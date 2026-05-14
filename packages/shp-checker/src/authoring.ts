@@ -22,10 +22,10 @@ export type EvidenceSpan = {
 
 export function buildShapeAuthorPrompt(input: ShapeAuthorPromptInput): string {
   return [
-    "You are authoring a Shape .shp change file for human review.",
+    "You are authoring a Shape .shape change file for human review.",
     "",
     "Rules:",
-    "- Output only valid .shp syntax.",
+    "- Output only valid .shape syntax.",
     "- Cover every governed changed file with a source or evidence reference.",
     "- Use effects complete only when every material effect is represented.",
     "- Use effects unknown when uncertainty remains; do not silently omit uncertainty.",
@@ -45,7 +45,7 @@ export function buildShapeAuthorPrompt(input: ShapeAuthorPromptInput): string {
 
 export function buildShapeCriticPrompt(input: ShapeAuthorPromptInput, proposedShapeDelta: string): string {
   return [
-    "Review this proposed Shape .shp delta before a deterministic checker runs.",
+    "Review this proposed Shape .shape delta before a deterministic checker runs.",
     "",
     "Critic checklist:",
     "- Did the shape delta cover every governed changed file?",

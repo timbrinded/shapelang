@@ -23,9 +23,9 @@ const USAGE = `Usage:
   shp explain SYMBOL [files...]
   shp graph SYMBOL [--relation requires] [files...]
   shp author --changed-files changed.txt --component ComponentName [--change ChangeName] [--module module.name]
-  shp analyze [--shape-files file1.shp,file2.shp] [source-files...]
+  shp analyze [--shape-files file1.shape,file2.shape] [source-files...]
 
-When no files are provided, commands scan shape/system/**/*.shp and shape/changes/**/*.shp.
+When no files are provided, commands scan shape/system/**/*.shape and shape/changes/**/*.shape.
 `;
 
 async function main(): Promise<number> {
@@ -168,7 +168,7 @@ async function formatFiles(providedFiles: string[], checkOnly: boolean): Promise
 }
 
 async function defaultShapeFiles(): Promise<string[]> {
-  const patterns = ["shape/system/**/*.shp", "shape/changes/**/*.shp"];
+  const patterns = ["shape/system/**/*.shape", "shape/changes/**/*.shape"];
   const files = new Set<string>();
   for (const pattern of patterns) {
     const glob = new Glob(pattern);

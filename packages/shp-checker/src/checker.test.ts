@@ -74,7 +74,7 @@ describe("Shape parser", () => {
 describe("Shape checker", () => {
   test("passes append-only append fixture", async () => {
     const result = await checkShapeFiles([
-      resolve(repoRoot, "fixtures/pass/append_only_append/audit.shp")
+      resolve(repoRoot, "fixtures/pass/append_only_append/audit.shape")
     ]);
 
     expect(result.exitCode).toBe(0);
@@ -83,7 +83,7 @@ describe("Shape checker", () => {
 
   test("passes append-only read fixture", async () => {
     const result = await checkShapeFiles([
-      resolve(repoRoot, "fixtures/pass/append_only_read/audit.shp")
+      resolve(repoRoot, "fixtures/pass/append_only_read/audit.shape")
     ]);
 
     expect(result.exitCode).toBe(0);
@@ -92,7 +92,7 @@ describe("Shape checker", () => {
 
   test("rejects hard delete against append-only resource", async () => {
     const result = await checkShapeFiles([
-      resolve(repoRoot, "fixtures/fail/append_only_hard_delete/audit.shp")
+      resolve(repoRoot, "fixtures/fail/append_only_hard_delete/audit.shape")
     ]);
     const output = formatDiagnostics(result);
 

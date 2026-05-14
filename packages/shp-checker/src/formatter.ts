@@ -65,7 +65,7 @@ export type FormatResult =
       diagnostics: ParseDiagnostic[];
     };
 
-export function formatShapeSource(source: string, filePath = "memory.shp"): FormatResult {
+export function formatShapeSource(source: string, filePath = "memory.shape"): FormatResult {
   const parsed = parseShapeModule(source, filePath);
   if (!parsed.ok) {
     return {

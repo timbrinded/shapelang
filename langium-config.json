@@ -8,7 +8,7 @@
       "id": "shape",
       "grammar": "packages/shp-checker/src/language/shape.langium",
       "fileExtensions": [
-        "shp"
+        "shape"
       ]
     }
   ]

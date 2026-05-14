@@ -38,7 +38,7 @@ type ParserErrorLike = {
   };
 };
 
-export function parseShapeModule(source: string, filePath = "memory.shp"): ParseShapeModuleResult {
+export function parseShapeModule(source: string, filePath = "memory.shape"): ParseShapeModuleResult {
   const services = createShapeServices();
   const absolutePath = resolve(filePath);
   const document = services.shared.workspace.LangiumDocumentFactory.fromString<ShapeModule>(

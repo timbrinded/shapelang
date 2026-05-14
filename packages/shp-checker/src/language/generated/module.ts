@@ -9,7 +9,7 @@ import { ShapeGrammar } from './grammar.ts';
 
 export const ShapeLanguageMetaData = {
     languageId: 'shape',
-    fileExtensions: ['.shp'],
+    fileExtensions: ['.shape'],
     caseInsensitive: false,
     mode: 'development'
 } as const satisfies LanguageMetaData;

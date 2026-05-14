@@ -1,7 +1,7 @@
 # Shape Language Implementation Plan
 
 **Working name:** Shape
-**File extension:** `.shp`
+**File extension:** `.shape`
 **Status:** draft implementation plan
 **Core idea:** human-readable, LLM-authored architecture shape files checked by a deterministic type/conformance checker.
 
@@ -11,7 +11,7 @@ Shape is a typed architecture conformance language.
 
 It is not a programming language in the normal sense. It does not execute. It does not compile application code. It does not need to infer TypeScript, Rust, SQL, or Solidity directly.
 
-Instead, `.shp` files describe the declared semantic shape of a system:
+Instead, `.shape` files describe the declared semantic shape of a system:
 
 ```text
 resources
@@ -27,7 +27,7 @@ change summaries
 
 The checker verifies that the declared shape is coherent.
 
-The LLM helps author `.shp` files from PRs, code diffs, design docs, schemas, and human instructions. The human reviews those `.shp` files. The deterministic checker decides whether the resulting architecture model is valid.
+The LLM helps author `.shape` files from PRs, code diffs, design docs, schemas, and human instructions. The human reviews those `.shape` files. The deterministic checker decides whether the resulting architecture model is valid.
 
 The product is therefore:
 
@@ -101,7 +101,7 @@ That is the first killer demo.
 Shape should not initially try to:
 
 ```text
-compile TypeScript into .shp
+compile TypeScript into .shape
 prove the application implementation is correct
 replace tests
 replace code review
@@ -111,17 +111,17 @@ execute business logic
 generate application code
 ```
 
-The first version checks the `.shp` model, not arbitrary implementation code.
+The first version checks the `.shape` model, not arbitrary implementation code.
 
 Optional source-code analysers can come later as audit aids, but they are not the core product.
 
 ## 4. Design principles
 
-### 4.1 `.shp` is the source of architectural truth
+### 4.1 `.shape` is the source of architectural truth
 
-Application code may be messy. `.shp` files should be precise.
+Application code may be messy. `.shape` files should be precise.
 
-A `.shp` file says:
+A `.shape` file says:
 
 ```text
 this function emits these effects
@@ -167,7 +167,7 @@ low ambiguity
 
 The LLM is never the authority.
 
-The checker should not ask the LLM whether something is safe. It should parse `.shp`, lower it into facts, run rules, and emit reproducible diagnostics.
+The checker should not ask the LLM whether something is safe. It should parse `.shape`, lower it into facts, run rules, and emit reproducible diagnostics.
 
 ### 4.4 Claims need evidence
 
@@ -225,12 +225,12 @@ The internal provenance graph matters more than fancy syntax.
 
 2. LLM reads:
    - code diff
-   - existing .shp files
+   - existing .shape files
    - relevant design docs
    - project prelude
    - changed file paths
 
-3. LLM proposes a .shp change file.
+3. LLM proposes a .shape change file.
 
 4. Human reviews:
    - code diff
@@ -254,7 +254,7 @@ The internal provenance graph matters more than fancy syntax.
 ### 5.2 Conceptual pipeline
 
 ```text
-.shp files
+.shape files
   ↓
 parser
   ↓
@@ -376,7 +376,7 @@ StorageAdapter
 PolicyAuthority
 ```
 
-## 7. Example `.shp` file
+## 7. Example `.shape` file
 
 ```text
 module audit
@@ -448,7 +448,7 @@ This should fail because `AuditEvent : AppendOnly`.
 
 ## 9. Core semantic model
 
-The parser should lower `.shp` declarations into a small internal model.
+The parser should lower `.shape` declarations into a small internal model.
 
 ### 9.1 Resource declaration
 
@@ -687,7 +687,7 @@ The final forbid wins.
 
 ## 12. Shape coverage
 
-Since the checker does not compile TypeScript into `.shp`, the system needs coverage rules.
+Since the checker does not compile TypeScript into `.shape`, the system needs coverage rules.
 
 Example:
 
@@ -710,7 +710,7 @@ If a PR changes:
 src/audit/purge.ts
 ```
 
-but there is no `.shp` change or attestation, CI fails:
+but there is no `.shape` change or attestation, CI fails:
 
 ```text
 error: governed source changed without shape delta
@@ -722,7 +722,7 @@ Governed by:
   AuditStoreImpl
 
 Required:
-  add a .shp change
+  add a .shape change
   or add an explicit no_shape_change attestation
 ```
 
@@ -844,12 +844,12 @@ emit witness path
 
 ## 15. LLM authoring workflow
 
-The LLM should produce `.shp` deltas, not vague prose.
+The LLM should produce `.shape` deltas, not vague prose.
 
 ### 15.1 Inputs to the LLM
 
 ```text
-existing .shp model
+existing .shape model
 PR diff
 changed file list
 relevant code snippets
@@ -861,7 +861,7 @@ previous shape conventions
 ### 15.2 Expected LLM output
 
 ```text
-valid .shp change file
+valid .shape change file
 evidence refs for every material effect
 complete or unknown effect status
 no hidden uncertainty
@@ -871,7 +871,7 @@ no downgrade of destructive effects
 
 ### 15.3 LLM critic pass
 
-A second pass should review the proposed `.shp` delta.
+A second pass should review the proposed `.shape` delta.
 
 It should ask:
 
@@ -999,18 +999,18 @@ Suggested repo layout:
 ```text
 shape/
   prelude/
-    data.shp
-    architecture.shp
-    security.shp
+    data.shape
+    architecture.shape
+    security.shape
 
   system/
-    audit.shp
-    gateway.shp
-    policy.shp
-    bridge.shp
+    audit.shape
+    gateway.shape
+    policy.shape
+    bridge.shape
 
   changes/
-    PR_412.shp
+    PR_412.shape
 
 src/
   ...
@@ -1071,7 +1071,7 @@ Do not start with Rust unless the core semantics have stabilised.
 Build:
 
 ```text
-parser for basic .shp
+parser for basic .shape
 AST model
 resolver
 hardcoded prelude
@@ -1133,7 +1133,7 @@ check resulting model
 Success condition:
 
 ```text
-A PR-level .shp file can be checked without rewriting base system files.
+A PR-level .shape file can be checked without rewriting base system files.
 ```
 
 ### Phase 4: coverage policy
@@ -1167,7 +1167,7 @@ stable output for LLM-authored files
 Success condition:
 
 ```text
-LLM-generated .shp can be normalised before review.
+LLM-generated .shape can be normalised before review.
 ```
 
 ### Phase 6: dependency graph rules
@@ -1228,7 +1228,7 @@ unknown-effect discipline
 Success condition:
 
 ```text
-Given a PR diff, the assistant proposes a valid .shp change file that humans can review.
+Given a PR diff, the assistant proposes a valid .shape change file that humans can review.
 ```
 
 ### Phase 9: LSP/editor support
@@ -1257,14 +1257,14 @@ Build only as audit support:
 ```text
 detect obvious SQL DELETE/TRUNCATE/DROP
 detect obvious Kysely/Prisma/Drizzle destructive calls
-compare analyser hints against .shp effects
+compare analyser hints against .shape effects
 warn on mismatch
 ```
 
 Success condition:
 
 ```text
-The analyser can flag suspicious omissions, but .shp remains the source of truth.
+The analyser can flag suspicious omissions, but .shape remains the source of truth.
 ```
 
 ## 21. Testing plan
@@ -1286,7 +1286,7 @@ fixtures/fail/unsafe_without_expiry
 Each fixture should snapshot:
 
 ```text
-input .shp
+input .shape
 derived facts
 diagnostic output
 exit code
@@ -1375,7 +1375,7 @@ jobs:
 
 ## 23. Review policy
 
-A `.shp` change should be reviewed like a semantic contract.
+A `.shape` change should be reviewed like a semantic contract.
 
 Reviewers should ask:
 
@@ -1397,22 +1397,22 @@ The shape review should be shorter and clearer than raw code review. That is the
 | Risk                                          |   Severity | Mitigation                                                                   |
 | --------------------------------------------- | ---------: | ---------------------------------------------------------------------------- |
 | LLM omits an effect                           |       High | coverage rules, evidence refs, critic pass, human review, optional analysers |
-| `.shp` becomes stale                          |       High | governed paths require shape deltas or attestations                          |
+| `.shape` becomes stale                          |       High | governed paths require shape deltas or attestations                          |
 | Language becomes too abstract                 |       High | start with resources/effects/components only                                 |
 | Diagnostics are poor                          |       High | provenance graph from day one                                                |
 | Users ignore shape files                      |     Medium | keep diffs small, canonical, and CI-enforced                                 |
 | Rule system becomes too powerful too early    |     Medium | constrained rule syntax first                                                |
 | Unsafe becomes a loophole                     |     Medium | require reason, capability, expiry, and policy                               |
-| `.shp` extension conflicts with GIS Shapefile | Low/Medium | acceptable internally; public product may use `.shape` later                 |
+| File extension conflicts with existing tools     | Low/Medium | use `.shape` to avoid GIS Shapefile associations                              |
 
 ## 25. MVP acceptance criteria
 
 The MVP is done when all of this works:
 
 ```text
-1. A human or LLM can write audit.shp.
+1. A human or LLM can write audit.shape.
 
-2. audit.shp declares:
+2. audit.shape declares:
    - AuditEvent resource
    - AppendOnly trait
    - AuditStore component
@@ -1447,7 +1447,7 @@ Nothing else is required for the first proof of value.
 The mature system should support:
 
 ```text
-human-readable .shp models
+human-readable .shape models
 LLM-authored shape deltas
 deterministic conformance checking
 resource/effect/capability constraints
@@ -1476,8 +1476,8 @@ The checker rejects incoherent system shape.
 Build the smallest end-to-end repository:
 
 ```text
-shape/system/audit.shp
-shape/changes/PR_001.shp
+shape/system/audit.shape
+shape/changes/PR_001.shape
 packages/shp-cli
 packages/shp-checker
 ```

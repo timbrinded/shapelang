@@ -67,7 +67,7 @@ const PRELUDE_COMPLETIONS = [
   "ControlPlane"
 ];
 
-export function getEditorDiagnostics(source: string, filePath = "memory.shp"): EditorDiagnostic[] {
+export function getEditorDiagnostics(source: string, filePath = "memory.shape"): EditorDiagnostic[] {
   const parsed = parseShapeModule(source, filePath);
   if (!parsed.ok) {
     return parsed.diagnostics.map((diagnostic) => ({
@@ -82,7 +82,7 @@ export function getEditorDiagnostics(source: string, filePath = "memory.shp"): E
   return result.diagnostics.map((diagnostic) => diagnosticToEditorDiagnostic(diagnostic));
 }
 
-export function getHoverText(source: string, symbol: string, filePath = "memory.shp"): string {
+export function getHoverText(source: string, symbol: string, filePath = "memory.shape"): string {
   const parsed = parseShapeModule(source, filePath);
   if (!parsed.ok) {
     return `No shape facts found for ${symbol}.\n`;
@@ -138,7 +138,7 @@ export function getCompletions(source: string, prefix = ""): string[] {
   return [...names].filter((name) => name.startsWith(prefix)).sort();
 }
 
-export function formatOnSave(source: string, filePath = "memory.shp"): FormatResult {
+export function formatOnSave(source: string, filePath = "memory.shape"): FormatResult {
   return formatShapeSource(source, filePath);
 }
 

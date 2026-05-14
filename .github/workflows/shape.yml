@@ -22,7 +22,7 @@ jobs:
         run: bun run langium:generate
 
       - name: Format check
-        run: find . -name '*.shp' -not -path './node_modules/*' -print0 | xargs -0 bun packages/shp-cli/src/index.ts fmt --check
+        run: find . -name '*.shape' -not -path './node_modules/*' -print0 | xargs -0 bun packages/shp-cli/src/index.ts fmt --check
 
       - name: Tests
         run: bun test

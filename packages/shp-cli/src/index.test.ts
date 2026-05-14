@@ -16,7 +16,7 @@ describe("shp CLI", () => {
   test("returns exit code 1 for semantic violations", async () => {
     const result = await runCli([
       "check",
-      "fixtures/fail/append_only_hard_delete/audit.shp"
+      "fixtures/fail/append_only_hard_delete/audit.shape"
     ]);
 
     expect(result.exitCode).toBe(1);
@@ -30,7 +30,7 @@ describe("shp CLI", () => {
       "coverage",
       "--changed-files",
       "fixtures/changed/audit_purge.txt",
-      "fixtures/fail/missing_shape_delta/audit.shp"
+      "fixtures/fail/missing_shape_delta/audit.shape"
     ]);
 
     expect(result.exitCode).toBe(1);
@@ -40,7 +40,7 @@ describe("shp CLI", () => {
   });
 
   test("checks formatting", async () => {
-    const result = await runCli(["fmt", "--check", "fixtures/pass/append_only_append/audit.shp"]);
+    const result = await runCli(["fmt", "--check", "fixtures/pass/append_only_append/audit.shape"]);
 
     expect(result.exitCode).toBe(0);
     expect(result.stdout).toContain("Shape format check passed");
@@ -71,7 +71,7 @@ describe("shp CLI", () => {
     const result = await runCli([
       "analyze",
       "--shape-files",
-      "shape/system/audit.shp",
+      "shape/system/audit.shape",
       "fixtures/source/audit_purge.ts"
     ]);
 

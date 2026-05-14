@@ -1214,7 +1214,7 @@ function checkCoverage(model: Model, changedFiles: string[]): SemanticDiagnostic
     }
 
     for (const changedFile of normalizedChanged) {
-      if (changedFile.endsWith(".shp")) {
+      if (changedFile.endsWith(".shape")) {
         continue;
       }
 
@@ -1518,7 +1518,7 @@ function formatMissingShapeDeltaDiagnostic(diagnostic: Extract<SemanticDiagnosti
     `Changed file: ${diagnostic.changedFile}`,
     `Governed by: ${diagnostic.implementation}`,
     `Matched path: ${diagnostic.glob}`,
-    "Required: add a .shp change with matching source/evidence, or add a no_shape_change attestation.",
+    "Required: add a .shape change with matching source/evidence, or add a no_shape_change attestation.",
     formatCausedBy(diagnostic.causedBy)
   ].join("\n");
 }
