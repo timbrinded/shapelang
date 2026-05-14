@@ -24,6 +24,62 @@ describe("shp CLI", () => {
     expect(result.stderr).toContain("AuditStore.purgeOldEvents");
     expect(result.stdout).toBe("");
   });
+
+  test("runs coverage with changed-file input", async () => {
+    const result = await runCli([
+      "coverage",
+      "--changed-files",
+      "fixtures/changed/audit_purge.txt",
+      "fixtures/fail/missing_shape_delta/audit.shp"
+    ]);
+
+    expect(result.exitCode).toBe(1);
+    expect(result.stderr).toContain("governed source changed without shape delta");
+    expect(result.stderr).toContain("src/audit/purge.ts");
+    expect(result.stdout).toBe("");
+  });
+
+  test("checks formatting", async () => {
+    const result = await runCli(["fmt", "--check", "fixtures/pass/append_only_append/audit.shp"]);
+
+    expect(result.exitCode).toBe(0);
+    expect(result.stdout).toContain("Shape format check passed");
+    expect(result.stderr).toBe("");
+  });
+
+  test("generates authoring scaffolds", async () => {
+    const result = await runCli([
+      "author",
+      "--changed-files",
+      "fixtures/changed/audit_purge.txt",
+      "--component",
+      "AuditStore",
+      "--change",
+      "ReviewAuditChange",
+      "--module",
+      "changes.PR_001"
+    ]);
+
+    expect(result.exitCode).toBe(0);
+    expect(result.stdout).toContain("module changes.PR_001");
+    expect(result.stdout).toContain("change ReviewAuditChange");
+    expect(result.stdout).toContain("effects unknown");
+    expect(result.stderr).toBe("");
+  });
+
+  test("runs source analyzer with shape comparison", async () => {
+    const result = await runCli([
+      "analyze",
+      "--shape-files",
+      "shape/system/audit.shp",
+      "fixtures/source/audit_purge.ts"
+    ]);
+
+    expect(result.exitCode).toBe(1);
+    expect(result.stderr).toContain("missing from shape effects");
+    expect(result.stderr).toContain("HardDelete");
+    expect(result.stdout).toBe("");
+  });
 });
 
 async function runCli(args: string[]): Promise<{

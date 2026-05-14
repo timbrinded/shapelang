@@ -5,7 +5,6 @@ resource AuditEvent : AppendOnly
 component AuditStore {
   owns AuditEvent
   grants Read<AuditEvent>
-
   fn listEvents
     effects complete {
       Read<AuditEvent>

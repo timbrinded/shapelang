@@ -1,11 +1,32 @@
 module audit
 
+trait AppendOnly<T: Resource> {
+  allow Append<T>
+  allow Read<T>
+  forbid final DropStorage<T>
+  forbid final HardDelete<T>
+  forbid final Truncate<T>
+}
+
 resource AuditEvent : AppendOnly
 
 component AuditStore {
   owns AuditEvent
+  grants Append<AuditEvent>
   grants HardDelete<AuditEvent>
-
+  grants Read<AuditEvent>
+  fn appendEvent
+    source ts("src/audit/store.ts#appendEvent")
+    effects complete {
+      Append<AuditEvent>
+        evidence ts("src/audit/store.ts:8-14")
+    }
+  fn listEvents
+    source ts("src/audit/store.ts#listEvents")
+    effects complete {
+      Read<AuditEvent>
+        evidence ts("src/audit/store.ts:18-25")
+    }
   fn purgeOldEvents
     source ts("src/audit/purge.ts#purgeOldEvents")
     effects complete {

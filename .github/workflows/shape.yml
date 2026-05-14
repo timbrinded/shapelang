@@ -1,0 +1,34 @@
+name: Shape Check
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  shape:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+
+      - name: Install
+        run: bun install --frozen-lockfile
+
+      - name: Generate Langium artifacts
+        run: bun run langium:generate
+
+      - name: Format check
+        run: find . -name '*.shp' -not -path './node_modules/*' -print0 | xargs -0 bun packages/shp-cli/src/index.ts fmt --check
+
+      - name: Tests
+        run: bun test
+
+      - name: Typecheck
+        run: bun run typecheck
+
+      - name: Shape conformance
+        run: bun shp check

@@ -1,0 +1,15 @@
+module audit
+
+resource AuditEvent : AppendOnly
+
+component AuditStore {
+  owns AuditEvent
+}
+
+implementation AuditStoreImpl {
+  paths {
+    "src/audit/**/*.ts"
+  }
+  conforms_to AuditStore
+  on_change require shape_delta
+}
