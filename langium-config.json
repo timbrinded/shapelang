@@ -1,0 +1,15 @@
+{
+  "projectName": "Shape",
+  "out": "packages/shp-checker/src/language/generated",
+  "importExtension": ".ts",
+  "mode": "development",
+  "languages": [
+    {
+      "id": "shape",
+      "grammar": "packages/shp-checker/src/language/shape.langium",
+      "fileExtensions": [
+        "shp"
+      ]
+    }
+  ]
+}

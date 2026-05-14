@@ -1,0 +1,12 @@
+{
+  "name": "@shape/shp-checker",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "langium": "^4.2.4"
+  }
+}

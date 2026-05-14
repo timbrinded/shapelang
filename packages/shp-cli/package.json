@@ -1,0 +1,12 @@
+{
+  "name": "@shape/shp-cli",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "shp": "./src/index.ts"
+  },
+  "dependencies": {
+    "@shape/shp-checker": "workspace:*"
+  }
+}

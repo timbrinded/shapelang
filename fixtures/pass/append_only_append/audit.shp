@@ -1,0 +1,13 @@
+module audit
+
+resource AuditEvent : AppendOnly
+
+component AuditStore {
+  owns AuditEvent
+  grants Append<AuditEvent>
+
+  fn appendEvent
+    effects complete {
+      Append<AuditEvent>
+    }
+}

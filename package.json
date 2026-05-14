@@ -1,0 +1,19 @@
+{
+  "name": "shapelang",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "langium:generate": "bunx langium-cli generate",
+    "shp": "bun packages/shp-cli/src/index.ts",
+    "test": "bun test",
+    "typecheck": "tsgo -p tsconfig.json --noEmit"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@typescript/native-preview": "beta",
+    "langium-cli": "^4.2.1"
+  }
+}
