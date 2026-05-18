@@ -1,8 +1,15 @@
 # Examples
 
-Use these as compact patterns. Prefer current fixtures if there is any conflict.
+Use these as compact patterns. Prefer current project fixtures if there is any conflict.
 
-## Resource, Component, Effects
+## Contents
+
+- [Good Examples](#good-examples)
+- [Counterexamples](#counterexamples)
+
+## Good Examples
+
+Resource, component, grant, and effect:
 
 ```shape
 module audit
@@ -22,7 +29,7 @@ component AuditStore {
 }
 ```
 
-## Change File With Unknown Effects
+Change file with explicit unknowns:
 
 ```shape
 module changes.PR_001
@@ -36,18 +43,26 @@ change ReviewAuditChange {
 }
 ```
 
-## Preserve Inline With Rationale
+Coverage attestation for a governed non-architecture change:
 
 ```shape
-component Gateway {
-  owns PolicySnapshot
-  grants Read<PolicySnapshot>
-  fn derivePolicyDecision : PreserveInline
-    effects complete {
-      Read<PolicySnapshot>
-    }
+attest no_shape_change {
+  source ts("src/audit/reporting.ts")
+  reason "Reporting-only copy change; no resource effect changed."
 }
+```
 
+Dependency rule with a semantic relation:
+
+```shape
+rule no_runtime_control_cycle {
+  forbid cycle over requires where includes RuntimeCall or ControlPlaneDependency
+}
+```
+
+Preserve inline with rationale:
+
+```shape
 rationale DerivePolicyDecisionInline : InlineRationale<fn Gateway.derivePolicyDecision> {
   applies_to fn Gateway.derivePolicyDecision
   why CognitiveLocality
@@ -56,7 +71,7 @@ rationale DerivePolicyDecisionInline : InlineRationale<fn Gateway.derivePolicyDe
 }
 ```
 
-## Refactor-Sensitive Function With Memory And Guard
+Refactor-sensitive memory with guard:
 
 ```shape
 memory DecisionRefactorConstraint : RefactorConstraint<fn Gateway.derivePolicyDecision> {
@@ -69,7 +84,7 @@ memory DecisionRefactorConstraint : RefactorConstraint<fn Gateway.derivePolicyDe
 }
 ```
 
-## Reevaluation For Guarded Change
+Reevaluation for a guarded change:
 
 ```shape
 reevaluation DecisionShapeRechecked {
@@ -82,12 +97,65 @@ reevaluation DecisionShapeRechecked {
 }
 ```
 
-## Required Description
+Analyzer-backed effect after review:
 
 ```shape
-fn derivePolicyDecision : RequiresDescription
-  description required "Policy decision branches remain local for auditability."
+HardDelete<AuditEvent>
+  evidence ts("src/audit/purge.ts:12-16")
+```
+
+## Counterexamples
+
+Unknown work falsely marked complete:
+
+```shape
+fn reviewPurgeShape1
+  source ts("src/audit/purge.ts")
   effects complete {
-    Read<PolicySnapshot>
   }
+```
+
+Broad grant added just to pass a diagnostic:
+
+```shape
+component AuditStore {
+  owns AuditEvent
+  grants HardDelete<AuditEvent>
+}
+```
+
+Memory used as a waiver:
+
+```shape
+memory PurgeDeleteConstraint : RefactorConstraint<fn AuditStore.purgeOldEvents> {
+  applies_to fn AuditStore.purgeOldEvents
+  status Explained
+  summary "Approved exception."
+}
+```
+
+Guarded change without reevaluation:
+
+```shape
+change RefactorDecision {
+  modify fn Gateway.derivePolicyDecision
+    effects complete {
+      Read<PolicySnapshot>
+    }
+}
+```
+
+Attestation hiding a real shape delta:
+
+```shape
+attest no_shape_change {
+  source ts("src/audit/purge.ts")
+  reason "No shape update needed."
+}
+```
+
+Analyzer treated as authoritative:
+
+```text
+Analyzer hinted HardDelete, so no source review is needed.
 ```

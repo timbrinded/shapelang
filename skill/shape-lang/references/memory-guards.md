@@ -1,25 +1,33 @@
 # Memory Guards
 
-Use this when working with shape traits, descriptions, rationales, memories, or reevaluations.
-
-## Purpose
+Use this when working with function shape traits, descriptions, rationales, memories, or reevaluations.
 
 Memory Guards add typed design memory. They are restrictive: they add obligations and can block refactors. They are not waivers and must not make a final-forbidden effect pass.
 
-## Shape Traits
+## Contents
 
-Function shape traits derive obligations:
+- [Obligation Table](#obligation-table)
+- [Rationale](#rationale)
+- [Required Description](#required-description)
+- [Memory](#memory)
+- [Reevaluation](#reevaluation)
+- [Target Integrity](#target-integrity)
+- [Final Forbids](#final-forbids)
 
-- `PreserveInline` requires `InlineRationale<fn Component.fn>`.
-- `RequiresDescription` requires a non-empty `description` and `DescriptionRationale<fn Component.fn>`.
-- `ProtectedCheckOrder` requires `CheckOrderRationale<fn Component.fn>` satisfied by rationale or memory.
-- `RefactorSensitive` requires `RefactorConstraint<fn Component.fn>` satisfied by memory.
-- `NonIdiomatic` requires `DesignRationale<fn Component.fn>` satisfied by rationale or memory.
-- `TestOnly` requires `TestOnlyPurpose<fn Component.fn>`.
+## Obligation Table
+
+| Function shape trait | Required context |
+| --- | --- |
+| `PreserveInline` | `InlineRationale<fn Component.fn>` from a `rationale` |
+| `RequiresDescription` | non-empty `description` plus `DescriptionRationale<fn Component.fn>` |
+| `ProtectedCheckOrder` | `CheckOrderRationale<fn Component.fn>` from a `rationale` or `memory` |
+| `RefactorSensitive` | `RefactorConstraint<fn Component.fn>` from a `memory` |
+| `NonIdiomatic` | `DesignRationale<fn Component.fn>` from a `rationale` or `memory` |
+| `TestOnly` | `TestOnlyPurpose<fn Component.fn>` from a `rationale` |
 
 ## Rationale
 
-Use `rationale` for intentional, explainable shape choices:
+Good: explain an intentional function shape with a typed target.
 
 ```shape
 rationale DerivePolicyDecisionInline : InlineRationale<fn Gateway.derivePolicyDecision> {
@@ -30,9 +38,44 @@ rationale DerivePolicyDecisionInline : InlineRationale<fn Gateway.derivePolicyDe
 }
 ```
 
+Counterexample: adding the trait without the required context.
+
+```shape
+fn derivePolicyDecision : PreserveInline
+  effects complete {
+    Read<PolicySnapshot>
+  }
+```
+
+Smallest fix: add a matching `InlineRationale<fn Gateway.derivePolicyDecision>`.
+
+## Required Description
+
+Good: keep compact local purpose next to the function.
+
+```shape
+fn derivePolicyDecision : RequiresDescription
+  description required "Builds the visible authorization decision from policy state."
+  effects complete {
+    Read<PolicySnapshot>
+  }
+```
+
+Counterexample: empty required description.
+
+```shape
+fn derivePolicyDecision : RequiresDescription
+  description required ""
+  effects complete {
+    Read<PolicySnapshot>
+  }
+```
+
+Smallest fix: add a non-empty description and a matching `DescriptionRationale`.
+
 ## Memory
 
-Use `memory` for refactor constraints, including uncertainty:
+Good: preserve a refactor constraint, including explicit uncertainty.
 
 ```shape
 memory DecisionRefactorConstraint : RefactorConstraint<fn Gateway.derivePolicyDecision> {
@@ -47,9 +90,21 @@ memory DecisionRefactorConstraint : RefactorConstraint<fn Gateway.derivePolicyDe
 
 Use `status Unexplained` when the team knows a refactor constraint exists but cannot fully explain why yet.
 
+Counterexample: vague memory that behaves like a waiver.
+
+```shape
+memory DecisionRefactorConstraint : RefactorConstraint<fn Gateway.derivePolicyDecision> {
+  applies_to fn Gateway.derivePolicyDecision
+  status Explained
+  summary "Known issue approved by team."
+}
+```
+
+Smallest fix: state the specific refactor constraint or remove the memory.
+
 ## Reevaluation
 
-A guarded `modify fn` or `remove fn` requires a matching reevaluation:
+Good: record review evidence for a guarded change.
 
 ```shape
 reevaluation DecisionShapeRechecked {
@@ -62,12 +117,48 @@ reevaluation DecisionShapeRechecked {
 }
 ```
 
-A valid reevaluation must satisfy an existing memory/rationale and include outcome, summary, evidence, reviewer, and decided_on.
+Counterexample: incomplete reevaluation.
 
-## Diagnostics To Expect
+```shape
+reevaluation DecisionShapeRechecked {
+  satisfies memory DecisionRefactorConstraint
+  outcome Confirmed
+  summary "Looks fine."
+}
+```
 
-- Missing trait context: add matching rationale or memory.
-- Missing required description: add `description required "..."`.
-- Invalid context target: fix `InlineRationale<fn ...>` or `applies_to`.
-- Guarded shape changed: add valid reevaluation or preserve the target.
-- Forbidden effect: fix the effect/model; do not add memory as a waiver.
+Smallest fix: include `evidence`, `reviewer`, and `decided_on`, and make sure `satisfies` points to an existing memory or rationale.
+
+## Target Integrity
+
+Counterexample: type target and `applies_to` disagree.
+
+```shape
+rationale DerivePolicyDecisionInline : InlineRationale<fn Gateway.derivePolicyDecision> {
+  applies_to fn Gateway.otherDecision
+  why CognitiveLocality
+  summary "Policy checks remain inline for auditability."
+  owner GatewayTeam
+}
+```
+
+Smallest fix: make the context type target and `applies_to` target identical.
+
+## Final Forbids
+
+Counterexample: memory cannot rescue a final-forbidden effect.
+
+```shape
+fn purgeOldEvents : RefactorSensitive
+  effects complete {
+    HardDelete<AuditEvent>
+  }
+
+memory PurgeDeleteConstraint : RefactorConstraint<fn AuditStore.purgeOldEvents> {
+  applies_to fn AuditStore.purgeOldEvents
+  status Explained
+  summary "This behavior is documented."
+}
+```
+
+Smallest fix: fix the effect or policy. Do not use rationale, memory, or reevaluation as a waiver.

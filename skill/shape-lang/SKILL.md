@@ -1,6 +1,6 @@
 ---
 name: shape-lang
-description: Use when working with .shape files in repositories that use the Shape language to author, review, teach, format, or validate Shape architecture claims, including Shape change files, Memory Guards, typed component/resource/effect models, coverage attestations, and agent-safe Shape authoring workflows using the shp CLI.
+description: Use when working with .shape files in repositories that use the Shape language to author, review, teach, format, debug, or validate Shape architecture claims, including Shape change files, Memory Guards, typed component/resource/effect models, coverage attestations, and agent-safe workflows using all shp CLI commands.
 ---
 
 # Shape Lang
@@ -9,7 +9,7 @@ description: Use when working with .shape files in repositories that use the Sha
 
 Shape is a deterministic architecture conformance language. Treat `.shape` files as typed, reviewable claims about architecture, not prose explanations and not proof of application implementation correctness.
 
-Assume the released `shp` binary is installed on `PATH`. Before authoring, reviewing, or teaching Shape usage:
+Assume the released `shp` binary is installed on `PATH`. Before authoring, reviewing, teaching, or debugging Shape usage:
 
 - Inspect the repository's existing `.shape` files before inventing syntax.
 - Inspect project docs for local Shape conventions and changed-file workflows.
@@ -20,9 +20,10 @@ Assume the released `shp` binary is installed on `PATH`. Before authoring, revie
 
 Load only the reference needed for the task:
 
-- Authoring or reviewing `.shape` changes: read `references/make-shape-protocol.md`.
-- Memory Guards, rationales, memories, descriptions, or reevaluations: read `references/memory-guards.md`.
 - Teaching Shape concepts to an agent or human: read `references/teaching-guide.md`.
+- Authoring or reviewing `.shape` changes: read `references/make-shape-protocol.md`.
+- Choosing or interpreting CLI commands: read `references/cli-workflows.md`.
+- Memory Guards, rationales, memories, descriptions, or reevaluations: read `references/memory-guards.md`.
 - Need canonical snippets: read `references/examples.md`.
 - Reviewing for mistakes or cleaning up generated Shape: read `references/antipatterns.md`.
 
@@ -37,9 +38,11 @@ Load only the reference needed for the task:
 
 ## CLI Defaults
 
-- Run `shp check` to validate the current Shape model.
-- Run `shp fmt --check` to verify canonical formatting.
-- Run `shp coverage --changed-files changed.txt` when the workflow provides a changed-files list.
+- Run `shp fmt --check` before `shp check` when validating edited Shape files.
+- Run `shp coverage --changed-files changed.txt` only when the workflow provides a changed-files list.
+- Use `shp obligations` and `shp memory` before fixing Memory Guard failures.
+- Use `shp explain`, `shp graph`, and `shp analyze` for investigation before changing model semantics.
+- Use `shp author` to scaffold, then review and replace `effects unknown` when evidence is available.
 - Run `shp --help` if a repository uses a newer CLI than this skill describes.
 
 ## Validation
