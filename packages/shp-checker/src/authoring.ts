@@ -166,15 +166,20 @@ function formatUnknownFunction(componentName: string, file: string, functionName
 }
 
 function formatMemoryGuardScaffold(componentName: string, functionName: string): string {
+  const target = `fn ${componentName}.${functionName}`;
   return [
-    `memory ReviewChangedShape : HardFoughtKnowledge<fn ${componentName}.${functionName}> {`,
-    `  applies_to fn ${componentName}.${functionName}`,
+    `memory ReviewChangedShape : ${contextRef("HardFoughtKnowledge", target)} {`,
+    `  applies_to ${target}`,
     "  status Unexplained",
     "  confidence Medium",
     '  summary "TODO: replace with hard-fought knowledge or remove this memory."',
     "  owner TODO",
     "}"
   ].join("\n");
+}
+
+function contextRef(contextType: string, target: string): string {
+  return `${contextType}<${target}>`;
 }
 
 function uniqueFunctionName(file: string, index: number): string {

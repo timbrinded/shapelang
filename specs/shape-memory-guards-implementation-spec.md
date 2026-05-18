@@ -1050,7 +1050,7 @@ Extend `Model`:
 
 ```ts
 type Model = {
-  ...
+  // existing fields
   rationales: Map<string, RationaleInfo>;
   memories: Map<string, MemoryInfo>;
   reevaluations: Map<string, ReevaluationInfo>;
@@ -1102,7 +1102,7 @@ Extend the existing `Fact` union.
 
 Add:
 
-```ts
+```text
 | {
     kind: "shape_trait";
     targetKind: TargetKind;
@@ -1177,7 +1177,7 @@ Extend `SemanticDiagnostic`.
 
 ### 13.1 Missing required context
 
-```ts
+```text
 | {
     kind: "missing_required_context";
     targetKind: TargetKind;
@@ -1206,7 +1206,7 @@ caused by:
 
 ### 13.2 Invalid context target
 
-```ts
+```text
 | {
     kind: "invalid_context_target";
     contextKind: "rationale" | "memory";
@@ -1229,7 +1229,7 @@ but that target is not declared.
 
 ### 13.3 Context target mismatch
 
-```ts
+```text
 | {
     kind: "context_target_mismatch";
     contextKind: "rationale" | "memory";
@@ -1253,7 +1253,7 @@ This should fail.
 
 ### 13.4 Missing required description
 
-```ts
+```text
 | {
     kind: "missing_required_description";
     targetKind: TargetKind;
@@ -1266,7 +1266,7 @@ This should fail.
 
 ### 13.5 Guarded shape changed
 
-```ts
+```text
 | {
     kind: "guarded_shape_changed";
     guardKind: "memory" | "rationale";
@@ -1294,7 +1294,7 @@ Required:
 
 ### 13.6 Invalid re-evaluation
 
-```ts
+```text
 | {
     kind: "invalid_reevaluation";
     name: string;
@@ -1320,7 +1320,7 @@ missing decided_on
 
 Add these functions to `checker.ts`.
 
-```ts
+```text
 function lowerRationale(...)
 function lowerMemory(...)
 function lowerReevaluation(...)
@@ -1676,7 +1676,7 @@ Update `buildShapeCriticPrompt` with:
 
 Update `generateShapeDelta` optionally:
 
-```ts
+```text
 type ShapeDeltaInput = {
   ...
   includeMemoryGuardScaffold?: boolean;

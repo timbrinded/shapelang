@@ -89,7 +89,7 @@ describe("shp CLI", () => {
     expect(result.exitCode).toBe(0);
     expect(result.stdout).toContain("Open Shape Obligations");
     expect(result.stdout).toContain("missing context");
-    expect(result.stdout).toContain("InlineRationale<fn Gateway.derivePolicyDecision>");
+    expect(result.stdout).toContain(["InlineRationale", "<", "fn Gateway.derivePolicyDecision", ">"].join(""));
     expect(result.stderr).toBe("");
   });
 

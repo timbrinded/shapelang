@@ -79,13 +79,20 @@ const PRELUDE_COMPLETIONS = [
   "TestOnly"
 ];
 
+function shapeContextRef(contextType: string, target: string): string {
+  return `${contextType}<${target}>`;
+}
+
 const PRELUDE_SHAPE_TRAIT_HOVERS = new Map([
-  ["PreserveInline", "PreserveInline\n  kind: shape trait\n  requires: InlineRationale<fn ...>\n"],
-  ["RequiresDescription", "RequiresDescription\n  kind: shape trait\n  requires: DescriptionRationale<fn ...>\n  requires description\n"],
-  ["ProtectedCheckOrder", "ProtectedCheckOrder\n  kind: shape trait\n  requires: CheckOrderRationale<fn ...>\n"],
-  ["SharpEdge", "SharpEdge\n  kind: shape trait\n  requires: HardFoughtKnowledge<fn ...>\n"],
-  ["NonIdiomatic", "NonIdiomatic\n  kind: shape trait\n  requires: DesignRationale<fn ...>\n"],
-  ["TestOnly", "TestOnly\n  kind: shape trait\n  requires: TestOnlyPurpose<fn ...>\n"]
+  ["PreserveInline", `PreserveInline\n  kind: shape trait\n  requires: ${shapeContextRef("InlineRationale", "fn ...")}\n`],
+  [
+    "RequiresDescription",
+    `RequiresDescription\n  kind: shape trait\n  requires: ${shapeContextRef("DescriptionRationale", "fn ...")}\n  requires description\n`
+  ],
+  ["ProtectedCheckOrder", `ProtectedCheckOrder\n  kind: shape trait\n  requires: ${shapeContextRef("CheckOrderRationale", "fn ...")}\n`],
+  ["SharpEdge", `SharpEdge\n  kind: shape trait\n  requires: ${shapeContextRef("HardFoughtKnowledge", "fn ...")}\n`],
+  ["NonIdiomatic", `NonIdiomatic\n  kind: shape trait\n  requires: ${shapeContextRef("DesignRationale", "fn ...")}\n`],
+  ["TestOnly", `TestOnly\n  kind: shape trait\n  requires: ${shapeContextRef("TestOnlyPurpose", "fn ...")}\n`]
 ]);
 
 export function getEditorDiagnostics(source: string, filePath = "memory.shape"): EditorDiagnostic[] {

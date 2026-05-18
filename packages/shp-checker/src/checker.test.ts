@@ -23,6 +23,14 @@ import {
 
 const repoRoot = resolve(import.meta.dir, "../../..");
 
+function fnTarget(name: string): string {
+  return `fn ${name}`;
+}
+
+function contextRef(contextType: string, target: string): string {
+  return `${contextType}<${target}>`;
+}
+
 describe("Shape parser", () => {
   test("parses a minimal valid module", () => {
     const parsed = parseShapeModule(`
@@ -80,19 +88,19 @@ describe("Shape parser", () => {
           }
       }
 
-      rationale DerivePolicyDecisionInline : InlineRationale<fn Gateway.derivePolicyDecision> {
+      rationale DerivePolicyDecisionInline : ${contextRef("InlineRationale", fnTarget("Gateway.derivePolicyDecision"))} {
         applies_to fn Gateway.derivePolicyDecision
         why CognitiveLocality
         summary "Policy checks remain inline for auditability."
         owner GatewayTeam
       }
 
-      memory DoNotTouchDecisionShape : HardFoughtKnowledge<fn Gateway.derivePolicyDecision> {
+      memory DoNotTouchDecisionShape : ${contextRef("HardFoughtKnowledge", fnTarget("Gateway.derivePolicyDecision"))} {
         applies_to fn Gateway.derivePolicyDecision
         status Unexplained
         confidence High
         protects shape CheckOrder
-        guards on_change require ReEvaluation<Self>
+        guards on_change require ${contextRef("ReEvaluation", "Self")}
         observed issue("SEC-231")
         summary "Previous refactors broke error normalisation."
         owner GatewayTeam
@@ -577,7 +585,7 @@ describe("Shape checker", () => {
           }
       }
 
-      rationale DerivePolicyDecisionDescription : DescriptionRationale<fn Gateway.derivePolicyDecision> {
+      rationale DerivePolicyDecisionDescription : ${contextRef("DescriptionRationale", fnTarget("Gateway.derivePolicyDecision"))} {
         applies_to fn Gateway.derivePolicyDecision
         why Auditability
         summary "Reviewers need the local policy decision purpose."
@@ -611,7 +619,7 @@ describe("Shape checker", () => {
     expect(explanation).toContain("shape traits:");
     expect(explanation).toContain("RequiresDescription");
     expect(explanation).toContain("description:");
-    expect(explanation).toContain("DescriptionRationale<fn Gateway.derivePolicyDecision>");
+    expect(explanation).toContain(contextRef("DescriptionRationale", fnTarget("Gateway.derivePolicyDecision")));
   });
 
   test("enforces required rationale, descriptions, memory, guarded changes, and final forbids", async () => {
@@ -620,7 +628,7 @@ describe("Shape checker", () => {
     ]);
     expect(missingRationale.exitCode).toBe(1);
     expect(formatDiagnostics(missingRationale)).toContain("missing required context");
-    expect(formatDiagnostics(missingRationale)).toContain("InlineRationale<fn Gateway.derivePolicyDecision>");
+    expect(formatDiagnostics(missingRationale)).toContain(contextRef("InlineRationale", fnTarget("Gateway.derivePolicyDecision")));
 
     const preserveInline = await checkShapeFiles([
       resolve(repoRoot, "fixtures/pass/memory_guard_preserve_inline/audit.shape")
@@ -696,7 +704,7 @@ describe("Shape checker", () => {
           }
       }
 
-      memory DoNotTouchDecisionShape : HardFoughtKnowledge<fn Gateway.derivePolicyDecision> {
+      memory DoNotTouchDecisionShape : ${contextRef("HardFoughtKnowledge", fnTarget("Gateway.derivePolicyDecision"))} {
         applies_to fn Gateway.otherDecision
         status Unexplained
         confidence High
@@ -735,7 +743,7 @@ describe("Shape checker", () => {
     }
     const missingMemoryResult = checkShapeModules([missingMemory.module]);
     expect(missingMemoryResult.exitCode).toBe(1);
-    expect(formatDiagnostics(missingMemoryResult)).toContain("HardFoughtKnowledge<fn Gateway.pollAttestation>");
+    expect(formatDiagnostics(missingMemoryResult)).toContain(contextRef("HardFoughtKnowledge", fnTarget("Gateway.pollAttestation")));
 
     const invalidReevaluation = parseShapeModule(`
       module gateway
@@ -774,11 +782,11 @@ describe("Shape checker", () => {
           }
       }
 
-      memory DoNotTouchDecisionShape : HardFoughtKnowledge<fn Gateway.derivePolicyDecision> {
+      memory DoNotTouchDecisionShape : ${contextRef("HardFoughtKnowledge", fnTarget("Gateway.derivePolicyDecision"))} {
         applies_to fn Gateway.derivePolicyDecision
         status Unexplained
         confidence High
-        guards on_change require ReEvaluation<Self>
+        guards on_change require ${contextRef("ReEvaluation", "Self")}
         summary "Previous refactors broke error normalisation."
         owner GatewayTeam
       }
@@ -837,8 +845,8 @@ component AuditStore {
   test("formats memory guard syntax canonically", () => {
     const result = formatShapeSource(`
       reevaluation DecisionShapeRechecked { evidence test('gateway/error-normalisation.test.ts') decided_on '2026-06-02' reviewer GatewayTeam summary 'Refactor preserves behaviour.' outcome Confirmed satisfies memory DoNotTouchDecisionShape }
-      memory DoNotTouchDecisionShape : HardFoughtKnowledge<fn Gateway.derivePolicyDecision> { summary 'Previous refactors broke error normalisation.' guards on_change require ReEvaluation<Self> confidence High status Unexplained applies_to fn Gateway.derivePolicyDecision owner GatewayTeam protects shape CheckOrder }
-      rationale DerivePolicyDecisionInline : InlineRationale<fn Gateway.derivePolicyDecision> { summary 'Policy checks remain inline for auditability.' owner GatewayTeam why CognitiveLocality applies_to fn Gateway.derivePolicyDecision }
+      memory DoNotTouchDecisionShape : ${contextRef("HardFoughtKnowledge", fnTarget("Gateway.derivePolicyDecision"))} { summary 'Previous refactors broke error normalisation.' guards on_change require ${contextRef("ReEvaluation", "Self")} confidence High status Unexplained applies_to fn Gateway.derivePolicyDecision owner GatewayTeam protects shape CheckOrder }
+      rationale DerivePolicyDecisionInline : ${contextRef("InlineRationale", fnTarget("Gateway.derivePolicyDecision"))} { summary 'Policy checks remain inline for auditability.' owner GatewayTeam why CognitiveLocality applies_to fn Gateway.derivePolicyDecision }
       component Gateway { grants Read<PolicySnapshot> owns PolicySnapshot fn derivePolicyDecision : RequiresDescription, PreserveInline description required 'Policy decision branches remain local for auditability.' effects complete { Read<PolicySnapshot> } }
       resource PolicySnapshot
     `);
@@ -860,21 +868,21 @@ component Gateway {
     }
 }
 
-rationale DerivePolicyDecisionInline : InlineRationale<fn Gateway.derivePolicyDecision> {
+rationale DerivePolicyDecisionInline : ${contextRef("InlineRationale", fnTarget("Gateway.derivePolicyDecision"))} {
   applies_to fn Gateway.derivePolicyDecision
   why CognitiveLocality
   summary "Policy checks remain inline for auditability."
   owner GatewayTeam
 }
 
-memory DoNotTouchDecisionShape : HardFoughtKnowledge<fn Gateway.derivePolicyDecision> {
+memory DoNotTouchDecisionShape : ${contextRef("HardFoughtKnowledge", fnTarget("Gateway.derivePolicyDecision"))} {
   applies_to fn Gateway.derivePolicyDecision
   status Unexplained
   confidence High
   summary "Previous refactors broke error normalisation."
   owner GatewayTeam
   protects shape CheckOrder
-  guards on_change require ReEvaluation<Self>
+  guards on_change require ${contextRef("ReEvaluation", "Self")}
 }
 
 reevaluation DecisionShapeRechecked {
@@ -929,7 +937,7 @@ describe("Shape authoring assistant", () => {
     });
     const parsed = parseShapeModule(source);
 
-    expect(source).toContain("memory ReviewChangedShape : HardFoughtKnowledge<fn AuditStore.reviewPurgeShape1>");
+    expect(source).toContain(`memory ReviewChangedShape : ${contextRef("HardFoughtKnowledge", fnTarget("AuditStore.reviewPurgeShape1"))}`);
     expect(source).toContain("status Unexplained");
     expect(parsed.ok).toBe(true);
   });
@@ -997,7 +1005,7 @@ describe("Shape editor support", () => {
           effects unknown
       }
 
-      rationale DerivePolicyDecisionInline : InlineRationale<fn Gateway.derivePolicyDecision> {
+      rationale DerivePolicyDecisionInline : ${contextRef("InlineRationale", fnTarget("Gateway.derivePolicyDecision"))} {
         applies_to fn Gateway.derivePolicyDecision
       }
     `, "InlineRationale")?.line).toBeGreaterThan(1);
