@@ -56,10 +56,10 @@ rationale DerivePolicyDecisionInline : InlineRationale<fn Gateway.derivePolicyDe
 }
 ```
 
-## Sharp Edge With Memory And Guard
+## Refactor-Sensitive Function With Memory And Guard
 
 ```shape
-memory DoNotTouchDecisionShape : HardFoughtKnowledge<fn Gateway.derivePolicyDecision> {
+memory DecisionRefactorConstraint : RefactorConstraint<fn Gateway.derivePolicyDecision> {
   applies_to fn Gateway.derivePolicyDecision
   status Unexplained
   confidence High
@@ -73,7 +73,7 @@ memory DoNotTouchDecisionShape : HardFoughtKnowledge<fn Gateway.derivePolicyDeci
 
 ```shape
 reevaluation DecisionShapeRechecked {
-  satisfies memory DoNotTouchDecisionShape
+  satisfies memory DecisionRefactorConstraint
   outcome Confirmed
   summary "Refactor preserves error-normalisation behaviour."
   reviewer GatewayTeam

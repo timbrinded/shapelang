@@ -9,6 +9,7 @@ Application code can be messy, implicit, and spread across many files. Shape giv
 - function effect summaries with source evidence
 - change files for PR-level deltas
 - coverage rules for governed source paths
+- typed design memory for refactor-sensitive functions
 - constrained project rules such as dependency-cycle bans
 
 The checker does not prove the application implementation is correct. It checks that the declared architecture model is coherent. That is the product boundary: humans and LLMs write reviewable claims, then a deterministic checker accepts or rejects those claims.
@@ -35,6 +36,8 @@ Run the checker from a repo that contains Shape files:
 shp check
 shp fmt --check
 shp coverage --changed-files changed.txt
+shp memory
+shp obligations
 ```
 
 `shp check` scans these paths when no files are provided:
@@ -66,9 +69,13 @@ Shape also covers:
 - unknown effects in protected components
 - missing grants for declared function effects
 - governed source files changed without a shape delta or attestation
+- refactor-sensitive functions changed without a recorded reevaluation
+- required design context or descriptions missing from non-obvious function shapes
 - semantic dependency cycles with witness paths
 - project-specific rules like "only Gateway may provide JsonRpcEndpoint"
 - optional analyzer hints for obvious `DELETE`, `TRUNCATE`, and `DROP` operations
+
+See [Refactor Constraints](docs-site/src/content/docs/concepts/refactor-constraints.md) for the design-memory workflow around rationale, memory, and reevaluation.
 
 ## Example Shape File
 
@@ -148,6 +155,8 @@ shp coverage --changed-files changed.txt
 shp fmt --check
 shp explain AuditEvent
 shp graph Gateway --relation requires
+shp memory
+shp obligations
 shp author --changed-files changed.txt --component AuditStore
 shp analyze --shape-files shape/system/audit.shape src/audit/purge.ts
 ```
@@ -161,6 +170,8 @@ Useful commands:
 - `shp fmt --check`: verify canonical formatting.
 - `shp explain AuditEvent`: show derived facts and constraints for a symbol.
 - `shp graph Gateway --relation requires`: print dependency paths.
+- `shp memory`: list rationale and memory entries that protect design context.
+- `shp obligations`: list open design-memory obligations such as missing rationale or reevaluation.
 - `shp author --changed-files changed.txt --component AuditStore`: scaffold a reviewable change file with explicit unknowns.
 - `shp analyze --shape-files shape/system/audit.shape src/file.ts`: compare obvious source hints against declared effects.
 

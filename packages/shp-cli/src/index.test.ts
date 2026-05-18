@@ -75,7 +75,7 @@ describe("shp CLI", () => {
 
     expect(result.exitCode).toBe(0);
     expect(result.stdout).toContain("Memory Guards");
-    expect(result.stdout).toContain("memory DoNotTouchDecisionShape");
+    expect(result.stdout).toContain("memory DecisionRefactorConstraint");
     expect(result.stdout).toContain("status: Unexplained");
     expect(result.stderr).toBe("");
   });

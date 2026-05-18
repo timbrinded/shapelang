@@ -5,13 +5,13 @@ resource PolicySnapshot
 component Gateway {
   owns PolicySnapshot
   grants Read<PolicySnapshot>
-  fn derivePolicyDecision : SharpEdge
+  fn derivePolicyDecision : RefactorSensitive
     effects complete {
       Read<PolicySnapshot>
     }
 }
 
-memory DoNotTouchDecisionShape : HardFoughtKnowledge<fn Gateway.derivePolicyDecision> {
+memory DecisionRefactorConstraint : RefactorConstraint<fn Gateway.derivePolicyDecision> {
   applies_to fn Gateway.derivePolicyDecision
   status Unexplained
   confidence High

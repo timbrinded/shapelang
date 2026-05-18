@@ -15,7 +15,7 @@ Memory Guards add a typed design-memory layer to Shape.
 
 Shape already lets a repository declare architectural facts such as resources, traits, components, functions, effects, dependencies, implementation coverage, change files, and rules. Memory Guards extend this by allowing shape declarations to require explicit, typechecked design memory.
 
-The feature exists for cases where a shape is intentionally non-obvious, hard-fought, or refactor-sensitive.
+The feature exists for cases where a shape is intentionally non-obvious, refactor-sensitive.
 
 Examples:
 
@@ -34,7 +34,7 @@ They are typed objects that let the checker say:
 
 ```text
 This shape requires a rationale.
-This hard-fought memory protects this shape.
+This refactor-sensitive memory protects this shape.
 This change touches a guarded shape.
 This change must include a matching re-evaluation.
 ```
@@ -161,7 +161,7 @@ This means:
 
 ```text
 rationale   satisfies explanation obligations
-memory      records hard-fought knowledge and guards changes
+memory      records a refactor constraint and guards changes
 reevaluation permits a guarded change after explicit review
 description carries compact local explanation
 ```
@@ -220,12 +220,12 @@ A rationale can satisfy a `require_context` obligation.
 
 ### 5.3 Memory
 
-A `memory` records hard-fought knowledge. It may explicitly admit uncertainty.
+A `memory` records a refactor constraint. It may explicitly admit uncertainty.
 
 Example:
 
 ```shape
-memory DoNotReorderPolicyChecks : HardFoughtKnowledge<fn Gateway.derivePolicyDecision> {
+memory DoNotReorderPolicyChecks : RefactorConstraint<fn Gateway.derivePolicyDecision> {
   applies_to fn Gateway.derivePolicyDecision
   status Unexplained
   confidence High
@@ -368,7 +368,7 @@ rationale DerivePolicyDecisionInline : InlineRationale<fn Gateway.derivePolicyDe
 ### 6.4 Memory
 
 ```shape
-memory DoNotReorderPolicyChecks : HardFoughtKnowledge<fn Gateway.derivePolicyDecision> {
+memory DoNotReorderPolicyChecks : RefactorConstraint<fn Gateway.derivePolicyDecision> {
   applies_to fn Gateway.derivePolicyDecision
   status Unexplained
   confidence High
@@ -445,7 +445,7 @@ Initial standard shape traits:
 PreserveInline
 RequiresDescription
 ProtectedCheckOrder
-SharpEdge
+RefactorSensitive
 NonIdiomatic
 TestOnly
 ```
@@ -456,7 +456,7 @@ Initial standard context types:
 InlineRationale
 DescriptionRationale
 CheckOrderRationale
-HardFoughtKnowledge
+RefactorConstraint
 DesignRationale
 TestOnlyPurpose
 NonProductionScope
@@ -467,7 +467,7 @@ Initial standard reason codes:
 ```text
 CognitiveLocality
 Auditability
-HardFoughtKnowledge
+RefactorConstraint
 E2ETesting
 LegacyCompatibility
 ExternalProtocolConstraint
@@ -547,24 +547,24 @@ No matching rationale found.
 
 ### 9.2 Memory satisfaction rule
 
-A memory can satisfy a required `HardFoughtKnowledge` context.
+A memory can satisfy a required `RefactorConstraint` context.
 
 Example:
 
 ```shape
-fn pollAttestation : SharpEdge
+fn pollAttestation : RefactorSensitive
 ```
 
 requires:
 
 ```text
-HardFoughtKnowledge<fn BridgePoller.pollAttestation>
+RefactorConstraint<fn BridgePoller.pollAttestation>
 ```
 
 A matching memory satisfies it:
 
 ```shape
-memory BridgeRetryDelaySharpEdge : HardFoughtKnowledge<fn BridgePoller.pollAttestation> {
+memory BridgePollingDelayConstraint : RefactorConstraint<fn BridgePoller.pollAttestation> {
   applies_to fn BridgePoller.pollAttestation
   status Unexplained
   confidence High
@@ -611,7 +611,7 @@ then fail
 Example:
 
 ```shape
-memory DoNotReorderPolicyChecks : HardFoughtKnowledge<fn Gateway.derivePolicyDecision> {
+memory DoNotReorderPolicyChecks : RefactorConstraint<fn Gateway.derivePolicyDecision> {
   applies_to fn Gateway.derivePolicyDecision
   guards on_change require ReEvaluation<Self>
   summary "Earlier reordering leaked operational detail."
@@ -656,13 +656,13 @@ component AuditStore {
   owns AuditEvent
   grants HardDelete<AuditEvent>
 
-  fn purgeOldEvents : SharpEdge
+  fn purgeOldEvents : RefactorSensitive
     effects complete {
       HardDelete<AuditEvent>
     }
 }
 
-memory PurgeIsKnown : HardFoughtKnowledge<fn AuditStore.purgeOldEvents> {
+memory PurgeDeleteConstraint : RefactorConstraint<fn AuditStore.purgeOldEvents> {
   applies_to fn AuditStore.purgeOldEvents
   status Explained
   confidence High
@@ -1399,9 +1399,9 @@ const PRELUDE_CONTEXT_REQUIREMENTS: ContextRequirementRule[] = [
     satisfiedBy: ["rationale", "memory"]
   },
   {
-    trait: "SharpEdge",
+    trait: "RefactorSensitive",
     targetKind: "fn",
-    contextType: "HardFoughtKnowledge",
+    contextType: "RefactorConstraint",
     satisfiedBy: ["memory"]
   },
   {
@@ -1611,8 +1611,8 @@ fn Gateway.derivePolicyDecision
   owner: GatewayTeam
 
 fn BridgePoller.pollAttestation
-  memory BridgeRetryDelaySharpEdge
-  type: HardFoughtKnowledge
+  memory BridgePollingDelayConstraint
+  type: RefactorConstraint
   status: Unexplained
   confidence: High
   owner: BridgeTeam
@@ -1657,9 +1657,9 @@ packages/shp-checker/src/authoring.ts
 Update `buildShapeAuthorPrompt` with:
 
 ```text
-- If adding PreserveInline, RequiresDescription, ProtectedCheckOrder, SharpEdge, or NonIdiomatic, include matching rationale or memory.
+- If adding PreserveInline, RequiresDescription, ProtectedCheckOrder, RefactorSensitive, or NonIdiomatic, include matching rationale or memory.
 - If modifying/removing a function protected by memory/rationale, include a reevaluation.
-- Use memory with status Unexplained when the team knows something matters but cannot yet fully explain why.
+- Use memory with status Unexplained when a refactor constraint is known but not fully explained yet.
 - Do not use rationale or memory to waive final forbidden effects.
 - Keep summaries short. Link longer evidence through source/evidence refs.
 ```
@@ -1686,11 +1686,11 @@ type ShapeDeltaInput = {
 When true, generate:
 
 ```shape
-memory ReviewChangedShape : HardFoughtKnowledge<fn Component.reviewChangeShape1> {
+memory ReviewChangedShape : RefactorConstraint<fn Component.reviewChangeShape1> {
   applies_to fn Component.reviewChangeShape1
   status Unexplained
   confidence Medium
-  summary "TODO: replace with hard-fought knowledge or remove this memory."
+  summary "TODO: replace with a specific refactor constraint or remove this memory."
   owner TODO
 }
 ```
@@ -1781,7 +1781,7 @@ For a memory:
 ```text
 DoNotReorderPolicyChecks
   kind: memory
-  type: HardFoughtKnowledge
+  type: RefactorConstraint
   target: fn Gateway.derivePolicyDecision
   status: Unexplained
   confidence: High
@@ -1820,8 +1820,8 @@ rationale with wrong target fails
 rationale with unknown target fails
 RequiresDescription without description fails
 RequiresDescription with description passes
-SharpEdge without memory fails
-SharpEdge with HardFoughtKnowledge memory passes
+RefactorSensitive without memory fails
+RefactorSensitive with RefactorConstraint memory passes
 memory with wrong target fails
 modify guarded function without reevaluation fails
 modify guarded function with reevaluation passes
@@ -1857,7 +1857,7 @@ fixtures/fail/memory_guard_modify_without_reevaluation/
 fixtures/pass/memory_guard_modify_with_reevaluation/
 fixtures/fail/memory_guard_required_description_missing/
 fixtures/pass/memory_guard_required_description_present/
-fixtures/pass/memory_guard_hard_fought_unknown/
+fixtures/pass/memory_guard_refactor_constraint_unknown/
 fixtures/fail/memory_guard_does_not_override_final_forbid/
 ```
 
@@ -1922,13 +1922,13 @@ component Gateway {
   owns PolicySnapshot
   grants Read<PolicySnapshot>
 
-  fn derivePolicyDecision : SharpEdge
+  fn derivePolicyDecision : RefactorSensitive
     effects complete {
       Read<PolicySnapshot>
     }
 }
 
-memory DoNotTouchDecisionShape : HardFoughtKnowledge<fn Gateway.derivePolicyDecision> {
+memory DecisionRefactorConstraint : RefactorConstraint<fn Gateway.derivePolicyDecision> {
   applies_to fn Gateway.derivePolicyDecision
   status Unexplained
   confidence High
@@ -1949,7 +1949,7 @@ Expected:
 
 ```text
 guarded shape changed
-requires reevaluation satisfying memory DoNotTouchDecisionShape
+requires reevaluation satisfying memory DecisionRefactorConstraint
 ```
 
 ### 24.4 Pass: guarded change with re-evaluation
@@ -1963,13 +1963,13 @@ component Gateway {
   owns PolicySnapshot
   grants Read<PolicySnapshot>
 
-  fn derivePolicyDecision : SharpEdge
+  fn derivePolicyDecision : RefactorSensitive
     effects complete {
       Read<PolicySnapshot>
     }
 }
 
-memory DoNotTouchDecisionShape : HardFoughtKnowledge<fn Gateway.derivePolicyDecision> {
+memory DecisionRefactorConstraint : RefactorConstraint<fn Gateway.derivePolicyDecision> {
   applies_to fn Gateway.derivePolicyDecision
   status Unexplained
   confidence High
@@ -1986,7 +1986,7 @@ change RefactorDecision {
 }
 
 reevaluation DecisionShapeRechecked {
-  satisfies memory DoNotTouchDecisionShape
+  satisfies memory DecisionRefactorConstraint
   outcome Confirmed
   summary "Refactor preserves error-normalisation behaviour."
   evidence test("gateway/error-normalisation.test.ts")
@@ -2092,7 +2092,7 @@ memory grammar
 MemoryInfo
 lowerMemory
 memory facts
-HardFoughtKnowledge satisfaction
+RefactorConstraint satisfaction
 formatter support
 tests
 ```
@@ -2100,8 +2100,8 @@ tests
 Definition of done:
 
 ```text
-SharpEdge with matching memory passes
-SharpEdge without memory fails
+RefactorSensitive with matching memory passes
+RefactorSensitive without memory fails
 memory can use status Unexplained and confidence High
 ```
 
@@ -2184,7 +2184,7 @@ Definition of done:
 ```text
 LLM prompt tells agents to include rationale/memory/reevaluation
 hover explains PreserveInline requirement
-completion suggests PreserveInline, RequiresDescription, SharpEdge
+completion suggests PreserveInline, RequiresDescription, RefactorSensitive
 ```
 
 ### Milestone 10 — Optional richer guards
@@ -2345,13 +2345,13 @@ component Gateway {
   owns PolicySnapshot
   grants Read<PolicySnapshot>
 
-  fn derivePolicyDecision : SharpEdge
+  fn derivePolicyDecision : RefactorSensitive
     effects complete {
       Read<PolicySnapshot>
     }
 }
 
-memory DoNotTouchDecisionShape : HardFoughtKnowledge<fn Gateway.derivePolicyDecision> {
+memory DecisionRefactorConstraint : RefactorConstraint<fn Gateway.derivePolicyDecision> {
   applies_to fn Gateway.derivePolicyDecision
   status Unexplained
   confidence High
@@ -2373,11 +2373,11 @@ Expected:
 ```text
 error: guarded shape changed
 
-fn Gateway.derivePolicyDecision is protected by memory DoNotTouchDecisionShape.
+fn Gateway.derivePolicyDecision is protected by memory DecisionRefactorConstraint.
 This change modifies the guarded target.
 
 Required:
-  add reevaluation satisfying memory DoNotTouchDecisionShape
+  add reevaluation satisfying memory DecisionRefactorConstraint
   or preserve the protected shape.
 ```
 
@@ -2392,9 +2392,9 @@ Memory Guards are implemented when:
 2. Functions can declare compact descriptions.
 3. PreserveInline derives a required InlineRationale.
 4. RequiresDescription derives a required description and DescriptionRationale.
-5. SharpEdge derives a required HardFoughtKnowledge memory.
+5. RefactorSensitive derives a required RefactorConstraint memory.
 6. Rationale blocks can satisfy rationale obligations.
-7. Memory blocks can satisfy hard-fought knowledge obligations.
+7. Memory blocks can satisfy refactor constraint obligations.
 8. Memory/rationale guards can block change-file modifications.
 9. Re-evaluation blocks can satisfy guarded changes.
 10. Final forbidden effects remain final and cannot be bypassed by memory/rationale.
@@ -2415,7 +2415,7 @@ Memory Guards are implemented when:
 5. `grammar: add rationale declarations`
 6. `checker: lower rationale and satisfy context obligations`
 7. `grammar: add memory declarations`
-8. `checker: lower memory and satisfy HardFoughtKnowledge`
+8. `checker: lower memory and satisfy RefactorConstraint`
 9. `grammar: add reevaluation declarations`
 10. `checker: track change events and enforce guarded changes`
 11. `cli: add memory and obligations commands`

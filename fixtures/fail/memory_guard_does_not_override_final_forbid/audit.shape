@@ -5,13 +5,13 @@ resource AuditEvent : AppendOnly
 component AuditStore {
   owns AuditEvent
   grants HardDelete<AuditEvent>
-  fn purgeOldEvents : SharpEdge
+  fn purgeOldEvents : RefactorSensitive
     effects complete {
       HardDelete<AuditEvent>
     }
 }
 
-memory PurgeIsKnown : HardFoughtKnowledge<fn AuditStore.purgeOldEvents> {
+memory PurgeDeleteConstraint : RefactorConstraint<fn AuditStore.purgeOldEvents> {
   applies_to fn AuditStore.purgeOldEvents
   status Explained
   confidence High

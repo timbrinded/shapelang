@@ -2,7 +2,7 @@
 title: Rules and Dependency Graphs
 description: Express project-specific architecture rules and inspect component relationships.
 sidebar:
-  order: 6
+  order: 7
 ---
 
 Rules capture project-specific constraints beyond generic resource protection.

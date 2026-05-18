@@ -31,6 +31,9 @@ implementation AuditStoreImpl { ... }
 change AddAuditRetentionPurge { ... }
 attest shape_delta { ... }
 rule NoRequiresCycle { ... }
+rationale InlineDecision : InlineRationale<fn Gateway.derivePolicyDecision> { ... }
+memory DecisionRefactorConstraint : RefactorConstraint<fn Gateway.derivePolicyDecision> { ... }
+reevaluation DecisionShapeRechecked { ... }
 ```
 
 ## Resources
@@ -81,7 +84,24 @@ component AuditStore {
 }
 ```
 
-Function summaries support `source`, optional `unsafe`, `effects complete`, `effects unknown`, `requires`, `reason`, and `expires`.
+Function summaries support shape traits, `source`, optional `description`, optional `unsafe`, `effects complete`, `effects unknown`, `requires`, `reason`, and `expires`.
+
+```shape
+module gateway
+
+resource PolicySnapshot
+
+component Gateway {
+  owns PolicySnapshot
+  grants Read<PolicySnapshot>
+  fn derivePolicyDecision : RequiresDescription, PreserveInline
+    source ts("src/gateway/authorize.ts#derivePolicyDecision")
+    description required "Builds the visible authorization decision from policy state."
+    effects complete {
+      Read<PolicySnapshot>
+    }
+}
+```
 
 ## Change entries
 
@@ -115,3 +135,52 @@ rule NoRequiresCycle {
 
 Rules currently support `when subject has TraitName`, forbidden effects, forbidden providers, and dependency-cycle checks.
 
+## Rationale, memory, and reevaluation
+
+Rationale and memory declarations attach typed design context to an existing target:
+
+```shape
+module gateway
+
+resource PolicySnapshot
+
+component Gateway {
+  owns PolicySnapshot
+  grants Read<PolicySnapshot>
+  fn derivePolicyDecision : RefactorSensitive
+    effects complete {
+      Read<PolicySnapshot>
+    }
+}
+
+memory DecisionRefactorConstraint : RefactorConstraint<fn Gateway.derivePolicyDecision> {
+  applies_to fn Gateway.derivePolicyDecision
+  status Unexplained
+  confidence High
+  summary "Previous refactors changed error normalisation behaviour."
+  owner GatewayTeam
+  guards on_change require ReEvaluation<Self>
+}
+```
+
+`rationale` members can include `applies_to`, `why`, `summary`, `owner`, `review_by`, `protects`, `guards`, and `evidence`.
+
+`memory` members can include `applies_to`, `status`, `confidence`, `protects`, `guards`, `observed`, `summary`, `owner`, `review_by`, and `evidence`.
+
+`reevaluation` records review for a guarded change:
+
+```shape
+module gateway
+
+reevaluation DecisionShapeRechecked {
+  satisfies memory DecisionRefactorConstraint
+  outcome Confirmed
+  summary "Refactor preserves error-normalisation behaviour."
+  reviewer GatewayTeam
+  approver Security
+  decided_on "2026-06-02"
+  evidence test("gateway/error-normalisation.test.ts")
+}
+```
+
+`reevaluation` members can include `satisfies`, `outcome`, `summary`, `evidence`, `reviewer`, `approver`, and `decided_on`.

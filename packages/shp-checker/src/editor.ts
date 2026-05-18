@@ -74,7 +74,7 @@ const PRELUDE_COMPLETIONS = [
   "PreserveInline",
   "RequiresDescription",
   "ProtectedCheckOrder",
-  "SharpEdge",
+  "RefactorSensitive",
   "NonIdiomatic",
   "TestOnly"
 ];
@@ -90,7 +90,7 @@ const PRELUDE_SHAPE_TRAIT_HOVERS = new Map([
     `RequiresDescription\n  kind: shape trait\n  requires: ${shapeContextRef("DescriptionRationale", "fn ...")}\n  requires description\n`
   ],
   ["ProtectedCheckOrder", `ProtectedCheckOrder\n  kind: shape trait\n  requires: ${shapeContextRef("CheckOrderRationale", "fn ...")}\n`],
-  ["SharpEdge", `SharpEdge\n  kind: shape trait\n  requires: ${shapeContextRef("HardFoughtKnowledge", "fn ...")}\n`],
+  ["RefactorSensitive", `RefactorSensitive\n  kind: shape trait\n  requires: ${shapeContextRef("RefactorConstraint", "fn ...")}\n`],
   ["NonIdiomatic", `NonIdiomatic\n  kind: shape trait\n  requires: ${shapeContextRef("DesignRationale", "fn ...")}\n`],
   ["TestOnly", `TestOnly\n  kind: shape trait\n  requires: ${shapeContextRef("TestOnlyPurpose", "fn ...")}\n`]
 ]);

@@ -2,7 +2,7 @@
 title: Diagnostics and Provenance
 description: Shape diagnostics explain why a model failed, not just what failed.
 sidebar:
-  order: 8
+  order: 9
 ---
 
 Diagnostics are a primary product surface for Shape.
@@ -42,4 +42,3 @@ HardDelete<AuditEvent>
 ```
 
 The diagnostic should lead the reviewer from the failed function to the source span behind the claim.
-

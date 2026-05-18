@@ -15,7 +15,7 @@ imports
 top-level declarations
 ```
 
-Top-level declarations currently include resources, traits, components, implementations, change blocks, attestations, and rules.
+Top-level declarations currently include resources, traits, components, implementations, change blocks, attestations, rules, rationale, memory, and reevaluation records.
 
 ## Syntax bias
 
@@ -47,4 +47,3 @@ bun run langium:generate
 ```
 
 Generated files live under `packages/shp-checker/src/language/generated/`.
-

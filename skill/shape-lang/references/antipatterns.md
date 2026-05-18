@@ -16,7 +16,7 @@ Use this when reviewing Shape authored by an agent.
 - Adding memory to justify a final-forbidden effect.
 - Adding `PreserveInline` without an `InlineRationale`.
 - Adding `RequiresDescription` without a non-empty description and `DescriptionRationale`.
-- Adding `SharpEdge` without `HardFoughtKnowledge`.
+- Adding `RefactorSensitive` without `RefactorConstraint`.
 - Letting `applies_to` disagree with the context type target.
 - Modifying or removing a guarded function without a valid reevaluation.
 - Using `summary` as a vague waiver, for example "known issue" or "approved by team".

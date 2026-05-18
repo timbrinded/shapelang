@@ -123,7 +123,7 @@ const KNOWN_PRELUDE_TRAITS = new Set([
   "PreserveInline",
   "RequiresDescription",
   "ProtectedCheckOrder",
-  "SharpEdge",
+  "RefactorSensitive",
   "NonIdiomatic",
   "TestOnly"
 ]);
@@ -159,9 +159,9 @@ const PRELUDE_CONTEXT_REQUIREMENTS: ContextRequirementRule[] = [
     satisfiedBy: ["rationale", "memory"]
   },
   {
-    trait: "SharpEdge",
+    trait: "RefactorSensitive",
     targetKind: "fn",
-    contextType: "HardFoughtKnowledge",
+    contextType: "RefactorConstraint",
     satisfiedBy: ["memory"]
   },
   {

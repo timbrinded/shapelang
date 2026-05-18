@@ -13,7 +13,7 @@ Function shape traits derive obligations:
 - `PreserveInline` requires `InlineRationale<fn Component.fn>`.
 - `RequiresDescription` requires a non-empty `description` and `DescriptionRationale<fn Component.fn>`.
 - `ProtectedCheckOrder` requires `CheckOrderRationale<fn Component.fn>` satisfied by rationale or memory.
-- `SharpEdge` requires `HardFoughtKnowledge<fn Component.fn>` satisfied by memory.
+- `RefactorSensitive` requires `RefactorConstraint<fn Component.fn>` satisfied by memory.
 - `NonIdiomatic` requires `DesignRationale<fn Component.fn>` satisfied by rationale or memory.
 - `TestOnly` requires `TestOnlyPurpose<fn Component.fn>`.
 
@@ -32,10 +32,10 @@ rationale DerivePolicyDecisionInline : InlineRationale<fn Gateway.derivePolicyDe
 
 ## Memory
 
-Use `memory` for hard-fought knowledge, including uncertainty:
+Use `memory` for refactor constraints, including uncertainty:
 
 ```shape
-memory DoNotTouchDecisionShape : HardFoughtKnowledge<fn Gateway.derivePolicyDecision> {
+memory DecisionRefactorConstraint : RefactorConstraint<fn Gateway.derivePolicyDecision> {
   applies_to fn Gateway.derivePolicyDecision
   status Unexplained
   confidence High
@@ -45,7 +45,7 @@ memory DoNotTouchDecisionShape : HardFoughtKnowledge<fn Gateway.derivePolicyDeci
 }
 ```
 
-Use `status Unexplained` when the team knows the shape matters but cannot fully explain why yet.
+Use `status Unexplained` when the team knows a refactor constraint exists but cannot fully explain why yet.
 
 ## Reevaluation
 
@@ -53,7 +53,7 @@ A guarded `modify fn` or `remove fn` requires a matching reevaluation:
 
 ```shape
 reevaluation DecisionShapeRechecked {
-  satisfies memory DoNotTouchDecisionShape
+  satisfies memory DecisionRefactorConstraint
   outcome Confirmed
   summary "Refactor preserves error-normalisation behaviour."
   reviewer GatewayTeam

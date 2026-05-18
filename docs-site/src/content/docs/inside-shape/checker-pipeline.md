@@ -30,15 +30,15 @@ The checker lowers declarations into facts such as:
 - resources and traits
 - component ownership and grants
 - function effects and evidence
+- function shape traits, descriptions, rationale, memory, and reevaluations
 - implementation path governance
 - dependency edges
 - rule constraints
 
 ## Run rules
 
-Semantic rules evaluate those facts. The checker looks for forbidden effects, missing grants, coverage failures, dependency cycles, and project-specific rule violations.
+Semantic rules evaluate those facts. The checker looks for forbidden effects, missing grants, coverage failures, missing design context, guarded changes without reevaluation, dependency cycles, and project-specific rule violations.
 
 ## Emit diagnostics
 
 Diagnostics should preserve the causal trail that led to rejection. A good diagnostic is useful to a human reviewer without requiring them to inspect checker internals.
-

@@ -32,9 +32,9 @@ export function buildShapeAuthorPrompt(input: ShapeAuthorPromptInput): string {
     "- Use effects unknown when uncertainty remains; do not silently omit uncertainty.",
     "- Represent destructive operations explicitly, including HardDelete, Truncate, and DropStorage.",
     "- Include evidence spans for material effects when the diff gives enough line context.",
-    "- If adding PreserveInline, RequiresDescription, ProtectedCheckOrder, SharpEdge, or NonIdiomatic, include matching rationale or memory.",
+    "- If adding PreserveInline, RequiresDescription, ProtectedCheckOrder, RefactorSensitive, or NonIdiomatic, include matching rationale or memory.",
     "- If modifying or removing a function protected by memory/rationale, include a reevaluation.",
-    "- Use memory with status Unexplained when the team knows something matters but cannot yet fully explain why.",
+    "- Use memory with status Unexplained when a refactor constraint is known but not fully explained yet.",
     "- Do not use rationale or memory to waive final forbidden effects.",
     "- Keep summaries short. Link longer evidence through source/evidence refs.",
     "",
@@ -168,11 +168,11 @@ function formatUnknownFunction(componentName: string, file: string, functionName
 function formatMemoryGuardScaffold(componentName: string, functionName: string): string {
   const target = `fn ${componentName}.${functionName}`;
   return [
-    `memory ReviewChangedShape : ${contextRef("HardFoughtKnowledge", target)} {`,
+    `memory ReviewChangedShape : ${contextRef("RefactorConstraint", target)} {`,
     `  applies_to ${target}`,
     "  status Unexplained",
     "  confidence Medium",
-    '  summary "TODO: replace with hard-fought knowledge or remove this memory."',
+    '  summary "TODO: replace with a specific refactor constraint or remove this memory."',
     "  owner TODO",
     "}"
   ].join("\n");

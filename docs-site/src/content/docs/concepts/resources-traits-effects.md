@@ -21,7 +21,7 @@ The checker does not require the resource to be a runtime type. It is an archite
 
 ## Traits
 
-Traits derive allowed, required, and forbidden effect patterns:
+Resource traits derive allowed, required, and forbidden effect patterns:
 
 ```shape
 module audit
@@ -36,6 +36,8 @@ resource AuditEvent : AppendOnly
 ```
 
 `allow` documents an effect that fits the trait. `require` records an effect pattern that must be present. `forbid final` rejects matching effects even if a component grants them.
+
+Shape also has function shape traits such as `PreserveInline`, `RequiresDescription`, and `RefactorSensitive`. Those do not derive resource-effect policy. They create review obligations for a function, such as requiring a rationale, memory, description, or reevaluation. See [Refactor Constraints](./refactor-constraints).
 
 ## Effects
 
@@ -73,4 +75,3 @@ resource AuditEvent : Protected
 ```
 
 Today trait applications are named at the resource level. The checker derives concrete constraints for the resource that carries the trait.
-

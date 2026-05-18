@@ -24,6 +24,34 @@ change AddAuditRetentionPurge {
 
 The checker applies changes before rule evaluation. That means a failing PR delta fails in CI even if the base model still passes.
 
+## Guarded changes
+
+Some function shapes carry refactor constraints. If a function is protected by a `memory` or `rationale` with `guards on_change require ReEvaluation<Self>`, a `modify fn` or `remove fn` change must include a matching `reevaluation`.
+
+```shape
+module changes.PR_004
+
+import gateway
+
+reevaluation DecisionShapeRechecked {
+  satisfies memory DecisionRefactorConstraint
+  outcome Confirmed
+  summary "Refactor preserves error-normalisation behaviour."
+  reviewer GatewayTeam
+  decided_on "2026-06-02"
+  evidence test("gateway/error-normalisation.test.ts")
+}
+
+change RefactorDecision {
+  modify fn Gateway.derivePolicyDecision
+    effects complete {
+      Read<PolicySnapshot>
+    }
+}
+```
+
+A source-path attestation does not satisfy this obligation. Coverage answers whether the PR documented a governed source change; reevaluation answers whether a guarded function shape was reviewed.
+
 ## Unknowns
 
 Unknown effects should be explicit:
@@ -56,4 +84,3 @@ attest shape_delta {
 ```
 
 Use attestations sparingly. They should explain why a governed source change does not need a shape delta.
-

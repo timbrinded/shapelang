@@ -2,7 +2,7 @@
 title: Analyzer Hints
 description: Understand what source analysis can and cannot decide for Shape.
 sidebar:
-  order: 7
+  order: 8
 ---
 
 The source analyzer is advisory. It scans implementation files for obvious destructive operations and compares the hints with declared shape effects.

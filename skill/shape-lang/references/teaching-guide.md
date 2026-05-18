@@ -14,7 +14,7 @@ Teach in this order:
 6. Change files model PR-level deltas.
 7. Coverage rules require shape deltas for governed source changes.
 8. Rules express project constraints such as final forbids and dependency-cycle bans.
-9. Memory Guards add typed design memory for non-obvious or hard-fought shapes.
+9. Memory Guards add typed design memory for non-obvious or refactor-sensitive shapes.
 
 ## Teaching Style
 
@@ -30,7 +30,7 @@ Teach in this order:
 - A `.shape` file is a reviewable contract for architecture.
 - A change block is a PR patch to the architecture model.
 - A rationale explains an intentional shape.
-- A memory preserves hard-fought knowledge.
+- A memory preserves a refactor constraint.
 - A reevaluation is a typed review record for changing guarded shape.
 
 ## Avoid Teaching These Wrong Ideas

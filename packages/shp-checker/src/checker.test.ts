@@ -103,7 +103,7 @@ describe("Shape parser", () => {
         owner GatewayTeam
       }
 
-      memory DoNotTouchDecisionShape : ${contextRef("HardFoughtKnowledge", fnTarget("Gateway.derivePolicyDecision"))} {
+      memory DecisionRefactorConstraint : ${contextRef("RefactorConstraint", fnTarget("Gateway.derivePolicyDecision"))} {
         applies_to fn Gateway.derivePolicyDecision
         status Unexplained
         confidence High
@@ -116,7 +116,7 @@ describe("Shape parser", () => {
       }
 
       reevaluation DecisionShapeRechecked {
-        satisfies memory DoNotTouchDecisionShape
+        satisfies memory DecisionRefactorConstraint
         outcome Confirmed
         summary "Refactor preserves error-normalisation behaviour."
         evidence test("gateway/error-normalisation.test.ts")
@@ -654,17 +654,17 @@ describe("Shape checker", () => {
     ]);
     expect(descriptionPresent.exitCode).toBe(0);
 
-    const hardFoughtMemory = await checkShapeFiles([
-      resolve(repoRoot, "fixtures/pass/memory_guard_hard_fought_unknown/audit.shape")
+    const refactorConstraintMemory = await checkShapeFiles([
+      resolve(repoRoot, "fixtures/pass/memory_guard_refactor_constraint_unknown/audit.shape")
     ]);
-    expect(hardFoughtMemory.exitCode).toBe(0);
+    expect(refactorConstraintMemory.exitCode).toBe(0);
 
     const guardedWithoutReevaluation = await checkShapeFiles([
       resolve(repoRoot, "fixtures/fail/memory_guard_modify_without_reevaluation/audit.shape")
     ]);
     expect(guardedWithoutReevaluation.exitCode).toBe(1);
     expect(formatDiagnostics(guardedWithoutReevaluation)).toContain("guarded shape changed");
-    expect(formatDiagnostics(guardedWithoutReevaluation)).toContain("reevaluation satisfying memory DoNotTouchDecisionShape");
+    expect(formatDiagnostics(guardedWithoutReevaluation)).toContain("reevaluation satisfying memory DecisionRefactorConstraint");
 
     const guardedWithReevaluation = await checkShapeFiles([
       resolve(repoRoot, "fixtures/pass/memory_guard_modify_with_reevaluation/audit.shape")
@@ -712,7 +712,7 @@ describe("Shape checker", () => {
           }
       }
 
-      memory DoNotTouchDecisionShape : ${contextRef("HardFoughtKnowledge", fnTarget("Gateway.derivePolicyDecision"))} {
+      memory DecisionRefactorConstraint : ${contextRef("RefactorConstraint", fnTarget("Gateway.derivePolicyDecision"))} {
         applies_to fn Gateway.otherDecision
         status Unexplained
         confidence High
@@ -729,7 +729,7 @@ describe("Shape checker", () => {
     expect(formatDiagnostics(memoryWrongTargetResult)).toContain("context target mismatch");
   });
 
-  test("requires SharpEdge memory and valid reevaluations", () => {
+  test("requires RefactorSensitive memory and valid reevaluations", () => {
     const missingMemory = parseShapeModule(`
       module gateway
 
@@ -739,7 +739,7 @@ describe("Shape checker", () => {
         owns PolicySnapshot
         grants Read<PolicySnapshot>
 
-        fn pollAttestation : SharpEdge
+        fn pollAttestation : RefactorSensitive
           effects complete {
             Read<PolicySnapshot>
           }
@@ -751,7 +751,7 @@ describe("Shape checker", () => {
     }
     const missingMemoryResult = checkShapeModules([missingMemory.module]);
     expect(missingMemoryResult.exitCode).toBe(1);
-    expect(formatDiagnostics(missingMemoryResult)).toContain(contextRef("HardFoughtKnowledge", fnTarget("Gateway.pollAttestation")));
+    expect(formatDiagnostics(missingMemoryResult)).toContain(contextRef("RefactorConstraint", fnTarget("Gateway.pollAttestation")));
 
     const invalidReevaluation = parseShapeModule(`
       module gateway
@@ -784,13 +784,13 @@ describe("Shape checker", () => {
         owns PolicySnapshot
         grants Read<PolicySnapshot>
 
-        fn derivePolicyDecision : SharpEdge
+        fn derivePolicyDecision : RefactorSensitive
           effects complete {
             Read<PolicySnapshot>
           }
       }
 
-      memory DoNotTouchDecisionShape : ${contextRef("HardFoughtKnowledge", fnTarget("Gateway.derivePolicyDecision"))} {
+      memory DecisionRefactorConstraint : ${contextRef("RefactorConstraint", fnTarget("Gateway.derivePolicyDecision"))} {
         applies_to fn Gateway.derivePolicyDecision
         status Unexplained
         confidence High
@@ -946,7 +946,7 @@ describe("Shape memory guard intent scenarios", () => {
     expect(guardedWithReevaluation.exitCode).toBe(0);
   });
 
-  test("requires memory for hard-fought unknown implementation shape", () => {
+  test("requires memory for refactor-sensitive implementation shape", () => {
     const missingMemory = checkShapeSource(`
       module bridge
 
@@ -956,7 +956,7 @@ describe("Shape memory guard intent scenarios", () => {
         owns Attestation
         grants Read<Attestation>
 
-        fn pollAttestation : SharpEdge
+        fn pollAttestation : RefactorSensitive
           effects complete {
             Read<Attestation>
           }
@@ -965,7 +965,7 @@ describe("Shape memory guard intent scenarios", () => {
     const missingOutput = formatDiagnostics(missingMemory);
 
     expect(missingMemory.exitCode).toBe(1);
-    expect(missingOutput).toContain(contextRef("HardFoughtKnowledge", fnTarget("BridgePoller.pollAttestation")));
+    expect(missingOutput).toContain(contextRef("RefactorConstraint", fnTarget("BridgePoller.pollAttestation")));
 
     const withMemory = checkShapeSource(`
       module bridge
@@ -976,13 +976,13 @@ describe("Shape memory guard intent scenarios", () => {
         owns Attestation
         grants Read<Attestation>
 
-        fn pollAttestation : SharpEdge
+        fn pollAttestation : RefactorSensitive
           effects complete {
             Read<Attestation>
           }
       }
 
-      memory BridgePollingDelay : ${contextRef("HardFoughtKnowledge", fnTarget("BridgePoller.pollAttestation"))} {
+      memory BridgePollingDelayConstraint : ${contextRef("RefactorConstraint", fnTarget("BridgePoller.pollAttestation"))} {
         applies_to fn BridgePoller.pollAttestation
         status Unexplained
         confidence High
@@ -1154,13 +1154,13 @@ describe("Shape memory guard intent scenarios", () => {
         owns PolicySnapshot
         grants Read<PolicySnapshot>
 
-        fn derivePolicyDecision : SharpEdge
+        fn derivePolicyDecision : RefactorSensitive
           effects complete {
             Read<PolicySnapshot>
           }
       }
 
-      memory DoNotTouchDecisionShape : ${contextRef("HardFoughtKnowledge", fnTarget("Gateway.derivePolicyDecision"))} {
+      memory DecisionRefactorConstraint : ${contextRef("RefactorConstraint", fnTarget("Gateway.derivePolicyDecision"))} {
         applies_to fn Gateway.derivePolicyDecision
         status Unexplained
         confidence High
@@ -1170,7 +1170,7 @@ describe("Shape memory guard intent scenarios", () => {
       }
 
       reevaluation IncompleteReview {
-        satisfies memory DoNotTouchDecisionShape
+        satisfies memory DecisionRefactorConstraint
         outcome Confirmed
         summary "The refactor looks equivalent."
       }
@@ -1202,13 +1202,13 @@ describe("Shape memory guard intent scenarios", () => {
         owns AuditEvent
         grants HardDelete<AuditEvent>
 
-        fn purgeOldEvents : SharpEdge
+        fn purgeOldEvents : RefactorSensitive
           effects complete {
             HardDelete<AuditEvent>
           }
       }
 
-      memory PurgeIsKnown : ${contextRef("HardFoughtKnowledge", fnTarget("AuditStore.purgeOldEvents"))} {
+      memory PurgeDeleteConstraint : ${contextRef("RefactorConstraint", fnTarget("AuditStore.purgeOldEvents"))} {
         applies_to fn AuditStore.purgeOldEvents
         status Explained
         confidence High
@@ -1261,8 +1261,8 @@ component AuditStore {
 
   test("formats memory guard syntax canonically", () => {
     const result = formatShapeSource(`
-      reevaluation DecisionShapeRechecked { evidence test('gateway/error-normalisation.test.ts') decided_on '2026-06-02' reviewer GatewayTeam summary 'Refactor preserves behaviour.' outcome Confirmed satisfies memory DoNotTouchDecisionShape }
-      memory DoNotTouchDecisionShape : ${contextRef("HardFoughtKnowledge", fnTarget("Gateway.derivePolicyDecision"))} { summary 'Previous refactors broke error normalisation.' guards on_change require ${contextRef("ReEvaluation", "Self")} confidence High status Unexplained applies_to fn Gateway.derivePolicyDecision owner GatewayTeam protects shape CheckOrder }
+      reevaluation DecisionShapeRechecked { evidence test('gateway/error-normalisation.test.ts') decided_on '2026-06-02' reviewer GatewayTeam summary 'Refactor preserves behaviour.' outcome Confirmed satisfies memory DecisionRefactorConstraint }
+      memory DecisionRefactorConstraint : ${contextRef("RefactorConstraint", fnTarget("Gateway.derivePolicyDecision"))} { summary 'Previous refactors broke error normalisation.' guards on_change require ${contextRef("ReEvaluation", "Self")} confidence High status Unexplained applies_to fn Gateway.derivePolicyDecision owner GatewayTeam protects shape CheckOrder }
       rationale DerivePolicyDecisionInline : ${contextRef("InlineRationale", fnTarget("Gateway.derivePolicyDecision"))} { summary 'Policy checks remain inline for auditability.' owner GatewayTeam why CognitiveLocality applies_to fn Gateway.derivePolicyDecision }
       component Gateway { grants Read<PolicySnapshot> owns PolicySnapshot fn derivePolicyDecision : RequiresDescription, PreserveInline description required 'Policy decision branches remain local for auditability.' effects complete { Read<PolicySnapshot> } }
       resource PolicySnapshot
@@ -1292,7 +1292,7 @@ rationale DerivePolicyDecisionInline : ${contextRef("InlineRationale", fnTarget(
   owner GatewayTeam
 }
 
-memory DoNotTouchDecisionShape : ${contextRef("HardFoughtKnowledge", fnTarget("Gateway.derivePolicyDecision"))} {
+memory DecisionRefactorConstraint : ${contextRef("RefactorConstraint", fnTarget("Gateway.derivePolicyDecision"))} {
   applies_to fn Gateway.derivePolicyDecision
   status Unexplained
   confidence High
@@ -1303,7 +1303,7 @@ memory DoNotTouchDecisionShape : ${contextRef("HardFoughtKnowledge", fnTarget("G
 }
 
 reevaluation DecisionShapeRechecked {
-  satisfies memory DoNotTouchDecisionShape
+  satisfies memory DecisionRefactorConstraint
   outcome Confirmed
   summary "Refactor preserves behaviour."
   reviewer GatewayTeam
@@ -1354,7 +1354,7 @@ describe("Shape authoring assistant", () => {
     });
     const parsed = parseShapeModule(source);
 
-    expect(source).toContain(`memory ReviewChangedShape : ${contextRef("HardFoughtKnowledge", fnTarget("AuditStore.reviewPurgeShape1"))}`);
+    expect(source).toContain(`memory ReviewChangedShape : ${contextRef("RefactorConstraint", fnTarget("AuditStore.reviewPurgeShape1"))}`);
     expect(source).toContain("status Unexplained");
     expect(parsed.ok).toBe(true);
   });

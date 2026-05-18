@@ -1,18 +1,18 @@
-module gateway
+module bridge
 
 resource PolicySnapshot
 
-component Gateway {
+component BridgePoller {
   owns PolicySnapshot
   grants Read<PolicySnapshot>
-  fn pollAttestation : SharpEdge
+  fn pollAttestation : RefactorSensitive
     effects complete {
       Read<PolicySnapshot>
     }
 }
 
-memory BridgeRetryDelaySharpEdge : HardFoughtKnowledge<fn Gateway.pollAttestation> {
-  applies_to fn Gateway.pollAttestation
+memory BridgePollingDelayConstraint : RefactorConstraint<fn BridgePoller.pollAttestation> {
+  applies_to fn BridgePoller.pollAttestation
   status Unexplained
   confidence High
   summary "Previous attempts to lower this delay caused intermittent settlement failures."

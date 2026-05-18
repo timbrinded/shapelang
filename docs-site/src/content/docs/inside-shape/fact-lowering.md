@@ -15,6 +15,8 @@ component AuditStore grants Append<AuditEvent>
 function AuditStore.appendEvent emits Append<AuditEvent>
 resource AuditEvent has trait AppendOnly
 trait AppendOnly forbids final HardDelete<AuditEvent>
+function Gateway.derivePolicyDecision has shape trait RefactorSensitive
+memory DecisionRefactorConstraint applies to fn Gateway.derivePolicyDecision
 ```
 
 ## Why this matters
@@ -23,7 +25,8 @@ Fact lowering gives diagnostics better provenance. The checker can point at the 
 
 It also makes change files tractable. The checker can apply all changes first, then lower a single effective model into facts.
 
+Refactor constraints use the same path. Shape traits lower into required-context facts, `rationale` and `memory` declarations lower into typed context facts, and `reevaluation` declarations lower into records that can satisfy guarded changes.
+
 ## Design rule
 
 Keep fact lowering deterministic and local. If a fact cannot be explained from the declarations in the loaded modules, it should not appear in diagnostics.
-
