@@ -157,3 +157,7 @@ The implementation currently lives in two packages:
 ## CI
 
 CI is wired in `.github/workflows/shape.yml` for formatting, tests, typechecking, and `shp check`.
+
+## License
+
+BSD 3-Clause
