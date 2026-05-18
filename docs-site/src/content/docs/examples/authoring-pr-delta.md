@@ -8,7 +8,7 @@ sidebar:
 The authoring command turns changed files into a Shape change scaffold.
 
 ```bash
-bun shp author --changed-files fixtures/changed/audit_purge.txt --component AuditStore --change ReviewAuditChange --module changes.PR_001
+shp author --changed-files fixtures/changed/audit_purge.txt --component AuditStore --change ReviewAuditChange --module changes.PR_001
 ```
 
 The generated output includes the target module and change name:
@@ -43,4 +43,3 @@ change ReviewAuditChange {
 ```
 
 If `AuditEvent` is append-only, this completed delta fails for the right reason.
-

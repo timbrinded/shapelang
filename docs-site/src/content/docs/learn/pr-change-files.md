@@ -55,8 +55,7 @@ Mark incomplete snippets with `no-verify` in docs. Real change files should be c
 Use the authoring command to produce a reviewable starting point:
 
 ```bash
-bun shp author --changed-files fixtures/changed/audit_purge.txt --component AuditStore --change ReviewAuditChange --module changes.PR_001
+shp author --changed-files fixtures/changed/audit_purge.txt --component AuditStore --change ReviewAuditChange --module changes.PR_001
 ```
 
 The scaffold uses `effects unknown` until a human or LLM fills in the source-backed effect summary.
-

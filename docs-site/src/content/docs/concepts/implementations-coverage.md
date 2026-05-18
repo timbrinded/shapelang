@@ -32,7 +32,7 @@ The coverage command compares changed files with these governed paths.
 Run:
 
 ```bash
-bun shp coverage --changed-files fixtures/changed/audit_purge.txt fixtures/fail/missing_shape_delta/audit.shape
+shp coverage --changed-files fixtures/changed/audit_purge.txt fixtures/fail/missing_shape_delta/audit.shape
 ```
 
 If `src/audit/purge.ts` is governed by `AuditStoreImpl` and the PR does not include a shape delta or attestation, coverage fails.
@@ -44,4 +44,3 @@ Conformance checks answer: "Is this model coherent?"
 Coverage checks answer: "Did this PR update the model when governed source changed?"
 
 Both checks matter. A coherent baseline can still miss a required PR-level update.
-

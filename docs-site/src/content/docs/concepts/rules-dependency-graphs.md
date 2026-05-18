@@ -41,8 +41,7 @@ rule NoRequiresCycle {
 Run graph inspection with:
 
 ```bash
-bun shp graph Gateway --relation requires
+shp graph Gateway --relation requires
 ```
 
 The checker reports witness paths for semantic dependency cycles so reviewers can see the path, not just the fact that a cycle exists.
-

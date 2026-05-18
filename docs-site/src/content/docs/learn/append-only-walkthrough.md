@@ -95,7 +95,7 @@ component AuditStore {
 Run:
 
 ```bash
-bun shp check fixtures/fail/append_only_hard_delete/audit.shape
+shp check fixtures/fail/append_only_hard_delete/audit.shape
 ```
 
 The checker reports a forbidden effect and includes the causal trail:
@@ -107,4 +107,3 @@ AppendOnly forbids final HardDelete<AuditEvent>
 ```
 
 That is the product: a compact declaration, a deterministic rejection, and a diagnostic that reviewers can follow.
-

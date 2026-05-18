@@ -12,7 +12,7 @@ The checker package exports more than parse and check.
 `formatShapeSource` and `formatShapeModule` produce canonical Shape formatting. The CLI exposes this as:
 
 ```bash
-bun shp fmt --check fixtures/pass/append_only_append/audit.shape
+shp fmt --check fixtures/pass/append_only_append/audit.shape
 ```
 
 Canonical formatting matters because Shape files are review artifacts.
@@ -28,8 +28,7 @@ Those APIs are intended to support a future language-server or editor integratio
 Authoring helpers generate change scaffolds and prompts for LLM-assisted review.
 
 ```bash
-bun shp author --changed-files fixtures/changed/audit_purge.txt --component AuditStore
+shp author --changed-files fixtures/changed/audit_purge.txt --component AuditStore
 ```
 
 Generated deltas should keep uncertainty explicit with `effects unknown` until a reviewed effect summary replaces it.
-

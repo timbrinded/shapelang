@@ -1,23 +1,38 @@
 ---
 title: Quickstart
-description: Install the repo, generate grammar artifacts, and run the Shape checker.
+description: Download the released Shape typechecker and run it against `.shape` files.
 sidebar:
   order: 2
 ---
 
-Shape currently ships as a Bun workspace with a checker package and a CLI package.
+Shape ships a self-contained `shp` typechecker binary. You do not need Bun or Node to run it in a project that already has `.shape` files.
 
 ## Install
 
+Use a pinned version in scripts and CI:
+
 ```bash
-bun install
-bun run langium:generate
+curl --proto '=https' --tlsv1.2 -LsSf https://github.com/timbrinded/shapelang/releases/download/v0.1.0/install.sh | sh
 ```
 
-## Run the checker
+On Windows:
+
+```powershell
+irm https://github.com/timbrinded/shapelang/releases/download/v0.1.0/install.ps1 | iex
+```
+
+The installer downloads the matching release archive, verifies its SHA-256 checksum, and installs `shp` into `~/.local/bin`. Replace `v0.1.0` with the release tag you want to pin.
+
+If your shell cannot find `shp` after installation, add the install directory to your `PATH`:
 
 ```bash
-bun shp check
+export PATH="$HOME/.local/bin:$PATH"
+```
+
+## Check a repo
+
+```bash
+shp check
 ```
 
 With no file arguments, `shp check` scans:
@@ -27,26 +42,30 @@ shape/system/**/*.shape
 shape/changes/**/*.shape
 ```
 
-## Run the test suite
-
-```bash
-bun test
-bun run typecheck
-```
-
-## Try a failing fixture
-
-```bash
-bun shp check fixtures/fail/append_only_hard_delete/audit.shape
-```
-
-That fixture declares `AuditEvent : AppendOnly`, then adds a function that emits `HardDelete<AuditEvent>`. The checker rejects it because final forbids win over component grants.
-
 ## Format shape files
 
 ```bash
-bun shp fmt --check fixtures/pass/append_only_append/audit.shape
+shp fmt --check
 ```
 
-Use `bun shp fmt` without `--check` to rewrite shape files with canonical formatting.
+Use `shp fmt` without `--check` to rewrite shape files with canonical formatting.
 
+## Check changed files
+
+```bash
+git diff --name-only origin/main...HEAD > changed.txt
+shp coverage --changed-files changed.txt
+```
+
+If a governed source path changes without a shape delta or attestation, the checker rejects the change.
+
+## GitHub Actions
+
+```yaml
+steps:
+  - uses: actions/checkout@v4
+  - uses: timbrinded/shapelang@v0.1.0
+  - run: shp check
+```
+
+For contributor setup, see [Local Development](../../reference/local-development).

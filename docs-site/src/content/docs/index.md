@@ -52,8 +52,7 @@ If a PR adds a function whose shape summary says it hard-deletes `AuditEvent`, S
 
 ## What to read first
 
-- [Quickstart](./learn/quickstart/) gets the repo installed and runs the checker.
-- [First Shape File](./learn/first-shape-file/) explains the smallest useful model.
-- [Append-Only Walkthrough](./learn/append-only-walkthrough/) follows the core failure from declaration to diagnostic.
-- [CLI Reference](./reference/cli/) lists the commands this repo exposes today.
-
+- [Quickstart](./learn/quickstart) installs the released typechecker and runs it against `.shape` files.
+- [First Shape File](./learn/first-shape-file) explains the smallest useful model.
+- [Append-Only Walkthrough](./learn/append-only-walkthrough) follows the core failure from declaration to diagnostic.
+- [CLI Reference](./reference/cli) lists the commands exposed by `shp`.

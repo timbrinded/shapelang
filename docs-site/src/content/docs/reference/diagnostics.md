@@ -65,6 +65,5 @@ Cause: a changed source path matches an implementation block with `on_change req
 Run coverage with the changed-file list to reproduce it:
 
 ```bash
-bun shp coverage --changed-files fixtures/changed/audit_purge.txt fixtures/fail/missing_shape_delta/audit.shape
+shp coverage --changed-files fixtures/changed/audit_purge.txt fixtures/fail/missing_shape_delta/audit.shape
 ```
-

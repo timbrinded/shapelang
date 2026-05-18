@@ -34,7 +34,7 @@ src/audit/purge.ts
 Run:
 
 ```bash
-bun shp coverage --changed-files fixtures/changed/audit_purge.txt fixtures/fail/missing_shape_delta/audit.shape
+shp coverage --changed-files fixtures/changed/audit_purge.txt fixtures/fail/missing_shape_delta/audit.shape
 ```
 
 Expected diagnostic shape:
@@ -45,4 +45,3 @@ src/audit/purge.ts
 ```
 
 The model may be coherent, but the PR still failed to update or attest the architecture claim for a governed source change.
-

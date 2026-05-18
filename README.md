@@ -15,6 +15,46 @@ The checker does not prove the application implementation is correct. It checks 
 
 ![Shape workflow infographic](docs/shape-workflow.png)
 
+## Quick Start
+
+Install the released `shp` typechecker binary. Pin the version in scripts and CI so checks are reproducible.
+
+```bash
+curl --proto '=https' --tlsv1.2 -LsSf https://github.com/timbrinded/shapelang/releases/download/v0.1.0/install.sh | sh
+```
+
+On Windows:
+
+```powershell
+irm https://github.com/timbrinded/shapelang/releases/download/v0.1.0/install.ps1 | iex
+```
+
+Run the checker from a repo that contains Shape files:
+
+```bash
+shp check
+shp fmt --check
+shp coverage --changed-files changed.txt
+```
+
+`shp check` scans these paths when no files are provided:
+
+```text
+shape/system/**/*.shape
+shape/changes/**/*.shape
+```
+
+In GitHub Actions, install the same pinned release with the setup action:
+
+```yaml
+steps:
+  - uses: actions/checkout@v4
+  - uses: timbrinded/shapelang@v0.1.0
+  - run: shp check
+```
+
+Manual archive downloads are available on the GitHub release if you do not want to run the installer script.
+
 ## What It Catches
 
 The first core use case is append-only resource protection.
@@ -29,13 +69,6 @@ Shape also covers:
 - semantic dependency cycles with witness paths
 - project-specific rules like "only Gateway may provide JsonRpcEndpoint"
 - optional analyzer hints for obvious `DELETE`, `TRUNCATE`, and `DROP` operations
-
-## Setup
-
-```bash
-bun install
-bun run langium:generate
-```
 
 ## Example Shape File
 
@@ -109,34 +142,27 @@ The LLM-facing authoring helpers intentionally produce Shape deltas, not prose. 
 ## Commands
 
 ```bash
-bun shp check
-bun shp check --changed-files fixtures/changed/audit_purge.txt
-bun shp coverage --changed-files fixtures/changed/audit_purge.txt fixtures/fail/missing_shape_delta/audit.shape
-bun shp fmt --check fixtures/pass/append_only_append/audit.shape
-bun shp explain AuditEvent
-bun shp graph Gateway --relation requires
-bun shp author --changed-files fixtures/changed/audit_purge.txt --component AuditStore
-bun shp analyze --shape-files shape/system/audit.shape fixtures/source/audit_purge.ts
-bun shp check fixtures/fail/append_only_hard_delete/audit.shape
-bun test
-bun run typecheck
-bun run docs:dev
-bun run docs:check
- ```
+shp check
+shp check --changed-files changed.txt
+shp coverage --changed-files changed.txt
+shp fmt --check
+shp explain AuditEvent
+shp graph Gateway --relation requires
+shp author --changed-files changed.txt --component AuditStore
+shp analyze --shape-files shape/system/audit.shape src/audit/purge.ts
+```
 
 `shp check` scans `shape/system/**/*.shape` and `shape/changes/**/*.shape` when no files are provided.
 
 Useful commands:
 
-- `bun shp check`: run conformance checks.
-- `bun shp coverage --changed-files changed.txt`: enforce shape deltas or attestations for governed paths.
-- `bun shp fmt --check`: verify canonical formatting.
-- `bun shp explain AuditEvent`: show derived facts and constraints for a symbol.
-- `bun shp graph Gateway --relation requires`: print dependency paths.
-- `bun shp author --changed-files changed.txt --component AuditStore`: scaffold a reviewable change file with explicit unknowns.
-- `bun shp analyze --shape-files shape/system/audit.shape src/file.ts`: compare obvious source hints against declared effects.
-- `bun run docs:dev`: run the Starlight documentation site locally.
-- `bun run docs:check`: validate docs content, parse docs Shape examples, and build the static site.
+- `shp check`: run conformance checks.
+- `shp coverage --changed-files changed.txt`: enforce shape deltas or attestations for governed paths.
+- `shp fmt --check`: verify canonical formatting.
+- `shp explain AuditEvent`: show derived facts and constraints for a symbol.
+- `shp graph Gateway --relation requires`: print dependency paths.
+- `shp author --changed-files changed.txt --component AuditStore`: scaffold a reviewable change file with explicit unknowns.
+- `shp analyze --shape-files shape/system/audit.shape src/file.ts`: compare obvious source hints against declared effects.
 
 ## Project Layout
 
@@ -162,6 +188,37 @@ The implementation currently lives in two packages:
 - `@shape/shp-cli`: command-line wrapper around the checker package.
 
 The Starlight documentation site lives in `docs-site/` and is configured for static publishing under `/shapelang/`.
+
+## Local Development
+
+Use the Bun workspace only when contributing to Shape itself:
+
+```bash
+bun install --frozen-lockfile
+bun run langium:generate
+bun shp check
+bun test
+bun run typecheck
+bun run docs:check
+```
+
+Run the docs site locally:
+
+```bash
+bun run docs:dev
+```
+
+Build release archives locally:
+
+```bash
+bun run build:release
+```
+
+Release archives are written under `dist/release/`, which is ignored by git.
+
+## Contributing
+
+Before opening changes, run the local development checks. Documentation changes should keep complete `shape` code fences parseable; use `shape no-verify` only for intentional fragments. CLI behavior changes should update the README, docs quickstart, and CLI reference together.
 
 ## Docs Deployment
 

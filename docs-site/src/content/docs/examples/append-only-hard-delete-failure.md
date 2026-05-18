@@ -37,7 +37,7 @@ component AuditStore {
 Run:
 
 ```bash
-bun shp check fixtures/fail/append_only_hard_delete/audit.shape
+shp check fixtures/fail/append_only_hard_delete/audit.shape
 ```
 
 Expected diagnostic shape:
@@ -52,4 +52,3 @@ evidence: ts("src/audit/purge.ts:12-16")
 ```
 
 The important behavior is that final forbids win over grants.
-

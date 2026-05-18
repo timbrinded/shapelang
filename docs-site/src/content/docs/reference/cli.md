@@ -5,7 +5,7 @@ sidebar:
   order: 2
 ---
 
-The CLI is implemented in `packages/shp-cli/src/index.ts`.
+The released `shp` binary exposes these commands.
 
 ## Usage
 
@@ -41,17 +41,16 @@ shape/changes/**/*.shape
 ## Common commands
 
 ```bash
-bun shp check
-bun shp check fixtures/fail/append_only_hard_delete/audit.shape
-bun shp coverage --changed-files fixtures/changed/audit_purge.txt fixtures/fail/missing_shape_delta/audit.shape
-bun shp fmt --check fixtures/pass/append_only_append/audit.shape
-bun shp explain AuditEvent
-bun shp graph Gateway --relation requires
-bun shp author --changed-files fixtures/changed/audit_purge.txt --component AuditStore
-bun shp analyze --shape-files shape/system/audit.shape fixtures/source/audit_purge.ts
+shp check
+shp check shape/system/audit.shape
+shp coverage --changed-files changed.txt
+shp fmt --check
+shp explain AuditEvent
+shp graph Gateway --relation requires
+shp author --changed-files changed.txt --component AuditStore
+shp analyze --shape-files shape/system/audit.shape src/audit/purge.ts
 ```
 
 ## Exit codes
 
 `0` means the command passed. `1` means semantic checks, formatting checks, coverage, or analyzer comparison failed. `2` means the CLI arguments were invalid.
-

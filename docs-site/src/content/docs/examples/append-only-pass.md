@@ -25,7 +25,7 @@ component AuditStore {
 Run:
 
 ```bash
-bun shp check fixtures/pass/append_only_append/audit.shape
+shp check fixtures/pass/append_only_append/audit.shape
 ```
 
 Expected result:
@@ -35,4 +35,3 @@ Shape check passed.
 ```
 
 Use this as the smallest positive example for a resource, component, grant, function, and complete effect summary.
-
