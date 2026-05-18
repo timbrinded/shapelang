@@ -120,6 +120,8 @@ bun shp analyze --shape-files shape/system/audit.shape fixtures/source/audit_pur
 bun shp check fixtures/fail/append_only_hard_delete/audit.shape
 bun test
 bun run typecheck
+bun run docs:dev
+bun run docs:check
 ```
 
 `shp check` scans `shape/system/**/*.shape` and `shape/changes/**/*.shape` when no files are provided.
@@ -133,6 +135,8 @@ Useful commands:
 - `bun shp graph Gateway --relation requires`: print dependency paths.
 - `bun shp author --changed-files changed.txt --component AuditStore`: scaffold a reviewable change file with explicit unknowns.
 - `bun shp analyze --shape-files shape/system/audit.shape src/file.ts`: compare obvious source hints against declared effects.
+- `bun run docs:dev`: run the Starlight documentation site locally.
+- `bun run docs:check`: validate docs content, parse docs Shape examples, and build the static site.
 
 ## Project Layout
 
@@ -147,6 +151,9 @@ fixtures/
 packages/
   shp-checker/
   shp-cli/
+
+docs-site/
+  src/content/docs/
 ```
 
 The implementation currently lives in two packages:
@@ -154,6 +161,14 @@ The implementation currently lives in two packages:
 - `@shape/shp-checker`: parser, formatter, fact lowering, rule checks, authoring helpers, editor primitives, and analyzer hints.
 - `@shape/shp-cli`: command-line wrapper around the checker package.
 
+The Starlight documentation site lives in `docs-site/` and is configured for static publishing under `/shapelang/`.
+
+## Docs Deployment
+
+The docs site is configured for GitHub Pages at `https://timbrinded.github.io/shapelang/`.
+
+GitHub Pages should use the **GitHub Actions** publishing source. The deployment workflow builds `docs-site`, uploads `docs-site/dist`, and publishes the artifact with the Pages deployment actions.
+
 ## CI
 
-CI is wired in `.github/workflows/shape.yml` for formatting, tests, typechecking, and `shp check`.
+CI is wired in `.github/workflows/shape.yml` for formatting, tests, typechecking, `shp check`, and docs checks.

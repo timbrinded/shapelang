@@ -32,3 +32,6 @@ jobs:
 
       - name: Shape conformance
         run: bun shp check
+
+      - name: Docs check
+        run: bun run docs:check
