@@ -68,4 +68,4 @@ steps:
   - run: shp check
 ```
 
-For contributor setup, see [Local Development](../../reference/local-development).
+For contributor setup, see [Local Development](../reference/local-development).

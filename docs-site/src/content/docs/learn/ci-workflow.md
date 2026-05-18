@@ -57,4 +57,4 @@ If you do not want to use the setup action, use the release installer directly:
 
 The Shape repository itself also runs Bun workspace tests, typechecking, docs verification, and release smoke tests. Those are contributor checks, not required for application repos that only consume `shp`.
 
-See [Local Development](../../reference/local-development) for the contributor commands.
+See [Local Development](../reference/local-development) for the contributor commands.
