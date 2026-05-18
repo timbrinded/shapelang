@@ -4,7 +4,7 @@ on:
   pull_request:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   shape:
@@ -12,6 +12,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
 
       - uses: oven-sh/setup-bun@v2
 
@@ -32,3 +36,6 @@ jobs:
 
       - name: Shape conformance
         run: bun shp check
+
+      - name: Docs check
+        run: bun run docs:check

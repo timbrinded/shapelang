@@ -4,9 +4,14 @@
   "license": "BSD-3-Clause",
   "type": "module",
   "workspaces": [
-    "packages/*"
+    "packages/*",
+    "docs-site"
   ],
   "scripts": {
+    "docs:build": "bun run --cwd docs-site build",
+    "docs:check": "bun run --cwd docs-site check",
+    "docs:dev": "bun run --cwd docs-site dev",
+    "docs:preview": "bun run --cwd docs-site preview",
     "langium:generate": "bunx langium-cli generate",
     "shp": "bun packages/shp-cli/src/index.ts",
     "test": "bun test",

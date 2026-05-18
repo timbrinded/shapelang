@@ -1,0 +1,22 @@
+{
+  "name": "@shape/docs-site",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "astro build",
+    "check": "astro check && bun run verify:shape && astro build",
+    "dev": "astro dev",
+    "preview": "astro preview",
+    "verify:shape": "bun scripts/verify-shape-blocks.ts"
+  },
+  "dependencies": {
+    "@astrojs/starlight": "^0.39.2",
+    "astro": "^6.3.3"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.9",
+    "@shape/shp-checker": "workspace:*",
+    "typescript": "^6.0.3"
+  }
+}
