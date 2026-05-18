@@ -7,6 +7,8 @@ sidebar:
 
 Shape is meant to run in review. In application repos, install a pinned `shp` release and run the checker directly.
 
+![PR change review workflow showing shape system files, shape changes, changed files, coverage, shp check, and CI result.](../../../assets/infographics/pr-change-review.png)
+
 ## Recommended workflow
 
 ```yaml

@@ -53,7 +53,8 @@ export default defineConfig({
           items: [
             { label: "Append-Only Walkthrough", slug: "learn/append-only-walkthrough" },
             { label: "PR Change Files", slug: "learn/pr-change-files" },
-            { label: "CI Workflow", slug: "learn/ci-workflow" }
+            { label: "CI Workflow", slug: "learn/ci-workflow" },
+            { label: "Visual Guides", slug: "learn/visual-guides" }
           ]
         },
         {
