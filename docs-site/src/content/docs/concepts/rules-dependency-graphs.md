@@ -7,6 +7,8 @@ sidebar:
 
 Rules capture project-specific constraints beyond generic resource protection.
 
+![Dependency witness path diagram showing two components with requires and callbacks edges, a cycle rule, a witness path, and a rejected result.](../../../assets/infographics/dependency-witness-path.png)
+
 ```shape
 module gateway
 

@@ -7,6 +7,8 @@ sidebar:
 
 The checker package exports more than parse and check.
 
+![Review helpers diagram showing formatter, editor APIs, and authoring lanes for stable diffs, diagnostics, explicit unknowns, and human-filled evidence.](../../../assets/infographics/review-helpers.png)
+
 ## Formatter
 
 `formatShapeSource` and `formatShapeModule` produce canonical Shape formatting. The CLI exposes this as:

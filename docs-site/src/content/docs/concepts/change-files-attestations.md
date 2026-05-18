@@ -7,6 +7,8 @@ sidebar:
 
 Change files let a PR express architecture deltas without rewriting the baseline model.
 
+![PR change review workflow showing shape system files, shape changes, changed files, coverage, shp check, and CI result.](../../../assets/infographics/pr-change-review.png)
+
 ```shape
 module changes.PR_001
 

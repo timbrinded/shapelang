@@ -7,6 +7,8 @@ sidebar:
 
 Evidence is how Shape stays reviewable. An effect summary should point to the code span that supports the claim.
 
+![Evidence path diagram showing a claim, effect, evidence, source span, reviewer check, and checker provenance.](../../../assets/infographics/evidence-review-path.png)
+
 ```shape
 module audit
 
@@ -46,4 +48,3 @@ Good evidence is narrow, stable, and points at the behavior being claimed. Broad
 The analyzer can flag obvious destructive operations such as `DELETE`, `TRUNCATE`, or `DROP`, then compare hints with declared effects. It is advisory.
 
 The declared `.shape` model remains the source of truth.
-

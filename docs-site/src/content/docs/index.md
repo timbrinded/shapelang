@@ -22,17 +22,6 @@ The checker does not prove that application code is correct. It checks whether t
 
 ![Shape review loop showing code diff, agent draft, .shape claims, human review, source evidence, unknowns, shp check, CI gate, and diagnostics.](../../assets/infographics/shape-model-loop.png)
 
-## Visual guides
-
-The docs use infographics as primary explainers for workflows, causal paths, and review obligations.
-
-- [Shape Review Loop](./learn/visual-guides#shape-review-loop) shows how source changes, agent drafts, human review, and CI diagnostics fit together.
-- [Core Vocabulary](./learn/visual-guides#core-vocabulary) maps resources, traits, effects, components, ownership, grants, and evidence.
-- [Final Forbid Wins](./learn/visual-guides#final-forbid-wins) follows the append-only rejection path.
-- [PR Change Review](./learn/visual-guides#pr-change-review) separates model coherence from coverage.
-- [Design Memory](./learn/visual-guides#design-memory) shows guarded review obligations and `ReEvaluation`.
-- [Checker Pipeline](./learn/visual-guides#checker-pipeline) shows the deterministic internals from parsing to provenance.
-
 ## The first demo
 
 An append-only resource can allow reads and appends while forbidding final destructive effects:

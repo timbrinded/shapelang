@@ -7,6 +7,8 @@ sidebar:
 
 Shape should never hide uncertainty. If a function's effects are not known yet, say so.
 
+![Unknowns safety diagram comparing effects unknown as a review blocker, effects complete as known effects, and memory as a known constraint.](../../../assets/infographics/unknowns-safety-states.png)
+
 ```shape
 module audit
 

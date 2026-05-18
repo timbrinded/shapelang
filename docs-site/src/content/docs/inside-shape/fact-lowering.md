@@ -7,6 +7,8 @@ sidebar:
 
 The parser gives the checker syntax trees. Semantic checks are easier to reason about after those trees become facts.
 
+![Fact lowering diagram showing declarations, applied changes, an effective model, facts, rules, diagnostics, and provenance.](../../../assets/infographics/fact-lowering-map.png)
+
 Facts make rules uniform:
 
 ```text

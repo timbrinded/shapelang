@@ -7,6 +7,8 @@ sidebar:
 
 The source analyzer is advisory. It scans implementation files for obvious destructive operations and compares the hints with declared shape effects.
 
+![Analyzer hints diagram showing a source scan for DELETE, TRUNCATE, and DROP, comparison with the .shape model, a warning, and the source-of-truth boundary.](../../../assets/infographics/analyzer-advisory-scan.png)
+
 ```bash
 shp analyze --shape-files shape/system/audit.shape fixtures/source/audit_purge.ts
 ```

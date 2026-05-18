@@ -7,6 +7,8 @@ sidebar:
 
 Rule evaluation decides whether the effective model is coherent.
 
+![Rule evaluation diagram showing facts flowing into final forbid, missing grant, coverage, design memory, and cycle rule checks, then pass or reject outputs.](../../../assets/infographics/rule-evaluation-board.png)
+
 ## Core checks
 
 The checker currently covers:

@@ -7,6 +7,8 @@ sidebar:
 
 Diagnostics are a primary product surface for Shape.
 
+![Diagnostic causal trail diagram showing function claim, effect, resource, trait, constraint, provenance, and source evidence.](../../../assets/infographics/diagnostics-causal-trail.png)
+
 A useful diagnostic should show the causal path:
 
 ```text

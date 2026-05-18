@@ -7,6 +7,8 @@ sidebar:
 
 Components are the main boundary for architectural claims.
 
+![Component boundary diagram showing ownership, grants, functions, provides, requires, and the note that ownership is not runtime allocation.](../../../assets/infographics/component-boundary-grants.png)
+
 ```shape
 module audit
 
@@ -68,4 +70,3 @@ component Gateway {
 ```
 
 Those relationships power graph inspection and dependency-cycle rules.
-

@@ -13,6 +13,8 @@ The human reviews claims.
 The checker rejects incoherent claims.
 ```
 
+![Shape boundary diagram showing agent drafted claims, human review, deterministic checker rejection, retained tests and code review, and the not-a-proof-system boundary.](../../../assets/infographics/shape-boundary.png)
+
 ## Non-goals
 
 Shape should not initially try to:
@@ -53,4 +55,3 @@ Avoid compressed notation that saves characters but hides meaning from reviewers
 ## Why diagnostics matter
 
 The checker's output is part of the product. A rejection should be explainable as a causal path from a source-backed function claim to an architecture constraint.
-

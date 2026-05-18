@@ -7,6 +7,8 @@ sidebar:
 
 Shape ships a self-contained `shp` typechecker binary. You do not need Bun or Node to run it in a project that already has `.shape` files.
 
+![Quickstart loop showing install shp, shape files, shp check, diagnostics, update model, and CI.](../../../assets/infographics/quickstart-loop.png)
+
 ## Install
 
 Use a pinned version in scripts and CI:

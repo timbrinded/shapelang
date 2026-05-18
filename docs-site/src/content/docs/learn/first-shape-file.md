@@ -7,6 +7,8 @@ sidebar:
 
 A useful Shape file usually starts with a resource, a component, and function effect summaries.
 
+![First Shape file map showing a resource, component, function summary, effect, evidence, and checker claim reading.](../../../assets/infographics/first-shape-file-map.png)
+
 ```shape
 module audit
 
@@ -62,4 +64,3 @@ component AuditStore {
 ```
 
 The checker does not need to understand the TypeScript span. The evidence tells a human reviewer where to inspect the claim.
-

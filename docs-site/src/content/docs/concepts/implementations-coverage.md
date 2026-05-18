@@ -7,6 +7,8 @@ sidebar:
 
 Implementation blocks map source paths to component shapes.
 
+![Implementation coverage diagram showing source paths mapped through implementation blocks to components, with changed files passing through a coverage gate via shape delta or attestation.](../../../assets/infographics/implementation-coverage-map.png)
+
 ```shape
 module audit
 
