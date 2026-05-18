@@ -12,6 +12,8 @@ import {
   formatShapeSource,
   generateShapeDelta,
   graphShapeModules,
+  listMemoryGuardsShapeModules,
+  listShapeObligations,
   parseShapeModule,
   type ShapeModule
 } from "@shape/shp-checker";
@@ -22,6 +24,8 @@ const USAGE = `Usage:
   shp fmt [--check] [files...]
   shp explain SYMBOL [files...]
   shp graph SYMBOL [--relation requires] [files...]
+  shp memory [files...]
+  shp obligations [files...]
   shp author --changed-files changed.txt --component ComponentName [--change ChangeName] [--module module.name]
   shp analyze [--shape-files file1.shape,file2.shape] [source-files...]
 
@@ -113,6 +117,18 @@ async function main(): Promise<number> {
     }
     const modules = await parseModules(files.length > 0 ? files : await defaultShapeFiles());
     await Bun.write(Bun.stdout, graphShapeModules(modules, symbol, values.relation));
+    return 0;
+  }
+
+  if (command === "memory") {
+    const modules = await parseModules(providedFiles.length > 0 ? providedFiles : await defaultShapeFiles());
+    await Bun.write(Bun.stdout, listMemoryGuardsShapeModules(modules));
+    return 0;
+  }
+
+  if (command === "obligations") {
+    const modules = await parseModules(providedFiles.length > 0 ? providedFiles : await defaultShapeFiles());
+    await Bun.write(Bun.stdout, listShapeObligations(modules));
     return 0;
   }
 

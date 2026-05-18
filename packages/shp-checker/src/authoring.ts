@@ -11,6 +11,7 @@ export type ShapeDeltaInput = {
   changeName?: string;
   componentName: string;
   changedFiles: string[];
+  includeMemoryGuardScaffold?: boolean;
 };
 
 export type EvidenceSpan = {
@@ -31,6 +32,11 @@ export function buildShapeAuthorPrompt(input: ShapeAuthorPromptInput): string {
     "- Use effects unknown when uncertainty remains; do not silently omit uncertainty.",
     "- Represent destructive operations explicitly, including HardDelete, Truncate, and DropStorage.",
     "- Include evidence spans for material effects when the diff gives enough line context.",
+    "- If adding PreserveInline, RequiresDescription, ProtectedCheckOrder, SharpEdge, or NonIdiomatic, include matching rationale or memory.",
+    "- If modifying or removing a function protected by memory/rationale, include a reevaluation.",
+    "- Use memory with status Unexplained when the team knows something matters but cannot yet fully explain why.",
+    "- Do not use rationale or memory to waive final forbidden effects.",
+    "- Keep summaries short. Link longer evidence through source/evidence refs.",
     "",
     "Changed files:",
     ...input.changedFiles.map((file) => `- ${file}`),
@@ -54,6 +60,11 @@ export function buildShapeCriticPrompt(input: ShapeAuthorPromptInput, proposedSh
     "- Are evidence spans plausible and reviewable?",
     "- Did the delta avoid weakening final invariants?",
     "- Did dependency changes appear as requires/provides declarations?",
+    "- Did the delta add shape traits without matching context?",
+    "- Did the delta touch a guarded target without reevaluation?",
+    "- Did the delta remove a required description?",
+    "- Are memory/rationale blocks compact and typed rather than generic prose?",
+    "- Did the delta try to justify a final forbidden effect instead of preserving the error?",
     "",
     "Changed files:",
     ...input.changedFiles.map((file) => `- ${file}`),
@@ -67,9 +78,17 @@ export function buildShapeCriticPrompt(input: ShapeAuthorPromptInput, proposedSh
 export function generateShapeDelta(input: ShapeDeltaInput): string {
   const moduleName = input.moduleName ?? "changes.generated";
   const changeName = input.changeName ?? "GeneratedShapeDelta";
-  const functions = input.changedFiles.map((file, index) =>
-    formatUnknownFunction(input.componentName, file, uniqueFunctionName(file, index))
-  );
+  const changedFunctions = input.changedFiles.map((file, index) => ({
+    file,
+    functionName: uniqueFunctionName(file, index)
+  }));
+  const functions = changedFunctions.map((item) => formatUnknownFunction(input.componentName, item.file, item.functionName));
+  const scaffold = input.includeMemoryGuardScaffold && changedFunctions[0]
+    ? [
+        "",
+        formatMemoryGuardScaffold(input.componentName, changedFunctions[0].functionName)
+      ]
+    : [];
 
   return [
     `module ${moduleName}`,
@@ -77,6 +96,7 @@ export function generateShapeDelta(input: ShapeDeltaInput): string {
     `change ${changeName} {`,
     ...functions.flatMap((fn, index) => (index === 0 ? indentBlock(fn) : ["", ...indentBlock(fn)])),
     "}",
+    ...scaffold,
     ""
   ].join("\n");
 }
@@ -142,6 +162,18 @@ function formatUnknownFunction(componentName: string, file: string, functionName
     `add fn ${componentName}.${functionName}`,
     `  source ${languageForPath(file)}(${JSON.stringify(file)})`,
     "  effects unknown"
+  ].join("\n");
+}
+
+function formatMemoryGuardScaffold(componentName: string, functionName: string): string {
+  return [
+    `memory ReviewChangedShape : HardFoughtKnowledge<fn ${componentName}.${functionName}> {`,
+    `  applies_to fn ${componentName}.${functionName}`,
+    "  status Unexplained",
+    "  confidence Medium",
+    '  summary "TODO: replace with hard-fought knowledge or remove this memory."',
+    "  owner TODO",
+    "}"
   ].join("\n");
 }
 

@@ -6,7 +6,7 @@ entry ShapeModule:
     declarations+=Declaration*;
 
 Declaration:
-    ResourceDecl | TraitDecl | ComponentDecl | ImplementationDecl | ChangeDecl | AttestationDecl | RuleDecl;
+    ResourceDecl | TraitDecl | ComponentDecl | ImplementationDecl | ChangeDecl | AttestationDecl | RuleDecl | RationaleDecl | MemoryDecl | ReevaluationDecl;
 
 ImportDecl:
     'import' path=QualifiedName;
@@ -70,10 +70,18 @@ ProvidesDecl:
 
 FunctionSummary:
     'fn' name=ID
+        shapeTraits=ShapeTraitList?
         source=SourceDecl?
+        description=DescriptionDecl?
         unsafe?='unsafe'?
         effects=EffectsDecl
         members+=FunctionMember*;
+
+ShapeTraitList:
+    ':' traits+=TypeRef (',' traits+=TypeRef)*;
+
+DescriptionDecl:
+    'description' required?='required'? summary=STRING;
 
 FunctionMember:
     FunctionRequiresDecl | ReasonDecl | ExpiresDecl;
@@ -155,14 +163,18 @@ ChangeEntry:
 
 AddFunctionChange:
     'add' 'fn' component=ID '.' name=ID
+        shapeTraits=ShapeTraitList?
         source=SourceDecl?
+        description=DescriptionDecl?
         unsafe?='unsafe'?
         effects=EffectsDecl
         members+=FunctionMember*;
 
 ModifyFunctionChange:
     'modify' 'fn' component=ID '.' name=ID
+        shapeTraits=ShapeTraitList?
         source=SourceDecl?
+        description=DescriptionDecl?
         unsafe?='unsafe'?
         effects=EffectsDecl
         members+=FunctionMember*;
@@ -205,6 +217,99 @@ RuleForbidProvidesDecl:
 
 RuleForbidCycleDecl:
     'forbid' 'cycle' 'over' relation=RelationName ('where' 'includes' relationKinds+=ID ('or' relationKinds+=ID)*)?;
+
+RationaleDecl:
+    'rationale' name=ID ':' contextType=ContextTypeRef
+    '{'
+        members+=RationaleMember*
+    '}';
+
+RationaleMember:
+    AppliesToDecl | WhyDecl | SummaryDecl | OwnerDecl | ReviewByDecl | ProtectsDecl | GuardDecl | EvidenceLineDecl;
+
+MemoryDecl:
+    'memory' name=ID ':' contextType=ContextTypeRef
+    '{'
+        members+=MemoryMember*
+    '}';
+
+MemoryMember:
+    AppliesToDecl | StatusDecl | ConfidenceDecl | ProtectsDecl | GuardDecl | ObservedDecl | SummaryDecl | OwnerDecl | ReviewByDecl | EvidenceLineDecl;
+
+ReevaluationDecl:
+    'reevaluation' name=ID
+    '{'
+        members+=ReevaluationMember*
+    '}';
+
+ReevaluationMember:
+    SatisfiesDecl | OutcomeDecl | SummaryDecl | EvidenceLineDecl | ReviewerDecl | ApproverDecl | DecidedOnDecl;
+
+TargetRef:
+    kind=TargetKind name=QualifiedTargetName;
+
+TargetKind returns string:
+    'fn' | 'component' | 'resource' | 'implementation' | 'rule';
+
+QualifiedTargetName returns string:
+    ID ('.' ID)*;
+
+ContextTypeRef:
+    name=ID '<' target=TargetRef '>';
+
+AppliesToDecl:
+    'applies_to' target=TargetRef;
+
+WhyDecl:
+    'why' reason=ID;
+
+SummaryDecl:
+    'summary' value=STRING;
+
+OwnerDecl:
+    'owner' value=ID;
+
+ReviewByDecl:
+    'review_by' value=STRING;
+
+StatusDecl:
+    'status' value=ID;
+
+ConfidenceDecl:
+    'confidence' value=ID;
+
+ProtectsDecl:
+    'protects' kind=ID value=ID;
+
+GuardDecl:
+    'guards' 'on_change' 'require' requirement=ContextTypeName;
+
+ContextTypeName returns string:
+    ID ('<' ID '>')?;
+
+ObservedDecl:
+    'observed' ref=SourceRef;
+
+EvidenceLineDecl:
+    'evidence' ref=SourceRef;
+
+SatisfiesDecl:
+    'satisfies' kind=ContextObjectKind name=ID;
+
+ContextObjectKind returns string:
+    'memory' | 'rationale';
+
+OutcomeDecl:
+    'outcome' value=ID;
+
+ReviewerDecl:
+    'reviewer' value=ID;
+
+ApproverDecl:
+    'approver' value=ID;
+
+DecidedOnDecl:
+    'decided_on' value=STRING;
 
 RelationName returns string:
     'requires' | ID;

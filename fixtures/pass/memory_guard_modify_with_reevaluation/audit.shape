@@ -1,0 +1,37 @@
+module gateway
+
+resource PolicySnapshot
+
+component Gateway {
+  owns PolicySnapshot
+  grants Read<PolicySnapshot>
+  fn derivePolicyDecision : SharpEdge
+    effects complete {
+      Read<PolicySnapshot>
+    }
+}
+
+memory DoNotTouchDecisionShape : HardFoughtKnowledge<fn Gateway.derivePolicyDecision> {
+  applies_to fn Gateway.derivePolicyDecision
+  status Unexplained
+  confidence High
+  summary "Previous refactors broke error normalisation."
+  owner GatewayTeam
+  guards on_change require ReEvaluation<Self>
+}
+
+reevaluation DecisionShapeRechecked {
+  satisfies memory DoNotTouchDecisionShape
+  outcome Confirmed
+  summary "Refactor preserves error-normalisation behaviour."
+  reviewer GatewayTeam
+  decided_on "2026-06-02"
+  evidence test("gateway/error-normalisation.test.ts")
+}
+
+change RefactorDecision {
+  modify fn Gateway.derivePolicyDecision
+    effects complete {
+      Read<PolicySnapshot>
+    }
+}

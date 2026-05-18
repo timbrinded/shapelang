@@ -1,0 +1,15 @@
+module gateway
+
+resource PolicySnapshot
+
+component Gateway {
+  owns PolicySnapshot
+  grants Read<PolicySnapshot>
+}
+
+rationale DerivePolicyDecisionInline : InlineRationale<fn Gateway.derivePolicyDecision> {
+  applies_to fn Gateway.derivePolicyDecision
+  why CognitiveLocality
+  summary "Policy checks remain inline for auditability."
+  owner GatewayTeam
+}

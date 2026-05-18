@@ -4,14 +4,18 @@ import type {
   AttestationDecl,
   ChangeDecl,
   ComponentDecl,
+  DescriptionDecl,
   EffectEntry,
   EffectPattern,
   EffectsDecl,
   EffectTerm,
   FunctionSummary,
   ImplementationDecl,
+  MemoryDecl,
   ModifyDeclarationChange,
   ModifyFunctionChange,
+  RationaleDecl,
+  ReevaluationDecl,
   RemoveDeclarationChange,
   ResourceDecl,
   RuleDecl,
@@ -20,41 +24,62 @@ import type {
   RuleForbidProvidesDecl,
   ShapeModule,
   SourceRef,
+  TargetKind,
+  TargetRef,
   TraitDecl,
   TraitForbidDecl
 } from "./language/generated/ast.ts";
 import {
   isAddDeclarationChange,
   isAddFunctionChange,
+  isAppliesToDecl,
+  isApproverDecl,
   isAttestationDecl,
   isChangeDecl,
   isCompleteEffects,
   isComponentDecl,
+  isConfidenceDecl,
   isConformsToDecl,
+  isDecidedOnDecl,
+  isEvidenceLineDecl,
   isExpiresDecl,
   isFunctionRequiresDecl,
   isFunctionSummary,
   isGrantsDecl,
+  isGuardDecl,
   isImplementationDecl,
+  isMemoryDecl,
   isModifyDeclarationChange,
   isModifyFunctionChange,
+  isObservedDecl,
   isOnChangeDecl,
+  isOutcomeDecl,
+  isOwnerDecl,
   isOwnsDecl,
   isPathsBlock,
+  isProtectsDecl,
   isProvidesDecl,
+  isRationaleDecl,
   isReasonDecl,
+  isReevaluationDecl,
   isRemoveDeclarationChange,
   isRemoveFunctionChange,
   isRequiresDecl,
   isResourceDecl,
+  isReviewByDecl,
+  isReviewerDecl,
   isRuleDecl,
   isRuleForbidCycleDecl,
   isRuleForbidEffectDecl,
   isRuleForbidProvidesDecl,
   isRuleWhenHasDecl,
+  isSatisfiesDecl,
+  isStatusDecl,
+  isSummaryDecl,
   isTraitDecl,
   isTraitForbidDecl,
-  isUnknownEffects
+  isUnknownEffects,
+  isWhyDecl
 } from "./language/generated/ast.ts";
 import { parseShapeModule, type ParseDiagnostic } from "./parser.ts";
 
@@ -94,8 +119,64 @@ const KNOWN_PRELUDE_TRAITS = new Set([
   "Secret",
   "Public",
   "External",
-  "Internal"
+  "Internal",
+  "PreserveInline",
+  "RequiresDescription",
+  "ProtectedCheckOrder",
+  "SharpEdge",
+  "NonIdiomatic",
+  "TestOnly"
 ]);
+
+type ContextKind = "rationale" | "memory";
+
+type ContextRequirementRule = {
+  trait: string;
+  targetKind: TargetKind;
+  contextType: string;
+  satisfiedBy: ContextKind[];
+  requiresDescription?: boolean;
+};
+
+const PRELUDE_CONTEXT_REQUIREMENTS: ContextRequirementRule[] = [
+  {
+    trait: "PreserveInline",
+    targetKind: "fn",
+    contextType: "InlineRationale",
+    satisfiedBy: ["rationale"]
+  },
+  {
+    trait: "RequiresDescription",
+    targetKind: "fn",
+    contextType: "DescriptionRationale",
+    satisfiedBy: ["rationale"],
+    requiresDescription: true
+  },
+  {
+    trait: "ProtectedCheckOrder",
+    targetKind: "fn",
+    contextType: "CheckOrderRationale",
+    satisfiedBy: ["rationale", "memory"]
+  },
+  {
+    trait: "SharpEdge",
+    targetKind: "fn",
+    contextType: "HardFoughtKnowledge",
+    satisfiedBy: ["memory"]
+  },
+  {
+    trait: "NonIdiomatic",
+    targetKind: "fn",
+    contextType: "DesignRationale",
+    satisfiedBy: ["rationale", "memory"]
+  },
+  {
+    trait: "TestOnly",
+    targetKind: "fn",
+    contextType: "TestOnlyPurpose",
+    satisfiedBy: ["rationale"]
+  }
+];
 
 export type SemanticDiagnostic =
   | {
@@ -134,7 +215,7 @@ export type SemanticDiagnostic =
     }
   | {
       kind: "duplicate_declaration";
-      declarationKind: "resource" | "component" | "trait";
+      declarationKind: "resource" | "component" | "trait" | "rationale" | "memory" | "reevaluation";
       name: string;
       filePath?: string;
       causedBy: string[];
@@ -171,6 +252,58 @@ export type SemanticDiagnostic =
       missing: string[];
       filePath?: string;
       causedBy: string[];
+    }
+  | {
+      kind: "missing_required_context";
+      targetKind: TargetKind;
+      target: string;
+      requiredContext: string;
+      requiredBy: string;
+      filePath?: string;
+      causedBy: string[];
+    }
+  | {
+      kind: "invalid_context_target";
+      contextKind: ContextKind;
+      name: string;
+      targetKind: TargetKind;
+      target: string;
+      filePath?: string;
+      causedBy: string[];
+    }
+  | {
+      kind: "context_target_mismatch";
+      contextKind: ContextKind;
+      name: string;
+      declaredTarget: ShapeTarget;
+      appliesToTarget: ShapeTarget;
+      filePath?: string;
+      causedBy: string[];
+    }
+  | {
+      kind: "missing_required_description";
+      targetKind: TargetKind;
+      target: string;
+      requiredBy: string;
+      filePath?: string;
+      causedBy: string[];
+    }
+  | {
+      kind: "guarded_shape_changed";
+      guardKind: ContextKind;
+      guard: string;
+      targetKind: TargetKind;
+      target: string;
+      missingReevaluation: string;
+      filePath?: string;
+      causedBy: string[];
+    }
+  | {
+      kind: "invalid_reevaluation";
+      name: string;
+      reason: string;
+      filePath?: string;
+      causedBy: string[];
     };
 
 export type ShapeDiagnostic = ParseDiagnostic | SemanticDiagnostic;
@@ -199,6 +332,64 @@ export type Fact =
   | { kind: "function"; component: string; name: string; provenance: Provenance }
   | { kind: "effect"; component: string; functionName: string; effect: string; target: string; provenance: Provenance }
   | { kind: "effect_unknown"; component: string; functionName: string; provenance: Provenance }
+  | { kind: "shape_trait"; targetKind: TargetKind; target: string; trait: string; provenance: Provenance }
+  | {
+      kind: "description";
+      targetKind: TargetKind;
+      target: string;
+      required: boolean;
+      summary: string;
+      provenance: Provenance;
+    }
+  | {
+      kind: "context_required";
+      targetKind: TargetKind;
+      target: string;
+      contextType: string;
+      requiredBy: string;
+      provenance: Provenance;
+    }
+  | {
+      kind: "rationale";
+      name: string;
+      contextType: string;
+      targetKind: TargetKind;
+      target: string;
+      provenance: Provenance;
+    }
+  | {
+      kind: "memory";
+      name: string;
+      contextType: string;
+      targetKind: TargetKind;
+      target: string;
+      provenance: Provenance;
+    }
+  | {
+      kind: "reevaluation";
+      name: string;
+      satisfiesKind: ContextKind;
+      satisfies: string;
+      provenance: Provenance;
+    }
+  | {
+      kind: "protected_shape";
+      guardKind: ContextKind;
+      guard: string;
+      targetKind: TargetKind;
+      target: string;
+      propertyKind: string;
+      propertyValue: string;
+      provenance: Provenance;
+    }
+  | {
+      kind: "guard_requires_reevaluation";
+      guardKind: ContextKind;
+      guard: string;
+      targetKind: TargetKind;
+      target: string;
+      provenance: Provenance;
+    }
   | { kind: "implementation"; name: string; provenance: Provenance }
   | { kind: "implementation_path"; implementation: string; glob: string; provenance: Provenance }
   | { kind: "conforms_to"; implementation: string; component: string; provenance: Provenance }
@@ -236,6 +427,85 @@ type EffectSummaryInfo =
       kind: "unknown";
     };
 
+type ShapeTarget = {
+  kind: TargetKind;
+  name: string;
+};
+
+type DescriptionInfo = {
+  required: boolean;
+  summary: string;
+  provenance: Provenance;
+};
+
+type ProtectedProperty = {
+  kind: string;
+  value: string;
+  provenance: Provenance;
+};
+
+type GuardInfo = {
+  requirement: string;
+  provenance: Provenance;
+};
+
+type RationaleInfo = {
+  name: string;
+  contextType: string;
+  target: ShapeTarget;
+  appliesTo?: ShapeTarget;
+  why?: string;
+  summary?: string;
+  owner?: string;
+  reviewBy?: string;
+  protects: ProtectedProperty[];
+  guards: GuardInfo[];
+  evidence: SourceRefInfo[];
+  provenance: Provenance;
+};
+
+type MemoryInfo = {
+  name: string;
+  contextType: string;
+  target: ShapeTarget;
+  appliesTo?: ShapeTarget;
+  status?: string;
+  confidence?: string;
+  summary?: string;
+  owner?: string;
+  reviewBy?: string;
+  protects: ProtectedProperty[];
+  guards: GuardInfo[];
+  observed: SourceRefInfo[];
+  evidence: SourceRefInfo[];
+  provenance: Provenance;
+};
+
+type ReevaluationInfo = {
+  name: string;
+  satisfiesKind?: ContextKind;
+  satisfiesName?: string;
+  outcome?: string;
+  summary?: string;
+  evidence: SourceRefInfo[];
+  reviewer?: string;
+  approver?: string;
+  decidedOn?: string;
+  provenance: Provenance;
+};
+
+type ChangeEvent =
+  | {
+      kind: "function_modified";
+      target: ShapeTarget;
+      provenance: Provenance;
+    }
+  | {
+      kind: "function_removed";
+      target: ShapeTarget;
+      provenance: Provenance;
+    };
+
 type FunctionInfo = {
   component: string;
   name: string;
@@ -245,6 +515,8 @@ type FunctionInfo = {
   requires: TermInfo[];
   reason?: string;
   expires?: string;
+  shapeTraits: Map<string, Provenance>;
+  description?: DescriptionInfo;
   provenance: Provenance;
 };
 
@@ -325,9 +597,13 @@ type Model = {
   components: Map<string, ComponentInfo>;
   implementations: ImplementationInfo[];
   rules: RuleInfo[];
+  rationales: Map<string, RationaleInfo>;
+  memories: Map<string, MemoryInfo>;
+  reevaluations: Map<string, ReevaluationInfo>;
   attestations: { path: string; reason: string; provenance: Provenance }[];
   shapeDeltaPaths: Map<string, Provenance>;
   removedFunctions: Set<string>;
+  changeEvents: ChangeEvent[];
   facts: Fact[];
   diagnostics: SemanticDiagnostic[];
 };
@@ -339,6 +615,11 @@ export function checkShapeModules(modules: ShapeModule[] | CheckModuleInput[], o
   const diagnostics = [
     ...model.diagnostics,
     ...checkResolvedNames(model),
+    ...checkContextTargets(model),
+    ...checkRequiredContext(model),
+    ...checkRequiredDescriptions(model),
+    ...checkReevaluations(model),
+    ...checkGuardedChanges(model),
     ...checkFunctions(model),
     ...checkProvidesRules(model),
     ...checkDependencyCycles(model),
@@ -389,6 +670,73 @@ export async function checkShapeFiles(paths: string[], options: CheckOptions = {
   return checkShapeModules(parsedModules, options);
 }
 
+export function listMemoryGuardsShapeModules(modules: ShapeModule[] | CheckModuleInput[]): string {
+  const model = lowerShapeModules(modules);
+  const entries = [
+    ...[...model.rationales.values()].map((rationale) => ({
+      target: rationale.appliesTo ?? rationale.target,
+      lines: formatRationaleMemoryListEntry(rationale)
+    })),
+    ...[...model.memories.values()].map((memory) => ({
+      target: memory.appliesTo ?? memory.target,
+      lines: formatMemoryListEntry(memory)
+    }))
+  ].sort((left, right) => `${formatTarget(left.target)}:${left.lines[0]}`.localeCompare(`${formatTarget(right.target)}:${right.lines[0]}`));
+
+  if (entries.length === 0) {
+    return "Memory Guards\n\nNo active memory guards.\n";
+  }
+
+  const lines = ["Memory Guards", ""];
+  for (const entry of entries) {
+    lines.push(formatTarget(entry.target), ...entry.lines.map((line) => `  ${line}`), "");
+  }
+  return `${lines.join("\n").trimEnd()}\n`;
+}
+
+export function listShapeObligations(modules: ShapeModule[] | CheckModuleInput[]): string {
+  const result = checkShapeModules(modules);
+  const relevant = result.diagnostics.filter(isObligationDiagnostic);
+  if (relevant.length === 0) {
+    return "Open Shape Obligations\n\nNo open shape obligations.\n";
+  }
+
+  const lines = ["Open Shape Obligations", ""];
+  const missingContext = relevant.filter((diagnostic) => diagnostic.kind === "missing_required_context");
+  const missingDescription = relevant.filter((diagnostic) => diagnostic.kind === "missing_required_description");
+  const guardedChanges = relevant.filter((diagnostic) => diagnostic.kind === "guarded_shape_changed");
+  const invalidReevaluations = relevant.filter((diagnostic) => diagnostic.kind === "invalid_reevaluation");
+
+  if (missingContext.length > 0) {
+    lines.push("missing context:");
+    lines.push(
+      ...missingContext.map((diagnostic) => `  ${diagnostic.targetKind} ${diagnostic.target} requires ${diagnostic.requiredContext}`)
+    );
+    lines.push("");
+  }
+  if (missingDescription.length > 0) {
+    lines.push("missing description:");
+    lines.push(
+      ...missingDescription.map((diagnostic) => `  ${diagnostic.targetKind} ${diagnostic.target} requires description`)
+    );
+    lines.push("");
+  }
+  if (guardedChanges.length > 0) {
+    lines.push("guarded changes:");
+    lines.push(
+      ...guardedChanges.map((diagnostic) => `  ${diagnostic.targetKind} ${diagnostic.target} changed; requires ${diagnostic.missingReevaluation}`)
+    );
+    lines.push("");
+  }
+  if (invalidReevaluations.length > 0) {
+    lines.push("invalid reevaluations:");
+    lines.push(...invalidReevaluations.map((diagnostic) => `  reevaluation ${diagnostic.name}: ${diagnostic.reason}`));
+    lines.push("");
+  }
+
+  return `${lines.join("\n").trimEnd()}\n`;
+}
+
 export function explainShapeModules(modules: ShapeModule[] | CheckModuleInput[], symbol: string): string {
   const model = lowerShapeModules(modules);
   const resource = model.resources.get(symbol);
@@ -415,6 +763,33 @@ export function explainShapeModules(modules: ShapeModule[] | CheckModuleInput[],
       if (fn.source) {
         lines.push(`  source: ${formatSourceRefInfo(fn.source)}`);
       }
+      if (fn.shapeTraits.size > 0) {
+        lines.push("", "  shape traits:");
+        lines.push(...[...fn.shapeTraits.keys()].sort().map((trait) => `    ${trait}`));
+      }
+      if (fn.description) {
+        lines.push("", "  description:");
+        if (fn.description.required) {
+          lines.push("    required");
+        }
+        lines.push(`    ${JSON.stringify(fn.description.summary)}`);
+      }
+      const requirements = requirementsForFunction(fn);
+      if (requirements.length > 0) {
+        const target = functionTarget(componentName, functionName);
+        lines.push("", "  required context:");
+        lines.push(...requirements.map((requirement) => `    ${formatContextRequirement(requirement.contextType, target)}`));
+      }
+      const satisfiedBy = matchingContextsForTarget(functionTarget(componentName, functionName), model);
+      if (satisfiedBy.length > 0) {
+        lines.push("", "  satisfied by:");
+        lines.push(...satisfiedBy.map((context) => `    ${context.kind} ${context.name}`));
+      }
+      const guards = guardsForTarget(functionTarget(componentName, functionName), model);
+      if (guards.length > 0) {
+        lines.push("", "  memory guards:");
+        lines.push(...guards.map((guard) => `    ${guard.kind} ${guard.info.name}`));
+      }
       lines.push("  effects:");
       if (fn.effects.kind === "unknown") {
         lines.push("    unknown");
@@ -423,6 +798,16 @@ export function explainShapeModules(modules: ShapeModule[] | CheckModuleInput[],
       }
       return `${lines.join("\n")}\n`;
     }
+  }
+
+  const rationale = model.rationales.get(symbol);
+  if (rationale) {
+    return `${formatRationaleExplanation(rationale)}\n`;
+  }
+
+  const memory = model.memories.get(symbol);
+  if (memory) {
+    return `${formatMemoryExplanation(memory)}\n`;
   }
 
   const component = model.components.get(symbol);
@@ -479,9 +864,13 @@ function lowerShapeModules(modules: ShapeModule[] | CheckModuleInput[]): Model {
     components: new Map(),
     implementations: [],
     rules: [],
+    rationales: new Map(),
+    memories: new Map(),
+    reevaluations: new Map(),
     attestations: [],
     shapeDeltaPaths: new Map(),
     removedFunctions: new Set(),
+    changeEvents: [],
     facts: [],
     diagnostics: []
   };
@@ -500,6 +889,12 @@ function lowerShapeModules(modules: ShapeModule[] | CheckModuleInput[]): Model {
         lowerAttestation(declaration, input.filePath, model);
       } else if (isRuleDecl(declaration)) {
         lowerRule(declaration, input.filePath, model);
+      } else if (isRationaleDecl(declaration)) {
+        lowerRationale(declaration, input.filePath, model);
+      } else if (isMemoryDecl(declaration)) {
+        lowerMemory(declaration, input.filePath, model);
+      } else if (isReevaluationDecl(declaration)) {
+        lowerReevaluation(declaration, input.filePath, model);
       }
     }
   }
@@ -721,6 +1116,213 @@ function lowerRule(rule: RuleDecl, filePath: string | undefined, model: Model): 
   model.facts.push({ kind: "rule", name: rule.name, provenance: info.provenance });
 }
 
+function lowerRationale(rationale: RationaleDecl, filePath: string | undefined, model: Model): void {
+  const prov = provenance(filePath, `rationale ${rationale.name}`);
+  if (model.rationales.has(rationale.name)) {
+    model.diagnostics.push({
+      kind: "duplicate_declaration",
+      declarationKind: "rationale",
+      name: rationale.name,
+      filePath,
+      causedBy: [describeProvenance(model.rationales.get(rationale.name)?.provenance), describeProvenance(prov)]
+    });
+    return;
+  }
+
+  const info: RationaleInfo = {
+    name: rationale.name,
+    contextType: rationale.contextType.name,
+    target: lowerTargetRef(rationale.contextType.target),
+    protects: [],
+    guards: [],
+    evidence: [],
+    provenance: prov
+  };
+
+  for (const member of rationale.members) {
+    if (isAppliesToDecl(member)) {
+      info.appliesTo = lowerTargetRef(member.target);
+    } else if (isWhyDecl(member)) {
+      info.why = member.reason;
+    } else if (isSummaryDecl(member)) {
+      info.summary = unquote(member.value);
+    } else if (isOwnerDecl(member)) {
+      info.owner = member.value;
+    } else if (isReviewByDecl(member)) {
+      info.reviewBy = unquote(member.value);
+    } else if (isProtectsDecl(member)) {
+      info.protects.push({
+        kind: member.kind,
+        value: member.value,
+        provenance: provenance(filePath, `rationale ${rationale.name} protects ${member.kind} ${member.value}`)
+      });
+    } else if (isGuardDecl(member)) {
+      info.guards.push({
+        requirement: member.requirement,
+        provenance: provenance(filePath, `rationale ${rationale.name} guards on_change require ${member.requirement}`)
+      });
+    } else if (isEvidenceLineDecl(member)) {
+      info.evidence.push(lowerSourceRef(member));
+    }
+  }
+
+  model.rationales.set(rationale.name, info);
+  model.facts.push({
+    kind: "rationale",
+    name: rationale.name,
+    contextType: info.contextType,
+    targetKind: info.target.kind,
+    target: info.target.name,
+    provenance: prov
+  });
+  emitGuardFacts("rationale", info, model);
+}
+
+function lowerMemory(memory: MemoryDecl, filePath: string | undefined, model: Model): void {
+  const prov = provenance(filePath, `memory ${memory.name}`);
+  if (model.memories.has(memory.name)) {
+    model.diagnostics.push({
+      kind: "duplicate_declaration",
+      declarationKind: "memory",
+      name: memory.name,
+      filePath,
+      causedBy: [describeProvenance(model.memories.get(memory.name)?.provenance), describeProvenance(prov)]
+    });
+    return;
+  }
+
+  const info: MemoryInfo = {
+    name: memory.name,
+    contextType: memory.contextType.name,
+    target: lowerTargetRef(memory.contextType.target),
+    protects: [],
+    guards: [],
+    observed: [],
+    evidence: [],
+    provenance: prov
+  };
+
+  for (const member of memory.members) {
+    if (isAppliesToDecl(member)) {
+      info.appliesTo = lowerTargetRef(member.target);
+    } else if (isStatusDecl(member)) {
+      info.status = member.value;
+    } else if (isConfidenceDecl(member)) {
+      info.confidence = member.value;
+    } else if (isProtectsDecl(member)) {
+      info.protects.push({
+        kind: member.kind,
+        value: member.value,
+        provenance: provenance(filePath, `memory ${memory.name} protects ${member.kind} ${member.value}`)
+      });
+    } else if (isGuardDecl(member)) {
+      info.guards.push({
+        requirement: member.requirement,
+        provenance: provenance(filePath, `memory ${memory.name} guards on_change require ${member.requirement}`)
+      });
+    } else if (isObservedDecl(member)) {
+      info.observed.push(lowerSourceRef(member));
+    } else if (isSummaryDecl(member)) {
+      info.summary = unquote(member.value);
+    } else if (isOwnerDecl(member)) {
+      info.owner = member.value;
+    } else if (isReviewByDecl(member)) {
+      info.reviewBy = unquote(member.value);
+    } else if (isEvidenceLineDecl(member)) {
+      info.evidence.push(lowerSourceRef(member));
+    }
+  }
+
+  model.memories.set(memory.name, info);
+  model.facts.push({
+    kind: "memory",
+    name: memory.name,
+    contextType: info.contextType,
+    targetKind: info.target.kind,
+    target: info.target.name,
+    provenance: prov
+  });
+  emitGuardFacts("memory", info, model);
+}
+
+function lowerReevaluation(reevaluation: ReevaluationDecl, filePath: string | undefined, model: Model): void {
+  const prov = provenance(filePath, `reevaluation ${reevaluation.name}`);
+  if (model.reevaluations.has(reevaluation.name)) {
+    model.diagnostics.push({
+      kind: "duplicate_declaration",
+      declarationKind: "reevaluation",
+      name: reevaluation.name,
+      filePath,
+      causedBy: [describeProvenance(model.reevaluations.get(reevaluation.name)?.provenance), describeProvenance(prov)]
+    });
+    return;
+  }
+
+  const info: ReevaluationInfo = {
+    name: reevaluation.name,
+    evidence: [],
+    provenance: prov
+  };
+
+  for (const member of reevaluation.members) {
+    if (isSatisfiesDecl(member)) {
+      info.satisfiesKind = member.kind;
+      info.satisfiesName = member.name;
+    } else if (isOutcomeDecl(member)) {
+      info.outcome = member.value;
+    } else if (isSummaryDecl(member)) {
+      info.summary = unquote(member.value);
+    } else if (isEvidenceLineDecl(member)) {
+      info.evidence.push(lowerSourceRef(member));
+    } else if (isReviewerDecl(member)) {
+      info.reviewer = member.value;
+    } else if (isApproverDecl(member)) {
+      info.approver = member.value;
+    } else if (isDecidedOnDecl(member)) {
+      info.decidedOn = unquote(member.value);
+    }
+  }
+
+  model.reevaluations.set(reevaluation.name, info);
+  if (info.satisfiesKind && info.satisfiesName) {
+    model.facts.push({
+      kind: "reevaluation",
+      name: reevaluation.name,
+      satisfiesKind: info.satisfiesKind,
+      satisfies: info.satisfiesName,
+      provenance: prov
+    });
+  }
+}
+
+function emitGuardFacts(kind: ContextKind, info: RationaleInfo | MemoryInfo, model: Model): void {
+  for (const item of info.protects) {
+    model.facts.push({
+      kind: "protected_shape",
+      guardKind: kind,
+      guard: info.name,
+      targetKind: info.target.kind,
+      target: info.target.name,
+      propertyKind: item.kind,
+      propertyValue: item.value,
+      provenance: item.provenance
+    });
+  }
+
+  for (const guard of info.guards) {
+    if (requiresReevaluation(guard)) {
+      model.facts.push({
+        kind: "guard_requires_reevaluation",
+        guardKind: kind,
+        guard: info.name,
+        targetKind: info.target.kind,
+        target: info.target.name,
+        provenance: guard.provenance
+      });
+    }
+  }
+}
+
 function lowerChange(change: ChangeDecl, filePath: string | undefined, model: Model): void {
   for (const entry of change.entries) {
     if (isAddFunctionChange(entry) || isModifyFunctionChange(entry)) {
@@ -736,12 +1338,25 @@ function lowerChange(change: ChangeDecl, filePath: string | undefined, model: Mo
         continue;
       }
 
+      if (isModifyFunctionChange(entry)) {
+        model.changeEvents.push({
+          kind: "function_modified",
+          target: functionTarget(entry.component, entry.name),
+          provenance: provenance(filePath, `change ${change.name} modify fn ${entry.component}.${entry.name}`)
+        });
+      }
+
       const fn = lowerFunction(entry, entry.component, filePath, `change ${change.name}`);
       component.functions.set(fn.name, fn);
       model.shapeDeltaPaths.set(`${entry.component}.${entry.name}`, fn.provenance);
       collectShapeDeltaPathsFromFunction(fn, model);
       emitFunctionFacts(fn, model);
     } else if (isRemoveFunctionChange(entry)) {
+      model.changeEvents.push({
+        kind: "function_removed",
+        target: functionTarget(entry.component, entry.name),
+        provenance: provenance(filePath, `change ${change.name} remove fn ${entry.component}.${entry.name}`)
+      });
       model.removedFunctions.add(functionKey(entry.component, entry.name));
       model.components.get(entry.component)?.functions.delete(entry.name);
     } else if (isAddDeclarationChange(entry)) {
@@ -825,6 +1440,8 @@ function lowerFunction(fn: FunctionAst, componentName: string, filePath?: string
     unsafe: fn.unsafe,
     effects: lowerEffects(fn.effects, filePath, componentName, fn.name),
     requires: [],
+    shapeTraits: lowerShapeTraits(fn, componentName, filePath, context),
+    description: fn.description ? lowerDescription(fn.description, componentName, fn.name, filePath, context) : undefined,
     provenance: provenance(filePath, `${context ? `${context} ` : ""}fn ${componentName}.${fn.name}`)
   };
 
@@ -839,6 +1456,31 @@ function lowerFunction(fn: FunctionAst, componentName: string, filePath?: string
   }
 
   return info;
+}
+
+function lowerShapeTraits(fn: FunctionAst, componentName: string, filePath: string | undefined, context?: string): Map<string, Provenance> {
+  const traits = new Map<string, Provenance>();
+  for (const trait of fn.shapeTraits?.traits ?? []) {
+    traits.set(
+      trait.name,
+      provenance(filePath, `${context ? `${context} ` : ""}fn ${componentName}.${fn.name} : ${trait.name}`)
+    );
+  }
+  return traits;
+}
+
+function lowerDescription(
+  description: DescriptionDecl,
+  componentName: string,
+  functionName: string,
+  filePath: string | undefined,
+  context?: string
+): DescriptionInfo {
+  return {
+    required: description.required,
+    summary: unquote(description.summary),
+    provenance: provenance(filePath, `${context ? `${context} ` : ""}fn ${componentName}.${functionName} description`)
+  };
 }
 
 function lowerEffects(
@@ -943,8 +1585,41 @@ function lowerSourceRef(source: { ref: SourceRef }): SourceRefInfo {
   };
 }
 
+function lowerTargetRef(target: TargetRef): ShapeTarget {
+  return {
+    kind: target.kind,
+    name: target.name
+  };
+}
+
+function functionTarget(component: string, name: string): ShapeTarget {
+  return {
+    kind: "fn",
+    name: functionKey(component, name)
+  };
+}
+
 function emitFunctionFacts(fn: FunctionInfo, model: Model): void {
   model.facts.push({ kind: "function", component: fn.component, name: fn.name, provenance: fn.provenance });
+  for (const [trait, traitProvenance] of fn.shapeTraits) {
+    model.facts.push({
+      kind: "shape_trait",
+      targetKind: "fn",
+      target: functionKey(fn.component, fn.name),
+      trait,
+      provenance: traitProvenance
+    });
+  }
+  if (fn.description) {
+    model.facts.push({
+      kind: "description",
+      targetKind: "fn",
+      target: functionKey(fn.component, fn.name),
+      required: fn.description.required,
+      summary: fn.description.summary,
+      provenance: fn.description.provenance
+    });
+  }
   if (fn.effects.kind === "unknown") {
     model.facts.push({
       kind: "effect_unknown",
@@ -977,6 +1652,21 @@ function emitDerivedFacts(model: Model): void {
         target: forbid.target ?? "",
         provenance: forbid.provenance
       });
+    }
+  }
+
+  for (const component of model.components.values()) {
+    for (const fn of component.functions.values()) {
+      for (const requirement of requirementsForFunction(fn)) {
+        model.facts.push({
+          kind: "context_required",
+          targetKind: "fn",
+          target: functionKey(fn.component, fn.name),
+          contextType: requirement.contextType,
+          requiredBy: requirement.trait,
+          provenance: fn.shapeTraits.get(requirement.trait) ?? fn.provenance
+        });
+      }
     }
   }
 }
@@ -1034,6 +1724,18 @@ function checkResolvedNames(model: Model): SemanticDiagnostic[] {
     }
 
     for (const fn of component.functions.values()) {
+      for (const [trait, traitProv] of fn.shapeTraits) {
+        if (!knownTraits.has(trait)) {
+          diagnostics.push({
+            kind: "unknown_name",
+            nameKind: "trait",
+            name: trait,
+            filePath: traitProv.filePath,
+            causedBy: [describeProvenance(traitProv)]
+          });
+        }
+      }
+
       if (fn.effects.kind !== "complete") {
         continue;
       }
@@ -1060,6 +1762,178 @@ function checkResolvedNames(model: Model): SemanticDiagnostic[] {
         name: implementation.conformsTo,
         filePath: implementation.provenance.filePath,
         causedBy: [describeProvenance(implementation.provenance)]
+      });
+    }
+  }
+
+  return diagnostics;
+}
+
+function checkContextTargets(model: Model): SemanticDiagnostic[] {
+  const diagnostics: SemanticDiagnostic[] = [];
+
+  for (const rationale of model.rationales.values()) {
+    diagnostics.push(...checkContextTarget("rationale", rationale, model));
+  }
+
+  for (const memory of model.memories.values()) {
+    diagnostics.push(...checkContextTarget("memory", memory, model));
+  }
+
+  return diagnostics;
+}
+
+function checkContextTarget(kind: ContextKind, context: RationaleInfo | MemoryInfo, model: Model): SemanticDiagnostic[] {
+  const diagnostics: SemanticDiagnostic[] = [];
+  if (!targetExists(context.target, model)) {
+    diagnostics.push({
+      kind: "invalid_context_target",
+      contextKind: kind,
+      name: context.name,
+      targetKind: context.target.kind,
+      target: context.target.name,
+      filePath: context.provenance.filePath,
+      causedBy: [describeProvenance(context.provenance)]
+    });
+  }
+
+  if (context.appliesTo) {
+    if (!targetsEqual(context.target, context.appliesTo)) {
+      diagnostics.push({
+        kind: "context_target_mismatch",
+        contextKind: kind,
+        name: context.name,
+        declaredTarget: context.target,
+        appliesToTarget: context.appliesTo,
+        filePath: context.provenance.filePath,
+        causedBy: [describeProvenance(context.provenance)]
+      });
+    }
+
+    if (!targetExists(context.appliesTo, model)) {
+      diagnostics.push({
+        kind: "invalid_context_target",
+        contextKind: kind,
+        name: context.name,
+        targetKind: context.appliesTo.kind,
+        target: context.appliesTo.name,
+        filePath: context.provenance.filePath,
+        causedBy: [describeProvenance(context.provenance)]
+      });
+    }
+  }
+
+  return diagnostics;
+}
+
+function checkRequiredContext(model: Model): SemanticDiagnostic[] {
+  const diagnostics: SemanticDiagnostic[] = [];
+
+  for (const component of model.components.values()) {
+    for (const fn of component.functions.values()) {
+      const target = functionTarget(fn.component, fn.name);
+      for (const requirement of requirementsForFunction(fn)) {
+        if (hasRequiredContext(requirement, target, model)) {
+          continue;
+        }
+
+        const traitProvenance = fn.shapeTraits.get(requirement.trait) ?? fn.provenance;
+        diagnostics.push({
+          kind: "missing_required_context",
+          targetKind: "fn",
+          target: target.name,
+          requiredContext: formatContextRequirement(requirement.contextType, target),
+          requiredBy: requirement.trait,
+          filePath: traitProvenance.filePath,
+          causedBy: [
+            describeProvenance(traitProvenance),
+            describeProvenance(provenance("standard prelude", `${requirement.trait} requires ${requirement.contextType}`))
+          ]
+        });
+      }
+    }
+  }
+
+  return diagnostics;
+}
+
+function checkRequiredDescriptions(model: Model): SemanticDiagnostic[] {
+  const diagnostics: SemanticDiagnostic[] = [];
+
+  for (const component of model.components.values()) {
+    for (const fn of component.functions.values()) {
+      for (const requirement of requirementsForFunction(fn).filter((item) => item.requiresDescription)) {
+        if (hasNonEmptyDescription(fn)) {
+          continue;
+        }
+
+        const traitProvenance = fn.shapeTraits.get(requirement.trait) ?? fn.provenance;
+        diagnostics.push({
+          kind: "missing_required_description",
+          targetKind: "fn",
+          target: functionKey(fn.component, fn.name),
+          requiredBy: requirement.trait,
+          filePath: traitProvenance.filePath,
+          causedBy: [
+            describeProvenance(traitProvenance),
+            describeProvenance(provenance("standard prelude", `${requirement.trait} requires description`))
+          ]
+        });
+      }
+
+      if (fn.description?.required && fn.description.summary.trim().length === 0) {
+        diagnostics.push({
+          kind: "missing_required_description",
+          targetKind: "fn",
+          target: functionKey(fn.component, fn.name),
+          requiredBy: "description required",
+          filePath: fn.description.provenance.filePath,
+          causedBy: [describeProvenance(fn.description.provenance)]
+        });
+      }
+    }
+  }
+
+  return diagnostics;
+}
+
+function checkReevaluations(model: Model): SemanticDiagnostic[] {
+  const diagnostics: SemanticDiagnostic[] = [];
+
+  for (const reevaluation of model.reevaluations.values()) {
+    for (const reason of reevaluationValidationReasons(reevaluation, model)) {
+      diagnostics.push({
+        kind: "invalid_reevaluation",
+        name: reevaluation.name,
+        reason,
+        filePath: reevaluation.provenance.filePath,
+        causedBy: [describeProvenance(reevaluation.provenance)]
+      });
+    }
+  }
+
+  return diagnostics;
+}
+
+function checkGuardedChanges(model: Model): SemanticDiagnostic[] {
+  const diagnostics: SemanticDiagnostic[] = [];
+  const guards = [...guardedContexts("rationale", model.rationales.values()), ...guardedContexts("memory", model.memories.values())];
+
+  for (const event of model.changeEvents) {
+    for (const guard of guards) {
+      if (!targetsEqual(event.target, guard.target) || hasValidReevaluationForGuard(model, guard.kind, guard.info.name)) {
+        continue;
+      }
+
+      diagnostics.push({
+        kind: "guarded_shape_changed",
+        guardKind: guard.kind,
+        guard: guard.info.name,
+        targetKind: event.target.kind,
+        target: event.target.name,
+        missingReevaluation: `reevaluation satisfying ${guard.kind} ${guard.info.name}`,
+        filePath: event.provenance.filePath,
+        causedBy: [describeProvenance(event.provenance), describeProvenance(guard.guard.provenance)]
       });
     }
   }
@@ -1243,6 +2117,279 @@ function checkCoverage(model: Model, changedFiles: string[]): SemanticDiagnostic
   }
 
   return diagnostics;
+}
+
+function requirementsForFunction(fn: FunctionInfo): ContextRequirementRule[] {
+  return PRELUDE_CONTEXT_REQUIREMENTS.filter((rule) => rule.targetKind === "fn" && fn.shapeTraits.has(rule.trait));
+}
+
+function hasRequiredContext(requirement: ContextRequirementRule, target: ShapeTarget, model: Model): boolean {
+  if (requirement.satisfiedBy.includes("rationale")) {
+    const rationale = [...model.rationales.values()].find((item) =>
+      contextSatisfiesRequirement(item, requirement.contextType, target)
+    );
+    if (rationale) {
+      return true;
+    }
+  }
+
+  if (requirement.satisfiedBy.includes("memory")) {
+    return [...model.memories.values()].some((item) => contextSatisfiesRequirement(item, requirement.contextType, target));
+  }
+
+  return false;
+}
+
+function contextSatisfiesRequirement(context: RationaleInfo | MemoryInfo, contextType: string, target: ShapeTarget): boolean {
+  const effectiveTarget = context.appliesTo ?? context.target;
+  return context.contextType === contextType && targetsEqual(effectiveTarget, target) && targetsEqual(context.target, effectiveTarget);
+}
+
+function hasNonEmptyDescription(fn: FunctionInfo): boolean {
+  return fn.description !== undefined && fn.description.summary.trim().length > 0;
+}
+
+function targetExists(target: ShapeTarget, model: Model): boolean {
+  if (target.kind === "fn") {
+    const [component, functionName] = splitFunctionTarget(target.name);
+    if (!component || !functionName) {
+      return false;
+    }
+
+    if (model.components.get(component)?.functions.has(functionName)) {
+      return true;
+    }
+
+    return model.facts.some(
+      (fact) => fact.kind === "function" && fact.component === component && fact.name === functionName
+    );
+  }
+
+  if (target.kind === "component") {
+    return model.components.has(target.name);
+  }
+  if (target.kind === "resource") {
+    return model.resources.has(target.name);
+  }
+  if (target.kind === "implementation") {
+    return model.implementations.some((implementation) => implementation.name === target.name);
+  }
+  if (target.kind === "rule") {
+    return model.rules.some((rule) => rule.name === target.name);
+  }
+  return false;
+}
+
+function splitFunctionTarget(target: string): [string | undefined, string | undefined] {
+  const [component, functionName, ...extra] = target.split(".");
+  if (extra.length > 0) {
+    return [undefined, undefined];
+  }
+  return [component, functionName];
+}
+
+function targetsEqual(left: ShapeTarget, right: ShapeTarget): boolean {
+  return left.kind === right.kind && left.name === right.name;
+}
+
+function formatTarget(target: ShapeTarget): string {
+  return `${target.kind} ${target.name}`;
+}
+
+function formatContextRequirement(contextType: string, target: ShapeTarget): string {
+  return `${contextType}<${formatTarget(target)}>`;
+}
+
+function reevaluationValidationReasons(reevaluation: ReevaluationInfo, model: Model): string[] {
+  const reasons: string[] = [];
+  if (!reevaluation.satisfiesKind || !reevaluation.satisfiesName) {
+    reasons.push("missing satisfies");
+  } else if (!contextObjectExists(reevaluation.satisfiesKind, reevaluation.satisfiesName, model)) {
+    reasons.push(`unknown satisfied ${reevaluation.satisfiesKind}`);
+  }
+
+  if (!reevaluation.outcome) {
+    reasons.push("missing outcome");
+  }
+  if (!reevaluation.summary || reevaluation.summary.trim().length === 0) {
+    reasons.push("missing summary");
+  }
+  if (reevaluation.evidence.length === 0) {
+    reasons.push("missing evidence");
+  }
+  if (!reevaluation.reviewer) {
+    reasons.push("missing reviewer");
+  }
+  if (!reevaluation.decidedOn) {
+    reasons.push("missing decided_on");
+  }
+
+  return reasons;
+}
+
+function contextObjectExists(kind: ContextKind, name: string, model: Model): boolean {
+  return kind === "memory" ? model.memories.has(name) : model.rationales.has(name);
+}
+
+function guardedContexts(
+  kind: ContextKind,
+  contexts: Iterable<RationaleInfo | MemoryInfo>
+): { kind: ContextKind; info: RationaleInfo | MemoryInfo; target: ShapeTarget; guard: GuardInfo }[] {
+  const guarded: { kind: ContextKind; info: RationaleInfo | MemoryInfo; target: ShapeTarget; guard: GuardInfo }[] = [];
+  for (const info of contexts) {
+    for (const guard of info.guards) {
+      if (requiresReevaluation(guard)) {
+        guarded.push({
+          kind,
+          info,
+          target: info.appliesTo ?? info.target,
+          guard
+        });
+      }
+    }
+  }
+  return guarded;
+}
+
+function requiresReevaluation(guard: GuardInfo): boolean {
+  const normalized = guard.requirement.replace(/\s+/g, "").toLowerCase();
+  return normalized === "reevaluation" || normalized === "reevaluation<self>";
+}
+
+function hasValidReevaluationForGuard(model: Model, kind: ContextKind, name: string): boolean {
+  return [...model.reevaluations.values()].some(
+    (reevaluation) =>
+      reevaluation.satisfiesKind === kind &&
+      reevaluation.satisfiesName === name &&
+      reevaluationValidationReasons(reevaluation, model).length === 0
+  );
+}
+
+function matchingContextsForTarget(target: ShapeTarget, model: Model): { kind: ContextKind; name: string }[] {
+  const contexts: { kind: ContextKind; name: string }[] = [];
+  for (const rationale of model.rationales.values()) {
+    if (targetsEqual(rationale.appliesTo ?? rationale.target, target)) {
+      contexts.push({ kind: "rationale", name: rationale.name });
+    }
+  }
+  for (const memory of model.memories.values()) {
+    if (targetsEqual(memory.appliesTo ?? memory.target, target)) {
+      contexts.push({ kind: "memory", name: memory.name });
+    }
+  }
+  return contexts.sort((left, right) => `${left.kind}:${left.name}`.localeCompare(`${right.kind}:${right.name}`));
+}
+
+function guardsForTarget(target: ShapeTarget, model: Model): { kind: ContextKind; info: RationaleInfo | MemoryInfo }[] {
+  const guards: { kind: ContextKind; info: RationaleInfo | MemoryInfo }[] = [];
+  for (const rationale of model.rationales.values()) {
+    if (targetsEqual(rationale.appliesTo ?? rationale.target, target) && rationale.guards.some(requiresReevaluation)) {
+      guards.push({ kind: "rationale", info: rationale });
+    }
+  }
+  for (const memory of model.memories.values()) {
+    if (targetsEqual(memory.appliesTo ?? memory.target, target) && memory.guards.some(requiresReevaluation)) {
+      guards.push({ kind: "memory", info: memory });
+    }
+  }
+  return guards.sort((left, right) => `${left.kind}:${left.info.name}`.localeCompare(`${right.kind}:${right.info.name}`));
+}
+
+function formatRationaleExplanation(rationale: RationaleInfo): string {
+  const lines = [
+    rationale.name,
+    "  kind: rationale",
+    `  type: ${rationale.contextType}`,
+    `  target: ${formatTarget(rationale.target)}`
+  ];
+  if (rationale.owner) {
+    lines.push(`  owner: ${rationale.owner}`);
+  }
+  if (rationale.protects.length > 0) {
+    lines.push("  protects:");
+    lines.push(...rationale.protects.map((item) => `    ${item.kind} ${item.value}`));
+  }
+  if (rationale.guards.length > 0) {
+    lines.push("  guards:");
+    lines.push(...rationale.guards.map((guard) => `    on_change require ${guard.requirement}`));
+  }
+  return lines.join("\n");
+}
+
+function formatMemoryExplanation(memory: MemoryInfo): string {
+  const lines = [
+    memory.name,
+    "  kind: memory",
+    `  type: ${memory.contextType}`,
+    `  target: ${formatTarget(memory.target)}`
+  ];
+  if (memory.status) {
+    lines.push(`  status: ${memory.status}`);
+  }
+  if (memory.confidence) {
+    lines.push(`  confidence: ${memory.confidence}`);
+  }
+  if (memory.owner) {
+    lines.push(`  owner: ${memory.owner}`);
+  }
+  if (memory.reviewBy) {
+    lines.push(`  review_by: ${memory.reviewBy}`);
+  }
+  if (memory.protects.length > 0) {
+    lines.push("  protects:");
+    lines.push(...memory.protects.map((item) => `    ${item.kind} ${item.value}`));
+  }
+  if (memory.guards.length > 0) {
+    lines.push("  guards:");
+    lines.push(...memory.guards.map((guard) => `    on_change require ${guard.requirement}`));
+  }
+  return lines.join("\n");
+}
+
+function formatRationaleMemoryListEntry(rationale: RationaleInfo): string[] {
+  const lines = [`rationale ${rationale.name}`, `type: ${rationale.contextType}`];
+  if (rationale.protects.length > 0) {
+    lines.push(`protects: ${rationale.protects.map((item) => `${item.kind} ${item.value}`).join(", ")}`);
+  }
+  if (rationale.owner) {
+    lines.push(`owner: ${rationale.owner}`);
+  }
+  if (rationale.reviewBy) {
+    lines.push(`review_by: ${rationale.reviewBy}`);
+  }
+  return lines;
+}
+
+function formatMemoryListEntry(memory: MemoryInfo): string[] {
+  const lines = [`memory ${memory.name}`, `type: ${memory.contextType}`];
+  if (memory.status) {
+    lines.push(`status: ${memory.status}`);
+  }
+  if (memory.confidence) {
+    lines.push(`confidence: ${memory.confidence}`);
+  }
+  if (memory.protects.length > 0) {
+    lines.push(`protects: ${memory.protects.map((item) => `${item.kind} ${item.value}`).join(", ")}`);
+  }
+  if (memory.owner) {
+    lines.push(`owner: ${memory.owner}`);
+  }
+  if (memory.reviewBy) {
+    lines.push(`review_by: ${memory.reviewBy}`);
+  }
+  return lines;
+}
+
+function isObligationDiagnostic(diagnostic: ShapeDiagnostic): diagnostic is Extract<
+  SemanticDiagnostic,
+  { kind: "missing_required_context" | "missing_required_description" | "guarded_shape_changed" | "invalid_reevaluation" }
+> {
+  return (
+    diagnostic.kind === "missing_required_context" ||
+    diagnostic.kind === "missing_required_description" ||
+    diagnostic.kind === "guarded_shape_changed" ||
+    diagnostic.kind === "invalid_reevaluation"
+  );
 }
 
 function deriveFinalForbidsForResource(
@@ -1452,6 +2599,18 @@ function formatDiagnostic(diagnostic: ShapeDiagnostic): string {
       return formatForbiddenProvidesDiagnostic(diagnostic);
     case "unsafe_effects":
       return formatUnsafeEffectsDiagnostic(diagnostic);
+    case "missing_required_context":
+      return formatMissingRequiredContextDiagnostic(diagnostic);
+    case "invalid_context_target":
+      return formatInvalidContextTargetDiagnostic(diagnostic);
+    case "context_target_mismatch":
+      return formatContextTargetMismatchDiagnostic(diagnostic);
+    case "missing_required_description":
+      return formatMissingRequiredDescriptionDiagnostic(diagnostic);
+    case "guarded_shape_changed":
+      return formatGuardedShapeChangedDiagnostic(diagnostic);
+    case "invalid_reevaluation":
+      return formatInvalidReevaluationDiagnostic(diagnostic);
   }
 }
 
@@ -1553,6 +2712,83 @@ function formatUnsafeEffectsDiagnostic(diagnostic: Extract<SemanticDiagnostic, {
     "",
     `${diagnostic.component}.${diagnostic.functionName} declares unsafe effects.`,
     `Missing: ${diagnostic.missing.join(", ")}.`,
+    formatCausedBy(diagnostic.causedBy)
+  ].join("\n");
+}
+
+function formatMissingRequiredContextDiagnostic(
+  diagnostic: Extract<SemanticDiagnostic, { kind: "missing_required_context" }>
+): string {
+  return [
+    "error: missing required context",
+    "",
+    `${diagnostic.targetKind} ${diagnostic.target} has shape ${diagnostic.requiredBy}.`,
+    `${diagnostic.requiredBy} requires ${diagnostic.requiredContext}.`,
+    "",
+    "No matching rationale or memory found.",
+    formatCausedBy(diagnostic.causedBy)
+  ].join("\n");
+}
+
+function formatInvalidContextTargetDiagnostic(
+  diagnostic: Extract<SemanticDiagnostic, { kind: "invalid_context_target" }>
+): string {
+  return [
+    "error: invalid context target",
+    "",
+    `${diagnostic.contextKind} ${diagnostic.name} applies to ${diagnostic.targetKind} ${diagnostic.target},`,
+    "but that target is not declared.",
+    formatCausedBy(diagnostic.causedBy)
+  ].join("\n");
+}
+
+function formatContextTargetMismatchDiagnostic(
+  diagnostic: Extract<SemanticDiagnostic, { kind: "context_target_mismatch" }>
+): string {
+  return [
+    "error: context target mismatch",
+    "",
+    `${diagnostic.contextKind} ${diagnostic.name} declares ${formatTarget(diagnostic.declaredTarget)},`,
+    `but applies_to references ${formatTarget(diagnostic.appliesToTarget)}.`,
+    formatCausedBy(diagnostic.causedBy)
+  ].join("\n");
+}
+
+function formatMissingRequiredDescriptionDiagnostic(
+  diagnostic: Extract<SemanticDiagnostic, { kind: "missing_required_description" }>
+): string {
+  return [
+    "error: missing required description",
+    "",
+    `${diagnostic.targetKind} ${diagnostic.target} has shape ${diagnostic.requiredBy}.`,
+    `${diagnostic.requiredBy} requires a description.`,
+    formatCausedBy(diagnostic.causedBy)
+  ].join("\n");
+}
+
+function formatGuardedShapeChangedDiagnostic(
+  diagnostic: Extract<SemanticDiagnostic, { kind: "guarded_shape_changed" }>
+): string {
+  return [
+    "error: guarded shape changed",
+    "",
+    `${diagnostic.targetKind} ${diagnostic.target} is protected by ${diagnostic.guardKind} ${diagnostic.guard}.`,
+    "This change modifies the guarded target.",
+    "",
+    "Required:",
+    `  add ${diagnostic.missingReevaluation}`,
+    "  or preserve the protected shape.",
+    formatCausedBy(diagnostic.causedBy)
+  ].join("\n");
+}
+
+function formatInvalidReevaluationDiagnostic(
+  diagnostic: Extract<SemanticDiagnostic, { kind: "invalid_reevaluation" }>
+): string {
+  return [
+    "error: invalid reevaluation",
+    "",
+    `reevaluation ${diagnostic.name} is invalid: ${diagnostic.reason}.`,
     formatCausedBy(diagnostic.causedBy)
   ].join("\n");
 }

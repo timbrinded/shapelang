@@ -67,6 +67,32 @@ describe("shp CLI", () => {
     expect(result.stderr).toBe("");
   });
 
+  test("lists memory guards", async () => {
+    const result = await runCli([
+      "memory",
+      "fixtures/pass/memory_guard_modify_with_reevaluation/audit.shape"
+    ]);
+
+    expect(result.exitCode).toBe(0);
+    expect(result.stdout).toContain("Memory Guards");
+    expect(result.stdout).toContain("memory DoNotTouchDecisionShape");
+    expect(result.stdout).toContain("status: Unexplained");
+    expect(result.stderr).toBe("");
+  });
+
+  test("lists open obligations", async () => {
+    const result = await runCli([
+      "obligations",
+      "fixtures/fail/memory_guard_missing_rationale/audit.shape"
+    ]);
+
+    expect(result.exitCode).toBe(0);
+    expect(result.stdout).toContain("Open Shape Obligations");
+    expect(result.stdout).toContain("missing context");
+    expect(result.stdout).toContain("InlineRationale<fn Gateway.derivePolicyDecision>");
+    expect(result.stderr).toBe("");
+  });
+
   test("runs source analyzer with shape comparison", async () => {
     const result = await runCli([
       "analyze",

@@ -1,0 +1,12 @@
+module gateway
+
+resource PolicySnapshot
+
+component Gateway {
+  owns PolicySnapshot
+  grants Read<PolicySnapshot>
+  fn derivePolicyDecision : PreserveInline
+    effects complete {
+      Read<PolicySnapshot>
+    }
+}

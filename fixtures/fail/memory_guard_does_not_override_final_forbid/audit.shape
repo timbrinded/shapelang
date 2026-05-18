@@ -1,0 +1,20 @@
+module audit
+
+resource AuditEvent : AppendOnly
+
+component AuditStore {
+  owns AuditEvent
+  grants HardDelete<AuditEvent>
+  fn purgeOldEvents : SharpEdge
+    effects complete {
+      HardDelete<AuditEvent>
+    }
+}
+
+memory PurgeIsKnown : HardFoughtKnowledge<fn AuditStore.purgeOldEvents> {
+  applies_to fn AuditStore.purgeOldEvents
+  status Explained
+  confidence High
+  summary "This is known behaviour."
+  owner AuditTeam
+}

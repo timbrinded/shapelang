@@ -16,6 +16,7 @@ import {
   getDefinitionLocation,
   getEditorDiagnostics,
   getHoverText,
+  explainShapeModules,
   formatDiagnostics,
   parseShapeModule
 } from "./index.ts";
@@ -56,6 +57,65 @@ describe("Shape parser", () => {
       }
 
       resource AuditEvent : AppendOnly
+    `);
+
+    expect(parsed.ok).toBe(true);
+  });
+
+  test("parses memory guard declarations and function annotations", () => {
+    const parsed = parseShapeModule(`
+      module gateway
+
+      resource PolicySnapshot
+
+      component Gateway {
+        owns PolicySnapshot
+        grants Read<PolicySnapshot>
+
+        fn derivePolicyDecision : RequiresDescription, PreserveInline
+          source ts("src/gateway/authorize.ts#derivePolicyDecision")
+          description required "Policy decision branches remain local for auditability."
+          effects complete {
+            Read<PolicySnapshot>
+          }
+      }
+
+      rationale DerivePolicyDecisionInline : InlineRationale<fn Gateway.derivePolicyDecision> {
+        applies_to fn Gateway.derivePolicyDecision
+        why CognitiveLocality
+        summary "Policy checks remain inline for auditability."
+        owner GatewayTeam
+      }
+
+      memory DoNotTouchDecisionShape : HardFoughtKnowledge<fn Gateway.derivePolicyDecision> {
+        applies_to fn Gateway.derivePolicyDecision
+        status Unexplained
+        confidence High
+        protects shape CheckOrder
+        guards on_change require ReEvaluation<Self>
+        observed issue("SEC-231")
+        summary "Previous refactors broke error normalisation."
+        owner GatewayTeam
+        review_by "2026-08-18"
+      }
+
+      reevaluation DecisionShapeRechecked {
+        satisfies memory DoNotTouchDecisionShape
+        outcome Confirmed
+        summary "Refactor preserves error-normalisation behaviour."
+        evidence test("gateway/error-normalisation.test.ts")
+        reviewer GatewayTeam
+        approver Security
+        decided_on "2026-06-02"
+      }
+
+      change RefactorGatewayDecision {
+        modify fn Gateway.derivePolicyDecision : PreserveInline
+          description required "Policy decision branches remain local for auditability."
+          effects complete {
+            Read<PolicySnapshot>
+          }
+      }
     `);
 
     expect(parsed.ok).toBe(true);
@@ -499,6 +559,244 @@ describe("Shape checker", () => {
     expect(output).toContain("PublicApi provides JsonRpcEndpoint");
     expect(output).toContain("except Gateway");
   });
+
+  test("exposes shape trait and description facts in explain output", () => {
+    const parsed = parseShapeModule(`
+      module gateway
+
+      resource PolicySnapshot
+
+      component Gateway {
+        owns PolicySnapshot
+        grants Read<PolicySnapshot>
+
+        fn derivePolicyDecision : RequiresDescription
+          description required "Policy decision branches remain local for auditability."
+          effects complete {
+            Read<PolicySnapshot>
+          }
+      }
+
+      rationale DerivePolicyDecisionDescription : DescriptionRationale<fn Gateway.derivePolicyDecision> {
+        applies_to fn Gateway.derivePolicyDecision
+        why Auditability
+        summary "Reviewers need the local policy decision purpose."
+        owner GatewayTeam
+      }
+    `);
+
+    expect(parsed.ok).toBe(true);
+    if (!parsed.ok) {
+      return;
+    }
+
+    const result = checkShapeModules([parsed.module], { includeFacts: true });
+    const explanation = explainShapeModules([parsed.module], "Gateway.derivePolicyDecision");
+
+    expect(result.exitCode).toBe(0);
+    expect(result.facts).toContainEqual(
+      expect.objectContaining({
+        kind: "shape_trait",
+        trait: "RequiresDescription",
+        target: "Gateway.derivePolicyDecision"
+      })
+    );
+    expect(result.facts).toContainEqual(
+      expect.objectContaining({
+        kind: "description",
+        required: true,
+        summary: "Policy decision branches remain local for auditability."
+      })
+    );
+    expect(explanation).toContain("shape traits:");
+    expect(explanation).toContain("RequiresDescription");
+    expect(explanation).toContain("description:");
+    expect(explanation).toContain("DescriptionRationale<fn Gateway.derivePolicyDecision>");
+  });
+
+  test("enforces required rationale, descriptions, memory, guarded changes, and final forbids", async () => {
+    const missingRationale = await checkShapeFiles([
+      resolve(repoRoot, "fixtures/fail/memory_guard_missing_rationale/audit.shape")
+    ]);
+    expect(missingRationale.exitCode).toBe(1);
+    expect(formatDiagnostics(missingRationale)).toContain("missing required context");
+    expect(formatDiagnostics(missingRationale)).toContain("InlineRationale<fn Gateway.derivePolicyDecision>");
+
+    const preserveInline = await checkShapeFiles([
+      resolve(repoRoot, "fixtures/pass/memory_guard_preserve_inline/audit.shape")
+    ]);
+    expect(preserveInline.exitCode).toBe(0);
+
+    const missingDescription = await checkShapeFiles([
+      resolve(repoRoot, "fixtures/fail/memory_guard_required_description_missing/audit.shape")
+    ]);
+    expect(missingDescription.exitCode).toBe(1);
+    expect(formatDiagnostics(missingDescription)).toContain("missing required description");
+
+    const descriptionPresent = await checkShapeFiles([
+      resolve(repoRoot, "fixtures/pass/memory_guard_required_description_present/audit.shape")
+    ]);
+    expect(descriptionPresent.exitCode).toBe(0);
+
+    const hardFoughtMemory = await checkShapeFiles([
+      resolve(repoRoot, "fixtures/pass/memory_guard_hard_fought_unknown/audit.shape")
+    ]);
+    expect(hardFoughtMemory.exitCode).toBe(0);
+
+    const guardedWithoutReevaluation = await checkShapeFiles([
+      resolve(repoRoot, "fixtures/fail/memory_guard_modify_without_reevaluation/audit.shape")
+    ]);
+    expect(guardedWithoutReevaluation.exitCode).toBe(1);
+    expect(formatDiagnostics(guardedWithoutReevaluation)).toContain("guarded shape changed");
+    expect(formatDiagnostics(guardedWithoutReevaluation)).toContain("reevaluation satisfying memory DoNotTouchDecisionShape");
+
+    const guardedWithReevaluation = await checkShapeFiles([
+      resolve(repoRoot, "fixtures/pass/memory_guard_modify_with_reevaluation/audit.shape")
+    ]);
+    expect(guardedWithReevaluation.exitCode).toBe(0);
+
+    const finalForbid = await checkShapeFiles([
+      resolve(repoRoot, "fixtures/fail/memory_guard_does_not_override_final_forbid/audit.shape")
+    ]);
+    expect(finalForbid.exitCode).toBe(1);
+    expect(formatDiagnostics(finalForbid)).toContain("forbidden effect");
+    expect(formatDiagnostics(finalForbid)).toContain("AppendOnly forbids final HardDelete<AuditEvent>");
+  });
+
+  test("rejects wrong and unknown context targets", async () => {
+    const wrongTarget = await checkShapeFiles([
+      resolve(repoRoot, "fixtures/fail/memory_guard_wrong_target/audit.shape")
+    ]);
+    expect(wrongTarget.exitCode).toBe(1);
+    expect(formatDiagnostics(wrongTarget)).toContain("context target mismatch");
+
+    const unknownTarget = await checkShapeFiles([
+      resolve(repoRoot, "fixtures/fail/memory_guard_unknown_target/audit.shape")
+    ]);
+    expect(unknownTarget.exitCode).toBe(1);
+    expect(formatDiagnostics(unknownTarget)).toContain("invalid context target");
+
+    const memoryWrongTarget = parseShapeModule(`
+      module gateway
+
+      resource PolicySnapshot
+
+      component Gateway {
+        owns PolicySnapshot
+        grants Read<PolicySnapshot>
+
+        fn derivePolicyDecision
+          effects complete {
+            Read<PolicySnapshot>
+          }
+
+        fn otherDecision
+          effects complete {
+            Read<PolicySnapshot>
+          }
+      }
+
+      memory DoNotTouchDecisionShape : HardFoughtKnowledge<fn Gateway.derivePolicyDecision> {
+        applies_to fn Gateway.otherDecision
+        status Unexplained
+        confidence High
+        summary "Previous refactors broke error normalisation."
+        owner GatewayTeam
+      }
+    `);
+    expect(memoryWrongTarget.ok).toBe(true);
+    if (!memoryWrongTarget.ok) {
+      return;
+    }
+    const memoryWrongTargetResult = checkShapeModules([memoryWrongTarget.module]);
+    expect(memoryWrongTargetResult.exitCode).toBe(1);
+    expect(formatDiagnostics(memoryWrongTargetResult)).toContain("context target mismatch");
+  });
+
+  test("requires SharpEdge memory and valid reevaluations", () => {
+    const missingMemory = parseShapeModule(`
+      module gateway
+
+      resource PolicySnapshot
+
+      component Gateway {
+        owns PolicySnapshot
+        grants Read<PolicySnapshot>
+
+        fn pollAttestation : SharpEdge
+          effects complete {
+            Read<PolicySnapshot>
+          }
+      }
+    `);
+    expect(missingMemory.ok).toBe(true);
+    if (!missingMemory.ok) {
+      return;
+    }
+    const missingMemoryResult = checkShapeModules([missingMemory.module]);
+    expect(missingMemoryResult.exitCode).toBe(1);
+    expect(formatDiagnostics(missingMemoryResult)).toContain("HardFoughtKnowledge<fn Gateway.pollAttestation>");
+
+    const invalidReevaluation = parseShapeModule(`
+      module gateway
+
+      reevaluation DecisionShapeRechecked {
+        satisfies memory MissingMemory
+        outcome Confirmed
+        summary "Refactor preserves error-normalisation behaviour."
+        evidence test("gateway/error-normalisation.test.ts")
+        reviewer GatewayTeam
+        decided_on "2026-06-02"
+      }
+    `);
+    expect(invalidReevaluation.ok).toBe(true);
+    if (!invalidReevaluation.ok) {
+      return;
+    }
+    const invalidReevaluationResult = checkShapeModules([invalidReevaluation.module]);
+    expect(invalidReevaluationResult.exitCode).toBe(1);
+    expect(formatDiagnostics(invalidReevaluationResult)).toContain("unknown satisfied memory");
+  });
+
+  test("rejects removing guarded functions without reevaluation", () => {
+    const parsed = parseShapeModule(`
+      module gateway
+
+      resource PolicySnapshot
+
+      component Gateway {
+        owns PolicySnapshot
+        grants Read<PolicySnapshot>
+
+        fn derivePolicyDecision : SharpEdge
+          effects complete {
+            Read<PolicySnapshot>
+          }
+      }
+
+      memory DoNotTouchDecisionShape : HardFoughtKnowledge<fn Gateway.derivePolicyDecision> {
+        applies_to fn Gateway.derivePolicyDecision
+        status Unexplained
+        confidence High
+        guards on_change require ReEvaluation<Self>
+        summary "Previous refactors broke error normalisation."
+        owner GatewayTeam
+      }
+
+      change RemoveDecision {
+        remove fn Gateway.derivePolicyDecision
+      }
+    `);
+
+    expect(parsed.ok).toBe(true);
+    if (!parsed.ok) {
+      return;
+    }
+
+    const result = checkShapeModules([parsed.module]);
+    expect(result.exitCode).toBe(1);
+    expect(formatDiagnostics(result)).toContain("guarded shape changed");
+  });
 });
 
 describe("Shape formatter", () => {
@@ -535,6 +833,60 @@ component AuditStore {
 }
 `);
   });
+
+  test("formats memory guard syntax canonically", () => {
+    const result = formatShapeSource(`
+      reevaluation DecisionShapeRechecked { evidence test('gateway/error-normalisation.test.ts') decided_on '2026-06-02' reviewer GatewayTeam summary 'Refactor preserves behaviour.' outcome Confirmed satisfies memory DoNotTouchDecisionShape }
+      memory DoNotTouchDecisionShape : HardFoughtKnowledge<fn Gateway.derivePolicyDecision> { summary 'Previous refactors broke error normalisation.' guards on_change require ReEvaluation<Self> confidence High status Unexplained applies_to fn Gateway.derivePolicyDecision owner GatewayTeam protects shape CheckOrder }
+      rationale DerivePolicyDecisionInline : InlineRationale<fn Gateway.derivePolicyDecision> { summary 'Policy checks remain inline for auditability.' owner GatewayTeam why CognitiveLocality applies_to fn Gateway.derivePolicyDecision }
+      component Gateway { grants Read<PolicySnapshot> owns PolicySnapshot fn derivePolicyDecision : RequiresDescription, PreserveInline description required 'Policy decision branches remain local for auditability.' effects complete { Read<PolicySnapshot> } }
+      resource PolicySnapshot
+    `);
+
+    expect(result.ok).toBe(true);
+    if (!result.ok) {
+      return;
+    }
+
+    expect(result.formatted).toBe(`resource PolicySnapshot
+
+component Gateway {
+  owns PolicySnapshot
+  grants Read<PolicySnapshot>
+  fn derivePolicyDecision : PreserveInline, RequiresDescription
+    description required "Policy decision branches remain local for auditability."
+    effects complete {
+      Read<PolicySnapshot>
+    }
+}
+
+rationale DerivePolicyDecisionInline : InlineRationale<fn Gateway.derivePolicyDecision> {
+  applies_to fn Gateway.derivePolicyDecision
+  why CognitiveLocality
+  summary "Policy checks remain inline for auditability."
+  owner GatewayTeam
+}
+
+memory DoNotTouchDecisionShape : HardFoughtKnowledge<fn Gateway.derivePolicyDecision> {
+  applies_to fn Gateway.derivePolicyDecision
+  status Unexplained
+  confidence High
+  summary "Previous refactors broke error normalisation."
+  owner GatewayTeam
+  protects shape CheckOrder
+  guards on_change require ReEvaluation<Self>
+}
+
+reevaluation DecisionShapeRechecked {
+  satisfies memory DoNotTouchDecisionShape
+  outcome Confirmed
+  summary "Refactor preserves behaviour."
+  reviewer GatewayTeam
+  decided_on "2026-06-02"
+  evidence test("gateway/error-normalisation.test.ts")
+}
+`);
+  });
 });
 
 describe("Shape authoring assistant", () => {
@@ -547,7 +899,10 @@ describe("Shape authoring assistant", () => {
 
     expect(prompt).toContain("Use effects unknown when uncertainty remains");
     expect(prompt).toContain("HardDelete");
+    expect(prompt).toContain("If adding PreserveInline");
+    expect(prompt).toContain("Do not use rationale or memory to waive final forbidden effects");
     expect(critic).toContain("Did the shape delta cover every governed changed file?");
+    expect(critic).toContain("Did the delta touch a guarded target without reevaluation?");
   });
 
   test("generates a valid reviewable change scaffold", () => {
@@ -561,6 +916,21 @@ describe("Shape authoring assistant", () => {
 
     expect(source).toContain("effects unknown");
     expect(source).toContain('source ts("src/audit/purge.ts")');
+    expect(parsed.ok).toBe(true);
+  });
+
+  test("can generate an optional memory guard scaffold", () => {
+    const source = generateShapeDelta({
+      moduleName: "changes.PR_001",
+      changeName: "ReviewAuditChange",
+      componentName: "AuditStore",
+      changedFiles: ["src/audit/purge.ts"],
+      includeMemoryGuardScaffold: true
+    });
+    const parsed = parseShapeModule(source);
+
+    expect(source).toContain("memory ReviewChangedShape : HardFoughtKnowledge<fn AuditStore.reviewPurgeShape1>");
+    expect(source).toContain("status Unexplained");
     expect(parsed.ok).toBe(true);
   });
 
@@ -619,8 +989,20 @@ describe("Shape editor support", () => {
 
   test("provides hover, definition, completions, and format-on-save", () => {
     expect(getHoverText(source, "AuditEvent")).toContain("kind: resource");
+    expect(getHoverText(source, "PreserveInline")).toContain("InlineRationale");
     expect(getDefinitionLocation(source, "AuditStore")?.line).toBeGreaterThan(1);
+    expect(getDefinitionLocation(`
+      component Gateway {
+        fn derivePolicyDecision
+          effects unknown
+      }
+
+      rationale DerivePolicyDecisionInline : InlineRationale<fn Gateway.derivePolicyDecision> {
+        applies_to fn Gateway.derivePolicyDecision
+      }
+    `, "InlineRationale")?.line).toBeGreaterThan(1);
     expect(getCompletions(source, "Audit")).toContain("AuditStore.appendEvent");
+    expect(getCompletions(source, "Preserve")).toContain("PreserveInline");
 
     const formatted = formatOnSave(source);
     expect(formatted.ok).toBe(true);

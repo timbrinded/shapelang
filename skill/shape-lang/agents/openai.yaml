@@ -1,0 +1,4 @@
+interface:
+  display_name: "Shape Lang"
+  short_description: "Author and teach Shape language"
+  default_prompt: "Use $shape-lang to author, review, teach, or implement Shape language changes."

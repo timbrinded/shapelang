@@ -29,6 +29,8 @@ export {
   explainShapeModules,
   formatDiagnostics,
   graphShapeModules,
+  listMemoryGuardsShapeModules,
+  listShapeObligations,
   type CheckResult,
   type CheckOptions,
   type Fact,

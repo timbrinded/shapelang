@@ -8,6 +8,9 @@ import { formatShapeSource, type FormatResult } from "./formatter.ts";
 import {
   isComponentDecl,
   isFunctionSummary,
+  isMemoryDecl,
+  isRationaleDecl,
+  isReevaluationDecl,
   isResourceDecl,
   isRuleDecl,
   isTraitDecl
@@ -37,6 +40,9 @@ const KEYWORD_COMPLETIONS = [
   "change",
   "attest",
   "rule",
+  "rationale",
+  "memory",
+  "reevaluation",
   "owns",
   "grants",
   "provides",
@@ -64,8 +70,23 @@ const PRELUDE_COMPLETIONS = [
   "Secret",
   "StorageAdapter",
   "DataPlane",
-  "ControlPlane"
+  "ControlPlane",
+  "PreserveInline",
+  "RequiresDescription",
+  "ProtectedCheckOrder",
+  "SharpEdge",
+  "NonIdiomatic",
+  "TestOnly"
 ];
+
+const PRELUDE_SHAPE_TRAIT_HOVERS = new Map([
+  ["PreserveInline", "PreserveInline\n  kind: shape trait\n  requires: InlineRationale<fn ...>\n"],
+  ["RequiresDescription", "RequiresDescription\n  kind: shape trait\n  requires: DescriptionRationale<fn ...>\n  requires description\n"],
+  ["ProtectedCheckOrder", "ProtectedCheckOrder\n  kind: shape trait\n  requires: CheckOrderRationale<fn ...>\n"],
+  ["SharpEdge", "SharpEdge\n  kind: shape trait\n  requires: HardFoughtKnowledge<fn ...>\n"],
+  ["NonIdiomatic", "NonIdiomatic\n  kind: shape trait\n  requires: DesignRationale<fn ...>\n"],
+  ["TestOnly", "TestOnly\n  kind: shape trait\n  requires: TestOnlyPurpose<fn ...>\n"]
+]);
 
 export function getEditorDiagnostics(source: string, filePath = "memory.shape"): EditorDiagnostic[] {
   const parsed = parseShapeModule(source, filePath);
@@ -83,6 +104,11 @@ export function getEditorDiagnostics(source: string, filePath = "memory.shape"):
 }
 
 export function getHoverText(source: string, symbol: string, filePath = "memory.shape"): string {
+  const preludeHover = PRELUDE_SHAPE_TRAIT_HOVERS.get(symbol);
+  if (preludeHover) {
+    return preludeHover;
+  }
+
   const parsed = parseShapeModule(source, filePath);
   if (!parsed.ok) {
     return `No shape facts found for ${symbol}.\n`;
@@ -102,6 +128,11 @@ export function getDefinitionLocation(source: string, symbol: string): Definitio
     new RegExp(`\\btrait\\s+${escapeRegex(name)}\\b`),
     new RegExp(`\\bcomponent\\s+${escapeRegex(name)}\\b`),
     new RegExp(`\\brule\\s+${escapeRegex(name)}\\b`),
+    new RegExp(`\\brationale\\s+${escapeRegex(name)}\\b`),
+    new RegExp(`\\bmemory\\s+${escapeRegex(name)}\\b`),
+    new RegExp(`\\breevaluation\\s+${escapeRegex(name)}\\b`),
+    new RegExp(`\\brationale\\s+[A-Za-z_][\\w_]*\\s*:\\s*${escapeRegex(name)}\\b`),
+    new RegExp(`\\bmemory\\s+[A-Za-z_][\\w_]*\\s*:\\s*${escapeRegex(name)}\\b`),
     new RegExp(`\\bfn\\s+${escapeRegex(name)}\\b`)
   ];
 
@@ -121,7 +152,15 @@ export function getCompletions(source: string, prefix = ""): string[] {
 
   if (parsed.ok) {
     for (const declaration of parsed.module.declarations) {
-      if (isResourceDecl(declaration) || isTraitDecl(declaration) || isComponentDecl(declaration) || isRuleDecl(declaration)) {
+      if (
+        isResourceDecl(declaration) ||
+        isTraitDecl(declaration) ||
+        isComponentDecl(declaration) ||
+        isRuleDecl(declaration) ||
+        isRationaleDecl(declaration) ||
+        isMemoryDecl(declaration) ||
+        isReevaluationDecl(declaration)
+      ) {
         names.add(declaration.name);
       }
       if (isComponentDecl(declaration)) {
