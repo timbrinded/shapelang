@@ -38,6 +38,9 @@ export default defineConfig({
           langs: [shapeLanguage]
         }
       },
+      components: {
+        Head: "./src/components/Head.astro"
+      },
       sidebar: [
         {
           label: "Start",

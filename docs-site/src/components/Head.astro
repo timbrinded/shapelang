@@ -1,0 +1,104 @@
+---
+const { head } = Astro.locals.starlightRoute;
+---
+
+{head.map(({ tag: Tag, attrs, content }) => <Tag {...attrs} set:html={content} />)}
+
+<script>
+  let mermaidModule: typeof import("mermaid").default | undefined;
+
+  function readMermaidSource(pre: HTMLPreElement): string {
+    const lines = pre.querySelectorAll(".ec-line .code");
+    if (lines.length > 0) {
+      return [...lines].map((line) => line.textContent ?? "").join("\n");
+    }
+    return pre.textContent ?? "";
+  }
+
+  function diagramTheme() {
+    const styles = getComputedStyle(document.documentElement);
+    const panel = styles.getPropertyValue("--shape-panel").trim() || "#ffffff";
+    const ink = styles.getPropertyValue("--shape-ink").trim() || "#07151f";
+    const slate = styles.getPropertyValue("--shape-slate").trim() || "#162936";
+    const border = styles.getPropertyValue("--shape-border").trim() || "#c8d8df";
+    const blue = styles.getPropertyValue("--shape-blue").trim() || "#00639a";
+    const agent = styles.getPropertyValue("--shape-agent").trim() || "#6a5cff";
+
+    return {
+      theme: "base" as const,
+      securityLevel: "strict" as const,
+      startOnLoad: false,
+      themeVariables: {
+        background: "transparent",
+        primaryColor: panel,
+        primaryTextColor: ink,
+        primaryBorderColor: blue,
+        lineColor: blue,
+        secondaryColor: "transparent",
+        secondaryTextColor: slate,
+        secondaryBorderColor: border,
+        tertiaryColor: panel,
+        tertiaryTextColor: ink,
+        tertiaryBorderColor: agent,
+        clusterBkg: "transparent",
+        clusterBorder: border,
+        edgeLabelBackground: panel,
+        fontFamily: styles.getPropertyValue("--sl-font").trim() || "system-ui, sans-serif"
+      }
+    };
+  }
+
+  async function renderMermaidDiagrams() {
+    const blocks = document.querySelectorAll('pre[data-language="mermaid"]');
+    if (blocks.length === 0) {
+      return;
+    }
+
+    const mermaid = mermaidModule ?? (await import("mermaid")).default;
+    mermaidModule = mermaid;
+    mermaid.initialize(diagramTheme());
+
+    let index = 0;
+    for (const block of blocks) {
+      if (!(block instanceof HTMLPreElement)) {
+        continue;
+      }
+      const pre = block;
+      const frame = pre.closest(".expressive-code") ?? pre;
+      if (frame instanceof HTMLElement && frame.dataset.mermaidRendered === "true") {
+        continue;
+      }
+
+      const source = readMermaidSource(pre).trim();
+      if (!source) {
+        continue;
+      }
+
+      const diagram = document.createElement("div");
+      diagram.className = "mermaid-diagram";
+      diagram.setAttribute("role", "img");
+
+      try {
+        const id = `shape-mermaid-${index}-${Math.random().toString(36).slice(2)}`;
+        const { svg, bindFunctions } = await mermaid.render(id, source);
+        diagram.innerHTML = svg;
+        frame.replaceWith(diagram);
+        bindFunctions?.(diagram);
+      } catch (error) {
+        console.warn("Failed to render Mermaid diagram", error);
+        if (frame instanceof HTMLElement) {
+          frame.dataset.mermaidRendered = "true";
+          frame.classList.add("mermaid-fallback");
+        }
+      }
+      index += 1;
+    }
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", renderMermaidDiagrams, { once: true });
+  } else {
+    renderMermaidDiagrams();
+  }
+  document.addEventListener("astro:page-load", renderMermaidDiagrams);
+</script>
