@@ -173,6 +173,34 @@ GitHub Pages should use the **GitHub Actions** publishing source. The deployment
 
 CI is wired in `.github/workflows/shape.yml` for formatting, tests, typechecking, `shp check`, and docs checks.
 
+## Release
+
+Releases are built from version tags:
+
+```bash
+git tag v0.1.0
+git push origin v0.1.0
+```
+
+The release workflow validates the repo, cross-compiles `shp` for Linux, macOS, and Windows, publishes tarballs as GitHub release assets, and includes SHA-256 checksums.
+
+Other GitHub Actions workflows can install `shp` from a release:
+
+```yaml
+steps:
+  - uses: actions/checkout@v4
+  - uses: timbrinded/shapelang@v0.1.0
+  - run: shp check
+```
+
+Use `with.version` to install a different release than the action ref:
+
+```yaml
+- uses: timbrinded/shapelang@master
+  with:
+    version: v0.1.0
+```
+
 ## License
 
 BSD 3-Clause

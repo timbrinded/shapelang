@@ -1,0 +1,101 @@
+name: Setup shp
+description: Download shp from a shapelang GitHub release and add it to PATH.
+
+inputs:
+  version:
+    description: Release tag to install. Defaults to the action ref when it is a version tag, otherwise latest.
+    required: false
+  repository:
+    description: Repository to download release assets from.
+    required: false
+    default: timbrinded/shapelang
+  token:
+    description: GitHub token used by gh to download release assets.
+    required: false
+
+runs:
+  using: composite
+  steps:
+    - name: Download shp
+      shell: bash
+      env:
+        INPUT_VERSION: ${{ inputs.version }}
+        ACTION_REF: ${{ github.action_ref }}
+        REPOSITORY: ${{ inputs.repository }}
+        GH_TOKEN: ${{ inputs.token || github.token }}
+      run: |
+        set -euo pipefail
+
+        version="$INPUT_VERSION"
+        if [ -z "$version" ]; then
+          case "$ACTION_REF" in
+            v*) version="$ACTION_REF" ;;
+            *) version="latest" ;;
+          esac
+        fi
+
+        case "$RUNNER_OS" in
+          Linux)
+            os="linux"
+            executable="shp"
+            ;;
+          macOS)
+            os="darwin"
+            executable="shp"
+            ;;
+          Windows)
+            os="windows"
+            executable="shp.exe"
+            ;;
+          *)
+            echo "Unsupported runner OS: $RUNNER_OS" >&2
+            exit 1
+            ;;
+        esac
+
+        case "$RUNNER_ARCH" in
+          X64) arch="x64" ;;
+          ARM64) arch="arm64" ;;
+          *)
+            echo "Unsupported runner architecture: $RUNNER_ARCH" >&2
+            exit 1
+            ;;
+        esac
+
+        if [ "$os" = "windows" ] && [ "$arch" = "arm64" ]; then
+          echo "No shp release asset is published for Windows ARM64." >&2
+          exit 1
+        fi
+
+        asset="shp-$os-$arch.tar.gz"
+        download_dir="$(mktemp -d)"
+        install_dir="$(mktemp -d)"
+
+        if [ "$version" = "latest" ]; then
+          gh release download --repo "$REPOSITORY" --pattern "$asset" --pattern checksums.txt --dir "$download_dir"
+        else
+          gh release download "$version" --repo "$REPOSITORY" --pattern "$asset" --pattern checksums.txt --dir "$download_dir"
+        fi
+
+        if command -v sha256sum >/dev/null 2>&1; then
+          (cd "$download_dir" && sha256sum --check checksums.txt --ignore-missing)
+        elif command -v shasum >/dev/null 2>&1; then
+          expected="$(awk -v asset="$asset" '$2 == "./" asset { print $1 }' "$download_dir/checksums.txt")"
+          actual="$(shasum -a 256 "$download_dir/$asset" | awk '{ print $1 }')"
+          if [ -z "$expected" ] || [ "$expected" != "$actual" ]; then
+            echo "Checksum verification failed for $asset." >&2
+            exit 1
+          fi
+        else
+          echo "No SHA-256 tool found; skipping checksum verification." >&2
+        fi
+
+        tar -xzf "$download_dir/$asset" -C "$install_dir"
+        chmod +x "$install_dir/$executable" 2>/dev/null || true
+        path_to_add="$install_dir"
+        if [ "$RUNNER_OS" = "Windows" ] && command -v cygpath >/dev/null 2>&1; then
+          path_to_add="$(cygpath -w "$install_dir")"
+        fi
+
+        echo "$path_to_add" >> "$GITHUB_PATH"
+        "$install_dir/$executable" --help >/dev/null

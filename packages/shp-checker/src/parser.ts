@@ -1,5 +1,5 @@
 import { resolve } from "node:path";
-import { URI, type LangiumDocument } from "langium";
+import { DocumentState, TextDocument, URI, type LangiumDocument, type Mutable } from "langium";
 import type { ShapeModule } from "./language/generated/ast.ts";
 import { createShapeServices } from "./language/shape-module.ts";
 
@@ -41,10 +41,16 @@ type ParserErrorLike = {
 export function parseShapeModule(source: string, filePath = "memory.shape"): ParseShapeModuleResult {
   const services = createShapeServices();
   const absolutePath = resolve(filePath);
-  const document = services.shared.workspace.LangiumDocumentFactory.fromString<ShapeModule>(
-    source,
-    URI.file(absolutePath)
-  );
+  const uri = URI.file(absolutePath);
+  const parseResult = services.Shape.parser.LangiumParser.parse<ShapeModule>(source);
+  const document: LangiumDocument<ShapeModule> = {
+    parseResult,
+    uri,
+    state: DocumentState.Parsed,
+    references: [],
+    textDocument: TextDocument.create(uri.toString(), "shape", 0, source)
+  };
+  (parseResult.value as Mutable<ShapeModule>).$document = document;
   const lexerErrors = document.parseResult.lexerErrors.map((error) =>
     lexerDiagnostic(error as LexerErrorLike, filePath)
   );

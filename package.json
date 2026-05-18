@@ -8,6 +8,7 @@
     "docs-site"
   ],
   "scripts": {
+    "build:release": "scripts/build-release-assets.sh",
     "docs:build": "bun run --cwd docs-site build",
     "docs:check": "bun run --cwd docs-site check",
     "docs:dev": "bun run --cwd docs-site dev",

@@ -24,7 +24,6 @@ export function createShapeServices(): ShapeServices {
   const Shape = inject(createDefaultCoreModule({ shared }), ShapeGeneratedModule);
 
   shared.ServiceRegistry.register(Shape);
-  void shared.workspace.ConfigurationProvider.initialized({});
 
   cachedServices = { shared, Shape };
   return cachedServices;
