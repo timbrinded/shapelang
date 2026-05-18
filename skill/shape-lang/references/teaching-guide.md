@@ -23,7 +23,7 @@ Teach in this order:
 - Contrast `effects complete` with `effects unknown`.
 - Show why a final forbid beats a grant.
 - For Memory Guards, distinguish rationale, memory, description, and reevaluation.
-- End by running `bun shp check` or showing the diagnostic that proves the point.
+- End by running `shp check` or showing the diagnostic that proves the point.
 
 ## Useful Analogies
 

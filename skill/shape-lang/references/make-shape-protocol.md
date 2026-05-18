@@ -8,7 +8,7 @@ Use this when authoring or reviewing `.shape` files and change files.
 2. Identify the architectural claim being made: resource invariant, component ownership, grant, dependency, function effect, implementation coverage, rule, or memory guard.
 3. Prefer a small `.shape` delta over rewriting the base model.
 4. Include `source` for changed functions and `evidence` for material effects when the source/diff gives line context.
-5. Run `bun shp check` and `bun shp fmt --check ...`; for code changes also run `bun test` and `bun run typecheck`.
+5. Run `shp fmt --check` and `shp check`; when the workflow provides a changed-files list, also run `shp coverage --changed-files changed.txt`.
 
 ## Authoring Rules
 
