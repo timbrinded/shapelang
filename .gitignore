@@ -4,3 +4,4 @@ dist/
 coverage/
 .astro/
 .DS_Store
+specs/
