@@ -7,6 +7,8 @@ sidebar:
 
 The first Shape use case is append-only resource protection.
 
+![Append-only rejection diagram showing AuditEvent, AppendOnly, forbid final, a HardDelete claim, the witness path, and the rejected diagnostic.](../../../assets/infographics/append-only-rejection.png)
+
 ## Declare the invariant
 
 An append-only trait allows appends and reads, then forbids final destructive effects:

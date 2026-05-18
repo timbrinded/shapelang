@@ -5,8 +5,8 @@ template: splash
 hero:
   tagline: Typed architecture conformance for reviewable systems.
   image:
-    file: ../../assets/shape-workflow.png
-    alt: Shape workflow from code diff to shape delta to deterministic checker.
+    file: ../../assets/infographics/shape-model-loop.png
+    alt: Shape review loop from code diff and agent draft through human review, shp check, CI gate, and diagnostics.
   actions:
     - text: Start with Shape
       link: /shapelang/learn/quickstart/

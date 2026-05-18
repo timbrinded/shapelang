@@ -11,6 +11,8 @@ The checker treats this as design memory with types. A function shape trait crea
 
 Refactor constraints are not waivers. They cannot make a final-forbidden effect pass.
 
+![Design memory diagram showing function shape traits, memory, rationale, review obligations, guards on change, modify fn, ReEvaluation, and the final-forbids rule.](../../../assets/infographics/design-memory-reevaluation.png)
+
 ## Function Shape Traits
 
 Function shape traits attach review obligations to a function summary:

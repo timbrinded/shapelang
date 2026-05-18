@@ -1,40 +1,77 @@
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap");
+
 :root {
-  --sl-color-accent-low: #d8f3ed;
-  --sl-color-accent: #0b7f6f;
-  --sl-color-accent-high: #053b34;
-  --sl-font: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --sl-font-mono: "Berkeley Mono", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  --shape-blue: #00639a;
+  --shape-ink: #07151f;
+  --shape-slate: #162936;
+  --shape-surface: #f6f9fb;
+  --shape-panel: #ffffff;
+  --shape-border: #c8d8df;
+  --shape-muted: #5d7180;
+  --shape-pass: #19a66a;
+  --shape-warn: #d28b00;
+  --shape-fail: #d13b3b;
+  --shape-agent: #6a5cff;
+
+  --sl-color-accent-low: #d8edf7;
+  --sl-color-accent: var(--shape-blue);
+  --sl-color-accent-high: #0d3449;
+  --sl-color-bg: var(--shape-surface);
+  --sl-color-bg-nav: color-mix(in srgb, var(--shape-surface), white 38%);
+  --sl-color-bg-sidebar: #eef5f8;
+  --sl-color-text: var(--shape-slate);
+  --sl-color-text-accent: var(--shape-blue);
+  --sl-font: "Space Grotesk", Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --sl-font-mono: "IBM Plex Mono", "Berkeley Mono", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
 }
 
 :root[data-theme="dark"] {
-  --sl-color-accent-low: #103b35;
-  --sl-color-accent: #45c4b0;
-  --sl-color-accent-high: #d8f3ed;
-  --sl-color-bg: #0e1418;
-  --sl-color-bg-nav: #0e1418;
-  --sl-color-bg-sidebar: #101820;
+  --shape-ink: #f6f9fb;
+  --shape-slate: #d8e5eb;
+  --shape-surface: #07151f;
+  --shape-panel: #0d1e2a;
+  --shape-border: #284252;
+  --shape-muted: #91a8b5;
+
+  --sl-color-accent-low: #082c42;
+  --sl-color-accent: #42aee4;
+  --sl-color-accent-high: #dff4ff;
+  --sl-color-bg: var(--shape-surface);
+  --sl-color-bg-nav: #07151f;
+  --sl-color-bg-sidebar: #0a1923;
+  --sl-color-text: var(--shape-slate);
 }
 
 .hero {
-  padding-block: clamp(3rem, 7vw, 6rem);
+  padding-block: clamp(3.5rem, 7vw, 6.5rem);
 }
 
 .hero img {
-  width: min(720px, 92vw);
-  border: 1px solid color-mix(in srgb, var(--sl-color-gray-5), transparent 35%);
+  width: min(920px, 94vw);
+  background: var(--shape-panel);
+  border: 1px solid color-mix(in srgb, var(--shape-blue), var(--shape-border) 58%);
   border-radius: 8px;
-  box-shadow: 0 24px 80px color-mix(in srgb, #000, transparent 82%);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--shape-panel), transparent 65%) inset,
+    0 20px 56px color-mix(in srgb, var(--shape-ink), transparent 90%);
 }
 
 .hero .tagline {
-  max-width: 17ch;
-  font-weight: 740;
+  max-width: 16ch;
+  color: var(--shape-ink);
+  font-weight: 700;
   line-height: 0.98;
   letter-spacing: 0;
 }
 
 .sl-markdown-content :is(h2, h3) {
+  color: var(--shape-ink);
   letter-spacing: 0;
+}
+
+.sl-markdown-content h2 {
+  border-top: 1px solid color-mix(in srgb, var(--shape-border), transparent 30%);
+  padding-top: 1.35rem;
 }
 
 .sl-markdown-content table code,
@@ -43,9 +80,38 @@
   font-size: 0.9em;
 }
 
+.sl-markdown-content :not(pre) > code {
+  border: 1px solid color-mix(in srgb, var(--shape-border), transparent 25%);
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--shape-blue), transparent 94%);
+  padding: 0.08rem 0.28rem;
+}
+
+.sl-markdown-content p:has(> img) {
+  margin-block: 2rem 2.35rem;
+}
+
+.sl-markdown-content p > img {
+  display: block;
+  width: min(100%, 1040px);
+  margin-inline: auto;
+  background: #ffffff;
+  border: 1px solid color-mix(in srgb, var(--shape-blue), var(--shape-border) 62%);
+  border-radius: 8px;
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, #ffffff, transparent 45%) inset,
+    0 18px 48px color-mix(in srgb, var(--shape-ink), transparent 91%);
+}
+
 .site-title {
-  font-weight: 720;
+  color: var(--shape-ink);
+  font-weight: 700;
   letter-spacing: 0;
+}
+
+.sidebar-pane,
+.right-sidebar-panel {
+  border-color: color-mix(in srgb, var(--shape-border), transparent 25%);
 }
 
 .sl-markdown-content .workflow-frame {

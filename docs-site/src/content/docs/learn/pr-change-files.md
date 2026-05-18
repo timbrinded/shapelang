@@ -7,6 +7,8 @@ sidebar:
 
 Baseline architecture belongs in `shape/system/**/*.shape`. PR-level deltas belong in `shape/changes/**/*.shape`.
 
+![PR change review workflow showing shape system files, shape changes, changed files, coverage, shp check, and CI result.](../../../assets/infographics/pr-change-review.png)
+
 A change file imports the baseline module and applies edits for review:
 
 ```shape

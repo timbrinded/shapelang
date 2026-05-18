@@ -25,6 +25,8 @@ LLM-authored semantic model
 + CI enforcement
 ```
 
+![Shape review loop showing code diff, agent draft, .shape claims, human review, source evidence, unknowns, shp check, CI gate, and diagnostics.](../../../assets/infographics/shape-model-loop.png)
+
 ## Source of truth
 
 `.shape` files are the source of architectural truth. Application code can be messy, implicit, or spread across many files; Shape gives the codebase a compact review surface.

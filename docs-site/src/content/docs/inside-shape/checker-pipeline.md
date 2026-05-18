@@ -15,6 +15,8 @@ run semantic rules
 emit diagnostics with provenance
 ```
 
+![Checker pipeline diagram showing parse, apply changes, lower facts, run rules, and emit diagnostics with facts, rules, and provenance.](../../../assets/infographics/checker-pipeline.png)
+
 ## Parse
 
 Langium parses each `.shape` file into a `ShapeModule`. Parser errors stop before semantic checking.

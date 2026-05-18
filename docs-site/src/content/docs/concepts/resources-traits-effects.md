@@ -7,6 +7,8 @@ sidebar:
 
 Resources, traits, and effects are the smallest useful unit of Shape.
 
+![Core Shape vocabulary map linking resources, traits, effects, components, ownership, grants, and evidence.](../../../assets/infographics/core-vocabulary-map.png)
+
 ## Resources
 
 A resource is a thing the architecture cares about: a table, stream, bucket, ledger, queue, secret, endpoint, or domain object.
