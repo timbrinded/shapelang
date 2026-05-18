@@ -24,7 +24,7 @@ export default defineConfig({
       favicon: "/favicon.svg",
       customCss: ["./src/styles/custom.css"],
       editLink: {
-        baseUrl: "https://github.com/timbrinded/shapelang/edit/main/docs-site/"
+        baseUrl: "https://github.com/timbrinded/shapelang/edit/master/docs-site/"
       },
       social: [
         {
