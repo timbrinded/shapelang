@@ -17,7 +17,7 @@ Use this when choosing, sequencing, or interpreting `shp` commands. The released
 | `shp coverage --changed-files changed.txt [files...]` | Enforcing shape deltas or attestations for governed changed files. | Normal validation without a changed-files list. |
 | `shp fmt [--check] [files...]` | Canonical formatting or review-safe format checks. | Semantic validation. |
 | `shp explain SYMBOL [files...]` | Inspecting derived facts for a resource, function, rationale, or memory. | Proving source code correctness. |
-| `shp graph [SYMBOL] [--kind KIND] [--summary] [files...]` | Inspecting hyperedges. With a SYMBOL: incidence for that vertex or relation. Without a SYMBOL: the whole hypergraph, grouped by kind. With `--summary`: aggregate vertex, hyperedge, and incidence counts. | Effect or Memory Guard checks. |
+| `shp graph [SYMBOL] [--kind KIND] [--stats] [files...]` | Inspecting hyperedges. With a SYMBOL: incidence for that vertex or relation. Without a SYMBOL: the whole hypergraph, grouped by kind. With `--stats`: aggregate vertex, hyperedge, and incidence counts. | Effect or Memory Guard checks. |
 | `shp memory [files...]` | Listing active rationale/memory entries by protected target. | Determining whether a guarded change is valid by itself. |
 | `shp obligations [files...]` | Listing open rationale, memory, description, reevaluation, and guarded-change work. | Replacing `shp check`; it filters only selected diagnostics. |
 | `shp author --changed-files changed.txt --component Name` | Scaffolding a PR change file. | Producing final reviewed effect summaries without human review. |
@@ -64,13 +64,13 @@ Investigate component dependencies, or the whole hypergraph:
 
 ```bash
 shp graph
-shp graph --summary
+shp graph --stats
 shp graph --kind calls
 shp graph Gateway
 shp graph Gateway --kind calls
 ```
 
-Start with `shp graph --summary` for a single-shot overview (vertex and hyperedge counts, arity range, isolated vertices) before drilling into specific symbols.
+Start with `shp graph --stats` for a single-shot overview (vertex and hyperedge counts, arity range, isolated vertices) before drilling into specific symbols.
 
 Compare source hints with declared effects:
 

@@ -942,12 +942,12 @@ export function graphAllShapeModules(modules: ShapeModule[] | CheckModuleInput[]
 
 /**
  * Aggregate counts of vertices, hyperedges, and incidences in the loaded
- * modules. Used by `shp graph --summary` to give an agent (or human) a
+ * modules. Used by `shp graph --stats` to give an agent (or human) a
  * single-shot overview of the model size and shape before they decide what
  * to drill into. `kindFilter`, if provided, restricts hyperedge counts to a
  * single relation kind; vertex counts always reflect the full model.
  */
-export function summarizeShapeHypergraph(
+export function statsShapeHypergraph(
   modules: ShapeModule[] | CheckModuleInput[],
   options: { kindFilter?: string } = {}
 ): string {
@@ -995,7 +995,7 @@ export function summarizeShapeHypergraph(
     .filter((vertex) => !participatingVertices.has(vertex))
     .sort();
 
-  const lines = ["Hypergraph summary"];
+  const lines = ["Hypergraph stats"];
   lines.push(
     `  vertices: ${vertexCount} (${componentCount} component${pluralSuffix(componentCount)}, ${resourceCount} resource${pluralSuffix(resourceCount)})`
   );

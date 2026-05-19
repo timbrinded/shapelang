@@ -32,7 +32,7 @@ export {
   graphShapeModules,
   listMemoryGuardsShapeModules,
   listShapeObligations,
-  summarizeShapeHypergraph,
+  statsShapeHypergraph,
   type CheckResult,
   type CheckOptions,
   type Fact,

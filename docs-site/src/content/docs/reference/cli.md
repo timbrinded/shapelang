@@ -14,7 +14,7 @@ shp check [--changed-files changed.txt] [files...]
 shp coverage --changed-files changed.txt [files...]
 shp fmt [--check] [files...]
 shp explain SYMBOL [files...]
-shp graph [SYMBOL] [--kind KIND] [--summary] [files...]
+shp graph [SYMBOL] [--kind KIND] [--stats] [files...]
 shp memory [files...]
 shp obligations [files...]
 shp author --changed-files changed.txt --component ComponentName [--change ChangeName] [--module module.name]
@@ -36,7 +36,7 @@ shape/changes/**/*.shape
 | `coverage` | Require shape deltas or attestations when governed source paths change. |
 | `fmt` | Format Shape files, or check formatting with `--check`. |
 | `explain` | Print derived facts and incident relations for a symbol. |
-| `graph` | Print the hyperedges incident to a symbol, the entire hypergraph when no symbol is given, or aggregate counts with `--summary`. Filter by `--kind KIND`. |
+| `graph` | Print the hyperedges incident to a symbol, the entire hypergraph when no symbol is given, or aggregate counts with `--stats`. Filter by `--kind KIND`. |
 | `memory` | List rationale and memory entries grouped by protected target. |
 | `obligations` | List open design-memory obligations from checker diagnostics. |
 | `author` | Generate a Shape change scaffold from changed files. |
@@ -51,11 +51,11 @@ shp coverage --changed-files changed.txt
 shp fmt --check
 shp explain AuditEvent
 shp graph
-shp graph --summary
+shp graph --stats
 shp graph Gateway
 shp graph Gateway --kind calls
 shp graph --kind provides
-shp graph --summary --kind calls
+shp graph --stats --kind calls
 shp memory
 shp obligations
 shp author --changed-files changed.txt --component AuditStore
@@ -86,12 +86,12 @@ coordinated_call:
 
 `--kind KIND` filters by relation kind in both modes. There is no separate binary view; every structural dependency is a hyperedge.
 
-### Summary
+### Stats
 
-`shp graph --summary` reports aggregate counts so an agent (or human) can size up a model before drilling into specific relations:
+`shp graph --stats` reports aggregate counts so an agent (or human) can size up a model before drilling into specific relations:
 
 ```text
-Hypergraph summary
+Hypergraph stats
   vertices: 4 (3 components, 1 resource)
   hyperedges: 3
     calls: 2
@@ -102,7 +102,7 @@ Hypergraph summary
   isolated vertices: 0
 ```
 
-`--summary` combines with `--kind KIND` to scope the edge, incidence, and arity counts to a single relation kind. Vertex counts always reflect the full model; `isolated vertices` then reports vertices that do not participate in any hyperedge of the selected kind.
+`--stats` combines with `--kind KIND` to scope the edge, incidence, and arity counts to a single relation kind. Vertex counts always reflect the full model; `isolated vertices` then reports vertices that do not participate in any hyperedge of the selected kind.
 
 ## Memory and obligations
 

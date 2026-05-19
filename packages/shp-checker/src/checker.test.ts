@@ -21,7 +21,7 @@ import {
   graphAllShapeModules,
   graphShapeModules,
   parseShapeModule,
-  summarizeShapeHypergraph
+  statsShapeHypergraph
 } from "./index.ts";
 
 const repoRoot = resolve(import.meta.dir, "../../..");
@@ -747,7 +747,7 @@ describe("Shape checker", () => {
     );
   });
 
-  test("summarizeShapeHypergraph reports vertex, hyperedge, and incidence counts", () => {
+  test("statsShapeHypergraph reports vertex, hyperedge, and incidence counts", () => {
     const parsed = parseShapeModule(`
       module deps
 
@@ -775,19 +775,19 @@ describe("Shape checker", () => {
       return;
     }
 
-    const summary = summarizeShapeHypergraph([parsed.module]);
-    expect(summary).toContain("Hypergraph summary");
-    expect(summary).toContain("vertices: 4 (3 components, 1 resource)");
-    expect(summary).toContain("hyperedges: 2");
-    expect(summary).toContain("calls: 1");
-    expect(summary).toContain("coordinated_call: 1");
-    expect(summary).toContain("incidences: 5");
-    expect(summary).toContain("arity: min 2, max 3, avg 2.50");
-    expect(summary).toContain("widest: coordinated_call AuditWritePath");
-    expect(summary).toContain("isolated vertices: 1");
-    expect(summary).toContain("Loner (component)");
+    const stats = statsShapeHypergraph([parsed.module]);
+    expect(stats).toContain("Hypergraph stats");
+    expect(stats).toContain("vertices: 4 (3 components, 1 resource)");
+    expect(stats).toContain("hyperedges: 2");
+    expect(stats).toContain("calls: 1");
+    expect(stats).toContain("coordinated_call: 1");
+    expect(stats).toContain("incidences: 5");
+    expect(stats).toContain("arity: min 2, max 3, avg 2.50");
+    expect(stats).toContain("widest: coordinated_call AuditWritePath");
+    expect(stats).toContain("isolated vertices: 1");
+    expect(stats).toContain("Loner (component)");
 
-    const callsOnly = summarizeShapeHypergraph([parsed.module], { kindFilter: "calls" });
+    const callsOnly = statsShapeHypergraph([parsed.module], { kindFilter: "calls" });
     expect(callsOnly).toContain("filter: kind=calls");
     expect(callsOnly).toContain("hyperedges: 1 (of 2 total)");
     expect(callsOnly).toContain("calls: 1");

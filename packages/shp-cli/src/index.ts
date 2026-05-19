@@ -16,7 +16,7 @@ import {
   listMemoryGuardsShapeModules,
   listShapeObligations,
   parseShapeModule,
-  summarizeShapeHypergraph,
+  statsShapeHypergraph,
   type ShapeModule
 } from "@shape/shp-checker";
 
@@ -25,7 +25,7 @@ const USAGE = `Usage:
   shp coverage --changed-files changed.txt [files...]
   shp fmt [--check] [files...]
   shp explain SYMBOL [files...]
-  shp graph [SYMBOL] [--kind KIND] [--summary] [files...]
+  shp graph [SYMBOL] [--kind KIND] [--stats] [files...]
   shp memory [files...]
   shp obligations [files...]
   shp author --changed-files changed.txt --component ComponentName [--change ChangeName] [--module module.name]
@@ -33,7 +33,7 @@ const USAGE = `Usage:
 
 When no files are provided, commands scan shape/system/**/*.shape and shape/changes/**/*.shape.
 \`shp graph\` without a SYMBOL prints every relation in the hypergraph.
-\`shp graph --summary\` prints aggregate vertex, hyperedge, and incidence counts.
+\`shp graph --stats\` prints aggregate vertex, hyperedge, and incidence counts.
 `;
 
 async function main(): Promise<number> {
@@ -50,7 +50,7 @@ async function main(): Promise<number> {
       kind: {
         type: "string"
       },
-      summary: {
+      stats: {
         type: "boolean"
       },
       component: {
@@ -122,8 +122,8 @@ async function main(): Promise<number> {
     const symbol = !maybeSymbol || looksLikeFile ? undefined : maybeSymbol;
     const files = symbol ? rest : providedFiles;
     const modules = await parseModules(files.length > 0 ? files : await defaultShapeFiles());
-    if (values.summary) {
-      await Bun.write(Bun.stdout, summarizeShapeHypergraph(modules, { kindFilter: values.kind }));
+    if (values.stats) {
+      await Bun.write(Bun.stdout, statsShapeHypergraph(modules, { kindFilter: values.kind }));
     } else if (symbol) {
       await Bun.write(Bun.stdout, graphShapeModules(modules, symbol, values.kind));
     } else {
