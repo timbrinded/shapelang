@@ -1,0 +1,209 @@
+module shape.checker
+
+import shape.language
+
+resource ChangedFileList
+
+resource DependencyGraph
+
+resource EffectiveModel
+
+resource FactSet
+
+resource SemanticDiagnostics
+
+resource ShapeBinding
+
+component ShapeBindings {
+  owns ShapeBinding
+  requires ShapeModelLowerer via BindingFacts
+  grants Append<SemanticDiagnostics>
+  grants Read<ChangedFileList>
+  grants Read<ShapeBinding>
+  fn checkBindings : RefactorSensitive
+    source ts("packages/shp-checker/src/checker.ts#checkBindings")
+    effects complete {
+      Append<SemanticDiagnostics>
+        evidence ts("packages/shp-checker/src/checker.ts")
+      Read<ChangedFileList>
+        evidence ts("packages/shp-checker/src/checker.ts")
+      Read<ShapeBinding>
+        evidence ts("packages/shp-checker/src/checker.ts")
+    }
+}
+
+component ShapeChecker {
+  provides ShapeConformance
+  requires ShapeBindings via BindingRules
+  requires ShapeModelLowerer via ModelPipeline
+  requires ShapeRuleEngine via RulePipeline
+  grants Append<SemanticDiagnostics>
+  grants Read<ChangedFileList>
+  grants Read<EffectiveModel>
+  grants Read<FactSet>
+  fn checkShapeFiles
+    source ts("packages/shp-checker/src/checker.ts#checkShapeFiles")
+    effects complete {
+      Append<SemanticDiagnostics>
+        evidence ts("packages/shp-checker/src/checker.ts")
+      Read<ChangedFileList>
+        evidence ts("packages/shp-checker/src/checker.ts")
+    }
+  fn checkShapeModules : ProtectedCheckOrder
+    source ts("packages/shp-checker/src/checker.ts#checkShapeModules")
+    effects complete {
+      Append<SemanticDiagnostics>
+        evidence ts("packages/shp-checker/src/checker.ts")
+      Read<ChangedFileList>
+        evidence ts("packages/shp-checker/src/checker.ts")
+      Read<EffectiveModel>
+        evidence ts("packages/shp-checker/src/checker.ts")
+      Read<FactSet>
+        evidence ts("packages/shp-checker/src/checker.ts")
+    }
+}
+
+component ShapeDiagnostics {
+  provides HumanReadableDiagnostics
+  requires ShapeRuleEngine via DiagnosticInput
+  grants Append<DiagnosticText>
+  grants Read<SemanticDiagnostics>
+  fn formatDiagnostics : RefactorSensitive
+    source ts("packages/shp-checker/src/checker.ts#formatDiagnostics")
+    effects complete {
+      Append<DiagnosticText>
+        evidence ts("packages/shp-checker/src/checker.ts")
+      Read<SemanticDiagnostics>
+        evidence ts("packages/shp-checker/src/checker.ts")
+    }
+}
+
+component ShapeModelLowerer {
+  owns EffectiveModel
+  owns FactSet
+  provides EffectiveShapeModel
+  provides ShapeFacts
+  requires ShapeParser via ParsedInput
+  grants Append<FactSet>
+  grants Read<ParsedModule>
+  grants Update<EffectiveModel>
+  fn lowerShapeModules : ProtectedCheckOrder
+    source ts("packages/shp-checker/src/checker.ts#lowerShapeModules")
+    effects complete {
+      Append<FactSet>
+        evidence ts("packages/shp-checker/src/checker.ts")
+      Read<ParsedModule>
+        evidence ts("packages/shp-checker/src/checker.ts")
+      Update<EffectiveModel>
+        evidence ts("packages/shp-checker/src/checker.ts")
+    }
+}
+
+component ShapeRuleEngine {
+  owns DependencyGraph
+  owns SemanticDiagnostics
+  provides SemanticDiagnosticSet
+  requires ShapeModelLowerer via LoweredFacts
+  grants Append<SemanticDiagnostics>
+  grants Read<EffectiveModel>
+  grants Read<FactSet>
+  grants Update<DependencyGraph>
+  fn checkCoverage
+    source ts("packages/shp-checker/src/checker.ts#checkCoverage")
+    effects complete {
+      Append<SemanticDiagnostics>
+        evidence ts("packages/shp-checker/src/checker.ts")
+      Read<EffectiveModel>
+        evidence ts("packages/shp-checker/src/checker.ts")
+    }
+  fn deriveFinalForbidsForResource : RefactorSensitive
+    source ts("packages/shp-checker/src/checker.ts#deriveFinalForbidsForResource")
+    effects complete {
+      Append<SemanticDiagnostics>
+        evidence ts("packages/shp-checker/src/checker.ts")
+      Read<FactSet>
+        evidence ts("packages/shp-checker/src/checker.ts")
+    }
+  fn findDependencyCycle : RefactorSensitive
+    source ts("packages/shp-checker/src/checker.ts#findDependencyCycle")
+    effects complete {
+      Append<SemanticDiagnostics>
+        evidence ts("packages/shp-checker/src/checker.ts")
+      Read<EffectiveModel>
+        evidence ts("packages/shp-checker/src/checker.ts")
+      Update<DependencyGraph>
+        evidence ts("packages/shp-checker/src/checker.ts")
+    }
+}
+
+rule checker_contract_providers {
+  forbid provides EffectiveShapeModel except ShapeModelLowerer
+  forbid provides HumanReadableDiagnostics except ShapeDiagnostics
+  forbid provides SemanticDiagnosticSet except ShapeRuleEngine
+  forbid provides ShapeConformance except ShapeChecker
+  forbid provides ShapeFacts except ShapeModelLowerer
+}
+
+rule no_runtime_dependency_cycles {
+  forbid cycle over requires
+}
+
+memory BindingDocsCouplingContract : RefactorConstraint<fn ShapeBindings.checkBindings> {
+  applies_to fn ShapeBindings.checkBindings
+  status Explained
+  confidence High
+  summary "Bindings enforce review coupling between Shape-affecting changes and documentation updates or narrow current-change docs_not_needed attestations."
+  owner ShapeMaintainers
+  protects shape DocsCoupling
+  guards on_change require ReEvaluation<Self>
+}
+
+memory CheckPipelineOrder : CheckOrderRationale<fn ShapeChecker.checkShapeModules> {
+  applies_to fn ShapeChecker.checkShapeModules
+  status Explained
+  confidence High
+  summary "The checker must lower the effective model before semantic rules and coverage/binding checks run."
+  owner ShapeMaintainers
+  protects shape PhaseOrder
+  guards on_change require ReEvaluation<Self>
+}
+
+memory DependencyCycleWitness : RefactorConstraint<fn ShapeRuleEngine.findDependencyCycle> {
+  applies_to fn ShapeRuleEngine.findDependencyCycle
+  status Explained
+  confidence High
+  summary "Cycle diagnostics need a deterministic witness path so reviewers can understand the rejected dependency."
+  owner ShapeMaintainers
+  protects shape CycleWitness
+  guards on_change require ReEvaluation<Self>
+}
+
+memory DiagnosticContract : RefactorConstraint<fn ShapeDiagnostics.formatDiagnostics> {
+  applies_to fn ShapeDiagnostics.formatDiagnostics
+  status Explained
+  confidence High
+  summary "Diagnostics are a product surface and must keep causal paths understandable for reviewers."
+  owner ShapeMaintainers
+  protects shape DiagnosticOutput
+  guards on_change require ReEvaluation<Self>
+}
+
+memory FinalForbidPrecedence : RefactorConstraint<fn ShapeRuleEngine.deriveFinalForbidsForResource> {
+  applies_to fn ShapeRuleEngine.deriveFinalForbidsForResource
+  status Explained
+  confidence High
+  summary "Final forbids must remain stronger than component grants and cannot be waived by rationale or memory."
+  owner ShapeMaintainers
+  protects shape FinalForbidPrecedence
+  guards on_change require ReEvaluation<Self>
+}
+
+memory LoweringBeforeRules : CheckOrderRationale<fn ShapeModelLowerer.lowerShapeModules> {
+  applies_to fn ShapeModelLowerer.lowerShapeModules
+  status Explained
+  confidence High
+  summary "Change declarations must be applied before derived facts are emitted."
+  owner ShapeMaintainers
+  protects shape EffectiveModelOrder
+  guards on_change require ReEvaluation<Self>
+}

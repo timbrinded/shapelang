@@ -46,6 +46,7 @@ The current checker covers these major categories:
 | Missing grants | Did a function emit an effect its component lacks permission to emit? | Add the narrow grant if the architecture allows it. |
 | Unknown effects | Is a function still marked `effects unknown`? | Replace uncertainty with reviewed complete effects. |
 | Source coverage | Did governed source change without a Shape delta or attestation? | Add a change file or `attest no_shape_change`. |
+| Bindings | Did a Shape-affecting change require a paired docs or workflow change? | Update the bound path or add a narrow `docs_not_needed` attestation. |
 | Required context | Did a shape trait require rationale, memory, or description? | Add the typed context block. |
 | Guarded changes | Did a protected target change without reevaluation? | Add a matching `reevaluation` or preserve the shape. |
 | Dependency cycles | Did a dependency rule find a forbidden cycle? | Break the dependency or revise the rule intentionally. |
@@ -147,6 +148,28 @@ change ReviewAuditPurge {
 Unknown effects keep uncertainty visible. They are better than an empty `effects complete` block, which would falsely claim that every material effect has been represented.
 
 Rule evaluation can then force the authoring loop to resolve the uncertainty before the shape is accepted.
+
+## Bindings
+
+Bindings extend changed-file checks beyond implementation coverage. They let a repo say, "if this source or model surface changes, another review surface must also change."
+
+```shape
+module repo
+
+binding RuleEngineDocs {
+  when_changed paths {
+    "packages/shp-checker/src/checker.ts"
+    "shape/system/checker.shape"
+  }
+  require_changed paths {
+    "docs-site/src/content/docs/inside-shape/rule-evaluation.md"
+    "docs-site/src/content/docs/reference/diagnostics.md"
+  }
+  allow attest docs_not_needed
+}
+```
+
+When `shp check --changed-files changed.txt` sees a triggering path, at least one required path must also appear. A `docs_not_needed` attestation can satisfy the binding only when it points at the triggering path, gives a reason, and is declared in a `.shape` file changed by the current run.
 
 ## Context And Memory Guards
 

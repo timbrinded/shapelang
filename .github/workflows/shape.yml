@@ -18,6 +18,8 @@ jobs:
       - &checkout
         name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - &setup-bun
         name: Setup Bun
@@ -95,8 +97,13 @@ jobs:
       - *setup-bun
       - *install
 
-      - name: Shape conformance
-        run: bun shp check
+      - name: Changed files
+        run: bun run changed-files
+        env:
+          GITHUB_EVENT_BEFORE: ${{ github.event.before }}
+
+      - name: Shape CI
+        run: bun run shape:ci
 
   docs:
     name: Docs

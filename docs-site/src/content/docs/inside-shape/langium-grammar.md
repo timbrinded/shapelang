@@ -39,6 +39,7 @@ Top-level declarations currently include:
 | `trait` | Reusable constraints or capabilities, such as final forbidden effects. |
 | `component` | An owner of resources, authority grants, dependencies, and function summaries. |
 | `implementation` | Source path governance for coverage checks. |
+| `binding` | Changed-file coupling, such as requiring docs when Shape-affecting code changes. |
 | `change` | A PR-level patch to the architecture model. |
 | `attest` | A typed statement such as `no_shape_change`. |
 | `rule` | Project-specific semantic policy. |
@@ -141,6 +142,26 @@ change Example {
 
 The checker applies these edits before lowering facts. That is why change syntax belongs in the language rather than a separate metadata file.
 
+## Binding Syntax
+
+Bindings are checked only when the workflow provides changed files. They connect a trigger path set to a required path set:
+
+```shape
+module repo
+
+binding GrammarDocs {
+  when_changed paths {
+    "packages/shp-checker/src/language/shape.langium"
+  }
+  require_changed paths {
+    "docs-site/src/content/docs/reference/language-syntax.md"
+  }
+  allow attest docs_not_needed
+}
+```
+
+This is deliberately a language feature rather than ad hoc CI shell logic because bindings are architecture claims: the repo is saying that one surface cannot change without another being reviewed.
+
 ## Context Syntax
 
 Rationale, memory, and reevaluation syntax uses typed references. A context block names both its context type and target:
@@ -191,6 +212,7 @@ When changing the grammar, make the corresponding semantic and tooling changes i
 - Update formatter output so diffs stay canonical.
 - Lower new semantic concepts into facts or internal indexes.
 - Add rule checks only if the syntax has semantic meaning.
+- Add or update bindings when the syntax affects docs, CLI behavior, or other review surfaces.
 - Add editor completions or hovers if the construct is user-facing.
 - Update docs with a valid example and, when needed, `shape no-verify` for partial snippets.
 - Run `bun run langium:generate`, `bun test`, `bun run docs:check`, and `bun run typecheck`.

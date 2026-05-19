@@ -29,6 +29,7 @@ export type ShapeKeywordNames =
     | "applies_to"
     | "approver"
     | "attest"
+    | "binding"
     | "change"
     | "complete"
     | "component"
@@ -68,6 +69,7 @@ export type ShapeKeywordNames =
     | "reevaluation"
     | "remove"
     | "require"
+    | "require_changed"
     | "required"
     | "requires"
     | "resource"
@@ -84,6 +86,7 @@ export type ShapeKeywordNames =
     | "unsafe"
     | "via"
     | "when"
+    | "when_changed"
     | "where"
     | "why"
     | "{"
@@ -91,7 +94,7 @@ export type ShapeKeywordNames =
 
 export type ShapeTokenNames = ShapeTerminalNames | ShapeKeywordNames;
 
-export type AddableDeclaration = AttestationDecl | ComponentDecl | ImplementationDecl | ResourceDecl | RuleDecl | TraitDecl;
+export type AddableDeclaration = AttestationDecl | BindingDecl | ComponentDecl | ImplementationDecl | ResourceDecl | RuleDecl | TraitDecl;
 
 export const AddableDeclaration = {
     $type: 'AddableDeclaration'
@@ -192,6 +195,78 @@ export const AttestationDecl = {
 
 export function isAttestationDecl(item: unknown): item is AttestationDecl {
     return reflection.isInstance(item, AttestationDecl.$type);
+}
+
+export interface BindingAllowAttestDecl extends langium.AstNode {
+    readonly $container: BindingDecl;
+    readonly $type: 'BindingAllowAttestDecl';
+    kind: string;
+}
+
+export const BindingAllowAttestDecl = {
+    $type: 'BindingAllowAttestDecl',
+    kind: 'kind'
+} as const;
+
+export function isBindingAllowAttestDecl(item: unknown): item is BindingAllowAttestDecl {
+    return reflection.isInstance(item, BindingAllowAttestDecl.$type);
+}
+
+export interface BindingDecl extends langium.AstNode {
+    readonly $container: AddDeclarationChange | ModifyDeclarationChange | ShapeModule;
+    readonly $type: 'BindingDecl';
+    members: Array<BindingMember>;
+    name: string;
+}
+
+export const BindingDecl = {
+    $type: 'BindingDecl',
+    members: 'members',
+    name: 'name'
+} as const;
+
+export function isBindingDecl(item: unknown): item is BindingDecl {
+    return reflection.isInstance(item, BindingDecl.$type);
+}
+
+export type BindingMember = BindingAllowAttestDecl | BindingRequireChangedDecl | BindingWhenChangedDecl;
+
+export const BindingMember = {
+    $type: 'BindingMember'
+} as const;
+
+export function isBindingMember(item: unknown): item is BindingMember {
+    return reflection.isInstance(item, BindingMember.$type);
+}
+
+export interface BindingRequireChangedDecl extends langium.AstNode {
+    readonly $container: BindingDecl;
+    readonly $type: 'BindingRequireChangedDecl';
+    body: PathsBlock;
+}
+
+export const BindingRequireChangedDecl = {
+    $type: 'BindingRequireChangedDecl',
+    body: 'body'
+} as const;
+
+export function isBindingRequireChangedDecl(item: unknown): item is BindingRequireChangedDecl {
+    return reflection.isInstance(item, BindingRequireChangedDecl.$type);
+}
+
+export interface BindingWhenChangedDecl extends langium.AstNode {
+    readonly $container: BindingDecl;
+    readonly $type: 'BindingWhenChangedDecl';
+    body: PathsBlock;
+}
+
+export const BindingWhenChangedDecl = {
+    $type: 'BindingWhenChangedDecl',
+    body: 'body'
+} as const;
+
+export function isBindingWhenChangedDecl(item: unknown): item is BindingWhenChangedDecl {
+    return reflection.isInstance(item, BindingWhenChangedDecl.$type);
 }
 
 export interface ChangeDecl extends langium.AstNode {
@@ -339,7 +414,7 @@ export function isDecidedOnDecl(item: unknown): item is DecidedOnDecl {
     return reflection.isInstance(item, DecidedOnDecl.$type);
 }
 
-export type Declaration = AttestationDecl | ChangeDecl | ComponentDecl | ImplementationDecl | MemoryDecl | RationaleDecl | ReevaluationDecl | ResourceDecl | RuleDecl | TraitDecl;
+export type Declaration = AttestationDecl | BindingDecl | ChangeDecl | ComponentDecl | ImplementationDecl | MemoryDecl | RationaleDecl | ReevaluationDecl | ResourceDecl | RuleDecl | TraitDecl;
 
 export const Declaration = {
     $type: 'Declaration'
@@ -745,7 +820,7 @@ export function isOwnsDecl(item: unknown): item is OwnsDecl {
 }
 
 export interface PathsBlock extends langium.AstNode {
-    readonly $container: ImplementationDecl;
+    readonly $container: BindingRequireChangedDecl | BindingWhenChangedDecl | ImplementationDecl;
     readonly $type: 'PathsBlock';
     paths: Array<string>;
 }
@@ -880,10 +955,10 @@ export function isRelationName(item: unknown): item is RelationName {
     return item === 'requires' || (typeof item === 'string' && (/[_a-zA-Z][\w_]*/.test(item)));
 }
 
-export type RemovableDeclarationKind = 'component' | 'implementation' | 'resource' | 'rule' | 'trait';
+export type RemovableDeclarationKind = 'binding' | 'component' | 'implementation' | 'resource' | 'rule' | 'trait';
 
 export function isRemovableDeclarationKind(item: unknown): item is RemovableDeclarationKind {
-    return item === 'resource' || item === 'trait' || item === 'component' || item === 'implementation' || item === 'rule';
+    return item === 'resource' || item === 'trait' || item === 'component' || item === 'implementation' || item === 'binding' || item === 'rule';
 }
 
 export interface RemoveDeclarationChange extends langium.AstNode {
@@ -1418,6 +1493,11 @@ export type ShapeAstType = {
     AppliesToDecl: AppliesToDecl
     ApproverDecl: ApproverDecl
     AttestationDecl: AttestationDecl
+    BindingAllowAttestDecl: BindingAllowAttestDecl
+    BindingDecl: BindingDecl
+    BindingMember: BindingMember
+    BindingRequireChangedDecl: BindingRequireChangedDecl
+    BindingWhenChangedDecl: BindingWhenChangedDecl
     ChangeDecl: ChangeDecl
     ChangeEntry: ChangeEntry
     CompleteEffects: CompleteEffects
@@ -1577,6 +1657,52 @@ export class ShapeAstReflection extends langium.AbstractAstReflection {
                 }
             },
             superTypes: [AddableDeclaration.$type, Declaration.$type]
+        },
+        BindingAllowAttestDecl: {
+            name: BindingAllowAttestDecl.$type,
+            properties: {
+                kind: {
+                    name: BindingAllowAttestDecl.kind
+                }
+            },
+            superTypes: [BindingMember.$type]
+        },
+        BindingDecl: {
+            name: BindingDecl.$type,
+            properties: {
+                members: {
+                    name: BindingDecl.members,
+                    defaultValue: []
+                },
+                name: {
+                    name: BindingDecl.name
+                }
+            },
+            superTypes: [AddableDeclaration.$type, Declaration.$type]
+        },
+        BindingMember: {
+            name: BindingMember.$type,
+            properties: {
+            },
+            superTypes: []
+        },
+        BindingRequireChangedDecl: {
+            name: BindingRequireChangedDecl.$type,
+            properties: {
+                body: {
+                    name: BindingRequireChangedDecl.body
+                }
+            },
+            superTypes: [BindingMember.$type]
+        },
+        BindingWhenChangedDecl: {
+            name: BindingWhenChangedDecl.$type,
+            properties: {
+                body: {
+                    name: BindingWhenChangedDecl.body
+                }
+            },
+            superTypes: [BindingMember.$type]
         },
         ChangeDecl: {
             name: ChangeDecl.$type,

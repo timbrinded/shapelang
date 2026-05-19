@@ -35,6 +35,8 @@ Shape is meant to sit in a feedback loop:
 
 The helper APIs keep that loop from becoming a collection of one-off scripts. They also make it possible to build a language server later without moving semantics into the CLI.
 
+The formatter and editor helpers also understand repository binding declarations. Bindings remain semantic checker claims, but helper surfaces should keep them readable, discoverable, and highlighted like other top-level Shape declarations.
+
 ## Formatter
 
 `formatShapeSource` parses source text and returns canonical formatting. `formatShapeModule` formats an already parsed `ShapeModule`. The CLI exposes this through `shp fmt`:

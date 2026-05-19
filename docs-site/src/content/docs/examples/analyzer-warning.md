@@ -8,7 +8,7 @@ sidebar:
 The analyzer can find obvious destructive operations in source text.
 
 ```bash
-shp analyze --shape-files shape/system/audit.shape fixtures/source/audit_purge.ts
+shp analyze --shape-files fixtures/pass/append_only_append/audit.shape fixtures/source/audit_purge.ts
 ```
 
 If the source contains a delete-like operation that is missing from the shape summary, the analyzer warns:

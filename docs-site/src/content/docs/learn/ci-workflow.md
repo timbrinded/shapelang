@@ -45,6 +45,17 @@ Coverage checks compare changed source paths with implementation blocks:
 
 If a governed source path changes without a shape delta or attestation, the checker rejects the change.
 
+## Shape repo workflow
+
+The Shape repository dogfoods this workflow more strictly than a normal consumer repo. CI generates `changed.txt`, then runs formatting, semantic checks, coverage, obligations, and memory output:
+
+```bash
+bun run changed-files
+bun run shape:ci
+```
+
+`shape:ci` runs `bun shp check --changed-files changed.txt`, so implementation coverage and bindings are checked together. Bindings are used for documentation coupling: if Shape-affecting code or model files change, the associated docs must change too, unless the PR includes a narrow `docs_not_needed` attestation.
+
 ## Direct binary install
 
 If you do not want to use the setup action, use the release installer directly:

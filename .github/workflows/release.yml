@@ -17,6 +17,8 @@ jobs:
       - &checkout
         name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - &setup-bun
         name: Setup Bun
@@ -50,7 +52,11 @@ jobs:
         run: bun run typecheck
 
       - name: Shape conformance
-        run: bun shp check
+        run: |
+          bun run format:shape:check
+          bun shp check
+          bun shp obligations
+          bun shp memory
 
       - name: Docs check
         run: bun run docs:check

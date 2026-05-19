@@ -2,6 +2,7 @@ import type {
   AddDeclarationChange,
   AddFunctionChange,
   AttestationDecl,
+  BindingDecl,
   ChangeDecl,
   ComponentDecl,
   DescriptionDecl,
@@ -35,6 +36,10 @@ import {
   isAppliesToDecl,
   isApproverDecl,
   isAttestationDecl,
+  isBindingAllowAttestDecl,
+  isBindingDecl,
+  isBindingRequireChangedDecl,
+  isBindingWhenChangedDecl,
   isChangeDecl,
   isCompleteEffects,
   isComponentDecl,
@@ -215,8 +220,50 @@ export type SemanticDiagnostic =
     }
   | {
       kind: "duplicate_declaration";
-      declarationKind: "resource" | "component" | "trait" | "rationale" | "memory" | "reevaluation";
+      declarationKind:
+        | "resource"
+        | "component"
+        | "trait"
+        | "binding"
+        | "rationale"
+        | "memory"
+        | "reevaluation";
       name: string;
+      filePath?: string;
+      causedBy: string[];
+    }
+  | {
+      kind: "duplicate_function";
+      component: string;
+      functionName: string;
+      filePath?: string;
+      causedBy: string[];
+    }
+  | {
+      kind: "duplicate_implementation";
+      name: string;
+      filePath?: string;
+      causedBy: string[];
+    }
+  | {
+      kind: "invalid_change_target";
+      changeKind: "modify" | "remove";
+      component: string;
+      functionName: string;
+      filePath?: string;
+      causedBy: string[];
+    }
+  | {
+      kind: "unresolved_dependency";
+      component: string;
+      target: string;
+      filePath?: string;
+      causedBy: string[];
+    }
+  | {
+      kind: "unsupported_rule_shape";
+      rule: string;
+      reason: string;
       filePath?: string;
       causedBy: string[];
     }
@@ -225,6 +272,15 @@ export type SemanticDiagnostic =
       changedFile: string;
       implementation: string;
       glob: string;
+      filePath?: string;
+      causedBy: string[];
+    }
+  | {
+      kind: "missing_bound_docs_change";
+      binding: string;
+      changedFile: string;
+      requiredPaths: string[];
+      attestationKinds: string[];
       filePath?: string;
       causedBy: string[];
     }
@@ -418,8 +474,12 @@ export type Fact =
   | { kind: "implementation"; name: string; provenance: Provenance }
   | { kind: "implementation_path"; implementation: string; glob: string; provenance: Provenance }
   | { kind: "conforms_to"; implementation: string; component: string; provenance: Provenance }
+  | { kind: "binding"; name: string; provenance: Provenance }
+  | { kind: "binding_when_changed"; binding: string; glob: string; provenance: Provenance }
+  | { kind: "binding_require_changed"; binding: string; glob: string; provenance: Provenance }
+  | { kind: "binding_allow_attest"; binding: string; kindName: string; provenance: Provenance }
   | { kind: "shape_delta_for"; path: string; provenance: Provenance }
-  | { kind: "attestation"; path: string; reason: string; provenance: Provenance }
+  | { kind: "attestation"; kindName: string; path: string; reason: string; provenance: Provenance }
   | { kind: "rule"; name: string; provenance: Provenance };
 
 type CheckModuleInput = {
@@ -594,6 +654,14 @@ type ImplementationInfo = {
   provenance: Provenance;
 };
 
+type BindingInfo = {
+  name: string;
+  whenChanged: { glob: string; provenance: Provenance }[];
+  requireChanged: { glob: string; provenance: Provenance }[];
+  allowAttestations: { kind: string; provenance: Provenance }[];
+  provenance: Provenance;
+};
+
 type RuleInfo = {
   name: string;
   whenHas: { subject: string; trait: string }[];
@@ -621,11 +689,12 @@ type Model = {
   traits: Map<string, TraitInfo>;
   components: Map<string, ComponentInfo>;
   implementations: ImplementationInfo[];
+  bindings: Map<string, BindingInfo>;
   rules: RuleInfo[];
   rationales: Map<string, RationaleInfo>;
   memories: Map<string, MemoryInfo>;
   reevaluations: Map<string, ReevaluationInfo>;
-  attestations: { path: string; reason: string; provenance: Provenance }[];
+  attestations: { kind: string; path: string; reason: string; provenance: Provenance }[];
   shapeDeltaPaths: Map<string, Provenance>;
   removedFunctions: Set<string>;
   changeEvents: ChangeEvent[];
@@ -643,6 +712,8 @@ export function checkShapeModules(
   const diagnostics = [
     ...model.diagnostics,
     ...checkResolvedNames(model),
+    ...checkResolvedDependencies(model),
+    ...checkUnsupportedRuleShapes(model),
     ...checkContextTargets(model),
     ...checkRequiredContext(model),
     ...checkRequiredDescriptions(model),
@@ -651,7 +722,8 @@ export function checkShapeModules(
     ...checkFunctions(model),
     ...checkProvidesRules(model),
     ...checkDependencyCycles(model),
-    ...checkCoverage(model, options.changedFiles ?? [])
+    ...checkCoverage(model, options.changedFiles ?? []),
+    ...checkBindings(model, options.changedFiles ?? [])
   ];
 
   return {
@@ -940,6 +1012,7 @@ function lowerShapeModules(modules: ShapeModule[] | CheckModuleInput[]): Model {
     traits: new Map(PRELUDE_TRAITS.map((trait) => [trait.name, cloneTraitInfo(trait)])),
     components: new Map(),
     implementations: [],
+    bindings: new Map(),
     rules: [],
     rationales: new Map(),
     memories: new Map(),
@@ -962,6 +1035,8 @@ function lowerShapeModules(modules: ShapeModule[] | CheckModuleInput[]): Model {
         lowerComponent(declaration, input.filePath, model);
       } else if (isImplementationDecl(declaration)) {
         lowerImplementation(declaration, input.filePath, model);
+      } else if (isBindingDecl(declaration)) {
+        lowerBinding(declaration, input.filePath, model);
       } else if (isAttestationDecl(declaration)) {
         lowerAttestation(declaration, input.filePath, model);
       } else if (isRuleDecl(declaration)) {
@@ -1149,6 +1224,17 @@ function lowerComponent(
       });
     } else if (isFunctionSummary(member)) {
       const fn = lowerFunction(member, component.name, filePath);
+      const existing = info.functions.get(fn.name);
+      if (existing) {
+        model.diagnostics.push({
+          kind: "duplicate_function",
+          component: component.name,
+          functionName: fn.name,
+          filePath,
+          causedBy: [describeProvenance(existing.provenance), describeProvenance(fn.provenance)]
+        });
+        continue;
+      }
       info.functions.set(fn.name, fn);
       emitFunctionFacts(fn, model);
     }
@@ -1164,6 +1250,17 @@ function lowerImplementation(
   model: Model
 ): void {
   const prov = provenance(filePath, `implementation ${implementation.name}`);
+  const existing = model.implementations.find((item) => item.name === implementation.name);
+  if (existing) {
+    model.diagnostics.push({
+      kind: "duplicate_implementation",
+      name: implementation.name,
+      filePath,
+      causedBy: [describeProvenance(existing.provenance), describeProvenance(prov)]
+    });
+    return;
+  }
+
   const info: ImplementationInfo = {
     name: implementation.name,
     paths: [],
@@ -1203,6 +1300,74 @@ function lowerImplementation(
   model.facts.push({ kind: "implementation", name: implementation.name, provenance: prov });
 }
 
+function lowerBinding(binding: BindingDecl, filePath: string | undefined, model: Model): void {
+  const prov = provenance(filePath, `binding ${binding.name}`);
+  if (model.bindings.has(binding.name)) {
+    model.diagnostics.push({
+      kind: "duplicate_declaration",
+      declarationKind: "binding",
+      name: binding.name,
+      filePath,
+      causedBy: [
+        describeProvenance(model.bindings.get(binding.name)?.provenance),
+        describeProvenance(prov)
+      ]
+    });
+    return;
+  }
+
+  const info: BindingInfo = {
+    name: binding.name,
+    whenChanged: [],
+    requireChanged: [],
+    allowAttestations: [],
+    provenance: prov
+  };
+
+  for (const member of binding.members) {
+    if (isBindingWhenChangedDecl(member)) {
+      for (const path of member.body.paths) {
+        const glob = unquote(path);
+        const pathProv = provenance(filePath, `binding ${binding.name} when_changed ${glob}`);
+        info.whenChanged.push({ glob, provenance: pathProv });
+        model.facts.push({
+          kind: "binding_when_changed",
+          binding: binding.name,
+          glob,
+          provenance: pathProv
+        });
+      }
+    } else if (isBindingRequireChangedDecl(member)) {
+      for (const path of member.body.paths) {
+        const glob = unquote(path);
+        const pathProv = provenance(filePath, `binding ${binding.name} require_changed ${glob}`);
+        info.requireChanged.push({ glob, provenance: pathProv });
+        model.facts.push({
+          kind: "binding_require_changed",
+          binding: binding.name,
+          glob,
+          provenance: pathProv
+        });
+      }
+    } else if (isBindingAllowAttestDecl(member)) {
+      const attestProv = provenance(
+        filePath,
+        `binding ${binding.name} allow attest ${member.kind}`
+      );
+      info.allowAttestations.push({ kind: member.kind, provenance: attestProv });
+      model.facts.push({
+        kind: "binding_allow_attest",
+        binding: binding.name,
+        kindName: member.kind,
+        provenance: attestProv
+      });
+    }
+  }
+
+  model.bindings.set(binding.name, info);
+  model.facts.push({ kind: "binding", name: binding.name, provenance: prov });
+}
+
 function lowerAttestation(
   attestation: AttestationDecl,
   filePath: string | undefined,
@@ -1212,10 +1377,14 @@ function lowerAttestation(
   const path = normalizeSourcePath(source.path);
   const reason = unquote(attestation.reason.value);
   const prov = provenance(filePath, `attest ${attestation.kind} for ${path}`);
-  if (attestation.kind === "no_shape_change") {
-    model.attestations.push({ path, reason, provenance: prov });
-    model.facts.push({ kind: "attestation", path, reason, provenance: prov });
-  }
+  model.attestations.push({ kind: attestation.kind, path, reason, provenance: prov });
+  model.facts.push({
+    kind: "attestation",
+    kindName: attestation.kind,
+    path,
+    reason,
+    provenance: prov
+  });
 }
 
 function lowerRule(rule: RuleDecl, filePath: string | undefined, model: Model): void {
@@ -1485,24 +1654,36 @@ function lowerChange(change: ChangeDecl, filePath: string | undefined, model: Mo
     if (isAddFunctionChange(entry) || isModifyFunctionChange(entry)) {
       const component = model.components.get(entry.component);
       if (!component) {
-        model.diagnostics.push({
-          kind: "unknown_name",
-          nameKind: "component",
-          name: entry.component,
-          filePath,
-          causedBy: [
-            describeProvenance(
-              provenance(
-                filePath,
-                `change ${change.name} ${entry.$type} ${entry.component}.${entry.name}`
+        if (isModifyFunctionChange(entry)) {
+          model.diagnostics.push(
+            invalidChangeTargetDiagnostic(change.name, entry, "modify", filePath)
+          );
+        } else {
+          model.diagnostics.push({
+            kind: "unknown_name",
+            nameKind: "component",
+            name: entry.component,
+            filePath,
+            causedBy: [
+              describeProvenance(
+                provenance(
+                  filePath,
+                  `change ${change.name} ${entry.$type} ${entry.component}.${entry.name}`
+                )
               )
-            )
-          ]
-        });
+            ]
+          });
+        }
         continue;
       }
 
       if (isModifyFunctionChange(entry)) {
+        if (!component.functions.has(entry.name)) {
+          model.diagnostics.push(
+            invalidChangeTargetDiagnostic(change.name, entry, "modify", filePath)
+          );
+          continue;
+        }
         model.changeEvents.push({
           kind: "function_modified",
           target: functionTarget(entry.component, entry.name),
@@ -1511,6 +1692,19 @@ function lowerChange(change: ChangeDecl, filePath: string | undefined, model: Mo
             `change ${change.name} modify fn ${entry.component}.${entry.name}`
           )
         });
+      } else if (component.functions.has(entry.name)) {
+        const incoming = lowerFunction(entry, entry.component, filePath, `change ${change.name}`);
+        model.diagnostics.push({
+          kind: "duplicate_function",
+          component: entry.component,
+          functionName: entry.name,
+          filePath,
+          causedBy: [
+            describeProvenance(component.functions.get(entry.name)?.provenance),
+            describeProvenance(incoming.provenance)
+          ]
+        });
+        continue;
       }
 
       const fn = lowerFunction(entry, entry.component, filePath, `change ${change.name}`);
@@ -1519,6 +1713,13 @@ function lowerChange(change: ChangeDecl, filePath: string | undefined, model: Mo
       collectShapeDeltaPathsFromFunction(fn, model);
       emitFunctionFacts(fn, model);
     } else if (isRemoveFunctionChange(entry)) {
+      const component = model.components.get(entry.component);
+      if (!component?.functions.has(entry.name)) {
+        model.diagnostics.push(
+          invalidChangeTargetDiagnostic(change.name, entry, "remove", filePath)
+        );
+        continue;
+      }
       model.changeEvents.push({
         kind: "function_removed",
         target: functionTarget(entry.component, entry.name),
@@ -1528,7 +1729,7 @@ function lowerChange(change: ChangeDecl, filePath: string | undefined, model: Mo
         )
       });
       model.removedFunctions.add(functionKey(entry.component, entry.name));
-      model.components.get(entry.component)?.functions.delete(entry.name);
+      component.functions.delete(entry.name);
     } else if (isAddDeclarationChange(entry)) {
       lowerDeclaration(entry.declaration, filePath, model);
     } else if (isModifyDeclarationChange(entry)) {
@@ -1541,6 +1742,29 @@ function lowerChange(change: ChangeDecl, filePath: string | undefined, model: Mo
       removeDeclaration(entry.kind, entry.name, model);
     }
   }
+}
+
+function invalidChangeTargetDiagnostic(
+  changeName: string,
+  entry: { component: string; name: string },
+  changeKind: "modify" | "remove",
+  filePath: string | undefined
+): Extract<SemanticDiagnostic, { kind: "invalid_change_target" }> {
+  return {
+    kind: "invalid_change_target",
+    changeKind,
+    component: entry.component,
+    functionName: entry.name,
+    filePath,
+    causedBy: [
+      describeProvenance(
+        provenance(
+          filePath,
+          `change ${changeName} ${changeKind} fn ${entry.component}.${entry.name}`
+        )
+      )
+    ]
+  };
 }
 
 function lowerDeclaration(
@@ -1556,6 +1780,8 @@ function lowerDeclaration(
     lowerComponent(declaration, filePath, model);
   } else if (isImplementationDecl(declaration)) {
     lowerImplementation(declaration, filePath, model);
+  } else if (isBindingDecl(declaration)) {
+    lowerBinding(declaration, filePath, model);
   } else if (isAttestationDecl(declaration)) {
     lowerAttestation(declaration, filePath, model);
   } else if (isRuleDecl(declaration)) {
@@ -1578,6 +1804,8 @@ function removeDeclaration(
     model.implementations = model.implementations.filter(
       (implementation) => implementation.name !== name
     );
+  } else if (kind === "binding") {
+    model.bindings.delete(name);
   } else if (kind === "rule") {
     model.rules = model.rules.filter((rule) => rule.name !== name);
   }
@@ -1597,6 +1825,9 @@ function declarationKind(
   }
   if (isImplementationDecl(declaration)) {
     return "implementation";
+  }
+  if (isBindingDecl(declaration)) {
+    return "binding";
   }
   if (isAttestationDecl(declaration)) {
     return "attestation";
@@ -1993,6 +2224,51 @@ function checkResolvedNames(model: Model): SemanticDiagnostic[] {
   return diagnostics;
 }
 
+function checkResolvedDependencies(model: Model): SemanticDiagnostic[] {
+  const diagnostics: SemanticDiagnostic[] = [];
+  const providedTargets = new Set<string>();
+  for (const component of model.components.values()) {
+    for (const provided of component.provides) {
+      providedTargets.add(provided.target);
+    }
+  }
+
+  for (const component of model.components.values()) {
+    for (const required of component.requires) {
+      if (model.components.has(required.target) || providedTargets.has(required.target)) {
+        continue;
+      }
+      diagnostics.push({
+        kind: "unresolved_dependency",
+        component: component.name,
+        target: required.target,
+        filePath: required.provenance.filePath,
+        causedBy: [describeProvenance(required.provenance)]
+      });
+    }
+  }
+
+  return diagnostics;
+}
+
+function checkUnsupportedRuleShapes(model: Model): SemanticDiagnostic[] {
+  const diagnostics: SemanticDiagnostic[] = [];
+  for (const rule of model.rules) {
+    if (rule.whenHas.length <= 1) {
+      continue;
+    }
+
+    diagnostics.push({
+      kind: "unsupported_rule_shape",
+      rule: rule.name,
+      reason: "multiple when clauses are not supported yet",
+      filePath: rule.provenance.filePath,
+      causedBy: [describeProvenance(rule.provenance)]
+    });
+  }
+  return diagnostics;
+}
+
 function checkContextTargets(model: Model): SemanticDiagnostic[] {
   const diagnostics: SemanticDiagnostic[] = [];
 
@@ -2354,7 +2630,12 @@ function checkCoverage(model: Model, changedFiles: string[]): SemanticDiagnostic
         continue;
       }
 
-      if (model.attestations.some((attestation) => attestation.path === changedFile)) {
+      if (
+        model.attestations.some(
+          (attestation) =>
+            attestation.kind === "no_shape_change" && attestation.path === changedFile
+        )
+      ) {
         continue;
       }
 
@@ -2368,6 +2649,59 @@ function checkCoverage(model: Model, changedFiles: string[]): SemanticDiagnostic
           describeProvenance(implementation.provenance),
           describeProvenance(governingPath.provenance)
         ]
+      });
+    }
+  }
+
+  return diagnostics;
+}
+
+function checkBindings(model: Model, changedFiles: string[]): SemanticDiagnostic[] {
+  if (changedFiles.length === 0) {
+    return [];
+  }
+
+  const normalizedChanged = changedFiles
+    .map((file) => normalizePath(file))
+    .filter((file) => file.length > 0);
+  const changedSet = new Set(normalizedChanged);
+  const diagnostics: SemanticDiagnostic[] = [];
+
+  for (const binding of model.bindings.values()) {
+    for (const changedFile of normalizedChanged) {
+      const trigger = binding.whenChanged.find((entry) => globMatches(entry.glob, changedFile));
+      if (!trigger) {
+        continue;
+      }
+
+      const requiredChanged = normalizedChanged.some((file) =>
+        binding.requireChanged.some((entry) => globMatches(entry.glob, file))
+      );
+      if (requiredChanged) {
+        continue;
+      }
+
+      const allowedKinds = new Set(binding.allowAttestations.map((item) => item.kind));
+      const attested = model.attestations.some(
+        (attestation) =>
+          allowedKinds.has(attestation.kind) &&
+          attestation.path === changedFile &&
+          attestation.provenance.filePath !== undefined &&
+          changedSet.has(normalizePath(attestation.provenance.filePath)) &&
+          attestation.reason.trim().length > 0
+      );
+      if (attested) {
+        continue;
+      }
+
+      diagnostics.push({
+        kind: "missing_bound_docs_change",
+        binding: binding.name,
+        changedFile,
+        requiredPaths: binding.requireChanged.map((entry) => entry.glob).sort(),
+        attestationKinds: [...allowedKinds].sort(),
+        filePath: binding.provenance.filePath,
+        causedBy: [describeProvenance(binding.provenance), describeProvenance(trigger.provenance)]
       });
     }
   }
@@ -2907,6 +3241,16 @@ function formatDiagnostic(diagnostic: ShapeDiagnostic): string {
       return formatUnknownNameDiagnostic(diagnostic);
     case "duplicate_declaration":
       return formatDuplicateDeclarationDiagnostic(diagnostic);
+    case "duplicate_function":
+      return formatDuplicateFunctionDiagnostic(diagnostic);
+    case "duplicate_implementation":
+      return formatDuplicateImplementationDiagnostic(diagnostic);
+    case "invalid_change_target":
+      return formatInvalidChangeTargetDiagnostic(diagnostic);
+    case "unresolved_dependency":
+      return formatUnresolvedDependencyDiagnostic(diagnostic);
+    case "unsupported_rule_shape":
+      return formatUnsupportedRuleShapeDiagnostic(diagnostic);
     case "missing_shape_delta":
       return formatMissingShapeDeltaDiagnostic(diagnostic);
     case "forbidden_dependency_cycle":
@@ -2927,6 +3271,8 @@ function formatDiagnostic(diagnostic: ShapeDiagnostic): string {
       return formatGuardedShapeChangedDiagnostic(diagnostic);
     case "invalid_reevaluation":
       return formatInvalidReevaluationDiagnostic(diagnostic);
+    case "missing_bound_docs_change":
+      return formatMissingBoundDocsChangeDiagnostic(diagnostic);
   }
 }
 
@@ -2994,6 +3340,61 @@ function formatDuplicateDeclarationDiagnostic(
   ].join("\n");
 }
 
+function formatDuplicateFunctionDiagnostic(
+  diagnostic: Extract<SemanticDiagnostic, { kind: "duplicate_function" }>
+): string {
+  return [
+    "error: duplicate function",
+    "",
+    `function ${diagnostic.component}.${diagnostic.functionName} is declared more than once.`,
+    formatCausedBy(diagnostic.causedBy)
+  ].join("\n");
+}
+
+function formatDuplicateImplementationDiagnostic(
+  diagnostic: Extract<SemanticDiagnostic, { kind: "duplicate_implementation" }>
+): string {
+  return [
+    "error: duplicate implementation",
+    "",
+    `implementation ${diagnostic.name} is declared more than once.`,
+    formatCausedBy(diagnostic.causedBy)
+  ].join("\n");
+}
+
+function formatInvalidChangeTargetDiagnostic(
+  diagnostic: Extract<SemanticDiagnostic, { kind: "invalid_change_target" }>
+): string {
+  return [
+    "error: invalid change target",
+    "",
+    `change entry tries to ${diagnostic.changeKind} missing function ${diagnostic.component}.${diagnostic.functionName}.`,
+    formatCausedBy(diagnostic.causedBy)
+  ].join("\n");
+}
+
+function formatUnresolvedDependencyDiagnostic(
+  diagnostic: Extract<SemanticDiagnostic, { kind: "unresolved_dependency" }>
+): string {
+  return [
+    "error: unresolved dependency",
+    "",
+    `${diagnostic.component} requires ${diagnostic.target}, but no component with that name or provider for that target exists.`,
+    formatCausedBy(diagnostic.causedBy)
+  ].join("\n");
+}
+
+function formatUnsupportedRuleShapeDiagnostic(
+  diagnostic: Extract<SemanticDiagnostic, { kind: "unsupported_rule_shape" }>
+): string {
+  return [
+    "error: unsupported rule shape",
+    "",
+    `rule ${diagnostic.rule} is not supported: ${diagnostic.reason}.`,
+    formatCausedBy(diagnostic.causedBy)
+  ].join("\n");
+}
+
 function formatMissingShapeDeltaDiagnostic(
   diagnostic: Extract<SemanticDiagnostic, { kind: "missing_shape_delta" }>
 ): string {
@@ -3004,6 +3405,22 @@ function formatMissingShapeDeltaDiagnostic(
     `Governed by: ${diagnostic.implementation}`,
     `Matched path: ${diagnostic.glob}`,
     "Required: add a .shape change with matching source/evidence, or add a no_shape_change attestation.",
+    formatCausedBy(diagnostic.causedBy)
+  ].join("\n");
+}
+
+function formatMissingBoundDocsChangeDiagnostic(
+  diagnostic: Extract<SemanticDiagnostic, { kind: "missing_bound_docs_change" }>
+): string {
+  const attest =
+    diagnostic.attestationKinds.length > 0
+      ? `, or add ${diagnostic.attestationKinds.map((kind) => `attest ${kind}`).join(" or ")}`
+      : "";
+  return [
+    "error: bound docs change missing",
+    "",
+    `binding ${diagnostic.binding} was triggered by ${diagnostic.changedFile}.`,
+    `Required: change one of ${diagnostic.requiredPaths.join(", ")}${attest}.`,
     formatCausedBy(diagnostic.causedBy)
   ].join("\n");
 }

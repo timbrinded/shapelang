@@ -96,7 +96,7 @@ describe("shp CLI", () => {
     const result = await runCli([
       "analyze",
       "--shape-files",
-      "shape/system/audit.shape",
+      "fixtures/pass/append_only_append/audit.shape",
       "fixtures/source/audit_purge.ts"
     ]);
 

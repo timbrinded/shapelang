@@ -32,7 +32,7 @@ shape/changes/**/*.shape
 
 | Command | Purpose |
 | --- | --- |
-| `check` | Parse modules, apply change blocks, lower facts, and run semantic checks. |
+| `check` | Parse modules, apply change blocks, lower facts, and run semantic checks. With `--changed-files`, it also runs coverage and bindings. |
 | `coverage` | Require shape deltas or attestations when governed source paths change. |
 | `fmt` | Format Shape files, or check formatting with `--check`. |
 | `explain` | Print derived facts and constraints for a symbol. |
@@ -46,7 +46,8 @@ shape/changes/**/*.shape
 
 ```bash
 shp check
-shp check shape/system/audit.shape
+shp check shape/system/checker.shape
+shp check --changed-files changed.txt
 shp coverage --changed-files changed.txt
 shp fmt --check
 shp explain AuditEvent
@@ -54,7 +55,7 @@ shp graph Gateway --relation requires
 shp memory
 shp obligations
 shp author --changed-files changed.txt --component AuditStore
-shp analyze --shape-files shape/system/audit.shape src/audit/purge.ts
+shp analyze --shape-files fixtures/pass/append_only_append/audit.shape src/audit/purge.ts
 ```
 
 ## Memory and obligations

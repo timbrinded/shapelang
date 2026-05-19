@@ -68,6 +68,53 @@ Run coverage with the changed-file list to reproduce it:
 shp coverage --changed-files fixtures/changed/audit_purge.txt fixtures/fail/missing_shape_delta/audit.shape
 ```
 
+## Bound docs change missing
+
+Cause: a `binding` declaration says that one changed path requires another changed path, but the required path was not present in the changed-file list.
+
+```shape
+module repo
+
+binding CheckerDocs {
+  when_changed paths {
+    "packages/shp-checker/src/checker.ts"
+  }
+  require_changed paths {
+    "docs-site/src/content/docs/reference/diagnostics.md"
+  }
+  allow attest docs_not_needed
+}
+```
+
+If `packages/shp-checker/src/checker.ts` changes, the docs path must also change or the PR must include a narrow attestation in a `.shape` file changed by the same PR:
+
+```shape
+module repo
+
+attest docs_not_needed {
+  source ts("packages/shp-checker/src/checker.ts")
+  reason "Internal refactor only; no diagnostics or documented behavior changed."
+}
+```
+
+Bindings are review gates. They ensure docs are considered when Shape-affecting code or model files change.
+
+## Invalid change target
+
+Cause: a change block tries to modify or remove a function that is not present in the effective model.
+
+## Duplicate function or implementation
+
+Cause: the same function name appears twice in a component, or an implementation name is reused. Shape rejects these because otherwise one declaration can silently overwrite or shadow another.
+
+## Unresolved dependency
+
+Cause: a component declares `requires Target`, but `Target` is neither a component nor a target provided by another component.
+
+## Unsupported rule shape
+
+Cause: a rule uses a syntax shape the checker does not currently implement semantically. For example, multiple `when` clauses are rejected until conjunctive rule semantics are designed.
+
 ## Missing required context
 
 Cause: a function has a shape trait such as `PreserveInline`, `RefactorSensitive`, or `NonIdiomatic`, but no matching `rationale` or `memory` exists for that function target.

@@ -1,0 +1,102 @@
+module shape.language
+
+resource DocsShapeBlock
+
+resource GeneratedAst
+
+resource LangiumGrammar
+
+resource ParsedModule
+
+resource ShapeSource
+
+resource SyntaxHighlighting
+
+component DocsShapeBlockVerifier {
+  owns DocsShapeBlock
+  requires ShapeParser via VerificationDependency
+  grants Append<ParsedModule>
+  grants Append<SemanticDiagnostics>
+  grants Read<DocsShapeBlock>
+  fn verifyShapeCodeBlocks : RefactorSensitive
+    source ts("docs-site/scripts/verify-shape-blocks.ts")
+    effects complete {
+      Append<ParsedModule>
+        evidence ts("docs-site/scripts/verify-shape-blocks.ts")
+      Append<SemanticDiagnostics>
+        evidence ts("docs-site/scripts/verify-shape-blocks.ts")
+      Read<DocsShapeBlock>
+        evidence ts("docs-site/scripts/verify-shape-blocks.ts")
+    }
+}
+
+component ShapeGrammar {
+  owns GeneratedAst
+  owns LangiumGrammar
+  owns SyntaxHighlighting
+  provides GeneratedAstContract
+  provides ShapeLanguageDefinition
+  grants Read<LangiumGrammar>
+  grants Update<GeneratedAst>
+  grants Update<SyntaxHighlighting>
+  fn generateAst
+    source langium("packages/shp-checker/src/language/shape.langium")
+    effects complete {
+      Read<LangiumGrammar>
+        evidence langium("packages/shp-checker/src/language/shape.langium")
+      Update<GeneratedAst>
+        evidence ts("packages/shp-checker/src/language/generated/ast.ts")
+    }
+  fn updateSyntaxHighlighting
+    source js("docs-site/src/syntax/shape-language.mjs")
+    effects complete {
+      Update<SyntaxHighlighting>
+        evidence js("docs-site/src/syntax/shape-language.mjs")
+    }
+}
+
+component ShapeParser {
+  owns ParsedModule
+  owns ShapeSource
+  provides ParsedShapeModule
+  requires ShapeGrammar via ParserRuntime
+  grants Append<ParsedModule>
+  grants Append<SemanticDiagnostics>
+  grants Read<ShapeSource>
+  fn parseShapeModule : RefactorSensitive
+    source ts("packages/shp-checker/src/parser.ts#parseShapeModule")
+    effects complete {
+      Append<ParsedModule>
+        evidence ts("packages/shp-checker/src/parser.ts")
+      Append<SemanticDiagnostics>
+        evidence ts("packages/shp-checker/src/parser.ts")
+      Read<ShapeSource>
+        evidence ts("packages/shp-checker/src/parser.ts")
+    }
+}
+
+rule grammar_contract_providers {
+  forbid provides GeneratedAstContract except ShapeGrammar
+  forbid provides ParsedShapeModule except ShapeParser
+  forbid provides ShapeLanguageDefinition except ShapeGrammar
+}
+
+memory DocsShapeBlockParsingContract : RefactorConstraint<fn DocsShapeBlockVerifier.verifyShapeCodeBlocks> {
+  applies_to fn DocsShapeBlockVerifier.verifyShapeCodeBlocks
+  status Explained
+  confidence High
+  summary "Docs examples must be parsed with the repo parser unless explicitly marked no-verify."
+  owner ShapeMaintainers
+  protects shape DocsExampleValidity
+  guards on_change require ReEvaluation<Self>
+}
+
+memory ParseDocumentContract : RefactorConstraint<fn ShapeParser.parseShapeModule> {
+  applies_to fn ShapeParser.parseShapeModule
+  status Explained
+  confidence High
+  summary "Parser output must preserve Langium document state, source URI, and parse diagnostics for downstream checker and editor use."
+  owner ShapeMaintainers
+  protects shape ParseContract
+  guards on_change require ReEvaluation<Self>
+}

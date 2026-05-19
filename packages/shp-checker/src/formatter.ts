@@ -2,6 +2,7 @@ import type {
   AddDeclarationChange,
   AddFunctionChange,
   AttestationDecl,
+  BindingDecl,
   ChangeDecl,
   ComponentDecl,
   DescriptionDecl,
@@ -30,6 +31,10 @@ import {
   isAppliesToDecl,
   isApproverDecl,
   isAttestationDecl,
+  isBindingAllowAttestDecl,
+  isBindingDecl,
+  isBindingRequireChangedDecl,
+  isBindingWhenChangedDecl,
   isChangeDecl,
   isCompleteEffects,
   isComponentDecl,
@@ -140,6 +145,9 @@ function formatDeclaration(declaration: ShapeModule["declarations"][number]): st
   }
   if (isImplementationDecl(declaration)) {
     return formatImplementation(declaration);
+  }
+  if (isBindingDecl(declaration)) {
+    return formatBinding(declaration);
   }
   if (isAttestationDecl(declaration)) {
     return formatAttestation(declaration);
@@ -369,6 +377,34 @@ function formatImplementation(implementation: ImplementationDecl): string {
   }
 
   return block(`implementation ${implementation.name}`, lines);
+}
+
+function formatBinding(binding: BindingDecl): string {
+  const whenChanged: string[] = [];
+  const requireChanged: string[] = [];
+  const allowAttest: string[] = [];
+
+  for (const member of binding.members) {
+    if (isBindingWhenChangedDecl(member)) {
+      whenChanged.push(formatBindingPaths("when_changed", member.body.paths));
+    } else if (isBindingRequireChangedDecl(member)) {
+      requireChanged.push(formatBindingPaths("require_changed", member.body.paths));
+    } else if (isBindingAllowAttestDecl(member)) {
+      allowAttest.push(`allow attest ${member.kind}`);
+    }
+  }
+
+  return block(`binding ${binding.name}`, [
+    ...whenChanged.sort(),
+    ...requireChanged.sort(),
+    ...allowAttest.sort()
+  ]);
+}
+
+function formatBindingPaths(keyword: "when_changed" | "require_changed", paths: string[]): string {
+  return [`${keyword} paths {`, ...[...paths].sort().map((path) => indent(quote(path))), "}"].join(
+    "\n"
+  );
 }
 
 function formatAttestation(attestation: AttestationDecl): string {
@@ -653,36 +689,39 @@ function formatSourceRef(ref: SourceDecl["ref"]): string {
 
 function declarationSortKey(declaration: ShapeModule["declarations"][number]): string {
   if (isTraitDecl(declaration)) {
-    return `0:${declaration.name}`;
+    return `00:${declaration.name}`;
   }
   if (isResourceDecl(declaration)) {
-    return `1:${declaration.name}`;
+    return `01:${declaration.name}`;
   }
   if (isComponentDecl(declaration)) {
-    return `2:${declaration.name}`;
+    return `02:${declaration.name}`;
   }
   if (isImplementationDecl(declaration)) {
-    return `3:${declaration.name}`;
+    return `03:${declaration.name}`;
+  }
+  if (isBindingDecl(declaration)) {
+    return `04:${declaration.name}`;
   }
   if (isRuleDecl(declaration)) {
-    return `4:${declaration.name}`;
+    return `05:${declaration.name}`;
   }
   if (isRationaleDecl(declaration)) {
-    return `5:${declaration.name}`;
+    return `06:${declaration.name}`;
   }
   if (isMemoryDecl(declaration)) {
-    return `6:${declaration.name}`;
+    return `07:${declaration.name}`;
   }
   if (isReevaluationDecl(declaration)) {
-    return `7:${declaration.name}`;
+    return `08:${declaration.name}`;
   }
   if (isAttestationDecl(declaration)) {
-    return `8:${declaration.kind}`;
+    return `09:${declaration.kind}`;
   }
   if (isChangeDecl(declaration)) {
-    return `9:${declaration.name}`;
+    return `10:${declaration.name}`;
   }
-  return "9:";
+  return "10:";
 }
 
 function indent(value: string, depth = 1): string {

@@ -28,8 +28,9 @@ resource AuditEvent : AppendOnly
 trait AppendOnly<T: Resource> { ... }
 component AuditStore { ... }
 implementation AuditStoreImpl { ... }
+binding CheckerDocs { ... }
 change AddAuditRetentionPurge { ... }
-attest shape_delta { ... }
+attest no_shape_change { ... }
 rule NoRequiresCycle { ... }
 rationale InlineDecision : InlineRationale<fn Gateway.derivePolicyDecision> { ... }
 memory DecisionRefactorConstraint : RefactorConstraint<fn Gateway.derivePolicyDecision> { ... }
@@ -122,6 +123,39 @@ change ReviewAuditChange {
 ```
 
 Change blocks can add, modify, and remove functions or top-level declarations.
+
+## Bindings
+
+Bindings couple one set of changed paths to another. They are useful when a code or model change affects a public review surface such as docs.
+
+```shape
+module repo
+
+binding CheckerDocs {
+  when_changed paths {
+    "packages/shp-checker/src/checker.ts"
+    "shape/system/checker.shape"
+  }
+  require_changed paths {
+    "docs-site/src/content/docs/inside-shape/rule-evaluation.md"
+    "docs-site/src/content/docs/reference/diagnostics.md"
+  }
+  allow attest docs_not_needed
+}
+```
+
+When coverage is run with a changed-file list, a matching `when_changed` path requires at least one `require_changed` path in the same change. A narrow attestation can satisfy the binding only when the attestation's `.shape` file is also part of the same changed-file list:
+
+```shape
+module repo
+
+attest docs_not_needed {
+  source ts("packages/shp-checker/src/checker.ts")
+  reason "Internal extraction only; no documented behavior changed."
+}
+```
+
+Bindings enforce review coupling. They do not prove that the docs are complete.
 
 ## Rules
 

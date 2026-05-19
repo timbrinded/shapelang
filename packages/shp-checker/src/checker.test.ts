@@ -137,6 +137,26 @@ describe("Shape parser", () => {
     expect(parsed.ok).toBe(true);
   });
 
+  test("parses docs binding declarations", () => {
+    const parsed = parseShapeModule(`
+      module repo
+
+      binding CheckerDocs {
+        when_changed paths {
+          "packages/shp-checker/src/checker.ts"
+          "shape/system/checker.shape"
+        }
+        require_changed paths {
+          "docs-site/src/content/docs/inside-shape/rule-evaluation.md"
+          "docs-site/src/content/docs/reference/diagnostics.md"
+        }
+        allow attest docs_not_needed
+      }
+    `);
+
+    expect(parsed.ok).toBe(true);
+  });
+
   test("reports parser errors", () => {
     const parsed = parseShapeModule("resource");
 
@@ -241,6 +261,104 @@ describe("Shape checker", () => {
     const result = checkShapeModules([parsed.module]);
     expect(result.exitCode).toBe(1);
     expect(formatDiagnostics(result)).toContain("forbidden effect");
+  });
+
+  test("rejects duplicate functions and implementations", () => {
+    const duplicateFunction = checkShapeSource(`
+      module dup
+
+      resource Config
+
+      component Parser {
+        owns Config
+        grants Read<Config>
+
+        fn parseConfig
+          effects complete {
+            Read<Config>
+          }
+
+        fn parseConfig
+          effects complete {
+            Read<Config>
+          }
+      }
+    `);
+    expect(duplicateFunction.exitCode).toBe(1);
+    expect(formatDiagnostics(duplicateFunction)).toContain("duplicate function");
+    expect(formatDiagnostics(duplicateFunction)).toContain("Parser.parseConfig");
+
+    const duplicateImplementation = checkShapeSource(`
+      module dup
+
+      component Parser {
+      }
+
+      implementation ParserImpl {
+        paths {
+          "src/parser.ts"
+        }
+        conforms_to Parser
+      }
+
+      implementation ParserImpl {
+        paths {
+          "src/other.ts"
+        }
+        conforms_to Parser
+      }
+    `);
+    expect(duplicateImplementation.exitCode).toBe(1);
+    expect(formatDiagnostics(duplicateImplementation)).toContain("duplicate implementation");
+  });
+
+  test("rejects invalid change targets and unresolved dependencies", () => {
+    const invalidChange = checkShapeSource(`
+      module changes
+
+      component Parser {
+      }
+
+      change UpdateMissingFunction {
+        modify fn Parser.parseConfig
+          effects complete {
+          }
+      }
+    `);
+    expect(invalidChange.exitCode).toBe(1);
+    expect(formatDiagnostics(invalidChange)).toContain("invalid change target");
+
+    const unresolvedDependency = checkShapeSource(`
+      module deps
+
+      component Parser {
+        requires MissingService
+      }
+    `);
+    expect(unresolvedDependency.exitCode).toBe(1);
+    expect(formatDiagnostics(unresolvedDependency)).toContain("unresolved dependency");
+  });
+
+  test("rejects unsupported multi-when rule shapes", () => {
+    const result = checkShapeSource(`
+      module rules
+
+      trait Stable<T: Resource> {
+      }
+
+      trait Public<T: Resource> {
+      }
+
+      rule stable_public<T: Resource> {
+        when T has Stable
+        when T has Public
+        forbid final HardDelete<T>
+      }
+    `);
+
+    expect(result.exitCode).toBe(1);
+    expect(formatDiagnostics(result)).toContain("unsupported rule shape");
+    expect(formatDiagnostics(result)).toContain("multiple when clauses");
   });
 
   test("applies change-file function additions to the base model", () => {
@@ -467,6 +585,86 @@ describe("Shape checker", () => {
     });
 
     expect(result.exitCode).toBe(0);
+  });
+
+  test("enforces bindings between Shape-affecting code and docs", () => {
+    const parsed = parseShapeModule(`
+      module repo
+
+      binding CheckerDocs {
+        when_changed paths {
+          "packages/shp-checker/src/checker.ts"
+          "shape/system/checker.shape"
+        }
+        require_changed paths {
+          "docs-site/src/content/docs/inside-shape/rule-evaluation.md"
+          "docs-site/src/content/docs/reference/diagnostics.md"
+        }
+        allow attest docs_not_needed
+      }
+    `);
+
+    expect(parsed.ok).toBe(true);
+    if (!parsed.ok) {
+      return;
+    }
+
+    const missingDocs = checkShapeModules([parsed.module], {
+      changedFiles: ["packages/shp-checker/src/checker.ts"]
+    });
+    expect(missingDocs.exitCode).toBe(1);
+    expect(formatDiagnostics(missingDocs)).toContain("bound docs change missing");
+    expect(formatDiagnostics(missingDocs)).toContain("CheckerDocs");
+
+    const withDocs = checkShapeModules([parsed.module], {
+      changedFiles: [
+        "packages/shp-checker/src/checker.ts",
+        "docs-site/src/content/docs/reference/diagnostics.md"
+      ]
+    });
+    expect(withDocs.exitCode).toBe(0);
+
+    const withAttestation = parseShapeModule(`
+      module repo
+
+      binding CheckerDocs {
+        when_changed paths {
+          "packages/shp-checker/src/checker.ts"
+        }
+        require_changed paths {
+          "docs-site/src/content/docs/reference/diagnostics.md"
+        }
+        allow attest docs_not_needed
+      }
+
+      attest docs_not_needed {
+        source ts("packages/shp-checker/src/checker.ts")
+        reason "Internal extraction only; no documented behavior changed."
+      }
+    `);
+
+    expect(withAttestation.ok).toBe(true);
+    if (!withAttestation.ok) {
+      return;
+    }
+    const staleAttestation = checkShapeModules(
+      [{ module: withAttestation.module, filePath: "shape/changes/existing-waiver.shape" }],
+      {
+        changedFiles: ["packages/shp-checker/src/checker.ts"]
+      }
+    );
+    expect(staleAttestation.exitCode).toBe(1);
+    expect(staleAttestation.diagnostics.map((diagnostic) => diagnostic.kind)).toContain(
+      "missing_bound_docs_change"
+    );
+
+    const attested = checkShapeModules(
+      [{ module: withAttestation.module, filePath: "shape/changes/current-waiver.shape" }],
+      {
+        changedFiles: ["packages/shp-checker/src/checker.ts", "shape/changes/current-waiver.shape"]
+      }
+    );
+    expect(attested.exitCode).toBe(0);
   });
 
   test("rejects forbidden dependency cycles with a witness path", () => {
@@ -1327,6 +1525,30 @@ reevaluation DecisionShapeRechecked {
   reviewer GatewayTeam
   decided_on "2026-06-02"
   evidence test("gateway/error-normalisation.test.ts")
+}
+`);
+  });
+
+  test("formats binding syntax canonically", () => {
+    const result = formatShapeSource(`
+      binding CheckerDocs { allow attest docs_not_needed require_changed paths { 'docs-site/src/content/docs/reference/diagnostics.md' 'docs-site/src/content/docs/inside-shape/rule-evaluation.md' } when_changed paths { 'shape/system/checker.shape' 'packages/shp-checker/src/checker.ts' } }
+    `);
+
+    expect(result.ok).toBe(true);
+    if (!result.ok) {
+      return;
+    }
+
+    expect(result.formatted).toBe(`binding CheckerDocs {
+  when_changed paths {
+    "packages/shp-checker/src/checker.ts"
+    "shape/system/checker.shape"
+  }
+  require_changed paths {
+    "docs-site/src/content/docs/inside-shape/rule-evaluation.md"
+    "docs-site/src/content/docs/reference/diagnostics.md"
+  }
+  allow attest docs_not_needed
 }
 `);
   });

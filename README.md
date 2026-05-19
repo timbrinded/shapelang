@@ -9,6 +9,7 @@ Application code can be messy, implicit, and spread across many files. Shape giv
 - function effect summaries with source evidence
 - change files for PR-level deltas
 - coverage rules for governed source paths
+- bindings that require paired review-surface changes, such as docs updates
 - typed design memory for refactor-sensitive functions
 - constrained project rules such as dependency-cycle bans
 
@@ -69,6 +70,7 @@ Shape also covers:
 - unknown effects in protected components
 - missing grants for declared function effects
 - governed source files changed without a shape delta or attestation
+- Shape-affecting files changed without a bound docs update or `docs_not_needed` attestation
 - refactor-sensitive functions changed without a recorded reevaluation
 - required design context or descriptions missing from non-obvious function shapes
 - semantic dependency cycles with witness paths
@@ -158,7 +160,7 @@ shp graph Gateway --relation requires
 shp memory
 shp obligations
 shp author --changed-files changed.txt --component AuditStore
-shp analyze --shape-files shape/system/audit.shape src/audit/purge.ts
+shp analyze --shape-files fixtures/pass/append_only_append/audit.shape src/audit/purge.ts
 ```
 
 `shp check` scans `shape/system/**/*.shape` and `shape/changes/**/*.shape` when no files are provided.
@@ -167,19 +169,23 @@ Useful commands:
 
 - `shp check`: run conformance checks.
 - `shp coverage --changed-files changed.txt`: enforce shape deltas or attestations for governed paths.
+- `shp check --changed-files changed.txt`: run semantic checks, coverage, and bindings together.
 - `shp fmt --check`: verify canonical formatting.
 - `shp explain AuditEvent`: show derived facts and constraints for a symbol.
 - `shp graph Gateway --relation requires`: print dependency paths.
 - `shp memory`: list rationale and memory entries that protect design context.
 - `shp obligations`: list open design-memory obligations such as missing rationale or reevaluation.
 - `shp author --changed-files changed.txt --component AuditStore`: scaffold a reviewable change file with explicit unknowns.
-- `shp analyze --shape-files shape/system/audit.shape src/file.ts`: compare obvious source hints against declared effects.
+- `shp analyze --shape-files fixtures/pass/append_only_append/audit.shape src/file.ts`: compare obvious source hints against declared effects.
 
 ## Project Layout
 
 ```text
 shape/system/
-  audit.shape
+  checker.shape
+  delivery.shape
+  language.shape
+  tooling.shape
 
 fixtures/
   pass/
@@ -208,6 +214,8 @@ Use the Bun workspace only when contributing to Shape itself:
 bun install --frozen-lockfile
 bun run langium:generate
 bun shp check
+bun run changed-files
+bun run shape:ci
 bun test
 bun run typecheck
 bun run docs:check
@@ -239,7 +247,7 @@ GitHub Pages should use the **GitHub Actions** publishing source. The deployment
 
 ## CI
 
-CI is wired in `.github/workflows/shape.yml` for formatting, tests, typechecking, `shp check`, and docs checks.
+CI is wired in `.github/workflows/shape.yml` for formatting, tests, typechecking, `shp check --changed-files changed.txt`, Shape coverage/bindings, and docs checks. Shape source/model changes require matching `shape/changes` deltas or attestations; bound docs surfaces must change unless a narrow `docs_not_needed` attestation in the current change explains why not.
 
 ## Release
 

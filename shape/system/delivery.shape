@@ -1,0 +1,258 @@
+module shape.delivery
+
+import shape.checker
+
+import shape.tooling
+
+resource CiWorkflow
+
+resource DocsContent
+
+resource InstallScript
+
+resource ReleaseArtifact
+
+component CiPipeline {
+  owns CiWorkflow
+  requires ShpCli via ShapeCiCommand
+  grants Read<ChangedFileList>
+  grants Read<CiWorkflow>
+  grants Read<SemanticDiagnostics>
+  grants Update<ChangedFileList>
+  fn runShapeCi
+    source yaml(".github/workflows/shape.yml")
+    effects complete {
+      Read<ChangedFileList>
+        evidence yaml(".github/workflows/shape.yml")
+      Read<CiWorkflow>
+        evidence yaml(".github/workflows/shape.yml")
+      Read<SemanticDiagnostics>
+        evidence yaml(".github/workflows/shape.yml")
+    }
+  fn writeChangedFiles
+    source sh("scripts/write-changed-files.sh")
+    effects complete {
+      Update<ChangedFileList>
+        evidence sh("scripts/write-changed-files.sh")
+    }
+}
+
+component DocsSite {
+  owns DocsContent
+  requires DocsShapeBlockVerifier via DocsExamples
+  requires ShapeGrammar via SyntaxReference
+  grants Read<DocsContent>
+  grants Update<DocsContent>
+  fn verifyDocs
+    source ts("docs-site/scripts/verify-shape-blocks.ts")
+    effects complete {
+      Read<DocsContent>
+        evidence ts("docs-site/scripts/verify-shape-blocks.ts")
+      Update<DocsContent>
+        evidence md("docs-site/src/content/docs/reference/language-syntax.md")
+    }
+}
+
+component ReleasePipeline {
+  owns InstallScript
+  owns ReleaseArtifact
+  requires CiPipeline via ReleaseValidation
+  requires ShpCli via ReleaseBinary
+  grants Read<InstallScript>
+  grants Update<ReleaseArtifact>
+  fn buildReleaseAssets : RefactorSensitive
+    source sh("scripts/build-release-assets.sh")
+    effects complete {
+      Read<InstallScript>
+        evidence sh("scripts/build-release-assets.sh")
+      Update<ReleaseArtifact>
+        evidence sh("scripts/build-release-assets.sh")
+    }
+}
+
+implementation AnalyzerSource {
+  paths {
+    "packages/shp-checker/src/analyzer.ts"
+  }
+  conforms_to ShapeAnalyzer
+  on_change require shape_delta
+}
+
+implementation AuthoringSource {
+  paths {
+    "packages/shp-checker/src/authoring.ts"
+  }
+  conforms_to ShapeAuthoring
+  on_change require shape_delta
+}
+
+implementation CheckerSource {
+  paths {
+    "packages/shp-checker/src/checker.ts"
+  }
+  conforms_to ShapeChecker
+  on_change require shape_delta
+}
+
+implementation CiScripts {
+  paths {
+    "scripts/write-changed-files.sh"
+  }
+  conforms_to CiPipeline
+  on_change require shape_delta
+}
+
+implementation CliSource {
+  paths {
+    "packages/shp-cli/src/index.ts"
+  }
+  conforms_to ShpCli
+  on_change require shape_delta
+}
+
+implementation DocsSource {
+  paths {
+    "docs-site/scripts/**/*.ts"
+    "docs-site/src/content/docs/**/*.md"
+  }
+  conforms_to DocsSite
+  on_change require shape_delta
+}
+
+implementation EditorSource {
+  paths {
+    "packages/shp-checker/src/editor.ts"
+  }
+  conforms_to ShapeEditorServices
+  on_change require shape_delta
+}
+
+implementation FormatterSource {
+  paths {
+    "packages/shp-checker/src/formatter.ts"
+  }
+  conforms_to ShapeFormatter
+  on_change require shape_delta
+}
+
+implementation GrammarSource {
+  paths {
+    "packages/shp-checker/src/language/**/*.ts"
+    "packages/shp-checker/src/language/shape.langium"
+  }
+  conforms_to ShapeGrammar
+  on_change require shape_delta
+}
+
+implementation ParserSource {
+  paths {
+    "packages/shp-checker/src/parser.ts"
+  }
+  conforms_to ShapeParser
+  on_change require shape_delta
+}
+
+implementation ReleaseSource {
+  paths {
+    "install.ps1"
+    "install.sh"
+    "scripts/build-release-assets.sh"
+  }
+  conforms_to ReleasePipeline
+  on_change require shape_delta
+}
+
+implementation SyntaxHighlighterSource {
+  paths {
+    "docs-site/src/syntax/**/*.mjs"
+  }
+  conforms_to ShapeGrammar
+  on_change require shape_delta
+}
+
+implementation WorkflowSource {
+  paths {
+    ".github/workflows/**/*.yml"
+  }
+  conforms_to CiPipeline
+  on_change require shape_delta
+}
+
+binding CliDocs {
+  when_changed paths {
+    "packages/shp-cli/src/index.ts"
+    "shape/system/tooling.shape"
+  }
+  require_changed paths {
+    "README.md"
+    "docs-site/src/content/docs/learn/ci-workflow.md"
+    "docs-site/src/content/docs/reference/cli.md"
+  }
+  allow attest docs_not_needed
+}
+
+binding DocsVerifierDocs {
+  when_changed paths {
+    "docs-site/scripts/verify-shape-blocks.ts"
+    "shape/system/language.shape"
+  }
+  require_changed paths {
+    "docs-site/src/content/docs/inside-shape/langium-grammar.md"
+    "docs-site/src/content/docs/reference/local-development.md"
+  }
+  allow attest docs_not_needed
+}
+
+binding GrammarDocs {
+  when_changed paths {
+    "docs-site/src/syntax/**/*.mjs"
+    "packages/shp-checker/src/language/generated/**/*.ts"
+    "packages/shp-checker/src/language/shape.langium"
+    "shape/system/language.shape"
+  }
+  require_changed paths {
+    "docs-site/src/content/docs/inside-shape/langium-grammar.md"
+    "docs-site/src/content/docs/reference/language-syntax.md"
+  }
+  allow attest docs_not_needed
+}
+
+binding RuleEngineDocs {
+  when_changed paths {
+    "packages/shp-checker/src/checker.ts"
+    "shape/system/checker.shape"
+  }
+  require_changed paths {
+    "docs-site/src/content/docs/concepts/change-files-attestations.md"
+    "docs-site/src/content/docs/concepts/diagnostics-provenance.md"
+    "docs-site/src/content/docs/inside-shape/rule-evaluation.md"
+    "docs-site/src/content/docs/reference/diagnostics.md"
+  }
+  allow attest docs_not_needed
+}
+
+binding ToolingDocs {
+  when_changed paths {
+    "packages/shp-checker/src/analyzer.ts"
+    "packages/shp-checker/src/authoring.ts"
+    "packages/shp-checker/src/editor.ts"
+    "packages/shp-checker/src/formatter.ts"
+    "shape/system/tooling.shape"
+  }
+  require_changed paths {
+    "docs-site/src/content/docs/concepts/analyzer-hints.md"
+    "docs-site/src/content/docs/inside-shape/formatter-editor-authoring.md"
+    "docs-site/src/content/docs/reference/cli.md"
+  }
+  allow attest docs_not_needed
+}
+
+memory ReleaseChecksumContract : RefactorConstraint<fn ReleasePipeline.buildReleaseAssets> {
+  applies_to fn ReleasePipeline.buildReleaseAssets
+  status Explained
+  confidence High
+  summary "Release archives, installer templates, and checksums must stay in sync for binary installation."
+  owner ShapeMaintainers
+  protects shape ReleaseIntegrity
+  guards on_change require ReEvaluation<Self>
+}

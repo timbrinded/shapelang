@@ -7,6 +7,7 @@ import {
 import { formatShapeSource, type FormatResult } from "./formatter.ts";
 import {
   isComponentDecl,
+  isBindingDecl,
   isFunctionSummary,
   isMemoryDecl,
   isRationaleDecl,
@@ -37,6 +38,7 @@ const KEYWORD_COMPLETIONS = [
   "trait",
   "component",
   "implementation",
+  "binding",
   "change",
   "attest",
   "rule",
@@ -50,7 +52,10 @@ const KEYWORD_COMPLETIONS = [
   "effects complete",
   "effects unknown",
   "evidence",
-  "forbid final"
+  "forbid final",
+  "when_changed",
+  "require_changed",
+  "allow attest"
 ];
 
 const PRELUDE_COMPLETIONS = [
@@ -155,6 +160,7 @@ export function getDefinitionLocation(
     new RegExp(`\\bresource\\s+${escapeRegex(name)}\\b`),
     new RegExp(`\\btrait\\s+${escapeRegex(name)}\\b`),
     new RegExp(`\\bcomponent\\s+${escapeRegex(name)}\\b`),
+    new RegExp(`\\bbinding\\s+${escapeRegex(name)}\\b`),
     new RegExp(`\\brule\\s+${escapeRegex(name)}\\b`),
     new RegExp(`\\brationale\\s+${escapeRegex(name)}\\b`),
     new RegExp(`\\bmemory\\s+${escapeRegex(name)}\\b`),
@@ -184,6 +190,7 @@ export function getCompletions(source: string, prefix = ""): string[] {
         isResourceDecl(declaration) ||
         isTraitDecl(declaration) ||
         isComponentDecl(declaration) ||
+        isBindingDecl(declaration) ||
         isRuleDecl(declaration) ||
         isRationaleDecl(declaration) ||
         isMemoryDecl(declaration) ||

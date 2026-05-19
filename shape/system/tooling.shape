@@ -1,0 +1,182 @@
+module shape.tooling
+
+import shape.checker
+
+import shape.language
+
+resource AnalyzerHint
+
+resource AuthoringPrompt
+
+resource DiagnosticText
+
+resource EditorOutput
+
+resource FormattedShape
+
+resource ShapeChange
+
+component ShapeAnalyzer {
+  owns AnalyzerHint
+  requires ShapeChecker via AnalyzerComparison
+  grants Append<AnalyzerHint>
+  grants Read<ShapeSource>
+  fn analyzeSourceText
+    source ts("packages/shp-checker/src/analyzer.ts#analyzeSourceText")
+    effects complete {
+      Append<AnalyzerHint>
+        evidence ts("packages/shp-checker/src/analyzer.ts")
+      Read<ShapeSource>
+        evidence ts("packages/shp-checker/src/analyzer.ts")
+    }
+}
+
+component ShapeAuthoring {
+  owns AuthoringPrompt
+  owns ShapeChange
+  requires ShapeChecker via ChangeValidation
+  grants Append<AuthoringPrompt>
+  grants Append<ShapeChange>
+  grants Read<ChangedFileList>
+  fn buildShapeAuthorPrompt : RefactorSensitive
+    source ts("packages/shp-checker/src/authoring.ts#buildShapeAuthorPrompt")
+    effects complete {
+      Append<AuthoringPrompt>
+        evidence ts("packages/shp-checker/src/authoring.ts")
+      Read<ChangedFileList>
+        evidence ts("packages/shp-checker/src/authoring.ts")
+    }
+  fn generateShapeDelta : RefactorSensitive
+    source ts("packages/shp-checker/src/authoring.ts#generateShapeDelta")
+    effects complete {
+      Append<ShapeChange>
+        evidence ts("packages/shp-checker/src/authoring.ts")
+      Read<ChangedFileList>
+        evidence ts("packages/shp-checker/src/authoring.ts")
+    }
+}
+
+component ShapeEditorServices {
+  owns EditorOutput
+  requires ShapeChecker via EditorDiagnostics
+  requires ShapeFormatter via EditorFormatting
+  grants Append<EditorOutput>
+  grants Read<ParsedModule>
+  grants Read<SemanticDiagnostics>
+  fn getEditorDiagnostics
+    source ts("packages/shp-checker/src/editor.ts#getEditorDiagnostics")
+    effects complete {
+      Append<EditorOutput>
+        evidence ts("packages/shp-checker/src/editor.ts")
+      Read<SemanticDiagnostics>
+        evidence ts("packages/shp-checker/src/editor.ts")
+    }
+  fn getHoverText
+    source ts("packages/shp-checker/src/editor.ts#getHoverText")
+    effects complete {
+      Append<EditorOutput>
+        evidence ts("packages/shp-checker/src/editor.ts")
+      Read<ParsedModule>
+        evidence ts("packages/shp-checker/src/editor.ts")
+    }
+}
+
+component ShapeFormatter {
+  owns FormattedShape
+  provides CanonicalShapeFormat
+  requires ShapeParser via FormattingParser
+  grants Read<ParsedModule>
+  grants Update<FormattedShape>
+  fn formatShapeModule : RefactorSensitive
+    source ts("packages/shp-checker/src/formatter.ts#formatShapeModule")
+    effects complete {
+      Read<ParsedModule>
+        evidence ts("packages/shp-checker/src/formatter.ts")
+      Update<FormattedShape>
+        evidence ts("packages/shp-checker/src/formatter.ts")
+    }
+}
+
+component ShpCli {
+  provides CommandLineInterface
+  requires ShapeAnalyzer via AnalyzeCommand
+  requires ShapeAuthoring via AuthorCommand
+  requires ShapeChecker via CheckCommand
+  requires ShapeDiagnostics via DiagnosticOutput
+  requires ShapeFormatter via FormatCommand
+  grants Read<ChangedFileList>
+  grants Read<DiagnosticText>
+  grants Read<FormattedShape>
+  grants Read<ShapeSource>
+  fn defaultShapeFiles : RefactorSensitive
+    source ts("packages/shp-cli/src/index.ts#defaultShapeFiles")
+    effects complete {
+      Read<ShapeSource>
+        evidence ts("packages/shp-cli/src/index.ts")
+    }
+  fn main : ProtectedCheckOrder
+    source ts("packages/shp-cli/src/index.ts#main")
+    effects complete {
+      Read<ChangedFileList>
+        evidence ts("packages/shp-cli/src/index.ts")
+      Read<DiagnosticText>
+        evidence ts("packages/shp-cli/src/index.ts")
+      Read<FormattedShape>
+        evidence ts("packages/shp-cli/src/index.ts")
+    }
+}
+
+rule tooling_contract_providers {
+  forbid provides CanonicalShapeFormat except ShapeFormatter
+  forbid provides CommandLineInterface except ShpCli
+}
+
+memory AuthoringUnknownSafety : RefactorConstraint<fn ShapeAuthoring.generateShapeDelta> {
+  applies_to fn ShapeAuthoring.generateShapeDelta
+  status Explained
+  confidence High
+  summary "Generated deltas must prefer effects unknown over false empty complete summaries."
+  owner ShapeMaintainers
+  protects shape ExplicitUnknowns
+  guards on_change require ReEvaluation<Self>
+}
+
+memory AuthorPromptSafetyRules : RefactorConstraint<fn ShapeAuthoring.buildShapeAuthorPrompt> {
+  applies_to fn ShapeAuthoring.buildShapeAuthorPrompt
+  status Explained
+  confidence High
+  summary "Authoring prompts must require evidence, explicit destructive effects, and no memory waiver for final forbids."
+  owner ShapeMaintainers
+  protects shape AgentReviewSafety
+  guards on_change require ReEvaluation<Self>
+}
+
+memory CliCommandDispatchOrder : CheckOrderRationale<fn ShpCli.main> {
+  applies_to fn ShpCli.main
+  status Explained
+  confidence High
+  summary "CLI commands must dispatch to the same checker/formatter/helper semantics used by tests and CI."
+  owner ShapeMaintainers
+  protects shape CommandDispatch
+  guards on_change require ReEvaluation<Self>
+}
+
+memory DefaultShapeFileDiscovery : RefactorConstraint<fn ShpCli.defaultShapeFiles> {
+  applies_to fn ShpCli.defaultShapeFiles
+  status Explained
+  confidence High
+  summary "Default discovery is the repo and consumer contract for shape/system and shape/changes files."
+  owner ShapeMaintainers
+  protects shape DefaultFileSet
+  guards on_change require ReEvaluation<Self>
+}
+
+memory FormatterCanonicalDiffs : RefactorConstraint<fn ShapeFormatter.formatShapeModule> {
+  applies_to fn ShapeFormatter.formatShapeModule
+  status Explained
+  confidence High
+  summary "Formatter ordering and indentation keep Shape files reviewable and stable in diffs."
+  owner ShapeMaintainers
+  protects shape CanonicalFormatting
+  guards on_change require ReEvaluation<Self>
+}

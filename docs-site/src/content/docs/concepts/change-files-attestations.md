@@ -79,10 +79,23 @@ Attestations document a reviewer decision around a changed source path:
 ```shape
 module changes.PR_003
 
-attest shape_delta {
+attest no_shape_change {
   source ts("src/audit/reporting.ts")
   reason "Reporting-only change; no resource effect changed."
 }
 ```
 
 Use attestations sparingly. They should explain why a governed source change does not need a shape delta.
+
+Bindings can also allow attestations. The Shape repo uses `docs_not_needed` when a Shape-affecting source or model file changes but the documented behavior did not:
+
+```shape
+module changes.PR_004
+
+attest docs_not_needed {
+  source ts("packages/shp-checker/src/checker.ts")
+  reason "Internal extraction only; no syntax, diagnostic, or workflow behavior changed."
+}
+```
+
+The attestation must point at the triggering path, give a concrete reason, and live in a `.shape` file changed by the same run. A previously committed binding attestation does not waive future source changes.
