@@ -5,7 +5,7 @@ Use this when authoring or reviewing `.shape` files and change files. For comman
 ## Workflow
 
 1. Read the current model first: `shape/system/**/*.shape`, relevant `shape/changes/**/*.shape`, and nearby fixtures.
-2. Identify the claim type: resource invariant, component ownership, grant, dependency, function effect, implementation coverage, rule, attestation, rationale, memory, or reevaluation.
+2. Identify the claim type: resource invariant, component ownership, grant, structural relation, function effect, implementation coverage, rule, attestation, rationale, memory, or reevaluation.
 3. Prefer a small change file over rewriting the baseline model for PR work.
 4. Include `source` for changed functions and `evidence` for material effects when the source or diff gives line context.
 5. Validate with `shp fmt --check`, `shp check`, and `shp coverage --changed-files changed.txt` when changed files are available.
@@ -91,6 +91,6 @@ Smallest fix: add a Shape delta for the effect, or make the attestation specific
 - Are effects honest, including uncertainty?
 - Are grants present only where the component is actually allowed to emit the effect?
 - Do final forbidden effects still fail?
-- Are dependency changes represented with `requires` or `provides`?
+- Are structural-dependency changes represented as a top-level `relation` with the right `kind` (`calls`, `callbacks`, `provides`, `coordinated_call`)?
 - Are Memory Guard obligations satisfied when shape traits or guarded changes appear?
 - Does `shp check` still run after any filtered command such as `shp obligations` or `shp analyze`?

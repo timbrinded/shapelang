@@ -26,7 +26,7 @@ export const shapeLanguage = {
       patterns: [
         {
           name: "keyword.control.shape",
-          match: "\\b(module|import|resource|trait|component|implementation|change|attest|rule|rationale|memory|reevaluation|storage|owns|grants|requires|provides|source|effects|complete|unknown|evidence|unsafe|description|required|reason|expires|paths|conforms_to|applies_to|why|summary|owner|review_by|status|confidence|protects|guards|on_change|require|observed|satisfies|outcome|reviewer|approver|decided_on|add|modify|remove|allow|forbid|final|when|has|except|cycle|over|where|includes|via)\\b"
+          match: "\\b(module|import|resource|trait|component|relation|implementation|change|attest|rule|rationale|memory|reevaluation|storage|owns|grants|requires|provides|kind|connects|roles|calls|callbacks|coordinated_call|as|source|effects|complete|unknown|evidence|unsafe|description|required|reason|expires|paths|conforms_to|applies_to|why|summary|owner|review_by|status|confidence|protects|guards|on_change|require|observed|satisfies|outcome|reviewer|approver|decided_on|add|modify|remove|allow|forbid|final|hypercycle|when|has|except|over)\\b"
         }
       ]
     },

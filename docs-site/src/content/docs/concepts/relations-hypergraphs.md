@@ -74,5 +74,5 @@ Resources are valid endpoints. `shp graph AuditEvent` prints the relations incid
 
 ## See also
 
-- [Rules and Hypercycles](./rules-dependency-graphs.md) — `forbid hypercycle` and `forbid provides` rules over the hypergraph.
+- [Rules and Hypercycles](./rules-hypercycles.md) — `forbid hypercycle` and `forbid provides` rules over the hypergraph.
 - [CLI Reference](../reference/cli.md) — `shp graph SYMBOL [--kind KIND]`.

@@ -16,12 +16,14 @@ flowchart TD
   A["ShapeModule declarations"] --> B["lowerResource"]
   A --> C["lowerTrait"]
   A --> D["lowerComponent"]
+  A --> R["lowerRelation"]
   A --> E["lowerImplementation"]
   A --> F["lowerContext"]
   A --> G["lowerRule"]
   B --> H["facts[]"]
   C --> H
   D --> H
+  R --> H
   E --> H
   F --> H
   G --> H
@@ -140,6 +142,48 @@ flowchart LR
 ```
 
 This split is why diagnostics can say both things: the resource has `AppendOnly`, and the trait forbids the specific effect.
+
+## Relation Lowering
+
+Structural links between components and resources live exclusively in top-level `relation` declarations. Lowering turns each `relation` into a hyperedge in the model's directed hypergraph plus one fact per endpoint.
+
+```shape
+module audit
+
+resource AuditEvent
+
+component Gateway {
+}
+
+component AuditStore {
+}
+
+relation GatewayCallsAudit {
+  kind calls
+  connects Gateway -> AuditStore
+}
+
+relation AuditWritePath {
+  kind coordinated_call
+  connects Gateway -> AuditStore -> AuditEvent
+}
+```
+
+The lowered facts include:
+
+```text
+hyperedge GatewayCallsAudit kind=calls ordered=true
+hyperedge_member GatewayCallsAudit Gateway index=0
+hyperedge_member GatewayCallsAudit AuditStore index=1
+hyperedge AuditWritePath kind=coordinated_call ordered=true
+hyperedge_member AuditWritePath Gateway index=0
+hyperedge_member AuditWritePath AuditStore index=1
+hyperedge_member AuditWritePath AuditEvent index=2
+```
+
+Lowering also builds a vertex-to-hyperedge incidence index keyed by endpoint name. Rule evaluation uses it to answer hypergraph questions without rescanning the AST: `forbid hypercycle` walks the directed step graph derived from each kind's traversal semantics, and `forbid provides T except C` filters incidence at `T`.
+
+A binary dependency is just a 2-vertex hyperedge. Shape does not maintain a separate binary-edge layer.
 
 ## Context Lowering
 

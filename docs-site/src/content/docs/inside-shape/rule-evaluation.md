@@ -9,7 +9,7 @@ Rule evaluation decides whether the effective Shape model is coherent. By the ti
 
 Rules are intentionally boring. They compare explicit claims. They do not search source code for hidden behavior, and they do not let prose override hard constraints.
 
-![Rule evaluation diagram showing facts flowing into final forbid, missing grant, coverage, design memory, and cycle rule checks, then pass or reject outputs.](../../../assets/infographics/rule-evaluation-board.png)
+![Rule evaluation diagram showing facts flowing into final forbid, missing grant, coverage, design memory, and hypercycle rule checks, then pass or reject outputs.](../../../assets/infographics/rule-evaluation-board.png)
 
 ```mermaid
 flowchart TD

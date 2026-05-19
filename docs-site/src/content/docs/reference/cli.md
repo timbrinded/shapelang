@@ -102,7 +102,7 @@ Hypergraph stats
   isolated vertices: 0
 ```
 
-`--stats` combines with `--kind KIND` to scope the edge, incidence, and arity counts to a single relation kind. Vertex counts always reflect the full model; `isolated vertices` then reports vertices that do not participate in any hyperedge of the selected kind.
+`--stats` combines with `--kind KIND` to scope the hyperedge, incidence, and arity counts to a single relation kind. Vertex counts always reflect the full model; `isolated vertices` then reports vertices that do not participate in any hyperedge of the selected kind.
 
 ## Memory and obligations
 

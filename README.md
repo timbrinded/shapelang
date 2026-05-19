@@ -5,12 +5,12 @@ Shape is a typed architecture conformance language for making architectural clai
 Application code can be messy, implicit, and spread across many files. Shape gives the system a small human-readable model in `.shape` files:
 
 - resources, traits, and invariants
-- components, ownership, capabilities, and dependencies
+- components, ownership, capabilities, and structural relations
 - function effect summaries with source evidence
 - change files for PR-level deltas
 - coverage rules for governed source paths
 - typed design memory for refactor-sensitive functions
-- constrained project rules such as dependency-cycle bans
+- constrained project rules such as hypercycle bans over the structural hypergraph
 
 The checker does not prove the application implementation is correct. It checks that the declared architecture model is coherent. That is the product boundary: humans and LLMs write reviewable claims, then a deterministic checker accepts or rejects those claims.
 
@@ -71,7 +71,7 @@ Shape also covers:
 - governed source files changed without a shape delta or attestation
 - refactor-sensitive functions changed without a recorded reevaluation
 - required design context or descriptions missing from non-obvious function shapes
-- semantic dependency cycles with witness paths
+- semantic hypercycles in the structural hypergraph with witness paths
 - project-specific rules like "only Gateway may provide JsonRpcEndpoint", expressed over `provides` relation hyperedges
 - optional analyzer hints for obvious `DELETE`, `TRUNCATE`, and `DROP` operations
 
@@ -140,7 +140,7 @@ The checker pipeline is:
 
 1. Parse `.shape` files with Langium.
 2. Apply change blocks on top of the base model.
-3. Lower declarations into facts such as resources, traits, effects, grants, dependencies, and governed paths.
+3. Lower declarations into facts such as resources, traits, effects, grants, relation hyperedges, and governed paths.
 4. Evaluate deterministic rules.
 5. Emit diagnostics with provenance, including the declarations that caused a violation.
 

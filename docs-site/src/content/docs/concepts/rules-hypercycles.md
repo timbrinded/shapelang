@@ -7,7 +7,7 @@ sidebar:
 
 Rules capture project-specific architectural constraints that operate over the structural hypergraph.
 
-![Dependency witness path diagram showing two components with requires and callbacks edges, a cycle rule, a witness path, and a rejected result.](../../../assets/infographics/dependency-witness-path.png)
+![Hypercycle witness path diagram showing two components with calls and callbacks relations, a forbid hypercycle rule, a witness path through the directed hypergraph, and a rejected result.](../../../assets/infographics/hypercycle-witness-path.png)
 
 ```shape
 module gateway

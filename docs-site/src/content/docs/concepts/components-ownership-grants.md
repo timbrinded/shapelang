@@ -9,7 +9,7 @@ Components are the main boundary for claims about authority and behavior: what a
 
 Components do **not** carry structural dependencies. Calls, provides, and other links between components live in `relation` declarations. See [Relations and Hypergraphs](./relations-hypergraphs.md).
 
-![Component boundary diagram showing ownership, grants, functions, provides, requires, and the note that ownership is not runtime allocation.](../../../assets/infographics/component-boundary-grants.png)
+![Component boundary diagram showing ownership, grants, and functions inside the component, with structural links shown as an external relation hyperedge, plus the note that ownership is not runtime allocation.](../../../assets/infographics/component-boundary-grants.png)
 
 ```shape
 module audit

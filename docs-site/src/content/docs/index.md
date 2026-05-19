@@ -16,7 +16,7 @@ hero:
       variant: secondary
 ---
 
-Shape gives a codebase a small human-readable model in `.shape` files. Humans and LLMs write reviewable claims about resources, components, effects, ownership, dependencies, changes, and refactor constraints. The deterministic checker accepts or rejects those claims.
+Shape gives a codebase a small human-readable model in `.shape` files. Humans and LLMs write reviewable claims about resources, components, effects, ownership, structural relations, changes, and refactor constraints. The deterministic checker accepts or rejects those claims.
 
 The checker does not prove that application code is correct. It checks whether the declared architecture model is coherent enough to enforce in review and CI.
 

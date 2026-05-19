@@ -7,7 +7,7 @@ These prompts were written with the `$infographic` skill conventions and use `@f
 - `shape-model-loop.png` was regenerated once to remove invented sample code, filenames, and non-Shape domain details.
 - `core-vocabulary-map.png` was regenerated once after the first pass misspelled `Ownership`.
 - `design-memory-reevaluation.png` was regenerated after the first pass rendered `guards on_change` with an extra underscore.
-- `dependency-witness-path.png` was regenerated twice: the first two attempts misspelled `AuditStore`, so the final asset uses generic component names to teach the witness-path concept without a bad project term.
+- `hypercycle-witness-path.png` was regenerated for the hypergraph redesign to teach the witness-path concept using `calls`/`callbacks` relations and a `forbid hypercycle` rule. The asset uses generic `Component A`/`Component B` names because earlier image-generation passes misspelled real project component names; using generic names keeps the diagram pedagogical without inviting a bad project term into the rendered text.
 - `quickstart-loop.png` was regenerated once to remove platform logos from the install panel.
 - The saved assets were visually inspected for label spelling, layout coherence, and unsupported Shape behavior before embedding.
 
@@ -19,15 +19,15 @@ These additional prompts were intentionally lower-density than the first set. Ea
 | --- | --- | --- |
 | `quickstart-loop.png` | `learn/quickstart.md` | `Quickstart Loop`, `install shp`, `shape files`, `shp check`, `diagnostics`, `update model`, `CI` |
 | `first-shape-file-map.png` | `learn/first-shape-file.md` | `First Shape File`, `Resource`, `Component`, `Function summary`, `Effect`, `Evidence`, `checker reads claims` |
-| `component-boundary-grants.png` | `concepts/components-ownership-grants.md` | `Component Boundary`, `Component`, `owns`, `grants`, `functions`, `provides`, `requires`, `not runtime allocation` |
+| `component-boundary-grants.png` | `concepts/components-ownership-grants.md` | `Component Boundary`, `Component`, `owns`, `grants`, `functions`, `relation (external)`, `not runtime allocation` |
 | `evidence-review-path.png` | `concepts/evidence-source-refs.md` | `Evidence Path`, `Claim`, `Effect`, `Evidence`, `Source span`, `Reviewer checks`, `checker keeps provenance` |
 | `implementation-coverage-map.png` | `concepts/implementations-coverage.md` | `Implementation Coverage`, `source paths`, `implementation`, `component`, `changed file`, `shape delta`, `attestation`, `coverage gate` |
 | `unknowns-safety-states.png` | `concepts/unknowns-safety.md` | `Unknowns Stay Visible`, `effects unknown`, `review blocker`, `effects complete`, `known effects`, `memory`, `known constraint` |
-| `dependency-witness-path.png` | `concepts/rules-dependency-graphs.md` | `Dependency Witness Path`, `Component A`, `Component B`, `requires`, `callbacks`, `cycle rule`, `witness path`, `rejected` |
+| `hypercycle-witness-path.png` | `concepts/rules-hypercycles.md` | `Hypercycle Witness Path`, `Component A`, `Component B`, `calls`, `callbacks`, `forbid hypercycle`, `witness path`, `rejected` |
 | `analyzer-advisory-scan.png` | `concepts/analyzer-hints.md` | `Analyzer Hints`, `source scan`, `DELETE`, `TRUNCATE`, `DROP`, `.shape model`, `warning`, `source of truth` |
 | `diagnostics-causal-trail.png` | `concepts/diagnostics-provenance.md` | `Diagnostic Causal Trail`, `function claim`, `effect`, `resource`, `trait`, `constraint`, `provenance`, `source evidence` |
 | `fact-lowering-map.png` | `inside-shape/fact-lowering.md` | `Fact Lowering`, `declarations`, `apply changes`, `effective model`, `facts`, `rules`, `diagnostics`, `provenance` |
-| `rule-evaluation-board.png` | `inside-shape/rule-evaluation.md` | `Rule Evaluation`, `facts`, `final forbid`, `missing grant`, `coverage`, `design memory`, `cycle rule`, `pass`, `reject` |
+| `rule-evaluation-board.png` | `inside-shape/rule-evaluation.md` | `Rule Evaluation`, `facts`, `final forbid`, `missing grant`, `coverage`, `design memory`, `hypercycle rule`, `pass`, `reject` |
 | `review-helpers.png` | `inside-shape/formatter-editor-authoring.md` | `Review Helpers`, `formatter`, `editor APIs`, `authoring`, `stable diff`, `diagnostics`, `effects unknown`, `human fills evidence` |
 | `shape-boundary.png` | `inside-shape/design-rationale.md` | `Shape Boundary`, `agent drafts claims`, `human reviews claims`, `checker rejects incoherence`, `tests remain`, `code review remains`, `not a proof system` |
 

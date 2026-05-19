@@ -60,7 +60,7 @@ shp explain AuditEvent
 shp explain Gateway.derivePolicyDecision
 ```
 
-Investigate component dependencies, or the whole hypergraph:
+Investigate the relations incident to a symbol, or the whole hypergraph:
 
 ```bash
 shp graph
