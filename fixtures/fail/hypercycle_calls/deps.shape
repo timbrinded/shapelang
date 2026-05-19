@@ -1,22 +1,22 @@
 module deps
 
-component Gateway {
-}
-
 component AuditStore {
 }
 
 component ContractRegistry {
 }
 
-relation GatewayCallsAudit {
-  kind calls
-  connects Gateway -> AuditStore
+component Gateway {
 }
 
 relation AuditCallsRegistry {
   kind calls
   connects AuditStore -> ContractRegistry
+}
+
+relation GatewayCallsAudit {
+  kind calls
+  connects Gateway -> AuditStore
 }
 
 relation RegistryCallsGateway {

@@ -2,13 +2,13 @@ module deps
 
 resource AuditEvent
 
-component Gateway {
-}
-
 component AuditStore {
 }
 
 component ContractRegistry {
+}
+
+component Gateway {
 }
 
 relation AuditWritePath {

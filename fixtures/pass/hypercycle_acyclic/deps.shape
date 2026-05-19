@@ -2,20 +2,20 @@ module deps
 
 resource AuditEvent
 
-component Gateway {
-}
-
 component AuditStore {
 }
 
-relation GatewayCallsAudit {
-  kind calls
-  connects Gateway -> AuditStore
+component Gateway {
 }
 
 relation AuditWritePath {
   kind coordinated_call
   connects Gateway -> AuditStore -> AuditEvent
+}
+
+relation GatewayCallsAudit {
+  kind calls
+  connects Gateway -> AuditStore
 }
 
 rule no_calls_cycle {
