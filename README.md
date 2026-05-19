@@ -169,7 +169,7 @@ Useful commands:
 - `shp coverage --changed-files changed.txt`: enforce shape deltas or attestations for governed paths.
 - `shp fmt --check`: verify canonical formatting.
 - `shp explain AuditEvent`: show derived facts and incident relations for a symbol.
-- `shp graph [SYMBOL] [--kind KIND]`: with a SYMBOL, print the hyperedges incident to that symbol; without a SYMBOL, print the whole hypergraph grouped by kind. `--kind` filters in either mode.
+- `shp graph [SYMBOL] [--kind KIND] [--summary]`: with a SYMBOL, print the hyperedges incident to that symbol; without a SYMBOL, print the whole hypergraph grouped by kind; with `--summary`, print aggregate vertex, hyperedge, and incidence counts. `--kind` filters in any mode.
 - `shp memory`: list rationale and memory entries that protect design context.
 - `shp obligations`: list open design-memory obligations such as missing rationale or reevaluation.
 - `shp author --changed-files changed.txt --component AuditStore`: scaffold a reviewable change file with explicit unknowns.

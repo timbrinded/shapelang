@@ -20,7 +20,8 @@ import {
   formatDiagnostics,
   graphAllShapeModules,
   graphShapeModules,
-  parseShapeModule
+  parseShapeModule,
+  summarizeShapeHypergraph
 } from "./index.ts";
 
 const repoRoot = resolve(import.meta.dir, "../../..");
@@ -744,6 +745,55 @@ describe("Shape checker", () => {
         index: 0
       })
     );
+  });
+
+  test("summarizeShapeHypergraph reports vertex, hyperedge, and incidence counts", () => {
+    const parsed = parseShapeModule(`
+      module deps
+
+      component Gateway {
+      }
+      component AuditStore {
+      }
+      component Loner {
+      }
+      resource AuditEvent
+
+      relation AuditWritePath {
+        kind coordinated_call
+        connects Gateway -> AuditStore -> AuditEvent
+      }
+
+      relation GatewayCallsAudit {
+        kind calls
+        connects Gateway -> AuditStore
+      }
+    `);
+
+    expect(parsed.ok).toBe(true);
+    if (!parsed.ok) {
+      return;
+    }
+
+    const summary = summarizeShapeHypergraph([parsed.module]);
+    expect(summary).toContain("Hypergraph summary");
+    expect(summary).toContain("vertices: 4 (3 components, 1 resource)");
+    expect(summary).toContain("hyperedges: 2");
+    expect(summary).toContain("calls: 1");
+    expect(summary).toContain("coordinated_call: 1");
+    expect(summary).toContain("incidences: 5");
+    expect(summary).toContain("arity: min 2, max 3, avg 2.50");
+    expect(summary).toContain("widest: coordinated_call AuditWritePath");
+    expect(summary).toContain("isolated vertices: 1");
+    expect(summary).toContain("Loner (component)");
+
+    const callsOnly = summarizeShapeHypergraph([parsed.module], { kindFilter: "calls" });
+    expect(callsOnly).toContain("filter: kind=calls");
+    expect(callsOnly).toContain("hyperedges: 1 (of 2 total)");
+    expect(callsOnly).toContain("calls: 1");
+    expect(callsOnly).not.toContain("coordinated_call: 1");
+    expect(callsOnly).toContain("incidences: 2");
+    expect(callsOnly).toContain("isolated vertices: 2");
   });
 
   test("graphAllShapeModules prints the whole hypergraph grouped by kind", () => {
