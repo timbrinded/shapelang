@@ -2,18 +2,23 @@
   "name": "shapelang",
   "private": true,
   "license": "BSD-3-Clause",
-  "type": "module",
   "workspaces": [
     "packages/*",
     "docs-site"
   ],
+  "type": "module",
   "scripts": {
     "build:release": "scripts/build-release-assets.sh",
     "docs:build": "bun run --cwd docs-site build",
     "docs:check": "bun run --cwd docs-site check",
     "docs:dev": "bun run --cwd docs-site dev",
     "docs:preview": "bun run --cwd docs-site preview",
+    "format": "oxfmt --write . && bun run format:shape",
+    "format:check": "oxfmt --check . && bun run format:shape:check",
+    "format:shape": "find . -name '*.shape' -not -path './node_modules/*' -print0 | xargs -0 bun packages/shp-cli/src/index.ts fmt",
+    "format:shape:check": "find . -name '*.shape' -not -path './node_modules/*' -print0 | xargs -0 bun packages/shp-cli/src/index.ts fmt --check",
     "langium:generate": "bunx langium-cli generate",
+    "lint": "oxlint --deny-warnings .",
     "shp": "bun packages/shp-cli/src/index.ts",
     "test": "bun test",
     "typecheck": "tsgo -p tsconfig.json --noEmit"
@@ -21,6 +26,8 @@
   "devDependencies": {
     "@types/bun": "latest",
     "@typescript/native-preview": "beta",
-    "langium-cli": "^4.2.1"
+    "langium-cli": "^4.2.1",
+    "oxfmt": "^0.51.0",
+    "oxlint": "^1.66.0"
   }
 }

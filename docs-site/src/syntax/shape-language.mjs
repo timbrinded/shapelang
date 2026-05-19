@@ -18,15 +18,26 @@ export const shapeLanguage = {
     },
     strings: {
       patterns: [
-        { name: "string.quoted.double.shape", begin: "\"", end: "\"", patterns: [{ name: "constant.character.escape.shape", match: "\\\\." }] },
-        { name: "string.quoted.single.shape", begin: "'", end: "'", patterns: [{ name: "constant.character.escape.shape", match: "\\\\." }] }
+        {
+          name: "string.quoted.double.shape",
+          begin: '"',
+          end: '"',
+          patterns: [{ name: "constant.character.escape.shape", match: "\\\\." }]
+        },
+        {
+          name: "string.quoted.single.shape",
+          begin: "'",
+          end: "'",
+          patterns: [{ name: "constant.character.escape.shape", match: "\\\\." }]
+        }
       ]
     },
     keywords: {
       patterns: [
         {
           name: "keyword.control.shape",
-          match: "\\b(module|import|resource|trait|component|implementation|change|attest|rule|rationale|memory|reevaluation|storage|owns|grants|requires|provides|source|effects|complete|unknown|evidence|unsafe|description|required|reason|expires|paths|conforms_to|applies_to|why|summary|owner|review_by|status|confidence|protects|guards|on_change|require|observed|satisfies|outcome|reviewer|approver|decided_on|add|modify|remove|allow|forbid|final|when|has|except|cycle|over|where|includes|via)\\b"
+          match:
+            "\\b(module|import|resource|trait|component|implementation|change|attest|rule|rationale|memory|reevaluation|storage|owns|grants|requires|provides|source|effects|complete|unknown|evidence|unsafe|description|required|reason|expires|paths|conforms_to|applies_to|why|summary|owner|review_by|status|confidence|protects|guards|on_change|require|observed|satisfies|outcome|reviewer|approver|decided_on|add|modify|remove|allow|forbid|final|when|has|except|cycle|over|where|includes|via)\\b"
         }
       ]
     },

@@ -1,4 +1,4 @@
-name: Shape Check
+name: CI
 
 on:
   pull_request:
@@ -6,36 +6,149 @@ on:
     branches:
       - master
 
+permissions:
+  contents: read
+
 jobs:
-  shape:
+  format:
+    name: Format
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - &checkout
+        name: Checkout
+        uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 24
+      - &setup-bun
+        name: Setup Bun
+        uses: oven-sh/setup-bun@v2
 
-      - uses: oven-sh/setup-bun@v2
-
-      - name: Install
+      - &install
+        name: Install
         run: bun install --frozen-lockfile
 
-      - name: Generate Langium artifacts
+      - &langium-generate
+        name: Generate Langium artifacts
         run: bun run langium:generate
 
       - name: Format check
-        run: find . -name '*.shape' -not -path './node_modules/*' -print0 | xargs -0 bun packages/shp-cli/src/index.ts fmt --check
+        run: bun run format:check
 
-      - name: Tests
-        run: bun test
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - *checkout
+      - *setup-bun
+      - *install
+      - *langium-generate
+
+      - name: Lint
+        run: bun run lint
+
+  typecheck:
+    name: Typecheck
+    runs-on: ubuntu-latest
+
+    steps:
+      - *checkout
+      - *setup-bun
+      - *install
+      - *langium-generate
 
       - name: Typecheck
         run: bun run typecheck
 
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - *checkout
+      - *setup-bun
+      - *install
+      - *langium-generate
+
+      - name: Tests
+        run: bun test
+
+  shape:
+    name: Shape
+    runs-on: ubuntu-latest
+
+    steps:
+      - *checkout
+      - *setup-bun
+      - *install
+      - *langium-generate
+
       - name: Shape conformance
         run: bun shp check
 
+  docs:
+    name: Docs
+    runs-on: ubuntu-latest
+
+    steps:
+      - *checkout
+      - *setup-bun
+      - *install
+      - *langium-generate
+
       - name: Docs check
         run: bun run docs:check
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - *checkout
+      - *setup-bun
+      - *install
+      - *langium-generate
+
+      - name: Build release assets
+        run: bun run build:release
+
+      - name: Smoke test release binary
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/shp-smoke
+          tar -xzf dist/release/shp-linux-x64.tar.gz -C /tmp/shp-smoke
+          /tmp/shp-smoke/shp --help >/dev/null
+          /tmp/shp-smoke/shp check
+
+  links:
+    name: Links
+    runs-on: ubuntu-latest
+
+    steps:
+      - *checkout
+
+      - name: Check links
+        uses: lycheeverse/lychee-action@v2
+        with:
+          args: >-
+            --no-progress
+            --max-concurrency 4
+            --fallback-extensions md
+            --exclude-path node_modules
+            --exclude-path dist
+            --exclude-path docs-site/dist
+            --exclude-path docs-site/.astro
+            .
+          fail: true
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+
+  typos:
+    name: Typos
+    runs-on: ubuntu-latest
+
+    steps:
+      - *checkout
+
+      - name: Check typos
+        uses: crate-ci/typos@v1

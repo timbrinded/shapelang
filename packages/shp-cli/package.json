@@ -3,10 +3,10 @@
   "version": "0.0.0",
   "private": true,
   "license": "BSD-3-Clause",
-  "type": "module",
   "bin": {
     "shp": "./src/index.ts"
   },
+  "type": "module",
   "dependencies": {
     "@shape/shp-checker": "workspace:*"
   }

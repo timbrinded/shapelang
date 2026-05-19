@@ -177,7 +177,7 @@ describe("Shape checker", () => {
     expect(output).toContain("HardDelete<AuditEvent>");
     expect(output).toContain("AuditEvent has trait AppendOnly");
     expect(output).toContain("AppendOnly forbids final HardDelete<AuditEvent>");
-    expect(output).toContain("evidence: ts(\"src/audit/purge.ts:12-16\")");
+    expect(output).toContain('evidence: ts("src/audit/purge.ts:12-16")');
   });
 
   test("uses explicit trait final forbid declarations", () => {
@@ -627,7 +627,9 @@ describe("Shape checker", () => {
     expect(explanation).toContain("shape traits:");
     expect(explanation).toContain("RequiresDescription");
     expect(explanation).toContain("description:");
-    expect(explanation).toContain(contextRef("DescriptionRationale", fnTarget("Gateway.derivePolicyDecision")));
+    expect(explanation).toContain(
+      contextRef("DescriptionRationale", fnTarget("Gateway.derivePolicyDecision"))
+    );
   });
 
   test("enforces required rationale, descriptions, memory, guarded changes, and final forbids", async () => {
@@ -636,7 +638,9 @@ describe("Shape checker", () => {
     ]);
     expect(missingRationale.exitCode).toBe(1);
     expect(formatDiagnostics(missingRationale)).toContain("missing required context");
-    expect(formatDiagnostics(missingRationale)).toContain(contextRef("InlineRationale", fnTarget("Gateway.derivePolicyDecision")));
+    expect(formatDiagnostics(missingRationale)).toContain(
+      contextRef("InlineRationale", fnTarget("Gateway.derivePolicyDecision"))
+    );
 
     const preserveInline = await checkShapeFiles([
       resolve(repoRoot, "fixtures/pass/memory_guard_preserve_inline/audit.shape")
@@ -664,7 +668,9 @@ describe("Shape checker", () => {
     ]);
     expect(guardedWithoutReevaluation.exitCode).toBe(1);
     expect(formatDiagnostics(guardedWithoutReevaluation)).toContain("guarded shape changed");
-    expect(formatDiagnostics(guardedWithoutReevaluation)).toContain("reevaluation satisfying memory DecisionRefactorConstraint");
+    expect(formatDiagnostics(guardedWithoutReevaluation)).toContain(
+      "reevaluation satisfying memory DecisionRefactorConstraint"
+    );
 
     const guardedWithReevaluation = await checkShapeFiles([
       resolve(repoRoot, "fixtures/pass/memory_guard_modify_with_reevaluation/audit.shape")
@@ -676,7 +682,9 @@ describe("Shape checker", () => {
     ]);
     expect(finalForbid.exitCode).toBe(1);
     expect(formatDiagnostics(finalForbid)).toContain("forbidden effect");
-    expect(formatDiagnostics(finalForbid)).toContain("AppendOnly forbids final HardDelete<AuditEvent>");
+    expect(formatDiagnostics(finalForbid)).toContain(
+      "AppendOnly forbids final HardDelete<AuditEvent>"
+    );
   });
 
   test("rejects wrong and unknown context targets", async () => {
@@ -751,7 +759,9 @@ describe("Shape checker", () => {
     }
     const missingMemoryResult = checkShapeModules([missingMemory.module]);
     expect(missingMemoryResult.exitCode).toBe(1);
-    expect(formatDiagnostics(missingMemoryResult)).toContain(contextRef("RefactorConstraint", fnTarget("Gateway.pollAttestation")));
+    expect(formatDiagnostics(missingMemoryResult)).toContain(
+      contextRef("RefactorConstraint", fnTarget("Gateway.pollAttestation"))
+    );
 
     const invalidReevaluation = parseShapeModule(`
       module gateway
@@ -836,7 +846,9 @@ describe("Shape memory guard intent scenarios", () => {
 
     expect(missingRationale.exitCode).toBe(1);
     expect(missingOutput).toContain("missing required context");
-    expect(missingOutput).toContain(contextRef("InlineRationale", fnTarget("Gateway.derivePolicyDecision")));
+    expect(missingOutput).toContain(
+      contextRef("InlineRationale", fnTarget("Gateway.derivePolicyDecision"))
+    );
 
     const withRationale = checkShapeSource(`
       module gateway
@@ -965,7 +977,9 @@ describe("Shape memory guard intent scenarios", () => {
     const missingOutput = formatDiagnostics(missingMemory);
 
     expect(missingMemory.exitCode).toBe(1);
-    expect(missingOutput).toContain(contextRef("RefactorConstraint", fnTarget("BridgePoller.pollAttestation")));
+    expect(missingOutput).toContain(
+      contextRef("RefactorConstraint", fnTarget("BridgePoller.pollAttestation"))
+    );
 
     const withMemory = checkShapeSource(`
       module bridge
@@ -1013,7 +1027,9 @@ describe("Shape memory guard intent scenarios", () => {
     const missingOutput = formatDiagnostics(missingRationale);
 
     expect(missingRationale.exitCode).toBe(1);
-    expect(missingOutput).toContain(contextRef("DesignRationale", fnTarget("Gateway.normalizeVendorPayload")));
+    expect(missingOutput).toContain(
+      contextRef("DesignRationale", fnTarget("Gateway.normalizeVendorPayload"))
+    );
 
     const withRationale = checkShapeSource(`
       module gateway
@@ -1060,7 +1076,9 @@ describe("Shape memory guard intent scenarios", () => {
     const missingOutput = formatDiagnostics(missingPurpose);
 
     expect(missingPurpose.exitCode).toBe(1);
-    expect(missingOutput).toContain(contextRef("TestOnlyPurpose", fnTarget("ReplayHarness.seedReplayFixture")));
+    expect(missingOutput).toContain(
+      contextRef("TestOnlyPurpose", fnTarget("ReplayHarness.seedReplayFixture"))
+    );
 
     const withPurpose = checkShapeSource(`
       module audit
@@ -1320,7 +1338,10 @@ describe("Shape authoring assistant", () => {
       changedFiles: ["src/audit/purge.ts"],
       diff: "diff --git a/src/audit/purge.ts b/src/audit/purge.ts"
     });
-    const critic = buildShapeCriticPrompt({ changedFiles: ["src/audit/purge.ts"] }, "change Proposed {}");
+    const critic = buildShapeCriticPrompt(
+      { changedFiles: ["src/audit/purge.ts"] },
+      "change Proposed {}"
+    );
 
     expect(prompt).toContain("Use effects unknown when uncertainty remains");
     expect(prompt).toContain("HardDelete");
@@ -1354,13 +1375,16 @@ describe("Shape authoring assistant", () => {
     });
     const parsed = parseShapeModule(source);
 
-    expect(source).toContain(`memory ReviewChangedShape : ${contextRef("RefactorConstraint", fnTarget("AuditStore.reviewPurgeShape1"))}`);
+    expect(source).toContain(
+      `memory ReviewChangedShape : ${contextRef("RefactorConstraint", fnTarget("AuditStore.reviewPurgeShape1"))}`
+    );
     expect(source).toContain("status Unexplained");
     expect(parsed.ok).toBe(true);
   });
 
   test("extracts evidence spans from unified diffs", () => {
-    const spans = extractEvidenceSpansFromUnifiedDiff(`diff --git a/src/audit/purge.ts b/src/audit/purge.ts
+    const spans =
+      extractEvidenceSpansFromUnifiedDiff(`diff --git a/src/audit/purge.ts b/src/audit/purge.ts
 --- a/src/audit/purge.ts
 +++ b/src/audit/purge.ts
 @@ -10,2 +10,3 @@
@@ -1416,7 +1440,9 @@ describe("Shape editor support", () => {
     expect(getHoverText(source, "AuditEvent")).toContain("kind: resource");
     expect(getHoverText(source, "PreserveInline")).toContain("InlineRationale");
     expect(getDefinitionLocation(source, "AuditStore")?.line).toBeGreaterThan(1);
-    expect(getDefinitionLocation(`
+    expect(
+      getDefinitionLocation(
+        `
       component Gateway {
         fn derivePolicyDecision
           effects unknown
@@ -1425,7 +1451,10 @@ describe("Shape editor support", () => {
       rationale DerivePolicyDecisionInline : ${contextRef("InlineRationale", fnTarget("Gateway.derivePolicyDecision"))} {
         applies_to fn Gateway.derivePolicyDecision
       }
-    `, "InlineRationale")?.line).toBeGreaterThan(1);
+    `,
+        "InlineRationale"
+      )?.line
+    ).toBeGreaterThan(1);
     expect(getCompletions(source, "Audit")).toContain("AuditStore.appendEvent");
     expect(getCompletions(source, "Preserve")).toContain("PreserveInline");
 
@@ -1441,7 +1470,10 @@ describe("Shape source analyzer", () => {
   test("detects destructive SQL and TypeScript hints", () => {
     // noinspection SqlNoDataSourceInspection
     const hints = [
-      ...analyzeSourceText("db/audit/purge.sql", "DELETE FROM audit_events;\nTRUNCATE audit_events;"),
+      ...analyzeSourceText(
+        "db/audit/purge.sql",
+        "DELETE FROM audit_events;\nTRUNCATE audit_events;"
+      ),
       ...analyzeSourceText("src/audit/purge.ts", "db.deleteFrom('audit_events').execute();")
     ];
 
@@ -1471,7 +1503,10 @@ describe("Shape source analyzer", () => {
       return;
     }
 
-    const hints = analyzeSourceText("src/audit/store.ts", "db.deleteFrom('audit_events').execute();");
+    const hints = analyzeSourceText(
+      "src/audit/store.ts",
+      "db.deleteFrom('audit_events').execute();"
+    );
     const warnings = compareAnalyzerHintsToShape(hints, [parsed.module]);
     const output = formatAnalyzerWarnings(warnings);
 

@@ -16,7 +16,7 @@ const { head } = Astro.locals.starlightRoute;
   }
 
   function preserveExpressiveCodeAssets(container: Element) {
-    for (const child of [...container.children]) {
+    for (const child of Array.from(container.children)) {
       if (child instanceof HTMLLinkElement && child.rel === "stylesheet" && child.href) {
         const alreadyLoaded = [...document.querySelectorAll<HTMLLinkElement>('link[rel="stylesheet"]')].some(
           (link) => link !== child && link.href === child.href

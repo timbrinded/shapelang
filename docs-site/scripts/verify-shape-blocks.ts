@@ -35,13 +35,18 @@ for (const filePath of files) {
 
     checked += 1;
     const line = lineNumberAt(source, match.index ?? 0);
-    const parsed = parseShapeModule(match[2] ?? "", `${relative(process.cwd(), filePath)}:${line}.shape`);
+    const parsed = parseShapeModule(
+      match[2] ?? "",
+      `${relative(process.cwd(), filePath)}:${line}.shape`
+    );
     if (!parsed.ok) {
       failures.push({
         filePath,
         line,
         messages: parsed.diagnostics.map((diagnostic) => {
-          const location = diagnostic.line ? `${diagnostic.line}:${diagnostic.column ?? 1}` : "unknown";
+          const location = diagnostic.line
+            ? `${diagnostic.line}:${diagnostic.column ?? 1}`
+            : "unknown";
           return `${location} ${diagnostic.message}`;
         })
       });
@@ -51,7 +56,9 @@ for (const filePath of files) {
 
 if (failures.length > 0) {
   for (const failure of failures) {
-    console.error(`${relative(process.cwd(), failure.filePath)}:${failure.line}: invalid shape code block`);
+    console.error(
+      `${relative(process.cwd(), failure.filePath)}:${failure.line}: invalid shape code block`
+    );
     for (const message of failure.messages) {
       console.error(`  ${message}`);
     }
@@ -59,7 +66,9 @@ if (failures.length > 0) {
   process.exit(1);
 }
 
-console.log(`Verified ${checked} shape code blocks${skipped > 0 ? `; skipped ${skipped} marked no-verify` : ""}.`);
+console.log(
+  `Verified ${checked} shape code blocks${skipped > 0 ? `; skipped ${skipped} marked no-verify` : ""}.`
+);
 
 async function collectDocsFiles(directory: string): Promise<string[]> {
   const entries = await readdir(directory, { withFileTypes: true });
@@ -68,7 +77,7 @@ async function collectDocsFiles(directory: string): Promise<string[]> {
   for (const entry of entries) {
     const entryPath = join(directory, entry.name);
     if (entry.isDirectory()) {
-      files.push(...await collectDocsFiles(entryPath));
+      files.push(...(await collectDocsFiles(entryPath)));
     } else if (supportedExtensions.has(extensionOf(entry.name))) {
       files.push(entryPath);
     }

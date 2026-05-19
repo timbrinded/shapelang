@@ -84,18 +84,36 @@ function shapeContextRef(contextType: string, target: string): string {
 }
 
 const PRELUDE_SHAPE_TRAIT_HOVERS = new Map([
-  ["PreserveInline", `PreserveInline\n  kind: shape trait\n  requires: ${shapeContextRef("InlineRationale", "fn ...")}\n`],
+  [
+    "PreserveInline",
+    `PreserveInline\n  kind: shape trait\n  requires: ${shapeContextRef("InlineRationale", "fn ...")}\n`
+  ],
   [
     "RequiresDescription",
     `RequiresDescription\n  kind: shape trait\n  requires: ${shapeContextRef("DescriptionRationale", "fn ...")}\n  requires description\n`
   ],
-  ["ProtectedCheckOrder", `ProtectedCheckOrder\n  kind: shape trait\n  requires: ${shapeContextRef("CheckOrderRationale", "fn ...")}\n`],
-  ["RefactorSensitive", `RefactorSensitive\n  kind: shape trait\n  requires: ${shapeContextRef("RefactorConstraint", "fn ...")}\n`],
-  ["NonIdiomatic", `NonIdiomatic\n  kind: shape trait\n  requires: ${shapeContextRef("DesignRationale", "fn ...")}\n`],
-  ["TestOnly", `TestOnly\n  kind: shape trait\n  requires: ${shapeContextRef("TestOnlyPurpose", "fn ...")}\n`]
+  [
+    "ProtectedCheckOrder",
+    `ProtectedCheckOrder\n  kind: shape trait\n  requires: ${shapeContextRef("CheckOrderRationale", "fn ...")}\n`
+  ],
+  [
+    "RefactorSensitive",
+    `RefactorSensitive\n  kind: shape trait\n  requires: ${shapeContextRef("RefactorConstraint", "fn ...")}\n`
+  ],
+  [
+    "NonIdiomatic",
+    `NonIdiomatic\n  kind: shape trait\n  requires: ${shapeContextRef("DesignRationale", "fn ...")}\n`
+  ],
+  [
+    "TestOnly",
+    `TestOnly\n  kind: shape trait\n  requires: ${shapeContextRef("TestOnlyPurpose", "fn ...")}\n`
+  ]
 ]);
 
-export function getEditorDiagnostics(source: string, filePath = "memory.shape"): EditorDiagnostic[] {
+export function getEditorDiagnostics(
+  source: string,
+  filePath = "memory.shape"
+): EditorDiagnostic[] {
   const parsed = parseShapeModule(source, filePath);
   if (!parsed.ok) {
     return parsed.diagnostics.map((diagnostic) => ({
@@ -124,7 +142,10 @@ export function getHoverText(source: string, symbol: string, filePath = "memory.
   return explainShapeModules([{ module: parsed.module, filePath }], symbol);
 }
 
-export function getDefinitionLocation(source: string, symbol: string): DefinitionLocation | undefined {
+export function getDefinitionLocation(
+  source: string,
+  symbol: string
+): DefinitionLocation | undefined {
   const name = symbol.includes(".") ? symbol.split(".").at(-1) : symbol;
   if (!name) {
     return undefined;

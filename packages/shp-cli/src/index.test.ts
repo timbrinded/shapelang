@@ -14,10 +14,7 @@ describe("shp CLI", () => {
   });
 
   test("returns exit code 1 for semantic violations", async () => {
-    const result = await runCli([
-      "check",
-      "fixtures/fail/append_only_hard_delete/audit.shape"
-    ]);
+    const result = await runCli(["check", "fixtures/fail/append_only_hard_delete/audit.shape"]);
 
     expect(result.exitCode).toBe(1);
     expect(result.stderr).toContain("error: forbidden effect");
@@ -89,7 +86,9 @@ describe("shp CLI", () => {
     expect(result.exitCode).toBe(0);
     expect(result.stdout).toContain("Open Shape Obligations");
     expect(result.stdout).toContain("missing context");
-    expect(result.stdout).toContain(["InlineRationale", "<", "fn Gateway.derivePolicyDecision", ">"].join(""));
+    expect(result.stdout).toContain(
+      ["InlineRationale", "<", "fn Gateway.derivePolicyDecision", ">"].join("")
+    );
     expect(result.stderr).toBe("");
   });
 
