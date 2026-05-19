@@ -11,6 +11,7 @@ import {
   isMemoryDecl,
   isRationaleDecl,
   isReevaluationDecl,
+  isRelationDecl,
   isResourceDecl,
   isRuleDecl,
   isTraitDecl
@@ -36,6 +37,7 @@ const KEYWORD_COMPLETIONS = [
   "resource",
   "trait",
   "component",
+  "relation",
   "implementation",
   "change",
   "attest",
@@ -45,12 +47,15 @@ const KEYWORD_COMPLETIONS = [
   "reevaluation",
   "owns",
   "grants",
-  "provides",
-  "requires",
+  "kind",
+  "connects",
+  "roles",
   "effects complete",
   "effects unknown",
   "evidence",
-  "forbid final"
+  "forbid final",
+  "forbid hypercycle",
+  "forbid provides"
 ];
 
 const PRELUDE_COMPLETIONS = [
@@ -134,6 +139,7 @@ export function getDefinitionLocation(source: string, symbol: string): Definitio
     new RegExp(`\\bresource\\s+${escapeRegex(name)}\\b`),
     new RegExp(`\\btrait\\s+${escapeRegex(name)}\\b`),
     new RegExp(`\\bcomponent\\s+${escapeRegex(name)}\\b`),
+    new RegExp(`\\brelation\\s+${escapeRegex(name)}\\b`),
     new RegExp(`\\brule\\s+${escapeRegex(name)}\\b`),
     new RegExp(`\\brationale\\s+${escapeRegex(name)}\\b`),
     new RegExp(`\\bmemory\\s+${escapeRegex(name)}\\b`),
@@ -163,6 +169,7 @@ export function getCompletions(source: string, prefix = ""): string[] {
         isResourceDecl(declaration) ||
         isTraitDecl(declaration) ||
         isComponentDecl(declaration) ||
+        isRelationDecl(declaration) ||
         isRuleDecl(declaration) ||
         isRationaleDecl(declaration) ||
         isMemoryDecl(declaration) ||

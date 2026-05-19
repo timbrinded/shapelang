@@ -16,11 +16,13 @@ import type {
   ModifyFunctionChange,
   RationaleDecl,
   ReevaluationDecl,
+  RelationDecl,
+  RelationEndpoint,
   RemoveDeclarationChange,
   ResourceDecl,
   RuleDecl,
-  RuleForbidCycleDecl,
   RuleForbidEffectDecl,
+  RuleForbidHypercycleDecl,
   RuleForbidProvidesDecl,
   ShapeModule,
   SourceRef,
@@ -58,19 +60,22 @@ import {
   isOwnsDecl,
   isPathsBlock,
   isProtectsDecl,
-  isProvidesDecl,
   isRationaleDecl,
   isReasonDecl,
   isReevaluationDecl,
+  isRelationConnectsDecl,
+  isRelationDecl,
+  isRelationKindDecl,
+  isRelationRolesDecl,
+  isRelationSummaryDecl,
   isRemoveDeclarationChange,
   isRemoveFunctionChange,
-  isRequiresDecl,
   isResourceDecl,
   isReviewByDecl,
   isReviewerDecl,
   isRuleDecl,
-  isRuleForbidCycleDecl,
   isRuleForbidEffectDecl,
+  isRuleForbidHypercycleDecl,
   isRuleForbidProvidesDecl,
   isRuleWhenHasDecl,
   isSatisfiesDecl,
@@ -178,6 +183,26 @@ const PRELUDE_CONTEXT_REQUIREMENTS: ContextRequirementRule[] = [
   }
 ];
 
+/**
+ * Kind registry: every relation kind declares whether its members are
+ * traversed as an ordered path, as directed pairs, or not at all for cycle
+ * checks. This is the single source of truth for hypercycle traversal.
+ */
+type RelationCycleTraversal = "none" | "directed_pairs" | "ordered_path";
+
+type RelationKindRule = {
+  /** Whether `connects A -> B -> C` is required, forbidden, or either. */
+  arity: "binary" | "ordered" | "any";
+  cycleTraversal: RelationCycleTraversal;
+};
+
+const PRELUDE_RELATION_KINDS = new Map<string, RelationKindRule>([
+  ["calls", { arity: "binary", cycleTraversal: "directed_pairs" }],
+  ["callbacks", { arity: "binary", cycleTraversal: "directed_pairs" }],
+  ["provides", { arity: "binary", cycleTraversal: "directed_pairs" }],
+  ["coordinated_call", { arity: "ordered", cycleTraversal: "ordered_path" }]
+]);
+
 export type SemanticDiagnostic =
   | {
       kind: "final_forbidden_effect";
@@ -208,14 +233,14 @@ export type SemanticDiagnostic =
     }
   | {
       kind: "unknown_name";
-      nameKind: "resource" | "component" | "trait";
+      nameKind: "resource" | "component" | "trait" | "relation_endpoint";
       name: string;
       filePath?: string;
       causedBy: string[];
     }
   | {
       kind: "duplicate_declaration";
-      declarationKind: "resource" | "component" | "trait" | "rationale" | "memory" | "reevaluation";
+      declarationKind: "resource" | "component" | "trait" | "relation" | "rationale" | "memory" | "reevaluation";
       name: string;
       filePath?: string;
       causedBy: string[];
@@ -229,18 +254,19 @@ export type SemanticDiagnostic =
       causedBy: string[];
     }
   | {
-      kind: "forbidden_dependency_cycle";
+      kind: "forbidden_hypercycle";
       rule: string;
-      path: string[];
-      relationKinds: string[];
+      vertices: string[];
+      hyperedges: { name: string; kind: string }[];
       filePath?: string;
       causedBy: string[];
     }
   | {
       kind: "forbidden_provides";
       rule: string;
-      component: string;
+      provider: string;
       target: string;
+      hyperedge: string;
       allowedComponent?: string;
       filePath?: string;
       causedBy: string[];
@@ -304,6 +330,13 @@ export type SemanticDiagnostic =
       reason: string;
       filePath?: string;
       causedBy: string[];
+    }
+  | {
+      kind: "invalid_relation";
+      name: string;
+      reason: string;
+      filePath?: string;
+      causedBy: string[];
     };
 
 export type ShapeDiagnostic = ParseDiagnostic | SemanticDiagnostic;
@@ -327,8 +360,15 @@ export type Fact =
   | { kind: "component"; name: string; provenance: Provenance }
   | { kind: "owns"; component: string; resource: string; provenance: Provenance }
   | { kind: "grants"; component: string; effect: string; target: string; provenance: Provenance }
-  | { kind: "provides"; component: string; target: string; provenance: Provenance }
-  | { kind: "requires"; component: string; target: string; relation: string; provenance: Provenance }
+  | { kind: "hyperedge"; name: string; relationKind: string; ordered: boolean; provenance: Provenance }
+  | {
+      kind: "hyperedge_member";
+      hyperedge: string;
+      endpoint: string;
+      index: number;
+      role?: string;
+      provenance: Provenance;
+    }
   | { kind: "function"; component: string; name: string; provenance: Provenance }
   | { kind: "effect"; component: string; functionName: string; effect: string; target: string; provenance: Provenance }
   | { kind: "effect_unknown"; component: string; functionName: string; provenance: Provenance }
@@ -544,20 +584,7 @@ type ComponentInfo = {
   name: string;
   grants: Map<string, Provenance>;
   owns: Map<string, Provenance>;
-  provides: ProvidedInfo[];
-  requires: RequiredInfo[];
   functions: Map<string, FunctionInfo>;
-  provenance: Provenance;
-};
-
-type ProvidedInfo = {
-  target: string;
-  provenance: Provenance;
-};
-
-type RequiredInfo = {
-  target: string;
-  relation: string;
   provenance: Provenance;
 };
 
@@ -578,9 +605,8 @@ type RuleInfo = {
     except?: string;
     provenance: Provenance;
   }[];
-  forbidCycles: {
-    relation: string;
-    relationKinds: string[];
+  forbidHypercycles: {
+    kinds: string[];
     provenance: Provenance;
   }[];
   provenance: Provenance;
@@ -591,10 +617,32 @@ type SourceRefInfo = {
   path: string;
 };
 
+type HyperedgeMember = {
+  endpoint: string;
+  index: number;
+  role?: string;
+};
+
+type HyperedgeInfo = {
+  name: string;
+  kind: string;
+  ordered: boolean;
+  members: HyperedgeMember[];
+  summary?: string;
+  provenance: Provenance;
+};
+
+type Hypergraph = {
+  edges: Map<string, HyperedgeInfo>;
+  /** vertex name -> hyperedge names incident to that vertex */
+  incidence: Map<string, string[]>;
+};
+
 type Model = {
   resources: Map<string, ResourceInfo>;
   traits: Map<string, TraitInfo>;
   components: Map<string, ComponentInfo>;
+  hypergraph: Hypergraph;
   implementations: ImplementationInfo[];
   rules: RuleInfo[];
   rationales: Map<string, RationaleInfo>;
@@ -622,7 +670,7 @@ export function checkShapeModules(modules: ShapeModule[] | CheckModuleInput[], o
     ...checkGuardedChanges(model),
     ...checkFunctions(model),
     ...checkProvidesRules(model),
-    ...checkDependencyCycles(model),
+    ...checkHypercycles(model),
     ...checkCoverage(model, options.changedFiles ?? [])
   ];
 
@@ -697,6 +745,7 @@ export function listMemoryGuardsShapeModules(modules: ShapeModule[] | CheckModul
 export function listShapeObligations(modules: ShapeModule[] | CheckModuleInput[]): string {
   const result = checkShapeModules(modules);
   const relevant = result.diagnostics.filter(isObligationDiagnostic);
+
   if (relevant.length === 0) {
     return "Open Shape Obligations\n\nNo open shape obligations.\n";
   }
@@ -752,6 +801,7 @@ export function explainShapeModules(modules: ShapeModule[] | CheckModuleInput[],
       lines.push("", "  final forbidden effects:");
       lines.push(...finalForbids.map((forbid) => `    ${formatTerm(forbid.effect, forbid.target)}`));
     }
+    appendIncidence(symbol, model, lines);
     return `${lines.join("\n")}\n`;
   }
 
@@ -821,32 +871,75 @@ export function explainShapeModules(modules: ShapeModule[] | CheckModuleInput[],
       "  functions:",
       ...[...component.functions.keys()].sort().map((name) => `    ${name}`)
     ];
+    appendIncidence(symbol, model, lines);
     return `${lines.join("\n")}\n`;
+  }
+
+  const relation = model.hypergraph.edges.get(symbol);
+  if (relation) {
+    return `${formatRelationExplanation(relation)}\n`;
   }
 
   return `No shape facts found for ${symbol}.\n`;
 }
 
-export function graphShapeModules(modules: ShapeModule[] | CheckModuleInput[], symbol: string, relation = "requires"): string {
+export function graphShapeModules(modules: ShapeModule[] | CheckModuleInput[], symbol: string, kindFilter?: string): string {
   const model = lowerShapeModules(modules);
-  const edges = buildDependencyEdges(model).filter((edge) => relation === "requires" || edge.relation === relation);
-  const lines = [symbol];
-  const seen = new Set<string>();
-
-  function visit(component: string, depth: number): void {
-    if (seen.has(component)) {
-      return;
+  const relation = model.hypergraph.edges.get(symbol);
+  if (relation) {
+    if (kindFilter && relation.kind !== kindFilter) {
+      return `No relations match kind ${kindFilter} for ${symbol}.\n`;
     }
-    seen.add(component);
-    for (const edge of edges.filter((candidate) => candidate.from === component)) {
-      lines.push(`${"  ".repeat(depth)}-> ${edge.to} via ${edge.relation}`);
-      visit(edge.to, depth + 1);
-    }
+    return `${formatHyperedgeLine(relation, 0, model)}\n`;
   }
 
-  visit(symbol, 1);
+  const incidentNames = model.hypergraph.incidence.get(symbol) ?? [];
+  const incident = incidentNames
+    .map((name) => model.hypergraph.edges.get(name))
+    .filter((edge): edge is HyperedgeInfo => edge !== undefined)
+    .filter((edge) => !kindFilter || edge.kind === kindFilter)
+    .sort((left, right) => `${left.kind}:${left.name}`.localeCompare(`${right.kind}:${right.name}`));
+
+  const lines = [formatVertexHeader(symbol, model)];
+  if (incident.length === 0) {
+    lines.push("  (no incident relations)");
+    return `${lines.join("\n")}\n`;
+  }
+
+  for (const edge of incident) {
+    lines.push(`  ${formatHyperedgeLine(edge, 1, model)}`);
+  }
   return `${lines.join("\n")}\n`;
 }
+
+/**
+ * Dump every hyperedge in the loaded modules, grouped by kind and sorted by name.
+ * Used by `shp graph` with no symbol argument.
+ */
+export function graphAllShapeModules(modules: ShapeModule[] | CheckModuleInput[], kindFilter?: string): string {
+  const model = lowerShapeModules(modules);
+  const edges = [...model.hypergraph.edges.values()]
+    .filter((edge) => !kindFilter || edge.kind === kindFilter)
+    .sort((left, right) => `${left.kind}:${left.name}`.localeCompare(`${right.kind}:${right.name}`));
+
+  if (edges.length === 0) {
+    return kindFilter
+      ? `No relations match kind ${kindFilter}.\n`
+      : "No relations declared.\n";
+  }
+
+  const lines = ["Hypergraph"];
+  let currentKind = "";
+  for (const edge of edges) {
+    if (edge.kind !== currentKind) {
+      currentKind = edge.kind;
+      lines.push("", `${currentKind}:`);
+    }
+    lines.push(`  ${formatHyperedgeLine(edge, 0, model)}`);
+  }
+  return `${lines.join("\n")}\n`;
+}
+
 
 export function formatDiagnostics(result: CheckResult): string {
   if (result.diagnostics.length === 0) {
@@ -862,6 +955,10 @@ function lowerShapeModules(modules: ShapeModule[] | CheckModuleInput[]): Model {
     resources: new Map(),
     traits: new Map(PRELUDE_TRAITS.map((trait) => [trait.name, cloneTraitInfo(trait)])),
     components: new Map(),
+    hypergraph: {
+      edges: new Map(),
+      incidence: new Map()
+    },
     implementations: [],
     rules: [],
     rationales: new Map(),
@@ -883,6 +980,8 @@ function lowerShapeModules(modules: ShapeModule[] | CheckModuleInput[]): Model {
         lowerTrait(declaration, input.filePath, model);
       } else if (isComponentDecl(declaration)) {
         lowerComponent(declaration, input.filePath, model);
+      } else if (isRelationDecl(declaration)) {
+        lowerRelation(declaration, input.filePath, model);
       } else if (isImplementationDecl(declaration)) {
         lowerImplementation(declaration, input.filePath, model);
       } else if (isAttestationDecl(declaration)) {
@@ -993,8 +1092,6 @@ function lowerComponent(component: ComponentDecl, filePath: string | undefined, 
     name: component.name,
     grants: new Map(),
     owns: new Map(),
-    provides: [],
-    requires: [],
     functions: new Map(),
     provenance: prov
   };
@@ -1015,21 +1112,6 @@ function lowerComponent(component: ComponentDecl, filePath: string | undefined, 
         target: grant.target ?? "",
         provenance: memberProv
       });
-    } else if (isProvidesDecl(member)) {
-      const memberProv = provenance(filePath, `component ${component.name} provides ${member.target.name}`);
-      info.provides.push({ target: member.target.name, provenance: memberProv });
-      model.facts.push({ kind: "provides", component: component.name, target: member.target.name, provenance: memberProv });
-    } else if (isRequiresDecl(member)) {
-      const relation = member.relation ?? "requires";
-      const memberProv = provenance(filePath, `component ${component.name} requires ${member.target.name} via ${relation}`);
-      info.requires.push({ target: member.target.name, relation, provenance: memberProv });
-      model.facts.push({
-        kind: "requires",
-        component: component.name,
-        target: member.target.name,
-        relation,
-        provenance: memberProv
-      });
     } else if (isFunctionSummary(member)) {
       const fn = lowerFunction(member, component.name, filePath);
       info.functions.set(fn.name, fn);
@@ -1039,6 +1121,196 @@ function lowerComponent(component: ComponentDecl, filePath: string | undefined, 
 
   model.components.set(component.name, info);
   model.facts.push({ kind: "component", name: component.name, provenance: prov });
+}
+
+function lowerRelation(relation: RelationDecl, filePath: string | undefined, model: Model): void {
+  const prov = provenance(filePath, `relation ${relation.name}`);
+  if (model.hypergraph.edges.has(relation.name)) {
+    model.diagnostics.push({
+      kind: "duplicate_declaration",
+      declarationKind: "relation",
+      name: relation.name,
+      filePath,
+      causedBy: [describeProvenance(model.hypergraph.edges.get(relation.name)?.provenance), describeProvenance(prov)]
+    });
+    return;
+  }
+
+  let kindValue: string | undefined;
+  let connectsDecl: ReturnType<typeof collectConnects> | undefined;
+  let summary: string | undefined;
+  const roleByEndpoint = new Map<string, string>();
+
+  for (const member of relation.members) {
+    if (isRelationKindDecl(member)) {
+      kindValue = member.value;
+    } else if (isRelationConnectsDecl(member)) {
+      if (connectsDecl) {
+        model.diagnostics.push({
+          kind: "invalid_relation",
+          name: relation.name,
+          reason: "duplicate connects",
+          filePath,
+          causedBy: [describeProvenance(prov)]
+        });
+        continue;
+      }
+      connectsDecl = collectConnects(member);
+    } else if (isRelationRolesDecl(member)) {
+      for (const role of member.roles) {
+        roleByEndpoint.set(role.name, role.role);
+      }
+    } else if (isRelationSummaryDecl(member)) {
+      summary = unquote(member.value);
+    }
+  }
+
+  if (!kindValue) {
+    model.diagnostics.push({
+      kind: "invalid_relation",
+      name: relation.name,
+      reason: "missing kind",
+      filePath,
+      causedBy: [describeProvenance(prov)]
+    });
+    return;
+  }
+
+  if (!connectsDecl) {
+    model.diagnostics.push({
+      kind: "invalid_relation",
+      name: relation.name,
+      reason: "missing connects",
+      filePath,
+      causedBy: [describeProvenance(prov)]
+    });
+    return;
+  }
+
+  if (connectsDecl.endpoints.length < 2) {
+    model.diagnostics.push({
+      kind: "invalid_relation",
+      name: relation.name,
+      reason: "connects requires at least two endpoints",
+      filePath,
+      causedBy: [describeProvenance(prov)]
+    });
+    return;
+  }
+
+  const seen = new Set<string>();
+  for (const endpoint of connectsDecl.endpoints) {
+    if (seen.has(endpoint)) {
+      model.diagnostics.push({
+        kind: "invalid_relation",
+        name: relation.name,
+        reason: `duplicate endpoint ${endpoint}`,
+        filePath,
+        causedBy: [describeProvenance(prov)]
+      });
+      return;
+    }
+    seen.add(endpoint);
+  }
+
+  const rule = PRELUDE_RELATION_KINDS.get(kindValue);
+  if (rule) {
+    if (rule.arity === "binary" && connectsDecl.endpoints.length !== 2) {
+      model.diagnostics.push({
+        kind: "invalid_relation",
+        name: relation.name,
+        reason: `kind ${kindValue} requires exactly two endpoints`,
+        filePath,
+        causedBy: [describeProvenance(prov)]
+      });
+      return;
+    }
+    if (rule.arity === "ordered" && !connectsDecl.ordered) {
+      model.diagnostics.push({
+        kind: "invalid_relation",
+        name: relation.name,
+        reason: `kind ${kindValue} requires ordered connects (A -> B -> ...)`,
+        filePath,
+        causedBy: [describeProvenance(prov)]
+      });
+      return;
+    }
+    if (rule.arity === "binary" && connectsDecl.ordered === false) {
+      // binary kinds permit either ordered or set; the parser only sets
+      // `ordered` when the `->` separator appears, so 2-member set syntax
+      // `{ A, B }` is allowed. No diagnostic.
+    }
+  }
+
+  const members: HyperedgeMember[] = connectsDecl.endpoints.map((endpoint, index) => ({
+    endpoint,
+    index,
+    role: roleByEndpoint.get(endpoint)
+  }));
+
+  const info: HyperedgeInfo = {
+    name: relation.name,
+    kind: kindValue,
+    ordered: connectsDecl.ordered,
+    members,
+    summary,
+    provenance: prov
+  };
+
+  model.hypergraph.edges.set(relation.name, info);
+  for (const member of members) {
+    const incident = model.hypergraph.incidence.get(member.endpoint) ?? [];
+    incident.push(relation.name);
+    model.hypergraph.incidence.set(member.endpoint, incident);
+  }
+
+  model.facts.push({
+    kind: "hyperedge",
+    name: relation.name,
+    relationKind: kindValue,
+    ordered: connectsDecl.ordered,
+    provenance: prov
+  });
+  for (const member of members) {
+    model.facts.push({
+      kind: "hyperedge_member",
+      hyperedge: relation.name,
+      endpoint: member.endpoint,
+      index: member.index,
+      role: member.role,
+      provenance: provenance(filePath, `relation ${relation.name} connects ${member.endpoint}`)
+    });
+  }
+}
+
+function removeRelation(name: string, model: Model): void {
+  const info = model.hypergraph.edges.get(name);
+  if (!info) {
+    return;
+  }
+  model.hypergraph.edges.delete(name);
+  for (const member of info.members) {
+    const incident = model.hypergraph.incidence.get(member.endpoint);
+    if (!incident) {
+      continue;
+    }
+    const filtered = incident.filter((edge) => edge !== name);
+    if (filtered.length === 0) {
+      model.hypergraph.incidence.delete(member.endpoint);
+    } else {
+      model.hypergraph.incidence.set(member.endpoint, filtered);
+    }
+  }
+}
+
+function collectConnects(member: { endpoints: RelationEndpoint[]; ordered: boolean }): {
+  endpoints: string[];
+  ordered: boolean;
+} {
+  return {
+    endpoints: member.endpoints.map((endpoint) => endpoint.name),
+    ordered: member.ordered === true
+  };
 }
 
 function lowerImplementation(implementation: ImplementationDecl, filePath: string | undefined, model: Model): void {
@@ -1096,7 +1368,7 @@ function lowerRule(rule: RuleDecl, filePath: string | undefined, model: Model): 
     whenHas: [],
     forbidEffects: [],
     forbidProvides: [],
-    forbidCycles: [],
+    forbidHypercycles: [],
     provenance: provenance(filePath, `rule ${rule.name}`)
   };
 
@@ -1107,8 +1379,8 @@ function lowerRule(rule: RuleDecl, filePath: string | undefined, model: Model): 
       info.forbidEffects.push(lowerRuleForbid(member, filePath, rule.name));
     } else if (isRuleForbidProvidesDecl(member)) {
       info.forbidProvides.push(lowerRuleForbidProvides(member, filePath, rule.name));
-    } else if (isRuleForbidCycleDecl(member)) {
-      info.forbidCycles.push(lowerRuleForbidCycle(member, filePath, rule.name));
+    } else if (isRuleForbidHypercycleDecl(member)) {
+      info.forbidHypercycles.push(lowerRuleForbidHypercycle(member, filePath, rule.name));
     }
   }
 
@@ -1380,6 +1652,8 @@ function lowerDeclaration(declaration: AddDeclarationChange["declaration"] | Mod
     lowerTrait(declaration, filePath, model);
   } else if (isComponentDecl(declaration)) {
     lowerComponent(declaration, filePath, model);
+  } else if (isRelationDecl(declaration)) {
+    lowerRelation(declaration, filePath, model);
   } else if (isImplementationDecl(declaration)) {
     lowerImplementation(declaration, filePath, model);
   } else if (isAttestationDecl(declaration)) {
@@ -1396,6 +1670,8 @@ function removeDeclaration(kind: RemoveDeclarationChange["kind"], name: string, 
     model.traits.delete(name);
   } else if (kind === "component") {
     model.components.delete(name);
+  } else if (kind === "relation") {
+    removeRelation(name, model);
   } else if (kind === "implementation") {
     model.implementations = model.implementations.filter((implementation) => implementation.name !== name);
   } else if (kind === "rule") {
@@ -1414,6 +1690,9 @@ function declarationKind(
   }
   if (isComponentDecl(declaration)) {
     return "component";
+  }
+  if (isRelationDecl(declaration)) {
+    return "relation";
   }
   if (isImplementationDecl(declaration)) {
     return "implementation";
@@ -1552,15 +1831,14 @@ function lowerRuleForbidProvides(
   };
 }
 
-function lowerRuleForbidCycle(
-  member: RuleForbidCycleDecl,
+function lowerRuleForbidHypercycle(
+  member: RuleForbidHypercycleDecl,
   filePath: string | undefined,
   ruleName: string
-): RuleInfo["forbidCycles"][number] {
+): RuleInfo["forbidHypercycles"][number] {
   return {
-    relation: member.relation,
-    relationKinds: member.relationKinds,
-    provenance: provenance(filePath, `rule ${ruleName} forbids cycle over ${member.relation}`)
+    kinds: [...member.kinds],
+    provenance: provenance(filePath, `rule ${ruleName} forbids hypercycle${member.kinds.length > 0 ? ` over ${member.kinds.join(" or ")}` : ""}`)
   };
 }
 
@@ -1766,7 +2044,25 @@ function checkResolvedNames(model: Model): SemanticDiagnostic[] {
     }
   }
 
+  for (const hyperedge of model.hypergraph.edges.values()) {
+    for (const member of hyperedge.members) {
+      if (!isResolvedVertex(member.endpoint, model)) {
+        diagnostics.push({
+          kind: "unknown_name",
+          nameKind: "relation_endpoint",
+          name: member.endpoint,
+          filePath: hyperedge.provenance.filePath,
+          causedBy: [describeProvenance(hyperedge.provenance)]
+        });
+      }
+    }
+  }
+
   return diagnostics;
+}
+
+function isResolvedVertex(name: string, model: Model): boolean {
+  return model.components.has(name) || model.resources.has(name);
 }
 
 function checkContextTargets(model: Model): SemanticDiagnostic[] {
@@ -2027,20 +2323,31 @@ function checkProvidesRules(model: Model): SemanticDiagnostic[] {
 
   for (const rule of model.rules) {
     for (const forbid of rule.forbidProvides) {
-      for (const component of model.components.values()) {
-        for (const provided of component.provides) {
-          if (provided.target === forbid.target && component.name !== forbid.except) {
-            diagnostics.push({
-              kind: "forbidden_provides",
-              rule: rule.name,
-              component: component.name,
-              target: provided.target,
-              allowedComponent: forbid.except,
-              filePath: provided.provenance.filePath,
-              causedBy: [describeProvenance(provided.provenance), describeProvenance(forbid.provenance)]
-            });
-          }
+      for (const hyperedge of model.hypergraph.edges.values()) {
+        if (hyperedge.kind !== "provides") {
+          continue;
         }
+        const provider = providesProvider(hyperedge);
+        const target = providesTarget(hyperedge);
+        if (!provider || !target) {
+          continue;
+        }
+        if (target !== forbid.target) {
+          continue;
+        }
+        if (provider === forbid.except) {
+          continue;
+        }
+        diagnostics.push({
+          kind: "forbidden_provides",
+          rule: rule.name,
+          provider,
+          target,
+          hyperedge: hyperedge.name,
+          allowedComponent: forbid.except,
+          filePath: hyperedge.provenance.filePath,
+          causedBy: [describeProvenance(hyperedge.provenance), describeProvenance(forbid.provenance)]
+        });
       }
     }
   }
@@ -2048,30 +2355,183 @@ function checkProvidesRules(model: Model): SemanticDiagnostic[] {
   return diagnostics;
 }
 
-function checkDependencyCycles(model: Model): SemanticDiagnostic[] {
+/**
+ * `provides` hyperedges connect `provider -> target` (binary, directed).
+ */
+function providesProvider(hyperedge: HyperedgeInfo): string | undefined {
+  return hyperedge.members[0]?.endpoint;
+}
+
+function providesTarget(hyperedge: HyperedgeInfo): string | undefined {
+  return hyperedge.members[1]?.endpoint;
+}
+
+function checkHypercycles(model: Model): SemanticDiagnostic[] {
   const diagnostics: SemanticDiagnostic[] = [];
-  const edges = buildDependencyEdges(model);
+  const seenCycles = new Set<string>();
 
   for (const rule of model.rules) {
-    for (const cycleRule of rule.forbidCycles) {
-      const cycle = findDependencyCycle(edges, cycleRule.relationKinds);
-      if (cycle) {
-        diagnostics.push({
-          kind: "forbidden_dependency_cycle",
-          rule: rule.name,
-          path: cycle.path,
-          relationKinds: cycle.relationKinds,
-          filePath: cycleRule.provenance.filePath,
-          causedBy: [
-            describeProvenance(cycleRule.provenance),
-            ...cycle.provenance.map((item) => describeProvenance(item))
-          ]
-        });
+    for (const forbid of rule.forbidHypercycles) {
+      const cycle = findHypercycle(model, forbid.kinds);
+      if (!cycle) {
+        continue;
       }
+
+      const signature = cycle.hyperedges.map((edge) => edge.name).sort().join(",");
+      const dedupeKey = `${rule.name}:${signature}`;
+      if (seenCycles.has(dedupeKey)) {
+        continue;
+      }
+      seenCycles.add(dedupeKey);
+
+      diagnostics.push({
+        kind: "forbidden_hypercycle",
+        rule: rule.name,
+        vertices: cycle.vertices,
+        hyperedges: cycle.hyperedges.map((edge) => ({ name: edge.name, kind: edge.kind })),
+        filePath: forbid.provenance.filePath,
+        causedBy: [describeProvenance(forbid.provenance), ...cycle.provenance.map(describeProvenance)]
+      });
     }
   }
 
   return diagnostics;
+}
+
+type HypercycleWitness = {
+  vertices: string[];
+  hyperedges: HyperedgeInfo[];
+  provenance: Provenance[];
+};
+
+type HyperedgeStep = {
+  hyperedge: HyperedgeInfo;
+  from: string;
+  to: string;
+};
+
+/**
+ * Find a cycle in the directed hypergraph.
+ *
+ * Each relation kind contributes directed steps to the traversal according
+ * to its `cycleTraversal` rule in the prelude kind registry:
+ *
+ * - `directed_pairs`: a 2-vertex hyperedge contributes one step `members[0] -> members[1]`.
+ * - `ordered_path`: an N-vertex hyperedge contributes consecutive steps
+ *   `members[i] -> members[i+1]` along the declared order.
+ * - `none`: the hyperedge does not participate in cycle detection.
+ *
+ * `kindsFilter`, if non-empty, restricts the search to hypercycles whose
+ * witness must include at least one step from a hyperedge whose `kind`
+ * matches one of the listed kinds.
+ */
+function findHypercycle(model: Model, kindsFilter: string[]): HypercycleWitness | undefined {
+  const steps = buildHyperedgeSteps(model);
+  if (steps.length === 0) {
+    return undefined;
+  }
+
+  const adjacency = new Map<string, HyperedgeStep[]>();
+  const vertices = new Set<string>();
+  for (const step of steps) {
+    vertices.add(step.from);
+    vertices.add(step.to);
+    const existing = adjacency.get(step.from) ?? [];
+    existing.push(step);
+    adjacency.set(step.from, existing);
+  }
+
+  const allowedKinds = kindsFilter.length === 0 ? undefined : new Set(kindsFilter);
+
+  for (const start of [...vertices].sort()) {
+    const visited = new Set<string>();
+    const witness = dfsHypercycle(start, start, adjacency, [], visited, allowedKinds);
+    if (witness) {
+      return witness;
+    }
+  }
+
+  return undefined;
+}
+
+function dfsHypercycle(
+  start: string,
+  current: string,
+  adjacency: Map<string, HyperedgeStep[]>,
+  path: HyperedgeStep[],
+  visited: Set<string>,
+  allowedKinds: Set<string> | undefined
+): HypercycleWitness | undefined {
+  if (visited.has(current)) {
+    return undefined;
+  }
+  visited.add(current);
+
+  const nextSteps = adjacency.get(current) ?? [];
+  for (const step of nextSteps) {
+    const nextPath = [...path, step];
+    if (step.to === start) {
+      if (!allowedKinds || nextPath.some((entry) => allowedKinds.has(entry.hyperedge.kind))) {
+        return witnessFromPath(start, nextPath);
+      }
+      continue;
+    }
+
+    const witness = dfsHypercycle(start, step.to, adjacency, nextPath, new Set(visited), allowedKinds);
+    if (witness) {
+      return witness;
+    }
+  }
+
+  return undefined;
+}
+
+function witnessFromPath(start: string, path: HyperedgeStep[]): HypercycleWitness {
+  const vertices = [start, ...path.map((step) => step.to)];
+  const seenEdges = new Set<string>();
+  const hyperedges: HyperedgeInfo[] = [];
+  for (const step of path) {
+    if (!seenEdges.has(step.hyperedge.name)) {
+      seenEdges.add(step.hyperedge.name);
+      hyperedges.push(step.hyperedge);
+    }
+  }
+  return {
+    vertices,
+    hyperedges,
+    provenance: hyperedges.map((edge) => edge.provenance)
+  };
+}
+
+function buildHyperedgeSteps(model: Model): HyperedgeStep[] {
+  const steps: HyperedgeStep[] = [];
+  for (const edge of model.hypergraph.edges.values()) {
+    const rule = PRELUDE_RELATION_KINDS.get(edge.kind);
+    const traversal = rule?.cycleTraversal ?? "none";
+    if (traversal === "none") {
+      continue;
+    }
+
+    if (traversal === "directed_pairs") {
+      if (edge.members.length < 2) {
+        continue;
+      }
+      steps.push({
+        hyperedge: edge,
+        from: edge.members[0]!.endpoint,
+        to: edge.members[1]!.endpoint
+      });
+    } else if (traversal === "ordered_path") {
+      for (let index = 0; index < edge.members.length - 1; index += 1) {
+        steps.push({
+          hyperedge: edge,
+          from: edge.members[index]!.endpoint,
+          to: edge.members[index + 1]!.endpoint
+        });
+      }
+    }
+  }
+  return steps;
 }
 
 function checkCoverage(model: Model, changedFiles: string[]): SemanticDiagnostic[] {
@@ -2176,6 +2636,9 @@ function targetExists(target: ShapeTarget, model: Model): boolean {
   }
   if (target.kind === "rule") {
     return model.rules.some((rule) => rule.name === target.name);
+  }
+  if (target.kind === "relation") {
+    return model.hypergraph.edges.has(target.name);
   }
   return false;
 }
@@ -2293,6 +2756,38 @@ function guardsForTarget(target: ShapeTarget, model: Model): { kind: ContextKind
     }
   }
   return guards.sort((left, right) => `${left.kind}:${left.info.name}`.localeCompare(`${right.kind}:${right.info.name}`));
+}
+
+function formatRelationExplanation(relation: HyperedgeInfo): string {
+  const lines = [
+    relation.name,
+    "  kind: relation",
+    `  relation kind: ${relation.kind}`,
+    `  ordered: ${relation.ordered ? "true" : "false"}`,
+    "  connects:"
+  ];
+  for (const member of relation.members) {
+    const role = member.role ? ` as ${member.role}` : "";
+    lines.push(`    ${member.index}: ${member.endpoint}${role}`);
+  }
+  if (relation.summary) {
+    lines.push("", `  summary: ${JSON.stringify(relation.summary)}`);
+  }
+  return lines.join("\n");
+}
+
+function appendIncidence(vertex: string, model: Model, lines: string[]): void {
+  const incident = (model.hypergraph.incidence.get(vertex) ?? [])
+    .map((name) => model.hypergraph.edges.get(name))
+    .filter((edge): edge is HyperedgeInfo => edge !== undefined)
+    .sort((left, right) => `${left.kind}:${left.name}`.localeCompare(`${right.kind}:${right.name}`));
+  if (incident.length === 0) {
+    return;
+  }
+  lines.push("", "  relations:");
+  for (const edge of incident) {
+    lines.push(`    ${formatHyperedgeLine(edge, 2, model)}`);
+  }
 }
 
 function formatRationaleExplanation(rationale: RationaleInfo): string {
@@ -2470,97 +2965,33 @@ function dedupeForbids(
   });
 }
 
-type DependencyEdge = {
-  from: string;
-  to: string;
-  relation: string;
-  provenance: Provenance;
-};
-
-function buildDependencyEdges(model: Model): DependencyEdge[] {
-  const providers = new Map<string, string[]>();
-  for (const component of model.components.values()) {
-    for (const provided of component.provides) {
-      const existing = providers.get(provided.target) ?? [];
-      existing.push(component.name);
-      providers.set(provided.target, existing);
-    }
-  }
-
-  const edges: DependencyEdge[] = [];
-  for (const component of model.components.values()) {
-    for (const required of component.requires) {
-      const directComponent = model.components.has(required.target) ? [required.target] : [];
-      const providerComponents = providers.get(required.target) ?? [];
-      const targets = directComponent.length > 0 ? directComponent : providerComponents;
-      for (const target of targets) {
-        edges.push({
-          from: component.name,
-          to: target,
-          relation: required.relation,
-          provenance: required.provenance
-        });
-      }
-    }
-  }
-  return edges;
+function formatHyperedgeLine(edge: HyperedgeInfo, _indent: number, model: Model): string {
+  const separator = edge.ordered ? " -> " : ", ";
+  const labelled = edge.members.map((member) => formatHyperedgeMember(member, model));
+  const set = edge.ordered ? labelled.join(separator) : `{ ${labelled.join(separator)} }`;
+  const summary = edge.summary ? `  // ${edge.summary}` : "";
+  return `${edge.kind} ${edge.name}: ${set}${summary}`;
 }
 
-function findDependencyCycle(
-  edges: DependencyEdge[],
-  requiredKinds: string[]
-): { path: string[]; relationKinds: string[]; provenance: Provenance[] } | undefined {
-  const adjacency = new Map<string, DependencyEdge[]>();
-  for (const edge of edges) {
-    const existing = adjacency.get(edge.from) ?? [];
-    existing.push(edge);
-    adjacency.set(edge.from, existing);
-  }
-
-  for (const start of adjacency.keys()) {
-    const result = dfsCycle(start, start, adjacency, [], new Set(), requiredKinds);
-    if (result) {
-      return result;
-    }
-  }
-
-  return undefined;
+function formatHyperedgeMember(member: HyperedgeMember, model: Model): string {
+  const role = member.role ? ` as ${member.role}` : "";
+  const kind = vertexKindLabel(member.endpoint, model);
+  return `${member.endpoint}${kind}${role}`;
 }
 
-function dfsCycle(
-  start: string,
-  current: string,
-  adjacency: Map<string, DependencyEdge[]>,
-  path: DependencyEdge[],
-  seen: Set<string>,
-  requiredKinds: string[]
-): { path: string[]; relationKinds: string[]; provenance: Provenance[] } | undefined {
-  if (seen.has(current)) {
-    return undefined;
+function vertexKindLabel(name: string, model: Model): string {
+  if (model.components.has(name)) {
+    return " (component)";
   }
-  seen.add(current);
-
-  for (const edge of adjacency.get(current) ?? []) {
-    const nextPath = [...path, edge];
-    if (edge.to === start) {
-      const relationKinds = nextPath.map((item) => item.relation);
-      if (requiredKinds.length === 0 || relationKinds.some((kind) => requiredKinds.includes(kind))) {
-        return {
-          path: [start, ...nextPath.map((item) => item.to)],
-          relationKinds,
-          provenance: nextPath.map((item) => item.provenance)
-        };
-      }
-      continue;
-    }
-
-    const result = dfsCycle(start, edge.to, adjacency, nextPath, new Set(seen), requiredKinds);
-    if (result) {
-      return result;
-    }
+  if (model.resources.has(name)) {
+    return " (resource)";
   }
+  return "";
+}
 
-  return undefined;
+function formatVertexHeader(name: string, model: Model): string {
+  const kind = vertexKindLabel(name, model).trim();
+  return kind ? `${name} ${kind}` : name;
 }
 
 function missingUnsafeRequirements(fn: FunctionInfo): string[] {
@@ -2593,8 +3024,8 @@ function formatDiagnostic(diagnostic: ShapeDiagnostic): string {
       return formatDuplicateDeclarationDiagnostic(diagnostic);
     case "missing_shape_delta":
       return formatMissingShapeDeltaDiagnostic(diagnostic);
-    case "forbidden_dependency_cycle":
-      return formatDependencyCycleDiagnostic(diagnostic);
+    case "forbidden_hypercycle":
+      return formatForbiddenHypercycleDiagnostic(diagnostic);
     case "forbidden_provides":
       return formatForbiddenProvidesDiagnostic(diagnostic);
     case "unsafe_effects":
@@ -2611,6 +3042,8 @@ function formatDiagnostic(diagnostic: ShapeDiagnostic): string {
       return formatGuardedShapeChangedDiagnostic(diagnostic);
     case "invalid_reevaluation":
       return formatInvalidReevaluationDiagnostic(diagnostic);
+    case "invalid_relation":
+      return formatInvalidRelationDiagnostic(diagnostic);
   }
 }
 
@@ -2682,15 +3115,15 @@ function formatMissingShapeDeltaDiagnostic(diagnostic: Extract<SemanticDiagnosti
   ].join("\n");
 }
 
-function formatDependencyCycleDiagnostic(
-  diagnostic: Extract<SemanticDiagnostic, { kind: "forbidden_dependency_cycle" }>
+function formatForbiddenHypercycleDiagnostic(
+  diagnostic: Extract<SemanticDiagnostic, { kind: "forbidden_hypercycle" }>
 ): string {
   return [
-    "error: forbidden dependency cycle",
+    "error: forbidden hypercycle",
     "",
-    `rule ${diagnostic.rule} rejects this dependency cycle:`,
-    `  ${diagnostic.path.join(" -> ")}`,
-    `relations: ${diagnostic.relationKinds.join(", ")}`,
+    `rule ${diagnostic.rule} rejects this hypercycle:`,
+    ...diagnostic.hyperedges.map((edge) => `  ${edge.kind} ${edge.name}`),
+    `witness: ${diagnostic.vertices.join(" -> ")}`,
     formatCausedBy(diagnostic.causedBy)
   ].join("\n");
 }
@@ -2700,7 +3133,7 @@ function formatForbiddenProvidesDiagnostic(diagnostic: Extract<SemanticDiagnosti
   return [
     "error: forbidden provides",
     "",
-    `${diagnostic.component} provides ${diagnostic.target}.`,
+    `${diagnostic.provider} provides ${diagnostic.target} via relation ${diagnostic.hyperedge}.`,
     `rule ${diagnostic.rule} forbids provides ${diagnostic.target}${allowed}.`,
     formatCausedBy(diagnostic.causedBy)
   ].join("\n");
@@ -2789,6 +3222,17 @@ function formatInvalidReevaluationDiagnostic(
     "error: invalid reevaluation",
     "",
     `reevaluation ${diagnostic.name} is invalid: ${diagnostic.reason}.`,
+    formatCausedBy(diagnostic.causedBy)
+  ].join("\n");
+}
+
+function formatInvalidRelationDiagnostic(
+  diagnostic: Extract<SemanticDiagnostic, { kind: "invalid_relation" }>
+): string {
+  return [
+    "error: invalid relation",
+    "",
+    `relation ${diagnostic.name} is invalid: ${diagnostic.reason}.`,
     formatCausedBy(diagnostic.causedBy)
   ].join("\n");
 }

@@ -72,7 +72,7 @@ Shape also covers:
 - refactor-sensitive functions changed without a recorded reevaluation
 - required design context or descriptions missing from non-obvious function shapes
 - semantic dependency cycles with witness paths
-- project-specific rules like "only Gateway may provide JsonRpcEndpoint"
+- project-specific rules like "only Gateway may provide JsonRpcEndpoint", expressed over `provides` relation hyperedges
 - optional analyzer hints for obvious `DELETE`, `TRUNCATE`, and `DROP` operations
 
 See [Refactor Constraints](docs-site/src/content/docs/concepts/refactor-constraints.md) for the design-memory workflow around rationale, memory, and reevaluation.
@@ -154,7 +154,7 @@ shp check --changed-files changed.txt
 shp coverage --changed-files changed.txt
 shp fmt --check
 shp explain AuditEvent
-shp graph Gateway --relation requires
+shp graph Gateway --kind calls
 shp memory
 shp obligations
 shp author --changed-files changed.txt --component AuditStore
@@ -168,8 +168,8 @@ Useful commands:
 - `shp check`: run conformance checks.
 - `shp coverage --changed-files changed.txt`: enforce shape deltas or attestations for governed paths.
 - `shp fmt --check`: verify canonical formatting.
-- `shp explain AuditEvent`: show derived facts and constraints for a symbol.
-- `shp graph Gateway --relation requires`: print dependency paths.
+- `shp explain AuditEvent`: show derived facts and incident relations for a symbol.
+- `shp graph [SYMBOL] [--kind KIND]`: with a SYMBOL, print the hyperedges incident to that symbol; without a SYMBOL, print the whole hypergraph grouped by kind. `--kind` filters in either mode.
 - `shp memory`: list rationale and memory entries that protect design context.
 - `shp obligations`: list open design-memory obligations such as missing rationale or reevaluation.
 - `shp author --changed-files changed.txt --component AuditStore`: scaffold a reviewable change file with explicit unknowns.

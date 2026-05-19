@@ -125,7 +125,7 @@ Rules consume facts and internal indexes. They answer questions such as:
 - Did a governed source file change without a matching shape delta or attestation?
 - Did a function marked `RefactorSensitive` receive the required memory?
 - Did a guarded target change without a matching reevaluation?
-- Did a dependency rule find a forbidden cycle, and what path proves it?
+- Did a hypercycle rule find a forbidden cycle in the directed hypergraph, and what relations and vertex path prove it?
 
 The important detail is that these checks are deterministic comparisons over a lowered model. The checker can be conservative because it is not guessing from code. If a function has `effects unknown`, the model says uncertainty remains. If a function has `effects complete`, the author is claiming every material effect is represented.
 

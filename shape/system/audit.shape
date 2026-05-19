@@ -19,3 +19,8 @@ component AuditStore {
         evidence ts("src/audit/store.ts:18-25")
     }
 }
+
+relation AuditStoreOwnsAuditEvent {
+  kind provides
+  connects AuditStore -> AuditEvent
+}

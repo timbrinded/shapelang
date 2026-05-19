@@ -11,6 +11,7 @@ import {
   formatDiagnostics,
   formatShapeSource,
   generateShapeDelta,
+  graphAllShapeModules,
   graphShapeModules,
   listMemoryGuardsShapeModules,
   listShapeObligations,
@@ -23,13 +24,14 @@ const USAGE = `Usage:
   shp coverage --changed-files changed.txt [files...]
   shp fmt [--check] [files...]
   shp explain SYMBOL [files...]
-  shp graph SYMBOL [--relation requires] [files...]
+  shp graph [SYMBOL] [--kind KIND] [files...]
   shp memory [files...]
   shp obligations [files...]
   shp author --changed-files changed.txt --component ComponentName [--change ChangeName] [--module module.name]
   shp analyze [--shape-files file1.shape,file2.shape] [source-files...]
 
 When no files are provided, commands scan shape/system/**/*.shape and shape/changes/**/*.shape.
+\`shp graph\` without a SYMBOL prints every relation in the hypergraph.
 `;
 
 async function main(): Promise<number> {
@@ -43,7 +45,7 @@ async function main(): Promise<number> {
       check: {
         type: "boolean"
       },
-      relation: {
+      kind: {
         type: "string"
       },
       component: {
@@ -110,13 +112,16 @@ async function main(): Promise<number> {
   }
 
   if (command === "graph") {
-    const [symbol, ...files] = providedFiles;
-    if (!symbol) {
-      await Bun.write(Bun.stderr, USAGE);
-      return 2;
-    }
+    const [maybeSymbol, ...rest] = providedFiles;
+    const looksLikeFile = typeof maybeSymbol === "string" && maybeSymbol.endsWith(".shape");
+    const symbol = !maybeSymbol || looksLikeFile ? undefined : maybeSymbol;
+    const files = symbol ? rest : providedFiles;
     const modules = await parseModules(files.length > 0 ? files : await defaultShapeFiles());
-    await Bun.write(Bun.stdout, graphShapeModules(modules, symbol, values.relation));
+    if (symbol) {
+      await Bun.write(Bun.stdout, graphShapeModules(modules, symbol, values.kind));
+    } else {
+      await Bun.write(Bun.stdout, graphAllShapeModules(modules, values.kind));
+    }
     return 0;
   }
 

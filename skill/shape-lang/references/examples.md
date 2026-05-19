@@ -52,11 +52,26 @@ attest no_shape_change {
 }
 ```
 
-Dependency rule with a semantic relation:
+Structural relations and a hypercycle rule:
 
 ```shape
+component Api {
+}
+component Worker {
+}
+
+relation ApiCallsWorker {
+  kind calls
+  connects Api -> Worker
+}
+
+relation WorkerCallsApi {
+  kind callbacks
+  connects Worker -> Api
+}
+
 rule no_runtime_control_cycle {
-  forbid cycle over requires where includes RuntimeCall or ControlPlaneDependency
+  forbid hypercycle over calls or callbacks
 }
 ```
 

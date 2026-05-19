@@ -1,11 +1,13 @@
 ---
 title: Components, Ownership, and Grants
-description: How Shape groups functions, resources, permissions, and dependencies.
+description: How Shape groups functions, resources, and permissions inside a component boundary.
 sidebar:
   order: 2
 ---
 
-Components are the main boundary for architectural claims.
+Components are the main boundary for claims about authority and behavior: what a component owns, what it is allowed to do, and which functions it provides.
+
+Components do **not** carry structural dependencies. Calls, provides, and other links between components live in `relation` declarations. See [Relations and Hypergraphs](./relations-hypergraphs.md).
 
 ![Component boundary diagram showing ownership, grants, functions, provides, requires, and the note that ownership is not runtime allocation.](../../../assets/infographics/component-boundary-grants.png)
 
@@ -56,17 +58,10 @@ component AuditStore {
 
 `AuditEvent : AppendOnly` derives a final forbid for `HardDelete<AuditEvent>`, so the grant is not enough.
 
-## Provides and requires
+## Function summaries
 
-Components can also describe semantic dependencies:
+Each `fn` member declares the function's source location, effects, and any shape traits or descriptions the reviewer needs to see. Function-level `requires` is a capability term used together with `unsafe` effects; it is unrelated to structural dependencies between components.
 
-```shape
-module gateway
+## Structural dependencies
 
-component Gateway {
-  provides JsonRpcEndpoint
-  requires AuditStore via calls
-}
-```
-
-Those relationships power graph inspection and dependency-cycle rules.
+Structural links between components and resources live exclusively in top-level `relation` declarations, never inside a `component` block. See [Relations and Hypergraphs](./relations-hypergraphs.md) for the syntax and semantics.
