@@ -101,6 +101,11 @@ if (image) {
       z-index: -3;
     }
 
+    .shape-hero__media,
+    .shape-hero__shade {
+      pointer-events: none;
+    }
+
     .shape-hero__shade {
       z-index: -2;
       background:
@@ -120,6 +125,8 @@ if (image) {
     }
 
     .shape-hero__copy {
+      position: relative;
+      z-index: 1;
       width: min(100% - 2rem, 68rem);
       margin-inline: auto;
       padding: clamp(4.5rem, 10vw, 7.5rem) 1rem clamp(4rem, 8vw, 6.5rem);
