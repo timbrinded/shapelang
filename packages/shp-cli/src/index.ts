@@ -121,13 +121,17 @@ async function main(): Promise<number> {
   }
 
   if (command === "memory") {
-    const modules = await parseModules(providedFiles.length > 0 ? providedFiles : await defaultShapeFiles());
+    const modules = await parseModules(
+      providedFiles.length > 0 ? providedFiles : await defaultShapeFiles()
+    );
     await Bun.write(Bun.stdout, listMemoryGuardsShapeModules(modules));
     return 0;
   }
 
   if (command === "obligations") {
-    const modules = await parseModules(providedFiles.length > 0 ? providedFiles : await defaultShapeFiles());
+    const modules = await parseModules(
+      providedFiles.length > 0 ? providedFiles : await defaultShapeFiles()
+    );
     await Bun.write(Bun.stdout, listShapeObligations(modules));
     return 0;
   }
@@ -177,7 +181,10 @@ async function formatFiles(providedFiles: string[], checkOnly: boolean): Promise
   }
 
   if (ok) {
-    await Bun.write(Bun.stdout, checkOnly ? "Shape format check passed.\n" : "Shape format complete.\n");
+    await Bun.write(
+      Bun.stdout,
+      checkOnly ? "Shape format check passed.\n" : "Shape format complete.\n"
+    );
   }
 
   return ok ? 0 : 1;
@@ -215,7 +222,10 @@ async function parseModules(paths: string[]): Promise<{ module: ShapeModule; fil
   return modules;
 }
 
-async function analyzeFiles(sourceFiles: string[], shapeFilesOption: string | undefined): Promise<number> {
+async function analyzeFiles(
+  sourceFiles: string[],
+  shapeFilesOption: string | undefined
+): Promise<number> {
   const hints: ReturnType<typeof analyzeSourceText> = [];
   for (const sourceFile of sourceFiles) {
     hints.push(...analyzeSourceText(sourceFile, await Bun.file(sourceFile).text()));
@@ -223,12 +233,18 @@ async function analyzeFiles(sourceFiles: string[], shapeFilesOption: string | un
 
   if (!shapeFilesOption) {
     for (const hint of hints) {
-      await Bun.write(Bun.stdout, `${hint.sourcePath}:${hint.line} ${hint.effect} ${hint.evidence}\n`);
+      await Bun.write(
+        Bun.stdout,
+        `${hint.sourcePath}:${hint.line} ${hint.effect} ${hint.evidence}\n`
+      );
     }
     return 0;
   }
 
-  const shapeFiles = shapeFilesOption.split(",").map((file) => file.trim()).filter((file) => file.length > 0);
+  const shapeFiles = shapeFilesOption
+    .split(",")
+    .map((file) => file.trim())
+    .filter((file) => file.length > 0);
   const modules = (await parseModules(shapeFiles)).map((input) => input.module);
   const warnings = compareAnalyzerHintsToShape(hints, modules);
   await Bun.write(warnings.length > 0 ? Bun.stderr : Bun.stdout, formatAnalyzerWarnings(warnings));
