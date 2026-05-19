@@ -241,7 +241,14 @@ export type SemanticDiagnostic =
     }
   | {
       kind: "duplicate_declaration";
-      declarationKind: "resource" | "component" | "trait" | "relation" | "rationale" | "memory" | "reevaluation";
+      declarationKind:
+        | "resource"
+        | "component"
+        | "trait"
+        | "relation"
+        | "rationale"
+        | "memory"
+        | "reevaluation";
       name: string;
       filePath?: string;
       causedBy: string[];
@@ -357,11 +364,23 @@ export type CheckOptions = {
 export type Fact =
   | { kind: "resource"; name: string; provenance: Provenance }
   | { kind: "resource_trait"; resource: string; trait: string; provenance: Provenance }
-  | { kind: "trait_final_forbid"; trait: string; effect: string; target: string; provenance: Provenance }
+  | {
+      kind: "trait_final_forbid";
+      trait: string;
+      effect: string;
+      target: string;
+      provenance: Provenance;
+    }
   | { kind: "component"; name: string; provenance: Provenance }
   | { kind: "owns"; component: string; resource: string; provenance: Provenance }
   | { kind: "grants"; component: string; effect: string; target: string; provenance: Provenance }
-  | { kind: "hyperedge"; name: string; relationKind: string; ordered: boolean; provenance: Provenance }
+  | {
+      kind: "hyperedge";
+      name: string;
+      relationKind: string;
+      ordered: boolean;
+      provenance: Provenance;
+    }
   | {
       kind: "hyperedge_member";
       hyperedge: string;
@@ -371,9 +390,22 @@ export type Fact =
       provenance: Provenance;
     }
   | { kind: "function"; component: string; name: string; provenance: Provenance }
-  | { kind: "effect"; component: string; functionName: string; effect: string; target: string; provenance: Provenance }
+  | {
+      kind: "effect";
+      component: string;
+      functionName: string;
+      effect: string;
+      target: string;
+      provenance: Provenance;
+    }
   | { kind: "effect_unknown"; component: string; functionName: string; provenance: Provenance }
-  | { kind: "shape_trait"; targetKind: TargetKind; target: string; trait: string; provenance: Provenance }
+  | {
+      kind: "shape_trait";
+      targetKind: TargetKind;
+      target: string;
+      trait: string;
+      provenance: Provenance;
+    }
   | {
       kind: "description";
       targetKind: TargetKind;
@@ -659,7 +691,10 @@ type Model = {
 
 type FunctionAst = FunctionSummary | AddFunctionChange | ModifyFunctionChange;
 
-export function checkShapeModules(modules: ShapeModule[] | CheckModuleInput[], options: CheckOptions = {}): CheckResult {
+export function checkShapeModules(
+  modules: ShapeModule[] | CheckModuleInput[],
+  options: CheckOptions = {}
+): CheckResult {
   const model = lowerShapeModules(modules);
   const diagnostics = [
     ...model.diagnostics,
@@ -683,7 +718,10 @@ export function checkShapeModules(modules: ShapeModule[] | CheckModuleInput[], o
   };
 }
 
-export async function checkShapeFiles(paths: string[], options: CheckOptions = {}): Promise<CheckResult> {
+export async function checkShapeFiles(
+  paths: string[],
+  options: CheckOptions = {}
+): Promise<CheckResult> {
   const parsedModules: CheckModuleInput[] = [];
   const parseDiagnostics: ParseDiagnostic[] = [];
 
@@ -730,7 +768,11 @@ export function listMemoryGuardsShapeModules(modules: ShapeModule[] | CheckModul
       target: memory.appliesTo ?? memory.target,
       lines: formatMemoryListEntry(memory)
     }))
-  ].sort((left, right) => `${formatTarget(left.target)}:${left.lines[0]}`.localeCompare(`${formatTarget(right.target)}:${right.lines[0]}`));
+  ].sort((left, right) =>
+    `${formatTarget(left.target)}:${left.lines[0]}`.localeCompare(
+      `${formatTarget(right.target)}:${right.lines[0]}`
+    )
+  );
 
   if (entries.length === 0) {
     return "Memory Guards\n\nNo active memory guards.\n";
@@ -752,42 +794,65 @@ export function listShapeObligations(modules: ShapeModule[] | CheckModuleInput[]
   }
 
   const lines = ["Open Shape Obligations", ""];
-  const missingContext = relevant.filter((diagnostic) => diagnostic.kind === "missing_required_context");
-  const missingDescription = relevant.filter((diagnostic) => diagnostic.kind === "missing_required_description");
-  const guardedChanges = relevant.filter((diagnostic) => diagnostic.kind === "guarded_shape_changed");
-  const invalidReevaluations = relevant.filter((diagnostic) => diagnostic.kind === "invalid_reevaluation");
+  const missingContext = relevant.filter(
+    (diagnostic) => diagnostic.kind === "missing_required_context"
+  );
+  const missingDescription = relevant.filter(
+    (diagnostic) => diagnostic.kind === "missing_required_description"
+  );
+  const guardedChanges = relevant.filter(
+    (diagnostic) => diagnostic.kind === "guarded_shape_changed"
+  );
+  const invalidReevaluations = relevant.filter(
+    (diagnostic) => diagnostic.kind === "invalid_reevaluation"
+  );
 
   if (missingContext.length > 0) {
     lines.push("missing context:");
     lines.push(
-      ...missingContext.map((diagnostic) => `  ${diagnostic.targetKind} ${diagnostic.target} requires ${diagnostic.requiredContext}`)
+      ...missingContext.map(
+        (diagnostic) =>
+          `  ${diagnostic.targetKind} ${diagnostic.target} requires ${diagnostic.requiredContext}`
+      )
     );
     lines.push("");
   }
   if (missingDescription.length > 0) {
     lines.push("missing description:");
     lines.push(
-      ...missingDescription.map((diagnostic) => `  ${diagnostic.targetKind} ${diagnostic.target} requires description`)
+      ...missingDescription.map(
+        (diagnostic) => `  ${diagnostic.targetKind} ${diagnostic.target} requires description`
+      )
     );
     lines.push("");
   }
   if (guardedChanges.length > 0) {
     lines.push("guarded changes:");
     lines.push(
-      ...guardedChanges.map((diagnostic) => `  ${diagnostic.targetKind} ${diagnostic.target} changed; requires ${diagnostic.missingReevaluation}`)
+      ...guardedChanges.map(
+        (diagnostic) =>
+          `  ${diagnostic.targetKind} ${diagnostic.target} changed; requires ${diagnostic.missingReevaluation}`
+      )
     );
     lines.push("");
   }
   if (invalidReevaluations.length > 0) {
     lines.push("invalid reevaluations:");
-    lines.push(...invalidReevaluations.map((diagnostic) => `  reevaluation ${diagnostic.name}: ${diagnostic.reason}`));
+    lines.push(
+      ...invalidReevaluations.map(
+        (diagnostic) => `  reevaluation ${diagnostic.name}: ${diagnostic.reason}`
+      )
+    );
     lines.push("");
   }
 
   return `${lines.join("\n").trimEnd()}\n`;
 }
 
-export function explainShapeModules(modules: ShapeModule[] | CheckModuleInput[], symbol: string): string {
+export function explainShapeModules(
+  modules: ShapeModule[] | CheckModuleInput[],
+  symbol: string
+): string {
   const model = lowerShapeModules(modules);
   const resource = model.resources.get(symbol);
   if (resource) {
@@ -800,7 +865,9 @@ export function explainShapeModules(modules: ShapeModule[] | CheckModuleInput[],
     ];
     if (finalForbids.length > 0) {
       lines.push("", "  final forbidden effects:");
-      lines.push(...finalForbids.map((forbid) => `    ${formatTerm(forbid.effect, forbid.target)}`));
+      lines.push(
+        ...finalForbids.map((forbid) => `    ${formatTerm(forbid.effect, forbid.target)}`)
+      );
     }
     appendIncidence(symbol, model, lines);
     return `${lines.join("\n")}\n`;
@@ -829,9 +896,16 @@ export function explainShapeModules(modules: ShapeModule[] | CheckModuleInput[],
       if (requirements.length > 0) {
         const target = functionTarget(componentName, functionName);
         lines.push("", "  required context:");
-        lines.push(...requirements.map((requirement) => `    ${formatContextRequirement(requirement.contextType, target)}`));
+        lines.push(
+          ...requirements.map(
+            (requirement) => `    ${formatContextRequirement(requirement.contextType, target)}`
+          )
+        );
       }
-      const satisfiedBy = matchingContextsForTarget(functionTarget(componentName, functionName), model);
+      const satisfiedBy = matchingContextsForTarget(
+        functionTarget(componentName, functionName),
+        model
+      );
       if (satisfiedBy.length > 0) {
         lines.push("", "  satisfied by:");
         lines.push(...satisfiedBy.map((context) => `    ${context.kind} ${context.name}`));
@@ -845,7 +919,11 @@ export function explainShapeModules(modules: ShapeModule[] | CheckModuleInput[],
       if (fn.effects.kind === "unknown") {
         lines.push("    unknown");
       } else {
-        lines.push(...fn.effects.entries.map((entry) => `    ${formatTerm(entry.term.name, entry.term.target ?? "")}`));
+        lines.push(
+          ...fn.effects.entries.map(
+            (entry) => `    ${formatTerm(entry.term.name, entry.term.target ?? "")}`
+          )
+        );
       }
       return `${lines.join("\n")}\n`;
     }
@@ -898,7 +976,11 @@ function allHyperedgesByKind(model: Model, kindFilter?: string): HyperedgeInfo[]
   return edges;
 }
 
-export function graphShapeModules(modules: ShapeModule[] | CheckModuleInput[], symbol: string, kindFilter?: string): string {
+export function graphShapeModules(
+  modules: ShapeModule[] | CheckModuleInput[],
+  symbol: string,
+  kindFilter?: string
+): string {
   const model = lowerShapeModules(modules);
   const relation = model.hypergraph.edges.get(symbol);
   if (relation) {
@@ -931,14 +1013,15 @@ export function graphShapeModules(modules: ShapeModule[] | CheckModuleInput[], s
  * Dump every hyperedge in the loaded modules, grouped by kind and sorted by name.
  * Used by `shp graph` with no symbol argument.
  */
-export function graphAllShapeModules(modules: ShapeModule[] | CheckModuleInput[], kindFilter?: string): string {
+export function graphAllShapeModules(
+  modules: ShapeModule[] | CheckModuleInput[],
+  kindFilter?: string
+): string {
   const model = lowerShapeModules(modules);
   const edges = allHyperedgesByKind(model, kindFilter).sort(compareHyperedges);
 
   if (edges.length === 0) {
-    return kindFilter
-      ? `No relations match kind ${kindFilter}.\n`
-      : "No relations declared.\n";
+    return kindFilter ? `No relations match kind ${kindFilter}.\n` : "No relations declared.\n";
   }
 
   const lines = ["Hypergraph"];
@@ -1001,7 +1084,9 @@ export function statsShapeHypergraph(
   if (kindFilter) {
     lines.push(`  filter: kind=${kindFilter}`);
   }
-  lines.push(`  hyperedges: ${filteredEdges.length}${kindFilter ? ` (of ${totalEdgeCount} total)` : ""}`);
+  lines.push(
+    `  hyperedges: ${filteredEdges.length}${kindFilter ? ` (of ${totalEdgeCount} total)` : ""}`
+  );
   if (kindFilter) {
     if (filteredEdges.length > 0) {
       lines.push(`    ${kindFilter}: ${filteredEdges.length}`);
@@ -1011,7 +1096,9 @@ export function statsShapeHypergraph(
     for (const edge of filteredEdges) {
       kindCounts.set(edge.kind, (kindCounts.get(edge.kind) ?? 0) + 1);
     }
-    for (const [kind, count] of [...kindCounts.entries()].sort(([leftKind], [rightKind]) => leftKind.localeCompare(rightKind))) {
+    for (const [kind, count] of [...kindCounts.entries()].sort(([leftKind], [rightKind]) =>
+      leftKind.localeCompare(rightKind)
+    )) {
       lines.push(`    ${kind}: ${count}`);
     }
   }
@@ -1025,7 +1112,9 @@ export function statsShapeHypergraph(
   }
   lines.push(`  isolated vertices: ${isolatedVertices.length}`);
   if (isolatedVertices.length > 0 && isolatedVertices.length <= 8) {
-    lines.push(`    ${isolatedVertices.map((vertex) => formatVertexHeader(vertex, model)).join(", ")}`);
+    lines.push(
+      `    ${isolatedVertices.map((vertex) => formatVertexHeader(vertex, model)).join(", ")}`
+    );
   }
   return `${lines.join("\n")}\n`;
 }
@@ -1033,7 +1122,6 @@ export function statsShapeHypergraph(
 function pluralSuffix(count: number): string {
   return count === 1 ? "" : "s";
 }
-
 
 export function formatDiagnostics(result: CheckResult): string {
   if (result.diagnostics.length === 0) {
@@ -1121,7 +1209,10 @@ function lowerResource(resource: ResourceDecl, filePath: string | undefined, mod
       declarationKind: "resource",
       name: resource.name,
       filePath,
-      causedBy: [describeProvenance(model.resources.get(resource.name)?.provenance), describeProvenance(prov)]
+      causedBy: [
+        describeProvenance(model.resources.get(resource.name)?.provenance),
+        describeProvenance(prov)
+      ]
     });
     return;
   }
@@ -1130,7 +1221,12 @@ function lowerResource(resource: ResourceDecl, filePath: string | undefined, mod
   for (const trait of resource.traits) {
     const traitProv = provenance(filePath, `resource ${resource.name} : ${trait.name}`);
     traits.set(trait.name, traitProv);
-    model.facts.push({ kind: "resource_trait", resource: resource.name, trait: trait.name, provenance: traitProv });
+    model.facts.push({
+      kind: "resource_trait",
+      resource: resource.name,
+      trait: trait.name,
+      provenance: traitProv
+    });
   }
 
   model.resources.set(resource.name, {
@@ -1149,7 +1245,10 @@ function lowerTrait(trait: TraitDecl, filePath: string | undefined, model: Model
       declarationKind: "trait",
       name: trait.name,
       filePath,
-      causedBy: [describeProvenance(model.traits.get(trait.name)?.provenance), describeProvenance(prov)]
+      causedBy: [
+        describeProvenance(model.traits.get(trait.name)?.provenance),
+        describeProvenance(prov)
+      ]
     });
     return;
   }
@@ -1169,7 +1268,11 @@ function lowerTrait(trait: TraitDecl, filePath: string | undefined, model: Model
   });
 }
 
-function lowerComponent(component: ComponentDecl, filePath: string | undefined, model: Model): void {
+function lowerComponent(
+  component: ComponentDecl,
+  filePath: string | undefined,
+  model: Model
+): void {
   const prov = provenance(filePath, `component ${component.name}`);
   if (model.components.has(component.name)) {
     model.diagnostics.push({
@@ -1177,7 +1280,10 @@ function lowerComponent(component: ComponentDecl, filePath: string | undefined, 
       declarationKind: "component",
       name: component.name,
       filePath,
-      causedBy: [describeProvenance(model.components.get(component.name)?.provenance), describeProvenance(prov)]
+      causedBy: [
+        describeProvenance(model.components.get(component.name)?.provenance),
+        describeProvenance(prov)
+      ]
     });
     return;
   }
@@ -1192,12 +1298,23 @@ function lowerComponent(component: ComponentDecl, filePath: string | undefined, 
 
   for (const member of component.members) {
     if (isOwnsDecl(member)) {
-      const memberProv = provenance(filePath, `component ${component.name} owns ${member.resource.name}`);
+      const memberProv = provenance(
+        filePath,
+        `component ${component.name} owns ${member.resource.name}`
+      );
       info.owns.set(member.resource.name, memberProv);
-      model.facts.push({ kind: "owns", component: component.name, resource: member.resource.name, provenance: memberProv });
+      model.facts.push({
+        kind: "owns",
+        component: component.name,
+        resource: member.resource.name,
+        provenance: memberProv
+      });
     } else if (isGrantsDecl(member)) {
       const grant = lowerTerm(member.term);
-      const memberProv = provenance(filePath, `component ${component.name} grants ${formatTerm(grant.name, grant.target ?? "")}`);
+      const memberProv = provenance(
+        filePath,
+        `component ${component.name} grants ${formatTerm(grant.name, grant.target ?? "")}`
+      );
       info.grants.set(termKey(grant), memberProv);
       model.facts.push({
         kind: "grants",
@@ -1225,7 +1342,10 @@ function lowerRelation(relation: RelationDecl, filePath: string | undefined, mod
       declarationKind: "relation",
       name: relation.name,
       filePath,
-      causedBy: [describeProvenance(model.hypergraph.edges.get(relation.name)?.provenance), describeProvenance(prov)]
+      causedBy: [
+        describeProvenance(model.hypergraph.edges.get(relation.name)?.provenance),
+        describeProvenance(prov)
+      ]
     });
     return;
   }
@@ -1469,7 +1589,11 @@ function collectConnects(member: { endpoints: RelationEndpoint[]; ordered: boole
   };
 }
 
-function lowerImplementation(implementation: ImplementationDecl, filePath: string | undefined, model: Model): void {
+function lowerImplementation(
+  implementation: ImplementationDecl,
+  filePath: string | undefined,
+  model: Model
+): void {
   const prov = provenance(filePath, `implementation ${implementation.name}`);
   const info: ImplementationInfo = {
     name: implementation.name,
@@ -1496,7 +1620,10 @@ function lowerImplementation(implementation: ImplementationDecl, filePath: strin
         kind: "conforms_to",
         implementation: implementation.name,
         component: member.component.name,
-        provenance: provenance(filePath, `implementation ${implementation.name} conforms_to ${member.component.name}`)
+        provenance: provenance(
+          filePath,
+          `implementation ${implementation.name} conforms_to ${member.component.name}`
+        )
       });
     } else if (isOnChangeDecl(member)) {
       info.onChangeRequirement = member.requirement;
@@ -1507,7 +1634,11 @@ function lowerImplementation(implementation: ImplementationDecl, filePath: strin
   model.facts.push({ kind: "implementation", name: implementation.name, provenance: prov });
 }
 
-function lowerAttestation(attestation: AttestationDecl, filePath: string | undefined, model: Model): void {
+function lowerAttestation(
+  attestation: AttestationDecl,
+  filePath: string | undefined,
+  model: Model
+): void {
   const source = lowerSourceRef(attestation.source);
   const path = normalizeSourcePath(source.path);
   const reason = unquote(attestation.reason.value);
@@ -1544,7 +1675,11 @@ function lowerRule(rule: RuleDecl, filePath: string | undefined, model: Model): 
   model.facts.push({ kind: "rule", name: rule.name, provenance: info.provenance });
 }
 
-function lowerRationale(rationale: RationaleDecl, filePath: string | undefined, model: Model): void {
+function lowerRationale(
+  rationale: RationaleDecl,
+  filePath: string | undefined,
+  model: Model
+): void {
   const prov = provenance(filePath, `rationale ${rationale.name}`);
   if (model.rationales.has(rationale.name)) {
     model.diagnostics.push({
@@ -1552,7 +1687,10 @@ function lowerRationale(rationale: RationaleDecl, filePath: string | undefined, 
       declarationKind: "rationale",
       name: rationale.name,
       filePath,
-      causedBy: [describeProvenance(model.rationales.get(rationale.name)?.provenance), describeProvenance(prov)]
+      causedBy: [
+        describeProvenance(model.rationales.get(rationale.name)?.provenance),
+        describeProvenance(prov)
+      ]
     });
     return;
   }
@@ -1582,12 +1720,18 @@ function lowerRationale(rationale: RationaleDecl, filePath: string | undefined, 
       info.protects.push({
         kind: member.kind,
         value: member.value,
-        provenance: provenance(filePath, `rationale ${rationale.name} protects ${member.kind} ${member.value}`)
+        provenance: provenance(
+          filePath,
+          `rationale ${rationale.name} protects ${member.kind} ${member.value}`
+        )
       });
     } else if (isGuardDecl(member)) {
       info.guards.push({
         requirement: member.requirement,
-        provenance: provenance(filePath, `rationale ${rationale.name} guards on_change require ${member.requirement}`)
+        provenance: provenance(
+          filePath,
+          `rationale ${rationale.name} guards on_change require ${member.requirement}`
+        )
       });
     } else if (isEvidenceLineDecl(member)) {
       info.evidence.push(lowerSourceRef(member));
@@ -1614,7 +1758,10 @@ function lowerMemory(memory: MemoryDecl, filePath: string | undefined, model: Mo
       declarationKind: "memory",
       name: memory.name,
       filePath,
-      causedBy: [describeProvenance(model.memories.get(memory.name)?.provenance), describeProvenance(prov)]
+      causedBy: [
+        describeProvenance(model.memories.get(memory.name)?.provenance),
+        describeProvenance(prov)
+      ]
     });
     return;
   }
@@ -1641,12 +1788,18 @@ function lowerMemory(memory: MemoryDecl, filePath: string | undefined, model: Mo
       info.protects.push({
         kind: member.kind,
         value: member.value,
-        provenance: provenance(filePath, `memory ${memory.name} protects ${member.kind} ${member.value}`)
+        provenance: provenance(
+          filePath,
+          `memory ${memory.name} protects ${member.kind} ${member.value}`
+        )
       });
     } else if (isGuardDecl(member)) {
       info.guards.push({
         requirement: member.requirement,
-        provenance: provenance(filePath, `memory ${memory.name} guards on_change require ${member.requirement}`)
+        provenance: provenance(
+          filePath,
+          `memory ${memory.name} guards on_change require ${member.requirement}`
+        )
       });
     } else if (isObservedDecl(member)) {
       info.observed.push(lowerSourceRef(member));
@@ -1673,7 +1826,11 @@ function lowerMemory(memory: MemoryDecl, filePath: string | undefined, model: Mo
   emitGuardFacts("memory", info, model);
 }
 
-function lowerReevaluation(reevaluation: ReevaluationDecl, filePath: string | undefined, model: Model): void {
+function lowerReevaluation(
+  reevaluation: ReevaluationDecl,
+  filePath: string | undefined,
+  model: Model
+): void {
   const prov = provenance(filePath, `reevaluation ${reevaluation.name}`);
   if (model.reevaluations.has(reevaluation.name)) {
     model.diagnostics.push({
@@ -1681,7 +1838,10 @@ function lowerReevaluation(reevaluation: ReevaluationDecl, filePath: string | un
       declarationKind: "reevaluation",
       name: reevaluation.name,
       filePath,
-      causedBy: [describeProvenance(model.reevaluations.get(reevaluation.name)?.provenance), describeProvenance(prov)]
+      causedBy: [
+        describeProvenance(model.reevaluations.get(reevaluation.name)?.provenance),
+        describeProvenance(prov)
+      ]
     });
     return;
   }
@@ -1761,7 +1921,14 @@ function lowerChange(change: ChangeDecl, filePath: string | undefined, model: Mo
           nameKind: "component",
           name: entry.component,
           filePath,
-          causedBy: [describeProvenance(provenance(filePath, `change ${change.name} ${entry.$type} ${entry.component}.${entry.name}`))]
+          causedBy: [
+            describeProvenance(
+              provenance(
+                filePath,
+                `change ${change.name} ${entry.$type} ${entry.component}.${entry.name}`
+              )
+            )
+          ]
         });
         continue;
       }
@@ -1770,7 +1937,10 @@ function lowerChange(change: ChangeDecl, filePath: string | undefined, model: Mo
         model.changeEvents.push({
           kind: "function_modified",
           target: functionTarget(entry.component, entry.name),
-          provenance: provenance(filePath, `change ${change.name} modify fn ${entry.component}.${entry.name}`)
+          provenance: provenance(
+            filePath,
+            `change ${change.name} modify fn ${entry.component}.${entry.name}`
+          )
         });
       }
 
@@ -1783,7 +1953,10 @@ function lowerChange(change: ChangeDecl, filePath: string | undefined, model: Mo
       model.changeEvents.push({
         kind: "function_removed",
         target: functionTarget(entry.component, entry.name),
-        provenance: provenance(filePath, `change ${change.name} remove fn ${entry.component}.${entry.name}`)
+        provenance: provenance(
+          filePath,
+          `change ${change.name} remove fn ${entry.component}.${entry.name}`
+        )
       });
       model.removedFunctions.add(functionKey(entry.component, entry.name));
       model.components.get(entry.component)?.functions.delete(entry.name);
@@ -1801,7 +1974,11 @@ function lowerChange(change: ChangeDecl, filePath: string | undefined, model: Mo
   }
 }
 
-function lowerDeclaration(declaration: AddDeclarationChange["declaration"] | ModifyDeclarationChange["declaration"], filePath: string | undefined, model: Model): void {
+function lowerDeclaration(
+  declaration: AddDeclarationChange["declaration"] | ModifyDeclarationChange["declaration"],
+  filePath: string | undefined,
+  model: Model
+): void {
   if (isResourceDecl(declaration)) {
     lowerResource(declaration, filePath, model);
   } else if (isTraitDecl(declaration)) {
@@ -1819,7 +1996,11 @@ function lowerDeclaration(declaration: AddDeclarationChange["declaration"] | Mod
   }
 }
 
-function removeDeclaration(kind: RemoveDeclarationChange["kind"], name: string, model: Model): void {
+function removeDeclaration(
+  kind: RemoveDeclarationChange["kind"],
+  name: string,
+  model: Model
+): void {
   if (kind === "resource") {
     model.resources.delete(name);
   } else if (kind === "trait") {
@@ -1829,7 +2010,9 @@ function removeDeclaration(kind: RemoveDeclarationChange["kind"], name: string, 
   } else if (kind === "relation") {
     removeRelation(name, model);
   } else if (kind === "implementation") {
-    model.implementations = model.implementations.filter((implementation) => implementation.name !== name);
+    model.implementations = model.implementations.filter(
+      (implementation) => implementation.name !== name
+    );
   } else if (kind === "rule") {
     model.rules = model.rules.filter((rule) => rule.name !== name);
   }
@@ -1859,14 +2042,21 @@ function declarationKind(
   return "rule";
 }
 
-function declarationName(declaration: AddDeclarationChange["declaration"] | ModifyDeclarationChange["declaration"]): string {
+function declarationName(
+  declaration: AddDeclarationChange["declaration"] | ModifyDeclarationChange["declaration"]
+): string {
   if (isAttestationDecl(declaration)) {
     return declaration.kind;
   }
   return declaration.name;
 }
 
-function lowerFunction(fn: FunctionAst, componentName: string, filePath?: string, context?: string): FunctionInfo {
+function lowerFunction(
+  fn: FunctionAst,
+  componentName: string,
+  filePath?: string,
+  context?: string
+): FunctionInfo {
   const source = fn.source ? lowerSourceRef(fn.source) : undefined;
   const info: FunctionInfo = {
     component: componentName,
@@ -1876,8 +2066,13 @@ function lowerFunction(fn: FunctionAst, componentName: string, filePath?: string
     effects: lowerEffects(fn.effects, filePath, componentName, fn.name),
     requires: [],
     shapeTraits: lowerShapeTraits(fn, componentName, filePath, context),
-    description: fn.description ? lowerDescription(fn.description, componentName, fn.name, filePath, context) : undefined,
-    provenance: provenance(filePath, `${context ? `${context} ` : ""}fn ${componentName}.${fn.name}`)
+    description: fn.description
+      ? lowerDescription(fn.description, componentName, fn.name, filePath, context)
+      : undefined,
+    provenance: provenance(
+      filePath,
+      `${context ? `${context} ` : ""}fn ${componentName}.${fn.name}`
+    )
   };
 
   for (const member of fn.members) {
@@ -1893,12 +2088,20 @@ function lowerFunction(fn: FunctionAst, componentName: string, filePath?: string
   return info;
 }
 
-function lowerShapeTraits(fn: FunctionAst, componentName: string, filePath: string | undefined, context?: string): Map<string, Provenance> {
+function lowerShapeTraits(
+  fn: FunctionAst,
+  componentName: string,
+  filePath: string | undefined,
+  context?: string
+): Map<string, Provenance> {
   const traits = new Map<string, Provenance>();
   for (const trait of fn.shapeTraits?.traits ?? []) {
     traits.set(
       trait.name,
-      provenance(filePath, `${context ? `${context} ` : ""}fn ${componentName}.${fn.name} : ${trait.name}`)
+      provenance(
+        filePath,
+        `${context ? `${context} ` : ""}fn ${componentName}.${fn.name} : ${trait.name}`
+      )
     );
   }
   return traits;
@@ -1914,7 +2117,10 @@ function lowerDescription(
   return {
     required: description.required,
     summary: unquote(description.summary),
-    provenance: provenance(filePath, `${context ? `${context} ` : ""}fn ${componentName}.${functionName} description`)
+    provenance: provenance(
+      filePath,
+      `${context ? `${context} ` : ""}fn ${componentName}.${functionName} description`
+    )
   };
 }
 
@@ -1934,7 +2140,9 @@ function lowerEffects(
 
   return {
     kind: "complete",
-    entries: effects.effects.map((entry) => lowerEffectEntry(entry, filePath, componentName, functionName))
+    entries: effects.effects.map((entry) =>
+      lowerEffectEntry(entry, filePath, componentName, functionName)
+    )
   };
 }
 
@@ -1955,23 +2163,37 @@ function lowerEffectEntry(
   };
 }
 
-function lowerForbidPattern(member: TraitForbidDecl, filePath: string | undefined, owner: string): FinalForbidPattern {
+function lowerForbidPattern(
+  member: TraitForbidDecl,
+  filePath: string | undefined,
+  owner: string
+): FinalForbidPattern {
   const pattern = lowerPattern(member.pattern);
   return {
     effect: pattern.name,
     target: pattern.target,
     final: member.final,
-    provenance: provenance(filePath, `${owner} forbids ${member.final ? "final " : ""}${formatTerm(pattern.name, pattern.target ?? "")}`)
+    provenance: provenance(
+      filePath,
+      `${owner} forbids ${member.final ? "final " : ""}${formatTerm(pattern.name, pattern.target ?? "")}`
+    )
   };
 }
 
-function lowerRuleForbid(member: RuleForbidEffectDecl, filePath: string | undefined, ruleName: string): FinalForbidPattern {
+function lowerRuleForbid(
+  member: RuleForbidEffectDecl,
+  filePath: string | undefined,
+  ruleName: string
+): FinalForbidPattern {
   const pattern = lowerPattern(member.pattern);
   return {
     effect: pattern.name,
     target: pattern.target,
     final: member.final,
-    provenance: provenance(filePath, `rule ${ruleName} forbids ${member.final ? "final " : ""}${formatTerm(pattern.name, pattern.target ?? "")}`)
+    provenance: provenance(
+      filePath,
+      `rule ${ruleName} forbids ${member.final ? "final " : ""}${formatTerm(pattern.name, pattern.target ?? "")}`
+    )
   };
 }
 
@@ -1994,7 +2216,10 @@ function lowerRuleForbidHypercycle(
 ): RuleInfo["forbidHypercycles"][number] {
   return {
     kinds: [...member.kinds],
-    provenance: provenance(filePath, `rule ${ruleName} forbids hypercycle${member.kinds.length > 0 ? ` over ${member.kinds.join(" or ")}` : ""}`)
+    provenance: provenance(
+      filePath,
+      `rule ${ruleName} forbids hypercycle${member.kinds.length > 0 ? ` over ${member.kinds.join(" or ")}` : ""}`
+    )
   };
 }
 
@@ -2034,7 +2259,12 @@ function functionTarget(component: string, name: string): ShapeTarget {
 }
 
 function emitFunctionFacts(fn: FunctionInfo, model: Model): void {
-  model.facts.push({ kind: "function", component: fn.component, name: fn.name, provenance: fn.provenance });
+  model.facts.push({
+    kind: "function",
+    component: fn.component,
+    name: fn.name,
+    provenance: fn.provenance
+  });
   for (const [trait, traitProvenance] of fn.shapeTraits) {
     model.facts.push({
       kind: "shape_trait",
@@ -2235,7 +2465,11 @@ function checkContextTargets(model: Model): SemanticDiagnostic[] {
   return diagnostics;
 }
 
-function checkContextTarget(kind: ContextKind, context: RationaleInfo | MemoryInfo, model: Model): SemanticDiagnostic[] {
+function checkContextTarget(
+  kind: ContextKind,
+  context: RationaleInfo | MemoryInfo,
+  model: Model
+): SemanticDiagnostic[] {
   const diagnostics: SemanticDiagnostic[] = [];
   if (!targetExists(context.target, model)) {
     diagnostics.push({
@@ -2299,7 +2533,12 @@ function checkRequiredContext(model: Model): SemanticDiagnostic[] {
           filePath: traitProvenance.filePath,
           causedBy: [
             describeProvenance(traitProvenance),
-            describeProvenance(provenance("standard prelude", `${requirement.trait} requires ${requirement.contextType}`))
+            describeProvenance(
+              provenance(
+                "standard prelude",
+                `${requirement.trait} requires ${requirement.contextType}`
+              )
+            )
           ]
         });
       }
@@ -2314,7 +2553,9 @@ function checkRequiredDescriptions(model: Model): SemanticDiagnostic[] {
 
   for (const component of model.components.values()) {
     for (const fn of component.functions.values()) {
-      for (const requirement of requirementsForFunction(fn).filter((item) => item.requiresDescription)) {
+      for (const requirement of requirementsForFunction(fn).filter(
+        (item) => item.requiresDescription
+      )) {
         if (hasNonEmptyDescription(fn)) {
           continue;
         }
@@ -2328,7 +2569,9 @@ function checkRequiredDescriptions(model: Model): SemanticDiagnostic[] {
           filePath: traitProvenance.filePath,
           causedBy: [
             describeProvenance(traitProvenance),
-            describeProvenance(provenance("standard prelude", `${requirement.trait} requires description`))
+            describeProvenance(
+              provenance("standard prelude", `${requirement.trait} requires description`)
+            )
           ]
         });
       }
@@ -2369,11 +2612,17 @@ function checkReevaluations(model: Model): SemanticDiagnostic[] {
 
 function checkGuardedChanges(model: Model): SemanticDiagnostic[] {
   const diagnostics: SemanticDiagnostic[] = [];
-  const guards = [...guardedContexts("rationale", model.rationales.values()), ...guardedContexts("memory", model.memories.values())];
+  const guards = [
+    ...guardedContexts("rationale", model.rationales.values()),
+    ...guardedContexts("memory", model.memories.values())
+  ];
 
   for (const event of model.changeEvents) {
     for (const guard of guards) {
-      if (!targetsEqual(event.target, guard.target) || hasValidReevaluationForGuard(model, guard.kind, guard.info.name)) {
+      if (
+        !targetsEqual(event.target, guard.target) ||
+        hasValidReevaluationForGuard(model, guard.kind, guard.info.name)
+      ) {
         continue;
       }
 
@@ -2464,7 +2713,10 @@ function checkFunctions(model: Model): SemanticDiagnostic[] {
             effect: entry.term.name,
             target,
             filePath: entry.provenance.filePath,
-            causedBy: [describeProvenance(entry.provenance), describeProvenance(component.provenance)]
+            causedBy: [
+              describeProvenance(entry.provenance),
+              describeProvenance(component.provenance)
+            ]
           });
         }
       }
@@ -2502,7 +2754,10 @@ function checkProvidesRules(model: Model): SemanticDiagnostic[] {
           hyperedge: hyperedge.name,
           allowedComponent: forbid.except,
           filePath: hyperedge.provenance.filePath,
-          causedBy: [describeProvenance(hyperedge.provenance), describeProvenance(forbid.provenance)]
+          causedBy: [
+            describeProvenance(hyperedge.provenance),
+            describeProvenance(forbid.provenance)
+          ]
         });
       }
     }
@@ -2533,7 +2788,10 @@ function checkHypercycles(model: Model): SemanticDiagnostic[] {
         continue;
       }
 
-      const signature = cycle.hyperedges.map((edge) => edge.name).sort().join(",");
+      const signature = cycle.hyperedges
+        .map((edge) => edge.name)
+        .sort()
+        .join(",");
       const dedupeKey = `${rule.name}:${signature}`;
       if (seenCycles.has(dedupeKey)) {
         continue;
@@ -2546,7 +2804,10 @@ function checkHypercycles(model: Model): SemanticDiagnostic[] {
         vertices: cycle.vertices,
         hyperedges: cycle.hyperedges.map((edge) => ({ name: edge.name, kind: edge.kind })),
         filePath: forbid.provenance.filePath,
-        causedBy: [describeProvenance(forbid.provenance), ...cycle.provenance.map(describeProvenance)]
+        causedBy: [
+          describeProvenance(forbid.provenance),
+          ...cycle.provenance.map(describeProvenance)
+        ]
       });
     }
   }
@@ -2585,7 +2846,9 @@ type HyperedgeStep = {
 function findHypercycle(model: Model, kindsFilter: string[]): HypercycleWitness | undefined {
   const allSteps = buildHyperedgeSteps(model);
   const allowedKinds = kindsFilter.length === 0 ? undefined : new Set(kindsFilter);
-  const steps = allowedKinds ? allSteps.filter((step) => allowedKinds.has(step.hyperedge.kind)) : allSteps;
+  const steps = allowedKinds
+    ? allSteps.filter((step) => allowedKinds.has(step.hyperedge.kind))
+    : allSteps;
   if (steps.length === 0) {
     return undefined;
   }
@@ -2692,7 +2955,9 @@ function checkCoverage(model: Model, changedFiles: string[]): SemanticDiagnostic
     return [];
   }
 
-  const normalizedChanged = changedFiles.map((file) => normalizePath(file)).filter((file) => file.length > 0);
+  const normalizedChanged = changedFiles
+    .map((file) => normalizePath(file))
+    .filter((file) => file.length > 0);
   const diagnostics: SemanticDiagnostic[] = [];
 
   for (const implementation of model.implementations) {
@@ -2705,7 +2970,9 @@ function checkCoverage(model: Model, changedFiles: string[]): SemanticDiagnostic
         continue;
       }
 
-      const governingPath = implementation.paths.find((entry) => globMatches(entry.glob, changedFile));
+      const governingPath = implementation.paths.find((entry) =>
+        globMatches(entry.glob, changedFile)
+      );
       if (!governingPath) {
         continue;
       }
@@ -2724,7 +2991,10 @@ function checkCoverage(model: Model, changedFiles: string[]): SemanticDiagnostic
         implementation: implementation.name,
         glob: governingPath.glob,
         filePath: implementation.provenance.filePath,
-        causedBy: [describeProvenance(implementation.provenance), describeProvenance(governingPath.provenance)]
+        causedBy: [
+          describeProvenance(implementation.provenance),
+          describeProvenance(governingPath.provenance)
+        ]
       });
     }
   }
@@ -2733,10 +3003,16 @@ function checkCoverage(model: Model, changedFiles: string[]): SemanticDiagnostic
 }
 
 function requirementsForFunction(fn: FunctionInfo): ContextRequirementRule[] {
-  return PRELUDE_CONTEXT_REQUIREMENTS.filter((rule) => rule.targetKind === "fn" && fn.shapeTraits.has(rule.trait));
+  return PRELUDE_CONTEXT_REQUIREMENTS.filter(
+    (rule) => rule.targetKind === "fn" && fn.shapeTraits.has(rule.trait)
+  );
 }
 
-function hasRequiredContext(requirement: ContextRequirementRule, target: ShapeTarget, model: Model): boolean {
+function hasRequiredContext(
+  requirement: ContextRequirementRule,
+  target: ShapeTarget,
+  model: Model
+): boolean {
   if (requirement.satisfiedBy.includes("rationale")) {
     const rationale = [...model.rationales.values()].find((item) =>
       contextSatisfiesRequirement(item, requirement.contextType, target)
@@ -2747,15 +3023,25 @@ function hasRequiredContext(requirement: ContextRequirementRule, target: ShapeTa
   }
 
   if (requirement.satisfiedBy.includes("memory")) {
-    return [...model.memories.values()].some((item) => contextSatisfiesRequirement(item, requirement.contextType, target));
+    return [...model.memories.values()].some((item) =>
+      contextSatisfiesRequirement(item, requirement.contextType, target)
+    );
   }
 
   return false;
 }
 
-function contextSatisfiesRequirement(context: RationaleInfo | MemoryInfo, contextType: string, target: ShapeTarget): boolean {
+function contextSatisfiesRequirement(
+  context: RationaleInfo | MemoryInfo,
+  contextType: string,
+  target: ShapeTarget
+): boolean {
   const effectiveTarget = context.appliesTo ?? context.target;
-  return context.contextType === contextType && targetsEqual(effectiveTarget, target) && targetsEqual(context.target, effectiveTarget);
+  return (
+    context.contextType === contextType &&
+    targetsEqual(effectiveTarget, target) &&
+    targetsEqual(context.target, effectiveTarget)
+  );
 }
 
 function hasNonEmptyDescription(fn: FunctionInfo): boolean {
@@ -2774,7 +3060,8 @@ function targetExists(target: ShapeTarget, model: Model): boolean {
     }
 
     return model.facts.some(
-      (fact) => fact.kind === "function" && fact.component === component && fact.name === functionName
+      (fact) =>
+        fact.kind === "function" && fact.component === component && fact.name === functionName
     );
   }
 
@@ -2850,8 +3137,18 @@ function contextObjectExists(kind: ContextKind, name: string, model: Model): boo
 function guardedContexts(
   kind: ContextKind,
   contexts: Iterable<RationaleInfo | MemoryInfo>
-): { kind: ContextKind; info: RationaleInfo | MemoryInfo; target: ShapeTarget; guard: GuardInfo }[] {
-  const guarded: { kind: ContextKind; info: RationaleInfo | MemoryInfo; target: ShapeTarget; guard: GuardInfo }[] = [];
+): {
+  kind: ContextKind;
+  info: RationaleInfo | MemoryInfo;
+  target: ShapeTarget;
+  guard: GuardInfo;
+}[] {
+  const guarded: {
+    kind: ContextKind;
+    info: RationaleInfo | MemoryInfo;
+    target: ShapeTarget;
+    guard: GuardInfo;
+  }[] = [];
   for (const info of contexts) {
     for (const guard of info.guards) {
       if (requiresReevaluation(guard)) {
@@ -2881,7 +3178,10 @@ function hasValidReevaluationForGuard(model: Model, kind: ContextKind, name: str
   );
 }
 
-function matchingContextsForTarget(target: ShapeTarget, model: Model): { kind: ContextKind; name: string }[] {
+function matchingContextsForTarget(
+  target: ShapeTarget,
+  model: Model
+): { kind: ContextKind; name: string }[] {
   const contexts: { kind: ContextKind; name: string }[] = [];
   for (const rationale of model.rationales.values()) {
     if (targetsEqual(rationale.appliesTo ?? rationale.target, target)) {
@@ -2893,22 +3193,35 @@ function matchingContextsForTarget(target: ShapeTarget, model: Model): { kind: C
       contexts.push({ kind: "memory", name: memory.name });
     }
   }
-  return contexts.sort((left, right) => `${left.kind}:${left.name}`.localeCompare(`${right.kind}:${right.name}`));
+  return contexts.sort((left, right) =>
+    `${left.kind}:${left.name}`.localeCompare(`${right.kind}:${right.name}`)
+  );
 }
 
-function guardsForTarget(target: ShapeTarget, model: Model): { kind: ContextKind; info: RationaleInfo | MemoryInfo }[] {
+function guardsForTarget(
+  target: ShapeTarget,
+  model: Model
+): { kind: ContextKind; info: RationaleInfo | MemoryInfo }[] {
   const guards: { kind: ContextKind; info: RationaleInfo | MemoryInfo }[] = [];
   for (const rationale of model.rationales.values()) {
-    if (targetsEqual(rationale.appliesTo ?? rationale.target, target) && rationale.guards.some(requiresReevaluation)) {
+    if (
+      targetsEqual(rationale.appliesTo ?? rationale.target, target) &&
+      rationale.guards.some(requiresReevaluation)
+    ) {
       guards.push({ kind: "rationale", info: rationale });
     }
   }
   for (const memory of model.memories.values()) {
-    if (targetsEqual(memory.appliesTo ?? memory.target, target) && memory.guards.some(requiresReevaluation)) {
+    if (
+      targetsEqual(memory.appliesTo ?? memory.target, target) &&
+      memory.guards.some(requiresReevaluation)
+    ) {
       guards.push({ kind: "memory", info: memory });
     }
   }
-  return guards.sort((left, right) => `${left.kind}:${left.info.name}`.localeCompare(`${right.kind}:${right.info.name}`));
+  return guards.sort((left, right) =>
+    `${left.kind}:${left.info.name}`.localeCompare(`${right.kind}:${right.info.name}`)
+  );
 }
 
 function formatRelationExplanation(relation: HyperedgeInfo): string {
@@ -2997,7 +3310,9 @@ function formatMemoryExplanation(memory: MemoryInfo): string {
 function formatRationaleMemoryListEntry(rationale: RationaleInfo): string[] {
   const lines = [`rationale ${rationale.name}`, `type: ${rationale.contextType}`];
   if (rationale.protects.length > 0) {
-    lines.push(`protects: ${rationale.protects.map((item) => `${item.kind} ${item.value}`).join(", ")}`);
+    lines.push(
+      `protects: ${rationale.protects.map((item) => `${item.kind} ${item.value}`).join(", ")}`
+    );
   }
   if (rationale.owner) {
     lines.push(`owner: ${rationale.owner}`);
@@ -3017,7 +3332,9 @@ function formatMemoryListEntry(memory: MemoryInfo): string[] {
     lines.push(`confidence: ${memory.confidence}`);
   }
   if (memory.protects.length > 0) {
-    lines.push(`protects: ${memory.protects.map((item) => `${item.kind} ${item.value}`).join(", ")}`);
+    lines.push(
+      `protects: ${memory.protects.map((item) => `${item.kind} ${item.value}`).join(", ")}`
+    );
   }
   if (memory.owner) {
     lines.push(`owner: ${memory.owner}`);
@@ -3030,7 +3347,13 @@ function formatMemoryListEntry(memory: MemoryInfo): string[] {
 
 function isObligationDiagnostic(diagnostic: ShapeDiagnostic): diagnostic is Extract<
   SemanticDiagnostic,
-  { kind: "missing_required_context" | "missing_required_description" | "guarded_shape_changed" | "invalid_reevaluation" }
+  {
+    kind:
+      | "missing_required_context"
+      | "missing_required_description"
+      | "guarded_shape_changed"
+      | "invalid_reevaluation";
+  }
 > {
   return (
     diagnostic.kind === "missing_required_context" ||
@@ -3097,7 +3420,11 @@ function findFinalForbidden(
   );
 }
 
-function substituteTarget(target: string | undefined, resourceName: string, typeParams: string[]): string {
+function substituteTarget(
+  target: string | undefined,
+  resourceName: string,
+  typeParams: string[]
+): string {
   if (!target) {
     return resourceName;
   }
@@ -3205,7 +3532,9 @@ function formatParseDiagnostic(diagnostic: ParseDiagnostic): string {
   return `error: parse error\n\n${location} ${diagnostic.message}`;
 }
 
-function formatFinalForbiddenDiagnostic(diagnostic: Extract<SemanticDiagnostic, { kind: "final_forbidden_effect" }>): string {
+function formatFinalForbiddenDiagnostic(
+  diagnostic: Extract<SemanticDiagnostic, { kind: "final_forbidden_effect" }>
+): string {
   const evidence = diagnostic.evidence ? `\nevidence: ${diagnostic.evidence}` : "";
   return [
     "error: forbidden effect",
@@ -3217,7 +3546,9 @@ function formatFinalForbiddenDiagnostic(diagnostic: Extract<SemanticDiagnostic, 
   ].join("\n");
 }
 
-function formatMissingGrantDiagnostic(diagnostic: Extract<SemanticDiagnostic, { kind: "missing_grant" }>): string {
+function formatMissingGrantDiagnostic(
+  diagnostic: Extract<SemanticDiagnostic, { kind: "missing_grant" }>
+): string {
   return [
     "error: missing grant",
     "",
@@ -3227,7 +3558,9 @@ function formatMissingGrantDiagnostic(diagnostic: Extract<SemanticDiagnostic, { 
   ].join("\n");
 }
 
-function formatUnknownEffectsDiagnostic(diagnostic: Extract<SemanticDiagnostic, { kind: "unknown_effects" }>): string {
+function formatUnknownEffectsDiagnostic(
+  diagnostic: Extract<SemanticDiagnostic, { kind: "unknown_effects" }>
+): string {
   return [
     "error: unknown effects",
     "",
@@ -3236,7 +3569,9 @@ function formatUnknownEffectsDiagnostic(diagnostic: Extract<SemanticDiagnostic, 
   ].join("\n");
 }
 
-function formatUnknownNameDiagnostic(diagnostic: Extract<SemanticDiagnostic, { kind: "unknown_name" }>): string {
+function formatUnknownNameDiagnostic(
+  diagnostic: Extract<SemanticDiagnostic, { kind: "unknown_name" }>
+): string {
   return [
     `error: unknown ${diagnostic.nameKind}`,
     "",
@@ -3256,7 +3591,9 @@ function formatDuplicateDeclarationDiagnostic(
   ].join("\n");
 }
 
-function formatMissingShapeDeltaDiagnostic(diagnostic: Extract<SemanticDiagnostic, { kind: "missing_shape_delta" }>): string {
+function formatMissingShapeDeltaDiagnostic(
+  diagnostic: Extract<SemanticDiagnostic, { kind: "missing_shape_delta" }>
+): string {
   return [
     "error: governed source changed without shape delta",
     "",
@@ -3281,7 +3618,9 @@ function formatForbiddenHypercycleDiagnostic(
   ].join("\n");
 }
 
-function formatForbiddenProvidesDiagnostic(diagnostic: Extract<SemanticDiagnostic, { kind: "forbidden_provides" }>): string {
+function formatForbiddenProvidesDiagnostic(
+  diagnostic: Extract<SemanticDiagnostic, { kind: "forbidden_provides" }>
+): string {
   const allowed = diagnostic.allowedComponent ? ` except ${diagnostic.allowedComponent}` : "";
   return [
     "error: forbidden provides",
@@ -3292,7 +3631,9 @@ function formatForbiddenProvidesDiagnostic(diagnostic: Extract<SemanticDiagnosti
   ].join("\n");
 }
 
-function formatUnsafeEffectsDiagnostic(diagnostic: Extract<SemanticDiagnostic, { kind: "unsafe_effects" }>): string {
+function formatUnsafeEffectsDiagnostic(
+  diagnostic: Extract<SemanticDiagnostic, { kind: "unsafe_effects" }>
+): string {
   return [
     "error: unsafe effects missing policy metadata",
     "",
@@ -3480,7 +3821,10 @@ function describeProvenance(prov: Provenance | undefined): string {
 }
 
 function isPreludeTrait(trait: TraitInfo | undefined): boolean {
-  return trait !== undefined && (trait.provenance.filePath === undefined || trait.provenance.filePath === "standard prelude");
+  return (
+    trait !== undefined &&
+    (trait.provenance.filePath === undefined || trait.provenance.filePath === "standard prelude")
+  );
 }
 
 function cloneTraitInfo(trait: TraitInfo): TraitInfo {

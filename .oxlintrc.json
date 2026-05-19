@@ -1,0 +1,20 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["typescript", "unicorn", "oxc"],
+  "categories": {
+    "correctness": "error"
+  },
+  "env": {
+    "builtin": true,
+    "browser": true,
+    "node": true
+  },
+  "ignorePatterns": [
+    "dist/**",
+    "docs-site/.astro/**",
+    "docs-site/dist/**",
+    "node_modules/**",
+    "packages/shp-checker/src/language/generated/**"
+  ],
+  "rules": {}
+}

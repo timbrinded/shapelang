@@ -116,11 +116,15 @@ export function formatShapeModule(module: ShapeModule): string {
     chunks.push(`module ${module.name}`);
   }
 
-  for (const item of [...module.imports].sort((left, right) => left.path.localeCompare(right.path))) {
+  for (const item of [...module.imports].sort((left, right) =>
+    left.path.localeCompare(right.path)
+  )) {
     chunks.push(`import ${item.path}`);
   }
 
-  const declarations = [...module.declarations].sort((left, right) => declarationSortKey(left).localeCompare(declarationSortKey(right)));
+  const declarations = [...module.declarations].sort((left, right) =>
+    declarationSortKey(left).localeCompare(declarationSortKey(right))
+  );
   for (const declaration of declarations) {
     chunks.push(formatDeclaration(declaration));
   }
@@ -166,7 +170,13 @@ function formatDeclaration(declaration: ShapeModule["declarations"][number]): st
 }
 
 function formatResource(resource: ResourceDecl): string {
-  const traits = resource.traits.length > 0 ? ` : ${resource.traits.map((trait) => trait.name).sort().join(", ")}` : "";
+  const traits =
+    resource.traits.length > 0
+      ? ` : ${resource.traits
+          .map((trait) => trait.name)
+          .sort()
+          .join(", ")}`
+      : "";
   const storage = resource.body?.members.filter(isStorageDecl) ?? [];
   if (storage.length === 0) {
     return `resource ${resource.name}${traits}`;
@@ -175,7 +185,9 @@ function formatResource(resource: ResourceDecl): string {
   return [
     `resource ${resource.name}${traits} {`,
     ...storage
-      .sort((left, right) => `${left.provider}:${left.value}`.localeCompare(`${right.provider}:${right.value}`))
+      .sort((left, right) =>
+        `${left.provider}:${left.value}`.localeCompare(`${right.provider}:${right.value}`)
+      )
       .map((item) => indent(`storage ${item.provider}(${quote(item.value)})`)),
     "}"
   ].join("\n");
@@ -216,9 +228,13 @@ function formatComponent(component: ComponentDecl): string {
     }
   }
 
-  const classifiers = component.classifiers.length > 0
-    ? ` : ${component.classifiers.map((classifier) => classifier.name).sort().join(", ")}`
-    : "";
+  const classifiers =
+    component.classifiers.length > 0
+      ? ` : ${component.classifiers
+          .map((classifier) => classifier.name)
+          .sort()
+          .join(", ")}`
+      : "";
   const members = [...owns.sort(), ...grants.sort(), ...functions.sort()];
   return block(`component ${component.name}${classifiers}`, members);
 }
@@ -240,22 +256,39 @@ function formatRelation(relation: RelationDecl): string {
         connectsLine = `connects { ${endpoints.join(", ")} }`;
       }
     } else if (isRelationRolesDecl(member)) {
-      const sortedRoles = [...member.roles].sort((left, right) => left.name.localeCompare(right.name));
-      rolesLines.push(`roles { ${sortedRoles.map((role) => `${role.name} as ${role.role}`).join(", ")} }`);
+      const sortedRoles = [...member.roles].sort((left, right) =>
+        left.name.localeCompare(right.name)
+      );
+      rolesLines.push(
+        `roles { ${sortedRoles.map((role) => `${role.name} as ${role.role}`).join(", ")} }`
+      );
     } else if (isRelationSummaryDecl(member)) {
       summaryLine = `summary ${quote(member.value)}`;
     }
   }
 
-  const lines = [kindLine, connectsLine, ...rolesLines, summaryLine].filter((line) => line.length > 0);
+  const lines = [kindLine, connectsLine, ...rolesLines, summaryLine].filter(
+    (line) => line.length > 0
+  );
   return block(`relation ${relation.name}`, lines);
 }
 
 function formatFunction(fn: FunctionSummary | AddFunctionChange): string {
-  return formatFunctionParts(`fn ${fn.name}`, fn.shapeTraits, fn.source, fn.description, fn.unsafe, fn.effects, fn.members);
+  return formatFunctionParts(
+    `fn ${fn.name}`,
+    fn.shapeTraits,
+    fn.source,
+    fn.description,
+    fn.unsafe,
+    fn.effects,
+    fn.members
+  );
 }
 
-function formatQualifiedFunction(fn: AddFunctionChange | ModifyFunctionChange, keyword: "add" | "modify"): string {
+function formatQualifiedFunction(
+  fn: AddFunctionChange | ModifyFunctionChange,
+  keyword: "add" | "modify"
+): string {
   return formatFunctionParts(
     `${keyword} fn ${fn.component}.${fn.name}`,
     fn.shapeTraits,
@@ -288,7 +321,9 @@ function formatFunctionParts(
     lines.push(indent(`${unsafe ? "unsafe " : ""}effects unknown`));
   } else if (isCompleteEffects(effects)) {
     lines.push(indent(`${unsafe ? "unsafe " : ""}effects complete {`));
-    for (const entry of [...effects.effects].sort((left, right) => formatTerm(left.term).localeCompare(formatTerm(right.term)))) {
+    for (const entry of [...effects.effects].sort((left, right) =>
+      formatTerm(left.term).localeCompare(formatTerm(right.term))
+    )) {
       lines.push(indent(formatEffectEntry(entry), 2));
     }
     lines.push(indent("}"));
@@ -305,7 +340,10 @@ function formatShapeTraitList(shapeTraits: ShapeTraitList | undefined): string {
   if (!shapeTraits || shapeTraits.traits.length === 0) {
     return "";
   }
-  return ` : ${shapeTraits.traits.map((trait) => trait.name).sort().join(", ")}`;
+  return ` : ${shapeTraits.traits
+    .map((trait) => trait.name)
+    .sort()
+    .join(", ")}`;
 }
 
 function formatDescription(description: DescriptionDecl): string {
@@ -334,7 +372,9 @@ function formatFunctionMember(member: FunctionMember): string {
 }
 
 function sortFunctionMembers(members: FunctionMember[]): FunctionMember[] {
-  return [...members].sort((left, right) => formatFunctionMember(left).localeCompare(formatFunctionMember(right)));
+  return [...members].sort((left, right) =>
+    formatFunctionMember(left).localeCompare(formatFunctionMember(right))
+  );
 }
 
 function formatImplementation(implementation: ImplementationDecl): string {
@@ -394,7 +434,10 @@ function formatChange(change: ChangeDecl): string {
   return block(`change ${change.name}`, entries);
 }
 
-function formatChangedDeclaration(keyword: "add" | "modify", declaration: AddDeclarationChange["declaration"]): string {
+function formatChangedDeclaration(
+  keyword: "add" | "modify",
+  declaration: AddDeclarationChange["declaration"]
+): string {
   const formatted = formatDeclaration(declaration);
   const lines = formatted.split("\n");
   if (lines.length === 1) {
@@ -459,9 +502,16 @@ function formatRationale(rationale: RationaleDecl): string {
       return "";
     })
     .filter((line) => line.length > 0)
-    .sort((left, right) => memberOrder(left, RATIONALE_MEMBER_ORDER) - memberOrder(right, RATIONALE_MEMBER_ORDER) || left.localeCompare(right));
+    .sort(
+      (left, right) =>
+        memberOrder(left, RATIONALE_MEMBER_ORDER) - memberOrder(right, RATIONALE_MEMBER_ORDER) ||
+        left.localeCompare(right)
+    );
 
-  return block(`rationale ${rationale.name} : ${formatContextTypeRef(rationale.contextType)}`, members);
+  return block(
+    `rationale ${rationale.name} : ${formatContextTypeRef(rationale.contextType)}`,
+    members
+  );
 }
 
 function formatMemory(memory: MemoryDecl): string {
@@ -500,7 +550,11 @@ function formatMemory(memory: MemoryDecl): string {
       return "";
     })
     .filter((line) => line.length > 0)
-    .sort((left, right) => memberOrder(left, MEMORY_MEMBER_ORDER) - memberOrder(right, MEMORY_MEMBER_ORDER) || left.localeCompare(right));
+    .sort(
+      (left, right) =>
+        memberOrder(left, MEMORY_MEMBER_ORDER) - memberOrder(right, MEMORY_MEMBER_ORDER) ||
+        left.localeCompare(right)
+    );
 
   return block(`memory ${memory.name} : ${formatContextTypeRef(memory.contextType)}`, members);
 }
@@ -532,7 +586,11 @@ function formatReevaluation(reevaluation: ReevaluationDecl): string {
       return "";
     })
     .filter((line) => line.length > 0)
-    .sort((left, right) => memberOrder(left, REEVALUATION_MEMBER_ORDER) - memberOrder(right, REEVALUATION_MEMBER_ORDER) || left.localeCompare(right));
+    .sort(
+      (left, right) =>
+        memberOrder(left, REEVALUATION_MEMBER_ORDER) -
+          memberOrder(right, REEVALUATION_MEMBER_ORDER) || left.localeCompare(right)
+    );
 
   return block(`reevaluation ${reevaluation.name}`, members);
 }
@@ -577,7 +635,9 @@ function memberOrder(line: string, order: string[]): number {
   return index === -1 ? order.length : index;
 }
 
-function formatContextTypeRef(contextType: RationaleDecl["contextType"] | MemoryDecl["contextType"]): string {
+function formatContextTypeRef(
+  contextType: RationaleDecl["contextType"] | MemoryDecl["contextType"]
+): string {
   return `${contextType.name}<${formatTargetRef(contextType.target)}>`;
 }
 

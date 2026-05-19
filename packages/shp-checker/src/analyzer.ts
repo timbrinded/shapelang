@@ -30,7 +30,12 @@ export function analyzeSourceText(sourcePath: string, source: string): AnalyzerH
 
   lines.forEach((line, index) => {
     const lineNumber = index + 1;
-    if (/\bDELETE\s+FROM\b/i.test(line) || /\bdeleteFrom\s*\(/.test(line) || /\bdeleteMany\s*\(/.test(line) || /\.delete\s*\(/.test(line)) {
+    if (
+      /\bDELETE\s+FROM\b/i.test(line) ||
+      /\bdeleteFrom\s*\(/.test(line) ||
+      /\bdeleteMany\s*\(/.test(line) ||
+      /\.delete\s*\(/.test(line)
+    ) {
       hints.push({
         effect: "HardDelete",
         sourcePath,
@@ -61,7 +66,10 @@ export function analyzeSourceText(sourcePath: string, source: string): AnalyzerH
   return hints;
 }
 
-export function compareAnalyzerHintsToShape(hints: AnalyzerHint[], modules: ShapeModule[]): AnalyzerWarning[] {
+export function compareAnalyzerHintsToShape(
+  hints: AnalyzerHint[],
+  modules: ShapeModule[]
+): AnalyzerWarning[] {
   const declaredEffectsByPath = collectDeclaredEffectsBySourcePath(modules);
   const warnings: AnalyzerWarning[] = [];
 
@@ -84,12 +92,14 @@ export function formatAnalyzerWarnings(warnings: AnalyzerWarning[]): string {
   }
 
   return `${warnings
-    .map((warning) => [
-      "warning: analyzer hint missing from shape effects",
-      "",
-      `${warning.hint.sourcePath}:${warning.hint.line} suggests ${warning.hint.effect}.`,
-      `evidence: ${warning.hint.evidence}`
-    ].join("\n"))
+    .map((warning) =>
+      [
+        "warning: analyzer hint missing from shape effects",
+        "",
+        `${warning.hint.sourcePath}:${warning.hint.line} suggests ${warning.hint.effect}.`,
+        `evidence: ${warning.hint.evidence}`
+      ].join("\n")
+    )
     .join("\n\n")}\n`;
 }
 
@@ -117,7 +127,13 @@ function collectDeclaredEffectsBySourcePath(modules: ShapeModule[]): Map<string,
   return effects;
 }
 
-function collectFunctionEffects(fn: AddFunctionChange | ModifyFunctionChange | Extract<ShapeModule["declarations"][number], { $type: "ComponentDecl" }>["members"][number], effects: Map<string, Set<string>>): void {
+function collectFunctionEffects(
+  fn:
+    | AddFunctionChange
+    | ModifyFunctionChange
+    | Extract<ShapeModule["declarations"][number], { $type: "ComponentDecl" }>["members"][number],
+  effects: Map<string, Set<string>>
+): void {
   if (!("effects" in fn) || !isCompleteEffects(fn.effects)) {
     return;
   }

@@ -15,6 +15,32 @@ const { head } = Astro.locals.starlightRoute;
     return pre.textContent ?? "";
   }
 
+  function preserveExpressiveCodeAssets(container: Element) {
+    for (const child of Array.from(container.children)) {
+      if (child instanceof HTMLLinkElement && child.rel === "stylesheet" && child.href) {
+        const alreadyLoaded = [...document.querySelectorAll<HTMLLinkElement>('link[rel="stylesheet"]')].some(
+          (link) => link !== child && link.href === child.href
+        );
+        if (alreadyLoaded) {
+          child.remove();
+        } else {
+          document.head.append(child);
+        }
+      }
+
+      if (child instanceof HTMLScriptElement && child.src) {
+        const alreadyLoaded = [...document.querySelectorAll<HTMLScriptElement>("script[src]")].some(
+          (script) => script !== child && script.src === child.src
+        );
+        if (alreadyLoaded) {
+          child.remove();
+        } else {
+          document.head.append(child);
+        }
+      }
+    }
+  }
+
   function diagramTheme() {
     const styles = getComputedStyle(document.documentElement);
     const panel = styles.getPropertyValue("--shape-panel").trim() || "#ffffff";
@@ -82,6 +108,7 @@ const { head } = Astro.locals.starlightRoute;
         const id = `shape-mermaid-${index}-${Math.random().toString(36).slice(2)}`;
         const { svg, bindFunctions } = await mermaid.render(id, source);
         diagram.innerHTML = svg;
+        preserveExpressiveCodeAssets(frame);
         frame.replaceWith(diagram);
         bindFunctions?.(diagram);
       } catch (error) {

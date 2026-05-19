@@ -3,10 +3,10 @@ title: Shape
 description: Shape is a typed architecture conformance language for making architectural claims explicit and checkable.
 template: splash
 hero:
-  tagline: Typed architecture conformance for reviewable systems.
+  tagline: Agent-drafted architecture claims, human-reviewed and deterministically checked.
   image:
-    file: ../../assets/infographics/shape-model-loop.png
-    alt: Shape review loop from code diff and agent draft through human review, shp check, CI gate, and diagnostics.
+    file: ../../assets/shape-hero-aperture.webp
+    alt: Abstract glass conformance aperture with coherent blue paths and a rejected red diagnostic trace.
   actions:
     - text: Start with Shape
       link: /shapelang/learn/quickstart/

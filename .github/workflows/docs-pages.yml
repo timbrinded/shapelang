@@ -22,17 +22,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 24
-
       - uses: oven-sh/setup-bun@v2
 
       - name: Install
         run: bun install --frozen-lockfile
 
-      - name: Generate Langium artifacts
-        run: bun run langium:generate
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
 
       - name: Docs check
         run: bun run docs:check

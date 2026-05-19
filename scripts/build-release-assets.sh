@@ -5,6 +5,7 @@ repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 bin_dir="$repo_root/dist/bin"
 release_dir="$repo_root/dist/release"
 release_version="${SHAPE_RELEASE_VERSION:-${GITHUB_REF_NAME:-latest}}"
+release_version_sed="$(printf '%s' "$release_version" | sed -e 's/[\\&|]/\\&/g')"
 
 rm -rf "$bin_dir" "$release_dir"
 mkdir -p "$bin_dir" "$release_dir"
@@ -34,8 +35,8 @@ build_asset bun-darwin-x64-baseline shp-darwin-x64 shp
 build_asset bun-darwin-arm64 shp-darwin-arm64 shp
 build_asset bun-windows-x64-baseline shp-windows-x64 shp.exe
 
-sed "s/__SHAPE_DEFAULT_VERSION__/$release_version/g" "$repo_root/install.sh" > "$release_dir/install.sh"
-sed "s/__SHAPE_DEFAULT_VERSION__/$release_version/g" "$repo_root/install.ps1" > "$release_dir/install.ps1"
+sed "s|__SHAPE_DEFAULT_VERSION__|$release_version_sed|g" "$repo_root/install.sh" > "$release_dir/install.sh"
+sed "s|__SHAPE_DEFAULT_VERSION__|$release_version_sed|g" "$repo_root/install.ps1" > "$release_dir/install.ps1"
 chmod +x "$release_dir/install.sh"
 
 (cd "$release_dir" && sha256sum ./* > checksums.txt)

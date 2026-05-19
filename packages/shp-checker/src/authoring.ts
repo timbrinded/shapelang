@@ -49,7 +49,10 @@ export function buildShapeAuthorPrompt(input: ShapeAuthorPromptInput): string {
     .join("\n");
 }
 
-export function buildShapeCriticPrompt(input: ShapeAuthorPromptInput, proposedShapeDelta: string): string {
+export function buildShapeCriticPrompt(
+  input: ShapeAuthorPromptInput,
+  proposedShapeDelta: string
+): string {
   return [
     "Review this proposed Shape .shape delta before a deterministic checker runs.",
     "",
@@ -82,13 +85,13 @@ export function generateShapeDelta(input: ShapeDeltaInput): string {
     file,
     functionName: uniqueFunctionName(file, index)
   }));
-  const functions = changedFunctions.map((item) => formatUnknownFunction(input.componentName, item.file, item.functionName));
-  const scaffold = input.includeMemoryGuardScaffold && changedFunctions[0]
-    ? [
-        "",
-        formatMemoryGuardScaffold(input.componentName, changedFunctions[0].functionName)
-      ]
-    : [];
+  const functions = changedFunctions.map((item) =>
+    formatUnknownFunction(input.componentName, item.file, item.functionName)
+  );
+  const scaffold =
+    input.includeMemoryGuardScaffold && changedFunctions[0]
+      ? ["", formatMemoryGuardScaffold(input.componentName, changedFunctions[0].functionName)]
+      : [];
 
   return [
     `module ${moduleName}`,
@@ -183,10 +186,12 @@ function contextRef(contextType: string, target: string): string {
 }
 
 function uniqueFunctionName(file: string, index: number): string {
-  const baseName = file.split("/").at(-1)?.replace(/\.[^.]+$/, "") ?? "change";
-  const words = baseName
-    .split(/[^a-zA-Z0-9]+/)
-    .filter((part) => part.length > 0);
+  const baseName =
+    file
+      .split("/")
+      .at(-1)
+      ?.replace(/\.[^.]+$/, "") ?? "change";
+  const words = baseName.split(/[^a-zA-Z0-9]+/).filter((part) => part.length > 0);
   const pascal = words.map((word) => `${word[0]?.toUpperCase() ?? ""}${word.slice(1)}`).join("");
   return `review${pascal || "Change"}Shape${index + 1}`;
 }
