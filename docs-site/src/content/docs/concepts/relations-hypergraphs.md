@@ -38,11 +38,11 @@ relation GatewayCallsAudit {
 |------------|------|
 | `name`     | Stable hyperedge identifier shown in diagnostics and `shp graph` output. |
 | `kind`     | Relation kind. Each kind has declared traversal semantics for hypercycle detection. |
-| `connects` | Two or more endpoints. Ordered kinds use `A -> B -> C`; unordered kinds use `{ A, B, C }`. |
+| `connects` | Two or more endpoints. Directional kinds use `A -> B -> C`; unordered custom kinds can use `{ A, B, C }`. |
 | `roles`    | Optional `{ Gateway as caller, AuditStore as callee }` tags. |
 | `summary`  | Optional review text. |
 
-Endpoints resolve to components or resources declared elsewhere in the module set. Unresolved endpoints are rejected as `unknown relation_endpoint`.
+Endpoints resolve to components or resources declared elsewhere in the module set. Unresolved endpoints are rejected as `unknown relation_endpoint`, and relation endpoints are ambiguous if the same name is declared as both a component and a resource.
 
 ## Prelude relation kinds
 
@@ -50,10 +50,10 @@ Endpoints resolve to components or resources declared elsewhere in the module se
 |--------------------|------------|---------------------|--------------------------------------------------------------|
 | `calls`            | binary     | directed `A -> B`   | Component calls component                                    |
 | `callbacks`        | binary     | directed `A -> B`   | Callback edges, often in conjunction with `calls`            |
-| `provides`         | binary     | directed `A -> B`   | Capability or interface advertisement                        |
+| `provides`         | binary     | directed `component -> resource` | Capability or interface advertisement             |
 | `coordinated_call` | ordered    | path along members  | Multi-vertex coordination (e.g. saga, audit pipeline)        |
 
-Each kind also constrains arity: `calls`, `callbacks`, and `provides` require exactly two endpoints; `coordinated_call` requires ordered `A -> B -> ...` connects and at least two endpoints.
+Each prelude kind also constrains arity and syntax: `calls`, `callbacks`, and `provides` require exactly two endpoints written with `A -> B`; `coordinated_call` requires ordered `A -> B -> ...` connects and at least two endpoints. User-defined kinds may use ordered or unordered connects, but they do not participate in hypercycle traversal unless the checker knows their traversal semantics.
 
 ## Binary dependencies are 2-vertex hyperedges
 

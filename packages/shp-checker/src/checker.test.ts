@@ -355,6 +355,160 @@ describe("Shape checker", () => {
     expect(result.exitCode).toBe(0);
   });
 
+  test("applies change-file add relation operations before hypercycle checks", () => {
+    const base = parseShapeModule(`
+      module deps
+
+      component Gateway {
+      }
+      component AuditStore {
+      }
+
+      relation GatewayCallsAudit {
+        kind calls
+        connects Gateway -> AuditStore
+      }
+
+      rule no_calls_cycle {
+        forbid hypercycle over calls
+      }
+    `);
+    const change = parseShapeModule(`
+      module changes.PR_005
+      import deps
+
+      change AddAuditCallsGateway {
+        add relation AuditCallsGateway {
+          kind calls
+          connects AuditStore -> Gateway
+        }
+      }
+    `);
+
+    expect(base.ok).toBe(true);
+    expect(change.ok).toBe(true);
+    if (!base.ok || !change.ok) {
+      return;
+    }
+
+    const result = checkShapeModules([base.module, change.module]);
+    const output = formatDiagnostics(result);
+
+    expect(result.exitCode).toBe(1);
+    expect(output).toContain("forbidden hypercycle");
+    expect(output).toContain("calls AuditCallsGateway");
+  });
+
+  test("applies change-file modify relation operations before hypercycle checks", () => {
+    const base = parseShapeModule(`
+      module deps
+
+      component Gateway {
+      }
+      component AuditStore {
+      }
+      component Sink {
+      }
+
+      relation GatewayCallsAudit {
+        kind calls
+        connects Gateway -> AuditStore
+      }
+
+      relation AuditCallsSink {
+        kind calls
+        connects AuditStore -> Sink
+      }
+
+      rule no_calls_cycle {
+        forbid hypercycle over calls
+      }
+    `);
+    const createsViolation = parseShapeModule(`
+      module changes.PR_006
+      import deps
+
+      change RepointAuditCall {
+        modify relation AuditCallsSink {
+          kind calls
+          connects AuditStore -> Gateway
+        }
+      }
+    `);
+    const removesViolation = parseShapeModule(`
+      module changes.PR_007
+      import deps
+
+      change RepointAuditCallAway {
+        modify relation GatewayCallsAudit {
+          kind calls
+          connects Gateway -> Sink
+        }
+      }
+    `);
+
+    expect(base.ok).toBe(true);
+    expect(createsViolation.ok).toBe(true);
+    expect(removesViolation.ok).toBe(true);
+    if (!base.ok || !createsViolation.ok || !removesViolation.ok) {
+      return;
+    }
+
+    const created = checkShapeModules([base.module, createsViolation.module]);
+    expect(created.exitCode).toBe(1);
+    expect(formatDiagnostics(created)).toContain("forbidden hypercycle");
+
+    const cleared = checkShapeModules([
+      base.module,
+      createsViolation.module,
+      removesViolation.module
+    ]);
+    expect(cleared.exitCode).toBe(0);
+  });
+
+  test("applies change-file remove relation operations before hypercycle checks", () => {
+    const base = parseShapeModule(`
+      module deps
+
+      component Gateway {
+      }
+      component AuditStore {
+      }
+
+      relation GatewayCallsAudit {
+        kind calls
+        connects Gateway -> AuditStore
+      }
+
+      relation AuditCallsGateway {
+        kind calls
+        connects AuditStore -> Gateway
+      }
+
+      rule no_calls_cycle {
+        forbid hypercycle over calls
+      }
+    `);
+    const change = parseShapeModule(`
+      module changes.PR_008
+      import deps
+
+      change RemoveAuditCallsGateway {
+        remove relation AuditCallsGateway
+      }
+    `);
+
+    expect(base.ok).toBe(true);
+    expect(change.ok).toBe(true);
+    if (!base.ok || !change.ok) {
+      return;
+    }
+
+    const result = checkShapeModules([base.module, change.module]);
+
+    expect(result.exitCode).toBe(0);
+  });
+
   test("fails coverage when governed files change without shape delta", () => {
     const parsed = parseShapeModule(`
       module audit
@@ -708,6 +862,118 @@ describe("Shape checker", () => {
     expect(output).toContain("kind coordinated_call requires ordered connects");
   });
 
+  test("rejects unordered connects for directional binary relation kinds", () => {
+    const parsed = parseShapeModule(`
+      module deps
+
+      component Gateway {
+      }
+      component AuditStore {
+      }
+
+      relation GatewayCallsAudit {
+        kind calls
+        connects { Gateway, AuditStore }
+      }
+    `);
+
+    expect(parsed.ok).toBe(true);
+    if (!parsed.ok) {
+      return;
+    }
+
+    const result = checkShapeModules([parsed.module]);
+    const output = formatDiagnostics(result);
+
+    expect(result.exitCode).toBe(1);
+    expect(output).toContain("invalid relation");
+    expect(output).toContain("kind calls requires ordered connects");
+  });
+
+  test("rejects ambiguous component and resource relation endpoints", () => {
+    const parsed = parseShapeModule(`
+      module deps
+
+      resource Node
+      component Node {
+      }
+      component Other {
+      }
+
+      relation NodeCallsOther {
+        kind calls
+        connects Node -> Other
+      }
+    `);
+
+    expect(parsed.ok).toBe(true);
+    if (!parsed.ok) {
+      return;
+    }
+
+    const result = checkShapeModules([parsed.module]);
+    const output = formatDiagnostics(result);
+
+    expect(result.exitCode).toBe(1);
+    expect(output).toContain("invalid relation");
+    expect(output).toContain("endpoint Node resolves to both a component and a resource");
+  });
+
+  test("reports unknown forbid provides target and except names", () => {
+    const parsed = parseShapeModule(`
+      module deps
+
+      resource JsonRpcEndpoint
+      component Gateway {
+      }
+
+      rule gateway_only_rpc_ingress {
+        forbid provides MissingEndpoint except MissingGateway
+      }
+    `);
+
+    expect(parsed.ok).toBe(true);
+    if (!parsed.ok) {
+      return;
+    }
+
+    const result = checkShapeModules([parsed.module]);
+    const output = formatDiagnostics(result);
+
+    expect(result.exitCode).toBe(1);
+    expect(output).toContain("unknown resource");
+    expect(output).toContain("MissingEndpoint");
+    expect(output).toContain("unknown component");
+    expect(output).toContain("MissingGateway");
+  });
+
+  test("rejects provides relations whose endpoints are not component to resource", () => {
+    const parsed = parseShapeModule(`
+      module deps
+
+      resource AuditEvent
+      component Gateway {
+      }
+
+      relation ReversedProvide {
+        kind provides
+        connects AuditEvent -> Gateway
+      }
+    `);
+
+    expect(parsed.ok).toBe(true);
+    if (!parsed.ok) {
+      return;
+    }
+
+    const result = checkShapeModules([parsed.module]);
+    const output = formatDiagnostics(result);
+
+    expect(result.exitCode).toBe(1);
+    expect(output).toContain("provides provider AuditEvent must be a component");
+    expect(output).toContain("provides target Gateway must be a resource");
+  });
+
   test("emits hyperedge facts and rejects unresolved relation endpoints", () => {
     const parsed = parseShapeModule(`
       module deps
@@ -757,15 +1023,16 @@ describe("Shape checker", () => {
       }
       component AuditStore {
       }
+      resource AuditEvent
 
       relation GatewayProvidesAudit {
         kind provides
-        connects Gateway -> AuditStore
+        connects Gateway -> AuditEvent
       }
 
       relation AuditCallsGateway {
         kind calls
-        connects AuditStore -> Gateway
+        connects AuditEvent -> Gateway
       }
 
       rule no_call_cycle {
@@ -793,15 +1060,16 @@ describe("Shape checker", () => {
       }
       component AuditStore {
       }
+      resource AuditEvent
 
       relation GatewayProvidesAudit {
         kind provides
-        connects Gateway -> AuditStore
+        connects Gateway -> AuditEvent
       }
 
       relation AuditCallsGateway {
         kind calls
-        connects AuditStore -> Gateway
+        connects AuditEvent -> Gateway
       }
 
       rule no_runtime_cycle {
@@ -1103,6 +1371,94 @@ describe("Shape checker", () => {
     const resourceGraph = graphShapeModules([parsed.module], "AuditEvent");
     expect(resourceGraph).toContain("AuditEvent (resource)");
     expect(resourceGraph).toContain("coordinated_call AuditWritePath:");
+  });
+
+  test("custom relation kinds appear in graph and stats but do not create hypercycles", () => {
+    const parsed = parseShapeModule(`
+      module deps
+
+      component Gateway {
+      }
+      component AuditStore {
+      }
+
+      relation GatewayWiresAudit {
+        kind wiring
+        connects Gateway -> AuditStore
+      }
+
+      relation AuditWiresGateway {
+        kind wiring
+        connects AuditStore -> Gateway
+      }
+
+      rule no_unknown_cycles {
+        forbid hypercycle
+      }
+    `);
+
+    expect(parsed.ok).toBe(true);
+    if (!parsed.ok) {
+      return;
+    }
+
+    const result = checkShapeModules([parsed.module]);
+    const output = formatDiagnostics(result);
+    const graph = graphAllShapeModules([parsed.module]);
+    const stats = statsShapeHypergraph([parsed.module]);
+
+    expect(result.exitCode).toBe(0);
+    expect(output).not.toContain("forbidden hypercycle");
+    expect(graph).toContain("wiring GatewayWiresAudit:");
+    expect(graph).toContain("wiring AuditWiresGateway:");
+    expect(stats).toContain("wiring: 2");
+  });
+
+  test("preserves relation roles in facts, explain output, and graph output", () => {
+    const parsed = parseShapeModule(`
+      module deps
+
+      component Gateway {
+      }
+      component AuditStore {
+      }
+
+      relation GatewayCallsAudit {
+        kind calls
+        connects Gateway -> AuditStore
+        roles { Gateway as caller, AuditStore as callee }
+      }
+    `);
+
+    expect(parsed.ok).toBe(true);
+    if (!parsed.ok) {
+      return;
+    }
+
+    const result = checkShapeModules([parsed.module], { includeFacts: true });
+    const explanation = explainShapeModules([parsed.module], "GatewayCallsAudit");
+    const graph = graphShapeModules([parsed.module], "Gateway");
+
+    expect(result.exitCode).toBe(0);
+    expect(result.facts).toContainEqual(
+      expect.objectContaining({
+        kind: "hyperedge_member",
+        hyperedge: "GatewayCallsAudit",
+        endpoint: "Gateway",
+        role: "caller"
+      })
+    );
+    expect(result.facts).toContainEqual(
+      expect.objectContaining({
+        kind: "hyperedge_member",
+        hyperedge: "GatewayCallsAudit",
+        endpoint: "AuditStore",
+        role: "callee"
+      })
+    );
+    expect(explanation).toContain("0: Gateway as caller");
+    expect(explanation).toContain("1: AuditStore as callee");
+    expect(graph).toContain("Gateway (component) as caller -> AuditStore (component) as callee");
   });
 
   test("applies user-defined trait rules", () => {
@@ -1857,7 +2213,7 @@ describe("Shape formatter", () => {
     const result = formatShapeSource(`
       module deps
       relation AuditWritePath { summary 'Audit write path.' connects Gateway -> AuditStore -> AuditEvent kind coordinated_call }
-      relation GatewayProvidesRpc { connects { Gateway, JsonRpcEndpoint } kind provides }
+      relation GatewayProvidesRpc { connects Gateway -> JsonRpcEndpoint kind provides }
       component Gateway { }
       component AuditStore { }
       resource AuditEvent
@@ -1889,7 +2245,7 @@ relation AuditWritePath {
 
 relation GatewayProvidesRpc {
   kind provides
-  connects { Gateway, JsonRpcEndpoint }
+  connects Gateway -> JsonRpcEndpoint
 }
 `);
   });
@@ -2108,6 +2464,9 @@ describe("Shape editor support", () => {
     ).toBeGreaterThan(1);
     expect(getCompletions(source, "Audit")).toContain("AuditStore.appendEvent");
     expect(getCompletions(source, "Preserve")).toContain("PreserveInline");
+    expect(getCompletions(source, "requ")).toContain("requires");
+    expect(getCompletions(source, "call")).toEqual(expect.arrayContaining(["calls", "callbacks"]));
+    expect(getCompletions(source, "coord")).toContain("coordinated_call");
 
     const formatted = formatOnSave(source);
     expect(formatted.ok).toBe(true);

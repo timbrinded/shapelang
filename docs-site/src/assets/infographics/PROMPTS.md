@@ -8,6 +8,7 @@ These prompts were written with the `$infographic` skill conventions and use `@f
 - `core-vocabulary-map.png` was regenerated once after the first pass misspelled `Ownership`.
 - `design-memory-reevaluation.png` was regenerated after the first pass rendered `guards on_change` with an extra underscore.
 - `hypercycle-witness-path.png` was regenerated for the hypergraph redesign to teach the witness-path concept using `calls`/`callbacks` relations and a `forbid hypercycle` rule. The asset uses generic `Component A`/`Component B` names because earlier image-generation passes misspelled real project component names; using generic names keeps the diagram pedagogical without inviting a bad project term into the rendered text.
+- `component-boundary-grants.png` was regenerated after the first hypergraph pass left the external relation target empty, then regenerated again against the previous `main` asset and neighboring concept infographics to restore the same medium-density schematic style. The final replacement names the external vertex `AuditEvent` and keeps `relation (external)` outside the component boundary.
 - `quickstart-loop.png` was regenerated once to remove platform logos from the install panel.
 - The saved assets were visually inspected for label spelling, layout coherence, and unsupported Shape behavior before embedding.
 
@@ -30,6 +31,54 @@ These additional prompts were intentionally lower-density than the first set. Ea
 | `rule-evaluation-board.png` | `inside-shape/rule-evaluation.md` | `Rule Evaluation`, `facts`, `final forbid`, `missing grant`, `coverage`, `design memory`, `hypercycle rule`, `pass`, `reject` |
 | `review-helpers.png` | `inside-shape/formatter-editor-authoring.md` | `Review Helpers`, `formatter`, `editor APIs`, `authoring`, `stable diff`, `diagnostics`, `effects unknown`, `human fills evidence` |
 | `shape-boundary.png` | `inside-shape/design-rationale.md` | `Shape Boundary`, `agent drafts claims`, `human reviews claims`, `checker rejects incoherence`, `tests remain`, `code review remains`, `not a proof system` |
+
+## component-boundary-grants.png
+
+Parameters: context=`docs-site/src/content/docs/concepts/components-ownership-grants.md`, `docs-site/src/content/docs/concepts/relations-hypergraphs.md`; orientation=landscape; level=medium; format=markdown; model=gpt-image-2; quality=high; size=1024x576.
+
+```text
+Use case: infographic-diagram
+Asset type: docs concept explainer
+
+Create a landscape 16:9 technical infographic for senior software engineers learning Shape. Match the previous `main` asset's visual style and granularity: centered title, medium-density schematic cards, nested grants/functions panels, small icon badges, and crisp engineering diagram surfaces.
+
+Design system:
+professional enterprise workstation aesthetic; Space Grotesk typography; Arbitrum Blue #00639a, deep slate text, light structured surfaces; tight 4px-grid alignment, compact panels, crisp 1px borders; tonal layering instead of soft shadows; medium density; small blue and green icon badges; no stock imagery, no decorative AI/cloud/blockchain motifs.
+
+Main message:
+Components contain ownership, grants, and functions; structural links live outside the component as relation hyperedges.
+
+Required visible text:
+- "Component Boundary"
+- "Component"
+- "owns"
+- "grants"
+- "functions"
+- "relation (external)"
+- "AuditEvent"
+- "not runtime allocation"
+
+Required layout:
+- Main title at top: "Component Boundary".
+- Center: a large blue-outlined rounded rectangle labeled "Component" with a small blue cube badge near the label.
+- Inside the boundary, place a green-accent grants panel labeled "grants" with schematic icons and short line placeholders.
+- Below the grants panel, place a blue-accent functions panel labeled "functions" with multiple function-summary rows, small function badges, effect/grant-style mini icons, and short line placeholders.
+- Left outside the boundary, place an owns card labeled "owns" with database/resource schematic icons and short line placeholders, connected toward the component boundary.
+- Below the owns card, place the note "not runtime allocation".
+- Right side: show a clearly labeled external vertex card named "AuditEvent" outside the component boundary.
+- Draw a blue directed hyperedge or arrow from the Component boundary to AuditEvent labeled exactly "relation (external)".
+- The relation must clearly be outside the component, not inside it, and the external vertex must not be empty.
+
+Text rendering rules:
+- Render every quoted label verbatim, exactly once, with no extra characters, no duplicate labels, and no spelling changes.
+- Do not render any visible text other than the quoted labels.
+- Use large readable Space Grotesk text with strong contrast.
+
+Content constraints:
+- Do not put structural dependencies inside the component boundary.
+- Do not imply ownership is runtime allocation.
+- No fake code blocks, filenames, lorem ipsum, stock imagery, decorative clutter, or unsupported Shape behavior.
+```
 
 ## shape-model-loop.png
 

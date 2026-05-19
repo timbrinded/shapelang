@@ -121,7 +121,7 @@ Relation members:
 - `roles` — optional `{ Gateway as caller, AuditStore as callee }` tagging.
 - `summary` — optional review text.
 
-Ordered kinds must use `A -> B -> ...`. Binary kinds (`calls`, `callbacks`, `provides`) must have exactly two endpoints.
+Directional prelude kinds must use ordered `A -> B` syntax. Binary directional kinds (`calls`, `callbacks`, `provides`) must have exactly two endpoints, and `provides` must connect a component provider to a resource target. `coordinated_call` must use ordered `A -> B -> ...` syntax.
 
 See [Relations and Hypergraphs](../concepts/relations-hypergraphs.md) for the kind registry and traversal semantics.
 

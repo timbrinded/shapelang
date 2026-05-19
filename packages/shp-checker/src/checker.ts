@@ -1485,10 +1485,15 @@ function lowerRelation(relation: RelationDecl, filePath: string | undefined, mod
       });
       return;
     }
-    if (rule.arity === "binary" && connectsDecl.ordered === false) {
-      // binary kinds permit either ordered or set; the parser only sets
-      // `ordered` when the `->` separator appears, so 2-member set syntax
-      // `{ A, B }` is allowed. No diagnostic.
+    if (rule.cycleTraversal === "directed_pairs" && !connectsDecl.ordered) {
+      model.diagnostics.push({
+        kind: "invalid_relation",
+        name: relation.name,
+        reason: `kind ${kindValue} requires ordered connects (A -> B)`,
+        filePath,
+        causedBy: [describeProvenance(prov)]
+      });
+      return;
     }
   }
 
@@ -2440,6 +2445,41 @@ function checkResolvedNames(model: Model): SemanticDiagnostic[] {
           filePath: hyperedge.provenance.filePath,
           causedBy: [describeProvenance(hyperedge.provenance)]
         });
+      } else if (isAmbiguousVertex(member.endpoint, model)) {
+        diagnostics.push({
+          kind: "invalid_relation",
+          name: hyperedge.name,
+          reason: `endpoint ${member.endpoint} resolves to both a component and a resource`,
+          filePath: hyperedge.provenance.filePath,
+          causedBy: [describeProvenance(hyperedge.provenance)]
+        });
+      }
+    }
+
+    if (hyperedge.kind === "provides") {
+      diagnostics.push(...checkProvidesEndpointKinds(hyperedge, model));
+    }
+  }
+
+  for (const rule of model.rules) {
+    for (const forbid of rule.forbidProvides) {
+      if (!model.resources.has(forbid.target)) {
+        diagnostics.push({
+          kind: "unknown_name",
+          nameKind: "resource",
+          name: forbid.target,
+          filePath: forbid.provenance.filePath,
+          causedBy: [describeProvenance(forbid.provenance)]
+        });
+      }
+      if (forbid.except && !model.components.has(forbid.except)) {
+        diagnostics.push({
+          kind: "unknown_name",
+          nameKind: "component",
+          name: forbid.except,
+          filePath: forbid.provenance.filePath,
+          causedBy: [describeProvenance(forbid.provenance)]
+        });
       }
     }
   }
@@ -2449,6 +2489,38 @@ function checkResolvedNames(model: Model): SemanticDiagnostic[] {
 
 function isResolvedVertex(name: string, model: Model): boolean {
   return model.components.has(name) || model.resources.has(name);
+}
+
+function isAmbiguousVertex(name: string, model: Model): boolean {
+  return model.components.has(name) && model.resources.has(name);
+}
+
+function checkProvidesEndpointKinds(hyperedge: HyperedgeInfo, model: Model): SemanticDiagnostic[] {
+  const diagnostics: SemanticDiagnostic[] = [];
+  const provider = providesProvider(hyperedge);
+  const target = providesTarget(hyperedge);
+
+  if (provider && isResolvedVertex(provider, model) && !model.components.has(provider)) {
+    diagnostics.push({
+      kind: "invalid_relation",
+      name: hyperedge.name,
+      reason: `provides provider ${provider} must be a component`,
+      filePath: hyperedge.provenance.filePath,
+      causedBy: [describeProvenance(hyperedge.provenance)]
+    });
+  }
+
+  if (target && isResolvedVertex(target, model) && !model.resources.has(target)) {
+    diagnostics.push({
+      kind: "invalid_relation",
+      name: hyperedge.name,
+      reason: `provides target ${target} must be a resource`,
+      filePath: hyperedge.provenance.filePath,
+      causedBy: [describeProvenance(hyperedge.provenance)]
+    });
+  }
+
+  return diagnostics;
 }
 
 function checkContextTargets(model: Model): SemanticDiagnostic[] {

@@ -238,7 +238,7 @@ A valid reevaluation needs a known `satisfies` target plus `outcome`, `summary`,
 
 ## Invalid relation
 
-Cause: a `relation` declaration is malformed. Reasons reported by the checker include `missing kind`, `missing connects`, `connects requires at least two endpoints`, `duplicate kind`/`connects`/`roles`/`summary`, `duplicate endpoint X`, `kind K requires exactly two endpoints` (for binary prelude kinds), `kind K requires ordered connects (A -> B -> ...)` (for `coordinated_call`), `role NAME is not a connects endpoint`, and `duplicate role for NAME`.
+Cause: a `relation` declaration is malformed. Reasons reported by the checker include `missing kind`, `missing connects`, `connects requires at least two endpoints`, `duplicate kind`/`connects`/`roles`/`summary`, `duplicate endpoint X`, `kind K requires exactly two endpoints` (for binary prelude kinds), `kind K requires ordered connects (A -> B)` (for directional binary kinds), `kind K requires ordered connects (A -> B -> ...)` (for `coordinated_call`), ambiguous endpoints that resolve to both a component and a resource, invalid `provides` endpoint kinds, `role NAME is not a connects endpoint`, and `duplicate role for NAME`.
 
 ```text
 error: invalid relation
@@ -246,7 +246,7 @@ error: invalid relation
 relation GatewayCallsAudit is invalid: kind calls requires exactly two endpoints.
 ```
 
-Fix the offending relation block. Each prelude kind constrains arity and connects shape: `calls`, `callbacks`, and `provides` are binary; `coordinated_call` is an ordered path of two or more endpoints; user-defined kinds accept any arity but are excluded from hypercycle detection.
+Fix the offending relation block. Each prelude kind constrains arity and connects shape: `calls`, `callbacks`, and `provides` are binary and directional; `provides` must be `component -> resource`; `coordinated_call` is an ordered path of two or more endpoints; user-defined kinds accept any arity but are excluded from hypercycle detection.
 
 ## Unknown relation endpoint
 
@@ -258,7 +258,7 @@ error: unknown relation_endpoint
 relation_endpoint GhostService is referenced but not declared.
 ```
 
-Declare the missing component or resource, or fix the endpoint name. Relation endpoints must resolve before the hypergraph is built.
+Declare the missing component or resource, or fix the endpoint name. Relation endpoints must resolve unambiguously before the hypergraph is checked.
 
 ## Design memory does not waive final forbids
 

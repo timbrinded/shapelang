@@ -14,7 +14,8 @@ shp check [--changed-files changed.txt] [files...]
 shp coverage --changed-files changed.txt [files...]
 shp fmt [--check] [files...]
 shp explain SYMBOL [files...]
-shp graph [SYMBOL] [--kind KIND] [--stats] [files...]
+shp graph [SYMBOL] [--kind KIND] [files...]
+shp graph --stats [--kind KIND] [files...]
 shp memory [files...]
 shp obligations [files...]
 shp author --changed-files changed.txt --component ComponentName [--change ChangeName] [--module module.name]
@@ -102,7 +103,7 @@ Hypergraph stats
   isolated vertices: 0
 ```
 
-`--stats` combines with `--kind KIND` to scope the hyperedge, incidence, and arity counts to a single relation kind. Vertex counts always reflect the full model; `isolated vertices` then reports vertices that do not participate in any hyperedge of the selected kind.
+`--stats` combines with `--kind KIND` to scope the hyperedge, incidence, and arity counts to a single relation kind. It is a whole-graph mode and does not accept a symbol. Vertex counts always reflect the full model; `isolated vertices` then reports vertices that do not participate in any hyperedge of the selected kind.
 
 ## Memory and obligations
 

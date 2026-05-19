@@ -25,7 +25,8 @@ const USAGE = `Usage:
   shp coverage --changed-files changed.txt [files...]
   shp fmt [--check] [files...]
   shp explain SYMBOL [files...]
-  shp graph [SYMBOL] [--kind KIND] [--stats] [files...]
+  shp graph [SYMBOL] [--kind KIND] [files...]
+  shp graph --stats [--kind KIND] [files...]
   shp memory [files...]
   shp obligations [files...]
   shp author --changed-files changed.txt --component ComponentName [--change ChangeName] [--module module.name]
@@ -117,23 +118,27 @@ async function main(): Promise<number> {
   }
 
   if (command === "graph") {
+    const graphArgs = resolveGraphArgs(providedFiles);
     if (values.stats) {
+      if (graphArgs.symbol) {
+        await Bun.write(Bun.stderr, "`shp graph --stats` does not accept a SYMBOL.\n\n" + USAGE);
+        return 2;
+      }
+
       const modules = await parseModules(
-        providedFiles.length > 0 ? providedFiles : await defaultShapeFiles()
+        graphArgs.files.length > 0 ? graphArgs.files : await defaultShapeFiles()
       );
       await Bun.write(Bun.stdout, statsShapeHypergraph(modules, values.kind));
       return 0;
     }
 
-    const [maybeSymbol, ...rest] = providedFiles;
-    const looksLikeFile = typeof maybeSymbol === "string" && maybeSymbol.endsWith(".shape");
-    const symbol = !maybeSymbol || looksLikeFile ? undefined : maybeSymbol;
-    const files = symbol ? rest : providedFiles;
-    const modules = await parseModules(files.length > 0 ? files : await defaultShapeFiles());
+    const modules = await parseModules(
+      graphArgs.files.length > 0 ? graphArgs.files : await defaultShapeFiles()
+    );
     await Bun.write(
       Bun.stdout,
-      symbol
-        ? graphShapeModules(modules, symbol, values.kind)
+      graphArgs.symbol
+        ? graphShapeModules(modules, graphArgs.symbol, values.kind)
         : graphAllShapeModules(modules, values.kind)
     );
     return 0;
@@ -207,6 +212,14 @@ async function formatFiles(providedFiles: string[], checkOnly: boolean): Promise
   }
 
   return ok ? 0 : 1;
+}
+
+function resolveGraphArgs(positionals: string[]): { symbol?: string; files: string[] } {
+  const [maybeSymbol, ...rest] = positionals;
+  const looksLikeFile = typeof maybeSymbol === "string" && maybeSymbol.endsWith(".shape");
+  const symbol = !maybeSymbol || looksLikeFile ? undefined : maybeSymbol;
+  const files = symbol ? rest : positionals;
+  return { symbol, files };
 }
 
 async function defaultShapeFiles(): Promise<string[]> {
