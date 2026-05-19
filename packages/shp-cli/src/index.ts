@@ -117,18 +117,23 @@ async function main(): Promise<number> {
   }
 
   if (command === "graph") {
+    if (values.stats) {
+      const modules = await parseModules(
+        providedFiles.length > 0 ? providedFiles : await defaultShapeFiles()
+      );
+      await Bun.write(Bun.stdout, statsShapeHypergraph(modules, values.kind));
+      return 0;
+    }
+
     const [maybeSymbol, ...rest] = providedFiles;
     const looksLikeFile = typeof maybeSymbol === "string" && maybeSymbol.endsWith(".shape");
     const symbol = !maybeSymbol || looksLikeFile ? undefined : maybeSymbol;
     const files = symbol ? rest : providedFiles;
     const modules = await parseModules(files.length > 0 ? files : await defaultShapeFiles());
-    if (values.stats) {
-      await Bun.write(Bun.stdout, statsShapeHypergraph(modules, { kindFilter: values.kind }));
-    } else if (symbol) {
-      await Bun.write(Bun.stdout, graphShapeModules(modules, symbol, values.kind));
-    } else {
-      await Bun.write(Bun.stdout, graphAllShapeModules(modules, values.kind));
-    }
+    await Bun.write(
+      Bun.stdout,
+      symbol ? graphShapeModules(modules, symbol, values.kind) : graphAllShapeModules(modules, values.kind)
+    );
     return 0;
   }
 

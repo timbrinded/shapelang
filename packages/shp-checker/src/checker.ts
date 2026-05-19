@@ -883,6 +883,20 @@ export function explainShapeModules(modules: ShapeModule[] | CheckModuleInput[],
   return `No shape facts found for ${symbol}.\n`;
 }
 
+function compareHyperedges(left: HyperedgeInfo, right: HyperedgeInfo): number {
+  return `${left.kind}:${left.name}`.localeCompare(`${right.kind}:${right.name}`);
+}
+
+function allHyperedgesByKind(model: Model, kindFilter?: string): HyperedgeInfo[] {
+  const edges: HyperedgeInfo[] = [];
+  for (const edge of model.hypergraph.edges.values()) {
+    if (!kindFilter || edge.kind === kindFilter) {
+      edges.push(edge);
+    }
+  }
+  return edges;
+}
+
 export function graphShapeModules(modules: ShapeModule[] | CheckModuleInput[], symbol: string, kindFilter?: string): string {
   const model = lowerShapeModules(modules);
   const relation = model.hypergraph.edges.get(symbol);
@@ -898,7 +912,7 @@ export function graphShapeModules(modules: ShapeModule[] | CheckModuleInput[], s
     .map((name) => model.hypergraph.edges.get(name))
     .filter((edge): edge is HyperedgeInfo => edge !== undefined)
     .filter((edge) => !kindFilter || edge.kind === kindFilter)
-    .sort((left, right) => `${left.kind}:${left.name}`.localeCompare(`${right.kind}:${right.name}`));
+    .sort(compareHyperedges);
 
   const lines = [formatVertexHeader(symbol, model)];
   if (incident.length === 0) {
@@ -918,9 +932,7 @@ export function graphShapeModules(modules: ShapeModule[] | CheckModuleInput[], s
  */
 export function graphAllShapeModules(modules: ShapeModule[] | CheckModuleInput[], kindFilter?: string): string {
   const model = lowerShapeModules(modules);
-  const edges = [...model.hypergraph.edges.values()]
-    .filter((edge) => !kindFilter || edge.kind === kindFilter)
-    .sort((left, right) => `${left.kind}:${left.name}`.localeCompare(`${right.kind}:${right.name}`));
+  const edges = allHyperedgesByKind(model, kindFilter).sort(compareHyperedges);
 
   if (edges.length === 0) {
     return kindFilter
@@ -941,35 +953,28 @@ export function graphAllShapeModules(modules: ShapeModule[] | CheckModuleInput[]
 }
 
 /**
- * Aggregate counts of vertices, hyperedges, and incidences in the loaded
- * modules. Used by `shp graph --stats` to give an agent (or human) a
- * single-shot overview of the model size and shape before they decide what
- * to drill into. `kindFilter`, if provided, restricts hyperedge counts to a
- * single relation kind; vertex counts always reflect the full model.
+ * `kindFilter`, if provided, scopes hyperedge, incidence, arity, and
+ * isolated-vertex participation to a single relation kind; vertex totals
+ * always reflect the full model.
  */
 export function statsShapeHypergraph(
   modules: ShapeModule[] | CheckModuleInput[],
-  options: { kindFilter?: string } = {}
+  kindFilter?: string
 ): string {
   const model = lowerShapeModules(modules);
-  const kindFilter = options.kindFilter;
 
-  const allEdges = [...model.hypergraph.edges.values()];
-  const filteredEdges = kindFilter ? allEdges.filter((edge) => edge.kind === kindFilter) : allEdges;
+  const filteredEdges = allHyperedgesByKind(model, kindFilter);
+  const totalEdgeCount = model.hypergraph.edges.size;
 
   const componentCount = model.components.size;
   const resourceCount = model.resources.size;
   const vertexCount = componentCount + resourceCount;
 
-  const kindCounts = new Map<string, number>();
-  for (const edge of allEdges) {
-    kindCounts.set(edge.kind, (kindCounts.get(edge.kind) ?? 0) + 1);
-  }
-
   let totalIncidences = 0;
   let minArity = Number.POSITIVE_INFINITY;
   let maxArity = 0;
   let widestEdge: HyperedgeInfo | undefined;
+  const participatingVertices = new Set<string>();
   for (const edge of filteredEdges) {
     totalIncidences += edge.members.length;
     if (edge.members.length < minArity) {
@@ -979,19 +984,12 @@ export function statsShapeHypergraph(
       maxArity = edge.members.length;
       widestEdge = edge;
     }
-  }
-
-  const participatingVertices = new Set<string>();
-  for (const edge of filteredEdges) {
     for (const member of edge.members) {
       participatingVertices.add(member.endpoint);
     }
   }
-  const allDeclaredVertices = new Set<string>([
-    ...model.components.keys(),
-    ...model.resources.keys()
-  ]);
-  const isolatedVertices = [...allDeclaredVertices]
+
+  const isolatedVertices = [...model.components.keys(), ...model.resources.keys()]
     .filter((vertex) => !participatingVertices.has(vertex))
     .sort();
 
@@ -1002,18 +1000,25 @@ export function statsShapeHypergraph(
   if (kindFilter) {
     lines.push(`  filter: kind=${kindFilter}`);
   }
-  lines.push(`  hyperedges: ${filteredEdges.length}${kindFilter ? ` (of ${allEdges.length} total)` : ""}`);
-  const kindsToList = kindFilter
-    ? [...kindCounts.entries()].filter(([kind]) => kind === kindFilter)
-    : [...kindCounts.entries()];
-  for (const [kind, count] of kindsToList.sort(([leftKind], [rightKind]) => leftKind.localeCompare(rightKind))) {
-    lines.push(`    ${kind}: ${count}`);
+  lines.push(`  hyperedges: ${filteredEdges.length}${kindFilter ? ` (of ${totalEdgeCount} total)` : ""}`);
+  if (kindFilter) {
+    if (filteredEdges.length > 0) {
+      lines.push(`    ${kindFilter}: ${filteredEdges.length}`);
+    }
+  } else {
+    const kindCounts = new Map<string, number>();
+    for (const edge of filteredEdges) {
+      kindCounts.set(edge.kind, (kindCounts.get(edge.kind) ?? 0) + 1);
+    }
+    for (const [kind, count] of [...kindCounts.entries()].sort(([leftKind], [rightKind]) => leftKind.localeCompare(rightKind))) {
+      lines.push(`    ${kind}: ${count}`);
+    }
   }
   lines.push(`  incidences: ${totalIncidences}`);
   if (filteredEdges.length > 0) {
     const averageArity = totalIncidences / filteredEdges.length;
     lines.push(`  arity: min ${minArity}, max ${maxArity}, avg ${averageArity.toFixed(2)}`);
-    if (widestEdge && widestEdge.members.length > 2) {
+    if (maxArity > 2 && widestEdge) {
       lines.push(`    widest: ${widestEdge.kind} ${widestEdge.name}`);
     }
   }
@@ -2868,7 +2873,7 @@ function appendIncidence(vertex: string, model: Model, lines: string[]): void {
   const incident = (model.hypergraph.incidence.get(vertex) ?? [])
     .map((name) => model.hypergraph.edges.get(name))
     .filter((edge): edge is HyperedgeInfo => edge !== undefined)
-    .sort((left, right) => `${left.kind}:${left.name}`.localeCompare(`${right.kind}:${right.name}`));
+    .sort(compareHyperedges);
   if (incident.length === 0) {
     return;
   }

@@ -787,7 +787,7 @@ describe("Shape checker", () => {
     expect(stats).toContain("isolated vertices: 1");
     expect(stats).toContain("Loner (component)");
 
-    const callsOnly = statsShapeHypergraph([parsed.module], { kindFilter: "calls" });
+    const callsOnly = statsShapeHypergraph([parsed.module], "calls");
     expect(callsOnly).toContain("filter: kind=calls");
     expect(callsOnly).toContain("hyperedges: 1 (of 2 total)");
     expect(callsOnly).toContain("calls: 1");
