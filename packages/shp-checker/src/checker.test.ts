@@ -747,6 +747,227 @@ describe("Shape checker", () => {
     );
   });
 
+  test("forbid hypercycle over KIND restricts traversal to that kind's subgraph", () => {
+    const parsed = parseShapeModule(`
+      module deps
+
+      component Gateway {
+      }
+      component AuditStore {
+      }
+
+      relation GatewayProvidesAudit {
+        kind provides
+        connects Gateway -> AuditStore
+      }
+
+      relation AuditCallsGateway {
+        kind calls
+        connects AuditStore -> Gateway
+      }
+
+      rule no_call_cycle {
+        forbid hypercycle over calls
+      }
+    `);
+
+    expect(parsed.ok).toBe(true);
+    if (!parsed.ok) {
+      return;
+    }
+
+    const result = checkShapeModules([parsed.module]);
+    const output = formatDiagnostics(result);
+
+    expect(result.exitCode).toBe(0);
+    expect(output).not.toContain("forbidden hypercycle");
+  });
+
+  test("forbid hypercycle over multiple kinds detects cycles that span those kinds", () => {
+    const parsed = parseShapeModule(`
+      module deps
+
+      component Gateway {
+      }
+      component AuditStore {
+      }
+
+      relation GatewayProvidesAudit {
+        kind provides
+        connects Gateway -> AuditStore
+      }
+
+      relation AuditCallsGateway {
+        kind calls
+        connects AuditStore -> Gateway
+      }
+
+      rule no_runtime_cycle {
+        forbid hypercycle over calls or provides
+      }
+    `);
+
+    expect(parsed.ok).toBe(true);
+    if (!parsed.ok) {
+      return;
+    }
+
+    const result = checkShapeModules([parsed.module]);
+    const output = formatDiagnostics(result);
+
+    expect(result.exitCode).toBe(1);
+    expect(output).toContain("forbidden hypercycle");
+    expect(output).toContain("provides GatewayProvidesAudit");
+    expect(output).toContain("calls AuditCallsGateway");
+  });
+
+  test("rejects relation roles that are not connects endpoints", () => {
+    const parsed = parseShapeModule(`
+      module deps
+
+      component Gateway {
+      }
+      component AuditStore {
+      }
+
+      relation GatewayCallsAudit {
+        kind calls
+        connects Gateway -> AuditStore
+        roles { GhostService as callee }
+      }
+    `);
+
+    expect(parsed.ok).toBe(true);
+    if (!parsed.ok) {
+      return;
+    }
+
+    const result = checkShapeModules([parsed.module]);
+    const output = formatDiagnostics(result);
+
+    expect(result.exitCode).toBe(1);
+    expect(output).toContain("invalid relation");
+    expect(output).toContain("role GhostService is not a connects endpoint");
+  });
+
+  test("rejects duplicate role entries for the same endpoint", () => {
+    const parsed = parseShapeModule(`
+      module deps
+
+      component Gateway {
+      }
+      component AuditStore {
+      }
+
+      relation GatewayCallsAudit {
+        kind calls
+        connects Gateway -> AuditStore
+        roles { Gateway as caller, Gateway as callee }
+      }
+    `);
+
+    expect(parsed.ok).toBe(true);
+    if (!parsed.ok) {
+      return;
+    }
+
+    const result = checkShapeModules([parsed.module]);
+    const output = formatDiagnostics(result);
+
+    expect(result.exitCode).toBe(1);
+    expect(output).toContain("invalid relation");
+    expect(output).toContain("duplicate role for Gateway");
+  });
+
+  test("rejects relations with duplicate kind declarations", () => {
+    const parsed = parseShapeModule(`
+      module deps
+
+      component Gateway {
+      }
+      component AuditStore {
+      }
+
+      relation GatewayLink {
+        kind calls
+        kind provides
+        connects Gateway -> AuditStore
+      }
+    `);
+
+    expect(parsed.ok).toBe(true);
+    if (!parsed.ok) {
+      return;
+    }
+
+    const result = checkShapeModules([parsed.module]);
+    const output = formatDiagnostics(result);
+
+    expect(result.exitCode).toBe(1);
+    expect(output).toContain("invalid relation");
+    expect(output).toContain("duplicate kind");
+  });
+
+  test("rejects relations with duplicate summary declarations", () => {
+    const parsed = parseShapeModule(`
+      module deps
+
+      component Gateway {
+      }
+      component AuditStore {
+      }
+
+      relation GatewayCallsAudit {
+        kind calls
+        connects Gateway -> AuditStore
+        summary "first"
+        summary "second"
+      }
+    `);
+
+    expect(parsed.ok).toBe(true);
+    if (!parsed.ok) {
+      return;
+    }
+
+    const result = checkShapeModules([parsed.module]);
+    const output = formatDiagnostics(result);
+
+    expect(result.exitCode).toBe(1);
+    expect(output).toContain("invalid relation");
+    expect(output).toContain("duplicate summary");
+  });
+
+  test("rejects relations with duplicate roles blocks", () => {
+    const parsed = parseShapeModule(`
+      module deps
+
+      component Gateway {
+      }
+      component AuditStore {
+      }
+
+      relation GatewayCallsAudit {
+        kind calls
+        connects Gateway -> AuditStore
+        roles { Gateway as caller }
+        roles { AuditStore as callee }
+      }
+    `);
+
+    expect(parsed.ok).toBe(true);
+    if (!parsed.ok) {
+      return;
+    }
+
+    const result = checkShapeModules([parsed.module]);
+    const output = formatDiagnostics(result);
+
+    expect(result.exitCode).toBe(1);
+    expect(output).toContain("invalid relation");
+    expect(output).toContain("duplicate roles");
+  });
+
   test("statsShapeHypergraph reports vertex, hyperedge, and incidence counts", () => {
     const parsed = parseShapeModule(`
       module deps

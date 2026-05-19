@@ -18,6 +18,7 @@ import type {
   ReevaluationDecl,
   RelationDecl,
   RelationEndpoint,
+  RelationRoleEntry,
   RemoveDeclarationChange,
   ResourceDecl,
   RuleDecl,
@@ -1230,12 +1231,26 @@ function lowerRelation(relation: RelationDecl, filePath: string | undefined, mod
   }
 
   let kindValue: string | undefined;
+  let kindSeen = false;
   let connectsDecl: ReturnType<typeof collectConnects> | undefined;
   let summary: string | undefined;
-  const roleByEndpoint = new Map<string, string>();
+  let summarySeen = false;
+  let rolesSeen = false;
+  const roleDecls: RelationRoleEntry[] = [];
 
   for (const member of relation.members) {
     if (isRelationKindDecl(member)) {
+      if (kindSeen) {
+        model.diagnostics.push({
+          kind: "invalid_relation",
+          name: relation.name,
+          reason: "duplicate kind",
+          filePath,
+          causedBy: [describeProvenance(prov)]
+        });
+        continue;
+      }
+      kindSeen = true;
       kindValue = member.value;
     } else if (isRelationConnectsDecl(member)) {
       if (connectsDecl) {
@@ -1250,10 +1265,32 @@ function lowerRelation(relation: RelationDecl, filePath: string | undefined, mod
       }
       connectsDecl = collectConnects(member);
     } else if (isRelationRolesDecl(member)) {
+      if (rolesSeen) {
+        model.diagnostics.push({
+          kind: "invalid_relation",
+          name: relation.name,
+          reason: "duplicate roles",
+          filePath,
+          causedBy: [describeProvenance(prov)]
+        });
+        continue;
+      }
+      rolesSeen = true;
       for (const role of member.roles) {
-        roleByEndpoint.set(role.name, role.role);
+        roleDecls.push(role);
       }
     } else if (isRelationSummaryDecl(member)) {
+      if (summarySeen) {
+        model.diagnostics.push({
+          kind: "invalid_relation",
+          name: relation.name,
+          reason: "duplicate summary",
+          filePath,
+          causedBy: [describeProvenance(prov)]
+        });
+        continue;
+      }
+      summarySeen = true;
       summary = unquote(member.value);
     }
   }
@@ -1333,6 +1370,32 @@ function lowerRelation(relation: RelationDecl, filePath: string | undefined, mod
       // `ordered` when the `->` separator appears, so 2-member set syntax
       // `{ A, B }` is allowed. No diagnostic.
     }
+  }
+
+  const endpointSet = new Set(connectsDecl.endpoints);
+  const roleByEndpoint = new Map<string, string>();
+  for (const role of roleDecls) {
+    if (!endpointSet.has(role.name)) {
+      model.diagnostics.push({
+        kind: "invalid_relation",
+        name: relation.name,
+        reason: `role ${role.name} is not a connects endpoint`,
+        filePath,
+        causedBy: [describeProvenance(prov)]
+      });
+      continue;
+    }
+    if (roleByEndpoint.has(role.name)) {
+      model.diagnostics.push({
+        kind: "invalid_relation",
+        name: relation.name,
+        reason: `duplicate role for ${role.name}`,
+        filePath,
+        causedBy: [describeProvenance(prov)]
+      });
+      continue;
+    }
+    roleByEndpoint.set(role.name, role.role);
   }
 
   const members: HyperedgeMember[] = connectsDecl.endpoints.map((endpoint, index) => ({
@@ -2514,12 +2577,15 @@ type HyperedgeStep = {
  *   `members[i] -> members[i+1]` along the declared order.
  * - `none`: the hyperedge does not participate in cycle detection.
  *
- * `kindsFilter`, if non-empty, restricts the search to hypercycles whose
- * witness must include at least one step from a hyperedge whose `kind`
- * matches one of the listed kinds.
+ * `kindsFilter`, if non-empty, restricts the search to the subgraph induced
+ * by hyperedges whose `kind` matches one of the listed kinds. Steps from
+ * other kinds are excluded from adjacency entirely, so cycles that require
+ * traversing a non-allowed kind to close are not reported.
  */
 function findHypercycle(model: Model, kindsFilter: string[]): HypercycleWitness | undefined {
-  const steps = buildHyperedgeSteps(model);
+  const allSteps = buildHyperedgeSteps(model);
+  const allowedKinds = kindsFilter.length === 0 ? undefined : new Set(kindsFilter);
+  const steps = allowedKinds ? allSteps.filter((step) => allowedKinds.has(step.hyperedge.kind)) : allSteps;
   if (steps.length === 0) {
     return undefined;
   }
@@ -2534,11 +2600,9 @@ function findHypercycle(model: Model, kindsFilter: string[]): HypercycleWitness 
     adjacency.set(step.from, existing);
   }
 
-  const allowedKinds = kindsFilter.length === 0 ? undefined : new Set(kindsFilter);
-
   for (const start of [...vertices].sort()) {
     const visited = new Set<string>();
-    const witness = dfsHypercycle(start, start, adjacency, [], visited, allowedKinds);
+    const witness = dfsHypercycle(start, start, adjacency, [], visited);
     if (witness) {
       return witness;
     }
@@ -2552,8 +2616,7 @@ function dfsHypercycle(
   current: string,
   adjacency: Map<string, HyperedgeStep[]>,
   path: HyperedgeStep[],
-  visited: Set<string>,
-  allowedKinds: Set<string> | undefined
+  visited: Set<string>
 ): HypercycleWitness | undefined {
   if (visited.has(current)) {
     return undefined;
@@ -2564,13 +2627,10 @@ function dfsHypercycle(
   for (const step of nextSteps) {
     const nextPath = [...path, step];
     if (step.to === start) {
-      if (!allowedKinds || nextPath.some((entry) => allowedKinds.has(entry.hyperedge.kind))) {
-        return witnessFromPath(start, nextPath);
-      }
-      continue;
+      return witnessFromPath(start, nextPath);
     }
 
-    const witness = dfsHypercycle(start, step.to, adjacency, nextPath, new Set(visited), allowedKinds);
+    const witness = dfsHypercycle(start, step.to, adjacency, nextPath, new Set(visited));
     if (witness) {
       return witness;
     }
