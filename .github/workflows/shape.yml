@@ -10,8 +10,8 @@ permissions:
   contents: read
 
 jobs:
-  format:
-    name: Format
+  codegen:
+    name: Codegen
     runs-on: ubuntu-latest
 
     steps:
@@ -27,9 +27,25 @@ jobs:
         name: Install
         run: bun install --frozen-lockfile
 
-      - &langium-generate
-        name: Generate Langium artifacts
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Generate Langium artifacts
         run: bun run langium:generate
+
+      - name: Check generated artifacts
+        run: git diff --exit-code -- packages/shp-checker/src/language/generated
+
+  format:
+    name: Format
+    runs-on: ubuntu-latest
+
+    steps:
+      - *checkout
+      - *setup-bun
+      - *install
 
       - name: Format check
         run: bun run format:check
@@ -42,7 +58,6 @@ jobs:
       - *checkout
       - *setup-bun
       - *install
-      - *langium-generate
 
       - name: Lint
         run: bun run lint
@@ -55,7 +70,6 @@ jobs:
       - *checkout
       - *setup-bun
       - *install
-      - *langium-generate
 
       - name: Typecheck
         run: bun run typecheck
@@ -68,7 +82,6 @@ jobs:
       - *checkout
       - *setup-bun
       - *install
-      - *langium-generate
 
       - name: Tests
         run: bun test
@@ -81,7 +94,6 @@ jobs:
       - *checkout
       - *setup-bun
       - *install
-      - *langium-generate
 
       - name: Shape conformance
         run: bun shp check
@@ -94,7 +106,6 @@ jobs:
       - *checkout
       - *setup-bun
       - *install
-      - *langium-generate
 
       - name: Docs check
         run: bun run docs:check
@@ -107,7 +118,6 @@ jobs:
       - *checkout
       - *setup-bun
       - *install
-      - *langium-generate
 
       - name: Build release assets
         run: bun run build:release

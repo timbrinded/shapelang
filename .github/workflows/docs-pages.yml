@@ -27,9 +27,6 @@ jobs:
       - name: Install
         run: bun install --frozen-lockfile
 
-      - name: Generate Langium artifacts
-        run: bun run langium:generate
-
       - name: Docs check
         run: bun run docs:check
 
