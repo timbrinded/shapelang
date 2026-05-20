@@ -1,6 +1,6 @@
 ---
 name: shape-lang
-description: Use when working with .shape files in repositories that use the Shape language to author, review, teach, format, debug, or validate Shape architecture claims, including Shape change files, Memory Guards, typed component/resource/effect models, coverage attestations, and agent-safe workflows using all shp CLI commands.
+description: Use when working with .shape files in repositories that use the Shape language to author, review, teach, format, debug, or validate Shape architecture claims, including Shape change files, Memory Guards, typed component/resource/effect models, top-level relation declarations, hypergraphs, hypercycles, relation kinds such as calls/callbacks/provides/coordinated_call, forbid hypercycle rules, coverage attestations, and agent-safe workflows using all shp CLI commands including shp graph.
 ---
 
 # Shape Lang
@@ -34,6 +34,9 @@ Load only the reference needed for the task:
 - Include `source` for functions and `evidence` for material effects when available.
 - For governed source changes, add a Shape change file or `attest no_shape_change`.
 - For guarded targets, add a valid `reevaluation` or preserve the protected shape.
+- Represent structural dependencies as top-level `relation` declarations, not component members.
+- Use prelude relation kinds (`calls`, `callbacks`, `provides`, `coordinated_call`) unless the project documents a custom kind.
+- Avoid ambiguous relation endpoints; component and resource names should not collide when relations reference them.
 - Use compact summaries; link longer detail through `evidence issue(...)`, `evidence test(...)`, or similar source refs.
 
 ## CLI Defaults
@@ -42,6 +45,8 @@ Load only the reference needed for the task:
 - Run `shp coverage --changed-files changed.txt` only when the workflow provides a changed-files list.
 - Use `shp obligations` and `shp memory` before fixing Memory Guard failures.
 - Use `shp explain`, `shp graph`, and `shp analyze` for investigation before changing model semantics.
+- Use `shp graph --stats` before editing relation-heavy models.
+- Use `shp graph SYMBOL --kind KIND` to inspect focused incidence for a relation kind.
 - Use `shp author` to scaffold, then review and replace `effects unknown` when evidence is available.
 - Run `shp --help` if a repository uses a newer CLI than this skill describes.
 

@@ -11,10 +11,12 @@ import {
   formatDiagnostics,
   formatShapeSource,
   generateShapeDelta,
+  graphAllShapeModules,
   graphShapeModules,
   listMemoryGuardsShapeModules,
   listShapeObligations,
   parseShapeModule,
+  statsShapeHypergraph,
   type ShapeModule
 } from "@shape/shp-checker";
 
@@ -23,13 +25,16 @@ const USAGE = `Usage:
   shp coverage --changed-files changed.txt [files...]
   shp fmt [--check] [files...]
   shp explain SYMBOL [files...]
-  shp graph SYMBOL [--relation requires] [files...]
+  shp graph [SYMBOL] [--kind KIND] [files...]
+  shp graph --stats [--kind KIND] [files...]
   shp memory [files...]
   shp obligations [files...]
   shp author --changed-files changed.txt --component ComponentName [--change ChangeName] [--module module.name]
   shp analyze [--shape-files file1.shape,file2.shape] [source-files...]
 
 When no files are provided, commands scan shape/**/*.shape.
+\`shp graph\` without a SYMBOL prints every relation in the hypergraph.
+\`shp graph --stats\` prints aggregate vertex, hyperedge, and incidence counts.
 `;
 
 async function main(): Promise<number> {
@@ -43,8 +48,11 @@ async function main(): Promise<number> {
       check: {
         type: "boolean"
       },
-      relation: {
+      kind: {
         type: "string"
+      },
+      stats: {
+        type: "boolean"
       },
       component: {
         type: "string"
@@ -110,13 +118,29 @@ async function main(): Promise<number> {
   }
 
   if (command === "graph") {
-    const [symbol, ...files] = providedFiles;
-    if (!symbol) {
-      await Bun.write(Bun.stderr, USAGE);
-      return 2;
+    const graphArgs = resolveGraphArgs(providedFiles);
+    if (values.stats) {
+      if (graphArgs.symbol) {
+        await Bun.write(Bun.stderr, "`shp graph --stats` does not accept a SYMBOL.\n\n" + USAGE);
+        return 2;
+      }
+
+      const modules = await parseModules(
+        graphArgs.files.length > 0 ? graphArgs.files : await defaultShapeFiles()
+      );
+      await Bun.write(Bun.stdout, statsShapeHypergraph(modules, values.kind));
+      return 0;
     }
-    const modules = await parseModules(files.length > 0 ? files : await defaultShapeFiles());
-    await Bun.write(Bun.stdout, graphShapeModules(modules, symbol, values.relation));
+
+    const modules = await parseModules(
+      graphArgs.files.length > 0 ? graphArgs.files : await defaultShapeFiles()
+    );
+    await Bun.write(
+      Bun.stdout,
+      graphArgs.symbol
+        ? graphShapeModules(modules, graphArgs.symbol, values.kind)
+        : graphAllShapeModules(modules, values.kind)
+    );
     return 0;
   }
 
@@ -188,6 +212,14 @@ async function formatFiles(providedFiles: string[], checkOnly: boolean): Promise
   }
 
   return ok ? 0 : 1;
+}
+
+function resolveGraphArgs(positionals: string[]): { symbol?: string; files: string[] } {
+  const [maybeSymbol, ...rest] = positionals;
+  const looksLikeFile = typeof maybeSymbol === "string" && maybeSymbol.endsWith(".shape");
+  const symbol = !maybeSymbol || looksLikeFile ? undefined : maybeSymbol;
+  const files = symbol ? rest : positionals;
+  return { symbol, files };
 }
 
 async function defaultShapeFiles(): Promise<string[]> {

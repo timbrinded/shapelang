@@ -6,12 +6,13 @@ import {
 } from "./checker.ts";
 import { formatShapeSource, type FormatResult } from "./formatter.ts";
 import {
-  isComponentDecl,
   isBindingDecl,
+  isComponentDecl,
   isFunctionSummary,
   isMemoryDecl,
   isRationaleDecl,
   isReevaluationDecl,
+  isRelationDecl,
   isResourceDecl,
   isRuleDecl,
   isTraitDecl
@@ -37,6 +38,7 @@ const KEYWORD_COMPLETIONS = [
   "resource",
   "trait",
   "component",
+  "relation",
   "implementation",
   "binding",
   "change",
@@ -47,12 +49,20 @@ const KEYWORD_COMPLETIONS = [
   "reevaluation",
   "owns",
   "grants",
-  "provides",
   "requires",
+  "kind",
+  "connects",
+  "roles",
+  "calls",
+  "callbacks",
+  "provides",
+  "coordinated_call",
   "effects complete",
   "effects unknown",
   "evidence",
   "forbid final",
+  "forbid hypercycle",
+  "forbid provides",
   "when_changed",
   "require_changed",
   "allow attest"
@@ -160,6 +170,7 @@ export function getDefinitionLocation(
     new RegExp(`\\bresource\\s+${escapeRegex(name)}\\b`),
     new RegExp(`\\btrait\\s+${escapeRegex(name)}\\b`),
     new RegExp(`\\bcomponent\\s+${escapeRegex(name)}\\b`),
+    new RegExp(`\\brelation\\s+${escapeRegex(name)}\\b`),
     new RegExp(`\\bbinding\\s+${escapeRegex(name)}\\b`),
     new RegExp(`\\brule\\s+${escapeRegex(name)}\\b`),
     new RegExp(`\\brationale\\s+${escapeRegex(name)}\\b`),
@@ -190,6 +201,7 @@ export function getCompletions(source: string, prefix = ""): string[] {
         isResourceDecl(declaration) ||
         isTraitDecl(declaration) ||
         isComponentDecl(declaration) ||
+        isRelationDecl(declaration) ||
         isBindingDecl(declaration) ||
         isRuleDecl(declaration) ||
         isRationaleDecl(declaration) ||

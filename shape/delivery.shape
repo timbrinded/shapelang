@@ -20,8 +20,6 @@ component CiPipeline {
   owns CiWorkflow
   owns CopilotReviewPrompt
   owns CopilotReviewResult
-  requires ShpCli via ShapeCiCommand
-  requires ShpCli via ShapeContractReview
   grants Read<ChangedFileList>
   grants Read<CiWorkflow>
   grants Read<CopilotReviewPrompt>
@@ -64,8 +62,6 @@ component CiPipeline {
 
 component DocsSite {
   owns DocsContent
-  requires DocsShapeBlockVerifier via DocsExamples
-  requires ShapeGrammar via SyntaxReference
   grants Read<DocsContent>
   grants Update<DocsContent>
   fn verifyDocs
@@ -76,13 +72,23 @@ component DocsSite {
       Read<DocsContent>
         evidence md("docs-site/src/content/docs/concepts/change-files-attestations.md")
       Read<DocsContent>
+        evidence md("docs-site/src/content/docs/concepts/components-ownership-grants.md")
+      Read<DocsContent>
         evidence md("docs-site/src/content/docs/concepts/implementations-coverage.md")
+      Read<DocsContent>
+        evidence md("docs-site/src/content/docs/concepts/relations-hypergraphs.md")
+      Read<DocsContent>
+        evidence md("docs-site/src/content/docs/concepts/rules-hypercycles.md")
       Read<DocsContent>
         evidence md("docs-site/src/content/docs/examples/authoring-pr-delta.md")
       Read<DocsContent>
         evidence md("docs-site/src/content/docs/examples/analyzer-warning.md")
       Read<DocsContent>
+        evidence md("docs-site/src/content/docs/examples/forbid-provides-boundary.md")
+      Read<DocsContent>
         evidence md("docs-site/src/content/docs/examples/missing-shape-delta.md")
+      Read<DocsContent>
+        evidence md("docs-site/src/content/docs/index.md")
       Read<DocsContent>
         evidence md("docs-site/src/content/docs/inside-shape/checker-pipeline.md")
       Read<DocsContent>
@@ -95,6 +101,8 @@ component DocsSite {
         evidence md("docs-site/src/content/docs/inside-shape/rule-evaluation.md")
       Read<DocsContent>
         evidence md("docs-site/src/content/docs/learn/ci-workflow.md")
+      Read<DocsContent>
+        evidence md("docs-site/src/content/docs/learn/first-shape-file.md")
       Read<DocsContent>
         evidence md("docs-site/src/content/docs/learn/pr-change-files.md")
       Read<DocsContent>
@@ -121,8 +129,6 @@ component DocsSite {
 component ReleasePipeline {
   owns InstallScript
   owns ReleaseArtifact
-  requires CiPipeline via ReleaseValidation
-  requires ShpCli via ReleaseBinary
   grants Read<InstallScript>
   grants Update<ReleaseArtifact>
   fn buildReleaseAssets : RefactorSensitive
@@ -133,6 +139,42 @@ component ReleasePipeline {
       Update<ReleaseArtifact>
         evidence sh("scripts/build-release-assets.sh")
     }
+}
+
+relation CiPipelineUsesShapeCi {
+  kind calls
+  connects CiPipeline -> ShpCli
+  summary "ShapeCiCommand"
+}
+
+relation CiPipelineUsesShapeReview {
+  kind calls
+  connects CiPipeline -> ShpCli
+  summary "ShapeContractReview"
+}
+
+relation DocsSiteUsesDocsVerifier {
+  kind calls
+  connects DocsSite -> DocsShapeBlockVerifier
+  summary "DocsExamples"
+}
+
+relation DocsSiteUsesGrammar {
+  kind calls
+  connects DocsSite -> ShapeGrammar
+  summary "SyntaxReference"
+}
+
+relation ReleasePipelineUsesCi {
+  kind calls
+  connects ReleasePipeline -> CiPipeline
+  summary "ReleaseValidation"
+}
+
+relation ReleasePipelineUsesCli {
+  kind calls
+  connects ReleasePipeline -> ShpCli
+  summary "ReleaseBinary"
 }
 
 implementation AnalyzerSource {
@@ -328,4 +370,9 @@ memory ReleaseChecksumContract : RefactorConstraint<fn ReleasePipeline.buildRele
   owner ShapeMaintainers
   protects shape ReleaseIntegrity
   guards on_change require ReEvaluation<Self>
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/concepts/rules-dependency-graphs.md")
+  reason "Dependency graph docs were replaced by hypercycle docs in the hypergraph redesign."
 }

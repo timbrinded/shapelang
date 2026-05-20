@@ -14,7 +14,8 @@ shp check [--changed-files changed.txt] [files...]
 shp coverage --changed-files changed.txt [files...]
 shp fmt [--check] [files...]
 shp explain SYMBOL [files...]
-shp graph SYMBOL [--relation requires] [files...]
+shp graph [SYMBOL] [--kind KIND] [files...]
+shp graph --stats [--kind KIND] [files...]
 shp memory [files...]
 shp obligations [files...]
 shp author --changed-files changed.txt --component ComponentName [--change ChangeName] [--module module.name]
@@ -34,8 +35,8 @@ shape/**/*.shape
 | `check` | Parse modules, apply change blocks, lower facts, and run semantic checks. With `--changed-files`, it also runs coverage and bindings. |
 | `coverage` | Require Shape updates or current attestations when governed source paths change. |
 | `fmt` | Format Shape files, or check formatting with `--check`. |
-| `explain` | Print derived facts and constraints for a symbol. |
-| `graph` | Print dependency paths for a symbol and relation. |
+| `explain` | Print derived facts and incident relations for a symbol. |
+| `graph` | Print the hyperedges incident to a symbol, the entire hypergraph when no symbol is given, or aggregate counts with `--stats`. Filter by `--kind KIND`. |
 | `memory` | List rationale and memory entries grouped by protected target. |
 | `obligations` | List open design-memory obligations from checker diagnostics. |
 | `author` | Generate a Shape change scaffold from changed files. |
@@ -49,12 +50,59 @@ shp check --changed-files changed.txt
 shp coverage --changed-files changed.txt
 shp fmt --check
 shp explain AuditEvent
-shp graph Gateway --relation requires
+shp graph
+shp graph --stats
+shp graph Gateway
+shp graph Gateway --kind calls
+shp graph --kind provides
+shp graph --stats --kind calls
 shp memory
 shp obligations
 shp author --changed-files changed.txt --component AuditStore
 shp analyze --shape-files fixtures/pass/append_only_append/audit.shape src/audit/purge.ts
 ```
+
+## Graph output
+
+`shp graph SYMBOL` lists the hyperedges incident to a component or resource:
+
+```text
+Gateway (component)
+  calls GatewayCallsAudit: Gateway (component) -> AuditStore (component)
+  coordinated_call AuditWritePath: Gateway (component) -> AuditStore (component) -> AuditEvent (resource)
+```
+
+`shp graph` without a symbol prints every relation in the hypergraph, grouped by kind:
+
+```text
+Hypergraph
+
+calls:
+  calls GatewayCallsAudit: Gateway (component) -> AuditStore (component)
+
+coordinated_call:
+  coordinated_call AuditWritePath: Gateway (component) -> AuditStore (component) -> AuditEvent (resource)
+```
+
+`--kind KIND` filters by relation kind in both modes. There is no separate binary view; every structural dependency is a hyperedge.
+
+### Stats
+
+`shp graph --stats` reports aggregate counts so an agent (or human) can size up a model before drilling into specific relations:
+
+```text
+Hypergraph stats
+  vertices: 4 (3 components, 1 resource)
+  hyperedges: 3
+    calls: 2
+    coordinated_call: 1
+  incidences: 7
+  arity: min 2, max 3, avg 2.33
+    widest: coordinated_call AuditWritePath
+  isolated vertices: 0
+```
+
+`--stats` combines with `--kind KIND` to scope the hyperedge, incidence, and arity counts to a single relation kind. It is a whole-graph mode and does not accept a symbol. Vertex counts always reflect the full model; `isolated vertices` then reports vertices that do not participate in any hyperedge of the selected kind.
 
 ## Memory and obligations
 

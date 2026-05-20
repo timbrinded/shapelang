@@ -40,7 +40,7 @@ This split keeps each phase honest. The parser does not decide whether `HardDele
 
 ## Parse
 
-Langium parses each loaded `.shape` file into a `ShapeModule`. A module contains imports and a list of top-level declarations: resources, traits, components, implementations, changes, attestations, rules, rationales, memories, and reevaluations.
+Langium parses each loaded `.shape` file into a `ShapeModule`. A module contains imports and a list of top-level declarations: resources, traits, components, relations, implementations, changes, attestations, rules, rationales, memories, and reevaluations.
 
 At this stage the checker only knows whether the text follows the grammar. For example, this is syntactically meaningful even if later rules reject it:
 
@@ -125,7 +125,7 @@ Rules consume facts and internal indexes. They answer questions such as:
 - Did a governed source file change without a matching Shape update or current attestation?
 - Did a function marked `RefactorSensitive` receive the required memory?
 - Did a guarded target change without a matching reevaluation?
-- Did a dependency rule find a forbidden cycle, and what path proves it?
+- Did a hypercycle rule find a forbidden hypercycle in the directed hypergraph, and what relations and vertex path prove it?
 
 The important detail is that these checks are deterministic comparisons over a lowered model. The checker can be conservative because it is not guessing from code. If a function has `effects unknown`, the model says uncertainty remains. If a function has `effects complete`, the author is claiming every material effect is represented.
 

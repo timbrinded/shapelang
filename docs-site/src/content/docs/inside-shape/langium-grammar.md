@@ -37,7 +37,8 @@ Top-level declarations currently include:
 | --- | --- |
 | `resource` | A modeled thing the architecture cares about, often with traits. |
 | `trait` | Reusable constraints or capabilities, such as final forbidden effects. |
-| `component` | An owner of resources, authority grants, dependencies, and function summaries. |
+| `component` | An owner of resources, authority grants, and function summaries. |
+| `relation` | A top-level structural hyperedge over components and resources, with `kind`, `connects`, and optional `roles`/`summary`. |
 | `implementation` | Source path governance for coverage checks. |
 | `binding` | Changed-file coupling, such as requiring docs when Shape-affecting code changes. |
 | `change` | A patch to the architecture model. |

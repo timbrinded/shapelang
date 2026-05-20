@@ -8,6 +8,10 @@ resource AnalyzerHint
 
 resource AuthoringPrompt
 
+resource CanonicalShapeFormat
+
+resource CommandLineInterface
+
 resource DiagnosticText
 
 resource EditorOutput
@@ -18,7 +22,6 @@ resource ShapeChange
 
 component ShapeAnalyzer {
   owns AnalyzerHint
-  requires ShapeChecker via AnalyzerComparison
   grants Append<AnalyzerHint>
   grants Read<ShapeSource>
   fn analyzeSourceText
@@ -34,7 +37,6 @@ component ShapeAnalyzer {
 component ShapeAuthoring {
   owns AuthoringPrompt
   owns ShapeChange
-  requires ShapeChecker via ChangeValidation
   grants Append<AuthoringPrompt>
   grants Append<ShapeChange>
   grants Read<ChangedFileList>
@@ -58,8 +60,6 @@ component ShapeAuthoring {
 
 component ShapeEditorServices {
   owns EditorOutput
-  requires ShapeChecker via EditorDiagnostics
-  requires ShapeFormatter via EditorFormatting
   grants Append<EditorOutput>
   grants Read<ParsedModule>
   grants Read<SemanticDiagnostics>
@@ -83,8 +83,6 @@ component ShapeEditorServices {
 
 component ShapeFormatter {
   owns FormattedShape
-  provides CanonicalShapeFormat
-  requires ShapeParser via FormattingParser
   grants Read<ParsedModule>
   grants Update<FormattedShape>
   fn formatShapeModule : RefactorSensitive
@@ -98,12 +96,6 @@ component ShapeFormatter {
 }
 
 component ShpCli {
-  provides CommandLineInterface
-  requires ShapeAnalyzer via AnalyzeCommand
-  requires ShapeAuthoring via AuthorCommand
-  requires ShapeChecker via CheckCommand
-  requires ShapeDiagnostics via DiagnosticOutput
-  requires ShapeFormatter via FormatCommand
   grants Read<ChangedFileList>
   grants Read<DiagnosticText>
   grants Read<FormattedShape>
@@ -124,6 +116,76 @@ component ShpCli {
       Read<FormattedShape>
         evidence ts("packages/shp-cli/src/index.ts")
     }
+}
+
+relation ShapeAnalyzerUsesChecker {
+  kind calls
+  connects ShapeAnalyzer -> ShapeChecker
+  summary "AnalyzerComparison"
+}
+
+relation ShapeAuthoringUsesChecker {
+  kind calls
+  connects ShapeAuthoring -> ShapeChecker
+  summary "ChangeValidation"
+}
+
+relation ShapeEditorUsesChecker {
+  kind calls
+  connects ShapeEditorServices -> ShapeChecker
+  summary "EditorDiagnostics"
+}
+
+relation ShapeEditorUsesFormatter {
+  kind calls
+  connects ShapeEditorServices -> ShapeFormatter
+  summary "EditorFormatting"
+}
+
+relation ShapeFormatterProvidesFormat {
+  kind provides
+  connects ShapeFormatter -> CanonicalShapeFormat
+}
+
+relation ShapeFormatterUsesParser {
+  kind calls
+  connects ShapeFormatter -> ShapeParser
+  summary "FormattingParser"
+}
+
+relation ShpCliProvidesInterface {
+  kind provides
+  connects ShpCli -> CommandLineInterface
+}
+
+relation ShpCliUsesAnalyzer {
+  kind calls
+  connects ShpCli -> ShapeAnalyzer
+  summary "AnalyzeCommand"
+}
+
+relation ShpCliUsesAuthoring {
+  kind calls
+  connects ShpCli -> ShapeAuthoring
+  summary "AuthorCommand"
+}
+
+relation ShpCliUsesChecker {
+  kind calls
+  connects ShpCli -> ShapeChecker
+  summary "CheckCommand"
+}
+
+relation ShpCliUsesDiagnostics {
+  kind calls
+  connects ShpCli -> ShapeDiagnostics
+  summary "DiagnosticOutput"
+}
+
+relation ShpCliUsesFormatter {
+  kind calls
+  connects ShpCli -> ShapeFormatter
+  summary "FormatCommand"
 }
 
 rule tooling_contract_providers {

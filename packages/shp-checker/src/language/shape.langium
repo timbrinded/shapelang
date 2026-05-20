@@ -6,7 +6,7 @@ entry ShapeModule:
     declarations+=Declaration*;
 
 Declaration:
-    ResourceDecl | TraitDecl | ComponentDecl | ImplementationDecl | BindingDecl | ChangeDecl | AttestationDecl | RuleDecl | RationaleDecl | MemoryDecl | ReevaluationDecl;
+    ResourceDecl | TraitDecl | ComponentDecl | RelationDecl | ImplementationDecl | BindingDecl | ChangeDecl | AttestationDecl | RuleDecl | RationaleDecl | MemoryDecl | ReevaluationDecl;
 
 ImportDecl:
     'import' path=QualifiedName;
@@ -54,7 +54,7 @@ ComponentDecl:
     '}';
 
 ComponentMember:
-    OwnsDecl | GrantsDecl | RequiresDecl | ProvidesDecl | FunctionSummary;
+    OwnsDecl | GrantsDecl | FunctionSummary;
 
 OwnsDecl:
     'owns' resource=TypeRef;
@@ -62,11 +62,38 @@ OwnsDecl:
 GrantsDecl:
     'grants' term=EffectTerm;
 
-RequiresDecl:
-    'requires' target=TypeRef ('via' relation=ID)?;
+RelationDecl:
+    'relation' name=ID
+    '{'
+        members+=RelationMember*
+    '}';
 
-ProvidesDecl:
-    'provides' target=TypeRef;
+RelationMember:
+    RelationKindDecl | RelationConnectsDecl | RelationRolesDecl | RelationSummaryDecl;
+
+RelationKindDecl:
+    'kind' value=RelationKindName;
+
+RelationKindName returns string:
+    'provides' | 'calls' | 'callbacks' | 'coordinated_call' | ID;
+
+RelationConnectsDecl:
+    'connects' (
+        endpoints+=RelationEndpoint (ordered?='->' endpoints+=RelationEndpoint)+
+        | '{' endpoints+=RelationEndpoint (',' endpoints+=RelationEndpoint)+ '}'
+    );
+
+RelationEndpoint:
+    name=QualifiedTargetName;
+
+RelationRolesDecl:
+    'roles' '{' roles+=RelationRoleEntry (',' roles+=RelationRoleEntry)* '}';
+
+RelationRoleEntry:
+    name=QualifiedTargetName 'as' role=ID;
+
+RelationSummaryDecl:
+    'summary' value=STRING;
 
 FunctionSummary:
     'fn' name=ID
@@ -210,10 +237,10 @@ RemoveDeclarationChange:
     'remove' kind=RemovableDeclarationKind name=ID;
 
 AddableDeclaration:
-    ResourceDecl | TraitDecl | ComponentDecl | ImplementationDecl | BindingDecl | AttestationDecl | RuleDecl;
+    ResourceDecl | TraitDecl | ComponentDecl | RelationDecl | ImplementationDecl | BindingDecl | AttestationDecl | RuleDecl;
 
 RemovableDeclarationKind returns string:
-    'resource' | 'trait' | 'component' | 'implementation' | 'binding' | 'rule';
+    'resource' | 'trait' | 'component' | 'relation' | 'implementation' | 'binding' | 'rule';
 
 RuleDecl:
     'rule' name=ID typeParams=TypeParamList?
@@ -222,7 +249,7 @@ RuleDecl:
     '}';
 
 RuleMember:
-    RuleWhenHasDecl | RuleForbidEffectDecl | RuleForbidProvidesDecl | RuleForbidCycleDecl;
+    RuleWhenHasDecl | RuleForbidEffectDecl | RuleForbidProvidesDecl | RuleForbidHypercycleDecl;
 
 RuleWhenHasDecl:
     'when' subject=ID 'has' trait=ID;
@@ -233,8 +260,8 @@ RuleForbidEffectDecl:
 RuleForbidProvidesDecl:
     'forbid' 'provides' target=TypeRef ('except' except=ID)?;
 
-RuleForbidCycleDecl:
-    'forbid' 'cycle' 'over' relation=RelationName ('where' 'includes' relationKinds+=ID ('or' relationKinds+=ID)*)?;
+RuleForbidHypercycleDecl:
+    'forbid' 'hypercycle' ('over' kinds+=RelationKindName ('or' kinds+=RelationKindName)*)?;
 
 RationaleDecl:
     'rationale' name=ID ':' contextType=ContextTypeRef
@@ -267,7 +294,7 @@ TargetRef:
     kind=TargetKind name=QualifiedTargetName;
 
 TargetKind returns string:
-    'fn' | 'component' | 'resource' | 'implementation' | 'rule';
+    'fn' | 'component' | 'resource' | 'implementation' | 'rule' | 'relation';
 
 QualifiedTargetName returns string:
     ID ('.' ID)*;
@@ -328,9 +355,6 @@ ApproverDecl:
 
 DecidedOnDecl:
     'decided_on' value=STRING;
-
-RelationName returns string:
-    'requires' | ID;
 
 QualifiedName returns string:
     ID ('.' ID)*;

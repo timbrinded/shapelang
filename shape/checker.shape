@@ -4,19 +4,28 @@ import shape.language
 
 resource ChangedFileList
 
-resource DependencyGraph
-
 resource EffectiveModel
+
+resource EffectiveShapeModel
 
 resource FactSet
 
+resource HumanReadableDiagnostics
+
 resource SemanticDiagnostics
+
+resource SemanticDiagnosticSet
 
 resource ShapeBinding
 
+resource ShapeConformance
+
+resource ShapeFacts
+
+resource ShapeHypergraph
+
 component ShapeBindings {
   owns ShapeBinding
-  requires ShapeModelLowerer via BindingFacts
   grants Append<SemanticDiagnostics>
   grants Read<ChangedFileList>
   grants Read<ShapeBinding>
@@ -33,10 +42,6 @@ component ShapeBindings {
 }
 
 component ShapeChecker {
-  provides ShapeConformance
-  requires ShapeBindings via BindingRules
-  requires ShapeModelLowerer via ModelPipeline
-  requires ShapeRuleEngine via RulePipeline
   grants Append<SemanticDiagnostics>
   grants Read<ChangedFileList>
   grants Read<EffectiveModel>
@@ -64,8 +69,6 @@ component ShapeChecker {
 }
 
 component ShapeDiagnostics {
-  provides HumanReadableDiagnostics
-  requires ShapeRuleEngine via DiagnosticInput
   grants Append<DiagnosticText>
   grants Read<SemanticDiagnostics>
   fn formatDiagnostics : RefactorSensitive
@@ -81,9 +84,6 @@ component ShapeDiagnostics {
 component ShapeModelLowerer {
   owns EffectiveModel
   owns FactSet
-  provides EffectiveShapeModel
-  provides ShapeFacts
-  requires ShapeParser via ParsedInput
   grants Append<FactSet>
   grants Read<ParsedModule>
   grants Update<EffectiveModel>
@@ -100,15 +100,13 @@ component ShapeModelLowerer {
 }
 
 component ShapeRuleEngine {
-  owns DependencyGraph
   owns SemanticDiagnostics
-  provides SemanticDiagnosticSet
-  requires ShapeModelLowerer via LoweredFacts
+  owns ShapeHypergraph
   grants Append<SemanticDiagnostics>
   grants Read<ChangedFileList>
   grants Read<EffectiveModel>
   grants Read<FactSet>
-  grants Update<DependencyGraph>
+  grants Update<ShapeHypergraph>
   fn checkCoverage : RefactorSensitive
     source ts("packages/shp-checker/src/checker.ts#checkCoverage")
     effects complete {
@@ -127,16 +125,83 @@ component ShapeRuleEngine {
       Read<FactSet>
         evidence ts("packages/shp-checker/src/checker.ts")
     }
-  fn findDependencyCycle : RefactorSensitive
-    source ts("packages/shp-checker/src/checker.ts#findDependencyCycle")
+  fn findHypercycle : RefactorSensitive
+    source ts("packages/shp-checker/src/checker.ts#findHypercycle")
     effects complete {
       Append<SemanticDiagnostics>
         evidence ts("packages/shp-checker/src/checker.ts")
       Read<EffectiveModel>
         evidence ts("packages/shp-checker/src/checker.ts")
-      Update<DependencyGraph>
+      Update<ShapeHypergraph>
         evidence ts("packages/shp-checker/src/checker.ts")
     }
+}
+
+relation ShapeBindingsReadLoweredFacts {
+  kind calls
+  connects ShapeBindings -> ShapeModelLowerer
+  summary "BindingFacts"
+}
+
+relation ShapeCheckerProvidesConformance {
+  kind provides
+  connects ShapeChecker -> ShapeConformance
+}
+
+relation ShapeCheckerUsesBindings {
+  kind calls
+  connects ShapeChecker -> ShapeBindings
+  summary "BindingRules"
+}
+
+relation ShapeCheckerUsesModelPipeline {
+  kind calls
+  connects ShapeChecker -> ShapeModelLowerer
+  summary "ModelPipeline"
+}
+
+relation ShapeCheckerUsesRulePipeline {
+  kind calls
+  connects ShapeChecker -> ShapeRuleEngine
+  summary "RulePipeline"
+}
+
+relation ShapeDiagnosticsProvidesText {
+  kind provides
+  connects ShapeDiagnostics -> HumanReadableDiagnostics
+}
+
+relation ShapeDiagnosticsReadsRuleOutput {
+  kind calls
+  connects ShapeDiagnostics -> ShapeRuleEngine
+  summary "DiagnosticInput"
+}
+
+relation ShapeModelLowererProvidesEffectiveModel {
+  kind provides
+  connects ShapeModelLowerer -> EffectiveShapeModel
+}
+
+relation ShapeModelLowererProvidesFacts {
+  kind provides
+  connects ShapeModelLowerer -> ShapeFacts
+}
+
+relation ShapeModelLowererUsesParser {
+  kind calls
+  connects ShapeModelLowerer -> ShapeParser
+  summary "ParsedInput"
+}
+
+relation ShapeRuleEngineProvidesDiagnostics {
+  kind provides
+  connects ShapeRuleEngine -> SemanticDiagnosticSet
+}
+
+relation ShapeRuleEngineReadsLoweredFacts {
+  kind calls
+  connects ShapeRuleEngine -> ShapeModelLowerer
+  summary "LoweredFacts"
 }
 
 rule checker_contract_providers {
@@ -148,7 +213,7 @@ rule checker_contract_providers {
 }
 
 rule no_runtime_dependency_cycles {
-  forbid cycle over requires
+  forbid hypercycle over calls
 }
 
 memory BindingDocsCouplingContract : RefactorConstraint<fn ShapeBindings.checkBindings> {
@@ -181,16 +246,6 @@ memory CoverageCurrentDeltaContract : RefactorConstraint<fn ShapeRuleEngine.chec
   guards on_change require ReEvaluation<Self>
 }
 
-memory DependencyCycleWitness : RefactorConstraint<fn ShapeRuleEngine.findDependencyCycle> {
-  applies_to fn ShapeRuleEngine.findDependencyCycle
-  status Explained
-  confidence High
-  summary "Cycle diagnostics need a deterministic witness path so reviewers can understand the rejected dependency."
-  owner ShapeMaintainers
-  protects shape CycleWitness
-  guards on_change require ReEvaluation<Self>
-}
-
 memory DiagnosticContract : RefactorConstraint<fn ShapeDiagnostics.formatDiagnostics> {
   applies_to fn ShapeDiagnostics.formatDiagnostics
   status Explained
@@ -208,6 +263,16 @@ memory FinalForbidPrecedence : RefactorConstraint<fn ShapeRuleEngine.deriveFinal
   summary "Final forbids must remain stronger than component grants and cannot be waived by rationale or memory."
   owner ShapeMaintainers
   protects shape FinalForbidPrecedence
+  guards on_change require ReEvaluation<Self>
+}
+
+memory HypercycleWitness : RefactorConstraint<fn ShapeRuleEngine.findHypercycle> {
+  applies_to fn ShapeRuleEngine.findHypercycle
+  status Explained
+  confidence High
+  summary "Hypercycle diagnostics need a deterministic witness path so reviewers can understand the rejected structural relation."
+  owner ShapeMaintainers
+  protects shape HypercycleWitness
   guards on_change require ReEvaluation<Self>
 }
 

@@ -10,7 +10,7 @@ Detect: summaries or reasons carry architecture facts that should be declaration
 
 Why wrong: prose is not typechecked.
 
-Smallest fix: move the claim into `resource`, `component`, `grants`, `effects`, `requires`, `rationale`, `memory`, or `reevaluation`.
+Smallest fix: move the claim into `resource`, `component`, `grants`, `effects`, `relation`, `rationale`, `memory`, or `reevaluation`.
 
 ### Broad grant added to silence a diagnostic
 

@@ -114,7 +114,7 @@ Prefer simple stroked icons and schematic shapes:
 - Cylinder: resources.
 - Shield: grants, coverage, CI gate.
 - Lightning bolt: effects.
-- Branch graph: dependencies and witness paths.
+- Branch graph: relation hyperedges and hypercycle witness paths.
 - Terminal prompt: CLI commands.
 - Spark line or small node: agent-authored draft.
 
@@ -179,19 +179,19 @@ For Shape-specific outputs, also include:
 | `quickstart-loop.png` | Quickstart | Install, check, diagnose, update, and repeat in CI |
 | `first-shape-file-map.png` | First Shape File | Smallest useful model: resource, component, function, effect, evidence |
 | `core-vocabulary-map.png` | Resources, Traits, and Effects | Resources, traits, effects, components, grants, and evidence |
-| `component-boundary-grants.png` | Components, Ownership, and Grants | Component boundary with ownership, grants, functions, provides, and requires |
+| `component-boundary-grants.png` | Components, Ownership, and Grants | Component boundary with ownership, grants, functions, and an external relation hyperedge |
 | `evidence-review-path.png` | Evidence and Source Refs | Declared claim linked to source span and reviewer inspection |
 | `append-only-rejection.png` | Append-Only Walkthrough | Final forbids override grants and reject destructive effects |
 | `pr-change-review.png` | PR Change Files, CI Workflow | Baseline model plus PR delta plus coverage or attestation |
 | `implementation-coverage-map.png` | Implementations and Coverage | Governed source path changes require documentation |
 | `design-memory-reevaluation.png` | Refactor Constraints | Function shape trait, memory/rationale, guard, reevaluation |
 | `unknowns-safety-states.png` | Unknowns and Safety | Unknown effects, complete effects, and design memory are different states |
-| `dependency-witness-path.png` | Rules and Dependency Graphs | Dependency cycles explain failure with witness paths |
+| `hypercycle-witness-path.png` | Rules and Hypercycles | Hypercycles in the directed hypergraph explain failure with witness paths |
 | `analyzer-advisory-scan.png` | Analyzer Hints | Source analyzer hints are advisory, while `.shape` remains source of truth |
 | `diagnostics-causal-trail.png` | Diagnostics and Provenance | Diagnostics should preserve causal trail and source evidence |
 | `checker-pipeline.png` | Checker Pipeline | Parse, apply changes, lower facts, run rules, emit diagnostics |
 | `fact-lowering-map.png` | Fact Lowering | Declarations and changes lower into uniform facts with provenance |
-| `rule-evaluation-board.png` | Rule Evaluation | Rules read facts and produce pass or reject outcomes |
+| `rule-evaluation-board.png` | Rule Evaluation | Rules read facts (including hypercycle rules) and produce pass or reject outcomes |
 | `shape-boundary.png` | Design Rationale | Shape does not replace tests, code review, or proof boundaries |
 | `review-helpers.png` | Formatter, Editor, and Authoring Helpers | Supporting helpers keep `.shape` files reviewable |
 

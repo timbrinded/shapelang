@@ -16,6 +16,7 @@ import type {
   ModifyFunctionChange,
   RationaleDecl,
   ReevaluationDecl,
+  RelationDecl,
   ResourceDecl,
   RuleDecl,
   ShapeTraitList,
@@ -58,19 +59,22 @@ import {
   isOwnsDecl,
   isPathsBlock,
   isProtectsDecl,
-  isProvidesDecl,
   isRationaleDecl,
   isReasonDecl,
   isReevaluationDecl,
+  isRelationConnectsDecl,
+  isRelationDecl,
+  isRelationKindDecl,
+  isRelationRolesDecl,
+  isRelationSummaryDecl,
   isRemoveDeclarationChange,
   isRemoveFunctionChange,
-  isRequiresDecl,
   isResourceDecl,
   isReviewByDecl,
   isReviewerDecl,
   isRuleDecl,
-  isRuleForbidCycleDecl,
   isRuleForbidEffectDecl,
+  isRuleForbidHypercycleDecl,
   isRuleForbidProvidesDecl,
   isRuleWhenHasDecl,
   isSatisfiesDecl,
@@ -142,6 +146,9 @@ function formatDeclaration(declaration: ShapeModule["declarations"][number]): st
   }
   if (isComponentDecl(declaration)) {
     return formatComponent(declaration);
+  }
+  if (isRelationDecl(declaration)) {
+    return formatRelation(declaration);
   }
   if (isImplementationDecl(declaration)) {
     return formatImplementation(declaration);
@@ -216,20 +223,12 @@ function formatTrait(trait: TraitDecl): string {
 
 function formatComponent(component: ComponentDecl): string {
   const owns: string[] = [];
-  const provides: string[] = [];
-  const requires: string[] = [];
   const grants: string[] = [];
   const functions: string[] = [];
 
   for (const member of component.members) {
     if (isOwnsDecl(member)) {
       owns.push(`owns ${member.resource.name}`);
-    } else if (isProvidesDecl(member)) {
-      provides.push(`provides ${member.target.name}`);
-    } else if (isRequiresDecl(member)) {
-      requires.push(
-        `requires ${member.target.name}${member.relation ? ` via ${member.relation}` : ""}`
-      );
     } else if (isGrantsDecl(member)) {
       grants.push(`grants ${formatTerm(member.term)}`);
     } else if (isFunctionSummary(member)) {
@@ -244,14 +243,42 @@ function formatComponent(component: ComponentDecl): string {
           .sort()
           .join(", ")}`
       : "";
-  const members = [
-    ...owns.sort(),
-    ...provides.sort(),
-    ...requires.sort(),
-    ...grants.sort(),
-    ...functions.sort()
-  ];
+  const members = [...owns.sort(), ...grants.sort(), ...functions.sort()];
   return block(`component ${component.name}${classifiers}`, members);
+}
+
+function formatRelation(relation: RelationDecl): string {
+  let kindLine = "";
+  let connectsLine = "";
+  const rolesLines: string[] = [];
+  let summaryLine = "";
+
+  for (const member of relation.members) {
+    if (isRelationKindDecl(member)) {
+      kindLine = `kind ${member.value}`;
+    } else if (isRelationConnectsDecl(member)) {
+      const endpoints = member.endpoints.map((endpoint) => endpoint.name);
+      if (member.ordered) {
+        connectsLine = `connects ${endpoints.join(" -> ")}`;
+      } else {
+        connectsLine = `connects { ${endpoints.join(", ")} }`;
+      }
+    } else if (isRelationRolesDecl(member)) {
+      const sortedRoles = [...member.roles].sort((left, right) =>
+        left.name.localeCompare(right.name)
+      );
+      rolesLines.push(
+        `roles { ${sortedRoles.map((role) => `${role.name} as ${role.role}`).join(", ")} }`
+      );
+    } else if (isRelationSummaryDecl(member)) {
+      summaryLine = `summary ${quote(member.value)}`;
+    }
+  }
+
+  const lines = [kindLine, connectsLine, ...rolesLines, summaryLine].filter(
+    (line) => line.length > 0
+  );
+  return block(`relation ${relation.name}`, lines);
 }
 
 function formatFunction(fn: FunctionSummary | AddFunctionChange): string {
@@ -469,12 +496,9 @@ function formatRule(rule: RuleDecl): string {
       if (isRuleForbidProvidesDecl(member)) {
         return `forbid provides ${member.target.name}${member.except ? ` except ${member.except}` : ""}`;
       }
-      if (isRuleForbidCycleDecl(member)) {
-        const kinds =
-          member.relationKinds.length > 0
-            ? ` where includes ${member.relationKinds.join(" or ")}`
-            : "";
-        return `forbid cycle over ${member.relation}${kinds}`;
+      if (isRuleForbidHypercycleDecl(member)) {
+        const kinds = member.kinds.length > 0 ? ` over ${member.kinds.join(" or ")}` : "";
+        return `forbid hypercycle${kinds}`;
       }
       return "";
     })
@@ -689,39 +713,42 @@ function formatSourceRef(ref: SourceDecl["ref"]): string {
 
 function declarationSortKey(declaration: ShapeModule["declarations"][number]): string {
   if (isTraitDecl(declaration)) {
-    return `00:${declaration.name}`;
+    return `0:${declaration.name}`;
   }
   if (isResourceDecl(declaration)) {
-    return `01:${declaration.name}`;
+    return `1:${declaration.name}`;
   }
   if (isComponentDecl(declaration)) {
-    return `02:${declaration.name}`;
+    return `2:${declaration.name}`;
+  }
+  if (isRelationDecl(declaration)) {
+    return `3:${declaration.name}`;
   }
   if (isImplementationDecl(declaration)) {
-    return `03:${declaration.name}`;
+    return `4:${declaration.name}`;
   }
   if (isBindingDecl(declaration)) {
-    return `04:${declaration.name}`;
+    return `5:${declaration.name}`;
   }
   if (isRuleDecl(declaration)) {
-    return `05:${declaration.name}`;
+    return `6:${declaration.name}`;
   }
   if (isRationaleDecl(declaration)) {
-    return `06:${declaration.name}`;
+    return `7:${declaration.name}`;
   }
   if (isMemoryDecl(declaration)) {
-    return `07:${declaration.name}`;
+    return `8:${declaration.name}`;
   }
   if (isReevaluationDecl(declaration)) {
-    return `08:${declaration.name}`;
+    return `9:${declaration.name}`;
   }
   if (isAttestationDecl(declaration)) {
-    return `09:${declaration.kind}`;
+    return `A:${declaration.kind}`;
   }
   if (isChangeDecl(declaration)) {
-    return `10:${declaration.name}`;
+    return `B:${declaration.name}`;
   }
-  return "10:";
+  return "Z:";
 }
 
 function indent(value: string, depth = 1): string {
