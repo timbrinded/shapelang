@@ -14,13 +14,13 @@ Use this when choosing, sequencing, or interpreting `shp` commands. The released
 | Command | Use it for | Do not use it for |
 | --- | --- | --- |
 | `shp check [--changed-files changed.txt] [files...]` | Full model validation and diagnostics. | Formatting or source analysis. |
-| `shp coverage --changed-files changed.txt [files...]` | Enforcing shape deltas or attestations for governed changed files. | Normal validation without a changed-files list. |
+| `shp coverage --changed-files changed.txt [files...]` | Enforcing global model updates or attestations for governed changed files. | Normal validation without a changed-files list. |
 | `shp fmt [--check] [files...]` | Canonical formatting or review-safe format checks. | Semantic validation. |
 | `shp explain SYMBOL [files...]` | Inspecting derived facts for a resource, function, rationale, or memory. | Proving source code correctness. |
 | `shp graph [SYMBOL] [--kind KIND] [files...]` / `shp graph --stats [--kind KIND] [files...]` | Inspecting hyperedges. With a SYMBOL: incidence for that vertex or relation. Without a SYMBOL: the whole hypergraph, grouped by kind. With `--stats`: aggregate vertex, hyperedge, and incidence counts. | Effect or Memory Guard checks. |
 | `shp memory [files...]` | Listing active rationale/memory entries by protected target. | Determining whether a guarded change is valid by itself. |
 | `shp obligations [files...]` | Listing open rationale, memory, description, reevaluation, and guarded-change work. | Replacing `shp check`; it filters only selected diagnostics. |
-| `shp author --changed-files changed.txt --component Name` | Scaffolding a PR change file. | Producing final reviewed effect summaries without human review. |
+| `shp author --changed-files changed.txt --component Name` | Scaffolding a conservative global model draft. | Producing final reviewed effect summaries without human review. |
 | `shp analyze [--shape-files files] source-files...` | Advisory source hints and comparison against declared effects. | Making the analyzer the source of truth. |
 | `shp --help` | Confirming the available CLI on the current machine. | Assuming old skill docs are newer than the binary. |
 
@@ -33,7 +33,7 @@ shp fmt --check
 shp check
 ```
 
-PR coverage validation when changed files are available:
+Changed-source coverage validation when changed files are available:
 
 ```bash
 shp coverage --changed-files changed.txt
@@ -78,10 +78,10 @@ Compare source hints with declared effects:
 shp analyze --shape-files shape/system/audit.shape src/audit/purge.ts
 ```
 
-Scaffold a PR delta, then review it:
+Scaffold a global model draft, then review and fold it into the owning model file:
 
 ```bash
-shp author --changed-files changed.txt --component AuditStore --change ReviewAuditChange --module changes.PR_001
+shp author --changed-files changed.txt --component AuditStore --module audit
 ```
 
 The scaffold is intentionally conservative. Replace `effects unknown` only when evidence supports a complete summary.

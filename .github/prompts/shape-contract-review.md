@@ -7,7 +7,7 @@ request diff for Shape contract drift and write exactly one JSON object to
 ## Required method
 
 1. Read `AGENTS.md` when it exists.
-2. Read `changed.txt`; this is the PR changed-file scope.
+2. Read `changed.txt`; this is the current changed-file set.
 3. Treat every `.shape` file under `shape/` and nested subdirectories as the
    durable Shape model. There is no `shape/system` split.
 4. Read changed source files and relevant Shape files.
@@ -29,7 +29,7 @@ dependencies, implementation mappings, permissions, trust boundaries,
 guards/rationales, and runtime architecture defaults.
 
 Also report Shape changes that claim behavior unsupported by the changed source
-diff. Do not count unchanged Shape files as a current PR update.
+diff. Do not count unchanged Shape files as a current Shape update.
 
 Do not report formatting-only changes, comments, local renames, docs-only
 changes, tests-only changes, or behavior already faithfully represented by a

@@ -14,7 +14,7 @@ It is not a programming language in the usual sense. Shape files do not execute 
 - this function emits these effects
 - this implementation path is governed by a component shape
 - this refactor-sensitive function has recorded design context
-- this PR updates the Shape model when architecture behavior changes
+- this change set updates the Shape model when architecture behavior changes
 
 The contract is simple:
 

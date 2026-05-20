@@ -9,7 +9,7 @@ Architecture claims belong in `shape/**/*.shape`. The checker loads those files 
 
 If an architecture change is not ready to be checked, keep it outside `shape/`. Files under `shape/` are part of the model like any other source file.
 
-![PR change review workflow showing shape model files, changed files, coverage, shp check, and CI result.](../../../assets/infographics/pr-change-review.png)
+![CI review workflow showing global Shape model files, changed files, coverage, shp check, and CI result.](../../../assets/infographics/global-model-review.png)
 
 When source changes alter architecture, edit the owning global model file:
 

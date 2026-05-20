@@ -86,11 +86,13 @@ component DocsSite {
       Read<DocsContent>
         evidence md("docs-site/src/content/docs/examples/forbid-provides-boundary.md")
       Read<DocsContent>
-        evidence md("docs-site/src/content/docs/examples/missing-shape-delta.md")
+        evidence md("docs-site/src/content/docs/examples/missing-shape-update.md")
       Read<DocsContent>
         evidence md("docs-site/src/content/docs/index.md")
       Read<DocsContent>
         evidence md("docs-site/src/content/docs/inside-shape/checker-pipeline.md")
+      Read<DocsContent>
+        evidence md("docs-site/src/content/docs/inside-shape/design-rationale.md")
       Read<DocsContent>
         evidence md("docs-site/src/content/docs/inside-shape/fact-lowering.md")
       Read<DocsContent>
@@ -182,7 +184,7 @@ implementation AnalyzerSource {
     "packages/shp-checker/src/analyzer.ts"
   }
   conforms_to ShapeAnalyzer
-  on_change require shape_delta
+  on_change require shape_update
 }
 
 implementation AuthoringSource {
@@ -190,7 +192,7 @@ implementation AuthoringSource {
     "packages/shp-checker/src/authoring.ts"
   }
   conforms_to ShapeAuthoring
-  on_change require shape_delta
+  on_change require shape_update
 }
 
 implementation CheckerSource {
@@ -198,7 +200,7 @@ implementation CheckerSource {
     "packages/shp-checker/src/checker.ts"
   }
   conforms_to ShapeChecker
-  on_change require shape_delta
+  on_change require shape_update
 }
 
 implementation CiScripts {
@@ -206,7 +208,7 @@ implementation CiScripts {
     "scripts/write-changed-files.sh"
   }
   conforms_to CiPipeline
-  on_change require shape_delta
+  on_change require shape_update
 }
 
 implementation CliSource {
@@ -214,7 +216,7 @@ implementation CliSource {
     "packages/shp-cli/src/index.ts"
   }
   conforms_to ShpCli
-  on_change require shape_delta
+  on_change require shape_update
 }
 
 implementation CopilotReviewSource {
@@ -222,7 +224,7 @@ implementation CopilotReviewSource {
     ".github/prompts/**/*.md"
   }
   conforms_to CiPipeline
-  on_change require shape_delta
+  on_change require shape_update
 }
 
 implementation DocsSource {
@@ -231,7 +233,7 @@ implementation DocsSource {
     "docs-site/src/content/docs/**/*.md"
   }
   conforms_to DocsSite
-  on_change require shape_delta
+  on_change require shape_update
 }
 
 implementation EditorSource {
@@ -239,7 +241,7 @@ implementation EditorSource {
     "packages/shp-checker/src/editor.ts"
   }
   conforms_to ShapeEditorServices
-  on_change require shape_delta
+  on_change require shape_update
 }
 
 implementation FormatterSource {
@@ -247,7 +249,7 @@ implementation FormatterSource {
     "packages/shp-checker/src/formatter.ts"
   }
   conforms_to ShapeFormatter
-  on_change require shape_delta
+  on_change require shape_update
 }
 
 implementation GrammarSource {
@@ -256,7 +258,7 @@ implementation GrammarSource {
     "packages/shp-checker/src/language/shape.langium"
   }
   conforms_to ShapeGrammar
-  on_change require shape_delta
+  on_change require shape_update
 }
 
 implementation ParserSource {
@@ -264,7 +266,7 @@ implementation ParserSource {
     "packages/shp-checker/src/parser.ts"
   }
   conforms_to ShapeParser
-  on_change require shape_delta
+  on_change require shape_update
 }
 
 implementation ReleaseSource {
@@ -274,7 +276,7 @@ implementation ReleaseSource {
     "scripts/build-release-assets.sh"
   }
   conforms_to ReleasePipeline
-  on_change require shape_delta
+  on_change require shape_update
 }
 
 implementation SyntaxHighlighterSource {
@@ -282,7 +284,7 @@ implementation SyntaxHighlighterSource {
     "docs-site/src/syntax/**/*.mjs"
   }
   conforms_to ShapeGrammar
-  on_change require shape_delta
+  on_change require shape_update
 }
 
 implementation WorkflowSource {
@@ -291,7 +293,7 @@ implementation WorkflowSource {
     ".github/workflows/**/*.yml"
   }
   conforms_to CiPipeline
-  on_change require shape_delta
+  on_change require shape_update
 }
 
 binding CliDocs {
@@ -379,16 +381,6 @@ attest no_shape_change {
 }
 
 attest no_shape_change {
-  source md("docs-site/src/content/docs/concepts/change-files-attestations.md")
-  reason "Page was renamed and replaced by global model update documentation."
-}
-
-attest no_shape_change {
-  source md("docs-site/src/content/docs/examples/authoring-pr-delta.md")
-  reason "Example was renamed and replaced by global model update documentation."
-}
-
-attest no_shape_change {
-  source md("docs-site/src/content/docs/learn/pr-change-files.md")
-  reason "Guide was renamed and replaced by global model update documentation."
+  source md("docs-site/src/content/docs/examples/missing-shape-delta.md")
+  reason "Legacy example page was renamed to missing-shape-update; the deleted path is intentionally obsolete."
 }

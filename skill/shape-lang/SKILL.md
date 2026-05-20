@@ -1,6 +1,6 @@
 ---
 name: shape-lang
-description: Use when working with .shape files in repositories that use the Shape language to author, review, teach, format, debug, or validate Shape architecture claims, including Shape change files, Memory Guards, typed component/resource/effect models, top-level relation declarations, hypergraphs, hypercycles, relation kinds such as calls/callbacks/provides/coordinated_call, forbid hypercycle rules, coverage attestations, and agent-safe workflows using all shp CLI commands including shp graph.
+description: Use when working with .shape files in repositories that use the Shape language to author, review, teach, format, debug, or validate Shape architecture claims, including global model updates, Memory Guards, typed component/resource/effect models, top-level relation declarations, hypergraphs, hypercycles, relation kinds such as calls/callbacks/provides/coordinated_call, forbid hypercycle rules, coverage attestations, and agent-safe workflows using all shp CLI commands including shp graph.
 ---
 
 # Shape Lang
@@ -12,7 +12,7 @@ Shape is a deterministic architecture conformance language. Treat `.shape` files
 Assume the released `shp` binary is installed on `PATH`. Before authoring, reviewing, teaching, or debugging Shape usage:
 
 - Inspect the repository's existing `.shape` files before inventing syntax.
-- Inspect project docs for local Shape conventions and changed-file workflows.
+- Inspect project docs for local Shape conventions and changed-source workflows.
 - Run `shp check` and `shp fmt --check` after Shape changes.
 - Keep final forbids final; never use rationale or memory to waive them.
 
@@ -21,7 +21,7 @@ Assume the released `shp` binary is installed on `PATH`. Before authoring, revie
 Load only the reference needed for the task:
 
 - Teaching Shape concepts to an agent or human: read `references/teaching-guide.md`.
-- Authoring or reviewing `.shape` changes: read `references/make-shape-protocol.md`.
+- Authoring or reviewing global `.shape` model changes: read `references/make-shape-protocol.md`.
 - Choosing or interpreting CLI commands: read `references/cli-workflows.md`.
 - Memory Guards, rationales, memories, descriptions, or reevaluations: read `references/memory-guards.md`.
 - Need canonical snippets: read `references/examples.md`.
@@ -32,7 +32,7 @@ Load only the reference needed for the task:
 - Prefer `effects complete` only when every material effect is represented.
 - Use `effects unknown` when uncertainty remains.
 - Include `source` for functions and `evidence` for material effects when available.
-- For governed source changes, add a Shape change file or `attest no_shape_change`.
+- For governed source changes, update the global Shape model directly or add a narrow `attest no_shape_change`.
 - For guarded targets, add a valid `reevaluation` or preserve the protected shape.
 - Represent structural dependencies as top-level `relation` declarations, not component members.
 - Use prelude relation kinds (`calls`, `callbacks`, `provides`, `coordinated_call`) unless the project documents a custom kind.
@@ -59,4 +59,4 @@ shp fmt --check
 shp check
 ```
 
-When validating PR/source coverage, also run `shp coverage --changed-files changed.txt` with the repository's changed-files list.
+When validating changed-source coverage, also run `shp coverage --changed-files changed.txt` with the repository's changed-files list.

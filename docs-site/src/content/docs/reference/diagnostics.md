@@ -131,12 +131,12 @@ Replace unknowns with a source-backed `effects complete` block before accepting 
 
 ## Governed source changed without Shape update
 
-Cause: a changed source path matches an implementation block with `on_change require shape_delta`, but the changed-file set did not include a matching Shape update or current attestation.
+Cause: a changed source path matches an implementation block with `on_change require shape_update`, but the changed-file set did not include a matching Shape update or current attestation.
 
 Run coverage with the changed-file list to reproduce it:
 
 ```bash
-shp coverage --changed-files fixtures/changed/audit_purge.txt fixtures/fail/missing_shape_delta/audit.shape
+shp coverage --changed-files fixtures/changed/audit_purge.txt fixtures/fail/missing_shape_update/audit.shape
 ```
 
 ## Bound docs change missing
@@ -157,7 +157,7 @@ binding CheckerDocs {
 }
 ```
 
-If `packages/shp-checker/src/checker.ts` changes, the docs path must also change or the PR must include a narrow current attestation in a `.shape` file changed by the same PR:
+If `packages/shp-checker/src/checker.ts` changes, the docs path must also change or the change set must include a narrow current attestation in a `.shape` file changed by that same set:
 
 ```shape
 module repo

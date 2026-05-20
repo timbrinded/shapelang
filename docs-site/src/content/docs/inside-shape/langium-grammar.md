@@ -50,7 +50,7 @@ Top-level declarations currently include:
 
 ## Syntax Bias
 
-Shape syntax should stay boring. That is a design choice, not a lack of ambition. The files are meant to be read in PR review by humans and agents who need to answer, "what architectural claim is this line making?"
+Shape syntax should stay boring. That is a design choice, not a lack of ambition. The files are meant to be read in code review by humans and agents who need to answer, "what architectural claim is this line making?"
 
 ```shape
 module audit

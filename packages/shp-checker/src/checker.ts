@@ -261,7 +261,7 @@ export type SemanticDiagnostic =
       causedBy: string[];
     }
   | {
-      kind: "missing_shape_delta";
+      kind: "missing_shape_update";
       changedFile: string;
       implementation: string;
       glob: string;
@@ -487,7 +487,7 @@ export type Fact =
   | { kind: "binding_when_changed"; binding: string; glob: string; provenance: Provenance }
   | { kind: "binding_require_changed"; binding: string; glob: string; provenance: Provenance }
   | { kind: "binding_allow_attest"; binding: string; kindName: string; provenance: Provenance }
-  | { kind: "shape_delta_for"; path: string; provenance: Provenance }
+  | { kind: "shape_update_for"; path: string; provenance: Provenance }
   | { kind: "attestation"; kindName: string; path: string; reason: string; provenance: Provenance }
   | { kind: "rule"; name: string; provenance: Provenance };
 
@@ -712,7 +712,7 @@ type Model = {
   memories: Map<string, MemoryInfo>;
   reevaluations: Map<string, ReevaluationInfo>;
   attestations: { kind: string; path: string; reason: string; provenance: Provenance }[];
-  shapeDeltaPaths: Map<string, Provenance[]>;
+  shapeUpdatePaths: Map<string, Provenance[]>;
   removedFunctions: Set<string>;
   changeEvents: ChangeEvent[];
   facts: Fact[];
@@ -1179,7 +1179,7 @@ function lowerShapeModules(modules: ShapeModule[] | CheckModuleInput[]): Model {
     memories: new Map(),
     reevaluations: new Map(),
     attestations: [],
-    shapeDeltaPaths: new Map(),
+    shapeUpdatePaths: new Map(),
     removedFunctions: new Set(),
     changeEvents: [],
     facts: [],
@@ -1360,7 +1360,7 @@ function lowerComponent(
     } else if (isFunctionSummary(member)) {
       const fn = lowerFunction(member, component.name, filePath);
       info.functions.set(fn.name, fn);
-      collectShapeDeltaPathsFromFunction(fn, model);
+      collectShapeUpdatePathsFromFunction(fn, model);
       emitFunctionFacts(fn, model);
     }
   }
@@ -2058,8 +2058,8 @@ function lowerChange(change: ChangeDecl, filePath: string | undefined, model: Mo
 
       const fn = lowerFunction(entry, entry.component, filePath, `change ${change.name}`);
       component.functions.set(fn.name, fn);
-      addShapeDeltaPath(model, functionKey(entry.component, entry.name), fn.provenance);
-      collectShapeDeltaPathsFromFunction(fn, model);
+      addShapeUpdatePath(model, functionKey(entry.component, entry.name), fn.provenance);
+      collectShapeUpdatePathsFromFunction(fn, model);
       emitFunctionFacts(fn, model);
     } else if (isRemoveFunctionChange(entry)) {
       model.changeEvents.push({
@@ -2454,11 +2454,11 @@ function emitDerivedFacts(model: Model): void {
   }
 }
 
-function collectShapeDeltaPathsFromFunction(fn: FunctionInfo, model: Model): void {
+function collectShapeUpdatePathsFromFunction(fn: FunctionInfo, model: Model): void {
   if (fn.source) {
-    addShapeDeltaPath(model, fn.source.path, fn.provenance);
+    addShapeUpdatePath(model, fn.source.path, fn.provenance);
     model.facts.push({
-      kind: "shape_delta_for",
+      kind: "shape_update_for",
       path: normalizeSourcePath(fn.source.path),
       provenance: fn.provenance
     });
@@ -2468,20 +2468,20 @@ function collectShapeDeltaPathsFromFunction(fn: FunctionInfo, model: Model): voi
     for (const entry of fn.effects.entries) {
       if (entry.evidence) {
         const path = normalizeSourcePath(entry.evidence.path);
-        addShapeDeltaPath(model, path, entry.provenance);
-        model.facts.push({ kind: "shape_delta_for", path, provenance: entry.provenance });
+        addShapeUpdatePath(model, path, entry.provenance);
+        model.facts.push({ kind: "shape_update_for", path, provenance: entry.provenance });
       }
     }
   }
 }
 
-function addShapeDeltaPath(model: Model, path: string, provenance: Provenance): void {
+function addShapeUpdatePath(model: Model, path: string, provenance: Provenance): void {
   const normalized = normalizeSourcePath(path);
-  const existing = model.shapeDeltaPaths.get(normalized);
+  const existing = model.shapeUpdatePaths.get(normalized);
   if (existing) {
     existing.push(provenance);
   } else {
-    model.shapeDeltaPaths.set(normalized, [provenance]);
+    model.shapeUpdatePaths.set(normalized, [provenance]);
   }
 }
 
@@ -3158,7 +3158,7 @@ function checkCoverage(model: Model, changedFiles: string[]): SemanticDiagnostic
   const diagnostics: SemanticDiagnostic[] = [];
 
   for (const implementation of model.implementations) {
-    if (implementation.onChangeRequirement !== "shape_delta") {
+    if (implementation.onChangeRequirement !== "shape_update") {
       continue;
     }
 
@@ -3174,7 +3174,7 @@ function checkCoverage(model: Model, changedFiles: string[]): SemanticDiagnostic
         continue;
       }
 
-      if (currentShapeDeltaExists(model, changedFile, changedSet)) {
+      if (currentShapeUpdateExists(model, changedFile, changedSet)) {
         continue;
       }
 
@@ -3191,7 +3191,7 @@ function checkCoverage(model: Model, changedFiles: string[]): SemanticDiagnostic
       }
 
       diagnostics.push({
-        kind: "missing_shape_delta",
+        kind: "missing_shape_update",
         changedFile,
         implementation: implementation.name,
         glob: governingPath.glob,
@@ -3207,13 +3207,13 @@ function checkCoverage(model: Model, changedFiles: string[]): SemanticDiagnostic
   return diagnostics;
 }
 
-function currentShapeDeltaExists(
+function currentShapeUpdateExists(
   model: Model,
   changedFile: string,
   changedSet: Set<string>
 ): boolean {
   return (
-    model.shapeDeltaPaths
+    model.shapeUpdatePaths
       .get(changedFile)
       ?.some((provenance) => provenanceFileChanged(provenance, changedSet)) ?? false
   );
@@ -3777,8 +3777,8 @@ function formatDiagnostic(diagnostic: ShapeDiagnostic): string {
       return formatUnknownNameDiagnostic(diagnostic);
     case "duplicate_declaration":
       return formatDuplicateDeclarationDiagnostic(diagnostic);
-    case "missing_shape_delta":
-      return formatMissingShapeDeltaDiagnostic(diagnostic);
+    case "missing_shape_update":
+      return formatMissingShapeUpdateDiagnostic(diagnostic);
     case "missing_bound_docs_change":
       return formatMissingBoundDocsChangeDiagnostic(diagnostic);
     case "forbidden_hypercycle":
@@ -3868,8 +3868,8 @@ function formatDuplicateDeclarationDiagnostic(
   ].join("\n");
 }
 
-function formatMissingShapeDeltaDiagnostic(
-  diagnostic: Extract<SemanticDiagnostic, { kind: "missing_shape_delta" }>
+function formatMissingShapeUpdateDiagnostic(
+  diagnostic: Extract<SemanticDiagnostic, { kind: "missing_shape_update" }>
 ): string {
   return [
     "error: governed source changed without current Shape update",

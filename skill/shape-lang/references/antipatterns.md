@@ -28,13 +28,13 @@ Why wrong: complete means exhaustive.
 
 Smallest fix: use `effects unknown`, or add every material effect with evidence.
 
-### Governed source changed without a real delta
+### Governed source changed without a real model update
 
-Detect: a changed file matches an implementation path, but only vague attestation or no delta exists.
+Detect: a changed file matches an implementation path, but only vague attestation or no model update exists.
 
 Why wrong: coverage must show how the architecture model changed or why it did not.
 
-Smallest fix: add a change file with `source`/`evidence`, or a narrow `attest no_shape_change`.
+Smallest fix: update the owning global model with `source`/`evidence`, or add a narrow `attest no_shape_change`.
 
 ### Memory Guard missing context
 

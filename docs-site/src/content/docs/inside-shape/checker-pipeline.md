@@ -7,7 +7,7 @@ sidebar:
 
 The checker pipeline is the part of Shape that turns reviewable architecture claims into pass or fail output. It is intentionally deterministic: the same set of `.shape` files and changed-file inputs should always produce the same facts, the same rule decisions, and the same diagnostics.
 
-That determinism is important because Shape is not trying to infer intent from source code at the moment a PR is reviewed. The language records claims that a human can inspect, then the checker rejects claims that conflict with the model. Analyzer output and authoring helpers can assist the workflow, but the checker itself is built around explicit declarations.
+That determinism is important because Shape is not trying to infer intent from source code at review time. The language records claims that a human can inspect, then the checker rejects claims that conflict with the model. Analyzer output and authoring helpers can assist the workflow, but the checker itself is built around explicit declarations.
 
 ![Checker pipeline diagram showing parse, lower facts, run rules, and emit diagnostics with facts, rules, and provenance.](../../../assets/infographics/checker-pipeline.png)
 

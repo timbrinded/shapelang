@@ -150,7 +150,7 @@ The critic prompt asks the inverse questions. It is designed to catch the common
 
 ```mermaid
 sequenceDiagram
-  participant Diff as PR diff
+  participant Diff as Source diff
   participant Author as Authoring helper
   participant Human as Human reviewer
   participant Checker as Shape checker

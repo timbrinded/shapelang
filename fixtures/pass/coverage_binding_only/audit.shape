@@ -17,7 +17,7 @@ implementation AuditStoreImpl {
     "src/audit/**/*.ts"
   }
   conforms_to AuditStore
-  on_change require shape_delta
+  on_change require shape_update
 }
 
 binding AuditDocs {

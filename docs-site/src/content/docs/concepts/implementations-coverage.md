@@ -1,6 +1,6 @@
 ---
 title: Implementations and Coverage
-description: Connect source paths to component shapes and enforce PR coverage.
+description: Connect source paths to component shapes and enforce changed-source coverage.
 sidebar:
   order: 5
 ---
@@ -23,7 +23,7 @@ implementation AuditStoreImpl {
     "src/audit/**/*.ts"
   }
   conforms_to AuditStore
-  on_change require shape_delta
+  on_change require shape_update
 }
 ```
 
@@ -34,15 +34,15 @@ The coverage command compares changed files with these governed paths. A matchin
 Run:
 
 ```bash
-shp coverage --changed-files fixtures/changed/audit_purge.txt fixtures/fail/missing_shape_delta/audit.shape
+shp coverage --changed-files fixtures/changed/audit_purge.txt fixtures/fail/missing_shape_update/audit.shape
 ```
 
-If `src/audit/purge.ts` is governed by `AuditStoreImpl` and the PR does not include a Shape update or current attestation, coverage fails.
+If `src/audit/purge.ts` is governed by `AuditStoreImpl` and the change set does not include a Shape update or current attestation, coverage fails.
 
 ## Why coverage is separate
 
 Conformance checks answer: "Is this model coherent?"
 
-Coverage checks answer: "Did this PR update the model when governed source changed?"
+Coverage checks answer: "Did this change set update the model when governed source changed?"
 
-Both checks matter. A coherent Shape model can still miss a required PR-level update.
+Both checks matter. A coherent Shape model can still miss a required current global model update.

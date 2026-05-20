@@ -29,15 +29,13 @@ component AuditStore {
 }
 ```
 
-Change file with explicit unknowns:
+Global model update with explicit unknowns:
 
 ```shape
-module changes.PR_001
+module audit
 
-import audit
-
-change ReviewAuditChange {
-  add fn AuditStore.reviewPurgeShape1
+component AuditStore {
+  fn reviewPurgeShape1
     source ts("src/audit/purge.ts")
     effects unknown
 }
@@ -149,18 +147,18 @@ memory PurgeDeleteConstraint : RefactorConstraint<fn AuditStore.purgeOldEvents> 
 }
 ```
 
-Guarded change without reevaluation:
+Guarded model update without reevaluation:
 
 ```shape
-change RefactorDecision {
-  modify fn Gateway.derivePolicyDecision
+component Gateway {
+  fn derivePolicyDecision
     effects complete {
       Read<PolicySnapshot>
     }
 }
 ```
 
-Attestation hiding a real shape delta:
+Attestation hiding a real model update:
 
 ```shape
 attest no_shape_change {

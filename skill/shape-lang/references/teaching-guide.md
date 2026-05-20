@@ -9,8 +9,8 @@ Use this when explaining Shape to another agent or human. Teach by running or sh
 3. Resources carry traits and invariants.
 4. Components own resources and grant effects. Structural links between components and resources live in top-level `relation` declarations.
 5. Functions summarize effects with source/evidence.
-6. Change files model PR-level deltas.
-7. Coverage rules require shape deltas for governed source changes.
+6. Global model updates keep Shape claims aligned with source changes.
+7. Coverage rules require current model updates or attestations for governed source changes.
 8. Rules express project constraints such as final forbids and hypercycle bans over the directed hypergraph of relations.
 9. Memory Guards add typed design memory for non-obvious or refactor-sensitive shapes.
 
@@ -34,10 +34,10 @@ Inspect the resource or function:
 shp explain AuditEvent fixtures/fail/append_only_hard_delete/audit.shape
 ```
 
-Show PR coverage:
+Show changed-source coverage:
 
 ```bash
-shp coverage --changed-files fixtures/changed/audit_purge.txt fixtures/fail/missing_shape_delta/audit.shape
+shp coverage --changed-files fixtures/changed/audit_purge.txt fixtures/fail/missing_shape_update/audit.shape
 ```
 
 Show source hints as advisory:
@@ -88,7 +88,7 @@ Teach instead: `effects complete` claims every material effect is represented.
 ## Useful Analogies
 
 - A `.shape` file is a reviewable contract for architecture.
-- A change block is a PR patch to the architecture model.
+- A model update is a direct edit to the global architecture contract.
 - A rationale explains an intentional shape.
 - A memory preserves a refactor constraint.
 - A reevaluation is a typed review record for changing guarded shape.

@@ -222,7 +222,7 @@ Content constraints:
 - No decorative clutter, stock images, invented logos, or illegible microtext.
 ```
 
-## pr-change-review.png
+## global-model-review.png
 
 Parameters: context=`docs-site/src/content/docs/learn/global-model-updates.md`, `docs-site/src/content/docs/concepts/model-updates-attestations.md`, `docs-site/src/content/docs/concepts/implementations-coverage.md`, `docs-site/src/content/docs/learn/ci-workflow.md`; orientation=landscape; level=medium; format=markdown; model=gpt-image-2; quality=high; size=1680x944.
 
@@ -237,10 +237,10 @@ Design system:
 professional enterprise workstation aesthetic; Space Grotesk typography; Arbitrum Blue #00639a, deep slate text, light structured surfaces; tight 4px-grid alignment, compact panels, crisp 1px borders; tonal layering instead of soft shadows; high-density but readable information hierarchy.
 
 Main message:
-PRs update the global Shape model directly, while coverage verifies governed source paths were documented.
+Change sets update the global Shape model directly, while coverage verifies governed source paths were documented.
 
 Required visible text:
-- "PR Change Review"
+- "Global Model Review"
 - "shape model"
 - "changed files"
 - "model update"

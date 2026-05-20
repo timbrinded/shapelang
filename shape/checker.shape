@@ -236,7 +236,7 @@ memory CheckPipelineOrder : CheckOrderRationale<fn ShapeChecker.checkShapeModule
   guards on_change require ReEvaluation<Self>
 }
 
-memory CoverageCurrentDeltaContract : RefactorConstraint<fn ShapeRuleEngine.checkCoverage> {
+memory CoverageCurrentUpdateContract : RefactorConstraint<fn ShapeRuleEngine.checkCoverage> {
   applies_to fn ShapeRuleEngine.checkCoverage
   status Explained
   confidence High

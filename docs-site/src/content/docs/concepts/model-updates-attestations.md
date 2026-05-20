@@ -7,7 +7,7 @@ sidebar:
 
 The architecture contract lives in the global files under `shape/`. When governed source changes alter architecture, update the relevant global `.shape` file directly.
 
-![PR change review workflow showing shape model files, changed files, coverage, shp check, and CI result.](../../../assets/infographics/pr-change-review.png)
+![CI review workflow showing global Shape model files, changed files, coverage, shp check, and CI result.](../../../assets/infographics/global-model-review.png)
 
 ```shape
 module audit

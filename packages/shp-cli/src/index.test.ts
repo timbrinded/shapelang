@@ -27,7 +27,7 @@ describe("shp CLI", () => {
       "coverage",
       "--changed-files",
       "fixtures/changed/audit_purge.txt",
-      "fixtures/fail/missing_shape_delta/audit.shape"
+      "fixtures/fail/missing_shape_update/audit.shape"
     ]);
 
     expect(result.exitCode).toBe(1);

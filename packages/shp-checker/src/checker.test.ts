@@ -509,7 +509,7 @@ describe("Shape checker", () => {
     expect(result.exitCode).toBe(0);
   });
 
-  test("fails coverage when governed files change without shape delta", () => {
+  test("fails coverage when governed files change without shape update", () => {
     const parsed = parseShapeModule(`
       module audit
 
@@ -524,7 +524,7 @@ describe("Shape checker", () => {
           "src/audit/**/*.ts"
         }
         conforms_to AuditStore
-        on_change require shape_delta
+        on_change require shape_update
       }
     `);
 
@@ -559,7 +559,7 @@ describe("Shape checker", () => {
           "src/audit/**/*.ts"
         }
         conforms_to AuditStore
-        on_change require shape_delta
+        on_change require shape_update
       }
 
       attest no_shape_change {
@@ -595,7 +595,7 @@ describe("Shape checker", () => {
           "src/audit/**/*.ts"
         }
         conforms_to AuditStore
-        on_change require shape_delta
+        on_change require shape_update
       }
 
       attest no_shape_change {
@@ -634,7 +634,7 @@ describe("Shape checker", () => {
           "src/audit/**/*.ts"
         }
         conforms_to AuditStore
-        on_change require shape_delta
+        on_change require shape_update
       }
 
       attest no_shape_change {
@@ -654,7 +654,7 @@ describe("Shape checker", () => {
 
     expect(result.exitCode).toBe(1);
     expect(result.diagnostics.map((diagnostic) => diagnostic.kind)).toContain(
-      "missing_shape_delta"
+      "missing_shape_update"
     );
   });
 
@@ -674,7 +674,7 @@ describe("Shape checker", () => {
           "src/audit/**/*.ts"
         }
         conforms_to AuditStore
-        on_change require shape_delta
+        on_change require shape_update
       }
     `);
     const change = parseShapeModule(`
@@ -733,7 +733,7 @@ describe("Shape checker", () => {
           "src/audit/**/*.ts"
         }
         conforms_to AuditStore
-        on_change require shape_delta
+        on_change require shape_update
       }
     `);
 
@@ -768,7 +768,7 @@ describe("Shape checker", () => {
           "src/audit/**/*.ts"
         }
         conforms_to AuditStore
-        on_change require shape_delta
+        on_change require shape_update
       }
     `);
     const change = parseShapeModule(`
@@ -803,7 +803,7 @@ describe("Shape checker", () => {
 
     expect(result.exitCode).toBe(1);
     expect(result.diagnostics.map((diagnostic) => diagnostic.kind)).toContain(
-      "missing_shape_delta"
+      "missing_shape_update"
     );
   });
 

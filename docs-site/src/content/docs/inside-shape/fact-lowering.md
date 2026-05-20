@@ -78,7 +78,7 @@ owns AuditStore AuditEvent
 grants AuditStore Append<AuditEvent>
 function AuditStore.appendEvent
 effect AuditStore.appendEvent Append<AuditEvent>
-shape_delta_for src/audit/store.ts
+shape_update_for src/audit/store.ts
 ```
 
 They also preserve provenance. Conceptually, the effect fact is not just `Append<AuditEvent>`; it is `Append<AuditEvent>` caused by the `fn appendEvent` summary, with optional evidence from `src/audit/store.ts:8-14`.
@@ -244,11 +244,11 @@ implementation AuditImplementation {
     "src/audit/**/*.ts"
   }
   conforms_to AuditStore
-  on_change require shape_delta
+  on_change require shape_update
 }
 ```
 
-Lowering records implementation paths and function source paths. Coverage checks then compare changed files against those paths. A matching `source` or `evidence` reference creates a `shape_delta_for` fact, but coverage only accepts it when the declaring `.shape` file is also in the current changed-file list. An explicit `attest no_shape_change` creates an attestation fact with the same current-file requirement.
+Lowering records implementation paths and function source paths. Coverage checks then compare changed files against those paths. A matching `source` or `evidence` reference creates a `shape_update_for` fact, but coverage only accepts it when the declaring `.shape` file is also in the current changed-file list. An explicit `attest no_shape_change` creates an attestation fact with the same current-file requirement.
 
 ## Design Rule
 

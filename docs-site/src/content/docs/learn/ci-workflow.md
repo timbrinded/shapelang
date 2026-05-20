@@ -7,7 +7,7 @@ sidebar:
 
 Shape is meant to run in review. In application repos, install a pinned `shp` release and run the checker directly.
 
-![PR change review workflow showing shape system files, shape changes, changed files, coverage, shp check, and CI result.](../../../assets/infographics/pr-change-review.png)
+![CI review workflow showing global Shape model files, changed files, coverage, shp check, and CI result.](../../../assets/infographics/global-model-review.png)
 
 ## Recommended workflow
 
@@ -33,7 +33,7 @@ jobs:
 
 ## Coverage gate
 
-Coverage checks compare changed source paths with implementation blocks. A governed source change must be represented by a current `shape` update, or by a narrow attestation changed in the same PR:
+Coverage checks compare changed source paths with implementation blocks. A governed source change must be represented by a current `shape` update, or by a narrow attestation changed in the same change set:
 
 ```yaml
 - name: Changed files
@@ -103,7 +103,7 @@ bun run changed-files
 bun run shape:ci
 ```
 
-`shape:ci` runs `bun shp check --changed-files changed.txt`, so implementation coverage and bindings are checked together. Bindings are used for documentation coupling: if Shape-affecting code or model files change, the associated docs must change too, unless the PR includes a narrow current `docs_not_needed` attestation.
+`shape:ci` runs `bun shp check --changed-files changed.txt`, so implementation coverage and bindings are checked together. Bindings are used for documentation coupling: if Shape-affecting code or model files change, the associated docs must change too, unless the current change set includes a narrow current `docs_not_needed` attestation.
 
 ## Direct binary install
 
