@@ -2632,6 +2632,19 @@ describe("Shape authoring assistant", () => {
     expect(parsed.ok).toBe(true);
   });
 
+  test("uses a valid fallback source language for unknown file extensions", () => {
+    const source = generateShapeUpdateDraft({
+      moduleName: "audit",
+      componentName: "AuditStore",
+      changedFiles: ["README"]
+    });
+    const parsed = parseShapeModule(source);
+
+    expect(source).toContain('source file("README")');
+    expect(source).not.toContain("source source(");
+    expect(parsed.ok).toBe(true);
+  });
+
   test("can generate an optional memory guard scaffold", () => {
     const source = generateShapeUpdateDraft({
       moduleName: "audit",

@@ -35,7 +35,7 @@ The checker judges the claims in `.shape` files. Optional source analyzers can p
 
 ## Core workflow
 
-1. A architecture model lives under `shape/**/*.shape`.
+1. An architecture model lives under `shape/**/*.shape`.
 2. PRs update that model when source behavior changes the contract.
 3. Reviewers inspect the source evidence attached to effects.
 4. Reviewers inspect any rationale, memory, or reevaluation attached to refactor-sensitive functions.

@@ -113,19 +113,44 @@ jobs:
     if: github.event_name == 'pull_request'
 
     steps:
-      - *checkout
-      - *setup-bun
-      - *install
+      - name: Detect Copilot token
+        id: copilot-token
+        env:
+          COPILOT_GITHUB_TOKEN: ${{ secrets.COPILOT_GITHUB_TOKEN }}
+        run: |
+          if [ -n "${COPILOT_GITHUB_TOKEN:-}" ]; then
+            echo "available=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "available=false" >> "$GITHUB_OUTPUT"
+            echo "Skipping Copilot Shape contract review because COPILOT_GITHUB_TOKEN is not available."
+          fi
+
+      - name: Checkout
+        if: steps.copilot-token.outputs.available == 'true'
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Bun
+        if: steps.copilot-token.outputs.available == 'true'
+        uses: oven-sh/setup-bun@v2
+
+      - name: Install
+        if: steps.copilot-token.outputs.available == 'true'
+        run: bun install --frozen-lockfile
 
       - name: Setup Node
+        if: steps.copilot-token.outputs.available == 'true'
         uses: actions/setup-node@v4
         with:
           node-version: 24
 
       - name: Install Copilot CLI
+        if: steps.copilot-token.outputs.available == 'true'
         run: npm install -g @github/copilot
 
       - name: Changed files
+        if: steps.copilot-token.outputs.available == 'true'
         run: bun run changed-files
         env:
           GITHUB_BASE_REF: ${{ github.base_ref }}
@@ -133,6 +158,7 @@ jobs:
           GITHUB_SHA: ${{ github.sha }}
 
       - name: Shape diagnostics for Copilot
+        if: steps.copilot-token.outputs.available == 'true'
         run: |
           set +e
           {
@@ -147,17 +173,13 @@ jobs:
           } > shape-copilot-context.txt 2>&1
 
       - name: Run Copilot Shape contract review
+        if: steps.copilot-token.outputs.available == 'true'
         env:
           COPILOT_GITHUB_TOKEN: ${{ secrets.COPILOT_GITHUB_TOKEN }}
           GITHUB_BASE_REF: ${{ github.base_ref }}
           GITHUB_SHA: ${{ github.sha }}
         run: |
           set -euo pipefail
-          if [ -z "${COPILOT_GITHUB_TOKEN:-}" ]; then
-            echo "COPILOT_GITHUB_TOKEN must be configured with a Copilot-licensed fine-grained PAT that has Copilot Requests permission." >&2
-            exit 1
-          fi
-
           prompt="$(<.github/prompts/shape-contract-review.md)"
           prompt="$prompt
 
@@ -174,6 +196,7 @@ jobs:
             --no-ask-user
 
       - name: Check Copilot review result
+        if: steps.copilot-token.outputs.available == 'true'
         run: node .github/scripts/check-copilot-shape-review.mjs
 
   docs:

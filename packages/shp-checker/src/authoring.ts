@@ -207,7 +207,7 @@ function languageForPath(file: string): string {
   if (file.endsWith(".sol")) {
     return "solidity";
   }
-  return "source";
+  return "file";
 }
 
 function indentBlock(value: string): string[] {
