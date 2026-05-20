@@ -23,6 +23,7 @@ component CiPipeline {
   grants Read<ChangedFileList>
   grants Read<CiWorkflow>
   grants Read<CopilotReviewPrompt>
+  grants Read<CopilotReviewResult>
   grants Read<SemanticDiagnostics>
   grants Update<ChangedFileList>
   grants Update<CopilotReviewResult>
@@ -47,6 +48,8 @@ component CiPipeline {
         evidence yaml(".github/workflows/shape.yml")
       Read<CopilotReviewPrompt>
         evidence md(".github/prompts/shape-contract-review.md")
+      Read<CopilotReviewResult>
+        evidence mjs(".github/scripts/check-copilot-shape-review.mjs")
       Read<SemanticDiagnostics>
         evidence yaml(".github/workflows/shape.yml")
       Update<CopilotReviewResult>

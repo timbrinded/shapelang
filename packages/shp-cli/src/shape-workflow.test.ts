@@ -23,6 +23,16 @@ describe("Shape workflow", () => {
     expect(result.stderr).toContain("findings");
   });
 
+  test("fails Copilot review gate when findings are missing", async () => {
+    const result = await runCopilotReviewGate({
+      status: "pass",
+      summary: "No drift found."
+    });
+
+    expect(result.exitCode).toBe(1);
+    expect(result.stderr).toContain("findings must be an array");
+  });
+
   test("passes Copilot review gate when a pass result has no findings", async () => {
     const result = await runCopilotReviewGate({
       status: "pass",

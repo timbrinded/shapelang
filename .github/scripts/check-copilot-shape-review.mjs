@@ -11,13 +11,28 @@ try {
 }
 
 const validStatuses = new Set(["pass", "drift", "error"]);
-if (!validStatuses.has(review?.status)) {
+if (review === null || typeof review !== "object" || Array.isArray(review)) {
+  console.error("Invalid Shape Copilot review: result must be a JSON object.");
+  process.exit(1);
+}
+
+if (!validStatuses.has(review.status)) {
   console.error(`Invalid Shape Copilot review status: ${review?.status}`);
   process.exit(1);
 }
 
-const summary = typeof review.summary === "string" ? review.summary : "";
-const findings = Array.isArray(review.findings) ? review.findings : [];
+if (typeof review.summary !== "string") {
+  console.error("Invalid Shape Copilot review: summary must be a string.");
+  process.exit(1);
+}
+
+if (!Array.isArray(review.findings)) {
+  console.error("Invalid Shape Copilot review: findings must be an array.");
+  process.exit(1);
+}
+
+const summary = review.summary;
+const findings = review.findings;
 
 if (process.env.GITHUB_STEP_SUMMARY) {
   appendFileSync(
