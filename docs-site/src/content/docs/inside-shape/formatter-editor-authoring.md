@@ -37,6 +37,8 @@ The helper APIs keep that loop from becoming a collection of one-off scripts. Th
 
 The formatter and editor helpers also understand repository binding declarations. Bindings remain semantic checker claims, but helper surfaces should keep them readable, discoverable, and highlighted like other top-level Shape declarations.
 
+Shared checker-package metadata backs the helper surfaces. Prelude shape traits, context requirements, relation-kind names, and source-reference string normalization live in package-local helpers, and the formatter, editor, analyzer, checker, and authoring prompt derive their own output from those helpers instead of maintaining separate copies.
+
 ## Formatter
 
 `formatShapeSource` parses source text and returns canonical formatting. `formatShapeModule` formats an already parsed `ShapeModule`. The CLI exposes this through `shp fmt`:

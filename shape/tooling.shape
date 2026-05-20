@@ -23,11 +23,14 @@ resource ShapeModelDraft
 component ShapeAnalyzer {
   owns AnalyzerHint
   grants Append<AnalyzerHint>
+  grants Read<NormalizedShapeReference>
   grants Read<ShapeSource>
   fn analyzeSourceText
     source ts("packages/shp-checker/src/analyzer.ts#analyzeSourceText")
     effects complete {
       Append<AnalyzerHint>
+        evidence ts("packages/shp-checker/src/analyzer.ts")
+      Read<NormalizedShapeReference>
         evidence ts("packages/shp-checker/src/analyzer.ts")
       Read<ShapeSource>
         evidence ts("packages/shp-checker/src/analyzer.ts")
@@ -40,12 +43,15 @@ component ShapeAuthoring {
   grants Append<AuthoringPrompt>
   grants Append<ShapeModelDraft>
   grants Read<ChangedFileList>
+  grants Read<PreludeMetadata>
   fn buildShapeAuthorPrompt : RefactorSensitive
     source ts("packages/shp-checker/src/authoring.ts#buildShapeAuthorPrompt")
     effects complete {
       Append<AuthoringPrompt>
         evidence ts("packages/shp-checker/src/authoring.ts")
       Read<ChangedFileList>
+        evidence ts("packages/shp-checker/src/authoring.ts")
+      Read<PreludeMetadata>
         evidence ts("packages/shp-checker/src/authoring.ts")
     }
   fn generateShapeUpdateDraft : RefactorSensitive
@@ -62,6 +68,7 @@ component ShapeEditorServices {
   owns EditorOutput
   grants Append<EditorOutput>
   grants Read<ParsedModule>
+  grants Read<PreludeMetadata>
   grants Read<SemanticDiagnostics>
   grants Read<ShapeSource>
   grants Update<FormattedShape>
@@ -79,6 +86,8 @@ component ShapeEditorServices {
       Append<EditorOutput>
         evidence ts("packages/shp-checker/src/editor.ts")
       Read<ParsedModule>
+        evidence ts("packages/shp-checker/src/editor.ts")
+      Read<PreludeMetadata>
         evidence ts("packages/shp-checker/src/editor.ts")
     }
   fn getDefinitionLocation
@@ -104,16 +113,21 @@ component ShapeEditorServices {
         evidence ts("packages/shp-checker/src/editor.ts")
       Read<ParsedModule>
         evidence ts("packages/shp-checker/src/editor.ts")
+      Read<PreludeMetadata>
+        evidence ts("packages/shp-checker/src/editor.ts")
     }
 }
 
 component ShapeFormatter {
   owns FormattedShape
+  grants Read<NormalizedShapeReference>
   grants Read<ParsedModule>
   grants Update<FormattedShape>
   fn formatShapeModule : RefactorSensitive
     source ts("packages/shp-checker/src/formatter.ts#formatShapeModule")
     effects complete {
+      Read<NormalizedShapeReference>
+        evidence ts("packages/shp-checker/src/formatter.ts")
       Read<ParsedModule>
         evidence ts("packages/shp-checker/src/formatter.ts")
       Update<FormattedShape>
@@ -150,10 +164,22 @@ relation ShapeAnalyzerUsesChecker {
   summary "AnalyzerComparison"
 }
 
+relation ShapeAnalyzerUsesStringHelpers {
+  kind calls
+  connects ShapeAnalyzer -> ShapeStringHelpers
+  summary "SourcePathNormalization"
+}
+
 relation ShapeAuthoringUsesChecker {
   kind calls
   connects ShapeAuthoring -> ShapeChecker
   summary "ModelDraftValidation"
+}
+
+relation ShapeAuthoringUsesPreludeRegistry {
+  kind calls
+  connects ShapeAuthoring -> ShapePreludeRegistry
+  summary "PromptPreludeRules"
 }
 
 relation ShapeEditorUsesChecker {
@@ -174,6 +200,12 @@ relation ShapeEditorUsesParser {
   summary "EditorParsing"
 }
 
+relation ShapeEditorUsesPreludeRegistry {
+  kind calls
+  connects ShapeEditorServices -> ShapePreludeRegistry
+  summary "EditorPreludeHelp"
+}
+
 relation ShapeFormatterProvidesFormat {
   kind provides
   connects ShapeFormatter -> CanonicalShapeFormat
@@ -183,6 +215,12 @@ relation ShapeFormatterUsesParser {
   kind calls
   connects ShapeFormatter -> ShapeParser
   summary "FormattingParser"
+}
+
+relation ShapeFormatterUsesStringHelpers {
+  kind calls
+  connects ShapeFormatter -> ShapeStringHelpers
+  summary "LiteralNormalization"
 }
 
 relation ShpCliProvidesInterface {
@@ -275,6 +313,33 @@ memory FormatterCanonicalDiffs : RefactorConstraint<fn ShapeFormatter.formatShap
   guards on_change require ReEvaluation<Self>
 }
 
+reevaluation AuthoringDraftSafetyRechecked {
+  satisfies memory AuthoringUnknownSafety
+  outcome Confirmed
+  summary "Draft generation still keeps uncertain effects explicit after the authoring prompt helper changes."
+  reviewer ShapeMaintainers
+  decided_on "2026-05-20"
+  evidence test("packages/shp-checker/src/checker.test.ts")
+}
+
+reevaluation AuthorPromptPreludeRechecked {
+  satisfies memory AuthorPromptSafetyRules
+  outcome Confirmed
+  summary "Author prompts now derive final-forbid, context, and relation-kind guidance from the shared prelude registry."
+  reviewer ShapeMaintainers
+  decided_on "2026-05-20"
+  evidence test("packages/shp-checker/src/checker.test.ts")
+}
+
+reevaluation CliCommandErrorsRechecked {
+  satisfies memory CliCommandDispatchOrder
+  outcome Confirmed
+  summary "CLI dispatch now reports expected user-input failures without bypassing checker and formatter command semantics."
+  reviewer ShapeMaintainers
+  decided_on "2026-05-20"
+  evidence test("packages/shp-cli/src/index.test.ts")
+}
+
 reevaluation DefaultShapeDiscoveryRechecked {
   satisfies memory DefaultShapeFileDiscovery
   outcome Confirmed
@@ -282,4 +347,13 @@ reevaluation DefaultShapeDiscoveryRechecked {
   reviewer ShapeMaintainers
   decided_on "2026-05-20"
   evidence test("packages/shp-cli/src/index.test.ts")
+}
+
+reevaluation FormatterSharedStringHelpersRechecked {
+  satisfies memory FormatterCanonicalDiffs
+  outcome Confirmed
+  summary "Formatter canonical output is preserved while quote handling is shared with checker string helpers."
+  reviewer ShapeMaintainers
+  decided_on "2026-05-20"
+  evidence test("packages/shp-checker/src/shape-strings.test.ts")
 }

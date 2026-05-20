@@ -378,6 +378,15 @@ memory ReleaseChecksumContract : RefactorConstraint<fn ReleasePipeline.buildRele
   guards on_change require ReEvaluation<Self>
 }
 
+reevaluation DocsShapeBlockVerificationRechecked {
+  satisfies memory DocsShapeBlockParsingContract
+  outcome Confirmed
+  summary "Docs verification still parses complete shape fences while file extension handling uses Node path semantics."
+  reviewer ShapeMaintainers
+  decided_on "2026-05-20"
+  evidence test("docs-site/scripts/verify-shape-blocks.ts")
+}
+
 attest no_shape_change {
   source md("docs-site/src/content/docs/concepts/rules-dependency-graphs.md")
   reason "Dependency graph docs were replaced by hypercycle docs in the hypergraph redesign."

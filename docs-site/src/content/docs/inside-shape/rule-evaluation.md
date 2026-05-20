@@ -52,6 +52,8 @@ The current checker covers these major categories:
 | Hypercycles | Did a `forbid hypercycle` rule find a cycle in the directed hypergraph? | Break the cycle or revise the rule intentionally. |
 | Provider rules | Does any `provides` relation expose a target outside the allowed component? | Move provider responsibility, remove the relation, or change the rule. |
 
+Coverage and binding checks use a normalized changed-file context. A source, evidence reference, or attestation only counts for the current run when the declaring Shape file is also in the changed-file list; stale attestations from older reviews are deliberately ignored. Function facts are emitted from the final component function registry, so add, modify, and remove changes update the model first and then produce facts from that final state.
+
 ## Final Forbids
 
 Final forbids are intentionally stronger than grants. A grant says a component may emit an effect. A final forbid says the effect is not allowed for that target at all.
