@@ -63,6 +63,32 @@ component ShapeEditorServices {
   grants Append<EditorOutput>
   grants Read<ParsedModule>
   grants Read<SemanticDiagnostics>
+  grants Read<ShapeSource>
+  grants Update<FormattedShape>
+  fn formatOnSave
+    source ts("packages/shp-checker/src/editor.ts#formatOnSave")
+    effects complete {
+      Read<ShapeSource>
+        evidence ts("packages/shp-checker/src/editor.ts")
+      Update<FormattedShape>
+        evidence ts("packages/shp-checker/src/editor.ts")
+    }
+  fn getCompletions
+    source ts("packages/shp-checker/src/editor.ts#getCompletions")
+    effects complete {
+      Append<EditorOutput>
+        evidence ts("packages/shp-checker/src/editor.ts")
+      Read<ParsedModule>
+        evidence ts("packages/shp-checker/src/editor.ts")
+    }
+  fn getDefinitionLocation
+    source ts("packages/shp-checker/src/editor.ts#getDefinitionLocation")
+    effects complete {
+      Append<EditorOutput>
+        evidence ts("packages/shp-checker/src/editor.ts")
+      Read<ShapeSource>
+        evidence ts("packages/shp-checker/src/editor.ts")
+    }
   fn getEditorDiagnostics
     source ts("packages/shp-checker/src/editor.ts#getEditorDiagnostics")
     effects complete {
@@ -140,6 +166,12 @@ relation ShapeEditorUsesFormatter {
   kind calls
   connects ShapeEditorServices -> ShapeFormatter
   summary "EditorFormatting"
+}
+
+relation ShapeEditorUsesParser {
+  kind calls
+  connects ShapeEditorServices -> ShapeParser
+  summary "EditorParsing"
 }
 
 relation ShapeFormatterProvidesFormat {
