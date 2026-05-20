@@ -6,6 +6,10 @@ import shape.tooling
 
 resource CiWorkflow
 
+resource CopilotReviewPrompt
+
+resource CopilotReviewResult
+
 resource DocsContent
 
 resource InstallScript
@@ -14,11 +18,16 @@ resource ReleaseArtifact
 
 component CiPipeline {
   owns CiWorkflow
+  owns CopilotReviewPrompt
+  owns CopilotReviewResult
   requires ShpCli via ShapeCiCommand
+  requires ShpCli via ShapeContractReview
   grants Read<ChangedFileList>
   grants Read<CiWorkflow>
+  grants Read<CopilotReviewPrompt>
   grants Read<SemanticDiagnostics>
   grants Update<ChangedFileList>
+  grants Update<CopilotReviewResult>
   fn runShapeCi
     source yaml(".github/workflows/shape.yml")
     effects complete {
@@ -29,6 +38,20 @@ component CiPipeline {
       Read<CiWorkflow>
         evidence yaml(".github/workflows/release.yml")
       Read<SemanticDiagnostics>
+        evidence yaml(".github/workflows/shape.yml")
+    }
+  fn runShapeContractReview
+    source yaml(".github/workflows/shape.yml")
+    effects complete {
+      Read<ChangedFileList>
+        evidence yaml(".github/workflows/shape.yml")
+      Read<CiWorkflow>
+        evidence yaml(".github/workflows/shape.yml")
+      Read<CopilotReviewPrompt>
+        evidence md(".github/prompts/shape-contract-review.md")
+      Read<SemanticDiagnostics>
+        evidence yaml(".github/workflows/shape.yml")
+      Update<CopilotReviewResult>
         evidence yaml(".github/workflows/shape.yml")
     }
   fn writeChangedFiles
@@ -149,6 +172,14 @@ implementation CliSource {
     "packages/shp-cli/src/index.ts"
   }
   conforms_to ShpCli
+  on_change require shape_delta
+}
+
+implementation CopilotReviewSource {
+  paths {
+    ".github/prompts/**/*.md"
+  }
+  conforms_to CiPipeline
   on_change require shape_delta
 }
 

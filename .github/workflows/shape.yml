@@ -100,10 +100,122 @@ jobs:
       - name: Changed files
         run: bun run changed-files
         env:
+          GITHUB_BASE_REF: ${{ github.base_ref }}
           GITHUB_EVENT_BEFORE: ${{ github.event.before }}
+          GITHUB_SHA: ${{ github.sha }}
 
       - name: Shape CI
         run: bun run shape:ci
+
+  shape-copilot-review:
+    name: Shape Copilot Review
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+
+    steps:
+      - *checkout
+      - *setup-bun
+      - *install
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Install Copilot CLI
+        run: npm install -g @github/copilot
+
+      - name: Changed files
+        run: bun run changed-files
+        env:
+          GITHUB_BASE_REF: ${{ github.base_ref }}
+          GITHUB_EVENT_BEFORE: ${{ github.event.before }}
+          GITHUB_SHA: ${{ github.sha }}
+
+      - name: Shape diagnostics for Copilot
+        run: |
+          set +e
+          {
+            echo "## changed.txt"
+            sed -n '1,200p' changed.txt
+            echo
+            echo "## bun run shape:ci"
+            bun run shape:ci
+            status=$?
+            echo
+            echo "shape_ci_exit=$status"
+          } > shape-copilot-context.txt 2>&1
+
+      - name: Run Copilot Shape contract review
+        env:
+          COPILOT_GITHUB_TOKEN: ${{ secrets.COPILOT_GITHUB_TOKEN }}
+          GITHUB_BASE_REF: ${{ github.base_ref }}
+          GITHUB_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          if [ -z "${COPILOT_GITHUB_TOKEN:-}" ]; then
+            echo "COPILOT_GITHUB_TOKEN must be configured with a Copilot-licensed fine-grained PAT that has Copilot Requests permission." >&2
+            exit 1
+          fi
+
+          prompt="$(<.github/prompts/shape-contract-review.md)"
+          prompt="$prompt
+
+          CI context:
+          - Base ref: ${GITHUB_BASE_REF:-unknown}
+          - Head SHA: ${GITHUB_SHA:-unknown}
+          - Changed files are listed in changed.txt.
+          - Shape command output is in shape-copilot-context.txt.
+          - Write the final JSON object to copilot-shape-review.json."
+
+          copilot -p "$prompt" \
+            --allow-tool='read,write(copilot-shape-review.json),shell(git:*),shell(bun:*),shell(rg:*),shell(ls:*),shell(pwd)' \
+            --deny-tool='shell(git push),shell(git commit),shell(git reset),shell(git checkout)' \
+            --no-ask-user
+
+      - name: Check Copilot review result
+        run: |
+          node --input-type=module <<'NODE'
+          import { appendFileSync, readFileSync } from "node:fs";
+
+          const resultPath = "copilot-shape-review.json";
+          let review;
+
+          try {
+            review = JSON.parse(readFileSync(resultPath, "utf8"));
+          } catch (error) {
+            console.error(`Could not parse ${resultPath}: ${error}`);
+            process.exit(1);
+          }
+
+          const validStatuses = new Set(["pass", "drift", "error"]);
+          if (!validStatuses.has(review?.status)) {
+            console.error(`Invalid Shape Copilot review status: ${review?.status}`);
+            process.exit(1);
+          }
+
+          const summary = typeof review.summary === "string" ? review.summary : "";
+          const findings = Array.isArray(review.findings) ? review.findings : [];
+
+          appendFileSync(
+            process.env.GITHUB_STEP_SUMMARY,
+            [
+              "## Shape Copilot Review",
+              "",
+              `Status: \`${review.status}\``,
+              "",
+              summary,
+              "",
+              findings.length > 0 ? `Findings: ${findings.length}` : "Findings: 0",
+              "",
+            ].join("\n"),
+          );
+
+          if (review.status !== "pass") {
+            console.error(JSON.stringify(review, null, 2));
+            process.exit(1);
+          }
+          NODE
 
   docs:
     name: Docs

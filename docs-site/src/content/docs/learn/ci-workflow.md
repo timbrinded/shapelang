@@ -45,39 +45,53 @@ Coverage checks compare changed source paths with implementation blocks. A gover
 
 If a governed source path changes without a Shape update or current attestation, the checker rejects the change.
 
-## Contract review assistant
+## Copilot CLI contract review
 
-CI can also ask an LLM reviewer to check source semantics against the Shape model. Keep the instruction short and make `shape/` the authority:
+CI can also run GitHub Copilot CLI as a PR job to check source semantics against the Shape model. This is separate from the deterministic checker: `shp check --changed-files` enforces current coverage and bindings, while Copilot reviews whether the committed Shape claims faithfully describe the changed behavior.
+
+The job needs a repository secret such as `COPILOT_GITHUB_TOKEN`, containing a fine-grained personal access token for a Copilot-licensed account with Copilot Requests permission:
+
+```yaml
+shape-copilot-review:
+  if: github.event_name == 'pull_request'
+  runs-on: ubuntu-latest
+  steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    - uses: oven-sh/setup-bun@v2
+    - run: bun install --frozen-lockfile
+    - uses: actions/setup-node@v4
+      with:
+        node-version: 24
+    - run: npm install -g @github/copilot
+    - run: bun run changed-files
+      env:
+        GITHUB_BASE_REF: ${{ github.base_ref }}
+        GITHUB_SHA: ${{ github.sha }}
+    - run: |
+        copilot -p "$(<.github/prompts/shape-contract-review.md)" \
+          --allow-tool='read,write(copilot-shape-review.json),shell(git:*),shell(bun:*)' \
+          --no-ask-user
+      env:
+        COPILOT_GITHUB_TOKEN: ${{ secrets.COPILOT_GITHUB_TOKEN }}
+```
+
+Use a short prompt that makes `shape/` the authority:
 
 ```md
 # Shape contract review
 
-Review the PR diff against the Shape model in `shape/**/*.shape`.
+Review `changed.txt` against the durable Shape model in `shape/**/*.shape`.
+For changed source behavior that affects the architecture contract, require a
+faithful current Shape update or a narrow current attestation.
 
-1. Read repository instructions.
-2. Determine the changed source files.
-3. Load the Shape model.
-4. Decide whether each changed source file alters the architecture contract.
-5. If it does, verify the committed `shape` changes faithfully represent the new behavior.
-6. If it does not, verify any `attest no_shape_change` is narrow, reasoned, and changed in this PR.
-7. Run `shp fmt --check` and `shp check`.
+Run `bun shp check --changed-files changed.txt`, `bun shp obligations`, and
+`bun shp memory`. Use `bun shp explain` when a symbol needs context and
+`bun shp analyze` only as advisory input.
 
-Return JSON:
-
-{
-  "status": "pass | drift | error",
-  "summary": "one short sentence",
-  "findings": [
-    {
-      "severity": "warning | error",
-      "target": "changed file",
-      "shape_source": "shape/file.shape | missing-shape-claim",
-      "issue": "short label",
-      "reason": "why the Shape model and source diff disagree",
-      "suggested_fix": "minimal shape change or source change"
-    }
-  ]
-}
+Write JSON to `copilot-shape-review.json` with `status: "pass" | "drift" |
+"error"` and terse evidence-backed findings.
 ```
 
 ## Shape repo workflow
