@@ -32,6 +32,20 @@ describe("shp CLI", () => {
     expect(result.stdout).toBe("");
   });
 
+  test("reports missing changed-file lists without a stack trace", async () => {
+    const result = await runCli([
+      "coverage",
+      "--changed-files",
+      "fixtures/missing-changed-files.txt",
+      "fixtures/pass/append_only_append/audit.shape"
+    ]);
+
+    expect(result.exitCode).toBe(2);
+    expect(result.stderr).toContain("error: failed to read fixtures/missing-changed-files.txt");
+    expect(result.stderr).not.toContain("readChangedFiles");
+    expect(result.stdout).toBe("");
+  });
+
   test("runs coverage with changed-file input", async () => {
     const result = await runCli([
       "coverage",
@@ -141,6 +155,27 @@ describe("shp CLI", () => {
     expect(result.stdout).toBe("");
   });
 
+  test("reports missing analyzer source files without a stack trace", async () => {
+    const result = await runCli(["analyze", "fixtures/source/missing.ts"]);
+
+    expect(result.exitCode).toBe(2);
+    expect(result.stderr).toContain("error: failed to read fixtures/source/missing.ts");
+    expect(result.stderr).not.toContain("analyzeFiles");
+    expect(result.stdout).toBe("");
+  });
+
+  test("runs the declared package bin", async () => {
+    const manifest = await readCliManifest();
+    const result = await runCli(
+      ["--help"],
+      resolve(repoRoot, "packages/shp-cli", manifest.bin.shp)
+    );
+
+    expect(result.exitCode).toBe(0);
+    expect(result.stdout).toContain("Usage:");
+    expect(result.stderr).toBe("");
+  });
+
   test("prints the whole hypergraph", async () => {
     const result = await runCli(["graph", "fixtures/pass/hypercycle_acyclic/deps.shape"]);
 
@@ -218,12 +253,40 @@ describe("shp CLI", () => {
   });
 });
 
-async function runCli(args: string[]): Promise<{
+type CliManifest = {
+  bin: {
+    shp: string;
+  };
+};
+
+async function readCliManifest(): Promise<CliManifest> {
+  const manifest: unknown = await Bun.file(
+    resolve(repoRoot, "packages/shp-cli/package.json")
+  ).json();
+  if (!isCliManifest(manifest)) {
+    throw new Error("packages/shp-cli/package.json is missing bin.shp");
+  }
+  return manifest;
+}
+
+function isCliManifest(value: unknown): value is CliManifest {
+  if (typeof value !== "object" || value === null || !("bin" in value)) {
+    return false;
+  }
+
+  const { bin } = value;
+  return typeof bin === "object" && bin !== null && "shp" in bin && typeof bin.shp === "string";
+}
+
+async function runCli(
+  args: string[],
+  executable = cliPath
+): Promise<{
   exitCode: number;
   stdout: string;
   stderr: string;
 }> {
-  const process = Bun.spawn(["bun", cliPath, ...args], {
+  const process = Bun.spawn(["bun", executable, ...args], {
     cwd: repoRoot,
     stdout: "pipe",
     stderr: "pipe"

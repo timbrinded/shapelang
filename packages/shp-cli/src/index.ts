@@ -199,7 +199,7 @@ async function formatFiles(providedFiles: string[], checkOnly: boolean): Promise
   let ok = true;
 
   for (const file of files) {
-    const source = await Bun.file(file).text();
+    const source = await readCliTextFile(file);
     const result = formatShapeSource(source, file);
     if (!result.ok) {
       ok = false;
@@ -250,7 +250,7 @@ async function defaultShapeFiles(): Promise<string[]> {
 }
 
 async function readChangedFiles(path: string): Promise<string[]> {
-  const text = await Bun.file(path).text();
+  const text = await readCliTextFile(path);
   return text
     .split(/\r?\n/)
     .map((line) => line.trim())
@@ -289,7 +289,7 @@ async function analyzeFiles(
 ): Promise<number> {
   const hints: ReturnType<typeof analyzeSourceText> = [];
   for (const sourceFile of sourceFiles) {
-    hints.push(...analyzeSourceText(sourceFile, await Bun.file(sourceFile).text()));
+    hints.push(...analyzeSourceText(sourceFile, await readCliTextFile(sourceFile)));
   }
 
   if (!shapeFilesOption) {
@@ -318,6 +318,14 @@ class CliDiagnosticError extends Error {
     readonly exitCode: number
   ) {
     super(message);
+  }
+}
+
+async function readCliTextFile(path: string): Promise<string> {
+  try {
+    return await Bun.file(path).text();
+  } catch (error) {
+    throw new CliDiagnosticError(`error: failed to read ${path}\n\n${errorMessage(error)}\n`, 2);
   }
 }
 

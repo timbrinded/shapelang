@@ -23,6 +23,7 @@ import {
   parseShapeModule,
   statsShapeHypergraph
 } from "./index.ts";
+import { PRELUDE_CONTEXT_REQUIREMENTS, PRELUDE_RELATION_KIND_NAMES } from "./prelude.ts";
 
 const repoRoot = resolve(import.meta.dir, "../../..");
 
@@ -317,6 +318,82 @@ describe("Shape checker", () => {
     const result = checkShapeModules([base.module, change.module]);
 
     expect(result.exitCode).toBe(0);
+  });
+
+  test("checks functions re-added after removal", () => {
+    const base = parseShapeModule(`
+      module audit
+
+      resource AuditEvent : AppendOnly
+
+      component AuditStore {
+        owns AuditEvent
+        grants HardDelete<AuditEvent>
+
+        fn purgeOldEvents
+          effects unknown
+      }
+    `);
+    const change = parseShapeModule(`
+      module review.replace_audit_retention_purge
+      import audit
+
+      change ReplaceAuditRetentionPurge {
+        remove fn AuditStore.purgeOldEvents
+        add fn AuditStore.purgeOldEvents
+          effects complete {
+            HardDelete<AuditEvent>
+          }
+      }
+    `);
+
+    expect(base.ok).toBe(true);
+    expect(change.ok).toBe(true);
+    if (!base.ok || !change.ok) {
+      return;
+    }
+
+    const result = checkShapeModules([base.module, change.module]);
+
+    expect(result.exitCode).toBe(1);
+    expect(formatDiagnostics(result)).toContain("forbidden effect");
+    expect(formatDiagnostics(result)).toContain("AuditStore.purgeOldEvents");
+  });
+
+  test("rejects context targeting a removed function", () => {
+    const base = parseShapeModule(`
+      module gateway
+
+      component Gateway {
+        fn derivePolicyDecision
+          effects unknown
+      }
+
+      rationale DecisionInline : ${contextRef("InlineRationale", fnTarget("Gateway.derivePolicyDecision"))} {
+        applies_to fn Gateway.derivePolicyDecision
+        why CognitiveLocality
+      }
+    `);
+    const change = parseShapeModule(`
+      module review.remove_decision
+      import gateway
+
+      change RemoveDecision {
+        remove fn Gateway.derivePolicyDecision
+      }
+    `);
+
+    expect(base.ok).toBe(true);
+    expect(change.ok).toBe(true);
+    if (!base.ok || !change.ok) {
+      return;
+    }
+
+    const result = checkShapeModules([base.module, change.module]);
+
+    expect(result.exitCode).toBe(1);
+    expect(formatDiagnostics(result)).toContain("invalid context target");
+    expect(formatDiagnostics(result)).toContain("Gateway.derivePolicyDecision");
   });
 
   test("applies change declaration top-level declaration modifications", () => {
@@ -2737,13 +2814,21 @@ describe("Shape editor support", () => {
     expect(getCompletions(source, "Audit")).toContain("AuditStore.appendEvent");
     expect(getCompletions(source, "Preserve")).toContain("PreserveInline");
     expect(getCompletions(source, "requ")).toContain("requires");
-    expect(getCompletions(source, "call")).toEqual(expect.arrayContaining(["calls", "callbacks"]));
-    expect(getCompletions(source, "coord")).toContain("coordinated_call");
 
     const formatted = formatOnSave(source);
     expect(formatted.ok).toBe(true);
     if (formatted.ok) {
       expect(formatted.formatted).toContain("component AuditStore");
+    }
+  });
+
+  test("derives editor shape-trait help from the prelude registry", () => {
+    for (const requirement of PRELUDE_CONTEXT_REQUIREMENTS) {
+      expect(getCompletions("", requirement.trait)).toContain(requirement.trait);
+      expect(getHoverText("", requirement.trait)).toContain(requirement.contextType);
+    }
+    for (const relationKind of PRELUDE_RELATION_KIND_NAMES) {
+      expect(getCompletions("", relationKind)).toContain(relationKind);
     }
   });
 });

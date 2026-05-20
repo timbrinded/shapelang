@@ -1,3 +1,10 @@
+import {
+  PRELUDE_CONTEXT_REQUIREMENTS,
+  PRELUDE_FINAL_FORBID_EFFECT_NAMES,
+  PRELUDE_RELATION_KIND_NAMES,
+  type ContextKind
+} from "./prelude.ts";
+
 export type ShapeAuthorPromptInput = {
   existingShape?: string;
   diff?: string;
@@ -29,9 +36,10 @@ export function buildShapeAuthorPrompt(input: ShapeAuthorPromptInput): string {
     "- Cover every governed changed file with a source or evidence reference.",
     "- Use effects complete only when every material effect is represented.",
     "- Use effects unknown when uncertainty remains; do not silently omit uncertainty.",
-    "- Represent destructive operations explicitly, including HardDelete, Truncate, and DropStorage.",
+    formatFinalForbidEffectGuidance(),
     "- Include evidence spans for material effects when the diff gives enough line context.",
-    "- If adding PreserveInline, RequiresDescription, ProtectedCheckOrder, RefactorSensitive, or NonIdiomatic, include matching rationale or memory.",
+    formatContextTraitGuidance(),
+    formatRelationKindGuidance(),
     "- If modifying or removing a function protected by memory/rationale, include a reevaluation.",
     "- Use memory with status Unexplained when a refactor constraint is known but not fully explained yet.",
     "- Do not use rationale or memory to waive final forbidden effects.",
@@ -48,6 +56,34 @@ export function buildShapeAuthorPrompt(input: ShapeAuthorPromptInput): string {
     .join("\n");
 }
 
+function formatFinalForbidEffectGuidance(): string {
+  return `- Represent destructive operations explicitly, including ${formatHumanList(PRELUDE_FINAL_FORBID_EFFECT_NAMES)}.`;
+}
+
+function formatContextTraitGuidance(): string {
+  const traits = PRELUDE_CONTEXT_REQUIREMENTS.map((rule) => rule.trait);
+  const contextKinds = new Set<ContextKind>();
+  for (const rule of PRELUDE_CONTEXT_REQUIREMENTS) {
+    for (const kind of rule.satisfiedBy) {
+      contextKinds.add(kind);
+    }
+  }
+
+  return `- If adding ${formatHumanList(traits)}, include matching ${formatHumanList([...contextKinds])}.`;
+}
+
+function formatRelationKindGuidance(): string {
+  return `- Prefer prelude relation kinds ${formatHumanList(PRELUDE_RELATION_KIND_NAMES)} for structural dependencies unless project docs define a custom kind.`;
+}
+
+function formatHumanList(items: string[]): string {
+  if (items.length <= 2) {
+    return items.join(" or ");
+  }
+
+  return `${items.slice(0, -1).join(", ")}, or ${items.at(-1) ?? ""}`;
+}
+
 export function buildShapeCriticPrompt(
   input: ShapeAuthorPromptInput,
   proposedShapeUpdate: string
@@ -61,7 +97,7 @@ export function buildShapeCriticPrompt(
     "- Are unknowns marked explicitly?",
     "- Are evidence spans plausible and reviewable?",
     "- Did the model update avoid weakening final invariants?",
-    "- Did structural dependency changes appear as relation declarations with the correct kind?",
+    `- Did structural dependency changes appear as relation declarations with ${formatHumanList(PRELUDE_RELATION_KIND_NAMES)} or an intentional custom kind?`,
     "- Did the model update add shape traits without matching context?",
     "- Did the model update touch a guarded target without reevaluation?",
     "- Did the model update remove a required description?",

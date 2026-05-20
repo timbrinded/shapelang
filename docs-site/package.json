@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "astro build",
-    "check": "astro check && bun run verify:shape && astro build",
+    "check": "astro check && bun run verify:shape && bun run build",
     "dev": "astro dev",
     "preview": "astro preview",
     "verify:shape": "bun scripts/verify-shape-blocks.ts"

@@ -1,5 +1,5 @@
 import { readdir, readFile } from "node:fs/promises";
-import { dirname, join, relative } from "node:path";
+import { dirname, extname, join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
 import { parseShapeModule } from "@shape/shp-checker";
 
@@ -78,17 +78,12 @@ async function collectDocsFiles(directory: string): Promise<string[]> {
     const entryPath = join(directory, entry.name);
     if (entry.isDirectory()) {
       files.push(...(await collectDocsFiles(entryPath)));
-    } else if (supportedExtensions.has(extensionOf(entry.name))) {
+    } else if (supportedExtensions.has(extname(entry.name))) {
       files.push(entryPath);
     }
   }
 
   return files.sort();
-}
-
-function extensionOf(fileName: string): string {
-  const index = fileName.lastIndexOf(".");
-  return index >= 0 ? fileName.slice(index) : "";
 }
 
 function lineNumberAt(source: string, index: number): number {
