@@ -1,0 +1,2 @@
+src/audit/store.ts
+fixtures/pass/coverage_binding_only/audit.shape

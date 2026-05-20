@@ -8,7 +8,7 @@ sidebar:
 The analyzer can find obvious destructive operations in source text.
 
 ```bash
-shp analyze --shape-files shape/system/audit.shape fixtures/source/audit_purge.ts
+shp analyze --shape-files fixtures/pass/append_only_append/audit.shape fixtures/source/audit_purge.ts
 ```
 
 If the source contains a delete-like operation that is missing from the shape summary, the analyzer warns:
@@ -25,12 +25,10 @@ Do not treat analyzer output as proof. Treat it as a prompt to inspect the sourc
 A suspicious purge might become:
 
 ```shape
-module changes.PR_001
+module audit
 
-import audit
-
-change AddAuditRetentionPurge {
-  add fn AuditStore.purgeOldEvents
+component AuditStore {
+  fn purgeOldEvents
     source ts("src/audit/purge.ts#purgeOldEvents")
     effects complete {
       HardDelete<AuditEvent>

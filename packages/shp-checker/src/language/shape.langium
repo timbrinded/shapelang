@@ -6,7 +6,7 @@ entry ShapeModule:
     declarations+=Declaration*;
 
 Declaration:
-    ResourceDecl | TraitDecl | ComponentDecl | RelationDecl | ImplementationDecl | ChangeDecl | AttestationDecl | RuleDecl | RationaleDecl | MemoryDecl | ReevaluationDecl;
+    ResourceDecl | TraitDecl | ComponentDecl | RelationDecl | ImplementationDecl | BindingDecl | ChangeDecl | AttestationDecl | RuleDecl | RationaleDecl | MemoryDecl | ReevaluationDecl;
 
 ImportDecl:
     'import' path=QualifiedName;
@@ -172,6 +172,24 @@ ConformsToDecl:
 OnChangeDecl:
     'on_change' 'require' requirement=ID;
 
+BindingDecl:
+    'binding' name=ID
+    '{'
+        members+=BindingMember*
+    '}';
+
+BindingMember:
+    BindingWhenChangedDecl | BindingRequireChangedDecl | BindingAllowAttestDecl;
+
+BindingWhenChangedDecl:
+    'when_changed' body=PathsBlock;
+
+BindingRequireChangedDecl:
+    'require_changed' body=PathsBlock;
+
+BindingAllowAttestDecl:
+    'allow' 'attest' kind=ID;
+
 AttestationDecl:
     'attest' kind=ID
     '{'
@@ -219,10 +237,10 @@ RemoveDeclarationChange:
     'remove' kind=RemovableDeclarationKind name=ID;
 
 AddableDeclaration:
-    ResourceDecl | TraitDecl | ComponentDecl | RelationDecl | ImplementationDecl | AttestationDecl | RuleDecl;
+    ResourceDecl | TraitDecl | ComponentDecl | RelationDecl | ImplementationDecl | BindingDecl | AttestationDecl | RuleDecl;
 
 RemovableDeclarationKind returns string:
-    'resource' | 'trait' | 'component' | 'relation' | 'implementation' | 'rule';
+    'resource' | 'trait' | 'component' | 'relation' | 'implementation' | 'binding' | 'rule';
 
 RuleDecl:
     'rule' name=ID typeParams=TypeParamList?

@@ -7,16 +7,15 @@ sidebar:
 
 The checker pipeline is the part of Shape that turns reviewable architecture claims into pass or fail output. It is intentionally deterministic: the same set of `.shape` files and changed-file inputs should always produce the same facts, the same rule decisions, and the same diagnostics.
 
-That determinism is important because Shape is not trying to infer intent from source code at the moment a PR is reviewed. The language records claims that a human can inspect, then the checker rejects claims that conflict with the model. Analyzer output and authoring helpers can assist the workflow, but the checker itself is built around explicit declarations.
+That determinism is important because Shape is not trying to infer intent from source code at review time. The language records claims that a human can inspect, then the checker rejects claims that conflict with the model. Analyzer output and authoring helpers can assist the workflow, but the checker itself is built around explicit declarations.
 
-![Checker pipeline diagram showing parse, apply changes, lower facts, run rules, and emit diagnostics with facts, rules, and provenance.](../../../assets/infographics/checker-pipeline.png)
+![Checker pipeline diagram showing parse, lower facts, run rules, and emit diagnostics with facts, rules, and provenance.](../../../assets/infographics/checker-pipeline.png)
 
 ```mermaid
 flowchart TD
   A[".shape files"] --> B["Parse with Langium"]
   B --> C["ShapeModule ASTs"]
-  C --> D["Apply change blocks"]
-  D --> E["Effective model"]
+  C --> E["Effective model"]
   E --> F["Lower declarations into facts"]
   F --> G["Run semantic rules"]
   G --> H{"Diagnostics?"}
@@ -31,7 +30,6 @@ Think of the checker as five small phases rather than one large validator.
 | Phase | Input | Output | Main job |
 | --- | --- | --- | --- |
 | Parse | Source text | `ShapeModule` ASTs | Reject syntax the language cannot understand. |
-| Apply changes | Baseline modules plus `change` declarations | Effective architecture model | Model the PR as a patch before rules run. |
 | Lower facts | Effective model | Fact list and internal indexes | Normalize syntax into records rules can consume. |
 | Run rules | Facts and indexes | Semantic diagnostics | Reject incoherent claims and missing obligations. |
 | Format diagnostics | Diagnostics with provenance | CLI/editor output | Explain the shortest causal path to the reviewer. |
@@ -40,7 +38,7 @@ This split keeps each phase honest. The parser does not decide whether `HardDele
 
 ## Parse
 
-Langium parses each loaded `.shape` file into a `ShapeModule`. A module contains imports and a list of top-level declarations: resources, traits, components, relations, implementations, changes, attestations, rules, rationales, memories, and reevaluations.
+Langium parses each loaded `.shape` file into a `ShapeModule`. A module contains imports and a list of top-level declarations: resources, traits, components, relations, implementations, attestations, rules, rationales, memories, and reevaluations.
 
 At this stage the checker only knows whether the text follows the grammar. For example, this is syntactically meaningful even if later rules reject it:
 
@@ -65,27 +63,24 @@ The parser accepts the shape of the declaration. The later semantic stages decid
 
 Parser diagnostics have exit code `2` because the checker could not build a semantic model at all. Semantic diagnostics have exit code `1` because the model was understood and rejected.
 
-## Apply Changes
+## Build Effective Model
 
-Shape change files are applied before facts are lowered. That order matters: rules should see the PR's proposed architecture, not a baseline model plus a separate list of edits.
+Files under `shape/` are the normal CI contract. The checker lowers the committed global model before evaluating rules, so rules see the architecture exactly as the repo declares it.
 
 ```mermaid
 flowchart TD
-  A["baseline declarations"] --> C["effective model"]
-  B["change declarations"] --> C
+  A["global declarations"] --> C["effective model"]
   C --> D["facts"]
   D --> E["rules"]
 ```
 
-A change can add, modify, or remove functions and declarations:
+A global model update can add, modify, or remove functions and declarations:
 
 ```shape
-module changes.PR_042
+module audit
 
-import audit
-
-change ReviewAuditPurge {
-  modify fn AuditStore.purgeOldEvents
+component AuditStore {
+  fn purgeOldEvents
     source ts("src/audit/purge.ts#purgeOldEvents")
     effects complete {
       HardDelete<AuditEvent>
@@ -94,9 +89,7 @@ change ReviewAuditPurge {
 }
 ```
 
-After this phase, the checker treats `AuditStore.purgeOldEvents` as having the modified summary. Coverage, memory guard, grant, and final-forbid checks all evaluate the effective version.
-
-This is why change files are powerful in PR review. They do not merely annotate a diff; they alter the architecture model that the checker evaluates.
+Coverage, memory guard, grant, and final-forbid checks all evaluate the same effective model.
 
 ## Lower Facts
 
@@ -122,7 +115,7 @@ Rules consume facts and internal indexes. They answer questions such as:
 
 - Does a function emit an effect its component does not grant?
 - Does a resource trait create a final forbid for an emitted effect?
-- Did a governed source file change without a matching shape delta or attestation?
+- Did a governed source file change without a matching Shape update or current attestation?
 - Did a function marked `RefactorSensitive` receive the required memory?
 - Did a guarded target change without a matching reevaluation?
 - Did a hypercycle rule find a forbidden hypercycle in the directed hypergraph, and what relations and vertex path prove it?

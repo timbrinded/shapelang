@@ -40,7 +40,8 @@ Top-level declarations currently include:
 | `component` | An owner of resources, authority grants, and function summaries. |
 | `relation` | A top-level structural hyperedge over components and resources, with `kind`, `connects`, and optional `roles`/`summary`. |
 | `implementation` | Source path governance for coverage checks. |
-| `change` | A PR-level patch to the architecture model. |
+| `binding` | Changed-file coupling, such as requiring docs when Shape-affecting code changes. |
+| `change` | A patch to the architecture model. |
 | `attest` | A typed statement such as `no_shape_change`. |
 | `rule` | Project-specific semantic policy. |
 | `rationale` | Typed design context for non-obvious function shapes. |
@@ -49,7 +50,7 @@ Top-level declarations currently include:
 
 ## Syntax Bias
 
-Shape syntax should stay boring. That is a design choice, not a lack of ambition. The files are meant to be read in PR review by humans and agents who need to answer, "what architectural claim is this line making?"
+Shape syntax should stay boring. That is a design choice, not a lack of ambition. The files are meant to be read in code review by humans and agents who need to answer, "what architectural claim is this line making?"
 
 ```shape
 module audit
@@ -99,17 +100,15 @@ The semantic checker gives those fields meaning:
 
 The grammar only says the structure is legal. The checker decides whether obligations are satisfied.
 
-## Change Syntax
+## Global Update Syntax
 
-Change blocks are how a PR proposes architecture deltas without rewriting the whole model.
+The repo workflow updates the global model directly. The grammar accepts the normal declarations that make up that model.
 
 ```shape
-module changes.PR_042
+module audit
 
-import audit
-
-change ReviewAuditPurge {
-  modify fn AuditStore.purgeOldEvents
+component AuditStore {
+  fn purgeOldEvents
     source ts("src/audit/purge.ts#purgeOldEvents")
     effects complete {
       HardDelete<AuditEvent>
@@ -118,29 +117,47 @@ change ReviewAuditPurge {
 }
 ```
 
-The grammar supports function-level edits and declaration-level edits:
+Global updates can add, modify, or remove ordinary declarations in the owning module:
 
 ```shape no-verify
-change Example {
-  add fn ComponentName.newFunction
+component ComponentName {
+  fn newFunction
     effects unknown
 
-  modify fn ComponentName.existingFunction
+  fn existingFunction
     effects complete {
       Read<ResourceName>
     }
+}
 
-  remove fn ComponentName.oldFunction
+resource NewResource
 
-  add resource NewResource
-  modify component ExistingComponent {
-    owns NewResource
-  }
-  remove rule old_policy
+rule new_policy {
+  forbid hypercycle over calls
 }
 ```
 
-The checker applies these edits before lowering facts. That is why change syntax belongs in the language rather than a separate metadata file.
+The checker lowers the committed global model into facts before evaluating rules.
+
+## Binding Syntax
+
+Bindings are checked only when the workflow provides changed files. They connect a trigger path set to a required path set:
+
+```shape
+module repo
+
+binding GrammarDocs {
+  when_changed paths {
+    "packages/shp-checker/src/language/shape.langium"
+  }
+  require_changed paths {
+    "docs-site/src/content/docs/reference/language-syntax.md"
+  }
+  allow attest docs_not_needed
+}
+```
+
+This is deliberately a language feature rather than ad hoc CI shell logic because bindings are architecture claims: the repo is saying that one surface cannot change without another being reviewed.
 
 ## Context Syntax
 
@@ -192,6 +209,7 @@ When changing the grammar, make the corresponding semantic and tooling changes i
 - Update formatter output so diffs stay canonical.
 - Lower new semantic concepts into facts or internal indexes.
 - Add rule checks only if the syntax has semantic meaning.
+- Add or update bindings when the syntax affects docs, CLI behavior, or other review surfaces.
 - Add editor completions or hovers if the construct is user-facing.
 - Update docs with a valid example and, when needed, `shape no-verify` for partial snippets.
 - Run `bun run langium:generate`, `bun test`, `bun run docs:check`, and `bun run typecheck`.

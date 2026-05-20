@@ -10,13 +10,14 @@ import {
   formatAnalyzerWarnings,
   formatDiagnostics,
   formatShapeSource,
-  generateShapeDelta,
+  generateShapeUpdateDraft,
   graphAllShapeModules,
   graphShapeModules,
   listMemoryGuardsShapeModules,
   listShapeObligations,
   parseShapeModule,
   statsShapeHypergraph,
+  type ParseDiagnostic,
   type ShapeModule
 } from "@shape/shp-checker";
 
@@ -29,49 +30,27 @@ const USAGE = `Usage:
   shp graph --stats [--kind KIND] [files...]
   shp memory [files...]
   shp obligations [files...]
-  shp author --changed-files changed.txt --component ComponentName [--change ChangeName] [--module module.name]
+  shp author --changed-files changed.txt --component ComponentName [--module module.name]
   shp analyze [--shape-files file1.shape,file2.shape] [source-files...]
 
-When no files are provided, commands scan shape/system/**/*.shape and shape/changes/**/*.shape.
+When no files are provided, commands scan shape/**/*.shape.
 \`shp graph\` without a SYMBOL prints every relation in the hypergraph.
 \`shp graph --stats\` prints aggregate vertex, hyperedge, and incidence counts.
 `;
 
 async function main(): Promise<number> {
-  const { values, positionals } = parseArgs({
-    args: Bun.argv.slice(2),
-    allowPositionals: true,
-    options: {
-      "changed-files": {
-        type: "string"
-      },
-      check: {
-        type: "boolean"
-      },
-      kind: {
-        type: "string"
-      },
-      stats: {
-        type: "boolean"
-      },
-      component: {
-        type: "string"
-      },
-      change: {
-        type: "string"
-      },
-      module: {
-        type: "string"
-      },
-      "shape-files": {
-        type: "string"
-      },
-      help: {
-        type: "boolean",
-        short: "h"
-      }
+  let parsedArgs: ReturnType<typeof parseCliArgs>;
+  try {
+    parsedArgs = parseCliArgs();
+  } catch (error) {
+    if (!isParseArgsError(error)) {
+      throw error;
     }
-  });
+    await Bun.write(Bun.stderr, `${errorMessage(error)}\n\n${USAGE}`);
+    return 2;
+  }
+
+  const { values, positionals } = parsedArgs;
 
   if (values.help) {
     await Bun.write(Bun.stdout, USAGE);
@@ -92,10 +71,9 @@ async function main(): Promise<number> {
     const changedFiles = await readChangedFiles(changedFilesPath);
     await Bun.write(
       Bun.stdout,
-      generateShapeDelta({
+      generateShapeUpdateDraft({
         changedFiles,
         componentName: values.component,
-        changeName: values.change,
         moduleName: values.module
       })
     );
@@ -173,10 +151,47 @@ async function main(): Promise<number> {
 
   const files = providedFiles.length > 0 ? providedFiles : await defaultShapeFiles();
   const changedFiles = changedFilesPath ? await readChangedFiles(changedFilesPath) : undefined;
-  const result = await checkShapeFiles(files, { changedFiles });
+  const result = await checkShapeFiles(files, {
+    changedFiles,
+    enforceBindings: command !== "coverage"
+  });
   const output = formatDiagnostics(result);
   await Bun.write(result.exitCode === 0 ? Bun.stdout : Bun.stderr, output);
   return result.exitCode;
+}
+
+function parseCliArgs() {
+  return parseArgs({
+    args: Bun.argv.slice(2),
+    allowPositionals: true,
+    options: {
+      "changed-files": {
+        type: "string"
+      },
+      check: {
+        type: "boolean"
+      },
+      kind: {
+        type: "string"
+      },
+      stats: {
+        type: "boolean"
+      },
+      component: {
+        type: "string"
+      },
+      module: {
+        type: "string"
+      },
+      "shape-files": {
+        type: "string"
+      },
+      help: {
+        type: "boolean",
+        short: "h"
+      }
+    }
+  });
 }
 
 async function formatFiles(providedFiles: string[], checkOnly: boolean): Promise<number> {
@@ -223,7 +238,7 @@ function resolveGraphArgs(positionals: string[]): { symbol?: string; files: stri
 }
 
 async function defaultShapeFiles(): Promise<string[]> {
-  const patterns = ["shape/system/**/*.shape", "shape/changes/**/*.shape"];
+  const patterns = ["shape/**/*.shape"];
   const files = new Set<string>();
   for (const pattern of patterns) {
     const glob = new Glob(pattern);
@@ -244,12 +259,26 @@ async function readChangedFiles(path: string): Promise<string[]> {
 
 async function parseModules(paths: string[]): Promise<{ module: ShapeModule; filePath: string }[]> {
   const modules: { module: ShapeModule; filePath: string }[] = [];
+  const diagnostics: ParseDiagnostic[] = [];
   for (const filePath of paths) {
-    const parsed = parseShapeModule(await Bun.file(filePath).text(), filePath);
-    if (!parsed.ok) {
-      throw new Error(parsed.diagnostics.map((diagnostic) => diagnostic.message).join("\n"));
+    try {
+      const parsed = parseShapeModule(await Bun.file(filePath).text(), filePath);
+      if (parsed.ok) {
+        modules.push({ module: parsed.module, filePath });
+      } else {
+        diagnostics.push(...parsed.diagnostics);
+      }
+    } catch (error) {
+      diagnostics.push({
+        kind: "parse",
+        filePath,
+        message: errorMessage(error)
+      });
     }
-    modules.push({ module: parsed.module, filePath });
+  }
+
+  if (diagnostics.length > 0) {
+    throw new CliDiagnosticError(formatDiagnostics({ ok: false, exitCode: 2, diagnostics }), 2);
   }
   return modules;
 }
@@ -283,4 +312,42 @@ async function analyzeFiles(
   return warnings.length === 0 ? 0 : 1;
 }
 
-process.exitCode = await main();
+class CliDiagnosticError extends Error {
+  constructor(
+    message: string,
+    readonly exitCode: number
+  ) {
+    super(message);
+  }
+}
+
+function errorMessage(error: unknown): string {
+  return error instanceof Error ? error.message : String(error);
+}
+
+function isParseArgsError(error: unknown): boolean {
+  const code = errorCode(error);
+  return code?.startsWith("ERR_PARSE_ARGS_") === true;
+}
+
+function errorCode(error: unknown): string | undefined {
+  if (typeof error !== "object" || error === null || !("code" in error)) {
+    return undefined;
+  }
+  const { code } = error;
+  return typeof code === "string" ? code : undefined;
+}
+
+async function run(): Promise<number> {
+  try {
+    return await main();
+  } catch (error) {
+    if (error instanceof CliDiagnosticError) {
+      await Bun.write(Bun.stderr, error.message);
+      return error.exitCode;
+    }
+    throw error;
+  }
+}
+
+process.exitCode = await run();

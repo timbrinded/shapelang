@@ -9,10 +9,10 @@ export {
   buildShapeAuthorPrompt,
   buildShapeCriticPrompt,
   extractEvidenceSpansFromUnifiedDiff,
-  generateShapeDelta,
+  generateShapeUpdateDraft,
   type EvidenceSpan,
   type ShapeAuthorPromptInput,
-  type ShapeDeltaInput
+  type ShapeUpdateInput
 } from "./authoring.ts";
 export {
   formatOnSave,

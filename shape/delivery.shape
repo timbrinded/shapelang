@@ -1,0 +1,404 @@
+module shape.delivery
+
+import shape.checker
+
+import shape.tooling
+
+resource CiWorkflow
+
+resource CopilotReviewPrompt
+
+resource CopilotReviewResult
+
+resource DocsContent
+
+resource InstallScript
+
+resource ReleaseArtifact
+
+component CiPipeline {
+  owns CiWorkflow
+  owns CopilotReviewPrompt
+  owns CopilotReviewResult
+  grants Read<ChangedFileList>
+  grants Read<CiWorkflow>
+  grants Read<CopilotReviewPrompt>
+  grants Read<CopilotReviewResult>
+  grants Read<SemanticDiagnostics>
+  grants Update<ChangedFileList>
+  grants Update<CopilotReviewResult>
+  fn runShapeCi
+    source yaml(".github/workflows/shape.yml")
+    effects complete {
+      Read<ChangedFileList>
+        evidence yaml(".github/workflows/shape.yml")
+      Read<CiWorkflow>
+        evidence yaml(".github/workflows/shape.yml")
+      Read<CiWorkflow>
+        evidence yaml(".github/workflows/release.yml")
+      Read<SemanticDiagnostics>
+        evidence yaml(".github/workflows/shape.yml")
+    }
+  fn runShapeContractReview
+    source yaml(".github/workflows/shape.yml")
+    effects complete {
+      Read<ChangedFileList>
+        evidence yaml(".github/workflows/shape.yml")
+      Read<CiWorkflow>
+        evidence yaml(".github/workflows/shape.yml")
+      Read<CopilotReviewPrompt>
+        evidence md(".github/prompts/shape-contract-review.md")
+      Read<CopilotReviewResult>
+        evidence mjs(".github/scripts/check-copilot-shape-review.mjs")
+      Read<SemanticDiagnostics>
+        evidence yaml(".github/workflows/shape.yml")
+      Update<CopilotReviewResult>
+        evidence mjs(".github/scripts/check-copilot-shape-review.mjs")
+    }
+  fn writeChangedFiles
+    source sh("scripts/write-changed-files.sh")
+    effects complete {
+      Update<ChangedFileList>
+        evidence sh("scripts/write-changed-files.sh")
+    }
+}
+
+component DocsSite {
+  owns DocsContent
+  grants Read<DocsContent>
+  grants Update<DocsContent>
+  fn verifyDocs
+    source ts("docs-site/scripts/verify-shape-blocks.ts")
+    effects complete {
+      Read<DocsContent>
+        evidence md("docs-site/src/content/docs/concepts/analyzer-hints.md")
+      Read<DocsContent>
+        evidence md("docs-site/src/content/docs/concepts/model-updates-attestations.md")
+      Read<DocsContent>
+        evidence md("docs-site/src/content/docs/concepts/components-ownership-grants.md")
+      Read<DocsContent>
+        evidence md("docs-site/src/content/docs/concepts/implementations-coverage.md")
+      Read<DocsContent>
+        evidence md("docs-site/src/content/docs/concepts/relations-hypergraphs.md")
+      Read<DocsContent>
+        evidence md("docs-site/src/content/docs/concepts/rules-hypercycles.md")
+      Read<DocsContent>
+        evidence md("docs-site/src/content/docs/examples/global-model-update.md")
+      Read<DocsContent>
+        evidence md("docs-site/src/content/docs/examples/analyzer-warning.md")
+      Read<DocsContent>
+        evidence md("docs-site/src/content/docs/examples/forbid-provides-boundary.md")
+      Read<DocsContent>
+        evidence md("docs-site/src/content/docs/examples/missing-shape-update.md")
+      Read<DocsContent>
+        evidence md("docs-site/src/content/docs/index.md")
+      Read<DocsContent>
+        evidence md("docs-site/src/content/docs/inside-shape/checker-pipeline.md")
+      Read<DocsContent>
+        evidence md("docs-site/src/content/docs/inside-shape/design-rationale.md")
+      Read<DocsContent>
+        evidence md("docs-site/src/content/docs/inside-shape/fact-lowering.md")
+      Read<DocsContent>
+        evidence md("docs-site/src/content/docs/inside-shape/formatter-editor-authoring.md")
+      Read<DocsContent>
+        evidence md("docs-site/src/content/docs/inside-shape/langium-grammar.md")
+      Read<DocsContent>
+        evidence md("docs-site/src/content/docs/inside-shape/rule-evaluation.md")
+      Read<DocsContent>
+        evidence md("docs-site/src/content/docs/learn/ci-workflow.md")
+      Read<DocsContent>
+        evidence md("docs-site/src/content/docs/learn/first-shape-file.md")
+      Read<DocsContent>
+        evidence md("docs-site/src/content/docs/learn/global-model-updates.md")
+      Read<DocsContent>
+        evidence md("docs-site/src/content/docs/learn/quickstart.md")
+      Read<DocsContent>
+        evidence md("docs-site/src/content/docs/learn/what-is-shape.md")
+      Read<DocsContent>
+        evidence md("docs-site/src/content/docs/reference/cli.md")
+      Read<DocsContent>
+        evidence md("docs-site/src/content/docs/reference/diagnostics.md")
+      Read<DocsContent>
+        evidence md("docs-site/src/content/docs/reference/glossary.md")
+      Read<DocsContent>
+        evidence md("docs-site/src/content/docs/reference/language-syntax.md")
+      Read<DocsContent>
+        evidence md("docs-site/src/content/docs/reference/local-development.md")
+      Read<DocsContent>
+        evidence ts("docs-site/scripts/verify-shape-blocks.ts")
+      Update<DocsContent>
+        evidence md("docs-site/src/content/docs/reference/language-syntax.md")
+    }
+}
+
+component ReleasePipeline {
+  owns InstallScript
+  owns ReleaseArtifact
+  grants Read<InstallScript>
+  grants Update<ReleaseArtifact>
+  fn buildReleaseAssets : RefactorSensitive
+    source sh("scripts/build-release-assets.sh")
+    effects complete {
+      Read<InstallScript>
+        evidence sh("scripts/build-release-assets.sh")
+      Update<ReleaseArtifact>
+        evidence sh("scripts/build-release-assets.sh")
+    }
+}
+
+relation CiPipelineUsesShapeCi {
+  kind calls
+  connects CiPipeline -> ShpCli
+  summary "ShapeCiCommand"
+}
+
+relation CiPipelineUsesShapeReview {
+  kind calls
+  connects CiPipeline -> ShpCli
+  summary "ShapeContractReview"
+}
+
+relation DocsSiteUsesDocsVerifier {
+  kind calls
+  connects DocsSite -> DocsShapeBlockVerifier
+  summary "DocsExamples"
+}
+
+relation DocsSiteUsesGrammar {
+  kind calls
+  connects DocsSite -> ShapeGrammar
+  summary "SyntaxReference"
+}
+
+relation ReleasePipelineUsesCi {
+  kind calls
+  connects ReleasePipeline -> CiPipeline
+  summary "ReleaseValidation"
+}
+
+relation ReleasePipelineUsesCli {
+  kind calls
+  connects ReleasePipeline -> ShpCli
+  summary "ReleaseBinary"
+}
+
+implementation AnalyzerSource {
+  paths {
+    "packages/shp-checker/src/analyzer.ts"
+  }
+  conforms_to ShapeAnalyzer
+  on_change require shape_update
+}
+
+implementation AuthoringSource {
+  paths {
+    "packages/shp-checker/src/authoring.ts"
+  }
+  conforms_to ShapeAuthoring
+  on_change require shape_update
+}
+
+implementation CheckerSource {
+  paths {
+    "packages/shp-checker/src/checker.ts"
+  }
+  conforms_to ShapeChecker
+  on_change require shape_update
+}
+
+implementation CiScripts {
+  paths {
+    "scripts/write-changed-files.sh"
+  }
+  conforms_to CiPipeline
+  on_change require shape_update
+}
+
+implementation CliSource {
+  paths {
+    "packages/shp-cli/src/index.ts"
+  }
+  conforms_to ShpCli
+  on_change require shape_update
+}
+
+implementation CopilotReviewSource {
+  paths {
+    ".github/prompts/**/*.md"
+  }
+  conforms_to CiPipeline
+  on_change require shape_update
+}
+
+implementation DocsSource {
+  paths {
+    "docs-site/scripts/**/*.ts"
+    "docs-site/src/content/docs/**/*.md"
+  }
+  conforms_to DocsSite
+  on_change require shape_update
+}
+
+implementation EditorSource {
+  paths {
+    "packages/shp-checker/src/editor.ts"
+  }
+  conforms_to ShapeEditorServices
+  on_change require shape_update
+}
+
+implementation FormatterSource {
+  paths {
+    "packages/shp-checker/src/formatter.ts"
+  }
+  conforms_to ShapeFormatter
+  on_change require shape_update
+}
+
+implementation GrammarSource {
+  paths {
+    "packages/shp-checker/src/language/**/*.ts"
+    "packages/shp-checker/src/language/shape.langium"
+  }
+  conforms_to ShapeGrammar
+  on_change require shape_update
+}
+
+implementation ParserSource {
+  paths {
+    "packages/shp-checker/src/parser.ts"
+  }
+  conforms_to ShapeParser
+  on_change require shape_update
+}
+
+implementation ReleaseSource {
+  paths {
+    "install.ps1"
+    "install.sh"
+    "scripts/build-release-assets.sh"
+  }
+  conforms_to ReleasePipeline
+  on_change require shape_update
+}
+
+implementation SyntaxHighlighterSource {
+  paths {
+    "docs-site/src/syntax/**/*.mjs"
+  }
+  conforms_to ShapeGrammar
+  on_change require shape_update
+}
+
+implementation WorkflowSource {
+  paths {
+    ".github/scripts/**/*.mjs"
+    ".github/workflows/**/*.yml"
+  }
+  conforms_to CiPipeline
+  on_change require shape_update
+}
+
+binding CliDocs {
+  when_changed paths {
+    "packages/shp-cli/src/index.ts"
+    "shape/tooling.shape"
+  }
+  require_changed paths {
+    "README.md"
+    "docs-site/src/content/docs/learn/ci-workflow.md"
+    "docs-site/src/content/docs/reference/cli.md"
+  }
+  allow attest docs_not_needed
+}
+
+binding DocsVerifierDocs {
+  when_changed paths {
+    "docs-site/scripts/verify-shape-blocks.ts"
+    "shape/language.shape"
+  }
+  require_changed paths {
+    "docs-site/src/content/docs/inside-shape/langium-grammar.md"
+    "docs-site/src/content/docs/reference/local-development.md"
+  }
+  allow attest docs_not_needed
+}
+
+binding GrammarDocs {
+  when_changed paths {
+    "docs-site/src/syntax/**/*.mjs"
+    "packages/shp-checker/src/language/generated/**/*.ts"
+    "packages/shp-checker/src/language/shape.langium"
+    "shape/language.shape"
+  }
+  require_changed paths {
+    "docs-site/src/content/docs/inside-shape/langium-grammar.md"
+    "docs-site/src/content/docs/reference/language-syntax.md"
+  }
+  allow attest docs_not_needed
+}
+
+binding RuleEngineDocs {
+  when_changed paths {
+    "packages/shp-checker/src/checker.ts"
+    "shape/checker.shape"
+  }
+  require_changed paths {
+    "docs-site/src/content/docs/concepts/diagnostics-provenance.md"
+    "docs-site/src/content/docs/concepts/model-updates-attestations.md"
+    "docs-site/src/content/docs/inside-shape/rule-evaluation.md"
+    "docs-site/src/content/docs/reference/diagnostics.md"
+  }
+  allow attest docs_not_needed
+}
+
+binding ToolingDocs {
+  when_changed paths {
+    "packages/shp-checker/src/analyzer.ts"
+    "packages/shp-checker/src/authoring.ts"
+    "packages/shp-checker/src/editor.ts"
+    "packages/shp-checker/src/formatter.ts"
+    "shape/tooling.shape"
+  }
+  require_changed paths {
+    "docs-site/src/content/docs/concepts/analyzer-hints.md"
+    "docs-site/src/content/docs/inside-shape/formatter-editor-authoring.md"
+    "docs-site/src/content/docs/reference/cli.md"
+  }
+  allow attest docs_not_needed
+}
+
+memory ReleaseChecksumContract : RefactorConstraint<fn ReleasePipeline.buildReleaseAssets> {
+  applies_to fn ReleasePipeline.buildReleaseAssets
+  status Explained
+  confidence High
+  summary "Release archives, installer templates, and checksums must stay in sync for binary installation."
+  owner ShapeMaintainers
+  protects shape ReleaseIntegrity
+  guards on_change require ReEvaluation<Self>
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/concepts/rules-dependency-graphs.md")
+  reason "Dependency graph docs were replaced by hypercycle docs in the hypergraph redesign."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/concepts/change-files-attestations.md")
+  reason "Legacy change-file docs were renamed and replaced by global model update documentation."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/examples/authoring-pr-delta.md")
+  reason "Legacy PR delta example was renamed and replaced by global model update documentation."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/examples/missing-shape-delta.md")
+  reason "Legacy example page was renamed to missing-shape-update; the deleted path is intentionally obsolete."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/learn/pr-change-files.md")
+  reason "Legacy PR change-file guide was renamed and replaced by global model update documentation."
+}

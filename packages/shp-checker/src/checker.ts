@@ -2,6 +2,7 @@ import type {
   AddDeclarationChange,
   AddFunctionChange,
   AttestationDecl,
+  BindingDecl,
   ChangeDecl,
   ComponentDecl,
   DescriptionDecl,
@@ -32,12 +33,17 @@ import type {
   TraitDecl,
   TraitForbidDecl
 } from "./language/generated/ast.ts";
+import { isAbsolute, relative } from "node:path";
 import {
   isAddDeclarationChange,
   isAddFunctionChange,
   isAppliesToDecl,
   isApproverDecl,
   isAttestationDecl,
+  isBindingAllowAttestDecl,
+  isBindingDecl,
+  isBindingRequireChangedDecl,
+  isBindingWhenChangedDecl,
   isChangeDecl,
   isCompleteEffects,
   isComponentDecl,
@@ -246,6 +252,7 @@ export type SemanticDiagnostic =
         | "component"
         | "trait"
         | "relation"
+        | "binding"
         | "rationale"
         | "memory"
         | "reevaluation";
@@ -254,10 +261,19 @@ export type SemanticDiagnostic =
       causedBy: string[];
     }
   | {
-      kind: "missing_shape_delta";
+      kind: "missing_shape_update";
       changedFile: string;
       implementation: string;
       glob: string;
+      filePath?: string;
+      causedBy: string[];
+    }
+  | {
+      kind: "missing_bound_docs_change";
+      binding: string;
+      changedFile: string;
+      requiredPaths: string[];
+      attestationKinds: string[];
       filePath?: string;
       causedBy: string[];
     }
@@ -358,6 +374,7 @@ export type CheckResult = {
 
 export type CheckOptions = {
   changedFiles?: string[];
+  enforceBindings?: boolean;
   includeFacts?: boolean;
 };
 
@@ -466,8 +483,12 @@ export type Fact =
   | { kind: "implementation"; name: string; provenance: Provenance }
   | { kind: "implementation_path"; implementation: string; glob: string; provenance: Provenance }
   | { kind: "conforms_to"; implementation: string; component: string; provenance: Provenance }
-  | { kind: "shape_delta_for"; path: string; provenance: Provenance }
-  | { kind: "attestation"; path: string; reason: string; provenance: Provenance }
+  | { kind: "binding"; name: string; provenance: Provenance }
+  | { kind: "binding_when_changed"; binding: string; glob: string; provenance: Provenance }
+  | { kind: "binding_require_changed"; binding: string; glob: string; provenance: Provenance }
+  | { kind: "binding_allow_attest"; binding: string; kindName: string; provenance: Provenance }
+  | { kind: "shape_update_for"; path: string; provenance: Provenance }
+  | { kind: "attestation"; kindName: string; path: string; reason: string; provenance: Provenance }
   | { kind: "rule"; name: string; provenance: Provenance };
 
 type CheckModuleInput = {
@@ -629,6 +650,14 @@ type ImplementationInfo = {
   provenance: Provenance;
 };
 
+type BindingInfo = {
+  name: string;
+  whenChanged: { glob: string; provenance: Provenance }[];
+  requireChanged: { glob: string; provenance: Provenance }[];
+  allowAttestations: { kind: string; provenance: Provenance }[];
+  provenance: Provenance;
+};
+
 type RuleInfo = {
   name: string;
   whenHas: { subject: string; trait: string }[];
@@ -677,12 +706,13 @@ type Model = {
   components: Map<string, ComponentInfo>;
   hypergraph: Hypergraph;
   implementations: ImplementationInfo[];
+  bindings: Map<string, BindingInfo>;
   rules: RuleInfo[];
   rationales: Map<string, RationaleInfo>;
   memories: Map<string, MemoryInfo>;
   reevaluations: Map<string, ReevaluationInfo>;
-  attestations: { path: string; reason: string; provenance: Provenance }[];
-  shapeDeltaPaths: Map<string, Provenance>;
+  attestations: { kind: string; path: string; reason: string; provenance: Provenance }[];
+  shapeUpdatePaths: Map<string, Provenance[]>;
   removedFunctions: Set<string>;
   changeEvents: ChangeEvent[];
   facts: Fact[];
@@ -707,7 +737,8 @@ export function checkShapeModules(
     ...checkFunctions(model),
     ...checkProvidesRules(model),
     ...checkHypercycles(model),
-    ...checkCoverage(model, options.changedFiles ?? [])
+    ...checkCoverage(model, options.changedFiles ?? []),
+    ...(options.enforceBindings === false ? [] : checkBindings(model, options.changedFiles ?? []))
   ];
 
   return {
@@ -1142,12 +1173,13 @@ function lowerShapeModules(modules: ShapeModule[] | CheckModuleInput[]): Model {
       incidence: new Map()
     },
     implementations: [],
+    bindings: new Map(),
     rules: [],
     rationales: new Map(),
     memories: new Map(),
     reevaluations: new Map(),
     attestations: [],
-    shapeDeltaPaths: new Map(),
+    shapeUpdatePaths: new Map(),
     removedFunctions: new Set(),
     changeEvents: [],
     facts: [],
@@ -1166,6 +1198,8 @@ function lowerShapeModules(modules: ShapeModule[] | CheckModuleInput[]): Model {
         lowerRelation(declaration, input.filePath, model);
       } else if (isImplementationDecl(declaration)) {
         lowerImplementation(declaration, input.filePath, model);
+      } else if (isBindingDecl(declaration)) {
+        lowerBinding(declaration, input.filePath, model);
       } else if (isAttestationDecl(declaration)) {
         lowerAttestation(declaration, input.filePath, model);
       } else if (isRuleDecl(declaration)) {
@@ -1326,6 +1360,7 @@ function lowerComponent(
     } else if (isFunctionSummary(member)) {
       const fn = lowerFunction(member, component.name, filePath);
       info.functions.set(fn.name, fn);
+      collectShapeUpdatePathsFromFunction(fn, model);
       emitFunctionFacts(fn, model);
     }
   }
@@ -1590,7 +1625,7 @@ function collectConnects(member: { endpoints: RelationEndpoint[]; ordered: boole
 } {
   return {
     endpoints: member.endpoints.map((endpoint) => endpoint.name),
-    ordered: member.ordered === true
+    ordered: member.ordered
   };
 }
 
@@ -1639,6 +1674,74 @@ function lowerImplementation(
   model.facts.push({ kind: "implementation", name: implementation.name, provenance: prov });
 }
 
+function lowerBinding(binding: BindingDecl, filePath: string | undefined, model: Model): void {
+  const prov = provenance(filePath, `binding ${binding.name}`);
+  if (model.bindings.has(binding.name)) {
+    model.diagnostics.push({
+      kind: "duplicate_declaration",
+      declarationKind: "binding",
+      name: binding.name,
+      filePath,
+      causedBy: [
+        describeProvenance(model.bindings.get(binding.name)?.provenance),
+        describeProvenance(prov)
+      ]
+    });
+    return;
+  }
+
+  const info: BindingInfo = {
+    name: binding.name,
+    whenChanged: [],
+    requireChanged: [],
+    allowAttestations: [],
+    provenance: prov
+  };
+
+  for (const member of binding.members) {
+    if (isBindingWhenChangedDecl(member)) {
+      for (const path of member.body.paths) {
+        const glob = unquote(path);
+        const pathProv = provenance(filePath, `binding ${binding.name} when_changed ${glob}`);
+        info.whenChanged.push({ glob, provenance: pathProv });
+        model.facts.push({
+          kind: "binding_when_changed",
+          binding: binding.name,
+          glob,
+          provenance: pathProv
+        });
+      }
+    } else if (isBindingRequireChangedDecl(member)) {
+      for (const path of member.body.paths) {
+        const glob = unquote(path);
+        const pathProv = provenance(filePath, `binding ${binding.name} require_changed ${glob}`);
+        info.requireChanged.push({ glob, provenance: pathProv });
+        model.facts.push({
+          kind: "binding_require_changed",
+          binding: binding.name,
+          glob,
+          provenance: pathProv
+        });
+      }
+    } else if (isBindingAllowAttestDecl(member)) {
+      const attestProv = provenance(
+        filePath,
+        `binding ${binding.name} allow attest ${member.kind}`
+      );
+      info.allowAttestations.push({ kind: member.kind, provenance: attestProv });
+      model.facts.push({
+        kind: "binding_allow_attest",
+        binding: binding.name,
+        kindName: member.kind,
+        provenance: attestProv
+      });
+    }
+  }
+
+  model.bindings.set(binding.name, info);
+  model.facts.push({ kind: "binding", name: binding.name, provenance: prov });
+}
+
 function lowerAttestation(
   attestation: AttestationDecl,
   filePath: string | undefined,
@@ -1648,10 +1751,14 @@ function lowerAttestation(
   const path = normalizeSourcePath(source.path);
   const reason = unquote(attestation.reason.value);
   const prov = provenance(filePath, `attest ${attestation.kind} for ${path}`);
-  if (attestation.kind === "no_shape_change") {
-    model.attestations.push({ path, reason, provenance: prov });
-    model.facts.push({ kind: "attestation", path, reason, provenance: prov });
-  }
+  model.attestations.push({ kind: attestation.kind, path, reason, provenance: prov });
+  model.facts.push({
+    kind: "attestation",
+    kindName: attestation.kind,
+    path,
+    reason,
+    provenance: prov
+  });
 }
 
 function lowerRule(rule: RuleDecl, filePath: string | undefined, model: Model): void {
@@ -1951,8 +2058,8 @@ function lowerChange(change: ChangeDecl, filePath: string | undefined, model: Mo
 
       const fn = lowerFunction(entry, entry.component, filePath, `change ${change.name}`);
       component.functions.set(fn.name, fn);
-      model.shapeDeltaPaths.set(`${entry.component}.${entry.name}`, fn.provenance);
-      collectShapeDeltaPathsFromFunction(fn, model);
+      addShapeUpdatePath(model, functionKey(entry.component, entry.name), fn.provenance);
+      collectShapeUpdatePathsFromFunction(fn, model);
       emitFunctionFacts(fn, model);
     } else if (isRemoveFunctionChange(entry)) {
       model.changeEvents.push({
@@ -1994,6 +2101,8 @@ function lowerDeclaration(
     lowerRelation(declaration, filePath, model);
   } else if (isImplementationDecl(declaration)) {
     lowerImplementation(declaration, filePath, model);
+  } else if (isBindingDecl(declaration)) {
+    lowerBinding(declaration, filePath, model);
   } else if (isAttestationDecl(declaration)) {
     lowerAttestation(declaration, filePath, model);
   } else if (isRuleDecl(declaration)) {
@@ -2018,6 +2127,8 @@ function removeDeclaration(
     model.implementations = model.implementations.filter(
       (implementation) => implementation.name !== name
     );
+  } else if (kind === "binding") {
+    model.bindings.delete(name);
   } else if (kind === "rule") {
     model.rules = model.rules.filter((rule) => rule.name !== name);
   }
@@ -2040,6 +2151,9 @@ function declarationKind(
   }
   if (isImplementationDecl(declaration)) {
     return "implementation";
+  }
+  if (isBindingDecl(declaration)) {
+    return "binding";
   }
   if (isAttestationDecl(declaration)) {
     return "attestation";
@@ -2340,11 +2454,11 @@ function emitDerivedFacts(model: Model): void {
   }
 }
 
-function collectShapeDeltaPathsFromFunction(fn: FunctionInfo, model: Model): void {
+function collectShapeUpdatePathsFromFunction(fn: FunctionInfo, model: Model): void {
   if (fn.source) {
-    model.shapeDeltaPaths.set(normalizeSourcePath(fn.source.path), fn.provenance);
+    addShapeUpdatePath(model, fn.source.path, fn.provenance);
     model.facts.push({
-      kind: "shape_delta_for",
+      kind: "shape_update_for",
       path: normalizeSourcePath(fn.source.path),
       provenance: fn.provenance
     });
@@ -2354,10 +2468,20 @@ function collectShapeDeltaPathsFromFunction(fn: FunctionInfo, model: Model): voi
     for (const entry of fn.effects.entries) {
       if (entry.evidence) {
         const path = normalizeSourcePath(entry.evidence.path);
-        model.shapeDeltaPaths.set(path, entry.provenance);
-        model.facts.push({ kind: "shape_delta_for", path, provenance: entry.provenance });
+        addShapeUpdatePath(model, path, entry.provenance);
+        model.facts.push({ kind: "shape_update_for", path, provenance: entry.provenance });
       }
     }
+  }
+}
+
+function addShapeUpdatePath(model: Model, path: string, provenance: Provenance): void {
+  const normalized = normalizeSourcePath(path);
+  const existing = model.shapeUpdatePaths.get(normalized);
+  if (existing) {
+    existing.push(provenance);
+  } else {
+    model.shapeUpdatePaths.set(normalized, [provenance]);
   }
 }
 
@@ -3028,12 +3152,13 @@ function checkCoverage(model: Model, changedFiles: string[]): SemanticDiagnostic
   }
 
   const normalizedChanged = changedFiles
-    .map((file) => normalizePath(file))
+    .map((file) => normalizeRepoPath(file))
     .filter((file) => file.length > 0);
+  const changedSet = new Set(normalizedChanged);
   const diagnostics: SemanticDiagnostic[] = [];
 
   for (const implementation of model.implementations) {
-    if (implementation.onChangeRequirement !== "shape_delta") {
+    if (implementation.onChangeRequirement !== "shape_update") {
       continue;
     }
 
@@ -3049,16 +3174,24 @@ function checkCoverage(model: Model, changedFiles: string[]): SemanticDiagnostic
         continue;
       }
 
-      if (model.shapeDeltaPaths.has(changedFile)) {
+      if (currentShapeUpdateExists(model, changedFile, changedSet)) {
         continue;
       }
 
-      if (model.attestations.some((attestation) => attestation.path === changedFile)) {
+      if (
+        model.attestations.some(
+          (attestation) =>
+            attestation.kind === "no_shape_change" &&
+            attestation.path === changedFile &&
+            attestation.reason.trim().length > 0 &&
+            provenanceFileChanged(attestation.provenance, changedSet)
+        )
+      ) {
         continue;
       }
 
       diagnostics.push({
-        kind: "missing_shape_delta",
+        kind: "missing_shape_update",
         changedFile,
         implementation: implementation.name,
         glob: governingPath.glob,
@@ -3067,6 +3200,76 @@ function checkCoverage(model: Model, changedFiles: string[]): SemanticDiagnostic
           describeProvenance(implementation.provenance),
           describeProvenance(governingPath.provenance)
         ]
+      });
+    }
+  }
+
+  return diagnostics;
+}
+
+function currentShapeUpdateExists(
+  model: Model,
+  changedFile: string,
+  changedSet: Set<string>
+): boolean {
+  return (
+    model.shapeUpdatePaths
+      .get(changedFile)
+      ?.some((provenance) => provenanceFileChanged(provenance, changedSet)) ?? false
+  );
+}
+
+function provenanceFileChanged(provenance: Provenance, changedSet: Set<string>): boolean {
+  return (
+    provenance.filePath !== undefined && changedSet.has(normalizeRepoPath(provenance.filePath))
+  );
+}
+
+function checkBindings(model: Model, changedFiles: string[]): SemanticDiagnostic[] {
+  if (changedFiles.length === 0) {
+    return [];
+  }
+
+  const normalizedChanged = changedFiles
+    .map((file) => normalizeRepoPath(file))
+    .filter((file) => file.length > 0);
+  const changedSet = new Set(normalizedChanged);
+  const diagnostics: SemanticDiagnostic[] = [];
+
+  for (const binding of model.bindings.values()) {
+    for (const changedFile of normalizedChanged) {
+      const trigger = binding.whenChanged.find((entry) => globMatches(entry.glob, changedFile));
+      if (!trigger) {
+        continue;
+      }
+
+      const requiredChanged = normalizedChanged.some((file) =>
+        binding.requireChanged.some((entry) => globMatches(entry.glob, file))
+      );
+      if (requiredChanged) {
+        continue;
+      }
+
+      const allowedKinds = new Set(binding.allowAttestations.map((item) => item.kind));
+      const attested = model.attestations.some(
+        (attestation) =>
+          allowedKinds.has(attestation.kind) &&
+          attestation.path === changedFile &&
+          attestation.reason.trim().length > 0 &&
+          provenanceFileChanged(attestation.provenance, changedSet)
+      );
+      if (attested) {
+        continue;
+      }
+
+      diagnostics.push({
+        kind: "missing_bound_docs_change",
+        binding: binding.name,
+        changedFile,
+        requiredPaths: binding.requireChanged.map((entry) => entry.glob).sort(),
+        attestationKinds: [...allowedKinds].sort(),
+        filePath: binding.provenance.filePath,
+        causedBy: [describeProvenance(binding.provenance), describeProvenance(trigger.provenance)]
       });
     }
   }
@@ -3574,8 +3777,10 @@ function formatDiagnostic(diagnostic: ShapeDiagnostic): string {
       return formatUnknownNameDiagnostic(diagnostic);
     case "duplicate_declaration":
       return formatDuplicateDeclarationDiagnostic(diagnostic);
-    case "missing_shape_delta":
-      return formatMissingShapeDeltaDiagnostic(diagnostic);
+    case "missing_shape_update":
+      return formatMissingShapeUpdateDiagnostic(diagnostic);
+    case "missing_bound_docs_change":
+      return formatMissingBoundDocsChangeDiagnostic(diagnostic);
     case "forbidden_hypercycle":
       return formatForbiddenHypercycleDiagnostic(diagnostic);
     case "forbidden_provides":
@@ -3663,16 +3868,32 @@ function formatDuplicateDeclarationDiagnostic(
   ].join("\n");
 }
 
-function formatMissingShapeDeltaDiagnostic(
-  diagnostic: Extract<SemanticDiagnostic, { kind: "missing_shape_delta" }>
+function formatMissingShapeUpdateDiagnostic(
+  diagnostic: Extract<SemanticDiagnostic, { kind: "missing_shape_update" }>
 ): string {
   return [
-    "error: governed source changed without shape delta",
+    "error: governed source changed without current Shape update",
     "",
     `Changed file: ${diagnostic.changedFile}`,
     `Governed by: ${diagnostic.implementation}`,
     `Matched path: ${diagnostic.glob}`,
-    "Required: add a .shape change with matching source/evidence, or add a no_shape_change attestation.",
+    "Required: update a current .shape file with matching source/evidence, or add a no_shape_change attestation.",
+    formatCausedBy(diagnostic.causedBy)
+  ].join("\n");
+}
+
+function formatMissingBoundDocsChangeDiagnostic(
+  diagnostic: Extract<SemanticDiagnostic, { kind: "missing_bound_docs_change" }>
+): string {
+  const attest =
+    diagnostic.attestationKinds.length > 0
+      ? `, or add ${diagnostic.attestationKinds.map((kind) => `attest ${kind}`).join(" or ")}`
+      : "";
+  return [
+    "error: bound docs change missing",
+    "",
+    `binding ${diagnostic.binding} was triggered by ${diagnostic.changedFile}.`,
+    `Required: change one of ${diagnostic.requiredPaths.join(", ")}${attest}.`,
     formatCausedBy(diagnostic.causedBy)
   ].join("\n");
 }
@@ -3845,6 +4066,15 @@ function normalizeSourcePath(path: string): string {
 
 function normalizePath(path: string): string {
   return path.replaceAll("\\", "/").replace(/^\.\//, "");
+}
+
+function normalizeRepoPath(path: string): string {
+  const normalized = normalizePath(path);
+  if (!isAbsolute(normalized)) {
+    return normalized;
+  }
+
+  return normalizePath(relative(process.cwd(), normalized));
 }
 
 function globMatches(glob: string, path: string): boolean {

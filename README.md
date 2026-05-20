@@ -7,8 +7,9 @@ Application code can be messy, implicit, and spread across many files. Shape giv
 - resources, traits, and invariants
 - components, ownership, capabilities, and structural relations
 - function effect summaries with source evidence
-- change files for PR-level deltas
+- model updates for architecture changes
 - coverage rules for governed source paths
+- bindings that require paired review-surface changes, such as docs updates
 - typed design memory for refactor-sensitive functions
 - constrained project rules such as hypercycle bans over the structural hypergraph
 
@@ -43,8 +44,7 @@ shp obligations
 `shp check` scans these paths when no files are provided:
 
 ```text
-shape/system/**/*.shape
-shape/changes/**/*.shape
+shape/**/*.shape
 ```
 
 In GitHub Actions, install the same pinned release with the setup action:
@@ -68,7 +68,8 @@ Shape also covers:
 
 - unknown effects in protected components
 - missing grants for declared function effects
-- governed source files changed without a shape delta or attestation
+- governed source files changed without a Shape update or current attestation
+- Shape-affecting files changed without a bound docs update or `docs_not_needed` attestation
 - refactor-sensitive functions changed without a recorded reevaluation
 - required design context or descriptions missing from non-obvious function shapes
 - semantic hypercycles in the structural hypergraph with witness paths
@@ -115,15 +116,14 @@ component AuditStore {
 }
 ```
 
-A PR-level change file can add a new function without rewriting the base model:
+A source-backed model update can add a new function directly to the global Shape model:
 
 ```shape
-module changes.PR_001
+module audit
 
-import audit
-
-change AddAuditRetentionPurge {
-  add fn AuditStore.purgeOldEvents
+component AuditStore {
+  grants HardDelete<AuditEvent>
+  fn purgeOldEvents
     source ts("src/audit/purge.ts#purgeOldEvents")
     effects complete {
       HardDelete<AuditEvent>
@@ -132,19 +132,18 @@ change AddAuditRetentionPurge {
 }
 ```
 
-That change fails because `AuditEvent : AppendOnly` derives a final forbid for `HardDelete<AuditEvent>`.
+That model update fails because `AuditEvent : AppendOnly` derives a final forbid for `HardDelete<AuditEvent>`.
 
 ## How It Works
 
 The checker pipeline is:
 
 1. Parse `.shape` files with Langium.
-2. Apply change blocks on top of the base model.
-3. Lower declarations into facts such as resources, traits, effects, grants, relation hyperedges, and governed paths.
-4. Evaluate deterministic rules.
-5. Emit diagnostics with provenance, including the declarations that caused a violation.
+2. Lower declarations into facts such as resources, traits, effects, grants, relation hyperedges, and governed paths.
+3. Evaluate deterministic rules.
+4. Emit diagnostics with provenance, including the declarations that caused a violation.
 
-The LLM-facing authoring helpers intentionally produce Shape deltas, not prose. The optional analyzer is advisory only: it can flag suspicious omissions, but `.shape` remains the source of truth.
+The optional analyzer is advisory only: it can flag suspicious omissions, but `.shape` remains the source of truth.
 
 ## Commands
 
@@ -157,29 +156,31 @@ shp explain AuditEvent
 shp graph Gateway --kind calls
 shp memory
 shp obligations
-shp author --changed-files changed.txt --component AuditStore
-shp analyze --shape-files shape/system/audit.shape src/audit/purge.ts
+shp analyze --shape-files fixtures/pass/append_only_append/audit.shape src/audit/purge.ts
 ```
 
-`shp check` scans `shape/system/**/*.shape` and `shape/changes/**/*.shape` when no files are provided.
+`shp check` scans `shape/**/*.shape` when no files are provided. Any `.shape` file under `shape/` is part of the checked model.
 
 Useful commands:
 
 - `shp check`: run conformance checks.
-- `shp coverage --changed-files changed.txt`: enforce shape deltas or attestations for governed paths.
+- `shp coverage --changed-files changed.txt`: enforce Shape updates or current attestations for governed paths.
+- `shp check --changed-files changed.txt`: run semantic checks, coverage, and bindings together.
 - `shp fmt --check`: verify canonical formatting.
 - `shp explain AuditEvent`: show derived facts and incident relations for a symbol.
 - `shp graph [SYMBOL] [--kind KIND]`: with a SYMBOL, print the hyperedges incident to that symbol; without a SYMBOL, print the whole hypergraph grouped by kind. Use `shp graph --stats [--kind KIND]` for aggregate vertex, hyperedge, and incidence counts.
 - `shp memory`: list rationale and memory entries that protect design context.
 - `shp obligations`: list open design-memory obligations such as missing rationale or reevaluation.
-- `shp author --changed-files changed.txt --component AuditStore`: scaffold a reviewable change file with explicit unknowns.
-- `shp analyze --shape-files shape/system/audit.shape src/file.ts`: compare obvious source hints against declared effects.
+- `shp analyze --shape-files fixtures/pass/append_only_append/audit.shape src/file.ts`: compare obvious source hints against declared effects.
 
 ## Project Layout
 
 ```text
-shape/system/
-  audit.shape
+shape/
+  checker.shape
+  delivery.shape
+  language.shape
+  tooling.shape
 
 fixtures/
   pass/
@@ -208,6 +209,8 @@ Use the Bun workspace only when contributing to Shape itself:
 bun install --frozen-lockfile
 bun run langium:generate
 bun shp check
+bun run changed-files
+bun run shape:ci
 bun test
 bun run typecheck
 bun run docs:check
@@ -239,7 +242,7 @@ GitHub Pages should use the **GitHub Actions** publishing source. The deployment
 
 ## CI
 
-CI is wired in `.github/workflows/shape.yml` for formatting, tests, typechecking, `shp check`, and docs checks.
+CI is wired in `.github/workflows/shape.yml` for formatting, tests, typechecking, `shp check --changed-files changed.txt`, Shape coverage/bindings, and docs checks. Governed source changes require a faithful `shape` update or a narrow current attestation; bound docs surfaces must change unless a current `docs_not_needed` attestation explains why not.
 
 ## Release
 

@@ -18,36 +18,35 @@ shp graph [SYMBOL] [--kind KIND] [files...]
 shp graph --stats [--kind KIND] [files...]
 shp memory [files...]
 shp obligations [files...]
-shp author --changed-files changed.txt --component ComponentName [--change ChangeName] [--module module.name]
+shp author --changed-files changed.txt --component ComponentName [--module module.name]
 shp analyze [--shape-files file1.shape,file2.shape] [source-files...]
 ```
 
 When no files are provided, commands scan:
 
 ```text
-shape/system/**/*.shape
-shape/changes/**/*.shape
+shape/**/*.shape
 ```
 
 ## Commands
 
 | Command | Purpose |
 | --- | --- |
-| `check` | Parse modules, apply change blocks, lower facts, and run semantic checks. |
-| `coverage` | Require shape deltas or attestations when governed source paths change. |
+| `check` | Parse modules, lower facts, and run semantic checks. With `--changed-files`, it also runs coverage and bindings. |
+| `coverage` | Require Shape updates or current attestations when governed source paths change. |
 | `fmt` | Format Shape files, or check formatting with `--check`. |
 | `explain` | Print derived facts and incident relations for a symbol. |
 | `graph` | Print the hyperedges incident to a symbol, the entire hypergraph when no symbol is given, or aggregate counts with `--stats`. Filter by `--kind KIND`. |
 | `memory` | List rationale and memory entries grouped by protected target. |
 | `obligations` | List open design-memory obligations from checker diagnostics. |
-| `author` | Generate a Shape change scaffold from changed files. |
+| `author` | Generate a conservative global-model draft from changed files. |
 | `analyze` | Emit source hints or compare source hints with declared effects. |
 
 ## Common commands
 
 ```bash
 shp check
-shp check shape/system/audit.shape
+shp check --changed-files changed.txt
 shp coverage --changed-files changed.txt
 shp fmt --check
 shp explain AuditEvent
@@ -60,7 +59,7 @@ shp graph --stats --kind calls
 shp memory
 shp obligations
 shp author --changed-files changed.txt --component AuditStore
-shp analyze --shape-files shape/system/audit.shape src/audit/purge.ts
+shp analyze --shape-files fixtures/pass/append_only_append/audit.shape src/audit/purge.ts
 ```
 
 ## Graph output

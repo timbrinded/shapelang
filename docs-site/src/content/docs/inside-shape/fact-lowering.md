@@ -78,7 +78,7 @@ owns AuditStore AuditEvent
 grants AuditStore Append<AuditEvent>
 function AuditStore.appendEvent
 effect AuditStore.appendEvent Append<AuditEvent>
-shape_delta_for src/audit/store.ts
+shape_update_for src/audit/store.ts
 ```
 
 They also preserve provenance. Conceptually, the effect fact is not just `Append<AuditEvent>`; it is `Append<AuditEvent>` caused by the `fn appendEvent` summary, with optional evidence from `src/audit/store.ts:8-14`.
@@ -87,28 +87,24 @@ Provenance is why the checker can produce a useful diagnostic instead of a gener
 
 ## Effective Model First
 
-Change declarations are applied before facts are lowered. The checker does not lower "baseline facts" and "PR facts" independently, then try to reconcile them later. It first builds the model that would exist if the change were accepted.
+The committed global model is assembled before facts are lowered. The checker does not lower separate fact sets and reconcile them later.
 
 ```mermaid
 sequenceDiagram
-  participant Baseline as Baseline modules
-  participant Change as Change module
+  participant Global as Global modules
   participant Model as Effective model
   participant Facts as Lowered facts
-  Baseline->>Model: declare resources, components, functions
-  Change->>Model: add, modify, remove
+  Global->>Model: declare resources, components, functions
   Model->>Facts: emit one normalized fact set
 ```
 
-That design keeps PR review straightforward. If a change modifies a guarded function, the modified function is what rule evaluation sees. If a change adds a function with `effects unknown`, the model really contains a function with unknown effects, and the relevant rule can reject or surface that uncertainty.
+That design keeps review straightforward. If the global model contains a function with `effects unknown`, the lowered model really contains an unknown effect fact, and the relevant rule can reject or surface that uncertainty.
 
 ```shape
-module changes.PR_042
+module audit
 
-import audit
-
-change ReviewAuditPurge {
-  add fn AuditStore.reviewPurgeShape1
+component AuditStore {
+  fn reviewPurgeShape1
     source ts("src/audit/purge.ts")
     effects unknown
 }
@@ -226,7 +222,7 @@ That is enough to check both the current state and future changes. The memory sa
 
 ## Coverage Lowering
 
-Implementations connect source paths to components. They are how Shape can say, "this kind of source change needs a Shape delta."
+Implementations connect source paths to components. They are how Shape can say, "this kind of source change needs a Shape update or current attestation."
 
 ```shape
 module audit
@@ -248,11 +244,11 @@ implementation AuditImplementation {
     "src/audit/**/*.ts"
   }
   conforms_to AuditStore
-  on_change require shape_delta
+  on_change require shape_update
 }
 ```
 
-Lowering records implementation paths and function source paths. Coverage checks then compare changed files against those paths. A matching `source` or `evidence` reference in a change file creates a `shape_delta_for` fact. An explicit `attest no_shape_change` creates an attestation fact.
+Lowering records implementation paths and function source paths. Coverage checks then compare changed files against those paths. A matching `source` or `evidence` reference creates a `shape_update_for` fact, but coverage only accepts it when the declaring `.shape` file is also in the current changed-file list. An explicit `attest no_shape_change` creates an attestation fact with the same current-file requirement.
 
 ## Design Rule
 

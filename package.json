@@ -9,6 +9,7 @@
   "type": "module",
   "scripts": {
     "build:release": "scripts/build-release-assets.sh",
+    "changed-files": "scripts/write-changed-files.sh changed.txt",
     "docs:build": "bun run --cwd docs-site build",
     "docs:check": "bun run --cwd docs-site check",
     "docs:dev": "bun run --cwd docs-site dev",
@@ -19,6 +20,9 @@
     "format:shape:check": "find . -name '*.shape' -not -path './node_modules/*' -print0 | xargs -0 bun packages/shp-cli/src/index.ts fmt --check",
     "langium:generate": "bunx langium-cli generate",
     "lint": "oxlint --deny-warnings .",
+    "shape:check": "bun shp check",
+    "shape:ci": "bun run format:shape:check && bun shp check --changed-files changed.txt && bun shp obligations && bun shp memory",
+    "shape:coverage": "bun shp coverage --changed-files changed.txt",
     "shp": "bun packages/shp-cli/src/index.ts",
     "test": "bun test",
     "typecheck": "tsgo -p tsconfig.json --noEmit"

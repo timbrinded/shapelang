@@ -17,7 +17,7 @@ import shared.resources
 resource AuditEvent : AppendOnly
 ```
 
-`module` is optional, but named modules make imports and change files clearer.
+`module` is optional, but named modules make imports and diagnostics clearer.
 
 ## Top-level declarations
 
@@ -29,8 +29,8 @@ trait AppendOnly<T: Resource> { ... }
 component AuditStore { ... }
 relation AuditWritePath { ... }
 implementation AuditStoreImpl { ... }
-change AddAuditRetentionPurge { ... }
-attest shape_delta { ... }
+binding CheckerDocs { ... }
+attest no_shape_change { ... }
 rule NoCallsCycle { ... }
 rationale InlineDecision : InlineRationale<fn Gateway.derivePolicyDecision> { ... }
 memory DecisionRefactorConstraint : RefactorConstraint<fn Gateway.derivePolicyDecision> { ... }
@@ -125,43 +125,67 @@ Directional prelude kinds must use ordered `A -> B` syntax. Binary directional k
 
 See [Relations and Hypergraphs](../concepts/relations-hypergraphs.md) for the kind registry and traversal semantics.
 
-## Change entries
+## Bindings
+
+Bindings couple one set of changed paths to another. They are useful when a code or model change affects a public review surface such as docs.
 
 ```shape
-module changes.PR_001
+module repo
 
-import audit
+binding CheckerDocs {
+  when_changed paths {
+    "packages/shp-checker/src/checker.ts"
+    "shape/checker.shape"
+  }
+  require_changed paths {
+    "docs-site/src/content/docs/inside-shape/rule-evaluation.md"
+    "docs-site/src/content/docs/reference/diagnostics.md"
+  }
+  allow attest docs_not_needed
+}
+```
 
-change ReviewAuditChange {
-  add fn AuditStore.purgeOldEvents
+When `shp check --changed-files` runs, a matching `when_changed` path requires at least one `require_changed` path in the same changed-file list. A narrow attestation can satisfy the binding only when the attestation's `.shape` file is also in that changed-file list:
+
+```shape
+module repo
+
+attest docs_not_needed {
+  source ts("packages/shp-checker/src/checker.ts")
+  reason "Internal extraction only; no documented behavior changed."
+}
+```
+
+Bindings enforce review coupling. They do not prove that the paired docs are complete.
+
+## Global model edits
+
+```shape
+module audit
+
+component AuditStore {
+  fn purgeOldEvents
     source ts("src/audit/purge.ts#purgeOldEvents")
     effects complete {
       HardDelete<AuditEvent>
         evidence ts("src/audit/purge.ts:12-16")
     }
-  remove fn AuditStore.oldPurge
 }
 ```
 
-Change blocks can add, modify, and remove functions or top-level declarations (`resource`, `trait`, `component`, `relation`, `implementation`, `rule`).
-
-`add relation` / `modify relation` carry a full `relation` body, matching the [relation syntax](#relations) above; `remove relation` cites the relation by name only.
+The repository workflow updates the global model directly. Add, modify, or remove normal declarations in the owning module.
 
 ```shape
-module changes.PR_002
+module audit
 
-import audit
+relation AuditCallsGateway {
+  kind calls
+  connects AuditStore -> Gateway
+}
 
-change AdjustAuditGraph {
-  add relation AuditCallsGateway {
-    kind calls
-    connects AuditStore -> Gateway
-  }
-  modify relation GatewayCallsAudit {
-    kind calls
-    connects Gateway -> AuditStore
-  }
-  remove relation StaleProvidesEdge
+relation GatewayCallsAudit {
+  kind calls
+  connects Gateway -> AuditStore
 }
 ```
 

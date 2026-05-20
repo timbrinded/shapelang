@@ -43,7 +43,7 @@ The system is light-first with dark-mode parity. Favor structured surfaces and c
 | Success | Pass Green | `#19a66a` | Passing checks, allowed effects, completed review |
 | Warning | Unknown Amber | `#d28b00` | Explicit unknowns, pending review, incomplete analysis |
 | Failure | Forbid Red | `#d13b3b` | Final forbids, rejected effects, failing diagnostics |
-| Agent | Agent Violet | `#6a5cff` | LLM-authored drafts, assistant-authored deltas |
+| Agent | Agent Violet | `#6a5cff` | LLM-authored drafts, assistant-authored model updates |
 | Human | Review Cyan | `#00a7b5` | Human review, evidence inspection, stewardship |
 
 ### Color Rules
@@ -109,7 +109,7 @@ Use compact panels as instruments, not generic cards. Each panel needs one job: 
 
 Prefer simple stroked icons and schematic shapes:
 
-- Document: source refs, evidence, change files.
+- Document: source refs, evidence, global model updates.
 - Hexagon or tag: traits.
 - Cylinder: resources.
 - Shield: grants, coverage, CI gate.
@@ -182,7 +182,7 @@ For Shape-specific outputs, also include:
 | `component-boundary-grants.png` | Components, Ownership, and Grants | Component boundary with ownership, grants, functions, and an external relation hyperedge |
 | `evidence-review-path.png` | Evidence and Source Refs | Declared claim linked to source span and reviewer inspection |
 | `append-only-rejection.png` | Append-Only Walkthrough | Final forbids override grants and reject destructive effects |
-| `pr-change-review.png` | PR Change Files, CI Workflow | Baseline model plus PR delta plus coverage or attestation |
+| `global-model-review.png` | Global Model Updates, CI Workflow | Global model update plus coverage or attestation |
 | `implementation-coverage-map.png` | Implementations and Coverage | Governed source path changes require documentation |
 | `design-memory-reevaluation.png` | Refactor Constraints | Function shape trait, memory/rationale, guard, reevaluation |
 | `unknowns-safety-states.png` | Unknowns and Safety | Unknown effects, complete effects, and design memory are different states |

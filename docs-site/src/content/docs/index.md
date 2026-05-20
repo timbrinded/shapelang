@@ -50,7 +50,7 @@ component AuditStore {
 }
 ```
 
-If a PR adds a function whose shape summary says it hard-deletes `AuditEvent`, Shape rejects the model before the change becomes architectural fact.
+If a change adds a function whose shape summary says it hard-deletes `AuditEvent`, Shape rejects the model before the change becomes architectural fact.
 
 Shape can also require typed design context before accepting non-obvious function shapes. A refactor-sensitive function can require a matching `memory`, and guarded changes to that function can require a recorded `reevaluation`.
 

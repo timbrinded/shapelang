@@ -1,26 +1,24 @@
 # Make Shape Protocol
 
-Use this when authoring or reviewing `.shape` files and change files. For command details, read `cli-workflows.md`.
+Use this when authoring or reviewing global `.shape` model updates. For command details, read `cli-workflows.md`.
 
 ## Workflow
 
-1. Read the current model first: `shape/system/**/*.shape`, relevant `shape/changes/**/*.shape`, and nearby fixtures.
+1. Read the current model first: `shape/**/*.shape` and nearby fixtures.
 2. Identify the claim type: resource invariant, component ownership, grant, structural relation, function effect, implementation coverage, rule, attestation, rationale, memory, or reevaluation.
-3. Prefer a small change file over rewriting the baseline model for PR work.
+3. Update the owning global model file directly; do not create a separate staging area for model drafts.
 4. Include `source` for changed functions and `evidence` for material effects when the source or diff gives line context.
 5. Validate with `shp fmt --check`, `shp check`, and `shp coverage --changed-files changed.txt` when changed files are available.
 
 ## Authoring Patterns
 
-Good: a reviewable PR delta with explicit uncertainty.
+Good: a reviewable global model update with explicit uncertainty.
 
 ```shape
-module changes.PR_001
+module audit
 
-import audit
-
-change ReviewAuditChange {
-  add fn AuditStore.reviewPurgeShape1
+component AuditStore {
+  fn reviewPurgeShape1
     source ts("src/audit/purge.ts")
     effects unknown
 }
@@ -29,8 +27,8 @@ change ReviewAuditChange {
 Counterexample: hiding uncertainty with an empty complete block.
 
 ```shape
-change ReviewAuditChange {
-  add fn AuditStore.reviewPurgeShape1
+component AuditStore {
+  fn reviewPurgeShape1
     source ts("src/audit/purge.ts")
     effects complete {
     }
@@ -42,8 +40,8 @@ Smallest fix: use `effects unknown`, or add every material effect with evidence.
 Good: a destructive effect is explicit and source-backed.
 
 ```shape
-change AddAuditRetentionPurge {
-  add fn AuditStore.purgeOldEvents
+component AuditStore {
+  fn purgeOldEvents
     source ts("src/audit/purge.ts#purgeOldEvents")
     effects complete {
       HardDelete<AuditEvent>
@@ -83,11 +81,11 @@ attest no_shape_change {
 }
 ```
 
-Smallest fix: add a Shape delta for the effect, or make the attestation specific enough to explain why no Shape claim changed.
+Smallest fix: update the global Shape model for the effect, or make the attestation specific enough to explain why no Shape claim changed.
 
 ## Review Checklist
 
-- Does every governed changed file have a shape delta or narrow attestation?
+- Does every governed changed file have a global model update or narrow attestation?
 - Are effects honest, including uncertainty?
 - Are grants present only where the component is actually allowed to emit the effect?
 - Do final forbidden effects still fail?

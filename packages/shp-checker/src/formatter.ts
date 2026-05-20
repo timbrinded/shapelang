@@ -2,6 +2,7 @@ import type {
   AddDeclarationChange,
   AddFunctionChange,
   AttestationDecl,
+  BindingDecl,
   ChangeDecl,
   ComponentDecl,
   DescriptionDecl,
@@ -31,6 +32,10 @@ import {
   isAppliesToDecl,
   isApproverDecl,
   isAttestationDecl,
+  isBindingAllowAttestDecl,
+  isBindingDecl,
+  isBindingRequireChangedDecl,
+  isBindingWhenChangedDecl,
   isChangeDecl,
   isCompleteEffects,
   isComponentDecl,
@@ -147,6 +152,9 @@ function formatDeclaration(declaration: ShapeModule["declarations"][number]): st
   }
   if (isImplementationDecl(declaration)) {
     return formatImplementation(declaration);
+  }
+  if (isBindingDecl(declaration)) {
+    return formatBinding(declaration);
   }
   if (isAttestationDecl(declaration)) {
     return formatAttestation(declaration);
@@ -396,6 +404,34 @@ function formatImplementation(implementation: ImplementationDecl): string {
   }
 
   return block(`implementation ${implementation.name}`, lines);
+}
+
+function formatBinding(binding: BindingDecl): string {
+  const whenChanged: string[] = [];
+  const requireChanged: string[] = [];
+  const allowAttest: string[] = [];
+
+  for (const member of binding.members) {
+    if (isBindingWhenChangedDecl(member)) {
+      whenChanged.push(formatBindingPaths("when_changed", member.body.paths));
+    } else if (isBindingRequireChangedDecl(member)) {
+      requireChanged.push(formatBindingPaths("require_changed", member.body.paths));
+    } else if (isBindingAllowAttestDecl(member)) {
+      allowAttest.push(`allow attest ${member.kind}`);
+    }
+  }
+
+  return block(`binding ${binding.name}`, [
+    ...whenChanged.sort(),
+    ...requireChanged.sort(),
+    ...allowAttest.sort()
+  ]);
+}
+
+function formatBindingPaths(keyword: "when_changed" | "require_changed", paths: string[]): string {
+  return [`${keyword} paths {`, ...[...paths].sort().map((path) => indent(quote(path))), "}"].join(
+    "\n"
+  );
 }
 
 function formatAttestation(attestation: AttestationDecl): string {
@@ -691,23 +727,26 @@ function declarationSortKey(declaration: ShapeModule["declarations"][number]): s
   if (isImplementationDecl(declaration)) {
     return `4:${declaration.name}`;
   }
-  if (isRuleDecl(declaration)) {
+  if (isBindingDecl(declaration)) {
     return `5:${declaration.name}`;
   }
-  if (isRationaleDecl(declaration)) {
+  if (isRuleDecl(declaration)) {
     return `6:${declaration.name}`;
   }
-  if (isMemoryDecl(declaration)) {
+  if (isRationaleDecl(declaration)) {
     return `7:${declaration.name}`;
   }
-  if (isReevaluationDecl(declaration)) {
+  if (isMemoryDecl(declaration)) {
     return `8:${declaration.name}`;
   }
+  if (isReevaluationDecl(declaration)) {
+    return `9:${declaration.name}`;
+  }
   if (isAttestationDecl(declaration)) {
-    return `9:${declaration.kind}`;
+    return `A:${declaration.kind}`;
   }
   if (isChangeDecl(declaration)) {
-    return `A:${declaration.name}`;
+    return `B:${declaration.name}`;
   }
   return "Z:";
 }

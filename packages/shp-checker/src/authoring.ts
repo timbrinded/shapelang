@@ -6,9 +6,8 @@ export type ShapeAuthorPromptInput = {
   instructions?: string;
 };
 
-export type ShapeDeltaInput = {
+export type ShapeUpdateInput = {
   moduleName?: string;
-  changeName?: string;
   componentName: string;
   changedFiles: string[];
   includeMemoryGuardScaffold?: boolean;
@@ -23,7 +22,7 @@ export type EvidenceSpan = {
 
 export function buildShapeAuthorPrompt(input: ShapeAuthorPromptInput): string {
   return [
-    "You are authoring a Shape .shape change file for human review.",
+    "You are authoring a Shape .shape global model update for human review.",
     "",
     "Rules:",
     "- Output only valid .shape syntax.",
@@ -51,42 +50,41 @@ export function buildShapeAuthorPrompt(input: ShapeAuthorPromptInput): string {
 
 export function buildShapeCriticPrompt(
   input: ShapeAuthorPromptInput,
-  proposedShapeDelta: string
+  proposedShapeUpdate: string
 ): string {
   return [
-    "Review this proposed Shape .shape delta before a deterministic checker runs.",
+    "Review this proposed Shape .shape model update before a deterministic checker runs.",
     "",
     "Critic checklist:",
-    "- Did the shape delta cover every governed changed file?",
+    "- Did the model update cover every governed changed file?",
     "- Are destructive effects represented honestly?",
     "- Are unknowns marked explicitly?",
     "- Are evidence spans plausible and reviewable?",
-    "- Did the delta avoid weakening final invariants?",
+    "- Did the model update avoid weakening final invariants?",
     "- Did structural dependency changes appear as relation declarations with the correct kind?",
-    "- Did the delta add shape traits without matching context?",
-    "- Did the delta touch a guarded target without reevaluation?",
-    "- Did the delta remove a required description?",
+    "- Did the model update add shape traits without matching context?",
+    "- Did the model update touch a guarded target without reevaluation?",
+    "- Did the model update remove a required description?",
     "- Are memory/rationale blocks compact and typed rather than generic prose?",
-    "- Did the delta try to justify a final forbidden effect instead of preserving the error?",
+    "- Did the model update try to justify a final forbidden effect instead of preserving the error?",
     "",
     "Changed files:",
     ...input.changedFiles.map((file) => `- ${file}`),
     input.diff ? `\nPR diff:\n${input.diff}` : "",
-    `\nProposed shape delta:\n${proposedShapeDelta}`
+    `\nProposed shape update:\n${proposedShapeUpdate}`
   ]
     .filter((part) => part.length > 0)
     .join("\n");
 }
 
-export function generateShapeDelta(input: ShapeDeltaInput): string {
-  const moduleName = input.moduleName ?? "changes.generated";
-  const changeName = input.changeName ?? "GeneratedShapeDelta";
+export function generateShapeUpdateDraft(input: ShapeUpdateInput): string {
+  const moduleName = input.moduleName ?? "generated";
   const changedFunctions = input.changedFiles.map((file, index) => ({
     file,
     functionName: uniqueFunctionName(file, index)
   }));
   const functions = changedFunctions.map((item) =>
-    formatUnknownFunction(input.componentName, item.file, item.functionName)
+    formatUnknownFunction(item.file, item.functionName)
   );
   const scaffold =
     input.includeMemoryGuardScaffold && changedFunctions[0]
@@ -96,7 +94,7 @@ export function generateShapeDelta(input: ShapeDeltaInput): string {
   return [
     `module ${moduleName}`,
     "",
-    `change ${changeName} {`,
+    `component ${input.componentName} {`,
     ...functions.flatMap((fn, index) => (index === 0 ? indentBlock(fn) : ["", ...indentBlock(fn)])),
     "}",
     ...scaffold,
@@ -160,9 +158,9 @@ export function extractEvidenceSpansFromUnifiedDiff(diff: string): EvidenceSpan[
   return spans;
 }
 
-function formatUnknownFunction(componentName: string, file: string, functionName: string): string {
+function formatUnknownFunction(file: string, functionName: string): string {
   return [
-    `add fn ${componentName}.${functionName}`,
+    `fn ${functionName}`,
     `  source ${languageForPath(file)}(${JSON.stringify(file)})`,
     "  effects unknown"
   ].join("\n");
@@ -209,7 +207,7 @@ function languageForPath(file: string): string {
   if (file.endsWith(".sol")) {
     return "solidity";
   }
-  return "source";
+  return "file";
 }
 
 function indentBlock(value: string): string[] {

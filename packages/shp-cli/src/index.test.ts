@@ -5,7 +5,7 @@ const repoRoot = resolve(import.meta.dir, "../../..");
 const cliPath = resolve(repoRoot, "packages/shp-cli/src/index.ts");
 
 describe("shp CLI", () => {
-  test("checks default shape/system files", async () => {
+  test("checks default shape files", async () => {
     const result = await runCli(["check"]);
 
     expect(result.exitCode).toBe(0);
@@ -22,17 +22,54 @@ describe("shp CLI", () => {
     expect(result.stdout).toBe("");
   });
 
+  test("rejects unknown options without a stack trace", async () => {
+    const result = await runCli(["check", "--not-a-real-option"]);
+
+    expect(result.exitCode).toBe(2);
+    expect(result.stderr).toContain("--not-a-real-option");
+    expect(result.stderr).toContain("Usage:");
+    expect(result.stderr).not.toContain("parseArgs");
+    expect(result.stdout).toBe("");
+  });
+
   test("runs coverage with changed-file input", async () => {
     const result = await runCli([
       "coverage",
       "--changed-files",
       "fixtures/changed/audit_purge.txt",
-      "fixtures/fail/missing_shape_delta/audit.shape"
+      "fixtures/fail/missing_shape_update/audit.shape"
     ]);
 
     expect(result.exitCode).toBe(1);
-    expect(result.stderr).toContain("governed source changed without shape delta");
+    expect(result.stderr).toContain("governed source changed without current Shape update");
     expect(result.stderr).toContain("src/audit/purge.ts");
+    expect(result.stdout).toBe("");
+  });
+
+  test("does not enforce bindings during coverage-only runs", async () => {
+    const result = await runCli([
+      "coverage",
+      "--changed-files",
+      "fixtures/changed/audit_store_with_shape.txt",
+      "fixtures/pass/coverage_binding_only/audit.shape"
+    ]);
+
+    expect(result.exitCode).toBe(0);
+    expect(result.stdout).toContain("Shape check passed");
+    expect(result.stderr).toBe("");
+  });
+
+  test("enforces bindings during changed-file checks", async () => {
+    const result = await runCli([
+      "check",
+      "--changed-files",
+      "fixtures/changed/audit_store_with_shape.txt",
+      "fixtures/pass/coverage_binding_only/audit.shape"
+    ]);
+
+    expect(result.exitCode).toBe(1);
+    expect(result.stderr).toContain("bound docs change missing");
+    expect(result.stderr).toContain("AuditDocs");
     expect(result.stdout).toBe("");
   });
 
@@ -51,15 +88,13 @@ describe("shp CLI", () => {
       "fixtures/changed/audit_purge.txt",
       "--component",
       "AuditStore",
-      "--change",
-      "ReviewAuditChange",
       "--module",
-      "changes.PR_001"
+      "audit"
     ]);
 
     expect(result.exitCode).toBe(0);
-    expect(result.stdout).toContain("module changes.PR_001");
-    expect(result.stdout).toContain("change ReviewAuditChange");
+    expect(result.stdout).toContain("module audit");
+    expect(result.stdout).toContain("component AuditStore");
     expect(result.stdout).toContain("effects unknown");
     expect(result.stderr).toBe("");
   });
@@ -96,7 +131,7 @@ describe("shp CLI", () => {
     const result = await runCli([
       "analyze",
       "--shape-files",
-      "shape/system/audit.shape",
+      "fixtures/pass/append_only_append/audit.shape",
       "fixtures/source/audit_purge.ts"
     ]);
 
@@ -114,6 +149,16 @@ describe("shp CLI", () => {
     expect(result.stdout).toContain("coordinated_call AuditWritePath");
     expect(result.stdout).toContain("calls GatewayCallsAudit");
     expect(result.stderr).toBe("");
+  });
+
+  test("reports missing graph files without a stack trace", async () => {
+    const result = await runCli(["graph", "fixtures/missing.shape"]);
+
+    expect(result.exitCode).toBe(2);
+    expect(result.stderr).toContain("error: parse error");
+    expect(result.stderr).toContain("fixtures/missing.shape");
+    expect(result.stderr).not.toContain("parseModules");
+    expect(result.stdout).toBe("");
   });
 
   test("prints hypergraph stats", async () => {

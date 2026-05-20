@@ -7,7 +7,7 @@ sidebar:
 
 Shape is meant to run in review. In application repos, install a pinned `shp` release and run the checker directly.
 
-![PR change review workflow showing shape system files, shape changes, changed files, coverage, shp check, and CI result.](../../../assets/infographics/pr-change-review.png)
+![CI review workflow showing global Shape model files, changed files, coverage, shp check, and CI result.](../../../assets/infographics/global-model-review.png)
 
 ## Recommended workflow
 
@@ -33,7 +33,7 @@ jobs:
 
 ## Coverage gate
 
-Coverage checks compare changed source paths with implementation blocks:
+Coverage checks compare changed source paths with implementation blocks. A governed source change must be represented by a current `shape` update, or by a narrow attestation changed in the same change set:
 
 ```yaml
 - name: Changed files
@@ -43,7 +43,85 @@ Coverage checks compare changed source paths with implementation blocks:
   run: shp coverage --changed-files changed.txt
 ```
 
-If a governed source path changes without a shape delta or attestation, the checker rejects the change.
+If a governed source path changes without a Shape update or current attestation, the checker rejects the change.
+
+## Copilot CLI contract review
+
+CI can also run GitHub Copilot CLI as a PR job to check source semantics against the Shape model. This is separate from the deterministic checker: `shp check --changed-files` enforces current coverage and bindings, while Copilot reviews whether the committed Shape claims faithfully describe the changed behavior.
+
+The job needs a repository secret such as `COPILOT_GITHUB_TOKEN`, containing a fine-grained personal access token for a Copilot-licensed account with Copilot Requests permission. Detect the token first so forked pull requests skip the Copilot-only work instead of failing on an unavailable secret:
+
+```yaml
+shape-copilot-review:
+  if: github.event_name == 'pull_request'
+  runs-on: ubuntu-latest
+  steps:
+    - name: Detect Copilot token
+      id: copilot-token
+      env:
+        COPILOT_GITHUB_TOKEN: ${{ secrets.COPILOT_GITHUB_TOKEN }}
+      run: |
+        if [ -n "${COPILOT_GITHUB_TOKEN:-}" ]; then
+          echo "available=true" >> "$GITHUB_OUTPUT"
+        else
+          echo "available=false" >> "$GITHUB_OUTPUT"
+          echo "Skipping Copilot Shape contract review because COPILOT_GITHUB_TOKEN is not available."
+        fi
+    - uses: actions/checkout@v4
+      if: steps.copilot-token.outputs.available == 'true'
+      with:
+        fetch-depth: 0
+    - uses: oven-sh/setup-bun@v2
+      if: steps.copilot-token.outputs.available == 'true'
+    - run: bun install --frozen-lockfile
+      if: steps.copilot-token.outputs.available == 'true'
+    - uses: actions/setup-node@v4
+      if: steps.copilot-token.outputs.available == 'true'
+      with:
+        node-version: 24
+    - run: npm install -g @github/copilot
+      if: steps.copilot-token.outputs.available == 'true'
+    - run: bun run changed-files
+      if: steps.copilot-token.outputs.available == 'true'
+      env:
+        GITHUB_BASE_REF: ${{ github.base_ref }}
+        GITHUB_SHA: ${{ github.sha }}
+    - run: |
+        copilot -p "$(<.github/prompts/shape-contract-review.md)" \
+          --allow-tool='read,write(copilot-shape-review.json),shell(git:*),shell(bun:*)' \
+          --no-ask-user
+      if: steps.copilot-token.outputs.available == 'true'
+      env:
+        COPILOT_GITHUB_TOKEN: ${{ secrets.COPILOT_GITHUB_TOKEN }}
+```
+
+Use a short prompt that makes `shape/` the authority:
+
+```md
+# Shape contract review
+
+Review `changed.txt` against the durable Shape model in `shape/**/*.shape`.
+For changed source behavior that affects the architecture contract, require a
+faithful current Shape update or a narrow current attestation.
+
+Run `bun shp check --changed-files changed.txt`, `bun shp obligations`, and
+`bun shp memory`. Use `bun shp explain` when a symbol needs context and
+`bun shp analyze` only as advisory input.
+
+Write JSON to `copilot-shape-review.json` with `status: "pass" | "drift" |
+"error"` and terse evidence-backed findings.
+```
+
+## Shape repo workflow
+
+The Shape repository dogfoods this workflow more strictly than a normal consumer repo. CI generates `changed.txt`, then runs formatting, semantic checks, coverage, obligations, and memory output:
+
+```bash
+bun run changed-files
+bun run shape:ci
+```
+
+`shape:ci` runs `bun shp check --changed-files changed.txt`, so implementation coverage and bindings are checked together. Bindings are used for documentation coupling: if Shape-affecting code or model files change, the associated docs must change too, unless the current change set includes a narrow current `docs_not_needed` attestation.
 
 ## Direct binary install
 

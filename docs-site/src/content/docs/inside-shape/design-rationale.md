@@ -35,7 +35,7 @@ A source compiler or theorem prover would need to understand application semanti
 
 This makes Shape useful in the messy middle of software engineering:
 
-- A PR can say which resources a function reads, appends, deletes, or exports.
+- A reviewed change can say which resources a function reads, appends, deletes, or exports.
 - A component can declare the authority it is allowed to exercise.
 - A resource trait can encode a durable invariant such as append-only storage.
 - A memory can preserve why an unusual function shape must be handled carefully.

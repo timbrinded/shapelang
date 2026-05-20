@@ -129,15 +129,58 @@ component AuditStore {
 
 Replace unknowns with a source-backed `effects complete` block before accepting protected changes.
 
-## Governed source changed without shape delta
+## Governed source changed without Shape update
 
-Cause: a changed source path matches an implementation block with `on_change require shape_delta`, but the PR did not include a matching shape delta or attestation.
+Cause: a changed source path matches an implementation block with `on_change require shape_update`, but the changed-file set did not include a matching Shape update or current attestation.
 
 Run coverage with the changed-file list to reproduce it:
 
 ```bash
-shp coverage --changed-files fixtures/changed/audit_purge.txt fixtures/fail/missing_shape_delta/audit.shape
+shp coverage --changed-files fixtures/changed/audit_purge.txt fixtures/fail/missing_shape_update/audit.shape
 ```
+
+## Bound docs change missing
+
+Cause: a `binding` declaration says that one changed path requires another changed path, but the required path was not present in the changed-file list.
+
+```shape
+module repo
+
+binding CheckerDocs {
+  when_changed paths {
+    "packages/shp-checker/src/checker.ts"
+  }
+  require_changed paths {
+    "docs-site/src/content/docs/reference/diagnostics.md"
+  }
+  allow attest docs_not_needed
+}
+```
+
+If `packages/shp-checker/src/checker.ts` changes, the docs path must also change or the change set must include a narrow current attestation in a `.shape` file changed by that same set:
+
+```shape
+module repo
+
+attest docs_not_needed {
+  source ts("packages/shp-checker/src/checker.ts")
+  reason "Internal refactor only; no diagnostics or documented behavior changed."
+}
+```
+
+Bindings are review gates. They ensure docs are considered when Shape-affecting code or model files change.
+
+## Duplicate function or implementation
+
+Cause: the same function name appears twice in a component, or an implementation name is reused. Shape rejects these because otherwise one declaration can silently overwrite or shadow another.
+
+## Unresolved dependency
+
+Cause: a component declares `requires Target`, but `Target` is neither a component nor a target provided by another component.
+
+## Unsupported rule shape
+
+Cause: a rule uses a syntax shape the checker does not currently implement semantically. For example, multiple `when` clauses are rejected until conjunctive rule semantics are designed.
 
 ## Missing required context
 

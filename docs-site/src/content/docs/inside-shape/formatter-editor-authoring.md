@@ -19,7 +19,7 @@ flowchart LR
   D --> E["editor diagnostics"]
   D --> F["hover and explain output"]
   G["changed files or diff"] --> H["authoring helper"]
-  H --> I["reviewable change scaffold"]
+  H --> I["reviewable model draft"]
   I --> D
 ```
 
@@ -34,6 +34,8 @@ Shape is meant to sit in a feedback loop:
 5. The reviewer turns uncertainty into explicit effects, rationale, memory, or reevaluation.
 
 The helper APIs keep that loop from becoming a collection of one-off scripts. They also make it possible to build a language server later without moving semantics into the CLI.
+
+The formatter and editor helpers also understand repository binding declarations. Bindings remain semantic checker claims, but helper surfaces should keep them readable, discoverable, and highlighted like other top-level Shape declarations.
 
 ## Formatter
 
@@ -109,19 +111,19 @@ For a new reader, the practical takeaway is that editor behavior is a projection
 
 Authoring helpers are built for agent-assisted review. They should help create a safe draft, not pretend to know more than the reviewer knows.
 
-The CLI command starts from changed files and a component:
+Authoring helpers start from changed files and a component:
 
 ```bash
 bun run shp -- author --changed-files fixtures/changed/audit_purge.txt --component AuditStore
 ```
 
-The generated scaffold is intentionally conservative:
+The generated scaffold is intentionally conservative and should be folded into the owning global model after review:
 
 ```shape
-module changes.generated
+module audit
 
-change GeneratedShapeDelta {
-  add fn AuditStore.reviewAuditPurgeShape1
+component AuditStore {
+  fn reviewAuditPurgeShape1
     source ts("src/audit/purge.ts")
     effects unknown
 }
@@ -148,7 +150,7 @@ The critic prompt asks the inverse questions. It is designed to catch the common
 
 ```mermaid
 sequenceDiagram
-  participant Diff as PR diff
+  participant Diff as Source diff
   participant Author as Authoring helper
   participant Human as Human reviewer
   participant Checker as Shape checker

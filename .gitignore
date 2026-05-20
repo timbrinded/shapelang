@@ -5,3 +5,4 @@ coverage/
 .astro/
 .DS_Store
 specs/
+.clawpatch/

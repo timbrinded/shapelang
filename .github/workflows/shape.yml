@@ -18,6 +18,8 @@ jobs:
       - &checkout
         name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - &setup-bun
         name: Setup Bun
@@ -95,8 +97,107 @@ jobs:
       - *setup-bun
       - *install
 
-      - name: Shape conformance
-        run: bun shp check
+      - name: Changed files
+        run: bun run changed-files
+        env:
+          GITHUB_BASE_REF: ${{ github.base_ref }}
+          GITHUB_EVENT_BEFORE: ${{ github.event.before }}
+          GITHUB_SHA: ${{ github.sha }}
+
+      - name: Shape CI
+        run: bun run shape:ci
+
+  shape-copilot-review:
+    name: Shape Copilot Review
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+
+    steps:
+      - name: Detect Copilot token
+        id: copilot-token
+        env:
+          COPILOT_GITHUB_TOKEN: ${{ secrets.COPILOT_GITHUB_TOKEN }}
+        run: |
+          if [ -n "${COPILOT_GITHUB_TOKEN:-}" ]; then
+            echo "available=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "available=false" >> "$GITHUB_OUTPUT"
+            echo "Skipping Copilot Shape contract review because COPILOT_GITHUB_TOKEN is not available."
+          fi
+
+      - name: Checkout
+        if: steps.copilot-token.outputs.available == 'true'
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Bun
+        if: steps.copilot-token.outputs.available == 'true'
+        uses: oven-sh/setup-bun@v2
+
+      - name: Install
+        if: steps.copilot-token.outputs.available == 'true'
+        run: bun install --frozen-lockfile
+
+      - name: Setup Node
+        if: steps.copilot-token.outputs.available == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Install Copilot CLI
+        if: steps.copilot-token.outputs.available == 'true'
+        run: npm install -g @github/copilot
+
+      - name: Changed files
+        if: steps.copilot-token.outputs.available == 'true'
+        run: bun run changed-files
+        env:
+          GITHUB_BASE_REF: ${{ github.base_ref }}
+          GITHUB_EVENT_BEFORE: ${{ github.event.before }}
+          GITHUB_SHA: ${{ github.sha }}
+
+      - name: Shape diagnostics for Copilot
+        if: steps.copilot-token.outputs.available == 'true'
+        run: |
+          set +e
+          {
+            echo "## changed.txt"
+            sed -n '1,200p' changed.txt
+            echo
+            echo "## bun run shape:ci"
+            bun run shape:ci
+            status=$?
+            echo
+            echo "shape_ci_exit=$status"
+          } > shape-copilot-context.txt 2>&1
+
+      - name: Run Copilot Shape contract review
+        if: steps.copilot-token.outputs.available == 'true'
+        env:
+          COPILOT_GITHUB_TOKEN: ${{ secrets.COPILOT_GITHUB_TOKEN }}
+          GITHUB_BASE_REF: ${{ github.base_ref }}
+          GITHUB_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          prompt="$(<.github/prompts/shape-contract-review.md)"
+          prompt="$prompt
+
+          CI context:
+          - Base ref: ${GITHUB_BASE_REF:-unknown}
+          - Head SHA: ${GITHUB_SHA:-unknown}
+          - Changed files are listed in changed.txt.
+          - Shape command output is in shape-copilot-context.txt.
+          - Write the final JSON object to copilot-shape-review.json."
+
+          copilot -p "$prompt" \
+            --allow-tool='read,write(copilot-shape-review.json),shell(git:*),shell(bun:*),shell(rg:*),shell(ls:*),shell(pwd)' \
+            --deny-tool='shell(git push),shell(git commit),shell(git reset),shell(git checkout)' \
+            --no-ask-user
+
+      - name: Check Copilot review result
+        if: steps.copilot-token.outputs.available == 'true'
+        run: node .github/scripts/check-copilot-shape-review.mjs
 
   docs:
     name: Docs

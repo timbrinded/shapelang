@@ -5,7 +5,7 @@ sidebar:
   order: 4
 ---
 
-Rule evaluation decides whether the effective Shape model is coherent. By the time rules run, syntax has been parsed, change blocks have been applied, and declarations have been lowered into facts with provenance.
+Rule evaluation decides whether the effective Shape model is coherent. By the time rules run, syntax has been parsed and declarations have been lowered into facts with provenance.
 
 Rules are intentionally boring. They compare explicit claims. They do not search source code for hidden behavior, and they do not let prose override hard constraints.
 
@@ -45,7 +45,8 @@ The current checker covers these major categories:
 | Final forbidden effects | Did a function emit an effect that a resource trait forbids with `final`? | Change the implementation or model; do not waive it with memory. |
 | Missing grants | Did a function emit an effect its component lacks permission to emit? | Add the narrow grant if the architecture allows it. |
 | Unknown effects | Is a function still marked `effects unknown`? | Replace uncertainty with reviewed complete effects. |
-| Source coverage | Did governed source change without a Shape delta or attestation? | Add a change file or `attest no_shape_change`. |
+| Source coverage | Did governed source change without a Shape update or current attestation? | Update `shape` or add a narrow current `attest no_shape_change`. |
+| Bindings | Did a Shape-affecting change require a paired docs or workflow change? | Update the bound path or add a narrow `docs_not_needed` attestation. |
 | Required context | Did a shape trait require rationale, memory, or description? | Add the typed context block. |
 | Guarded changes | Did a protected target change without reevaluation? | Add a matching `reevaluation` or preserve the shape. |
 | Hypercycles | Did a `forbid hypercycle` rule find a cycle in the directed hypergraph? | Break the cycle or revise the rule intentionally. |
@@ -133,12 +134,10 @@ Grants are part of the architecture model. They should read like deliberate auth
 `effects unknown` is a first-class state. It is useful while a change is being scaffolded, especially when an agent or human has not yet reviewed the diff deeply enough to claim completeness.
 
 ```shape
-module changes.PR_042
+module audit
 
-import audit
-
-change ReviewAuditPurge {
-  add fn AuditStore.reviewPurgeShape1
+component AuditStore {
+  fn reviewPurgeShape1
     source ts("src/audit/purge.ts")
     effects unknown
 }
@@ -147,6 +146,28 @@ change ReviewAuditPurge {
 Unknown effects keep uncertainty visible. They are better than an empty `effects complete` block, which would falsely claim that every material effect has been represented.
 
 Rule evaluation can then force the authoring loop to resolve the uncertainty before the shape is accepted.
+
+## Bindings
+
+Bindings extend changed-file checks beyond implementation coverage. They let a repo say, "if this source or model surface changes, another review surface must also change."
+
+```shape
+module repo
+
+binding RuleEngineDocs {
+  when_changed paths {
+    "packages/shp-checker/src/checker.ts"
+    "shape/checker.shape"
+  }
+  require_changed paths {
+    "docs-site/src/content/docs/inside-shape/rule-evaluation.md"
+    "docs-site/src/content/docs/reference/diagnostics.md"
+  }
+  allow attest docs_not_needed
+}
+```
+
+When `shp check --changed-files changed.txt` sees a triggering path, at least one required path must also appear. A `docs_not_needed` attestation can satisfy the binding only when it points at the triggering path, gives a reason, and is declared in a `.shape` file changed by the current run.
 
 ## Context And Memory Guards
 
@@ -182,7 +203,7 @@ This does two things:
 - It explains why the current shape deserves attention.
 - It creates a guard so future modifications need a reevaluation.
 
-If a change later modifies `Gateway.derivePolicyDecision`, this satisfies the guard:
+If a later model update modifies `Gateway.derivePolicyDecision`, this satisfies the guard:
 
 ```shape
 module gateway
@@ -215,13 +236,6 @@ reevaluation DecisionShapeRechecked {
   reviewer GatewayTeam
   decided_on "2026-06-02"
   evidence test("gateway/error-normalisation.test.ts")
-}
-
-change RefactorDecision {
-  modify fn Gateway.derivePolicyDecision : RefactorSensitive
-    effects complete {
-      Read<PolicySnapshot>
-    }
 }
 ```
 

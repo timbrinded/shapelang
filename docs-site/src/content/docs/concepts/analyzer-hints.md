@@ -10,7 +10,7 @@ The source analyzer is advisory. It scans implementation files for obvious destr
 ![Analyzer hints diagram showing a source scan for DELETE, TRUNCATE, and DROP, comparison with the .shape model, a warning, and the source-of-truth boundary.](../../../assets/infographics/analyzer-advisory-scan.png)
 
 ```bash
-shp analyze --shape-files shape/system/audit.shape fixtures/source/audit_purge.ts
+shp analyze --shape-files fixtures/pass/append_only_append/audit.shape fixtures/source/audit_purge.ts
 ```
 
 If a source file appears to hard-delete data but the shape model does not declare `HardDelete`, the analyzer reports a warning.
