@@ -5,7 +5,7 @@ sidebar:
   order: 4
 ---
 
-Rule evaluation decides whether the effective Shape model is coherent. By the time rules run, syntax has been parsed, change blocks have been applied, and declarations have been lowered into facts with provenance.
+Rule evaluation decides whether the effective Shape model is coherent. By the time rules run, syntax has been parsed and declarations have been lowered into facts with provenance.
 
 Rules are intentionally boring. They compare explicit claims. They do not search source code for hidden behavior, and they do not let prose override hard constraints.
 
@@ -134,12 +134,10 @@ Grants are part of the architecture model. They should read like deliberate auth
 `effects unknown` is a first-class state. It is useful while a change is being scaffolded, especially when an agent or human has not yet reviewed the diff deeply enough to claim completeness.
 
 ```shape
-module changes.PR_042
+module audit
 
-import audit
-
-change ReviewAuditPurge {
-  add fn AuditStore.reviewPurgeShape1
+component AuditStore {
+  fn reviewPurgeShape1
     source ts("src/audit/purge.ts")
     effects unknown
 }
@@ -205,7 +203,7 @@ This does two things:
 - It explains why the current shape deserves attention.
 - It creates a guard so future modifications need a reevaluation.
 
-If a change later modifies `Gateway.derivePolicyDecision`, this satisfies the guard:
+If a later model update modifies `Gateway.derivePolicyDecision`, this satisfies the guard:
 
 ```shape
 module gateway
@@ -238,13 +236,6 @@ reevaluation DecisionShapeRechecked {
   reviewer GatewayTeam
   decided_on "2026-06-02"
   evidence test("gateway/error-normalisation.test.ts")
-}
-
-change RefactorDecision {
-  modify fn Gateway.derivePolicyDecision : RefactorSensitive
-    effects complete {
-      Read<PolicySnapshot>
-    }
 }
 ```
 

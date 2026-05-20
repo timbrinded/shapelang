@@ -10,7 +10,7 @@ import {
   formatAnalyzerWarnings,
   formatDiagnostics,
   formatShapeSource,
-  generateShapeDelta,
+  generateShapeUpdateDraft,
   graphAllShapeModules,
   graphShapeModules,
   listMemoryGuardsShapeModules,
@@ -29,7 +29,7 @@ const USAGE = `Usage:
   shp graph --stats [--kind KIND] [files...]
   shp memory [files...]
   shp obligations [files...]
-  shp author --changed-files changed.txt --component ComponentName [--change ChangeName] [--module module.name]
+  shp author --changed-files changed.txt --component ComponentName [--module module.name]
   shp analyze [--shape-files file1.shape,file2.shape] [source-files...]
 
 When no files are provided, commands scan shape/**/*.shape.
@@ -55,9 +55,6 @@ async function main(): Promise<number> {
         type: "boolean"
       },
       component: {
-        type: "string"
-      },
-      change: {
         type: "string"
       },
       module: {
@@ -92,10 +89,9 @@ async function main(): Promise<number> {
     const changedFiles = await readChangedFiles(changedFilesPath);
     await Bun.write(
       Bun.stdout,
-      generateShapeDelta({
+      generateShapeUpdateDraft({
         changedFiles,
         componentName: values.component,
-        changeName: values.change,
         moduleName: values.module
       })
     );

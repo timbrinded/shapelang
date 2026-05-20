@@ -19,7 +19,7 @@ flowchart LR
   D --> E["editor diagnostics"]
   D --> F["hover and explain output"]
   G["changed files or diff"] --> H["authoring helper"]
-  H --> I["reviewable change scaffold"]
+  H --> I["reviewable model draft"]
   I --> D
 ```
 
@@ -111,19 +111,19 @@ For a new reader, the practical takeaway is that editor behavior is a projection
 
 Authoring helpers are built for agent-assisted review. They should help create a safe draft, not pretend to know more than the reviewer knows.
 
-The CLI command starts from changed files and a component:
+Authoring helpers start from changed files and a component:
 
 ```bash
 bun run shp -- author --changed-files fixtures/changed/audit_purge.txt --component AuditStore
 ```
 
-The generated scaffold is intentionally conservative:
+The generated scaffold is intentionally conservative and should be folded into the owning global model after review:
 
 ```shape
-module changes.generated
+module audit
 
-change GeneratedShapeDelta {
-  add fn AuditStore.reviewAuditPurgeShape1
+component AuditStore {
+  fn reviewAuditPurgeShape1
     source ts("src/audit/purge.ts")
     effects unknown
 }

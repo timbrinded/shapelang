@@ -11,7 +11,7 @@ import {
   formatAnalyzerWarnings,
   formatOnSave,
   formatShapeSource,
-  generateShapeDelta,
+  generateShapeUpdateDraft,
   getCompletions,
   getDefinitionLocation,
   getEditorDiagnostics,
@@ -246,7 +246,7 @@ describe("Shape checker", () => {
     expect(formatDiagnostics(result)).toContain("forbidden effect");
   });
 
-  test("applies change-file function additions to the base model", () => {
+  test("applies change declaration function additions to the base model", () => {
     const base = parseShapeModule(`
       module audit
 
@@ -258,7 +258,7 @@ describe("Shape checker", () => {
       }
     `);
     const change = parseShapeModule(`
-      module changes.PR_001
+      module review.add_audit_retention_purge
       import audit
 
       change AddAuditRetentionPurge {
@@ -283,7 +283,7 @@ describe("Shape checker", () => {
     expect(formatDiagnostics(result)).toContain("AuditStore.purgeOldEvents");
   });
 
-  test("applies change-file function removals before checking", () => {
+  test("applies change declaration function removals before checking", () => {
     const base = parseShapeModule(`
       module audit
 
@@ -300,7 +300,7 @@ describe("Shape checker", () => {
       }
     `);
     const change = parseShapeModule(`
-      module changes.PR_002
+      module review.remove_audit_retention_purge
       import audit
 
       change RemoveAuditRetentionPurge {
@@ -319,7 +319,7 @@ describe("Shape checker", () => {
     expect(result.exitCode).toBe(0);
   });
 
-  test("applies change-file top-level declaration modifications", () => {
+  test("applies change declaration top-level declaration modifications", () => {
     const base = parseShapeModule(`
       module audit
 
@@ -336,7 +336,7 @@ describe("Shape checker", () => {
       }
     `);
     const change = parseShapeModule(`
-      module changes.PR_004
+      module review.reclassify_audit_event
       import audit
 
       change ReclassifyAuditEvent {
@@ -355,7 +355,7 @@ describe("Shape checker", () => {
     expect(result.exitCode).toBe(0);
   });
 
-  test("applies change-file add relation operations before hypercycle checks", () => {
+  test("applies change declaration add relation operations before hypercycle checks", () => {
     const base = parseShapeModule(`
       module deps
 
@@ -374,7 +374,7 @@ describe("Shape checker", () => {
       }
     `);
     const change = parseShapeModule(`
-      module changes.PR_005
+      module review.add_audit_calls_gateway
       import deps
 
       change AddAuditCallsGateway {
@@ -399,7 +399,7 @@ describe("Shape checker", () => {
     expect(output).toContain("calls AuditCallsGateway");
   });
 
-  test("applies change-file modify relation operations before hypercycle checks", () => {
+  test("applies change declaration modify relation operations before hypercycle checks", () => {
     const base = parseShapeModule(`
       module deps
 
@@ -425,7 +425,7 @@ describe("Shape checker", () => {
       }
     `);
     const createsViolation = parseShapeModule(`
-      module changes.PR_006
+      module review.repoint_audit_call
       import deps
 
       change RepointAuditCall {
@@ -436,7 +436,7 @@ describe("Shape checker", () => {
       }
     `);
     const removesViolation = parseShapeModule(`
-      module changes.PR_007
+      module review.repoint_audit_call_away
       import deps
 
       change RepointAuditCallAway {
@@ -466,7 +466,7 @@ describe("Shape checker", () => {
     expect(cleared.exitCode).toBe(0);
   });
 
-  test("applies change-file remove relation operations before hypercycle checks", () => {
+  test("applies change declaration remove relation operations before hypercycle checks", () => {
     const base = parseShapeModule(`
       module deps
 
@@ -490,7 +490,7 @@ describe("Shape checker", () => {
       }
     `);
     const change = parseShapeModule(`
-      module changes.PR_008
+      module review.remove_audit_calls_gateway
       import deps
 
       change RemoveAuditCallsGateway {
@@ -658,7 +658,7 @@ describe("Shape checker", () => {
     );
   });
 
-  test("passes coverage when a change file references the governed source", () => {
+  test("passes coverage when a change declaration references the governed source", () => {
     const base = parseShapeModule(`
       module audit
 
@@ -678,7 +678,7 @@ describe("Shape checker", () => {
       }
     `);
     const change = parseShapeModule(`
-      module changes.PR_003
+      module review.add_append
       import audit
 
       change AddAppend {
@@ -700,18 +700,18 @@ describe("Shape checker", () => {
     const result = checkShapeModules(
       [
         { module: base.module, filePath: "shape/audit.shape" },
-        { module: change.module, filePath: "shape/changes/PR_003.shape" }
+        { module: change.module, filePath: "shape/audit-update.shape" }
       ],
       {
-        changedFiles: ["src/audit/store.ts", "shape/changes/PR_003.shape"]
+        changedFiles: ["src/audit/store.ts", "shape/audit-update.shape"]
       }
     );
 
     expect(result.exitCode).toBe(0);
   });
 
-  test("passes coverage when an absolute change file references the governed source", () => {
-    const base = parseShapeModule(`
+  test("passes coverage when an absolute global Shape file references the governed source", () => {
+    const parsed = parseShapeModule(`
       module audit
 
       resource AuditEvent : AppendOnly
@@ -719,53 +719,40 @@ describe("Shape checker", () => {
       component AuditStore {
         owns AuditEvent
         grants Append<AuditEvent>
-      }
 
-      implementation AuditStoreImpl {
-        paths {
-          "src/audit/**/*.ts"
-        }
-        conforms_to AuditStore
-        on_change require shape_delta
-      }
-    `);
-    const change = parseShapeModule(`
-      module changes.PR_003
-      import audit
-
-      change AddAppend {
-        add fn AuditStore.appendEvent
+        fn appendEvent
           source ts("src/audit/store.ts#appendEvent")
           effects complete {
             Append<AuditEvent>
               evidence ts("src/audit/store.ts:8-14")
           }
       }
+
+      implementation AuditStoreImpl {
+        paths {
+          "src/audit/**/*.ts"
+        }
+        conforms_to AuditStore
+        on_change require shape_delta
+      }
     `);
 
-    expect(base.ok).toBe(true);
-    expect(change.ok).toBe(true);
-    if (!base.ok || !change.ok) {
+    expect(parsed.ok).toBe(true);
+    if (!parsed.ok) {
       return;
     }
 
     const result = checkShapeModules(
-      [
-        { module: base.module, filePath: resolve(repoRoot, "shape/audit.shape") },
-        {
-          module: change.module,
-          filePath: resolve(repoRoot, "shape/changes/PR_003.shape")
-        }
-      ],
+      [{ module: parsed.module, filePath: resolve(repoRoot, "shape/audit.shape") }],
       {
-        changedFiles: ["src/audit/store.ts", "shape/changes/PR_003.shape"]
+        changedFiles: ["src/audit/store.ts", "shape/audit.shape"]
       }
     );
 
     expect(result.exitCode).toBe(0);
   });
 
-  test("rejects stale change-file source references for current coverage", () => {
+  test("rejects stale change declaration source references for current coverage", () => {
     const base = parseShapeModule(`
       module audit
 
@@ -785,7 +772,7 @@ describe("Shape checker", () => {
       }
     `);
     const change = parseShapeModule(`
-      module changes.PR_003
+      module review.add_append
       import audit
 
       change AddAppend {
@@ -807,7 +794,7 @@ describe("Shape checker", () => {
     const result = checkShapeModules(
       [
         { module: base.module, filePath: "shape/audit.shape" },
-        { module: change.module, filePath: "shape/changes/PR_003.shape" }
+        { module: change.module, filePath: "shape/audit-update.shape" }
       ],
       {
         changedFiles: ["src/audit/store.ts"]
@@ -881,7 +868,7 @@ describe("Shape checker", () => {
       return;
     }
     const staleAttestation = checkShapeModules(
-      [{ module: withAttestation.module, filePath: "shape/changes/existing-waiver.shape" }],
+      [{ module: withAttestation.module, filePath: "shape/existing-waiver.shape" }],
       {
         changedFiles: ["packages/shp-checker/src/checker.ts"]
       }
@@ -892,9 +879,9 @@ describe("Shape checker", () => {
     );
 
     const attested = checkShapeModules(
-      [{ module: withAttestation.module, filePath: "shape/changes/current-waiver.shape" }],
+      [{ module: withAttestation.module, filePath: "shape/current-waiver.shape" }],
       {
-        changedFiles: ["packages/shp-checker/src/checker.ts", "shape/changes/current-waiver.shape"]
+        changedFiles: ["packages/shp-checker/src/checker.ts", "shape/current-waiver.shape"]
       }
     );
     expect(attested.exitCode).toBe(0);
@@ -2621,21 +2608,20 @@ describe("Shape authoring assistant", () => {
     });
     const critic = buildShapeCriticPrompt(
       { changedFiles: ["src/audit/purge.ts"] },
-      "change Proposed {}"
+      "component AuditStore {}"
     );
 
     expect(prompt).toContain("Use effects unknown when uncertainty remains");
     expect(prompt).toContain("HardDelete");
     expect(prompt).toContain("If adding PreserveInline");
     expect(prompt).toContain("Do not use rationale or memory to waive final forbidden effects");
-    expect(critic).toContain("Did the shape delta cover every governed changed file?");
-    expect(critic).toContain("Did the delta touch a guarded target without reevaluation?");
+    expect(critic).toContain("Did the model update cover every governed changed file?");
+    expect(critic).toContain("Did the model update touch a guarded target without reevaluation?");
   });
 
-  test("generates a valid reviewable change scaffold", () => {
-    const source = generateShapeDelta({
-      moduleName: "changes.PR_001",
-      changeName: "ReviewAuditChange",
+  test("generates a valid reviewable global model scaffold", () => {
+    const source = generateShapeUpdateDraft({
+      moduleName: "audit",
       componentName: "AuditStore",
       changedFiles: ["src/audit/purge.ts"]
     });
@@ -2647,9 +2633,8 @@ describe("Shape authoring assistant", () => {
   });
 
   test("can generate an optional memory guard scaffold", () => {
-    const source = generateShapeDelta({
-      moduleName: "changes.PR_001",
-      changeName: "ReviewAuditChange",
+    const source = generateShapeUpdateDraft({
+      moduleName: "audit",
       componentName: "AuditStore",
       changedFiles: ["src/audit/purge.ts"],
       includeMemoryGuardScaffold: true

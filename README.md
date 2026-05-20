@@ -116,15 +116,14 @@ component AuditStore {
 }
 ```
 
-A change file can preview a new function before the broader model is updated:
+A source-backed model update can add a new function directly to the global Shape model:
 
 ```shape
-module changes.PR_001
+module audit
 
-import audit
-
-change AddAuditRetentionPurge {
-  add fn AuditStore.purgeOldEvents
+component AuditStore {
+  grants HardDelete<AuditEvent>
+  fn purgeOldEvents
     source ts("src/audit/purge.ts#purgeOldEvents")
     effects complete {
       HardDelete<AuditEvent>
@@ -133,19 +132,18 @@ change AddAuditRetentionPurge {
 }
 ```
 
-That proposed change fails because `AuditEvent : AppendOnly` derives a final forbid for `HardDelete<AuditEvent>`.
+That model update fails because `AuditEvent : AppendOnly` derives a final forbid for `HardDelete<AuditEvent>`.
 
 ## How It Works
 
 The checker pipeline is:
 
 1. Parse `.shape` files with Langium.
-2. Apply change blocks on top of the base model.
-3. Lower declarations into facts such as resources, traits, effects, grants, relation hyperedges, and governed paths.
-4. Evaluate deterministic rules.
-5. Emit diagnostics with provenance, including the declarations that caused a violation.
+2. Lower declarations into facts such as resources, traits, effects, grants, relation hyperedges, and governed paths.
+3. Evaluate deterministic rules.
+4. Emit diagnostics with provenance, including the declarations that caused a violation.
 
-The LLM-facing authoring helpers intentionally produce Shape deltas, not prose. The optional analyzer is advisory only: it can flag suspicious omissions, but `.shape` remains the source of truth.
+The optional analyzer is advisory only: it can flag suspicious omissions, but `.shape` remains the source of truth.
 
 ## Commands
 
@@ -158,7 +156,6 @@ shp explain AuditEvent
 shp graph Gateway --kind calls
 shp memory
 shp obligations
-shp author --changed-files changed.txt --component AuditStore
 shp analyze --shape-files fixtures/pass/append_only_append/audit.shape src/audit/purge.ts
 ```
 
@@ -174,7 +171,6 @@ Useful commands:
 - `shp graph [SYMBOL] [--kind KIND]`: with a SYMBOL, print the hyperedges incident to that symbol; without a SYMBOL, print the whole hypergraph grouped by kind. Use `shp graph --stats [--kind KIND]` for aggregate vertex, hyperedge, and incidence counts.
 - `shp memory`: list rationale and memory entries that protect design context.
 - `shp obligations`: list open design-memory obligations such as missing rationale or reevaluation.
-- `shp author --changed-files changed.txt --component AuditStore`: scaffold a review change file with explicit unknowns.
 - `shp analyze --shape-files fixtures/pass/append_only_append/audit.shape src/file.ts`: compare obvious source hints against declared effects.
 
 ## Project Layout

@@ -22,12 +22,12 @@ These additional prompts were intentionally lower-density than the first set. Ea
 | `first-shape-file-map.png` | `learn/first-shape-file.md` | `First Shape File`, `Resource`, `Component`, `Function summary`, `Effect`, `Evidence`, `checker reads claims` |
 | `component-boundary-grants.png` | `concepts/components-ownership-grants.md` | `Component Boundary`, `Component`, `owns`, `grants`, `functions`, `relation (external)`, `not runtime allocation` |
 | `evidence-review-path.png` | `concepts/evidence-source-refs.md` | `Evidence Path`, `Claim`, `Effect`, `Evidence`, `Source span`, `Reviewer checks`, `checker keeps provenance` |
-| `implementation-coverage-map.png` | `concepts/implementations-coverage.md` | `Implementation Coverage`, `source paths`, `implementation`, `component`, `changed file`, `shape delta`, `attestation`, `coverage gate` |
+| `implementation-coverage-map.png` | `concepts/implementations-coverage.md` | `Implementation Coverage`, `source paths`, `implementation`, `component`, `changed file`, `model update`, `attestation`, `coverage gate` |
 | `unknowns-safety-states.png` | `concepts/unknowns-safety.md` | `Unknowns Stay Visible`, `effects unknown`, `review blocker`, `effects complete`, `known effects`, `memory`, `known constraint` |
 | `hypercycle-witness-path.png` | `concepts/rules-hypercycles.md` | `Hypercycle Witness Path`, `Component A`, `Component B`, `calls`, `callbacks`, `forbid hypercycle`, `witness path`, `rejected` |
 | `analyzer-advisory-scan.png` | `concepts/analyzer-hints.md` | `Analyzer Hints`, `source scan`, `DELETE`, `TRUNCATE`, `DROP`, `.shape model`, `warning`, `source of truth` |
 | `diagnostics-causal-trail.png` | `concepts/diagnostics-provenance.md` | `Diagnostic Causal Trail`, `function claim`, `effect`, `resource`, `trait`, `constraint`, `provenance`, `source evidence` |
-| `fact-lowering-map.png` | `inside-shape/fact-lowering.md` | `Fact Lowering`, `declarations`, `apply changes`, `effective model`, `facts`, `rules`, `diagnostics`, `provenance` |
+| `fact-lowering-map.png` | `inside-shape/fact-lowering.md` | `Fact Lowering`, `declarations`, `effective model`, `facts`, `rules`, `diagnostics`, `provenance` |
 | `rule-evaluation-board.png` | `inside-shape/rule-evaluation.md` | `Rule Evaluation`, `facts`, `final forbid`, `missing grant`, `coverage`, `design memory`, `hypercycle rule`, `pass`, `reject` |
 | `review-helpers.png` | `inside-shape/formatter-editor-authoring.md` | `Review Helpers`, `formatter`, `editor APIs`, `authoring`, `stable diff`, `diagnostics`, `effects unknown`, `human fills evidence` |
 | `shape-boundary.png` | `inside-shape/design-rationale.md` | `Shape Boundary`, `agent drafts claims`, `human reviews claims`, `checker rejects incoherence`, `tests remain`, `code review remains`, `not a proof system` |
@@ -224,27 +224,26 @@ Content constraints:
 
 ## pr-change-review.png
 
-Parameters: context=`docs-site/src/content/docs/learn/pr-change-files.md`, `docs-site/src/content/docs/concepts/change-files-attestations.md`, `docs-site/src/content/docs/concepts/implementations-coverage.md`, `docs-site/src/content/docs/learn/ci-workflow.md`; orientation=landscape; level=medium; format=markdown; model=gpt-image-2; quality=high; size=1680x944.
+Parameters: context=`docs-site/src/content/docs/learn/global-model-updates.md`, `docs-site/src/content/docs/concepts/model-updates-attestations.md`, `docs-site/src/content/docs/concepts/implementations-coverage.md`, `docs-site/src/content/docs/learn/ci-workflow.md`; orientation=landscape; level=medium; format=markdown; model=gpt-image-2; quality=high; size=1680x944.
 
 ```text
 Use case: infographic-diagram
 Asset type: docs workflow explainer
 
-Create a landscape 16:9 infographic for senior software engineers learning Shape PR workflows.
+Create a landscape 16:9 infographic for senior software engineers learning Shape model-update workflows.
 Use @file:DESIGN.md as the visual style reference.
 
 Design system:
 professional enterprise workstation aesthetic; Space Grotesk typography; Arbitrum Blue #00639a, deep slate text, light structured surfaces; tight 4px-grid alignment, compact panels, crisp 1px borders; tonal layering instead of soft shadows; high-density but readable information hierarchy.
 
 Main message:
-PRs apply a change file on top of the baseline model, while coverage verifies governed source paths were documented.
+PRs update the global Shape model directly, while coverage verifies governed source paths were documented.
 
 Required visible text:
 - "PR Change Review"
-- "shape/system"
-- "shape/changes"
+- "shape model"
 - "changed files"
-- "shape delta"
+- "model update"
 - "attestation"
 - "effects unknown"
 - "coverage"
@@ -252,8 +251,8 @@ Required visible text:
 - "CI result"
 
 Required layout:
-- Two-layer workflow: top layer shows model application from "shape/system" plus "shape/changes" into "shp check"; bottom layer shows "changed files" into "coverage".
-- Show "shape delta" and "attestation" as alternate documentation paths for governed changes.
+- Two-layer workflow: top layer shows "shape model" flowing into "shp check"; bottom layer shows "changed files" into "coverage".
+- Show "model update" and "attestation" as alternate documentation paths for governed changes.
 - Show "effects unknown" as an amber review blocker, not as a pass state.
 - Right side merges "coverage" and "shp check" into "CI result".
 
@@ -270,7 +269,7 @@ Content constraints:
 
 ## design-memory-reevaluation.png
 
-Parameters: context=`docs-site/src/content/docs/concepts/refactor-constraints.md`, `docs-site/src/content/docs/concepts/change-files-attestations.md`, `docs-site/src/content/docs/concepts/unknowns-safety.md`; orientation=landscape; level=medium; format=markdown; model=gpt-image-2; quality=high; size=1680x944.
+Parameters: context=`docs-site/src/content/docs/concepts/refactor-constraints.md`, `docs-site/src/content/docs/concepts/model-updates-attestations.md`, `docs-site/src/content/docs/concepts/unknowns-safety.md`; orientation=landscape; level=medium; format=markdown; model=gpt-image-2; quality=high; size=1680x944.
 
 ```text
 Use case: infographic-diagram

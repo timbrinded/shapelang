@@ -87,28 +87,24 @@ Provenance is why the checker can produce a useful diagnostic instead of a gener
 
 ## Effective Model First
 
-Change declarations are applied before facts are lowered. The checker does not lower "base facts" and "patch facts" independently, then try to reconcile them later. It first builds the model that would exist if the change were accepted.
+The committed global model is assembled before facts are lowered. The checker does not lower separate fact sets and reconcile them later.
 
 ```mermaid
 sequenceDiagram
-  participant Baseline as Base modules
-  participant Change as Change module
+  participant Global as Global modules
   participant Model as Effective model
   participant Facts as Lowered facts
-  Baseline->>Model: declare resources, components, functions
-  Change->>Model: add, modify, remove
+  Global->>Model: declare resources, components, functions
   Model->>Facts: emit one normalized fact set
 ```
 
-That design keeps PR review straightforward. If a change modifies a guarded function, the modified function is what rule evaluation sees. If a change adds a function with `effects unknown`, the model really contains a function with unknown effects, and the relevant rule can reject or surface that uncertainty.
+That design keeps review straightforward. If the global model contains a function with `effects unknown`, the lowered model really contains an unknown effect fact, and the relevant rule can reject or surface that uncertainty.
 
 ```shape
-module changes.PR_042
+module audit
 
-import audit
-
-change ReviewAuditPurge {
-  add fn AuditStore.reviewPurgeShape1
+component AuditStore {
+  fn reviewPurgeShape1
     source ts("src/audit/purge.ts")
     effects unknown
 }

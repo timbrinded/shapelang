@@ -25,12 +25,10 @@ Do not treat analyzer output as proof. Treat it as a prompt to inspect the sourc
 A suspicious purge might become:
 
 ```shape
-module changes.PR_001
+module audit
 
-import audit
-
-change AddAuditRetentionPurge {
-  add fn AuditStore.purgeOldEvents
+component AuditStore {
+  fn purgeOldEvents
     source ts("src/audit/purge.ts#purgeOldEvents")
     effects complete {
       HardDelete<AuditEvent>

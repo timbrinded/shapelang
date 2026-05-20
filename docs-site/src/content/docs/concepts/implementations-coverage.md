@@ -29,7 +29,7 @@ implementation AuditStoreImpl {
 
 The coverage command compares changed files with these governed paths. A matching `source` or `evidence` reference only counts when the declaring `.shape` file is part of the current changed-file list.
 
-## Missing delta failure
+## Missing model update failure
 
 Run:
 

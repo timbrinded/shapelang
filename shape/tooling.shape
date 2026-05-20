@@ -18,7 +18,7 @@ resource EditorOutput
 
 resource FormattedShape
 
-resource ShapeChange
+resource ShapeModelDraft
 
 component ShapeAnalyzer {
   owns AnalyzerHint
@@ -36,9 +36,9 @@ component ShapeAnalyzer {
 
 component ShapeAuthoring {
   owns AuthoringPrompt
-  owns ShapeChange
+  owns ShapeModelDraft
   grants Append<AuthoringPrompt>
-  grants Append<ShapeChange>
+  grants Append<ShapeModelDraft>
   grants Read<ChangedFileList>
   fn buildShapeAuthorPrompt : RefactorSensitive
     source ts("packages/shp-checker/src/authoring.ts#buildShapeAuthorPrompt")
@@ -48,10 +48,10 @@ component ShapeAuthoring {
       Read<ChangedFileList>
         evidence ts("packages/shp-checker/src/authoring.ts")
     }
-  fn generateShapeDelta : RefactorSensitive
-    source ts("packages/shp-checker/src/authoring.ts#generateShapeDelta")
+  fn generateShapeUpdateDraft : RefactorSensitive
+    source ts("packages/shp-checker/src/authoring.ts#generateShapeUpdateDraft")
     effects complete {
-      Append<ShapeChange>
+      Append<ShapeModelDraft>
         evidence ts("packages/shp-checker/src/authoring.ts")
       Read<ChangedFileList>
         evidence ts("packages/shp-checker/src/authoring.ts")
@@ -127,7 +127,7 @@ relation ShapeAnalyzerUsesChecker {
 relation ShapeAuthoringUsesChecker {
   kind calls
   connects ShapeAuthoring -> ShapeChecker
-  summary "ChangeValidation"
+  summary "ModelDraftValidation"
 }
 
 relation ShapeEditorUsesChecker {
@@ -193,11 +193,11 @@ rule tooling_contract_providers {
   forbid provides CommandLineInterface except ShpCli
 }
 
-memory AuthoringUnknownSafety : RefactorConstraint<fn ShapeAuthoring.generateShapeDelta> {
-  applies_to fn ShapeAuthoring.generateShapeDelta
+memory AuthoringUnknownSafety : RefactorConstraint<fn ShapeAuthoring.generateShapeUpdateDraft> {
+  applies_to fn ShapeAuthoring.generateShapeUpdateDraft
   status Explained
   confidence High
-  summary "Generated deltas must prefer effects unknown over false empty complete summaries."
+  summary "Generated model drafts must prefer effects unknown over false empty complete summaries."
   owner ShapeMaintainers
   protects shape ExplicitUnknowns
   guards on_change require ReEvaluation<Self>

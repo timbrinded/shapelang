@@ -50,7 +50,7 @@ component CiPipeline {
       Read<SemanticDiagnostics>
         evidence yaml(".github/workflows/shape.yml")
       Update<CopilotReviewResult>
-        evidence yaml(".github/workflows/shape.yml")
+        evidence mjs(".github/scripts/check-copilot-shape-review.mjs")
     }
   fn writeChangedFiles
     source sh("scripts/write-changed-files.sh")
@@ -70,7 +70,7 @@ component DocsSite {
       Read<DocsContent>
         evidence md("docs-site/src/content/docs/concepts/analyzer-hints.md")
       Read<DocsContent>
-        evidence md("docs-site/src/content/docs/concepts/change-files-attestations.md")
+        evidence md("docs-site/src/content/docs/concepts/model-updates-attestations.md")
       Read<DocsContent>
         evidence md("docs-site/src/content/docs/concepts/components-ownership-grants.md")
       Read<DocsContent>
@@ -80,7 +80,7 @@ component DocsSite {
       Read<DocsContent>
         evidence md("docs-site/src/content/docs/concepts/rules-hypercycles.md")
       Read<DocsContent>
-        evidence md("docs-site/src/content/docs/examples/authoring-pr-delta.md")
+        evidence md("docs-site/src/content/docs/examples/global-model-update.md")
       Read<DocsContent>
         evidence md("docs-site/src/content/docs/examples/analyzer-warning.md")
       Read<DocsContent>
@@ -104,7 +104,7 @@ component DocsSite {
       Read<DocsContent>
         evidence md("docs-site/src/content/docs/learn/first-shape-file.md")
       Read<DocsContent>
-        evidence md("docs-site/src/content/docs/learn/pr-change-files.md")
+        evidence md("docs-site/src/content/docs/learn/global-model-updates.md")
       Read<DocsContent>
         evidence md("docs-site/src/content/docs/learn/quickstart.md")
       Read<DocsContent>
@@ -287,6 +287,7 @@ implementation SyntaxHighlighterSource {
 
 implementation WorkflowSource {
   paths {
+    ".github/scripts/**/*.mjs"
     ".github/workflows/**/*.yml"
   }
   conforms_to CiPipeline
@@ -338,8 +339,8 @@ binding RuleEngineDocs {
     "shape/checker.shape"
   }
   require_changed paths {
-    "docs-site/src/content/docs/concepts/change-files-attestations.md"
     "docs-site/src/content/docs/concepts/diagnostics-provenance.md"
+    "docs-site/src/content/docs/concepts/model-updates-attestations.md"
     "docs-site/src/content/docs/inside-shape/rule-evaluation.md"
     "docs-site/src/content/docs/reference/diagnostics.md"
   }
@@ -375,4 +376,19 @@ memory ReleaseChecksumContract : RefactorConstraint<fn ReleasePipeline.buildRele
 attest no_shape_change {
   source md("docs-site/src/content/docs/concepts/rules-dependency-graphs.md")
   reason "Dependency graph docs were replaced by hypercycle docs in the hypergraph redesign."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/concepts/change-files-attestations.md")
+  reason "Page was renamed and replaced by global model update documentation."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/examples/authoring-pr-delta.md")
+  reason "Example was renamed and replaced by global model update documentation."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/learn/pr-change-files.md")
+  reason "Guide was renamed and replaced by global model update documentation."
 }

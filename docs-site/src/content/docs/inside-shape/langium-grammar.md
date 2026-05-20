@@ -100,17 +100,15 @@ The semantic checker gives those fields meaning:
 
 The grammar only says the structure is legal. The checker decides whether obligations are satisfied.
 
-## Change Syntax
+## Global Update Syntax
 
-Change blocks are how a PR proposes architecture deltas without rewriting the whole model.
+The repo workflow updates the global model directly. The grammar accepts the normal declarations that make up that model.
 
 ```shape
-module changes.PR_042
+module audit
 
-import audit
-
-change ReviewAuditPurge {
-  modify fn AuditStore.purgeOldEvents
+component AuditStore {
+  fn purgeOldEvents
     source ts("src/audit/purge.ts#purgeOldEvents")
     effects complete {
       HardDelete<AuditEvent>
@@ -119,29 +117,27 @@ change ReviewAuditPurge {
 }
 ```
 
-The grammar supports function-level edits and declaration-level edits:
+Global updates can add, modify, or remove ordinary declarations in the owning module:
 
 ```shape no-verify
-change Example {
-  add fn ComponentName.newFunction
+component ComponentName {
+  fn newFunction
     effects unknown
 
-  modify fn ComponentName.existingFunction
+  fn existingFunction
     effects complete {
       Read<ResourceName>
     }
+}
 
-  remove fn ComponentName.oldFunction
+resource NewResource
 
-  add resource NewResource
-  modify component ExistingComponent {
-    owns NewResource
-  }
-  remove rule old_policy
+rule new_policy {
+  forbid hypercycle over calls
 }
 ```
 
-The checker applies these edits before lowering facts. That is why change syntax belongs in the language rather than a separate metadata file.
+The checker lowers the committed global model into facts before evaluating rules.
 
 ## Binding Syntax
 

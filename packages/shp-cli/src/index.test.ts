@@ -78,15 +78,13 @@ describe("shp CLI", () => {
       "fixtures/changed/audit_purge.txt",
       "--component",
       "AuditStore",
-      "--change",
-      "ReviewAuditChange",
       "--module",
-      "changes.PR_001"
+      "audit"
     ]);
 
     expect(result.exitCode).toBe(0);
-    expect(result.stdout).toContain("module changes.PR_001");
-    expect(result.stdout).toContain("change ReviewAuditChange");
+    expect(result.stdout).toContain("module audit");
+    expect(result.stdout).toContain("component AuditStore");
     expect(result.stdout).toContain("effects unknown");
     expect(result.stderr).toBe("");
   });

@@ -131,7 +131,7 @@ Replace unknowns with a source-backed `effects complete` block before accepting 
 
 ## Governed source changed without Shape update
 
-Cause: a changed source path matches an implementation block with `on_change require shape_delta`, but the PR did not include a matching Shape update or current attestation.
+Cause: a changed source path matches an implementation block with `on_change require shape_delta`, but the changed-file set did not include a matching Shape update or current attestation.
 
 Run coverage with the changed-file list to reproduce it:
 
@@ -169,10 +169,6 @@ attest docs_not_needed {
 ```
 
 Bindings are review gates. They ensure docs are considered when Shape-affecting code or model files change.
-
-## Invalid change target
-
-Cause: a change block tries to modify or remove a function that is not present in the effective model.
 
 ## Duplicate function or implementation
 

@@ -220,7 +220,7 @@ memory BindingDocsCouplingContract : RefactorConstraint<fn ShapeBindings.checkBi
   applies_to fn ShapeBindings.checkBindings
   status Explained
   confidence High
-  summary "Bindings enforce review coupling between Shape-affecting changes and documentation updates or narrow current-change docs_not_needed attestations."
+  summary "Bindings enforce review coupling and compare current attestations with normalized repo-relative changed-file paths."
   owner ShapeMaintainers
   protects shape DocsCoupling
   guards on_change require ReEvaluation<Self>
@@ -240,7 +240,7 @@ memory CoverageCurrentDeltaContract : RefactorConstraint<fn ShapeRuleEngine.chec
   applies_to fn ShapeRuleEngine.checkCoverage
   status Explained
   confidence High
-  summary "Coverage may accept a source or attestation waiver only when the declaring Shape file is part of the current changed-file input."
+  summary "Coverage accepts a source or attestation only when the declaring Shape file matches the current changed-file input after path normalization."
   owner ShapeMaintainers
   protects shape CurrentChangeCoverage
   guards on_change require ReEvaluation<Self>

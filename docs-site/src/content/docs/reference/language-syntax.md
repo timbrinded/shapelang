@@ -17,7 +17,7 @@ import shared.resources
 resource AuditEvent : AppendOnly
 ```
 
-`module` is optional, but named modules make imports and change files clearer.
+`module` is optional, but named modules make imports and diagnostics clearer.
 
 ## Top-level declarations
 
@@ -30,7 +30,6 @@ component AuditStore { ... }
 relation AuditWritePath { ... }
 implementation AuditStoreImpl { ... }
 binding CheckerDocs { ... }
-change AddAuditRetentionPurge { ... }
 attest no_shape_change { ... }
 rule NoCallsCycle { ... }
 rationale InlineDecision : InlineRationale<fn Gateway.derivePolicyDecision> { ... }
@@ -159,43 +158,34 @@ attest docs_not_needed {
 
 Bindings enforce review coupling. They do not prove that the paired docs are complete.
 
-## Change entries
+## Global model edits
 
 ```shape
-module changes.PR_001
+module audit
 
-import audit
-
-change ReviewAuditChange {
-  add fn AuditStore.purgeOldEvents
+component AuditStore {
+  fn purgeOldEvents
     source ts("src/audit/purge.ts#purgeOldEvents")
     effects complete {
       HardDelete<AuditEvent>
         evidence ts("src/audit/purge.ts:12-16")
     }
-  remove fn AuditStore.oldPurge
 }
 ```
 
-Change blocks can add, modify, and remove functions or top-level declarations (`resource`, `trait`, `component`, `relation`, `implementation`, `binding`, `rule`).
-
-`add relation` / `modify relation` carry a full `relation` body, matching the [relation syntax](#relations) above; `remove relation` cites the relation by name only.
+The repository workflow updates the global model directly. Add, modify, or remove normal declarations in the owning module.
 
 ```shape
-module changes.PR_002
+module audit
 
-import audit
+relation AuditCallsGateway {
+  kind calls
+  connects AuditStore -> Gateway
+}
 
-change AdjustAuditGraph {
-  add relation AuditCallsGateway {
-    kind calls
-    connects AuditStore -> Gateway
-  }
-  modify relation GatewayCallsAudit {
-    kind calls
-    connects Gateway -> AuditStore
-  }
-  remove relation StaleProvidesEdge
+relation GatewayCallsAudit {
+  kind calls
+  connects Gateway -> AuditStore
 }
 ```
 
