@@ -1655,26 +1655,7 @@ function lowerChange(change: ChangeDecl, filePath: string | undefined, model: Mo
     if (isAddFunctionChange(entry) || isModifyFunctionChange(entry)) {
       const component = model.components.get(entry.component);
       if (!component) {
-        if (isModifyFunctionChange(entry)) {
-          model.diagnostics.push(
-            invalidChangeTargetDiagnostic(change.name, entry, "modify", filePath)
-          );
-        } else {
-          model.diagnostics.push({
-            kind: "unknown_name",
-            nameKind: "component",
-            name: entry.component,
-            filePath,
-            causedBy: [
-              describeProvenance(
-                provenance(
-                  filePath,
-                  `change ${change.name} ${entry.$type} ${entry.component}.${entry.name}`
-                )
-              )
-            ]
-          });
-        }
+        model.diagnostics.push(unknownChangeComponentDiagnostic(change.name, entry, filePath));
         continue;
       }
 
@@ -1715,7 +1696,11 @@ function lowerChange(change: ChangeDecl, filePath: string | undefined, model: Mo
       emitFunctionFacts(fn, model);
     } else if (isRemoveFunctionChange(entry)) {
       const component = model.components.get(entry.component);
-      if (!component?.functions.has(entry.name)) {
+      if (!component) {
+        model.diagnostics.push(unknownChangeComponentDiagnostic(change.name, entry, filePath));
+        continue;
+      }
+      if (!component.functions.has(entry.name)) {
         model.diagnostics.push(
           invalidChangeTargetDiagnostic(change.name, entry, "remove", filePath)
         );
@@ -1743,6 +1728,24 @@ function lowerChange(change: ChangeDecl, filePath: string | undefined, model: Mo
       removeDeclaration(entry.kind, entry.name, model);
     }
   }
+}
+
+function unknownChangeComponentDiagnostic(
+  changeName: string,
+  entry: { $type: string; component: string; name: string },
+  filePath: string | undefined
+): Extract<SemanticDiagnostic, { kind: "unknown_name" }> {
+  return {
+    kind: "unknown_name",
+    nameKind: "component",
+    name: entry.component,
+    filePath,
+    causedBy: [
+      describeProvenance(
+        provenance(filePath, `change ${changeName} ${entry.$type} ${entry.component}.${entry.name}`)
+      )
+    ]
+  };
 }
 
 function invalidChangeTargetDiagnostic(

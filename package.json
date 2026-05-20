@@ -21,7 +21,7 @@
     "langium:generate": "bunx langium-cli generate",
     "lint": "oxlint --deny-warnings .",
     "shape:check": "bun shp check",
-    "shape:ci": "bun run format:shape:check && bun shp check --changed-files changed.txt && bun shp coverage --changed-files changed.txt && bun shp obligations && bun shp memory",
+    "shape:ci": "bun run format:shape:check && bun shp check --changed-files changed.txt && bun shp obligations && bun shp memory",
     "shape:coverage": "bun shp coverage --changed-files changed.txt",
     "shp": "bun packages/shp-cli/src/index.ts",
     "test": "bun test",

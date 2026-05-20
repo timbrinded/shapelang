@@ -328,6 +328,22 @@ describe("Shape checker", () => {
     expect(invalidChange.exitCode).toBe(1);
     expect(formatDiagnostics(invalidChange)).toContain("invalid change target");
 
+    const missingChangeComponent = checkShapeSource(`
+      module changes
+
+      change UpdateMissingComponent {
+        modify fn MissingParser.parseConfig
+          effects complete {
+          }
+        remove fn MissingParser.oldParser
+      }
+    `);
+    const missingChangeComponentOutput = formatDiagnostics(missingChangeComponent);
+    expect(missingChangeComponent.exitCode).toBe(1);
+    expect(missingChangeComponentOutput).toContain("unknown component");
+    expect(missingChangeComponentOutput).toContain("MissingParser");
+    expect(missingChangeComponentOutput).not.toContain("missing function MissingParser");
+
     const unresolvedDependency = checkShapeSource(`
       module deps
 
