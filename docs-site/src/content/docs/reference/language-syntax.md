@@ -17,7 +17,7 @@ import shared.resources
 resource AuditEvent : AppendOnly
 ```
 
-`module` is optional, but named modules make imports and change files clearer.
+`module` is optional, but named modules make imports and optional change files clearer.
 
 ## Top-level declarations
 
@@ -122,7 +122,7 @@ change ReviewAuditChange {
 }
 ```
 
-Change blocks can add, modify, and remove functions or top-level declarations.
+Change blocks can add, modify, and remove functions or top-level declarations in the loaded model.
 
 ## Bindings
 
@@ -134,7 +134,7 @@ module repo
 binding CheckerDocs {
   when_changed paths {
     "packages/shp-checker/src/checker.ts"
-    "shape/system/checker.shape"
+    "shape/checker.shape"
   }
   require_changed paths {
     "docs-site/src/content/docs/inside-shape/rule-evaluation.md"

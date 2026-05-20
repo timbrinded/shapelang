@@ -105,13 +105,16 @@ component ShapeRuleEngine {
   provides SemanticDiagnosticSet
   requires ShapeModelLowerer via LoweredFacts
   grants Append<SemanticDiagnostics>
+  grants Read<ChangedFileList>
   grants Read<EffectiveModel>
   grants Read<FactSet>
   grants Update<DependencyGraph>
-  fn checkCoverage
+  fn checkCoverage : RefactorSensitive
     source ts("packages/shp-checker/src/checker.ts#checkCoverage")
     effects complete {
       Append<SemanticDiagnostics>
+        evidence ts("packages/shp-checker/src/checker.ts")
+      Read<ChangedFileList>
         evidence ts("packages/shp-checker/src/checker.ts")
       Read<EffectiveModel>
         evidence ts("packages/shp-checker/src/checker.ts")
@@ -165,6 +168,16 @@ memory CheckPipelineOrder : CheckOrderRationale<fn ShapeChecker.checkShapeModule
   summary "The checker must lower the effective model before semantic rules and coverage/binding checks run."
   owner ShapeMaintainers
   protects shape PhaseOrder
+  guards on_change require ReEvaluation<Self>
+}
+
+memory CoverageCurrentDeltaContract : RefactorConstraint<fn ShapeRuleEngine.checkCoverage> {
+  applies_to fn ShapeRuleEngine.checkCoverage
+  status Explained
+  confidence High
+  summary "Coverage may accept a source or attestation waiver only when the declaring Shape file is part of the current changed-file input."
+  owner ShapeMaintainers
+  protects shape CurrentChangeCoverage
   guards on_change require ReEvaluation<Self>
 }
 

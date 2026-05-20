@@ -24,8 +24,7 @@ shp analyze [--shape-files file1.shape,file2.shape] [source-files...]
 When no files are provided, commands scan:
 
 ```text
-shape/system/**/*.shape
-shape/changes/**/*.shape
+shape/**/*.shape
 ```
 
 ## Commands
@@ -33,7 +32,7 @@ shape/changes/**/*.shape
 | Command | Purpose |
 | --- | --- |
 | `check` | Parse modules, apply change blocks, lower facts, and run semantic checks. With `--changed-files`, it also runs coverage and bindings. |
-| `coverage` | Require shape deltas or attestations when governed source paths change. |
+| `coverage` | Require Shape updates or current attestations when governed source paths change. |
 | `fmt` | Format Shape files, or check formatting with `--check`. |
 | `explain` | Print derived facts and constraints for a symbol. |
 | `graph` | Print dependency paths for a symbol and relation. |
@@ -46,7 +45,6 @@ shape/changes/**/*.shape
 
 ```bash
 shp check
-shp check shape/system/checker.shape
 shp check --changed-files changed.txt
 shp coverage --changed-files changed.txt
 shp fmt --check

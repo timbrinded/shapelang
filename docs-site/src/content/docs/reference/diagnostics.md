@@ -58,9 +58,9 @@ component AuditStore {
 
 Replace unknowns with a source-backed `effects complete` block before accepting protected changes.
 
-## Governed source changed without shape delta
+## Governed source changed without Shape update
 
-Cause: a changed source path matches an implementation block with `on_change require shape_delta`, but the PR did not include a matching shape delta or attestation.
+Cause: a changed source path matches an implementation block with `on_change require shape_delta`, but the PR did not include a matching Shape update or current attestation.
 
 Run coverage with the changed-file list to reproduce it:
 
@@ -86,7 +86,7 @@ binding CheckerDocs {
 }
 ```
 
-If `packages/shp-checker/src/checker.ts` changes, the docs path must also change or the PR must include a narrow attestation in a `.shape` file changed by the same PR:
+If `packages/shp-checker/src/checker.ts` changes, the docs path must also change or the PR must include a narrow current attestation in a `.shape` file changed by the same PR:
 
 ```shape
 module repo

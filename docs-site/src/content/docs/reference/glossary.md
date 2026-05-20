@@ -8,8 +8,8 @@ sidebar:
 | Term | Meaning |
 | --- | --- |
 | Architecture claim | A reviewable statement in `.shape` about resources, components, effects, dependencies, or changes. |
-| Attestation | A documented reviewer decision that a governed source change does not require a shape delta. |
-| Change file | A module that applies PR-level additions, modifications, or removals to the baseline model. |
+| Attestation | A documented reviewer decision that a governed source change does not require a Shape update. |
+| Change file | A module that applies additions, modifications, or removals to the loaded model. |
 | Component | A named architectural boundary containing ownership, grants, dependencies, and function summaries. |
 | Complete effects | An effect summary that claims to be exhaustive for a function. |
 | Diagnostic | A checker message explaining why a model failed. |
@@ -24,7 +24,7 @@ sidebar:
 | Refactor constraint | Design context that makes a function shape refactor-sensitive. |
 | Resource | A protected architectural target such as a table, stream, endpoint, bucket, or domain object. |
 | Required description | A non-empty function description required by a function shape trait or explicit `description required`. |
-| Shape delta | A change-file entry that updates the declared architecture model. |
+| Shape delta | A source or evidence reference in a changed `.shape` file that covers a governed source change. |
 | Shape trait | A function-level trait such as `PreserveInline` or `RefactorSensitive` that derives review obligations. |
 | Source ref | A language-tagged path such as `ts("src/audit/store.ts:8-14")`. |
 | Trait | A reusable set of allowed, required, or forbidden effect patterns. |

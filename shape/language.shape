@@ -46,6 +46,10 @@ component ShapeGrammar {
         evidence langium("packages/shp-checker/src/language/shape.langium")
       Update<GeneratedAst>
         evidence ts("packages/shp-checker/src/language/generated/ast.ts")
+      Update<GeneratedAst>
+        evidence ts("packages/shp-checker/src/language/generated/grammar.ts")
+      Update<GeneratedAst>
+        evidence ts("packages/shp-checker/src/language/generated/module.ts")
     }
   fn updateSyntaxHighlighting
     source js("docs-site/src/syntax/shape-language.mjs")

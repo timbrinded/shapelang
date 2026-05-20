@@ -85,11 +85,11 @@ Provenance is why the checker can produce a useful diagnostic instead of a gener
 
 ## Effective Model First
 
-Change declarations are applied before facts are lowered. The checker does not lower "baseline facts" and "PR facts" independently, then try to reconcile them later. It first builds the model that would exist if the change were accepted.
+Change declarations are applied before facts are lowered. The checker does not lower "base facts" and "patch facts" independently, then try to reconcile them later. It first builds the model that would exist if the change were accepted.
 
 ```mermaid
 sequenceDiagram
-  participant Baseline as Baseline modules
+  participant Baseline as Base modules
   participant Change as Change module
   participant Model as Effective model
   participant Facts as Lowered facts
@@ -182,7 +182,7 @@ That is enough to check both the current state and future changes. The memory sa
 
 ## Coverage Lowering
 
-Implementations connect source paths to components. They are how Shape can say, "this kind of source change needs a Shape delta."
+Implementations connect source paths to components. They are how Shape can say, "this kind of source change needs a Shape update or current attestation."
 
 ```shape
 module audit
@@ -208,7 +208,7 @@ implementation AuditImplementation {
 }
 ```
 
-Lowering records implementation paths and function source paths. Coverage checks then compare changed files against those paths. A matching `source` or `evidence` reference in a change file creates a `shape_delta_for` fact. An explicit `attest no_shape_change` creates an attestation fact.
+Lowering records implementation paths and function source paths. Coverage checks then compare changed files against those paths. A matching `source` or `evidence` reference creates a `shape_delta_for` fact, but coverage only accepts it when the declaring `.shape` file is also in the current changed-file list. An explicit `attest no_shape_change` creates an attestation fact with the same current-file requirement.
 
 ## Design Rule
 

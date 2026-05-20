@@ -1,11 +1,11 @@
 ---
 title: Change Files and Attestations
-description: Model PR deltas and documented exceptions without hiding uncertainty.
+description: Use change files and current attestations without hiding uncertainty.
 sidebar:
   order: 4
 ---
 
-Change files let a PR express architecture deltas without rewriting the baseline model.
+The architecture contract lives in `shape/**/*.shape`. Change files express architecture deltas as checked model files.
 
 ![PR change review workflow showing shape system files, shape changes, changed files, coverage, shp check, and CI result.](../../../assets/infographics/pr-change-review.png)
 
@@ -24,7 +24,7 @@ change AddAuditRetentionPurge {
 }
 ```
 
-The checker applies changes before rule evaluation. That means a failing PR delta fails in CI even if the base model still passes.
+The checker applies change files before rule evaluation. That means a proposed delta can be checked as part of the same model.
 
 ## Guarded changes
 
@@ -85,7 +85,7 @@ attest no_shape_change {
 }
 ```
 
-Use attestations sparingly. They should explain why a governed source change does not need a shape delta.
+Use attestations sparingly. They should explain why a governed source change does not need a Shape update.
 
 Bindings can also allow attestations. The Shape repo uses `docs_not_needed` when a Shape-affecting source or model file changes but the documented behavior did not:
 
@@ -98,4 +98,4 @@ attest docs_not_needed {
 }
 ```
 
-The attestation must point at the triggering path, give a concrete reason, and live in a `.shape` file changed by the same run. A previously committed binding attestation does not waive future source changes.
+The attestation must point at the triggering path, give a concrete reason, and live in a `.shape` file changed by the same run. A previously committed attestation does not waive future source changes.

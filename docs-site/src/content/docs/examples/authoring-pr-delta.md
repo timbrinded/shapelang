@@ -1,5 +1,5 @@
 ---
-title: Authoring a PR Delta
+title: Authoring an Optional Delta
 description: Generate a reviewable change-file scaffold from changed source paths.
 sidebar:
   order: 4
@@ -23,7 +23,7 @@ change ReviewAuditChange {
 }
 ```
 
-Treat generated output as a starting point. Reviewers or LLM authoring helpers should replace `effects unknown` with source-backed effects before the change is accepted.
+Treat generated output as a starting point. Reviewers or LLM authoring helpers should replace `effects unknown` with source-backed effects before putting the file under `shape/`.
 
 ## Completed delta
 

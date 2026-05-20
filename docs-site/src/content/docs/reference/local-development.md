@@ -27,7 +27,7 @@ bun run docs:check
 
 `bun run docs:check` runs Astro/Starlight validation, verifies complete `shape` code fences with the repo parser, and builds the static docs site.
 
-`bun run shape:ci` is the local version of the repo's Shape gate. It uses `changed.txt` to enforce governed source coverage and bindings. A governed source change needs a `shape/changes/*.shape` delta or `attest no_shape_change`; a Shape-affecting source/model change with a docs binding also needs a docs update or `attest docs_not_needed`.
+`bun run shape:ci` is the local version of the repo's Shape gate. It uses `changed.txt` to enforce governed source coverage and bindings. A governed source change needs a faithful `shape` update or current `attest no_shape_change`; a Shape-affecting source/model change with a docs binding also needs a docs update or current `attest docs_not_needed`.
 
 Incomplete docs snippets must opt out explicitly:
 

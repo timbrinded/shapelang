@@ -40,7 +40,7 @@ Top-level declarations currently include:
 | `component` | An owner of resources, authority grants, dependencies, and function summaries. |
 | `implementation` | Source path governance for coverage checks. |
 | `binding` | Changed-file coupling, such as requiring docs when Shape-affecting code changes. |
-| `change` | A PR-level patch to the architecture model. |
+| `change` | A patch to the architecture model. |
 | `attest` | A typed statement such as `no_shape_change`. |
 | `rule` | Project-specific semantic policy. |
 | `rationale` | Typed design context for non-obvious function shapes. |

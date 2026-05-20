@@ -1,15 +1,17 @@
 ---
-title: PR Change Files
-description: Use Shape change blocks to model PR-level deltas without rewriting the baseline model.
+title: Change Files
+description: Use Shape change blocks as checked model patches.
 sidebar:
   order: 5
 ---
 
-Baseline architecture belongs in `shape/system/**/*.shape`. PR-level deltas belong in `shape/changes/**/*.shape`.
+Architecture claims belong in `shape/**/*.shape`. The checker loads every `.shape` file under `shape/`, including nested subdirectories.
+
+If a change file is not ready to be checked, keep it outside `shape/`. Files under `shape/` are part of the model like any other source file.
 
 ![PR change review workflow showing shape system files, shape changes, changed files, coverage, shp check, and CI result.](../../../assets/infographics/pr-change-review.png)
 
-A change file imports the baseline module and applies edits for review:
+A change file imports the target module and applies edits for review:
 
 ```shape
 module changes.PR_001
@@ -26,7 +28,7 @@ change AddAuditRetentionPurge {
 }
 ```
 
-The checker applies change blocks on top of the base model before evaluating rules.
+The checker applies change blocks on top of the model before evaluating rules.
 
 ## Supported change entries
 
@@ -60,4 +62,4 @@ Use the authoring command to produce a reviewable starting point:
 shp author --changed-files fixtures/changed/audit_purge.txt --component AuditStore --change ReviewAuditChange --module changes.PR_001
 ```
 
-The scaffold uses `effects unknown` until a human or LLM fills in the source-backed effect summary.
+The scaffold uses `effects unknown` until a human or LLM fills in the source-backed effect summary. If the file lives under `shape/`, it will be checked by default.

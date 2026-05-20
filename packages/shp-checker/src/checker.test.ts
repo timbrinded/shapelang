@@ -144,7 +144,7 @@ describe("Shape parser", () => {
       binding CheckerDocs {
         when_changed paths {
           "packages/shp-checker/src/checker.ts"
-          "shape/system/checker.shape"
+          "shape/checker.shape"
         }
         require_changed paths {
           "docs-site/src/content/docs/inside-shape/rule-evaluation.md"
@@ -340,6 +340,7 @@ describe("Shape checker", () => {
   });
 
   test("rejects unsupported multi-when rule shapes", () => {
+    // noinspection RequiredAttributes
     const result = checkShapeSource(`
       module rules
 
@@ -470,7 +471,7 @@ describe("Shape checker", () => {
     expect(result.exitCode).toBe(0);
   });
 
-  test("fails coverage when governed files change without shape delta", () => {
+  test("fails coverage when governed files change without current Shape update", () => {
     const parsed = parseShapeModule(`
       module audit
 
@@ -500,12 +501,12 @@ describe("Shape checker", () => {
     const output = formatDiagnostics(result);
 
     expect(result.exitCode).toBe(1);
-    expect(output).toContain("governed source changed without shape delta");
+    expect(output).toContain("governed source changed without current Shape update");
     expect(output).toContain("src/audit/purge.ts");
     expect(output).toContain("AuditStoreImpl");
   });
 
-  test("passes coverage with no-shape-change attestation", () => {
+  test("passes coverage with current no-shape-change attestation", () => {
     const parsed = parseShapeModule(`
       module audit
 
@@ -534,11 +535,50 @@ describe("Shape checker", () => {
       return;
     }
 
-    const result = checkShapeModules([parsed.module], {
-      changedFiles: ["src/audit/purge.ts"]
+    const result = checkShapeModules([{ module: parsed.module, filePath: "shape/audit.shape" }], {
+      changedFiles: ["src/audit/purge.ts", "shape/audit.shape"]
     });
 
     expect(result.exitCode).toBe(0);
+  });
+
+  test("rejects stale no-shape-change attestation for current coverage", () => {
+    const parsed = parseShapeModule(`
+      module audit
+
+      resource AuditEvent : AppendOnly
+
+      component AuditStore {
+        owns AuditEvent
+      }
+
+      implementation AuditStoreImpl {
+        paths {
+          "src/audit/**/*.ts"
+        }
+        conforms_to AuditStore
+        on_change require shape_delta
+      }
+
+      attest no_shape_change {
+        source ts("src/audit/purge.ts")
+        reason "renamed local variable only"
+      }
+    `);
+
+    expect(parsed.ok).toBe(true);
+    if (!parsed.ok) {
+      return;
+    }
+
+    const result = checkShapeModules([{ module: parsed.module, filePath: "shape/audit.shape" }], {
+      changedFiles: ["src/audit/purge.ts"]
+    });
+
+    expect(result.exitCode).toBe(1);
+    expect(result.diagnostics.map((diagnostic) => diagnostic.kind)).toContain(
+      "missing_shape_delta"
+    );
   });
 
   test("passes coverage when a change file references the governed source", () => {
@@ -580,11 +620,153 @@ describe("Shape checker", () => {
       return;
     }
 
-    const result = checkShapeModules([base.module, change.module], {
-      changedFiles: ["src/audit/store.ts"]
+    const result = checkShapeModules(
+      [
+        { module: base.module, filePath: "shape/audit.shape" },
+        { module: change.module, filePath: "shape/changes/PR_003.shape" }
+      ],
+      {
+        changedFiles: ["src/audit/store.ts", "shape/changes/PR_003.shape"]
+      }
+    );
+
+    expect(result.exitCode).toBe(0);
+  });
+
+  test("rejects stale change-file source references for current coverage", () => {
+    const base = parseShapeModule(`
+      module audit
+
+      resource AuditEvent : AppendOnly
+
+      component AuditStore {
+        owns AuditEvent
+        grants Append<AuditEvent>
+      }
+
+      implementation AuditStoreImpl {
+        paths {
+          "src/audit/**/*.ts"
+        }
+        conforms_to AuditStore
+        on_change require shape_delta
+      }
+    `);
+    const change = parseShapeModule(`
+      module changes.PR_003
+      import audit
+
+      change AddAppend {
+        add fn AuditStore.appendEvent
+          source ts("src/audit/store.ts#appendEvent")
+          effects complete {
+            Append<AuditEvent>
+              evidence ts("src/audit/store.ts:8-14")
+          }
+      }
+    `);
+
+    expect(base.ok).toBe(true);
+    expect(change.ok).toBe(true);
+    if (!base.ok || !change.ok) {
+      return;
+    }
+
+    const result = checkShapeModules(
+      [
+        { module: base.module, filePath: "shape/audit.shape" },
+        { module: change.module, filePath: "shape/changes/PR_003.shape" }
+      ],
+      {
+        changedFiles: ["src/audit/store.ts"]
+      }
+    );
+
+    expect(result.exitCode).toBe(1);
+    expect(result.diagnostics.map((diagnostic) => diagnostic.kind)).toContain(
+      "missing_shape_delta"
+    );
+  });
+
+  test("passes coverage when Shape model references changed source in current shape file", () => {
+    const parsed = parseShapeModule(`
+      module audit
+
+      resource AuditEvent : AppendOnly
+
+      component AuditStore {
+        owns AuditEvent
+        grants Append<AuditEvent>
+
+        fn appendEvent
+          source ts("src/audit/store.ts#appendEvent")
+          effects complete {
+            Append<AuditEvent>
+              evidence ts("src/audit/store.ts:8-14")
+          }
+      }
+
+      implementation AuditStoreImpl {
+        paths {
+          "src/audit/**/*.ts"
+        }
+        conforms_to AuditStore
+        on_change require shape_delta
+      }
+    `);
+
+    expect(parsed.ok).toBe(true);
+    if (!parsed.ok) {
+      return;
+    }
+
+    const result = checkShapeModules([{ module: parsed.module, filePath: "shape/audit.shape" }], {
+      changedFiles: ["src/audit/store.ts", "shape/audit.shape"]
     });
 
     expect(result.exitCode).toBe(0);
+  });
+
+  test("rejects stale Shape model source references for current coverage", () => {
+    const parsed = parseShapeModule(`
+      module audit
+
+      resource AuditEvent : AppendOnly
+
+      component AuditStore {
+        owns AuditEvent
+        grants Append<AuditEvent>
+
+        fn appendEvent
+          source ts("src/audit/store.ts#appendEvent")
+          effects complete {
+            Append<AuditEvent>
+              evidence ts("src/audit/store.ts:8-14")
+          }
+      }
+
+      implementation AuditStoreImpl {
+        paths {
+          "src/audit/**/*.ts"
+        }
+        conforms_to AuditStore
+        on_change require shape_delta
+      }
+    `);
+
+    expect(parsed.ok).toBe(true);
+    if (!parsed.ok) {
+      return;
+    }
+
+    const result = checkShapeModules([{ module: parsed.module, filePath: "shape/audit.shape" }], {
+      changedFiles: ["src/audit/store.ts"]
+    });
+
+    expect(result.exitCode).toBe(1);
+    expect(result.diagnostics.map((diagnostic) => diagnostic.kind)).toContain(
+      "missing_shape_delta"
+    );
   });
 
   test("enforces bindings between Shape-affecting code and docs", () => {
@@ -594,7 +776,7 @@ describe("Shape checker", () => {
       binding CheckerDocs {
         when_changed paths {
           "packages/shp-checker/src/checker.ts"
-          "shape/system/checker.shape"
+          "shape/checker.shape"
         }
         require_changed paths {
           "docs-site/src/content/docs/inside-shape/rule-evaluation.md"
@@ -1531,7 +1713,7 @@ reevaluation DecisionShapeRechecked {
 
   test("formats binding syntax canonically", () => {
     const result = formatShapeSource(`
-      binding CheckerDocs { allow attest docs_not_needed require_changed paths { 'docs-site/src/content/docs/reference/diagnostics.md' 'docs-site/src/content/docs/inside-shape/rule-evaluation.md' } when_changed paths { 'shape/system/checker.shape' 'packages/shp-checker/src/checker.ts' } }
+      binding CheckerDocs { allow attest docs_not_needed require_changed paths { 'docs-site/src/content/docs/reference/diagnostics.md' 'docs-site/src/content/docs/inside-shape/rule-evaluation.md' } when_changed paths { 'shape/checker.shape' 'packages/shp-checker/src/checker.ts' } }
     `);
 
     expect(result.ok).toBe(true);
@@ -1542,7 +1724,7 @@ reevaluation DecisionShapeRechecked {
     expect(result.formatted).toBe(`binding CheckerDocs {
   when_changed paths {
     "packages/shp-checker/src/checker.ts"
-    "shape/system/checker.shape"
+    "shape/checker.shape"
   }
   require_changed paths {
     "docs-site/src/content/docs/inside-shape/rule-evaluation.md"

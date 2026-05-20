@@ -1,6 +1,6 @@
 ---
-title: Missing Shape Delta
-description: A coverage failure for a governed source path changed without a shape delta.
+title: Missing Shape Update
+description: A coverage failure for a governed source path changed without a Shape update.
 sidebar:
   order: 3
 ---
@@ -40,8 +40,8 @@ shp coverage --changed-files fixtures/changed/audit_purge.txt fixtures/fail/miss
 Expected diagnostic shape:
 
 ```text
-error: governed source changed without shape delta
+error: governed source changed without current Shape update
 src/audit/purge.ts
 ```
 
-The model may be coherent, but the PR still failed to update or attest the architecture claim for a governed source change.
+The model may be coherent, but the PR still failed to update `shape` or attest the architecture claim for a governed source change.

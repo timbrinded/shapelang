@@ -14,7 +14,7 @@ It is not a programming language in the usual sense. Shape files do not execute 
 - this function emits these effects
 - this implementation path is governed by a component shape
 - this refactor-sensitive function has recorded design context
-- this change file modifies the declared model for a PR
+- this PR updates the Shape model when architecture behavior changes
 
 The contract is simple:
 
@@ -35,8 +35,8 @@ The checker judges the claims in `.shape` files. Optional source analyzers can p
 
 ## Core workflow
 
-1. A baseline model lives under `shape/system/**/*.shape`.
-2. PRs add change files under `shape/changes/**/*.shape`.
+1. A architecture model lives under `shape/**/*.shape`.
+2. PRs update that model when source behavior changes the contract.
 3. Reviewers inspect the source evidence attached to effects.
 4. Reviewers inspect any rationale, memory, or reevaluation attached to refactor-sensitive functions.
 5. CI runs `shp check`, `shp coverage`, format checks, tests, and type checks.

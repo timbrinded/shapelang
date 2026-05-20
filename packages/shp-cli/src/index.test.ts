@@ -5,7 +5,7 @@ const repoRoot = resolve(import.meta.dir, "../../..");
 const cliPath = resolve(repoRoot, "packages/shp-cli/src/index.ts");
 
 describe("shp CLI", () => {
-  test("checks default shape/system files", async () => {
+  test("checks default shape files", async () => {
     const result = await runCli(["check"]);
 
     expect(result.exitCode).toBe(0);
@@ -31,7 +31,7 @@ describe("shp CLI", () => {
     ]);
 
     expect(result.exitCode).toBe(1);
-    expect(result.stderr).toContain("governed source changed without shape delta");
+    expect(result.stderr).toContain("governed source changed without current Shape update");
     expect(result.stderr).toContain("src/audit/purge.ts");
     expect(result.stdout).toBe("");
   });

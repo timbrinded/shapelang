@@ -695,7 +695,7 @@ type Model = {
   memories: Map<string, MemoryInfo>;
   reevaluations: Map<string, ReevaluationInfo>;
   attestations: { kind: string; path: string; reason: string; provenance: Provenance }[];
-  shapeDeltaPaths: Map<string, Provenance>;
+  shapeDeltaPaths: Map<string, Provenance[]>;
   removedFunctions: Set<string>;
   changeEvents: ChangeEvent[];
   facts: Fact[];
@@ -1236,6 +1236,7 @@ function lowerComponent(
         continue;
       }
       info.functions.set(fn.name, fn);
+      collectShapeDeltaPathsFromFunction(fn, model);
       emitFunctionFacts(fn, model);
     }
   }
@@ -1709,7 +1710,7 @@ function lowerChange(change: ChangeDecl, filePath: string | undefined, model: Mo
 
       const fn = lowerFunction(entry, entry.component, filePath, `change ${change.name}`);
       component.functions.set(fn.name, fn);
-      model.shapeDeltaPaths.set(`${entry.component}.${entry.name}`, fn.provenance);
+      addShapeDeltaPath(model, functionKey(entry.component, entry.name), fn.provenance);
       collectShapeDeltaPathsFromFunction(fn, model);
       emitFunctionFacts(fn, model);
     } else if (isRemoveFunctionChange(entry)) {
@@ -2128,7 +2129,7 @@ function emitDerivedFacts(model: Model): void {
 
 function collectShapeDeltaPathsFromFunction(fn: FunctionInfo, model: Model): void {
   if (fn.source) {
-    model.shapeDeltaPaths.set(normalizeSourcePath(fn.source.path), fn.provenance);
+    addShapeDeltaPath(model, fn.source.path, fn.provenance);
     model.facts.push({
       kind: "shape_delta_for",
       path: normalizeSourcePath(fn.source.path),
@@ -2140,10 +2141,20 @@ function collectShapeDeltaPathsFromFunction(fn: FunctionInfo, model: Model): voi
     for (const entry of fn.effects.entries) {
       if (entry.evidence) {
         const path = normalizeSourcePath(entry.evidence.path);
-        model.shapeDeltaPaths.set(path, entry.provenance);
+        addShapeDeltaPath(model, path, entry.provenance);
         model.facts.push({ kind: "shape_delta_for", path, provenance: entry.provenance });
       }
     }
+  }
+}
+
+function addShapeDeltaPath(model: Model, path: string, provenance: Provenance): void {
+  const normalized = normalizeSourcePath(path);
+  const existing = model.shapeDeltaPaths.get(normalized);
+  if (existing) {
+    existing.push(provenance);
+  } else {
+    model.shapeDeltaPaths.set(normalized, [provenance]);
   }
 }
 
@@ -2607,6 +2618,7 @@ function checkCoverage(model: Model, changedFiles: string[]): SemanticDiagnostic
   const normalizedChanged = changedFiles
     .map((file) => normalizePath(file))
     .filter((file) => file.length > 0);
+  const changedSet = new Set(normalizedChanged);
   const diagnostics: SemanticDiagnostic[] = [];
 
   for (const implementation of model.implementations) {
@@ -2626,14 +2638,17 @@ function checkCoverage(model: Model, changedFiles: string[]): SemanticDiagnostic
         continue;
       }
 
-      if (model.shapeDeltaPaths.has(changedFile)) {
+      if (currentShapeDeltaExists(model, changedFile, changedSet)) {
         continue;
       }
 
       if (
         model.attestations.some(
           (attestation) =>
-            attestation.kind === "no_shape_change" && attestation.path === changedFile
+            attestation.kind === "no_shape_change" &&
+            attestation.path === changedFile &&
+            attestation.reason.trim().length > 0 &&
+            provenanceFileChanged(attestation.provenance, changedSet)
         )
       ) {
         continue;
@@ -2654,6 +2669,22 @@ function checkCoverage(model: Model, changedFiles: string[]): SemanticDiagnostic
   }
 
   return diagnostics;
+}
+
+function currentShapeDeltaExists(
+  model: Model,
+  changedFile: string,
+  changedSet: Set<string>
+): boolean {
+  return (
+    model.shapeDeltaPaths
+      .get(changedFile)
+      ?.some((provenance) => provenanceFileChanged(provenance, changedSet)) ?? false
+  );
+}
+
+function provenanceFileChanged(provenance: Provenance, changedSet: Set<string>): boolean {
+  return provenance.filePath !== undefined && changedSet.has(normalizePath(provenance.filePath));
 }
 
 function checkBindings(model: Model, changedFiles: string[]): SemanticDiagnostic[] {
@@ -3399,12 +3430,12 @@ function formatMissingShapeDeltaDiagnostic(
   diagnostic: Extract<SemanticDiagnostic, { kind: "missing_shape_delta" }>
 ): string {
   return [
-    "error: governed source changed without shape delta",
+    "error: governed source changed without current Shape update",
     "",
     `Changed file: ${diagnostic.changedFile}`,
     `Governed by: ${diagnostic.implementation}`,
     `Matched path: ${diagnostic.glob}`,
-    "Required: add a .shape change with matching source/evidence, or add a no_shape_change attestation.",
+    "Required: update a current .shape file with matching source/evidence, or add a no_shape_change attestation.",
     formatCausedBy(diagnostic.causedBy)
   ].join("\n");
 }

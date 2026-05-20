@@ -40,8 +40,7 @@ shp check
 With no file arguments, `shp check` scans:
 
 ```text
-shape/system/**/*.shape
-shape/changes/**/*.shape
+shape/**/*.shape
 ```
 
 ## Format shape files
@@ -59,7 +58,7 @@ git diff --name-only origin/main...HEAD > changed.txt
 shp coverage --changed-files changed.txt
 ```
 
-If a governed source path changes without a shape delta or attestation, the checker rejects the change.
+If a governed source path changes without a Shape update or current attestation, the checker rejects the change.
 
 ## GitHub Actions
 

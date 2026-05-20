@@ -165,7 +165,7 @@ memory DefaultShapeFileDiscovery : RefactorConstraint<fn ShpCli.defaultShapeFile
   applies_to fn ShpCli.defaultShapeFiles
   status Explained
   confidence High
-  summary "Default discovery is the repo and consumer contract for shape/system and shape/changes files."
+  summary "Default discovery loads every Shape file under the shape directory, including nested subdirectories."
   owner ShapeMaintainers
   protects shape DefaultFileSet
   guards on_change require ReEvaluation<Self>
@@ -179,4 +179,13 @@ memory FormatterCanonicalDiffs : RefactorConstraint<fn ShapeFormatter.formatShap
   owner ShapeMaintainers
   protects shape CanonicalFormatting
   guards on_change require ReEvaluation<Self>
+}
+
+reevaluation DefaultShapeDiscoveryRechecked {
+  satisfies memory DefaultShapeFileDiscovery
+  outcome Confirmed
+  summary "The CLI default load path now scans every Shape file under the shape directory."
+  reviewer ShapeMaintainers
+  decided_on "2026-05-20"
+  evidence test("packages/shp-cli/src/index.test.ts")
 }

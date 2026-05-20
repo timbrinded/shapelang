@@ -26,6 +26,8 @@ component CiPipeline {
         evidence yaml(".github/workflows/shape.yml")
       Read<CiWorkflow>
         evidence yaml(".github/workflows/shape.yml")
+      Read<CiWorkflow>
+        evidence yaml(".github/workflows/release.yml")
       Read<SemanticDiagnostics>
         evidence yaml(".github/workflows/shape.yml")
     }
@@ -46,6 +48,46 @@ component DocsSite {
   fn verifyDocs
     source ts("docs-site/scripts/verify-shape-blocks.ts")
     effects complete {
+      Read<DocsContent>
+        evidence md("docs-site/src/content/docs/concepts/analyzer-hints.md")
+      Read<DocsContent>
+        evidence md("docs-site/src/content/docs/concepts/change-files-attestations.md")
+      Read<DocsContent>
+        evidence md("docs-site/src/content/docs/concepts/implementations-coverage.md")
+      Read<DocsContent>
+        evidence md("docs-site/src/content/docs/examples/authoring-pr-delta.md")
+      Read<DocsContent>
+        evidence md("docs-site/src/content/docs/examples/analyzer-warning.md")
+      Read<DocsContent>
+        evidence md("docs-site/src/content/docs/examples/missing-shape-delta.md")
+      Read<DocsContent>
+        evidence md("docs-site/src/content/docs/inside-shape/checker-pipeline.md")
+      Read<DocsContent>
+        evidence md("docs-site/src/content/docs/inside-shape/fact-lowering.md")
+      Read<DocsContent>
+        evidence md("docs-site/src/content/docs/inside-shape/formatter-editor-authoring.md")
+      Read<DocsContent>
+        evidence md("docs-site/src/content/docs/inside-shape/langium-grammar.md")
+      Read<DocsContent>
+        evidence md("docs-site/src/content/docs/inside-shape/rule-evaluation.md")
+      Read<DocsContent>
+        evidence md("docs-site/src/content/docs/learn/ci-workflow.md")
+      Read<DocsContent>
+        evidence md("docs-site/src/content/docs/learn/pr-change-files.md")
+      Read<DocsContent>
+        evidence md("docs-site/src/content/docs/learn/quickstart.md")
+      Read<DocsContent>
+        evidence md("docs-site/src/content/docs/learn/what-is-shape.md")
+      Read<DocsContent>
+        evidence md("docs-site/src/content/docs/reference/cli.md")
+      Read<DocsContent>
+        evidence md("docs-site/src/content/docs/reference/diagnostics.md")
+      Read<DocsContent>
+        evidence md("docs-site/src/content/docs/reference/glossary.md")
+      Read<DocsContent>
+        evidence md("docs-site/src/content/docs/reference/language-syntax.md")
+      Read<DocsContent>
+        evidence md("docs-site/src/content/docs/reference/local-development.md")
       Read<DocsContent>
         evidence ts("docs-site/scripts/verify-shape-blocks.ts")
       Update<DocsContent>
@@ -181,7 +223,7 @@ implementation WorkflowSource {
 binding CliDocs {
   when_changed paths {
     "packages/shp-cli/src/index.ts"
-    "shape/system/tooling.shape"
+    "shape/tooling.shape"
   }
   require_changed paths {
     "README.md"
@@ -194,7 +236,7 @@ binding CliDocs {
 binding DocsVerifierDocs {
   when_changed paths {
     "docs-site/scripts/verify-shape-blocks.ts"
-    "shape/system/language.shape"
+    "shape/language.shape"
   }
   require_changed paths {
     "docs-site/src/content/docs/inside-shape/langium-grammar.md"
@@ -208,7 +250,7 @@ binding GrammarDocs {
     "docs-site/src/syntax/**/*.mjs"
     "packages/shp-checker/src/language/generated/**/*.ts"
     "packages/shp-checker/src/language/shape.langium"
-    "shape/system/language.shape"
+    "shape/language.shape"
   }
   require_changed paths {
     "docs-site/src/content/docs/inside-shape/langium-grammar.md"
@@ -220,7 +262,7 @@ binding GrammarDocs {
 binding RuleEngineDocs {
   when_changed paths {
     "packages/shp-checker/src/checker.ts"
-    "shape/system/checker.shape"
+    "shape/checker.shape"
   }
   require_changed paths {
     "docs-site/src/content/docs/concepts/change-files-attestations.md"
@@ -237,7 +279,7 @@ binding ToolingDocs {
     "packages/shp-checker/src/authoring.ts"
     "packages/shp-checker/src/editor.ts"
     "packages/shp-checker/src/formatter.ts"
-    "shape/system/tooling.shape"
+    "shape/tooling.shape"
   }
   require_changed paths {
     "docs-site/src/content/docs/concepts/analyzer-hints.md"

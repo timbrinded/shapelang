@@ -7,7 +7,7 @@ Application code can be messy, implicit, and spread across many files. Shape giv
 - resources, traits, and invariants
 - components, ownership, capabilities, and dependencies
 - function effect summaries with source evidence
-- change files for PR-level deltas
+- model updates for architecture changes
 - coverage rules for governed source paths
 - bindings that require paired review-surface changes, such as docs updates
 - typed design memory for refactor-sensitive functions
@@ -44,8 +44,7 @@ shp obligations
 `shp check` scans these paths when no files are provided:
 
 ```text
-shape/system/**/*.shape
-shape/changes/**/*.shape
+shape/**/*.shape
 ```
 
 In GitHub Actions, install the same pinned release with the setup action:
@@ -69,7 +68,7 @@ Shape also covers:
 
 - unknown effects in protected components
 - missing grants for declared function effects
-- governed source files changed without a shape delta or attestation
+- governed source files changed without a Shape update or current attestation
 - Shape-affecting files changed without a bound docs update or `docs_not_needed` attestation
 - refactor-sensitive functions changed without a recorded reevaluation
 - required design context or descriptions missing from non-obvious function shapes
@@ -117,7 +116,7 @@ component AuditStore {
 }
 ```
 
-A PR-level change file can add a new function without rewriting the base model:
+A change file can preview a new function before the broader model is updated:
 
 ```shape
 module changes.PR_001
@@ -134,7 +133,7 @@ change AddAuditRetentionPurge {
 }
 ```
 
-That change fails because `AuditEvent : AppendOnly` derives a final forbid for `HardDelete<AuditEvent>`.
+That proposed change fails because `AuditEvent : AppendOnly` derives a final forbid for `HardDelete<AuditEvent>`.
 
 ## How It Works
 
@@ -163,25 +162,25 @@ shp author --changed-files changed.txt --component AuditStore
 shp analyze --shape-files fixtures/pass/append_only_append/audit.shape src/audit/purge.ts
 ```
 
-`shp check` scans `shape/system/**/*.shape` and `shape/changes/**/*.shape` when no files are provided.
+`shp check` scans `shape/**/*.shape` when no files are provided. Any `.shape` file under `shape/` is part of the checked model.
 
 Useful commands:
 
 - `shp check`: run conformance checks.
-- `shp coverage --changed-files changed.txt`: enforce shape deltas or attestations for governed paths.
+- `shp coverage --changed-files changed.txt`: enforce Shape updates or current attestations for governed paths.
 - `shp check --changed-files changed.txt`: run semantic checks, coverage, and bindings together.
 - `shp fmt --check`: verify canonical formatting.
 - `shp explain AuditEvent`: show derived facts and constraints for a symbol.
 - `shp graph Gateway --relation requires`: print dependency paths.
 - `shp memory`: list rationale and memory entries that protect design context.
 - `shp obligations`: list open design-memory obligations such as missing rationale or reevaluation.
-- `shp author --changed-files changed.txt --component AuditStore`: scaffold a reviewable change file with explicit unknowns.
+- `shp author --changed-files changed.txt --component AuditStore`: scaffold a review change file with explicit unknowns.
 - `shp analyze --shape-files fixtures/pass/append_only_append/audit.shape src/file.ts`: compare obvious source hints against declared effects.
 
 ## Project Layout
 
 ```text
-shape/system/
+shape/
   checker.shape
   delivery.shape
   language.shape
@@ -247,7 +246,7 @@ GitHub Pages should use the **GitHub Actions** publishing source. The deployment
 
 ## CI
 
-CI is wired in `.github/workflows/shape.yml` for formatting, tests, typechecking, `shp check --changed-files changed.txt`, Shape coverage/bindings, and docs checks. Shape source/model changes require matching `shape/changes` deltas or attestations; bound docs surfaces must change unless a narrow `docs_not_needed` attestation in the current change explains why not.
+CI is wired in `.github/workflows/shape.yml` for formatting, tests, typechecking, `shp check --changed-files changed.txt`, Shape coverage/bindings, and docs checks. Governed source changes require a faithful `shape` update or a narrow current attestation; bound docs surfaces must change unless a current `docs_not_needed` attestation explains why not.
 
 ## Release
 

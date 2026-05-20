@@ -33,7 +33,7 @@ jobs:
 
 ## Coverage gate
 
-Coverage checks compare changed source paths with implementation blocks:
+Coverage checks compare changed source paths with implementation blocks. A governed source change must be represented by a current `shape` update, or by a narrow attestation changed in the same PR:
 
 ```yaml
 - name: Changed files
@@ -43,7 +43,42 @@ Coverage checks compare changed source paths with implementation blocks:
   run: shp coverage --changed-files changed.txt
 ```
 
-If a governed source path changes without a shape delta or attestation, the checker rejects the change.
+If a governed source path changes without a Shape update or current attestation, the checker rejects the change.
+
+## Contract review assistant
+
+CI can also ask an LLM reviewer to check source semantics against the Shape model. Keep the instruction short and make `shape/` the authority:
+
+```md
+# Shape contract review
+
+Review the PR diff against the Shape model in `shape/**/*.shape`.
+
+1. Read repository instructions.
+2. Determine the changed source files.
+3. Load the Shape model.
+4. Decide whether each changed source file alters the architecture contract.
+5. If it does, verify the committed `shape` changes faithfully represent the new behavior.
+6. If it does not, verify any `attest no_shape_change` is narrow, reasoned, and changed in this PR.
+7. Run `shp fmt --check` and `shp check`.
+
+Return JSON:
+
+{
+  "status": "pass | drift | error",
+  "summary": "one short sentence",
+  "findings": [
+    {
+      "severity": "warning | error",
+      "target": "changed file",
+      "shape_source": "shape/file.shape | missing-shape-claim",
+      "issue": "short label",
+      "reason": "why the Shape model and source diff disagree",
+      "suggested_fix": "minimal shape change or source change"
+    }
+  ]
+}
+```
 
 ## Shape repo workflow
 
@@ -54,7 +89,7 @@ bun run changed-files
 bun run shape:ci
 ```
 
-`shape:ci` runs `bun shp check --changed-files changed.txt`, so implementation coverage and bindings are checked together. Bindings are used for documentation coupling: if Shape-affecting code or model files change, the associated docs must change too, unless the PR includes a narrow `docs_not_needed` attestation.
+`shape:ci` runs `bun shp check --changed-files changed.txt`, so implementation coverage and bindings are checked together. Bindings are used for documentation coupling: if Shape-affecting code or model files change, the associated docs must change too, unless the PR includes a narrow current `docs_not_needed` attestation.
 
 ## Direct binary install
 

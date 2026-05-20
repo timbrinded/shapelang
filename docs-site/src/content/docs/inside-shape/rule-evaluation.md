@@ -45,7 +45,7 @@ The current checker covers these major categories:
 | Final forbidden effects | Did a function emit an effect that a resource trait forbids with `final`? | Change the implementation or model; do not waive it with memory. |
 | Missing grants | Did a function emit an effect its component lacks permission to emit? | Add the narrow grant if the architecture allows it. |
 | Unknown effects | Is a function still marked `effects unknown`? | Replace uncertainty with reviewed complete effects. |
-| Source coverage | Did governed source change without a Shape delta or attestation? | Add a change file or `attest no_shape_change`. |
+| Source coverage | Did governed source change without a Shape update or current attestation? | Update `shape` or add a narrow current `attest no_shape_change`. |
 | Bindings | Did a Shape-affecting change require a paired docs or workflow change? | Update the bound path or add a narrow `docs_not_needed` attestation. |
 | Required context | Did a shape trait require rationale, memory, or description? | Add the typed context block. |
 | Guarded changes | Did a protected target change without reevaluation? | Add a matching `reevaluation` or preserve the shape. |
@@ -159,7 +159,7 @@ module repo
 binding RuleEngineDocs {
   when_changed paths {
     "packages/shp-checker/src/checker.ts"
-    "shape/system/checker.shape"
+    "shape/checker.shape"
   }
   require_changed paths {
     "docs-site/src/content/docs/inside-shape/rule-evaluation.md"
