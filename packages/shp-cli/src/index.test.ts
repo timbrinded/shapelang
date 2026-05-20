@@ -22,6 +22,16 @@ describe("shp CLI", () => {
     expect(result.stdout).toBe("");
   });
 
+  test("rejects unknown options without a stack trace", async () => {
+    const result = await runCli(["check", "--not-a-real-option"]);
+
+    expect(result.exitCode).toBe(2);
+    expect(result.stderr).toContain("--not-a-real-option");
+    expect(result.stderr).toContain("Usage:");
+    expect(result.stderr).not.toContain("parseArgs");
+    expect(result.stdout).toBe("");
+  });
+
   test("runs coverage with changed-file input", async () => {
     const result = await runCli([
       "coverage",
@@ -139,6 +149,16 @@ describe("shp CLI", () => {
     expect(result.stdout).toContain("coordinated_call AuditWritePath");
     expect(result.stdout).toContain("calls GatewayCallsAudit");
     expect(result.stderr).toBe("");
+  });
+
+  test("reports missing graph files without a stack trace", async () => {
+    const result = await runCli(["graph", "fixtures/missing.shape"]);
+
+    expect(result.exitCode).toBe(2);
+    expect(result.stderr).toContain("error: parse error");
+    expect(result.stderr).toContain("fixtures/missing.shape");
+    expect(result.stderr).not.toContain("parseModules");
+    expect(result.stdout).toBe("");
   });
 
   test("prints hypergraph stats", async () => {

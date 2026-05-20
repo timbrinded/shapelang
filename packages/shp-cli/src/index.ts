@@ -17,6 +17,7 @@ import {
   listShapeObligations,
   parseShapeModule,
   statsShapeHypergraph,
+  type ParseDiagnostic,
   type ShapeModule
 } from "@shape/shp-checker";
 
@@ -38,37 +39,18 @@ When no files are provided, commands scan shape/**/*.shape.
 `;
 
 async function main(): Promise<number> {
-  const { values, positionals } = parseArgs({
-    args: Bun.argv.slice(2),
-    allowPositionals: true,
-    options: {
-      "changed-files": {
-        type: "string"
-      },
-      check: {
-        type: "boolean"
-      },
-      kind: {
-        type: "string"
-      },
-      stats: {
-        type: "boolean"
-      },
-      component: {
-        type: "string"
-      },
-      module: {
-        type: "string"
-      },
-      "shape-files": {
-        type: "string"
-      },
-      help: {
-        type: "boolean",
-        short: "h"
-      }
+  let parsedArgs: ReturnType<typeof parseCliArgs>;
+  try {
+    parsedArgs = parseCliArgs();
+  } catch (error) {
+    if (!isParseArgsError(error)) {
+      throw error;
     }
-  });
+    await Bun.write(Bun.stderr, `${errorMessage(error)}\n\n${USAGE}`);
+    return 2;
+  }
+
+  const { values, positionals } = parsedArgs;
 
   if (values.help) {
     await Bun.write(Bun.stdout, USAGE);
@@ -178,6 +160,40 @@ async function main(): Promise<number> {
   return result.exitCode;
 }
 
+function parseCliArgs() {
+  return parseArgs({
+    args: Bun.argv.slice(2),
+    allowPositionals: true,
+    options: {
+      "changed-files": {
+        type: "string"
+      },
+      check: {
+        type: "boolean"
+      },
+      kind: {
+        type: "string"
+      },
+      stats: {
+        type: "boolean"
+      },
+      component: {
+        type: "string"
+      },
+      module: {
+        type: "string"
+      },
+      "shape-files": {
+        type: "string"
+      },
+      help: {
+        type: "boolean",
+        short: "h"
+      }
+    }
+  });
+}
+
 async function formatFiles(providedFiles: string[], checkOnly: boolean): Promise<number> {
   const files = providedFiles.length > 0 ? providedFiles : await defaultShapeFiles();
   let ok = true;
@@ -243,12 +259,26 @@ async function readChangedFiles(path: string): Promise<string[]> {
 
 async function parseModules(paths: string[]): Promise<{ module: ShapeModule; filePath: string }[]> {
   const modules: { module: ShapeModule; filePath: string }[] = [];
+  const diagnostics: ParseDiagnostic[] = [];
   for (const filePath of paths) {
-    const parsed = parseShapeModule(await Bun.file(filePath).text(), filePath);
-    if (!parsed.ok) {
-      throw new Error(parsed.diagnostics.map((diagnostic) => diagnostic.message).join("\n"));
+    try {
+      const parsed = parseShapeModule(await Bun.file(filePath).text(), filePath);
+      if (parsed.ok) {
+        modules.push({ module: parsed.module, filePath });
+      } else {
+        diagnostics.push(...parsed.diagnostics);
+      }
+    } catch (error) {
+      diagnostics.push({
+        kind: "parse",
+        filePath,
+        message: errorMessage(error)
+      });
     }
-    modules.push({ module: parsed.module, filePath });
+  }
+
+  if (diagnostics.length > 0) {
+    throw new CliDiagnosticError(formatDiagnostics({ ok: false, exitCode: 2, diagnostics }), 2);
   }
   return modules;
 }
@@ -282,4 +312,42 @@ async function analyzeFiles(
   return warnings.length === 0 ? 0 : 1;
 }
 
-process.exitCode = await main();
+class CliDiagnosticError extends Error {
+  constructor(
+    message: string,
+    readonly exitCode: number
+  ) {
+    super(message);
+  }
+}
+
+function errorMessage(error: unknown): string {
+  return error instanceof Error ? error.message : String(error);
+}
+
+function isParseArgsError(error: unknown): boolean {
+  const code = errorCode(error);
+  return code?.startsWith("ERR_PARSE_ARGS_") === true;
+}
+
+function errorCode(error: unknown): string | undefined {
+  if (typeof error !== "object" || error === null || !("code" in error)) {
+    return undefined;
+  }
+  const { code } = error;
+  return typeof code === "string" ? code : undefined;
+}
+
+async function run(): Promise<number> {
+  try {
+    return await main();
+  } catch (error) {
+    if (error instanceof CliDiagnosticError) {
+      await Bun.write(Bun.stderr, error.message);
+      return error.exitCode;
+    }
+    throw error;
+  }
+}
+
+process.exitCode = await run();
