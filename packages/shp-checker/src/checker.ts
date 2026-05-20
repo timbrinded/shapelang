@@ -373,6 +373,7 @@ export type CheckResult = {
 
 export type CheckOptions = {
   changedFiles?: string[];
+  enforceBindings?: boolean;
   includeFacts?: boolean;
 };
 
@@ -736,7 +737,7 @@ export function checkShapeModules(
     ...checkProvidesRules(model),
     ...checkHypercycles(model),
     ...checkCoverage(model, options.changedFiles ?? []),
-    ...checkBindings(model, options.changedFiles ?? [])
+    ...(options.enforceBindings === false ? [] : checkBindings(model, options.changedFiles ?? []))
   ];
 
   return {
@@ -1623,7 +1624,7 @@ function collectConnects(member: { endpoints: RelationEndpoint[]; ordered: boole
 } {
   return {
     endpoints: member.endpoints.map((endpoint) => endpoint.name),
-    ordered: member.ordered === true
+    ordered: member.ordered
   };
 }
 

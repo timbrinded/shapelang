@@ -173,7 +173,10 @@ async function main(): Promise<number> {
 
   const files = providedFiles.length > 0 ? providedFiles : await defaultShapeFiles();
   const changedFiles = changedFilesPath ? await readChangedFiles(changedFilesPath) : undefined;
-  const result = await checkShapeFiles(files, { changedFiles });
+  const result = await checkShapeFiles(files, {
+    changedFiles,
+    enforceBindings: command !== "coverage"
+  });
   const output = formatDiagnostics(result);
   await Bun.write(result.exitCode === 0 ? Bun.stdout : Bun.stderr, output);
   return result.exitCode;

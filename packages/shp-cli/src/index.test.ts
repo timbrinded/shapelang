@@ -36,6 +36,33 @@ describe("shp CLI", () => {
     expect(result.stdout).toBe("");
   });
 
+  test("does not enforce bindings during coverage-only runs", async () => {
+    const result = await runCli([
+      "coverage",
+      "--changed-files",
+      "fixtures/changed/audit_store_with_shape.txt",
+      "fixtures/pass/coverage_binding_only/audit.shape"
+    ]);
+
+    expect(result.exitCode).toBe(0);
+    expect(result.stdout).toContain("Shape check passed");
+    expect(result.stderr).toBe("");
+  });
+
+  test("enforces bindings during changed-file checks", async () => {
+    const result = await runCli([
+      "check",
+      "--changed-files",
+      "fixtures/changed/audit_store_with_shape.txt",
+      "fixtures/pass/coverage_binding_only/audit.shape"
+    ]);
+
+    expect(result.exitCode).toBe(1);
+    expect(result.stderr).toContain("bound docs change missing");
+    expect(result.stderr).toContain("AuditDocs");
+    expect(result.stdout).toBe("");
+  });
+
   test("checks formatting", async () => {
     const result = await runCli(["fmt", "--check", "fixtures/pass/append_only_append/audit.shape"]);
 
