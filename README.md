@@ -5,12 +5,12 @@ Shape is a typed architecture conformance language for making architectural clai
 Application code can be messy, implicit, and spread across many files. Shape gives the system a small human-readable model in `.shape` files:
 
 - resources, traits, and invariants
-- components, ownership, capabilities, and dependencies
+- components, ownership, capabilities, and structural relations
 - function effect summaries with source evidence
 - change files for PR-level deltas
 - coverage rules for governed source paths
 - typed design memory for refactor-sensitive functions
-- constrained project rules such as dependency-cycle bans
+- constrained project rules such as hypercycle bans over the structural hypergraph
 
 The checker does not prove the application implementation is correct. It checks that the declared architecture model is coherent. That is the product boundary: humans and LLMs write reviewable claims, then a deterministic checker accepts or rejects those claims.
 
@@ -71,8 +71,8 @@ Shape also covers:
 - governed source files changed without a shape delta or attestation
 - refactor-sensitive functions changed without a recorded reevaluation
 - required design context or descriptions missing from non-obvious function shapes
-- semantic dependency cycles with witness paths
-- project-specific rules like "only Gateway may provide JsonRpcEndpoint"
+- semantic hypercycles in the structural hypergraph with witness paths
+- project-specific rules like "only Gateway may provide JsonRpcEndpoint", expressed over `provides` relation hyperedges
 - optional analyzer hints for obvious `DELETE`, `TRUNCATE`, and `DROP` operations
 
 See [Refactor Constraints](docs-site/src/content/docs/concepts/refactor-constraints.md) for the design-memory workflow around rationale, memory, and reevaluation.
@@ -140,7 +140,7 @@ The checker pipeline is:
 
 1. Parse `.shape` files with Langium.
 2. Apply change blocks on top of the base model.
-3. Lower declarations into facts such as resources, traits, effects, grants, dependencies, and governed paths.
+3. Lower declarations into facts such as resources, traits, effects, grants, relation hyperedges, and governed paths.
 4. Evaluate deterministic rules.
 5. Emit diagnostics with provenance, including the declarations that caused a violation.
 
@@ -154,7 +154,7 @@ shp check --changed-files changed.txt
 shp coverage --changed-files changed.txt
 shp fmt --check
 shp explain AuditEvent
-shp graph Gateway --relation requires
+shp graph Gateway --kind calls
 shp memory
 shp obligations
 shp author --changed-files changed.txt --component AuditStore
@@ -168,8 +168,8 @@ Useful commands:
 - `shp check`: run conformance checks.
 - `shp coverage --changed-files changed.txt`: enforce shape deltas or attestations for governed paths.
 - `shp fmt --check`: verify canonical formatting.
-- `shp explain AuditEvent`: show derived facts and constraints for a symbol.
-- `shp graph Gateway --relation requires`: print dependency paths.
+- `shp explain AuditEvent`: show derived facts and incident relations for a symbol.
+- `shp graph [SYMBOL] [--kind KIND]`: with a SYMBOL, print the hyperedges incident to that symbol; without a SYMBOL, print the whole hypergraph grouped by kind. Use `shp graph --stats [--kind KIND]` for aggregate vertex, hyperedge, and incidence counts.
 - `shp memory`: list rationale and memory entries that protect design context.
 - `shp obligations`: list open design-memory obligations such as missing rationale or reevaluation.
 - `shp author --changed-files changed.txt --component AuditStore`: scaffold a reviewable change file with explicit unknowns.

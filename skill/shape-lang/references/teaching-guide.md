@@ -7,11 +7,11 @@ Use this when explaining Shape to another agent or human. Teach by running or sh
 1. Shape files are typed architecture claims.
 2. The checker validates model coherence, not full source correctness.
 3. Resources carry traits and invariants.
-4. Components own resources, grant effects, and declare dependencies.
+4. Components own resources and grant effects. Structural links between components and resources live in top-level `relation` declarations.
 5. Functions summarize effects with source/evidence.
 6. Change files model PR-level deltas.
 7. Coverage rules require shape deltas for governed source changes.
-8. Rules express project constraints such as final forbids and dependency-cycle bans.
+8. Rules express project constraints such as final forbids and hypercycle bans over the directed hypergraph of relations.
 9. Memory Guards add typed design memory for non-obvious or refactor-sensitive shapes.
 
 ## CLI-Backed Teaching Path

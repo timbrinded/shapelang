@@ -27,10 +27,11 @@ Shape modules can contain:
 resource AuditEvent : AppendOnly
 trait AppendOnly<T: Resource> { ... }
 component AuditStore { ... }
+relation AuditWritePath { ... }
 implementation AuditStoreImpl { ... }
 change AddAuditRetentionPurge { ... }
 attest shape_delta { ... }
-rule NoRequiresCycle { ... }
+rule NoCallsCycle { ... }
 rationale InlineDecision : InlineRationale<fn Gateway.derivePolicyDecision> { ... }
 memory DecisionRefactorConstraint : RefactorConstraint<fn Gateway.derivePolicyDecision> { ... }
 reevaluation DecisionShapeRechecked { ... }
@@ -65,6 +66,8 @@ Trait members are `allow`, `forbid`, and `require` effect patterns.
 
 ## Components
 
+Components carry ownership, grants, and function summaries only. Structural dependencies between components and resources are declared as top-level `relation` blocks; they are not part of a component body.
+
 ```shape
 module audit
 
@@ -73,8 +76,6 @@ resource AuditEvent : AppendOnly
 component AuditStore {
   owns AuditEvent
   grants Append<AuditEvent>
-  requires Gateway via calls
-  provides AuditLog
   fn appendEvent
     source ts("src/audit/store.ts#appendEvent")
     effects complete {
@@ -84,24 +85,45 @@ component AuditStore {
 }
 ```
 
-Function summaries support shape traits, `source`, optional `description`, optional `unsafe`, `effects complete`, `effects unknown`, `requires`, `reason`, and `expires`.
+Function summaries support shape traits, `source`, optional `description`, optional `unsafe`, `effects complete`, `effects unknown`, function-level `requires` (capability term, used with `unsafe`), `reason`, and `expires`.
+
+## Relations
+
+Relations are the only structural primitive. A relation is a hyperedge connecting two or more components or resources. Binary relations are simply 2-vertex hyperedges.
 
 ```shape
-module gateway
+module audit
 
-resource PolicySnapshot
+resource AuditEvent
 
 component Gateway {
-  owns PolicySnapshot
-  grants Read<PolicySnapshot>
-  fn derivePolicyDecision : RequiresDescription, PreserveInline
-    source ts("src/gateway/authorize.ts#derivePolicyDecision")
-    description required "Builds the visible authorization decision from policy state."
-    effects complete {
-      Read<PolicySnapshot>
-    }
+}
+
+component AuditStore {
+}
+
+relation GatewayCallsAudit {
+  kind calls
+  connects Gateway -> AuditStore
+}
+
+relation AuditWritePath {
+  kind coordinated_call
+  connects Gateway -> AuditStore -> AuditEvent
+  summary "Audit writes flow Gateway -> AuditStore -> AuditEvent."
 }
 ```
+
+Relation members:
+
+- `kind` — a relation kind name (e.g. `calls`, `callbacks`, `provides`, `coordinated_call`).
+- `connects` — either `A -> B -> ...` (ordered) or `{ A, B, ... }` (unordered). At least two endpoints are required.
+- `roles` — optional `{ Gateway as caller, AuditStore as callee }` tagging.
+- `summary` — optional review text.
+
+Directional prelude kinds must use ordered `A -> B` syntax. Binary directional kinds (`calls`, `callbacks`, `provides`) must have exactly two endpoints, and `provides` must connect a component provider to a resource target. `coordinated_call` must use ordered `A -> B -> ...` syntax.
+
+See [Relations and Hypergraphs](../concepts/relations-hypergraphs.md) for the kind registry and traversal semantics.
 
 ## Change entries
 
@@ -121,19 +143,43 @@ change ReviewAuditChange {
 }
 ```
 
-Change blocks can add, modify, and remove functions or top-level declarations.
+Change blocks can add, modify, and remove functions or top-level declarations (`resource`, `trait`, `component`, `relation`, `implementation`, `rule`).
+
+`add relation` / `modify relation` carry a full `relation` body, matching the [relation syntax](#relations) above; `remove relation` cites the relation by name only.
+
+```shape
+module changes.PR_002
+
+import audit
+
+change AdjustAuditGraph {
+  add relation AuditCallsGateway {
+    kind calls
+    connects AuditStore -> Gateway
+  }
+  modify relation GatewayCallsAudit {
+    kind calls
+    connects Gateway -> AuditStore
+  }
+  remove relation StaleProvidesEdge
+}
+```
 
 ## Rules
 
 ```shape
 module rules
 
-rule NoRequiresCycle {
-  forbid cycle over requires where includes calls or callbacks
+rule NoCallsCycle {
+  forbid hypercycle over calls or callbacks
+}
+
+rule GatewayBoundary {
+  forbid provides JsonRpcEndpoint except Gateway
 }
 ```
 
-Rules currently support `when subject has TraitName`, forbidden effects, forbidden providers, and dependency-cycle checks.
+Rules currently support `when subject has TraitName`, `forbid` effect patterns (including `forbid final`), `forbid provides TARGET except COMPONENT`, and `forbid hypercycle [over KIND or KIND ...]`.
 
 ## Rationale, memory, and reevaluation
 

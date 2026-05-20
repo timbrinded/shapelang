@@ -1,0 +1,29 @@
+module deps
+
+component AuditStore {
+}
+
+component ContractRegistry {
+}
+
+component Gateway {
+}
+
+relation AuditCallsRegistry {
+  kind calls
+  connects AuditStore -> ContractRegistry
+}
+
+relation GatewayCallsAudit {
+  kind calls
+  connects Gateway -> AuditStore
+}
+
+relation RegistryCallsGateway {
+  kind calls
+  connects ContractRegistry -> Gateway
+}
+
+rule no_calls_cycle {
+  forbid hypercycle over calls
+}

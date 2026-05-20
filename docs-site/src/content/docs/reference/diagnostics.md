@@ -20,6 +20,77 @@ AppendOnly forbids final HardDelete<AuditEvent>
 
 Fix the model by removing the effect, changing the architecture decision, or moving the behavior to a component/resource where the effect is allowed.
 
+## Forbidden hypercycle
+
+Cause: a `forbid hypercycle` rule found a directed cycle in the structural hypergraph. The diagnostic cites the relations forming the cycle and a vertex witness path. Each relation kind contributes steps to the cycle graph according to its declared traversal semantics (binary kinds contribute one step `A -> B`; ordered kinds contribute consecutive steps along their members).
+
+```shape
+module gateway
+
+component Gateway {
+}
+component AuditStore {
+}
+
+relation GatewayCallsAudit {
+  kind calls
+  connects Gateway -> AuditStore
+}
+
+relation AuditCallsGateway {
+  kind callbacks
+  connects AuditStore -> Gateway
+}
+
+rule no_runtime_cycle {
+  forbid hypercycle over calls or callbacks
+}
+```
+
+```text
+error: forbidden hypercycle
+
+rule no_runtime_cycle rejects this hypercycle:
+  calls GatewayCallsAudit
+  callbacks AuditCallsGateway
+witness: AuditStore -> Gateway -> AuditStore
+```
+
+Break the cycle by removing or redirecting one of the relations, or scope the rule to a different set of kinds with `forbid hypercycle over KIND`.
+
+## Forbidden provides
+
+Cause: a `forbid provides T except C` rule found a `provides` hyperedge that supplies `T` from a component other than the allowed one.
+
+```shape
+module gateway
+
+resource JsonRpcEndpoint
+
+component Gateway {
+}
+component Sidecar {
+}
+
+relation SidecarProvidesRpc {
+  kind provides
+  connects Sidecar -> JsonRpcEndpoint
+}
+
+rule GatewayBoundary {
+  forbid provides JsonRpcEndpoint except Gateway
+}
+```
+
+```text
+error: forbidden provides
+
+Sidecar provides JsonRpcEndpoint via relation SidecarProvidesRpc.
+rule GatewayBoundary forbids provides JsonRpcEndpoint except Gateway.
+```
+
+Move the `provides` relation onto the allowed component, or change the rule.
+
 ## Missing grant
 
 Cause: a function emits an effect that its component does not grant.
@@ -164,6 +235,30 @@ Add a `reevaluation` with review evidence, or avoid changing the protected funct
 Cause: a `reevaluation` is incomplete or satisfies a memory/rationale that does not exist.
 
 A valid reevaluation needs a known `satisfies` target plus `outcome`, `summary`, `evidence`, `reviewer`, and `decided_on`.
+
+## Invalid relation
+
+Cause: a `relation` declaration is malformed. Reasons reported by the checker include `missing kind`, `missing connects`, `connects requires at least two endpoints`, `duplicate kind`/`connects`/`roles`/`summary`, `duplicate endpoint X`, `kind K requires exactly two endpoints` (for binary prelude kinds), `kind K requires ordered connects (A -> B)` (for directional binary kinds), `kind K requires ordered connects (A -> B -> ...)` (for `coordinated_call`), ambiguous endpoints that resolve to both a component and a resource, invalid `provides` endpoint kinds, `role NAME is not a connects endpoint`, and `duplicate role for NAME`.
+
+```text
+error: invalid relation
+
+relation GatewayCallsAudit is invalid: kind calls requires exactly two endpoints.
+```
+
+Fix the offending relation block. Each prelude kind constrains arity and connects shape: `calls`, `callbacks`, and `provides` are binary and directional; `provides` must be `component -> resource`; `coordinated_call` is an ordered path of two or more endpoints; user-defined kinds accept any arity but are excluded from hypercycle detection.
+
+## Unknown relation endpoint
+
+Cause: a `relation`'s `connects` lists a name that does not resolve to a declared component or resource in the loaded model.
+
+```text
+error: unknown relation_endpoint
+
+relation_endpoint GhostService is referenced but not declared.
+```
+
+Declare the missing component or resource, or fix the endpoint name. Relation endpoints must resolve unambiguously before the hypergraph is checked.
 
 ## Design memory does not waive final forbids
 

@@ -62,7 +62,7 @@ export function buildShapeCriticPrompt(
     "- Are unknowns marked explicitly?",
     "- Are evidence spans plausible and reviewable?",
     "- Did the delta avoid weakening final invariants?",
-    "- Did dependency changes appear as requires/provides declarations?",
+    "- Did structural dependency changes appear as relation declarations with the correct kind?",
     "- Did the delta add shape traits without matching context?",
     "- Did the delta touch a guarded target without reevaluation?",
     "- Did the delta remove a required description?",

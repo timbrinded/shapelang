@@ -19,3 +19,11 @@ component AuditStore {
         evidence ts("src/audit/store.ts:18-25")
     }
 }
+
+component Gateway {
+}
+
+relation GatewayCallsAudit {
+  kind calls
+  connects Gateway -> AuditStore
+}

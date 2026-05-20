@@ -1,0 +1,31 @@
+module deps
+
+resource AuditEvent
+
+component AuditStore {
+}
+
+component ContractRegistry {
+}
+
+component Gateway {
+}
+
+relation AuditWritePath {
+  kind coordinated_call
+  connects Gateway -> AuditStore -> AuditEvent
+}
+
+relation EventNotifiesRegistry {
+  kind calls
+  connects AuditEvent -> ContractRegistry
+}
+
+relation RegistryNotifiesGateway {
+  kind calls
+  connects ContractRegistry -> Gateway
+}
+
+rule no_audit_loop {
+  forbid hypercycle over coordinated_call or calls
+}

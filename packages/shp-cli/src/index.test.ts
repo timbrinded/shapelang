@@ -105,6 +105,72 @@ describe("shp CLI", () => {
     expect(result.stderr).toContain("HardDelete");
     expect(result.stdout).toBe("");
   });
+
+  test("prints the whole hypergraph", async () => {
+    const result = await runCli(["graph", "fixtures/pass/hypercycle_acyclic/deps.shape"]);
+
+    expect(result.exitCode).toBe(0);
+    expect(result.stdout).toContain("Hypergraph");
+    expect(result.stdout).toContain("coordinated_call AuditWritePath");
+    expect(result.stdout).toContain("calls GatewayCallsAudit");
+    expect(result.stderr).toBe("");
+  });
+
+  test("prints hypergraph stats", async () => {
+    const result = await runCli([
+      "graph",
+      "--stats",
+      "fixtures/pass/hypercycle_acyclic/deps.shape"
+    ]);
+
+    expect(result.exitCode).toBe(0);
+    expect(result.stdout).toContain("Hypergraph stats");
+    expect(result.stdout).toContain("hyperedges: 2");
+    expect(result.stderr).toBe("");
+  });
+
+  test("rejects a symbol with hypergraph stats", async () => {
+    const result = await runCli([
+      "graph",
+      "Gateway",
+      "--stats",
+      "fixtures/pass/hypercycle_acyclic/deps.shape"
+    ]);
+
+    expect(result.exitCode).toBe(2);
+    expect(result.stderr).toContain("`shp graph --stats` does not accept a SYMBOL");
+    expect(result.stdout).toBe("");
+  });
+
+  test("prints focused hypergraph incidence for a symbol", async () => {
+    const result = await runCli([
+      "graph",
+      "Gateway",
+      "fixtures/pass/hypercycle_acyclic/deps.shape"
+    ]);
+
+    expect(result.exitCode).toBe(0);
+    expect(result.stdout).toContain("Gateway (component)");
+    expect(result.stdout).toContain("coordinated_call AuditWritePath");
+    expect(result.stdout).toContain("calls GatewayCallsAudit");
+    expect(result.stderr).toBe("");
+  });
+
+  test("filters focused hypergraph incidence by relation kind", async () => {
+    const result = await runCli([
+      "graph",
+      "Gateway",
+      "--kind",
+      "calls",
+      "fixtures/pass/hypercycle_acyclic/deps.shape"
+    ]);
+
+    expect(result.exitCode).toBe(0);
+    expect(result.stdout).toContain("Gateway (component)");
+    expect(result.stdout).toContain("calls GatewayCallsAudit");
+    expect(result.stdout).not.toContain("coordinated_call AuditWritePath");
+    expect(result.stderr).toBe("");
+  });
 });
 
 async function runCli(args: string[]): Promise<{

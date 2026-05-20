@@ -1,0 +1,23 @@
+module deps
+
+resource AuditEvent
+
+component AuditStore {
+}
+
+component Gateway {
+}
+
+relation AuditWritePath {
+  kind coordinated_call
+  connects Gateway -> AuditStore -> AuditEvent
+}
+
+relation GatewayCallsAudit {
+  kind calls
+  connects Gateway -> AuditStore
+}
+
+rule no_calls_cycle {
+  forbid hypercycle over calls
+}

@@ -32,9 +32,11 @@ The checker derives constraints from that trait. In the built-in checker logic a
 
 ## Component
 
-`component AuditStore` groups ownership, grants, dependencies, and functions.
+`component AuditStore` groups ownership, grants, and function summaries.
 
 `owns AuditEvent` makes the ownership claim explicit. `grants Append<AuditEvent>` says the component may contain functions that append to that resource.
+
+Structural links between components and resources are not declared inside a component. They live in top-level `relation` declarations. See [Relations and Hypergraphs](../concepts/relations-hypergraphs.md).
 
 ## Function summary
 

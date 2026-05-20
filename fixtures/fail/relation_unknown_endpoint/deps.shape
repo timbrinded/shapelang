@@ -1,0 +1,9 @@
+module deps
+
+component Gateway {
+}
+
+relation GatewayCallsGhost {
+  kind calls
+  connects Gateway -> GhostService
+}

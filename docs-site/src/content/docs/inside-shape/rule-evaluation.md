@@ -9,7 +9,7 @@ Rule evaluation decides whether the effective Shape model is coherent. By the ti
 
 Rules are intentionally boring. They compare explicit claims. They do not search source code for hidden behavior, and they do not let prose override hard constraints.
 
-![Rule evaluation diagram showing facts flowing into final forbid, missing grant, coverage, design memory, and cycle rule checks, then pass or reject outputs.](../../../assets/infographics/rule-evaluation-board.png)
+![Rule evaluation diagram showing facts flowing into final forbid, missing grant, coverage, design memory, and hypercycle rule checks, then pass or reject outputs.](../../../assets/infographics/rule-evaluation-board.png)
 
 ```mermaid
 flowchart TD
@@ -18,7 +18,7 @@ flowchart TD
   A --> D["trait final-forbid checks"]
   A --> E["coverage checks"]
   A --> F["context and guard checks"]
-  A --> G["dependency and provider rules"]
+  A --> G["hypercycle and provider rules"]
   B --> H["diagnostics"]
   C --> H
   D --> H
@@ -48,8 +48,8 @@ The current checker covers these major categories:
 | Source coverage | Did governed source change without a Shape delta or attestation? | Add a change file or `attest no_shape_change`. |
 | Required context | Did a shape trait require rationale, memory, or description? | Add the typed context block. |
 | Guarded changes | Did a protected target change without reevaluation? | Add a matching `reevaluation` or preserve the shape. |
-| Dependency cycles | Did a dependency rule find a forbidden cycle? | Break the dependency or revise the rule intentionally. |
-| Provider rules | Did a component provide something forbidden by policy? | Move ownership/provider responsibility or change the policy. |
+| Hypercycles | Did a `forbid hypercycle` rule find a cycle in the directed hypergraph? | Break the cycle or revise the rule intentionally. |
+| Provider rules | Does any `provides` relation expose a target outside the allowed component? | Move provider responsibility, remove the relation, or change the rule. |
 
 ## Final Forbids
 
@@ -227,37 +227,50 @@ change RefactorDecision {
 
 Memory is not a waiver. It can satisfy required design context and create review obligations, but it does not suppress final forbids, missing grants, or other hard model failures.
 
-## Dependency Witness Paths
+## Hypercycle Witness Paths
 
-Graph rules need to show their work. If a rule forbids cycles over `requires`, the diagnostic should include the path that proves the cycle.
+Hypergraph rules need to show their work. If a rule forbids cycles over `calls`, the diagnostic should include the relations and the vertex path that prove the cycle.
 
 ```shape
 module platform
 
 component Api {
-  requires Worker via RuntimeCall
 }
-
 component Worker {
-  requires Queue via RuntimeCall
+}
+component Queue {
 }
 
-component Queue {
-  requires Api via RuntimeCall
+relation ApiCallsWorker {
+  kind calls
+  connects Api -> Worker
+}
+
+relation WorkerCallsQueue {
+  kind calls
+  connects Worker -> Queue
+}
+
+relation QueueCallsApi {
+  kind calls
+  connects Queue -> Api
 }
 
 rule no_runtime_control_cycle {
-  forbid cycle over requires where includes RuntimeCall
+  forbid hypercycle over calls
 }
 ```
 
-The useful diagnostic is not merely "cycle exists." It should point to a witness path:
+The useful diagnostic is not merely "cycle exists." It should point to the relations involved and a vertex witness path:
 
 ```text
-Api -> Worker -> Queue -> Api
+calls ApiCallsWorker
+calls WorkerCallsQueue
+calls QueueCallsApi
+witness: Api -> Worker -> Queue -> Api
 ```
 
-That path gives the reviewer a concrete place to start. They can decide whether the runtime dependency should be inverted, split, or expressed through a different relation.
+That path gives the reviewer a concrete place to start. They can decide whether the runtime dependency should be inverted, split, or expressed through a different relation kind.
 
 ## Rule Design Principle
 
