@@ -114,7 +114,7 @@ Prefer simple stroked icons and schematic shapes:
 - Cylinder: resources.
 - Shield: grants, coverage, CI gate.
 - Lightning bolt: effects.
-- Branch graph: dependencies and witness paths.
+- Branch graph: relation hyperedges and hypercycle witness paths.
 - Terminal prompt: CLI commands.
 - Spark line or small node: agent-authored draft.
 

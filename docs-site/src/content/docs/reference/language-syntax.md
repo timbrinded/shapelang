@@ -145,6 +145,26 @@ change ReviewAuditChange {
 
 Change blocks can add, modify, and remove functions or top-level declarations (`resource`, `trait`, `component`, `relation`, `implementation`, `rule`).
 
+`add relation` / `modify relation` carry a full `relation` body, matching the [relation syntax](#relations) above; `remove relation` cites the relation by name only.
+
+```shape
+module changes.PR_002
+
+import audit
+
+change AdjustAuditGraph {
+  add relation AuditCallsGateway {
+    kind calls
+    connects AuditStore -> Gateway
+  }
+  modify relation GatewayCallsAudit {
+    kind calls
+    connects Gateway -> AuditStore
+  }
+  remove relation StaleProvidesEdge
+}
+```
+
 ## Rules
 
 ```shape

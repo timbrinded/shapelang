@@ -59,5 +59,7 @@ Shape can also require typed design context before accepting non-obvious functio
 - [Quickstart](./learn/quickstart) installs the released typechecker and runs it against `.shape` files.
 - [First Shape File](./learn/first-shape-file) explains the smallest useful model.
 - [Append-Only Walkthrough](./learn/append-only-walkthrough) follows the core failure from declaration to diagnostic.
+- [Relations and Hypergraphs](./concepts/relations-hypergraphs) introduces structural links as hyperedges in a directed hypergraph.
+- [Rules and Hypercycles](./concepts/rules-hypercycles) covers `forbid hypercycle` and `forbid provides` rules over that hypergraph.
 - [Refactor Constraints](./concepts/refactor-constraints) explains typed design memory for refactor-sensitive code.
 - [CLI Reference](./reference/cli) lists the commands exposed by `shp`.

@@ -1,0 +1,23 @@
+module rules
+
+resource JsonRpcEndpoint
+
+component Gateway {
+}
+
+component PublicApi {
+}
+
+relation GatewayProvidesRpc {
+  kind provides
+  connects Gateway -> JsonRpcEndpoint
+}
+
+relation PublicApiProvidesRpc {
+  kind provides
+  connects PublicApi -> JsonRpcEndpoint
+}
+
+rule gateway_only_rpc_ingress {
+  forbid provides JsonRpcEndpoint except Gateway
+}

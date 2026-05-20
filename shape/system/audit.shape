@@ -20,7 +20,10 @@ component AuditStore {
     }
 }
 
-relation AuditStoreOwnsAuditEvent {
-  kind provides
-  connects AuditStore -> AuditEvent
+component Gateway {
+}
+
+relation GatewayCallsAudit {
+  kind calls
+  connects Gateway -> AuditStore
 }
