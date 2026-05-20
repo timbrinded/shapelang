@@ -384,6 +384,21 @@ attest no_shape_change {
 }
 
 attest no_shape_change {
+  source md("docs-site/src/content/docs/concepts/change-files-attestations.md")
+  reason "Legacy change-file docs were renamed and replaced by global model update documentation."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/examples/authoring-pr-delta.md")
+  reason "Legacy PR delta example was renamed and replaced by global model update documentation."
+}
+
+attest no_shape_change {
   source md("docs-site/src/content/docs/examples/missing-shape-delta.md")
   reason "Legacy example page was renamed to missing-shape-update; the deleted path is intentionally obsolete."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/learn/pr-change-files.md")
+  reason "Legacy PR change-file guide was renamed and replaced by global model update documentation."
 }
