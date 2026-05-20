@@ -33,6 +33,7 @@ import type {
   TraitDecl,
   TraitForbidDecl
 } from "./language/generated/ast.ts";
+import { isAbsolute, relative } from "node:path";
 import {
   isAddDeclarationChange,
   isAddFunctionChange,
@@ -3151,7 +3152,7 @@ function checkCoverage(model: Model, changedFiles: string[]): SemanticDiagnostic
   }
 
   const normalizedChanged = changedFiles
-    .map((file) => normalizePath(file))
+    .map((file) => normalizeRepoPath(file))
     .filter((file) => file.length > 0);
   const changedSet = new Set(normalizedChanged);
   const diagnostics: SemanticDiagnostic[] = [];
@@ -3219,7 +3220,9 @@ function currentShapeDeltaExists(
 }
 
 function provenanceFileChanged(provenance: Provenance, changedSet: Set<string>): boolean {
-  return provenance.filePath !== undefined && changedSet.has(normalizePath(provenance.filePath));
+  return (
+    provenance.filePath !== undefined && changedSet.has(normalizeRepoPath(provenance.filePath))
+  );
 }
 
 function checkBindings(model: Model, changedFiles: string[]): SemanticDiagnostic[] {
@@ -3228,7 +3231,7 @@ function checkBindings(model: Model, changedFiles: string[]): SemanticDiagnostic
   }
 
   const normalizedChanged = changedFiles
-    .map((file) => normalizePath(file))
+    .map((file) => normalizeRepoPath(file))
     .filter((file) => file.length > 0);
   const changedSet = new Set(normalizedChanged);
   const diagnostics: SemanticDiagnostic[] = [];
@@ -4063,6 +4066,15 @@ function normalizeSourcePath(path: string): string {
 
 function normalizePath(path: string): string {
   return path.replaceAll("\\", "/").replace(/^\.\//, "");
+}
+
+function normalizeRepoPath(path: string): string {
+  const normalized = normalizePath(path);
+  if (!isAbsolute(normalized)) {
+    return normalized;
+  }
+
+  return normalizePath(relative(process.cwd(), normalized));
 }
 
 function globMatches(glob: string, path: string): boolean {

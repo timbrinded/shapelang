@@ -580,6 +580,45 @@ describe("Shape checker", () => {
     expect(result.exitCode).toBe(0);
   });
 
+  test("passes coverage with no-shape-change attestation from an absolute Shape path", () => {
+    const parsed = parseShapeModule(`
+      module audit
+
+      resource AuditEvent : AppendOnly
+
+      component AuditStore {
+        owns AuditEvent
+      }
+
+      implementation AuditStoreImpl {
+        paths {
+          "src/audit/**/*.ts"
+        }
+        conforms_to AuditStore
+        on_change require shape_delta
+      }
+
+      attest no_shape_change {
+        source ts("src/audit/purge.ts")
+        reason "renamed local variable only"
+      }
+    `);
+
+    expect(parsed.ok).toBe(true);
+    if (!parsed.ok) {
+      return;
+    }
+
+    const result = checkShapeModules(
+      [{ module: parsed.module, filePath: resolve(repoRoot, "shape/audit.shape") }],
+      {
+        changedFiles: ["src/audit/purge.ts", "shape/audit.shape"]
+      }
+    );
+
+    expect(result.exitCode).toBe(0);
+  });
+
   test("rejects stale no-shape-change attestation for current coverage", () => {
     const parsed = parseShapeModule(`
       module audit
@@ -662,6 +701,61 @@ describe("Shape checker", () => {
       [
         { module: base.module, filePath: "shape/audit.shape" },
         { module: change.module, filePath: "shape/changes/PR_003.shape" }
+      ],
+      {
+        changedFiles: ["src/audit/store.ts", "shape/changes/PR_003.shape"]
+      }
+    );
+
+    expect(result.exitCode).toBe(0);
+  });
+
+  test("passes coverage when an absolute change file references the governed source", () => {
+    const base = parseShapeModule(`
+      module audit
+
+      resource AuditEvent : AppendOnly
+
+      component AuditStore {
+        owns AuditEvent
+        grants Append<AuditEvent>
+      }
+
+      implementation AuditStoreImpl {
+        paths {
+          "src/audit/**/*.ts"
+        }
+        conforms_to AuditStore
+        on_change require shape_delta
+      }
+    `);
+    const change = parseShapeModule(`
+      module changes.PR_003
+      import audit
+
+      change AddAppend {
+        add fn AuditStore.appendEvent
+          source ts("src/audit/store.ts#appendEvent")
+          effects complete {
+            Append<AuditEvent>
+              evidence ts("src/audit/store.ts:8-14")
+          }
+      }
+    `);
+
+    expect(base.ok).toBe(true);
+    expect(change.ok).toBe(true);
+    if (!base.ok || !change.ok) {
+      return;
+    }
+
+    const result = checkShapeModules(
+      [
+        { module: base.module, filePath: resolve(repoRoot, "shape/audit.shape") },
+        {
+          module: change.module,
+          filePath: resolve(repoRoot, "shape/changes/PR_003.shape")
+        }
       ],
       {
         changedFiles: ["src/audit/store.ts", "shape/changes/PR_003.shape"]
