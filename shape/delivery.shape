@@ -224,6 +224,7 @@ implementation CliSource {
     "packages/shp-cli/src/io.ts"
     "packages/shp-cli/src/parameters.ts"
     "packages/shp-cli/src/shape-files.ts"
+    "packages/shp-cli/src/version.ts"
   }
   conforms_to ShpCli
   on_change require shape_update

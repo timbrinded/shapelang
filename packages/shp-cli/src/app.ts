@@ -16,6 +16,7 @@ import { memoryCommand } from "./commands/memory/command";
 import { obligationsCommand } from "./commands/obligations/command";
 import type { CliContext } from "./context";
 import { cliExitCode, errorMessage } from "./errors";
+import { SHP_VERSION } from "./version";
 
 const root = buildRouteMap({
   routes: {
@@ -53,7 +54,7 @@ const text = {
 export const app = buildApplication<CliContext>(root, {
   name: "shp",
   versionInfo: {
-    currentVersion: "0.0.0"
+    currentVersion: SHP_VERSION
   },
   scanner: {
     caseStyle: "allow-kebab-for-camel"

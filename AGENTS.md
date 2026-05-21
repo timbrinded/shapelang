@@ -120,8 +120,11 @@ The TypeScript project is strict (`strict`, `noUncheckedIndexedAccess`,
 
 ## Release Process
 
-Public versions are Git tags such as `v0.2.0`. The workspace packages are private
-and currently use `0.0.0`; do not assume npm package versions drive releases.
+Public versions are Git tags such as `v0.2.0`. The CLI package version in
+`packages/shp-cli/package.json` must match the release tag without the leading
+`v`; the release workflow rejects mismatches such as tag `v0.3.0` with CLI
+version `0.2.0`. Workspace packages remain private; package versions are used for
+release consistency, not npm publishing.
 
 Only release from committed branch state. Do not create a release tag from a
 dirty worktree, detached `HEAD`, stash-only changes, or uncommitted local edits.
@@ -130,9 +133,10 @@ The tag must point at a pushed branch commit.
 Before tagging a new release:
 
 1. Pick the next semver tag, for example `v0.3.0`.
-2. Update user-facing pinned examples if needed, especially README install
-   snippets, docs quick-start content, and action examples that mention an older
-   release.
+2. Update `packages/shp-cli/package.json` to the tag version without the leading
+   `v`, then update user-facing pinned examples if needed, especially README
+   install snippets, docs quick-start content, and action examples that mention
+   an older release.
 3. Install and regenerate:
 
    ```bash

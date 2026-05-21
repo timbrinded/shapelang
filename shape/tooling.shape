@@ -193,6 +193,8 @@ component ShpCli {
         evidence ts("packages/shp-cli/src/app.ts")
       Read<DiagnosticText>
         evidence ts("packages/shp-cli/src/errors.ts")
+      Read<DiagnosticText>
+        evidence ts("packages/shp-cli/src/version.ts")
       Read<FormattedShape>
         evidence ts("packages/shp-cli/src/commands/fmt/impl.ts")
     }

@@ -189,10 +189,11 @@ describe("shp CLI", () => {
   });
 
   test("prints the CLI version", async () => {
+    const manifest = await readCliManifest();
     const result = await runCli(["--version"]);
 
     expect(result.exitCode).toBe(0);
-    expect(result.stdout.trim()).toBe("0.0.0");
+    expect(result.stdout.trim()).toBe(manifest.version);
     expect(result.stderr).toBe("");
   });
 
@@ -367,6 +368,7 @@ describe("shp CLI", () => {
 });
 
 type CliManifest = {
+  version: string;
   bin: {
     shp: string;
   };
@@ -383,12 +385,18 @@ async function readCliManifest(): Promise<CliManifest> {
 }
 
 function isCliManifest(value: unknown): value is CliManifest {
-  if (typeof value !== "object" || value === null || !("bin" in value)) {
+  if (typeof value !== "object" || value === null || !("version" in value) || !("bin" in value)) {
     return false;
   }
 
   const { bin } = value;
-  return typeof bin === "object" && bin !== null && "shp" in bin && typeof bin.shp === "string";
+  return (
+    typeof value.version === "string" &&
+    typeof bin === "object" &&
+    bin !== null &&
+    "shp" in bin &&
+    typeof bin.shp === "string"
+  );
 }
 
 async function runCli(
