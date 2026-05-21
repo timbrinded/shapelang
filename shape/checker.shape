@@ -436,9 +436,9 @@ reevaluation CheckerPhaseOrderRechecked {
 reevaluation CoverageCurrentAttestationsRechecked {
   satisfies memory CoverageCurrentUpdateContract
   outcome Confirmed
-  summary "Coverage and binding checks now share the current-attestation predicate while preserving current-file freshness."
+  summary "Coverage uses current attestations and shape-update paths rebuilt from the final function registry."
   reviewer ShapeMaintainers
-  decided_on "2026-05-20"
+  decided_on "2026-05-21"
   evidence test("packages/shp-checker/src/checker.test.ts")
 }
 
@@ -472,8 +472,8 @@ reevaluation HypercycleTraversalRechecked {
 reevaluation LoweringFunctionRegistryRechecked {
   satisfies memory LoweringBeforeRules
   outcome Confirmed
-  summary "Function add, modify, and remove changes now update component.functions before derived function facts are emitted."
+  summary "Function add, modify, and remove changes update component.functions before derived facts and coverage paths are emitted."
   reviewer ShapeMaintainers
-  decided_on "2026-05-20"
+  decided_on "2026-05-21"
   evidence test("packages/shp-checker/src/checker.test.ts")
 }

@@ -884,6 +884,68 @@ describe("Shape checker", () => {
     );
   });
 
+  test("rejects removed function source references for current coverage", () => {
+    const base = parseShapeModule(`
+      module audit
+
+      resource AuditEvent : AppendOnly
+
+      component AuditStore {
+        owns AuditEvent
+        grants Append<AuditEvent>
+
+        fn appendEvent
+          source ts("src/audit/store.ts#appendEvent")
+          effects complete {
+            Append<AuditEvent>
+          }
+      }
+
+      implementation AuditStoreImpl {
+        paths {
+          "src/audit/**/*.ts"
+        }
+        conforms_to AuditStore
+        on_change require shape_update
+      }
+    `);
+    const change = parseShapeModule(`
+      module review.remove_append
+      import audit
+
+      change RemoveAppend {
+        remove fn AuditStore.appendEvent
+      }
+    `);
+
+    expect(base.ok).toBe(true);
+    expect(change.ok).toBe(true);
+    if (!base.ok || !change.ok) {
+      return;
+    }
+
+    const result = checkShapeModules(
+      [
+        { module: base.module, filePath: "shape/audit.shape" },
+        { module: change.module, filePath: "shape/audit-update.shape" }
+      ],
+      {
+        changedFiles: ["src/audit/store.ts", "shape/audit.shape", "shape/audit-update.shape"],
+        includeFacts: true
+      }
+    );
+
+    expect(result.exitCode).toBe(1);
+    expect(result.diagnostics.map((diagnostic) => diagnostic.kind)).toContain(
+      "missing_shape_update"
+    );
+    expect(
+      result.facts?.some(
+        (fact) => fact.kind === "shape_update_for" && fact.path === "src/audit/store.ts"
+      )
+    ).toBe(false);
+  });
+
   test("enforces bindings between Shape-affecting code and docs", () => {
     const parsed = parseShapeModule(`
       module repo
@@ -2820,6 +2882,26 @@ describe("Shape editor support", () => {
     if (formatted.ok) {
       expect(formatted.formatted).toContain("component AuditStore");
     }
+  });
+
+  test("keeps qualified function definition lookup scoped to components", () => {
+    const scopedSource = `
+      component Alpha {
+        fn handle
+          effects unknown
+      }
+
+      component Beta {
+        fn handle
+          effects unknown
+      }
+    `;
+
+    const alpha = getDefinitionLocation(scopedSource, "Alpha.handle");
+    const beta = getDefinitionLocation(scopedSource, "Beta.handle");
+
+    expect(alpha?.line).toBeGreaterThan(1);
+    expect(beta?.line).toBeGreaterThan(alpha?.line ?? 0);
   });
 
   test("derives editor shape-trait help from the prelude registry", () => {

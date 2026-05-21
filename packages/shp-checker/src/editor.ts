@@ -255,6 +255,10 @@ function definitionName(symbol: string): string | undefined {
 }
 
 function symbolMatches(candidate: string, symbol: string, name: string): boolean {
+  if (symbol.includes(".")) {
+    return candidate === symbol;
+  }
+
   return candidate === symbol || candidate === name;
 }
 

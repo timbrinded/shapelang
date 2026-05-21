@@ -1153,8 +1153,20 @@ function lowerShapeModules(modules: ShapeModule[] | CheckModuleInput[]): Model {
     }
   }
 
+  rebuildShapeUpdatePaths(model);
   emitDerivedFacts(model);
   return model;
+}
+
+function rebuildShapeUpdatePaths(model: Model): void {
+  model.shapeUpdatePaths = new Map();
+  model.facts = model.facts.filter((fact) => fact.kind !== "shape_update_for");
+
+  for (const component of model.components.values()) {
+    for (const fn of component.functions.values()) {
+      collectShapeUpdatePathsFromFunction(fn, model);
+    }
+  }
 }
 
 function normalizeModuleInputs(modules: ShapeModule[] | CheckModuleInput[]): CheckModuleInput[] {
@@ -1291,7 +1303,6 @@ function lowerComponent(
     } else if (isFunctionSummary(member)) {
       const fn = lowerFunction(member, component.name, filePath);
       info.functions.set(fn.name, fn);
-      collectShapeUpdatePathsFromFunction(fn, model);
       emitFunctionFacts(fn, model);
     }
   }
@@ -1994,8 +2005,6 @@ function lowerChange(change: ChangeDecl, filePath: string | undefined, model: Mo
       const fn = lowerFunction(entry, entry.component, filePath, `change ${change.name}`);
       removeFunctionFacts(model, entry.component, entry.name);
       component.functions.set(fn.name, fn);
-      addShapeUpdatePath(model, functionKey(entry.component, entry.name), fn.provenance);
-      collectShapeUpdatePathsFromFunction(fn, model);
       emitFunctionFacts(fn, model);
     } else if (isRemoveFunctionChange(entry)) {
       model.changeEvents.push({
