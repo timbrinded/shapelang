@@ -22,13 +22,13 @@ The checker does not prove the application implementation is correct. It checks 
 Install the released `shp` typechecker binary. Pin the version in scripts and CI so checks are reproducible.
 
 ```bash
-curl --proto '=https' --tlsv1.2 -LsSf https://github.com/timbrinded/shapelang/releases/download/v0.1.0/install.sh | sh
+curl --proto '=https' --tlsv1.2 -LsSf https://github.com/timbrinded/shapelang/releases/download/v0.3.0/install.sh | sh
 ```
 
 On Windows:
 
 ```powershell
-irm https://github.com/timbrinded/shapelang/releases/download/v0.1.0/install.ps1 | iex
+irm https://github.com/timbrinded/shapelang/releases/download/v0.3.0/install.ps1 | iex
 ```
 
 Run the checker from a repo that contains Shape files:
@@ -41,6 +41,16 @@ shp memory
 shp obligations
 ```
 
+For local developer installs, update the released binary explicitly:
+
+```bash
+shp update
+shp update --dry-run
+```
+
+`shp update --path PATH` can replace a custom install path, but an existing target
+must already identify itself as the Shape CLI and report a valid version.
+
 `shp check` scans these paths when no files are provided:
 
 ```text
@@ -52,7 +62,7 @@ In GitHub Actions, install the same pinned release with the setup action:
 ```yaml
 steps:
   - uses: actions/checkout@v4
-  - uses: timbrinded/shapelang@v0.1.0
+  - uses: timbrinded/shapelang@v0.3.0
   - run: shp check
 ```
 
@@ -153,10 +163,12 @@ shp check --changed-files changed.txt
 shp coverage --changed-files changed.txt
 shp fmt --check
 shp explain AuditEvent
-shp graph Gateway --kind calls
+shp graph show Gateway --kind calls
+shp graph stats --kind calls
 shp memory
 shp obligations
 shp analyze --shape-files fixtures/pass/append_only_append/audit.shape src/audit/purge.ts
+shp update --dry-run
 ```
 
 `shp check` scans `shape/**/*.shape` when no files are provided. Any `.shape` file under `shape/` is part of the checked model.
@@ -168,10 +180,13 @@ Useful commands:
 - `shp check --changed-files changed.txt`: run semantic checks, coverage, and bindings together.
 - `shp fmt --check`: verify canonical formatting.
 - `shp explain AuditEvent`: show derived facts and incident relations for a symbol.
-- `shp graph [SYMBOL] [--kind KIND]`: with a SYMBOL, print the hyperedges incident to that symbol; without a SYMBOL, print the whole hypergraph grouped by kind. Use `shp graph --stats [--kind KIND]` for aggregate vertex, hyperedge, and incidence counts.
+- `shp graph all [--kind KIND]`: print the whole hypergraph grouped by kind.
+- `shp graph show SYMBOL [--kind KIND]`: print the hyperedges incident to a component or resource.
+- `shp graph stats [--kind KIND]`: print aggregate vertex, hyperedge, and incidence counts.
 - `shp memory`: list rationale and memory entries that protect design context.
 - `shp obligations`: list open design-memory obligations such as missing rationale or reevaluation.
 - `shp analyze --shape-files fixtures/pass/append_only_append/audit.shape src/file.ts`: compare obvious source hints against declared effects.
+- `shp update`: update a local released binary from GitHub Releases.
 
 ## Project Layout
 
@@ -249,8 +264,8 @@ CI is wired in `.github/workflows/shape.yml` for formatting, tests, typechecking
 Releases are built from version tags:
 
 ```bash
-git tag v0.1.0
-git push origin v0.1.0
+git tag v0.3.0
+git push origin v0.3.0
 ```
 
 The release workflow validates the repo, cross-compiles `shp` for Linux, macOS, and Windows, publishes tarballs as GitHub release assets, and includes SHA-256 checksums.
@@ -260,7 +275,7 @@ Other GitHub Actions workflows can install `shp` with the setup action shown in 
 ```yaml
 - uses: timbrinded/shapelang@master
   with:
-    version: v0.1.0
+    version: v0.3.0
 ```
 
 ## License

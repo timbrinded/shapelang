@@ -1,6 +1,6 @@
 {
   "name": "@shape/shp-cli",
-  "version": "0.0.0",
+  "version": "0.3.0",
   "private": true,
   "license": "BSD-3-Clause",
   "bin": {
@@ -8,6 +8,7 @@
   },
   "type": "module",
   "dependencies": {
-    "@shape/shp-checker": "workspace:*"
+    "@shape/shp-checker": "workspace:*",
+    "@stricli/core": "^1.2.7"
   }
 }

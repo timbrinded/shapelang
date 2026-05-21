@@ -28,6 +28,17 @@ jobs:
         name: Install
         run: bun install --frozen-lockfile
 
+      - name: Check release tag matches CLI package version
+        run: |
+          set -euo pipefail
+          cli_version="$(bun -e 'console.log((await import("./packages/shp-cli/package.json")).default.version)')"
+          expected_tag="v${cli_version}"
+          if [ "$GITHUB_REF_NAME" != "$expected_tag" ]; then
+            echo "Release tag $GITHUB_REF_NAME does not match packages/shp-cli/package.json version $cli_version."
+            echo "Expected tag: $expected_tag"
+            exit 1
+          fi
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
@@ -81,6 +92,25 @@ jobs:
           tar -xzf dist/release/shp-linux-x64.tar.gz -C /tmp/shp-smoke
           /tmp/shp-smoke/shp --help >/dev/null
           /tmp/shp-smoke/shp check
+          /tmp/shp-smoke/shp memory >/dev/null
+          /tmp/shp-smoke/shp obligations >/tmp/shp-smoke/obligations.txt
+          grep -q "No open shape obligations." /tmp/shp-smoke/obligations.txt
+
+          set +e
+          /tmp/shp-smoke/shp analyze \
+            --shape-files fixtures/pass/append_only_append/audit.shape \
+            fixtures/source/audit_purge.ts \
+            >/tmp/shp-smoke/analyze.out \
+            2>/tmp/shp-smoke/analyze.err
+          analyze_status=$?
+          set -e
+          if [ "$analyze_status" -ne 1 ]; then
+            echo "Expected analyzer smoke test to report a mismatch, got exit $analyze_status."
+            cat /tmp/shp-smoke/analyze.out
+            cat /tmp/shp-smoke/analyze.err >&2
+            exit 1
+          fi
+          grep -q "HardDelete" /tmp/shp-smoke/analyze.err
 
       - name: Publish GitHub release
         env:

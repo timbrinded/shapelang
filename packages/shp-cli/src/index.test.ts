@@ -1,5 +1,7 @@
 import { describe, expect, test } from "bun:test";
-import { resolve } from "node:path";
+import { chmod, mkdtemp, rm, writeFile } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { join, resolve } from "node:path";
 
 const repoRoot = resolve(import.meta.dir, "../../..");
 const cliPath = resolve(repoRoot, "packages/shp-cli/src/index.ts");
@@ -27,8 +29,8 @@ describe("shp CLI", () => {
 
     expect(result.exitCode).toBe(2);
     expect(result.stderr).toContain("--not-a-real-option");
-    expect(result.stderr).toContain("Usage:");
-    expect(result.stderr).not.toContain("parseArgs");
+    expect(result.stderr).toContain("No flag registered");
+    expect(result.stderr).not.toContain("ArgumentScannerError");
     expect(result.stdout).toBe("");
   });
 
@@ -84,6 +86,19 @@ describe("shp CLI", () => {
     expect(result.exitCode).toBe(1);
     expect(result.stderr).toContain("bound docs change missing");
     expect(result.stderr).toContain("AuditDocs");
+    expect(result.stdout).toBe("");
+  });
+
+  test("rejects empty changed-file path during checks", async () => {
+    const result = await runCli([
+      "check",
+      "--changed-files",
+      "",
+      "fixtures/pass/coverage_binding_only/audit.shape"
+    ]);
+
+    expect(result.exitCode).toBe(2);
+    expect(result.stderr).toContain("error: failed to read");
     expect(result.stdout).toBe("");
   });
 
@@ -172,8 +187,139 @@ describe("shp CLI", () => {
     );
 
     expect(result.exitCode).toBe(0);
-    expect(result.stdout).toContain("Usage:");
+    expect(result.stdout).toContain("USAGE");
+    expect(result.stdout).toContain("COMMANDS");
+    expect(result.stdout).toContain("--version");
     expect(result.stderr).toBe("");
+  });
+
+  test("prints command help", async () => {
+    const result = await runCli(["check", "--help"]);
+
+    expect(result.exitCode).toBe(0);
+    expect(result.stdout).toContain("USAGE");
+    expect(result.stdout).toContain("--changed-files");
+    expect(result.stdout).toContain("Run semantic checks");
+    expect(result.stderr).toBe("");
+  });
+
+  test("prints update command help", async () => {
+    const result = await runCli(["update", "--help"]);
+
+    expect(result.exitCode).toBe(0);
+    expect(result.stdout).toContain("Update the released shp binary in place");
+    expect(result.stdout).toContain("--version");
+    expect(result.stdout).toContain("--dry-run");
+    expect(result.stdout).toContain("--path");
+    expect(result.stderr).toBe("");
+  });
+
+  test("prints the CLI version", async () => {
+    const manifest = await readCliManifest();
+    const result = await runCli(["--version"]);
+
+    expect(result.exitCode).toBe(0);
+    expect(result.stdout.trim()).toBe(manifest.version);
+    expect(result.stderr).toBe("");
+  });
+
+  test("reports same-version update without network or mutation", async () => {
+    const manifest = await readCliManifest();
+    const tempDir = await mkdtemp(join(tmpdir(), "shp-cli-test-"));
+    const fakeShp = join(tempDir, "shp");
+    try {
+      await writeFile(
+        fakeShp,
+        [
+          "#!/usr/bin/env sh",
+          'if [ "$1" = "--help" ]; then',
+          "  echo 'USAGE'",
+          "  echo '  shp check [--changed-files changed.txt] <files>...'",
+          "  echo '  shp coverage (--changed-files changed.txt) <files>...'",
+          "  echo '  shp fmt [--check] <files>...'",
+          "  echo '  shp update [--version VERSION] [--dry-run] [--path PATH]'",
+          "  echo 'When no files are provided, Shape file commands scan shape/**/*.shape by default.'",
+          "else",
+          `  echo "${manifest.version}"`,
+          "fi",
+          ""
+        ].join("\n")
+      );
+      await chmod(fakeShp, 0o755);
+
+      const result = await runCli([
+        "update",
+        "--dry-run",
+        "--version",
+        manifest.version,
+        "--path",
+        fakeShp
+      ]);
+
+      expect(result.exitCode).toBe(0);
+      expect(result.stdout).toBe(`shp ${manifest.version} is already installed\n`);
+      expect(result.stderr).toBe("");
+    } finally {
+      await rm(tempDir, { recursive: true, force: true });
+    }
+  });
+
+  test("refuses to update the Bun runtime when run from source", async () => {
+    const result = await runCli(["update"]);
+
+    expect(result.exitCode).toBe(2);
+    expect(result.stderr).toContain("refusing to update");
+    expect(result.stderr).toContain("pass --path PATH");
+    expect(result.stdout).toBe("");
+  });
+
+  test("reports unknown commands without a stack trace", async () => {
+    const result = await runCli(["chek"]);
+
+    expect(result.exitCode).toBe(2);
+    expect(result.stderr).toContain("No command registered");
+    expect(result.stderr).toContain("check");
+    expect(result.stderr).not.toContain("buildRouteScanner");
+    expect(result.stdout).toBe("");
+  });
+
+  test("reports missing required positionals as usage errors", async () => {
+    const result = await runCli(["explain"]);
+
+    expect(result.exitCode).toBe(2);
+    expect(result.stderr).toContain("Expected at least 1 argument");
+    expect(result.stderr).toContain("args");
+    expect(result.stdout).toBe("");
+  });
+
+  test("documents reserved legacy graph symbols", async () => {
+    const result = await runCli(["graph", "--help"]);
+
+    expect(result.exitCode).toBe(0);
+    expect(result.stdout).toContain("symbols named all, show, or stats");
+    expect(result.stdout).toContain("graph show SYMBOL");
+    expect(result.stderr).toBe("");
+  });
+
+  test("preserves legacy graph invocation for a symbol named legacy", async () => {
+    const tempDir = await mkdtemp(join(tmpdir(), "shp-cli-test-"));
+    const shapeFile = join(tempDir, "legacy-symbol.shape");
+    try {
+      await writeFile(
+        shapeFile,
+        ["module legacy_symbol", "", "component legacy {", "}", ""].join("\n")
+      );
+
+      const result = await runCli(["graph", "legacy", shapeFile]);
+
+      expect(result.exitCode).toBe(0);
+      expect(result.stdout).toContain("legacy (component)");
+      expect(result.stdout).toContain("(no incident relations)");
+      expect(result.stdout).not.toContain("Hypergraph");
+      expect(result.stderr).toBe("");
+    } finally {
+      await rm(tempDir, { recursive: true, force: true });
+    }
   });
 
   test("prints the whole hypergraph", async () => {
@@ -184,6 +330,15 @@ describe("shp CLI", () => {
     expect(result.stdout).toContain("coordinated_call AuditWritePath");
     expect(result.stdout).toContain("calls GatewayCallsAudit");
     expect(result.stderr).toBe("");
+  });
+
+  test("prints the whole hypergraph with the explicit all subcommand", async () => {
+    const legacy = await runCli(["graph", "fixtures/pass/hypercycle_acyclic/deps.shape"]);
+    const explicit = await runCli(["graph", "all", "fixtures/pass/hypercycle_acyclic/deps.shape"]);
+
+    expect(explicit.exitCode).toBe(0);
+    expect(explicit.stdout).toBe(legacy.stdout);
+    expect(explicit.stderr).toBe("");
   });
 
   test("reports missing graph files without a stack trace", async () => {
@@ -207,6 +362,23 @@ describe("shp CLI", () => {
     expect(result.stdout).toContain("Hypergraph stats");
     expect(result.stdout).toContain("hyperedges: 2");
     expect(result.stderr).toBe("");
+  });
+
+  test("prints hypergraph stats with the explicit stats subcommand", async () => {
+    const legacy = await runCli([
+      "graph",
+      "--stats",
+      "fixtures/pass/hypercycle_acyclic/deps.shape"
+    ]);
+    const explicit = await runCli([
+      "graph",
+      "stats",
+      "fixtures/pass/hypercycle_acyclic/deps.shape"
+    ]);
+
+    expect(explicit.exitCode).toBe(0);
+    expect(explicit.stdout).toBe(legacy.stdout);
+    expect(explicit.stderr).toBe("");
   });
 
   test("rejects a symbol with hypergraph stats", async () => {
@@ -236,6 +408,24 @@ describe("shp CLI", () => {
     expect(result.stderr).toBe("");
   });
 
+  test("prints focused hypergraph incidence with the explicit show subcommand", async () => {
+    const legacy = await runCli([
+      "graph",
+      "Gateway",
+      "fixtures/pass/hypercycle_acyclic/deps.shape"
+    ]);
+    const explicit = await runCli([
+      "graph",
+      "show",
+      "Gateway",
+      "fixtures/pass/hypercycle_acyclic/deps.shape"
+    ]);
+
+    expect(explicit.exitCode).toBe(0);
+    expect(explicit.stdout).toBe(legacy.stdout);
+    expect(explicit.stderr).toBe("");
+  });
+
   test("filters focused hypergraph incidence by relation kind", async () => {
     const result = await runCli([
       "graph",
@@ -251,9 +441,40 @@ describe("shp CLI", () => {
     expect(result.stdout).not.toContain("coordinated_call AuditWritePath");
     expect(result.stderr).toBe("");
   });
+
+  test("filters whole hypergraph output by relation kind with the explicit all subcommand", async () => {
+    const result = await runCli([
+      "graph",
+      "all",
+      "--kind",
+      "calls",
+      "fixtures/pass/hypercycle_acyclic/deps.shape"
+    ]);
+
+    expect(result.exitCode).toBe(0);
+    expect(result.stdout).toContain("calls GatewayCallsAudit");
+    expect(result.stdout).not.toContain("coordinated_call AuditWritePath");
+    expect(result.stderr).toBe("");
+  });
+
+  test("filters hypergraph stats by relation kind with the explicit stats subcommand", async () => {
+    const result = await runCli([
+      "graph",
+      "stats",
+      "--kind",
+      "calls",
+      "fixtures/pass/hypercycle_acyclic/deps.shape"
+    ]);
+
+    expect(result.exitCode).toBe(0);
+    expect(result.stdout).toContain("filter: kind=calls");
+    expect(result.stdout).toContain("calls: 1");
+    expect(result.stderr).toBe("");
+  });
 });
 
 type CliManifest = {
+  version: string;
   bin: {
     shp: string;
   };
@@ -270,12 +491,18 @@ async function readCliManifest(): Promise<CliManifest> {
 }
 
 function isCliManifest(value: unknown): value is CliManifest {
-  if (typeof value !== "object" || value === null || !("bin" in value)) {
+  if (typeof value !== "object" || value === null || !("version" in value) || !("bin" in value)) {
     return false;
   }
 
   const { bin } = value;
-  return typeof bin === "object" && bin !== null && "shp" in bin && typeof bin.shp === "string";
+  return (
+    typeof value.version === "string" &&
+    typeof bin === "object" &&
+    bin !== null &&
+    "shp" in bin &&
+    typeof bin.shp === "string"
+  );
 }
 
 async function runCli(
