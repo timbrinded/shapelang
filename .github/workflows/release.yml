@@ -92,6 +92,25 @@ jobs:
           tar -xzf dist/release/shp-linux-x64.tar.gz -C /tmp/shp-smoke
           /tmp/shp-smoke/shp --help >/dev/null
           /tmp/shp-smoke/shp check
+          /tmp/shp-smoke/shp memory >/dev/null
+          /tmp/shp-smoke/shp obligations >/tmp/shp-smoke/obligations.txt
+          grep -q "No open shape obligations." /tmp/shp-smoke/obligations.txt
+
+          set +e
+          /tmp/shp-smoke/shp analyze \
+            --shape-files fixtures/pass/append_only_append/audit.shape \
+            fixtures/source/audit_purge.ts \
+            >/tmp/shp-smoke/analyze.out \
+            2>/tmp/shp-smoke/analyze.err
+          analyze_status=$?
+          set -e
+          if [ "$analyze_status" -ne 1 ]; then
+            echo "Expected analyzer smoke test to report a mismatch, got exit $analyze_status."
+            cat /tmp/shp-smoke/analyze.out
+            cat /tmp/shp-smoke/analyze.err >&2
+            exit 1
+          fi
+          grep -q "HardDelete" /tmp/shp-smoke/analyze.err
 
       - name: Publish GitHub release
         env:
