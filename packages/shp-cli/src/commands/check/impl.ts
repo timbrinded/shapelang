@@ -13,7 +13,8 @@ export default async function check(
   ...providedFiles: string[]
 ): Promise<void> {
   const files = providedFiles.length > 0 ? providedFiles : await defaultShapeFiles();
-  const changedFiles = flags.changedFiles ? await readChangedFiles(flags.changedFiles) : undefined;
+  const changedFiles =
+    flags.changedFiles !== undefined ? await readChangedFiles(flags.changedFiles) : undefined;
   const result = await checkShapeFiles(files, {
     changedFiles,
     enforceBindings: true

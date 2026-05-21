@@ -87,6 +87,19 @@ describe("shp CLI", () => {
     expect(result.stdout).toBe("");
   });
 
+  test("rejects empty changed-file path during checks", async () => {
+    const result = await runCli([
+      "check",
+      "--changed-files",
+      "",
+      "fixtures/pass/coverage_binding_only/audit.shape"
+    ]);
+
+    expect(result.exitCode).toBe(2);
+    expect(result.stderr).toContain("error: failed to read");
+    expect(result.stdout).toBe("");
+  });
+
   test("checks formatting", async () => {
     const result = await runCli(["fmt", "--check", "fixtures/pass/append_only_append/audit.shape"]);
 
