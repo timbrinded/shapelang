@@ -13,9 +13,11 @@ import type {
   FunctionSummary,
   ImplementationDecl,
   MemoryDecl,
+  MemoryMember,
   ModifyDeclarationChange,
   ModifyFunctionChange,
   RationaleDecl,
+  RationaleMember,
   ReevaluationDecl,
   RelationDecl,
   RelationEndpoint,
@@ -94,121 +96,31 @@ import {
   isWhyDecl
 } from "./language/generated/ast.ts";
 import { parseShapeModule, type ParseDiagnostic } from "./parser.ts";
-
-const PRELUDE_TRAITS: TraitInfo[] = [
-  {
-    name: "AppendOnly",
-    typeParams: ["T"],
-    finalForbids: [
-      {
-        effect: "HardDelete",
-        target: "T",
-        final: true,
-        provenance: provenance("standard prelude", "trait AppendOnly forbids final HardDelete<T>")
-      },
-      {
-        effect: "Truncate",
-        target: "T",
-        final: true,
-        provenance: provenance("standard prelude", "trait AppendOnly forbids final Truncate<T>")
-      },
-      {
-        effect: "DropStorage",
-        target: "T",
-        final: true,
-        provenance: provenance("standard prelude", "trait AppendOnly forbids final DropStorage<T>")
-      }
-    ],
-    provenance: provenance("standard prelude", "trait AppendOnly")
-  }
-];
-
-const KNOWN_PRELUDE_TRAITS = new Set([
-  "AppendOnly",
-  "Persistent",
-  "Ephemeral",
-  "PII",
-  "Secret",
-  "Public",
-  "External",
-  "Internal",
-  "PreserveInline",
-  "RequiresDescription",
-  "ProtectedCheckOrder",
-  "RefactorSensitive",
-  "NonIdiomatic",
-  "TestOnly"
-]);
-
-type ContextKind = "rationale" | "memory";
-
-type ContextRequirementRule = {
-  trait: string;
-  targetKind: TargetKind;
-  contextType: string;
-  satisfiedBy: ContextKind[];
-  requiresDescription?: boolean;
-};
-
-const PRELUDE_CONTEXT_REQUIREMENTS: ContextRequirementRule[] = [
-  {
-    trait: "PreserveInline",
-    targetKind: "fn",
-    contextType: "InlineRationale",
-    satisfiedBy: ["rationale"]
-  },
-  {
-    trait: "RequiresDescription",
-    targetKind: "fn",
-    contextType: "DescriptionRationale",
-    satisfiedBy: ["rationale"],
-    requiresDescription: true
-  },
-  {
-    trait: "ProtectedCheckOrder",
-    targetKind: "fn",
-    contextType: "CheckOrderRationale",
-    satisfiedBy: ["rationale", "memory"]
-  },
-  {
-    trait: "RefactorSensitive",
-    targetKind: "fn",
-    contextType: "RefactorConstraint",
-    satisfiedBy: ["memory"]
-  },
-  {
-    trait: "NonIdiomatic",
-    targetKind: "fn",
-    contextType: "DesignRationale",
-    satisfiedBy: ["rationale", "memory"]
-  },
-  {
-    trait: "TestOnly",
-    targetKind: "fn",
-    contextType: "TestOnlyPurpose",
-    satisfiedBy: ["rationale"]
-  }
-];
+import {
+  PRELUDE_CONTEXT_REQUIREMENTS,
+  PRELUDE_RELATION_KIND_RULES,
+  PRELUDE_TRAIT_NAMES,
+  PRELUDE_TRAITS,
+  type ContextKind,
+  type PreludeContextRequirement,
+  type PreludeTraitDefinition
+} from "./prelude.ts";
+import {
+  normalizeShapePath,
+  normalizeShapeSourcePath,
+  unquoteShapeString
+} from "./shape-strings.ts";
 
 /**
  * Kind registry: every relation kind declares whether its members are
  * traversed as an ordered path, as directed pairs, or not at all for cycle
  * checks. This is the single source of truth for hypercycle traversal.
  */
-type RelationCycleTraversal = "none" | "directed_pairs" | "ordered_path";
+const PRELUDE_RELATION_KINDS = new Map(
+  PRELUDE_RELATION_KIND_RULES.map(({ name, ...rule }) => [name, rule])
+);
 
-type RelationKindRule = {
-  /** Whether `connects A -> B -> C` is required, forbidden, or either. */
-  arity: "binary" | "ordered" | "any";
-  cycleTraversal: RelationCycleTraversal;
-};
-
-const PRELUDE_RELATION_KINDS = new Map<string, RelationKindRule>([
-  ["calls", { arity: "binary", cycleTraversal: "directed_pairs" }],
-  ["callbacks", { arity: "binary", cycleTraversal: "directed_pairs" }],
-  ["provides", { arity: "binary", cycleTraversal: "directed_pairs" }],
-  ["coordinated_call", { arity: "ordered", cycleTraversal: "ordered_path" }]
-]);
+const KNOWN_PRELUDE_TRAITS = new Set(PRELUDE_TRAIT_NAMES);
 
 export type SemanticDiagnostic =
   | {
@@ -575,6 +487,20 @@ type MemoryInfo = {
   provenance: Provenance;
 };
 
+type ContextObjectInfo = {
+  name: string;
+  contextType: string;
+  target: ShapeTarget;
+  appliesTo?: ShapeTarget;
+  summary?: string;
+  owner?: string;
+  reviewBy?: string;
+  protects: ProtectedProperty[];
+  guards: GuardInfo[];
+  evidence: SourceRefInfo[];
+  provenance: Provenance;
+};
+
 type ReevaluationInfo = {
   name: string;
   satisfiesKind?: ContextKind;
@@ -713,13 +639,19 @@ type Model = {
   reevaluations: Map<string, ReevaluationInfo>;
   attestations: { kind: string; path: string; reason: string; provenance: Provenance }[];
   shapeUpdatePaths: Map<string, Provenance[]>;
-  removedFunctions: Set<string>;
   changeEvents: ChangeEvent[];
   facts: Fact[];
   diagnostics: SemanticDiagnostic[];
 };
 
 type FunctionAst = FunctionSummary | AddFunctionChange | ModifyFunctionChange;
+
+type ChangedFileContext = {
+  files: string[];
+  set: Set<string>;
+};
+
+type AttestationInfo = Model["attestations"][number];
 
 export function checkShapeModules(
   modules: ShapeModule[] | CheckModuleInput[],
@@ -1166,7 +1098,7 @@ function lowerShapeModules(modules: ShapeModule[] | CheckModuleInput[]): Model {
   const inputs = normalizeModuleInputs(modules);
   const model: Model = {
     resources: new Map(),
-    traits: new Map(PRELUDE_TRAITS.map((trait) => [trait.name, cloneTraitInfo(trait)])),
+    traits: new Map(PRELUDE_TRAITS.map((trait) => [trait.name, preludeTraitInfo(trait)])),
     components: new Map(),
     hypergraph: {
       edges: new Map(),
@@ -1180,7 +1112,6 @@ function lowerShapeModules(modules: ShapeModule[] | CheckModuleInput[]): Model {
     reevaluations: new Map(),
     attestations: [],
     shapeUpdatePaths: new Map(),
-    removedFunctions: new Set(),
     changeEvents: [],
     facts: [],
     diagnostics: []
@@ -1222,8 +1153,20 @@ function lowerShapeModules(modules: ShapeModule[] | CheckModuleInput[]): Model {
     }
   }
 
+  rebuildShapeUpdatePaths(model);
   emitDerivedFacts(model);
   return model;
+}
+
+function rebuildShapeUpdatePaths(model: Model): void {
+  model.shapeUpdatePaths = new Map();
+  model.facts = model.facts.filter((fact) => fact.kind !== "shape_update_for");
+
+  for (const component of model.components.values()) {
+    for (const fn of component.functions.values()) {
+      collectShapeUpdatePathsFromFunction(fn, model);
+    }
+  }
 }
 
 function normalizeModuleInputs(modules: ShapeModule[] | CheckModuleInput[]): CheckModuleInput[] {
@@ -1360,7 +1303,6 @@ function lowerComponent(
     } else if (isFunctionSummary(member)) {
       const fn = lowerFunction(member, component.name, filePath);
       info.functions.set(fn.name, fn);
-      collectShapeUpdatePathsFromFunction(fn, model);
       emitFunctionFacts(fn, model);
     }
   }
@@ -1446,7 +1388,7 @@ function lowerRelation(relation: RelationDecl, filePath: string | undefined, mod
         continue;
       }
       summarySeen = true;
-      summary = unquote(member.value);
+      summary = unquoteShapeString(member.value);
     }
   }
 
@@ -1644,7 +1586,7 @@ function lowerImplementation(
   for (const member of implementation.members) {
     if (isPathsBlock(member)) {
       for (const path of member.paths) {
-        const glob = unquote(path);
+        const glob = unquoteShapeString(path);
         const pathProv = provenance(filePath, `implementation ${implementation.name} path ${glob}`);
         info.paths.push({ glob, provenance: pathProv });
         model.facts.push({
@@ -1701,7 +1643,7 @@ function lowerBinding(binding: BindingDecl, filePath: string | undefined, model:
   for (const member of binding.members) {
     if (isBindingWhenChangedDecl(member)) {
       for (const path of member.body.paths) {
-        const glob = unquote(path);
+        const glob = unquoteShapeString(path);
         const pathProv = provenance(filePath, `binding ${binding.name} when_changed ${glob}`);
         info.whenChanged.push({ glob, provenance: pathProv });
         model.facts.push({
@@ -1713,7 +1655,7 @@ function lowerBinding(binding: BindingDecl, filePath: string | undefined, model:
       }
     } else if (isBindingRequireChangedDecl(member)) {
       for (const path of member.body.paths) {
-        const glob = unquote(path);
+        const glob = unquoteShapeString(path);
         const pathProv = provenance(filePath, `binding ${binding.name} require_changed ${glob}`);
         info.requireChanged.push({ glob, provenance: pathProv });
         model.facts.push({
@@ -1748,8 +1690,8 @@ function lowerAttestation(
   model: Model
 ): void {
   const source = lowerSourceRef(attestation.source);
-  const path = normalizeSourcePath(source.path);
-  const reason = unquote(attestation.reason.value);
+  const path = normalizeShapeSourcePath(source.path);
+  const reason = unquoteShapeString(attestation.reason.value);
   const prov = provenance(filePath, `attest ${attestation.kind} for ${path}`);
   model.attestations.push({ kind: attestation.kind, path, reason, provenance: prov });
   model.facts.push({
@@ -1818,35 +1760,12 @@ function lowerRationale(
   };
 
   for (const member of rationale.members) {
-    if (isAppliesToDecl(member)) {
-      info.appliesTo = lowerTargetRef(member.target);
-    } else if (isWhyDecl(member)) {
+    if (lowerContextMember(member, info, "rationale", filePath)) {
+      continue;
+    }
+
+    if (isWhyDecl(member)) {
       info.why = member.reason;
-    } else if (isSummaryDecl(member)) {
-      info.summary = unquote(member.value);
-    } else if (isOwnerDecl(member)) {
-      info.owner = member.value;
-    } else if (isReviewByDecl(member)) {
-      info.reviewBy = unquote(member.value);
-    } else if (isProtectsDecl(member)) {
-      info.protects.push({
-        kind: member.kind,
-        value: member.value,
-        provenance: provenance(
-          filePath,
-          `rationale ${rationale.name} protects ${member.kind} ${member.value}`
-        )
-      });
-    } else if (isGuardDecl(member)) {
-      info.guards.push({
-        requirement: member.requirement,
-        provenance: provenance(
-          filePath,
-          `rationale ${rationale.name} guards on_change require ${member.requirement}`
-        )
-      });
-    } else if (isEvidenceLineDecl(member)) {
-      info.evidence.push(lowerSourceRef(member));
     }
   }
 
@@ -1890,39 +1809,16 @@ function lowerMemory(memory: MemoryDecl, filePath: string | undefined, model: Mo
   };
 
   for (const member of memory.members) {
-    if (isAppliesToDecl(member)) {
-      info.appliesTo = lowerTargetRef(member.target);
-    } else if (isStatusDecl(member)) {
+    if (lowerContextMember(member, info, "memory", filePath)) {
+      continue;
+    }
+
+    if (isStatusDecl(member)) {
       info.status = member.value;
     } else if (isConfidenceDecl(member)) {
       info.confidence = member.value;
-    } else if (isProtectsDecl(member)) {
-      info.protects.push({
-        kind: member.kind,
-        value: member.value,
-        provenance: provenance(
-          filePath,
-          `memory ${memory.name} protects ${member.kind} ${member.value}`
-        )
-      });
-    } else if (isGuardDecl(member)) {
-      info.guards.push({
-        requirement: member.requirement,
-        provenance: provenance(
-          filePath,
-          `memory ${memory.name} guards on_change require ${member.requirement}`
-        )
-      });
     } else if (isObservedDecl(member)) {
       info.observed.push(lowerSourceRef(member));
-    } else if (isSummaryDecl(member)) {
-      info.summary = unquote(member.value);
-    } else if (isOwnerDecl(member)) {
-      info.owner = member.value;
-    } else if (isReviewByDecl(member)) {
-      info.reviewBy = unquote(member.value);
-    } else if (isEvidenceLineDecl(member)) {
-      info.evidence.push(lowerSourceRef(member));
     }
   }
 
@@ -1936,6 +1832,56 @@ function lowerMemory(memory: MemoryDecl, filePath: string | undefined, model: Mo
     provenance: prov
   });
   emitGuardFacts("memory", info, model);
+}
+
+function lowerContextMember(
+  member: RationaleMember | MemoryMember,
+  info: ContextObjectInfo,
+  kind: ContextKind,
+  filePath: string | undefined
+): boolean {
+  if (isAppliesToDecl(member)) {
+    info.appliesTo = lowerTargetRef(member.target);
+    return true;
+  }
+  if (isSummaryDecl(member)) {
+    info.summary = unquoteShapeString(member.value);
+    return true;
+  }
+  if (isOwnerDecl(member)) {
+    info.owner = member.value;
+    return true;
+  }
+  if (isReviewByDecl(member)) {
+    info.reviewBy = unquoteShapeString(member.value);
+    return true;
+  }
+  if (isProtectsDecl(member)) {
+    info.protects.push({
+      kind: member.kind,
+      value: member.value,
+      provenance: provenance(
+        filePath,
+        `${kind} ${info.name} protects ${member.kind} ${member.value}`
+      )
+    });
+    return true;
+  }
+  if (isGuardDecl(member)) {
+    info.guards.push({
+      requirement: member.requirement,
+      provenance: provenance(
+        filePath,
+        `${kind} ${info.name} guards on_change require ${member.requirement}`
+      )
+    });
+    return true;
+  }
+  if (isEvidenceLineDecl(member)) {
+    info.evidence.push(lowerSourceRef(member));
+    return true;
+  }
+  return false;
 }
 
 function lowerReevaluation(
@@ -1971,7 +1917,7 @@ function lowerReevaluation(
     } else if (isOutcomeDecl(member)) {
       info.outcome = member.value;
     } else if (isSummaryDecl(member)) {
-      info.summary = unquote(member.value);
+      info.summary = unquoteShapeString(member.value);
     } else if (isEvidenceLineDecl(member)) {
       info.evidence.push(lowerSourceRef(member));
     } else if (isReviewerDecl(member)) {
@@ -1979,7 +1925,7 @@ function lowerReevaluation(
     } else if (isApproverDecl(member)) {
       info.approver = member.value;
     } else if (isDecidedOnDecl(member)) {
-      info.decidedOn = unquote(member.value);
+      info.decidedOn = unquoteShapeString(member.value);
     }
   }
 
@@ -2057,9 +2003,8 @@ function lowerChange(change: ChangeDecl, filePath: string | undefined, model: Mo
       }
 
       const fn = lowerFunction(entry, entry.component, filePath, `change ${change.name}`);
+      removeFunctionFacts(model, entry.component, entry.name);
       component.functions.set(fn.name, fn);
-      addShapeUpdatePath(model, functionKey(entry.component, entry.name), fn.provenance);
-      collectShapeUpdatePathsFromFunction(fn, model);
       emitFunctionFacts(fn, model);
     } else if (isRemoveFunctionChange(entry)) {
       model.changeEvents.push({
@@ -2070,7 +2015,7 @@ function lowerChange(change: ChangeDecl, filePath: string | undefined, model: Mo
           `change ${change.name} remove fn ${entry.component}.${entry.name}`
         )
       });
-      model.removedFunctions.add(functionKey(entry.component, entry.name));
+      removeFunctionFacts(model, entry.component, entry.name);
       model.components.get(entry.component)?.functions.delete(entry.name);
     } else if (isAddDeclarationChange(entry)) {
       lowerDeclaration(entry.declaration, filePath, model);
@@ -2198,9 +2143,9 @@ function lowerFunction(
     if (isFunctionRequiresDecl(member)) {
       info.requires.push(lowerTerm(member.term));
     } else if (isReasonDecl(member)) {
-      info.reason = unquote(member.value);
+      info.reason = unquoteShapeString(member.value);
     } else if (isExpiresDecl(member)) {
-      info.expires = unquote(member.value);
+      info.expires = unquoteShapeString(member.value);
     }
   }
 
@@ -2235,7 +2180,7 @@ function lowerDescription(
 ): DescriptionInfo {
   return {
     required: description.required,
-    summary: unquote(description.summary),
+    summary: unquoteShapeString(description.summary),
     provenance: provenance(
       filePath,
       `${context ? `${context} ` : ""}fn ${componentName}.${functionName} description`
@@ -2359,7 +2304,7 @@ function lowerPattern(pattern: EffectPattern): TermInfo {
 function lowerSourceRef(source: { ref: SourceRef }): SourceRefInfo {
   return {
     language: source.ref.language,
-    path: unquote(source.ref.path)
+    path: unquoteShapeString(source.ref.path)
   };
 }
 
@@ -2425,6 +2370,26 @@ function emitFunctionFacts(fn: FunctionInfo, model: Model): void {
   }
 }
 
+function removeFunctionFacts(model: Model, component: string, functionName: string): void {
+  const target = functionKey(component, functionName);
+  model.facts = model.facts.filter((fact) => {
+    if (fact.kind === "function") {
+      return fact.component !== component || fact.name !== functionName;
+    }
+    if (fact.kind === "effect" || fact.kind === "effect_unknown") {
+      return fact.component !== component || fact.functionName !== functionName;
+    }
+    if (
+      fact.kind === "shape_trait" ||
+      fact.kind === "description" ||
+      fact.kind === "context_required"
+    ) {
+      return fact.targetKind !== "fn" || fact.target !== target;
+    }
+    return true;
+  });
+}
+
 function emitDerivedFacts(model: Model): void {
   for (const trait of model.traits.values()) {
     for (const forbid of trait.finalForbids) {
@@ -2459,7 +2424,7 @@ function collectShapeUpdatePathsFromFunction(fn: FunctionInfo, model: Model): vo
     addShapeUpdatePath(model, fn.source.path, fn.provenance);
     model.facts.push({
       kind: "shape_update_for",
-      path: normalizeSourcePath(fn.source.path),
+      path: normalizeShapeSourcePath(fn.source.path),
       provenance: fn.provenance
     });
   }
@@ -2467,7 +2432,7 @@ function collectShapeUpdatePathsFromFunction(fn: FunctionInfo, model: Model): vo
   if (fn.effects.kind === "complete") {
     for (const entry of fn.effects.entries) {
       if (entry.evidence) {
-        const path = normalizeSourcePath(entry.evidence.path);
+        const path = normalizeShapeSourcePath(entry.evidence.path);
         addShapeUpdatePath(model, path, entry.provenance);
         model.facts.push({ kind: "shape_update_for", path, provenance: entry.provenance });
       }
@@ -2476,7 +2441,7 @@ function collectShapeUpdatePathsFromFunction(fn: FunctionInfo, model: Model): vo
 }
 
 function addShapeUpdatePath(model: Model, path: string, provenance: Provenance): void {
-  const normalized = normalizeSourcePath(path);
+  const normalized = normalizeShapeSourcePath(path);
   const existing = model.shapeUpdatePaths.get(normalized);
   if (existing) {
     existing.push(provenance);
@@ -2843,10 +2808,6 @@ function checkFunctions(model: Model): SemanticDiagnostic[] {
 
   for (const component of model.components.values()) {
     for (const fn of component.functions.values()) {
-      if (model.removedFunctions.has(functionKey(component.name, fn.name))) {
-        continue;
-      }
-
       if (fn.unsafe) {
         const missing = missingUnsafeRequirements(fn);
         if (missing.length > 0) {
@@ -3084,17 +3045,19 @@ function dfsHypercycle(
 
   const nextSteps = adjacency.get(current) ?? [];
   for (const step of nextSteps) {
-    const nextPath = [...path, step];
+    path.push(step);
     if (step.to === start) {
-      return witnessFromPath(start, nextPath);
+      return witnessFromPath(start, path);
     }
 
-    const witness = dfsHypercycle(start, step.to, adjacency, nextPath, new Set(visited));
+    const witness = dfsHypercycle(start, step.to, adjacency, path, visited);
     if (witness) {
       return witness;
     }
+    path.pop();
   }
 
+  visited.delete(current);
   return undefined;
 }
 
@@ -3151,10 +3114,8 @@ function checkCoverage(model: Model, changedFiles: string[]): SemanticDiagnostic
     return [];
   }
 
-  const normalizedChanged = changedFiles
-    .map((file) => normalizeRepoPath(file))
-    .filter((file) => file.length > 0);
-  const changedSet = new Set(normalizedChanged);
+  const changed = changedFileContext(changedFiles);
+  const noShapeChangeAttestations = new Set(["no_shape_change"]);
   const diagnostics: SemanticDiagnostic[] = [];
 
   for (const implementation of model.implementations) {
@@ -3162,7 +3123,7 @@ function checkCoverage(model: Model, changedFiles: string[]): SemanticDiagnostic
       continue;
     }
 
-    for (const changedFile of normalizedChanged) {
+    for (const changedFile of changed.files) {
       if (changedFile.endsWith(".shape")) {
         continue;
       }
@@ -3174,19 +3135,11 @@ function checkCoverage(model: Model, changedFiles: string[]): SemanticDiagnostic
         continue;
       }
 
-      if (currentShapeUpdateExists(model, changedFile, changedSet)) {
+      if (currentShapeUpdateExists(model, changedFile, changed.set)) {
         continue;
       }
 
-      if (
-        model.attestations.some(
-          (attestation) =>
-            attestation.kind === "no_shape_change" &&
-            attestation.path === changedFile &&
-            attestation.reason.trim().length > 0 &&
-            provenanceFileChanged(attestation.provenance, changedSet)
-        )
-      ) {
+      if (currentAttestationExists(model, changedFile, changed.set, noShapeChangeAttestations)) {
         continue;
       }
 
@@ -3207,6 +3160,16 @@ function checkCoverage(model: Model, changedFiles: string[]): SemanticDiagnostic
   return diagnostics;
 }
 
+function changedFileContext(changedFiles: string[]): ChangedFileContext {
+  const files = changedFiles
+    .map((file) => normalizeRepoPath(file))
+    .filter((file) => file.length > 0);
+  return {
+    files,
+    set: new Set(files)
+  };
+}
+
 function currentShapeUpdateExists(
   model: Model,
   changedFile: string,
@@ -3216,6 +3179,31 @@ function currentShapeUpdateExists(
     model.shapeUpdatePaths
       .get(changedFile)
       ?.some((provenance) => provenanceFileChanged(provenance, changedSet)) ?? false
+  );
+}
+
+function currentAttestationExists(
+  model: Model,
+  changedFile: string,
+  changedSet: Set<string>,
+  allowedKinds: ReadonlySet<string>
+): boolean {
+  return model.attestations.some((attestation) =>
+    isCurrentAttestation(attestation, changedFile, changedSet, allowedKinds)
+  );
+}
+
+function isCurrentAttestation(
+  attestation: AttestationInfo,
+  changedFile: string,
+  changedSet: Set<string>,
+  allowedKinds: ReadonlySet<string>
+): boolean {
+  return (
+    allowedKinds.has(attestation.kind) &&
+    attestation.path === changedFile &&
+    attestation.reason.trim().length > 0 &&
+    provenanceFileChanged(attestation.provenance, changedSet)
   );
 }
 
@@ -3230,35 +3218,25 @@ function checkBindings(model: Model, changedFiles: string[]): SemanticDiagnostic
     return [];
   }
 
-  const normalizedChanged = changedFiles
-    .map((file) => normalizeRepoPath(file))
-    .filter((file) => file.length > 0);
-  const changedSet = new Set(normalizedChanged);
+  const changed = changedFileContext(changedFiles);
   const diagnostics: SemanticDiagnostic[] = [];
 
   for (const binding of model.bindings.values()) {
-    for (const changedFile of normalizedChanged) {
+    const requiredChanged = changed.files.some((file) =>
+      binding.requireChanged.some((entry) => globMatches(entry.glob, file))
+    );
+    if (requiredChanged) {
+      continue;
+    }
+
+    const allowedKinds = new Set(binding.allowAttestations.map((item) => item.kind));
+    for (const changedFile of changed.files) {
       const trigger = binding.whenChanged.find((entry) => globMatches(entry.glob, changedFile));
       if (!trigger) {
         continue;
       }
 
-      const requiredChanged = normalizedChanged.some((file) =>
-        binding.requireChanged.some((entry) => globMatches(entry.glob, file))
-      );
-      if (requiredChanged) {
-        continue;
-      }
-
-      const allowedKinds = new Set(binding.allowAttestations.map((item) => item.kind));
-      const attested = model.attestations.some(
-        (attestation) =>
-          allowedKinds.has(attestation.kind) &&
-          attestation.path === changedFile &&
-          attestation.reason.trim().length > 0 &&
-          provenanceFileChanged(attestation.provenance, changedSet)
-      );
-      if (attested) {
+      if (currentAttestationExists(model, changedFile, changed.set, allowedKinds)) {
         continue;
       }
 
@@ -3277,14 +3255,14 @@ function checkBindings(model: Model, changedFiles: string[]): SemanticDiagnostic
   return diagnostics;
 }
 
-function requirementsForFunction(fn: FunctionInfo): ContextRequirementRule[] {
+function requirementsForFunction(fn: FunctionInfo): PreludeContextRequirement[] {
   return PRELUDE_CONTEXT_REQUIREMENTS.filter(
     (rule) => rule.targetKind === "fn" && fn.shapeTraits.has(rule.trait)
   );
 }
 
 function hasRequiredContext(
-  requirement: ContextRequirementRule,
+  requirement: PreludeContextRequirement,
   target: ShapeTarget,
   model: Model
 ): boolean {
@@ -3330,14 +3308,7 @@ function targetExists(target: ShapeTarget, model: Model): boolean {
       return false;
     }
 
-    if (model.components.get(component)?.functions.has(functionName)) {
-      return true;
-    }
-
-    return model.facts.some(
-      (fact) =>
-        fact.kind === "function" && fact.component === component && fact.name === functionName
-    );
+    return model.components.get(component)?.functions.has(functionName) === true;
   }
 
   if (target.kind === "component") {
@@ -3538,17 +3509,7 @@ function formatRationaleExplanation(rationale: RationaleInfo): string {
     `  type: ${rationale.contextType}`,
     `  target: ${formatTarget(rationale.target)}`
   ];
-  if (rationale.owner) {
-    lines.push(`  owner: ${rationale.owner}`);
-  }
-  if (rationale.protects.length > 0) {
-    lines.push("  protects:");
-    lines.push(...rationale.protects.map((item) => `    ${item.kind} ${item.value}`));
-  }
-  if (rationale.guards.length > 0) {
-    lines.push("  guards:");
-    lines.push(...rationale.guards.map((guard) => `    on_change require ${guard.requirement}`));
-  }
+  appendContextExplanationFields(lines, rationale);
   return lines.join("\n");
 }
 
@@ -3565,36 +3526,30 @@ function formatMemoryExplanation(memory: MemoryInfo): string {
   if (memory.confidence) {
     lines.push(`  confidence: ${memory.confidence}`);
   }
-  if (memory.owner) {
-    lines.push(`  owner: ${memory.owner}`);
-  }
-  if (memory.reviewBy) {
-    lines.push(`  review_by: ${memory.reviewBy}`);
-  }
-  if (memory.protects.length > 0) {
-    lines.push("  protects:");
-    lines.push(...memory.protects.map((item) => `    ${item.kind} ${item.value}`));
-  }
-  if (memory.guards.length > 0) {
-    lines.push("  guards:");
-    lines.push(...memory.guards.map((guard) => `    on_change require ${guard.requirement}`));
-  }
+  appendContextExplanationFields(lines, memory);
   return lines.join("\n");
+}
+
+function appendContextExplanationFields(lines: string[], context: ContextObjectInfo): void {
+  if (context.owner) {
+    lines.push(`  owner: ${context.owner}`);
+  }
+  if (context.reviewBy) {
+    lines.push(`  review_by: ${context.reviewBy}`);
+  }
+  if (context.protects.length > 0) {
+    lines.push("  protects:");
+    lines.push(...context.protects.map((item) => `    ${item.kind} ${item.value}`));
+  }
+  if (context.guards.length > 0) {
+    lines.push("  guards:");
+    lines.push(...context.guards.map((guard) => `    on_change require ${guard.requirement}`));
+  }
 }
 
 function formatRationaleMemoryListEntry(rationale: RationaleInfo): string[] {
   const lines = [`rationale ${rationale.name}`, `type: ${rationale.contextType}`];
-  if (rationale.protects.length > 0) {
-    lines.push(
-      `protects: ${rationale.protects.map((item) => `${item.kind} ${item.value}`).join(", ")}`
-    );
-  }
-  if (rationale.owner) {
-    lines.push(`owner: ${rationale.owner}`);
-  }
-  if (rationale.reviewBy) {
-    lines.push(`review_by: ${rationale.reviewBy}`);
-  }
+  appendContextListFields(lines, rationale);
   return lines;
 }
 
@@ -3606,18 +3561,22 @@ function formatMemoryListEntry(memory: MemoryInfo): string[] {
   if (memory.confidence) {
     lines.push(`confidence: ${memory.confidence}`);
   }
-  if (memory.protects.length > 0) {
+  appendContextListFields(lines, memory);
+  return lines;
+}
+
+function appendContextListFields(lines: string[], context: ContextObjectInfo): void {
+  if (context.protects.length > 0) {
     lines.push(
-      `protects: ${memory.protects.map((item) => `${item.kind} ${item.value}`).join(", ")}`
+      `protects: ${context.protects.map((item) => `${item.kind} ${item.value}`).join(", ")}`
     );
   }
-  if (memory.owner) {
-    lines.push(`owner: ${memory.owner}`);
+  if (context.owner) {
+    lines.push(`owner: ${context.owner}`);
   }
-  if (memory.reviewBy) {
-    lines.push(`review_by: ${memory.reviewBy}`);
+  if (context.reviewBy) {
+    lines.push(`review_by: ${context.reviewBy}`);
   }
-  return lines;
 }
 
 function isObligationDiagnostic(diagnostic: ShapeDiagnostic): diagnostic is Extract<
@@ -4058,28 +4017,18 @@ function functionKey(component: string, name: string): string {
   return `${component}.${name}`;
 }
 
-function normalizeSourcePath(path: string): string {
-  const withoutAnchor = path.split("#", 1)[0] ?? path;
-  const lineMatch = /^(.*):\d+(?:-\d+)?$/.exec(withoutAnchor);
-  return normalizePath(lineMatch?.[1] ?? withoutAnchor);
-}
-
-function normalizePath(path: string): string {
-  return path.replaceAll("\\", "/").replace(/^\.\//, "");
-}
-
 function normalizeRepoPath(path: string): string {
-  const normalized = normalizePath(path);
+  const normalized = normalizeShapePath(path);
   if (!isAbsolute(normalized)) {
     return normalized;
   }
 
-  return normalizePath(relative(process.cwd(), normalized));
+  return normalizeShapePath(relative(process.cwd(), normalized));
 }
 
 function globMatches(glob: string, path: string): boolean {
-  const normalizedGlob = normalizePath(glob);
-  const normalizedPath = normalizePath(path);
+  const normalizedGlob = normalizeShapePath(glob);
+  const normalizedPath = normalizeShapePath(path);
   const regex = new RegExp(`^${globToRegex(normalizedGlob)}$`);
   return regex.test(normalizedPath);
 }
@@ -4129,20 +4078,22 @@ function isPreludeTrait(trait: TraitInfo | undefined): boolean {
   );
 }
 
-function cloneTraitInfo(trait: TraitInfo): TraitInfo {
+function preludeTraitInfo(trait: PreludeTraitDefinition): TraitInfo {
   return {
     name: trait.name,
     typeParams: [...trait.typeParams],
-    finalForbids: trait.finalForbids.map((forbid) => ({ ...forbid })),
-    provenance: { ...trait.provenance }
+    finalForbids: trait.finalForbids.map((forbid) => {
+      const target = forbid.target ? `<${forbid.target}>` : "";
+      return {
+        effect: forbid.effect,
+        target: forbid.target,
+        final: true,
+        provenance: provenance(
+          "standard prelude",
+          `trait ${trait.name} forbids final ${forbid.effect}${target}`
+        )
+      };
+    }),
+    provenance: provenance("standard prelude", `trait ${trait.name}`)
   };
-}
-
-function unquote(value: string): string {
-  const first = value.at(0);
-  const last = value.at(-1);
-  if ((first === '"' && last === '"') || (first === "'" && last === "'")) {
-    return value.slice(1, -1);
-  }
-  return value;
 }

@@ -255,16 +255,7 @@ git push origin v0.1.0
 
 The release workflow validates the repo, cross-compiles `shp` for Linux, macOS, and Windows, publishes tarballs as GitHub release assets, and includes SHA-256 checksums.
 
-Other GitHub Actions workflows can install `shp` from a release:
-
-```yaml
-steps:
-  - uses: actions/checkout@v4
-  - uses: timbrinded/shapelang@v0.1.0
-  - run: shp check
-```
-
-Use `with.version` to install a different release than the action ref:
+Other GitHub Actions workflows can install `shp` with the setup action shown in Quick Start. Use `with.version` to install a different release than the action ref:
 
 ```yaml
 - uses: timbrinded/shapelang@master

@@ -13,8 +13,10 @@ import type {
   FunctionSummary,
   ImplementationDecl,
   MemoryDecl,
+  MemoryMember,
   ModifyFunctionChange,
   RationaleDecl,
+  RationaleMember,
   ReevaluationDecl,
   RelationDecl,
   ResourceDecl,
@@ -89,6 +91,7 @@ import {
   isWhyDecl
 } from "./language/generated/ast.ts";
 import { parseShapeModule, type ParseDiagnostic } from "./parser.ts";
+import { unquoteShapeString } from "./shape-strings.ts";
 
 export type FormatResult =
   | {
@@ -511,31 +514,10 @@ function formatRule(rule: RuleDecl): string {
 function formatRationale(rationale: RationaleDecl): string {
   const members = [...rationale.members]
     .map((member) => {
-      if (isAppliesToDecl(member)) {
-        return `applies_to ${formatTargetRef(member.target)}`;
-      }
       if (isWhyDecl(member)) {
         return `why ${member.reason}`;
       }
-      if (isSummaryDecl(member)) {
-        return `summary ${quote(member.value)}`;
-      }
-      if (isOwnerDecl(member)) {
-        return `owner ${member.value}`;
-      }
-      if (isReviewByDecl(member)) {
-        return `review_by ${quote(member.value)}`;
-      }
-      if (isProtectsDecl(member)) {
-        return `protects ${member.kind} ${member.value}`;
-      }
-      if (isGuardDecl(member)) {
-        return `guards on_change require ${member.requirement}`;
-      }
-      if (isEvidenceLineDecl(member)) {
-        return `evidence ${formatSourceRef(member.ref)}`;
-      }
-      return "";
+      return formatContextMember(member) ?? "";
     })
     .filter((line) => line.length > 0)
     .sort(
@@ -553,37 +535,16 @@ function formatRationale(rationale: RationaleDecl): string {
 function formatMemory(memory: MemoryDecl): string {
   const members = [...memory.members]
     .map((member) => {
-      if (isAppliesToDecl(member)) {
-        return `applies_to ${formatTargetRef(member.target)}`;
-      }
       if (isStatusDecl(member)) {
         return `status ${member.value}`;
       }
       if (isConfidenceDecl(member)) {
         return `confidence ${member.value}`;
       }
-      if (isSummaryDecl(member)) {
-        return `summary ${quote(member.value)}`;
-      }
-      if (isOwnerDecl(member)) {
-        return `owner ${member.value}`;
-      }
-      if (isReviewByDecl(member)) {
-        return `review_by ${quote(member.value)}`;
-      }
-      if (isProtectsDecl(member)) {
-        return `protects ${member.kind} ${member.value}`;
-      }
-      if (isGuardDecl(member)) {
-        return `guards on_change require ${member.requirement}`;
-      }
       if (isObservedDecl(member)) {
         return `observed ${formatSourceRef(member.ref)}`;
       }
-      if (isEvidenceLineDecl(member)) {
-        return `evidence ${formatSourceRef(member.ref)}`;
-      }
-      return "";
+      return formatContextMember(member) ?? "";
     })
     .filter((line) => line.length > 0)
     .sort(
@@ -593,6 +554,31 @@ function formatMemory(memory: MemoryDecl): string {
     );
 
   return block(`memory ${memory.name} : ${formatContextTypeRef(memory.contextType)}`, members);
+}
+
+function formatContextMember(member: RationaleMember | MemoryMember): string | undefined {
+  if (isAppliesToDecl(member)) {
+    return `applies_to ${formatTargetRef(member.target)}`;
+  }
+  if (isSummaryDecl(member)) {
+    return `summary ${quote(member.value)}`;
+  }
+  if (isOwnerDecl(member)) {
+    return `owner ${member.value}`;
+  }
+  if (isReviewByDecl(member)) {
+    return `review_by ${quote(member.value)}`;
+  }
+  if (isProtectsDecl(member)) {
+    return `protects ${member.kind} ${member.value}`;
+  }
+  if (isGuardDecl(member)) {
+    return `guards on_change require ${member.requirement}`;
+  }
+  if (isEvidenceLineDecl(member)) {
+    return `evidence ${formatSourceRef(member.ref)}`;
+  }
+  return undefined;
 }
 
 function formatReevaluation(reevaluation: ReevaluationDecl): string {
@@ -760,14 +746,5 @@ function indent(value: string, depth = 1): string {
 }
 
 function quote(value: string): string {
-  return JSON.stringify(unquote(value));
-}
-
-function unquote(value: string): string {
-  const first = value.at(0);
-  const last = value.at(-1);
-  if ((first === '"' && last === '"') || (first === "'" && last === "'")) {
-    return value.slice(1, -1);
-  }
-  return value;
+  return JSON.stringify(unquoteShapeString(value));
 }

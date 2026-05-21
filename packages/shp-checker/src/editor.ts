@@ -6,8 +6,10 @@ import {
 } from "./checker.ts";
 import { formatShapeSource, type FormatResult } from "./formatter.ts";
 import {
+  isChangeDecl,
   isBindingDecl,
   isComponentDecl,
+  type Declaration,
   isFunctionSummary,
   isMemoryDecl,
   isRationaleDecl,
@@ -18,6 +20,12 @@ import {
   isTraitDecl
 } from "./language/generated/ast.ts";
 import { parseShapeModule } from "./parser.ts";
+import {
+  PRELUDE_COMPLETION_SYMBOLS,
+  PRELUDE_CONTEXT_REQUIREMENTS,
+  PRELUDE_RELATION_KIND_NAMES
+} from "./prelude.ts";
+import type { AstNode } from "langium";
 
 export type EditorDiagnostic = {
   message: string;
@@ -53,10 +61,6 @@ const KEYWORD_COMPLETIONS = [
   "kind",
   "connects",
   "roles",
-  "calls",
-  "callbacks",
-  "provides",
-  "coordinated_call",
   "effects complete",
   "effects unknown",
   "evidence",
@@ -65,65 +69,27 @@ const KEYWORD_COMPLETIONS = [
   "forbid provides",
   "when_changed",
   "require_changed",
-  "allow attest"
-];
-
-const PRELUDE_COMPLETIONS = [
-  "Read",
-  "Append",
-  "Update",
-  "Redact",
-  "LogicalDelete",
-  "HardDelete",
-  "Truncate",
-  "DropStorage",
-  "Export",
-  "Import",
-  "AppendOnly",
-  "Persistent",
-  "PII",
-  "Secret",
-  "StorageAdapter",
-  "DataPlane",
-  "ControlPlane",
-  "PreserveInline",
-  "RequiresDescription",
-  "ProtectedCheckOrder",
-  "RefactorSensitive",
-  "NonIdiomatic",
-  "TestOnly"
+  "allow attest",
+  ...PRELUDE_RELATION_KIND_NAMES
 ];
 
 function shapeContextRef(contextType: string, target: string): string {
   return `${contextType}<${target}>`;
 }
 
-const PRELUDE_SHAPE_TRAIT_HOVERS = new Map([
-  [
-    "PreserveInline",
-    `PreserveInline\n  kind: shape trait\n  requires: ${shapeContextRef("InlineRationale", "fn ...")}\n`
-  ],
-  [
-    "RequiresDescription",
-    `RequiresDescription\n  kind: shape trait\n  requires: ${shapeContextRef("DescriptionRationale", "fn ...")}\n  requires description\n`
-  ],
-  [
-    "ProtectedCheckOrder",
-    `ProtectedCheckOrder\n  kind: shape trait\n  requires: ${shapeContextRef("CheckOrderRationale", "fn ...")}\n`
-  ],
-  [
-    "RefactorSensitive",
-    `RefactorSensitive\n  kind: shape trait\n  requires: ${shapeContextRef("RefactorConstraint", "fn ...")}\n`
-  ],
-  [
-    "NonIdiomatic",
-    `NonIdiomatic\n  kind: shape trait\n  requires: ${shapeContextRef("DesignRationale", "fn ...")}\n`
-  ],
-  [
-    "TestOnly",
-    `TestOnly\n  kind: shape trait\n  requires: ${shapeContextRef("TestOnlyPurpose", "fn ...")}\n`
-  ]
-]);
+const PRELUDE_SHAPE_TRAIT_HOVERS = new Map(
+  PRELUDE_CONTEXT_REQUIREMENTS.map((rule) => [rule.trait, formatPreludeShapeTraitHover(rule)])
+);
+
+function formatPreludeShapeTraitHover(rule: (typeof PRELUDE_CONTEXT_REQUIREMENTS)[number]): string {
+  return [
+    rule.trait,
+    "  kind: shape trait",
+    `  requires: ${shapeContextRef(rule.contextType, `${rule.targetKind} ...`)}`,
+    ...(rule.requiresDescription ? ["  requires description"] : []),
+    ""
+  ].join("\n");
+}
 
 export function getEditorDiagnostics(
   source: string,
@@ -161,30 +127,20 @@ export function getDefinitionLocation(
   source: string,
   symbol: string
 ): DefinitionLocation | undefined {
-  const name = symbol.includes(".") ? symbol.split(".").at(-1) : symbol;
+  const parsed = parseShapeModule(source);
+  if (!parsed.ok) {
+    return undefined;
+  }
+
+  const name = definitionName(symbol);
   if (!name) {
     return undefined;
   }
 
-  const patterns = [
-    new RegExp(`\\bresource\\s+${escapeRegex(name)}\\b`),
-    new RegExp(`\\btrait\\s+${escapeRegex(name)}\\b`),
-    new RegExp(`\\bcomponent\\s+${escapeRegex(name)}\\b`),
-    new RegExp(`\\brelation\\s+${escapeRegex(name)}\\b`),
-    new RegExp(`\\bbinding\\s+${escapeRegex(name)}\\b`),
-    new RegExp(`\\brule\\s+${escapeRegex(name)}\\b`),
-    new RegExp(`\\brationale\\s+${escapeRegex(name)}\\b`),
-    new RegExp(`\\bmemory\\s+${escapeRegex(name)}\\b`),
-    new RegExp(`\\breevaluation\\s+${escapeRegex(name)}\\b`),
-    new RegExp(`\\brationale\\s+[A-Za-z_][\\w_]*\\s*:\\s*${escapeRegex(name)}\\b`),
-    new RegExp(`\\bmemory\\s+[A-Za-z_][\\w_]*\\s*:\\s*${escapeRegex(name)}\\b`),
-    new RegExp(`\\bfn\\s+${escapeRegex(name)}\\b`)
-  ];
-
-  for (const pattern of patterns) {
-    const match = pattern.exec(source);
-    if (match?.index !== undefined) {
-      return offsetToLocation(source, match.index, symbol);
+  for (const declaration of parsed.module.declarations) {
+    const location = definitionLocationForDeclaration(declaration, symbol, name);
+    if (location) {
+      return location;
     }
   }
 
@@ -193,7 +149,7 @@ export function getDefinitionLocation(
 
 export function getCompletions(source: string, prefix = ""): string[] {
   const parsed = parseShapeModule(source);
-  const names = new Set([...KEYWORD_COMPLETIONS, ...PRELUDE_COMPLETIONS]);
+  const names = new Set([...KEYWORD_COMPLETIONS, ...PRELUDE_COMPLETION_SYMBOLS]);
 
   if (parsed.ok) {
     for (const declaration of parsed.module.declarations) {
@@ -248,14 +204,73 @@ function diagnosticToEditorDiagnostic(diagnostic: ShapeDiagnostic): EditorDiagno
   };
 }
 
-function offsetToLocation(source: string, offset: number, symbol: string): DefinitionLocation {
-  const before = source.slice(0, offset);
-  const lines = before.split(/\r?\n/);
-  const line = lines.length;
-  const column = (lines.at(-1)?.length ?? 0) + 1;
-  return { symbol, line, column };
+function definitionLocationForDeclaration(
+  declaration: Declaration,
+  symbol: string,
+  name: string
+): DefinitionLocation | undefined {
+  if (
+    isResourceDecl(declaration) ||
+    isTraitDecl(declaration) ||
+    isRelationDecl(declaration) ||
+    isBindingDecl(declaration) ||
+    isRuleDecl(declaration) ||
+    isRationaleDecl(declaration) ||
+    isMemoryDecl(declaration) ||
+    isReevaluationDecl(declaration) ||
+    isChangeDecl(declaration)
+  ) {
+    if (symbolMatches(declaration.name, symbol, name)) {
+      return astNodeToLocation(declaration, symbol);
+    }
+  }
+
+  if (isRationaleDecl(declaration) || isMemoryDecl(declaration)) {
+    if (symbolMatches(declaration.contextType.name, symbol, name)) {
+      return astNodeToLocation(declaration.contextType, symbol);
+    }
+  }
+
+  if (isComponentDecl(declaration)) {
+    if (symbolMatches(declaration.name, symbol, name)) {
+      return astNodeToLocation(declaration, symbol);
+    }
+
+    for (const member of declaration.members) {
+      if (
+        isFunctionSummary(member) &&
+        (symbolMatches(member.name, symbol, name) ||
+          symbolMatches(`${declaration.name}.${member.name}`, symbol, name))
+      ) {
+        return astNodeToLocation(member, symbol);
+      }
+    }
+  }
+
+  return undefined;
 }
 
-function escapeRegex(value: string): string {
-  return value.replace(/[\\^$.*+?()[\]{}|]/g, "\\$&");
+function definitionName(symbol: string): string | undefined {
+  return symbol.includes(".") ? symbol.split(".").at(-1) : symbol;
+}
+
+function symbolMatches(candidate: string, symbol: string, name: string): boolean {
+  if (symbol.includes(".")) {
+    return candidate === symbol;
+  }
+
+  return candidate === symbol || candidate === name;
+}
+
+function astNodeToLocation(node: AstNode, symbol: string): DefinitionLocation | undefined {
+  const start = node.$cstNode?.range.start;
+  if (!start) {
+    return undefined;
+  }
+
+  return {
+    symbol,
+    line: start.line + 1,
+    column: start.character + 1
+  };
 }

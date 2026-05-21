@@ -23,6 +23,7 @@ import {
   parseShapeModule,
   statsShapeHypergraph
 } from "./index.ts";
+import { PRELUDE_CONTEXT_REQUIREMENTS, PRELUDE_RELATION_KIND_NAMES } from "./prelude.ts";
 
 const repoRoot = resolve(import.meta.dir, "../../..");
 
@@ -317,6 +318,82 @@ describe("Shape checker", () => {
     const result = checkShapeModules([base.module, change.module]);
 
     expect(result.exitCode).toBe(0);
+  });
+
+  test("checks functions re-added after removal", () => {
+    const base = parseShapeModule(`
+      module audit
+
+      resource AuditEvent : AppendOnly
+
+      component AuditStore {
+        owns AuditEvent
+        grants HardDelete<AuditEvent>
+
+        fn purgeOldEvents
+          effects unknown
+      }
+    `);
+    const change = parseShapeModule(`
+      module review.replace_audit_retention_purge
+      import audit
+
+      change ReplaceAuditRetentionPurge {
+        remove fn AuditStore.purgeOldEvents
+        add fn AuditStore.purgeOldEvents
+          effects complete {
+            HardDelete<AuditEvent>
+          }
+      }
+    `);
+
+    expect(base.ok).toBe(true);
+    expect(change.ok).toBe(true);
+    if (!base.ok || !change.ok) {
+      return;
+    }
+
+    const result = checkShapeModules([base.module, change.module]);
+
+    expect(result.exitCode).toBe(1);
+    expect(formatDiagnostics(result)).toContain("forbidden effect");
+    expect(formatDiagnostics(result)).toContain("AuditStore.purgeOldEvents");
+  });
+
+  test("rejects context targeting a removed function", () => {
+    const base = parseShapeModule(`
+      module gateway
+
+      component Gateway {
+        fn derivePolicyDecision
+          effects unknown
+      }
+
+      rationale DecisionInline : ${contextRef("InlineRationale", fnTarget("Gateway.derivePolicyDecision"))} {
+        applies_to fn Gateway.derivePolicyDecision
+        why CognitiveLocality
+      }
+    `);
+    const change = parseShapeModule(`
+      module review.remove_decision
+      import gateway
+
+      change RemoveDecision {
+        remove fn Gateway.derivePolicyDecision
+      }
+    `);
+
+    expect(base.ok).toBe(true);
+    expect(change.ok).toBe(true);
+    if (!base.ok || !change.ok) {
+      return;
+    }
+
+    const result = checkShapeModules([base.module, change.module]);
+
+    expect(result.exitCode).toBe(1);
+    expect(formatDiagnostics(result)).toContain("invalid context target");
+    expect(formatDiagnostics(result)).toContain("Gateway.derivePolicyDecision");
   });
 
   test("applies change declaration top-level declaration modifications", () => {
@@ -805,6 +882,68 @@ describe("Shape checker", () => {
     expect(result.diagnostics.map((diagnostic) => diagnostic.kind)).toContain(
       "missing_shape_update"
     );
+  });
+
+  test("rejects removed function source references for current coverage", () => {
+    const base = parseShapeModule(`
+      module audit
+
+      resource AuditEvent : AppendOnly
+
+      component AuditStore {
+        owns AuditEvent
+        grants Append<AuditEvent>
+
+        fn appendEvent
+          source ts("src/audit/store.ts#appendEvent")
+          effects complete {
+            Append<AuditEvent>
+          }
+      }
+
+      implementation AuditStoreImpl {
+        paths {
+          "src/audit/**/*.ts"
+        }
+        conforms_to AuditStore
+        on_change require shape_update
+      }
+    `);
+    const change = parseShapeModule(`
+      module review.remove_append
+      import audit
+
+      change RemoveAppend {
+        remove fn AuditStore.appendEvent
+      }
+    `);
+
+    expect(base.ok).toBe(true);
+    expect(change.ok).toBe(true);
+    if (!base.ok || !change.ok) {
+      return;
+    }
+
+    const result = checkShapeModules(
+      [
+        { module: base.module, filePath: "shape/audit.shape" },
+        { module: change.module, filePath: "shape/audit-update.shape" }
+      ],
+      {
+        changedFiles: ["src/audit/store.ts", "shape/audit.shape", "shape/audit-update.shape"],
+        includeFacts: true
+      }
+    );
+
+    expect(result.exitCode).toBe(1);
+    expect(result.diagnostics.map((diagnostic) => diagnostic.kind)).toContain(
+      "missing_shape_update"
+    );
+    expect(
+      result.facts?.some(
+        (fact) => fact.kind === "shape_update_for" && fact.path === "src/audit/store.ts"
+      )
+    ).toBe(false);
   });
 
   test("enforces bindings between Shape-affecting code and docs", () => {
@@ -2737,13 +2876,41 @@ describe("Shape editor support", () => {
     expect(getCompletions(source, "Audit")).toContain("AuditStore.appendEvent");
     expect(getCompletions(source, "Preserve")).toContain("PreserveInline");
     expect(getCompletions(source, "requ")).toContain("requires");
-    expect(getCompletions(source, "call")).toEqual(expect.arrayContaining(["calls", "callbacks"]));
-    expect(getCompletions(source, "coord")).toContain("coordinated_call");
 
     const formatted = formatOnSave(source);
     expect(formatted.ok).toBe(true);
     if (formatted.ok) {
       expect(formatted.formatted).toContain("component AuditStore");
+    }
+  });
+
+  test("keeps qualified function definition lookup scoped to components", () => {
+    const scopedSource = `
+      component Alpha {
+        fn handle
+          effects unknown
+      }
+
+      component Beta {
+        fn handle
+          effects unknown
+      }
+    `;
+
+    const alpha = getDefinitionLocation(scopedSource, "Alpha.handle");
+    const beta = getDefinitionLocation(scopedSource, "Beta.handle");
+
+    expect(alpha?.line).toBeGreaterThan(1);
+    expect(beta?.line).toBeGreaterThan(alpha?.line ?? 0);
+  });
+
+  test("derives editor shape-trait help from the prelude registry", () => {
+    for (const requirement of PRELUDE_CONTEXT_REQUIREMENTS) {
+      expect(getCompletions("", requirement.trait)).toContain(requirement.trait);
+      expect(getHoverText("", requirement.trait)).toContain(requirement.contextType);
+    }
+    for (const relationKind of PRELUDE_RELATION_KIND_NAMES) {
+      expect(getCompletions("", relationKind)).toContain(relationKind);
     }
   });
 });

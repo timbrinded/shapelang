@@ -11,6 +11,11 @@ import {
   isFunctionSummary,
   isModifyFunctionChange
 } from "./language/generated/ast.ts";
+import {
+  normalizeShapePath,
+  normalizeShapeSourcePath,
+  unquoteShapeString
+} from "./shape-strings.ts";
 
 export type AnalyzerHint = {
   effect: "HardDelete" | "Truncate" | "DropStorage";
@@ -74,7 +79,8 @@ export function compareAnalyzerHintsToShape(
   const warnings: AnalyzerWarning[] = [];
 
   for (const hint of hints) {
-    const declared = declaredEffectsByPath.get(normalizePath(hint.sourcePath)) ?? new Set<string>();
+    const declared =
+      declaredEffectsByPath.get(normalizeShapePath(hint.sourcePath)) ?? new Set<string>();
     if (!declared.has(hint.effect)) {
       warnings.push({
         kind: "missing_declared_effect",
@@ -138,14 +144,16 @@ function collectFunctionEffects(
     return;
   }
 
-  const sourcePath = fn.source ? normalizeSourcePath(unquote(fn.source.ref.path)) : undefined;
+  const sourcePath = fn.source
+    ? normalizeShapeSourcePath(unquoteShapeString(fn.source.ref.path))
+    : undefined;
   for (const entry of fn.effects.effects) {
     const paths = new Set<string>();
     if (sourcePath) {
       paths.add(sourcePath);
     }
     if (entry.evidence) {
-      paths.add(normalizeSourcePath(unquote(entry.evidence.ref.path)));
+      paths.add(normalizeShapeSourcePath(unquoteShapeString(entry.evidence.ref.path)));
     }
 
     for (const path of paths) {
@@ -154,23 +162,4 @@ function collectFunctionEffects(
       effects.set(path, declared);
     }
   }
-}
-
-function normalizeSourcePath(path: string): string {
-  const withoutAnchor = path.split("#", 1)[0] ?? path;
-  const lineMatch = /^(.*):\d+(?:-\d+)?$/.exec(withoutAnchor);
-  return normalizePath(lineMatch?.[1] ?? withoutAnchor);
-}
-
-function normalizePath(path: string): string {
-  return path.replaceAll("\\", "/").replace(/^\.\//, "");
-}
-
-function unquote(value: string): string {
-  const first = value.at(0);
-  const last = value.at(-1);
-  if ((first === '"' && last === '"') || (first === "'" && last === "'")) {
-    return value.slice(1, -1);
-  }
-  return value;
 }
