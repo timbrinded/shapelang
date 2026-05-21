@@ -1,5 +1,7 @@
 import { describe, expect, test } from "bun:test";
-import { resolve } from "node:path";
+import { chmod, mkdtemp, rm, writeFile } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { join, resolve } from "node:path";
 
 const repoRoot = resolve(import.meta.dir, "../../..");
 const cliPath = resolve(repoRoot, "packages/shp-cli/src/index.ts");
@@ -223,18 +225,27 @@ describe("shp CLI", () => {
 
   test("reports same-version update without network or mutation", async () => {
     const manifest = await readCliManifest();
-    const result = await runCli([
-      "update",
-      "--dry-run",
-      "--version",
-      manifest.version,
-      "--path",
-      "fixtures/shp"
-    ]);
+    const tempDir = await mkdtemp(join(tmpdir(), "shp-cli-test-"));
+    const fakeShp = join(tempDir, "shp");
+    try {
+      await writeFile(fakeShp, `#!/usr/bin/env sh\necho "${manifest.version}"\n`);
+      await chmod(fakeShp, 0o755);
 
-    expect(result.exitCode).toBe(0);
-    expect(result.stdout).toBe(`shp ${manifest.version} is already installed\n`);
-    expect(result.stderr).toBe("");
+      const result = await runCli([
+        "update",
+        "--dry-run",
+        "--version",
+        manifest.version,
+        "--path",
+        fakeShp
+      ]);
+
+      expect(result.exitCode).toBe(0);
+      expect(result.stdout).toBe(`shp ${manifest.version} is already installed\n`);
+      expect(result.stderr).toBe("");
+    } finally {
+      await rm(tempDir, { recursive: true, force: true });
+    }
   });
 
   test("refuses to update the Bun runtime when run from source", async () => {

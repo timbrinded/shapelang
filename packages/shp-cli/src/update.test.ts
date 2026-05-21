@@ -121,7 +121,11 @@ describe("shp update helpers", () => {
       extractTarGz: async (archivePath: string, destinationDir: string) => {
         extracted.push(`${archivePath}:${destinationDir}`);
       },
-      runVersion: async () => ({ exitCode: 0, stdout: "0.4.0\n", stderr: "" }),
+      runVersion: async (binaryPath: string) => ({
+        exitCode: 0,
+        stdout: binaryPath === "/opt/bin/shp" ? "0.3.0\n" : "0.4.0\n",
+        stderr: ""
+      }),
       replaceBinary: async (sourcePath: string, targetPath: string, platform: ReleasePlatform) => {
         replaced.push(`${sourcePath}:${targetPath}:${platform.assetName}`);
         return { pending: false };
@@ -152,6 +156,68 @@ describe("shp update helpers", () => {
     expect(extracted).toEqual(["/tmp/shp-update-test/shp-linux-x64.tar.gz:/tmp/shp-update-test"]);
     expect(replaced).toEqual(["/tmp/shp-update-test/shp:/opt/bin/shp:shp-linux-x64.tar.gz"]);
     expect(removedTemp).toBe(true);
+  });
+
+  test("updates an explicit stale target when the running version matches latest", async () => {
+    const replaced: string[] = [];
+    const versionChecks: string[] = [];
+
+    const services: UpdateServices = {
+      fetchJson: async () => ({
+        tag_name: "v0.4.0",
+        assets: [
+          {
+            name: "checksums.txt",
+            browser_download_url: "https://example.test/checksums.txt"
+          },
+          {
+            name: "shp-linux-x64.tar.gz",
+            browser_download_url: "https://example.test/shp-linux-x64.tar.gz"
+          }
+        ]
+      }),
+      downloadBytes: async (url: string) => {
+        if (url.endsWith("checksums.txt")) {
+          return new TextEncoder().encode(
+            "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc  shp-linux-x64.tar.gz\n"
+          );
+        }
+        return new Uint8Array([1, 2, 3]);
+      },
+      makeTempDir: async () => "/tmp/shp-update-test",
+      removeDir: async () => {},
+      writeFile: async () => {},
+      sha256File: async () => "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+      extractTarGz: async () => {},
+      runVersion: async (binaryPath: string) => {
+        versionChecks.push(binaryPath);
+        return {
+          exitCode: 0,
+          stdout: binaryPath === "/tmp/stale-shp" ? "0.3.0\n" : "0.4.0\n",
+          stderr: ""
+        };
+      },
+      replaceBinary: async (sourcePath: string, targetPath: string, platform: ReleasePlatform) => {
+        replaced.push(`${sourcePath}:${targetPath}:${platform.assetName}`);
+        return { pending: false };
+      }
+    };
+
+    const output = await runUpdate(
+      {
+        currentVersion: "0.4.0",
+        dryRun: false,
+        targetPath: "/tmp/stale-shp",
+        defaultTargetPath: "/usr/bin/shp",
+        processPlatform: "linux",
+        processArch: "x64"
+      },
+      services
+    );
+
+    expect(output).toBe("updated shp 0.3.0 -> 0.4.0 at /tmp/stale-shp\n");
+    expect(versionChecks).toEqual(["/tmp/stale-shp", "/tmp/shp-update-test/shp"]);
+    expect(replaced).toEqual(["/tmp/shp-update-test/shp:/tmp/stale-shp:shp-linux-x64.tar.gz"]);
   });
 
   test("dry run resolves the release without downloading", async () => {

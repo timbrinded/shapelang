@@ -100,17 +100,23 @@ export async function runUpdate(
 
   const platform = resolveReleasePlatform(options.processPlatform, options.processArch);
   const currentVersion = normalizeReleaseVersion(options.currentVersion);
+  const installedVersion = await resolveInstalledVersion(
+    options.targetPath !== undefined,
+    targetPath,
+    currentVersion,
+    services
+  );
   const repository = options.repository ?? DEFAULT_REPOSITORY;
 
-  if (options.requestedVersion) {
+  if (options.requestedVersion && installedVersion !== undefined) {
     const requestedVersion = normalizeReleaseVersion(options.requestedVersion);
-    const comparison = compareReleaseVersions(requestedVersion, currentVersion);
+    const comparison = compareReleaseVersions(requestedVersion, installedVersion);
     if (comparison === 0) {
-      return `shp ${currentVersion} is already installed\n`;
+      return `shp ${installedVersion} is already installed\n`;
     }
     if (comparison < 0) {
       throw usageError(
-        `target release v${requestedVersion} is older than current version ${currentVersion}`
+        `target release v${requestedVersion} is older than installed version ${installedVersion}`
       );
     }
   }
@@ -119,12 +125,15 @@ export async function runUpdate(
     await services.fetchJson(releaseApiUrl(repository, options.requestedVersion))
   );
   const targetVersion = normalizeReleaseVersion(release.tagName);
-  const comparison = compareReleaseVersions(targetVersion, currentVersion);
-  if (!options.requestedVersion && comparison === 0) {
-    return `shp ${currentVersion} is already up to date\n`;
-  }
-  if (!options.requestedVersion && comparison < 0) {
-    return `shp ${currentVersion} is newer than latest release ${release.tagName}\n`;
+  const versionBeforeUpdate = installedVersion ?? currentVersion;
+  if (installedVersion !== undefined) {
+    const comparison = compareReleaseVersions(targetVersion, installedVersion);
+    if (!options.requestedVersion && comparison === 0) {
+      return `shp ${installedVersion} is already up to date\n`;
+    }
+    if (!options.requestedVersion && comparison < 0) {
+      return `shp ${installedVersion} is newer than latest release ${release.tagName}\n`;
+    }
   }
 
   const archiveAsset = selectReleaseAsset(release, platform.assetName);
@@ -132,7 +141,7 @@ export async function runUpdate(
 
   if (options.dryRun) {
     return [
-      `would update shp ${currentVersion} -> ${targetVersion}`,
+      `would update shp ${versionBeforeUpdate} -> ${targetVersion}`,
       `release: ${release.tagName}`,
       `asset: ${archiveAsset.name}`,
       `binary: ${targetPath}`,
@@ -175,7 +184,7 @@ export async function runUpdate(
     if (replaceResult.pending) {
       return `staged shp ${targetVersion}; it will replace ${targetPath} after this process exits\n`;
     }
-    return `updated shp ${currentVersion} -> ${targetVersion} at ${targetPath}\n`;
+    return `updated shp ${versionBeforeUpdate} -> ${targetVersion} at ${targetPath}\n`;
   } finally {
     await services.removeDir(tempDir);
   }
@@ -272,6 +281,27 @@ export function isUnsafeDefaultTarget(path: string): boolean {
 
 function resolveTargetPath(targetPath: string | undefined, defaultTargetPath: string): string {
   return resolve(targetPath ?? defaultTargetPath);
+}
+
+async function resolveInstalledVersion(
+  hasExplicitTargetPath: boolean,
+  targetPath: string,
+  currentVersion: string,
+  services: UpdateServices
+): Promise<string | undefined> {
+  if (!hasExplicitTargetPath) {
+    return currentVersion;
+  }
+
+  try {
+    const versionResult = await services.runVersion(targetPath);
+    if (versionResult.exitCode !== 0) {
+      return undefined;
+    }
+    return normalizeReleaseVersion(versionResult.stdout.trim());
+  } catch {
+    return undefined;
+  }
 }
 
 function releaseApiUrl(repository: string, requestedVersion: string | undefined): string {

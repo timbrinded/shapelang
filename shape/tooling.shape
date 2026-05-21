@@ -429,6 +429,15 @@ reevaluation CliUpdateDispatchRechecked {
   evidence test("packages/shp-cli/src/index.test.ts")
 }
 
+reevaluation CliUpdateExplicitTargetRechecked {
+  satisfies memory UpdateBinaryIntegrity
+  outcome Confirmed
+  summary "Explicit update targets now compare against the selected binary while release checksum and downloaded-version verification still run before replacement."
+  reviewer ShapeMaintainers
+  decided_on "2026-05-21"
+  evidence test("packages/shp-cli/src/update.test.ts")
+}
+
 reevaluation DefaultShapeDiscoveryRechecked {
   satisfies memory DefaultShapeFileDiscovery
   outcome Confirmed
