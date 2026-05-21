@@ -225,6 +225,53 @@ describe("shp update helpers", () => {
     expect(replaced).toEqual(["/tmp/shp-update-test/shp:/tmp/stale-shp:shp-linux-x64.tar.gz"]);
   });
 
+  test("accepts older shp help text when validating an explicit target", async () => {
+    const downloads: string[] = [];
+    const services: UpdateServices = {
+      fetchJson: async () => ({
+        tag_name: "v0.4.0",
+        assets: [
+          {
+            name: "checksums.txt",
+            browser_download_url: "https://example.test/checksums.txt"
+          },
+          {
+            name: "shp-linux-x64.tar.gz",
+            browser_download_url: "https://example.test/shp-linux-x64.tar.gz"
+          }
+        ]
+      }),
+      downloadBytes: async (url: string) => {
+        downloads.push(url);
+        return new Uint8Array();
+      },
+      makeTempDir: async () => "/tmp/shp-update-test",
+      removeDir: async () => {},
+      pathExists: async (path: string) => path === "/tmp/older-shp",
+      writeFile: async () => {},
+      sha256File: async () => "",
+      extractTarGz: async () => {},
+      runVersion: async () => ({ exitCode: 0, stdout: "0.3.0\n", stderr: "" }),
+      runHelp: async () => olderShpHelp(),
+      replaceBinary: async () => ({ pending: false })
+    };
+
+    const output = await runUpdate(
+      {
+        currentVersion: "0.4.0",
+        dryRun: true,
+        targetPath: "/tmp/older-shp",
+        defaultTargetPath: "/usr/bin/shp",
+        processPlatform: "linux",
+        processArch: "x64"
+      },
+      services
+    );
+
+    expect(output).toContain("would update shp 0.3.0 -> 0.4.0");
+    expect(downloads).toEqual([]);
+  });
+
   test("rejects an existing explicit target that is not a shp binary", async () => {
     const services: UpdateServices = {
       fetchJson: async () => {
@@ -366,8 +413,26 @@ function validShpHelp() {
     exitCode: 0,
     stdout: [
       "USAGE",
+      "  shp check [--changed-files changed.txt] <files>...",
+      "  shp coverage (--changed-files changed.txt) <files>...",
+      "  shp fmt [--check] <files>...",
       "  shp update [--version VERSION] [--dry-run] [--path PATH]",
       "When no files are provided, Shape file commands scan shape/**/*.shape by default.",
+      ""
+    ].join("\n"),
+    stderr: ""
+  };
+}
+
+function olderShpHelp() {
+  return {
+    exitCode: 0,
+    stdout: [
+      "Usage:",
+      "  shp check [--changed-files changed.txt] [files...]",
+      "  shp coverage --changed-files changed.txt [files...]",
+      "  shp fmt [--check] [files...]",
+      "When no files are provided, commands scan shape/**/*.shape.",
       ""
     ].join("\n"),
     stderr: ""

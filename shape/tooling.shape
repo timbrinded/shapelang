@@ -441,6 +441,15 @@ reevaluation CliUpdateExplicitTargetRechecked {
   evidence test("packages/shp-cli/src/update.test.ts")
 }
 
+reevaluation CliUpdateHelpIdentityRechecked {
+  satisfies memory UpdateBinaryIntegrity
+  outcome Confirmed
+  summary "Explicit update target identity checks now accept stable Shape CLI help signals without requiring update-specific wording."
+  reviewer ShapeMaintainers
+  decided_on "2026-05-21"
+  evidence test("packages/shp-cli/src/update.test.ts")
+}
+
 reevaluation DefaultShapeDiscoveryRechecked {
   satisfies memory DefaultShapeFileDiscovery
   outcome Confirmed

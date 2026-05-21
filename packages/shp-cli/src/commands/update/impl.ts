@@ -367,10 +367,18 @@ function formatCommandFailure(result: CommandResult): string {
 }
 
 function hasShpHelpIdentity(output: string): boolean {
+  const normalizedLines = output
+    .toLowerCase()
+    .split(/\r?\n/)
+    .map((line) => line.trim().replace(/\s+/g, " "));
+  const hasCommand = (command: string): boolean =>
+    normalizedLines.some((line) => line.startsWith(command) || line.includes(` ${command} `));
+
   return (
-    output.includes("USAGE") &&
-    output.includes("shp update") &&
-    output.includes("Shape file commands scan shape/**/*.shape")
+    hasCommand("shp check") &&
+    hasCommand("shp coverage") &&
+    hasCommand("shp fmt") &&
+    normalizedLines.some((line) => line.includes("shape"))
   );
 }
 
