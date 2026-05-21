@@ -188,6 +188,17 @@ describe("shp CLI", () => {
     expect(result.stderr).toBe("");
   });
 
+  test("prints update command help", async () => {
+    const result = await runCli(["update", "--help"]);
+
+    expect(result.exitCode).toBe(0);
+    expect(result.stdout).toContain("Update the released shp binary in place");
+    expect(result.stdout).toContain("--version");
+    expect(result.stdout).toContain("--dry-run");
+    expect(result.stdout).toContain("--path");
+    expect(result.stderr).toBe("");
+  });
+
   test("prints the CLI version", async () => {
     const manifest = await readCliManifest();
     const result = await runCli(["--version"]);
@@ -195,6 +206,31 @@ describe("shp CLI", () => {
     expect(result.exitCode).toBe(0);
     expect(result.stdout.trim()).toBe(manifest.version);
     expect(result.stderr).toBe("");
+  });
+
+  test("reports same-version update without network or mutation", async () => {
+    const manifest = await readCliManifest();
+    const result = await runCli([
+      "update",
+      "--dry-run",
+      "--version",
+      manifest.version,
+      "--path",
+      "fixtures/shp"
+    ]);
+
+    expect(result.exitCode).toBe(0);
+    expect(result.stdout).toBe(`shp ${manifest.version} is already installed\n`);
+    expect(result.stderr).toBe("");
+  });
+
+  test("refuses to update the Bun runtime when run from source", async () => {
+    const result = await runCli(["update"]);
+
+    expect(result.exitCode).toBe(2);
+    expect(result.stderr).toContain("refusing to update");
+    expect(result.stderr).toContain("pass --path PATH");
+    expect(result.stdout).toBe("");
   });
 
   test("reports unknown commands without a stack trace", async () => {

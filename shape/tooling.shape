@@ -18,6 +18,14 @@ resource EditorOutput
 
 resource FormattedShape
 
+resource InstalledShpBinary
+
+resource ReleaseArchive
+
+resource ReleaseChecksumManifest
+
+resource ReleaseMetadata
+
 resource ShapeModelDraft
 
 component ShapeAnalyzer {
@@ -139,7 +147,11 @@ component ShpCli {
   grants Read<ChangedFileList>
   grants Read<DiagnosticText>
   grants Read<FormattedShape>
+  grants Read<ReleaseArchive>
+  grants Read<ReleaseChecksumManifest>
+  grants Read<ReleaseMetadata>
   grants Read<ShapeSource>
+  grants Update<InstalledShpBinary>
   fn defaultShapeFiles : RefactorSensitive
     source ts("packages/shp-cli/src/shape-files.ts#defaultShapeFiles")
     effects complete {
@@ -184,6 +196,10 @@ component ShpCli {
       Read<DiagnosticText>
         evidence ts("packages/shp-cli/src/commands/obligations/impl.ts")
       Read<DiagnosticText>
+        evidence ts("packages/shp-cli/src/commands/update/command.ts")
+      Read<DiagnosticText>
+        evidence ts("packages/shp-cli/src/commands/update/impl.ts")
+      Read<DiagnosticText>
         evidence ts("packages/shp-cli/src/context.ts")
       Read<DiagnosticText>
         evidence ts("packages/shp-cli/src/io.ts")
@@ -197,6 +213,18 @@ component ShpCli {
         evidence ts("packages/shp-cli/src/version.ts")
       Read<FormattedShape>
         evidence ts("packages/shp-cli/src/commands/fmt/impl.ts")
+    }
+  fn updateInstalledBinary : RefactorSensitive
+    source ts("packages/shp-cli/src/commands/update/impl.ts#update")
+    effects complete {
+      Read<ReleaseArchive>
+        evidence ts("packages/shp-cli/src/commands/update/impl.ts")
+      Read<ReleaseChecksumManifest>
+        evidence ts("packages/shp-cli/src/commands/update/impl.ts")
+      Read<ReleaseMetadata>
+        evidence ts("packages/shp-cli/src/commands/update/impl.ts")
+      Update<InstalledShpBinary>
+        evidence ts("packages/shp-cli/src/commands/update/impl.ts")
     }
 }
 
@@ -355,6 +383,16 @@ memory FormatterCanonicalDiffs : RefactorConstraint<fn ShapeFormatter.formatShap
   guards on_change require ReEvaluation<Self>
 }
 
+memory UpdateBinaryIntegrity : RefactorConstraint<fn ShpCli.updateInstalledBinary> {
+  applies_to fn ShpCli.updateInstalledBinary
+  status Explained
+  confidence High
+  summary "Self-update must verify the release checksum and downloaded binary version before replacing the local executable."
+  owner ShapeMaintainers
+  protects shape ReleaseIntegrity
+  guards on_change require ReEvaluation<Self>
+}
+
 reevaluation AuthoringDraftSafetyRechecked {
   satisfies memory AuthoringUnknownSafety
   outcome Confirmed
@@ -379,6 +417,15 @@ reevaluation CliCommandErrorsRechecked {
   summary "CLI dispatch now reports expected user-input failures without bypassing checker and formatter command semantics."
   reviewer ShapeMaintainers
   decided_on "2026-05-20"
+  evidence test("packages/shp-cli/src/index.test.ts")
+}
+
+reevaluation CliUpdateDispatchRechecked {
+  satisfies memory CliCommandDispatchOrder
+  outcome Confirmed
+  summary "The update command is registered through the same Stricli dispatch path and keeps usage failures normalized."
+  reviewer ShapeMaintainers
+  decided_on "2026-05-21"
   evidence test("packages/shp-cli/src/index.test.ts")
 }
 

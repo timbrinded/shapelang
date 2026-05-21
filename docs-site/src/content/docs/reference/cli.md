@@ -21,6 +21,7 @@ shp memory [files...]
 shp obligations [files...]
 shp author --changed-files changed.txt --component ComponentName [--module module.name]
 shp analyze [--shape-files file1.shape,file2.shape] [source-files...]
+shp update [--version VERSION] [--dry-run] [--path PATH]
 shp --help
 shp --version
 ```
@@ -46,6 +47,7 @@ shape/**/*.shape
 | `obligations` | List open design-memory obligations from checker diagnostics. |
 | `author` | Generate a conservative global-model draft from changed files. |
 | `analyze` | Emit source hints or compare source hints with declared effects. |
+| `update` | Update a local released binary from GitHub Releases. |
 
 ## Common commands
 
@@ -65,6 +67,7 @@ shp memory
 shp obligations
 shp author --changed-files changed.txt --component AuditStore
 shp analyze --shape-files fixtures/pass/append_only_append/audit.shape src/audit/purge.ts
+shp update --dry-run
 ```
 
 ## Graph output
@@ -137,4 +140,12 @@ guarded changes:
 
 ## Exit codes
 
-`0` means the command passed. `1` means semantic checks, formatting checks, coverage, or analyzer comparison failed. `2` means the CLI arguments were invalid.
+`0` means the command passed. `1` means semantic checks, formatting checks, coverage, analyzer comparison, download, checksum, extraction, or binary replacement failed. `2` means the CLI arguments were invalid or the update target platform/path is unsupported.
+
+## Updating
+
+`shp update` is for local developer installs of the released single binary. It checks the current version, resolves a GitHub release, downloads the matching platform archive, verifies it with `checksums.txt`, and replaces the selected executable path.
+
+Use `shp update --dry-run` to see the selected release, asset, and binary path without downloading. Use `shp update --version v0.3.0` to target a specific newer release. Use `--path PATH` when testing from source or when replacing a custom installed binary.
+
+CI should continue installing pinned releases through the setup action or installer script instead of calling `shp update`.

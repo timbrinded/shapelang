@@ -14,6 +14,7 @@ import { fmtCommand } from "./commands/fmt/command";
 import { graphCommand } from "./commands/graph/command";
 import { memoryCommand } from "./commands/memory/command";
 import { obligationsCommand } from "./commands/obligations/command";
+import { updateCommand } from "./commands/update/command";
 import type { CliContext } from "./context";
 import { cliExitCode, errorMessage } from "./errors";
 import { SHP_VERSION } from "./version";
@@ -28,7 +29,8 @@ const root = buildRouteMap({
     fmt: fmtCommand,
     graph: graphCommand,
     memory: memoryCommand,
-    obligations: obligationsCommand
+    obligations: obligationsCommand,
+    update: updateCommand
   },
   docs: {
     brief: "Check and maintain Shape architecture models.",

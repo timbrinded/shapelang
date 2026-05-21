@@ -41,6 +41,13 @@ shp memory
 shp obligations
 ```
 
+For local developer installs, update the released binary explicitly:
+
+```bash
+shp update
+shp update --dry-run
+```
+
 `shp check` scans these paths when no files are provided:
 
 ```text
@@ -158,6 +165,7 @@ shp graph stats --kind calls
 shp memory
 shp obligations
 shp analyze --shape-files fixtures/pass/append_only_append/audit.shape src/audit/purge.ts
+shp update --dry-run
 ```
 
 `shp check` scans `shape/**/*.shape` when no files are provided. Any `.shape` file under `shape/` is part of the checked model.
@@ -175,6 +183,7 @@ Useful commands:
 - `shp memory`: list rationale and memory entries that protect design context.
 - `shp obligations`: list open design-memory obligations such as missing rationale or reevaluation.
 - `shp analyze --shape-files fixtures/pass/append_only_append/audit.shape src/file.ts`: compare obvious source hints against declared effects.
+- `shp update`: update a local released binary from GitHub Releases.
 
 ## Project Layout
 
