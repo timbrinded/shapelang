@@ -48,6 +48,9 @@ shp update
 shp update --dry-run
 ```
 
+`shp update --path PATH` can replace a custom install path, but an existing target
+must already identify itself as `shp` through `--version`.
+
 `shp check` scans these paths when no files are provided:
 
 ```text

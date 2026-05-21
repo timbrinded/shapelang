@@ -8,6 +8,7 @@ import {
   resolveReleasePlatform,
   runUpdate,
   selectReleaseAsset,
+  windowsReplacementScript,
   type ReleasePlatform,
   type UpdateServices
 } from "./commands/update/impl";
@@ -114,6 +115,7 @@ describe("shp update helpers", () => {
       removeDir: async (path: string) => {
         removedTemp = path === "/tmp/shp-update-test";
       },
+      pathExists: async (path: string) => path === "/opt/bin/shp",
       writeFile: async (path: string) => {
         writes.push(path);
       },
@@ -186,6 +188,7 @@ describe("shp update helpers", () => {
       },
       makeTempDir: async () => "/tmp/shp-update-test",
       removeDir: async () => {},
+      pathExists: async (path: string) => path === "/tmp/stale-shp",
       writeFile: async () => {},
       sha256File: async () => "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
       extractTarGz: async () => {},
@@ -220,6 +223,44 @@ describe("shp update helpers", () => {
     expect(replaced).toEqual(["/tmp/shp-update-test/shp:/tmp/stale-shp:shp-linux-x64.tar.gz"]);
   });
 
+  test("rejects an existing explicit target that is not a shp binary", async () => {
+    const services: UpdateServices = {
+      fetchJson: async () => {
+        throw new Error("release fetch should not run");
+      },
+      downloadBytes: async () => new Uint8Array(),
+      makeTempDir: async () => "/tmp/shp-update-test",
+      removeDir: async () => {},
+      pathExists: async (path: string) => path === "/tmp/not-shp",
+      writeFile: async () => {},
+      sha256File: async () => "",
+      extractTarGz: async () => {},
+      runVersion: async () => ({ exitCode: 0, stdout: "other-tool 1.2.3\n", stderr: "" }),
+      replaceBinary: async () => ({ pending: false })
+    };
+
+    let message = "";
+    try {
+      await runUpdate(
+        {
+          currentVersion: "0.3.0",
+          dryRun: false,
+          targetPath: "/tmp/not-shp",
+          defaultTargetPath: "/usr/bin/shp",
+          processPlatform: "linux",
+          processArch: "x64"
+        },
+        services
+      );
+    } catch (error) {
+      message = error instanceof Error ? error.message : String(error);
+    }
+
+    expect(message).toContain(
+      "existing --path target /tmp/not-shp did not report a valid shp version"
+    );
+  });
+
   test("dry run resolves the release without downloading", async () => {
     const downloads: string[] = [];
     const services: UpdateServices = {
@@ -242,6 +283,7 @@ describe("shp update helpers", () => {
       },
       makeTempDir: async () => "/tmp/shp-update-test",
       removeDir: async () => {},
+      pathExists: async () => false,
       writeFile: async () => {},
       sha256File: async () => "",
       extractTarGz: async () => {},
@@ -265,5 +307,17 @@ describe("shp update helpers", () => {
     expect(output).toContain("asset: shp-linux-x64.tar.gz");
     expect(output).toContain("binary: /opt/bin/shp");
     expect(downloads).toEqual([]);
+  });
+
+  test("cleans up staged Windows binary if deferred replacement fails", () => {
+    const script = windowsReplacementScript();
+
+    expect(script).toContain("} catch {");
+    expect(script).toContain(
+      "Remove-Item -LiteralPath $Source -Force -ErrorAction SilentlyContinue"
+    );
+    expect(script).toContain(
+      "Remove-Item -LiteralPath $MyInvocation.MyCommand.Path -Force -ErrorAction SilentlyContinue"
+    );
   });
 });

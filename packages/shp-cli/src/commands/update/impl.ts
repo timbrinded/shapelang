@@ -1,10 +1,10 @@
 import { createHash } from "node:crypto";
 import { spawn } from "node:child_process";
-import { chmod, copyFile, mkdir, mkdtemp, rename, rm, writeFile } from "node:fs/promises";
+import { chmod, copyFile, mkdir, mkdtemp, rename, rm, stat, writeFile } from "node:fs/promises";
 import { basename, dirname, join, resolve } from "node:path";
 import { tmpdir } from "node:os";
 import type { CliContext } from "../../context";
-import { CliDiagnosticError, EXIT_FAILURE, EXIT_USAGE } from "../../errors";
+import { CliDiagnosticError, EXIT_FAILURE, EXIT_USAGE, errorMessage } from "../../errors";
 import { stdout } from "../../io";
 import { SHP_VERSION } from "../../version";
 
@@ -50,6 +50,7 @@ export type UpdateServices = {
   readonly downloadBytes: (url: string) => Promise<Uint8Array>;
   readonly makeTempDir: () => Promise<string>;
   readonly removeDir: (path: string) => Promise<void>;
+  readonly pathExists: (path: string) => Promise<boolean>;
   readonly writeFile: (path: string, bytes: Uint8Array) => Promise<void>;
   readonly sha256File: (path: string) => Promise<string>;
   readonly extractTarGz: (archivePath: string, destinationDir: string) => Promise<void>;
@@ -293,14 +294,31 @@ async function resolveInstalledVersion(
     return currentVersion;
   }
 
+  if (!(await services.pathExists(targetPath))) {
+    return undefined;
+  }
+
+  let versionResult: CommandResult;
   try {
-    const versionResult = await services.runVersion(targetPath);
-    if (versionResult.exitCode !== 0) {
-      return undefined;
-    }
+    versionResult = await services.runVersion(targetPath);
+  } catch (error) {
+    throw usageError(
+      `existing --path target ${targetPath} is not a runnable shp binary: ${errorMessage(error)}`
+    );
+  }
+
+  if (versionResult.exitCode !== 0) {
+    throw usageError(
+      `existing --path target ${targetPath} failed --version${formatCommandFailure(versionResult)}`
+    );
+  }
+
+  try {
     return normalizeReleaseVersion(versionResult.stdout.trim());
   } catch {
-    return undefined;
+    throw usageError(
+      `existing --path target ${targetPath} did not report a valid shp version: ${versionResult.stdout.trim()}`
+    );
   }
 }
 
@@ -335,6 +353,11 @@ function versionParts(version: string): readonly number[] {
 
 function stripLeadingDotSlash(path: string): string {
   return path.startsWith("./") ? path.slice(2) : path;
+}
+
+function formatCommandFailure(result: CommandResult): string {
+  const detail = result.stderr.trim() || result.stdout.trim();
+  return detail ? `: ${detail}` : "";
 }
 
 function record(value: unknown): Record<string, unknown> | undefined {
@@ -377,6 +400,7 @@ const defaultUpdateServices: UpdateServices = {
   },
   makeTempDir: () => mkdtemp(join(tmpdir(), "shp-update-")),
   removeDir: (path: string) => rm(path, { recursive: true, force: true }),
+  pathExists,
   writeFile: (path: string, bytes: Uint8Array) => writeFile(path, bytes),
   sha256File,
   extractTarGz,
@@ -389,10 +413,27 @@ async function sha256File(path: string): Promise<string> {
   return createHash("sha256").update(bytes).digest("hex");
 }
 
+async function pathExists(path: string): Promise<boolean> {
+  try {
+    await stat(path);
+    return true;
+  } catch (error) {
+    if (errorCode(error) === "ENOENT") {
+      return false;
+    }
+    throw error;
+  }
+}
+
 async function extractTarGz(archivePath: string, destinationDir: string): Promise<void> {
   const result = await runCommand(["tar", "-xzf", archivePath, "-C", destinationDir]);
+  if (result.exitCode === 127) {
+    throw failureError(
+      `failed to run tar while extracting ${archivePath}; install tar or ensure it is on PATH${formatCommandFailure(result)}`
+    );
+  }
   if (result.exitCode !== 0) {
-    throw failureError(`failed to extract ${archivePath}: ${result.stderr.trim()}`);
+    throw failureError(`failed to extract ${archivePath}${formatCommandFailure(result)}`);
   }
 }
 
@@ -401,16 +442,20 @@ async function runVersion(binaryPath: string): Promise<CommandResult> {
 }
 
 async function runCommand(args: readonly string[]): Promise<CommandResult> {
-  const subprocess = Bun.spawn([...args], {
-    stdout: "pipe",
-    stderr: "pipe"
-  });
-  const [exitCode, stdoutText, stderrText] = await Promise.all([
-    subprocess.exited,
-    new Response(subprocess.stdout).text(),
-    new Response(subprocess.stderr).text()
-  ]);
-  return { exitCode, stdout: stdoutText, stderr: stderrText };
+  try {
+    const subprocess = Bun.spawn([...args], {
+      stdout: "pipe",
+      stderr: "pipe"
+    });
+    const [exitCode, stdoutText, stderrText] = await Promise.all([
+      subprocess.exited,
+      new Response(subprocess.stdout).text(),
+      new Response(subprocess.stderr).text()
+    ]);
+    return { exitCode, stdout: stdoutText, stderr: stderrText };
+  } catch (error) {
+    return { exitCode: 127, stdout: "", stderr: errorMessage(error) };
+  }
 }
 
 async function replaceBinary(
@@ -468,16 +513,27 @@ async function replaceWindowsBinary(
   return { pending: true };
 }
 
-function windowsReplacementScript(): string {
+export function windowsReplacementScript(): string {
   return [
     "param([int]$ParentProcessId, [string]$Source, [string]$Target)",
     '$ErrorActionPreference = "Stop"',
     "try {",
     "  Wait-Process -Id $ParentProcessId -ErrorAction SilentlyContinue",
     "  Move-Item -Force -LiteralPath $Source -Destination $Target",
+    "} catch {",
+    "  Remove-Item -LiteralPath $Source -Force -ErrorAction SilentlyContinue",
+    "  throw",
     "} finally {",
     "  Remove-Item -LiteralPath $MyInvocation.MyCommand.Path -Force -ErrorAction SilentlyContinue",
     "}",
     ""
   ].join("\n");
+}
+
+function errorCode(error: unknown): string | undefined {
+  if (typeof error === "object" && error !== null && "code" in error) {
+    const code = error.code;
+    return typeof code === "string" ? code : undefined;
+  }
+  return undefined;
 }

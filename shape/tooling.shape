@@ -147,6 +147,7 @@ component ShpCli {
   grants Read<ChangedFileList>
   grants Read<DiagnosticText>
   grants Read<FormattedShape>
+  grants Read<InstalledShpBinary>
   grants Read<ReleaseArchive>
   grants Read<ReleaseChecksumManifest>
   grants Read<ReleaseMetadata>
@@ -217,6 +218,8 @@ component ShpCli {
   fn updateInstalledBinary : RefactorSensitive
     source ts("packages/shp-cli/src/commands/update/impl.ts#update")
     effects complete {
+      Read<InstalledShpBinary>
+        evidence ts("packages/shp-cli/src/commands/update/impl.ts")
       Read<ReleaseArchive>
         evidence ts("packages/shp-cli/src/commands/update/impl.ts")
       Read<ReleaseChecksumManifest>
@@ -387,7 +390,7 @@ memory UpdateBinaryIntegrity : RefactorConstraint<fn ShpCli.updateInstalledBinar
   applies_to fn ShpCli.updateInstalledBinary
   status Explained
   confidence High
-  summary "Self-update must verify the release checksum and downloaded binary version before replacing the local executable."
+  summary "Self-update must verify any existing target binary identity, release checksum, and downloaded binary version before replacing the local executable."
   owner ShapeMaintainers
   protects shape ReleaseIntegrity
   guards on_change require ReEvaluation<Self>
@@ -432,7 +435,7 @@ reevaluation CliUpdateDispatchRechecked {
 reevaluation CliUpdateExplicitTargetRechecked {
   satisfies memory UpdateBinaryIntegrity
   outcome Confirmed
-  summary "Explicit update targets now compare against the selected binary while release checksum and downloaded-version verification still run before replacement."
+  summary "Existing explicit update targets must report a valid shp version before replacement, while release checksum and downloaded-version verification still run."
   reviewer ShapeMaintainers
   decided_on "2026-05-21"
   evidence test("packages/shp-cli/src/update.test.ts")
