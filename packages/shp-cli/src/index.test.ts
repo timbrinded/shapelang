@@ -276,6 +276,15 @@ describe("shp CLI", () => {
     expect(result.stdout).toBe("");
   });
 
+  test("documents reserved legacy graph symbols", async () => {
+    const result = await runCli(["graph", "--help"]);
+
+    expect(result.exitCode).toBe(0);
+    expect(result.stdout).toContain("symbols named all, show, or stats");
+    expect(result.stdout).toContain("graph show SYMBOL");
+    expect(result.stderr).toBe("");
+  });
+
   test("prints the whole hypergraph", async () => {
     const result = await runCli(["graph", "fixtures/pass/hypercycle_acyclic/deps.shape"]);
 

@@ -86,7 +86,7 @@ const legacyGraphCommand = buildCommand<LegacyGraphFlags, string[], CliContext>(
     customUsage: [
       {
         input: "[SYMBOL] [--kind KIND] [files...]",
-        brief: "Compatibility form for graph all/show/stats."
+        brief: "Compatibility form; all, show, and stats are reserved."
       },
       {
         input: "--stats [--kind KIND] [files...]",
@@ -107,7 +107,7 @@ export const graphCommand = buildRouteMap({
   docs: {
     brief: "Inspect Shape relation hypergraphs.",
     fullDescription:
-      "`graph all`, `graph show`, and `graph stats` are the preferred explicit forms. Legacy `shp graph ...` invocations remain supported.",
+      "`graph all`, `graph show`, and `graph stats` are the preferred explicit forms. Legacy `shp graph ...` invocations remain supported, except legacy symbols named all, show, or stats must use `graph show SYMBOL`.",
     hideRoute: {
       legacy: true
     }
