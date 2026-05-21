@@ -80,6 +80,13 @@ The TypeScript project is strict (`strict`, `noUncheckedIndexedAccess`,
   locally.
 - Governed source changes require a faithful Shape update or a narrow current
   `attest no_shape_change`.
+- When a code change adds, removes, or moves functionality, assume the Shape
+  model may need to change too. Inspect `shape/*.shape`, update the relevant
+  component/function/effect/relation claims, or add a narrow current attestation
+  only when the architecture contract truly did not change.
+- Use the existing files under `shape/` as the best local guide for Shape syntax,
+  modeling style, source/evidence references, relations, memory, and
+  reevaluations before inventing new patterns.
 - Shape-affecting files with docs bindings require a docs update or current
   `attest docs_not_needed`.
 - For guarded targets, inspect obligations with `bun shp obligations` and memory
