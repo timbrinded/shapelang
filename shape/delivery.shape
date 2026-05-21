@@ -6,6 +6,8 @@ import shape.tooling
 
 resource CiWorkflow
 
+resource CliPackageManifest
+
 resource CopilotReviewPrompt
 
 resource CopilotReviewResult
@@ -16,17 +18,31 @@ resource InstallScript
 
 resource ReleaseArtifact
 
+resource ReleaseVersionTag
+
 component CiPipeline {
   owns CiWorkflow
   owns CopilotReviewPrompt
   owns CopilotReviewResult
   grants Read<ChangedFileList>
   grants Read<CiWorkflow>
+  grants Read<CliPackageManifest>
   grants Read<CopilotReviewPrompt>
   grants Read<CopilotReviewResult>
+  grants Read<ReleaseVersionTag>
   grants Read<SemanticDiagnostics>
   grants Update<ChangedFileList>
   grants Update<CopilotReviewResult>
+  fn checkReleaseVersion : RefactorSensitive
+    source yaml(".github/workflows/release.yml#Check release tag matches CLI package version")
+    effects complete {
+      Read<CiWorkflow>
+        evidence yaml(".github/workflows/release.yml")
+      Read<CliPackageManifest>
+        evidence json("packages/shp-cli/package.json")
+      Read<ReleaseVersionTag>
+        evidence yaml(".github/workflows/release.yml")
+    }
   fn runShapeCi
     source yaml(".github/workflows/shape.yml")
     effects complete {
@@ -317,6 +333,7 @@ binding CliDocs {
     "packages/shp-cli/src/io.ts"
     "packages/shp-cli/src/parameters.ts"
     "packages/shp-cli/src/shape-files.ts"
+    "packages/shp-cli/src/version.ts"
     "shape/tooling.shape"
   }
   require_changed paths {
@@ -393,6 +410,16 @@ memory ReleaseChecksumContract : RefactorConstraint<fn ReleasePipeline.buildRele
   guards on_change require ReEvaluation<Self>
 }
 
+memory ReleaseVersionTagContract : RefactorConstraint<fn CiPipeline.checkReleaseVersion> {
+  applies_to fn CiPipeline.checkReleaseVersion
+  status Explained
+  confidence High
+  summary "Release tags must match the CLI package manifest version before release assets are published."
+  owner ShapeMaintainers
+  protects shape ReleaseVersionIntegrity
+  guards on_change require ReEvaluation<Self>
+}
+
 reevaluation DocsShapeBlockVerificationRechecked {
   satisfies memory DocsShapeBlockParsingContract
   outcome Confirmed
@@ -400,6 +427,15 @@ reevaluation DocsShapeBlockVerificationRechecked {
   reviewer ShapeMaintainers
   decided_on "2026-05-20"
   evidence test("docs-site/scripts/verify-shape-blocks.ts")
+}
+
+reevaluation ReleaseVersionTagCheckRechecked {
+  satisfies memory ReleaseVersionTagContract
+  outcome Confirmed
+  summary "The release workflow rejects tags that do not match packages/shp-cli/package.json."
+  reviewer ShapeMaintainers
+  decided_on "2026-05-21"
+  evidence yaml(".github/workflows/release.yml")
 }
 
 attest no_shape_change {
