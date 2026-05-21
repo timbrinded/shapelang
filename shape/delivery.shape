@@ -216,7 +216,14 @@ implementation CiScripts {
 
 implementation CliSource {
   paths {
+    "packages/shp-cli/src/app.ts"
+    "packages/shp-cli/src/commands/**/*.ts"
+    "packages/shp-cli/src/context.ts"
+    "packages/shp-cli/src/errors.ts"
     "packages/shp-cli/src/index.ts"
+    "packages/shp-cli/src/io.ts"
+    "packages/shp-cli/src/parameters.ts"
+    "packages/shp-cli/src/shape-files.ts"
   }
   conforms_to ShpCli
   on_change require shape_update
@@ -301,7 +308,14 @@ implementation WorkflowSource {
 
 binding CliDocs {
   when_changed paths {
+    "packages/shp-cli/src/app.ts"
+    "packages/shp-cli/src/commands/**/*.ts"
+    "packages/shp-cli/src/context.ts"
+    "packages/shp-cli/src/errors.ts"
     "packages/shp-cli/src/index.ts"
+    "packages/shp-cli/src/io.ts"
+    "packages/shp-cli/src/parameters.ts"
+    "packages/shp-cli/src/shape-files.ts"
     "shape/tooling.shape"
   }
   require_changed paths {

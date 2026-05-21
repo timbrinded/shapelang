@@ -153,7 +153,8 @@ shp check --changed-files changed.txt
 shp coverage --changed-files changed.txt
 shp fmt --check
 shp explain AuditEvent
-shp graph Gateway --kind calls
+shp graph show Gateway --kind calls
+shp graph stats --kind calls
 shp memory
 shp obligations
 shp analyze --shape-files fixtures/pass/append_only_append/audit.shape src/audit/purge.ts
@@ -168,7 +169,9 @@ Useful commands:
 - `shp check --changed-files changed.txt`: run semantic checks, coverage, and bindings together.
 - `shp fmt --check`: verify canonical formatting.
 - `shp explain AuditEvent`: show derived facts and incident relations for a symbol.
-- `shp graph [SYMBOL] [--kind KIND]`: with a SYMBOL, print the hyperedges incident to that symbol; without a SYMBOL, print the whole hypergraph grouped by kind. Use `shp graph --stats [--kind KIND]` for aggregate vertex, hyperedge, and incidence counts.
+- `shp graph all [--kind KIND]`: print the whole hypergraph grouped by kind.
+- `shp graph show SYMBOL [--kind KIND]`: print the hyperedges incident to a component or resource.
+- `shp graph stats [--kind KIND]`: print aggregate vertex, hyperedge, and incidence counts.
 - `shp memory`: list rationale and memory entries that protect design context.
 - `shp obligations`: list open design-memory obligations such as missing rationale or reevaluation.
 - `shp analyze --shape-files fixtures/pass/append_only_append/audit.shape src/file.ts`: compare obvious source hints against declared effects.

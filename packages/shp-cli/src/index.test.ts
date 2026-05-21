@@ -27,8 +27,8 @@ describe("shp CLI", () => {
 
     expect(result.exitCode).toBe(2);
     expect(result.stderr).toContain("--not-a-real-option");
-    expect(result.stderr).toContain("Usage:");
-    expect(result.stderr).not.toContain("parseArgs");
+    expect(result.stderr).toContain("No flag registered");
+    expect(result.stderr).not.toContain("ArgumentScannerError");
     expect(result.stdout).toBe("");
   });
 
@@ -172,8 +172,47 @@ describe("shp CLI", () => {
     );
 
     expect(result.exitCode).toBe(0);
-    expect(result.stdout).toContain("Usage:");
+    expect(result.stdout).toContain("USAGE");
+    expect(result.stdout).toContain("COMMANDS");
+    expect(result.stdout).toContain("--version");
     expect(result.stderr).toBe("");
+  });
+
+  test("prints command help", async () => {
+    const result = await runCli(["check", "--help"]);
+
+    expect(result.exitCode).toBe(0);
+    expect(result.stdout).toContain("USAGE");
+    expect(result.stdout).toContain("--changed-files");
+    expect(result.stdout).toContain("Run semantic checks");
+    expect(result.stderr).toBe("");
+  });
+
+  test("prints the CLI version", async () => {
+    const result = await runCli(["--version"]);
+
+    expect(result.exitCode).toBe(0);
+    expect(result.stdout.trim()).toBe("0.0.0");
+    expect(result.stderr).toBe("");
+  });
+
+  test("reports unknown commands without a stack trace", async () => {
+    const result = await runCli(["chek"]);
+
+    expect(result.exitCode).toBe(2);
+    expect(result.stderr).toContain("No command registered");
+    expect(result.stderr).toContain("check");
+    expect(result.stderr).not.toContain("buildRouteScanner");
+    expect(result.stdout).toBe("");
+  });
+
+  test("reports missing required positionals as usage errors", async () => {
+    const result = await runCli(["explain"]);
+
+    expect(result.exitCode).toBe(2);
+    expect(result.stderr).toContain("Expected at least 1 argument");
+    expect(result.stderr).toContain("args");
+    expect(result.stdout).toBe("");
   });
 
   test("prints the whole hypergraph", async () => {
@@ -184,6 +223,15 @@ describe("shp CLI", () => {
     expect(result.stdout).toContain("coordinated_call AuditWritePath");
     expect(result.stdout).toContain("calls GatewayCallsAudit");
     expect(result.stderr).toBe("");
+  });
+
+  test("prints the whole hypergraph with the explicit all subcommand", async () => {
+    const legacy = await runCli(["graph", "fixtures/pass/hypercycle_acyclic/deps.shape"]);
+    const explicit = await runCli(["graph", "all", "fixtures/pass/hypercycle_acyclic/deps.shape"]);
+
+    expect(explicit.exitCode).toBe(0);
+    expect(explicit.stdout).toBe(legacy.stdout);
+    expect(explicit.stderr).toBe("");
   });
 
   test("reports missing graph files without a stack trace", async () => {
@@ -207,6 +255,23 @@ describe("shp CLI", () => {
     expect(result.stdout).toContain("Hypergraph stats");
     expect(result.stdout).toContain("hyperedges: 2");
     expect(result.stderr).toBe("");
+  });
+
+  test("prints hypergraph stats with the explicit stats subcommand", async () => {
+    const legacy = await runCli([
+      "graph",
+      "--stats",
+      "fixtures/pass/hypercycle_acyclic/deps.shape"
+    ]);
+    const explicit = await runCli([
+      "graph",
+      "stats",
+      "fixtures/pass/hypercycle_acyclic/deps.shape"
+    ]);
+
+    expect(explicit.exitCode).toBe(0);
+    expect(explicit.stdout).toBe(legacy.stdout);
+    expect(explicit.stderr).toBe("");
   });
 
   test("rejects a symbol with hypergraph stats", async () => {
@@ -236,6 +301,24 @@ describe("shp CLI", () => {
     expect(result.stderr).toBe("");
   });
 
+  test("prints focused hypergraph incidence with the explicit show subcommand", async () => {
+    const legacy = await runCli([
+      "graph",
+      "Gateway",
+      "fixtures/pass/hypercycle_acyclic/deps.shape"
+    ]);
+    const explicit = await runCli([
+      "graph",
+      "show",
+      "Gateway",
+      "fixtures/pass/hypercycle_acyclic/deps.shape"
+    ]);
+
+    expect(explicit.exitCode).toBe(0);
+    expect(explicit.stdout).toBe(legacy.stdout);
+    expect(explicit.stderr).toBe("");
+  });
+
   test("filters focused hypergraph incidence by relation kind", async () => {
     const result = await runCli([
       "graph",
@@ -249,6 +332,36 @@ describe("shp CLI", () => {
     expect(result.stdout).toContain("Gateway (component)");
     expect(result.stdout).toContain("calls GatewayCallsAudit");
     expect(result.stdout).not.toContain("coordinated_call AuditWritePath");
+    expect(result.stderr).toBe("");
+  });
+
+  test("filters whole hypergraph output by relation kind with the explicit all subcommand", async () => {
+    const result = await runCli([
+      "graph",
+      "all",
+      "--kind",
+      "calls",
+      "fixtures/pass/hypercycle_acyclic/deps.shape"
+    ]);
+
+    expect(result.exitCode).toBe(0);
+    expect(result.stdout).toContain("calls GatewayCallsAudit");
+    expect(result.stdout).not.toContain("coordinated_call AuditWritePath");
+    expect(result.stderr).toBe("");
+  });
+
+  test("filters hypergraph stats by relation kind with the explicit stats subcommand", async () => {
+    const result = await runCli([
+      "graph",
+      "stats",
+      "--kind",
+      "calls",
+      "fixtures/pass/hypercycle_acyclic/deps.shape"
+    ]);
+
+    expect(result.exitCode).toBe(0);
+    expect(result.stdout).toContain("filter: kind=calls");
+    expect(result.stdout).toContain("calls: 1");
     expect(result.stderr).toBe("");
   });
 });

@@ -141,20 +141,60 @@ component ShpCli {
   grants Read<FormattedShape>
   grants Read<ShapeSource>
   fn defaultShapeFiles : RefactorSensitive
-    source ts("packages/shp-cli/src/index.ts#defaultShapeFiles")
+    source ts("packages/shp-cli/src/shape-files.ts#defaultShapeFiles")
     effects complete {
       Read<ShapeSource>
-        evidence ts("packages/shp-cli/src/index.ts")
+        evidence ts("packages/shp-cli/src/shape-files.ts")
     }
   fn main : ProtectedCheckOrder
     source ts("packages/shp-cli/src/index.ts#main")
     effects complete {
       Read<ChangedFileList>
-        evidence ts("packages/shp-cli/src/index.ts")
+        evidence ts("packages/shp-cli/src/commands/check/impl.ts")
+      Read<ChangedFileList>
+        evidence ts("packages/shp-cli/src/commands/coverage/impl.ts")
+      Read<ChangedFileList>
+        evidence ts("packages/shp-cli/src/commands/author/impl.ts")
       Read<DiagnosticText>
-        evidence ts("packages/shp-cli/src/index.ts")
+        evidence ts("packages/shp-cli/src/commands/analyze/command.ts")
+      Read<DiagnosticText>
+        evidence ts("packages/shp-cli/src/commands/analyze/impl.ts")
+      Read<DiagnosticText>
+        evidence ts("packages/shp-cli/src/commands/author/command.ts")
+      Read<DiagnosticText>
+        evidence ts("packages/shp-cli/src/commands/check/command.ts")
+      Read<DiagnosticText>
+        evidence ts("packages/shp-cli/src/commands/coverage/command.ts")
+      Read<DiagnosticText>
+        evidence ts("packages/shp-cli/src/commands/explain/command.ts")
+      Read<DiagnosticText>
+        evidence ts("packages/shp-cli/src/commands/explain/impl.ts")
+      Read<DiagnosticText>
+        evidence ts("packages/shp-cli/src/commands/fmt/command.ts")
+      Read<DiagnosticText>
+        evidence ts("packages/shp-cli/src/commands/graph/command.ts")
+      Read<DiagnosticText>
+        evidence ts("packages/shp-cli/src/commands/graph/impl.ts")
+      Read<DiagnosticText>
+        evidence ts("packages/shp-cli/src/commands/memory/command.ts")
+      Read<DiagnosticText>
+        evidence ts("packages/shp-cli/src/commands/memory/impl.ts")
+      Read<DiagnosticText>
+        evidence ts("packages/shp-cli/src/commands/obligations/command.ts")
+      Read<DiagnosticText>
+        evidence ts("packages/shp-cli/src/commands/obligations/impl.ts")
+      Read<DiagnosticText>
+        evidence ts("packages/shp-cli/src/context.ts")
+      Read<DiagnosticText>
+        evidence ts("packages/shp-cli/src/io.ts")
+      Read<DiagnosticText>
+        evidence ts("packages/shp-cli/src/parameters.ts")
+      Read<DiagnosticText>
+        evidence ts("packages/shp-cli/src/app.ts")
+      Read<DiagnosticText>
+        evidence ts("packages/shp-cli/src/errors.ts")
       Read<FormattedShape>
-        evidence ts("packages/shp-cli/src/index.ts")
+        evidence ts("packages/shp-cli/src/commands/fmt/impl.ts")
     }
 }
 

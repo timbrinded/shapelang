@@ -53,26 +53,20 @@ deterministic checker accepts or rejects those claims.
   coverage/binding checks.
 - `action.yml`: GitHub composite action that installs a released `shp` binary.
 
+## Research Workflow
+
+- Put raw research artifacts under `.research/`, including notes, scraped outputs,
+  comparison tables, JSON captures, PDFs, and screenshots.
+- Treat `.research/` as local working context, not product source. Do not make
+  implementation, tests, docs, release assets, or Shape CI depend on files there.
+- When research drives a decision, promote the durable conclusion into tracked
+  docs, specs, code comments, Shape memory or reevaluations, or PR text. Leave the
+  raw material in `.research/`.
+
 ## Toolchain
 
 Use Bun for this repo. The root `package.json` defines the workspace and scripts;
 there is a `bun.lock` lockfile.
-
-Important scripts:
-
-```bash
-bun install --frozen-lockfile
-bun run langium:generate
-bun shp check
-bun run changed-files
-bun run shape:ci
-bun test
-bun run typecheck
-bun run format:check
-bun run lint
-bun run docs:check
-bun run build:release
-```
 
 The TypeScript project is strict (`strict`, `noUncheckedIndexedAccess`,
 `noImplicitOverride`). Do not typecast to `any` to silence issues.

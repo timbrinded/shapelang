@@ -8,6 +8,7 @@
   },
   "type": "module",
   "dependencies": {
-    "@shape/shp-checker": "workspace:*"
+    "@shape/shp-checker": "workspace:*",
+    "@stricli/core": "^1.2.7"
   }
 }
