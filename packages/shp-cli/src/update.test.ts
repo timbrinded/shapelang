@@ -128,6 +128,7 @@ describe("shp update helpers", () => {
         stdout: binaryPath === "/opt/bin/shp" ? "0.3.0\n" : "0.4.0\n",
         stderr: ""
       }),
+      runHelp: async () => validShpHelp(),
       replaceBinary: async (sourcePath: string, targetPath: string, platform: ReleasePlatform) => {
         replaced.push(`${sourcePath}:${targetPath}:${platform.assetName}`);
         return { pending: false };
@@ -200,6 +201,7 @@ describe("shp update helpers", () => {
           stderr: ""
         };
       },
+      runHelp: async () => validShpHelp(),
       replaceBinary: async (sourcePath: string, targetPath: string, platform: ReleasePlatform) => {
         replaced.push(`${sourcePath}:${targetPath}:${platform.assetName}`);
         return { pending: false };
@@ -236,6 +238,7 @@ describe("shp update helpers", () => {
       sha256File: async () => "",
       extractTarGz: async () => {},
       runVersion: async () => ({ exitCode: 0, stdout: "other-tool 1.2.3\n", stderr: "" }),
+      runHelp: async () => ({ exitCode: 0, stdout: "usage: other-tool\n", stderr: "" }),
       replaceBinary: async () => ({ pending: false })
     };
 
@@ -256,9 +259,44 @@ describe("shp update helpers", () => {
       message = error instanceof Error ? error.message : String(error);
     }
 
-    expect(message).toContain(
-      "existing --path target /tmp/not-shp did not report a valid shp version"
-    );
+    expect(message).toContain("existing --path target /tmp/not-shp did not identify as shp");
+  });
+
+  test("rejects an existing explicit target that only reports a bare semver", async () => {
+    const services: UpdateServices = {
+      fetchJson: async () => {
+        throw new Error("release fetch should not run");
+      },
+      downloadBytes: async () => new Uint8Array(),
+      makeTempDir: async () => "/tmp/shp-update-test",
+      removeDir: async () => {},
+      pathExists: async (path: string) => path === "/tmp/semver-tool",
+      writeFile: async () => {},
+      sha256File: async () => "",
+      extractTarGz: async () => {},
+      runVersion: async () => ({ exitCode: 0, stdout: "1.2.3\n", stderr: "" }),
+      runHelp: async () => ({ exitCode: 0, stdout: "usage: semver-tool\n", stderr: "" }),
+      replaceBinary: async () => ({ pending: false })
+    };
+
+    let message = "";
+    try {
+      await runUpdate(
+        {
+          currentVersion: "0.3.0",
+          dryRun: false,
+          targetPath: "/tmp/semver-tool",
+          defaultTargetPath: "/usr/bin/shp",
+          processPlatform: "linux",
+          processArch: "x64"
+        },
+        services
+      );
+    } catch (error) {
+      message = error instanceof Error ? error.message : String(error);
+    }
+
+    expect(message).toContain("existing --path target /tmp/semver-tool did not identify as shp");
   });
 
   test("dry run resolves the release without downloading", async () => {
@@ -288,6 +326,7 @@ describe("shp update helpers", () => {
       sha256File: async () => "",
       extractTarGz: async () => {},
       runVersion: async () => ({ exitCode: 0, stdout: "", stderr: "" }),
+      runHelp: async () => ({ exitCode: 0, stdout: "", stderr: "" }),
       replaceBinary: async () => ({ pending: false })
     };
 
@@ -321,3 +360,16 @@ describe("shp update helpers", () => {
     );
   });
 });
+
+function validShpHelp() {
+  return {
+    exitCode: 0,
+    stdout: [
+      "USAGE",
+      "  shp update [--version VERSION] [--dry-run] [--path PATH]",
+      "When no files are provided, Shape file commands scan shape/**/*.shape by default.",
+      ""
+    ].join("\n"),
+    stderr: ""
+  };
+}

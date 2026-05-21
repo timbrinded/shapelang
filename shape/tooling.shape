@@ -435,7 +435,7 @@ reevaluation CliUpdateDispatchRechecked {
 reevaluation CliUpdateExplicitTargetRechecked {
   satisfies memory UpdateBinaryIntegrity
   outcome Confirmed
-  summary "Existing explicit update targets must report a valid shp version before replacement, while release checksum and downloaded-version verification still run."
+  summary "Existing explicit update targets must identify as the Shape CLI and report a valid version before replacement."
   reviewer ShapeMaintainers
   decided_on "2026-05-21"
   evidence test("packages/shp-cli/src/update.test.ts")

@@ -26,7 +26,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - uses: timbrinded/shapelang@v0.1.0
+      - uses: timbrinded/shapelang@v0.3.0
       - run: shp check
       - run: shp fmt --check
 ```
@@ -130,7 +130,7 @@ If you do not want to use the setup action, use the release installer directly:
 ```yaml
 - name: Install shp
   run: |
-    curl --proto '=https' --tlsv1.2 -LsSf https://github.com/timbrinded/shapelang/releases/download/v0.1.0/install.sh | sh
+    curl --proto '=https' --tlsv1.2 -LsSf https://github.com/timbrinded/shapelang/releases/download/v0.3.0/install.sh | sh
 ```
 
 Keep CI installs pinned to an explicit release. `shp update` is intended for local developer binaries and should not replace pinned CI installation.

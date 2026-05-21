@@ -101,15 +101,15 @@ export const graphCommand = buildRouteMap({
     all: graphAllCommand,
     show: graphShowCommand,
     stats: graphStatsCommand,
-    legacy: legacyGraphCommand
+    $legacy: legacyGraphCommand
   },
-  defaultCommand: "legacy",
+  defaultCommand: "$legacy",
   docs: {
     brief: "Inspect Shape relation hypergraphs.",
     fullDescription:
       "`graph all`, `graph show`, and `graph stats` are the preferred explicit forms. Legacy `shp graph ...` invocations remain supported, except legacy symbols named all, show, or stats must use `graph show SYMBOL`.",
     hideRoute: {
-      legacy: true
+      $legacy: true
     }
   }
 });

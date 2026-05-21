@@ -228,7 +228,20 @@ describe("shp CLI", () => {
     const tempDir = await mkdtemp(join(tmpdir(), "shp-cli-test-"));
     const fakeShp = join(tempDir, "shp");
     try {
-      await writeFile(fakeShp, `#!/usr/bin/env sh\necho "${manifest.version}"\n`);
+      await writeFile(
+        fakeShp,
+        [
+          "#!/usr/bin/env sh",
+          'if [ "$1" = "--help" ]; then',
+          "  echo 'USAGE'",
+          "  echo '  shp update [--version VERSION] [--dry-run] [--path PATH]'",
+          "  echo 'When no files are provided, Shape file commands scan shape/**/*.shape by default.'",
+          "else",
+          `  echo "${manifest.version}"`,
+          "fi",
+          ""
+        ].join("\n")
+      );
       await chmod(fakeShp, 0o755);
 
       const result = await runCli([
@@ -283,6 +296,27 @@ describe("shp CLI", () => {
     expect(result.stdout).toContain("symbols named all, show, or stats");
     expect(result.stdout).toContain("graph show SYMBOL");
     expect(result.stderr).toBe("");
+  });
+
+  test("preserves legacy graph invocation for a symbol named legacy", async () => {
+    const tempDir = await mkdtemp(join(tmpdir(), "shp-cli-test-"));
+    const shapeFile = join(tempDir, "legacy-symbol.shape");
+    try {
+      await writeFile(
+        shapeFile,
+        ["module legacy_symbol", "", "component legacy {", "}", ""].join("\n")
+      );
+
+      const result = await runCli(["graph", "legacy", shapeFile]);
+
+      expect(result.exitCode).toBe(0);
+      expect(result.stdout).toContain("legacy (component)");
+      expect(result.stdout).toContain("(no incident relations)");
+      expect(result.stdout).not.toContain("Hypergraph");
+      expect(result.stderr).toBe("");
+    } finally {
+      await rm(tempDir, { recursive: true, force: true });
+    }
   });
 
   test("prints the whole hypergraph", async () => {

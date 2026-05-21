@@ -22,13 +22,13 @@ The checker does not prove the application implementation is correct. It checks 
 Install the released `shp` typechecker binary. Pin the version in scripts and CI so checks are reproducible.
 
 ```bash
-curl --proto '=https' --tlsv1.2 -LsSf https://github.com/timbrinded/shapelang/releases/download/v0.1.0/install.sh | sh
+curl --proto '=https' --tlsv1.2 -LsSf https://github.com/timbrinded/shapelang/releases/download/v0.3.0/install.sh | sh
 ```
 
 On Windows:
 
 ```powershell
-irm https://github.com/timbrinded/shapelang/releases/download/v0.1.0/install.ps1 | iex
+irm https://github.com/timbrinded/shapelang/releases/download/v0.3.0/install.ps1 | iex
 ```
 
 Run the checker from a repo that contains Shape files:
@@ -49,7 +49,7 @@ shp update --dry-run
 ```
 
 `shp update --path PATH` can replace a custom install path, but an existing target
-must already identify itself as `shp` through `--version`.
+must already identify itself as the Shape CLI and report a valid version.
 
 `shp check` scans these paths when no files are provided:
 
@@ -62,7 +62,7 @@ In GitHub Actions, install the same pinned release with the setup action:
 ```yaml
 steps:
   - uses: actions/checkout@v4
-  - uses: timbrinded/shapelang@v0.1.0
+  - uses: timbrinded/shapelang@v0.3.0
   - run: shp check
 ```
 
@@ -264,8 +264,8 @@ CI is wired in `.github/workflows/shape.yml` for formatting, tests, typechecking
 Releases are built from version tags:
 
 ```bash
-git tag v0.1.0
-git push origin v0.1.0
+git tag v0.3.0
+git push origin v0.3.0
 ```
 
 The release workflow validates the repo, cross-compiles `shp` for Linux, macOS, and Windows, publishes tarballs as GitHub release assets, and includes SHA-256 checksums.
@@ -275,7 +275,7 @@ Other GitHub Actions workflows can install `shp` with the setup action shown in 
 ```yaml
 - uses: timbrinded/shapelang@master
   with:
-    version: v0.1.0
+    version: v0.3.0
 ```
 
 ## License

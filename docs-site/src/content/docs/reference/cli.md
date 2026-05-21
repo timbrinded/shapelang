@@ -146,6 +146,6 @@ guarded changes:
 
 `shp update` is for local developer installs of the released single binary. It checks the current version, resolves a GitHub release, downloads the matching platform archive, verifies it with `checksums.txt`, and replaces the selected executable path.
 
-Use `shp update --dry-run` to see the selected release, asset, and binary path without downloading. Use `shp update --version v0.3.0` to target a specific newer release. Use `--path PATH` when testing from source or when replacing a custom installed binary; if that path already exists, it must report a valid `shp --version`.
+Use `shp update --dry-run` to see the selected release, asset, and binary path without downloading. Use `shp update --version v0.3.0` to target a specific newer release. Use `--path PATH` when testing from source or when replacing a custom installed binary; if that path already exists, it must identify as the Shape CLI and report a valid version.
 
 CI should continue installing pinned releases through the setup action or installer script instead of calling `shp update`.

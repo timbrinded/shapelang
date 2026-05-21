@@ -55,6 +55,7 @@ export type UpdateServices = {
   readonly sha256File: (path: string) => Promise<string>;
   readonly extractTarGz: (archivePath: string, destinationDir: string) => Promise<void>;
   readonly runVersion: (binaryPath: string) => Promise<CommandResult>;
+  readonly runHelp: (binaryPath: string) => Promise<CommandResult>;
   readonly replaceBinary: (
     sourcePath: string,
     targetPath: string,
@@ -313,6 +314,11 @@ async function resolveInstalledVersion(
     );
   }
 
+  const helpResult = await services.runHelp(targetPath);
+  if (helpResult.exitCode !== 0 || !hasShpHelpIdentity(helpResult.stdout)) {
+    throw usageError(`existing --path target ${targetPath} did not identify as shp`);
+  }
+
   try {
     return normalizeReleaseVersion(versionResult.stdout.trim());
   } catch {
@@ -360,6 +366,14 @@ function formatCommandFailure(result: CommandResult): string {
   return detail ? `: ${detail}` : "";
 }
 
+function hasShpHelpIdentity(output: string): boolean {
+  return (
+    output.includes("USAGE") &&
+    output.includes("shp update") &&
+    output.includes("Shape file commands scan shape/**/*.shape")
+  );
+}
+
 function record(value: unknown): Record<string, unknown> | undefined {
   return typeof value === "object" && value !== null
     ? (value as Record<string, unknown>)
@@ -405,6 +419,7 @@ const defaultUpdateServices: UpdateServices = {
   sha256File,
   extractTarGz,
   runVersion,
+  runHelp,
   replaceBinary
 };
 
@@ -439,6 +454,10 @@ async function extractTarGz(archivePath: string, destinationDir: string): Promis
 
 async function runVersion(binaryPath: string): Promise<CommandResult> {
   return runCommand([binaryPath, "--version"]);
+}
+
+async function runHelp(binaryPath: string): Promise<CommandResult> {
+  return runCommand([binaryPath, "--help"]);
 }
 
 async function runCommand(args: readonly string[]): Promise<CommandResult> {
