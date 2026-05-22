@@ -72,6 +72,8 @@ shp obligations
 shp author --changed-files changed.txt --component AuditStore
 shp analyze --shape-files fixtures/pass/append_only_append/audit.shape src/audit/purge.ts
 shp ast source --language rust --module generated.audit src/audit/store.rs
+shp ast source --language rust --out-dir shape/generated/ast src/audit/store.rs
+shp ast source --language rust --out-dir shape/generated/ast --check src/audit/store.rs
 shp ast json --module generated.audit --raw-out ast.raw.shape ast.json
 shp update --dry-run
 ```
@@ -80,7 +82,9 @@ shp update --dry-run
 
 `shp ast` is a drafting tool. It turns syntax evidence into conservative Shape, not final architecture truth.
 
-By default, `shp ast source` parses files with the platform Tree-sitter native binding and prints the semantic draft: stable files, modules, types, functions, high-confidence calls, compact AST anchors, anchor fingerprints, and unresolved uncertainty. Generated functions use `effects unknown`, so the draft can parse successfully while still failing `shp check` until a reviewer replaces uncertainty with reviewed effects.
+By default, `shp ast source` parses files with the platform Tree-sitter native binding and prints the semantic draft: stable files, modules, types, functions, high-confidence calls, compact AST anchors, anchor fingerprints, candidate effect evidence, and unresolved uncertainty. Generated functions use `effects unknown`.
+
+Use `--out-dir shape/generated/ast` to write checked generated AST context as deterministic files plus a manifest. These generated files use `shape.generated.ast...` modules and are allowed to keep `effects unknown`, because they are candidate evidence rather than reviewed architecture truth. Use `--check` with `--out-dir` in CI to fail when the checked-in generated AST files are stale.
 
 Use `--include-ast-layer` to include raw AST resources and `ast_child` relations in stdout. Use `--raw-out PATH` to keep the raw trace in a sidecar Shape file while stdout stays focused on the semantic draft. These flags are mutually exclusive.
 

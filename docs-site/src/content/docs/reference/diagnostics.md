@@ -138,6 +138,8 @@ Add the correct grant only if the component is actually allowed to contain that 
 
 Cause: a function declares `effects unknown` where the project requires explicit effect summaries.
 
+Generated AST candidate files under `shape/generated/ast` are the exception: they may keep `effects unknown` because their `effect candidate` declarations are evidence hints, not reviewed effect summaries.
+
 ```shape
 module audit
 

@@ -2,6 +2,8 @@ module shape.checker
 
 import shape.language
 
+import shape.tooling
+
 resource ChangedFileList
 
 resource EffectiveModel
@@ -11,6 +13,8 @@ resource EffectiveShapeModel
 resource FactSet
 
 resource HumanReadableDiagnostics
+
+resource ModuleNamespace
 
 resource NormalizedShapeReference
 
@@ -94,7 +98,10 @@ component ShapeDiagnostics {
 component ShapeModelLowerer {
   owns EffectiveModel
   owns FactSet
+  owns ModuleNamespace
   grants Append<FactSet>
+  grants Append<ModuleNamespace>
+  grants Read<GeneratedCandidateEffect>
   grants Read<NormalizedShapeReference>
   grants Read<ParsedModule>
   grants Read<PreludeMetadata>
@@ -103,6 +110,10 @@ component ShapeModelLowerer {
     source ts("packages/shp-checker/src/checker.ts#lowerShapeModules")
     effects complete {
       Append<FactSet>
+        evidence ts("packages/shp-checker/src/checker.ts")
+      Append<ModuleNamespace>
+        evidence ts("packages/shp-checker/src/checker.ts")
+      Read<GeneratedCandidateEffect>
         evidence ts("packages/shp-checker/src/checker.ts")
       Read<NormalizedShapeReference>
         evidence ts("packages/shp-checker/src/checker.ts")
@@ -389,7 +400,7 @@ memory LoweringBeforeRules : CheckOrderRationale<fn ShapeModelLowerer.lowerShape
   applies_to fn ShapeModelLowerer.lowerShapeModules
   status Explained
   confidence High
-  summary "Change declarations must be applied to the final component function registry before derived facts are emitted."
+  summary "Module-scoped declarations, generated candidate evidence, and change declarations must be resolved into the final function registry before derived facts are emitted."
   owner ShapeMaintainers
   protects shape EffectiveModelOrder
   guards on_change require ReEvaluation<Self>
@@ -482,7 +493,7 @@ reevaluation HypercycleTraversalRechecked {
 reevaluation LoweringFunctionRegistryRechecked {
   satisfies memory LoweringBeforeRules
   outcome Confirmed
-  summary "Function add, modify, and remove changes update component.functions before derived facts and coverage paths are emitted."
+  summary "Checker tests cover module-scoped import resolution, generated candidate effect facts, trusted generated AST context, and function registry rebuilds before derived facts and coverage paths are emitted."
   reviewer ShapeMaintainers
   decided_on "2026-05-21"
   evidence test("packages/shp-checker/src/checker.test.ts")

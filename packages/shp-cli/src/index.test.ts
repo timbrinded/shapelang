@@ -220,6 +220,107 @@ describe("shp CLI", () => {
     expect(result.stderr).toBe("");
   });
 
+  test("generates source candidate effects from AST anchors", async () => {
+    const result = await runCli([
+      "ast",
+      "source",
+      "--language",
+      "typescript",
+      "--module",
+      "generated.audit",
+      "fixtures/source/audit_store.ts"
+    ]);
+
+    expect(result.exitCode).toBe(0);
+    expect(result.stdout).toContain("resource AuditEvent : GeneratedCandidate");
+    expect(result.stdout).toContain("effect candidate AppendEventAppendAuditEventCandidateEffect");
+    expect(result.stdout).toContain("  fn AuditStore.appendEvent");
+    expect(result.stdout).toContain("  effect Append<AuditEvent>");
+    expect(result.stdout).toContain("pin AuditStoreAppendEventAstAnchor fingerprint");
+    expect(result.stdout).not.toContain("ConstructorAppendAuditEventCandidateEffect");
+    expect(result.stderr).toBe("");
+  });
+
+  test("writes and freshness-checks generated AST source directory output", async () => {
+    const tempDir = await mkdtemp(join(tmpdir(), "shp-cli-test-"));
+    const outDir = join(tempDir, "shape/generated/ast");
+    try {
+      const writeResult = await runCli([
+        "ast",
+        "source",
+        "--language",
+        "typescript",
+        "--out-dir",
+        outDir,
+        "fixtures/source/audit_purge.ts"
+      ]);
+
+      expect(writeResult.exitCode).toBe(0);
+      expect(writeResult.stdout).toContain("Wrote 1 generated AST Shape file");
+
+      const generated = await readFile(join(outDir, "fixtures/source/audit_purge.shape"), "utf8");
+      expect(generated).toContain(
+        "module shape.generated.ast.fixtures.generated_source.audit_purge"
+      );
+      expect(generated).toContain("GeneratedAstAnchor");
+      expect(generated).toContain("kind generated_from");
+
+      const manifest = await readFile(join(outDir, "manifest.json"), "utf8");
+      expect(manifest).toContain("shape.generated.ast.fixtures.generated_source.audit_purge");
+
+      const checkResult = await runCli([
+        "ast",
+        "source",
+        "--language",
+        "typescript",
+        "--out-dir",
+        outDir,
+        "--check",
+        "fixtures/source/audit_purge.ts"
+      ]);
+      expect(checkResult.exitCode).toBe(0);
+      expect(checkResult.stdout).toContain("up to date");
+    } finally {
+      await rm(tempDir, { recursive: true, force: true });
+    }
+  });
+
+  test("rejects AST source freshness check without generated output directory", async () => {
+    const result = await runCli([
+      "ast",
+      "source",
+      "--language",
+      "typescript",
+      "--check",
+      "fixtures/source/audit_purge.ts"
+    ]);
+
+    expect(result.exitCode).toBe(2);
+    expect(result.stderr).toContain("--check requires --out-dir");
+  });
+
+  test("rejects generated AST directory output outside the generated AST module namespace", async () => {
+    const tempDir = await mkdtemp(join(tmpdir(), "shp-cli-test-"));
+    try {
+      const result = await runCli([
+        "ast",
+        "source",
+        "--language",
+        "typescript",
+        "--out-dir",
+        join(tempDir, "shape/generated/ast"),
+        "--module",
+        "shape.generated.astcustom",
+        "fixtures/source/audit_purge.ts"
+      ]);
+
+      expect(result.exitCode).toBe(2);
+      expect(result.stderr).toContain("shape.generated.ast or a child module");
+    } finally {
+      await rm(tempDir, { recursive: true, force: true });
+    }
+  });
+
   test("rejects conflicting AST source raw output flags", async () => {
     const tempDir = await mkdtemp(join(tmpdir(), "shp-cli-test-"));
     try {

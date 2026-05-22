@@ -3,6 +3,7 @@ import type {
   AddFunctionChange,
   AttestationDecl,
   BindingDecl,
+  CandidateEffectDecl,
   ChangeDecl,
   ComponentDecl,
   DescriptionDecl,
@@ -39,6 +40,11 @@ import {
   isBindingDecl,
   isBindingRequireChangedDecl,
   isBindingWhenChangedDecl,
+  isCandidateEffectAnchorDecl,
+  isCandidateEffectConfidenceDecl,
+  isCandidateEffectDecl,
+  isCandidateEffectFunctionDecl,
+  isCandidateEffectTermDecl,
   isChangeDecl,
   isCompleteEffects,
   isComponentDecl,
@@ -155,6 +161,9 @@ function formatDeclaration(declaration: ShapeModule["declarations"][number]): st
   }
   if (isRelationDecl(declaration)) {
     return formatRelation(declaration);
+  }
+  if (isCandidateEffectDecl(declaration)) {
+    return formatCandidateEffect(declaration);
   }
   if (isImplementationDecl(declaration)) {
     return formatImplementation(declaration);
@@ -300,6 +309,35 @@ function formatRelation(relation: RelationDecl): string {
     summaryLine
   ].filter((line) => line.length > 0);
   return block(`relation ${relation.name}`, lines);
+}
+
+function formatCandidateEffect(candidateEffect: CandidateEffectDecl): string {
+  let functionLine = "";
+  let effectLine = "";
+  let sourceLine = "";
+  let confidenceLine = "";
+  let anchorLine = "";
+
+  for (const member of candidateEffect.members) {
+    if (isCandidateEffectFunctionDecl(member)) {
+      functionLine = `fn ${member.function}`;
+    } else if (isCandidateEffectTermDecl(member)) {
+      effectLine = `effect ${formatTerm(member.term)}`;
+    } else if (isCandidateEffectConfidenceDecl(member)) {
+      confidenceLine = `confidence ${member.value}`;
+    } else if (isCandidateEffectAnchorDecl(member)) {
+      anchorLine = `pin ${member.target.name} fingerprint ${member.provider}(${quote(member.value)})`;
+    } else {
+      sourceLine = `source ${formatSourceRef(member.ref)}`;
+    }
+  }
+
+  return block(
+    `effect candidate ${candidateEffect.name}`,
+    [functionLine, effectLine, sourceLine, confidenceLine, anchorLine].filter(
+      (line) => line.length > 0
+    )
+  );
 }
 
 function formatFingerprint(fingerprint: FingerprintDecl): string {
@@ -732,29 +770,32 @@ function declarationSortKey(declaration: ShapeModule["declarations"][number]): s
   if (isRelationDecl(declaration)) {
     return `3:${declaration.name}`;
   }
-  if (isImplementationDecl(declaration)) {
+  if (isCandidateEffectDecl(declaration)) {
     return `4:${declaration.name}`;
   }
-  if (isBindingDecl(declaration)) {
+  if (isImplementationDecl(declaration)) {
     return `5:${declaration.name}`;
   }
-  if (isRuleDecl(declaration)) {
+  if (isBindingDecl(declaration)) {
     return `6:${declaration.name}`;
   }
-  if (isRationaleDecl(declaration)) {
+  if (isRuleDecl(declaration)) {
     return `7:${declaration.name}`;
   }
-  if (isMemoryDecl(declaration)) {
+  if (isRationaleDecl(declaration)) {
     return `8:${declaration.name}`;
   }
-  if (isReevaluationDecl(declaration)) {
+  if (isMemoryDecl(declaration)) {
     return `9:${declaration.name}`;
   }
+  if (isReevaluationDecl(declaration)) {
+    return `A:${declaration.name}`;
+  }
   if (isAttestationDecl(declaration)) {
-    return `A:${declaration.kind}`;
+    return `B:${declaration.kind}`;
   }
   if (isChangeDecl(declaration)) {
-    return `B:${declaration.name}`;
+    return `C:${declaration.name}`;
   }
   return "Z:";
 }

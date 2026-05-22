@@ -25,6 +25,14 @@ const rawOutFlag = {
   placeholder: "PATH"
 };
 
+const outDirFlag = {
+  kind: "parsed" as const,
+  parse: (input: string) => input,
+  optional: true as const,
+  brief: "Write generated semantic AST Shape files under a directory.",
+  placeholder: "DIR"
+};
+
 export const astSourceCommand = buildCommand<AstSourceFlags, string[], CliContext>({
   loader: async () => (await import("./impl")).astSource,
   parameters: {
@@ -39,6 +47,12 @@ export const astSourceCommand = buildCommand<AstSourceFlags, string[], CliContex
       module: moduleFlag,
       includeAstLayer: includeAstLayerFlag,
       rawOut: rawOutFlag,
+      outDir: outDirFlag,
+      check: {
+        kind: "boolean",
+        optional: true,
+        brief: "With --out-dir, fail when generated files are not up to date."
+      },
       allowParseErrors: {
         kind: "boolean",
         optional: true,
@@ -51,7 +65,8 @@ export const astSourceCommand = buildCommand<AstSourceFlags, string[], CliContex
     brief: "Generate a conservative Shape draft from source files.",
     customUsage: [
       {
-        input: "[--language LANG] [--module NAME] [--include-ast-layer] [--raw-out PATH] files...",
+        input:
+          "[--language LANG] [--module NAME] [--include-ast-layer] [--raw-out PATH] [--out-dir DIR] files...",
         brief: "Parse source with Tree-sitter and print the semantic Shape draft."
       }
     ]

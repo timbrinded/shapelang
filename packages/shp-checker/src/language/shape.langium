@@ -6,7 +6,7 @@ entry ShapeModule:
     declarations+=Declaration*;
 
 Declaration:
-    ResourceDecl | TraitDecl | ComponentDecl | RelationDecl | ImplementationDecl | BindingDecl | ChangeDecl | AttestationDecl | RuleDecl | RationaleDecl | MemoryDecl | ReevaluationDecl;
+    ResourceDecl | TraitDecl | ComponentDecl | RelationDecl | CandidateEffectDecl | ImplementationDecl | BindingDecl | ChangeDecl | AttestationDecl | RuleDecl | RationaleDecl | MemoryDecl | ReevaluationDecl;
 
 ImportDecl:
     'import' path=QualifiedName;
@@ -101,6 +101,27 @@ RelationFingerprintExpectationDecl:
 RelationSummaryDecl:
     'summary' value=STRING;
 
+CandidateEffectDecl:
+    'effect' 'candidate' name=ID
+    '{'
+        members+=CandidateEffectMember*
+    '}';
+
+CandidateEffectMember:
+    CandidateEffectFunctionDecl | CandidateEffectTermDecl | SourceDecl | CandidateEffectConfidenceDecl | CandidateEffectAnchorDecl;
+
+CandidateEffectFunctionDecl:
+    'fn' function=QualifiedTargetName;
+
+CandidateEffectTermDecl:
+    'effect' term=EffectTerm;
+
+CandidateEffectConfidenceDecl:
+    'confidence' value=ID;
+
+CandidateEffectAnchorDecl:
+    'pin' target=TypeRef 'fingerprint' provider=QualifiedName '(' value=STRING ')';
+
 FunctionSummary:
     'fn' name=ID
         shapeTraits=ShapeTraitList?
@@ -158,7 +179,7 @@ EffectPattern:
     name=ID ('<' target=TypeRef '>')?;
 
 TypeRef:
-    name=ID;
+    name=QualifiedTargetName;
 
 ImplementationDecl:
     'implementation' name=ID
@@ -303,7 +324,7 @@ TargetKind returns string:
     'fn' | 'component' | 'resource' | 'implementation' | 'rule' | 'relation';
 
 QualifiedTargetName returns string:
-    ID ('.' ID)*;
+    ID ('.' ID)* ('::' ID ('.' ID)*)?;
 
 ContextTypeRef:
     name=ID '<' target=TargetRef '>';

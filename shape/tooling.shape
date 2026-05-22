@@ -24,7 +24,11 @@ resource FormattedShape
 
 resource GeneratedAstAnchor
 
+resource GeneratedAstManifest
+
 resource GeneratedAstTrace
+
+resource GeneratedCandidateEffect
 
 resource InstalledShpBinary
 
@@ -62,10 +66,12 @@ component ShapeAstGenerator {
   owns CodeSemanticGraph
   owns GeneratedAstAnchor
   owns GeneratedAstTrace
+  owns GeneratedCandidateEffect
   grants Append<AstAnchorFingerprint>
   grants Append<CodeSemanticGraph>
   grants Append<GeneratedAstAnchor>
   grants Append<GeneratedAstTrace>
+  grants Append<GeneratedCandidateEffect>
   grants Append<SemanticDiagnostics>
   grants Append<ShapeModelDraft>
   grants Read<CodeSemanticGraph>
@@ -77,6 +83,8 @@ component ShapeAstGenerator {
       Append<AstAnchorFingerprint>
         evidence ts("packages/shp-checker/src/ast-generation.ts")
       Append<CodeSemanticGraph>
+        evidence ts("packages/shp-checker/src/ast-generation.ts")
+      Append<GeneratedCandidateEffect>
         evidence ts("packages/shp-checker/src/ast-generation.ts")
       Append<SemanticDiagnostics>
         evidence ts("packages/shp-checker/src/ast-generation.ts")
@@ -94,6 +102,8 @@ component ShapeAstGenerator {
         evidence ts("packages/shp-checker/src/ast-generation.ts")
       Append<GeneratedAstTrace>
         evidence ts("packages/shp-checker/src/ast-generation.ts")
+      Append<GeneratedCandidateEffect>
+        evidence ts("packages/shp-checker/src/ast-generation.ts")
       Append<ShapeModelDraft>
         evidence ts("packages/shp-checker/src/ast-generation.ts")
       Read<SourceSyntaxTree>
@@ -107,6 +117,8 @@ component ShapeAstGenerator {
       Append<GeneratedAstAnchor>
         evidence ts("packages/shp-checker/src/ast-generation.ts")
       Append<GeneratedAstTrace>
+        evidence ts("packages/shp-checker/src/ast-generation.ts")
+      Append<GeneratedCandidateEffect>
         evidence ts("packages/shp-checker/src/ast-generation.ts")
       Append<ShapeModelDraft>
         evidence ts("packages/shp-checker/src/ast-generation.ts")
@@ -124,6 +136,8 @@ component ShapeAstGenerator {
         evidence ts("packages/shp-checker/src/ast-generation.ts")
       Append<GeneratedAstTrace>
         evidence ts("packages/shp-checker/src/ast-generation.ts")
+      Append<GeneratedCandidateEffect>
+        evidence ts("packages/shp-checker/src/ast-generation.ts")
       Append<ShapeModelDraft>
         evidence ts("packages/shp-checker/src/ast-generation.ts")
       Read<LanguageSource>
@@ -135,6 +149,8 @@ component ShapeAstGenerator {
       Append<AstAnchorFingerprint>
         evidence ts("packages/shp-checker/src/ast-generation.ts")
       Append<CodeSemanticGraph>
+        evidence ts("packages/shp-checker/src/ast-generation.ts")
+      Append<GeneratedCandidateEffect>
         evidence ts("packages/shp-checker/src/ast-generation.ts")
       Append<SemanticDiagnostics>
         evidence ts("packages/shp-checker/src/ast-generation.ts")
@@ -243,7 +259,9 @@ component ShapeFormatter {
 
 component ShpCli {
   grants Append<GeneratedAstAnchor>
+  grants Append<GeneratedAstManifest>
   grants Append<GeneratedAstTrace>
+  grants Append<GeneratedCandidateEffect>
   grants Append<ShapeModelDraft>
   grants Read<ChangedFileList>
   grants Read<DiagnosticText>
@@ -266,7 +284,11 @@ component ShpCli {
     effects complete {
       Append<GeneratedAstAnchor>
         evidence ts("packages/shp-cli/src/commands/ast/impl.ts")
+      Append<GeneratedAstManifest>
+        evidence ts("packages/shp-cli/src/commands/ast/impl.ts")
       Append<GeneratedAstTrace>
+        evidence ts("packages/shp-cli/src/commands/ast/impl.ts")
+      Append<GeneratedCandidateEffect>
         evidence ts("packages/shp-cli/src/commands/ast/impl.ts")
       Append<ShapeModelDraft>
         evidence ts("packages/shp-cli/src/commands/ast/impl.ts")
@@ -467,7 +489,7 @@ memory AstGenerationUnknownSafety : RefactorConstraint<fn ShapeAstGenerator.gene
   applies_to fn ShapeAstGenerator.generateShapeFromCodeSemanticGraph
   status Explained
   confidence High
-  summary "AST-derived architecture drafts must preserve uncertainty with effects unknown, include compact syntax anchors with semantic fingerprints, and keep raw syntax traces opt-in."
+  summary "AST-derived architecture drafts must preserve uncertainty with effects unknown, include compact syntax anchors with semantic fingerprints, emit candidate effect evidence only as review hints, and keep raw syntax traces opt-in."
   owner ShapeMaintainers
   protects shape GeneratedAstDraftSafety
   guards on_change require ReEvaluation<Self>
@@ -497,7 +519,7 @@ memory CliCommandDispatchOrder : CheckOrderRationale<fn ShpCli.main> {
   applies_to fn ShpCli.main
   status Explained
   confidence High
-  summary "CLI commands must dispatch to the same checker/formatter/helper semantics used by tests and reject ambiguous output modes before running command work."
+  summary "CLI commands must dispatch to the same checker/formatter/helper semantics used by tests, reject ambiguous output modes before running command work, and make generated AST directory checks explicit."
   owner ShapeMaintainers
   protects shape CommandDispatch
   guards on_change require ReEvaluation<Self>
@@ -536,7 +558,7 @@ memory UpdateBinaryIntegrity : RefactorConstraint<fn ShpCli.updateInstalledBinar
 reevaluation AstGenerationDraftSafetyRechecked {
   satisfies memory AstGenerationUnknownSafety
   outcome Confirmed
-  summary "AST generation tests cover semantic drafts that parse with compact fingerprinted AST anchors while keeping effects unknown as a review blocker and raw AST output opt-in."
+  summary "AST generation tests cover semantic drafts with compact fingerprinted AST anchors, checked candidate effect syntax, trusted generated unknown effects, and raw AST output still opt-in."
   reviewer ShapeMaintainers
   decided_on "2026-05-21"
   evidence test("packages/shp-checker/src/checker.test.ts")
@@ -563,7 +585,7 @@ reevaluation AuthorPromptPreludeRechecked {
 reevaluation CliAstOutputModesRechecked {
   satisfies memory CliCommandDispatchOrder
   outcome Confirmed
-  summary "AST CLI tests reject ambiguous raw trace output flags and keep source and JSON draft paths on the same generator semantics."
+  summary "AST CLI tests reject ambiguous raw trace output flags, require explicit generated AST directories for freshness checks, and keep source and JSON draft paths on the same generator semantics."
   reviewer ShapeMaintainers
   decided_on "2026-05-22"
   evidence test("packages/shp-cli/src/index.test.ts")

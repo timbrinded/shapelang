@@ -3,6 +3,7 @@ import type {
   AddFunctionChange,
   AttestationDecl,
   BindingDecl,
+  CandidateEffectDecl,
   ChangeDecl,
   ComponentDecl,
   DescriptionDecl,
@@ -47,6 +48,11 @@ import {
   isBindingDecl,
   isBindingRequireChangedDecl,
   isBindingWhenChangedDecl,
+  isCandidateEffectAnchorDecl,
+  isCandidateEffectConfidenceDecl,
+  isCandidateEffectDecl,
+  isCandidateEffectFunctionDecl,
+  isCandidateEffectTermDecl,
   isChangeDecl,
   isCompleteEffects,
   isComponentDecl,
@@ -167,6 +173,7 @@ export type SemanticDiagnostic =
         | "component"
         | "trait"
         | "relation"
+        | "candidate_effect"
         | "binding"
         | "rationale"
         | "memory"
@@ -364,6 +371,19 @@ export type Fact =
     }
   | { kind: "effect_unknown"; component: string; functionName: string; provenance: Provenance }
   | {
+      kind: "candidate_effect";
+      name: string;
+      functionTarget: string;
+      effect: string;
+      target: string;
+      source?: SourceRefInfo;
+      confidence?: string;
+      anchor?: string;
+      fingerprintProvider?: string;
+      fingerprintValue?: string;
+      provenance: Provenance;
+    }
+  | {
       kind: "shape_trait";
       targetKind: TargetKind;
       target: string;
@@ -442,6 +462,30 @@ type CheckModuleInput = {
   module: ShapeModule;
   filePath?: string;
 };
+
+type ModuleInfo = {
+  name: string;
+  imports: string[];
+  filePath?: string;
+  generatedAst: boolean;
+};
+
+type LoweringContext = ModuleInfo;
+
+type DeclarationKind =
+  | "resource"
+  | "component"
+  | "trait"
+  | "relation"
+  | "candidate_effect"
+  | "implementation"
+  | "binding"
+  | "rationale"
+  | "memory"
+  | "reevaluation"
+  | "rule";
+
+type DeclarationIndex = Record<DeclarationKind, Map<string, Set<string>>>;
 
 type Provenance = {
   filePath?: string;
@@ -564,6 +608,7 @@ type ChangeEvent =
 type FunctionInfo = {
   component: string;
   name: string;
+  localName: string;
   source?: SourceRefInfo;
   unsafe: boolean;
   effects: EffectSummaryInfo;
@@ -572,13 +617,17 @@ type FunctionInfo = {
   expires?: string;
   shapeTraits: Map<string, Provenance>;
   description?: DescriptionInfo;
+  generatedAstCandidate: boolean;
   provenance: Provenance;
 };
 
 type ResourceInfo = {
   name: string;
+  localName: string;
+  moduleName: string;
   traits: Map<string, Provenance>;
   fingerprints: Map<string, FingerprintInfo>;
+  generatedAstCandidate: boolean;
   provenance: Provenance;
 };
 
@@ -590,6 +639,8 @@ type FingerprintInfo = {
 
 type TraitInfo = {
   name: string;
+  localName: string;
+  moduleName: string;
   typeParams: string[];
   finalForbids: FinalForbidPattern[];
   provenance: Provenance;
@@ -604,14 +655,20 @@ type FinalForbidPattern = {
 
 type ComponentInfo = {
   name: string;
+  localName: string;
+  moduleName: string;
+  classifiers: Map<string, Provenance>;
   grants: Map<string, Provenance>;
   owns: Map<string, Provenance>;
   functions: Map<string, FunctionInfo>;
+  generatedAstCandidate: boolean;
   provenance: Provenance;
 };
 
 type ImplementationInfo = {
   name: string;
+  localName: string;
+  moduleName: string;
   paths: { glob: string; provenance: Provenance }[];
   conformsTo?: string;
   onChangeRequirement?: string;
@@ -620,6 +677,8 @@ type ImplementationInfo = {
 
 type BindingInfo = {
   name: string;
+  localName: string;
+  moduleName: string;
   whenChanged: { glob: string; provenance: Provenance }[];
   requireChanged: { glob: string; provenance: Provenance }[];
   allowAttestations: { kind: string; provenance: Provenance }[];
@@ -628,6 +687,8 @@ type BindingInfo = {
 
 type RuleInfo = {
   name: string;
+  localName: string;
+  moduleName: string;
   whenHas: { subject: string; trait: string }[];
   forbidEffects: FinalForbidPattern[];
   forbidProvides: {
@@ -655,6 +716,8 @@ type HyperedgeMember = {
 
 type HyperedgeInfo = {
   name: string;
+  localName: string;
+  moduleName: string;
   kind: string;
   ordered: boolean;
   members: HyperedgeMember[];
@@ -677,10 +740,13 @@ type Hypergraph = {
 };
 
 type Model = {
+  modules: Map<string, ModuleInfo>;
+  declarations: DeclarationIndex;
   resources: Map<string, ResourceInfo>;
   traits: Map<string, TraitInfo>;
   components: Map<string, ComponentInfo>;
   hypergraph: Hypergraph;
+  candidateEffects: Map<string, CandidateEffectInfo>;
   implementations: ImplementationInfo[];
   bindings: Map<string, BindingInfo>;
   rules: RuleInfo[];
@@ -692,6 +758,20 @@ type Model = {
   changeEvents: ChangeEvent[];
   facts: Fact[];
   diagnostics: SemanticDiagnostic[];
+};
+
+type CandidateEffectInfo = {
+  name: string;
+  localName: string;
+  moduleName: string;
+  functionTarget?: string;
+  term?: TermInfo;
+  source?: SourceRefInfo;
+  confidence?: string;
+  anchor?: string;
+  fingerprintProvider?: string;
+  fingerprintValue?: string;
+  provenance: Provenance;
 };
 
 type FunctionAst = FunctionSummary | AddFunctionChange | ModifyFunctionChange;
@@ -868,7 +948,8 @@ export function explainShapeModules(
   symbol: string
 ): string {
   const model = lowerShapeModules(modules);
-  const resource = model.resources.get(symbol);
+  const resourceKey = resolveQuerySymbol(symbol, model.resources);
+  const resource = resourceKey ? model.resources.get(resourceKey) : undefined;
   if (resource) {
     const finalForbids = deriveFinalForbidsForResource(resource, model);
     const lines = [
@@ -891,15 +972,21 @@ export function explainShapeModules(
           .map((fingerprint) => `    ${formatFingerprintInfo(fingerprint)}`)
       );
     }
-    appendIncidence(symbol, model, lines);
+    appendIncidence(resource.name, model, lines);
     return `${lines.join("\n")}\n`;
   }
 
-  const [componentName, functionName] = symbol.split(".");
+  const [componentName, functionName] = splitFunctionTarget(symbol);
   if (componentName && functionName) {
-    const fn = model.components.get(componentName)?.functions.get(functionName);
+    const componentKey = resolveQuerySymbol(componentName, model.components);
+    const fn = componentKey
+      ? model.components.get(componentKey)?.functions.get(functionName)
+      : undefined;
     if (fn) {
-      const lines = [`${componentName}.${functionName}`, "  kind: function"];
+      if (!componentKey) {
+        return `No shape facts found for ${symbol}.\n`;
+      }
+      const lines = [`${componentKey}.${functionName}`, "  kind: function"];
       if (fn.source) {
         lines.push(`  source: ${formatSourceRefInfo(fn.source)}`);
       }
@@ -916,7 +1003,7 @@ export function explainShapeModules(
       }
       const requirements = requirementsForFunction(fn);
       if (requirements.length > 0) {
-        const target = functionTarget(componentName, functionName);
+        const target = functionTarget(componentKey, functionName);
         lines.push("", "  required context:");
         lines.push(
           ...requirements.map(
@@ -925,14 +1012,14 @@ export function explainShapeModules(
         );
       }
       const satisfiedBy = matchingContextsForTarget(
-        functionTarget(componentName, functionName),
+        functionTarget(componentKey, functionName),
         model
       );
       if (satisfiedBy.length > 0) {
         lines.push("", "  satisfied by:");
         lines.push(...satisfiedBy.map((context) => `    ${context.kind} ${context.name}`));
       }
-      const guards = guardsForTarget(functionTarget(componentName, functionName), model);
+      const guards = guardsForTarget(functionTarget(componentKey, functionName), model);
       if (guards.length > 0) {
         lines.push("", "  memory guards:");
         lines.push(...guards.map((guard) => `    ${guard.kind} ${guard.info.name}`));
@@ -951,17 +1038,20 @@ export function explainShapeModules(
     }
   }
 
-  const rationale = model.rationales.get(symbol);
+  const rationaleKey = resolveQuerySymbol(symbol, model.rationales);
+  const rationale = rationaleKey ? model.rationales.get(rationaleKey) : undefined;
   if (rationale) {
     return `${formatRationaleExplanation(rationale)}\n`;
   }
 
-  const memory = model.memories.get(symbol);
+  const memoryKey = resolveQuerySymbol(symbol, model.memories);
+  const memory = memoryKey ? model.memories.get(memoryKey) : undefined;
   if (memory) {
     return `${formatMemoryExplanation(memory)}\n`;
   }
 
-  const component = model.components.get(symbol);
+  const componentKey = resolveQuerySymbol(symbol, model.components);
+  const component = componentKey ? model.components.get(componentKey) : undefined;
   if (component) {
     const lines = [
       symbol,
@@ -972,11 +1062,12 @@ export function explainShapeModules(
       "  functions:",
       ...[...component.functions.keys()].sort().map((name) => `    ${name}`)
     ];
-    appendIncidence(symbol, model, lines);
+    appendIncidence(component.name, model, lines);
     return `${lines.join("\n")}\n`;
   }
 
-  const relation = model.hypergraph.edges.get(symbol);
+  const relationKey = resolveQuerySymbol(symbol, model.hypergraph.edges);
+  const relation = relationKey ? model.hypergraph.edges.get(relationKey) : undefined;
   if (relation) {
     return `${formatRelationExplanation(relation)}\n`;
   }
@@ -986,6 +1077,17 @@ export function explainShapeModules(
 
 function compareHyperedges(left: HyperedgeInfo, right: HyperedgeInfo): number {
   return `${left.kind}:${left.name}`.localeCompare(`${right.kind}:${right.name}`);
+}
+
+function resolveQuerySymbol<T extends { name: string }>(
+  symbol: string,
+  map: Map<string, T>
+): string | undefined {
+  if (map.has(symbol)) {
+    return symbol;
+  }
+  const matches = [...map.keys()].filter((key) => localNameOf(key) === symbol);
+  return matches.length === 1 ? matches[0] : undefined;
 }
 
 function allHyperedgesByKind(model: Model, kindFilter?: string): HyperedgeInfo[] {
@@ -1004,7 +1106,8 @@ export function graphShapeModules(
   kindFilter?: string
 ): string {
   const model = lowerShapeModules(modules);
-  const relation = model.hypergraph.edges.get(symbol);
+  const relationKey = resolveQuerySymbol(symbol, model.hypergraph.edges);
+  const relation = relationKey ? model.hypergraph.edges.get(relationKey) : undefined;
   if (relation) {
     if (kindFilter && relation.kind !== kindFilter) {
       return `No relations match kind ${kindFilter} for ${symbol}.\n`;
@@ -1012,14 +1115,18 @@ export function graphShapeModules(
     return `${formatHyperedgeLine(relation, 0, model)}\n`;
   }
 
-  const incidentNames = model.hypergraph.incidence.get(symbol) ?? [];
+  const vertexKey =
+    resolveQuerySymbol(symbol, model.components) ??
+    resolveQuerySymbol(symbol, model.resources) ??
+    symbol;
+  const incidentNames = model.hypergraph.incidence.get(vertexKey) ?? [];
   const incident = incidentNames
     .map((name) => model.hypergraph.edges.get(name))
     .filter((edge): edge is HyperedgeInfo => edge !== undefined)
     .filter((edge) => !kindFilter || edge.kind === kindFilter)
     .sort(compareHyperedges);
 
-  const lines = [formatVertexHeader(symbol, model)];
+  const lines = [formatVertexHeader(vertexKey, model)];
   if (incident.length === 0) {
     lines.push("  (no incident relations)");
     return `${lines.join("\n")}\n`;
@@ -1129,7 +1236,7 @@ export function statsShapeHypergraph(
     const averageArity = totalIncidences / filteredEdges.length;
     lines.push(`  arity: min ${minArity}, max ${maxArity}, avg ${averageArity.toFixed(2)}`);
     if (maxArity > 2 && widestEdge) {
-      lines.push(`    widest: ${widestEdge.kind} ${widestEdge.name}`);
+      lines.push(`    widest: ${widestEdge.kind} ${displaySymbol(widestEdge.name)}`);
     }
   }
   lines.push(`  isolated vertices: ${isolatedVertices.length}`);
@@ -1156,6 +1263,8 @@ export function formatDiagnostics(result: CheckResult): string {
 function lowerShapeModules(modules: ShapeModule[] | CheckModuleInput[]): Model {
   const inputs = normalizeModuleInputs(modules);
   const model: Model = {
+    modules: new Map(),
+    declarations: emptyDeclarationIndex(),
     resources: new Map(),
     traits: new Map(PRELUDE_TRAITS.map((trait) => [trait.name, preludeTraitInfo(trait)])),
     components: new Map(),
@@ -1163,6 +1272,7 @@ function lowerShapeModules(modules: ShapeModule[] | CheckModuleInput[]): Model {
       edges: new Map(),
       incidence: new Map()
     },
+    candidateEffects: new Map(),
     implementations: [],
     bindings: new Map(),
     rules: [],
@@ -1176,38 +1286,50 @@ function lowerShapeModules(modules: ShapeModule[] | CheckModuleInput[]): Model {
     diagnostics: []
   };
 
+  const contexts = new Map<CheckModuleInput, LoweringContext>();
   for (const input of inputs) {
+    const context = moduleContext(input);
+    contexts.set(input, context);
+    model.modules.set(context.name, context);
+    indexModuleDeclarations(input.module, context, model);
+  }
+
+  for (const input of inputs) {
+    const context = contexts.get(input) ?? moduleContext(input);
     for (const declaration of input.module.declarations) {
       if (isResourceDecl(declaration)) {
-        lowerResource(declaration, input.filePath, model);
+        lowerResource(declaration, context, model);
       } else if (isTraitDecl(declaration)) {
-        lowerTrait(declaration, input.filePath, model);
+        lowerTrait(declaration, context, model);
       } else if (isComponentDecl(declaration)) {
-        lowerComponent(declaration, input.filePath, model);
+        lowerComponent(declaration, context, model);
       } else if (isRelationDecl(declaration)) {
-        lowerRelation(declaration, input.filePath, model);
+        lowerRelation(declaration, context, model);
+      } else if (isCandidateEffectDecl(declaration)) {
+        lowerCandidateEffect(declaration, context, model);
       } else if (isImplementationDecl(declaration)) {
-        lowerImplementation(declaration, input.filePath, model);
+        lowerImplementation(declaration, context, model);
       } else if (isBindingDecl(declaration)) {
-        lowerBinding(declaration, input.filePath, model);
+        lowerBinding(declaration, context, model);
       } else if (isAttestationDecl(declaration)) {
-        lowerAttestation(declaration, input.filePath, model);
+        lowerAttestation(declaration, context, model);
       } else if (isRuleDecl(declaration)) {
-        lowerRule(declaration, input.filePath, model);
+        lowerRule(declaration, context, model);
       } else if (isRationaleDecl(declaration)) {
-        lowerRationale(declaration, input.filePath, model);
+        lowerRationale(declaration, context, model);
       } else if (isMemoryDecl(declaration)) {
-        lowerMemory(declaration, input.filePath, model);
+        lowerMemory(declaration, context, model);
       } else if (isReevaluationDecl(declaration)) {
-        lowerReevaluation(declaration, input.filePath, model);
+        lowerReevaluation(declaration, context, model);
       }
     }
   }
 
   for (const input of inputs) {
+    const context = contexts.get(input) ?? moduleContext(input);
     for (const declaration of input.module.declarations) {
       if (isChangeDecl(declaration)) {
-        lowerChange(declaration, input.filePath, model);
+        lowerChange(declaration, context, model);
       }
     }
   }
@@ -1237,16 +1359,240 @@ function normalizeModuleInputs(modules: ShapeModule[] | CheckModuleInput[]): Che
   });
 }
 
-function lowerResource(resource: ResourceDecl, filePath: string | undefined, model: Model): void {
-  const prov = provenance(filePath, `resource ${resource.name}`);
-  if (model.resources.has(resource.name)) {
+function emptyDeclarationIndex(): DeclarationIndex {
+  return {
+    resource: new Map(),
+    component: new Map(),
+    trait: new Map(),
+    relation: new Map(),
+    candidate_effect: new Map(),
+    implementation: new Map(),
+    binding: new Map(),
+    rationale: new Map(),
+    memory: new Map(),
+    reevaluation: new Map(),
+    rule: new Map()
+  };
+}
+
+function moduleContext(input: CheckModuleInput): LoweringContext {
+  const name = input.module.name ?? "";
+  return {
+    name,
+    imports: input.module.imports.map((item) => item.path),
+    filePath: input.filePath,
+    generatedAst: isTrustedGeneratedAstModule(name, input.filePath)
+  };
+}
+
+function isTrustedGeneratedAstModule(moduleName: string, filePath: string | undefined): boolean {
+  if (!isGeneratedAstModuleName(moduleName)) {
+    return false;
+  }
+  if (!filePath) {
+    return false;
+  }
+  return normalizeRepoPath(filePath).startsWith("shape/generated/ast/");
+}
+
+function isGeneratedAstModuleName(moduleName: string): boolean {
+  return moduleName === "shape.generated.ast" || moduleName.startsWith("shape.generated.ast.");
+}
+
+function indexModuleDeclarations(
+  module: ShapeModule,
+  context: LoweringContext,
+  model: Model
+): void {
+  for (const declaration of module.declarations) {
+    const kind = declarationIndexKind(declaration);
+    if (!kind) {
+      continue;
+    }
+    const names = model.declarations[kind].get(context.name) ?? new Set<string>();
+    names.add(declarationNameForIndex(declaration));
+    model.declarations[kind].set(context.name, names);
+  }
+}
+
+function declarationNameForIndex(declaration: ShapeModule["declarations"][number]): string {
+  if (isAttestationDecl(declaration)) {
+    return declaration.kind;
+  }
+  if (isChangeDecl(declaration)) {
+    return declaration.name;
+  }
+  return "name" in declaration ? declaration.name : "";
+}
+
+function declarationIndexKind(
+  declaration: ShapeModule["declarations"][number]
+): DeclarationKind | undefined {
+  if (isResourceDecl(declaration)) {
+    return "resource";
+  }
+  if (isComponentDecl(declaration)) {
+    return "component";
+  }
+  if (isTraitDecl(declaration)) {
+    return "trait";
+  }
+  if (isRelationDecl(declaration)) {
+    return "relation";
+  }
+  if (isCandidateEffectDecl(declaration)) {
+    return "candidate_effect";
+  }
+  if (isImplementationDecl(declaration)) {
+    return "implementation";
+  }
+  if (isBindingDecl(declaration)) {
+    return "binding";
+  }
+  if (isRationaleDecl(declaration)) {
+    return "rationale";
+  }
+  if (isMemoryDecl(declaration)) {
+    return "memory";
+  }
+  if (isReevaluationDecl(declaration)) {
+    return "reevaluation";
+  }
+  if (isRuleDecl(declaration)) {
+    return "rule";
+  }
+  return undefined;
+}
+
+function declKey(moduleName: string, localName: string): string {
+  return moduleName ? `${moduleName}::${localName}` : localName;
+}
+
+function splitQualifiedName(name: string): { moduleName?: string; localName: string } {
+  const separator = name.lastIndexOf("::");
+  if (separator < 0) {
+    return { localName: name };
+  }
+  return {
+    moduleName: name.slice(0, separator),
+    localName: name.slice(separator + 2)
+  };
+}
+
+function localNameOf(name: string): string {
+  return splitQualifiedName(name).localName;
+}
+
+function displaySymbol(name: string): string {
+  return localNameOf(name);
+}
+
+function declaredLocally(
+  model: Model,
+  kind: DeclarationKind,
+  moduleName: string,
+  localName: string
+): boolean {
+  return model.declarations[kind].get(moduleName)?.has(localName) === true;
+}
+
+function resolveDeclName(
+  name: string,
+  kind: DeclarationKind,
+  context: LoweringContext,
+  model: Model
+): string {
+  const qualified = splitQualifiedName(name);
+  if (qualified.moduleName !== undefined) {
+    return declKey(qualified.moduleName, qualified.localName);
+  }
+  if (
+    kind === "trait" &&
+    KNOWN_PRELUDE_TRAITS.has(name) &&
+    !declaredLocally(model, kind, context.name, name)
+  ) {
+    return name;
+  }
+  if (declaredLocally(model, kind, context.name, name)) {
+    return declKey(context.name, name);
+  }
+  const importedMatches = context.imports
+    .filter((moduleName) => declaredLocally(model, kind, moduleName, name))
+    .map((moduleName) => declKey(moduleName, name));
+  return importedMatches[0] ?? declKey(context.name, name);
+}
+
+function resolveVertexName(name: string, context: LoweringContext, model: Model): string {
+  const qualified = splitQualifiedName(name);
+  if (qualified.moduleName !== undefined) {
+    return declKey(qualified.moduleName, qualified.localName);
+  }
+  if (
+    declaredLocally(model, "component", context.name, name) ||
+    declaredLocally(model, "resource", context.name, name)
+  ) {
+    return declKey(context.name, name);
+  }
+  const importedMatches = context.imports
+    .filter(
+      (moduleName) =>
+        declaredLocally(model, "component", moduleName, name) ||
+        declaredLocally(model, "resource", moduleName, name)
+    )
+    .map((moduleName) => declKey(moduleName, name));
+  return importedMatches[0] ?? declKey(context.name, name);
+}
+
+function resolveTargetName(
+  target: ShapeTarget,
+  context: LoweringContext,
+  model: Model
+): ShapeTarget {
+  if (target.kind === "fn") {
+    return { kind: target.kind, name: resolveFunctionTargetName(target.name, context, model) };
+  }
+  const kind =
+    target.kind === "relation"
+      ? "relation"
+      : target.kind === "implementation"
+        ? "implementation"
+        : target.kind === "rule"
+          ? "rule"
+          : target.kind;
+  return {
+    kind: target.kind,
+    name: resolveDeclName(target.name, kind, context, model)
+  };
+}
+
+function resolveFunctionTargetName(value: string, context: LoweringContext, model: Model): string {
+  const [componentName, functionName] = splitFunctionTarget(value);
+  if (!componentName || !functionName) {
+    return value;
+  }
+  return functionKey(resolveDeclName(componentName, "component", context, model), functionName);
+}
+
+function resolveContextObjectName(
+  kind: ContextKind,
+  name: string,
+  context: LoweringContext,
+  model: Model
+): string {
+  return resolveDeclName(name, kind, context, model);
+}
+
+function lowerResource(resource: ResourceDecl, context: LoweringContext, model: Model): void {
+  const name = declKey(context.name, resource.name);
+  const prov = provenance(context.filePath, `resource ${name}`);
+  if (model.resources.has(name)) {
     model.diagnostics.push({
       kind: "duplicate_declaration",
       declarationKind: "resource",
-      name: resource.name,
-      filePath,
+      name,
+      filePath: context.filePath,
       causedBy: [
-        describeProvenance(model.resources.get(resource.name)?.provenance),
+        describeProvenance(model.resources.get(name)?.provenance),
         describeProvenance(prov)
       ]
     });
@@ -1255,12 +1601,13 @@ function lowerResource(resource: ResourceDecl, filePath: string | undefined, mod
 
   const traits = new Map<string, Provenance>();
   for (const trait of resource.traits) {
-    const traitProv = provenance(filePath, `resource ${resource.name} : ${trait.name}`);
-    traits.set(trait.name, traitProv);
+    const traitName = resolveDeclName(trait.name, "trait", context, model);
+    const traitProv = provenance(context.filePath, `resource ${name} : ${traitName}`);
+    traits.set(traitName, traitProv);
     model.facts.push({
       kind: "resource_trait",
-      resource: resource.name,
-      trait: trait.name,
+      resource: name,
+      trait: traitName,
       provenance: traitProv
     });
   }
@@ -1270,14 +1617,14 @@ function lowerResource(resource: ResourceDecl, filePath: string | undefined, mod
     if (!isFingerprintDecl(member)) {
       continue;
     }
-    const fingerprint = lowerFingerprint(member, filePath, `resource ${resource.name}`);
+    const fingerprint = lowerFingerprint(member, context.filePath, `resource ${name}`);
     const existing = fingerprints.get(fingerprint.provider);
     if (existing) {
       model.diagnostics.push({
         kind: "duplicate_fingerprint",
-        resource: resource.name,
+        resource: name,
         provider: fingerprint.provider,
-        filePath,
+        filePath: context.filePath,
         causedBy: [
           describeProvenance(existing.provenance),
           describeProvenance(fingerprint.provenance)
@@ -1288,34 +1635,35 @@ function lowerResource(resource: ResourceDecl, filePath: string | undefined, mod
     fingerprints.set(fingerprint.provider, fingerprint);
     model.facts.push({
       kind: "resource_fingerprint",
-      resource: resource.name,
+      resource: name,
       provider: fingerprint.provider,
       value: fingerprint.value,
       provenance: fingerprint.provenance
     });
   }
 
-  model.resources.set(resource.name, {
-    name: resource.name,
+  model.resources.set(name, {
+    name,
+    localName: resource.name,
+    moduleName: context.name,
     traits,
     fingerprints,
+    generatedAstCandidate: context.generatedAst,
     provenance: prov
   });
-  model.facts.push({ kind: "resource", name: resource.name, provenance: prov });
+  model.facts.push({ kind: "resource", name, provenance: prov });
 }
 
-function lowerTrait(trait: TraitDecl, filePath: string | undefined, model: Model): void {
-  const prov = provenance(filePath, `trait ${trait.name}`);
-  if (model.traits.has(trait.name) && !isPreludeTrait(model.traits.get(trait.name))) {
+function lowerTrait(trait: TraitDecl, context: LoweringContext, model: Model): void {
+  const name = declKey(context.name, trait.name);
+  const prov = provenance(context.filePath, `trait ${name}`);
+  if (model.traits.has(name) && !isPreludeTrait(model.traits.get(name))) {
     model.diagnostics.push({
       kind: "duplicate_declaration",
       declarationKind: "trait",
-      name: trait.name,
-      filePath,
-      causedBy: [
-        describeProvenance(model.traits.get(trait.name)?.provenance),
-        describeProvenance(prov)
-      ]
+      name,
+      filePath: context.filePath,
+      causedBy: [describeProvenance(model.traits.get(name)?.provenance), describeProvenance(prov)]
     });
     return;
   }
@@ -1323,32 +1671,31 @@ function lowerTrait(trait: TraitDecl, filePath: string | undefined, model: Model
   const finalForbids: FinalForbidPattern[] = [];
   for (const member of trait.members) {
     if (isTraitForbidDecl(member)) {
-      finalForbids.push(lowerForbidPattern(member, filePath, `trait ${trait.name}`));
+      finalForbids.push(lowerForbidPattern(member, context.filePath, `trait ${name}`));
     }
   }
 
-  model.traits.set(trait.name, {
-    name: trait.name,
+  model.traits.set(name, {
+    name,
+    localName: trait.name,
+    moduleName: context.name,
     typeParams: trait.typeParams?.params.map((param) => param.name) ?? [],
     finalForbids,
     provenance: prov
   });
 }
 
-function lowerComponent(
-  component: ComponentDecl,
-  filePath: string | undefined,
-  model: Model
-): void {
-  const prov = provenance(filePath, `component ${component.name}`);
-  if (model.components.has(component.name)) {
+function lowerComponent(component: ComponentDecl, context: LoweringContext, model: Model): void {
+  const name = declKey(context.name, component.name);
+  const prov = provenance(context.filePath, `component ${name}`);
+  if (model.components.has(name)) {
     model.diagnostics.push({
       kind: "duplicate_declaration",
       declarationKind: "component",
-      name: component.name,
-      filePath,
+      name,
+      filePath: context.filePath,
       causedBy: [
-        describeProvenance(model.components.get(component.name)?.provenance),
+        describeProvenance(model.components.get(name)?.provenance),
         describeProvenance(prov)
       ]
     });
@@ -1356,61 +1703,77 @@ function lowerComponent(
   }
 
   const info: ComponentInfo = {
-    name: component.name,
+    name,
+    localName: component.name,
+    moduleName: context.name,
+    classifiers: new Map(),
     grants: new Map(),
     owns: new Map(),
     functions: new Map(),
+    generatedAstCandidate: context.generatedAst,
     provenance: prov
   };
 
+  for (const classifier of component.classifiers) {
+    const traitName = resolveDeclName(classifier.name, "trait", context, model);
+    const classifierProv = provenance(context.filePath, `component ${name} : ${traitName}`);
+    info.classifiers.set(traitName, classifierProv);
+    model.facts.push({
+      kind: "shape_trait",
+      targetKind: "component",
+      target: name,
+      trait: traitName,
+      provenance: classifierProv
+    });
+  }
+
   for (const member of component.members) {
     if (isOwnsDecl(member)) {
-      const memberProv = provenance(
-        filePath,
-        `component ${component.name} owns ${member.resource.name}`
-      );
-      info.owns.set(member.resource.name, memberProv);
+      const resourceName = resolveDeclName(member.resource.name, "resource", context, model);
+      const memberProv = provenance(context.filePath, `component ${name} owns ${resourceName}`);
+      info.owns.set(resourceName, memberProv);
       model.facts.push({
         kind: "owns",
-        component: component.name,
-        resource: member.resource.name,
+        component: name,
+        resource: resourceName,
         provenance: memberProv
       });
     } else if (isGrantsDecl(member)) {
-      const grant = lowerTerm(member.term);
+      const grant = lowerTerm(member.term, context, model);
       const memberProv = provenance(
-        filePath,
-        `component ${component.name} grants ${formatTerm(grant.name, grant.target ?? "")}`
+        context.filePath,
+        `component ${name} grants ${formatTerm(grant.name, grant.target ?? "")}`
       );
       info.grants.set(termKey(grant), memberProv);
       model.facts.push({
         kind: "grants",
-        component: component.name,
+        component: name,
         effect: grant.name,
         target: grant.target ?? "",
         provenance: memberProv
       });
     } else if (isFunctionSummary(member)) {
-      const fn = lowerFunction(member, component.name, filePath);
+      const fn = lowerFunction(member, name, context, model);
       info.functions.set(fn.name, fn);
       emitFunctionFacts(fn, model);
     }
   }
 
-  model.components.set(component.name, info);
-  model.facts.push({ kind: "component", name: component.name, provenance: prov });
+  model.components.set(name, info);
+  model.facts.push({ kind: "component", name, provenance: prov });
 }
 
-function lowerRelation(relation: RelationDecl, filePath: string | undefined, model: Model): void {
-  const prov = provenance(filePath, `relation ${relation.name}`);
-  if (model.hypergraph.edges.has(relation.name)) {
+function lowerRelation(relation: RelationDecl, context: LoweringContext, model: Model): void {
+  const name = declKey(context.name, relation.name);
+  const prov = provenance(context.filePath, `relation ${name}`);
+  if (model.hypergraph.edges.has(name)) {
     model.diagnostics.push({
       kind: "duplicate_declaration",
       declarationKind: "relation",
-      name: relation.name,
-      filePath,
+      name,
+      filePath: context.filePath,
       causedBy: [
-        describeProvenance(model.hypergraph.edges.get(relation.name)?.provenance),
+        describeProvenance(model.hypergraph.edges.get(name)?.provenance),
         describeProvenance(prov)
       ]
     });
@@ -1431,9 +1794,9 @@ function lowerRelation(relation: RelationDecl, filePath: string | undefined, mod
       if (kindSeen) {
         model.diagnostics.push({
           kind: "invalid_relation",
-          name: relation.name,
+          name,
           reason: "duplicate kind",
-          filePath,
+          filePath: context.filePath,
           causedBy: [describeProvenance(prov)]
         });
         continue;
@@ -1444,21 +1807,21 @@ function lowerRelation(relation: RelationDecl, filePath: string | undefined, mod
       if (connectsDecl) {
         model.diagnostics.push({
           kind: "invalid_relation",
-          name: relation.name,
+          name,
           reason: "duplicate connects",
-          filePath,
+          filePath: context.filePath,
           causedBy: [describeProvenance(prov)]
         });
         continue;
       }
-      connectsDecl = collectConnects(member);
+      connectsDecl = collectConnects(member, context, model);
     } else if (isRelationRolesDecl(member)) {
       if (rolesSeen) {
         model.diagnostics.push({
           kind: "invalid_relation",
-          name: relation.name,
+          name,
           reason: "duplicate roles",
-          filePath,
+          filePath: context.filePath,
           causedBy: [describeProvenance(prov)]
         });
         continue;
@@ -1468,22 +1831,23 @@ function lowerRelation(relation: RelationDecl, filePath: string | undefined, mod
         roleDecls.push(role);
       }
     } else if (isRelationFingerprintExpectationDecl(member)) {
+      const endpoint = resolveVertexName(member.endpoint.name, context, model);
       fingerprintExpectations.push({
-        endpoint: member.endpoint.name,
+        endpoint,
         provider: member.provider,
         value: unquoteShapeString(member.value),
         provenance: provenance(
-          filePath,
-          `relation ${relation.name} expects ${member.endpoint.name} fingerprint ${member.provider}`
+          context.filePath,
+          `relation ${name} expects ${endpoint} fingerprint ${member.provider}`
         )
       });
     } else if (isRelationSummaryDecl(member)) {
       if (summarySeen) {
         model.diagnostics.push({
           kind: "invalid_relation",
-          name: relation.name,
+          name,
           reason: "duplicate summary",
-          filePath,
+          filePath: context.filePath,
           causedBy: [describeProvenance(prov)]
         });
         continue;
@@ -1496,9 +1860,9 @@ function lowerRelation(relation: RelationDecl, filePath: string | undefined, mod
   if (!kindValue) {
     model.diagnostics.push({
       kind: "invalid_relation",
-      name: relation.name,
+      name,
       reason: "missing kind",
-      filePath,
+      filePath: context.filePath,
       causedBy: [describeProvenance(prov)]
     });
     return;
@@ -1507,9 +1871,9 @@ function lowerRelation(relation: RelationDecl, filePath: string | undefined, mod
   if (!connectsDecl) {
     model.diagnostics.push({
       kind: "invalid_relation",
-      name: relation.name,
+      name,
       reason: "missing connects",
-      filePath,
+      filePath: context.filePath,
       causedBy: [describeProvenance(prov)]
     });
     return;
@@ -1518,9 +1882,9 @@ function lowerRelation(relation: RelationDecl, filePath: string | undefined, mod
   if (connectsDecl.endpoints.length < 2) {
     model.diagnostics.push({
       kind: "invalid_relation",
-      name: relation.name,
+      name,
       reason: "connects requires at least two endpoints",
-      filePath,
+      filePath: context.filePath,
       causedBy: [describeProvenance(prov)]
     });
     return;
@@ -1531,9 +1895,9 @@ function lowerRelation(relation: RelationDecl, filePath: string | undefined, mod
     if (seen.has(endpoint)) {
       model.diagnostics.push({
         kind: "invalid_relation",
-        name: relation.name,
-        reason: `duplicate endpoint ${endpoint}`,
-        filePath,
+        name,
+        reason: `duplicate endpoint ${displaySymbol(endpoint)}`,
+        filePath: context.filePath,
         causedBy: [describeProvenance(prov)]
       });
       return;
@@ -1546,9 +1910,9 @@ function lowerRelation(relation: RelationDecl, filePath: string | undefined, mod
     if (rule.arity === "binary" && connectsDecl.endpoints.length !== 2) {
       model.diagnostics.push({
         kind: "invalid_relation",
-        name: relation.name,
+        name,
         reason: `kind ${kindValue} requires exactly two endpoints`,
-        filePath,
+        filePath: context.filePath,
         causedBy: [describeProvenance(prov)]
       });
       return;
@@ -1556,9 +1920,9 @@ function lowerRelation(relation: RelationDecl, filePath: string | undefined, mod
     if (rule.arity === "ordered" && !connectsDecl.ordered) {
       model.diagnostics.push({
         kind: "invalid_relation",
-        name: relation.name,
+        name,
         reason: `kind ${kindValue} requires ordered connects (A -> B -> ...)`,
-        filePath,
+        filePath: context.filePath,
         causedBy: [describeProvenance(prov)]
       });
       return;
@@ -1566,9 +1930,9 @@ function lowerRelation(relation: RelationDecl, filePath: string | undefined, mod
     if (rule.cycleTraversal === "directed_pairs" && !connectsDecl.ordered) {
       model.diagnostics.push({
         kind: "invalid_relation",
-        name: relation.name,
+        name,
         reason: `kind ${kindValue} requires ordered connects (A -> B)`,
-        filePath,
+        filePath: context.filePath,
         causedBy: [describeProvenance(prov)]
       });
       return;
@@ -1578,36 +1942,37 @@ function lowerRelation(relation: RelationDecl, filePath: string | undefined, mod
   const endpointSet = new Set(connectsDecl.endpoints);
   const roleByEndpoint = new Map<string, string>();
   for (const role of roleDecls) {
-    if (!endpointSet.has(role.name)) {
+    const roleName = resolveVertexName(role.name, context, model);
+    if (!endpointSet.has(roleName)) {
       model.diagnostics.push({
         kind: "invalid_relation",
-        name: relation.name,
-        reason: `role ${role.name} is not a connects endpoint`,
-        filePath,
+        name,
+        reason: `role ${displaySymbol(roleName)} is not a connects endpoint`,
+        filePath: context.filePath,
         causedBy: [describeProvenance(prov)]
       });
       continue;
     }
-    if (roleByEndpoint.has(role.name)) {
+    if (roleByEndpoint.has(roleName)) {
       model.diagnostics.push({
         kind: "invalid_relation",
-        name: relation.name,
-        reason: `duplicate role for ${role.name}`,
-        filePath,
+        name,
+        reason: `duplicate role for ${displaySymbol(roleName)}`,
+        filePath: context.filePath,
         causedBy: [describeProvenance(prov)]
       });
       continue;
     }
-    roleByEndpoint.set(role.name, role.role);
+    roleByEndpoint.set(roleName, role.role);
   }
 
   for (const expectation of fingerprintExpectations) {
     if (!endpointSet.has(expectation.endpoint)) {
       model.diagnostics.push({
         kind: "invalid_relation",
-        name: relation.name,
-        reason: `fingerprint expectation ${expectation.endpoint} is not a connects endpoint`,
-        filePath,
+        name,
+        reason: `fingerprint expectation ${displaySymbol(expectation.endpoint)} is not a connects endpoint`,
+        filePath: context.filePath,
         causedBy: [describeProvenance(expectation.provenance)]
       });
     }
@@ -1620,7 +1985,9 @@ function lowerRelation(relation: RelationDecl, filePath: string | undefined, mod
   }));
 
   const info: HyperedgeInfo = {
-    name: relation.name,
+    name,
+    localName: relation.name,
+    moduleName: context.name,
     kind: kindValue,
     ordered: connectsDecl.ordered,
     members,
@@ -1629,16 +1996,16 @@ function lowerRelation(relation: RelationDecl, filePath: string | undefined, mod
     provenance: prov
   };
 
-  model.hypergraph.edges.set(relation.name, info);
+  model.hypergraph.edges.set(name, info);
   for (const member of members) {
     const incident = model.hypergraph.incidence.get(member.endpoint) ?? [];
-    incident.push(relation.name);
+    incident.push(name);
     model.hypergraph.incidence.set(member.endpoint, incident);
   }
 
   model.facts.push({
     kind: "hyperedge",
-    name: relation.name,
+    name,
     relationKind: kindValue,
     ordered: connectsDecl.ordered,
     provenance: prov
@@ -1646,17 +2013,17 @@ function lowerRelation(relation: RelationDecl, filePath: string | undefined, mod
   for (const member of members) {
     model.facts.push({
       kind: "hyperedge_member",
-      hyperedge: relation.name,
+      hyperedge: name,
       endpoint: member.endpoint,
       index: member.index,
       role: member.role,
-      provenance: provenance(filePath, `relation ${relation.name} connects ${member.endpoint}`)
+      provenance: provenance(context.filePath, `relation ${name} connects ${member.endpoint}`)
     });
   }
   for (const expectation of fingerprintExpectations) {
     model.facts.push({
       kind: "hyperedge_fingerprint_expectation",
-      hyperedge: relation.name,
+      hyperedge: name,
       endpoint: expectation.endpoint,
       provider: expectation.provider,
       value: expectation.value,
@@ -1685,24 +2052,91 @@ function removeRelation(name: string, model: Model): void {
   }
 }
 
-function collectConnects(member: { endpoints: RelationEndpoint[]; ordered: boolean }): {
+function collectConnects(
+  member: { endpoints: RelationEndpoint[]; ordered: boolean },
+  context: LoweringContext,
+  model: Model
+): {
   endpoints: string[];
   ordered: boolean;
 } {
   return {
-    endpoints: member.endpoints.map((endpoint) => endpoint.name),
+    endpoints: member.endpoints.map((endpoint) => resolveVertexName(endpoint.name, context, model)),
     ordered: member.ordered
   };
 }
 
-function lowerImplementation(
-  implementation: ImplementationDecl,
-  filePath: string | undefined,
+function lowerCandidateEffect(
+  candidateEffect: CandidateEffectDecl,
+  context: LoweringContext,
   model: Model
 ): void {
-  const prov = provenance(filePath, `implementation ${implementation.name}`);
+  const name = declKey(context.name, candidateEffect.name);
+  const prov = provenance(context.filePath, `effect candidate ${name}`);
+  if (model.candidateEffects.has(name)) {
+    model.diagnostics.push({
+      kind: "duplicate_declaration",
+      declarationKind: "candidate_effect",
+      name,
+      filePath: context.filePath,
+      causedBy: [
+        describeProvenance(model.candidateEffects.get(name)?.provenance),
+        describeProvenance(prov)
+      ]
+    });
+    return;
+  }
+
+  const info: CandidateEffectInfo = {
+    name,
+    localName: candidateEffect.name,
+    moduleName: context.name,
+    provenance: prov
+  };
+
+  for (const member of candidateEffect.members) {
+    if (isCandidateEffectFunctionDecl(member)) {
+      info.functionTarget = resolveFunctionTargetName(member.function, context, model);
+    } else if (isCandidateEffectTermDecl(member)) {
+      info.term = lowerTerm(member.term, context, model);
+    } else if (isCandidateEffectConfidenceDecl(member)) {
+      info.confidence = member.value;
+    } else if (isCandidateEffectAnchorDecl(member)) {
+      info.anchor = resolveDeclName(member.target.name, "resource", context, model);
+      info.fingerprintProvider = member.provider;
+      info.fingerprintValue = unquoteShapeString(member.value);
+    } else {
+      info.source = lowerSourceRef(member);
+    }
+  }
+
+  model.candidateEffects.set(name, info);
+  model.facts.push({
+    kind: "candidate_effect",
+    name,
+    functionTarget: info.functionTarget ?? "",
+    effect: info.term?.name ?? "",
+    target: info.term?.target ?? "",
+    source: info.source,
+    confidence: info.confidence,
+    anchor: info.anchor,
+    fingerprintProvider: info.fingerprintProvider,
+    fingerprintValue: info.fingerprintValue,
+    provenance: prov
+  });
+}
+
+function lowerImplementation(
+  implementation: ImplementationDecl,
+  context: LoweringContext,
+  model: Model
+): void {
+  const name = declKey(context.name, implementation.name);
+  const prov = provenance(context.filePath, `implementation ${name}`);
   const info: ImplementationInfo = {
-    name: implementation.name,
+    name,
+    localName: implementation.name,
+    moduleName: context.name,
     paths: [],
     provenance: prov
   };
@@ -1711,24 +2145,24 @@ function lowerImplementation(
     if (isPathsBlock(member)) {
       for (const path of member.paths) {
         const glob = unquoteShapeString(path);
-        const pathProv = provenance(filePath, `implementation ${implementation.name} path ${glob}`);
+        const pathProv = provenance(context.filePath, `implementation ${name} path ${glob}`);
         info.paths.push({ glob, provenance: pathProv });
         model.facts.push({
           kind: "implementation_path",
-          implementation: implementation.name,
+          implementation: name,
           glob,
           provenance: pathProv
         });
       }
     } else if (isConformsToDecl(member)) {
-      info.conformsTo = member.component.name;
+      info.conformsTo = resolveDeclName(member.component.name, "component", context, model);
       model.facts.push({
         kind: "conforms_to",
-        implementation: implementation.name,
-        component: member.component.name,
+        implementation: name,
+        component: info.conformsTo,
         provenance: provenance(
-          filePath,
-          `implementation ${implementation.name} conforms_to ${member.component.name}`
+          context.filePath,
+          `implementation ${name} conforms_to ${info.conformsTo}`
         )
       });
     } else if (isOnChangeDecl(member)) {
@@ -1737,27 +2171,27 @@ function lowerImplementation(
   }
 
   model.implementations.push(info);
-  model.facts.push({ kind: "implementation", name: implementation.name, provenance: prov });
+  model.facts.push({ kind: "implementation", name, provenance: prov });
 }
 
-function lowerBinding(binding: BindingDecl, filePath: string | undefined, model: Model): void {
-  const prov = provenance(filePath, `binding ${binding.name}`);
-  if (model.bindings.has(binding.name)) {
+function lowerBinding(binding: BindingDecl, context: LoweringContext, model: Model): void {
+  const name = declKey(context.name, binding.name);
+  const prov = provenance(context.filePath, `binding ${name}`);
+  if (model.bindings.has(name)) {
     model.diagnostics.push({
       kind: "duplicate_declaration",
       declarationKind: "binding",
-      name: binding.name,
-      filePath,
-      causedBy: [
-        describeProvenance(model.bindings.get(binding.name)?.provenance),
-        describeProvenance(prov)
-      ]
+      name,
+      filePath: context.filePath,
+      causedBy: [describeProvenance(model.bindings.get(name)?.provenance), describeProvenance(prov)]
     });
     return;
   }
 
   const info: BindingInfo = {
-    name: binding.name,
+    name,
+    localName: binding.name,
+    moduleName: context.name,
     whenChanged: [],
     requireChanged: [],
     allowAttestations: [],
@@ -1768,11 +2202,11 @@ function lowerBinding(binding: BindingDecl, filePath: string | undefined, model:
     if (isBindingWhenChangedDecl(member)) {
       for (const path of member.body.paths) {
         const glob = unquoteShapeString(path);
-        const pathProv = provenance(filePath, `binding ${binding.name} when_changed ${glob}`);
+        const pathProv = provenance(context.filePath, `binding ${name} when_changed ${glob}`);
         info.whenChanged.push({ glob, provenance: pathProv });
         model.facts.push({
           kind: "binding_when_changed",
-          binding: binding.name,
+          binding: name,
           glob,
           provenance: pathProv
         });
@@ -1780,43 +2214,43 @@ function lowerBinding(binding: BindingDecl, filePath: string | undefined, model:
     } else if (isBindingRequireChangedDecl(member)) {
       for (const path of member.body.paths) {
         const glob = unquoteShapeString(path);
-        const pathProv = provenance(filePath, `binding ${binding.name} require_changed ${glob}`);
+        const pathProv = provenance(context.filePath, `binding ${name} require_changed ${glob}`);
         info.requireChanged.push({ glob, provenance: pathProv });
         model.facts.push({
           kind: "binding_require_changed",
-          binding: binding.name,
+          binding: name,
           glob,
           provenance: pathProv
         });
       }
     } else if (isBindingAllowAttestDecl(member)) {
       const attestProv = provenance(
-        filePath,
-        `binding ${binding.name} allow attest ${member.kind}`
+        context.filePath,
+        `binding ${name} allow attest ${member.kind}`
       );
       info.allowAttestations.push({ kind: member.kind, provenance: attestProv });
       model.facts.push({
         kind: "binding_allow_attest",
-        binding: binding.name,
+        binding: name,
         kindName: member.kind,
         provenance: attestProv
       });
     }
   }
 
-  model.bindings.set(binding.name, info);
-  model.facts.push({ kind: "binding", name: binding.name, provenance: prov });
+  model.bindings.set(name, info);
+  model.facts.push({ kind: "binding", name, provenance: prov });
 }
 
 function lowerAttestation(
   attestation: AttestationDecl,
-  filePath: string | undefined,
+  context: LoweringContext,
   model: Model
 ): void {
   const source = lowerSourceRef(attestation.source);
   const path = normalizeShapeSourcePath(source.path);
   const reason = unquoteShapeString(attestation.reason.value);
-  const prov = provenance(filePath, `attest ${attestation.kind} for ${path}`);
+  const prov = provenance(context.filePath, `attest ${attestation.kind} for ${path}`);
   model.attestations.push({ kind: attestation.kind, path, reason, provenance: prov });
   model.facts.push({
     kind: "attestation",
@@ -1827,46 +2261,49 @@ function lowerAttestation(
   });
 }
 
-function lowerRule(rule: RuleDecl, filePath: string | undefined, model: Model): void {
+function lowerRule(rule: RuleDecl, context: LoweringContext, model: Model): void {
+  const name = declKey(context.name, rule.name);
   const info: RuleInfo = {
-    name: rule.name,
+    name,
+    localName: rule.name,
+    moduleName: context.name,
     whenHas: [],
     forbidEffects: [],
     forbidProvides: [],
     forbidHypercycles: [],
-    provenance: provenance(filePath, `rule ${rule.name}`)
+    provenance: provenance(context.filePath, `rule ${name}`)
   };
 
   for (const member of rule.members) {
     if (isRuleWhenHasDecl(member)) {
-      info.whenHas.push({ subject: member.subject, trait: member.trait });
+      info.whenHas.push({
+        subject: member.subject,
+        trait: resolveDeclName(member.trait, "trait", context, model)
+      });
     } else if (isRuleForbidEffectDecl(member)) {
-      info.forbidEffects.push(lowerRuleForbid(member, filePath, rule.name));
+      info.forbidEffects.push(lowerRuleForbid(member, context.filePath, name));
     } else if (isRuleForbidProvidesDecl(member)) {
-      info.forbidProvides.push(lowerRuleForbidProvides(member, filePath, rule.name));
+      info.forbidProvides.push(lowerRuleForbidProvides(member, context, model, name));
     } else if (isRuleForbidHypercycleDecl(member)) {
-      info.forbidHypercycles.push(lowerRuleForbidHypercycle(member, filePath, rule.name));
+      info.forbidHypercycles.push(lowerRuleForbidHypercycle(member, context.filePath, name));
     }
   }
 
   model.rules.push(info);
-  model.facts.push({ kind: "rule", name: rule.name, provenance: info.provenance });
+  model.facts.push({ kind: "rule", name, provenance: info.provenance });
 }
 
-function lowerRationale(
-  rationale: RationaleDecl,
-  filePath: string | undefined,
-  model: Model
-): void {
-  const prov = provenance(filePath, `rationale ${rationale.name}`);
-  if (model.rationales.has(rationale.name)) {
+function lowerRationale(rationale: RationaleDecl, context: LoweringContext, model: Model): void {
+  const name = declKey(context.name, rationale.name);
+  const prov = provenance(context.filePath, `rationale ${name}`);
+  if (model.rationales.has(name)) {
     model.diagnostics.push({
       kind: "duplicate_declaration",
       declarationKind: "rationale",
-      name: rationale.name,
-      filePath,
+      name,
+      filePath: context.filePath,
       causedBy: [
-        describeProvenance(model.rationales.get(rationale.name)?.provenance),
+        describeProvenance(model.rationales.get(name)?.provenance),
         describeProvenance(prov)
       ]
     });
@@ -1874,9 +2311,9 @@ function lowerRationale(
   }
 
   const info: RationaleInfo = {
-    name: rationale.name,
+    name,
     contextType: rationale.contextType.name,
-    target: lowerTargetRef(rationale.contextType.target),
+    target: lowerTargetRef(rationale.contextType.target, context, model),
     protects: [],
     guards: [],
     evidence: [],
@@ -1884,7 +2321,7 @@ function lowerRationale(
   };
 
   for (const member of rationale.members) {
-    if (lowerContextMember(member, info, "rationale", filePath)) {
+    if (lowerContextMember(member, info, "rationale", context, model)) {
       continue;
     }
 
@@ -1893,10 +2330,10 @@ function lowerRationale(
     }
   }
 
-  model.rationales.set(rationale.name, info);
+  model.rationales.set(name, info);
   model.facts.push({
     kind: "rationale",
-    name: rationale.name,
+    name,
     contextType: info.contextType,
     targetKind: info.target.kind,
     target: info.target.name,
@@ -1905,26 +2342,24 @@ function lowerRationale(
   emitGuardFacts("rationale", info, model);
 }
 
-function lowerMemory(memory: MemoryDecl, filePath: string | undefined, model: Model): void {
-  const prov = provenance(filePath, `memory ${memory.name}`);
-  if (model.memories.has(memory.name)) {
+function lowerMemory(memory: MemoryDecl, context: LoweringContext, model: Model): void {
+  const name = declKey(context.name, memory.name);
+  const prov = provenance(context.filePath, `memory ${name}`);
+  if (model.memories.has(name)) {
     model.diagnostics.push({
       kind: "duplicate_declaration",
       declarationKind: "memory",
-      name: memory.name,
-      filePath,
-      causedBy: [
-        describeProvenance(model.memories.get(memory.name)?.provenance),
-        describeProvenance(prov)
-      ]
+      name,
+      filePath: context.filePath,
+      causedBy: [describeProvenance(model.memories.get(name)?.provenance), describeProvenance(prov)]
     });
     return;
   }
 
   const info: MemoryInfo = {
-    name: memory.name,
+    name,
     contextType: memory.contextType.name,
-    target: lowerTargetRef(memory.contextType.target),
+    target: lowerTargetRef(memory.contextType.target, context, model),
     protects: [],
     guards: [],
     observed: [],
@@ -1933,7 +2368,7 @@ function lowerMemory(memory: MemoryDecl, filePath: string | undefined, model: Mo
   };
 
   for (const member of memory.members) {
-    if (lowerContextMember(member, info, "memory", filePath)) {
+    if (lowerContextMember(member, info, "memory", context, model)) {
       continue;
     }
 
@@ -1946,10 +2381,10 @@ function lowerMemory(memory: MemoryDecl, filePath: string | undefined, model: Mo
     }
   }
 
-  model.memories.set(memory.name, info);
+  model.memories.set(name, info);
   model.facts.push({
     kind: "memory",
-    name: memory.name,
+    name,
     contextType: info.contextType,
     targetKind: info.target.kind,
     target: info.target.name,
@@ -1962,10 +2397,11 @@ function lowerContextMember(
   member: RationaleMember | MemoryMember,
   info: ContextObjectInfo,
   kind: ContextKind,
-  filePath: string | undefined
+  context: LoweringContext,
+  model: Model
 ): boolean {
   if (isAppliesToDecl(member)) {
-    info.appliesTo = lowerTargetRef(member.target);
+    info.appliesTo = lowerTargetRef(member.target, context, model);
     return true;
   }
   if (isSummaryDecl(member)) {
@@ -1985,7 +2421,7 @@ function lowerContextMember(
       kind: member.kind,
       value: member.value,
       provenance: provenance(
-        filePath,
+        context.filePath,
         `${kind} ${info.name} protects ${member.kind} ${member.value}`
       )
     });
@@ -1995,7 +2431,7 @@ function lowerContextMember(
     info.guards.push({
       requirement: member.requirement,
       provenance: provenance(
-        filePath,
+        context.filePath,
         `${kind} ${info.name} guards on_change require ${member.requirement}`
       )
     });
@@ -2010,18 +2446,19 @@ function lowerContextMember(
 
 function lowerReevaluation(
   reevaluation: ReevaluationDecl,
-  filePath: string | undefined,
+  context: LoweringContext,
   model: Model
 ): void {
-  const prov = provenance(filePath, `reevaluation ${reevaluation.name}`);
-  if (model.reevaluations.has(reevaluation.name)) {
+  const name = declKey(context.name, reevaluation.name);
+  const prov = provenance(context.filePath, `reevaluation ${name}`);
+  if (model.reevaluations.has(name)) {
     model.diagnostics.push({
       kind: "duplicate_declaration",
       declarationKind: "reevaluation",
-      name: reevaluation.name,
-      filePath,
+      name,
+      filePath: context.filePath,
       causedBy: [
-        describeProvenance(model.reevaluations.get(reevaluation.name)?.provenance),
+        describeProvenance(model.reevaluations.get(name)?.provenance),
         describeProvenance(prov)
       ]
     });
@@ -2029,7 +2466,7 @@ function lowerReevaluation(
   }
 
   const info: ReevaluationInfo = {
-    name: reevaluation.name,
+    name,
     evidence: [],
     provenance: prov
   };
@@ -2037,7 +2474,7 @@ function lowerReevaluation(
   for (const member of reevaluation.members) {
     if (isSatisfiesDecl(member)) {
       info.satisfiesKind = member.kind;
-      info.satisfiesName = member.name;
+      info.satisfiesName = resolveContextObjectName(member.kind, member.name, context, model);
     } else if (isOutcomeDecl(member)) {
       info.outcome = member.value;
     } else if (isSummaryDecl(member)) {
@@ -2053,11 +2490,11 @@ function lowerReevaluation(
     }
   }
 
-  model.reevaluations.set(reevaluation.name, info);
+  model.reevaluations.set(name, info);
   if (info.satisfiesKind && info.satisfiesName) {
     model.facts.push({
       kind: "reevaluation",
-      name: reevaluation.name,
+      name,
       satisfiesKind: info.satisfiesKind,
       satisfies: info.satisfiesName,
       provenance: prov
@@ -2093,21 +2530,22 @@ function emitGuardFacts(kind: ContextKind, info: RationaleInfo | MemoryInfo, mod
   }
 }
 
-function lowerChange(change: ChangeDecl, filePath: string | undefined, model: Model): void {
+function lowerChange(change: ChangeDecl, context: LoweringContext, model: Model): void {
   for (const entry of change.entries) {
     if (isAddFunctionChange(entry) || isModifyFunctionChange(entry)) {
-      const component = model.components.get(entry.component);
+      const componentName = resolveDeclName(entry.component, "component", context, model);
+      const component = model.components.get(componentName);
       if (!component) {
         model.diagnostics.push({
           kind: "unknown_name",
           nameKind: "component",
-          name: entry.component,
-          filePath,
+          name: componentName,
+          filePath: context.filePath,
           causedBy: [
             describeProvenance(
               provenance(
-                filePath,
-                `change ${change.name} ${entry.$type} ${entry.component}.${entry.name}`
+                context.filePath,
+                `change ${change.name} ${entry.$type} ${componentName}.${entry.name}`
               )
             )
           ]
@@ -2118,88 +2556,117 @@ function lowerChange(change: ChangeDecl, filePath: string | undefined, model: Mo
       if (isModifyFunctionChange(entry)) {
         model.changeEvents.push({
           kind: "function_modified",
-          target: functionTarget(entry.component, entry.name),
+          target: functionTarget(componentName, entry.name),
           provenance: provenance(
-            filePath,
-            `change ${change.name} modify fn ${entry.component}.${entry.name}`
+            context.filePath,
+            `change ${change.name} modify fn ${componentName}.${entry.name}`
           )
         });
       }
 
-      const fn = lowerFunction(entry, entry.component, filePath, `change ${change.name}`);
-      removeFunctionFacts(model, entry.component, entry.name);
+      const fn = lowerFunction(entry, componentName, context, model, `change ${change.name}`);
+      removeFunctionFacts(model, componentName, entry.name);
       component.functions.set(fn.name, fn);
       emitFunctionFacts(fn, model);
     } else if (isRemoveFunctionChange(entry)) {
+      const componentName = resolveDeclName(entry.component, "component", context, model);
       model.changeEvents.push({
         kind: "function_removed",
-        target: functionTarget(entry.component, entry.name),
+        target: functionTarget(componentName, entry.name),
         provenance: provenance(
-          filePath,
-          `change ${change.name} remove fn ${entry.component}.${entry.name}`
+          context.filePath,
+          `change ${change.name} remove fn ${componentName}.${entry.name}`
         )
       });
-      removeFunctionFacts(model, entry.component, entry.name);
-      model.components.get(entry.component)?.functions.delete(entry.name);
+      removeFunctionFacts(model, componentName, entry.name);
+      model.components.get(componentName)?.functions.delete(entry.name);
     } else if (isAddDeclarationChange(entry)) {
-      lowerDeclaration(entry.declaration, filePath, model);
+      lowerDeclaration(entry.declaration, context, model);
     } else if (isModifyDeclarationChange(entry)) {
       const kind = declarationKind(entry.declaration);
       if (kind !== "attestation") {
-        removeDeclaration(kind, declarationName(entry.declaration), model);
+        const targetContext = contextForDeclarationChange(
+          kind,
+          declarationName(entry.declaration),
+          context,
+          model
+        );
+        removeDeclaration(kind, declarationName(entry.declaration), targetContext, model);
+        lowerDeclaration(entry.declaration, targetContext, model);
+        continue;
       }
-      lowerDeclaration(entry.declaration, filePath, model);
+      lowerDeclaration(entry.declaration, context, model);
     } else if (isRemoveDeclarationChange(entry)) {
-      removeDeclaration(entry.kind, entry.name, model);
+      removeDeclaration(entry.kind, entry.name, context, model);
     }
   }
 }
 
+function contextForDeclarationChange(
+  kind: RemoveDeclarationChange["kind"],
+  name: string,
+  context: LoweringContext,
+  model: Model
+): LoweringContext {
+  const resolvedName = resolveDeclName(name, kind, context, model);
+  const qualified = splitQualifiedName(resolvedName);
+  if (!qualified.moduleName) {
+    return context;
+  }
+  return {
+    ...context,
+    name: qualified.moduleName,
+    imports: model.modules.get(qualified.moduleName)?.imports ?? []
+  };
+}
+
 function lowerDeclaration(
   declaration: AddDeclarationChange["declaration"] | ModifyDeclarationChange["declaration"],
-  filePath: string | undefined,
+  context: LoweringContext,
   model: Model
 ): void {
   if (isResourceDecl(declaration)) {
-    lowerResource(declaration, filePath, model);
+    lowerResource(declaration, context, model);
   } else if (isTraitDecl(declaration)) {
-    lowerTrait(declaration, filePath, model);
+    lowerTrait(declaration, context, model);
   } else if (isComponentDecl(declaration)) {
-    lowerComponent(declaration, filePath, model);
+    lowerComponent(declaration, context, model);
   } else if (isRelationDecl(declaration)) {
-    lowerRelation(declaration, filePath, model);
+    lowerRelation(declaration, context, model);
   } else if (isImplementationDecl(declaration)) {
-    lowerImplementation(declaration, filePath, model);
+    lowerImplementation(declaration, context, model);
   } else if (isBindingDecl(declaration)) {
-    lowerBinding(declaration, filePath, model);
+    lowerBinding(declaration, context, model);
   } else if (isAttestationDecl(declaration)) {
-    lowerAttestation(declaration, filePath, model);
+    lowerAttestation(declaration, context, model);
   } else if (isRuleDecl(declaration)) {
-    lowerRule(declaration, filePath, model);
+    lowerRule(declaration, context, model);
   }
 }
 
 function removeDeclaration(
   kind: RemoveDeclarationChange["kind"],
   name: string,
+  context: LoweringContext,
   model: Model
 ): void {
+  const resolvedName = resolveDeclName(name, kind, context, model);
   if (kind === "resource") {
-    model.resources.delete(name);
+    model.resources.delete(resolvedName);
   } else if (kind === "trait") {
-    model.traits.delete(name);
+    model.traits.delete(resolvedName);
   } else if (kind === "component") {
-    model.components.delete(name);
+    model.components.delete(resolvedName);
   } else if (kind === "relation") {
-    removeRelation(name, model);
+    removeRelation(resolvedName, model);
   } else if (kind === "implementation") {
     model.implementations = model.implementations.filter(
-      (implementation) => implementation.name !== name
+      (implementation) => implementation.name !== resolvedName
     );
   } else if (kind === "binding") {
-    model.bindings.delete(name);
+    model.bindings.delete(resolvedName);
   } else if (kind === "rule") {
-    model.rules = model.rules.filter((rule) => rule.name !== name);
+    model.rules = model.rules.filter((rule) => rule.name !== resolvedName);
   }
 }
 
@@ -2242,30 +2709,46 @@ function declarationName(
 function lowerFunction(
   fn: FunctionAst,
   componentName: string,
-  filePath?: string,
-  context?: string
+  loweringContext: LoweringContext,
+  model: Model,
+  labelContext?: string
 ): FunctionInfo {
   const source = fn.source ? lowerSourceRef(fn.source) : undefined;
   const info: FunctionInfo = {
     component: componentName,
     name: fn.name,
+    localName: fn.name,
     source,
     unsafe: fn.unsafe,
-    effects: lowerEffects(fn.effects, filePath, componentName, fn.name),
+    effects: lowerEffects(
+      fn.effects,
+      loweringContext.filePath,
+      componentName,
+      fn.name,
+      loweringContext,
+      model
+    ),
     requires: [],
-    shapeTraits: lowerShapeTraits(fn, componentName, filePath, context),
+    shapeTraits: lowerShapeTraits(fn, componentName, loweringContext, model, labelContext),
     description: fn.description
-      ? lowerDescription(fn.description, componentName, fn.name, filePath, context)
+      ? lowerDescription(
+          fn.description,
+          componentName,
+          fn.name,
+          loweringContext.filePath,
+          labelContext
+        )
       : undefined,
+    generatedAstCandidate: loweringContext.generatedAst,
     provenance: provenance(
-      filePath,
-      `${context ? `${context} ` : ""}fn ${componentName}.${fn.name}`
+      loweringContext.filePath,
+      `${labelContext ? `${labelContext} ` : ""}fn ${componentName}.${fn.name}`
     )
   };
 
   for (const member of fn.members) {
     if (isFunctionRequiresDecl(member)) {
-      info.requires.push(lowerTerm(member.term));
+      info.requires.push(lowerTerm(member.term, loweringContext, model));
     } else if (isReasonDecl(member)) {
       info.reason = unquoteShapeString(member.value);
     } else if (isExpiresDecl(member)) {
@@ -2279,16 +2762,18 @@ function lowerFunction(
 function lowerShapeTraits(
   fn: FunctionAst,
   componentName: string,
-  filePath: string | undefined,
-  context?: string
+  context: LoweringContext,
+  model: Model,
+  labelContext?: string
 ): Map<string, Provenance> {
   const traits = new Map<string, Provenance>();
   for (const trait of fn.shapeTraits?.traits ?? []) {
+    const traitName = resolveDeclName(trait.name, "trait", context, model);
     traits.set(
-      trait.name,
+      traitName,
       provenance(
-        filePath,
-        `${context ? `${context} ` : ""}fn ${componentName}.${fn.name} : ${trait.name}`
+        context.filePath,
+        `${labelContext ? `${labelContext} ` : ""}fn ${componentName}.${fn.name} : ${traitName}`
       )
     );
   }
@@ -2316,7 +2801,9 @@ function lowerEffects(
   effects: EffectsDecl,
   filePath: string | undefined,
   componentName: string,
-  functionName: string
+  functionName: string,
+  context: LoweringContext,
+  model: Model
 ): EffectSummaryInfo {
   if (isUnknownEffects(effects)) {
     return { kind: "unknown" };
@@ -2329,7 +2816,7 @@ function lowerEffects(
   return {
     kind: "complete",
     entries: effects.effects.map((entry) =>
-      lowerEffectEntry(entry, filePath, componentName, functionName)
+      lowerEffectEntry(entry, filePath, componentName, functionName, context, model)
     )
   };
 }
@@ -2338,9 +2825,11 @@ function lowerEffectEntry(
   entry: EffectEntry,
   filePath: string | undefined,
   componentName: string,
-  functionName: string
+  functionName: string,
+  context: LoweringContext,
+  model: Model
 ): EffectEntryInfo {
-  const term = lowerTerm(entry.term);
+  const term = lowerTerm(entry.term, context, model);
   return {
     term,
     evidence: entry.evidence ? lowerSourceRef(entry.evidence) : undefined,
@@ -2387,13 +2876,18 @@ function lowerRuleForbid(
 
 function lowerRuleForbidProvides(
   member: RuleForbidProvidesDecl,
-  filePath: string | undefined,
+  context: LoweringContext,
+  model: Model,
   ruleName: string
 ): RuleInfo["forbidProvides"][number] {
+  const target = resolveDeclName(member.target.name, "resource", context, model);
+  const except = member.except
+    ? resolveDeclName(member.except, "component", context, model)
+    : undefined;
   return {
-    target: member.target.name,
-    except: member.except,
-    provenance: provenance(filePath, `rule ${ruleName} forbids provides ${member.target.name}`)
+    target,
+    except,
+    provenance: provenance(context.filePath, `rule ${ruleName} forbids provides ${target}`)
   };
 }
 
@@ -2411,10 +2905,10 @@ function lowerRuleForbidHypercycle(
   };
 }
 
-function lowerTerm(term: EffectTerm): TermInfo {
+function lowerTerm(term: EffectTerm, context: LoweringContext, model: Model): TermInfo {
   return {
     name: term.name,
-    target: term.target?.name
+    target: term.target ? resolveDeclName(term.target.name, "resource", context, model) : undefined
   };
 }
 
@@ -2444,11 +2938,15 @@ function lowerFingerprint(
   };
 }
 
-function lowerTargetRef(target: TargetRef): ShapeTarget {
-  return {
-    kind: target.kind,
-    name: target.name
-  };
+function lowerTargetRef(target: TargetRef, context: LoweringContext, model: Model): ShapeTarget {
+  return resolveTargetName(
+    {
+      kind: target.kind,
+      name: target.name
+    },
+    context,
+    model
+  );
 }
 
 function functionTarget(component: string, name: string): ShapeTarget {
@@ -2556,6 +3054,10 @@ function emitDerivedFacts(model: Model): void {
 }
 
 function collectShapeUpdatePathsFromFunction(fn: FunctionInfo, model: Model): void {
+  if (fn.generatedAstCandidate) {
+    return;
+  }
+
   if (fn.source) {
     addShapeUpdatePath(model, fn.source.path, fn.provenance);
     model.facts.push({
@@ -2605,6 +3107,18 @@ function checkResolvedNames(model: Model): SemanticDiagnostic[] {
   }
 
   for (const component of model.components.values()) {
+    for (const [trait, traitProv] of component.classifiers) {
+      if (!knownTraits.has(trait)) {
+        diagnostics.push({
+          kind: "unknown_name",
+          nameKind: "trait",
+          name: trait,
+          filePath: traitProv.filePath,
+          causedBy: [describeProvenance(traitProv)]
+        });
+      }
+    }
+
     for (const [resource, ownProv] of component.owns) {
       if (!model.resources.has(resource)) {
         diagnostics.push({
@@ -2674,7 +3188,7 @@ function checkResolvedNames(model: Model): SemanticDiagnostic[] {
         diagnostics.push({
           kind: "invalid_relation",
           name: hyperedge.name,
-          reason: `endpoint ${member.endpoint} resolves to both a component and a resource`,
+          reason: `endpoint ${displaySymbol(member.endpoint)} resolves to both a component and a resource`,
           filePath: hyperedge.provenance.filePath,
           causedBy: [describeProvenance(hyperedge.provenance)]
         });
@@ -2683,6 +3197,45 @@ function checkResolvedNames(model: Model): SemanticDiagnostic[] {
 
     if (hyperedge.kind === "provides") {
       diagnostics.push(...checkProvidesEndpointKinds(hyperedge, model));
+    }
+  }
+
+  for (const candidateEffect of model.candidateEffects.values()) {
+    if (!candidateEffect.functionTarget) {
+      diagnostics.push({
+        kind: "unknown_name",
+        nameKind: "component",
+        name: `${candidateEffect.name} function`,
+        filePath: candidateEffect.provenance.filePath,
+        causedBy: [describeProvenance(candidateEffect.provenance)]
+      });
+    } else if (!targetExists({ kind: "fn", name: candidateEffect.functionTarget }, model)) {
+      diagnostics.push({
+        kind: "unknown_name",
+        nameKind: "component",
+        name: candidateEffect.functionTarget,
+        filePath: candidateEffect.provenance.filePath,
+        causedBy: [describeProvenance(candidateEffect.provenance)]
+      });
+    }
+    const target = candidateEffect.term?.target;
+    if (target && !model.resources.has(target)) {
+      diagnostics.push({
+        kind: "unknown_name",
+        nameKind: "resource",
+        name: target,
+        filePath: candidateEffect.provenance.filePath,
+        causedBy: [describeProvenance(candidateEffect.provenance)]
+      });
+    }
+    if (candidateEffect.anchor && !model.resources.has(candidateEffect.anchor)) {
+      diagnostics.push({
+        kind: "unknown_name",
+        nameKind: "resource",
+        name: candidateEffect.anchor,
+        filePath: candidateEffect.provenance.filePath,
+        causedBy: [describeProvenance(candidateEffect.provenance)]
+      });
     }
   }
 
@@ -2729,7 +3282,7 @@ function checkProvidesEndpointKinds(hyperedge: HyperedgeInfo, model: Model): Sem
     diagnostics.push({
       kind: "invalid_relation",
       name: hyperedge.name,
-      reason: `provides provider ${provider} must be a component`,
+      reason: `provides provider ${displaySymbol(provider)} must be a component`,
       filePath: hyperedge.provenance.filePath,
       causedBy: [describeProvenance(hyperedge.provenance)]
     });
@@ -2739,7 +3292,7 @@ function checkProvidesEndpointKinds(hyperedge: HyperedgeInfo, model: Model): Sem
     diagnostics.push({
       kind: "invalid_relation",
       name: hyperedge.name,
-      reason: `provides target ${target} must be a resource`,
+      reason: `provides target ${displaySymbol(target)} must be a resource`,
       filePath: hyperedge.provenance.filePath,
       causedBy: [describeProvenance(hyperedge.provenance)]
     });
@@ -2764,7 +3317,7 @@ function checkFingerprintExpectations(model: Model): SemanticDiagnostic[] {
         diagnostics.push({
           kind: "invalid_relation",
           name: hyperedge.name,
-          reason: `fingerprint expectation endpoint ${expectation.endpoint} resolves to both a component and a resource`,
+          reason: `fingerprint expectation endpoint ${displaySymbol(expectation.endpoint)} resolves to both a component and a resource`,
           filePath: expectation.provenance.filePath,
           causedBy: [describeProvenance(expectation.provenance)]
         });
@@ -2776,7 +3329,7 @@ function checkFingerprintExpectations(model: Model): SemanticDiagnostic[] {
         diagnostics.push({
           kind: "invalid_relation",
           name: hyperedge.name,
-          reason: `fingerprint expectation endpoint ${expectation.endpoint} must be a resource`,
+          reason: `fingerprint expectation endpoint ${displaySymbol(expectation.endpoint)} must be a resource`,
           filePath: expectation.provenance.filePath,
           causedBy: [describeProvenance(expectation.provenance)]
         });
@@ -2987,7 +3540,7 @@ function checkGuardedChanges(model: Model): SemanticDiagnostic[] {
         guard: guard.info.name,
         targetKind: event.target.kind,
         target: event.target.name,
-        missingReevaluation: `reevaluation satisfying ${guard.kind} ${guard.info.name}`,
+        missingReevaluation: `reevaluation satisfying ${guard.kind} ${displaySymbol(guard.info.name)}`,
         filePath: event.provenance.filePath,
         causedBy: [describeProvenance(event.provenance), describeProvenance(guard.guard.provenance)]
       });
@@ -3017,6 +3570,9 @@ function checkFunctions(model: Model): SemanticDiagnostic[] {
       }
 
       if (fn.effects.kind === "unknown") {
+        if (fn.generatedAstCandidate) {
+          continue;
+        }
         diagnostics.push({
           kind: "unknown_effects",
           component: component.name,
@@ -3524,11 +4080,11 @@ function targetExists(target: ShapeTarget, model: Model): boolean {
 }
 
 function splitFunctionTarget(target: string): [string | undefined, string | undefined] {
-  const [component, functionName, ...extra] = target.split(".");
-  if (extra.length > 0) {
+  const separator = target.lastIndexOf(".");
+  if (separator <= 0 || separator === target.length - 1) {
     return [undefined, undefined];
   }
-  return [component, functionName];
+  return [target.slice(0, separator), target.slice(separator + 1)];
 }
 
 function targetsEqual(left: ShapeTarget, right: ShapeTarget): boolean {
@@ -3536,7 +4092,7 @@ function targetsEqual(left: ShapeTarget, right: ShapeTarget): boolean {
 }
 
 function formatTarget(target: ShapeTarget): string {
-  return `${target.kind} ${target.name}`;
+  return `${target.kind} ${displaySymbol(target.name)}`;
 }
 
 function formatContextRequirement(contextType: string, target: ShapeTarget): string {
@@ -3666,7 +4222,7 @@ function guardsForTarget(
 
 function formatRelationExplanation(relation: HyperedgeInfo): string {
   const lines = [
-    relation.name,
+    displaySymbol(relation.name),
     "  kind: relation",
     `  relation kind: ${relation.kind}`,
     `  ordered: ${relation.ordered ? "true" : "false"}`,
@@ -3674,7 +4230,7 @@ function formatRelationExplanation(relation: HyperedgeInfo): string {
   ];
   for (const member of relation.members) {
     const role = member.role ? ` as ${member.role}` : "";
-    lines.push(`    ${member.index}: ${member.endpoint}${role}`);
+    lines.push(`    ${member.index}: ${displaySymbol(member.endpoint)}${role}`);
   }
   if (relation.summary) {
     lines.push("", `  summary: ${JSON.stringify(relation.summary)}`);
@@ -3688,7 +4244,7 @@ function formatRelationExplanation(relation: HyperedgeInfo): string {
         )
         .map(
           (expectation) =>
-            `    ${expectation.endpoint} ${expectation.provider}(${JSON.stringify(expectation.value)})`
+            `    ${displaySymbol(expectation.endpoint)} ${expectation.provider}(${JSON.stringify(expectation.value)})`
         )
     );
   }
@@ -3755,13 +4311,13 @@ function appendContextExplanationFields(lines: string[], context: ContextObjectI
 }
 
 function formatRationaleMemoryListEntry(rationale: RationaleInfo): string[] {
-  const lines = [`rationale ${rationale.name}`, `type: ${rationale.contextType}`];
+  const lines = [`rationale ${displaySymbol(rationale.name)}`, `type: ${rationale.contextType}`];
   appendContextListFields(lines, rationale);
   return lines;
 }
 
 function formatMemoryListEntry(memory: MemoryInfo): string[] {
-  const lines = [`memory ${memory.name}`, `type: ${memory.contextType}`];
+  const lines = [`memory ${displaySymbol(memory.name)}`, `type: ${memory.contextType}`];
   if (memory.status) {
     lines.push(`status: ${memory.status}`);
   }
@@ -3891,13 +4447,13 @@ function formatHyperedgeLine(edge: HyperedgeInfo, _indent: number, model: Model)
   const labelled = edge.members.map((member) => formatHyperedgeMember(member, model));
   const set = edge.ordered ? labelled.join(separator) : `{ ${labelled.join(separator)} }`;
   const summary = edge.summary ? `  // ${edge.summary}` : "";
-  return `${edge.kind} ${edge.name}: ${set}${summary}`;
+  return `${edge.kind} ${displaySymbol(edge.name)}: ${set}${summary}`;
 }
 
 function formatHyperedgeMember(member: HyperedgeMember, model: Model): string {
   const role = member.role ? ` as ${member.role}` : "";
   const kind = vertexKindLabel(member.endpoint, model);
-  return `${member.endpoint}${kind}${role}`;
+  return `${displaySymbol(member.endpoint)}${kind}${role}`;
 }
 
 function vertexKindLabel(name: string, model: Model): string {
@@ -3912,7 +4468,7 @@ function vertexKindLabel(name: string, model: Model): string {
 
 function formatVertexHeader(name: string, model: Model): string {
   const kind = vertexKindLabel(name, model).trim();
-  return kind ? `${name} ${kind}` : name;
+  return kind ? `${displaySymbol(name)} ${kind}` : displaySymbol(name);
 }
 
 function missingUnsafeRequirements(fn: FunctionInfo): string[] {
@@ -3986,9 +4542,9 @@ function formatFinalForbiddenDiagnostic(
   return [
     "error: forbidden effect",
     "",
-    `${diagnostic.component}.${diagnostic.functionName} emits ${formatTerm(diagnostic.effect, diagnostic.target)}.`,
-    `${diagnostic.target} has trait ${diagnostic.trait}.`,
-    `${diagnostic.trait} forbids final ${formatTerm(diagnostic.effect, diagnostic.target)}.${evidence}`,
+    `${displaySymbol(diagnostic.component)}.${diagnostic.functionName} emits ${formatTerm(diagnostic.effect, diagnostic.target)}.`,
+    `${displaySymbol(diagnostic.target)} has trait ${displaySymbol(diagnostic.trait)}.`,
+    `${displaySymbol(diagnostic.trait)} forbids final ${formatTerm(diagnostic.effect, diagnostic.target)}.${evidence}`,
     formatCausedBy(diagnostic.causedBy)
   ].join("\n");
 }
@@ -3999,8 +4555,8 @@ function formatMissingGrantDiagnostic(
   return [
     "error: missing grant",
     "",
-    `${diagnostic.component}.${diagnostic.functionName} emits ${formatTerm(diagnostic.effect, diagnostic.target)}.`,
-    `${diagnostic.component} does not grant ${formatTerm(diagnostic.effect, diagnostic.target)}.`,
+    `${displaySymbol(diagnostic.component)}.${diagnostic.functionName} emits ${formatTerm(diagnostic.effect, diagnostic.target)}.`,
+    `${displaySymbol(diagnostic.component)} does not grant ${formatTerm(diagnostic.effect, diagnostic.target)}.`,
     formatCausedBy(diagnostic.causedBy)
   ].join("\n");
 }
@@ -4011,7 +4567,7 @@ function formatUnknownEffectsDiagnostic(
   return [
     "error: unknown effects",
     "",
-    `${diagnostic.component}.${diagnostic.functionName} declares effects unknown.`,
+    `${displaySymbol(diagnostic.component)}.${diagnostic.functionName} declares effects unknown.`,
     formatCausedBy(diagnostic.causedBy)
   ].join("\n");
 }
@@ -4022,7 +4578,7 @@ function formatUnknownNameDiagnostic(
   return [
     `error: unknown ${diagnostic.nameKind}`,
     "",
-    `${diagnostic.nameKind} ${diagnostic.name} is referenced but not declared.`,
+    `${diagnostic.nameKind} ${displaySymbol(diagnostic.name)} is referenced but not declared.`,
     formatCausedBy(diagnostic.causedBy)
   ].join("\n");
 }
@@ -4033,7 +4589,7 @@ function formatDuplicateDeclarationDiagnostic(
   return [
     `error: duplicate ${diagnostic.declarationKind}`,
     "",
-    `${diagnostic.declarationKind} ${diagnostic.name} is declared more than once.`,
+    `${diagnostic.declarationKind} ${displaySymbol(diagnostic.name)} is declared more than once.`,
     formatCausedBy(diagnostic.causedBy)
   ].join("\n");
 }
@@ -4044,7 +4600,7 @@ function formatDuplicateFingerprintDiagnostic(
   return [
     "error: duplicate fingerprint",
     "",
-    `resource ${diagnostic.resource} declares fingerprint provider ${diagnostic.provider} more than once.`,
+    `resource ${displaySymbol(diagnostic.resource)} declares fingerprint provider ${diagnostic.provider} more than once.`,
     formatCausedBy(diagnostic.causedBy)
   ].join("\n");
 }
@@ -4085,9 +4641,9 @@ function formatForbiddenHypercycleDiagnostic(
   return [
     "error: forbidden hypercycle",
     "",
-    `rule ${diagnostic.rule} rejects this hypercycle:`,
-    ...diagnostic.hyperedges.map((edge) => `  ${edge.kind} ${edge.name}`),
-    `witness: ${diagnostic.vertices.join(" -> ")}`,
+    `rule ${displaySymbol(diagnostic.rule)} rejects this hypercycle:`,
+    ...diagnostic.hyperedges.map((edge) => `  ${edge.kind} ${displaySymbol(edge.name)}`),
+    `witness: ${diagnostic.vertices.map(displaySymbol).join(" -> ")}`,
     formatCausedBy(diagnostic.causedBy)
   ].join("\n");
 }
@@ -4095,12 +4651,14 @@ function formatForbiddenHypercycleDiagnostic(
 function formatForbiddenProvidesDiagnostic(
   diagnostic: Extract<SemanticDiagnostic, { kind: "forbidden_provides" }>
 ): string {
-  const allowed = diagnostic.allowedComponent ? ` except ${diagnostic.allowedComponent}` : "";
+  const allowed = diagnostic.allowedComponent
+    ? ` except ${displaySymbol(diagnostic.allowedComponent)}`
+    : "";
   return [
     "error: forbidden provides",
     "",
-    `${diagnostic.provider} provides ${diagnostic.target} via relation ${diagnostic.hyperedge}.`,
-    `rule ${diagnostic.rule} forbids provides ${diagnostic.target}${allowed}.`,
+    `${displaySymbol(diagnostic.provider)} provides ${displaySymbol(diagnostic.target)} via relation ${displaySymbol(diagnostic.hyperedge)}.`,
+    `rule ${displaySymbol(diagnostic.rule)} forbids provides ${displaySymbol(diagnostic.target)}${allowed}.`,
     formatCausedBy(diagnostic.causedBy)
   ].join("\n");
 }
@@ -4112,7 +4670,7 @@ function formatFingerprintMismatchDiagnostic(
   return [
     "error: stale fingerprint expectation",
     "",
-    `relation ${diagnostic.relation} expects ${diagnostic.endpoint} fingerprint ${diagnostic.provider}.`,
+    `relation ${displaySymbol(diagnostic.relation)} expects ${displaySymbol(diagnostic.endpoint)} fingerprint ${diagnostic.provider}.`,
     `expected: ${diagnostic.expected}`,
     `actual: ${actual}`,
     formatCausedBy(diagnostic.causedBy)
@@ -4125,7 +4683,7 @@ function formatUnsafeEffectsDiagnostic(
   return [
     "error: unsafe effects missing policy metadata",
     "",
-    `${diagnostic.component}.${diagnostic.functionName} declares unsafe effects.`,
+    `${displaySymbol(diagnostic.component)}.${diagnostic.functionName} declares unsafe effects.`,
     `Missing: ${diagnostic.missing.join(", ")}.`,
     formatCausedBy(diagnostic.causedBy)
   ].join("\n");
@@ -4137,8 +4695,8 @@ function formatMissingRequiredContextDiagnostic(
   return [
     "error: missing required context",
     "",
-    `${diagnostic.targetKind} ${diagnostic.target} has shape ${diagnostic.requiredBy}.`,
-    `${diagnostic.requiredBy} requires ${diagnostic.requiredContext}.`,
+    `${diagnostic.targetKind} ${displaySymbol(diagnostic.target)} has shape ${displaySymbol(diagnostic.requiredBy)}.`,
+    `${displaySymbol(diagnostic.requiredBy)} requires ${diagnostic.requiredContext}.`,
     "",
     "No matching rationale or memory found.",
     formatCausedBy(diagnostic.causedBy)
@@ -4151,7 +4709,7 @@ function formatInvalidContextTargetDiagnostic(
   return [
     "error: invalid context target",
     "",
-    `${diagnostic.contextKind} ${diagnostic.name} applies to ${diagnostic.targetKind} ${diagnostic.target},`,
+    `${diagnostic.contextKind} ${displaySymbol(diagnostic.name)} applies to ${diagnostic.targetKind} ${displaySymbol(diagnostic.target)},`,
     "but that target is not declared.",
     formatCausedBy(diagnostic.causedBy)
   ].join("\n");
@@ -4175,8 +4733,8 @@ function formatMissingRequiredDescriptionDiagnostic(
   return [
     "error: missing required description",
     "",
-    `${diagnostic.targetKind} ${diagnostic.target} has shape ${diagnostic.requiredBy}.`,
-    `${diagnostic.requiredBy} requires a description.`,
+    `${diagnostic.targetKind} ${displaySymbol(diagnostic.target)} has shape ${displaySymbol(diagnostic.requiredBy)}.`,
+    `${displaySymbol(diagnostic.requiredBy)} requires a description.`,
     formatCausedBy(diagnostic.causedBy)
   ].join("\n");
 }
@@ -4187,7 +4745,7 @@ function formatGuardedShapeChangedDiagnostic(
   return [
     "error: guarded shape changed",
     "",
-    `${diagnostic.targetKind} ${diagnostic.target} is protected by ${diagnostic.guardKind} ${diagnostic.guard}.`,
+    `${diagnostic.targetKind} ${displaySymbol(diagnostic.target)} is protected by ${diagnostic.guardKind} ${displaySymbol(diagnostic.guard)}.`,
     "This change modifies the guarded target.",
     "",
     "Required:",
@@ -4246,7 +4804,7 @@ function formatFingerprintInfo(fingerprint: FingerprintInfo): string {
 }
 
 function formatTerm(effect: string, target: string): string {
-  return target ? `${effect}<${target}>` : effect;
+  return target ? `${effect}<${displaySymbol(target)}>` : effect;
 }
 
 function termKey(term: TermInfo): string {
@@ -4308,7 +4866,8 @@ function describeProvenance(prov: Provenance | undefined): string {
   if (!prov) {
     return "";
   }
-  return prov.filePath ? `${prov.filePath}: ${prov.label}` : prov.label;
+  const label = prov.label.replace(/\b[A-Za-z_][\w.]*::/g, "");
+  return prov.filePath ? `${prov.filePath}: ${label}` : label;
 }
 
 function isPreludeTrait(trait: TraitInfo | undefined): boolean {
@@ -4321,6 +4880,8 @@ function isPreludeTrait(trait: TraitInfo | undefined): boolean {
 function preludeTraitInfo(trait: PreludeTraitDefinition): TraitInfo {
   return {
     name: trait.name,
+    localName: trait.name,
+    moduleName: "",
     typeParams: [...trait.typeParams],
     finalForbids: trait.finalForbids.map((forbid) => {
       const target = forbid.target ? `<${forbid.target}>` : "";

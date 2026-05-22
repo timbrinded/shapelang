@@ -1,5 +1,7 @@
 module shape.language
 
+import shape.checker
+
 resource DocsShapeBlock
 
 resource GeneratedAst
@@ -130,7 +132,7 @@ memory ParseDocumentContract : RefactorConstraint<fn ShapeParser.parseShapeModul
   applies_to fn ShapeParser.parseShapeModule
   status Explained
   confidence High
-  summary "Parser output must preserve Langium document state, source URI, and parse diagnostics for downstream checker and editor use."
+  summary "Parser output must preserve Langium document state, source URI, module-qualified references, candidate effect syntax, and parse diagnostics for downstream checker and editor use."
   owner ShapeMaintainers
   protects shape ParseContract
   guards on_change require ReEvaluation<Self>

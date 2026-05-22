@@ -23,6 +23,7 @@ export type ShapeKeywordNames =
     | "->"
     | "."
     | ":"
+    | "::"
     | "<"
     | ">"
     | "add"
@@ -34,6 +35,7 @@ export type ShapeKeywordNames =
     | "binding"
     | "callbacks"
     | "calls"
+    | "candidate"
     | "change"
     | "complete"
     | "component"
@@ -43,6 +45,7 @@ export type ShapeKeywordNames =
     | "coordinated_call"
     | "decided_on"
     | "description"
+    | "effect"
     | "effects"
     | "evidence"
     | "except"
@@ -70,6 +73,7 @@ export type ShapeKeywordNames =
     | "owner"
     | "owns"
     | "paths"
+    | "pin"
     | "protects"
     | "provides"
     | "rationale"
@@ -277,6 +281,97 @@ export function isBindingWhenChangedDecl(item: unknown): item is BindingWhenChan
     return reflection.isInstance(item, BindingWhenChangedDecl.$type);
 }
 
+export interface CandidateEffectAnchorDecl extends langium.AstNode {
+    readonly $container: CandidateEffectDecl;
+    readonly $type: 'CandidateEffectAnchorDecl';
+    provider: QualifiedName;
+    target: TypeRef;
+    value: string;
+}
+
+export const CandidateEffectAnchorDecl = {
+    $type: 'CandidateEffectAnchorDecl',
+    provider: 'provider',
+    target: 'target',
+    value: 'value'
+} as const;
+
+export function isCandidateEffectAnchorDecl(item: unknown): item is CandidateEffectAnchorDecl {
+    return reflection.isInstance(item, CandidateEffectAnchorDecl.$type);
+}
+
+export interface CandidateEffectConfidenceDecl extends langium.AstNode {
+    readonly $container: CandidateEffectDecl;
+    readonly $type: 'CandidateEffectConfidenceDecl';
+    value: string;
+}
+
+export const CandidateEffectConfidenceDecl = {
+    $type: 'CandidateEffectConfidenceDecl',
+    value: 'value'
+} as const;
+
+export function isCandidateEffectConfidenceDecl(item: unknown): item is CandidateEffectConfidenceDecl {
+    return reflection.isInstance(item, CandidateEffectConfidenceDecl.$type);
+}
+
+export interface CandidateEffectDecl extends langium.AstNode {
+    readonly $container: ShapeModule;
+    readonly $type: 'CandidateEffectDecl';
+    members: Array<CandidateEffectMember>;
+    name: string;
+}
+
+export const CandidateEffectDecl = {
+    $type: 'CandidateEffectDecl',
+    members: 'members',
+    name: 'name'
+} as const;
+
+export function isCandidateEffectDecl(item: unknown): item is CandidateEffectDecl {
+    return reflection.isInstance(item, CandidateEffectDecl.$type);
+}
+
+export interface CandidateEffectFunctionDecl extends langium.AstNode {
+    readonly $container: CandidateEffectDecl;
+    readonly $type: 'CandidateEffectFunctionDecl';
+    function: QualifiedTargetName;
+}
+
+export const CandidateEffectFunctionDecl = {
+    $type: 'CandidateEffectFunctionDecl',
+    function: 'function'
+} as const;
+
+export function isCandidateEffectFunctionDecl(item: unknown): item is CandidateEffectFunctionDecl {
+    return reflection.isInstance(item, CandidateEffectFunctionDecl.$type);
+}
+
+export type CandidateEffectMember = CandidateEffectAnchorDecl | CandidateEffectConfidenceDecl | CandidateEffectFunctionDecl | CandidateEffectTermDecl | SourceDecl;
+
+export const CandidateEffectMember = {
+    $type: 'CandidateEffectMember'
+} as const;
+
+export function isCandidateEffectMember(item: unknown): item is CandidateEffectMember {
+    return reflection.isInstance(item, CandidateEffectMember.$type);
+}
+
+export interface CandidateEffectTermDecl extends langium.AstNode {
+    readonly $container: CandidateEffectDecl;
+    readonly $type: 'CandidateEffectTermDecl';
+    term: EffectTerm;
+}
+
+export const CandidateEffectTermDecl = {
+    $type: 'CandidateEffectTermDecl',
+    term: 'term'
+} as const;
+
+export function isCandidateEffectTermDecl(item: unknown): item is CandidateEffectTermDecl {
+    return reflection.isInstance(item, CandidateEffectTermDecl.$type);
+}
+
 export interface ChangeDecl extends langium.AstNode {
     readonly $container: ShapeModule;
     readonly $type: 'ChangeDecl';
@@ -422,7 +517,7 @@ export function isDecidedOnDecl(item: unknown): item is DecidedOnDecl {
     return reflection.isInstance(item, DecidedOnDecl.$type);
 }
 
-export type Declaration = AttestationDecl | BindingDecl | ChangeDecl | ComponentDecl | ImplementationDecl | MemoryDecl | RationaleDecl | ReevaluationDecl | RelationDecl | ResourceDecl | RuleDecl | TraitDecl;
+export type Declaration = AttestationDecl | BindingDecl | CandidateEffectDecl | ChangeDecl | ComponentDecl | ImplementationDecl | MemoryDecl | RationaleDecl | ReevaluationDecl | RelationDecl | ResourceDecl | RuleDecl | TraitDecl;
 
 export const Declaration = {
     $type: 'Declaration'
@@ -494,7 +589,7 @@ export function isEffectsDecl(item: unknown): item is EffectsDecl {
 }
 
 export interface EffectTerm extends langium.AstNode {
-    readonly $container: EffectEntry | FunctionRequiresDecl | GrantsDecl;
+    readonly $container: CandidateEffectTermDecl | EffectEntry | FunctionRequiresDecl | GrantsDecl;
     readonly $type: 'EffectTerm';
     name: string;
     target?: TypeRef;
@@ -1365,7 +1460,7 @@ export function isShapeTraitList(item: unknown): item is ShapeTraitList {
 }
 
 export interface SourceDecl extends langium.AstNode {
-    readonly $container: AddFunctionChange | AttestationDecl | FunctionSummary | ModifyFunctionChange;
+    readonly $container: AddFunctionChange | AttestationDecl | CandidateEffectDecl | FunctionSummary | ModifyFunctionChange;
     readonly $type: 'SourceDecl';
     ref: SourceRef;
 }
@@ -1575,9 +1670,9 @@ export function isTypeParamList(item: unknown): item is TypeParamList {
 }
 
 export interface TypeRef extends langium.AstNode {
-    readonly $container: ComponentDecl | ConformsToDecl | EffectPattern | EffectTerm | OwnsDecl | ResourceDecl | RuleForbidProvidesDecl | ShapeTraitList;
+    readonly $container: CandidateEffectAnchorDecl | ComponentDecl | ConformsToDecl | EffectPattern | EffectTerm | OwnsDecl | ResourceDecl | RuleForbidProvidesDecl | ShapeTraitList;
     readonly $type: 'TypeRef';
-    name: string;
+    name: QualifiedTargetName;
 }
 
 export const TypeRef = {
@@ -1629,6 +1724,12 @@ export type ShapeAstType = {
     BindingMember: BindingMember
     BindingRequireChangedDecl: BindingRequireChangedDecl
     BindingWhenChangedDecl: BindingWhenChangedDecl
+    CandidateEffectAnchorDecl: CandidateEffectAnchorDecl
+    CandidateEffectConfidenceDecl: CandidateEffectConfidenceDecl
+    CandidateEffectDecl: CandidateEffectDecl
+    CandidateEffectFunctionDecl: CandidateEffectFunctionDecl
+    CandidateEffectMember: CandidateEffectMember
+    CandidateEffectTermDecl: CandidateEffectTermDecl
     ChangeDecl: ChangeDecl
     ChangeEntry: ChangeEntry
     CompleteEffects: CompleteEffects
@@ -1842,6 +1943,67 @@ export class ShapeAstReflection extends langium.AbstractAstReflection {
                 }
             },
             superTypes: [BindingMember.$type]
+        },
+        CandidateEffectAnchorDecl: {
+            name: CandidateEffectAnchorDecl.$type,
+            properties: {
+                provider: {
+                    name: CandidateEffectAnchorDecl.provider
+                },
+                target: {
+                    name: CandidateEffectAnchorDecl.target
+                },
+                value: {
+                    name: CandidateEffectAnchorDecl.value
+                }
+            },
+            superTypes: [CandidateEffectMember.$type]
+        },
+        CandidateEffectConfidenceDecl: {
+            name: CandidateEffectConfidenceDecl.$type,
+            properties: {
+                value: {
+                    name: CandidateEffectConfidenceDecl.value
+                }
+            },
+            superTypes: [CandidateEffectMember.$type]
+        },
+        CandidateEffectDecl: {
+            name: CandidateEffectDecl.$type,
+            properties: {
+                members: {
+                    name: CandidateEffectDecl.members,
+                    defaultValue: []
+                },
+                name: {
+                    name: CandidateEffectDecl.name
+                }
+            },
+            superTypes: [Declaration.$type]
+        },
+        CandidateEffectFunctionDecl: {
+            name: CandidateEffectFunctionDecl.$type,
+            properties: {
+                function: {
+                    name: CandidateEffectFunctionDecl.function
+                }
+            },
+            superTypes: [CandidateEffectMember.$type]
+        },
+        CandidateEffectMember: {
+            name: CandidateEffectMember.$type,
+            properties: {
+            },
+            superTypes: []
+        },
+        CandidateEffectTermDecl: {
+            name: CandidateEffectTermDecl.$type,
+            properties: {
+                term: {
+                    name: CandidateEffectTermDecl.term
+                }
+            },
+            superTypes: [CandidateEffectMember.$type]
         },
         ChangeDecl: {
             name: ChangeDecl.$type,
@@ -2590,7 +2752,7 @@ export class ShapeAstReflection extends langium.AbstractAstReflection {
                     name: SourceDecl.ref
                 }
             },
-            superTypes: []
+            superTypes: [CandidateEffectMember.$type]
         },
         SourceRef: {
             name: SourceRef.$type,

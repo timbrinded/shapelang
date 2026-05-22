@@ -90,6 +90,32 @@ describe("Shape parser", () => {
     expect(parsed.ok).toBe(true);
   });
 
+  test("parses effect candidate declarations", () => {
+    const parsed = parseShapeModule(`
+      module shape.generated.ast.audit
+
+      resource AuditEvent
+      resource AuditStoreAppendEventAstAnchor {
+        fingerprint ast.semantic_subtree_v1("sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+      }
+
+      component AuditStore {
+        fn appendEvent
+          effects unknown
+      }
+
+      effect candidate AppendEventCandidate {
+        fn AuditStore.appendEvent
+        effect Append<AuditEvent>
+        source ts("src/audit/store.ts:8-14")
+        confidence low
+        pin AuditStoreAppendEventAstAnchor fingerprint ast.semantic_subtree_v1("sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+      }
+    `);
+
+    expect(parsed.ok).toBe(true);
+  });
+
   test("parses memory guard declarations and function annotations", () => {
     const parsed = parseShapeModule(`
       module gateway
@@ -160,6 +186,108 @@ describe("Shape parser", () => {
 });
 
 describe("Shape checker", () => {
+  test("keeps declarations module scoped and resolves imports explicitly", () => {
+    const left = parseShapeModule(`
+      module left
+      resource Shared
+    `);
+    const right = parseShapeModule(`
+      module right
+      resource Shared
+    `);
+    const consumer = parseShapeModule(`
+      module consumer
+      import left
+
+      component Reader {
+        owns Shared
+        grants Read<Shared>
+        fn readShared
+          effects complete {
+            Read<Shared>
+          }
+      }
+    `);
+
+    expect(left.ok).toBe(true);
+    expect(right.ok).toBe(true);
+    expect(consumer.ok).toBe(true);
+    if (!left.ok || !right.ok || !consumer.ok) {
+      return;
+    }
+
+    const result = checkShapeModules([left.module, right.module, consumer.module], {
+      includeFacts: true
+    });
+
+    expect(result.exitCode).toBe(0);
+    expect(result.facts).toContainEqual(
+      expect.objectContaining({ kind: "resource", name: "left::Shared" })
+    );
+    expect(result.facts).toContainEqual(
+      expect.objectContaining({ kind: "resource", name: "right::Shared" })
+    );
+    expect(result.facts).toContainEqual(
+      expect.objectContaining({
+        kind: "owns",
+        component: "consumer::Reader",
+        resource: "left::Shared"
+      })
+    );
+  });
+
+  test("lowers effect candidate facts and trusts generated AST unknown effects only from generated files", () => {
+    const parsed = parseShapeModule(`
+      module shape.generated.ast.audit
+
+      resource AuditEvent
+      resource AuditStoreAppendEventAstAnchor {
+        fingerprint ast.semantic_subtree_v1("sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+      }
+
+      component AuditStore {
+        fn appendEvent
+          source ts("src/audit/store.ts:8-14")
+          effects unknown
+      }
+
+      effect candidate AppendEventCandidate {
+        fn AuditStore.appendEvent
+        effect Append<AuditEvent>
+        source ts("src/audit/store.ts:8-14")
+        confidence low
+        pin AuditStoreAppendEventAstAnchor fingerprint ast.semantic_subtree_v1("sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+      }
+    `);
+
+    expect(parsed.ok).toBe(true);
+    if (!parsed.ok) {
+      return;
+    }
+
+    const untrusted = checkShapeModules([parsed.module]);
+    expect(untrusted.diagnostics).toContainEqual(
+      expect.objectContaining({ kind: "unknown_effects" })
+    );
+
+    const trusted = checkShapeModules(
+      [{ module: parsed.module, filePath: "shape/generated/ast/audit.shape" }],
+      { includeFacts: true }
+    );
+    expect(trusted.exitCode).toBe(0);
+    expect(trusted.facts).toContainEqual(
+      expect.objectContaining({
+        kind: "candidate_effect",
+        name: "shape.generated.ast.audit::AppendEventCandidate",
+        functionTarget: "shape.generated.ast.audit::AuditStore.appendEvent",
+        effect: "Append",
+        target: "shape.generated.ast.audit::AuditEvent",
+        anchor: "shape.generated.ast.audit::AuditStoreAppendEventAstAnchor"
+      })
+    );
+    expect(trusted.facts?.some((fact) => fact.kind === "shape_update_for")).toBe(false);
+  });
+
   test("passes append-only append fixture", async () => {
     const result = await checkShapeFiles([
       resolve(repoRoot, "fixtures/pass/append_only_append/audit.shape")
@@ -1409,15 +1537,15 @@ describe("Shape checker", () => {
     expect(result.facts).toContainEqual(
       expect.objectContaining({
         kind: "hyperedge",
-        name: "GatewayCallsGhost",
+        name: "deps::GatewayCallsGhost",
         relationKind: "calls"
       })
     );
     expect(result.facts).toContainEqual(
       expect.objectContaining({
         kind: "hyperedge_member",
-        hyperedge: "GatewayCallsGhost",
-        endpoint: "Gateway",
+        hyperedge: "deps::GatewayCallsGhost",
+        endpoint: "deps::Gateway",
         index: 0
       })
     );
@@ -1679,15 +1807,15 @@ describe("Shape checker", () => {
     expect(result.facts).toContainEqual(
       expect.objectContaining({
         kind: "resource_fingerprint",
-        resource: "AuditStoreAstAnchor",
+        resource: "generated.audit::AuditStoreAstAnchor",
         provider: "ast.semantic_subtree_v1"
       })
     );
     expect(result.facts).toContainEqual(
       expect.objectContaining({
         kind: "hyperedge_fingerprint_expectation",
-        hyperedge: "AuditStoreGeneratedFromAnchor",
-        endpoint: "AuditStoreAstAnchor"
+        hyperedge: "generated.audit::AuditStoreGeneratedFromAnchor",
+        endpoint: "generated.audit::AuditStoreAstAnchor"
       })
     );
     expect(explainShapeModules([parsed.module], "AuditStoreAstAnchor")).toContain("fingerprints:");
@@ -2026,16 +2154,16 @@ describe("Shape checker", () => {
     expect(result.facts).toContainEqual(
       expect.objectContaining({
         kind: "hyperedge_member",
-        hyperedge: "GatewayCallsAudit",
-        endpoint: "Gateway",
+        hyperedge: "deps::GatewayCallsAudit",
+        endpoint: "deps::Gateway",
         role: "caller"
       })
     );
     expect(result.facts).toContainEqual(
       expect.objectContaining({
         kind: "hyperedge_member",
-        hyperedge: "GatewayCallsAudit",
-        endpoint: "AuditStore",
+        hyperedge: "deps::GatewayCallsAudit",
+        endpoint: "deps::AuditStore",
         role: "callee"
       })
     );
@@ -2163,7 +2291,7 @@ describe("Shape checker", () => {
       expect.objectContaining({
         kind: "shape_trait",
         trait: "RequiresDescription",
-        target: "Gateway.derivePolicyDecision"
+        target: "gateway::Gateway.derivePolicyDecision"
       })
     );
     expect(result.facts).toContainEqual(
@@ -2920,6 +3048,29 @@ reevaluation DecisionShapeRechecked {
 }
 `);
   });
+
+  test("formats effect candidate syntax canonically", () => {
+    const result = formatShapeSource(`
+      module shape.generated.ast.audit
+      resource AuditEvent
+      resource AuditStoreAppendEventAstAnchor { fingerprint ast.semantic_subtree_v1('sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa') }
+      component AuditStore { fn appendEvent effects unknown }
+      effect candidate AppendEventCandidate { confidence low source ts('src/audit/store.ts:8-14') effect Append<AuditEvent> fn AuditStore.appendEvent pin AuditStoreAppendEventAstAnchor fingerprint ast.semantic_subtree_v1('sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa') }
+    `);
+
+    expect(result.ok).toBe(true);
+    if (!result.ok) {
+      return;
+    }
+
+    expect(result.formatted).toContain("effect candidate AppendEventCandidate");
+    expect(result.formatted).toContain("  fn AuditStore.appendEvent");
+    expect(result.formatted).toContain("  effect Append<AuditEvent>");
+    expect(result.formatted).toContain("  confidence low");
+    expect(result.formatted).toContain(
+      '  pin AuditStoreAppendEventAstAnchor fingerprint ast.semantic_subtree_v1("sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")'
+    );
+  });
 });
 
 describe("Shape authoring assistant", () => {
@@ -3240,6 +3391,7 @@ describe("AST to Shape generation", () => {
 
     const authoredPin = parseShapeModule(`
       module reviewed.main
+      import shape.generated.ast.main
 
       relation ReviewedMainEvidence {
         kind generated_from
@@ -3254,12 +3406,12 @@ describe("AST to Shape generation", () => {
 
     const generatedVersionOne = parseShapeModule(
       generateShapeFromCodeSemanticGraph(versionOne.value, {
-        moduleName: "generated.main"
+        moduleName: "shape.generated.ast.main"
       }).semanticShape
     );
     const generatedVersionTwo = parseShapeModule(
       generateShapeFromCodeSemanticGraph(versionTwo.value, {
-        moduleName: "generated.main"
+        moduleName: "shape.generated.ast.main"
       }).semanticShape
     );
     expect(generatedVersionOne.ok).toBe(true);
@@ -3268,18 +3420,24 @@ describe("AST to Shape generation", () => {
       throw new Error("generated fingerprint Shape did not parse");
     }
 
-    const matching = checkShapeModules([generatedVersionOne.module, authoredPin.module]);
+    const matching = checkShapeModules([
+      { module: generatedVersionOne.module, filePath: "shape/generated/ast/main.shape" },
+      { module: authoredPin.module }
+    ]);
     expect(
       matching.diagnostics.some((diagnostic) => diagnostic.kind === "fingerprint_mismatch")
     ).toBe(false);
 
-    const stale = checkShapeModules([generatedVersionTwo.module, authoredPin.module]);
+    const stale = checkShapeModules([
+      { module: generatedVersionTwo.module, filePath: "shape/generated/ast/main.shape" },
+      { module: authoredPin.module }
+    ]);
     const staleOutput = formatDiagnostics(stale);
     expect(stale.diagnostics).toContainEqual(
       expect.objectContaining({
         kind: "fingerprint_mismatch",
-        relation: "ReviewedMainEvidence",
-        endpoint: firstAnchor.name,
+        relation: "reviewed.main::ReviewedMainEvidence",
+        endpoint: `shape.generated.ast.main::${firstAnchor.name}`,
         expected: firstAnchor.fingerprint.value,
         actual: secondAnchor.fingerprint.value
       })
@@ -3488,6 +3646,7 @@ describe("AST to Shape generation", () => {
 
     const authoredPin = parseShapeModule(`
       module reviewed.main
+      import shape.generated.ast.main
 
       relation ReviewedMainEvidence {
         kind generated_from
@@ -3502,7 +3661,7 @@ describe("AST to Shape generation", () => {
 
     const generatedVersionTwo = parseShapeModule(
       generateShapeFromCodeSemanticGraph(versionTwo, {
-        moduleName: "generated.main"
+        moduleName: "shape.generated.ast.main"
       }).semanticShape
     );
     expect(generatedVersionTwo.ok).toBe(true);
@@ -3510,13 +3669,16 @@ describe("AST to Shape generation", () => {
       throw new Error("generated renamed Shape did not parse");
     }
 
-    const result = checkShapeModules([generatedVersionTwo.module, authoredPin.module]);
+    const result = checkShapeModules([
+      { module: generatedVersionTwo.module, filePath: "shape/generated/ast/main.shape" },
+      { module: authoredPin.module }
+    ]);
     const output = formatDiagnostics(result);
     expect(result.diagnostics).toContainEqual(
       expect.objectContaining({
         kind: "unknown_name",
         nameKind: "relation_endpoint",
-        name: firstAnchor.name
+        name: `reviewed.main::${firstAnchor.name}`
       })
     );
     expect(

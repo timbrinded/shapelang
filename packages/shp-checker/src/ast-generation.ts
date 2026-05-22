@@ -133,6 +133,18 @@ export type CodeRelation = {
   summary: string;
 };
 
+export type CodeCandidateEffect = {
+  id: string;
+  name: string;
+  functionId: string;
+  effect: string;
+  targetResourceId: string;
+  sourceRef: string;
+  confidence: SemanticConfidence;
+  anchorId?: string;
+  summary: string;
+};
+
 export type CodeSemanticGraph = {
   files: RawAstFile[];
   rawNodes: RawAstNode[];
@@ -141,6 +153,7 @@ export type CodeSemanticGraph = {
   resources: CodeResource[];
   anchors: CodeAstAnchor[];
   relations: CodeRelation[];
+  candidateEffects: CodeCandidateEffect[];
   diagnostics: AstGenerationDiagnostic[];
 };
 
@@ -377,13 +390,17 @@ export function generateShapeFromCodeSemanticGraph(
   graph: CodeSemanticGraph,
   options: GenerateShapeOptions = {}
 ): GeneratedShapeOutput {
-  const moduleName = normalizeModuleName(options.moduleName ?? "generated.ast");
+  const moduleName = normalizeGeneratedModuleName(options.moduleName ?? "generated.ast");
   const semanticShape = formatSemanticShape(graph, moduleName, options.includeAstLayer === true);
   const rawShape =
     options.rawModuleName !== undefined
       ? formatRawAstShape(graph, normalizeModuleName(options.rawModuleName))
       : undefined;
   return { semanticShape, rawShape };
+}
+
+export function normalizeGeneratedModuleName(moduleName: string): string {
+  return normalizeModuleName(moduleName);
 }
 
 export async function generateShapeFromSourceFiles(
@@ -428,6 +445,7 @@ function emptyGraph(): CodeSemanticGraph {
     resources: [],
     anchors: [],
     relations: [],
+    candidateEffects: [],
     diagnostics: []
   };
 }
@@ -889,6 +907,7 @@ function addSemanticProjection(graph: CodeSemanticGraph): void {
     }
 
     addResolvedReceiverCalls(graph, fileNodes, containersByName, nodeById);
+    addCandidateEffects(graph, fileNodes);
   }
 }
 
@@ -1358,6 +1377,87 @@ function addResolvedReceiverCalls(
   }
 }
 
+function addCandidateEffects(graph: CodeSemanticGraph, fileNodes: RawAstNode[]): void {
+  const nodeById = new Map(fileNodes.map((node) => [node.id, node]));
+  const resourcesByName = new Map<string, CodeResource>();
+  for (const resource of graph.resources) {
+    resourcesByName.set(resource.name.toLowerCase(), resource);
+    resourcesByName.set(originalName(resource.name).toLowerCase(), resource);
+  }
+
+  for (const fn of graph.functions) {
+    if (fn.name === "constructor") {
+      continue;
+    }
+    const node = fn.nodeId ? nodeById.get(fn.nodeId) : undefined;
+    if (!node?.text) {
+      continue;
+    }
+    const effect = candidateEffectName(fn.name, node.text);
+    if (!effect) {
+      continue;
+    }
+    const mentionedResources = [...new Set(candidateResourceMentions(node.text, resourcesByName))];
+    for (const resource of mentionedResources) {
+      const anchorId = fn.anchorId;
+      const name = uniqueSemanticName(
+        shapeTypeName(`${fn.name}_${effect}_${resource.name}_CandidateEffect`),
+        graph.candidateEffects.map((item) => item.name),
+        `${fn.id}_${resource.id}_${effect}`
+      );
+      const id = stableShapeId(
+        `candidate_effect_${fn.id}_${resource.id}_${effect}`,
+        "CandidateEffect"
+      );
+      if (graph.candidateEffects.some((item) => item.id === id)) {
+        continue;
+      }
+      graph.candidateEffects.push({
+        id,
+        name,
+        functionId: fn.id,
+        effect,
+        targetResourceId: resource.id,
+        sourceRef: fn.sourceRef,
+        confidence: "low",
+        anchorId,
+        summary: `${fn.name} may ${effect.toLowerCase()} ${resource.name}; generated from ${fn.sourceRef}.`
+      });
+    }
+  }
+}
+
+function candidateResourceMentions(
+  text: string,
+  resourcesByName: Map<string, CodeResource>
+): CodeResource[] {
+  const resources: CodeResource[] = [];
+  const tokens = new Set(semanticTokens(text).map((token) => token.toLowerCase()));
+  for (const [name, resource] of resourcesByName) {
+    if (tokens.has(name.toLowerCase())) {
+      resources.push(resource);
+    }
+  }
+  return resources;
+}
+
+function candidateEffectName(functionName: string, text: string): string | undefined {
+  const haystack = `${functionName} ${text}`.toLowerCase();
+  if (/\b(append|add|insert|create|push|write|save|persist)\b/.test(haystack)) {
+    return "Append";
+  }
+  if (/\b(update|set|mutate|replace)\b/.test(haystack)) {
+    return "Update";
+  }
+  if (/\b(delete|remove|purge|clear|drop)\b/.test(haystack)) {
+    return "Delete";
+  }
+  if (/\b(read|get|load|fetch|find|list|query)\b/.test(haystack)) {
+    return "Read";
+  }
+  return undefined;
+}
+
 function collectFieldTypes(
   nodes: RawAstNode[],
   nodeById: Map<string, RawAstNode>
@@ -1494,6 +1594,7 @@ function formatSemanticShape(
     );
   }
 
+  appendCandidateEffects(lines, graph);
   appendGeneratedFromRelations(lines, graph, seenRelationNames);
 
   if (includeRawLayer) {
@@ -1501,6 +1602,41 @@ function formatSemanticShape(
   }
 
   return formatGeneratedShape(`${lines.join("\n")}\n`, `${moduleName}.shape`);
+}
+
+function appendCandidateEffects(lines: string[], graph: CodeSemanticGraph): void {
+  const functionById = new Map(graph.functions.map((fn) => [fn.id, fn]));
+  const ownerById = new Map(graph.containers.map((owner) => [owner.id, owner]));
+  const resourceById = new Map(graph.resources.map((resource) => [resource.id, resource]));
+  const anchorById = new Map(graph.anchors.map((anchor) => [anchor.id, anchor]));
+
+  for (const candidate of [...graph.candidateEffects].sort((left, right) =>
+    left.name.localeCompare(right.name)
+  )) {
+    const fn = functionById.get(candidate.functionId);
+    const owner = fn ? ownerById.get(fn.ownerId) : undefined;
+    const resource = resourceById.get(candidate.targetResourceId);
+    const anchor = candidate.anchorId ? anchorById.get(candidate.anchorId) : undefined;
+    if (!fn || !owner || !resource) {
+      continue;
+    }
+    lines.push(
+      "",
+      `effect candidate ${candidate.name} {`,
+      `  fn ${owner.name}.${fn.name}`,
+      `  effect ${candidate.effect}<${resource.name}>`,
+      `  source ${sourceLanguage(fn.language)}(${quoteShapeString(candidate.sourceRef)})`,
+      `  confidence ${candidate.confidence}`,
+      ...(anchor
+        ? [
+            `  pin ${anchor.name} fingerprint ${anchor.fingerprint.provider}(${quoteShapeString(
+              anchor.fingerprint.value
+            )})`
+          ]
+        : []),
+      "}"
+    );
+  }
 }
 
 function appendGeneratedFromRelations(

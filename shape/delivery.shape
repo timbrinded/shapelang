@@ -2,6 +2,8 @@ module shape.delivery
 
 import shape.checker
 
+import shape.language
+
 import shape.tooling
 
 resource CiWorkflow
@@ -179,6 +181,14 @@ component DocsSite {
         evidence md("docs-site/src/content/docs/reference/local-development.md")
       Read<DocsContent>
         evidence ts("docs-site/scripts/verify-shape-blocks.ts")
+      Update<DocsContent>
+        evidence md("docs-site/src/content/docs/concepts/ast-generation.md")
+      Update<DocsContent>
+        evidence md("docs-site/src/content/docs/inside-shape/langium-grammar.md")
+      Update<DocsContent>
+        evidence md("docs-site/src/content/docs/reference/cli.md")
+      Update<DocsContent>
+        evidence md("docs-site/src/content/docs/reference/diagnostics.md")
       Update<DocsContent>
         evidence md("docs-site/src/content/docs/reference/language-syntax.md")
     }

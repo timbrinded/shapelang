@@ -19,13 +19,14 @@ The semantic draft maps stable code concepts into Shape:
 - high-confidence resolved calls become `relation kind calls`
 - compact `GeneratedAstAnchor` resources and `generated_from` relations point semantic claims back to syntax evidence
 - AST anchors carry `ast.semantic_subtree_v1` fingerprints so reviewed claims can pin exact syntax evidence without putting hashes in resource names
+- generated `effect candidate` declarations record machine-readable effect hints without claiming reviewed completeness
 - unresolved references stay out of prelude `calls`
 - every generated function uses `effects unknown`
 
-That last point is deliberate. A generated draft should be reviewable, not falsely complete.
+That last point is deliberate. A generated draft should be reviewable, not falsely complete. When generated drafts live under `shape/generated/ast` with `shape.generated.ast...` module names, `shp check` treats their unknown effects as candidate evidence. Authored `.shape` files still fail on `effects unknown`.
 
 ```shape
-module generated.audit
+module shape.generated.ast.audit
 
 trait GeneratedCandidate {
 }
@@ -41,6 +42,14 @@ component AuditStore : GeneratedCandidate {
   fn append_event
     source rust("src/audit/store.rs:20-22")
     effects unknown
+}
+
+effect candidate AppendEventAppendAuditEventCandidate {
+  fn AuditStore.append_event
+  effect Append<AuditEvent>
+  source rust("src/audit/store.rs:20-22")
+  confidence low
+  pin AuditStoreAppendEventAstAnchor fingerprint ast.semantic_subtree_v1("sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb")
 }
 
 implementation AuditStoreImpl {
@@ -64,7 +73,7 @@ relation AuditStoreGeneratedFromAuditStoreAstAnchor {
 }
 ```
 
-This parses as Shape, but `effects unknown` remains a checker-visible review blocker until a human or agent records reviewed effects.
+This parses as Shape. If the same draft is written under `shape/generated/ast`, it can also participate in `shp check` as candidate context while reviewed effects live in authored overlays.
 
 Generated fingerprint pins are draft-local examples and update whenever the draft is regenerated. To detect stale reviewed evidence, put the reviewed claim in an authored `.shape` file and keep its `expects ... fingerprint ...` value there. On a later regeneration, `shp check` compares the authored expectation with the current generated anchor resource.
 
@@ -82,6 +91,17 @@ shp ast json --module generated.audit --raw-out ast.raw.shape ast.json
 When enabled, AST files and nodes become generated resources, parent-child edges become `relation kind ast_child`, and node metadata is stored in `storage ast.node(...)`.
 
 Choose either `--include-ast-layer` for one combined stdout draft or `--raw-out PATH` for a sidecar raw trace. The two raw trace modes are mutually exclusive.
+
+## Checked generated files
+
+For durable agent context, generate one source-area-shaped file tree under `shape/generated/ast`:
+
+```bash
+shp ast source --language rust --out-dir shape/generated/ast src/audit/store.rs
+shp ast source --language rust --out-dir shape/generated/ast --check src/audit/store.rs
+```
+
+The manifest records generated modules and source inputs. The `--check` form regenerates in memory and fails when the checked-in generated files differ, which lets CI catch stale anchors, stale fingerprints, and missing generated context.
 
 ## JSON input adapter
 

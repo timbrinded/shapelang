@@ -17,7 +17,7 @@ import shared.resources
 resource AuditEvent : AppendOnly
 ```
 
-`module` is optional, but named modules make imports and diagnostics clearer.
+`module` is optional, but named modules make imports and diagnostics clearer. Declarations are scoped by module, so two modules may both declare `Store` without colliding. References resolve local declarations first and then explicit imports. Use `other.module::Name` when an authored claim should point at a specific module unambiguously.
 
 ## Top-level declarations
 
@@ -28,6 +28,7 @@ resource AuditEvent : AppendOnly
 trait AppendOnly<T: Resource> { ... }
 component AuditStore { ... }
 relation AuditWritePath { ... }
+effect candidate AppendEventCandidate { ... }
 implementation AuditStoreImpl { ... }
 binding CheckerDocs { ... }
 attest no_shape_change { ... }
@@ -95,6 +96,32 @@ component AuditStore {
 ```
 
 Function summaries support shape traits, `source`, optional `description`, optional `unsafe`, `effects complete`, `effects unknown`, function-level `requires` (capability term, used with `unsafe`), `reason`, and `expires`.
+
+Generated AST drafts may include candidate effect evidence. These declarations are not reviewed effect claims; they are machine-readable hints that agents can compare with authored `effects complete` summaries:
+
+```shape
+module shape.generated.ast.audit
+
+resource AuditEvent
+
+resource AuditStoreAppendEventAstAnchor {
+  fingerprint ast.semantic_subtree_v1("sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+}
+
+component AuditStore {
+  fn appendEvent
+    source ts("src/audit/store.ts:8-14")
+    effects unknown
+}
+
+effect candidate AppendEventCandidate {
+  fn AuditStore.appendEvent
+  effect Append<AuditEvent>
+  source ts("src/audit/store.ts:8-14")
+  confidence low
+  pin AuditStoreAppendEventAstAnchor fingerprint ast.semantic_subtree_v1("sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+}
+```
 
 ## Relations
 

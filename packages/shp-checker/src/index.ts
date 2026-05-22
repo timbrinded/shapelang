@@ -19,6 +19,7 @@ export {
   generateShapeFromAstJson,
   generateShapeFromCodeSemanticGraph,
   generateShapeFromSourceFiles,
+  normalizeGeneratedModuleName,
   parseSourceFilesToCodeSemanticGraph,
   type AstGenerationDiagnostic,
   type AstGenerationResult,

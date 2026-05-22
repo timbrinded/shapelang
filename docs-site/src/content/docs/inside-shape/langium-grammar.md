@@ -39,6 +39,7 @@ Top-level declarations currently include:
 | `trait` | Reusable constraints or capabilities, such as final forbidden effects. |
 | `component` | An owner of resources, authority grants, and function summaries. |
 | `relation` | A top-level structural hyperedge over components and resources, with `kind`, `connects`, and optional `roles`/`summary`. |
+| `effect candidate` | Generated, machine-readable effect evidence that can point at AST anchors without becoming a reviewed effect claim. |
 | `implementation` | Source path governance for coverage checks. |
 | `binding` | Changed-file coupling, such as requiring docs when Shape-affecting code changes. |
 | `change` | A patch to the architecture model. |
@@ -72,6 +73,7 @@ component AuditStore {
 This is intentionally more verbose than a compact policy DSL. The verbosity buys reviewability:
 
 - declarations have stable names
+- module-qualified references can disambiguate same-named declarations with `other.module::Name`
 - effects are explicit
 - source and evidence references have obvious targets
 - descriptions, rationale, memory, and reevaluations are typed blocks
@@ -99,6 +101,20 @@ The semantic checker gives those fields meaning:
 - `evidence` gives diagnostics and reviewers a source-backed trail.
 
 The grammar only says the structure is legal. The checker decides whether obligations are satisfied.
+
+Generated AST drafts may also emit candidate effect declarations:
+
+```shape
+effect candidate AppendAuditEventCandidate {
+  fn AuditStore.appendEvent
+  effect Append<AuditEvent>
+  source ts("src/audit/store.ts:8-14")
+  confidence low
+  pin AuditStoreAppendEventAstAnchor fingerprint ast.semantic_subtree_v1("sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+}
+```
+
+This syntax is intentionally separate from function `effects complete`: it carries evidence for review, while authored Shape remains responsible for final effect claims.
 
 ## Global Update Syntax
 
