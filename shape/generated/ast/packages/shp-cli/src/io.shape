@@ -1,0 +1,65 @@
+module shape.generated.ast.packages.shp_cli.src.io
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource IoModuleSetExitCodeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/io.ts:11-13")
+  fingerprint ast.semantic_subtree_v1("sha256:29e6d9c5808c1b1e07661b57271b5357a8ac331c7c008fb6e783507b0d95fd2d")
+}
+
+resource IoModuleStderrAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/io.ts:7-9")
+  fingerprint ast.semantic_subtree_v1("sha256:38ce8c2b388bd6e17cb1e8d6aa266c28fdd6599f89c3e3a93c11626746646504")
+}
+
+resource IoModuleStdoutAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/io.ts:3-5")
+  fingerprint ast.semantic_subtree_v1("sha256:4b466b9273bdac7f1c52116f3f80ea1bafecfea9f4aba6aab565149b473669ff")
+}
+
+component IoModule : GeneratedCandidate {
+  fn setExitCode
+    source ts("packages/shp-cli/src/io.ts:11-13")
+    effects unknown
+  fn stderr
+    source ts("packages/shp-cli/src/io.ts:7-9")
+    effects unknown
+  fn stdout
+    source ts("packages/shp-cli/src/io.ts:3-5")
+    effects unknown
+}
+
+relation IoModuleSetExitCodeGeneratedFromIoModuleSetExitCodeAstAnchor {
+  kind generated_from
+  connects IoModule -> IoModuleSetExitCodeAstAnchor
+  roles { IoModule as generated, IoModuleSetExitCodeAstAnchor as syntax }
+  expects IoModuleSetExitCodeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:29e6d9c5808c1b1e07661b57271b5357a8ac331c7c008fb6e783507b0d95fd2d")
+  summary "fn IoModule.setExitCode generated from typescript function_declaration at packages/shp-cli/src/io.ts:11-13."
+}
+
+relation IoModuleStderrGeneratedFromIoModuleStderrAstAnchor {
+  kind generated_from
+  connects IoModule -> IoModuleStderrAstAnchor
+  roles { IoModule as generated, IoModuleStderrAstAnchor as syntax }
+  expects IoModuleStderrAstAnchor fingerprint ast.semantic_subtree_v1("sha256:38ce8c2b388bd6e17cb1e8d6aa266c28fdd6599f89c3e3a93c11626746646504")
+  summary "fn IoModule.stderr generated from typescript function_declaration at packages/shp-cli/src/io.ts:7-9."
+}
+
+relation IoModuleStdoutGeneratedFromIoModuleStdoutAstAnchor {
+  kind generated_from
+  connects IoModule -> IoModuleStdoutAstAnchor
+  roles { IoModule as generated, IoModuleStdoutAstAnchor as syntax }
+  expects IoModuleStdoutAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4b466b9273bdac7f1c52116f3f80ea1bafecfea9f4aba6aab565149b473669ff")
+  summary "fn IoModule.stdout generated from typescript function_declaration at packages/shp-cli/src/io.ts:3-5."
+}
+
+implementation IoModuleImpl {
+  paths {
+    "packages/shp-cli/src/io.ts"
+  }
+  conforms_to IoModule
+}

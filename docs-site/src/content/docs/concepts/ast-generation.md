@@ -103,6 +103,16 @@ shp ast source --language rust --out-dir shape/generated/ast --check src/audit/s
 
 The manifest records generated modules and source inputs. The `--check` form regenerates in memory and fails when the checked-in generated files differ, which lets CI catch stale anchors, stale fingerprints, and missing generated context.
 
+This repository commits its own generated AST context under `shape/generated/ast`. Use:
+
+```bash
+bun run ast:generate
+bun run ast:check
+```
+
+Those scripts use tracked first-party source files only. They exclude dependency, build, and generated parser output such as `node_modules`, `dist`, `docs-site/dist`, `shape/generated`, and `packages/shp-checker/src/language/generated`.
+CI and release validation run `bun run ast:check`, so source changes that stale the committed AST context fail until the generated files are refreshed.
+
 ## JSON input adapter
 
 Use `shp ast json` when another tool already parsed the code. The JSON input must declare files, a root node, and a flat node list. Nested structure belongs in child nodes, not nested attributes, so every raw node can be accounted for deterministically. Semantic anchors require token/source text in the relevant node subtree so the same `ast.semantic_subtree_v1` provider can be computed; JSON that only supplies structural IDs for anchored nodes is rejected.

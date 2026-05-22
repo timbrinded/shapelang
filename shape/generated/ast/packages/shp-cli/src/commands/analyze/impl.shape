@@ -1,0 +1,33 @@
+module shape.generated.ast.packages.shp_cli.src.commands.analyze.impl
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource ImplModuleAnalyzeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/commands/analyze/impl.ts:15-46")
+  fingerprint ast.semantic_subtree_v1("sha256:0298fe506b534e3fd28061207e097f56fc4b001e504c067bde6df7e899d792a0")
+}
+
+component ImplModule : GeneratedCandidate {
+  fn analyze
+    source ts("packages/shp-cli/src/commands/analyze/impl.ts:15-46")
+    effects unknown
+}
+
+relation ImplModuleAnalyzeGeneratedFromImplModuleAnalyzeAstAnchor {
+  kind generated_from
+  connects ImplModule -> ImplModuleAnalyzeAstAnchor
+  roles { ImplModule as generated, ImplModuleAnalyzeAstAnchor as syntax }
+  expects ImplModuleAnalyzeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0298fe506b534e3fd28061207e097f56fc4b001e504c067bde6df7e899d792a0")
+  summary "fn ImplModule.analyze generated from typescript function_declaration at packages/shp-cli/src/commands/analyze/impl.ts:15-46."
+}
+
+implementation ImplModuleImpl {
+  paths {
+    "packages/shp-cli/src/commands/analyze/impl.ts"
+  }
+  conforms_to ImplModule
+}

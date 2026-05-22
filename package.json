@@ -8,6 +8,8 @@
   ],
   "type": "module",
   "scripts": {
+    "ast:check": "scripts/generate-ast-shapes.sh --check",
+    "ast:generate": "scripts/generate-ast-shapes.sh",
     "build:release": "scripts/build-release-assets.sh",
     "changed-files": "scripts/write-changed-files.sh changed.txt",
     "docs:build": "bun run --cwd docs-site build",

@@ -1,0 +1,97 @@
+module shape.generated.ast.packages.shp_cli.src.commands.graph.impl
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource ImplModuleGraphAllAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/commands/graph/impl.ts:15-24")
+  fingerprint ast.semantic_subtree_v1("sha256:0c88bfaba03e1ea5ab760decc0b55313e88d4245bb53783c796aeeb51f007f68")
+}
+
+resource ImplModuleGraphLegacyAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/commands/graph/impl.ts:49-66")
+  fingerprint ast.semantic_subtree_v1("sha256:097c47134985d04cb452d2b5216b6351b9b46c705b807f21f8a46fb505058ba1")
+}
+
+resource ImplModuleGraphShowAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/commands/graph/impl.ts:26-36")
+  fingerprint ast.semantic_subtree_v1("sha256:11c03526b3a0ff3670a1521f84be7f3d7e11305f00ba877f233daffc784d38f8")
+}
+
+resource ImplModuleGraphStatsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/commands/graph/impl.ts:38-47")
+  fingerprint ast.semantic_subtree_v1("sha256:24c57d10da53b4f2dd006481ac8f9aa3efc523aae01ba66220a1b78957ac5dd9")
+}
+
+resource ImplModuleResolveGraphArgsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/commands/graph/impl.ts:68-74")
+  fingerprint ast.semantic_subtree_v1("sha256:d4ad9595d343db6df1b0da90401af2d65bc8b185d3e24494b27b9ff6fa02b8bf")
+}
+
+component ImplModule : GeneratedCandidate {
+  fn graphAll
+    source ts("packages/shp-cli/src/commands/graph/impl.ts:15-24")
+    effects unknown
+  fn graphLegacy
+    source ts("packages/shp-cli/src/commands/graph/impl.ts:49-66")
+    effects unknown
+  fn graphShow
+    source ts("packages/shp-cli/src/commands/graph/impl.ts:26-36")
+    effects unknown
+  fn graphStats
+    source ts("packages/shp-cli/src/commands/graph/impl.ts:38-47")
+    effects unknown
+  fn resolveGraphArgs
+    source ts("packages/shp-cli/src/commands/graph/impl.ts:68-74")
+    effects unknown
+}
+
+relation ImplModuleGraphAllGeneratedFromImplModuleGraphAllAstAnchor {
+  kind generated_from
+  connects ImplModule -> ImplModuleGraphAllAstAnchor
+  roles { ImplModule as generated, ImplModuleGraphAllAstAnchor as syntax }
+  expects ImplModuleGraphAllAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0c88bfaba03e1ea5ab760decc0b55313e88d4245bb53783c796aeeb51f007f68")
+  summary "fn ImplModule.graphAll generated from typescript function_declaration at packages/shp-cli/src/commands/graph/impl.ts:15-24."
+}
+
+relation ImplModuleGraphLegacyGeneratedFromImplModuleGraphLegacyAstAnchor {
+  kind generated_from
+  connects ImplModule -> ImplModuleGraphLegacyAstAnchor
+  roles { ImplModule as generated, ImplModuleGraphLegacyAstAnchor as syntax }
+  expects ImplModuleGraphLegacyAstAnchor fingerprint ast.semantic_subtree_v1("sha256:097c47134985d04cb452d2b5216b6351b9b46c705b807f21f8a46fb505058ba1")
+  summary "fn ImplModule.graphLegacy generated from typescript function_declaration at packages/shp-cli/src/commands/graph/impl.ts:49-66."
+}
+
+relation ImplModuleGraphShowGeneratedFromImplModuleGraphShowAstAnchor {
+  kind generated_from
+  connects ImplModule -> ImplModuleGraphShowAstAnchor
+  roles { ImplModule as generated, ImplModuleGraphShowAstAnchor as syntax }
+  expects ImplModuleGraphShowAstAnchor fingerprint ast.semantic_subtree_v1("sha256:11c03526b3a0ff3670a1521f84be7f3d7e11305f00ba877f233daffc784d38f8")
+  summary "fn ImplModule.graphShow generated from typescript function_declaration at packages/shp-cli/src/commands/graph/impl.ts:26-36."
+}
+
+relation ImplModuleGraphStatsGeneratedFromImplModuleGraphStatsAstAnchor {
+  kind generated_from
+  connects ImplModule -> ImplModuleGraphStatsAstAnchor
+  roles { ImplModule as generated, ImplModuleGraphStatsAstAnchor as syntax }
+  expects ImplModuleGraphStatsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:24c57d10da53b4f2dd006481ac8f9aa3efc523aae01ba66220a1b78957ac5dd9")
+  summary "fn ImplModule.graphStats generated from typescript function_declaration at packages/shp-cli/src/commands/graph/impl.ts:38-47."
+}
+
+relation ImplModuleResolveGraphArgsGeneratedFromImplModuleResolveGraphArgsAstAnchor {
+  kind generated_from
+  connects ImplModule -> ImplModuleResolveGraphArgsAstAnchor
+  roles { ImplModule as generated, ImplModuleResolveGraphArgsAstAnchor as syntax }
+  expects ImplModuleResolveGraphArgsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d4ad9595d343db6df1b0da90401af2d65bc8b185d3e24494b27b9ff6fa02b8bf")
+  summary "fn ImplModule.resolveGraphArgs generated from typescript function_declaration at packages/shp-cli/src/commands/graph/impl.ts:68-74."
+}
+
+implementation ImplModuleImpl {
+  paths {
+    "packages/shp-cli/src/commands/graph/impl.ts"
+  }
+  conforms_to ImplModule
+}

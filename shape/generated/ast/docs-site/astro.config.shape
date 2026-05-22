@@ -1,0 +1,7 @@
+module shape.generated.ast.docs_site.astro_config
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}

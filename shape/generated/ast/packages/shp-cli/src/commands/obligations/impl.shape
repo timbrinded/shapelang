@@ -1,0 +1,33 @@
+module shape.generated.ast.packages.shp_cli.src.commands.obligations.impl
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource ImplModuleObligationsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/commands/obligations/impl.ts:8-16")
+  fingerprint ast.semantic_subtree_v1("sha256:3f88423336a70b1c883eebae90be69b0755820da1aad8711febe4794376762be")
+}
+
+component ImplModule : GeneratedCandidate {
+  fn obligations
+    source ts("packages/shp-cli/src/commands/obligations/impl.ts:8-16")
+    effects unknown
+}
+
+relation ImplModuleObligationsGeneratedFromImplModuleObligationsAstAnchor {
+  kind generated_from
+  connects ImplModule -> ImplModuleObligationsAstAnchor
+  roles { ImplModule as generated, ImplModuleObligationsAstAnchor as syntax }
+  expects ImplModuleObligationsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3f88423336a70b1c883eebae90be69b0755820da1aad8711febe4794376762be")
+  summary "fn ImplModule.obligations generated from typescript function_declaration at packages/shp-cli/src/commands/obligations/impl.ts:8-16."
+}
+
+implementation ImplModuleImpl {
+  paths {
+    "packages/shp-cli/src/commands/obligations/impl.ts"
+  }
+  conforms_to ImplModule
+}

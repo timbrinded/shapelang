@@ -1,0 +1,225 @@
+module shape.generated.ast.packages.shp_cli.src.commands.ast.impl
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource ImplModuleAstJsonAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/commands/ast/impl.ts:243-270")
+  fingerprint ast.semantic_subtree_v1("sha256:9fc2182af46eebe30ee4fb38a5127f38e7bbdf7eb00004bb4f86f94a7aa47fb3")
+}
+
+resource ImplModuleAstSourceAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/commands/ast/impl.ts:37-72")
+  fingerprint ast.semantic_subtree_v1("sha256:628818a2a972c02a9b7e89d9715aacf14da3f421d22d5f9265b86cea334c17b8")
+}
+
+resource ImplModuleChangedGeneratedFilesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/commands/ast/impl.ts:196-211")
+  fingerprint ast.semantic_subtree_v1("sha256:c071374256603d616fee3c8eaa5639dfd2e6c4e4df4539bee45cf6781735d772")
+}
+
+resource ImplModuleDiagnosticsExitCodeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/commands/ast/impl.ts:315-321")
+  fingerprint ast.semantic_subtree_v1("sha256:58c4beaf5d6c1b73aa7a324f8a136dd239aea30d6122eefa1ba97108d58532ec")
+}
+
+resource ImplModuleExistingGeneratedFilesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/commands/ast/impl.ts:222-241")
+  fingerprint ast.semantic_subtree_v1("sha256:ba11e443ba268aa56d38b387dc956e0d0989812d8671b3cb03a514092939aece")
+}
+
+resource ImplModuleExtraGeneratedFilesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/commands/ast/impl.ts:213-220")
+  fingerprint ast.semantic_subtree_v1("sha256:c14f43c4663b4dcaa1ccd4f019465782b9437f38c88363360f70c8a67ca77f86")
+}
+
+resource ImplModuleFormatAstDiagnosticsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/commands/ast/impl.ts:305-313")
+  fingerprint ast.semantic_subtree_v1("sha256:e203c2d5ec74afa09b73caf44e79254033f22099b9f5dd03484ee8853e8ef74e")
+}
+
+resource ImplModuleGeneratedRelativeSourcePathAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/commands/ast/impl.ts:168-180")
+  fingerprint ast.semantic_subtree_v1("sha256:d7d7ef2a7a9d0b765ba8ad8ffe7acaca3d46505dbcdb2ea529835120db26ae35")
+}
+
+resource ImplModuleIsGeneratedAstModuleNameAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/commands/ast/impl.ts:182-184")
+  fingerprint ast.semantic_subtree_v1("sha256:a6112ab26c2cad14a04a1d28507172e051711e28c5301d9b7d4df10ab00606c6")
+}
+
+resource ImplModuleShapeOptionsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/commands/ast/impl.ts:272-285")
+  fingerprint ast.semantic_subtree_v1("sha256:36f86f15070e344f98d005e7d7e77fa496fee319ecce904a3e02487e281eaa7d")
+}
+
+resource ImplModuleSourcePathToModuleSuffixAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/commands/ast/impl.ts:186-194")
+  fingerprint ast.semantic_subtree_v1("sha256:bc35cba68c84e246e64d9a8a010bb41f5e7d8d2745a2bd941c943c247166930f")
+}
+
+resource ImplModuleWriteGeneratedAstDirectoryAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/commands/ast/impl.ts:74-166")
+  fingerprint ast.semantic_subtree_v1("sha256:41bac9a59ab0c41c796c4caf4bd80c2a8e5bf72a49452056801f9821281225e0")
+}
+
+resource ImplModuleWriteOutputAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/commands/ast/impl.ts:287-303")
+  fingerprint ast.semantic_subtree_v1("sha256:b9c0dd7d997518f307675bb4de74134595e959d0696adf2611be7558664a79cf")
+}
+
+component ImplModule : GeneratedCandidate {
+  fn astJson
+    source ts("packages/shp-cli/src/commands/ast/impl.ts:243-270")
+    effects unknown
+  fn astSource
+    source ts("packages/shp-cli/src/commands/ast/impl.ts:37-72")
+    effects unknown
+  fn changedGeneratedFiles
+    source ts("packages/shp-cli/src/commands/ast/impl.ts:196-211")
+    effects unknown
+  fn diagnosticsExitCode
+    source ts("packages/shp-cli/src/commands/ast/impl.ts:315-321")
+    effects unknown
+  fn existingGeneratedFiles
+    source ts("packages/shp-cli/src/commands/ast/impl.ts:222-241")
+    effects unknown
+  fn extraGeneratedFiles
+    source ts("packages/shp-cli/src/commands/ast/impl.ts:213-220")
+    effects unknown
+  fn formatAstDiagnostics
+    source ts("packages/shp-cli/src/commands/ast/impl.ts:305-313")
+    effects unknown
+  fn generatedRelativeSourcePath
+    source ts("packages/shp-cli/src/commands/ast/impl.ts:168-180")
+    effects unknown
+  fn isGeneratedAstModuleName
+    source ts("packages/shp-cli/src/commands/ast/impl.ts:182-184")
+    effects unknown
+  fn shapeOptions
+    source ts("packages/shp-cli/src/commands/ast/impl.ts:272-285")
+    effects unknown
+  fn sourcePathToModuleSuffix
+    source ts("packages/shp-cli/src/commands/ast/impl.ts:186-194")
+    effects unknown
+  fn writeGeneratedAstDirectory
+    source ts("packages/shp-cli/src/commands/ast/impl.ts:74-166")
+    effects unknown
+  fn writeOutput
+    source ts("packages/shp-cli/src/commands/ast/impl.ts:287-303")
+    effects unknown
+}
+
+relation ImplModuleAstJsonGeneratedFromImplModuleAstJsonAstAnchor {
+  kind generated_from
+  connects ImplModule -> ImplModuleAstJsonAstAnchor
+  roles { ImplModule as generated, ImplModuleAstJsonAstAnchor as syntax }
+  expects ImplModuleAstJsonAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9fc2182af46eebe30ee4fb38a5127f38e7bbdf7eb00004bb4f86f94a7aa47fb3")
+  summary "fn ImplModule.astJson generated from typescript function_declaration at packages/shp-cli/src/commands/ast/impl.ts:243-270."
+}
+
+relation ImplModuleAstSourceGeneratedFromImplModuleAstSourceAstAnchor {
+  kind generated_from
+  connects ImplModule -> ImplModuleAstSourceAstAnchor
+  roles { ImplModule as generated, ImplModuleAstSourceAstAnchor as syntax }
+  expects ImplModuleAstSourceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:628818a2a972c02a9b7e89d9715aacf14da3f421d22d5f9265b86cea334c17b8")
+  summary "fn ImplModule.astSource generated from typescript function_declaration at packages/shp-cli/src/commands/ast/impl.ts:37-72."
+}
+
+relation ImplModuleChangedGeneratedFilesGeneratedFromImplModuleChangedGeneratedFilesAstAnchor {
+  kind generated_from
+  connects ImplModule -> ImplModuleChangedGeneratedFilesAstAnchor
+  roles { ImplModule as generated, ImplModuleChangedGeneratedFilesAstAnchor as syntax }
+  expects ImplModuleChangedGeneratedFilesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c071374256603d616fee3c8eaa5639dfd2e6c4e4df4539bee45cf6781735d772")
+  summary "fn ImplModule.changedGeneratedFiles generated from typescript function_declaration at packages/shp-cli/src/commands/ast/impl.ts:196-211."
+}
+
+relation ImplModuleDiagnosticsExitCodeGeneratedFromImplModuleDiagnosticsExitCodeAstAnchor {
+  kind generated_from
+  connects ImplModule -> ImplModuleDiagnosticsExitCodeAstAnchor
+  roles { ImplModule as generated, ImplModuleDiagnosticsExitCodeAstAnchor as syntax }
+  expects ImplModuleDiagnosticsExitCodeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:58c4beaf5d6c1b73aa7a324f8a136dd239aea30d6122eefa1ba97108d58532ec")
+  summary "fn ImplModule.diagnosticsExitCode generated from typescript function_declaration at packages/shp-cli/src/commands/ast/impl.ts:315-321."
+}
+
+relation ImplModuleExistingGeneratedFilesGeneratedFromImplModuleExistingGeneratedFilesAstAnchor {
+  kind generated_from
+  connects ImplModule -> ImplModuleExistingGeneratedFilesAstAnchor
+  roles { ImplModule as generated, ImplModuleExistingGeneratedFilesAstAnchor as syntax }
+  expects ImplModuleExistingGeneratedFilesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ba11e443ba268aa56d38b387dc956e0d0989812d8671b3cb03a514092939aece")
+  summary "fn ImplModule.existingGeneratedFiles generated from typescript function_declaration at packages/shp-cli/src/commands/ast/impl.ts:222-241."
+}
+
+relation ImplModuleExtraGeneratedFilesGeneratedFromImplModuleExtraGeneratedFilesAstAnchor {
+  kind generated_from
+  connects ImplModule -> ImplModuleExtraGeneratedFilesAstAnchor
+  roles { ImplModule as generated, ImplModuleExtraGeneratedFilesAstAnchor as syntax }
+  expects ImplModuleExtraGeneratedFilesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c14f43c4663b4dcaa1ccd4f019465782b9437f38c88363360f70c8a67ca77f86")
+  summary "fn ImplModule.extraGeneratedFiles generated from typescript function_declaration at packages/shp-cli/src/commands/ast/impl.ts:213-220."
+}
+
+relation ImplModuleFormatAstDiagnosticsGeneratedFromImplModuleFormatAstDiagnosticsAstAnchor {
+  kind generated_from
+  connects ImplModule -> ImplModuleFormatAstDiagnosticsAstAnchor
+  roles { ImplModule as generated, ImplModuleFormatAstDiagnosticsAstAnchor as syntax }
+  expects ImplModuleFormatAstDiagnosticsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e203c2d5ec74afa09b73caf44e79254033f22099b9f5dd03484ee8853e8ef74e")
+  summary "fn ImplModule.formatAstDiagnostics generated from typescript function_declaration at packages/shp-cli/src/commands/ast/impl.ts:305-313."
+}
+
+relation ImplModuleGeneratedRelativeSourcePathGeneratedFromImplModuleGeneratedRelativeSourcePathAstAnchor {
+  kind generated_from
+  connects ImplModule -> ImplModuleGeneratedRelativeSourcePathAstAnchor
+  roles { ImplModule as generated, ImplModuleGeneratedRelativeSourcePathAstAnchor as syntax }
+  expects ImplModuleGeneratedRelativeSourcePathAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d7d7ef2a7a9d0b765ba8ad8ffe7acaca3d46505dbcdb2ea529835120db26ae35")
+  summary "fn ImplModule.generatedRelativeSourcePath generated from typescript function_declaration at packages/shp-cli/src/commands/ast/impl.ts:168-180."
+}
+
+relation ImplModuleIsGeneratedAstModuleNameGeneratedFromImplModuleIsGeneratedAstModuleNameAstAnchor {
+  kind generated_from
+  connects ImplModule -> ImplModuleIsGeneratedAstModuleNameAstAnchor
+  roles { ImplModule as generated, ImplModuleIsGeneratedAstModuleNameAstAnchor as syntax }
+  expects ImplModuleIsGeneratedAstModuleNameAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a6112ab26c2cad14a04a1d28507172e051711e28c5301d9b7d4df10ab00606c6")
+  summary "fn ImplModule.isGeneratedAstModuleName generated from typescript function_declaration at packages/shp-cli/src/commands/ast/impl.ts:182-184."
+}
+
+relation ImplModuleShapeOptionsGeneratedFromImplModuleShapeOptionsAstAnchor {
+  kind generated_from
+  connects ImplModule -> ImplModuleShapeOptionsAstAnchor
+  roles { ImplModule as generated, ImplModuleShapeOptionsAstAnchor as syntax }
+  expects ImplModuleShapeOptionsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:36f86f15070e344f98d005e7d7e77fa496fee319ecce904a3e02487e281eaa7d")
+  summary "fn ImplModule.shapeOptions generated from typescript function_declaration at packages/shp-cli/src/commands/ast/impl.ts:272-285."
+}
+
+relation ImplModuleSourcePathToModuleSuffixGeneratedFromImplModuleSourcePathToModuleSuffixAstAnchor {
+  kind generated_from
+  connects ImplModule -> ImplModuleSourcePathToModuleSuffixAstAnchor
+  roles { ImplModule as generated, ImplModuleSourcePathToModuleSuffixAstAnchor as syntax }
+  expects ImplModuleSourcePathToModuleSuffixAstAnchor fingerprint ast.semantic_subtree_v1("sha256:bc35cba68c84e246e64d9a8a010bb41f5e7d8d2745a2bd941c943c247166930f")
+  summary "fn ImplModule.sourcePathToModuleSuffix generated from typescript function_declaration at packages/shp-cli/src/commands/ast/impl.ts:186-194."
+}
+
+relation ImplModuleWriteGeneratedAstDirectoryGeneratedFromImplModuleWriteGeneratedAstDirectoryAstAnchor {
+  kind generated_from
+  connects ImplModule -> ImplModuleWriteGeneratedAstDirectoryAstAnchor
+  roles { ImplModule as generated, ImplModuleWriteGeneratedAstDirectoryAstAnchor as syntax }
+  expects ImplModuleWriteGeneratedAstDirectoryAstAnchor fingerprint ast.semantic_subtree_v1("sha256:41bac9a59ab0c41c796c4caf4bd80c2a8e5bf72a49452056801f9821281225e0")
+  summary "fn ImplModule.writeGeneratedAstDirectory generated from typescript function_declaration at packages/shp-cli/src/commands/ast/impl.ts:74-166."
+}
+
+relation ImplModuleWriteOutputGeneratedFromImplModuleWriteOutputAstAnchor {
+  kind generated_from
+  connects ImplModule -> ImplModuleWriteOutputAstAnchor
+  roles { ImplModule as generated, ImplModuleWriteOutputAstAnchor as syntax }
+  expects ImplModuleWriteOutputAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b9c0dd7d997518f307675bb4de74134595e959d0696adf2611be7558664a79cf")
+  summary "fn ImplModule.writeOutput generated from typescript function_declaration at packages/shp-cli/src/commands/ast/impl.ts:287-303."
+}
+
+implementation ImplModuleImpl {
+  paths {
+    "packages/shp-cli/src/commands/ast/impl.ts"
+  }
+  conforms_to ImplModule
+}

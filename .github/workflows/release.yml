@@ -50,6 +50,9 @@ jobs:
       - name: Check generated artifacts
         run: git diff --exit-code -- packages/shp-checker/src/language/generated
 
+      - name: Check generated AST context
+        run: bun run ast:check
+
       - name: Format check
         run: bun run format:check
 

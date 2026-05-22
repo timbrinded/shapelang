@@ -252,11 +252,12 @@ describe("shp CLI", () => {
         "typescript",
         "--out-dir",
         outDir,
+        "fixtures/source/audit_store.ts",
         "fixtures/source/audit_purge.ts"
       ]);
 
       expect(writeResult.exitCode).toBe(0);
-      expect(writeResult.stdout).toContain("Wrote 1 generated AST Shape file");
+      expect(writeResult.stdout).toContain("Wrote 2 generated AST Shape file");
 
       const generated = await readFile(join(outDir, "fixtures/source/audit_purge.shape"), "utf8");
       expect(generated).toContain(
@@ -267,6 +268,36 @@ describe("shp CLI", () => {
 
       const manifest = await readFile(join(outDir, "manifest.json"), "utf8");
       expect(manifest).toContain("shape.generated.ast.fixtures.generated_source.audit_purge");
+      expect(manifest.indexOf("audit_purge.ts")).toBeLessThan(manifest.indexOf("audit_store.ts"));
+
+      const staleFile = join(outDir, "fixtures/source/stale.shape");
+      await writeFile(staleFile, "module shape.generated.ast.fixtures.generated_source.stale\n");
+      const staleCheckResult = await runCli([
+        "ast",
+        "source",
+        "--language",
+        "typescript",
+        "--out-dir",
+        outDir,
+        "--check",
+        "fixtures/source/audit_purge.ts",
+        "fixtures/source/audit_store.ts"
+      ]);
+      expect(staleCheckResult.exitCode).toBe(1);
+      expect(staleCheckResult.stderr).toContain("generated AST Shape files are stale");
+      expect(staleCheckResult.stderr).toContain("stale.shape");
+
+      const rewriteResult = await runCli([
+        "ast",
+        "source",
+        "--language",
+        "typescript",
+        "--out-dir",
+        outDir,
+        "fixtures/source/audit_purge.ts",
+        "fixtures/source/audit_store.ts"
+      ]);
+      expect(rewriteResult.exitCode).toBe(0);
 
       const checkResult = await runCli([
         "ast",
@@ -276,7 +307,8 @@ describe("shp CLI", () => {
         "--out-dir",
         outDir,
         "--check",
-        "fixtures/source/audit_purge.ts"
+        "fixtures/source/audit_purge.ts",
+        "fixtures/source/audit_store.ts"
       ]);
       expect(checkResult.exitCode).toBe(0);
       expect(checkResult.stdout).toContain("up to date");

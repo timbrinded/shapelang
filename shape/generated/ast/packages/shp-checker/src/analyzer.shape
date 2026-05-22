@@ -1,0 +1,97 @@
+module shape.generated.ast.packages.shp_checker.src.analyzer
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource AnalyzerModuleAnalyzeSourceTextAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer.ts:32-72")
+  fingerprint ast.semantic_subtree_v1("sha256:f8c1cf0a7f8009a391c027e613914554459a6a0d8bf01b58e2fde5764c3ae2be")
+}
+
+resource AnalyzerModuleCollectDeclaredEffectsBySourcePathAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer.ts:112-134")
+  fingerprint ast.semantic_subtree_v1("sha256:1177c05b2d564255e960808be13843dfa33ea9df8e2462af03b868b74eed0b0f")
+}
+
+resource AnalyzerModuleCollectFunctionEffectsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer.ts:136-165")
+  fingerprint ast.semantic_subtree_v1("sha256:902f3e399545debb4cd019d59a52cab36a80be591d11c5ef49fbd89bac954aa0")
+}
+
+resource AnalyzerModuleCompareAnalyzerHintsToShapeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer.ts:74-93")
+  fingerprint ast.semantic_subtree_v1("sha256:a7881dad742276e5cebd02c7d3e9f9873b90555d99a9ec15e2214963e066c85e")
+}
+
+resource AnalyzerModuleFormatAnalyzerWarningsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer.ts:95-110")
+  fingerprint ast.semantic_subtree_v1("sha256:be508623711330cec343d0ad3686465f45813b9da7decba31a21470894f9c12f")
+}
+
+component AnalyzerModule : GeneratedCandidate {
+  fn analyzeSourceText
+    source ts("packages/shp-checker/src/analyzer.ts:32-72")
+    effects unknown
+  fn collectDeclaredEffectsBySourcePath
+    source ts("packages/shp-checker/src/analyzer.ts:112-134")
+    effects unknown
+  fn collectFunctionEffects
+    source ts("packages/shp-checker/src/analyzer.ts:136-165")
+    effects unknown
+  fn compareAnalyzerHintsToShape
+    source ts("packages/shp-checker/src/analyzer.ts:74-93")
+    effects unknown
+  fn formatAnalyzerWarnings
+    source ts("packages/shp-checker/src/analyzer.ts:95-110")
+    effects unknown
+}
+
+relation AnalyzerModuleAnalyzeSourceTextGeneratedFromAnalyzerModuleAnalyzeSourceTextAstAnchor {
+  kind generated_from
+  connects AnalyzerModule -> AnalyzerModuleAnalyzeSourceTextAstAnchor
+  roles { AnalyzerModule as generated, AnalyzerModuleAnalyzeSourceTextAstAnchor as syntax }
+  expects AnalyzerModuleAnalyzeSourceTextAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f8c1cf0a7f8009a391c027e613914554459a6a0d8bf01b58e2fde5764c3ae2be")
+  summary "fn AnalyzerModule.analyzeSourceText generated from typescript function_declaration at packages/shp-checker/src/analyzer.ts:32-72."
+}
+
+relation AnalyzerModuleCollectDeclaredEffectsBySourcePathGeneratedFromAnalyzerModuleCollectDeclaredEffectsBySourcePathAstAnchor {
+  kind generated_from
+  connects AnalyzerModule -> AnalyzerModuleCollectDeclaredEffectsBySourcePathAstAnchor
+  roles { AnalyzerModule as generated, AnalyzerModuleCollectDeclaredEffectsBySourcePathAstAnchor as syntax }
+  expects AnalyzerModuleCollectDeclaredEffectsBySourcePathAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1177c05b2d564255e960808be13843dfa33ea9df8e2462af03b868b74eed0b0f")
+  summary "fn AnalyzerModule.collectDeclaredEffectsBySourcePath generated from typescript function_declaration at packages/shp-checker/src/analyzer.ts:112-134."
+}
+
+relation AnalyzerModuleCollectFunctionEffectsGeneratedFromAnalyzerModuleCollectFunctionEffectsAstAnchor {
+  kind generated_from
+  connects AnalyzerModule -> AnalyzerModuleCollectFunctionEffectsAstAnchor
+  roles { AnalyzerModule as generated, AnalyzerModuleCollectFunctionEffectsAstAnchor as syntax }
+  expects AnalyzerModuleCollectFunctionEffectsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:902f3e399545debb4cd019d59a52cab36a80be591d11c5ef49fbd89bac954aa0")
+  summary "fn AnalyzerModule.collectFunctionEffects generated from typescript function_declaration at packages/shp-checker/src/analyzer.ts:136-165."
+}
+
+relation AnalyzerModuleCompareAnalyzerHintsToShapeGeneratedFromAnalyzerModuleCompareAnalyzerHintsToShapeAstAnchor {
+  kind generated_from
+  connects AnalyzerModule -> AnalyzerModuleCompareAnalyzerHintsToShapeAstAnchor
+  roles { AnalyzerModule as generated, AnalyzerModuleCompareAnalyzerHintsToShapeAstAnchor as syntax }
+  expects AnalyzerModuleCompareAnalyzerHintsToShapeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a7881dad742276e5cebd02c7d3e9f9873b90555d99a9ec15e2214963e066c85e")
+  summary "fn AnalyzerModule.compareAnalyzerHintsToShape generated from typescript function_declaration at packages/shp-checker/src/analyzer.ts:74-93."
+}
+
+relation AnalyzerModuleFormatAnalyzerWarningsGeneratedFromAnalyzerModuleFormatAnalyzerWarningsAstAnchor {
+  kind generated_from
+  connects AnalyzerModule -> AnalyzerModuleFormatAnalyzerWarningsAstAnchor
+  roles { AnalyzerModule as generated, AnalyzerModuleFormatAnalyzerWarningsAstAnchor as syntax }
+  expects AnalyzerModuleFormatAnalyzerWarningsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:be508623711330cec343d0ad3686465f45813b9da7decba31a21470894f9c12f")
+  summary "fn AnalyzerModule.formatAnalyzerWarnings generated from typescript function_declaration at packages/shp-checker/src/analyzer.ts:95-110."
+}
+
+implementation AnalyzerModuleImpl {
+  paths {
+    "packages/shp-checker/src/analyzer.ts"
+  }
+  conforms_to AnalyzerModule
+}

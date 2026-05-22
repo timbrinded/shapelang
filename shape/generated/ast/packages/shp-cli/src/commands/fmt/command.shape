@@ -1,0 +1,7 @@
+module shape.generated.ast.packages.shp_cli.src.commands.fmt.command
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}

@@ -1,0 +1,49 @@
+module shape.generated.ast.docs_site.scripts.verify_shape_blocks
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource VerifyShapeBlocksModuleCollectDocsFilesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("docs-site/scripts/verify-shape-blocks.ts:73-87")
+  fingerprint ast.semantic_subtree_v1("sha256:29d45983b2c105fdcf01c6c145dcd3b4f84d75d08f87a7847ee16317386e5d61")
+}
+
+resource VerifyShapeBlocksModuleLineNumberAtAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("docs-site/scripts/verify-shape-blocks.ts:89-97")
+  fingerprint ast.semantic_subtree_v1("sha256:177e1d8b0779dd4d02f78b0c72dc266074cff141512fdd7bdde441fbf260a5f6")
+}
+
+component VerifyShapeBlocksModule : GeneratedCandidate {
+  fn collectDocsFiles
+    source ts("docs-site/scripts/verify-shape-blocks.ts:73-87")
+    effects unknown
+  fn lineNumberAt
+    source ts("docs-site/scripts/verify-shape-blocks.ts:89-97")
+    effects unknown
+}
+
+relation VerifyShapeBlocksModuleCollectDocsFilesGeneratedFromVerifyShapeBlocksModuleCollectDocsFilesAstAnchor {
+  kind generated_from
+  connects VerifyShapeBlocksModule -> VerifyShapeBlocksModuleCollectDocsFilesAstAnchor
+  roles { VerifyShapeBlocksModule as generated, VerifyShapeBlocksModuleCollectDocsFilesAstAnchor as syntax }
+  expects VerifyShapeBlocksModuleCollectDocsFilesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:29d45983b2c105fdcf01c6c145dcd3b4f84d75d08f87a7847ee16317386e5d61")
+  summary "fn VerifyShapeBlocksModule.collectDocsFiles generated from typescript function_declaration at docs-site/scripts/verify-shape-blocks.ts:73-87."
+}
+
+relation VerifyShapeBlocksModuleLineNumberAtGeneratedFromVerifyShapeBlocksModuleLineNumberAtAstAnchor {
+  kind generated_from
+  connects VerifyShapeBlocksModule -> VerifyShapeBlocksModuleLineNumberAtAstAnchor
+  roles { VerifyShapeBlocksModule as generated, VerifyShapeBlocksModuleLineNumberAtAstAnchor as syntax }
+  expects VerifyShapeBlocksModuleLineNumberAtAstAnchor fingerprint ast.semantic_subtree_v1("sha256:177e1d8b0779dd4d02f78b0c72dc266074cff141512fdd7bdde441fbf260a5f6")
+  summary "fn VerifyShapeBlocksModule.lineNumberAt generated from typescript function_declaration at docs-site/scripts/verify-shape-blocks.ts:89-97."
+}
+
+implementation VerifyShapeBlocksModuleImpl {
+  paths {
+    "docs-site/scripts/verify-shape-blocks.ts"
+  }
+  conforms_to VerifyShapeBlocksModule
+}

@@ -1,0 +1,65 @@
+module shape.generated.ast.packages.shp_checker.src.parser
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource ParserModuleLexerDiagnosticAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/parser.ts:81-89")
+  fingerprint ast.semantic_subtree_v1("sha256:610bfaa36d86ad4491d2d747bdbe0f888e3a6aebe11cb0ddfa07fef39396ec32")
+}
+
+resource ParserModuleParserDiagnosticAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/parser.ts:91-99")
+  fingerprint ast.semantic_subtree_v1("sha256:9c03e19db4a6906cb2015a624a9b3461f993dfd5ed811447f4a039aaafa9d2da")
+}
+
+resource ParserModuleParseShapeModuleAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/parser.ts:41-79")
+  fingerprint ast.semantic_subtree_v1("sha256:52083188d3fa8f9a848bddf8bc7239b9de1b1dd9401840992e30d88e8c2db066")
+}
+
+component ParserModule : GeneratedCandidate {
+  fn lexerDiagnostic
+    source ts("packages/shp-checker/src/parser.ts:81-89")
+    effects unknown
+  fn parseShapeModule
+    source ts("packages/shp-checker/src/parser.ts:41-79")
+    effects unknown
+  fn parserDiagnostic
+    source ts("packages/shp-checker/src/parser.ts:91-99")
+    effects unknown
+}
+
+relation ParserModuleLexerDiagnosticGeneratedFromParserModuleLexerDiagnosticAstAnchor {
+  kind generated_from
+  connects ParserModule -> ParserModuleLexerDiagnosticAstAnchor
+  roles { ParserModule as generated, ParserModuleLexerDiagnosticAstAnchor as syntax }
+  expects ParserModuleLexerDiagnosticAstAnchor fingerprint ast.semantic_subtree_v1("sha256:610bfaa36d86ad4491d2d747bdbe0f888e3a6aebe11cb0ddfa07fef39396ec32")
+  summary "fn ParserModule.lexerDiagnostic generated from typescript function_declaration at packages/shp-checker/src/parser.ts:81-89."
+}
+
+relation ParserModuleParserDiagnosticGeneratedFromParserModuleParserDiagnosticAstAnchor {
+  kind generated_from
+  connects ParserModule -> ParserModuleParserDiagnosticAstAnchor
+  roles { ParserModule as generated, ParserModuleParserDiagnosticAstAnchor as syntax }
+  expects ParserModuleParserDiagnosticAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9c03e19db4a6906cb2015a624a9b3461f993dfd5ed811447f4a039aaafa9d2da")
+  summary "fn ParserModule.parserDiagnostic generated from typescript function_declaration at packages/shp-checker/src/parser.ts:91-99."
+}
+
+relation ParserModuleParseShapeModuleGeneratedFromParserModuleParseShapeModuleAstAnchor {
+  kind generated_from
+  connects ParserModule -> ParserModuleParseShapeModuleAstAnchor
+  roles { ParserModule as generated, ParserModuleParseShapeModuleAstAnchor as syntax }
+  expects ParserModuleParseShapeModuleAstAnchor fingerprint ast.semantic_subtree_v1("sha256:52083188d3fa8f9a848bddf8bc7239b9de1b1dd9401840992e30d88e8c2db066")
+  summary "fn ParserModule.parseShapeModule generated from typescript function_declaration at packages/shp-checker/src/parser.ts:41-79."
+}
+
+implementation ParserModuleImpl {
+  paths {
+    "packages/shp-checker/src/parser.ts"
+  }
+  conforms_to ParserModule
+}

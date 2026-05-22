@@ -33,6 +33,7 @@ component CiPipeline {
   grants Read<CliPackageManifest>
   grants Read<CopilotReviewPrompt>
   grants Read<CopilotReviewResult>
+  grants Read<GeneratedAstManifest>
   grants Read<LanguageSource>
   grants Read<ReleaseArtifact>
   grants Read<ReleaseVersionTag>
@@ -42,6 +43,8 @@ component CiPipeline {
   grants Read<SourceSyntaxTree>
   grants Update<ChangedFileList>
   grants Update<CopilotReviewResult>
+  grants Update<GeneratedAstManifest>
+  grants Update<ShapeModelDraft>
   fn checkReleaseVersion : RefactorSensitive
     source yaml(".github/workflows/release.yml#Check release tag matches CLI package version")
     effects complete {
@@ -51,6 +54,26 @@ component CiPipeline {
         evidence json("packages/shp-cli/package.json")
       Read<ReleaseVersionTag>
         evidence yaml(".github/workflows/release.yml")
+    }
+  fn generateAstContext
+    source sh("scripts/generate-ast-shapes.sh")
+    effects complete {
+      Read<CiWorkflow>
+        evidence yaml(".github/workflows/shape.yml")
+      Read<CiWorkflow>
+        evidence yaml(".github/workflows/release.yml")
+      Read<CliPackageManifest>
+        evidence json("package.json")
+      Read<GeneratedAstManifest>
+        evidence json("shape/generated/ast/manifest.json")
+      Read<LanguageSource>
+        evidence sh("scripts/generate-ast-shapes.sh")
+      Read<SourceSyntaxTree>
+        evidence sh("scripts/generate-ast-shapes.sh")
+      Update<GeneratedAstManifest>
+        evidence sh("scripts/generate-ast-shapes.sh")
+      Update<ShapeModelDraft>
+        evidence sh("scripts/generate-ast-shapes.sh")
     }
   fn runShapeCi
     source yaml(".github/workflows/shape.yml")
@@ -282,6 +305,7 @@ implementation CheckerSource {
 
 implementation CiScripts {
   paths {
+    "scripts/generate-ast-shapes.sh"
     "scripts/write-changed-files.sh"
   }
   conforms_to CiPipeline

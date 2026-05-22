@@ -1,0 +1,33 @@
+module shape.generated.ast.packages.shp_cli.src.commands.coverage.impl
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource ImplModuleCoverageAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/commands/coverage/impl.ts:10-28")
+  fingerprint ast.semantic_subtree_v1("sha256:904eb1d8b67de5d967425780f1bdcf60a57d4033688ec5146ba7aff23e9d5fb8")
+}
+
+component ImplModule : GeneratedCandidate {
+  fn coverage
+    source ts("packages/shp-cli/src/commands/coverage/impl.ts:10-28")
+    effects unknown
+}
+
+relation ImplModuleCoverageGeneratedFromImplModuleCoverageAstAnchor {
+  kind generated_from
+  connects ImplModule -> ImplModuleCoverageAstAnchor
+  roles { ImplModule as generated, ImplModuleCoverageAstAnchor as syntax }
+  expects ImplModuleCoverageAstAnchor fingerprint ast.semantic_subtree_v1("sha256:904eb1d8b67de5d967425780f1bdcf60a57d4033688ec5146ba7aff23e9d5fb8")
+  summary "fn ImplModule.coverage generated from typescript function_declaration at packages/shp-cli/src/commands/coverage/impl.ts:10-28."
+}
+
+implementation ImplModuleImpl {
+  paths {
+    "packages/shp-cli/src/commands/coverage/impl.ts"
+  }
+  conforms_to ImplModule
+}

@@ -1,0 +1,33 @@
+module shape.generated.ast.packages.shp_cli.src.commands.check.impl
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource ImplModuleCheckAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/commands/check/impl.ts:10-29")
+  fingerprint ast.semantic_subtree_v1("sha256:729fcdb11feafb3dc14d01644205e8aefc517fc89dab48cb8777d75a1622f36d")
+}
+
+component ImplModule : GeneratedCandidate {
+  fn check
+    source ts("packages/shp-cli/src/commands/check/impl.ts:10-29")
+    effects unknown
+}
+
+relation ImplModuleCheckGeneratedFromImplModuleCheckAstAnchor {
+  kind generated_from
+  connects ImplModule -> ImplModuleCheckAstAnchor
+  roles { ImplModule as generated, ImplModuleCheckAstAnchor as syntax }
+  expects ImplModuleCheckAstAnchor fingerprint ast.semantic_subtree_v1("sha256:729fcdb11feafb3dc14d01644205e8aefc517fc89dab48cb8777d75a1622f36d")
+  summary "fn ImplModule.check generated from typescript function_declaration at packages/shp-cli/src/commands/check/impl.ts:10-29."
+}
+
+implementation ImplModuleImpl {
+  paths {
+    "packages/shp-cli/src/commands/check/impl.ts"
+  }
+  conforms_to ImplModule
+}

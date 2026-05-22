@@ -1,0 +1,33 @@
+module shape.generated.ast.packages.shp_cli.src.commands.author.impl
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource ImplModuleAuthorAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/commands/author/impl.ts:12-22")
+  fingerprint ast.semantic_subtree_v1("sha256:0d980dede9545b0a5ec8e811467d54accc406999151a2652ecfc55a140d5bf95")
+}
+
+component ImplModule : GeneratedCandidate {
+  fn author
+    source ts("packages/shp-cli/src/commands/author/impl.ts:12-22")
+    effects unknown
+}
+
+relation ImplModuleAuthorGeneratedFromImplModuleAuthorAstAnchor {
+  kind generated_from
+  connects ImplModule -> ImplModuleAuthorAstAnchor
+  roles { ImplModule as generated, ImplModuleAuthorAstAnchor as syntax }
+  expects ImplModuleAuthorAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0d980dede9545b0a5ec8e811467d54accc406999151a2652ecfc55a140d5bf95")
+  summary "fn ImplModule.author generated from typescript function_declaration at packages/shp-cli/src/commands/author/impl.ts:12-22."
+}
+
+implementation ImplModuleImpl {
+  paths {
+    "packages/shp-cli/src/commands/author/impl.ts"
+  }
+  conforms_to ImplModule
+}

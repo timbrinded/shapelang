@@ -6,7 +6,7 @@ import {
   type AstSourceFileInput,
   type GenerateShapeOptions
 } from "@shape/shp-checker";
-import { mkdir, readFile } from "node:fs/promises";
+import { mkdir, readdir, readFile, rm } from "node:fs/promises";
 import { dirname, join, relative } from "node:path";
 import type { CliContext } from "../../context";
 import { CliDiagnosticError, EXIT_FAILURE, EXIT_USAGE, errorMessage } from "../../errors";
@@ -99,14 +99,19 @@ async function writeGeneratedAstDirectory(
   }
   const manifestEntries: GeneratedAstManifestEntry[] = [];
   const writes: { path: string; contents: string }[] = [];
+  const sourceEntries = sourcePaths
+    .map((sourcePath) => ({
+      sourcePath,
+      relativeSourcePath: generatedRelativeSourcePath(sourcePath)
+    }))
+    .sort((left, right) => left.relativeSourcePath.localeCompare(right.relativeSourcePath));
 
-  for (const sourcePath of sourcePaths) {
+  for (const { sourcePath, relativeSourcePath } of sourceEntries) {
     const file = {
       path: sourcePath,
       source: await readCliTextFile(sourcePath),
       language: flags.language
     };
-    const relativeSourcePath = generatedRelativeSourcePath(sourcePath);
     const moduleName = normalizeGeneratedModuleName(
       `${moduleBase}.${sourcePathToModuleSuffix(relativeSourcePath)}`
     );
@@ -136,7 +141,10 @@ async function writeGeneratedAstDirectory(
   });
 
   if (flags.check) {
-    const stale = await changedGeneratedFiles(writes);
+    const stale = [
+      ...(await changedGeneratedFiles(writes)),
+      ...(await extraGeneratedFiles(outDir, writes))
+    ].sort();
     if (stale.length > 0) {
       throw new CliDiagnosticError(
         `error: generated AST Shape files are stale\n\n${stale.map((path) => `  ${path}`).join("\n")}\n`,
@@ -147,6 +155,9 @@ async function writeGeneratedAstDirectory(
     return;
   }
 
+  for (const extraPath of await extraGeneratedFiles(outDir, writes)) {
+    await rm(extraPath, { force: true });
+  }
   for (const write of writes) {
     await mkdir(dirname(write.path), { recursive: true });
     await Bun.write(write.path, write.contents);
@@ -197,6 +208,36 @@ async function changedGeneratedFiles(
     }
   }
   return changed;
+}
+
+async function extraGeneratedFiles(
+  outDir: string,
+  writes: { path: string; contents: string }[]
+): Promise<string[]> {
+  const expected = new Set(writes.map((write) => write.path));
+  const existing = await existingGeneratedFiles(outDir);
+  return existing.filter((path) => !expected.has(path));
+}
+
+async function existingGeneratedFiles(dir: string): Promise<string[]> {
+  try {
+    const entries = await readdir(dir, { withFileTypes: true, encoding: "utf8" });
+    const files: string[] = [];
+    for (const entry of entries) {
+      const path = join(dir, entry.name);
+      if (entry.isDirectory()) {
+        files.push(...(await existingGeneratedFiles(path)));
+      } else if (
+        entry.isFile() &&
+        (entry.name === "manifest.json" || entry.name.endsWith(".shape"))
+      ) {
+        files.push(path);
+      }
+    }
+    return files.sort();
+  } catch {
+    return [];
+  }
 }
 
 export async function astJson(

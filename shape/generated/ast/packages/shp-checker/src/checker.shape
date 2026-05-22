@@ -1,0 +1,2769 @@
+module shape.generated.ast.packages.shp_checker.src.checker
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource CheckerModuleAddShapeUpdatePathAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:3081-3089")
+  fingerprint ast.semantic_subtree_v1("sha256:c009f40d3575e2f1724fcfc041f7ae183a5bc15bb20ba97c0b5b48d7e0e2305a")
+}
+
+resource CheckerModuleAllHyperedgesByKindAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:1093-1101")
+  fingerprint ast.semantic_subtree_v1("sha256:4c88cb6e4420856b6e6d18ebcde818125a441139a2c0ab54f2b742264b7f384a")
+}
+
+resource CheckerModuleAppendContextExplanationFieldsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:4296-4311")
+  fingerprint ast.semantic_subtree_v1("sha256:7bc1b5f4e887d2899412e44ab941fe17c8afc3b990c0672e9c7475159f65afe7")
+}
+
+resource CheckerModuleAppendContextListFieldsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:4331-4343")
+  fingerprint ast.semantic_subtree_v1("sha256:efec31ca4e2fcca4decdec0b3d89d294c9be43a18581b17b7745009d31daaac8")
+}
+
+resource CheckerModuleAppendIncidenceAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:4254-4266")
+  fingerprint ast.semantic_subtree_v1("sha256:08c207e6c137ea6d4bb60cdef2c5d588bc82135317749709b9113dc2aafd3d5e")
+}
+
+resource CheckerModuleBuildHyperedgeStepsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:3831-3860")
+  fingerprint ast.semantic_subtree_v1("sha256:be721d03e47cc3984c6ede9ecdcd7cac751f76d549c1edab58823d1de777b52a")
+}
+
+resource CheckerModuleChangedFileContextAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:3913-3921")
+  fingerprint ast.semantic_subtree_v1("sha256:5c4ae616a1424b71bcf17806c834b248916dd1526749a938322e5930425f72bf")
+}
+
+resource CheckerModuleCheckBindingsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:3966-4006")
+  fingerprint ast.semantic_subtree_v1("sha256:8d10f1b2f1c43260712e1d134934b635d8f0f258f6eb3f316959f7e3e4ba234e")
+}
+
+resource CheckerModuleCheckContextTargetAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:3376-3421")
+  fingerprint ast.semantic_subtree_v1("sha256:e94c6ef8e151e7db2496573729843916c4a7abc7db3ee45f8a0e9da35494f958")
+}
+
+resource CheckerModuleCheckContextTargetsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:3362-3374")
+  fingerprint ast.semantic_subtree_v1("sha256:a85d7a9d269c4324acc4a710398ffea4aabb7ebfc51eccb6bef6c8894659fcc1")
+}
+
+resource CheckerModuleCheckCoverageAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:3862-3911")
+  fingerprint ast.semantic_subtree_v1("sha256:ce566495bb7180ff85bb01c00f92f7b86b27d8ace4eab5c3380af0014df35119")
+}
+
+resource CheckerModuleCheckFingerprintExpectationsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:3304-3360")
+  fingerprint ast.semantic_subtree_v1("sha256:f58a1cad65fcf653778e347d7d0f51a625c1631be0bade07d88b3c3db6f1829f")
+}
+
+resource CheckerModuleCheckFunctionsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:3553-3634")
+  fingerprint ast.semantic_subtree_v1("sha256:45aa7d82435aa69a8c8be329908d84c8913dc52efd0a7a72e01d191292c12e23")
+}
+
+resource CheckerModuleCheckGuardedChangesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:3521-3551")
+  fingerprint ast.semantic_subtree_v1("sha256:65266b1a97be176049d371858fc3b7fa023db7994f13a2ee43bfa0ed9b8b9e7c")
+}
+
+resource CheckerModuleCheckHypercyclesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:3687-3723")
+  fingerprint ast.semantic_subtree_v1("sha256:90fa5caeaeaf4df8e75d5b6102ab71e72cf18db3206735c130b91b9fc9949732")
+}
+
+resource CheckerModuleCheckProvidesEndpointKindsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:3276-3302")
+  fingerprint ast.semantic_subtree_v1("sha256:5b17d333859bae6d860cb54bb9821e508818d0c943df8fef56968e472390163e")
+}
+
+resource CheckerModuleCheckProvidesRulesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:3636-3674")
+  fingerprint ast.semantic_subtree_v1("sha256:f760e875336f560ca189b93e7145cc782f66e25c38c90e90ade5e3d2a3cd000b")
+}
+
+resource CheckerModuleCheckReevaluationsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:3503-3519")
+  fingerprint ast.semantic_subtree_v1("sha256:30afa37469a81bfc361f4f4135ae10239edb7c60f1c8db1916dd72af4e00b77f")
+}
+
+resource CheckerModuleCheckRequiredContextAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:3423-3457")
+  fingerprint ast.semantic_subtree_v1("sha256:486ca26d0debc07af59e06b138252808785df43d9db3252a57918fe54b2f8795")
+}
+
+resource CheckerModuleCheckRequiredDescriptionsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:3459-3501")
+  fingerprint ast.semantic_subtree_v1("sha256:137cd0ccdf6e003783282a43f9407693008e8a36d9776c95b796eca1b181d285")
+}
+
+resource CheckerModuleCheckResolvedNamesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:3091-3266")
+  fingerprint ast.semantic_subtree_v1("sha256:dfb428b93ae004fb2a9686bc178cf17ca089eafa4c14df04bac4bab0887eae47")
+}
+
+resource CheckerModuleCheckShapeFilesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:815-852")
+  fingerprint ast.semantic_subtree_v1("sha256:8b26b9a6658fc65fd5a34a8967a8b2f1aa0da053063df070ca98e40b7a0b3e86")
+}
+
+resource CheckerModuleCheckShapeModulesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:786-813")
+  fingerprint ast.semantic_subtree_v1("sha256:9ac3b47da79034511186e1aa3bbd4ec11e77217561f102a0aef59a282f4ba0ab")
+}
+
+resource CheckerModuleCollectConnectsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:2055-2067")
+  fingerprint ast.semantic_subtree_v1("sha256:ec4e75b81a7b302d746692f1d5c3adcbb0c77f59c5757aeb1b1f17e5a21e10be")
+}
+
+resource CheckerModuleCollectShapeUpdatePathsFromFunctionAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:3056-3079")
+  fingerprint ast.semantic_subtree_v1("sha256:b2739785030f6388475fc43ec6856813993b56102179d359f3af128d36ac6b38")
+}
+
+resource CheckerModuleCompareHyperedgesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:1078-1080")
+  fingerprint ast.semantic_subtree_v1("sha256:c7fb64b32d1539f7b38924072c0e25680571b8956d8df2ed84cea46ce1d2979a")
+}
+
+resource CheckerModuleContextForDeclarationChangeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:2605-2621")
+  fingerprint ast.semantic_subtree_v1("sha256:2e9d87420992485942007ea4d38e1e8df8d8d6fcccdb98cb83ab6a55c2fcd31f")
+}
+
+resource CheckerModuleContextObjectExistsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:4129-4131")
+  fingerprint ast.semantic_subtree_v1("sha256:9e353f3d20456f2f1d9ccbef8622f8948e59d5721ccff0b342bf337540d5e286")
+}
+
+resource CheckerModuleContextSatisfiesRequirementAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:4037-4048")
+  fingerprint ast.semantic_subtree_v1("sha256:17e761dc02a9bd5a79a3fe9db0b8ae7db4f17aca0ade8cc807961530c71ffff0")
+}
+
+resource CheckerModuleCurrentAttestationExistsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:3935-3944")
+  fingerprint ast.semantic_subtree_v1("sha256:43ed2491f609ab5cb15537093bb71f3a2f793da8895b5d497f163834e5d72e6b")
+}
+
+resource CheckerModuleCurrentShapeUpdateExistsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:3923-3933")
+  fingerprint ast.semantic_subtree_v1("sha256:15d309c3188cea8f28d5095ba11e8b39058fe5e450faf491fd3201154fb43b45")
+}
+
+resource CheckerModuleDeclarationIndexKindAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:1428-1465")
+  fingerprint ast.semantic_subtree_v1("sha256:ab995cb60c827a92bdfc067aaf6721b2ce830cdff1ae0a5e7c87dd56da00f170")
+}
+
+resource CheckerModuleDeclarationKindAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:2673-2698")
+  fingerprint ast.semantic_subtree_v1("sha256:cf694019957606405442a87b10ae9e9f07387e97459d92060af389ada7b795e8")
+}
+
+resource CheckerModuleDeclarationNameAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:2700-2707")
+  fingerprint ast.semantic_subtree_v1("sha256:f483a6973dde4601f3675daa49bf347cc66c3dd90b93b2f395234b9adf113757")
+}
+
+resource CheckerModuleDeclarationNameForIndexAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:1418-1426")
+  fingerprint ast.semantic_subtree_v1("sha256:2c292d771006403f8d9845b2707ac58bef549f7a23454f236bc700609e739437")
+}
+
+resource CheckerModuleDeclaredLocallyAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:1490-1497")
+  fingerprint ast.semantic_subtree_v1("sha256:9df74a0a62ab70e9f62525d15c71965492bbc3b51eb52d4303f6b52d9f246de7")
+}
+
+resource CheckerModuleDeclKeyAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:1467-1469")
+  fingerprint ast.semantic_subtree_v1("sha256:2782e9f4f1f25b56bacf8ac363aa26e9fdf41a9ee939fa06e63130ab9b3c8b74")
+}
+
+resource CheckerModuleDedupeForbidsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:4431-4443")
+  fingerprint ast.semantic_subtree_v1("sha256:7fde6d5744a9bb2dab0cc9916b09294ca9bca0343905c44d48b4e70ea7f5a965")
+}
+
+resource CheckerModuleDeriveFinalForbidsForResourceAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:4363-4408")
+  fingerprint ast.semantic_subtree_v1("sha256:31c01a119cf852a5438d45782a585fd64f4f456d87962ffd0fb4e27adad9ecf7")
+}
+
+resource CheckerModuleDescribeProvenanceAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:4865-4871")
+  fingerprint ast.semantic_subtree_v1("sha256:7cf030054990d787e4c1b0de64f15cd570d8c1951f252f21e5af571bc79bb21f")
+}
+
+resource CheckerModuleDfsHypercycleAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:3784-3812")
+  fingerprint ast.semantic_subtree_v1("sha256:c4a2690ff42919e3a73359de7bd2ad5ada6f6ef4a0f74202c13509f82b4dfa12")
+}
+
+resource CheckerModuleDisplaySymbolAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:1486-1488")
+  fingerprint ast.semantic_subtree_v1("sha256:2c7e36d0b607d7baae9e68b9d4c812af88bbcff7f9adc174402c213f939612f6")
+}
+
+resource CheckerModuleEmitDerivedFactsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:3027-3054")
+  fingerprint ast.semantic_subtree_v1("sha256:2df3d25c3b88192c9e64bd694bc769e13babf7bc7157086de65c864c64158269")
+}
+
+resource CheckerModuleEmitFunctionFactsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:2959-3005")
+  fingerprint ast.semantic_subtree_v1("sha256:c69d72b97f2cea459ca9dc346c78c62a1e416514f5c32509d26437a1309afd93")
+}
+
+resource CheckerModuleEmitGuardFactsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:2505-2531")
+  fingerprint ast.semantic_subtree_v1("sha256:74c0ef021d32b5ca8f67556029933e749a6cdbb35246b5a314b69b0651e0c232")
+}
+
+resource CheckerModuleEmptyDeclarationIndexAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:1362-1376")
+  fingerprint ast.semantic_subtree_v1("sha256:24091ef503578f579b084025cfc85f9ab96b0278439cf382693a94d705e31a26")
+}
+
+resource CheckerModuleEscapeRegexAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:4857-4859")
+  fingerprint ast.semantic_subtree_v1("sha256:bbf911682278776acb8ccd2bedbd57e1a215c8b743cdda068deb617c95e79e64")
+}
+
+resource CheckerModuleExplainShapeModulesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:946-1076")
+  fingerprint ast.semantic_subtree_v1("sha256:3766de298e3bc893323fcf2ea07c70af99b34667d62b0e61f87d6fddc197a3d1")
+}
+
+resource CheckerModuleFindFinalForbiddenAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:4410-4418")
+  fingerprint ast.semantic_subtree_v1("sha256:09fd4d379d3f295ee46a6dfbe93557d37dc75ea523291334ba3b31ba99116fa9")
+}
+
+resource CheckerModuleFindHypercycleAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:3753-3782")
+  fingerprint ast.semantic_subtree_v1("sha256:9900ba305a137d8d4aabfefe7f01e83caffb48aa40642380bde547bcff89446e")
+}
+
+resource CheckerModuleFormatCausedByAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:4780-4786")
+  fingerprint ast.semantic_subtree_v1("sha256:7aaff7abce7a23ef8d9081e8228f1209b36904f25461cc048feac138dd38c530")
+}
+
+resource CheckerModuleFormatContextRequirementAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:4098-4100")
+  fingerprint ast.semantic_subtree_v1("sha256:f821cf8d6969796e264cfe4811ff47e45c441775b6e455bdb980cf1ff584d7d2")
+}
+
+resource CheckerModuleFormatContextTargetMismatchDiagnosticAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:4718-4728")
+  fingerprint ast.semantic_subtree_v1("sha256:05c398e16d04c2327a823d601d82773e2d453f4ceba568af07d29839f1958a38")
+}
+
+resource CheckerModuleFormatDiagnosticAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:4488-4531")
+  fingerprint ast.semantic_subtree_v1("sha256:9552652b6e034ff45dc34033ab3166b6d07933a7735b8bc4e7625e9046a62227")
+}
+
+resource CheckerModuleFormatDiagnosticsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:1255-1261")
+  fingerprint ast.semantic_subtree_v1("sha256:b31c3a74a2a8ead280f732c0e40d18b86d3f26d00256fc698a71665b36207090")
+}
+
+resource CheckerModuleFormatDuplicateDeclarationDiagnosticAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:4586-4595")
+  fingerprint ast.semantic_subtree_v1("sha256:49e5491eee6c9d565e9e332d118ba2e3f2c963cee876f11c926c70eabf564e80")
+}
+
+resource CheckerModuleFormatDuplicateFingerprintDiagnosticAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:4597-4606")
+  fingerprint ast.semantic_subtree_v1("sha256:01981a751c8c38294445f7c20141486180bc0c1bfa17388c6d1e1730ecba2a38")
+}
+
+resource CheckerModuleFormatFinalForbiddenDiagnosticAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:4538-4550")
+  fingerprint ast.semantic_subtree_v1("sha256:970465e620f351619884b05a2f997b7c1300cc3e44316232d9b2b458b0518887")
+}
+
+resource CheckerModuleFormatFingerprintInfoAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:4802-4804")
+  fingerprint ast.semantic_subtree_v1("sha256:076c4c66f0aba3d132c46ca38aa3d3af56f54966e515cfcc5149eb996edf5f10")
+}
+
+resource CheckerModuleFormatFingerprintMismatchDiagnosticAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:4666-4678")
+  fingerprint ast.semantic_subtree_v1("sha256:d50addad95b0d3dcec7899c793980a7a5f63b04b79c4ea8e5e67c6aec3867dc0")
+}
+
+resource CheckerModuleFormatForbiddenHypercycleDiagnosticAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:4638-4649")
+  fingerprint ast.semantic_subtree_v1("sha256:90bd1c03a65593893a831d94c145625520c14fc5d0022c8950c34b18cd425ff0")
+}
+
+resource CheckerModuleFormatForbiddenProvidesDiagnosticAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:4651-4664")
+  fingerprint ast.semantic_subtree_v1("sha256:52e263a8a10b2280290175c94c8900dd4ac2ad6c20d95edccc43812758baa0ff")
+}
+
+resource CheckerModuleFormatGuardedShapeChangedDiagnosticAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:4742-4756")
+  fingerprint ast.semantic_subtree_v1("sha256:37dc17ba8ea042c2c59add3feb7d4f7af49ab7080b506730630f1398ebb903f0")
+}
+
+resource CheckerModuleFormatHyperedgeLineAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:4445-4451")
+  fingerprint ast.semantic_subtree_v1("sha256:478af2b2e0f0c67c536c30b89f7af4df689be061f1fa47d9f810fc80275688a1")
+}
+
+resource CheckerModuleFormatHyperedgeMemberAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:4453-4457")
+  fingerprint ast.semantic_subtree_v1("sha256:cebb8a133b3883617addb54f72fe140b05e98ed32315c88f4d3d55aaf39ef413")
+}
+
+resource CheckerModuleFormatInvalidContextTargetDiagnosticAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:4706-4716")
+  fingerprint ast.semantic_subtree_v1("sha256:e90b89d37cdf37ccd15851d557d05d26c77a22ffc9b53664543e9382e339a6cd")
+}
+
+resource CheckerModuleFormatInvalidReevaluationDiagnosticAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:4758-4767")
+  fingerprint ast.semantic_subtree_v1("sha256:328c28685f8cd7bf460ca8c0a1b75c63778f31890e74aa1492b38b97b9aaac8d")
+}
+
+resource CheckerModuleFormatInvalidRelationDiagnosticAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:4769-4778")
+  fingerprint ast.semantic_subtree_v1("sha256:73b39c396af11cfd955ad3875d72f597b9a57cb020a809da4cf962447d13bbf7")
+}
+
+resource CheckerModuleFormatLocationAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:4788-4796")
+  fingerprint ast.semantic_subtree_v1("sha256:49d052f6930985b8845828041ead07658a2337a80fa7045754e600f69e634e23")
+}
+
+resource CheckerModuleFormatMemoryExplanationAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:4279-4294")
+  fingerprint ast.semantic_subtree_v1("sha256:81f8974e0fe8e724b68d8c6bb796bf556fd82becf1767ec8be40ed59f7a41d0d")
+}
+
+resource CheckerModuleFormatMemoryListEntryAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:4319-4329")
+  fingerprint ast.semantic_subtree_v1("sha256:a50a0d7839e1699e81f0243336794f48b575be64ee75977b7569e2627bca44c7")
+}
+
+resource CheckerModuleFormatMissingBoundDocsChangeDiagnosticAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:4622-4636")
+  fingerprint ast.semantic_subtree_v1("sha256:b62c0537b196aad68fb52d8a29dba589dc8c79a9a1f74c1e9e045a4e0dcc74f4")
+}
+
+resource CheckerModuleFormatMissingGrantDiagnosticAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:4552-4562")
+  fingerprint ast.semantic_subtree_v1("sha256:7546d97f447dad0682d4bf23bbcc1a6eb99f2f8ef1b5fc50694bd50eceebfbbe")
+}
+
+resource CheckerModuleFormatMissingRequiredContextDiagnosticAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:4692-4704")
+  fingerprint ast.semantic_subtree_v1("sha256:a5b66683669bf81024d2de1d5dabc90fe37057dee24640576dde84422cf8c339")
+}
+
+resource CheckerModuleFormatMissingRequiredDescriptionDiagnosticAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:4730-4740")
+  fingerprint ast.semantic_subtree_v1("sha256:e66e91513ca1c978145244a73ef0dd1f99c5d63d6ccb1226d1921ee8901d8c5d")
+}
+
+resource CheckerModuleFormatMissingShapeUpdateDiagnosticAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:4608-4620")
+  fingerprint ast.semantic_subtree_v1("sha256:d118fcfb6f59fcf5a7a99c444795c02b5b82113cef74a36ef4710ffded4d0803")
+}
+
+resource CheckerModuleFormatParseDiagnosticAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:4533-4536")
+  fingerprint ast.semantic_subtree_v1("sha256:156146fae29da01ef8353cc7a7a0cdb09b15182dfd936ef9de114ed17e915dbb")
+}
+
+resource CheckerModuleFormatRationaleExplanationAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:4268-4277")
+  fingerprint ast.semantic_subtree_v1("sha256:7b628b0f3c1b2c8ae0bc966f4846305881a8ee17472d19e48ae6ee7369ce6037")
+}
+
+resource CheckerModuleFormatRationaleMemoryListEntryAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:4313-4317")
+  fingerprint ast.semantic_subtree_v1("sha256:8a0066b9dae8d7df4c754d8834a27c1ee011c070f9b94e5dd90d944353cdd24c")
+}
+
+resource CheckerModuleFormatRelationExplanationAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:4223-4252")
+  fingerprint ast.semantic_subtree_v1("sha256:e6840a99d6de2ae0e7f878ce3af7362d920c28bb96ab4bc500998b3861fb9b1f")
+}
+
+resource CheckerModuleFormatSourceRefInfoAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:4798-4800")
+  fingerprint ast.semantic_subtree_v1("sha256:46b5e55c2f5e0e6e1062bb086ad143dc5508bfcd17260752f95c48f969ff220b")
+}
+
+resource CheckerModuleFormatTargetAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:4094-4096")
+  fingerprint ast.semantic_subtree_v1("sha256:ed04888976be7289c8bbd0c8188380c91cd527fd972939c9b5b690fc6c02519a")
+}
+
+resource CheckerModuleFormatTermAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:4806-4808")
+  fingerprint ast.semantic_subtree_v1("sha256:39be3ba1d7907ca08ea3e8b0e8b19e283c1bfe210575f7aeab95eb75026bd046")
+}
+
+resource CheckerModuleFormatUnknownEffectsDiagnosticAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:4564-4573")
+  fingerprint ast.semantic_subtree_v1("sha256:fbfa3f8bc9e7e286ba44187edefae93da924643840962e8dd89d9f54adf40dfa")
+}
+
+resource CheckerModuleFormatUnknownNameDiagnosticAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:4575-4584")
+  fingerprint ast.semantic_subtree_v1("sha256:a1ad1a1f62aada4d591a665ef453b90c7f9dc93763ec33f522b2858fa0aaff7a")
+}
+
+resource CheckerModuleFormatUnsafeEffectsDiagnosticAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:4680-4690")
+  fingerprint ast.semantic_subtree_v1("sha256:58d036102870f28b5d00be6ee1c6f8fa8dfdd1ca89494636bc9fe9112ecce0ca")
+}
+
+resource CheckerModuleFormatVertexHeaderAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:4469-4472")
+  fingerprint ast.semantic_subtree_v1("sha256:1aaa71fff555cd7efa5cef948362586c60c1c6bb0054a6041d07ff9aa27f9a46")
+}
+
+resource CheckerModuleFunctionKeyAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:4814-4816")
+  fingerprint ast.semantic_subtree_v1("sha256:008dfb303fd76e42f64f602ea41118a535625111ec7f7507755465b7e10207d4")
+}
+
+resource CheckerModuleFunctionTargetAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:2952-2957")
+  fingerprint ast.semantic_subtree_v1("sha256:cfc97571e5397a25da57743905f95707f003bd6250b0974c710375b311653c21")
+}
+
+resource CheckerModuleGlobMatchesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:4827-4832")
+  fingerprint ast.semantic_subtree_v1("sha256:0a61aabafb5f1f1485faa843643c19a740ad72d3a5e73223a5f09faa25fcda1d")
+}
+
+resource CheckerModuleGlobToRegexAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:4834-4855")
+  fingerprint ast.semantic_subtree_v1("sha256:86e1ed79f1eaa56ce3a68561910fb7d4eef615f32b9f3d3891e10c5d67e2e648")
+}
+
+resource CheckerModuleGraphAllShapeModulesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:1145-1166")
+  fingerprint ast.semantic_subtree_v1("sha256:05145617d1d21d6a041218ab8bb769869cdf7147a52ccb6769a08865d246cd18")
+}
+
+resource CheckerModuleGraphShapeModulesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:1103-1139")
+  fingerprint ast.semantic_subtree_v1("sha256:4fd6407753819e795a935d5e74cd92c57ec0f95c9e2cb963fa1e3dbdf60de30f")
+}
+
+resource CheckerModuleGuardedContextsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:4133-4161")
+  fingerprint ast.semantic_subtree_v1("sha256:4e8b8df4c397f9f2f3486d85ccd3e0ccb0be7d3a93fbd01ab31cad786f0f7df9")
+}
+
+resource CheckerModuleGuardsForTargetAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:4197-4221")
+  fingerprint ast.semantic_subtree_v1("sha256:1fb1336bf331f54e7bac146a9074c22d21ed73f961a77dd5b2be21a73b56bbde")
+}
+
+resource CheckerModuleHasNonEmptyDescriptionAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:4050-4052")
+  fingerprint ast.semantic_subtree_v1("sha256:f115c4214b488d97dfb9736e20bc028580ad0e898bc69f05e76f639b1920f0db")
+}
+
+resource CheckerModuleHasRequiredContextAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:4014-4035")
+  fingerprint ast.semantic_subtree_v1("sha256:36e7067cf4fb1c014f9c73134274d3e70f0748efe19aec9dfd0e0d2fe262f696")
+}
+
+resource CheckerModuleHasValidReevaluationForGuardAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:4168-4175")
+  fingerprint ast.semantic_subtree_v1("sha256:ae95addfb58b5da86347368c3cdf81e0f597a08ddd655105f87c6fcfc8cf5f31")
+}
+
+resource CheckerModuleIndexModuleDeclarationsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:1402-1416")
+  fingerprint ast.semantic_subtree_v1("sha256:0217d3b3964f806bf9a99357f93f44786e6db28d79a8581ba7edf388a43af63b")
+}
+
+resource CheckerModuleIsAmbiguousVertexAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:3272-3274")
+  fingerprint ast.semantic_subtree_v1("sha256:36135619db9adc52ba6593d32c04d018e2f958db1bacb42cf19609e524ddc63b")
+}
+
+resource CheckerModuleIsCurrentAttestationAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:3946-3958")
+  fingerprint ast.semantic_subtree_v1("sha256:cb45d43294c22a7959099bf4e8e4816502277a62095757ceecb2e48c15371573")
+}
+
+resource CheckerModuleIsGeneratedAstModuleNameAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:1398-1400")
+  fingerprint ast.semantic_subtree_v1("sha256:a6112ab26c2cad14a04a1d28507172e051711e28c5301d9b7d4df10ab00606c6")
+}
+
+resource CheckerModuleIsObligationDiagnosticAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:4345-4361")
+  fingerprint ast.semantic_subtree_v1("sha256:4fca5e5b73a1c5cdcd75097849e16a432e1104f0789b676e1499599de8bd8be9")
+}
+
+resource CheckerModuleIsPreludeTraitAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:4873-4878")
+  fingerprint ast.semantic_subtree_v1("sha256:46d12cedd36568ddaeed62cd9e0ccf2bd209f59af955b94a8478f291a04e7339")
+}
+
+resource CheckerModuleIsResolvedVertexAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:3268-3270")
+  fingerprint ast.semantic_subtree_v1("sha256:ed5b5101e90bbd93fcfae195000b7a5f5f2b97da4bfd007fe048d0fa158c6778")
+}
+
+resource CheckerModuleIsTrustedGeneratedAstModuleAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:1388-1396")
+  fingerprint ast.semantic_subtree_v1("sha256:c352e388a98d3119632921ea8ff190935900ea5870d46098a00f73201a966b43")
+}
+
+resource CheckerModuleListMemoryGuardsShapeModulesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:854-880")
+  fingerprint ast.semantic_subtree_v1("sha256:46ccb2f58efd16575fad058410cd8d1a256fdda26ec61d10c831f6b62b74d6ac")
+}
+
+resource CheckerModuleListShapeObligationsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:882-944")
+  fingerprint ast.semantic_subtree_v1("sha256:627e0ed3af0a50a03460aae2e3c5fcc3a39919e99edcfd17d5d6b8d9d7a9bd9f")
+}
+
+resource CheckerModuleLocalNameOfAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:1482-1484")
+  fingerprint ast.semantic_subtree_v1("sha256:c4bc7f6052716c37dfcd3721e1ce728e707df58d350b0613d83394e68a4e2065")
+}
+
+resource CheckerModuleLowerAttestationAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:2245-2262")
+  fingerprint ast.semantic_subtree_v1("sha256:0f410c9eb41fc4511b4d342c463b57317032b609241b3246cacd400758fa048e")
+}
+
+resource CheckerModuleLowerBindingAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:2177-2243")
+  fingerprint ast.semantic_subtree_v1("sha256:f4f2b14615f01388cfb3d85efaddba012904f7d7df1d961490f2cb3360399897")
+}
+
+resource CheckerModuleLowerCandidateEffectAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:2069-2127")
+  fingerprint ast.semantic_subtree_v1("sha256:4d14d7d28053788a032230a6d50d560f70f6ca720b0bae57b87867317124ad74")
+}
+
+resource CheckerModuleLowerChangeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:2533-2603")
+  fingerprint ast.semantic_subtree_v1("sha256:621251a99e7395ab1f481e892b25d77c6928c3ba235009cf0c5d3ee99c73943a")
+}
+
+resource CheckerModuleLowerComponentAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:1688-1764")
+  fingerprint ast.semantic_subtree_v1("sha256:ad00c56494cd1ab1774d7a819c84e2cf3e2c4c1345b73051778c4f5e88c74bc2")
+}
+
+resource CheckerModuleLowerContextMemberAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:2396-2445")
+  fingerprint ast.semantic_subtree_v1("sha256:328e8c69da949c352d6cc64812d22e5b0666d4bba4ec41988d6913bc01c9d88f")
+}
+
+resource CheckerModuleLowerDeclarationAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:2623-2645")
+  fingerprint ast.semantic_subtree_v1("sha256:bb894d616a76ff4194f1b94b107b88c87e267e65a53f857c159c01a3689524ce")
+}
+
+resource CheckerModuleLowerDescriptionAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:2783-2798")
+  fingerprint ast.semantic_subtree_v1("sha256:d4267f8047e4f40a5cfaaeded2f0748529db9051a6e01eaa0e379c14e2e7a342")
+}
+
+resource CheckerModuleLowerEffectEntryAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:2824-2841")
+  fingerprint ast.semantic_subtree_v1("sha256:4d33d1cc7def6ee25a9bfaff1e9f3eae8af5902275426384f93716e224b111a0")
+}
+
+resource CheckerModuleLowerEffectsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:2800-2822")
+  fingerprint ast.semantic_subtree_v1("sha256:990756cd6d10c50fc712be58b07a370200741841ddb8f954dd6632326724cbb2")
+}
+
+resource CheckerModuleLowerFingerprintAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:2929-2939")
+  fingerprint ast.semantic_subtree_v1("sha256:7dc1fad43bfbaa3b70bc775b9d076441e109227ebe9c44ee960dfe3db515237a")
+}
+
+resource CheckerModuleLowerForbidPatternAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:2843-2858")
+  fingerprint ast.semantic_subtree_v1("sha256:ee0e469ff626dc830878d0ee0b3ea35697571aa4a05d473f928cbabeea98d4bc")
+}
+
+resource CheckerModuleLowerFunctionAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:2709-2760")
+  fingerprint ast.semantic_subtree_v1("sha256:19876e2d92791af980481e29f898eeebeb55d3434651daa1050e542baf9c96e2")
+}
+
+resource CheckerModuleLowerImplementationAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:2129-2175")
+  fingerprint ast.semantic_subtree_v1("sha256:5ee63b73d28edf87569f6a6c8c1e08508a8ca5c112f462e99a6b2b2f69d24e04")
+}
+
+resource CheckerModuleLowerMemoryAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:2345-2394")
+  fingerprint ast.semantic_subtree_v1("sha256:d8e242ed04484dcabd619ab29e5036096b19d3d72ba06d151cd4b66198675402")
+}
+
+resource CheckerModuleLowerPatternAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:2915-2920")
+  fingerprint ast.semantic_subtree_v1("sha256:59f3466b5eecc3a0ceb034133422887b5bf3349de956aa1ec4913a168c3b5690")
+}
+
+resource CheckerModuleLowerRationaleAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:2296-2343")
+  fingerprint ast.semantic_subtree_v1("sha256:0ea862f3f5bf0aa6749a286c6b6c55c4dcdf65c3003bbbb8cff767cea9b56a07")
+}
+
+resource CheckerModuleLowerReevaluationAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:2447-2503")
+  fingerprint ast.semantic_subtree_v1("sha256:6ef1db4c4b5cf1314a5fc2c5b30b77242b975eb23516ab99e076ce6fa05e2ca3")
+}
+
+resource CheckerModuleLowerRelationAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:1766-2033")
+  fingerprint ast.semantic_subtree_v1("sha256:273bd4b6b3ef6c8ec64f97c71486419ff20eac5318fa291df36e2d5203886461")
+}
+
+resource CheckerModuleLowerResourceAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:1585-1655")
+  fingerprint ast.semantic_subtree_v1("sha256:ddae1f3df600223aee2d4be8d40e3dbee9171fb7b540771f1e8439e890160e8a")
+}
+
+resource CheckerModuleLowerRuleAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:2264-2294")
+  fingerprint ast.semantic_subtree_v1("sha256:21e9887db16fe9d9a6ee1412f67319fbe03190963a6d3e1fe3c5280c6a96488f")
+}
+
+resource CheckerModuleLowerRuleForbidAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:2860-2875")
+  fingerprint ast.semantic_subtree_v1("sha256:03f03d6e8df2d99dfb3d9530770e60fe514773586904ece415b8ce4fcd8019d4")
+}
+
+resource CheckerModuleLowerRuleForbidHypercycleAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:2894-2906")
+  fingerprint ast.semantic_subtree_v1("sha256:ca8ebb9b0dc42937078a7f89653b6fed8ea89dacfdf8e7975e1ceb69997d4624")
+}
+
+resource CheckerModuleLowerRuleForbidProvidesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:2877-2892")
+  fingerprint ast.semantic_subtree_v1("sha256:0e77f937c2235799bac05aae5bac24750ef8c62303b017337142b9809d677a6c")
+}
+
+resource CheckerModuleLowerShapeModulesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:1263-1340")
+  fingerprint ast.semantic_subtree_v1("sha256:1618127410a0d5c6c4edf69768f795b0bbc18131320417833a6e1192a91e763f")
+}
+
+resource CheckerModuleLowerShapeTraitsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:2762-2781")
+  fingerprint ast.semantic_subtree_v1("sha256:c3d90840f95aaf48d8ab8bfd92b440085ac4a75917e3ca976b11b26eb7f823b9")
+}
+
+resource CheckerModuleLowerSourceRefAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:2922-2927")
+  fingerprint ast.semantic_subtree_v1("sha256:12e7c43f928b78453b343af00cac624acca13dafe496d48e1cc3aa582a969c82")
+}
+
+resource CheckerModuleLowerTargetRefAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:2941-2950")
+  fingerprint ast.semantic_subtree_v1("sha256:42d1640af59cfd0e70c402fa73ad75f9bcd1a922695c4ef7640af58ed79e5a81")
+}
+
+resource CheckerModuleLowerTermAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:2908-2913")
+  fingerprint ast.semantic_subtree_v1("sha256:ba4d4251100467187278b272cf16da181b846096c26d050495d10cb8b25d0d59")
+}
+
+resource CheckerModuleLowerTraitAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:1657-1686")
+  fingerprint ast.semantic_subtree_v1("sha256:0b4d3885047a4ed8785e8a1b3b8cb9fbc93d4de1395596878cd85e270fefce1d")
+}
+
+resource CheckerModuleMatchingContextsForTargetAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:4177-4195")
+  fingerprint ast.semantic_subtree_v1("sha256:44af7e21d8daadc6259c91681d5ae290cd6336a95dcb1d1653f32e9bd07842d9")
+}
+
+resource CheckerModuleMissingUnsafeRequirementsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:4474-4486")
+  fingerprint ast.semantic_subtree_v1("sha256:f6bbfdc93f0b0e3b01280022a90b41d5d69be8bca36f50a647a52f541f5c669c")
+}
+
+resource CheckerModuleModuleContextAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:1378-1386")
+  fingerprint ast.semantic_subtree_v1("sha256:a1f32c694559560bbee73a93e978d9c3fd7cb7c0421b853fa5cc2c3bd35f54cb")
+}
+
+resource CheckerModuleNormalizeModuleInputsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:1353-1360")
+  fingerprint ast.semantic_subtree_v1("sha256:3fa84d81be573dd36ce6e0c89f0fb35d11a946f70d22a4f5f11543fb97d7ef8a")
+}
+
+resource CheckerModuleNormalizeRepoPathAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:4818-4825")
+  fingerprint ast.semantic_subtree_v1("sha256:68c442f96324ffa94178d239706236a5c7dfe2d85de9b530ebeb3bcf76c713b3")
+}
+
+resource CheckerModulePluralSuffixAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:1251-1253")
+  fingerprint ast.semantic_subtree_v1("sha256:92e9e9a897ea660c2412f520ea7adeb0383da7c4e06a73706c88746b2976812a")
+}
+
+resource CheckerModulePreludeTraitInfoAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:4880-4900")
+  fingerprint ast.semantic_subtree_v1("sha256:aa7362698a63737c6630413d5d1092144a474e59018483bae3025f913a65dbe6")
+}
+
+resource CheckerModuleProvenanceAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:4861-4863")
+  fingerprint ast.semantic_subtree_v1("sha256:2d7eed54fc7ebec2a77193cd8a471e610dc21e48d135cac3a755f2465dc428b1")
+}
+
+resource CheckerModuleProvenanceFileChangedAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:3960-3964")
+  fingerprint ast.semantic_subtree_v1("sha256:a5511d3a79ed55741c684c1c871cbf32fda67d15147208f7d105061f6383c23a")
+}
+
+resource CheckerModuleProvidesProviderAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:3679-3681")
+  fingerprint ast.semantic_subtree_v1("sha256:cbd725a9573807dba65cd71722da901a1fa9fbde8d47387a9da53e24e0dc213a")
+}
+
+resource CheckerModuleProvidesTargetAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:3683-3685")
+  fingerprint ast.semantic_subtree_v1("sha256:bd3fd81e24fddd9e7829ecb690525aef200b6e643d173f637cb7fed5ff3df5be")
+}
+
+resource CheckerModuleRebuildShapeUpdatePathsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:1342-1351")
+  fingerprint ast.semantic_subtree_v1("sha256:06f36dfb8ea5ebd33e8f251da4ba2babf6a4685bcde1987c154c0465ecb68eec")
+}
+
+resource CheckerModuleReevaluationValidationReasonsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:4102-4127")
+  fingerprint ast.semantic_subtree_v1("sha256:c8607613760873cec08850ab3468583baff69507fd319010b9c03dd8c373f3f1")
+}
+
+resource CheckerModuleRemoveDeclarationAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:2647-2671")
+  fingerprint ast.semantic_subtree_v1("sha256:5d6369071142f26a1b151ffdb4db43c91c313d34be93435089076a2897436e45")
+}
+
+resource CheckerModuleRemoveFunctionFactsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:3007-3025")
+  fingerprint ast.semantic_subtree_v1("sha256:cb371ad632f8aeaa27ac8a4744bf20e6d100103222264da4ae352a8c40be173c")
+}
+
+resource CheckerModuleRemoveRelationAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:2035-2053")
+  fingerprint ast.semantic_subtree_v1("sha256:922adb0eb1bbefbfa3ae282d8e044d2b6f9b086cb9f8a4982901195b9276a762")
+}
+
+resource CheckerModuleRequirementsForFunctionAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:4008-4012")
+  fingerprint ast.semantic_subtree_v1("sha256:83447f26a4729da4edb2ac0d86d62cc0f7c6c30f919f7d9a377035e964785e50")
+}
+
+resource CheckerModuleRequiresReevaluationAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:4163-4166")
+  fingerprint ast.semantic_subtree_v1("sha256:b1f923ddb804bde379b418a7028700de83fc6e685beb6bea385c08eecc18ae0a")
+}
+
+resource CheckerModuleResolveContextObjectNameAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:1576-1583")
+  fingerprint ast.semantic_subtree_v1("sha256:5e037132bb7801797e7f19ea73bf2f9b56da74e16e71b486cbfe2424fa67f437")
+}
+
+resource CheckerModuleResolveDeclNameAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:1499-1523")
+  fingerprint ast.semantic_subtree_v1("sha256:18052481ea523edf9c2f70a231242b6fa76e3ce3c1b26350cb35791dc1f312d2")
+}
+
+resource CheckerModuleResolveFunctionTargetNameAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:1568-1574")
+  fingerprint ast.semantic_subtree_v1("sha256:0324e45a4a2c1975f910eb5a38a969239b8f39d1193d06e8a03f6dfe0aebfbd2")
+}
+
+resource CheckerModuleResolveQuerySymbolAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:1082-1091")
+  fingerprint ast.semantic_subtree_v1("sha256:d761a1f55274b1f182b616921e5e617c203aceb513a02fcf8ca0fb5f0e9394bc")
+}
+
+resource CheckerModuleResolveTargetNameAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:1546-1566")
+  fingerprint ast.semantic_subtree_v1("sha256:4a93ca7d254c407f02f9dbc68994b5b7cb5aab7e2edecdbff37ae92af2c2566c")
+}
+
+resource CheckerModuleResolveVertexNameAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:1525-1544")
+  fingerprint ast.semantic_subtree_v1("sha256:e3da3f57431bcf88fb7894d456b3fc0f425e4c6423fd48673a9cba2924e04924")
+}
+
+resource CheckerModuleSplitFunctionTargetAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:4082-4088")
+  fingerprint ast.semantic_subtree_v1("sha256:b9d94d111bc864d6eb3f8eddfac85f4e9c02dbffc5d8e81afc8dfc537dc25d6e")
+}
+
+resource CheckerModuleSplitQualifiedNameAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:1471-1480")
+  fingerprint ast.semantic_subtree_v1("sha256:7bbd8bc2580396bfa4cb74e325a930d521b7d116191e5f8925ce234db2a86bf8")
+}
+
+resource CheckerModuleStatsShapeHypergraphAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:1173-1249")
+  fingerprint ast.semantic_subtree_v1("sha256:daae921c3dd30992edcbc9c9077f242a4b5638540636574de12d59c2f9ab7da8")
+}
+
+resource CheckerModuleSubstituteTargetAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:4420-4429")
+  fingerprint ast.semantic_subtree_v1("sha256:fe3efddf3b36832a6367b333405a0a710ee70c094d669e50e46c88fb19a79bd5")
+}
+
+resource CheckerModuleTargetExistsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:4054-4080")
+  fingerprint ast.semantic_subtree_v1("sha256:7aba3b47c027cbf7109e94967d257921a88fa84289ca7d94a51f31a03bcda4f0")
+}
+
+resource CheckerModuleTargetsEqualAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:4090-4092")
+  fingerprint ast.semantic_subtree_v1("sha256:9c63ccc644b81c087c86942cb1b15aa0c228453a05caea3c0fd24bb278e1042c")
+}
+
+resource CheckerModuleTermKeyAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:4810-4812")
+  fingerprint ast.semantic_subtree_v1("sha256:744b1e651be43a3613dbd6f257aba6972ffbfcdc4b10e7e6134682733b70d884")
+}
+
+resource CheckerModuleVertexKindLabelAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:4459-4467")
+  fingerprint ast.semantic_subtree_v1("sha256:cc033e9ef88049252417071a1b31ff6dcec52bcb55404ba04f6a1601009827bc")
+}
+
+resource CheckerModuleWitnessFromPathAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.ts:3814-3829")
+  fingerprint ast.semantic_subtree_v1("sha256:dee291aa400316b14d04def760058f046e2d9f514d2044807f86a33263d26615")
+}
+
+component CheckerModule : GeneratedCandidate {
+  fn addShapeUpdatePath
+    source ts("packages/shp-checker/src/checker.ts:3081-3089")
+    effects unknown
+  fn allHyperedgesByKind
+    source ts("packages/shp-checker/src/checker.ts:1093-1101")
+    effects unknown
+  fn appendContextExplanationFields
+    source ts("packages/shp-checker/src/checker.ts:4296-4311")
+    effects unknown
+  fn appendContextListFields
+    source ts("packages/shp-checker/src/checker.ts:4331-4343")
+    effects unknown
+  fn appendIncidence
+    source ts("packages/shp-checker/src/checker.ts:4254-4266")
+    effects unknown
+  fn buildHyperedgeSteps
+    source ts("packages/shp-checker/src/checker.ts:3831-3860")
+    effects unknown
+  fn changedFileContext
+    source ts("packages/shp-checker/src/checker.ts:3913-3921")
+    effects unknown
+  fn checkBindings
+    source ts("packages/shp-checker/src/checker.ts:3966-4006")
+    effects unknown
+  fn checkContextTarget
+    source ts("packages/shp-checker/src/checker.ts:3376-3421")
+    effects unknown
+  fn checkContextTargets
+    source ts("packages/shp-checker/src/checker.ts:3362-3374")
+    effects unknown
+  fn checkCoverage
+    source ts("packages/shp-checker/src/checker.ts:3862-3911")
+    effects unknown
+  fn checkFingerprintExpectations
+    source ts("packages/shp-checker/src/checker.ts:3304-3360")
+    effects unknown
+  fn checkFunctions
+    source ts("packages/shp-checker/src/checker.ts:3553-3634")
+    effects unknown
+  fn checkGuardedChanges
+    source ts("packages/shp-checker/src/checker.ts:3521-3551")
+    effects unknown
+  fn checkHypercycles
+    source ts("packages/shp-checker/src/checker.ts:3687-3723")
+    effects unknown
+  fn checkProvidesEndpointKinds
+    source ts("packages/shp-checker/src/checker.ts:3276-3302")
+    effects unknown
+  fn checkProvidesRules
+    source ts("packages/shp-checker/src/checker.ts:3636-3674")
+    effects unknown
+  fn checkReevaluations
+    source ts("packages/shp-checker/src/checker.ts:3503-3519")
+    effects unknown
+  fn checkRequiredContext
+    source ts("packages/shp-checker/src/checker.ts:3423-3457")
+    effects unknown
+  fn checkRequiredDescriptions
+    source ts("packages/shp-checker/src/checker.ts:3459-3501")
+    effects unknown
+  fn checkResolvedNames
+    source ts("packages/shp-checker/src/checker.ts:3091-3266")
+    effects unknown
+  fn checkShapeFiles
+    source ts("packages/shp-checker/src/checker.ts:815-852")
+    effects unknown
+  fn checkShapeModules
+    source ts("packages/shp-checker/src/checker.ts:786-813")
+    effects unknown
+  fn collectConnects
+    source ts("packages/shp-checker/src/checker.ts:2055-2067")
+    effects unknown
+  fn collectShapeUpdatePathsFromFunction
+    source ts("packages/shp-checker/src/checker.ts:3056-3079")
+    effects unknown
+  fn compareHyperedges
+    source ts("packages/shp-checker/src/checker.ts:1078-1080")
+    effects unknown
+  fn contextForDeclarationChange
+    source ts("packages/shp-checker/src/checker.ts:2605-2621")
+    effects unknown
+  fn contextObjectExists
+    source ts("packages/shp-checker/src/checker.ts:4129-4131")
+    effects unknown
+  fn contextSatisfiesRequirement
+    source ts("packages/shp-checker/src/checker.ts:4037-4048")
+    effects unknown
+  fn currentAttestationExists
+    source ts("packages/shp-checker/src/checker.ts:3935-3944")
+    effects unknown
+  fn currentShapeUpdateExists
+    source ts("packages/shp-checker/src/checker.ts:3923-3933")
+    effects unknown
+  fn declKey
+    source ts("packages/shp-checker/src/checker.ts:1467-1469")
+    effects unknown
+  fn declarationIndexKind
+    source ts("packages/shp-checker/src/checker.ts:1428-1465")
+    effects unknown
+  fn declarationKind
+    source ts("packages/shp-checker/src/checker.ts:2673-2698")
+    effects unknown
+  fn declarationName
+    source ts("packages/shp-checker/src/checker.ts:2700-2707")
+    effects unknown
+  fn declarationNameForIndex
+    source ts("packages/shp-checker/src/checker.ts:1418-1426")
+    effects unknown
+  fn declaredLocally
+    source ts("packages/shp-checker/src/checker.ts:1490-1497")
+    effects unknown
+  fn dedupeForbids
+    source ts("packages/shp-checker/src/checker.ts:4431-4443")
+    effects unknown
+  fn deriveFinalForbidsForResource
+    source ts("packages/shp-checker/src/checker.ts:4363-4408")
+    effects unknown
+  fn describeProvenance
+    source ts("packages/shp-checker/src/checker.ts:4865-4871")
+    effects unknown
+  fn dfsHypercycle
+    source ts("packages/shp-checker/src/checker.ts:3784-3812")
+    effects unknown
+  fn displaySymbol
+    source ts("packages/shp-checker/src/checker.ts:1486-1488")
+    effects unknown
+  fn emitDerivedFacts
+    source ts("packages/shp-checker/src/checker.ts:3027-3054")
+    effects unknown
+  fn emitFunctionFacts
+    source ts("packages/shp-checker/src/checker.ts:2959-3005")
+    effects unknown
+  fn emitGuardFacts
+    source ts("packages/shp-checker/src/checker.ts:2505-2531")
+    effects unknown
+  fn emptyDeclarationIndex
+    source ts("packages/shp-checker/src/checker.ts:1362-1376")
+    effects unknown
+  fn escapeRegex
+    source ts("packages/shp-checker/src/checker.ts:4857-4859")
+    effects unknown
+  fn explainShapeModules
+    source ts("packages/shp-checker/src/checker.ts:946-1076")
+    effects unknown
+  fn findFinalForbidden
+    source ts("packages/shp-checker/src/checker.ts:4410-4418")
+    effects unknown
+  fn findHypercycle
+    source ts("packages/shp-checker/src/checker.ts:3753-3782")
+    effects unknown
+  fn formatCausedBy
+    source ts("packages/shp-checker/src/checker.ts:4780-4786")
+    effects unknown
+  fn formatContextRequirement
+    source ts("packages/shp-checker/src/checker.ts:4098-4100")
+    effects unknown
+  fn formatContextTargetMismatchDiagnostic
+    source ts("packages/shp-checker/src/checker.ts:4718-4728")
+    effects unknown
+  fn formatDiagnostic
+    source ts("packages/shp-checker/src/checker.ts:4488-4531")
+    effects unknown
+  fn formatDiagnostics
+    source ts("packages/shp-checker/src/checker.ts:1255-1261")
+    effects unknown
+  fn formatDuplicateDeclarationDiagnostic
+    source ts("packages/shp-checker/src/checker.ts:4586-4595")
+    effects unknown
+  fn formatDuplicateFingerprintDiagnostic
+    source ts("packages/shp-checker/src/checker.ts:4597-4606")
+    effects unknown
+  fn formatFinalForbiddenDiagnostic
+    source ts("packages/shp-checker/src/checker.ts:4538-4550")
+    effects unknown
+  fn formatFingerprintInfo
+    source ts("packages/shp-checker/src/checker.ts:4802-4804")
+    effects unknown
+  fn formatFingerprintMismatchDiagnostic
+    source ts("packages/shp-checker/src/checker.ts:4666-4678")
+    effects unknown
+  fn formatForbiddenHypercycleDiagnostic
+    source ts("packages/shp-checker/src/checker.ts:4638-4649")
+    effects unknown
+  fn formatForbiddenProvidesDiagnostic
+    source ts("packages/shp-checker/src/checker.ts:4651-4664")
+    effects unknown
+  fn formatGuardedShapeChangedDiagnostic
+    source ts("packages/shp-checker/src/checker.ts:4742-4756")
+    effects unknown
+  fn formatHyperedgeLine
+    source ts("packages/shp-checker/src/checker.ts:4445-4451")
+    effects unknown
+  fn formatHyperedgeMember
+    source ts("packages/shp-checker/src/checker.ts:4453-4457")
+    effects unknown
+  fn formatInvalidContextTargetDiagnostic
+    source ts("packages/shp-checker/src/checker.ts:4706-4716")
+    effects unknown
+  fn formatInvalidReevaluationDiagnostic
+    source ts("packages/shp-checker/src/checker.ts:4758-4767")
+    effects unknown
+  fn formatInvalidRelationDiagnostic
+    source ts("packages/shp-checker/src/checker.ts:4769-4778")
+    effects unknown
+  fn formatLocation
+    source ts("packages/shp-checker/src/checker.ts:4788-4796")
+    effects unknown
+  fn formatMemoryExplanation
+    source ts("packages/shp-checker/src/checker.ts:4279-4294")
+    effects unknown
+  fn formatMemoryListEntry
+    source ts("packages/shp-checker/src/checker.ts:4319-4329")
+    effects unknown
+  fn formatMissingBoundDocsChangeDiagnostic
+    source ts("packages/shp-checker/src/checker.ts:4622-4636")
+    effects unknown
+  fn formatMissingGrantDiagnostic
+    source ts("packages/shp-checker/src/checker.ts:4552-4562")
+    effects unknown
+  fn formatMissingRequiredContextDiagnostic
+    source ts("packages/shp-checker/src/checker.ts:4692-4704")
+    effects unknown
+  fn formatMissingRequiredDescriptionDiagnostic
+    source ts("packages/shp-checker/src/checker.ts:4730-4740")
+    effects unknown
+  fn formatMissingShapeUpdateDiagnostic
+    source ts("packages/shp-checker/src/checker.ts:4608-4620")
+    effects unknown
+  fn formatParseDiagnostic
+    source ts("packages/shp-checker/src/checker.ts:4533-4536")
+    effects unknown
+  fn formatRationaleExplanation
+    source ts("packages/shp-checker/src/checker.ts:4268-4277")
+    effects unknown
+  fn formatRationaleMemoryListEntry
+    source ts("packages/shp-checker/src/checker.ts:4313-4317")
+    effects unknown
+  fn formatRelationExplanation
+    source ts("packages/shp-checker/src/checker.ts:4223-4252")
+    effects unknown
+  fn formatSourceRefInfo
+    source ts("packages/shp-checker/src/checker.ts:4798-4800")
+    effects unknown
+  fn formatTarget
+    source ts("packages/shp-checker/src/checker.ts:4094-4096")
+    effects unknown
+  fn formatTerm
+    source ts("packages/shp-checker/src/checker.ts:4806-4808")
+    effects unknown
+  fn formatUnknownEffectsDiagnostic
+    source ts("packages/shp-checker/src/checker.ts:4564-4573")
+    effects unknown
+  fn formatUnknownNameDiagnostic
+    source ts("packages/shp-checker/src/checker.ts:4575-4584")
+    effects unknown
+  fn formatUnsafeEffectsDiagnostic
+    source ts("packages/shp-checker/src/checker.ts:4680-4690")
+    effects unknown
+  fn formatVertexHeader
+    source ts("packages/shp-checker/src/checker.ts:4469-4472")
+    effects unknown
+  fn functionKey
+    source ts("packages/shp-checker/src/checker.ts:4814-4816")
+    effects unknown
+  fn functionTarget
+    source ts("packages/shp-checker/src/checker.ts:2952-2957")
+    effects unknown
+  fn globMatches
+    source ts("packages/shp-checker/src/checker.ts:4827-4832")
+    effects unknown
+  fn globToRegex
+    source ts("packages/shp-checker/src/checker.ts:4834-4855")
+    effects unknown
+  fn graphAllShapeModules
+    source ts("packages/shp-checker/src/checker.ts:1145-1166")
+    effects unknown
+  fn graphShapeModules
+    source ts("packages/shp-checker/src/checker.ts:1103-1139")
+    effects unknown
+  fn guardedContexts
+    source ts("packages/shp-checker/src/checker.ts:4133-4161")
+    effects unknown
+  fn guardsForTarget
+    source ts("packages/shp-checker/src/checker.ts:4197-4221")
+    effects unknown
+  fn hasNonEmptyDescription
+    source ts("packages/shp-checker/src/checker.ts:4050-4052")
+    effects unknown
+  fn hasRequiredContext
+    source ts("packages/shp-checker/src/checker.ts:4014-4035")
+    effects unknown
+  fn hasValidReevaluationForGuard
+    source ts("packages/shp-checker/src/checker.ts:4168-4175")
+    effects unknown
+  fn indexModuleDeclarations
+    source ts("packages/shp-checker/src/checker.ts:1402-1416")
+    effects unknown
+  fn isAmbiguousVertex
+    source ts("packages/shp-checker/src/checker.ts:3272-3274")
+    effects unknown
+  fn isCurrentAttestation
+    source ts("packages/shp-checker/src/checker.ts:3946-3958")
+    effects unknown
+  fn isGeneratedAstModuleName
+    source ts("packages/shp-checker/src/checker.ts:1398-1400")
+    effects unknown
+  fn isObligationDiagnostic
+    source ts("packages/shp-checker/src/checker.ts:4345-4361")
+    effects unknown
+  fn isPreludeTrait
+    source ts("packages/shp-checker/src/checker.ts:4873-4878")
+    effects unknown
+  fn isResolvedVertex
+    source ts("packages/shp-checker/src/checker.ts:3268-3270")
+    effects unknown
+  fn isTrustedGeneratedAstModule
+    source ts("packages/shp-checker/src/checker.ts:1388-1396")
+    effects unknown
+  fn listMemoryGuardsShapeModules
+    source ts("packages/shp-checker/src/checker.ts:854-880")
+    effects unknown
+  fn listShapeObligations
+    source ts("packages/shp-checker/src/checker.ts:882-944")
+    effects unknown
+  fn localNameOf
+    source ts("packages/shp-checker/src/checker.ts:1482-1484")
+    effects unknown
+  fn lowerAttestation
+    source ts("packages/shp-checker/src/checker.ts:2245-2262")
+    effects unknown
+  fn lowerBinding
+    source ts("packages/shp-checker/src/checker.ts:2177-2243")
+    effects unknown
+  fn lowerCandidateEffect
+    source ts("packages/shp-checker/src/checker.ts:2069-2127")
+    effects unknown
+  fn lowerChange
+    source ts("packages/shp-checker/src/checker.ts:2533-2603")
+    effects unknown
+  fn lowerComponent
+    source ts("packages/shp-checker/src/checker.ts:1688-1764")
+    effects unknown
+  fn lowerContextMember
+    source ts("packages/shp-checker/src/checker.ts:2396-2445")
+    effects unknown
+  fn lowerDeclaration
+    source ts("packages/shp-checker/src/checker.ts:2623-2645")
+    effects unknown
+  fn lowerDescription
+    source ts("packages/shp-checker/src/checker.ts:2783-2798")
+    effects unknown
+  fn lowerEffectEntry
+    source ts("packages/shp-checker/src/checker.ts:2824-2841")
+    effects unknown
+  fn lowerEffects
+    source ts("packages/shp-checker/src/checker.ts:2800-2822")
+    effects unknown
+  fn lowerFingerprint
+    source ts("packages/shp-checker/src/checker.ts:2929-2939")
+    effects unknown
+  fn lowerForbidPattern
+    source ts("packages/shp-checker/src/checker.ts:2843-2858")
+    effects unknown
+  fn lowerFunction
+    source ts("packages/shp-checker/src/checker.ts:2709-2760")
+    effects unknown
+  fn lowerImplementation
+    source ts("packages/shp-checker/src/checker.ts:2129-2175")
+    effects unknown
+  fn lowerMemory
+    source ts("packages/shp-checker/src/checker.ts:2345-2394")
+    effects unknown
+  fn lowerPattern
+    source ts("packages/shp-checker/src/checker.ts:2915-2920")
+    effects unknown
+  fn lowerRationale
+    source ts("packages/shp-checker/src/checker.ts:2296-2343")
+    effects unknown
+  fn lowerReevaluation
+    source ts("packages/shp-checker/src/checker.ts:2447-2503")
+    effects unknown
+  fn lowerRelation
+    source ts("packages/shp-checker/src/checker.ts:1766-2033")
+    effects unknown
+  fn lowerResource
+    source ts("packages/shp-checker/src/checker.ts:1585-1655")
+    effects unknown
+  fn lowerRule
+    source ts("packages/shp-checker/src/checker.ts:2264-2294")
+    effects unknown
+  fn lowerRuleForbid
+    source ts("packages/shp-checker/src/checker.ts:2860-2875")
+    effects unknown
+  fn lowerRuleForbidHypercycle
+    source ts("packages/shp-checker/src/checker.ts:2894-2906")
+    effects unknown
+  fn lowerRuleForbidProvides
+    source ts("packages/shp-checker/src/checker.ts:2877-2892")
+    effects unknown
+  fn lowerShapeModules
+    source ts("packages/shp-checker/src/checker.ts:1263-1340")
+    effects unknown
+  fn lowerShapeTraits
+    source ts("packages/shp-checker/src/checker.ts:2762-2781")
+    effects unknown
+  fn lowerSourceRef
+    source ts("packages/shp-checker/src/checker.ts:2922-2927")
+    effects unknown
+  fn lowerTargetRef
+    source ts("packages/shp-checker/src/checker.ts:2941-2950")
+    effects unknown
+  fn lowerTerm
+    source ts("packages/shp-checker/src/checker.ts:2908-2913")
+    effects unknown
+  fn lowerTrait
+    source ts("packages/shp-checker/src/checker.ts:1657-1686")
+    effects unknown
+  fn matchingContextsForTarget
+    source ts("packages/shp-checker/src/checker.ts:4177-4195")
+    effects unknown
+  fn missingUnsafeRequirements
+    source ts("packages/shp-checker/src/checker.ts:4474-4486")
+    effects unknown
+  fn moduleContext
+    source ts("packages/shp-checker/src/checker.ts:1378-1386")
+    effects unknown
+  fn normalizeModuleInputs
+    source ts("packages/shp-checker/src/checker.ts:1353-1360")
+    effects unknown
+  fn normalizeRepoPath
+    source ts("packages/shp-checker/src/checker.ts:4818-4825")
+    effects unknown
+  fn pluralSuffix
+    source ts("packages/shp-checker/src/checker.ts:1251-1253")
+    effects unknown
+  fn preludeTraitInfo
+    source ts("packages/shp-checker/src/checker.ts:4880-4900")
+    effects unknown
+  fn provenance
+    source ts("packages/shp-checker/src/checker.ts:4861-4863")
+    effects unknown
+  fn provenanceFileChanged
+    source ts("packages/shp-checker/src/checker.ts:3960-3964")
+    effects unknown
+  fn providesProvider
+    source ts("packages/shp-checker/src/checker.ts:3679-3681")
+    effects unknown
+  fn providesTarget
+    source ts("packages/shp-checker/src/checker.ts:3683-3685")
+    effects unknown
+  fn rebuildShapeUpdatePaths
+    source ts("packages/shp-checker/src/checker.ts:1342-1351")
+    effects unknown
+  fn reevaluationValidationReasons
+    source ts("packages/shp-checker/src/checker.ts:4102-4127")
+    effects unknown
+  fn removeDeclaration
+    source ts("packages/shp-checker/src/checker.ts:2647-2671")
+    effects unknown
+  fn removeFunctionFacts
+    source ts("packages/shp-checker/src/checker.ts:3007-3025")
+    effects unknown
+  fn removeRelation
+    source ts("packages/shp-checker/src/checker.ts:2035-2053")
+    effects unknown
+  fn requirementsForFunction
+    source ts("packages/shp-checker/src/checker.ts:4008-4012")
+    effects unknown
+  fn requiresReevaluation
+    source ts("packages/shp-checker/src/checker.ts:4163-4166")
+    effects unknown
+  fn resolveContextObjectName
+    source ts("packages/shp-checker/src/checker.ts:1576-1583")
+    effects unknown
+  fn resolveDeclName
+    source ts("packages/shp-checker/src/checker.ts:1499-1523")
+    effects unknown
+  fn resolveFunctionTargetName
+    source ts("packages/shp-checker/src/checker.ts:1568-1574")
+    effects unknown
+  fn resolveQuerySymbol
+    source ts("packages/shp-checker/src/checker.ts:1082-1091")
+    effects unknown
+  fn resolveTargetName
+    source ts("packages/shp-checker/src/checker.ts:1546-1566")
+    effects unknown
+  fn resolveVertexName
+    source ts("packages/shp-checker/src/checker.ts:1525-1544")
+    effects unknown
+  fn splitFunctionTarget
+    source ts("packages/shp-checker/src/checker.ts:4082-4088")
+    effects unknown
+  fn splitQualifiedName
+    source ts("packages/shp-checker/src/checker.ts:1471-1480")
+    effects unknown
+  fn statsShapeHypergraph
+    source ts("packages/shp-checker/src/checker.ts:1173-1249")
+    effects unknown
+  fn substituteTarget
+    source ts("packages/shp-checker/src/checker.ts:4420-4429")
+    effects unknown
+  fn targetExists
+    source ts("packages/shp-checker/src/checker.ts:4054-4080")
+    effects unknown
+  fn targetsEqual
+    source ts("packages/shp-checker/src/checker.ts:4090-4092")
+    effects unknown
+  fn termKey
+    source ts("packages/shp-checker/src/checker.ts:4810-4812")
+    effects unknown
+  fn vertexKindLabel
+    source ts("packages/shp-checker/src/checker.ts:4459-4467")
+    effects unknown
+  fn witnessFromPath
+    source ts("packages/shp-checker/src/checker.ts:3814-3829")
+    effects unknown
+}
+
+relation CheckerModuleAddShapeUpdatePathGeneratedFromCheckerModuleAddShapeUpdatePathAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleAddShapeUpdatePathAstAnchor
+  roles { CheckerModule as generated, CheckerModuleAddShapeUpdatePathAstAnchor as syntax }
+  expects CheckerModuleAddShapeUpdatePathAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c009f40d3575e2f1724fcfc041f7ae183a5bc15bb20ba97c0b5b48d7e0e2305a")
+  summary "fn CheckerModule.addShapeUpdatePath generated from typescript function_declaration at packages/shp-checker/src/checker.ts:3081-3089."
+}
+
+relation CheckerModuleAllHyperedgesByKindGeneratedFromCheckerModuleAllHyperedgesByKindAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleAllHyperedgesByKindAstAnchor
+  roles { CheckerModule as generated, CheckerModuleAllHyperedgesByKindAstAnchor as syntax }
+  expects CheckerModuleAllHyperedgesByKindAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4c88cb6e4420856b6e6d18ebcde818125a441139a2c0ab54f2b742264b7f384a")
+  summary "fn CheckerModule.allHyperedgesByKind generated from typescript function_declaration at packages/shp-checker/src/checker.ts:1093-1101."
+}
+
+relation CheckerModuleAppendContextExplanationFieldsGeneratedFromCheckerModuleAppendContextExplanationFieldsAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleAppendContextExplanationFieldsAstAnchor
+  roles { CheckerModule as generated, CheckerModuleAppendContextExplanationFieldsAstAnchor as syntax }
+  expects CheckerModuleAppendContextExplanationFieldsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7bc1b5f4e887d2899412e44ab941fe17c8afc3b990c0672e9c7475159f65afe7")
+  summary "fn CheckerModule.appendContextExplanationFields generated from typescript function_declaration at packages/shp-checker/src/checker.ts:4296-4311."
+}
+
+relation CheckerModuleAppendContextListFieldsGeneratedFromCheckerModuleAppendContextListFieldsAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleAppendContextListFieldsAstAnchor
+  roles { CheckerModule as generated, CheckerModuleAppendContextListFieldsAstAnchor as syntax }
+  expects CheckerModuleAppendContextListFieldsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:efec31ca4e2fcca4decdec0b3d89d294c9be43a18581b17b7745009d31daaac8")
+  summary "fn CheckerModule.appendContextListFields generated from typescript function_declaration at packages/shp-checker/src/checker.ts:4331-4343."
+}
+
+relation CheckerModuleAppendIncidenceGeneratedFromCheckerModuleAppendIncidenceAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleAppendIncidenceAstAnchor
+  roles { CheckerModule as generated, CheckerModuleAppendIncidenceAstAnchor as syntax }
+  expects CheckerModuleAppendIncidenceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:08c207e6c137ea6d4bb60cdef2c5d588bc82135317749709b9113dc2aafd3d5e")
+  summary "fn CheckerModule.appendIncidence generated from typescript function_declaration at packages/shp-checker/src/checker.ts:4254-4266."
+}
+
+relation CheckerModuleBuildHyperedgeStepsGeneratedFromCheckerModuleBuildHyperedgeStepsAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleBuildHyperedgeStepsAstAnchor
+  roles { CheckerModule as generated, CheckerModuleBuildHyperedgeStepsAstAnchor as syntax }
+  expects CheckerModuleBuildHyperedgeStepsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:be721d03e47cc3984c6ede9ecdcd7cac751f76d549c1edab58823d1de777b52a")
+  summary "fn CheckerModule.buildHyperedgeSteps generated from typescript function_declaration at packages/shp-checker/src/checker.ts:3831-3860."
+}
+
+relation CheckerModuleChangedFileContextGeneratedFromCheckerModuleChangedFileContextAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleChangedFileContextAstAnchor
+  roles { CheckerModule as generated, CheckerModuleChangedFileContextAstAnchor as syntax }
+  expects CheckerModuleChangedFileContextAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5c4ae616a1424b71bcf17806c834b248916dd1526749a938322e5930425f72bf")
+  summary "fn CheckerModule.changedFileContext generated from typescript function_declaration at packages/shp-checker/src/checker.ts:3913-3921."
+}
+
+relation CheckerModuleCheckBindingsGeneratedFromCheckerModuleCheckBindingsAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleCheckBindingsAstAnchor
+  roles { CheckerModule as generated, CheckerModuleCheckBindingsAstAnchor as syntax }
+  expects CheckerModuleCheckBindingsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:8d10f1b2f1c43260712e1d134934b635d8f0f258f6eb3f316959f7e3e4ba234e")
+  summary "fn CheckerModule.checkBindings generated from typescript function_declaration at packages/shp-checker/src/checker.ts:3966-4006."
+}
+
+relation CheckerModuleCheckContextTargetGeneratedFromCheckerModuleCheckContextTargetAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleCheckContextTargetAstAnchor
+  roles { CheckerModule as generated, CheckerModuleCheckContextTargetAstAnchor as syntax }
+  expects CheckerModuleCheckContextTargetAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e94c6ef8e151e7db2496573729843916c4a7abc7db3ee45f8a0e9da35494f958")
+  summary "fn CheckerModule.checkContextTarget generated from typescript function_declaration at packages/shp-checker/src/checker.ts:3376-3421."
+}
+
+relation CheckerModuleCheckContextTargetsGeneratedFromCheckerModuleCheckContextTargetsAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleCheckContextTargetsAstAnchor
+  roles { CheckerModule as generated, CheckerModuleCheckContextTargetsAstAnchor as syntax }
+  expects CheckerModuleCheckContextTargetsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a85d7a9d269c4324acc4a710398ffea4aabb7ebfc51eccb6bef6c8894659fcc1")
+  summary "fn CheckerModule.checkContextTargets generated from typescript function_declaration at packages/shp-checker/src/checker.ts:3362-3374."
+}
+
+relation CheckerModuleCheckCoverageGeneratedFromCheckerModuleCheckCoverageAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleCheckCoverageAstAnchor
+  roles { CheckerModule as generated, CheckerModuleCheckCoverageAstAnchor as syntax }
+  expects CheckerModuleCheckCoverageAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ce566495bb7180ff85bb01c00f92f7b86b27d8ace4eab5c3380af0014df35119")
+  summary "fn CheckerModule.checkCoverage generated from typescript function_declaration at packages/shp-checker/src/checker.ts:3862-3911."
+}
+
+relation CheckerModuleCheckFingerprintExpectationsGeneratedFromCheckerModuleCheckFingerprintExpectationsAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleCheckFingerprintExpectationsAstAnchor
+  roles { CheckerModule as generated, CheckerModuleCheckFingerprintExpectationsAstAnchor as syntax }
+  expects CheckerModuleCheckFingerprintExpectationsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f58a1cad65fcf653778e347d7d0f51a625c1631be0bade07d88b3c3db6f1829f")
+  summary "fn CheckerModule.checkFingerprintExpectations generated from typescript function_declaration at packages/shp-checker/src/checker.ts:3304-3360."
+}
+
+relation CheckerModuleCheckFunctionsGeneratedFromCheckerModuleCheckFunctionsAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleCheckFunctionsAstAnchor
+  roles { CheckerModule as generated, CheckerModuleCheckFunctionsAstAnchor as syntax }
+  expects CheckerModuleCheckFunctionsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:45aa7d82435aa69a8c8be329908d84c8913dc52efd0a7a72e01d191292c12e23")
+  summary "fn CheckerModule.checkFunctions generated from typescript function_declaration at packages/shp-checker/src/checker.ts:3553-3634."
+}
+
+relation CheckerModuleCheckGuardedChangesGeneratedFromCheckerModuleCheckGuardedChangesAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleCheckGuardedChangesAstAnchor
+  roles { CheckerModule as generated, CheckerModuleCheckGuardedChangesAstAnchor as syntax }
+  expects CheckerModuleCheckGuardedChangesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:65266b1a97be176049d371858fc3b7fa023db7994f13a2ee43bfa0ed9b8b9e7c")
+  summary "fn CheckerModule.checkGuardedChanges generated from typescript function_declaration at packages/shp-checker/src/checker.ts:3521-3551."
+}
+
+relation CheckerModuleCheckHypercyclesGeneratedFromCheckerModuleCheckHypercyclesAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleCheckHypercyclesAstAnchor
+  roles { CheckerModule as generated, CheckerModuleCheckHypercyclesAstAnchor as syntax }
+  expects CheckerModuleCheckHypercyclesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:90fa5caeaeaf4df8e75d5b6102ab71e72cf18db3206735c130b91b9fc9949732")
+  summary "fn CheckerModule.checkHypercycles generated from typescript function_declaration at packages/shp-checker/src/checker.ts:3687-3723."
+}
+
+relation CheckerModuleCheckProvidesEndpointKindsGeneratedFromCheckerModuleCheckProvidesEndpointKindsAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleCheckProvidesEndpointKindsAstAnchor
+  roles { CheckerModule as generated, CheckerModuleCheckProvidesEndpointKindsAstAnchor as syntax }
+  expects CheckerModuleCheckProvidesEndpointKindsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5b17d333859bae6d860cb54bb9821e508818d0c943df8fef56968e472390163e")
+  summary "fn CheckerModule.checkProvidesEndpointKinds generated from typescript function_declaration at packages/shp-checker/src/checker.ts:3276-3302."
+}
+
+relation CheckerModuleCheckProvidesRulesGeneratedFromCheckerModuleCheckProvidesRulesAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleCheckProvidesRulesAstAnchor
+  roles { CheckerModule as generated, CheckerModuleCheckProvidesRulesAstAnchor as syntax }
+  expects CheckerModuleCheckProvidesRulesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f760e875336f560ca189b93e7145cc782f66e25c38c90e90ade5e3d2a3cd000b")
+  summary "fn CheckerModule.checkProvidesRules generated from typescript function_declaration at packages/shp-checker/src/checker.ts:3636-3674."
+}
+
+relation CheckerModuleCheckReevaluationsGeneratedFromCheckerModuleCheckReevaluationsAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleCheckReevaluationsAstAnchor
+  roles { CheckerModule as generated, CheckerModuleCheckReevaluationsAstAnchor as syntax }
+  expects CheckerModuleCheckReevaluationsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:30afa37469a81bfc361f4f4135ae10239edb7c60f1c8db1916dd72af4e00b77f")
+  summary "fn CheckerModule.checkReevaluations generated from typescript function_declaration at packages/shp-checker/src/checker.ts:3503-3519."
+}
+
+relation CheckerModuleCheckRequiredContextGeneratedFromCheckerModuleCheckRequiredContextAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleCheckRequiredContextAstAnchor
+  roles { CheckerModule as generated, CheckerModuleCheckRequiredContextAstAnchor as syntax }
+  expects CheckerModuleCheckRequiredContextAstAnchor fingerprint ast.semantic_subtree_v1("sha256:486ca26d0debc07af59e06b138252808785df43d9db3252a57918fe54b2f8795")
+  summary "fn CheckerModule.checkRequiredContext generated from typescript function_declaration at packages/shp-checker/src/checker.ts:3423-3457."
+}
+
+relation CheckerModuleCheckRequiredDescriptionsGeneratedFromCheckerModuleCheckRequiredDescriptionsAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleCheckRequiredDescriptionsAstAnchor
+  roles { CheckerModule as generated, CheckerModuleCheckRequiredDescriptionsAstAnchor as syntax }
+  expects CheckerModuleCheckRequiredDescriptionsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:137cd0ccdf6e003783282a43f9407693008e8a36d9776c95b796eca1b181d285")
+  summary "fn CheckerModule.checkRequiredDescriptions generated from typescript function_declaration at packages/shp-checker/src/checker.ts:3459-3501."
+}
+
+relation CheckerModuleCheckResolvedNamesGeneratedFromCheckerModuleCheckResolvedNamesAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleCheckResolvedNamesAstAnchor
+  roles { CheckerModule as generated, CheckerModuleCheckResolvedNamesAstAnchor as syntax }
+  expects CheckerModuleCheckResolvedNamesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:dfb428b93ae004fb2a9686bc178cf17ca089eafa4c14df04bac4bab0887eae47")
+  summary "fn CheckerModule.checkResolvedNames generated from typescript function_declaration at packages/shp-checker/src/checker.ts:3091-3266."
+}
+
+relation CheckerModuleCheckShapeFilesGeneratedFromCheckerModuleCheckShapeFilesAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleCheckShapeFilesAstAnchor
+  roles { CheckerModule as generated, CheckerModuleCheckShapeFilesAstAnchor as syntax }
+  expects CheckerModuleCheckShapeFilesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:8b26b9a6658fc65fd5a34a8967a8b2f1aa0da053063df070ca98e40b7a0b3e86")
+  summary "fn CheckerModule.checkShapeFiles generated from typescript function_declaration at packages/shp-checker/src/checker.ts:815-852."
+}
+
+relation CheckerModuleCheckShapeModulesGeneratedFromCheckerModuleCheckShapeModulesAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleCheckShapeModulesAstAnchor
+  roles { CheckerModule as generated, CheckerModuleCheckShapeModulesAstAnchor as syntax }
+  expects CheckerModuleCheckShapeModulesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9ac3b47da79034511186e1aa3bbd4ec11e77217561f102a0aef59a282f4ba0ab")
+  summary "fn CheckerModule.checkShapeModules generated from typescript function_declaration at packages/shp-checker/src/checker.ts:786-813."
+}
+
+relation CheckerModuleCollectConnectsGeneratedFromCheckerModuleCollectConnectsAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleCollectConnectsAstAnchor
+  roles { CheckerModule as generated, CheckerModuleCollectConnectsAstAnchor as syntax }
+  expects CheckerModuleCollectConnectsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ec4e75b81a7b302d746692f1d5c3adcbb0c77f59c5757aeb1b1f17e5a21e10be")
+  summary "fn CheckerModule.collectConnects generated from typescript function_declaration at packages/shp-checker/src/checker.ts:2055-2067."
+}
+
+relation CheckerModuleCollectShapeUpdatePathsFromFunctionGeneratedFromCheckerModuleCollectShapeUpdatePathsFromFunctionAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleCollectShapeUpdatePathsFromFunctionAstAnchor
+  roles { CheckerModule as generated, CheckerModuleCollectShapeUpdatePathsFromFunctionAstAnchor as syntax }
+  expects CheckerModuleCollectShapeUpdatePathsFromFunctionAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b2739785030f6388475fc43ec6856813993b56102179d359f3af128d36ac6b38")
+  summary "fn CheckerModule.collectShapeUpdatePathsFromFunction generated from typescript function_declaration at packages/shp-checker/src/checker.ts:3056-3079."
+}
+
+relation CheckerModuleCompareHyperedgesGeneratedFromCheckerModuleCompareHyperedgesAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleCompareHyperedgesAstAnchor
+  roles { CheckerModule as generated, CheckerModuleCompareHyperedgesAstAnchor as syntax }
+  expects CheckerModuleCompareHyperedgesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c7fb64b32d1539f7b38924072c0e25680571b8956d8df2ed84cea46ce1d2979a")
+  summary "fn CheckerModule.compareHyperedges generated from typescript function_declaration at packages/shp-checker/src/checker.ts:1078-1080."
+}
+
+relation CheckerModuleContextForDeclarationChangeGeneratedFromCheckerModuleContextForDeclarationChangeAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleContextForDeclarationChangeAstAnchor
+  roles { CheckerModule as generated, CheckerModuleContextForDeclarationChangeAstAnchor as syntax }
+  expects CheckerModuleContextForDeclarationChangeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2e9d87420992485942007ea4d38e1e8df8d8d6fcccdb98cb83ab6a55c2fcd31f")
+  summary "fn CheckerModule.contextForDeclarationChange generated from typescript function_declaration at packages/shp-checker/src/checker.ts:2605-2621."
+}
+
+relation CheckerModuleContextObjectExistsGeneratedFromCheckerModuleContextObjectExistsAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleContextObjectExistsAstAnchor
+  roles { CheckerModule as generated, CheckerModuleContextObjectExistsAstAnchor as syntax }
+  expects CheckerModuleContextObjectExistsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9e353f3d20456f2f1d9ccbef8622f8948e59d5721ccff0b342bf337540d5e286")
+  summary "fn CheckerModule.contextObjectExists generated from typescript function_declaration at packages/shp-checker/src/checker.ts:4129-4131."
+}
+
+relation CheckerModuleContextSatisfiesRequirementGeneratedFromCheckerModuleContextSatisfiesRequirementAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleContextSatisfiesRequirementAstAnchor
+  roles { CheckerModule as generated, CheckerModuleContextSatisfiesRequirementAstAnchor as syntax }
+  expects CheckerModuleContextSatisfiesRequirementAstAnchor fingerprint ast.semantic_subtree_v1("sha256:17e761dc02a9bd5a79a3fe9db0b8ae7db4f17aca0ade8cc807961530c71ffff0")
+  summary "fn CheckerModule.contextSatisfiesRequirement generated from typescript function_declaration at packages/shp-checker/src/checker.ts:4037-4048."
+}
+
+relation CheckerModuleCurrentAttestationExistsGeneratedFromCheckerModuleCurrentAttestationExistsAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleCurrentAttestationExistsAstAnchor
+  roles { CheckerModule as generated, CheckerModuleCurrentAttestationExistsAstAnchor as syntax }
+  expects CheckerModuleCurrentAttestationExistsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:43ed2491f609ab5cb15537093bb71f3a2f793da8895b5d497f163834e5d72e6b")
+  summary "fn CheckerModule.currentAttestationExists generated from typescript function_declaration at packages/shp-checker/src/checker.ts:3935-3944."
+}
+
+relation CheckerModuleCurrentShapeUpdateExistsGeneratedFromCheckerModuleCurrentShapeUpdateExistsAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleCurrentShapeUpdateExistsAstAnchor
+  roles { CheckerModule as generated, CheckerModuleCurrentShapeUpdateExistsAstAnchor as syntax }
+  expects CheckerModuleCurrentShapeUpdateExistsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:15d309c3188cea8f28d5095ba11e8b39058fe5e450faf491fd3201154fb43b45")
+  summary "fn CheckerModule.currentShapeUpdateExists generated from typescript function_declaration at packages/shp-checker/src/checker.ts:3923-3933."
+}
+
+relation CheckerModuleDeclarationIndexKindGeneratedFromCheckerModuleDeclarationIndexKindAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleDeclarationIndexKindAstAnchor
+  roles { CheckerModule as generated, CheckerModuleDeclarationIndexKindAstAnchor as syntax }
+  expects CheckerModuleDeclarationIndexKindAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ab995cb60c827a92bdfc067aaf6721b2ce830cdff1ae0a5e7c87dd56da00f170")
+  summary "fn CheckerModule.declarationIndexKind generated from typescript function_declaration at packages/shp-checker/src/checker.ts:1428-1465."
+}
+
+relation CheckerModuleDeclarationKindGeneratedFromCheckerModuleDeclarationKindAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleDeclarationKindAstAnchor
+  roles { CheckerModule as generated, CheckerModuleDeclarationKindAstAnchor as syntax }
+  expects CheckerModuleDeclarationKindAstAnchor fingerprint ast.semantic_subtree_v1("sha256:cf694019957606405442a87b10ae9e9f07387e97459d92060af389ada7b795e8")
+  summary "fn CheckerModule.declarationKind generated from typescript function_declaration at packages/shp-checker/src/checker.ts:2673-2698."
+}
+
+relation CheckerModuleDeclarationNameForIndexGeneratedFromCheckerModuleDeclarationNameForIndexAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleDeclarationNameForIndexAstAnchor
+  roles { CheckerModule as generated, CheckerModuleDeclarationNameForIndexAstAnchor as syntax }
+  expects CheckerModuleDeclarationNameForIndexAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2c292d771006403f8d9845b2707ac58bef549f7a23454f236bc700609e739437")
+  summary "fn CheckerModule.declarationNameForIndex generated from typescript function_declaration at packages/shp-checker/src/checker.ts:1418-1426."
+}
+
+relation CheckerModuleDeclarationNameGeneratedFromCheckerModuleDeclarationNameAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleDeclarationNameAstAnchor
+  roles { CheckerModule as generated, CheckerModuleDeclarationNameAstAnchor as syntax }
+  expects CheckerModuleDeclarationNameAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f483a6973dde4601f3675daa49bf347cc66c3dd90b93b2f395234b9adf113757")
+  summary "fn CheckerModule.declarationName generated from typescript function_declaration at packages/shp-checker/src/checker.ts:2700-2707."
+}
+
+relation CheckerModuleDeclaredLocallyGeneratedFromCheckerModuleDeclaredLocallyAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleDeclaredLocallyAstAnchor
+  roles { CheckerModule as generated, CheckerModuleDeclaredLocallyAstAnchor as syntax }
+  expects CheckerModuleDeclaredLocallyAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9df74a0a62ab70e9f62525d15c71965492bbc3b51eb52d4303f6b52d9f246de7")
+  summary "fn CheckerModule.declaredLocally generated from typescript function_declaration at packages/shp-checker/src/checker.ts:1490-1497."
+}
+
+relation CheckerModuleDeclKeyGeneratedFromCheckerModuleDeclKeyAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleDeclKeyAstAnchor
+  roles { CheckerModule as generated, CheckerModuleDeclKeyAstAnchor as syntax }
+  expects CheckerModuleDeclKeyAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2782e9f4f1f25b56bacf8ac363aa26e9fdf41a9ee939fa06e63130ab9b3c8b74")
+  summary "fn CheckerModule.declKey generated from typescript function_declaration at packages/shp-checker/src/checker.ts:1467-1469."
+}
+
+relation CheckerModuleDedupeForbidsGeneratedFromCheckerModuleDedupeForbidsAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleDedupeForbidsAstAnchor
+  roles { CheckerModule as generated, CheckerModuleDedupeForbidsAstAnchor as syntax }
+  expects CheckerModuleDedupeForbidsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7fde6d5744a9bb2dab0cc9916b09294ca9bca0343905c44d48b4e70ea7f5a965")
+  summary "fn CheckerModule.dedupeForbids generated from typescript function_declaration at packages/shp-checker/src/checker.ts:4431-4443."
+}
+
+relation CheckerModuleDeriveFinalForbidsForResourceGeneratedFromCheckerModuleDeriveFinalForbidsForResourceAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleDeriveFinalForbidsForResourceAstAnchor
+  roles { CheckerModule as generated, CheckerModuleDeriveFinalForbidsForResourceAstAnchor as syntax }
+  expects CheckerModuleDeriveFinalForbidsForResourceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:31c01a119cf852a5438d45782a585fd64f4f456d87962ffd0fb4e27adad9ecf7")
+  summary "fn CheckerModule.deriveFinalForbidsForResource generated from typescript function_declaration at packages/shp-checker/src/checker.ts:4363-4408."
+}
+
+relation CheckerModuleDescribeProvenanceGeneratedFromCheckerModuleDescribeProvenanceAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleDescribeProvenanceAstAnchor
+  roles { CheckerModule as generated, CheckerModuleDescribeProvenanceAstAnchor as syntax }
+  expects CheckerModuleDescribeProvenanceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7cf030054990d787e4c1b0de64f15cd570d8c1951f252f21e5af571bc79bb21f")
+  summary "fn CheckerModule.describeProvenance generated from typescript function_declaration at packages/shp-checker/src/checker.ts:4865-4871."
+}
+
+relation CheckerModuleDfsHypercycleGeneratedFromCheckerModuleDfsHypercycleAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleDfsHypercycleAstAnchor
+  roles { CheckerModule as generated, CheckerModuleDfsHypercycleAstAnchor as syntax }
+  expects CheckerModuleDfsHypercycleAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c4a2690ff42919e3a73359de7bd2ad5ada6f6ef4a0f74202c13509f82b4dfa12")
+  summary "fn CheckerModule.dfsHypercycle generated from typescript function_declaration at packages/shp-checker/src/checker.ts:3784-3812."
+}
+
+relation CheckerModuleDisplaySymbolGeneratedFromCheckerModuleDisplaySymbolAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleDisplaySymbolAstAnchor
+  roles { CheckerModule as generated, CheckerModuleDisplaySymbolAstAnchor as syntax }
+  expects CheckerModuleDisplaySymbolAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2c7e36d0b607d7baae9e68b9d4c812af88bbcff7f9adc174402c213f939612f6")
+  summary "fn CheckerModule.displaySymbol generated from typescript function_declaration at packages/shp-checker/src/checker.ts:1486-1488."
+}
+
+relation CheckerModuleEmitDerivedFactsGeneratedFromCheckerModuleEmitDerivedFactsAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleEmitDerivedFactsAstAnchor
+  roles { CheckerModule as generated, CheckerModuleEmitDerivedFactsAstAnchor as syntax }
+  expects CheckerModuleEmitDerivedFactsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2df3d25c3b88192c9e64bd694bc769e13babf7bc7157086de65c864c64158269")
+  summary "fn CheckerModule.emitDerivedFacts generated from typescript function_declaration at packages/shp-checker/src/checker.ts:3027-3054."
+}
+
+relation CheckerModuleEmitFunctionFactsGeneratedFromCheckerModuleEmitFunctionFactsAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleEmitFunctionFactsAstAnchor
+  roles { CheckerModule as generated, CheckerModuleEmitFunctionFactsAstAnchor as syntax }
+  expects CheckerModuleEmitFunctionFactsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c69d72b97f2cea459ca9dc346c78c62a1e416514f5c32509d26437a1309afd93")
+  summary "fn CheckerModule.emitFunctionFacts generated from typescript function_declaration at packages/shp-checker/src/checker.ts:2959-3005."
+}
+
+relation CheckerModuleEmitGuardFactsGeneratedFromCheckerModuleEmitGuardFactsAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleEmitGuardFactsAstAnchor
+  roles { CheckerModule as generated, CheckerModuleEmitGuardFactsAstAnchor as syntax }
+  expects CheckerModuleEmitGuardFactsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:74c0ef021d32b5ca8f67556029933e749a6cdbb35246b5a314b69b0651e0c232")
+  summary "fn CheckerModule.emitGuardFacts generated from typescript function_declaration at packages/shp-checker/src/checker.ts:2505-2531."
+}
+
+relation CheckerModuleEmptyDeclarationIndexGeneratedFromCheckerModuleEmptyDeclarationIndexAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleEmptyDeclarationIndexAstAnchor
+  roles { CheckerModule as generated, CheckerModuleEmptyDeclarationIndexAstAnchor as syntax }
+  expects CheckerModuleEmptyDeclarationIndexAstAnchor fingerprint ast.semantic_subtree_v1("sha256:24091ef503578f579b084025cfc85f9ab96b0278439cf382693a94d705e31a26")
+  summary "fn CheckerModule.emptyDeclarationIndex generated from typescript function_declaration at packages/shp-checker/src/checker.ts:1362-1376."
+}
+
+relation CheckerModuleEscapeRegexGeneratedFromCheckerModuleEscapeRegexAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleEscapeRegexAstAnchor
+  roles { CheckerModule as generated, CheckerModuleEscapeRegexAstAnchor as syntax }
+  expects CheckerModuleEscapeRegexAstAnchor fingerprint ast.semantic_subtree_v1("sha256:bbf911682278776acb8ccd2bedbd57e1a215c8b743cdda068deb617c95e79e64")
+  summary "fn CheckerModule.escapeRegex generated from typescript function_declaration at packages/shp-checker/src/checker.ts:4857-4859."
+}
+
+relation CheckerModuleExplainShapeModulesGeneratedFromCheckerModuleExplainShapeModulesAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleExplainShapeModulesAstAnchor
+  roles { CheckerModule as generated, CheckerModuleExplainShapeModulesAstAnchor as syntax }
+  expects CheckerModuleExplainShapeModulesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3766de298e3bc893323fcf2ea07c70af99b34667d62b0e61f87d6fddc197a3d1")
+  summary "fn CheckerModule.explainShapeModules generated from typescript function_declaration at packages/shp-checker/src/checker.ts:946-1076."
+}
+
+relation CheckerModuleFindFinalForbiddenGeneratedFromCheckerModuleFindFinalForbiddenAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleFindFinalForbiddenAstAnchor
+  roles { CheckerModule as generated, CheckerModuleFindFinalForbiddenAstAnchor as syntax }
+  expects CheckerModuleFindFinalForbiddenAstAnchor fingerprint ast.semantic_subtree_v1("sha256:09fd4d379d3f295ee46a6dfbe93557d37dc75ea523291334ba3b31ba99116fa9")
+  summary "fn CheckerModule.findFinalForbidden generated from typescript function_declaration at packages/shp-checker/src/checker.ts:4410-4418."
+}
+
+relation CheckerModuleFindHypercycleGeneratedFromCheckerModuleFindHypercycleAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleFindHypercycleAstAnchor
+  roles { CheckerModule as generated, CheckerModuleFindHypercycleAstAnchor as syntax }
+  expects CheckerModuleFindHypercycleAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9900ba305a137d8d4aabfefe7f01e83caffb48aa40642380bde547bcff89446e")
+  summary "fn CheckerModule.findHypercycle generated from typescript function_declaration at packages/shp-checker/src/checker.ts:3753-3782."
+}
+
+relation CheckerModuleFormatCausedByGeneratedFromCheckerModuleFormatCausedByAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleFormatCausedByAstAnchor
+  roles { CheckerModule as generated, CheckerModuleFormatCausedByAstAnchor as syntax }
+  expects CheckerModuleFormatCausedByAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7aaff7abce7a23ef8d9081e8228f1209b36904f25461cc048feac138dd38c530")
+  summary "fn CheckerModule.formatCausedBy generated from typescript function_declaration at packages/shp-checker/src/checker.ts:4780-4786."
+}
+
+relation CheckerModuleFormatContextRequirementGeneratedFromCheckerModuleFormatContextRequirementAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleFormatContextRequirementAstAnchor
+  roles { CheckerModule as generated, CheckerModuleFormatContextRequirementAstAnchor as syntax }
+  expects CheckerModuleFormatContextRequirementAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f821cf8d6969796e264cfe4811ff47e45c441775b6e455bdb980cf1ff584d7d2")
+  summary "fn CheckerModule.formatContextRequirement generated from typescript function_declaration at packages/shp-checker/src/checker.ts:4098-4100."
+}
+
+relation CheckerModuleFormatContextTargetMismatchDiagnosticGeneratedFromCheckerModuleFormatContextTargetMismatchDiagnosticAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleFormatContextTargetMismatchDiagnosticAstAnchor
+  roles { CheckerModule as generated, CheckerModuleFormatContextTargetMismatchDiagnosticAstAnchor as syntax }
+  expects CheckerModuleFormatContextTargetMismatchDiagnosticAstAnchor fingerprint ast.semantic_subtree_v1("sha256:05c398e16d04c2327a823d601d82773e2d453f4ceba568af07d29839f1958a38")
+  summary "fn CheckerModule.formatContextTargetMismatchDiagnostic generated from typescript function_declaration at packages/shp-checker/src/checker.ts:4718-4728."
+}
+
+relation CheckerModuleFormatDiagnosticGeneratedFromCheckerModuleFormatDiagnosticAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleFormatDiagnosticAstAnchor
+  roles { CheckerModule as generated, CheckerModuleFormatDiagnosticAstAnchor as syntax }
+  expects CheckerModuleFormatDiagnosticAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9552652b6e034ff45dc34033ab3166b6d07933a7735b8bc4e7625e9046a62227")
+  summary "fn CheckerModule.formatDiagnostic generated from typescript function_declaration at packages/shp-checker/src/checker.ts:4488-4531."
+}
+
+relation CheckerModuleFormatDiagnosticsGeneratedFromCheckerModuleFormatDiagnosticsAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleFormatDiagnosticsAstAnchor
+  roles { CheckerModule as generated, CheckerModuleFormatDiagnosticsAstAnchor as syntax }
+  expects CheckerModuleFormatDiagnosticsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b31c3a74a2a8ead280f732c0e40d18b86d3f26d00256fc698a71665b36207090")
+  summary "fn CheckerModule.formatDiagnostics generated from typescript function_declaration at packages/shp-checker/src/checker.ts:1255-1261."
+}
+
+relation CheckerModuleFormatDuplicateDeclarationDiagnosticGeneratedFromCheckerModuleFormatDuplicateDeclarationDiagnosticAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleFormatDuplicateDeclarationDiagnosticAstAnchor
+  roles { CheckerModule as generated, CheckerModuleFormatDuplicateDeclarationDiagnosticAstAnchor as syntax }
+  expects CheckerModuleFormatDuplicateDeclarationDiagnosticAstAnchor fingerprint ast.semantic_subtree_v1("sha256:49e5491eee6c9d565e9e332d118ba2e3f2c963cee876f11c926c70eabf564e80")
+  summary "fn CheckerModule.formatDuplicateDeclarationDiagnostic generated from typescript function_declaration at packages/shp-checker/src/checker.ts:4586-4595."
+}
+
+relation CheckerModuleFormatDuplicateFingerprintDiagnosticGeneratedFromCheckerModuleFormatDuplicateFingerprintDiagnosticAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleFormatDuplicateFingerprintDiagnosticAstAnchor
+  roles { CheckerModule as generated, CheckerModuleFormatDuplicateFingerprintDiagnosticAstAnchor as syntax }
+  expects CheckerModuleFormatDuplicateFingerprintDiagnosticAstAnchor fingerprint ast.semantic_subtree_v1("sha256:01981a751c8c38294445f7c20141486180bc0c1bfa17388c6d1e1730ecba2a38")
+  summary "fn CheckerModule.formatDuplicateFingerprintDiagnostic generated from typescript function_declaration at packages/shp-checker/src/checker.ts:4597-4606."
+}
+
+relation CheckerModuleFormatFinalForbiddenDiagnosticGeneratedFromCheckerModuleFormatFinalForbiddenDiagnosticAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleFormatFinalForbiddenDiagnosticAstAnchor
+  roles { CheckerModule as generated, CheckerModuleFormatFinalForbiddenDiagnosticAstAnchor as syntax }
+  expects CheckerModuleFormatFinalForbiddenDiagnosticAstAnchor fingerprint ast.semantic_subtree_v1("sha256:970465e620f351619884b05a2f997b7c1300cc3e44316232d9b2b458b0518887")
+  summary "fn CheckerModule.formatFinalForbiddenDiagnostic generated from typescript function_declaration at packages/shp-checker/src/checker.ts:4538-4550."
+}
+
+relation CheckerModuleFormatFingerprintInfoGeneratedFromCheckerModuleFormatFingerprintInfoAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleFormatFingerprintInfoAstAnchor
+  roles { CheckerModule as generated, CheckerModuleFormatFingerprintInfoAstAnchor as syntax }
+  expects CheckerModuleFormatFingerprintInfoAstAnchor fingerprint ast.semantic_subtree_v1("sha256:076c4c66f0aba3d132c46ca38aa3d3af56f54966e515cfcc5149eb996edf5f10")
+  summary "fn CheckerModule.formatFingerprintInfo generated from typescript function_declaration at packages/shp-checker/src/checker.ts:4802-4804."
+}
+
+relation CheckerModuleFormatFingerprintMismatchDiagnosticGeneratedFromCheckerModuleFormatFingerprintMismatchDiagnosticAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleFormatFingerprintMismatchDiagnosticAstAnchor
+  roles { CheckerModule as generated, CheckerModuleFormatFingerprintMismatchDiagnosticAstAnchor as syntax }
+  expects CheckerModuleFormatFingerprintMismatchDiagnosticAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d50addad95b0d3dcec7899c793980a7a5f63b04b79c4ea8e5e67c6aec3867dc0")
+  summary "fn CheckerModule.formatFingerprintMismatchDiagnostic generated from typescript function_declaration at packages/shp-checker/src/checker.ts:4666-4678."
+}
+
+relation CheckerModuleFormatForbiddenHypercycleDiagnosticGeneratedFromCheckerModuleFormatForbiddenHypercycleDiagnosticAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleFormatForbiddenHypercycleDiagnosticAstAnchor
+  roles { CheckerModule as generated, CheckerModuleFormatForbiddenHypercycleDiagnosticAstAnchor as syntax }
+  expects CheckerModuleFormatForbiddenHypercycleDiagnosticAstAnchor fingerprint ast.semantic_subtree_v1("sha256:90bd1c03a65593893a831d94c145625520c14fc5d0022c8950c34b18cd425ff0")
+  summary "fn CheckerModule.formatForbiddenHypercycleDiagnostic generated from typescript function_declaration at packages/shp-checker/src/checker.ts:4638-4649."
+}
+
+relation CheckerModuleFormatForbiddenProvidesDiagnosticGeneratedFromCheckerModuleFormatForbiddenProvidesDiagnosticAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleFormatForbiddenProvidesDiagnosticAstAnchor
+  roles { CheckerModule as generated, CheckerModuleFormatForbiddenProvidesDiagnosticAstAnchor as syntax }
+  expects CheckerModuleFormatForbiddenProvidesDiagnosticAstAnchor fingerprint ast.semantic_subtree_v1("sha256:52e263a8a10b2280290175c94c8900dd4ac2ad6c20d95edccc43812758baa0ff")
+  summary "fn CheckerModule.formatForbiddenProvidesDiagnostic generated from typescript function_declaration at packages/shp-checker/src/checker.ts:4651-4664."
+}
+
+relation CheckerModuleFormatGuardedShapeChangedDiagnosticGeneratedFromCheckerModuleFormatGuardedShapeChangedDiagnosticAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleFormatGuardedShapeChangedDiagnosticAstAnchor
+  roles { CheckerModule as generated, CheckerModuleFormatGuardedShapeChangedDiagnosticAstAnchor as syntax }
+  expects CheckerModuleFormatGuardedShapeChangedDiagnosticAstAnchor fingerprint ast.semantic_subtree_v1("sha256:37dc17ba8ea042c2c59add3feb7d4f7af49ab7080b506730630f1398ebb903f0")
+  summary "fn CheckerModule.formatGuardedShapeChangedDiagnostic generated from typescript function_declaration at packages/shp-checker/src/checker.ts:4742-4756."
+}
+
+relation CheckerModuleFormatHyperedgeLineGeneratedFromCheckerModuleFormatHyperedgeLineAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleFormatHyperedgeLineAstAnchor
+  roles { CheckerModule as generated, CheckerModuleFormatHyperedgeLineAstAnchor as syntax }
+  expects CheckerModuleFormatHyperedgeLineAstAnchor fingerprint ast.semantic_subtree_v1("sha256:478af2b2e0f0c67c536c30b89f7af4df689be061f1fa47d9f810fc80275688a1")
+  summary "fn CheckerModule.formatHyperedgeLine generated from typescript function_declaration at packages/shp-checker/src/checker.ts:4445-4451."
+}
+
+relation CheckerModuleFormatHyperedgeMemberGeneratedFromCheckerModuleFormatHyperedgeMemberAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleFormatHyperedgeMemberAstAnchor
+  roles { CheckerModule as generated, CheckerModuleFormatHyperedgeMemberAstAnchor as syntax }
+  expects CheckerModuleFormatHyperedgeMemberAstAnchor fingerprint ast.semantic_subtree_v1("sha256:cebb8a133b3883617addb54f72fe140b05e98ed32315c88f4d3d55aaf39ef413")
+  summary "fn CheckerModule.formatHyperedgeMember generated from typescript function_declaration at packages/shp-checker/src/checker.ts:4453-4457."
+}
+
+relation CheckerModuleFormatInvalidContextTargetDiagnosticGeneratedFromCheckerModuleFormatInvalidContextTargetDiagnosticAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleFormatInvalidContextTargetDiagnosticAstAnchor
+  roles { CheckerModule as generated, CheckerModuleFormatInvalidContextTargetDiagnosticAstAnchor as syntax }
+  expects CheckerModuleFormatInvalidContextTargetDiagnosticAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e90b89d37cdf37ccd15851d557d05d26c77a22ffc9b53664543e9382e339a6cd")
+  summary "fn CheckerModule.formatInvalidContextTargetDiagnostic generated from typescript function_declaration at packages/shp-checker/src/checker.ts:4706-4716."
+}
+
+relation CheckerModuleFormatInvalidReevaluationDiagnosticGeneratedFromCheckerModuleFormatInvalidReevaluationDiagnosticAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleFormatInvalidReevaluationDiagnosticAstAnchor
+  roles { CheckerModule as generated, CheckerModuleFormatInvalidReevaluationDiagnosticAstAnchor as syntax }
+  expects CheckerModuleFormatInvalidReevaluationDiagnosticAstAnchor fingerprint ast.semantic_subtree_v1("sha256:328c28685f8cd7bf460ca8c0a1b75c63778f31890e74aa1492b38b97b9aaac8d")
+  summary "fn CheckerModule.formatInvalidReevaluationDiagnostic generated from typescript function_declaration at packages/shp-checker/src/checker.ts:4758-4767."
+}
+
+relation CheckerModuleFormatInvalidRelationDiagnosticGeneratedFromCheckerModuleFormatInvalidRelationDiagnosticAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleFormatInvalidRelationDiagnosticAstAnchor
+  roles { CheckerModule as generated, CheckerModuleFormatInvalidRelationDiagnosticAstAnchor as syntax }
+  expects CheckerModuleFormatInvalidRelationDiagnosticAstAnchor fingerprint ast.semantic_subtree_v1("sha256:73b39c396af11cfd955ad3875d72f597b9a57cb020a809da4cf962447d13bbf7")
+  summary "fn CheckerModule.formatInvalidRelationDiagnostic generated from typescript function_declaration at packages/shp-checker/src/checker.ts:4769-4778."
+}
+
+relation CheckerModuleFormatLocationGeneratedFromCheckerModuleFormatLocationAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleFormatLocationAstAnchor
+  roles { CheckerModule as generated, CheckerModuleFormatLocationAstAnchor as syntax }
+  expects CheckerModuleFormatLocationAstAnchor fingerprint ast.semantic_subtree_v1("sha256:49d052f6930985b8845828041ead07658a2337a80fa7045754e600f69e634e23")
+  summary "fn CheckerModule.formatLocation generated from typescript function_declaration at packages/shp-checker/src/checker.ts:4788-4796."
+}
+
+relation CheckerModuleFormatMemoryExplanationGeneratedFromCheckerModuleFormatMemoryExplanationAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleFormatMemoryExplanationAstAnchor
+  roles { CheckerModule as generated, CheckerModuleFormatMemoryExplanationAstAnchor as syntax }
+  expects CheckerModuleFormatMemoryExplanationAstAnchor fingerprint ast.semantic_subtree_v1("sha256:81f8974e0fe8e724b68d8c6bb796bf556fd82becf1767ec8be40ed59f7a41d0d")
+  summary "fn CheckerModule.formatMemoryExplanation generated from typescript function_declaration at packages/shp-checker/src/checker.ts:4279-4294."
+}
+
+relation CheckerModuleFormatMemoryListEntryGeneratedFromCheckerModuleFormatMemoryListEntryAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleFormatMemoryListEntryAstAnchor
+  roles { CheckerModule as generated, CheckerModuleFormatMemoryListEntryAstAnchor as syntax }
+  expects CheckerModuleFormatMemoryListEntryAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a50a0d7839e1699e81f0243336794f48b575be64ee75977b7569e2627bca44c7")
+  summary "fn CheckerModule.formatMemoryListEntry generated from typescript function_declaration at packages/shp-checker/src/checker.ts:4319-4329."
+}
+
+relation CheckerModuleFormatMissingBoundDocsChangeDiagnosticGeneratedFromCheckerModuleFormatMissingBoundDocsChangeDiagnosticAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleFormatMissingBoundDocsChangeDiagnosticAstAnchor
+  roles { CheckerModule as generated, CheckerModuleFormatMissingBoundDocsChangeDiagnosticAstAnchor as syntax }
+  expects CheckerModuleFormatMissingBoundDocsChangeDiagnosticAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b62c0537b196aad68fb52d8a29dba589dc8c79a9a1f74c1e9e045a4e0dcc74f4")
+  summary "fn CheckerModule.formatMissingBoundDocsChangeDiagnostic generated from typescript function_declaration at packages/shp-checker/src/checker.ts:4622-4636."
+}
+
+relation CheckerModuleFormatMissingGrantDiagnosticGeneratedFromCheckerModuleFormatMissingGrantDiagnosticAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleFormatMissingGrantDiagnosticAstAnchor
+  roles { CheckerModule as generated, CheckerModuleFormatMissingGrantDiagnosticAstAnchor as syntax }
+  expects CheckerModuleFormatMissingGrantDiagnosticAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7546d97f447dad0682d4bf23bbcc1a6eb99f2f8ef1b5fc50694bd50eceebfbbe")
+  summary "fn CheckerModule.formatMissingGrantDiagnostic generated from typescript function_declaration at packages/shp-checker/src/checker.ts:4552-4562."
+}
+
+relation CheckerModuleFormatMissingRequiredContextDiagnosticGeneratedFromCheckerModuleFormatMissingRequiredContextDiagnosticAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleFormatMissingRequiredContextDiagnosticAstAnchor
+  roles { CheckerModule as generated, CheckerModuleFormatMissingRequiredContextDiagnosticAstAnchor as syntax }
+  expects CheckerModuleFormatMissingRequiredContextDiagnosticAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a5b66683669bf81024d2de1d5dabc90fe37057dee24640576dde84422cf8c339")
+  summary "fn CheckerModule.formatMissingRequiredContextDiagnostic generated from typescript function_declaration at packages/shp-checker/src/checker.ts:4692-4704."
+}
+
+relation CheckerModuleFormatMissingRequiredDescriptionDiagnosticGeneratedFromCheckerModuleFormatMissingRequiredDescriptionDiagnosticAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleFormatMissingRequiredDescriptionDiagnosticAstAnchor
+  roles { CheckerModule as generated, CheckerModuleFormatMissingRequiredDescriptionDiagnosticAstAnchor as syntax }
+  expects CheckerModuleFormatMissingRequiredDescriptionDiagnosticAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e66e91513ca1c978145244a73ef0dd1f99c5d63d6ccb1226d1921ee8901d8c5d")
+  summary "fn CheckerModule.formatMissingRequiredDescriptionDiagnostic generated from typescript function_declaration at packages/shp-checker/src/checker.ts:4730-4740."
+}
+
+relation CheckerModuleFormatMissingShapeUpdateDiagnosticGeneratedFromCheckerModuleFormatMissingShapeUpdateDiagnosticAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleFormatMissingShapeUpdateDiagnosticAstAnchor
+  roles { CheckerModule as generated, CheckerModuleFormatMissingShapeUpdateDiagnosticAstAnchor as syntax }
+  expects CheckerModuleFormatMissingShapeUpdateDiagnosticAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d118fcfb6f59fcf5a7a99c444795c02b5b82113cef74a36ef4710ffded4d0803")
+  summary "fn CheckerModule.formatMissingShapeUpdateDiagnostic generated from typescript function_declaration at packages/shp-checker/src/checker.ts:4608-4620."
+}
+
+relation CheckerModuleFormatParseDiagnosticGeneratedFromCheckerModuleFormatParseDiagnosticAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleFormatParseDiagnosticAstAnchor
+  roles { CheckerModule as generated, CheckerModuleFormatParseDiagnosticAstAnchor as syntax }
+  expects CheckerModuleFormatParseDiagnosticAstAnchor fingerprint ast.semantic_subtree_v1("sha256:156146fae29da01ef8353cc7a7a0cdb09b15182dfd936ef9de114ed17e915dbb")
+  summary "fn CheckerModule.formatParseDiagnostic generated from typescript function_declaration at packages/shp-checker/src/checker.ts:4533-4536."
+}
+
+relation CheckerModuleFormatRationaleExplanationGeneratedFromCheckerModuleFormatRationaleExplanationAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleFormatRationaleExplanationAstAnchor
+  roles { CheckerModule as generated, CheckerModuleFormatRationaleExplanationAstAnchor as syntax }
+  expects CheckerModuleFormatRationaleExplanationAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7b628b0f3c1b2c8ae0bc966f4846305881a8ee17472d19e48ae6ee7369ce6037")
+  summary "fn CheckerModule.formatRationaleExplanation generated from typescript function_declaration at packages/shp-checker/src/checker.ts:4268-4277."
+}
+
+relation CheckerModuleFormatRationaleMemoryListEntryGeneratedFromCheckerModuleFormatRationaleMemoryListEntryAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleFormatRationaleMemoryListEntryAstAnchor
+  roles { CheckerModule as generated, CheckerModuleFormatRationaleMemoryListEntryAstAnchor as syntax }
+  expects CheckerModuleFormatRationaleMemoryListEntryAstAnchor fingerprint ast.semantic_subtree_v1("sha256:8a0066b9dae8d7df4c754d8834a27c1ee011c070f9b94e5dd90d944353cdd24c")
+  summary "fn CheckerModule.formatRationaleMemoryListEntry generated from typescript function_declaration at packages/shp-checker/src/checker.ts:4313-4317."
+}
+
+relation CheckerModuleFormatRelationExplanationGeneratedFromCheckerModuleFormatRelationExplanationAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleFormatRelationExplanationAstAnchor
+  roles { CheckerModule as generated, CheckerModuleFormatRelationExplanationAstAnchor as syntax }
+  expects CheckerModuleFormatRelationExplanationAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e6840a99d6de2ae0e7f878ce3af7362d920c28bb96ab4bc500998b3861fb9b1f")
+  summary "fn CheckerModule.formatRelationExplanation generated from typescript function_declaration at packages/shp-checker/src/checker.ts:4223-4252."
+}
+
+relation CheckerModuleFormatSourceRefInfoGeneratedFromCheckerModuleFormatSourceRefInfoAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleFormatSourceRefInfoAstAnchor
+  roles { CheckerModule as generated, CheckerModuleFormatSourceRefInfoAstAnchor as syntax }
+  expects CheckerModuleFormatSourceRefInfoAstAnchor fingerprint ast.semantic_subtree_v1("sha256:46b5e55c2f5e0e6e1062bb086ad143dc5508bfcd17260752f95c48f969ff220b")
+  summary "fn CheckerModule.formatSourceRefInfo generated from typescript function_declaration at packages/shp-checker/src/checker.ts:4798-4800."
+}
+
+relation CheckerModuleFormatTargetGeneratedFromCheckerModuleFormatTargetAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleFormatTargetAstAnchor
+  roles { CheckerModule as generated, CheckerModuleFormatTargetAstAnchor as syntax }
+  expects CheckerModuleFormatTargetAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ed04888976be7289c8bbd0c8188380c91cd527fd972939c9b5b690fc6c02519a")
+  summary "fn CheckerModule.formatTarget generated from typescript function_declaration at packages/shp-checker/src/checker.ts:4094-4096."
+}
+
+relation CheckerModuleFormatTermGeneratedFromCheckerModuleFormatTermAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleFormatTermAstAnchor
+  roles { CheckerModule as generated, CheckerModuleFormatTermAstAnchor as syntax }
+  expects CheckerModuleFormatTermAstAnchor fingerprint ast.semantic_subtree_v1("sha256:39be3ba1d7907ca08ea3e8b0e8b19e283c1bfe210575f7aeab95eb75026bd046")
+  summary "fn CheckerModule.formatTerm generated from typescript function_declaration at packages/shp-checker/src/checker.ts:4806-4808."
+}
+
+relation CheckerModuleFormatUnknownEffectsDiagnosticGeneratedFromCheckerModuleFormatUnknownEffectsDiagnosticAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleFormatUnknownEffectsDiagnosticAstAnchor
+  roles { CheckerModule as generated, CheckerModuleFormatUnknownEffectsDiagnosticAstAnchor as syntax }
+  expects CheckerModuleFormatUnknownEffectsDiagnosticAstAnchor fingerprint ast.semantic_subtree_v1("sha256:fbfa3f8bc9e7e286ba44187edefae93da924643840962e8dd89d9f54adf40dfa")
+  summary "fn CheckerModule.formatUnknownEffectsDiagnostic generated from typescript function_declaration at packages/shp-checker/src/checker.ts:4564-4573."
+}
+
+relation CheckerModuleFormatUnknownNameDiagnosticGeneratedFromCheckerModuleFormatUnknownNameDiagnosticAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleFormatUnknownNameDiagnosticAstAnchor
+  roles { CheckerModule as generated, CheckerModuleFormatUnknownNameDiagnosticAstAnchor as syntax }
+  expects CheckerModuleFormatUnknownNameDiagnosticAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a1ad1a1f62aada4d591a665ef453b90c7f9dc93763ec33f522b2858fa0aaff7a")
+  summary "fn CheckerModule.formatUnknownNameDiagnostic generated from typescript function_declaration at packages/shp-checker/src/checker.ts:4575-4584."
+}
+
+relation CheckerModuleFormatUnsafeEffectsDiagnosticGeneratedFromCheckerModuleFormatUnsafeEffectsDiagnosticAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleFormatUnsafeEffectsDiagnosticAstAnchor
+  roles { CheckerModule as generated, CheckerModuleFormatUnsafeEffectsDiagnosticAstAnchor as syntax }
+  expects CheckerModuleFormatUnsafeEffectsDiagnosticAstAnchor fingerprint ast.semantic_subtree_v1("sha256:58d036102870f28b5d00be6ee1c6f8fa8dfdd1ca89494636bc9fe9112ecce0ca")
+  summary "fn CheckerModule.formatUnsafeEffectsDiagnostic generated from typescript function_declaration at packages/shp-checker/src/checker.ts:4680-4690."
+}
+
+relation CheckerModuleFormatVertexHeaderGeneratedFromCheckerModuleFormatVertexHeaderAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleFormatVertexHeaderAstAnchor
+  roles { CheckerModule as generated, CheckerModuleFormatVertexHeaderAstAnchor as syntax }
+  expects CheckerModuleFormatVertexHeaderAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1aaa71fff555cd7efa5cef948362586c60c1c6bb0054a6041d07ff9aa27f9a46")
+  summary "fn CheckerModule.formatVertexHeader generated from typescript function_declaration at packages/shp-checker/src/checker.ts:4469-4472."
+}
+
+relation CheckerModuleFunctionKeyGeneratedFromCheckerModuleFunctionKeyAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleFunctionKeyAstAnchor
+  roles { CheckerModule as generated, CheckerModuleFunctionKeyAstAnchor as syntax }
+  expects CheckerModuleFunctionKeyAstAnchor fingerprint ast.semantic_subtree_v1("sha256:008dfb303fd76e42f64f602ea41118a535625111ec7f7507755465b7e10207d4")
+  summary "fn CheckerModule.functionKey generated from typescript function_declaration at packages/shp-checker/src/checker.ts:4814-4816."
+}
+
+relation CheckerModuleFunctionTargetGeneratedFromCheckerModuleFunctionTargetAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleFunctionTargetAstAnchor
+  roles { CheckerModule as generated, CheckerModuleFunctionTargetAstAnchor as syntax }
+  expects CheckerModuleFunctionTargetAstAnchor fingerprint ast.semantic_subtree_v1("sha256:cfc97571e5397a25da57743905f95707f003bd6250b0974c710375b311653c21")
+  summary "fn CheckerModule.functionTarget generated from typescript function_declaration at packages/shp-checker/src/checker.ts:2952-2957."
+}
+
+relation CheckerModuleGlobMatchesGeneratedFromCheckerModuleGlobMatchesAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleGlobMatchesAstAnchor
+  roles { CheckerModule as generated, CheckerModuleGlobMatchesAstAnchor as syntax }
+  expects CheckerModuleGlobMatchesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0a61aabafb5f1f1485faa843643c19a740ad72d3a5e73223a5f09faa25fcda1d")
+  summary "fn CheckerModule.globMatches generated from typescript function_declaration at packages/shp-checker/src/checker.ts:4827-4832."
+}
+
+relation CheckerModuleGlobToRegexGeneratedFromCheckerModuleGlobToRegexAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleGlobToRegexAstAnchor
+  roles { CheckerModule as generated, CheckerModuleGlobToRegexAstAnchor as syntax }
+  expects CheckerModuleGlobToRegexAstAnchor fingerprint ast.semantic_subtree_v1("sha256:86e1ed79f1eaa56ce3a68561910fb7d4eef615f32b9f3d3891e10c5d67e2e648")
+  summary "fn CheckerModule.globToRegex generated from typescript function_declaration at packages/shp-checker/src/checker.ts:4834-4855."
+}
+
+relation CheckerModuleGraphAllShapeModulesGeneratedFromCheckerModuleGraphAllShapeModulesAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleGraphAllShapeModulesAstAnchor
+  roles { CheckerModule as generated, CheckerModuleGraphAllShapeModulesAstAnchor as syntax }
+  expects CheckerModuleGraphAllShapeModulesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:05145617d1d21d6a041218ab8bb769869cdf7147a52ccb6769a08865d246cd18")
+  summary "fn CheckerModule.graphAllShapeModules generated from typescript function_declaration at packages/shp-checker/src/checker.ts:1145-1166."
+}
+
+relation CheckerModuleGraphShapeModulesGeneratedFromCheckerModuleGraphShapeModulesAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleGraphShapeModulesAstAnchor
+  roles { CheckerModule as generated, CheckerModuleGraphShapeModulesAstAnchor as syntax }
+  expects CheckerModuleGraphShapeModulesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4fd6407753819e795a935d5e74cd92c57ec0f95c9e2cb963fa1e3dbdf60de30f")
+  summary "fn CheckerModule.graphShapeModules generated from typescript function_declaration at packages/shp-checker/src/checker.ts:1103-1139."
+}
+
+relation CheckerModuleGuardedContextsGeneratedFromCheckerModuleGuardedContextsAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleGuardedContextsAstAnchor
+  roles { CheckerModule as generated, CheckerModuleGuardedContextsAstAnchor as syntax }
+  expects CheckerModuleGuardedContextsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4e8b8df4c397f9f2f3486d85ccd3e0ccb0be7d3a93fbd01ab31cad786f0f7df9")
+  summary "fn CheckerModule.guardedContexts generated from typescript function_declaration at packages/shp-checker/src/checker.ts:4133-4161."
+}
+
+relation CheckerModuleGuardsForTargetGeneratedFromCheckerModuleGuardsForTargetAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleGuardsForTargetAstAnchor
+  roles { CheckerModule as generated, CheckerModuleGuardsForTargetAstAnchor as syntax }
+  expects CheckerModuleGuardsForTargetAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1fb1336bf331f54e7bac146a9074c22d21ed73f961a77dd5b2be21a73b56bbde")
+  summary "fn CheckerModule.guardsForTarget generated from typescript function_declaration at packages/shp-checker/src/checker.ts:4197-4221."
+}
+
+relation CheckerModuleHasNonEmptyDescriptionGeneratedFromCheckerModuleHasNonEmptyDescriptionAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleHasNonEmptyDescriptionAstAnchor
+  roles { CheckerModule as generated, CheckerModuleHasNonEmptyDescriptionAstAnchor as syntax }
+  expects CheckerModuleHasNonEmptyDescriptionAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f115c4214b488d97dfb9736e20bc028580ad0e898bc69f05e76f639b1920f0db")
+  summary "fn CheckerModule.hasNonEmptyDescription generated from typescript function_declaration at packages/shp-checker/src/checker.ts:4050-4052."
+}
+
+relation CheckerModuleHasRequiredContextGeneratedFromCheckerModuleHasRequiredContextAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleHasRequiredContextAstAnchor
+  roles { CheckerModule as generated, CheckerModuleHasRequiredContextAstAnchor as syntax }
+  expects CheckerModuleHasRequiredContextAstAnchor fingerprint ast.semantic_subtree_v1("sha256:36e7067cf4fb1c014f9c73134274d3e70f0748efe19aec9dfd0e0d2fe262f696")
+  summary "fn CheckerModule.hasRequiredContext generated from typescript function_declaration at packages/shp-checker/src/checker.ts:4014-4035."
+}
+
+relation CheckerModuleHasValidReevaluationForGuardGeneratedFromCheckerModuleHasValidReevaluationForGuardAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleHasValidReevaluationForGuardAstAnchor
+  roles { CheckerModule as generated, CheckerModuleHasValidReevaluationForGuardAstAnchor as syntax }
+  expects CheckerModuleHasValidReevaluationForGuardAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ae95addfb58b5da86347368c3cdf81e0f597a08ddd655105f87c6fcfc8cf5f31")
+  summary "fn CheckerModule.hasValidReevaluationForGuard generated from typescript function_declaration at packages/shp-checker/src/checker.ts:4168-4175."
+}
+
+relation CheckerModuleIndexModuleDeclarationsGeneratedFromCheckerModuleIndexModuleDeclarationsAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleIndexModuleDeclarationsAstAnchor
+  roles { CheckerModule as generated, CheckerModuleIndexModuleDeclarationsAstAnchor as syntax }
+  expects CheckerModuleIndexModuleDeclarationsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0217d3b3964f806bf9a99357f93f44786e6db28d79a8581ba7edf388a43af63b")
+  summary "fn CheckerModule.indexModuleDeclarations generated from typescript function_declaration at packages/shp-checker/src/checker.ts:1402-1416."
+}
+
+relation CheckerModuleIsAmbiguousVertexGeneratedFromCheckerModuleIsAmbiguousVertexAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleIsAmbiguousVertexAstAnchor
+  roles { CheckerModule as generated, CheckerModuleIsAmbiguousVertexAstAnchor as syntax }
+  expects CheckerModuleIsAmbiguousVertexAstAnchor fingerprint ast.semantic_subtree_v1("sha256:36135619db9adc52ba6593d32c04d018e2f958db1bacb42cf19609e524ddc63b")
+  summary "fn CheckerModule.isAmbiguousVertex generated from typescript function_declaration at packages/shp-checker/src/checker.ts:3272-3274."
+}
+
+relation CheckerModuleIsCurrentAttestationGeneratedFromCheckerModuleIsCurrentAttestationAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleIsCurrentAttestationAstAnchor
+  roles { CheckerModule as generated, CheckerModuleIsCurrentAttestationAstAnchor as syntax }
+  expects CheckerModuleIsCurrentAttestationAstAnchor fingerprint ast.semantic_subtree_v1("sha256:cb45d43294c22a7959099bf4e8e4816502277a62095757ceecb2e48c15371573")
+  summary "fn CheckerModule.isCurrentAttestation generated from typescript function_declaration at packages/shp-checker/src/checker.ts:3946-3958."
+}
+
+relation CheckerModuleIsGeneratedAstModuleNameGeneratedFromCheckerModuleIsGeneratedAstModuleNameAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleIsGeneratedAstModuleNameAstAnchor
+  roles { CheckerModule as generated, CheckerModuleIsGeneratedAstModuleNameAstAnchor as syntax }
+  expects CheckerModuleIsGeneratedAstModuleNameAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a6112ab26c2cad14a04a1d28507172e051711e28c5301d9b7d4df10ab00606c6")
+  summary "fn CheckerModule.isGeneratedAstModuleName generated from typescript function_declaration at packages/shp-checker/src/checker.ts:1398-1400."
+}
+
+relation CheckerModuleIsObligationDiagnosticGeneratedFromCheckerModuleIsObligationDiagnosticAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleIsObligationDiagnosticAstAnchor
+  roles { CheckerModule as generated, CheckerModuleIsObligationDiagnosticAstAnchor as syntax }
+  expects CheckerModuleIsObligationDiagnosticAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4fca5e5b73a1c5cdcd75097849e16a432e1104f0789b676e1499599de8bd8be9")
+  summary "fn CheckerModule.isObligationDiagnostic generated from typescript function_declaration at packages/shp-checker/src/checker.ts:4345-4361."
+}
+
+relation CheckerModuleIsPreludeTraitGeneratedFromCheckerModuleIsPreludeTraitAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleIsPreludeTraitAstAnchor
+  roles { CheckerModule as generated, CheckerModuleIsPreludeTraitAstAnchor as syntax }
+  expects CheckerModuleIsPreludeTraitAstAnchor fingerprint ast.semantic_subtree_v1("sha256:46d12cedd36568ddaeed62cd9e0ccf2bd209f59af955b94a8478f291a04e7339")
+  summary "fn CheckerModule.isPreludeTrait generated from typescript function_declaration at packages/shp-checker/src/checker.ts:4873-4878."
+}
+
+relation CheckerModuleIsResolvedVertexGeneratedFromCheckerModuleIsResolvedVertexAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleIsResolvedVertexAstAnchor
+  roles { CheckerModule as generated, CheckerModuleIsResolvedVertexAstAnchor as syntax }
+  expects CheckerModuleIsResolvedVertexAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ed5b5101e90bbd93fcfae195000b7a5f5f2b97da4bfd007fe048d0fa158c6778")
+  summary "fn CheckerModule.isResolvedVertex generated from typescript function_declaration at packages/shp-checker/src/checker.ts:3268-3270."
+}
+
+relation CheckerModuleIsTrustedGeneratedAstModuleGeneratedFromCheckerModuleIsTrustedGeneratedAstModuleAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleIsTrustedGeneratedAstModuleAstAnchor
+  roles { CheckerModule as generated, CheckerModuleIsTrustedGeneratedAstModuleAstAnchor as syntax }
+  expects CheckerModuleIsTrustedGeneratedAstModuleAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c352e388a98d3119632921ea8ff190935900ea5870d46098a00f73201a966b43")
+  summary "fn CheckerModule.isTrustedGeneratedAstModule generated from typescript function_declaration at packages/shp-checker/src/checker.ts:1388-1396."
+}
+
+relation CheckerModuleListMemoryGuardsShapeModulesGeneratedFromCheckerModuleListMemoryGuardsShapeModulesAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleListMemoryGuardsShapeModulesAstAnchor
+  roles { CheckerModule as generated, CheckerModuleListMemoryGuardsShapeModulesAstAnchor as syntax }
+  expects CheckerModuleListMemoryGuardsShapeModulesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:46ccb2f58efd16575fad058410cd8d1a256fdda26ec61d10c831f6b62b74d6ac")
+  summary "fn CheckerModule.listMemoryGuardsShapeModules generated from typescript function_declaration at packages/shp-checker/src/checker.ts:854-880."
+}
+
+relation CheckerModuleListShapeObligationsGeneratedFromCheckerModuleListShapeObligationsAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleListShapeObligationsAstAnchor
+  roles { CheckerModule as generated, CheckerModuleListShapeObligationsAstAnchor as syntax }
+  expects CheckerModuleListShapeObligationsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:627e0ed3af0a50a03460aae2e3c5fcc3a39919e99edcfd17d5d6b8d9d7a9bd9f")
+  summary "fn CheckerModule.listShapeObligations generated from typescript function_declaration at packages/shp-checker/src/checker.ts:882-944."
+}
+
+relation CheckerModuleLocalNameOfGeneratedFromCheckerModuleLocalNameOfAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleLocalNameOfAstAnchor
+  roles { CheckerModule as generated, CheckerModuleLocalNameOfAstAnchor as syntax }
+  expects CheckerModuleLocalNameOfAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c4bc7f6052716c37dfcd3721e1ce728e707df58d350b0613d83394e68a4e2065")
+  summary "fn CheckerModule.localNameOf generated from typescript function_declaration at packages/shp-checker/src/checker.ts:1482-1484."
+}
+
+relation CheckerModuleLowerAttestationGeneratedFromCheckerModuleLowerAttestationAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleLowerAttestationAstAnchor
+  roles { CheckerModule as generated, CheckerModuleLowerAttestationAstAnchor as syntax }
+  expects CheckerModuleLowerAttestationAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0f410c9eb41fc4511b4d342c463b57317032b609241b3246cacd400758fa048e")
+  summary "fn CheckerModule.lowerAttestation generated from typescript function_declaration at packages/shp-checker/src/checker.ts:2245-2262."
+}
+
+relation CheckerModuleLowerBindingGeneratedFromCheckerModuleLowerBindingAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleLowerBindingAstAnchor
+  roles { CheckerModule as generated, CheckerModuleLowerBindingAstAnchor as syntax }
+  expects CheckerModuleLowerBindingAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f4f2b14615f01388cfb3d85efaddba012904f7d7df1d961490f2cb3360399897")
+  summary "fn CheckerModule.lowerBinding generated from typescript function_declaration at packages/shp-checker/src/checker.ts:2177-2243."
+}
+
+relation CheckerModuleLowerCandidateEffectGeneratedFromCheckerModuleLowerCandidateEffectAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleLowerCandidateEffectAstAnchor
+  roles { CheckerModule as generated, CheckerModuleLowerCandidateEffectAstAnchor as syntax }
+  expects CheckerModuleLowerCandidateEffectAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4d14d7d28053788a032230a6d50d560f70f6ca720b0bae57b87867317124ad74")
+  summary "fn CheckerModule.lowerCandidateEffect generated from typescript function_declaration at packages/shp-checker/src/checker.ts:2069-2127."
+}
+
+relation CheckerModuleLowerChangeGeneratedFromCheckerModuleLowerChangeAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleLowerChangeAstAnchor
+  roles { CheckerModule as generated, CheckerModuleLowerChangeAstAnchor as syntax }
+  expects CheckerModuleLowerChangeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:621251a99e7395ab1f481e892b25d77c6928c3ba235009cf0c5d3ee99c73943a")
+  summary "fn CheckerModule.lowerChange generated from typescript function_declaration at packages/shp-checker/src/checker.ts:2533-2603."
+}
+
+relation CheckerModuleLowerComponentGeneratedFromCheckerModuleLowerComponentAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleLowerComponentAstAnchor
+  roles { CheckerModule as generated, CheckerModuleLowerComponentAstAnchor as syntax }
+  expects CheckerModuleLowerComponentAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ad00c56494cd1ab1774d7a819c84e2cf3e2c4c1345b73051778c4f5e88c74bc2")
+  summary "fn CheckerModule.lowerComponent generated from typescript function_declaration at packages/shp-checker/src/checker.ts:1688-1764."
+}
+
+relation CheckerModuleLowerContextMemberGeneratedFromCheckerModuleLowerContextMemberAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleLowerContextMemberAstAnchor
+  roles { CheckerModule as generated, CheckerModuleLowerContextMemberAstAnchor as syntax }
+  expects CheckerModuleLowerContextMemberAstAnchor fingerprint ast.semantic_subtree_v1("sha256:328e8c69da949c352d6cc64812d22e5b0666d4bba4ec41988d6913bc01c9d88f")
+  summary "fn CheckerModule.lowerContextMember generated from typescript function_declaration at packages/shp-checker/src/checker.ts:2396-2445."
+}
+
+relation CheckerModuleLowerDeclarationGeneratedFromCheckerModuleLowerDeclarationAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleLowerDeclarationAstAnchor
+  roles { CheckerModule as generated, CheckerModuleLowerDeclarationAstAnchor as syntax }
+  expects CheckerModuleLowerDeclarationAstAnchor fingerprint ast.semantic_subtree_v1("sha256:bb894d616a76ff4194f1b94b107b88c87e267e65a53f857c159c01a3689524ce")
+  summary "fn CheckerModule.lowerDeclaration generated from typescript function_declaration at packages/shp-checker/src/checker.ts:2623-2645."
+}
+
+relation CheckerModuleLowerDescriptionGeneratedFromCheckerModuleLowerDescriptionAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleLowerDescriptionAstAnchor
+  roles { CheckerModule as generated, CheckerModuleLowerDescriptionAstAnchor as syntax }
+  expects CheckerModuleLowerDescriptionAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d4267f8047e4f40a5cfaaeded2f0748529db9051a6e01eaa0e379c14e2e7a342")
+  summary "fn CheckerModule.lowerDescription generated from typescript function_declaration at packages/shp-checker/src/checker.ts:2783-2798."
+}
+
+relation CheckerModuleLowerEffectEntryGeneratedFromCheckerModuleLowerEffectEntryAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleLowerEffectEntryAstAnchor
+  roles { CheckerModule as generated, CheckerModuleLowerEffectEntryAstAnchor as syntax }
+  expects CheckerModuleLowerEffectEntryAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4d33d1cc7def6ee25a9bfaff1e9f3eae8af5902275426384f93716e224b111a0")
+  summary "fn CheckerModule.lowerEffectEntry generated from typescript function_declaration at packages/shp-checker/src/checker.ts:2824-2841."
+}
+
+relation CheckerModuleLowerEffectsGeneratedFromCheckerModuleLowerEffectsAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleLowerEffectsAstAnchor
+  roles { CheckerModule as generated, CheckerModuleLowerEffectsAstAnchor as syntax }
+  expects CheckerModuleLowerEffectsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:990756cd6d10c50fc712be58b07a370200741841ddb8f954dd6632326724cbb2")
+  summary "fn CheckerModule.lowerEffects generated from typescript function_declaration at packages/shp-checker/src/checker.ts:2800-2822."
+}
+
+relation CheckerModuleLowerFingerprintGeneratedFromCheckerModuleLowerFingerprintAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleLowerFingerprintAstAnchor
+  roles { CheckerModule as generated, CheckerModuleLowerFingerprintAstAnchor as syntax }
+  expects CheckerModuleLowerFingerprintAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7dc1fad43bfbaa3b70bc775b9d076441e109227ebe9c44ee960dfe3db515237a")
+  summary "fn CheckerModule.lowerFingerprint generated from typescript function_declaration at packages/shp-checker/src/checker.ts:2929-2939."
+}
+
+relation CheckerModuleLowerForbidPatternGeneratedFromCheckerModuleLowerForbidPatternAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleLowerForbidPatternAstAnchor
+  roles { CheckerModule as generated, CheckerModuleLowerForbidPatternAstAnchor as syntax }
+  expects CheckerModuleLowerForbidPatternAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ee0e469ff626dc830878d0ee0b3ea35697571aa4a05d473f928cbabeea98d4bc")
+  summary "fn CheckerModule.lowerForbidPattern generated from typescript function_declaration at packages/shp-checker/src/checker.ts:2843-2858."
+}
+
+relation CheckerModuleLowerFunctionGeneratedFromCheckerModuleLowerFunctionAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleLowerFunctionAstAnchor
+  roles { CheckerModule as generated, CheckerModuleLowerFunctionAstAnchor as syntax }
+  expects CheckerModuleLowerFunctionAstAnchor fingerprint ast.semantic_subtree_v1("sha256:19876e2d92791af980481e29f898eeebeb55d3434651daa1050e542baf9c96e2")
+  summary "fn CheckerModule.lowerFunction generated from typescript function_declaration at packages/shp-checker/src/checker.ts:2709-2760."
+}
+
+relation CheckerModuleLowerImplementationGeneratedFromCheckerModuleLowerImplementationAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleLowerImplementationAstAnchor
+  roles { CheckerModule as generated, CheckerModuleLowerImplementationAstAnchor as syntax }
+  expects CheckerModuleLowerImplementationAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5ee63b73d28edf87569f6a6c8c1e08508a8ca5c112f462e99a6b2b2f69d24e04")
+  summary "fn CheckerModule.lowerImplementation generated from typescript function_declaration at packages/shp-checker/src/checker.ts:2129-2175."
+}
+
+relation CheckerModuleLowerMemoryGeneratedFromCheckerModuleLowerMemoryAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleLowerMemoryAstAnchor
+  roles { CheckerModule as generated, CheckerModuleLowerMemoryAstAnchor as syntax }
+  expects CheckerModuleLowerMemoryAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d8e242ed04484dcabd619ab29e5036096b19d3d72ba06d151cd4b66198675402")
+  summary "fn CheckerModule.lowerMemory generated from typescript function_declaration at packages/shp-checker/src/checker.ts:2345-2394."
+}
+
+relation CheckerModuleLowerPatternGeneratedFromCheckerModuleLowerPatternAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleLowerPatternAstAnchor
+  roles { CheckerModule as generated, CheckerModuleLowerPatternAstAnchor as syntax }
+  expects CheckerModuleLowerPatternAstAnchor fingerprint ast.semantic_subtree_v1("sha256:59f3466b5eecc3a0ceb034133422887b5bf3349de956aa1ec4913a168c3b5690")
+  summary "fn CheckerModule.lowerPattern generated from typescript function_declaration at packages/shp-checker/src/checker.ts:2915-2920."
+}
+
+relation CheckerModuleLowerRationaleGeneratedFromCheckerModuleLowerRationaleAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleLowerRationaleAstAnchor
+  roles { CheckerModule as generated, CheckerModuleLowerRationaleAstAnchor as syntax }
+  expects CheckerModuleLowerRationaleAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0ea862f3f5bf0aa6749a286c6b6c55c4dcdf65c3003bbbb8cff767cea9b56a07")
+  summary "fn CheckerModule.lowerRationale generated from typescript function_declaration at packages/shp-checker/src/checker.ts:2296-2343."
+}
+
+relation CheckerModuleLowerReevaluationGeneratedFromCheckerModuleLowerReevaluationAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleLowerReevaluationAstAnchor
+  roles { CheckerModule as generated, CheckerModuleLowerReevaluationAstAnchor as syntax }
+  expects CheckerModuleLowerReevaluationAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6ef1db4c4b5cf1314a5fc2c5b30b77242b975eb23516ab99e076ce6fa05e2ca3")
+  summary "fn CheckerModule.lowerReevaluation generated from typescript function_declaration at packages/shp-checker/src/checker.ts:2447-2503."
+}
+
+relation CheckerModuleLowerRelationGeneratedFromCheckerModuleLowerRelationAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleLowerRelationAstAnchor
+  roles { CheckerModule as generated, CheckerModuleLowerRelationAstAnchor as syntax }
+  expects CheckerModuleLowerRelationAstAnchor fingerprint ast.semantic_subtree_v1("sha256:273bd4b6b3ef6c8ec64f97c71486419ff20eac5318fa291df36e2d5203886461")
+  summary "fn CheckerModule.lowerRelation generated from typescript function_declaration at packages/shp-checker/src/checker.ts:1766-2033."
+}
+
+relation CheckerModuleLowerResourceGeneratedFromCheckerModuleLowerResourceAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleLowerResourceAstAnchor
+  roles { CheckerModule as generated, CheckerModuleLowerResourceAstAnchor as syntax }
+  expects CheckerModuleLowerResourceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ddae1f3df600223aee2d4be8d40e3dbee9171fb7b540771f1e8439e890160e8a")
+  summary "fn CheckerModule.lowerResource generated from typescript function_declaration at packages/shp-checker/src/checker.ts:1585-1655."
+}
+
+relation CheckerModuleLowerRuleForbidGeneratedFromCheckerModuleLowerRuleForbidAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleLowerRuleForbidAstAnchor
+  roles { CheckerModule as generated, CheckerModuleLowerRuleForbidAstAnchor as syntax }
+  expects CheckerModuleLowerRuleForbidAstAnchor fingerprint ast.semantic_subtree_v1("sha256:03f03d6e8df2d99dfb3d9530770e60fe514773586904ece415b8ce4fcd8019d4")
+  summary "fn CheckerModule.lowerRuleForbid generated from typescript function_declaration at packages/shp-checker/src/checker.ts:2860-2875."
+}
+
+relation CheckerModuleLowerRuleForbidHypercycleGeneratedFromCheckerModuleLowerRuleForbidHypercycleAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleLowerRuleForbidHypercycleAstAnchor
+  roles { CheckerModule as generated, CheckerModuleLowerRuleForbidHypercycleAstAnchor as syntax }
+  expects CheckerModuleLowerRuleForbidHypercycleAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ca8ebb9b0dc42937078a7f89653b6fed8ea89dacfdf8e7975e1ceb69997d4624")
+  summary "fn CheckerModule.lowerRuleForbidHypercycle generated from typescript function_declaration at packages/shp-checker/src/checker.ts:2894-2906."
+}
+
+relation CheckerModuleLowerRuleForbidProvidesGeneratedFromCheckerModuleLowerRuleForbidProvidesAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleLowerRuleForbidProvidesAstAnchor
+  roles { CheckerModule as generated, CheckerModuleLowerRuleForbidProvidesAstAnchor as syntax }
+  expects CheckerModuleLowerRuleForbidProvidesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0e77f937c2235799bac05aae5bac24750ef8c62303b017337142b9809d677a6c")
+  summary "fn CheckerModule.lowerRuleForbidProvides generated from typescript function_declaration at packages/shp-checker/src/checker.ts:2877-2892."
+}
+
+relation CheckerModuleLowerRuleGeneratedFromCheckerModuleLowerRuleAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleLowerRuleAstAnchor
+  roles { CheckerModule as generated, CheckerModuleLowerRuleAstAnchor as syntax }
+  expects CheckerModuleLowerRuleAstAnchor fingerprint ast.semantic_subtree_v1("sha256:21e9887db16fe9d9a6ee1412f67319fbe03190963a6d3e1fe3c5280c6a96488f")
+  summary "fn CheckerModule.lowerRule generated from typescript function_declaration at packages/shp-checker/src/checker.ts:2264-2294."
+}
+
+relation CheckerModuleLowerShapeModulesGeneratedFromCheckerModuleLowerShapeModulesAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleLowerShapeModulesAstAnchor
+  roles { CheckerModule as generated, CheckerModuleLowerShapeModulesAstAnchor as syntax }
+  expects CheckerModuleLowerShapeModulesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1618127410a0d5c6c4edf69768f795b0bbc18131320417833a6e1192a91e763f")
+  summary "fn CheckerModule.lowerShapeModules generated from typescript function_declaration at packages/shp-checker/src/checker.ts:1263-1340."
+}
+
+relation CheckerModuleLowerShapeTraitsGeneratedFromCheckerModuleLowerShapeTraitsAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleLowerShapeTraitsAstAnchor
+  roles { CheckerModule as generated, CheckerModuleLowerShapeTraitsAstAnchor as syntax }
+  expects CheckerModuleLowerShapeTraitsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c3d90840f95aaf48d8ab8bfd92b440085ac4a75917e3ca976b11b26eb7f823b9")
+  summary "fn CheckerModule.lowerShapeTraits generated from typescript function_declaration at packages/shp-checker/src/checker.ts:2762-2781."
+}
+
+relation CheckerModuleLowerSourceRefGeneratedFromCheckerModuleLowerSourceRefAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleLowerSourceRefAstAnchor
+  roles { CheckerModule as generated, CheckerModuleLowerSourceRefAstAnchor as syntax }
+  expects CheckerModuleLowerSourceRefAstAnchor fingerprint ast.semantic_subtree_v1("sha256:12e7c43f928b78453b343af00cac624acca13dafe496d48e1cc3aa582a969c82")
+  summary "fn CheckerModule.lowerSourceRef generated from typescript function_declaration at packages/shp-checker/src/checker.ts:2922-2927."
+}
+
+relation CheckerModuleLowerTargetRefGeneratedFromCheckerModuleLowerTargetRefAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleLowerTargetRefAstAnchor
+  roles { CheckerModule as generated, CheckerModuleLowerTargetRefAstAnchor as syntax }
+  expects CheckerModuleLowerTargetRefAstAnchor fingerprint ast.semantic_subtree_v1("sha256:42d1640af59cfd0e70c402fa73ad75f9bcd1a922695c4ef7640af58ed79e5a81")
+  summary "fn CheckerModule.lowerTargetRef generated from typescript function_declaration at packages/shp-checker/src/checker.ts:2941-2950."
+}
+
+relation CheckerModuleLowerTermGeneratedFromCheckerModuleLowerTermAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleLowerTermAstAnchor
+  roles { CheckerModule as generated, CheckerModuleLowerTermAstAnchor as syntax }
+  expects CheckerModuleLowerTermAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ba4d4251100467187278b272cf16da181b846096c26d050495d10cb8b25d0d59")
+  summary "fn CheckerModule.lowerTerm generated from typescript function_declaration at packages/shp-checker/src/checker.ts:2908-2913."
+}
+
+relation CheckerModuleLowerTraitGeneratedFromCheckerModuleLowerTraitAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleLowerTraitAstAnchor
+  roles { CheckerModule as generated, CheckerModuleLowerTraitAstAnchor as syntax }
+  expects CheckerModuleLowerTraitAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0b4d3885047a4ed8785e8a1b3b8cb9fbc93d4de1395596878cd85e270fefce1d")
+  summary "fn CheckerModule.lowerTrait generated from typescript function_declaration at packages/shp-checker/src/checker.ts:1657-1686."
+}
+
+relation CheckerModuleMatchingContextsForTargetGeneratedFromCheckerModuleMatchingContextsForTargetAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleMatchingContextsForTargetAstAnchor
+  roles { CheckerModule as generated, CheckerModuleMatchingContextsForTargetAstAnchor as syntax }
+  expects CheckerModuleMatchingContextsForTargetAstAnchor fingerprint ast.semantic_subtree_v1("sha256:44af7e21d8daadc6259c91681d5ae290cd6336a95dcb1d1653f32e9bd07842d9")
+  summary "fn CheckerModule.matchingContextsForTarget generated from typescript function_declaration at packages/shp-checker/src/checker.ts:4177-4195."
+}
+
+relation CheckerModuleMissingUnsafeRequirementsGeneratedFromCheckerModuleMissingUnsafeRequirementsAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleMissingUnsafeRequirementsAstAnchor
+  roles { CheckerModule as generated, CheckerModuleMissingUnsafeRequirementsAstAnchor as syntax }
+  expects CheckerModuleMissingUnsafeRequirementsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f6bbfdc93f0b0e3b01280022a90b41d5d69be8bca36f50a647a52f541f5c669c")
+  summary "fn CheckerModule.missingUnsafeRequirements generated from typescript function_declaration at packages/shp-checker/src/checker.ts:4474-4486."
+}
+
+relation CheckerModuleModuleContextGeneratedFromCheckerModuleModuleContextAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleModuleContextAstAnchor
+  roles { CheckerModule as generated, CheckerModuleModuleContextAstAnchor as syntax }
+  expects CheckerModuleModuleContextAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a1f32c694559560bbee73a93e978d9c3fd7cb7c0421b853fa5cc2c3bd35f54cb")
+  summary "fn CheckerModule.moduleContext generated from typescript function_declaration at packages/shp-checker/src/checker.ts:1378-1386."
+}
+
+relation CheckerModuleNormalizeModuleInputsGeneratedFromCheckerModuleNormalizeModuleInputsAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleNormalizeModuleInputsAstAnchor
+  roles { CheckerModule as generated, CheckerModuleNormalizeModuleInputsAstAnchor as syntax }
+  expects CheckerModuleNormalizeModuleInputsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3fa84d81be573dd36ce6e0c89f0fb35d11a946f70d22a4f5f11543fb97d7ef8a")
+  summary "fn CheckerModule.normalizeModuleInputs generated from typescript function_declaration at packages/shp-checker/src/checker.ts:1353-1360."
+}
+
+relation CheckerModuleNormalizeRepoPathGeneratedFromCheckerModuleNormalizeRepoPathAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleNormalizeRepoPathAstAnchor
+  roles { CheckerModule as generated, CheckerModuleNormalizeRepoPathAstAnchor as syntax }
+  expects CheckerModuleNormalizeRepoPathAstAnchor fingerprint ast.semantic_subtree_v1("sha256:68c442f96324ffa94178d239706236a5c7dfe2d85de9b530ebeb3bcf76c713b3")
+  summary "fn CheckerModule.normalizeRepoPath generated from typescript function_declaration at packages/shp-checker/src/checker.ts:4818-4825."
+}
+
+relation CheckerModulePluralSuffixGeneratedFromCheckerModulePluralSuffixAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModulePluralSuffixAstAnchor
+  roles { CheckerModule as generated, CheckerModulePluralSuffixAstAnchor as syntax }
+  expects CheckerModulePluralSuffixAstAnchor fingerprint ast.semantic_subtree_v1("sha256:92e9e9a897ea660c2412f520ea7adeb0383da7c4e06a73706c88746b2976812a")
+  summary "fn CheckerModule.pluralSuffix generated from typescript function_declaration at packages/shp-checker/src/checker.ts:1251-1253."
+}
+
+relation CheckerModulePreludeTraitInfoGeneratedFromCheckerModulePreludeTraitInfoAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModulePreludeTraitInfoAstAnchor
+  roles { CheckerModule as generated, CheckerModulePreludeTraitInfoAstAnchor as syntax }
+  expects CheckerModulePreludeTraitInfoAstAnchor fingerprint ast.semantic_subtree_v1("sha256:aa7362698a63737c6630413d5d1092144a474e59018483bae3025f913a65dbe6")
+  summary "fn CheckerModule.preludeTraitInfo generated from typescript function_declaration at packages/shp-checker/src/checker.ts:4880-4900."
+}
+
+relation CheckerModuleProvenanceFileChangedGeneratedFromCheckerModuleProvenanceFileChangedAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleProvenanceFileChangedAstAnchor
+  roles { CheckerModule as generated, CheckerModuleProvenanceFileChangedAstAnchor as syntax }
+  expects CheckerModuleProvenanceFileChangedAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a5511d3a79ed55741c684c1c871cbf32fda67d15147208f7d105061f6383c23a")
+  summary "fn CheckerModule.provenanceFileChanged generated from typescript function_declaration at packages/shp-checker/src/checker.ts:3960-3964."
+}
+
+relation CheckerModuleProvenanceGeneratedFromCheckerModuleProvenanceAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleProvenanceAstAnchor
+  roles { CheckerModule as generated, CheckerModuleProvenanceAstAnchor as syntax }
+  expects CheckerModuleProvenanceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2d7eed54fc7ebec2a77193cd8a471e610dc21e48d135cac3a755f2465dc428b1")
+  summary "fn CheckerModule.provenance generated from typescript function_declaration at packages/shp-checker/src/checker.ts:4861-4863."
+}
+
+relation CheckerModuleProvidesProviderGeneratedFromCheckerModuleProvidesProviderAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleProvidesProviderAstAnchor
+  roles { CheckerModule as generated, CheckerModuleProvidesProviderAstAnchor as syntax }
+  expects CheckerModuleProvidesProviderAstAnchor fingerprint ast.semantic_subtree_v1("sha256:cbd725a9573807dba65cd71722da901a1fa9fbde8d47387a9da53e24e0dc213a")
+  summary "fn CheckerModule.providesProvider generated from typescript function_declaration at packages/shp-checker/src/checker.ts:3679-3681."
+}
+
+relation CheckerModuleProvidesTargetGeneratedFromCheckerModuleProvidesTargetAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleProvidesTargetAstAnchor
+  roles { CheckerModule as generated, CheckerModuleProvidesTargetAstAnchor as syntax }
+  expects CheckerModuleProvidesTargetAstAnchor fingerprint ast.semantic_subtree_v1("sha256:bd3fd81e24fddd9e7829ecb690525aef200b6e643d173f637cb7fed5ff3df5be")
+  summary "fn CheckerModule.providesTarget generated from typescript function_declaration at packages/shp-checker/src/checker.ts:3683-3685."
+}
+
+relation CheckerModuleRebuildShapeUpdatePathsGeneratedFromCheckerModuleRebuildShapeUpdatePathsAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleRebuildShapeUpdatePathsAstAnchor
+  roles { CheckerModule as generated, CheckerModuleRebuildShapeUpdatePathsAstAnchor as syntax }
+  expects CheckerModuleRebuildShapeUpdatePathsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:06f36dfb8ea5ebd33e8f251da4ba2babf6a4685bcde1987c154c0465ecb68eec")
+  summary "fn CheckerModule.rebuildShapeUpdatePaths generated from typescript function_declaration at packages/shp-checker/src/checker.ts:1342-1351."
+}
+
+relation CheckerModuleReevaluationValidationReasonsGeneratedFromCheckerModuleReevaluationValidationReasonsAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleReevaluationValidationReasonsAstAnchor
+  roles { CheckerModule as generated, CheckerModuleReevaluationValidationReasonsAstAnchor as syntax }
+  expects CheckerModuleReevaluationValidationReasonsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c8607613760873cec08850ab3468583baff69507fd319010b9c03dd8c373f3f1")
+  summary "fn CheckerModule.reevaluationValidationReasons generated from typescript function_declaration at packages/shp-checker/src/checker.ts:4102-4127."
+}
+
+relation CheckerModuleRemoveDeclarationGeneratedFromCheckerModuleRemoveDeclarationAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleRemoveDeclarationAstAnchor
+  roles { CheckerModule as generated, CheckerModuleRemoveDeclarationAstAnchor as syntax }
+  expects CheckerModuleRemoveDeclarationAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5d6369071142f26a1b151ffdb4db43c91c313d34be93435089076a2897436e45")
+  summary "fn CheckerModule.removeDeclaration generated from typescript function_declaration at packages/shp-checker/src/checker.ts:2647-2671."
+}
+
+relation CheckerModuleRemoveFunctionFactsGeneratedFromCheckerModuleRemoveFunctionFactsAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleRemoveFunctionFactsAstAnchor
+  roles { CheckerModule as generated, CheckerModuleRemoveFunctionFactsAstAnchor as syntax }
+  expects CheckerModuleRemoveFunctionFactsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:cb371ad632f8aeaa27ac8a4744bf20e6d100103222264da4ae352a8c40be173c")
+  summary "fn CheckerModule.removeFunctionFacts generated from typescript function_declaration at packages/shp-checker/src/checker.ts:3007-3025."
+}
+
+relation CheckerModuleRemoveRelationGeneratedFromCheckerModuleRemoveRelationAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleRemoveRelationAstAnchor
+  roles { CheckerModule as generated, CheckerModuleRemoveRelationAstAnchor as syntax }
+  expects CheckerModuleRemoveRelationAstAnchor fingerprint ast.semantic_subtree_v1("sha256:922adb0eb1bbefbfa3ae282d8e044d2b6f9b086cb9f8a4982901195b9276a762")
+  summary "fn CheckerModule.removeRelation generated from typescript function_declaration at packages/shp-checker/src/checker.ts:2035-2053."
+}
+
+relation CheckerModuleRequirementsForFunctionGeneratedFromCheckerModuleRequirementsForFunctionAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleRequirementsForFunctionAstAnchor
+  roles { CheckerModule as generated, CheckerModuleRequirementsForFunctionAstAnchor as syntax }
+  expects CheckerModuleRequirementsForFunctionAstAnchor fingerprint ast.semantic_subtree_v1("sha256:83447f26a4729da4edb2ac0d86d62cc0f7c6c30f919f7d9a377035e964785e50")
+  summary "fn CheckerModule.requirementsForFunction generated from typescript function_declaration at packages/shp-checker/src/checker.ts:4008-4012."
+}
+
+relation CheckerModuleRequiresReevaluationGeneratedFromCheckerModuleRequiresReevaluationAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleRequiresReevaluationAstAnchor
+  roles { CheckerModule as generated, CheckerModuleRequiresReevaluationAstAnchor as syntax }
+  expects CheckerModuleRequiresReevaluationAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b1f923ddb804bde379b418a7028700de83fc6e685beb6bea385c08eecc18ae0a")
+  summary "fn CheckerModule.requiresReevaluation generated from typescript function_declaration at packages/shp-checker/src/checker.ts:4163-4166."
+}
+
+relation CheckerModuleResolveContextObjectNameGeneratedFromCheckerModuleResolveContextObjectNameAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleResolveContextObjectNameAstAnchor
+  roles { CheckerModule as generated, CheckerModuleResolveContextObjectNameAstAnchor as syntax }
+  expects CheckerModuleResolveContextObjectNameAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5e037132bb7801797e7f19ea73bf2f9b56da74e16e71b486cbfe2424fa67f437")
+  summary "fn CheckerModule.resolveContextObjectName generated from typescript function_declaration at packages/shp-checker/src/checker.ts:1576-1583."
+}
+
+relation CheckerModuleResolveDeclNameGeneratedFromCheckerModuleResolveDeclNameAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleResolveDeclNameAstAnchor
+  roles { CheckerModule as generated, CheckerModuleResolveDeclNameAstAnchor as syntax }
+  expects CheckerModuleResolveDeclNameAstAnchor fingerprint ast.semantic_subtree_v1("sha256:18052481ea523edf9c2f70a231242b6fa76e3ce3c1b26350cb35791dc1f312d2")
+  summary "fn CheckerModule.resolveDeclName generated from typescript function_declaration at packages/shp-checker/src/checker.ts:1499-1523."
+}
+
+relation CheckerModuleResolveFunctionTargetNameGeneratedFromCheckerModuleResolveFunctionTargetNameAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleResolveFunctionTargetNameAstAnchor
+  roles { CheckerModule as generated, CheckerModuleResolveFunctionTargetNameAstAnchor as syntax }
+  expects CheckerModuleResolveFunctionTargetNameAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0324e45a4a2c1975f910eb5a38a969239b8f39d1193d06e8a03f6dfe0aebfbd2")
+  summary "fn CheckerModule.resolveFunctionTargetName generated from typescript function_declaration at packages/shp-checker/src/checker.ts:1568-1574."
+}
+
+relation CheckerModuleResolveQuerySymbolGeneratedFromCheckerModuleResolveQuerySymbolAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleResolveQuerySymbolAstAnchor
+  roles { CheckerModule as generated, CheckerModuleResolveQuerySymbolAstAnchor as syntax }
+  expects CheckerModuleResolveQuerySymbolAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d761a1f55274b1f182b616921e5e617c203aceb513a02fcf8ca0fb5f0e9394bc")
+  summary "fn CheckerModule.resolveQuerySymbol generated from typescript function_declaration at packages/shp-checker/src/checker.ts:1082-1091."
+}
+
+relation CheckerModuleResolveTargetNameGeneratedFromCheckerModuleResolveTargetNameAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleResolveTargetNameAstAnchor
+  roles { CheckerModule as generated, CheckerModuleResolveTargetNameAstAnchor as syntax }
+  expects CheckerModuleResolveTargetNameAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4a93ca7d254c407f02f9dbc68994b5b7cb5aab7e2edecdbff37ae92af2c2566c")
+  summary "fn CheckerModule.resolveTargetName generated from typescript function_declaration at packages/shp-checker/src/checker.ts:1546-1566."
+}
+
+relation CheckerModuleResolveVertexNameGeneratedFromCheckerModuleResolveVertexNameAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleResolveVertexNameAstAnchor
+  roles { CheckerModule as generated, CheckerModuleResolveVertexNameAstAnchor as syntax }
+  expects CheckerModuleResolveVertexNameAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e3da3f57431bcf88fb7894d456b3fc0f425e4c6423fd48673a9cba2924e04924")
+  summary "fn CheckerModule.resolveVertexName generated from typescript function_declaration at packages/shp-checker/src/checker.ts:1525-1544."
+}
+
+relation CheckerModuleSplitFunctionTargetGeneratedFromCheckerModuleSplitFunctionTargetAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleSplitFunctionTargetAstAnchor
+  roles { CheckerModule as generated, CheckerModuleSplitFunctionTargetAstAnchor as syntax }
+  expects CheckerModuleSplitFunctionTargetAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b9d94d111bc864d6eb3f8eddfac85f4e9c02dbffc5d8e81afc8dfc537dc25d6e")
+  summary "fn CheckerModule.splitFunctionTarget generated from typescript function_declaration at packages/shp-checker/src/checker.ts:4082-4088."
+}
+
+relation CheckerModuleSplitQualifiedNameGeneratedFromCheckerModuleSplitQualifiedNameAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleSplitQualifiedNameAstAnchor
+  roles { CheckerModule as generated, CheckerModuleSplitQualifiedNameAstAnchor as syntax }
+  expects CheckerModuleSplitQualifiedNameAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7bbd8bc2580396bfa4cb74e325a930d521b7d116191e5f8925ce234db2a86bf8")
+  summary "fn CheckerModule.splitQualifiedName generated from typescript function_declaration at packages/shp-checker/src/checker.ts:1471-1480."
+}
+
+relation CheckerModuleStatsShapeHypergraphGeneratedFromCheckerModuleStatsShapeHypergraphAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleStatsShapeHypergraphAstAnchor
+  roles { CheckerModule as generated, CheckerModuleStatsShapeHypergraphAstAnchor as syntax }
+  expects CheckerModuleStatsShapeHypergraphAstAnchor fingerprint ast.semantic_subtree_v1("sha256:daae921c3dd30992edcbc9c9077f242a4b5638540636574de12d59c2f9ab7da8")
+  summary "fn CheckerModule.statsShapeHypergraph generated from typescript function_declaration at packages/shp-checker/src/checker.ts:1173-1249."
+}
+
+relation CheckerModuleSubstituteTargetGeneratedFromCheckerModuleSubstituteTargetAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleSubstituteTargetAstAnchor
+  roles { CheckerModule as generated, CheckerModuleSubstituteTargetAstAnchor as syntax }
+  expects CheckerModuleSubstituteTargetAstAnchor fingerprint ast.semantic_subtree_v1("sha256:fe3efddf3b36832a6367b333405a0a710ee70c094d669e50e46c88fb19a79bd5")
+  summary "fn CheckerModule.substituteTarget generated from typescript function_declaration at packages/shp-checker/src/checker.ts:4420-4429."
+}
+
+relation CheckerModuleTargetExistsGeneratedFromCheckerModuleTargetExistsAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleTargetExistsAstAnchor
+  roles { CheckerModule as generated, CheckerModuleTargetExistsAstAnchor as syntax }
+  expects CheckerModuleTargetExistsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7aba3b47c027cbf7109e94967d257921a88fa84289ca7d94a51f31a03bcda4f0")
+  summary "fn CheckerModule.targetExists generated from typescript function_declaration at packages/shp-checker/src/checker.ts:4054-4080."
+}
+
+relation CheckerModuleTargetsEqualGeneratedFromCheckerModuleTargetsEqualAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleTargetsEqualAstAnchor
+  roles { CheckerModule as generated, CheckerModuleTargetsEqualAstAnchor as syntax }
+  expects CheckerModuleTargetsEqualAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9c63ccc644b81c087c86942cb1b15aa0c228453a05caea3c0fd24bb278e1042c")
+  summary "fn CheckerModule.targetsEqual generated from typescript function_declaration at packages/shp-checker/src/checker.ts:4090-4092."
+}
+
+relation CheckerModuleTermKeyGeneratedFromCheckerModuleTermKeyAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleTermKeyAstAnchor
+  roles { CheckerModule as generated, CheckerModuleTermKeyAstAnchor as syntax }
+  expects CheckerModuleTermKeyAstAnchor fingerprint ast.semantic_subtree_v1("sha256:744b1e651be43a3613dbd6f257aba6972ffbfcdc4b10e7e6134682733b70d884")
+  summary "fn CheckerModule.termKey generated from typescript function_declaration at packages/shp-checker/src/checker.ts:4810-4812."
+}
+
+relation CheckerModuleVertexKindLabelGeneratedFromCheckerModuleVertexKindLabelAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleVertexKindLabelAstAnchor
+  roles { CheckerModule as generated, CheckerModuleVertexKindLabelAstAnchor as syntax }
+  expects CheckerModuleVertexKindLabelAstAnchor fingerprint ast.semantic_subtree_v1("sha256:cc033e9ef88049252417071a1b31ff6dcec52bcb55404ba04f6a1601009827bc")
+  summary "fn CheckerModule.vertexKindLabel generated from typescript function_declaration at packages/shp-checker/src/checker.ts:4459-4467."
+}
+
+relation CheckerModuleWitnessFromPathGeneratedFromCheckerModuleWitnessFromPathAstAnchor {
+  kind generated_from
+  connects CheckerModule -> CheckerModuleWitnessFromPathAstAnchor
+  roles { CheckerModule as generated, CheckerModuleWitnessFromPathAstAnchor as syntax }
+  expects CheckerModuleWitnessFromPathAstAnchor fingerprint ast.semantic_subtree_v1("sha256:dee291aa400316b14d04def760058f046e2d9f514d2044807f86a33263d26615")
+  summary "fn CheckerModule.witnessFromPath generated from typescript function_declaration at packages/shp-checker/src/checker.ts:3814-3829."
+}
+
+implementation CheckerModuleImpl {
+  paths {
+    "packages/shp-checker/src/checker.ts"
+  }
+  conforms_to CheckerModule
+}

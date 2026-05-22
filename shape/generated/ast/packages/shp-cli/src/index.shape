@@ -1,0 +1,33 @@
+module shape.generated.ast.packages.shp_cli.src.index
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource IndexModuleMainAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/index.ts:8-35")
+  fingerprint ast.semantic_subtree_v1("sha256:05878ca099614741a996d97a3334f348ca29834e037e4e4deab5a4659800308f")
+}
+
+component IndexModule : GeneratedCandidate {
+  fn main
+    source ts("packages/shp-cli/src/index.ts:8-35")
+    effects unknown
+}
+
+relation IndexModuleMainGeneratedFromIndexModuleMainAstAnchor {
+  kind generated_from
+  connects IndexModule -> IndexModuleMainAstAnchor
+  roles { IndexModule as generated, IndexModuleMainAstAnchor as syntax }
+  expects IndexModuleMainAstAnchor fingerprint ast.semantic_subtree_v1("sha256:05878ca099614741a996d97a3334f348ca29834e037e4e4deab5a4659800308f")
+  summary "fn IndexModule.main generated from typescript function_declaration at packages/shp-cli/src/index.ts:8-35."
+}
+
+implementation IndexModuleImpl {
+  paths {
+    "packages/shp-cli/src/index.ts"
+  }
+  conforms_to IndexModule
+}

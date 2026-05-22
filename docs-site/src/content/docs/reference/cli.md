@@ -86,6 +86,8 @@ By default, `shp ast source` parses files with the platform Tree-sitter native b
 
 Use `--out-dir shape/generated/ast` to write checked generated AST context as deterministic files plus a manifest. These generated files use `shape.generated.ast...` modules and are allowed to keep `effects unknown`, because they are candidate evidence rather than reviewed architecture truth. Use `--check` with `--out-dir` in CI to fail when the checked-in generated AST files are stale.
 
+In this repo, `bun run ast:generate` refreshes the committed generated AST context for tracked first-party source only, and `bun run ast:check` verifies it is fresh in local, CI, and release validation. The source set excludes dependency, build, and generated parser output.
+
 Use `--include-ast-layer` to include raw AST resources and `ast_child` relations in stdout. Use `--raw-out PATH` to keep the raw trace in a sidecar Shape file while stdout stays focused on the semantic draft. These flags are mutually exclusive.
 
 `shp ast json` accepts normalized AST JSON with this shape when another parser already produced syntax data. It is an input adapter, not a Shapes-to-AST export path. Anchored nodes must include token/source text in their subtree so `ast.semantic_subtree_v1` fingerprints can be computed:
