@@ -1452,17 +1452,7 @@ function formatSemanticShape(
     lines.push(
       "",
       `resource ${anchor.name} : GeneratedAstAnchor {`,
-      `  storage ast.anchor(${quoteShapeString(
-        JSON.stringify({
-          target: anchor.target,
-          targetKind: anchor.targetKind,
-          nodeId: anchor.nodeId,
-          path: anchor.path,
-          language: anchor.language,
-          kind: anchor.kind,
-          source: anchor.sourceRef
-        })
-      )})`,
+      `  storage ast.anchor(${quoteShapeString(anchor.sourceRef)})`,
       `  fingerprint ${anchor.fingerprint.provider}(${quoteShapeString(anchor.fingerprint.value)})`,
       "}"
     );

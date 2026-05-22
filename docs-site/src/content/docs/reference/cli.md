@@ -80,7 +80,7 @@ shp update --dry-run
 
 `shp ast` is a drafting tool. It turns syntax evidence into conservative Shape, not final architecture truth.
 
-By default, `shp ast source` parses files with `@kreuzberg/tree-sitter-language-pack` and prints the semantic draft: stable files, modules, types, functions, high-confidence calls, compact AST anchors, anchor fingerprints, and unresolved uncertainty. Generated functions use `effects unknown`, so the draft can parse successfully while still failing `shp check` until a reviewer replaces uncertainty with reviewed effects.
+By default, `shp ast source` parses files with the platform Tree-sitter native binding and prints the semantic draft: stable files, modules, types, functions, high-confidence calls, compact AST anchors, anchor fingerprints, and unresolved uncertainty. Generated functions use `effects unknown`, so the draft can parse successfully while still failing `shp check` until a reviewer replaces uncertainty with reviewed effects.
 
 Use `--include-ast-layer` to include raw AST resources and `ast_child` relations in stdout. Use `--raw-out PATH` to keep the raw trace in a sidecar Shape file while stdout stays focused on the semantic draft. These flags are mutually exclusive.
 

@@ -51,7 +51,7 @@ implementation AuditStoreImpl {
 }
 
 resource AuditStoreAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("{\"target\":\"AuditStore\",\"targetKind\":\"component\",\"nodeId\":\"...\",\"path\":\"src/audit/store.rs\",\"language\":\"rust\",\"kind\":\"struct_item\",\"source\":\"src/audit/store.rs:9-11\"}")
+  storage ast.anchor("src/audit/store.rs:9-11")
   fingerprint ast.semantic_subtree_v1("sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
 }
 

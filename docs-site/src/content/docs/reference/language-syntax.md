@@ -53,7 +53,7 @@ Storage and fingerprint declarations use provider names and string values. Finge
 module generated.audit
 
 resource PurgeOldEventsAstAnchor {
-  storage ast.anchor("{\"target\":\"AuditStore.purgeOldEvents\"}")
+  storage ast.anchor("src/audit/store.rs:42-58")
   fingerprint ast.semantic_subtree_v1("sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
 }
 ```

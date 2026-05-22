@@ -3130,6 +3130,8 @@ describe("AST to Shape generation", () => {
     expect(output.semanticShape).toContain("kind calls");
     expect(output.semanticShape).toContain("trait GeneratedAstAnchor");
     expect(output.semanticShape).toContain("fingerprint ast.semantic_subtree_v1");
+    expect(output.semanticShape).toContain('storage ast.anchor("src/audit/store.rs:9-11")');
+    expect(output.semanticShape).not.toContain('storage ast.anchor("{\\"target\\"');
     expect(output.semanticShape).toContain("kind generated_from");
     expect(output.semanticShape).toContain("expects AuditStoreAstAnchor fingerprint");
     expect(output.semanticShape).toContain("fn AuditStore.append_event generated from");

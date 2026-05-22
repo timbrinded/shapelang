@@ -201,6 +201,8 @@ describe("shp CLI", () => {
     expect(result.stdout).toContain("module generated.audit");
     expect(result.stdout).toContain("component AuditPurgeModule : GeneratedCandidate");
     expect(result.stdout).toContain("GeneratedAstAnchor");
+    expect(result.stdout).toContain('storage ast.anchor("fixtures/source/audit_purge.ts:1-3")');
+    expect(result.stdout).not.toContain('storage ast.anchor("{\\"target\\"');
     expect(result.stdout).toContain("fingerprint ast.semantic_subtree_v1");
     expect(result.stdout).toContain("kind generated_from");
     expect(result.stdout).toContain("expects AuditPurgeModulePurgeOldEventsAstAnchor fingerprint");
