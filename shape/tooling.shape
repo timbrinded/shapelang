@@ -26,6 +26,8 @@ resource GeneratedAstTrace
 
 resource InstalledShpBinary
 
+resource LanguageSource
+
 resource ReleaseArchive
 
 resource ReleaseChecksumManifest
@@ -39,16 +41,16 @@ resource SourceSyntaxTree
 component ShapeAnalyzer {
   owns AnalyzerHint
   grants Append<AnalyzerHint>
+  grants Read<LanguageSource>
   grants Read<NormalizedShapeReference>
-  grants Read<ShapeSource>
   fn analyzeSourceText
     source ts("packages/shp-checker/src/analyzer.ts#analyzeSourceText")
     effects complete {
       Append<AnalyzerHint>
         evidence ts("packages/shp-checker/src/analyzer.ts")
-      Read<NormalizedShapeReference>
+      Read<LanguageSource>
         evidence ts("packages/shp-checker/src/analyzer.ts")
-      Read<ShapeSource>
+      Read<NormalizedShapeReference>
         evidence ts("packages/shp-checker/src/analyzer.ts")
     }
 }
@@ -63,7 +65,7 @@ component ShapeAstGenerator {
   grants Append<SemanticDiagnostics>
   grants Append<ShapeModelDraft>
   grants Read<CodeSemanticGraph>
-  grants Read<ShapeSource>
+  grants Read<LanguageSource>
   grants Read<SourceSyntaxTree>
   fn buildCodeSemanticGraphFromAstJson
     source ts("packages/shp-checker/src/ast-generation.ts#buildCodeSemanticGraphFromAstJson")
@@ -112,7 +114,7 @@ component ShapeAstGenerator {
         evidence ts("packages/shp-checker/src/ast-generation.ts")
       Append<ShapeModelDraft>
         evidence ts("packages/shp-checker/src/ast-generation.ts")
-      Read<ShapeSource>
+      Read<LanguageSource>
         evidence ts("packages/shp-checker/src/ast-generation.ts")
     }
   fn parseSourceFilesToCodeSemanticGraph
@@ -122,7 +124,7 @@ component ShapeAstGenerator {
         evidence ts("packages/shp-checker/src/ast-generation.ts")
       Append<SemanticDiagnostics>
         evidence ts("packages/shp-checker/src/ast-generation.ts")
-      Read<ShapeSource>
+      Read<LanguageSource>
         evidence ts("packages/shp-checker/src/ast-generation.ts")
     }
 }
@@ -233,6 +235,7 @@ component ShpCli {
   grants Read<DiagnosticText>
   grants Read<FormattedShape>
   grants Read<InstalledShpBinary>
+  grants Read<LanguageSource>
   grants Read<ReleaseArchive>
   grants Read<ReleaseChecksumManifest>
   grants Read<ReleaseMetadata>
@@ -309,7 +312,9 @@ component ShpCli {
         evidence ts("packages/shp-cli/src/version.ts")
       Read<FormattedShape>
         evidence ts("packages/shp-cli/src/commands/fmt/impl.ts")
-      Read<ShapeSource>
+      Read<LanguageSource>
+        evidence ts("packages/shp-cli/src/commands/analyze/impl.ts")
+      Read<LanguageSource>
         evidence ts("packages/shp-cli/src/commands/ast/impl.ts")
     }
   fn updateInstalledBinary : RefactorSensitive
