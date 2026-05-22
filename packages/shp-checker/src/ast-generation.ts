@@ -1570,20 +1570,61 @@ function requireTreeSitterEmbeddedBinding(
 function isCurrentLinuxMusl(): boolean {
   const report: unknown = process.report?.getReport?.();
   const header = isRecord(report) ? report["header"] : undefined;
-  if (isRecord(header)) {
-    if (typeof header["glibcVersion"] === "string") {
+  return detectLinuxMuslRuntime(header, process.arch, (loaderPath) => {
+    try {
+      statSync(loaderPath);
+      return true;
+    } catch {
       return false;
     }
-    if (!("glibcVersion" in header)) {
+  });
+}
+
+export function detectLinuxMuslRuntime(
+  reportHeader: unknown,
+  arch: NodeJS.Architecture,
+  fileExists: (path: string) => boolean
+): boolean {
+  const header = reportHeader;
+  if (isRecord(header)) {
+    if (
+      typeof header["glibcVersionRuntime"] === "string" ||
+      typeof header["glibcVersion"] === "string"
+    ) {
+      return false;
+    }
+
+    const componentVersions = header["componentVersions"];
+    if (isRecord(componentVersions) && typeof componentVersions["glibc"] === "string") {
+      return false;
+    }
+  }
+
+  for (const loaderPath of linuxMuslLoaderPaths(arch)) {
+    if (fileExists(loaderPath)) {
       return true;
     }
   }
 
-  try {
-    statSync("/lib64/ld-musl-x86_64.so.1");
-    return true;
-  } catch {
-    return false;
+  return false;
+}
+
+function linuxMuslLoaderPaths(arch: NodeJS.Architecture): string[] {
+  switch (arch) {
+    case "x64":
+      return [
+        "/lib/ld-musl-x86_64.so.1",
+        "/lib64/ld-musl-x86_64.so.1",
+        "/usr/lib/ld-musl-x86_64.so.1"
+      ];
+    case "arm64":
+      return [
+        "/lib/ld-musl-aarch64.so.1",
+        "/lib64/ld-musl-aarch64.so.1",
+        "/usr/lib/ld-musl-aarch64.so.1"
+      ];
+    default:
+      return [];
   }
 }
 

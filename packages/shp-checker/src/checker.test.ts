@@ -29,6 +29,7 @@ import {
   type SourceSpan
 } from "./index.ts";
 import { PRELUDE_CONTEXT_REQUIREMENTS, PRELUDE_RELATION_KIND_NAMES } from "./prelude.ts";
+import { detectLinuxMuslRuntime } from "./ast-generation.ts";
 
 const repoRoot = resolve(import.meta.dir, "../../..");
 
@@ -2921,6 +2922,16 @@ describe("Shape editor support", () => {
 });
 
 describe("AST to Shape generation", () => {
+  test("does not treat missing glibc report fields as musl without loader evidence", () => {
+    expect(detectLinuxMuslRuntime({}, "x64", () => false)).toBe(false);
+    expect(
+      detectLinuxMuslRuntime({ componentVersions: { glibc: "2.39" } }, "x64", () => true)
+    ).toBe(false);
+    expect(detectLinuxMuslRuntime({}, "x64", (path) => path === "/lib/ld-musl-x86_64.so.1")).toBe(
+      true
+    );
+  });
+
   test("projects Rust AST JSON into a semantic draft plus optional raw trace", () => {
     const ast = rustAuditAstJson();
     const graphResult = buildCodeSemanticGraphFromAstJson(ast);
