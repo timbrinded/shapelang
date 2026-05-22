@@ -186,6 +186,66 @@ describe("shp CLI", () => {
     }
   });
 
+  test("generates AST source drafts from source checkout", async () => {
+    const result = await runCli([
+      "ast",
+      "source",
+      "--language",
+      "typescript",
+      "--module",
+      "generated.audit",
+      "fixtures/source/audit_purge.ts"
+    ]);
+
+    expect(result.exitCode).toBe(0);
+    expect(result.stdout).toContain("module generated.audit");
+    expect(result.stdout).toContain("component AuditPurgeModule : GeneratedCandidate");
+    expect(result.stdout).toContain("GeneratedAstAnchor");
+    expect(result.stdout).toContain("kind generated_from");
+    expect(result.stderr).toBe("");
+  });
+
+  test("rejects conflicting AST source raw output flags", async () => {
+    const tempDir = await mkdtemp(join(tmpdir(), "shp-cli-test-"));
+    try {
+      const result = await runCli([
+        "ast",
+        "source",
+        "--include-ast-layer",
+        "--raw-out",
+        join(tempDir, "raw.shape"),
+        "fixtures/source/audit_purge.ts"
+      ]);
+
+      expect(result.exitCode).toBe(2);
+      expect(result.stderr).toContain("--include-ast-layer and --raw-out cannot be used together");
+    } finally {
+      await rm(tempDir, { recursive: true, force: true });
+    }
+  });
+
+  test("rejects conflicting AST JSON raw output flags", async () => {
+    const tempDir = await mkdtemp(join(tmpdir(), "shp-cli-test-"));
+    const astFile = join(tempDir, "ast.json");
+    try {
+      await writeFile(astFile, JSON.stringify(cliAstJson()));
+
+      const result = await runCli([
+        "ast",
+        "json",
+        "--include-ast-layer",
+        "--raw-out",
+        join(tempDir, "raw.shape"),
+        astFile
+      ]);
+
+      expect(result.exitCode).toBe(2);
+      expect(result.stderr).toContain("--include-ast-layer and --raw-out cannot be used together");
+    } finally {
+      await rm(tempDir, { recursive: true, force: true });
+    }
+  });
+
   test("reports malformed AST JSON diagnostics without a stack trace", async () => {
     const tempDir = await mkdtemp(join(tmpdir(), "shp-cli-test-"));
     const astFile = join(tempDir, "ast.json");

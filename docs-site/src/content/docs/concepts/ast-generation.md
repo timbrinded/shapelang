@@ -7,7 +7,7 @@ sidebar:
 
 `shp ast` helps bootstrap a Shape model from code. It is intentionally conservative: Tree-sitter can show syntax, but it cannot prove the architecture contract that the team intends to maintain.
 
-The command builds a Code Semantic Graph from source or normalized JSON. That graph keeps raw parser facts, source spans, text hashes, containers, functions, resources, candidate references, confidence, and diagnostics. The default Shape output then keeps only review-sized architecture candidates.
+The primary path is `shp ast source`: parse source files, project syntax evidence into a Code Semantic Graph, and print a review-sized Shape draft. `shp ast json` is only an input adapter for tools that already parsed the code; Shape does not generate AST JSON from `.shape` files.
 
 ## Default semantic draft
 
@@ -17,6 +17,7 @@ The semantic draft maps stable code concepts into Shape:
 - methods and functions become `fn` entries under the nearest owner when the owner is clear
 - durable data concepts become `resource` only when the name or input evidence supports it
 - high-confidence resolved calls become `relation kind calls`
+- compact `GeneratedAstAnchor` resources and `generated_from` relations point semantic claims back to syntax evidence
 - unresolved references stay out of prelude `calls`
 - every generated function uses `effects unknown`
 
@@ -26,6 +27,9 @@ That last point is deliberate. A generated draft should be reviewable, not false
 module generated.audit
 
 trait GeneratedCandidate {
+}
+
+trait GeneratedAstAnchor {
 }
 
 resource AuditEvent : GeneratedCandidate {
@@ -44,6 +48,17 @@ implementation AuditStoreImpl {
   }
   conforms_to AuditStore
 }
+
+resource AuditStoreAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("{\"target\":\"AuditStore\",\"targetKind\":\"component\",\"nodeId\":\"...\",\"path\":\"src/audit/store.rs\",\"language\":\"rust\",\"kind\":\"struct_item\",\"source\":\"src/audit/store.rs:9-11\"}")
+}
+
+relation AuditStoreGeneratedFromAuditStoreAstAnchor {
+  kind generated_from
+  connects AuditStore -> AuditStoreAstAnchor
+  roles { AuditStore as generated, AuditStoreAstAnchor as syntax }
+  summary "component AuditStore generated from rust struct_item at src/audit/store.rs:9-11."
+}
 ```
 
 This parses as Shape, but `effects unknown` remains a checker-visible review blocker until a human or agent records reviewed effects.
@@ -59,7 +74,9 @@ shp ast json --module generated.audit --raw-out ast.raw.shape ast.json
 
 When enabled, AST files and nodes become generated resources, parent-child edges become `relation kind ast_child`, and node metadata is stored in `storage ast.node(...)`.
 
-## JSON fallback
+Choose either `--include-ast-layer` for one combined stdout draft or `--raw-out PATH` for a sidecar raw trace. The two raw trace modes are mutually exclusive.
+
+## JSON input adapter
 
 Use `shp ast json` when another tool already parsed the code. The JSON input must declare files, a root node, and a flat node list. Nested structure belongs in child nodes, not nested attributes, so every raw node can be accounted for deterministically.
 

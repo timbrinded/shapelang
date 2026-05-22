@@ -92,6 +92,13 @@ jobs:
           tar -xzf dist/release/shp-linux-x64.tar.gz -C /tmp/shp-smoke
           /tmp/shp-smoke/shp --help >/dev/null
           /tmp/shp-smoke/shp check
+          /tmp/shp-smoke/shp ast source \
+            --language typescript \
+            --module generated.audit \
+            fixtures/source/audit_purge.ts \
+            >/tmp/shp-smoke/ast-source.shape
+          grep -q "GeneratedAstAnchor" /tmp/shp-smoke/ast-source.shape
+          grep -q "kind generated_from" /tmp/shp-smoke/ast-source.shape
           /tmp/shp-smoke/shp memory >/dev/null
           /tmp/shp-smoke/shp obligations >/tmp/shp-smoke/obligations.txt
           grep -q "No open shape obligations." /tmp/shp-smoke/obligations.txt

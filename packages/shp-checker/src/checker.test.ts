@@ -2940,6 +2940,11 @@ describe("AST to Shape generation", () => {
     expect(output.semanticShape).toContain("component AuditStore : GeneratedCandidate");
     expect(output.semanticShape).toContain("fn append_event");
     expect(output.semanticShape).toContain("kind calls");
+    expect(output.semanticShape).toContain("trait GeneratedAstAnchor");
+    expect(output.semanticShape).toContain("kind generated_from");
+    expect(output.semanticShape).toContain("fn AuditStore.append_event generated from");
+    expect(output.semanticShape).toContain("implementation AuditStoreImpl");
+    expect(output.semanticShape).not.toContain("AuditStoreImpl_");
     expect(output.semanticShape).not.toContain("GeneratedAstNode");
     expect(output.rawShape).toContain("GeneratedAstNode");
     expect(output.rawShape).toContain("kind ast_child");
@@ -2949,14 +2954,25 @@ describe("AST to Shape generation", () => {
     if (!semantic.ok) {
       throw new Error(semantic.diagnostics.map((diagnostic) => diagnostic.message).join("\n"));
     }
+    const formattedSemantic = formatShapeSource(output.semanticShape);
+    expect(formattedSemantic.ok).toBe(true);
+    if (formattedSemantic.ok) {
+      expect(formattedSemantic.formatted).toBe(output.semanticShape);
+    }
     const semanticCheck = checkShapeModules([semantic.module]);
     expect(semanticCheck.exitCode).toBe(1);
     expect(formatDiagnostics(semanticCheck)).toContain("unknown effects");
 
-    const raw = parseShapeModule(output.rawShape ?? "");
+    const rawShape = output.rawShape ?? "";
+    const raw = parseShapeModule(rawShape);
     expect(raw.ok).toBe(true);
     if (!raw.ok) {
       throw new Error(raw.diagnostics.map((diagnostic) => diagnostic.message).join("\n"));
+    }
+    const formattedRaw = formatShapeSource(rawShape);
+    expect(formattedRaw.ok).toBe(true);
+    if (formattedRaw.ok) {
+      expect(formattedRaw.formatted).toBe(rawShape);
     }
     expect(checkShapeModules([raw.module]).exitCode).toBe(0);
   });
@@ -2975,6 +2991,54 @@ describe("AST to Shape generation", () => {
       expect(parseShapeModule(result.value.semanticShape).ok).toBe(true);
     });
   }
+
+  test("attaches Go receiver methods to their component instead of a file module", () => {
+    const result = generateShapeFromAstJson(goReceiverAstJson(), {
+      moduleName: "generated.go"
+    });
+
+    expect(result.ok).toBe(true);
+    if (!result.ok) {
+      throw new Error(formatAstTestDiagnostics(result.diagnostics));
+    }
+    expect(result.value.semanticShape).toContain("component AuditStore : GeneratedCandidate");
+    expect(result.value.semanticShape).toContain("  fn AppendEvent");
+    expect(result.value.semanticShape).not.toContain("component StoreModule");
+  });
+
+  test("preserves explicit source language for extensionless files", async () => {
+    const source = "fn main() {}\n";
+    const functionNode = fakeTreeSitterNode({
+      kind: "function_item",
+      startByte: 0,
+      endByte: 12,
+      startPosition: { row: 0, column: 0 },
+      endPosition: { row: 0, column: 12 }
+    });
+    const root = fakeTreeSitterNode({
+      kind: "source_file",
+      startByte: 0,
+      endByte: source.length,
+      startPosition: { row: 0, column: 0 },
+      endPosition: { row: 1, column: 0 },
+      children: [{ fieldName: "item", node: functionNode }]
+    });
+
+    const graph = await parseSourceFilesToCodeSemanticGraph(
+      [{ path: "src/main", source, language: "rust" }],
+      { parserProvider: () => ({ rootNode: root }) }
+    );
+
+    expect(graph.ok).toBe(true);
+    if (!graph.ok) {
+      throw new Error(formatAstTestDiagnostics(graph.diagnostics));
+    }
+    const output = generateShapeFromCodeSemanticGraph(graph.value, {
+      moduleName: "generated.rust"
+    });
+    expect(output.semanticShape).toContain('source rust("src/main:1-1")');
+    expect(output.semanticShape).not.toContain('source file("src/main:1-1")');
+  });
 
   test("normalizes Tree-sitter-like source nodes with field names, spans, and hashes", async () => {
     const source = "fn main() {}\n";
@@ -3232,36 +3296,40 @@ function languageAstFixtures(): { language: string; expected: string; ast: unkno
     {
       language: "go",
       expected: "component AuditStore : GeneratedCandidate",
-      ast: {
-        language: "go",
-        files: [
+      ast: goReceiverAstJson()
+    }
+  ];
+}
+
+function goReceiverAstJson(): unknown {
+  return {
+    language: "go",
+    files: [
+      {
+        path: "src/audit/store.go",
+        root: "root",
+        nodes: [
           {
-            path: "src/audit/store.go",
-            root: "root",
-            nodes: [
-              {
-                id: "root",
-                kind: "source_file",
-                children: ["store", "append"]
-              },
-              {
-                id: "store",
-                kind: "type_declaration",
-                attributes: { name: "AuditStore" },
-                text: "type AuditStore struct {\n  repo AuditRepo\n}"
-              },
-              {
-                id: "append",
-                kind: "function_declaration",
-                attributes: { name: "AppendEvent" },
-                text: "func (s *AuditStore) AppendEvent(event AuditEvent) {\n  s.repo.Insert(event)\n}"
-              }
-            ]
+            id: "root",
+            kind: "source_file",
+            children: ["store", "append"]
+          },
+          {
+            id: "store",
+            kind: "type_declaration",
+            attributes: { name: "AuditStore" },
+            text: "type AuditStore struct {\n  repo AuditRepo\n}"
+          },
+          {
+            id: "append",
+            kind: "function_declaration",
+            attributes: { name: "AppendEvent" },
+            text: "func (s *AuditStore) AppendEvent(event AuditEvent) {\n  s.repo.Insert(event)\n}"
           }
         ]
       }
-    }
-  ];
+    ]
+  };
 }
 
 function classFixtureAst(input: {

@@ -16,6 +16,8 @@ resource DocsContent
 
 resource InstallScript
 
+resource NativeParserAsset
+
 resource ReleaseArtifact
 
 resource ReleaseVersionTag
@@ -32,6 +34,9 @@ component CiPipeline {
   grants Read<ReleaseArtifact>
   grants Read<ReleaseVersionTag>
   grants Read<SemanticDiagnostics>
+  grants Read<ShapeModelDraft>
+  grants Read<ShapeSource>
+  grants Read<SourceSyntaxTree>
   grants Update<ChangedFileList>
   grants Update<CopilotReviewResult>
   fn checkReleaseVersion : RefactorSensitive
@@ -86,6 +91,18 @@ component CiPipeline {
       Read<SemanticDiagnostics>
         evidence yaml(".github/workflows/release.yml")
       Read<SemanticDiagnostics>
+        evidence yaml(".github/workflows/shape.yml")
+      Read<ShapeModelDraft>
+        evidence yaml(".github/workflows/release.yml")
+      Read<ShapeModelDraft>
+        evidence yaml(".github/workflows/shape.yml")
+      Read<ShapeSource>
+        evidence yaml(".github/workflows/release.yml")
+      Read<ShapeSource>
+        evidence yaml(".github/workflows/shape.yml")
+      Read<SourceSyntaxTree>
+        evidence yaml(".github/workflows/release.yml")
+      Read<SourceSyntaxTree>
         evidence yaml(".github/workflows/shape.yml")
     }
   fn writeChangedFiles
@@ -170,11 +187,14 @@ component ReleasePipeline {
   owns InstallScript
   owns ReleaseArtifact
   grants Read<InstallScript>
+  grants Read<NativeParserAsset>
   grants Update<ReleaseArtifact>
   fn buildReleaseAssets : RefactorSensitive
     source sh("scripts/build-release-assets.sh")
     effects complete {
       Read<InstallScript>
+        evidence sh("scripts/build-release-assets.sh")
+      Read<NativeParserAsset>
         evidence sh("scripts/build-release-assets.sh")
       Update<ReleaseArtifact>
         evidence sh("scripts/build-release-assets.sh")
@@ -456,6 +476,15 @@ reevaluation DocsShapeBlockVerificationRechecked {
   reviewer ShapeMaintainers
   decided_on "2026-05-20"
   evidence test("docs-site/scripts/verify-shape-blocks.ts")
+}
+
+reevaluation ReleaseNativeParserAssetsRechecked {
+  satisfies memory ReleaseChecksumContract
+  outcome Confirmed
+  summary "Release asset builds resolve explicit native parser bindings, compile them into binaries, and still publish checksummed archives."
+  reviewer ShapeMaintainers
+  decided_on "2026-05-22"
+  evidence sh("scripts/build-release-assets.sh")
 }
 
 reevaluation ReleaseVersionTagCheckRechecked {

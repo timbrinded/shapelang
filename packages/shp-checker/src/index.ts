@@ -23,6 +23,7 @@ export {
   type AstGenerationDiagnostic,
   type AstGenerationResult,
   type AstSourceFileInput,
+  type CodeAstAnchor,
   type CodeContainer,
   type CodeFunction,
   type CodeRelation,

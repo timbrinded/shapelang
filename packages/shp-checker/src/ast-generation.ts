@@ -1,3 +1,8 @@
+import { statSync } from "node:fs";
+import { createRequire } from "node:module";
+
+import { formatShapeSource } from "./formatter.ts";
+
 export type AstSourceFileInput = {
   path: string;
   source: string;
@@ -64,7 +69,9 @@ export type CodeContainer = {
   name: string;
   kind: "file" | "module" | "type" | "impl";
   path: string;
+  language: string;
   nodeId?: string;
+  anchorId?: string;
   ownerId?: string;
   confidence: SemanticConfidence;
 };
@@ -73,7 +80,9 @@ export type CodeFunction = {
   id: string;
   name: string;
   path: string;
+  language: string;
   nodeId?: string;
+  anchorId?: string;
   ownerId: string;
   confidence: SemanticConfidence;
   sourceRef: string;
@@ -83,10 +92,24 @@ export type CodeResource = {
   id: string;
   name: string;
   path: string;
+  language: string;
   nodeId?: string;
+  anchorId?: string;
   confidence: SemanticConfidence;
   reason: string;
   sourceRef: string;
+};
+
+export type CodeAstAnchor = {
+  id: string;
+  name: string;
+  path: string;
+  language: string;
+  nodeId: string;
+  kind: string;
+  sourceRef: string;
+  target: string;
+  targetKind: "component" | "fn" | "resource";
 };
 
 export type CodeRelation = {
@@ -106,6 +129,7 @@ export type CodeSemanticGraph = {
   containers: CodeContainer[];
   functions: CodeFunction[];
   resources: CodeResource[];
+  anchors: CodeAstAnchor[];
   relations: CodeRelation[];
   diagnostics: AstGenerationDiagnostic[];
 };
@@ -158,6 +182,25 @@ type ChildEdge = {
 };
 
 type TreeSitterParseProvider = (language: string, source: string) => Promise<unknown> | unknown;
+type NativeBindingLoadResult =
+  | { ok: true; moduleValue: unknown }
+  | { ok: false; diagnostics: AstGenerationDiagnostic[] };
+type TreeSitterNativeBindingPackageSpecifier =
+  | "@kreuzberg/tree-sitter-language-pack/ts-pack-core-node.linux-x64-gnu.node"
+  | "@kreuzberg/tree-sitter-language-pack/ts-pack-core-node.linux-arm64-gnu.node"
+  | "@kreuzberg/tree-sitter-language-pack/ts-pack-core-node.darwin-arm64.node"
+  | "@kreuzberg/tree-sitter-language-pack/ts-pack-core-node.win32-x64-msvc.node"
+  | "@kreuzberg/tree-sitter-language-pack/ts-pack-core-node.win32-arm64-msvc.node";
+type TreeSitterNativeBindingEmbeddedSpecifier =
+  | "./ts-pack-core-node.linux-x64-gnu.node"
+  | "./ts-pack-core-node.linux-arm64-gnu.node"
+  | "./ts-pack-core-node.darwin-arm64.node"
+  | "./ts-pack-core-node.win32-x64-msvc.node"
+  | "./ts-pack-core-node.win32-arm64-msvc.node";
+type TreeSitterNativeBindingTarget = {
+  packageSpecifier: TreeSitterNativeBindingPackageSpecifier;
+  embeddedSpecifier: TreeSitterNativeBindingEmbeddedSpecifier;
+};
 
 const DATA_RESOURCE_NAME_HINT =
   /(Event|Record|Message|Config|State|Entity|Snapshot|Request|Response|Table|Queue|Topic|Payload)$/;
@@ -202,6 +245,7 @@ const SHAPE_RESERVED_WORDS = new Set([
   "trait",
   "unknown"
 ]);
+const treeSitterNativeRequire = createRequire(import.meta.url);
 
 export async function parseSourceFilesToCodeSemanticGraph(
   files: AstSourceFileInput[],
@@ -363,6 +407,7 @@ function emptyGraph(): CodeSemanticGraph {
     containers: [],
     functions: [],
     resources: [],
+    anchors: [],
     relations: [],
     diagnostics: []
   };
@@ -738,6 +783,8 @@ function addSemanticProjection(graph: CodeSemanticGraph): void {
     const fileNodes = graph.rawNodes.filter((node) => node.path === file.path);
     const declaredTypes = fileNodes.filter(isTypeDeclarationNode);
     const implByType = collectImplFunctions(fileNodes, childrenByParent);
+    const receiverFunctionsByType = collectReceiverFunctions(fileNodes);
+    const ownedFunctionNodeIds = new Set<string>();
 
     for (const typeNode of declaredTypes) {
       const name = semanticName(typeNode, childrenByParent, nodeById);
@@ -746,39 +793,73 @@ function addSemanticProjection(graph: CodeSemanticGraph): void {
       }
       const implFunctions = implByType.get(name) ?? [];
       const nestedFunctions = descendants(typeNode.id, childrenByParent).filter(isFunctionNode);
-      const ownedFunctions = [...implFunctions, ...nestedFunctions];
+      const receiverFunctions = receiverFunctionsByType.get(name) ?? [];
+      const ownedFunctions = uniqueNodes([
+        ...implFunctions,
+        ...nestedFunctions,
+        ...receiverFunctions
+      ]);
       if (ownedFunctions.length > 0 || typeLooksStateful(typeNode)) {
         const container = addContainer(graph, containersByName, {
           name,
           kind: "type",
           path: file.path,
+          language: typeNode.language,
           nodeId: typeNode.id,
           confidence: "medium"
         });
+        const anchor = addAnchor(graph, {
+          name: `${container.name}AstAnchor`,
+          path: typeNode.path,
+          language: typeNode.language,
+          nodeId: typeNode.id,
+          kind: typeNode.kind,
+          sourceRef: sourceRef(typeNode),
+          target: container.name,
+          targetKind: "component"
+        });
+        container.anchorId = anchor.id;
         for (const fn of ownedFunctions) {
           addFunction(graph, container, fn, childrenByParent, nodeById);
+          ownedFunctionNodeIds.add(fn.id);
         }
       } else if (DATA_RESOURCE_NAME_HINT.test(name)) {
         const resource = addResource(graph, resourcesByName, {
           name,
           path: file.path,
+          language: typeNode.language,
           nodeId: typeNode.id,
           confidence: "medium",
           reason: `Generated candidate from ${typeNode.language} ${typeNode.kind}`,
           sourceRef: sourceRef(typeNode)
         });
-        void resource;
+        const anchor = addAnchor(graph, {
+          name: `${resource.name}AstAnchor`,
+          path: typeNode.path,
+          language: typeNode.language,
+          nodeId: typeNode.id,
+          kind: typeNode.kind,
+          sourceRef: sourceRef(typeNode),
+          target: resource.name,
+          targetKind: "resource"
+        });
+        resource.anchorId = anchor.id;
       }
     }
 
     const freeFunctions = fileNodes.filter(
-      (node) => isFunctionNode(node) && !nearestTypeOwner(node, nodeById)
+      (node) =>
+        isFunctionNode(node) &&
+        !nearestTypeOwner(node, nodeById) &&
+        !receiverTypeName(node) &&
+        !ownedFunctionNodeIds.has(node.id)
     );
     if (freeFunctions.length > 0) {
       const fileContainer = addContainer(graph, containersByName, {
         name: `${baseNameWithoutExtension(file.path)}Module`,
         kind: "file",
         path: file.path,
+        language: file.language,
         nodeId: file.rootNodeId,
         confidence: "low"
       });
@@ -814,6 +895,18 @@ function collectImplFunctions(
   return implByType;
 }
 
+function collectReceiverFunctions(nodes: RawAstNode[]): Map<string, RawAstNode[]> {
+  const functionsByReceiver = new Map<string, RawAstNode[]>();
+  for (const node of nodes.filter(isFunctionNode)) {
+    const receiverType = receiverTypeName(node);
+    if (!receiverType) {
+      continue;
+    }
+    functionsByReceiver.set(receiverType, [...(functionsByReceiver.get(receiverType) ?? []), node]);
+  }
+  return functionsByReceiver;
+}
+
 function addFunction(
   graph: CodeSemanticGraph,
   owner: CodeContainer,
@@ -830,11 +923,27 @@ function addFunction(
     id,
     name: shapeFunctionName(name),
     path: node.path,
+    language: node.language,
     nodeId: node.id,
     ownerId: owner.id,
     confidence: "medium",
     sourceRef: sourceRef(node)
   });
+  const fn = graph.functions.at(-1);
+  if (!fn) {
+    return;
+  }
+  const anchor = addAnchor(graph, {
+    name: `${owner.name}${shapeTypeName(fn.name)}AstAnchor`,
+    path: node.path,
+    language: node.language,
+    nodeId: node.id,
+    kind: node.kind,
+    sourceRef: fn.sourceRef,
+    target: `${owner.name}.${fn.name}`,
+    targetKind: "fn"
+  });
+  fn.anchorId = anchor.id;
 }
 
 function addContainer(
@@ -883,6 +992,34 @@ function addResource(
   resourcesByName.set(resource.name, resource);
   graph.resources.push(resource);
   return resource;
+}
+
+function addAnchor(
+  graph: CodeSemanticGraph,
+  input: Omit<CodeAstAnchor, "id" | "name"> & {
+    name: string;
+  }
+): CodeAstAnchor {
+  const existing = graph.anchors.find(
+    (anchor) =>
+      anchor.nodeId === input.nodeId &&
+      anchor.target === input.target &&
+      anchor.targetKind === input.targetKind
+  );
+  if (existing) {
+    return existing;
+  }
+  const anchor = {
+    ...input,
+    id: stableShapeId(`anchor_${input.targetKind}_${input.target}_${input.nodeId}`, "AstAnchor"),
+    name: uniqueSemanticName(
+      shapeTypeName(input.name),
+      graph.anchors.map((item) => item.name),
+      input.nodeId
+    )
+  };
+  graph.anchors.push(anchor);
+  return anchor;
 }
 
 function addResolvedReceiverCalls(
@@ -979,13 +1116,21 @@ function formatSemanticShape(
   moduleName: string,
   includeRawLayer: boolean
 ): string {
-  const lines = [`module ${moduleName}`, "", "trait GeneratedCandidate {", "}"];
+  const lines = [
+    `module ${moduleName}`,
+    "",
+    "trait GeneratedCandidate {",
+    "}",
+    "",
+    "trait GeneratedAstAnchor {",
+    "}"
+  ];
   const resources = [...graph.resources].sort((left, right) => left.name.localeCompare(right.name));
   for (const resource of resources) {
     lines.push(
       "",
       `resource ${resource.name} : GeneratedCandidate {`,
-      `  storage ${sourceLanguage(resource.path)}.type(${quoteShapeString(resource.sourceRef)})`,
+      `  storage ${sourceLanguage(resource.language)}.type(${quoteShapeString(resource.sourceRef)})`,
       "}"
     );
   }
@@ -1001,15 +1146,19 @@ function formatSemanticShape(
     for (const fn of functions) {
       lines.push(
         `  fn ${fn.name}`,
-        `    source ${sourceLanguage(fn.path)}(${quoteShapeString(fn.sourceRef)})`,
+        `    source ${sourceLanguage(fn.language)}(${quoteShapeString(fn.sourceRef)})`,
         "    effects unknown"
       );
     }
     lines.push("}");
   }
 
+  const seenImplementationNames = new Set<string>();
   for (const component of components) {
-    const implementationName = uniqueShapeName(`${component.name}Impl`, new Set());
+    const implementationName = uniqueReadableShapeName(
+      `${component.name}Impl`,
+      seenImplementationNames
+    );
     lines.push(
       "",
       `implementation ${implementationName} {`,
@@ -1021,12 +1170,35 @@ function formatSemanticShape(
     );
   }
 
+  const anchors = [...graph.anchors].sort((left, right) => left.name.localeCompare(right.name));
+  for (const anchor of anchors) {
+    lines.push(
+      "",
+      `resource ${anchor.name} : GeneratedAstAnchor {`,
+      `  storage ast.anchor(${quoteShapeString(
+        JSON.stringify({
+          target: anchor.target,
+          targetKind: anchor.targetKind,
+          nodeId: anchor.nodeId,
+          path: anchor.path,
+          language: anchor.language,
+          kind: anchor.kind,
+          source: anchor.sourceRef
+        })
+      )})`,
+      "}"
+    );
+  }
+
   const endpointName = new Map<string, string>();
   for (const component of graph.containers) {
     endpointName.set(component.id, component.name);
   }
   for (const resource of graph.resources) {
     endpointName.set(resource.id, resource.name);
+  }
+  for (const anchor of graph.anchors) {
+    endpointName.set(anchor.id, anchor.name);
   }
 
   const seenRelationNames = new Set<string>();
@@ -1038,7 +1210,10 @@ function formatSemanticShape(
     if (!from || !to || from === to) {
       continue;
     }
-    const relationName = uniqueShapeName(relation.id, seenRelationNames);
+    const relationName = uniqueReadableShapeName(
+      shapeRelationName(`${from} ${relation.kind} ${to}`),
+      seenRelationNames
+    );
     const relationKind = relation.confidence === "high" ? relation.kind : "candidate_call";
     lines.push(
       "",
@@ -1051,17 +1226,88 @@ function formatSemanticShape(
     );
   }
 
+  appendGeneratedFromRelations(lines, graph, seenRelationNames);
+
   if (includeRawLayer) {
     appendRawAstDeclarations(lines, graph);
   }
 
-  return `${lines.join("\n")}\n`;
+  return formatGeneratedShape(`${lines.join("\n")}\n`, `${moduleName}.shape`);
+}
+
+function appendGeneratedFromRelations(
+  lines: string[],
+  graph: CodeSemanticGraph,
+  seenRelationNames: Set<string>
+): void {
+  const componentById = new Map(graph.containers.map((component) => [component.id, component]));
+  const anchorsById = new Map(graph.anchors.map((anchor) => [anchor.id, anchor]));
+  const semanticLinks: { from: string; anchor: CodeAstAnchor; summary: string; name: string }[] =
+    [];
+
+  for (const component of graph.containers) {
+    const anchor = component.anchorId ? anchorsById.get(component.anchorId) : undefined;
+    if (!anchor) {
+      continue;
+    }
+    semanticLinks.push({
+      from: component.name,
+      anchor,
+      summary: `component ${component.name} generated from ${anchor.language} ${anchor.kind} at ${anchor.sourceRef}.`,
+      name: `${component.name}GeneratedFrom${anchor.name}`
+    });
+  }
+
+  for (const resource of graph.resources) {
+    const anchor = resource.anchorId ? anchorsById.get(resource.anchorId) : undefined;
+    if (!anchor) {
+      continue;
+    }
+    semanticLinks.push({
+      from: resource.name,
+      anchor,
+      summary: `resource ${resource.name} generated from ${anchor.language} ${anchor.kind} at ${anchor.sourceRef}.`,
+      name: `${resource.name}GeneratedFrom${anchor.name}`
+    });
+  }
+
+  for (const fn of graph.functions) {
+    const owner = componentById.get(fn.ownerId);
+    const anchor = fn.anchorId ? anchorsById.get(fn.anchorId) : undefined;
+    if (!owner || !anchor) {
+      continue;
+    }
+    semanticLinks.push({
+      from: owner.name,
+      anchor,
+      summary: `fn ${owner.name}.${fn.name} generated from ${anchor.language} ${anchor.kind} at ${anchor.sourceRef}.`,
+      name: `${owner.name}${shapeTypeName(fn.name)}GeneratedFrom${anchor.name}`
+    });
+  }
+
+  for (const link of semanticLinks.sort((left, right) => left.name.localeCompare(right.name))) {
+    const relationName = uniqueReadableShapeName(link.name, seenRelationNames);
+    lines.push(
+      "",
+      `relation ${relationName} {`,
+      "  kind generated_from",
+      `  connects ${link.from} -> ${link.anchor.name}`,
+      `  roles { ${link.from} as generated, ${link.anchor.name} as syntax }`,
+      `  summary ${quoteShapeString(link.summary)}`,
+      "}"
+    );
+  }
 }
 
 function formatRawAstShape(graph: CodeSemanticGraph, moduleName: string): string {
   const lines = [`module ${moduleName}`];
   appendRawAstDeclarations(lines, graph);
-  return `${lines.join("\n")}\n`;
+  return formatGeneratedShape(`${lines.join("\n")}\n`, `${moduleName}.shape`);
+}
+
+function formatGeneratedShape(source: string, filePath: string): string {
+  const formatted = formatShapeSource(source, filePath);
+  return formatted.ok ? formatted.formatted : source;
 }
 
 function appendRawAstDeclarations(lines: string[], graph: CodeSemanticGraph): void {
@@ -1141,22 +1387,12 @@ async function loadTreeSitterProvider(): Promise<
   | { ok: true; provider: TreeSitterParseProvider }
   | { ok: false; diagnostics: AstGenerationDiagnostic[] }
 > {
-  let moduleValue: unknown;
-  try {
-    moduleValue = await import("@kreuzberg/tree-sitter-language-pack");
-  } catch (error) {
-    return {
-      ok: false,
-      diagnostics: [
-        {
-          kind: "error",
-          code: "missing_tree_sitter_language_pack",
-          message: `failed to load @kreuzberg/tree-sitter-language-pack: ${errorMessage(error)}`
-        }
-      ]
-    };
+  const nativeBinding = loadTreeSitterNativeBinding();
+  if (!nativeBinding.ok) {
+    return nativeBinding;
   }
 
+  const moduleValue = nativeBinding.moduleValue;
   if (!isRecord(moduleValue)) {
     return {
       ok: false,
@@ -1170,16 +1406,15 @@ async function loadTreeSitterProvider(): Promise<
     };
   }
 
-  const getParser = methodFunction(moduleValue, ["getParser", "get_parser"]);
-  const parseString = methodFunction(moduleValue, ["parseString", "parse_string"]);
-  if (!getParser && !parseString) {
+  const getParser = methodFunction(moduleValue, ["getParser"]);
+  if (!getParser) {
     return {
       ok: false,
       diagnostics: [
         {
           kind: "error",
           code: "invalid_tree_sitter_language_pack",
-          message: "@kreuzberg/tree-sitter-language-pack does not expose getParser/parseString"
+          message: "@kreuzberg/tree-sitter-language-pack native binding does not expose getParser"
         }
       ]
     };
@@ -1188,12 +1423,6 @@ async function loadTreeSitterProvider(): Promise<
   return {
     ok: true,
     provider: async (language, source) => {
-      if (parseString) {
-        return await parseString(undefined, source, language);
-      }
-      if (!getParser) {
-        throw new Error("missing getParser");
-      }
       const parser = await getParser(undefined, language);
       const tree = await callMethod(parser, ["parse"], [source]);
       if (!tree) {
@@ -1202,6 +1431,160 @@ async function loadTreeSitterProvider(): Promise<
       return tree;
     }
   };
+}
+
+function loadTreeSitterNativeBinding(): NativeBindingLoadResult {
+  const target = currentTreeSitterNativeBindingTarget();
+  if (!target) {
+    return {
+      ok: false,
+      diagnostics: [
+        {
+          kind: "error",
+          code: "unsupported_tree_sitter_platform",
+          message: `no bundled @kreuzberg/tree-sitter-language-pack native binding target for ${process.platform}-${process.arch}`
+        }
+      ]
+    };
+  }
+
+  try {
+    return {
+      ok: true,
+      moduleValue: requireTreeSitterNativeBinding(target)
+    };
+  } catch (error) {
+    return {
+      ok: false,
+      diagnostics: [
+        {
+          kind: "error",
+          code: "missing_tree_sitter_language_pack",
+          message: `failed to load ${target.packageSpecifier}: ${errorMessage(error)}`
+        }
+      ]
+    };
+  }
+}
+
+function currentTreeSitterNativeBindingTarget(): TreeSitterNativeBindingTarget | undefined {
+  if (process.platform === "linux" && isCurrentLinuxMusl()) {
+    return undefined;
+  }
+
+  if (process.platform === "linux" && process.arch === "x64") {
+    return {
+      packageSpecifier: "@kreuzberg/tree-sitter-language-pack/ts-pack-core-node.linux-x64-gnu.node",
+      embeddedSpecifier: "./ts-pack-core-node.linux-x64-gnu.node"
+    };
+  }
+  if (process.platform === "linux" && process.arch === "arm64") {
+    return {
+      packageSpecifier:
+        "@kreuzberg/tree-sitter-language-pack/ts-pack-core-node.linux-arm64-gnu.node",
+      embeddedSpecifier: "./ts-pack-core-node.linux-arm64-gnu.node"
+    };
+  }
+  if (process.platform === "darwin" && process.arch === "arm64") {
+    return {
+      packageSpecifier: "@kreuzberg/tree-sitter-language-pack/ts-pack-core-node.darwin-arm64.node",
+      embeddedSpecifier: "./ts-pack-core-node.darwin-arm64.node"
+    };
+  }
+  if (process.platform === "win32" && process.arch === "x64") {
+    return {
+      packageSpecifier:
+        "@kreuzberg/tree-sitter-language-pack/ts-pack-core-node.win32-x64-msvc.node",
+      embeddedSpecifier: "./ts-pack-core-node.win32-x64-msvc.node"
+    };
+  }
+  if (process.platform === "win32" && process.arch === "arm64") {
+    return {
+      packageSpecifier:
+        "@kreuzberg/tree-sitter-language-pack/ts-pack-core-node.win32-arm64-msvc.node",
+      embeddedSpecifier: "./ts-pack-core-node.win32-arm64-msvc.node"
+    };
+  }
+
+  return undefined;
+}
+
+function requireTreeSitterNativeBinding(target: TreeSitterNativeBindingTarget): unknown {
+  try {
+    return requireTreeSitterNativePackageBinding(target.packageSpecifier);
+  } catch (packageError) {
+    try {
+      return requireTreeSitterEmbeddedBinding(target.embeddedSpecifier);
+    } catch (embeddedError) {
+      throw new Error(
+        `package ${errorMessage(packageError)}; embedded ${errorMessage(embeddedError)}`
+      );
+    }
+  }
+}
+
+function requireTreeSitterNativePackageBinding(
+  specifier: TreeSitterNativeBindingPackageSpecifier
+): unknown {
+  switch (specifier) {
+    case "@kreuzberg/tree-sitter-language-pack/ts-pack-core-node.linux-x64-gnu.node":
+      return treeSitterNativeRequire(
+        "@kreuzberg/tree-sitter-language-pack/ts-pack-core-node.linux-x64-gnu.node"
+      );
+    case "@kreuzberg/tree-sitter-language-pack/ts-pack-core-node.linux-arm64-gnu.node":
+      return treeSitterNativeRequire(
+        "@kreuzberg/tree-sitter-language-pack/ts-pack-core-node.linux-arm64-gnu.node"
+      );
+    case "@kreuzberg/tree-sitter-language-pack/ts-pack-core-node.darwin-arm64.node":
+      return treeSitterNativeRequire(
+        "@kreuzberg/tree-sitter-language-pack/ts-pack-core-node.darwin-arm64.node"
+      );
+    case "@kreuzberg/tree-sitter-language-pack/ts-pack-core-node.win32-x64-msvc.node":
+      return treeSitterNativeRequire(
+        "@kreuzberg/tree-sitter-language-pack/ts-pack-core-node.win32-x64-msvc.node"
+      );
+    case "@kreuzberg/tree-sitter-language-pack/ts-pack-core-node.win32-arm64-msvc.node":
+      return treeSitterNativeRequire(
+        "@kreuzberg/tree-sitter-language-pack/ts-pack-core-node.win32-arm64-msvc.node"
+      );
+  }
+}
+
+function requireTreeSitterEmbeddedBinding(
+  specifier: TreeSitterNativeBindingEmbeddedSpecifier
+): unknown {
+  switch (specifier) {
+    case "./ts-pack-core-node.linux-x64-gnu.node":
+      return treeSitterNativeRequire("./ts-pack-core-node.linux-x64-gnu.node");
+    case "./ts-pack-core-node.linux-arm64-gnu.node":
+      return treeSitterNativeRequire("./ts-pack-core-node.linux-arm64-gnu.node");
+    case "./ts-pack-core-node.darwin-arm64.node":
+      return treeSitterNativeRequire("./ts-pack-core-node.darwin-arm64.node");
+    case "./ts-pack-core-node.win32-x64-msvc.node":
+      return treeSitterNativeRequire("./ts-pack-core-node.win32-x64-msvc.node");
+    case "./ts-pack-core-node.win32-arm64-msvc.node":
+      return treeSitterNativeRequire("./ts-pack-core-node.win32-arm64-msvc.node");
+  }
+}
+
+function isCurrentLinuxMusl(): boolean {
+  const report: unknown = process.report?.getReport?.();
+  const header = isRecord(report) ? report["header"] : undefined;
+  if (isRecord(header)) {
+    if (typeof header["glibcVersion"] === "string") {
+      return false;
+    }
+    if (!("glibcVersion" in header)) {
+      return true;
+    }
+  }
+
+  try {
+    statSync("/lib64/ld-musl-x86_64.so.1");
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 function rootNodeFromTree(tree: unknown): unknown | undefined {
@@ -1598,6 +1981,31 @@ function nearestTypeOwner(
   return undefined;
 }
 
+function receiverTypeName(node: RawAstNode): string | undefined {
+  const text = node.text?.trim();
+  if (!text) {
+    return undefined;
+  }
+  const goMatch =
+    /\bfunc\s*\(\s*[A-Za-z_][A-Za-z0-9_]*\s+\*?([A-Za-z_][A-Za-z0-9_]*)\s*\)\s*[A-Za-z_][A-Za-z0-9_]*/.exec(
+      text
+    );
+  return goMatch?.[1];
+}
+
+function uniqueNodes(nodes: RawAstNode[]): RawAstNode[] {
+  const seen = new Set<string>();
+  const result: RawAstNode[] = [];
+  for (const node of nodes) {
+    if (seen.has(node.id)) {
+      continue;
+    }
+    seen.add(node.id);
+    result.push(node);
+  }
+  return result;
+}
+
 function typeLooksStateful(node: RawAstNode): boolean {
   const text = node.text ?? "";
   return (
@@ -1619,8 +2027,7 @@ function sourceRef(node: RawAstNode): string {
   return `${node.path}:${node.span.startLine}-${node.span.endLine}`;
 }
 
-function sourceLanguage(path: string): string {
-  const language = inferLanguageFromPath(path);
+function sourceLanguage(language: string): string {
   if (language === "typescript" || language === "tsx") {
     return "ts";
   }
@@ -1737,6 +2144,29 @@ function uniqueShapeName(value: string, seen: Set<string>): string {
   }
   seen.add(name);
   return name;
+}
+
+function uniqueReadableShapeName(value: string, seen: Set<string>): string {
+  const base = shapeTypeName(value);
+  if (!seen.has(base)) {
+    seen.add(base);
+    return base;
+  }
+
+  let suffix = stableHash(value).slice(0, 8);
+  let name = `${base}_${suffix}`;
+  let counter = 2;
+  while (seen.has(name)) {
+    suffix = stableHash(`${value}_${counter}`).slice(0, 8);
+    name = `${base}_${suffix}`;
+    counter += 1;
+  }
+  seen.add(name);
+  return name;
+}
+
+function shapeRelationName(value: string): string {
+  return shapeTypeName(value.replace(/\bcandidate_call\b/g, "candidate call"));
 }
 
 function originalName(name: string): string {

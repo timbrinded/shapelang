@@ -54,4 +54,4 @@ bun run docs:dev
 bun run build:release
 ```
 
-Release assets are written under `dist/release/`. The tag-triggered release workflow runs the same builder, smoke-tests the Linux binary, and uploads checksummed archives to GitHub Releases.
+Release assets are written under `dist/release/`. The tag-triggered release workflow runs the same builder, smoke-tests the Linux binary including `shp ast source`, and uploads checksummed archives to GitHub Releases.
