@@ -79,6 +79,55 @@ Generated fingerprint pins are draft-local examples and update whenever the draf
 
 `ast.semantic_subtree_v1` hashes a canonical node-specific subtree, not the entire AST JSON or whole file. It excludes file paths, spans, generated node IDs, comments, and whitespace. It includes the node kind, field structure, child order, and actual semantic tokens such as identifiers, literals, operators, modifiers, and keywords.
 
+## Authored relations to AST anchors
+
+Generated files are context. Reviewed claims belong in authored modules. An authored module can point at generated AST evidence by importing the generated module and connecting a reviewed component or resource to the generated anchor.
+
+For example, a generated file under `shape/generated/ast/src/audit/store.shape` might contain:
+
+```shape
+module shape.generated.ast.src.audit.store
+
+trait GeneratedAstAnchor {
+}
+
+resource AuditStoreAppendEventAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("src/audit/store.rs:20-22")
+  fingerprint ast.semantic_subtree_v1("sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb")
+}
+```
+
+Then an authored overlay can pin a reviewed architectural claim to that exact AST anchor:
+
+```shape
+module audit.reviewed
+
+import shape.generated.ast.src.audit.store
+
+resource AuditEvent : AppendOnly
+
+component AuditStore {
+  owns AuditEvent
+  grants Append<AuditEvent>
+  fn append_event
+    source rust("src/audit/store.rs:20-22")
+    effects complete {
+      Append<AuditEvent>
+        evidence rust("src/audit/store.rs:20-22")
+    }
+}
+
+relation AuditStoreAppendEventReviewedFromAst {
+  kind generated_from
+  connects AuditStore -> shape.generated.ast.src.audit.store::AuditStoreAppendEventAstAnchor
+  roles { AuditStore as reviewed, shape.generated.ast.src.audit.store::AuditStoreAppendEventAstAnchor as syntax }
+  expects shape.generated.ast.src.audit.store::AuditStoreAppendEventAstAnchor fingerprint ast.semantic_subtree_v1("sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb")
+  summary "Reviewed AuditStore.append_event effects are backed by the generated AST anchor for src/audit/store.rs:20-22."
+}
+```
+
+That relation gives agents a precise bridge: `AuditStore.append_event` is the reviewed Shape claim, and `AuditStoreAppendEventAstAnchor` is the generated syntax evidence to inspect in code. If the function body or signature changes and the generated anchor fingerprint changes, `shp check` reports the authored relation as stale. If the function is renamed or removed and the generated anchor disappears, the authored relation fails as an unresolved endpoint.
+
 ## Raw AST trace
 
 The raw AST layer is opt-in because large files can produce thousands of syntax nodes. Use it when debugging a generator adapter or preserving exact parser provenance.
