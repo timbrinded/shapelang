@@ -8,6 +8,7 @@
     ".": "./src/index.ts"
   },
   "dependencies": {
+    "@kreuzberg/tree-sitter-language-pack": "^1.8.1",
     "langium": "^4.2.4"
   }
 }

@@ -168,6 +168,8 @@ shp graph stats --kind calls
 shp memory
 shp obligations
 shp analyze --shape-files fixtures/pass/append_only_append/audit.shape src/audit/purge.ts
+shp ast source --language rust --module generated.audit src/audit/store.rs
+shp ast json --module generated.audit --raw-out ast.raw.shape ast.json
 shp update --dry-run
 ```
 
@@ -186,6 +188,8 @@ Useful commands:
 - `shp memory`: list rationale and memory entries that protect design context.
 - `shp obligations`: list open design-memory obligations such as missing rationale or reevaluation.
 - `shp analyze --shape-files fixtures/pass/append_only_append/audit.shape src/file.ts`: compare obvious source hints against declared effects.
+- `shp ast source [--language LANG] [--module NAME] src/file.rs`: parse source with Tree-sitter and print a conservative Shape draft.
+- `shp ast json [--module NAME] [--include-ast-layer] ast.json`: generate from external AST JSON, with raw AST resources opt-in.
 - `shp update`: update a local released binary from GitHub Releases.
 
 ## Project Layout

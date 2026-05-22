@@ -15,6 +15,27 @@ export {
   type ShapeUpdateInput
 } from "./authoring.ts";
 export {
+  buildCodeSemanticGraphFromAstJson,
+  generateShapeFromAstJson,
+  generateShapeFromCodeSemanticGraph,
+  generateShapeFromSourceFiles,
+  parseSourceFilesToCodeSemanticGraph,
+  type AstGenerationDiagnostic,
+  type AstGenerationResult,
+  type AstSourceFileInput,
+  type CodeContainer,
+  type CodeFunction,
+  type CodeRelation,
+  type CodeResource,
+  type CodeSemanticGraph,
+  type GeneratedShapeOutput,
+  type GenerateShapeOptions,
+  type RawAstFile,
+  type RawAstNode,
+  type SemanticConfidence,
+  type SourceSpan
+} from "./ast-generation.ts";
+export {
   formatOnSave,
   getCompletions,
   getDefinitionLocation,

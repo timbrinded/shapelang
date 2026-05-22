@@ -6,6 +6,7 @@ import {
   buildShapeCriticPrompt,
   checkShapeFiles,
   checkShapeModules,
+  buildCodeSemanticGraphFromAstJson,
   compareAnalyzerHintsToShape,
   extractEvidenceSpansFromUnifiedDiff,
   formatAnalyzerWarnings,
@@ -18,10 +19,14 @@ import {
   getHoverText,
   explainShapeModules,
   formatDiagnostics,
+  generateShapeFromAstJson,
+  generateShapeFromCodeSemanticGraph,
+  parseSourceFilesToCodeSemanticGraph,
   graphAllShapeModules,
   graphShapeModules,
   parseShapeModule,
-  statsShapeHypergraph
+  statsShapeHypergraph,
+  type SourceSpan
 } from "./index.ts";
 import { PRELUDE_CONTEXT_REQUIREMENTS, PRELUDE_RELATION_KIND_NAMES } from "./prelude.ts";
 
@@ -2915,6 +2920,151 @@ describe("Shape editor support", () => {
   });
 });
 
+describe("AST to Shape generation", () => {
+  test("projects Rust AST JSON into a semantic draft plus optional raw trace", () => {
+    const ast = rustAuditAstJson();
+    const graphResult = buildCodeSemanticGraphFromAstJson(ast);
+
+    expect(graphResult.ok).toBe(true);
+    if (!graphResult.ok) {
+      throw new Error(formatAstTestDiagnostics(graphResult.diagnostics));
+    }
+
+    expect(graphResult.value.rawNodes).toHaveLength(ast.files[0]?.nodes.length ?? 0);
+    const output = generateShapeFromCodeSemanticGraph(graphResult.value, {
+      moduleName: "generated.audit",
+      rawModuleName: "generated.audit.raw"
+    });
+
+    expect(output.semanticShape).toContain("resource AuditEvent : GeneratedCandidate");
+    expect(output.semanticShape).toContain("component AuditStore : GeneratedCandidate");
+    expect(output.semanticShape).toContain("fn append_event");
+    expect(output.semanticShape).toContain("kind calls");
+    expect(output.semanticShape).not.toContain("GeneratedAstNode");
+    expect(output.rawShape).toContain("GeneratedAstNode");
+    expect(output.rawShape).toContain("kind ast_child");
+
+    const semantic = parseShapeModule(output.semanticShape);
+    expect(semantic.ok).toBe(true);
+    if (!semantic.ok) {
+      throw new Error(semantic.diagnostics.map((diagnostic) => diagnostic.message).join("\n"));
+    }
+    const semanticCheck = checkShapeModules([semantic.module]);
+    expect(semanticCheck.exitCode).toBe(1);
+    expect(formatDiagnostics(semanticCheck)).toContain("unknown effects");
+
+    const raw = parseShapeModule(output.rawShape ?? "");
+    expect(raw.ok).toBe(true);
+    if (!raw.ok) {
+      throw new Error(raw.diagnostics.map((diagnostic) => diagnostic.message).join("\n"));
+    }
+    expect(checkShapeModules([raw.module]).exitCode).toBe(0);
+  });
+
+  for (const fixture of languageAstFixtures()) {
+    test(`generates parseable semantic Shape for ${fixture.language}`, () => {
+      const result = generateShapeFromAstJson(fixture.ast, {
+        moduleName: `generated.${fixture.language}`
+      });
+
+      expect(result.ok).toBe(true);
+      if (!result.ok) {
+        throw new Error(formatAstTestDiagnostics(result.diagnostics));
+      }
+      expect(result.value.semanticShape).toContain(fixture.expected);
+      expect(parseShapeModule(result.value.semanticShape).ok).toBe(true);
+    });
+  }
+
+  test("normalizes Tree-sitter-like source nodes with field names, spans, and hashes", async () => {
+    const source = "fn main() {}\n";
+    const functionNode = fakeTreeSitterNode({
+      kind: "function_item",
+      startByte: 0,
+      endByte: 12,
+      startPosition: { row: 0, column: 0 },
+      endPosition: { row: 0, column: 12 }
+    });
+    const root = fakeTreeSitterNode({
+      kind: "source_file",
+      startByte: 0,
+      endByte: source.length,
+      startPosition: { row: 0, column: 0 },
+      endPosition: { row: 1, column: 0 },
+      children: [{ fieldName: "item", node: functionNode }]
+    });
+
+    const result = await parseSourceFilesToCodeSemanticGraph([{ path: "src/main.rs", source }], {
+      parserProvider: () => ({ rootNode: root })
+    });
+
+    expect(result.ok).toBe(true);
+    if (!result.ok) {
+      throw new Error(formatAstTestDiagnostics(result.diagnostics));
+    }
+    expect(result.value.files[0]?.sourceHash).toMatch(/^[0-9a-f]{8}$/);
+    expect(result.value.rawNodes).toHaveLength(2);
+    const normalizedFunction = result.value.rawNodes.find((node) => node.kind === "function_item");
+    expect(normalizedFunction?.fieldName).toBe("item");
+    expect(normalizedFunction?.span?.startLine).toBe(1);
+    expect(normalizedFunction?.text).toBe("fn main() {}");
+    expect(normalizedFunction?.textHash).toMatch(/^[0-9a-f]{8}$/);
+  });
+
+  test("rejects parser errors unless explicitly allowed", async () => {
+    const root = fakeTreeSitterNode({
+      kind: "source_file",
+      startByte: 0,
+      endByte: 4,
+      startPosition: { row: 0, column: 0 },
+      endPosition: { row: 0, column: 4 },
+      hasError: true
+    });
+
+    const rejected = await parseSourceFilesToCodeSemanticGraph(
+      [{ path: "src/broken.py", source: "def " }],
+      { parserProvider: () => ({ rootNode: root }) }
+    );
+    expect(rejected.ok).toBe(false);
+    if (!rejected.ok) {
+      expect(rejected.diagnostics.map((diagnostic) => diagnostic.code)).toContain("parse_error");
+    }
+
+    const allowed = await parseSourceFilesToCodeSemanticGraph(
+      [{ path: "src/broken.py", source: "def " }],
+      { allowParseErrors: true, parserProvider: () => ({ rootNode: root }) }
+    );
+    expect(allowed.ok).toBe(true);
+  });
+
+  test("rejects malformed AST JSON instead of dropping raw nodes", () => {
+    const result = buildCodeSemanticGraphFromAstJson({
+      language: "rust",
+      files: [
+        {
+          path: "src/broken.rs",
+          root: "root",
+          nodes: [
+            {
+              id: "root",
+              kind: "source_file",
+              attributes: { nested: { unsupported: true } },
+              children: ["missing"]
+            },
+            { id: "orphan", kind: "function_item", text: "fn orphan() {}" }
+          ]
+        }
+      ]
+    });
+
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      const codes = result.diagnostics.map((diagnostic) => diagnostic.code);
+      expect(codes).toContain("nested_attribute");
+    }
+  });
+});
+
 describe("Shape source analyzer", () => {
   test("detects destructive SQL and TypeScript hints", () => {
     // noinspection SqlNoDataSourceInspection
@@ -2964,3 +3114,264 @@ describe("Shape source analyzer", () => {
     expect(output).toContain("HardDelete");
   });
 });
+
+function rustAuditAstJson() {
+  return {
+    language: "rust",
+    files: [
+      {
+        path: "src/audit/store.rs",
+        root: "root",
+        nodes: [
+          {
+            id: "root",
+            kind: "source_file",
+            span: span(1, 1, 24, 1),
+            children: ["event", "repo", "store", "repoImpl", "storeImpl"]
+          },
+          {
+            id: "event",
+            kind: "struct_item",
+            attributes: { name: "AuditEvent" },
+            span: span(1, 1, 3, 2),
+            text: "struct AuditEvent {\n  id: String,\n}"
+          },
+          {
+            id: "repo",
+            kind: "struct_item",
+            attributes: { name: "AuditRepo" },
+            span: span(5, 1, 7, 2),
+            text: "struct AuditRepo {\n  client: DbClient,\n}"
+          },
+          {
+            id: "store",
+            kind: "struct_item",
+            attributes: { name: "AuditStore" },
+            span: span(9, 1, 11, 2),
+            text: "struct AuditStore {\n  repo: AuditRepo,\n}"
+          },
+          {
+            id: "repoImpl",
+            kind: "impl_item",
+            span: span(13, 1, 17, 2),
+            text: "impl AuditRepo {\n  fn insert(&self, event: AuditEvent) {}\n}",
+            children: [{ id: "repoImplType", field: "type" }, "repoInsert"]
+          },
+          {
+            id: "repoImplType",
+            kind: "type_identifier",
+            span: span(13, 6, 13, 15),
+            text: "AuditRepo"
+          },
+          {
+            id: "repoInsert",
+            kind: "function_item",
+            attributes: { name: "insert" },
+            span: span(14, 3, 14, 45),
+            text: "fn insert(&self, event: AuditEvent) {}"
+          },
+          {
+            id: "storeImpl",
+            kind: "impl_item",
+            span: span(19, 1, 24, 2),
+            text: "impl AuditStore {\n  fn append_event(&self, event: AuditEvent) {\n    self.repo.insert(event);\n  }\n}",
+            children: [{ id: "storeImplType", field: "type" }, "storeAppend"]
+          },
+          {
+            id: "storeImplType",
+            kind: "type_identifier",
+            span: span(19, 6, 19, 16),
+            text: "AuditStore"
+          },
+          {
+            id: "storeAppend",
+            kind: "function_item",
+            attributes: { name: "append_event" },
+            span: span(20, 3, 22, 4),
+            text: "fn append_event(&self, event: AuditEvent) {\n  self.repo.insert(event);\n}"
+          }
+        ]
+      }
+    ]
+  };
+}
+
+function languageAstFixtures(): { language: string; expected: string; ast: unknown }[] {
+  return [
+    {
+      language: "rust",
+      expected: "component AuditStore : GeneratedCandidate",
+      ast: rustAuditAstJson()
+    },
+    {
+      language: "typescript",
+      expected: "fn appendEvent",
+      ast: classFixtureAst({
+        language: "typescript",
+        path: "src/audit/store.ts",
+        rootKind: "program",
+        classKind: "class_declaration",
+        methodKind: "method_definition",
+        classText:
+          "class AuditStore {\n  repo: AuditRepo;\n  appendEvent(event: AuditEvent) {\n    this.repo.insert(event);\n  }\n}"
+      })
+    },
+    {
+      language: "python",
+      expected: "fn append_event",
+      ast: classFixtureAst({
+        language: "python",
+        path: "src/audit/store.py",
+        rootKind: "module",
+        classKind: "class_definition",
+        methodKind: "function_definition",
+        classText:
+          "class AuditStore:\n    repo: AuditRepo\n    def append_event(self, event):\n        self.repo.insert(event)"
+      })
+    },
+    {
+      language: "go",
+      expected: "component AuditStore : GeneratedCandidate",
+      ast: {
+        language: "go",
+        files: [
+          {
+            path: "src/audit/store.go",
+            root: "root",
+            nodes: [
+              {
+                id: "root",
+                kind: "source_file",
+                children: ["store", "append"]
+              },
+              {
+                id: "store",
+                kind: "type_declaration",
+                attributes: { name: "AuditStore" },
+                text: "type AuditStore struct {\n  repo AuditRepo\n}"
+              },
+              {
+                id: "append",
+                kind: "function_declaration",
+                attributes: { name: "AppendEvent" },
+                text: "func (s *AuditStore) AppendEvent(event AuditEvent) {\n  s.repo.Insert(event)\n}"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ];
+}
+
+function classFixtureAst(input: {
+  language: string;
+  path: string;
+  rootKind: string;
+  classKind: string;
+  methodKind: string;
+  classText: string;
+}): unknown {
+  return {
+    language: input.language,
+    files: [
+      {
+        path: input.path,
+        root: "root",
+        nodes: [
+          {
+            id: "root",
+            kind: input.rootKind,
+            children: ["repo", "store"]
+          },
+          {
+            id: "repo",
+            kind: input.classKind,
+            attributes: { name: "AuditRepo" },
+            text: "class AuditRepo {\n  insert(event: AuditEvent) {}\n}",
+            children: ["insert"]
+          },
+          {
+            id: "insert",
+            kind: input.methodKind,
+            attributes: { name: "insert" },
+            text: "insert(event: AuditEvent) {}"
+          },
+          {
+            id: "store",
+            kind: input.classKind,
+            attributes: { name: "AuditStore" },
+            text: input.classText,
+            children: ["append"]
+          },
+          {
+            id: "append",
+            kind: input.methodKind,
+            attributes: {
+              name: input.language === "python" ? "append_event" : "appendEvent"
+            },
+            text:
+              input.language === "python"
+                ? "def append_event(self, event):\n    self.repo.insert(event)"
+                : "appendEvent(event: AuditEvent) {\n  this.repo.insert(event);\n}"
+          }
+        ]
+      }
+    ]
+  };
+}
+
+function span(
+  startLine: number,
+  startColumn: number,
+  endLine: number,
+  endColumn: number
+): SourceSpan {
+  return { startLine, startColumn, endLine, endColumn };
+}
+
+function formatAstTestDiagnostics(diagnostics: { message: string }[]): string {
+  return diagnostics.map((diagnostic) => diagnostic.message).join("\n");
+}
+
+type FakeTreeSitterPosition = {
+  row: number;
+  column: number;
+};
+
+type FakeTreeSitterNode = {
+  kind: () => string;
+  isNamed: () => boolean;
+  startPosition: () => FakeTreeSitterPosition;
+  endPosition: () => FakeTreeSitterPosition;
+  startByte: () => number;
+  endByte: () => number;
+  childCount: () => number;
+  child: (index: number) => FakeTreeSitterNode | undefined;
+  fieldNameForChild: (index: number) => string | undefined;
+  hasError: () => boolean;
+};
+
+function fakeTreeSitterNode(input: {
+  kind: string;
+  startByte: number;
+  endByte: number;
+  startPosition: FakeTreeSitterPosition;
+  endPosition: FakeTreeSitterPosition;
+  children?: { fieldName?: string; node: FakeTreeSitterNode }[];
+  hasError?: boolean;
+}): FakeTreeSitterNode {
+  const children = input.children ?? [];
+  return {
+    kind: () => input.kind,
+    isNamed: () => true,
+    startPosition: () => input.startPosition,
+    endPosition: () => input.endPosition,
+    startByte: () => input.startByte,
+    endByte: () => input.endByte,
+    childCount: () => children.length,
+    child: (index) => children[index]?.node,
+    fieldNameForChild: (index) => children[index]?.fieldName,
+    hasError: () => input.hasError === true
+  };
+}

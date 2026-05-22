@@ -21,6 +21,8 @@ shp memory [files...]
 shp obligations [files...]
 shp author --changed-files changed.txt --component ComponentName [--module module.name]
 shp analyze [--shape-files file1.shape,file2.shape] [source-files...]
+shp ast source [--language LANG] [--module NAME] [--include-ast-layer] [--raw-out PATH] files...
+shp ast json [--module NAME] [--include-ast-layer] [--raw-out PATH] ast.json
 shp update [--version VERSION] [--dry-run] [--path PATH]
 shp --help
 shp --version
@@ -47,6 +49,8 @@ shape/**/*.shape
 | `obligations` | List open design-memory obligations from checker diagnostics. |
 | `author` | Generate a conservative global-model draft from changed files. |
 | `analyze` | Emit source hints or compare source hints with declared effects. |
+| `ast source` | Parse source with Tree-sitter and emit a conservative semantic Shape draft. |
+| `ast json` | Read external AST JSON and emit the same draft format. |
 | `update` | Update a local released binary from GitHub Releases. |
 
 ## Common commands
@@ -67,7 +71,40 @@ shp memory
 shp obligations
 shp author --changed-files changed.txt --component AuditStore
 shp analyze --shape-files fixtures/pass/append_only_append/audit.shape src/audit/purge.ts
+shp ast source --language rust --module generated.audit src/audit/store.rs
+shp ast json --module generated.audit --raw-out ast.raw.shape ast.json
 shp update --dry-run
+```
+
+## AST generation
+
+`shp ast` is a drafting tool. It turns syntax evidence into conservative Shape, not final architecture truth.
+
+By default, `shp ast source` parses files with `@kreuzberg/tree-sitter-language-pack` and prints only the semantic draft: stable files, modules, types, functions, high-confidence calls, and unresolved uncertainty. Generated functions use `effects unknown`, so the draft can parse successfully while still failing `shp check` until a reviewer replaces uncertainty with reviewed effects.
+
+Use `--include-ast-layer` to include raw AST resources and `ast_child` relations in stdout. Use `--raw-out PATH` to keep the raw trace in a sidecar Shape file while stdout stays focused on the semantic draft.
+
+`shp ast json` accepts normalized AST JSON with this shape:
+
+```json
+{
+  "language": "rust",
+  "files": [
+    {
+      "path": "src/audit/store.rs",
+      "root": "root",
+      "nodes": [
+        { "id": "root", "kind": "source_file", "children": ["store"] },
+        {
+          "id": "store",
+          "kind": "struct_item",
+          "attributes": { "name": "AuditStore" },
+          "text": "struct AuditStore { repo: AuditRepo }"
+        }
+      ]
+    }
+  ]
+}
 ```
 
 ## Graph output

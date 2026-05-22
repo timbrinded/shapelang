@@ -106,6 +106,8 @@ component DocsSite {
       Read<DocsContent>
         evidence md("docs-site/src/content/docs/concepts/analyzer-hints.md")
       Read<DocsContent>
+        evidence md("docs-site/src/content/docs/concepts/ast-generation.md")
+      Read<DocsContent>
         evidence md("docs-site/src/content/docs/concepts/model-updates-attestations.md")
       Read<DocsContent>
         evidence md("docs-site/src/content/docs/concepts/components-ownership-grants.md")
@@ -220,6 +222,14 @@ implementation AnalyzerSource {
     "packages/shp-checker/src/analyzer.ts"
   }
   conforms_to ShapeAnalyzer
+  on_change require shape_update
+}
+
+implementation AstGenerationSource {
+  paths {
+    "packages/shp-checker/src/ast-generation.ts"
+  }
+  conforms_to ShapeAstGenerator
   on_change require shape_update
 }
 
@@ -404,6 +414,7 @@ binding RuleEngineDocs {
 binding ToolingDocs {
   when_changed paths {
     "packages/shp-checker/src/analyzer.ts"
+    "packages/shp-checker/src/ast-generation.ts"
     "packages/shp-checker/src/authoring.ts"
     "packages/shp-checker/src/editor.ts"
     "packages/shp-checker/src/formatter.ts"
@@ -411,6 +422,7 @@ binding ToolingDocs {
   }
   require_changed paths {
     "docs-site/src/content/docs/concepts/analyzer-hints.md"
+    "docs-site/src/content/docs/concepts/ast-generation.md"
     "docs-site/src/content/docs/inside-shape/formatter-editor-authoring.md"
     "docs-site/src/content/docs/reference/cli.md"
   }

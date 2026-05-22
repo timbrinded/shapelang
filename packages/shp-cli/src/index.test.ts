@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { chmod, mkdtemp, rm, writeFile } from "node:fs/promises";
+import { chmod, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 
@@ -126,6 +126,114 @@ describe("shp CLI", () => {
     expect(result.stdout).toContain("component AuditStore");
     expect(result.stdout).toContain("effects unknown");
     expect(result.stderr).toBe("");
+  });
+
+  test("generates AST JSON shape drafts with raw trace sidecars", async () => {
+    const tempDir = await mkdtemp(join(tmpdir(), "shp-cli-test-"));
+    const astFile = join(tempDir, "ast.json");
+    const rawFile = join(tempDir, "raw.shape");
+    try {
+      await writeFile(astFile, JSON.stringify(cliAstJson()));
+
+      const result = await runCli([
+        "ast",
+        "json",
+        "--module",
+        "generated.audit",
+        "--raw-out",
+        rawFile,
+        astFile
+      ]);
+
+      expect(result.exitCode).toBe(0);
+      expect(result.stdout).toContain("module generated.audit");
+      expect(result.stdout).toContain("component AuditStore : GeneratedCandidate");
+      expect(result.stdout).toContain("effects unknown");
+      expect(result.stdout).not.toContain("GeneratedAstNode");
+      expect(result.stderr).toBe("");
+
+      const rawShape = await readFile(rawFile, "utf8");
+      expect(rawShape).toContain("module generated.audit.raw");
+      expect(rawShape).toContain("GeneratedAstNode");
+      expect(rawShape).toContain("kind ast_child");
+    } finally {
+      await rm(tempDir, { recursive: true, force: true });
+    }
+  });
+
+  test("embeds raw AST trace in AST JSON output on request", async () => {
+    const tempDir = await mkdtemp(join(tmpdir(), "shp-cli-test-"));
+    const astFile = join(tempDir, "ast.json");
+    try {
+      await writeFile(astFile, JSON.stringify(cliAstJson()));
+
+      const result = await runCli([
+        "ast",
+        "json",
+        "--module",
+        "generated.audit",
+        "--include-ast-layer",
+        astFile
+      ]);
+
+      expect(result.exitCode).toBe(0);
+      expect(result.stdout).toContain("module generated.audit");
+      expect(result.stdout).toContain("GeneratedAstNode");
+      expect(result.stdout).toContain("kind ast_child");
+      expect(result.stderr).toBe("");
+    } finally {
+      await rm(tempDir, { recursive: true, force: true });
+    }
+  });
+
+  test("reports malformed AST JSON diagnostics without a stack trace", async () => {
+    const tempDir = await mkdtemp(join(tmpdir(), "shp-cli-test-"));
+    const astFile = join(tempDir, "ast.json");
+    try {
+      await writeFile(
+        astFile,
+        JSON.stringify({
+          language: "rust",
+          files: [
+            {
+              path: "src/broken.rs",
+              root: "root",
+              nodes: [
+                {
+                  id: "root",
+                  kind: "source_file",
+                  attributes: { nested: { unsupported: true } }
+                }
+              ]
+            }
+          ]
+        })
+      );
+
+      const result = await runCli(["ast", "json", astFile]);
+
+      expect(result.exitCode).toBe(2);
+      expect(result.stderr).toContain("AST generation failed");
+      expect(result.stderr).toContain("nested_attribute");
+      expect(result.stderr).not.toContain("buildRouteScanner");
+      expect(result.stdout).toBe("");
+    } finally {
+      await rm(tempDir, { recursive: true, force: true });
+    }
+  });
+
+  test("reports missing AST source files without loading a parser", async () => {
+    const result = await runCli([
+      "ast",
+      "source",
+      "--language",
+      "rust",
+      "fixtures/source/missing.rs"
+    ]);
+
+    expect(result.exitCode).toBe(2);
+    expect(result.stderr).toContain("error: failed to read fixtures/source/missing.rs");
+    expect(result.stdout).toBe("");
   });
 
   test("lists memory guards", async () => {
@@ -503,6 +611,43 @@ function isCliManifest(value: unknown): value is CliManifest {
     "shp" in bin &&
     typeof bin.shp === "string"
   );
+}
+
+function cliAstJson(): unknown {
+  return {
+    language: "rust",
+    files: [
+      {
+        path: "src/audit/store.rs",
+        root: "root",
+        nodes: [
+          {
+            id: "root",
+            kind: "source_file",
+            children: ["event", "store", "append"]
+          },
+          {
+            id: "event",
+            kind: "struct_item",
+            attributes: { name: "AuditEvent" },
+            text: "struct AuditEvent { id: String }"
+          },
+          {
+            id: "store",
+            kind: "struct_item",
+            attributes: { name: "AuditStore" },
+            text: "struct AuditStore { repo: AuditRepo }"
+          },
+          {
+            id: "append",
+            kind: "function_item",
+            attributes: { name: "append_event" },
+            text: "fn append_event(event: AuditEvent) {}"
+          }
+        ]
+      }
+    ]
+  };
 }
 
 async function runCli(

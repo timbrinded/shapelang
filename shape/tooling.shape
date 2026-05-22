@@ -10,6 +10,8 @@ resource AuthoringPrompt
 
 resource CanonicalShapeFormat
 
+resource CodeSemanticGraph
+
 resource CommandLineInterface
 
 resource DiagnosticText
@@ -17,6 +19,8 @@ resource DiagnosticText
 resource EditorOutput
 
 resource FormattedShape
+
+resource GeneratedAstTrace
 
 resource InstalledShpBinary
 
@@ -27,6 +31,8 @@ resource ReleaseChecksumManifest
 resource ReleaseMetadata
 
 resource ShapeModelDraft
+
+resource SourceSyntaxTree
 
 component ShapeAnalyzer {
   owns AnalyzerHint
@@ -42,6 +48,72 @@ component ShapeAnalyzer {
         evidence ts("packages/shp-checker/src/analyzer.ts")
       Read<ShapeSource>
         evidence ts("packages/shp-checker/src/analyzer.ts")
+    }
+}
+
+component ShapeAstGenerator {
+  owns CodeSemanticGraph
+  owns GeneratedAstTrace
+  grants Append<CodeSemanticGraph>
+  grants Append<GeneratedAstTrace>
+  grants Append<SemanticDiagnostics>
+  grants Append<ShapeModelDraft>
+  grants Read<CodeSemanticGraph>
+  grants Read<ShapeSource>
+  grants Read<SourceSyntaxTree>
+  fn buildCodeSemanticGraphFromAstJson
+    source ts("packages/shp-checker/src/ast-generation.ts#buildCodeSemanticGraphFromAstJson")
+    effects complete {
+      Append<CodeSemanticGraph>
+        evidence ts("packages/shp-checker/src/ast-generation.ts")
+      Append<SemanticDiagnostics>
+        evidence ts("packages/shp-checker/src/ast-generation.ts")
+      Read<SourceSyntaxTree>
+        evidence ts("packages/shp-checker/src/ast-generation.ts")
+    }
+  fn generateShapeFromAstJson
+    source ts("packages/shp-checker/src/ast-generation.ts#generateShapeFromAstJson")
+    effects complete {
+      Append<CodeSemanticGraph>
+        evidence ts("packages/shp-checker/src/ast-generation.ts")
+      Append<GeneratedAstTrace>
+        evidence ts("packages/shp-checker/src/ast-generation.ts")
+      Append<ShapeModelDraft>
+        evidence ts("packages/shp-checker/src/ast-generation.ts")
+      Read<SourceSyntaxTree>
+        evidence ts("packages/shp-checker/src/ast-generation.ts")
+    }
+  fn generateShapeFromCodeSemanticGraph : RefactorSensitive
+    source ts("packages/shp-checker/src/ast-generation.ts#generateShapeFromCodeSemanticGraph")
+    effects complete {
+      Append<GeneratedAstTrace>
+        evidence ts("packages/shp-checker/src/ast-generation.ts")
+      Append<ShapeModelDraft>
+        evidence ts("packages/shp-checker/src/ast-generation.ts")
+      Read<CodeSemanticGraph>
+        evidence ts("packages/shp-checker/src/ast-generation.ts")
+    }
+  fn generateShapeFromSourceFiles
+    source ts("packages/shp-checker/src/ast-generation.ts#generateShapeFromSourceFiles")
+    effects complete {
+      Append<CodeSemanticGraph>
+        evidence ts("packages/shp-checker/src/ast-generation.ts")
+      Append<GeneratedAstTrace>
+        evidence ts("packages/shp-checker/src/ast-generation.ts")
+      Append<ShapeModelDraft>
+        evidence ts("packages/shp-checker/src/ast-generation.ts")
+      Read<ShapeSource>
+        evidence ts("packages/shp-checker/src/ast-generation.ts")
+    }
+  fn parseSourceFilesToCodeSemanticGraph
+    source ts("packages/shp-checker/src/ast-generation.ts#parseSourceFilesToCodeSemanticGraph")
+    effects complete {
+      Append<CodeSemanticGraph>
+        evidence ts("packages/shp-checker/src/ast-generation.ts")
+      Append<SemanticDiagnostics>
+        evidence ts("packages/shp-checker/src/ast-generation.ts")
+      Read<ShapeSource>
+        evidence ts("packages/shp-checker/src/ast-generation.ts")
     }
 }
 
@@ -144,6 +216,8 @@ component ShapeFormatter {
 }
 
 component ShpCli {
+  grants Append<GeneratedAstTrace>
+  grants Append<ShapeModelDraft>
   grants Read<ChangedFileList>
   grants Read<DiagnosticText>
   grants Read<FormattedShape>
@@ -162,6 +236,10 @@ component ShpCli {
   fn main : ProtectedCheckOrder
     source ts("packages/shp-cli/src/index.ts#main")
     effects complete {
+      Append<GeneratedAstTrace>
+        evidence ts("packages/shp-cli/src/commands/ast/impl.ts")
+      Append<ShapeModelDraft>
+        evidence ts("packages/shp-cli/src/commands/ast/impl.ts")
       Read<ChangedFileList>
         evidence ts("packages/shp-cli/src/commands/check/impl.ts")
       Read<ChangedFileList>
@@ -172,6 +250,10 @@ component ShpCli {
         evidence ts("packages/shp-cli/src/commands/analyze/command.ts")
       Read<DiagnosticText>
         evidence ts("packages/shp-cli/src/commands/analyze/impl.ts")
+      Read<DiagnosticText>
+        evidence ts("packages/shp-cli/src/commands/ast/command.ts")
+      Read<DiagnosticText>
+        evidence ts("packages/shp-cli/src/commands/ast/impl.ts")
       Read<DiagnosticText>
         evidence ts("packages/shp-cli/src/commands/author/command.ts")
       Read<DiagnosticText>
@@ -214,6 +296,8 @@ component ShpCli {
         evidence ts("packages/shp-cli/src/version.ts")
       Read<FormattedShape>
         evidence ts("packages/shp-cli/src/commands/fmt/impl.ts")
+      Read<ShapeSource>
+        evidence ts("packages/shp-cli/src/commands/ast/impl.ts")
     }
   fn updateInstalledBinary : RefactorSensitive
     source ts("packages/shp-cli/src/commands/update/impl.ts#update")
@@ -241,6 +325,11 @@ relation ShapeAnalyzerUsesStringHelpers {
   kind calls
   connects ShapeAnalyzer -> ShapeStringHelpers
   summary "SourcePathNormalization"
+}
+
+relation ShapeAstGeneratorProvidesDraft {
+  kind provides
+  connects ShapeAstGenerator -> ShapeModelDraft
 }
 
 relation ShapeAuthoringUsesChecker {
@@ -307,6 +396,12 @@ relation ShpCliUsesAnalyzer {
   summary "AnalyzeCommand"
 }
 
+relation ShpCliUsesAstGenerator {
+  kind calls
+  connects ShpCli -> ShapeAstGenerator
+  summary "AstCommand"
+}
+
 relation ShpCliUsesAuthoring {
   kind calls
   connects ShpCli -> ShapeAuthoring
@@ -334,6 +429,16 @@ relation ShpCliUsesFormatter {
 rule tooling_contract_providers {
   forbid provides CanonicalShapeFormat except ShapeFormatter
   forbid provides CommandLineInterface except ShpCli
+}
+
+memory AstGenerationUnknownSafety : RefactorConstraint<fn ShapeAstGenerator.generateShapeFromCodeSemanticGraph> {
+  applies_to fn ShapeAstGenerator.generateShapeFromCodeSemanticGraph
+  status Explained
+  confidence High
+  summary "AST-derived architecture drafts must preserve uncertainty with effects unknown and keep raw syntax traces opt-in."
+  owner ShapeMaintainers
+  protects shape GeneratedAstDraftSafety
+  guards on_change require ReEvaluation<Self>
 }
 
 memory AuthoringUnknownSafety : RefactorConstraint<fn ShapeAuthoring.generateShapeUpdateDraft> {
@@ -394,6 +499,15 @@ memory UpdateBinaryIntegrity : RefactorConstraint<fn ShpCli.updateInstalledBinar
   owner ShapeMaintainers
   protects shape ReleaseIntegrity
   guards on_change require ReEvaluation<Self>
+}
+
+reevaluation AstGenerationDraftSafetyRechecked {
+  satisfies memory AstGenerationUnknownSafety
+  outcome Confirmed
+  summary "AST generation tests cover semantic drafts that parse while keeping effects unknown as a review blocker and raw AST output opt-in."
+  reviewer ShapeMaintainers
+  decided_on "2026-05-21"
+  evidence test("packages/shp-checker/src/checker.test.ts")
 }
 
 reevaluation AuthoringDraftSafetyRechecked {
