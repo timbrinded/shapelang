@@ -46,8 +46,10 @@ export type ShapeKeywordNames =
     | "effects"
     | "evidence"
     | "except"
+    | "expects"
     | "expires"
     | "final"
+    | "fingerprint"
     | "fn"
     | "forbid"
     | "grants"
@@ -553,6 +555,23 @@ export function isExpiresDecl(item: unknown): item is ExpiresDecl {
     return reflection.isInstance(item, ExpiresDecl.$type);
 }
 
+export interface FingerprintDecl extends langium.AstNode {
+    readonly $container: ResourceBody;
+    readonly $type: 'FingerprintDecl';
+    provider: QualifiedName;
+    value: string;
+}
+
+export const FingerprintDecl = {
+    $type: 'FingerprintDecl',
+    provider: 'provider',
+    value: 'value'
+} as const;
+
+export function isFingerprintDecl(item: unknown): item is FingerprintDecl {
+    return reflection.isInstance(item, FingerprintDecl.$type);
+}
+
 export type FunctionMember = ExpiresDecl | FunctionRequiresDecl | ReasonDecl;
 
 export const FunctionMember = {
@@ -975,7 +994,7 @@ export function isRelationDecl(item: unknown): item is RelationDecl {
 }
 
 export interface RelationEndpoint extends langium.AstNode {
-    readonly $container: RelationConnectsDecl;
+    readonly $container: RelationConnectsDecl | RelationFingerprintExpectationDecl;
     readonly $type: 'RelationEndpoint';
     name: QualifiedTargetName;
 }
@@ -987,6 +1006,25 @@ export const RelationEndpoint = {
 
 export function isRelationEndpoint(item: unknown): item is RelationEndpoint {
     return reflection.isInstance(item, RelationEndpoint.$type);
+}
+
+export interface RelationFingerprintExpectationDecl extends langium.AstNode {
+    readonly $container: RelationDecl;
+    readonly $type: 'RelationFingerprintExpectationDecl';
+    endpoint: RelationEndpoint;
+    provider: QualifiedName;
+    value: string;
+}
+
+export const RelationFingerprintExpectationDecl = {
+    $type: 'RelationFingerprintExpectationDecl',
+    endpoint: 'endpoint',
+    provider: 'provider',
+    value: 'value'
+} as const;
+
+export function isRelationFingerprintExpectationDecl(item: unknown): item is RelationFingerprintExpectationDecl {
+    return reflection.isInstance(item, RelationFingerprintExpectationDecl.$type);
 }
 
 export interface RelationKindDecl extends langium.AstNode {
@@ -1010,7 +1048,7 @@ export function isRelationKindName(item: unknown): item is RelationKindName {
     return item === 'provides' || item === 'calls' || item === 'callbacks' || item === 'coordinated_call' || (typeof item === 'string' && (/[_a-zA-Z][\w_]*/.test(item)));
 }
 
-export type RelationMember = RelationConnectsDecl | RelationKindDecl | RelationRolesDecl | RelationSummaryDecl;
+export type RelationMember = RelationConnectsDecl | RelationFingerprintExpectationDecl | RelationKindDecl | RelationRolesDecl | RelationSummaryDecl;
 
 export const RelationMember = {
     $type: 'RelationMember'
@@ -1141,7 +1179,7 @@ export function isResourceDecl(item: unknown): item is ResourceDecl {
     return reflection.isInstance(item, ResourceDecl.$type);
 }
 
-export type ResourceMember = StorageDecl;
+export type ResourceMember = FingerprintDecl | StorageDecl;
 
 export const ResourceMember = {
     $type: 'ResourceMember'
@@ -1609,6 +1647,7 @@ export type ShapeAstType = {
     EvidenceDecl: EvidenceDecl
     EvidenceLineDecl: EvidenceLineDecl
     ExpiresDecl: ExpiresDecl
+    FingerprintDecl: FingerprintDecl
     FunctionMember: FunctionMember
     FunctionRequiresDecl: FunctionRequiresDecl
     FunctionSummary: FunctionSummary
@@ -1636,6 +1675,7 @@ export type ShapeAstType = {
     RelationConnectsDecl: RelationConnectsDecl
     RelationDecl: RelationDecl
     RelationEndpoint: RelationEndpoint
+    RelationFingerprintExpectationDecl: RelationFingerprintExpectationDecl
     RelationKindDecl: RelationKindDecl
     RelationMember: RelationMember
     RelationRoleEntry: RelationRoleEntry
@@ -1982,6 +2022,18 @@ export class ShapeAstReflection extends langium.AbstractAstReflection {
             },
             superTypes: [FunctionMember.$type]
         },
+        FingerprintDecl: {
+            name: FingerprintDecl.$type,
+            properties: {
+                provider: {
+                    name: FingerprintDecl.provider
+                },
+                value: {
+                    name: FingerprintDecl.value
+                }
+            },
+            superTypes: [ResourceMember.$type]
+        },
         FunctionMember: {
             name: FunctionMember.$type,
             properties: {
@@ -2287,6 +2339,21 @@ export class ShapeAstReflection extends langium.AbstractAstReflection {
                 }
             },
             superTypes: []
+        },
+        RelationFingerprintExpectationDecl: {
+            name: RelationFingerprintExpectationDecl.$type,
+            properties: {
+                endpoint: {
+                    name: RelationFingerprintExpectationDecl.endpoint
+                },
+                provider: {
+                    name: RelationFingerprintExpectationDecl.provider
+                },
+                value: {
+                    name: RelationFingerprintExpectationDecl.value
+                }
+            },
+            superTypes: [RelationMember.$type]
         },
         RelationKindDecl: {
             name: RelationKindDecl.$type,

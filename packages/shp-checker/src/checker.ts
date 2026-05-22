@@ -10,6 +10,7 @@ import type {
   EffectPattern,
   EffectsDecl,
   EffectTerm,
+  FingerprintDecl,
   FunctionSummary,
   ImplementationDecl,
   MemoryDecl,
@@ -54,6 +55,7 @@ import {
   isDecidedOnDecl,
   isEvidenceLineDecl,
   isExpiresDecl,
+  isFingerprintDecl,
   isFunctionRequiresDecl,
   isFunctionSummary,
   isGrantsDecl,
@@ -74,6 +76,7 @@ import {
   isReevaluationDecl,
   isRelationConnectsDecl,
   isRelationDecl,
+  isRelationFingerprintExpectationDecl,
   isRelationKindDecl,
   isRelationRolesDecl,
   isRelationSummaryDecl,
@@ -173,6 +176,13 @@ export type SemanticDiagnostic =
       causedBy: string[];
     }
   | {
+      kind: "duplicate_fingerprint";
+      resource: string;
+      provider: string;
+      filePath?: string;
+      causedBy: string[];
+    }
+  | {
       kind: "missing_shape_update";
       changedFile: string;
       implementation: string;
@@ -204,6 +214,16 @@ export type SemanticDiagnostic =
       target: string;
       hyperedge: string;
       allowedComponent?: string;
+      filePath?: string;
+      causedBy: string[];
+    }
+  | {
+      kind: "fingerprint_mismatch";
+      relation: string;
+      endpoint: string;
+      provider: string;
+      expected: string;
+      actual?: string;
       filePath?: string;
       causedBy: string[];
     }
@@ -294,6 +314,13 @@ export type Fact =
   | { kind: "resource"; name: string; provenance: Provenance }
   | { kind: "resource_trait"; resource: string; trait: string; provenance: Provenance }
   | {
+      kind: "resource_fingerprint";
+      resource: string;
+      provider: string;
+      value: string;
+      provenance: Provenance;
+    }
+  | {
       kind: "trait_final_forbid";
       trait: string;
       effect: string;
@@ -316,6 +343,14 @@ export type Fact =
       endpoint: string;
       index: number;
       role?: string;
+      provenance: Provenance;
+    }
+  | {
+      kind: "hyperedge_fingerprint_expectation";
+      hyperedge: string;
+      endpoint: string;
+      provider: string;
+      value: string;
       provenance: Provenance;
     }
   | { kind: "function"; component: string; name: string; provenance: Provenance }
@@ -543,6 +578,13 @@ type FunctionInfo = {
 type ResourceInfo = {
   name: string;
   traits: Map<string, Provenance>;
+  fingerprints: Map<string, FingerprintInfo>;
+  provenance: Provenance;
+};
+
+type FingerprintInfo = {
+  provider: string;
+  value: string;
   provenance: Provenance;
 };
 
@@ -616,7 +658,15 @@ type HyperedgeInfo = {
   kind: string;
   ordered: boolean;
   members: HyperedgeMember[];
+  fingerprintExpectations: FingerprintExpectationInfo[];
   summary?: string;
+  provenance: Provenance;
+};
+
+type FingerprintExpectationInfo = {
+  endpoint: string;
+  provider: string;
+  value: string;
   provenance: Provenance;
 };
 
@@ -661,6 +711,7 @@ export function checkShapeModules(
   const diagnostics = [
     ...model.diagnostics,
     ...checkResolvedNames(model),
+    ...checkFingerprintExpectations(model),
     ...checkContextTargets(model),
     ...checkRequiredContext(model),
     ...checkRequiredDescriptions(model),
@@ -830,6 +881,14 @@ export function explainShapeModules(
       lines.push("", "  final forbidden effects:");
       lines.push(
         ...finalForbids.map((forbid) => `    ${formatTerm(forbid.effect, forbid.target)}`)
+      );
+    }
+    if (resource.fingerprints.size > 0) {
+      lines.push("", "  fingerprints:");
+      lines.push(
+        ...[...resource.fingerprints.values()]
+          .sort((left, right) => left.provider.localeCompare(right.provider))
+          .map((fingerprint) => `    ${formatFingerprintInfo(fingerprint)}`)
       );
     }
     appendIncidence(symbol, model, lines);
@@ -1206,9 +1265,40 @@ function lowerResource(resource: ResourceDecl, filePath: string | undefined, mod
     });
   }
 
+  const fingerprints = new Map<string, FingerprintInfo>();
+  for (const member of resource.body?.members ?? []) {
+    if (!isFingerprintDecl(member)) {
+      continue;
+    }
+    const fingerprint = lowerFingerprint(member, filePath, `resource ${resource.name}`);
+    const existing = fingerprints.get(fingerprint.provider);
+    if (existing) {
+      model.diagnostics.push({
+        kind: "duplicate_fingerprint",
+        resource: resource.name,
+        provider: fingerprint.provider,
+        filePath,
+        causedBy: [
+          describeProvenance(existing.provenance),
+          describeProvenance(fingerprint.provenance)
+        ]
+      });
+      continue;
+    }
+    fingerprints.set(fingerprint.provider, fingerprint);
+    model.facts.push({
+      kind: "resource_fingerprint",
+      resource: resource.name,
+      provider: fingerprint.provider,
+      value: fingerprint.value,
+      provenance: fingerprint.provenance
+    });
+  }
+
   model.resources.set(resource.name, {
     name: resource.name,
     traits,
+    fingerprints,
     provenance: prov
   });
   model.facts.push({ kind: "resource", name: resource.name, provenance: prov });
@@ -1334,6 +1424,7 @@ function lowerRelation(relation: RelationDecl, filePath: string | undefined, mod
   let summarySeen = false;
   let rolesSeen = false;
   const roleDecls: RelationRoleEntry[] = [];
+  const fingerprintExpectations: FingerprintExpectationInfo[] = [];
 
   for (const member of relation.members) {
     if (isRelationKindDecl(member)) {
@@ -1376,6 +1467,16 @@ function lowerRelation(relation: RelationDecl, filePath: string | undefined, mod
       for (const role of member.roles) {
         roleDecls.push(role);
       }
+    } else if (isRelationFingerprintExpectationDecl(member)) {
+      fingerprintExpectations.push({
+        endpoint: member.endpoint.name,
+        provider: member.provider,
+        value: unquoteShapeString(member.value),
+        provenance: provenance(
+          filePath,
+          `relation ${relation.name} expects ${member.endpoint.name} fingerprint ${member.provider}`
+        )
+      });
     } else if (isRelationSummaryDecl(member)) {
       if (summarySeen) {
         model.diagnostics.push({
@@ -1500,6 +1601,18 @@ function lowerRelation(relation: RelationDecl, filePath: string | undefined, mod
     roleByEndpoint.set(role.name, role.role);
   }
 
+  for (const expectation of fingerprintExpectations) {
+    if (!endpointSet.has(expectation.endpoint)) {
+      model.diagnostics.push({
+        kind: "invalid_relation",
+        name: relation.name,
+        reason: `fingerprint expectation ${expectation.endpoint} is not a connects endpoint`,
+        filePath,
+        causedBy: [describeProvenance(expectation.provenance)]
+      });
+    }
+  }
+
   const members: HyperedgeMember[] = connectsDecl.endpoints.map((endpoint, index) => ({
     endpoint,
     index,
@@ -1511,6 +1624,7 @@ function lowerRelation(relation: RelationDecl, filePath: string | undefined, mod
     kind: kindValue,
     ordered: connectsDecl.ordered,
     members,
+    fingerprintExpectations,
     summary,
     provenance: prov
   };
@@ -1537,6 +1651,16 @@ function lowerRelation(relation: RelationDecl, filePath: string | undefined, mod
       index: member.index,
       role: member.role,
       provenance: provenance(filePath, `relation ${relation.name} connects ${member.endpoint}`)
+    });
+  }
+  for (const expectation of fingerprintExpectations) {
+    model.facts.push({
+      kind: "hyperedge_fingerprint_expectation",
+      hyperedge: relation.name,
+      endpoint: expectation.endpoint,
+      provider: expectation.provider,
+      value: expectation.value,
+      provenance: expectation.provenance
     });
   }
 }
@@ -2308,6 +2432,18 @@ function lowerSourceRef(source: { ref: SourceRef }): SourceRefInfo {
   };
 }
 
+function lowerFingerprint(
+  fingerprint: FingerprintDecl,
+  filePath: string | undefined,
+  owner: string
+): FingerprintInfo {
+  return {
+    provider: fingerprint.provider,
+    value: unquoteShapeString(fingerprint.value),
+    provenance: provenance(filePath, `${owner} fingerprint ${fingerprint.provider}`)
+  };
+}
+
 function lowerTargetRef(target: TargetRef): ShapeTarget {
   return {
     kind: target.kind,
@@ -2607,6 +2743,64 @@ function checkProvidesEndpointKinds(hyperedge: HyperedgeInfo, model: Model): Sem
       filePath: hyperedge.provenance.filePath,
       causedBy: [describeProvenance(hyperedge.provenance)]
     });
+  }
+
+  return diagnostics;
+}
+
+function checkFingerprintExpectations(model: Model): SemanticDiagnostic[] {
+  const diagnostics: SemanticDiagnostic[] = [];
+
+  for (const hyperedge of model.hypergraph.edges.values()) {
+    const endpointSet = new Set(hyperedge.members.map((member) => member.endpoint));
+    for (const expectation of hyperedge.fingerprintExpectations) {
+      if (!endpointSet.has(expectation.endpoint)) {
+        continue;
+      }
+      if (!isResolvedVertex(expectation.endpoint, model)) {
+        continue;
+      }
+      if (isAmbiguousVertex(expectation.endpoint, model)) {
+        diagnostics.push({
+          kind: "invalid_relation",
+          name: hyperedge.name,
+          reason: `fingerprint expectation endpoint ${expectation.endpoint} resolves to both a component and a resource`,
+          filePath: expectation.provenance.filePath,
+          causedBy: [describeProvenance(expectation.provenance)]
+        });
+        continue;
+      }
+
+      const resource = model.resources.get(expectation.endpoint);
+      if (!resource) {
+        diagnostics.push({
+          kind: "invalid_relation",
+          name: hyperedge.name,
+          reason: `fingerprint expectation endpoint ${expectation.endpoint} must be a resource`,
+          filePath: expectation.provenance.filePath,
+          causedBy: [describeProvenance(expectation.provenance)]
+        });
+        continue;
+      }
+
+      const actual = resource.fingerprints.get(expectation.provider);
+      if (!actual || actual.value !== expectation.value) {
+        diagnostics.push({
+          kind: "fingerprint_mismatch",
+          relation: hyperedge.name,
+          endpoint: expectation.endpoint,
+          provider: expectation.provider,
+          expected: expectation.value,
+          actual: actual?.value,
+          filePath: expectation.provenance.filePath,
+          causedBy: [
+            describeProvenance(expectation.provenance),
+            describeProvenance(resource.provenance),
+            ...(actual ? [describeProvenance(actual.provenance)] : [])
+          ]
+        });
+      }
+    }
   }
 
   return diagnostics;
@@ -3485,6 +3679,19 @@ function formatRelationExplanation(relation: HyperedgeInfo): string {
   if (relation.summary) {
     lines.push("", `  summary: ${JSON.stringify(relation.summary)}`);
   }
+  if (relation.fingerprintExpectations.length > 0) {
+    lines.push("", "  fingerprint expectations:");
+    lines.push(
+      ...relation.fingerprintExpectations
+        .sort((left, right) =>
+          `${left.endpoint}:${left.provider}`.localeCompare(`${right.endpoint}:${right.provider}`)
+        )
+        .map(
+          (expectation) =>
+            `    ${expectation.endpoint} ${expectation.provider}(${JSON.stringify(expectation.value)})`
+        )
+    );
+  }
   return lines.join("\n");
 }
 
@@ -3736,6 +3943,8 @@ function formatDiagnostic(diagnostic: ShapeDiagnostic): string {
       return formatUnknownNameDiagnostic(diagnostic);
     case "duplicate_declaration":
       return formatDuplicateDeclarationDiagnostic(diagnostic);
+    case "duplicate_fingerprint":
+      return formatDuplicateFingerprintDiagnostic(diagnostic);
     case "missing_shape_update":
       return formatMissingShapeUpdateDiagnostic(diagnostic);
     case "missing_bound_docs_change":
@@ -3744,6 +3953,8 @@ function formatDiagnostic(diagnostic: ShapeDiagnostic): string {
       return formatForbiddenHypercycleDiagnostic(diagnostic);
     case "forbidden_provides":
       return formatForbiddenProvidesDiagnostic(diagnostic);
+    case "fingerprint_mismatch":
+      return formatFingerprintMismatchDiagnostic(diagnostic);
     case "unsafe_effects":
       return formatUnsafeEffectsDiagnostic(diagnostic);
     case "missing_required_context":
@@ -3827,6 +4038,17 @@ function formatDuplicateDeclarationDiagnostic(
   ].join("\n");
 }
 
+function formatDuplicateFingerprintDiagnostic(
+  diagnostic: Extract<SemanticDiagnostic, { kind: "duplicate_fingerprint" }>
+): string {
+  return [
+    "error: duplicate fingerprint",
+    "",
+    `resource ${diagnostic.resource} declares fingerprint provider ${diagnostic.provider} more than once.`,
+    formatCausedBy(diagnostic.causedBy)
+  ].join("\n");
+}
+
 function formatMissingShapeUpdateDiagnostic(
   diagnostic: Extract<SemanticDiagnostic, { kind: "missing_shape_update" }>
 ): string {
@@ -3879,6 +4101,20 @@ function formatForbiddenProvidesDiagnostic(
     "",
     `${diagnostic.provider} provides ${diagnostic.target} via relation ${diagnostic.hyperedge}.`,
     `rule ${diagnostic.rule} forbids provides ${diagnostic.target}${allowed}.`,
+    formatCausedBy(diagnostic.causedBy)
+  ].join("\n");
+}
+
+function formatFingerprintMismatchDiagnostic(
+  diagnostic: Extract<SemanticDiagnostic, { kind: "fingerprint_mismatch" }>
+): string {
+  const actual = diagnostic.actual ?? "missing";
+  return [
+    "error: stale fingerprint expectation",
+    "",
+    `relation ${diagnostic.relation} expects ${diagnostic.endpoint} fingerprint ${diagnostic.provider}.`,
+    `expected: ${diagnostic.expected}`,
+    `actual: ${actual}`,
     formatCausedBy(diagnostic.causedBy)
   ].join("\n");
 }
@@ -4003,6 +4239,10 @@ function formatLocation(filePath: string, line?: number, column?: number): strin
 
 function formatSourceRefInfo(ref: SourceRefInfo): string {
   return `${ref.language}("${ref.path}")`;
+}
+
+function formatFingerprintInfo(fingerprint: FingerprintInfo): string {
+  return `${fingerprint.provider}(${JSON.stringify(fingerprint.value)})`;
 }
 
 function formatTerm(effect: string, target: string): string {

@@ -80,11 +80,11 @@ shp update --dry-run
 
 `shp ast` is a drafting tool. It turns syntax evidence into conservative Shape, not final architecture truth.
 
-By default, `shp ast source` parses files with `@kreuzberg/tree-sitter-language-pack` and prints the semantic draft: stable files, modules, types, functions, high-confidence calls, compact AST anchors, and unresolved uncertainty. Generated functions use `effects unknown`, so the draft can parse successfully while still failing `shp check` until a reviewer replaces uncertainty with reviewed effects.
+By default, `shp ast source` parses files with `@kreuzberg/tree-sitter-language-pack` and prints the semantic draft: stable files, modules, types, functions, high-confidence calls, compact AST anchors, anchor fingerprints, and unresolved uncertainty. Generated functions use `effects unknown`, so the draft can parse successfully while still failing `shp check` until a reviewer replaces uncertainty with reviewed effects.
 
 Use `--include-ast-layer` to include raw AST resources and `ast_child` relations in stdout. Use `--raw-out PATH` to keep the raw trace in a sidecar Shape file while stdout stays focused on the semantic draft. These flags are mutually exclusive.
 
-`shp ast json` accepts normalized AST JSON with this shape when another parser already produced syntax data. It is an input adapter, not a Shapes-to-AST export path:
+`shp ast json` accepts normalized AST JSON with this shape when another parser already produced syntax data. It is an input adapter, not a Shapes-to-AST export path. Anchored nodes must include token/source text in their subtree so `ast.semantic_subtree_v1` fingerprints can be computed:
 
 ```json
 {

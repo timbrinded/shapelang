@@ -148,6 +148,16 @@ component ShapeRuleEngine {
       Read<NormalizedShapeReference>
         evidence ts("packages/shp-checker/src/checker.ts")
     }
+  fn checkFingerprintExpectations
+    source ts("packages/shp-checker/src/checker.ts#checkFingerprintExpectations")
+    effects complete {
+      Append<SemanticDiagnostics>
+        evidence ts("packages/shp-checker/src/checker.ts")
+      Read<EffectiveModel>
+        evidence ts("packages/shp-checker/src/checker.ts")
+      Read<FactSet>
+        evidence ts("packages/shp-checker/src/checker.ts")
+    }
   fn deriveFinalForbidsForResource : RefactorSensitive
     source ts("packages/shp-checker/src/checker.ts#deriveFinalForbidsForResource")
     effects complete {

@@ -201,7 +201,20 @@ describe("shp CLI", () => {
     expect(result.stdout).toContain("module generated.audit");
     expect(result.stdout).toContain("component AuditPurgeModule : GeneratedCandidate");
     expect(result.stdout).toContain("GeneratedAstAnchor");
+    expect(result.stdout).toContain("fingerprint ast.semantic_subtree_v1");
     expect(result.stdout).toContain("kind generated_from");
+    expect(result.stdout).toContain("expects AuditPurgeModulePurgeOldEventsAstAnchor fingerprint");
+    const anchorName = "AuditPurgeModulePurgeOldEventsAstAnchor";
+    const resourceFingerprint = result.stdout.match(
+      new RegExp(
+        `resource ${anchorName} : GeneratedAstAnchor \\{[\\s\\S]*?fingerprint ast\\.semantic_subtree_v1\\("([^"]+)"\\)`
+      )
+    )?.[1];
+    const expectedFingerprint = result.stdout.match(
+      new RegExp(`expects ${anchorName} fingerprint ast\\.semantic_subtree_v1\\("([^"]+)"\\)`)
+    )?.[1];
+    expect(resourceFingerprint).toMatch(/^sha256:[0-9a-f]{64}$/);
+    expect(expectedFingerprint).toBe(resourceFingerprint);
     expect(result.stderr).toBe("");
   });
 
@@ -276,6 +289,37 @@ describe("shp CLI", () => {
       expect(result.stderr).toContain("AST generation failed");
       expect(result.stderr).toContain("nested_attribute");
       expect(result.stderr).not.toContain("buildRouteScanner");
+      expect(result.stdout).toBe("");
+    } finally {
+      await rm(tempDir, { recursive: true, force: true });
+    }
+  });
+
+  test("rejects AST JSON without token data for semantic fingerprints", async () => {
+    const tempDir = await mkdtemp(join(tmpdir(), "shp-cli-test-"));
+    const astFile = join(tempDir, "ast.json");
+    try {
+      await writeFile(
+        astFile,
+        JSON.stringify({
+          language: "rust",
+          files: [
+            {
+              path: "src/main.rs",
+              root: "root",
+              nodes: [
+                { id: "root", kind: "source_file", children: ["main"] },
+                { id: "main", kind: "function_item", attributes: { name: "main" } }
+              ]
+            }
+          ]
+        })
+      );
+
+      const result = await runCli(["ast", "json", astFile]);
+
+      expect(result.exitCode).toBe(2);
+      expect(result.stderr).toContain("missing_fingerprint_tokens");
       expect(result.stdout).toBe("");
     } finally {
       await rm(tempDir, { recursive: true, force: true });

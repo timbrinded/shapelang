@@ -41,6 +41,7 @@ component ShapeGrammar {
   owns SyntaxHighlighting
   grants Read<LangiumGrammar>
   grants Update<GeneratedAst>
+  grants Update<ShapeLanguageDefinition>
   grants Update<SyntaxHighlighting>
   fn generateAst
     source langium("packages/shp-checker/src/language/shape.langium")
@@ -53,6 +54,8 @@ component ShapeGrammar {
         evidence ts("packages/shp-checker/src/language/generated/grammar.ts")
       Update<GeneratedAst>
         evidence ts("packages/shp-checker/src/language/generated/module.ts")
+      Update<ShapeLanguageDefinition>
+        evidence langium("packages/shp-checker/src/language/shape.langium")
     }
   fn updateSyntaxHighlighting
     source js("docs-site/src/syntax/shape-language.mjs")

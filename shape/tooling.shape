@@ -6,6 +6,8 @@ import shape.language
 
 resource AnalyzerHint
 
+resource AstAnchorFingerprint
+
 resource AuthoringPrompt
 
 resource CanonicalShapeFormat
@@ -56,9 +58,11 @@ component ShapeAnalyzer {
 }
 
 component ShapeAstGenerator {
+  owns AstAnchorFingerprint
   owns CodeSemanticGraph
   owns GeneratedAstAnchor
   owns GeneratedAstTrace
+  grants Append<AstAnchorFingerprint>
   grants Append<CodeSemanticGraph>
   grants Append<GeneratedAstAnchor>
   grants Append<GeneratedAstTrace>
@@ -70,6 +74,8 @@ component ShapeAstGenerator {
   fn buildCodeSemanticGraphFromAstJson
     source ts("packages/shp-checker/src/ast-generation.ts#buildCodeSemanticGraphFromAstJson")
     effects complete {
+      Append<AstAnchorFingerprint>
+        evidence ts("packages/shp-checker/src/ast-generation.ts")
       Append<CodeSemanticGraph>
         evidence ts("packages/shp-checker/src/ast-generation.ts")
       Append<SemanticDiagnostics>
@@ -80,6 +86,8 @@ component ShapeAstGenerator {
   fn generateShapeFromAstJson
     source ts("packages/shp-checker/src/ast-generation.ts#generateShapeFromAstJson")
     effects complete {
+      Append<AstAnchorFingerprint>
+        evidence ts("packages/shp-checker/src/ast-generation.ts")
       Append<CodeSemanticGraph>
         evidence ts("packages/shp-checker/src/ast-generation.ts")
       Append<GeneratedAstAnchor>
@@ -94,6 +102,8 @@ component ShapeAstGenerator {
   fn generateShapeFromCodeSemanticGraph : RefactorSensitive
     source ts("packages/shp-checker/src/ast-generation.ts#generateShapeFromCodeSemanticGraph")
     effects complete {
+      Append<AstAnchorFingerprint>
+        evidence ts("packages/shp-checker/src/ast-generation.ts")
       Append<GeneratedAstAnchor>
         evidence ts("packages/shp-checker/src/ast-generation.ts")
       Append<GeneratedAstTrace>
@@ -106,6 +116,8 @@ component ShapeAstGenerator {
   fn generateShapeFromSourceFiles
     source ts("packages/shp-checker/src/ast-generation.ts#generateShapeFromSourceFiles")
     effects complete {
+      Append<AstAnchorFingerprint>
+        evidence ts("packages/shp-checker/src/ast-generation.ts")
       Append<CodeSemanticGraph>
         evidence ts("packages/shp-checker/src/ast-generation.ts")
       Append<GeneratedAstAnchor>
@@ -120,6 +132,8 @@ component ShapeAstGenerator {
   fn parseSourceFilesToCodeSemanticGraph
     source ts("packages/shp-checker/src/ast-generation.ts#parseSourceFilesToCodeSemanticGraph")
     effects complete {
+      Append<AstAnchorFingerprint>
+        evidence ts("packages/shp-checker/src/ast-generation.ts")
       Append<CodeSemanticGraph>
         evidence ts("packages/shp-checker/src/ast-generation.ts")
       Append<SemanticDiagnostics>
@@ -453,7 +467,7 @@ memory AstGenerationUnknownSafety : RefactorConstraint<fn ShapeAstGenerator.gene
   applies_to fn ShapeAstGenerator.generateShapeFromCodeSemanticGraph
   status Explained
   confidence High
-  summary "AST-derived architecture drafts must preserve uncertainty with effects unknown, include compact syntax anchors, and keep raw syntax traces opt-in."
+  summary "AST-derived architecture drafts must preserve uncertainty with effects unknown, include compact syntax anchors with semantic fingerprints, and keep raw syntax traces opt-in."
   owner ShapeMaintainers
   protects shape GeneratedAstDraftSafety
   guards on_change require ReEvaluation<Self>
@@ -522,7 +536,7 @@ memory UpdateBinaryIntegrity : RefactorConstraint<fn ShpCli.updateInstalledBinar
 reevaluation AstGenerationDraftSafetyRechecked {
   satisfies memory AstGenerationUnknownSafety
   outcome Confirmed
-  summary "AST generation tests cover semantic drafts that parse with compact AST anchors while keeping effects unknown as a review blocker and raw AST output opt-in."
+  summary "AST generation tests cover semantic drafts that parse with compact fingerprinted AST anchors while keeping effects unknown as a review blocker and raw AST output opt-in."
   reviewer ShapeMaintainers
   decided_on "2026-05-21"
   evidence test("packages/shp-checker/src/checker.test.ts")

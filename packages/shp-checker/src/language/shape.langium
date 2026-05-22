@@ -18,10 +18,13 @@ ResourceBody:
     '{' members+=ResourceMember* '}';
 
 ResourceMember:
-    StorageDecl;
+    StorageDecl | FingerprintDecl;
 
 StorageDecl:
     'storage' provider=QualifiedName '(' value=STRING ')';
+
+FingerprintDecl:
+    'fingerprint' provider=QualifiedName '(' value=STRING ')';
 
 TraitDecl:
     'trait' name=ID typeParams=TypeParamList?
@@ -69,7 +72,7 @@ RelationDecl:
     '}';
 
 RelationMember:
-    RelationKindDecl | RelationConnectsDecl | RelationRolesDecl | RelationSummaryDecl;
+    RelationKindDecl | RelationConnectsDecl | RelationRolesDecl | RelationFingerprintExpectationDecl | RelationSummaryDecl;
 
 RelationKindDecl:
     'kind' value=RelationKindName;
@@ -91,6 +94,9 @@ RelationRolesDecl:
 
 RelationRoleEntry:
     name=QualifiedTargetName 'as' role=ID;
+
+RelationFingerprintExpectationDecl:
+    'expects' endpoint=RelationEndpoint 'fingerprint' provider=QualifiedName '(' value=STRING ')';
 
 RelationSummaryDecl:
     'summary' value=STRING;

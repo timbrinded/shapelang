@@ -91,6 +91,29 @@ rule GatewayBoundary forbids provides JsonRpcEndpoint except Gateway.
 
 Move the `provides` relation onto the allowed component, or change the rule.
 
+## Stale Fingerprint Expectation
+
+Cause: a relation pins a resource fingerprint, but the current resource fingerprint is missing or different. This usually means a reviewed Shape claim still points at an older generated AST anchor version.
+
+```shape
+module generated.audit
+
+resource AuditStoreAstAnchor {
+  fingerprint ast.semantic_subtree_v1("sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb")
+}
+
+component AuditStore {
+}
+
+relation ReviewedFromAst {
+  kind generated_from
+  connects AuditStore -> AuditStoreAstAnchor
+  expects AuditStoreAstAnchor fingerprint ast.semantic_subtree_v1("sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+}
+```
+
+Regenerate the AST anchor layer, inspect the changed code evidence, then either update the pinned fingerprint after review or revise the claim.
+
 ## Missing grant
 
 Cause: a function emits an effect that its component does not grant.

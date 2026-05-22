@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { statSync } from "node:fs";
 import { createRequire } from "node:module";
 
@@ -45,6 +46,7 @@ export type RawAstNode = {
   kind: string;
   named: boolean;
   semanticLabel?: string;
+  attributes?: Record<string, AstScalar>;
   parentId?: string;
   childIndex?: number;
   fieldName?: string;
@@ -52,6 +54,8 @@ export type RawAstNode = {
   textHash?: string;
   text?: string;
 };
+
+type AstScalar = string | number | boolean | null;
 
 export type RawAstFile = {
   id: string;
@@ -110,6 +114,12 @@ export type CodeAstAnchor = {
   sourceRef: string;
   target: string;
   targetKind: "component" | "fn" | "resource";
+  fingerprint: AstFingerprint;
+};
+
+export type AstFingerprint = {
+  provider: string;
+  value: string;
 };
 
 export type CodeRelation = {
@@ -206,6 +216,7 @@ const DATA_RESOURCE_NAME_HINT =
   /(Event|Record|Message|Config|State|Entity|Snapshot|Request|Response|Table|Queue|Topic|Payload)$/;
 const CALL_RECEIVER_PATTERN =
   /\b(?:self|this)\.([A-Za-z_][A-Za-z0-9_]*)\.([A-Za-z_][A-Za-z0-9_]*)\b/g;
+const AST_SEMANTIC_SUBTREE_FINGERPRINT_PROVIDER = "ast.semantic_subtree_v1";
 const SHAPE_RESERVED_WORDS = new Set([
   "allow",
   "applies_to",
@@ -221,7 +232,9 @@ const SHAPE_RESERVED_WORDS = new Set([
   "coordinated_call",
   "effects",
   "evidence",
+  "expects",
   "final",
+  "fingerprint",
   "fn",
   "forbid",
   "grants",
@@ -322,7 +335,10 @@ export async function parseSourceFilesToCodeSemanticGraph(
   }
 
   addSemanticProjection(graph);
-  return { ok: true, value: graph, diagnostics };
+  if (graph.diagnostics.some((diagnostic) => diagnostic.kind === "error")) {
+    return { ok: false, diagnostics: graph.diagnostics };
+  }
+  return { ok: true, value: graph, diagnostics: graph.diagnostics };
 }
 
 export function buildCodeSemanticGraphFromAstJson(
@@ -351,7 +367,10 @@ export function buildCodeSemanticGraphFromAstJson(
   }
 
   addSemanticProjection(graph);
-  return { ok: true, value: graph, diagnostics };
+  if (graph.diagnostics.some((diagnostic) => diagnostic.kind === "error")) {
+    return { ok: false, diagnostics: graph.diagnostics };
+  }
+  return { ok: true, value: graph, diagnostics: graph.diagnostics };
 }
 
 export function generateShapeFromCodeSemanticGraph(
@@ -620,6 +639,7 @@ function normalizeJsonAstFile(
       span: node.span,
       textHash: node.textHash ?? (node.text ? stableHash(node.text) : undefined),
       text: node.text,
+      attributes: node.attributes,
       semanticLabel: typeof name === "string" ? name : undefined
     };
   });
@@ -996,7 +1016,7 @@ function addResource(
 
 function addAnchor(
   graph: CodeSemanticGraph,
-  input: Omit<CodeAstAnchor, "id" | "name"> & {
+  input: Omit<CodeAstAnchor, "id" | "name" | "fingerprint"> & {
     name: string;
   }
 ): CodeAstAnchor {
@@ -1009,6 +1029,7 @@ function addAnchor(
   if (existing) {
     return existing;
   }
+  const fingerprint = fingerprintForAnchor(graph, input);
   const anchor = {
     ...input,
     id: stableShapeId(`anchor_${input.targetKind}_${input.target}_${input.nodeId}`, "AstAnchor"),
@@ -1016,10 +1037,266 @@ function addAnchor(
       shapeTypeName(input.name),
       graph.anchors.map((item) => item.name),
       input.nodeId
-    )
+    ),
+    fingerprint
   };
   graph.anchors.push(anchor);
   return anchor;
+}
+
+type CanonicalFingerprintNode = {
+  kind: string;
+  named: boolean;
+  field?: string;
+  label?: string;
+  attributes?: Record<string, AstScalar>;
+  token?: string;
+  children?: CanonicalFingerprintNode[];
+};
+
+type CanonicalFingerprintResult = {
+  node?: CanonicalFingerprintNode;
+  hasToken: boolean;
+};
+
+function fingerprintForAnchor(
+  graph: CodeSemanticGraph,
+  input: Omit<CodeAstAnchor, "id" | "name" | "fingerprint">
+): AstFingerprint {
+  const nodeById = new Map(graph.rawNodes.map((node) => [node.id, node]));
+  const node = nodeById.get(input.nodeId);
+  const provider = AST_SEMANTIC_SUBTREE_FINGERPRINT_PROVIDER;
+  if (!node) {
+    graph.diagnostics.push({
+      kind: "error",
+      code: "missing_fingerprint_node",
+      path: input.path,
+      nodeId: input.nodeId,
+      message: `cannot fingerprint AST anchor ${input.target}: node ${input.nodeId} is missing`
+    });
+    return { provider, value: sha256Fingerprint("missing") };
+  }
+
+  const payload = canonicalFingerprintPayload(graph, input, node);
+  if (!payload) {
+    graph.diagnostics.push({
+      kind: "error",
+      code: "missing_fingerprint_tokens",
+      path: input.path,
+      nodeId: input.nodeId,
+      message: `cannot compute ${provider} for ${input.target}; AST JSON/source node must include token text or semantic child tokens`
+    });
+    return { provider, value: sha256Fingerprint("missing") };
+  }
+
+  return { provider, value: sha256Fingerprint(stableJson(payload)) };
+}
+
+function canonicalFingerprintPayload(
+  graph: CodeSemanticGraph,
+  input: Omit<CodeAstAnchor, "id" | "name" | "fingerprint">,
+  node: RawAstNode
+): Record<string, unknown> | undefined {
+  const childrenByParent = groupChildren(graph.rawNodes);
+  const mode = input.targetKind === "fn" ? "function_subtree" : "declaration_shell";
+  const result = canonicalizeFingerprintNode(node, childrenByParent, {
+    rootId: node.id,
+    mode
+  });
+  if (!result.node || !result.hasToken) {
+    return undefined;
+  }
+  return {
+    provider: AST_SEMANTIC_SUBTREE_FINGERPRINT_PROVIDER,
+    language: normalizeLanguageName(node.language) ?? node.language,
+    targetKind: input.targetKind,
+    mode,
+    node: result.node
+  };
+}
+
+function canonicalizeFingerprintNode(
+  node: RawAstNode,
+  childrenByParent: Map<string, RawAstNode[]>,
+  options: {
+    rootId: string;
+    mode: "function_subtree" | "declaration_shell";
+  }
+): CanonicalFingerprintResult {
+  if (isCommentNode(node)) {
+    return { hasToken: false };
+  }
+
+  const children = childrenByParent.get(node.id) ?? [];
+  const pruneFunctionBody =
+    options.mode === "declaration_shell" && node.id !== options.rootId && isFunctionNode(node);
+  const canonicalChildren: CanonicalFingerprintNode[] = [];
+  let hasToken = false;
+
+  if (!pruneFunctionBody) {
+    for (const child of children) {
+      const childResult = canonicalizeFingerprintNode(child, childrenByParent, {
+        ...options
+      });
+      if (childResult.node) {
+        canonicalChildren.push(childResult.node);
+      }
+      hasToken ||= childResult.hasToken;
+    }
+  }
+
+  const attributes = canonicalAttributes(node);
+  const token =
+    pruneFunctionBody && node.text
+      ? normalizeSemanticTokenText(signatureText(node.text, node.language), node.language)
+      : children.length === 0
+        ? normalizeSemanticTokenText(node.text, node.language)
+        : undefined;
+  if (token) {
+    hasToken = true;
+  }
+
+  if (
+    !token &&
+    canonicalChildren.length === 0 &&
+    attributes === undefined &&
+    !node.semanticLabel &&
+    isSkippablePunctuationNode(node)
+  ) {
+    return { hasToken };
+  }
+
+  const canonical: CanonicalFingerprintNode = {
+    kind: node.kind,
+    named: node.named
+  };
+  if (node.fieldName) {
+    canonical.field = node.fieldName;
+  }
+  if (node.semanticLabel) {
+    canonical.label = node.semanticLabel;
+  }
+  if (attributes) {
+    canonical.attributes = attributes;
+  }
+  if (token) {
+    canonical.token = token;
+  }
+  if (canonicalChildren.length > 0) {
+    canonical.children = canonicalChildren;
+  }
+
+  return { node: canonical, hasToken };
+}
+
+function canonicalAttributes(node: RawAstNode): Record<string, AstScalar> | undefined {
+  if (!node.attributes) {
+    return undefined;
+  }
+  const entries = Object.entries(node.attributes).sort(([left], [right]) =>
+    left.localeCompare(right)
+  );
+  if (entries.length === 0) {
+    return undefined;
+  }
+  return Object.fromEntries(entries);
+}
+
+function signatureText(text: string, language: string): string {
+  const withoutComments = stripComments(text, language);
+  const braceIndex = withoutComments.indexOf("{");
+  if (braceIndex >= 0) {
+    return withoutComments.slice(0, braceIndex);
+  }
+  const lines = withoutComments.split(/\r?\n/);
+  return lines[0] ?? withoutComments;
+}
+
+function normalizeSemanticTokenText(
+  text: string | undefined,
+  language: string
+): string | undefined {
+  if (!text) {
+    return undefined;
+  }
+  const tokens = semanticTokens(stripComments(text, language)).filter(
+    (token) => !isSkippablePunctuation(token)
+  );
+  if (tokens.length === 0) {
+    return undefined;
+  }
+  return tokens.join(" ");
+}
+
+function semanticTokens(text: string): string[] {
+  const tokenPattern =
+    /[A-Za-z_][A-Za-z0-9_]*|\d+(?:\.\d+)?|"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|==|!=|<=|>=|&&|\|\||->|=>|::|\.\.\.|[+\-*/%=<>!&|?.]+|[{}()[\],;:]/g;
+  return [...text.matchAll(tokenPattern)].map((match) => match[0]);
+}
+
+function stripComments(text: string, language: string): string {
+  let stripped = text.replace(/\/\*[\s\S]*?\*\//g, " ").replace(/\/\/[^\n\r]*/g, " ");
+  if (language === "python") {
+    stripped = stripped.replace(/#[^\n\r]*/g, " ");
+  }
+  return stripped;
+}
+
+function isCommentNode(node: RawAstNode): boolean {
+  return /\bcomment\b|^comment$|_comment$/.test(node.kind);
+}
+
+function isSkippablePunctuationNode(node: RawAstNode): boolean {
+  return !node.named && isSkippablePunctuation(node.text ?? node.kind);
+}
+
+function isSkippablePunctuation(value: string): boolean {
+  const token = value.trim();
+  if (!/^[^\w\s]+$/.test(token)) {
+    return false;
+  }
+  const semanticPunctuation = new Set([
+    "*",
+    "&",
+    "?",
+    "!",
+    "=",
+    "==",
+    "!=",
+    "<",
+    ">",
+    "<=",
+    ">=",
+    "+",
+    "-",
+    "/",
+    "%",
+    "&&",
+    "||",
+    "->",
+    "=>",
+    "::",
+    ".",
+    "..."
+  ]);
+  return !semanticPunctuation.has(token);
+}
+
+function stableJson(value: unknown): string {
+  if (Array.isArray(value)) {
+    return `[${value.map(stableJson).join(",")}]`;
+  }
+  if (value && typeof value === "object") {
+    const entries = Object.entries(value as Record<string, unknown>)
+      .filter(([, item]) => item !== undefined)
+      .sort(([left], [right]) => left.localeCompare(right));
+    return `{${entries.map(([key, item]) => `${JSON.stringify(key)}:${stableJson(item)}`).join(",")}}`;
+  }
+  return JSON.stringify(value);
+}
+
+function sha256Fingerprint(value: string): string {
+  return `sha256:${createHash("sha256").update(value).digest("hex")}`;
 }
 
 function addResolvedReceiverCalls(
@@ -1186,6 +1463,7 @@ function formatSemanticShape(
           source: anchor.sourceRef
         })
       )})`,
+      `  fingerprint ${anchor.fingerprint.provider}(${quoteShapeString(anchor.fingerprint.value)})`,
       "}"
     );
   }
@@ -1293,6 +1571,9 @@ function appendGeneratedFromRelations(
       "  kind generated_from",
       `  connects ${link.from} -> ${link.anchor.name}`,
       `  roles { ${link.from} as generated, ${link.anchor.name} as syntax }`,
+      `  expects ${link.anchor.name} fingerprint ${link.anchor.fingerprint.provider}(${quoteShapeString(
+        link.anchor.fingerprint.value
+      )})`,
       `  summary ${quoteShapeString(link.summary)}`,
       "}"
     );

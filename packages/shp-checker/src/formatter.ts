@@ -9,6 +9,7 @@ import type {
   EffectEntry,
   EffectPattern,
   EffectTerm,
+  FingerprintDecl,
   FunctionMember,
   FunctionSummary,
   ImplementationDecl,
@@ -46,6 +47,7 @@ import {
   isDecidedOnDecl,
   isEvidenceLineDecl,
   isExpiresDecl,
+  isFingerprintDecl,
   isFunctionRequiresDecl,
   isFunctionSummary,
   isGrantsDecl,
@@ -66,6 +68,7 @@ import {
   isReevaluationDecl,
   isRelationConnectsDecl,
   isRelationDecl,
+  isRelationFingerprintExpectationDecl,
   isRelationKindDecl,
   isRelationRolesDecl,
   isRelationSummaryDecl,
@@ -189,7 +192,8 @@ function formatResource(resource: ResourceDecl): string {
           .join(", ")}`
       : "";
   const storage = resource.body?.members.filter(isStorageDecl) ?? [];
-  if (storage.length === 0) {
+  const fingerprints = resource.body?.members.filter(isFingerprintDecl) ?? [];
+  if (storage.length === 0 && fingerprints.length === 0) {
     return `resource ${resource.name}${traits}`;
   }
 
@@ -200,6 +204,11 @@ function formatResource(resource: ResourceDecl): string {
         `${left.provider}:${left.value}`.localeCompare(`${right.provider}:${right.value}`)
       )
       .map((item) => indent(`storage ${item.provider}(${quote(item.value)})`)),
+    ...fingerprints
+      .sort((left, right) =>
+        `${left.provider}:${left.value}`.localeCompare(`${right.provider}:${right.value}`)
+      )
+      .map((item) => indent(formatFingerprint(item))),
     "}"
   ].join("\n");
 }
@@ -254,6 +263,7 @@ function formatRelation(relation: RelationDecl): string {
   let kindLine = "";
   let connectsLine = "";
   const rolesLines: string[] = [];
+  const expectationLines: string[] = [];
   let summaryLine = "";
 
   for (const member of relation.members) {
@@ -273,15 +283,27 @@ function formatRelation(relation: RelationDecl): string {
       rolesLines.push(
         `roles { ${sortedRoles.map((role) => `${role.name} as ${role.role}`).join(", ")} }`
       );
+    } else if (isRelationFingerprintExpectationDecl(member)) {
+      expectationLines.push(
+        `expects ${member.endpoint.name} fingerprint ${member.provider}(${quote(member.value)})`
+      );
     } else if (isRelationSummaryDecl(member)) {
       summaryLine = `summary ${quote(member.value)}`;
     }
   }
 
-  const lines = [kindLine, connectsLine, ...rolesLines, summaryLine].filter(
-    (line) => line.length > 0
-  );
+  const lines = [
+    kindLine,
+    connectsLine,
+    ...rolesLines,
+    ...expectationLines.sort(),
+    summaryLine
+  ].filter((line) => line.length > 0);
   return block(`relation ${relation.name}`, lines);
+}
+
+function formatFingerprint(fingerprint: FingerprintDecl): string {
+  return `fingerprint ${fingerprint.provider}(${quote(fingerprint.value)})`;
 }
 
 function formatFunction(fn: FunctionSummary | AddFunctionChange): string {
