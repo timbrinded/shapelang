@@ -1,0 +1,33 @@
+module shape.generated.ast.packages.shp_checker.src.source_languages
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource SourceLanguagesModuleInferAstSourceLanguageFromPathAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/source-languages.ts:15-38")
+  fingerprint ast.semantic_subtree_v1("sha256:bb23435871c69876d80b90d132eb0d7cbc7ee28c6326bb33ffb4e7f01f611341")
+}
+
+component SourceLanguagesModule : GeneratedCandidate {
+  fn inferAstSourceLanguageFromPath
+    source ts("packages/shp-checker/src/source-languages.ts:15-38")
+    effects unknown
+}
+
+relation SourceLanguagesModuleInferAstSourceLanguageFromPathGeneratedFromSourceLanguagesModuleInferAstSourceLanguageFromPathAstAnchor {
+  kind generated_from
+  connects SourceLanguagesModule -> SourceLanguagesModuleInferAstSourceLanguageFromPathAstAnchor
+  roles { SourceLanguagesModule as generated, SourceLanguagesModuleInferAstSourceLanguageFromPathAstAnchor as syntax }
+  expects SourceLanguagesModuleInferAstSourceLanguageFromPathAstAnchor fingerprint ast.semantic_subtree_v1("sha256:bb23435871c69876d80b90d132eb0d7cbc7ee28c6326bb33ffb4e7f01f611341")
+  summary "fn SourceLanguagesModule.inferAstSourceLanguageFromPath generated from typescript function_declaration at packages/shp-checker/src/source-languages.ts:15-38."
+}
+
+implementation SourceLanguagesModuleImpl {
+  paths {
+    "packages/shp-checker/src/source-languages.ts"
+  }
+  conforms_to SourceLanguagesModule
+}

@@ -119,6 +119,7 @@ import {
   normalizeShapeSourcePath,
   unquoteShapeString
 } from "./shape-strings.ts";
+import { isTrustedGeneratedAstModule } from "./generated-ast-policy.ts";
 
 /**
  * Kind registry: every relation kind declares whether its members are
@@ -163,6 +164,14 @@ export type SemanticDiagnostic =
       kind: "unknown_name";
       nameKind: "resource" | "component" | "trait" | "relation_endpoint";
       name: string;
+      filePath?: string;
+      causedBy: string[];
+    }
+  | {
+      kind: "ambiguous_name";
+      nameKind: DeclarationKind | "relation_endpoint";
+      name: string;
+      matches: string[];
       filePath?: string;
       causedBy: string[];
     }
@@ -231,6 +240,23 @@ export type SemanticDiagnostic =
       provider: string;
       expected: string;
       actual?: string;
+      filePath?: string;
+      causedBy: string[];
+    }
+  | {
+      kind: "candidate_pin_fingerprint_mismatch";
+      candidateEffect: string;
+      anchor: string;
+      provider: string;
+      expected: string;
+      actual?: string;
+      filePath?: string;
+      causedBy: string[];
+    }
+  | {
+      kind: "invalid_candidate_effect";
+      name: string;
+      reason: string;
       filePath?: string;
       causedBy: string[];
     }
@@ -486,6 +512,11 @@ type DeclarationKind =
   | "rule";
 
 type DeclarationIndex = Record<DeclarationKind, Map<string, Set<string>>>;
+
+type ResolutionResult =
+  | { kind: "resolved"; name: string }
+  | { kind: "unknown"; name: string }
+  | { kind: "ambiguous"; name: string; matches: string[] };
 
 type Provenance = {
   filePath?: string;
@@ -792,6 +823,7 @@ export function checkShapeModules(
     ...model.diagnostics,
     ...checkResolvedNames(model),
     ...checkFingerprintExpectations(model),
+    ...checkCandidateEffectFingerprints(model),
     ...checkContextTargets(model),
     ...checkRequiredContext(model),
     ...checkRequiredDescriptions(model),
@@ -1385,20 +1417,6 @@ function moduleContext(input: CheckModuleInput): LoweringContext {
   };
 }
 
-function isTrustedGeneratedAstModule(moduleName: string, filePath: string | undefined): boolean {
-  if (!isGeneratedAstModuleName(moduleName)) {
-    return false;
-  }
-  if (!filePath) {
-    return false;
-  }
-  return normalizeRepoPath(filePath).startsWith("shape/generated/ast/");
-}
-
-function isGeneratedAstModuleName(moduleName: string): boolean {
-  return moduleName === "shape.generated.ast" || moduleName.startsWith("shape.generated.ast.");
-}
-
 function indexModuleDeclarations(
   module: ShapeModule,
   context: LoweringContext,
@@ -1502,45 +1520,101 @@ function resolveDeclName(
   context: LoweringContext,
   model: Model
 ): string {
+  const result = resolveDeclReference(name, kind, context, model);
+  if (result.kind === "ambiguous") {
+    model.diagnostics.push({
+      kind: "ambiguous_name",
+      nameKind: kind,
+      name,
+      matches: result.matches,
+      filePath: context.filePath,
+      causedBy: [describeProvenance(provenance(context.filePath, `${kind} reference ${name}`))]
+    });
+  }
+  return result.name;
+}
+
+function resolveDeclReference(
+  name: string,
+  kind: DeclarationKind,
+  context: LoweringContext,
+  model: Model
+): ResolutionResult {
   const qualified = splitQualifiedName(name);
   if (qualified.moduleName !== undefined) {
-    return declKey(qualified.moduleName, qualified.localName);
+    return { kind: "resolved", name: declKey(qualified.moduleName, qualified.localName) };
   }
   if (
     kind === "trait" &&
     KNOWN_PRELUDE_TRAITS.has(name) &&
     !declaredLocally(model, kind, context.name, name)
   ) {
-    return name;
+    return { kind: "resolved", name };
   }
   if (declaredLocally(model, kind, context.name, name)) {
-    return declKey(context.name, name);
+    return { kind: "resolved", name: declKey(context.name, name) };
   }
   const importedMatches = context.imports
     .filter((moduleName) => declaredLocally(model, kind, moduleName, name))
-    .map((moduleName) => declKey(moduleName, name));
-  return importedMatches[0] ?? declKey(context.name, name);
+    .map((moduleName) => declKey(moduleName, name))
+    .sort();
+  if (importedMatches.length > 1) {
+    return { kind: "ambiguous", name: declKey(context.name, name), matches: importedMatches };
+  }
+  return importedMatches[0]
+    ? { kind: "resolved", name: importedMatches[0] }
+    : { kind: "unknown", name: declKey(context.name, name) };
 }
 
 function resolveVertexName(name: string, context: LoweringContext, model: Model): string {
+  const result = resolveVertexReference(name, context, model);
+  if (result.kind === "ambiguous") {
+    model.diagnostics.push({
+      kind: "ambiguous_name",
+      nameKind: "relation_endpoint",
+      name,
+      matches: result.matches,
+      filePath: context.filePath,
+      causedBy: [
+        describeProvenance(provenance(context.filePath, `relation endpoint reference ${name}`))
+      ]
+    });
+  }
+  return result.name;
+}
+
+function resolveVertexReference(
+  name: string,
+  context: LoweringContext,
+  model: Model
+): ResolutionResult {
   const qualified = splitQualifiedName(name);
   if (qualified.moduleName !== undefined) {
-    return declKey(qualified.moduleName, qualified.localName);
+    return { kind: "resolved", name: declKey(qualified.moduleName, qualified.localName) };
   }
   if (
     declaredLocally(model, "component", context.name, name) ||
     declaredLocally(model, "resource", context.name, name)
   ) {
-    return declKey(context.name, name);
+    return { kind: "resolved", name: declKey(context.name, name) };
   }
-  const importedMatches = context.imports
-    .filter(
-      (moduleName) =>
-        declaredLocally(model, "component", moduleName, name) ||
-        declaredLocally(model, "resource", moduleName, name)
+  const importedMatches = [
+    ...new Set(
+      context.imports
+        .filter(
+          (moduleName) =>
+            declaredLocally(model, "component", moduleName, name) ||
+            declaredLocally(model, "resource", moduleName, name)
+        )
+        .map((moduleName) => declKey(moduleName, name))
     )
-    .map((moduleName) => declKey(moduleName, name));
-  return importedMatches[0] ?? declKey(context.name, name);
+  ].sort();
+  if (importedMatches.length > 1) {
+    return { kind: "ambiguous", name: declKey(context.name, name), matches: importedMatches };
+  }
+  return importedMatches[0]
+    ? { kind: "resolved", name: importedMatches[0] }
+    : { kind: "unknown", name: declKey(context.name, name) };
 }
 
 function resolveTargetName(
@@ -2093,20 +2167,58 @@ function lowerCandidateEffect(
     moduleName: context.name,
     provenance: prov
   };
+  const seen = {
+    fn: 0,
+    effect: 0,
+    source: 0,
+    confidence: 0,
+    pin: 0
+  };
 
   for (const member of candidateEffect.members) {
     if (isCandidateEffectFunctionDecl(member)) {
+      seen.fn += 1;
+      if (seen.fn > 1) {
+        pushInvalidCandidateEffect(model, name, "duplicate fn", context.filePath, prov);
+        continue;
+      }
       info.functionTarget = resolveFunctionTargetName(member.function, context, model);
     } else if (isCandidateEffectTermDecl(member)) {
+      seen.effect += 1;
+      if (seen.effect > 1) {
+        pushInvalidCandidateEffect(model, name, "duplicate effect", context.filePath, prov);
+        continue;
+      }
       info.term = lowerTerm(member.term, context, model);
     } else if (isCandidateEffectConfidenceDecl(member)) {
+      seen.confidence += 1;
+      if (seen.confidence > 1) {
+        pushInvalidCandidateEffect(model, name, "duplicate confidence", context.filePath, prov);
+        continue;
+      }
       info.confidence = member.value;
     } else if (isCandidateEffectAnchorDecl(member)) {
+      seen.pin += 1;
+      if (seen.pin > 1) {
+        pushInvalidCandidateEffect(model, name, "duplicate pin", context.filePath, prov);
+        continue;
+      }
       info.anchor = resolveDeclName(member.target.name, "resource", context, model);
       info.fingerprintProvider = member.provider;
       info.fingerprintValue = unquoteShapeString(member.value);
     } else {
+      seen.source += 1;
+      if (seen.source > 1) {
+        pushInvalidCandidateEffect(model, name, "duplicate source", context.filePath, prov);
+        continue;
+      }
       info.source = lowerSourceRef(member);
+    }
+  }
+
+  for (const [field, count] of Object.entries(seen)) {
+    if (count === 0) {
+      pushInvalidCandidateEffect(model, name, `missing ${field}`, context.filePath, prov);
     }
   }
 
@@ -2123,6 +2235,22 @@ function lowerCandidateEffect(
     fingerprintProvider: info.fingerprintProvider,
     fingerprintValue: info.fingerprintValue,
     provenance: prov
+  });
+}
+
+function pushInvalidCandidateEffect(
+  model: Model,
+  name: string,
+  reason: string,
+  filePath: string | undefined,
+  provenanceInfo: Provenance
+): void {
+  model.diagnostics.push({
+    kind: "invalid_candidate_effect",
+    name,
+    reason,
+    filePath,
+    causedBy: [describeProvenance(provenanceInfo)]
   });
 }
 
@@ -2533,7 +2661,25 @@ function emitGuardFacts(kind: ContextKind, info: RationaleInfo | MemoryInfo, mod
 function lowerChange(change: ChangeDecl, context: LoweringContext, model: Model): void {
   for (const entry of change.entries) {
     if (isAddFunctionChange(entry) || isModifyFunctionChange(entry)) {
-      const componentName = resolveDeclName(entry.component, "component", context, model);
+      const [componentName, functionName] = resolveFunctionTargetParts(
+        entry.target,
+        context,
+        model
+      );
+      if (!componentName || !functionName) {
+        model.diagnostics.push({
+          kind: "unknown_name",
+          nameKind: "component",
+          name: entry.target,
+          filePath: context.filePath,
+          causedBy: [
+            describeProvenance(
+              provenance(context.filePath, `change ${change.name} ${entry.$type} ${entry.target}`)
+            )
+          ]
+        });
+        continue;
+      }
       const component = model.components.get(componentName);
       if (!component) {
         model.diagnostics.push({
@@ -2545,7 +2691,7 @@ function lowerChange(change: ChangeDecl, context: LoweringContext, model: Model)
             describeProvenance(
               provenance(
                 context.filePath,
-                `change ${change.name} ${entry.$type} ${componentName}.${entry.name}`
+                `change ${change.name} ${entry.$type} ${componentName}.${functionName}`
               )
             )
           ]
@@ -2556,30 +2702,48 @@ function lowerChange(change: ChangeDecl, context: LoweringContext, model: Model)
       if (isModifyFunctionChange(entry)) {
         model.changeEvents.push({
           kind: "function_modified",
-          target: functionTarget(componentName, entry.name),
+          target: functionTarget(componentName, functionName),
           provenance: provenance(
             context.filePath,
-            `change ${change.name} modify fn ${componentName}.${entry.name}`
+            `change ${change.name} modify fn ${componentName}.${functionName}`
           )
         });
       }
 
       const fn = lowerFunction(entry, componentName, context, model, `change ${change.name}`);
-      removeFunctionFacts(model, componentName, entry.name);
+      removeFunctionFacts(model, componentName, functionName);
       component.functions.set(fn.name, fn);
       emitFunctionFacts(fn, model);
     } else if (isRemoveFunctionChange(entry)) {
-      const componentName = resolveDeclName(entry.component, "component", context, model);
+      const [componentName, functionName] = resolveFunctionTargetParts(
+        entry.target,
+        context,
+        model
+      );
+      if (!componentName || !functionName) {
+        model.diagnostics.push({
+          kind: "unknown_name",
+          nameKind: "component",
+          name: entry.target,
+          filePath: context.filePath,
+          causedBy: [
+            describeProvenance(
+              provenance(context.filePath, `change ${change.name} remove fn ${entry.target}`)
+            )
+          ]
+        });
+        continue;
+      }
       model.changeEvents.push({
         kind: "function_removed",
-        target: functionTarget(componentName, entry.name),
+        target: functionTarget(componentName, functionName),
         provenance: provenance(
           context.filePath,
-          `change ${change.name} remove fn ${componentName}.${entry.name}`
+          `change ${change.name} remove fn ${componentName}.${functionName}`
         )
       });
-      removeFunctionFacts(model, componentName, entry.name);
-      model.components.get(componentName)?.functions.delete(entry.name);
+      removeFunctionFacts(model, componentName, functionName);
+      model.components.get(componentName)?.functions.delete(functionName);
     } else if (isAddDeclarationChange(entry)) {
       lowerDeclaration(entry.declaration, context, model);
     } else if (isModifyDeclarationChange(entry)) {
@@ -2600,6 +2764,14 @@ function lowerChange(change: ChangeDecl, context: LoweringContext, model: Model)
       removeDeclaration(entry.kind, entry.name, context, model);
     }
   }
+}
+
+function resolveFunctionTargetParts(
+  target: string,
+  context: LoweringContext,
+  model: Model
+): [string | undefined, string | undefined] {
+  return splitFunctionTarget(resolveFunctionTargetName(target, context, model));
 }
 
 function contextForDeclarationChange(
@@ -2713,18 +2885,19 @@ function lowerFunction(
   model: Model,
   labelContext?: string
 ): FunctionInfo {
+  const functionName = functionNameForAst(fn);
   const source = fn.source ? lowerSourceRef(fn.source) : undefined;
   const info: FunctionInfo = {
     component: componentName,
-    name: fn.name,
-    localName: fn.name,
+    name: functionName,
+    localName: functionName,
     source,
     unsafe: fn.unsafe,
     effects: lowerEffects(
       fn.effects,
       loweringContext.filePath,
       componentName,
-      fn.name,
+      functionName,
       loweringContext,
       model
     ),
@@ -2734,7 +2907,7 @@ function lowerFunction(
       ? lowerDescription(
           fn.description,
           componentName,
-          fn.name,
+          functionName,
           loweringContext.filePath,
           labelContext
         )
@@ -2742,7 +2915,7 @@ function lowerFunction(
     generatedAstCandidate: loweringContext.generatedAst,
     provenance: provenance(
       loweringContext.filePath,
-      `${labelContext ? `${labelContext} ` : ""}fn ${componentName}.${fn.name}`
+      `${labelContext ? `${labelContext} ` : ""}fn ${componentName}.${functionName}`
     )
   };
 
@@ -2759,6 +2932,14 @@ function lowerFunction(
   return info;
 }
 
+function functionNameForAst(fn: FunctionAst): string {
+  if (isFunctionSummary(fn)) {
+    return fn.name;
+  }
+  const [, functionName] = splitFunctionTarget(fn.target);
+  return functionName ?? fn.target;
+}
+
 function lowerShapeTraits(
   fn: FunctionAst,
   componentName: string,
@@ -2767,13 +2948,14 @@ function lowerShapeTraits(
   labelContext?: string
 ): Map<string, Provenance> {
   const traits = new Map<string, Provenance>();
+  const functionName = functionNameForAst(fn);
   for (const trait of fn.shapeTraits?.traits ?? []) {
     const traitName = resolveDeclName(trait.name, "trait", context, model);
     traits.set(
       traitName,
       provenance(
         context.filePath,
-        `${labelContext ? `${labelContext} ` : ""}fn ${componentName}.${fn.name} : ${traitName}`
+        `${labelContext ? `${labelContext} ` : ""}fn ${componentName}.${functionName} : ${traitName}`
       )
     );
   }
@@ -3353,6 +3535,45 @@ function checkFingerprintExpectations(model: Model): SemanticDiagnostic[] {
           ]
         });
       }
+    }
+  }
+
+  return diagnostics;
+}
+
+function checkCandidateEffectFingerprints(model: Model): SemanticDiagnostic[] {
+  const diagnostics: SemanticDiagnostic[] = [];
+
+  for (const candidateEffect of model.candidateEffects.values()) {
+    if (
+      !candidateEffect.anchor ||
+      !candidateEffect.fingerprintProvider ||
+      !candidateEffect.fingerprintValue
+    ) {
+      continue;
+    }
+
+    const anchor = model.resources.get(candidateEffect.anchor);
+    if (!anchor) {
+      continue;
+    }
+
+    const actual = anchor.fingerprints.get(candidateEffect.fingerprintProvider);
+    if (!actual || actual.value !== candidateEffect.fingerprintValue) {
+      diagnostics.push({
+        kind: "candidate_pin_fingerprint_mismatch",
+        candidateEffect: candidateEffect.name,
+        anchor: candidateEffect.anchor,
+        provider: candidateEffect.fingerprintProvider,
+        expected: candidateEffect.fingerprintValue,
+        actual: actual?.value,
+        filePath: candidateEffect.provenance.filePath,
+        causedBy: [
+          describeProvenance(candidateEffect.provenance),
+          describeProvenance(anchor.provenance),
+          ...(actual ? [describeProvenance(actual.provenance)] : [])
+        ]
+      });
     }
   }
 
@@ -4497,6 +4718,8 @@ function formatDiagnostic(diagnostic: ShapeDiagnostic): string {
       return formatUnknownEffectsDiagnostic(diagnostic);
     case "unknown_name":
       return formatUnknownNameDiagnostic(diagnostic);
+    case "ambiguous_name":
+      return formatAmbiguousNameDiagnostic(diagnostic);
     case "duplicate_declaration":
       return formatDuplicateDeclarationDiagnostic(diagnostic);
     case "duplicate_fingerprint":
@@ -4511,6 +4734,10 @@ function formatDiagnostic(diagnostic: ShapeDiagnostic): string {
       return formatForbiddenProvidesDiagnostic(diagnostic);
     case "fingerprint_mismatch":
       return formatFingerprintMismatchDiagnostic(diagnostic);
+    case "candidate_pin_fingerprint_mismatch":
+      return formatCandidatePinFingerprintMismatchDiagnostic(diagnostic);
+    case "invalid_candidate_effect":
+      return formatInvalidCandidateEffectDiagnostic(diagnostic);
     case "unsafe_effects":
       return formatUnsafeEffectsDiagnostic(diagnostic);
     case "missing_required_context":
@@ -4579,6 +4806,19 @@ function formatUnknownNameDiagnostic(
     `error: unknown ${diagnostic.nameKind}`,
     "",
     `${diagnostic.nameKind} ${displaySymbol(diagnostic.name)} is referenced but not declared.`,
+    formatCausedBy(diagnostic.causedBy)
+  ].join("\n");
+}
+
+function formatAmbiguousNameDiagnostic(
+  diagnostic: Extract<SemanticDiagnostic, { kind: "ambiguous_name" }>
+): string {
+  return [
+    `error: ambiguous ${diagnostic.nameKind}`,
+    "",
+    `${diagnostic.nameKind} ${diagnostic.name} matches more than one imported declaration.`,
+    "Use a module-qualified reference.",
+    `matches: ${diagnostic.matches.join(", ")}`,
     formatCausedBy(diagnostic.causedBy)
   ].join("\n");
 }
@@ -4670,9 +4910,34 @@ function formatFingerprintMismatchDiagnostic(
   return [
     "error: stale fingerprint expectation",
     "",
-    `relation ${displaySymbol(diagnostic.relation)} expects ${displaySymbol(diagnostic.endpoint)} fingerprint ${diagnostic.provider}.`,
+    `relation ${diagnostic.relation} expects ${diagnostic.endpoint} fingerprint ${diagnostic.provider}.`,
     `expected: ${diagnostic.expected}`,
     `actual: ${actual}`,
+    formatCausedBy(diagnostic.causedBy)
+  ].join("\n");
+}
+
+function formatCandidatePinFingerprintMismatchDiagnostic(
+  diagnostic: Extract<SemanticDiagnostic, { kind: "candidate_pin_fingerprint_mismatch" }>
+): string {
+  const actual = diagnostic.actual ?? "missing";
+  return [
+    "error: stale candidate effect pin",
+    "",
+    `candidate effect ${diagnostic.candidateEffect} pins ${diagnostic.anchor} fingerprint ${diagnostic.provider}.`,
+    `expected: ${diagnostic.expected}`,
+    `actual: ${actual}`,
+    formatCausedBy(diagnostic.causedBy)
+  ].join("\n");
+}
+
+function formatInvalidCandidateEffectDiagnostic(
+  diagnostic: Extract<SemanticDiagnostic, { kind: "invalid_candidate_effect" }>
+): string {
+  return [
+    "error: invalid candidate effect",
+    "",
+    `candidate effect ${diagnostic.name}: ${diagnostic.reason}.`,
     formatCausedBy(diagnostic.causedBy)
   ].join("\n");
 }

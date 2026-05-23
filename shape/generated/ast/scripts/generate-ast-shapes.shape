@@ -1,0 +1,33 @@
+module shape.generated.ast.scripts.generate_ast_shapes
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource GenerateAstShapesModuleTrackedSourceFilesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("scripts/generate-ast-shapes.ts:35-52")
+  fingerprint ast.semantic_subtree_v1("sha256:ba725bcc2a72647195ec28a8586290ea3c054ce546bdd3e4ddaf40d93a0d4635")
+}
+
+component GenerateAstShapesModule : GeneratedCandidate {
+  fn trackedSourceFiles
+    source ts("scripts/generate-ast-shapes.ts:35-52")
+    effects unknown
+}
+
+relation GenerateAstShapesModuleTrackedSourceFilesGeneratedFromGenerateAstShapesModuleTrackedSourceFilesAstAnchor {
+  kind generated_from
+  connects GenerateAstShapesModule -> GenerateAstShapesModuleTrackedSourceFilesAstAnchor
+  roles { GenerateAstShapesModule as generated, GenerateAstShapesModuleTrackedSourceFilesAstAnchor as syntax }
+  expects GenerateAstShapesModuleTrackedSourceFilesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ba725bcc2a72647195ec28a8586290ea3c054ce546bdd3e4ddaf40d93a0d4635")
+  summary "fn GenerateAstShapesModule.trackedSourceFiles generated from typescript function_declaration at scripts/generate-ast-shapes.ts:35-52."
+}
+
+implementation GenerateAstShapesModuleImpl {
+  paths {
+    "scripts/generate-ast-shapes.ts"
+  }
+  conforms_to GenerateAstShapesModule
+}

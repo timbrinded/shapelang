@@ -134,25 +134,23 @@ export function isAddDeclarationChange(item: unknown): item is AddDeclarationCha
 export interface AddFunctionChange extends langium.AstNode {
     readonly $container: ChangeDecl;
     readonly $type: 'AddFunctionChange';
-    component: string;
     description?: DescriptionDecl;
     effects: EffectsDecl;
     members: Array<FunctionMember>;
-    name: string;
     shapeTraits?: ShapeTraitList;
     source?: SourceDecl;
+    target: FunctionTargetName;
     unsafe: boolean;
 }
 
 export const AddFunctionChange = {
     $type: 'AddFunctionChange',
-    component: 'component',
     description: 'description',
     effects: 'effects',
     members: 'members',
-    name: 'name',
     shapeTraits: 'shapeTraits',
     source: 'source',
+    target: 'target',
     unsafe: 'unsafe'
 } as const;
 
@@ -719,6 +717,12 @@ export function isFunctionSummary(item: unknown): item is FunctionSummary {
     return reflection.isInstance(item, FunctionSummary.$type);
 }
 
+export type FunctionTargetName = string;
+
+export function isFunctionTargetName(item: unknown): item is FunctionTargetName {
+    return typeof item === 'string';
+}
+
 export interface GrantsDecl extends langium.AstNode {
     readonly $container: ComponentDecl;
     readonly $type: 'GrantsDecl';
@@ -838,25 +842,23 @@ export function isModifyDeclarationChange(item: unknown): item is ModifyDeclarat
 export interface ModifyFunctionChange extends langium.AstNode {
     readonly $container: ChangeDecl;
     readonly $type: 'ModifyFunctionChange';
-    component: string;
     description?: DescriptionDecl;
     effects: EffectsDecl;
     members: Array<FunctionMember>;
-    name: string;
     shapeTraits?: ShapeTraitList;
     source?: SourceDecl;
+    target: FunctionTargetName;
     unsafe: boolean;
 }
 
 export const ModifyFunctionChange = {
     $type: 'ModifyFunctionChange',
-    component: 'component',
     description: 'description',
     effects: 'effects',
     members: 'members',
-    name: 'name',
     shapeTraits: 'shapeTraits',
     source: 'source',
+    target: 'target',
     unsafe: 'unsafe'
 } as const;
 
@@ -1210,7 +1212,7 @@ export interface RemoveDeclarationChange extends langium.AstNode {
     readonly $container: ChangeDecl;
     readonly $type: 'RemoveDeclarationChange';
     kind: RemovableDeclarationKind;
-    name: string;
+    name: QualifiedTargetName;
 }
 
 export const RemoveDeclarationChange = {
@@ -1226,14 +1228,12 @@ export function isRemoveDeclarationChange(item: unknown): item is RemoveDeclarat
 export interface RemoveFunctionChange extends langium.AstNode {
     readonly $container: ChangeDecl;
     readonly $type: 'RemoveFunctionChange';
-    component: string;
-    name: string;
+    target: FunctionTargetName;
 }
 
 export const RemoveFunctionChange = {
     $type: 'RemoveFunctionChange',
-    component: 'component',
-    name: 'name'
+    target: 'target'
 } as const;
 
 export function isRemoveFunctionChange(item: unknown): item is RemoveFunctionChange {
@@ -1368,7 +1368,7 @@ export function isRuleForbidHypercycleDecl(item: unknown): item is RuleForbidHyp
 export interface RuleForbidProvidesDecl extends langium.AstNode {
     readonly $container: RuleDecl;
     readonly $type: 'RuleForbidProvidesDecl';
-    except?: string;
+    except?: QualifiedTargetName;
     target: TypeRef;
 }
 
@@ -1396,7 +1396,7 @@ export interface RuleWhenHasDecl extends langium.AstNode {
     readonly $container: RuleDecl;
     readonly $type: 'RuleWhenHasDecl';
     subject: string;
-    trait: string;
+    trait: QualifiedTargetName;
 }
 
 export const RuleWhenHasDecl = {
@@ -1413,7 +1413,7 @@ export interface SatisfiesDecl extends langium.AstNode {
     readonly $container: ReevaluationDecl;
     readonly $type: 'SatisfiesDecl';
     kind: ContextObjectKind;
-    name: string;
+    name: QualifiedTargetName;
 }
 
 export const SatisfiesDecl = {
@@ -1830,9 +1830,6 @@ export class ShapeAstReflection extends langium.AbstractAstReflection {
         AddFunctionChange: {
             name: AddFunctionChange.$type,
             properties: {
-                component: {
-                    name: AddFunctionChange.component
-                },
                 description: {
                     name: AddFunctionChange.description
                 },
@@ -1843,14 +1840,14 @@ export class ShapeAstReflection extends langium.AbstractAstReflection {
                     name: AddFunctionChange.members,
                     defaultValue: []
                 },
-                name: {
-                    name: AddFunctionChange.name
-                },
                 shapeTraits: {
                     name: AddFunctionChange.shapeTraits
                 },
                 source: {
                     name: AddFunctionChange.source
+                },
+                target: {
+                    name: AddFunctionChange.target
                 },
                 unsafe: {
                     name: AddFunctionChange.unsafe,
@@ -2320,9 +2317,6 @@ export class ShapeAstReflection extends langium.AbstractAstReflection {
         ModifyFunctionChange: {
             name: ModifyFunctionChange.$type,
             properties: {
-                component: {
-                    name: ModifyFunctionChange.component
-                },
                 description: {
                     name: ModifyFunctionChange.description
                 },
@@ -2333,14 +2327,14 @@ export class ShapeAstReflection extends langium.AbstractAstReflection {
                     name: ModifyFunctionChange.members,
                     defaultValue: []
                 },
-                name: {
-                    name: ModifyFunctionChange.name
-                },
                 shapeTraits: {
                     name: ModifyFunctionChange.shapeTraits
                 },
                 source: {
                     name: ModifyFunctionChange.source
+                },
+                target: {
+                    name: ModifyFunctionChange.target
                 },
                 unsafe: {
                     name: ModifyFunctionChange.unsafe,
@@ -2578,11 +2572,8 @@ export class ShapeAstReflection extends langium.AbstractAstReflection {
         RemoveFunctionChange: {
             name: RemoveFunctionChange.$type,
             properties: {
-                component: {
-                    name: RemoveFunctionChange.component
-                },
-                name: {
-                    name: RemoveFunctionChange.name
+                target: {
+                    name: RemoveFunctionChange.target
                 }
             },
             superTypes: [ChangeEntry.$type]

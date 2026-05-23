@@ -73,7 +73,7 @@ component AuditStore {
 This is intentionally more verbose than a compact policy DSL. The verbosity buys reviewability:
 
 - declarations have stable names
-- module-qualified references can disambiguate same-named declarations with `other.module::Name`
+- module-qualified references can disambiguate same-named declarations with `other.module::Name`, including function targets such as `other.module::Component.fn`
 - effects are explicit
 - source and evidence references have obvious targets
 - descriptions, rationale, memory, and reevaluations are typed blocks

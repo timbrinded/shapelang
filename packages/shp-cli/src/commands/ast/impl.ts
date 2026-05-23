@@ -1,9 +1,12 @@
 import {
   generateShapeFromAstJson,
   generateShapeFromSourceFiles,
+  isGeneratedAstModuleName,
   normalizeGeneratedModuleName,
+  normalizeGeneratedAstPath,
   type AstGenerationDiagnostic,
   type AstSourceFileInput,
+  type GeneratedAstManifestEntry,
   type GenerateShapeOptions
 } from "@shape/shp-checker";
 import { mkdir, readdir, readFile, rm } from "node:fs/promises";
@@ -17,12 +20,6 @@ type AstOutputFlags = {
   readonly module?: string;
   readonly includeAstLayer?: boolean;
   readonly rawOut?: string;
-};
-
-type GeneratedAstManifestEntry = {
-  module: string;
-  path: string;
-  sources: string[];
 };
 
 export type AstSourceFlags = AstOutputFlags & {
@@ -99,6 +96,8 @@ async function writeGeneratedAstDirectory(
   }
   const manifestEntries: GeneratedAstManifestEntry[] = [];
   const writes: { path: string; contents: string }[] = [];
+  const outputPaths = new Map<string, string>();
+  const moduleNames = new Map<string, string>();
   const sourceEntries = sourcePaths
     .map((sourcePath) => ({
       sourcePath,
@@ -115,6 +114,7 @@ async function writeGeneratedAstDirectory(
     const moduleName = normalizeGeneratedModuleName(
       `${moduleBase}.${sourcePathToModuleSuffix(relativeSourcePath)}`
     );
+    ensureUniqueGeneratedValue(moduleNames, moduleName, relativeSourcePath, "module");
     const result = await generateShapeFromSourceFiles([file], {
       moduleName,
       allowParseErrors: flags.allowParseErrors
@@ -126,10 +126,11 @@ async function writeGeneratedAstDirectory(
       );
     }
     const outputPath = join(outDir, `${relativeSourcePath.replace(/\.[^/.]+$/, "")}.shape`);
+    ensureUniqueGeneratedValue(outputPaths, outputPath, relativeSourcePath, "output path");
     writes.push({ path: outputPath, contents: result.value.semanticShape });
     manifestEntries.push({
       module: moduleName,
-      path: outputPath,
+      path: normalizeGeneratedAstPath(outputPath),
       sources: [relativeSourcePath]
     });
   }
@@ -179,10 +180,6 @@ function generatedRelativeSourcePath(sourcePath: string): string {
   return normalized;
 }
 
-function isGeneratedAstModuleName(moduleName: string): boolean {
-  return moduleName === "shape.generated.ast" || moduleName.startsWith("shape.generated.ast.");
-}
-
 function sourcePathToModuleSuffix(sourcePath: string): string {
   return sourcePath
     .replace(/\.[^/.]+$/, "")
@@ -191,6 +188,22 @@ function sourcePathToModuleSuffix(sourcePath: string): string {
     .map((part) => part.replace(/[^A-Za-z0-9_]/g, "_"))
     .map((part) => (/^[A-Za-z_]/.test(part) ? part : `_${part}`))
     .join(".");
+}
+
+function ensureUniqueGeneratedValue(
+  seen: Map<string, string>,
+  value: string,
+  sourcePath: string,
+  label: string
+): void {
+  const existingSource = seen.get(value);
+  if (existingSource) {
+    throw new CliDiagnosticError(
+      `error: generated AST ${label} collision\n\n  ${existingSource}\n  ${sourcePath}\n\nChoose distinct source paths or an explicit module base.\n`,
+      EXIT_USAGE
+    );
+  }
+  seen.set(value, sourcePath);
 }
 
 async function changedGeneratedFiles(

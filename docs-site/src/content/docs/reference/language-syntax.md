@@ -252,7 +252,7 @@ rule GatewayBoundary {
 }
 ```
 
-Rules currently support `when subject has TraitName`, `forbid` effect patterns (including `forbid final`), `forbid provides TARGET except COMPONENT`, and `forbid hypercycle [over KIND or KIND ...]`.
+Rules currently support `when subject has TraitName`, `forbid` effect patterns (including `forbid final`), `forbid provides TARGET except COMPONENT`, and `forbid hypercycle [over KIND or KIND ...]`. Trait and exception references may be module-qualified with `module.name::Declaration`.
 
 ## Rationale, memory, and reevaluation
 
@@ -292,7 +292,7 @@ memory DecisionRefactorConstraint : RefactorConstraint<fn Gateway.derivePolicyDe
 module gateway
 
 reevaluation DecisionShapeRechecked {
-  satisfies memory DecisionRefactorConstraint
+  satisfies memory gateway::DecisionRefactorConstraint
   outcome Confirmed
   summary "Refactor preserves error-normalisation behaviour."
   reviewer GatewayTeam
@@ -302,4 +302,4 @@ reevaluation DecisionShapeRechecked {
 }
 ```
 
-`reevaluation` members can include `satisfies`, `outcome`, `summary`, `evidence`, `reviewer`, `approver`, and `decided_on`.
+`reevaluation` members can include `satisfies`, `outcome`, `summary`, `evidence`, `reviewer`, `approver`, and `decided_on`. `satisfies` can use a module-qualified rationale or memory name.

@@ -15,27 +15,20 @@ export {
   type ShapeUpdateInput
 } from "./authoring.ts";
 export {
-  buildCodeSemanticGraphFromAstJson,
   generateShapeFromAstJson,
-  generateShapeFromCodeSemanticGraph,
   generateShapeFromSourceFiles,
+  isGeneratedAstModuleName,
   normalizeGeneratedModuleName,
-  parseSourceFilesToCodeSemanticGraph,
+  normalizeGeneratedAstPath,
+  TREE_SITTER_NATIVE_BINDING_TARGETS,
   type AstGenerationDiagnostic,
   type AstGenerationResult,
   type AstSourceFileInput,
-  type CodeAstAnchor,
-  type CodeContainer,
-  type CodeFunction,
-  type CodeRelation,
-  type CodeResource,
-  type CodeSemanticGraph,
+  type GeneratedAstManifestEntry,
   type GeneratedShapeOutput,
   type GenerateShapeOptions,
-  type RawAstFile,
-  type RawAstNode,
-  type SemanticConfidence,
-  type SourceSpan
+  type SourceSpan,
+  type TreeSitterNativeBindingTarget
 } from "./ast-generation.ts";
 export {
   formatOnSave,

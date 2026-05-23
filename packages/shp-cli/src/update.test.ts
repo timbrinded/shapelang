@@ -28,6 +28,12 @@ describe("shp update helpers", () => {
       executableName: "shp.exe",
       assetName: "shp-windows-x64.tar.gz"
     });
+    expect(() => resolveReleasePlatform("darwin", "x64")).toThrow(
+      "no shp release asset is published for darwin x64"
+    );
+    expect(() => resolveReleasePlatform("win32", "arm64")).toThrow(
+      "no shp release asset is published for windows arm64"
+    );
   });
 
   test("normalizes and compares release versions semver-style", () => {

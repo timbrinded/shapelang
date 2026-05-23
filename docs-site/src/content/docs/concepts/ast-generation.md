@@ -150,7 +150,7 @@ shp ast source --language rust --out-dir shape/generated/ast src/audit/store.rs
 shp ast source --language rust --out-dir shape/generated/ast --check src/audit/store.rs
 ```
 
-The manifest records generated modules and source inputs. The `--check` form regenerates in memory and fails when the checked-in generated files differ, which lets CI catch stale anchors, stale fingerprints, and missing generated context.
+The manifest records generated modules and source inputs. The checker trusts generated `effects unknown` only for files whose module and path appear in that manifest. The `--check` form regenerates in memory and fails when the checked-in generated files differ, which lets CI catch stale anchors, stale fingerprints, and missing generated context.
 
 This repository commits its own generated AST context under `shape/generated/ast`. Use:
 
@@ -160,7 +160,7 @@ bun run ast:check
 ```
 
 Those scripts use tracked first-party source files only. They exclude dependency, build, and generated parser output such as `node_modules`, `dist`, `docs-site/dist`, `shape/generated`, and `packages/shp-checker/src/language/generated`.
-CI and release validation run `bun run ast:check`, so source changes that stale the committed AST context fail until the generated files are refreshed.
+CI, `bun run shape:ci`, and release validation run `bun run ast:check`, so source changes that stale the committed AST context fail until the generated files are refreshed. Generation rejects source sets that would collide after module/path normalization.
 
 ## JSON input adapter
 

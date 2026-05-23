@@ -108,6 +108,11 @@ if [ "$os" = "windows" ] && [ "$arch" = "arm64" ]; then
   exit 1
 fi
 
+if [ "$os" = "darwin" ] && [ "$arch" = "x64" ]; then
+  echo "no shp release asset is published for macOS x64" >&2
+  exit 1
+fi
+
 need tar
 need awk
 

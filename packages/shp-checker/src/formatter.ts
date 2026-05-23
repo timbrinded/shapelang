@@ -312,32 +312,35 @@ function formatRelation(relation: RelationDecl): string {
 }
 
 function formatCandidateEffect(candidateEffect: CandidateEffectDecl): string {
-  let functionLine = "";
-  let effectLine = "";
-  let sourceLine = "";
-  let confidenceLine = "";
-  let anchorLine = "";
+  const functionLines: string[] = [];
+  const effectLines: string[] = [];
+  const sourceLines: string[] = [];
+  const confidenceLines: string[] = [];
+  const anchorLines: string[] = [];
 
   for (const member of candidateEffect.members) {
     if (isCandidateEffectFunctionDecl(member)) {
-      functionLine = `fn ${member.function}`;
+      functionLines.push(`fn ${member.function}`);
     } else if (isCandidateEffectTermDecl(member)) {
-      effectLine = `effect ${formatTerm(member.term)}`;
+      effectLines.push(`effect ${formatTerm(member.term)}`);
     } else if (isCandidateEffectConfidenceDecl(member)) {
-      confidenceLine = `confidence ${member.value}`;
+      confidenceLines.push(`confidence ${member.value}`);
     } else if (isCandidateEffectAnchorDecl(member)) {
-      anchorLine = `pin ${member.target.name} fingerprint ${member.provider}(${quote(member.value)})`;
+      anchorLines.push(
+        `pin ${member.target.name} fingerprint ${member.provider}(${quote(member.value)})`
+      );
     } else {
-      sourceLine = `source ${formatSourceRef(member.ref)}`;
+      sourceLines.push(`source ${formatSourceRef(member.ref)}`);
     }
   }
 
-  return block(
-    `effect candidate ${candidateEffect.name}`,
-    [functionLine, effectLine, sourceLine, confidenceLine, anchorLine].filter(
-      (line) => line.length > 0
-    )
-  );
+  return block(`effect candidate ${candidateEffect.name}`, [
+    ...functionLines,
+    ...effectLines,
+    ...sourceLines,
+    ...confidenceLines,
+    ...anchorLines
+  ]);
 }
 
 function formatFingerprint(fingerprint: FingerprintDecl): string {
@@ -346,7 +349,7 @@ function formatFingerprint(fingerprint: FingerprintDecl): string {
 
 function formatFunction(fn: FunctionSummary | AddFunctionChange): string {
   return formatFunctionParts(
-    `fn ${fn.name}`,
+    `fn ${formatFunctionLocalName(fn)}`,
     fn.shapeTraits,
     fn.source,
     fn.description,
@@ -361,7 +364,7 @@ function formatQualifiedFunction(
   keyword: "add" | "modify"
 ): string {
   return formatFunctionParts(
-    `${keyword} fn ${fn.component}.${fn.name}`,
+    `${keyword} fn ${fn.target}`,
     fn.shapeTraits,
     fn.source,
     fn.description,
@@ -514,7 +517,7 @@ function formatChange(change: ChangeDecl): string {
         return formatQualifiedFunction(entry, "modify");
       }
       if (isRemoveFunctionChange(entry)) {
-        return `remove fn ${entry.component}.${entry.name}`;
+        return `remove fn ${entry.target}`;
       }
       if (isAddDeclarationChange(entry)) {
         return formatChangedDeclaration("add", entry.declaration);
@@ -531,6 +534,13 @@ function formatChange(change: ChangeDecl): string {
     .sort();
 
   return block(`change ${change.name}`, entries);
+}
+
+function formatFunctionLocalName(fn: FunctionSummary | AddFunctionChange): string {
+  if (isFunctionSummary(fn)) {
+    return fn.name;
+  }
+  return fn.target.slice(fn.target.lastIndexOf(".") + 1);
 }
 
 function formatChangedDeclaration(

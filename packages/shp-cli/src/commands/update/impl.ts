@@ -3,6 +3,7 @@ import { spawn } from "node:child_process";
 import { chmod, copyFile, mkdir, mkdtemp, rename, rm, stat, writeFile } from "node:fs/promises";
 import { basename, dirname, join, resolve } from "node:path";
 import { tmpdir } from "node:os";
+import { TREE_SITTER_NATIVE_BINDING_TARGETS } from "@shape/shp-checker";
 import type { CliContext } from "../../context";
 import { CliDiagnosticError, EXIT_FAILURE, EXIT_USAGE, errorMessage } from "../../errors";
 import { stdout } from "../../io";
@@ -203,15 +204,19 @@ export function resolveReleasePlatform(platform: NodeJS.Platform, arch: string):
   if (releaseArch !== "x64" && releaseArch !== "arm64") {
     throw usageError(`unsupported architecture: ${arch}`);
   }
-  if (releaseOs === "windows" && releaseArch === "arm64") {
-    throw usageError("no shp release asset is published for Windows ARM64");
+
+  const nativeTarget = TREE_SITTER_NATIVE_BINDING_TARGETS.find(
+    (target) => target.platform === platform && target.arch === releaseArch
+  );
+  if (!nativeTarget) {
+    throw usageError(`no shp release asset is published for ${releaseOs} ${releaseArch}`);
   }
 
   return {
     releaseOs,
     releaseArch,
     executableName: releaseOs === "windows" ? "shp.exe" : "shp",
-    assetName: `shp-${releaseOs}-${releaseArch}.tar.gz`
+    assetName: `${nativeTarget.releaseName}.tar.gz`
   };
 }
 

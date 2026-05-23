@@ -317,6 +317,35 @@ describe("shp CLI", () => {
     }
   });
 
+  test("rejects generated AST output path and module collisions before writing", async () => {
+    const tempDir = await mkdtemp(join(repoRoot, ".tmp-shp-cli-test-"));
+    const outDir = join(tempDir, "shape/generated/ast");
+    const tsFile = join(tempDir, "foo.ts");
+    const tsxFile = join(tempDir, "foo.tsx");
+    try {
+      await writeFile(tsFile, "export function readAudit() { return 1; }\n");
+      await writeFile(tsxFile, "export function readAudit() { return 2; }\n");
+
+      const result = await runCli([
+        "ast",
+        "source",
+        "--language",
+        "typescript",
+        "--out-dir",
+        outDir,
+        tsFile,
+        tsxFile
+      ]);
+
+      expect(result.exitCode).toBe(2);
+      expect(result.stderr).toContain("generated AST module collision");
+      expect(result.stderr).toContain("foo.ts");
+      expect(result.stderr).toContain("foo.tsx");
+    } finally {
+      await rm(tempDir, { recursive: true, force: true });
+    }
+  });
+
   test("rejects AST source freshness check without generated output directory", async () => {
     const result = await runCli([
       "ast",

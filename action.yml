@@ -66,6 +66,10 @@ runs:
           echo "No shp release asset is published for Windows ARM64." >&2
           exit 1
         fi
+        if [ "$os" = "darwin" ] && [ "$arch" = "x64" ]; then
+          echo "No shp release asset is published for macOS x64." >&2
+          exit 1
+        fi
 
         asset="shp-$os-$arch.tar.gz"
         download_dir="$(mktemp -d)"

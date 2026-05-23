@@ -56,7 +56,7 @@ component CiPipeline {
         evidence yaml(".github/workflows/release.yml")
     }
   fn generateAstContext
-    source sh("scripts/generate-ast-shapes.sh")
+    source ts("scripts/generate-ast-shapes.ts")
     effects complete {
       Read<CiWorkflow>
         evidence yaml(".github/workflows/shape.yml")
@@ -67,13 +67,15 @@ component CiPipeline {
       Read<GeneratedAstManifest>
         evidence json("shape/generated/ast/manifest.json")
       Read<LanguageSource>
+        evidence ts("scripts/generate-ast-shapes.ts")
+      Read<LanguageSource>
         evidence sh("scripts/generate-ast-shapes.sh")
       Read<SourceSyntaxTree>
-        evidence sh("scripts/generate-ast-shapes.sh")
+        evidence ts("scripts/generate-ast-shapes.ts")
       Update<GeneratedAstManifest>
-        evidence sh("scripts/generate-ast-shapes.sh")
+        evidence ts("scripts/generate-ast-shapes.ts")
       Update<ShapeModelDraft>
-        evidence sh("scripts/generate-ast-shapes.sh")
+        evidence ts("scripts/generate-ast-shapes.ts")
     }
   fn runShapeCi
     source yaml(".github/workflows/shape.yml")
@@ -222,16 +224,41 @@ component ReleasePipeline {
   owns ReleaseArtifact
   grants Read<InstallScript>
   grants Read<NativeParserAsset>
+  grants Read<ReleaseArtifact>
   grants Update<ReleaseArtifact>
   fn buildReleaseAssets : RefactorSensitive
     source sh("scripts/build-release-assets.sh")
     effects complete {
       Read<InstallScript>
         evidence sh("scripts/build-release-assets.sh")
+      Read<InstallScript>
+        evidence sh("install.sh")
+      Read<InstallScript>
+        evidence ps1("install.ps1")
       Read<NativeParserAsset>
         evidence sh("scripts/build-release-assets.sh")
+      Read<NativeParserAsset>
+        evidence ts("packages/shp-checker/src/tree-sitter-native-targets.ts")
       Update<ReleaseArtifact>
         evidence sh("scripts/build-release-assets.sh")
+    }
+  fn selectInstallReleaseAsset
+    source yaml("action.yml")
+    effects complete {
+      Read<InstallScript>
+        evidence yaml("action.yml")
+      Read<InstallScript>
+        evidence sh("install.sh")
+      Read<InstallScript>
+        evidence ps1("install.ps1")
+      Read<NativeParserAsset>
+        evidence ts("packages/shp-checker/src/tree-sitter-native-targets.ts")
+      Read<ReleaseArtifact>
+        evidence yaml("action.yml")
+      Read<ReleaseArtifact>
+        evidence sh("install.sh")
+      Read<ReleaseArtifact>
+        evidence ps1("install.ps1")
     }
 }
 
@@ -281,7 +308,11 @@ implementation AnalyzerSource {
 
 implementation AstGenerationSource {
   paths {
+    "packages/shp-checker/src/ast-generation-core.ts"
     "packages/shp-checker/src/ast-generation.ts"
+    "packages/shp-checker/src/generated-ast-policy.ts"
+    "packages/shp-checker/src/source-languages.ts"
+    "packages/shp-checker/src/tree-sitter-native-targets.ts"
   }
   conforms_to ShapeAstGenerator
   on_change require shape_update
@@ -306,6 +337,7 @@ implementation CheckerSource {
 implementation CiScripts {
   paths {
     "scripts/generate-ast-shapes.sh"
+    "scripts/generate-ast-shapes.ts"
     "scripts/write-changed-files.sh"
   }
   conforms_to CiPipeline
@@ -380,6 +412,7 @@ implementation ParserSource {
 
 implementation ReleaseSource {
   paths {
+    "action.yml"
     "install.ps1"
     "install.sh"
     "scripts/build-release-assets.sh"
@@ -469,10 +502,14 @@ binding RuleEngineDocs {
 binding ToolingDocs {
   when_changed paths {
     "packages/shp-checker/src/analyzer.ts"
+    "packages/shp-checker/src/ast-generation-core.ts"
     "packages/shp-checker/src/ast-generation.ts"
     "packages/shp-checker/src/authoring.ts"
     "packages/shp-checker/src/editor.ts"
     "packages/shp-checker/src/formatter.ts"
+    "packages/shp-checker/src/generated-ast-policy.ts"
+    "packages/shp-checker/src/source-languages.ts"
+    "packages/shp-checker/src/tree-sitter-native-targets.ts"
     "shape/tooling.shape"
   }
   require_changed paths {
@@ -516,7 +553,7 @@ reevaluation DocsShapeBlockVerificationRechecked {
 reevaluation ReleaseNativeParserAssetsRechecked {
   satisfies memory ReleaseChecksumContract
   outcome Confirmed
-  summary "Release asset builds resolve explicit native parser bindings, compile them into binaries, and still publish checksummed archives."
+  summary "Release asset builds and installers read the shared native parser target matrix, reject unsupported platform archives such as macOS x64, compile matching bindings into advertised binaries, and still publish checksummed archives."
   reviewer ShapeMaintainers
   decided_on "2026-05-22"
   evidence sh("scripts/build-release-assets.sh")

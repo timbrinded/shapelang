@@ -6,7 +6,6 @@ import {
   buildShapeCriticPrompt,
   checkShapeFiles,
   checkShapeModules,
-  buildCodeSemanticGraphFromAstJson,
   compareAnalyzerHintsToShape,
   extractEvidenceSpansFromUnifiedDiff,
   formatAnalyzerWarnings,
@@ -20,16 +19,19 @@ import {
   explainShapeModules,
   formatDiagnostics,
   generateShapeFromAstJson,
-  generateShapeFromCodeSemanticGraph,
-  parseSourceFilesToCodeSemanticGraph,
   graphAllShapeModules,
   graphShapeModules,
   parseShapeModule,
   statsShapeHypergraph,
-  type CodeAstAnchor,
-  type CodeSemanticGraph,
   type SourceSpan
 } from "./index.ts";
+import {
+  buildCodeSemanticGraphFromAstJson,
+  generateShapeFromCodeSemanticGraph,
+  parseSourceFilesToCodeSemanticGraph,
+  type CodeAstAnchor,
+  type CodeSemanticGraph
+} from "./ast-generation-core.ts";
 import { PRELUDE_CONTEXT_REQUIREMENTS, PRELUDE_RELATION_KIND_NAMES } from "./prelude.ts";
 import { detectLinuxMuslRuntime } from "./ast-generation.ts";
 
@@ -49,6 +51,13 @@ function checkShapeSource(source: string) {
     throw new Error(parsed.diagnostics.map((diagnostic) => diagnostic.message).join("\n"));
   }
   return checkShapeModules([parsed.module]);
+}
+
+function requireGeneratedOutput(result: ReturnType<typeof generateShapeFromCodeSemanticGraph>) {
+  if (!result.ok) {
+    throw new Error(formatAstTestDiagnostics(result.diagnostics));
+  }
+  return result.value;
 }
 
 describe("Shape parser", () => {
@@ -236,7 +245,87 @@ describe("Shape checker", () => {
     );
   });
 
-  test("lowers effect candidate facts and trusts generated AST unknown effects only from generated files", () => {
+  test("rejects ambiguous imports before formatter import sorting can choose a winner", () => {
+    const left = parseShapeModule(`
+      module left
+      resource Shared
+    `);
+    const right = parseShapeModule(`
+      module right
+      resource Shared
+    `);
+    const consumerSource = `
+      module consumer
+      import right
+      import left
+
+      component Reader {
+        owns Shared
+        grants Read<Shared>
+        fn readShared
+          effects complete {
+            Read<Shared>
+          }
+      }
+    `;
+    const formatted = formatShapeSource(consumerSource);
+
+    expect(left.ok).toBe(true);
+    expect(right.ok).toBe(true);
+    expect(formatted.ok).toBe(true);
+    if (!left.ok || !right.ok || !formatted.ok) {
+      return;
+    }
+
+    const consumer = parseShapeModule(formatted.formatted);
+    expect(consumer.ok).toBe(true);
+    if (!consumer.ok) {
+      return;
+    }
+
+    const result = checkShapeModules([left.module, right.module, consumer.module]);
+    const output = formatDiagnostics(result);
+
+    expect(result.exitCode).toBe(1);
+    expect(result.diagnostics).toContainEqual(
+      expect.objectContaining({ kind: "ambiguous_name", name: "Shared" })
+    );
+    expect(output).toContain("matches: left::Shared, right::Shared");
+  });
+
+  test("accepts module-qualified function targets and resource refs in change declarations", () => {
+    const base = parseShapeModule(`
+      module audit
+      resource Event
+      component Store {
+        grants Read<Event>
+        fn fetch
+          effects complete {
+            Read<Event>
+          }
+      }
+    `);
+    const change = parseShapeModule(`
+      module audit.update
+      change RecheckStoreFetch {
+        modify fn audit::Store.fetch
+          effects complete {
+            Read<audit::Event>
+          }
+      }
+    `);
+
+    expect(base.ok).toBe(true);
+    expect(change.ok).toBe(true);
+    if (!base.ok || !change.ok) {
+      return;
+    }
+
+    const result = checkShapeModules([base.module, change.module]);
+    expect(result.exitCode).toBe(0);
+  });
+
+  test("lowers effect candidate facts and trusts generated AST unknown effects only from manifest entries", async () => {
     const parsed = parseShapeModule(`
       module shape.generated.ast.audit
 
@@ -265,17 +354,12 @@ describe("Shape checker", () => {
       return;
     }
 
-    const untrusted = checkShapeModules([parsed.module]);
+    const untrusted = checkShapeModules([parsed.module], { includeFacts: true });
     expect(untrusted.diagnostics).toContainEqual(
       expect.objectContaining({ kind: "unknown_effects" })
     );
 
-    const trusted = checkShapeModules(
-      [{ module: parsed.module, filePath: "shape/generated/ast/audit.shape" }],
-      { includeFacts: true }
-    );
-    expect(trusted.exitCode).toBe(0);
-    expect(trusted.facts).toContainEqual(
+    expect(untrusted.facts).toContainEqual(
       expect.objectContaining({
         kind: "candidate_effect",
         name: "shape.generated.ast.audit::AppendEventCandidate",
@@ -285,7 +369,110 @@ describe("Shape checker", () => {
         anchor: "shape.generated.ast.audit::AuditStoreAppendEventAstAnchor"
       })
     );
+
+    const trusted = await checkShapeFiles(
+      [resolve(repoRoot, "shape/generated/ast/fixtures/source/audit_store.shape")],
+      { includeFacts: true }
+    );
+    expect(trusted.exitCode).toBe(0);
+    expect(trusted.facts).toContainEqual(
+      expect.objectContaining({
+        kind: "candidate_effect",
+        name: "shape.generated.ast.fixtures.generated_source.audit_store::AppendEventAppendAuditEventCandidateEffect",
+        functionTarget:
+          "shape.generated.ast.fixtures.generated_source.audit_store::AuditStore.appendEvent",
+        effect: "Append",
+        target: "shape.generated.ast.fixtures.generated_source.audit_store::AuditEvent",
+        anchor:
+          "shape.generated.ast.fixtures.generated_source.audit_store::AuditStoreAppendEventAstAnchor"
+      })
+    );
     expect(trusted.facts?.some((fact) => fact.kind === "shape_update_for")).toBe(false);
+  });
+
+  test("rejects duplicate and missing candidate effect fields", () => {
+    const duplicate = checkShapeSource(`
+      module generated
+      resource AuditEvent
+      resource Anchor {
+        fingerprint ast.semantic_subtree_v1("sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+      }
+      component AuditStore {
+        grants Append<AuditEvent>
+        fn appendEvent
+          effects complete {
+            Append<AuditEvent>
+          }
+      }
+      effect candidate DuplicateCandidate {
+        fn AuditStore.appendEvent
+        effect Append<AuditEvent>
+        effect Read<AuditEvent>
+        source ts("src/audit/store.ts")
+        confidence low
+        pin Anchor fingerprint ast.semantic_subtree_v1("sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+      }
+    `);
+    const missing = checkShapeSource(`
+      module generated
+      resource AuditEvent
+      component AuditStore {
+        fn appendEvent
+          effects unknown
+      }
+      effect candidate MissingCandidate {
+        fn AuditStore.appendEvent
+        effect Append<AuditEvent>
+      }
+    `);
+
+    expect(formatDiagnostics(duplicate)).toContain(
+      "candidate effect generated::DuplicateCandidate: duplicate effect"
+    );
+    expect(formatDiagnostics(missing)).toContain(
+      "candidate effect generated::MissingCandidate: missing source"
+    );
+    expect(formatDiagnostics(missing)).toContain(
+      "candidate effect generated::MissingCandidate: missing confidence"
+    );
+    expect(formatDiagnostics(missing)).toContain(
+      "candidate effect generated::MissingCandidate: missing pin"
+    );
+  });
+
+  test("rejects stale candidate effect pin fingerprints", () => {
+    const result = checkShapeSource(`
+      module generated
+      resource AuditEvent
+      resource Anchor {
+        fingerprint ast.semantic_subtree_v1("sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb")
+      }
+      component AuditStore {
+        grants Append<AuditEvent>
+        fn appendEvent
+          effects complete {
+            Append<AuditEvent>
+          }
+      }
+      effect candidate StalePin {
+        fn AuditStore.appendEvent
+        effect Append<AuditEvent>
+        source ts("src/audit/store.ts")
+        confidence low
+        pin Anchor fingerprint ast.semantic_subtree_v1("sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+      }
+    `);
+    const output = formatDiagnostics(result);
+
+    expect(result.diagnostics).toContainEqual(
+      expect.objectContaining({
+        kind: "candidate_pin_fingerprint_mismatch",
+        candidateEffect: "generated::StalePin",
+        anchor: "generated::Anchor"
+      })
+    );
+    expect(output).toContain("stale candidate effect pin");
+    expect(output).toContain("candidate effect generated::StalePin pins generated::Anchor");
   });
 
   test("passes append-only append fixture", async () => {
@@ -3270,10 +3457,12 @@ describe("AST to Shape generation", () => {
     }
 
     expect(graphResult.value.rawNodes).toHaveLength(ast.files[0]?.nodes.length ?? 0);
-    const output = generateShapeFromCodeSemanticGraph(graphResult.value, {
-      moduleName: "generated.audit",
-      rawModuleName: "generated.audit.raw"
-    });
+    const output = requireGeneratedOutput(
+      generateShapeFromCodeSemanticGraph(graphResult.value, {
+        moduleName: "generated.audit",
+        rawModuleName: "generated.audit.raw"
+      })
+    );
 
     expect(output.semanticShape).toContain("resource AuditEvent : GeneratedCandidate");
     expect(output.semanticShape).toContain("component AuditStore : GeneratedCandidate");
@@ -3405,14 +3594,18 @@ describe("AST to Shape generation", () => {
     }
 
     const generatedVersionOne = parseShapeModule(
-      generateShapeFromCodeSemanticGraph(versionOne.value, {
-        moduleName: "shape.generated.ast.main"
-      }).semanticShape
+      requireGeneratedOutput(
+        generateShapeFromCodeSemanticGraph(versionOne.value, {
+          moduleName: "shape.generated.ast.main"
+        })
+      ).semanticShape
     );
     const generatedVersionTwo = parseShapeModule(
-      generateShapeFromCodeSemanticGraph(versionTwo.value, {
-        moduleName: "shape.generated.ast.main"
-      }).semanticShape
+      requireGeneratedOutput(
+        generateShapeFromCodeSemanticGraph(versionTwo.value, {
+          moduleName: "shape.generated.ast.main"
+        })
+      ).semanticShape
     );
     expect(generatedVersionOne.ok).toBe(true);
     expect(generatedVersionTwo.ok).toBe(true);
@@ -3660,9 +3853,11 @@ describe("AST to Shape generation", () => {
     }
 
     const generatedVersionTwo = parseShapeModule(
-      generateShapeFromCodeSemanticGraph(versionTwo, {
-        moduleName: "shape.generated.ast.main"
-      }).semanticShape
+      requireGeneratedOutput(
+        generateShapeFromCodeSemanticGraph(versionTwo, {
+          moduleName: "shape.generated.ast.main"
+        })
+      ).semanticShape
     );
     expect(generatedVersionTwo.ok).toBe(true);
     if (!generatedVersionTwo.ok) {
@@ -3711,6 +3906,97 @@ describe("AST to Shape generation", () => {
     }
   });
 
+  test("keeps same-named AST declarations from different files as distinct identities", () => {
+    const graph = graphFromAstForTest({
+      language: "typescript",
+      files: [
+        {
+          path: "src/left/store.ts",
+          root: "leftRoot",
+          nodes: [
+            { id: "leftRoot", kind: "program", children: ["leftStore"] },
+            {
+              id: "leftStore",
+              kind: "class_declaration",
+              text: "class AuditStore { read() {} }",
+              children: ["leftRead"]
+            },
+            { id: "leftRead", kind: "method_definition", text: "read() {}" }
+          ]
+        },
+        {
+          path: "src/right/store.ts",
+          root: "rightRoot",
+          nodes: [
+            { id: "rightRoot", kind: "program", children: ["rightStore"] },
+            {
+              id: "rightStore",
+              kind: "class_declaration",
+              text: "class AuditStore { read() {} }",
+              children: ["rightRead"]
+            },
+            { id: "rightRead", kind: "method_definition", text: "read() {}" }
+          ]
+        }
+      ]
+    });
+    const stores = graph.containers.filter((container) => container.name.startsWith("AuditStore"));
+
+    expect(stores).toHaveLength(2);
+    expect(new Set(stores.map((store) => store.id)).size).toBe(2);
+    expect(new Set(stores.map((store) => store.name)).size).toBe(2);
+  });
+
+  test("allocates deterministic names for overloaded AST functions", () => {
+    const graph = graphFromAstForTest({
+      language: "typescript",
+      files: [
+        {
+          path: "src/store.ts",
+          root: "root",
+          nodes: [
+            { id: "root", kind: "program", children: ["store"] },
+            {
+              id: "store",
+              kind: "class_declaration",
+              text: "class AuditStore { read(id: string) {} read(id: number) {} }",
+              children: ["readString", "readNumber"]
+            },
+            { id: "readString", kind: "method_definition", text: "read(id: string) {}" },
+            { id: "readNumber", kind: "method_definition", text: "read(id: number) {}" }
+          ]
+        }
+      ]
+    });
+    const store = graph.containers.find((container) => container.name === "AuditStore");
+    const functions = graph.functions.filter((fn) => fn.ownerId === store?.id);
+
+    expect(functions).toHaveLength(2);
+    expect(new Set(functions.map((fn) => fn.name)).size).toBe(2);
+  });
+
+  test("rejects invalid semantic graph edges instead of dropping them during rendering", () => {
+    const graph = graphFromAstForTest(functionFingerprintAst("fn main() {}"));
+    graph.relations.push({
+      id: "bad_relation",
+      kind: "calls",
+      fromId: "missing_from",
+      toId: graph.containers[0]?.id ?? "missing_to",
+      path: "src/main.rs",
+      confidence: "high",
+      summary: "invalid test edge"
+    });
+
+    const result = generateShapeFromCodeSemanticGraph(graph, { moduleName: "generated.invalid" });
+
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.diagnostics).toContainEqual(
+        expect.objectContaining({ code: "invalid_semantic_relation" })
+      );
+    }
+  });
+
   test("preserves explicit source language for extensionless files", async () => {
     const source = "fn main() {}\n";
     const functionNode = fakeTreeSitterNode({
@@ -3738,9 +4024,11 @@ describe("AST to Shape generation", () => {
     if (!graph.ok) {
       throw new Error(formatAstTestDiagnostics(graph.diagnostics));
     }
-    const output = generateShapeFromCodeSemanticGraph(graph.value, {
-      moduleName: "generated.rust"
-    });
+    const output = requireGeneratedOutput(
+      generateShapeFromCodeSemanticGraph(graph.value, {
+        moduleName: "generated.rust"
+      })
+    );
     expect(output.semanticShape).toContain('source rust("src/main:1-1")');
     expect(output.semanticShape).not.toContain('source file("src/main:1-1")');
   });

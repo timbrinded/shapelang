@@ -261,7 +261,7 @@ GitHub Pages should use the **GitHub Actions** publishing source. The deployment
 
 ## CI
 
-CI is wired in `.github/workflows/shape.yml` for formatting, tests, typechecking, `shp check --changed-files changed.txt`, Shape coverage/bindings, and docs checks. Governed source changes require a faithful `shape` update or a narrow current attestation; bound docs surfaces must change unless a current `docs_not_needed` attestation explains why not.
+CI is wired in `.github/workflows/shape.yml` for generated AST freshness, formatting, tests, typechecking, `shp check --changed-files changed.txt`, Shape coverage/bindings, and docs checks. Governed source changes require a faithful `shape` update or a narrow current attestation; bound docs surfaces must change unless a current `docs_not_needed` attestation explains why not.
 
 ## Release
 
@@ -272,7 +272,7 @@ git tag v0.3.0
 git push origin v0.3.0
 ```
 
-The release workflow validates the repo, cross-compiles `shp` for Linux, macOS, and Windows, publishes tarballs as GitHub release assets, and includes SHA-256 checksums.
+The release workflow validates the repo, cross-compiles `shp` for the native parser target matrix, publishes tarballs as GitHub release assets, and includes SHA-256 checksums. The current matrix is Linux x64, Linux ARM64, macOS ARM64, and Windows x64.
 
 Other GitHub Actions workflows can install `shp` with the setup action shown in Quick Start. Use `with.version` to install a different release than the action ref:
 

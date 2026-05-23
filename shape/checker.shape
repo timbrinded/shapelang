@@ -101,6 +101,7 @@ component ShapeModelLowerer {
   owns ModuleNamespace
   grants Append<FactSet>
   grants Append<ModuleNamespace>
+  grants Read<GeneratedAstManifest>
   grants Read<GeneratedCandidateEffect>
   grants Read<NormalizedShapeReference>
   grants Read<ParsedModule>
@@ -113,6 +114,8 @@ component ShapeModelLowerer {
         evidence ts("packages/shp-checker/src/checker.ts")
       Append<ModuleNamespace>
         evidence ts("packages/shp-checker/src/checker.ts")
+      Read<GeneratedAstManifest>
+        evidence ts("packages/shp-checker/src/generated-ast-policy.ts")
       Read<GeneratedCandidateEffect>
         evidence ts("packages/shp-checker/src/checker.ts")
       Read<NormalizedShapeReference>
@@ -466,9 +469,9 @@ reevaluation CoverageCurrentAttestationsRechecked {
 reevaluation DiagnosticOutputRechecked {
   satisfies memory DiagnosticContract
   outcome Confirmed
-  summary "Diagnostic formatting remains path-aware and reviewer-readable after shared string handling changes."
+  summary "Diagnostic formatting remains path-aware and reviewer-readable after shared string handling, qualified fingerprint output, and ambiguous reference diagnostics."
   reviewer ShapeMaintainers
-  decided_on "2026-05-20"
+  decided_on "2026-05-22"
   evidence test("packages/shp-checker/src/checker.test.ts")
 }
 
@@ -493,8 +496,8 @@ reevaluation HypercycleTraversalRechecked {
 reevaluation LoweringFunctionRegistryRechecked {
   satisfies memory LoweringBeforeRules
   outcome Confirmed
-  summary "Checker tests cover module-scoped import resolution, generated candidate effect facts, trusted generated AST context, and function registry rebuilds before derived facts and coverage paths are emitted."
+  summary "Checker tests cover module-scoped import resolution with ambiguity rejection, qualified function targets, generated candidate effect validation, manifest-backed generated AST trust, and function registry rebuilds before derived facts and coverage paths are emitted."
   reviewer ShapeMaintainers
-  decided_on "2026-05-21"
+  decided_on "2026-05-22"
   evidence test("packages/shp-checker/src/checker.test.ts")
 }

@@ -234,7 +234,7 @@ ChangeEntry:
     AddFunctionChange | ModifyFunctionChange | RemoveFunctionChange | AddDeclarationChange | ModifyDeclarationChange | RemoveDeclarationChange;
 
 AddFunctionChange:
-    'add' 'fn' component=ID '.' name=ID
+    'add' 'fn' target=FunctionTargetName
         shapeTraits=ShapeTraitList?
         source=SourceDecl?
         description=DescriptionDecl?
@@ -243,7 +243,7 @@ AddFunctionChange:
         members+=FunctionMember*;
 
 ModifyFunctionChange:
-    'modify' 'fn' component=ID '.' name=ID
+    'modify' 'fn' target=FunctionTargetName
         shapeTraits=ShapeTraitList?
         source=SourceDecl?
         description=DescriptionDecl?
@@ -252,7 +252,7 @@ ModifyFunctionChange:
         members+=FunctionMember*;
 
 RemoveFunctionChange:
-    'remove' 'fn' component=ID '.' name=ID;
+    'remove' 'fn' target=FunctionTargetName;
 
 AddDeclarationChange:
     'add' declaration=AddableDeclaration;
@@ -261,7 +261,7 @@ ModifyDeclarationChange:
     'modify' declaration=AddableDeclaration;
 
 RemoveDeclarationChange:
-    'remove' kind=RemovableDeclarationKind name=ID;
+    'remove' kind=RemovableDeclarationKind name=QualifiedTargetName;
 
 AddableDeclaration:
     ResourceDecl | TraitDecl | ComponentDecl | RelationDecl | ImplementationDecl | BindingDecl | AttestationDecl | RuleDecl;
@@ -279,13 +279,13 @@ RuleMember:
     RuleWhenHasDecl | RuleForbidEffectDecl | RuleForbidProvidesDecl | RuleForbidHypercycleDecl;
 
 RuleWhenHasDecl:
-    'when' subject=ID 'has' trait=ID;
+    'when' subject=ID 'has' trait=QualifiedTargetName;
 
 RuleForbidEffectDecl:
     'forbid' final?='final'? pattern=EffectPattern;
 
 RuleForbidProvidesDecl:
-    'forbid' 'provides' target=TypeRef ('except' except=ID)?;
+    'forbid' 'provides' target=TypeRef ('except' except=QualifiedTargetName)?;
 
 RuleForbidHypercycleDecl:
     'forbid' 'hypercycle' ('over' kinds+=RelationKindName ('or' kinds+=RelationKindName)*)?;
@@ -325,6 +325,9 @@ TargetKind returns string:
 
 QualifiedTargetName returns string:
     ID ('.' ID)* ('::' ID ('.' ID)*)?;
+
+FunctionTargetName returns string:
+    ID ('.' ID)* '::' ID '.' ID | ID '.' ID;
 
 ContextTypeRef:
     name=ID '<' target=TargetRef '>';
@@ -366,7 +369,7 @@ EvidenceLineDecl:
     'evidence' ref=SourceRef;
 
 SatisfiesDecl:
-    'satisfies' kind=ContextObjectKind name=ID;
+    'satisfies' kind=ContextObjectKind name=QualifiedTargetName;
 
 ContextObjectKind returns string:
     'memory' | 'rationale';
