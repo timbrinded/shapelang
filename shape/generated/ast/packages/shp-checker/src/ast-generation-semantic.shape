@@ -1,0 +1,209 @@
+module shape.generated.ast.packages.shp_checker.src.ast_generation_semantic
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource AstGenerationSemanticModuleAddAnchorAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/ast-generation-semantic.ts:263-291")
+  fingerprint ast.semantic_subtree_v1("sha256:a1cf7a910bf38c7bf6d6b1ff4278e0e1616e7f15d6365c3216332d8b4bf9a7a4")
+}
+
+resource AstGenerationSemanticModuleAddCandidateEffectsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/ast-generation-semantic.ts:351-399")
+  fingerprint ast.semantic_subtree_v1("sha256:3743451be020d48787bc1eabb022df3556155aa68f7578077c6b7c3489fef285")
+}
+
+resource AstGenerationSemanticModuleAddContainerAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/ast-generation-semantic.ts:219-239")
+  fingerprint ast.semantic_subtree_v1("sha256:a405012e4ca9c29cf99185fd68c57af7dfa3e85e23d691cb33ea9b210f96967f")
+}
+
+resource AstGenerationSemanticModuleAddFunctionAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/ast-generation-semantic.ts:176-217")
+  fingerprint ast.semantic_subtree_v1("sha256:fbb64b2717c05365618183f8713d009f9c61866b0e0a4d9835b0d323014b6b0f")
+}
+
+resource AstGenerationSemanticModuleAddResolvedReceiverCallsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/ast-generation-semantic.ts:293-349")
+  fingerprint ast.semantic_subtree_v1("sha256:0755b3a52201612bd728dc207d57d092f99f0d2592046000cbd727e4579244fb")
+}
+
+resource AstGenerationSemanticModuleAddResourceAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/ast-generation-semantic.ts:241-261")
+  fingerprint ast.semantic_subtree_v1("sha256:d92bc2f9618302b6eac06be38570160af5cdbfae668f0b72760ed5bcc26509f4")
+}
+
+resource AstGenerationSemanticModuleAddSemanticProjectionAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/ast-generation-semantic.ts:41-139")
+  fingerprint ast.semantic_subtree_v1("sha256:5d8c5ee6a96d303a72446da04ae6d68f0f9d207aae9e24cb3a715722239ec9bf")
+}
+
+resource AstGenerationSemanticModuleCandidateEffectNameAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/ast-generation-semantic.ts:415-430")
+  fingerprint ast.semantic_subtree_v1("sha256:431856c78b8b74ea6266d38eac6cf4a498f07e7962e2d9b88f7906374b5eab5a")
+}
+
+resource AstGenerationSemanticModuleCandidateResourceMentionsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/ast-generation-semantic.ts:401-413")
+  fingerprint ast.semantic_subtree_v1("sha256:6b646cd6a5f327ddbfe16e00482458268445debffc2da7fa205cb5be3ee9ed8d")
+}
+
+resource AstGenerationSemanticModuleCollectFieldTypesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/ast-generation-semantic.ts:432-455")
+  fingerprint ast.semantic_subtree_v1("sha256:a8ea36cd360c3c913abbe195c858d551562ca07caf1bcd0baa1370dc07a78913")
+}
+
+resource AstGenerationSemanticModuleCollectImplFunctionsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/ast-generation-semantic.ts:141-162")
+  fingerprint ast.semantic_subtree_v1("sha256:326fea179018d1a0e1420bf9b43284acb43edc30de9c6a3890ade58a34390769")
+}
+
+resource AstGenerationSemanticModuleCollectReceiverFunctionsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/ast-generation-semantic.ts:164-174")
+  fingerprint ast.semantic_subtree_v1("sha256:6f45c72d5fe229130c4328fe6ef55599405a008be5b2971350ad041d9f46ba69")
+}
+
+component AstGenerationSemanticModule : GeneratedCandidate {
+  fn addAnchor
+    source ts("packages/shp-checker/src/ast-generation-semantic.ts:263-291")
+    effects unknown
+  fn addCandidateEffects
+    source ts("packages/shp-checker/src/ast-generation-semantic.ts:351-399")
+    effects unknown
+  fn addContainer
+    source ts("packages/shp-checker/src/ast-generation-semantic.ts:219-239")
+    effects unknown
+  fn addFunction
+    source ts("packages/shp-checker/src/ast-generation-semantic.ts:176-217")
+    effects unknown
+  fn addResolvedReceiverCalls
+    source ts("packages/shp-checker/src/ast-generation-semantic.ts:293-349")
+    effects unknown
+  fn addResource
+    source ts("packages/shp-checker/src/ast-generation-semantic.ts:241-261")
+    effects unknown
+  fn addSemanticProjection
+    source ts("packages/shp-checker/src/ast-generation-semantic.ts:41-139")
+    effects unknown
+  fn candidateEffectName
+    source ts("packages/shp-checker/src/ast-generation-semantic.ts:415-430")
+    effects unknown
+  fn candidateResourceMentions
+    source ts("packages/shp-checker/src/ast-generation-semantic.ts:401-413")
+    effects unknown
+  fn collectFieldTypes
+    source ts("packages/shp-checker/src/ast-generation-semantic.ts:432-455")
+    effects unknown
+  fn collectImplFunctions
+    source ts("packages/shp-checker/src/ast-generation-semantic.ts:141-162")
+    effects unknown
+  fn collectReceiverFunctions
+    source ts("packages/shp-checker/src/ast-generation-semantic.ts:164-174")
+    effects unknown
+}
+
+relation AstGenerationSemanticModuleAddAnchorGeneratedFromAstGenerationSemanticModuleAddAnchorAstAnchor {
+  kind generated_from
+  connects AstGenerationSemanticModule -> AstGenerationSemanticModuleAddAnchorAstAnchor
+  roles { AstGenerationSemanticModule as generated, AstGenerationSemanticModuleAddAnchorAstAnchor as syntax }
+  expects AstGenerationSemanticModuleAddAnchorAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a1cf7a910bf38c7bf6d6b1ff4278e0e1616e7f15d6365c3216332d8b4bf9a7a4")
+  summary "fn AstGenerationSemanticModule.addAnchor generated from typescript function_declaration at packages/shp-checker/src/ast-generation-semantic.ts:263-291."
+}
+
+relation AstGenerationSemanticModuleAddCandidateEffectsGeneratedFromAstGenerationSemanticModuleAddCandidateEffectsAstAnchor {
+  kind generated_from
+  connects AstGenerationSemanticModule -> AstGenerationSemanticModuleAddCandidateEffectsAstAnchor
+  roles { AstGenerationSemanticModule as generated, AstGenerationSemanticModuleAddCandidateEffectsAstAnchor as syntax }
+  expects AstGenerationSemanticModuleAddCandidateEffectsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3743451be020d48787bc1eabb022df3556155aa68f7578077c6b7c3489fef285")
+  summary "fn AstGenerationSemanticModule.addCandidateEffects generated from typescript function_declaration at packages/shp-checker/src/ast-generation-semantic.ts:351-399."
+}
+
+relation AstGenerationSemanticModuleAddContainerGeneratedFromAstGenerationSemanticModuleAddContainerAstAnchor {
+  kind generated_from
+  connects AstGenerationSemanticModule -> AstGenerationSemanticModuleAddContainerAstAnchor
+  roles { AstGenerationSemanticModule as generated, AstGenerationSemanticModuleAddContainerAstAnchor as syntax }
+  expects AstGenerationSemanticModuleAddContainerAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a405012e4ca9c29cf99185fd68c57af7dfa3e85e23d691cb33ea9b210f96967f")
+  summary "fn AstGenerationSemanticModule.addContainer generated from typescript function_declaration at packages/shp-checker/src/ast-generation-semantic.ts:219-239."
+}
+
+relation AstGenerationSemanticModuleAddFunctionGeneratedFromAstGenerationSemanticModuleAddFunctionAstAnchor {
+  kind generated_from
+  connects AstGenerationSemanticModule -> AstGenerationSemanticModuleAddFunctionAstAnchor
+  roles { AstGenerationSemanticModule as generated, AstGenerationSemanticModuleAddFunctionAstAnchor as syntax }
+  expects AstGenerationSemanticModuleAddFunctionAstAnchor fingerprint ast.semantic_subtree_v1("sha256:fbb64b2717c05365618183f8713d009f9c61866b0e0a4d9835b0d323014b6b0f")
+  summary "fn AstGenerationSemanticModule.addFunction generated from typescript function_declaration at packages/shp-checker/src/ast-generation-semantic.ts:176-217."
+}
+
+relation AstGenerationSemanticModuleAddResolvedReceiverCallsGeneratedFromAstGenerationSemanticModuleAddResolvedReceiverCallsAstAnchor {
+  kind generated_from
+  connects AstGenerationSemanticModule -> AstGenerationSemanticModuleAddResolvedReceiverCallsAstAnchor
+  roles { AstGenerationSemanticModule as generated, AstGenerationSemanticModuleAddResolvedReceiverCallsAstAnchor as syntax }
+  expects AstGenerationSemanticModuleAddResolvedReceiverCallsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0755b3a52201612bd728dc207d57d092f99f0d2592046000cbd727e4579244fb")
+  summary "fn AstGenerationSemanticModule.addResolvedReceiverCalls generated from typescript function_declaration at packages/shp-checker/src/ast-generation-semantic.ts:293-349."
+}
+
+relation AstGenerationSemanticModuleAddResourceGeneratedFromAstGenerationSemanticModuleAddResourceAstAnchor {
+  kind generated_from
+  connects AstGenerationSemanticModule -> AstGenerationSemanticModuleAddResourceAstAnchor
+  roles { AstGenerationSemanticModule as generated, AstGenerationSemanticModuleAddResourceAstAnchor as syntax }
+  expects AstGenerationSemanticModuleAddResourceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d92bc2f9618302b6eac06be38570160af5cdbfae668f0b72760ed5bcc26509f4")
+  summary "fn AstGenerationSemanticModule.addResource generated from typescript function_declaration at packages/shp-checker/src/ast-generation-semantic.ts:241-261."
+}
+
+relation AstGenerationSemanticModuleAddSemanticProjectionGeneratedFromAstGenerationSemanticModuleAddSemanticProjectionAstAnchor {
+  kind generated_from
+  connects AstGenerationSemanticModule -> AstGenerationSemanticModuleAddSemanticProjectionAstAnchor
+  roles { AstGenerationSemanticModule as generated, AstGenerationSemanticModuleAddSemanticProjectionAstAnchor as syntax }
+  expects AstGenerationSemanticModuleAddSemanticProjectionAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5d8c5ee6a96d303a72446da04ae6d68f0f9d207aae9e24cb3a715722239ec9bf")
+  summary "fn AstGenerationSemanticModule.addSemanticProjection generated from typescript function_declaration at packages/shp-checker/src/ast-generation-semantic.ts:41-139."
+}
+
+relation AstGenerationSemanticModuleCandidateEffectNameGeneratedFromAstGenerationSemanticModuleCandidateEffectNameAstAnchor {
+  kind generated_from
+  connects AstGenerationSemanticModule -> AstGenerationSemanticModuleCandidateEffectNameAstAnchor
+  roles { AstGenerationSemanticModule as generated, AstGenerationSemanticModuleCandidateEffectNameAstAnchor as syntax }
+  expects AstGenerationSemanticModuleCandidateEffectNameAstAnchor fingerprint ast.semantic_subtree_v1("sha256:431856c78b8b74ea6266d38eac6cf4a498f07e7962e2d9b88f7906374b5eab5a")
+  summary "fn AstGenerationSemanticModule.candidateEffectName generated from typescript function_declaration at packages/shp-checker/src/ast-generation-semantic.ts:415-430."
+}
+
+relation AstGenerationSemanticModuleCandidateResourceMentionsGeneratedFromAstGenerationSemanticModuleCandidateResourceMentionsAstAnchor {
+  kind generated_from
+  connects AstGenerationSemanticModule -> AstGenerationSemanticModuleCandidateResourceMentionsAstAnchor
+  roles { AstGenerationSemanticModule as generated, AstGenerationSemanticModuleCandidateResourceMentionsAstAnchor as syntax }
+  expects AstGenerationSemanticModuleCandidateResourceMentionsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6b646cd6a5f327ddbfe16e00482458268445debffc2da7fa205cb5be3ee9ed8d")
+  summary "fn AstGenerationSemanticModule.candidateResourceMentions generated from typescript function_declaration at packages/shp-checker/src/ast-generation-semantic.ts:401-413."
+}
+
+relation AstGenerationSemanticModuleCollectFieldTypesGeneratedFromAstGenerationSemanticModuleCollectFieldTypesAstAnchor {
+  kind generated_from
+  connects AstGenerationSemanticModule -> AstGenerationSemanticModuleCollectFieldTypesAstAnchor
+  roles { AstGenerationSemanticModule as generated, AstGenerationSemanticModuleCollectFieldTypesAstAnchor as syntax }
+  expects AstGenerationSemanticModuleCollectFieldTypesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a8ea36cd360c3c913abbe195c858d551562ca07caf1bcd0baa1370dc07a78913")
+  summary "fn AstGenerationSemanticModule.collectFieldTypes generated from typescript function_declaration at packages/shp-checker/src/ast-generation-semantic.ts:432-455."
+}
+
+relation AstGenerationSemanticModuleCollectImplFunctionsGeneratedFromAstGenerationSemanticModuleCollectImplFunctionsAstAnchor {
+  kind generated_from
+  connects AstGenerationSemanticModule -> AstGenerationSemanticModuleCollectImplFunctionsAstAnchor
+  roles { AstGenerationSemanticModule as generated, AstGenerationSemanticModuleCollectImplFunctionsAstAnchor as syntax }
+  expects AstGenerationSemanticModuleCollectImplFunctionsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:326fea179018d1a0e1420bf9b43284acb43edc30de9c6a3890ade58a34390769")
+  summary "fn AstGenerationSemanticModule.collectImplFunctions generated from typescript function_declaration at packages/shp-checker/src/ast-generation-semantic.ts:141-162."
+}
+
+relation AstGenerationSemanticModuleCollectReceiverFunctionsGeneratedFromAstGenerationSemanticModuleCollectReceiverFunctionsAstAnchor {
+  kind generated_from
+  connects AstGenerationSemanticModule -> AstGenerationSemanticModuleCollectReceiverFunctionsAstAnchor
+  roles { AstGenerationSemanticModule as generated, AstGenerationSemanticModuleCollectReceiverFunctionsAstAnchor as syntax }
+  expects AstGenerationSemanticModuleCollectReceiverFunctionsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6f45c72d5fe229130c4328fe6ef55599405a008be5b2971350ad041d9f46ba69")
+  summary "fn AstGenerationSemanticModule.collectReceiverFunctions generated from typescript function_declaration at packages/shp-checker/src/ast-generation-semantic.ts:164-174."
+}
+
+implementation AstGenerationSemanticModuleImpl {
+  paths {
+    "packages/shp-checker/src/ast-generation-semantic.ts"
+  }
+  conforms_to AstGenerationSemanticModule
+}

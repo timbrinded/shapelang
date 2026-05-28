@@ -1,0 +1,129 @@
+module shape.generated.ast.packages.shp_checker.src.ast_generation_tokens
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource AstGenerationTokensModuleIsCommentNodeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/ast-generation-tokens.ts:43-45")
+  fingerprint ast.semantic_subtree_v1("sha256:acba67acb5f9079ae33f07d1eca932650b4b68e96851dd7391566f36a407eb9e")
+}
+
+resource AstGenerationTokensModuleIsSkippablePunctuationAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/ast-generation-tokens.ts:51-81")
+  fingerprint ast.semantic_subtree_v1("sha256:b773796faef526ec02661a087f6044b730d96f6a5125ec630b1fcd318406e550")
+}
+
+resource AstGenerationTokensModuleIsSkippablePunctuationNodeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/ast-generation-tokens.ts:47-49")
+  fingerprint ast.semantic_subtree_v1("sha256:1e30d98fea35b5243b4c2529d2aab2e227ba90aacefcab5f2d61904f4bf31606")
+}
+
+resource AstGenerationTokensModuleNormalizeSemanticTokenTextAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/ast-generation-tokens.ts:13-27")
+  fingerprint ast.semantic_subtree_v1("sha256:6304821653553556c1dcaf7421f35830625561708ec0030cfcacd5a96130a19c")
+}
+
+resource AstGenerationTokensModuleSemanticTokensAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/ast-generation-tokens.ts:29-33")
+  fingerprint ast.semantic_subtree_v1("sha256:e48d0a2e4a6ff856b59ac66dc2e966fc3f15d49f526b4efc3d51cbc82900b61b")
+}
+
+resource AstGenerationTokensModuleSignatureTextAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/ast-generation-tokens.ts:3-11")
+  fingerprint ast.semantic_subtree_v1("sha256:ceee23c0ea6021189ee6aa3d6b82918faa6057a3ee274633d7318868af35748a")
+}
+
+resource AstGenerationTokensModuleStripCommentsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/ast-generation-tokens.ts:35-41")
+  fingerprint ast.semantic_subtree_v1("sha256:e85013e60a99cb40165bf97cff9e1a5ed342ab2c012d8ba679aaeffe15041fbe")
+}
+
+component AstGenerationTokensModule : GeneratedCandidate {
+  fn isCommentNode
+    source ts("packages/shp-checker/src/ast-generation-tokens.ts:43-45")
+    effects unknown
+  fn isSkippablePunctuation
+    source ts("packages/shp-checker/src/ast-generation-tokens.ts:51-81")
+    effects unknown
+  fn isSkippablePunctuationNode
+    source ts("packages/shp-checker/src/ast-generation-tokens.ts:47-49")
+    effects unknown
+  fn normalizeSemanticTokenText
+    source ts("packages/shp-checker/src/ast-generation-tokens.ts:13-27")
+    effects unknown
+  fn semanticTokens
+    source ts("packages/shp-checker/src/ast-generation-tokens.ts:29-33")
+    effects unknown
+  fn signatureText
+    source ts("packages/shp-checker/src/ast-generation-tokens.ts:3-11")
+    effects unknown
+  fn stripComments
+    source ts("packages/shp-checker/src/ast-generation-tokens.ts:35-41")
+    effects unknown
+}
+
+relation AstGenerationTokensModuleIsCommentNodeGeneratedFromAstGenerationTokensModuleIsCommentNodeAstAnchor {
+  kind generated_from
+  connects AstGenerationTokensModule -> AstGenerationTokensModuleIsCommentNodeAstAnchor
+  roles { AstGenerationTokensModule as generated, AstGenerationTokensModuleIsCommentNodeAstAnchor as syntax }
+  expects AstGenerationTokensModuleIsCommentNodeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:acba67acb5f9079ae33f07d1eca932650b4b68e96851dd7391566f36a407eb9e")
+  summary "fn AstGenerationTokensModule.isCommentNode generated from typescript function_declaration at packages/shp-checker/src/ast-generation-tokens.ts:43-45."
+}
+
+relation AstGenerationTokensModuleIsSkippablePunctuationGeneratedFromAstGenerationTokensModuleIsSkippablePunctuationAstAnchor {
+  kind generated_from
+  connects AstGenerationTokensModule -> AstGenerationTokensModuleIsSkippablePunctuationAstAnchor
+  roles { AstGenerationTokensModule as generated, AstGenerationTokensModuleIsSkippablePunctuationAstAnchor as syntax }
+  expects AstGenerationTokensModuleIsSkippablePunctuationAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b773796faef526ec02661a087f6044b730d96f6a5125ec630b1fcd318406e550")
+  summary "fn AstGenerationTokensModule.isSkippablePunctuation generated from typescript function_declaration at packages/shp-checker/src/ast-generation-tokens.ts:51-81."
+}
+
+relation AstGenerationTokensModuleIsSkippablePunctuationNodeGeneratedFromAstGenerationTokensModuleIsSkippablePunctuationNodeAstAnchor {
+  kind generated_from
+  connects AstGenerationTokensModule -> AstGenerationTokensModuleIsSkippablePunctuationNodeAstAnchor
+  roles { AstGenerationTokensModule as generated, AstGenerationTokensModuleIsSkippablePunctuationNodeAstAnchor as syntax }
+  expects AstGenerationTokensModuleIsSkippablePunctuationNodeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1e30d98fea35b5243b4c2529d2aab2e227ba90aacefcab5f2d61904f4bf31606")
+  summary "fn AstGenerationTokensModule.isSkippablePunctuationNode generated from typescript function_declaration at packages/shp-checker/src/ast-generation-tokens.ts:47-49."
+}
+
+relation AstGenerationTokensModuleNormalizeSemanticTokenTextGeneratedFromAstGenerationTokensModuleNormalizeSemanticTokenTextAstAnchor {
+  kind generated_from
+  connects AstGenerationTokensModule -> AstGenerationTokensModuleNormalizeSemanticTokenTextAstAnchor
+  roles { AstGenerationTokensModule as generated, AstGenerationTokensModuleNormalizeSemanticTokenTextAstAnchor as syntax }
+  expects AstGenerationTokensModuleNormalizeSemanticTokenTextAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6304821653553556c1dcaf7421f35830625561708ec0030cfcacd5a96130a19c")
+  summary "fn AstGenerationTokensModule.normalizeSemanticTokenText generated from typescript function_declaration at packages/shp-checker/src/ast-generation-tokens.ts:13-27."
+}
+
+relation AstGenerationTokensModuleSemanticTokensGeneratedFromAstGenerationTokensModuleSemanticTokensAstAnchor {
+  kind generated_from
+  connects AstGenerationTokensModule -> AstGenerationTokensModuleSemanticTokensAstAnchor
+  roles { AstGenerationTokensModule as generated, AstGenerationTokensModuleSemanticTokensAstAnchor as syntax }
+  expects AstGenerationTokensModuleSemanticTokensAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e48d0a2e4a6ff856b59ac66dc2e966fc3f15d49f526b4efc3d51cbc82900b61b")
+  summary "fn AstGenerationTokensModule.semanticTokens generated from typescript function_declaration at packages/shp-checker/src/ast-generation-tokens.ts:29-33."
+}
+
+relation AstGenerationTokensModuleSignatureTextGeneratedFromAstGenerationTokensModuleSignatureTextAstAnchor {
+  kind generated_from
+  connects AstGenerationTokensModule -> AstGenerationTokensModuleSignatureTextAstAnchor
+  roles { AstGenerationTokensModule as generated, AstGenerationTokensModuleSignatureTextAstAnchor as syntax }
+  expects AstGenerationTokensModuleSignatureTextAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ceee23c0ea6021189ee6aa3d6b82918faa6057a3ee274633d7318868af35748a")
+  summary "fn AstGenerationTokensModule.signatureText generated from typescript function_declaration at packages/shp-checker/src/ast-generation-tokens.ts:3-11."
+}
+
+relation AstGenerationTokensModuleStripCommentsGeneratedFromAstGenerationTokensModuleStripCommentsAstAnchor {
+  kind generated_from
+  connects AstGenerationTokensModule -> AstGenerationTokensModuleStripCommentsAstAnchor
+  roles { AstGenerationTokensModule as generated, AstGenerationTokensModuleStripCommentsAstAnchor as syntax }
+  expects AstGenerationTokensModuleStripCommentsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e85013e60a99cb40165bf97cff9e1a5ed342ab2c012d8ba679aaeffe15041fbe")
+  summary "fn AstGenerationTokensModule.stripComments generated from typescript function_declaration at packages/shp-checker/src/ast-generation-tokens.ts:35-41."
+}
+
+implementation AstGenerationTokensModuleImpl {
+  paths {
+    "packages/shp-checker/src/ast-generation-tokens.ts"
+  }
+  conforms_to AstGenerationTokensModule
+}

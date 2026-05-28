@@ -2,7 +2,7 @@ import { existsSync, statSync } from "node:fs";
 import { createRequire } from "node:module";
 import { dirname, join } from "node:path";
 
-import type { AstGenerationDiagnostic, TreeSitterParseProvider } from "./ast-generation-core.ts";
+import type { AstGenerationDiagnostic, TreeSitterParseProvider } from "./ast-generation-types.ts";
 import {
   currentTreeSitterNativeBindingTarget as currentNativeBindingTarget,
   type TreeSitterNativeBindingEmbeddedSpecifier,

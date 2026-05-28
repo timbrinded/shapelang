@@ -79,95 +79,131 @@ component ShapeAstGenerator {
   grants Read<CodeSemanticGraph>
   grants Read<LanguageSource>
   grants Read<SourceSyntaxTree>
-  fn buildCodeSemanticGraphFromAstJson
-    source ts("packages/shp-checker/src/ast-generation-core.ts#buildCodeSemanticGraphFromAstJson")
+  fn addSemanticProjection
+    source ts("packages/shp-checker/src/ast-generation-semantic.ts#addSemanticProjection")
     effects complete {
       Append<AstAnchorFingerprint>
-        evidence ts("packages/shp-checker/src/ast-generation-core.ts")
+        evidence ts("packages/shp-checker/src/ast-generation-fingerprints.ts")
       Append<CodeSemanticGraph>
-        evidence ts("packages/shp-checker/src/ast-generation-core.ts")
+        evidence ts("packages/shp-checker/src/ast-generation-semantic.ts")
+      Append<GeneratedAstAnchor>
+        evidence ts("packages/shp-checker/src/ast-generation-semantic.ts")
       Append<GeneratedCandidateEffect>
-        evidence ts("packages/shp-checker/src/ast-generation-core.ts")
+        evidence ts("packages/shp-checker/src/ast-generation-semantic.ts")
       Append<SemanticDiagnostics>
-        evidence ts("packages/shp-checker/src/ast-generation-core.ts")
+        evidence ts("packages/shp-checker/src/ast-generation-fingerprints.ts")
       Read<SourceSyntaxTree>
-        evidence ts("packages/shp-checker/src/ast-generation-core.ts")
+        evidence ts("packages/shp-checker/src/ast-generation-raw.ts")
+    }
+  fn buildCodeSemanticGraphFromAstJson
+    source ts("packages/shp-checker/src/ast-generation-json.ts#buildCodeSemanticGraphFromAstJson")
+    effects complete {
+      Append<CodeSemanticGraph>
+        evidence ts("packages/shp-checker/src/ast-generation-graph.ts")
+      Append<CodeSemanticGraph>
+        evidence ts("packages/shp-checker/src/ast-generation-json.ts")
+      Append<CodeSemanticGraph>
+        evidence ts("packages/shp-checker/src/ast-generation-types.ts")
+      Append<CodeSemanticGraph>
+        evidence ts("packages/shp-checker/src/ast-generation-utils.ts")
+      Append<SemanticDiagnostics>
+        evidence ts("packages/shp-checker/src/ast-generation-json.ts")
+      Read<SourceSyntaxTree>
+        evidence ts("packages/shp-checker/src/ast-generation-json.ts")
+    }
+  fn fingerprintForAnchor
+    source ts("packages/shp-checker/src/ast-generation-fingerprints.ts#fingerprintForAnchor")
+    effects complete {
+      Append<AstAnchorFingerprint>
+        evidence ts("packages/shp-checker/src/ast-generation-fingerprints.ts")
+      Append<SemanticDiagnostics>
+        evidence ts("packages/shp-checker/src/ast-generation-fingerprints.ts")
+      Read<SourceSyntaxTree>
+        evidence ts("packages/shp-checker/src/ast-generation-tokens.ts")
     }
   fn generateShapeFromAstJson
-    source ts("packages/shp-checker/src/ast-generation-core.ts#generateShapeFromAstJson")
+    source ts("packages/shp-checker/src/ast-generation-render.ts#generateShapeFromAstJson")
     effects complete {
       Append<AstAnchorFingerprint>
-        evidence ts("packages/shp-checker/src/ast-generation-core.ts")
+        evidence ts("packages/shp-checker/src/ast-generation-fingerprints.ts")
       Append<CodeSemanticGraph>
-        evidence ts("packages/shp-checker/src/ast-generation-core.ts")
+        evidence ts("packages/shp-checker/src/ast-generation-json.ts")
       Append<GeneratedAstAnchor>
-        evidence ts("packages/shp-checker/src/ast-generation-core.ts")
+        evidence ts("packages/shp-checker/src/ast-generation-render.ts")
       Append<GeneratedAstTrace>
-        evidence ts("packages/shp-checker/src/ast-generation-core.ts")
+        evidence ts("packages/shp-checker/src/ast-generation-render.ts")
       Append<GeneratedCandidateEffect>
-        evidence ts("packages/shp-checker/src/ast-generation-core.ts")
+        evidence ts("packages/shp-checker/src/ast-generation-render.ts")
       Append<ShapeModelDraft>
-        evidence ts("packages/shp-checker/src/ast-generation-core.ts")
+        evidence ts("packages/shp-checker/src/ast-generation-render.ts")
       Read<SourceSyntaxTree>
-        evidence ts("packages/shp-checker/src/ast-generation-core.ts")
+        evidence ts("packages/shp-checker/src/ast-generation-json.ts")
     }
   fn generateShapeFromCodeSemanticGraph : RefactorSensitive
-    source ts("packages/shp-checker/src/ast-generation-core.ts#generateShapeFromCodeSemanticGraph")
+    source ts("packages/shp-checker/src/ast-generation-render.ts#generateShapeFromCodeSemanticGraph")
     effects complete {
-      Append<AstAnchorFingerprint>
-        evidence ts("packages/shp-checker/src/ast-generation-core.ts")
       Append<GeneratedAstAnchor>
-        evidence ts("packages/shp-checker/src/ast-generation-core.ts")
+        evidence ts("packages/shp-checker/src/ast-generation-render.ts")
       Append<GeneratedAstTrace>
-        evidence ts("packages/shp-checker/src/ast-generation-core.ts")
+        evidence ts("packages/shp-checker/src/ast-generation-render.ts")
       Append<GeneratedCandidateEffect>
-        evidence ts("packages/shp-checker/src/ast-generation-core.ts")
+        evidence ts("packages/shp-checker/src/ast-generation-render.ts")
       Append<ShapeModelDraft>
-        evidence ts("packages/shp-checker/src/ast-generation-core.ts")
+        evidence ts("packages/shp-checker/src/ast-generation-render.ts")
       Read<CodeSemanticGraph>
-        evidence ts("packages/shp-checker/src/ast-generation-core.ts")
+        evidence ts("packages/shp-checker/src/ast-generation-render.ts")
+      Read<CodeSemanticGraph>
+        evidence ts("packages/shp-checker/src/ast-generation-types.ts")
+      Read<CodeSemanticGraph>
+        evidence ts("packages/shp-checker/src/ast-generation-utils.ts")
     }
   fn generateShapeFromSourceFiles
-    source ts("packages/shp-checker/src/ast-generation-core.ts#generateShapeFromSourceFiles")
+    source ts("packages/shp-checker/src/ast-generation-render.ts#generateShapeFromSourceFiles")
     effects complete {
       Append<AstAnchorFingerprint>
-        evidence ts("packages/shp-checker/src/ast-generation-core.ts")
+        evidence ts("packages/shp-checker/src/ast-generation-fingerprints.ts")
       Append<CodeSemanticGraph>
-        evidence ts("packages/shp-checker/src/ast-generation-core.ts")
+        evidence ts("packages/shp-checker/src/ast-generation-source.ts")
       Append<GeneratedAstAnchor>
-        evidence ts("packages/shp-checker/src/ast-generation-core.ts")
+        evidence ts("packages/shp-checker/src/ast-generation-render.ts")
       Append<GeneratedAstTrace>
-        evidence ts("packages/shp-checker/src/ast-generation-core.ts")
+        evidence ts("packages/shp-checker/src/ast-generation-render.ts")
       Append<GeneratedCandidateEffect>
-        evidence ts("packages/shp-checker/src/ast-generation-core.ts")
+        evidence ts("packages/shp-checker/src/ast-generation-render.ts")
       Append<ShapeModelDraft>
         evidence ts("packages/shp-checker/src/ast-generation-core.ts")
-      Read<LanguageSource>
-        evidence ts("packages/shp-checker/src/ast-generation-core.ts")
-      Read<LanguageSource>
+      Append<ShapeModelDraft>
+        evidence ts("packages/shp-checker/src/ast-generation-render.ts")
+      Append<ShapeModelDraft>
         evidence ts("packages/shp-checker/src/ast-generation.ts")
       Read<LanguageSource>
-        evidence ts("packages/shp-checker/src/source-languages.ts")
-    }
-  fn parseSourceFilesToCodeSemanticGraph
-    source ts("packages/shp-checker/src/ast-generation-core.ts#parseSourceFilesToCodeSemanticGraph")
-    effects complete {
-      Append<AstAnchorFingerprint>
-        evidence ts("packages/shp-checker/src/ast-generation-core.ts")
-      Append<CodeSemanticGraph>
-        evidence ts("packages/shp-checker/src/ast-generation-core.ts")
-      Append<GeneratedCandidateEffect>
-        evidence ts("packages/shp-checker/src/ast-generation-core.ts")
-      Append<SemanticDiagnostics>
-        evidence ts("packages/shp-checker/src/ast-generation-core.ts")
-      Read<LanguageSource>
-        evidence ts("packages/shp-checker/src/ast-generation-core.ts")
+        evidence ts("packages/shp-checker/src/ast-generation-source.ts")
       Read<LanguageSource>
         evidence ts("packages/shp-checker/src/source-languages.ts")
-      Read<SourceSyntaxTree>
-        evidence ts("packages/shp-checker/src/tree-sitter-native-targets.ts")
       Read<SourceSyntaxTree>
         evidence ts("packages/shp-checker/src/ast-generation-tree-sitter.ts")
+    }
+  fn parseSourceFilesToCodeSemanticGraph
+    source ts("packages/shp-checker/src/ast-generation-source.ts#parseSourceFilesToCodeSemanticGraph")
+    effects complete {
+      Append<CodeSemanticGraph>
+        evidence ts("packages/shp-checker/src/ast-generation-graph.ts")
+      Append<CodeSemanticGraph>
+        evidence ts("packages/shp-checker/src/ast-generation-source.ts")
+      Append<CodeSemanticGraph>
+        evidence ts("packages/shp-checker/src/ast-generation-types.ts")
+      Append<CodeSemanticGraph>
+        evidence ts("packages/shp-checker/src/ast-generation-utils.ts")
+      Append<SemanticDiagnostics>
+        evidence ts("packages/shp-checker/src/ast-generation-source.ts")
+      Read<LanguageSource>
+        evidence ts("packages/shp-checker/src/ast-generation-source.ts")
+      Read<LanguageSource>
+        evidence ts("packages/shp-checker/src/source-languages.ts")
+      Read<SourceSyntaxTree>
+        evidence ts("packages/shp-checker/src/ast-generation-tree-sitter.ts")
+      Read<SourceSyntaxTree>
+        evidence ts("packages/shp-checker/src/ast-generation-tree-sitter-normalize.ts")
     }
 }
 

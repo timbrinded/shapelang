@@ -1,18 +1,20 @@
 export {
-  buildCodeSemanticGraphFromAstJson,
   bundledTreeSitterParserAssetRoot,
   bundledTreeSitterParserLibsDir,
   configureBundledTreeSitterParsers,
   detectLinuxMuslRuntime,
-  generateShapeFromAstJson,
-  generateShapeFromCodeSemanticGraph,
-  generateShapeFromSourceFiles,
-  normalizeGeneratedModuleName,
-  parseSourceFilesToCodeSemanticGraph,
   treeSitterParserLibraryName,
   BUNDLED_TREE_SITTER_LANGUAGES,
   TREE_SITTER_LANGUAGE_PACK_VERSION
-} from "./ast-generation-core.ts";
+} from "./ast-generation-tree-sitter.ts";
+export { buildCodeSemanticGraphFromAstJson } from "./ast-generation-json.ts";
+export { parseSourceFilesToCodeSemanticGraph } from "./ast-generation-source.ts";
+export {
+  generateShapeFromAstJson,
+  generateShapeFromCodeSemanticGraph,
+  generateShapeFromSourceFiles,
+  normalizeGeneratedModuleName
+} from "./ast-generation-render.ts";
 export {
   GENERATED_AST_MANIFEST_FILE,
   GENERATED_AST_MODULE_BASE,
@@ -45,4 +47,4 @@ export type {
   SemanticConfidence,
   SourceSpan,
   TreeSitterParseProvider
-} from "./ast-generation-core.ts";
+} from "./ast-generation-types.ts";

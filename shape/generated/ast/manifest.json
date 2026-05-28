@@ -73,10 +73,87 @@
       ]
     },
     {
+      "module": "shape.generated.ast.packages.shp_checker.src.ast_generation_fingerprints",
+      "path": "shape/generated/ast/packages/shp-checker/src/ast-generation-fingerprints.shape",
+      "sources": [
+        "packages/shp-checker/src/ast-generation-fingerprints.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.ast_generation_graph",
+      "path": "shape/generated/ast/packages/shp-checker/src/ast-generation-graph.shape",
+      "sources": [
+        "packages/shp-checker/src/ast-generation-graph.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.ast_generation_json",
+      "path": "shape/generated/ast/packages/shp-checker/src/ast-generation-json.shape",
+      "sources": [
+        "packages/shp-checker/src/ast-generation-json.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.ast_generation_raw",
+      "path": "shape/generated/ast/packages/shp-checker/src/ast-generation-raw.shape",
+      "sources": [
+        "packages/shp-checker/src/ast-generation-raw.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.ast_generation_render",
+      "path": "shape/generated/ast/packages/shp-checker/src/ast-generation-render.shape",
+      "sources": [
+        "packages/shp-checker/src/ast-generation-render.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.ast_generation_semantic",
+      "path": "shape/generated/ast/packages/shp-checker/src/ast-generation-semantic.shape",
+      "sources": [
+        "packages/shp-checker/src/ast-generation-semantic.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.ast_generation_source",
+      "path": "shape/generated/ast/packages/shp-checker/src/ast-generation-source.shape",
+      "sources": [
+        "packages/shp-checker/src/ast-generation-source.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.ast_generation_tokens",
+      "path": "shape/generated/ast/packages/shp-checker/src/ast-generation-tokens.shape",
+      "sources": [
+        "packages/shp-checker/src/ast-generation-tokens.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.ast_generation_tree_sitter_normalize",
+      "path": "shape/generated/ast/packages/shp-checker/src/ast-generation-tree-sitter-normalize.shape",
+      "sources": [
+        "packages/shp-checker/src/ast-generation-tree-sitter-normalize.ts"
+      ]
+    },
+    {
       "module": "shape.generated.ast.packages.shp_checker.src.ast_generation_tree_sitter",
       "path": "shape/generated/ast/packages/shp-checker/src/ast-generation-tree-sitter.shape",
       "sources": [
         "packages/shp-checker/src/ast-generation-tree-sitter.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.ast_generation_types",
+      "path": "shape/generated/ast/packages/shp-checker/src/ast-generation-types.shape",
+      "sources": [
+        "packages/shp-checker/src/ast-generation-types.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.ast_generation_utils",
+      "path": "shape/generated/ast/packages/shp-checker/src/ast-generation-utils.shape",
+      "sources": [
+        "packages/shp-checker/src/ast-generation-utils.ts"
       ]
     },
     {
