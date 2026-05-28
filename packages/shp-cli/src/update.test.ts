@@ -121,7 +121,8 @@ describe("shp update helpers", () => {
       removeDir: async (path: string) => {
         removedTemp = path === "/tmp/shp-update-test";
       },
-      pathExists: async (path: string) => path === "/opt/bin/shp",
+      pathExists: async (path: string) =>
+        path === "/opt/bin/shp" || path === "/tmp/shp-update-test/tree-sitter-language-pack",
       writeFile: async (path: string) => {
         writes.push(path);
       },
@@ -135,8 +136,13 @@ describe("shp update helpers", () => {
         stderr: ""
       }),
       runHelp: async () => validShpHelp(),
-      replaceBinary: async (sourcePath: string, targetPath: string, platform: ReleasePlatform) => {
-        replaced.push(`${sourcePath}:${targetPath}:${platform.assetName}`);
+      replaceBinary: async (
+        sourcePath: string,
+        targetPath: string,
+        platform: ReleasePlatform,
+        parserAssetsPath: string
+      ) => {
+        replaced.push(`${sourcePath}:${targetPath}:${platform.assetName}:${parserAssetsPath}`);
         return { pending: false };
       }
     };
@@ -163,7 +169,9 @@ describe("shp update helpers", () => {
       "/tmp/shp-update-test/shp-linux-x64.tar.gz"
     ]);
     expect(extracted).toEqual(["/tmp/shp-update-test/shp-linux-x64.tar.gz:/tmp/shp-update-test"]);
-    expect(replaced).toEqual(["/tmp/shp-update-test/shp:/opt/bin/shp:shp-linux-x64.tar.gz"]);
+    expect(replaced).toEqual([
+      "/tmp/shp-update-test/shp:/opt/bin/shp:shp-linux-x64.tar.gz:/tmp/shp-update-test/tree-sitter-language-pack"
+    ]);
     expect(removedTemp).toBe(true);
   });
 
@@ -195,7 +203,8 @@ describe("shp update helpers", () => {
       },
       makeTempDir: async () => "/tmp/shp-update-test",
       removeDir: async () => {},
-      pathExists: async (path: string) => path === "/tmp/stale-shp",
+      pathExists: async (path: string) =>
+        path === "/tmp/stale-shp" || path === "/tmp/shp-update-test/tree-sitter-language-pack",
       writeFile: async () => {},
       sha256File: async () => "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
       extractTarGz: async () => {},
@@ -208,8 +217,13 @@ describe("shp update helpers", () => {
         };
       },
       runHelp: async () => validShpHelp(),
-      replaceBinary: async (sourcePath: string, targetPath: string, platform: ReleasePlatform) => {
-        replaced.push(`${sourcePath}:${targetPath}:${platform.assetName}`);
+      replaceBinary: async (
+        sourcePath: string,
+        targetPath: string,
+        platform: ReleasePlatform,
+        parserAssetsPath: string
+      ) => {
+        replaced.push(`${sourcePath}:${targetPath}:${platform.assetName}:${parserAssetsPath}`);
         return { pending: false };
       }
     };
@@ -228,7 +242,9 @@ describe("shp update helpers", () => {
 
     expect(output).toBe("updated shp 0.3.0 -> 0.4.0 at /tmp/stale-shp\n");
     expect(versionChecks).toEqual(["/tmp/stale-shp", "/tmp/shp-update-test/shp"]);
-    expect(replaced).toEqual(["/tmp/shp-update-test/shp:/tmp/stale-shp:shp-linux-x64.tar.gz"]);
+    expect(replaced).toEqual([
+      "/tmp/shp-update-test/shp:/tmp/stale-shp:shp-linux-x64.tar.gz:/tmp/shp-update-test/tree-sitter-language-pack"
+    ]);
   });
 
   test("accepts older shp help text when validating an explicit target", async () => {
@@ -406,7 +422,13 @@ describe("shp update helpers", () => {
 
     expect(script).toContain("} catch {");
     expect(script).toContain(
+      "Move-Item -Force -LiteralPath $SourceAssets -Destination $TargetAssets"
+    );
+    expect(script).toContain(
       "Remove-Item -LiteralPath $Source -Force -ErrorAction SilentlyContinue"
+    );
+    expect(script).toContain(
+      "Remove-Item -Recurse -Force -LiteralPath $SourceAssets -ErrorAction SilentlyContinue"
     );
     expect(script).toContain(
       "Remove-Item -LiteralPath $MyInvocation.MyCommand.Path -Force -ErrorAction SilentlyContinue"

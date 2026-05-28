@@ -20,6 +20,8 @@ AppendOnly forbids final HardDelete<AuditEvent>
 
 Fix the model by removing the effect, changing the architecture decision, or moving the behavior to a component/resource where the effect is allowed.
 
+For rule-derived final forbids, the rule must bind exactly one subject with `when T has TraitName`. Concrete forbid targets are resolved through module/import scoping before this check runs.
+
 ## Forbidden hypercycle
 
 Cause: a `forbid hypercycle` rule found a directed cycle in the structural hypergraph. The diagnostic cites the relations forming the cycle and a vertex witness path. Each relation kind contributes steps to the cycle graph according to its declared traversal semantics (binary kinds contribute one step `A -> B`; ordered kinds contribute consecutive steps along their members).
@@ -315,6 +317,18 @@ relation GatewayCallsAudit is invalid: kind calls requires exactly two endpoints
 ```
 
 Fix the offending relation block. Each prelude kind constrains arity and connects shape: `calls`, `callbacks`, and `provides` are binary and directional; `provides` must be `component -> resource`; `coordinated_call` is an ordered path of two or more endpoints; user-defined kinds accept any arity but are excluded from hypercycle detection.
+
+## Invalid rule
+
+Cause: a `rule` declaration is malformed for the semantic check it asks the checker to perform. For final effect forbids, rules may bind only one subject name. Repeated `when T has Trait` clauses are allowed and are treated as conjunctions; different subject names in the same final-forbid rule are rejected.
+
+```text
+error: invalid rule
+
+rule invalid_multi_subject_final_forbid is invalid: final effect forbids may bind only one subject, but found T, U.
+```
+
+Use one subject name for the resource being constrained, or split unrelated subjects into separate rules.
 
 ## Unknown relation endpoint
 

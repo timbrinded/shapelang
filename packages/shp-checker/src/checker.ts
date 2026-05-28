@@ -176,6 +176,13 @@ export type SemanticDiagnostic =
       causedBy: string[];
     }
   | {
+      kind: "invalid_rule";
+      rule: string;
+      reason: string;
+      filePath?: string;
+      causedBy: string[];
+    }
+  | {
       kind: "duplicate_declaration";
       declarationKind:
         | "resource"
@@ -680,6 +687,7 @@ type TraitInfo = {
 type FinalForbidPattern = {
   effect: string;
   target?: string;
+  targetBinding: "omitted" | "generic" | "concrete" | "ambiguous";
   final: boolean;
   provenance: Provenance;
 };
@@ -721,6 +729,7 @@ type RuleInfo = {
   localName: string;
   moduleName: string;
   whenHas: { subject: string; trait: string }[];
+  finalForbidSubject?: string;
   forbidEffects: FinalForbidPattern[];
   forbidProvides: {
     target: string;
@@ -822,6 +831,7 @@ export function checkShapeModules(
   const diagnostics = [
     ...model.diagnostics,
     ...checkResolvedNames(model),
+    ...checkRules(model),
     ...checkFingerprintExpectations(model),
     ...checkCandidateEffectFingerprints(model),
     ...checkContextTargets(model),
@@ -1742,10 +1752,13 @@ function lowerTrait(trait: TraitDecl, context: LoweringContext, model: Model): v
     return;
   }
 
+  const typeParams = trait.typeParams?.params.map((param) => param.name) ?? [];
   const finalForbids: FinalForbidPattern[] = [];
   for (const member of trait.members) {
     if (isTraitForbidDecl(member)) {
-      finalForbids.push(lowerForbidPattern(member, context.filePath, `trait ${name}`));
+      finalForbids.push(
+        lowerForbidPattern(member, context, model, `trait ${name}`, new Set(typeParams))
+      );
     }
   }
 
@@ -1753,7 +1766,7 @@ function lowerTrait(trait: TraitDecl, context: LoweringContext, model: Model): v
     name,
     localName: trait.name,
     moduleName: context.name,
-    typeParams: trait.typeParams?.params.map((param) => param.name) ?? [],
+    typeParams,
     finalForbids,
     provenance: prov
   });
@@ -2391,11 +2404,20 @@ function lowerAttestation(
 
 function lowerRule(rule: RuleDecl, context: LoweringContext, model: Model): void {
   const name = declKey(context.name, rule.name);
+  const finalForbidSubjects = new Set(
+    rule.members.filter(isRuleWhenHasDecl).map((member) => member.subject)
+  );
+  const hasFinalForbid = rule.members.some(
+    (member) => isRuleForbidEffectDecl(member) && member.final
+  );
+  const finalForbidSubject =
+    hasFinalForbid && finalForbidSubjects.size === 1 ? [...finalForbidSubjects][0] : undefined;
   const info: RuleInfo = {
     name,
     localName: rule.name,
     moduleName: context.name,
     whenHas: [],
+    finalForbidSubject,
     forbidEffects: [],
     forbidProvides: [],
     forbidHypercycles: [],
@@ -2409,7 +2431,7 @@ function lowerRule(rule: RuleDecl, context: LoweringContext, model: Model): void
         trait: resolveDeclName(member.trait, "trait", context, model)
       });
     } else if (isRuleForbidEffectDecl(member)) {
-      info.forbidEffects.push(lowerRuleForbid(member, context.filePath, name));
+      info.forbidEffects.push(lowerRuleForbid(member, context, model, name, finalForbidSubjects));
     } else if (isRuleForbidProvidesDecl(member)) {
       info.forbidProvides.push(lowerRuleForbidProvides(member, context, model, name));
     } else if (isRuleForbidHypercycleDecl(member)) {
@@ -3024,16 +3046,19 @@ function lowerEffectEntry(
 
 function lowerForbidPattern(
   member: TraitForbidDecl,
-  filePath: string | undefined,
-  owner: string
+  context: LoweringContext,
+  model: Model,
+  owner: string,
+  genericTargets: Set<string>
 ): FinalForbidPattern {
-  const pattern = lowerPattern(member.pattern);
+  const pattern = lowerPattern(member.pattern, context, model, genericTargets);
   return {
     effect: pattern.name,
     target: pattern.target,
+    targetBinding: pattern.targetBinding,
     final: member.final,
     provenance: provenance(
-      filePath,
+      context.filePath,
       `${owner} forbids ${member.final ? "final " : ""}${formatTerm(pattern.name, pattern.target ?? "")}`
     )
   };
@@ -3041,16 +3066,19 @@ function lowerForbidPattern(
 
 function lowerRuleForbid(
   member: RuleForbidEffectDecl,
-  filePath: string | undefined,
-  ruleName: string
+  context: LoweringContext,
+  model: Model,
+  ruleName: string,
+  genericTargets: Set<string>
 ): FinalForbidPattern {
-  const pattern = lowerPattern(member.pattern);
+  const pattern = lowerPattern(member.pattern, context, model, genericTargets);
   return {
     effect: pattern.name,
     target: pattern.target,
+    targetBinding: pattern.targetBinding,
     final: member.final,
     provenance: provenance(
-      filePath,
+      context.filePath,
       `rule ${ruleName} forbids ${member.final ? "final " : ""}${formatTerm(pattern.name, pattern.target ?? "")}`
     )
   };
@@ -3094,10 +3122,43 @@ function lowerTerm(term: EffectTerm, context: LoweringContext, model: Model): Te
   };
 }
 
-function lowerPattern(pattern: EffectPattern): TermInfo {
+function lowerPattern(
+  pattern: EffectPattern,
+  context: LoweringContext,
+  model: Model,
+  genericTargets: Set<string>
+): TermInfo & { targetBinding: FinalForbidPattern["targetBinding"] } {
+  if (!pattern.target) {
+    return {
+      name: pattern.name,
+      targetBinding: "omitted"
+    };
+  }
+  const targetName = pattern.target.name;
+  if (genericTargets.has(targetName)) {
+    return {
+      name: pattern.name,
+      target: targetName,
+      targetBinding: "generic"
+    };
+  }
+  const result = resolveDeclReference(targetName, "resource", context, model);
+  if (result.kind === "ambiguous") {
+    model.diagnostics.push({
+      kind: "ambiguous_name",
+      nameKind: "resource",
+      name: targetName,
+      matches: result.matches,
+      filePath: context.filePath,
+      causedBy: [
+        describeProvenance(provenance(context.filePath, `resource reference ${targetName}`))
+      ]
+    });
+  }
   return {
     name: pattern.name,
-    target: pattern.target?.name
+    target: result.name,
+    targetBinding: result.kind === "ambiguous" ? "ambiguous" : "concrete"
   };
 }
 
@@ -3421,7 +3482,40 @@ function checkResolvedNames(model: Model): SemanticDiagnostic[] {
     }
   }
 
+  for (const trait of model.traits.values()) {
+    for (const forbid of trait.finalForbids) {
+      if (
+        forbid.target &&
+        forbid.targetBinding === "concrete" &&
+        !model.resources.has(forbid.target)
+      ) {
+        diagnostics.push({
+          kind: "unknown_name",
+          nameKind: "resource",
+          name: forbid.target,
+          filePath: forbid.provenance.filePath,
+          causedBy: [describeProvenance(forbid.provenance)]
+        });
+      }
+    }
+  }
+
   for (const rule of model.rules) {
+    for (const forbid of rule.forbidEffects) {
+      if (
+        forbid.target &&
+        forbid.targetBinding === "concrete" &&
+        !model.resources.has(forbid.target)
+      ) {
+        diagnostics.push({
+          kind: "unknown_name",
+          nameKind: "resource",
+          name: forbid.target,
+          filePath: forbid.provenance.filePath,
+          causedBy: [describeProvenance(forbid.provenance)]
+        });
+      }
+    }
     for (const forbid of rule.forbidProvides) {
       if (!model.resources.has(forbid.target)) {
         diagnostics.push({
@@ -3441,6 +3535,38 @@ function checkResolvedNames(model: Model): SemanticDiagnostic[] {
           causedBy: [describeProvenance(forbid.provenance)]
         });
       }
+    }
+  }
+
+  return diagnostics;
+}
+
+function checkRules(model: Model): SemanticDiagnostic[] {
+  const diagnostics: SemanticDiagnostic[] = [];
+
+  for (const rule of model.rules) {
+    const hasFinalForbid = rule.forbidEffects.some((forbid) => forbid.final);
+    if (!hasFinalForbid) {
+      continue;
+    }
+
+    const subjects = [...new Set(rule.whenHas.map((when) => when.subject))];
+    if (subjects.length === 0) {
+      diagnostics.push({
+        kind: "invalid_rule",
+        rule: rule.name,
+        reason: "final effect forbids require exactly one when subject",
+        filePath: rule.provenance.filePath,
+        causedBy: [describeProvenance(rule.provenance)]
+      });
+    } else if (subjects.length > 1) {
+      diagnostics.push({
+        kind: "invalid_rule",
+        rule: rule.name,
+        reason: `final effect forbids may bind only one subject, but found ${subjects.join(", ")}`,
+        filePath: rule.provenance.filePath,
+        causedBy: [describeProvenance(rule.provenance)]
+      });
     }
   }
 
@@ -4607,8 +4733,16 @@ function deriveFinalForbidsForResource(
   }
 
   for (const rule of model.rules) {
-    const when = rule.whenHas[0];
-    if (!when || !resource.traits.has(when.trait)) {
+    const subject = rule.finalForbidSubject;
+    if (!subject) {
+      continue;
+    }
+    const whens = rule.whenHas.filter((when) => when.subject === subject);
+    if (whens.length === 0 || !whens.every((when) => resource.traits.has(when.trait))) {
+      continue;
+    }
+    const diagnosticTrait = whens[0]?.trait;
+    if (!diagnosticTrait) {
       continue;
     }
 
@@ -4618,8 +4752,8 @@ function deriveFinalForbidsForResource(
       }
       forbids.push({
         effect: forbid.effect,
-        target: substituteTarget(forbid.target, resource.name, [when.subject]),
-        trait: when.trait,
+        target: substituteTarget(forbid.target, resource.name, [subject]),
+        trait: diagnosticTrait,
         provenance: forbid.provenance
       });
     }
@@ -4720,6 +4854,8 @@ function formatDiagnostic(diagnostic: ShapeDiagnostic): string {
       return formatUnknownNameDiagnostic(diagnostic);
     case "ambiguous_name":
       return formatAmbiguousNameDiagnostic(diagnostic);
+    case "invalid_rule":
+      return formatInvalidRuleDiagnostic(diagnostic);
     case "duplicate_declaration":
       return formatDuplicateDeclarationDiagnostic(diagnostic);
     case "duplicate_fingerprint":
@@ -4819,6 +4955,17 @@ function formatAmbiguousNameDiagnostic(
     `${diagnostic.nameKind} ${diagnostic.name} matches more than one imported declaration.`,
     "Use a module-qualified reference.",
     `matches: ${diagnostic.matches.join(", ")}`,
+    formatCausedBy(diagnostic.causedBy)
+  ].join("\n");
+}
+
+function formatInvalidRuleDiagnostic(
+  diagnostic: Extract<SemanticDiagnostic, { kind: "invalid_rule" }>
+): string {
+  return [
+    "error: invalid rule",
+    "",
+    `rule ${displaySymbol(diagnostic.rule)} is invalid: ${diagnostic.reason}.`,
     formatCausedBy(diagnostic.causedBy)
   ].join("\n");
 }
@@ -5153,6 +5300,12 @@ function preludeTraitInfo(trait: PreludeTraitDefinition): TraitInfo {
       return {
         effect: forbid.effect,
         target: forbid.target,
+        targetBinding:
+          forbid.target === undefined
+            ? "omitted"
+            : trait.typeParams.includes(forbid.target)
+              ? "generic"
+              : "concrete",
         final: true,
         provenance: provenance(
           "standard prelude",

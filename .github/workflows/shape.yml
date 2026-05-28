@@ -245,6 +245,16 @@ jobs:
             >/tmp/shp-smoke/ast-source.shape
           grep -q "GeneratedAstAnchor" /tmp/shp-smoke/ast-source.shape
           grep -q "kind generated_from" /tmp/shp-smoke/ast-source.shape
+          cat > /tmp/shp-smoke/widget.tsx <<'EOF'
+          export function Widget() {
+            return <section>audit</section>;
+          }
+          EOF
+          /tmp/shp-smoke/shp ast source \
+            --module generated.widget \
+            /tmp/shp-smoke/widget.tsx \
+            >/tmp/shp-smoke/ast-source-tsx.shape
+          grep -q "GeneratedAstAnchor" /tmp/shp-smoke/ast-source-tsx.shape
           /tmp/shp-smoke/shp memory >/dev/null
           /tmp/shp-smoke/shp obligations >/tmp/shp-smoke/obligations.txt
           grep -q "No open shape obligations." /tmp/shp-smoke/obligations.txt

@@ -57,4 +57,4 @@ bun run docs:dev
 bun run build:release
 ```
 
-Release assets are written under `dist/release/`. The tag-triggered release workflow runs the same builder, smoke-tests the Linux binary including `shp ast source`, and uploads checksummed archives to GitHub Releases. The builder reads the same native parser target table used by runtime parser selection and installer/update archive selection.
+Release assets are written under `dist/release/`. The tag-triggered release workflow runs the same builder, smoke-tests the Linux binary including inferred TSX `shp ast source`, and uploads checksummed archives to GitHub Releases. The builder reads the same native parser target table used by runtime parser selection and installer/update archive selection, and each archive includes the Tree-sitter parser assets used by source inference.

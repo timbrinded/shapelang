@@ -3284,19 +3284,6 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
             }
           },
           {
-            "$type": "Assignment",
-            "feature": "typeParams",
-            "operator": "=",
-            "terminal": {
-              "$type": "RuleCall",
-              "rule": {
-                "$ref": "#/rules@9"
-              },
-              "arguments": []
-            },
-            "cardinality": "?"
-          },
-          {
             "$type": "Keyword",
             "value": "{"
           },

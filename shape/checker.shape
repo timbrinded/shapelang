@@ -383,7 +383,7 @@ memory FinalForbidPrecedence : RefactorConstraint<fn ShapeRuleEngine.deriveFinal
   applies_to fn ShapeRuleEngine.deriveFinalForbidsForResource
   status Explained
   confidence High
-  summary "Final forbids must remain stronger than component grants and cannot be waived by rationale or memory."
+  summary "Final forbids must remain stronger than component grants, resolve concrete targets deterministically, and cannot be waived by rationale or memory."
   owner ShapeMaintainers
   protects shape FinalForbidPrecedence
   guards on_change require ReEvaluation<Self>
@@ -403,7 +403,7 @@ memory LoweringBeforeRules : CheckOrderRationale<fn ShapeModelLowerer.lowerShape
   applies_to fn ShapeModelLowerer.lowerShapeModules
   status Explained
   confidence High
-  summary "Module-scoped declarations, generated candidate evidence, and change declarations must be resolved into the final function registry before derived facts are emitted."
+  summary "Module-scoped declarations, concrete forbid targets, generated candidate evidence, and change declarations must be resolved into the final effective model before derived facts are emitted."
   owner ShapeMaintainers
   protects shape EffectiveModelOrder
   guards on_change require ReEvaluation<Self>
@@ -478,9 +478,9 @@ reevaluation DiagnosticOutputRechecked {
 reevaluation FinalForbidPrecedenceRechecked {
   satisfies memory FinalForbidPrecedence
   outcome Confirmed
-  summary "Final forbid derivation still reads prelude metadata and remains stronger than component grants."
+  summary "Final forbid derivation still reads prelude metadata, resolves concrete targets through module scope, rejects invalid rule binders, and remains stronger than component grants."
   reviewer ShapeMaintainers
-  decided_on "2026-05-20"
+  decided_on "2026-05-28"
   evidence test("packages/shp-checker/src/checker.test.ts")
 }
 
@@ -496,8 +496,8 @@ reevaluation HypercycleTraversalRechecked {
 reevaluation LoweringFunctionRegistryRechecked {
   satisfies memory LoweringBeforeRules
   outcome Confirmed
-  summary "Checker tests cover module-scoped import resolution with ambiguity rejection, qualified function targets, generated candidate effect validation, manifest-backed generated AST trust, and function registry rebuilds before derived facts and coverage paths are emitted."
+  summary "Checker tests cover module-scoped import resolution with ambiguity rejection, concrete forbid target lowering, generated candidate effect validation, manifest-backed generated AST trust, and function registry rebuilds before derived facts and coverage paths are emitted."
   reviewer ShapeMaintainers
-  decided_on "2026-05-22"
+  decided_on "2026-05-28"
   evidence test("packages/shp-checker/src/checker.test.ts")
 }

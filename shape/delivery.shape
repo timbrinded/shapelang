@@ -35,6 +35,7 @@ component CiPipeline {
   grants Read<CopilotReviewResult>
   grants Read<GeneratedAstManifest>
   grants Read<LanguageSource>
+  grants Read<NativeParserAsset>
   grants Read<ReleaseArtifact>
   grants Read<ReleaseVersionTag>
   grants Read<SemanticDiagnostics>
@@ -115,6 +116,10 @@ component CiPipeline {
       Read<LanguageSource>
         evidence yaml(".github/workflows/release.yml")
       Read<LanguageSource>
+        evidence yaml(".github/workflows/shape.yml")
+      Read<NativeParserAsset>
+        evidence yaml(".github/workflows/release.yml")
+      Read<NativeParserAsset>
         evidence yaml(".github/workflows/shape.yml")
       Read<ReleaseArtifact>
         evidence yaml(".github/workflows/release.yml")
@@ -237,6 +242,8 @@ component ReleasePipeline {
         evidence ps1("install.ps1")
       Read<NativeParserAsset>
         evidence sh("scripts/build-release-assets.sh")
+      Read<NativeParserAsset>
+        evidence ts("scripts/prepare-tree-sitter-parser-assets.ts")
       Read<NativeParserAsset>
         evidence ts("packages/shp-checker/src/tree-sitter-native-targets.ts")
       Update<ReleaseArtifact>
@@ -416,6 +423,7 @@ implementation ReleaseSource {
     "install.ps1"
     "install.sh"
     "scripts/build-release-assets.sh"
+    "scripts/prepare-tree-sitter-parser-assets.ts"
   }
   conforms_to ReleasePipeline
   on_change require shape_update
@@ -525,7 +533,7 @@ memory ReleaseChecksumContract : RefactorConstraint<fn ReleasePipeline.buildRele
   applies_to fn ReleasePipeline.buildReleaseAssets
   status Explained
   confidence High
-  summary "Release archives, installer templates, and checksums must stay in sync for binary installation."
+  summary "Release archives, bundled parser assets, installer templates, and checksums must stay in sync for binary installation."
   owner ShapeMaintainers
   protects shape ReleaseIntegrity
   guards on_change require ReEvaluation<Self>
@@ -553,10 +561,13 @@ reevaluation DocsShapeBlockVerificationRechecked {
 reevaluation ReleaseNativeParserAssetsRechecked {
   satisfies memory ReleaseChecksumContract
   outcome Confirmed
-  summary "Release asset builds and installers read the shared native parser target matrix, reject unsupported platform archives such as macOS x64, compile matching bindings into advertised binaries, and still publish checksummed archives."
+  summary "Release asset builds include native bindings and verified parser libraries for every advertised source language, and installers require and copy the parser asset directory beside the executable."
   reviewer ShapeMaintainers
-  decided_on "2026-05-22"
+  decided_on "2026-05-28"
+  evidence ps1("install.ps1")
+  evidence sh("install.sh")
   evidence sh("scripts/build-release-assets.sh")
+  evidence ts("scripts/prepare-tree-sitter-parser-assets.ts")
 }
 
 reevaluation ReleaseVersionTagCheckRechecked {

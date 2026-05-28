@@ -1,6 +1,7 @@
 import { createHash } from "node:crypto";
-import { statSync } from "node:fs";
+import { existsSync, statSync } from "node:fs";
 import { createRequire } from "node:module";
+import { dirname, join } from "node:path";
 
 import { formatShapeSource } from "./formatter.ts";
 import { inferAstSourceLanguageFromPath } from "./source-languages.ts";
@@ -266,6 +267,15 @@ const SHAPE_RESERVED_WORDS = new Set([
   "unknown"
 ]);
 const treeSitterNativeRequire = createRequire(import.meta.url);
+export const TREE_SITTER_LANGUAGE_PACK_VERSION = "1.8.1";
+export const BUNDLED_TREE_SITTER_LANGUAGES = [
+  "javascript",
+  "typescript",
+  "tsx",
+  "rust",
+  "go",
+  "python"
+] as const;
 
 export async function parseSourceFilesToCodeSemanticGraph(
   files: AstSourceFileInput[],
@@ -1906,6 +1916,14 @@ async function loadTreeSitterProvider(): Promise<
     };
   }
 
+  const bundledParserDiagnostics = configureBundledTreeSitterParsers(moduleValue);
+  if (bundledParserDiagnostics.length > 0) {
+    return {
+      ok: false,
+      diagnostics: bundledParserDiagnostics
+    };
+  }
+
   const getParser = methodFunction(moduleValue, ["getParser"]);
   if (!getParser) {
     return {
@@ -1931,6 +1949,77 @@ async function loadTreeSitterProvider(): Promise<
       return tree;
     }
   };
+}
+
+export function configureBundledTreeSitterParsers(
+  moduleValue: Record<string, unknown>,
+  executablePath: string = process.execPath
+): AstGenerationDiagnostic[] {
+  const assetRoot = bundledTreeSitterParserAssetRoot(executablePath);
+  if (!existsSync(assetRoot)) {
+    return [];
+  }
+
+  const libsDir = bundledTreeSitterParserLibsDir(executablePath);
+  const missing = BUNDLED_TREE_SITTER_LANGUAGES.map((language) =>
+    join(libsDir, treeSitterParserLibraryName(language))
+  ).filter((path) => !existsSync(path));
+  if (missing.length > 0) {
+    return [
+      {
+        kind: "error",
+        code: "missing_bundled_tree_sitter_parsers",
+        message: `bundled tree-sitter parser assets are incomplete; missing ${missing.join(", ")}`
+      }
+    ];
+  }
+
+  const configure = methodFunction(moduleValue, ["configure"]);
+  if (!configure) {
+    return [
+      {
+        kind: "error",
+        code: "invalid_tree_sitter_language_pack",
+        message: "@kreuzberg/tree-sitter-language-pack native binding does not expose configure"
+      }
+    ];
+  }
+
+  try {
+    configure(undefined, { cacheDir: libsDir });
+  } catch (error) {
+    return [
+      {
+        kind: "error",
+        code: "invalid_tree_sitter_parser_cache",
+        message: `failed to configure bundled tree-sitter parser cache: ${errorMessage(error)}`
+      }
+    ];
+  }
+
+  return [];
+}
+
+export function bundledTreeSitterParserAssetRoot(
+  executablePath: string = process.execPath
+): string {
+  return join(dirname(executablePath), "tree-sitter-language-pack");
+}
+
+export function bundledTreeSitterParserLibsDir(
+  executablePath: string = process.execPath,
+  version: string = TREE_SITTER_LANGUAGE_PACK_VERSION
+): string {
+  return join(bundledTreeSitterParserAssetRoot(executablePath), version, "libs");
+}
+
+export function treeSitterParserLibraryName(
+  language: (typeof BUNDLED_TREE_SITTER_LANGUAGES)[number],
+  platform: NodeJS.Platform = process.platform
+): string {
+  const extension = platform === "win32" ? ".dll" : platform === "darwin" ? ".dylib" : ".so";
+  const prefix = platform === "win32" ? "" : "lib";
+  return `${prefix}tree_sitter_${language}${extension}`;
 }
 
 function loadTreeSitterNativeBinding(): NativeBindingLoadResult {
@@ -2558,8 +2647,11 @@ function normalizeLanguageName(language: string | undefined): string | undefined
   if (lower === "ts") {
     return "typescript";
   }
-  if (lower === "js") {
+  if (lower === "js" || lower === "jsx") {
     return "javascript";
+  }
+  if (lower === "tsx") {
+    return "tsx";
   }
   if (lower === "rs") {
     return "rust";

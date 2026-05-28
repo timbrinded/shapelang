@@ -62,9 +62,16 @@ try {
   }
 
   tar -xzf $AssetPath -C $TempDir
+  $ParserAssets = Join-Path $TempDir "tree-sitter-language-pack"
+  if (-not (Test-Path -LiteralPath $ParserAssets -PathType Container)) {
+    throw "Release archive is missing tree-sitter-language-pack parser assets."
+  }
 
   New-Item -ItemType Directory -Force -Path $InstallDir | Out-Null
   Copy-Item -Force (Join-Path $TempDir "shp.exe") (Join-Path $InstallDir "shp.exe")
+  $InstallParserAssets = Join-Path $InstallDir "tree-sitter-language-pack"
+  Remove-Item -Recurse -Force $InstallParserAssets -ErrorAction SilentlyContinue
+  Copy-Item -Recurse -Force $ParserAssets $InstallParserAssets
 
   if (-not [string]::IsNullOrWhiteSpace($env:GITHUB_PATH)) {
     Add-Content -Path $env:GITHUB_PATH -Value $InstallDir

@@ -1,5 +1,7 @@
 import { describe, expect, test } from "bun:test";
-import { resolve } from "node:path";
+import { mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
+import { join, resolve } from "node:path";
+import { tmpdir } from "node:os";
 import {
   analyzeSourceText,
   buildShapeAuthorPrompt,
@@ -27,8 +29,12 @@ import {
 } from "./index.ts";
 import {
   buildCodeSemanticGraphFromAstJson,
+  BUNDLED_TREE_SITTER_LANGUAGES,
+  bundledTreeSitterParserLibsDir,
+  configureBundledTreeSitterParsers,
   generateShapeFromCodeSemanticGraph,
   parseSourceFilesToCodeSemanticGraph,
+  treeSitterParserLibraryName,
   type CodeAstAnchor,
   type CodeSemanticGraph
 } from "./ast-generation-core.ts";
@@ -545,6 +551,121 @@ describe("Shape checker", () => {
         effect: "HardDelete"
       })
     );
+  });
+
+  test("resolves concrete trait forbid targets in named modules", () => {
+    const parsed = parseShapeModule(`
+      module audit
+
+      trait Protected {
+        forbid final HardDelete<AuditEvent>
+      }
+
+      resource AuditEvent : Protected
+
+      component AuditStore {
+        owns AuditEvent
+        grants HardDelete<AuditEvent>
+        fn purgeOldEvents
+          effects complete {
+            HardDelete<AuditEvent>
+          }
+      }
+    `);
+
+    expect(parsed.ok).toBe(true);
+    if (!parsed.ok) {
+      return;
+    }
+
+    const result = checkShapeModules([parsed.module]);
+    const output = formatDiagnostics(result);
+
+    expect(result.exitCode).toBe(1);
+    expect(output).toContain("AuditEvent has trait Protected");
+    expect(output).toContain("Protected forbids final HardDelete<AuditEvent>");
+  });
+
+  test("resolves imported concrete rule forbid targets", () => {
+    const domain = parseShapeModule(`
+      module domain
+
+      trait Protected {
+      }
+
+      resource AuditEvent : Protected
+    `);
+    const policy = parseShapeModule(`
+      module policy
+      import domain
+
+      component AuditStore {
+        owns AuditEvent
+        grants HardDelete<AuditEvent>
+        fn purgeOldEvents
+          effects complete {
+            HardDelete<AuditEvent>
+          }
+      }
+
+      rule protected_events_are_not_deleted {
+        when T has Protected
+        forbid final HardDelete<AuditEvent>
+      }
+    `);
+
+    expect(domain.ok).toBe(true);
+    expect(policy.ok).toBe(true);
+    if (!domain.ok || !policy.ok) {
+      return;
+    }
+
+    const result = checkShapeModules([domain.module, policy.module]);
+    const output = formatDiagnostics(result);
+
+    expect(result.exitCode).toBe(1);
+    expect(output).toContain("AuditEvent has trait Protected");
+    expect(output).toContain("Protected forbids final HardDelete<AuditEvent>");
+  });
+
+  test("rejects unknown and ambiguous concrete forbid targets", () => {
+    const unknown = parseShapeModule(`
+      module policy
+
+      trait Broken {
+        forbid final HardDelete<MissingEvent>
+      }
+    `);
+    expect(unknown.ok).toBe(true);
+    if (!unknown.ok) {
+      return;
+    }
+    const unknownResult = checkShapeModules([unknown.module]);
+    expect(unknownResult.exitCode).toBe(1);
+    expect(formatDiagnostics(unknownResult)).toContain("resource MissingEvent is referenced");
+
+    const left = parseShapeModule("module left\nresource AuditEvent");
+    const right = parseShapeModule("module right\nresource AuditEvent");
+    const ambiguous = parseShapeModule(`
+      module policy
+      import left
+      import right
+
+      trait Broken {
+        forbid final HardDelete<AuditEvent>
+      }
+    `);
+    expect(left.ok).toBe(true);
+    expect(right.ok).toBe(true);
+    expect(ambiguous.ok).toBe(true);
+    if (!left.ok || !right.ok || !ambiguous.ok) {
+      return;
+    }
+    const ambiguousResult = checkShapeModules([left.module, right.module, ambiguous.module]);
+    const ambiguousOutput = formatDiagnostics(ambiguousResult);
+    expect(ambiguousResult.exitCode).toBe(1);
+    expect(ambiguousOutput).toContain("ambiguous resource");
+    expect(ambiguousOutput).toContain("Use a module-qualified reference");
   });
 
   test("checks already parsed modules", () => {
@@ -2364,7 +2485,7 @@ describe("Shape checker", () => {
     const parsed = parseShapeModule(`
       module rules
 
-      trait Immutable<T: Resource> {
+      trait Immutable {
       }
 
       resource LedgerEntry : Immutable
@@ -2379,7 +2500,7 @@ describe("Shape checker", () => {
           }
       }
 
-      rule immutable_forbids_delete<T: Resource> {
+      rule immutable_forbids_delete {
         when T has Immutable
         forbid final HardDelete<T>
       }
@@ -2397,6 +2518,78 @@ describe("Shape checker", () => {
     expect(output).toContain("LedgerEntry has trait Immutable");
     expect(output).toContain("Immutable forbids final HardDelete<LedgerEntry>");
     expect(output).toContain("rule immutable_forbids_delete forbids final HardDelete<T>");
+  });
+
+  test("applies repeated rule subjects as conjunctions", () => {
+    const parsed = parseShapeModule(`
+      module rules
+
+      trait Immutable {
+      }
+
+      trait Archived {
+      }
+
+      resource LedgerEntry : Immutable, Archived
+
+      component LedgerStore {
+        owns LedgerEntry
+        grants HardDelete<LedgerEntry>
+
+        fn purgeEntry
+          effects complete {
+            HardDelete<LedgerEntry>
+          }
+      }
+
+      rule archived_immutable_forbids_delete {
+        when T has Immutable
+        when T has Archived
+        forbid final HardDelete<T>
+      }
+    `);
+
+    expect(parsed.ok).toBe(true);
+    if (!parsed.ok) {
+      return;
+    }
+
+    const result = checkShapeModules([parsed.module]);
+    const output = formatDiagnostics(result);
+
+    expect(result.exitCode).toBe(1);
+    expect(output).toContain("LedgerEntry has trait Immutable");
+    expect(output).toContain("rule archived_immutable_forbids_delete forbids final HardDelete<T>");
+  });
+
+  test("rejects final forbid rules with multiple subjects", () => {
+    const parsed = parseShapeModule(`
+      module rules
+
+      trait Immutable {
+      }
+
+      trait Archived {
+      }
+
+      rule invalid_multi_subject_final_forbid {
+        when T has Immutable
+        when U has Archived
+        forbid final HardDelete<T>
+      }
+    `);
+
+    expect(parsed.ok).toBe(true);
+    if (!parsed.ok) {
+      return;
+    }
+
+    const result = checkShapeModules([parsed.module]);
+    const output = formatDiagnostics(result);
+
+    expect(result.exitCode).toBe(1);
+    expect(output).toContain("invalid rule");
+    expect(output).toContain("final effect forbids may bind only one subject");
   });
 
   test("applies user-defined provides exceptions over provides hyperedges", () => {
@@ -4031,6 +4224,61 @@ describe("AST to Shape generation", () => {
     );
     expect(output.semanticShape).toContain('source rust("src/main:1-1")');
     expect(output.semanticShape).not.toContain('source file("src/main:1-1")');
+  });
+
+  test("infers JSX and TSX parser languages from file extensions", async () => {
+    const source = "export function Widget() { return <div />; }\n";
+    const root = fakeTreeSitterNode({
+      kind: "program",
+      startByte: 0,
+      endByte: source.length,
+      startPosition: { row: 0, column: 0 },
+      endPosition: { row: 1, column: 0 }
+    });
+    const languages: string[] = [];
+
+    const result = await parseSourceFilesToCodeSemanticGraph(
+      [
+        { path: "src/widget.jsx", source },
+        { path: "src/widget.tsx", source }
+      ],
+      {
+        parserProvider: (language) => {
+          languages.push(language);
+          return { rootNode: root };
+        }
+      }
+    );
+
+    expect(result.ok).toBe(true);
+    expect(languages).toEqual(["javascript", "tsx"]);
+  });
+
+  test("configures complete bundled parser assets before parser lookup", async () => {
+    const tempDir = await mkdtemp(join(tmpdir(), "shp-parser-assets-test-"));
+    try {
+      const executablePath = join(tempDir, "bin", "shp");
+      const libsDir = bundledTreeSitterParserLibsDir(executablePath);
+      await mkdir(libsDir, { recursive: true });
+      for (const language of BUNDLED_TREE_SITTER_LANGUAGES) {
+        await writeFile(join(libsDir, treeSitterParserLibraryName(language)), "");
+      }
+
+      let configuredCacheDir: string | undefined;
+      const diagnostics = configureBundledTreeSitterParsers(
+        {
+          configure: (config?: { cacheDir?: string }) => {
+            configuredCacheDir = config?.cacheDir;
+          }
+        },
+        executablePath
+      );
+
+      expect(diagnostics).toEqual([]);
+      expect(configuredCacheDir).toBe(libsDir);
+    } finally {
+      await rm(tempDir, { recursive: true, force: true });
+    }
   });
 
   test("normalizes Tree-sitter-like source nodes with field names, spans, and hashes", async () => {

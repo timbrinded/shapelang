@@ -1,11 +1,17 @@
 export {
   buildCodeSemanticGraphFromAstJson,
+  bundledTreeSitterParserAssetRoot,
+  bundledTreeSitterParserLibsDir,
+  configureBundledTreeSitterParsers,
   detectLinuxMuslRuntime,
   generateShapeFromAstJson,
   generateShapeFromCodeSemanticGraph,
   generateShapeFromSourceFiles,
   normalizeGeneratedModuleName,
-  parseSourceFilesToCodeSemanticGraph
+  parseSourceFilesToCodeSemanticGraph,
+  treeSitterParserLibraryName,
+  BUNDLED_TREE_SITTER_LANGUAGES,
+  TREE_SITTER_LANGUAGE_PACK_VERSION
 } from "./ast-generation-core.ts";
 export {
   GENERATED_AST_MANIFEST_FILE,

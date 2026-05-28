@@ -270,7 +270,7 @@ RemovableDeclarationKind returns string:
     'resource' | 'trait' | 'component' | 'relation' | 'implementation' | 'binding' | 'rule';
 
 RuleDecl:
-    'rule' name=ID typeParams=TypeParamList?
+    'rule' name=ID
     '{'
         members+=RuleMember*
     '}';

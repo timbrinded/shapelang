@@ -407,6 +407,13 @@
       "sources": [
         "scripts/generate-ast-shapes.ts"
       ]
+    },
+    {
+      "module": "shape.generated.ast.scripts.prepare_tree_sitter_parser_assets",
+      "path": "shape/generated/ast/scripts/prepare-tree-sitter-parser-assets.shape",
+      "sources": [
+        "scripts/prepare-tree-sitter-parser-assets.ts"
+      ]
     }
   ]
 }

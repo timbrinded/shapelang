@@ -1319,14 +1319,12 @@ export interface RuleDecl extends langium.AstNode {
     readonly $type: 'RuleDecl';
     members: Array<RuleMember>;
     name: string;
-    typeParams?: TypeParamList;
 }
 
 export const RuleDecl = {
     $type: 'RuleDecl',
     members: 'members',
-    name: 'name',
-    typeParams: 'typeParams'
+    name: 'name'
 } as const;
 
 export function isRuleDecl(item: unknown): item is RuleDecl {
@@ -1655,7 +1653,7 @@ export function isTypeParam(item: unknown): item is TypeParam {
 }
 
 export interface TypeParamList extends langium.AstNode {
-    readonly $container: RuleDecl | TraitDecl;
+    readonly $container: TraitDecl;
     readonly $type: 'TypeParamList';
     params: Array<TypeParam>;
 }
@@ -2637,9 +2635,6 @@ export class ShapeAstReflection extends langium.AbstractAstReflection {
                 },
                 name: {
                     name: RuleDecl.name
-                },
-                typeParams: {
-                    name: RuleDecl.typeParams
                 }
             },
             superTypes: [AddableDeclaration.$type, Declaration.$type]

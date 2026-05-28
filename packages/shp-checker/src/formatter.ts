@@ -578,7 +578,7 @@ function formatRule(rule: RuleDecl): string {
     .filter((line) => line.length > 0)
     .sort();
 
-  return block(`rule ${rule.name}${formatTypeParams(rule.typeParams)}`, members);
+  return block(`rule ${rule.name}`, members);
 }
 
 function formatRationale(rationale: RationaleDecl): string {

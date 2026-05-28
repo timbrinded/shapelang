@@ -19,11 +19,13 @@ export function inferAstSourceLanguageFromPath(path: string): string | undefined
   if (path.endsWith(".tsx")) {
     return "tsx";
   }
-  if (path.endsWith(".js") || path.endsWith(".mjs") || path.endsWith(".cjs")) {
+  if (
+    path.endsWith(".js") ||
+    path.endsWith(".jsx") ||
+    path.endsWith(".mjs") ||
+    path.endsWith(".cjs")
+  ) {
     return "javascript";
-  }
-  if (path.endsWith(".jsx")) {
-    return "jsx";
   }
   if (path.endsWith(".rs")) {
     return "rust";

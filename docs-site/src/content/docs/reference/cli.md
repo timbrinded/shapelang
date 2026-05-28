@@ -84,6 +84,8 @@ shp update --dry-run
 
 By default, `shp ast source` parses files with the platform Tree-sitter native binding and prints the semantic draft: stable files, modules, types, functions, high-confidence calls, compact AST anchors, anchor fingerprints, candidate effect evidence, and unresolved uncertainty. Generated functions use `effects unknown`.
 
+Source language inference covers TypeScript, TSX, JavaScript/JSX, Rust, Go, and Python. JSX files use the JavaScript parser; TSX files use the TSX parser bundled beside released `shp` binaries.
+
 Use `--out-dir shape/generated/ast` to write checked generated AST context as deterministic files plus a manifest. These generated files use `shape.generated.ast...` modules and are allowed to keep `effects unknown`, because they are candidate evidence rather than reviewed architecture truth. Use `--check` with `--out-dir` in CI to fail when the checked-in generated AST files are stale.
 
 In this repo, `bun run ast:generate` refreshes the committed generated AST context for tracked and untracked non-ignored first-party source, and `bun run ast:check` verifies it is fresh in local, CI, and release validation. The source set excludes dependency, build, and generated parser output. Directory output rejects module or output-path collisions before writing.

@@ -154,6 +154,10 @@ if [ "$expected" != "$actual" ]; then
 fi
 
 tar -xzf "$tmp_dir/$asset" -C "$tmp_dir"
+if [ ! -d "$tmp_dir/tree-sitter-language-pack" ]; then
+  echo "release archive is missing tree-sitter-language-pack parser assets" >&2
+  exit 1
+fi
 mkdir -p "$install_dir"
 
 if command -v install >/dev/null 2>&1; then
@@ -162,6 +166,8 @@ else
   cp "$tmp_dir/$executable" "$install_dir/$executable"
   chmod 0755 "$install_dir/$executable" 2>/dev/null || true
 fi
+rm -rf "$install_dir/tree-sitter-language-pack"
+cp -R "$tmp_dir/tree-sitter-language-pack" "$install_dir/tree-sitter-language-pack"
 
 if [ -n "${GITHUB_PATH:-}" ]; then
   echo "$install_dir" >> "$GITHUB_PATH"

@@ -9,6 +9,8 @@ sidebar:
 
 The primary path is `shp ast source`: parse source files, project syntax evidence into a Code Semantic Graph, and print a review-sized Shape draft. `shp ast json` is only an input adapter for tools that already parsed the code; Shape does not generate AST JSON from `.shape` files.
 
+Source inference recognizes TypeScript, TSX, JavaScript/JSX, Rust, Go, and Python. JSX is parsed with the JavaScript grammar. TSX uses the TSX Tree-sitter grammar, which release archives install as a bundled parser asset next to the `shp` executable so generated AST checks do not depend on runtime downloads.
+
 ## Default semantic draft
 
 The semantic draft maps stable code concepts into Shape:

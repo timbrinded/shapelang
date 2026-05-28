@@ -8,6 +8,11 @@ release_version="${SHAPE_RELEASE_VERSION:-${GITHUB_REF_NAME:-latest}}"
 release_version_sed="$(printf '%s' "$release_version" | sed -e 's/[\\&|]/\\&/g')"
 tree_sitter_native_assets=()
 
+if ! command -v zstd >/dev/null 2>&1; then
+  echo "error: zstd is required to extract tree-sitter parser bundles" >&2
+  exit 1
+fi
+
 resolve_native_asset() {
   local specifier="$1"
   local native_asset=""
@@ -59,8 +64,14 @@ build_asset() {
 
   chmod +x "$asset_dir/$executable_name" 2>/dev/null || true
   cp "$repo_root/LICENSE" "$asset_dir/LICENSE"
+  bun "$repo_root/scripts/prepare-tree-sitter-parser-assets.ts" \
+    --release-name "$asset_name" \
+    --out-dir "$asset_dir"
 
-  tar -C "$asset_dir" -czf "$release_dir/$asset_name.tar.gz" "$executable_name" LICENSE
+  tar -C "$asset_dir" -czf "$release_dir/$asset_name.tar.gz" \
+    "$executable_name" \
+    LICENSE \
+    tree-sitter-language-pack
 }
 
 while IFS=$'\t' read -r target asset_name; do

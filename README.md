@@ -248,6 +248,7 @@ bun run build:release
 ```
 
 Release archives are written under `dist/release/`, which is ignored by git.
+Each archive includes the `shp` executable, `LICENSE`, and bundled Tree-sitter parser assets used by `shp ast source` for TypeScript, TSX, JavaScript/JSX, Rust, Go, and Python.
 
 ## Contributing
 

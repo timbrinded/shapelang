@@ -32,6 +32,8 @@ resource GeneratedCandidateEffect
 
 resource InstalledShpBinary
 
+resource InstalledShpRuntimeAssets
+
 resource LanguageSource
 
 resource ReleaseArchive
@@ -275,12 +277,14 @@ component ShpCli {
   grants Read<DiagnosticText>
   grants Read<FormattedShape>
   grants Read<InstalledShpBinary>
+  grants Read<InstalledShpRuntimeAssets>
   grants Read<LanguageSource>
   grants Read<ReleaseArchive>
   grants Read<ReleaseChecksumManifest>
   grants Read<ReleaseMetadata>
   grants Read<ShapeSource>
   grants Update<InstalledShpBinary>
+  grants Update<InstalledShpRuntimeAssets>
   fn defaultShapeFiles : RefactorSensitive
     source ts("packages/shp-cli/src/shape-files.ts#defaultShapeFiles")
     effects complete {
@@ -366,6 +370,8 @@ component ShpCli {
     effects complete {
       Read<InstalledShpBinary>
         evidence ts("packages/shp-cli/src/commands/update/impl.ts")
+      Read<InstalledShpRuntimeAssets>
+        evidence ts("packages/shp-cli/src/commands/update/impl.ts")
       Read<ReleaseArchive>
         evidence ts("packages/shp-cli/src/commands/update/impl.ts")
       Read<ReleaseChecksumManifest>
@@ -373,6 +379,8 @@ component ShpCli {
       Read<ReleaseMetadata>
         evidence ts("packages/shp-cli/src/commands/update/impl.ts")
       Update<InstalledShpBinary>
+        evidence ts("packages/shp-cli/src/commands/update/impl.ts")
+      Update<InstalledShpRuntimeAssets>
         evidence ts("packages/shp-cli/src/commands/update/impl.ts")
     }
 }
@@ -557,7 +565,7 @@ memory UpdateBinaryIntegrity : RefactorConstraint<fn ShpCli.updateInstalledBinar
   applies_to fn ShpCli.updateInstalledBinary
   status Explained
   confidence High
-  summary "Self-update must verify any existing target binary identity, release checksum, and downloaded binary version before replacing the local executable."
+  summary "Self-update must verify any existing target binary identity, release checksum, downloaded binary version, and bundled runtime parser assets before replacing the local executable."
   owner ShapeMaintainers
   protects shape ReleaseIntegrity
   guards on_change require ReEvaluation<Self>
@@ -651,4 +659,14 @@ reevaluation FormatterSharedStringHelpersRechecked {
   reviewer ShapeMaintainers
   decided_on "2026-05-20"
   evidence test("packages/shp-checker/src/shape-strings.test.ts")
+}
+
+reevaluation UpdateRuntimeAssetsRechecked {
+  satisfies memory UpdateBinaryIntegrity
+  outcome Confirmed
+  summary "Self-update now rejects archives without parser assets and stages those assets beside the target binary, including the deferred Windows replacement path."
+  reviewer ShapeMaintainers
+  decided_on "2026-05-28"
+  evidence test("packages/shp-cli/src/update.test.ts")
+  evidence ts("packages/shp-cli/src/commands/update/impl.ts")
 }

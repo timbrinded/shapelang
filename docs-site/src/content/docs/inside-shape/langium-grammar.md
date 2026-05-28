@@ -154,6 +154,7 @@ rule new_policy {
 ```
 
 The checker lowers the committed global model into facts before evaluating rules.
+Rule headers are intentionally simple names; subject variables for final effect forbids are introduced by `when T has TraitName` members, not by rule-level type parameters.
 
 ## Binding Syntax
 
