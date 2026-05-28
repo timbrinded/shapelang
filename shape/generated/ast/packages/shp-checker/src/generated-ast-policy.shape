@@ -7,61 +7,45 @@ trait GeneratedCandidate {
 }
 
 resource GeneratedAstPolicyModuleIsGeneratedAstManifestAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/generated-ast-policy.ts:60-66")
+  storage ast.anchor("packages/shp-checker/src/generated-ast-policy.ts:31-37")
   fingerprint ast.semantic_subtree_v1("sha256:6af33de846833b4acd03b0b6f5d0d47152cc6eca63f77171c72edc2b9fcc8e2a")
 }
 
 resource GeneratedAstPolicyModuleIsGeneratedAstManifestEntryAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/generated-ast-policy.ts:79-90")
+  storage ast.anchor("packages/shp-checker/src/generated-ast-policy.ts:39-50")
   fingerprint ast.semantic_subtree_v1("sha256:7a7a36c14ec9a98a58f2b218586eae21234b9c2f83a4004161a003aece0a311d")
 }
 
 resource GeneratedAstPolicyModuleIsGeneratedAstModuleNameAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/generated-ast-policy.ts:20-25")
+  storage ast.anchor("packages/shp-checker/src/generated-ast-policy.ts:19-24")
   fingerprint ast.semantic_subtree_v1("sha256:d206e685bb1c7eebcaacf87d5bf732e86c0a2ecad0a0bf77309d624e41caab6a")
 }
 
 resource GeneratedAstPolicyModuleIsRecordAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/generated-ast-policy.ts:92-94")
+  storage ast.anchor("packages/shp-checker/src/generated-ast-policy.ts:52-54")
   fingerprint ast.semantic_subtree_v1("sha256:6c3bfbe32c226536ac76ad1de8792ea1626f1f1552dd0e94b6ac2841b3b1e4ab")
 }
 
-resource GeneratedAstPolicyModuleIsTrustedGeneratedAstModuleAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/generated-ast-policy.ts:32-58")
-  fingerprint ast.semantic_subtree_v1("sha256:a6ad61864ddb6cb1f67f7c8b1d13bc964a8af9c56a2219e250697c720e411c14")
-}
-
 resource GeneratedAstPolicyModuleNormalizeGeneratedAstPathAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/generated-ast-policy.ts:27-30")
+  storage ast.anchor("packages/shp-checker/src/generated-ast-policy.ts:26-29")
   fingerprint ast.semantic_subtree_v1("sha256:0a320eb041296b582a93ebe5767b0a5ffe88eedc71030d67e60fdbc05d619313")
-}
-
-resource GeneratedAstPolicyModuleReadGeneratedAstManifestAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/generated-ast-policy.ts:68-77")
-  fingerprint ast.semantic_subtree_v1("sha256:0ebe5dbf462d7ea861177df9e5d5c170b31938f73d773f28dedc7f056bb6f773")
 }
 
 component GeneratedAstPolicyModule : GeneratedCandidate {
   fn isGeneratedAstManifest
-    source ts("packages/shp-checker/src/generated-ast-policy.ts:60-66")
+    source ts("packages/shp-checker/src/generated-ast-policy.ts:31-37")
     effects unknown
   fn isGeneratedAstManifestEntry
-    source ts("packages/shp-checker/src/generated-ast-policy.ts:79-90")
+    source ts("packages/shp-checker/src/generated-ast-policy.ts:39-50")
     effects unknown
   fn isGeneratedAstModuleName
-    source ts("packages/shp-checker/src/generated-ast-policy.ts:20-25")
+    source ts("packages/shp-checker/src/generated-ast-policy.ts:19-24")
     effects unknown
   fn isRecord
-    source ts("packages/shp-checker/src/generated-ast-policy.ts:92-94")
-    effects unknown
-  fn isTrustedGeneratedAstModule
-    source ts("packages/shp-checker/src/generated-ast-policy.ts:32-58")
+    source ts("packages/shp-checker/src/generated-ast-policy.ts:52-54")
     effects unknown
   fn normalizeGeneratedAstPath
-    source ts("packages/shp-checker/src/generated-ast-policy.ts:27-30")
-    effects unknown
-  fn readGeneratedAstManifest
-    source ts("packages/shp-checker/src/generated-ast-policy.ts:68-77")
+    source ts("packages/shp-checker/src/generated-ast-policy.ts:26-29")
     effects unknown
 }
 
@@ -70,7 +54,7 @@ relation GeneratedAstPolicyModuleIsGeneratedAstManifestEntryGeneratedFromGenerat
   connects GeneratedAstPolicyModule -> GeneratedAstPolicyModuleIsGeneratedAstManifestEntryAstAnchor
   roles { GeneratedAstPolicyModule as generated, GeneratedAstPolicyModuleIsGeneratedAstManifestEntryAstAnchor as syntax }
   expects GeneratedAstPolicyModuleIsGeneratedAstManifestEntryAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7a7a36c14ec9a98a58f2b218586eae21234b9c2f83a4004161a003aece0a311d")
-  summary "fn GeneratedAstPolicyModule.isGeneratedAstManifestEntry generated from typescript function_declaration at packages/shp-checker/src/generated-ast-policy.ts:79-90."
+  summary "fn GeneratedAstPolicyModule.isGeneratedAstManifestEntry generated from typescript function_declaration at packages/shp-checker/src/generated-ast-policy.ts:39-50."
 }
 
 relation GeneratedAstPolicyModuleIsGeneratedAstManifestGeneratedFromGeneratedAstPolicyModuleIsGeneratedAstManifestAstAnchor {
@@ -78,7 +62,7 @@ relation GeneratedAstPolicyModuleIsGeneratedAstManifestGeneratedFromGeneratedAst
   connects GeneratedAstPolicyModule -> GeneratedAstPolicyModuleIsGeneratedAstManifestAstAnchor
   roles { GeneratedAstPolicyModule as generated, GeneratedAstPolicyModuleIsGeneratedAstManifestAstAnchor as syntax }
   expects GeneratedAstPolicyModuleIsGeneratedAstManifestAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6af33de846833b4acd03b0b6f5d0d47152cc6eca63f77171c72edc2b9fcc8e2a")
-  summary "fn GeneratedAstPolicyModule.isGeneratedAstManifest generated from typescript function_declaration at packages/shp-checker/src/generated-ast-policy.ts:60-66."
+  summary "fn GeneratedAstPolicyModule.isGeneratedAstManifest generated from typescript function_declaration at packages/shp-checker/src/generated-ast-policy.ts:31-37."
 }
 
 relation GeneratedAstPolicyModuleIsGeneratedAstModuleNameGeneratedFromGeneratedAstPolicyModuleIsGeneratedAstModuleNameAstAnchor {
@@ -86,7 +70,7 @@ relation GeneratedAstPolicyModuleIsGeneratedAstModuleNameGeneratedFromGeneratedA
   connects GeneratedAstPolicyModule -> GeneratedAstPolicyModuleIsGeneratedAstModuleNameAstAnchor
   roles { GeneratedAstPolicyModule as generated, GeneratedAstPolicyModuleIsGeneratedAstModuleNameAstAnchor as syntax }
   expects GeneratedAstPolicyModuleIsGeneratedAstModuleNameAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d206e685bb1c7eebcaacf87d5bf732e86c0a2ecad0a0bf77309d624e41caab6a")
-  summary "fn GeneratedAstPolicyModule.isGeneratedAstModuleName generated from typescript function_declaration at packages/shp-checker/src/generated-ast-policy.ts:20-25."
+  summary "fn GeneratedAstPolicyModule.isGeneratedAstModuleName generated from typescript function_declaration at packages/shp-checker/src/generated-ast-policy.ts:19-24."
 }
 
 relation GeneratedAstPolicyModuleIsRecordGeneratedFromGeneratedAstPolicyModuleIsRecordAstAnchor {
@@ -94,15 +78,7 @@ relation GeneratedAstPolicyModuleIsRecordGeneratedFromGeneratedAstPolicyModuleIs
   connects GeneratedAstPolicyModule -> GeneratedAstPolicyModuleIsRecordAstAnchor
   roles { GeneratedAstPolicyModule as generated, GeneratedAstPolicyModuleIsRecordAstAnchor as syntax }
   expects GeneratedAstPolicyModuleIsRecordAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6c3bfbe32c226536ac76ad1de8792ea1626f1f1552dd0e94b6ac2841b3b1e4ab")
-  summary "fn GeneratedAstPolicyModule.isRecord generated from typescript function_declaration at packages/shp-checker/src/generated-ast-policy.ts:92-94."
-}
-
-relation GeneratedAstPolicyModuleIsTrustedGeneratedAstModuleGeneratedFromGeneratedAstPolicyModuleIsTrustedGeneratedAstModuleAstAnchor {
-  kind generated_from
-  connects GeneratedAstPolicyModule -> GeneratedAstPolicyModuleIsTrustedGeneratedAstModuleAstAnchor
-  roles { GeneratedAstPolicyModule as generated, GeneratedAstPolicyModuleIsTrustedGeneratedAstModuleAstAnchor as syntax }
-  expects GeneratedAstPolicyModuleIsTrustedGeneratedAstModuleAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a6ad61864ddb6cb1f67f7c8b1d13bc964a8af9c56a2219e250697c720e411c14")
-  summary "fn GeneratedAstPolicyModule.isTrustedGeneratedAstModule generated from typescript function_declaration at packages/shp-checker/src/generated-ast-policy.ts:32-58."
+  summary "fn GeneratedAstPolicyModule.isRecord generated from typescript function_declaration at packages/shp-checker/src/generated-ast-policy.ts:52-54."
 }
 
 relation GeneratedAstPolicyModuleNormalizeGeneratedAstPathGeneratedFromGeneratedAstPolicyModuleNormalizeGeneratedAstPathAstAnchor {
@@ -110,15 +86,7 @@ relation GeneratedAstPolicyModuleNormalizeGeneratedAstPathGeneratedFromGenerated
   connects GeneratedAstPolicyModule -> GeneratedAstPolicyModuleNormalizeGeneratedAstPathAstAnchor
   roles { GeneratedAstPolicyModule as generated, GeneratedAstPolicyModuleNormalizeGeneratedAstPathAstAnchor as syntax }
   expects GeneratedAstPolicyModuleNormalizeGeneratedAstPathAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0a320eb041296b582a93ebe5767b0a5ffe88eedc71030d67e60fdbc05d619313")
-  summary "fn GeneratedAstPolicyModule.normalizeGeneratedAstPath generated from typescript function_declaration at packages/shp-checker/src/generated-ast-policy.ts:27-30."
-}
-
-relation GeneratedAstPolicyModuleReadGeneratedAstManifestGeneratedFromGeneratedAstPolicyModuleReadGeneratedAstManifestAstAnchor {
-  kind generated_from
-  connects GeneratedAstPolicyModule -> GeneratedAstPolicyModuleReadGeneratedAstManifestAstAnchor
-  roles { GeneratedAstPolicyModule as generated, GeneratedAstPolicyModuleReadGeneratedAstManifestAstAnchor as syntax }
-  expects GeneratedAstPolicyModuleReadGeneratedAstManifestAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0ebe5dbf462d7ea861177df9e5d5c170b31938f73d773f28dedc7f056bb6f773")
-  summary "fn GeneratedAstPolicyModule.readGeneratedAstManifest generated from typescript function_declaration at packages/shp-checker/src/generated-ast-policy.ts:68-77."
+  summary "fn GeneratedAstPolicyModule.normalizeGeneratedAstPath generated from typescript function_declaration at packages/shp-checker/src/generated-ast-policy.ts:26-29."
 }
 
 implementation GeneratedAstPolicyModuleImpl {

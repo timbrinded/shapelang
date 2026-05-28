@@ -421,6 +421,10 @@ describe("shp update helpers", () => {
     const script = windowsReplacementScript();
 
     expect(script).toContain("} catch {");
+    expect(script).toContain('$BackupAssets = "$TargetAssets.previous-$ParentProcessId"');
+    expect(script.indexOf("Move-Item -Force -LiteralPath $SourceAssets")).toBeLessThan(
+      script.indexOf("Move-Item -Force -LiteralPath $Source -Destination $Target")
+    );
     expect(script).toContain(
       "Move-Item -Force -LiteralPath $SourceAssets -Destination $TargetAssets"
     );

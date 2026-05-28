@@ -18,7 +18,6 @@ export {
   GENERATED_AST_MODULE_BASE,
   isGeneratedAstManifest,
   isGeneratedAstModuleName,
-  isTrustedGeneratedAstModule,
   normalizeGeneratedAstPath,
   type GeneratedAstManifest,
   type GeneratedAstManifestEntry

@@ -119,7 +119,11 @@ import {
   normalizeShapeSourcePath,
   unquoteShapeString
 } from "./shape-strings.ts";
-import { isTrustedGeneratedAstModule } from "./generated-ast-policy.ts";
+import {
+  GENERATED_AST_DIR,
+  isGeneratedAstModuleName,
+  normalizeGeneratedAstPath
+} from "./generated-ast-policy.ts";
 
 /**
  * Kind registry: every relation kind declares whether its members are
@@ -491,9 +495,12 @@ export type Fact =
   | { kind: "attestation"; kindName: string; path: string; reason: string; provenance: Provenance }
   | { kind: "rule"; name: string; provenance: Provenance };
 
-type CheckModuleInput = {
+export type CheckModuleOrigin = "authored" | "generated_ast";
+
+export type CheckModuleInput = {
   module: ShapeModule;
   filePath?: string;
+  origin?: CheckModuleOrigin;
 };
 
 type ModuleInfo = {
@@ -646,7 +653,6 @@ type ChangeEvent =
 type FunctionInfo = {
   component: string;
   name: string;
-  localName: string;
   source?: SourceRefInfo;
   unsafe: boolean;
   effects: EffectSummaryInfo;
@@ -661,8 +667,6 @@ type FunctionInfo = {
 
 type ResourceInfo = {
   name: string;
-  localName: string;
-  moduleName: string;
   traits: Map<string, Provenance>;
   fingerprints: Map<string, FingerprintInfo>;
   generatedAstCandidate: boolean;
@@ -677,8 +681,6 @@ type FingerprintInfo = {
 
 type TraitInfo = {
   name: string;
-  localName: string;
-  moduleName: string;
   typeParams: string[];
   finalForbids: FinalForbidPattern[];
   provenance: Provenance;
@@ -694,8 +696,6 @@ type FinalForbidPattern = {
 
 type ComponentInfo = {
   name: string;
-  localName: string;
-  moduleName: string;
   classifiers: Map<string, Provenance>;
   grants: Map<string, Provenance>;
   owns: Map<string, Provenance>;
@@ -706,8 +706,6 @@ type ComponentInfo = {
 
 type ImplementationInfo = {
   name: string;
-  localName: string;
-  moduleName: string;
   paths: { glob: string; provenance: Provenance }[];
   conformsTo?: string;
   onChangeRequirement?: string;
@@ -716,8 +714,6 @@ type ImplementationInfo = {
 
 type BindingInfo = {
   name: string;
-  localName: string;
-  moduleName: string;
   whenChanged: { glob: string; provenance: Provenance }[];
   requireChanged: { glob: string; provenance: Provenance }[];
   allowAttestations: { kind: string; provenance: Provenance }[];
@@ -726,8 +722,6 @@ type BindingInfo = {
 
 type RuleInfo = {
   name: string;
-  localName: string;
-  moduleName: string;
   whenHas: { subject: string; trait: string }[];
   finalForbidSubject?: string;
   forbidEffects: FinalForbidPattern[];
@@ -756,8 +750,6 @@ type HyperedgeMember = {
 
 type HyperedgeInfo = {
   name: string;
-  localName: string;
-  moduleName: string;
   kind: string;
   ordered: boolean;
   members: HyperedgeMember[];
@@ -802,8 +794,6 @@ type Model = {
 
 type CandidateEffectInfo = {
   name: string;
-  localName: string;
-  moduleName: string;
   functionTarget?: string;
   term?: TermInfo;
   source?: SourceRefInfo;
@@ -868,7 +858,8 @@ export async function checkShapeFiles(
       if (parsed.ok) {
         parsedModules.push({
           module: parsed.module,
-          filePath
+          filePath,
+          origin: moduleOriginForShapeFile(parsed.module, filePath)
         });
       } else {
         parseDiagnostics.push(...parsed.diagnostics);
@@ -1024,10 +1015,7 @@ export function explainShapeModules(
     const fn = componentKey
       ? model.components.get(componentKey)?.functions.get(functionName)
       : undefined;
-    if (fn) {
-      if (!componentKey) {
-        return `No shape facts found for ${symbol}.\n`;
-      }
+    if (fn && componentKey) {
       const lines = [`${componentKey}.${functionName}`, "  kind: function"];
       if (fn.source) {
         lines.push(`  source: ${formatSourceRefInfo(fn.source)}`);
@@ -1423,8 +1411,16 @@ function moduleContext(input: CheckModuleInput): LoweringContext {
     name,
     imports: input.module.imports.map((item) => item.path),
     filePath: input.filePath,
-    generatedAst: isTrustedGeneratedAstModule(name, input.filePath)
+    generatedAst: input.origin === "generated_ast"
   };
+}
+
+function moduleOriginForShapeFile(module: ShapeModule, filePath: string): CheckModuleOrigin {
+  const moduleName = module.name ?? "";
+  const path = normalizeGeneratedAstPath(filePath);
+  return isGeneratedAstModuleName(moduleName) && path.startsWith(`${GENERATED_AST_DIR}/`)
+    ? "generated_ast"
+    : "authored";
 }
 
 function indexModuleDeclarations(
@@ -1728,8 +1724,6 @@ function lowerResource(resource: ResourceDecl, context: LoweringContext, model: 
 
   model.resources.set(name, {
     name,
-    localName: resource.name,
-    moduleName: context.name,
     traits,
     fingerprints,
     generatedAstCandidate: context.generatedAst,
@@ -1764,8 +1758,6 @@ function lowerTrait(trait: TraitDecl, context: LoweringContext, model: Model): v
 
   model.traits.set(name, {
     name,
-    localName: trait.name,
-    moduleName: context.name,
     typeParams,
     finalForbids,
     provenance: prov
@@ -1791,8 +1783,6 @@ function lowerComponent(component: ComponentDecl, context: LoweringContext, mode
 
   const info: ComponentInfo = {
     name,
-    localName: component.name,
-    moduleName: context.name,
     classifiers: new Map(),
     grants: new Map(),
     owns: new Map(),
@@ -2073,8 +2063,6 @@ function lowerRelation(relation: RelationDecl, context: LoweringContext, model: 
 
   const info: HyperedgeInfo = {
     name,
-    localName: relation.name,
-    moduleName: context.name,
     kind: kindValue,
     ordered: connectsDecl.ordered,
     members,
@@ -2176,8 +2164,6 @@ function lowerCandidateEffect(
 
   const info: CandidateEffectInfo = {
     name,
-    localName: candidateEffect.name,
-    moduleName: context.name,
     provenance: prov
   };
   const seen = {
@@ -2276,8 +2262,6 @@ function lowerImplementation(
   const prov = provenance(context.filePath, `implementation ${name}`);
   const info: ImplementationInfo = {
     name,
-    localName: implementation.name,
-    moduleName: context.name,
     paths: [],
     provenance: prov
   };
@@ -2331,8 +2315,6 @@ function lowerBinding(binding: BindingDecl, context: LoweringContext, model: Mod
 
   const info: BindingInfo = {
     name,
-    localName: binding.name,
-    moduleName: context.name,
     whenChanged: [],
     requireChanged: [],
     allowAttestations: [],
@@ -2414,8 +2396,6 @@ function lowerRule(rule: RuleDecl, context: LoweringContext, model: Model): void
     hasFinalForbid && finalForbidSubjects.size === 1 ? [...finalForbidSubjects][0] : undefined;
   const info: RuleInfo = {
     name,
-    localName: rule.name,
-    moduleName: context.name,
     whenHas: [],
     finalForbidSubject,
     forbidEffects: [],
@@ -2912,7 +2892,6 @@ function lowerFunction(
   const info: FunctionInfo = {
     component: componentName,
     name: functionName,
-    localName: functionName,
     source,
     unsafe: fn.unsafe,
     effects: lowerEffects(
@@ -3297,7 +3276,7 @@ function emitDerivedFacts(model: Model): void {
 }
 
 function collectShapeUpdatePathsFromFunction(fn: FunctionInfo, model: Model): void {
-  if (fn.generatedAstCandidate) {
+  if (shouldIgnoreFunctionForCoverage(fn)) {
     return;
   }
 
@@ -3319,6 +3298,14 @@ function collectShapeUpdatePathsFromFunction(fn: FunctionInfo, model: Model): vo
       }
     }
   }
+}
+
+function shouldIgnoreFunctionForCoverage(fn: FunctionInfo): boolean {
+  return fn.generatedAstCandidate;
+}
+
+function shouldIgnoreUnknownEffectsDiagnostic(fn: FunctionInfo): boolean {
+  return fn.generatedAstCandidate;
 }
 
 function addShapeUpdatePath(model: Model, path: string, provenance: Provenance): void {
@@ -3917,7 +3904,7 @@ function checkFunctions(model: Model): SemanticDiagnostic[] {
       }
 
       if (fn.effects.kind === "unknown") {
-        if (fn.generatedAstCandidate) {
+        if (shouldIgnoreUnknownEffectsDiagnostic(fn)) {
           continue;
         }
         diagnostics.push({
@@ -5292,8 +5279,6 @@ function isPreludeTrait(trait: TraitInfo | undefined): boolean {
 function preludeTraitInfo(trait: PreludeTraitDefinition): TraitInfo {
   return {
     name: trait.name,
-    localName: trait.name,
-    moduleName: "",
     typeParams: [...trait.typeParams],
     finalForbids: trait.finalForbids.map((forbid) => {
       const target = forbid.target ? `<${forbid.target}>` : "";

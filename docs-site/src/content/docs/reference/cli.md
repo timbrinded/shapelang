@@ -21,7 +21,7 @@ shp memory [files...]
 shp obligations [files...]
 shp author --changed-files changed.txt --component ComponentName [--module module.name]
 shp analyze [--shape-files file1.shape,file2.shape] [source-files...]
-shp ast source [--language LANG] [--module NAME] [--include-ast-layer] [--raw-out PATH] files...
+shp ast source [--language LANG] [--module NAME] [--include-ast-layer] [--raw-out PATH] [--out-dir DIR] [--check] [--allow-parse-errors] files...
 shp ast json [--module NAME] [--include-ast-layer] [--raw-out PATH] ast.json
 shp update [--version VERSION] [--dry-run] [--path PATH]
 shp --help

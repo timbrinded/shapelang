@@ -316,6 +316,7 @@ implementation AnalyzerSource {
 implementation AstGenerationSource {
   paths {
     "packages/shp-checker/src/ast-generation-core.ts"
+    "packages/shp-checker/src/ast-generation-tree-sitter.ts"
     "packages/shp-checker/src/ast-generation.ts"
     "packages/shp-checker/src/generated-ast-policy.ts"
     "packages/shp-checker/src/source-languages.ts"
@@ -577,6 +578,11 @@ reevaluation ReleaseVersionTagCheckRechecked {
   reviewer ShapeMaintainers
   decided_on "2026-05-21"
   evidence yaml(".github/workflows/release.yml")
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/generated-ast-policy.ts")
+  reason "Generated AST manifest helper cleanup is covered by the checker origin model update; the remaining manifest schema and path helper contract is unchanged."
 }
 
 attest no_shape_change {

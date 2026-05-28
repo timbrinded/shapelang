@@ -52,6 +52,13 @@
       ]
     },
     {
+      "module": "shape.generated.ast.fixtures.generated_source.rust.audit_store",
+      "path": "shape/generated/ast/fixtures/source/rust/audit_store.shape",
+      "sources": [
+        "fixtures/source/rust/audit_store.rs"
+      ]
+    },
+    {
       "module": "shape.generated.ast.packages.shp_checker.src.analyzer",
       "path": "shape/generated/ast/packages/shp-checker/src/analyzer.shape",
       "sources": [
@@ -63,6 +70,13 @@
       "path": "shape/generated/ast/packages/shp-checker/src/ast-generation-core.shape",
       "sources": [
         "packages/shp-checker/src/ast-generation-core.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.ast_generation_tree_sitter",
+      "path": "shape/generated/ast/packages/shp-checker/src/ast-generation-tree-sitter.shape",
+      "sources": [
+        "packages/shp-checker/src/ast-generation-tree-sitter.ts"
       ]
     },
     {

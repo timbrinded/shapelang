@@ -220,6 +220,29 @@ describe("shp CLI", () => {
     expect(result.stderr).toBe("");
   });
 
+  test("generates Rust AST source drafts from real source files", async () => {
+    const result = await runCli([
+      "ast",
+      "source",
+      "--language",
+      "rust",
+      "--module",
+      "generated.audit",
+      "fixtures/source/rust/audit_store.rs"
+    ]);
+
+    expect(result.exitCode).toBe(0);
+    expect(result.stdout).toContain("module generated.audit");
+    expect(result.stdout).toContain("component AuditStore : GeneratedCandidate");
+    expect(result.stdout).toContain("fn append_event");
+    expect(result.stdout).toContain('source rust("fixtures/source/rust/audit_store.rs:16-18")');
+    expect(result.stdout).toContain("AuditStoreAppendEventAstAnchor");
+    expect(result.stdout).toContain("kind generated_from");
+    expect(result.stdout).toContain("kind calls");
+    expect(result.stdout).toContain("effect candidate AppendEventAppendAuditEventCandidateEffect");
+    expect(result.stderr).toBe("");
+  });
+
   test("generates source candidate effects from AST anchors", async () => {
     const result = await runCli([
       "ast",

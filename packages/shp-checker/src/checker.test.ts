@@ -331,7 +331,7 @@ describe("Shape checker", () => {
     expect(result.exitCode).toBe(0);
   });
 
-  test("lowers effect candidate facts and trusts generated AST unknown effects only from manifest entries", async () => {
+  test("lowers effect candidate facts and trusts generated AST unknown effects only from explicit origin", async () => {
     const parsed = parseShapeModule(`
       module shape.generated.ast.audit
 
@@ -360,7 +360,10 @@ describe("Shape checker", () => {
       return;
     }
 
-    const untrusted = checkShapeModules([parsed.module], { includeFacts: true });
+    const untrusted = checkShapeModules(
+      [{ module: parsed.module, filePath: "shape/generated/ast/audit.shape" }],
+      { includeFacts: true }
+    );
     expect(untrusted.diagnostics).toContainEqual(
       expect.objectContaining({ kind: "unknown_effects" })
     );
@@ -376,12 +379,27 @@ describe("Shape checker", () => {
       })
     );
 
-    const trusted = await checkShapeFiles(
+    const explicitOrigin = checkShapeModules(
+      [
+        {
+          module: parsed.module,
+          filePath: "shape/generated/ast/audit.shape",
+          origin: "generated_ast"
+        }
+      ],
+      { includeFacts: true }
+    );
+    expect(
+      explicitOrigin.diagnostics.some((diagnostic) => diagnostic.kind === "unknown_effects")
+    ).toBe(false);
+    expect(explicitOrigin.facts?.some((fact) => fact.kind === "shape_update_for")).toBe(false);
+
+    const checkedFile = await checkShapeFiles(
       [resolve(repoRoot, "shape/generated/ast/fixtures/source/audit_store.shape")],
       { includeFacts: true }
     );
-    expect(trusted.exitCode).toBe(0);
-    expect(trusted.facts).toContainEqual(
+    expect(checkedFile.exitCode).toBe(0);
+    expect(checkedFile.facts).toContainEqual(
       expect.objectContaining({
         kind: "candidate_effect",
         name: "shape.generated.ast.fixtures.generated_source.audit_store::AppendEventAppendAuditEventCandidateEffect",
@@ -393,7 +411,7 @@ describe("Shape checker", () => {
           "shape.generated.ast.fixtures.generated_source.audit_store::AuditStoreAppendEventAstAnchor"
       })
     );
-    expect(trusted.facts?.some((fact) => fact.kind === "shape_update_for")).toBe(false);
+    expect(checkedFile.facts?.some((fact) => fact.kind === "shape_update_for")).toBe(false);
   });
 
   test("rejects duplicate and missing candidate effect fields", () => {

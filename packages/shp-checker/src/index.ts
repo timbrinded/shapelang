@@ -50,6 +50,8 @@ export {
   listShapeObligations,
   statsShapeHypergraph,
   type CheckResult,
+  type CheckModuleInput,
+  type CheckModuleOrigin,
   type CheckOptions,
   type Fact,
   type SemanticDiagnostic,

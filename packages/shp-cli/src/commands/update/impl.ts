@@ -517,18 +517,37 @@ async function replaceBinary(
     dirname(targetPath),
     `.tree-sitter-language-pack.update-${process.pid}`
   );
+  const backupAssetsPath = join(
+    dirname(targetPath),
+    `.tree-sitter-language-pack.previous-${process.pid}`
+  );
   try {
     await rm(stagedAssetsPath, { recursive: true, force: true });
+    await rm(backupAssetsPath, { recursive: true, force: true });
     await cp(parserAssetsPath, stagedAssetsPath, { recursive: true });
     await copyFile(sourcePath, stagedPath);
     await chmod(stagedPath, 0o755);
-    await rename(stagedPath, targetPath);
-    await rm(targetAssetsPath, { recursive: true, force: true });
+    if (await pathExists(targetAssetsPath)) {
+      await rename(targetAssetsPath, backupAssetsPath);
+    }
     await rename(stagedAssetsPath, targetAssetsPath);
+    try {
+      await rename(stagedPath, targetPath);
+    } catch (error) {
+      await rm(targetAssetsPath, { recursive: true, force: true });
+      if (await pathExists(backupAssetsPath)) {
+        await rename(backupAssetsPath, targetAssetsPath);
+      }
+      throw error;
+    }
+    await rm(backupAssetsPath, { recursive: true, force: true });
     return { pending: false };
   } catch (error) {
     await rm(stagedPath, { force: true });
     await rm(stagedAssetsPath, { recursive: true, force: true });
+    if ((await pathExists(backupAssetsPath)) && !(await pathExists(targetAssetsPath))) {
+      await rename(backupAssetsPath, targetAssetsPath);
+    }
     throw error;
   }
 }
@@ -577,14 +596,30 @@ export function windowsReplacementScript(): string {
   return [
     "param([int]$ParentProcessId, [string]$Source, [string]$Target, [string]$SourceAssets, [string]$TargetAssets)",
     '$ErrorActionPreference = "Stop"',
+    '$BackupAssets = "$TargetAssets.previous-$ParentProcessId"',
     "try {",
     "  Wait-Process -Id $ParentProcessId -ErrorAction SilentlyContinue",
-    "  Move-Item -Force -LiteralPath $Source -Destination $Target",
-    "  Remove-Item -Recurse -Force -LiteralPath $TargetAssets -ErrorAction SilentlyContinue",
+    "  Remove-Item -Recurse -Force -LiteralPath $BackupAssets -ErrorAction SilentlyContinue",
+    "  if (Test-Path -LiteralPath $TargetAssets) {",
+    "    Move-Item -Force -LiteralPath $TargetAssets -Destination $BackupAssets",
+    "  }",
     "  Move-Item -Force -LiteralPath $SourceAssets -Destination $TargetAssets",
+    "  try {",
+    "    Move-Item -Force -LiteralPath $Source -Destination $Target",
+    "  } catch {",
+    "    Remove-Item -Recurse -Force -LiteralPath $TargetAssets -ErrorAction SilentlyContinue",
+    "    if (Test-Path -LiteralPath $BackupAssets) {",
+    "      Move-Item -Force -LiteralPath $BackupAssets -Destination $TargetAssets",
+    "    }",
+    "    throw",
+    "  }",
+    "  Remove-Item -Recurse -Force -LiteralPath $BackupAssets -ErrorAction SilentlyContinue",
     "} catch {",
     "  Remove-Item -LiteralPath $Source -Force -ErrorAction SilentlyContinue",
     "  Remove-Item -Recurse -Force -LiteralPath $SourceAssets -ErrorAction SilentlyContinue",
+    "  if ((Test-Path -LiteralPath $BackupAssets) -and -not (Test-Path -LiteralPath $TargetAssets)) {",
+    "    Move-Item -Force -LiteralPath $BackupAssets -Destination $TargetAssets",
+    "  }",
     "  throw",
     "} finally {",
     "  Remove-Item -LiteralPath $MyInvocation.MyCommand.Path -Force -ErrorAction SilentlyContinue",

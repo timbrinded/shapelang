@@ -9,6 +9,7 @@ import { createRequire } from "node:module";
 import {
   BUNDLED_TREE_SITTER_LANGUAGES,
   TREE_SITTER_LANGUAGE_PACK_VERSION,
+  currentTreeSitterNativeBindingTarget,
   treeSitterParserLibraryName
 } from "../packages/shp-checker/src/ast-generation.ts";
 
@@ -66,9 +67,14 @@ if (languagePackPackageJson.version !== TREE_SITTER_LANGUAGE_PACK_VERSION) {
   );
 }
 
-const languagePack = requireFromChecker(
-  "@kreuzberg/tree-sitter-language-pack"
-) as LanguagePackModule;
+const nativeBindingTarget = currentTreeSitterNativeBindingTarget();
+if (!nativeBindingTarget) {
+  throw new Error(
+    `no tree-sitter language pack native binding for ${process.platform}-${process.arch}`
+  );
+}
+
+const languagePack = requireFromChecker(nativeBindingTarget.packageSpecifier) as LanguagePackModule;
 const manifest = languagePack.JsDownloadManager?.["new"](
   TREE_SITTER_LANGUAGE_PACK_VERSION
 ).fetchManifest() as Manifest | undefined;

@@ -1,25 +1,4 @@
-export type TreeSitterNativeBindingPackageSpecifier =
-  | "@kreuzberg/tree-sitter-language-pack/ts-pack-core-node.linux-x64-gnu.node"
-  | "@kreuzberg/tree-sitter-language-pack/ts-pack-core-node.linux-arm64-gnu.node"
-  | "@kreuzberg/tree-sitter-language-pack/ts-pack-core-node.darwin-arm64.node"
-  | "@kreuzberg/tree-sitter-language-pack/ts-pack-core-node.win32-x64-msvc.node";
-
-export type TreeSitterNativeBindingEmbeddedSpecifier =
-  | "./ts-pack-core-node.linux-x64-gnu.node"
-  | "./ts-pack-core-node.linux-arm64-gnu.node"
-  | "./ts-pack-core-node.darwin-arm64.node"
-  | "./ts-pack-core-node.win32-x64-msvc.node";
-
-export type TreeSitterNativeBindingTarget = {
-  readonly platform: NodeJS.Platform;
-  readonly arch: NodeJS.Architecture;
-  readonly bunTarget: string;
-  readonly releaseName: string;
-  readonly packageSpecifier: TreeSitterNativeBindingPackageSpecifier;
-  readonly embeddedSpecifier: TreeSitterNativeBindingEmbeddedSpecifier;
-};
-
-export const TREE_SITTER_NATIVE_BINDING_TARGETS = [
+const TREE_SITTER_NATIVE_BINDING_TARGET_ROWS = [
   {
     platform: "linux",
     arch: "x64",
@@ -52,7 +31,24 @@ export const TREE_SITTER_NATIVE_BINDING_TARGETS = [
     packageSpecifier: "@kreuzberg/tree-sitter-language-pack/ts-pack-core-node.win32-x64-msvc.node",
     embeddedSpecifier: "./ts-pack-core-node.win32-x64-msvc.node"
   }
-] as const satisfies readonly TreeSitterNativeBindingTarget[];
+] as const satisfies readonly {
+  readonly platform: NodeJS.Platform;
+  readonly arch: NodeJS.Architecture;
+  readonly bunTarget: string;
+  readonly releaseName: string;
+  readonly packageSpecifier: string;
+  readonly embeddedSpecifier: string;
+}[];
+
+export type TreeSitterNativeBindingTarget = (typeof TREE_SITTER_NATIVE_BINDING_TARGET_ROWS)[number];
+
+export type TreeSitterNativeBindingPackageSpecifier =
+  TreeSitterNativeBindingTarget["packageSpecifier"];
+
+export type TreeSitterNativeBindingEmbeddedSpecifier =
+  TreeSitterNativeBindingTarget["embeddedSpecifier"];
+
+export const TREE_SITTER_NATIVE_BINDING_TARGETS = TREE_SITTER_NATIVE_BINDING_TARGET_ROWS;
 
 export function currentTreeSitterNativeBindingTarget(
   platform: NodeJS.Platform = process.platform,

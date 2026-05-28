@@ -66,7 +66,7 @@ export const astSourceCommand = buildCommand<AstSourceFlags, string[], CliContex
     customUsage: [
       {
         input:
-          "[--language LANG] [--module NAME] [--include-ast-layer] [--raw-out PATH] [--out-dir DIR] files...",
+          "[--language LANG] [--module NAME] [--include-ast-layer] [--raw-out PATH] [--out-dir DIR] [--check] [--allow-parse-errors] files...",
         brief: "Parse source with Tree-sitter and print the semantic Shape draft."
       }
     ]

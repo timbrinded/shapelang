@@ -166,6 +166,8 @@ component ShapeAstGenerator {
         evidence ts("packages/shp-checker/src/source-languages.ts")
       Read<SourceSyntaxTree>
         evidence ts("packages/shp-checker/src/tree-sitter-native-targets.ts")
+      Read<SourceSyntaxTree>
+        evidence ts("packages/shp-checker/src/ast-generation-tree-sitter.ts")
     }
 }
 
@@ -574,7 +576,7 @@ memory UpdateBinaryIntegrity : RefactorConstraint<fn ShpCli.updateInstalledBinar
 reevaluation AstGenerationDraftSafetyRechecked {
   satisfies memory AstGenerationUnknownSafety
   outcome Confirmed
-  summary "AST generation tests cover semantic drafts with compact fingerprinted AST anchors, checked candidate effect syntax, manifest-backed trusted generated unknown effects, invalid graph diagnostics, collision-safe names, and raw AST output still opt-in."
+  summary "AST generation tests cover semantic drafts with compact fingerprinted AST anchors, checked candidate effect syntax, explicit generated AST module origin, invalid graph diagnostics, collision-safe names, and raw AST output still opt-in."
   reviewer ShapeMaintainers
   decided_on "2026-05-21"
   evidence test("packages/shp-checker/src/checker.test.ts")
@@ -664,7 +666,7 @@ reevaluation FormatterSharedStringHelpersRechecked {
 reevaluation UpdateRuntimeAssetsRechecked {
   satisfies memory UpdateBinaryIntegrity
   outcome Confirmed
-  summary "Self-update now rejects archives without parser assets and stages those assets beside the target binary, including the deferred Windows replacement path."
+  summary "Self-update now rejects archives without parser assets and installs staged parser assets before making the new binary visible, including rollback in the deferred Windows replacement path."
   reviewer ShapeMaintainers
   decided_on "2026-05-28"
   evidence test("packages/shp-cli/src/update.test.ts")

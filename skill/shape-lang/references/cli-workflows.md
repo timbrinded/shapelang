@@ -22,6 +22,8 @@ Use this when choosing, sequencing, or interpreting `shp` commands. The released
 | `shp obligations [files...]` | Listing open rationale, memory, description, reevaluation, and guarded-change work. | Replacing `shp check`; it filters only selected diagnostics. |
 | `shp author --changed-files changed.txt --component Name` | Scaffolding a conservative global model draft. | Producing final reviewed effect summaries without human review. |
 | `shp analyze [--shape-files files] source-files...` | Advisory source hints and comparison against declared effects. | Making the analyzer the source of truth. |
+| `shp ast source [--out-dir DIR] [--check] source-files...` | Generating or freshness-checking source-backed AST Shape context with anchors, fingerprints, candidate effects, and source refs. | Replacing reviewed architecture claims; generated functions stay `effects unknown`. |
+| `shp ast json [--include-ast-layer] ast.json` | Adapting normalized AST JSON from another parser into Shape drafts. | Asking Shape to parse source files or invent missing AST token data. |
 | `shp --help` | Confirming the available CLI on the current machine. | Assuming old skill docs are newer than the binary. |
 
 ## Validation Recipes
@@ -76,6 +78,19 @@ Compare source hints with declared effects:
 
 ```bash
 shp analyze --shape-files shape/system/audit.shape src/audit/purge.ts
+```
+
+Refresh committed generated AST context when the repository has an AST workflow:
+
+```bash
+bun run ast:generate
+bun run ast:check
+```
+
+Check generated AST context without writing files:
+
+```bash
+shp ast source --out-dir shape/generated/ast --check src/audit/store.rs
 ```
 
 Scaffold a global model draft, then review and fold it into the owning model file:

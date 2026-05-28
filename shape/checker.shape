@@ -101,7 +101,6 @@ component ShapeModelLowerer {
   owns ModuleNamespace
   grants Append<FactSet>
   grants Append<ModuleNamespace>
-  grants Read<GeneratedAstManifest>
   grants Read<GeneratedCandidateEffect>
   grants Read<NormalizedShapeReference>
   grants Read<ParsedModule>
@@ -114,8 +113,6 @@ component ShapeModelLowerer {
         evidence ts("packages/shp-checker/src/checker.ts")
       Append<ModuleNamespace>
         evidence ts("packages/shp-checker/src/checker.ts")
-      Read<GeneratedAstManifest>
-        evidence ts("packages/shp-checker/src/generated-ast-policy.ts")
       Read<GeneratedCandidateEffect>
         evidence ts("packages/shp-checker/src/checker.ts")
       Read<NormalizedShapeReference>
@@ -496,7 +493,7 @@ reevaluation HypercycleTraversalRechecked {
 reevaluation LoweringFunctionRegistryRechecked {
   satisfies memory LoweringBeforeRules
   outcome Confirmed
-  summary "Checker tests cover module-scoped import resolution with ambiguity rejection, concrete forbid target lowering, generated candidate effect validation, manifest-backed generated AST trust, and function registry rebuilds before derived facts and coverage paths are emitted."
+  summary "Checker tests cover module-scoped import resolution with ambiguity rejection, concrete forbid target lowering, generated candidate effect validation, explicit generated AST module origin, and function registry rebuilds before derived facts and coverage paths are emitted."
   reviewer ShapeMaintainers
   decided_on "2026-05-28"
   evidence test("packages/shp-checker/src/checker.test.ts")

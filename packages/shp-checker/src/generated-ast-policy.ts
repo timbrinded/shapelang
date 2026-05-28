@@ -1,5 +1,4 @@
-import { readFileSync } from "node:fs";
-import { isAbsolute, relative, resolve } from "node:path";
+import { isAbsolute, relative } from "node:path";
 
 export const GENERATED_AST_MODULE_BASE = "shape.generated.ast";
 export const GENERATED_AST_DIR = "shape/generated/ast";
@@ -29,51 +28,12 @@ export function normalizeGeneratedAstPath(path: string, cwd = process.cwd()): st
   return repoRelative.replace(/\\/g, "/").replace(/^\.\//, "");
 }
 
-export function isTrustedGeneratedAstModule(
-  moduleName: string,
-  filePath: string | undefined,
-  cwd = process.cwd()
-): boolean {
-  if (!filePath || !isGeneratedAstModuleName(moduleName)) {
-    return false;
-  }
-
-  const normalizedPath = normalizeGeneratedAstPath(filePath, cwd);
-  if (
-    normalizedPath !== GENERATED_AST_MANIFEST_FILE &&
-    !normalizedPath.startsWith(`${GENERATED_AST_DIR}/`)
-  ) {
-    return false;
-  }
-
-  const manifest = readGeneratedAstManifest(cwd);
-  if (!manifest) {
-    return false;
-  }
-
-  return manifest.entries.some(
-    (entry) =>
-      entry.module === moduleName && normalizeGeneratedAstPath(entry.path, cwd) === normalizedPath
-  );
-}
-
 export function isGeneratedAstManifest(value: unknown): value is GeneratedAstManifest {
   if (!isRecord(value) || value["version"] !== 1 || typeof value["generatedAt"] !== "string") {
     return false;
   }
   const entries = value["entries"];
   return Array.isArray(entries) && entries.every(isGeneratedAstManifestEntry);
-}
-
-function readGeneratedAstManifest(cwd: string): GeneratedAstManifest | undefined {
-  try {
-    const parsed: unknown = JSON.parse(
-      readFileSync(resolve(cwd, GENERATED_AST_MANIFEST_FILE), "utf8")
-    );
-    return isGeneratedAstManifest(parsed) ? parsed : undefined;
-  } catch {
-    return undefined;
-  }
 }
 
 function isGeneratedAstManifestEntry(value: unknown): value is GeneratedAstManifestEntry {
