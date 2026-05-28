@@ -115,6 +115,7 @@ import {
   type PreludeTraitDefinition
 } from "./prelude.ts";
 import {
+  compareCodepointStrings,
   normalizeShapePath,
   normalizeShapeSourcePath,
   unquoteShapeString
@@ -981,6 +982,17 @@ export function explainShapeModules(
   symbol: string
 ): string {
   const model = lowerShapeModules(modules);
+  const symbolAmbiguity = formatAmbiguousQuerySymbol(symbol, [
+    { kind: "resource", map: model.resources },
+    { kind: "component", map: model.components },
+    { kind: "relation", map: model.hypergraph.edges },
+    { kind: "rationale", map: model.rationales },
+    { kind: "memory", map: model.memories }
+  ]);
+  if (symbolAmbiguity) {
+    return symbolAmbiguity;
+  }
+
   const resourceKey = resolveQuerySymbol(symbol, model.resources);
   const resource = resourceKey ? model.resources.get(resourceKey) : undefined;
   if (resource) {
@@ -1108,17 +1120,6 @@ export function explainShapeModules(
     return `${formatRelationExplanation(relation)}\n`;
   }
 
-  const ambiguity = formatAmbiguousQuerySymbol(symbol, [
-    { kind: "resource", map: model.resources },
-    { kind: "component", map: model.components },
-    { kind: "relation", map: model.hypergraph.edges },
-    { kind: "rationale", map: model.rationales },
-    { kind: "memory", map: model.memories }
-  ]);
-  if (ambiguity) {
-    return ambiguity;
-  }
-
   return `No shape facts found for ${symbol}.\n`;
 }
 
@@ -1141,7 +1142,7 @@ function querySymbolMatches<T extends { name: string }>(
   if (map.has(symbol)) {
     return [symbol];
   }
-  return [...map.keys()].filter((key) => localNameOf(key) === symbol).sort();
+  return [...map.keys()].filter((key) => localNameOf(key) === symbol).sort(compareCodepointStrings);
 }
 
 function formatAmbiguousQuerySymbol(
@@ -1179,6 +1180,15 @@ export function graphShapeModules(
   kindFilter?: string
 ): string {
   const model = lowerShapeModules(modules);
+  const symbolAmbiguity = formatAmbiguousQuerySymbol(symbol, [
+    { kind: "relation", map: model.hypergraph.edges },
+    { kind: "component", map: model.components },
+    { kind: "resource", map: model.resources }
+  ]);
+  if (symbolAmbiguity) {
+    return symbolAmbiguity;
+  }
+
   const relationKey = resolveQuerySymbol(symbol, model.hypergraph.edges);
   const relation = relationKey ? model.hypergraph.edges.get(relationKey) : undefined;
   if (relation) {
@@ -1187,24 +1197,10 @@ export function graphShapeModules(
     }
     return `${formatHyperedgeLine(relation, 0, model)}\n`;
   }
-  const relationAmbiguity = formatAmbiguousQuerySymbol(symbol, [
-    { kind: "relation", map: model.hypergraph.edges }
-  ]);
-  if (relationAmbiguity) {
-    return relationAmbiguity;
-  }
-
   const vertexKey =
     resolveQuerySymbol(symbol, model.components) ??
     resolveQuerySymbol(symbol, model.resources) ??
     symbol;
-  const vertexAmbiguity = formatAmbiguousQuerySymbol(symbol, [
-    { kind: "component", map: model.components },
-    { kind: "resource", map: model.resources }
-  ]);
-  if (vertexKey === symbol && vertexAmbiguity) {
-    return vertexAmbiguity;
-  }
   const incidentNames = model.hypergraph.incidence.get(vertexKey) ?? [];
   const incident = incidentNames
     .map((name) => model.hypergraph.edges.get(name))

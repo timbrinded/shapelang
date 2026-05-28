@@ -585,7 +585,7 @@ reevaluation DocsShapeBlockVerificationRechecked {
 reevaluation ReleaseNativeParserAssetsRechecked {
   satisfies memory ReleaseChecksumContract
   outcome Confirmed
-  summary "Release asset builds include native bindings and verified parser libraries for every advertised source language, and installers require and copy the parser asset directory beside the executable."
+  summary "Release asset builds include native bindings and verified parser libraries for every advertised source language, and installers stage parser assets with the executable before swapping them into place."
   reviewer ShapeMaintainers
   decided_on "2026-05-28"
   evidence ps1("install.ps1")

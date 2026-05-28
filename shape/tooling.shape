@@ -552,16 +552,6 @@ memory AstGenerationUnknownSafety : RefactorConstraint<fn ShapeAstGenerator.gene
   guards on_change require ReEvaluation<Self>
 }
 
-memory AuthoringUnknownSafety : RefactorConstraint<fn ShapeAuthoring.generateShapeUpdateDraft> {
-  applies_to fn ShapeAuthoring.generateShapeUpdateDraft
-  status Explained
-  confidence High
-  summary "Generated model drafts must prefer effects unknown over false empty complete summaries."
-  owner ShapeMaintainers
-  protects shape ExplicitUnknowns
-  guards on_change require ReEvaluation<Self>
-}
-
 memory AuthorPromptSafetyRules : RefactorConstraint<fn ShapeAuthoring.buildShapeAuthorPrompt> {
   applies_to fn ShapeAuthoring.buildShapeAuthorPrompt
   status Explained
@@ -569,6 +559,16 @@ memory AuthorPromptSafetyRules : RefactorConstraint<fn ShapeAuthoring.buildShape
   summary "Authoring prompts must require evidence, explicit destructive effects, and no memory waiver for final forbids."
   owner ShapeMaintainers
   protects shape AgentReviewSafety
+  guards on_change require ReEvaluation<Self>
+}
+
+memory AuthoringUnknownSafety : RefactorConstraint<fn ShapeAuthoring.generateShapeUpdateDraft> {
+  applies_to fn ShapeAuthoring.generateShapeUpdateDraft
+  status Explained
+  confidence High
+  summary "Generated model drafts must prefer effects unknown over false empty complete summaries."
+  owner ShapeMaintainers
+  protects shape ExplicitUnknowns
   guards on_change require ReEvaluation<Self>
 }
 
@@ -621,19 +621,19 @@ reevaluation AstGenerationDraftSafetyRechecked {
   evidence test("packages/shp-checker/src/checker.test.ts")
 }
 
-reevaluation AuthoringDraftSafetyRechecked {
-  satisfies memory AuthoringUnknownSafety
+reevaluation AuthorPromptPreludeRechecked {
+  satisfies memory AuthorPromptSafetyRules
   outcome Confirmed
-  summary "Draft generation still keeps uncertain effects explicit after the authoring prompt helper changes."
+  summary "Author prompts now derive final-forbid, context, and relation-kind guidance from the shared prelude registry."
   reviewer ShapeMaintainers
   decided_on "2026-05-20"
   evidence test("packages/shp-checker/src/checker.test.ts")
 }
 
-reevaluation AuthorPromptPreludeRechecked {
-  satisfies memory AuthorPromptSafetyRules
+reevaluation AuthoringDraftSafetyRechecked {
+  satisfies memory AuthoringUnknownSafety
   outcome Confirmed
-  summary "Author prompts now derive final-forbid, context, and relation-kind guidance from the shared prelude registry."
+  summary "Draft generation still keeps uncertain effects explicit after the authoring prompt helper changes."
   reviewer ShapeMaintainers
   decided_on "2026-05-20"
   evidence test("packages/shp-checker/src/checker.test.ts")

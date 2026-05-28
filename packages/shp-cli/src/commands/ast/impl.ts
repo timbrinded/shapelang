@@ -199,13 +199,17 @@ function generatedRelativeSourcePath(sourcePath: string, workspaceRoot: string):
 }
 
 function compareCodepointStrings(left: string, right: string): number {
-  if (left < right) {
-    return -1;
+  const leftCodepoints = Array.from(left);
+  const rightCodepoints = Array.from(right);
+  const length = Math.min(leftCodepoints.length, rightCodepoints.length);
+  for (let index = 0; index < length; index += 1) {
+    const leftCodepoint = leftCodepoints[index]?.codePointAt(0) ?? 0;
+    const rightCodepoint = rightCodepoints[index]?.codePointAt(0) ?? 0;
+    if (leftCodepoint !== rightCodepoint) {
+      return leftCodepoint - rightCodepoint;
+    }
   }
-  if (left > right) {
-    return 1;
-  }
-  return 0;
+  return leftCodepoints.length - rightCodepoints.length;
 }
 
 function sourcePathToModuleSuffix(sourcePath: string): string {

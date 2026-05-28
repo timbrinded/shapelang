@@ -168,7 +168,7 @@ CI, `bun run shape:ci`, and release validation run `bun run ast:check`, so sourc
 
 ## JSON input adapter
 
-Use `shp ast json` when another tool already parsed the code. The JSON input must declare files, a root node, and a flat node list. Nested structure belongs in child nodes, not nested attributes, so every raw node can be accounted for deterministically. Semantic anchors require token/source text in the relevant node subtree so the same `ast.semantic_subtree_v1` provider can be computed; JSON that only supplies structural IDs for anchored nodes is rejected.
+Use `shp ast json` when another tool already parsed the code. The JSON input must declare files, a root node, and a flat node list. Nested structure belongs in child nodes, not nested attributes, so every raw node can be accounted for deterministically. Semantic anchors require token/source text in the relevant node subtree so the same `ast.semantic_subtree_v1` provider can be computed; JSON that only supplies structural IDs for anchored nodes still generates a draft, but the affected anchors are emitted without fingerprints and the CLI reports a warning.
 
 ```json
 {

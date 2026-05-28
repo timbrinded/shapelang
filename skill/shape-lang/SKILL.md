@@ -70,4 +70,4 @@ bun run ast:generate
 bun run ast:check
 ```
 
-Generated AST drafts intentionally leave generated functions at `effects unknown`, add `GeneratedAstAnchor` resources with `ast.semantic_subtree_v1` fingerprints, and may include candidate effects that need human review before being promoted into authored Shape.
+Generated AST drafts intentionally leave generated functions at `effects unknown`, add `GeneratedAstAnchor` resources with `ast.semantic_subtree_v1` fingerprints when token evidence is available, and may include candidate effects that need human review before being promoted into authored Shape. If an anchor has no token evidence, Shape emits it without a fingerprint/`expects` pin and reports a warning instead of failing the batch.

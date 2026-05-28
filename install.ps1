@@ -68,10 +68,48 @@ try {
   }
 
   New-Item -ItemType Directory -Force -Path $InstallDir | Out-Null
-  Copy-Item -Force (Join-Path $TempDir "shp.exe") (Join-Path $InstallDir "shp.exe")
+  $TargetBinary = Join-Path $InstallDir "shp.exe"
   $InstallParserAssets = Join-Path $InstallDir "tree-sitter-language-pack"
-  Remove-Item -Recurse -Force $InstallParserAssets -ErrorAction SilentlyContinue
-  Copy-Item -Recurse -Force $ParserAssets $InstallParserAssets
+  $Token = [System.Guid]::NewGuid().ToString("N")
+  $StagedBinary = Join-Path $InstallDir ".shp.exe.update-$Token"
+  $StagedParserAssets = Join-Path $InstallDir ".tree-sitter-language-pack.update-$Token"
+  $PreviousBinary = Join-Path $InstallDir ".shp.exe.previous-$Token"
+  $PreviousParserAssets = Join-Path $InstallDir ".tree-sitter-language-pack.previous-$Token"
+  $InstallCommitted = $false
+  $FinalSwapStarted = $false
+  try {
+    Remove-Item -Force $StagedBinary, $PreviousBinary -ErrorAction SilentlyContinue
+    Remove-Item -Recurse -Force $StagedParserAssets, $PreviousParserAssets -ErrorAction SilentlyContinue
+    Copy-Item -Force (Join-Path $TempDir "shp.exe") $StagedBinary
+    Copy-Item -Recurse -Force $ParserAssets $StagedParserAssets
+
+    $FinalSwapStarted = $true
+    if (Test-Path -LiteralPath $TargetBinary) {
+      Move-Item -Force $TargetBinary $PreviousBinary
+    }
+    if (Test-Path -LiteralPath $InstallParserAssets) {
+      Move-Item -Force $InstallParserAssets $PreviousParserAssets
+    }
+    Move-Item -Force $StagedParserAssets $InstallParserAssets
+    Move-Item -Force $StagedBinary $TargetBinary
+    $InstallCommitted = $true
+  } finally {
+    Remove-Item -Force $StagedBinary -ErrorAction SilentlyContinue
+    Remove-Item -Recurse -Force $StagedParserAssets -ErrorAction SilentlyContinue
+    if ($InstallCommitted) {
+      Remove-Item -Force $PreviousBinary -ErrorAction SilentlyContinue
+      Remove-Item -Recurse -Force $PreviousParserAssets -ErrorAction SilentlyContinue
+    } elseif ($FinalSwapStarted) {
+      Remove-Item -Force $TargetBinary -ErrorAction SilentlyContinue
+      Remove-Item -Recurse -Force $InstallParserAssets -ErrorAction SilentlyContinue
+      if (Test-Path -LiteralPath $PreviousBinary) {
+        Move-Item -Force $PreviousBinary $TargetBinary
+      }
+      if (Test-Path -LiteralPath $PreviousParserAssets) {
+        Move-Item -Force $PreviousParserAssets $InstallParserAssets
+      }
+    }
+  }
 
   if (-not [string]::IsNullOrWhiteSpace($env:GITHUB_PATH)) {
     Add-Content -Path $env:GITHUB_PATH -Value $InstallDir

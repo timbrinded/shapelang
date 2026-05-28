@@ -207,7 +207,7 @@ Cause: a component declares `requires Target`, but `Target` is neither a compone
 
 ## Unsupported rule shape
 
-Cause: a rule uses a syntax shape the checker does not currently implement semantically. For example, multiple `when` clauses are rejected until conjunctive rule semantics are designed.
+Cause: a rule uses a syntax shape the checker does not currently implement semantically. For example, repeated `when T has Trait` clauses can add same-subject trait requirements, but mixing different rule subjects is rejected until cross-subject conjunctive semantics are designed.
 
 ## Missing required context
 

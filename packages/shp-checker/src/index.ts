@@ -25,6 +25,7 @@ export {
   type AstGenerationDiagnostic,
   type AstGenerationResult,
   type AstSourceFileInput,
+  type CodeAstAnchor,
   type GeneratedAstManifest,
   type GeneratedAstManifestEntry,
   type GeneratedShapeOutput,

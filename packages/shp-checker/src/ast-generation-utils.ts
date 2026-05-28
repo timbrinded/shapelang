@@ -1,6 +1,8 @@
 import { createHash } from "node:crypto";
 
 import type { SourceSpan } from "./ast-generation-types.ts";
+import { compareCodepointStrings } from "./shape-strings.ts";
+export { compareCodepointStrings } from "./shape-strings.ts";
 
 const SHAPE_RESERVED_WORDS = new Set([
   "allow",
@@ -211,16 +213,6 @@ export function stableJson(value: unknown): string {
     stack.push({ kind: "value", value: item });
   }
   return output;
-}
-
-export function compareCodepointStrings(left: string, right: string): number {
-  if (left < right) {
-    return -1;
-  }
-  if (left > right) {
-    return 1;
-  }
-  return 0;
 }
 
 export function sha256Fingerprint(value: string): string {

@@ -7,8 +7,8 @@ trait GeneratedCandidate {
 }
 
 resource GenerateAstShapesModuleCompareCodepointStringsAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("scripts/generate-ast-shapes.ts:54-62")
-  fingerprint ast.semantic_subtree_v1("sha256:e888107daded6da8a90e58aa8981b45bb5049a5ee3ce63fcf4e87c7572200af7")
+  storage ast.anchor("scripts/generate-ast-shapes.ts:54-66")
+  fingerprint ast.semantic_subtree_v1("sha256:eb07b3e59c489c772220843e824132909cce785549eedb8cfea45c34927f7049")
 }
 
 resource GenerateAstShapesModuleTrackedSourceFilesAstAnchor : GeneratedAstAnchor {
@@ -18,7 +18,7 @@ resource GenerateAstShapesModuleTrackedSourceFilesAstAnchor : GeneratedAstAnchor
 
 component GenerateAstShapesModule : GeneratedCandidate {
   fn compareCodepointStrings
-    source ts("scripts/generate-ast-shapes.ts:54-62")
+    source ts("scripts/generate-ast-shapes.ts:54-66")
     effects unknown
   fn trackedSourceFiles
     source ts("scripts/generate-ast-shapes.ts:35-52")
@@ -29,8 +29,8 @@ relation GenerateAstShapesModuleCompareCodepointStringsGeneratedFromGenerateAstS
   kind generated_from
   connects GenerateAstShapesModule -> GenerateAstShapesModuleCompareCodepointStringsAstAnchor
   roles { GenerateAstShapesModule as generated, GenerateAstShapesModuleCompareCodepointStringsAstAnchor as syntax }
-  expects GenerateAstShapesModuleCompareCodepointStringsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e888107daded6da8a90e58aa8981b45bb5049a5ee3ce63fcf4e87c7572200af7")
-  summary "fn GenerateAstShapesModule.compareCodepointStrings generated from typescript function_declaration at scripts/generate-ast-shapes.ts:54-62."
+  expects GenerateAstShapesModuleCompareCodepointStringsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:eb07b3e59c489c772220843e824132909cce785549eedb8cfea45c34927f7049")
+  summary "fn GenerateAstShapesModule.compareCodepointStrings generated from typescript function_declaration at scripts/generate-ast-shapes.ts:54-66."
 }
 
 relation GenerateAstShapesModuleTrackedSourceFilesGeneratedFromGenerateAstShapesModuleTrackedSourceFilesAstAnchor {

@@ -20,9 +20,9 @@ resource NormalizedShapeReference
 
 resource PreludeMetadata
 
-resource SemanticDiagnostics
-
 resource SemanticDiagnosticSet
+
+resource SemanticDiagnostics
 
 resource ShapeBinding
 

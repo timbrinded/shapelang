@@ -84,6 +84,58 @@ download() {
   fi
 }
 
+install_release_payload() {
+  target_binary="$install_dir/$executable"
+  target_assets="$install_dir/tree-sitter-language-pack"
+  staged_binary="$install_dir/.$executable.update-$$"
+  staged_assets="$install_dir/.tree-sitter-language-pack.update-$$"
+  previous_binary="$install_dir/.$executable.previous-$$"
+  previous_assets="$install_dir/.tree-sitter-language-pack.previous-$$"
+  swap_started=0
+
+  rollback_install() {
+    status="$?"
+    rm -rf "$staged_binary" "$staged_assets"
+    if [ "$status" -ne 0 ] && [ "$swap_started" -eq 1 ]; then
+      rm -rf "$target_binary" "$target_assets"
+      if [ -f "$previous_binary" ]; then
+        mv "$previous_binary" "$target_binary"
+      fi
+      if [ -d "$previous_assets" ]; then
+        mv "$previous_assets" "$target_assets"
+      fi
+    else
+      rm -rf "$previous_binary" "$previous_assets"
+    fi
+    cleanup
+    exit "$status"
+  }
+
+  rm -rf "$staged_binary" "$staged_assets" "$previous_binary" "$previous_assets"
+  trap rollback_install EXIT INT TERM
+
+  if command -v install >/dev/null 2>&1; then
+    install -m 0755 "$tmp_dir/$executable" "$staged_binary"
+  else
+    cp "$tmp_dir/$executable" "$staged_binary"
+    chmod 0755 "$staged_binary" 2>/dev/null || true
+  fi
+  cp -R "$tmp_dir/tree-sitter-language-pack" "$staged_assets"
+
+  swap_started=1
+  if [ -f "$target_binary" ]; then
+    mv "$target_binary" "$previous_binary"
+  fi
+  if [ -d "$target_assets" ]; then
+    mv "$target_assets" "$previous_assets"
+  fi
+  mv "$staged_assets" "$target_assets"
+  mv "$staged_binary" "$target_binary"
+
+  rm -rf "$previous_binary" "$previous_assets"
+  trap cleanup EXIT INT TERM
+}
+
 case "$(uname -s)" in
   Linux*) os="linux"; executable="shp" ;;
   Darwin*) os="darwin"; executable="shp" ;;
@@ -159,15 +211,7 @@ if [ ! -d "$tmp_dir/tree-sitter-language-pack" ]; then
   exit 1
 fi
 mkdir -p "$install_dir"
-
-if command -v install >/dev/null 2>&1; then
-  install -m 0755 "$tmp_dir/$executable" "$install_dir/$executable"
-else
-  cp "$tmp_dir/$executable" "$install_dir/$executable"
-  chmod 0755 "$install_dir/$executable" 2>/dev/null || true
-fi
-rm -rf "$install_dir/tree-sitter-language-pack"
-cp -R "$tmp_dir/tree-sitter-language-pack" "$install_dir/tree-sitter-language-pack"
+install_release_payload
 
 if [ -n "${GITHUB_PATH:-}" ]; then
   echo "$install_dir" >> "$GITHUB_PATH"

@@ -6,6 +6,11 @@ trait GeneratedAstAnchor {
 trait GeneratedCandidate {
 }
 
+resource ShapeStringsModuleCompareCodepointStringsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/shape-strings.ts:11-23")
+  fingerprint ast.semantic_subtree_v1("sha256:1e852737d61c81fb3b4326f13cb95f5adfda906254cacb78f946076c583e983c")
+}
+
 resource ShapeStringsModuleNormalizeShapePathAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/shape-strings.ts:7-9")
   fingerprint ast.semantic_subtree_v1("sha256:5f0aaceefa1de0641a79187c4b18b8ee4ca2d1f29b09690f1fb6ef231f390f95")
@@ -17,11 +22,14 @@ resource ShapeStringsModuleNormalizeShapeSourcePathAstAnchor : GeneratedAstAncho
 }
 
 resource ShapeStringsModuleUnquoteShapeStringAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/shape-strings.ts:11-18")
+  storage ast.anchor("packages/shp-checker/src/shape-strings.ts:25-32")
   fingerprint ast.semantic_subtree_v1("sha256:6c53dbd6ba45892737dbf7ed292c57a42c4209d4859ff32f19d87db1b82c2ee6")
 }
 
 component ShapeStringsModule : GeneratedCandidate {
+  fn compareCodepointStrings
+    source ts("packages/shp-checker/src/shape-strings.ts:11-23")
+    effects unknown
   fn normalizeShapePath
     source ts("packages/shp-checker/src/shape-strings.ts:7-9")
     effects unknown
@@ -29,8 +37,16 @@ component ShapeStringsModule : GeneratedCandidate {
     source ts("packages/shp-checker/src/shape-strings.ts:1-5")
     effects unknown
   fn unquoteShapeString
-    source ts("packages/shp-checker/src/shape-strings.ts:11-18")
+    source ts("packages/shp-checker/src/shape-strings.ts:25-32")
     effects unknown
+}
+
+relation ShapeStringsModuleCompareCodepointStringsGeneratedFromShapeStringsModuleCompareCodepointStringsAstAnchor {
+  kind generated_from
+  connects ShapeStringsModule -> ShapeStringsModuleCompareCodepointStringsAstAnchor
+  roles { ShapeStringsModule as generated, ShapeStringsModuleCompareCodepointStringsAstAnchor as syntax }
+  expects ShapeStringsModuleCompareCodepointStringsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1e852737d61c81fb3b4326f13cb95f5adfda906254cacb78f946076c583e983c")
+  summary "fn ShapeStringsModule.compareCodepointStrings generated from typescript function_declaration at packages/shp-checker/src/shape-strings.ts:11-23."
 }
 
 relation ShapeStringsModuleNormalizeShapePathGeneratedFromShapeStringsModuleNormalizeShapePathAstAnchor {
@@ -54,7 +70,7 @@ relation ShapeStringsModuleUnquoteShapeStringGeneratedFromShapeStringsModuleUnqu
   connects ShapeStringsModule -> ShapeStringsModuleUnquoteShapeStringAstAnchor
   roles { ShapeStringsModule as generated, ShapeStringsModuleUnquoteShapeStringAstAnchor as syntax }
   expects ShapeStringsModuleUnquoteShapeStringAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6c53dbd6ba45892737dbf7ed292c57a42c4209d4859ff32f19d87db1b82c2ee6")
-  summary "fn ShapeStringsModule.unquoteShapeString generated from typescript function_declaration at packages/shp-checker/src/shape-strings.ts:11-18."
+  summary "fn ShapeStringsModule.unquoteShapeString generated from typescript function_declaration at packages/shp-checker/src/shape-strings.ts:25-32."
 }
 
 implementation ShapeStringsModuleImpl {

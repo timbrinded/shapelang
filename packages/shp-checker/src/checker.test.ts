@@ -2461,6 +2461,36 @@ describe("Shape checker", () => {
     expect(graph).toContain("component right::Ledger");
   });
 
+  test("explain and graph report cross-kind ambiguous unqualified symbols", () => {
+    const left = parseShapeModule(`
+      module left
+      resource Ledger
+    `);
+    const right = parseShapeModule(`
+      module right
+      component Ledger {
+      }
+    `);
+
+    expect(left.ok).toBe(true);
+    expect(right.ok).toBe(true);
+    if (!left.ok || !right.ok) {
+      return;
+    }
+
+    const explanation = explainShapeModules([left.module, right.module], "Ledger");
+    expect(explanation).toContain("Ambiguous shape symbol Ledger.");
+    expect(explanation).toContain("resource left::Ledger");
+    expect(explanation).toContain("component right::Ledger");
+    expect(explanation).toContain("Use a module-qualified reference.");
+
+    const graph = graphShapeModules([left.module, right.module], "Ledger");
+    expect(graph).toContain("Ambiguous shape symbol Ledger.");
+    expect(graph).toContain("resource left::Ledger");
+    expect(graph).toContain("component right::Ledger");
+    expect(graph).toContain("Use a module-qualified reference.");
+  });
+
   test("custom relation kinds appear in graph and stats but do not create hypercycles", () => {
     const parsed = parseShapeModule(`
       module deps
@@ -3717,12 +3747,22 @@ describe("AST to Shape generation", () => {
 
   test("serializes canonical JSON keys by codepoint order", () => {
     expect(stableJson({ b: 1, a: 2, A: 3 })).toBe('{"A":3,"a":2,"b":1}');
+    const privateUse = "\ue000";
+    const astral = "😀";
+    const payload = stableJson({ [astral]: 1, [privateUse]: 2 });
+    expect(payload.indexOf(JSON.stringify(privateUse))).toBeLessThan(
+      payload.indexOf(JSON.stringify(astral))
+    );
   });
 
   test("keeps braces inside literals out of fingerprint signatures", () => {
     expect(
       signatureText('fn handle(label = "{open}", value: Value) { value }', "typescript")
     ).toContain("value: Value)");
+  });
+
+  test("keeps full brace-less declarations in fingerprint signatures", () => {
+    expect(signatureText("fn handle(\n  a: A,\n  b: B\n);", "rust")).toContain("b: B");
   });
 
   test("projects Rust AST JSON into a semantic draft plus optional raw trace", () => {
@@ -4239,6 +4279,38 @@ describe("AST to Shape generation", () => {
       expect(result.value.semanticShape).toContain("resource MainModuleMainAstAnchor");
       expect(result.value.semanticShape).not.toContain("fingerprint ast.semantic_subtree_v1");
       expect(result.value.semanticShape).not.toContain("expects MainModuleMainAstAnchor");
+    }
+  });
+
+  test("handles deeply nested AST JSON nodes without recursive stack overflow", () => {
+    const depth = 6000;
+    const nodes = Array.from({ length: depth }, (_, index) => ({
+      id: `node-${index}`,
+      kind: "wrapper",
+      children: [index + 1 === depth ? "main" : `node-${index + 1}`]
+    }));
+    const result = buildCodeSemanticGraphFromAstJson({
+      language: "rust",
+      files: [
+        {
+          path: "src/main.rs",
+          root: "node-0",
+          nodes: [
+            ...nodes,
+            {
+              id: "main",
+              kind: "function_item",
+              attributes: { name: "main" },
+              text: "fn main() {}"
+            }
+          ]
+        }
+      ]
+    });
+
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.value.rawNodes).toHaveLength(depth + 1);
     }
   });
 
@@ -5110,7 +5182,7 @@ type FakeTreeSitterNode = {
 type FakeTreeSitterCursor = {
   gotoFirstChild: () => boolean;
   gotoNextSibling: () => boolean;
-  currentNode: () => FakeTreeSitterNode | undefined;
+  node: () => FakeTreeSitterNode | undefined;
   fieldName: () => string | undefined;
 };
 
@@ -5150,7 +5222,7 @@ function fakeTreeSitterNode(input: {
           index += 1;
           return true;
         },
-        currentNode: () => children[index]?.node,
+        node: () => children[index]?.node,
         fieldName: () => children[index]?.fieldName
       };
     },

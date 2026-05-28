@@ -30,6 +30,7 @@ import type {
   TraitDecl,
   TypeParamList
 } from "./language/generated/ast.ts";
+import { compareCodepointStrings } from "./shape-strings.ts";
 import {
   isAddDeclarationChange,
   isAddFunctionChange,
@@ -134,13 +135,13 @@ export function formatShapeModule(module: ShapeModule): string {
   }
 
   for (const item of [...module.imports].sort((left, right) =>
-    left.path.localeCompare(right.path)
+    compareCodepointStrings(left.path, right.path)
   )) {
     chunks.push(`import ${item.path}`);
   }
 
   const declarations = [...module.declarations].sort((left, right) =>
-    declarationSortKey(left).localeCompare(declarationSortKey(right))
+    compareCodepointStrings(declarationSortKey(left), declarationSortKey(right))
   );
   for (const declaration of declarations) {
     chunks.push(formatDeclaration(declaration));
@@ -197,7 +198,7 @@ function formatResource(resource: ResourceDecl): string {
     resource.traits.length > 0
       ? ` : ${resource.traits
           .map((trait) => trait.name)
-          .sort()
+          .sort(compareCodepointStrings)
           .join(", ")}`
       : "";
   const storage = resource.body?.members.filter(isStorageDecl) ?? [];
@@ -210,12 +211,18 @@ function formatResource(resource: ResourceDecl): string {
     `resource ${resource.name}${traits} {`,
     ...storage
       .sort((left, right) =>
-        `${left.provider}:${left.value}`.localeCompare(`${right.provider}:${right.value}`)
+        compareCodepointStrings(
+          `${left.provider}:${left.value}`,
+          `${right.provider}:${right.value}`
+        )
       )
       .map((item) => indent(`storage ${item.provider}(${quote(item.value)})`)),
     ...fingerprints
       .sort((left, right) =>
-        `${left.provider}:${left.value}`.localeCompare(`${right.provider}:${right.value}`)
+        compareCodepointStrings(
+          `${left.provider}:${left.value}`,
+          `${right.provider}:${right.value}`
+        )
       )
       .map((item) => indent(formatFingerprint(item))),
     "}"
@@ -237,7 +244,7 @@ function formatTrait(trait: TraitDecl): string {
       return "";
     })
     .filter((line) => line.length > 0)
-    .sort();
+    .sort(compareCodepointStrings);
 
   return block(`trait ${trait.name}${formatTypeParams(trait.typeParams)}`, members);
 }
@@ -261,10 +268,14 @@ function formatComponent(component: ComponentDecl): string {
     component.classifiers.length > 0
       ? ` : ${component.classifiers
           .map((classifier) => classifier.name)
-          .sort()
+          .sort(compareCodepointStrings)
           .join(", ")}`
       : "";
-  const members = [...owns.sort(), ...grants.sort(), ...functions.sort()];
+  const members = [
+    ...owns.sort(compareCodepointStrings),
+    ...grants.sort(compareCodepointStrings),
+    ...functions.sort(compareCodepointStrings)
+  ];
   return block(`component ${component.name}${classifiers}`, members);
 }
 
@@ -287,7 +298,7 @@ function formatRelation(relation: RelationDecl): string {
       }
     } else if (isRelationRolesDecl(member)) {
       const sortedRoles = [...member.roles].sort((left, right) =>
-        left.name.localeCompare(right.name)
+        compareCodepointStrings(left.name, right.name)
       );
       rolesLines.push(
         `roles { ${sortedRoles.map((role) => `${role.name} as ${role.role}`).join(", ")} }`
@@ -305,7 +316,7 @@ function formatRelation(relation: RelationDecl): string {
     kindLine,
     connectsLine,
     ...rolesLines,
-    ...expectationLines.sort(),
+    ...expectationLines.sort(compareCodepointStrings),
     summaryLine
   ].filter((line) => line.length > 0);
   return block(`relation ${relation.name}`, lines);
@@ -396,7 +407,7 @@ function formatFunctionParts(
   } else if (isCompleteEffects(effects)) {
     lines.push(indent(`${unsafe ? "unsafe " : ""}effects complete {`));
     for (const entry of [...effects.effects].sort((left, right) =>
-      formatTerm(left.term).localeCompare(formatTerm(right.term))
+      compareCodepointStrings(formatTerm(left.term), formatTerm(right.term))
     )) {
       lines.push(indent(formatEffectEntry(entry), 2));
     }
@@ -416,7 +427,7 @@ function formatShapeTraitList(shapeTraits: ShapeTraitList | undefined): string {
   }
   return ` : ${shapeTraits.traits
     .map((trait) => trait.name)
-    .sort()
+    .sort(compareCodepointStrings)
     .join(", ")}`;
 }
 
@@ -447,7 +458,7 @@ function formatFunctionMember(member: FunctionMember): string {
 
 function sortFunctionMembers(members: FunctionMember[]): FunctionMember[] {
   return [...members].sort((left, right) =>
-    formatFunctionMember(left).localeCompare(formatFunctionMember(right))
+    compareCodepointStrings(formatFunctionMember(left), formatFunctionMember(right))
   );
 }
 
@@ -459,7 +470,9 @@ function formatImplementation(implementation: ImplementationDecl): string {
 
   for (const pathBlock of pathBlocks) {
     lines.push("paths {");
-    lines.push(...[...pathBlock.paths].sort().map((path) => indent(quote(path))));
+    lines.push(
+      ...[...pathBlock.paths].sort(compareCodepointStrings).map((path) => indent(quote(path)))
+    );
     lines.push("}");
   }
   if (conformsTo) {
@@ -488,16 +501,18 @@ function formatBinding(binding: BindingDecl): string {
   }
 
   return block(`binding ${binding.name}`, [
-    ...whenChanged.sort(),
-    ...requireChanged.sort(),
-    ...allowAttest.sort()
+    ...whenChanged.sort(compareCodepointStrings),
+    ...requireChanged.sort(compareCodepointStrings),
+    ...allowAttest.sort(compareCodepointStrings)
   ]);
 }
 
 function formatBindingPaths(keyword: "when_changed" | "require_changed", paths: string[]): string {
-  return [`${keyword} paths {`, ...[...paths].sort().map((path) => indent(quote(path))), "}"].join(
-    "\n"
-  );
+  return [
+    `${keyword} paths {`,
+    ...[...paths].sort(compareCodepointStrings).map((path) => indent(quote(path))),
+    "}"
+  ].join("\n");
 }
 
 function formatAttestation(attestation: AttestationDecl): string {
@@ -531,7 +546,7 @@ function formatChange(change: ChangeDecl): string {
       return "";
     })
     .filter((line) => line.length > 0)
-    .sort();
+    .sort(compareCodepointStrings);
 
   return block(`change ${change.name}`, entries);
 }
@@ -576,7 +591,7 @@ function formatRule(rule: RuleDecl): string {
       return "";
     })
     .filter((line) => line.length > 0)
-    .sort();
+    .sort(compareCodepointStrings);
 
   return block(`rule ${rule.name}`, members);
 }
@@ -593,7 +608,7 @@ function formatRationale(rationale: RationaleDecl): string {
     .sort(
       (left, right) =>
         memberOrder(left, RATIONALE_MEMBER_ORDER) - memberOrder(right, RATIONALE_MEMBER_ORDER) ||
-        left.localeCompare(right)
+        compareCodepointStrings(left, right)
     );
 
   return block(
@@ -620,7 +635,7 @@ function formatMemory(memory: MemoryDecl): string {
     .sort(
       (left, right) =>
         memberOrder(left, MEMORY_MEMBER_ORDER) - memberOrder(right, MEMORY_MEMBER_ORDER) ||
-        left.localeCompare(right)
+        compareCodepointStrings(left, right)
     );
 
   return block(`memory ${memory.name} : ${formatContextTypeRef(memory.contextType)}`, members);
@@ -681,7 +696,7 @@ function formatReevaluation(reevaluation: ReevaluationDecl): string {
     .sort(
       (left, right) =>
         memberOrder(left, REEVALUATION_MEMBER_ORDER) -
-          memberOrder(right, REEVALUATION_MEMBER_ORDER) || left.localeCompare(right)
+          memberOrder(right, REEVALUATION_MEMBER_ORDER) || compareCodepointStrings(left, right)
     );
 
   return block(`reevaluation ${reevaluation.name}`, members);
