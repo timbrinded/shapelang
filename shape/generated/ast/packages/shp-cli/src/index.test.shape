@@ -7,37 +7,37 @@ trait GeneratedCandidate {
 }
 
 resource IndexTestModuleCliAstJsonAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-cli/src/index.test.ts:907-942")
+  storage ast.anchor("packages/shp-cli/src/index.test.ts:944-979")
   fingerprint ast.semantic_subtree_v1("sha256:07a5c2d0f1b3a192016c4e0f84babfa3baeb498428c43a7a3fd9f0256ea12e81")
 }
 
 resource IndexTestModuleIsCliManifestAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-cli/src/index.test.ts:892-905")
+  storage ast.anchor("packages/shp-cli/src/index.test.ts:929-942")
   fingerprint ast.semantic_subtree_v1("sha256:c86615a123c6559dd9683af8d8f020dae75c18b85a70b9b1b311bf0c68508b4c")
 }
 
 resource IndexTestModuleReadCliManifestAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-cli/src/index.test.ts:882-890")
+  storage ast.anchor("packages/shp-cli/src/index.test.ts:919-927")
   fingerprint ast.semantic_subtree_v1("sha256:ab99734c1b5266c0a5e610c19db4a2533561fa68d5ba728db7aec34b7610e03e")
 }
 
 resource IndexTestModuleRunCliAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-cli/src/index.test.ts:944-965")
+  storage ast.anchor("packages/shp-cli/src/index.test.ts:981-1002")
   fingerprint ast.semantic_subtree_v1("sha256:66692a44acc72a19bc4c302a5ce0299a6d40bcdd70ed31c7e93c2f449079aedf")
 }
 
 component IndexTestModule : GeneratedCandidate {
   fn cliAstJson
-    source ts("packages/shp-cli/src/index.test.ts:907-942")
+    source ts("packages/shp-cli/src/index.test.ts:944-979")
     effects unknown
   fn isCliManifest
-    source ts("packages/shp-cli/src/index.test.ts:892-905")
+    source ts("packages/shp-cli/src/index.test.ts:929-942")
     effects unknown
   fn readCliManifest
-    source ts("packages/shp-cli/src/index.test.ts:882-890")
+    source ts("packages/shp-cli/src/index.test.ts:919-927")
     effects unknown
   fn runCli
-    source ts("packages/shp-cli/src/index.test.ts:944-965")
+    source ts("packages/shp-cli/src/index.test.ts:981-1002")
     effects unknown
 }
 
@@ -46,7 +46,7 @@ relation IndexTestModuleCliAstJsonGeneratedFromIndexTestModuleCliAstJsonAstAncho
   connects IndexTestModule -> IndexTestModuleCliAstJsonAstAnchor
   roles { IndexTestModule as generated, IndexTestModuleCliAstJsonAstAnchor as syntax }
   expects IndexTestModuleCliAstJsonAstAnchor fingerprint ast.semantic_subtree_v1("sha256:07a5c2d0f1b3a192016c4e0f84babfa3baeb498428c43a7a3fd9f0256ea12e81")
-  summary "fn IndexTestModule.cliAstJson generated from typescript function_declaration at packages/shp-cli/src/index.test.ts:907-942."
+  summary "fn IndexTestModule.cliAstJson generated from typescript function_declaration at packages/shp-cli/src/index.test.ts:944-979."
 }
 
 relation IndexTestModuleIsCliManifestGeneratedFromIndexTestModuleIsCliManifestAstAnchor {
@@ -54,7 +54,7 @@ relation IndexTestModuleIsCliManifestGeneratedFromIndexTestModuleIsCliManifestAs
   connects IndexTestModule -> IndexTestModuleIsCliManifestAstAnchor
   roles { IndexTestModule as generated, IndexTestModuleIsCliManifestAstAnchor as syntax }
   expects IndexTestModuleIsCliManifestAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c86615a123c6559dd9683af8d8f020dae75c18b85a70b9b1b311bf0c68508b4c")
-  summary "fn IndexTestModule.isCliManifest generated from typescript function_declaration at packages/shp-cli/src/index.test.ts:892-905."
+  summary "fn IndexTestModule.isCliManifest generated from typescript function_declaration at packages/shp-cli/src/index.test.ts:929-942."
 }
 
 relation IndexTestModuleReadCliManifestGeneratedFromIndexTestModuleReadCliManifestAstAnchor {
@@ -62,7 +62,7 @@ relation IndexTestModuleReadCliManifestGeneratedFromIndexTestModuleReadCliManife
   connects IndexTestModule -> IndexTestModuleReadCliManifestAstAnchor
   roles { IndexTestModule as generated, IndexTestModuleReadCliManifestAstAnchor as syntax }
   expects IndexTestModuleReadCliManifestAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ab99734c1b5266c0a5e610c19db4a2533561fa68d5ba728db7aec34b7610e03e")
-  summary "fn IndexTestModule.readCliManifest generated from typescript function_declaration at packages/shp-cli/src/index.test.ts:882-890."
+  summary "fn IndexTestModule.readCliManifest generated from typescript function_declaration at packages/shp-cli/src/index.test.ts:919-927."
 }
 
 relation IndexTestModuleRunCliGeneratedFromIndexTestModuleRunCliAstAnchor {
@@ -70,7 +70,7 @@ relation IndexTestModuleRunCliGeneratedFromIndexTestModuleRunCliAstAnchor {
   connects IndexTestModule -> IndexTestModuleRunCliAstAnchor
   roles { IndexTestModule as generated, IndexTestModuleRunCliAstAnchor as syntax }
   expects IndexTestModuleRunCliAstAnchor fingerprint ast.semantic_subtree_v1("sha256:66692a44acc72a19bc4c302a5ce0299a6d40bcdd70ed31c7e93c2f449079aedf")
-  summary "fn IndexTestModule.runCli generated from typescript function_declaration at packages/shp-cli/src/index.test.ts:944-965."
+  summary "fn IndexTestModule.runCli generated from typescript function_declaration at packages/shp-cli/src/index.test.ts:981-1002."
 }
 
 implementation IndexTestModuleImpl {

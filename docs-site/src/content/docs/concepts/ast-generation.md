@@ -152,7 +152,7 @@ shp ast source --language rust --out-dir shape/generated/ast src/audit/store.rs
 shp ast source --language rust --out-dir shape/generated/ast --check src/audit/store.rs
 ```
 
-The manifest records generated modules and source inputs for freshness checks. The checker treats generated `effects unknown` as candidate context only when module origin is explicit, such as files loaded from `shape/generated/ast` with `shape.generated.ast...` module names; it does not use the manifest as a trust boundary. The `--check` form regenerates in memory and fails when the checked-in generated files differ, which lets CI catch stale anchors, stale fingerprints, and missing generated context.
+The manifest records generated modules and source inputs for freshness checks. The checker treats generated `effects unknown` as candidate context only when module origin is explicit, such as files loaded from `shape/generated/ast` with `shape.generated.ast...` module names; it does not use the manifest as a trust boundary. The `--check` form regenerates in memory and fails when checked-in manifest-owned generated files differ, which lets CI catch stale anchors, stale fingerprints, and missing generated context without deleting or reporting unrelated authored `.shape` files in the same output tree.
 
 This repository commits its own generated AST context under `shape/generated/ast`. Use:
 

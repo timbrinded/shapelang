@@ -1,6 +1,7 @@
 import {
   generateShapeFromAstJson,
   generateShapeFromSourceFiles,
+  isGeneratedAstManifest,
   isGeneratedAstModuleName,
   normalizeGeneratedModuleName,
   normalizeGeneratedAstPath,
@@ -9,8 +10,8 @@ import {
   type GeneratedAstManifestEntry,
   type GenerateShapeOptions
 } from "@shape/shp-checker";
-import { mkdir, readdir, readFile, rm } from "node:fs/promises";
-import { dirname, join, relative } from "node:path";
+import { mkdir, readFile, rm } from "node:fs/promises";
+import { dirname, isAbsolute, join, relative, resolve } from "node:path";
 import type { CliContext } from "../../context";
 import { CliDiagnosticError, EXIT_FAILURE, EXIT_USAGE, errorMessage } from "../../errors";
 import { stdout } from "../../io";
@@ -227,30 +228,41 @@ async function extraGeneratedFiles(
   outDir: string,
   writes: { path: string; contents: string }[]
 ): Promise<string[]> {
-  const expected = new Set(writes.map((write) => write.path));
+  const expected = new Set(writes.map((write) => resolve(write.path)));
   const existing = await existingGeneratedFiles(outDir);
-  return existing.filter((path) => !expected.has(path));
+  return existing.filter((path) => !expected.has(resolve(path)));
 }
 
 async function existingGeneratedFiles(dir: string): Promise<string[]> {
+  const manifestPath = join(dir, "manifest.json");
   try {
-    const entries = await readdir(dir, { withFileTypes: true, encoding: "utf8" });
-    const files: string[] = [];
-    for (const entry of entries) {
-      const path = join(dir, entry.name);
-      if (entry.isDirectory()) {
-        files.push(...(await existingGeneratedFiles(path)));
-      } else if (
-        entry.isFile() &&
-        (entry.name === "manifest.json" || entry.name.endsWith(".shape"))
-      ) {
-        files.push(path);
+    const manifest = JSON.parse(await readFile(manifestPath, "utf8")) as unknown;
+    if (!isGeneratedAstManifest(manifest)) {
+      return [];
+    }
+    const files = new Set<string>([manifestPath]);
+    for (const entry of manifest.entries) {
+      const path = manifestEntryOutputPath(dir, entry.path);
+      if (path) {
+        files.add(path);
       }
     }
-    return files.sort();
+    return [...files].sort();
   } catch {
     return [];
   }
+}
+
+function manifestEntryOutputPath(outDir: string, manifestPath: string): string | undefined {
+  const absoluteOutDir = resolve(outDir);
+  const absolutePath = isAbsolute(manifestPath)
+    ? resolve(manifestPath)
+    : resolve(process.cwd(), manifestPath);
+  const relativePath = relative(absoluteOutDir, absolutePath);
+  if (relativePath === "" || (!relativePath.startsWith("..") && !isAbsolute(relativePath))) {
+    return absolutePath;
+  }
+  return undefined;
 }
 
 export async function astJson(

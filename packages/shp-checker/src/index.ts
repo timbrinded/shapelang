@@ -17,6 +17,7 @@ export {
 export {
   generateShapeFromAstJson,
   generateShapeFromSourceFiles,
+  isGeneratedAstManifest,
   isGeneratedAstModuleName,
   normalizeGeneratedModuleName,
   normalizeGeneratedAstPath,
@@ -24,6 +25,7 @@ export {
   type AstGenerationDiagnostic,
   type AstGenerationResult,
   type AstSourceFileInput,
+  type GeneratedAstManifest,
   type GeneratedAstManifestEntry,
   type GeneratedShapeOutput,
   type GenerateShapeOptions,

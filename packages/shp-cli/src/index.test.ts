@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { chmod, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { chmod, mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 
@@ -293,8 +293,6 @@ describe("shp CLI", () => {
       expect(manifest).toContain("shape.generated.ast.fixtures.generated_source.audit_purge");
       expect(manifest.indexOf("audit_purge.ts")).toBeLessThan(manifest.indexOf("audit_store.ts"));
 
-      const staleFile = join(outDir, "fixtures/source/stale.shape");
-      await writeFile(staleFile, "module shape.generated.ast.fixtures.generated_source.stale\n");
       const staleCheckResult = await runCli([
         "ast",
         "source",
@@ -303,12 +301,11 @@ describe("shp CLI", () => {
         "--out-dir",
         outDir,
         "--check",
-        "fixtures/source/audit_purge.ts",
-        "fixtures/source/audit_store.ts"
+        "fixtures/source/audit_purge.ts"
       ]);
       expect(staleCheckResult.exitCode).toBe(1);
       expect(staleCheckResult.stderr).toContain("generated AST Shape files are stale");
-      expect(staleCheckResult.stderr).toContain("stale.shape");
+      expect(staleCheckResult.stderr).toContain("audit_store.shape");
 
       const rewriteResult = await runCli([
         "ast",
@@ -317,10 +314,12 @@ describe("shp CLI", () => {
         "typescript",
         "--out-dir",
         outDir,
-        "fixtures/source/audit_purge.ts",
-        "fixtures/source/audit_store.ts"
+        "fixtures/source/audit_purge.ts"
       ]);
       expect(rewriteResult.exitCode).toBe(0);
+      expect(await Bun.file(join(outDir, "fixtures/source/audit_store.shape")).exists()).toBe(
+        false
+      );
 
       const checkResult = await runCli([
         "ast",
@@ -330,11 +329,49 @@ describe("shp CLI", () => {
         "--out-dir",
         outDir,
         "--check",
-        "fixtures/source/audit_purge.ts",
-        "fixtures/source/audit_store.ts"
+        "fixtures/source/audit_purge.ts"
       ]);
       expect(checkResult.exitCode).toBe(0);
       expect(checkResult.stdout).toContain("up to date");
+    } finally {
+      await rm(tempDir, { recursive: true, force: true });
+    }
+  });
+
+  test("preserves authored Shape files in broad generated AST output directories", async () => {
+    const tempDir = await mkdtemp(join(repoRoot, ".tmp-shp-cli-test-"));
+    const shapeDir = join(tempDir, "shape");
+    const authoredShape = join(shapeDir, "model.shape");
+    const sourcePath = join(tempDir, "audit.ts");
+    try {
+      await mkdir(shapeDir, { recursive: true });
+      await writeFile(authoredShape, "module local.model\n\ncomponent AuthoredModel {\n}\n");
+      await writeFile(sourcePath, "export function readAudit() { return 1; }\n");
+
+      const writeResult = await runCli([
+        "ast",
+        "source",
+        "--language",
+        "typescript",
+        "--out-dir",
+        shapeDir,
+        sourcePath
+      ]);
+      expect(writeResult.exitCode).toBe(0);
+      expect(await readFile(authoredShape, "utf8")).toContain("component AuthoredModel");
+
+      const checkResult = await runCli([
+        "ast",
+        "source",
+        "--language",
+        "typescript",
+        "--out-dir",
+        shapeDir,
+        "--check",
+        sourcePath
+      ]);
+      expect(checkResult.exitCode).toBe(0);
+      expect(checkResult.stderr).not.toContain("model.shape");
     } finally {
       await rm(tempDir, { recursive: true, force: true });
     }

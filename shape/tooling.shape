@@ -314,6 +314,7 @@ component ShpCli {
   grants Read<ChangedFileList>
   grants Read<DiagnosticText>
   grants Read<FormattedShape>
+  grants Read<GeneratedAstManifest>
   grants Read<InstalledShpBinary>
   grants Read<InstalledShpRuntimeAssets>
   grants Read<LanguageSource>
@@ -398,6 +399,8 @@ component ShpCli {
         evidence ts("packages/shp-cli/src/version.ts")
       Read<FormattedShape>
         evidence ts("packages/shp-cli/src/commands/fmt/impl.ts")
+      Read<GeneratedAstManifest>
+        evidence ts("packages/shp-cli/src/commands/ast/impl.ts")
       Read<LanguageSource>
         evidence ts("packages/shp-cli/src/commands/analyze/impl.ts")
       Read<LanguageSource>
@@ -639,7 +642,7 @@ reevaluation AuthorPromptPreludeRechecked {
 reevaluation CliAstOutputModesRechecked {
   satisfies memory CliCommandDispatchOrder
   outcome Confirmed
-  summary "AST CLI tests reject ambiguous raw trace output flags, require explicit generated AST directories for freshness checks, reject generated output collisions, and keep source and JSON draft paths on the same generator semantics."
+  summary "AST CLI tests reject ambiguous raw trace output flags, keep generated AST freshness and cleanup scoped to manifest-owned files, reject generated output collisions, and keep source and JSON draft paths on the same generator semantics."
   reviewer ShapeMaintainers
   decided_on "2026-05-22"
   evidence test("packages/shp-cli/src/index.test.ts")
