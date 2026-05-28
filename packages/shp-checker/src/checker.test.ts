@@ -4282,6 +4282,79 @@ describe("AST to Shape generation", () => {
     }
   });
 
+  test("skips candidate effects whose anchors cannot be pinned", () => {
+    const graph: CodeSemanticGraph = {
+      files: [],
+      rawNodes: [],
+      containers: [
+        {
+          id: "owner",
+          name: "AuditStore",
+          kind: "type",
+          path: "src/audit.ts",
+          language: "typescript",
+          confidence: "medium"
+        }
+      ],
+      functions: [
+        {
+          id: "fn",
+          name: "saveEvent",
+          path: "src/audit.ts",
+          language: "typescript",
+          ownerId: "owner",
+          anchorId: "anchor",
+          confidence: "medium",
+          sourceRef: "src/audit.ts:1-3"
+        }
+      ],
+      resources: [
+        {
+          id: "resource",
+          name: "AuditEvent",
+          path: "src/audit.ts",
+          language: "typescript",
+          confidence: "medium",
+          reason: "test resource",
+          sourceRef: "src/audit.ts:1-1"
+        }
+      ],
+      anchors: [
+        {
+          id: "anchor",
+          name: "AuditStoreSaveEventAstAnchor",
+          path: "src/audit.ts",
+          language: "typescript",
+          nodeId: "fn-node",
+          kind: "method_definition",
+          sourceRef: "src/audit.ts:1-3",
+          target: "AuditStore.saveEvent",
+          targetKind: "fn"
+        }
+      ],
+      relations: [],
+      candidateEffects: [
+        {
+          id: "candidate",
+          name: "AuditStoreSaveEventAppendAuditEventCandidateEffect",
+          functionId: "fn",
+          effect: "Append",
+          targetResourceId: "resource",
+          sourceRef: "src/audit.ts:1-3",
+          confidence: "low",
+          anchorId: "anchor",
+          summary: "saveEvent may append AuditEvent"
+        }
+      ],
+      diagnostics: []
+    };
+
+    const output = requireGeneratedOutput(generateShapeFromCodeSemanticGraph(graph));
+    expect(output.semanticShape).toContain("resource AuditStoreSaveEventAstAnchor");
+    expect(output.semanticShape).not.toContain("effect candidate");
+    expect(output.semanticShape).not.toContain("pin AuditStoreSaveEventAstAnchor");
+  });
+
   test("handles deeply nested AST JSON nodes without recursive stack overflow", () => {
     const depth = 6000;
     const nodes = Array.from({ length: depth }, (_, index) => ({
