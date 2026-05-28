@@ -466,7 +466,7 @@ reevaluation CoverageCurrentAttestationsRechecked {
 reevaluation DiagnosticOutputRechecked {
   satisfies memory DiagnosticContract
   outcome Confirmed
-  summary "Diagnostic formatting remains path-aware and reviewer-readable after shared string handling, qualified fingerprint output, and ambiguous reference diagnostics."
+  summary "Diagnostic formatting remains path-aware and reviewer-readable after shared string handling, display-name fingerprint output, and ambiguous query/reference diagnostics."
   reviewer ShapeMaintainers
   decided_on "2026-05-22"
   evidence test("packages/shp-checker/src/checker.test.ts")

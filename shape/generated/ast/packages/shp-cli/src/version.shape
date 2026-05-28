@@ -8,7 +8,7 @@ trait GeneratedCandidate {
 
 resource VersionModuleReadManifestVersionAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-cli/src/version.ts:5-16")
-  fingerprint ast.semantic_subtree_v1("sha256:e8fe732fc257b33f26c7f27b6caeb49052ff888102aa25ce1cfe3bd353e42c03")
+  fingerprint ast.semantic_subtree_v1("sha256:246b822fc16dc28eefe1b720626bd613c5fd89299db6d6b1c5063567f94ab3e5")
 }
 
 component VersionModule : GeneratedCandidate {
@@ -21,7 +21,7 @@ relation VersionModuleReadManifestVersionGeneratedFromVersionModuleReadManifestV
   kind generated_from
   connects VersionModule -> VersionModuleReadManifestVersionAstAnchor
   roles { VersionModule as generated, VersionModuleReadManifestVersionAstAnchor as syntax }
-  expects VersionModuleReadManifestVersionAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e8fe732fc257b33f26c7f27b6caeb49052ff888102aa25ce1cfe3bd353e42c03")
+  expects VersionModuleReadManifestVersionAstAnchor fingerprint ast.semantic_subtree_v1("sha256:246b822fc16dc28eefe1b720626bd613c5fd89299db6d6b1c5063567f94ab3e5")
   summary "fn VersionModule.readManifestVersion generated from typescript function_declaration at packages/shp-cli/src/version.ts:5-16."
 }
 

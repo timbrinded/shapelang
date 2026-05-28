@@ -29,7 +29,7 @@ export function normalizeTreeSitterFile(
   const byteMap = makeByteToStringIndexMap(source);
   let sequence = 0;
 
-  function visit(
+  function addNode(
     node: unknown,
     parentId: string | undefined,
     childIndex: number | undefined,
@@ -55,15 +55,35 @@ export function normalizeTreeSitterFile(
       textHash: text ? stableHash(text) : undefined,
       text
     });
-
-    const children = nodeChildren(node);
-    children.forEach((child, index) => {
-      visit(child, id, index, fieldNameForChild(node, index));
-    });
     return id;
   }
 
-  const rootNodeId = visit(root, undefined, undefined, undefined);
+  let rootNodeId = "";
+  const stack: {
+    node: unknown;
+    parentId: string | undefined;
+    childIndex: number | undefined;
+    fieldName: string | undefined;
+  }[] = [{ node: root, parentId: undefined, childIndex: undefined, fieldName: undefined }];
+  while (stack.length > 0) {
+    const frame = stack.pop();
+    if (!frame) {
+      continue;
+    }
+    const id = addNode(frame.node, frame.parentId, frame.childIndex, frame.fieldName);
+    if (!frame.parentId) {
+      rootNodeId = id;
+    }
+    const children = nodeChildren(frame.node);
+    for (let index = children.length - 1; index >= 0; index -= 1) {
+      const child = children[index];
+      if (!child) {
+        continue;
+      }
+      stack.push({ node: child.node, parentId: id, childIndex: index, fieldName: child.fieldName });
+    }
+  }
+
   return {
     files: [{ id: fileId, path, language, rootNodeId, sourceHash, parser: "tree-sitter" }],
     rawNodes,
@@ -100,31 +120,55 @@ function nodeNamed(node: unknown): boolean {
   );
 }
 
-function nodeChildren(node: unknown): unknown[] {
+type TreeSitterChild = {
+  node: unknown;
+  fieldName?: string;
+};
+
+function nodeChildren(node: unknown): TreeSitterChild[] {
+  const cursorChildren = nodeChildrenFromCursor(node);
+  if (cursorChildren) {
+    return cursorChildren;
+  }
   const children = property(node, "children");
   if (Array.isArray(children)) {
-    return children;
+    return children.map((child) => ({ node: child }));
   }
   const count =
     callNumberMethod(node, ["childCount", "child_count"]) ??
     numberPropertyFromUnknown(node, "childCount") ??
     numberPropertyFromUnknown(node, "child_count") ??
     0;
-  const result: unknown[] = [];
+  const result: TreeSitterChild[] = [];
   for (let index = 0; index < count; index += 1) {
     const child = callMethod(node, ["child"], [index]);
     if (child) {
-      result.push(child);
+      result.push({ node: child });
     }
   }
   return result;
 }
 
-function fieldNameForChild(node: unknown, index: number): string | undefined {
-  return (
-    callStringMethod(node, ["fieldNameForChild", "field_name_for_child"], [index]) ??
-    callStringMethod(node, ["fieldNameForNamedChild", "field_name_for_named_child"], [index])
-  );
+function nodeChildrenFromCursor(node: unknown): TreeSitterChild[] | undefined {
+  const cursor = callMethod(node, ["walk"], []);
+  if (!cursor) {
+    return undefined;
+  }
+  const hasFirstChild = callBooleanMethod(cursor, ["gotoFirstChild", "goto_first_child"]);
+  if (!hasFirstChild) {
+    return [];
+  }
+  const result: TreeSitterChild[] = [];
+  do {
+    const child = propertyOrMethodValue(cursor, ["currentNode", "current_node", "node"]);
+    if (child) {
+      result.push({
+        node: child,
+        fieldName: callStringMethod(cursor, ["fieldName", "field_name"])
+      });
+    }
+  } while (callBooleanMethod(cursor, ["gotoNextSibling", "goto_next_sibling"]));
+  return result;
 }
 
 function nodeSpan(node: unknown): SourceSpan | undefined {
@@ -160,17 +204,31 @@ function nodeByteRange(node: unknown): { startByte?: number; endByte?: number } 
 }
 
 export function nodeHasError(node: unknown): boolean {
-  if (
-    callBooleanMethod(node, ["hasError", "has_error"]) ??
-    booleanPropertyFromUnknown(node, "hasError") ??
-    false
-  ) {
-    return true;
+  const stack = [node];
+  while (stack.length > 0) {
+    const current = stack.pop();
+    if (!current) {
+      continue;
+    }
+    if (
+      callBooleanMethod(current, ["hasError", "has_error"]) ??
+      booleanPropertyFromUnknown(current, "hasError") ??
+      false
+    ) {
+      return true;
+    }
+    if (nodeKind(current) === "ERROR" || nodeKind(current) === "MISSING") {
+      return true;
+    }
+    const children = nodeChildren(current);
+    for (let index = children.length - 1; index >= 0; index -= 1) {
+      const child = children[index];
+      if (child) {
+        stack.push(child.node);
+      }
+    }
   }
-  if (nodeKind(node) === "ERROR" || nodeKind(node) === "MISSING") {
-    return true;
-  }
-  return nodeChildren(node).some(nodeHasError);
+  return false;
 }
 
 function positionValue(value: unknown): { row: number; column: number } | undefined {

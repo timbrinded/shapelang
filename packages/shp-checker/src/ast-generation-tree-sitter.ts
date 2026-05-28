@@ -230,6 +230,8 @@ function requireTreeSitterNativePackageBinding(
       return treeSitterNativeRequire(
         "@kreuzberg/tree-sitter-language-pack/ts-pack-core-node.win32-x64-msvc.node"
       );
+    default:
+      return assertNeverTreeSitterBinding(specifier);
   }
 }
 
@@ -245,7 +247,13 @@ function requireTreeSitterEmbeddedBinding(
       return treeSitterNativeRequire("./ts-pack-core-node.darwin-arm64.node");
     case "./ts-pack-core-node.win32-x64-msvc.node":
       return treeSitterNativeRequire("./ts-pack-core-node.win32-x64-msvc.node");
+    default:
+      return assertNeverTreeSitterBinding(specifier);
   }
+}
+
+function assertNeverTreeSitterBinding(value: never): never {
+  throw new Error(`unsupported Tree-sitter native binding target: ${String(value)}`);
 }
 
 function isCurrentLinuxMusl(): boolean {

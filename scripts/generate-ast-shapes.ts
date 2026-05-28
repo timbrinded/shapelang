@@ -48,5 +48,15 @@ async function trackedSourceFiles(pathspecs: string[]): Promise<string[]> {
   return output
     .split("\0")
     .filter((path) => path.length > 0)
-    .sort((left, right) => left.localeCompare(right));
+    .sort(compareCodepointStrings);
+}
+
+function compareCodepointStrings(left: string, right: string): number {
+  if (left < right) {
+    return -1;
+  }
+  if (left > right) {
+    return 1;
+  }
+  return 0;
 }

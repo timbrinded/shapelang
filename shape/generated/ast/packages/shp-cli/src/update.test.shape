@@ -8,12 +8,12 @@ trait GeneratedCandidate {
 
 resource UpdateTestModuleOlderShpHelpAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-cli/src/update.test.ts:459-472")
-  fingerprint ast.semantic_subtree_v1("sha256:7359efc18365a534bf7040e747c52bec1c3c5747cb859b7e90fe7592d1f8d7b7")
+  fingerprint ast.semantic_subtree_v1("sha256:f4524eebaaaa4039c81a7eac94e607e27d598c06e6dad1392447aa1c0e5f830d")
 }
 
 resource UpdateTestModuleValidShpHelpAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-cli/src/update.test.ts:443-457")
-  fingerprint ast.semantic_subtree_v1("sha256:3c17084b4392676633239a6e74f2bf8bf86e7ac0d6b41da342cf85f6c81f9629")
+  fingerprint ast.semantic_subtree_v1("sha256:7762844c9aa7037c432f63f50644fcd0566f4741cecfcfd38fa8048dd8c93fc7")
 }
 
 component UpdateTestModule : GeneratedCandidate {
@@ -29,7 +29,7 @@ relation UpdateTestModuleOlderShpHelpGeneratedFromUpdateTestModuleOlderShpHelpAs
   kind generated_from
   connects UpdateTestModule -> UpdateTestModuleOlderShpHelpAstAnchor
   roles { UpdateTestModule as generated, UpdateTestModuleOlderShpHelpAstAnchor as syntax }
-  expects UpdateTestModuleOlderShpHelpAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7359efc18365a534bf7040e747c52bec1c3c5747cb859b7e90fe7592d1f8d7b7")
+  expects UpdateTestModuleOlderShpHelpAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f4524eebaaaa4039c81a7eac94e607e27d598c06e6dad1392447aa1c0e5f830d")
   summary "fn UpdateTestModule.olderShpHelp generated from typescript function_declaration at packages/shp-cli/src/update.test.ts:459-472."
 }
 
@@ -37,7 +37,7 @@ relation UpdateTestModuleValidShpHelpGeneratedFromUpdateTestModuleValidShpHelpAs
   kind generated_from
   connects UpdateTestModule -> UpdateTestModuleValidShpHelpAstAnchor
   roles { UpdateTestModule as generated, UpdateTestModuleValidShpHelpAstAnchor as syntax }
-  expects UpdateTestModuleValidShpHelpAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3c17084b4392676633239a6e74f2bf8bf86e7ac0d6b41da342cf85f6c81f9629")
+  expects UpdateTestModuleValidShpHelpAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7762844c9aa7037c432f63f50644fcd0566f4741cecfcfd38fa8048dd8c93fc7")
   summary "fn UpdateTestModule.validShpHelp generated from typescript function_declaration at packages/shp-cli/src/update.test.ts:443-457."
 }
 

@@ -14,7 +14,7 @@ import { mkdir, readFile, rm } from "node:fs/promises";
 import { dirname, isAbsolute, join, relative, resolve } from "node:path";
 import type { CliContext } from "../../context";
 import { CliDiagnosticError, EXIT_FAILURE, EXIT_USAGE, errorMessage } from "../../errors";
-import { stdout } from "../../io";
+import { stderr, stdout } from "../../io";
 import { readCliTextFile } from "../../shape-files";
 
 type AstOutputFlags = {
@@ -66,6 +66,7 @@ export async function astSource(
     );
   }
 
+  emitAstWarnings.call(this, result.diagnostics);
   await writeOutput.call(this, flags, result.value.semanticShape, result.value.rawShape);
 }
 
@@ -99,16 +100,19 @@ async function writeGeneratedAstDirectory(
   const writes: { path: string; contents: string }[] = [];
   const outputPaths = new Map<string, string>();
   const moduleNames = new Map<string, string>();
+  const workspaceRoot = await discoverWorkspaceRoot();
   const sourceEntries = sourcePaths
     .map((sourcePath) => ({
       sourcePath,
-      relativeSourcePath: generatedRelativeSourcePath(sourcePath)
+      relativeSourcePath: generatedRelativeSourcePath(sourcePath, workspaceRoot)
     }))
-    .sort((left, right) => left.relativeSourcePath.localeCompare(right.relativeSourcePath));
+    .sort((left, right) =>
+      compareCodepointStrings(left.relativeSourcePath, right.relativeSourcePath)
+    );
 
   for (const { sourcePath, relativeSourcePath } of sourceEntries) {
     const file = {
-      path: sourcePath,
+      path: relativeSourcePath,
       source: await readCliTextFile(sourcePath),
       language: flags.language
     };
@@ -126,12 +130,13 @@ async function writeGeneratedAstDirectory(
         diagnosticsExitCode(result.diagnostics)
       );
     }
+    emitAstWarnings.call(this, result.diagnostics);
     const outputPath = join(outDir, `${relativeSourcePath.replace(/\.[^/.]+$/, "")}.shape`);
     ensureUniqueGeneratedValue(outputPaths, outputPath, relativeSourcePath, "output path");
     writes.push({ path: outputPath, contents: result.value.semanticShape });
     manifestEntries.push({
       module: moduleName,
-      path: normalizeGeneratedAstPath(outputPath),
+      path: normalizeGeneratedAstPath(outputPath, workspaceRoot),
       sources: [relativeSourcePath]
     });
   }
@@ -145,8 +150,8 @@ async function writeGeneratedAstDirectory(
   if (flags.check) {
     const stale = [
       ...(await changedGeneratedFiles(writes)),
-      ...(await extraGeneratedFiles(outDir, writes))
-    ].sort();
+      ...(await extraGeneratedFiles(outDir, writes, workspaceRoot))
+    ].sort(compareCodepointStrings);
     if (stale.length > 0) {
       throw new CliDiagnosticError(
         `error: generated AST Shape files are stale\n\n${stale.map((path) => `  ${path}`).join("\n")}\n`,
@@ -157,7 +162,7 @@ async function writeGeneratedAstDirectory(
     return;
   }
 
-  for (const extraPath of await extraGeneratedFiles(outDir, writes)) {
+  for (const extraPath of await extraGeneratedFiles(outDir, writes, workspaceRoot)) {
     await rm(extraPath, { force: true });
   }
   for (const write of writes) {
@@ -167,10 +172,22 @@ async function writeGeneratedAstDirectory(
   stdout(this, `Wrote ${manifestEntries.length} generated AST Shape file(s) to ${outDir}.\n`);
 }
 
-function generatedRelativeSourcePath(sourcePath: string): string {
-  const relativePath = sourcePath.startsWith("/")
-    ? relative(process.cwd(), sourcePath)
-    : sourcePath;
+async function discoverWorkspaceRoot(): Promise<string> {
+  const child = Bun.spawn(["git", "rev-parse", "--show-toplevel"], {
+    stdout: "pipe",
+    stderr: "pipe"
+  });
+  const output = await new Response(child.stdout).text();
+  const exitCode = await child.exited;
+  if (exitCode !== 0) {
+    return process.cwd();
+  }
+  const root = output.trim();
+  return root ? resolve(root) : process.cwd();
+}
+
+function generatedRelativeSourcePath(sourcePath: string, workspaceRoot: string): string {
+  const relativePath = relative(workspaceRoot, resolve(sourcePath));
   const normalized = relativePath.replace(/\\/g, "/").replace(/^\.\//, "");
   if (normalized === ".." || normalized.startsWith("../")) {
     throw new CliDiagnosticError(
@@ -179,6 +196,16 @@ function generatedRelativeSourcePath(sourcePath: string): string {
     );
   }
   return normalized;
+}
+
+function compareCodepointStrings(left: string, right: string): number {
+  if (left < right) {
+    return -1;
+  }
+  if (left > right) {
+    return 1;
+  }
+  return 0;
 }
 
 function sourcePathToModuleSuffix(sourcePath: string): string {
@@ -226,14 +253,15 @@ async function changedGeneratedFiles(
 
 async function extraGeneratedFiles(
   outDir: string,
-  writes: { path: string; contents: string }[]
+  writes: { path: string; contents: string }[],
+  workspaceRoot: string
 ): Promise<string[]> {
   const expected = new Set(writes.map((write) => resolve(write.path)));
-  const existing = await existingGeneratedFiles(outDir);
+  const existing = await existingGeneratedFiles(outDir, workspaceRoot);
   return existing.filter((path) => !expected.has(resolve(path)));
 }
 
-async function existingGeneratedFiles(dir: string): Promise<string[]> {
+async function existingGeneratedFiles(dir: string, workspaceRoot: string): Promise<string[]> {
   const manifestPath = join(dir, "manifest.json");
   try {
     const manifest = JSON.parse(await readFile(manifestPath, "utf8")) as unknown;
@@ -242,22 +270,26 @@ async function existingGeneratedFiles(dir: string): Promise<string[]> {
     }
     const files = new Set<string>([manifestPath]);
     for (const entry of manifest.entries) {
-      const path = manifestEntryOutputPath(dir, entry.path);
+      const path = manifestEntryOutputPath(dir, entry.path, workspaceRoot);
       if (path) {
         files.add(path);
       }
     }
-    return [...files].sort();
+    return [...files].sort(compareCodepointStrings);
   } catch {
     return [];
   }
 }
 
-function manifestEntryOutputPath(outDir: string, manifestPath: string): string | undefined {
+function manifestEntryOutputPath(
+  outDir: string,
+  manifestPath: string,
+  workspaceRoot: string
+): string | undefined {
   const absoluteOutDir = resolve(outDir);
   const absolutePath = isAbsolute(manifestPath)
     ? resolve(manifestPath)
-    : resolve(process.cwd(), manifestPath);
+    : resolve(workspaceRoot, manifestPath);
   const relativePath = relative(absoluteOutDir, absolutePath);
   if (relativePath === "" || (!relativePath.startsWith("..") && !isAbsolute(relativePath))) {
     return absolutePath;
@@ -291,6 +323,7 @@ export async function astJson(
     );
   }
 
+  emitAstWarnings.call(this, result.diagnostics);
   await writeOutput.call(this, flags, result.value.semanticShape, result.value.rawShape);
 }
 
@@ -335,6 +368,21 @@ function formatAstDiagnostics(diagnostics: AstGenerationDiagnostic[]): string {
     return `${diagnostic.kind} ${diagnostic.code}: ${location}${diagnostic.message}`;
   });
   return `error: AST generation failed\n\n${lines.join("\n")}\n`;
+}
+
+function emitAstWarnings(this: CliContext, diagnostics: AstGenerationDiagnostic[]): void {
+  const warnings = diagnostics.filter((diagnostic) => diagnostic.kind === "warning");
+  if (warnings.length === 0) {
+    return;
+  }
+  stderr(this, `${warnings.map(formatAstDiagnosticLine).join("\n")}\n`);
+}
+
+function formatAstDiagnosticLine(diagnostic: AstGenerationDiagnostic): string {
+  const location = diagnostic.path
+    ? `${diagnostic.path}${diagnostic.nodeId ? `:${diagnostic.nodeId}` : ""}: `
+    : "";
+  return `${diagnostic.kind} ${diagnostic.code}: ${location}${diagnostic.message}`;
 }
 
 function diagnosticsExitCode(diagnostics: AstGenerationDiagnostic[]): number {

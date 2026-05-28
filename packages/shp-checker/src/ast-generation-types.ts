@@ -108,7 +108,7 @@ export type CodeAstAnchor = {
   sourceRef: string;
   target: string;
   targetKind: "component" | "fn" | "resource";
-  fingerprint: AstFingerprint;
+  fingerprint?: AstFingerprint;
 };
 
 export type AstFingerprint = {

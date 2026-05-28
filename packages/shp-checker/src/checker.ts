@@ -1066,6 +1066,12 @@ export function explainShapeModules(
       }
       return `${lines.join("\n")}\n`;
     }
+    const ambiguity = formatAmbiguousQuerySymbol(componentName, [
+      { kind: "component", map: model.components }
+    ]);
+    if (ambiguity) {
+      return ambiguity;
+    }
   }
 
   const rationaleKey = resolveQuerySymbol(symbol, model.rationales);
@@ -1102,6 +1108,17 @@ export function explainShapeModules(
     return `${formatRelationExplanation(relation)}\n`;
   }
 
+  const ambiguity = formatAmbiguousQuerySymbol(symbol, [
+    { kind: "resource", map: model.resources },
+    { kind: "component", map: model.components },
+    { kind: "relation", map: model.hypergraph.edges },
+    { kind: "rationale", map: model.rationales },
+    { kind: "memory", map: model.memories }
+  ]);
+  if (ambiguity) {
+    return ambiguity;
+  }
+
   return `No shape facts found for ${symbol}.\n`;
 }
 
@@ -1111,13 +1128,39 @@ function compareHyperedges(left: HyperedgeInfo, right: HyperedgeInfo): number {
 
 function resolveQuerySymbol<T extends { name: string }>(
   symbol: string,
-  map: Map<string, T>
+  map: ReadonlyMap<string, T>
 ): string | undefined {
-  if (map.has(symbol)) {
-    return symbol;
-  }
-  const matches = [...map.keys()].filter((key) => localNameOf(key) === symbol);
+  const matches = querySymbolMatches(symbol, map);
   return matches.length === 1 ? matches[0] : undefined;
+}
+
+function querySymbolMatches<T extends { name: string }>(
+  symbol: string,
+  map: ReadonlyMap<string, T>
+): string[] {
+  if (map.has(symbol)) {
+    return [symbol];
+  }
+  return [...map.keys()].filter((key) => localNameOf(key) === symbol).sort();
+}
+
+function formatAmbiguousQuerySymbol(
+  symbol: string,
+  groups: { kind: string; map: ReadonlyMap<string, { name: string }> }[]
+): string | undefined {
+  const candidates = groups.flatMap((group) =>
+    querySymbolMatches(symbol, group.map).map((name) => ({ kind: group.kind, name }))
+  );
+  if (candidates.length < 2) {
+    return undefined;
+  }
+  const lines = [
+    `Ambiguous shape symbol ${symbol}.`,
+    "Candidates:",
+    ...candidates.map((candidate) => `  ${candidate.kind} ${candidate.name}`),
+    "Use a module-qualified reference."
+  ];
+  return `${lines.join("\n")}\n`;
 }
 
 function allHyperedgesByKind(model: Model, kindFilter?: string): HyperedgeInfo[] {
@@ -1144,11 +1187,24 @@ export function graphShapeModules(
     }
     return `${formatHyperedgeLine(relation, 0, model)}\n`;
   }
+  const relationAmbiguity = formatAmbiguousQuerySymbol(symbol, [
+    { kind: "relation", map: model.hypergraph.edges }
+  ]);
+  if (relationAmbiguity) {
+    return relationAmbiguity;
+  }
 
   const vertexKey =
     resolveQuerySymbol(symbol, model.components) ??
     resolveQuerySymbol(symbol, model.resources) ??
     symbol;
+  const vertexAmbiguity = formatAmbiguousQuerySymbol(symbol, [
+    { kind: "component", map: model.components },
+    { kind: "resource", map: model.resources }
+  ]);
+  if (vertexKey === symbol && vertexAmbiguity) {
+    return vertexAmbiguity;
+  }
   const incidentNames = model.hypergraph.incidence.get(vertexKey) ?? [];
   const incident = incidentNames
     .map((name) => model.hypergraph.edges.get(name))
@@ -5044,7 +5100,7 @@ function formatFingerprintMismatchDiagnostic(
   return [
     "error: stale fingerprint expectation",
     "",
-    `relation ${diagnostic.relation} expects ${diagnostic.endpoint} fingerprint ${diagnostic.provider}.`,
+    `relation ${displaySymbol(diagnostic.relation)} expects ${displaySymbol(diagnostic.endpoint)} fingerprint ${diagnostic.provider}.`,
     `expected: ${diagnostic.expected}`,
     `actual: ${actual}`,
     formatCausedBy(diagnostic.causedBy)
@@ -5058,7 +5114,7 @@ function formatCandidatePinFingerprintMismatchDiagnostic(
   return [
     "error: stale candidate effect pin",
     "",
-    `candidate effect ${diagnostic.candidateEffect} pins ${diagnostic.anchor} fingerprint ${diagnostic.provider}.`,
+    `candidate effect ${displaySymbol(diagnostic.candidateEffect)} pins ${displaySymbol(diagnostic.anchor)} fingerprint ${diagnostic.provider}.`,
     `expected: ${diagnostic.expected}`,
     `actual: ${actual}`,
     formatCausedBy(diagnostic.causedBy)

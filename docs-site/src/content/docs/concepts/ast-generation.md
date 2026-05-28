@@ -152,7 +152,9 @@ shp ast source --language rust --out-dir shape/generated/ast src/audit/store.rs
 shp ast source --language rust --out-dir shape/generated/ast --check src/audit/store.rs
 ```
 
-The manifest records generated modules and source inputs for freshness checks. The checker treats generated `effects unknown` as candidate context only when module origin is explicit, such as files loaded from `shape/generated/ast` with `shape.generated.ast...` module names; it does not use the manifest as a trust boundary. The `--check` form regenerates in memory and fails when checked-in manifest-owned generated files differ, which lets CI catch stale anchors, stale fingerprints, and missing generated context without deleting or reporting unrelated authored `.shape` files in the same output tree.
+The manifest records generated modules and source inputs for freshness checks. Source identities are normalized from the workspace root before module names, output paths, and source refs are derived, so absolute paths and nested working directories do not churn generated context for the same file. The checker treats generated `effects unknown` as candidate context only when module origin is explicit, such as files loaded from `shape/generated/ast` with `shape.generated.ast...` module names; it does not use the manifest as a trust boundary. The `--check` form regenerates in memory and fails when checked-in manifest-owned generated files differ, which lets CI catch stale anchors, stale fingerprints, and missing generated context without deleting or reporting unrelated authored `.shape` files in the same output tree.
+
+If AST JSON or parser output names a declaration but lacks token text for that anchor subtree, Shape reports a warning and keeps the draft. The affected `GeneratedAstAnchor` is emitted without an `ast.semantic_subtree_v1` fingerprint, generated `generated_from` relations omit `expects`, and candidate effects that would need that uncheckable pin are skipped.
 
 This repository commits its own generated AST context under `shape/generated/ast`. Use:
 

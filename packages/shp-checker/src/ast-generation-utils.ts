@@ -141,16 +141,86 @@ export function hasNonScalarRecordEntry(value: Record<string, unknown>, key: str
 }
 
 export function stableJson(value: unknown): string {
-  if (Array.isArray(value)) {
-    return `[${value.map(stableJson).join(",")}]`;
+  type StableJsonFrame =
+    | { kind: "value"; value: unknown }
+    | { kind: "array"; values: unknown[]; index: number; started: boolean }
+    | {
+        kind: "object";
+        entries: [string, unknown][];
+        index: number;
+        started: boolean;
+      };
+
+  let output = "";
+  const stack: StableJsonFrame[] = [{ kind: "value", value }];
+  while (stack.length > 0) {
+    const frame = stack.pop();
+    if (!frame) {
+      continue;
+    }
+    if (frame.kind === "value") {
+      if (Array.isArray(frame.value)) {
+        stack.push({ kind: "array", values: frame.value, index: 0, started: false });
+      } else if (frame.value && typeof frame.value === "object") {
+        stack.push({
+          kind: "object",
+          entries: Object.entries(frame.value as Record<string, unknown>)
+            .filter(([, item]) => item !== undefined)
+            .sort(([left], [right]) => compareCodepointStrings(left, right)),
+          index: 0,
+          started: false
+        });
+      } else {
+        output += JSON.stringify(frame.value) ?? "null";
+      }
+      continue;
+    }
+    if (frame.kind === "array") {
+      if (!frame.started) {
+        output += "[";
+        frame.started = true;
+      }
+      if (frame.index >= frame.values.length) {
+        output += "]";
+        continue;
+      }
+      if (frame.index > 0) {
+        output += ",";
+      }
+      const item = frame.values[frame.index];
+      frame.index += 1;
+      stack.push(frame);
+      stack.push({ kind: "value", value: item });
+      continue;
+    }
+    if (!frame.started) {
+      output += "{";
+      frame.started = true;
+    }
+    if (frame.index >= frame.entries.length) {
+      output += "}";
+      continue;
+    }
+    if (frame.index > 0) {
+      output += ",";
+    }
+    const [key, item] = frame.entries[frame.index] ?? ["", undefined];
+    output += `${JSON.stringify(key)}:`;
+    frame.index += 1;
+    stack.push(frame);
+    stack.push({ kind: "value", value: item });
   }
-  if (value && typeof value === "object") {
-    const entries = Object.entries(value as Record<string, unknown>)
-      .filter(([, item]) => item !== undefined)
-      .sort(([left], [right]) => left.localeCompare(right));
-    return `{${entries.map(([key, item]) => `${JSON.stringify(key)}:${stableJson(item)}`).join(",")}}`;
+  return output;
+}
+
+export function compareCodepointStrings(left: string, right: string): number {
+  if (left < right) {
+    return -1;
   }
-  return JSON.stringify(value);
+  if (left > right) {
+    return 1;
+  }
+  return 0;
 }
 
 export function sha256Fingerprint(value: string): string {
@@ -202,7 +272,7 @@ export function normalizeLanguageName(language: string | undefined): string | un
 export function normalizeModuleName(moduleName: string): string {
   return moduleName
     .split(".")
-    .map((part) => stableShapeId(part, "generated").replace(/_[0-9a-f]{8}$/, ""))
+    .map((part) => stableShapeId(part, "generated").replace(/_[0-9a-f]{16}$/, ""))
     .join(".");
 }
 
@@ -229,7 +299,7 @@ export function stableShapeId(value: string, fallback: string): string {
     /^[A-Za-z_]/.test(clean) ? clean : `${fallback}_${clean}`,
     fallback
   );
-  return `${prefixed}_${stableHash(value).slice(0, 8)}`;
+  return `${prefixed}_${stableIdentityHash(value).slice(0, 16)}`;
 }
 
 function avoidReservedShapeWord(value: string, fallback: string): string {
@@ -278,7 +348,7 @@ export function shapeRelationName(value: string): string {
 }
 
 export function originalName(name: string): string {
-  return name.replace(/_[0-9a-f]{8}$/, "");
+  return name.replace(/_[0-9a-f]{16}$/, "").replace(/_[0-9a-f]{8}$/, "");
 }
 
 function toPascal(value: string): string {
@@ -307,6 +377,10 @@ export function stableHash(value: string): string {
     hash = Math.imul(hash, 0x01000193);
   }
   return (hash >>> 0).toString(16).padStart(8, "0");
+}
+
+function stableIdentityHash(value: string): string {
+  return createHash("sha256").update(value).digest("hex");
 }
 
 export function makeByteToStringIndexMap(source: string): number[] {

@@ -8,7 +8,7 @@ trait GeneratedCandidate {
 
 resource ImplModuleExplainAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-cli/src/commands/explain/impl.ts:8-17")
-  fingerprint ast.semantic_subtree_v1("sha256:4d5b7891c84055366a93fe2b56a25c8d5e366bc1294d5b4f2e9c7581dac2c570")
+  fingerprint ast.semantic_subtree_v1("sha256:904371da470b803e66ee1233195b1d0bb4f156060366bc8cc3433f86a765381e")
 }
 
 component ImplModule : GeneratedCandidate {
@@ -21,7 +21,7 @@ relation ImplModuleExplainGeneratedFromImplModuleExplainAstAnchor {
   kind generated_from
   connects ImplModule -> ImplModuleExplainAstAnchor
   roles { ImplModule as generated, ImplModuleExplainAstAnchor as syntax }
-  expects ImplModuleExplainAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4d5b7891c84055366a93fe2b56a25c8d5e366bc1294d5b4f2e9c7581dac2c570")
+  expects ImplModuleExplainAstAnchor fingerprint ast.semantic_subtree_v1("sha256:904371da470b803e66ee1233195b1d0bb4f156060366bc8cc3433f86a765381e")
   summary "fn ImplModule.explain generated from typescript function_declaration at packages/shp-cli/src/commands/explain/impl.ts:8-17."
 }
 

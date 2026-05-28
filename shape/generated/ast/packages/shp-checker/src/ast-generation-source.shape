@@ -8,7 +8,7 @@ trait GeneratedCandidate {
 
 resource AstGenerationSourceModuleParseSourceFilesToCodeSemanticGraphAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/ast-generation-source.ts:20-101")
-  fingerprint ast.semantic_subtree_v1("sha256:be4be7d767b42e05489577b8ff347b1fd5b51650089a9ecc4624eaaa51b03437")
+  fingerprint ast.semantic_subtree_v1("sha256:4c55f987a962e1547015a1d6e704f7ae5a3346704a9320ae4588a87a132455e8")
 }
 
 component AstGenerationSourceModule : GeneratedCandidate {
@@ -21,7 +21,7 @@ relation AstGenerationSourceModuleParseSourceFilesToCodeSemanticGraphGeneratedFr
   kind generated_from
   connects AstGenerationSourceModule -> AstGenerationSourceModuleParseSourceFilesToCodeSemanticGraphAstAnchor
   roles { AstGenerationSourceModule as generated, AstGenerationSourceModuleParseSourceFilesToCodeSemanticGraphAstAnchor as syntax }
-  expects AstGenerationSourceModuleParseSourceFilesToCodeSemanticGraphAstAnchor fingerprint ast.semantic_subtree_v1("sha256:be4be7d767b42e05489577b8ff347b1fd5b51650089a9ecc4624eaaa51b03437")
+  expects AstGenerationSourceModuleParseSourceFilesToCodeSemanticGraphAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4c55f987a962e1547015a1d6e704f7ae5a3346704a9320ae4588a87a132455e8")
   summary "fn AstGenerationSourceModule.parseSourceFilesToCodeSemanticGraph generated from typescript function_declaration at packages/shp-checker/src/ast-generation-source.ts:20-101."
 }
 

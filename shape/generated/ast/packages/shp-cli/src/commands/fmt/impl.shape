@@ -8,7 +8,7 @@ trait GeneratedCandidate {
 
 resource ImplModuleFmtAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-cli/src/commands/fmt/impl.ts:11-46")
-  fingerprint ast.semantic_subtree_v1("sha256:f3b32ca1e6662e561db496bfb7fca9c63b27d433db33f97472d03088383b7dd2")
+  fingerprint ast.semantic_subtree_v1("sha256:6b57ce977b55cabc7a2b5231901e605ca32ea009dd5a200497534e709af62252")
 }
 
 component ImplModule : GeneratedCandidate {
@@ -21,7 +21,7 @@ relation ImplModuleFmtGeneratedFromImplModuleFmtAstAnchor {
   kind generated_from
   connects ImplModule -> ImplModuleFmtAstAnchor
   roles { ImplModule as generated, ImplModuleFmtAstAnchor as syntax }
-  expects ImplModuleFmtAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f3b32ca1e6662e561db496bfb7fca9c63b27d433db33f97472d03088383b7dd2")
+  expects ImplModuleFmtAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6b57ce977b55cabc7a2b5231901e605ca32ea009dd5a200497534e709af62252")
   summary "fn ImplModule.fmt generated from typescript function_declaration at packages/shp-cli/src/commands/fmt/impl.ts:11-46."
 }
 

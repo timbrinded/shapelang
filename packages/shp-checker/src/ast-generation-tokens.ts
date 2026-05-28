@@ -1,13 +1,13 @@
 import type { RawAstNode } from "./ast-generation-types.ts";
 
 export function signatureText(text: string, language: string): string {
-  const withoutComments = stripComments(text, language);
-  const braceIndex = withoutComments.indexOf("{");
+  const withoutComments = stripComments(normalizeLineEndings(text), language);
+  const masked = maskStringLiterals(withoutComments);
+  const braceIndex = masked.indexOf("{");
   if (braceIndex >= 0) {
     return withoutComments.slice(0, braceIndex);
   }
-  const lines = withoutComments.split(/\r?\n/);
-  return lines[0] ?? withoutComments;
+  return withoutComments;
 }
 
 export function normalizeSemanticTokenText(
@@ -17,7 +17,7 @@ export function normalizeSemanticTokenText(
   if (!text) {
     return undefined;
   }
-  const tokens = semanticTokens(stripComments(text, language)).filter(
+  const tokens = semanticTokens(stripComments(normalizeLineEndings(text), language)).filter(
     (token) => !isSkippablePunctuation(token)
   );
   if (tokens.length === 0) {
@@ -38,6 +38,42 @@ export function stripComments(text: string, language: string): string {
     stripped = stripped.replace(/#[^\n\r]*/g, " ");
   }
   return stripped;
+}
+
+function normalizeLineEndings(text: string): string {
+  return text.replace(/\r\n?/g, "\n");
+}
+
+function maskStringLiterals(text: string): string {
+  let masked = "";
+  let index = 0;
+  while (index < text.length) {
+    const quote = text[index];
+    if (quote !== '"' && quote !== "'" && quote !== "`") {
+      masked += quote;
+      index += 1;
+      continue;
+    }
+
+    masked += " ";
+    index += 1;
+    while (index < text.length) {
+      const char = text[index];
+      masked += char === "\n" ? "\n" : " ";
+      index += 1;
+      if (char === "\\") {
+        if (index < text.length) {
+          masked += text[index] === "\n" ? "\n" : " ";
+          index += 1;
+        }
+        continue;
+      }
+      if (char === quote) {
+        break;
+      }
+    }
+  }
+  return masked;
 }
 
 export function isCommentNode(node: RawAstNode): boolean {

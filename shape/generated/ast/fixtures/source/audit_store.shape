@@ -12,22 +12,22 @@ resource AuditEvent : GeneratedCandidate {
 
 resource AuditEventAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("fixtures/source/audit_store.ts:1-3")
-  fingerprint ast.semantic_subtree_v1("sha256:70bcb9c278eec5b386495a43b714cddbb9d41f4344f6d1b8293c81143afeb75a")
+  fingerprint ast.semantic_subtree_v1("sha256:c5051cd8b8316dfb7ff20ae1712069d218b917998b4abc373d6999362c7fa5f5")
 }
 
 resource AuditStoreAppendEventAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("fixtures/source/audit_store.ts:12-14")
-  fingerprint ast.semantic_subtree_v1("sha256:ee8b7f6a9c0e3ed266b284f30d43aa0921943b6d4f790df86739295c24376f7d")
+  fingerprint ast.semantic_subtree_v1("sha256:e95858c2724a969b4078e46336a9f73a659f69b421a2829199c720b9034e12fc")
 }
 
 resource AuditStoreAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("fixtures/source/audit_store.ts:5-15")
-  fingerprint ast.semantic_subtree_v1("sha256:c742f0e816d37df4c41619abbbf72feb24561c8b0c139ed52af87e40adc704a3")
+  fingerprint ast.semantic_subtree_v1("sha256:6947094baf66ec5445599e29f840d53e3e668d5e1f7f1672f52eea2fcbe34827")
 }
 
 resource AuditStoreConstructorAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("fixtures/source/audit_store.ts:8-10")
-  fingerprint ast.semantic_subtree_v1("sha256:cc76387a51842d2568dc71706347e1498c6173b35fe6b36d3e42c2f2f2f6bb01")
+  fingerprint ast.semantic_subtree_v1("sha256:2893929d18fbec64f137796341c6059b73c9b58bc6c0046475f3e82b6bc46371")
 }
 
 component AuditStore : GeneratedCandidate {
@@ -43,7 +43,7 @@ relation AuditEventGeneratedFromAuditEventAstAnchor {
   kind generated_from
   connects AuditEvent -> AuditEventAstAnchor
   roles { AuditEvent as generated, AuditEventAstAnchor as syntax }
-  expects AuditEventAstAnchor fingerprint ast.semantic_subtree_v1("sha256:70bcb9c278eec5b386495a43b714cddbb9d41f4344f6d1b8293c81143afeb75a")
+  expects AuditEventAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c5051cd8b8316dfb7ff20ae1712069d218b917998b4abc373d6999362c7fa5f5")
   summary "resource AuditEvent generated from typescript interface_declaration at fixtures/source/audit_store.ts:1-3."
 }
 
@@ -51,7 +51,7 @@ relation AuditStoreAppendEventGeneratedFromAuditStoreAppendEventAstAnchor {
   kind generated_from
   connects AuditStore -> AuditStoreAppendEventAstAnchor
   roles { AuditStore as generated, AuditStoreAppendEventAstAnchor as syntax }
-  expects AuditStoreAppendEventAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ee8b7f6a9c0e3ed266b284f30d43aa0921943b6d4f790df86739295c24376f7d")
+  expects AuditStoreAppendEventAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e95858c2724a969b4078e46336a9f73a659f69b421a2829199c720b9034e12fc")
   summary "fn AuditStore.appendEvent generated from typescript method_definition at fixtures/source/audit_store.ts:12-14."
 }
 
@@ -59,7 +59,7 @@ relation AuditStoreConstructorGeneratedFromAuditStoreConstructorAstAnchor {
   kind generated_from
   connects AuditStore -> AuditStoreConstructorAstAnchor
   roles { AuditStore as generated, AuditStoreConstructorAstAnchor as syntax }
-  expects AuditStoreConstructorAstAnchor fingerprint ast.semantic_subtree_v1("sha256:cc76387a51842d2568dc71706347e1498c6173b35fe6b36d3e42c2f2f2f6bb01")
+  expects AuditStoreConstructorAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2893929d18fbec64f137796341c6059b73c9b58bc6c0046475f3e82b6bc46371")
   summary "fn AuditStore.constructor generated from typescript method_definition at fixtures/source/audit_store.ts:8-10."
 }
 
@@ -67,7 +67,7 @@ relation AuditStoreGeneratedFromAuditStoreAstAnchor {
   kind generated_from
   connects AuditStore -> AuditStoreAstAnchor
   roles { AuditStore as generated, AuditStoreAstAnchor as syntax }
-  expects AuditStoreAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c742f0e816d37df4c41619abbbf72feb24561c8b0c139ed52af87e40adc704a3")
+  expects AuditStoreAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6947094baf66ec5445599e29f840d53e3e668d5e1f7f1672f52eea2fcbe34827")
   summary "component AuditStore generated from typescript class_declaration at fixtures/source/audit_store.ts:5-15."
 }
 
@@ -76,7 +76,7 @@ effect candidate AppendEventAppendAuditEventCandidateEffect {
   effect Append<AuditEvent>
   source ts("fixtures/source/audit_store.ts:12-14")
   confidence low
-  pin AuditStoreAppendEventAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ee8b7f6a9c0e3ed266b284f30d43aa0921943b6d4f790df86739295c24376f7d")
+  pin AuditStoreAppendEventAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e95858c2724a969b4078e46336a9f73a659f69b421a2829199c720b9034e12fc")
 }
 
 implementation AuditStoreImpl {

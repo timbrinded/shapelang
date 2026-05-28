@@ -8,152 +8,152 @@ trait GeneratedCandidate {
 
 resource ImplModuleCompareReleaseVersionsAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-cli/src/commands/update/impl.ts:241-255")
-  fingerprint ast.semantic_subtree_v1("sha256:41eefb9a0dca7c068f0e397ec2afbd7314dd2e1801033760a029b24e2a4ab9fd")
+  fingerprint ast.semantic_subtree_v1("sha256:0344d8ad195522ae5f3558a08a9553e8b34e8c99d7136935ac9a78defe84bc9c")
 }
 
 resource ImplModuleErrorCodeAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-cli/src/commands/update/impl.ts:631-637")
-  fingerprint ast.semantic_subtree_v1("sha256:b1fd5893ac2a67452cb7ef0f0592318865947bce07b2a6a14727049d24e095f4")
+  fingerprint ast.semantic_subtree_v1("sha256:312f7b4e22bec6053943698b38bec17da28f4b936001d31eb90354831a5deca7")
 }
 
 resource ImplModuleExpectedChecksumForAssetAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-cli/src/commands/update/impl.ts:279-292")
-  fingerprint ast.semantic_subtree_v1("sha256:b7d614d9edad9070479f4868fc7822b97f6dc8ccbaa3651be5965141e83a26ea")
+  fingerprint ast.semantic_subtree_v1("sha256:9202262a18a41920683a54b8454bc2fcbb7d2cd6d8a3c994ee88abda577e7115")
 }
 
 resource ImplModuleExtractTarGzAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-cli/src/commands/update/impl.ts:466-476")
-  fingerprint ast.semantic_subtree_v1("sha256:9aabb5c1aac342789aff4adc3f016db1f17647b34af4a200858d30219e917540")
+  fingerprint ast.semantic_subtree_v1("sha256:b935b840ca4c5d807de64c143870c97720b267020a97e961a8a4a3b9fe366f4a")
 }
 
 resource ImplModuleFailureErrorAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-cli/src/commands/update/impl.ts:410-412")
-  fingerprint ast.semantic_subtree_v1("sha256:52630432b3fd0dd3c2df139caef955c08e3bd6fcecb3096f1697a21261084413")
+  fingerprint ast.semantic_subtree_v1("sha256:4b24e2ce72f4ef119430202152bc759dc57efe487406b25e35c0848a5106a9ce")
 }
 
 resource ImplModuleFormatCommandFailureAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-cli/src/commands/update/impl.ts:379-382")
-  fingerprint ast.semantic_subtree_v1("sha256:2434fc082666eaca32da6e92346c75d4838365d6e5cf130a9605cf61748d64b1")
+  fingerprint ast.semantic_subtree_v1("sha256:f7d8b95d05af8ef994475734c3a1ec67296ecd70d5ed6a2e33eb9914cea8c38b")
 }
 
 resource ImplModuleHasShpHelpIdentityAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-cli/src/commands/update/impl.ts:384-398")
-  fingerprint ast.semantic_subtree_v1("sha256:be31f664cf46568e8d7d0c818b274ec342fde6e1436d709e8a8c19b61a8fddbf")
+  fingerprint ast.semantic_subtree_v1("sha256:aea15088b1ea2ae8a0772cac126c8cf5026542b5ec45cfddf70308b1fe93d5c9")
 }
 
 resource ImplModuleIsUnsafeDefaultTargetAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-cli/src/commands/update/impl.ts:294-297")
-  fingerprint ast.semantic_subtree_v1("sha256:89b3a239b5364fd807e236d87faca5ca61463d87229c8cff5657c31c1a9d4fa3")
+  fingerprint ast.semantic_subtree_v1("sha256:a6bbec3935343170c27136e891d67e1c8503c17651c0efbd508d3a35e7ea96f3")
 }
 
 resource ImplModuleNormalizeReleaseVersionAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-cli/src/commands/update/impl.ts:233-239")
-  fingerprint ast.semantic_subtree_v1("sha256:a1854138660859ef884bd2570c7d7249704c772d8f3ad40edf457057a543db7f")
+  fingerprint ast.semantic_subtree_v1("sha256:a031cd2d20b359ae94f54941ae26c71fdd3b879c8dfcd1e48b939e4adc1811e0")
 }
 
 resource ImplModuleParseReleaseAssetAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-cli/src/commands/update/impl.ts:353-367")
-  fingerprint ast.semantic_subtree_v1("sha256:756343647156c93c43c051521aef076b0a14724d5f8d59f94033835d81480900")
+  fingerprint ast.semantic_subtree_v1("sha256:5fbfca3281bc98fd16dfcd529c2132e70805a27a54b7ff2ee2542eec789184d4")
 }
 
 resource ImplModuleParseReleaseInfoAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-cli/src/commands/update/impl.ts:257-269")
-  fingerprint ast.semantic_subtree_v1("sha256:f6e9ed4de07a77a9feede65c2f4f036405d79d30d222688dbd2b3ab032391a6e")
+  fingerprint ast.semantic_subtree_v1("sha256:31e361b23ad9cab22d1fbc7ffde71b9ed53af84bd68c5ef10f79155ee5e27c6e")
 }
 
 resource ImplModulePathExistsAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-cli/src/commands/update/impl.ts:454-464")
-  fingerprint ast.semantic_subtree_v1("sha256:2a0d86a522a445d379f4c9eba3d0bfc201d10e86ee94f6e14ca78dd2f1c1f648")
+  fingerprint ast.semantic_subtree_v1("sha256:3767f788d4b4b7c9ab0e5274066e9df455f7b7acd237c17ff12872c431c1ba7f")
 }
 
 resource ImplModuleRecordAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-cli/src/commands/update/impl.ts:400-404")
-  fingerprint ast.semantic_subtree_v1("sha256:7f8d9fbdd461e2ce31e258e345d72d5151679843360814c7312505161306567e")
+  fingerprint ast.semantic_subtree_v1("sha256:395f255191699b8a219246c3d813bf282c3228dedd1dca3d5a5bcf3ffac7105c")
 }
 
 resource ImplModuleReleaseApiUrlAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-cli/src/commands/update/impl.ts:346-351")
-  fingerprint ast.semantic_subtree_v1("sha256:c9a589737b07992dd48776a6ef8dda9c402603b3caa4a9cd07bf720afe321be8")
+  fingerprint ast.semantic_subtree_v1("sha256:d1785d36d876550bcc585146fc04128e98b97f6383fbe936f996f644b450f476")
 }
 
 resource ImplModuleReplaceBinaryAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-cli/src/commands/update/impl.ts:503-553")
-  fingerprint ast.semantic_subtree_v1("sha256:0311860fe675e468db20c6c82310272dc2dfb7ad2a7800543edd607c48504c2f")
+  fingerprint ast.semantic_subtree_v1("sha256:fbfbaf7247ad31f4b9406b74b053083f91aae634e8b14ff91cda90332835d4e2")
 }
 
 resource ImplModuleReplaceWindowsBinaryAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-cli/src/commands/update/impl.ts:555-593")
-  fingerprint ast.semantic_subtree_v1("sha256:7f735cf10399b484317a711cacb4110030eea96354ab8145598156c4f87cb9c7")
+  fingerprint ast.semantic_subtree_v1("sha256:b314434199cb94c13b744b15b9aa3baf158ad0ece00d98e2654599bc6667a761")
 }
 
 resource ImplModuleResolveInstalledVersionAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-cli/src/commands/update/impl.ts:303-344")
-  fingerprint ast.semantic_subtree_v1("sha256:3627f51071fb2df5145884411aff803e58129ee0aa5c6a06619015d0b6704622")
+  fingerprint ast.semantic_subtree_v1("sha256:73dec9d2863252a05e7d86300b95da06d76399cb04ecef687adebc69bbce8aef")
 }
 
 resource ImplModuleResolveReleasePlatformAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-cli/src/commands/update/impl.ts:206-231")
-  fingerprint ast.semantic_subtree_v1("sha256:e709dddaec786f4a2dbcb0cf291735d63a17bf36cd7d7f1e539b5e3b97f7422e")
+  fingerprint ast.semantic_subtree_v1("sha256:7d3f33cb938ebcb9fa4fbfb77c1985b126bba2667fa8e148164287cfd06addfe")
 }
 
 resource ImplModuleResolveTargetPathAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-cli/src/commands/update/impl.ts:299-301")
-  fingerprint ast.semantic_subtree_v1("sha256:2c4aa5cbdc3b21d8084f396fe0b78826ec7bef80415e34a794e3ed9a1fc0339d")
+  fingerprint ast.semantic_subtree_v1("sha256:7ce53a49202cb48407e830a42a7e1279b2e0aeb3912bd371d26b421d8fc64452")
 }
 
 resource ImplModuleRunCommandAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-cli/src/commands/update/impl.ts:486-501")
-  fingerprint ast.semantic_subtree_v1("sha256:6e7fc36a35d175b6f2edaf90b36e6a1a5101cfa8e8d8fb0b2179041ab61ca0c6")
+  fingerprint ast.semantic_subtree_v1("sha256:8d12e66e835405b7ef70e1cf7a6b0f3487ebaf498fb56db7d0cea5188050b320")
 }
 
 resource ImplModuleRunHelpAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-cli/src/commands/update/impl.ts:482-484")
-  fingerprint ast.semantic_subtree_v1("sha256:016c90bd7c4ad99fb59930219b903b2a2ca4f7d8c9ea170d2b9372eab632e6c9")
+  fingerprint ast.semantic_subtree_v1("sha256:3333e3363de77ff0ab24e613351c70e1c1535a8a36cbd31f1c7263ab49cb44eb")
 }
 
 resource ImplModuleRunUpdateAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-cli/src/commands/update/impl.ts:94-204")
-  fingerprint ast.semantic_subtree_v1("sha256:dcf84f767996ffe67d5ebbc5bbb15702fcc9604ac25989d968fd745032fa5580")
+  fingerprint ast.semantic_subtree_v1("sha256:3af8b5cebf0e3268a815da44cd63f4bc31051c91896ed11b0e9a883a6ce4009c")
 }
 
 resource ImplModuleRunVersionAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-cli/src/commands/update/impl.ts:478-480")
-  fingerprint ast.semantic_subtree_v1("sha256:88e235624b9fac453d872398543bdb537da3764a9c06512952a0b2b1b9d47671")
+  fingerprint ast.semantic_subtree_v1("sha256:e9c3df209bf4c3dbd1c7067398d71adc907245673ee62434d7b149fa7ffe49af")
 }
 
 resource ImplModuleSelectReleaseAssetAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-cli/src/commands/update/impl.ts:271-277")
-  fingerprint ast.semantic_subtree_v1("sha256:1a6da4ed511c5170580b22371d5bf1ad0d88d966d69944840087a640b1e63ed0")
+  fingerprint ast.semantic_subtree_v1("sha256:89b82d46073fd9d3c8ca9ac2556ea0aec9e8f50602dfd9c275148ce0a2ebfeec")
 }
 
 resource ImplModuleSha256FileAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-cli/src/commands/update/impl.ts:449-452")
-  fingerprint ast.semantic_subtree_v1("sha256:b769394f578015e65a4e35571a33ce4bafc6e53fe3c2b78aeaf97f1a3967fe7c")
+  fingerprint ast.semantic_subtree_v1("sha256:01f0721487337eb36bf4944a2a8b8ff905f0961765810b918005b44971fdf321")
 }
 
 resource ImplModuleStripLeadingDotSlashAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-cli/src/commands/update/impl.ts:375-377")
-  fingerprint ast.semantic_subtree_v1("sha256:07c2b881222506bf04a447f217db87e062c26714d9eaf040506f0d5a9170709a")
+  fingerprint ast.semantic_subtree_v1("sha256:ef851366320c8290e797f9e7a46bba1fa2184f7eab1e623ee4137962e80b3436")
 }
 
 resource ImplModuleUpdateAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-cli/src/commands/update/impl.ts:79-92")
-  fingerprint ast.semantic_subtree_v1("sha256:36b7a0c44b0361ecfbd7cb99a5b545778c8eccf869cbb723ca142c871a69a5c1")
+  fingerprint ast.semantic_subtree_v1("sha256:8c1795cf8787865da6b7259c790dccd5312388e273a5c62d1fa11d3c0a35e7e8")
 }
 
 resource ImplModuleUsageErrorAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-cli/src/commands/update/impl.ts:406-408")
-  fingerprint ast.semantic_subtree_v1("sha256:b61833704e1d9d66d4842b36295007fc22332f4900ea93de437dab106fa6ffa7")
+  fingerprint ast.semantic_subtree_v1("sha256:2c80858585d0cc9119cff2cc61b3c2139c2206e99c0846214830213d225011a7")
 }
 
 resource ImplModuleVersionPartsAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-cli/src/commands/update/impl.ts:369-373")
-  fingerprint ast.semantic_subtree_v1("sha256:709e77d1350bf9165b73df213608fbd3dc34cd7da884e8e33f72db0a2eea7967")
+  fingerprint ast.semantic_subtree_v1("sha256:3b3aff7870ee09bb635a30b803d879b76314d527042df7129c9efed5687d749f")
 }
 
 resource ImplModuleWindowsReplacementScriptAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-cli/src/commands/update/impl.ts:595-629")
-  fingerprint ast.semantic_subtree_v1("sha256:c6c1318b6583d05379747e5591bead7a967af292fc7cf5eb26e6e299e9bd4ddc")
+  fingerprint ast.semantic_subtree_v1("sha256:71f13e5eeff28f8cbae1e58be43443480c188a6b579d32e3a2d5ea4a326f5b8b")
 }
 
 component ImplModule : GeneratedCandidate {
@@ -253,7 +253,7 @@ relation ImplModuleCompareReleaseVersionsGeneratedFromImplModuleCompareReleaseVe
   kind generated_from
   connects ImplModule -> ImplModuleCompareReleaseVersionsAstAnchor
   roles { ImplModule as generated, ImplModuleCompareReleaseVersionsAstAnchor as syntax }
-  expects ImplModuleCompareReleaseVersionsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:41eefb9a0dca7c068f0e397ec2afbd7314dd2e1801033760a029b24e2a4ab9fd")
+  expects ImplModuleCompareReleaseVersionsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0344d8ad195522ae5f3558a08a9553e8b34e8c99d7136935ac9a78defe84bc9c")
   summary "fn ImplModule.compareReleaseVersions generated from typescript function_declaration at packages/shp-cli/src/commands/update/impl.ts:241-255."
 }
 
@@ -261,7 +261,7 @@ relation ImplModuleErrorCodeGeneratedFromImplModuleErrorCodeAstAnchor {
   kind generated_from
   connects ImplModule -> ImplModuleErrorCodeAstAnchor
   roles { ImplModule as generated, ImplModuleErrorCodeAstAnchor as syntax }
-  expects ImplModuleErrorCodeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b1fd5893ac2a67452cb7ef0f0592318865947bce07b2a6a14727049d24e095f4")
+  expects ImplModuleErrorCodeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:312f7b4e22bec6053943698b38bec17da28f4b936001d31eb90354831a5deca7")
   summary "fn ImplModule.errorCode generated from typescript function_declaration at packages/shp-cli/src/commands/update/impl.ts:631-637."
 }
 
@@ -269,7 +269,7 @@ relation ImplModuleExpectedChecksumForAssetGeneratedFromImplModuleExpectedChecks
   kind generated_from
   connects ImplModule -> ImplModuleExpectedChecksumForAssetAstAnchor
   roles { ImplModule as generated, ImplModuleExpectedChecksumForAssetAstAnchor as syntax }
-  expects ImplModuleExpectedChecksumForAssetAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b7d614d9edad9070479f4868fc7822b97f6dc8ccbaa3651be5965141e83a26ea")
+  expects ImplModuleExpectedChecksumForAssetAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9202262a18a41920683a54b8454bc2fcbb7d2cd6d8a3c994ee88abda577e7115")
   summary "fn ImplModule.expectedChecksumForAsset generated from typescript function_declaration at packages/shp-cli/src/commands/update/impl.ts:279-292."
 }
 
@@ -277,7 +277,7 @@ relation ImplModuleExtractTarGzGeneratedFromImplModuleExtractTarGzAstAnchor {
   kind generated_from
   connects ImplModule -> ImplModuleExtractTarGzAstAnchor
   roles { ImplModule as generated, ImplModuleExtractTarGzAstAnchor as syntax }
-  expects ImplModuleExtractTarGzAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9aabb5c1aac342789aff4adc3f016db1f17647b34af4a200858d30219e917540")
+  expects ImplModuleExtractTarGzAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b935b840ca4c5d807de64c143870c97720b267020a97e961a8a4a3b9fe366f4a")
   summary "fn ImplModule.extractTarGz generated from typescript function_declaration at packages/shp-cli/src/commands/update/impl.ts:466-476."
 }
 
@@ -285,7 +285,7 @@ relation ImplModuleFailureErrorGeneratedFromImplModuleFailureErrorAstAnchor {
   kind generated_from
   connects ImplModule -> ImplModuleFailureErrorAstAnchor
   roles { ImplModule as generated, ImplModuleFailureErrorAstAnchor as syntax }
-  expects ImplModuleFailureErrorAstAnchor fingerprint ast.semantic_subtree_v1("sha256:52630432b3fd0dd3c2df139caef955c08e3bd6fcecb3096f1697a21261084413")
+  expects ImplModuleFailureErrorAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4b24e2ce72f4ef119430202152bc759dc57efe487406b25e35c0848a5106a9ce")
   summary "fn ImplModule.failureError generated from typescript function_declaration at packages/shp-cli/src/commands/update/impl.ts:410-412."
 }
 
@@ -293,7 +293,7 @@ relation ImplModuleFormatCommandFailureGeneratedFromImplModuleFormatCommandFailu
   kind generated_from
   connects ImplModule -> ImplModuleFormatCommandFailureAstAnchor
   roles { ImplModule as generated, ImplModuleFormatCommandFailureAstAnchor as syntax }
-  expects ImplModuleFormatCommandFailureAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2434fc082666eaca32da6e92346c75d4838365d6e5cf130a9605cf61748d64b1")
+  expects ImplModuleFormatCommandFailureAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f7d8b95d05af8ef994475734c3a1ec67296ecd70d5ed6a2e33eb9914cea8c38b")
   summary "fn ImplModule.formatCommandFailure generated from typescript function_declaration at packages/shp-cli/src/commands/update/impl.ts:379-382."
 }
 
@@ -301,7 +301,7 @@ relation ImplModuleHasShpHelpIdentityGeneratedFromImplModuleHasShpHelpIdentityAs
   kind generated_from
   connects ImplModule -> ImplModuleHasShpHelpIdentityAstAnchor
   roles { ImplModule as generated, ImplModuleHasShpHelpIdentityAstAnchor as syntax }
-  expects ImplModuleHasShpHelpIdentityAstAnchor fingerprint ast.semantic_subtree_v1("sha256:be31f664cf46568e8d7d0c818b274ec342fde6e1436d709e8a8c19b61a8fddbf")
+  expects ImplModuleHasShpHelpIdentityAstAnchor fingerprint ast.semantic_subtree_v1("sha256:aea15088b1ea2ae8a0772cac126c8cf5026542b5ec45cfddf70308b1fe93d5c9")
   summary "fn ImplModule.hasShpHelpIdentity generated from typescript function_declaration at packages/shp-cli/src/commands/update/impl.ts:384-398."
 }
 
@@ -309,7 +309,7 @@ relation ImplModuleIsUnsafeDefaultTargetGeneratedFromImplModuleIsUnsafeDefaultTa
   kind generated_from
   connects ImplModule -> ImplModuleIsUnsafeDefaultTargetAstAnchor
   roles { ImplModule as generated, ImplModuleIsUnsafeDefaultTargetAstAnchor as syntax }
-  expects ImplModuleIsUnsafeDefaultTargetAstAnchor fingerprint ast.semantic_subtree_v1("sha256:89b3a239b5364fd807e236d87faca5ca61463d87229c8cff5657c31c1a9d4fa3")
+  expects ImplModuleIsUnsafeDefaultTargetAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a6bbec3935343170c27136e891d67e1c8503c17651c0efbd508d3a35e7ea96f3")
   summary "fn ImplModule.isUnsafeDefaultTarget generated from typescript function_declaration at packages/shp-cli/src/commands/update/impl.ts:294-297."
 }
 
@@ -317,7 +317,7 @@ relation ImplModuleNormalizeReleaseVersionGeneratedFromImplModuleNormalizeReleas
   kind generated_from
   connects ImplModule -> ImplModuleNormalizeReleaseVersionAstAnchor
   roles { ImplModule as generated, ImplModuleNormalizeReleaseVersionAstAnchor as syntax }
-  expects ImplModuleNormalizeReleaseVersionAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a1854138660859ef884bd2570c7d7249704c772d8f3ad40edf457057a543db7f")
+  expects ImplModuleNormalizeReleaseVersionAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a031cd2d20b359ae94f54941ae26c71fdd3b879c8dfcd1e48b939e4adc1811e0")
   summary "fn ImplModule.normalizeReleaseVersion generated from typescript function_declaration at packages/shp-cli/src/commands/update/impl.ts:233-239."
 }
 
@@ -325,7 +325,7 @@ relation ImplModuleParseReleaseAssetGeneratedFromImplModuleParseReleaseAssetAstA
   kind generated_from
   connects ImplModule -> ImplModuleParseReleaseAssetAstAnchor
   roles { ImplModule as generated, ImplModuleParseReleaseAssetAstAnchor as syntax }
-  expects ImplModuleParseReleaseAssetAstAnchor fingerprint ast.semantic_subtree_v1("sha256:756343647156c93c43c051521aef076b0a14724d5f8d59f94033835d81480900")
+  expects ImplModuleParseReleaseAssetAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5fbfca3281bc98fd16dfcd529c2132e70805a27a54b7ff2ee2542eec789184d4")
   summary "fn ImplModule.parseReleaseAsset generated from typescript function_declaration at packages/shp-cli/src/commands/update/impl.ts:353-367."
 }
 
@@ -333,7 +333,7 @@ relation ImplModuleParseReleaseInfoGeneratedFromImplModuleParseReleaseInfoAstAnc
   kind generated_from
   connects ImplModule -> ImplModuleParseReleaseInfoAstAnchor
   roles { ImplModule as generated, ImplModuleParseReleaseInfoAstAnchor as syntax }
-  expects ImplModuleParseReleaseInfoAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f6e9ed4de07a77a9feede65c2f4f036405d79d30d222688dbd2b3ab032391a6e")
+  expects ImplModuleParseReleaseInfoAstAnchor fingerprint ast.semantic_subtree_v1("sha256:31e361b23ad9cab22d1fbc7ffde71b9ed53af84bd68c5ef10f79155ee5e27c6e")
   summary "fn ImplModule.parseReleaseInfo generated from typescript function_declaration at packages/shp-cli/src/commands/update/impl.ts:257-269."
 }
 
@@ -341,7 +341,7 @@ relation ImplModulePathExistsGeneratedFromImplModulePathExistsAstAnchor {
   kind generated_from
   connects ImplModule -> ImplModulePathExistsAstAnchor
   roles { ImplModule as generated, ImplModulePathExistsAstAnchor as syntax }
-  expects ImplModulePathExistsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2a0d86a522a445d379f4c9eba3d0bfc201d10e86ee94f6e14ca78dd2f1c1f648")
+  expects ImplModulePathExistsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3767f788d4b4b7c9ab0e5274066e9df455f7b7acd237c17ff12872c431c1ba7f")
   summary "fn ImplModule.pathExists generated from typescript function_declaration at packages/shp-cli/src/commands/update/impl.ts:454-464."
 }
 
@@ -349,7 +349,7 @@ relation ImplModuleRecordGeneratedFromImplModuleRecordAstAnchor {
   kind generated_from
   connects ImplModule -> ImplModuleRecordAstAnchor
   roles { ImplModule as generated, ImplModuleRecordAstAnchor as syntax }
-  expects ImplModuleRecordAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7f8d9fbdd461e2ce31e258e345d72d5151679843360814c7312505161306567e")
+  expects ImplModuleRecordAstAnchor fingerprint ast.semantic_subtree_v1("sha256:395f255191699b8a219246c3d813bf282c3228dedd1dca3d5a5bcf3ffac7105c")
   summary "fn ImplModule.record generated from typescript function_declaration at packages/shp-cli/src/commands/update/impl.ts:400-404."
 }
 
@@ -357,7 +357,7 @@ relation ImplModuleReleaseApiUrlGeneratedFromImplModuleReleaseApiUrlAstAnchor {
   kind generated_from
   connects ImplModule -> ImplModuleReleaseApiUrlAstAnchor
   roles { ImplModule as generated, ImplModuleReleaseApiUrlAstAnchor as syntax }
-  expects ImplModuleReleaseApiUrlAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c9a589737b07992dd48776a6ef8dda9c402603b3caa4a9cd07bf720afe321be8")
+  expects ImplModuleReleaseApiUrlAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d1785d36d876550bcc585146fc04128e98b97f6383fbe936f996f644b450f476")
   summary "fn ImplModule.releaseApiUrl generated from typescript function_declaration at packages/shp-cli/src/commands/update/impl.ts:346-351."
 }
 
@@ -365,7 +365,7 @@ relation ImplModuleReplaceBinaryGeneratedFromImplModuleReplaceBinaryAstAnchor {
   kind generated_from
   connects ImplModule -> ImplModuleReplaceBinaryAstAnchor
   roles { ImplModule as generated, ImplModuleReplaceBinaryAstAnchor as syntax }
-  expects ImplModuleReplaceBinaryAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0311860fe675e468db20c6c82310272dc2dfb7ad2a7800543edd607c48504c2f")
+  expects ImplModuleReplaceBinaryAstAnchor fingerprint ast.semantic_subtree_v1("sha256:fbfbaf7247ad31f4b9406b74b053083f91aae634e8b14ff91cda90332835d4e2")
   summary "fn ImplModule.replaceBinary generated from typescript function_declaration at packages/shp-cli/src/commands/update/impl.ts:503-553."
 }
 
@@ -373,7 +373,7 @@ relation ImplModuleReplaceWindowsBinaryGeneratedFromImplModuleReplaceWindowsBina
   kind generated_from
   connects ImplModule -> ImplModuleReplaceWindowsBinaryAstAnchor
   roles { ImplModule as generated, ImplModuleReplaceWindowsBinaryAstAnchor as syntax }
-  expects ImplModuleReplaceWindowsBinaryAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7f735cf10399b484317a711cacb4110030eea96354ab8145598156c4f87cb9c7")
+  expects ImplModuleReplaceWindowsBinaryAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b314434199cb94c13b744b15b9aa3baf158ad0ece00d98e2654599bc6667a761")
   summary "fn ImplModule.replaceWindowsBinary generated from typescript function_declaration at packages/shp-cli/src/commands/update/impl.ts:555-593."
 }
 
@@ -381,7 +381,7 @@ relation ImplModuleResolveInstalledVersionGeneratedFromImplModuleResolveInstalle
   kind generated_from
   connects ImplModule -> ImplModuleResolveInstalledVersionAstAnchor
   roles { ImplModule as generated, ImplModuleResolveInstalledVersionAstAnchor as syntax }
-  expects ImplModuleResolveInstalledVersionAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3627f51071fb2df5145884411aff803e58129ee0aa5c6a06619015d0b6704622")
+  expects ImplModuleResolveInstalledVersionAstAnchor fingerprint ast.semantic_subtree_v1("sha256:73dec9d2863252a05e7d86300b95da06d76399cb04ecef687adebc69bbce8aef")
   summary "fn ImplModule.resolveInstalledVersion generated from typescript function_declaration at packages/shp-cli/src/commands/update/impl.ts:303-344."
 }
 
@@ -389,7 +389,7 @@ relation ImplModuleResolveReleasePlatformGeneratedFromImplModuleResolveReleasePl
   kind generated_from
   connects ImplModule -> ImplModuleResolveReleasePlatformAstAnchor
   roles { ImplModule as generated, ImplModuleResolveReleasePlatformAstAnchor as syntax }
-  expects ImplModuleResolveReleasePlatformAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e709dddaec786f4a2dbcb0cf291735d63a17bf36cd7d7f1e539b5e3b97f7422e")
+  expects ImplModuleResolveReleasePlatformAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7d3f33cb938ebcb9fa4fbfb77c1985b126bba2667fa8e148164287cfd06addfe")
   summary "fn ImplModule.resolveReleasePlatform generated from typescript function_declaration at packages/shp-cli/src/commands/update/impl.ts:206-231."
 }
 
@@ -397,7 +397,7 @@ relation ImplModuleResolveTargetPathGeneratedFromImplModuleResolveTargetPathAstA
   kind generated_from
   connects ImplModule -> ImplModuleResolveTargetPathAstAnchor
   roles { ImplModule as generated, ImplModuleResolveTargetPathAstAnchor as syntax }
-  expects ImplModuleResolveTargetPathAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2c4aa5cbdc3b21d8084f396fe0b78826ec7bef80415e34a794e3ed9a1fc0339d")
+  expects ImplModuleResolveTargetPathAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7ce53a49202cb48407e830a42a7e1279b2e0aeb3912bd371d26b421d8fc64452")
   summary "fn ImplModule.resolveTargetPath generated from typescript function_declaration at packages/shp-cli/src/commands/update/impl.ts:299-301."
 }
 
@@ -405,7 +405,7 @@ relation ImplModuleRunCommandGeneratedFromImplModuleRunCommandAstAnchor {
   kind generated_from
   connects ImplModule -> ImplModuleRunCommandAstAnchor
   roles { ImplModule as generated, ImplModuleRunCommandAstAnchor as syntax }
-  expects ImplModuleRunCommandAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6e7fc36a35d175b6f2edaf90b36e6a1a5101cfa8e8d8fb0b2179041ab61ca0c6")
+  expects ImplModuleRunCommandAstAnchor fingerprint ast.semantic_subtree_v1("sha256:8d12e66e835405b7ef70e1cf7a6b0f3487ebaf498fb56db7d0cea5188050b320")
   summary "fn ImplModule.runCommand generated from typescript function_declaration at packages/shp-cli/src/commands/update/impl.ts:486-501."
 }
 
@@ -413,7 +413,7 @@ relation ImplModuleRunHelpGeneratedFromImplModuleRunHelpAstAnchor {
   kind generated_from
   connects ImplModule -> ImplModuleRunHelpAstAnchor
   roles { ImplModule as generated, ImplModuleRunHelpAstAnchor as syntax }
-  expects ImplModuleRunHelpAstAnchor fingerprint ast.semantic_subtree_v1("sha256:016c90bd7c4ad99fb59930219b903b2a2ca4f7d8c9ea170d2b9372eab632e6c9")
+  expects ImplModuleRunHelpAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3333e3363de77ff0ab24e613351c70e1c1535a8a36cbd31f1c7263ab49cb44eb")
   summary "fn ImplModule.runHelp generated from typescript function_declaration at packages/shp-cli/src/commands/update/impl.ts:482-484."
 }
 
@@ -421,7 +421,7 @@ relation ImplModuleRunUpdateGeneratedFromImplModuleRunUpdateAstAnchor {
   kind generated_from
   connects ImplModule -> ImplModuleRunUpdateAstAnchor
   roles { ImplModule as generated, ImplModuleRunUpdateAstAnchor as syntax }
-  expects ImplModuleRunUpdateAstAnchor fingerprint ast.semantic_subtree_v1("sha256:dcf84f767996ffe67d5ebbc5bbb15702fcc9604ac25989d968fd745032fa5580")
+  expects ImplModuleRunUpdateAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3af8b5cebf0e3268a815da44cd63f4bc31051c91896ed11b0e9a883a6ce4009c")
   summary "fn ImplModule.runUpdate generated from typescript function_declaration at packages/shp-cli/src/commands/update/impl.ts:94-204."
 }
 
@@ -429,7 +429,7 @@ relation ImplModuleRunVersionGeneratedFromImplModuleRunVersionAstAnchor {
   kind generated_from
   connects ImplModule -> ImplModuleRunVersionAstAnchor
   roles { ImplModule as generated, ImplModuleRunVersionAstAnchor as syntax }
-  expects ImplModuleRunVersionAstAnchor fingerprint ast.semantic_subtree_v1("sha256:88e235624b9fac453d872398543bdb537da3764a9c06512952a0b2b1b9d47671")
+  expects ImplModuleRunVersionAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e9c3df209bf4c3dbd1c7067398d71adc907245673ee62434d7b149fa7ffe49af")
   summary "fn ImplModule.runVersion generated from typescript function_declaration at packages/shp-cli/src/commands/update/impl.ts:478-480."
 }
 
@@ -437,7 +437,7 @@ relation ImplModuleSelectReleaseAssetGeneratedFromImplModuleSelectReleaseAssetAs
   kind generated_from
   connects ImplModule -> ImplModuleSelectReleaseAssetAstAnchor
   roles { ImplModule as generated, ImplModuleSelectReleaseAssetAstAnchor as syntax }
-  expects ImplModuleSelectReleaseAssetAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1a6da4ed511c5170580b22371d5bf1ad0d88d966d69944840087a640b1e63ed0")
+  expects ImplModuleSelectReleaseAssetAstAnchor fingerprint ast.semantic_subtree_v1("sha256:89b82d46073fd9d3c8ca9ac2556ea0aec9e8f50602dfd9c275148ce0a2ebfeec")
   summary "fn ImplModule.selectReleaseAsset generated from typescript function_declaration at packages/shp-cli/src/commands/update/impl.ts:271-277."
 }
 
@@ -445,7 +445,7 @@ relation ImplModuleSha256FileGeneratedFromImplModuleSha256FileAstAnchor {
   kind generated_from
   connects ImplModule -> ImplModuleSha256FileAstAnchor
   roles { ImplModule as generated, ImplModuleSha256FileAstAnchor as syntax }
-  expects ImplModuleSha256FileAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b769394f578015e65a4e35571a33ce4bafc6e53fe3c2b78aeaf97f1a3967fe7c")
+  expects ImplModuleSha256FileAstAnchor fingerprint ast.semantic_subtree_v1("sha256:01f0721487337eb36bf4944a2a8b8ff905f0961765810b918005b44971fdf321")
   summary "fn ImplModule.sha256File generated from typescript function_declaration at packages/shp-cli/src/commands/update/impl.ts:449-452."
 }
 
@@ -453,7 +453,7 @@ relation ImplModuleStripLeadingDotSlashGeneratedFromImplModuleStripLeadingDotSla
   kind generated_from
   connects ImplModule -> ImplModuleStripLeadingDotSlashAstAnchor
   roles { ImplModule as generated, ImplModuleStripLeadingDotSlashAstAnchor as syntax }
-  expects ImplModuleStripLeadingDotSlashAstAnchor fingerprint ast.semantic_subtree_v1("sha256:07c2b881222506bf04a447f217db87e062c26714d9eaf040506f0d5a9170709a")
+  expects ImplModuleStripLeadingDotSlashAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ef851366320c8290e797f9e7a46bba1fa2184f7eab1e623ee4137962e80b3436")
   summary "fn ImplModule.stripLeadingDotSlash generated from typescript function_declaration at packages/shp-cli/src/commands/update/impl.ts:375-377."
 }
 
@@ -461,7 +461,7 @@ relation ImplModuleUpdateGeneratedFromImplModuleUpdateAstAnchor {
   kind generated_from
   connects ImplModule -> ImplModuleUpdateAstAnchor
   roles { ImplModule as generated, ImplModuleUpdateAstAnchor as syntax }
-  expects ImplModuleUpdateAstAnchor fingerprint ast.semantic_subtree_v1("sha256:36b7a0c44b0361ecfbd7cb99a5b545778c8eccf869cbb723ca142c871a69a5c1")
+  expects ImplModuleUpdateAstAnchor fingerprint ast.semantic_subtree_v1("sha256:8c1795cf8787865da6b7259c790dccd5312388e273a5c62d1fa11d3c0a35e7e8")
   summary "fn ImplModule.update generated from typescript function_declaration at packages/shp-cli/src/commands/update/impl.ts:79-92."
 }
 
@@ -469,7 +469,7 @@ relation ImplModuleUsageErrorGeneratedFromImplModuleUsageErrorAstAnchor {
   kind generated_from
   connects ImplModule -> ImplModuleUsageErrorAstAnchor
   roles { ImplModule as generated, ImplModuleUsageErrorAstAnchor as syntax }
-  expects ImplModuleUsageErrorAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b61833704e1d9d66d4842b36295007fc22332f4900ea93de437dab106fa6ffa7")
+  expects ImplModuleUsageErrorAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2c80858585d0cc9119cff2cc61b3c2139c2206e99c0846214830213d225011a7")
   summary "fn ImplModule.usageError generated from typescript function_declaration at packages/shp-cli/src/commands/update/impl.ts:406-408."
 }
 
@@ -477,7 +477,7 @@ relation ImplModuleVersionPartsGeneratedFromImplModuleVersionPartsAstAnchor {
   kind generated_from
   connects ImplModule -> ImplModuleVersionPartsAstAnchor
   roles { ImplModule as generated, ImplModuleVersionPartsAstAnchor as syntax }
-  expects ImplModuleVersionPartsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:709e77d1350bf9165b73df213608fbd3dc34cd7da884e8e33f72db0a2eea7967")
+  expects ImplModuleVersionPartsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3b3aff7870ee09bb635a30b803d879b76314d527042df7129c9efed5687d749f")
   summary "fn ImplModule.versionParts generated from typescript function_declaration at packages/shp-cli/src/commands/update/impl.ts:369-373."
 }
 
@@ -485,7 +485,7 @@ relation ImplModuleWindowsReplacementScriptGeneratedFromImplModuleWindowsReplace
   kind generated_from
   connects ImplModule -> ImplModuleWindowsReplacementScriptAstAnchor
   roles { ImplModule as generated, ImplModuleWindowsReplacementScriptAstAnchor as syntax }
-  expects ImplModuleWindowsReplacementScriptAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c6c1318b6583d05379747e5591bead7a967af292fc7cf5eb26e6e299e9bd4ddc")
+  expects ImplModuleWindowsReplacementScriptAstAnchor fingerprint ast.semantic_subtree_v1("sha256:71f13e5eeff28f8cbae1e58be43443480c188a6b579d32e3a2d5ea4a326f5b8b")
   summary "fn ImplModule.windowsReplacementScript generated from typescript function_declaration at packages/shp-cli/src/commands/update/impl.ts:595-629."
 }
 

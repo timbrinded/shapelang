@@ -159,32 +159,44 @@ function normalizeJsonAstFile(
   }
 
   const reachable = new Set<string>();
-  const visiting = new Set<string>();
   const visited = new Set<string>();
-  function visit(parserId: string): void {
-    if (visiting.has(parserId)) {
+  const visiting = new Set<string>();
+  const stack: { parserId: string; leaving: boolean }[] = [{ parserId: file.root, leaving: false }];
+  while (stack.length > 0) {
+    const frame = stack.pop();
+    if (!frame) {
+      continue;
+    }
+    if (frame.leaving) {
+      visiting.delete(frame.parserId);
+      visited.add(frame.parserId);
+      continue;
+    }
+    if (visiting.has(frame.parserId)) {
       diagnostics.push({
         kind: "error",
         code: "cycle",
         path: file.path,
-        nodeId: parserId,
-        message: `AST child graph contains a cycle at ${parserId}`
+        nodeId: frame.parserId,
+        message: `AST child graph contains a cycle at ${frame.parserId}`
       });
-      return;
+      continue;
     }
-    if (visited.has(parserId)) {
-      return;
+    if (visited.has(frame.parserId)) {
+      continue;
     }
-    visiting.add(parserId);
-    reachable.add(parserId);
-    const node = nodeByParserId.get(parserId);
-    for (const child of node?.children ?? []) {
-      visit(child.id);
+    visiting.add(frame.parserId);
+    reachable.add(frame.parserId);
+    stack.push({ parserId: frame.parserId, leaving: true });
+    const node = nodeByParserId.get(frame.parserId);
+    const children = node?.children ?? [];
+    for (let index = children.length - 1; index >= 0; index -= 1) {
+      const child = children[index];
+      if (child) {
+        stack.push({ parserId: child.id, leaving: false });
+      }
     }
-    visiting.delete(parserId);
-    visited.add(parserId);
   }
-  visit(file.root);
 
   for (const node of file.nodes) {
     if (!reachable.has(node.id)) {

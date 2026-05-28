@@ -546,7 +546,7 @@ memory AstGenerationUnknownSafety : RefactorConstraint<fn ShapeAstGenerator.gene
   applies_to fn ShapeAstGenerator.generateShapeFromCodeSemanticGraph
   status Explained
   confidence High
-  summary "AST-derived architecture drafts must preserve uncertainty with effects unknown, include compact syntax anchors with semantic fingerprints, emit candidate effect evidence only as review hints, and keep raw syntax traces opt-in."
+  summary "AST-derived architecture drafts must preserve uncertainty with effects unknown, include compact syntax anchors with semantic fingerprints when token evidence exists, warn instead of failing on tokenless anchors, emit candidate effect evidence only as review hints with checkable pins, and keep raw syntax traces opt-in."
   owner ShapeMaintainers
   protects shape GeneratedAstDraftSafety
   guards on_change require ReEvaluation<Self>
@@ -576,7 +576,7 @@ memory CliCommandDispatchOrder : CheckOrderRationale<fn ShpCli.main> {
   applies_to fn ShpCli.main
   status Explained
   confidence High
-  summary "CLI commands must dispatch to the same checker/formatter/helper semantics used by tests, reject ambiguous output modes before running command work, and make generated AST directory checks explicit."
+  summary "CLI commands must dispatch to the same checker/formatter/helper semantics used by tests, reject ambiguous output modes before running command work, make generated AST directory checks explicit, and derive generated AST source identity from the workspace root."
   owner ShapeMaintainers
   protects shape CommandDispatch
   guards on_change require ReEvaluation<Self>
@@ -615,7 +615,7 @@ memory UpdateBinaryIntegrity : RefactorConstraint<fn ShpCli.updateInstalledBinar
 reevaluation AstGenerationDraftSafetyRechecked {
   satisfies memory AstGenerationUnknownSafety
   outcome Confirmed
-  summary "AST generation tests cover semantic drafts with compact fingerprinted AST anchors, checked candidate effect syntax, explicit generated AST module origin, invalid graph diagnostics, collision-safe names, and raw AST output still opt-in."
+  summary "AST generation tests cover compact fingerprinted AST anchors, warning-only tokenless anchors, checked candidate effect syntax, explicit generated AST module origin, deep traversal safety, deterministic fingerprints, collision-safe names, and raw AST output still opt-in."
   reviewer ShapeMaintainers
   decided_on "2026-05-21"
   evidence test("packages/shp-checker/src/checker.test.ts")
@@ -642,7 +642,7 @@ reevaluation AuthorPromptPreludeRechecked {
 reevaluation CliAstOutputModesRechecked {
   satisfies memory CliCommandDispatchOrder
   outcome Confirmed
-  summary "AST CLI tests reject ambiguous raw trace output flags, keep generated AST freshness and cleanup scoped to manifest-owned files, reject generated output collisions, and keep source and JSON draft paths on the same generator semantics."
+  summary "AST CLI tests reject ambiguous raw trace output flags, keep generated AST freshness and cleanup scoped to manifest-owned files, reject generated output collisions, preserve workspace-root source identity, and keep source and JSON draft paths on the same generator semantics."
   reviewer ShapeMaintainers
   decided_on "2026-05-22"
   evidence test("packages/shp-cli/src/index.test.ts")

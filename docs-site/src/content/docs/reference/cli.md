@@ -82,17 +82,17 @@ shp update --dry-run
 
 `shp ast` is a drafting tool. It turns syntax evidence into conservative Shape, not final architecture truth.
 
-By default, `shp ast source` parses files with the platform Tree-sitter native binding and prints the semantic draft: stable files, modules, types, functions, high-confidence calls, compact AST anchors, anchor fingerprints, candidate effect evidence, and unresolved uncertainty. Generated functions use `effects unknown`.
+By default, `shp ast source` parses files with the platform Tree-sitter native binding and prints the semantic draft: stable files, modules, types, functions, high-confidence calls, compact AST anchors, anchor fingerprints where token evidence exists, candidate effect evidence, and unresolved uncertainty. Generated functions use `effects unknown`.
 
 Source language inference covers TypeScript, TSX, JavaScript/JSX, Rust, Go, and Python. JSX files use the JavaScript parser; TSX files use the TSX parser bundled beside released `shp` binaries.
 
-Use `--out-dir shape/generated/ast` to write checked generated AST context as deterministic files plus a manifest. These generated files use `shape.generated.ast...` modules and are allowed to keep `effects unknown`, because they are candidate evidence rather than reviewed architecture truth. Use `--check` with `--out-dir` in CI to fail when the checked-in generated AST files are stale. Freshness checks and cleanup are scoped to files recorded in the generated AST manifest, so unrelated authored `.shape` files in the output tree are not treated as generated output.
+Use `--out-dir shape/generated/ast` to write checked generated AST context as deterministic files plus a manifest. Source identities are normalized relative to the workspace root, so absolute source paths and invocations from nested directories produce the same generated modules and source references for the same file. These generated files use `shape.generated.ast...` modules and are allowed to keep `effects unknown`, because they are candidate evidence rather than reviewed architecture truth. Use `--check` with `--out-dir` in CI to fail when the checked-in generated AST files are stale. Freshness checks and cleanup are scoped to files recorded in the generated AST manifest, so unrelated authored `.shape` files in the output tree are not treated as generated output.
 
 In this repo, `bun run ast:generate` refreshes the committed generated AST context for tracked and untracked non-ignored first-party source, and `bun run ast:check` verifies it is fresh in local, CI, and release validation. The source set excludes dependency, build, and generated parser output. Directory output rejects module or output-path collisions before writing.
 
 Use `--include-ast-layer` to include raw AST resources and `ast_child` relations in stdout. Use `--raw-out PATH` to keep the raw trace in a sidecar Shape file while stdout stays focused on the semantic draft. These flags are mutually exclusive.
 
-`shp ast json` accepts normalized AST JSON with this shape when another parser already produced syntax data. It is an input adapter, not a Shapes-to-AST export path. Anchored nodes must include token/source text in their subtree so `ast.semantic_subtree_v1` fingerprints can be computed:
+`shp ast json` accepts normalized AST JSON with this shape when another parser already produced syntax data. It is an input adapter, not a Shapes-to-AST export path. Anchored nodes should include token/source text in their subtree so `ast.semantic_subtree_v1` fingerprints can be computed. If an anchor has no token evidence, generation reports a warning, keeps the draft, omits that fingerprint expectation, and skips candidate effects that would need an uncheckable pin:
 
 ```json
 {

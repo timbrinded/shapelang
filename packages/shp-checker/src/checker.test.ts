@@ -35,9 +35,10 @@ import {
   generateShapeFromCodeSemanticGraph,
   parseSourceFilesToCodeSemanticGraph,
   treeSitterParserLibraryName,
-  type CodeAstAnchor,
   type CodeSemanticGraph
 } from "./ast-generation-core.ts";
+import { signatureText } from "./ast-generation-tokens.ts";
+import { stableJson, stableShapeId } from "./ast-generation-utils.ts";
 import { PRELUDE_CONTEXT_REQUIREMENTS, PRELUDE_RELATION_KIND_NAMES } from "./prelude.ts";
 import { detectLinuxMuslRuntime } from "./ast-generation.ts";
 
@@ -496,7 +497,7 @@ describe("Shape checker", () => {
       })
     );
     expect(output).toContain("stale candidate effect pin");
-    expect(output).toContain("candidate effect generated::StalePin pins generated::Anchor");
+    expect(output).toContain("candidate effect StalePin pins Anchor");
   });
 
   test("passes append-only append fixture", async () => {
@@ -644,6 +645,26 @@ describe("Shape checker", () => {
     expect(result.exitCode).toBe(1);
     expect(output).toContain("AuditEvent has trait Protected");
     expect(output).toContain("Protected forbids final HardDelete<AuditEvent>");
+  });
+
+  test("keeps rule subjects in when clauses instead of generic rule headers", () => {
+    const parsed = parseShapeModule(`
+      module policy
+
+      trait Immutable {
+      }
+
+      rule immutable_forbids_delete<T> {
+        forbid final HardDelete<T>
+      }
+    `);
+
+    expect(parsed.ok).toBe(false);
+    if (!parsed.ok) {
+      expect(parsed.diagnostics.map((diagnostic) => diagnostic.message).join("\n")).toContain(
+        "Expecting token of type '{'"
+      );
+    }
   });
 
   test("rejects unknown and ambiguous concrete forbid targets", () => {
@@ -2410,6 +2431,36 @@ describe("Shape checker", () => {
     expect(resourceGraph).toContain("coordinated_call AuditWritePath:");
   });
 
+  test("explain and graph report ambiguous unqualified symbols", () => {
+    const left = parseShapeModule(`
+      module left
+      component Ledger {
+      }
+    `);
+    const right = parseShapeModule(`
+      module right
+      component Ledger {
+      }
+    `);
+
+    expect(left.ok).toBe(true);
+    expect(right.ok).toBe(true);
+    if (!left.ok || !right.ok) {
+      return;
+    }
+
+    const explanation = explainShapeModules([left.module, right.module], "Ledger");
+    expect(explanation).toContain("Ambiguous shape symbol Ledger.");
+    expect(explanation).toContain("component left::Ledger");
+    expect(explanation).toContain("component right::Ledger");
+    expect(explanation).toContain("Use a module-qualified reference.");
+
+    const graph = graphShapeModules([left.module, right.module], "Ledger");
+    expect(graph).toContain("Ambiguous shape symbol Ledger.");
+    expect(graph).toContain("component left::Ledger");
+    expect(graph).toContain("component right::Ledger");
+  });
+
   test("custom relation kinds appear in graph and stats but do not create hypercycles", () => {
     const parsed = parseShapeModule(`
       module deps
@@ -3658,6 +3709,22 @@ describe("AST to Shape generation", () => {
     );
   });
 
+  test("uses wide deterministic suffixes for generated identity names", () => {
+    expect(stableShapeId("src/generated/very/long/path/main.ts:node-a", "Generated")).toMatch(
+      /_[0-9a-f]{16}$/
+    );
+  });
+
+  test("serializes canonical JSON keys by codepoint order", () => {
+    expect(stableJson({ b: 1, a: 2, A: 3 })).toBe('{"A":3,"a":2,"b":1}');
+  });
+
+  test("keeps braces inside literals out of fingerprint signatures", () => {
+    expect(
+      signatureText('fn handle(label = "{open}", value: Value) { value }', "typescript")
+    ).toContain("value: Value)");
+  });
+
   test("projects Rust AST JSON into a semantic draft plus optional raw trace", () => {
     const ast = rustAuditAstJson();
     const graphResult = buildCodeSemanticGraphFromAstJson(ast);
@@ -3749,6 +3816,53 @@ describe("AST to Shape generation", () => {
     expect(result.value.semanticShape).not.toContain("component StoreModule");
   });
 
+  test("extracts Go named receiver field calls", () => {
+    const result = generateShapeFromAstJson(goReceiverCallAstJson(), {
+      moduleName: "generated.go"
+    });
+
+    expect(result.ok).toBe(true);
+    if (!result.ok) {
+      throw new Error(formatAstTestDiagnostics(result.diagnostics));
+    }
+    expect(result.value.semanticShape).toContain("kind calls");
+    expect(result.value.semanticShape).toContain("connects AuditStore -> AuditRepo");
+  });
+
+  test("skips self-referential receiver calls", () => {
+    const result = generateShapeFromAstJson({
+      language: "typescript",
+      files: [
+        {
+          path: "src/tree.ts",
+          root: "root",
+          nodes: [
+            { id: "root", kind: "program", children: ["node"] },
+            {
+              id: "node",
+              kind: "class_declaration",
+              attributes: { name: "TreeNode" },
+              text: "class TreeNode { child: TreeNode; walk() { this.child.walk(); } }",
+              children: ["walk"]
+            },
+            {
+              id: "walk",
+              kind: "method_definition",
+              attributes: { name: "walk" },
+              text: "walk() { this.child.walk(); }"
+            }
+          ]
+        }
+      ]
+    });
+
+    expect(result.ok).toBe(true);
+    if (!result.ok) {
+      throw new Error(formatAstTestDiagnostics(result.diagnostics));
+    }
+    expect(result.value.semanticShape).not.toContain("kind calls");
+  });
+
   test("keeps anchor names stable while semantic fingerprints change with function bodies", () => {
     const before = buildCodeSemanticGraphFromAstJson(functionFingerprintAst("fn main() {}"));
     const after = buildCodeSemanticGraphFromAstJson(
@@ -3761,10 +3875,10 @@ describe("AST to Shape generation", () => {
       throw new Error("failed to build test graphs");
     }
 
-    const beforeAnchor = astAnchorForTarget(before.value, "MainModule.main");
-    const afterAnchor = astAnchorForTarget(after.value, "MainModule.main");
-    expect(beforeAnchor?.name).toBe(afterAnchor?.name);
-    expect(beforeAnchor?.fingerprint.value).not.toBe(afterAnchor?.fingerprint.value);
+    const beforeAnchor = requireAstAnchor(before.value, "MainModule.main");
+    const afterAnchor = requireAstAnchor(after.value, "MainModule.main");
+    expect(beforeAnchor.name).toBe(afterAnchor.name);
+    expect(beforeAnchor.fingerprint.value).not.toBe(afterAnchor.fingerprint.value);
   });
 
   test("flags authored AST relations when regenerated anchor fingerprints change", () => {
@@ -3779,13 +3893,8 @@ describe("AST to Shape generation", () => {
       throw new Error("failed to build test graphs");
     }
 
-    const firstAnchor = astAnchorForTarget(versionOne.value, "MainModule.main");
-    const secondAnchor = astAnchorForTarget(versionTwo.value, "MainModule.main");
-    expect(firstAnchor).toBeDefined();
-    expect(secondAnchor).toBeDefined();
-    if (!firstAnchor || !secondAnchor) {
-      throw new Error("missing test anchor");
-    }
+    const firstAnchor = requireAstAnchor(versionOne.value, "MainModule.main");
+    const secondAnchor = requireAstAnchor(versionTwo.value, "MainModule.main");
     expect(firstAnchor.name).toBe(secondAnchor.name);
     expect(firstAnchor.fingerprint.value).not.toBe(secondAnchor.fingerprint.value);
 
@@ -3867,9 +3976,22 @@ describe("AST to Shape generation", () => {
       throw new Error("failed to build test graphs");
     }
 
-    const baseAnchor = astAnchorForTarget(base.value, "MainModule.main");
-    const changedAnchor = astAnchorForTarget(unrelatedChanged.value, "MainModule.main");
-    expect(baseAnchor?.fingerprint.value).toBe(changedAnchor?.fingerprint.value);
+    const baseAnchor = requireAstAnchor(base.value, "MainModule.main");
+    const changedAnchor = requireAstAnchor(unrelatedChanged.value, "MainModule.main");
+    expect(baseAnchor.fingerprint.value).toBe(changedAnchor.fingerprint.value);
+  });
+
+  test("does not churn fingerprints for CRLF inside string literals", () => {
+    const lf = graphFromAstForTest(
+      functionFingerprintAst('fn main() { let text = "alpha\nbeta"; }')
+    );
+    const crlf = graphFromAstForTest(
+      functionFingerprintAst('fn main() { let text = "alpha\r\nbeta"; }')
+    );
+
+    expect(requireAstAnchor(lf, "MainModule.main").fingerprint.value).toBe(
+      requireAstAnchor(crlf, "MainModule.main").fingerprint.value
+    );
   });
 
   test("classifies function fingerprint churn across code evolution scenarios", () => {
@@ -4094,7 +4216,7 @@ describe("AST to Shape generation", () => {
     expect(output).toContain("unknown relation_endpoint");
   });
 
-  test("rejects AST JSON without token data for semantic fingerprints", () => {
+  test("warns and skips fingerprints when AST JSON lacks token data", () => {
     const result = generateShapeFromAstJson({
       language: "rust",
       files: [
@@ -4109,11 +4231,14 @@ describe("AST to Shape generation", () => {
       ]
     });
 
-    expect(result.ok).toBe(false);
-    if (!result.ok) {
-      expect(result.diagnostics).toContainEqual(
-        expect.objectContaining({ code: "missing_fingerprint_tokens" })
-      );
+    expect(result.ok).toBe(true);
+    expect(result.diagnostics).toContainEqual(
+      expect.objectContaining({ kind: "warning", code: "missing_fingerprint_tokens" })
+    );
+    if (result.ok) {
+      expect(result.value.semanticShape).toContain("resource MainModuleMainAstAnchor");
+      expect(result.value.semanticShape).not.toContain("fingerprint ast.semantic_subtree_v1");
+      expect(result.value.semanticShape).not.toContain("expects MainModuleMainAstAnchor");
     }
   });
 
@@ -4332,6 +4457,56 @@ describe("AST to Shape generation", () => {
     expect(normalizedFunction?.span?.startLine).toBe(1);
     expect(normalizedFunction?.text).toBe("fn main() {}");
     expect(normalizedFunction?.textHash).toMatch(/^[0-9a-f]{8}$/);
+  });
+
+  test("handles deeply nested Tree-sitter nodes without recursive stack overflow", async () => {
+    const source = "class Deep { run() {} }\n";
+    let child = fakeTreeSitterNode({
+      kind: "method_definition",
+      startByte: 13,
+      endByte: 21,
+      startPosition: { row: 0, column: 13 },
+      endPosition: { row: 0, column: 21 }
+    });
+    for (let index = 0; index < 6000; index += 1) {
+      child = fakeTreeSitterNode({
+        kind: "parenthesized_expression",
+        startByte: 13,
+        endByte: 21,
+        startPosition: { row: 0, column: 13 },
+        endPosition: { row: 0, column: 21 },
+        children: [{ node: child }]
+      });
+    }
+    const classNode = fakeTreeSitterNode({
+      kind: "class_declaration",
+      startByte: 0,
+      endByte: 21,
+      startPosition: { row: 0, column: 0 },
+      endPosition: { row: 0, column: 21 },
+      children: [{ fieldName: "body", node: child }]
+    });
+    const root = fakeTreeSitterNode({
+      kind: "program",
+      startByte: 0,
+      endByte: source.length,
+      startPosition: { row: 0, column: 0 },
+      endPosition: { row: 1, column: 0 },
+      children: [{ node: classNode }]
+    });
+
+    const result = await parseSourceFilesToCodeSemanticGraph([{ path: "src/deep.ts", source }], {
+      parserProvider: () => ({ rootNode: root })
+    });
+
+    expect(result.ok).toBe(true);
+    if (!result.ok) {
+      throw new Error(formatAstTestDiagnostics(result.diagnostics));
+    }
+    expect(result.value.rawNodes.length).toBeGreaterThan(6000);
+    expect(requireAstAnchor(result.value, "Deep").fingerprint.value).toMatch(
+      /^sha256:[0-9a-f]{64}$/
+    );
   });
 
   test("rejects parser errors unless explicitly allowed", async () => {
@@ -4696,7 +4871,14 @@ function resourceShellFingerprintAst(input: ResourceShellFingerprintAstInput = {
   };
 }
 
-function astAnchorForTarget(graph: CodeSemanticGraph, target: string): CodeAstAnchor | undefined {
+type FingerprintedAstAnchor = CodeSemanticGraph["anchors"][number] & {
+  fingerprint: NonNullable<CodeSemanticGraph["anchors"][number]["fingerprint"]>;
+};
+
+function astAnchorForTarget(
+  graph: CodeSemanticGraph,
+  target: string
+): CodeSemanticGraph["anchors"][number] | undefined {
   return graph.anchors.find((anchor) => anchor.target === target);
 }
 
@@ -4709,13 +4891,17 @@ function graphFromAstForTest(ast: unknown): CodeSemanticGraph {
   return result.value;
 }
 
-function requireAstAnchor(graph: CodeSemanticGraph, target: string): CodeAstAnchor {
+function requireAstAnchor(graph: CodeSemanticGraph, target: string): FingerprintedAstAnchor {
   const anchor = astAnchorForTarget(graph, target);
   expect(anchor).toBeDefined();
   if (!anchor) {
     throw new Error(`missing AST anchor for ${target}`);
   }
-  return anchor;
+  expect(anchor.fingerprint).toBeDefined();
+  if (!anchor.fingerprint) {
+    throw new Error(`missing AST anchor fingerprint for ${target}`);
+  }
+  return anchor as FingerprintedAstAnchor;
 }
 
 function languageAstFixtures(): { language: string; expected: string; ast: unknown }[] {
@@ -4783,6 +4969,49 @@ function goReceiverAstJson(): unknown {
             kind: "function_declaration",
             attributes: { name: "AppendEvent" },
             text: "func (s *AuditStore) AppendEvent(event AuditEvent) {\n  s.repo.Insert(event)\n}"
+          }
+        ]
+      }
+    ]
+  };
+}
+
+function goReceiverCallAstJson(): unknown {
+  return {
+    language: "go",
+    files: [
+      {
+        path: "src/audit/store.go",
+        root: "root",
+        nodes: [
+          {
+            id: "root",
+            kind: "source_file",
+            children: ["repo", "store", "save", "run"]
+          },
+          {
+            id: "repo",
+            kind: "type_declaration",
+            attributes: { name: "AuditRepo" },
+            text: "type AuditRepo struct {\n}"
+          },
+          {
+            id: "store",
+            kind: "type_declaration",
+            attributes: { name: "AuditStore" },
+            text: "type AuditStore struct {\n  repo *AuditRepo\n}"
+          },
+          {
+            id: "save",
+            kind: "function_declaration",
+            attributes: { name: "Save" },
+            text: "func (r *AuditRepo) Save(event AuditEvent) {\n}"
+          },
+          {
+            id: "run",
+            kind: "function_declaration",
+            attributes: { name: "Run" },
+            text: "func (s *AuditStore) Run(event AuditEvent) {\n  s.repo.Save(event)\n}"
           }
         ]
       }
@@ -4874,8 +5103,15 @@ type FakeTreeSitterNode = {
   endByte: () => number;
   childCount: () => number;
   child: (index: number) => FakeTreeSitterNode | undefined;
-  fieldNameForChild: (index: number) => string | undefined;
+  walk: () => FakeTreeSitterCursor;
   hasError: () => boolean;
+};
+
+type FakeTreeSitterCursor = {
+  gotoFirstChild: () => boolean;
+  gotoNextSibling: () => boolean;
+  currentNode: () => FakeTreeSitterNode | undefined;
+  fieldName: () => string | undefined;
 };
 
 function fakeTreeSitterNode(input: {
@@ -4897,7 +5133,27 @@ function fakeTreeSitterNode(input: {
     endByte: () => input.endByte,
     childCount: () => children.length,
     child: (index) => children[index]?.node,
-    fieldNameForChild: (index) => children[index]?.fieldName,
+    walk: () => {
+      let index = -1;
+      return {
+        gotoFirstChild: () => {
+          if (children.length === 0) {
+            return false;
+          }
+          index = 0;
+          return true;
+        },
+        gotoNextSibling: () => {
+          if (index + 1 >= children.length) {
+            return false;
+          }
+          index += 1;
+          return true;
+        },
+        currentNode: () => children[index]?.node,
+        fieldName: () => children[index]?.fieldName
+      };
+    },
     hasError: () => input.hasError === true
   };
 }

@@ -14,6 +14,7 @@ import { buildCodeSemanticGraphFromAstJson } from "./ast-generation-json.ts";
 import { parseSourceFilesToCodeSemanticGraph } from "./ast-generation-source.ts";
 import {
   normalizeModuleName,
+  compareCodepointStrings,
   quoteShapeString,
   shapeRelationName,
   shapeTypeName,
@@ -160,7 +161,9 @@ function formatSemanticShape(
     "trait GeneratedAstAnchor {",
     "}"
   ];
-  const resources = [...graph.resources].sort((left, right) => left.name.localeCompare(right.name));
+  const resources = [...graph.resources].sort((left, right) =>
+    compareCodepointStrings(left.name, right.name)
+  );
   for (const resource of resources) {
     lines.push(
       "",
@@ -171,13 +174,13 @@ function formatSemanticShape(
   }
 
   const components = [...graph.containers].sort((left, right) =>
-    left.name.localeCompare(right.name)
+    compareCodepointStrings(left.name, right.name)
   );
   for (const component of components) {
     lines.push("", `component ${component.name} : GeneratedCandidate {`);
     const functions = graph.functions
       .filter((fn) => fn.ownerId === component.id)
-      .sort((left, right) => left.name.localeCompare(right.name));
+      .sort((left, right) => compareCodepointStrings(left.name, right.name));
     for (const fn of functions) {
       lines.push(
         `  fn ${fn.name}`,
@@ -205,15 +208,21 @@ function formatSemanticShape(
     );
   }
 
-  const anchors = [...graph.anchors].sort((left, right) => left.name.localeCompare(right.name));
+  const anchors = [...graph.anchors].sort((left, right) =>
+    compareCodepointStrings(left.name, right.name)
+  );
   for (const anchor of anchors) {
     lines.push(
       "",
       `resource ${anchor.name} : GeneratedAstAnchor {`,
-      `  storage ast.anchor(${quoteShapeString(anchor.sourceRef)})`,
-      `  fingerprint ${anchor.fingerprint.provider}(${quoteShapeString(anchor.fingerprint.value)})`,
-      "}"
+      `  storage ast.anchor(${quoteShapeString(anchor.sourceRef)})`
     );
+    if (anchor.fingerprint) {
+      lines.push(
+        `  fingerprint ${anchor.fingerprint.provider}(${quoteShapeString(anchor.fingerprint.value)})`
+      );
+    }
+    lines.push("}");
   }
 
   const endpointName = new Map<string, string>();
@@ -229,7 +238,7 @@ function formatSemanticShape(
 
   const seenRelationNames = new Set<string>();
   for (const relation of [...graph.relations].sort((left, right) =>
-    left.id.localeCompare(right.id)
+    compareCodepointStrings(left.id, right.id)
   )) {
     const from = endpointName.get(relation.fromId);
     const to = endpointName.get(relation.toId);
@@ -280,13 +289,13 @@ function appendCandidateEffects(lines: string[], graph: CodeSemanticGraph): void
   const anchorById = new Map(graph.anchors.map((anchor) => [anchor.id, anchor]));
 
   for (const candidate of [...graph.candidateEffects].sort((left, right) =>
-    left.name.localeCompare(right.name)
+    compareCodepointStrings(left.name, right.name)
   )) {
     const fn = functionById.get(candidate.functionId);
     const owner = fn ? ownerById.get(fn.ownerId) : undefined;
     const resource = resourceById.get(candidate.targetResourceId);
     const anchor = candidate.anchorId ? anchorById.get(candidate.anchorId) : undefined;
-    if (!fn || !owner || !resource) {
+    if (!fn || !owner || !resource || !anchor?.fingerprint) {
       continue;
     }
     lines.push(
@@ -296,13 +305,9 @@ function appendCandidateEffects(lines: string[], graph: CodeSemanticGraph): void
       `  effect ${candidate.effect}<${resource.name}>`,
       `  source ${sourceLanguage(fn.language)}(${quoteShapeString(candidate.sourceRef)})`,
       `  confidence ${candidate.confidence}`,
-      ...(anchor
-        ? [
-            `  pin ${anchor.name} fingerprint ${anchor.fingerprint.provider}(${quoteShapeString(
-              anchor.fingerprint.value
-            )})`
-          ]
-        : []),
+      `  pin ${anchor.name} fingerprint ${anchor.fingerprint.provider}(${quoteShapeString(
+        anchor.fingerprint.value
+      )})`,
       "}"
     );
   }
@@ -358,20 +363,25 @@ function appendGeneratedFromRelations(
     });
   }
 
-  for (const link of semanticLinks.sort((left, right) => left.name.localeCompare(right.name))) {
+  for (const link of semanticLinks.sort((left, right) =>
+    compareCodepointStrings(left.name, right.name)
+  )) {
     const relationName = uniqueReadableShapeName(link.name, seenRelationNames);
     lines.push(
       "",
       `relation ${relationName} {`,
       "  kind generated_from",
       `  connects ${link.from} -> ${link.anchor.name}`,
-      `  roles { ${link.from} as generated, ${link.anchor.name} as syntax }`,
-      `  expects ${link.anchor.name} fingerprint ${link.anchor.fingerprint.provider}(${quoteShapeString(
-        link.anchor.fingerprint.value
-      )})`,
-      `  summary ${quoteShapeString(link.summary)}`,
-      "}"
+      `  roles { ${link.from} as generated, ${link.anchor.name} as syntax }`
     );
+    if (link.anchor.fingerprint) {
+      lines.push(
+        `  expects ${link.anchor.name} fingerprint ${link.anchor.fingerprint.provider}(${quoteShapeString(
+          link.anchor.fingerprint.value
+        )})`
+      );
+    }
+    lines.push(`  summary ${quoteShapeString(link.summary)}`, "}");
   }
 }
 
@@ -402,7 +412,9 @@ function formatGeneratedShape(source: string, filePath: string): AstGenerationRe
 
 function appendRawAstDeclarations(lines: string[], graph: CodeSemanticGraph): void {
   lines.push("", "trait GeneratedAstFile {", "}", "", "trait GeneratedAstNode {", "}");
-  for (const file of [...graph.files].sort((left, right) => left.path.localeCompare(right.path))) {
+  for (const file of [...graph.files].sort((left, right) =>
+    compareCodepointStrings(left.path, right.path)
+  )) {
     lines.push(
       "",
       `resource ${file.id} : GeneratedAstFile {`,
@@ -418,7 +430,9 @@ function appendRawAstDeclarations(lines: string[], graph: CodeSemanticGraph): vo
     );
   }
 
-  for (const node of [...graph.rawNodes].sort((left, right) => left.id.localeCompare(right.id))) {
+  for (const node of [...graph.rawNodes].sort((left, right) =>
+    compareCodepointStrings(left.id, right.id)
+  )) {
     lines.push(
       "",
       `resource ${node.id} : GeneratedAstNode {`,

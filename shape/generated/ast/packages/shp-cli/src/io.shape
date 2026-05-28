@@ -8,17 +8,17 @@ trait GeneratedCandidate {
 
 resource IoModuleSetExitCodeAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-cli/src/io.ts:11-13")
-  fingerprint ast.semantic_subtree_v1("sha256:29e6d9c5808c1b1e07661b57271b5357a8ac331c7c008fb6e783507b0d95fd2d")
+  fingerprint ast.semantic_subtree_v1("sha256:b8f4c9a9a25baae406342b080b2931407ed4316a13963a7353153b91271d2f4e")
 }
 
 resource IoModuleStderrAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-cli/src/io.ts:7-9")
-  fingerprint ast.semantic_subtree_v1("sha256:38ce8c2b388bd6e17cb1e8d6aa266c28fdd6599f89c3e3a93c11626746646504")
+  fingerprint ast.semantic_subtree_v1("sha256:b0e571f645712b4dd2382f26bb02c077ce0631bd21f4fe2ec82ecda8c4aef5c8")
 }
 
 resource IoModuleStdoutAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-cli/src/io.ts:3-5")
-  fingerprint ast.semantic_subtree_v1("sha256:4b466b9273bdac7f1c52116f3f80ea1bafecfea9f4aba6aab565149b473669ff")
+  fingerprint ast.semantic_subtree_v1("sha256:cdf6a4eb309fac1a3bc6104e00598fd5883bda3ee06b4ba4509171869c4f1221")
 }
 
 component IoModule : GeneratedCandidate {
@@ -37,7 +37,7 @@ relation IoModuleSetExitCodeGeneratedFromIoModuleSetExitCodeAstAnchor {
   kind generated_from
   connects IoModule -> IoModuleSetExitCodeAstAnchor
   roles { IoModule as generated, IoModuleSetExitCodeAstAnchor as syntax }
-  expects IoModuleSetExitCodeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:29e6d9c5808c1b1e07661b57271b5357a8ac331c7c008fb6e783507b0d95fd2d")
+  expects IoModuleSetExitCodeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b8f4c9a9a25baae406342b080b2931407ed4316a13963a7353153b91271d2f4e")
   summary "fn IoModule.setExitCode generated from typescript function_declaration at packages/shp-cli/src/io.ts:11-13."
 }
 
@@ -45,7 +45,7 @@ relation IoModuleStderrGeneratedFromIoModuleStderrAstAnchor {
   kind generated_from
   connects IoModule -> IoModuleStderrAstAnchor
   roles { IoModule as generated, IoModuleStderrAstAnchor as syntax }
-  expects IoModuleStderrAstAnchor fingerprint ast.semantic_subtree_v1("sha256:38ce8c2b388bd6e17cb1e8d6aa266c28fdd6599f89c3e3a93c11626746646504")
+  expects IoModuleStderrAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b0e571f645712b4dd2382f26bb02c077ce0631bd21f4fe2ec82ecda8c4aef5c8")
   summary "fn IoModule.stderr generated from typescript function_declaration at packages/shp-cli/src/io.ts:7-9."
 }
 
@@ -53,7 +53,7 @@ relation IoModuleStdoutGeneratedFromIoModuleStdoutAstAnchor {
   kind generated_from
   connects IoModule -> IoModuleStdoutAstAnchor
   roles { IoModule as generated, IoModuleStdoutAstAnchor as syntax }
-  expects IoModuleStdoutAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4b466b9273bdac7f1c52116f3f80ea1bafecfea9f4aba6aab565149b473669ff")
+  expects IoModuleStdoutAstAnchor fingerprint ast.semantic_subtree_v1("sha256:cdf6a4eb309fac1a3bc6104e00598fd5883bda3ee06b4ba4509171869c4f1221")
   summary "fn IoModule.stdout generated from typescript function_declaration at packages/shp-cli/src/io.ts:3-5."
 }
 

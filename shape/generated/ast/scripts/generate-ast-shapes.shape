@@ -6,22 +6,38 @@ trait GeneratedAstAnchor {
 trait GeneratedCandidate {
 }
 
+resource GenerateAstShapesModuleCompareCodepointStringsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("scripts/generate-ast-shapes.ts:54-62")
+  fingerprint ast.semantic_subtree_v1("sha256:e888107daded6da8a90e58aa8981b45bb5049a5ee3ce63fcf4e87c7572200af7")
+}
+
 resource GenerateAstShapesModuleTrackedSourceFilesAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("scripts/generate-ast-shapes.ts:35-52")
-  fingerprint ast.semantic_subtree_v1("sha256:ba725bcc2a72647195ec28a8586290ea3c054ce546bdd3e4ddaf40d93a0d4635")
+  fingerprint ast.semantic_subtree_v1("sha256:74a6b83701c1e54920eb98545e95ab38dfe40aea255bcdb146c1030bfc95bc13")
 }
 
 component GenerateAstShapesModule : GeneratedCandidate {
+  fn compareCodepointStrings
+    source ts("scripts/generate-ast-shapes.ts:54-62")
+    effects unknown
   fn trackedSourceFiles
     source ts("scripts/generate-ast-shapes.ts:35-52")
     effects unknown
+}
+
+relation GenerateAstShapesModuleCompareCodepointStringsGeneratedFromGenerateAstShapesModuleCompareCodepointStringsAstAnchor {
+  kind generated_from
+  connects GenerateAstShapesModule -> GenerateAstShapesModuleCompareCodepointStringsAstAnchor
+  roles { GenerateAstShapesModule as generated, GenerateAstShapesModuleCompareCodepointStringsAstAnchor as syntax }
+  expects GenerateAstShapesModuleCompareCodepointStringsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e888107daded6da8a90e58aa8981b45bb5049a5ee3ce63fcf4e87c7572200af7")
+  summary "fn GenerateAstShapesModule.compareCodepointStrings generated from typescript function_declaration at scripts/generate-ast-shapes.ts:54-62."
 }
 
 relation GenerateAstShapesModuleTrackedSourceFilesGeneratedFromGenerateAstShapesModuleTrackedSourceFilesAstAnchor {
   kind generated_from
   connects GenerateAstShapesModule -> GenerateAstShapesModuleTrackedSourceFilesAstAnchor
   roles { GenerateAstShapesModule as generated, GenerateAstShapesModuleTrackedSourceFilesAstAnchor as syntax }
-  expects GenerateAstShapesModuleTrackedSourceFilesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ba725bcc2a72647195ec28a8586290ea3c054ce546bdd3e4ddaf40d93a0d4635")
+  expects GenerateAstShapesModuleTrackedSourceFilesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:74a6b83701c1e54920eb98545e95ab38dfe40aea255bcdb146c1030bfc95bc13")
   summary "fn GenerateAstShapesModule.trackedSourceFiles generated from typescript function_declaration at scripts/generate-ast-shapes.ts:35-52."
 }
 

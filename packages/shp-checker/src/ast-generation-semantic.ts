@@ -35,8 +35,6 @@ import {
 
 const DATA_RESOURCE_NAME_HINT =
   /(Event|Record|Message|Config|State|Entity|Snapshot|Request|Response|Table|Queue|Topic|Payload)$/;
-const CALL_RECEIVER_PATTERN =
-  /\b(?:self|this)\.([A-Za-z_][A-Za-z0-9_]*)\.([A-Za-z_][A-Za-z0-9_]*)\b/g;
 
 export function addSemanticProjection(graph: CodeSemanticGraph): void {
   const childrenByParent = groupChildren(graph.rawNodes);
@@ -74,14 +72,18 @@ export function addSemanticProjection(graph: CodeSemanticGraph): void {
           confidence: "medium"
         });
         const anchor = addAnchor(graph, {
-          name: `${container.name}AstAnchor`,
-          path: typeNode.path,
-          language: typeNode.language,
-          nodeId: typeNode.id,
-          kind: typeNode.kind,
-          sourceRef: sourceRef(typeNode),
-          target: container.name,
-          targetKind: "component"
+          input: {
+            name: `${container.name}AstAnchor`,
+            path: typeNode.path,
+            language: typeNode.language,
+            nodeId: typeNode.id,
+            kind: typeNode.kind,
+            sourceRef: sourceRef(typeNode),
+            target: container.name,
+            targetKind: "component"
+          },
+          childrenByParent,
+          nodeById
         });
         container.anchorId = anchor.id;
         for (const fn of ownedFunctions) {
@@ -99,14 +101,18 @@ export function addSemanticProjection(graph: CodeSemanticGraph): void {
           sourceRef: sourceRef(typeNode)
         });
         const anchor = addAnchor(graph, {
-          name: `${resource.name}AstAnchor`,
-          path: typeNode.path,
-          language: typeNode.language,
-          nodeId: typeNode.id,
-          kind: typeNode.kind,
-          sourceRef: sourceRef(typeNode),
-          target: resource.name,
-          targetKind: "resource"
+          input: {
+            name: `${resource.name}AstAnchor`,
+            path: typeNode.path,
+            language: typeNode.language,
+            nodeId: typeNode.id,
+            kind: typeNode.kind,
+            sourceRef: sourceRef(typeNode),
+            target: resource.name,
+            targetKind: "resource"
+          },
+          childrenByParent,
+          nodeById
         });
         resource.anchorId = anchor.id;
       }
@@ -204,14 +210,18 @@ function addFunction(
     return;
   }
   const anchor = addAnchor(graph, {
-    name: `${owner.name}${shapeTypeName(fn.name)}AstAnchor`,
-    path: node.path,
-    language: node.language,
-    nodeId: node.id,
-    kind: node.kind,
-    sourceRef: fn.sourceRef,
-    target: `${owner.name}.${fn.name}`,
-    targetKind: "fn"
+    input: {
+      name: `${owner.name}${shapeTypeName(fn.name)}AstAnchor`,
+      path: node.path,
+      language: node.language,
+      nodeId: node.id,
+      kind: node.kind,
+      sourceRef: fn.sourceRef,
+      target: `${owner.name}.${fn.name}`,
+      targetKind: "fn"
+    },
+    childrenByParent,
+    nodeById
   });
   fn.anchorId = anchor.id;
 }
@@ -262,10 +272,15 @@ function addResource(
 
 function addAnchor(
   graph: CodeSemanticGraph,
-  input: Omit<CodeAstAnchor, "id" | "name" | "fingerprint"> & {
-    name: string;
+  options: {
+    input: Omit<CodeAstAnchor, "id" | "name" | "fingerprint"> & {
+      name: string;
+    };
+    childrenByParent: Map<string, RawAstNode[]>;
+    nodeById: Map<string, RawAstNode>;
   }
 ): CodeAstAnchor {
+  const { input } = options;
   const existing = graph.anchors.find(
     (anchor) =>
       anchor.nodeId === input.nodeId &&
@@ -275,7 +290,10 @@ function addAnchor(
   if (existing) {
     return existing;
   }
-  const fingerprint = fingerprintForAnchor(graph, input);
+  const fingerprint = fingerprintForAnchor(graph, input, {
+    childrenByParent: options.childrenByParent,
+    nodeById: options.nodeById
+  });
   const anchor = {
     ...input,
     id: stableShapeId(`anchor_${input.targetKind}_${input.target}_${input.nodeId}`, "AstAnchor"),
@@ -312,9 +330,10 @@ function addResolvedReceiverCalls(
     if (!fieldTypes) {
       continue;
     }
+    const receiverNames = receiverNamesForFunction(fnNode);
 
-    for (const match of fnNode.text.matchAll(CALL_RECEIVER_PATTERN)) {
-      const field = match[1];
+    for (const call of receiverFieldCalls(fnNode.text, receiverNames)) {
+      const field = call.field;
       if (!field) {
         continue;
       }
@@ -324,11 +343,11 @@ function addResolvedReceiverCalls(
       }
       const target =
         containersByName.get(targetName) ?? containersByName.get(shapeTypeName(targetName));
-      if (!target) {
+      if (!target || target.id === owner.id) {
         continue;
       }
       const relationId = stableShapeId(
-        `rel_${owner.name}_${target.name}_${fn.name}_${match[0]}`,
+        `rel_${owner.name}_${target.name}_${fn.name}_${call.text}`,
         "Relation"
       );
       if (graph.relations.some((relation) => relation.id === relationId)) {
@@ -371,6 +390,10 @@ function addCandidateEffects(graph: CodeSemanticGraph, fileNodes: RawAstNode[]):
     const mentionedResources = [...new Set(candidateResourceMentions(node.text, resourcesByName))];
     for (const resource of mentionedResources) {
       const anchorId = fn.anchorId;
+      const anchor = anchorId ? graph.anchors.find((item) => item.id === anchorId) : undefined;
+      if (!anchor?.fingerprint) {
+        continue;
+      }
       const name = uniqueSemanticName(
         shapeTypeName(`${fn.name}_${effect}_${resource.name}_CandidateEffect`),
         graph.candidateEffects.map((item) => item.name),
@@ -437,14 +460,8 @@ function collectFieldTypes(nodes: RawAstNode[]): Map<string, Map<string, string>
       continue;
     }
     const fields = new Map<string, string>();
-    for (const match of node.text.matchAll(
-      /\b([A-Za-z_][A-Za-z0-9_]*)\s*:\s*([A-Z][A-Za-z0-9_]*)\b/g
-    )) {
-      const field = match[1];
-      const typeName = match[2];
-      if (field && typeName) {
-        fields.set(field, typeName);
-      }
+    for (const field of fieldTypeEntries(node.text, node.language)) {
+      fields.set(field.name, field.typeName);
     }
     if (fields.size > 0) {
       fieldTypesByOwner.set(name, fields);
@@ -452,4 +469,52 @@ function collectFieldTypes(nodes: RawAstNode[]): Map<string, Map<string, string>
     }
   }
   return fieldTypesByOwner;
+}
+
+function receiverNamesForFunction(node: RawAstNode): Set<string> {
+  const text = node.text ?? "";
+  const names = new Set(["self", "this"]);
+  const goMatch = /\bfunc\s*\(\s*([A-Za-z_][A-Za-z0-9_]*)\s+\*?[A-Za-z_][A-Za-z0-9_]*\s*\)/.exec(
+    text
+  );
+  if (goMatch?.[1]) {
+    names.add(goMatch[1]);
+  }
+  return names;
+}
+
+function receiverFieldCalls(
+  text: string,
+  receiverNames: Set<string>
+): { text: string; field: string }[] {
+  const calls: { text: string; field: string }[] = [];
+  const pattern =
+    /\b([A-Za-z_][A-Za-z0-9_]*)\.([A-Za-z_][A-Za-z0-9_]*)\.([A-Za-z_][A-Za-z0-9_]*)\b/g;
+  for (const match of text.matchAll(pattern)) {
+    const receiver = match[1];
+    const field = match[2];
+    if (receiver && field && receiverNames.has(receiver)) {
+      calls.push({ text: match[0], field });
+    }
+  }
+  return calls;
+}
+
+function fieldTypeEntries(text: string, language: string): { name: string; typeName: string }[] {
+  const fields: { name: string; typeName: string }[] = [];
+  const colonPattern = /\b([A-Za-z_][A-Za-z0-9_]*)\s*:\s*([A-Z][A-Za-z0-9_]*)\b/g;
+  for (const match of text.matchAll(colonPattern)) {
+    if (match[1] && match[2]) {
+      fields.push({ name: match[1], typeName: match[2] });
+    }
+  }
+  if (language === "go") {
+    const goFieldPattern = /^\s*([A-Za-z_][A-Za-z0-9_]*)\s+\*?([A-Z][A-Za-z0-9_]*)\b/gm;
+    for (const match of text.matchAll(goFieldPattern)) {
+      if (match[1] && match[2] && match[1] !== "type") {
+        fields.push({ name: match[1], typeName: match[2] });
+      }
+    }
+  }
+  return fields;
 }

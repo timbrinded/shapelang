@@ -338,6 +338,55 @@ describe("shp CLI", () => {
     }
   });
 
+  test("keeps generated AST identity stable for absolute paths and nested cwd", async () => {
+    const tempDir = await mkdtemp(join(repoRoot, ".tmp-shp-cli-test-"));
+    const absoluteOutDir = join(tempDir, "absolute/shape/generated/ast");
+    const nestedOutDir = join(tempDir, "nested/shape/generated/ast");
+    const absoluteSource = resolve(repoRoot, "fixtures/source/audit_purge.ts");
+    try {
+      const absoluteResult = await runCli([
+        "ast",
+        "source",
+        "--language",
+        "typescript",
+        "--out-dir",
+        absoluteOutDir,
+        absoluteSource
+      ]);
+      expect(absoluteResult.exitCode).toBe(0);
+
+      const nestedResult = await runCli(
+        [
+          "ast",
+          "source",
+          "--language",
+          "typescript",
+          "--out-dir",
+          nestedOutDir,
+          "../../fixtures/source/audit_purge.ts"
+        ],
+        cliPath,
+        resolve(repoRoot, "packages/shp-cli")
+      );
+      expect(nestedResult.exitCode).toBe(0);
+
+      const absoluteShape = await readFile(
+        join(absoluteOutDir, "fixtures/source/audit_purge.shape"),
+        "utf8"
+      );
+      const nestedShape = await readFile(
+        join(nestedOutDir, "fixtures/source/audit_purge.shape"),
+        "utf8"
+      );
+      expect(nestedShape).toBe(absoluteShape);
+
+      const manifest = await readFile(join(nestedOutDir, "manifest.json"), "utf8");
+      expect(manifest).toContain('"sources": [\n        "fixtures/source/audit_purge.ts"\n      ]');
+    } finally {
+      await rm(tempDir, { recursive: true, force: true });
+    }
+  });
+
   test("preserves authored Shape files in broad generated AST output directories", async () => {
     const tempDir = await mkdtemp(join(repoRoot, ".tmp-shp-cli-test-"));
     const shapeDir = join(tempDir, "shape");
@@ -519,7 +568,7 @@ describe("shp CLI", () => {
     }
   });
 
-  test("rejects AST JSON without token data for semantic fingerprints", async () => {
+  test("warns and skips fingerprints when AST JSON lacks token data", async () => {
     const tempDir = await mkdtemp(join(tmpdir(), "shp-cli-test-"));
     const astFile = join(tempDir, "ast.json");
     try {
@@ -542,9 +591,10 @@ describe("shp CLI", () => {
 
       const result = await runCli(["ast", "json", astFile]);
 
-      expect(result.exitCode).toBe(2);
+      expect(result.exitCode).toBe(0);
       expect(result.stderr).toContain("missing_fingerprint_tokens");
-      expect(result.stdout).toBe("");
+      expect(result.stdout).toContain("resource MainModuleMainAstAnchor");
+      expect(result.stdout).not.toContain("fingerprint ast.semantic_subtree_v1");
     } finally {
       await rm(tempDir, { recursive: true, force: true });
     }
@@ -980,14 +1030,15 @@ function cliAstJson(): unknown {
 
 async function runCli(
   args: string[],
-  executable = cliPath
+  executable = cliPath,
+  cwd = repoRoot
 ): Promise<{
   exitCode: number;
   stdout: string;
   stderr: string;
 }> {
   const process = Bun.spawn(["bun", executable, ...args], {
-    cwd: repoRoot,
+    cwd,
     stdout: "pipe",
     stderr: "pipe"
   });
