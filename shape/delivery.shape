@@ -2,6 +2,8 @@ module shape.delivery
 
 import shape.checker
 
+import shape.language
+
 import shape.tooling
 
 resource CiWorkflow
@@ -16,6 +18,8 @@ resource DocsContent
 
 resource InstallScript
 
+resource NativeParserAsset
+
 resource ReleaseArtifact
 
 resource ReleaseVersionTag
@@ -29,11 +33,19 @@ component CiPipeline {
   grants Read<CliPackageManifest>
   grants Read<CopilotReviewPrompt>
   grants Read<CopilotReviewResult>
+  grants Read<GeneratedAstManifest>
+  grants Read<LanguageSource>
+  grants Read<NativeParserAsset>
   grants Read<ReleaseArtifact>
   grants Read<ReleaseVersionTag>
   grants Read<SemanticDiagnostics>
+  grants Read<ShapeModelDraft>
+  grants Read<ShapeSource>
+  grants Read<SourceSyntaxTree>
   grants Update<ChangedFileList>
   grants Update<CopilotReviewResult>
+  grants Update<GeneratedAstManifest>
+  grants Update<ShapeModelDraft>
   fn checkReleaseVersion : RefactorSensitive
     source yaml(".github/workflows/release.yml#Check release tag matches CLI package version")
     effects complete {
@@ -43,6 +55,28 @@ component CiPipeline {
         evidence json("packages/shp-cli/package.json")
       Read<ReleaseVersionTag>
         evidence yaml(".github/workflows/release.yml")
+    }
+  fn generateAstContext
+    source ts("scripts/generate-ast-shapes.ts")
+    effects complete {
+      Read<CiWorkflow>
+        evidence yaml(".github/workflows/shape.yml")
+      Read<CiWorkflow>
+        evidence yaml(".github/workflows/release.yml")
+      Read<CliPackageManifest>
+        evidence json("package.json")
+      Read<GeneratedAstManifest>
+        evidence json("shape/generated/ast/manifest.json")
+      Read<LanguageSource>
+        evidence ts("scripts/generate-ast-shapes.ts")
+      Read<LanguageSource>
+        evidence sh("scripts/generate-ast-shapes.sh")
+      Read<SourceSyntaxTree>
+        evidence ts("scripts/generate-ast-shapes.ts")
+      Update<GeneratedAstManifest>
+        evidence ts("scripts/generate-ast-shapes.ts")
+      Update<ShapeModelDraft>
+        evidence ts("scripts/generate-ast-shapes.ts")
     }
   fn runShapeCi
     source yaml(".github/workflows/shape.yml")
@@ -79,6 +113,14 @@ component CiPipeline {
         evidence yaml(".github/workflows/release.yml")
       Read<CiWorkflow>
         evidence yaml(".github/workflows/shape.yml")
+      Read<LanguageSource>
+        evidence yaml(".github/workflows/release.yml")
+      Read<LanguageSource>
+        evidence yaml(".github/workflows/shape.yml")
+      Read<NativeParserAsset>
+        evidence yaml(".github/workflows/release.yml")
+      Read<NativeParserAsset>
+        evidence yaml(".github/workflows/shape.yml")
       Read<ReleaseArtifact>
         evidence yaml(".github/workflows/release.yml")
       Read<ReleaseArtifact>
@@ -86,6 +128,14 @@ component CiPipeline {
       Read<SemanticDiagnostics>
         evidence yaml(".github/workflows/release.yml")
       Read<SemanticDiagnostics>
+        evidence yaml(".github/workflows/shape.yml")
+      Read<ShapeModelDraft>
+        evidence yaml(".github/workflows/release.yml")
+      Read<ShapeModelDraft>
+        evidence yaml(".github/workflows/shape.yml")
+      Read<SourceSyntaxTree>
+        evidence yaml(".github/workflows/release.yml")
+      Read<SourceSyntaxTree>
         evidence yaml(".github/workflows/shape.yml")
     }
   fn writeChangedFiles
@@ -105,6 +155,8 @@ component DocsSite {
     effects complete {
       Read<DocsContent>
         evidence md("docs-site/src/content/docs/concepts/analyzer-hints.md")
+      Read<DocsContent>
+        evidence md("docs-site/src/content/docs/concepts/ast-generation.md")
       Read<DocsContent>
         evidence md("docs-site/src/content/docs/concepts/model-updates-attestations.md")
       Read<DocsContent>
@@ -160,6 +212,14 @@ component DocsSite {
       Read<DocsContent>
         evidence ts("docs-site/scripts/verify-shape-blocks.ts")
       Update<DocsContent>
+        evidence md("docs-site/src/content/docs/concepts/ast-generation.md")
+      Update<DocsContent>
+        evidence md("docs-site/src/content/docs/inside-shape/langium-grammar.md")
+      Update<DocsContent>
+        evidence md("docs-site/src/content/docs/reference/cli.md")
+      Update<DocsContent>
+        evidence md("docs-site/src/content/docs/reference/diagnostics.md")
+      Update<DocsContent>
         evidence md("docs-site/src/content/docs/reference/language-syntax.md")
     }
 }
@@ -168,14 +228,44 @@ component ReleasePipeline {
   owns InstallScript
   owns ReleaseArtifact
   grants Read<InstallScript>
+  grants Read<NativeParserAsset>
+  grants Read<ReleaseArtifact>
   grants Update<ReleaseArtifact>
   fn buildReleaseAssets : RefactorSensitive
     source sh("scripts/build-release-assets.sh")
     effects complete {
       Read<InstallScript>
         evidence sh("scripts/build-release-assets.sh")
+      Read<InstallScript>
+        evidence sh("install.sh")
+      Read<InstallScript>
+        evidence ps1("install.ps1")
+      Read<NativeParserAsset>
+        evidence sh("scripts/build-release-assets.sh")
+      Read<NativeParserAsset>
+        evidence ts("scripts/prepare-tree-sitter-parser-assets.ts")
+      Read<NativeParserAsset>
+        evidence ts("packages/shp-checker/src/tree-sitter-native-targets.ts")
       Update<ReleaseArtifact>
         evidence sh("scripts/build-release-assets.sh")
+    }
+  fn selectInstallReleaseAsset
+    source yaml("action.yml")
+    effects complete {
+      Read<InstallScript>
+        evidence yaml("action.yml")
+      Read<InstallScript>
+        evidence sh("install.sh")
+      Read<InstallScript>
+        evidence ps1("install.ps1")
+      Read<NativeParserAsset>
+        evidence ts("packages/shp-checker/src/tree-sitter-native-targets.ts")
+      Read<ReleaseArtifact>
+        evidence yaml("action.yml")
+      Read<ReleaseArtifact>
+        evidence sh("install.sh")
+      Read<ReleaseArtifact>
+        evidence ps1("install.ps1")
     }
 }
 
@@ -223,6 +313,30 @@ implementation AnalyzerSource {
   on_change require shape_update
 }
 
+implementation AstGenerationSource {
+  paths {
+    "packages/shp-checker/src/ast-generation-core.ts"
+    "packages/shp-checker/src/ast-generation-fingerprints.ts"
+    "packages/shp-checker/src/ast-generation-graph.ts"
+    "packages/shp-checker/src/ast-generation-json.ts"
+    "packages/shp-checker/src/ast-generation-raw.ts"
+    "packages/shp-checker/src/ast-generation-render.ts"
+    "packages/shp-checker/src/ast-generation-semantic.ts"
+    "packages/shp-checker/src/ast-generation-source.ts"
+    "packages/shp-checker/src/ast-generation-tokens.ts"
+    "packages/shp-checker/src/ast-generation-tree-sitter-normalize.ts"
+    "packages/shp-checker/src/ast-generation-tree-sitter.ts"
+    "packages/shp-checker/src/ast-generation-types.ts"
+    "packages/shp-checker/src/ast-generation-utils.ts"
+    "packages/shp-checker/src/ast-generation.ts"
+    "packages/shp-checker/src/generated-ast-policy.ts"
+    "packages/shp-checker/src/source-languages.ts"
+    "packages/shp-checker/src/tree-sitter-native-targets.ts"
+  }
+  conforms_to ShapeAstGenerator
+  on_change require shape_update
+}
+
 implementation AuthoringSource {
   paths {
     "packages/shp-checker/src/authoring.ts"
@@ -241,6 +355,8 @@ implementation CheckerSource {
 
 implementation CiScripts {
   paths {
+    "scripts/generate-ast-shapes.sh"
+    "scripts/generate-ast-shapes.ts"
     "scripts/write-changed-files.sh"
   }
   conforms_to CiPipeline
@@ -315,9 +431,11 @@ implementation ParserSource {
 
 implementation ReleaseSource {
   paths {
+    "action.yml"
     "install.ps1"
     "install.sh"
     "scripts/build-release-assets.sh"
+    "scripts/prepare-tree-sitter-parser-assets.ts"
   }
   conforms_to ReleasePipeline
   on_change require shape_update
@@ -404,13 +522,31 @@ binding RuleEngineDocs {
 binding ToolingDocs {
   when_changed paths {
     "packages/shp-checker/src/analyzer.ts"
+    "packages/shp-checker/src/ast-generation-core.ts"
+    "packages/shp-checker/src/ast-generation-fingerprints.ts"
+    "packages/shp-checker/src/ast-generation-graph.ts"
+    "packages/shp-checker/src/ast-generation-json.ts"
+    "packages/shp-checker/src/ast-generation-raw.ts"
+    "packages/shp-checker/src/ast-generation-render.ts"
+    "packages/shp-checker/src/ast-generation-semantic.ts"
+    "packages/shp-checker/src/ast-generation-source.ts"
+    "packages/shp-checker/src/ast-generation-tokens.ts"
+    "packages/shp-checker/src/ast-generation-tree-sitter-normalize.ts"
+    "packages/shp-checker/src/ast-generation-tree-sitter.ts"
+    "packages/shp-checker/src/ast-generation-types.ts"
+    "packages/shp-checker/src/ast-generation-utils.ts"
+    "packages/shp-checker/src/ast-generation.ts"
     "packages/shp-checker/src/authoring.ts"
     "packages/shp-checker/src/editor.ts"
     "packages/shp-checker/src/formatter.ts"
+    "packages/shp-checker/src/generated-ast-policy.ts"
+    "packages/shp-checker/src/source-languages.ts"
+    "packages/shp-checker/src/tree-sitter-native-targets.ts"
     "shape/tooling.shape"
   }
   require_changed paths {
     "docs-site/src/content/docs/concepts/analyzer-hints.md"
+    "docs-site/src/content/docs/concepts/ast-generation.md"
     "docs-site/src/content/docs/inside-shape/formatter-editor-authoring.md"
     "docs-site/src/content/docs/reference/cli.md"
   }
@@ -421,7 +557,7 @@ memory ReleaseChecksumContract : RefactorConstraint<fn ReleasePipeline.buildRele
   applies_to fn ReleasePipeline.buildReleaseAssets
   status Explained
   confidence High
-  summary "Release archives, installer templates, and checksums must stay in sync for binary installation."
+  summary "Release archives, bundled parser assets, installer templates, and checksums must stay in sync for binary installation."
   owner ShapeMaintainers
   protects shape ReleaseIntegrity
   guards on_change require ReEvaluation<Self>
@@ -446,6 +582,18 @@ reevaluation DocsShapeBlockVerificationRechecked {
   evidence test("docs-site/scripts/verify-shape-blocks.ts")
 }
 
+reevaluation ReleaseNativeParserAssetsRechecked {
+  satisfies memory ReleaseChecksumContract
+  outcome Confirmed
+  summary "Release asset builds include native bindings and verified parser libraries for every advertised source language, and installers stage parser assets with the executable before swapping them into place."
+  reviewer ShapeMaintainers
+  decided_on "2026-05-28"
+  evidence ps1("install.ps1")
+  evidence sh("install.sh")
+  evidence sh("scripts/build-release-assets.sh")
+  evidence ts("scripts/prepare-tree-sitter-parser-assets.ts")
+}
+
 reevaluation ReleaseVersionTagCheckRechecked {
   satisfies memory ReleaseVersionTagContract
   outcome Confirmed
@@ -453,6 +601,11 @@ reevaluation ReleaseVersionTagCheckRechecked {
   reviewer ShapeMaintainers
   decided_on "2026-05-21"
   evidence yaml(".github/workflows/release.yml")
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/generated-ast-policy.ts")
+  reason "Generated AST manifest helper cleanup is covered by the checker origin model update; the remaining manifest schema and path helper contract is unchanged."
 }
 
 attest no_shape_change {

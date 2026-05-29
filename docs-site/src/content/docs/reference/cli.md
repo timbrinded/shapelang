@@ -21,6 +21,8 @@ shp memory [files...]
 shp obligations [files...]
 shp author --changed-files changed.txt --component ComponentName [--module module.name]
 shp analyze [--shape-files file1.shape,file2.shape] [source-files...]
+shp ast source [--language LANG] [--module NAME] [--include-ast-layer] [--raw-out PATH] [--out-dir DIR] [--check] [--allow-parse-errors] files...
+shp ast json [--module NAME] [--include-ast-layer] [--raw-out PATH] ast.json
 shp update [--version VERSION] [--dry-run] [--path PATH]
 shp --help
 shp --version
@@ -47,6 +49,8 @@ shape/**/*.shape
 | `obligations` | List open design-memory obligations from checker diagnostics. |
 | `author` | Generate a conservative global-model draft from changed files. |
 | `analyze` | Emit source hints or compare source hints with declared effects. |
+| `ast source` | Parse source with Tree-sitter and emit a conservative semantic Shape draft. |
+| `ast json` | Read external AST JSON and emit the same draft format. |
 | `update` | Update a local released binary from GitHub Releases. |
 
 ## Common commands
@@ -67,7 +71,48 @@ shp memory
 shp obligations
 shp author --changed-files changed.txt --component AuditStore
 shp analyze --shape-files fixtures/pass/append_only_append/audit.shape src/audit/purge.ts
+shp ast source --language rust --module generated.audit src/audit/store.rs
+shp ast source --language rust --out-dir shape/generated/ast src/audit/store.rs
+shp ast source --language rust --out-dir shape/generated/ast --check src/audit/store.rs
+shp ast json --module generated.audit --raw-out ast.raw.shape ast.json
 shp update --dry-run
+```
+
+## AST generation
+
+`shp ast` is a drafting tool. It turns syntax evidence into conservative Shape, not final architecture truth.
+
+By default, `shp ast source` parses files with the platform Tree-sitter native binding and prints the semantic draft: stable files, modules, types, functions, high-confidence calls, compact AST anchors, anchor fingerprints where token evidence exists, candidate effect evidence, and unresolved uncertainty. Generated functions use `effects unknown`.
+
+Source language inference covers TypeScript, TSX, JavaScript/JSX, Rust, Go, and Python. JSX files use the JavaScript parser; TSX files use the TSX parser bundled beside released `shp` binaries.
+
+Use `--out-dir shape/generated/ast` to write checked generated AST context as deterministic files plus a manifest. Source identities are normalized relative to the workspace root, so absolute source paths and invocations from nested directories produce the same generated modules and source references for the same file. These generated files use `shape.generated.ast...` modules and are allowed to keep `effects unknown`, because they are candidate evidence rather than reviewed architecture truth. Use `--check` with `--out-dir` in CI to fail when the checked-in generated AST files are stale. Freshness checks and cleanup are scoped to files recorded in the generated AST manifest, so unrelated authored `.shape` files in the output tree are not treated as generated output.
+
+In this repo, `bun run ast:generate` refreshes the committed generated AST context for tracked and untracked non-ignored first-party source, and `bun run ast:check` verifies it is fresh in local, CI, and release validation. The source set excludes dependency, build, and generated parser output. Directory output rejects module or output-path collisions before writing.
+
+Use `--include-ast-layer` to include raw AST resources and `ast_child` relations in stdout. Use `--raw-out PATH` to keep the raw trace in a sidecar Shape file while stdout stays focused on the semantic draft. These flags are mutually exclusive.
+
+`shp ast json` accepts normalized AST JSON with this shape when another parser already produced syntax data. It is an input adapter, not a Shapes-to-AST export path. Anchored nodes should include token/source text in their subtree so `ast.semantic_subtree_v1` fingerprints can be computed. If an anchor has no token evidence, generation reports a warning, keeps the draft, omits that fingerprint expectation, and skips candidate effects that would need an uncheckable pin:
+
+```json
+{
+  "language": "rust",
+  "files": [
+    {
+      "path": "src/audit/store.rs",
+      "root": "root",
+      "nodes": [
+        { "id": "root", "kind": "source_file", "children": ["store"] },
+        {
+          "id": "store",
+          "kind": "struct_item",
+          "attributes": { "name": "AuditStore" },
+          "text": "struct AuditStore { repo: AuditRepo }"
+        }
+      ]
+    }
+  ]
+}
 ```
 
 ## Graph output
@@ -144,7 +189,7 @@ guarded changes:
 
 ## Updating
 
-`shp update` is for local developer installs of the released single binary. It checks the current version, resolves a GitHub release, downloads the matching platform archive, verifies it with `checksums.txt`, and replaces the selected executable path.
+`shp update` is for local developer installs of the released single binary. It checks the current version, resolves a GitHub release, downloads the matching published platform archive, verifies it with `checksums.txt`, and replaces the selected executable path. The published archive matrix follows the native parser target table used by release builds.
 
 Use `shp update --dry-run` to see the selected release, asset, and binary path without downloading. Use `shp update --version v0.3.0` to target a specific newer release. Use `--path PATH` when testing from source or when replacing a custom installed binary; if that path already exists, it must identify as the Shape CLI and report a valid version.
 

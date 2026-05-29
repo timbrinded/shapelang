@@ -1,0 +1,88 @@
+module shape.generated.ast.packages.shp_cli.src.errors
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource CliDiagnosticErrorAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/errors.ts:5-12")
+  fingerprint ast.semantic_subtree_v1("sha256:b1e1c89328150b70218c88aebc8c3aed2a5020d099e9a097606efb2c76aad334")
+}
+
+resource CliDiagnosticErrorConstructorAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/errors.ts:6-11")
+  fingerprint ast.semantic_subtree_v1("sha256:c6b318a81c43efc2ac84420ed2441511429af7b9cc57557d2788455a80cbdf6d")
+}
+
+resource ErrorsModuleCliExitCodeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/errors.ts:14-16")
+  fingerprint ast.semantic_subtree_v1("sha256:a6c621d62d2d8d112c743db89e39c8b058ddc5f8bccf31c0d946767e5c91ad80")
+}
+
+resource ErrorsModuleErrorMessageAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/errors.ts:18-20")
+  fingerprint ast.semantic_subtree_v1("sha256:ec7f26c38d5c1bbad8461e28dd551f1ca2aa907e03970a5e1a24010ce7371601")
+}
+
+component CliDiagnosticError : GeneratedCandidate {
+  fn constructor
+    source ts("packages/shp-cli/src/errors.ts:6-11")
+    effects unknown
+}
+
+component ErrorsModule : GeneratedCandidate {
+  fn cliExitCode
+    source ts("packages/shp-cli/src/errors.ts:14-16")
+    effects unknown
+  fn errorMessage
+    source ts("packages/shp-cli/src/errors.ts:18-20")
+    effects unknown
+}
+
+relation CliDiagnosticErrorConstructorGeneratedFromCliDiagnosticErrorConstructorAstAnchor {
+  kind generated_from
+  connects CliDiagnosticError -> CliDiagnosticErrorConstructorAstAnchor
+  roles { CliDiagnosticError as generated, CliDiagnosticErrorConstructorAstAnchor as syntax }
+  expects CliDiagnosticErrorConstructorAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c6b318a81c43efc2ac84420ed2441511429af7b9cc57557d2788455a80cbdf6d")
+  summary "fn CliDiagnosticError.constructor generated from typescript method_definition at packages/shp-cli/src/errors.ts:6-11."
+}
+
+relation CliDiagnosticErrorGeneratedFromCliDiagnosticErrorAstAnchor {
+  kind generated_from
+  connects CliDiagnosticError -> CliDiagnosticErrorAstAnchor
+  roles { CliDiagnosticError as generated, CliDiagnosticErrorAstAnchor as syntax }
+  expects CliDiagnosticErrorAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b1e1c89328150b70218c88aebc8c3aed2a5020d099e9a097606efb2c76aad334")
+  summary "component CliDiagnosticError generated from typescript class_declaration at packages/shp-cli/src/errors.ts:5-12."
+}
+
+relation ErrorsModuleCliExitCodeGeneratedFromErrorsModuleCliExitCodeAstAnchor {
+  kind generated_from
+  connects ErrorsModule -> ErrorsModuleCliExitCodeAstAnchor
+  roles { ErrorsModule as generated, ErrorsModuleCliExitCodeAstAnchor as syntax }
+  expects ErrorsModuleCliExitCodeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a6c621d62d2d8d112c743db89e39c8b058ddc5f8bccf31c0d946767e5c91ad80")
+  summary "fn ErrorsModule.cliExitCode generated from typescript function_declaration at packages/shp-cli/src/errors.ts:14-16."
+}
+
+relation ErrorsModuleErrorMessageGeneratedFromErrorsModuleErrorMessageAstAnchor {
+  kind generated_from
+  connects ErrorsModule -> ErrorsModuleErrorMessageAstAnchor
+  roles { ErrorsModule as generated, ErrorsModuleErrorMessageAstAnchor as syntax }
+  expects ErrorsModuleErrorMessageAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ec7f26c38d5c1bbad8461e28dd551f1ca2aa907e03970a5e1a24010ce7371601")
+  summary "fn ErrorsModule.errorMessage generated from typescript function_declaration at packages/shp-cli/src/errors.ts:18-20."
+}
+
+implementation CliDiagnosticErrorImpl {
+  paths {
+    "packages/shp-cli/src/errors.ts"
+  }
+  conforms_to CliDiagnosticError
+}
+
+implementation ErrorsModuleImpl {
+  paths {
+    "packages/shp-cli/src/errors.ts"
+  }
+  conforms_to ErrorsModule
+}

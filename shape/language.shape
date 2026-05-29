@@ -1,5 +1,7 @@
 module shape.language
 
+import shape.checker
+
 resource DocsShapeBlock
 
 resource GeneratedAst
@@ -41,6 +43,7 @@ component ShapeGrammar {
   owns SyntaxHighlighting
   grants Read<LangiumGrammar>
   grants Update<GeneratedAst>
+  grants Update<ShapeLanguageDefinition>
   grants Update<SyntaxHighlighting>
   fn generateAst
     source langium("packages/shp-checker/src/language/shape.langium")
@@ -53,6 +56,8 @@ component ShapeGrammar {
         evidence ts("packages/shp-checker/src/language/generated/grammar.ts")
       Update<GeneratedAst>
         evidence ts("packages/shp-checker/src/language/generated/module.ts")
+      Update<ShapeLanguageDefinition>
+        evidence langium("packages/shp-checker/src/language/shape.langium")
     }
   fn updateSyntaxHighlighting
     source js("docs-site/src/syntax/shape-language.mjs")
@@ -127,7 +132,7 @@ memory ParseDocumentContract : RefactorConstraint<fn ShapeParser.parseShapeModul
   applies_to fn ShapeParser.parseShapeModule
   status Explained
   confidence High
-  summary "Parser output must preserve Langium document state, source URI, and parse diagnostics for downstream checker and editor use."
+  summary "Parser output must preserve Langium document state, source URI, module-qualified references, candidate effect syntax, and parse diagnostics for downstream checker and editor use."
   owner ShapeMaintainers
   protects shape ParseContract
   guards on_change require ReEvaluation<Self>

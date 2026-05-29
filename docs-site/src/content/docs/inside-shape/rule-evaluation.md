@@ -94,6 +94,8 @@ flowchart LR
 
 The failure is not an accident; it is the intended precedence rule. If final forbids could be overridden by adding a grant, traits would not be reliable architecture boundaries.
 
+Rule-derived final forbids use the subject name from `when T has TraitName` as their generic binder. Multiple `when` clauses for the same subject must all match the resource. A final-forbid rule cannot bind multiple different subjects, and any concrete effect target such as `HardDelete<audit::AuditEvent>` is resolved through normal module/import scoping before the rule runs.
+
 ## Missing Grants
 
 Missing-grant checks are narrower. They ask whether the component is allowed to emit the effect it claims.

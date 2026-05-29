@@ -216,7 +216,6 @@ Release assets produced by `scripts/build-release-assets.sh`:
 
 - `shp-linux-x64.tar.gz`
 - `shp-linux-arm64.tar.gz`
-- `shp-darwin-x64.tar.gz`
 - `shp-darwin-arm64.tar.gz`
 - `shp-windows-x64.tar.gz`
 - `install.sh`

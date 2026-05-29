@@ -2,6 +2,8 @@ module shape.checker
 
 import shape.language
 
+import shape.tooling
+
 resource ChangedFileList
 
 resource EffectiveModel
@@ -12,13 +14,15 @@ resource FactSet
 
 resource HumanReadableDiagnostics
 
+resource ModuleNamespace
+
 resource NormalizedShapeReference
 
 resource PreludeMetadata
 
-resource SemanticDiagnostics
-
 resource SemanticDiagnosticSet
+
+resource SemanticDiagnostics
 
 resource ShapeBinding
 
@@ -94,7 +98,10 @@ component ShapeDiagnostics {
 component ShapeModelLowerer {
   owns EffectiveModel
   owns FactSet
+  owns ModuleNamespace
   grants Append<FactSet>
+  grants Append<ModuleNamespace>
+  grants Read<GeneratedCandidateEffect>
   grants Read<NormalizedShapeReference>
   grants Read<ParsedModule>
   grants Read<PreludeMetadata>
@@ -103,6 +110,10 @@ component ShapeModelLowerer {
     source ts("packages/shp-checker/src/checker.ts#lowerShapeModules")
     effects complete {
       Append<FactSet>
+        evidence ts("packages/shp-checker/src/checker.ts")
+      Append<ModuleNamespace>
+        evidence ts("packages/shp-checker/src/checker.ts")
+      Read<GeneratedCandidateEffect>
         evidence ts("packages/shp-checker/src/checker.ts")
       Read<NormalizedShapeReference>
         evidence ts("packages/shp-checker/src/checker.ts")
@@ -146,6 +157,16 @@ component ShapeRuleEngine {
       Read<EffectiveModel>
         evidence ts("packages/shp-checker/src/checker.ts")
       Read<NormalizedShapeReference>
+        evidence ts("packages/shp-checker/src/checker.ts")
+    }
+  fn checkFingerprintExpectations
+    source ts("packages/shp-checker/src/checker.ts#checkFingerprintExpectations")
+    effects complete {
+      Append<SemanticDiagnostics>
+        evidence ts("packages/shp-checker/src/checker.ts")
+      Read<EffectiveModel>
+        evidence ts("packages/shp-checker/src/checker.ts")
+      Read<FactSet>
         evidence ts("packages/shp-checker/src/checker.ts")
     }
   fn deriveFinalForbidsForResource : RefactorSensitive
@@ -359,7 +380,7 @@ memory FinalForbidPrecedence : RefactorConstraint<fn ShapeRuleEngine.deriveFinal
   applies_to fn ShapeRuleEngine.deriveFinalForbidsForResource
   status Explained
   confidence High
-  summary "Final forbids must remain stronger than component grants and cannot be waived by rationale or memory."
+  summary "Final forbids must remain stronger than component grants, resolve concrete targets deterministically, and cannot be waived by rationale or memory."
   owner ShapeMaintainers
   protects shape FinalForbidPrecedence
   guards on_change require ReEvaluation<Self>
@@ -379,7 +400,7 @@ memory LoweringBeforeRules : CheckOrderRationale<fn ShapeModelLowerer.lowerShape
   applies_to fn ShapeModelLowerer.lowerShapeModules
   status Explained
   confidence High
-  summary "Change declarations must be applied to the final component function registry before derived facts are emitted."
+  summary "Module-scoped declarations, concrete forbid targets, generated candidate evidence, and change declarations must be resolved into the final effective model before derived facts are emitted."
   owner ShapeMaintainers
   protects shape EffectiveModelOrder
   guards on_change require ReEvaluation<Self>
@@ -445,18 +466,18 @@ reevaluation CoverageCurrentAttestationsRechecked {
 reevaluation DiagnosticOutputRechecked {
   satisfies memory DiagnosticContract
   outcome Confirmed
-  summary "Diagnostic formatting remains path-aware and reviewer-readable after shared string handling changes."
+  summary "Diagnostic formatting remains path-aware and reviewer-readable after shared string handling, display-name fingerprint output, and ambiguous query/reference diagnostics."
   reviewer ShapeMaintainers
-  decided_on "2026-05-20"
+  decided_on "2026-05-22"
   evidence test("packages/shp-checker/src/checker.test.ts")
 }
 
 reevaluation FinalForbidPrecedenceRechecked {
   satisfies memory FinalForbidPrecedence
   outcome Confirmed
-  summary "Final forbid derivation still reads prelude metadata and remains stronger than component grants."
+  summary "Final forbid derivation still reads prelude metadata, resolves concrete targets through module scope, rejects invalid rule binders, and remains stronger than component grants."
   reviewer ShapeMaintainers
-  decided_on "2026-05-20"
+  decided_on "2026-05-28"
   evidence test("packages/shp-checker/src/checker.test.ts")
 }
 
@@ -472,8 +493,8 @@ reevaluation HypercycleTraversalRechecked {
 reevaluation LoweringFunctionRegistryRechecked {
   satisfies memory LoweringBeforeRules
   outcome Confirmed
-  summary "Function add, modify, and remove changes update component.functions before derived facts and coverage paths are emitted."
+  summary "Checker tests cover module-scoped import resolution with ambiguity rejection, concrete forbid target lowering, generated candidate effect validation, explicit generated AST module origin, and function registry rebuilds before derived facts and coverage paths are emitted."
   reviewer ShapeMaintainers
-  decided_on "2026-05-21"
+  decided_on "2026-05-28"
   evidence test("packages/shp-checker/src/checker.test.ts")
 }

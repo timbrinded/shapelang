@@ -1,0 +1,125 @@
+module shape.generated.ast.fixtures.generated_source.rust.audit_store
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource AuditEvent : GeneratedCandidate {
+  storage rust.type("fixtures/source/rust/audit_store.rs:1-3")
+}
+
+resource AuditEventAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("fixtures/source/rust/audit_store.rs:1-3")
+  fingerprint ast.semantic_subtree_v1("sha256:77cc9d528e0297f14a518f45c12ddaa601d86db906818612f2c1a731b3fe4b57")
+}
+
+resource AuditRepoAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("fixtures/source/rust/audit_store.rs:5-5")
+  fingerprint ast.semantic_subtree_v1("sha256:62bceaad71b3a5217e8550f3183be8fac6b11c729f7564d63bfcc19150de8d30")
+}
+
+resource AuditRepoInsertAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("fixtures/source/rust/audit_store.rs:8-8")
+  fingerprint ast.semantic_subtree_v1("sha256:76838e379c8530d9ba2b2d3c3624b1495b2e93c63eb27e68ea969dce4c766875")
+}
+
+resource AuditStoreAppendEventAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("fixtures/source/rust/audit_store.rs:16-18")
+  fingerprint ast.semantic_subtree_v1("sha256:6486b2f6963404bca81c18eb18ae3f90508215c7a40b81d7734247b2e34c0a5b")
+}
+
+resource AuditStoreAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("fixtures/source/rust/audit_store.rs:11-13")
+  fingerprint ast.semantic_subtree_v1("sha256:d70cdde35c0172a299f0f943841784d578aaa304bff36ff64ffd3a9d1022c7a7")
+}
+
+component AuditRepo : GeneratedCandidate {
+  fn insert
+    source rust("fixtures/source/rust/audit_store.rs:8-8")
+    effects unknown
+}
+
+component AuditStore : GeneratedCandidate {
+  fn append_event
+    source rust("fixtures/source/rust/audit_store.rs:16-18")
+    effects unknown
+}
+
+relation AuditEventGeneratedFromAuditEventAstAnchor {
+  kind generated_from
+  connects AuditEvent -> AuditEventAstAnchor
+  roles { AuditEvent as generated, AuditEventAstAnchor as syntax }
+  expects AuditEventAstAnchor fingerprint ast.semantic_subtree_v1("sha256:77cc9d528e0297f14a518f45c12ddaa601d86db906818612f2c1a731b3fe4b57")
+  summary "resource AuditEvent generated from rust struct_item at fixtures/source/rust/audit_store.rs:1-3."
+}
+
+relation AuditRepoGeneratedFromAuditRepoAstAnchor {
+  kind generated_from
+  connects AuditRepo -> AuditRepoAstAnchor
+  roles { AuditRepo as generated, AuditRepoAstAnchor as syntax }
+  expects AuditRepoAstAnchor fingerprint ast.semantic_subtree_v1("sha256:62bceaad71b3a5217e8550f3183be8fac6b11c729f7564d63bfcc19150de8d30")
+  summary "component AuditRepo generated from rust struct_item at fixtures/source/rust/audit_store.rs:5-5."
+}
+
+relation AuditRepoInsertGeneratedFromAuditRepoInsertAstAnchor {
+  kind generated_from
+  connects AuditRepo -> AuditRepoInsertAstAnchor
+  roles { AuditRepo as generated, AuditRepoInsertAstAnchor as syntax }
+  expects AuditRepoInsertAstAnchor fingerprint ast.semantic_subtree_v1("sha256:76838e379c8530d9ba2b2d3c3624b1495b2e93c63eb27e68ea969dce4c766875")
+  summary "fn AuditRepo.insert generated from rust function_item at fixtures/source/rust/audit_store.rs:8-8."
+}
+
+relation AuditStoreAppendEventGeneratedFromAuditStoreAppendEventAstAnchor {
+  kind generated_from
+  connects AuditStore -> AuditStoreAppendEventAstAnchor
+  roles { AuditStore as generated, AuditStoreAppendEventAstAnchor as syntax }
+  expects AuditStoreAppendEventAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6486b2f6963404bca81c18eb18ae3f90508215c7a40b81d7734247b2e34c0a5b")
+  summary "fn AuditStore.append_event generated from rust function_item at fixtures/source/rust/audit_store.rs:16-18."
+}
+
+relation AuditStoreCallsAuditRepo {
+  kind calls
+  connects AuditStore -> AuditRepo
+  roles { AuditRepo as destination, AuditStore as origin }
+  summary "AuditStore.append_event calls AuditRepo; generated from fixtures/source/rust/audit_store.rs:16-18."
+}
+
+relation AuditStoreGeneratedFromAuditStoreAstAnchor {
+  kind generated_from
+  connects AuditStore -> AuditStoreAstAnchor
+  roles { AuditStore as generated, AuditStoreAstAnchor as syntax }
+  expects AuditStoreAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d70cdde35c0172a299f0f943841784d578aaa304bff36ff64ffd3a9d1022c7a7")
+  summary "component AuditStore generated from rust struct_item at fixtures/source/rust/audit_store.rs:11-13."
+}
+
+effect candidate AppendEventAppendAuditEventCandidateEffect {
+  fn AuditStore.append_event
+  effect Append<AuditEvent>
+  source rust("fixtures/source/rust/audit_store.rs:16-18")
+  confidence low
+  pin AuditStoreAppendEventAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6486b2f6963404bca81c18eb18ae3f90508215c7a40b81d7734247b2e34c0a5b")
+}
+
+effect candidate InsertAppendAuditEventCandidateEffect {
+  fn AuditRepo.insert
+  effect Append<AuditEvent>
+  source rust("fixtures/source/rust/audit_store.rs:8-8")
+  confidence low
+  pin AuditRepoInsertAstAnchor fingerprint ast.semantic_subtree_v1("sha256:76838e379c8530d9ba2b2d3c3624b1495b2e93c63eb27e68ea969dce4c766875")
+}
+
+implementation AuditRepoImpl {
+  paths {
+    "fixtures/source/rust/audit_store.rs"
+  }
+  conforms_to AuditRepo
+}
+
+implementation AuditStoreImpl {
+  paths {
+    "fixtures/source/rust/audit_store.rs"
+  }
+  conforms_to AuditStore
+}

@@ -15,6 +15,25 @@ export {
   type ShapeUpdateInput
 } from "./authoring.ts";
 export {
+  generateShapeFromAstJson,
+  generateShapeFromSourceFiles,
+  isGeneratedAstManifest,
+  isGeneratedAstModuleName,
+  normalizeGeneratedModuleName,
+  normalizeGeneratedAstPath,
+  TREE_SITTER_NATIVE_BINDING_TARGETS,
+  type AstGenerationDiagnostic,
+  type AstGenerationResult,
+  type AstSourceFileInput,
+  type CodeAstAnchor,
+  type GeneratedAstManifest,
+  type GeneratedAstManifestEntry,
+  type GeneratedShapeOutput,
+  type GenerateShapeOptions,
+  type SourceSpan,
+  type TreeSitterNativeBindingTarget
+} from "./ast-generation.ts";
+export {
   formatOnSave,
   getCompletions,
   getDefinitionLocation,
@@ -34,6 +53,8 @@ export {
   listShapeObligations,
   statsShapeHypergraph,
   type CheckResult,
+  type CheckModuleInput,
+  type CheckModuleOrigin,
   type CheckOptions,
   type Fact,
   type SemanticDiagnostic,

@@ -1,0 +1,7 @@
+module shape.generated.ast.packages.shp_cli.src.commands.generated_memory.command
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}

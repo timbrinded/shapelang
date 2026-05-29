@@ -1,8 +1,9 @@
 import { createHash } from "node:crypto";
 import { spawn } from "node:child_process";
-import { chmod, copyFile, mkdir, mkdtemp, rename, rm, stat, writeFile } from "node:fs/promises";
+import { chmod, copyFile, cp, mkdir, mkdtemp, rename, rm, stat, writeFile } from "node:fs/promises";
 import { basename, dirname, join, resolve } from "node:path";
 import { tmpdir } from "node:os";
+import { TREE_SITTER_NATIVE_BINDING_TARGETS } from "@shape/shp-checker";
 import type { CliContext } from "../../context";
 import { CliDiagnosticError, EXIT_FAILURE, EXIT_USAGE, errorMessage } from "../../errors";
 import { stdout } from "../../io";
@@ -59,7 +60,8 @@ export type UpdateServices = {
   readonly replaceBinary: (
     sourcePath: string,
     targetPath: string,
-    platform: ReleasePlatform
+    platform: ReleasePlatform,
+    parserAssetsPath: string
   ) => Promise<ReplaceResult>;
 };
 
@@ -170,6 +172,10 @@ export async function runUpdate(
 
     await services.extractTarGz(archivePath, tempDir);
     const extractedBinaryPath = join(tempDir, platform.executableName);
+    const extractedParserAssetsPath = join(tempDir, "tree-sitter-language-pack");
+    if (!(await services.pathExists(extractedParserAssetsPath))) {
+      throw failureError(`${archiveAsset.name} is missing tree-sitter-language-pack parser assets`);
+    }
     const versionResult = await services.runVersion(extractedBinaryPath);
     if (versionResult.exitCode !== 0) {
       throw failureError(
@@ -182,7 +188,12 @@ export async function runUpdate(
       );
     }
 
-    const replaceResult = await services.replaceBinary(extractedBinaryPath, targetPath, platform);
+    const replaceResult = await services.replaceBinary(
+      extractedBinaryPath,
+      targetPath,
+      platform,
+      extractedParserAssetsPath
+    );
     if (replaceResult.pending) {
       return `staged shp ${targetVersion}; it will replace ${targetPath} after this process exits\n`;
     }
@@ -203,15 +214,19 @@ export function resolveReleasePlatform(platform: NodeJS.Platform, arch: string):
   if (releaseArch !== "x64" && releaseArch !== "arm64") {
     throw usageError(`unsupported architecture: ${arch}`);
   }
-  if (releaseOs === "windows" && releaseArch === "arm64") {
-    throw usageError("no shp release asset is published for Windows ARM64");
+
+  const nativeTarget = TREE_SITTER_NATIVE_BINDING_TARGETS.find(
+    (target) => target.platform === platform && target.arch === releaseArch
+  );
+  if (!nativeTarget) {
+    throw usageError(`no shp release asset is published for ${releaseOs} ${releaseArch}`);
   }
 
   return {
     releaseOs,
     releaseArch,
     executableName: releaseOs === "windows" ? "shp.exe" : "shp",
-    assetName: `shp-${releaseOs}-${releaseArch}.tar.gz`
+    assetName: `${nativeTarget.releaseName}.tar.gz`
   };
 }
 
@@ -488,34 +503,69 @@ async function runCommand(args: readonly string[]): Promise<CommandResult> {
 async function replaceBinary(
   sourcePath: string,
   targetPath: string,
-  platform: ReleasePlatform
+  platform: ReleasePlatform,
+  parserAssetsPath: string
 ): Promise<ReplaceResult> {
   await mkdir(dirname(targetPath), { recursive: true });
   if (platform.releaseOs === "windows") {
-    return replaceWindowsBinary(sourcePath, targetPath);
+    return replaceWindowsBinary(sourcePath, targetPath, parserAssetsPath);
   }
 
   const stagedPath = join(dirname(targetPath), `.${basename(targetPath)}.update-${process.pid}`);
+  const targetAssetsPath = join(dirname(targetPath), "tree-sitter-language-pack");
+  const stagedAssetsPath = join(
+    dirname(targetPath),
+    `.tree-sitter-language-pack.update-${process.pid}`
+  );
+  const backupAssetsPath = join(
+    dirname(targetPath),
+    `.tree-sitter-language-pack.previous-${process.pid}`
+  );
   try {
+    await rm(stagedAssetsPath, { recursive: true, force: true });
+    await rm(backupAssetsPath, { recursive: true, force: true });
+    await cp(parserAssetsPath, stagedAssetsPath, { recursive: true });
     await copyFile(sourcePath, stagedPath);
     await chmod(stagedPath, 0o755);
-    await rename(stagedPath, targetPath);
+    if (await pathExists(targetAssetsPath)) {
+      await rename(targetAssetsPath, backupAssetsPath);
+    }
+    await rename(stagedAssetsPath, targetAssetsPath);
+    try {
+      await rename(stagedPath, targetPath);
+    } catch (error) {
+      await rm(targetAssetsPath, { recursive: true, force: true });
+      if (await pathExists(backupAssetsPath)) {
+        await rename(backupAssetsPath, targetAssetsPath);
+      }
+      throw error;
+    }
+    await rm(backupAssetsPath, { recursive: true, force: true });
     return { pending: false };
   } catch (error) {
     await rm(stagedPath, { force: true });
+    await rm(stagedAssetsPath, { recursive: true, force: true });
+    if ((await pathExists(backupAssetsPath)) && !(await pathExists(targetAssetsPath))) {
+      await rename(backupAssetsPath, targetAssetsPath);
+    }
     throw error;
   }
 }
 
 async function replaceWindowsBinary(
   sourcePath: string,
-  targetPath: string
+  targetPath: string,
+  parserAssetsPath: string
 ): Promise<ReplaceResult> {
   const targetDir = dirname(targetPath);
   const token = `${process.pid}-${Date.now()}`;
   const stagedPath = join(targetDir, `.${basename(targetPath)}.update-${token}.exe`);
+  const stagedAssetsPath = join(targetDir, `.tree-sitter-language-pack.update-${token}`);
+  const targetAssetsPath = join(targetDir, "tree-sitter-language-pack");
   const scriptPath = join(targetDir, `.${basename(targetPath)}.update-${token}.ps1`);
   await copyFile(sourcePath, stagedPath);
+  await rm(stagedAssetsPath, { recursive: true, force: true });
+  await cp(parserAssetsPath, stagedAssetsPath, { recursive: true });
   await writeFile(scriptPath, windowsReplacementScript());
 
   const child = spawn(
@@ -528,7 +578,9 @@ async function replaceWindowsBinary(
       scriptPath,
       String(process.pid),
       stagedPath,
-      targetPath
+      targetPath,
+      stagedAssetsPath,
+      targetAssetsPath
     ],
     {
       detached: true,
@@ -542,13 +594,32 @@ async function replaceWindowsBinary(
 
 export function windowsReplacementScript(): string {
   return [
-    "param([int]$ParentProcessId, [string]$Source, [string]$Target)",
+    "param([int]$ParentProcessId, [string]$Source, [string]$Target, [string]$SourceAssets, [string]$TargetAssets)",
     '$ErrorActionPreference = "Stop"',
+    '$BackupAssets = "$TargetAssets.previous-$ParentProcessId"',
     "try {",
     "  Wait-Process -Id $ParentProcessId -ErrorAction SilentlyContinue",
-    "  Move-Item -Force -LiteralPath $Source -Destination $Target",
+    "  Remove-Item -Recurse -Force -LiteralPath $BackupAssets -ErrorAction SilentlyContinue",
+    "  if (Test-Path -LiteralPath $TargetAssets) {",
+    "    Move-Item -Force -LiteralPath $TargetAssets -Destination $BackupAssets",
+    "  }",
+    "  Move-Item -Force -LiteralPath $SourceAssets -Destination $TargetAssets",
+    "  try {",
+    "    Move-Item -Force -LiteralPath $Source -Destination $Target",
+    "  } catch {",
+    "    Remove-Item -Recurse -Force -LiteralPath $TargetAssets -ErrorAction SilentlyContinue",
+    "    if (Test-Path -LiteralPath $BackupAssets) {",
+    "      Move-Item -Force -LiteralPath $BackupAssets -Destination $TargetAssets",
+    "    }",
+    "    throw",
+    "  }",
+    "  Remove-Item -Recurse -Force -LiteralPath $BackupAssets -ErrorAction SilentlyContinue",
     "} catch {",
     "  Remove-Item -LiteralPath $Source -Force -ErrorAction SilentlyContinue",
+    "  Remove-Item -Recurse -Force -LiteralPath $SourceAssets -ErrorAction SilentlyContinue",
+    "  if ((Test-Path -LiteralPath $BackupAssets) -and -not (Test-Path -LiteralPath $TargetAssets)) {",
+    "    Move-Item -Force -LiteralPath $BackupAssets -Destination $TargetAssets",
+    "  }",
     "  throw",
     "} finally {",
     "  Remove-Item -LiteralPath $MyInvocation.MyCommand.Path -Force -ErrorAction SilentlyContinue",

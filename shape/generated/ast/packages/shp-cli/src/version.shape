@@ -1,0 +1,33 @@
+module shape.generated.ast.packages.shp_cli.src.version
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource VersionModuleReadManifestVersionAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/version.ts:5-16")
+  fingerprint ast.semantic_subtree_v1("sha256:246b822fc16dc28eefe1b720626bd613c5fd89299db6d6b1c5063567f94ab3e5")
+}
+
+component VersionModule : GeneratedCandidate {
+  fn readManifestVersion
+    source ts("packages/shp-cli/src/version.ts:5-16")
+    effects unknown
+}
+
+relation VersionModuleReadManifestVersionGeneratedFromVersionModuleReadManifestVersionAstAnchor {
+  kind generated_from
+  connects VersionModule -> VersionModuleReadManifestVersionAstAnchor
+  roles { VersionModule as generated, VersionModuleReadManifestVersionAstAnchor as syntax }
+  expects VersionModuleReadManifestVersionAstAnchor fingerprint ast.semantic_subtree_v1("sha256:246b822fc16dc28eefe1b720626bd613c5fd89299db6d6b1c5063567f94ab3e5")
+  summary "fn VersionModule.readManifestVersion generated from typescript function_declaration at packages/shp-cli/src/version.ts:5-16."
+}
+
+implementation VersionModuleImpl {
+  paths {
+    "packages/shp-cli/src/version.ts"
+  }
+  conforms_to VersionModule
+}

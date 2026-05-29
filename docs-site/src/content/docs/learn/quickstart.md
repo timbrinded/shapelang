@@ -23,7 +23,7 @@ On Windows:
 irm https://github.com/timbrinded/shapelang/releases/download/v0.3.0/install.ps1 | iex
 ```
 
-The installer downloads the matching release archive, verifies its SHA-256 checksum, and installs `shp` into `~/.local/bin`. Replace `v0.3.0` with the release tag you want to pin.
+The installer downloads the matching release archive, verifies its SHA-256 checksum, and installs `shp` plus its bundled Tree-sitter parser assets into `~/.local/bin`. Replace `v0.3.0` with the release tag you want to pin.
 
 If your shell cannot find `shp` after installation, add the install directory to your `PATH`:
 

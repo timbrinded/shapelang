@@ -20,6 +20,8 @@ AppendOnly forbids final HardDelete<AuditEvent>
 
 Fix the model by removing the effect, changing the architecture decision, or moving the behavior to a component/resource where the effect is allowed.
 
+For rule-derived final forbids, the rule must bind exactly one subject with `when T has TraitName`. Concrete forbid targets are resolved through module/import scoping before this check runs.
+
 ## Forbidden hypercycle
 
 Cause: a `forbid hypercycle` rule found a directed cycle in the structural hypergraph. The diagnostic cites the relations forming the cycle and a vertex witness path. Each relation kind contributes steps to the cycle graph according to its declared traversal semantics (binary kinds contribute one step `A -> B`; ordered kinds contribute consecutive steps along their members).
@@ -91,6 +93,29 @@ rule GatewayBoundary forbids provides JsonRpcEndpoint except Gateway.
 
 Move the `provides` relation onto the allowed component, or change the rule.
 
+## Stale Fingerprint Expectation
+
+Cause: a relation pins a resource fingerprint, but the current resource fingerprint is missing or different. This usually means a reviewed Shape claim still points at an older generated AST anchor version.
+
+```shape
+module generated.audit
+
+resource AuditStoreAstAnchor {
+  fingerprint ast.semantic_subtree_v1("sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb")
+}
+
+component AuditStore {
+}
+
+relation ReviewedFromAst {
+  kind generated_from
+  connects AuditStore -> AuditStoreAstAnchor
+  expects AuditStoreAstAnchor fingerprint ast.semantic_subtree_v1("sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+}
+```
+
+Regenerate the AST anchor layer, inspect the changed code evidence, then either update the pinned fingerprint after review or revise the claim.
+
 ## Missing grant
 
 Cause: a function emits an effect that its component does not grant.
@@ -114,6 +139,8 @@ Add the correct grant only if the component is actually allowed to contain that 
 ## Unknown effects
 
 Cause: a function declares `effects unknown` where the project requires explicit effect summaries.
+
+Generated AST candidate files under `shape/generated/ast` are the exception: they may keep `effects unknown` because their `effect candidate` declarations are evidence hints, not reviewed effect summaries.
 
 ```shape
 module audit
@@ -180,7 +207,7 @@ Cause: a component declares `requires Target`, but `Target` is neither a compone
 
 ## Unsupported rule shape
 
-Cause: a rule uses a syntax shape the checker does not currently implement semantically. For example, multiple `when` clauses are rejected until conjunctive rule semantics are designed.
+Cause: a rule uses a syntax shape the checker does not currently implement semantically. For example, repeated `when T has Trait` clauses can add same-subject trait requirements, but mixing different rule subjects is rejected until cross-subject conjunctive semantics are designed.
 
 ## Missing required context
 
@@ -290,6 +317,18 @@ relation GatewayCallsAudit is invalid: kind calls requires exactly two endpoints
 ```
 
 Fix the offending relation block. Each prelude kind constrains arity and connects shape: `calls`, `callbacks`, and `provides` are binary and directional; `provides` must be `component -> resource`; `coordinated_call` is an ordered path of two or more endpoints; user-defined kinds accept any arity but are excluded from hypercycle detection.
+
+## Invalid rule
+
+Cause: a `rule` declaration is malformed for the semantic check it asks the checker to perform. For final effect forbids, rules may bind only one subject name. Repeated `when T has Trait` clauses are allowed and are treated as conjunctions; different subject names in the same final-forbid rule are rejected.
+
+```text
+error: invalid rule
+
+rule invalid_multi_subject_final_forbid is invalid: final effect forbids may bind only one subject, but found T, U.
+```
+
+Use one subject name for the resource being constrained, or split unrelated subjects into separate rules.
 
 ## Unknown relation endpoint
 

@@ -1,0 +1,33 @@
+module shape.generated.ast.packages.shp_cli.src.shape_workflow_test
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource ShapeWorkflowTestModuleRunCopilotReviewGateAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/shape-workflow.test.ts:50-88")
+  fingerprint ast.semantic_subtree_v1("sha256:1cfb77eee5c0149c5dd0358bc18321fcac37ea05b23827558e61808bc024c670")
+}
+
+component ShapeWorkflowTestModule : GeneratedCandidate {
+  fn runCopilotReviewGate
+    source ts("packages/shp-cli/src/shape-workflow.test.ts:50-88")
+    effects unknown
+}
+
+relation ShapeWorkflowTestModuleRunCopilotReviewGateGeneratedFromShapeWorkflowTestModuleRunCopilotReviewGateAstAnchor {
+  kind generated_from
+  connects ShapeWorkflowTestModule -> ShapeWorkflowTestModuleRunCopilotReviewGateAstAnchor
+  roles { ShapeWorkflowTestModule as generated, ShapeWorkflowTestModuleRunCopilotReviewGateAstAnchor as syntax }
+  expects ShapeWorkflowTestModuleRunCopilotReviewGateAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1cfb77eee5c0149c5dd0358bc18321fcac37ea05b23827558e61808bc024c670")
+  summary "fn ShapeWorkflowTestModule.runCopilotReviewGate generated from typescript function_declaration at packages/shp-cli/src/shape-workflow.test.ts:50-88."
+}
+
+implementation ShapeWorkflowTestModuleImpl {
+  paths {
+    "packages/shp-cli/src/shape-workflow.test.ts"
+  }
+  conforms_to ShapeWorkflowTestModule
+}

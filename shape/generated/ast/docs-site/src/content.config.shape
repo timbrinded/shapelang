@@ -1,0 +1,7 @@
+module shape.generated.ast.docs_site.src.content_config
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}

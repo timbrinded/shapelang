@@ -1,0 +1,33 @@
+module shape.generated.ast.packages.shp_checker.src.language.shape_module
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource ShapeModuleModuleCreateShapeServicesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/language/shape-module.ts:18-30")
+  fingerprint ast.semantic_subtree_v1("sha256:e81ab94f433b3f0633e706741acbef721acb0507abebebd513096746db9a20cd")
+}
+
+component ShapeModuleModule : GeneratedCandidate {
+  fn createShapeServices
+    source ts("packages/shp-checker/src/language/shape-module.ts:18-30")
+    effects unknown
+}
+
+relation ShapeModuleModuleCreateShapeServicesGeneratedFromShapeModuleModuleCreateShapeServicesAstAnchor {
+  kind generated_from
+  connects ShapeModuleModule -> ShapeModuleModuleCreateShapeServicesAstAnchor
+  roles { ShapeModuleModule as generated, ShapeModuleModuleCreateShapeServicesAstAnchor as syntax }
+  expects ShapeModuleModuleCreateShapeServicesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e81ab94f433b3f0633e706741acbef721acb0507abebebd513096746db9a20cd")
+  summary "fn ShapeModuleModule.createShapeServices generated from typescript function_declaration at packages/shp-checker/src/language/shape-module.ts:18-30."
+}
+
+implementation ShapeModuleModuleImpl {
+  paths {
+    "packages/shp-checker/src/language/shape-module.ts"
+  }
+  conforms_to ShapeModuleModule
+}

@@ -1,0 +1,510 @@
+{
+  "version": 1,
+  "generatedAt": "deterministic",
+  "entries": [
+    {
+      "module": "shape.generated.ast.github.scripts.check_copilot_shape_review",
+      "path": "shape/generated/ast/.github/scripts/check-copilot-shape-review.shape",
+      "sources": [
+        ".github/scripts/check-copilot-shape-review.mjs"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.docs_site.astro_config",
+      "path": "shape/generated/ast/docs-site/astro.config.shape",
+      "sources": [
+        "docs-site/astro.config.mjs"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.docs_site.scripts.verify_shape_blocks",
+      "path": "shape/generated/ast/docs-site/scripts/verify-shape-blocks.shape",
+      "sources": [
+        "docs-site/scripts/verify-shape-blocks.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.docs_site.src.content_config",
+      "path": "shape/generated/ast/docs-site/src/content.config.shape",
+      "sources": [
+        "docs-site/src/content.config.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.docs_site.src.syntax.shape_language",
+      "path": "shape/generated/ast/docs-site/src/syntax/shape-language.shape",
+      "sources": [
+        "docs-site/src/syntax/shape-language.mjs"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.fixtures.generated_source.audit_purge",
+      "path": "shape/generated/ast/fixtures/source/audit_purge.shape",
+      "sources": [
+        "fixtures/source/audit_purge.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.fixtures.generated_source.audit_store",
+      "path": "shape/generated/ast/fixtures/source/audit_store.shape",
+      "sources": [
+        "fixtures/source/audit_store.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.fixtures.generated_source.rust.audit_store",
+      "path": "shape/generated/ast/fixtures/source/rust/audit_store.shape",
+      "sources": [
+        "fixtures/source/rust/audit_store.rs"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.analyzer",
+      "path": "shape/generated/ast/packages/shp-checker/src/analyzer.shape",
+      "sources": [
+        "packages/shp-checker/src/analyzer.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.ast_generation_core",
+      "path": "shape/generated/ast/packages/shp-checker/src/ast-generation-core.shape",
+      "sources": [
+        "packages/shp-checker/src/ast-generation-core.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.ast_generation_fingerprints",
+      "path": "shape/generated/ast/packages/shp-checker/src/ast-generation-fingerprints.shape",
+      "sources": [
+        "packages/shp-checker/src/ast-generation-fingerprints.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.ast_generation_graph",
+      "path": "shape/generated/ast/packages/shp-checker/src/ast-generation-graph.shape",
+      "sources": [
+        "packages/shp-checker/src/ast-generation-graph.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.ast_generation_json",
+      "path": "shape/generated/ast/packages/shp-checker/src/ast-generation-json.shape",
+      "sources": [
+        "packages/shp-checker/src/ast-generation-json.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.ast_generation_raw",
+      "path": "shape/generated/ast/packages/shp-checker/src/ast-generation-raw.shape",
+      "sources": [
+        "packages/shp-checker/src/ast-generation-raw.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.ast_generation_render",
+      "path": "shape/generated/ast/packages/shp-checker/src/ast-generation-render.shape",
+      "sources": [
+        "packages/shp-checker/src/ast-generation-render.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.ast_generation_semantic",
+      "path": "shape/generated/ast/packages/shp-checker/src/ast-generation-semantic.shape",
+      "sources": [
+        "packages/shp-checker/src/ast-generation-semantic.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.ast_generation_source",
+      "path": "shape/generated/ast/packages/shp-checker/src/ast-generation-source.shape",
+      "sources": [
+        "packages/shp-checker/src/ast-generation-source.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.ast_generation_tokens",
+      "path": "shape/generated/ast/packages/shp-checker/src/ast-generation-tokens.shape",
+      "sources": [
+        "packages/shp-checker/src/ast-generation-tokens.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.ast_generation_tree_sitter_normalize",
+      "path": "shape/generated/ast/packages/shp-checker/src/ast-generation-tree-sitter-normalize.shape",
+      "sources": [
+        "packages/shp-checker/src/ast-generation-tree-sitter-normalize.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.ast_generation_tree_sitter",
+      "path": "shape/generated/ast/packages/shp-checker/src/ast-generation-tree-sitter.shape",
+      "sources": [
+        "packages/shp-checker/src/ast-generation-tree-sitter.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.ast_generation_types",
+      "path": "shape/generated/ast/packages/shp-checker/src/ast-generation-types.shape",
+      "sources": [
+        "packages/shp-checker/src/ast-generation-types.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.ast_generation_utils",
+      "path": "shape/generated/ast/packages/shp-checker/src/ast-generation-utils.shape",
+      "sources": [
+        "packages/shp-checker/src/ast-generation-utils.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.ast_generation",
+      "path": "shape/generated/ast/packages/shp-checker/src/ast-generation.shape",
+      "sources": [
+        "packages/shp-checker/src/ast-generation.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.authoring",
+      "path": "shape/generated/ast/packages/shp-checker/src/authoring.shape",
+      "sources": [
+        "packages/shp-checker/src/authoring.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.checker_test",
+      "path": "shape/generated/ast/packages/shp-checker/src/checker.test.shape",
+      "sources": [
+        "packages/shp-checker/src/checker.test.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.checker",
+      "path": "shape/generated/ast/packages/shp-checker/src/checker.shape",
+      "sources": [
+        "packages/shp-checker/src/checker.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.editor",
+      "path": "shape/generated/ast/packages/shp-checker/src/editor.shape",
+      "sources": [
+        "packages/shp-checker/src/editor.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.formatter",
+      "path": "shape/generated/ast/packages/shp-checker/src/formatter.shape",
+      "sources": [
+        "packages/shp-checker/src/formatter.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.generated_ast_policy",
+      "path": "shape/generated/ast/packages/shp-checker/src/generated-ast-policy.shape",
+      "sources": [
+        "packages/shp-checker/src/generated-ast-policy.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.index",
+      "path": "shape/generated/ast/packages/shp-checker/src/index.shape",
+      "sources": [
+        "packages/shp-checker/src/index.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.language.shape_module",
+      "path": "shape/generated/ast/packages/shp-checker/src/language/shape-module.shape",
+      "sources": [
+        "packages/shp-checker/src/language/shape-module.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.parser",
+      "path": "shape/generated/ast/packages/shp-checker/src/parser.shape",
+      "sources": [
+        "packages/shp-checker/src/parser.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.prelude",
+      "path": "shape/generated/ast/packages/shp-checker/src/prelude.shape",
+      "sources": [
+        "packages/shp-checker/src/prelude.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.shape_strings_test",
+      "path": "shape/generated/ast/packages/shp-checker/src/shape-strings.test.shape",
+      "sources": [
+        "packages/shp-checker/src/shape-strings.test.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.shape_strings",
+      "path": "shape/generated/ast/packages/shp-checker/src/shape-strings.shape",
+      "sources": [
+        "packages/shp-checker/src/shape-strings.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.source_languages",
+      "path": "shape/generated/ast/packages/shp-checker/src/source-languages.shape",
+      "sources": [
+        "packages/shp-checker/src/source-languages.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.tree_sitter_native_targets",
+      "path": "shape/generated/ast/packages/shp-checker/src/tree-sitter-native-targets.shape",
+      "sources": [
+        "packages/shp-checker/src/tree-sitter-native-targets.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_cli.src.app",
+      "path": "shape/generated/ast/packages/shp-cli/src/app.shape",
+      "sources": [
+        "packages/shp-cli/src/app.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_cli.src.commands.analyze.command",
+      "path": "shape/generated/ast/packages/shp-cli/src/commands/analyze/command.shape",
+      "sources": [
+        "packages/shp-cli/src/commands/analyze/command.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_cli.src.commands.analyze.impl",
+      "path": "shape/generated/ast/packages/shp-cli/src/commands/analyze/impl.shape",
+      "sources": [
+        "packages/shp-cli/src/commands/analyze/impl.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_cli.src.commands.ast.command",
+      "path": "shape/generated/ast/packages/shp-cli/src/commands/ast/command.shape",
+      "sources": [
+        "packages/shp-cli/src/commands/ast/command.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_cli.src.commands.ast.impl",
+      "path": "shape/generated/ast/packages/shp-cli/src/commands/ast/impl.shape",
+      "sources": [
+        "packages/shp-cli/src/commands/ast/impl.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_cli.src.commands.author.command",
+      "path": "shape/generated/ast/packages/shp-cli/src/commands/author/command.shape",
+      "sources": [
+        "packages/shp-cli/src/commands/author/command.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_cli.src.commands.author.impl",
+      "path": "shape/generated/ast/packages/shp-cli/src/commands/author/impl.shape",
+      "sources": [
+        "packages/shp-cli/src/commands/author/impl.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_cli.src.commands.check.command",
+      "path": "shape/generated/ast/packages/shp-cli/src/commands/check/command.shape",
+      "sources": [
+        "packages/shp-cli/src/commands/check/command.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_cli.src.commands.check.impl",
+      "path": "shape/generated/ast/packages/shp-cli/src/commands/check/impl.shape",
+      "sources": [
+        "packages/shp-cli/src/commands/check/impl.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_cli.src.commands.coverage.command",
+      "path": "shape/generated/ast/packages/shp-cli/src/commands/coverage/command.shape",
+      "sources": [
+        "packages/shp-cli/src/commands/coverage/command.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_cli.src.commands.coverage.impl",
+      "path": "shape/generated/ast/packages/shp-cli/src/commands/coverage/impl.shape",
+      "sources": [
+        "packages/shp-cli/src/commands/coverage/impl.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_cli.src.commands.explain.command",
+      "path": "shape/generated/ast/packages/shp-cli/src/commands/explain/command.shape",
+      "sources": [
+        "packages/shp-cli/src/commands/explain/command.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_cli.src.commands.explain.impl",
+      "path": "shape/generated/ast/packages/shp-cli/src/commands/explain/impl.shape",
+      "sources": [
+        "packages/shp-cli/src/commands/explain/impl.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_cli.src.commands.fmt.command",
+      "path": "shape/generated/ast/packages/shp-cli/src/commands/fmt/command.shape",
+      "sources": [
+        "packages/shp-cli/src/commands/fmt/command.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_cli.src.commands.fmt.impl",
+      "path": "shape/generated/ast/packages/shp-cli/src/commands/fmt/impl.shape",
+      "sources": [
+        "packages/shp-cli/src/commands/fmt/impl.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_cli.src.commands.graph.command",
+      "path": "shape/generated/ast/packages/shp-cli/src/commands/graph/command.shape",
+      "sources": [
+        "packages/shp-cli/src/commands/graph/command.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_cli.src.commands.graph.impl",
+      "path": "shape/generated/ast/packages/shp-cli/src/commands/graph/impl.shape",
+      "sources": [
+        "packages/shp-cli/src/commands/graph/impl.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_cli.src.commands.generated_memory.command",
+      "path": "shape/generated/ast/packages/shp-cli/src/commands/memory/command.shape",
+      "sources": [
+        "packages/shp-cli/src/commands/memory/command.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_cli.src.commands.generated_memory.impl",
+      "path": "shape/generated/ast/packages/shp-cli/src/commands/memory/impl.shape",
+      "sources": [
+        "packages/shp-cli/src/commands/memory/impl.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_cli.src.commands.obligations.command",
+      "path": "shape/generated/ast/packages/shp-cli/src/commands/obligations/command.shape",
+      "sources": [
+        "packages/shp-cli/src/commands/obligations/command.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_cli.src.commands.obligations.impl",
+      "path": "shape/generated/ast/packages/shp-cli/src/commands/obligations/impl.shape",
+      "sources": [
+        "packages/shp-cli/src/commands/obligations/impl.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_cli.src.commands.update.command",
+      "path": "shape/generated/ast/packages/shp-cli/src/commands/update/command.shape",
+      "sources": [
+        "packages/shp-cli/src/commands/update/command.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_cli.src.commands.update.impl",
+      "path": "shape/generated/ast/packages/shp-cli/src/commands/update/impl.shape",
+      "sources": [
+        "packages/shp-cli/src/commands/update/impl.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_cli.src.context",
+      "path": "shape/generated/ast/packages/shp-cli/src/context.shape",
+      "sources": [
+        "packages/shp-cli/src/context.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_cli.src.errors",
+      "path": "shape/generated/ast/packages/shp-cli/src/errors.shape",
+      "sources": [
+        "packages/shp-cli/src/errors.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_cli.src.index_test",
+      "path": "shape/generated/ast/packages/shp-cli/src/index.test.shape",
+      "sources": [
+        "packages/shp-cli/src/index.test.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_cli.src.index",
+      "path": "shape/generated/ast/packages/shp-cli/src/index.shape",
+      "sources": [
+        "packages/shp-cli/src/index.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_cli.src.io",
+      "path": "shape/generated/ast/packages/shp-cli/src/io.shape",
+      "sources": [
+        "packages/shp-cli/src/io.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_cli.src.parameters",
+      "path": "shape/generated/ast/packages/shp-cli/src/parameters.shape",
+      "sources": [
+        "packages/shp-cli/src/parameters.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_cli.src.shape_files",
+      "path": "shape/generated/ast/packages/shp-cli/src/shape-files.shape",
+      "sources": [
+        "packages/shp-cli/src/shape-files.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_cli.src.shape_workflow_test",
+      "path": "shape/generated/ast/packages/shp-cli/src/shape-workflow.test.shape",
+      "sources": [
+        "packages/shp-cli/src/shape-workflow.test.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_cli.src.update_test",
+      "path": "shape/generated/ast/packages/shp-cli/src/update.test.shape",
+      "sources": [
+        "packages/shp-cli/src/update.test.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_cli.src.version",
+      "path": "shape/generated/ast/packages/shp-cli/src/version.shape",
+      "sources": [
+        "packages/shp-cli/src/version.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.scripts.generate_ast_shapes",
+      "path": "shape/generated/ast/scripts/generate-ast-shapes.shape",
+      "sources": [
+        "scripts/generate-ast-shapes.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.scripts.prepare_tree_sitter_parser_assets",
+      "path": "shape/generated/ast/scripts/prepare-tree-sitter-parser-assets.shape",
+      "sources": [
+        "scripts/prepare-tree-sitter-parser-assets.ts"
+      ]
+    }
+  ]
+}

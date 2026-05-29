@@ -1,0 +1,7 @@
+module shape.generated.ast.packages.shp_cli.src.commands.explain.command
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}

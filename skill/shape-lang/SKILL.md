@@ -45,6 +45,8 @@ Load only the reference needed for the task:
 - Run `shp coverage --changed-files changed.txt` only when the workflow provides a changed-files list.
 - Use `shp obligations` and `shp memory` before fixing Memory Guard failures.
 - Use `shp explain`, `shp graph`, and `shp analyze` for investigation before changing model semantics.
+- Use `shp ast source` for generated source-backed AST context and `shp ast json` only when another tool already produced normalized AST JSON.
+- When a repo commits generated AST context under `shape/generated/ast`, run its `ast:generate`/`ast:check` scripts or equivalent `shp ast source --out-dir ... --check` workflow after source changes.
 - Use `shp graph --stats` before editing relation-heavy models.
 - Use `shp graph SYMBOL --kind KIND` to inspect focused incidence for a relation kind.
 - Use `shp author` to scaffold, then review and replace `effects unknown` when evidence is available.
@@ -60,3 +62,12 @@ shp check
 ```
 
 When validating changed-source coverage, also run `shp coverage --changed-files changed.txt` with the repository's changed-files list.
+
+When validating generated AST context, prefer the repository script if present:
+
+```bash
+bun run ast:generate
+bun run ast:check
+```
+
+Generated AST drafts intentionally leave generated functions at `effects unknown`, add `GeneratedAstAnchor` resources with `ast.semantic_subtree_v1` fingerprints when token evidence is available, and may include candidate effects that need human review before being promoted into authored Shape. If an anchor has no token evidence, Shape emits it without a fingerprint/`expects` pin and reports a warning instead of failing the batch.

@@ -6,7 +6,7 @@ entry ShapeModule:
     declarations+=Declaration*;
 
 Declaration:
-    ResourceDecl | TraitDecl | ComponentDecl | RelationDecl | ImplementationDecl | BindingDecl | ChangeDecl | AttestationDecl | RuleDecl | RationaleDecl | MemoryDecl | ReevaluationDecl;
+    ResourceDecl | TraitDecl | ComponentDecl | RelationDecl | CandidateEffectDecl | ImplementationDecl | BindingDecl | ChangeDecl | AttestationDecl | RuleDecl | RationaleDecl | MemoryDecl | ReevaluationDecl;
 
 ImportDecl:
     'import' path=QualifiedName;
@@ -18,10 +18,13 @@ ResourceBody:
     '{' members+=ResourceMember* '}';
 
 ResourceMember:
-    StorageDecl;
+    StorageDecl | FingerprintDecl;
 
 StorageDecl:
     'storage' provider=QualifiedName '(' value=STRING ')';
+
+FingerprintDecl:
+    'fingerprint' provider=QualifiedName '(' value=STRING ')';
 
 TraitDecl:
     'trait' name=ID typeParams=TypeParamList?
@@ -69,7 +72,7 @@ RelationDecl:
     '}';
 
 RelationMember:
-    RelationKindDecl | RelationConnectsDecl | RelationRolesDecl | RelationSummaryDecl;
+    RelationKindDecl | RelationConnectsDecl | RelationRolesDecl | RelationFingerprintExpectationDecl | RelationSummaryDecl;
 
 RelationKindDecl:
     'kind' value=RelationKindName;
@@ -92,8 +95,32 @@ RelationRolesDecl:
 RelationRoleEntry:
     name=QualifiedTargetName 'as' role=ID;
 
+RelationFingerprintExpectationDecl:
+    'expects' endpoint=RelationEndpoint 'fingerprint' provider=QualifiedName '(' value=STRING ')';
+
 RelationSummaryDecl:
     'summary' value=STRING;
+
+CandidateEffectDecl:
+    'effect' 'candidate' name=ID
+    '{'
+        members+=CandidateEffectMember*
+    '}';
+
+CandidateEffectMember:
+    CandidateEffectFunctionDecl | CandidateEffectTermDecl | SourceDecl | CandidateEffectConfidenceDecl | CandidateEffectAnchorDecl;
+
+CandidateEffectFunctionDecl:
+    'fn' function=QualifiedTargetName;
+
+CandidateEffectTermDecl:
+    'effect' term=EffectTerm;
+
+CandidateEffectConfidenceDecl:
+    'confidence' value=ID;
+
+CandidateEffectAnchorDecl:
+    'pin' target=TypeRef 'fingerprint' provider=QualifiedName '(' value=STRING ')';
 
 FunctionSummary:
     'fn' name=ID
@@ -152,7 +179,7 @@ EffectPattern:
     name=ID ('<' target=TypeRef '>')?;
 
 TypeRef:
-    name=ID;
+    name=QualifiedTargetName;
 
 ImplementationDecl:
     'implementation' name=ID
@@ -207,7 +234,7 @@ ChangeEntry:
     AddFunctionChange | ModifyFunctionChange | RemoveFunctionChange | AddDeclarationChange | ModifyDeclarationChange | RemoveDeclarationChange;
 
 AddFunctionChange:
-    'add' 'fn' component=ID '.' name=ID
+    'add' 'fn' target=FunctionTargetName
         shapeTraits=ShapeTraitList?
         source=SourceDecl?
         description=DescriptionDecl?
@@ -216,7 +243,7 @@ AddFunctionChange:
         members+=FunctionMember*;
 
 ModifyFunctionChange:
-    'modify' 'fn' component=ID '.' name=ID
+    'modify' 'fn' target=FunctionTargetName
         shapeTraits=ShapeTraitList?
         source=SourceDecl?
         description=DescriptionDecl?
@@ -225,7 +252,7 @@ ModifyFunctionChange:
         members+=FunctionMember*;
 
 RemoveFunctionChange:
-    'remove' 'fn' component=ID '.' name=ID;
+    'remove' 'fn' target=FunctionTargetName;
 
 AddDeclarationChange:
     'add' declaration=AddableDeclaration;
@@ -234,7 +261,7 @@ ModifyDeclarationChange:
     'modify' declaration=AddableDeclaration;
 
 RemoveDeclarationChange:
-    'remove' kind=RemovableDeclarationKind name=ID;
+    'remove' kind=RemovableDeclarationKind name=QualifiedTargetName;
 
 AddableDeclaration:
     ResourceDecl | TraitDecl | ComponentDecl | RelationDecl | ImplementationDecl | BindingDecl | AttestationDecl | RuleDecl;
@@ -243,7 +270,7 @@ RemovableDeclarationKind returns string:
     'resource' | 'trait' | 'component' | 'relation' | 'implementation' | 'binding' | 'rule';
 
 RuleDecl:
-    'rule' name=ID typeParams=TypeParamList?
+    'rule' name=ID
     '{'
         members+=RuleMember*
     '}';
@@ -252,13 +279,13 @@ RuleMember:
     RuleWhenHasDecl | RuleForbidEffectDecl | RuleForbidProvidesDecl | RuleForbidHypercycleDecl;
 
 RuleWhenHasDecl:
-    'when' subject=ID 'has' trait=ID;
+    'when' subject=ID 'has' trait=QualifiedTargetName;
 
 RuleForbidEffectDecl:
     'forbid' final?='final'? pattern=EffectPattern;
 
 RuleForbidProvidesDecl:
-    'forbid' 'provides' target=TypeRef ('except' except=ID)?;
+    'forbid' 'provides' target=TypeRef ('except' except=QualifiedTargetName)?;
 
 RuleForbidHypercycleDecl:
     'forbid' 'hypercycle' ('over' kinds+=RelationKindName ('or' kinds+=RelationKindName)*)?;
@@ -297,7 +324,10 @@ TargetKind returns string:
     'fn' | 'component' | 'resource' | 'implementation' | 'rule' | 'relation';
 
 QualifiedTargetName returns string:
-    ID ('.' ID)*;
+    ID ('.' ID)* ('::' ID ('.' ID)*)?;
+
+FunctionTargetName returns string:
+    ID ('.' ID)* '::' ID '.' ID | ID '.' ID;
 
 ContextTypeRef:
     name=ID '<' target=TargetRef '>';
@@ -339,7 +369,7 @@ EvidenceLineDecl:
     'evidence' ref=SourceRef;
 
 SatisfiesDecl:
-    'satisfies' kind=ContextObjectKind name=ID;
+    'satisfies' kind=ContextObjectKind name=QualifiedTargetName;
 
 ContextObjectKind returns string:
     'memory' | 'rationale';

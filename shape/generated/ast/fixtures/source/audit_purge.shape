@@ -1,0 +1,33 @@
+module shape.generated.ast.fixtures.generated_source.audit_purge
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource AuditPurgeModulePurgeOldEventsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("fixtures/source/audit_purge.ts:1-3")
+  fingerprint ast.semantic_subtree_v1("sha256:cec2014565b54b7e971ee1fb49139cb45699e7be9a492a6f358df088049f15b7")
+}
+
+component AuditPurgeModule : GeneratedCandidate {
+  fn purgeOldEvents
+    source ts("fixtures/source/audit_purge.ts:1-3")
+    effects unknown
+}
+
+relation AuditPurgeModulePurgeOldEventsGeneratedFromAuditPurgeModulePurgeOldEventsAstAnchor {
+  kind generated_from
+  connects AuditPurgeModule -> AuditPurgeModulePurgeOldEventsAstAnchor
+  roles { AuditPurgeModule as generated, AuditPurgeModulePurgeOldEventsAstAnchor as syntax }
+  expects AuditPurgeModulePurgeOldEventsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:cec2014565b54b7e971ee1fb49139cb45699e7be9a492a6f358df088049f15b7")
+  summary "fn AuditPurgeModule.purgeOldEvents generated from typescript function_declaration at fixtures/source/audit_purge.ts:1-3."
+}
+
+implementation AuditPurgeModuleImpl {
+  paths {
+    "fixtures/source/audit_purge.ts"
+  }
+  conforms_to AuditPurgeModule
+}

@@ -1,0 +1,81 @@
+module shape.generated.ast.packages.shp_cli.src.shape_files
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource ShapeFilesModuleDefaultShapeFilesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/shape-files.ts:10-20")
+  fingerprint ast.semantic_subtree_v1("sha256:08f7ddd6e6a46a87367677611adae04275a1ef5cc4d9a35844461644fc8089a3")
+}
+
+resource ShapeFilesModuleParseModulesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/shape-files.ts:30-59")
+  fingerprint ast.semantic_subtree_v1("sha256:e576ea2ea2b2ee23e525ce4e3f577f8a660e1804ea2044f5d3091a22d168b383")
+}
+
+resource ShapeFilesModuleReadChangedFilesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/shape-files.ts:22-28")
+  fingerprint ast.semantic_subtree_v1("sha256:878d525aae1591d5055c4dbf1ce8919448a323eb2c388e8b2effaffe6db9f36a")
+}
+
+resource ShapeFilesModuleReadCliTextFileAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/shape-files.ts:61-67")
+  fingerprint ast.semantic_subtree_v1("sha256:3edf6f56361a3da54cf030a435a39ae204f043c4652abe430fde59d6fc8cd128")
+}
+
+component ShapeFilesModule : GeneratedCandidate {
+  fn defaultShapeFiles
+    source ts("packages/shp-cli/src/shape-files.ts:10-20")
+    effects unknown
+  fn parseModules
+    source ts("packages/shp-cli/src/shape-files.ts:30-59")
+    effects unknown
+  fn readChangedFiles
+    source ts("packages/shp-cli/src/shape-files.ts:22-28")
+    effects unknown
+  fn readCliTextFile
+    source ts("packages/shp-cli/src/shape-files.ts:61-67")
+    effects unknown
+}
+
+relation ShapeFilesModuleDefaultShapeFilesGeneratedFromShapeFilesModuleDefaultShapeFilesAstAnchor {
+  kind generated_from
+  connects ShapeFilesModule -> ShapeFilesModuleDefaultShapeFilesAstAnchor
+  roles { ShapeFilesModule as generated, ShapeFilesModuleDefaultShapeFilesAstAnchor as syntax }
+  expects ShapeFilesModuleDefaultShapeFilesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:08f7ddd6e6a46a87367677611adae04275a1ef5cc4d9a35844461644fc8089a3")
+  summary "fn ShapeFilesModule.defaultShapeFiles generated from typescript function_declaration at packages/shp-cli/src/shape-files.ts:10-20."
+}
+
+relation ShapeFilesModuleParseModulesGeneratedFromShapeFilesModuleParseModulesAstAnchor {
+  kind generated_from
+  connects ShapeFilesModule -> ShapeFilesModuleParseModulesAstAnchor
+  roles { ShapeFilesModule as generated, ShapeFilesModuleParseModulesAstAnchor as syntax }
+  expects ShapeFilesModuleParseModulesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e576ea2ea2b2ee23e525ce4e3f577f8a660e1804ea2044f5d3091a22d168b383")
+  summary "fn ShapeFilesModule.parseModules generated from typescript function_declaration at packages/shp-cli/src/shape-files.ts:30-59."
+}
+
+relation ShapeFilesModuleReadChangedFilesGeneratedFromShapeFilesModuleReadChangedFilesAstAnchor {
+  kind generated_from
+  connects ShapeFilesModule -> ShapeFilesModuleReadChangedFilesAstAnchor
+  roles { ShapeFilesModule as generated, ShapeFilesModuleReadChangedFilesAstAnchor as syntax }
+  expects ShapeFilesModuleReadChangedFilesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:878d525aae1591d5055c4dbf1ce8919448a323eb2c388e8b2effaffe6db9f36a")
+  summary "fn ShapeFilesModule.readChangedFiles generated from typescript function_declaration at packages/shp-cli/src/shape-files.ts:22-28."
+}
+
+relation ShapeFilesModuleReadCliTextFileGeneratedFromShapeFilesModuleReadCliTextFileAstAnchor {
+  kind generated_from
+  connects ShapeFilesModule -> ShapeFilesModuleReadCliTextFileAstAnchor
+  roles { ShapeFilesModule as generated, ShapeFilesModuleReadCliTextFileAstAnchor as syntax }
+  expects ShapeFilesModuleReadCliTextFileAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3edf6f56361a3da54cf030a435a39ae204f043c4652abe430fde59d6fc8cd128")
+  summary "fn ShapeFilesModule.readCliTextFile generated from typescript function_declaration at packages/shp-cli/src/shape-files.ts:61-67."
+}
+
+implementation ShapeFilesModuleImpl {
+  paths {
+    "packages/shp-cli/src/shape-files.ts"
+  }
+  conforms_to ShapeFilesModule
+}

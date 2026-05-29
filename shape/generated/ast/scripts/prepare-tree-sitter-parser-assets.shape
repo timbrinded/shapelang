@@ -1,0 +1,65 @@
+module shape.generated.ast.scripts.prepare_tree_sitter_parser_assets
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource PrepareTreeSitterParserAssetsModuleExtractTarZstAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("scripts/prepare-tree-sitter-parser-assets.ts:141-153")
+  fingerprint ast.semantic_subtree_v1("sha256:2688026e136638083b45c7a1b9961572eca3969c57580cfaf23549c6c6d8186d")
+}
+
+resource PrepareTreeSitterParserAssetsModuleFetchBytesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("scripts/prepare-tree-sitter-parser-assets.ts:133-139")
+  fingerprint ast.semantic_subtree_v1("sha256:a7df35f989b1a44fe4bab978805d12e14bcdca9e23e37179b5e1535107ba7fee")
+}
+
+resource PrepareTreeSitterParserAssetsModuleFindExtractedFileAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("scripts/prepare-tree-sitter-parser-assets.ts:155-163")
+  fingerprint ast.semantic_subtree_v1("sha256:51506609163669b97529329aa5ef374c051711bfe1ddac35ee1bf0305cfea19c")
+}
+
+component PrepareTreeSitterParserAssetsModule : GeneratedCandidate {
+  fn extractTarZst
+    source ts("scripts/prepare-tree-sitter-parser-assets.ts:141-153")
+    effects unknown
+  fn fetchBytes
+    source ts("scripts/prepare-tree-sitter-parser-assets.ts:133-139")
+    effects unknown
+  fn findExtractedFile
+    source ts("scripts/prepare-tree-sitter-parser-assets.ts:155-163")
+    effects unknown
+}
+
+relation PrepareTreeSitterParserAssetsModuleExtractTarZstGeneratedFromPrepareTreeSitterParserAssetsModuleExtractTarZstAstAnchor {
+  kind generated_from
+  connects PrepareTreeSitterParserAssetsModule -> PrepareTreeSitterParserAssetsModuleExtractTarZstAstAnchor
+  roles { PrepareTreeSitterParserAssetsModule as generated, PrepareTreeSitterParserAssetsModuleExtractTarZstAstAnchor as syntax }
+  expects PrepareTreeSitterParserAssetsModuleExtractTarZstAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2688026e136638083b45c7a1b9961572eca3969c57580cfaf23549c6c6d8186d")
+  summary "fn PrepareTreeSitterParserAssetsModule.extractTarZst generated from typescript function_declaration at scripts/prepare-tree-sitter-parser-assets.ts:141-153."
+}
+
+relation PrepareTreeSitterParserAssetsModuleFetchBytesGeneratedFromPrepareTreeSitterParserAssetsModuleFetchBytesAstAnchor {
+  kind generated_from
+  connects PrepareTreeSitterParserAssetsModule -> PrepareTreeSitterParserAssetsModuleFetchBytesAstAnchor
+  roles { PrepareTreeSitterParserAssetsModule as generated, PrepareTreeSitterParserAssetsModuleFetchBytesAstAnchor as syntax }
+  expects PrepareTreeSitterParserAssetsModuleFetchBytesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a7df35f989b1a44fe4bab978805d12e14bcdca9e23e37179b5e1535107ba7fee")
+  summary "fn PrepareTreeSitterParserAssetsModule.fetchBytes generated from typescript function_declaration at scripts/prepare-tree-sitter-parser-assets.ts:133-139."
+}
+
+relation PrepareTreeSitterParserAssetsModuleFindExtractedFileGeneratedFromPrepareTreeSitterParserAssetsModuleFindExtractedFileAstAnchor {
+  kind generated_from
+  connects PrepareTreeSitterParserAssetsModule -> PrepareTreeSitterParserAssetsModuleFindExtractedFileAstAnchor
+  roles { PrepareTreeSitterParserAssetsModule as generated, PrepareTreeSitterParserAssetsModuleFindExtractedFileAstAnchor as syntax }
+  expects PrepareTreeSitterParserAssetsModuleFindExtractedFileAstAnchor fingerprint ast.semantic_subtree_v1("sha256:51506609163669b97529329aa5ef374c051711bfe1ddac35ee1bf0305cfea19c")
+  summary "fn PrepareTreeSitterParserAssetsModule.findExtractedFile generated from typescript function_declaration at scripts/prepare-tree-sitter-parser-assets.ts:155-163."
+}
+
+implementation PrepareTreeSitterParserAssetsModuleImpl {
+  paths {
+    "scripts/prepare-tree-sitter-parser-assets.ts"
+  }
+  conforms_to PrepareTreeSitterParserAssetsModule
+}

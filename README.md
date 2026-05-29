@@ -168,6 +168,8 @@ shp graph stats --kind calls
 shp memory
 shp obligations
 shp analyze --shape-files fixtures/pass/append_only_append/audit.shape src/audit/purge.ts
+shp ast source --language rust --module generated.audit src/audit/store.rs
+shp ast json --module generated.audit --raw-out ast.raw.shape ast.json
 shp update --dry-run
 ```
 
@@ -186,6 +188,8 @@ Useful commands:
 - `shp memory`: list rationale and memory entries that protect design context.
 - `shp obligations`: list open design-memory obligations such as missing rationale or reevaluation.
 - `shp analyze --shape-files fixtures/pass/append_only_append/audit.shape src/file.ts`: compare obvious source hints against declared effects.
+- `shp ast source [--language LANG] [--module NAME] src/file.rs`: parse source with Tree-sitter and print a conservative Shape draft with compact AST anchors and semantic fingerprints.
+- `shp ast json [--module NAME] [--include-ast-layer] ast.json`: read normalized AST JSON from another parser, with raw AST resources opt-in.
 - `shp update`: update a local released binary from GitHub Releases.
 
 ## Project Layout
@@ -244,6 +248,7 @@ bun run build:release
 ```
 
 Release archives are written under `dist/release/`, which is ignored by git.
+Each archive includes the `shp` executable, `LICENSE`, and bundled Tree-sitter parser assets used by `shp ast source` for TypeScript, TSX, JavaScript/JSX, Rust, Go, and Python.
 
 ## Contributing
 
@@ -257,7 +262,7 @@ GitHub Pages should use the **GitHub Actions** publishing source. The deployment
 
 ## CI
 
-CI is wired in `.github/workflows/shape.yml` for formatting, tests, typechecking, `shp check --changed-files changed.txt`, Shape coverage/bindings, and docs checks. Governed source changes require a faithful `shape` update or a narrow current attestation; bound docs surfaces must change unless a current `docs_not_needed` attestation explains why not.
+CI is wired in `.github/workflows/shape.yml` for generated AST freshness, formatting, tests, typechecking, `shp check --changed-files changed.txt`, Shape coverage/bindings, and docs checks. Governed source changes require a faithful `shape` update or a narrow current attestation; bound docs surfaces must change unless a current `docs_not_needed` attestation explains why not.
 
 ## Release
 
@@ -268,7 +273,7 @@ git tag v0.3.0
 git push origin v0.3.0
 ```
 
-The release workflow validates the repo, cross-compiles `shp` for Linux, macOS, and Windows, publishes tarballs as GitHub release assets, and includes SHA-256 checksums.
+The release workflow validates the repo, cross-compiles `shp` for the native parser target matrix, publishes tarballs as GitHub release assets, and includes SHA-256 checksums. The current matrix is Linux x64, Linux ARM64, macOS ARM64, and Windows x64.
 
 Other GitHub Actions workflows can install `shp` with the setup action shown in Quick Start. Use `with.version` to install a different release than the action ref:
 

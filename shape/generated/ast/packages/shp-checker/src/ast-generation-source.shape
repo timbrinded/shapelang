@@ -1,0 +1,33 @@
+module shape.generated.ast.packages.shp_checker.src.ast_generation_source
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource AstGenerationSourceModuleParseSourceFilesToCodeSemanticGraphAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/ast-generation-source.ts:20-101")
+  fingerprint ast.semantic_subtree_v1("sha256:4c55f987a962e1547015a1d6e704f7ae5a3346704a9320ae4588a87a132455e8")
+}
+
+component AstGenerationSourceModule : GeneratedCandidate {
+  fn parseSourceFilesToCodeSemanticGraph
+    source ts("packages/shp-checker/src/ast-generation-source.ts:20-101")
+    effects unknown
+}
+
+relation AstGenerationSourceModuleParseSourceFilesToCodeSemanticGraphGeneratedFromAstGenerationSourceModuleParseSourceFilesToCodeSemanticGraphAstAnchor {
+  kind generated_from
+  connects AstGenerationSourceModule -> AstGenerationSourceModuleParseSourceFilesToCodeSemanticGraphAstAnchor
+  roles { AstGenerationSourceModule as generated, AstGenerationSourceModuleParseSourceFilesToCodeSemanticGraphAstAnchor as syntax }
+  expects AstGenerationSourceModuleParseSourceFilesToCodeSemanticGraphAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4c55f987a962e1547015a1d6e704f7ae5a3346704a9320ae4588a87a132455e8")
+  summary "fn AstGenerationSourceModule.parseSourceFilesToCodeSemanticGraph generated from typescript function_declaration at packages/shp-checker/src/ast-generation-source.ts:20-101."
+}
+
+implementation AstGenerationSourceModuleImpl {
+  paths {
+    "packages/shp-checker/src/ast-generation-source.ts"
+  }
+  conforms_to AstGenerationSourceModule
+}
