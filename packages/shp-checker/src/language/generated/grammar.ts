@@ -4225,17 +4225,44 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
             "value": "{"
           },
           {
-            "$type": "Assignment",
-            "feature": "entries",
-            "operator": "+=",
-            "terminal": {
-              "$type": "RuleCall",
-              "rule": {
-                "$ref": "#/rules@91"
+            "$type": "Group",
+            "elements": [
+              {
+                "$type": "Assignment",
+                "feature": "entries",
+                "operator": "+=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@91"
+                  },
+                  "arguments": []
+                }
               },
-              "arguments": []
-            },
-            "cardinality": "*"
+              {
+                "$type": "Group",
+                "elements": [
+                  {
+                    "$type": "Keyword",
+                    "value": ","
+                  },
+                  {
+                    "$type": "Assignment",
+                    "feature": "entries",
+                    "operator": "+=",
+                    "terminal": {
+                      "$type": "RuleCall",
+                      "rule": {
+                        "$ref": "#/rules@91"
+                      },
+                      "arguments": []
+                    }
+                  }
+                ],
+                "cardinality": "*"
+              }
+            ],
+            "cardinality": "?"
           },
           {
             "$type": "Keyword",
@@ -4399,8 +4426,8 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
           },
           {
             "$type": "Assignment",
-            "feature": "owners",
-            "operator": "+=",
+            "feature": "owner",
+            "operator": "=",
             "terminal": {
               "$type": "RuleCall",
               "rule": {
@@ -4408,7 +4435,7 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
               },
               "arguments": []
             },
-            "cardinality": "*"
+            "cardinality": "?"
           },
           {
             "$type": "Keyword",
@@ -4436,8 +4463,8 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
           },
           {
             "$type": "Assignment",
-            "feature": "dates",
-            "operator": "+=",
+            "feature": "date",
+            "operator": "=",
             "terminal": {
               "$type": "RuleCall",
               "rule": {
@@ -4445,7 +4472,7 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
               },
               "arguments": []
             },
-            "cardinality": "*"
+            "cardinality": "?"
           },
           {
             "$type": "Keyword",

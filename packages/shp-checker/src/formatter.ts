@@ -711,10 +711,10 @@ function formatContextMember(member: RationaleMember | MemoryMember): string[] {
     );
   }
   if (isWhoBlock(member)) {
-    return member.owners.map((owner) => `owner ${owner.value}`);
+    return member.owner ? [`owner ${member.owner.value}`] : [];
   }
   if (isWhenBlock(member)) {
-    return member.dates.map((date) => `review_by ${quote(date.value)}`);
+    return member.date ? [`review_by ${quote(member.date.value)}`] : [];
   }
   return [];
 }

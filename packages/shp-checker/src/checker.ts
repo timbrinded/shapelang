@@ -2856,14 +2856,14 @@ function lowerContextMember(
     return true;
   }
   if (isWhoBlock(member)) {
-    for (const owner of member.owners) {
-      info.owner = owner.value;
+    if (member.owner) {
+      info.owner = member.owner.value;
     }
     return true;
   }
   if (isWhenBlock(member)) {
-    for (const date of member.dates) {
-      info.reviewBy = unquoteShapeString(date.value);
+    if (member.date) {
+      info.reviewBy = unquoteShapeString(member.date.value);
     }
     return true;
   }

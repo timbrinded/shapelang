@@ -335,7 +335,7 @@ SensitiveDecl:
     {infer SensitiveDecl} 'sensitive';
 
 ProtectsBlock:
-    'protects' '{' entries+=ProtectsEntry* '}';
+    'protects' '{' (entries+=ProtectsEntry (',' entries+=ProtectsEntry)*)? '}';
 
 ProtectsEntry:
     kind=ProtectsPropertyKind (value=ID)?;
@@ -348,10 +348,10 @@ GuardEntry:
   | 'forbid' 'transform' forbiddenTransform=ID;
 
 WhoBlock:
-    'who' '{' owners+=OwnerDecl* '}';
+    'who' '{' owner=OwnerDecl? '}';
 
 WhenBlock:
-    'when' '{' dates+=ReviewByDecl* '}';
+    'when' '{' date=ReviewByDecl? '}';
 
 ReevaluationDecl:
     'reevaluation' name=ID

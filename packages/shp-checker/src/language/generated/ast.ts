@@ -1881,12 +1881,12 @@ export function isUnknownEffects(item: unknown): item is UnknownEffects {
 export interface WhenBlock extends langium.AstNode {
     readonly $container: MemoryDecl | RationaleDecl;
     readonly $type: 'WhenBlock';
-    dates: Array<ReviewByDecl>;
+    date?: ReviewByDecl;
 }
 
 export const WhenBlock = {
     $type: 'WhenBlock',
-    dates: 'dates'
+    date: 'date'
 } as const;
 
 export function isWhenBlock(item: unknown): item is WhenBlock {
@@ -1896,12 +1896,12 @@ export function isWhenBlock(item: unknown): item is WhenBlock {
 export interface WhoBlock extends langium.AstNode {
     readonly $container: MemoryDecl | RationaleDecl;
     readonly $type: 'WhoBlock';
-    owners: Array<OwnerDecl>;
+    owner?: OwnerDecl;
 }
 
 export const WhoBlock = {
     $type: 'WhoBlock',
-    owners: 'owners'
+    owner: 'owner'
 } as const;
 
 export function isWhoBlock(item: unknown): item is WhoBlock {
@@ -3229,9 +3229,8 @@ export class ShapeAstReflection extends langium.AbstractAstReflection {
         WhenBlock: {
             name: WhenBlock.$type,
             properties: {
-                dates: {
-                    name: WhenBlock.dates,
-                    defaultValue: []
+                date: {
+                    name: WhenBlock.date
                 }
             },
             superTypes: [MemoryMember.$type, RationaleMember.$type]
@@ -3239,9 +3238,8 @@ export class ShapeAstReflection extends langium.AbstractAstReflection {
         WhoBlock: {
             name: WhoBlock.$type,
             properties: {
-                owners: {
-                    name: WhoBlock.owners,
-                    defaultValue: []
+                owner: {
+                    name: WhoBlock.owner
                 }
             },
             superTypes: [MemoryMember.$type, RationaleMember.$type]

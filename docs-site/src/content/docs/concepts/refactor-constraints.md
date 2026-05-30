@@ -326,7 +326,7 @@ rationale PolicyInline : CheckOrderRationale<fn Gateway.derivePolicyDecision> {
   why CognitiveLocality
   summary "Branches stay inline."
   protects {
-    shape PreserveInline
+    shape PreserveInline,
     description
   }
   guards {
@@ -342,7 +342,7 @@ rationale PolicyInline : CheckOrderRationale<fn Gateway.derivePolicyDecision> {
 }
 ```
 
-Nested blocks are pure sugar: the checker treats them identically to the flat members, and `shp fmt` canonicalizes them back to the flat form, so the flat syntax stays the single canonical representation in diffs and review.
+Nested blocks are pure sugar: the checker treats them identically to the flat members, and `shp fmt` canonicalizes them back to the flat form, so the flat syntax stays the single canonical representation in diffs and review. Entries in a `protects` block are comma-separated; `who` and `when` hold a single `owner`/`review_by` because those fields are single-valued.
 
 ## What To Check In Review
 
