@@ -78,6 +78,36 @@ export const PRELUDE_CONTEXT_REQUIREMENTS: PreludeContextRequirement[] = [
     targetKind: "fn",
     contextType: "TestOnlyPurpose",
     satisfiedBy: ["rationale"]
+  },
+  {
+    trait: "RefactorSensitive",
+    targetKind: "component",
+    contextType: "RefactorConstraint",
+    satisfiedBy: ["memory"]
+  },
+  {
+    trait: "NonIdiomatic",
+    targetKind: "component",
+    contextType: "DesignRationale",
+    satisfiedBy: ["rationale", "memory"]
+  },
+  {
+    trait: "TestOnly",
+    targetKind: "component",
+    contextType: "TestOnlyPurpose",
+    satisfiedBy: ["rationale"]
+  },
+  {
+    trait: "RefactorSensitive",
+    targetKind: "resource",
+    contextType: "RefactorConstraint",
+    satisfiedBy: ["memory"]
+  },
+  {
+    trait: "NonIdiomatic",
+    targetKind: "resource",
+    contextType: "DesignRationale",
+    satisfiedBy: ["rationale", "memory"]
   }
 ];
 

@@ -54,11 +54,15 @@ function contextRef(contextType: string, target: string): string {
 }
 
 function checkShapeSource(source: string) {
+  return checkShapeModules([requireParsed(source)]);
+}
+
+function requireParsed(source: string) {
   const parsed = parseShapeModule(source);
   if (!parsed.ok) {
     throw new Error(parsed.diagnostics.map((diagnostic) => diagnostic.message).join("\n"));
   }
-  return checkShapeModules([parsed.module]);
+  return parsed.module;
 }
 
 function requireGeneratedOutput(result: ReturnType<typeof generateShapeFromCodeSemanticGraph>) {
@@ -3396,6 +3400,383 @@ describe("Shape memory guard intent scenarios", () => {
     expect(result.exitCode).toBe(1);
     expect(output).toContain("forbidden effect");
     expect(output).toContain("AppendOnly forbids final HardDelete<AuditEvent>");
+  });
+});
+
+describe("Shape component and resource shape traits", () => {
+  test("requires a RefactorConstraint memory for a RefactorSensitive component", () => {
+    const missing = checkShapeSource(`
+      module gateway
+
+      resource PolicySnapshot
+
+      component Gateway : RefactorSensitive {
+        owns PolicySnapshot
+        grants Read<PolicySnapshot>
+        fn read
+          effects complete {
+            Read<PolicySnapshot>
+          }
+      }
+    `);
+    const missingOutput = formatDiagnostics(missing);
+
+    expect(missing.exitCode).toBe(1);
+    expect(missingOutput).toContain("missing required context");
+    expect(missingOutput).toContain("component Gateway has shape RefactorSensitive");
+    expect(missingOutput).toContain(contextRef("RefactorConstraint", "component Gateway"));
+
+    const satisfied = checkShapeSource(`
+      module gateway
+
+      resource PolicySnapshot
+
+      component Gateway : RefactorSensitive {
+        owns PolicySnapshot
+        grants Read<PolicySnapshot>
+        fn read
+          effects complete {
+            Read<PolicySnapshot>
+          }
+      }
+
+      memory GatewayShapeConstraint : ${contextRef("RefactorConstraint", "component Gateway")} {
+        applies_to component Gateway
+        status Unexplained
+        confidence High
+        summary "The Gateway boundary isolates policy evaluation from transport."
+        owner GatewayTeam
+      }
+    `);
+
+    expect(satisfied.exitCode).toBe(0);
+  });
+
+  test("requires a RefactorConstraint memory for a RefactorSensitive resource", () => {
+    const missing = checkShapeSource(`
+      module audit
+
+      resource AuditEvent : RefactorSensitive
+
+      component AuditStore {
+        owns AuditEvent
+        grants Read<AuditEvent>
+        fn read
+          effects complete {
+            Read<AuditEvent>
+          }
+      }
+    `);
+    const missingOutput = formatDiagnostics(missing);
+
+    expect(missing.exitCode).toBe(1);
+    expect(missingOutput).toContain("resource AuditEvent has shape RefactorSensitive");
+    expect(missingOutput).toContain(contextRef("RefactorConstraint", "resource AuditEvent"));
+
+    const satisfied = checkShapeSource(`
+      module audit
+
+      resource AuditEvent : RefactorSensitive
+
+      component AuditStore {
+        owns AuditEvent
+        grants Read<AuditEvent>
+        fn read
+          effects complete {
+            Read<AuditEvent>
+          }
+      }
+
+      memory AuditEventLayout : ${contextRef("RefactorConstraint", "resource AuditEvent")} {
+        applies_to resource AuditEvent
+        status Explained
+        confidence High
+        summary "External auditors depend on the AuditEvent field layout."
+        owner AuditTeam
+      }
+    `);
+
+    expect(satisfied.exitCode).toBe(0);
+  });
+
+  test("satisfies a NonIdiomatic component with a rationale", () => {
+    const result = checkShapeSource(`
+      module gateway
+
+      resource PolicySnapshot
+
+      component Gateway : NonIdiomatic {
+        owns PolicySnapshot
+        grants Read<PolicySnapshot>
+        fn read
+          effects complete {
+            Read<PolicySnapshot>
+          }
+      }
+
+      rationale GatewayDesign : ${contextRef("DesignRationale", "component Gateway")} {
+        applies_to component Gateway
+        why LegacyCompatibility
+        summary "Gateway keeps a non-idiomatic facade for the legacy transport."
+        owner GatewayTeam
+      }
+    `);
+
+    expect(result.exitCode).toBe(0);
+  });
+
+  test("requires a TestOnlyPurpose rationale for a TestOnly component", () => {
+    const missing = checkShapeSource(`
+      module e2e
+
+      resource Fixture
+
+      component E2EHarness : TestOnly {
+        owns Fixture
+        grants Read<Fixture>
+        fn seed
+          effects complete {
+            Read<Fixture>
+          }
+      }
+    `);
+    const missingOutput = formatDiagnostics(missing);
+
+    expect(missing.exitCode).toBe(1);
+    expect(missingOutput).toContain("component E2EHarness has shape TestOnly");
+    expect(missingOutput).toContain(contextRef("TestOnlyPurpose", "component E2EHarness"));
+
+    const satisfied = checkShapeSource(`
+      module e2e
+
+      resource Fixture
+
+      component E2EHarness : TestOnly {
+        owns Fixture
+        grants Read<Fixture>
+        fn seed
+          effects complete {
+            Read<Fixture>
+          }
+      }
+
+      rationale E2EHarnessPurpose : ${contextRef("TestOnlyPurpose", "component E2EHarness")} {
+        applies_to component E2EHarness
+        why E2ETesting
+        summary "E2EHarness exists only to drive end-to-end fixtures."
+        owner QaTeam
+      }
+    `);
+
+    expect(satisfied.exitCode).toBe(0);
+  });
+
+  test("satisfies a NonIdiomatic resource with a rationale", () => {
+    const missing = checkShapeSource(`
+      module legacy
+
+      resource LegacyRecord : NonIdiomatic
+
+      component LegacyStore {
+        owns LegacyRecord
+        grants Read<LegacyRecord>
+        fn read
+          effects complete {
+            Read<LegacyRecord>
+          }
+      }
+    `);
+    const missingOutput = formatDiagnostics(missing);
+
+    expect(missing.exitCode).toBe(1);
+    expect(missingOutput).toContain("resource LegacyRecord has shape NonIdiomatic");
+    expect(missingOutput).toContain(contextRef("DesignRationale", "resource LegacyRecord"));
+
+    const satisfied = checkShapeSource(`
+      module legacy
+
+      resource LegacyRecord : NonIdiomatic
+
+      component LegacyStore {
+        owns LegacyRecord
+        grants Read<LegacyRecord>
+        fn read
+          effects complete {
+            Read<LegacyRecord>
+          }
+      }
+
+      rationale LegacyRecordShape : ${contextRef("DesignRationale", "resource LegacyRecord")} {
+        applies_to resource LegacyRecord
+        why ExternalProtocolConstraint
+        summary "LegacyRecord mirrors a non-idiomatic upstream wire format."
+        owner LegacyTeam
+      }
+    `);
+
+    expect(satisfied.exitCode).toBe(0);
+  });
+
+  test("does not let a rationale satisfy a memory-only RefactorSensitive obligation", () => {
+    const result = checkShapeSource(`
+      module gateway
+
+      resource PolicySnapshot
+
+      component Gateway : RefactorSensitive {
+        owns PolicySnapshot
+        grants Read<PolicySnapshot>
+        fn read
+          effects complete {
+            Read<PolicySnapshot>
+          }
+      }
+
+      rationale GatewayShape : ${contextRef("RefactorConstraint", "component Gateway")} {
+        applies_to component Gateway
+        why LegacyCompatibility
+        summary "A rationale must not satisfy a RefactorConstraint obligation."
+        owner GatewayTeam
+      }
+    `);
+    const output = formatDiagnostics(result);
+
+    expect(result.exitCode).toBe(1);
+    expect(output).toContain("component Gateway has shape RefactorSensitive");
+  });
+
+  test("keeps semantic resource traits free of shape-trait obligations", () => {
+    const parsed = requireParsed(`
+      module audit
+
+      resource AuditEvent : AppendOnly
+
+      component AuditStore {
+        owns AuditEvent
+        grants Append<AuditEvent>
+        fn appendEvent
+          effects complete {
+            Append<AuditEvent>
+          }
+      }
+    `);
+    const result = checkShapeModules([parsed], { includeFacts: true });
+
+    expect(result.exitCode).toBe(0);
+    expect(
+      result.facts?.some(
+        (fact) => fact.kind === "context_required" && fact.target.endsWith("AuditEvent")
+      )
+    ).toBe(false);
+  });
+
+  test("emits context_required facts for component and resource targets", () => {
+    const parsed = requireParsed(`
+      module gateway
+
+      resource PolicySnapshot : RefactorSensitive
+
+      component Gateway : RefactorSensitive {
+        owns PolicySnapshot
+        grants Read<PolicySnapshot>
+        fn read
+          effects complete {
+            Read<PolicySnapshot>
+          }
+      }
+    `);
+    const result = checkShapeModules([parsed], { includeFacts: true });
+
+    expect(result.facts).toContainEqual(
+      expect.objectContaining({
+        kind: "context_required",
+        targetKind: "component",
+        target: "gateway::Gateway",
+        contextType: "RefactorConstraint",
+        requiredBy: "RefactorSensitive"
+      })
+    );
+    expect(result.facts).toContainEqual(
+      expect.objectContaining({
+        kind: "context_required",
+        targetKind: "resource",
+        target: "gateway::PolicySnapshot",
+        contextType: "RefactorConstraint",
+        requiredBy: "RefactorSensitive"
+      })
+    );
+  });
+
+  test("explains component classifiers and required context", () => {
+    const explanation = explainShapeModules(
+      [
+        requireParsed(`
+          module gateway
+
+          resource PolicySnapshot
+
+          component Gateway : RefactorSensitive {
+            owns PolicySnapshot
+            grants Read<PolicySnapshot>
+            fn read
+              effects complete {
+                Read<PolicySnapshot>
+              }
+          }
+
+          memory GatewayShapeConstraint : ${contextRef("RefactorConstraint", "component Gateway")} {
+            applies_to component Gateway
+            status Unexplained
+            confidence High
+            summary "The Gateway boundary isolates policy evaluation from transport."
+            owner GatewayTeam
+          }
+        `)
+      ],
+      "Gateway"
+    );
+
+    expect(explanation).toContain("classifiers:");
+    expect(explanation).toContain("RefactorSensitive");
+    expect(explanation).toContain("required context:");
+    expect(explanation).toContain(contextRef("RefactorConstraint", "component Gateway"));
+    expect(explanation).toContain("satisfied by:");
+    expect(explanation).toContain("memory gateway::GatewayShapeConstraint");
+  });
+
+  test("explains resource traits and required context", () => {
+    const explanation = explainShapeModules(
+      [
+        requireParsed(`
+          module audit
+
+          resource AuditEvent : RefactorSensitive
+
+          component AuditStore {
+            owns AuditEvent
+            grants Read<AuditEvent>
+            fn read
+              effects complete {
+                Read<AuditEvent>
+              }
+          }
+
+          memory AuditEventLayout : ${contextRef("RefactorConstraint", "resource AuditEvent")} {
+            applies_to resource AuditEvent
+            status Explained
+            confidence High
+            summary "External auditors depend on the AuditEvent field layout."
+            owner AuditTeam
+          }
+        `)
+      ],
+      "AuditEvent"
+    );
+
+    expect(explanation).toContain("required context:");
+    expect(explanation).toContain(contextRef("RefactorConstraint", "resource AuditEvent"));
+    expect(explanation).toContain("satisfied by:");
+    expect(explanation).toContain("memory audit::AuditEventLayout");
   });
 });
 

@@ -50,6 +50,53 @@ rationale DerivePolicyDecisionInline : InlineRationale<fn Gateway.derivePolicyDe
 }
 ```
 
+## Component and Resource Shape Traits
+
+Shape traits are not limited to functions. Components and resources can also carry refactor-sensitive design context, declared in their existing trait list:
+
+| Target | Trait | Required context |
+| --- | --- | --- |
+| `component` | `RefactorSensitive` | `RefactorConstraint<component C>` from a `memory` |
+| `component` | `NonIdiomatic` | `DesignRationale<component C>` from a `rationale` or `memory` |
+| `component` | `TestOnly` | `TestOnlyPurpose<component C>` from a `rationale` |
+| `resource` | `RefactorSensitive` | `RefactorConstraint<resource R>` from a `memory` |
+| `resource` | `NonIdiomatic` | `DesignRationale<resource R>` from a `rationale` or `memory` |
+
+Semantic resource traits such as `AppendOnly` keep their existing meaning; only the shape traits above derive a context obligation, so the two coexist in one trait list:
+
+```shape
+module audit
+
+resource AuditEvent : AppendOnly, RefactorSensitive
+
+component AuditStore : RefactorSensitive {
+  owns AuditEvent
+  grants Append<AuditEvent>
+  fn appendEvent
+    effects complete {
+      Append<AuditEvent>
+    }
+}
+
+memory AuditEventLayout : RefactorConstraint<resource AuditEvent> {
+  applies_to resource AuditEvent
+  status Explained
+  confidence High
+  summary "External auditors depend on the AuditEvent field layout."
+  owner AuditTeam
+}
+
+memory AuditStoreBoundary : RefactorConstraint<component AuditStore> {
+  applies_to component AuditStore
+  status Unexplained
+  confidence High
+  summary "The AuditStore boundary keeps append-only storage isolated from query paths."
+  owner AuditTeam
+}
+```
+
+`shp explain` for a component or resource lists its classifiers or traits, the required context derived from them, and any satisfying rationale or memory.
+
 ## Required Descriptions
 
 Use `RequiresDescription` when the shape needs a compact explanation at the function declaration itself. This keeps the primary review context next to the source and effect summary:

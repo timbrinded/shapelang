@@ -1050,6 +1050,12 @@ export function explainShapeModules(
           .map((fingerprint) => `    ${formatFingerprintInfo(fingerprint)}`)
       );
     }
+    appendShapeTraitContext(
+      { kind: "resource", name: resource.name },
+      resource.traits,
+      model,
+      lines
+    );
     appendIncidence(resource.name, model, lines);
     return `${lines.join("\n")}\n`;
   }
@@ -1076,7 +1082,7 @@ export function explainShapeModules(
         }
         lines.push(`    ${JSON.stringify(fn.description.summary)}`);
       }
-      const requirements = requirementsForFunction(fn);
+      const requirements = requirementsForTarget("fn", fn.shapeTraits);
       if (requirements.length > 0) {
         const target = functionTarget(componentKey, functionName);
         lines.push("", "  required context:");
@@ -1134,15 +1140,26 @@ export function explainShapeModules(
   const componentKey = resolveQuerySymbol(symbol, model.components);
   const component = componentKey ? model.components.get(componentKey) : undefined;
   if (component) {
-    const lines = [
-      symbol,
-      "  kind: component",
+    const lines = [symbol, "  kind: component"];
+    if (component.classifiers.size > 0) {
+      lines.push("  classifiers:");
+      lines.push(
+        ...[...component.classifiers.keys()].sort().map((classifier) => `    ${classifier}`)
+      );
+    }
+    lines.push(
       "  grants:",
       ...[...component.grants.keys()].sort().map((grant) => `    ${grant}`),
       "",
       "  functions:",
       ...[...component.functions.keys()].sort().map((name) => `    ${name}`)
-    ];
+    );
+    appendShapeTraitContext(
+      { kind: "component", name: component.name },
+      component.classifiers,
+      model,
+      lines
+    );
     appendIncidence(component.name, model, lines);
     return `${lines.join("\n")}\n`;
   }
@@ -1154,6 +1171,35 @@ export function explainShapeModules(
   }
 
   return `No shape facts found for ${symbol}.\n`;
+}
+
+/**
+ * Appends the shape-trait obligation sections (required context and satisfying
+ * context) for a component or resource target to an explain listing. Guards are
+ * deliberately omitted: guarded-change enforcement currently fires only on
+ * `modify fn`/`remove fn`, so advertising a guard on a component or resource
+ * would claim protection the checker does not yet deliver.
+ */
+function appendShapeTraitContext(
+  target: ShapeTarget,
+  traits: ReadonlyMap<string, Provenance>,
+  model: Model,
+  lines: string[]
+): void {
+  const requirements = requirementsForTarget(target.kind, traits);
+  if (requirements.length > 0) {
+    lines.push("", "  required context:");
+    lines.push(
+      ...requirements.map(
+        (requirement) => `    ${formatContextRequirement(requirement.contextType, target)}`
+      )
+    );
+  }
+  const satisfiedBy = matchingContextsForTarget(target, model);
+  if (satisfiedBy.length > 0) {
+    lines.push("", "  satisfied by:");
+    lines.push(...satisfiedBy.map((context) => `    ${context.kind} ${context.name}`));
+  }
 }
 
 function compareHyperedges(left: HyperedgeInfo, right: HyperedgeInfo): number {
@@ -3344,18 +3390,16 @@ function emitDerivedFacts(model: Model): void {
     }
   }
 
-  for (const component of model.components.values()) {
-    for (const fn of component.functions.values()) {
-      for (const requirement of requirementsForFunction(fn)) {
-        model.facts.push({
-          kind: "context_required",
-          targetKind: "fn",
-          target: functionKey(fn.component, fn.name),
-          contextType: requirement.contextType,
-          requiredBy: requirement.trait,
-          provenance: fn.shapeTraits.get(requirement.trait) ?? fn.provenance
-        });
-      }
+  for (const bearer of shapeTraitBearers(model)) {
+    for (const requirement of requirementsForTarget(bearer.kind, bearer.traits)) {
+      model.facts.push({
+        kind: "context_required",
+        targetKind: bearer.kind,
+        target: bearer.target.name,
+        contextType: requirement.contextType,
+        requiredBy: requirement.trait,
+        provenance: bearer.traits.get(requirement.trait) ?? bearer.fallback
+      });
     }
   }
 }
@@ -3842,37 +3886,75 @@ function checkContextTarget(
 function checkRequiredContext(model: Model): SemanticDiagnostic[] {
   const diagnostics: SemanticDiagnostic[] = [];
 
-  for (const component of model.components.values()) {
-    for (const fn of component.functions.values()) {
-      const target = functionTarget(fn.component, fn.name);
-      for (const requirement of requirementsForFunction(fn)) {
-        if (hasRequiredContext(requirement, target, model)) {
-          continue;
-        }
-
-        const traitProvenance = fn.shapeTraits.get(requirement.trait) ?? fn.provenance;
-        diagnostics.push({
-          kind: "missing_required_context",
-          targetKind: "fn",
-          target: target.name,
-          requiredContext: formatContextRequirement(requirement.contextType, target),
-          requiredBy: requirement.trait,
-          filePath: traitProvenance.filePath,
-          causedBy: [
-            describeProvenance(traitProvenance),
-            describeProvenance(
-              provenance(
-                "standard prelude",
-                `${requirement.trait} requires ${requirement.contextType}`
-              )
-            )
-          ]
-        });
+  for (const target of shapeTraitBearers(model)) {
+    for (const requirement of requirementsForTarget(target.kind, target.traits)) {
+      if (hasRequiredContext(requirement, target.target, model)) {
+        continue;
       }
+
+      const traitProvenance = target.traits.get(requirement.trait) ?? target.fallback;
+      diagnostics.push({
+        kind: "missing_required_context",
+        targetKind: target.kind,
+        target: target.target.name,
+        requiredContext: formatContextRequirement(requirement.contextType, target.target),
+        requiredBy: requirement.trait,
+        filePath: traitProvenance.filePath,
+        causedBy: [
+          describeProvenance(traitProvenance),
+          describeProvenance(
+            provenance(
+              "standard prelude",
+              `${requirement.trait} requires ${requirement.contextType}`
+            )
+          )
+        ]
+      });
     }
   }
 
   return diagnostics;
+}
+
+type ShapeTraitBearer = {
+  kind: TargetKind;
+  target: ShapeTarget;
+  traits: Map<string, Provenance>;
+  fallback: Provenance;
+};
+
+/**
+ * Every model declaration that can carry shape traits, paired with its trait
+ * map. Functions store traits in `shapeTraits`, components in `classifiers`,
+ * and resources in `traits`; required-context checking treats them uniformly.
+ */
+function shapeTraitBearers(model: Model): ShapeTraitBearer[] {
+  const bearers: ShapeTraitBearer[] = [];
+  for (const component of model.components.values()) {
+    for (const fn of component.functions.values()) {
+      bearers.push({
+        kind: "fn",
+        target: functionTarget(fn.component, fn.name),
+        traits: fn.shapeTraits,
+        fallback: fn.provenance
+      });
+    }
+    bearers.push({
+      kind: "component",
+      target: { kind: "component", name: component.name },
+      traits: component.classifiers,
+      fallback: component.provenance
+    });
+  }
+  for (const resource of model.resources.values()) {
+    bearers.push({
+      kind: "resource",
+      target: { kind: "resource", name: resource.name },
+      traits: resource.traits,
+      fallback: resource.provenance
+    });
+  }
+  return bearers;
 }
 
 function checkRequiredDescriptions(model: Model): SemanticDiagnostic[] {
@@ -3880,7 +3962,7 @@ function checkRequiredDescriptions(model: Model): SemanticDiagnostic[] {
 
   for (const component of model.components.values()) {
     for (const fn of component.functions.values()) {
-      for (const requirement of requirementsForFunction(fn).filter(
+      for (const requirement of requirementsForTarget("fn", fn.shapeTraits).filter(
         (item) => item.requiresDescription
       )) {
         if (hasNonEmptyDescription(fn)) {
@@ -4466,9 +4548,12 @@ function checkBindings(model: Model, changedFiles: string[]): SemanticDiagnostic
   return diagnostics;
 }
 
-function requirementsForFunction(fn: FunctionInfo): PreludeContextRequirement[] {
+function requirementsForTarget(
+  targetKind: TargetKind,
+  traits: ReadonlyMap<string, Provenance>
+): PreludeContextRequirement[] {
   return PRELUDE_CONTEXT_REQUIREMENTS.filter(
-    (rule) => rule.targetKind === "fn" && fn.shapeTraits.has(rule.trait)
+    (rule) => rule.targetKind === targetKind && traits.has(rule.trait)
   );
 }
 

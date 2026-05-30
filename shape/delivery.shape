@@ -172,6 +172,10 @@ component DocsSite {
       Read<DocsContent>
         evidence md("docs-site/src/content/docs/examples/global-model-update.md")
       Read<DocsContent>
+        evidence md("docs-site/src/content/docs/examples/guarded-change-reevaluation.md")
+      Read<DocsContent>
+        evidence md("docs-site/src/content/docs/examples/refactor-sensitive-function.md")
+      Read<DocsContent>
         evidence md("docs-site/src/content/docs/examples/analyzer-warning.md")
       Read<DocsContent>
         evidence md("docs-site/src/content/docs/examples/forbid-provides-boundary.md")
