@@ -278,6 +278,32 @@ By default `review_by` is informational. Enable enforcement with `--strict-fresh
 
 Only ISO `YYYY-MM-DD` dates are enforced; the date on which a review is due still counts as fresh. Missing or non-ISO `review_by` values are never reported as stale. Freshness compares against a caller-provided date rather than the system clock, keeping checks deterministic.
 
+## Roles and Approver Policy
+
+By default a `reevaluation` needs a `reviewer` and a `decided_on`; the `approver` is optional. Two opt-in declarations tighten this for sensitive design memory.
+
+Declare valid review identities with `role`, and a project policy with `policy`. Mark the memory that needs sign-off with `sensitive`:
+
+```shape
+role Security
+role GatewayTeam
+
+policy ReviewPolicy {
+  require approver
+}
+
+memory DecisionConstraint : RefactorConstraint<fn Gateway.derivePolicyDecision> {
+  applies_to fn Gateway.derivePolicyDecision
+  status Unexplained
+  confidence High
+  sensitive
+  summary "The decision path is security-sensitive."
+  owner GatewayTeam
+}
+```
+
+With an approver policy present, a `reevaluation` that satisfies a `sensitive` memory must name an `approver`, not just a `reviewer`. Without a policy, or for memories that are not `sensitive`, the approver stays optional. When at least one `role` is declared, every `reviewer` and `approver` must name a declared role; an unknown role is reported as an invalid reevaluation. Declaring no roles leaves review identities unchecked, preserving the default path.
+
 ## What To Check In Review
 
 - Use a function shape trait only when it changes review obligations.

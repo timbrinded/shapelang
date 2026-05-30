@@ -18,9 +18,11 @@ import type {
   MemoryMember,
   ModifyDeclarationChange,
   ModifyFunctionChange,
+  PolicyDecl,
   RationaleDecl,
   RationaleMember,
   ReevaluationDecl,
+  RoleDecl,
   RelationDecl,
   RelationEndpoint,
   RelationRoleEntry,
@@ -77,6 +79,7 @@ import {
   isOwnsDecl,
   isPathsBlock,
   isProtectsDecl,
+  isPolicyDecl,
   isRationaleDecl,
   isReasonDecl,
   isReevaluationDecl,
@@ -88,15 +91,18 @@ import {
   isRelationSummaryDecl,
   isRemoveDeclarationChange,
   isRemoveFunctionChange,
+  isRequireApproverDecl,
   isResourceDecl,
   isReviewByDecl,
   isReviewerDecl,
+  isRoleDecl,
   isRuleDecl,
   isRuleForbidEffectDecl,
   isRuleForbidHypercycleDecl,
   isRuleForbidProvidesDecl,
   isRuleWhenHasDecl,
   isSatisfiesDecl,
+  isSensitiveDecl,
   isStatusDecl,
   isSummaryDecl,
   isTraitDecl,
@@ -607,6 +613,12 @@ type TransformGuardInfo = {
   provenance: Provenance;
 };
 
+type PolicyInfo = {
+  name: string;
+  requiresApprover: boolean;
+  provenance: Provenance;
+};
+
 type RationaleInfo = {
   name: string;
   contextType: string;
@@ -633,6 +645,7 @@ type MemoryInfo = {
   summary?: string;
   owner?: string;
   reviewBy?: string;
+  sensitive: boolean;
   protects: ProtectedProperty[];
   guards: GuardInfo[];
   forbiddenTransforms: TransformGuardInfo[];
@@ -836,6 +849,8 @@ type Model = {
   rationales: Map<string, RationaleInfo>;
   memories: Map<string, MemoryInfo>;
   reevaluations: Map<string, ReevaluationInfo>;
+  roles: Map<string, Provenance>;
+  policies: Map<string, PolicyInfo>;
   attestations: { kind: string; path: string; reason: string; provenance: Provenance }[];
   shapeUpdatePaths: Map<string, Provenance[]>;
   changeEvents: ChangeEvent[];
@@ -1476,6 +1491,8 @@ function lowerShapeModules(modules: ShapeModule[] | CheckModuleInput[]): Model {
     rationales: new Map(),
     memories: new Map(),
     reevaluations: new Map(),
+    roles: new Map(),
+    policies: new Map(),
     attestations: [],
     shapeUpdatePaths: new Map(),
     changeEvents: [],
@@ -1518,6 +1535,10 @@ function lowerShapeModules(modules: ShapeModule[] | CheckModuleInput[]): Model {
         lowerMemory(declaration, context, model);
       } else if (isReevaluationDecl(declaration)) {
         lowerReevaluation(declaration, context, model);
+      } else if (isRoleDecl(declaration)) {
+        lowerRole(declaration, context, model);
+      } else if (isPolicyDecl(declaration)) {
+        lowerPolicy(declaration, context, model);
       }
     }
   }
@@ -2658,6 +2679,7 @@ function lowerMemory(memory: MemoryDecl, context: LoweringContext, model: Model)
     name,
     contextType: memory.contextType.name,
     target: lowerTargetRef(memory.contextType.target, context, model),
+    sensitive: false,
     protects: [],
     guards: [],
     forbiddenTransforms: [],
@@ -2677,6 +2699,8 @@ function lowerMemory(memory: MemoryDecl, context: LoweringContext, model: Model)
       info.confidence = member.value;
     } else if (isObservedDecl(member)) {
       info.observed.push(lowerSourceRef(member));
+    } else if (isSensitiveDecl(member)) {
+      info.sensitive = true;
     }
   }
 
@@ -2810,6 +2834,29 @@ function lowerReevaluation(
       provenance: prov
     });
   }
+}
+
+/**
+ * A `role` declares a valid reviewer/approver identity. Roles are matched by
+ * their local name, so a role declared in any module authorises that name.
+ * Declaring at least one role turns on structural reviewer/approver validation.
+ */
+function lowerRole(role: RoleDecl, context: LoweringContext, model: Model): void {
+  if (!model.roles.has(role.name)) {
+    model.roles.set(role.name, provenance(context.filePath, `role ${role.name}`));
+  }
+}
+
+function lowerPolicy(policy: PolicyDecl, context: LoweringContext, model: Model): void {
+  const name = declKey(context.name, policy.name);
+  if (model.policies.has(name)) {
+    return;
+  }
+  model.policies.set(name, {
+    name,
+    requiresApprover: policy.members.some(isRequireApproverDecl),
+    provenance: provenance(context.filePath, `policy ${name}`)
+  });
 }
 
 function emitGuardFacts(kind: ContextKind, info: RationaleInfo | MemoryInfo, model: Model): void {
@@ -4966,8 +5013,34 @@ function reevaluationValidationReasons(reevaluation: ReevaluationInfo, model: Mo
   if (!reevaluation.decidedOn) {
     reasons.push("missing decided_on");
   }
+  if (approverRequiredBy(reevaluation, model) && !reevaluation.approver) {
+    reasons.push("missing approver required by policy");
+  }
+  if (model.roles.size > 0) {
+    if (reevaluation.reviewer && !model.roles.has(reevaluation.reviewer)) {
+      reasons.push(`unknown reviewer role ${reevaluation.reviewer}`);
+    }
+    if (reevaluation.approver && !model.roles.has(reevaluation.approver)) {
+      reasons.push(`unknown approver role ${reevaluation.approver}`);
+    }
+  }
 
   return reasons;
+}
+
+/**
+ * True when a project policy requires an approver and the reevaluation
+ * satisfies a memory marked `sensitive`. Without such a policy, approver stays
+ * optional, preserving the default reviewer-only path.
+ */
+function approverRequiredBy(reevaluation: ReevaluationInfo, model: Model): boolean {
+  if (![...model.policies.values()].some((policy) => policy.requiresApprover)) {
+    return false;
+  }
+  if (reevaluation.satisfiesKind !== "memory" || !reevaluation.satisfiesName) {
+    return false;
+  }
+  return model.memories.get(reevaluation.satisfiesName)?.sensitive === true;
 }
 
 function contextObjectExists(kind: ContextKind, name: string, model: Model): boolean {

@@ -185,6 +185,14 @@ component ShapeRuleEngine {
       Read<EffectiveModel>
         evidence ts("packages/shp-checker/src/checker.ts")
     }
+  fn checkReevaluations : RefactorSensitive
+    source ts("packages/shp-checker/src/checker.ts#checkReevaluations")
+    effects complete {
+      Append<SemanticDiagnostics>
+        evidence ts("packages/shp-checker/src/checker.ts")
+      Read<EffectiveModel>
+        evidence ts("packages/shp-checker/src/checker.ts")
+    }
   fn deriveFinalForbidsForResource : RefactorSensitive
     source ts("packages/shp-checker/src/checker.ts#deriveFinalForbidsForResource")
     effects complete {
@@ -449,6 +457,16 @@ memory PreludeMetadataContract : RefactorConstraint<fn ShapePreludeRegistry.defi
   summary "Prelude traits, relation kinds, and context requirements are semantic inputs shared by checker, editor, and authoring surfaces; context requirements derive obligations for function, component, and resource targets."
   owner ShapeMaintainers
   protects shape PreludeConsistency
+  guards on_change require ReEvaluation<Self>
+}
+
+memory ReevaluationPolicyContract : RefactorConstraint<fn ShapeRuleEngine.checkReevaluations> {
+  applies_to fn ShapeRuleEngine.checkReevaluations
+  status Explained
+  confidence High
+  summary "Reevaluation validation requires structural fields plus an approver when a project policy requires one for a sensitive memory, and validates reviewer/approver against declared roles; approver and role checks stay opt-in so the default reviewer-only path is preserved."
+  owner ShapeMaintainers
+  protects shape ReevaluationValidation
   guards on_change require ReEvaluation<Self>
 }
 

@@ -308,7 +308,7 @@ Add a `reevaluation` with review evidence, or avoid changing the protected shape
 
 Cause: a `reevaluation` is incomplete or satisfies a memory/rationale that does not exist.
 
-A valid reevaluation needs a known `satisfies` target plus `outcome`, `summary`, `evidence`, `reviewer`, and `decided_on`.
+A valid reevaluation needs a known `satisfies` target plus `outcome`, `summary`, `evidence`, `reviewer`, and `decided_on`. When an approver `policy` is declared and the reevaluation satisfies a `sensitive` memory, an `approver` is also required (`missing approver required by policy`). When any `role` is declared, the `reviewer` and `approver` must name a declared role, otherwise the reason is `unknown reviewer role X` / `unknown approver role X`.
 
 ## Stale design memory
 

@@ -290,6 +290,8 @@ A `protects` clause names either a property with a value, such as `protects shap
 
 A `guards` clause takes one of two forms: `guards on_change require ReEvaluation<Self>`, or `guards forbid transform Label`. A `modify fn` change can declare its intent with `transform Label1, Label2`; a `forbid transform` guard fires only when a matching transform intent is declared.
 
+A `memory` may carry a `sensitive` flag. A top-level `role Name` declaration registers a valid reviewer/approver identity, and a top-level `policy Name { require approver }` declaration requires an approver on reevaluations that satisfy a `sensitive` memory. `role`, `policy`, and `sensitive` are reserved keywords.
+
 `reevaluation` records review for a guarded change:
 
 ```shape

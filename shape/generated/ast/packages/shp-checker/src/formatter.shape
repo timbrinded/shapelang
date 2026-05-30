@@ -7,333 +7,341 @@ trait GeneratedCandidate {
 }
 
 resource FormatterModuleBlockAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/formatter.ts:764-769")
+  storage ast.anchor("packages/shp-checker/src/formatter.ts:788-793")
   fingerprint ast.semantic_subtree_v1("sha256:33e6041d1fdf09a415866a3cd4a134b1deff2b0d7b107f92e7c3f0e76d9cb92b")
 }
 
 resource FormatterModuleDeclarationSortKeyAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/formatter.ts:794-835")
-  fingerprint ast.semantic_subtree_v1("sha256:7774049c6eb6e273602c1b65d1303ca39516486682797100b5015f09d8cae6ba")
+  storage ast.anchor("packages/shp-checker/src/formatter.ts:818-865")
+  fingerprint ast.semantic_subtree_v1("sha256:49016d441a1dbea6400dbf3737c4cb6350ef790d799bb816f7620e9ffac025f8")
 }
 
 resource FormatterModuleFormatAttestationAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/formatter.ts:525-530")
+  storage ast.anchor("packages/shp-checker/src/formatter.ts:545-550")
   fingerprint ast.semantic_subtree_v1("sha256:cd670269662a81b1820c7463765cd00d710b95bad73c2bd81ad18c8c7d8f852a")
 }
 
 resource FormatterModuleFormatBindingAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/formatter.ts:495-515")
+  storage ast.anchor("packages/shp-checker/src/formatter.ts:515-535")
   fingerprint ast.semantic_subtree_v1("sha256:f4da6a5165e7b14f094d78a5ba2d07a0ab6bb48ac79dab171fb0b8180009e55e")
 }
 
 resource FormatterModuleFormatBindingPathsAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/formatter.ts:517-523")
+  storage ast.anchor("packages/shp-checker/src/formatter.ts:537-543")
   fingerprint ast.semantic_subtree_v1("sha256:9edb7d2ef40960731fc5c5d666f4ad938fdab986cf850bef9950f875483fdf2a")
 }
 
 resource FormatterModuleFormatCandidateEffectAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/formatter.ts:326-356")
+  storage ast.anchor("packages/shp-checker/src/formatter.ts:346-376")
   fingerprint ast.semantic_subtree_v1("sha256:7b9455a95f49e321cf43bbda6b9f89d8fd42ae5886911899d754429ddea71db4")
 }
 
 resource FormatterModuleFormatChangeAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/formatter.ts:532-559")
+  storage ast.anchor("packages/shp-checker/src/formatter.ts:552-579")
   fingerprint ast.semantic_subtree_v1("sha256:597a08c7aceaa02ed2cb8f6daebf362cf0f6fb62f4ccc1455e44e8e180944b6b")
 }
 
 resource FormatterModuleFormatChangedDeclarationAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/formatter.ts:568-580")
+  storage ast.anchor("packages/shp-checker/src/formatter.ts:588-600")
   fingerprint ast.semantic_subtree_v1("sha256:f24cd1324f4bfcc4482609ac208df6ff2307cced6b746d3cf156cfb9386cfee1")
 }
 
 resource FormatterModuleFormatComponentAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/formatter.ts:253-281")
+  storage ast.anchor("packages/shp-checker/src/formatter.ts:273-301")
   fingerprint ast.semantic_subtree_v1("sha256:914e12b7f256aa13bb1eb5f1fcfe2513dd17474a15d816012bec85cef0a82720")
 }
 
 resource FormatterModuleFormatContextMemberAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/formatter.ts:651-676")
+  storage ast.anchor("packages/shp-checker/src/formatter.ts:674-699")
   fingerprint ast.semantic_subtree_v1("sha256:76cde32cc362993d222076a0ef8181594cbce878ba87c82e59f919db0a6b49c3")
 }
 
 resource FormatterModuleFormatContextTypeRefAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/formatter.ts:754-758")
+  storage ast.anchor("packages/shp-checker/src/formatter.ts:778-782")
   fingerprint ast.semantic_subtree_v1("sha256:b7ddafc14d9fa70e99637f8388c3ceed29b6035d58e2d6ba210a289b0b0d32b8")
 }
 
 resource FormatterModuleFormatDeclarationAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/formatter.ts:154-195")
-  fingerprint ast.semantic_subtree_v1("sha256:a28be2dfdd8d270c7f3297009c63ef541da16a96f8b019c98d8d88092d6669e2")
+  storage ast.anchor("packages/shp-checker/src/formatter.ts:159-206")
+  fingerprint ast.semantic_subtree_v1("sha256:22799cfb93a40ecfac241181398fa7843a02350256282495ce9afa0278d5ff8d")
 }
 
 resource FormatterModuleFormatDescriptionAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/formatter.ts:441-443")
+  storage ast.anchor("packages/shp-checker/src/formatter.ts:461-463")
   fingerprint ast.semantic_subtree_v1("sha256:885f74bf17df3462b3f92e64df1b2ddd70a7efa8419259a5d9184e24ac0553b5")
 }
 
 resource FormatterModuleFormatEffectEntryAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/formatter.ts:445-451")
+  storage ast.anchor("packages/shp-checker/src/formatter.ts:465-471")
   fingerprint ast.semantic_subtree_v1("sha256:75e68c09d3885d08a4690d4b3dbe248e695f7e532183d5fdcd79d0fe67910bb5")
 }
 
 resource FormatterModuleFormatFingerprintAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/formatter.ts:358-360")
+  storage ast.anchor("packages/shp-checker/src/formatter.ts:378-380")
   fingerprint ast.semantic_subtree_v1("sha256:80660a7758ecfe028a92fb6b1c3ff1b5d29b8d1d81b91f5d607ae0f8666f4db8")
 }
 
 resource FormatterModuleFormatFunctionAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/formatter.ts:362-373")
+  storage ast.anchor("packages/shp-checker/src/formatter.ts:382-393")
   fingerprint ast.semantic_subtree_v1("sha256:3f559a8b71e9027294d5661f98a2ceabb454d4677254ff4df1d577d7be5c5b2f")
 }
 
 resource FormatterModuleFormatFunctionLocalNameAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/formatter.ts:561-566")
+  storage ast.anchor("packages/shp-checker/src/formatter.ts:581-586")
   fingerprint ast.semantic_subtree_v1("sha256:9d0c7936673c62a6f3e7a94dfebce0f5c99a9fda60ae217be5761b7896995b2a")
 }
 
 resource FormatterModuleFormatFunctionMemberAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/formatter.ts:453-464")
+  storage ast.anchor("packages/shp-checker/src/formatter.ts:473-484")
   fingerprint ast.semantic_subtree_v1("sha256:cac8c6c70198bbe2d76b7b59d8e0ddb59d9cc84342d449dd8faea531a92ebaf1")
 }
 
 resource FormatterModuleFormatFunctionPartsAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/formatter.ts:391-429")
+  storage ast.anchor("packages/shp-checker/src/formatter.ts:411-449")
   fingerprint ast.semantic_subtree_v1("sha256:12702361cc0962582dd0bcfea069c46efdd9f309e7cff9e7ac40dff134b3cba0")
 }
 
 resource FormatterModuleFormatImplementationAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/formatter.ts:472-493")
+  storage ast.anchor("packages/shp-checker/src/formatter.ts:492-513")
   fingerprint ast.semantic_subtree_v1("sha256:f620c3d367a53c068794c25335f2e77918e2ceaa15bdf4d39fe8f408bde4ae41")
 }
 
 resource FormatterModuleFormatMemoryAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/formatter.ts:627-649")
-  fingerprint ast.semantic_subtree_v1("sha256:03e9f579921f9212ee71ed83582b8bc7805656a43e4079a4047db0ee04e23a2e")
+  storage ast.anchor("packages/shp-checker/src/formatter.ts:647-672")
+  fingerprint ast.semantic_subtree_v1("sha256:0bcfc9ec23922c8e0fdbcb0481136b9779a0ec857407f16b49fb990db0621d4f")
 }
 
 resource FormatterModuleFormatPatternAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/formatter.ts:782-784")
+  storage ast.anchor("packages/shp-checker/src/formatter.ts:806-808")
   fingerprint ast.semantic_subtree_v1("sha256:050cd1cebaa68fc97f4b257f8b8ff8b3dc119c729b24c3022634218d54d17c11")
 }
 
+resource FormatterModuleFormatPolicyAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/formatter.ts:208-215")
+  fingerprint ast.semantic_subtree_v1("sha256:25c3e602da0c7b002b3660b7afc057a9fc1230dcd43992c744dd14f3b40ebcd4")
+}
+
 resource FormatterModuleFormatQualifiedFunctionAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/formatter.ts:375-389")
+  storage ast.anchor("packages/shp-checker/src/formatter.ts:395-409")
   fingerprint ast.semantic_subtree_v1("sha256:5abeae8a6184097cad176ea514527cc4641f98517847cec260ccb12736c13b69")
 }
 
 resource FormatterModuleFormatRationaleAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/formatter.ts:606-625")
+  storage ast.anchor("packages/shp-checker/src/formatter.ts:626-645")
   fingerprint ast.semantic_subtree_v1("sha256:5ee22b0f607c5c5fafb3f89c04f21c4f69be5318554a047cb943d0a58a70357c")
 }
 
 resource FormatterModuleFormatReevaluationAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/formatter.ts:678-712")
+  storage ast.anchor("packages/shp-checker/src/formatter.ts:701-735")
   fingerprint ast.semantic_subtree_v1("sha256:ee0643b78c092b4bcd87dadf880ac30860dc1b7156b538ad91ca60c4a5330e72")
 }
 
 resource FormatterModuleFormatRelationAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/formatter.ts:283-324")
+  storage ast.anchor("packages/shp-checker/src/formatter.ts:303-344")
   fingerprint ast.semantic_subtree_v1("sha256:dde73216ccce013647ac3bc77b74838f67bf9ff6fed0662e3a8856c753abd7cd")
 }
 
 resource FormatterModuleFormatResourceAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/formatter.ts:197-231")
+  storage ast.anchor("packages/shp-checker/src/formatter.ts:217-251")
   fingerprint ast.semantic_subtree_v1("sha256:1d532b12fda683d4c43b0db26d292195803bba1b9c91f286431f3c1a520c1c47")
 }
 
 resource FormatterModuleFormatRuleAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/formatter.ts:582-604")
+  storage ast.anchor("packages/shp-checker/src/formatter.ts:602-624")
   fingerprint ast.semantic_subtree_v1("sha256:c98e40138a9b5b6975e57392eaaff99da29811e3baebd9567421471a68f30a67")
 }
 
 resource FormatterModuleFormatShapeModuleAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/formatter.ts:132-152")
+  storage ast.anchor("packages/shp-checker/src/formatter.ts:137-157")
   fingerprint ast.semantic_subtree_v1("sha256:06b7f419061c49e324b39df310cce01ba6ba6bac1ff4956ab1ac5551e35bdb5a")
 }
 
 resource FormatterModuleFormatShapeSourceAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/formatter.ts:117-130")
+  storage ast.anchor("packages/shp-checker/src/formatter.ts:122-135")
   fingerprint ast.semantic_subtree_v1("sha256:4c40f093ae7c66e4f29f58cfd62a6f4560b5908873ac54f9f923d4683f8f62c8")
 }
 
 resource FormatterModuleFormatShapeTraitListAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/formatter.ts:431-439")
+  storage ast.anchor("packages/shp-checker/src/formatter.ts:451-459")
   fingerprint ast.semantic_subtree_v1("sha256:f138ec0a4fac380d5bb9c66c779e9f6a6af32ca0bf23beb4da41c1ea3e3b501e")
 }
 
 resource FormatterModuleFormatSourceAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/formatter.ts:786-788")
+  storage ast.anchor("packages/shp-checker/src/formatter.ts:810-812")
   fingerprint ast.semantic_subtree_v1("sha256:ea2a8eef0dd5d756de56642082b16309e6a661a4a956375f269033ab72fdc847")
 }
 
 resource FormatterModuleFormatSourceRefAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/formatter.ts:790-792")
+  storage ast.anchor("packages/shp-checker/src/formatter.ts:814-816")
   fingerprint ast.semantic_subtree_v1("sha256:6fba7a95754d70daddaa476075a12e2969bf51a23c025bda93d582a25111e8a6")
 }
 
 resource FormatterModuleFormatTargetRefAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/formatter.ts:760-762")
+  storage ast.anchor("packages/shp-checker/src/formatter.ts:784-786")
   fingerprint ast.semantic_subtree_v1("sha256:596566b6ea5219f4fcc55921806ff67e6e817e8678d03c5de85a1554253dcb31")
 }
 
 resource FormatterModuleFormatTermAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/formatter.ts:778-780")
+  storage ast.anchor("packages/shp-checker/src/formatter.ts:802-804")
   fingerprint ast.semantic_subtree_v1("sha256:e5f31959206efc616350b2d11948290936f6375e66c8ab7f2c218702eddd8b87")
 }
 
 resource FormatterModuleFormatTraitAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/formatter.ts:233-251")
+  storage ast.anchor("packages/shp-checker/src/formatter.ts:253-271")
   fingerprint ast.semantic_subtree_v1("sha256:ff11a99efb4cb43fa0290e75174800f92896a18c1d5c841560d3beabd0360fdc")
 }
 
 resource FormatterModuleFormatTypeParamsAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/formatter.ts:771-776")
+  storage ast.anchor("packages/shp-checker/src/formatter.ts:795-800")
   fingerprint ast.semantic_subtree_v1("sha256:a1d1f5ac481e2a85878c11166c17ff2e1bd2483d4af8f4bc1f5cf9973c5b9feb")
 }
 
 resource FormatterModuleIndentAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/formatter.ts:837-843")
+  storage ast.anchor("packages/shp-checker/src/formatter.ts:867-873")
   fingerprint ast.semantic_subtree_v1("sha256:49bd83bd1bc39455e75bc9eb3c01d08a02fb2e2d07ad370c8f3e7d4f6ab370ea")
 }
 
 resource FormatterModuleMemberOrderAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/formatter.ts:748-752")
+  storage ast.anchor("packages/shp-checker/src/formatter.ts:772-776")
   fingerprint ast.semantic_subtree_v1("sha256:d32e616a3210875c494f8a8c59574eb78cbbef92576bbcad78ea65b080d0220a")
 }
 
 resource FormatterModuleQuoteAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/formatter.ts:845-847")
+  storage ast.anchor("packages/shp-checker/src/formatter.ts:875-877")
   fingerprint ast.semantic_subtree_v1("sha256:bab1b5ea4fcaf961b50db42d4f33e82206da4c3d8cb1b6c627c8ec6e1fbb87cd")
 }
 
 resource FormatterModuleSortFunctionMembersAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/formatter.ts:466-470")
+  storage ast.anchor("packages/shp-checker/src/formatter.ts:486-490")
   fingerprint ast.semantic_subtree_v1("sha256:4d66aa8c9066b68ce01fe47a50b565eee42903f615902d889be860729145a0c4")
 }
 
 component FormatterModule : GeneratedCandidate {
   fn block
-    source ts("packages/shp-checker/src/formatter.ts:764-769")
+    source ts("packages/shp-checker/src/formatter.ts:788-793")
     effects unknown
   fn declarationSortKey
-    source ts("packages/shp-checker/src/formatter.ts:794-835")
+    source ts("packages/shp-checker/src/formatter.ts:818-865")
     effects unknown
   fn formatAttestation
-    source ts("packages/shp-checker/src/formatter.ts:525-530")
+    source ts("packages/shp-checker/src/formatter.ts:545-550")
     effects unknown
   fn formatBinding
-    source ts("packages/shp-checker/src/formatter.ts:495-515")
+    source ts("packages/shp-checker/src/formatter.ts:515-535")
     effects unknown
   fn formatBindingPaths
-    source ts("packages/shp-checker/src/formatter.ts:517-523")
+    source ts("packages/shp-checker/src/formatter.ts:537-543")
     effects unknown
   fn formatCandidateEffect
-    source ts("packages/shp-checker/src/formatter.ts:326-356")
+    source ts("packages/shp-checker/src/formatter.ts:346-376")
     effects unknown
   fn formatChange
-    source ts("packages/shp-checker/src/formatter.ts:532-559")
+    source ts("packages/shp-checker/src/formatter.ts:552-579")
     effects unknown
   fn formatChangedDeclaration
-    source ts("packages/shp-checker/src/formatter.ts:568-580")
+    source ts("packages/shp-checker/src/formatter.ts:588-600")
     effects unknown
   fn formatComponent
-    source ts("packages/shp-checker/src/formatter.ts:253-281")
+    source ts("packages/shp-checker/src/formatter.ts:273-301")
     effects unknown
   fn formatContextMember
-    source ts("packages/shp-checker/src/formatter.ts:651-676")
+    source ts("packages/shp-checker/src/formatter.ts:674-699")
     effects unknown
   fn formatContextTypeRef
-    source ts("packages/shp-checker/src/formatter.ts:754-758")
+    source ts("packages/shp-checker/src/formatter.ts:778-782")
     effects unknown
   fn formatDeclaration
-    source ts("packages/shp-checker/src/formatter.ts:154-195")
+    source ts("packages/shp-checker/src/formatter.ts:159-206")
     effects unknown
   fn formatDescription
-    source ts("packages/shp-checker/src/formatter.ts:441-443")
+    source ts("packages/shp-checker/src/formatter.ts:461-463")
     effects unknown
   fn formatEffectEntry
-    source ts("packages/shp-checker/src/formatter.ts:445-451")
+    source ts("packages/shp-checker/src/formatter.ts:465-471")
     effects unknown
   fn formatFingerprint
-    source ts("packages/shp-checker/src/formatter.ts:358-360")
+    source ts("packages/shp-checker/src/formatter.ts:378-380")
     effects unknown
   fn formatFunction
-    source ts("packages/shp-checker/src/formatter.ts:362-373")
+    source ts("packages/shp-checker/src/formatter.ts:382-393")
     effects unknown
   fn formatFunctionLocalName
-    source ts("packages/shp-checker/src/formatter.ts:561-566")
+    source ts("packages/shp-checker/src/formatter.ts:581-586")
     effects unknown
   fn formatFunctionMember
-    source ts("packages/shp-checker/src/formatter.ts:453-464")
+    source ts("packages/shp-checker/src/formatter.ts:473-484")
     effects unknown
   fn formatFunctionParts
-    source ts("packages/shp-checker/src/formatter.ts:391-429")
+    source ts("packages/shp-checker/src/formatter.ts:411-449")
     effects unknown
   fn formatImplementation
-    source ts("packages/shp-checker/src/formatter.ts:472-493")
+    source ts("packages/shp-checker/src/formatter.ts:492-513")
     effects unknown
   fn formatMemory
-    source ts("packages/shp-checker/src/formatter.ts:627-649")
+    source ts("packages/shp-checker/src/formatter.ts:647-672")
     effects unknown
   fn formatPattern
-    source ts("packages/shp-checker/src/formatter.ts:782-784")
+    source ts("packages/shp-checker/src/formatter.ts:806-808")
+    effects unknown
+  fn formatPolicy
+    source ts("packages/shp-checker/src/formatter.ts:208-215")
     effects unknown
   fn formatQualifiedFunction
-    source ts("packages/shp-checker/src/formatter.ts:375-389")
+    source ts("packages/shp-checker/src/formatter.ts:395-409")
     effects unknown
   fn formatRationale
-    source ts("packages/shp-checker/src/formatter.ts:606-625")
+    source ts("packages/shp-checker/src/formatter.ts:626-645")
     effects unknown
   fn formatReevaluation
-    source ts("packages/shp-checker/src/formatter.ts:678-712")
+    source ts("packages/shp-checker/src/formatter.ts:701-735")
     effects unknown
   fn formatRelation
-    source ts("packages/shp-checker/src/formatter.ts:283-324")
+    source ts("packages/shp-checker/src/formatter.ts:303-344")
     effects unknown
   fn formatResource
-    source ts("packages/shp-checker/src/formatter.ts:197-231")
+    source ts("packages/shp-checker/src/formatter.ts:217-251")
     effects unknown
   fn formatRule
-    source ts("packages/shp-checker/src/formatter.ts:582-604")
+    source ts("packages/shp-checker/src/formatter.ts:602-624")
     effects unknown
   fn formatShapeModule
-    source ts("packages/shp-checker/src/formatter.ts:132-152")
+    source ts("packages/shp-checker/src/formatter.ts:137-157")
     effects unknown
   fn formatShapeSource
-    source ts("packages/shp-checker/src/formatter.ts:117-130")
+    source ts("packages/shp-checker/src/formatter.ts:122-135")
     effects unknown
   fn formatShapeTraitList
-    source ts("packages/shp-checker/src/formatter.ts:431-439")
+    source ts("packages/shp-checker/src/formatter.ts:451-459")
     effects unknown
   fn formatSource
-    source ts("packages/shp-checker/src/formatter.ts:786-788")
+    source ts("packages/shp-checker/src/formatter.ts:810-812")
     effects unknown
   fn formatSourceRef
-    source ts("packages/shp-checker/src/formatter.ts:790-792")
+    source ts("packages/shp-checker/src/formatter.ts:814-816")
     effects unknown
   fn formatTargetRef
-    source ts("packages/shp-checker/src/formatter.ts:760-762")
+    source ts("packages/shp-checker/src/formatter.ts:784-786")
     effects unknown
   fn formatTerm
-    source ts("packages/shp-checker/src/formatter.ts:778-780")
+    source ts("packages/shp-checker/src/formatter.ts:802-804")
     effects unknown
   fn formatTrait
-    source ts("packages/shp-checker/src/formatter.ts:233-251")
+    source ts("packages/shp-checker/src/formatter.ts:253-271")
     effects unknown
   fn formatTypeParams
-    source ts("packages/shp-checker/src/formatter.ts:771-776")
+    source ts("packages/shp-checker/src/formatter.ts:795-800")
     effects unknown
   fn indent
-    source ts("packages/shp-checker/src/formatter.ts:837-843")
+    source ts("packages/shp-checker/src/formatter.ts:867-873")
     effects unknown
   fn memberOrder
-    source ts("packages/shp-checker/src/formatter.ts:748-752")
+    source ts("packages/shp-checker/src/formatter.ts:772-776")
     effects unknown
   fn quote
-    source ts("packages/shp-checker/src/formatter.ts:845-847")
+    source ts("packages/shp-checker/src/formatter.ts:875-877")
     effects unknown
   fn sortFunctionMembers
-    source ts("packages/shp-checker/src/formatter.ts:466-470")
+    source ts("packages/shp-checker/src/formatter.ts:486-490")
     effects unknown
 }
 
@@ -342,15 +350,15 @@ relation FormatterModuleBlockGeneratedFromFormatterModuleBlockAstAnchor {
   connects FormatterModule -> FormatterModuleBlockAstAnchor
   roles { FormatterModule as generated, FormatterModuleBlockAstAnchor as syntax }
   expects FormatterModuleBlockAstAnchor fingerprint ast.semantic_subtree_v1("sha256:33e6041d1fdf09a415866a3cd4a134b1deff2b0d7b107f92e7c3f0e76d9cb92b")
-  summary "fn FormatterModule.block generated from typescript function_declaration at packages/shp-checker/src/formatter.ts:764-769."
+  summary "fn FormatterModule.block generated from typescript function_declaration at packages/shp-checker/src/formatter.ts:788-793."
 }
 
 relation FormatterModuleDeclarationSortKeyGeneratedFromFormatterModuleDeclarationSortKeyAstAnchor {
   kind generated_from
   connects FormatterModule -> FormatterModuleDeclarationSortKeyAstAnchor
   roles { FormatterModule as generated, FormatterModuleDeclarationSortKeyAstAnchor as syntax }
-  expects FormatterModuleDeclarationSortKeyAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7774049c6eb6e273602c1b65d1303ca39516486682797100b5015f09d8cae6ba")
-  summary "fn FormatterModule.declarationSortKey generated from typescript function_declaration at packages/shp-checker/src/formatter.ts:794-835."
+  expects FormatterModuleDeclarationSortKeyAstAnchor fingerprint ast.semantic_subtree_v1("sha256:49016d441a1dbea6400dbf3737c4cb6350ef790d799bb816f7620e9ffac025f8")
+  summary "fn FormatterModule.declarationSortKey generated from typescript function_declaration at packages/shp-checker/src/formatter.ts:818-865."
 }
 
 relation FormatterModuleFormatAttestationGeneratedFromFormatterModuleFormatAttestationAstAnchor {
@@ -358,7 +366,7 @@ relation FormatterModuleFormatAttestationGeneratedFromFormatterModuleFormatAttes
   connects FormatterModule -> FormatterModuleFormatAttestationAstAnchor
   roles { FormatterModule as generated, FormatterModuleFormatAttestationAstAnchor as syntax }
   expects FormatterModuleFormatAttestationAstAnchor fingerprint ast.semantic_subtree_v1("sha256:cd670269662a81b1820c7463765cd00d710b95bad73c2bd81ad18c8c7d8f852a")
-  summary "fn FormatterModule.formatAttestation generated from typescript function_declaration at packages/shp-checker/src/formatter.ts:525-530."
+  summary "fn FormatterModule.formatAttestation generated from typescript function_declaration at packages/shp-checker/src/formatter.ts:545-550."
 }
 
 relation FormatterModuleFormatBindingGeneratedFromFormatterModuleFormatBindingAstAnchor {
@@ -366,7 +374,7 @@ relation FormatterModuleFormatBindingGeneratedFromFormatterModuleFormatBindingAs
   connects FormatterModule -> FormatterModuleFormatBindingAstAnchor
   roles { FormatterModule as generated, FormatterModuleFormatBindingAstAnchor as syntax }
   expects FormatterModuleFormatBindingAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f4da6a5165e7b14f094d78a5ba2d07a0ab6bb48ac79dab171fb0b8180009e55e")
-  summary "fn FormatterModule.formatBinding generated from typescript function_declaration at packages/shp-checker/src/formatter.ts:495-515."
+  summary "fn FormatterModule.formatBinding generated from typescript function_declaration at packages/shp-checker/src/formatter.ts:515-535."
 }
 
 relation FormatterModuleFormatBindingPathsGeneratedFromFormatterModuleFormatBindingPathsAstAnchor {
@@ -374,7 +382,7 @@ relation FormatterModuleFormatBindingPathsGeneratedFromFormatterModuleFormatBind
   connects FormatterModule -> FormatterModuleFormatBindingPathsAstAnchor
   roles { FormatterModule as generated, FormatterModuleFormatBindingPathsAstAnchor as syntax }
   expects FormatterModuleFormatBindingPathsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9edb7d2ef40960731fc5c5d666f4ad938fdab986cf850bef9950f875483fdf2a")
-  summary "fn FormatterModule.formatBindingPaths generated from typescript function_declaration at packages/shp-checker/src/formatter.ts:517-523."
+  summary "fn FormatterModule.formatBindingPaths generated from typescript function_declaration at packages/shp-checker/src/formatter.ts:537-543."
 }
 
 relation FormatterModuleFormatCandidateEffectGeneratedFromFormatterModuleFormatCandidateEffectAstAnchor {
@@ -382,7 +390,7 @@ relation FormatterModuleFormatCandidateEffectGeneratedFromFormatterModuleFormatC
   connects FormatterModule -> FormatterModuleFormatCandidateEffectAstAnchor
   roles { FormatterModule as generated, FormatterModuleFormatCandidateEffectAstAnchor as syntax }
   expects FormatterModuleFormatCandidateEffectAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7b9455a95f49e321cf43bbda6b9f89d8fd42ae5886911899d754429ddea71db4")
-  summary "fn FormatterModule.formatCandidateEffect generated from typescript function_declaration at packages/shp-checker/src/formatter.ts:326-356."
+  summary "fn FormatterModule.formatCandidateEffect generated from typescript function_declaration at packages/shp-checker/src/formatter.ts:346-376."
 }
 
 relation FormatterModuleFormatChangeGeneratedFromFormatterModuleFormatChangeAstAnchor {
@@ -390,7 +398,7 @@ relation FormatterModuleFormatChangeGeneratedFromFormatterModuleFormatChangeAstA
   connects FormatterModule -> FormatterModuleFormatChangeAstAnchor
   roles { FormatterModule as generated, FormatterModuleFormatChangeAstAnchor as syntax }
   expects FormatterModuleFormatChangeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:597a08c7aceaa02ed2cb8f6daebf362cf0f6fb62f4ccc1455e44e8e180944b6b")
-  summary "fn FormatterModule.formatChange generated from typescript function_declaration at packages/shp-checker/src/formatter.ts:532-559."
+  summary "fn FormatterModule.formatChange generated from typescript function_declaration at packages/shp-checker/src/formatter.ts:552-579."
 }
 
 relation FormatterModuleFormatChangedDeclarationGeneratedFromFormatterModuleFormatChangedDeclarationAstAnchor {
@@ -398,7 +406,7 @@ relation FormatterModuleFormatChangedDeclarationGeneratedFromFormatterModuleForm
   connects FormatterModule -> FormatterModuleFormatChangedDeclarationAstAnchor
   roles { FormatterModule as generated, FormatterModuleFormatChangedDeclarationAstAnchor as syntax }
   expects FormatterModuleFormatChangedDeclarationAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f24cd1324f4bfcc4482609ac208df6ff2307cced6b746d3cf156cfb9386cfee1")
-  summary "fn FormatterModule.formatChangedDeclaration generated from typescript function_declaration at packages/shp-checker/src/formatter.ts:568-580."
+  summary "fn FormatterModule.formatChangedDeclaration generated from typescript function_declaration at packages/shp-checker/src/formatter.ts:588-600."
 }
 
 relation FormatterModuleFormatComponentGeneratedFromFormatterModuleFormatComponentAstAnchor {
@@ -406,7 +414,7 @@ relation FormatterModuleFormatComponentGeneratedFromFormatterModuleFormatCompone
   connects FormatterModule -> FormatterModuleFormatComponentAstAnchor
   roles { FormatterModule as generated, FormatterModuleFormatComponentAstAnchor as syntax }
   expects FormatterModuleFormatComponentAstAnchor fingerprint ast.semantic_subtree_v1("sha256:914e12b7f256aa13bb1eb5f1fcfe2513dd17474a15d816012bec85cef0a82720")
-  summary "fn FormatterModule.formatComponent generated from typescript function_declaration at packages/shp-checker/src/formatter.ts:253-281."
+  summary "fn FormatterModule.formatComponent generated from typescript function_declaration at packages/shp-checker/src/formatter.ts:273-301."
 }
 
 relation FormatterModuleFormatContextMemberGeneratedFromFormatterModuleFormatContextMemberAstAnchor {
@@ -414,7 +422,7 @@ relation FormatterModuleFormatContextMemberGeneratedFromFormatterModuleFormatCon
   connects FormatterModule -> FormatterModuleFormatContextMemberAstAnchor
   roles { FormatterModule as generated, FormatterModuleFormatContextMemberAstAnchor as syntax }
   expects FormatterModuleFormatContextMemberAstAnchor fingerprint ast.semantic_subtree_v1("sha256:76cde32cc362993d222076a0ef8181594cbce878ba87c82e59f919db0a6b49c3")
-  summary "fn FormatterModule.formatContextMember generated from typescript function_declaration at packages/shp-checker/src/formatter.ts:651-676."
+  summary "fn FormatterModule.formatContextMember generated from typescript function_declaration at packages/shp-checker/src/formatter.ts:674-699."
 }
 
 relation FormatterModuleFormatContextTypeRefGeneratedFromFormatterModuleFormatContextTypeRefAstAnchor {
@@ -422,15 +430,15 @@ relation FormatterModuleFormatContextTypeRefGeneratedFromFormatterModuleFormatCo
   connects FormatterModule -> FormatterModuleFormatContextTypeRefAstAnchor
   roles { FormatterModule as generated, FormatterModuleFormatContextTypeRefAstAnchor as syntax }
   expects FormatterModuleFormatContextTypeRefAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b7ddafc14d9fa70e99637f8388c3ceed29b6035d58e2d6ba210a289b0b0d32b8")
-  summary "fn FormatterModule.formatContextTypeRef generated from typescript function_declaration at packages/shp-checker/src/formatter.ts:754-758."
+  summary "fn FormatterModule.formatContextTypeRef generated from typescript function_declaration at packages/shp-checker/src/formatter.ts:778-782."
 }
 
 relation FormatterModuleFormatDeclarationGeneratedFromFormatterModuleFormatDeclarationAstAnchor {
   kind generated_from
   connects FormatterModule -> FormatterModuleFormatDeclarationAstAnchor
   roles { FormatterModule as generated, FormatterModuleFormatDeclarationAstAnchor as syntax }
-  expects FormatterModuleFormatDeclarationAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a28be2dfdd8d270c7f3297009c63ef541da16a96f8b019c98d8d88092d6669e2")
-  summary "fn FormatterModule.formatDeclaration generated from typescript function_declaration at packages/shp-checker/src/formatter.ts:154-195."
+  expects FormatterModuleFormatDeclarationAstAnchor fingerprint ast.semantic_subtree_v1("sha256:22799cfb93a40ecfac241181398fa7843a02350256282495ce9afa0278d5ff8d")
+  summary "fn FormatterModule.formatDeclaration generated from typescript function_declaration at packages/shp-checker/src/formatter.ts:159-206."
 }
 
 relation FormatterModuleFormatDescriptionGeneratedFromFormatterModuleFormatDescriptionAstAnchor {
@@ -438,7 +446,7 @@ relation FormatterModuleFormatDescriptionGeneratedFromFormatterModuleFormatDescr
   connects FormatterModule -> FormatterModuleFormatDescriptionAstAnchor
   roles { FormatterModule as generated, FormatterModuleFormatDescriptionAstAnchor as syntax }
   expects FormatterModuleFormatDescriptionAstAnchor fingerprint ast.semantic_subtree_v1("sha256:885f74bf17df3462b3f92e64df1b2ddd70a7efa8419259a5d9184e24ac0553b5")
-  summary "fn FormatterModule.formatDescription generated from typescript function_declaration at packages/shp-checker/src/formatter.ts:441-443."
+  summary "fn FormatterModule.formatDescription generated from typescript function_declaration at packages/shp-checker/src/formatter.ts:461-463."
 }
 
 relation FormatterModuleFormatEffectEntryGeneratedFromFormatterModuleFormatEffectEntryAstAnchor {
@@ -446,7 +454,7 @@ relation FormatterModuleFormatEffectEntryGeneratedFromFormatterModuleFormatEffec
   connects FormatterModule -> FormatterModuleFormatEffectEntryAstAnchor
   roles { FormatterModule as generated, FormatterModuleFormatEffectEntryAstAnchor as syntax }
   expects FormatterModuleFormatEffectEntryAstAnchor fingerprint ast.semantic_subtree_v1("sha256:75e68c09d3885d08a4690d4b3dbe248e695f7e532183d5fdcd79d0fe67910bb5")
-  summary "fn FormatterModule.formatEffectEntry generated from typescript function_declaration at packages/shp-checker/src/formatter.ts:445-451."
+  summary "fn FormatterModule.formatEffectEntry generated from typescript function_declaration at packages/shp-checker/src/formatter.ts:465-471."
 }
 
 relation FormatterModuleFormatFingerprintGeneratedFromFormatterModuleFormatFingerprintAstAnchor {
@@ -454,7 +462,7 @@ relation FormatterModuleFormatFingerprintGeneratedFromFormatterModuleFormatFinge
   connects FormatterModule -> FormatterModuleFormatFingerprintAstAnchor
   roles { FormatterModule as generated, FormatterModuleFormatFingerprintAstAnchor as syntax }
   expects FormatterModuleFormatFingerprintAstAnchor fingerprint ast.semantic_subtree_v1("sha256:80660a7758ecfe028a92fb6b1c3ff1b5d29b8d1d81b91f5d607ae0f8666f4db8")
-  summary "fn FormatterModule.formatFingerprint generated from typescript function_declaration at packages/shp-checker/src/formatter.ts:358-360."
+  summary "fn FormatterModule.formatFingerprint generated from typescript function_declaration at packages/shp-checker/src/formatter.ts:378-380."
 }
 
 relation FormatterModuleFormatFunctionGeneratedFromFormatterModuleFormatFunctionAstAnchor {
@@ -462,7 +470,7 @@ relation FormatterModuleFormatFunctionGeneratedFromFormatterModuleFormatFunction
   connects FormatterModule -> FormatterModuleFormatFunctionAstAnchor
   roles { FormatterModule as generated, FormatterModuleFormatFunctionAstAnchor as syntax }
   expects FormatterModuleFormatFunctionAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3f559a8b71e9027294d5661f98a2ceabb454d4677254ff4df1d577d7be5c5b2f")
-  summary "fn FormatterModule.formatFunction generated from typescript function_declaration at packages/shp-checker/src/formatter.ts:362-373."
+  summary "fn FormatterModule.formatFunction generated from typescript function_declaration at packages/shp-checker/src/formatter.ts:382-393."
 }
 
 relation FormatterModuleFormatFunctionLocalNameGeneratedFromFormatterModuleFormatFunctionLocalNameAstAnchor {
@@ -470,7 +478,7 @@ relation FormatterModuleFormatFunctionLocalNameGeneratedFromFormatterModuleForma
   connects FormatterModule -> FormatterModuleFormatFunctionLocalNameAstAnchor
   roles { FormatterModule as generated, FormatterModuleFormatFunctionLocalNameAstAnchor as syntax }
   expects FormatterModuleFormatFunctionLocalNameAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9d0c7936673c62a6f3e7a94dfebce0f5c99a9fda60ae217be5761b7896995b2a")
-  summary "fn FormatterModule.formatFunctionLocalName generated from typescript function_declaration at packages/shp-checker/src/formatter.ts:561-566."
+  summary "fn FormatterModule.formatFunctionLocalName generated from typescript function_declaration at packages/shp-checker/src/formatter.ts:581-586."
 }
 
 relation FormatterModuleFormatFunctionMemberGeneratedFromFormatterModuleFormatFunctionMemberAstAnchor {
@@ -478,7 +486,7 @@ relation FormatterModuleFormatFunctionMemberGeneratedFromFormatterModuleFormatFu
   connects FormatterModule -> FormatterModuleFormatFunctionMemberAstAnchor
   roles { FormatterModule as generated, FormatterModuleFormatFunctionMemberAstAnchor as syntax }
   expects FormatterModuleFormatFunctionMemberAstAnchor fingerprint ast.semantic_subtree_v1("sha256:cac8c6c70198bbe2d76b7b59d8e0ddb59d9cc84342d449dd8faea531a92ebaf1")
-  summary "fn FormatterModule.formatFunctionMember generated from typescript function_declaration at packages/shp-checker/src/formatter.ts:453-464."
+  summary "fn FormatterModule.formatFunctionMember generated from typescript function_declaration at packages/shp-checker/src/formatter.ts:473-484."
 }
 
 relation FormatterModuleFormatFunctionPartsGeneratedFromFormatterModuleFormatFunctionPartsAstAnchor {
@@ -486,7 +494,7 @@ relation FormatterModuleFormatFunctionPartsGeneratedFromFormatterModuleFormatFun
   connects FormatterModule -> FormatterModuleFormatFunctionPartsAstAnchor
   roles { FormatterModule as generated, FormatterModuleFormatFunctionPartsAstAnchor as syntax }
   expects FormatterModuleFormatFunctionPartsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:12702361cc0962582dd0bcfea069c46efdd9f309e7cff9e7ac40dff134b3cba0")
-  summary "fn FormatterModule.formatFunctionParts generated from typescript function_declaration at packages/shp-checker/src/formatter.ts:391-429."
+  summary "fn FormatterModule.formatFunctionParts generated from typescript function_declaration at packages/shp-checker/src/formatter.ts:411-449."
 }
 
 relation FormatterModuleFormatImplementationGeneratedFromFormatterModuleFormatImplementationAstAnchor {
@@ -494,15 +502,15 @@ relation FormatterModuleFormatImplementationGeneratedFromFormatterModuleFormatIm
   connects FormatterModule -> FormatterModuleFormatImplementationAstAnchor
   roles { FormatterModule as generated, FormatterModuleFormatImplementationAstAnchor as syntax }
   expects FormatterModuleFormatImplementationAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f620c3d367a53c068794c25335f2e77918e2ceaa15bdf4d39fe8f408bde4ae41")
-  summary "fn FormatterModule.formatImplementation generated from typescript function_declaration at packages/shp-checker/src/formatter.ts:472-493."
+  summary "fn FormatterModule.formatImplementation generated from typescript function_declaration at packages/shp-checker/src/formatter.ts:492-513."
 }
 
 relation FormatterModuleFormatMemoryGeneratedFromFormatterModuleFormatMemoryAstAnchor {
   kind generated_from
   connects FormatterModule -> FormatterModuleFormatMemoryAstAnchor
   roles { FormatterModule as generated, FormatterModuleFormatMemoryAstAnchor as syntax }
-  expects FormatterModuleFormatMemoryAstAnchor fingerprint ast.semantic_subtree_v1("sha256:03e9f579921f9212ee71ed83582b8bc7805656a43e4079a4047db0ee04e23a2e")
-  summary "fn FormatterModule.formatMemory generated from typescript function_declaration at packages/shp-checker/src/formatter.ts:627-649."
+  expects FormatterModuleFormatMemoryAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0bcfc9ec23922c8e0fdbcb0481136b9779a0ec857407f16b49fb990db0621d4f")
+  summary "fn FormatterModule.formatMemory generated from typescript function_declaration at packages/shp-checker/src/formatter.ts:647-672."
 }
 
 relation FormatterModuleFormatPatternGeneratedFromFormatterModuleFormatPatternAstAnchor {
@@ -510,7 +518,15 @@ relation FormatterModuleFormatPatternGeneratedFromFormatterModuleFormatPatternAs
   connects FormatterModule -> FormatterModuleFormatPatternAstAnchor
   roles { FormatterModule as generated, FormatterModuleFormatPatternAstAnchor as syntax }
   expects FormatterModuleFormatPatternAstAnchor fingerprint ast.semantic_subtree_v1("sha256:050cd1cebaa68fc97f4b257f8b8ff8b3dc119c729b24c3022634218d54d17c11")
-  summary "fn FormatterModule.formatPattern generated from typescript function_declaration at packages/shp-checker/src/formatter.ts:782-784."
+  summary "fn FormatterModule.formatPattern generated from typescript function_declaration at packages/shp-checker/src/formatter.ts:806-808."
+}
+
+relation FormatterModuleFormatPolicyGeneratedFromFormatterModuleFormatPolicyAstAnchor {
+  kind generated_from
+  connects FormatterModule -> FormatterModuleFormatPolicyAstAnchor
+  roles { FormatterModule as generated, FormatterModuleFormatPolicyAstAnchor as syntax }
+  expects FormatterModuleFormatPolicyAstAnchor fingerprint ast.semantic_subtree_v1("sha256:25c3e602da0c7b002b3660b7afc057a9fc1230dcd43992c744dd14f3b40ebcd4")
+  summary "fn FormatterModule.formatPolicy generated from typescript function_declaration at packages/shp-checker/src/formatter.ts:208-215."
 }
 
 relation FormatterModuleFormatQualifiedFunctionGeneratedFromFormatterModuleFormatQualifiedFunctionAstAnchor {
@@ -518,7 +534,7 @@ relation FormatterModuleFormatQualifiedFunctionGeneratedFromFormatterModuleForma
   connects FormatterModule -> FormatterModuleFormatQualifiedFunctionAstAnchor
   roles { FormatterModule as generated, FormatterModuleFormatQualifiedFunctionAstAnchor as syntax }
   expects FormatterModuleFormatQualifiedFunctionAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5abeae8a6184097cad176ea514527cc4641f98517847cec260ccb12736c13b69")
-  summary "fn FormatterModule.formatQualifiedFunction generated from typescript function_declaration at packages/shp-checker/src/formatter.ts:375-389."
+  summary "fn FormatterModule.formatQualifiedFunction generated from typescript function_declaration at packages/shp-checker/src/formatter.ts:395-409."
 }
 
 relation FormatterModuleFormatRationaleGeneratedFromFormatterModuleFormatRationaleAstAnchor {
@@ -526,7 +542,7 @@ relation FormatterModuleFormatRationaleGeneratedFromFormatterModuleFormatRationa
   connects FormatterModule -> FormatterModuleFormatRationaleAstAnchor
   roles { FormatterModule as generated, FormatterModuleFormatRationaleAstAnchor as syntax }
   expects FormatterModuleFormatRationaleAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5ee22b0f607c5c5fafb3f89c04f21c4f69be5318554a047cb943d0a58a70357c")
-  summary "fn FormatterModule.formatRationale generated from typescript function_declaration at packages/shp-checker/src/formatter.ts:606-625."
+  summary "fn FormatterModule.formatRationale generated from typescript function_declaration at packages/shp-checker/src/formatter.ts:626-645."
 }
 
 relation FormatterModuleFormatReevaluationGeneratedFromFormatterModuleFormatReevaluationAstAnchor {
@@ -534,7 +550,7 @@ relation FormatterModuleFormatReevaluationGeneratedFromFormatterModuleFormatReev
   connects FormatterModule -> FormatterModuleFormatReevaluationAstAnchor
   roles { FormatterModule as generated, FormatterModuleFormatReevaluationAstAnchor as syntax }
   expects FormatterModuleFormatReevaluationAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ee0643b78c092b4bcd87dadf880ac30860dc1b7156b538ad91ca60c4a5330e72")
-  summary "fn FormatterModule.formatReevaluation generated from typescript function_declaration at packages/shp-checker/src/formatter.ts:678-712."
+  summary "fn FormatterModule.formatReevaluation generated from typescript function_declaration at packages/shp-checker/src/formatter.ts:701-735."
 }
 
 relation FormatterModuleFormatRelationGeneratedFromFormatterModuleFormatRelationAstAnchor {
@@ -542,7 +558,7 @@ relation FormatterModuleFormatRelationGeneratedFromFormatterModuleFormatRelation
   connects FormatterModule -> FormatterModuleFormatRelationAstAnchor
   roles { FormatterModule as generated, FormatterModuleFormatRelationAstAnchor as syntax }
   expects FormatterModuleFormatRelationAstAnchor fingerprint ast.semantic_subtree_v1("sha256:dde73216ccce013647ac3bc77b74838f67bf9ff6fed0662e3a8856c753abd7cd")
-  summary "fn FormatterModule.formatRelation generated from typescript function_declaration at packages/shp-checker/src/formatter.ts:283-324."
+  summary "fn FormatterModule.formatRelation generated from typescript function_declaration at packages/shp-checker/src/formatter.ts:303-344."
 }
 
 relation FormatterModuleFormatResourceGeneratedFromFormatterModuleFormatResourceAstAnchor {
@@ -550,7 +566,7 @@ relation FormatterModuleFormatResourceGeneratedFromFormatterModuleFormatResource
   connects FormatterModule -> FormatterModuleFormatResourceAstAnchor
   roles { FormatterModule as generated, FormatterModuleFormatResourceAstAnchor as syntax }
   expects FormatterModuleFormatResourceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1d532b12fda683d4c43b0db26d292195803bba1b9c91f286431f3c1a520c1c47")
-  summary "fn FormatterModule.formatResource generated from typescript function_declaration at packages/shp-checker/src/formatter.ts:197-231."
+  summary "fn FormatterModule.formatResource generated from typescript function_declaration at packages/shp-checker/src/formatter.ts:217-251."
 }
 
 relation FormatterModuleFormatRuleGeneratedFromFormatterModuleFormatRuleAstAnchor {
@@ -558,7 +574,7 @@ relation FormatterModuleFormatRuleGeneratedFromFormatterModuleFormatRuleAstAncho
   connects FormatterModule -> FormatterModuleFormatRuleAstAnchor
   roles { FormatterModule as generated, FormatterModuleFormatRuleAstAnchor as syntax }
   expects FormatterModuleFormatRuleAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c98e40138a9b5b6975e57392eaaff99da29811e3baebd9567421471a68f30a67")
-  summary "fn FormatterModule.formatRule generated from typescript function_declaration at packages/shp-checker/src/formatter.ts:582-604."
+  summary "fn FormatterModule.formatRule generated from typescript function_declaration at packages/shp-checker/src/formatter.ts:602-624."
 }
 
 relation FormatterModuleFormatShapeModuleGeneratedFromFormatterModuleFormatShapeModuleAstAnchor {
@@ -566,7 +582,7 @@ relation FormatterModuleFormatShapeModuleGeneratedFromFormatterModuleFormatShape
   connects FormatterModule -> FormatterModuleFormatShapeModuleAstAnchor
   roles { FormatterModule as generated, FormatterModuleFormatShapeModuleAstAnchor as syntax }
   expects FormatterModuleFormatShapeModuleAstAnchor fingerprint ast.semantic_subtree_v1("sha256:06b7f419061c49e324b39df310cce01ba6ba6bac1ff4956ab1ac5551e35bdb5a")
-  summary "fn FormatterModule.formatShapeModule generated from typescript function_declaration at packages/shp-checker/src/formatter.ts:132-152."
+  summary "fn FormatterModule.formatShapeModule generated from typescript function_declaration at packages/shp-checker/src/formatter.ts:137-157."
 }
 
 relation FormatterModuleFormatShapeSourceGeneratedFromFormatterModuleFormatShapeSourceAstAnchor {
@@ -574,7 +590,7 @@ relation FormatterModuleFormatShapeSourceGeneratedFromFormatterModuleFormatShape
   connects FormatterModule -> FormatterModuleFormatShapeSourceAstAnchor
   roles { FormatterModule as generated, FormatterModuleFormatShapeSourceAstAnchor as syntax }
   expects FormatterModuleFormatShapeSourceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4c40f093ae7c66e4f29f58cfd62a6f4560b5908873ac54f9f923d4683f8f62c8")
-  summary "fn FormatterModule.formatShapeSource generated from typescript function_declaration at packages/shp-checker/src/formatter.ts:117-130."
+  summary "fn FormatterModule.formatShapeSource generated from typescript function_declaration at packages/shp-checker/src/formatter.ts:122-135."
 }
 
 relation FormatterModuleFormatShapeTraitListGeneratedFromFormatterModuleFormatShapeTraitListAstAnchor {
@@ -582,7 +598,7 @@ relation FormatterModuleFormatShapeTraitListGeneratedFromFormatterModuleFormatSh
   connects FormatterModule -> FormatterModuleFormatShapeTraitListAstAnchor
   roles { FormatterModule as generated, FormatterModuleFormatShapeTraitListAstAnchor as syntax }
   expects FormatterModuleFormatShapeTraitListAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f138ec0a4fac380d5bb9c66c779e9f6a6af32ca0bf23beb4da41c1ea3e3b501e")
-  summary "fn FormatterModule.formatShapeTraitList generated from typescript function_declaration at packages/shp-checker/src/formatter.ts:431-439."
+  summary "fn FormatterModule.formatShapeTraitList generated from typescript function_declaration at packages/shp-checker/src/formatter.ts:451-459."
 }
 
 relation FormatterModuleFormatSourceGeneratedFromFormatterModuleFormatSourceAstAnchor {
@@ -590,7 +606,7 @@ relation FormatterModuleFormatSourceGeneratedFromFormatterModuleFormatSourceAstA
   connects FormatterModule -> FormatterModuleFormatSourceAstAnchor
   roles { FormatterModule as generated, FormatterModuleFormatSourceAstAnchor as syntax }
   expects FormatterModuleFormatSourceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ea2a8eef0dd5d756de56642082b16309e6a661a4a956375f269033ab72fdc847")
-  summary "fn FormatterModule.formatSource generated from typescript function_declaration at packages/shp-checker/src/formatter.ts:786-788."
+  summary "fn FormatterModule.formatSource generated from typescript function_declaration at packages/shp-checker/src/formatter.ts:810-812."
 }
 
 relation FormatterModuleFormatSourceRefGeneratedFromFormatterModuleFormatSourceRefAstAnchor {
@@ -598,7 +614,7 @@ relation FormatterModuleFormatSourceRefGeneratedFromFormatterModuleFormatSourceR
   connects FormatterModule -> FormatterModuleFormatSourceRefAstAnchor
   roles { FormatterModule as generated, FormatterModuleFormatSourceRefAstAnchor as syntax }
   expects FormatterModuleFormatSourceRefAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6fba7a95754d70daddaa476075a12e2969bf51a23c025bda93d582a25111e8a6")
-  summary "fn FormatterModule.formatSourceRef generated from typescript function_declaration at packages/shp-checker/src/formatter.ts:790-792."
+  summary "fn FormatterModule.formatSourceRef generated from typescript function_declaration at packages/shp-checker/src/formatter.ts:814-816."
 }
 
 relation FormatterModuleFormatTargetRefGeneratedFromFormatterModuleFormatTargetRefAstAnchor {
@@ -606,7 +622,7 @@ relation FormatterModuleFormatTargetRefGeneratedFromFormatterModuleFormatTargetR
   connects FormatterModule -> FormatterModuleFormatTargetRefAstAnchor
   roles { FormatterModule as generated, FormatterModuleFormatTargetRefAstAnchor as syntax }
   expects FormatterModuleFormatTargetRefAstAnchor fingerprint ast.semantic_subtree_v1("sha256:596566b6ea5219f4fcc55921806ff67e6e817e8678d03c5de85a1554253dcb31")
-  summary "fn FormatterModule.formatTargetRef generated from typescript function_declaration at packages/shp-checker/src/formatter.ts:760-762."
+  summary "fn FormatterModule.formatTargetRef generated from typescript function_declaration at packages/shp-checker/src/formatter.ts:784-786."
 }
 
 relation FormatterModuleFormatTermGeneratedFromFormatterModuleFormatTermAstAnchor {
@@ -614,7 +630,7 @@ relation FormatterModuleFormatTermGeneratedFromFormatterModuleFormatTermAstAncho
   connects FormatterModule -> FormatterModuleFormatTermAstAnchor
   roles { FormatterModule as generated, FormatterModuleFormatTermAstAnchor as syntax }
   expects FormatterModuleFormatTermAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e5f31959206efc616350b2d11948290936f6375e66c8ab7f2c218702eddd8b87")
-  summary "fn FormatterModule.formatTerm generated from typescript function_declaration at packages/shp-checker/src/formatter.ts:778-780."
+  summary "fn FormatterModule.formatTerm generated from typescript function_declaration at packages/shp-checker/src/formatter.ts:802-804."
 }
 
 relation FormatterModuleFormatTraitGeneratedFromFormatterModuleFormatTraitAstAnchor {
@@ -622,7 +638,7 @@ relation FormatterModuleFormatTraitGeneratedFromFormatterModuleFormatTraitAstAnc
   connects FormatterModule -> FormatterModuleFormatTraitAstAnchor
   roles { FormatterModule as generated, FormatterModuleFormatTraitAstAnchor as syntax }
   expects FormatterModuleFormatTraitAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ff11a99efb4cb43fa0290e75174800f92896a18c1d5c841560d3beabd0360fdc")
-  summary "fn FormatterModule.formatTrait generated from typescript function_declaration at packages/shp-checker/src/formatter.ts:233-251."
+  summary "fn FormatterModule.formatTrait generated from typescript function_declaration at packages/shp-checker/src/formatter.ts:253-271."
 }
 
 relation FormatterModuleFormatTypeParamsGeneratedFromFormatterModuleFormatTypeParamsAstAnchor {
@@ -630,7 +646,7 @@ relation FormatterModuleFormatTypeParamsGeneratedFromFormatterModuleFormatTypePa
   connects FormatterModule -> FormatterModuleFormatTypeParamsAstAnchor
   roles { FormatterModule as generated, FormatterModuleFormatTypeParamsAstAnchor as syntax }
   expects FormatterModuleFormatTypeParamsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a1d1f5ac481e2a85878c11166c17ff2e1bd2483d4af8f4bc1f5cf9973c5b9feb")
-  summary "fn FormatterModule.formatTypeParams generated from typescript function_declaration at packages/shp-checker/src/formatter.ts:771-776."
+  summary "fn FormatterModule.formatTypeParams generated from typescript function_declaration at packages/shp-checker/src/formatter.ts:795-800."
 }
 
 relation FormatterModuleIndentGeneratedFromFormatterModuleIndentAstAnchor {
@@ -638,7 +654,7 @@ relation FormatterModuleIndentGeneratedFromFormatterModuleIndentAstAnchor {
   connects FormatterModule -> FormatterModuleIndentAstAnchor
   roles { FormatterModule as generated, FormatterModuleIndentAstAnchor as syntax }
   expects FormatterModuleIndentAstAnchor fingerprint ast.semantic_subtree_v1("sha256:49bd83bd1bc39455e75bc9eb3c01d08a02fb2e2d07ad370c8f3e7d4f6ab370ea")
-  summary "fn FormatterModule.indent generated from typescript function_declaration at packages/shp-checker/src/formatter.ts:837-843."
+  summary "fn FormatterModule.indent generated from typescript function_declaration at packages/shp-checker/src/formatter.ts:867-873."
 }
 
 relation FormatterModuleMemberOrderGeneratedFromFormatterModuleMemberOrderAstAnchor {
@@ -646,7 +662,7 @@ relation FormatterModuleMemberOrderGeneratedFromFormatterModuleMemberOrderAstAnc
   connects FormatterModule -> FormatterModuleMemberOrderAstAnchor
   roles { FormatterModule as generated, FormatterModuleMemberOrderAstAnchor as syntax }
   expects FormatterModuleMemberOrderAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d32e616a3210875c494f8a8c59574eb78cbbef92576bbcad78ea65b080d0220a")
-  summary "fn FormatterModule.memberOrder generated from typescript function_declaration at packages/shp-checker/src/formatter.ts:748-752."
+  summary "fn FormatterModule.memberOrder generated from typescript function_declaration at packages/shp-checker/src/formatter.ts:772-776."
 }
 
 relation FormatterModuleQuoteGeneratedFromFormatterModuleQuoteAstAnchor {
@@ -654,7 +670,7 @@ relation FormatterModuleQuoteGeneratedFromFormatterModuleQuoteAstAnchor {
   connects FormatterModule -> FormatterModuleQuoteAstAnchor
   roles { FormatterModule as generated, FormatterModuleQuoteAstAnchor as syntax }
   expects FormatterModuleQuoteAstAnchor fingerprint ast.semantic_subtree_v1("sha256:bab1b5ea4fcaf961b50db42d4f33e82206da4c3d8cb1b6c627c8ec6e1fbb87cd")
-  summary "fn FormatterModule.quote generated from typescript function_declaration at packages/shp-checker/src/formatter.ts:845-847."
+  summary "fn FormatterModule.quote generated from typescript function_declaration at packages/shp-checker/src/formatter.ts:875-877."
 }
 
 relation FormatterModuleSortFunctionMembersGeneratedFromFormatterModuleSortFunctionMembersAstAnchor {
@@ -662,7 +678,7 @@ relation FormatterModuleSortFunctionMembersGeneratedFromFormatterModuleSortFunct
   connects FormatterModule -> FormatterModuleSortFunctionMembersAstAnchor
   roles { FormatterModule as generated, FormatterModuleSortFunctionMembersAstAnchor as syntax }
   expects FormatterModuleSortFunctionMembersAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4d66aa8c9066b68ce01fe47a50b565eee42903f615902d889be860729145a0c4")
-  summary "fn FormatterModule.sortFunctionMembers generated from typescript function_declaration at packages/shp-checker/src/formatter.ts:466-470."
+  summary "fn FormatterModule.sortFunctionMembers generated from typescript function_declaration at packages/shp-checker/src/formatter.ts:486-490."
 }
 
 implementation FormatterModuleImpl {

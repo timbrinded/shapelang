@@ -17,6 +17,7 @@ import type {
   MemoryDecl,
   MemoryMember,
   ModifyFunctionChange,
+  PolicyDecl,
   TransformDecl,
   RationaleDecl,
   RationaleMember,
@@ -70,6 +71,7 @@ import {
   isOwnerDecl,
   isOwnsDecl,
   isPathsBlock,
+  isPolicyDecl,
   isProtectsDecl,
   isRationaleDecl,
   isReasonDecl,
@@ -82,15 +84,18 @@ import {
   isRelationSummaryDecl,
   isRemoveDeclarationChange,
   isRemoveFunctionChange,
+  isRequireApproverDecl,
   isResourceDecl,
   isReviewByDecl,
   isReviewerDecl,
+  isRoleDecl,
   isRuleDecl,
   isRuleForbidEffectDecl,
   isRuleForbidHypercycleDecl,
   isRuleForbidProvidesDecl,
   isRuleWhenHasDecl,
   isSatisfiesDecl,
+  isSensitiveDecl,
   isStatusDecl,
   isStorageDecl,
   isSummaryDecl,
@@ -191,7 +196,22 @@ function formatDeclaration(declaration: ShapeModule["declarations"][number]): st
   if (isReevaluationDecl(declaration)) {
     return formatReevaluation(declaration);
   }
+  if (isRoleDecl(declaration)) {
+    return `role ${declaration.name}`;
+  }
+  if (isPolicyDecl(declaration)) {
+    return formatPolicy(declaration);
+  }
   return "";
+}
+
+function formatPolicy(policy: PolicyDecl): string {
+  const lines = [`policy ${policy.name} {`];
+  if (policy.members.some(isRequireApproverDecl)) {
+    lines.push(indent("require approver"));
+  }
+  lines.push("}");
+  return lines.join("\n");
 }
 
 function formatResource(resource: ResourceDecl): string {
@@ -636,6 +656,9 @@ function formatMemory(memory: MemoryDecl): string {
       if (isObservedDecl(member)) {
         return `observed ${formatSourceRef(member.ref)}`;
       }
+      if (isSensitiveDecl(member)) {
+        return "sensitive";
+      }
       return formatContextMember(member) ?? "";
     })
     .filter((line) => line.length > 0)
@@ -726,6 +749,7 @@ const MEMORY_MEMBER_ORDER = [
   "applies_to",
   "status",
   "confidence",
+  "sensitive",
   "summary",
   "owner",
   "review_by",
@@ -824,6 +848,12 @@ function declarationSortKey(declaration: ShapeModule["declarations"][number]): s
   }
   if (isReevaluationDecl(declaration)) {
     return `A:${declaration.name}`;
+  }
+  if (isRoleDecl(declaration)) {
+    return `7A:${declaration.name}`;
+  }
+  if (isPolicyDecl(declaration)) {
+    return `7B:${declaration.name}`;
   }
   if (isAttestationDecl(declaration)) {
     return `B:${declaration.kind}`;

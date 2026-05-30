@@ -6,7 +6,22 @@ entry ShapeModule:
     declarations+=Declaration*;
 
 Declaration:
-    ResourceDecl | TraitDecl | ComponentDecl | RelationDecl | CandidateEffectDecl | ImplementationDecl | BindingDecl | ChangeDecl | AttestationDecl | RuleDecl | RationaleDecl | MemoryDecl | ReevaluationDecl;
+    ResourceDecl | TraitDecl | ComponentDecl | RelationDecl | CandidateEffectDecl | ImplementationDecl | BindingDecl | ChangeDecl | AttestationDecl | RuleDecl | RationaleDecl | MemoryDecl | ReevaluationDecl | RoleDecl | PolicyDecl;
+
+RoleDecl:
+    'role' name=ID;
+
+PolicyDecl:
+    'policy' name=ID
+    '{'
+        members+=PolicyMember*
+    '}';
+
+PolicyMember:
+    RequireApproverDecl;
+
+RequireApproverDecl:
+    {infer RequireApproverDecl} 'require' 'approver';
 
 ImportDecl:
     'import' path=QualifiedName;
@@ -310,7 +325,10 @@ MemoryDecl:
     '}';
 
 MemoryMember:
-    AppliesToDecl | StatusDecl | ConfidenceDecl | ProtectsDecl | GuardDecl | ObservedDecl | SummaryDecl | OwnerDecl | ReviewByDecl | EvidenceLineDecl;
+    AppliesToDecl | StatusDecl | ConfidenceDecl | ProtectsDecl | GuardDecl | ObservedDecl | SummaryDecl | OwnerDecl | ReviewByDecl | EvidenceLineDecl | SensitiveDecl;
+
+SensitiveDecl:
+    {infer SensitiveDecl} 'sensitive';
 
 ReevaluationDecl:
     'reevaluation' name=ID

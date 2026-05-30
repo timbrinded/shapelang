@@ -74,6 +74,7 @@ export type ShapeKeywordNames =
     | "owns"
     | "paths"
     | "pin"
+    | "policy"
     | "protects"
     | "provides"
     | "rationale"
@@ -88,9 +89,11 @@ export type ShapeKeywordNames =
     | "resource"
     | "review_by"
     | "reviewer"
+    | "role"
     | "roles"
     | "rule"
     | "satisfies"
+    | "sensitive"
     | "source"
     | "status"
     | "storage"
@@ -516,7 +519,7 @@ export function isDecidedOnDecl(item: unknown): item is DecidedOnDecl {
     return reflection.isInstance(item, DecidedOnDecl.$type);
 }
 
-export type Declaration = AttestationDecl | BindingDecl | CandidateEffectDecl | ChangeDecl | ComponentDecl | ImplementationDecl | MemoryDecl | RationaleDecl | ReevaluationDecl | RelationDecl | ResourceDecl | RuleDecl | TraitDecl;
+export type Declaration = AttestationDecl | BindingDecl | CandidateEffectDecl | ChangeDecl | ComponentDecl | ImplementationDecl | MemoryDecl | PolicyDecl | RationaleDecl | ReevaluationDecl | RelationDecl | ResourceDecl | RoleDecl | RuleDecl | TraitDecl;
 
 export const Declaration = {
     $type: 'Declaration'
@@ -817,7 +820,7 @@ export function isMemoryDecl(item: unknown): item is MemoryDecl {
     return reflection.isInstance(item, MemoryDecl.$type);
 }
 
-export type MemoryMember = AppliesToDecl | ConfidenceDecl | EvidenceLineDecl | GuardDecl | ObservedDecl | OwnerDecl | ProtectsDecl | ReviewByDecl | StatusDecl | SummaryDecl;
+export type MemoryMember = AppliesToDecl | ConfidenceDecl | EvidenceLineDecl | GuardDecl | ObservedDecl | OwnerDecl | ProtectsDecl | ReviewByDecl | SensitiveDecl | StatusDecl | SummaryDecl;
 
 export const MemoryMember = {
     $type: 'MemoryMember'
@@ -959,6 +962,33 @@ export const PathsBlock = {
 
 export function isPathsBlock(item: unknown): item is PathsBlock {
     return reflection.isInstance(item, PathsBlock.$type);
+}
+
+export interface PolicyDecl extends langium.AstNode {
+    readonly $container: ShapeModule;
+    readonly $type: 'PolicyDecl';
+    members: Array<PolicyMember>;
+    name: string;
+}
+
+export const PolicyDecl = {
+    $type: 'PolicyDecl',
+    members: 'members',
+    name: 'name'
+} as const;
+
+export function isPolicyDecl(item: unknown): item is PolicyDecl {
+    return reflection.isInstance(item, PolicyDecl.$type);
+}
+
+export type PolicyMember = RequireApproverDecl;
+
+export const PolicyMember = {
+    $type: 'PolicyMember'
+} as const;
+
+export function isPolicyMember(item: unknown): item is PolicyMember {
+    return reflection.isInstance(item, PolicyMember.$type);
 }
 
 export interface ProtectsDecl extends langium.AstNode {
@@ -1251,6 +1281,19 @@ export function isRemoveFunctionChange(item: unknown): item is RemoveFunctionCha
     return reflection.isInstance(item, RemoveFunctionChange.$type);
 }
 
+export interface RequireApproverDecl extends langium.AstNode {
+    readonly $container: PolicyDecl;
+    readonly $type: 'RequireApproverDecl';
+}
+
+export const RequireApproverDecl = {
+    $type: 'RequireApproverDecl'
+} as const;
+
+export function isRequireApproverDecl(item: unknown): item is RequireApproverDecl {
+    return reflection.isInstance(item, RequireApproverDecl.$type);
+}
+
 export interface ResourceBody extends langium.AstNode {
     readonly $container: ResourceDecl;
     readonly $type: 'ResourceBody';
@@ -1323,6 +1366,21 @@ export const ReviewerDecl = {
 
 export function isReviewerDecl(item: unknown): item is ReviewerDecl {
     return reflection.isInstance(item, ReviewerDecl.$type);
+}
+
+export interface RoleDecl extends langium.AstNode {
+    readonly $container: ShapeModule;
+    readonly $type: 'RoleDecl';
+    name: string;
+}
+
+export const RoleDecl = {
+    $type: 'RoleDecl',
+    name: 'name'
+} as const;
+
+export function isRoleDecl(item: unknown): item is RoleDecl {
+    return reflection.isInstance(item, RoleDecl.$type);
 }
 
 export interface RuleDecl extends langium.AstNode {
@@ -1433,6 +1491,19 @@ export const SatisfiesDecl = {
 
 export function isSatisfiesDecl(item: unknown): item is SatisfiesDecl {
     return reflection.isInstance(item, SatisfiesDecl.$type);
+}
+
+export interface SensitiveDecl extends langium.AstNode {
+    readonly $container: MemoryDecl;
+    readonly $type: 'SensitiveDecl';
+}
+
+export const SensitiveDecl = {
+    $type: 'SensitiveDecl'
+} as const;
+
+export function isSensitiveDecl(item: unknown): item is SensitiveDecl {
+    return reflection.isInstance(item, SensitiveDecl.$type);
 }
 
 export interface ShapeModule extends langium.AstNode {
@@ -1791,6 +1862,8 @@ export type ShapeAstType = {
     OwnerDecl: OwnerDecl
     OwnsDecl: OwnsDecl
     PathsBlock: PathsBlock
+    PolicyDecl: PolicyDecl
+    PolicyMember: PolicyMember
     ProtectsDecl: ProtectsDecl
     RationaleDecl: RationaleDecl
     RationaleMember: RationaleMember
@@ -1808,11 +1881,13 @@ export type ShapeAstType = {
     RelationSummaryDecl: RelationSummaryDecl
     RemoveDeclarationChange: RemoveDeclarationChange
     RemoveFunctionChange: RemoveFunctionChange
+    RequireApproverDecl: RequireApproverDecl
     ResourceBody: ResourceBody
     ResourceDecl: ResourceDecl
     ResourceMember: ResourceMember
     ReviewByDecl: ReviewByDecl
     ReviewerDecl: ReviewerDecl
+    RoleDecl: RoleDecl
     RuleDecl: RuleDecl
     RuleForbidEffectDecl: RuleForbidEffectDecl
     RuleForbidHypercycleDecl: RuleForbidHypercycleDecl
@@ -1820,6 +1895,7 @@ export type ShapeAstType = {
     RuleMember: RuleMember
     RuleWhenHasDecl: RuleWhenHasDecl
     SatisfiesDecl: SatisfiesDecl
+    SensitiveDecl: SensitiveDecl
     ShapeModule: ShapeModule
     ShapeTraitList: ShapeTraitList
     SourceDecl: SourceDecl
@@ -2429,6 +2505,25 @@ export class ShapeAstReflection extends langium.AbstractAstReflection {
             },
             superTypes: [ImplementationMember.$type]
         },
+        PolicyDecl: {
+            name: PolicyDecl.$type,
+            properties: {
+                members: {
+                    name: PolicyDecl.members,
+                    defaultValue: []
+                },
+                name: {
+                    name: PolicyDecl.name
+                }
+            },
+            superTypes: [Declaration.$type]
+        },
+        PolicyMember: {
+            name: PolicyMember.$type,
+            properties: {
+            },
+            superTypes: []
+        },
         ProtectsDecl: {
             name: ProtectsDecl.$type,
             properties: {
@@ -2609,6 +2704,12 @@ export class ShapeAstReflection extends langium.AbstractAstReflection {
             },
             superTypes: [ChangeEntry.$type]
         },
+        RequireApproverDecl: {
+            name: RequireApproverDecl.$type,
+            properties: {
+            },
+            superTypes: [PolicyMember.$type]
+        },
         ResourceBody: {
             name: ResourceBody.$type,
             properties: {
@@ -2658,6 +2759,15 @@ export class ShapeAstReflection extends langium.AbstractAstReflection {
                 }
             },
             superTypes: [ReevaluationMember.$type]
+        },
+        RoleDecl: {
+            name: RoleDecl.$type,
+            properties: {
+                name: {
+                    name: RoleDecl.name
+                }
+            },
+            superTypes: [Declaration.$type]
         },
         RuleDecl: {
             name: RuleDecl.$type,
@@ -2736,6 +2846,12 @@ export class ShapeAstReflection extends langium.AbstractAstReflection {
                 }
             },
             superTypes: [ReevaluationMember.$type]
+        },
+        SensitiveDecl: {
+            name: SensitiveDecl.$type,
+            properties: {
+            },
+            superTypes: [MemoryMember.$type]
         },
         ShapeModule: {
             name: ShapeModule.$type,
