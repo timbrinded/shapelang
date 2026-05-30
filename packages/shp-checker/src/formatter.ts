@@ -85,6 +85,7 @@ import {
   isRemoveDeclarationChange,
   isRemoveFunctionChange,
   isRequireApproverDecl,
+  isRequireContextDecl,
   isResourceDecl,
   isReviewByDecl,
   isReviewerDecl,
@@ -261,6 +262,11 @@ function formatTrait(trait: TraitDecl): string {
       }
       if (isTraitForbidDecl(member)) {
         return `forbid ${member.final ? "final " : ""}${formatPattern(member.pattern)}`;
+      }
+      if (isRequireContextDecl(member)) {
+        const satisfiedBy =
+          member.satisfiedBy.length > 0 ? ` satisfied_by ${member.satisfiedBy.join(" or ")}` : "";
+        return `require_context ${member.contextType}<${member.target}>${satisfiedBy}`;
       }
       return "";
     })

@@ -222,7 +222,7 @@ PreserveInline requires InlineRationale<fn Gateway.derivePolicyDecision>.
 No matching rationale or memory found.
 ```
 
-Component and resource targets report the same diagnostic with their own target kind, for example `component Gateway has shape RefactorSensitive` requiring `RefactorConstraint<component Gateway>`.
+Component and resource targets report the same diagnostic with their own target kind, for example `component Gateway has shape RefactorSensitive` requiring `RefactorConstraint<component Gateway>`. The same diagnostic covers obligations from user-defined `trait` `require_context` members, attributed to the declaring trait rather than the standard prelude.
 
 Add a typed `rationale` or `memory` that applies to the same target. Do not add generic prose.
 

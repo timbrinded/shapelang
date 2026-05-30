@@ -54,7 +54,11 @@ TypeParam:
     name=ID (':' bound=ID)?;
 
 TraitMember:
-    TraitAllowDecl | TraitForbidDecl | TraitRequireDecl;
+    TraitAllowDecl | TraitForbidDecl | TraitRequireDecl | RequireContextDecl;
+
+RequireContextDecl:
+    'require_context' contextType=ID '<' target=ID '>'
+        ('satisfied_by' satisfiedBy+=ContextObjectKind ('or' satisfiedBy+=ContextObjectKind)*)?;
 
 TraitAllowDecl:
     'allow' pattern=EffectPattern;

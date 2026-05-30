@@ -278,6 +278,18 @@ By default `review_by` is informational. Enable enforcement with `--strict-fresh
 
 Only ISO `YYYY-MM-DD` dates are enforced; the date on which a review is due still counts as fresh. Missing or non-ISO `review_by` values are never reported as stale. Freshness compares against a caller-provided date rather than the system clock, keeping checks deterministic.
 
+## Defining Your Own Obligations
+
+The standard shape traits are built in, but a project can define its own obligation with a `require_context` member on a `trait`. The trait's type-parameter bound sets the target kind (`<T: Fn>`, `<T: Component>`, or `<T: Resource>`):
+
+```shape
+trait PreserveLocal<T: Fn> {
+  require_context LocalRationale<T> satisfied_by rationale
+}
+```
+
+A function, component, or resource that carries `PreserveLocal` then needs a matching `rationale` of type `LocalRationale` for that target, exactly as the built-in traits require their context. Omitting `satisfied_by` accepts either a `rationale` or a `memory`; `satisfied_by rationale` or `satisfied_by memory` restricts it to one kind. User-defined obligations are checked alongside the built-in ones, so the standard traits keep working unchanged.
+
 ## Roles and Approver Policy
 
 By default a `reevaluation` needs a `reviewer` and a `decided_on`; the `approver` is optional. Two opt-in declarations tighten this for sensitive design memory.

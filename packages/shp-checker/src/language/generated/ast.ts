@@ -84,6 +84,7 @@ export type ShapeKeywordNames =
     | "remove"
     | "require"
     | "require_changed"
+    | "require_context"
     | "required"
     | "requires"
     | "resource"
@@ -92,6 +93,7 @@ export type ShapeKeywordNames =
     | "role"
     | "roles"
     | "rule"
+    | "satisfied_by"
     | "satisfies"
     | "sensitive"
     | "source"
@@ -1294,6 +1296,25 @@ export function isRequireApproverDecl(item: unknown): item is RequireApproverDec
     return reflection.isInstance(item, RequireApproverDecl.$type);
 }
 
+export interface RequireContextDecl extends langium.AstNode {
+    readonly $container: TraitDecl;
+    readonly $type: 'RequireContextDecl';
+    contextType: string;
+    satisfiedBy: Array<ContextObjectKind>;
+    target: string;
+}
+
+export const RequireContextDecl = {
+    $type: 'RequireContextDecl',
+    contextType: 'contextType',
+    satisfiedBy: 'satisfiedBy',
+    target: 'target'
+} as const;
+
+export function isRequireContextDecl(item: unknown): item is RequireContextDecl {
+    return reflection.isInstance(item, RequireContextDecl.$type);
+}
+
 export interface ResourceBody extends langium.AstNode {
     readonly $container: ResourceDecl;
     readonly $type: 'ResourceBody';
@@ -1692,7 +1713,7 @@ export function isTraitForbidDecl(item: unknown): item is TraitForbidDecl {
     return reflection.isInstance(item, TraitForbidDecl.$type);
 }
 
-export type TraitMember = TraitAllowDecl | TraitForbidDecl | TraitRequireDecl;
+export type TraitMember = RequireContextDecl | TraitAllowDecl | TraitForbidDecl | TraitRequireDecl;
 
 export const TraitMember = {
     $type: 'TraitMember'
@@ -1882,6 +1903,7 @@ export type ShapeAstType = {
     RemoveDeclarationChange: RemoveDeclarationChange
     RemoveFunctionChange: RemoveFunctionChange
     RequireApproverDecl: RequireApproverDecl
+    RequireContextDecl: RequireContextDecl
     ResourceBody: ResourceBody
     ResourceDecl: ResourceDecl
     ResourceMember: ResourceMember
@@ -2709,6 +2731,22 @@ export class ShapeAstReflection extends langium.AbstractAstReflection {
             properties: {
             },
             superTypes: [PolicyMember.$type]
+        },
+        RequireContextDecl: {
+            name: RequireContextDecl.$type,
+            properties: {
+                contextType: {
+                    name: RequireContextDecl.contextType
+                },
+                satisfiedBy: {
+                    name: RequireContextDecl.satisfiedBy,
+                    defaultValue: []
+                },
+                target: {
+                    name: RequireContextDecl.target
+                }
+            },
+            superTypes: [TraitMember.$type]
         },
         ResourceBody: {
             name: ResourceBody.$type,

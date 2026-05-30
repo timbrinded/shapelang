@@ -92,6 +92,7 @@ import {
   isRemoveDeclarationChange,
   isRemoveFunctionChange,
   isRequireApproverDecl,
+  isRequireContextDecl,
   isResourceDecl,
   isReviewByDecl,
   isReviewerDecl,
@@ -619,6 +620,13 @@ type PolicyInfo = {
   provenance: Provenance;
 };
 
+/**
+ * A context obligation rule. Prelude rules come from PRELUDE_CONTEXT_REQUIREMENTS
+ * with no provenance; user-defined `require_context` trait members carry the
+ * declaring trait's provenance so diagnostics can point at the trait.
+ */
+type ContextRequirementRule = PreludeContextRequirement & { provenance?: Provenance };
+
 type RationaleInfo = {
   name: string;
   contextType: string;
@@ -851,6 +859,7 @@ type Model = {
   reevaluations: Map<string, ReevaluationInfo>;
   roles: Map<string, Provenance>;
   policies: Map<string, PolicyInfo>;
+  userContextRequirements: ContextRequirementRule[];
   attestations: { kind: string; path: string; reason: string; provenance: Provenance }[];
   shapeUpdatePaths: Map<string, Provenance[]>;
   changeEvents: ChangeEvent[];
@@ -1129,7 +1138,7 @@ export function explainShapeModules(
         }
         lines.push(`    ${JSON.stringify(fn.description.summary)}`);
       }
-      const requirements = requirementsForTarget("fn", fn.shapeTraits);
+      const requirements = requirementsForTarget(model, "fn", fn.shapeTraits);
       if (requirements.length > 0) {
         const target = functionTarget(componentKey, functionName);
         lines.push("", "  required context:");
@@ -1232,7 +1241,7 @@ function appendShapeTraitContext(
   model: Model,
   lines: string[]
 ): void {
-  const requirements = requirementsForTarget(target.kind, traits);
+  const requirements = requirementsForTarget(model, target.kind, traits);
   if (requirements.length > 0) {
     lines.push("", "  required context:");
     lines.push(
@@ -1493,6 +1502,7 @@ function lowerShapeModules(modules: ShapeModule[] | CheckModuleInput[]): Model {
     reevaluations: new Map(),
     roles: new Map(),
     policies: new Map(),
+    userContextRequirements: [],
     attestations: [],
     shapeUpdatePaths: new Map(),
     changeEvents: [],
@@ -1941,6 +1951,17 @@ function lowerTrait(trait: TraitDecl, context: LoweringContext, model: Model): v
       finalForbids.push(
         lowerForbidPattern(member, context, model, `trait ${name}`, new Set(typeParams))
       );
+    } else if (isRequireContextDecl(member)) {
+      model.userContextRequirements.push({
+        trait: name,
+        targetKind: requireContextTargetKind(trait, member.target),
+        contextType: member.contextType,
+        satisfiedBy: lowerSatisfiedByKinds(member.satisfiedBy),
+        provenance: provenance(
+          context.filePath,
+          `trait ${name} require_context ${member.contextType}<${member.target}>`
+        )
+      });
     }
   }
 
@@ -1950,6 +1971,30 @@ function lowerTrait(trait: TraitDecl, context: LoweringContext, model: Model): v
     finalForbids,
     provenance: prov
   });
+}
+
+/**
+ * Resolves the target kind of a `require_context` obligation from the bound of
+ * the trait type parameter it names (`<T: Fn>` -> fn). Unbound or unrecognised
+ * type parameters default to fn, the most common shape-trait target.
+ */
+function requireContextTargetKind(trait: TraitDecl, typeParamName: string): TargetKind {
+  const bound = trait.typeParams?.params.find((param) => param.name === typeParamName)?.bound;
+  switch (bound?.toLowerCase()) {
+    case "component":
+      return "component";
+    case "resource":
+      return "resource";
+    default:
+      return "fn";
+  }
+}
+
+function lowerSatisfiedByKinds(kinds: string[]): ContextKind[] {
+  const allowed = kinds.filter(
+    (kind): kind is ContextKind => kind === "rationale" || kind === "memory"
+  );
+  return allowed.length > 0 ? [...new Set(allowed)] : ["rationale", "memory"];
 }
 
 function lowerComponent(component: ComponentDecl, context: LoweringContext, model: Model): void {
@@ -3583,7 +3628,7 @@ function emitDerivedFacts(model: Model): void {
   }
 
   for (const bearer of shapeTraitBearers(model)) {
-    for (const requirement of requirementsForTarget(bearer.kind, bearer.traits)) {
+    for (const requirement of requirementsForTarget(model, bearer.kind, bearer.traits)) {
       model.facts.push({
         kind: "context_required",
         targetKind: bearer.kind,
@@ -4079,12 +4124,15 @@ function checkRequiredContext(model: Model): SemanticDiagnostic[] {
   const diagnostics: SemanticDiagnostic[] = [];
 
   for (const target of shapeTraitBearers(model)) {
-    for (const requirement of requirementsForTarget(target.kind, target.traits)) {
+    for (const requirement of requirementsForTarget(model, target.kind, target.traits)) {
       if (hasRequiredContext(requirement, target.target, model)) {
         continue;
       }
 
       const traitProvenance = target.traits.get(requirement.trait) ?? target.fallback;
+      const requirementProvenance =
+        requirement.provenance ??
+        provenance("standard prelude", `${requirement.trait} requires ${requirement.contextType}`);
       diagnostics.push({
         kind: "missing_required_context",
         targetKind: target.kind,
@@ -4092,15 +4140,7 @@ function checkRequiredContext(model: Model): SemanticDiagnostic[] {
         requiredContext: formatContextRequirement(requirement.contextType, target.target),
         requiredBy: requirement.trait,
         filePath: traitProvenance.filePath,
-        causedBy: [
-          describeProvenance(traitProvenance),
-          describeProvenance(
-            provenance(
-              "standard prelude",
-              `${requirement.trait} requires ${requirement.contextType}`
-            )
-          )
-        ]
+        causedBy: [describeProvenance(traitProvenance), describeProvenance(requirementProvenance)]
       });
     }
   }
@@ -4154,7 +4194,7 @@ function checkRequiredDescriptions(model: Model): SemanticDiagnostic[] {
 
   for (const component of model.components.values()) {
     for (const fn of component.functions.values()) {
-      for (const requirement of requirementsForTarget("fn", fn.shapeTraits).filter(
+      for (const requirement of requirementsForTarget(model, "fn", fn.shapeTraits).filter(
         (item) => item.requiresDescription
       )) {
         if (hasNonEmptyDescription(fn)) {
@@ -4894,12 +4934,24 @@ function checkBindings(model: Model, changedFiles: string[]): SemanticDiagnostic
 }
 
 function requirementsForTarget(
+  model: Model,
   targetKind: TargetKind,
   traits: ReadonlyMap<string, Provenance>
-): PreludeContextRequirement[] {
-  return PRELUDE_CONTEXT_REQUIREMENTS.filter(
-    (rule) => rule.targetKind === targetKind && traits.has(rule.trait)
-  );
+): ContextRequirementRule[] {
+  const matched: ContextRequirementRule[] = [];
+  const seen = new Set<string>();
+  for (const rule of [...PRELUDE_CONTEXT_REQUIREMENTS, ...model.userContextRequirements]) {
+    if (rule.targetKind !== targetKind || !traits.has(rule.trait)) {
+      continue;
+    }
+    const key = `${rule.trait}:${rule.targetKind}:${rule.contextType}`;
+    if (seen.has(key)) {
+      continue;
+    }
+    seen.add(key);
+    matched.push(rule);
+  }
+  return matched;
 }
 
 function hasRequiredContext(

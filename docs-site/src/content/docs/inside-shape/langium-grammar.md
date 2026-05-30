@@ -212,6 +212,8 @@ A `guards` clause is a choice between `'on_change' 'require' ContextTypeName` an
 
 Typed review governance adds three more keywords: top-level `RoleDecl` (`'role' ID`) and `PolicyDecl` (`'policy' ID '{' RequireApproverDecl* '}'`), plus a valueless `SensitiveDecl` (`'sensitive'`) as a memory member. Reserving `role`, `policy`, and `sensitive` means they can no longer be used as bare lowercase identifiers (module segments or function names); PascalCase names such as `Policy` are unaffected.
 
+User-defined context obligations add a `RequireContextDecl` trait member (`'require_context' ID '<' ID '>' ('satisfied_by' ContextObjectKind ('or' ContextObjectKind)*)?`), reserving `require_context` and `satisfied_by`. Each new keyword must also be added to `SHAPE_RESERVED_WORDS` in `ast-generation-utils.ts`; the "reserved words cover every ID-shaped grammar keyword" test enforces this so the AST generator never emits an unparseable bare keyword.
+
 ## Generated Artifacts
 
 After grammar edits, run:

@@ -292,6 +292,8 @@ A `guards` clause takes one of two forms: `guards on_change require ReEvaluation
 
 A `memory` may carry a `sensitive` flag. A top-level `role Name` declaration registers a valid reviewer/approver identity, and a top-level `policy Name { require approver }` declaration requires an approver on reevaluations that satisfy a `sensitive` memory. `role`, `policy`, and `sensitive` are reserved keywords.
 
+A `trait` can define its own context obligation with a `require_context ContextType<T>` member, where `T` is the trait's type parameter and its bound (`Fn`, `Component`, or `Resource`) sets the target kind. An optional `satisfied_by rationale`, `satisfied_by memory`, or `satisfied_by rationale or memory` clause restricts which context kind satisfies it; the default accepts either. `require_context` and `satisfied_by` are reserved keywords.
+
 `reevaluation` records review for a guarded change:
 
 ```shape

@@ -7,7 +7,7 @@ trait GeneratedCandidate {
 }
 
 resource CheckerTestModuleAstAnchorForTargetAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker.test.ts:6654-6659")
+  storage ast.anchor("packages/shp-checker/src/checker.test.ts:6799-6804")
   fingerprint ast.semantic_subtree_v1("sha256:a920df85354835719f6402864b399efd32af83b7329cba4db7059164e283186c")
 }
 
@@ -17,17 +17,17 @@ resource CheckerTestModuleCheckShapeSourceAstAnchor : GeneratedAstAnchor {
 }
 
 resource CheckerTestModuleCheckWithFreshnessAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker.test.ts:4907-4913")
+  storage ast.anchor("packages/shp-checker/src/checker.test.ts:5052-5058")
   fingerprint ast.semantic_subtree_v1("sha256:5729fec2bdf2f3fa6097c272eedfd926798a293e17d3104d80a7a71a1ce453bc")
 }
 
 resource CheckerTestModuleClassFixtureAstAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker.test.ts:6798-6853")
+  storage ast.anchor("packages/shp-checker/src/checker.test.ts:6943-6998")
   fingerprint ast.semantic_subtree_v1("sha256:b80e4e4b0906f00640bd639f1ab00ba18946a1f188e1342ebe49c82af35b92d7")
 }
 
 resource CheckerTestModuleComponentShellFingerprintAstAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker.test.ts:6542-6587")
+  storage ast.anchor("packages/shp-checker/src/checker.test.ts:6687-6732")
   fingerprint ast.semantic_subtree_v1("sha256:abf456ed506a8d69c7d3b92c422eed1e21d99eb8768ccc3506b24f490816e9a7")
 }
 
@@ -37,7 +37,7 @@ resource CheckerTestModuleContextRefAstAnchor : GeneratedAstAnchor {
 }
 
 resource CheckerTestModuleFakeTreeSitterNodeAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker.test.ts:6893-6935")
+  storage ast.anchor("packages/shp-checker/src/checker.test.ts:7038-7080")
   fingerprint ast.semantic_subtree_v1("sha256:011707033302131a64a8b039e04d128d483d2fb414ad9007e7bd775785accd44")
 }
 
@@ -47,17 +47,17 @@ resource CheckerTestModuleFnTargetAstAnchor : GeneratedAstAnchor {
 }
 
 resource CheckerTestModuleFormatAstTestDiagnosticsAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker.test.ts:6864-6866")
+  storage ast.anchor("packages/shp-checker/src/checker.test.ts:7009-7011")
   fingerprint ast.semantic_subtree_v1("sha256:67fa6fc6cea9be6ae2c68494739f4227e3e8c8bffe9cd9e6a5adc61427353136")
 }
 
 resource CheckerTestModuleFunctionFingerprintAstAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker.test.ts:6481-6484")
+  storage ast.anchor("packages/shp-checker/src/checker.test.ts:6626-6629")
   fingerprint ast.semantic_subtree_v1("sha256:53e95f7252e2e3b932a4e1b0611547998bb40a0ea8d5b45871557d42a37d70e2")
 }
 
 resource CheckerTestModuleGraphFromAstForTestAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker.test.ts:6661-6668")
+  storage ast.anchor("packages/shp-checker/src/checker.test.ts:6806-6813")
   fingerprint ast.semantic_subtree_v1("sha256:1a154b6e99e3ef2c45b1eb961c3d223b22e2fd4870b93aac2eda4d45c21b2c61")
 }
 
@@ -67,12 +67,12 @@ resource CheckerTestModuleInlineGuardModelAstAnchor : GeneratedAstAnchor {
 }
 
 resource CheckerTestModuleLanguageAstFixturesAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker.test.ts:6683-6722")
+  storage ast.anchor("packages/shp-checker/src/checker.test.ts:6828-6867")
   fingerprint ast.semantic_subtree_v1("sha256:298bd18a4b2062de7f2e9a9cbd67e9244481055c3331130cdd26d0d2e204ab33")
 }
 
 resource CheckerTestModuleMultiFunctionFingerprintAstAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker.test.ts:6486-6528")
+  storage ast.anchor("packages/shp-checker/src/checker.test.ts:6631-6673")
   fingerprint ast.semantic_subtree_v1("sha256:ba81a13622e44b780b0a5fc1e5a1c9a0e2f794e669001901541f816a521a8e8d")
 }
 
@@ -82,17 +82,17 @@ resource CheckerTestModulePolicyModelAstAnchor : GeneratedAstAnchor {
 }
 
 resource CheckerTestModuleRefactorMemorySourceAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker.test.ts:4880-4905")
+  storage ast.anchor("packages/shp-checker/src/checker.test.ts:5025-5050")
   fingerprint ast.semantic_subtree_v1("sha256:d1c2d027c8c7769475e09cb1efe3e6f847ddf86b279a914a237ed505c80d06b9")
 }
 
 resource CheckerTestModuleRelationGuardModelAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker.test.ts:4069-4131")
+  storage ast.anchor("packages/shp-checker/src/checker.test.ts:4214-4276")
   fingerprint ast.semantic_subtree_v1("sha256:eac7d073699faf69cf74670e59f8ab7e753443190e02778553bf639f993c604b")
 }
 
 resource CheckerTestModuleRequireAstAnchorAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker.test.ts:6670-6681")
+  storage ast.anchor("packages/shp-checker/src/checker.test.ts:6815-6826")
   fingerprint ast.semantic_subtree_v1("sha256:99fa9c06d989e62d6977c1de3e14281868557c1ccd4fd9dc4d4db8fe984405a3")
 }
 
@@ -107,79 +107,79 @@ resource CheckerTestModuleRequireParsedAstAnchor : GeneratedAstAnchor {
 }
 
 resource CheckerTestModuleResourceShellFingerprintAstAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker.test.ts:6600-6648")
+  storage ast.anchor("packages/shp-checker/src/checker.test.ts:6745-6793")
   fingerprint ast.semantic_subtree_v1("sha256:38f53430e266f3405a7c443b8073e2271282fff09e8bd445c28c4850570a8c39")
 }
 
 resource CheckerTestModuleRustAuditAstJsonAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker.test.ts:6392-6471")
+  storage ast.anchor("packages/shp-checker/src/checker.test.ts:6537-6616")
   fingerprint ast.semantic_subtree_v1("sha256:16ee82219b6f4f6d4e6cd9f79a42037f87aceb744e53d3aafdff83d3fbfe6897")
 }
 
 resource CheckerTestModuleSpanAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker.test.ts:6855-6862")
+  storage ast.anchor("packages/shp-checker/src/checker.test.ts:7000-7007")
   fingerprint ast.semantic_subtree_v1("sha256:98b858224277fa5de75888654180d5e74decab72d039c7c8bb67b14b2c20bef9")
 }
 
 resource CheckerTestModuleTransformGuardModelAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker.test.ts:4209-4240")
+  storage ast.anchor("packages/shp-checker/src/checker.test.ts:4354-4385")
   fingerprint ast.semantic_subtree_v1("sha256:11dc4120e7ecd832d8836d6471266a6a0f166fb2a3a33201316c016566007a96")
 }
 
 component CheckerTestModule : GeneratedCandidate {
   fn astAnchorForTarget
-    source ts("packages/shp-checker/src/checker.test.ts:6654-6659")
+    source ts("packages/shp-checker/src/checker.test.ts:6799-6804")
     effects unknown
   fn checkShapeSource
     source ts("packages/shp-checker/src/checker.test.ts:57-59")
     effects unknown
   fn checkWithFreshness
-    source ts("packages/shp-checker/src/checker.test.ts:4907-4913")
+    source ts("packages/shp-checker/src/checker.test.ts:5052-5058")
     effects unknown
   fn classFixtureAst
-    source ts("packages/shp-checker/src/checker.test.ts:6798-6853")
+    source ts("packages/shp-checker/src/checker.test.ts:6943-6998")
     effects unknown
   fn componentShellFingerprintAst
-    source ts("packages/shp-checker/src/checker.test.ts:6542-6587")
+    source ts("packages/shp-checker/src/checker.test.ts:6687-6732")
     effects unknown
   fn contextRef
     source ts("packages/shp-checker/src/checker.test.ts:53-55")
     effects unknown
   fn fakeTreeSitterNode
-    source ts("packages/shp-checker/src/checker.test.ts:6893-6935")
+    source ts("packages/shp-checker/src/checker.test.ts:7038-7080")
     effects unknown
   fn fnTarget
     source ts("packages/shp-checker/src/checker.test.ts:49-51")
     effects unknown
   fn formatAstTestDiagnostics
-    source ts("packages/shp-checker/src/checker.test.ts:6864-6866")
+    source ts("packages/shp-checker/src/checker.test.ts:7009-7011")
     effects unknown
   fn functionFingerprintAst
-    source ts("packages/shp-checker/src/checker.test.ts:6481-6484")
+    source ts("packages/shp-checker/src/checker.test.ts:6626-6629")
     effects unknown
   fn graphFromAstForTest
-    source ts("packages/shp-checker/src/checker.test.ts:6661-6668")
+    source ts("packages/shp-checker/src/checker.test.ts:6806-6813")
     effects unknown
   fn inlineGuardModel
     source ts("packages/shp-checker/src/checker.test.ts:3408-3444")
     effects unknown
   fn languageAstFixtures
-    source ts("packages/shp-checker/src/checker.test.ts:6683-6722")
+    source ts("packages/shp-checker/src/checker.test.ts:6828-6867")
     effects unknown
   fn multiFunctionFingerprintAst
-    source ts("packages/shp-checker/src/checker.test.ts:6486-6528")
+    source ts("packages/shp-checker/src/checker.test.ts:6631-6673")
     effects unknown
   fn policyModel
     source ts("packages/shp-checker/src/checker.test.ts:3831-3877")
     effects unknown
   fn refactorMemorySource
-    source ts("packages/shp-checker/src/checker.test.ts:4880-4905")
+    source ts("packages/shp-checker/src/checker.test.ts:5025-5050")
     effects unknown
   fn relationGuardModel
-    source ts("packages/shp-checker/src/checker.test.ts:4069-4131")
+    source ts("packages/shp-checker/src/checker.test.ts:4214-4276")
     effects unknown
   fn requireAstAnchor
-    source ts("packages/shp-checker/src/checker.test.ts:6670-6681")
+    source ts("packages/shp-checker/src/checker.test.ts:6815-6826")
     effects unknown
   fn requireGeneratedOutput
     source ts("packages/shp-checker/src/checker.test.ts:69-74")
@@ -188,16 +188,16 @@ component CheckerTestModule : GeneratedCandidate {
     source ts("packages/shp-checker/src/checker.test.ts:61-67")
     effects unknown
   fn resourceShellFingerprintAst
-    source ts("packages/shp-checker/src/checker.test.ts:6600-6648")
+    source ts("packages/shp-checker/src/checker.test.ts:6745-6793")
     effects unknown
   fn rustAuditAstJson
-    source ts("packages/shp-checker/src/checker.test.ts:6392-6471")
+    source ts("packages/shp-checker/src/checker.test.ts:6537-6616")
     effects unknown
   fn span
-    source ts("packages/shp-checker/src/checker.test.ts:6855-6862")
+    source ts("packages/shp-checker/src/checker.test.ts:7000-7007")
     effects unknown
   fn transformGuardModel
-    source ts("packages/shp-checker/src/checker.test.ts:4209-4240")
+    source ts("packages/shp-checker/src/checker.test.ts:4354-4385")
     effects unknown
 }
 
@@ -206,7 +206,7 @@ relation CheckerTestModuleAstAnchorForTargetGeneratedFromCheckerTestModuleAstAnc
   connects CheckerTestModule -> CheckerTestModuleAstAnchorForTargetAstAnchor
   roles { CheckerTestModule as generated, CheckerTestModuleAstAnchorForTargetAstAnchor as syntax }
   expects CheckerTestModuleAstAnchorForTargetAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a920df85354835719f6402864b399efd32af83b7329cba4db7059164e283186c")
-  summary "fn CheckerTestModule.astAnchorForTarget generated from typescript function_declaration at packages/shp-checker/src/checker.test.ts:6654-6659."
+  summary "fn CheckerTestModule.astAnchorForTarget generated from typescript function_declaration at packages/shp-checker/src/checker.test.ts:6799-6804."
 }
 
 relation CheckerTestModuleCheckShapeSourceGeneratedFromCheckerTestModuleCheckShapeSourceAstAnchor {
@@ -222,7 +222,7 @@ relation CheckerTestModuleCheckWithFreshnessGeneratedFromCheckerTestModuleCheckW
   connects CheckerTestModule -> CheckerTestModuleCheckWithFreshnessAstAnchor
   roles { CheckerTestModule as generated, CheckerTestModuleCheckWithFreshnessAstAnchor as syntax }
   expects CheckerTestModuleCheckWithFreshnessAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5729fec2bdf2f3fa6097c272eedfd926798a293e17d3104d80a7a71a1ce453bc")
-  summary "fn CheckerTestModule.checkWithFreshness generated from typescript function_declaration at packages/shp-checker/src/checker.test.ts:4907-4913."
+  summary "fn CheckerTestModule.checkWithFreshness generated from typescript function_declaration at packages/shp-checker/src/checker.test.ts:5052-5058."
 }
 
 relation CheckerTestModuleClassFixtureAstGeneratedFromCheckerTestModuleClassFixtureAstAstAnchor {
@@ -230,7 +230,7 @@ relation CheckerTestModuleClassFixtureAstGeneratedFromCheckerTestModuleClassFixt
   connects CheckerTestModule -> CheckerTestModuleClassFixtureAstAstAnchor
   roles { CheckerTestModule as generated, CheckerTestModuleClassFixtureAstAstAnchor as syntax }
   expects CheckerTestModuleClassFixtureAstAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b80e4e4b0906f00640bd639f1ab00ba18946a1f188e1342ebe49c82af35b92d7")
-  summary "fn CheckerTestModule.classFixtureAst generated from typescript function_declaration at packages/shp-checker/src/checker.test.ts:6798-6853."
+  summary "fn CheckerTestModule.classFixtureAst generated from typescript function_declaration at packages/shp-checker/src/checker.test.ts:6943-6998."
 }
 
 relation CheckerTestModuleComponentShellFingerprintAstGeneratedFromCheckerTestModuleComponentShellFingerprintAstAstAnchor {
@@ -238,7 +238,7 @@ relation CheckerTestModuleComponentShellFingerprintAstGeneratedFromCheckerTestMo
   connects CheckerTestModule -> CheckerTestModuleComponentShellFingerprintAstAstAnchor
   roles { CheckerTestModule as generated, CheckerTestModuleComponentShellFingerprintAstAstAnchor as syntax }
   expects CheckerTestModuleComponentShellFingerprintAstAstAnchor fingerprint ast.semantic_subtree_v1("sha256:abf456ed506a8d69c7d3b92c422eed1e21d99eb8768ccc3506b24f490816e9a7")
-  summary "fn CheckerTestModule.componentShellFingerprintAst generated from typescript function_declaration at packages/shp-checker/src/checker.test.ts:6542-6587."
+  summary "fn CheckerTestModule.componentShellFingerprintAst generated from typescript function_declaration at packages/shp-checker/src/checker.test.ts:6687-6732."
 }
 
 relation CheckerTestModuleContextRefGeneratedFromCheckerTestModuleContextRefAstAnchor {
@@ -254,7 +254,7 @@ relation CheckerTestModuleFakeTreeSitterNodeGeneratedFromCheckerTestModuleFakeTr
   connects CheckerTestModule -> CheckerTestModuleFakeTreeSitterNodeAstAnchor
   roles { CheckerTestModule as generated, CheckerTestModuleFakeTreeSitterNodeAstAnchor as syntax }
   expects CheckerTestModuleFakeTreeSitterNodeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:011707033302131a64a8b039e04d128d483d2fb414ad9007e7bd775785accd44")
-  summary "fn CheckerTestModule.fakeTreeSitterNode generated from typescript function_declaration at packages/shp-checker/src/checker.test.ts:6893-6935."
+  summary "fn CheckerTestModule.fakeTreeSitterNode generated from typescript function_declaration at packages/shp-checker/src/checker.test.ts:7038-7080."
 }
 
 relation CheckerTestModuleFnTargetGeneratedFromCheckerTestModuleFnTargetAstAnchor {
@@ -270,7 +270,7 @@ relation CheckerTestModuleFormatAstTestDiagnosticsGeneratedFromCheckerTestModule
   connects CheckerTestModule -> CheckerTestModuleFormatAstTestDiagnosticsAstAnchor
   roles { CheckerTestModule as generated, CheckerTestModuleFormatAstTestDiagnosticsAstAnchor as syntax }
   expects CheckerTestModuleFormatAstTestDiagnosticsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:67fa6fc6cea9be6ae2c68494739f4227e3e8c8bffe9cd9e6a5adc61427353136")
-  summary "fn CheckerTestModule.formatAstTestDiagnostics generated from typescript function_declaration at packages/shp-checker/src/checker.test.ts:6864-6866."
+  summary "fn CheckerTestModule.formatAstTestDiagnostics generated from typescript function_declaration at packages/shp-checker/src/checker.test.ts:7009-7011."
 }
 
 relation CheckerTestModuleFunctionFingerprintAstGeneratedFromCheckerTestModuleFunctionFingerprintAstAstAnchor {
@@ -278,7 +278,7 @@ relation CheckerTestModuleFunctionFingerprintAstGeneratedFromCheckerTestModuleFu
   connects CheckerTestModule -> CheckerTestModuleFunctionFingerprintAstAstAnchor
   roles { CheckerTestModule as generated, CheckerTestModuleFunctionFingerprintAstAstAnchor as syntax }
   expects CheckerTestModuleFunctionFingerprintAstAstAnchor fingerprint ast.semantic_subtree_v1("sha256:53e95f7252e2e3b932a4e1b0611547998bb40a0ea8d5b45871557d42a37d70e2")
-  summary "fn CheckerTestModule.functionFingerprintAst generated from typescript function_declaration at packages/shp-checker/src/checker.test.ts:6481-6484."
+  summary "fn CheckerTestModule.functionFingerprintAst generated from typescript function_declaration at packages/shp-checker/src/checker.test.ts:6626-6629."
 }
 
 relation CheckerTestModuleGraphFromAstForTestGeneratedFromCheckerTestModuleGraphFromAstForTestAstAnchor {
@@ -286,7 +286,7 @@ relation CheckerTestModuleGraphFromAstForTestGeneratedFromCheckerTestModuleGraph
   connects CheckerTestModule -> CheckerTestModuleGraphFromAstForTestAstAnchor
   roles { CheckerTestModule as generated, CheckerTestModuleGraphFromAstForTestAstAnchor as syntax }
   expects CheckerTestModuleGraphFromAstForTestAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1a154b6e99e3ef2c45b1eb961c3d223b22e2fd4870b93aac2eda4d45c21b2c61")
-  summary "fn CheckerTestModule.graphFromAstForTest generated from typescript function_declaration at packages/shp-checker/src/checker.test.ts:6661-6668."
+  summary "fn CheckerTestModule.graphFromAstForTest generated from typescript function_declaration at packages/shp-checker/src/checker.test.ts:6806-6813."
 }
 
 relation CheckerTestModuleInlineGuardModelGeneratedFromCheckerTestModuleInlineGuardModelAstAnchor {
@@ -302,7 +302,7 @@ relation CheckerTestModuleLanguageAstFixturesGeneratedFromCheckerTestModuleLangu
   connects CheckerTestModule -> CheckerTestModuleLanguageAstFixturesAstAnchor
   roles { CheckerTestModule as generated, CheckerTestModuleLanguageAstFixturesAstAnchor as syntax }
   expects CheckerTestModuleLanguageAstFixturesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:298bd18a4b2062de7f2e9a9cbd67e9244481055c3331130cdd26d0d2e204ab33")
-  summary "fn CheckerTestModule.languageAstFixtures generated from typescript function_declaration at packages/shp-checker/src/checker.test.ts:6683-6722."
+  summary "fn CheckerTestModule.languageAstFixtures generated from typescript function_declaration at packages/shp-checker/src/checker.test.ts:6828-6867."
 }
 
 relation CheckerTestModuleMultiFunctionFingerprintAstGeneratedFromCheckerTestModuleMultiFunctionFingerprintAstAstAnchor {
@@ -310,7 +310,7 @@ relation CheckerTestModuleMultiFunctionFingerprintAstGeneratedFromCheckerTestMod
   connects CheckerTestModule -> CheckerTestModuleMultiFunctionFingerprintAstAstAnchor
   roles { CheckerTestModule as generated, CheckerTestModuleMultiFunctionFingerprintAstAstAnchor as syntax }
   expects CheckerTestModuleMultiFunctionFingerprintAstAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ba81a13622e44b780b0a5fc1e5a1c9a0e2f794e669001901541f816a521a8e8d")
-  summary "fn CheckerTestModule.multiFunctionFingerprintAst generated from typescript function_declaration at packages/shp-checker/src/checker.test.ts:6486-6528."
+  summary "fn CheckerTestModule.multiFunctionFingerprintAst generated from typescript function_declaration at packages/shp-checker/src/checker.test.ts:6631-6673."
 }
 
 relation CheckerTestModulePolicyModelGeneratedFromCheckerTestModulePolicyModelAstAnchor {
@@ -326,7 +326,7 @@ relation CheckerTestModuleRefactorMemorySourceGeneratedFromCheckerTestModuleRefa
   connects CheckerTestModule -> CheckerTestModuleRefactorMemorySourceAstAnchor
   roles { CheckerTestModule as generated, CheckerTestModuleRefactorMemorySourceAstAnchor as syntax }
   expects CheckerTestModuleRefactorMemorySourceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d1c2d027c8c7769475e09cb1efe3e6f847ddf86b279a914a237ed505c80d06b9")
-  summary "fn CheckerTestModule.refactorMemorySource generated from typescript function_declaration at packages/shp-checker/src/checker.test.ts:4880-4905."
+  summary "fn CheckerTestModule.refactorMemorySource generated from typescript function_declaration at packages/shp-checker/src/checker.test.ts:5025-5050."
 }
 
 relation CheckerTestModuleRelationGuardModelGeneratedFromCheckerTestModuleRelationGuardModelAstAnchor {
@@ -334,7 +334,7 @@ relation CheckerTestModuleRelationGuardModelGeneratedFromCheckerTestModuleRelati
   connects CheckerTestModule -> CheckerTestModuleRelationGuardModelAstAnchor
   roles { CheckerTestModule as generated, CheckerTestModuleRelationGuardModelAstAnchor as syntax }
   expects CheckerTestModuleRelationGuardModelAstAnchor fingerprint ast.semantic_subtree_v1("sha256:eac7d073699faf69cf74670e59f8ab7e753443190e02778553bf639f993c604b")
-  summary "fn CheckerTestModule.relationGuardModel generated from typescript function_declaration at packages/shp-checker/src/checker.test.ts:4069-4131."
+  summary "fn CheckerTestModule.relationGuardModel generated from typescript function_declaration at packages/shp-checker/src/checker.test.ts:4214-4276."
 }
 
 relation CheckerTestModuleRequireAstAnchorGeneratedFromCheckerTestModuleRequireAstAnchorAstAnchor {
@@ -342,7 +342,7 @@ relation CheckerTestModuleRequireAstAnchorGeneratedFromCheckerTestModuleRequireA
   connects CheckerTestModule -> CheckerTestModuleRequireAstAnchorAstAnchor
   roles { CheckerTestModule as generated, CheckerTestModuleRequireAstAnchorAstAnchor as syntax }
   expects CheckerTestModuleRequireAstAnchorAstAnchor fingerprint ast.semantic_subtree_v1("sha256:99fa9c06d989e62d6977c1de3e14281868557c1ccd4fd9dc4d4db8fe984405a3")
-  summary "fn CheckerTestModule.requireAstAnchor generated from typescript function_declaration at packages/shp-checker/src/checker.test.ts:6670-6681."
+  summary "fn CheckerTestModule.requireAstAnchor generated from typescript function_declaration at packages/shp-checker/src/checker.test.ts:6815-6826."
 }
 
 relation CheckerTestModuleRequireGeneratedOutputGeneratedFromCheckerTestModuleRequireGeneratedOutputAstAnchor {
@@ -366,7 +366,7 @@ relation CheckerTestModuleResourceShellFingerprintAstGeneratedFromCheckerTestMod
   connects CheckerTestModule -> CheckerTestModuleResourceShellFingerprintAstAstAnchor
   roles { CheckerTestModule as generated, CheckerTestModuleResourceShellFingerprintAstAstAnchor as syntax }
   expects CheckerTestModuleResourceShellFingerprintAstAstAnchor fingerprint ast.semantic_subtree_v1("sha256:38f53430e266f3405a7c443b8073e2271282fff09e8bd445c28c4850570a8c39")
-  summary "fn CheckerTestModule.resourceShellFingerprintAst generated from typescript function_declaration at packages/shp-checker/src/checker.test.ts:6600-6648."
+  summary "fn CheckerTestModule.resourceShellFingerprintAst generated from typescript function_declaration at packages/shp-checker/src/checker.test.ts:6745-6793."
 }
 
 relation CheckerTestModuleRustAuditAstJsonGeneratedFromCheckerTestModuleRustAuditAstJsonAstAnchor {
@@ -374,7 +374,7 @@ relation CheckerTestModuleRustAuditAstJsonGeneratedFromCheckerTestModuleRustAudi
   connects CheckerTestModule -> CheckerTestModuleRustAuditAstJsonAstAnchor
   roles { CheckerTestModule as generated, CheckerTestModuleRustAuditAstJsonAstAnchor as syntax }
   expects CheckerTestModuleRustAuditAstJsonAstAnchor fingerprint ast.semantic_subtree_v1("sha256:16ee82219b6f4f6d4e6cd9f79a42037f87aceb744e53d3aafdff83d3fbfe6897")
-  summary "fn CheckerTestModule.rustAuditAstJson generated from typescript function_declaration at packages/shp-checker/src/checker.test.ts:6392-6471."
+  summary "fn CheckerTestModule.rustAuditAstJson generated from typescript function_declaration at packages/shp-checker/src/checker.test.ts:6537-6616."
 }
 
 relation CheckerTestModuleSpanGeneratedFromCheckerTestModuleSpanAstAnchor {
@@ -382,7 +382,7 @@ relation CheckerTestModuleSpanGeneratedFromCheckerTestModuleSpanAstAnchor {
   connects CheckerTestModule -> CheckerTestModuleSpanAstAnchor
   roles { CheckerTestModule as generated, CheckerTestModuleSpanAstAnchor as syntax }
   expects CheckerTestModuleSpanAstAnchor fingerprint ast.semantic_subtree_v1("sha256:98b858224277fa5de75888654180d5e74decab72d039c7c8bb67b14b2c20bef9")
-  summary "fn CheckerTestModule.span generated from typescript function_declaration at packages/shp-checker/src/checker.test.ts:6855-6862."
+  summary "fn CheckerTestModule.span generated from typescript function_declaration at packages/shp-checker/src/checker.test.ts:7000-7007."
 }
 
 relation CheckerTestModuleTransformGuardModelGeneratedFromCheckerTestModuleTransformGuardModelAstAnchor {
@@ -390,7 +390,7 @@ relation CheckerTestModuleTransformGuardModelGeneratedFromCheckerTestModuleTrans
   connects CheckerTestModule -> CheckerTestModuleTransformGuardModelAstAnchor
   roles { CheckerTestModule as generated, CheckerTestModuleTransformGuardModelAstAnchor as syntax }
   expects CheckerTestModuleTransformGuardModelAstAnchor fingerprint ast.semantic_subtree_v1("sha256:11dc4120e7ecd832d8836d6471266a6a0f166fb2a3a33201316c016566007a96")
-  summary "fn CheckerTestModule.transformGuardModel generated from typescript function_declaration at packages/shp-checker/src/checker.test.ts:4209-4240."
+  summary "fn CheckerTestModule.transformGuardModel generated from typescript function_declaration at packages/shp-checker/src/checker.test.ts:4354-4385."
 }
 
 implementation CheckerTestModuleImpl {

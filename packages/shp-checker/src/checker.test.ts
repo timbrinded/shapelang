@@ -4052,6 +4052,151 @@ describe("Shape role and approver policy", () => {
   });
 });
 
+describe("Shape user-defined context obligations", () => {
+  test("a user trait require_context obligation behaves like a prelude one", () => {
+    const base = `
+      module gateway
+
+      resource PolicySnapshot
+
+      trait PreserveLocal<T: Fn> {
+        require_context LocalRationale<T> satisfied_by rationale
+      }
+
+      component Gateway {
+        owns PolicySnapshot
+        grants Read<PolicySnapshot>
+        fn derivePolicyDecision : PreserveLocal
+          effects complete {
+            Read<PolicySnapshot>
+          }
+      }
+    `;
+    const missing = checkShapeSource(base);
+    const missingOutput = formatDiagnostics(missing);
+    expect(missing.exitCode).toBe(1);
+    expect(missingOutput).toContain("missing required context");
+    expect(missingOutput).toContain(
+      contextRef("LocalRationale", fnTarget("Gateway.derivePolicyDecision"))
+    );
+    expect(missingOutput).toContain("trait PreserveLocal require_context");
+
+    const satisfied = checkShapeSource(`${base}
+      rationale LocalReason : ${contextRef("LocalRationale", fnTarget("Gateway.derivePolicyDecision"))} {
+        applies_to fn Gateway.derivePolicyDecision
+        why CognitiveLocality
+        summary "Kept local."
+        owner GatewayTeam
+      }
+    `);
+    expect(satisfied.exitCode).toBe(0);
+  });
+
+  test("satisfied_by restricts which context kind satisfies the obligation", () => {
+    const base = `
+      module bridge
+
+      resource Attestation
+
+      trait DelaySensitive<T: Fn> {
+        require_context DelayConstraint<T> satisfied_by memory
+      }
+
+      component BridgePoller {
+        owns Attestation
+        grants Read<Attestation>
+        fn pollAttestation : DelaySensitive
+          effects complete {
+            Read<Attestation>
+          }
+      }
+    `;
+    const withRationale = checkShapeSource(`${base}
+      rationale PollDelay : ${contextRef("DelayConstraint", fnTarget("BridgePoller.pollAttestation"))} {
+        applies_to fn BridgePoller.pollAttestation
+        why ExternalProtocolConstraint
+        summary "A rationale must not satisfy a memory-only obligation."
+        owner BridgeTeam
+      }
+    `);
+    expect(withRationale.exitCode).toBe(1);
+
+    const withMemory = checkShapeSource(`${base}
+      memory PollDelay : ${contextRef("DelayConstraint", fnTarget("BridgePoller.pollAttestation"))} {
+        applies_to fn BridgePoller.pollAttestation
+        status Unexplained
+        confidence High
+        summary "Lowering the delay caused settlement failures."
+        owner BridgeTeam
+      }
+    `);
+    expect(withMemory.exitCode).toBe(0);
+  });
+
+  test("derives the target kind from the trait type parameter bound", () => {
+    const missing = checkShapeSource(`
+      module audit
+
+      trait ComponentBoundary<T: Component> {
+        require_context BoundaryReason<T>
+      }
+
+      resource AuditEvent
+
+      component AuditStore : ComponentBoundary {
+        owns AuditEvent
+        grants Read<AuditEvent>
+        fn read
+          effects complete {
+            Read<AuditEvent>
+          }
+      }
+    `);
+    const output = formatDiagnostics(missing);
+
+    expect(missing.exitCode).toBe(1);
+    expect(output).toContain("component AuditStore has shape ComponentBoundary");
+    expect(output).toContain(contextRef("BoundaryReason", "component AuditStore"));
+  });
+
+  test("keeps the hardcoded prelude obligations working alongside user traits", () => {
+    const result = checkShapeSource(`
+      module gateway
+
+      resource PolicySnapshot
+
+      component Gateway {
+        owns PolicySnapshot
+        grants Read<PolicySnapshot>
+        fn derivePolicyDecision : PreserveInline
+          effects complete {
+            Read<PolicySnapshot>
+          }
+      }
+    `);
+    const output = formatDiagnostics(result);
+
+    expect(result.exitCode).toBe(1);
+    expect(output).toContain(
+      contextRef("InlineRationale", fnTarget("Gateway.derivePolicyDecision"))
+    );
+  });
+
+  test("parses and formats require_context trait members", () => {
+    const result = formatShapeSource(`
+      trait PreserveLocal<T: Fn> { require_context LocalRationale<T> satisfied_by rationale or memory }
+    `);
+
+    expect(result.ok).toBe(true);
+    if (!result.ok) {
+      return;
+    }
+    expect(result.formatted).toContain(
+      "require_context LocalRationale<T> satisfied_by rationale or memory"
+    );
+  });
+});
+
 describe("Shape grammar keyword reservation", () => {
   test("reserved words cover every ID-shaped grammar keyword", async () => {
     const grammar = await Bun.file(join(import.meta.dir, "language", "shape.langium")).text();

@@ -454,7 +454,7 @@ memory PreludeMetadataContract : RefactorConstraint<fn ShapePreludeRegistry.defi
   applies_to fn ShapePreludeRegistry.definePreludeMetadata
   status Explained
   confidence High
-  summary "Prelude traits, relation kinds, and context requirements are semantic inputs shared by checker, editor, and authoring surfaces; context requirements derive obligations for function, component, and resource targets."
+  summary "Prelude traits, relation kinds, and context requirements are semantic inputs shared by checker, editor, and authoring surfaces; context requirements derive obligations for function, component, and resource targets, and are merged with user-defined trait require_context obligations during checking."
   owner ShapeMaintainers
   protects shape PreludeConsistency
   guards on_change require ReEvaluation<Self>
