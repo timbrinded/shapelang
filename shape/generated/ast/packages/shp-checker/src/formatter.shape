@@ -53,7 +53,7 @@ resource FormatterModuleFormatComponentAstAnchor : GeneratedAstAnchor {
 
 resource FormatterModuleFormatContextMemberAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/formatter.ts:644-667")
-  fingerprint ast.semantic_subtree_v1("sha256:97ffae8245370dc11be78741dac70561c60c54fc32be986931dc55abcaf90fca")
+  fingerprint ast.semantic_subtree_v1("sha256:0463c6b1ae2f43dc179b8096d3f5d12b779a3f98f4c080656d2ab86ab291d3a7")
 }
 
 resource FormatterModuleFormatContextTypeRefAstAnchor : GeneratedAstAnchor {
@@ -413,7 +413,7 @@ relation FormatterModuleFormatContextMemberGeneratedFromFormatterModuleFormatCon
   kind generated_from
   connects FormatterModule -> FormatterModuleFormatContextMemberAstAnchor
   roles { FormatterModule as generated, FormatterModuleFormatContextMemberAstAnchor as syntax }
-  expects FormatterModuleFormatContextMemberAstAnchor fingerprint ast.semantic_subtree_v1("sha256:97ffae8245370dc11be78741dac70561c60c54fc32be986931dc55abcaf90fca")
+  expects FormatterModuleFormatContextMemberAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0463c6b1ae2f43dc179b8096d3f5d12b779a3f98f4c080656d2ab86ab291d3a7")
   summary "fn FormatterModule.formatContextMember generated from typescript function_declaration at packages/shp-checker/src/formatter.ts:644-667."
 }
 

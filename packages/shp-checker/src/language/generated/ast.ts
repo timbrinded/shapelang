@@ -959,8 +959,8 @@ export function isPathsBlock(item: unknown): item is PathsBlock {
 export interface ProtectsDecl extends langium.AstNode {
     readonly $container: MemoryDecl | RationaleDecl;
     readonly $type: 'ProtectsDecl';
-    kind: string;
-    value: string;
+    kind: ProtectsPropertyKind;
+    value?: string;
 }
 
 export const ProtectsDecl = {
@@ -971,6 +971,12 @@ export const ProtectsDecl = {
 
 export function isProtectsDecl(item: unknown): item is ProtectsDecl {
     return reflection.isInstance(item, ProtectsDecl.$type);
+}
+
+export type ProtectsPropertyKind = 'description' | string;
+
+export function isProtectsPropertyKind(item: unknown): item is ProtectsPropertyKind {
+    return item === 'description' || (typeof item === 'string' && (/[_a-zA-Z][\w_]*/.test(item)));
 }
 
 export type QualifiedName = string;

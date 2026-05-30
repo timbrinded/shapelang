@@ -197,6 +197,24 @@ change RefactorDecision {
 
 Without the `reevaluation`, the checker reports `guarded shape changed` and tells the author which memory or rationale must be satisfied.
 
+## Property-Level Guards
+
+A guard can protect a specific property rather than the whole target. When every `protects` clause names a detectable property — a shape trait by name, or the `description` — the guard fires only when that exact property is removed by a change:
+
+```shape
+rationale DerivePolicyInline : InlineRationale<fn Gateway.derivePolicyDecision> {
+  applies_to fn Gateway.derivePolicyDecision
+  why CognitiveLocality
+  summary "Branches stay inline for auditability."
+  owner GatewayTeam
+  protects shape PreserveInline
+  protects description
+  guards on_change require ReEvaluation<Self>
+}
+```
+
+With this guard, a change that only adjusts effects passes, but a change that drops the `PreserveInline` trait or removes the `description` reports `guarded shape changed` and names the removed property. A guard that protects a free-form label (for example `protects shape CheckOrder`, where `CheckOrder` is not a declared shape trait) keeps the coarse behaviour: any `modify` or `remove` of the target requires a reevaluation. The same enforcement applies to guarded component and resource targets through `modify`/`remove` declaration changes.
+
 ## Review Freshness
 
 Design memory ages. A `memory` or `rationale` can carry a `review_by` date so reviewers know when the constraint should be revisited:

@@ -108,6 +108,7 @@ import { parseShapeModule, type ParseDiagnostic } from "./parser.ts";
 import {
   PRELUDE_CONTEXT_REQUIREMENTS,
   PRELUDE_RELATION_KIND_RULES,
+  PRELUDE_SHAPE_TRAIT_NAMES,
   PRELUDE_TRAIT_NAMES,
   PRELUDE_TRAITS,
   type ContextKind,
@@ -136,6 +137,7 @@ const PRELUDE_RELATION_KINDS = new Map(
 );
 
 const KNOWN_PRELUDE_TRAITS = new Set(PRELUDE_TRAIT_NAMES);
+const KNOWN_SHAPE_TRAITS = new Set(PRELUDE_SHAPE_TRAIT_NAMES);
 
 export type SemanticDiagnostic =
   | {
@@ -321,6 +323,7 @@ export type SemanticDiagnostic =
       guard: string;
       targetKind: TargetKind;
       target: string;
+      changedProperty?: string;
       missingReevaluation: string;
       filePath?: string;
       causedBy: string[];
@@ -659,12 +662,24 @@ type ReevaluationInfo = {
 
 type ChangeEvent =
   | {
-      kind: "function_modified";
+      // A target was modified or removed wholesale. Drives coarse guards that
+      // protect a target without a detectable property, or no property at all.
+      kind: "target_changed";
       target: ShapeTarget;
       provenance: Provenance;
     }
   | {
-      kind: "function_removed";
+      // A specific shape trait was dropped from a target. Drives property-level
+      // guards that protect that exact trait.
+      kind: "shape_trait_removed";
+      target: ShapeTarget;
+      trait: string;
+      provenance: Provenance;
+    }
+  | {
+      // A target's required/non-empty description was dropped. Drives guards
+      // that protect the description.
+      kind: "description_removed";
       target: ShapeTarget;
       provenance: Provenance;
     };
@@ -1174,11 +1189,10 @@ export function explainShapeModules(
 }
 
 /**
- * Appends the shape-trait obligation sections (required context and satisfying
- * context) for a component or resource target to an explain listing. Guards are
- * deliberately omitted: guarded-change enforcement currently fires only on
- * `modify fn`/`remove fn`, so advertising a guard on a component or resource
- * would claim protection the checker does not yet deliver.
+ * Appends the shape-trait obligation sections (required context, satisfying
+ * context, and active guards) for a component or resource target to an explain
+ * listing. Guarded-change enforcement now fires for component/resource targets
+ * via `modify`/`remove` change events, so listed guards are real.
  */
 function appendShapeTraitContext(
   target: ShapeTarget,
@@ -1199,6 +1213,11 @@ function appendShapeTraitContext(
   if (satisfiedBy.length > 0) {
     lines.push("", "  satisfied by:");
     lines.push(...satisfiedBy.map((context) => `    ${context.kind} ${context.name}`));
+  }
+  const guards = guardsForTarget(target, model);
+  if (guards.length > 0) {
+    lines.push("", "  memory guards:");
+    lines.push(...guards.map((guard) => `    ${guard.kind} ${guard.info.name}`));
   }
 }
 
@@ -2678,12 +2697,13 @@ function lowerContextMember(
     return true;
   }
   if (isProtectsDecl(member)) {
+    const value = member.value ?? "";
     info.protects.push({
       kind: member.kind,
-      value: member.value,
+      value,
       provenance: provenance(
         context.filePath,
-        `${kind} ${info.name} protects ${member.kind} ${member.value}`
+        `${kind} ${info.name} protects ${member.kind}${value ? ` ${value}` : ""}`
       )
     });
     return true;
@@ -2832,18 +2852,20 @@ function lowerChange(change: ChangeDecl, context: LoweringContext, model: Model)
         continue;
       }
 
+      const previous = component.functions.get(functionName);
+      const fn = lowerFunction(entry, componentName, context, model, `change ${change.name}`);
       if (isModifyFunctionChange(entry)) {
-        model.changeEvents.push({
-          kind: "function_modified",
-          target: functionTarget(componentName, functionName),
-          provenance: provenance(
+        emitTargetChange(
+          functionTarget(componentName, functionName),
+          removedTraitsBetween(previous?.shapeTraits, fn.shapeTraits),
+          descriptionDropped(previous, fn),
+          provenance(
             context.filePath,
             `change ${change.name} modify fn ${componentName}.${functionName}`
-          )
-        });
+          ),
+          model
+        );
       }
-
-      const fn = lowerFunction(entry, componentName, context, model, `change ${change.name}`);
       removeFunctionFacts(model, componentName, functionName);
       component.functions.set(fn.name, fn);
       emitFunctionFacts(fn, model);
@@ -2867,14 +2889,17 @@ function lowerChange(change: ChangeDecl, context: LoweringContext, model: Model)
         });
         continue;
       }
-      model.changeEvents.push({
-        kind: "function_removed",
-        target: functionTarget(componentName, functionName),
-        provenance: provenance(
+      const removed = model.components.get(componentName)?.functions.get(functionName);
+      emitTargetChange(
+        functionTarget(componentName, functionName),
+        removed ? [...removed.shapeTraits.keys()] : [],
+        removed ? hasNonEmptyDescription(removed) : false,
+        provenance(
           context.filePath,
           `change ${change.name} remove fn ${componentName}.${functionName}`
-        )
-      });
+        ),
+        model
+      );
       removeFunctionFacts(model, componentName, functionName);
       model.components.get(componentName)?.functions.delete(functionName);
     } else if (isAddDeclarationChange(entry)) {
@@ -2882,18 +2907,33 @@ function lowerChange(change: ChangeDecl, context: LoweringContext, model: Model)
     } else if (isModifyDeclarationChange(entry)) {
       const kind = declarationKind(entry.declaration);
       if (kind !== "attestation") {
-        const targetContext = contextForDeclarationChange(
+        const localName = declarationName(entry.declaration);
+        const targetContext = contextForDeclarationChange(kind, localName, context, model);
+        const resolvedName = resolveDeclName(localName, kind, targetContext, model);
+        const before = declarationShapeTraits(kind, resolvedName, model);
+        removeDeclaration(kind, localName, targetContext, model);
+        lowerDeclaration(entry.declaration, targetContext, model);
+        const after = declarationShapeTraits(kind, resolvedName, model);
+        emitDeclarationChange(
           kind,
-          declarationName(entry.declaration),
-          context,
+          resolvedName,
+          removedTraitsBetween(before, after),
+          provenance(context.filePath, `change ${change.name} modify ${kind} ${resolvedName}`),
           model
         );
-        removeDeclaration(kind, declarationName(entry.declaration), targetContext, model);
-        lowerDeclaration(entry.declaration, targetContext, model);
         continue;
       }
       lowerDeclaration(entry.declaration, context, model);
     } else if (isRemoveDeclarationChange(entry)) {
+      const resolvedName = resolveDeclName(entry.name, entry.kind, context, model);
+      const before = declarationShapeTraits(entry.kind, resolvedName, model);
+      emitDeclarationChange(
+        entry.kind,
+        resolvedName,
+        before ? [...before.keys()] : [],
+        provenance(context.filePath, `change ${change.name} remove ${entry.kind} ${resolvedName}`),
+        model
+      );
       removeDeclaration(entry.kind, entry.name, context, model);
     }
   }
@@ -2905,6 +2945,70 @@ function resolveFunctionTargetParts(
   model: Model
 ): [string | undefined, string | undefined] {
   return splitFunctionTarget(resolveFunctionTargetName(target, context, model));
+}
+
+/**
+ * Records a change to a target: a coarse `target_changed` event plus a
+ * property-level `shape_trait_removed`/`description_removed` event for each
+ * dropped property, so guarded-change checking can match either granularity.
+ */
+function emitTargetChange(
+  target: ShapeTarget,
+  removedTraits: string[],
+  descriptionRemoved: boolean,
+  prov: Provenance,
+  model: Model
+): void {
+  model.changeEvents.push({ kind: "target_changed", target, provenance: prov });
+  for (const trait of removedTraits) {
+    model.changeEvents.push({ kind: "shape_trait_removed", target, trait, provenance: prov });
+  }
+  if (descriptionRemoved) {
+    model.changeEvents.push({ kind: "description_removed", target, provenance: prov });
+  }
+}
+
+function emitDeclarationChange(
+  kind: RemoveDeclarationChange["kind"],
+  resolvedName: string,
+  removedTraits: string[],
+  prov: Provenance,
+  model: Model
+): void {
+  if (kind !== "component" && kind !== "resource") {
+    return;
+  }
+  emitTargetChange({ kind, name: resolvedName }, removedTraits, false, prov, model);
+}
+
+function declarationShapeTraits(
+  kind: RemoveDeclarationChange["kind"],
+  resolvedName: string,
+  model: Model
+): ReadonlyMap<string, Provenance> | undefined {
+  if (kind === "component") {
+    return model.components.get(resolvedName)?.classifiers;
+  }
+  if (kind === "resource") {
+    return model.resources.get(resolvedName)?.traits;
+  }
+  return undefined;
+}
+
+function removedTraitsBetween(
+  before: ReadonlyMap<string, Provenance> | undefined,
+  after: ReadonlyMap<string, Provenance> | undefined
+): string[] {
+  if (!before) {
+    return [];
+  }
+  return [...before.keys()].filter((trait) => after?.has(trait) !== true);
+}
+
+function descriptionDropped(previous: FunctionInfo | undefined, next: FunctionInfo): boolean {
+  return (
+    previous !== undefined && hasNonEmptyDescription(previous) && !hasNonEmptyDescription(next)
+  );
 }
 
 function contextForDeclarationChange(
@@ -4026,29 +4130,94 @@ function checkGuardedChanges(model: Model): SemanticDiagnostic[] {
     ...guardedContexts("memory", model.memories.values())
   ];
 
-  for (const event of model.changeEvents) {
-    for (const guard of guards) {
-      if (
-        !targetsEqual(event.target, guard.target) ||
-        hasValidReevaluationForGuard(model, guard.kind, guard.info.name)
-      ) {
-        continue;
-      }
+  for (const guard of guards) {
+    if (hasValidReevaluationForGuard(model, guard.kind, guard.info.name)) {
+      continue;
+    }
 
+    const detectable = detectableProtectedProperties(guard.info);
+    // Property-level only when every protected property is detectable; if a
+    // guard protects something we cannot diff (a free-form label, or nothing),
+    // fall back to coarse "any change to the target" matching.
+    const triggers =
+      detectable.length === guard.info.protects.length && detectable.length > 0
+        ? detectable
+            .map((property) => ({
+              property,
+              event: findPropertyEvent(model, guard.target, property)
+            }))
+            .filter(
+              (match): match is { property: ProtectedProperty; event: ChangeEvent } =>
+                match.event !== undefined
+            )
+        : findCoarseChange(model, guard.target);
+
+    for (const trigger of triggers) {
       diagnostics.push({
         kind: "guarded_shape_changed",
         guardKind: guard.kind,
         guard: guard.info.name,
-        targetKind: event.target.kind,
-        target: event.target.name,
+        targetKind: guard.target.kind,
+        target: guard.target.name,
+        changedProperty: trigger.property ? describeProtectedProperty(trigger.property) : undefined,
         missingReevaluation: `reevaluation satisfying ${guard.kind} ${displaySymbol(guard.info.name)}`,
-        filePath: event.provenance.filePath,
-        causedBy: [describeProvenance(event.provenance), describeProvenance(guard.guard.provenance)]
+        filePath: trigger.event.provenance.filePath,
+        causedBy: [
+          describeProvenance(trigger.event.provenance),
+          describeProvenance(guard.guard.provenance)
+        ]
       });
     }
   }
 
   return diagnostics;
+}
+
+/**
+ * The subset of a guard's `protects` clauses whose change we can actually
+ * detect: a description, or a shape trait by name. Free-form labels (e.g.
+ * `protects shape CheckOrder`) are not detectable and keep coarse matching.
+ */
+function detectableProtectedProperties(info: RationaleInfo | MemoryInfo): ProtectedProperty[] {
+  // A description is a function-only property, so a `protects description` clause
+  // is only detectable on a function target; on a component/resource it has no
+  // corresponding change event and must fall back to coarse matching.
+  const targetKind = (info.appliesTo ?? info.target).kind;
+  return info.protects.filter(
+    (property) =>
+      (property.kind === "description" && targetKind === "fn") ||
+      (property.kind === "shape" && KNOWN_SHAPE_TRAITS.has(property.value))
+  );
+}
+
+function findPropertyEvent(
+  model: Model,
+  target: ShapeTarget,
+  property: ProtectedProperty
+): ChangeEvent | undefined {
+  return model.changeEvents.find((event) => {
+    if (!targetsEqual(event.target, target)) {
+      return false;
+    }
+    if (property.kind === "description") {
+      return event.kind === "description_removed";
+    }
+    return event.kind === "shape_trait_removed" && event.trait === property.value;
+  });
+}
+
+function findCoarseChange(
+  model: Model,
+  target: ShapeTarget
+): { property: undefined; event: ChangeEvent }[] {
+  const event = model.changeEvents.find(
+    (candidate) => candidate.kind === "target_changed" && targetsEqual(candidate.target, target)
+  );
+  return event ? [{ property: undefined, event }] : [];
+}
+
+function describeProtectedProperty(property: ProtectedProperty): string {
+  return property.kind === "description" ? "description" : `shape trait ${property.value}`;
 }
 
 /**
@@ -4848,12 +5017,17 @@ function appendContextExplanationFields(lines: string[], context: ContextObjectI
   }
   if (context.protects.length > 0) {
     lines.push("  protects:");
-    lines.push(...context.protects.map((item) => `    ${item.kind} ${item.value}`));
+    lines.push(...context.protects.map((item) => `    ${protectedPropertyText(item)}`));
   }
   if (context.guards.length > 0) {
     lines.push("  guards:");
     lines.push(...context.guards.map((guard) => `    on_change require ${guard.requirement}`));
   }
+}
+
+/** Renders a protected property for listings, omitting an empty value. */
+function protectedPropertyText(property: ProtectedProperty): string {
+  return property.value ? `${property.kind} ${property.value}` : property.kind;
 }
 
 function formatRationaleMemoryListEntry(rationale: RationaleInfo): string[] {
@@ -4876,9 +5050,7 @@ function formatMemoryListEntry(memory: MemoryInfo): string[] {
 
 function appendContextListFields(lines: string[], context: ContextObjectInfo): void {
   if (context.protects.length > 0) {
-    lines.push(
-      `protects: ${context.protects.map((item) => `${item.kind} ${item.value}`).join(", ")}`
-    );
+    lines.push(`protects: ${context.protects.map(protectedPropertyText).join(", ")}`);
   }
   if (context.owner) {
     lines.push(`owner: ${context.owner}`);
@@ -5361,7 +5533,9 @@ function formatGuardedShapeChangedDiagnostic(
     "error: guarded shape changed",
     "",
     `${diagnostic.targetKind} ${displaySymbol(diagnostic.target)} is protected by ${diagnostic.guardKind} ${displaySymbol(diagnostic.guard)}.`,
-    "This change modifies the guarded target.",
+    diagnostic.changedProperty
+      ? `This change removes ${diagnostic.changedProperty} from the guarded target.`
+      : "This change modifies the guarded target.",
     "",
     "Required:",
     `  add ${diagnostic.missingReevaluation}`,

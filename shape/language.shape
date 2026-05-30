@@ -45,7 +45,7 @@ component ShapeGrammar {
   grants Update<GeneratedAst>
   grants Update<ShapeLanguageDefinition>
   grants Update<SyntaxHighlighting>
-  fn generateAst
+  fn generateAst : RefactorSensitive
     source langium("packages/shp-checker/src/language/shape.langium")
     effects complete {
       Read<LangiumGrammar>
@@ -125,6 +125,16 @@ memory DocsShapeBlockParsingContract : RefactorConstraint<fn DocsShapeBlockVerif
   summary "Docs examples must be parsed with the repo parser unless explicitly marked no-verify."
   owner ShapeMaintainers
   protects shape DocsExampleValidity
+  guards on_change require ReEvaluation<Self>
+}
+
+memory GrammarMemoryGuardForms : RefactorConstraint<fn ShapeGrammar.generateAst> {
+  applies_to fn ShapeGrammar.generateAst
+  status Explained
+  confidence High
+  summary "Grammar changes ripple to the generated AST, parser, checker, formatter, and docs; the memory-guard protects clause supports a shape-trait form with a value and a valueless description form."
+  owner ShapeMaintainers
+  protects shape GrammarContract
   guards on_change require ReEvaluation<Self>
 }
 

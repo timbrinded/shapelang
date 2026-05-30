@@ -123,6 +123,15 @@ const PRELUDE_RESOURCE_TRAIT_NAMES = [
 
 const PRELUDE_COMPONENT_TRAIT_NAMES = ["StorageAdapter", "DataPlane", "ControlPlane"];
 
+/**
+ * Names of the standard shape traits that derive context obligations
+ * (PreserveInline, RefactorSensitive, ...). Used to tell a guard's protected
+ * shape trait apart from a free-form protected-property label.
+ */
+export const PRELUDE_SHAPE_TRAIT_NAMES = [
+  ...new Set(PRELUDE_CONTEXT_REQUIREMENTS.map((rule) => rule.trait))
+];
+
 export const PRELUDE_TRAIT_NAMES = [
   ...PRELUDE_TRAITS.map((trait) => trait.name),
   ...PRELUDE_RESOURCE_TRAIT_NAMES,

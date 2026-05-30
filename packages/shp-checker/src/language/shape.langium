@@ -354,7 +354,10 @@ ConfidenceDecl:
     'confidence' value=ID;
 
 ProtectsDecl:
-    'protects' kind=ID value=ID;
+    'protects' kind=ProtectsPropertyKind (value=ID)?;
+
+ProtectsPropertyKind returns string:
+    'description' | ID;
 
 GuardDecl:
     'guards' 'on_change' 'require' requirement=ContextTypeName;

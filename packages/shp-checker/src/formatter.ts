@@ -655,7 +655,7 @@ function formatContextMember(member: RationaleMember | MemoryMember): string | u
     return `review_by ${quote(member.value)}`;
   }
   if (isProtectsDecl(member)) {
-    return `protects ${member.kind} ${member.value}`;
+    return member.value ? `protects ${member.kind} ${member.value}` : `protects ${member.kind}`;
   }
   if (isGuardDecl(member)) {
     return `guards on_change require ${member.requirement}`;

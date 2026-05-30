@@ -206,6 +206,8 @@ memory DecisionRefactorConstraint : RefactorConstraint<fn Gateway.derivePolicyDe
 
 That explicit target is useful in two places. The parser can produce structured target references, and the semantic checker can detect unknown targets, mismatched `applies_to` declarations, and guarded changes that need reevaluation.
 
+A `protects` clause uses `ProtectsPropertyKind`, which accepts the `description` keyword or any identifier, followed by an optional value. This keeps the value-bearing form `protects shape PreserveInline` while also allowing the valueless `protects description`. Adding a literal such as `'shape'` here would reserve it as a global keyword and break identifiers (module segments like `shape.generated.ast`), so only the already-reserved `description` keyword is listed.
+
 ## Generated Artifacts
 
 After grammar edits, run:

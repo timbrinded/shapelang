@@ -287,7 +287,7 @@ Make the type target and `applies_to` target identical.
 
 ## Guarded shape changed
 
-Cause: a `modify fn` or `remove fn` touched a function protected by `guards on_change require ReEvaluation<Self>`, but no valid reevaluation satisfies that memory or rationale.
+Cause: a `modify`/`remove` change touched a function, component, or resource protected by `guards on_change require ReEvaluation<Self>`, but no valid reevaluation satisfies that memory or rationale.
 
 ```text
 error: guarded shape changed
@@ -300,7 +300,9 @@ Required:
   or preserve the protected shape.
 ```
 
-Add a `reevaluation` with review evidence, or avoid changing the protected function shape.
+When the guard protects only detectable properties (a named shape trait, or the `description`), the diagnostic fires solely on removal of that property and names it, for example `This change removes shape trait PreserveInline from the guarded target.` Guards that protect a free-form label keep coarse matching and fire on any change to the target.
+
+Add a `reevaluation` with review evidence, or avoid changing the protected shape.
 
 ## Invalid reevaluation
 

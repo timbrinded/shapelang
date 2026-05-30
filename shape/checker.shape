@@ -177,6 +177,14 @@ component ShapeRuleEngine {
       Read<EffectiveModel>
         evidence ts("packages/shp-checker/src/checker.ts")
     }
+  fn checkGuardedChanges : RefactorSensitive
+    source ts("packages/shp-checker/src/checker.ts#checkGuardedChanges")
+    effects complete {
+      Append<SemanticDiagnostics>
+        evidence ts("packages/shp-checker/src/checker.ts")
+      Read<EffectiveModel>
+        evidence ts("packages/shp-checker/src/checker.ts")
+    }
   fn deriveFinalForbidsForResource : RefactorSensitive
     source ts("packages/shp-checker/src/checker.ts#deriveFinalForbidsForResource")
     effects complete {
@@ -401,6 +409,16 @@ memory FreshnessDeterminism : RefactorConstraint<fn ShapeRuleEngine.checkFreshne
   summary "Freshness compares review_by against a caller-injected ISO date, never the system clock, and enforces only ISO YYYY-MM-DD values so checks stay deterministic."
   owner ShapeMaintainers
   protects shape DeterministicFreshness
+  guards on_change require ReEvaluation<Self>
+}
+
+memory GuardedChangePrecision : RefactorConstraint<fn ShapeRuleEngine.checkGuardedChanges> {
+  applies_to fn ShapeRuleEngine.checkGuardedChanges
+  status Explained
+  confidence High
+  summary "Guards fire property-level when every protected property is detectable (a named shape trait or the description) and otherwise fall back to coarse modify/remove matching, so existing coarse guards keep their behaviour and final forbids are never waived."
+  owner ShapeMaintainers
+  protects shape GuardedChangePrecision
   guards on_change require ReEvaluation<Self>
 }
 

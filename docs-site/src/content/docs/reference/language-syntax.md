@@ -286,6 +286,8 @@ memory DecisionRefactorConstraint : RefactorConstraint<fn Gateway.derivePolicyDe
 
 `memory` members can include `applies_to`, `status`, `confidence`, `protects`, `guards`, `observed`, `summary`, `owner`, `review_by`, and `evidence`.
 
+A `protects` clause names either a property with a value, such as `protects shape PreserveInline`, or the local description with no value, written `protects description`. Guards whose protected properties are all detectable (a named shape trait, or the description) fire only when that property is removed.
+
 `reevaluation` records review for a guarded change:
 
 ```shape
