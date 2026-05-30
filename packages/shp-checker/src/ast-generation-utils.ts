@@ -90,6 +90,7 @@ const SHAPE_RESERVED_WORDS = new Set([
   "unsafe",
   "when",
   "when_changed",
+  "who",
   "why"
 ]);
 

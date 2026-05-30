@@ -4197,6 +4197,155 @@ describe("Shape user-defined context obligations", () => {
   });
 });
 
+describe("Shape nested memory guard blocks", () => {
+  const nested = `
+    module gateway
+
+    resource PolicySnapshot
+
+    component Gateway {
+      owns PolicySnapshot
+      grants Read<PolicySnapshot>
+      fn derivePolicyDecision : ProtectedCheckOrder
+        effects complete {
+          Read<PolicySnapshot>
+        }
+    }
+
+    rationale PolicyInline : ${contextRef("CheckOrderRationale", fnTarget("Gateway.derivePolicyDecision"))} {
+      applies_to fn Gateway.derivePolicyDecision
+      why CognitiveLocality
+      summary "Inline."
+      protects {
+        shape PreserveInline
+        description
+      }
+      guards {
+        on_change require ${contextRef("ReEvaluation", "Self")}
+        forbid transform ExtractHelper
+      }
+      who {
+        owner GatewayTeam
+      }
+      when {
+        review_by "2026-08-18"
+      }
+    }
+  `;
+
+  const flat = `
+    module gateway
+
+    resource PolicySnapshot
+
+    component Gateway {
+      owns PolicySnapshot
+      grants Read<PolicySnapshot>
+      fn derivePolicyDecision : ProtectedCheckOrder
+        effects complete {
+          Read<PolicySnapshot>
+        }
+    }
+
+    rationale PolicyInline : ${contextRef("CheckOrderRationale", fnTarget("Gateway.derivePolicyDecision"))} {
+      applies_to fn Gateway.derivePolicyDecision
+      why CognitiveLocality
+      summary "Inline."
+      owner GatewayTeam
+      review_by "2026-08-18"
+      protects shape PreserveInline
+      protects description
+      guards on_change require ${contextRef("ReEvaluation", "Self")}
+      guards forbid transform ExtractHelper
+    }
+  `;
+
+  test("parses and checks nested rationale blocks", () => {
+    expect(checkShapeSource(nested).exitCode).toBe(0);
+  });
+
+  test("formatter canonicalizes nested blocks to the flat form", () => {
+    const nestedFormatted = formatShapeSource(nested);
+    const flatFormatted = formatShapeSource(flat);
+
+    expect(nestedFormatted.ok).toBe(true);
+    expect(flatFormatted.ok).toBe(true);
+    if (!nestedFormatted.ok || !flatFormatted.ok) {
+      return;
+    }
+    expect(nestedFormatted.formatted).toBe(flatFormatted.formatted);
+    expect(nestedFormatted.formatted).not.toContain("protects {");
+    expect(nestedFormatted.formatted).not.toContain("who {");
+  });
+
+  test("nested guards block still enforces a forbid-transform guard", () => {
+    const result = checkShapeSource(`
+      module gateway
+
+      resource PolicySnapshot
+
+      component Gateway {
+        owns PolicySnapshot
+        grants Read<PolicySnapshot>
+        fn derivePolicyDecision : PreserveInline
+          effects complete {
+            Read<PolicySnapshot>
+          }
+      }
+
+      rationale PolicyInline : ${contextRef("InlineRationale", fnTarget("Gateway.derivePolicyDecision"))} {
+        applies_to fn Gateway.derivePolicyDecision
+        why CognitiveLocality
+        summary "Inline."
+        guards {
+          forbid transform ExtractHelper
+        }
+      }
+
+      change ExtractIt {
+        modify fn Gateway.derivePolicyDecision : PreserveInline
+          transform ExtractHelper
+          effects complete {
+            Read<PolicySnapshot>
+          }
+      }
+    `);
+    const output = formatDiagnostics(result);
+
+    expect(result.exitCode).toBe(1);
+    expect(output).toContain("applies the ExtractHelper transform to the guarded target");
+  });
+
+  test("supports nested blocks in a memory declaration", () => {
+    const result = checkShapeSource(`
+      module bridge
+
+      resource Attestation
+
+      component BridgePoller {
+        owns Attestation
+        grants Read<Attestation>
+        fn pollAttestation : RefactorSensitive
+          effects complete {
+            Read<Attestation>
+          }
+      }
+
+      memory PollConstraint : ${contextRef("RefactorConstraint", fnTarget("BridgePoller.pollAttestation"))} {
+        applies_to fn BridgePoller.pollAttestation
+        status Unexplained
+        confidence High
+        summary "Timing-sensitive."
+        who {
+          owner BridgeTeam
+        }
+      }
+    `);
+
+    expect(result.exitCode).toBe(0);
+  });
+});
+
 describe("Shape grammar keyword reservation", () => {
   test("reserved words cover every ID-shaped grammar keyword", async () => {
     const grammar = await Bun.file(join(import.meta.dir, "language", "shape.langium")).text();

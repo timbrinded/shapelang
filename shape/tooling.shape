@@ -615,7 +615,7 @@ memory FormatterCanonicalDiffs : RefactorConstraint<fn ShapeFormatter.formatShap
   applies_to fn ShapeFormatter.formatShapeModule
   status Explained
   confidence High
-  summary "Formatter ordering and indentation keep Shape files reviewable and stable in diffs."
+  summary "Formatter ordering and indentation keep Shape files reviewable and stable in diffs, and nested rationale/memory grouping blocks are canonicalized to their flat members so there is one on-disk form."
   owner ShapeMaintainers
   protects shape CanonicalFormatting
   guards on_change require ReEvaluation<Self>

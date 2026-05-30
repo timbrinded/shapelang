@@ -61,6 +61,7 @@ import {
   isFunctionSummary,
   isGrantsDecl,
   isGuardDecl,
+  isGuardsBlock,
   isImplementationDecl,
   isMemoryDecl,
   isModifyDeclarationChange,
@@ -72,6 +73,7 @@ import {
   isOwnsDecl,
   isPathsBlock,
   isPolicyDecl,
+  isProtectsBlock,
   isProtectsDecl,
   isRationaleDecl,
   isReasonDecl,
@@ -105,6 +107,8 @@ import {
   isTraitForbidDecl,
   isTraitRequireDecl,
   isUnknownEffects,
+  isWhenBlock,
+  isWhoBlock,
   isWhyDecl
 } from "./language/generated/ast.ts";
 import { parseShapeModule, type ParseDiagnostic } from "./parser.ts";
@@ -631,12 +635,9 @@ function formatRule(rule: RuleDecl): string {
 
 function formatRationale(rationale: RationaleDecl): string {
   const members = [...rationale.members]
-    .map((member) => {
-      if (isWhyDecl(member)) {
-        return `why ${member.reason}`;
-      }
-      return formatContextMember(member) ?? "";
-    })
+    .flatMap((member) =>
+      isWhyDecl(member) ? [`why ${member.reason}`] : formatContextMember(member)
+    )
     .filter((line) => line.length > 0)
     .sort(
       (left, right) =>
@@ -652,20 +653,20 @@ function formatRationale(rationale: RationaleDecl): string {
 
 function formatMemory(memory: MemoryDecl): string {
   const members = [...memory.members]
-    .map((member) => {
+    .flatMap((member) => {
       if (isStatusDecl(member)) {
-        return `status ${member.value}`;
+        return [`status ${member.value}`];
       }
       if (isConfidenceDecl(member)) {
-        return `confidence ${member.value}`;
+        return [`confidence ${member.value}`];
       }
       if (isObservedDecl(member)) {
-        return `observed ${formatSourceRef(member.ref)}`;
+        return [`observed ${formatSourceRef(member.ref)}`];
       }
       if (isSensitiveDecl(member)) {
-        return "sensitive";
+        return ["sensitive"];
       }
-      return formatContextMember(member) ?? "";
+      return formatContextMember(member);
     })
     .filter((line) => line.length > 0)
     .sort(
@@ -677,31 +678,58 @@ function formatMemory(memory: MemoryDecl): string {
   return block(`memory ${memory.name} : ${formatContextTypeRef(memory.contextType)}`, members);
 }
 
-function formatContextMember(member: RationaleMember | MemoryMember): string | undefined {
+// Returns the canonical flat lines for a context member. Nested grouping
+// blocks (#14) are flattened here, so the formatter always emits the flat form.
+function formatContextMember(member: RationaleMember | MemoryMember): string[] {
   if (isAppliesToDecl(member)) {
-    return `applies_to ${formatTargetRef(member.target)}`;
+    return [`applies_to ${formatTargetRef(member.target)}`];
   }
   if (isSummaryDecl(member)) {
-    return `summary ${quote(member.value)}`;
+    return [`summary ${quote(member.value)}`];
   }
   if (isOwnerDecl(member)) {
-    return `owner ${member.value}`;
+    return [`owner ${member.value}`];
   }
   if (isReviewByDecl(member)) {
-    return `review_by ${quote(member.value)}`;
+    return [`review_by ${quote(member.value)}`];
   }
   if (isProtectsDecl(member)) {
-    return member.value ? `protects ${member.kind} ${member.value}` : `protects ${member.kind}`;
+    return [formatProtectsLine(member.kind, member.value)];
   }
   if (isGuardDecl(member)) {
-    return member.forbiddenTransform
-      ? `guards forbid transform ${member.forbiddenTransform}`
-      : `guards on_change require ${member.requirement}`;
+    return [formatGuardLine(member.requirement, member.forbiddenTransform)];
   }
   if (isEvidenceLineDecl(member)) {
-    return `evidence ${formatSourceRef(member.ref)}`;
+    return [`evidence ${formatSourceRef(member.ref)}`];
   }
-  return undefined;
+  if (isProtectsBlock(member)) {
+    return member.entries.map((entry) => formatProtectsLine(entry.kind, entry.value));
+  }
+  if (isGuardsBlock(member)) {
+    return member.entries.map((entry) =>
+      formatGuardLine(entry.requirement, entry.forbiddenTransform)
+    );
+  }
+  if (isWhoBlock(member)) {
+    return member.owners.map((owner) => `owner ${owner.value}`);
+  }
+  if (isWhenBlock(member)) {
+    return member.dates.map((date) => `review_by ${quote(date.value)}`);
+  }
+  return [];
+}
+
+function formatProtectsLine(kind: string, value: string | undefined): string {
+  return value ? `protects ${kind} ${value}` : `protects ${kind}`;
+}
+
+function formatGuardLine(
+  requirement: string | undefined,
+  forbiddenTransform: string | undefined
+): string {
+  return forbiddenTransform
+    ? `guards forbid transform ${forbiddenTransform}`
+    : `guards on_change require ${requirement}`;
 }
 
 function formatReevaluation(reevaluation: ReevaluationDecl): string {

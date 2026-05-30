@@ -132,7 +132,7 @@ memory GrammarMemoryGuardForms : RefactorConstraint<fn ShapeGrammar.generateAst>
   applies_to fn ShapeGrammar.generateAst
   status Explained
   confidence High
-  summary "Grammar changes ripple to the generated AST, parser, checker, formatter, and docs; the memory-guard protects clause supports a shape-trait form with a value and a valueless description form, guards support on_change require and forbid transform forms alongside modify-fn transform intent, review governance adds role, policy, and sensitive keywords, and traits support require_context obligations; new keywords must also be reserved in the AST generator."
+  summary "Grammar changes ripple to the generated AST, parser, checker, formatter, and docs; the memory-guard protects clause supports a shape-trait form with a value and a valueless description form, guards support on_change require and forbid transform forms alongside modify-fn transform intent, review governance adds role, policy, and sensitive keywords, traits support require_context obligations, and rationale/memory members may be grouped in nested protects/guards/who/when blocks that lower to the flat form; new keywords must also be reserved in the AST generator."
   owner ShapeMaintainers
   protects shape GrammarContract
   guards on_change require ReEvaluation<Self>

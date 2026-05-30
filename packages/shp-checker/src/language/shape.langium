@@ -320,7 +320,7 @@ RationaleDecl:
     '}';
 
 RationaleMember:
-    AppliesToDecl | WhyDecl | SummaryDecl | OwnerDecl | ReviewByDecl | ProtectsDecl | GuardDecl | EvidenceLineDecl;
+    AppliesToDecl | WhyDecl | SummaryDecl | OwnerDecl | ReviewByDecl | ProtectsDecl | GuardDecl | EvidenceLineDecl | ProtectsBlock | GuardsBlock | WhoBlock | WhenBlock;
 
 MemoryDecl:
     'memory' name=ID ':' contextType=ContextTypeRef
@@ -329,10 +329,29 @@ MemoryDecl:
     '}';
 
 MemoryMember:
-    AppliesToDecl | StatusDecl | ConfidenceDecl | ProtectsDecl | GuardDecl | ObservedDecl | SummaryDecl | OwnerDecl | ReviewByDecl | EvidenceLineDecl | SensitiveDecl;
+    AppliesToDecl | StatusDecl | ConfidenceDecl | ProtectsDecl | GuardDecl | ObservedDecl | SummaryDecl | OwnerDecl | ReviewByDecl | EvidenceLineDecl | SensitiveDecl | ProtectsBlock | GuardsBlock | WhoBlock | WhenBlock;
 
 SensitiveDecl:
     {infer SensitiveDecl} 'sensitive';
+
+ProtectsBlock:
+    'protects' '{' entries+=ProtectsEntry* '}';
+
+ProtectsEntry:
+    kind=ProtectsPropertyKind (value=ID)?;
+
+GuardsBlock:
+    'guards' '{' entries+=GuardEntry* '}';
+
+GuardEntry:
+    'on_change' 'require' requirement=ContextTypeName
+  | 'forbid' 'transform' forbiddenTransform=ID;
+
+WhoBlock:
+    'who' '{' owners+=OwnerDecl* '}';
+
+WhenBlock:
+    'when' '{' dates+=ReviewByDecl* '}';
 
 ReevaluationDecl:
     'reevaluation' name=ID

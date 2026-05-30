@@ -294,6 +294,8 @@ A `memory` may carry a `sensitive` flag. A top-level `role Name` declaration reg
 
 A `trait` can define its own context obligation with a `require_context ContextType<T>` member, where `T` is the trait's type parameter and its bound (`Fn`, `Component`, or `Resource`) sets the target kind. An optional `satisfied_by rationale`, `satisfied_by memory`, or `satisfied_by rationale or memory` clause restricts which context kind satisfies it; the default accepts either. `require_context` and `satisfied_by` are reserved keywords.
 
+Rationale and memory members can be grouped into nested blocks — `protects { ... }`, `guards { ... }`, `who { owner ... }`, and `when { review_by ... }` — which are equivalent to the flat members they contain. `shp fmt` canonicalizes nested blocks back to the flat form, so the flat syntax remains canonical. `who` is a reserved keyword.
+
 `reevaluation` records review for a guarded change:
 
 ```shape

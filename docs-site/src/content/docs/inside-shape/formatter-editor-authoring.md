@@ -47,7 +47,7 @@ Shared checker-package metadata backs the helper surfaces. Prelude shape traits,
 bun run shp -- fmt --check fixtures/pass/append_only_append/audit.shape
 ```
 
-Canonical formatting matters because Shape files are meant to be reviewed in diffs. The formatter sorts declarations and members in a predictable way, normalizes indentation, and keeps function shape traits, descriptions, rationale, memory, and reevaluation blocks easy to scan.
+Canonical formatting matters because Shape files are meant to be reviewed in diffs. The formatter sorts declarations and members in a predictable way, normalizes indentation, and keeps function shape traits, descriptions, rationale, memory, and reevaluation blocks easy to scan. Nested rationale/memory grouping blocks (`protects`, `guards`, `who`, `when`) are canonicalized back to their flat members, so there is one on-disk form regardless of how the source was authored.
 
 For example, an author might write:
 

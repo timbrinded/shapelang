@@ -68,6 +68,7 @@ import {
   isFunctionSummary,
   isGrantsDecl,
   isGuardDecl,
+  isGuardsBlock,
   isImplementationDecl,
   isMemoryDecl,
   isModifyDeclarationChange,
@@ -80,6 +81,7 @@ import {
   isPathsBlock,
   isProtectsDecl,
   isPolicyDecl,
+  isProtectsBlock,
   isRationaleDecl,
   isReasonDecl,
   isReevaluationDecl,
@@ -109,6 +111,8 @@ import {
   isTraitDecl,
   isTraitForbidDecl,
   isUnknownEffects,
+  isWhenBlock,
+  isWhoBlock,
   isWhyDecl
 } from "./language/generated/ast.ts";
 import { parseShapeModule, type ParseDiagnostic } from "./parser.ts";
@@ -2785,42 +2789,87 @@ function lowerContextMember(
     return true;
   }
   if (isProtectsDecl(member)) {
-    const value = member.value ?? "";
-    info.protects.push({
-      kind: member.kind,
-      value,
-      provenance: provenance(
-        context.filePath,
-        `${kind} ${info.name} protects ${member.kind}${value ? ` ${value}` : ""}`
-      )
-    });
+    pushProtects(info, kind, member.kind, member.value, context);
     return true;
   }
   if (isGuardDecl(member)) {
-    if (member.forbiddenTransform) {
-      info.forbiddenTransforms.push({
-        label: member.forbiddenTransform,
-        provenance: provenance(
-          context.filePath,
-          `${kind} ${info.name} guards forbid transform ${member.forbiddenTransform}`
-        )
-      });
-    } else if (member.requirement) {
-      info.guards.push({
-        requirement: member.requirement,
-        provenance: provenance(
-          context.filePath,
-          `${kind} ${info.name} guards on_change require ${member.requirement}`
-        )
-      });
-    }
+    pushGuard(info, kind, member.requirement, member.forbiddenTransform, context);
     return true;
   }
   if (isEvidenceLineDecl(member)) {
     info.evidence.push(lowerSourceRef(member));
     return true;
   }
+  // Nested grouping blocks (#14) desugar to the same flat members.
+  if (isProtectsBlock(member)) {
+    for (const entry of member.entries) {
+      pushProtects(info, kind, entry.kind, entry.value, context);
+    }
+    return true;
+  }
+  if (isGuardsBlock(member)) {
+    for (const entry of member.entries) {
+      pushGuard(info, kind, entry.requirement, entry.forbiddenTransform, context);
+    }
+    return true;
+  }
+  if (isWhoBlock(member)) {
+    for (const owner of member.owners) {
+      info.owner = owner.value;
+    }
+    return true;
+  }
+  if (isWhenBlock(member)) {
+    for (const date of member.dates) {
+      info.reviewBy = unquoteShapeString(date.value);
+    }
+    return true;
+  }
   return false;
+}
+
+function pushProtects(
+  info: ContextObjectInfo,
+  kind: ContextKind,
+  propertyKind: string,
+  rawValue: string | undefined,
+  context: LoweringContext
+): void {
+  const value = rawValue ?? "";
+  info.protects.push({
+    kind: propertyKind,
+    value,
+    provenance: provenance(
+      context.filePath,
+      `${kind} ${info.name} protects ${propertyKind}${value ? ` ${value}` : ""}`
+    )
+  });
+}
+
+function pushGuard(
+  info: ContextObjectInfo,
+  kind: ContextKind,
+  requirement: string | undefined,
+  forbiddenTransform: string | undefined,
+  context: LoweringContext
+): void {
+  if (forbiddenTransform) {
+    info.forbiddenTransforms.push({
+      label: forbiddenTransform,
+      provenance: provenance(
+        context.filePath,
+        `${kind} ${info.name} guards forbid transform ${forbiddenTransform}`
+      )
+    });
+  } else if (requirement) {
+    info.guards.push({
+      requirement,
+      provenance: provenance(
+        context.filePath,
+        `${kind} ${info.name} guards on_change require ${requirement}`
+      )
+    });
+  }
 }
 
 function lowerReevaluation(
