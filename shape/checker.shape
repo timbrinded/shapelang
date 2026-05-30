@@ -416,7 +416,7 @@ memory GuardedChangePrecision : RefactorConstraint<fn ShapeRuleEngine.checkGuard
   applies_to fn ShapeRuleEngine.checkGuardedChanges
   status Explained
   confidence High
-  summary "Guards fire property-level when every protected property is detectable (a named shape trait or the description) and otherwise fall back to coarse modify/remove matching, so existing coarse guards keep their behaviour and final forbids are never waived."
+  summary "Guards fire property-level when every protected property is detectable (a named shape trait or the description), forbid-transform guards fire when a change declares the matching transform intent, and everything else falls back to coarse modify/remove matching, so existing coarse guards keep their behaviour and final forbids are never waived."
   owner ShapeMaintainers
   protects shape GuardedChangePrecision
   guards on_change require ReEvaluation<Self>

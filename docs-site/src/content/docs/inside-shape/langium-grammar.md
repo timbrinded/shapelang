@@ -208,6 +208,8 @@ That explicit target is useful in two places. The parser can produce structured 
 
 A `protects` clause uses `ProtectsPropertyKind`, which accepts the `description` keyword or any identifier, followed by an optional value. This keeps the value-bearing form `protects shape PreserveInline` while also allowing the valueless `protects description`. Adding a literal such as `'shape'` here would reserve it as a global keyword and break identifiers (module segments like `shape.generated.ast`), so only the already-reserved `description` keyword is listed.
 
+A `guards` clause is a choice between `'on_change' 'require' ContextTypeName` and `'forbid' 'transform' ID`, and a `ModifyFunctionChange` carries an optional `TransformDecl` (`'transform' ID (',' ID)*`) after its shape-trait list. The `transform` keyword is new; it is safe to add because no identifier in the model uses it as a name.
+
 ## Generated Artifacts
 
 After grammar edits, run:

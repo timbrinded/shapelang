@@ -288,6 +288,8 @@ memory DecisionRefactorConstraint : RefactorConstraint<fn Gateway.derivePolicyDe
 
 A `protects` clause names either a property with a value, such as `protects shape PreserveInline`, or the local description with no value, written `protects description`. Guards whose protected properties are all detectable (a named shape trait, or the description) fire only when that property is removed.
 
+A `guards` clause takes one of two forms: `guards on_change require ReEvaluation<Self>`, or `guards forbid transform Label`. A `modify fn` change can declare its intent with `transform Label1, Label2`; a `forbid transform` guard fires only when a matching transform intent is declared.
+
 `reevaluation` records review for a guarded change:
 
 ```shape

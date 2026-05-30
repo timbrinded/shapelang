@@ -300,7 +300,7 @@ Required:
   or preserve the protected shape.
 ```
 
-When the guard protects only detectable properties (a named shape trait, or the `description`), the diagnostic fires solely on removal of that property and names it, for example `This change removes shape trait PreserveInline from the guarded target.` Guards that protect a free-form label keep coarse matching and fire on any change to the target.
+When the guard protects only detectable properties (a named shape trait, or the `description`), the diagnostic fires solely on removal of that property and names it, for example `This change removes shape trait PreserveInline from the guarded target.` A `guards forbid transform` guard fires when a `modify fn` declares the matching `transform` intent, reporting `This change applies the ExtractHelper transform to the guarded target.` Guards that protect a free-form label keep coarse matching and fire on any change to the target.
 
 Add a `reevaluation` with review evidence, or avoid changing the protected shape.
 

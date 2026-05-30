@@ -215,6 +215,30 @@ rationale DerivePolicyInline : InlineRationale<fn Gateway.derivePolicyDecision> 
 
 With this guard, a change that only adjusts effects passes, but a change that drops the `PreserveInline` trait or removes the `description` reports `guarded shape changed` and names the removed property. A guard that protects a free-form label (for example `protects shape CheckOrder`, where `CheckOrder` is not a declared shape trait) keeps the coarse behaviour: any `modify` or `remove` of the target requires a reevaluation. The same enforcement applies to guarded component and resource targets through `modify`/`remove` declaration changes.
 
+## Transform Guards
+
+A guard can name a specific refactor intent to forbid, instead of reacting to any change. A `modify fn` change declares its intent with `transform`, and a guard forbids named transforms with `guards forbid transform`:
+
+```shape
+rationale DerivePolicyInline : InlineRationale<fn Gateway.derivePolicyDecision> {
+  applies_to fn Gateway.derivePolicyDecision
+  why CognitiveLocality
+  summary "Branches stay inline for auditability."
+  owner GatewayTeam
+  guards forbid transform ExtractHelper
+}
+
+change ExtractPolicyHelper {
+  modify fn Gateway.derivePolicyDecision
+    transform ExtractHelper
+    effects complete {
+      Read<PolicySnapshot>
+    }
+}
+```
+
+The checker reports `guarded shape changed` and names the transform. A change that declares a different transform, or none, does not trigger the forbid-transform guard by itself. Common labels are `ExtractHelper`, `RemoveDescription`, and `SplitDecisionTree`, but any identifier works; matching is structural between the declared intent and the guard. A `reevaluation` that satisfies the guarding memory or rationale clears the obligation.
+
 ## Review Freshness
 
 Design memory ages. A `memory` or `rationale` can carry a `review_by` date so reviewers know when the constraint should be revisited:

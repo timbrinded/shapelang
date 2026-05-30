@@ -17,6 +17,7 @@ import type {
   MemoryDecl,
   MemoryMember,
   ModifyFunctionChange,
+  TransformDecl,
   RationaleDecl,
   RationaleMember,
   ReevaluationDecl,
@@ -362,6 +363,7 @@ function formatFunction(fn: FunctionSummary | AddFunctionChange): string {
   return formatFunctionParts(
     `fn ${formatFunctionLocalName(fn)}`,
     fn.shapeTraits,
+    undefined,
     fn.source,
     fn.description,
     fn.unsafe,
@@ -377,6 +379,7 @@ function formatQualifiedFunction(
   return formatFunctionParts(
     `${keyword} fn ${fn.target}`,
     fn.shapeTraits,
+    isModifyFunctionChange(fn) ? fn.transforms : undefined,
     fn.source,
     fn.description,
     fn.unsafe,
@@ -388,6 +391,7 @@ function formatQualifiedFunction(
 function formatFunctionParts(
   header: string,
   shapeTraits: ShapeTraitList | undefined,
+  transforms: TransformDecl | undefined,
   source: SourceDecl | undefined,
   description: DescriptionDecl | undefined,
   unsafe: boolean,
@@ -395,6 +399,9 @@ function formatFunctionParts(
   members: FunctionMember[]
 ): string {
   const lines = [`${header}${formatShapeTraitList(shapeTraits)}`];
+  if (transforms && transforms.labels.length > 0) {
+    lines.push(indent(`transform ${transforms.labels.join(", ")}`));
+  }
   if (source) {
     lines.push(indent(`source ${formatSource(source)}`));
   }
@@ -658,7 +665,9 @@ function formatContextMember(member: RationaleMember | MemoryMember): string | u
     return member.value ? `protects ${member.kind} ${member.value}` : `protects ${member.kind}`;
   }
   if (isGuardDecl(member)) {
-    return `guards on_change require ${member.requirement}`;
+    return member.forbiddenTransform
+      ? `guards forbid transform ${member.forbiddenTransform}`
+      : `guards on_change require ${member.requirement}`;
   }
   if (isEvidenceLineDecl(member)) {
     return `evidence ${formatSourceRef(member.ref)}`;

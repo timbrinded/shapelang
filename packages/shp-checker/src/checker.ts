@@ -324,6 +324,7 @@ export type SemanticDiagnostic =
       targetKind: TargetKind;
       target: string;
       changedProperty?: string;
+      changeKind?: "property" | "transform";
       missingReevaluation: string;
       filePath?: string;
       causedBy: string[];
@@ -601,6 +602,11 @@ type GuardInfo = {
   provenance: Provenance;
 };
 
+type TransformGuardInfo = {
+  label: string;
+  provenance: Provenance;
+};
+
 type RationaleInfo = {
   name: string;
   contextType: string;
@@ -612,6 +618,7 @@ type RationaleInfo = {
   reviewBy?: string;
   protects: ProtectedProperty[];
   guards: GuardInfo[];
+  forbiddenTransforms: TransformGuardInfo[];
   evidence: SourceRefInfo[];
   provenance: Provenance;
 };
@@ -628,6 +635,7 @@ type MemoryInfo = {
   reviewBy?: string;
   protects: ProtectedProperty[];
   guards: GuardInfo[];
+  forbiddenTransforms: TransformGuardInfo[];
   observed: SourceRefInfo[];
   evidence: SourceRefInfo[];
   provenance: Provenance;
@@ -643,6 +651,7 @@ type ContextObjectInfo = {
   reviewBy?: string;
   protects: ProtectedProperty[];
   guards: GuardInfo[];
+  forbiddenTransforms: TransformGuardInfo[];
   evidence: SourceRefInfo[];
   provenance: Provenance;
 };
@@ -681,6 +690,14 @@ type ChangeEvent =
       // that protect the description.
       kind: "description_removed";
       target: ShapeTarget;
+      provenance: Provenance;
+    }
+  | {
+      // A change declared a named transform intent on a target. Drives
+      // `guards forbid transform <label>` guards.
+      kind: "transform_applied";
+      target: ShapeTarget;
+      label: string;
       provenance: Provenance;
     };
 
@@ -2596,6 +2613,7 @@ function lowerRationale(rationale: RationaleDecl, context: LoweringContext, mode
     target: lowerTargetRef(rationale.contextType.target, context, model),
     protects: [],
     guards: [],
+    forbiddenTransforms: [],
     evidence: [],
     provenance: prov
   };
@@ -2642,6 +2660,7 @@ function lowerMemory(memory: MemoryDecl, context: LoweringContext, model: Model)
     target: lowerTargetRef(memory.contextType.target, context, model),
     protects: [],
     guards: [],
+    forbiddenTransforms: [],
     observed: [],
     evidence: [],
     provenance: prov
@@ -2709,13 +2728,23 @@ function lowerContextMember(
     return true;
   }
   if (isGuardDecl(member)) {
-    info.guards.push({
-      requirement: member.requirement,
-      provenance: provenance(
-        context.filePath,
-        `${kind} ${info.name} guards on_change require ${member.requirement}`
-      )
-    });
+    if (member.forbiddenTransform) {
+      info.forbiddenTransforms.push({
+        label: member.forbiddenTransform,
+        provenance: provenance(
+          context.filePath,
+          `${kind} ${info.name} guards forbid transform ${member.forbiddenTransform}`
+        )
+      });
+    } else if (member.requirement) {
+      info.guards.push({
+        requirement: member.requirement,
+        provenance: provenance(
+          context.filePath,
+          `${kind} ${info.name} guards on_change require ${member.requirement}`
+        )
+      });
+    }
     return true;
   }
   if (isEvidenceLineDecl(member)) {
@@ -2855,16 +2884,26 @@ function lowerChange(change: ChangeDecl, context: LoweringContext, model: Model)
       const previous = component.functions.get(functionName);
       const fn = lowerFunction(entry, componentName, context, model, `change ${change.name}`);
       if (isModifyFunctionChange(entry)) {
+        const target = functionTarget(componentName, functionName);
+        const changeProvenance = provenance(
+          context.filePath,
+          `change ${change.name} modify fn ${componentName}.${functionName}`
+        );
         emitTargetChange(
-          functionTarget(componentName, functionName),
+          target,
           removedTraitsBetween(previous?.shapeTraits, fn.shapeTraits),
           descriptionDropped(previous, fn),
-          provenance(
-            context.filePath,
-            `change ${change.name} modify fn ${componentName}.${functionName}`
-          ),
+          changeProvenance,
           model
         );
+        for (const label of entry.transforms?.labels ?? []) {
+          model.changeEvents.push({
+            kind: "transform_applied",
+            target,
+            label,
+            provenance: changeProvenance
+          });
+        }
       }
       removeFunctionFacts(model, componentName, functionName);
       component.functions.set(fn.name, fn);
@@ -4153,24 +4192,89 @@ function checkGuardedChanges(model: Model): SemanticDiagnostic[] {
         : findCoarseChange(model, guard.target);
 
     for (const trigger of triggers) {
-      diagnostics.push({
-        kind: "guarded_shape_changed",
-        guardKind: guard.kind,
-        guard: guard.info.name,
-        targetKind: guard.target.kind,
-        target: guard.target.name,
-        changedProperty: trigger.property ? describeProtectedProperty(trigger.property) : undefined,
-        missingReevaluation: `reevaluation satisfying ${guard.kind} ${displaySymbol(guard.info.name)}`,
-        filePath: trigger.event.provenance.filePath,
-        causedBy: [
-          describeProvenance(trigger.event.provenance),
-          describeProvenance(guard.guard.provenance)
-        ]
-      });
+      diagnostics.push(
+        guardedShapeChanged(
+          guard.kind,
+          guard.info.name,
+          guard.target,
+          trigger.property
+            ? { kind: "property", label: describeProtectedProperty(trigger.property) }
+            : undefined,
+          trigger.event.provenance,
+          guard.guard.provenance
+        )
+      );
+    }
+  }
+
+  diagnostics.push(...checkTransformGuards(model));
+  return diagnostics;
+}
+
+/**
+ * `guards forbid transform <label>` fires when a change declares that transform
+ * intent on the guarded target and no reevaluation satisfies the guard.
+ */
+function checkTransformGuards(model: Model): SemanticDiagnostic[] {
+  const diagnostics: SemanticDiagnostic[] = [];
+  const contexts: { kind: ContextKind; info: RationaleInfo | MemoryInfo }[] = [
+    ...[...model.rationales.values()].map((info) => ({ kind: "rationale" as const, info })),
+    ...[...model.memories.values()].map((info) => ({ kind: "memory" as const, info }))
+  ];
+
+  for (const { kind, info } of contexts) {
+    if (
+      info.forbiddenTransforms.length === 0 ||
+      hasValidReevaluationForGuard(model, kind, info.name)
+    ) {
+      continue;
+    }
+    const target = info.appliesTo ?? info.target;
+    for (const guard of info.forbiddenTransforms) {
+      const event = model.changeEvents.find(
+        (candidate) =>
+          candidate.kind === "transform_applied" &&
+          candidate.label === guard.label &&
+          targetsEqual(candidate.target, target)
+      );
+      if (event) {
+        diagnostics.push(
+          guardedShapeChanged(
+            kind,
+            info.name,
+            target,
+            { kind: "transform", label: guard.label },
+            event.provenance,
+            guard.provenance
+          )
+        );
+      }
     }
   }
 
   return diagnostics;
+}
+
+function guardedShapeChanged(
+  guardKind: ContextKind,
+  guardName: string,
+  target: ShapeTarget,
+  change: { kind: "property" | "transform"; label: string } | undefined,
+  eventProvenance: Provenance,
+  guardProvenance: Provenance
+): Extract<SemanticDiagnostic, { kind: "guarded_shape_changed" }> {
+  return {
+    kind: "guarded_shape_changed",
+    guardKind,
+    guard: guardName,
+    targetKind: target.kind,
+    target: target.name,
+    changedProperty: change?.label,
+    changeKind: change?.kind,
+    missingReevaluation: `reevaluation satisfying ${guardKind} ${displaySymbol(guardName)}`,
+    filePath: eventProvenance.filePath,
+    causedBy: [describeProvenance(eventProvenance), describeProvenance(guardProvenance)]
+  };
 }
 
 /**
@@ -5526,6 +5630,18 @@ function formatMissingRequiredDescriptionDiagnostic(
   ].join("\n");
 }
 
+function guardedShapeChangeSummary(
+  diagnostic: Extract<SemanticDiagnostic, { kind: "guarded_shape_changed" }>
+): string {
+  if (diagnostic.changeKind === "transform" && diagnostic.changedProperty) {
+    return `This change applies the ${diagnostic.changedProperty} transform to the guarded target.`;
+  }
+  if (diagnostic.changeKind === "property" && diagnostic.changedProperty) {
+    return `This change removes ${diagnostic.changedProperty} from the guarded target.`;
+  }
+  return "This change modifies the guarded target.";
+}
+
 function formatGuardedShapeChangedDiagnostic(
   diagnostic: Extract<SemanticDiagnostic, { kind: "guarded_shape_changed" }>
 ): string {
@@ -5533,9 +5649,7 @@ function formatGuardedShapeChangedDiagnostic(
     "error: guarded shape changed",
     "",
     `${diagnostic.targetKind} ${displaySymbol(diagnostic.target)} is protected by ${diagnostic.guardKind} ${displaySymbol(diagnostic.guard)}.`,
-    diagnostic.changedProperty
-      ? `This change removes ${diagnostic.changedProperty} from the guarded target.`
-      : "This change modifies the guarded target.",
+    guardedShapeChangeSummary(diagnostic),
     "",
     "Required:",
     `  add ${diagnostic.missingReevaluation}`,

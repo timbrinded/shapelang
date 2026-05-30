@@ -3827,6 +3827,99 @@ describe("Shape property-level guarded changes", () => {
   });
 });
 
+describe("Shape transform guards", () => {
+  function transformGuardModel(forbidden: string, applied: string): string {
+    return `
+      module gateway
+
+      resource PolicySnapshot
+
+      component Gateway {
+        owns PolicySnapshot
+        grants Read<PolicySnapshot>
+        fn derivePolicyDecision : PreserveInline
+          effects complete {
+            Read<PolicySnapshot>
+          }
+      }
+
+      rationale DerivePolicyInline : ${contextRef("InlineRationale", fnTarget("Gateway.derivePolicyDecision"))} {
+        applies_to fn Gateway.derivePolicyDecision
+        why CognitiveLocality
+        summary "Branches inline for auditability."
+        owner GatewayTeam
+        guards forbid transform ${forbidden}
+      }
+
+      change ApplyTransform {
+        modify fn Gateway.derivePolicyDecision : PreserveInline
+          transform ${applied}
+          effects complete {
+            Read<PolicySnapshot>
+          }
+      }
+    `;
+  }
+
+  test("fails when a forbidden transform is applied without reevaluation", () => {
+    const result = checkShapeSource(transformGuardModel("ExtractHelper", "ExtractHelper"));
+    const output = formatDiagnostics(result);
+
+    expect(result.exitCode).toBe(1);
+    expect(output).toContain("guarded shape changed");
+    expect(output).toContain("applies the ExtractHelper transform to the guarded target");
+  });
+
+  test("does not fire when an applied transform is not forbidden", () => {
+    const result = checkShapeSource(transformGuardModel("ExtractHelper", "RenameSymbol"));
+
+    expect(result.exitCode).toBe(0);
+  });
+
+  test("passes a forbidden transform with a matching reevaluation", () => {
+    const result = checkShapeSource(`
+      ${transformGuardModel("ExtractHelper", "ExtractHelper")}
+      reevaluation ExtractHelperReviewed {
+        satisfies rationale DerivePolicyInline
+        outcome Replaced
+        summary "Helper extraction keeps the audited branch structure intact."
+        evidence test("gateway/extract-helper.test.ts")
+        reviewer GatewayTeam
+        decided_on "2026-06-02"
+      }
+    `);
+
+    expect(result.exitCode).toBe(0);
+  });
+
+  test("matches a forbidden transform among several applied labels", () => {
+    const result = checkShapeSource(
+      transformGuardModel("SplitDecisionTree", "RenameSymbol, SplitDecisionTree")
+    );
+    const output = formatDiagnostics(result);
+
+    expect(result.exitCode).toBe(1);
+    expect(output).toContain("applies the SplitDecisionTree transform to the guarded target");
+  });
+
+  test("parses and formats transform intent and forbid-transform guards", () => {
+    const result = formatShapeSource(`
+      rationale DerivePolicyInline : ${contextRef("InlineRationale", fnTarget("Gateway.derivePolicyDecision"))} { guards forbid transform ExtractHelper summary 'Inline.' owner GatewayTeam why CognitiveLocality applies_to fn Gateway.derivePolicyDecision }
+      component Gateway { grants Read<PolicySnapshot> owns PolicySnapshot fn derivePolicyDecision : PreserveInline effects complete { Read<PolicySnapshot> } }
+      resource PolicySnapshot
+      change ApplyTransform { modify fn Gateway.derivePolicyDecision : PreserveInline transform ExtractHelper, RemoveDescription effects complete { Read<PolicySnapshot> } }
+    `);
+
+    expect(result.ok).toBe(true);
+    if (!result.ok) {
+      return;
+    }
+
+    expect(result.formatted).toContain("guards forbid transform ExtractHelper");
+    expect(result.formatted).toContain("    transform ExtractHelper, RemoveDescription");
+  });
+});
+
 describe("Shape component and resource shape traits", () => {
   test("requires a RefactorConstraint memory for a RefactorSensitive component", () => {
     const missing = checkShapeSource(`

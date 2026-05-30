@@ -96,6 +96,7 @@ export type ShapeKeywordNames =
     | "storage"
     | "summary"
     | "trait"
+    | "transform"
     | "unknown"
     | "unsafe"
     | "when"
@@ -741,11 +742,13 @@ export function isGrantsDecl(item: unknown): item is GrantsDecl {
 export interface GuardDecl extends langium.AstNode {
     readonly $container: MemoryDecl | RationaleDecl;
     readonly $type: 'GuardDecl';
-    requirement: ContextTypeName;
+    forbiddenTransform?: string;
+    requirement?: ContextTypeName;
 }
 
 export const GuardDecl = {
     $type: 'GuardDecl',
+    forbiddenTransform: 'forbiddenTransform',
     requirement: 'requirement'
 } as const;
 
@@ -848,6 +851,7 @@ export interface ModifyFunctionChange extends langium.AstNode {
     shapeTraits?: ShapeTraitList;
     source?: SourceDecl;
     target: FunctionTargetName;
+    transforms?: TransformDecl;
     unsafe: boolean;
 }
 
@@ -859,6 +863,7 @@ export const ModifyFunctionChange = {
     shapeTraits: 'shapeTraits',
     source: 'source',
     target: 'target',
+    transforms: 'transforms',
     unsafe: 'unsafe'
 } as const;
 
@@ -1641,6 +1646,21 @@ export function isTraitRequireDecl(item: unknown): item is TraitRequireDecl {
     return reflection.isInstance(item, TraitRequireDecl.$type);
 }
 
+export interface TransformDecl extends langium.AstNode {
+    readonly $container: ModifyFunctionChange;
+    readonly $type: 'TransformDecl';
+    labels: Array<string>;
+}
+
+export const TransformDecl = {
+    $type: 'TransformDecl',
+    labels: 'labels'
+} as const;
+
+export function isTransformDecl(item: unknown): item is TransformDecl {
+    return reflection.isInstance(item, TransformDecl.$type);
+}
+
 export interface TypeParam extends langium.AstNode {
     readonly $container: TypeParamList;
     readonly $type: 'TypeParam';
@@ -1813,6 +1833,7 @@ export type ShapeAstType = {
     TraitForbidDecl: TraitForbidDecl
     TraitMember: TraitMember
     TraitRequireDecl: TraitRequireDecl
+    TransformDecl: TransformDecl
     TypeParam: TypeParam
     TypeParamList: TypeParamList
     TypeRef: TypeRef
@@ -2253,6 +2274,9 @@ export class ShapeAstReflection extends langium.AbstractAstReflection {
         GuardDecl: {
             name: GuardDecl.$type,
             properties: {
+                forbiddenTransform: {
+                    name: GuardDecl.forbiddenTransform
+                },
                 requirement: {
                     name: GuardDecl.requirement
                 }
@@ -2339,6 +2363,9 @@ export class ShapeAstReflection extends langium.AbstractAstReflection {
                 },
                 target: {
                     name: ModifyFunctionChange.target
+                },
+                transforms: {
+                    name: ModifyFunctionChange.transforms
                 },
                 unsafe: {
                     name: ModifyFunctionChange.unsafe,
@@ -2852,6 +2879,16 @@ export class ShapeAstReflection extends langium.AbstractAstReflection {
                 }
             },
             superTypes: [TraitMember.$type]
+        },
+        TransformDecl: {
+            name: TransformDecl.$type,
+            properties: {
+                labels: {
+                    name: TransformDecl.labels,
+                    defaultValue: []
+                }
+            },
+            superTypes: []
         },
         TypeParam: {
             name: TypeParam.$type,

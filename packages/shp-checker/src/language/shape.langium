@@ -245,11 +245,15 @@ AddFunctionChange:
 ModifyFunctionChange:
     'modify' 'fn' target=FunctionTargetName
         shapeTraits=ShapeTraitList?
+        transforms=TransformDecl?
         source=SourceDecl?
         description=DescriptionDecl?
         unsafe?='unsafe'?
         effects=EffectsDecl
         members+=FunctionMember*;
+
+TransformDecl:
+    'transform' labels+=ID (',' labels+=ID)*;
 
 RemoveFunctionChange:
     'remove' 'fn' target=FunctionTargetName;
@@ -360,7 +364,10 @@ ProtectsPropertyKind returns string:
     'description' | ID;
 
 GuardDecl:
-    'guards' 'on_change' 'require' requirement=ContextTypeName;
+    'guards' (
+        'on_change' 'require' requirement=ContextTypeName
+      | 'forbid' 'transform' forbiddenTransform=ID
+    );
 
 ContextTypeName returns string:
     ID ('<' ID '>')?;
