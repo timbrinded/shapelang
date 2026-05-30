@@ -239,6 +239,23 @@ change ExtractPolicyHelper {
 
 The checker reports `guarded shape changed` and names the transform. A change that declares a different transform, or none, does not trigger the forbid-transform guard by itself. Common labels are `ExtractHelper`, `RemoveDescription`, and `SplitDecisionTree`, but any identifier works; matching is structural between the declared intent and the guard. A `reevaluation` that satisfies the guarding memory or rationale clears the obligation.
 
+## Guarding Dependencies
+
+Guards are not limited to functions, components, and resources. A `memory` or `rationale` can protect a `relation` target, so a load-bearing dependency edge cannot be rewired or removed without review:
+
+```shape
+memory PollerSettlementCoupling : RefactorConstraint<relation PollerCallsSettlement> {
+  applies_to relation PollerCallsSettlement
+  status Unexplained
+  confidence High
+  summary "The poller-settlement call edge is timing-sensitive."
+  owner BridgeTeam
+  guards on_change require ReEvaluation<Self>
+}
+```
+
+A `modify relation` or `remove relation` change to the guarded edge then reports `guarded shape changed` until a matching `reevaluation` is added. `shp explain` for the relation lists its guards and satisfying context, so the protected dependency is reviewable.
+
 ## Review Freshness
 
 Design memory ages. A `memory` or `rationale` can carry a `review_by` date so reviewers know when the constraint should be revisited:

@@ -287,7 +287,7 @@ Make the type target and `applies_to` target identical.
 
 ## Guarded shape changed
 
-Cause: a `modify`/`remove` change touched a function, component, or resource protected by `guards on_change require ReEvaluation<Self>`, but no valid reevaluation satisfies that memory or rationale.
+Cause: a `modify`/`remove` change touched a function, component, resource, or relation protected by `guards on_change require ReEvaluation<Self>`, but no valid reevaluation satisfies that memory or rationale.
 
 ```text
 error: guarded shape changed

@@ -1199,7 +1199,7 @@ export function explainShapeModules(
   const relationKey = resolveQuerySymbol(symbol, model.hypergraph.edges);
   const relation = relationKey ? model.hypergraph.edges.get(relationKey) : undefined;
   if (relation) {
-    return `${formatRelationExplanation(relation)}\n`;
+    return `${formatRelationExplanation(relation, model)}\n`;
   }
 
   return `No shape facts found for ${symbol}.\n`;
@@ -3014,7 +3014,9 @@ function emitDeclarationChange(
   prov: Provenance,
   model: Model
 ): void {
-  if (kind !== "component" && kind !== "resource") {
+  // Only target kinds that a guard can protect emit change events. Relations
+  // carry no shape traits, so they record a coarse target change only.
+  if (kind !== "component" && kind !== "resource" && kind !== "relation") {
     return;
   }
   emitTargetChange({ kind, name: resolvedName }, removedTraits, false, prov, model);
@@ -4208,7 +4210,30 @@ function checkGuardedChanges(model: Model): SemanticDiagnostic[] {
   }
 
   diagnostics.push(...checkTransformGuards(model));
-  return diagnostics;
+  return dedupeCoarseGuardedChanges(diagnostics);
+}
+
+/**
+ * When a guard reports both a coarse "target changed" diagnostic and a more
+ * specific property/transform one for the same guard and target (e.g. a context
+ * with both `on_change require` and `forbid transform`), keep only the specific
+ * ones so a single violation is reported once.
+ */
+function dedupeCoarseGuardedChanges(diagnostics: SemanticDiagnostic[]): SemanticDiagnostic[] {
+  const specificKeys = new Set<string>();
+  const key = (d: Extract<SemanticDiagnostic, { kind: "guarded_shape_changed" }>) =>
+    `${d.guardKind}:${d.guard}:${d.targetKind}:${d.target}`;
+  for (const diagnostic of diagnostics) {
+    if (diagnostic.kind === "guarded_shape_changed" && diagnostic.changeKind) {
+      specificKeys.add(key(diagnostic));
+    }
+  }
+  return diagnostics.filter(
+    (diagnostic) =>
+      diagnostic.kind !== "guarded_shape_changed" ||
+      diagnostic.changeKind !== undefined ||
+      !specificKeys.has(key(diagnostic))
+  );
 }
 
 /**
@@ -5039,7 +5064,7 @@ function guardsForTarget(
   );
 }
 
-function formatRelationExplanation(relation: HyperedgeInfo): string {
+function formatRelationExplanation(relation: HyperedgeInfo, model: Model): string {
   const lines = [
     displaySymbol(relation.name),
     "  kind: relation",
@@ -5067,8 +5092,11 @@ function formatRelationExplanation(relation: HyperedgeInfo): string {
         )
     );
   }
+  appendShapeTraitContext({ kind: "relation", name: relation.name }, EMPTY_TRAIT_MAP, model, lines);
   return lines.join("\n");
 }
+
+const EMPTY_TRAIT_MAP: ReadonlyMap<string, Provenance> = new Map();
 
 function appendIncidence(vertex: string, model: Model, lines: string[]): void {
   const incident = (model.hypergraph.incidence.get(vertex) ?? [])
