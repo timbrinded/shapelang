@@ -338,6 +338,18 @@ relation GatewayCallsAudit is invalid: kind calls requires exactly two endpoints
 
 Fix the offending relation block. Each prelude kind constrains arity and connects shape: `calls`, `callbacks`, and `provides` are binary and directional; `provides` must be `component -> resource`; `coordinated_call` is an ordered path of two or more endpoints; user-defined kinds accept any arity but are excluded from hypercycle detection.
 
+## Invalid require_context
+
+Cause: a trait's `require_context ContextType<T>` member names a type parameter `T` that the trait does not declare, or whose bound is not `Fn`, `Component`, or `Resource`. The obligation is rejected so a typo cannot silently fail to attach.
+
+```text
+error: invalid require_context
+
+trait ComponentBoundary require_context BoundaryReason<X> is invalid: type parameter X is not declared by the trait.
+```
+
+Reference the trait's declared type parameter and give it a supported bound (`Fn`, `Component`, or `Resource`), or leave it unbound to target functions.
+
 ## Invalid rule
 
 Cause: a `rule` declaration is malformed for the semantic check it asks the checker to perform. For final effect forbids, rules may bind only one subject name. Repeated `when T has Trait` clauses are allowed and are treated as conjunctions; different subject names in the same final-forbid rule are rejected.

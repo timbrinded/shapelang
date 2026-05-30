@@ -364,6 +364,15 @@ export type SemanticDiagnostic =
       reason: string;
       filePath?: string;
       causedBy: string[];
+    }
+  | {
+      kind: "invalid_require_context";
+      trait: string;
+      contextType: string;
+      typeParam: string;
+      reason: string;
+      filePath?: string;
+      causedBy: string[];
     };
 
 export type ShapeDiagnostic = ParseDiagnostic | SemanticDiagnostic;
@@ -1956,15 +1965,29 @@ function lowerTrait(trait: TraitDecl, context: LoweringContext, model: Model): v
         lowerForbidPattern(member, context, model, `trait ${name}`, new Set(typeParams))
       );
     } else if (isRequireContextDecl(member)) {
+      const memberProvenance = provenance(
+        context.filePath,
+        `trait ${name} require_context ${member.contextType}<${member.target}>`
+      );
+      const resolved = requireContextTargetKind(trait, member.target);
+      if ("reason" in resolved) {
+        model.diagnostics.push({
+          kind: "invalid_require_context",
+          trait: name,
+          contextType: member.contextType,
+          typeParam: member.target,
+          reason: resolved.reason,
+          filePath: context.filePath,
+          causedBy: [describeProvenance(memberProvenance)]
+        });
+        continue;
+      }
       model.userContextRequirements.push({
         trait: name,
-        targetKind: requireContextTargetKind(trait, member.target),
+        targetKind: resolved.kind,
         contextType: member.contextType,
         satisfiedBy: lowerSatisfiedByKinds(member.satisfiedBy),
-        provenance: provenance(
-          context.filePath,
-          `trait ${name} require_context ${member.contextType}<${member.target}>`
-        )
+        provenance: memberProvenance
       });
     }
   }
@@ -1979,21 +2002,40 @@ function lowerTrait(trait: TraitDecl, context: LoweringContext, model: Model): v
 
 /**
  * Resolves the target kind of a `require_context` obligation from the bound of
- * the trait type parameter it names (`<T: Fn>` -> fn). Unbound or unrecognised
- * type parameters default to fn, the most common shape-trait target.
+ * the trait type parameter it names (`<T: Fn>` -> fn). An unbound type parameter
+ * defaults to fn (the most common shape-trait target). A `<target>` that names
+ * no declared type parameter, or a bound that is not Fn/Component/Resource, is
+ * reported so a typo cannot silently drop the obligation.
  */
-function requireContextTargetKind(trait: TraitDecl, typeParamName: string): TargetKind {
-  const bound = trait.typeParams?.params.find((param) => param.name === typeParamName)?.bound;
-  switch (bound?.toLowerCase()) {
+function requireContextTargetKind(
+  trait: TraitDecl,
+  typeParamName: string
+): { kind: TargetKind } | { reason: string } {
+  const param = trait.typeParams?.params.find((entry) => entry.name === typeParamName);
+  if (!param) {
+    return { reason: `type parameter ${typeParamName} is not declared by the trait` };
+  }
+  if (!param.bound) {
+    return { kind: "fn" };
+  }
+  switch (param.bound.toLowerCase()) {
+    case "fn":
+    case "function":
+      return { kind: "fn" };
     case "component":
-      return "component";
+      return { kind: "component" };
     case "resource":
-      return "resource";
+      return { kind: "resource" };
     default:
-      return "fn";
+      return {
+        reason: `type parameter ${typeParamName} has unsupported bound ${param.bound} (expected Fn, Component, or Resource)`
+      };
   }
 }
 
+// satisfiedBy is already constrained to memory|rationale by the grammar
+// (ContextObjectKind); the filter is defensive and an empty clause defaults to
+// accepting either kind.
 function lowerSatisfiedByKinds(kinds: string[]): ContextKind[] {
   const allowed = kinds.filter(
     (kind): kind is ContextKind => kind === "rationale" || kind === "memory"
@@ -5571,6 +5613,8 @@ function formatDiagnostic(diagnostic: ShapeDiagnostic): string {
       return formatStaleMemoryDiagnostic(diagnostic);
     case "invalid_relation":
       return formatInvalidRelationDiagnostic(diagnostic);
+    case "invalid_require_context":
+      return formatInvalidRequireContextDiagnostic(diagnostic);
   }
 }
 
@@ -5893,6 +5937,17 @@ function formatInvalidRelationDiagnostic(
     "error: invalid relation",
     "",
     `relation ${diagnostic.name} is invalid: ${diagnostic.reason}.`,
+    formatCausedBy(diagnostic.causedBy)
+  ].join("\n");
+}
+
+function formatInvalidRequireContextDiagnostic(
+  diagnostic: Extract<SemanticDiagnostic, { kind: "invalid_require_context" }>
+): string {
+  return [
+    "error: invalid require_context",
+    "",
+    `trait ${displaySymbol(diagnostic.trait)} require_context ${diagnostic.contextType}<${diagnostic.typeParam}> is invalid: ${diagnostic.reason}.`,
     formatCausedBy(diagnostic.causedBy)
   ].join("\n");
 }

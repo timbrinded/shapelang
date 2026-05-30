@@ -4195,6 +4195,161 @@ describe("Shape user-defined context obligations", () => {
       "require_context LocalRationale<T> satisfied_by rationale or memory"
     );
   });
+
+  test("accepts either kind when satisfied_by is omitted", () => {
+    const base = (context: string) => `
+      module gateway
+
+      resource PolicySnapshot
+
+      trait FlexibleLocal<T: Fn> {
+        require_context LocalReason<T>
+      }
+
+      component Gateway {
+        owns PolicySnapshot
+        grants Read<PolicySnapshot>
+        fn derivePolicyDecision : FlexibleLocal
+          effects complete {
+            Read<PolicySnapshot>
+          }
+      }
+
+      ${context}
+    `;
+    const withRationale = checkShapeSource(
+      base(`rationale R : ${contextRef("LocalReason", fnTarget("Gateway.derivePolicyDecision"))} {
+        applies_to fn Gateway.derivePolicyDecision
+        why CognitiveLocality
+        summary "Reason."
+        owner GatewayTeam
+      }`)
+    );
+    const withMemory = checkShapeSource(
+      base(`memory M : ${contextRef("LocalReason", fnTarget("Gateway.derivePolicyDecision"))} {
+        applies_to fn Gateway.derivePolicyDecision
+        status Unexplained
+        confidence High
+        summary "Reason."
+        owner GatewayTeam
+      }`)
+    );
+
+    expect(withRationale.exitCode).toBe(0);
+    expect(withMemory.exitCode).toBe(0);
+  });
+
+  test("satisfies a component-target user obligation with a memory", () => {
+    const result = checkShapeSource(`
+      module audit
+
+      trait ComponentBoundary<T: Component> {
+        require_context BoundaryReason<T> satisfied_by memory
+      }
+
+      resource AuditEvent
+
+      component AuditStore : ComponentBoundary {
+        owns AuditEvent
+        grants Read<AuditEvent>
+        fn read
+          effects complete {
+            Read<AuditEvent>
+          }
+      }
+
+      memory AuditStoreBoundary : ${contextRef("BoundaryReason", "component AuditStore")} {
+        applies_to component AuditStore
+        status Unexplained
+        confidence High
+        summary "Boundary is load-bearing."
+        owner AuditTeam
+      }
+    `);
+
+    expect(result.exitCode).toBe(0);
+  });
+
+  test("defaults an unbound type parameter to a function target", () => {
+    const result = checkShapeSource(`
+      module gateway
+
+      resource PolicySnapshot
+
+      trait Unbound<T> {
+        require_context UnboundReason<T>
+      }
+
+      component Gateway {
+        owns PolicySnapshot
+        grants Read<PolicySnapshot>
+        fn derivePolicyDecision : Unbound
+          effects complete {
+            Read<PolicySnapshot>
+          }
+      }
+    `);
+    const output = formatDiagnostics(result);
+
+    expect(result.exitCode).toBe(1);
+    expect(output).toContain(contextRef("UnboundReason", fnTarget("Gateway.derivePolicyDecision")));
+  });
+
+  test("reports require_context with an undeclared type parameter or unsupported bound", () => {
+    const result = checkShapeSource(`
+      module m
+
+      trait BadTarget<T: Component> {
+        require_context Reason<X>
+      }
+
+      trait BadBound<T: Fnn> {
+        require_context Reason<T>
+      }
+    `);
+    const output = formatDiagnostics(result);
+
+    expect(result.exitCode).toBe(1);
+    expect(output).toContain("invalid require_context");
+    expect(output).toContain("type parameter X is not declared by the trait");
+    expect(output).toContain("unsupported bound Fnn");
+  });
+
+  test("a user trait shadows a same-named prelude obligation via name resolution", () => {
+    // Declaring a trait named like a prelude trait (RefactorSensitive) makes
+    // `: RefactorSensitive` resolve to the local trait, so the user obligation
+    // replaces the prelude one rather than stacking with it.
+    const result = checkShapeSource(`
+      module gateway
+
+      resource PolicySnapshot
+
+      trait RefactorSensitive<T: Fn> {
+        require_context LocalReason<T> satisfied_by rationale
+      }
+
+      component Gateway {
+        owns PolicySnapshot
+        grants Read<PolicySnapshot>
+        fn derivePolicyDecision : RefactorSensitive
+          effects complete {
+            Read<PolicySnapshot>
+          }
+      }
+
+      rationale R : ${contextRef("LocalReason", fnTarget("Gateway.derivePolicyDecision"))} {
+        applies_to fn Gateway.derivePolicyDecision
+        why CognitiveLocality
+        summary "Reason."
+        owner GatewayTeam
+      }
+    `);
+
+    // The prelude RefactorSensitive requires a memory; the local trait requires
+    // a rationale. A rationale satisfying the local obligation passes, proving
+    // the local trait shadowed the prelude one.
+    expect(result.exitCode).toBe(0);
+  });
 });
 
 describe("Shape nested memory guard blocks", () => {
