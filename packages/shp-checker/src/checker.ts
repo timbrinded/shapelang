@@ -333,6 +333,17 @@ export type SemanticDiagnostic =
       causedBy: string[];
     }
   | {
+      kind: "stale_memory";
+      guardKind: ContextKind;
+      guard: string;
+      targetKind: TargetKind;
+      target: string;
+      reviewBy: string;
+      asOf: string;
+      filePath?: string;
+      causedBy: string[];
+    }
+  | {
       kind: "invalid_relation";
       name: string;
       reason: string;
@@ -353,6 +364,13 @@ export type CheckOptions = {
   changedFiles?: string[];
   enforceBindings?: boolean;
   includeFacts?: boolean;
+  /**
+   * When set to an ISO `YYYY-MM-DD` date, design memory whose `review_by` is
+   * strictly before this date is reported as stale. Absent disables freshness
+   * checking. The checker never reads the system clock; callers inject the date
+   * so checking stays deterministic.
+   */
+  freshnessDate?: string;
 };
 
 export type Fact =
@@ -830,6 +848,7 @@ export function checkShapeModules(
     ...checkRequiredDescriptions(model),
     ...checkReevaluations(model),
     ...checkGuardedChanges(model),
+    ...(options.freshnessDate ? checkFreshness(model, options.freshnessDate) : []),
     ...checkFunctions(model),
     ...checkProvidesRules(model),
     ...checkHypercycles(model),
@@ -913,8 +932,11 @@ export function listMemoryGuardsShapeModules(modules: ShapeModule[] | CheckModul
   return `${lines.join("\n").trimEnd()}\n`;
 }
 
-export function listShapeObligations(modules: ShapeModule[] | CheckModuleInput[]): string {
-  const result = checkShapeModules(modules);
+export function listShapeObligations(
+  modules: ShapeModule[] | CheckModuleInput[],
+  options: { freshnessDate?: string } = {}
+): string {
+  const result = checkShapeModules(modules, { freshnessDate: options.freshnessDate });
   const relevant = result.diagnostics.filter(isObligationDiagnostic);
 
   if (relevant.length === 0) {
@@ -934,6 +956,7 @@ export function listShapeObligations(modules: ShapeModule[] | CheckModuleInput[]
   const invalidReevaluations = relevant.filter(
     (diagnostic) => diagnostic.kind === "invalid_reevaluation"
   );
+  const staleMemories = relevant.filter((diagnostic) => diagnostic.kind === "stale_memory");
 
   if (missingContext.length > 0) {
     lines.push("missing context:");
@@ -969,6 +992,16 @@ export function listShapeObligations(modules: ShapeModule[] | CheckModuleInput[]
     lines.push(
       ...invalidReevaluations.map(
         (diagnostic) => `  reevaluation ${diagnostic.name}: ${diagnostic.reason}`
+      )
+    );
+    lines.push("");
+  }
+  if (staleMemories.length > 0) {
+    lines.push("stale design memory:");
+    lines.push(
+      ...staleMemories.map(
+        (diagnostic) =>
+          `  ${diagnostic.guardKind} ${displaySymbol(diagnostic.guard)} review_by ${diagnostic.reviewBy} is before ${diagnostic.asOf}`
       )
     );
     lines.push("");
@@ -3936,6 +3969,48 @@ function checkGuardedChanges(model: Model): SemanticDiagnostic[] {
   return diagnostics;
 }
 
+/**
+ * Reports design memory whose `review_by` date is strictly before `asOf`.
+ * Only ISO `YYYY-MM-DD` `review_by` values are enforced; non-ISO and missing
+ * values are left untouched so freshness never breaks a model on a typo's say-so.
+ */
+function checkFreshness(model: Model, asOf: string): SemanticDiagnostic[] {
+  const diagnostics: SemanticDiagnostic[] = [];
+  const contexts: { kind: ContextKind; info: RationaleInfo | MemoryInfo }[] = [
+    ...[...model.rationales.values()].map((info) => ({ kind: "rationale" as const, info })),
+    ...[...model.memories.values()].map((info) => ({ kind: "memory" as const, info }))
+  ];
+
+  for (const { kind, info } of contexts) {
+    if (!info.reviewBy || !isIsoDate(info.reviewBy) || info.reviewBy >= asOf) {
+      continue;
+    }
+
+    const target = info.appliesTo ?? info.target;
+    diagnostics.push({
+      kind: "stale_memory",
+      guardKind: kind,
+      guard: info.name,
+      targetKind: target.kind,
+      target: target.name,
+      reviewBy: info.reviewBy,
+      asOf,
+      filePath: info.provenance.filePath,
+      causedBy: [describeProvenance(info.provenance)]
+    });
+  }
+
+  return diagnostics;
+}
+
+function isIsoDate(value: string): boolean {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+    return false;
+  }
+  const parsed = new Date(`${value}T00:00:00Z`);
+  return !Number.isNaN(parsed.getTime()) && parsed.toISOString().slice(0, 10) === value;
+}
+
 function checkFunctions(model: Model): SemanticDiagnostic[] {
   const diagnostics: SemanticDiagnostic[] = [];
 
@@ -4735,14 +4810,16 @@ function isObligationDiagnostic(diagnostic: ShapeDiagnostic): diagnostic is Extr
       | "missing_required_context"
       | "missing_required_description"
       | "guarded_shape_changed"
-      | "invalid_reevaluation";
+      | "invalid_reevaluation"
+      | "stale_memory";
   }
 > {
   return (
     diagnostic.kind === "missing_required_context" ||
     diagnostic.kind === "missing_required_description" ||
     diagnostic.kind === "guarded_shape_changed" ||
-    diagnostic.kind === "invalid_reevaluation"
+    diagnostic.kind === "invalid_reevaluation" ||
+    diagnostic.kind === "stale_memory"
   );
 }
 
@@ -4927,6 +5004,8 @@ function formatDiagnostic(diagnostic: ShapeDiagnostic): string {
       return formatGuardedShapeChangedDiagnostic(diagnostic);
     case "invalid_reevaluation":
       return formatInvalidReevaluationDiagnostic(diagnostic);
+    case "stale_memory":
+      return formatStaleMemoryDiagnostic(diagnostic);
     case "invalid_relation":
       return formatInvalidRelationDiagnostic(diagnostic);
   }
@@ -5213,6 +5292,21 @@ function formatInvalidReevaluationDiagnostic(
     "error: invalid reevaluation",
     "",
     `reevaluation ${diagnostic.name} is invalid: ${diagnostic.reason}.`,
+    formatCausedBy(diagnostic.causedBy)
+  ].join("\n");
+}
+
+function formatStaleMemoryDiagnostic(
+  diagnostic: Extract<SemanticDiagnostic, { kind: "stale_memory" }>
+): string {
+  return [
+    "error: stale design memory",
+    "",
+    `${diagnostic.guardKind} ${displaySymbol(diagnostic.guard)} protects ${diagnostic.targetKind} ${displaySymbol(diagnostic.target)}.`,
+    `Its review_by date ${diagnostic.reviewBy} is before ${diagnostic.asOf}.`,
+    "",
+    "Required:",
+    "  review the design memory and update review_by, or replace it with a reevaluation.",
     formatCausedBy(diagnostic.causedBy)
   ].join("\n");
 }

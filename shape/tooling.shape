@@ -46,6 +46,8 @@ resource ShapeModelDraft
 
 resource SourceSyntaxTree
 
+resource SystemClock
+
 component ShapeAnalyzer {
   owns AnalyzerHint
   grants Append<AnalyzerHint>
@@ -322,12 +324,19 @@ component ShpCli {
   grants Read<ReleaseChecksumManifest>
   grants Read<ReleaseMetadata>
   grants Read<ShapeSource>
+  grants Read<SystemClock>
   grants Update<InstalledShpBinary>
   grants Update<InstalledShpRuntimeAssets>
   fn defaultShapeFiles : RefactorSensitive
     source ts("packages/shp-cli/src/shape-files.ts#defaultShapeFiles")
     effects complete {
       Read<ShapeSource>
+        evidence ts("packages/shp-cli/src/shape-files.ts")
+    }
+  fn isoToday : RefactorSensitive
+    source ts("packages/shp-cli/src/shape-files.ts#isoToday")
+    effects complete {
+      Read<SystemClock>
         evidence ts("packages/shp-cli/src/shape-files.ts")
     }
   fn main : ProtectedCheckOrder
@@ -579,6 +588,16 @@ memory CliCommandDispatchOrder : CheckOrderRationale<fn ShpCli.main> {
   summary "CLI commands must dispatch to the same checker/formatter/helper semantics used by tests, reject ambiguous output modes before running command work, make generated AST directory checks explicit, and derive generated AST source identity from the workspace root."
   owner ShapeMaintainers
   protects shape CommandDispatch
+  guards on_change require ReEvaluation<Self>
+}
+
+memory ClockReadAtCliBoundary : RefactorConstraint<fn ShpCli.isoToday> {
+  applies_to fn ShpCli.isoToday
+  status Explained
+  confidence High
+  summary "The system clock is read only at the CLI boundary to inject a freshness date; the checker never reads the clock so freshness checking stays deterministic."
+  owner ShapeMaintainers
+  protects shape DeterministicFreshness
   guards on_change require ReEvaluation<Self>
 }
 

@@ -1,0 +1,21 @@
+module bridge
+
+resource Attestation
+
+component BridgePoller {
+  owns Attestation
+  grants Read<Attestation>
+  fn pollAttestation : RefactorSensitive
+    effects complete {
+      Read<Attestation>
+    }
+}
+
+memory BridgePollingDelayConstraint : RefactorConstraint<fn BridgePoller.pollAttestation> {
+  applies_to fn BridgePoller.pollAttestation
+  status Unexplained
+  confidence High
+  summary "Earlier attempts to lower this delay caused intermittent settlement failures."
+  owner BridgeTeam
+  review_by "2020-01-01"
+}

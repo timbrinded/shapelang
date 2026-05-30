@@ -306,6 +306,22 @@ Cause: a `reevaluation` is incomplete or satisfies a memory/rationale that does 
 
 A valid reevaluation needs a known `satisfies` target plus `outcome`, `summary`, `evidence`, `reviewer`, and `decided_on`.
 
+## Stale design memory
+
+Cause: a `memory` or `rationale` has a `review_by` date strictly before the freshness date, and freshness checking is enabled. This diagnostic is only emitted under `shp check --strict-freshness` (a failure) or surfaced by `shp obligations --strict-freshness` (a listing). By default `review_by` is informational and never produces this diagnostic.
+
+```text
+error: stale design memory
+
+memory DecisionRefactorConstraint protects fn Gateway.derivePolicyDecision.
+Its review_by date 2026-01-01 is before 2026-05-30.
+
+Required:
+  review the design memory and update review_by, or replace it with a reevaluation.
+```
+
+Only ISO `YYYY-MM-DD` `review_by` values are enforced; missing or non-ISO values are ignored. The checker compares against a caller-provided date and never reads the system clock, so freshness results are deterministic.
+
 ## Invalid relation
 
 Cause: a `relation` declaration is malformed. Reasons reported by the checker include `missing kind`, `missing connects`, `connects requires at least two endpoints`, `duplicate kind`/`connects`/`roles`/`summary`, `duplicate endpoint X`, `kind K requires exactly two endpoints` (for binary prelude kinds), `kind K requires ordered connects (A -> B)` (for directional binary kinds), `kind K requires ordered connects (A -> B -> ...)` (for `coordinated_call`), ambiguous endpoints that resolve to both a component and a resource, invalid `provides` endpoint kinds, `role NAME is not a connects endpoint`, and `duplicate role for NAME`.

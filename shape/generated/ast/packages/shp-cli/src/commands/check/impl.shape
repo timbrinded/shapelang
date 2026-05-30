@@ -7,13 +7,13 @@ trait GeneratedCandidate {
 }
 
 resource ImplModuleCheckAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-cli/src/commands/check/impl.ts:10-29")
-  fingerprint ast.semantic_subtree_v1("sha256:81a0a7d059a6b974c9c8ba006684ee78a344a4da55590137f48e6242a4c9fde3")
+  storage ast.anchor("packages/shp-cli/src/commands/check/impl.ts:11-31")
+  fingerprint ast.semantic_subtree_v1("sha256:67a8722f2e46343c2822202c2dca0f7ab123cb3775425d9371d4f9c2cb8cc6f2")
 }
 
 component ImplModule : GeneratedCandidate {
   fn check
-    source ts("packages/shp-cli/src/commands/check/impl.ts:10-29")
+    source ts("packages/shp-cli/src/commands/check/impl.ts:11-31")
     effects unknown
 }
 
@@ -21,8 +21,8 @@ relation ImplModuleCheckGeneratedFromImplModuleCheckAstAnchor {
   kind generated_from
   connects ImplModule -> ImplModuleCheckAstAnchor
   roles { ImplModule as generated, ImplModuleCheckAstAnchor as syntax }
-  expects ImplModuleCheckAstAnchor fingerprint ast.semantic_subtree_v1("sha256:81a0a7d059a6b974c9c8ba006684ee78a344a4da55590137f48e6242a4c9fde3")
-  summary "fn ImplModule.check generated from typescript function_declaration at packages/shp-cli/src/commands/check/impl.ts:10-29."
+  expects ImplModuleCheckAstAnchor fingerprint ast.semantic_subtree_v1("sha256:67a8722f2e46343c2822202c2dca0f7ab123cb3775425d9371d4f9c2cb8cc6f2")
+  summary "fn ImplModule.check generated from typescript function_declaration at packages/shp-cli/src/commands/check/impl.ts:11-31."
 }
 
 implementation ImplModuleImpl {

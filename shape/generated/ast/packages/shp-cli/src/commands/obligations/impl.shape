@@ -7,13 +7,13 @@ trait GeneratedCandidate {
 }
 
 resource ImplModuleObligationsAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-cli/src/commands/obligations/impl.ts:8-16")
-  fingerprint ast.semantic_subtree_v1("sha256:75aa248d7929c8020f1d69ce17508abdce40cabf25b2e88c81c4b40889b8971e")
+  storage ast.anchor("packages/shp-cli/src/commands/obligations/impl.ts:10-19")
+  fingerprint ast.semantic_subtree_v1("sha256:d27f98fe4780b7c39645b0776c0008732fe6698607e4b8642a16a3bea0921267")
 }
 
 component ImplModule : GeneratedCandidate {
   fn obligations
-    source ts("packages/shp-cli/src/commands/obligations/impl.ts:8-16")
+    source ts("packages/shp-cli/src/commands/obligations/impl.ts:10-19")
     effects unknown
 }
 
@@ -21,8 +21,8 @@ relation ImplModuleObligationsGeneratedFromImplModuleObligationsAstAnchor {
   kind generated_from
   connects ImplModule -> ImplModuleObligationsAstAnchor
   roles { ImplModule as generated, ImplModuleObligationsAstAnchor as syntax }
-  expects ImplModuleObligationsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:75aa248d7929c8020f1d69ce17508abdce40cabf25b2e88c81c4b40889b8971e")
-  summary "fn ImplModule.obligations generated from typescript function_declaration at packages/shp-cli/src/commands/obligations/impl.ts:8-16."
+  expects ImplModuleObligationsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d27f98fe4780b7c39645b0776c0008732fe6698607e4b8642a16a3bea0921267")
+  summary "fn ImplModule.obligations generated from typescript function_declaration at packages/shp-cli/src/commands/obligations/impl.ts:10-19."
 }
 
 implementation ImplModuleImpl {

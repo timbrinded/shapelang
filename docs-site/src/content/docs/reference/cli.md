@@ -10,7 +10,7 @@ The released `shp` binary exposes these commands.
 ## Usage
 
 ```text
-shp check [--changed-files changed.txt] [files...]
+shp check [--changed-files changed.txt] [--strict-freshness] [files...]
 shp coverage --changed-files changed.txt [files...]
 shp fmt [--check] [files...]
 shp explain SYMBOL [files...]
@@ -18,7 +18,7 @@ shp graph all [--kind KIND] [files...]
 shp graph show SYMBOL [--kind KIND] [files...]
 shp graph stats [--kind KIND] [files...]
 shp memory [files...]
-shp obligations [files...]
+shp obligations [--strict-freshness] [files...]
 shp author --changed-files changed.txt --component ComponentName [--module module.name]
 shp analyze [--shape-files file1.shape,file2.shape] [source-files...]
 shp ast source [--language LANG] [--module NAME] [--include-ast-layer] [--raw-out PATH] [--out-dir DIR] [--check] [--allow-parse-errors] files...
@@ -38,7 +38,7 @@ shape/**/*.shape
 
 | Command | Purpose |
 | --- | --- |
-| `check` | Parse modules, lower facts, and run semantic checks. With `--changed-files`, it also runs coverage and bindings. |
+| `check` | Parse modules, lower facts, and run semantic checks. With `--changed-files`, it also runs coverage and bindings. With `--strict-freshness`, stale design memory becomes a check failure. |
 | `coverage` | Require Shape updates or current attestations when governed source paths change. |
 | `fmt` | Format Shape files, or check formatting with `--check`. |
 | `explain` | Print derived facts and incident relations for a symbol. |
@@ -46,7 +46,7 @@ shape/**/*.shape
 | `graph show` | Print the hyperedges incident to a symbol. Filter by `--kind KIND`. |
 | `graph stats` | Print aggregate hypergraph counts. Filter by `--kind KIND`. |
 | `memory` | List rationale and memory entries grouped by protected target. |
-| `obligations` | List open design-memory obligations from checker diagnostics. |
+| `obligations` | List open design-memory obligations from checker diagnostics. With `--strict-freshness`, also list design memory whose `review_by` date is past. |
 | `author` | Generate a conservative global-model draft from changed files. |
 | `analyze` | Emit source hints or compare source hints with declared effects. |
 | `ast source` | Parse source with Tree-sitter and emit a conservative semantic Shape draft. |
@@ -182,6 +182,19 @@ Open Shape Obligations
 guarded changes:
   fn Gateway.derivePolicyDecision changed; requires reevaluation satisfying memory DecisionRefactorConstraint
 ```
+
+### Review freshness
+
+`review_by` is informational by default. Pass `--strict-freshness` to enforce it: design memory and rationale whose `review_by` is an ISO `YYYY-MM-DD` date strictly before today is reported. `shp obligations --strict-freshness` lists those entries under `stale design memory:`, and `shp check --strict-freshness` turns them into a failing diagnostic so CI can require periodic review.
+
+```text
+Open Shape Obligations
+
+stale design memory:
+  memory DecisionRefactorConstraint review_by 2026-01-01 is before 2026-05-30
+```
+
+Only ISO `YYYY-MM-DD` dates are enforced; missing or non-ISO `review_by` values are never reported as stale. The checker reads the date from the caller, never the system clock, so freshness results stay deterministic and reproducible.
 
 ## Exit codes
 

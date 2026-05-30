@@ -169,6 +169,14 @@ component ShapeRuleEngine {
       Read<FactSet>
         evidence ts("packages/shp-checker/src/checker.ts")
     }
+  fn checkFreshness : RefactorSensitive
+    source ts("packages/shp-checker/src/checker.ts#checkFreshness")
+    effects complete {
+      Append<SemanticDiagnostics>
+        evidence ts("packages/shp-checker/src/checker.ts")
+      Read<EffectiveModel>
+        evidence ts("packages/shp-checker/src/checker.ts")
+    }
   fn deriveFinalForbidsForResource : RefactorSensitive
     source ts("packages/shp-checker/src/checker.ts#deriveFinalForbidsForResource")
     effects complete {
@@ -383,6 +391,16 @@ memory FinalForbidPrecedence : RefactorConstraint<fn ShapeRuleEngine.deriveFinal
   summary "Final forbids must remain stronger than component grants, resolve concrete targets deterministically, and cannot be waived by rationale or memory."
   owner ShapeMaintainers
   protects shape FinalForbidPrecedence
+  guards on_change require ReEvaluation<Self>
+}
+
+memory FreshnessDeterminism : RefactorConstraint<fn ShapeRuleEngine.checkFreshness> {
+  applies_to fn ShapeRuleEngine.checkFreshness
+  status Explained
+  confidence High
+  summary "Freshness compares review_by against a caller-injected ISO date, never the system clock, and enforces only ISO YYYY-MM-DD values so checks stay deterministic."
+  owner ShapeMaintainers
+  protects shape DeterministicFreshness
   guards on_change require ReEvaluation<Self>
 }
 

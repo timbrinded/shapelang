@@ -150,6 +150,28 @@ change RefactorDecision {
 
 Without the `reevaluation`, the checker reports `guarded shape changed` and tells the author which memory or rationale must be satisfied.
 
+## Review Freshness
+
+Design memory ages. A `memory` or `rationale` can carry a `review_by` date so reviewers know when the constraint should be revisited:
+
+```shape
+memory BridgePollingDelayConstraint : RefactorConstraint<fn BridgePoller.pollAttestation> {
+  applies_to fn BridgePoller.pollAttestation
+  status Unexplained
+  confidence High
+  summary "Earlier attempts to lower this delay caused intermittent settlement failures."
+  owner BridgeTeam
+  review_by "2026-08-18"
+}
+```
+
+By default `review_by` is informational. Enable enforcement with `--strict-freshness`:
+
+- `shp obligations --strict-freshness` lists entries whose `review_by` is past, under `stale design memory:`.
+- `shp check --strict-freshness` turns a past `review_by` into a failing `stale design memory` diagnostic, so CI can require periodic review.
+
+Only ISO `YYYY-MM-DD` dates are enforced; the date on which a review is due still counts as fresh. Missing or non-ISO `review_by` values are never reported as stale. Freshness compares against a caller-provided date rather than the system clock, keeping checks deterministic.
+
 ## What To Check In Review
 
 - Use a function shape trait only when it changes review obligations.
