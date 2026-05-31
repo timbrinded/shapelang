@@ -82,7 +82,7 @@ describe("#56 formatter idempotence, round-trip, canonical flat form", () => {
         const once = formatShapeSource(source, path);
         if (!once.ok) {
           // A corpus file that does not format is counted, not asserted on —
-          // some fail fixtures may be deliberately unparseable. The vacuity
+          // some fail fixtures may be deliberately not parseable. The vacuity
           // guard below proves the loop still did real work.
           skipped += 1;
           continue;
@@ -206,14 +206,14 @@ describe("#56 formatter idempotence, round-trip, canonical flat form", () => {
   );
 
   // NEGATIVE CONTROL — proves the canonicalisation and idempotence laws above
-  // can FAIL, so a green suite means something. We mis-format a known-good
+  // can FAIL, so a green suite means something. We deliberately reformat a known-good
   // fixture (reordered members, extra blank lines, odd indentation) in a way
   // that still PARSES, and assert the formatter collapses it onto the exact
   // canonical representative. We do NOT mutate the shared fixture on disk — the
   // mutant is constructed in-memory here (agents run concurrently).
   test(
     lockedIntended(
-      "negative control: a mis-formatted-but-parseable variant normalises to the canonical form, and a stray-newline regression would be caught",
+      "negative control: a badly-formatted-but-parseable variant normalises to the canonical form, and a stray-newline regression would be caught",
       "shape/tooling.shape:595 FormatterCanonicalDiffs (one on-disk form)"
     ),
     () => {
@@ -250,7 +250,7 @@ describe("#56 formatter idempotence, round-trip, canonical flat form", () => {
       ].join("\n");
 
       // Guard: the mutant differs from the canonical SOURCE (it is genuinely
-      // mis-formatted) yet still parses.
+      // badly-formatted) yet still parses.
       expect(misformattedVariant).not.toBe(canonicalSource);
       expect(parseModuleOrThrow(misformattedVariant, canonicalPath)).toBeDefined();
 

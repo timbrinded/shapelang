@@ -350,7 +350,7 @@ describe("#65 AST-generation determinism + unknown-safety", () => {
 
   // NEGATIVE CONTROL — proves the unknown-safety and byte-identity PREDICATES
   // used above can actually fail. Self-contained: local stubs stand in for a
-  // mis-implemented generator, so this test fails iff the predicates are real.
+  // incorrectly implemented generator, so this test fails iff the predicates are real.
   test(
     lockedIntended(
       "the unknown-safety and byte-identity predicates reject a violating stub generator",
