@@ -1,0 +1,81 @@
+module shape.generated.ast.docs_site.scripts.verify_shape_blocks_test
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource VerifyShapeBlocksTestModuleCorpusOfAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("docs-site/scripts/verify-shape-blocks.test.ts:66-68")
+  fingerprint ast.semantic_subtree_v1("sha256:71140e42dffe1895cdd6cba02ef5cead04945972e1c3f5441c0441616aec9371")
+}
+
+resource VerifyShapeBlocksTestModuleCorpusWithExactlyOneBrokenFenceAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("docs-site/scripts/verify-shape-blocks.test.ts:197-218")
+  fingerprint ast.semantic_subtree_v1("sha256:3c809dde2e92fbc2d2de27c1ac65a0082023f208432553cb963ef088cdac6ecc")
+}
+
+resource VerifyShapeBlocksTestModuleFenceAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("docs-site/scripts/verify-shape-blocks.test.ts:61-63")
+  fingerprint ast.semantic_subtree_v1("sha256:bc350587afc262836ef5c7b584408abbfeb42a735e4a951fa4a15e7138f35888")
+}
+
+resource VerifyShapeBlocksTestModuleLockedIntendedAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("docs-site/scripts/verify-shape-blocks.test.ts:40-42")
+  fingerprint ast.semantic_subtree_v1("sha256:764f7468fa8cb3f267c5f0ede95308a03cdc4a42de950ef2f7a90795992fdd9c")
+}
+
+component VerifyShapeBlocksTestModule : GeneratedCandidate {
+  fn corpusOf
+    source ts("docs-site/scripts/verify-shape-blocks.test.ts:66-68")
+    effects unknown
+  fn corpusWithExactlyOneBrokenFence
+    source ts("docs-site/scripts/verify-shape-blocks.test.ts:197-218")
+    effects unknown
+  fn fence
+    source ts("docs-site/scripts/verify-shape-blocks.test.ts:61-63")
+    effects unknown
+  fn lockedIntended
+    source ts("docs-site/scripts/verify-shape-blocks.test.ts:40-42")
+    effects unknown
+}
+
+relation VerifyShapeBlocksTestModuleCorpusOfGeneratedFromVerifyShapeBlocksTestModuleCorpusOfAstAnchor {
+  kind generated_from
+  connects VerifyShapeBlocksTestModule -> VerifyShapeBlocksTestModuleCorpusOfAstAnchor
+  roles { VerifyShapeBlocksTestModule as generated, VerifyShapeBlocksTestModuleCorpusOfAstAnchor as syntax }
+  expects VerifyShapeBlocksTestModuleCorpusOfAstAnchor fingerprint ast.semantic_subtree_v1("sha256:71140e42dffe1895cdd6cba02ef5cead04945972e1c3f5441c0441616aec9371")
+  summary "fn VerifyShapeBlocksTestModule.corpusOf generated from typescript function_declaration at docs-site/scripts/verify-shape-blocks.test.ts:66-68."
+}
+
+relation VerifyShapeBlocksTestModuleCorpusWithExactlyOneBrokenFenceGeneratedFromVerifyShapeBlocksTestModuleCorpusWithExactlyOneBrokenFenceAstAnchor {
+  kind generated_from
+  connects VerifyShapeBlocksTestModule -> VerifyShapeBlocksTestModuleCorpusWithExactlyOneBrokenFenceAstAnchor
+  roles { VerifyShapeBlocksTestModule as generated, VerifyShapeBlocksTestModuleCorpusWithExactlyOneBrokenFenceAstAnchor as syntax }
+  expects VerifyShapeBlocksTestModuleCorpusWithExactlyOneBrokenFenceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3c809dde2e92fbc2d2de27c1ac65a0082023f208432553cb963ef088cdac6ecc")
+  summary "fn VerifyShapeBlocksTestModule.corpusWithExactlyOneBrokenFence generated from typescript function_declaration at docs-site/scripts/verify-shape-blocks.test.ts:197-218."
+}
+
+relation VerifyShapeBlocksTestModuleFenceGeneratedFromVerifyShapeBlocksTestModuleFenceAstAnchor {
+  kind generated_from
+  connects VerifyShapeBlocksTestModule -> VerifyShapeBlocksTestModuleFenceAstAnchor
+  roles { VerifyShapeBlocksTestModule as generated, VerifyShapeBlocksTestModuleFenceAstAnchor as syntax }
+  expects VerifyShapeBlocksTestModuleFenceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:bc350587afc262836ef5c7b584408abbfeb42a735e4a951fa4a15e7138f35888")
+  summary "fn VerifyShapeBlocksTestModule.fence generated from typescript function_declaration at docs-site/scripts/verify-shape-blocks.test.ts:61-63."
+}
+
+relation VerifyShapeBlocksTestModuleLockedIntendedGeneratedFromVerifyShapeBlocksTestModuleLockedIntendedAstAnchor {
+  kind generated_from
+  connects VerifyShapeBlocksTestModule -> VerifyShapeBlocksTestModuleLockedIntendedAstAnchor
+  roles { VerifyShapeBlocksTestModule as generated, VerifyShapeBlocksTestModuleLockedIntendedAstAnchor as syntax }
+  expects VerifyShapeBlocksTestModuleLockedIntendedAstAnchor fingerprint ast.semantic_subtree_v1("sha256:764f7468fa8cb3f267c5f0ede95308a03cdc4a42de950ef2f7a90795992fdd9c")
+  summary "fn VerifyShapeBlocksTestModule.lockedIntended generated from typescript function_declaration at docs-site/scripts/verify-shape-blocks.test.ts:40-42."
+}
+
+implementation VerifyShapeBlocksTestModuleImpl {
+  paths {
+    "docs-site/scripts/verify-shape-blocks.test.ts"
+  }
+  conforms_to VerifyShapeBlocksTestModule
+}

@@ -15,5 +15,5 @@
     "noUncheckedIndexedAccess": true,
     "noImplicitOverride": true
   },
-  "include": ["packages/**/*.ts", "scripts/**/*.ts"]
+  "include": ["packages/**/*.ts", "scripts/**/*.ts", "docs-site/scripts/**/*.test.ts"]
 }

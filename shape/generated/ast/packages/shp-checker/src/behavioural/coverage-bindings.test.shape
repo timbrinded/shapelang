@@ -1,0 +1,33 @@
+module shape.generated.ast.packages.shp_checker.src.behavioural.coverage_bindings_test
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource CoverageBindingsTestModuleChangedFilesFromAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/behavioural/coverage-bindings.test.ts:33-39")
+  fingerprint ast.semantic_subtree_v1("sha256:c7a29c21c06ea738536c50294626f286173af5a912dabb89ed75a87b3419d0d1")
+}
+
+component CoverageBindingsTestModule : GeneratedCandidate {
+  fn changedFilesFrom
+    source ts("packages/shp-checker/src/behavioural/coverage-bindings.test.ts:33-39")
+    effects unknown
+}
+
+relation CoverageBindingsTestModuleChangedFilesFromGeneratedFromCoverageBindingsTestModuleChangedFilesFromAstAnchor {
+  kind generated_from
+  connects CoverageBindingsTestModule -> CoverageBindingsTestModuleChangedFilesFromAstAnchor
+  roles { CoverageBindingsTestModule as generated, CoverageBindingsTestModuleChangedFilesFromAstAnchor as syntax }
+  expects CoverageBindingsTestModuleChangedFilesFromAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c7a29c21c06ea738536c50294626f286173af5a912dabb89ed75a87b3419d0d1")
+  summary "fn CoverageBindingsTestModule.changedFilesFrom generated from typescript function_declaration at packages/shp-checker/src/behavioural/coverage-bindings.test.ts:33-39."
+}
+
+implementation CoverageBindingsTestModuleImpl {
+  paths {
+    "packages/shp-checker/src/behavioural/coverage-bindings.test.ts"
+  }
+  conforms_to CoverageBindingsTestModule
+}

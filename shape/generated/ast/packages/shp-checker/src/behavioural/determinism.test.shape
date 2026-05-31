@@ -1,0 +1,65 @@
+module shape.generated.ast.packages.shp_checker.src.behavioural.determinism_test
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource DeterminismTestModuleConstructorAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/behavioural/determinism.test.ts:221-228")
+  fingerprint ast.semantic_subtree_v1("sha256:efac98cf224679020d7108618b08252b0927116c29ea8b1124e61e8acbea1371")
+}
+
+resource DeterminismTestModuleNowAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/behavioural/determinism.test.ts:229-231")
+  fingerprint ast.semantic_subtree_v1("sha256:b45ad1d8b33d2f5fc17491162cb7d18555a6e0fd1f0819162348228bf164a948")
+}
+
+resource DeterminismTestModuleSourceFromOrderAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/behavioural/determinism.test.ts:115-117")
+  fingerprint ast.semantic_subtree_v1("sha256:df22b59f130298747eb39ed1b32cdaf3cfe83990fc634f24bd5f79bf3064fc32")
+}
+
+component DeterminismTestModule : GeneratedCandidate {
+  fn constructor
+    source ts("packages/shp-checker/src/behavioural/determinism.test.ts:221-228")
+    effects unknown
+  fn now
+    source ts("packages/shp-checker/src/behavioural/determinism.test.ts:229-231")
+    effects unknown
+  fn sourceFromOrder
+    source ts("packages/shp-checker/src/behavioural/determinism.test.ts:115-117")
+    effects unknown
+}
+
+relation DeterminismTestModuleConstructorGeneratedFromDeterminismTestModuleConstructorAstAnchor {
+  kind generated_from
+  connects DeterminismTestModule -> DeterminismTestModuleConstructorAstAnchor
+  roles { DeterminismTestModule as generated, DeterminismTestModuleConstructorAstAnchor as syntax }
+  expects DeterminismTestModuleConstructorAstAnchor fingerprint ast.semantic_subtree_v1("sha256:efac98cf224679020d7108618b08252b0927116c29ea8b1124e61e8acbea1371")
+  summary "fn DeterminismTestModule.constructor generated from typescript method_definition at packages/shp-checker/src/behavioural/determinism.test.ts:221-228."
+}
+
+relation DeterminismTestModuleNowGeneratedFromDeterminismTestModuleNowAstAnchor {
+  kind generated_from
+  connects DeterminismTestModule -> DeterminismTestModuleNowAstAnchor
+  roles { DeterminismTestModule as generated, DeterminismTestModuleNowAstAnchor as syntax }
+  expects DeterminismTestModuleNowAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b45ad1d8b33d2f5fc17491162cb7d18555a6e0fd1f0819162348228bf164a948")
+  summary "fn DeterminismTestModule.now generated from typescript method_definition at packages/shp-checker/src/behavioural/determinism.test.ts:229-231."
+}
+
+relation DeterminismTestModuleSourceFromOrderGeneratedFromDeterminismTestModuleSourceFromOrderAstAnchor {
+  kind generated_from
+  connects DeterminismTestModule -> DeterminismTestModuleSourceFromOrderAstAnchor
+  roles { DeterminismTestModule as generated, DeterminismTestModuleSourceFromOrderAstAnchor as syntax }
+  expects DeterminismTestModuleSourceFromOrderAstAnchor fingerprint ast.semantic_subtree_v1("sha256:df22b59f130298747eb39ed1b32cdaf3cfe83990fc634f24bd5f79bf3064fc32")
+  summary "fn DeterminismTestModule.sourceFromOrder generated from typescript function_declaration at packages/shp-checker/src/behavioural/determinism.test.ts:115-117."
+}
+
+implementation DeterminismTestModuleImpl {
+  paths {
+    "packages/shp-checker/src/behavioural/determinism.test.ts"
+  }
+  conforms_to DeterminismTestModule
+}

@@ -603,6 +603,11 @@ reevaluation ReleaseVersionTagCheckRechecked {
   evidence yaml(".github/workflows/release.yml")
 }
 
+attest docs_not_needed {
+  source ts("docs-site/scripts/verify-shape-blocks.ts")
+  reason "The verifier refactor preserves observed behaviour and CLI output; the documented docs:check workflow and grammar reference describe no internal verifier structure that changed."
+}
+
 attest no_shape_change {
   source ts("packages/shp-checker/src/generated-ast-policy.ts")
   reason "Generated AST manifest helper cleanup is covered by the checker origin model update; the remaining manifest schema and path helper contract is unchanged."
@@ -631,4 +636,9 @@ attest no_shape_change {
 attest no_shape_change {
   source md("docs-site/src/content/docs/learn/pr-change-files.md")
   reason "Legacy PR change-file guide was renamed and replaced by global model update documentation."
+}
+
+attest no_shape_change {
+  source ts("docs-site/scripts/verify-shape-blocks.test.ts")
+  reason "Behavioural self-tests for the docs fence verifier (#64). Test-only code with no architectural surface of its own; it exercises the existing DocsShapeBlockVerifier contract rather than changing it."
 }

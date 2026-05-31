@@ -1,0 +1,42 @@
+module deps
+
+component Entry {
+}
+
+component Mid {
+}
+
+component Spur {
+}
+
+component Tail {
+}
+
+relation EntryCallsMid {
+  kind calls
+  connects Entry -> Mid
+}
+
+relation MidCallsSpur {
+  kind calls
+  connects Mid -> Spur
+}
+
+relation MidCallsTail {
+  kind calls
+  connects Mid -> Tail
+}
+
+relation SpurCallsMid {
+  kind calls
+  connects Spur -> Mid
+}
+
+relation TailCallsEntry {
+  kind calls
+  connects Tail -> Entry
+}
+
+rule no_calls_cycle {
+  forbid hypercycle over calls
+}

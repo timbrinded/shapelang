@@ -1,0 +1,49 @@
+module shape.generated.ast.packages.shp_checker.src.behavioural.ast_generation_behaviour_test
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource AstGenerationBehaviourTestModuleBodyWithoutModuleLineAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/behavioural/ast-generation-behaviour.test.ts:108-110")
+  fingerprint ast.semantic_subtree_v1("sha256:88c1bb2dfc55260c8f648d84db47e458a743af3efe8ef348e34a4132ef9c494a")
+}
+
+resource AstGenerationBehaviourTestModuleRequireGeneratedAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/behavioural/ast-generation-behaviour.test.ts:96-105")
+  fingerprint ast.semantic_subtree_v1("sha256:fd3aa4171cc4dc4be4e94e599d2bd3e3655b3449dad3fb431144b942edc6f9f5")
+}
+
+component AstGenerationBehaviourTestModule : GeneratedCandidate {
+  fn bodyWithoutModuleLine
+    source ts("packages/shp-checker/src/behavioural/ast-generation-behaviour.test.ts:108-110")
+    effects unknown
+  fn requireGenerated
+    source ts("packages/shp-checker/src/behavioural/ast-generation-behaviour.test.ts:96-105")
+    effects unknown
+}
+
+relation AstGenerationBehaviourTestModuleBodyWithoutModuleLineGeneratedFromAstGenerationBehaviourTestModuleBodyWithoutModuleLineAstAnchor {
+  kind generated_from
+  connects AstGenerationBehaviourTestModule -> AstGenerationBehaviourTestModuleBodyWithoutModuleLineAstAnchor
+  roles { AstGenerationBehaviourTestModule as generated, AstGenerationBehaviourTestModuleBodyWithoutModuleLineAstAnchor as syntax }
+  expects AstGenerationBehaviourTestModuleBodyWithoutModuleLineAstAnchor fingerprint ast.semantic_subtree_v1("sha256:88c1bb2dfc55260c8f648d84db47e458a743af3efe8ef348e34a4132ef9c494a")
+  summary "fn AstGenerationBehaviourTestModule.bodyWithoutModuleLine generated from typescript function_declaration at packages/shp-checker/src/behavioural/ast-generation-behaviour.test.ts:108-110."
+}
+
+relation AstGenerationBehaviourTestModuleRequireGeneratedGeneratedFromAstGenerationBehaviourTestModuleRequireGeneratedAstAnchor {
+  kind generated_from
+  connects AstGenerationBehaviourTestModule -> AstGenerationBehaviourTestModuleRequireGeneratedAstAnchor
+  roles { AstGenerationBehaviourTestModule as generated, AstGenerationBehaviourTestModuleRequireGeneratedAstAnchor as syntax }
+  expects AstGenerationBehaviourTestModuleRequireGeneratedAstAnchor fingerprint ast.semantic_subtree_v1("sha256:fd3aa4171cc4dc4be4e94e599d2bd3e3655b3449dad3fb431144b942edc6f9f5")
+  summary "fn AstGenerationBehaviourTestModule.requireGenerated generated from typescript function_declaration at packages/shp-checker/src/behavioural/ast-generation-behaviour.test.ts:96-105."
+}
+
+implementation AstGenerationBehaviourTestModuleImpl {
+  paths {
+    "packages/shp-checker/src/behavioural/ast-generation-behaviour.test.ts"
+  }
+  conforms_to AstGenerationBehaviourTestModule
+}

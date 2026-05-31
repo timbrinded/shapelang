@@ -17,6 +17,13 @@
       ]
     },
     {
+      "module": "shape.generated.ast.docs_site.scripts.verify_shape_blocks_test",
+      "path": "shape/generated/ast/docs-site/scripts/verify-shape-blocks.test.shape",
+      "sources": [
+        "docs-site/scripts/verify-shape-blocks.test.ts"
+      ]
+    },
+    {
       "module": "shape.generated.ast.docs_site.scripts.verify_shape_blocks",
       "path": "shape/generated/ast/docs-site/scripts/verify-shape-blocks.shape",
       "sources": [
@@ -171,6 +178,83 @@
       ]
     },
     {
+      "module": "shape.generated.ast.packages.shp_checker.src.behavioural.analyzer_truthfulness_test",
+      "path": "shape/generated/ast/packages/shp-checker/src/behavioural/analyzer-truthfulness.test.shape",
+      "sources": [
+        "packages/shp-checker/src/behavioural/analyzer-truthfulness.test.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.behavioural.ast_generation_behaviour_test",
+      "path": "shape/generated/ast/packages/shp-checker/src/behavioural/ast-generation-behaviour.test.shape",
+      "sources": [
+        "packages/shp-checker/src/behavioural/ast-generation-behaviour.test.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.behavioural.coverage_bindings_test",
+      "path": "shape/generated/ast/packages/shp-checker/src/behavioural/coverage-bindings.test.shape",
+      "sources": [
+        "packages/shp-checker/src/behavioural/coverage-bindings.test.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.behavioural.determinism_test",
+      "path": "shape/generated/ast/packages/shp-checker/src/behavioural/determinism.test.shape",
+      "sources": [
+        "packages/shp-checker/src/behavioural/determinism.test.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.behavioural.editor_behaviour_test",
+      "path": "shape/generated/ast/packages/shp-checker/src/behavioural/editor-behaviour.test.shape",
+      "sources": [
+        "packages/shp-checker/src/behavioural/editor-behaviour.test.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.behavioural.fingerprint_matrix_test",
+      "path": "shape/generated/ast/packages/shp-checker/src/behavioural/fingerprint-matrix.test.shape",
+      "sources": [
+        "packages/shp-checker/src/behavioural/fingerprint-matrix.test.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.behavioural.formatter_roundtrip_test",
+      "path": "shape/generated/ast/packages/shp-checker/src/behavioural/formatter-roundtrip.test.shape",
+      "sources": [
+        "packages/shp-checker/src/behavioural/formatter-roundtrip.test.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.behavioural.foundation_test",
+      "path": "shape/generated/ast/packages/shp-checker/src/behavioural/foundation.test.shape",
+      "sources": [
+        "packages/shp-checker/src/behavioural/foundation.test.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.behavioural.harness",
+      "path": "shape/generated/ast/packages/shp-checker/src/behavioural/harness.shape",
+      "sources": [
+        "packages/shp-checker/src/behavioural/harness.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.behavioural.hypercycle_witness_test",
+      "path": "shape/generated/ast/packages/shp-checker/src/behavioural/hypercycle-witness.test.shape",
+      "sources": [
+        "packages/shp-checker/src/behavioural/hypercycle-witness.test.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.behavioural.safety_invariants_test",
+      "path": "shape/generated/ast/packages/shp-checker/src/behavioural/safety-invariants.test.shape",
+      "sources": [
+        "packages/shp-checker/src/behavioural/safety-invariants.test.ts"
+      ]
+    },
+    {
       "module": "shape.generated.ast.packages.shp_checker.src.checker_test",
       "path": "shape/generated/ast/packages/shp-checker/src/checker.test.shape",
       "sources": [
@@ -266,6 +350,13 @@
       "path": "shape/generated/ast/packages/shp-cli/src/app.shape",
       "sources": [
         "packages/shp-cli/src/app.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_cli.src.cli_contract_test",
+      "path": "shape/generated/ast/packages/shp-cli/src/cli-contract.test.shape",
+      "sources": [
+        "packages/shp-cli/src/cli-contract.test.ts"
       ]
     },
     {
