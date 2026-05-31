@@ -639,11 +639,6 @@ attest no_shape_change {
 }
 
 attest no_shape_change {
-  source ts("docs-site/scripts/verify-shape-blocks.ts")
-  reason "Pure refactor extracting testable functions (extractShapeFences, verifyOneFence, verifyShapeCorpus) behind an unchanged CLI wrapper; DocsShapeBlockVerifier still reads docs fences, parses each via ShapeParser unless marked no-verify, and appends parsed modules and diagnostics, so the verifyShapeCodeBlocks contract is unchanged."
-}
-
-attest no_shape_change {
   source ts("docs-site/scripts/verify-shape-blocks.test.ts")
   reason "Behavioural self-tests for the docs fence verifier (#64). Test-only code with no architectural surface of its own; it exercises the existing DocsShapeBlockVerifier contract rather than changing it."
 }

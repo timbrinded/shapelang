@@ -118,6 +118,12 @@ change RefactorPurge {
 }
 `;
 
+// `attest no_shape_change` is a COVERAGE mechanism. Against this final-forbid-
+// only model (no governed implementation, no changed files) it has no causal
+// path to the final-forbid check, so the `attest` leg below is a control: it
+// confirms an unrelated attestation does not perturb the diagnostic, not that
+// attest is a defeated waiver. The grant/rationale/memory/reevaluation legs are
+// the genuine, causally-processed waiver attempts.
 const attestBlock = `attest no_shape_change {
   source ts("src/audit/purge.ts")
   reason "Purge implementation unchanged."

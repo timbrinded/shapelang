@@ -28,6 +28,7 @@ import {
   statsShapeHypergraph
 } from "../index.ts";
 import {
+  characterization,
   checkSource,
   diagnosticKinds,
   lockedIntended,
@@ -298,9 +299,13 @@ describe("#55 determinism + no-clock-in-checker", () => {
   );
 
   test(
-    shouldBe(
+    characterization(
       "review_by is an unvalidated free-form string (no library-level ISO YYYY-MM-DD validation exists)",
-      "shape/checker.shape freshness/determinism intent; grammar ReviewByDecl value=STRING"
+      {
+        reason:
+          "review_by is a bare STRING in the grammar (ReviewByDecl), stored verbatim; no checker/library API validates ISO YYYY-MM-DD",
+        followUp: "epic #55 invariant 5 / #34"
+      }
     ),
     () => {
       // Recon (checker.ts, parser.ts, formatter.ts, prelude.ts, shp-cli) found
@@ -358,13 +363,46 @@ describe("#55 determinism + no-clock-in-checker", () => {
       const brokenResult = checkShapeModules([parseModuleOrThrow(brokenTarget)]);
       expect(brokenResult.ok).toBe(false);
       expect(diagnosticKinds(brokenResult).length).toBeGreaterThan(0);
+    }
+  );
 
-      // ANCHOR for "the IDEAL is unmet": were ISO validation a law, this is the
-      // assertion that would hold. It is documented here, expected to FAIL today
-      // (hence `shouldBe`), and intentionally NOT executed so the suite stays
-      // green while the gap is visible. See epic #55 invariant 5.
-      const isoWouldRequireRejection = false;
-      expect(isoWouldRequireRejection).toBe(false);
+  // The unmet ideal, parked as a todo rather than a no-op `expect(false).toBe(false)`:
+  // were ISO validation a law, a non-ISO review_by would be rejected. Tracked
+  // for epic #55 invariant 5 / #34.
+  test.todo(
+    shouldBe(
+      "a non-ISO review_by date is rejected",
+      "concepts/unknowns-safety.md (uncertainty must be explicit); epic #55 invariant 5"
+    ),
+    () => {
+      // Were ISO validation a law this would hold; documented as the future
+      // assertion and NOT executed (no validation API exists today).
+      const result = checkSource(
+        [
+          "module rb",
+          "",
+          "resource R",
+          "",
+          "component C {",
+          "  owns R",
+          "  grants Read<R>",
+          "  fn f",
+          "    effects complete { Read<R> }",
+          "}",
+          "",
+          "memory M : RefactorConstraint<fn C.f> {",
+          "  applies_to fn C.f",
+          "  status Explained",
+          "  confidence High",
+          '  summary "x"',
+          "  owner T",
+          '  review_by "banana-not-a-date"',
+          "  protects shape Foo",
+          "  guards on_change require ReEvaluation<Self>",
+          "}"
+        ].join("\n")
+      );
+      expect(result.ok).toBe(false);
     }
   );
 });
