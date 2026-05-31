@@ -1,0 +1,145 @@
+module shape.generated.ast.packages.shp_checker.src.behavioural.fingerprint_matrix_test
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource FingerprintMatrixTestModuleComponentShellAstAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/behavioural/fingerprint-matrix.test.ts:135-176")
+  fingerprint ast.semantic_subtree_v1("sha256:f9c6e682902fc0353ca1e91ec7fce92a440ed3e7028f20e216b6d7a43cec1c58")
+}
+
+resource FingerprintMatrixTestModuleFingerprintOfAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/behavioural/fingerprint-matrix.test.ts:234-248")
+  fingerprint ast.semantic_subtree_v1("sha256:be5e066c01bc3b504756374f6c045a438cbe6852f514f0b01bab76270b5a1c54")
+}
+
+resource FingerprintMatrixTestModuleFunctionAstAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/behavioural/fingerprint-matrix.test.ts:68-71")
+  fingerprint ast.semantic_subtree_v1("sha256:bf0ab36e71db9574520ee4a00d43a69ba1dc82984df8060d2913d6f3c9ab1665")
+}
+
+resource FingerprintMatrixTestModuleGraphOfAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/behavioural/fingerprint-matrix.test.ts:216-226")
+  fingerprint ast.semantic_subtree_v1("sha256:272b55ffb788a41f944910105d31999e838c425eefd2530df9d5daae83e308b7")
+}
+
+resource FingerprintMatrixTestModuleMultiFunctionAstAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/behavioural/fingerprint-matrix.test.ts:74-116")
+  fingerprint ast.semantic_subtree_v1("sha256:f1513d9be4944e94f47983d3f192dafa2024df0a177972e1901f853b25e354fe")
+}
+
+resource FingerprintMatrixTestModuleResourceShellAstAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/behavioural/fingerprint-matrix.test.ts:184-212")
+  fingerprint ast.semantic_subtree_v1("sha256:376b2f252dabdd44f07670ec606542e7228b0f9b9c503eadd5c2ba0fec4b8508")
+}
+
+resource FingerprintMatrixTestModuleSpanAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/behavioural/fingerprint-matrix.test.ts:50-57")
+  fingerprint ast.semantic_subtree_v1("sha256:98b858224277fa5de75888654180d5e74decab72d039c7c8bb67b14b2c20bef9")
+}
+
+resource FingerprintMatrixTestModuleTargetKindOfAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/behavioural/fingerprint-matrix.test.ts:254-260")
+  fingerprint ast.semantic_subtree_v1("sha256:33efe96ac2030487988ef1b23356f586f0425890d84c3c13c4773f75d8c8405c")
+}
+
+component FingerprintMatrixTestModule : GeneratedCandidate {
+  fn componentShellAst
+    source ts("packages/shp-checker/src/behavioural/fingerprint-matrix.test.ts:135-176")
+    effects unknown
+  fn fingerprintOf
+    source ts("packages/shp-checker/src/behavioural/fingerprint-matrix.test.ts:234-248")
+    effects unknown
+  fn functionAst
+    source ts("packages/shp-checker/src/behavioural/fingerprint-matrix.test.ts:68-71")
+    effects unknown
+  fn graphOf
+    source ts("packages/shp-checker/src/behavioural/fingerprint-matrix.test.ts:216-226")
+    effects unknown
+  fn multiFunctionAst
+    source ts("packages/shp-checker/src/behavioural/fingerprint-matrix.test.ts:74-116")
+    effects unknown
+  fn resourceShellAst
+    source ts("packages/shp-checker/src/behavioural/fingerprint-matrix.test.ts:184-212")
+    effects unknown
+  fn span
+    source ts("packages/shp-checker/src/behavioural/fingerprint-matrix.test.ts:50-57")
+    effects unknown
+  fn targetKindOf
+    source ts("packages/shp-checker/src/behavioural/fingerprint-matrix.test.ts:254-260")
+    effects unknown
+}
+
+relation FingerprintMatrixTestModuleComponentShellAstGeneratedFromFingerprintMatrixTestModuleComponentShellAstAstAnchor {
+  kind generated_from
+  connects FingerprintMatrixTestModule -> FingerprintMatrixTestModuleComponentShellAstAstAnchor
+  roles { FingerprintMatrixTestModule as generated, FingerprintMatrixTestModuleComponentShellAstAstAnchor as syntax }
+  expects FingerprintMatrixTestModuleComponentShellAstAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f9c6e682902fc0353ca1e91ec7fce92a440ed3e7028f20e216b6d7a43cec1c58")
+  summary "fn FingerprintMatrixTestModule.componentShellAst generated from typescript function_declaration at packages/shp-checker/src/behavioural/fingerprint-matrix.test.ts:135-176."
+}
+
+relation FingerprintMatrixTestModuleFingerprintOfGeneratedFromFingerprintMatrixTestModuleFingerprintOfAstAnchor {
+  kind generated_from
+  connects FingerprintMatrixTestModule -> FingerprintMatrixTestModuleFingerprintOfAstAnchor
+  roles { FingerprintMatrixTestModule as generated, FingerprintMatrixTestModuleFingerprintOfAstAnchor as syntax }
+  expects FingerprintMatrixTestModuleFingerprintOfAstAnchor fingerprint ast.semantic_subtree_v1("sha256:be5e066c01bc3b504756374f6c045a438cbe6852f514f0b01bab76270b5a1c54")
+  summary "fn FingerprintMatrixTestModule.fingerprintOf generated from typescript function_declaration at packages/shp-checker/src/behavioural/fingerprint-matrix.test.ts:234-248."
+}
+
+relation FingerprintMatrixTestModuleFunctionAstGeneratedFromFingerprintMatrixTestModuleFunctionAstAstAnchor {
+  kind generated_from
+  connects FingerprintMatrixTestModule -> FingerprintMatrixTestModuleFunctionAstAstAnchor
+  roles { FingerprintMatrixTestModule as generated, FingerprintMatrixTestModuleFunctionAstAstAnchor as syntax }
+  expects FingerprintMatrixTestModuleFunctionAstAstAnchor fingerprint ast.semantic_subtree_v1("sha256:bf0ab36e71db9574520ee4a00d43a69ba1dc82984df8060d2913d6f3c9ab1665")
+  summary "fn FingerprintMatrixTestModule.functionAst generated from typescript function_declaration at packages/shp-checker/src/behavioural/fingerprint-matrix.test.ts:68-71."
+}
+
+relation FingerprintMatrixTestModuleGraphOfGeneratedFromFingerprintMatrixTestModuleGraphOfAstAnchor {
+  kind generated_from
+  connects FingerprintMatrixTestModule -> FingerprintMatrixTestModuleGraphOfAstAnchor
+  roles { FingerprintMatrixTestModule as generated, FingerprintMatrixTestModuleGraphOfAstAnchor as syntax }
+  expects FingerprintMatrixTestModuleGraphOfAstAnchor fingerprint ast.semantic_subtree_v1("sha256:272b55ffb788a41f944910105d31999e838c425eefd2530df9d5daae83e308b7")
+  summary "fn FingerprintMatrixTestModule.graphOf generated from typescript function_declaration at packages/shp-checker/src/behavioural/fingerprint-matrix.test.ts:216-226."
+}
+
+relation FingerprintMatrixTestModuleMultiFunctionAstGeneratedFromFingerprintMatrixTestModuleMultiFunctionAstAstAnchor {
+  kind generated_from
+  connects FingerprintMatrixTestModule -> FingerprintMatrixTestModuleMultiFunctionAstAstAnchor
+  roles { FingerprintMatrixTestModule as generated, FingerprintMatrixTestModuleMultiFunctionAstAstAnchor as syntax }
+  expects FingerprintMatrixTestModuleMultiFunctionAstAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f1513d9be4944e94f47983d3f192dafa2024df0a177972e1901f853b25e354fe")
+  summary "fn FingerprintMatrixTestModule.multiFunctionAst generated from typescript function_declaration at packages/shp-checker/src/behavioural/fingerprint-matrix.test.ts:74-116."
+}
+
+relation FingerprintMatrixTestModuleResourceShellAstGeneratedFromFingerprintMatrixTestModuleResourceShellAstAstAnchor {
+  kind generated_from
+  connects FingerprintMatrixTestModule -> FingerprintMatrixTestModuleResourceShellAstAstAnchor
+  roles { FingerprintMatrixTestModule as generated, FingerprintMatrixTestModuleResourceShellAstAstAnchor as syntax }
+  expects FingerprintMatrixTestModuleResourceShellAstAstAnchor fingerprint ast.semantic_subtree_v1("sha256:376b2f252dabdd44f07670ec606542e7228b0f9b9c503eadd5c2ba0fec4b8508")
+  summary "fn FingerprintMatrixTestModule.resourceShellAst generated from typescript function_declaration at packages/shp-checker/src/behavioural/fingerprint-matrix.test.ts:184-212."
+}
+
+relation FingerprintMatrixTestModuleSpanGeneratedFromFingerprintMatrixTestModuleSpanAstAnchor {
+  kind generated_from
+  connects FingerprintMatrixTestModule -> FingerprintMatrixTestModuleSpanAstAnchor
+  roles { FingerprintMatrixTestModule as generated, FingerprintMatrixTestModuleSpanAstAnchor as syntax }
+  expects FingerprintMatrixTestModuleSpanAstAnchor fingerprint ast.semantic_subtree_v1("sha256:98b858224277fa5de75888654180d5e74decab72d039c7c8bb67b14b2c20bef9")
+  summary "fn FingerprintMatrixTestModule.span generated from typescript function_declaration at packages/shp-checker/src/behavioural/fingerprint-matrix.test.ts:50-57."
+}
+
+relation FingerprintMatrixTestModuleTargetKindOfGeneratedFromFingerprintMatrixTestModuleTargetKindOfAstAnchor {
+  kind generated_from
+  connects FingerprintMatrixTestModule -> FingerprintMatrixTestModuleTargetKindOfAstAnchor
+  roles { FingerprintMatrixTestModule as generated, FingerprintMatrixTestModuleTargetKindOfAstAnchor as syntax }
+  expects FingerprintMatrixTestModuleTargetKindOfAstAnchor fingerprint ast.semantic_subtree_v1("sha256:33efe96ac2030487988ef1b23356f586f0425890d84c3c13c4773f75d8c8405c")
+  summary "fn FingerprintMatrixTestModule.targetKindOf generated from typescript function_declaration at packages/shp-checker/src/behavioural/fingerprint-matrix.test.ts:254-260."
+}
+
+implementation FingerprintMatrixTestModuleImpl {
+  paths {
+    "packages/shp-checker/src/behavioural/fingerprint-matrix.test.ts"
+  }
+  conforms_to FingerprintMatrixTestModule
+}

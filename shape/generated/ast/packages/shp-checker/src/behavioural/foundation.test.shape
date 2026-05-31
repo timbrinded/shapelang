@@ -1,0 +1,7 @@
+module shape.generated.ast.packages.shp_checker.src.behavioural.foundation_test
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
