@@ -1,0 +1,33 @@
+module shape.generated.ast.packages.shp_cli.src.cli_contract_test
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource CliContractTestModuleRunCliAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/cli-contract.test.ts:57-79")
+  fingerprint ast.semantic_subtree_v1("sha256:1f9b816c81546aa1a2c8377c7416ea959dc478759e845fc9fa6b3144af863de0")
+}
+
+component CliContractTestModule : GeneratedCandidate {
+  fn runCli
+    source ts("packages/shp-cli/src/cli-contract.test.ts:57-79")
+    effects unknown
+}
+
+relation CliContractTestModuleRunCliGeneratedFromCliContractTestModuleRunCliAstAnchor {
+  kind generated_from
+  connects CliContractTestModule -> CliContractTestModuleRunCliAstAnchor
+  roles { CliContractTestModule as generated, CliContractTestModuleRunCliAstAnchor as syntax }
+  expects CliContractTestModuleRunCliAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1f9b816c81546aa1a2c8377c7416ea959dc478759e845fc9fa6b3144af863de0")
+  summary "fn CliContractTestModule.runCli generated from typescript function_declaration at packages/shp-cli/src/cli-contract.test.ts:57-79."
+}
+
+implementation CliContractTestModuleImpl {
+  paths {
+    "packages/shp-cli/src/cli-contract.test.ts"
+  }
+  conforms_to CliContractTestModule
+}

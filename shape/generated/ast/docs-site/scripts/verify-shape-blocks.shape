@@ -7,21 +7,69 @@ trait GeneratedCandidate {
 }
 
 resource VerifyShapeBlocksModuleCollectDocsFilesAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("docs-site/scripts/verify-shape-blocks.ts:73-87")
-  fingerprint ast.semantic_subtree_v1("sha256:32935de3a70fac3c3849b044ee8c3afdd7e046bd684f0cec5474050747fcd113")
+  storage ast.anchor("docs-site/scripts/verify-shape-blocks.ts:143-157")
+  fingerprint ast.semantic_subtree_v1("sha256:38ab1ae7dc211bcf7274c3cf494243cf61f73dfeb2bf812c08c4ae9ed356a9c3")
+}
+
+resource VerifyShapeBlocksModuleExtractShapeFencesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("docs-site/scripts/verify-shape-blocks.ts:51-61")
+  fingerprint ast.semantic_subtree_v1("sha256:5b896f27df2b920d4dce71a5a39a44eaecba43a4ea86fecb96fc8d306d64ab00")
+}
+
+resource VerifyShapeBlocksModuleIsNoVerifyAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("docs-site/scripts/verify-shape-blocks.ts:70-72")
+  fingerprint ast.semantic_subtree_v1("sha256:91de4eb876e0b30df864617193ab48f689f04b6b3074597e4be8505b1262f335")
+}
+
+resource VerifyShapeBlocksModuleIsShapeFenceAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("docs-site/scripts/verify-shape-blocks.ts:64-67")
+  fingerprint ast.semantic_subtree_v1("sha256:4bf94c3d52f41b26122f617f18f4d0660d8d8c9815055ecd58fda470f7fb36c8")
 }
 
 resource VerifyShapeBlocksModuleLineNumberAtAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("docs-site/scripts/verify-shape-blocks.ts:89-97")
-  fingerprint ast.semantic_subtree_v1("sha256:e261439b53cdf9029c86f258876cd5cefdc5849fbcab7ada90ab91f8a515f97b")
+  storage ast.anchor("docs-site/scripts/verify-shape-blocks.ts:132-140")
+  fingerprint ast.semantic_subtree_v1("sha256:3b1fd4b30aae5413a96fa6ff6222bb03ab1f717bfe3f0e45e2949f04fa182b36")
+}
+
+resource VerifyShapeBlocksModuleRunCliAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("docs-site/scripts/verify-shape-blocks.ts:164-193")
+  fingerprint ast.semantic_subtree_v1("sha256:ff0adc57465ed3e5222acc94bd198c020787218fbb8c1f94652a1aa137b62860")
+}
+
+resource VerifyShapeBlocksModuleVerifyOneFenceAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("docs-site/scripts/verify-shape-blocks.ts:81-98")
+  fingerprint ast.semantic_subtree_v1("sha256:9a5ac20195d1bcc8ce22c7001b971fc5a97213be11e23a97e8c28bf0f8f3622d")
+}
+
+resource VerifyShapeBlocksModuleVerifyShapeCorpusAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("docs-site/scripts/verify-shape-blocks.ts:105-129")
+  fingerprint ast.semantic_subtree_v1("sha256:d0cc99442665d7fa475daa898e411e56f91c8ae6a661562043aef97d138e64c2")
 }
 
 component VerifyShapeBlocksModule : GeneratedCandidate {
   fn collectDocsFiles
-    source ts("docs-site/scripts/verify-shape-blocks.ts:73-87")
+    source ts("docs-site/scripts/verify-shape-blocks.ts:143-157")
+    effects unknown
+  fn extractShapeFences
+    source ts("docs-site/scripts/verify-shape-blocks.ts:51-61")
+    effects unknown
+  fn isNoVerify
+    source ts("docs-site/scripts/verify-shape-blocks.ts:70-72")
+    effects unknown
+  fn isShapeFence
+    source ts("docs-site/scripts/verify-shape-blocks.ts:64-67")
     effects unknown
   fn lineNumberAt
-    source ts("docs-site/scripts/verify-shape-blocks.ts:89-97")
+    source ts("docs-site/scripts/verify-shape-blocks.ts:132-140")
+    effects unknown
+  fn runCli
+    source ts("docs-site/scripts/verify-shape-blocks.ts:164-193")
+    effects unknown
+  fn verifyOneFence
+    source ts("docs-site/scripts/verify-shape-blocks.ts:81-98")
+    effects unknown
+  fn verifyShapeCorpus
+    source ts("docs-site/scripts/verify-shape-blocks.ts:105-129")
     effects unknown
 }
 
@@ -29,16 +77,64 @@ relation VerifyShapeBlocksModuleCollectDocsFilesGeneratedFromVerifyShapeBlocksMo
   kind generated_from
   connects VerifyShapeBlocksModule -> VerifyShapeBlocksModuleCollectDocsFilesAstAnchor
   roles { VerifyShapeBlocksModule as generated, VerifyShapeBlocksModuleCollectDocsFilesAstAnchor as syntax }
-  expects VerifyShapeBlocksModuleCollectDocsFilesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:32935de3a70fac3c3849b044ee8c3afdd7e046bd684f0cec5474050747fcd113")
-  summary "fn VerifyShapeBlocksModule.collectDocsFiles generated from typescript function_declaration at docs-site/scripts/verify-shape-blocks.ts:73-87."
+  expects VerifyShapeBlocksModuleCollectDocsFilesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:38ab1ae7dc211bcf7274c3cf494243cf61f73dfeb2bf812c08c4ae9ed356a9c3")
+  summary "fn VerifyShapeBlocksModule.collectDocsFiles generated from typescript function_declaration at docs-site/scripts/verify-shape-blocks.ts:143-157."
+}
+
+relation VerifyShapeBlocksModuleExtractShapeFencesGeneratedFromVerifyShapeBlocksModuleExtractShapeFencesAstAnchor {
+  kind generated_from
+  connects VerifyShapeBlocksModule -> VerifyShapeBlocksModuleExtractShapeFencesAstAnchor
+  roles { VerifyShapeBlocksModule as generated, VerifyShapeBlocksModuleExtractShapeFencesAstAnchor as syntax }
+  expects VerifyShapeBlocksModuleExtractShapeFencesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5b896f27df2b920d4dce71a5a39a44eaecba43a4ea86fecb96fc8d306d64ab00")
+  summary "fn VerifyShapeBlocksModule.extractShapeFences generated from typescript function_declaration at docs-site/scripts/verify-shape-blocks.ts:51-61."
+}
+
+relation VerifyShapeBlocksModuleIsNoVerifyGeneratedFromVerifyShapeBlocksModuleIsNoVerifyAstAnchor {
+  kind generated_from
+  connects VerifyShapeBlocksModule -> VerifyShapeBlocksModuleIsNoVerifyAstAnchor
+  roles { VerifyShapeBlocksModule as generated, VerifyShapeBlocksModuleIsNoVerifyAstAnchor as syntax }
+  expects VerifyShapeBlocksModuleIsNoVerifyAstAnchor fingerprint ast.semantic_subtree_v1("sha256:91de4eb876e0b30df864617193ab48f689f04b6b3074597e4be8505b1262f335")
+  summary "fn VerifyShapeBlocksModule.isNoVerify generated from typescript function_declaration at docs-site/scripts/verify-shape-blocks.ts:70-72."
+}
+
+relation VerifyShapeBlocksModuleIsShapeFenceGeneratedFromVerifyShapeBlocksModuleIsShapeFenceAstAnchor {
+  kind generated_from
+  connects VerifyShapeBlocksModule -> VerifyShapeBlocksModuleIsShapeFenceAstAnchor
+  roles { VerifyShapeBlocksModule as generated, VerifyShapeBlocksModuleIsShapeFenceAstAnchor as syntax }
+  expects VerifyShapeBlocksModuleIsShapeFenceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4bf94c3d52f41b26122f617f18f4d0660d8d8c9815055ecd58fda470f7fb36c8")
+  summary "fn VerifyShapeBlocksModule.isShapeFence generated from typescript function_declaration at docs-site/scripts/verify-shape-blocks.ts:64-67."
 }
 
 relation VerifyShapeBlocksModuleLineNumberAtGeneratedFromVerifyShapeBlocksModuleLineNumberAtAstAnchor {
   kind generated_from
   connects VerifyShapeBlocksModule -> VerifyShapeBlocksModuleLineNumberAtAstAnchor
   roles { VerifyShapeBlocksModule as generated, VerifyShapeBlocksModuleLineNumberAtAstAnchor as syntax }
-  expects VerifyShapeBlocksModuleLineNumberAtAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e261439b53cdf9029c86f258876cd5cefdc5849fbcab7ada90ab91f8a515f97b")
-  summary "fn VerifyShapeBlocksModule.lineNumberAt generated from typescript function_declaration at docs-site/scripts/verify-shape-blocks.ts:89-97."
+  expects VerifyShapeBlocksModuleLineNumberAtAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3b1fd4b30aae5413a96fa6ff6222bb03ab1f717bfe3f0e45e2949f04fa182b36")
+  summary "fn VerifyShapeBlocksModule.lineNumberAt generated from typescript function_declaration at docs-site/scripts/verify-shape-blocks.ts:132-140."
+}
+
+relation VerifyShapeBlocksModuleRunCliGeneratedFromVerifyShapeBlocksModuleRunCliAstAnchor {
+  kind generated_from
+  connects VerifyShapeBlocksModule -> VerifyShapeBlocksModuleRunCliAstAnchor
+  roles { VerifyShapeBlocksModule as generated, VerifyShapeBlocksModuleRunCliAstAnchor as syntax }
+  expects VerifyShapeBlocksModuleRunCliAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ff0adc57465ed3e5222acc94bd198c020787218fbb8c1f94652a1aa137b62860")
+  summary "fn VerifyShapeBlocksModule.runCli generated from typescript function_declaration at docs-site/scripts/verify-shape-blocks.ts:164-193."
+}
+
+relation VerifyShapeBlocksModuleVerifyOneFenceGeneratedFromVerifyShapeBlocksModuleVerifyOneFenceAstAnchor {
+  kind generated_from
+  connects VerifyShapeBlocksModule -> VerifyShapeBlocksModuleVerifyOneFenceAstAnchor
+  roles { VerifyShapeBlocksModule as generated, VerifyShapeBlocksModuleVerifyOneFenceAstAnchor as syntax }
+  expects VerifyShapeBlocksModuleVerifyOneFenceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9a5ac20195d1bcc8ce22c7001b971fc5a97213be11e23a97e8c28bf0f8f3622d")
+  summary "fn VerifyShapeBlocksModule.verifyOneFence generated from typescript function_declaration at docs-site/scripts/verify-shape-blocks.ts:81-98."
+}
+
+relation VerifyShapeBlocksModuleVerifyShapeCorpusGeneratedFromVerifyShapeBlocksModuleVerifyShapeCorpusAstAnchor {
+  kind generated_from
+  connects VerifyShapeBlocksModule -> VerifyShapeBlocksModuleVerifyShapeCorpusAstAnchor
+  roles { VerifyShapeBlocksModule as generated, VerifyShapeBlocksModuleVerifyShapeCorpusAstAnchor as syntax }
+  expects VerifyShapeBlocksModuleVerifyShapeCorpusAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d0cc99442665d7fa475daa898e411e56f91c8ae6a661562043aef97d138e64c2")
+  summary "fn VerifyShapeBlocksModule.verifyShapeCorpus generated from typescript function_declaration at docs-site/scripts/verify-shape-blocks.ts:105-129."
 }
 
 implementation VerifyShapeBlocksModuleImpl {

@@ -1,0 +1,33 @@
+module shape.generated.ast.packages.shp_checker.src.behavioural.formatter_roundtrip_test
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource FormatterRoundtripTestModuleLoadCorpusAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/behavioural/formatter-roundtrip.test.ts:58-68")
+  fingerprint ast.semantic_subtree_v1("sha256:acc867156f415fdb0a5bd428103ef570c937240c3aebc716c100ebb1abaf5984")
+}
+
+component FormatterRoundtripTestModule : GeneratedCandidate {
+  fn loadCorpus
+    source ts("packages/shp-checker/src/behavioural/formatter-roundtrip.test.ts:58-68")
+    effects unknown
+}
+
+relation FormatterRoundtripTestModuleLoadCorpusGeneratedFromFormatterRoundtripTestModuleLoadCorpusAstAnchor {
+  kind generated_from
+  connects FormatterRoundtripTestModule -> FormatterRoundtripTestModuleLoadCorpusAstAnchor
+  roles { FormatterRoundtripTestModule as generated, FormatterRoundtripTestModuleLoadCorpusAstAnchor as syntax }
+  expects FormatterRoundtripTestModuleLoadCorpusAstAnchor fingerprint ast.semantic_subtree_v1("sha256:acc867156f415fdb0a5bd428103ef570c937240c3aebc716c100ebb1abaf5984")
+  summary "fn FormatterRoundtripTestModule.loadCorpus generated from typescript function_declaration at packages/shp-checker/src/behavioural/formatter-roundtrip.test.ts:58-68."
+}
+
+implementation FormatterRoundtripTestModuleImpl {
+  paths {
+    "packages/shp-checker/src/behavioural/formatter-roundtrip.test.ts"
+  }
+  conforms_to FormatterRoundtripTestModule
+}
