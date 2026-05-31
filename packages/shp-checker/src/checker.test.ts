@@ -8,6 +8,7 @@ import {
   buildShapeCriticPrompt,
   checkShapeFiles,
   checkShapeModules,
+  type CheckOptions,
   compareAnalyzerHintsToShape,
   extractEvidenceSpansFromUnifiedDiff,
   formatAnalyzerWarnings,
@@ -54,8 +55,8 @@ function contextRef(contextType: string, target: string): string {
   return `${contextType}<${target}>`;
 }
 
-function checkShapeSource(source: string) {
-  return checkShapeModules([requireParsed(source)]);
+function checkShapeSource(source: string, options: CheckOptions = {}) {
+  return checkShapeModules([requireParsed(source)], options);
 }
 
 function requireParsed(source: string) {
@@ -3681,6 +3682,56 @@ describe("Shape property-level guarded changes", () => {
     expect(output).toContain("removes shape trait PreserveInline from the guarded target");
   });
 
+  test("fires a precise guard for a removed user-defined protected trait", () => {
+    // Regression for PR #66 review: the protected `shape` value is raw, but the
+    // removed-trait event stores the resolved (module-qualified) name, and a
+    // user-defined trait is not in the built-in shape-trait set. Both must be
+    // resolved/recognised so the guard matches precisely rather than coarsely.
+    const result = checkShapeSource(`
+      module gateway
+
+      resource PolicySnapshot
+
+      trait LocallyScoped<T: Component> {
+        require_context ScopeReason<T> satisfied_by memory
+      }
+
+      component Gateway : LocallyScoped {
+        owns PolicySnapshot
+        grants Read<PolicySnapshot>
+        fn read
+          effects complete {
+            Read<PolicySnapshot>
+          }
+      }
+
+      memory GatewayScope : ${contextRef("ScopeReason", "component Gateway")} {
+        applies_to component Gateway
+        status Unexplained
+        confidence High
+        summary "Gateway is deliberately locally scoped."
+        owner GatewayTeam
+        protects shape LocallyScoped
+        guards on_change require ${contextRef("ReEvaluation", "Self")}
+      }
+
+      change DropScope {
+        modify component Gateway {
+          owns PolicySnapshot
+          grants Read<PolicySnapshot>
+          fn read
+            effects complete {
+              Read<PolicySnapshot>
+            }
+        }
+      }
+    `);
+    const output = formatDiagnostics(result);
+
+    expect(result.exitCode).toBe(1);
+    expect(output).toContain("removes shape trait LocallyScoped from the guarded target");
+  });
+
   test("enforces coarse guards on a removed component", () => {
     const result = checkShapeSource(`
       module gateway
@@ -3887,6 +3938,55 @@ describe("Shape role and approver policy", () => {
       policyModel({ policy: true, sensitive: true, approver: "Security" })
     );
     expect(satisfied.exitCode).toBe(0);
+  });
+
+  test("merges a later require-approver policy with an earlier empty one", () => {
+    // Regression for PR #66 review: a duplicate policy declaration must not let
+    // an earlier empty policy hide a later `require approver` of the same name,
+    // or sensitive memories would silently stop requiring approvers.
+    const result = checkShapeSource(`
+      module gateway
+
+      resource PolicySnapshot
+
+      policy ReviewPolicy {
+      }
+
+      policy ReviewPolicy {
+        require approver
+      }
+
+      component Gateway {
+        owns PolicySnapshot
+        grants Read<PolicySnapshot>
+        fn derivePolicyDecision : RefactorSensitive
+          effects complete {
+            Read<PolicySnapshot>
+          }
+      }
+
+      memory DecisionConstraint : ${contextRef("RefactorConstraint", fnTarget("Gateway.derivePolicyDecision"))} {
+        applies_to fn Gateway.derivePolicyDecision
+        status Unexplained
+        confidence High
+        sensitive
+        summary "Security-sensitive decision path."
+        owner GatewayTeam
+      }
+
+      reevaluation DecisionReviewed {
+        satisfies memory DecisionConstraint
+        outcome Confirmed
+        summary "Reviewed and confirmed."
+        evidence test("gateway/decision.test.ts")
+        reviewer GatewayTeam
+        decided_on "2026-06-02"
+      }
+    `);
+    const output = formatDiagnostics(result);
+
+    expect(result.exitCode).toBe(1);
+    expect(output).toContain("missing approver required by policy");
   });
 
   test("keeps approver optional without an approver policy", () => {
@@ -5037,6 +5137,78 @@ describe("Shape transform guards", () => {
     expect(guardedChanges).toHaveLength(1);
     expect(formatDiagnostics(result)).toContain("modifies the guarded target");
   });
+
+  test("a user trait shadows the built-in obligation of the same name", () => {
+    // Documented behaviour: a trait declared with the same name as a built-in
+    // shape trait replaces the built-in obligation. A root-module RefactorSensitive
+    // resolves to the same key as the prelude rule, so the user obligation must
+    // win and the built-in RefactorConstraint must not be required.
+    const base = `
+      resource PolicySnapshot
+
+      trait RefactorSensitive<T: Fn> {
+        require_context LocalReason<T> satisfied_by rationale
+      }
+
+      component Gateway {
+        owns PolicySnapshot
+        grants Read<PolicySnapshot>
+        fn derivePolicyDecision : RefactorSensitive
+          effects complete {
+            Read<PolicySnapshot>
+          }
+      }
+    `;
+    const missing = checkShapeSource(base);
+    const missingOutput = formatDiagnostics(missing);
+    expect(missing.exitCode).toBe(1);
+    expect(missingOutput).toContain(
+      contextRef("LocalReason", fnTarget("Gateway.derivePolicyDecision"))
+    );
+    // The shadowed built-in RefactorConstraint obligation is gone.
+    expect(missingOutput).not.toContain("RefactorConstraint");
+
+    const satisfied = checkShapeSource(`${base}
+      rationale LocalReasonGiven : ${contextRef("LocalReason", fnTarget("Gateway.derivePolicyDecision"))} {
+        applies_to fn Gateway.derivePolicyDecision
+        why CognitiveLocality
+        summary "Kept local on purpose."
+        owner GatewayTeam
+      }
+    `);
+    expect(satisfied.exitCode).toBe(0);
+  });
+
+  test("modifying a trait to drop require_context relaxes the obligation", () => {
+    // The user obligation rule is appended to a flat list at lowering time;
+    // modifying the trait to an empty body must drop the stale rule so the
+    // obligation no longer fires.
+    const result = checkShapeSource(`
+      module gateway
+
+      resource PolicySnapshot
+
+      trait NeedsReason<T: Fn> {
+        require_context Reason<T> satisfied_by rationale
+      }
+
+      component Gateway {
+        owns PolicySnapshot
+        grants Read<PolicySnapshot>
+        fn derivePolicyDecision : NeedsReason
+          effects complete {
+            Read<PolicySnapshot>
+          }
+      }
+
+      change RelaxObligation {
+        modify trait NeedsReason<T: Fn> {
+        }
+      }
+    `);
+
+    expect(result.exitCode).toBe(0);
+  });
 });
 
 describe("Shape component and resource shape traits", () => {
@@ -5444,12 +5616,10 @@ describe("Shape memory freshness checking", () => {
     `;
   }
 
+  // Thin wrapper over the shared checkShapeSource helper so the parse/error flow
+  // lives in one place; this only threads the freshness option through.
   function checkWithFreshness(source: string, freshnessDate?: string) {
-    const parsed = parseShapeModule(source);
-    if (!parsed.ok) {
-      throw new Error(parsed.diagnostics.map((diagnostic) => diagnostic.message).join("\n"));
-    }
-    return checkShapeModules([parsed.module], { freshnessDate });
+    return checkShapeSource(source, { freshnessDate });
   }
 
   test("flags design memory whose review_by is before the freshness date", () => {

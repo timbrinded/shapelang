@@ -135,7 +135,7 @@ export const PRELUDE_SHAPE_TRAIT_NAMES = [
 export const PRELUDE_TRAIT_NAMES = [
   ...PRELUDE_TRAITS.map((trait) => trait.name),
   ...PRELUDE_RESOURCE_TRAIT_NAMES,
-  ...PRELUDE_CONTEXT_REQUIREMENTS.map((rule) => rule.trait)
+  ...PRELUDE_SHAPE_TRAIT_NAMES
 ];
 
 export const PRELUDE_EFFECT_NAMES = [

@@ -307,14 +307,23 @@ describe("#63 prelude context-obligation set surfaced by the editor", () => {
     () => {
       // Pinning the literal CONTENTS of the built-in set is characterization: it
       // documents today's hardcoded obligations and is expected to change when
-      // they move into Shape syntax.
-      expect(PRELUDE_CONTEXT_REQUIREMENTS.map((rule) => rule.trait)).toEqual([
-        "PreserveInline",
-        "RequiresDescription",
-        "ProtectedCheckOrder",
-        "RefactorSensitive",
-        "NonIdiomatic",
-        "TestOnly"
+      // they move into Shape syntax. Pinned as `trait targetKind` because the
+      // same trait now derives obligations on fn, component, and resource
+      // targets, so the trait name alone no longer identifies an entry.
+      expect(
+        PRELUDE_CONTEXT_REQUIREMENTS.map((rule) => `${rule.trait} ${rule.targetKind}`)
+      ).toEqual([
+        "PreserveInline fn",
+        "RequiresDescription fn",
+        "ProtectedCheckOrder fn",
+        "RefactorSensitive fn",
+        "NonIdiomatic fn",
+        "TestOnly fn",
+        "RefactorSensitive component",
+        "NonIdiomatic component",
+        "TestOnly component",
+        "RefactorSensitive resource",
+        "NonIdiomatic resource"
       ]);
     }
   );

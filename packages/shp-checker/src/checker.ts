@@ -614,6 +614,12 @@ type DescriptionInfo = {
 type ProtectedProperty = {
   kind: string;
   value: string;
+  // For `protects shape <trait>`, the trait name resolved into the same key
+  // space as classifier and `shape_trait_removed` events (module-qualified
+  // where applicable), so property-level guard matching can compare like for
+  // like. Undefined for non-shape properties; free-form `shape` labels resolve
+  // to a name that matches no declared trait and so stay coarse.
+  resolvedValue?: string;
   provenance: Provenance;
 };
 
@@ -1263,6 +1269,15 @@ function appendShapeTraitContext(
       )
     );
   }
+  appendContextAndGuardSections(target, model, lines);
+}
+
+/**
+ * Appends the "satisfied by" and "memory guards" sections for a target. Split
+ * out so relation explain (which carries no shape traits and so has no required
+ * context) can list its guards without a fake empty trait map.
+ */
+function appendContextAndGuardSections(target: ShapeTarget, model: Model, lines: string[]): void {
   const satisfiedBy = matchingContextsForTarget(target, model);
   if (satisfiedBy.length > 0) {
     lines.push("", "  satisfied by:");
@@ -2831,7 +2846,7 @@ function lowerContextMember(
     return true;
   }
   if (isProtectsDecl(member)) {
-    pushProtects(info, kind, member.kind, member.value, context);
+    pushProtects(info, kind, member.kind, member.value, context, model);
     return true;
   }
   if (isGuardDecl(member)) {
@@ -2845,7 +2860,7 @@ function lowerContextMember(
   // Nested grouping blocks (#14) desugar to the same flat members.
   if (isProtectsBlock(member)) {
     for (const entry of member.entries) {
-      pushProtects(info, kind, entry.kind, entry.value, context);
+      pushProtects(info, kind, entry.kind, entry.value, context, model);
     }
     return true;
   }
@@ -2875,12 +2890,22 @@ function pushProtects(
   kind: ContextKind,
   propertyKind: string,
   rawValue: string | undefined,
-  context: LoweringContext
+  context: LoweringContext,
+  model: Model
 ): void {
   const value = rawValue ?? "";
+  // Resolve a protected shape trait the same way classifiers resolve, so a
+  // module-qualified or user-defined trait matches its `shape_trait_removed`
+  // event. resolveDeclReference is used (not resolveDeclName) so a free-form
+  // protected label never emits a spurious ambiguity diagnostic.
+  const resolvedValue =
+    propertyKind === "shape" && value
+      ? resolveDeclReference(value, "trait", context, model).name
+      : undefined;
   info.protects.push({
     kind: propertyKind,
     value,
+    resolvedValue,
     provenance: provenance(
       context.filePath,
       `${kind} ${info.name} protects ${propertyKind}${value ? ` ${value}` : ""}`
@@ -2985,12 +3010,18 @@ function lowerRole(role: RoleDecl, context: LoweringContext, model: Model): void
 
 function lowerPolicy(policy: PolicyDecl, context: LoweringContext, model: Model): void {
   const name = declKey(context.name, policy.name);
-  if (model.policies.has(name)) {
+  const requiresApprover = policy.members.some(isRequireApproverDecl);
+  const existing = model.policies.get(name);
+  if (existing) {
+    // Merge rather than ignore: a later `policy P { require approver }` must not
+    // be silently dropped by an earlier empty declaration of the same name, or
+    // sensitive memories would stop requiring approvers.
+    existing.requiresApprover ||= requiresApprover;
     return;
   }
   model.policies.set(name, {
     name,
-    requiresApprover: policy.members.some(isRequireApproverDecl),
+    requiresApprover,
     provenance: provenance(context.filePath, `policy ${name}`)
   });
 }
@@ -3288,6 +3319,12 @@ function removeDeclaration(
     model.resources.delete(resolvedName);
   } else if (kind === "trait") {
     model.traits.delete(resolvedName);
+    // A trait's `require_context` obligations are appended to a flat list
+    // independent of model.traits, so drop them here too; otherwise a removed
+    // or modified trait would keep enforcing its old obligations.
+    model.userContextRequirements = model.userContextRequirements.filter(
+      (rule) => rule.trait !== resolvedName
+    );
   } else if (kind === "component") {
     model.components.delete(resolvedName);
   } else if (kind === "relation") {
@@ -4354,7 +4391,7 @@ function checkGuardedChanges(model: Model): SemanticDiagnostic[] {
       continue;
     }
 
-    const detectable = detectableProtectedProperties(guard.info);
+    const detectable = detectableProtectedProperties(model, guard.info);
     // Property-level only when every protected property is detectable; if a
     // guard protects something we cannot diff (a free-form label, or nothing),
     // fall back to coarse "any change to the target" matching.
@@ -4418,14 +4455,23 @@ function dedupeCoarseGuardedChanges(diagnostics: SemanticDiagnostic[]): Semantic
  * `guards forbid transform <label>` fires when a change declares that transform
  * intent on the guarded target and no reevaluation satisfies the guard.
  */
-function checkTransformGuards(model: Model): SemanticDiagnostic[] {
-  const diagnostics: SemanticDiagnostic[] = [];
-  const contexts: { kind: ContextKind; info: RationaleInfo | MemoryInfo }[] = [
+/**
+ * Every rationale and memory paired with its context kind, in a stable order
+ * (rationales then memories). Freshness and transform-guard checking both
+ * enumerate the full context population this way; sharing one builder keeps
+ * them from drifting on ordering or which kinds are included.
+ */
+function allContexts(model: Model): { kind: ContextKind; info: RationaleInfo | MemoryInfo }[] {
+  return [
     ...[...model.rationales.values()].map((info) => ({ kind: "rationale" as const, info })),
     ...[...model.memories.values()].map((info) => ({ kind: "memory" as const, info }))
   ];
+}
 
-  for (const { kind, info } of contexts) {
+function checkTransformGuards(model: Model): SemanticDiagnostic[] {
+  const diagnostics: SemanticDiagnostic[] = [];
+
+  for (const { kind, info } of allContexts(model)) {
     if (
       info.forbiddenTransforms.length === 0 ||
       hasValidReevaluationForGuard(model, kind, info.name)
@@ -4485,7 +4531,10 @@ function guardedShapeChanged(
  * detect: a description, or a shape trait by name. Free-form labels (e.g.
  * `protects shape CheckOrder`) are not detectable and keep coarse matching.
  */
-function detectableProtectedProperties(info: RationaleInfo | MemoryInfo): ProtectedProperty[] {
+function detectableProtectedProperties(
+  model: Model,
+  info: RationaleInfo | MemoryInfo
+): ProtectedProperty[] {
   // A description is a function-only property, so a `protects description` clause
   // is only detectable on a function target; on a component/resource it has no
   // corresponding change event and must fall back to coarse matching.
@@ -4493,7 +4542,20 @@ function detectableProtectedProperties(info: RationaleInfo | MemoryInfo): Protec
   return info.protects.filter(
     (property) =>
       (property.kind === "description" && targetKind === "fn") ||
-      (property.kind === "shape" && KNOWN_SHAPE_TRAITS.has(property.value))
+      (property.kind === "shape" && isDetectableShapeTrait(model, property.resolvedValue))
+  );
+}
+
+/**
+ * A protected `shape` value is detectable when it resolves to a real trait —
+ * either a built-in shape trait or a trait declared in the model — so its
+ * removal can be matched precisely. Free-form labels resolve to no trait and
+ * keep coarse matching.
+ */
+function isDetectableShapeTrait(model: Model, resolvedValue: string | undefined): boolean {
+  return (
+    resolvedValue !== undefined &&
+    (KNOWN_SHAPE_TRAITS.has(resolvedValue) || model.traits.has(resolvedValue))
   );
 }
 
@@ -4509,7 +4571,10 @@ function findPropertyEvent(
     if (property.kind === "description") {
       return event.kind === "description_removed";
     }
-    return event.kind === "shape_trait_removed" && event.trait === property.value;
+    return (
+      event.kind === "shape_trait_removed" &&
+      event.trait === (property.resolvedValue ?? property.value)
+    );
   });
 }
 
@@ -4534,12 +4599,8 @@ function describeProtectedProperty(property: ProtectedProperty): string {
  */
 function checkFreshness(model: Model, asOf: string): SemanticDiagnostic[] {
   const diagnostics: SemanticDiagnostic[] = [];
-  const contexts: { kind: ContextKind; info: RationaleInfo | MemoryInfo }[] = [
-    ...[...model.rationales.values()].map((info) => ({ kind: "rationale" as const, info })),
-    ...[...model.memories.values()].map((info) => ({ kind: "memory" as const, info }))
-  ];
 
-  for (const { kind, info } of contexts) {
+  for (const { kind, info } of allContexts(model)) {
     if (!info.reviewBy || !isIsoDate(info.reviewBy) || info.reviewBy >= asOf) {
       continue;
     }
@@ -4565,8 +4626,24 @@ function isIsoDate(value: string): boolean {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) {
     return false;
   }
-  const parsed = new Date(`${value}T00:00:00Z`);
-  return !Number.isNaN(parsed.getTime()) && parsed.toISOString().slice(0, 10) === value;
+  const year = Number(value.slice(0, 4));
+  const month = Number(value.slice(5, 7));
+  const day = Number(value.slice(8, 10));
+  if (month < 1 || month > 12 || day < 1) {
+    return false;
+  }
+  return day <= daysInMonth(year, month);
+}
+
+// Calendar days in a month, with Gregorian leap-year rules. Kept as pure
+// arithmetic (no `Date`) so the checker reads no wall clock and stays
+// deterministic; the no-clock-in-checker invariant is locked by a test.
+function daysInMonth(year: number, month: number): number {
+  if (month === 2) {
+    const isLeapYear = (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
+    return isLeapYear ? 29 : 28;
+  }
+  return month === 4 || month === 6 || month === 9 || month === 11 ? 30 : 31;
 }
 
 function checkFunctions(model: Model): SemanticDiagnostic[] {
@@ -5035,6 +5112,13 @@ function requirementsForTarget(
     if (rule.targetKind !== targetKind || !traits.has(rule.trait)) {
       continue;
     }
+    // A user-declared trait of the same name shadows the built-in obligation
+    // (documented name-resolution behavior). Drop prelude rules whose trait a
+    // non-prelude declaration has redefined, so the user's `require_context`
+    // (or its absence) governs instead of the built-in.
+    if (isPreludeRule(rule) && isShadowedByUserTrait(model, rule.trait)) {
+      continue;
+    }
     const key = `${rule.trait}:${rule.targetKind}:${rule.contextType}`;
     if (seen.has(key)) {
       continue;
@@ -5043,6 +5127,23 @@ function requirementsForTarget(
     matched.push(rule);
   }
   return matched;
+}
+
+/** Prelude rules carry no provenance; user `require_context` rules always do. */
+function isPreludeRule(rule: ContextRequirementRule): boolean {
+  return rule.provenance === undefined;
+}
+
+/**
+ * True when a trait declaration has redefined this prelude obligation's trait
+ * name. The prelude context-obligation traits (RefactorSensitive, NonIdiomatic,
+ * ...) are never seeded into model.traits — only PRELUDE_TRAITS (AppendOnly) is
+ * — so any entry under a context-trait name is necessarily user-declared. (A
+ * provenance check is unreliable here: an in-memory module has no file path, so
+ * its traits look prelude-authored.)
+ */
+function isShadowedByUserTrait(model: Model, trait: string): boolean {
+  return model.traits.has(trait);
 }
 
 function hasRequiredContext(
@@ -5308,11 +5409,9 @@ function formatRelationExplanation(relation: HyperedgeInfo, model: Model): strin
         )
     );
   }
-  appendShapeTraitContext({ kind: "relation", name: relation.name }, EMPTY_TRAIT_MAP, model, lines);
+  appendContextAndGuardSections({ kind: "relation", name: relation.name }, model, lines);
   return lines.join("\n");
 }
-
-const EMPTY_TRAIT_MAP: ReadonlyMap<string, Provenance> = new Map();
 
 function appendIncidence(vertex: string, model: Model, lines: string[]): void {
   const incident = (model.hypergraph.incidence.get(vertex) ?? [])
