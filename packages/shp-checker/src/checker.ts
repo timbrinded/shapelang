@@ -4395,12 +4395,12 @@ function allContexts(model: Model): { kind: ContextKind; info: RationaleInfo | M
 function buildGuardContexts(model: Model): GuardContext[] {
   const contexts: GuardContext[] = [];
   for (const { kind, info } of allContexts(model)) {
+    if (!hasGuardAction(info)) {
+      continue;
+    }
     const requireClauses = info.guards
       .filter((guard) => requiresReevaluation(guard))
       .map((guard) => ({ provenance: guard.provenance }));
-    if (requireClauses.length === 0 && info.forbiddenTransforms.length === 0) {
-      continue;
-    }
     const target = info.appliesTo ?? info.target;
     contexts.push({
       guardKind: kind,
@@ -5159,6 +5159,16 @@ function requiresReevaluation(guard: GuardInfo): boolean {
   return normalized === "reevaluation" || normalized === "reevaluation<self>";
 }
 
+/**
+ * A context carries an enforceable guard when it requires reevaluation or
+ * forbids a transform. Both `check` (via {@link buildGuardContexts}) and
+ * `explain` (via {@link guardsForTarget}) gate on this, so transform-only
+ * guards stay visible in explain output instead of being silently dropped.
+ */
+function hasGuardAction(info: RationaleInfo | MemoryInfo): boolean {
+  return info.guards.some(requiresReevaluation) || info.forbiddenTransforms.length > 0;
+}
+
 function hasValidReevaluationForGuard(model: Model, kind: ContextKind, name: string): boolean {
   return [...model.reevaluations.values()].some(
     (reevaluation) =>
@@ -5196,16 +5206,13 @@ function guardsForTarget(
   for (const rationale of model.rationales.values()) {
     if (
       targetsEqual(rationale.appliesTo ?? rationale.target, target) &&
-      rationale.guards.some(requiresReevaluation)
+      hasGuardAction(rationale)
     ) {
       guards.push({ kind: "rationale", info: rationale });
     }
   }
   for (const memory of model.memories.values()) {
-    if (
-      targetsEqual(memory.appliesTo ?? memory.target, target) &&
-      memory.guards.some(requiresReevaluation)
-    ) {
+    if (targetsEqual(memory.appliesTo ?? memory.target, target) && hasGuardAction(memory)) {
       guards.push({ kind: "memory", info: memory });
     }
   }

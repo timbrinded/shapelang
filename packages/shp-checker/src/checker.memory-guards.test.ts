@@ -2238,6 +2238,19 @@ describe("Shape transform guards", () => {
 
     expect(result.exitCode).toBe(0);
   });
+
+  test("explain lists a transform-only guard that has no reevaluation clause", () => {
+    // Regression: a context whose only guard action is `forbid transform` is
+    // enforced by `check` but was previously dropped from `shp explain`'s
+    // memory-guards section, which filtered on reevaluation guards alone.
+    const explanation = explainShapeModules(
+      [requireParsed(transformGuardModel("ExtractHelper", "RenameSymbol"))],
+      "Gateway.derivePolicyDecision"
+    );
+
+    expect(explanation).toContain("memory guards:");
+    expect(explanation).toContain("rationale gateway::DerivePolicyInline");
+  });
 });
 
 describe("Shape component and resource shape traits", () => {
