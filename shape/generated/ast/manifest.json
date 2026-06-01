@@ -304,6 +304,13 @@
       ]
     },
     {
+      "module": "shape.generated.ast.packages.shp_checker.src.memory_guards",
+      "path": "shape/generated/ast/packages/shp-checker/src/memory-guards.shape",
+      "sources": [
+        "packages/shp-checker/src/memory-guards.ts"
+      ]
+    },
+    {
       "module": "shape.generated.ast.packages.shp_checker.src.parser",
       "path": "shape/generated/ast/packages/shp-checker/src/parser.shape",
       "sources": [

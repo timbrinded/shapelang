@@ -119,7 +119,6 @@ import { parseShapeModule, type ParseDiagnostic } from "./parser.ts";
 import {
   PRELUDE_CONTEXT_REQUIREMENTS,
   PRELUDE_RELATION_KIND_RULES,
-  PRELUDE_SHAPE_TRAIT_NAMES,
   PRELUDE_TRAIT_NAMES,
   PRELUDE_TRAITS,
   type ContextKind,
@@ -136,6 +135,13 @@ import {
   isGeneratedAstModuleName,
   normalizeGeneratedAstPath
 } from "./generated-ast-policy.ts";
+import {
+  evaluateGuards,
+  type ChangeTrigger,
+  type GuardContext,
+  type GuardedProperty,
+  type GuardViolation
+} from "./memory-guards.ts";
 
 /**
  * Kind registry: every relation kind declares whether its members are
@@ -147,7 +153,6 @@ const PRELUDE_RELATION_KINDS = new Map(
 );
 
 const KNOWN_PRELUDE_TRAITS = new Set(PRELUDE_TRAIT_NAMES);
-const KNOWN_SHAPE_TRAITS = new Set(PRELUDE_SHAPE_TRAIT_NAMES);
 
 export type SemanticDiagnostic =
   | {
@@ -574,7 +579,7 @@ type ResolutionResult =
   | { kind: "unknown"; name: string }
   | { kind: "ambiguous"; name: string; matches: string[] };
 
-type Provenance = {
+export type Provenance = {
   filePath?: string;
   label: string;
 };
@@ -599,7 +604,7 @@ type EffectSummaryInfo =
       kind: "unknown";
     };
 
-type ShapeTarget = {
+export type ShapeTarget = {
   kind: TargetKind;
   name: string;
 };
@@ -721,37 +726,9 @@ type ReevaluationInfo = {
   provenance: Provenance;
 };
 
-type ChangeEvent =
-  | {
-      // A target was modified or removed wholesale. Drives coarse guards that
-      // protect a target without a detectable property, or no property at all.
-      kind: "target_changed";
-      target: ShapeTarget;
-      provenance: Provenance;
-    }
-  | {
-      // A specific shape trait was dropped from a target. Drives property-level
-      // guards that protect that exact trait.
-      kind: "shape_trait_removed";
-      target: ShapeTarget;
-      trait: string;
-      provenance: Provenance;
-    }
-  | {
-      // A target's required/non-empty description was dropped. Drives guards
-      // that protect the description.
-      kind: "description_removed";
-      target: ShapeTarget;
-      provenance: Provenance;
-    }
-  | {
-      // A change declared a named transform intent on a target. Drives
-      // `guards forbid transform <label>` guards.
-      kind: "transform_applied";
-      target: ShapeTarget;
-      label: string;
-      provenance: Provenance;
-    };
+// Observed changes are modelled by memory-guards as ChangeTrigger; the checker
+// emits them while lowering `change` declarations.
+type ChangeEvent = ChangeTrigger;
 
 type FunctionInfo = {
   component: string;
@@ -4388,86 +4365,14 @@ function checkReevaluations(model: Model): SemanticDiagnostic[] {
 }
 
 function checkGuardedChanges(model: Model): SemanticDiagnostic[] {
-  const diagnostics: SemanticDiagnostic[] = [];
-  const guards = [
-    ...guardedContexts("rationale", model.rationales.values()),
-    ...guardedContexts("memory", model.memories.values())
-  ];
-
-  for (const guard of guards) {
-    if (hasValidReevaluationForGuard(model, guard.kind, guard.info.name)) {
-      continue;
-    }
-
-    const detectable = detectableProtectedProperties(model, guard.info);
-    // Property-level only when every protected property is detectable; if a
-    // guard protects something we cannot diff (a free-form label, or nothing),
-    // fall back to coarse "any change to the target" matching.
-    const triggers =
-      detectable.length === guard.info.protects.length && detectable.length > 0
-        ? detectable
-            .map((property) => ({
-              property,
-              event: findPropertyEvent(model, guard.target, property)
-            }))
-            .filter(
-              (match): match is { property: ProtectedProperty; event: ChangeEvent } =>
-                match.event !== undefined
-            )
-        : findCoarseChange(model, guard.target);
-
-    for (const trigger of triggers) {
-      diagnostics.push(
-        guardedShapeChanged(
-          guard.kind,
-          guard.info.name,
-          guard.target,
-          trigger.property
-            ? { kind: "property", label: describeProtectedProperty(trigger.property) }
-            : undefined,
-          trigger.event.provenance,
-          guard.guard.provenance
-        )
-      );
-    }
-  }
-
-  diagnostics.push(...checkTransformGuards(model));
-  return dedupeCoarseGuardedChanges(diagnostics);
+  return evaluateGuards(buildGuardContexts(model), model.changeEvents).map(guardViolationDiagnostic);
 }
 
-/**
- * When a guard reports both a coarse "target changed" diagnostic and a more
- * specific property/transform one for the same guard and target (e.g. a context
- * with both `on_change require` and `forbid transform`), keep only the specific
- * ones so a single violation is reported once.
- */
-function dedupeCoarseGuardedChanges(diagnostics: SemanticDiagnostic[]): SemanticDiagnostic[] {
-  const specificKeys = new Set<string>();
-  const key = (d: Extract<SemanticDiagnostic, { kind: "guarded_shape_changed" }>) =>
-    `${d.guardKind}:${d.guard}:${d.targetKind}:${d.target}`;
-  for (const diagnostic of diagnostics) {
-    if (diagnostic.kind === "guarded_shape_changed" && diagnostic.changeKind) {
-      specificKeys.add(key(diagnostic));
-    }
-  }
-  return diagnostics.filter(
-    (diagnostic) =>
-      diagnostic.kind !== "guarded_shape_changed" ||
-      diagnostic.changeKind !== undefined ||
-      !specificKeys.has(key(diagnostic))
-  );
-}
-
-/**
- * `guards forbid transform <label>` fires when a change declares that transform
- * intent on the guarded target and no reevaluation satisfies the guard.
- */
 /**
  * Every rationale and memory paired with its context kind, in a stable order
- * (rationales then memories). Freshness and transform-guard checking both
- * enumerate the full context population this way; sharing one builder keeps
- * them from drifting on ordering or which kinds are included.
+ * (rationales then memories). Guard and freshness checking both enumerate the
+ * full context population this way; sharing one builder keeps them from
+ * drifting on ordering or which kinds are included.
  */
 function allContexts(model: Model): { kind: ContextKind; info: RationaleInfo | MemoryInfo }[] {
   return [
@@ -4476,128 +4381,85 @@ function allContexts(model: Model): { kind: ContextKind; info: RationaleInfo | M
   ];
 }
 
-function checkTransformGuards(model: Model): SemanticDiagnostic[] {
-  const diagnostics: SemanticDiagnostic[] = [];
-
+/**
+ * Lower every guarding rationale/memory into a GuardContext: its
+ * `require ReEvaluation` and `forbid transform` clauses, plus its protected
+ * properties already classified for detectability. Detectability is decided
+ * here — where the trait table and prelude shape-trait set are available — so
+ * the matcher consumes only the effective model.
+ */
+function buildGuardContexts(model: Model): GuardContext[] {
+  const contexts: GuardContext[] = [];
   for (const { kind, info } of allContexts(model)) {
-    if (
-      info.forbiddenTransforms.length === 0 ||
-      hasValidReevaluationForGuard(model, kind, info.name)
-    ) {
+    const requireClauses = info.guards
+      .filter((guard) => requiresReevaluation(guard))
+      .map((guard) => ({ provenance: guard.provenance }));
+    if (requireClauses.length === 0 && info.forbiddenTransforms.length === 0) {
       continue;
     }
     const target = info.appliesTo ?? info.target;
-    for (const guard of info.forbiddenTransforms) {
-      const event = model.changeEvents.find(
-        (candidate) =>
-          candidate.kind === "transform_applied" &&
-          candidate.label === guard.label &&
-          targetsEqual(candidate.target, target)
-      );
-      if (event) {
-        diagnostics.push(
-          guardedShapeChanged(
-            kind,
-            info.name,
-            target,
-            { kind: "transform", label: guard.label },
-            event.provenance,
-            guard.provenance
-          )
-        );
-      }
-    }
+    contexts.push({
+      guardKind: kind,
+      guardName: info.name,
+      target,
+      satisfied: hasValidReevaluationForGuard(model, kind, info.name),
+      requireClauses,
+      protects: info.protects.map((property) =>
+        classifyProtectedProperty(model, property, target.kind)
+      ),
+      transformClauses: info.forbiddenTransforms.map((guard) => ({
+        label: guard.label,
+        provenance: guard.provenance
+      }))
+    });
   }
-
-  return diagnostics;
+  return contexts;
 }
 
-function guardedShapeChanged(
-  guardKind: ContextKind,
-  guardName: string,
-  target: ShapeTarget,
-  change: { kind: "property" | "transform"; label: string } | undefined,
-  eventProvenance: Provenance,
-  guardProvenance: Provenance
+/**
+ * Classify a stored protected property for guard matching. A description is
+ * detectable only on a function target; a `shape` value is detectable when it
+ * resolves to a real trait (built-in or declared). Everything else is opaque
+ * and forces coarse matching.
+ */
+function classifyProtectedProperty(
+  model: Model,
+  property: ProtectedProperty,
+  targetKind: TargetKind
+): GuardedProperty {
+  if (property.kind === "description") {
+    return targetKind === "fn" ? { kind: "description" } : { kind: "opaque" };
+  }
+  if (property.kind === "shape") {
+    // Detectable iff the protected name resolves to a real trait. Prelude
+    // shape-trait obligations are seeded into model.traits, so this reads only
+    // the effective model — no separate prelude-metadata lookup.
+    const resolved = property.resolvedValue ?? property.value;
+    if (model.traits.has(resolved)) {
+      return { kind: "shapeTrait", trait: resolved, display: property.value };
+    }
+  }
+  return { kind: "opaque" };
+}
+
+function guardViolationDiagnostic(
+  violation: GuardViolation
 ): Extract<SemanticDiagnostic, { kind: "guarded_shape_changed" }> {
   return {
     kind: "guarded_shape_changed",
-    guardKind,
-    guard: guardName,
-    targetKind: target.kind,
-    target: target.name,
-    changedProperty: change?.label,
-    changeKind: change?.kind,
-    missingReevaluation: `reevaluation satisfying ${guardKind} ${displaySymbol(guardName)}`,
-    filePath: eventProvenance.filePath,
-    causedBy: [describeProvenance(eventProvenance), describeProvenance(guardProvenance)]
+    guardKind: violation.guardKind,
+    guard: violation.guardName,
+    targetKind: violation.target.kind,
+    target: violation.target.name,
+    changedProperty: violation.change?.label,
+    changeKind: violation.change?.kind,
+    missingReevaluation: `reevaluation satisfying ${violation.guardKind} ${displaySymbol(violation.guardName)}`,
+    filePath: violation.changeProvenance.filePath,
+    causedBy: [
+      describeProvenance(violation.changeProvenance),
+      describeProvenance(violation.guardProvenance)
+    ]
   };
-}
-
-/**
- * The subset of a guard's `protects` clauses whose change we can actually
- * detect: a description, or a shape trait by name. Free-form labels (e.g.
- * `protects shape CheckOrder`) are not detectable and keep coarse matching.
- */
-function detectableProtectedProperties(
-  model: Model,
-  info: RationaleInfo | MemoryInfo
-): ProtectedProperty[] {
-  // A description is a function-only property, so a `protects description` clause
-  // is only detectable on a function target; on a component/resource it has no
-  // corresponding change event and must fall back to coarse matching.
-  const targetKind = (info.appliesTo ?? info.target).kind;
-  return info.protects.filter(
-    (property) =>
-      (property.kind === "description" && targetKind === "fn") ||
-      (property.kind === "shape" && isDetectableShapeTrait(model, property.resolvedValue))
-  );
-}
-
-/**
- * A protected `shape` value is detectable when it resolves to a real trait —
- * either a built-in shape trait or a trait declared in the model — so its
- * removal can be matched precisely. Free-form labels resolve to no trait and
- * keep coarse matching.
- */
-function isDetectableShapeTrait(model: Model, resolvedValue: string | undefined): boolean {
-  return (
-    resolvedValue !== undefined &&
-    (KNOWN_SHAPE_TRAITS.has(resolvedValue) || model.traits.has(resolvedValue))
-  );
-}
-
-function findPropertyEvent(
-  model: Model,
-  target: ShapeTarget,
-  property: ProtectedProperty
-): ChangeEvent | undefined {
-  return model.changeEvents.find((event) => {
-    if (!targetsEqual(event.target, target)) {
-      return false;
-    }
-    if (property.kind === "description") {
-      return event.kind === "description_removed";
-    }
-    return (
-      event.kind === "shape_trait_removed" &&
-      event.trait === (property.resolvedValue ?? property.value)
-    );
-  });
-}
-
-function findCoarseChange(
-  model: Model,
-  target: ShapeTarget
-): { property: undefined; event: ChangeEvent }[] {
-  const event = model.changeEvents.find(
-    (candidate) => candidate.kind === "target_changed" && targetsEqual(candidate.target, target)
-  );
-  return event ? [{ property: undefined, event }] : [];
-}
-
-function describeProtectedProperty(property: ProtectedProperty): string {
-  return property.kind === "description" ? "description" : `shape trait ${property.value}`;
 }
 
 /**
@@ -5286,36 +5148,6 @@ function approverRequiredBy(reevaluation: ReevaluationInfo, model: Model): boole
 
 function contextObjectExists(kind: ContextKind, name: string, model: Model): boolean {
   return kind === "memory" ? model.memories.has(name) : model.rationales.has(name);
-}
-
-function guardedContexts(
-  kind: ContextKind,
-  contexts: Iterable<RationaleInfo | MemoryInfo>
-): {
-  kind: ContextKind;
-  info: RationaleInfo | MemoryInfo;
-  target: ShapeTarget;
-  guard: GuardInfo;
-}[] {
-  const guarded: {
-    kind: ContextKind;
-    info: RationaleInfo | MemoryInfo;
-    target: ShapeTarget;
-    guard: GuardInfo;
-  }[] = [];
-  for (const info of contexts) {
-    for (const guard of info.guards) {
-      if (requiresReevaluation(guard)) {
-        guarded.push({
-          kind,
-          info,
-          target: info.appliesTo ?? info.target,
-          guard
-        });
-      }
-    }
-  }
-  return guarded;
 }
 
 function requiresReevaluation(guard: GuardInfo): boolean {
