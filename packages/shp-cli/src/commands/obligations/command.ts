@@ -11,13 +11,15 @@ export const obligationsCommand = buildCommand<ObligationsFlags, string[], CliCo
         kind: "parsed",
         parse: (input: string) => input,
         optional: true,
-        brief: "Freshness reference date (ISO YYYY-MM-DD); also lists design memory whose review_by is before it.",
+        brief:
+          "Freshness reference date (ISO YYYY-MM-DD); also lists design memory whose review_by is before it.",
         placeholder: "YYYY-MM-DD"
       },
       strictFreshness: {
         kind: "boolean",
         optional: true,
-        brief: "Shorthand for --as-of today (UTC); also lists design memory whose review_by is before today."
+        brief:
+          "Shorthand for --as-of today (UTC); also lists design memory whose review_by is before today."
       }
     },
     positional: fileArguments()

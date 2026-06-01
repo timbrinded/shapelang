@@ -123,7 +123,6 @@ import {
   PRELUDE_TRAIT_NAMES,
   PRELUDE_TRAITS,
   type ContextKind,
-  type PreludeContextRequirement,
   type PreludeTraitDefinition
 } from "./prelude.ts";
 import {
@@ -640,11 +639,24 @@ type PolicyInfo = {
 };
 
 /**
- * A context obligation rule. Prelude rules come from PRELUDE_CONTEXT_REQUIREMENTS
- * with no provenance; user-defined `require_context` trait members carry the
- * declaring trait's provenance so diagnostics can point at the trait.
+ * A context obligation a trait imposes on its bearer. Built-in obligations are
+ * seeded onto prelude traits with a "standard prelude" provenance; user traits
+ * populate these from their `require_context` members. Storing them on the
+ * trait (rather than a global sidecar) means obligations follow the trait
+ * through declare/modify/remove, and a same-named user trait shadows a built-in
+ * simply by replacing the trait entry — no merge or scrub special-case.
  */
-type ContextRequirementRule = PreludeContextRequirement & { provenance?: Provenance };
+type TraitContextRequirement = {
+  targetKind: TargetKind;
+  contextType: string;
+  satisfiedBy: ContextKind[];
+  requiresDescription: boolean;
+  provenance: Provenance;
+};
+
+/** A trait context requirement resolved against a bearer, tagged with the
+ *  owning trait name for diagnostics. */
+type ContextRequirement = TraitContextRequirement & { trait: string };
 
 type RationaleInfo = {
   name: string;
@@ -774,6 +786,7 @@ type TraitInfo = {
   name: string;
   typeParams: string[];
   finalForbids: FinalForbidPattern[];
+  contextRequirements: TraitContextRequirement[];
   provenance: Provenance;
 };
 
@@ -878,7 +891,6 @@ type Model = {
   reevaluations: Map<string, ReevaluationInfo>;
   roles: Map<string, Provenance>;
   policies: Map<string, PolicyInfo>;
-  userContextRequirements: ContextRequirementRule[];
   attestations: { kind: string; path: string; reason: string; provenance: Provenance }[];
   shapeUpdatePaths: Map<string, Provenance[]>;
   changeEvents: ChangeEvent[];
@@ -1515,7 +1527,7 @@ function lowerShapeModules(modules: ShapeModule[] | CheckModuleInput[]): Model {
     modules: new Map(),
     declarations: emptyDeclarationIndex(),
     resources: new Map(),
-    traits: new Map(PRELUDE_TRAITS.map((trait) => [trait.name, preludeTraitInfo(trait)])),
+    traits: preludeTraitSeed(),
     components: new Map(),
     hypergraph: {
       edges: new Map(),
@@ -1530,7 +1542,6 @@ function lowerShapeModules(modules: ShapeModule[] | CheckModuleInput[]): Model {
     reevaluations: new Map(),
     roles: new Map(),
     policies: new Map(),
-    userContextRequirements: [],
     attestations: [],
     shapeUpdatePaths: new Map(),
     changeEvents: [],
@@ -1974,6 +1985,7 @@ function lowerTrait(trait: TraitDecl, context: LoweringContext, model: Model): v
 
   const typeParams = trait.typeParams?.params.map((param) => param.name) ?? [];
   const finalForbids: FinalForbidPattern[] = [];
+  const contextRequirements: TraitContextRequirement[] = [];
   for (const member of trait.members) {
     if (isTraitForbidDecl(member)) {
       finalForbids.push(
@@ -1997,11 +2009,11 @@ function lowerTrait(trait: TraitDecl, context: LoweringContext, model: Model): v
         });
         continue;
       }
-      model.userContextRequirements.push({
-        trait: name,
+      contextRequirements.push({
         targetKind: resolved.kind,
         contextType: member.contextType,
         satisfiedBy: lowerSatisfiedByKinds(member.satisfiedBy),
+        requiresDescription: false,
         provenance: memberProvenance
       });
     }
@@ -2011,6 +2023,7 @@ function lowerTrait(trait: TraitDecl, context: LoweringContext, model: Model): v
     name,
     typeParams,
     finalForbids,
+    contextRequirements,
     provenance: prov
   });
 }
@@ -3318,13 +3331,8 @@ function removeDeclaration(
   if (kind === "resource") {
     model.resources.delete(resolvedName);
   } else if (kind === "trait") {
+    // Obligations live on the trait, so deleting it drops them automatically.
     model.traits.delete(resolvedName);
-    // A trait's `require_context` obligations are appended to a flat list
-    // independent of model.traits, so drop them here too; otherwise a removed
-    // or modified trait would keep enforcing its old obligations.
-    model.userContextRequirements = model.userContextRequirements.filter(
-      (rule) => rule.trait !== resolvedName
-    );
   } else if (kind === "component") {
     model.components.delete(resolvedName);
   } else if (kind === "relation") {
@@ -5101,53 +5109,42 @@ function checkBindings(model: Model, changedFiles: string[]): SemanticDiagnostic
   return diagnostics;
 }
 
+/**
+ * The context obligations that apply to a target: for each shape trait the
+ * target bears (by resolved name), the owning trait's `contextRequirements`
+ * that match this target kind. Built-in and user obligations live on the same
+ * trait model, so a same-name user trait shadows a built-in by replacing the
+ * trait entry — no merge or special-case needed here.
+ */
 function requirementsForTarget(
   model: Model,
   targetKind: TargetKind,
   traits: ReadonlyMap<string, Provenance>
-): ContextRequirementRule[] {
-  const matched: ContextRequirementRule[] = [];
+): ContextRequirement[] {
+  const matched: ContextRequirement[] = [];
   const seen = new Set<string>();
-  for (const rule of [...PRELUDE_CONTEXT_REQUIREMENTS, ...model.userContextRequirements]) {
-    if (rule.targetKind !== targetKind || !traits.has(rule.trait)) {
+  for (const traitName of traits.keys()) {
+    const trait = model.traits.get(traitName);
+    if (!trait) {
       continue;
     }
-    // A user-declared trait of the same name shadows the built-in obligation
-    // (documented name-resolution behavior). Drop prelude rules whose trait a
-    // non-prelude declaration has redefined, so the user's `require_context`
-    // (or its absence) governs instead of the built-in.
-    if (isPreludeRule(rule) && isShadowedByUserTrait(model, rule.trait)) {
-      continue;
+    for (const requirement of trait.contextRequirements) {
+      if (requirement.targetKind !== targetKind) {
+        continue;
+      }
+      const key = `${traitName}:${requirement.targetKind}:${requirement.contextType}`;
+      if (seen.has(key)) {
+        continue;
+      }
+      seen.add(key);
+      matched.push({ trait: traitName, ...requirement });
     }
-    const key = `${rule.trait}:${rule.targetKind}:${rule.contextType}`;
-    if (seen.has(key)) {
-      continue;
-    }
-    seen.add(key);
-    matched.push(rule);
   }
   return matched;
 }
 
-/** Prelude rules carry no provenance; user `require_context` rules always do. */
-function isPreludeRule(rule: ContextRequirementRule): boolean {
-  return rule.provenance === undefined;
-}
-
-/**
- * True when a trait declaration has redefined this prelude obligation's trait
- * name. The prelude context-obligation traits (RefactorSensitive, NonIdiomatic,
- * ...) are never seeded into model.traits — only PRELUDE_TRAITS (AppendOnly) is
- * — so any entry under a context-trait name is necessarily user-declared. (A
- * provenance check is unreliable here: an in-memory module has no file path, so
- * its traits look prelude-authored.)
- */
-function isShadowedByUserTrait(model: Model, trait: string): boolean {
-  return model.traits.has(trait);
-}
-
 function hasRequiredContext(
-  requirement: PreludeContextRequirement,
+  requirement: { contextType: string; satisfiedBy: ContextKind[] },
   target: ShapeTarget,
   model: Model
 ): boolean {
@@ -6173,6 +6170,43 @@ function preludeTraitInfo(trait: PreludeTraitDefinition): TraitInfo {
         )
       };
     }),
+    contextRequirements: [],
     provenance: provenance("standard prelude", `trait ${trait.name}`)
   };
+}
+
+/**
+ * The initial trait table: prelude `finalForbids` traits plus the prelude
+ * context-obligation traits (PreserveInline, RefactorSensitive, ...), seeded
+ * with their requirements straight from PRELUDE_CONTEXT_REQUIREMENTS. Seeding
+ * built-in obligations through the same trait model that user traits use means
+ * `requirementsForTarget` has a single source and same-name user traits shadow
+ * built-ins by replacing the entry.
+ */
+function preludeTraitSeed(): Map<string, TraitInfo> {
+  const traits = new Map<string, TraitInfo>(
+    PRELUDE_TRAITS.map((trait) => [trait.name, preludeTraitInfo(trait)])
+  );
+  for (const rule of PRELUDE_CONTEXT_REQUIREMENTS) {
+    const existing = traits.get(rule.trait);
+    const requirement: TraitContextRequirement = {
+      targetKind: rule.targetKind,
+      contextType: rule.contextType,
+      satisfiedBy: rule.satisfiedBy,
+      requiresDescription: rule.requiresDescription === true,
+      provenance: provenance("standard prelude", `${rule.trait} requires ${rule.contextType}`)
+    };
+    if (existing) {
+      existing.contextRequirements.push(requirement);
+    } else {
+      traits.set(rule.trait, {
+        name: rule.trait,
+        typeParams: [],
+        finalForbids: [],
+        contextRequirements: [requirement],
+        provenance: provenance("standard prelude", `trait ${rule.trait}`)
+      });
+    }
+  }
+  return traits;
 }

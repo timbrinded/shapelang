@@ -18,7 +18,8 @@ export const checkCommand = buildCommand<CheckFlags, string[], CliContext>({
         kind: "parsed",
         parse: (input: string) => input,
         optional: true,
-        brief: "Freshness reference date (ISO YYYY-MM-DD); enforces stale design memory deterministically.",
+        brief:
+          "Freshness reference date (ISO YYYY-MM-DD); enforces stale design memory deterministically.",
         placeholder: "YYYY-MM-DD"
       },
       strictFreshness: {
