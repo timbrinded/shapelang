@@ -255,6 +255,13 @@
       ]
     },
     {
+      "module": "shape.generated.ast.packages.shp_checker.src.checker_memory_guards_test",
+      "path": "shape/generated/ast/packages/shp-checker/src/checker.memory-guards.test.shape",
+      "sources": [
+        "packages/shp-checker/src/checker.memory-guards.test.ts"
+      ]
+    },
+    {
       "module": "shape.generated.ast.packages.shp_checker.src.checker_test",
       "path": "shape/generated/ast/packages/shp-checker/src/checker.test.shape",
       "sources": [
@@ -343,6 +350,13 @@
       "path": "shape/generated/ast/packages/shp-checker/src/source-languages.shape",
       "sources": [
         "packages/shp-checker/src/source-languages.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.test_support",
+      "path": "shape/generated/ast/packages/shp-checker/src/test-support.shape",
+      "sources": [
+        "packages/shp-checker/src/test-support.ts"
       ]
     },
     {
