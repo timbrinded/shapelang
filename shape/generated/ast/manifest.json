@@ -318,6 +318,90 @@
       ]
     },
     {
+      "module": "shape.generated.ast.packages.shp_checker.src.checker.api",
+      "path": "shape/generated/ast/packages/shp-checker/src/checker/api.shape",
+      "sources": [
+        "packages/shp-checker/src/checker/api.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.checker.derivations",
+      "path": "shape/generated/ast/packages/shp-checker/src/checker/derivations.shape",
+      "sources": [
+        "packages/shp-checker/src/checker/derivations.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.checker.diagnostics",
+      "path": "shape/generated/ast/packages/shp-checker/src/checker/diagnostics.shape",
+      "sources": [
+        "packages/shp-checker/src/checker/diagnostics.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.checker.display",
+      "path": "shape/generated/ast/packages/shp-checker/src/checker/display.shape",
+      "sources": [
+        "packages/shp-checker/src/checker/display.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.checker.globs",
+      "path": "shape/generated/ast/packages/shp-checker/src/checker/globs.shape",
+      "sources": [
+        "packages/shp-checker/src/checker/globs.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.checker.lowerer",
+      "path": "shape/generated/ast/packages/shp-checker/src/checker/lowerer.shape",
+      "sources": [
+        "packages/shp-checker/src/checker/lowerer.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.checker.lowerers",
+      "path": "shape/generated/ast/packages/shp-checker/src/checker/lowerers.shape",
+      "sources": [
+        "packages/shp-checker/src/checker/lowerers.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.checker.model",
+      "path": "shape/generated/ast/packages/shp-checker/src/checker/model.shape",
+      "sources": [
+        "packages/shp-checker/src/checker/model.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.checker.provenance",
+      "path": "shape/generated/ast/packages/shp-checker/src/checker/provenance.shape",
+      "sources": [
+        "packages/shp-checker/src/checker/provenance.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.checker.query",
+      "path": "shape/generated/ast/packages/shp-checker/src/checker/query.shape",
+      "sources": [
+        "packages/shp-checker/src/checker/query.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.checker.rules",
+      "path": "shape/generated/ast/packages/shp-checker/src/checker/rules.shape",
+      "sources": [
+        "packages/shp-checker/src/checker/rules.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.checker.symbols",
+      "path": "shape/generated/ast/packages/shp-checker/src/checker/symbols.shape",
+      "sources": [
+        "packages/shp-checker/src/checker/symbols.ts"
+      ]
+    },
+    {
       "module": "shape.generated.ast.packages.shp_checker.src.editor",
       "path": "shape/generated/ast/packages/shp-checker/src/editor.shape",
       "sources": [

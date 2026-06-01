@@ -1,0 +1,81 @@
+module shape.generated.ast.packages.shp_checker.src.checker.globs
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource GlobsModuleEscapeRegexAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/globs.ts:46-48")
+  fingerprint ast.semantic_subtree_v1("sha256:98bfa2952f230961a8627b8a09cc865a75017b0c9bbc506edab617ccef781742")
+}
+
+resource GlobsModuleGlobMatchesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/globs.ts:16-21")
+  fingerprint ast.semantic_subtree_v1("sha256:03a93344d6b672059cfdee681a59f910cd1881266fb04c3a95e29a330f34153c")
+}
+
+resource GlobsModuleGlobToRegexAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/globs.ts:23-44")
+  fingerprint ast.semantic_subtree_v1("sha256:05246ee3a0345cbb65a03da70c552c9843e3dc6bb8f44699e84f4ce328b3876e")
+}
+
+resource GlobsModuleNormalizeRepoPathAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/globs.ts:7-14")
+  fingerprint ast.semantic_subtree_v1("sha256:f19cb48a154343d1f7068adfc51b35db48d13f28b8e0d32c535338ef70d02dfd")
+}
+
+component GlobsModule : GeneratedCandidate {
+  fn escapeRegex
+    source ts("packages/shp-checker/src/checker/globs.ts:46-48")
+    effects unknown
+  fn globMatches
+    source ts("packages/shp-checker/src/checker/globs.ts:16-21")
+    effects unknown
+  fn globToRegex
+    source ts("packages/shp-checker/src/checker/globs.ts:23-44")
+    effects unknown
+  fn normalizeRepoPath
+    source ts("packages/shp-checker/src/checker/globs.ts:7-14")
+    effects unknown
+}
+
+relation GlobsModuleEscapeRegexGeneratedFromGlobsModuleEscapeRegexAstAnchor {
+  kind generated_from
+  connects GlobsModule -> GlobsModuleEscapeRegexAstAnchor
+  roles { GlobsModule as generated, GlobsModuleEscapeRegexAstAnchor as syntax }
+  expects GlobsModuleEscapeRegexAstAnchor fingerprint ast.semantic_subtree_v1("sha256:98bfa2952f230961a8627b8a09cc865a75017b0c9bbc506edab617ccef781742")
+  summary "fn GlobsModule.escapeRegex generated from typescript function_declaration at packages/shp-checker/src/checker/globs.ts:46-48."
+}
+
+relation GlobsModuleGlobMatchesGeneratedFromGlobsModuleGlobMatchesAstAnchor {
+  kind generated_from
+  connects GlobsModule -> GlobsModuleGlobMatchesAstAnchor
+  roles { GlobsModule as generated, GlobsModuleGlobMatchesAstAnchor as syntax }
+  expects GlobsModuleGlobMatchesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:03a93344d6b672059cfdee681a59f910cd1881266fb04c3a95e29a330f34153c")
+  summary "fn GlobsModule.globMatches generated from typescript function_declaration at packages/shp-checker/src/checker/globs.ts:16-21."
+}
+
+relation GlobsModuleGlobToRegexGeneratedFromGlobsModuleGlobToRegexAstAnchor {
+  kind generated_from
+  connects GlobsModule -> GlobsModuleGlobToRegexAstAnchor
+  roles { GlobsModule as generated, GlobsModuleGlobToRegexAstAnchor as syntax }
+  expects GlobsModuleGlobToRegexAstAnchor fingerprint ast.semantic_subtree_v1("sha256:05246ee3a0345cbb65a03da70c552c9843e3dc6bb8f44699e84f4ce328b3876e")
+  summary "fn GlobsModule.globToRegex generated from typescript function_declaration at packages/shp-checker/src/checker/globs.ts:23-44."
+}
+
+relation GlobsModuleNormalizeRepoPathGeneratedFromGlobsModuleNormalizeRepoPathAstAnchor {
+  kind generated_from
+  connects GlobsModule -> GlobsModuleNormalizeRepoPathAstAnchor
+  roles { GlobsModule as generated, GlobsModuleNormalizeRepoPathAstAnchor as syntax }
+  expects GlobsModuleNormalizeRepoPathAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f19cb48a154343d1f7068adfc51b35db48d13f28b8e0d32c535338ef70d02dfd")
+  summary "fn GlobsModule.normalizeRepoPath generated from typescript function_declaration at packages/shp-checker/src/checker/globs.ts:7-14."
+}
+
+implementation GlobsModuleImpl {
+  paths {
+    "packages/shp-checker/src/checker/globs.ts"
+  }
+  conforms_to GlobsModule
+}

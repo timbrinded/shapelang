@@ -353,7 +353,14 @@ implementation AuthoringSource {
 
 implementation CheckerSource {
   paths {
-    "packages/shp-checker/src/checker.ts"
+    "packages/shp-checker/src/checker/api.ts"
+    "packages/shp-checker/src/checker/derivations.ts"
+    "packages/shp-checker/src/checker/diagnostics.ts"
+    "packages/shp-checker/src/checker/lowerer.ts"
+    "packages/shp-checker/src/checker/lowerers.ts"
+    "packages/shp-checker/src/checker/query.ts"
+    "packages/shp-checker/src/checker/rules.ts"
+    "packages/shp-checker/src/checker/symbols.ts"
   }
   conforms_to ShapeChecker
   on_change require shape_update
@@ -513,7 +520,7 @@ binding GrammarDocs {
 
 binding RuleEngineDocs {
   when_changed paths {
-    "packages/shp-checker/src/checker.ts"
+    "packages/shp-checker/src/checker/rules.ts"
     "shape/checker.shape"
   }
   require_changed paths {

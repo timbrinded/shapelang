@@ -1,0 +1,49 @@
+module shape.generated.ast.packages.shp_checker.src.checker.api
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource ApiModuleCheckShapeFilesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/api.ts:31-69")
+  fingerprint ast.semantic_subtree_v1("sha256:7d17a6350dd6aef4dc04e9be3f616d158b6db2a7b767077ee50f698c9492a591")
+}
+
+resource ApiModuleCheckShapeModulesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/api.ts:12-29")
+  fingerprint ast.semantic_subtree_v1("sha256:62ab4a101fb6dd9d0bfb0fef7c71fe89731947cb94b2ec42346ec26d7fba4564")
+}
+
+component ApiModule : GeneratedCandidate {
+  fn checkShapeFiles
+    source ts("packages/shp-checker/src/checker/api.ts:31-69")
+    effects unknown
+  fn checkShapeModules
+    source ts("packages/shp-checker/src/checker/api.ts:12-29")
+    effects unknown
+}
+
+relation ApiModuleCheckShapeFilesGeneratedFromApiModuleCheckShapeFilesAstAnchor {
+  kind generated_from
+  connects ApiModule -> ApiModuleCheckShapeFilesAstAnchor
+  roles { ApiModule as generated, ApiModuleCheckShapeFilesAstAnchor as syntax }
+  expects ApiModuleCheckShapeFilesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7d17a6350dd6aef4dc04e9be3f616d158b6db2a7b767077ee50f698c9492a591")
+  summary "fn ApiModule.checkShapeFiles generated from typescript function_declaration at packages/shp-checker/src/checker/api.ts:31-69."
+}
+
+relation ApiModuleCheckShapeModulesGeneratedFromApiModuleCheckShapeModulesAstAnchor {
+  kind generated_from
+  connects ApiModule -> ApiModuleCheckShapeModulesAstAnchor
+  roles { ApiModule as generated, ApiModuleCheckShapeModulesAstAnchor as syntax }
+  expects ApiModuleCheckShapeModulesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:62ab4a101fb6dd9d0bfb0fef7c71fe89731947cb94b2ec42346ec26d7fba4564")
+  summary "fn ApiModule.checkShapeModules generated from typescript function_declaration at packages/shp-checker/src/checker/api.ts:12-29."
+}
+
+implementation ApiModuleImpl {
+  paths {
+    "packages/shp-checker/src/checker/api.ts"
+  }
+  conforms_to ApiModule
+}

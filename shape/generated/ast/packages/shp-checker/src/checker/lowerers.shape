@@ -1,0 +1,913 @@
+module shape.generated.ast.packages.shp_checker.src.checker.lowerers
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource LowerersModuleAddShapeUpdatePathAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/lowerers.ts:2080-2088")
+  fingerprint ast.semantic_subtree_v1("sha256:9d2dd55c9216f4cb7147c10f8cecb00171611e5d535383c8d872753eb4910816")
+}
+
+resource LowerersModuleCollectConnectsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/lowerers.ts:716-728")
+  fingerprint ast.semantic_subtree_v1("sha256:420871c441d80da1ad7e8827ced2dfddcfa42661f78bdef60de2e88efefc4db7")
+}
+
+resource LowerersModuleCollectShapeUpdatePathsFromFunctionAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/lowerers.ts:2051-2074")
+  fingerprint ast.semantic_subtree_v1("sha256:842f3aca91fd61726ff4a2babe52395e560de872a92c669a4b758a005ec4cfeb")
+}
+
+resource LowerersModuleContextForDeclarationChangeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/lowerers.ts:1556-1572")
+  fingerprint ast.semantic_subtree_v1("sha256:c6dba043ec975768ca1e28a9a0312b083d7725177f6096ad7a22452a9fa17277")
+}
+
+resource LowerersModuleDeclarationKindAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/lowerers.ts:1625-1650")
+  fingerprint ast.semantic_subtree_v1("sha256:f4b4a628068d6d9189675fa203ae3e92eb1bc0cb2c38e2160ac4ee789aca3550")
+}
+
+resource LowerersModuleDeclarationNameAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/lowerers.ts:1652-1659")
+  fingerprint ast.semantic_subtree_v1("sha256:723d6f7b22623a5a57057a5ff1e387d3a8791ed53e985d7c4a13e5b09c49a3ac")
+}
+
+resource LowerersModuleDeclarationShapeTraitsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/lowerers.ts:1523-1535")
+  fingerprint ast.semantic_subtree_v1("sha256:8b423960593b6bf8d6632b1c455720ba7e181832dc216a78479a61024249cbb2")
+}
+
+resource LowerersModuleDescriptionDroppedAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/lowerers.ts:1547-1554")
+  fingerprint ast.semantic_subtree_v1("sha256:f282105bd2308f81b64c11c66949835fc742d1d9853ae986ef3bb73846d1ab24")
+}
+
+resource LowerersModuleEmitDeclarationChangeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/lowerers.ts:1508-1521")
+  fingerprint ast.semantic_subtree_v1("sha256:0c820fc7548342dd1b38c061675114cc74972f13c0764a23fba558573c363ab9")
+}
+
+resource LowerersModuleEmitDerivedFactsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/lowerers.ts:2024-2049")
+  fingerprint ast.semantic_subtree_v1("sha256:afa1f2062d60af47fed8e8a9e9b46075ffa33f016acdd0ce0907e5f28572ec1f")
+}
+
+resource LowerersModuleEmitFunctionFactsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/lowerers.ts:1956-2002")
+  fingerprint ast.semantic_subtree_v1("sha256:eefd929b6592727d99f0ffab35f599d73c9b2eaee066b528149fcb6b887a078b")
+}
+
+resource LowerersModuleEmitGuardFactsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/lowerers.ts:1309-1339")
+  fingerprint ast.semantic_subtree_v1("sha256:1433f08ed46f6aa54f4c4a48b148f8323afb039b4944b6ccc23a5b5ed88eaeda")
+}
+
+resource LowerersModuleEmitTargetChangeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/lowerers.ts:1492-1506")
+  fingerprint ast.semantic_subtree_v1("sha256:d09e3087efffd1130fabd2ea8b3aec8988988eac3580f4d2184a7f3b534b9ed6")
+}
+
+resource LowerersModuleFunctionNameForAstAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/lowerers.ts:1714-1720")
+  fingerprint ast.semantic_subtree_v1("sha256:41289bb112998f9f633df02fe6a026a2fa250eabff8021b0053954d673e1c9c7")
+}
+
+resource LowerersModuleLowerAttestationAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/lowerers.ts:954-971")
+  fingerprint ast.semantic_subtree_v1("sha256:3dc5e3e70f946302a1e3e32b117381dbd1843702900dcb257dc892fbaa6886ca")
+}
+
+resource LowerersModuleLowerBindingAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/lowerers.ts:888-952")
+  fingerprint ast.semantic_subtree_v1("sha256:0504b8a2d9e241ea707b92131d7d23bc07163a01be7727feec7e8b3187a2b700")
+}
+
+resource LowerersModuleLowerCandidateEffectAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/lowerers.ts:730-824")
+  fingerprint ast.semantic_subtree_v1("sha256:93dca0ccfff8ee714073613f94273cb5eaf9e72914ee1476d11b326b75fb39b2")
+}
+
+resource LowerersModuleLowerChangeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/lowerers.ts:1341-1477")
+  fingerprint ast.semantic_subtree_v1("sha256:60b327c16aca916fed6516084677c437310328ee9466a3c6c9419bdb87e8ec42")
+}
+
+resource LowerersModuleLowerComponentAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/lowerers.ts:345-423")
+  fingerprint ast.semantic_subtree_v1("sha256:5d20408dd6edc4db2d0b36f5bb55421a01eb1d65fc69286aaf4c34e39a1b1350")
+}
+
+resource LowerersModuleLowerContextMemberAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/lowerers.ts:1121-1167")
+  fingerprint ast.semantic_subtree_v1("sha256:10df3bfc6819415ed79c6afc5e988d5176da61c5df3d06cb1b2ea526a6733bb2")
+}
+
+resource LowerersModuleLowerDeclarationAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/lowerers.ts:1574-1596")
+  fingerprint ast.semantic_subtree_v1("sha256:fc87fd2bfe6029b34ab0e87c871ad647df0a62030338c1b706f173c0311b2a19")
+}
+
+resource LowerersModuleLowerDescriptionAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/lowerers.ts:1744-1759")
+  fingerprint ast.semantic_subtree_v1("sha256:7c6009808d8a49ef2ee6a966d89aeb878af8fde43905d1484dde13b13c79e221")
+}
+
+resource LowerersModuleLowerEffectEntryAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/lowerers.ts:1785-1802")
+  fingerprint ast.semantic_subtree_v1("sha256:368be1d91ed8269451810e66fce10d41248c15fe1d9a67d0984f27f3cfe61e15")
+}
+
+resource LowerersModuleLowerEffectsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/lowerers.ts:1761-1783")
+  fingerprint ast.semantic_subtree_v1("sha256:abb34e0c01f2d3f0b0725c19a80760bc11ef6366bab270937049338187d882f0")
+}
+
+resource LowerersModuleLowerFingerprintAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/lowerers.ts:1929-1939")
+  fingerprint ast.semantic_subtree_v1("sha256:a4b09ba7c75ea8c3cdd5cc7464043aeca1172fd54b7d886d62a9c4cae536da04")
+}
+
+resource LowerersModuleLowerForbidPatternAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/lowerers.ts:1804-1822")
+  fingerprint ast.semantic_subtree_v1("sha256:81df4a24a1f4810db826e6a7c953d2142d106536c8d929f75c56882ce6d5b343")
+}
+
+resource LowerersModuleLowerFunctionAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/lowerers.ts:1661-1712")
+  fingerprint ast.semantic_subtree_v1("sha256:7901f16b66e22e8d07713ba621e56583bf1b52ed84e31deab11bd05e7c653a35")
+}
+
+resource LowerersModuleLowerImplementationAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/lowerers.ts:842-886")
+  fingerprint ast.semantic_subtree_v1("sha256:9df4f0a1503669246705cb2d0e88f0a3c0c2f6938dfa32bcc7741319f3256519")
+}
+
+resource LowerersModuleLowerMemoryAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/lowerers.ts:1066-1119")
+  fingerprint ast.semantic_subtree_v1("sha256:0364af9d0f2c4ddcdf32f370ade679608a69c2fbf7f1c3960e7735c728bd5766")
+}
+
+resource LowerersModuleLowerPatternAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/lowerers.ts:1882-1920")
+  fingerprint ast.semantic_subtree_v1("sha256:f53c7b9d03c28bd795e9f1c1f4813c53f25132c661b0dcc2c47d59f98c43b59c")
+}
+
+resource LowerersModuleLowerPolicyAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/lowerers.ts:1291-1307")
+  fingerprint ast.semantic_subtree_v1("sha256:5bbefd29979b437f6d149f2c1f7373a185cf25567ed0ed24582fd8a67f6d74a2")
+}
+
+resource LowerersModuleLowerRationaleAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/lowerers.ts:1012-1064")
+  fingerprint ast.semantic_subtree_v1("sha256:0d2709a0177c6e62b01e049a10e02e231f2ec6f837bf4f2711255db9e8015dc4")
+}
+
+resource LowerersModuleLowerReevaluationAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/lowerers.ts:1222-1278")
+  fingerprint ast.semantic_subtree_v1("sha256:cfd6e74b872591a28a35cb838d9e9bddb4c726e99bd3639bb798395686998377")
+}
+
+resource LowerersModuleLowerRelationAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/lowerers.ts:425-694")
+  fingerprint ast.semantic_subtree_v1("sha256:4d0ad0864d6ca12a1e6467ff4ca39edf9ec18f3696219b90388293101cda7edd")
+}
+
+resource LowerersModuleLowerResourceAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/lowerers.ts:169-241")
+  fingerprint ast.semantic_subtree_v1("sha256:3da12f5bdf531343450c4a48cbcad581b84c4e50b05b0c644db48e4cc6784bc6")
+}
+
+resource LowerersModuleLowerRoleAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/lowerers.ts:1285-1289")
+  fingerprint ast.semantic_subtree_v1("sha256:320d7d69a514ef2070f5cacab9e9bf3dc5f93a475b2f5f9bededaa174dd20aa8")
+}
+
+resource LowerersModuleLowerRuleAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/lowerers.ts:973-1010")
+  fingerprint ast.semantic_subtree_v1("sha256:7241944bd58df5924f921ab99fbaac1559c03b10c13bed05c0f2bde4a0791913")
+}
+
+resource LowerersModuleLowerRuleForbidAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/lowerers.ts:1824-1842")
+  fingerprint ast.semantic_subtree_v1("sha256:f4f76c8c17801d5a9be990c8f987399c98b526935fc5981a8447f4d37e3f7eb2")
+}
+
+resource LowerersModuleLowerRuleForbidHypercycleAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/lowerers.ts:1861-1873")
+  fingerprint ast.semantic_subtree_v1("sha256:f60967725f9ffde58f4995ec5cecf48fbe9f490798d8e4fa71b04fed5e21e9b8")
+}
+
+resource LowerersModuleLowerRuleForbidProvidesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/lowerers.ts:1844-1859")
+  fingerprint ast.semantic_subtree_v1("sha256:00f0d60ed3293785d89561b46fcf9a39be19ebb11d744b803d34fd48afafb86e")
+}
+
+resource LowerersModuleLowerSatisfiedByKindsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/lowerers.ts:338-343")
+  fingerprint ast.semantic_subtree_v1("sha256:3f22073405906a35c22059ea18cb5a6c479e1637fced821b4b1390ce02b2e75c")
+}
+
+resource LowerersModuleLowerShapeTraitsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/lowerers.ts:1722-1742")
+  fingerprint ast.semantic_subtree_v1("sha256:dc26649cd20f8eeda1d3e8551d616fdf33567ca0f7e3ee0660ba03725fd669b0")
+}
+
+resource LowerersModuleLowerSourceRefAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/lowerers.ts:1922-1927")
+  fingerprint ast.semantic_subtree_v1("sha256:066c392ad2bc5ac7b1b33c48c2b352e35544cf77b28ad98b42344d95169aae30")
+}
+
+resource LowerersModuleLowerTargetRefAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/lowerers.ts:1941-1954")
+  fingerprint ast.semantic_subtree_v1("sha256:ab818589b6f17df5e9a11bf1d9b2575c5f7b01dc6c8771fa2049054c7bce8619")
+}
+
+resource LowerersModuleLowerTermAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/lowerers.ts:1875-1880")
+  fingerprint ast.semantic_subtree_v1("sha256:9254091311bd21f181b3763b308bfcad71ec349cfd4227bccb3a2400bd2154e6")
+}
+
+resource LowerersModuleLowerTraitAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/lowerers.ts:243-300")
+  fingerprint ast.semantic_subtree_v1("sha256:62bfbe6fb20c8b44739c71323c39f6923e6f838d5c09cf3b6028ec4320daefd8")
+}
+
+resource LowerersModulePushGuardAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/lowerers.ts:1197-1220")
+  fingerprint ast.semantic_subtree_v1("sha256:9cb4b5ca8a9df01ebe5982e7b9a730b53d0a412c347302cac72956e9e237b472")
+}
+
+resource LowerersModulePushInvalidCandidateEffectAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/lowerers.ts:826-840")
+  fingerprint ast.semantic_subtree_v1("sha256:ef2a2591612faf128c601caeedfaa30deaa63f9e50c41daa1633325d8c1a1807")
+}
+
+resource LowerersModulePushProtectsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/lowerers.ts:1169-1195")
+  fingerprint ast.semantic_subtree_v1("sha256:a10f3954722184c9678ec6d498ec24e97ad44bf7fb9a6c696ad6af358231c3d2")
+}
+
+resource LowerersModuleRemoveDeclarationAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/lowerers.ts:1598-1623")
+  fingerprint ast.semantic_subtree_v1("sha256:e02179ac51d0713bf5d2e4bca2fa9122db981704a29e2004986deedc61c55fc4")
+}
+
+resource LowerersModuleRemoveFunctionFactsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/lowerers.ts:2004-2022")
+  fingerprint ast.semantic_subtree_v1("sha256:daa14bf17a6f7276a4a81f30dfc49d83e76f43e406c269f7eacb906644f6bcf4")
+}
+
+resource LowerersModuleRemoveRelationAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/lowerers.ts:696-714")
+  fingerprint ast.semantic_subtree_v1("sha256:28220984b63cba5164572b568474323db02f6fbe94f4a355408d3e188aded959")
+}
+
+resource LowerersModuleRemovedTraitsBetweenAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/lowerers.ts:1537-1545")
+  fingerprint ast.semantic_subtree_v1("sha256:6590ea51a0a038d322dad61d5ab2b124e84f70feccb9a66d7a448b4de5188251")
+}
+
+resource LowerersModuleRequireContextTargetKindAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/lowerers.ts:309-333")
+  fingerprint ast.semantic_subtree_v1("sha256:72e19dfa98c154bbb34b3c8ec1cb342ecdd3a4fd4636ee919ef4a7e0627aa5b8")
+}
+
+resource LowerersModuleResolveFunctionTargetPartsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/lowerers.ts:1479-1485")
+  fingerprint ast.semantic_subtree_v1("sha256:feb26c989b584f7a93beb257c5180fb0bb8f8f0b0048efac91041f40ffafb14f")
+}
+
+resource LowerersModuleShouldIgnoreFunctionForCoverageAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/lowerers.ts:2076-2078")
+  fingerprint ast.semantic_subtree_v1("sha256:a515ada20aa7173b91894977ce79880760770039ac954e014444f4ab229cca33")
+}
+
+component LowerersModule : GeneratedCandidate {
+  fn addShapeUpdatePath
+    source ts("packages/shp-checker/src/checker/lowerers.ts:2080-2088")
+    effects unknown
+  fn collectConnects
+    source ts("packages/shp-checker/src/checker/lowerers.ts:716-728")
+    effects unknown
+  fn collectShapeUpdatePathsFromFunction
+    source ts("packages/shp-checker/src/checker/lowerers.ts:2051-2074")
+    effects unknown
+  fn contextForDeclarationChange
+    source ts("packages/shp-checker/src/checker/lowerers.ts:1556-1572")
+    effects unknown
+  fn declarationKind
+    source ts("packages/shp-checker/src/checker/lowerers.ts:1625-1650")
+    effects unknown
+  fn declarationName
+    source ts("packages/shp-checker/src/checker/lowerers.ts:1652-1659")
+    effects unknown
+  fn declarationShapeTraits
+    source ts("packages/shp-checker/src/checker/lowerers.ts:1523-1535")
+    effects unknown
+  fn descriptionDropped
+    source ts("packages/shp-checker/src/checker/lowerers.ts:1547-1554")
+    effects unknown
+  fn emitDeclarationChange
+    source ts("packages/shp-checker/src/checker/lowerers.ts:1508-1521")
+    effects unknown
+  fn emitDerivedFacts
+    source ts("packages/shp-checker/src/checker/lowerers.ts:2024-2049")
+    effects unknown
+  fn emitFunctionFacts
+    source ts("packages/shp-checker/src/checker/lowerers.ts:1956-2002")
+    effects unknown
+  fn emitGuardFacts
+    source ts("packages/shp-checker/src/checker/lowerers.ts:1309-1339")
+    effects unknown
+  fn emitTargetChange
+    source ts("packages/shp-checker/src/checker/lowerers.ts:1492-1506")
+    effects unknown
+  fn functionNameForAst
+    source ts("packages/shp-checker/src/checker/lowerers.ts:1714-1720")
+    effects unknown
+  fn lowerAttestation
+    source ts("packages/shp-checker/src/checker/lowerers.ts:954-971")
+    effects unknown
+  fn lowerBinding
+    source ts("packages/shp-checker/src/checker/lowerers.ts:888-952")
+    effects unknown
+  fn lowerCandidateEffect
+    source ts("packages/shp-checker/src/checker/lowerers.ts:730-824")
+    effects unknown
+  fn lowerChange
+    source ts("packages/shp-checker/src/checker/lowerers.ts:1341-1477")
+    effects unknown
+  fn lowerComponent
+    source ts("packages/shp-checker/src/checker/lowerers.ts:345-423")
+    effects unknown
+  fn lowerContextMember
+    source ts("packages/shp-checker/src/checker/lowerers.ts:1121-1167")
+    effects unknown
+  fn lowerDeclaration
+    source ts("packages/shp-checker/src/checker/lowerers.ts:1574-1596")
+    effects unknown
+  fn lowerDescription
+    source ts("packages/shp-checker/src/checker/lowerers.ts:1744-1759")
+    effects unknown
+  fn lowerEffectEntry
+    source ts("packages/shp-checker/src/checker/lowerers.ts:1785-1802")
+    effects unknown
+  fn lowerEffects
+    source ts("packages/shp-checker/src/checker/lowerers.ts:1761-1783")
+    effects unknown
+  fn lowerFingerprint
+    source ts("packages/shp-checker/src/checker/lowerers.ts:1929-1939")
+    effects unknown
+  fn lowerForbidPattern
+    source ts("packages/shp-checker/src/checker/lowerers.ts:1804-1822")
+    effects unknown
+  fn lowerFunction
+    source ts("packages/shp-checker/src/checker/lowerers.ts:1661-1712")
+    effects unknown
+  fn lowerImplementation
+    source ts("packages/shp-checker/src/checker/lowerers.ts:842-886")
+    effects unknown
+  fn lowerMemory
+    source ts("packages/shp-checker/src/checker/lowerers.ts:1066-1119")
+    effects unknown
+  fn lowerPattern
+    source ts("packages/shp-checker/src/checker/lowerers.ts:1882-1920")
+    effects unknown
+  fn lowerPolicy
+    source ts("packages/shp-checker/src/checker/lowerers.ts:1291-1307")
+    effects unknown
+  fn lowerRationale
+    source ts("packages/shp-checker/src/checker/lowerers.ts:1012-1064")
+    effects unknown
+  fn lowerReevaluation
+    source ts("packages/shp-checker/src/checker/lowerers.ts:1222-1278")
+    effects unknown
+  fn lowerRelation
+    source ts("packages/shp-checker/src/checker/lowerers.ts:425-694")
+    effects unknown
+  fn lowerResource
+    source ts("packages/shp-checker/src/checker/lowerers.ts:169-241")
+    effects unknown
+  fn lowerRole
+    source ts("packages/shp-checker/src/checker/lowerers.ts:1285-1289")
+    effects unknown
+  fn lowerRule
+    source ts("packages/shp-checker/src/checker/lowerers.ts:973-1010")
+    effects unknown
+  fn lowerRuleForbid
+    source ts("packages/shp-checker/src/checker/lowerers.ts:1824-1842")
+    effects unknown
+  fn lowerRuleForbidHypercycle
+    source ts("packages/shp-checker/src/checker/lowerers.ts:1861-1873")
+    effects unknown
+  fn lowerRuleForbidProvides
+    source ts("packages/shp-checker/src/checker/lowerers.ts:1844-1859")
+    effects unknown
+  fn lowerSatisfiedByKinds
+    source ts("packages/shp-checker/src/checker/lowerers.ts:338-343")
+    effects unknown
+  fn lowerShapeTraits
+    source ts("packages/shp-checker/src/checker/lowerers.ts:1722-1742")
+    effects unknown
+  fn lowerSourceRef
+    source ts("packages/shp-checker/src/checker/lowerers.ts:1922-1927")
+    effects unknown
+  fn lowerTargetRef
+    source ts("packages/shp-checker/src/checker/lowerers.ts:1941-1954")
+    effects unknown
+  fn lowerTerm
+    source ts("packages/shp-checker/src/checker/lowerers.ts:1875-1880")
+    effects unknown
+  fn lowerTrait
+    source ts("packages/shp-checker/src/checker/lowerers.ts:243-300")
+    effects unknown
+  fn pushGuard
+    source ts("packages/shp-checker/src/checker/lowerers.ts:1197-1220")
+    effects unknown
+  fn pushInvalidCandidateEffect
+    source ts("packages/shp-checker/src/checker/lowerers.ts:826-840")
+    effects unknown
+  fn pushProtects
+    source ts("packages/shp-checker/src/checker/lowerers.ts:1169-1195")
+    effects unknown
+  fn removeDeclaration
+    source ts("packages/shp-checker/src/checker/lowerers.ts:1598-1623")
+    effects unknown
+  fn removeFunctionFacts
+    source ts("packages/shp-checker/src/checker/lowerers.ts:2004-2022")
+    effects unknown
+  fn removeRelation
+    source ts("packages/shp-checker/src/checker/lowerers.ts:696-714")
+    effects unknown
+  fn removedTraitsBetween
+    source ts("packages/shp-checker/src/checker/lowerers.ts:1537-1545")
+    effects unknown
+  fn requireContextTargetKind
+    source ts("packages/shp-checker/src/checker/lowerers.ts:309-333")
+    effects unknown
+  fn resolveFunctionTargetParts
+    source ts("packages/shp-checker/src/checker/lowerers.ts:1479-1485")
+    effects unknown
+  fn shouldIgnoreFunctionForCoverage
+    source ts("packages/shp-checker/src/checker/lowerers.ts:2076-2078")
+    effects unknown
+}
+
+relation LowerersModuleAddShapeUpdatePathGeneratedFromLowerersModuleAddShapeUpdatePathAstAnchor {
+  kind generated_from
+  connects LowerersModule -> LowerersModuleAddShapeUpdatePathAstAnchor
+  roles { LowerersModule as generated, LowerersModuleAddShapeUpdatePathAstAnchor as syntax }
+  expects LowerersModuleAddShapeUpdatePathAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9d2dd55c9216f4cb7147c10f8cecb00171611e5d535383c8d872753eb4910816")
+  summary "fn LowerersModule.addShapeUpdatePath generated from typescript function_declaration at packages/shp-checker/src/checker/lowerers.ts:2080-2088."
+}
+
+relation LowerersModuleCollectConnectsGeneratedFromLowerersModuleCollectConnectsAstAnchor {
+  kind generated_from
+  connects LowerersModule -> LowerersModuleCollectConnectsAstAnchor
+  roles { LowerersModule as generated, LowerersModuleCollectConnectsAstAnchor as syntax }
+  expects LowerersModuleCollectConnectsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:420871c441d80da1ad7e8827ced2dfddcfa42661f78bdef60de2e88efefc4db7")
+  summary "fn LowerersModule.collectConnects generated from typescript function_declaration at packages/shp-checker/src/checker/lowerers.ts:716-728."
+}
+
+relation LowerersModuleCollectShapeUpdatePathsFromFunctionGeneratedFromLowerersModuleCollectShapeUpdatePathsFromFunctionAstAnchor {
+  kind generated_from
+  connects LowerersModule -> LowerersModuleCollectShapeUpdatePathsFromFunctionAstAnchor
+  roles { LowerersModule as generated, LowerersModuleCollectShapeUpdatePathsFromFunctionAstAnchor as syntax }
+  expects LowerersModuleCollectShapeUpdatePathsFromFunctionAstAnchor fingerprint ast.semantic_subtree_v1("sha256:842f3aca91fd61726ff4a2babe52395e560de872a92c669a4b758a005ec4cfeb")
+  summary "fn LowerersModule.collectShapeUpdatePathsFromFunction generated from typescript function_declaration at packages/shp-checker/src/checker/lowerers.ts:2051-2074."
+}
+
+relation LowerersModuleContextForDeclarationChangeGeneratedFromLowerersModuleContextForDeclarationChangeAstAnchor {
+  kind generated_from
+  connects LowerersModule -> LowerersModuleContextForDeclarationChangeAstAnchor
+  roles { LowerersModule as generated, LowerersModuleContextForDeclarationChangeAstAnchor as syntax }
+  expects LowerersModuleContextForDeclarationChangeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c6dba043ec975768ca1e28a9a0312b083d7725177f6096ad7a22452a9fa17277")
+  summary "fn LowerersModule.contextForDeclarationChange generated from typescript function_declaration at packages/shp-checker/src/checker/lowerers.ts:1556-1572."
+}
+
+relation LowerersModuleDeclarationKindGeneratedFromLowerersModuleDeclarationKindAstAnchor {
+  kind generated_from
+  connects LowerersModule -> LowerersModuleDeclarationKindAstAnchor
+  roles { LowerersModule as generated, LowerersModuleDeclarationKindAstAnchor as syntax }
+  expects LowerersModuleDeclarationKindAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f4b4a628068d6d9189675fa203ae3e92eb1bc0cb2c38e2160ac4ee789aca3550")
+  summary "fn LowerersModule.declarationKind generated from typescript function_declaration at packages/shp-checker/src/checker/lowerers.ts:1625-1650."
+}
+
+relation LowerersModuleDeclarationNameGeneratedFromLowerersModuleDeclarationNameAstAnchor {
+  kind generated_from
+  connects LowerersModule -> LowerersModuleDeclarationNameAstAnchor
+  roles { LowerersModule as generated, LowerersModuleDeclarationNameAstAnchor as syntax }
+  expects LowerersModuleDeclarationNameAstAnchor fingerprint ast.semantic_subtree_v1("sha256:723d6f7b22623a5a57057a5ff1e387d3a8791ed53e985d7c4a13e5b09c49a3ac")
+  summary "fn LowerersModule.declarationName generated from typescript function_declaration at packages/shp-checker/src/checker/lowerers.ts:1652-1659."
+}
+
+relation LowerersModuleDeclarationShapeTraitsGeneratedFromLowerersModuleDeclarationShapeTraitsAstAnchor {
+  kind generated_from
+  connects LowerersModule -> LowerersModuleDeclarationShapeTraitsAstAnchor
+  roles { LowerersModule as generated, LowerersModuleDeclarationShapeTraitsAstAnchor as syntax }
+  expects LowerersModuleDeclarationShapeTraitsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:8b423960593b6bf8d6632b1c455720ba7e181832dc216a78479a61024249cbb2")
+  summary "fn LowerersModule.declarationShapeTraits generated from typescript function_declaration at packages/shp-checker/src/checker/lowerers.ts:1523-1535."
+}
+
+relation LowerersModuleDescriptionDroppedGeneratedFromLowerersModuleDescriptionDroppedAstAnchor {
+  kind generated_from
+  connects LowerersModule -> LowerersModuleDescriptionDroppedAstAnchor
+  roles { LowerersModule as generated, LowerersModuleDescriptionDroppedAstAnchor as syntax }
+  expects LowerersModuleDescriptionDroppedAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f282105bd2308f81b64c11c66949835fc742d1d9853ae986ef3bb73846d1ab24")
+  summary "fn LowerersModule.descriptionDropped generated from typescript function_declaration at packages/shp-checker/src/checker/lowerers.ts:1547-1554."
+}
+
+relation LowerersModuleEmitDeclarationChangeGeneratedFromLowerersModuleEmitDeclarationChangeAstAnchor {
+  kind generated_from
+  connects LowerersModule -> LowerersModuleEmitDeclarationChangeAstAnchor
+  roles { LowerersModule as generated, LowerersModuleEmitDeclarationChangeAstAnchor as syntax }
+  expects LowerersModuleEmitDeclarationChangeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0c820fc7548342dd1b38c061675114cc74972f13c0764a23fba558573c363ab9")
+  summary "fn LowerersModule.emitDeclarationChange generated from typescript function_declaration at packages/shp-checker/src/checker/lowerers.ts:1508-1521."
+}
+
+relation LowerersModuleEmitDerivedFactsGeneratedFromLowerersModuleEmitDerivedFactsAstAnchor {
+  kind generated_from
+  connects LowerersModule -> LowerersModuleEmitDerivedFactsAstAnchor
+  roles { LowerersModule as generated, LowerersModuleEmitDerivedFactsAstAnchor as syntax }
+  expects LowerersModuleEmitDerivedFactsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:afa1f2062d60af47fed8e8a9e9b46075ffa33f016acdd0ce0907e5f28572ec1f")
+  summary "fn LowerersModule.emitDerivedFacts generated from typescript function_declaration at packages/shp-checker/src/checker/lowerers.ts:2024-2049."
+}
+
+relation LowerersModuleEmitFunctionFactsGeneratedFromLowerersModuleEmitFunctionFactsAstAnchor {
+  kind generated_from
+  connects LowerersModule -> LowerersModuleEmitFunctionFactsAstAnchor
+  roles { LowerersModule as generated, LowerersModuleEmitFunctionFactsAstAnchor as syntax }
+  expects LowerersModuleEmitFunctionFactsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:eefd929b6592727d99f0ffab35f599d73c9b2eaee066b528149fcb6b887a078b")
+  summary "fn LowerersModule.emitFunctionFacts generated from typescript function_declaration at packages/shp-checker/src/checker/lowerers.ts:1956-2002."
+}
+
+relation LowerersModuleEmitGuardFactsGeneratedFromLowerersModuleEmitGuardFactsAstAnchor {
+  kind generated_from
+  connects LowerersModule -> LowerersModuleEmitGuardFactsAstAnchor
+  roles { LowerersModule as generated, LowerersModuleEmitGuardFactsAstAnchor as syntax }
+  expects LowerersModuleEmitGuardFactsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1433f08ed46f6aa54f4c4a48b148f8323afb039b4944b6ccc23a5b5ed88eaeda")
+  summary "fn LowerersModule.emitGuardFacts generated from typescript function_declaration at packages/shp-checker/src/checker/lowerers.ts:1309-1339."
+}
+
+relation LowerersModuleEmitTargetChangeGeneratedFromLowerersModuleEmitTargetChangeAstAnchor {
+  kind generated_from
+  connects LowerersModule -> LowerersModuleEmitTargetChangeAstAnchor
+  roles { LowerersModule as generated, LowerersModuleEmitTargetChangeAstAnchor as syntax }
+  expects LowerersModuleEmitTargetChangeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d09e3087efffd1130fabd2ea8b3aec8988988eac3580f4d2184a7f3b534b9ed6")
+  summary "fn LowerersModule.emitTargetChange generated from typescript function_declaration at packages/shp-checker/src/checker/lowerers.ts:1492-1506."
+}
+
+relation LowerersModuleFunctionNameForAstGeneratedFromLowerersModuleFunctionNameForAstAstAnchor {
+  kind generated_from
+  connects LowerersModule -> LowerersModuleFunctionNameForAstAstAnchor
+  roles { LowerersModule as generated, LowerersModuleFunctionNameForAstAstAnchor as syntax }
+  expects LowerersModuleFunctionNameForAstAstAnchor fingerprint ast.semantic_subtree_v1("sha256:41289bb112998f9f633df02fe6a026a2fa250eabff8021b0053954d673e1c9c7")
+  summary "fn LowerersModule.functionNameForAst generated from typescript function_declaration at packages/shp-checker/src/checker/lowerers.ts:1714-1720."
+}
+
+relation LowerersModuleLowerAttestationGeneratedFromLowerersModuleLowerAttestationAstAnchor {
+  kind generated_from
+  connects LowerersModule -> LowerersModuleLowerAttestationAstAnchor
+  roles { LowerersModule as generated, LowerersModuleLowerAttestationAstAnchor as syntax }
+  expects LowerersModuleLowerAttestationAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3dc5e3e70f946302a1e3e32b117381dbd1843702900dcb257dc892fbaa6886ca")
+  summary "fn LowerersModule.lowerAttestation generated from typescript function_declaration at packages/shp-checker/src/checker/lowerers.ts:954-971."
+}
+
+relation LowerersModuleLowerBindingGeneratedFromLowerersModuleLowerBindingAstAnchor {
+  kind generated_from
+  connects LowerersModule -> LowerersModuleLowerBindingAstAnchor
+  roles { LowerersModule as generated, LowerersModuleLowerBindingAstAnchor as syntax }
+  expects LowerersModuleLowerBindingAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0504b8a2d9e241ea707b92131d7d23bc07163a01be7727feec7e8b3187a2b700")
+  summary "fn LowerersModule.lowerBinding generated from typescript function_declaration at packages/shp-checker/src/checker/lowerers.ts:888-952."
+}
+
+relation LowerersModuleLowerCandidateEffectGeneratedFromLowerersModuleLowerCandidateEffectAstAnchor {
+  kind generated_from
+  connects LowerersModule -> LowerersModuleLowerCandidateEffectAstAnchor
+  roles { LowerersModule as generated, LowerersModuleLowerCandidateEffectAstAnchor as syntax }
+  expects LowerersModuleLowerCandidateEffectAstAnchor fingerprint ast.semantic_subtree_v1("sha256:93dca0ccfff8ee714073613f94273cb5eaf9e72914ee1476d11b326b75fb39b2")
+  summary "fn LowerersModule.lowerCandidateEffect generated from typescript function_declaration at packages/shp-checker/src/checker/lowerers.ts:730-824."
+}
+
+relation LowerersModuleLowerChangeGeneratedFromLowerersModuleLowerChangeAstAnchor {
+  kind generated_from
+  connects LowerersModule -> LowerersModuleLowerChangeAstAnchor
+  roles { LowerersModule as generated, LowerersModuleLowerChangeAstAnchor as syntax }
+  expects LowerersModuleLowerChangeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:60b327c16aca916fed6516084677c437310328ee9466a3c6c9419bdb87e8ec42")
+  summary "fn LowerersModule.lowerChange generated from typescript function_declaration at packages/shp-checker/src/checker/lowerers.ts:1341-1477."
+}
+
+relation LowerersModuleLowerComponentGeneratedFromLowerersModuleLowerComponentAstAnchor {
+  kind generated_from
+  connects LowerersModule -> LowerersModuleLowerComponentAstAnchor
+  roles { LowerersModule as generated, LowerersModuleLowerComponentAstAnchor as syntax }
+  expects LowerersModuleLowerComponentAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5d20408dd6edc4db2d0b36f5bb55421a01eb1d65fc69286aaf4c34e39a1b1350")
+  summary "fn LowerersModule.lowerComponent generated from typescript function_declaration at packages/shp-checker/src/checker/lowerers.ts:345-423."
+}
+
+relation LowerersModuleLowerContextMemberGeneratedFromLowerersModuleLowerContextMemberAstAnchor {
+  kind generated_from
+  connects LowerersModule -> LowerersModuleLowerContextMemberAstAnchor
+  roles { LowerersModule as generated, LowerersModuleLowerContextMemberAstAnchor as syntax }
+  expects LowerersModuleLowerContextMemberAstAnchor fingerprint ast.semantic_subtree_v1("sha256:10df3bfc6819415ed79c6afc5e988d5176da61c5df3d06cb1b2ea526a6733bb2")
+  summary "fn LowerersModule.lowerContextMember generated from typescript function_declaration at packages/shp-checker/src/checker/lowerers.ts:1121-1167."
+}
+
+relation LowerersModuleLowerDeclarationGeneratedFromLowerersModuleLowerDeclarationAstAnchor {
+  kind generated_from
+  connects LowerersModule -> LowerersModuleLowerDeclarationAstAnchor
+  roles { LowerersModule as generated, LowerersModuleLowerDeclarationAstAnchor as syntax }
+  expects LowerersModuleLowerDeclarationAstAnchor fingerprint ast.semantic_subtree_v1("sha256:fc87fd2bfe6029b34ab0e87c871ad647df0a62030338c1b706f173c0311b2a19")
+  summary "fn LowerersModule.lowerDeclaration generated from typescript function_declaration at packages/shp-checker/src/checker/lowerers.ts:1574-1596."
+}
+
+relation LowerersModuleLowerDescriptionGeneratedFromLowerersModuleLowerDescriptionAstAnchor {
+  kind generated_from
+  connects LowerersModule -> LowerersModuleLowerDescriptionAstAnchor
+  roles { LowerersModule as generated, LowerersModuleLowerDescriptionAstAnchor as syntax }
+  expects LowerersModuleLowerDescriptionAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7c6009808d8a49ef2ee6a966d89aeb878af8fde43905d1484dde13b13c79e221")
+  summary "fn LowerersModule.lowerDescription generated from typescript function_declaration at packages/shp-checker/src/checker/lowerers.ts:1744-1759."
+}
+
+relation LowerersModuleLowerEffectEntryGeneratedFromLowerersModuleLowerEffectEntryAstAnchor {
+  kind generated_from
+  connects LowerersModule -> LowerersModuleLowerEffectEntryAstAnchor
+  roles { LowerersModule as generated, LowerersModuleLowerEffectEntryAstAnchor as syntax }
+  expects LowerersModuleLowerEffectEntryAstAnchor fingerprint ast.semantic_subtree_v1("sha256:368be1d91ed8269451810e66fce10d41248c15fe1d9a67d0984f27f3cfe61e15")
+  summary "fn LowerersModule.lowerEffectEntry generated from typescript function_declaration at packages/shp-checker/src/checker/lowerers.ts:1785-1802."
+}
+
+relation LowerersModuleLowerEffectsGeneratedFromLowerersModuleLowerEffectsAstAnchor {
+  kind generated_from
+  connects LowerersModule -> LowerersModuleLowerEffectsAstAnchor
+  roles { LowerersModule as generated, LowerersModuleLowerEffectsAstAnchor as syntax }
+  expects LowerersModuleLowerEffectsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:abb34e0c01f2d3f0b0725c19a80760bc11ef6366bab270937049338187d882f0")
+  summary "fn LowerersModule.lowerEffects generated from typescript function_declaration at packages/shp-checker/src/checker/lowerers.ts:1761-1783."
+}
+
+relation LowerersModuleLowerFingerprintGeneratedFromLowerersModuleLowerFingerprintAstAnchor {
+  kind generated_from
+  connects LowerersModule -> LowerersModuleLowerFingerprintAstAnchor
+  roles { LowerersModule as generated, LowerersModuleLowerFingerprintAstAnchor as syntax }
+  expects LowerersModuleLowerFingerprintAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a4b09ba7c75ea8c3cdd5cc7464043aeca1172fd54b7d886d62a9c4cae536da04")
+  summary "fn LowerersModule.lowerFingerprint generated from typescript function_declaration at packages/shp-checker/src/checker/lowerers.ts:1929-1939."
+}
+
+relation LowerersModuleLowerForbidPatternGeneratedFromLowerersModuleLowerForbidPatternAstAnchor {
+  kind generated_from
+  connects LowerersModule -> LowerersModuleLowerForbidPatternAstAnchor
+  roles { LowerersModule as generated, LowerersModuleLowerForbidPatternAstAnchor as syntax }
+  expects LowerersModuleLowerForbidPatternAstAnchor fingerprint ast.semantic_subtree_v1("sha256:81df4a24a1f4810db826e6a7c953d2142d106536c8d929f75c56882ce6d5b343")
+  summary "fn LowerersModule.lowerForbidPattern generated from typescript function_declaration at packages/shp-checker/src/checker/lowerers.ts:1804-1822."
+}
+
+relation LowerersModuleLowerFunctionGeneratedFromLowerersModuleLowerFunctionAstAnchor {
+  kind generated_from
+  connects LowerersModule -> LowerersModuleLowerFunctionAstAnchor
+  roles { LowerersModule as generated, LowerersModuleLowerFunctionAstAnchor as syntax }
+  expects LowerersModuleLowerFunctionAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7901f16b66e22e8d07713ba621e56583bf1b52ed84e31deab11bd05e7c653a35")
+  summary "fn LowerersModule.lowerFunction generated from typescript function_declaration at packages/shp-checker/src/checker/lowerers.ts:1661-1712."
+}
+
+relation LowerersModuleLowerImplementationGeneratedFromLowerersModuleLowerImplementationAstAnchor {
+  kind generated_from
+  connects LowerersModule -> LowerersModuleLowerImplementationAstAnchor
+  roles { LowerersModule as generated, LowerersModuleLowerImplementationAstAnchor as syntax }
+  expects LowerersModuleLowerImplementationAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9df4f0a1503669246705cb2d0e88f0a3c0c2f6938dfa32bcc7741319f3256519")
+  summary "fn LowerersModule.lowerImplementation generated from typescript function_declaration at packages/shp-checker/src/checker/lowerers.ts:842-886."
+}
+
+relation LowerersModuleLowerMemoryGeneratedFromLowerersModuleLowerMemoryAstAnchor {
+  kind generated_from
+  connects LowerersModule -> LowerersModuleLowerMemoryAstAnchor
+  roles { LowerersModule as generated, LowerersModuleLowerMemoryAstAnchor as syntax }
+  expects LowerersModuleLowerMemoryAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0364af9d0f2c4ddcdf32f370ade679608a69c2fbf7f1c3960e7735c728bd5766")
+  summary "fn LowerersModule.lowerMemory generated from typescript function_declaration at packages/shp-checker/src/checker/lowerers.ts:1066-1119."
+}
+
+relation LowerersModuleLowerPatternGeneratedFromLowerersModuleLowerPatternAstAnchor {
+  kind generated_from
+  connects LowerersModule -> LowerersModuleLowerPatternAstAnchor
+  roles { LowerersModule as generated, LowerersModuleLowerPatternAstAnchor as syntax }
+  expects LowerersModuleLowerPatternAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f53c7b9d03c28bd795e9f1c1f4813c53f25132c661b0dcc2c47d59f98c43b59c")
+  summary "fn LowerersModule.lowerPattern generated from typescript function_declaration at packages/shp-checker/src/checker/lowerers.ts:1882-1920."
+}
+
+relation LowerersModuleLowerPolicyGeneratedFromLowerersModuleLowerPolicyAstAnchor {
+  kind generated_from
+  connects LowerersModule -> LowerersModuleLowerPolicyAstAnchor
+  roles { LowerersModule as generated, LowerersModuleLowerPolicyAstAnchor as syntax }
+  expects LowerersModuleLowerPolicyAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5bbefd29979b437f6d149f2c1f7373a185cf25567ed0ed24582fd8a67f6d74a2")
+  summary "fn LowerersModule.lowerPolicy generated from typescript function_declaration at packages/shp-checker/src/checker/lowerers.ts:1291-1307."
+}
+
+relation LowerersModuleLowerRationaleGeneratedFromLowerersModuleLowerRationaleAstAnchor {
+  kind generated_from
+  connects LowerersModule -> LowerersModuleLowerRationaleAstAnchor
+  roles { LowerersModule as generated, LowerersModuleLowerRationaleAstAnchor as syntax }
+  expects LowerersModuleLowerRationaleAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0d2709a0177c6e62b01e049a10e02e231f2ec6f837bf4f2711255db9e8015dc4")
+  summary "fn LowerersModule.lowerRationale generated from typescript function_declaration at packages/shp-checker/src/checker/lowerers.ts:1012-1064."
+}
+
+relation LowerersModuleLowerReevaluationGeneratedFromLowerersModuleLowerReevaluationAstAnchor {
+  kind generated_from
+  connects LowerersModule -> LowerersModuleLowerReevaluationAstAnchor
+  roles { LowerersModule as generated, LowerersModuleLowerReevaluationAstAnchor as syntax }
+  expects LowerersModuleLowerReevaluationAstAnchor fingerprint ast.semantic_subtree_v1("sha256:cfd6e74b872591a28a35cb838d9e9bddb4c726e99bd3639bb798395686998377")
+  summary "fn LowerersModule.lowerReevaluation generated from typescript function_declaration at packages/shp-checker/src/checker/lowerers.ts:1222-1278."
+}
+
+relation LowerersModuleLowerRelationGeneratedFromLowerersModuleLowerRelationAstAnchor {
+  kind generated_from
+  connects LowerersModule -> LowerersModuleLowerRelationAstAnchor
+  roles { LowerersModule as generated, LowerersModuleLowerRelationAstAnchor as syntax }
+  expects LowerersModuleLowerRelationAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4d0ad0864d6ca12a1e6467ff4ca39edf9ec18f3696219b90388293101cda7edd")
+  summary "fn LowerersModule.lowerRelation generated from typescript function_declaration at packages/shp-checker/src/checker/lowerers.ts:425-694."
+}
+
+relation LowerersModuleLowerResourceGeneratedFromLowerersModuleLowerResourceAstAnchor {
+  kind generated_from
+  connects LowerersModule -> LowerersModuleLowerResourceAstAnchor
+  roles { LowerersModule as generated, LowerersModuleLowerResourceAstAnchor as syntax }
+  expects LowerersModuleLowerResourceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3da12f5bdf531343450c4a48cbcad581b84c4e50b05b0c644db48e4cc6784bc6")
+  summary "fn LowerersModule.lowerResource generated from typescript function_declaration at packages/shp-checker/src/checker/lowerers.ts:169-241."
+}
+
+relation LowerersModuleLowerRoleGeneratedFromLowerersModuleLowerRoleAstAnchor {
+  kind generated_from
+  connects LowerersModule -> LowerersModuleLowerRoleAstAnchor
+  roles { LowerersModule as generated, LowerersModuleLowerRoleAstAnchor as syntax }
+  expects LowerersModuleLowerRoleAstAnchor fingerprint ast.semantic_subtree_v1("sha256:320d7d69a514ef2070f5cacab9e9bf3dc5f93a475b2f5f9bededaa174dd20aa8")
+  summary "fn LowerersModule.lowerRole generated from typescript function_declaration at packages/shp-checker/src/checker/lowerers.ts:1285-1289."
+}
+
+relation LowerersModuleLowerRuleForbidGeneratedFromLowerersModuleLowerRuleForbidAstAnchor {
+  kind generated_from
+  connects LowerersModule -> LowerersModuleLowerRuleForbidAstAnchor
+  roles { LowerersModule as generated, LowerersModuleLowerRuleForbidAstAnchor as syntax }
+  expects LowerersModuleLowerRuleForbidAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f4f76c8c17801d5a9be990c8f987399c98b526935fc5981a8447f4d37e3f7eb2")
+  summary "fn LowerersModule.lowerRuleForbid generated from typescript function_declaration at packages/shp-checker/src/checker/lowerers.ts:1824-1842."
+}
+
+relation LowerersModuleLowerRuleForbidHypercycleGeneratedFromLowerersModuleLowerRuleForbidHypercycleAstAnchor {
+  kind generated_from
+  connects LowerersModule -> LowerersModuleLowerRuleForbidHypercycleAstAnchor
+  roles { LowerersModule as generated, LowerersModuleLowerRuleForbidHypercycleAstAnchor as syntax }
+  expects LowerersModuleLowerRuleForbidHypercycleAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f60967725f9ffde58f4995ec5cecf48fbe9f490798d8e4fa71b04fed5e21e9b8")
+  summary "fn LowerersModule.lowerRuleForbidHypercycle generated from typescript function_declaration at packages/shp-checker/src/checker/lowerers.ts:1861-1873."
+}
+
+relation LowerersModuleLowerRuleForbidProvidesGeneratedFromLowerersModuleLowerRuleForbidProvidesAstAnchor {
+  kind generated_from
+  connects LowerersModule -> LowerersModuleLowerRuleForbidProvidesAstAnchor
+  roles { LowerersModule as generated, LowerersModuleLowerRuleForbidProvidesAstAnchor as syntax }
+  expects LowerersModuleLowerRuleForbidProvidesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:00f0d60ed3293785d89561b46fcf9a39be19ebb11d744b803d34fd48afafb86e")
+  summary "fn LowerersModule.lowerRuleForbidProvides generated from typescript function_declaration at packages/shp-checker/src/checker/lowerers.ts:1844-1859."
+}
+
+relation LowerersModuleLowerRuleGeneratedFromLowerersModuleLowerRuleAstAnchor {
+  kind generated_from
+  connects LowerersModule -> LowerersModuleLowerRuleAstAnchor
+  roles { LowerersModule as generated, LowerersModuleLowerRuleAstAnchor as syntax }
+  expects LowerersModuleLowerRuleAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7241944bd58df5924f921ab99fbaac1559c03b10c13bed05c0f2bde4a0791913")
+  summary "fn LowerersModule.lowerRule generated from typescript function_declaration at packages/shp-checker/src/checker/lowerers.ts:973-1010."
+}
+
+relation LowerersModuleLowerSatisfiedByKindsGeneratedFromLowerersModuleLowerSatisfiedByKindsAstAnchor {
+  kind generated_from
+  connects LowerersModule -> LowerersModuleLowerSatisfiedByKindsAstAnchor
+  roles { LowerersModule as generated, LowerersModuleLowerSatisfiedByKindsAstAnchor as syntax }
+  expects LowerersModuleLowerSatisfiedByKindsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3f22073405906a35c22059ea18cb5a6c479e1637fced821b4b1390ce02b2e75c")
+  summary "fn LowerersModule.lowerSatisfiedByKinds generated from typescript function_declaration at packages/shp-checker/src/checker/lowerers.ts:338-343."
+}
+
+relation LowerersModuleLowerShapeTraitsGeneratedFromLowerersModuleLowerShapeTraitsAstAnchor {
+  kind generated_from
+  connects LowerersModule -> LowerersModuleLowerShapeTraitsAstAnchor
+  roles { LowerersModule as generated, LowerersModuleLowerShapeTraitsAstAnchor as syntax }
+  expects LowerersModuleLowerShapeTraitsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:dc26649cd20f8eeda1d3e8551d616fdf33567ca0f7e3ee0660ba03725fd669b0")
+  summary "fn LowerersModule.lowerShapeTraits generated from typescript function_declaration at packages/shp-checker/src/checker/lowerers.ts:1722-1742."
+}
+
+relation LowerersModuleLowerSourceRefGeneratedFromLowerersModuleLowerSourceRefAstAnchor {
+  kind generated_from
+  connects LowerersModule -> LowerersModuleLowerSourceRefAstAnchor
+  roles { LowerersModule as generated, LowerersModuleLowerSourceRefAstAnchor as syntax }
+  expects LowerersModuleLowerSourceRefAstAnchor fingerprint ast.semantic_subtree_v1("sha256:066c392ad2bc5ac7b1b33c48c2b352e35544cf77b28ad98b42344d95169aae30")
+  summary "fn LowerersModule.lowerSourceRef generated from typescript function_declaration at packages/shp-checker/src/checker/lowerers.ts:1922-1927."
+}
+
+relation LowerersModuleLowerTargetRefGeneratedFromLowerersModuleLowerTargetRefAstAnchor {
+  kind generated_from
+  connects LowerersModule -> LowerersModuleLowerTargetRefAstAnchor
+  roles { LowerersModule as generated, LowerersModuleLowerTargetRefAstAnchor as syntax }
+  expects LowerersModuleLowerTargetRefAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ab818589b6f17df5e9a11bf1d9b2575c5f7b01dc6c8771fa2049054c7bce8619")
+  summary "fn LowerersModule.lowerTargetRef generated from typescript function_declaration at packages/shp-checker/src/checker/lowerers.ts:1941-1954."
+}
+
+relation LowerersModuleLowerTermGeneratedFromLowerersModuleLowerTermAstAnchor {
+  kind generated_from
+  connects LowerersModule -> LowerersModuleLowerTermAstAnchor
+  roles { LowerersModule as generated, LowerersModuleLowerTermAstAnchor as syntax }
+  expects LowerersModuleLowerTermAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9254091311bd21f181b3763b308bfcad71ec349cfd4227bccb3a2400bd2154e6")
+  summary "fn LowerersModule.lowerTerm generated from typescript function_declaration at packages/shp-checker/src/checker/lowerers.ts:1875-1880."
+}
+
+relation LowerersModuleLowerTraitGeneratedFromLowerersModuleLowerTraitAstAnchor {
+  kind generated_from
+  connects LowerersModule -> LowerersModuleLowerTraitAstAnchor
+  roles { LowerersModule as generated, LowerersModuleLowerTraitAstAnchor as syntax }
+  expects LowerersModuleLowerTraitAstAnchor fingerprint ast.semantic_subtree_v1("sha256:62bfbe6fb20c8b44739c71323c39f6923e6f838d5c09cf3b6028ec4320daefd8")
+  summary "fn LowerersModule.lowerTrait generated from typescript function_declaration at packages/shp-checker/src/checker/lowerers.ts:243-300."
+}
+
+relation LowerersModulePushGuardGeneratedFromLowerersModulePushGuardAstAnchor {
+  kind generated_from
+  connects LowerersModule -> LowerersModulePushGuardAstAnchor
+  roles { LowerersModule as generated, LowerersModulePushGuardAstAnchor as syntax }
+  expects LowerersModulePushGuardAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9cb4b5ca8a9df01ebe5982e7b9a730b53d0a412c347302cac72956e9e237b472")
+  summary "fn LowerersModule.pushGuard generated from typescript function_declaration at packages/shp-checker/src/checker/lowerers.ts:1197-1220."
+}
+
+relation LowerersModulePushInvalidCandidateEffectGeneratedFromLowerersModulePushInvalidCandidateEffectAstAnchor {
+  kind generated_from
+  connects LowerersModule -> LowerersModulePushInvalidCandidateEffectAstAnchor
+  roles { LowerersModule as generated, LowerersModulePushInvalidCandidateEffectAstAnchor as syntax }
+  expects LowerersModulePushInvalidCandidateEffectAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ef2a2591612faf128c601caeedfaa30deaa63f9e50c41daa1633325d8c1a1807")
+  summary "fn LowerersModule.pushInvalidCandidateEffect generated from typescript function_declaration at packages/shp-checker/src/checker/lowerers.ts:826-840."
+}
+
+relation LowerersModulePushProtectsGeneratedFromLowerersModulePushProtectsAstAnchor {
+  kind generated_from
+  connects LowerersModule -> LowerersModulePushProtectsAstAnchor
+  roles { LowerersModule as generated, LowerersModulePushProtectsAstAnchor as syntax }
+  expects LowerersModulePushProtectsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a10f3954722184c9678ec6d498ec24e97ad44bf7fb9a6c696ad6af358231c3d2")
+  summary "fn LowerersModule.pushProtects generated from typescript function_declaration at packages/shp-checker/src/checker/lowerers.ts:1169-1195."
+}
+
+relation LowerersModuleRemoveDeclarationGeneratedFromLowerersModuleRemoveDeclarationAstAnchor {
+  kind generated_from
+  connects LowerersModule -> LowerersModuleRemoveDeclarationAstAnchor
+  roles { LowerersModule as generated, LowerersModuleRemoveDeclarationAstAnchor as syntax }
+  expects LowerersModuleRemoveDeclarationAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e02179ac51d0713bf5d2e4bca2fa9122db981704a29e2004986deedc61c55fc4")
+  summary "fn LowerersModule.removeDeclaration generated from typescript function_declaration at packages/shp-checker/src/checker/lowerers.ts:1598-1623."
+}
+
+relation LowerersModuleRemoveFunctionFactsGeneratedFromLowerersModuleRemoveFunctionFactsAstAnchor {
+  kind generated_from
+  connects LowerersModule -> LowerersModuleRemoveFunctionFactsAstAnchor
+  roles { LowerersModule as generated, LowerersModuleRemoveFunctionFactsAstAnchor as syntax }
+  expects LowerersModuleRemoveFunctionFactsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:daa14bf17a6f7276a4a81f30dfc49d83e76f43e406c269f7eacb906644f6bcf4")
+  summary "fn LowerersModule.removeFunctionFacts generated from typescript function_declaration at packages/shp-checker/src/checker/lowerers.ts:2004-2022."
+}
+
+relation LowerersModuleRemoveRelationGeneratedFromLowerersModuleRemoveRelationAstAnchor {
+  kind generated_from
+  connects LowerersModule -> LowerersModuleRemoveRelationAstAnchor
+  roles { LowerersModule as generated, LowerersModuleRemoveRelationAstAnchor as syntax }
+  expects LowerersModuleRemoveRelationAstAnchor fingerprint ast.semantic_subtree_v1("sha256:28220984b63cba5164572b568474323db02f6fbe94f4a355408d3e188aded959")
+  summary "fn LowerersModule.removeRelation generated from typescript function_declaration at packages/shp-checker/src/checker/lowerers.ts:696-714."
+}
+
+relation LowerersModuleRemovedTraitsBetweenGeneratedFromLowerersModuleRemovedTraitsBetweenAstAnchor {
+  kind generated_from
+  connects LowerersModule -> LowerersModuleRemovedTraitsBetweenAstAnchor
+  roles { LowerersModule as generated, LowerersModuleRemovedTraitsBetweenAstAnchor as syntax }
+  expects LowerersModuleRemovedTraitsBetweenAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6590ea51a0a038d322dad61d5ab2b124e84f70feccb9a66d7a448b4de5188251")
+  summary "fn LowerersModule.removedTraitsBetween generated from typescript function_declaration at packages/shp-checker/src/checker/lowerers.ts:1537-1545."
+}
+
+relation LowerersModuleRequireContextTargetKindGeneratedFromLowerersModuleRequireContextTargetKindAstAnchor {
+  kind generated_from
+  connects LowerersModule -> LowerersModuleRequireContextTargetKindAstAnchor
+  roles { LowerersModule as generated, LowerersModuleRequireContextTargetKindAstAnchor as syntax }
+  expects LowerersModuleRequireContextTargetKindAstAnchor fingerprint ast.semantic_subtree_v1("sha256:72e19dfa98c154bbb34b3c8ec1cb342ecdd3a4fd4636ee919ef4a7e0627aa5b8")
+  summary "fn LowerersModule.requireContextTargetKind generated from typescript function_declaration at packages/shp-checker/src/checker/lowerers.ts:309-333."
+}
+
+relation LowerersModuleResolveFunctionTargetPartsGeneratedFromLowerersModuleResolveFunctionTargetPartsAstAnchor {
+  kind generated_from
+  connects LowerersModule -> LowerersModuleResolveFunctionTargetPartsAstAnchor
+  roles { LowerersModule as generated, LowerersModuleResolveFunctionTargetPartsAstAnchor as syntax }
+  expects LowerersModuleResolveFunctionTargetPartsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:feb26c989b584f7a93beb257c5180fb0bb8f8f0b0048efac91041f40ffafb14f")
+  summary "fn LowerersModule.resolveFunctionTargetParts generated from typescript function_declaration at packages/shp-checker/src/checker/lowerers.ts:1479-1485."
+}
+
+relation LowerersModuleShouldIgnoreFunctionForCoverageGeneratedFromLowerersModuleShouldIgnoreFunctionForCoverageAstAnchor {
+  kind generated_from
+  connects LowerersModule -> LowerersModuleShouldIgnoreFunctionForCoverageAstAnchor
+  roles { LowerersModule as generated, LowerersModuleShouldIgnoreFunctionForCoverageAstAnchor as syntax }
+  expects LowerersModuleShouldIgnoreFunctionForCoverageAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a515ada20aa7173b91894977ce79880760770039ac954e014444f4ab229cca33")
+  summary "fn LowerersModule.shouldIgnoreFunctionForCoverage generated from typescript function_declaration at packages/shp-checker/src/checker/lowerers.ts:2076-2078."
+}
+
+implementation LowerersModuleImpl {
+  paths {
+    "packages/shp-checker/src/checker/lowerers.ts"
+  }
+  conforms_to LowerersModule
+}

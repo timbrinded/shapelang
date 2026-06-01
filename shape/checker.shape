@@ -39,16 +39,16 @@ component ShapeBindings {
   grants Read<NormalizedShapeReference>
   grants Read<ShapeBinding>
   fn checkBindings : RefactorSensitive
-    source ts("packages/shp-checker/src/checker.ts#checkBindings")
+    source ts("packages/shp-checker/src/checker/rules.ts#checkBindings")
     effects complete {
       Append<SemanticDiagnostics>
-        evidence ts("packages/shp-checker/src/checker.ts")
+        evidence ts("packages/shp-checker/src/checker/rules.ts")
       Read<ChangedFileList>
-        evidence ts("packages/shp-checker/src/checker.ts")
+        evidence ts("packages/shp-checker/src/checker/rules.ts")
       Read<NormalizedShapeReference>
-        evidence ts("packages/shp-checker/src/checker.ts")
+        evidence ts("packages/shp-checker/src/checker/rules.ts")
       Read<ShapeBinding>
-        evidence ts("packages/shp-checker/src/checker.ts")
+        evidence ts("packages/shp-checker/src/checker/rules.ts")
     }
 }
 
@@ -59,26 +59,32 @@ component ShapeChecker {
   grants Read<FactSet>
   grants Read<PreludeMetadata>
   fn checkShapeFiles
-    source ts("packages/shp-checker/src/checker.ts#checkShapeFiles")
+    source ts("packages/shp-checker/src/checker/api.ts#checkShapeFiles")
     effects complete {
       Append<SemanticDiagnostics>
-        evidence ts("packages/shp-checker/src/checker.ts")
+        evidence ts("packages/shp-checker/src/checker/api.ts")
       Read<ChangedFileList>
-        evidence ts("packages/shp-checker/src/checker.ts")
+        evidence ts("packages/shp-checker/src/checker/api.ts")
     }
   fn checkShapeModules : ProtectedCheckOrder
-    source ts("packages/shp-checker/src/checker.ts#checkShapeModules")
+    source ts("packages/shp-checker/src/checker/api.ts#checkShapeModules")
     effects complete {
       Append<SemanticDiagnostics>
-        evidence ts("packages/shp-checker/src/checker.ts")
+        evidence ts("packages/shp-checker/src/checker/api.ts")
       Read<ChangedFileList>
-        evidence ts("packages/shp-checker/src/checker.ts")
+        evidence ts("packages/shp-checker/src/checker/api.ts")
       Read<EffectiveModel>
-        evidence ts("packages/shp-checker/src/checker.ts")
+        evidence ts("packages/shp-checker/src/checker/api.ts")
       Read<FactSet>
-        evidence ts("packages/shp-checker/src/checker.ts")
+        evidence ts("packages/shp-checker/src/checker/api.ts")
       Read<PreludeMetadata>
-        evidence ts("packages/shp-checker/src/checker.ts")
+        evidence ts("packages/shp-checker/src/checker/api.ts")
+    }
+  fn explainShapeModules
+    source ts("packages/shp-checker/src/checker/query.ts#explainShapeModules")
+    effects complete {
+      Read<EffectiveModel>
+        evidence ts("packages/shp-checker/src/checker/query.ts")
     }
 }
 
@@ -86,12 +92,12 @@ component ShapeDiagnostics {
   grants Append<DiagnosticText>
   grants Read<SemanticDiagnostics>
   fn formatDiagnostics : RefactorSensitive
-    source ts("packages/shp-checker/src/checker.ts#formatDiagnostics")
+    source ts("packages/shp-checker/src/checker/diagnostics.ts#formatDiagnostics")
     effects complete {
       Append<DiagnosticText>
-        evidence ts("packages/shp-checker/src/checker.ts")
+        evidence ts("packages/shp-checker/src/checker/diagnostics.ts")
       Read<SemanticDiagnostics>
-        evidence ts("packages/shp-checker/src/checker.ts")
+        evidence ts("packages/shp-checker/src/checker/diagnostics.ts")
     }
 }
 
@@ -106,23 +112,41 @@ component ShapeModelLowerer {
   grants Read<ParsedModule>
   grants Read<PreludeMetadata>
   grants Update<EffectiveModel>
-  fn lowerShapeModules : ProtectedCheckOrder
-    source ts("packages/shp-checker/src/checker.ts#lowerShapeModules")
+  fn indexModuleDeclarations
+    source ts("packages/shp-checker/src/checker/symbols.ts#indexModuleDeclarations")
+    effects complete {
+      Append<ModuleNamespace>
+        evidence ts("packages/shp-checker/src/checker/symbols.ts")
+      Read<ParsedModule>
+        evidence ts("packages/shp-checker/src/checker/symbols.ts")
+    }
+  fn lowerComponent
+    source ts("packages/shp-checker/src/checker/lowerers.ts#lowerComponent")
     effects complete {
       Append<FactSet>
-        evidence ts("packages/shp-checker/src/checker.ts")
-      Append<ModuleNamespace>
-        evidence ts("packages/shp-checker/src/checker.ts")
-      Read<GeneratedCandidateEffect>
-        evidence ts("packages/shp-checker/src/checker.ts")
-      Read<NormalizedShapeReference>
-        evidence ts("packages/shp-checker/src/checker.ts")
+        evidence ts("packages/shp-checker/src/checker/lowerers.ts")
       Read<ParsedModule>
-        evidence ts("packages/shp-checker/src/checker.ts")
-      Read<PreludeMetadata>
-        evidence ts("packages/shp-checker/src/checker.ts")
+        evidence ts("packages/shp-checker/src/checker/lowerers.ts")
       Update<EffectiveModel>
-        evidence ts("packages/shp-checker/src/checker.ts")
+        evidence ts("packages/shp-checker/src/checker/lowerers.ts")
+    }
+  fn lowerShapeModules : ProtectedCheckOrder
+    source ts("packages/shp-checker/src/checker/lowerer.ts#lowerShapeModules")
+    effects complete {
+      Append<FactSet>
+        evidence ts("packages/shp-checker/src/checker/lowerer.ts")
+      Append<ModuleNamespace>
+        evidence ts("packages/shp-checker/src/checker/lowerer.ts")
+      Read<GeneratedCandidateEffect>
+        evidence ts("packages/shp-checker/src/checker/lowerer.ts")
+      Read<NormalizedShapeReference>
+        evidence ts("packages/shp-checker/src/checker/lowerer.ts")
+      Read<ParsedModule>
+        evidence ts("packages/shp-checker/src/checker/lowerer.ts")
+      Read<PreludeMetadata>
+        evidence ts("packages/shp-checker/src/checker/lowerer.ts")
+      Update<EffectiveModel>
+        evidence ts("packages/shp-checker/src/checker/lowerer.ts")
     }
 }
 
@@ -148,72 +172,72 @@ component ShapeRuleEngine {
   grants Read<PreludeMetadata>
   grants Update<ShapeHypergraph>
   fn checkCoverage : RefactorSensitive
-    source ts("packages/shp-checker/src/checker.ts#checkCoverage")
+    source ts("packages/shp-checker/src/checker/rules.ts#checkCoverage")
     effects complete {
       Append<SemanticDiagnostics>
-        evidence ts("packages/shp-checker/src/checker.ts")
+        evidence ts("packages/shp-checker/src/checker/rules.ts")
       Read<ChangedFileList>
-        evidence ts("packages/shp-checker/src/checker.ts")
+        evidence ts("packages/shp-checker/src/checker/rules.ts")
       Read<EffectiveModel>
-        evidence ts("packages/shp-checker/src/checker.ts")
+        evidence ts("packages/shp-checker/src/checker/rules.ts")
       Read<NormalizedShapeReference>
-        evidence ts("packages/shp-checker/src/checker.ts")
+        evidence ts("packages/shp-checker/src/checker/rules.ts")
     }
   fn checkFingerprintExpectations
-    source ts("packages/shp-checker/src/checker.ts#checkFingerprintExpectations")
+    source ts("packages/shp-checker/src/checker/rules.ts#checkFingerprintExpectations")
     effects complete {
       Append<SemanticDiagnostics>
-        evidence ts("packages/shp-checker/src/checker.ts")
+        evidence ts("packages/shp-checker/src/checker/rules.ts")
       Read<EffectiveModel>
-        evidence ts("packages/shp-checker/src/checker.ts")
+        evidence ts("packages/shp-checker/src/checker/rules.ts")
       Read<FactSet>
-        evidence ts("packages/shp-checker/src/checker.ts")
+        evidence ts("packages/shp-checker/src/checker/rules.ts")
     }
   fn checkFreshness : RefactorSensitive
-    source ts("packages/shp-checker/src/checker.ts#checkFreshness")
+    source ts("packages/shp-checker/src/checker/rules.ts#checkFreshness")
     effects complete {
       Append<SemanticDiagnostics>
-        evidence ts("packages/shp-checker/src/checker.ts")
+        evidence ts("packages/shp-checker/src/checker/rules.ts")
       Read<EffectiveModel>
-        evidence ts("packages/shp-checker/src/checker.ts")
+        evidence ts("packages/shp-checker/src/checker/rules.ts")
     }
   fn checkGuardedChanges : RefactorSensitive
-    source ts("packages/shp-checker/src/checker.ts#checkGuardedChanges")
+    source ts("packages/shp-checker/src/checker/rules.ts#checkGuardedChanges")
     effects complete {
       Append<SemanticDiagnostics>
-        evidence ts("packages/shp-checker/src/checker.ts")
+        evidence ts("packages/shp-checker/src/checker/rules.ts")
       Read<EffectiveModel>
-        evidence ts("packages/shp-checker/src/checker.ts")
+        evidence ts("packages/shp-checker/src/checker/rules.ts")
     }
   fn checkReevaluations : RefactorSensitive
-    source ts("packages/shp-checker/src/checker.ts#checkReevaluations")
+    source ts("packages/shp-checker/src/checker/rules.ts#checkReevaluations")
     effects complete {
       Append<SemanticDiagnostics>
-        evidence ts("packages/shp-checker/src/checker.ts")
+        evidence ts("packages/shp-checker/src/checker/rules.ts")
       Read<EffectiveModel>
-        evidence ts("packages/shp-checker/src/checker.ts")
+        evidence ts("packages/shp-checker/src/checker/rules.ts")
     }
   fn deriveFinalForbidsForResource : RefactorSensitive
-    source ts("packages/shp-checker/src/checker.ts#deriveFinalForbidsForResource")
+    source ts("packages/shp-checker/src/checker/derivations.ts#deriveFinalForbidsForResource")
     effects complete {
       Append<SemanticDiagnostics>
-        evidence ts("packages/shp-checker/src/checker.ts")
+        evidence ts("packages/shp-checker/src/checker/derivations.ts")
       Read<FactSet>
-        evidence ts("packages/shp-checker/src/checker.ts")
+        evidence ts("packages/shp-checker/src/checker/derivations.ts")
       Read<PreludeMetadata>
-        evidence ts("packages/shp-checker/src/checker.ts")
+        evidence ts("packages/shp-checker/src/checker/derivations.ts")
     }
   fn findHypercycle : RefactorSensitive
-    source ts("packages/shp-checker/src/checker.ts#findHypercycle")
+    source ts("packages/shp-checker/src/checker/rules.ts#findHypercycle")
     effects complete {
       Append<SemanticDiagnostics>
-        evidence ts("packages/shp-checker/src/checker.ts")
+        evidence ts("packages/shp-checker/src/checker/rules.ts")
       Read<EffectiveModel>
-        evidence ts("packages/shp-checker/src/checker.ts")
+        evidence ts("packages/shp-checker/src/checker/rules.ts")
       Read<PreludeMetadata>
-        evidence ts("packages/shp-checker/src/checker.ts")
+        evidence ts("packages/shp-checker/src/checker/rules.ts")
       Update<ShapeHypergraph>
-        evidence ts("packages/shp-checker/src/checker.ts")
+        evidence ts("packages/shp-checker/src/checker/rules.ts")
     }
 }
 
