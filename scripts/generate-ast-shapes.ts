@@ -1,4 +1,5 @@
 #!/usr/bin/env bun
+import { existsSync } from "node:fs";
 import { AST_SOURCE_EXTENSIONS } from "../packages/shp-checker/src/source-languages.ts";
 
 const passthroughArgs = Bun.argv.slice(2);
@@ -47,7 +48,7 @@ async function trackedSourceFiles(pathspecs: string[]): Promise<string[]> {
   }
   return output
     .split("\0")
-    .filter((path) => path.length > 0)
+    .filter((path) => path.length > 0 && existsSync(path))
     .sort(compareCodepointStrings);
 }
 

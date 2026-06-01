@@ -20,7 +20,7 @@ export function globMatches(glob: string, path: string): boolean {
   return regex.test(normalizedPath);
 }
 
-export function globToRegex(glob: string): string {
+function globToRegex(glob: string): string {
   let regex = "";
   for (let index = 0; index < glob.length; index += 1) {
     const char = glob[index];
@@ -43,6 +43,6 @@ export function globToRegex(glob: string): string {
   return regex;
 }
 
-export function escapeRegex(value: string): string {
+function escapeRegex(value: string): string {
   return value.replace(/[\\^$.*+?()[\]{}|]/g, "\\$&");
 }

@@ -7,21 +7,21 @@ trait GeneratedCandidate {
 }
 
 resource CheckerMemoryFreshnessTestModuleCheckWithFreshnessAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker.memory-freshness.test.ts:35-37")
-  fingerprint ast.semantic_subtree_v1("sha256:3a8cae72e79eb1e9751838cdbb69f01b306ddd297f5e27ddd248b7e61797ef4e")
+  storage ast.anchor("packages/shp-checker/src/checker.memory-freshness.test.ts:41-45")
+  fingerprint ast.semantic_subtree_v1("sha256:3a9f79628283e64151ee3dbc8501b93498336ab05260cfa3562b46cfc47cb265")
 }
 
 resource CheckerMemoryFreshnessTestModuleRefactorMemorySourceAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker.memory-freshness.test.ts:6-31")
+  storage ast.anchor("packages/shp-checker/src/checker.memory-freshness.test.ts:12-37")
   fingerprint ast.semantic_subtree_v1("sha256:83b1eaf43f4990c8db4fa4277e86fb0cd922ab3dc63a838e3dc7c4be95ed40b2")
 }
 
 component CheckerMemoryFreshnessTestModule : GeneratedCandidate {
   fn checkWithFreshness
-    source ts("packages/shp-checker/src/checker.memory-freshness.test.ts:35-37")
+    source ts("packages/shp-checker/src/checker.memory-freshness.test.ts:41-45")
     effects unknown
   fn refactorMemorySource
-    source ts("packages/shp-checker/src/checker.memory-freshness.test.ts:6-31")
+    source ts("packages/shp-checker/src/checker.memory-freshness.test.ts:12-37")
     effects unknown
 }
 
@@ -29,8 +29,8 @@ relation CheckerMemoryFreshnessTestModuleCheckWithFreshnessGeneratedFromCheckerM
   kind generated_from
   connects CheckerMemoryFreshnessTestModule -> CheckerMemoryFreshnessTestModuleCheckWithFreshnessAstAnchor
   roles { CheckerMemoryFreshnessTestModule as generated, CheckerMemoryFreshnessTestModuleCheckWithFreshnessAstAnchor as syntax }
-  expects CheckerMemoryFreshnessTestModuleCheckWithFreshnessAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3a8cae72e79eb1e9751838cdbb69f01b306ddd297f5e27ddd248b7e61797ef4e")
-  summary "fn CheckerMemoryFreshnessTestModule.checkWithFreshness generated from typescript function_declaration at packages/shp-checker/src/checker.memory-freshness.test.ts:35-37."
+  expects CheckerMemoryFreshnessTestModuleCheckWithFreshnessAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3a9f79628283e64151ee3dbc8501b93498336ab05260cfa3562b46cfc47cb265")
+  summary "fn CheckerMemoryFreshnessTestModule.checkWithFreshness generated from typescript function_declaration at packages/shp-checker/src/checker.memory-freshness.test.ts:41-45."
 }
 
 relation CheckerMemoryFreshnessTestModuleRefactorMemorySourceGeneratedFromCheckerMemoryFreshnessTestModuleRefactorMemorySourceAstAnchor {
@@ -38,7 +38,7 @@ relation CheckerMemoryFreshnessTestModuleRefactorMemorySourceGeneratedFromChecke
   connects CheckerMemoryFreshnessTestModule -> CheckerMemoryFreshnessTestModuleRefactorMemorySourceAstAnchor
   roles { CheckerMemoryFreshnessTestModule as generated, CheckerMemoryFreshnessTestModuleRefactorMemorySourceAstAnchor as syntax }
   expects CheckerMemoryFreshnessTestModuleRefactorMemorySourceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:83b1eaf43f4990c8db4fa4277e86fb0cd922ab3dc63a838e3dc7c4be95ed40b2")
-  summary "fn CheckerMemoryFreshnessTestModule.refactorMemorySource generated from typescript function_declaration at packages/shp-checker/src/checker.memory-freshness.test.ts:6-31."
+  summary "fn CheckerMemoryFreshnessTestModule.refactorMemorySource generated from typescript function_declaration at packages/shp-checker/src/checker.memory-freshness.test.ts:12-37."
 }
 
 implementation CheckerMemoryFreshnessTestModuleImpl {

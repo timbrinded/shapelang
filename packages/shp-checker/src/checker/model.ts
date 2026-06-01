@@ -13,6 +13,7 @@ import type {
 import type { ContextKind } from "../prelude.ts";
 import type { ParseDiagnostic } from "../parser.ts";
 import type { ChangeTrigger } from "../memory-guards.ts";
+import type { IsoDateString } from "./iso-date.ts";
 
 export type SemanticDiagnostic =
   | {
@@ -258,7 +259,7 @@ export type CheckOptions = {
    * checking. The checker never reads the system clock; callers inject the date
    * so checking stays deterministic.
    */
-  freshnessDate?: string;
+  freshnessDate?: IsoDateString;
 };
 
 export type Fact =

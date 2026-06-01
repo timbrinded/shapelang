@@ -51,6 +51,9 @@ export {
   graphShapeModules,
   listMemoryGuardsShapeModules,
   listShapeObligations,
+  isIsoCalendarDate,
+  parseIsoCalendarDate,
+  requireIsoCalendarDate,
   statsShapeHypergraph,
   type CheckResult,
   type CheckModuleInput,
@@ -58,7 +61,8 @@ export {
   type CheckOptions,
   type Fact,
   type SemanticDiagnostic,
-  type ShapeDiagnostic
+  type ShapeDiagnostic,
+  type IsoDateString
 } from "./checker.ts";
 export { formatShapeModule, formatShapeSource, type FormatResult } from "./formatter.ts";
 export type { ShapeModule } from "./language/generated/ast.ts";

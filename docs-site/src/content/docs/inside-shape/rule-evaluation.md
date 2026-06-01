@@ -162,7 +162,8 @@ module repo
 
 binding RuleEngineDocs {
   when_changed paths {
-    "packages/shp-checker/src/checker.ts"
+    "packages/shp-checker/src/checker/rules.ts"
+    "packages/shp-checker/src/checker/rules/**/*.ts"
     "shape/checker.shape"
   }
   require_changed paths {
@@ -173,7 +174,7 @@ binding RuleEngineDocs {
 }
 ```
 
-When `shp check --changed-files changed.txt` sees a triggering path, at least one required path must also appear. A `docs_not_needed` attestation can satisfy the binding only when it points at the triggering path, gives a reason, and is declared in a `.shape` file changed by the current run.
+When `shp check --changed-files changed.txt` sees a triggering path, at least one required path must also appear. A `docs_not_needed` attestation can satisfy the binding only when it points at the triggering path, gives a reason, and is declared in a `.shape` file changed by the current run. In this repo the rule engine is split into an ordered registry plus domain rule modules, and the binding watches both surfaces.
 
 ## Context And Memory Guards
 

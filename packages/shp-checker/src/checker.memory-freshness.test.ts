@@ -1,5 +1,11 @@
 import { describe, expect, test } from "bun:test";
-import { formatDiagnostics, listShapeObligations, parseShapeModule } from "./index.ts";
+import {
+  formatDiagnostics,
+  listShapeObligations,
+  parseShapeModule,
+  requireIsoCalendarDate,
+  type CheckOptions
+} from "./index.ts";
 import { checkShapeSource, contextRef, fnTarget } from "./test-support.ts";
 
 describe("Shape memory freshness checking", () => {
@@ -33,7 +39,9 @@ describe("Shape memory freshness checking", () => {
   // Thin wrapper over the shared checkShapeSource helper so the parse/error flow
   // lives in one place; this only threads the freshness option through.
   function checkWithFreshness(source: string, freshnessDate?: string) {
-    return checkShapeSource(source, { freshnessDate });
+    return checkShapeSource(source, {
+      freshnessDate: freshnessDate === undefined ? undefined : requireIsoCalendarDate(freshnessDate)
+    });
   }
 
   test("flags design memory whose review_by is before the freshness date", () => {
@@ -126,7 +134,9 @@ describe("Shape memory freshness checking", () => {
       throw new Error("expected module to parse");
     }
 
-    const withFreshness = listShapeObligations([parsed.module], { freshnessDate: "2026-05-30" });
+    const withFreshness = listShapeObligations([parsed.module], {
+      freshnessDate: requireIsoCalendarDate("2026-05-30")
+    });
     expect(withFreshness).toContain("stale design memory:");
     expect(withFreshness).toContain(
       "memory BridgePollingDelayConstraint review_by 2026-01-01 is before 2026-05-30"
@@ -134,5 +144,13 @@ describe("Shape memory freshness checking", () => {
 
     const withoutFreshness = listShapeObligations([parsed.module]);
     expect(withoutFreshness).not.toContain("stale design memory");
+  });
+
+  test("rejects invalid public checker freshness dates before rule evaluation", () => {
+    const unsafeOptions = { freshnessDate: "2026-02-30" } as unknown as CheckOptions;
+
+    expect(() => checkShapeSource(refactorMemorySource("2026-01-01"), unsafeOptions)).toThrow(
+      "CheckOptions.freshnessDate must be an ISO YYYY-MM-DD calendar date"
+    );
   });
 });

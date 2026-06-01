@@ -1,0 +1,49 @@
+module shape.generated.ast.packages.shp_checker.src.checker.sort
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource SortModuleCompareKindNameAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/sort.ts:12-14")
+  fingerprint ast.semantic_subtree_v1("sha256:bddf7fe645357e829a24d4eed3ea7cd4f0968aea987585ca56f11f928fdeff6c")
+}
+
+resource SortModuleKindNameKeyAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/sort.ts:8-10")
+  fingerprint ast.semantic_subtree_v1("sha256:a48b6cc8767065bc40d768da470b42111f83068f81b17b0eea79d373c16a7a1c")
+}
+
+component SortModule : GeneratedCandidate {
+  fn compareKindName
+    source ts("packages/shp-checker/src/checker/sort.ts:12-14")
+    effects unknown
+  fn kindNameKey
+    source ts("packages/shp-checker/src/checker/sort.ts:8-10")
+    effects unknown
+}
+
+relation SortModuleCompareKindNameGeneratedFromSortModuleCompareKindNameAstAnchor {
+  kind generated_from
+  connects SortModule -> SortModuleCompareKindNameAstAnchor
+  roles { SortModule as generated, SortModuleCompareKindNameAstAnchor as syntax }
+  expects SortModuleCompareKindNameAstAnchor fingerprint ast.semantic_subtree_v1("sha256:bddf7fe645357e829a24d4eed3ea7cd4f0968aea987585ca56f11f928fdeff6c")
+  summary "fn SortModule.compareKindName generated from typescript function_declaration at packages/shp-checker/src/checker/sort.ts:12-14."
+}
+
+relation SortModuleKindNameKeyGeneratedFromSortModuleKindNameKeyAstAnchor {
+  kind generated_from
+  connects SortModule -> SortModuleKindNameKeyAstAnchor
+  roles { SortModule as generated, SortModuleKindNameKeyAstAnchor as syntax }
+  expects SortModuleKindNameKeyAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a48b6cc8767065bc40d768da470b42111f83068f81b17b0eea79d373c16a7a1c")
+  summary "fn SortModule.kindNameKey generated from typescript function_declaration at packages/shp-checker/src/checker/sort.ts:8-10."
+}
+
+implementation SortModuleImpl {
+  paths {
+    "packages/shp-checker/src/checker/sort.ts"
+  }
+  conforms_to SortModule
+}

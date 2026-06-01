@@ -8,7 +8,7 @@ trait GeneratedCandidate {
 
 resource GlobsModuleEscapeRegexAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/checker/globs.ts:46-48")
-  fingerprint ast.semantic_subtree_v1("sha256:98bfa2952f230961a8627b8a09cc865a75017b0c9bbc506edab617ccef781742")
+  fingerprint ast.semantic_subtree_v1("sha256:5b184c7fd748a2869afc2d461ad5d24bf46108681209869fa8d22e654e12503b")
 }
 
 resource GlobsModuleGlobMatchesAstAnchor : GeneratedAstAnchor {
@@ -18,7 +18,7 @@ resource GlobsModuleGlobMatchesAstAnchor : GeneratedAstAnchor {
 
 resource GlobsModuleGlobToRegexAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/checker/globs.ts:23-44")
-  fingerprint ast.semantic_subtree_v1("sha256:05246ee3a0345cbb65a03da70c552c9843e3dc6bb8f44699e84f4ce328b3876e")
+  fingerprint ast.semantic_subtree_v1("sha256:d5610876860a9fd51c3296abe8f995e857ddee9f8644877b60e182382a1b907f")
 }
 
 resource GlobsModuleNormalizeRepoPathAstAnchor : GeneratedAstAnchor {
@@ -45,7 +45,7 @@ relation GlobsModuleEscapeRegexGeneratedFromGlobsModuleEscapeRegexAstAnchor {
   kind generated_from
   connects GlobsModule -> GlobsModuleEscapeRegexAstAnchor
   roles { GlobsModule as generated, GlobsModuleEscapeRegexAstAnchor as syntax }
-  expects GlobsModuleEscapeRegexAstAnchor fingerprint ast.semantic_subtree_v1("sha256:98bfa2952f230961a8627b8a09cc865a75017b0c9bbc506edab617ccef781742")
+  expects GlobsModuleEscapeRegexAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5b184c7fd748a2869afc2d461ad5d24bf46108681209869fa8d22e654e12503b")
   summary "fn GlobsModule.escapeRegex generated from typescript function_declaration at packages/shp-checker/src/checker/globs.ts:46-48."
 }
 
@@ -61,7 +61,7 @@ relation GlobsModuleGlobToRegexGeneratedFromGlobsModuleGlobToRegexAstAnchor {
   kind generated_from
   connects GlobsModule -> GlobsModuleGlobToRegexAstAnchor
   roles { GlobsModule as generated, GlobsModuleGlobToRegexAstAnchor as syntax }
-  expects GlobsModuleGlobToRegexAstAnchor fingerprint ast.semantic_subtree_v1("sha256:05246ee3a0345cbb65a03da70c552c9843e3dc6bb8f44699e84f4ce328b3876e")
+  expects GlobsModuleGlobToRegexAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d5610876860a9fd51c3296abe8f995e857ddee9f8644877b60e182382a1b907f")
   summary "fn GlobsModule.globToRegex generated from typescript function_declaration at packages/shp-checker/src/checker/globs.ts:23-44."
 }
 

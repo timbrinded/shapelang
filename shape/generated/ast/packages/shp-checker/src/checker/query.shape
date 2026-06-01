@@ -7,237 +7,237 @@ trait GeneratedCandidate {
 }
 
 resource QueryModuleAllHyperedgesByKindAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/query.ts:396-404")
+  storage ast.anchor("packages/shp-checker/src/checker/query.ts:398-406")
   fingerprint ast.semantic_subtree_v1("sha256:84bf2688fc82f942d25c82354c36a43dd3fd15088caee0a5f20fe31e1effb2ef")
 }
 
 resource QueryModuleAppendContextAndGuardSectionsAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/query.ts:342-353")
+  storage ast.anchor("packages/shp-checker/src/checker/query.ts:344-355")
   fingerprint ast.semantic_subtree_v1("sha256:25d8805954b024612d718baa4ddda246d7e5861ddbff4acbfcdd61cb8e7b8319")
 }
 
 resource QueryModuleAppendContextExplanationFieldsAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/query.ts:663-678")
+  storage ast.anchor("packages/shp-checker/src/checker/query.ts:668-683")
   fingerprint ast.semantic_subtree_v1("sha256:12fc78092e9349bf9511fa058f704a8576d9f50676923a14761f1135340ce833")
 }
 
 resource QueryModuleAppendContextListFieldsAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/query.ts:703-713")
+  storage ast.anchor("packages/shp-checker/src/checker/query.ts:708-718")
   fingerprint ast.semantic_subtree_v1("sha256:7205c1da307bafe2d941e58bf40174cc8e066e02ed5edac168541aec9f48b7b4")
 }
 
 resource QueryModuleAppendIncidenceAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/query.ts:621-633")
+  storage ast.anchor("packages/shp-checker/src/checker/query.ts:626-638")
   fingerprint ast.semantic_subtree_v1("sha256:70c6333f39900dcecd7b5d556a013ec465f3a547558895c525764af27f7b9a97")
 }
 
 resource QueryModuleAppendShapeTraitContextAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/query.ts:319-335")
+  storage ast.anchor("packages/shp-checker/src/checker/query.ts:321-337")
   fingerprint ast.semantic_subtree_v1("sha256:fb2f28321999d903a2955e139e64f721fb5fbf8997cc4fbb8e1f66fae24bf959")
 }
 
 resource QueryModuleCompareHyperedgesAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/query.ts:355-357")
-  fingerprint ast.semantic_subtree_v1("sha256:c62159e93f32519438a7d2839385bd13c3e5e261f07fa1689505069d14667d34")
+  storage ast.anchor("packages/shp-checker/src/checker/query.ts:357-359")
+  fingerprint ast.semantic_subtree_v1("sha256:a27ad5d72ceafc00a57f321c8cd6ab00acc9f3a7a5c226d61b39e668a8947b0d")
 }
 
 resource QueryModuleExplainShapeModulesAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/query.ts:150-311")
+  storage ast.anchor("packages/shp-checker/src/checker/query.ts:152-313")
   fingerprint ast.semantic_subtree_v1("sha256:ecf6dd2262cb5d9f9d583ddfa3005955f26bef82a0d7b3b93e47347f9032d909")
 }
 
 resource QueryModuleFormatAmbiguousQuerySymbolAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/query.ts:377-394")
+  storage ast.anchor("packages/shp-checker/src/checker/query.ts:379-396")
   fingerprint ast.semantic_subtree_v1("sha256:68cc68eeee030d3da67d9286d6df5b684ff963f6d6c049ca23ed601a6a5c7738")
 }
 
 resource QueryModuleFormatHyperedgeLineAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/query.ts:735-741")
+  storage ast.anchor("packages/shp-checker/src/checker/query.ts:740-746")
   fingerprint ast.semantic_subtree_v1("sha256:45e0fe9247f78516ba8d0799c32a5d70b2fe33bf6b9f8d72413fce965e45f387")
 }
 
 resource QueryModuleFormatHyperedgeMemberAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/query.ts:743-747")
+  storage ast.anchor("packages/shp-checker/src/checker/query.ts:748-752")
   fingerprint ast.semantic_subtree_v1("sha256:e956723110b1aa4341211d71cce277b7a8370e713cc2e53dea3787c3eca737a8")
 }
 
 resource QueryModuleFormatMemoryExplanationAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/query.ts:646-661")
+  storage ast.anchor("packages/shp-checker/src/checker/query.ts:651-666")
   fingerprint ast.semantic_subtree_v1("sha256:47a8b38663db20ed75c5918cff23b02d47377231ffa9e5e43c2e41ca750536fe")
 }
 
 resource QueryModuleFormatMemoryListEntryAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/query.ts:691-701")
+  storage ast.anchor("packages/shp-checker/src/checker/query.ts:696-706")
   fingerprint ast.semantic_subtree_v1("sha256:7312450473b7803bde3bcca66d6e7262c1ae46510e39710fa8753739e4c4a33f")
 }
 
 resource QueryModuleFormatRationaleExplanationAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/query.ts:635-644")
+  storage ast.anchor("packages/shp-checker/src/checker/query.ts:640-649")
   fingerprint ast.semantic_subtree_v1("sha256:454dda6da192ec2e9fde378a7447bfb60f04e114ba15cccb4301a4b67dc4d638")
 }
 
 resource QueryModuleFormatRationaleMemoryListEntryAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/query.ts:685-689")
+  storage ast.anchor("packages/shp-checker/src/checker/query.ts:690-694")
   fingerprint ast.semantic_subtree_v1("sha256:66f34545e60aafebc8aa1629221fd92c8afb8250a8314066335f3107ebca2697")
 }
 
 resource QueryModuleFormatRelationExplanationAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/query.ts:589-619")
+  storage ast.anchor("packages/shp-checker/src/checker/query.ts:594-624")
   fingerprint ast.semantic_subtree_v1("sha256:7056b43e38ae0a46a464d863dd27be1588f033d24c96b63543501c33f3aef56f")
 }
 
 resource QueryModuleFormatVertexHeaderAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/query.ts:759-762")
+  storage ast.anchor("packages/shp-checker/src/checker/query.ts:764-767")
   fingerprint ast.semantic_subtree_v1("sha256:cbc7f355fec420e16319b2784eb9d860cf7863890955e50b311d656efbcbeadc")
 }
 
 resource QueryModuleGraphAllShapeModulesAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/query.ts:456-477")
+  storage ast.anchor("packages/shp-checker/src/checker/query.ts:458-479")
   fingerprint ast.semantic_subtree_v1("sha256:f19b3afeda74a8eaf07e4cbd69f32c852aa17be7e02a892268f9b76388d1e566")
 }
 
 resource QueryModuleGraphShapeModulesAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/query.ts:406-450")
+  storage ast.anchor("packages/shp-checker/src/checker/query.ts:408-452")
   fingerprint ast.semantic_subtree_v1("sha256:96ea6a6efd7a82c2acf0c0f45b3985f0e19e682dbd7cb2d57a951cffdd950393")
 }
 
 resource QueryModuleGuardsForTargetAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/query.ts:566-587")
-  fingerprint ast.semantic_subtree_v1("sha256:22fcf901b0800b4e54e9af4fc36f6dcf2b2efce2b13ca92b135834daf7216a72")
+  storage ast.anchor("packages/shp-checker/src/checker/query.ts:568-592")
+  fingerprint ast.semantic_subtree_v1("sha256:5e83bce5bfdda789c74dd4362b2245fa39b824036c95bd0522948462928d37b6")
 }
 
 resource QueryModuleIsObligationDiagnosticAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/query.ts:715-733")
+  storage ast.anchor("packages/shp-checker/src/checker/query.ts:720-738")
   fingerprint ast.semantic_subtree_v1("sha256:f424d611458671dd18375f99f292b0ea20a40800d5f757edbc4f90caeaa87e55")
 }
 
 resource QueryModuleListMemoryGuardsShapeModulesAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/query.ts:44-70")
+  storage ast.anchor("packages/shp-checker/src/checker/query.ts:46-72")
   fingerprint ast.semantic_subtree_v1("sha256:12beb79972ff65cedd56859c828f368bf5f863ade712fcae012a57912d7a3122")
 }
 
 resource QueryModuleListShapeObligationsAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/query.ts:72-148")
-  fingerprint ast.semantic_subtree_v1("sha256:b086f442f98b2b992a6e2e977b5fd455f41a01646f77782612ff22219af19c9b")
+  storage ast.anchor("packages/shp-checker/src/checker/query.ts:74-150")
+  fingerprint ast.semantic_subtree_v1("sha256:f4862cb628b546ab81146a30df56ee1f08ee85fb11c65b995e21fa1f6f275445")
 }
 
 resource QueryModulePluralSuffixAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/query.ts:562-564")
+  storage ast.anchor("packages/shp-checker/src/checker/query.ts:564-566")
   fingerprint ast.semantic_subtree_v1("sha256:7fcb638ecc610d958f193954a42a08d93dd4a829aa516f5e688c3a3ccfc5c3e2")
 }
 
 resource QueryModuleProtectedPropertyTextAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/query.ts:681-683")
+  storage ast.anchor("packages/shp-checker/src/checker/query.ts:686-688")
   fingerprint ast.semantic_subtree_v1("sha256:2af4346ebf4fe5021f3ca33f795600655f32efb8f787dc68aa0256fe43a27e03")
 }
 
 resource QueryModuleQuerySymbolMatchesAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/query.ts:367-375")
+  storage ast.anchor("packages/shp-checker/src/checker/query.ts:369-377")
   fingerprint ast.semantic_subtree_v1("sha256:54ba609d14149f61d7806b93bad590afd5ebe541c37a4dd750fc60ecea646317")
 }
 
 resource QueryModuleResolveQuerySymbolAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/query.ts:359-365")
+  storage ast.anchor("packages/shp-checker/src/checker/query.ts:361-367")
   fingerprint ast.semantic_subtree_v1("sha256:663e7f14807aae193458c4b2094f55c51602675ca626ae5a7ed5f341e634af5c")
 }
 
 resource QueryModuleStatsShapeHypergraphAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/query.ts:484-560")
+  storage ast.anchor("packages/shp-checker/src/checker/query.ts:486-562")
   fingerprint ast.semantic_subtree_v1("sha256:25faea71f16628c910e373f61a5efe8dcd08b14e76a2809d64d99256d25eb1c4")
 }
 
 resource QueryModuleVertexKindLabelAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/query.ts:749-757")
+  storage ast.anchor("packages/shp-checker/src/checker/query.ts:754-762")
   fingerprint ast.semantic_subtree_v1("sha256:ca073889f8307e3e715260c63497798f2e740b49bef472c25a521eaf5811ca80")
 }
 
 component QueryModule : GeneratedCandidate {
   fn allHyperedgesByKind
-    source ts("packages/shp-checker/src/checker/query.ts:396-404")
+    source ts("packages/shp-checker/src/checker/query.ts:398-406")
     effects unknown
   fn appendContextAndGuardSections
-    source ts("packages/shp-checker/src/checker/query.ts:342-353")
+    source ts("packages/shp-checker/src/checker/query.ts:344-355")
     effects unknown
   fn appendContextExplanationFields
-    source ts("packages/shp-checker/src/checker/query.ts:663-678")
+    source ts("packages/shp-checker/src/checker/query.ts:668-683")
     effects unknown
   fn appendContextListFields
-    source ts("packages/shp-checker/src/checker/query.ts:703-713")
+    source ts("packages/shp-checker/src/checker/query.ts:708-718")
     effects unknown
   fn appendIncidence
-    source ts("packages/shp-checker/src/checker/query.ts:621-633")
+    source ts("packages/shp-checker/src/checker/query.ts:626-638")
     effects unknown
   fn appendShapeTraitContext
-    source ts("packages/shp-checker/src/checker/query.ts:319-335")
+    source ts("packages/shp-checker/src/checker/query.ts:321-337")
     effects unknown
   fn compareHyperedges
-    source ts("packages/shp-checker/src/checker/query.ts:355-357")
+    source ts("packages/shp-checker/src/checker/query.ts:357-359")
     effects unknown
   fn explainShapeModules
-    source ts("packages/shp-checker/src/checker/query.ts:150-311")
+    source ts("packages/shp-checker/src/checker/query.ts:152-313")
     effects unknown
   fn formatAmbiguousQuerySymbol
-    source ts("packages/shp-checker/src/checker/query.ts:377-394")
+    source ts("packages/shp-checker/src/checker/query.ts:379-396")
     effects unknown
   fn formatHyperedgeLine
-    source ts("packages/shp-checker/src/checker/query.ts:735-741")
+    source ts("packages/shp-checker/src/checker/query.ts:740-746")
     effects unknown
   fn formatHyperedgeMember
-    source ts("packages/shp-checker/src/checker/query.ts:743-747")
+    source ts("packages/shp-checker/src/checker/query.ts:748-752")
     effects unknown
   fn formatMemoryExplanation
-    source ts("packages/shp-checker/src/checker/query.ts:646-661")
+    source ts("packages/shp-checker/src/checker/query.ts:651-666")
     effects unknown
   fn formatMemoryListEntry
-    source ts("packages/shp-checker/src/checker/query.ts:691-701")
+    source ts("packages/shp-checker/src/checker/query.ts:696-706")
     effects unknown
   fn formatRationaleExplanation
-    source ts("packages/shp-checker/src/checker/query.ts:635-644")
+    source ts("packages/shp-checker/src/checker/query.ts:640-649")
     effects unknown
   fn formatRationaleMemoryListEntry
-    source ts("packages/shp-checker/src/checker/query.ts:685-689")
+    source ts("packages/shp-checker/src/checker/query.ts:690-694")
     effects unknown
   fn formatRelationExplanation
-    source ts("packages/shp-checker/src/checker/query.ts:589-619")
+    source ts("packages/shp-checker/src/checker/query.ts:594-624")
     effects unknown
   fn formatVertexHeader
-    source ts("packages/shp-checker/src/checker/query.ts:759-762")
+    source ts("packages/shp-checker/src/checker/query.ts:764-767")
     effects unknown
   fn graphAllShapeModules
-    source ts("packages/shp-checker/src/checker/query.ts:456-477")
+    source ts("packages/shp-checker/src/checker/query.ts:458-479")
     effects unknown
   fn graphShapeModules
-    source ts("packages/shp-checker/src/checker/query.ts:406-450")
+    source ts("packages/shp-checker/src/checker/query.ts:408-452")
     effects unknown
   fn guardsForTarget
-    source ts("packages/shp-checker/src/checker/query.ts:566-587")
+    source ts("packages/shp-checker/src/checker/query.ts:568-592")
     effects unknown
   fn isObligationDiagnostic
-    source ts("packages/shp-checker/src/checker/query.ts:715-733")
+    source ts("packages/shp-checker/src/checker/query.ts:720-738")
     effects unknown
   fn listMemoryGuardsShapeModules
-    source ts("packages/shp-checker/src/checker/query.ts:44-70")
+    source ts("packages/shp-checker/src/checker/query.ts:46-72")
     effects unknown
   fn listShapeObligations
-    source ts("packages/shp-checker/src/checker/query.ts:72-148")
+    source ts("packages/shp-checker/src/checker/query.ts:74-150")
     effects unknown
   fn pluralSuffix
-    source ts("packages/shp-checker/src/checker/query.ts:562-564")
+    source ts("packages/shp-checker/src/checker/query.ts:564-566")
     effects unknown
   fn protectedPropertyText
-    source ts("packages/shp-checker/src/checker/query.ts:681-683")
+    source ts("packages/shp-checker/src/checker/query.ts:686-688")
     effects unknown
   fn querySymbolMatches
-    source ts("packages/shp-checker/src/checker/query.ts:367-375")
+    source ts("packages/shp-checker/src/checker/query.ts:369-377")
     effects unknown
   fn resolveQuerySymbol
-    source ts("packages/shp-checker/src/checker/query.ts:359-365")
+    source ts("packages/shp-checker/src/checker/query.ts:361-367")
     effects unknown
   fn statsShapeHypergraph
-    source ts("packages/shp-checker/src/checker/query.ts:484-560")
+    source ts("packages/shp-checker/src/checker/query.ts:486-562")
     effects unknown
   fn vertexKindLabel
-    source ts("packages/shp-checker/src/checker/query.ts:749-757")
+    source ts("packages/shp-checker/src/checker/query.ts:754-762")
     effects unknown
 }
 
@@ -246,7 +246,7 @@ relation QueryModuleAllHyperedgesByKindGeneratedFromQueryModuleAllHyperedgesByKi
   connects QueryModule -> QueryModuleAllHyperedgesByKindAstAnchor
   roles { QueryModule as generated, QueryModuleAllHyperedgesByKindAstAnchor as syntax }
   expects QueryModuleAllHyperedgesByKindAstAnchor fingerprint ast.semantic_subtree_v1("sha256:84bf2688fc82f942d25c82354c36a43dd3fd15088caee0a5f20fe31e1effb2ef")
-  summary "fn QueryModule.allHyperedgesByKind generated from typescript function_declaration at packages/shp-checker/src/checker/query.ts:396-404."
+  summary "fn QueryModule.allHyperedgesByKind generated from typescript function_declaration at packages/shp-checker/src/checker/query.ts:398-406."
 }
 
 relation QueryModuleAppendContextAndGuardSectionsGeneratedFromQueryModuleAppendContextAndGuardSectionsAstAnchor {
@@ -254,7 +254,7 @@ relation QueryModuleAppendContextAndGuardSectionsGeneratedFromQueryModuleAppendC
   connects QueryModule -> QueryModuleAppendContextAndGuardSectionsAstAnchor
   roles { QueryModule as generated, QueryModuleAppendContextAndGuardSectionsAstAnchor as syntax }
   expects QueryModuleAppendContextAndGuardSectionsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:25d8805954b024612d718baa4ddda246d7e5861ddbff4acbfcdd61cb8e7b8319")
-  summary "fn QueryModule.appendContextAndGuardSections generated from typescript function_declaration at packages/shp-checker/src/checker/query.ts:342-353."
+  summary "fn QueryModule.appendContextAndGuardSections generated from typescript function_declaration at packages/shp-checker/src/checker/query.ts:344-355."
 }
 
 relation QueryModuleAppendContextExplanationFieldsGeneratedFromQueryModuleAppendContextExplanationFieldsAstAnchor {
@@ -262,7 +262,7 @@ relation QueryModuleAppendContextExplanationFieldsGeneratedFromQueryModuleAppend
   connects QueryModule -> QueryModuleAppendContextExplanationFieldsAstAnchor
   roles { QueryModule as generated, QueryModuleAppendContextExplanationFieldsAstAnchor as syntax }
   expects QueryModuleAppendContextExplanationFieldsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:12fc78092e9349bf9511fa058f704a8576d9f50676923a14761f1135340ce833")
-  summary "fn QueryModule.appendContextExplanationFields generated from typescript function_declaration at packages/shp-checker/src/checker/query.ts:663-678."
+  summary "fn QueryModule.appendContextExplanationFields generated from typescript function_declaration at packages/shp-checker/src/checker/query.ts:668-683."
 }
 
 relation QueryModuleAppendContextListFieldsGeneratedFromQueryModuleAppendContextListFieldsAstAnchor {
@@ -270,7 +270,7 @@ relation QueryModuleAppendContextListFieldsGeneratedFromQueryModuleAppendContext
   connects QueryModule -> QueryModuleAppendContextListFieldsAstAnchor
   roles { QueryModule as generated, QueryModuleAppendContextListFieldsAstAnchor as syntax }
   expects QueryModuleAppendContextListFieldsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7205c1da307bafe2d941e58bf40174cc8e066e02ed5edac168541aec9f48b7b4")
-  summary "fn QueryModule.appendContextListFields generated from typescript function_declaration at packages/shp-checker/src/checker/query.ts:703-713."
+  summary "fn QueryModule.appendContextListFields generated from typescript function_declaration at packages/shp-checker/src/checker/query.ts:708-718."
 }
 
 relation QueryModuleAppendIncidenceGeneratedFromQueryModuleAppendIncidenceAstAnchor {
@@ -278,7 +278,7 @@ relation QueryModuleAppendIncidenceGeneratedFromQueryModuleAppendIncidenceAstAnc
   connects QueryModule -> QueryModuleAppendIncidenceAstAnchor
   roles { QueryModule as generated, QueryModuleAppendIncidenceAstAnchor as syntax }
   expects QueryModuleAppendIncidenceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:70c6333f39900dcecd7b5d556a013ec465f3a547558895c525764af27f7b9a97")
-  summary "fn QueryModule.appendIncidence generated from typescript function_declaration at packages/shp-checker/src/checker/query.ts:621-633."
+  summary "fn QueryModule.appendIncidence generated from typescript function_declaration at packages/shp-checker/src/checker/query.ts:626-638."
 }
 
 relation QueryModuleAppendShapeTraitContextGeneratedFromQueryModuleAppendShapeTraitContextAstAnchor {
@@ -286,15 +286,15 @@ relation QueryModuleAppendShapeTraitContextGeneratedFromQueryModuleAppendShapeTr
   connects QueryModule -> QueryModuleAppendShapeTraitContextAstAnchor
   roles { QueryModule as generated, QueryModuleAppendShapeTraitContextAstAnchor as syntax }
   expects QueryModuleAppendShapeTraitContextAstAnchor fingerprint ast.semantic_subtree_v1("sha256:fb2f28321999d903a2955e139e64f721fb5fbf8997cc4fbb8e1f66fae24bf959")
-  summary "fn QueryModule.appendShapeTraitContext generated from typescript function_declaration at packages/shp-checker/src/checker/query.ts:319-335."
+  summary "fn QueryModule.appendShapeTraitContext generated from typescript function_declaration at packages/shp-checker/src/checker/query.ts:321-337."
 }
 
 relation QueryModuleCompareHyperedgesGeneratedFromQueryModuleCompareHyperedgesAstAnchor {
   kind generated_from
   connects QueryModule -> QueryModuleCompareHyperedgesAstAnchor
   roles { QueryModule as generated, QueryModuleCompareHyperedgesAstAnchor as syntax }
-  expects QueryModuleCompareHyperedgesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c62159e93f32519438a7d2839385bd13c3e5e261f07fa1689505069d14667d34")
-  summary "fn QueryModule.compareHyperedges generated from typescript function_declaration at packages/shp-checker/src/checker/query.ts:355-357."
+  expects QueryModuleCompareHyperedgesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a27ad5d72ceafc00a57f321c8cd6ab00acc9f3a7a5c226d61b39e668a8947b0d")
+  summary "fn QueryModule.compareHyperedges generated from typescript function_declaration at packages/shp-checker/src/checker/query.ts:357-359."
 }
 
 relation QueryModuleExplainShapeModulesGeneratedFromQueryModuleExplainShapeModulesAstAnchor {
@@ -302,7 +302,7 @@ relation QueryModuleExplainShapeModulesGeneratedFromQueryModuleExplainShapeModul
   connects QueryModule -> QueryModuleExplainShapeModulesAstAnchor
   roles { QueryModule as generated, QueryModuleExplainShapeModulesAstAnchor as syntax }
   expects QueryModuleExplainShapeModulesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ecf6dd2262cb5d9f9d583ddfa3005955f26bef82a0d7b3b93e47347f9032d909")
-  summary "fn QueryModule.explainShapeModules generated from typescript function_declaration at packages/shp-checker/src/checker/query.ts:150-311."
+  summary "fn QueryModule.explainShapeModules generated from typescript function_declaration at packages/shp-checker/src/checker/query.ts:152-313."
 }
 
 relation QueryModuleFormatAmbiguousQuerySymbolGeneratedFromQueryModuleFormatAmbiguousQuerySymbolAstAnchor {
@@ -310,7 +310,7 @@ relation QueryModuleFormatAmbiguousQuerySymbolGeneratedFromQueryModuleFormatAmbi
   connects QueryModule -> QueryModuleFormatAmbiguousQuerySymbolAstAnchor
   roles { QueryModule as generated, QueryModuleFormatAmbiguousQuerySymbolAstAnchor as syntax }
   expects QueryModuleFormatAmbiguousQuerySymbolAstAnchor fingerprint ast.semantic_subtree_v1("sha256:68cc68eeee030d3da67d9286d6df5b684ff963f6d6c049ca23ed601a6a5c7738")
-  summary "fn QueryModule.formatAmbiguousQuerySymbol generated from typescript function_declaration at packages/shp-checker/src/checker/query.ts:377-394."
+  summary "fn QueryModule.formatAmbiguousQuerySymbol generated from typescript function_declaration at packages/shp-checker/src/checker/query.ts:379-396."
 }
 
 relation QueryModuleFormatHyperedgeLineGeneratedFromQueryModuleFormatHyperedgeLineAstAnchor {
@@ -318,7 +318,7 @@ relation QueryModuleFormatHyperedgeLineGeneratedFromQueryModuleFormatHyperedgeLi
   connects QueryModule -> QueryModuleFormatHyperedgeLineAstAnchor
   roles { QueryModule as generated, QueryModuleFormatHyperedgeLineAstAnchor as syntax }
   expects QueryModuleFormatHyperedgeLineAstAnchor fingerprint ast.semantic_subtree_v1("sha256:45e0fe9247f78516ba8d0799c32a5d70b2fe33bf6b9f8d72413fce965e45f387")
-  summary "fn QueryModule.formatHyperedgeLine generated from typescript function_declaration at packages/shp-checker/src/checker/query.ts:735-741."
+  summary "fn QueryModule.formatHyperedgeLine generated from typescript function_declaration at packages/shp-checker/src/checker/query.ts:740-746."
 }
 
 relation QueryModuleFormatHyperedgeMemberGeneratedFromQueryModuleFormatHyperedgeMemberAstAnchor {
@@ -326,7 +326,7 @@ relation QueryModuleFormatHyperedgeMemberGeneratedFromQueryModuleFormatHyperedge
   connects QueryModule -> QueryModuleFormatHyperedgeMemberAstAnchor
   roles { QueryModule as generated, QueryModuleFormatHyperedgeMemberAstAnchor as syntax }
   expects QueryModuleFormatHyperedgeMemberAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e956723110b1aa4341211d71cce277b7a8370e713cc2e53dea3787c3eca737a8")
-  summary "fn QueryModule.formatHyperedgeMember generated from typescript function_declaration at packages/shp-checker/src/checker/query.ts:743-747."
+  summary "fn QueryModule.formatHyperedgeMember generated from typescript function_declaration at packages/shp-checker/src/checker/query.ts:748-752."
 }
 
 relation QueryModuleFormatMemoryExplanationGeneratedFromQueryModuleFormatMemoryExplanationAstAnchor {
@@ -334,7 +334,7 @@ relation QueryModuleFormatMemoryExplanationGeneratedFromQueryModuleFormatMemoryE
   connects QueryModule -> QueryModuleFormatMemoryExplanationAstAnchor
   roles { QueryModule as generated, QueryModuleFormatMemoryExplanationAstAnchor as syntax }
   expects QueryModuleFormatMemoryExplanationAstAnchor fingerprint ast.semantic_subtree_v1("sha256:47a8b38663db20ed75c5918cff23b02d47377231ffa9e5e43c2e41ca750536fe")
-  summary "fn QueryModule.formatMemoryExplanation generated from typescript function_declaration at packages/shp-checker/src/checker/query.ts:646-661."
+  summary "fn QueryModule.formatMemoryExplanation generated from typescript function_declaration at packages/shp-checker/src/checker/query.ts:651-666."
 }
 
 relation QueryModuleFormatMemoryListEntryGeneratedFromQueryModuleFormatMemoryListEntryAstAnchor {
@@ -342,7 +342,7 @@ relation QueryModuleFormatMemoryListEntryGeneratedFromQueryModuleFormatMemoryLis
   connects QueryModule -> QueryModuleFormatMemoryListEntryAstAnchor
   roles { QueryModule as generated, QueryModuleFormatMemoryListEntryAstAnchor as syntax }
   expects QueryModuleFormatMemoryListEntryAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7312450473b7803bde3bcca66d6e7262c1ae46510e39710fa8753739e4c4a33f")
-  summary "fn QueryModule.formatMemoryListEntry generated from typescript function_declaration at packages/shp-checker/src/checker/query.ts:691-701."
+  summary "fn QueryModule.formatMemoryListEntry generated from typescript function_declaration at packages/shp-checker/src/checker/query.ts:696-706."
 }
 
 relation QueryModuleFormatRationaleExplanationGeneratedFromQueryModuleFormatRationaleExplanationAstAnchor {
@@ -350,7 +350,7 @@ relation QueryModuleFormatRationaleExplanationGeneratedFromQueryModuleFormatRati
   connects QueryModule -> QueryModuleFormatRationaleExplanationAstAnchor
   roles { QueryModule as generated, QueryModuleFormatRationaleExplanationAstAnchor as syntax }
   expects QueryModuleFormatRationaleExplanationAstAnchor fingerprint ast.semantic_subtree_v1("sha256:454dda6da192ec2e9fde378a7447bfb60f04e114ba15cccb4301a4b67dc4d638")
-  summary "fn QueryModule.formatRationaleExplanation generated from typescript function_declaration at packages/shp-checker/src/checker/query.ts:635-644."
+  summary "fn QueryModule.formatRationaleExplanation generated from typescript function_declaration at packages/shp-checker/src/checker/query.ts:640-649."
 }
 
 relation QueryModuleFormatRationaleMemoryListEntryGeneratedFromQueryModuleFormatRationaleMemoryListEntryAstAnchor {
@@ -358,7 +358,7 @@ relation QueryModuleFormatRationaleMemoryListEntryGeneratedFromQueryModuleFormat
   connects QueryModule -> QueryModuleFormatRationaleMemoryListEntryAstAnchor
   roles { QueryModule as generated, QueryModuleFormatRationaleMemoryListEntryAstAnchor as syntax }
   expects QueryModuleFormatRationaleMemoryListEntryAstAnchor fingerprint ast.semantic_subtree_v1("sha256:66f34545e60aafebc8aa1629221fd92c8afb8250a8314066335f3107ebca2697")
-  summary "fn QueryModule.formatRationaleMemoryListEntry generated from typescript function_declaration at packages/shp-checker/src/checker/query.ts:685-689."
+  summary "fn QueryModule.formatRationaleMemoryListEntry generated from typescript function_declaration at packages/shp-checker/src/checker/query.ts:690-694."
 }
 
 relation QueryModuleFormatRelationExplanationGeneratedFromQueryModuleFormatRelationExplanationAstAnchor {
@@ -366,7 +366,7 @@ relation QueryModuleFormatRelationExplanationGeneratedFromQueryModuleFormatRelat
   connects QueryModule -> QueryModuleFormatRelationExplanationAstAnchor
   roles { QueryModule as generated, QueryModuleFormatRelationExplanationAstAnchor as syntax }
   expects QueryModuleFormatRelationExplanationAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7056b43e38ae0a46a464d863dd27be1588f033d24c96b63543501c33f3aef56f")
-  summary "fn QueryModule.formatRelationExplanation generated from typescript function_declaration at packages/shp-checker/src/checker/query.ts:589-619."
+  summary "fn QueryModule.formatRelationExplanation generated from typescript function_declaration at packages/shp-checker/src/checker/query.ts:594-624."
 }
 
 relation QueryModuleFormatVertexHeaderGeneratedFromQueryModuleFormatVertexHeaderAstAnchor {
@@ -374,7 +374,7 @@ relation QueryModuleFormatVertexHeaderGeneratedFromQueryModuleFormatVertexHeader
   connects QueryModule -> QueryModuleFormatVertexHeaderAstAnchor
   roles { QueryModule as generated, QueryModuleFormatVertexHeaderAstAnchor as syntax }
   expects QueryModuleFormatVertexHeaderAstAnchor fingerprint ast.semantic_subtree_v1("sha256:cbc7f355fec420e16319b2784eb9d860cf7863890955e50b311d656efbcbeadc")
-  summary "fn QueryModule.formatVertexHeader generated from typescript function_declaration at packages/shp-checker/src/checker/query.ts:759-762."
+  summary "fn QueryModule.formatVertexHeader generated from typescript function_declaration at packages/shp-checker/src/checker/query.ts:764-767."
 }
 
 relation QueryModuleGraphAllShapeModulesGeneratedFromQueryModuleGraphAllShapeModulesAstAnchor {
@@ -382,7 +382,7 @@ relation QueryModuleGraphAllShapeModulesGeneratedFromQueryModuleGraphAllShapeMod
   connects QueryModule -> QueryModuleGraphAllShapeModulesAstAnchor
   roles { QueryModule as generated, QueryModuleGraphAllShapeModulesAstAnchor as syntax }
   expects QueryModuleGraphAllShapeModulesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f19b3afeda74a8eaf07e4cbd69f32c852aa17be7e02a892268f9b76388d1e566")
-  summary "fn QueryModule.graphAllShapeModules generated from typescript function_declaration at packages/shp-checker/src/checker/query.ts:456-477."
+  summary "fn QueryModule.graphAllShapeModules generated from typescript function_declaration at packages/shp-checker/src/checker/query.ts:458-479."
 }
 
 relation QueryModuleGraphShapeModulesGeneratedFromQueryModuleGraphShapeModulesAstAnchor {
@@ -390,15 +390,15 @@ relation QueryModuleGraphShapeModulesGeneratedFromQueryModuleGraphShapeModulesAs
   connects QueryModule -> QueryModuleGraphShapeModulesAstAnchor
   roles { QueryModule as generated, QueryModuleGraphShapeModulesAstAnchor as syntax }
   expects QueryModuleGraphShapeModulesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:96ea6a6efd7a82c2acf0c0f45b3985f0e19e682dbd7cb2d57a951cffdd950393")
-  summary "fn QueryModule.graphShapeModules generated from typescript function_declaration at packages/shp-checker/src/checker/query.ts:406-450."
+  summary "fn QueryModule.graphShapeModules generated from typescript function_declaration at packages/shp-checker/src/checker/query.ts:408-452."
 }
 
 relation QueryModuleGuardsForTargetGeneratedFromQueryModuleGuardsForTargetAstAnchor {
   kind generated_from
   connects QueryModule -> QueryModuleGuardsForTargetAstAnchor
   roles { QueryModule as generated, QueryModuleGuardsForTargetAstAnchor as syntax }
-  expects QueryModuleGuardsForTargetAstAnchor fingerprint ast.semantic_subtree_v1("sha256:22fcf901b0800b4e54e9af4fc36f6dcf2b2efce2b13ca92b135834daf7216a72")
-  summary "fn QueryModule.guardsForTarget generated from typescript function_declaration at packages/shp-checker/src/checker/query.ts:566-587."
+  expects QueryModuleGuardsForTargetAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5e83bce5bfdda789c74dd4362b2245fa39b824036c95bd0522948462928d37b6")
+  summary "fn QueryModule.guardsForTarget generated from typescript function_declaration at packages/shp-checker/src/checker/query.ts:568-592."
 }
 
 relation QueryModuleIsObligationDiagnosticGeneratedFromQueryModuleIsObligationDiagnosticAstAnchor {
@@ -406,7 +406,7 @@ relation QueryModuleIsObligationDiagnosticGeneratedFromQueryModuleIsObligationDi
   connects QueryModule -> QueryModuleIsObligationDiagnosticAstAnchor
   roles { QueryModule as generated, QueryModuleIsObligationDiagnosticAstAnchor as syntax }
   expects QueryModuleIsObligationDiagnosticAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f424d611458671dd18375f99f292b0ea20a40800d5f757edbc4f90caeaa87e55")
-  summary "fn QueryModule.isObligationDiagnostic generated from typescript function_declaration at packages/shp-checker/src/checker/query.ts:715-733."
+  summary "fn QueryModule.isObligationDiagnostic generated from typescript function_declaration at packages/shp-checker/src/checker/query.ts:720-738."
 }
 
 relation QueryModuleListMemoryGuardsShapeModulesGeneratedFromQueryModuleListMemoryGuardsShapeModulesAstAnchor {
@@ -414,15 +414,15 @@ relation QueryModuleListMemoryGuardsShapeModulesGeneratedFromQueryModuleListMemo
   connects QueryModule -> QueryModuleListMemoryGuardsShapeModulesAstAnchor
   roles { QueryModule as generated, QueryModuleListMemoryGuardsShapeModulesAstAnchor as syntax }
   expects QueryModuleListMemoryGuardsShapeModulesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:12beb79972ff65cedd56859c828f368bf5f863ade712fcae012a57912d7a3122")
-  summary "fn QueryModule.listMemoryGuardsShapeModules generated from typescript function_declaration at packages/shp-checker/src/checker/query.ts:44-70."
+  summary "fn QueryModule.listMemoryGuardsShapeModules generated from typescript function_declaration at packages/shp-checker/src/checker/query.ts:46-72."
 }
 
 relation QueryModuleListShapeObligationsGeneratedFromQueryModuleListShapeObligationsAstAnchor {
   kind generated_from
   connects QueryModule -> QueryModuleListShapeObligationsAstAnchor
   roles { QueryModule as generated, QueryModuleListShapeObligationsAstAnchor as syntax }
-  expects QueryModuleListShapeObligationsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b086f442f98b2b992a6e2e977b5fd455f41a01646f77782612ff22219af19c9b")
-  summary "fn QueryModule.listShapeObligations generated from typescript function_declaration at packages/shp-checker/src/checker/query.ts:72-148."
+  expects QueryModuleListShapeObligationsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f4862cb628b546ab81146a30df56ee1f08ee85fb11c65b995e21fa1f6f275445")
+  summary "fn QueryModule.listShapeObligations generated from typescript function_declaration at packages/shp-checker/src/checker/query.ts:74-150."
 }
 
 relation QueryModulePluralSuffixGeneratedFromQueryModulePluralSuffixAstAnchor {
@@ -430,7 +430,7 @@ relation QueryModulePluralSuffixGeneratedFromQueryModulePluralSuffixAstAnchor {
   connects QueryModule -> QueryModulePluralSuffixAstAnchor
   roles { QueryModule as generated, QueryModulePluralSuffixAstAnchor as syntax }
   expects QueryModulePluralSuffixAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7fcb638ecc610d958f193954a42a08d93dd4a829aa516f5e688c3a3ccfc5c3e2")
-  summary "fn QueryModule.pluralSuffix generated from typescript function_declaration at packages/shp-checker/src/checker/query.ts:562-564."
+  summary "fn QueryModule.pluralSuffix generated from typescript function_declaration at packages/shp-checker/src/checker/query.ts:564-566."
 }
 
 relation QueryModuleProtectedPropertyTextGeneratedFromQueryModuleProtectedPropertyTextAstAnchor {
@@ -438,7 +438,7 @@ relation QueryModuleProtectedPropertyTextGeneratedFromQueryModuleProtectedProper
   connects QueryModule -> QueryModuleProtectedPropertyTextAstAnchor
   roles { QueryModule as generated, QueryModuleProtectedPropertyTextAstAnchor as syntax }
   expects QueryModuleProtectedPropertyTextAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2af4346ebf4fe5021f3ca33f795600655f32efb8f787dc68aa0256fe43a27e03")
-  summary "fn QueryModule.protectedPropertyText generated from typescript function_declaration at packages/shp-checker/src/checker/query.ts:681-683."
+  summary "fn QueryModule.protectedPropertyText generated from typescript function_declaration at packages/shp-checker/src/checker/query.ts:686-688."
 }
 
 relation QueryModuleQuerySymbolMatchesGeneratedFromQueryModuleQuerySymbolMatchesAstAnchor {
@@ -446,7 +446,7 @@ relation QueryModuleQuerySymbolMatchesGeneratedFromQueryModuleQuerySymbolMatches
   connects QueryModule -> QueryModuleQuerySymbolMatchesAstAnchor
   roles { QueryModule as generated, QueryModuleQuerySymbolMatchesAstAnchor as syntax }
   expects QueryModuleQuerySymbolMatchesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:54ba609d14149f61d7806b93bad590afd5ebe541c37a4dd750fc60ecea646317")
-  summary "fn QueryModule.querySymbolMatches generated from typescript function_declaration at packages/shp-checker/src/checker/query.ts:367-375."
+  summary "fn QueryModule.querySymbolMatches generated from typescript function_declaration at packages/shp-checker/src/checker/query.ts:369-377."
 }
 
 relation QueryModuleResolveQuerySymbolGeneratedFromQueryModuleResolveQuerySymbolAstAnchor {
@@ -454,7 +454,7 @@ relation QueryModuleResolveQuerySymbolGeneratedFromQueryModuleResolveQuerySymbol
   connects QueryModule -> QueryModuleResolveQuerySymbolAstAnchor
   roles { QueryModule as generated, QueryModuleResolveQuerySymbolAstAnchor as syntax }
   expects QueryModuleResolveQuerySymbolAstAnchor fingerprint ast.semantic_subtree_v1("sha256:663e7f14807aae193458c4b2094f55c51602675ca626ae5a7ed5f341e634af5c")
-  summary "fn QueryModule.resolveQuerySymbol generated from typescript function_declaration at packages/shp-checker/src/checker/query.ts:359-365."
+  summary "fn QueryModule.resolveQuerySymbol generated from typescript function_declaration at packages/shp-checker/src/checker/query.ts:361-367."
 }
 
 relation QueryModuleStatsShapeHypergraphGeneratedFromQueryModuleStatsShapeHypergraphAstAnchor {
@@ -462,7 +462,7 @@ relation QueryModuleStatsShapeHypergraphGeneratedFromQueryModuleStatsShapeHyperg
   connects QueryModule -> QueryModuleStatsShapeHypergraphAstAnchor
   roles { QueryModule as generated, QueryModuleStatsShapeHypergraphAstAnchor as syntax }
   expects QueryModuleStatsShapeHypergraphAstAnchor fingerprint ast.semantic_subtree_v1("sha256:25faea71f16628c910e373f61a5efe8dcd08b14e76a2809d64d99256d25eb1c4")
-  summary "fn QueryModule.statsShapeHypergraph generated from typescript function_declaration at packages/shp-checker/src/checker/query.ts:484-560."
+  summary "fn QueryModule.statsShapeHypergraph generated from typescript function_declaration at packages/shp-checker/src/checker/query.ts:486-562."
 }
 
 relation QueryModuleVertexKindLabelGeneratedFromQueryModuleVertexKindLabelAstAnchor {
@@ -470,7 +470,7 @@ relation QueryModuleVertexKindLabelGeneratedFromQueryModuleVertexKindLabelAstAnc
   connects QueryModule -> QueryModuleVertexKindLabelAstAnchor
   roles { QueryModule as generated, QueryModuleVertexKindLabelAstAnchor as syntax }
   expects QueryModuleVertexKindLabelAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ca073889f8307e3e715260c63497798f2e740b49bef472c25a521eaf5811ca80")
-  summary "fn QueryModule.vertexKindLabel generated from typescript function_declaration at packages/shp-checker/src/checker/query.ts:749-757."
+  summary "fn QueryModule.vertexKindLabel generated from typescript function_declaration at packages/shp-checker/src/checker/query.ts:754-762."
 }
 
 implementation QueryModuleImpl {

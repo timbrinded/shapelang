@@ -1,3 +1,4 @@
+import { parseIsoCalendarDate, type IsoDateString } from "@shape/shp-checker";
 import { CliDiagnosticError, EXIT_USAGE } from "./errors";
 
 /**
@@ -6,30 +7,28 @@ import { CliDiagnosticError, EXIT_USAGE } from "./errors";
  * deterministic. `toISOString` yields the UTC calendar day, so prefer an
  * explicit `--as-of` when the local calendar day matters.
  */
-export function isoToday(): string {
-  return new Date().toISOString().slice(0, 10);
+export function isoToday(): IsoDateString {
+  const today = parseIsoCalendarDate(new Date().toISOString().slice(0, 10));
+  if (today === undefined) {
+    throw new Error("generated current date was not an ISO calendar date");
+  }
+  return today;
 }
-
-const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
 
 /**
  * Validate an explicit `--as-of` value as a real ISO `YYYY-MM-DD` calendar
  * date, rejecting malformed or impossible dates (e.g. `2026-02-30`) once at the
  * CLI boundary rather than letting a bad date flow into freshness comparison.
  */
-export function parseAsOfDate(input: string): string {
-  const parsed = new Date(`${input}T00:00:00Z`);
-  if (
-    !ISO_DATE.test(input) ||
-    Number.isNaN(parsed.getTime()) ||
-    parsed.toISOString().slice(0, 10) !== input
-  ) {
+export function parseAsOfDate(input: string): IsoDateString {
+  const parsed = parseIsoCalendarDate(input);
+  if (parsed === undefined) {
     throw new CliDiagnosticError(
       `error: --as-of expects an ISO YYYY-MM-DD date, received ${JSON.stringify(input)}\n`,
       EXIT_USAGE
     );
   }
-  return input;
+  return parsed;
 }
 
 /**
@@ -41,7 +40,7 @@ export function parseAsOfDate(input: string): string {
 export function resolveFreshnessDate(flags: {
   readonly asOf?: string;
   readonly strictFreshness?: boolean;
-}): string | undefined {
+}): IsoDateString | undefined {
   if (flags.asOf !== undefined) {
     return parseAsOfDate(flags.asOf);
   }

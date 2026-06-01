@@ -1,9 +1,8 @@
 // Lowering orchestrator: the deterministic two-pass pipeline that turns parsed
 // modules into the effective Model. Pass 1 indexes declarations and lowers
 // regular declarations; pass 2 applies change declarations; then shape-update
-// paths are rebuilt and derived facts emitted. The per-declaration lowering
-// itself lives in checker/lowerers.ts, which this module drives but never the
-// reverse.
+// paths are rebuilt and derived facts emitted. Domain-specific lowerers live in
+// checker/lowering/*, which this module drives but never the reverse.
 import type { ShapeModule } from "../language/generated/ast.ts";
 import {
   isAttestationDecl,
@@ -23,27 +22,28 @@ import {
   isTraitDecl
 } from "../language/generated/ast.ts";
 import type { CheckModuleInput, LoweringContext, Model } from "./model.ts";
-import { preludeTraitSeed } from "../prelude.ts";
+import { preludeTraitSeed } from "./prelude-seed.ts";
 import { emptyDeclarationIndex, indexModuleDeclarations, moduleContext } from "./symbols.ts";
+import { collectShapeUpdatePathsFromFunction, emitDerivedFacts } from "./lowering/facts.ts";
 import {
-  collectShapeUpdatePathsFromFunction,
-  emitDerivedFacts,
   lowerAttestation,
   lowerBinding,
   lowerCandidateEffect,
-  lowerChange,
   lowerComponent,
   lowerImplementation,
+  lowerResource,
+  lowerRule,
+  lowerTrait
+} from "./lowering/declarations.ts";
+import { lowerRelation } from "./lowering/relations.ts";
+import {
   lowerMemory,
   lowerPolicy,
   lowerRationale,
   lowerReevaluation,
-  lowerRelation,
-  lowerResource,
-  lowerRole,
-  lowerRule,
-  lowerTrait
-} from "./lowerers.ts";
+  lowerRole
+} from "./lowering/context.ts";
+import { lowerChange } from "./lowering/changes.ts";
 
 export function lowerShapeModules(modules: ShapeModule[] | CheckModuleInput[]): Model {
   const inputs = normalizeModuleInputs(modules);
@@ -130,7 +130,7 @@ export function lowerShapeModules(modules: ShapeModule[] | CheckModuleInput[]): 
   return model;
 }
 
-export function rebuildShapeUpdatePaths(model: Model): void {
+function rebuildShapeUpdatePaths(model: Model): void {
   model.shapeUpdatePaths = new Map();
   model.facts = model.facts.filter((fact) => fact.kind !== "shape_update_for");
 
@@ -141,9 +141,7 @@ export function rebuildShapeUpdatePaths(model: Model): void {
   }
 }
 
-export function normalizeModuleInputs(
-  modules: ShapeModule[] | CheckModuleInput[]
-): CheckModuleInput[] {
+function normalizeModuleInputs(modules: ShapeModule[] | CheckModuleInput[]): CheckModuleInput[] {
   return modules.map((input) => {
     if ("module" in input) {
       return input;

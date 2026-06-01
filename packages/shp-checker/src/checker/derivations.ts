@@ -18,6 +18,8 @@ import type {
 } from "./model.ts";
 import type { ContextKind } from "../prelude.ts";
 import { functionTarget, splitFunctionTarget } from "./display.ts";
+import { compareKindName } from "./sort.ts";
+import { targetsEqual } from "../targets.ts";
 
 export type ShapeTraitBearer = {
   kind: TargetKind;
@@ -172,10 +174,6 @@ export function targetExists(target: ShapeTarget, model: Model): boolean {
   return false;
 }
 
-export function targetsEqual(left: ShapeTarget, right: ShapeTarget): boolean {
-  return left.kind === right.kind && left.name === right.name;
-}
-
 export function reevaluationValidationReasons(
   reevaluation: ReevaluationInfo,
   model: Model
@@ -232,7 +230,7 @@ export function approverRequiredBy(reevaluation: ReevaluationInfo, model: Model)
   return model.memories.get(reevaluation.satisfiesName)?.sensitive === true;
 }
 
-export function contextObjectExists(kind: ContextKind, name: string, model: Model): boolean {
+function contextObjectExists(kind: ContextKind, name: string, model: Model): boolean {
   return kind === "memory" ? model.memories.has(name) : model.rationales.has(name);
 }
 
@@ -274,9 +272,7 @@ export function matchingContextsForTarget(
       contexts.push({ kind: "memory", name: memory.name });
     }
   }
-  return contexts.sort((left, right) =>
-    `${left.kind}:${left.name}`.localeCompare(`${right.kind}:${right.name}`)
-  );
+  return contexts.sort(compareKindName);
 }
 export function deriveFinalForbidsForResource(
   resource: ResourceInfo,
@@ -343,7 +339,7 @@ export function findFinalForbidden(
   );
 }
 
-export function substituteTarget(
+function substituteTarget(
   target: string | undefined,
   resourceName: string,
   typeParams: string[]
@@ -354,7 +350,7 @@ export function substituteTarget(
   return typeParams.includes(target) ? resourceName : target;
 }
 
-export function dedupeForbids(
+function dedupeForbids(
   forbids: { effect: string; target: string; trait: string; provenance: Provenance }[]
 ): { effect: string; target: string; trait: string; provenance: Provenance }[] {
   const seen = new Set<string>();

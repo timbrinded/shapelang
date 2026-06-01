@@ -11,6 +11,7 @@
 // module has no runtime dependency on the checker (no import cycle).
 import type { Provenance, ShapeTarget } from "./checker/model.ts";
 import type { ContextKind } from "./prelude.ts";
+import { targetsEqual } from "./targets.ts";
 
 /** A property a guard protects, classified by what change (if any) we can
  *  detect against it. `opaque` properties (free-form labels, a description on a
@@ -54,10 +55,6 @@ export type GuardViolation = {
   changeProvenance: Provenance;
   guardProvenance: Provenance;
 };
-
-function targetsEqual(left: ShapeTarget, right: ShapeTarget): boolean {
-  return left.kind === right.kind && left.name === right.name;
-}
 
 /** Human-readable label for a detectable protected property, used in the
  *  diagnostic's `changedProperty`. */

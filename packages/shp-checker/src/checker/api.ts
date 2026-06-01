@@ -6,6 +6,7 @@ import type { ShapeModule } from "../language/generated/ast.ts";
 import { parseShapeModule, type ParseDiagnostic } from "../parser.ts";
 import type { CheckModuleInput, CheckOptions, CheckResult } from "./model.ts";
 import { lowerShapeModules } from "./lowerer.ts";
+import { requireIsoCalendarDate } from "./iso-date.ts";
 import { checkBindings, runSemanticChecks } from "./rules.ts";
 import { moduleOriginForShapeFile } from "./symbols.ts";
 
@@ -13,18 +14,31 @@ export function checkShapeModules(
   modules: ShapeModule[] | CheckModuleInput[],
   options: CheckOptions = {}
 ): CheckResult {
+  const normalizedOptions = normalizeCheckOptions(options);
   const model = lowerShapeModules(modules);
   const diagnostics = [
     ...model.diagnostics,
-    ...runSemanticChecks(model, options),
-    ...(options.enforceBindings === false ? [] : checkBindings(model, options.changedFiles ?? []))
+    ...runSemanticChecks(model, normalizedOptions),
+    ...(normalizedOptions.enforceBindings === false
+      ? []
+      : checkBindings(model, normalizedOptions.changedFiles ?? []))
   ];
 
   return {
     ok: diagnostics.length === 0,
     exitCode: diagnostics.length === 0 ? 0 : 1,
     diagnostics,
-    facts: options.includeFacts ? model.facts : undefined
+    facts: normalizedOptions.includeFacts ? model.facts : undefined
+  };
+}
+
+function normalizeCheckOptions(options: CheckOptions): CheckOptions {
+  if (options.freshnessDate === undefined) {
+    return options;
+  }
+  return {
+    ...options,
+    freshnessDate: requireIsoCalendarDate(options.freshnessDate, "CheckOptions.freshnessDate")
   };
 }
 

@@ -18,6 +18,7 @@ import type {
   ShapeDiagnostic,
   ShapeTarget
 } from "./model.ts";
+import type { IsoDateString } from "./iso-date.ts";
 import type { ContextKind } from "../prelude.ts";
 import { compareCodepointStrings } from "../shape-strings.ts";
 import {
@@ -35,11 +36,12 @@ import {
   deriveFinalForbidsForResource,
   hasGuardAction,
   matchingContextsForTarget,
-  requirementsForTarget,
-  targetsEqual
+  requirementsForTarget
 } from "./derivations.ts";
 import { lowerShapeModules } from "./lowerer.ts";
 import { checkShapeModules } from "./api.ts";
+import { compareKindName } from "./sort.ts";
+import { targetsEqual } from "../targets.ts";
 
 export function listMemoryGuardsShapeModules(modules: ShapeModule[] | CheckModuleInput[]): string {
   const model = lowerShapeModules(modules);
@@ -71,7 +73,7 @@ export function listMemoryGuardsShapeModules(modules: ShapeModule[] | CheckModul
 
 export function listShapeObligations(
   modules: ShapeModule[] | CheckModuleInput[],
-  options: { freshnessDate?: string } = {}
+  options: { freshnessDate?: IsoDateString } = {}
 ): string {
   const result = checkShapeModules(modules, { freshnessDate: options.freshnessDate });
   const relevant = result.diagnostics.filter(isObligationDiagnostic);
@@ -353,7 +355,7 @@ function appendContextAndGuardSections(target: ShapeTarget, model: Model, lines:
 }
 
 function compareHyperedges(left: HyperedgeInfo, right: HyperedgeInfo): number {
-  return `${left.kind}:${left.name}`.localeCompare(`${right.kind}:${right.name}`);
+  return compareKindName(left, right);
 }
 
 function resolveQuerySymbol<T extends { name: string }>(
@@ -582,7 +584,10 @@ function guardsForTarget(
     }
   }
   return guards.sort((left, right) =>
-    `${left.kind}:${left.info.name}`.localeCompare(`${right.kind}:${right.info.name}`)
+    compareKindName(
+      { kind: left.kind, name: left.info.name },
+      { kind: right.kind, name: right.info.name }
+    )
   );
 }
 
