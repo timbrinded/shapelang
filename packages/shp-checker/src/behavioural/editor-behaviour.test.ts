@@ -17,7 +17,11 @@ import {
   getEditorDiagnostics,
   getHoverText
 } from "../index.ts";
-import { PRELUDE_COMPLETION_SYMBOLS, PRELUDE_CONTEXT_REQUIREMENTS } from "../prelude.ts";
+import {
+  PRELUDE_COMPLETION_SYMBOLS,
+  PRELUDE_CONTEXT_REQUIREMENTS,
+  PRELUDE_CONTEXT_RULES
+} from "../prelude.ts";
 import { characterization, lockedIntended, shouldBe } from "./harness.ts";
 
 // A small known source whose declaration positions are counted in the comments
@@ -361,18 +365,20 @@ describe("#63 hover help for prelude traits and unknown symbols", () => {
       "shape/checker.shape:453 PreludeMetadataContract; packages/shp-checker/src/editor.ts PRELUDE_SHAPE_TRAIT_HOVERS"
     ),
     () => {
-      for (const requirement of PRELUDE_CONTEXT_REQUIREMENTS) {
-        const hover = getHoverText("", requirement.trait);
+      for (const rule of PRELUDE_CONTEXT_RULES) {
+        const hover = getHoverText("", rule.trait);
         expect(hover.length).toBeGreaterThan(0);
         // Structured help: names the trait, declares it a shape trait, and names
-        // the context type it requires (compared against the prelude source).
-        expect(hover).toContain(requirement.trait);
+        // the context type it requires for EVERY target kind it applies to, so a
+        // multi-target trait (e.g. RefactorSensitive on fn/component/resource)
+        // cannot collapse to a single target kind unnoticed.
+        expect(hover).toContain(rule.trait);
         expect(hover).toContain("kind: shape trait");
-        expect(hover).toContain(`requires: ${requirement.contextType}<`);
+        for (const targetKind of rule.targetKinds) {
+          expect(hover).toContain(`requires: ${rule.contextType}<${targetKind} `);
+        }
         // The requires-description flag is reflected exactly as the prelude says.
-        expect(hover.includes("requires description")).toBe(
-          requirement.requiresDescription === true
-        );
+        expect(hover.includes("requires description")).toBe(rule.requiresDescription === true);
       }
     }
   );

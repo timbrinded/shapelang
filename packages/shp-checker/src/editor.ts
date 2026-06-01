@@ -22,8 +22,9 @@ import {
 import { parseShapeModule } from "./parser.ts";
 import {
   PRELUDE_COMPLETION_SYMBOLS,
-  PRELUDE_CONTEXT_REQUIREMENTS,
-  PRELUDE_RELATION_KIND_NAMES
+  PRELUDE_CONTEXT_RULES,
+  PRELUDE_RELATION_KIND_NAMES,
+  type PreludeContextRule
 } from "./prelude.ts";
 import type { AstNode } from "langium";
 
@@ -78,14 +79,20 @@ function shapeContextRef(contextType: string, target: string): string {
 }
 
 const PRELUDE_SHAPE_TRAIT_HOVERS = new Map(
-  PRELUDE_CONTEXT_REQUIREMENTS.map((rule) => [rule.trait, formatPreludeShapeTraitHover(rule)])
+  PRELUDE_CONTEXT_RULES.map((rule) => [rule.trait, formatPreludeShapeTraitHover(rule)])
 );
 
-function formatPreludeShapeTraitHover(rule: (typeof PRELUDE_CONTEXT_REQUIREMENTS)[number]): string {
+// Hover help lists the obligation for every target kind the trait applies to,
+// so a trait that derives obligations on more than one target (e.g.
+// RefactorSensitive on fn/component/resource) does not collapse to a single
+// target kind.
+function formatPreludeShapeTraitHover(rule: PreludeContextRule): string {
   return [
     rule.trait,
     "  kind: shape trait",
-    `  requires: ${shapeContextRef(rule.contextType, `${rule.targetKind} ...`)}`,
+    ...rule.targetKinds.map(
+      (targetKind) => `  requires: ${shapeContextRef(rule.contextType, `${targetKind} ...`)}`
+    ),
     ...(rule.requiresDescription ? ["  requires description"] : []),
     ""
   ].join("\n");
