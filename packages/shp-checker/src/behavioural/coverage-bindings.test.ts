@@ -247,7 +247,7 @@ describe("#61 coverage/bindings enforcement vs vacuity + self-model dogfood", ()
           "  status Explained",
           "  confidence High",
           `  summary "Widget store ownership must stay append-only."`,
-          "  owner WidgetMaintainers",
+          "  who { owner WidgetMaintainers }",
           "}",
           "",
           ...reevaluationLines

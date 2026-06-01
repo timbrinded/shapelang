@@ -15,5 +15,7 @@ rationale DerivePolicyDecisionDescription : DescriptionRationale<fn Gateway.deri
   applies_to fn Gateway.derivePolicyDecision
   why Auditability
   summary "Reviewers need the local policy decision purpose."
-  owner GatewayTeam
+  who {
+    owner GatewayTeam
+  }
 }

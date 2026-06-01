@@ -1,0 +1,33 @@
+module shape.generated.ast.packages.shp_checker.src.checker.rules.names
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource NamesModuleCheckResolvedNamesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/rules/names.ts:8-216")
+  fingerprint ast.semantic_subtree_v1("sha256:0a8ff698efffbf1198a1579d6f4be96207ddc367f469f00e81b87d168369439c")
+}
+
+component NamesModule : GeneratedCandidate {
+  fn checkResolvedNames
+    source ts("packages/shp-checker/src/checker/rules/names.ts:8-216")
+    effects unknown
+}
+
+relation NamesModuleCheckResolvedNamesGeneratedFromNamesModuleCheckResolvedNamesAstAnchor {
+  kind generated_from
+  connects NamesModule -> NamesModuleCheckResolvedNamesAstAnchor
+  roles { NamesModule as generated, NamesModuleCheckResolvedNamesAstAnchor as syntax }
+  expects NamesModuleCheckResolvedNamesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0a8ff698efffbf1198a1579d6f4be96207ddc367f469f00e81b87d168369439c")
+  summary "fn NamesModule.checkResolvedNames generated from typescript function_declaration at packages/shp-checker/src/checker/rules/names.ts:8-216."
+}
+
+implementation NamesModuleImpl {
+  paths {
+    "packages/shp-checker/src/checker/rules/names.ts"
+  }
+  conforms_to NamesModule
+}

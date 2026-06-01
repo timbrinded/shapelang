@@ -204,8 +204,8 @@ memory DecisionRefactorConstraint : RefactorConstraint<fn Gateway.derivePolicyDe
   status Unexplained
   confidence High
   summary "Previous refactors broke error normalisation."
-  owner GatewayTeam
-  guards on_change require ReEvaluation<Self>
+  who { owner GatewayTeam }
+  guards { on_change require ReEvaluation<Self> }
 }
 ```
 

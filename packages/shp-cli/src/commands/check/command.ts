@@ -13,6 +13,19 @@ export const checkCommand = buildCommand<CheckFlags, string[], CliContext>({
         optional: true,
         brief: "Path to a newline-delimited changed-file list.",
         placeholder: "changed.txt"
+      },
+      asOf: {
+        kind: "parsed",
+        parse: (input: string) => input,
+        optional: true,
+        brief:
+          "Freshness reference date (ISO YYYY-MM-DD); enforces stale design memory deterministically.",
+        placeholder: "YYYY-MM-DD"
+      },
+      strictFreshness: {
+        kind: "boolean",
+        optional: true,
+        brief: "Shorthand for --as-of today (UTC); fails when review_by is before today."
       }
     },
     aliases: {},
@@ -21,10 +34,10 @@ export const checkCommand = buildCommand<CheckFlags, string[], CliContext>({
   docs: {
     brief: "Run Shape semantic checks.",
     fullDescription:
-      "Parses modules, lowers facts, and runs semantic checks. With --changed-files, also runs coverage and bindings.",
+      "Parses modules, lowers facts, and runs semantic checks. With --changed-files, also runs coverage and bindings. With --as-of (or --strict-freshness for today), stale design memory becomes a check failure.",
     customUsage: [
       {
-        input: "[--changed-files changed.txt] [files...]",
+        input: "[--changed-files changed.txt] [--as-of YYYY-MM-DD | --strict-freshness] [files...]",
         brief: "Run semantic checks."
       }
     ]

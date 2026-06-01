@@ -16,5 +16,7 @@ memory PurgeDeleteConstraint : RefactorConstraint<fn AuditStore.purgeOldEvents> 
   status Explained
   confidence High
   summary "This is known behaviour."
-  owner AuditTeam
+  who {
+    owner AuditTeam
+  }
 }

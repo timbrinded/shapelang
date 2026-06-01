@@ -4,47 +4,101 @@ import type { SourceSpan } from "./ast-generation-types.ts";
 import { compareCodepointStrings } from "./shape-strings.ts";
 export { compareCodepointStrings } from "./shape-strings.ts";
 
+// Every ID-shaped keyword in shape.langium. A generated identifier that
+// matches a keyword would produce unparsable Shape, so the AST generator
+// escapes any source segment, function, or type name in this set. Keep it
+// exhaustive over the grammar; the "reserved words cover all grammar keywords"
+// test guards against drift when a new keyword is added.
 const SHAPE_RESERVED_WORDS = new Set([
+  "add",
   "allow",
   "applies_to",
+  "approver",
   "as",
   "attest",
   "binding",
   "callbacks",
+  "calls",
+  "candidate",
   "change",
   "complete",
   "component",
+  "confidence",
   "conforms_to",
   "connects",
   "coordinated_call",
+  "decided_on",
+  "description",
+  "effect",
   "effects",
   "evidence",
+  "except",
   "expects",
+  "expires",
   "final",
   "fingerprint",
   "fn",
   "forbid",
   "grants",
+  "guards",
+  "has",
+  "hypercycle",
   "implementation",
   "import",
   "kind",
   "memory",
+  "modify",
   "module",
+  "observed",
+  "on_change",
+  "or",
+  "outcome",
+  "over",
+  "owner",
   "owns",
   "paths",
+  "pin",
+  "policy",
+  "protects",
   "provides",
   "rationale",
+  "reason",
   "reevaluation",
   "relation",
+  "remove",
+  "require",
+  "require_changed",
+  "require_context",
+  "required",
+  "requires",
   "resource",
+  "review_by",
+  "reviewer",
+  "role",
   "roles",
   "rule",
+  "satisfied_by",
+  "satisfies",
+  "sensitive",
   "source",
+  "status",
   "storage",
   "summary",
   "trait",
-  "unknown"
+  "transform",
+  "unknown",
+  "unsafe",
+  "when",
+  "when_changed",
+  "who",
+  "why"
 ]);
+
+/** The reserved Shape keywords the AST generator escapes. Exposed for the
+ * grammar-coverage regression test. */
+export function shapeReservedWords(): ReadonlySet<string> {
+  return SHAPE_RESERVED_WORDS;
+}
 
 export function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null;

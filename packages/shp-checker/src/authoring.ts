@@ -210,7 +210,7 @@ function formatMemoryGuardScaffold(componentName: string, functionName: string):
     "  status Unexplained",
     "  confidence Medium",
     '  summary "TODO: replace with a specific refactor constraint or remove this memory."',
-    "  owner TODO",
+    "  who { owner TODO }",
     "}"
   ].join("\n");
 }

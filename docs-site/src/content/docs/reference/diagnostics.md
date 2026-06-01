@@ -211,7 +211,7 @@ Cause: a rule uses a syntax shape the checker does not currently implement seman
 
 ## Missing required context
 
-Cause: a function has a shape trait such as `PreserveInline`, `RefactorSensitive`, or `NonIdiomatic`, but no matching `rationale` or `memory` exists for that function target.
+Cause: a function, component, or resource has a shape trait such as `PreserveInline`, `RefactorSensitive`, or `NonIdiomatic`, but no matching `rationale` or `memory` exists for that target.
 
 ```text
 error: missing required context
@@ -221,6 +221,8 @@ PreserveInline requires InlineRationale<fn Gateway.derivePolicyDecision>.
 
 No matching rationale or memory found.
 ```
+
+Component and resource targets report the same diagnostic with their own target kind, for example `component Gateway has shape RefactorSensitive` requiring `RefactorConstraint<component Gateway>`. The same diagnostic covers obligations from user-defined `trait` `require_context` members, attributed to the declaring trait rather than the standard prelude.
 
 Add a typed `rationale` or `memory` that applies to the same target. Do not add generic prose.
 
@@ -277,7 +279,7 @@ rationale DerivePolicyDecisionInline : InlineRationale<fn Gateway.derivePolicyDe
   applies_to fn Gateway.otherDecision
   why CognitiveLocality
   summary "Policy checks remain inline for auditability."
-  owner GatewayTeam
+  who { owner GatewayTeam }
 }
 ```
 
@@ -285,7 +287,7 @@ Make the type target and `applies_to` target identical.
 
 ## Guarded shape changed
 
-Cause: a `modify fn` or `remove fn` touched a function protected by `guards on_change require ReEvaluation<Self>`, but no valid reevaluation satisfies that memory or rationale.
+Cause: a `modify`/`remove` change touched a function, component, resource, or relation protected by `guards on_change require ReEvaluation<Self>`, but no valid reevaluation satisfies that memory or rationale.
 
 ```text
 error: guarded shape changed
@@ -298,13 +300,31 @@ Required:
   or preserve the protected shape.
 ```
 
-Add a `reevaluation` with review evidence, or avoid changing the protected function shape.
+When the guard protects only detectable properties (a named shape trait, or the `description`), the diagnostic fires solely on removal of that property and names it, for example `This change removes shape trait PreserveInline from the guarded target.` A `guards forbid transform` guard fires when a `modify fn` declares the matching `transform` intent, reporting `This change applies the ExtractHelper transform to the guarded target.` Guards that protect a free-form label keep coarse matching and fire on any change to the target.
+
+Add a `reevaluation` with review evidence, or avoid changing the protected shape.
 
 ## Invalid reevaluation
 
 Cause: a `reevaluation` is incomplete or satisfies a memory/rationale that does not exist.
 
-A valid reevaluation needs a known `satisfies` target plus `outcome`, `summary`, `evidence`, `reviewer`, and `decided_on`.
+A valid reevaluation needs a known `satisfies` target plus `outcome`, `summary`, `evidence`, `reviewer`, and `decided_on`. When an approver `policy` is declared and the reevaluation satisfies a `sensitive` memory, an `approver` is also required (`missing approver required by policy`). When any `role` is declared, the `reviewer` and `approver` must name a declared role, otherwise the reason is `unknown reviewer role X` / `unknown approver role X`.
+
+## Stale design memory
+
+Cause: a `memory` or `rationale` has a `review_by` date strictly before the freshness date, and freshness checking is enabled. This diagnostic is only emitted under `shp check --strict-freshness` (a failure) or surfaced by `shp obligations --strict-freshness` (a listing). By default `review_by` is informational and never produces this diagnostic.
+
+```text
+error: stale design memory
+
+memory DecisionRefactorConstraint protects fn Gateway.derivePolicyDecision.
+Its review_by date 2026-01-01 is before 2026-05-30.
+
+Required:
+  review the design memory and update review_by, or replace it with a reevaluation.
+```
+
+Only ISO `YYYY-MM-DD` `review_by` values are enforced; missing or non-ISO values are ignored. The checker compares against a caller-provided date and never reads the system clock, so freshness results are deterministic.
 
 ## Invalid relation
 
@@ -317,6 +337,18 @@ relation GatewayCallsAudit is invalid: kind calls requires exactly two endpoints
 ```
 
 Fix the offending relation block. Each prelude kind constrains arity and connects shape: `calls`, `callbacks`, and `provides` are binary and directional; `provides` must be `component -> resource`; `coordinated_call` is an ordered path of two or more endpoints; user-defined kinds accept any arity but are excluded from hypercycle detection.
+
+## Invalid require_context
+
+Cause: a trait's `require_context ContextType<T>` member names a type parameter `T` that the trait does not declare, or whose bound is not `Fn`, `Component`, or `Resource`. The obligation is rejected so a typo cannot silently fail to attach.
+
+```text
+error: invalid require_context
+
+trait ComponentBoundary require_context BoundaryReason<X> is invalid: type parameter X is not declared by the trait.
+```
+
+Reference the trait's declared type parameter and give it a supported bound (`Fn`, `Component`, or `Resource`), or leave it unbound to target functions.
 
 ## Invalid rule
 

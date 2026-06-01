@@ -1,0 +1,33 @@
+module shape.generated.ast.packages.shp_checker.src.checker_memory_guard_properties_test
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource CheckerMemoryGuardPropertiesTestModuleInlineGuardModelAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker.memory-guard-properties.test.ts:6-42")
+  fingerprint ast.semantic_subtree_v1("sha256:cc794486a57771d9ed86c55e71db0cf285ca1dabbb4c401e7b8479715eb62d79")
+}
+
+component CheckerMemoryGuardPropertiesTestModule : GeneratedCandidate {
+  fn inlineGuardModel
+    source ts("packages/shp-checker/src/checker.memory-guard-properties.test.ts:6-42")
+    effects unknown
+}
+
+relation CheckerMemoryGuardPropertiesTestModuleInlineGuardModelGeneratedFromCheckerMemoryGuardPropertiesTestModuleInlineGuardModelAstAnchor {
+  kind generated_from
+  connects CheckerMemoryGuardPropertiesTestModule -> CheckerMemoryGuardPropertiesTestModuleInlineGuardModelAstAnchor
+  roles { CheckerMemoryGuardPropertiesTestModule as generated, CheckerMemoryGuardPropertiesTestModuleInlineGuardModelAstAnchor as syntax }
+  expects CheckerMemoryGuardPropertiesTestModuleInlineGuardModelAstAnchor fingerprint ast.semantic_subtree_v1("sha256:cc794486a57771d9ed86c55e71db0cf285ca1dabbb4c401e7b8479715eb62d79")
+  summary "fn CheckerMemoryGuardPropertiesTestModule.inlineGuardModel generated from typescript function_declaration at packages/shp-checker/src/checker.memory-guard-properties.test.ts:6-42."
+}
+
+implementation CheckerMemoryGuardPropertiesTestModuleImpl {
+  paths {
+    "packages/shp-checker/src/checker.memory-guard-properties.test.ts"
+  }
+  conforms_to CheckerMemoryGuardPropertiesTestModule
+}

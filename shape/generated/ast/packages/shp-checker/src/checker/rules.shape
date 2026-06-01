@@ -1,0 +1,33 @@
+module shape.generated.ast.packages.shp_checker.src.checker.rules
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource RulesModuleRunSemanticChecksAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/rules.ts:49-51")
+  fingerprint ast.semantic_subtree_v1("sha256:7eb1a7f0d1b44cf7548c6ce46549d217e8364a7cce85e4b64550d871f92304ef")
+}
+
+component RulesModule : GeneratedCandidate {
+  fn runSemanticChecks
+    source ts("packages/shp-checker/src/checker/rules.ts:49-51")
+    effects unknown
+}
+
+relation RulesModuleRunSemanticChecksGeneratedFromRulesModuleRunSemanticChecksAstAnchor {
+  kind generated_from
+  connects RulesModule -> RulesModuleRunSemanticChecksAstAnchor
+  roles { RulesModule as generated, RulesModuleRunSemanticChecksAstAnchor as syntax }
+  expects RulesModuleRunSemanticChecksAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7eb1a7f0d1b44cf7548c6ce46549d217e8364a7cce85e4b64550d871f92304ef")
+  summary "fn RulesModule.runSemanticChecks generated from typescript function_declaration at packages/shp-checker/src/checker/rules.ts:49-51."
+}
+
+implementation RulesModuleImpl {
+  paths {
+    "packages/shp-checker/src/checker/rules.ts"
+  }
+  conforms_to RulesModule
+}

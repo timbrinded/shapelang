@@ -7,6 +7,8 @@ sidebar:
 
 Rule evaluation decides whether the effective Shape model is coherent. By the time rules run, syntax has been parsed and declarations have been lowered into facts with provenance.
 
+Context lowering normalizes surface sugar before rules run: user-defined `require_context` trait obligations are merged with the prelude obligations, and nested `protects`/`guards`/`who`/`when` blocks are flattened to the same members as their flat equivalents, so rule evaluation sees one shape regardless of how the source was written.
+
 Rules are intentionally boring. They compare explicit claims. They do not search source code for hidden behavior, and they do not let prose override hard constraints.
 
 ![Rule evaluation diagram showing facts flowing into final forbid, missing grant, coverage, design memory, and hypercycle rule checks, then pass or reject outputs.](../../../assets/infographics/rule-evaluation-board.png)
@@ -160,7 +162,8 @@ module repo
 
 binding RuleEngineDocs {
   when_changed paths {
-    "packages/shp-checker/src/checker.ts"
+    "packages/shp-checker/src/checker/rules.ts"
+    "packages/shp-checker/src/checker/rules/**/*.ts"
     "shape/checker.shape"
   }
   require_changed paths {
@@ -171,7 +174,7 @@ binding RuleEngineDocs {
 }
 ```
 
-When `shp check --changed-files changed.txt` sees a triggering path, at least one required path must also appear. A `docs_not_needed` attestation can satisfy the binding only when it points at the triggering path, gives a reason, and is declared in a `.shape` file changed by the current run.
+When `shp check --changed-files changed.txt` sees a triggering path, at least one required path must also appear. A `docs_not_needed` attestation can satisfy the binding only when it points at the triggering path, gives a reason, and is declared in a `.shape` file changed by the current run. In this repo the rule engine is split into an ordered registry plus domain rule modules, and the binding watches both surfaces.
 
 ## Context And Memory Guards
 
@@ -195,10 +198,10 @@ memory DecisionRefactorConstraint : RefactorConstraint<fn Gateway.derivePolicyDe
   applies_to fn Gateway.derivePolicyDecision
   status Unexplained
   confidence High
-  protects shape CheckOrder
-  guards on_change require ReEvaluation<Self>
+  protects { shape CheckOrder }
+  guards { on_change require ReEvaluation<Self> }
   summary "Previous refactors broke error normalisation."
-  owner GatewayTeam
+  who { owner GatewayTeam }
 }
 ```
 
@@ -227,10 +230,10 @@ memory DecisionRefactorConstraint : RefactorConstraint<fn Gateway.derivePolicyDe
   applies_to fn Gateway.derivePolicyDecision
   status Unexplained
   confidence High
-  protects shape CheckOrder
-  guards on_change require ReEvaluation<Self>
+  protects { shape CheckOrder }
+  guards { on_change require ReEvaluation<Self> }
   summary "Previous refactors broke error normalisation."
-  owner GatewayTeam
+  who { owner GatewayTeam }
 }
 
 reevaluation DecisionShapeRechecked {

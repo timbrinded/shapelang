@@ -47,7 +47,7 @@ Shared checker-package metadata backs the helper surfaces. Prelude shape traits,
 bun run shp -- fmt --check fixtures/pass/append_only_append/audit.shape
 ```
 
-Canonical formatting matters because Shape files are meant to be reviewed in diffs. The formatter sorts declarations and members in a predictable way, normalizes indentation, and keeps function shape traits, descriptions, rationale, memory, and reevaluation blocks easy to scan.
+Canonical formatting matters because Shape files are meant to be reviewed in diffs. The formatter sorts declarations and members in a predictable way, normalizes indentation, and keeps function shape traits, descriptions, rationale, memory, and reevaluation blocks easy to scan. Rationale/memory guard members are authored as grouped blocks (`protects`, `guards`, `who`, `when`), and the formatter aggregates repeated blocks of the same kind into one, so there is a single canonical on-disk form.
 
 For example, an author might write:
 
@@ -75,10 +75,10 @@ memory DecisionRefactorConstraint : RefactorConstraint<fn Gateway.derivePolicyDe
   applies_to fn Gateway.derivePolicyDecision
   status Unexplained
   confidence High
-  protects shape CheckOrder
-  guards on_change require ReEvaluation<Self>
+  protects { shape CheckOrder }
+  guards { on_change require ReEvaluation<Self> }
   summary "Previous refactors broke error normalisation."
-  owner GatewayTeam
+  who { owner GatewayTeam }
 }
 ```
 

@@ -1,0 +1,209 @@
+module shape.generated.ast.packages.shp_checker.src.checker.lowering.changes
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource ChangesModuleContextForDeclarationChangeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/lowering/changes.ts:257-273")
+  fingerprint ast.semantic_subtree_v1("sha256:c6dba043ec975768ca1e28a9a0312b083d7725177f6096ad7a22452a9fa17277")
+}
+
+resource ChangesModuleDeclarationKindAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/lowering/changes.ts:326-351")
+  fingerprint ast.semantic_subtree_v1("sha256:f4b4a628068d6d9189675fa203ae3e92eb1bc0cb2c38e2160ac4ee789aca3550")
+}
+
+resource ChangesModuleDeclarationNameAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/lowering/changes.ts:353-360")
+  fingerprint ast.semantic_subtree_v1("sha256:723d6f7b22623a5a57057a5ff1e387d3a8791ed53e985d7c4a13e5b09c49a3ac")
+}
+
+resource ChangesModuleDeclarationShapeTraitsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/lowering/changes.ts:224-236")
+  fingerprint ast.semantic_subtree_v1("sha256:8b423960593b6bf8d6632b1c455720ba7e181832dc216a78479a61024249cbb2")
+}
+
+resource ChangesModuleDescriptionDroppedAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/lowering/changes.ts:248-255")
+  fingerprint ast.semantic_subtree_v1("sha256:f282105bd2308f81b64c11c66949835fc742d1d9853ae986ef3bb73846d1ab24")
+}
+
+resource ChangesModuleEmitDeclarationChangeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/lowering/changes.ts:209-222")
+  fingerprint ast.semantic_subtree_v1("sha256:0c820fc7548342dd1b38c061675114cc74972f13c0764a23fba558573c363ab9")
+}
+
+resource ChangesModuleEmitTargetChangeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/lowering/changes.ts:193-207")
+  fingerprint ast.semantic_subtree_v1("sha256:d09e3087efffd1130fabd2ea8b3aec8988988eac3580f4d2184a7f3b534b9ed6")
+}
+
+resource ChangesModuleLowerChangeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/lowering/changes.ts:41-177")
+  fingerprint ast.semantic_subtree_v1("sha256:60b327c16aca916fed6516084677c437310328ee9466a3c6c9419bdb87e8ec42")
+}
+
+resource ChangesModuleLowerDeclarationAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/lowering/changes.ts:275-297")
+  fingerprint ast.semantic_subtree_v1("sha256:fc87fd2bfe6029b34ab0e87c871ad647df0a62030338c1b706f173c0311b2a19")
+}
+
+resource ChangesModuleRemoveDeclarationAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/lowering/changes.ts:299-324")
+  fingerprint ast.semantic_subtree_v1("sha256:e02179ac51d0713bf5d2e4bca2fa9122db981704a29e2004986deedc61c55fc4")
+}
+
+resource ChangesModuleRemovedTraitsBetweenAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/lowering/changes.ts:238-246")
+  fingerprint ast.semantic_subtree_v1("sha256:6590ea51a0a038d322dad61d5ab2b124e84f70feccb9a66d7a448b4de5188251")
+}
+
+resource ChangesModuleResolveFunctionTargetPartsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/lowering/changes.ts:179-185")
+  fingerprint ast.semantic_subtree_v1("sha256:feb26c989b584f7a93beb257c5180fb0bb8f8f0b0048efac91041f40ffafb14f")
+}
+
+component ChangesModule : GeneratedCandidate {
+  fn contextForDeclarationChange
+    source ts("packages/shp-checker/src/checker/lowering/changes.ts:257-273")
+    effects unknown
+  fn declarationKind
+    source ts("packages/shp-checker/src/checker/lowering/changes.ts:326-351")
+    effects unknown
+  fn declarationName
+    source ts("packages/shp-checker/src/checker/lowering/changes.ts:353-360")
+    effects unknown
+  fn declarationShapeTraits
+    source ts("packages/shp-checker/src/checker/lowering/changes.ts:224-236")
+    effects unknown
+  fn descriptionDropped
+    source ts("packages/shp-checker/src/checker/lowering/changes.ts:248-255")
+    effects unknown
+  fn emitDeclarationChange
+    source ts("packages/shp-checker/src/checker/lowering/changes.ts:209-222")
+    effects unknown
+  fn emitTargetChange
+    source ts("packages/shp-checker/src/checker/lowering/changes.ts:193-207")
+    effects unknown
+  fn lowerChange
+    source ts("packages/shp-checker/src/checker/lowering/changes.ts:41-177")
+    effects unknown
+  fn lowerDeclaration
+    source ts("packages/shp-checker/src/checker/lowering/changes.ts:275-297")
+    effects unknown
+  fn removeDeclaration
+    source ts("packages/shp-checker/src/checker/lowering/changes.ts:299-324")
+    effects unknown
+  fn removedTraitsBetween
+    source ts("packages/shp-checker/src/checker/lowering/changes.ts:238-246")
+    effects unknown
+  fn resolveFunctionTargetParts
+    source ts("packages/shp-checker/src/checker/lowering/changes.ts:179-185")
+    effects unknown
+}
+
+relation ChangesModuleContextForDeclarationChangeGeneratedFromChangesModuleContextForDeclarationChangeAstAnchor {
+  kind generated_from
+  connects ChangesModule -> ChangesModuleContextForDeclarationChangeAstAnchor
+  roles { ChangesModule as generated, ChangesModuleContextForDeclarationChangeAstAnchor as syntax }
+  expects ChangesModuleContextForDeclarationChangeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c6dba043ec975768ca1e28a9a0312b083d7725177f6096ad7a22452a9fa17277")
+  summary "fn ChangesModule.contextForDeclarationChange generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/changes.ts:257-273."
+}
+
+relation ChangesModuleDeclarationKindGeneratedFromChangesModuleDeclarationKindAstAnchor {
+  kind generated_from
+  connects ChangesModule -> ChangesModuleDeclarationKindAstAnchor
+  roles { ChangesModule as generated, ChangesModuleDeclarationKindAstAnchor as syntax }
+  expects ChangesModuleDeclarationKindAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f4b4a628068d6d9189675fa203ae3e92eb1bc0cb2c38e2160ac4ee789aca3550")
+  summary "fn ChangesModule.declarationKind generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/changes.ts:326-351."
+}
+
+relation ChangesModuleDeclarationNameGeneratedFromChangesModuleDeclarationNameAstAnchor {
+  kind generated_from
+  connects ChangesModule -> ChangesModuleDeclarationNameAstAnchor
+  roles { ChangesModule as generated, ChangesModuleDeclarationNameAstAnchor as syntax }
+  expects ChangesModuleDeclarationNameAstAnchor fingerprint ast.semantic_subtree_v1("sha256:723d6f7b22623a5a57057a5ff1e387d3a8791ed53e985d7c4a13e5b09c49a3ac")
+  summary "fn ChangesModule.declarationName generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/changes.ts:353-360."
+}
+
+relation ChangesModuleDeclarationShapeTraitsGeneratedFromChangesModuleDeclarationShapeTraitsAstAnchor {
+  kind generated_from
+  connects ChangesModule -> ChangesModuleDeclarationShapeTraitsAstAnchor
+  roles { ChangesModule as generated, ChangesModuleDeclarationShapeTraitsAstAnchor as syntax }
+  expects ChangesModuleDeclarationShapeTraitsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:8b423960593b6bf8d6632b1c455720ba7e181832dc216a78479a61024249cbb2")
+  summary "fn ChangesModule.declarationShapeTraits generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/changes.ts:224-236."
+}
+
+relation ChangesModuleDescriptionDroppedGeneratedFromChangesModuleDescriptionDroppedAstAnchor {
+  kind generated_from
+  connects ChangesModule -> ChangesModuleDescriptionDroppedAstAnchor
+  roles { ChangesModule as generated, ChangesModuleDescriptionDroppedAstAnchor as syntax }
+  expects ChangesModuleDescriptionDroppedAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f282105bd2308f81b64c11c66949835fc742d1d9853ae986ef3bb73846d1ab24")
+  summary "fn ChangesModule.descriptionDropped generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/changes.ts:248-255."
+}
+
+relation ChangesModuleEmitDeclarationChangeGeneratedFromChangesModuleEmitDeclarationChangeAstAnchor {
+  kind generated_from
+  connects ChangesModule -> ChangesModuleEmitDeclarationChangeAstAnchor
+  roles { ChangesModule as generated, ChangesModuleEmitDeclarationChangeAstAnchor as syntax }
+  expects ChangesModuleEmitDeclarationChangeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0c820fc7548342dd1b38c061675114cc74972f13c0764a23fba558573c363ab9")
+  summary "fn ChangesModule.emitDeclarationChange generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/changes.ts:209-222."
+}
+
+relation ChangesModuleEmitTargetChangeGeneratedFromChangesModuleEmitTargetChangeAstAnchor {
+  kind generated_from
+  connects ChangesModule -> ChangesModuleEmitTargetChangeAstAnchor
+  roles { ChangesModule as generated, ChangesModuleEmitTargetChangeAstAnchor as syntax }
+  expects ChangesModuleEmitTargetChangeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d09e3087efffd1130fabd2ea8b3aec8988988eac3580f4d2184a7f3b534b9ed6")
+  summary "fn ChangesModule.emitTargetChange generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/changes.ts:193-207."
+}
+
+relation ChangesModuleLowerChangeGeneratedFromChangesModuleLowerChangeAstAnchor {
+  kind generated_from
+  connects ChangesModule -> ChangesModuleLowerChangeAstAnchor
+  roles { ChangesModule as generated, ChangesModuleLowerChangeAstAnchor as syntax }
+  expects ChangesModuleLowerChangeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:60b327c16aca916fed6516084677c437310328ee9466a3c6c9419bdb87e8ec42")
+  summary "fn ChangesModule.lowerChange generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/changes.ts:41-177."
+}
+
+relation ChangesModuleLowerDeclarationGeneratedFromChangesModuleLowerDeclarationAstAnchor {
+  kind generated_from
+  connects ChangesModule -> ChangesModuleLowerDeclarationAstAnchor
+  roles { ChangesModule as generated, ChangesModuleLowerDeclarationAstAnchor as syntax }
+  expects ChangesModuleLowerDeclarationAstAnchor fingerprint ast.semantic_subtree_v1("sha256:fc87fd2bfe6029b34ab0e87c871ad647df0a62030338c1b706f173c0311b2a19")
+  summary "fn ChangesModule.lowerDeclaration generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/changes.ts:275-297."
+}
+
+relation ChangesModuleRemoveDeclarationGeneratedFromChangesModuleRemoveDeclarationAstAnchor {
+  kind generated_from
+  connects ChangesModule -> ChangesModuleRemoveDeclarationAstAnchor
+  roles { ChangesModule as generated, ChangesModuleRemoveDeclarationAstAnchor as syntax }
+  expects ChangesModuleRemoveDeclarationAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e02179ac51d0713bf5d2e4bca2fa9122db981704a29e2004986deedc61c55fc4")
+  summary "fn ChangesModule.removeDeclaration generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/changes.ts:299-324."
+}
+
+relation ChangesModuleRemovedTraitsBetweenGeneratedFromChangesModuleRemovedTraitsBetweenAstAnchor {
+  kind generated_from
+  connects ChangesModule -> ChangesModuleRemovedTraitsBetweenAstAnchor
+  roles { ChangesModule as generated, ChangesModuleRemovedTraitsBetweenAstAnchor as syntax }
+  expects ChangesModuleRemovedTraitsBetweenAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6590ea51a0a038d322dad61d5ab2b124e84f70feccb9a66d7a448b4de5188251")
+  summary "fn ChangesModule.removedTraitsBetween generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/changes.ts:238-246."
+}
+
+relation ChangesModuleResolveFunctionTargetPartsGeneratedFromChangesModuleResolveFunctionTargetPartsAstAnchor {
+  kind generated_from
+  connects ChangesModule -> ChangesModuleResolveFunctionTargetPartsAstAnchor
+  roles { ChangesModule as generated, ChangesModuleResolveFunctionTargetPartsAstAnchor as syntax }
+  expects ChangesModuleResolveFunctionTargetPartsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:feb26c989b584f7a93beb257c5180fb0bb8f8f0b0048efac91041f40ffafb14f")
+  summary "fn ChangesModule.resolveFunctionTargetParts generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/changes.ts:179-185."
+}
+
+implementation ChangesModuleImpl {
+  paths {
+    "packages/shp-checker/src/checker/lowering/changes.ts"
+  }
+  conforms_to ChangesModule
+}

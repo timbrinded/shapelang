@@ -1,0 +1,81 @@
+module shape.generated.ast.packages.shp_checker.src.test_support
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource TestSupportModuleCheckShapeSourceAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/test-support.ts:26-28")
+  fingerprint ast.semantic_subtree_v1("sha256:726dd5927c4fe12f0fbffe4b5d0f3410ba908067ec3b1d48c1b305ad496dbe59")
+}
+
+resource TestSupportModuleContextRefAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/test-support.ts:12-14")
+  fingerprint ast.semantic_subtree_v1("sha256:9d4fa254008e32de3550f57b64fadf67afdbcda61ade4d8d44f8b0706a14301c")
+}
+
+resource TestSupportModuleFnTargetAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/test-support.ts:7-9")
+  fingerprint ast.semantic_subtree_v1("sha256:d57c4f94adf20b0b3a1b43e1177e7c0d264797b7eb4c46bd88fbd2c83ac68bf6")
+}
+
+resource TestSupportModuleRequireParsedAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/test-support.ts:17-23")
+  fingerprint ast.semantic_subtree_v1("sha256:93a215c41f5d4b841075b5c11610bf69de3642f91e9f1e1ed5d855aef3b1c9ba")
+}
+
+component TestSupportModule : GeneratedCandidate {
+  fn checkShapeSource
+    source ts("packages/shp-checker/src/test-support.ts:26-28")
+    effects unknown
+  fn contextRef
+    source ts("packages/shp-checker/src/test-support.ts:12-14")
+    effects unknown
+  fn fnTarget
+    source ts("packages/shp-checker/src/test-support.ts:7-9")
+    effects unknown
+  fn requireParsed
+    source ts("packages/shp-checker/src/test-support.ts:17-23")
+    effects unknown
+}
+
+relation TestSupportModuleCheckShapeSourceGeneratedFromTestSupportModuleCheckShapeSourceAstAnchor {
+  kind generated_from
+  connects TestSupportModule -> TestSupportModuleCheckShapeSourceAstAnchor
+  roles { TestSupportModule as generated, TestSupportModuleCheckShapeSourceAstAnchor as syntax }
+  expects TestSupportModuleCheckShapeSourceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:726dd5927c4fe12f0fbffe4b5d0f3410ba908067ec3b1d48c1b305ad496dbe59")
+  summary "fn TestSupportModule.checkShapeSource generated from typescript function_declaration at packages/shp-checker/src/test-support.ts:26-28."
+}
+
+relation TestSupportModuleContextRefGeneratedFromTestSupportModuleContextRefAstAnchor {
+  kind generated_from
+  connects TestSupportModule -> TestSupportModuleContextRefAstAnchor
+  roles { TestSupportModule as generated, TestSupportModuleContextRefAstAnchor as syntax }
+  expects TestSupportModuleContextRefAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9d4fa254008e32de3550f57b64fadf67afdbcda61ade4d8d44f8b0706a14301c")
+  summary "fn TestSupportModule.contextRef generated from typescript function_declaration at packages/shp-checker/src/test-support.ts:12-14."
+}
+
+relation TestSupportModuleFnTargetGeneratedFromTestSupportModuleFnTargetAstAnchor {
+  kind generated_from
+  connects TestSupportModule -> TestSupportModuleFnTargetAstAnchor
+  roles { TestSupportModule as generated, TestSupportModuleFnTargetAstAnchor as syntax }
+  expects TestSupportModuleFnTargetAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d57c4f94adf20b0b3a1b43e1177e7c0d264797b7eb4c46bd88fbd2c83ac68bf6")
+  summary "fn TestSupportModule.fnTarget generated from typescript function_declaration at packages/shp-checker/src/test-support.ts:7-9."
+}
+
+relation TestSupportModuleRequireParsedGeneratedFromTestSupportModuleRequireParsedAstAnchor {
+  kind generated_from
+  connects TestSupportModule -> TestSupportModuleRequireParsedAstAnchor
+  roles { TestSupportModule as generated, TestSupportModuleRequireParsedAstAnchor as syntax }
+  expects TestSupportModuleRequireParsedAstAnchor fingerprint ast.semantic_subtree_v1("sha256:93a215c41f5d4b841075b5c11610bf69de3642f91e9f1e1ed5d855aef3b1c9ba")
+  summary "fn TestSupportModule.requireParsed generated from typescript function_declaration at packages/shp-checker/src/test-support.ts:17-23."
+}
+
+implementation TestSupportModuleImpl {
+  paths {
+    "packages/shp-checker/src/test-support.ts"
+  }
+  conforms_to TestSupportModule
+}

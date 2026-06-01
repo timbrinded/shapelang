@@ -86,8 +86,8 @@ const DECLARATIONS = {
     "  status Unexplained",
     "  confidence High",
     '  summary "Past refactors silently dropped ledger writes."',
-    "  owner StoreTeam",
-    "  guards on_change require ReEvaluation<Self>",
+    "  who { owner StoreTeam }",
+    "  guards { on_change require ReEvaluation<Self> }",
     "}"
   ].join("\n"),
   changeWithoutReeval: [
@@ -336,10 +336,10 @@ describe("#55 determinism + no-clock-in-checker", () => {
         "  status Explained",
         "  confidence High",
         '  summary "x"',
-        "  owner T",
-        `  review_by "${nonIsoReviewBy}"`,
-        "  protects shape Foo",
-        "  guards on_change require ReEvaluation<Self>",
+        "  who { owner T }",
+        `  when { review_by "${nonIsoReviewBy}" }`,
+        "  protects { shape Foo }",
+        "  guards { on_change require ReEvaluation<Self> }",
         "}"
       ].join("\n");
 
@@ -395,10 +395,10 @@ describe("#55 determinism + no-clock-in-checker", () => {
           "  status Explained",
           "  confidence High",
           '  summary "x"',
-          "  owner T",
-          '  review_by "banana-not-a-date"',
-          "  protects shape Foo",
-          "  guards on_change require ReEvaluation<Self>",
+          "  who { owner T }",
+          '  when { review_by "banana-not-a-date" }',
+          "  protects { shape Foo }",
+          "  guards { on_change require ReEvaluation<Self> }",
           "}"
         ].join("\n")
       );

@@ -12,7 +12,9 @@ Use this when explaining Shape to another agent or human. Teach by running or sh
 6. Global model updates keep Shape claims aligned with source changes.
 7. Coverage rules require current model updates or attestations for governed source changes.
 8. Rules express project constraints such as final forbids and hypercycle bans over the directed hypergraph of relations.
-9. Memory Guards add typed design memory for non-obvious or refactor-sensitive shapes.
+9. Memory Guards add typed design memory for non-obvious or refactor-sensitive shapes — on functions, components, and resources.
+10. Guards can be precise (`protects shape`/`description`, `guards forbid transform`) and can carry review policy: `sensitive` memories under an approver `policy` need an `approver`, declared `role`s validate identities, and `review_by` enables opt-in freshness via `--strict-freshness`.
+11. Projects can define their own obligations with `require_context`; a same-named trait shadows the built-in.
 
 ## CLI-Backed Teaching Path
 
@@ -51,6 +53,12 @@ Show Memory Guard review:
 ```bash
 shp memory fixtures/pass/memory_guard_modify_with_reevaluation/audit.shape
 shp obligations fixtures/fail/memory_guard_modify_without_reevaluation/audit.shape
+```
+
+Show opt-in freshness (stale design memory surfaces only with the flag):
+
+```bash
+shp obligations --strict-freshness fixtures/pass/memory_guard_review_freshness/bridge.shape
 ```
 
 End with validation:
@@ -92,3 +100,5 @@ Teach instead: `effects complete` claims every material effect is represented.
 - A rationale explains an intentional shape.
 - A memory preserves a refactor constraint.
 - A reevaluation is a typed review record for changing guarded shape.
+- A `sensitive` memory plus an approver `policy` is a two-person review rule.
+- `review_by` is a self-imposed review deadline the team opts into checking.

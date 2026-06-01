@@ -642,6 +642,74 @@ describe("shp CLI", () => {
     expect(result.stderr).toBe("");
   });
 
+  test("lists stale design memory under strict freshness", async () => {
+    const result = await runCli([
+      "obligations",
+      "--strict-freshness",
+      "fixtures/pass/memory_guard_review_freshness/bridge.shape"
+    ]);
+
+    expect(result.exitCode).toBe(0);
+    expect(result.stdout).toContain("stale design memory:");
+    expect(result.stdout).toContain("memory BridgePollingDelayConstraint review_by 2020-01-01");
+    expect(result.stderr).toBe("");
+  });
+
+  test("keeps stale design memory silent without strict freshness", async () => {
+    const result = await runCli([
+      "obligations",
+      "fixtures/pass/memory_guard_review_freshness/bridge.shape"
+    ]);
+
+    expect(result.exitCode).toBe(0);
+    expect(result.stdout).not.toContain("stale design memory");
+  });
+
+  test("fails check when strict freshness finds stale design memory", async () => {
+    const result = await runCli([
+      "check",
+      "--strict-freshness",
+      "fixtures/pass/memory_guard_review_freshness/bridge.shape"
+    ]);
+
+    expect(result.exitCode).toBe(1);
+    expect(result.stderr).toContain("stale design memory");
+    expect(result.stderr).toContain("review_by date 2020-01-01");
+  });
+
+  test("enforces freshness against an explicit --as-of date deterministically", async () => {
+    const stale = await runCli([
+      "obligations",
+      "--as-of",
+      "2026-05-30",
+      "fixtures/pass/memory_guard_review_freshness/bridge.shape"
+    ]);
+    expect(stale.exitCode).toBe(0);
+    expect(stale.stdout).toContain(
+      "memory BridgePollingDelayConstraint review_by 2020-01-01 is before 2026-05-30"
+    );
+
+    const fresh = await runCli([
+      "obligations",
+      "--as-of",
+      "2019-01-01",
+      "fixtures/pass/memory_guard_review_freshness/bridge.shape"
+    ]);
+    expect(fresh.exitCode).toBe(0);
+    expect(fresh.stdout).not.toContain("stale design memory");
+  });
+
+  test("rejects an --as-of value that is not a real ISO date", async () => {
+    const result = await runCli([
+      "obligations",
+      "--as-of",
+      "2026-02-30",
+      "fixtures/pass/memory_guard_review_freshness/bridge.shape"
+    ]);
+    expect(result.exitCode).not.toBe(0);
+    expect(result.stderr).toContain("--as-of expects an ISO YYYY-MM-DD date");
+  });
+
   test("runs source analyzer with shape comparison", async () => {
     const result = await runCli([
       "analyze",

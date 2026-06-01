@@ -13,10 +13,14 @@ import type {
   FingerprintDecl,
   FunctionMember,
   FunctionSummary,
+  GuardForbidTransformDecl,
+  GuardRequireDecl,
   ImplementationDecl,
   MemoryDecl,
   MemoryMember,
   ModifyFunctionChange,
+  PolicyDecl,
+  TransformDecl,
   RationaleDecl,
   RationaleMember,
   ReevaluationDecl,
@@ -58,7 +62,8 @@ import {
   isFunctionRequiresDecl,
   isFunctionSummary,
   isGrantsDecl,
-  isGuardDecl,
+  isGuardForbidTransformDecl,
+  isGuardsBlock,
   isImplementationDecl,
   isMemoryDecl,
   isModifyDeclarationChange,
@@ -66,10 +71,10 @@ import {
   isObservedDecl,
   isOnChangeDecl,
   isOutcomeDecl,
-  isOwnerDecl,
   isOwnsDecl,
   isPathsBlock,
-  isProtectsDecl,
+  isPolicyDecl,
+  isProtectsBlock,
   isRationaleDecl,
   isReasonDecl,
   isReevaluationDecl,
@@ -81,15 +86,18 @@ import {
   isRelationSummaryDecl,
   isRemoveDeclarationChange,
   isRemoveFunctionChange,
+  isRequireApproverDecl,
+  isRequireContextDecl,
   isResourceDecl,
-  isReviewByDecl,
   isReviewerDecl,
+  isRoleDecl,
   isRuleDecl,
   isRuleForbidEffectDecl,
   isRuleForbidHypercycleDecl,
   isRuleForbidProvidesDecl,
   isRuleWhenHasDecl,
   isSatisfiesDecl,
+  isSensitiveDecl,
   isStatusDecl,
   isStorageDecl,
   isSummaryDecl,
@@ -98,6 +106,8 @@ import {
   isTraitForbidDecl,
   isTraitRequireDecl,
   isUnknownEffects,
+  isWhenBlock,
+  isWhoBlock,
   isWhyDecl
 } from "./language/generated/ast.ts";
 import { parseShapeModule, type ParseDiagnostic } from "./parser.ts";
@@ -190,7 +200,22 @@ function formatDeclaration(declaration: ShapeModule["declarations"][number]): st
   if (isReevaluationDecl(declaration)) {
     return formatReevaluation(declaration);
   }
+  if (isRoleDecl(declaration)) {
+    return `role ${declaration.name}`;
+  }
+  if (isPolicyDecl(declaration)) {
+    return formatPolicy(declaration);
+  }
   return "";
+}
+
+function formatPolicy(policy: PolicyDecl): string {
+  const lines = [`policy ${policy.name} {`];
+  if (policy.members.some(isRequireApproverDecl)) {
+    lines.push(indent("require approver"));
+  }
+  lines.push("}");
+  return lines.join("\n");
 }
 
 function formatResource(resource: ResourceDecl): string {
@@ -240,6 +265,11 @@ function formatTrait(trait: TraitDecl): string {
       }
       if (isTraitForbidDecl(member)) {
         return `forbid ${member.final ? "final " : ""}${formatPattern(member.pattern)}`;
+      }
+      if (isRequireContextDecl(member)) {
+        const satisfiedBy =
+          member.satisfiedBy.length > 0 ? ` satisfied_by ${member.satisfiedBy.join(" or ")}` : "";
+        return `require_context ${member.contextType}<${member.target}>${satisfiedBy}`;
       }
       return "";
     })
@@ -362,6 +392,7 @@ function formatFunction(fn: FunctionSummary | AddFunctionChange): string {
   return formatFunctionParts(
     `fn ${formatFunctionLocalName(fn)}`,
     fn.shapeTraits,
+    undefined,
     fn.source,
     fn.description,
     fn.unsafe,
@@ -377,6 +408,7 @@ function formatQualifiedFunction(
   return formatFunctionParts(
     `${keyword} fn ${fn.target}`,
     fn.shapeTraits,
+    isModifyFunctionChange(fn) ? fn.transforms : undefined,
     fn.source,
     fn.description,
     fn.unsafe,
@@ -388,6 +420,7 @@ function formatQualifiedFunction(
 function formatFunctionParts(
   header: string,
   shapeTraits: ShapeTraitList | undefined,
+  transforms: TransformDecl | undefined,
   source: SourceDecl | undefined,
   description: DescriptionDecl | undefined,
   unsafe: boolean,
@@ -395,6 +428,9 @@ function formatFunctionParts(
   members: FunctionMember[]
 ): string {
   const lines = [`${header}${formatShapeTraitList(shapeTraits)}`];
+  if (transforms && transforms.labels.length > 0) {
+    lines.push(indent(`transform ${transforms.labels.join(", ")}`));
+  }
   if (source) {
     lines.push(indent(`source ${formatSource(source)}`));
   }
@@ -597,73 +633,110 @@ function formatRule(rule: RuleDecl): string {
 }
 
 function formatRationale(rationale: RationaleDecl): string {
-  const members = [...rationale.members]
-    .map((member) => {
-      if (isWhyDecl(member)) {
-        return `why ${member.reason}`;
-      }
-      return formatContextMember(member) ?? "";
-    })
-    .filter((line) => line.length > 0)
-    .sort(
-      (left, right) =>
-        memberOrder(left, RATIONALE_MEMBER_ORDER) - memberOrder(right, RATIONALE_MEMBER_ORDER) ||
-        compareCodepointStrings(left, right)
-    );
-
+  const specific = rationale.members.filter(isWhyDecl).map((member) => `why ${member.reason}`);
   return block(
     `rationale ${rationale.name} : ${formatContextTypeRef(rationale.contextType)}`,
-    members
+    formatContextMembers(rationale.members, specific, RATIONALE_MEMBER_ORDER)
   );
 }
 
 function formatMemory(memory: MemoryDecl): string {
-  const members = [...memory.members]
-    .map((member) => {
-      if (isStatusDecl(member)) {
-        return `status ${member.value}`;
+  const specific: string[] = [];
+  for (const member of memory.members) {
+    if (isStatusDecl(member)) {
+      specific.push(`status ${member.value}`);
+    } else if (isConfidenceDecl(member)) {
+      specific.push(`confidence ${member.value}`);
+    } else if (isObservedDecl(member)) {
+      specific.push(`observed ${formatSourceRef(member.ref)}`);
+    } else if (isSensitiveDecl(member)) {
+      specific.push("sensitive");
+    }
+  }
+  return block(
+    `memory ${memory.name} : ${formatContextTypeRef(memory.contextType)}`,
+    formatContextMembers(memory.members, specific, MEMORY_MEMBER_ORDER)
+  );
+}
+
+/**
+ * Canonicalise the shared context members. Grouped blocks are the only guard
+ * syntax: protects and guards are aggregated into one `protects { … }` /
+ * `guards { … }` block, and owner/review_by are wrapped in `who { … }` /
+ * `when { … }`. Repeated blocks of the same kind are merged into one.
+ */
+function formatContextMembers(
+  members: readonly (RationaleMember | MemoryMember)[],
+  specificLines: string[],
+  order: string[]
+): string[] {
+  const lines = [...specificLines];
+  const protects: string[] = [];
+  const guards: string[] = [];
+  let owner: string | undefined;
+  let reviewBy: string | undefined;
+
+  for (const member of members) {
+    if (isAppliesToDecl(member)) {
+      lines.push(`applies_to ${formatTargetRef(member.target)}`);
+    } else if (isSummaryDecl(member)) {
+      lines.push(`summary ${quote(member.value)}`);
+    } else if (isEvidenceLineDecl(member)) {
+      lines.push(`evidence ${formatSourceRef(member.ref)}`);
+    } else if (isProtectsBlock(member)) {
+      for (const entry of member.entries) {
+        protects.push(formatProtectsEntry(entry.kind, entry.value));
       }
-      if (isConfidenceDecl(member)) {
-        return `confidence ${member.value}`;
+    } else if (isGuardsBlock(member)) {
+      for (const entry of member.entries) {
+        guards.push(formatGuardActionEntry(entry));
       }
-      if (isObservedDecl(member)) {
-        return `observed ${formatSourceRef(member.ref)}`;
+    } else if (isWhoBlock(member)) {
+      if (member.owner) {
+        owner = member.owner.value;
       }
-      return formatContextMember(member) ?? "";
-    })
+    } else if (isWhenBlock(member)) {
+      if (member.date) {
+        reviewBy = member.date.value;
+      }
+    }
+  }
+
+  if (protects.length > 0) {
+    lines.push(block("protects", commaSeparated([...protects].sort(compareCodepointStrings))));
+  }
+  if (guards.length > 0) {
+    lines.push(block("guards", [...guards].sort(compareCodepointStrings)));
+  }
+  if (owner !== undefined) {
+    lines.push(block("who", [`owner ${owner}`]));
+  }
+  if (reviewBy !== undefined) {
+    lines.push(block("when", [`review_by ${quote(reviewBy)}`]));
+  }
+
+  return lines
     .filter((line) => line.length > 0)
     .sort(
       (left, right) =>
-        memberOrder(left, MEMORY_MEMBER_ORDER) - memberOrder(right, MEMORY_MEMBER_ORDER) ||
-        compareCodepointStrings(left, right)
+        memberOrder(left, order) - memberOrder(right, order) || compareCodepointStrings(left, right)
     );
-
-  return block(`memory ${memory.name} : ${formatContextTypeRef(memory.contextType)}`, members);
 }
 
-function formatContextMember(member: RationaleMember | MemoryMember): string | undefined {
-  if (isAppliesToDecl(member)) {
-    return `applies_to ${formatTargetRef(member.target)}`;
-  }
-  if (isSummaryDecl(member)) {
-    return `summary ${quote(member.value)}`;
-  }
-  if (isOwnerDecl(member)) {
-    return `owner ${member.value}`;
-  }
-  if (isReviewByDecl(member)) {
-    return `review_by ${quote(member.value)}`;
-  }
-  if (isProtectsDecl(member)) {
-    return `protects ${member.kind} ${member.value}`;
-  }
-  if (isGuardDecl(member)) {
-    return `guards on_change require ${member.requirement}`;
-  }
-  if (isEvidenceLineDecl(member)) {
-    return `evidence ${formatSourceRef(member.ref)}`;
-  }
-  return undefined;
+function formatProtectsEntry(kind: string, value: string | undefined): string {
+  return value ? `${kind} ${value}` : kind;
+}
+
+function formatGuardActionEntry(action: GuardRequireDecl | GuardForbidTransformDecl): string {
+  return isGuardForbidTransformDecl(action)
+    ? `forbid transform ${action.label}`
+    : `on_change require ${action.requirement}`;
+}
+
+/** Append a trailing comma to every entry but the last (ProtectsBlock entries
+ *  are comma-separated). */
+function commaSeparated(entries: string[]): string[] {
+  return entries.map((entry, index) => (index < entries.length - 1 ? `${entry},` : entry));
 }
 
 function formatReevaluation(reevaluation: ReevaluationDecl): string {
@@ -706,8 +779,8 @@ const RATIONALE_MEMBER_ORDER = [
   "applies_to",
   "why",
   "summary",
-  "owner",
-  "review_by",
+  "who",
+  "when",
   "protects",
   "guards",
   "evidence"
@@ -717,9 +790,10 @@ const MEMORY_MEMBER_ORDER = [
   "applies_to",
   "status",
   "confidence",
+  "sensitive",
   "summary",
-  "owner",
-  "review_by",
+  "who",
+  "when",
   "protects",
   "guards",
   "observed",
@@ -815,6 +889,12 @@ function declarationSortKey(declaration: ShapeModule["declarations"][number]): s
   }
   if (isReevaluationDecl(declaration)) {
     return `A:${declaration.name}`;
+  }
+  if (isRoleDecl(declaration)) {
+    return `7A:${declaration.name}`;
+  }
+  if (isPolicyDecl(declaration)) {
+    return `7B:${declaration.name}`;
   }
   if (isAttestationDecl(declaration)) {
     return `B:${declaration.kind}`;

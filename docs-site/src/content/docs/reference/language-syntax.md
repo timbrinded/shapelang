@@ -277,14 +277,24 @@ memory DecisionRefactorConstraint : RefactorConstraint<fn Gateway.derivePolicyDe
   status Unexplained
   confidence High
   summary "Previous refactors changed error normalisation behaviour."
-  owner GatewayTeam
-  guards on_change require ReEvaluation<Self>
+  who { owner GatewayTeam }
+  guards { on_change require ReEvaluation<Self> }
 }
 ```
 
-`rationale` members can include `applies_to`, `why`, `summary`, `owner`, `review_by`, `protects`, `guards`, and `evidence`.
+`rationale` members can include `applies_to`, `why`, `summary`, `evidence`, and the grouped guard blocks `protects`, `guards`, `who`, and `when`.
 
-`memory` members can include `applies_to`, `status`, `confidence`, `protects`, `guards`, `observed`, `summary`, `owner`, `review_by`, and `evidence`.
+`memory` members can include `applies_to`, `status`, `confidence`, `observed`, `summary`, `sensitive`, `evidence`, and the grouped guard blocks `protects`, `guards`, `who`, and `when`.
+
+A `protects` block lists the protected properties, comma-separated: each entry is either a property with a value, such as `shape PreserveInline`, or the local description written as `description`. Guards whose protected properties are all detectable (a named shape trait, or the description) fire only when that property is removed.
+
+A `guards` block lists guard actions: each is either `on_change require ReEvaluation<Self>` or `forbid transform Label`. A `modify fn` change can declare its intent with `transform Label1, Label2`; a `forbid transform` guard fires only when a matching transform intent is declared.
+
+A `memory` may carry a `sensitive` flag. A top-level `role Name` declaration registers a valid reviewer/approver identity, and a top-level `policy Name { require approver }` declaration requires an approver on reevaluations that satisfy a `sensitive` memory. `role`, `policy`, and `sensitive` are reserved keywords.
+
+A `trait` can define its own context obligation with a `require_context ContextType<T>` member, where `T` is the trait's type parameter and its bound sets the target kind: `Fn` (or unbound) maps to a function target, `Component` to a component, and `Resource` to a resource. A `<T>` that names no declared type parameter, or an unrecognised bound, is reported as `invalid require_context` rather than silently defaulting. An optional `satisfied_by rationale`, `satisfied_by memory`, or `satisfied_by rationale or memory` clause restricts which context kind satisfies it; the default accepts either. A trait declared with the same name as a built-in shape trait replaces (shadows) the built-in obligation through name resolution. `require_context` and `satisfied_by` are reserved keywords.
+
+Guard members are authored as grouped blocks — `protects { ... }`, `guards { ... }`, `who { owner ... }`, and `when { review_by ... }`. This is the single canonical syntax; `shp fmt` always emits these blocks. `who` and `when` are single-valued (one `owner`, one `review_by`). `who` is a reserved keyword.
 
 `reevaluation` records review for a guarded change:
 

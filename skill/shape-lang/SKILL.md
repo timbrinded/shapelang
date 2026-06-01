@@ -1,6 +1,6 @@
 ---
 name: shape-lang
-description: Use when working with .shape files in repositories that use the Shape language to author, review, teach, format, debug, or validate Shape architecture claims, including global model updates, Memory Guards, typed component/resource/effect models, top-level relation declarations, hypergraphs, hypercycles, relation kinds such as calls/callbacks/provides/coordinated_call, forbid hypercycle rules, coverage attestations, and agent-safe workflows using all shp CLI commands including shp graph.
+description: Use when working with .shape files in repositories that use the Shape language to author, review, teach, format, debug, or validate Shape architecture claims, including global model updates, Memory Guards on functions/components/resources, property-level and forbid-transform guards, design-memory freshness (review_by, --strict-freshness), sensitive memories with role and approver policy, user-defined require_context/satisfied_by obligations and built-in trait shadowing, nested guard blocks, typed component/resource/effect models, top-level relation declarations, hypergraphs, hypercycles, relation kinds such as calls/callbacks/provides/coordinated_call, forbid hypercycle rules, coverage attestations, and agent-safe workflows using all shp CLI commands including shp graph.
 ---
 
 # Shape Lang
@@ -23,7 +23,7 @@ Load only the reference needed for the task:
 - Teaching Shape concepts to an agent or human: read `references/teaching-guide.md`.
 - Authoring or reviewing global `.shape` model changes: read `references/make-shape-protocol.md`.
 - Choosing or interpreting CLI commands: read `references/cli-workflows.md`.
-- Memory Guards, rationales, memories, descriptions, or reevaluations: read `references/memory-guards.md`.
+- Memory Guards, rationales, memories, descriptions, reevaluations, property-level/transform guards, freshness, sensitive/role/policy, or user-defined `require_context`: read `references/memory-guards.md`.
 - Need canonical snippets: read `references/examples.md`.
 - Reviewing for mistakes or cleaning up generated Shape: read `references/antipatterns.md`.
 
@@ -33,7 +33,9 @@ Load only the reference needed for the task:
 - Use `effects unknown` when uncertainty remains.
 - Include `source` for functions and `evidence` for material effects when available.
 - For governed source changes, update the global Shape model directly or add a narrow `attest no_shape_change`.
-- For guarded targets, add a valid `reevaluation` or preserve the protected shape.
+- For guarded targets, add a valid `reevaluation` or preserve the protected shape; for `sensitive` memories under an approver `policy`, the reevaluation must name an `approver` (a declared `role` when any role exists).
+- Shape traits and their obligations apply to functions, components, and resources; match the required-context target to where the trait is borne.
+- Treat `review_by` freshness as opt-in: it is enforced only under `--strict-freshness`, and the checker reads no clock of its own.
 - Represent structural dependencies as top-level `relation` declarations, not component members.
 - Use prelude relation kinds (`calls`, `callbacks`, `provides`, `coordinated_call`) unless the project documents a custom kind.
 - Avoid ambiguous relation endpoints; component and resource names should not collide when relations reference them.
@@ -44,6 +46,7 @@ Load only the reference needed for the task:
 - Run `shp fmt --check` before `shp check` when validating edited Shape files.
 - Run `shp coverage --changed-files changed.txt` only when the workflow provides a changed-files list.
 - Use `shp obligations` and `shp memory` before fixing Memory Guard failures.
+- Use `shp check --strict-freshness` / `shp obligations --strict-freshness` to surface design memory past its `review_by`; today's date is computed only at the CLI boundary.
 - Use `shp explain`, `shp graph`, and `shp analyze` for investigation before changing model semantics.
 - Use `shp ast source` for generated source-backed AST context and `shp ast json` only when another tool already produced normalized AST JSON.
 - When a repo commits generated AST context under `shape/generated/ast`, run its `ast:generate`/`ast:check` scripts or equivalent `shp ast source --out-dir ... --check` workflow after source changes.

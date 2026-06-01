@@ -6,7 +6,22 @@ entry ShapeModule:
     declarations+=Declaration*;
 
 Declaration:
-    ResourceDecl | TraitDecl | ComponentDecl | RelationDecl | CandidateEffectDecl | ImplementationDecl | BindingDecl | ChangeDecl | AttestationDecl | RuleDecl | RationaleDecl | MemoryDecl | ReevaluationDecl;
+    ResourceDecl | TraitDecl | ComponentDecl | RelationDecl | CandidateEffectDecl | ImplementationDecl | BindingDecl | ChangeDecl | AttestationDecl | RuleDecl | RationaleDecl | MemoryDecl | ReevaluationDecl | RoleDecl | PolicyDecl;
+
+RoleDecl:
+    'role' name=ID;
+
+PolicyDecl:
+    'policy' name=ID
+    '{'
+        members+=PolicyMember*
+    '}';
+
+PolicyMember:
+    RequireApproverDecl;
+
+RequireApproverDecl:
+    {infer RequireApproverDecl} 'require' 'approver';
 
 ImportDecl:
     'import' path=QualifiedName;
@@ -39,7 +54,11 @@ TypeParam:
     name=ID (':' bound=ID)?;
 
 TraitMember:
-    TraitAllowDecl | TraitForbidDecl | TraitRequireDecl;
+    TraitAllowDecl | TraitForbidDecl | TraitRequireDecl | RequireContextDecl;
+
+RequireContextDecl:
+    'require_context' contextType=ID '<' target=ID '>'
+        ('satisfied_by' satisfiedBy+=ContextObjectKind ('or' satisfiedBy+=ContextObjectKind)*)?;
 
 TraitAllowDecl:
     'allow' pattern=EffectPattern;
@@ -245,11 +264,15 @@ AddFunctionChange:
 ModifyFunctionChange:
     'modify' 'fn' target=FunctionTargetName
         shapeTraits=ShapeTraitList?
+        transforms=TransformDecl?
         source=SourceDecl?
         description=DescriptionDecl?
         unsafe?='unsafe'?
         effects=EffectsDecl
         members+=FunctionMember*;
+
+TransformDecl:
+    'transform' labels+=ID (',' labels+=ID)*;
 
 RemoveFunctionChange:
     'remove' 'fn' target=FunctionTargetName;
@@ -297,7 +320,7 @@ RationaleDecl:
     '}';
 
 RationaleMember:
-    AppliesToDecl | WhyDecl | SummaryDecl | OwnerDecl | ReviewByDecl | ProtectsDecl | GuardDecl | EvidenceLineDecl;
+    AppliesToDecl | WhyDecl | SummaryDecl | EvidenceLineDecl | ProtectsBlock | GuardsBlock | WhoBlock | WhenBlock;
 
 MemoryDecl:
     'memory' name=ID ':' contextType=ContextTypeRef
@@ -306,7 +329,34 @@ MemoryDecl:
     '}';
 
 MemoryMember:
-    AppliesToDecl | StatusDecl | ConfidenceDecl | ProtectsDecl | GuardDecl | ObservedDecl | SummaryDecl | OwnerDecl | ReviewByDecl | EvidenceLineDecl;
+    AppliesToDecl | StatusDecl | ConfidenceDecl | ObservedDecl | SummaryDecl | EvidenceLineDecl | SensitiveDecl | ProtectsBlock | GuardsBlock | WhoBlock | WhenBlock;
+
+SensitiveDecl:
+    {infer SensitiveDecl} 'sensitive';
+
+ProtectsBlock:
+    'protects' '{' (entries+=ProtectsEntry (',' entries+=ProtectsEntry)*)? '}';
+
+ProtectsEntry:
+    kind=ProtectsPropertyKind (value=ID)?;
+
+GuardsBlock:
+    'guards' '{' entries+=GuardActionDecl* '}';
+
+GuardActionDecl:
+    GuardRequireDecl | GuardForbidTransformDecl;
+
+GuardRequireDecl:
+    'on_change' 'require' requirement=ContextTypeName;
+
+GuardForbidTransformDecl:
+    'forbid' 'transform' label=ID;
+
+WhoBlock:
+    'who' '{' owner=OwnerDecl? '}';
+
+WhenBlock:
+    'when' '{' date=ReviewByDecl? '}';
 
 ReevaluationDecl:
     'reevaluation' name=ID
@@ -353,11 +403,8 @@ StatusDecl:
 ConfidenceDecl:
     'confidence' value=ID;
 
-ProtectsDecl:
-    'protects' kind=ID value=ID;
-
-GuardDecl:
-    'guards' 'on_change' 'require' requirement=ContextTypeName;
+ProtectsPropertyKind returns string:
+    'description' | ID;
 
 ContextTypeName returns string:
     ID ('<' ID '>')?;

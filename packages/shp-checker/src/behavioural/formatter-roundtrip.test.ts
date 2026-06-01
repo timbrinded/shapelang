@@ -154,36 +154,38 @@ describe("#56 formatter idempotence, round-trip, canonical flat form", () => {
 
   test(
     shouldBe(
-      "nested rationale/memory grouping is NOT a parse-level construct; the only on-disk form is flat members",
-      "specs/TODO.md:41 + specs/shape-memory-guards-implementation-spec.md:432 (nested form unbuilt); shape/tooling.shape:595 FormatterCanonicalDiffs"
+      "grouped rationale/memory blocks are the only on-disk form; flat members are rejected",
+      "shape.langium RationaleMember/MemoryMember (grouped-only); shape/tooling.shape:595 FormatterCanonicalDiffs"
     ),
     () => {
-      // The grammar's MemoryMember/RationaleMember are FLAT member lists
-      // (shape.langium:299, 308). The pleasant nested `what {…} why {…}` grouping
-      // block is an explicit, unimplemented TODO. We therefore do not fabricate
-      // nested syntax; instead we PIN that the nested form does not parse today,
-      // and that the flat form is the canonical on-disk shape.
-      //
-      // If a future change lands the nested grouping block, this test SHOULD
-      // fail (the parse below will succeed) — at which point invariant 4 must be
-      // upgraded to a locked-intended "nested and flat format to the identical
-      // flat string" test, per FormatterCanonicalDiffs.
-      const nestedGroupingForm = [
+      // Guard members are authored as grouped blocks (`who`/`when`/`protects`/
+      // `guards`). This is the canonical and only on-disk form: it parses and
+      // formats idempotently onto itself.
+      const groupedForm = [
         "module m",
         "",
         "memory Keep : RefactorConstraint<fn C.f> {",
-        "  what {",
-        '    summary "grouped"',
-        "  }",
-        "  why {",
-        "    owner Team",
-        "  }",
+        '  summary "grouped"',
+        "  who { owner Team }",
         "}"
       ].join("\n");
-      const nestedParse = parseShapeModule(nestedGroupingForm, "m.shape");
-      expect(nestedParse.ok).toBe(false);
+      const groupedFormatted = formatShapeSource(groupedForm, "m.shape");
+      expect(groupedFormatted.ok).toBe(true);
+      if (groupedFormatted.ok) {
+        expect(groupedFormatted.formatted).toContain('summary "grouped"');
+        expect(groupedFormatted.formatted).toContain("who {");
+        expect(groupedFormatted.formatted).toContain("owner Team");
+        // Idempotent: reformatting the canonical output is a no-op.
+        const reformatted = formatShapeSource(groupedFormatted.formatted, "m.shape");
+        expect(reformatted.ok).toBe(true);
+        if (reformatted.ok) {
+          expect(reformatted.formatted).toBe(groupedFormatted.formatted);
+        }
+      }
 
-      // The flat equivalent — the actual on-disk form — parses and formats.
+      // The flat member form is no longer a parse-level construct: a bare
+      // `owner`/`guards`/`protects`/`review_by` member outside a block is
+      // rejected.
       const flatForm = [
         "module m",
         "",
@@ -192,16 +194,8 @@ describe("#56 formatter idempotence, round-trip, canonical flat form", () => {
         "  owner Team",
         "}"
       ].join("\n");
-      const flatFormatted = formatShapeSource(flatForm, "m.shape");
-      expect(flatFormatted.ok).toBe(true);
-      if (flatFormatted.ok) {
-        // The canonical form contains the flat members and never reintroduces a
-        // `what {`/`why {` grouping wrapper.
-        expect(flatFormatted.formatted).toContain('summary "grouped"');
-        expect(flatFormatted.formatted).toContain("owner Team");
-        expect(flatFormatted.formatted).not.toMatch(/\bwhat\s*\{/);
-        expect(flatFormatted.formatted).not.toMatch(/\bwhy\s*\{/);
-      }
+      const flatParse = parseShapeModule(flatForm, "m.shape");
+      expect(flatParse.ok).toBe(false);
     }
   );
 

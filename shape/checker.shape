@@ -39,16 +39,16 @@ component ShapeBindings {
   grants Read<NormalizedShapeReference>
   grants Read<ShapeBinding>
   fn checkBindings : RefactorSensitive
-    source ts("packages/shp-checker/src/checker.ts#checkBindings")
+    source ts("packages/shp-checker/src/checker/rules/coverage.ts#checkBindings")
     effects complete {
       Append<SemanticDiagnostics>
-        evidence ts("packages/shp-checker/src/checker.ts")
+        evidence ts("packages/shp-checker/src/checker/rules/coverage.ts")
       Read<ChangedFileList>
-        evidence ts("packages/shp-checker/src/checker.ts")
+        evidence ts("packages/shp-checker/src/checker/rules/coverage.ts")
       Read<NormalizedShapeReference>
-        evidence ts("packages/shp-checker/src/checker.ts")
+        evidence ts("packages/shp-checker/src/checker/rules/coverage.ts")
       Read<ShapeBinding>
-        evidence ts("packages/shp-checker/src/checker.ts")
+        evidence ts("packages/shp-checker/src/checker/rules/coverage.ts")
     }
 }
 
@@ -59,26 +59,36 @@ component ShapeChecker {
   grants Read<FactSet>
   grants Read<PreludeMetadata>
   fn checkShapeFiles
-    source ts("packages/shp-checker/src/checker.ts#checkShapeFiles")
+    source ts("packages/shp-checker/src/checker/api.ts#checkShapeFiles")
     effects complete {
       Append<SemanticDiagnostics>
-        evidence ts("packages/shp-checker/src/checker.ts")
+        evidence ts("packages/shp-checker/src/checker/api.ts")
       Read<ChangedFileList>
-        evidence ts("packages/shp-checker/src/checker.ts")
+        evidence ts("packages/shp-checker/src/checker/api.ts")
     }
   fn checkShapeModules : ProtectedCheckOrder
-    source ts("packages/shp-checker/src/checker.ts#checkShapeModules")
+    source ts("packages/shp-checker/src/checker/api.ts#checkShapeModules")
     effects complete {
       Append<SemanticDiagnostics>
-        evidence ts("packages/shp-checker/src/checker.ts")
+        evidence ts("packages/shp-checker/src/checker/api.ts")
       Read<ChangedFileList>
-        evidence ts("packages/shp-checker/src/checker.ts")
+        evidence ts("packages/shp-checker/src/checker/api.ts")
       Read<EffectiveModel>
-        evidence ts("packages/shp-checker/src/checker.ts")
+        evidence ts("packages/shp-checker/src/checker/api.ts")
       Read<FactSet>
-        evidence ts("packages/shp-checker/src/checker.ts")
+        evidence ts("packages/shp-checker/src/checker/api.ts")
       Read<PreludeMetadata>
-        evidence ts("packages/shp-checker/src/checker.ts")
+        evidence ts("packages/shp-checker/src/checker/api.ts")
+    }
+  fn explainShapeModules
+    source ts("packages/shp-checker/src/checker/query.ts#explainShapeModules")
+    effects complete {
+      Read<EffectiveModel>
+        evidence ts("packages/shp-checker/src/checker/query.ts")
+      Read<FactSet>
+        evidence ts("packages/shp-checker/src/checker/query.ts")
+      Read<PreludeMetadata>
+        evidence ts("packages/shp-checker/src/checker/query.ts")
     }
 }
 
@@ -86,12 +96,12 @@ component ShapeDiagnostics {
   grants Append<DiagnosticText>
   grants Read<SemanticDiagnostics>
   fn formatDiagnostics : RefactorSensitive
-    source ts("packages/shp-checker/src/checker.ts#formatDiagnostics")
+    source ts("packages/shp-checker/src/checker/diagnostics.ts#formatDiagnostics")
     effects complete {
       Append<DiagnosticText>
-        evidence ts("packages/shp-checker/src/checker.ts")
+        evidence ts("packages/shp-checker/src/checker/diagnostics.ts")
       Read<SemanticDiagnostics>
-        evidence ts("packages/shp-checker/src/checker.ts")
+        evidence ts("packages/shp-checker/src/checker/diagnostics.ts")
     }
 }
 
@@ -101,28 +111,49 @@ component ShapeModelLowerer {
   owns ModuleNamespace
   grants Append<FactSet>
   grants Append<ModuleNamespace>
+  grants Append<SemanticDiagnostics>
   grants Read<GeneratedCandidateEffect>
   grants Read<NormalizedShapeReference>
   grants Read<ParsedModule>
   grants Read<PreludeMetadata>
   grants Update<EffectiveModel>
-  fn lowerShapeModules : ProtectedCheckOrder
-    source ts("packages/shp-checker/src/checker.ts#lowerShapeModules")
+  fn indexModuleDeclarations
+    source ts("packages/shp-checker/src/checker/symbols.ts#indexModuleDeclarations")
+    effects complete {
+      Append<ModuleNamespace>
+        evidence ts("packages/shp-checker/src/checker/symbols.ts")
+      Read<ParsedModule>
+        evidence ts("packages/shp-checker/src/checker/symbols.ts")
+    }
+  fn lowerComponent
+    source ts("packages/shp-checker/src/checker/lowering/declarations.ts#lowerComponent")
     effects complete {
       Append<FactSet>
-        evidence ts("packages/shp-checker/src/checker.ts")
-      Append<ModuleNamespace>
-        evidence ts("packages/shp-checker/src/checker.ts")
-      Read<GeneratedCandidateEffect>
-        evidence ts("packages/shp-checker/src/checker.ts")
-      Read<NormalizedShapeReference>
-        evidence ts("packages/shp-checker/src/checker.ts")
+        evidence ts("packages/shp-checker/src/checker/lowering/declarations.ts")
+      Append<SemanticDiagnostics>
+        evidence ts("packages/shp-checker/src/checker/lowering/declarations.ts")
       Read<ParsedModule>
-        evidence ts("packages/shp-checker/src/checker.ts")
-      Read<PreludeMetadata>
-        evidence ts("packages/shp-checker/src/checker.ts")
+        evidence ts("packages/shp-checker/src/checker/lowering/declarations.ts")
       Update<EffectiveModel>
-        evidence ts("packages/shp-checker/src/checker.ts")
+        evidence ts("packages/shp-checker/src/checker/lowering/declarations.ts")
+    }
+  fn lowerShapeModules : ProtectedCheckOrder
+    source ts("packages/shp-checker/src/checker/lowerer.ts#lowerShapeModules")
+    effects complete {
+      Append<FactSet>
+        evidence ts("packages/shp-checker/src/checker/lowerer.ts")
+      Append<ModuleNamespace>
+        evidence ts("packages/shp-checker/src/checker/lowerer.ts")
+      Read<GeneratedCandidateEffect>
+        evidence ts("packages/shp-checker/src/checker/lowerer.ts")
+      Read<NormalizedShapeReference>
+        evidence ts("packages/shp-checker/src/checker/lowerer.ts")
+      Read<ParsedModule>
+        evidence ts("packages/shp-checker/src/checker/lowerer.ts")
+      Read<PreludeMetadata>
+        evidence ts("packages/shp-checker/src/checker/lowerer.ts")
+      Update<EffectiveModel>
+        evidence ts("packages/shp-checker/src/checker/lowerer.ts")
     }
 }
 
@@ -148,48 +179,72 @@ component ShapeRuleEngine {
   grants Read<PreludeMetadata>
   grants Update<ShapeHypergraph>
   fn checkCoverage : RefactorSensitive
-    source ts("packages/shp-checker/src/checker.ts#checkCoverage")
+    source ts("packages/shp-checker/src/checker/rules/coverage.ts#checkCoverage")
     effects complete {
       Append<SemanticDiagnostics>
-        evidence ts("packages/shp-checker/src/checker.ts")
+        evidence ts("packages/shp-checker/src/checker/rules/coverage.ts")
       Read<ChangedFileList>
-        evidence ts("packages/shp-checker/src/checker.ts")
+        evidence ts("packages/shp-checker/src/checker/rules/coverage.ts")
       Read<EffectiveModel>
-        evidence ts("packages/shp-checker/src/checker.ts")
+        evidence ts("packages/shp-checker/src/checker/rules/coverage.ts")
       Read<NormalizedShapeReference>
-        evidence ts("packages/shp-checker/src/checker.ts")
+        evidence ts("packages/shp-checker/src/checker/rules/coverage.ts")
     }
   fn checkFingerprintExpectations
-    source ts("packages/shp-checker/src/checker.ts#checkFingerprintExpectations")
+    source ts("packages/shp-checker/src/checker/rules/relations.ts#checkFingerprintExpectations")
     effects complete {
       Append<SemanticDiagnostics>
-        evidence ts("packages/shp-checker/src/checker.ts")
+        evidence ts("packages/shp-checker/src/checker/rules/relations.ts")
       Read<EffectiveModel>
-        evidence ts("packages/shp-checker/src/checker.ts")
+        evidence ts("packages/shp-checker/src/checker/rules/relations.ts")
       Read<FactSet>
-        evidence ts("packages/shp-checker/src/checker.ts")
+        evidence ts("packages/shp-checker/src/checker/rules/relations.ts")
+    }
+  fn checkFreshness : RefactorSensitive
+    source ts("packages/shp-checker/src/checker/rules/guards.ts#checkFreshness")
+    effects complete {
+      Append<SemanticDiagnostics>
+        evidence ts("packages/shp-checker/src/checker/rules/guards.ts")
+      Read<EffectiveModel>
+        evidence ts("packages/shp-checker/src/checker/rules/guards.ts")
+    }
+  fn checkGuardedChanges : RefactorSensitive
+    source ts("packages/shp-checker/src/checker/rules/guards.ts#checkGuardedChanges")
+    effects complete {
+      Append<SemanticDiagnostics>
+        evidence ts("packages/shp-checker/src/checker/rules/guards.ts")
+      Read<EffectiveModel>
+        evidence ts("packages/shp-checker/src/checker/rules/guards.ts")
+    }
+  fn checkReevaluations : RefactorSensitive
+    source ts("packages/shp-checker/src/checker/rules/context.ts#checkReevaluations")
+    effects complete {
+      Append<SemanticDiagnostics>
+        evidence ts("packages/shp-checker/src/checker/rules/context.ts")
+      Read<EffectiveModel>
+        evidence ts("packages/shp-checker/src/checker/rules/context.ts")
     }
   fn deriveFinalForbidsForResource : RefactorSensitive
-    source ts("packages/shp-checker/src/checker.ts#deriveFinalForbidsForResource")
+    source ts("packages/shp-checker/src/checker/derivations.ts#deriveFinalForbidsForResource")
     effects complete {
       Append<SemanticDiagnostics>
-        evidence ts("packages/shp-checker/src/checker.ts")
+        evidence ts("packages/shp-checker/src/checker/derivations.ts")
       Read<FactSet>
-        evidence ts("packages/shp-checker/src/checker.ts")
+        evidence ts("packages/shp-checker/src/checker/derivations.ts")
       Read<PreludeMetadata>
-        evidence ts("packages/shp-checker/src/checker.ts")
+        evidence ts("packages/shp-checker/src/checker/derivations.ts")
     }
   fn findHypercycle : RefactorSensitive
-    source ts("packages/shp-checker/src/checker.ts#findHypercycle")
+    source ts("packages/shp-checker/src/checker/rules/relations.ts#findHypercycle")
     effects complete {
       Append<SemanticDiagnostics>
-        evidence ts("packages/shp-checker/src/checker.ts")
+        evidence ts("packages/shp-checker/src/checker/rules/relations.ts")
       Read<EffectiveModel>
-        evidence ts("packages/shp-checker/src/checker.ts")
+        evidence ts("packages/shp-checker/src/checker/rules/relations.ts")
       Read<PreludeMetadata>
-        evidence ts("packages/shp-checker/src/checker.ts")
+        evidence ts("packages/shp-checker/src/checker/rules/relations.ts")
       Update<ShapeHypergraph>
-        evidence ts("packages/shp-checker/src/checker.ts")
+        evidence ts("packages/shp-checker/src/checker/rules/relations.ts")
     }
 }
 
@@ -341,9 +396,15 @@ memory BindingDocsCouplingContract : RefactorConstraint<fn ShapeBindings.checkBi
   status Explained
   confidence High
   summary "Bindings enforce review coupling and compare current attestations with normalized repo-relative changed-file paths."
-  owner ShapeMaintainers
-  protects shape DocsCoupling
-  guards on_change require ReEvaluation<Self>
+  who {
+    owner ShapeMaintainers
+  }
+  protects {
+    shape DocsCoupling
+  }
+  guards {
+    on_change require ReEvaluation<Self>
+  }
 }
 
 memory CheckPipelineOrder : CheckOrderRationale<fn ShapeChecker.checkShapeModules> {
@@ -351,9 +412,15 @@ memory CheckPipelineOrder : CheckOrderRationale<fn ShapeChecker.checkShapeModule
   status Explained
   confidence High
   summary "The checker must lower the effective model before semantic rules and coverage/binding checks run."
-  owner ShapeMaintainers
-  protects shape PhaseOrder
-  guards on_change require ReEvaluation<Self>
+  who {
+    owner ShapeMaintainers
+  }
+  protects {
+    shape PhaseOrder
+  }
+  guards {
+    on_change require ReEvaluation<Self>
+  }
 }
 
 memory CoverageCurrentUpdateContract : RefactorConstraint<fn ShapeRuleEngine.checkCoverage> {
@@ -361,9 +428,15 @@ memory CoverageCurrentUpdateContract : RefactorConstraint<fn ShapeRuleEngine.che
   status Explained
   confidence High
   summary "Coverage accepts a source or attestation only when the declaring Shape file matches the current changed-file input after path normalization."
-  owner ShapeMaintainers
-  protects shape CurrentChangeCoverage
-  guards on_change require ReEvaluation<Self>
+  who {
+    owner ShapeMaintainers
+  }
+  protects {
+    shape CurrentChangeCoverage
+  }
+  guards {
+    on_change require ReEvaluation<Self>
+  }
 }
 
 memory DiagnosticContract : RefactorConstraint<fn ShapeDiagnostics.formatDiagnostics> {
@@ -371,9 +444,15 @@ memory DiagnosticContract : RefactorConstraint<fn ShapeDiagnostics.formatDiagnos
   status Explained
   confidence High
   summary "Diagnostics are a product surface and must keep causal paths understandable for reviewers."
-  owner ShapeMaintainers
-  protects shape DiagnosticOutput
-  guards on_change require ReEvaluation<Self>
+  who {
+    owner ShapeMaintainers
+  }
+  protects {
+    shape DiagnosticOutput
+  }
+  guards {
+    on_change require ReEvaluation<Self>
+  }
 }
 
 memory FinalForbidPrecedence : RefactorConstraint<fn ShapeRuleEngine.deriveFinalForbidsForResource> {
@@ -381,9 +460,47 @@ memory FinalForbidPrecedence : RefactorConstraint<fn ShapeRuleEngine.deriveFinal
   status Explained
   confidence High
   summary "Final forbids must remain stronger than component grants, resolve concrete targets deterministically, and cannot be waived by rationale or memory."
-  owner ShapeMaintainers
-  protects shape FinalForbidPrecedence
-  guards on_change require ReEvaluation<Self>
+  who {
+    owner ShapeMaintainers
+  }
+  protects {
+    shape FinalForbidPrecedence
+  }
+  guards {
+    on_change require ReEvaluation<Self>
+  }
+}
+
+memory FreshnessDeterminism : RefactorConstraint<fn ShapeRuleEngine.checkFreshness> {
+  applies_to fn ShapeRuleEngine.checkFreshness
+  status Explained
+  confidence High
+  summary "Freshness compares review_by against a caller-injected ISO date, never the system clock, and enforces only ISO YYYY-MM-DD values so checks stay deterministic."
+  who {
+    owner ShapeMaintainers
+  }
+  protects {
+    shape DeterministicFreshness
+  }
+  guards {
+    on_change require ReEvaluation<Self>
+  }
+}
+
+memory GuardedChangePrecision : RefactorConstraint<fn ShapeRuleEngine.checkGuardedChanges> {
+  applies_to fn ShapeRuleEngine.checkGuardedChanges
+  status Explained
+  confidence High
+  summary "Guards fire property-level when every protected property is detectable (a named shape trait or the description), forbid-transform guards fire when a change declares the matching transform intent, and function, component, resource, and relation targets otherwise fall back to coarse modify/remove matching, so existing coarse guards keep their behaviour and final forbids are never waived."
+  who {
+    owner ShapeMaintainers
+  }
+  protects {
+    shape GuardedChangePrecision
+  }
+  guards {
+    on_change require ReEvaluation<Self>
+  }
 }
 
 memory HypercycleWitness : RefactorConstraint<fn ShapeRuleEngine.findHypercycle> {
@@ -391,9 +508,15 @@ memory HypercycleWitness : RefactorConstraint<fn ShapeRuleEngine.findHypercycle>
   status Explained
   confidence High
   summary "Hypercycle diagnostics need a deterministic witness path so reviewers can understand the rejected structural relation."
-  owner ShapeMaintainers
-  protects shape HypercycleWitness
-  guards on_change require ReEvaluation<Self>
+  who {
+    owner ShapeMaintainers
+  }
+  protects {
+    shape HypercycleWitness
+  }
+  guards {
+    on_change require ReEvaluation<Self>
+  }
 }
 
 memory LoweringBeforeRules : CheckOrderRationale<fn ShapeModelLowerer.lowerShapeModules> {
@@ -401,19 +524,47 @@ memory LoweringBeforeRules : CheckOrderRationale<fn ShapeModelLowerer.lowerShape
   status Explained
   confidence High
   summary "Module-scoped declarations, concrete forbid targets, generated candidate evidence, and change declarations must be resolved into the final effective model before derived facts are emitted."
-  owner ShapeMaintainers
-  protects shape EffectiveModelOrder
-  guards on_change require ReEvaluation<Self>
+  who {
+    owner ShapeMaintainers
+  }
+  protects {
+    shape EffectiveModelOrder
+  }
+  guards {
+    on_change require ReEvaluation<Self>
+  }
 }
 
 memory PreludeMetadataContract : RefactorConstraint<fn ShapePreludeRegistry.definePreludeMetadata> {
   applies_to fn ShapePreludeRegistry.definePreludeMetadata
   status Explained
   confidence High
-  summary "Prelude traits, relation kinds, and context requirements are semantic inputs shared by checker, editor, and authoring surfaces."
-  owner ShapeMaintainers
-  protects shape PreludeConsistency
-  guards on_change require ReEvaluation<Self>
+  summary "Prelude traits, relation kinds, and context requirements are semantic inputs shared by checker, editor, and authoring surfaces; context requirements derive obligations for function, component, and resource targets, and are merged with user-defined trait require_context obligations during checking."
+  who {
+    owner ShapeMaintainers
+  }
+  protects {
+    shape PreludeConsistency
+  }
+  guards {
+    on_change require ReEvaluation<Self>
+  }
+}
+
+memory ReevaluationPolicyContract : RefactorConstraint<fn ShapeRuleEngine.checkReevaluations> {
+  applies_to fn ShapeRuleEngine.checkReevaluations
+  status Explained
+  confidence High
+  summary "Reevaluation validation requires structural fields plus an approver when a project policy requires one for a sensitive memory, and validates reviewer/approver against declared roles; approver and role checks stay opt-in so the default reviewer-only path is preserved."
+  who {
+    owner ShapeMaintainers
+  }
+  protects {
+    shape ReevaluationValidation
+  }
+  guards {
+    on_change require ReEvaluation<Self>
+  }
 }
 
 memory ShapeSourceNormalizationContract : RefactorConstraint<fn ShapeStringHelpers.normalizeShapeSourcePath> {
@@ -421,9 +572,15 @@ memory ShapeSourceNormalizationContract : RefactorConstraint<fn ShapeStringHelpe
   status Explained
   confidence High
   summary "Source-reference normalization must keep coverage, binding, and analyzer comparisons using the same repo-relative path rules."
-  owner ShapeMaintainers
-  protects shape CurrentChangeCoverage
-  guards on_change require ReEvaluation<Self>
+  who {
+    owner ShapeMaintainers
+  }
+  protects {
+    shape CurrentChangeCoverage
+  }
+  guards {
+    on_change require ReEvaluation<Self>
+  }
 }
 
 memory ShapeStringLiteralContract : RefactorConstraint<fn ShapeStringHelpers.unquoteShapeString> {
@@ -431,9 +588,15 @@ memory ShapeStringLiteralContract : RefactorConstraint<fn ShapeStringHelpers.unq
   status Explained
   confidence High
   summary "Shape string literal unquoting must stay consistent across lowering and formatting."
-  owner ShapeMaintainers
-  protects shape CanonicalFormatting
-  guards on_change require ReEvaluation<Self>
+  who {
+    owner ShapeMaintainers
+  }
+  protects {
+    shape CanonicalFormatting
+  }
+  guards {
+    on_change require ReEvaluation<Self>
+  }
 }
 
 reevaluation BindingCurrentAttestationsRechecked {
@@ -497,4 +660,94 @@ reevaluation LoweringFunctionRegistryRechecked {
   reviewer ShapeMaintainers
   decided_on "2026-05-28"
   evidence test("packages/shp-checker/src/checker.test.ts")
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/checker/display.ts")
+  reason "Display helpers remain shared formatting support; this Shape update models the checker module split and no separate architecture contract changed."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/checker/globs.ts")
+  reason "Glob helpers remain coverage/binding support; CheckerSource now governs them but the logical checker contract is unchanged."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/checker/iso-date.ts")
+  reason "Freshness date validation is a checker boundary helper covered by memory freshness tests; no new architecture component is required."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/checker/lowerers.ts")
+  reason "Deleted monolithic lowerer file after extracting the same lowering domains into checker/lowering modules modeled above."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/checker/lowering/changes.ts")
+  reason "Change lowering was extracted from the former lowerers module without changing the ShapeModelLowerer architecture contract."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/checker/lowering/context.ts")
+  reason "Context-object lowering was extracted from the former lowerers module without changing the ShapeModelLowerer architecture contract."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/checker/lowering/facts.ts")
+  reason "Fact emission was extracted from the former lowerers module without changing the ShapeModelLowerer architecture contract."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/checker/lowering/relations.ts")
+  reason "Relation lowering was extracted from the former lowerers module without changing the ShapeModelLowerer architecture contract."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/checker/model.ts")
+  reason "Model types remain shared checker contracts; freshness date typing hardens an existing option rather than adding a new component boundary."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/checker/prelude-seed.ts")
+  reason "Prelude-to-model seeding moved into the checker layer to remove the prelude dependency inversion; the ShapePreludeRegistry relation already models this dependency."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/checker/provenance.ts")
+  reason "Provenance helpers remain diagnostic support with no independent architecture contract."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/checker/rules.ts")
+  reason "The rule file is now an ordering registry over domain modules; rule behavior and ordering remain covered by checker tests and modeled ShapeRuleEngine functions."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/checker/rules/declarations.ts")
+  reason "Rule declaration validation was extracted from the registry without changing the ShapeRuleEngine architecture contract."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/checker/rules/functions.ts")
+  reason "Function/effect rules were extracted from the registry without changing the ShapeRuleEngine architecture contract."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/checker/rules/names.ts")
+  reason "Name-resolution diagnostics were extracted from the registry without changing the ShapeRuleEngine architecture contract."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/checker/sort.ts")
+  reason "Shared deterministic ordering helpers centralize an existing output-order invariant; no new architecture boundary is introduced."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/memory-guards.ts")
+  reason "Guard matching still belongs to the ShapeRuleEngine guarded-change contract; target identity was deduplicated without changing semantics."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/targets.ts")
+  reason "Shared target identity helper removes duplicate equality logic; it does not introduce a new Shape component or resource."
 }

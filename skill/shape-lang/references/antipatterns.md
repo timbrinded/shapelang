@@ -40,9 +40,9 @@ Smallest fix: update the owning global model with `source`/`evidence`, or add a 
 
 Detect: `PreserveInline`, `RequiresDescription`, `RefactorSensitive`, `NonIdiomatic`, `ProtectedCheckOrder`, or `TestOnly` appears without the required rationale/memory/description.
 
-Why wrong: function shape traits derive typed review obligations.
+Why wrong: shape traits derive typed review obligations.
 
-Smallest fix: add the required context for the exact `fn Component.name` target.
+Smallest fix: add the required context for the exact target — `fn Component.name`, `component Name`, or `resource Name` — matching where the trait is borne.
 
 ### Context target mismatch
 
@@ -59,6 +59,46 @@ Detect: `modify fn` or `remove fn` touches a target protected by `guards on_chan
 Why wrong: guarded targets require explicit review evidence before change.
 
 Smallest fix: add a valid `reevaluation` satisfying the memory/rationale, or preserve the protected shape.
+
+### Forbidden transform applied without reevaluation
+
+Detect: a `change` declares `modify fn X.y transform <Label>` while a memory/rationale on that target has `guards forbid transform <Label>`, and no reevaluation satisfies it.
+
+Why wrong: a named transform was explicitly gated for review.
+
+Smallest fix: add a `reevaluation` satisfying the guard, or do not declare that transform.
+
+### Sensitive memory reevaluated without an approver
+
+Detect: a `policy` with `require approver` exists, a memory is `sensitive`, and its reevaluation names only a `reviewer` (`missing approver required by policy`).
+
+Why wrong: sensitive design memory under an approver policy needs a second, approving identity.
+
+Smallest fix: add an `approver` to the reevaluation; if roles are declared, use a declared `role`.
+
+### Unknown reviewer or approver role
+
+Detect: at least one `role` is declared and a reevaluation's `reviewer`/`approver` is not one of them.
+
+Why wrong: declaring roles turns on identity validation; an undeclared name is likely a typo.
+
+Smallest fix: declare the `role`, or correct the reviewer/approver to an existing one.
+
+### Stale design memory
+
+Detect: under `--strict-freshness`, a `rationale`/`memory` `review_by` date is before today (`stale design memory`).
+
+Why wrong: the design claim is past its own review deadline.
+
+Smallest fix: re-review and update `review_by`, or replace the entry with a `reevaluation`. Do not bump the date without a real review.
+
+### Invalid or redundant user obligation
+
+Detect: a `require_context C<T>` whose `<T>` names no declared type parameter or uses an unrecognised bound (`invalid require_context`); or a user trait re-declaring a built-in name expecting to add to, rather than replace, the built-in obligation.
+
+Why wrong: the bound selects the target kind, and a same-named trait shadows (replaces) the built-in.
+
+Smallest fix: bind `T` to `Fn`/`Component`/`Resource`; if shadowing a built-in, re-state every obligation the trait should still carry.
 
 ### Memory used as a waiver
 

@@ -1,0 +1,241 @@
+module shape.generated.ast.packages.shp_checker.src.checker.symbols
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource SymbolsModuleDeclarationIndexKindAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/symbols.ts:101-138")
+  fingerprint ast.semantic_subtree_v1("sha256:b56962289655c5fc0c2c548eeb8516589d0ee6f0b3e9bc6472afd9ff495073f7")
+}
+
+resource SymbolsModuleDeclarationNameForIndexAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/symbols.ts:91-99")
+  fingerprint ast.semantic_subtree_v1("sha256:f4efb3a6fb658db11d9cfb06055484e831b3fef4ecb70d2101d2868e4ec6b6be")
+}
+
+resource SymbolsModuleDeclaredLocallyAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/symbols.ts:140-147")
+  fingerprint ast.semantic_subtree_v1("sha256:23953530d090d68c465bd7c75b09db76b0432f90d60beb338f4f329a875dd243")
+}
+
+resource SymbolsModuleEmptyDeclarationIndexAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/symbols.ts:41-55")
+  fingerprint ast.semantic_subtree_v1("sha256:c11f3b516608c47d4464e8b1c1af62eb2a790d3677042d5be43efc9e5b69e0c6")
+}
+
+resource SymbolsModuleIndexModuleDeclarationsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/symbols.ts:75-89")
+  fingerprint ast.semantic_subtree_v1("sha256:ff7f9d57f4f56a21d7bf39eac52ded2805b6d8c3ef96fc634c53511d7ef2a1e6")
+}
+
+resource SymbolsModuleModuleContextAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/symbols.ts:57-65")
+  fingerprint ast.semantic_subtree_v1("sha256:560e7e2e44e1c870dec2ffda63cd473c3ecce31fb1a8403a93b74c6886f15197")
+}
+
+resource SymbolsModuleModuleOriginForShapeFileAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/symbols.ts:67-73")
+  fingerprint ast.semantic_subtree_v1("sha256:d83f72dffce5a4903446c81bef3f8378759976e1cc83badf94de7f6eaa8d3c3f")
+}
+
+resource SymbolsModuleResolveContextObjectNameAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/symbols.ts:286-293")
+  fingerprint ast.semantic_subtree_v1("sha256:1cc795a1889a57c6b7556b86669f29306933c1a31125baa1bf365cb23e6edf7b")
+}
+
+resource SymbolsModuleResolveDeclNameAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/symbols.ts:149-167")
+  fingerprint ast.semantic_subtree_v1("sha256:5e198657912a9474028bb22b6787ee1f28c3d935a53e09a9f5a318f787888cc1")
+}
+
+resource SymbolsModuleResolveDeclReferenceAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/symbols.ts:169-199")
+  fingerprint ast.semantic_subtree_v1("sha256:2b1e87a2e35c622f3502568c24c236facca2c52169d601269f0a168f408b92b5")
+}
+
+resource SymbolsModuleResolveFunctionTargetNameAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/symbols.ts:274-284")
+  fingerprint ast.semantic_subtree_v1("sha256:ca0ebd1a30d1f516e6e1950f734c46b766f86b91405079fadd96c0dc142cc7a6")
+}
+
+resource SymbolsModuleResolveTargetNameAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/symbols.ts:252-272")
+  fingerprint ast.semantic_subtree_v1("sha256:f5e0189506ac6e9bbdf9edc5aa8bae8ed49e17fc8e5b00d7d22cf1815c9c4544")
+}
+
+resource SymbolsModuleResolveVertexNameAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/symbols.ts:201-216")
+  fingerprint ast.semantic_subtree_v1("sha256:0bcc00ae960b637c69f1117b1ee15bfea6d18c51fccb959a353ae06bbaea03b5")
+}
+
+resource SymbolsModuleResolveVertexReferenceAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/symbols.ts:218-250")
+  fingerprint ast.semantic_subtree_v1("sha256:50f6ea984eb8de706455d5838de23d2d4b70f999f0b188cd9f000088030a78ed")
+}
+
+component SymbolsModule : GeneratedCandidate {
+  fn declarationIndexKind
+    source ts("packages/shp-checker/src/checker/symbols.ts:101-138")
+    effects unknown
+  fn declarationNameForIndex
+    source ts("packages/shp-checker/src/checker/symbols.ts:91-99")
+    effects unknown
+  fn declaredLocally
+    source ts("packages/shp-checker/src/checker/symbols.ts:140-147")
+    effects unknown
+  fn emptyDeclarationIndex
+    source ts("packages/shp-checker/src/checker/symbols.ts:41-55")
+    effects unknown
+  fn indexModuleDeclarations
+    source ts("packages/shp-checker/src/checker/symbols.ts:75-89")
+    effects unknown
+  fn moduleContext
+    source ts("packages/shp-checker/src/checker/symbols.ts:57-65")
+    effects unknown
+  fn moduleOriginForShapeFile
+    source ts("packages/shp-checker/src/checker/symbols.ts:67-73")
+    effects unknown
+  fn resolveContextObjectName
+    source ts("packages/shp-checker/src/checker/symbols.ts:286-293")
+    effects unknown
+  fn resolveDeclName
+    source ts("packages/shp-checker/src/checker/symbols.ts:149-167")
+    effects unknown
+  fn resolveDeclReference
+    source ts("packages/shp-checker/src/checker/symbols.ts:169-199")
+    effects unknown
+  fn resolveFunctionTargetName
+    source ts("packages/shp-checker/src/checker/symbols.ts:274-284")
+    effects unknown
+  fn resolveTargetName
+    source ts("packages/shp-checker/src/checker/symbols.ts:252-272")
+    effects unknown
+  fn resolveVertexName
+    source ts("packages/shp-checker/src/checker/symbols.ts:201-216")
+    effects unknown
+  fn resolveVertexReference
+    source ts("packages/shp-checker/src/checker/symbols.ts:218-250")
+    effects unknown
+}
+
+relation SymbolsModuleDeclarationIndexKindGeneratedFromSymbolsModuleDeclarationIndexKindAstAnchor {
+  kind generated_from
+  connects SymbolsModule -> SymbolsModuleDeclarationIndexKindAstAnchor
+  roles { SymbolsModule as generated, SymbolsModuleDeclarationIndexKindAstAnchor as syntax }
+  expects SymbolsModuleDeclarationIndexKindAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b56962289655c5fc0c2c548eeb8516589d0ee6f0b3e9bc6472afd9ff495073f7")
+  summary "fn SymbolsModule.declarationIndexKind generated from typescript function_declaration at packages/shp-checker/src/checker/symbols.ts:101-138."
+}
+
+relation SymbolsModuleDeclarationNameForIndexGeneratedFromSymbolsModuleDeclarationNameForIndexAstAnchor {
+  kind generated_from
+  connects SymbolsModule -> SymbolsModuleDeclarationNameForIndexAstAnchor
+  roles { SymbolsModule as generated, SymbolsModuleDeclarationNameForIndexAstAnchor as syntax }
+  expects SymbolsModuleDeclarationNameForIndexAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f4efb3a6fb658db11d9cfb06055484e831b3fef4ecb70d2101d2868e4ec6b6be")
+  summary "fn SymbolsModule.declarationNameForIndex generated from typescript function_declaration at packages/shp-checker/src/checker/symbols.ts:91-99."
+}
+
+relation SymbolsModuleDeclaredLocallyGeneratedFromSymbolsModuleDeclaredLocallyAstAnchor {
+  kind generated_from
+  connects SymbolsModule -> SymbolsModuleDeclaredLocallyAstAnchor
+  roles { SymbolsModule as generated, SymbolsModuleDeclaredLocallyAstAnchor as syntax }
+  expects SymbolsModuleDeclaredLocallyAstAnchor fingerprint ast.semantic_subtree_v1("sha256:23953530d090d68c465bd7c75b09db76b0432f90d60beb338f4f329a875dd243")
+  summary "fn SymbolsModule.declaredLocally generated from typescript function_declaration at packages/shp-checker/src/checker/symbols.ts:140-147."
+}
+
+relation SymbolsModuleEmptyDeclarationIndexGeneratedFromSymbolsModuleEmptyDeclarationIndexAstAnchor {
+  kind generated_from
+  connects SymbolsModule -> SymbolsModuleEmptyDeclarationIndexAstAnchor
+  roles { SymbolsModule as generated, SymbolsModuleEmptyDeclarationIndexAstAnchor as syntax }
+  expects SymbolsModuleEmptyDeclarationIndexAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c11f3b516608c47d4464e8b1c1af62eb2a790d3677042d5be43efc9e5b69e0c6")
+  summary "fn SymbolsModule.emptyDeclarationIndex generated from typescript function_declaration at packages/shp-checker/src/checker/symbols.ts:41-55."
+}
+
+relation SymbolsModuleIndexModuleDeclarationsGeneratedFromSymbolsModuleIndexModuleDeclarationsAstAnchor {
+  kind generated_from
+  connects SymbolsModule -> SymbolsModuleIndexModuleDeclarationsAstAnchor
+  roles { SymbolsModule as generated, SymbolsModuleIndexModuleDeclarationsAstAnchor as syntax }
+  expects SymbolsModuleIndexModuleDeclarationsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ff7f9d57f4f56a21d7bf39eac52ded2805b6d8c3ef96fc634c53511d7ef2a1e6")
+  summary "fn SymbolsModule.indexModuleDeclarations generated from typescript function_declaration at packages/shp-checker/src/checker/symbols.ts:75-89."
+}
+
+relation SymbolsModuleModuleContextGeneratedFromSymbolsModuleModuleContextAstAnchor {
+  kind generated_from
+  connects SymbolsModule -> SymbolsModuleModuleContextAstAnchor
+  roles { SymbolsModule as generated, SymbolsModuleModuleContextAstAnchor as syntax }
+  expects SymbolsModuleModuleContextAstAnchor fingerprint ast.semantic_subtree_v1("sha256:560e7e2e44e1c870dec2ffda63cd473c3ecce31fb1a8403a93b74c6886f15197")
+  summary "fn SymbolsModule.moduleContext generated from typescript function_declaration at packages/shp-checker/src/checker/symbols.ts:57-65."
+}
+
+relation SymbolsModuleModuleOriginForShapeFileGeneratedFromSymbolsModuleModuleOriginForShapeFileAstAnchor {
+  kind generated_from
+  connects SymbolsModule -> SymbolsModuleModuleOriginForShapeFileAstAnchor
+  roles { SymbolsModule as generated, SymbolsModuleModuleOriginForShapeFileAstAnchor as syntax }
+  expects SymbolsModuleModuleOriginForShapeFileAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d83f72dffce5a4903446c81bef3f8378759976e1cc83badf94de7f6eaa8d3c3f")
+  summary "fn SymbolsModule.moduleOriginForShapeFile generated from typescript function_declaration at packages/shp-checker/src/checker/symbols.ts:67-73."
+}
+
+relation SymbolsModuleResolveContextObjectNameGeneratedFromSymbolsModuleResolveContextObjectNameAstAnchor {
+  kind generated_from
+  connects SymbolsModule -> SymbolsModuleResolveContextObjectNameAstAnchor
+  roles { SymbolsModule as generated, SymbolsModuleResolveContextObjectNameAstAnchor as syntax }
+  expects SymbolsModuleResolveContextObjectNameAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1cc795a1889a57c6b7556b86669f29306933c1a31125baa1bf365cb23e6edf7b")
+  summary "fn SymbolsModule.resolveContextObjectName generated from typescript function_declaration at packages/shp-checker/src/checker/symbols.ts:286-293."
+}
+
+relation SymbolsModuleResolveDeclNameGeneratedFromSymbolsModuleResolveDeclNameAstAnchor {
+  kind generated_from
+  connects SymbolsModule -> SymbolsModuleResolveDeclNameAstAnchor
+  roles { SymbolsModule as generated, SymbolsModuleResolveDeclNameAstAnchor as syntax }
+  expects SymbolsModuleResolveDeclNameAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5e198657912a9474028bb22b6787ee1f28c3d935a53e09a9f5a318f787888cc1")
+  summary "fn SymbolsModule.resolveDeclName generated from typescript function_declaration at packages/shp-checker/src/checker/symbols.ts:149-167."
+}
+
+relation SymbolsModuleResolveDeclReferenceGeneratedFromSymbolsModuleResolveDeclReferenceAstAnchor {
+  kind generated_from
+  connects SymbolsModule -> SymbolsModuleResolveDeclReferenceAstAnchor
+  roles { SymbolsModule as generated, SymbolsModuleResolveDeclReferenceAstAnchor as syntax }
+  expects SymbolsModuleResolveDeclReferenceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2b1e87a2e35c622f3502568c24c236facca2c52169d601269f0a168f408b92b5")
+  summary "fn SymbolsModule.resolveDeclReference generated from typescript function_declaration at packages/shp-checker/src/checker/symbols.ts:169-199."
+}
+
+relation SymbolsModuleResolveFunctionTargetNameGeneratedFromSymbolsModuleResolveFunctionTargetNameAstAnchor {
+  kind generated_from
+  connects SymbolsModule -> SymbolsModuleResolveFunctionTargetNameAstAnchor
+  roles { SymbolsModule as generated, SymbolsModuleResolveFunctionTargetNameAstAnchor as syntax }
+  expects SymbolsModuleResolveFunctionTargetNameAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ca0ebd1a30d1f516e6e1950f734c46b766f86b91405079fadd96c0dc142cc7a6")
+  summary "fn SymbolsModule.resolveFunctionTargetName generated from typescript function_declaration at packages/shp-checker/src/checker/symbols.ts:274-284."
+}
+
+relation SymbolsModuleResolveTargetNameGeneratedFromSymbolsModuleResolveTargetNameAstAnchor {
+  kind generated_from
+  connects SymbolsModule -> SymbolsModuleResolveTargetNameAstAnchor
+  roles { SymbolsModule as generated, SymbolsModuleResolveTargetNameAstAnchor as syntax }
+  expects SymbolsModuleResolveTargetNameAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f5e0189506ac6e9bbdf9edc5aa8bae8ed49e17fc8e5b00d7d22cf1815c9c4544")
+  summary "fn SymbolsModule.resolveTargetName generated from typescript function_declaration at packages/shp-checker/src/checker/symbols.ts:252-272."
+}
+
+relation SymbolsModuleResolveVertexNameGeneratedFromSymbolsModuleResolveVertexNameAstAnchor {
+  kind generated_from
+  connects SymbolsModule -> SymbolsModuleResolveVertexNameAstAnchor
+  roles { SymbolsModule as generated, SymbolsModuleResolveVertexNameAstAnchor as syntax }
+  expects SymbolsModuleResolveVertexNameAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0bcc00ae960b637c69f1117b1ee15bfea6d18c51fccb959a353ae06bbaea03b5")
+  summary "fn SymbolsModule.resolveVertexName generated from typescript function_declaration at packages/shp-checker/src/checker/symbols.ts:201-216."
+}
+
+relation SymbolsModuleResolveVertexReferenceGeneratedFromSymbolsModuleResolveVertexReferenceAstAnchor {
+  kind generated_from
+  connects SymbolsModule -> SymbolsModuleResolveVertexReferenceAstAnchor
+  roles { SymbolsModule as generated, SymbolsModuleResolveVertexReferenceAstAnchor as syntax }
+  expects SymbolsModuleResolveVertexReferenceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:50f6ea984eb8de706455d5838de23d2d4b70f999f0b188cd9f000088030a78ed")
+  summary "fn SymbolsModule.resolveVertexReference generated from typescript function_declaration at packages/shp-checker/src/checker/symbols.ts:218-250."
+}
+
+implementation SymbolsModuleImpl {
+  paths {
+    "packages/shp-checker/src/checker/symbols.ts"
+  }
+  conforms_to SymbolsModule
+}

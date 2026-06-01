@@ -168,7 +168,13 @@ component DocsSite {
       Read<DocsContent>
         evidence md("docs-site/src/content/docs/concepts/rules-hypercycles.md")
       Read<DocsContent>
+        evidence md("docs-site/src/content/docs/concepts/refactor-constraints.md")
+      Read<DocsContent>
         evidence md("docs-site/src/content/docs/examples/global-model-update.md")
+      Read<DocsContent>
+        evidence md("docs-site/src/content/docs/examples/guarded-change-reevaluation.md")
+      Read<DocsContent>
+        evidence md("docs-site/src/content/docs/examples/refactor-sensitive-function.md")
       Read<DocsContent>
         evidence md("docs-site/src/content/docs/examples/analyzer-warning.md")
       Read<DocsContent>
@@ -347,7 +353,9 @@ implementation AuthoringSource {
 
 implementation CheckerSource {
   paths {
-    "packages/shp-checker/src/checker.ts"
+    "packages/shp-checker/src/checker/**/*.ts"
+    "packages/shp-checker/src/memory-guards.ts"
+    "packages/shp-checker/src/targets.ts"
   }
   conforms_to ShapeChecker
   on_change require shape_update
@@ -507,7 +515,9 @@ binding GrammarDocs {
 
 binding RuleEngineDocs {
   when_changed paths {
-    "packages/shp-checker/src/checker.ts"
+    "packages/shp-checker/src/checker/diagnostics.ts"
+    "packages/shp-checker/src/checker/rules.ts"
+    "packages/shp-checker/src/checker/rules/**/*.ts"
     "shape/checker.shape"
   }
   require_changed paths {
@@ -558,9 +568,15 @@ memory ReleaseChecksumContract : RefactorConstraint<fn ReleasePipeline.buildRele
   status Explained
   confidence High
   summary "Release archives, bundled parser assets, installer templates, and checksums must stay in sync for binary installation."
-  owner ShapeMaintainers
-  protects shape ReleaseIntegrity
-  guards on_change require ReEvaluation<Self>
+  who {
+    owner ShapeMaintainers
+  }
+  protects {
+    shape ReleaseIntegrity
+  }
+  guards {
+    on_change require ReEvaluation<Self>
+  }
 }
 
 memory ReleaseVersionTagContract : RefactorConstraint<fn CiPipeline.checkReleaseVersion> {
@@ -568,9 +584,15 @@ memory ReleaseVersionTagContract : RefactorConstraint<fn CiPipeline.checkRelease
   status Explained
   confidence High
   summary "Release tags must match the CLI package manifest version before release assets are published."
-  owner ShapeMaintainers
-  protects shape ReleaseVersionIntegrity
-  guards on_change require ReEvaluation<Self>
+  who {
+    owner ShapeMaintainers
+  }
+  protects {
+    shape ReleaseVersionIntegrity
+  }
+  guards {
+    on_change require ReEvaluation<Self>
+  }
 }
 
 reevaluation DocsShapeBlockVerificationRechecked {
@@ -641,4 +663,9 @@ attest no_shape_change {
 attest no_shape_change {
   source ts("docs-site/scripts/verify-shape-blocks.test.ts")
   reason "Behavioural self-tests for the docs fence verifier (#64). Test-only code with no architectural surface of its own; it exercises the existing DocsShapeBlockVerifier contract rather than changing it."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/concepts/unknowns-safety.md")
+  reason "Migrated one memory-guard example from the removed flat member syntax to the canonical grouped blocks; the page's uncertainty/unknowns guidance and architectural surface are unchanged."
 }

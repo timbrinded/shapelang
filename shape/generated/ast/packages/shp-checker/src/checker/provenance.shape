@@ -1,0 +1,49 @@
+module shape.generated.ast.packages.shp_checker.src.checker.provenance
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource ProvenanceModuleDescribeProvenanceAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/provenance.ts:11-17")
+  fingerprint ast.semantic_subtree_v1("sha256:90540069c32d43091b04d2df57bee554d20b9175b8ed57c24625305db7ace31b")
+}
+
+resource ProvenanceModuleProvenanceAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/provenance.ts:7-9")
+  fingerprint ast.semantic_subtree_v1("sha256:ea8e45337e2bdb1891d30f64e3043f15b715bb7bf7c489c7358acd2215589a5d")
+}
+
+component ProvenanceModule : GeneratedCandidate {
+  fn describeProvenance
+    source ts("packages/shp-checker/src/checker/provenance.ts:11-17")
+    effects unknown
+  fn provenance
+    source ts("packages/shp-checker/src/checker/provenance.ts:7-9")
+    effects unknown
+}
+
+relation ProvenanceModuleDescribeProvenanceGeneratedFromProvenanceModuleDescribeProvenanceAstAnchor {
+  kind generated_from
+  connects ProvenanceModule -> ProvenanceModuleDescribeProvenanceAstAnchor
+  roles { ProvenanceModule as generated, ProvenanceModuleDescribeProvenanceAstAnchor as syntax }
+  expects ProvenanceModuleDescribeProvenanceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:90540069c32d43091b04d2df57bee554d20b9175b8ed57c24625305db7ace31b")
+  summary "fn ProvenanceModule.describeProvenance generated from typescript function_declaration at packages/shp-checker/src/checker/provenance.ts:11-17."
+}
+
+relation ProvenanceModuleProvenanceGeneratedFromProvenanceModuleProvenanceAstAnchor {
+  kind generated_from
+  connects ProvenanceModule -> ProvenanceModuleProvenanceAstAnchor
+  roles { ProvenanceModule as generated, ProvenanceModuleProvenanceAstAnchor as syntax }
+  expects ProvenanceModuleProvenanceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ea8e45337e2bdb1891d30f64e3043f15b715bb7bf7c489c7358acd2215589a5d")
+  summary "fn ProvenanceModule.provenance generated from typescript function_declaration at packages/shp-checker/src/checker/provenance.ts:7-9."
+}
+
+implementation ProvenanceModuleImpl {
+  paths {
+    "packages/shp-checker/src/checker/provenance.ts"
+  }
+  conforms_to ProvenanceModule
+}

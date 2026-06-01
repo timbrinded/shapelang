@@ -199,12 +199,24 @@ memory DecisionRefactorConstraint : RefactorConstraint<fn Gateway.derivePolicyDe
   status Unexplained
   confidence High
   summary "Previous refactors broke error normalisation."
-  owner GatewayTeam
-  guards on_change require ReEvaluation<Self>
+  who { owner GatewayTeam }
+  guards { on_change require ReEvaluation<Self> }
 }
 ```
 
 That explicit target is useful in two places. The parser can produce structured target references, and the semantic checker can detect unknown targets, mismatched `applies_to` declarations, and guarded changes that need reevaluation.
+
+A `protects` clause uses `ProtectsPropertyKind`, which accepts the `description` keyword or any identifier, followed by an optional value. This keeps the value-bearing form `protects shape PreserveInline` while also allowing the valueless `protects description`. Adding a literal such as `'shape'` here would reserve it as a global keyword and break identifiers (module segments like `shape.generated.ast`), so only the already-reserved `description` keyword is listed.
+
+A `guards` clause is a choice between `'on_change' 'require' ContextTypeName` and `'forbid' 'transform' ID`, and a `ModifyFunctionChange` carries an optional `TransformDecl` (`'transform' ID (',' ID)*`) after its shape-trait list. The `transform` keyword is new; it is safe to add because no identifier in the model uses it as a name.
+
+Typed review governance adds three more keywords: top-level `RoleDecl` (`'role' ID`) and `PolicyDecl` (`'policy' ID '{' RequireApproverDecl* '}'`), plus a valueless `SensitiveDecl` (`'sensitive'`) as a memory member. Reserving `role`, `policy`, and `sensitive` means they can no longer be used as bare lowercase identifiers (module segments or function names); PascalCase names such as `Policy` are unaffected.
+
+User-defined context obligations add a `RequireContextDecl` trait member (`'require_context' ID '<' ID '>' ('satisfied_by' ContextObjectKind ('or' ContextObjectKind)*)?`), reserving `require_context` and `satisfied_by`. Each new keyword must also be added to `SHAPE_RESERVED_WORDS` in `ast-generation-utils.ts`; the "reserved words cover every ID-shaped grammar keyword" test enforces this so the AST generator never emits an unparsable bare keyword.
+
+Memory-guard members are grouped blocks (`ProtectsBlock`, `GuardsBlock`, `WhoBlock`, `WhenBlock`, reserving `who`) in `RationaleMember`/`MemoryMember`. This is the only guard-member syntax — the earlier flat `ProtectsDecl`/`GuardDecl` (and bare top-level `owner`/`review_by`) members were removed, so there is one canonical on-disk form. The checker lowers block entries into the shared context info, and the formatter aggregates repeated blocks of the same kind into one.
+
+`ProtectsBlock` entries are comma-separated, because a `ProtectsEntry`'s optional value would otherwise swallow the next entry's keyword. `GuardsBlock` entries are self-delimiting (each starts with `on_change` or `forbid`). `WhoBlock`/`WhenBlock` hold a single optional `OwnerDecl`/`ReviewByDecl`, matching the single-valued lowering so the formatter cannot reorder repeated entries into a different document-order winner.
 
 ## Generated Artifacts
 

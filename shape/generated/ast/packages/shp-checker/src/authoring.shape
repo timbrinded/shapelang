@@ -48,7 +48,7 @@ resource AuthoringModuleFormatHumanListAstAnchor : GeneratedAstAnchor {
 
 resource AuthoringModuleFormatMemoryGuardScaffoldAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/authoring.ts:205-216")
-  fingerprint ast.semantic_subtree_v1("sha256:1eeaf6c78167174f473e4745a9303283d5625596e88912fc623087b9ed255596")
+  fingerprint ast.semantic_subtree_v1("sha256:9eb05c484767c146689dbbf805ec0bca0a866ed7c3e26b985b3aa1eda38f3418")
 }
 
 resource AuthoringModuleFormatRelationKindGuidanceAstAnchor : GeneratedAstAnchor {
@@ -197,7 +197,7 @@ relation AuthoringModuleFormatMemoryGuardScaffoldGeneratedFromAuthoringModuleFor
   kind generated_from
   connects AuthoringModule -> AuthoringModuleFormatMemoryGuardScaffoldAstAnchor
   roles { AuthoringModule as generated, AuthoringModuleFormatMemoryGuardScaffoldAstAnchor as syntax }
-  expects AuthoringModuleFormatMemoryGuardScaffoldAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1eeaf6c78167174f473e4745a9303283d5625596e88912fc623087b9ed255596")
+  expects AuthoringModuleFormatMemoryGuardScaffoldAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9eb05c484767c146689dbbf805ec0bca0a866ed7c3e26b985b3aa1eda38f3418")
   summary "fn AuthoringModule.formatMemoryGuardScaffold generated from typescript function_declaration at packages/shp-checker/src/authoring.ts:205-216."
 }
 

@@ -19,5 +19,7 @@ rationale DerivePolicyDecisionInline : InlineRationale<fn Gateway.derivePolicyDe
   applies_to fn Gateway.otherDecision
   why CognitiveLocality
   summary "Policy checks remain inline for auditability."
-  owner GatewayTeam
+  who {
+    owner GatewayTeam
+  }
 }

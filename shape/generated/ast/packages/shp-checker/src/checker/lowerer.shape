@@ -1,0 +1,65 @@
+module shape.generated.ast.packages.shp_checker.src.checker.lowerer
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource LowererModuleLowerShapeModulesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/lowerer.ts:48-131")
+  fingerprint ast.semantic_subtree_v1("sha256:6df6c92d3bb9f93a6967a365086ec90fb7d3019b1273329ded7b1b5158a773f2")
+}
+
+resource LowererModuleNormalizeModuleInputsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/lowerer.ts:144-151")
+  fingerprint ast.semantic_subtree_v1("sha256:e25cf4d3b940a9b13cf11da1be23fdfd47a6ecd79380b37fbb28ecb79b30733b")
+}
+
+resource LowererModuleRebuildShapeUpdatePathsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/lowerer.ts:133-142")
+  fingerprint ast.semantic_subtree_v1("sha256:bee7777d170ff88806da71f62e7caaefbaab82698eb9b0267a623002950beb6d")
+}
+
+component LowererModule : GeneratedCandidate {
+  fn lowerShapeModules
+    source ts("packages/shp-checker/src/checker/lowerer.ts:48-131")
+    effects unknown
+  fn normalizeModuleInputs
+    source ts("packages/shp-checker/src/checker/lowerer.ts:144-151")
+    effects unknown
+  fn rebuildShapeUpdatePaths
+    source ts("packages/shp-checker/src/checker/lowerer.ts:133-142")
+    effects unknown
+}
+
+relation LowererModuleLowerShapeModulesGeneratedFromLowererModuleLowerShapeModulesAstAnchor {
+  kind generated_from
+  connects LowererModule -> LowererModuleLowerShapeModulesAstAnchor
+  roles { LowererModule as generated, LowererModuleLowerShapeModulesAstAnchor as syntax }
+  expects LowererModuleLowerShapeModulesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6df6c92d3bb9f93a6967a365086ec90fb7d3019b1273329ded7b1b5158a773f2")
+  summary "fn LowererModule.lowerShapeModules generated from typescript function_declaration at packages/shp-checker/src/checker/lowerer.ts:48-131."
+}
+
+relation LowererModuleNormalizeModuleInputsGeneratedFromLowererModuleNormalizeModuleInputsAstAnchor {
+  kind generated_from
+  connects LowererModule -> LowererModuleNormalizeModuleInputsAstAnchor
+  roles { LowererModule as generated, LowererModuleNormalizeModuleInputsAstAnchor as syntax }
+  expects LowererModuleNormalizeModuleInputsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e25cf4d3b940a9b13cf11da1be23fdfd47a6ecd79380b37fbb28ecb79b30733b")
+  summary "fn LowererModule.normalizeModuleInputs generated from typescript function_declaration at packages/shp-checker/src/checker/lowerer.ts:144-151."
+}
+
+relation LowererModuleRebuildShapeUpdatePathsGeneratedFromLowererModuleRebuildShapeUpdatePathsAstAnchor {
+  kind generated_from
+  connects LowererModule -> LowererModuleRebuildShapeUpdatePathsAstAnchor
+  roles { LowererModule as generated, LowererModuleRebuildShapeUpdatePathsAstAnchor as syntax }
+  expects LowererModuleRebuildShapeUpdatePathsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:bee7777d170ff88806da71f62e7caaefbaab82698eb9b0267a623002950beb6d")
+  summary "fn LowererModule.rebuildShapeUpdatePaths generated from typescript function_declaration at packages/shp-checker/src/checker/lowerer.ts:133-142."
+}
+
+implementation LowererModuleImpl {
+  paths {
+    "packages/shp-checker/src/checker/lowerer.ts"
+  }
+  conforms_to LowererModule
+}

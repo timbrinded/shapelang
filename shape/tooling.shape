@@ -46,6 +46,8 @@ resource ShapeModelDraft
 
 resource SourceSyntaxTree
 
+resource SystemClock
+
 component ShapeAnalyzer {
   owns AnalyzerHint
   grants Append<AnalyzerHint>
@@ -322,6 +324,7 @@ component ShpCli {
   grants Read<ReleaseChecksumManifest>
   grants Read<ReleaseMetadata>
   grants Read<ShapeSource>
+  grants Read<SystemClock>
   grants Update<InstalledShpBinary>
   grants Update<InstalledShpRuntimeAssets>
   fn defaultShapeFiles : RefactorSensitive
@@ -329,6 +332,12 @@ component ShpCli {
     effects complete {
       Read<ShapeSource>
         evidence ts("packages/shp-cli/src/shape-files.ts")
+    }
+  fn isoToday : RefactorSensitive
+    source ts("packages/shp-cli/src/freshness.ts#isoToday")
+    effects complete {
+      Read<SystemClock>
+        evidence ts("packages/shp-cli/src/freshness.ts")
     }
   fn main : ProtectedCheckOrder
     source ts("packages/shp-cli/src/index.ts#main")
@@ -405,6 +414,8 @@ component ShpCli {
         evidence ts("packages/shp-cli/src/commands/analyze/impl.ts")
       Read<LanguageSource>
         evidence ts("packages/shp-cli/src/commands/ast/impl.ts")
+      Read<SystemClock>
+        evidence ts("packages/shp-cli/src/freshness.ts")
     }
   fn updateInstalledBinary : RefactorSensitive
     source ts("packages/shp-cli/src/commands/update/impl.ts#update")
@@ -547,9 +558,15 @@ memory AstGenerationUnknownSafety : RefactorConstraint<fn ShapeAstGenerator.gene
   status Explained
   confidence High
   summary "AST-derived architecture drafts must preserve uncertainty with effects unknown, include compact syntax anchors with semantic fingerprints when token evidence exists, warn instead of failing on tokenless anchors, emit candidate effect evidence only as review hints with checkable pins, and keep raw syntax traces opt-in."
-  owner ShapeMaintainers
-  protects shape GeneratedAstDraftSafety
-  guards on_change require ReEvaluation<Self>
+  who {
+    owner ShapeMaintainers
+  }
+  protects {
+    shape GeneratedAstDraftSafety
+  }
+  guards {
+    on_change require ReEvaluation<Self>
+  }
 }
 
 memory AuthorPromptSafetyRules : RefactorConstraint<fn ShapeAuthoring.buildShapeAuthorPrompt> {
@@ -557,9 +574,15 @@ memory AuthorPromptSafetyRules : RefactorConstraint<fn ShapeAuthoring.buildShape
   status Explained
   confidence High
   summary "Authoring prompts must require evidence, explicit destructive effects, and no memory waiver for final forbids."
-  owner ShapeMaintainers
-  protects shape AgentReviewSafety
-  guards on_change require ReEvaluation<Self>
+  who {
+    owner ShapeMaintainers
+  }
+  protects {
+    shape AgentReviewSafety
+  }
+  guards {
+    on_change require ReEvaluation<Self>
+  }
 }
 
 memory AuthoringUnknownSafety : RefactorConstraint<fn ShapeAuthoring.generateShapeUpdateDraft> {
@@ -567,9 +590,15 @@ memory AuthoringUnknownSafety : RefactorConstraint<fn ShapeAuthoring.generateSha
   status Explained
   confidence High
   summary "Generated model drafts must prefer effects unknown over false empty complete summaries."
-  owner ShapeMaintainers
-  protects shape ExplicitUnknowns
-  guards on_change require ReEvaluation<Self>
+  who {
+    owner ShapeMaintainers
+  }
+  protects {
+    shape ExplicitUnknowns
+  }
+  guards {
+    on_change require ReEvaluation<Self>
+  }
 }
 
 memory CliCommandDispatchOrder : CheckOrderRationale<fn ShpCli.main> {
@@ -577,9 +606,31 @@ memory CliCommandDispatchOrder : CheckOrderRationale<fn ShpCli.main> {
   status Explained
   confidence High
   summary "CLI commands must dispatch to the same checker/formatter/helper semantics used by tests, reject ambiguous output modes before running command work, make generated AST directory checks explicit, and derive generated AST source identity from the workspace root."
-  owner ShapeMaintainers
-  protects shape CommandDispatch
-  guards on_change require ReEvaluation<Self>
+  who {
+    owner ShapeMaintainers
+  }
+  protects {
+    shape CommandDispatch
+  }
+  guards {
+    on_change require ReEvaluation<Self>
+  }
+}
+
+memory ClockReadAtCliBoundary : RefactorConstraint<fn ShpCli.isoToday> {
+  applies_to fn ShpCli.isoToday
+  status Explained
+  confidence High
+  summary "The system clock is read only at the CLI boundary to inject a freshness date; the checker never reads the clock so freshness checking stays deterministic."
+  who {
+    owner ShapeMaintainers
+  }
+  protects {
+    shape DeterministicFreshness
+  }
+  guards {
+    on_change require ReEvaluation<Self>
+  }
 }
 
 memory DefaultShapeFileDiscovery : RefactorConstraint<fn ShpCli.defaultShapeFiles> {
@@ -587,19 +638,31 @@ memory DefaultShapeFileDiscovery : RefactorConstraint<fn ShpCli.defaultShapeFile
   status Explained
   confidence High
   summary "Default discovery loads every Shape file under the shape directory, including nested subdirectories."
-  owner ShapeMaintainers
-  protects shape DefaultFileSet
-  guards on_change require ReEvaluation<Self>
+  who {
+    owner ShapeMaintainers
+  }
+  protects {
+    shape DefaultFileSet
+  }
+  guards {
+    on_change require ReEvaluation<Self>
+  }
 }
 
 memory FormatterCanonicalDiffs : RefactorConstraint<fn ShapeFormatter.formatShapeModule> {
   applies_to fn ShapeFormatter.formatShapeModule
   status Explained
   confidence High
-  summary "Formatter ordering and indentation keep Shape files reviewable and stable in diffs."
-  owner ShapeMaintainers
-  protects shape CanonicalFormatting
-  guards on_change require ReEvaluation<Self>
+  summary "Formatter ordering and indentation keep Shape files reviewable and stable in diffs, and nested rationale/memory grouping blocks are canonicalized to their flat members so there is one on-disk form."
+  who {
+    owner ShapeMaintainers
+  }
+  protects {
+    shape CanonicalFormatting
+  }
+  guards {
+    on_change require ReEvaluation<Self>
+  }
 }
 
 memory UpdateBinaryIntegrity : RefactorConstraint<fn ShpCli.updateInstalledBinary> {
@@ -607,9 +670,15 @@ memory UpdateBinaryIntegrity : RefactorConstraint<fn ShpCli.updateInstalledBinar
   status Explained
   confidence High
   summary "Self-update must verify any existing target binary identity, release checksum, downloaded binary version, and bundled runtime parser assets before replacing the local executable."
-  owner ShapeMaintainers
-  protects shape ReleaseIntegrity
-  guards on_change require ReEvaluation<Self>
+  who {
+    owner ShapeMaintainers
+  }
+  protects {
+    shape ReleaseIntegrity
+  }
+  guards {
+    on_change require ReEvaluation<Self>
+  }
 }
 
 reevaluation AstGenerationDraftSafetyRechecked {
