@@ -21,6 +21,20 @@ export type PreludeContextRequirement = {
   requiresDescription?: boolean;
 };
 
+/**
+ * A built-in context obligation as compact rule data: one entry per
+ * trait/context pair, listing the target kinds it applies to. This is the
+ * single source of truth; consumers that need one row per (trait, targetKind)
+ * read the flattened `PRELUDE_CONTEXT_REQUIREMENTS` below.
+ */
+export type PreludeContextRule = {
+  trait: string;
+  contextType: string;
+  satisfiedBy: ContextKind[];
+  targetKinds: TargetKind[];
+  requiresDescription?: boolean;
+};
+
 export type RelationCycleTraversal = "none" | "directed_pairs" | "ordered_path";
 
 export type PreludeRelationKindRule = {
@@ -41,75 +55,60 @@ export const PRELUDE_TRAITS: PreludeTraitDefinition[] = [
   }
 ];
 
-export const PRELUDE_CONTEXT_REQUIREMENTS: PreludeContextRequirement[] = [
+export const PRELUDE_CONTEXT_RULES: PreludeContextRule[] = [
   {
     trait: "PreserveInline",
-    targetKind: "fn",
     contextType: "InlineRationale",
-    satisfiedBy: ["rationale"]
+    satisfiedBy: ["rationale"],
+    targetKinds: ["fn"]
   },
   {
     trait: "RequiresDescription",
-    targetKind: "fn",
     contextType: "DescriptionRationale",
     satisfiedBy: ["rationale"],
+    targetKinds: ["fn"],
     requiresDescription: true
   },
   {
     trait: "ProtectedCheckOrder",
-    targetKind: "fn",
     contextType: "CheckOrderRationale",
-    satisfiedBy: ["rationale", "memory"]
+    satisfiedBy: ["rationale", "memory"],
+    targetKinds: ["fn"]
   },
   {
     trait: "RefactorSensitive",
-    targetKind: "fn",
     contextType: "RefactorConstraint",
-    satisfiedBy: ["memory"]
+    satisfiedBy: ["memory"],
+    targetKinds: ["fn", "component", "resource"]
   },
   {
     trait: "NonIdiomatic",
-    targetKind: "fn",
     contextType: "DesignRationale",
-    satisfiedBy: ["rationale", "memory"]
+    satisfiedBy: ["rationale", "memory"],
+    targetKinds: ["fn", "component", "resource"]
   },
+  // TestOnly applies to functions and components, but not resources.
   {
     trait: "TestOnly",
-    targetKind: "fn",
     contextType: "TestOnlyPurpose",
-    satisfiedBy: ["rationale"]
-  },
-  {
-    trait: "RefactorSensitive",
-    targetKind: "component",
-    contextType: "RefactorConstraint",
-    satisfiedBy: ["memory"]
-  },
-  {
-    trait: "NonIdiomatic",
-    targetKind: "component",
-    contextType: "DesignRationale",
-    satisfiedBy: ["rationale", "memory"]
-  },
-  {
-    trait: "TestOnly",
-    targetKind: "component",
-    contextType: "TestOnlyPurpose",
-    satisfiedBy: ["rationale"]
-  },
-  {
-    trait: "RefactorSensitive",
-    targetKind: "resource",
-    contextType: "RefactorConstraint",
-    satisfiedBy: ["memory"]
-  },
-  {
-    trait: "NonIdiomatic",
-    targetKind: "resource",
-    contextType: "DesignRationale",
-    satisfiedBy: ["rationale", "memory"]
+    satisfiedBy: ["rationale"],
+    targetKinds: ["fn", "component"]
   }
 ];
+
+// Row-shaped view (one entry per trait/targetKind) for consumers that match on
+// a concrete target kind. Flattened target-kind-major to keep a stable order.
+const PRELUDE_TARGET_ORDER: TargetKind[] = ["fn", "component", "resource"];
+export const PRELUDE_CONTEXT_REQUIREMENTS: PreludeContextRequirement[] =
+  PRELUDE_TARGET_ORDER.flatMap((targetKind) =>
+    PRELUDE_CONTEXT_RULES.filter((rule) => rule.targetKinds.includes(targetKind)).map((rule) => ({
+      trait: rule.trait,
+      targetKind,
+      contextType: rule.contextType,
+      satisfiedBy: rule.satisfiedBy,
+      ...(rule.requiresDescription ? { requiresDescription: true } : {})
+    }))
+  );
 
 const PRELUDE_RESOURCE_TRAIT_NAMES = [
   "Persistent",

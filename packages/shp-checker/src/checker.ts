@@ -4365,7 +4365,9 @@ function checkReevaluations(model: Model): SemanticDiagnostic[] {
 }
 
 function checkGuardedChanges(model: Model): SemanticDiagnostic[] {
-  return evaluateGuards(buildGuardContexts(model), model.changeEvents).map(guardViolationDiagnostic);
+  return evaluateGuards(buildGuardContexts(model), model.changeEvents).map(
+    guardViolationDiagnostic
+  );
 }
 
 /**
