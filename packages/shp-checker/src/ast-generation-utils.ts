@@ -5,7 +5,7 @@ import { compareCodepointStrings } from "./shape-strings.ts";
 export { compareCodepointStrings } from "./shape-strings.ts";
 
 // Every ID-shaped keyword in shape.langium. A generated identifier that
-// matches a keyword would produce unparseable Shape, so the AST generator
+// matches a keyword would produce unparsable Shape, so the AST generator
 // escapes any source segment, function, or type name in this set. Keep it
 // exhaustive over the grammar; the "reserved words cover all grammar keywords"
 // test guards against drift when a new keyword is added.
