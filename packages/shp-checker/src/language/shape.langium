@@ -320,7 +320,7 @@ RationaleDecl:
     '}';
 
 RationaleMember:
-    AppliesToDecl | WhyDecl | SummaryDecl | OwnerDecl | ReviewByDecl | ProtectsDecl | GuardDecl | EvidenceLineDecl | ProtectsBlock | GuardsBlock | WhoBlock | WhenBlock;
+    AppliesToDecl | WhyDecl | SummaryDecl | EvidenceLineDecl | ProtectsBlock | GuardsBlock | WhoBlock | WhenBlock;
 
 MemoryDecl:
     'memory' name=ID ':' contextType=ContextTypeRef
@@ -329,7 +329,7 @@ MemoryDecl:
     '}';
 
 MemoryMember:
-    AppliesToDecl | StatusDecl | ConfidenceDecl | ProtectsDecl | GuardDecl | ObservedDecl | SummaryDecl | OwnerDecl | ReviewByDecl | EvidenceLineDecl | SensitiveDecl | ProtectsBlock | GuardsBlock | WhoBlock | WhenBlock;
+    AppliesToDecl | StatusDecl | ConfidenceDecl | ObservedDecl | SummaryDecl | EvidenceLineDecl | SensitiveDecl | ProtectsBlock | GuardsBlock | WhoBlock | WhenBlock;
 
 SensitiveDecl:
     {infer SensitiveDecl} 'sensitive';
@@ -403,14 +403,8 @@ StatusDecl:
 ConfidenceDecl:
     'confidence' value=ID;
 
-ProtectsDecl:
-    'protects' kind=ProtectsPropertyKind (value=ID)?;
-
 ProtectsPropertyKind returns string:
     'description' | ID;
-
-GuardDecl:
-    'guards' action=GuardActionDecl;
 
 ContextTypeName returns string:
     ID ('<' ID '>')?;

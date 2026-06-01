@@ -80,7 +80,7 @@ rationale DerivePolicyDecisionInline : InlineRationale<fn Gateway.derivePolicyDe
   applies_to fn Gateway.derivePolicyDecision
   why CognitiveLocality
   summary "Policy checks remain inline for auditability."
-  owner GatewayTeam
+  who { owner GatewayTeam }
 }
 ```
 
@@ -92,8 +92,8 @@ memory DecisionRefactorConstraint : RefactorConstraint<fn Gateway.derivePolicyDe
   status Unexplained
   confidence High
   summary "Previous refactors broke error normalisation."
-  owner GatewayTeam
-  guards on_change require ReEvaluation<Self>
+  who { owner GatewayTeam }
+  guards { on_change require ReEvaluation<Self> }
 }
 ```
 
@@ -123,7 +123,7 @@ memory GatewayBoundary : RefactorConstraint<component Gateway> {
   status Unexplained
   confidence High
   summary "The Gateway boundary isolates policy evaluation."
-  owner GatewayTeam
+  who { owner GatewayTeam }
 }
 ```
 
@@ -143,8 +143,8 @@ memory RenameGuard : DesignRationale<fn Gateway.derivePolicyDecision> {
   status Explained
   confidence High
   summary "Public symbol name is referenced by external dashboards."
-  owner GatewayTeam
-  guards forbid transform RenameSymbol
+  who { owner GatewayTeam }
+  guards { forbid transform RenameSymbol }
 }
 ```
 
@@ -164,8 +164,8 @@ memory DecisionConstraint : RefactorConstraint<fn Gateway.derivePolicyDecision> 
   confidence High
   sensitive
   summary "Security-sensitive decision path."
-  owner GatewayTeam
-  guards on_change require ReEvaluation<Self>
+  who { owner GatewayTeam }
+  guards { on_change require ReEvaluation<Self> }
 }
 
 reevaluation DecisionReviewed {
@@ -187,8 +187,8 @@ memory BridgeDelayConstraint : RefactorConstraint<fn BridgePoller.pollAttestatio
   status Unexplained
   confidence High
   summary "Lowering this delay previously caused settlement failures."
-  owner BridgeTeam
-  review_by "2026-01-01"
+  who { owner BridgeTeam }
+  when { review_by "2026-01-01" }
 }
 ```
 

@@ -43,7 +43,7 @@ rationale DerivePolicyDecisionInline : InlineRationale<fn Gateway.derivePolicyDe
   applies_to fn Gateway.derivePolicyDecision
   why CognitiveLocality
   summary "Policy checks remain inline for auditability."
-  owner GatewayTeam
+  who { owner GatewayTeam }
 }
 ```
 
@@ -92,8 +92,8 @@ memory DecisionRefactorConstraint : RefactorConstraint<fn Gateway.derivePolicyDe
   status Unexplained
   confidence High
   summary "Previous refactors broke error normalisation."
-  owner GatewayTeam
-  guards on_change require ReEvaluation<Self>
+  who { owner GatewayTeam }
+  guards { on_change require ReEvaluation<Self> }
 }
 ```
 
@@ -152,9 +152,9 @@ memory DerivePolicyShape : RefactorConstraint<fn Gateway.derivePolicyDecision> {
   status Unexplained
   confidence High
   summary "The inline decision shape is load-bearing for auditability."
-  owner GatewayTeam
-  protects shape RefactorSensitive
-  guards on_change require ReEvaluation<Self>
+  who { owner GatewayTeam }
+  protects { shape RefactorSensitive }
+  guards { on_change require ReEvaluation<Self> }
 }
 ```
 
@@ -166,8 +166,8 @@ memory RenameGuard : DesignRationale<fn Gateway.derivePolicyDecision> {
   status Explained
   confidence High
   summary "Public symbol name is referenced by external dashboards."
-  owner GatewayTeam
-  guards forbid transform RenameSymbol
+  who { owner GatewayTeam }
+  guards { forbid transform RenameSymbol }
 }
 ```
 
@@ -186,8 +186,8 @@ memory BridgeDelayConstraint : RefactorConstraint<fn BridgePoller.pollAttestatio
   status Unexplained
   confidence High
   summary "Lowering this delay previously caused settlement failures."
-  owner BridgeTeam
-  review_by "2026-01-01"
+  who { owner BridgeTeam }
+  when { review_by "2026-01-01" }
 }
 ```
 
@@ -211,8 +211,8 @@ memory DecisionConstraint : RefactorConstraint<fn Gateway.derivePolicyDecision> 
   confidence High
   sensitive
   summary "Security-sensitive decision path."
-  owner GatewayTeam
-  guards on_change require ReEvaluation<Self>
+  who { owner GatewayTeam }
+  guards { on_change require ReEvaluation<Self> }
 }
 
 reevaluation DecisionReviewed {
@@ -244,9 +244,9 @@ trait PreserveLocal<T: Fn> {
 
 A `<T>` that names no declared type parameter, or an unrecognised bound, is reported as `invalid require_context` rather than silently defaulting. A trait declared with the same name as a built-in shape trait replaces (shadows) the built-in obligation through name resolution — so a local `trait RefactorSensitive { require_context ... }` governs instead of the built-in `RefactorConstraint`.
 
-## Nested Guard Blocks
+## Guard Blocks
 
-`protects`, `guards`, `who` (owner), and `when` (review_by) members may be grouped in nested blocks. They are pure sugar: the formatter canonicalises them back to the flat members above, so prefer the flat form unless a project already uses blocks.
+`protects`, `guards`, `who` (owner), and `when` (review_by) members are authored as grouped blocks. This is the only guard-member syntax — `shp fmt` always emits these blocks. `protects` entries are comma-separated; `who` and `when` each hold a single value.
 
 ```shape
 memory DecisionConstraint : RefactorConstraint<fn Gateway.derivePolicyDecision> {
@@ -270,7 +270,7 @@ rationale DerivePolicyDecisionInline : InlineRationale<fn Gateway.derivePolicyDe
   applies_to fn Gateway.otherDecision
   why CognitiveLocality
   summary "Policy checks remain inline for auditability."
-  owner GatewayTeam
+  who { owner GatewayTeam }
 }
 ```
 

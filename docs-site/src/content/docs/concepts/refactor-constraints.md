@@ -46,7 +46,7 @@ rationale DerivePolicyDecisionInline : InlineRationale<fn Gateway.derivePolicyDe
   applies_to fn Gateway.derivePolicyDecision
   why CognitiveLocality
   summary "Policy checks remain inline so reviewers can inspect the authorization path locally."
-  owner GatewayTeam
+  who { owner GatewayTeam }
 }
 ```
 
@@ -83,7 +83,7 @@ memory AuditEventLayout : RefactorConstraint<resource AuditEvent> {
   status Explained
   confidence High
   summary "External auditors depend on the AuditEvent field layout."
-  owner AuditTeam
+  who { owner AuditTeam }
 }
 
 memory AuditStoreBoundary : RefactorConstraint<component AuditStore> {
@@ -91,7 +91,7 @@ memory AuditStoreBoundary : RefactorConstraint<component AuditStore> {
   status Unexplained
   confidence High
   summary "The AuditStore boundary keeps append-only storage isolated from query paths."
-  owner AuditTeam
+  who { owner AuditTeam }
 }
 ```
 
@@ -120,7 +120,7 @@ rationale PolicyDecisionDescription : DescriptionRationale<fn Gateway.derivePoli
   applies_to fn Gateway.derivePolicyDecision
   why Auditability
   summary "Reviewers need the local policy decision purpose."
-  owner GatewayTeam
+  who { owner GatewayTeam }
 }
 ```
 
@@ -147,7 +147,7 @@ memory BridgePollingDelayConstraint : RefactorConstraint<fn BridgePoller.pollAtt
   status Unexplained
   confidence High
   summary "Previous attempts to lower this delay caused intermittent settlement failures."
-  owner BridgeTeam
+  who { owner BridgeTeam }
 }
 ```
 
@@ -174,8 +174,8 @@ memory DecisionRefactorConstraint : RefactorConstraint<fn Gateway.derivePolicyDe
   status Unexplained
   confidence High
   summary "Previous refactors changed error normalisation behaviour."
-  owner GatewayTeam
-  guards on_change require ReEvaluation<Self>
+  who { owner GatewayTeam }
+  guards { on_change require ReEvaluation<Self> }
 }
 
 reevaluation DecisionShapeRechecked {
@@ -206,10 +206,10 @@ rationale DerivePolicyInline : InlineRationale<fn Gateway.derivePolicyDecision> 
   applies_to fn Gateway.derivePolicyDecision
   why CognitiveLocality
   summary "Branches stay inline for auditability."
-  owner GatewayTeam
-  protects shape PreserveInline
-  protects description
-  guards on_change require ReEvaluation<Self>
+  who { owner GatewayTeam }
+  protects { shape PreserveInline }
+  protects { description }
+  guards { on_change require ReEvaluation<Self> }
 }
 ```
 
@@ -224,8 +224,8 @@ rationale DerivePolicyInline : InlineRationale<fn Gateway.derivePolicyDecision> 
   applies_to fn Gateway.derivePolicyDecision
   why CognitiveLocality
   summary "Branches stay inline for auditability."
-  owner GatewayTeam
-  guards forbid transform ExtractHelper
+  who { owner GatewayTeam }
+  guards { forbid transform ExtractHelper }
 }
 
 change ExtractPolicyHelper {
@@ -249,8 +249,8 @@ memory PollerSettlementCoupling : RefactorConstraint<relation PollerCallsSettlem
   status Unexplained
   confidence High
   summary "The poller-settlement call edge is timing-sensitive."
-  owner BridgeTeam
-  guards on_change require ReEvaluation<Self>
+  who { owner BridgeTeam }
+  guards { on_change require ReEvaluation<Self> }
 }
 ```
 
@@ -266,8 +266,8 @@ memory BridgePollingDelayConstraint : RefactorConstraint<fn BridgePoller.pollAtt
   status Unexplained
   confidence High
   summary "Earlier attempts to lower this delay caused intermittent settlement failures."
-  owner BridgeTeam
-  review_by "2026-08-18"
+  who { owner BridgeTeam }
+  when { review_by "2026-08-18" }
 }
 ```
 
@@ -310,15 +310,15 @@ memory DecisionConstraint : RefactorConstraint<fn Gateway.derivePolicyDecision> 
   confidence High
   sensitive
   summary "The decision path is security-sensitive."
-  owner GatewayTeam
+  who { owner GatewayTeam }
 }
 ```
 
 With an approver policy present, a `reevaluation` that satisfies a `sensitive` memory must name an `approver`, not just a `reviewer`. Without a policy, or for memories that are not `sensitive`, the approver stays optional. When at least one `role` is declared, every `reviewer` and `approver` must name a declared role; an unknown role is reported as an invalid reevaluation. Declaring no roles leaves review identities unchecked, preserving the default path.
 
-## Grouping With Nested Blocks
+## Guard Blocks
 
-For richer declarations, related members can be grouped into nested blocks instead of repeating the keyword. `protects { ... }`, `guards { ... }`, `who { ... }`, and `when { ... }` are equivalent to the flat members they contain:
+Guard members are authored as grouped blocks — `protects { ... }`, `guards { ... }`, `who { ... }`, and `when { ... }`. This is the single canonical syntax that `shp fmt` emits:
 
 ```shape
 rationale PolicyInline : CheckOrderRationale<fn Gateway.derivePolicyDecision> {
@@ -342,7 +342,7 @@ rationale PolicyInline : CheckOrderRationale<fn Gateway.derivePolicyDecision> {
 }
 ```
 
-Nested blocks are pure sugar: the checker treats them identically to the flat members, and `shp fmt` canonicalizes them back to the flat form, so the flat syntax stays the single canonical representation in diffs and review. Entries in a `protects` block are comma-separated; `who` and `when` hold a single `owner`/`review_by` because those fields are single-valued.
+Grouped blocks are the canonical and only guard-member syntax: `protects`, `guards`, `who`, and `when` each gather their members, and `shp fmt` emits this one grouped form. Entries in a `protects` block are comma-separated; `who` and `when` hold a single `owner`/`review_by` because those fields are single-valued.
 
 ## What To Check In Review
 

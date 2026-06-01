@@ -660,3 +660,8 @@ attest no_shape_change {
   source ts("docs-site/scripts/verify-shape-blocks.test.ts")
   reason "Behavioural self-tests for the docs fence verifier (#64). Test-only code with no architectural surface of its own; it exercises the existing DocsShapeBlockVerifier contract rather than changing it."
 }
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/concepts/unknowns-safety.md")
+  reason "Migrated one memory-guard example from the removed flat member syntax to the canonical grouped blocks; the page's uncertainty/unknowns guidance and architectural surface are unchanged."
+}

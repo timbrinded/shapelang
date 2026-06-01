@@ -755,23 +755,8 @@ export function isGuardActionDecl(item: unknown): item is GuardActionDecl {
     return reflection.isInstance(item, GuardActionDecl.$type);
 }
 
-export interface GuardDecl extends langium.AstNode {
-    readonly $container: MemoryDecl | RationaleDecl;
-    readonly $type: 'GuardDecl';
-    action: GuardActionDecl;
-}
-
-export const GuardDecl = {
-    $type: 'GuardDecl',
-    action: 'action'
-} as const;
-
-export function isGuardDecl(item: unknown): item is GuardDecl {
-    return reflection.isInstance(item, GuardDecl.$type);
-}
-
 export interface GuardForbidTransformDecl extends langium.AstNode {
-    readonly $container: GuardDecl | GuardsBlock;
+    readonly $container: GuardsBlock;
     readonly $type: 'GuardForbidTransformDecl';
     label: string;
 }
@@ -786,7 +771,7 @@ export function isGuardForbidTransformDecl(item: unknown): item is GuardForbidTr
 }
 
 export interface GuardRequireDecl extends langium.AstNode {
-    readonly $container: GuardDecl | GuardsBlock;
+    readonly $container: GuardsBlock;
     readonly $type: 'GuardRequireDecl';
     requirement: ContextTypeName;
 }
@@ -876,7 +861,7 @@ export function isMemoryDecl(item: unknown): item is MemoryDecl {
     return reflection.isInstance(item, MemoryDecl.$type);
 }
 
-export type MemoryMember = AppliesToDecl | ConfidenceDecl | EvidenceLineDecl | GuardDecl | GuardsBlock | ObservedDecl | OwnerDecl | ProtectsBlock | ProtectsDecl | ReviewByDecl | SensitiveDecl | StatusDecl | SummaryDecl | WhenBlock | WhoBlock;
+export type MemoryMember = AppliesToDecl | ConfidenceDecl | EvidenceLineDecl | GuardsBlock | ObservedDecl | ProtectsBlock | SensitiveDecl | StatusDecl | SummaryDecl | WhenBlock | WhoBlock;
 
 export const MemoryMember = {
     $type: 'MemoryMember'
@@ -976,7 +961,7 @@ export function isOutcomeDecl(item: unknown): item is OutcomeDecl {
 }
 
 export interface OwnerDecl extends langium.AstNode {
-    readonly $container: MemoryDecl | RationaleDecl | WhoBlock;
+    readonly $container: WhoBlock;
     readonly $type: 'OwnerDecl';
     value: string;
 }
@@ -1062,23 +1047,6 @@ export function isProtectsBlock(item: unknown): item is ProtectsBlock {
     return reflection.isInstance(item, ProtectsBlock.$type);
 }
 
-export interface ProtectsDecl extends langium.AstNode {
-    readonly $container: MemoryDecl | RationaleDecl;
-    readonly $type: 'ProtectsDecl';
-    kind: ProtectsPropertyKind;
-    value?: string;
-}
-
-export const ProtectsDecl = {
-    $type: 'ProtectsDecl',
-    kind: 'kind',
-    value: 'value'
-} as const;
-
-export function isProtectsDecl(item: unknown): item is ProtectsDecl {
-    return reflection.isInstance(item, ProtectsDecl.$type);
-}
-
 export interface ProtectsEntry extends langium.AstNode {
     readonly $container: ProtectsBlock;
     readonly $type: 'ProtectsEntry';
@@ -1133,7 +1101,7 @@ export function isRationaleDecl(item: unknown): item is RationaleDecl {
     return reflection.isInstance(item, RationaleDecl.$type);
 }
 
-export type RationaleMember = AppliesToDecl | EvidenceLineDecl | GuardDecl | GuardsBlock | OwnerDecl | ProtectsBlock | ProtectsDecl | ReviewByDecl | SummaryDecl | WhenBlock | WhoBlock | WhyDecl;
+export type RationaleMember = AppliesToDecl | EvidenceLineDecl | GuardsBlock | ProtectsBlock | SummaryDecl | WhenBlock | WhoBlock | WhyDecl;
 
 export const RationaleMember = {
     $type: 'RationaleMember'
@@ -1446,7 +1414,7 @@ export function isResourceMember(item: unknown): item is ResourceMember {
 }
 
 export interface ReviewByDecl extends langium.AstNode {
-    readonly $container: MemoryDecl | RationaleDecl | WhenBlock;
+    readonly $container: WhenBlock;
     readonly $type: 'ReviewByDecl';
     value: string;
 }
@@ -1986,7 +1954,6 @@ export type ShapeAstType = {
     FunctionSummary: FunctionSummary
     GrantsDecl: GrantsDecl
     GuardActionDecl: GuardActionDecl
-    GuardDecl: GuardDecl
     GuardForbidTransformDecl: GuardForbidTransformDecl
     GuardRequireDecl: GuardRequireDecl
     GuardsBlock: GuardsBlock
@@ -2006,7 +1973,6 @@ export type ShapeAstType = {
     PolicyDecl: PolicyDecl
     PolicyMember: PolicyMember
     ProtectsBlock: ProtectsBlock
-    ProtectsDecl: ProtectsDecl
     ProtectsEntry: ProtectsEntry
     RationaleDecl: RationaleDecl
     RationaleMember: RationaleMember
@@ -2499,15 +2465,6 @@ export class ShapeAstReflection extends langium.AbstractAstReflection {
             },
             superTypes: []
         },
-        GuardDecl: {
-            name: GuardDecl.$type,
-            properties: {
-                action: {
-                    name: GuardDecl.action
-                }
-            },
-            superTypes: [MemoryMember.$type, RationaleMember.$type]
-        },
         GuardForbidTransformDecl: {
             name: GuardForbidTransformDecl.$type,
             properties: {
@@ -2661,7 +2618,7 @@ export class ShapeAstReflection extends langium.AbstractAstReflection {
                     name: OwnerDecl.value
                 }
             },
-            superTypes: [MemoryMember.$type, RationaleMember.$type]
+            superTypes: []
         },
         OwnsDecl: {
             name: OwnsDecl.$type,
@@ -2707,18 +2664,6 @@ export class ShapeAstReflection extends langium.AbstractAstReflection {
                 entries: {
                     name: ProtectsBlock.entries,
                     defaultValue: []
-                }
-            },
-            superTypes: [MemoryMember.$type, RationaleMember.$type]
-        },
-        ProtectsDecl: {
-            name: ProtectsDecl.$type,
-            properties: {
-                kind: {
-                    name: ProtectsDecl.kind
-                },
-                value: {
-                    name: ProtectsDecl.value
                 }
             },
             superTypes: [MemoryMember.$type, RationaleMember.$type]
@@ -2964,7 +2909,7 @@ export class ShapeAstReflection extends langium.AbstractAstReflection {
                     name: ReviewByDecl.value
                 }
             },
-            superTypes: [MemoryMember.$type, RationaleMember.$type]
+            superTypes: []
         },
         ReviewerDecl: {
             name: ReviewerDecl.$type,

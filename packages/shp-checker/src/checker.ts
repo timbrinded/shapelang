@@ -69,7 +69,6 @@ import {
   isFunctionRequiresDecl,
   isFunctionSummary,
   isGrantsDecl,
-  isGuardDecl,
   isGuardForbidTransformDecl,
   isGuardsBlock,
   isImplementationDecl,
@@ -79,10 +78,8 @@ import {
   isObservedDecl,
   isOnChangeDecl,
   isOutcomeDecl,
-  isOwnerDecl,
   isOwnsDecl,
   isPathsBlock,
-  isProtectsDecl,
   isPolicyDecl,
   isProtectsBlock,
   isRationaleDecl,
@@ -99,7 +96,6 @@ import {
   isRequireApproverDecl,
   isRequireContextDecl,
   isResourceDecl,
-  isReviewByDecl,
   isReviewerDecl,
   isRoleDecl,
   isRuleDecl,
@@ -2830,27 +2826,12 @@ function lowerContextMember(
     info.summary = unquoteShapeString(member.value);
     return true;
   }
-  if (isOwnerDecl(member)) {
-    info.owner = member.value;
-    return true;
-  }
-  if (isReviewByDecl(member)) {
-    info.reviewBy = unquoteShapeString(member.value);
-    return true;
-  }
-  if (isProtectsDecl(member)) {
-    pushProtects(info, kind, member.kind, member.value, context, model);
-    return true;
-  }
-  if (isGuardDecl(member)) {
-    pushGuard(info, kind, member.action, context);
-    return true;
-  }
   if (isEvidenceLineDecl(member)) {
     info.evidence.push(lowerSourceRef(member));
     return true;
   }
-  // Nested grouping blocks (#14) desugar to the same flat members.
+  // Grouped blocks are the only guard-member syntax; they lower into the
+  // shared context info.
   if (isProtectsBlock(member)) {
     for (const entry of member.entries) {
       pushProtects(info, kind, entry.kind, entry.value, context, model);

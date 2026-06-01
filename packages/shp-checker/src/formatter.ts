@@ -62,7 +62,6 @@ import {
   isFunctionRequiresDecl,
   isFunctionSummary,
   isGrantsDecl,
-  isGuardDecl,
   isGuardForbidTransformDecl,
   isGuardsBlock,
   isImplementationDecl,
@@ -72,12 +71,10 @@ import {
   isObservedDecl,
   isOnChangeDecl,
   isOutcomeDecl,
-  isOwnerDecl,
   isOwnsDecl,
   isPathsBlock,
   isPolicyDecl,
   isProtectsBlock,
-  isProtectsDecl,
   isRationaleDecl,
   isReasonDecl,
   isReevaluationDecl,
@@ -92,7 +89,6 @@ import {
   isRequireApproverDecl,
   isRequireContextDecl,
   isResourceDecl,
-  isReviewByDecl,
   isReviewerDecl,
   isRoleDecl,
   isRuleDecl,
@@ -664,11 +660,10 @@ function formatMemory(memory: MemoryDecl): string {
 }
 
 /**
- * Canonicalise the shared context members. The grouped block forms are
- * canonical: protects and guards are aggregated into one `protects { … }` /
+ * Canonicalise the shared context members. Grouped blocks are the only guard
+ * syntax: protects and guards are aggregated into one `protects { … }` /
  * `guards { … }` block, and owner/review_by are wrapped in `who { … }` /
- * `when { … }`. Both the flat and the nested input syntaxes parse, but the
- * formatter always emits the grouped form, so there is one canonical shape.
+ * `when { … }`. Repeated blocks of the same kind are merged into one.
  */
 function formatContextMembers(
   members: readonly (RationaleMember | MemoryMember)[],
@@ -688,18 +683,10 @@ function formatContextMembers(
       lines.push(`summary ${quote(member.value)}`);
     } else if (isEvidenceLineDecl(member)) {
       lines.push(`evidence ${formatSourceRef(member.ref)}`);
-    } else if (isOwnerDecl(member)) {
-      owner = member.value;
-    } else if (isReviewByDecl(member)) {
-      reviewBy = member.value;
-    } else if (isProtectsDecl(member)) {
-      protects.push(formatProtectsEntry(member.kind, member.value));
     } else if (isProtectsBlock(member)) {
       for (const entry of member.entries) {
         protects.push(formatProtectsEntry(entry.kind, entry.value));
       }
-    } else if (isGuardDecl(member)) {
-      guards.push(formatGuardActionEntry(member.action));
     } else if (isGuardsBlock(member)) {
       for (const entry of member.entries) {
         guards.push(formatGuardActionEntry(entry));

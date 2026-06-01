@@ -199,8 +199,8 @@ memory DecisionRefactorConstraint : RefactorConstraint<fn Gateway.derivePolicyDe
   status Unexplained
   confidence High
   summary "Previous refactors broke error normalisation."
-  owner GatewayTeam
-  guards on_change require ReEvaluation<Self>
+  who { owner GatewayTeam }
+  guards { on_change require ReEvaluation<Self> }
 }
 ```
 
@@ -214,7 +214,7 @@ Typed review governance adds three more keywords: top-level `RoleDecl` (`'role' 
 
 User-defined context obligations add a `RequireContextDecl` trait member (`'require_context' ID '<' ID '>' ('satisfied_by' ContextObjectKind ('or' ContextObjectKind)*)?`), reserving `require_context` and `satisfied_by`. Each new keyword must also be added to `SHAPE_RESERVED_WORDS` in `ast-generation-utils.ts`; the "reserved words cover every ID-shaped grammar keyword" test enforces this so the AST generator never emits an unparseable bare keyword.
 
-Nested memory-guard blocks (`ProtectsBlock`, `GuardsBlock`, `WhoBlock`, `WhenBlock`, reserving `who`) sit alongside the flat members in `RationaleMember`/`MemoryMember`. Langium disambiguates the block form from the flat `ProtectsDecl`/`GuardDecl` by the `{` after the keyword. The blocks are pure sugar: the checker lowers their entries to the same flat info, and the formatter canonicalizes them back to flat lines, so there is one canonical on-disk form.
+Memory-guard members are grouped blocks (`ProtectsBlock`, `GuardsBlock`, `WhoBlock`, `WhenBlock`, reserving `who`) in `RationaleMember`/`MemoryMember`. This is the only guard-member syntax — the earlier flat `ProtectsDecl`/`GuardDecl` (and bare top-level `owner`/`review_by`) members were removed, so there is one canonical on-disk form. The checker lowers block entries into the shared context info, and the formatter aggregates repeated blocks of the same kind into one.
 
 `ProtectsBlock` entries are comma-separated, because a `ProtectsEntry`'s optional value would otherwise swallow the next entry's keyword. `GuardsBlock` entries are self-delimiting (each starts with `on_change` or `forbid`). `WhoBlock`/`WhenBlock` hold a single optional `OwnerDecl`/`ReviewByDecl`, matching the single-valued lowering so the formatter cannot reorder repeated entries into a different document-order winner.
 

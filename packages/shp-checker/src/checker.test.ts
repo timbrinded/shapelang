@@ -139,19 +139,19 @@ describe("Shape parser", () => {
         applies_to fn Gateway.derivePolicyDecision
         why CognitiveLocality
         summary "Policy checks remain inline for auditability."
-        owner GatewayTeam
+        who { owner GatewayTeam }
       }
 
       memory DecisionRefactorConstraint : ${contextRef("RefactorConstraint", fnTarget("Gateway.derivePolicyDecision"))} {
         applies_to fn Gateway.derivePolicyDecision
         status Unexplained
         confidence High
-        protects shape CheckOrder
-        guards on_change require ${contextRef("ReEvaluation", "Self")}
+        protects { shape CheckOrder }
+        guards { on_change require ${contextRef("ReEvaluation", "Self")} }
         observed issue("SEC-231")
         summary "Previous refactors broke error normalisation."
-        owner GatewayTeam
-        review_by "2026-08-18"
+        who { owner GatewayTeam }
+        when { review_by "2026-08-18" }
       }
 
       reevaluation DecisionShapeRechecked {
@@ -2738,7 +2738,7 @@ describe("Shape checker", () => {
         applies_to fn Gateway.derivePolicyDecision
         why Auditability
         summary "Reviewers need the local policy decision purpose."
-        owner GatewayTeam
+        who { owner GatewayTeam }
       }
     `);
 
@@ -2866,7 +2866,7 @@ describe("Shape checker", () => {
         status Unexplained
         confidence High
         summary "Previous refactors broke error normalisation."
-        owner GatewayTeam
+        who { owner GatewayTeam }
       }
     `);
     expect(memoryWrongTarget.ok).toBe(true);
@@ -2945,9 +2945,9 @@ describe("Shape checker", () => {
         applies_to fn Gateway.derivePolicyDecision
         status Unexplained
         confidence High
-        guards on_change require ${contextRef("ReEvaluation", "Self")}
+        guards { on_change require ${contextRef("ReEvaluation", "Self")} }
         summary "Previous refactors broke error normalisation."
-        owner GatewayTeam
+        who { owner GatewayTeam }
       }
 
       change RemoveDecision {
@@ -3045,8 +3045,8 @@ component AuditStore {
   test("formats memory guard syntax canonically", () => {
     const result = formatShapeSource(`
       reevaluation DecisionShapeRechecked { evidence test('gateway/error-normalisation.test.ts') decided_on '2026-06-02' reviewer GatewayTeam summary 'Refactor preserves behaviour.' outcome Confirmed satisfies memory DecisionRefactorConstraint }
-      memory DecisionRefactorConstraint : ${contextRef("RefactorConstraint", fnTarget("Gateway.derivePolicyDecision"))} { summary 'Previous refactors broke error normalisation.' guards on_change require ${contextRef("ReEvaluation", "Self")} confidence High status Unexplained applies_to fn Gateway.derivePolicyDecision owner GatewayTeam protects shape CheckOrder }
-      rationale DerivePolicyDecisionInline : ${contextRef("InlineRationale", fnTarget("Gateway.derivePolicyDecision"))} { summary 'Policy checks remain inline for auditability.' owner GatewayTeam why CognitiveLocality applies_to fn Gateway.derivePolicyDecision }
+      memory DecisionRefactorConstraint : ${contextRef("RefactorConstraint", fnTarget("Gateway.derivePolicyDecision"))} { summary 'Previous refactors broke error normalisation.' guards { on_change require ${contextRef("ReEvaluation", "Self")} } confidence High status Unexplained applies_to fn Gateway.derivePolicyDecision who { owner GatewayTeam } protects { shape CheckOrder } }
+      rationale DerivePolicyDecisionInline : ${contextRef("InlineRationale", fnTarget("Gateway.derivePolicyDecision"))} { summary 'Policy checks remain inline for auditability.' who { owner GatewayTeam } why CognitiveLocality applies_to fn Gateway.derivePolicyDecision }
       component Gateway { grants Read<PolicySnapshot> owns PolicySnapshot fn derivePolicyDecision : RequiresDescription, PreserveInline description required 'Policy decision branches remain local for auditability.' effects complete { Read<PolicySnapshot> } }
       resource PolicySnapshot
     `);
@@ -3106,7 +3106,7 @@ reevaluation DecisionShapeRechecked {
 
   test("formats a valueless protects description clause", () => {
     const result = formatShapeSource(`
-      memory DescriptionGuard : ${contextRef("RefactorConstraint", fnTarget("Gateway.derivePolicyDecision"))} { protects description summary 'Local description is required context.' applies_to fn Gateway.derivePolicyDecision owner GatewayTeam status Explained confidence High }
+      memory DescriptionGuard : ${contextRef("RefactorConstraint", fnTarget("Gateway.derivePolicyDecision"))} { protects { description } summary 'Local description is required context.' applies_to fn Gateway.derivePolicyDecision who { owner GatewayTeam } status Explained confidence High }
       component Gateway { grants Read<PolicySnapshot> owns PolicySnapshot fn derivePolicyDecision : RefactorSensitive effects complete { Read<PolicySnapshot> } }
       resource PolicySnapshot
     `);

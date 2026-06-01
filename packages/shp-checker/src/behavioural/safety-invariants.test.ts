@@ -83,7 +83,7 @@ const rationaleBlock = `rationale PurgeInline : InlineRationale<fn AuditStore.pu
   applies_to fn AuditStore.purgeOldEvents
   why CognitiveLocality
   summary "Purge stays inline for auditability."
-  owner AuditTeam
+  who { owner AuditTeam }
 }
 `;
 
@@ -92,8 +92,8 @@ const memoryBlock = `memory PurgeConstraint : RefactorConstraint<fn AuditStore.p
   status Unexplained
   confidence High
   summary "Purge timing is load-bearing."
-  owner AuditTeam
-  guards on_change require ReEvaluation<Self>
+  who { owner AuditTeam }
+  guards { on_change require ReEvaluation<Self> }
 }
 `;
 
@@ -257,7 +257,7 @@ memory LedgerConstraint : RefactorConstraint<fn Bookkeeper.writeLedger> {
   status Explained
   confidence High
   summary "Append path is intentional."
-  owner LedgerTeam
+  who { owner LedgerTeam }
 }
 `;
       const result = checkSource(source);
@@ -300,7 +300,7 @@ memory LedgerConstraint : RefactorConstraint<fn Bookkeeper.writeLedger> {
   status Explained
   confidence High
   summary "Append path is intentional."
-  owner LedgerTeam
+  who { owner LedgerTeam }
 }
 `;
       const result = checkSource(source);
@@ -422,8 +422,8 @@ memory ImportConstraint : RefactorConstraint<fn AuditStore.importLegacyEvents> {
   status Unexplained
   confidence High
   summary "Legacy import path is load-bearing."
-  owner AuditTeam
-  guards on_change require ReEvaluation<Self>
+  who { owner AuditTeam }
+  guards { on_change require ReEvaluation<Self> }
 }
 `;
       const unprotectedUnknown = `module safety_unknown

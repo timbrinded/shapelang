@@ -57,7 +57,7 @@ describe("Shape memory guard intent scenarios", () => {
         applies_to fn Gateway.derivePolicyDecision
         why Auditability
         summary "Reviewers inspect the full authorization branch locally."
-        owner GatewayTeam
+        who { owner GatewayTeam }
       }
     `);
 
@@ -84,9 +84,9 @@ describe("Shape memory guard intent scenarios", () => {
         applies_to fn Gateway.derivePolicyDecision
         why Auditability
         summary "The order controls which failure is visible to callers."
-        owner GatewayTeam
-        protects shape CheckOrder
-        guards on_change require ${contextRef("ReEvaluation", "Self")}
+        who { owner GatewayTeam }
+        protects { shape CheckOrder }
+        guards { on_change require ${contextRef("ReEvaluation", "Self")} }
       }
 
       change ReorderPolicyChecks {
@@ -121,9 +121,9 @@ describe("Shape memory guard intent scenarios", () => {
         applies_to fn Gateway.derivePolicyDecision
         why Auditability
         summary "The order controls which failure is visible to callers."
-        owner GatewayTeam
-        protects shape CheckOrder
-        guards on_change require ${contextRef("ReEvaluation", "Self")}
+        who { owner GatewayTeam }
+        protects { shape CheckOrder }
+        guards { on_change require ${contextRef("ReEvaluation", "Self")} }
       }
 
       reevaluation PolicyCheckOrderRechecked {
@@ -189,7 +189,7 @@ describe("Shape memory guard intent scenarios", () => {
         status Unexplained
         confidence High
         summary "Shorter polling previously caused intermittent settlement misses."
-        owner BridgeTeam
+        who { owner BridgeTeam }
       }
     `);
 
@@ -238,7 +238,7 @@ describe("Shape memory guard intent scenarios", () => {
         applies_to fn Gateway.normalizeVendorPayload
         why VendorLimitation
         summary "The odd field order mirrors the upstream protocol contract."
-        owner GatewayTeam
+        who { owner GatewayTeam }
       }
     `);
 
@@ -287,7 +287,7 @@ describe("Shape memory guard intent scenarios", () => {
         applies_to fn ReplayHarness.seedReplayFixture
         why E2ETesting
         summary "This helper only builds replay fixtures for e2e tests."
-        owner AuditTeam
+        who { owner AuditTeam }
       }
     `);
 
@@ -315,7 +315,7 @@ describe("Shape memory guard intent scenarios", () => {
         applies_to fn Gateway.derivePolicyDecision
         why Auditability
         summary "Reviewers need the local policy decision purpose."
-        owner GatewayTeam
+        who { owner GatewayTeam }
       }
     `);
     const emptyOutput = formatDiagnostics(emptyDescription);
@@ -343,7 +343,7 @@ describe("Shape memory guard intent scenarios", () => {
         applies_to fn Gateway.derivePolicyDecision
         why Auditability
         summary "Reviewers need the local policy decision purpose."
-        owner GatewayTeam
+        who { owner GatewayTeam }
       }
     `);
 
@@ -371,8 +371,8 @@ describe("Shape memory guard intent scenarios", () => {
         status Unexplained
         confidence High
         summary "Previous refactors broke error normalisation."
-        owner GatewayTeam
-        guards on_change require ${contextRef("ReEvaluation", "Self")}
+        who { owner GatewayTeam }
+        guards { on_change require ${contextRef("ReEvaluation", "Self")} }
       }
 
       reevaluation IncompleteReview {
@@ -419,7 +419,7 @@ describe("Shape memory guard intent scenarios", () => {
         status Explained
         confidence High
         summary "This behavior is documented but still violates final storage policy."
-        owner AuditTeam
+        who { owner AuditTeam }
       }
     `);
     const output = formatDiagnostics(result);
@@ -454,9 +454,9 @@ describe("Shape property-level guarded changes", () => {
         applies_to fn Gateway.derivePolicyDecision
         why CognitiveLocality
         summary "Branches inline for auditability."
-        owner GatewayTeam
-        protects shape PreserveInline
-        guards on_change require ${contextRef("ReEvaluation", "Self")}
+        who { owner GatewayTeam }
+        protects { shape PreserveInline }
+        guards { on_change require ${contextRef("ReEvaluation", "Self")} }
       }
 
       change RefactorDecision {
@@ -515,9 +515,9 @@ describe("Shape property-level guarded changes", () => {
         status Explained
         confidence High
         summary "The local description is required context for reviewers."
-        owner GatewayTeam
-        protects description
-        guards on_change require ${contextRef("ReEvaluation", "Self")}
+        who { owner GatewayTeam }
+        protects { description }
+        guards { on_change require ${contextRef("ReEvaluation", "Self")} }
       }
 
       change DropDescription {
@@ -553,9 +553,9 @@ describe("Shape property-level guarded changes", () => {
         applies_to fn Gateway.derivePolicyDecision
         why CognitiveLocality
         summary "Branches inline for auditability."
-        owner GatewayTeam
-        protects shape PreserveInline
-        guards on_change require ${contextRef("ReEvaluation", "Self")}
+        who { owner GatewayTeam }
+        protects { shape PreserveInline }
+        guards { on_change require ${contextRef("ReEvaluation", "Self")} }
       }
 
       reevaluation InlineExtracted {
@@ -597,9 +597,9 @@ describe("Shape property-level guarded changes", () => {
         applies_to fn Gateway.derivePolicyDecision
         why Auditability
         summary "Check order controls the visible failure."
-        owner GatewayTeam
-        protects shape CheckOrder
-        guards on_change require ${contextRef("ReEvaluation", "Self")}
+        who { owner GatewayTeam }
+        protects { shape CheckOrder }
+        guards { on_change require ${contextRef("ReEvaluation", "Self")} }
       }
 
       change ReorderChecks {
@@ -636,8 +636,8 @@ describe("Shape property-level guarded changes", () => {
         status Unexplained
         confidence High
         summary "The Gateway boundary isolates policy evaluation."
-        owner GatewayTeam
-        guards on_change require ${contextRef("ReEvaluation", "Self")}
+        who { owner GatewayTeam }
+        guards { on_change require ${contextRef("ReEvaluation", "Self")} }
       }
 
       change WidenGateway {
@@ -692,9 +692,9 @@ describe("Shape property-level guarded changes", () => {
         applies_to fn Gateway.derivePolicyDecision
         why CognitiveLocality
         summary "Branches inline for auditability."
-        owner GatewayTeam
-        protects shape PreserveInline
-        guards on_change require ${contextRef("ReEvaluation", "Self")}
+        who { owner GatewayTeam }
+        protects { shape PreserveInline }
+        guards { on_change require ${contextRef("ReEvaluation", "Self")} }
       }
 
       change RemoveDecision {
@@ -735,9 +735,9 @@ describe("Shape property-level guarded changes", () => {
         status Unexplained
         confidence High
         summary "Gateway is deliberately locally scoped."
-        owner GatewayTeam
-        protects shape LocallyScoped
-        guards on_change require ${contextRef("ReEvaluation", "Self")}
+        who { owner GatewayTeam }
+        protects { shape LocallyScoped }
+        guards { on_change require ${contextRef("ReEvaluation", "Self")} }
       }
 
       change DropScope {
@@ -777,8 +777,8 @@ describe("Shape property-level guarded changes", () => {
         status Unexplained
         confidence High
         summary "The Gateway boundary isolates policy evaluation."
-        owner GatewayTeam
-        guards on_change require ${contextRef("ReEvaluation", "Self")}
+        who { owner GatewayTeam }
+        guards { on_change require ${contextRef("ReEvaluation", "Self")} }
       }
 
       change DropGateway {
@@ -814,10 +814,10 @@ describe("Shape property-level guarded changes", () => {
         applies_to fn Gateway.derivePolicyDecision
         why CognitiveLocality
         summary "Branches inline for auditability."
-        owner GatewayTeam
-        protects shape PreserveInline
-        protects shape CheckOrder
-        guards on_change require ${contextRef("ReEvaluation", "Self")}
+        who { owner GatewayTeam }
+        protects { shape PreserveInline }
+        protects { shape CheckOrder }
+        guards { on_change require ${contextRef("ReEvaluation", "Self")} }
       }
 
       change WidenEffects {
@@ -857,8 +857,8 @@ describe("Shape property-level guarded changes", () => {
           status Explained
           confidence High
           summary "The local description is required context for reviewers."
-          owner GatewayTeam
-          protects description
+          who { owner GatewayTeam }
+          protects { description }
         }
       `)
     ]);
@@ -887,9 +887,9 @@ describe("Shape property-level guarded changes", () => {
         status Unexplained
         confidence High
         summary "The Gateway boundary isolates policy evaluation."
-        owner GatewayTeam
-        protects description
-        guards on_change require ${contextRef("ReEvaluation", "Self")}
+        who { owner GatewayTeam }
+        protects { description }
+        guards { on_change require ${contextRef("ReEvaluation", "Self")} }
       }
 
       change DropGateway {
@@ -938,7 +938,7 @@ describe("Shape role and approver policy", () => {
         status Unexplained
         confidence High${sensitive}
         summary "Security-sensitive decision path."
-        owner GatewayTeam
+        who { owner GatewayTeam }
       }
 
       reevaluation DecisionReviewed {
@@ -996,7 +996,7 @@ describe("Shape role and approver policy", () => {
         confidence High
         sensitive
         summary "Security-sensitive decision path."
-        owner GatewayTeam
+        who { owner GatewayTeam }
       }
 
       reevaluation DecisionReviewed {
@@ -1062,7 +1062,7 @@ describe("Shape role and approver policy", () => {
       role Security
       component Gateway { grants Read<PolicySnapshot> owns PolicySnapshot fn derivePolicyDecision : RefactorSensitive effects complete { Read<PolicySnapshot> } }
       resource PolicySnapshot
-      memory DecisionConstraint : ${contextRef("RefactorConstraint", fnTarget("Gateway.derivePolicyDecision"))} { sensitive summary 'Sensitive.' applies_to fn Gateway.derivePolicyDecision owner GatewayTeam status Unexplained confidence High }
+      memory DecisionConstraint : ${contextRef("RefactorConstraint", fnTarget("Gateway.derivePolicyDecision"))} { sensitive summary 'Sensitive.' applies_to fn Gateway.derivePolicyDecision who { owner GatewayTeam } status Unexplained confidence High }
     `);
 
     expect(result.ok).toBe(true);
@@ -1110,7 +1110,7 @@ describe("Shape role and approver policy", () => {
         status Unexplained
         confidence High
         summary "Decision path."
-        owner Security
+        who { owner Security }
       }
 
       reevaluation DecisionReviewed {
@@ -1150,7 +1150,7 @@ describe("Shape role and approver policy", () => {
         confidence High
         sensitive
         summary "Sensitive."
-        owner GatewayTeam
+        who { owner GatewayTeam }
       }
 
       reevaluation DecisionReviewed {
@@ -1211,7 +1211,7 @@ describe("Shape user-defined context obligations", () => {
         applies_to fn Gateway.derivePolicyDecision
         why CognitiveLocality
         summary "Kept local."
-        owner GatewayTeam
+        who { owner GatewayTeam }
       }
     `);
     expect(satisfied.exitCode).toBe(0);
@@ -1241,7 +1241,7 @@ describe("Shape user-defined context obligations", () => {
         applies_to fn BridgePoller.pollAttestation
         why ExternalProtocolConstraint
         summary "A rationale must not satisfy a memory-only obligation."
-        owner BridgeTeam
+        who { owner BridgeTeam }
       }
     `);
     expect(withRationale.exitCode).toBe(1);
@@ -1252,7 +1252,7 @@ describe("Shape user-defined context obligations", () => {
         status Unexplained
         confidence High
         summary "Lowering the delay caused settlement failures."
-        owner BridgeTeam
+        who { owner BridgeTeam }
       }
     `);
     expect(withMemory.exitCode).toBe(0);
@@ -1347,7 +1347,7 @@ describe("Shape user-defined context obligations", () => {
         applies_to fn Gateway.derivePolicyDecision
         why CognitiveLocality
         summary "Reason."
-        owner GatewayTeam
+        who { owner GatewayTeam }
       }`)
     );
     const withMemory = checkShapeSource(
@@ -1356,7 +1356,7 @@ describe("Shape user-defined context obligations", () => {
         status Unexplained
         confidence High
         summary "Reason."
-        owner GatewayTeam
+        who { owner GatewayTeam }
       }`)
     );
 
@@ -1388,7 +1388,7 @@ describe("Shape user-defined context obligations", () => {
         status Unexplained
         confidence High
         summary "Boundary is load-bearing."
-        owner AuditTeam
+        who { owner AuditTeam }
       }
     `);
 
@@ -1466,7 +1466,7 @@ describe("Shape user-defined context obligations", () => {
         applies_to fn Gateway.derivePolicyDecision
         why CognitiveLocality
         summary "Reason."
-        owner GatewayTeam
+        who { owner GatewayTeam }
       }
     `);
 
@@ -1531,12 +1531,12 @@ describe("Shape nested memory guard blocks", () => {
       applies_to fn Gateway.derivePolicyDecision
       why CognitiveLocality
       summary "Inline."
-      owner GatewayTeam
-      review_by "2026-08-18"
-      protects shape PreserveInline
-      protects description
-      guards on_change require ${contextRef("ReEvaluation", "Self")}
-      guards forbid transform ExtractHelper
+      who { owner GatewayTeam }
+      when { review_by "2026-08-18" }
+      protects { shape PreserveInline }
+      protects { description }
+      guards { on_change require ${contextRef("ReEvaluation", "Self")} }
+      guards { forbid transform ExtractHelper }
     }
   `;
 
@@ -1789,8 +1789,8 @@ describe("Shape dependency-target guards", () => {
         status Unexplained
         confidence High
         summary "The poller-settlement call edge is timing-sensitive."
-        owner BridgeTeam
-        guards on_change require ${contextRef("ReEvaluation", "Self")}
+        who { owner BridgeTeam }
+        guards { on_change require ${contextRef("ReEvaluation", "Self")} }
       }
 
       ${change}
@@ -1893,8 +1893,8 @@ describe("Shape transform guards", () => {
         applies_to fn Gateway.derivePolicyDecision
         why CognitiveLocality
         summary "Branches inline for auditability."
-        owner GatewayTeam
-        guards forbid transform ${forbidden}
+        who { owner GatewayTeam }
+        guards { forbid transform ${forbidden} }
       }
 
       change ApplyTransform {
@@ -1950,7 +1950,7 @@ describe("Shape transform guards", () => {
 
   test("parses and formats transform intent and forbid-transform guards", () => {
     const result = formatShapeSource(`
-      rationale DerivePolicyInline : ${contextRef("InlineRationale", fnTarget("Gateway.derivePolicyDecision"))} { guards forbid transform ExtractHelper summary 'Inline.' owner GatewayTeam why CognitiveLocality applies_to fn Gateway.derivePolicyDecision }
+      rationale DerivePolicyInline : ${contextRef("InlineRationale", fnTarget("Gateway.derivePolicyDecision"))} { guards { forbid transform ExtractHelper } summary 'Inline.' who { owner GatewayTeam } why CognitiveLocality applies_to fn Gateway.derivePolicyDecision }
       component Gateway { grants Read<PolicySnapshot> owns PolicySnapshot fn derivePolicyDecision : PreserveInline effects complete { Read<PolicySnapshot> } }
       resource PolicySnapshot
       change ApplyTransform { modify fn Gateway.derivePolicyDecision : PreserveInline transform ExtractHelper, RemoveDescription effects complete { Read<PolicySnapshot> } }
@@ -1986,8 +1986,8 @@ describe("Shape transform guards", () => {
         status Unexplained
         confidence High
         summary "Splitting the decision tree changed visible failures before."
-        owner GatewayTeam
-        guards forbid transform SplitDecisionTree
+        who { owner GatewayTeam }
+        guards { forbid transform SplitDecisionTree }
       }
 
       change SplitIt {
@@ -2063,9 +2063,9 @@ describe("Shape transform guards", () => {
         applies_to fn Gateway.derivePolicyDecision
         why CognitiveLocality
         summary "Branches inline for auditability."
-        owner GatewayTeam
-        guards forbid transform ExtractHelper
-        guards forbid transform SplitDecisionTree
+        who { owner GatewayTeam }
+        guards { forbid transform ExtractHelper }
+        guards { forbid transform SplitDecisionTree }
       }
 
       change RefactorBoth {
@@ -2103,9 +2103,9 @@ describe("Shape transform guards", () => {
         status Unexplained
         confidence High
         summary "Extracting a helper has historically changed behaviour."
-        owner GatewayTeam
-        guards on_change require ${contextRef("ReEvaluation", "Self")}
-        guards forbid transform ExtractHelper
+        who { owner GatewayTeam }
+        guards { on_change require ${contextRef("ReEvaluation", "Self")} }
+        guards { forbid transform ExtractHelper }
       }
 
       change ExtractIt {
@@ -2146,9 +2146,9 @@ describe("Shape transform guards", () => {
         status Unexplained
         confidence High
         summary "Extracting a helper has historically changed behaviour."
-        owner GatewayTeam
-        guards on_change require ${contextRef("ReEvaluation", "Self")}
-        guards forbid transform ExtractHelper
+        who { owner GatewayTeam }
+        guards { on_change require ${contextRef("ReEvaluation", "Self")} }
+        guards { forbid transform ExtractHelper }
       }
 
       change RenameIt {
@@ -2202,7 +2202,7 @@ describe("Shape transform guards", () => {
         applies_to fn Gateway.derivePolicyDecision
         why CognitiveLocality
         summary "Kept local on purpose."
-        owner GatewayTeam
+        who { owner GatewayTeam }
       }
     `);
     expect(satisfied.exitCode).toBe(0);
@@ -2272,8 +2272,8 @@ describe("Shape component and resource shape traits", () => {
     const satisfier = !context
       ? ""
       : context.satisfiedBy === "memory"
-        ? `\nmemory SubjectContext : ${ref} { applies_to ${targetRef} status Unexplained confidence High summary "Documented obligation." owner ProbeTeam }`
-        : `\nrationale SubjectContext : ${ref} { applies_to ${targetRef} why DesignChoice summary "Documented obligation." owner ProbeTeam }`;
+        ? `\nmemory SubjectContext : ${ref} { applies_to ${targetRef} status Unexplained confidence High summary "Documented obligation." who { owner ProbeTeam } }`
+        : `\nrationale SubjectContext : ${ref} { applies_to ${targetRef} why DesignChoice summary "Documented obligation." who { owner ProbeTeam } }`;
     return `module probe\n${subject}${satisfier}\n`;
   }
 
@@ -2318,7 +2318,7 @@ describe("Shape component and resource shape traits", () => {
         applies_to component Gateway
         why LegacyCompatibility
         summary "A rationale must not satisfy a RefactorConstraint obligation."
-        owner GatewayTeam
+        who { owner GatewayTeam }
       }
     `);
     const output = formatDiagnostics(result);
@@ -2411,7 +2411,7 @@ describe("Shape component and resource shape traits", () => {
             status Unexplained
             confidence High
             summary "The Gateway boundary isolates policy evaluation from transport."
-            owner GatewayTeam
+            who { owner GatewayTeam }
           }
         `)
       ],
@@ -2448,7 +2448,7 @@ describe("Shape component and resource shape traits", () => {
             status Explained
             confidence High
             summary "External auditors depend on the AuditEvent field layout."
-            owner AuditTeam
+            who { owner AuditTeam }
           }
         `)
       ],
@@ -2464,7 +2464,7 @@ describe("Shape component and resource shape traits", () => {
 
 describe("Shape memory freshness checking", () => {
   function refactorMemorySource(reviewBy?: string): string {
-    const reviewByLine = reviewBy === undefined ? "" : `\n        review_by "${reviewBy}"`;
+    const reviewByLine = reviewBy === undefined ? "" : `\n        when { review_by "${reviewBy}" }`;
     return `
       module bridge
 
@@ -2485,7 +2485,7 @@ describe("Shape memory freshness checking", () => {
         status Unexplained
         confidence High
         summary "Earlier attempts to lower this delay caused settlement failures."
-        owner BridgeTeam${reviewByLine}
+        who { owner BridgeTeam }${reviewByLine}
       }
     `;
   }
@@ -2567,8 +2567,8 @@ describe("Shape memory freshness checking", () => {
           applies_to fn Gateway.derivePolicyDecision
           why Auditability
           summary "Reviewers inspect the full authorization branch locally."
-          owner GatewayTeam
-          review_by "2025-01-01"
+          who { owner GatewayTeam }
+          when { review_by "2025-01-01" }
         }
       `,
       "2026-05-30"

@@ -33,7 +33,7 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@124"
+                    "$ref": "#/rules@122"
                   },
                   "arguments": []
                 }
@@ -206,7 +206,7 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@125"
+                "$ref": "#/rules@123"
               },
               "arguments": []
             }
@@ -234,7 +234,7 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@125"
+                "$ref": "#/rules@123"
               },
               "arguments": []
             }
@@ -324,7 +324,7 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@124"
+                "$ref": "#/rules@122"
               },
               "arguments": []
             }
@@ -352,7 +352,7 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@125"
+                "$ref": "#/rules@123"
               },
               "arguments": []
             }
@@ -496,7 +496,7 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@124"
+                "$ref": "#/rules@122"
               },
               "arguments": []
             }
@@ -512,7 +512,7 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@126"
+                "$ref": "#/rules@124"
               },
               "arguments": []
             }
@@ -544,7 +544,7 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@124"
+                "$ref": "#/rules@122"
               },
               "arguments": []
             }
@@ -560,7 +560,7 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@126"
+                "$ref": "#/rules@124"
               },
               "arguments": []
             }
@@ -592,7 +592,7 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@125"
+                "$ref": "#/rules@123"
               },
               "arguments": []
             }
@@ -704,7 +704,7 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@125"
+                "$ref": "#/rules@123"
               },
               "arguments": []
             }
@@ -723,7 +723,7 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@125"
+                    "$ref": "#/rules@123"
                   },
                   "arguments": []
                 }
@@ -794,7 +794,7 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@125"
+                "$ref": "#/rules@123"
               },
               "arguments": []
             }
@@ -810,7 +810,7 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@125"
+                "$ref": "#/rules@123"
               },
               "arguments": []
             }
@@ -833,7 +833,7 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@119"
+                    "$ref": "#/rules@117"
                   },
                   "arguments": []
                 }
@@ -852,7 +852,7 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
                     "terminal": {
                       "$type": "RuleCall",
                       "rule": {
-                        "$ref": "#/rules@119"
+                        "$ref": "#/rules@117"
                       },
                       "arguments": []
                     }
@@ -980,7 +980,7 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@125"
+                "$ref": "#/rules@123"
               },
               "arguments": []
             }
@@ -1162,7 +1162,7 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@125"
+                "$ref": "#/rules@123"
               },
               "arguments": []
             }
@@ -1295,7 +1295,7 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@125"
+              "$ref": "#/rules@123"
             },
             "arguments": []
           }
@@ -1523,7 +1523,7 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@125"
+                "$ref": "#/rules@123"
               },
               "arguments": []
             }
@@ -1567,7 +1567,7 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@124"
+                "$ref": "#/rules@122"
               },
               "arguments": []
             }
@@ -1583,7 +1583,7 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@126"
+                "$ref": "#/rules@124"
               },
               "arguments": []
             }
@@ -1615,7 +1615,7 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@126"
+                "$ref": "#/rules@124"
               },
               "arguments": []
             }
@@ -1647,7 +1647,7 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@125"
+                "$ref": "#/rules@123"
               },
               "arguments": []
             }
@@ -1799,7 +1799,7 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@125"
+                "$ref": "#/rules@123"
               },
               "arguments": []
             }
@@ -1843,7 +1843,7 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@124"
+                "$ref": "#/rules@122"
               },
               "arguments": []
             }
@@ -1859,7 +1859,7 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@126"
+                "$ref": "#/rules@124"
               },
               "arguments": []
             }
@@ -1891,7 +1891,7 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@125"
+                "$ref": "#/rules@123"
               },
               "arguments": []
             }
@@ -2053,7 +2053,7 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@126"
+                "$ref": "#/rules@124"
               },
               "arguments": []
             }
@@ -2142,7 +2142,7 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@126"
+                "$ref": "#/rules@124"
               },
               "arguments": []
             }
@@ -2170,7 +2170,7 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@126"
+                "$ref": "#/rules@124"
               },
               "arguments": []
             }
@@ -2381,7 +2381,7 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@125"
+                "$ref": "#/rules@123"
               },
               "arguments": []
             }
@@ -2397,7 +2397,7 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@126"
+                "$ref": "#/rules@124"
               },
               "arguments": []
             }
@@ -2425,7 +2425,7 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@125"
+                "$ref": "#/rules@123"
               },
               "arguments": []
             }
@@ -2475,7 +2475,7 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@125"
+                "$ref": "#/rules@123"
               },
               "arguments": []
             }
@@ -2548,7 +2548,7 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@125"
+                "$ref": "#/rules@123"
               },
               "arguments": []
             }
@@ -2634,7 +2634,7 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@126"
+                "$ref": "#/rules@124"
               },
               "arguments": []
             },
@@ -2699,7 +2699,7 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@125"
+                "$ref": "#/rules@123"
               },
               "arguments": []
             }
@@ -2727,7 +2727,7 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@125"
+                "$ref": "#/rules@123"
               },
               "arguments": []
             }
@@ -2869,7 +2869,7 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@125"
+                "$ref": "#/rules@123"
               },
               "arguments": []
             }
@@ -2897,7 +2897,7 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@125"
+                "$ref": "#/rules@123"
               },
               "arguments": []
             }
@@ -2957,7 +2957,7 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@125"
+                "$ref": "#/rules@123"
               },
               "arguments": []
             }
@@ -3285,7 +3285,7 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@125"
+                "$ref": "#/rules@123"
               },
               "arguments": []
             }
@@ -3304,7 +3304,7 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@125"
+                    "$ref": "#/rules@123"
                   },
                   "arguments": []
                 }
@@ -3572,7 +3572,7 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@125"
+                "$ref": "#/rules@123"
               },
               "arguments": []
             }
@@ -3661,7 +3661,7 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@125"
+                "$ref": "#/rules@123"
               },
               "arguments": []
             }
@@ -3861,7 +3861,7 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@125"
+                "$ref": "#/rules@123"
               },
               "arguments": []
             }
@@ -3939,35 +3939,7 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@108"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@109"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@112"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@114"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@117"
+              "$ref": "#/rules@115"
             },
             "arguments": []
           },
@@ -4022,7 +3994,7 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@125"
+                "$ref": "#/rules@123"
               },
               "arguments": []
             }
@@ -4100,21 +4072,7 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@112"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
               "$ref": "#/rules@114"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@116"
             },
             "arguments": []
           },
@@ -4128,21 +4086,7 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@108"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@109"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@117"
+              "$ref": "#/rules@115"
             },
             "arguments": []
           },
@@ -4287,7 +4231,7 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@113"
+                "$ref": "#/rules@112"
               },
               "arguments": []
             }
@@ -4299,7 +4243,7 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@125"
+                "$ref": "#/rules@123"
               },
               "arguments": []
             },
@@ -4395,7 +4339,7 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@115"
+                "$ref": "#/rules@113"
               },
               "arguments": []
             }
@@ -4427,7 +4371,7 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@125"
+                "$ref": "#/rules@123"
               },
               "arguments": []
             }
@@ -4529,7 +4473,7 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@125"
+                "$ref": "#/rules@123"
               },
               "arguments": []
             }
@@ -4570,14 +4514,14 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@118"
+              "$ref": "#/rules@116"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@120"
+              "$ref": "#/rules@118"
             },
             "arguments": []
           },
@@ -4591,7 +4535,21 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@117"
+              "$ref": "#/rules@115"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@119"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@120"
             },
             "arguments": []
           },
@@ -4599,20 +4557,6 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
             "$type": "RuleCall",
             "rule": {
               "$ref": "#/rules@121"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@122"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@123"
             },
             "arguments": []
           }
@@ -4705,7 +4649,7 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@125"
+              "$ref": "#/rules@123"
             },
             "arguments": []
           },
@@ -4719,7 +4663,7 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@125"
+                  "$ref": "#/rules@123"
                 },
                 "arguments": []
               }
@@ -4736,7 +4680,7 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@125"
+                  "$ref": "#/rules@123"
                 },
                 "arguments": []
               },
@@ -4750,7 +4694,7 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
                   {
                     "$type": "RuleCall",
                     "rule": {
-                      "$ref": "#/rules@125"
+                      "$ref": "#/rules@123"
                     },
                     "arguments": []
                   }
@@ -4779,7 +4723,7 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@125"
+                  "$ref": "#/rules@123"
                 },
                 "arguments": []
               },
@@ -4793,7 +4737,7 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
                   {
                     "$type": "RuleCall",
                     "rule": {
-                      "$ref": "#/rules@125"
+                      "$ref": "#/rules@123"
                     },
                     "arguments": []
                   }
@@ -4807,7 +4751,7 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@125"
+                  "$ref": "#/rules@123"
                 },
                 "arguments": []
               },
@@ -4818,7 +4762,7 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@125"
+                  "$ref": "#/rules@123"
                 },
                 "arguments": []
               }
@@ -4830,7 +4774,7 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@125"
+                  "$ref": "#/rules@123"
                 },
                 "arguments": []
               },
@@ -4841,7 +4785,7 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@125"
+                  "$ref": "#/rules@123"
                 },
                 "arguments": []
               }
@@ -4866,7 +4810,7 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@125"
+                "$ref": "#/rules@123"
               },
               "arguments": []
             }
@@ -4942,7 +4886,7 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@125"
+                "$ref": "#/rules@123"
               },
               "arguments": []
             }
@@ -4970,7 +4914,7 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@126"
+                "$ref": "#/rules@124"
               },
               "arguments": []
             }
@@ -4998,7 +4942,7 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@125"
+                "$ref": "#/rules@123"
               },
               "arguments": []
             }
@@ -5026,7 +4970,7 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@126"
+                "$ref": "#/rules@124"
               },
               "arguments": []
             }
@@ -5054,7 +4998,7 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@125"
+                "$ref": "#/rules@123"
               },
               "arguments": []
             }
@@ -5082,51 +5026,10 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@125"
+                "$ref": "#/rules@123"
               },
               "arguments": []
             }
-          }
-        ]
-      },
-      "entry": false,
-      "fragment": false,
-      "parameters": []
-    },
-    {
-      "$type": "ParserRule",
-      "name": "ProtectsDecl",
-      "definition": {
-        "$type": "Group",
-        "elements": [
-          {
-            "$type": "Keyword",
-            "value": "protects"
-          },
-          {
-            "$type": "Assignment",
-            "feature": "kind",
-            "operator": "=",
-            "terminal": {
-              "$type": "RuleCall",
-              "rule": {
-                "$ref": "#/rules@113"
-              },
-              "arguments": []
-            }
-          },
-          {
-            "$type": "Assignment",
-            "feature": "value",
-            "operator": "=",
-            "terminal": {
-              "$type": "RuleCall",
-              "rule": {
-                "$ref": "#/rules@125"
-              },
-              "arguments": []
-            },
-            "cardinality": "?"
           }
         ]
       },
@@ -5148,37 +5051,9 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@125"
+              "$ref": "#/rules@123"
             },
             "arguments": []
-          }
-        ]
-      },
-      "entry": false,
-      "fragment": false,
-      "parameters": []
-    },
-    {
-      "$type": "ParserRule",
-      "name": "GuardDecl",
-      "definition": {
-        "$type": "Group",
-        "elements": [
-          {
-            "$type": "Keyword",
-            "value": "guards"
-          },
-          {
-            "$type": "Assignment",
-            "feature": "action",
-            "operator": "=",
-            "terminal": {
-              "$type": "RuleCall",
-              "rule": {
-                "$ref": "#/rules@93"
-              },
-              "arguments": []
-            }
           }
         ]
       },
@@ -5196,7 +5071,7 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@125"
+              "$ref": "#/rules@123"
             },
             "arguments": []
           },
@@ -5210,7 +5085,7 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@125"
+                  "$ref": "#/rules@123"
                 },
                 "arguments": []
               },
@@ -5300,7 +5175,7 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@119"
+                "$ref": "#/rules@117"
               },
               "arguments": []
             }
@@ -5361,7 +5236,7 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@125"
+                "$ref": "#/rules@123"
               },
               "arguments": []
             }
@@ -5389,7 +5264,7 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@125"
+                "$ref": "#/rules@123"
               },
               "arguments": []
             }
@@ -5417,7 +5292,7 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@125"
+                "$ref": "#/rules@123"
               },
               "arguments": []
             }
@@ -5445,7 +5320,7 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@126"
+                "$ref": "#/rules@124"
               },
               "arguments": []
             }
@@ -5466,7 +5341,7 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@125"
+              "$ref": "#/rules@123"
             },
             "arguments": []
           },
@@ -5480,7 +5355,7 @@ export const ShapeGrammar = (): Grammar => loadedShapeGrammar ?? (loadedShapeGra
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@125"
+                  "$ref": "#/rules@123"
                 },
                 "arguments": []
               }

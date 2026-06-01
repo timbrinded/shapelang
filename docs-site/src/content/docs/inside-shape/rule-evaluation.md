@@ -197,10 +197,10 @@ memory DecisionRefactorConstraint : RefactorConstraint<fn Gateway.derivePolicyDe
   applies_to fn Gateway.derivePolicyDecision
   status Unexplained
   confidence High
-  protects shape CheckOrder
-  guards on_change require ReEvaluation<Self>
+  protects { shape CheckOrder }
+  guards { on_change require ReEvaluation<Self> }
   summary "Previous refactors broke error normalisation."
-  owner GatewayTeam
+  who { owner GatewayTeam }
 }
 ```
 
@@ -229,10 +229,10 @@ memory DecisionRefactorConstraint : RefactorConstraint<fn Gateway.derivePolicyDe
   applies_to fn Gateway.derivePolicyDecision
   status Unexplained
   confidence High
-  protects shape CheckOrder
-  guards on_change require ReEvaluation<Self>
+  protects { shape CheckOrder }
+  guards { on_change require ReEvaluation<Self> }
   summary "Previous refactors broke error normalisation."
-  owner GatewayTeam
+  who { owner GatewayTeam }
 }
 
 reevaluation DecisionShapeRechecked {
