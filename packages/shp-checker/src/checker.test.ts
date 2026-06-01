@@ -4519,7 +4519,7 @@ describe("Shape nested memory guard blocks", () => {
     expect(checkShapeSource(nested).exitCode).toBe(0);
   });
 
-  test("formatter canonicalizes nested blocks to the flat form", () => {
+  test("formatter canonicalizes flat and nested context members to the block form", () => {
     const nestedFormatted = formatShapeSource(nested);
     const flatFormatted = formatShapeSource(flat);
 
@@ -4528,9 +4528,12 @@ describe("Shape nested memory guard blocks", () => {
     if (!nestedFormatted.ok || !flatFormatted.ok) {
       return;
     }
+    // Flat and nested inputs canonicalize to the same grouped block form.
     expect(nestedFormatted.formatted).toBe(flatFormatted.formatted);
-    expect(nestedFormatted.formatted).not.toContain("protects {");
-    expect(nestedFormatted.formatted).not.toContain("who {");
+    expect(nestedFormatted.formatted).toContain("protects {");
+    expect(nestedFormatted.formatted).toContain("guards {");
+    expect(nestedFormatted.formatted).toContain("who {");
+    expect(nestedFormatted.formatted).toContain("when {");
   });
 
   test("nested guards block still enforces a forbid-transform guard", () => {
@@ -4933,7 +4936,8 @@ describe("Shape transform guards", () => {
       return;
     }
 
-    expect(result.formatted).toContain("guards forbid transform ExtractHelper");
+    expect(result.formatted).toContain("guards {");
+    expect(result.formatted).toContain("forbid transform ExtractHelper");
     expect(result.formatted).toContain("    transform ExtractHelper, RemoveDescription");
   });
 
@@ -5829,7 +5833,9 @@ rationale DerivePolicyDecisionInline : ${contextRef("InlineRationale", fnTarget(
   applies_to fn Gateway.derivePolicyDecision
   why CognitiveLocality
   summary "Policy checks remain inline for auditability."
-  owner GatewayTeam
+  who {
+    owner GatewayTeam
+  }
 }
 
 memory DecisionRefactorConstraint : ${contextRef("RefactorConstraint", fnTarget("Gateway.derivePolicyDecision"))} {
@@ -5837,9 +5843,15 @@ memory DecisionRefactorConstraint : ${contextRef("RefactorConstraint", fnTarget(
   status Unexplained
   confidence High
   summary "Previous refactors broke error normalisation."
-  owner GatewayTeam
-  protects shape CheckOrder
-  guards on_change require ${contextRef("ReEvaluation", "Self")}
+  who {
+    owner GatewayTeam
+  }
+  protects {
+    shape CheckOrder
+  }
+  guards {
+    on_change require ${contextRef("ReEvaluation", "Self")}
+  }
 }
 
 reevaluation DecisionShapeRechecked {
@@ -5865,8 +5877,9 @@ reevaluation DecisionShapeRechecked {
       return;
     }
 
-    expect(result.formatted).toContain("  protects description\n");
-    expect(result.formatted).not.toContain("protects description ");
+    // The valueless description canonicalizes into the protects block as a bare
+    // `description` entry (no trailing value).
+    expect(result.formatted).toContain("protects {\n    description\n  }");
   });
 
   test("formats effect candidate syntax canonically", () => {

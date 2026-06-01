@@ -637,97 +637,119 @@ function formatRule(rule: RuleDecl): string {
 }
 
 function formatRationale(rationale: RationaleDecl): string {
-  const members = [...rationale.members]
-    .flatMap((member) =>
-      isWhyDecl(member) ? [`why ${member.reason}`] : formatContextMember(member)
-    )
-    .filter((line) => line.length > 0)
-    .sort(
-      (left, right) =>
-        memberOrder(left, RATIONALE_MEMBER_ORDER) - memberOrder(right, RATIONALE_MEMBER_ORDER) ||
-        compareCodepointStrings(left, right)
-    );
-
+  const specific = rationale.members.filter(isWhyDecl).map((member) => `why ${member.reason}`);
   return block(
     `rationale ${rationale.name} : ${formatContextTypeRef(rationale.contextType)}`,
-    members
+    formatContextMembers(rationale.members, specific, RATIONALE_MEMBER_ORDER)
   );
 }
 
 function formatMemory(memory: MemoryDecl): string {
-  const members = [...memory.members]
-    .flatMap((member) => {
-      if (isStatusDecl(member)) {
-        return [`status ${member.value}`];
+  const specific: string[] = [];
+  for (const member of memory.members) {
+    if (isStatusDecl(member)) {
+      specific.push(`status ${member.value}`);
+    } else if (isConfidenceDecl(member)) {
+      specific.push(`confidence ${member.value}`);
+    } else if (isObservedDecl(member)) {
+      specific.push(`observed ${formatSourceRef(member.ref)}`);
+    } else if (isSensitiveDecl(member)) {
+      specific.push("sensitive");
+    }
+  }
+  return block(
+    `memory ${memory.name} : ${formatContextTypeRef(memory.contextType)}`,
+    formatContextMembers(memory.members, specific, MEMORY_MEMBER_ORDER)
+  );
+}
+
+/**
+ * Canonicalise the shared context members. The grouped block forms are
+ * canonical: protects and guards are aggregated into one `protects { … }` /
+ * `guards { … }` block, and owner/review_by are wrapped in `who { … }` /
+ * `when { … }`. Both the flat and the nested input syntaxes parse, but the
+ * formatter always emits the grouped form, so there is one canonical shape.
+ */
+function formatContextMembers(
+  members: readonly (RationaleMember | MemoryMember)[],
+  specificLines: string[],
+  order: string[]
+): string[] {
+  const lines = [...specificLines];
+  const protects: string[] = [];
+  const guards: string[] = [];
+  let owner: string | undefined;
+  let reviewBy: string | undefined;
+
+  for (const member of members) {
+    if (isAppliesToDecl(member)) {
+      lines.push(`applies_to ${formatTargetRef(member.target)}`);
+    } else if (isSummaryDecl(member)) {
+      lines.push(`summary ${quote(member.value)}`);
+    } else if (isEvidenceLineDecl(member)) {
+      lines.push(`evidence ${formatSourceRef(member.ref)}`);
+    } else if (isOwnerDecl(member)) {
+      owner = member.value;
+    } else if (isReviewByDecl(member)) {
+      reviewBy = member.value;
+    } else if (isProtectsDecl(member)) {
+      protects.push(formatProtectsEntry(member.kind, member.value));
+    } else if (isProtectsBlock(member)) {
+      for (const entry of member.entries) {
+        protects.push(formatProtectsEntry(entry.kind, entry.value));
       }
-      if (isConfidenceDecl(member)) {
-        return [`confidence ${member.value}`];
+    } else if (isGuardDecl(member)) {
+      guards.push(formatGuardActionEntry(member.action));
+    } else if (isGuardsBlock(member)) {
+      for (const entry of member.entries) {
+        guards.push(formatGuardActionEntry(entry));
       }
-      if (isObservedDecl(member)) {
-        return [`observed ${formatSourceRef(member.ref)}`];
+    } else if (isWhoBlock(member)) {
+      if (member.owner) {
+        owner = member.owner.value;
       }
-      if (isSensitiveDecl(member)) {
-        return ["sensitive"];
+    } else if (isWhenBlock(member)) {
+      if (member.date) {
+        reviewBy = member.date.value;
       }
-      return formatContextMember(member);
-    })
+    }
+  }
+
+  if (protects.length > 0) {
+    lines.push(block("protects", commaSeparated([...protects].sort(compareCodepointStrings))));
+  }
+  if (guards.length > 0) {
+    lines.push(block("guards", [...guards].sort(compareCodepointStrings)));
+  }
+  if (owner !== undefined) {
+    lines.push(block("who", [`owner ${owner}`]));
+  }
+  if (reviewBy !== undefined) {
+    lines.push(block("when", [`review_by ${quote(reviewBy)}`]));
+  }
+
+  return lines
     .filter((line) => line.length > 0)
     .sort(
       (left, right) =>
-        memberOrder(left, MEMORY_MEMBER_ORDER) - memberOrder(right, MEMORY_MEMBER_ORDER) ||
-        compareCodepointStrings(left, right)
+        memberOrder(left, order) - memberOrder(right, order) || compareCodepointStrings(left, right)
     );
-
-  return block(`memory ${memory.name} : ${formatContextTypeRef(memory.contextType)}`, members);
 }
 
-// Returns the canonical flat lines for a context member. Nested grouping
-// blocks (#14) are flattened here, so the formatter always emits the flat form.
-function formatContextMember(member: RationaleMember | MemoryMember): string[] {
-  if (isAppliesToDecl(member)) {
-    return [`applies_to ${formatTargetRef(member.target)}`];
-  }
-  if (isSummaryDecl(member)) {
-    return [`summary ${quote(member.value)}`];
-  }
-  if (isOwnerDecl(member)) {
-    return [`owner ${member.value}`];
-  }
-  if (isReviewByDecl(member)) {
-    return [`review_by ${quote(member.value)}`];
-  }
-  if (isProtectsDecl(member)) {
-    return [formatProtectsLine(member.kind, member.value)];
-  }
-  if (isGuardDecl(member)) {
-    return [formatGuardActionLine(member.action)];
-  }
-  if (isEvidenceLineDecl(member)) {
-    return [`evidence ${formatSourceRef(member.ref)}`];
-  }
-  if (isProtectsBlock(member)) {
-    return member.entries.map((entry) => formatProtectsLine(entry.kind, entry.value));
-  }
-  if (isGuardsBlock(member)) {
-    return member.entries.map(formatGuardActionLine);
-  }
-  if (isWhoBlock(member)) {
-    return member.owner ? [`owner ${member.owner.value}`] : [];
-  }
-  if (isWhenBlock(member)) {
-    return member.date ? [`review_by ${quote(member.date.value)}`] : [];
-  }
-  return [];
+function formatProtectsEntry(kind: string, value: string | undefined): string {
+  return value ? `${kind} ${value}` : kind;
 }
 
-function formatProtectsLine(kind: string, value: string | undefined): string {
-  return value ? `protects ${kind} ${value}` : `protects ${kind}`;
-}
-
-function formatGuardActionLine(action: GuardRequireDecl | GuardForbidTransformDecl): string {
+function formatGuardActionEntry(action: GuardRequireDecl | GuardForbidTransformDecl): string {
   return isGuardForbidTransformDecl(action)
-    ? `guards forbid transform ${action.label}`
-    : `guards on_change require ${action.requirement}`;
+    ? `forbid transform ${action.label}`
+    : `on_change require ${action.requirement}`;
+}
+
+/** Append a trailing comma to every entry but the last (ProtectsBlock entries
+ *  are comma-separated). */
+function commaSeparated(entries: string[]): string[] {
+  return entries.map((entry, index) => (index < entries.length - 1 ? `${entry},` : entry));
 }
 
 function formatReevaluation(reevaluation: ReevaluationDecl): string {
@@ -770,8 +792,8 @@ const RATIONALE_MEMBER_ORDER = [
   "applies_to",
   "why",
   "summary",
-  "owner",
-  "review_by",
+  "who",
+  "when",
   "protects",
   "guards",
   "evidence"
@@ -783,8 +805,8 @@ const MEMORY_MEMBER_ORDER = [
   "confidence",
   "sensitive",
   "summary",
-  "owner",
-  "review_by",
+  "who",
+  "when",
   "protects",
   "guards",
   "observed",

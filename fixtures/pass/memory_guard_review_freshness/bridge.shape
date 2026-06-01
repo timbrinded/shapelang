@@ -16,6 +16,10 @@ memory BridgePollingDelayConstraint : RefactorConstraint<fn BridgePoller.pollAtt
   status Unexplained
   confidence High
   summary "Earlier attempts to lower this delay caused intermittent settlement failures."
-  owner BridgeTeam
-  review_by "2020-01-01"
+  who {
+    owner BridgeTeam
+  }
+  when {
+    review_by "2020-01-01"
+  }
 }

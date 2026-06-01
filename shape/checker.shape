@@ -365,9 +365,15 @@ memory BindingDocsCouplingContract : RefactorConstraint<fn ShapeBindings.checkBi
   status Explained
   confidence High
   summary "Bindings enforce review coupling and compare current attestations with normalized repo-relative changed-file paths."
-  owner ShapeMaintainers
-  protects shape DocsCoupling
-  guards on_change require ReEvaluation<Self>
+  who {
+    owner ShapeMaintainers
+  }
+  protects {
+    shape DocsCoupling
+  }
+  guards {
+    on_change require ReEvaluation<Self>
+  }
 }
 
 memory CheckPipelineOrder : CheckOrderRationale<fn ShapeChecker.checkShapeModules> {
@@ -375,9 +381,15 @@ memory CheckPipelineOrder : CheckOrderRationale<fn ShapeChecker.checkShapeModule
   status Explained
   confidence High
   summary "The checker must lower the effective model before semantic rules and coverage/binding checks run."
-  owner ShapeMaintainers
-  protects shape PhaseOrder
-  guards on_change require ReEvaluation<Self>
+  who {
+    owner ShapeMaintainers
+  }
+  protects {
+    shape PhaseOrder
+  }
+  guards {
+    on_change require ReEvaluation<Self>
+  }
 }
 
 memory CoverageCurrentUpdateContract : RefactorConstraint<fn ShapeRuleEngine.checkCoverage> {
@@ -385,9 +397,15 @@ memory CoverageCurrentUpdateContract : RefactorConstraint<fn ShapeRuleEngine.che
   status Explained
   confidence High
   summary "Coverage accepts a source or attestation only when the declaring Shape file matches the current changed-file input after path normalization."
-  owner ShapeMaintainers
-  protects shape CurrentChangeCoverage
-  guards on_change require ReEvaluation<Self>
+  who {
+    owner ShapeMaintainers
+  }
+  protects {
+    shape CurrentChangeCoverage
+  }
+  guards {
+    on_change require ReEvaluation<Self>
+  }
 }
 
 memory DiagnosticContract : RefactorConstraint<fn ShapeDiagnostics.formatDiagnostics> {
@@ -395,9 +413,15 @@ memory DiagnosticContract : RefactorConstraint<fn ShapeDiagnostics.formatDiagnos
   status Explained
   confidence High
   summary "Diagnostics are a product surface and must keep causal paths understandable for reviewers."
-  owner ShapeMaintainers
-  protects shape DiagnosticOutput
-  guards on_change require ReEvaluation<Self>
+  who {
+    owner ShapeMaintainers
+  }
+  protects {
+    shape DiagnosticOutput
+  }
+  guards {
+    on_change require ReEvaluation<Self>
+  }
 }
 
 memory FinalForbidPrecedence : RefactorConstraint<fn ShapeRuleEngine.deriveFinalForbidsForResource> {
@@ -405,9 +429,15 @@ memory FinalForbidPrecedence : RefactorConstraint<fn ShapeRuleEngine.deriveFinal
   status Explained
   confidence High
   summary "Final forbids must remain stronger than component grants, resolve concrete targets deterministically, and cannot be waived by rationale or memory."
-  owner ShapeMaintainers
-  protects shape FinalForbidPrecedence
-  guards on_change require ReEvaluation<Self>
+  who {
+    owner ShapeMaintainers
+  }
+  protects {
+    shape FinalForbidPrecedence
+  }
+  guards {
+    on_change require ReEvaluation<Self>
+  }
 }
 
 memory FreshnessDeterminism : RefactorConstraint<fn ShapeRuleEngine.checkFreshness> {
@@ -415,9 +445,15 @@ memory FreshnessDeterminism : RefactorConstraint<fn ShapeRuleEngine.checkFreshne
   status Explained
   confidence High
   summary "Freshness compares review_by against a caller-injected ISO date, never the system clock, and enforces only ISO YYYY-MM-DD values so checks stay deterministic."
-  owner ShapeMaintainers
-  protects shape DeterministicFreshness
-  guards on_change require ReEvaluation<Self>
+  who {
+    owner ShapeMaintainers
+  }
+  protects {
+    shape DeterministicFreshness
+  }
+  guards {
+    on_change require ReEvaluation<Self>
+  }
 }
 
 memory GuardedChangePrecision : RefactorConstraint<fn ShapeRuleEngine.checkGuardedChanges> {
@@ -425,9 +461,15 @@ memory GuardedChangePrecision : RefactorConstraint<fn ShapeRuleEngine.checkGuard
   status Explained
   confidence High
   summary "Guards fire property-level when every protected property is detectable (a named shape trait or the description), forbid-transform guards fire when a change declares the matching transform intent, and function, component, resource, and relation targets otherwise fall back to coarse modify/remove matching, so existing coarse guards keep their behaviour and final forbids are never waived."
-  owner ShapeMaintainers
-  protects shape GuardedChangePrecision
-  guards on_change require ReEvaluation<Self>
+  who {
+    owner ShapeMaintainers
+  }
+  protects {
+    shape GuardedChangePrecision
+  }
+  guards {
+    on_change require ReEvaluation<Self>
+  }
 }
 
 memory HypercycleWitness : RefactorConstraint<fn ShapeRuleEngine.findHypercycle> {
@@ -435,9 +477,15 @@ memory HypercycleWitness : RefactorConstraint<fn ShapeRuleEngine.findHypercycle>
   status Explained
   confidence High
   summary "Hypercycle diagnostics need a deterministic witness path so reviewers can understand the rejected structural relation."
-  owner ShapeMaintainers
-  protects shape HypercycleWitness
-  guards on_change require ReEvaluation<Self>
+  who {
+    owner ShapeMaintainers
+  }
+  protects {
+    shape HypercycleWitness
+  }
+  guards {
+    on_change require ReEvaluation<Self>
+  }
 }
 
 memory LoweringBeforeRules : CheckOrderRationale<fn ShapeModelLowerer.lowerShapeModules> {
@@ -445,9 +493,15 @@ memory LoweringBeforeRules : CheckOrderRationale<fn ShapeModelLowerer.lowerShape
   status Explained
   confidence High
   summary "Module-scoped declarations, concrete forbid targets, generated candidate evidence, and change declarations must be resolved into the final effective model before derived facts are emitted."
-  owner ShapeMaintainers
-  protects shape EffectiveModelOrder
-  guards on_change require ReEvaluation<Self>
+  who {
+    owner ShapeMaintainers
+  }
+  protects {
+    shape EffectiveModelOrder
+  }
+  guards {
+    on_change require ReEvaluation<Self>
+  }
 }
 
 memory PreludeMetadataContract : RefactorConstraint<fn ShapePreludeRegistry.definePreludeMetadata> {
@@ -455,9 +509,15 @@ memory PreludeMetadataContract : RefactorConstraint<fn ShapePreludeRegistry.defi
   status Explained
   confidence High
   summary "Prelude traits, relation kinds, and context requirements are semantic inputs shared by checker, editor, and authoring surfaces; context requirements derive obligations for function, component, and resource targets, and are merged with user-defined trait require_context obligations during checking."
-  owner ShapeMaintainers
-  protects shape PreludeConsistency
-  guards on_change require ReEvaluation<Self>
+  who {
+    owner ShapeMaintainers
+  }
+  protects {
+    shape PreludeConsistency
+  }
+  guards {
+    on_change require ReEvaluation<Self>
+  }
 }
 
 memory ReevaluationPolicyContract : RefactorConstraint<fn ShapeRuleEngine.checkReevaluations> {
@@ -465,9 +525,15 @@ memory ReevaluationPolicyContract : RefactorConstraint<fn ShapeRuleEngine.checkR
   status Explained
   confidence High
   summary "Reevaluation validation requires structural fields plus an approver when a project policy requires one for a sensitive memory, and validates reviewer/approver against declared roles; approver and role checks stay opt-in so the default reviewer-only path is preserved."
-  owner ShapeMaintainers
-  protects shape ReevaluationValidation
-  guards on_change require ReEvaluation<Self>
+  who {
+    owner ShapeMaintainers
+  }
+  protects {
+    shape ReevaluationValidation
+  }
+  guards {
+    on_change require ReEvaluation<Self>
+  }
 }
 
 memory ShapeSourceNormalizationContract : RefactorConstraint<fn ShapeStringHelpers.normalizeShapeSourcePath> {
@@ -475,9 +541,15 @@ memory ShapeSourceNormalizationContract : RefactorConstraint<fn ShapeStringHelpe
   status Explained
   confidence High
   summary "Source-reference normalization must keep coverage, binding, and analyzer comparisons using the same repo-relative path rules."
-  owner ShapeMaintainers
-  protects shape CurrentChangeCoverage
-  guards on_change require ReEvaluation<Self>
+  who {
+    owner ShapeMaintainers
+  }
+  protects {
+    shape CurrentChangeCoverage
+  }
+  guards {
+    on_change require ReEvaluation<Self>
+  }
 }
 
 memory ShapeStringLiteralContract : RefactorConstraint<fn ShapeStringHelpers.unquoteShapeString> {
@@ -485,9 +557,15 @@ memory ShapeStringLiteralContract : RefactorConstraint<fn ShapeStringHelpers.unq
   status Explained
   confidence High
   summary "Shape string literal unquoting must stay consistent across lowering and formatting."
-  owner ShapeMaintainers
-  protects shape CanonicalFormatting
-  guards on_change require ReEvaluation<Self>
+  who {
+    owner ShapeMaintainers
+  }
+  protects {
+    shape CanonicalFormatting
+  }
+  guards {
+    on_change require ReEvaluation<Self>
+  }
 }
 
 reevaluation BindingCurrentAttestationsRechecked {

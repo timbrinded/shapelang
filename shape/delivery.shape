@@ -564,9 +564,15 @@ memory ReleaseChecksumContract : RefactorConstraint<fn ReleasePipeline.buildRele
   status Explained
   confidence High
   summary "Release archives, bundled parser assets, installer templates, and checksums must stay in sync for binary installation."
-  owner ShapeMaintainers
-  protects shape ReleaseIntegrity
-  guards on_change require ReEvaluation<Self>
+  who {
+    owner ShapeMaintainers
+  }
+  protects {
+    shape ReleaseIntegrity
+  }
+  guards {
+    on_change require ReEvaluation<Self>
+  }
 }
 
 memory ReleaseVersionTagContract : RefactorConstraint<fn CiPipeline.checkReleaseVersion> {
@@ -574,9 +580,15 @@ memory ReleaseVersionTagContract : RefactorConstraint<fn CiPipeline.checkRelease
   status Explained
   confidence High
   summary "Release tags must match the CLI package manifest version before release assets are published."
-  owner ShapeMaintainers
-  protects shape ReleaseVersionIntegrity
-  guards on_change require ReEvaluation<Self>
+  who {
+    owner ShapeMaintainers
+  }
+  protects {
+    shape ReleaseVersionIntegrity
+  }
+  guards {
+    on_change require ReEvaluation<Self>
+  }
 }
 
 reevaluation DocsShapeBlockVerificationRechecked {
