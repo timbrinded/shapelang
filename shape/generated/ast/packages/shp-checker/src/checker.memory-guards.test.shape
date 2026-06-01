@@ -6,71 +6,23 @@ trait GeneratedAstAnchor {
 trait GeneratedCandidate {
 }
 
-resource CheckerMemoryGuardsTestModuleCheckWithFreshnessAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker.memory-guards.test.ts:2495-2497")
-  fingerprint ast.semantic_subtree_v1("sha256:3a8cae72e79eb1e9751838cdbb69f01b306ddd297f5e27ddd248b7e61797ef4e")
-}
-
 resource CheckerMemoryGuardsTestModuleInlineGuardModelAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker.memory-guards.test.ts:434-470")
+  storage ast.anchor("packages/shp-checker/src/checker.memory-guards.test.ts:423-459")
   fingerprint ast.semantic_subtree_v1("sha256:cc794486a57771d9ed86c55e71db0cf285ca1dabbb4c401e7b8479715eb62d79")
 }
 
-resource CheckerMemoryGuardsTestModuleObligationModuleAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker.memory-guards.test.ts:2261-2278")
-  fingerprint ast.semantic_subtree_v1("sha256:5f3c87474e9191764bdbc3d0ecaf165369a16daafc1f27ebb2f0a99c1efcb34c")
-}
-
-resource CheckerMemoryGuardsTestModulePolicyModelAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker.memory-guards.test.ts:907-953")
-  fingerprint ast.semantic_subtree_v1("sha256:7b151bd4b1f367b474cd14032fa1c41e9d7524ac4f0a843d99ddb9df4429f16b")
-}
-
-resource CheckerMemoryGuardsTestModuleRefactorMemorySourceAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker.memory-guards.test.ts:2466-2491")
-  fingerprint ast.semantic_subtree_v1("sha256:83b1eaf43f4990c8db4fa4277e86fb0cd922ab3dc63a838e3dc7c4be95ed40b2")
-}
-
 resource CheckerMemoryGuardsTestModuleRelationGuardModelAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker.memory-guards.test.ts:1737-1799")
+  storage ast.anchor("packages/shp-checker/src/checker.memory-guards.test.ts:896-958")
   fingerprint ast.semantic_subtree_v1("sha256:f8395a6c20d1d608923483e9793a3c88d7637092293d62123901a2f777e5fc0b")
 }
 
-resource CheckerMemoryGuardsTestModuleTransformGuardModelAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker.memory-guards.test.ts:1877-1908")
-  fingerprint ast.semantic_subtree_v1("sha256:2e7a023dd2eb488a70c1c22d7e3d9255bd2c561c4a13ee148e1cce8dc2c77602")
-}
-
 component CheckerMemoryGuardsTestModule : GeneratedCandidate {
-  fn checkWithFreshness
-    source ts("packages/shp-checker/src/checker.memory-guards.test.ts:2495-2497")
-    effects unknown
   fn inlineGuardModel
-    source ts("packages/shp-checker/src/checker.memory-guards.test.ts:434-470")
-    effects unknown
-  fn obligationModule
-    source ts("packages/shp-checker/src/checker.memory-guards.test.ts:2261-2278")
-    effects unknown
-  fn policyModel
-    source ts("packages/shp-checker/src/checker.memory-guards.test.ts:907-953")
-    effects unknown
-  fn refactorMemorySource
-    source ts("packages/shp-checker/src/checker.memory-guards.test.ts:2466-2491")
+    source ts("packages/shp-checker/src/checker.memory-guards.test.ts:423-459")
     effects unknown
   fn relationGuardModel
-    source ts("packages/shp-checker/src/checker.memory-guards.test.ts:1737-1799")
+    source ts("packages/shp-checker/src/checker.memory-guards.test.ts:896-958")
     effects unknown
-  fn transformGuardModel
-    source ts("packages/shp-checker/src/checker.memory-guards.test.ts:1877-1908")
-    effects unknown
-}
-
-relation CheckerMemoryGuardsTestModuleCheckWithFreshnessGeneratedFromCheckerMemoryGuardsTestModuleCheckWithFreshnessAstAnchor {
-  kind generated_from
-  connects CheckerMemoryGuardsTestModule -> CheckerMemoryGuardsTestModuleCheckWithFreshnessAstAnchor
-  roles { CheckerMemoryGuardsTestModule as generated, CheckerMemoryGuardsTestModuleCheckWithFreshnessAstAnchor as syntax }
-  expects CheckerMemoryGuardsTestModuleCheckWithFreshnessAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3a8cae72e79eb1e9751838cdbb69f01b306ddd297f5e27ddd248b7e61797ef4e")
-  summary "fn CheckerMemoryGuardsTestModule.checkWithFreshness generated from typescript function_declaration at packages/shp-checker/src/checker.memory-guards.test.ts:2495-2497."
 }
 
 relation CheckerMemoryGuardsTestModuleInlineGuardModelGeneratedFromCheckerMemoryGuardsTestModuleInlineGuardModelAstAnchor {
@@ -78,31 +30,7 @@ relation CheckerMemoryGuardsTestModuleInlineGuardModelGeneratedFromCheckerMemory
   connects CheckerMemoryGuardsTestModule -> CheckerMemoryGuardsTestModuleInlineGuardModelAstAnchor
   roles { CheckerMemoryGuardsTestModule as generated, CheckerMemoryGuardsTestModuleInlineGuardModelAstAnchor as syntax }
   expects CheckerMemoryGuardsTestModuleInlineGuardModelAstAnchor fingerprint ast.semantic_subtree_v1("sha256:cc794486a57771d9ed86c55e71db0cf285ca1dabbb4c401e7b8479715eb62d79")
-  summary "fn CheckerMemoryGuardsTestModule.inlineGuardModel generated from typescript function_declaration at packages/shp-checker/src/checker.memory-guards.test.ts:434-470."
-}
-
-relation CheckerMemoryGuardsTestModuleObligationModuleGeneratedFromCheckerMemoryGuardsTestModuleObligationModuleAstAnchor {
-  kind generated_from
-  connects CheckerMemoryGuardsTestModule -> CheckerMemoryGuardsTestModuleObligationModuleAstAnchor
-  roles { CheckerMemoryGuardsTestModule as generated, CheckerMemoryGuardsTestModuleObligationModuleAstAnchor as syntax }
-  expects CheckerMemoryGuardsTestModuleObligationModuleAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5f3c87474e9191764bdbc3d0ecaf165369a16daafc1f27ebb2f0a99c1efcb34c")
-  summary "fn CheckerMemoryGuardsTestModule.obligationModule generated from typescript function_declaration at packages/shp-checker/src/checker.memory-guards.test.ts:2261-2278."
-}
-
-relation CheckerMemoryGuardsTestModulePolicyModelGeneratedFromCheckerMemoryGuardsTestModulePolicyModelAstAnchor {
-  kind generated_from
-  connects CheckerMemoryGuardsTestModule -> CheckerMemoryGuardsTestModulePolicyModelAstAnchor
-  roles { CheckerMemoryGuardsTestModule as generated, CheckerMemoryGuardsTestModulePolicyModelAstAnchor as syntax }
-  expects CheckerMemoryGuardsTestModulePolicyModelAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7b151bd4b1f367b474cd14032fa1c41e9d7524ac4f0a843d99ddb9df4429f16b")
-  summary "fn CheckerMemoryGuardsTestModule.policyModel generated from typescript function_declaration at packages/shp-checker/src/checker.memory-guards.test.ts:907-953."
-}
-
-relation CheckerMemoryGuardsTestModuleRefactorMemorySourceGeneratedFromCheckerMemoryGuardsTestModuleRefactorMemorySourceAstAnchor {
-  kind generated_from
-  connects CheckerMemoryGuardsTestModule -> CheckerMemoryGuardsTestModuleRefactorMemorySourceAstAnchor
-  roles { CheckerMemoryGuardsTestModule as generated, CheckerMemoryGuardsTestModuleRefactorMemorySourceAstAnchor as syntax }
-  expects CheckerMemoryGuardsTestModuleRefactorMemorySourceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:83b1eaf43f4990c8db4fa4277e86fb0cd922ab3dc63a838e3dc7c4be95ed40b2")
-  summary "fn CheckerMemoryGuardsTestModule.refactorMemorySource generated from typescript function_declaration at packages/shp-checker/src/checker.memory-guards.test.ts:2466-2491."
+  summary "fn CheckerMemoryGuardsTestModule.inlineGuardModel generated from typescript function_declaration at packages/shp-checker/src/checker.memory-guards.test.ts:423-459."
 }
 
 relation CheckerMemoryGuardsTestModuleRelationGuardModelGeneratedFromCheckerMemoryGuardsTestModuleRelationGuardModelAstAnchor {
@@ -110,15 +38,7 @@ relation CheckerMemoryGuardsTestModuleRelationGuardModelGeneratedFromCheckerMemo
   connects CheckerMemoryGuardsTestModule -> CheckerMemoryGuardsTestModuleRelationGuardModelAstAnchor
   roles { CheckerMemoryGuardsTestModule as generated, CheckerMemoryGuardsTestModuleRelationGuardModelAstAnchor as syntax }
   expects CheckerMemoryGuardsTestModuleRelationGuardModelAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f8395a6c20d1d608923483e9793a3c88d7637092293d62123901a2f777e5fc0b")
-  summary "fn CheckerMemoryGuardsTestModule.relationGuardModel generated from typescript function_declaration at packages/shp-checker/src/checker.memory-guards.test.ts:1737-1799."
-}
-
-relation CheckerMemoryGuardsTestModuleTransformGuardModelGeneratedFromCheckerMemoryGuardsTestModuleTransformGuardModelAstAnchor {
-  kind generated_from
-  connects CheckerMemoryGuardsTestModule -> CheckerMemoryGuardsTestModuleTransformGuardModelAstAnchor
-  roles { CheckerMemoryGuardsTestModule as generated, CheckerMemoryGuardsTestModuleTransformGuardModelAstAnchor as syntax }
-  expects CheckerMemoryGuardsTestModuleTransformGuardModelAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2e7a023dd2eb488a70c1c22d7e3d9255bd2c561c4a13ee148e1cce8dc2c77602")
-  summary "fn CheckerMemoryGuardsTestModule.transformGuardModel generated from typescript function_declaration at packages/shp-checker/src/checker.memory-guards.test.ts:1877-1908."
+  summary "fn CheckerMemoryGuardsTestModule.relationGuardModel generated from typescript function_declaration at packages/shp-checker/src/checker.memory-guards.test.ts:896-958."
 }
 
 implementation CheckerMemoryGuardsTestModuleImpl {

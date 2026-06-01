@@ -255,6 +255,34 @@
       ]
     },
     {
+      "module": "shape.generated.ast.packages.shp_checker.src.checker_context_obligations_test",
+      "path": "shape/generated/ast/packages/shp-checker/src/checker.context-obligations.test.shape",
+      "sources": [
+        "packages/shp-checker/src/checker.context-obligations.test.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.checker_governance_policy_test",
+      "path": "shape/generated/ast/packages/shp-checker/src/checker.governance-policy.test.shape",
+      "sources": [
+        "packages/shp-checker/src/checker.governance-policy.test.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.checker_guard_syntax_test",
+      "path": "shape/generated/ast/packages/shp-checker/src/checker.guard-syntax.test.shape",
+      "sources": [
+        "packages/shp-checker/src/checker.guard-syntax.test.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.checker_memory_freshness_test",
+      "path": "shape/generated/ast/packages/shp-checker/src/checker.memory-freshness.test.shape",
+      "sources": [
+        "packages/shp-checker/src/checker.memory-freshness.test.ts"
+      ]
+    },
+    {
       "module": "shape.generated.ast.packages.shp_checker.src.checker_memory_guards_test",
       "path": "shape/generated/ast/packages/shp-checker/src/checker.memory-guards.test.shape",
       "sources": [
@@ -262,10 +290,24 @@
       ]
     },
     {
+      "module": "shape.generated.ast.packages.shp_checker.src.checker_shape_traits_test",
+      "path": "shape/generated/ast/packages/shp-checker/src/checker.shape-traits.test.shape",
+      "sources": [
+        "packages/shp-checker/src/checker.shape-traits.test.ts"
+      ]
+    },
+    {
       "module": "shape.generated.ast.packages.shp_checker.src.checker_test",
       "path": "shape/generated/ast/packages/shp-checker/src/checker.test.shape",
       "sources": [
         "packages/shp-checker/src/checker.test.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.checker_transform_guards_test",
+      "path": "shape/generated/ast/packages/shp-checker/src/checker.transform-guards.test.shape",
+      "sources": [
+        "packages/shp-checker/src/checker.transform-guards.test.ts"
       ]
     },
     {
