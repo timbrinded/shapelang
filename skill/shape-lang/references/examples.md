@@ -110,6 +110,88 @@ reevaluation DecisionShapeRechecked {
 }
 ```
 
+Component-level shape-trait obligation (also works for `resource`):
+
+```shape
+component Gateway : RefactorSensitive {
+  owns PolicySnapshot
+  grants Read<PolicySnapshot>
+}
+
+memory GatewayBoundary : RefactorConstraint<component Gateway> {
+  applies_to component Gateway
+  status Unexplained
+  confidence High
+  summary "The Gateway boundary isolates policy evaluation."
+  owner GatewayTeam
+}
+```
+
+Project-defined obligation with `require_context`:
+
+```shape
+trait PreserveLocal<T: Fn> {
+  require_context LocalRationale<T> satisfied_by rationale or memory
+}
+```
+
+Transform guard requiring review before a named refactor:
+
+```shape
+memory RenameGuard : DesignRationale<fn Gateway.derivePolicyDecision> {
+  applies_to fn Gateway.derivePolicyDecision
+  status Explained
+  confidence High
+  summary "Public symbol name is referenced by external dashboards."
+  owner GatewayTeam
+  guards forbid transform RenameSymbol
+}
+```
+
+Sensitive memory under an approver policy, with a reevaluation that names an approver:
+
+```shape
+role Security
+role GatewayTeam
+
+policy ReviewPolicy {
+  require approver
+}
+
+memory DecisionConstraint : RefactorConstraint<fn Gateway.derivePolicyDecision> {
+  applies_to fn Gateway.derivePolicyDecision
+  status Unexplained
+  confidence High
+  sensitive
+  summary "Security-sensitive decision path."
+  owner GatewayTeam
+  guards on_change require ReEvaluation<Self>
+}
+
+reevaluation DecisionReviewed {
+  satisfies memory DecisionConstraint
+  outcome Confirmed
+  summary "Reviewed and confirmed; behaviour preserved."
+  evidence test("gateway/decision.test.ts")
+  reviewer GatewayTeam
+  approver Security
+  decided_on "2026-06-02"
+}
+```
+
+Design memory with a freshness deadline (enforced only under `--strict-freshness`):
+
+```shape
+memory BridgeDelayConstraint : RefactorConstraint<fn BridgePoller.pollAttestation> {
+  applies_to fn BridgePoller.pollAttestation
+  status Unexplained
+  confidence High
+  summary "Lowering this delay previously caused settlement failures."
+  owner BridgeTeam
+  review_by "2026-01-01"
+}
+```
+
 Analyzer-backed effect after review:
 
 ```shape
@@ -164,6 +246,19 @@ Attestation hiding a real model update:
 attest no_shape_change {
   source ts("src/audit/purge.ts")
   reason "No shape update needed."
+}
+```
+
+Sensitive memory reevaluated without an approver under an approver policy:
+
+```shape
+reevaluation DecisionReviewed {
+  satisfies memory DecisionConstraint
+  outcome Confirmed
+  summary "Reviewed."
+  evidence test("gateway/decision.test.ts")
+  reviewer GatewayTeam
+  decided_on "2026-06-02"
 }
 ```
 
