@@ -6,12 +6,18 @@ import {
 } from "./checker.ts";
 import { formatShapeSource, type FormatResult } from "./formatter.ts";
 import {
-  isChangeDecl,
+  isAddDeclarationChange,
+  isAddFunctionChange,
   isBindingDecl,
+  isChangeDecl,
   isComponentDecl,
+  type AddableDeclaration,
+  type ChangeEntry,
   type Declaration,
   isFunctionSummary,
   isMemoryDecl,
+  isModifyDeclarationChange,
+  isModifyFunctionChange,
   isRationaleDecl,
   isReevaluationDecl,
   isRelationDecl,
@@ -230,6 +236,14 @@ function definitionLocationForDeclaration(
     if (symbolMatches(declaration.name, symbol, name)) {
       return astNodeToLocation(declaration, symbol);
     }
+    if (isChangeDecl(declaration)) {
+      for (const entry of declaration.entries) {
+        const location = definitionLocationForChangeEntry(entry, symbol, name);
+        if (location) {
+          return location;
+        }
+      }
+    }
   }
 
   if (isRationaleDecl(declaration) || isMemoryDecl(declaration)) {
@@ -255,6 +269,38 @@ function definitionLocationForDeclaration(
   }
 
   return undefined;
+}
+
+function definitionLocationForChangeEntry(
+  entry: ChangeEntry,
+  symbol: string,
+  name: string
+): DefinitionLocation | undefined {
+  if (isAddFunctionChange(entry) || isModifyFunctionChange(entry)) {
+    const functionName = definitionName(entry.target);
+    if (
+      symbolMatches(entry.target, symbol, name) ||
+      (functionName !== undefined && symbolMatches(functionName, symbol, name))
+    ) {
+      return astNodeToLocation(entry, symbol);
+    }
+  }
+
+  if (isAddDeclarationChange(entry) || isModifyDeclarationChange(entry)) {
+    const changedName = namedDeclarationName(entry.declaration);
+    if (changedName !== undefined && symbolMatches(changedName, symbol, name)) {
+      return astNodeToLocation(entry, symbol);
+    }
+    return definitionLocationForDeclaration(entry.declaration, symbol, name);
+  }
+
+  return undefined;
+}
+
+function namedDeclarationName(declaration: AddableDeclaration | Declaration): string | undefined {
+  return "name" in declaration && typeof declaration.name === "string"
+    ? declaration.name
+    : undefined;
 }
 
 function definitionName(symbol: string): string | undefined {

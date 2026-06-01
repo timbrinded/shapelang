@@ -22,7 +22,7 @@ import {
   PRELUDE_CONTEXT_REQUIREMENTS,
   PRELUDE_CONTEXT_RULES
 } from "../prelude.ts";
-import { characterization, lockedIntended, shouldBe } from "./harness.ts";
+import { characterization, lockedIntended } from "./harness.ts";
 
 // A small known source whose declaration positions are counted in the comments
 // to the right. Lines are 1-based; columns are 1-based (column of the first
@@ -154,14 +154,8 @@ describe("#63 #48 regression: definitions inside change entries", () => {
     }
   );
 
-  // FINDING: run against the current implementation, the symbols added INSIDE a
-  // change block (the fn `appendEvent` / `AuditStore.appendEvent`, and the
-  // resource `AuditEvent`) BOTH return `undefined`. The #48 bug is still open:
-  // definitionLocationForDeclaration treats a ChangeDecl as a leaf and never
-  // inspects change.entries. These are recorded as `shouldBe` todos that pin the
-  // EXACT location the fix must produce, so they do not hard-fail the suite.
-  test.todo(
-    shouldBe(
+  test(
+    lockedIntended(
       "a fn added inside a change block resolves to its position inside the change (issue #48)",
       "GitHub issue #48; packages/shp-checker/src/editor.ts definitionLocationForDeclaration"
     ),
@@ -181,8 +175,8 @@ describe("#63 #48 regression: definitions inside change entries", () => {
     }
   );
 
-  test.todo(
-    shouldBe(
+  test(
+    lockedIntended(
       "a resource added inside a change block resolves to its position (issue #48)",
       "GitHub issue #48; packages/shp-checker/src/editor.ts definitionLocationForDeclaration"
     ),
@@ -194,22 +188,6 @@ describe("#63 #48 regression: definitions inside change entries", () => {
         line: 4,
         column: 3
       });
-    }
-  );
-
-  // Characterization of the CURRENT (buggy) behaviour, so the regression is
-  // pinned and visible until #48 lands. When the shouldBe todos above start
-  // passing, these characterizations will fail and must be deleted.
-  test(
-    characterization("change-added symbols currently resolve to undefined", {
-      reason:
-        "definitionLocationForDeclaration does not inspect ChangeDecl.entries, so symbols introduced inside a change block are skipped",
-      followUp: "GitHub issue #48"
-    }),
-    () => {
-      expect(getDefinitionLocation(CHANGE_SOURCE, "AuditStore.appendEvent")).toBeUndefined();
-      expect(getDefinitionLocation(CHANGE_SOURCE, "appendEvent")).toBeUndefined();
-      expect(getDefinitionLocation(CHANGE_RESOURCE_SOURCE, "AuditEvent")).toBeUndefined();
     }
   );
 });

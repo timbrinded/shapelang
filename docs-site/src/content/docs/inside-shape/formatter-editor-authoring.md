@@ -98,6 +98,8 @@ The editor helpers expose building blocks that a future language server can use:
 
 These helpers use the same parser and checker as the CLI. That is important: an editor should not have a softer or different understanding of Shape than CI.
 
+Definition lookup also walks `change` entries, so declarations and functions introduced by `add` or `modify` entries resolve through the same editor surface as global declarations.
+
 ```mermaid
 flowchart TD
   A["open document"] --> B["parseShapeModule"]
