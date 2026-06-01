@@ -19,15 +19,6 @@ export async function defaultShapeFiles(): Promise<string[]> {
   return [...files].sort();
 }
 
-/**
- * Today's date as an ISO `YYYY-MM-DD` string for freshness checking. The clock
- * is read only here at the CLI boundary; the checker stays deterministic and
- * receives the date explicitly.
- */
-export function isoToday(): string {
-  return new Date().toISOString().slice(0, 10);
-}
-
 export async function readChangedFiles(path: string): Promise<string[]> {
   const text = await readCliTextFile(path);
   return text

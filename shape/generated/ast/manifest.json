@@ -528,6 +528,13 @@
       ]
     },
     {
+      "module": "shape.generated.ast.packages.shp_cli.src.freshness",
+      "path": "shape/generated/ast/packages/shp-cli/src/freshness.shape",
+      "sources": [
+        "packages/shp-cli/src/freshness.ts"
+      ]
+    },
+    {
       "module": "shape.generated.ast.packages.shp_cli.src.index_test",
       "path": "shape/generated/ast/packages/shp-cli/src/index.test.shape",
       "sources": [

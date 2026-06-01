@@ -677,6 +677,39 @@ describe("shp CLI", () => {
     expect(result.stderr).toContain("review_by date 2020-01-01");
   });
 
+  test("enforces freshness against an explicit --as-of date deterministically", async () => {
+    const stale = await runCli([
+      "obligations",
+      "--as-of",
+      "2026-05-30",
+      "fixtures/pass/memory_guard_review_freshness/bridge.shape"
+    ]);
+    expect(stale.exitCode).toBe(0);
+    expect(stale.stdout).toContain(
+      "memory BridgePollingDelayConstraint review_by 2020-01-01 is before 2026-05-30"
+    );
+
+    const fresh = await runCli([
+      "obligations",
+      "--as-of",
+      "2019-01-01",
+      "fixtures/pass/memory_guard_review_freshness/bridge.shape"
+    ]);
+    expect(fresh.exitCode).toBe(0);
+    expect(fresh.stdout).not.toContain("stale design memory");
+  });
+
+  test("rejects an --as-of value that is not a real ISO date", async () => {
+    const result = await runCli([
+      "obligations",
+      "--as-of",
+      "2026-02-30",
+      "fixtures/pass/memory_guard_review_freshness/bridge.shape"
+    ]);
+    expect(result.exitCode).not.toBe(0);
+    expect(result.stderr).toContain("--as-of expects an ISO YYYY-MM-DD date");
+  });
+
   test("runs source analyzer with shape comparison", async () => {
     const result = await runCli([
       "analyze",

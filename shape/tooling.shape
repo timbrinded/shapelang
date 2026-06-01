@@ -334,10 +334,10 @@ component ShpCli {
         evidence ts("packages/shp-cli/src/shape-files.ts")
     }
   fn isoToday : RefactorSensitive
-    source ts("packages/shp-cli/src/shape-files.ts#isoToday")
+    source ts("packages/shp-cli/src/freshness.ts#isoToday")
     effects complete {
       Read<SystemClock>
-        evidence ts("packages/shp-cli/src/shape-files.ts")
+        evidence ts("packages/shp-cli/src/freshness.ts")
     }
   fn main : ProtectedCheckOrder
     source ts("packages/shp-cli/src/index.ts#main")
@@ -414,6 +414,8 @@ component ShpCli {
         evidence ts("packages/shp-cli/src/commands/analyze/impl.ts")
       Read<LanguageSource>
         evidence ts("packages/shp-cli/src/commands/ast/impl.ts")
+      Read<SystemClock>
+        evidence ts("packages/shp-cli/src/freshness.ts")
     }
   fn updateInstalledBinary : RefactorSensitive
     source ts("packages/shp-cli/src/commands/update/impl.ts#update")

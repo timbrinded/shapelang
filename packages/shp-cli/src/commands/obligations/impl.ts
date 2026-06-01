@@ -1,9 +1,11 @@
 import { listShapeObligations } from "@shape/shp-checker";
 import type { CliContext } from "../../context";
+import { resolveFreshnessDate } from "../../freshness";
 import { stdout } from "../../io";
-import { defaultShapeFiles, isoToday, parseModules } from "../../shape-files";
+import { defaultShapeFiles, parseModules } from "../../shape-files";
 
 export type ObligationsFlags = {
+  readonly asOf?: string;
   readonly strictFreshness?: boolean;
 };
 
@@ -14,6 +16,5 @@ export default async function obligations(
 ): Promise<void> {
   const files = providedFiles.length > 0 ? providedFiles : await defaultShapeFiles();
   const modules = await parseModules(files);
-  const freshnessDate = flags.strictFreshness ? isoToday() : undefined;
-  stdout(this, listShapeObligations(modules, { freshnessDate }));
+  stdout(this, listShapeObligations(modules, { freshnessDate: resolveFreshnessDate(flags) }));
 }

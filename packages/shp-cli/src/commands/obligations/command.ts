@@ -7,10 +7,17 @@ export const obligationsCommand = buildCommand<ObligationsFlags, string[], CliCo
   loader: () => import("./impl"),
   parameters: {
     flags: {
+      asOf: {
+        kind: "parsed",
+        parse: (input: string) => input,
+        optional: true,
+        brief: "Freshness reference date (ISO YYYY-MM-DD); also lists design memory whose review_by is before it.",
+        placeholder: "YYYY-MM-DD"
+      },
       strictFreshness: {
         kind: "boolean",
         optional: true,
-        brief: "Also list design memory whose review_by date is before today."
+        brief: "Shorthand for --as-of today (UTC); also lists design memory whose review_by is before today."
       }
     },
     positional: fileArguments()
@@ -19,7 +26,7 @@ export const obligationsCommand = buildCommand<ObligationsFlags, string[], CliCo
     brief: "List open Shape obligations.",
     customUsage: [
       {
-        input: "[--strict-freshness] [files...]",
+        input: "[--as-of YYYY-MM-DD | --strict-freshness] [files...]",
         brief: "List open design-memory obligations from checker diagnostics."
       }
     ]
