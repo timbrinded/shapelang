@@ -745,44 +745,65 @@ export function isGrantsDecl(item: unknown): item is GrantsDecl {
     return reflection.isInstance(item, GrantsDecl.$type);
 }
 
+export type GuardActionDecl = GuardForbidTransformDecl | GuardRequireDecl;
+
+export const GuardActionDecl = {
+    $type: 'GuardActionDecl'
+} as const;
+
+export function isGuardActionDecl(item: unknown): item is GuardActionDecl {
+    return reflection.isInstance(item, GuardActionDecl.$type);
+}
+
 export interface GuardDecl extends langium.AstNode {
     readonly $container: MemoryDecl | RationaleDecl;
     readonly $type: 'GuardDecl';
-    forbiddenTransform?: string;
-    requirement?: ContextTypeName;
+    action: GuardActionDecl;
 }
 
 export const GuardDecl = {
     $type: 'GuardDecl',
-    forbiddenTransform: 'forbiddenTransform',
-    requirement: 'requirement'
+    action: 'action'
 } as const;
 
 export function isGuardDecl(item: unknown): item is GuardDecl {
     return reflection.isInstance(item, GuardDecl.$type);
 }
 
-export interface GuardEntry extends langium.AstNode {
-    readonly $container: GuardsBlock;
-    readonly $type: 'GuardEntry';
-    forbiddenTransform?: string;
-    requirement?: ContextTypeName;
+export interface GuardForbidTransformDecl extends langium.AstNode {
+    readonly $container: GuardDecl | GuardsBlock;
+    readonly $type: 'GuardForbidTransformDecl';
+    label: string;
 }
 
-export const GuardEntry = {
-    $type: 'GuardEntry',
-    forbiddenTransform: 'forbiddenTransform',
+export const GuardForbidTransformDecl = {
+    $type: 'GuardForbidTransformDecl',
+    label: 'label'
+} as const;
+
+export function isGuardForbidTransformDecl(item: unknown): item is GuardForbidTransformDecl {
+    return reflection.isInstance(item, GuardForbidTransformDecl.$type);
+}
+
+export interface GuardRequireDecl extends langium.AstNode {
+    readonly $container: GuardDecl | GuardsBlock;
+    readonly $type: 'GuardRequireDecl';
+    requirement: ContextTypeName;
+}
+
+export const GuardRequireDecl = {
+    $type: 'GuardRequireDecl',
     requirement: 'requirement'
 } as const;
 
-export function isGuardEntry(item: unknown): item is GuardEntry {
-    return reflection.isInstance(item, GuardEntry.$type);
+export function isGuardRequireDecl(item: unknown): item is GuardRequireDecl {
+    return reflection.isInstance(item, GuardRequireDecl.$type);
 }
 
 export interface GuardsBlock extends langium.AstNode {
     readonly $container: MemoryDecl | RationaleDecl;
     readonly $type: 'GuardsBlock';
-    entries: Array<GuardEntry>;
+    entries: Array<GuardActionDecl>;
 }
 
 export const GuardsBlock = {
@@ -1964,8 +1985,10 @@ export type ShapeAstType = {
     FunctionRequiresDecl: FunctionRequiresDecl
     FunctionSummary: FunctionSummary
     GrantsDecl: GrantsDecl
+    GuardActionDecl: GuardActionDecl
     GuardDecl: GuardDecl
-    GuardEntry: GuardEntry
+    GuardForbidTransformDecl: GuardForbidTransformDecl
+    GuardRequireDecl: GuardRequireDecl
     GuardsBlock: GuardsBlock
     ImplementationDecl: ImplementationDecl
     ImplementationMember: ImplementationMember
@@ -2470,29 +2493,38 @@ export class ShapeAstReflection extends langium.AbstractAstReflection {
             },
             superTypes: [ComponentMember.$type]
         },
+        GuardActionDecl: {
+            name: GuardActionDecl.$type,
+            properties: {
+            },
+            superTypes: []
+        },
         GuardDecl: {
             name: GuardDecl.$type,
             properties: {
-                forbiddenTransform: {
-                    name: GuardDecl.forbiddenTransform
-                },
-                requirement: {
-                    name: GuardDecl.requirement
+                action: {
+                    name: GuardDecl.action
                 }
             },
             superTypes: [MemoryMember.$type, RationaleMember.$type]
         },
-        GuardEntry: {
-            name: GuardEntry.$type,
+        GuardForbidTransformDecl: {
+            name: GuardForbidTransformDecl.$type,
             properties: {
-                forbiddenTransform: {
-                    name: GuardEntry.forbiddenTransform
-                },
-                requirement: {
-                    name: GuardEntry.requirement
+                label: {
+                    name: GuardForbidTransformDecl.label
                 }
             },
-            superTypes: []
+            superTypes: [GuardActionDecl.$type]
+        },
+        GuardRequireDecl: {
+            name: GuardRequireDecl.$type,
+            properties: {
+                requirement: {
+                    name: GuardRequireDecl.requirement
+                }
+            },
+            superTypes: [GuardActionDecl.$type]
         },
         GuardsBlock: {
             name: GuardsBlock.$type,

@@ -341,11 +341,16 @@ ProtectsEntry:
     kind=ProtectsPropertyKind (value=ID)?;
 
 GuardsBlock:
-    'guards' '{' entries+=GuardEntry* '}';
+    'guards' '{' entries+=GuardActionDecl* '}';
 
-GuardEntry:
-    'on_change' 'require' requirement=ContextTypeName
-  | 'forbid' 'transform' forbiddenTransform=ID;
+GuardActionDecl:
+    GuardRequireDecl | GuardForbidTransformDecl;
+
+GuardRequireDecl:
+    'on_change' 'require' requirement=ContextTypeName;
+
+GuardForbidTransformDecl:
+    'forbid' 'transform' label=ID;
 
 WhoBlock:
     'who' '{' owner=OwnerDecl? '}';
@@ -405,10 +410,7 @@ ProtectsPropertyKind returns string:
     'description' | ID;
 
 GuardDecl:
-    'guards' (
-        'on_change' 'require' requirement=ContextTypeName
-      | 'forbid' 'transform' forbiddenTransform=ID
-    );
+    'guards' action=GuardActionDecl;
 
 ContextTypeName returns string:
     ID ('<' ID '>')?;

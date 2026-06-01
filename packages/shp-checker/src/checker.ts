@@ -13,6 +13,8 @@ import type {
   EffectTerm,
   FingerprintDecl,
   FunctionSummary,
+  GuardForbidTransformDecl,
+  GuardRequireDecl,
   ImplementationDecl,
   MemoryDecl,
   MemoryMember,
@@ -68,6 +70,7 @@ import {
   isFunctionSummary,
   isGrantsDecl,
   isGuardDecl,
+  isGuardForbidTransformDecl,
   isGuardsBlock,
   isImplementationDecl,
   isMemoryDecl,
@@ -2840,7 +2843,7 @@ function lowerContextMember(
     return true;
   }
   if (isGuardDecl(member)) {
-    pushGuard(info, kind, member.requirement, member.forbiddenTransform, context);
+    pushGuard(info, kind, member.action, context);
     return true;
   }
   if (isEvidenceLineDecl(member)) {
@@ -2856,7 +2859,7 @@ function lowerContextMember(
   }
   if (isGuardsBlock(member)) {
     for (const entry of member.entries) {
-      pushGuard(info, kind, entry.requirement, entry.forbiddenTransform, context);
+      pushGuard(info, kind, entry, context);
     }
     return true;
   }
@@ -2906,24 +2909,23 @@ function pushProtects(
 function pushGuard(
   info: ContextObjectInfo,
   kind: ContextKind,
-  requirement: string | undefined,
-  forbiddenTransform: string | undefined,
+  action: GuardRequireDecl | GuardForbidTransformDecl,
   context: LoweringContext
 ): void {
-  if (forbiddenTransform) {
+  if (isGuardForbidTransformDecl(action)) {
     info.forbiddenTransforms.push({
-      label: forbiddenTransform,
+      label: action.label,
       provenance: provenance(
         context.filePath,
-        `${kind} ${info.name} guards forbid transform ${forbiddenTransform}`
+        `${kind} ${info.name} guards forbid transform ${action.label}`
       )
     });
-  } else if (requirement) {
+  } else {
     info.guards.push({
-      requirement,
+      requirement: action.requirement,
       provenance: provenance(
         context.filePath,
-        `${kind} ${info.name} guards on_change require ${requirement}`
+        `${kind} ${info.name} guards on_change require ${action.requirement}`
       )
     });
   }

@@ -13,6 +13,8 @@ import type {
   FingerprintDecl,
   FunctionMember,
   FunctionSummary,
+  GuardForbidTransformDecl,
+  GuardRequireDecl,
   ImplementationDecl,
   MemoryDecl,
   MemoryMember,
@@ -61,6 +63,7 @@ import {
   isFunctionSummary,
   isGrantsDecl,
   isGuardDecl,
+  isGuardForbidTransformDecl,
   isGuardsBlock,
   isImplementationDecl,
   isMemoryDecl,
@@ -697,7 +700,7 @@ function formatContextMember(member: RationaleMember | MemoryMember): string[] {
     return [formatProtectsLine(member.kind, member.value)];
   }
   if (isGuardDecl(member)) {
-    return [formatGuardLine(member.requirement, member.forbiddenTransform)];
+    return [formatGuardActionLine(member.action)];
   }
   if (isEvidenceLineDecl(member)) {
     return [`evidence ${formatSourceRef(member.ref)}`];
@@ -706,9 +709,7 @@ function formatContextMember(member: RationaleMember | MemoryMember): string[] {
     return member.entries.map((entry) => formatProtectsLine(entry.kind, entry.value));
   }
   if (isGuardsBlock(member)) {
-    return member.entries.map((entry) =>
-      formatGuardLine(entry.requirement, entry.forbiddenTransform)
-    );
+    return member.entries.map(formatGuardActionLine);
   }
   if (isWhoBlock(member)) {
     return member.owner ? [`owner ${member.owner.value}`] : [];
@@ -723,13 +724,10 @@ function formatProtectsLine(kind: string, value: string | undefined): string {
   return value ? `protects ${kind} ${value}` : `protects ${kind}`;
 }
 
-function formatGuardLine(
-  requirement: string | undefined,
-  forbiddenTransform: string | undefined
-): string {
-  return forbiddenTransform
-    ? `guards forbid transform ${forbiddenTransform}`
-    : `guards on_change require ${requirement}`;
+function formatGuardActionLine(action: GuardRequireDecl | GuardForbidTransformDecl): string {
+  return isGuardForbidTransformDecl(action)
+    ? `guards forbid transform ${action.label}`
+    : `guards on_change require ${action.requirement}`;
 }
 
 function formatReevaluation(reevaluation: ReevaluationDecl): string {
