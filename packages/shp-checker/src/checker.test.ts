@@ -42,7 +42,11 @@ import {
 } from "./ast-generation-core.ts";
 import { signatureText } from "./ast-generation-tokens.ts";
 import { shapeReservedWords, stableJson, stableShapeId } from "./ast-generation-utils.ts";
-import { PRELUDE_CONTEXT_REQUIREMENTS, PRELUDE_RELATION_KIND_NAMES } from "./prelude.ts";
+import {
+  PRELUDE_CONTEXT_REQUIREMENTS,
+  PRELUDE_CONTEXT_RULES,
+  PRELUDE_RELATION_KIND_NAMES
+} from "./prelude.ts";
 import { detectLinuxMuslRuntime } from "./ast-generation.ts";
 
 const repoRoot = resolve(import.meta.dir, "../../..");
@@ -5216,218 +5220,50 @@ describe("Shape transform guards", () => {
 });
 
 describe("Shape component and resource shape traits", () => {
-  test("requires a RefactorConstraint memory for a RefactorSensitive component", () => {
-    const missing = checkShapeSource(`
-      module gateway
+  // The component/resource obligation matrix is driven from the prelude rule
+  // table, so it protects the data model instead of duplicating it by hand.
+  // Genuinely special cases (satisfied_by enforcement, semantic traits, derived
+  // facts) stay as bespoke tests below.
+  function obligationModule(
+    targetKind: "component" | "resource",
+    trait: string,
+    context?: { contextType: string; satisfiedBy: "memory" | "rationale" }
+  ): string {
+    const targetRef = `${targetKind} Subject`;
+    const subject =
+      targetKind === "component"
+        ? `resource Backing\ncomponent Subject : ${trait} { owns Backing grants Read<Backing> fn act effects complete { Read<Backing> } }`
+        : `resource Subject : ${trait}\ncomponent Holder { owns Subject grants Read<Subject> fn act effects complete { Read<Subject> } }`;
+    const ref = contextRef(context?.contextType ?? "", targetRef);
+    const satisfier = !context
+      ? ""
+      : context.satisfiedBy === "memory"
+        ? `\nmemory SubjectContext : ${ref} { applies_to ${targetRef} status Unexplained confidence High summary "Documented obligation." owner ProbeTeam }`
+        : `\nrationale SubjectContext : ${ref} { applies_to ${targetRef} why DesignChoice summary "Documented obligation." owner ProbeTeam }`;
+    return `module probe\n${subject}${satisfier}\n`;
+  }
 
-      resource PolicySnapshot
+  const obligationCases = PRELUDE_CONTEXT_RULES.flatMap((rule) =>
+    rule.targetKinds
+      .filter((targetKind): targetKind is "component" | "resource" => targetKind !== "fn")
+      .map((targetKind) => ({ rule, targetKind }))
+  );
 
-      component Gateway : RefactorSensitive {
-        owns PolicySnapshot
-        grants Read<PolicySnapshot>
-        fn read
-          effects complete {
-            Read<PolicySnapshot>
-          }
-      }
-    `);
-    const missingOutput = formatDiagnostics(missing);
+  for (const { rule, targetKind } of obligationCases) {
+    test(`requires ${rule.contextType} context for a ${rule.trait} ${targetKind}`, () => {
+      const missing = checkShapeSource(obligationModule(targetKind, rule.trait));
+      const missingOutput = formatDiagnostics(missing);
+      expect(missing.exitCode).toBe(1);
+      expect(missingOutput).toContain(`${targetKind} Subject has shape ${rule.trait}`);
+      expect(missingOutput).toContain(contextRef(rule.contextType, `${targetKind} Subject`));
 
-    expect(missing.exitCode).toBe(1);
-    expect(missingOutput).toContain("missing required context");
-    expect(missingOutput).toContain("component Gateway has shape RefactorSensitive");
-    expect(missingOutput).toContain(contextRef("RefactorConstraint", "component Gateway"));
-
-    const satisfied = checkShapeSource(`
-      module gateway
-
-      resource PolicySnapshot
-
-      component Gateway : RefactorSensitive {
-        owns PolicySnapshot
-        grants Read<PolicySnapshot>
-        fn read
-          effects complete {
-            Read<PolicySnapshot>
-          }
-      }
-
-      memory GatewayShapeConstraint : ${contextRef("RefactorConstraint", "component Gateway")} {
-        applies_to component Gateway
-        status Unexplained
-        confidence High
-        summary "The Gateway boundary isolates policy evaluation from transport."
-        owner GatewayTeam
-      }
-    `);
-
-    expect(satisfied.exitCode).toBe(0);
-  });
-
-  test("requires a RefactorConstraint memory for a RefactorSensitive resource", () => {
-    const missing = checkShapeSource(`
-      module audit
-
-      resource AuditEvent : RefactorSensitive
-
-      component AuditStore {
-        owns AuditEvent
-        grants Read<AuditEvent>
-        fn read
-          effects complete {
-            Read<AuditEvent>
-          }
-      }
-    `);
-    const missingOutput = formatDiagnostics(missing);
-
-    expect(missing.exitCode).toBe(1);
-    expect(missingOutput).toContain("resource AuditEvent has shape RefactorSensitive");
-    expect(missingOutput).toContain(contextRef("RefactorConstraint", "resource AuditEvent"));
-
-    const satisfied = checkShapeSource(`
-      module audit
-
-      resource AuditEvent : RefactorSensitive
-
-      component AuditStore {
-        owns AuditEvent
-        grants Read<AuditEvent>
-        fn read
-          effects complete {
-            Read<AuditEvent>
-          }
-      }
-
-      memory AuditEventLayout : ${contextRef("RefactorConstraint", "resource AuditEvent")} {
-        applies_to resource AuditEvent
-        status Explained
-        confidence High
-        summary "External auditors depend on the AuditEvent field layout."
-        owner AuditTeam
-      }
-    `);
-
-    expect(satisfied.exitCode).toBe(0);
-  });
-
-  test("satisfies a NonIdiomatic component with a rationale", () => {
-    const result = checkShapeSource(`
-      module gateway
-
-      resource PolicySnapshot
-
-      component Gateway : NonIdiomatic {
-        owns PolicySnapshot
-        grants Read<PolicySnapshot>
-        fn read
-          effects complete {
-            Read<PolicySnapshot>
-          }
-      }
-
-      rationale GatewayDesign : ${contextRef("DesignRationale", "component Gateway")} {
-        applies_to component Gateway
-        why LegacyCompatibility
-        summary "Gateway keeps a non-idiomatic facade for the legacy transport."
-        owner GatewayTeam
-      }
-    `);
-
-    expect(result.exitCode).toBe(0);
-  });
-
-  test("requires a TestOnlyPurpose rationale for a TestOnly component", () => {
-    const missing = checkShapeSource(`
-      module e2e
-
-      resource Fixture
-
-      component E2EHarness : TestOnly {
-        owns Fixture
-        grants Read<Fixture>
-        fn seed
-          effects complete {
-            Read<Fixture>
-          }
-      }
-    `);
-    const missingOutput = formatDiagnostics(missing);
-
-    expect(missing.exitCode).toBe(1);
-    expect(missingOutput).toContain("component E2EHarness has shape TestOnly");
-    expect(missingOutput).toContain(contextRef("TestOnlyPurpose", "component E2EHarness"));
-
-    const satisfied = checkShapeSource(`
-      module e2e
-
-      resource Fixture
-
-      component E2EHarness : TestOnly {
-        owns Fixture
-        grants Read<Fixture>
-        fn seed
-          effects complete {
-            Read<Fixture>
-          }
-      }
-
-      rationale E2EHarnessPurpose : ${contextRef("TestOnlyPurpose", "component E2EHarness")} {
-        applies_to component E2EHarness
-        why E2ETesting
-        summary "E2EHarness exists only to drive end-to-end fixtures."
-        owner QaTeam
-      }
-    `);
-
-    expect(satisfied.exitCode).toBe(0);
-  });
-
-  test("satisfies a NonIdiomatic resource with a rationale", () => {
-    const missing = checkShapeSource(`
-      module legacy
-
-      resource LegacyRecord : NonIdiomatic
-
-      component LegacyStore {
-        owns LegacyRecord
-        grants Read<LegacyRecord>
-        fn read
-          effects complete {
-            Read<LegacyRecord>
-          }
-      }
-    `);
-    const missingOutput = formatDiagnostics(missing);
-
-    expect(missing.exitCode).toBe(1);
-    expect(missingOutput).toContain("resource LegacyRecord has shape NonIdiomatic");
-    expect(missingOutput).toContain(contextRef("DesignRationale", "resource LegacyRecord"));
-
-    const satisfied = checkShapeSource(`
-      module legacy
-
-      resource LegacyRecord : NonIdiomatic
-
-      component LegacyStore {
-        owns LegacyRecord
-        grants Read<LegacyRecord>
-        fn read
-          effects complete {
-            Read<LegacyRecord>
-          }
-      }
-
-      rationale LegacyRecordShape : ${contextRef("DesignRationale", "resource LegacyRecord")} {
-        applies_to resource LegacyRecord
-        why ExternalProtocolConstraint
-        summary "LegacyRecord mirrors a non-idiomatic upstream wire format."
-        owner LegacyTeam
-      }
-    `);
-
-    expect(satisfied.exitCode).toBe(0);
-  });
+      const satisfiedBy = rule.satisfiedBy.includes("rationale") ? "rationale" : "memory";
+      const satisfied = checkShapeSource(
+        obligationModule(targetKind, rule.trait, { contextType: rule.contextType, satisfiedBy })
+      );
+      expect(satisfied.exitCode).toBe(0);
+    });
+  }
 
   test("does not let a rationale satisfy a memory-only RefactorSensitive obligation", () => {
     const result = checkShapeSource(`
