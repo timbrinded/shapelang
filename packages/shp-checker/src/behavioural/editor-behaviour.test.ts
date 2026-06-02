@@ -75,7 +75,7 @@ describe("#63 editor go-to-definition exact positions", () => {
   test(
     lockedIntended(
       "qualified Component.fn resolves to the EXACT member position in the right scope",
-      "packages/shp-checker/src/editor.ts definitionLocationForDeclaration component branch"
+      "packages/shp-checker/src/editor.ts editorSymbolsForDeclaration component branch"
     ),
     () => {
       // Derivation: in KNOWN_SOURCE the member `fn record` is line 7; the `fn`
@@ -114,8 +114,8 @@ describe("#63 editor go-to-definition exact positions", () => {
 });
 
 describe("#63 #48 regression: definitions inside change entries", () => {
-  // A change block that ADDS a fn and a resource. The change NAME resolves
-  // today; the symbols introduced INSIDE the change do not (GitHub issue #48).
+  // A change block that ADDS a fn. The change NAME resolves separately from the
+  // symbols introduced INSIDE the change (GitHub issue #48).
   const CHANGE_SOURCE = [
     "module m", // line 1
     "", // line 2
@@ -138,10 +138,72 @@ describe("#63 #48 regression: definitions inside change entries", () => {
     "}" // line 5
   ].join("\n");
 
+  const CHANGE_COMPONENT_SOURCE = [
+    "module m", // line 1
+    "", // line 2
+    "change AddReporter {", // line 3
+    "  add component Reporter {", // line 4, "component" starts at column 7
+    "    fn render", // line 5, "fn" starts at column 5
+    "      effects unknown", // line 6
+    "  }", // line 7
+    "}" // line 8
+  ].join("\n");
+
+  const CROSS_MODULE_CHANGE_SOURCE = [
+    "module m", // line 1
+    "", // line 2
+    "change AddQuery {", // line 3
+    "  add fn infra::DB.query", // line 4, "add" starts at column 3
+    "    effects unknown", // line 5
+    "}" // line 6
+  ].join("\n");
+
+  const MODIFY_SHADOW_SOURCE = [
+    "module m", // line 1
+    "", // line 2
+    "change Tweak {", // line 3
+    "  modify fn AuditStore.appendEvent", // line 4
+    "    effects unknown", // line 5
+    "}", // line 6
+    "", // line 7
+    "component AuditStore {", // line 8
+    "  fn appendEvent", // line 9, "fn" starts at column 3
+    "    effects unknown", // line 10
+    "}" // line 11
+  ].join("\n");
+
+  const CHANGE_NON_DEFINITION_SOURCE = [
+    "module m", // line 1
+    "", // line 2
+    "change RemoveGhost {", // line 3
+    "  remove fn Ghost.gone", // line 4
+    "  remove resource Ghost", // line 5
+    "  modify fn Ghost.stillGone", // line 6
+    "    effects unknown", // line 7
+    "  modify resource Ghost", // line 8
+    "}" // line 9
+  ].join("\n");
+
+  const IMPLEMENTATION_SOURCE = [
+    "module m", // line 1
+    "", // line 2
+    "implementation AuditImpl {", // line 3, "implementation" starts at column 1
+    "}" // line 4
+  ].join("\n");
+
+  const CHANGE_IMPLEMENTATION_SOURCE = [
+    "module m", // line 1
+    "", // line 2
+    "change AddImpl {", // line 3
+    "  add implementation AuditImpl {", // line 4, "implementation" starts at column 7
+    "  }", // line 5
+    "}" // line 6
+  ].join("\n");
+
   test(
     lockedIntended(
       "the change declaration name itself resolves to its EXACT position",
-      "packages/shp-checker/src/editor.ts isChangeDecl top-level name branch (PR #47)"
+      "packages/shp-checker/src/editor.ts editorSymbolsForDeclaration change branch (PR #47)"
     ),
     () => {
       // Derivation: `change AddAudit {` is line 8 of CHANGE_SOURCE; the `change`
@@ -157,7 +219,7 @@ describe("#63 #48 regression: definitions inside change entries", () => {
   test(
     lockedIntended(
       "a fn added inside a change block resolves to its position inside the change (issue #48)",
-      "GitHub issue #48; packages/shp-checker/src/editor.ts definitionLocationForDeclaration"
+      "GitHub issue #48; packages/shp-checker/src/editor.ts editorSymbolsForChangeEntry"
     ),
     () => {
       // Derivation: `add fn AuditStore.appendEvent` is line 9 of CHANGE_SOURCE;
@@ -178,16 +240,129 @@ describe("#63 #48 regression: definitions inside change entries", () => {
   test(
     lockedIntended(
       "a resource added inside a change block resolves to its position (issue #48)",
-      "GitHub issue #48; packages/shp-checker/src/editor.ts definitionLocationForDeclaration"
+      "GitHub issue #48; packages/shp-checker/src/editor.ts editorSymbolsForDeclaration"
     ),
     () => {
       // Derivation: `add resource AuditEvent` is line 4 of CHANGE_RESOURCE_SOURCE;
-      // the `add` keyword begins at column 3 (two-space indent inside the block).
+      // the `resource` keyword begins at column 7 after `add `.
       expect(getDefinitionLocation(CHANGE_RESOURCE_SOURCE, "AuditEvent")).toEqual({
         symbol: "AuditEvent",
         line: 4,
+        column: 7
+      });
+    }
+  );
+
+  test(
+    lockedIntended(
+      "members inside an added component resolve to their inner declaration positions",
+      "packages/shp-checker/src/editor.ts editorSymbolsForDeclaration component branch"
+    ),
+    () => {
+      expect(getDefinitionLocation(CHANGE_COMPONENT_SOURCE, "Reporter")).toEqual({
+        symbol: "Reporter",
+        line: 4,
+        column: 7
+      });
+      expect(getDefinitionLocation(CHANGE_COMPONENT_SOURCE, "render")).toEqual({
+        symbol: "render",
+        line: 5,
+        column: 5
+      });
+      expect(getDefinitionLocation(CHANGE_COMPONENT_SOURCE, "Reporter.render")).toEqual({
+        symbol: "Reporter.render",
+        line: 5,
+        column: 5
+      });
+    }
+  );
+
+  test(
+    lockedIntended(
+      "cross-module add-fn targets resolve under raw, local-qualified, and bare forms",
+      "packages/shp-checker/src/editor.ts changeFunctionTargetNames"
+    ),
+    () => {
+      for (const symbol of ["infra::DB.query", "DB.query", "query"]) {
+        expect(getDefinitionLocation(CROSS_MODULE_CHANGE_SOURCE, symbol)).toEqual({
+          symbol,
+          line: 4,
+          column: 3
+        });
+      }
+      expect(getCompletions(CROSS_MODULE_CHANGE_SOURCE, "DB")).toContain("DB.query");
+    }
+  );
+
+  test(
+    lockedIntended(
+      "modify entries do not shadow real declarations because they are not definition sites",
+      "packages/shp-checker/src/editor.ts editorSymbolsForChangeEntry skips modify entries"
+    ),
+    () => {
+      expect(getDefinitionLocation(MODIFY_SHADOW_SOURCE, "appendEvent")).toEqual({
+        symbol: "appendEvent",
+        line: 9,
         column: 3
       });
+      expect(getDefinitionLocation(MODIFY_SHADOW_SOURCE, "AuditStore.appendEvent")).toEqual({
+        symbol: "AuditStore.appendEvent",
+        line: 9,
+        column: 3
+      });
+    }
+  );
+
+  test(
+    lockedIntended(
+      "modify and remove entries with no real declaration resolve to undefined",
+      "packages/shp-checker/src/editor.ts editorSymbolsForChangeEntry non-definition entries"
+    ),
+    () => {
+      for (const symbol of ["Ghost.gone", "gone", "Ghost", "Ghost.stillGone", "stillGone"]) {
+        expect(getDefinitionLocation(CHANGE_NON_DEFINITION_SOURCE, symbol)).toBeUndefined();
+      }
+    }
+  );
+
+  test(
+    lockedIntended(
+      "implementation declarations resolve both at top level and inside add entries",
+      "packages/shp-checker/src/editor.ts editorSymbolsForDeclaration implementation branch"
+    ),
+    () => {
+      expect(getDefinitionLocation(IMPLEMENTATION_SOURCE, "AuditImpl")).toEqual({
+        symbol: "AuditImpl",
+        line: 3,
+        column: 1
+      });
+      expect(getDefinitionLocation(CHANGE_IMPLEMENTATION_SOURCE, "AuditImpl")).toEqual({
+        symbol: "AuditImpl",
+        line: 4,
+        column: 7
+      });
+      expect(getCompletions(IMPLEMENTATION_SOURCE, "Audit")).toContain("AuditImpl");
+    }
+  );
+
+  test(
+    lockedIntended(
+      "symbols introduced by add entries are completion candidates",
+      "packages/shp-checker/src/editor.ts getCompletions uses editorSymbolsForDeclarations"
+    ),
+    () => {
+      const source = [
+        "module m",
+        "",
+        "change AddAudit {",
+        "  add fn AuditStore.appendEvent",
+        "    effects unknown",
+        "  add resource AuditEvent",
+        "}"
+      ].join("\n");
+
+      expect(getCompletions(source, "Audit")).toEqual(["AuditEvent", "AuditStore.appendEvent"]);
+      expect(getCompletions(source, "append")).toEqual(["appendEvent"]);
     }
   );
 });

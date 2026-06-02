@@ -672,10 +672,10 @@ attest no_shape_change {
 
 attest no_shape_change {
   source ts("packages/shp-checker/src/editor.ts")
-  reason "Definition lookup now traverses change entries for editor navigation, but ShapeEditorServices.getDefinitionLocation retains the same editor-output and source-read contract."
+  reason "Definition lookup and completions now share add-entry symbol discovery, but ShapeEditorServices retains the same editor-output, source-read, parsed-module, and prelude-read contracts."
 }
 
 attest no_shape_change {
   source md("docs-site/src/content/docs/inside-shape/formatter-editor-authoring.md")
-  reason "Documented change-entry definition lookup for editor helpers; the docs source remains within the existing DocsSite surface."
+  reason "Documented add-entry symbol discovery and non-definition modify/remove behavior for editor helpers; the docs source remains within the existing DocsSite surface."
 }

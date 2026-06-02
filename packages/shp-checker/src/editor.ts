@@ -4,10 +4,12 @@ import {
   formatDiagnostics,
   type ShapeDiagnostic
 } from "./checker.ts";
+import { localNameOf } from "./checker/display.ts";
 import { formatShapeSource, type FormatResult } from "./formatter.ts";
 import {
   isAddDeclarationChange,
   isAddFunctionChange,
+  isAttestationDecl,
   isBindingDecl,
   isChangeDecl,
   isComponentDecl,
@@ -15,9 +17,8 @@ import {
   type ChangeEntry,
   type Declaration,
   isFunctionSummary,
+  isImplementationDecl,
   isMemoryDecl,
-  isModifyDeclarationChange,
-  isModifyFunctionChange,
   isRationaleDecl,
   isReevaluationDecl,
   isRelationDecl,
@@ -45,6 +46,11 @@ export type DefinitionLocation = {
   symbol: string;
   line: number;
   column: number;
+};
+
+type EditorSymbol = {
+  names: readonly string[];
+  node: AstNode;
 };
 
 const KEYWORD_COMPLETIONS = [
@@ -150,10 +156,9 @@ export function getDefinitionLocation(
     return undefined;
   }
 
-  for (const declaration of parsed.module.declarations) {
-    const location = definitionLocationForDeclaration(declaration, symbol, name);
-    if (location) {
-      return location;
+  for (const editorSymbol of editorSymbolsForDeclarations(parsed.module.declarations)) {
+    if (editorSymbol.names.some((candidate) => symbolMatches(candidate, symbol, name))) {
+      return astNodeToLocation(editorSymbol.node, symbol);
     }
   }
 
@@ -165,27 +170,9 @@ export function getCompletions(source: string, prefix = ""): string[] {
   const names = new Set([...KEYWORD_COMPLETIONS, ...PRELUDE_COMPLETION_SYMBOLS]);
 
   if (parsed.ok) {
-    for (const declaration of parsed.module.declarations) {
-      if (
-        isResourceDecl(declaration) ||
-        isTraitDecl(declaration) ||
-        isComponentDecl(declaration) ||
-        isRelationDecl(declaration) ||
-        isBindingDecl(declaration) ||
-        isRuleDecl(declaration) ||
-        isRationaleDecl(declaration) ||
-        isMemoryDecl(declaration) ||
-        isReevaluationDecl(declaration)
-      ) {
-        names.add(declaration.name);
-      }
-      if (isComponentDecl(declaration)) {
-        for (const member of declaration.members) {
-          if (isFunctionSummary(member)) {
-            names.add(`${declaration.name}.${member.name}`);
-            names.add(member.name);
-          }
-        }
+    for (const editorSymbol of editorSymbolsForDeclarations(parsed.module.declarations)) {
+      for (const candidate of editorSymbol.names) {
+        names.add(candidate);
       }
     }
   }
@@ -217,90 +204,92 @@ function diagnosticToEditorDiagnostic(diagnostic: ShapeDiagnostic): EditorDiagno
   };
 }
 
-function definitionLocationForDeclaration(
-  declaration: Declaration,
-  symbol: string,
-  name: string
-): DefinitionLocation | undefined {
+function* editorSymbolsForDeclarations(
+  declarations: readonly (AddableDeclaration | Declaration)[]
+): Generator<EditorSymbol> {
+  for (const declaration of declarations) {
+    yield* editorSymbolsForDeclaration(declaration);
+  }
+}
+
+function* editorSymbolsForDeclaration(
+  declaration: AddableDeclaration | Declaration
+): Generator<EditorSymbol> {
   if (
     isResourceDecl(declaration) ||
     isTraitDecl(declaration) ||
     isRelationDecl(declaration) ||
+    isImplementationDecl(declaration) ||
     isBindingDecl(declaration) ||
     isRuleDecl(declaration) ||
-    isRationaleDecl(declaration) ||
-    isMemoryDecl(declaration) ||
-    isReevaluationDecl(declaration) ||
-    isChangeDecl(declaration)
+    isReevaluationDecl(declaration)
   ) {
-    if (symbolMatches(declaration.name, symbol, name)) {
-      return astNodeToLocation(declaration, symbol);
-    }
-    if (isChangeDecl(declaration)) {
-      for (const entry of declaration.entries) {
-        const location = definitionLocationForChangeEntry(entry, symbol, name);
-        if (location) {
-          return location;
-        }
-      }
-    }
+    yield { names: [declaration.name], node: declaration };
+    return;
   }
 
   if (isRationaleDecl(declaration) || isMemoryDecl(declaration)) {
-    if (symbolMatches(declaration.contextType.name, symbol, name)) {
-      return astNodeToLocation(declaration.contextType, symbol);
+    yield { names: [declaration.name], node: declaration };
+    yield { names: [declaration.contextType.name], node: declaration.contextType };
+    return;
+  }
+
+  if (isChangeDecl(declaration)) {
+    yield { names: [declaration.name], node: declaration };
+    for (const entry of declaration.entries) {
+      yield* editorSymbolsForChangeEntry(entry);
     }
+    return;
   }
 
   if (isComponentDecl(declaration)) {
-    if (symbolMatches(declaration.name, symbol, name)) {
-      return astNodeToLocation(declaration, symbol);
-    }
+    yield { names: [declaration.name], node: declaration };
 
     for (const member of declaration.members) {
-      if (
-        isFunctionSummary(member) &&
-        (symbolMatches(member.name, symbol, name) ||
-          symbolMatches(`${declaration.name}.${member.name}`, symbol, name))
-      ) {
-        return astNodeToLocation(member, symbol);
+      if (isFunctionSummary(member)) {
+        yield {
+          names: [`${declaration.name}.${member.name}`, member.name],
+          node: member
+        };
       }
     }
+    return;
   }
 
-  return undefined;
+  if (isAttestationDecl(declaration)) {
+    return;
+  }
 }
 
-function definitionLocationForChangeEntry(
-  entry: ChangeEntry,
-  symbol: string,
-  name: string
-): DefinitionLocation | undefined {
-  if (isAddFunctionChange(entry) || isModifyFunctionChange(entry)) {
-    const functionName = definitionName(entry.target);
-    if (
-      symbolMatches(entry.target, symbol, name) ||
-      (functionName !== undefined && symbolMatches(functionName, symbol, name))
-    ) {
-      return astNodeToLocation(entry, symbol);
-    }
+function* editorSymbolsForChangeEntry(entry: ChangeEntry): Generator<EditorSymbol> {
+  if (isAddFunctionChange(entry)) {
+    yield { names: changeFunctionTargetNames(entry.target), node: entry };
+    return;
   }
 
-  if (isAddDeclarationChange(entry) || isModifyDeclarationChange(entry)) {
-    const changedName = namedDeclarationName(entry.declaration);
-    if (changedName !== undefined && symbolMatches(changedName, symbol, name)) {
-      return astNodeToLocation(entry, symbol);
-    }
-    return definitionLocationForDeclaration(entry.declaration, symbol, name);
+  if (isAddDeclarationChange(entry)) {
+    yield* editorSymbolsForDeclaration(entry.declaration);
+    return;
   }
 
-  return undefined;
+  // Modify and remove entries refer to or remove existing symbols; they do not
+  // introduce definition locations.
 }
 
-function namedDeclarationName(declaration: AddableDeclaration | Declaration): string | undefined {
-  return "name" in declaration && typeof declaration.name === "string"
-    ? declaration.name
-    : undefined;
+function changeFunctionTargetNames(target: string): string[] {
+  const localTarget = localNameOf(target);
+  const functionName = localTarget.slice(localTarget.lastIndexOf(".") + 1);
+  return uniqueNames([target, localTarget, functionName]);
+}
+
+function uniqueNames(candidates: readonly string[]): string[] {
+  const names = new Set<string>();
+  for (const candidate of candidates) {
+    if (candidate.length > 0) {
+      names.add(candidate);
+    }
+  }
+  return [...names];
 }
 
 function definitionName(symbol: string): string | undefined {
