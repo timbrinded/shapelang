@@ -679,3 +679,18 @@ attest no_shape_change {
   source md("docs-site/src/content/docs/inside-shape/formatter-editor-authoring.md")
   reason "Documented add-entry symbol discovery and non-definition modify/remove behavior for editor helpers; the docs source remains within the existing DocsSite surface."
 }
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/learn/ci-workflow.md")
+  reason "Release-prep version pin update from v0.3.0 to v0.4.0; CI workflow semantics and DocsSite architecture are unchanged."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/learn/quickstart.md")
+  reason "Release-prep version pin update from v0.3.0 to v0.4.0; install workflow semantics and DocsSite architecture are unchanged."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/reference/cli.md")
+  reason "Release-prep version pin update from v0.3.0 to v0.4.0; CLI update command semantics and DocsSite architecture are unchanged."
+}

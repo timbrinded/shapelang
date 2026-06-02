@@ -14,16 +14,16 @@ Shape ships a self-contained `shp` typechecker binary. You do not need Bun or No
 Use a pinned version in scripts and CI:
 
 ```bash
-curl --proto '=https' --tlsv1.2 -LsSf https://github.com/timbrinded/shapelang/releases/download/v0.3.0/install.sh | sh
+curl --proto '=https' --tlsv1.2 -LsSf https://github.com/timbrinded/shapelang/releases/download/v0.4.0/install.sh | sh
 ```
 
 On Windows:
 
 ```powershell
-irm https://github.com/timbrinded/shapelang/releases/download/v0.3.0/install.ps1 | iex
+irm https://github.com/timbrinded/shapelang/releases/download/v0.4.0/install.ps1 | iex
 ```
 
-The installer downloads the matching release archive, verifies its SHA-256 checksum, and installs `shp` plus its bundled Tree-sitter parser assets into `~/.local/bin`. Replace `v0.3.0` with the release tag you want to pin.
+The installer downloads the matching release archive, verifies its SHA-256 checksum, and installs `shp` plus its bundled Tree-sitter parser assets into `~/.local/bin`. Replace `v0.4.0` with the release tag you want to pin.
 
 If your shell cannot find `shp` after installation, add the install directory to your `PATH`:
 
@@ -65,7 +65,7 @@ If a governed source path changes without a Shape update or current attestation,
 ```yaml
 steps:
   - uses: actions/checkout@v4
-  - uses: timbrinded/shapelang@v0.3.0
+  - uses: timbrinded/shapelang@v0.4.0
   - run: shp check
 ```
 
