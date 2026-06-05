@@ -136,6 +136,12 @@ export function configureBundledTreeSitterParsers(
 export function bundledTreeSitterParserAssetRoot(
   executablePath: string = process.execPath
 ): string {
+  // Allow an explicit override so a pre-bundled parser cache can be used when
+  // running off-binary (e.g. via `bun`) or in a sandbox without network access.
+  const override = process.env.SHP_TREE_SITTER_ASSET_ROOT;
+  if (override && override.length > 0) {
+    return override;
+  }
   return join(dirname(executablePath), "tree-sitter-language-pack");
 }
 
