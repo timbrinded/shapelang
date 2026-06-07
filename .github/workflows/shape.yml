@@ -217,9 +217,10 @@ jobs:
           Changed files are listed in changed.txt.
           Shape command output is in shape-claude-context.txt.
           Use the prompt file's review policy and output contract.
-          Populate the structured-output fields required by
-          ${{ env.SHAPE_CONTRACT_RESULT_SCHEMA }}; do not print a standalone
-          JSON blob as prose or Markdown. Do not modify tracked repository files.
+          Return the final review as a single JSON object matching
+          ${{ env.SHAPE_CONTRACT_RESULT_SCHEMA }}. Do not include prose,
+          Markdown, or code fences outside that object. Do not modify tracked
+          repository files.
           PROMPT
           )
 
@@ -238,11 +239,25 @@ jobs:
             if (typeof value !== "string") {
               return value;
             }
-            try {
-              return JSON.parse(value);
-            } catch {
-              return undefined;
+            const trimmed = value.trim();
+            const candidates = [trimmed];
+            const fenced = trimmed.match(/^```(?:json)?\s*([\s\S]*?)\s*```$/);
+            if (fenced?.[1]) {
+              candidates.push(fenced[1].trim());
             }
+            const start = value.indexOf("{");
+            const end = value.lastIndexOf("}");
+            if (start !== -1 && end > start) {
+              candidates.push(value.slice(start, end + 1));
+            }
+            for (const candidate of candidates) {
+              try {
+                return JSON.parse(candidate);
+              } catch {
+                // Try the next representation.
+              }
+            }
+            return undefined;
           };
 
           const isShapeReview = (value) =>

@@ -115,7 +115,8 @@ shape-claude-review:
 
         Analyze this repository for Shape contract drift.
         Changed files are listed in changed.txt.
-        Populate the configured structured-output fields.
+        Return a single JSON object matching the configured schema.
+        Do not include prose, Markdown, or code fences outside that object.
         Do not modify tracked repository files.
         PROMPT
         )
@@ -130,11 +131,19 @@ shape-claude-review:
         const { appendFileSync, readFileSync } = require("node:fs");
         const parseJsonValue = (value) => {
           if (typeof value !== "string") return value;
-          try {
-            return JSON.parse(value);
-          } catch {
-            return undefined;
+          const trimmed = value.trim();
+          const candidates = [trimmed];
+          const fenced = trimmed.match(/^```(?:json)?\s*([\s\S]*?)\s*```$/);
+          if (fenced?.[1]) candidates.push(fenced[1].trim());
+          const start = value.indexOf("{");
+          const end = value.lastIndexOf("}");
+          if (start !== -1 && end > start) candidates.push(value.slice(start, end + 1));
+          for (const candidate of candidates) {
+            try {
+              return JSON.parse(candidate);
+            } catch {}
           }
+          return undefined;
         };
         const isShapeReview = (value) =>
           value !== null &&
