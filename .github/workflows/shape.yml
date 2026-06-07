@@ -227,24 +227,54 @@ jobs:
             --max-turns 100 \
             --output-format json \
             --allowedTools "Read,Glob,Grep,LS,Bash(git diff *),Bash(git log *),Bash(git show *),Bash(git ls-files *),Bash(bun run shape:ci),Bash(bun shp --help),Bash(bun shp check *),Bash(bun shp obligations *),Bash(bun shp memory *),Bash(bun shp explain *),Bash(bun shp analyze *),Bash(rg *),Bash(sed -n *),Bash(ls *),Bash(pwd)" \
-            --disallowedTools "Write,Edit,MultiEdit,NotebookEditCell" \
+            --disallowedTools "Write,Edit" \
             --json-schema "$JSON_SCHEMA" \
             > claude-shape-review.json
 
           node <<'NODE'
           const { appendFileSync, readFileSync } = require("node:fs");
+
+          const parseJsonValue = (value) => {
+            if (typeof value !== "string") {
+              return value;
+            }
+            try {
+              return JSON.parse(value);
+            } catch {
+              return undefined;
+            }
+          };
+
+          const isShapeReview = (value) =>
+            value !== null &&
+            typeof value === "object" &&
+            !Array.isArray(value) &&
+            typeof value.status === "string" &&
+            typeof value.summary === "string" &&
+            Array.isArray(value.findings);
+
           const result = JSON.parse(readFileSync("claude-shape-review.json", "utf8"));
-          if (!result.structured_output) {
-            console.error("Claude did not return structured_output.");
+          const candidates = [
+            ["structured_output", result.structured_output],
+            ["result", parseJsonValue(result.result)],
+            ["direct", result],
+          ];
+          const selected = candidates.find(([, value]) => isShapeReview(value));
+          if (!selected) {
+            console.error("Claude output did not include a valid Shape review object.");
             console.error(JSON.stringify({
               type: result.type,
               subtype: result.subtype,
               session_id: result.session_id,
+              keys: Object.keys(result),
+              result_preview: typeof result.result === "string" ? result.result.slice(0, 500) : undefined,
             }, null, 2));
             process.exit(1);
           }
-          const structuredOutput = JSON.stringify(result.structured_output);
-          console.log(`Claude structured output fields: ${Object.keys(result.structured_output).join(", ")}`);
+          const [source, review] = selected;
+          const structuredOutput = JSON.stringify(review);
+          console.log(`Claude structured output source: ${source}`);
+          console.log(`Claude structured output fields: ${Object.keys(review).join(", ")}`);
           appendFileSync(process.env.GITHUB_OUTPUT, `structured_output=${structuredOutput}\n`);
           NODE
 

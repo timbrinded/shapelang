@@ -123,17 +123,37 @@ shape-claude-review:
           --max-turns 100 \
           --output-format json \
           --allowedTools "Read,Glob,Grep,LS,Bash(git diff *),Bash(git show *),Bash(bun run shape:ci),Bash(bun shp check *),Bash(bun shp obligations *),Bash(bun shp memory *),Bash(bun shp explain *),Bash(bun shp analyze *)" \
-          --disallowedTools "Write,Edit,MultiEdit,NotebookEditCell" \
+          --disallowedTools "Write,Edit" \
           --json-schema "$JSON_SCHEMA" \
           > claude-shape-review.json
         node <<'NODE'
         const { appendFileSync, readFileSync } = require("node:fs");
+        const parseJsonValue = (value) => {
+          if (typeof value !== "string") return value;
+          try {
+            return JSON.parse(value);
+          } catch {
+            return undefined;
+          }
+        };
+        const isShapeReview = (value) =>
+          value !== null &&
+          typeof value === "object" &&
+          !Array.isArray(value) &&
+          typeof value.status === "string" &&
+          typeof value.summary === "string" &&
+          Array.isArray(value.findings);
         const result = JSON.parse(readFileSync("claude-shape-review.json", "utf8"));
-        if (!result.structured_output) {
-          console.error("Claude did not return structured_output.");
+        const selected = [
+          result.structured_output,
+          parseJsonValue(result.result),
+          result,
+        ].find(isShapeReview);
+        if (!selected) {
+          console.error("Claude output did not include a valid Shape review object.");
           process.exit(1);
         }
-        appendFileSync(process.env.GITHUB_OUTPUT, `structured_output=${JSON.stringify(result.structured_output)}\n`);
+        appendFileSync(process.env.GITHUB_OUTPUT, `structured_output=${JSON.stringify(selected)}\n`);
         NODE
     - run: node .github/scripts/check-claude-shape-review.mjs
       if: steps.claude-token.outputs.available == 'true'
