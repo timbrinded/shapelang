@@ -184,42 +184,69 @@ jobs:
           appendFileSync(process.env.GITHUB_OUTPUT, `json_schema=${schema}\n`);
           NODE
 
+      - name: Install Claude Code
+        if: steps.claude-token.outputs.available == 'true'
+        run: |
+          curl -fsSL https://claude.ai/install.sh | bash
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+          "$HOME/.local/bin/claude" --version
+
       - name: Run Claude Shape contract review
         id: claude
         if: steps.claude-token.outputs.available == 'true'
-        uses: anthropics/claude-code-action@v1.0.88
         env:
           API_TIMEOUT_MS: 18000
           DISABLE_NON_ESSENTIAL_MODE_CALLS: 1
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           ANTHROPIC_BASE_URL: ${{ secrets.ANTHROPIC_BASE_URL }}
           ANTHROPIC_AUTH_TOKEN: ${{ secrets.ANTHROPIC_AUTH_TOKEN }}
           CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS: ${{ secrets.CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS }}
           GITHUB_BASE_REF: ${{ github.base_ref }}
           GITHUB_SHA: ${{ github.sha }}
-        with:
-          github_token: ${{ github.token }}
-          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY || secrets.ANTHROPIC_AUTH_TOKEN }}
-          path_to_bun_executable: ${{ steps.setup-bun.outputs.bun-path }}
-          classify_inline_comments: false
-          prompt: |
-            Read AGENTS.md when it exists, then read
-            .github/prompts/shape-contract-review.md.
+          JSON_SCHEMA: ${{ steps.schema.outputs.json_schema }}
+        run: |
+          set -euo pipefail
 
-            Analyze this repository for Shape contract drift.
-            Scope: BASE_REF=${{ github.base_ref || '' }},
-            HEAD_SHA=${{ github.sha }}.
-            Changed files are listed in changed.txt.
-            Shape command output is in shape-claude-context.txt.
-            Use the prompt file's review policy and output contract.
-            Populate the structured-output fields required by
-            ${{ env.SHAPE_CONTRACT_RESULT_SCHEMA }}; do not print a standalone
-            JSON blob as prose or Markdown. Do not modify tracked repository files.
-          claude_args: |
-            --max-turns 100
-            --output-format json
-            --allowedTools "Read,Glob,Grep,LS,Bash(git diff *),Bash(git log *),Bash(git show *),Bash(git ls-files *),Bash(bun run shape:ci),Bash(bun shp --help),Bash(bun shp check *),Bash(bun shp obligations *),Bash(bun shp memory *),Bash(bun shp explain *),Bash(bun shp analyze *),Bash(rg *),Bash(sed -n *),Bash(ls *),Bash(pwd)"
-            --disallowedTools "Write,Edit,MultiEdit,NotebookEditCell"
-            --json-schema '${{ steps.schema.outputs.json_schema }}'
+          prompt=$(cat <<'PROMPT'
+          Read AGENTS.md when it exists, then read
+          .github/prompts/shape-contract-review.md.
+
+          Analyze this repository for Shape contract drift.
+          Scope: BASE_REF=${{ github.base_ref || '' }},
+          HEAD_SHA=${{ github.sha }}.
+          Changed files are listed in changed.txt.
+          Shape command output is in shape-claude-context.txt.
+          Use the prompt file's review policy and output contract.
+          Populate the structured-output fields required by
+          ${{ env.SHAPE_CONTRACT_RESULT_SCHEMA }}; do not print a standalone
+          JSON blob as prose or Markdown. Do not modify tracked repository files.
+          PROMPT
+          )
+
+          claude -p "$prompt" \
+            --max-turns 100 \
+            --output-format json \
+            --allowedTools "Read,Glob,Grep,LS,Bash(git diff *),Bash(git log *),Bash(git show *),Bash(git ls-files *),Bash(bun run shape:ci),Bash(bun shp --help),Bash(bun shp check *),Bash(bun shp obligations *),Bash(bun shp memory *),Bash(bun shp explain *),Bash(bun shp analyze *),Bash(rg *),Bash(sed -n *),Bash(ls *),Bash(pwd)" \
+            --disallowedTools "Write,Edit,MultiEdit,NotebookEditCell" \
+            --json-schema "$JSON_SCHEMA" \
+            > claude-shape-review.json
+
+          node <<'NODE'
+          const { appendFileSync, readFileSync } = require("node:fs");
+          const result = JSON.parse(readFileSync("claude-shape-review.json", "utf8"));
+          if (!result.structured_output) {
+            console.error("Claude did not return structured_output.");
+            console.error(JSON.stringify({
+              type: result.type,
+              subtype: result.subtype,
+              session_id: result.session_id,
+            }, null, 2));
+            process.exit(1);
+          }
+          const structuredOutput = JSON.stringify(result.structured_output);
+          console.log(`Claude structured output fields: ${Object.keys(result.structured_output).join(", ")}`);
+          appendFileSync(process.env.GITHUB_OUTPUT, `structured_output=${structuredOutput}\n`);
+          NODE
 
       - name: Check Claude review result
         if: steps.claude-token.outputs.available == 'true'
