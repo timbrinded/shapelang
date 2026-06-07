@@ -125,12 +125,13 @@ jobs:
         id: claude-token
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ANTHROPIC_AUTH_TOKEN: ${{ secrets.ANTHROPIC_AUTH_TOKEN }}
         run: |
-          if [ -n "${ANTHROPIC_API_KEY:-}" ]; then
+          if [ -n "${ANTHROPIC_API_KEY:-}" ] || [ -n "${ANTHROPIC_AUTH_TOKEN:-}" ]; then
             echo "available=true" >> "$GITHUB_OUTPUT"
           else
             echo "available=false" >> "$GITHUB_OUTPUT"
-            echo "Skipping Claude Shape contract review because ANTHROPIC_API_KEY is not available."
+            echo "Skipping Claude Shape contract review because no Anthropic API credential is available."
           fi
 
       - name: Checkout
@@ -197,7 +198,7 @@ jobs:
           GITHUB_SHA: ${{ github.sha }}
         with:
           github_token: ${{ github.token }}
-          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY || secrets.ANTHROPIC_AUTH_TOKEN }}
           path_to_bun_executable: ${{ steps.setup-bun.outputs.bun-path }}
           classify_inline_comments: false
           prompt: |
