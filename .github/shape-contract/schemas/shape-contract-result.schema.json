@@ -9,8 +9,7 @@
       "enum": ["pass", "drift", "error"]
     },
     "summary": {
-      "type": "string",
-      "maxLength": 280
+      "type": "string"
     },
     "findings": {
       "type": "array",
@@ -45,12 +44,10 @@
             "type": "string"
           },
           "source_quote": {
-            "type": "string",
-            "maxLength": 200
+            "type": "string"
           },
           "shape_quote": {
-            "type": "string",
-            "maxLength": 200
+            "type": "string"
           },
           "suggested_fix": {
             "type": "string"

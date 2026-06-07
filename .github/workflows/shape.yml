@@ -171,6 +171,18 @@ jobs:
             echo "shape_ci_exit=$status"
           } > shape-claude-context.txt 2>&1
 
+      - name: Load structured output schema
+        id: schema
+        if: steps.claude-token.outputs.available == 'true'
+        env:
+          SCHEMA_PATH: ${{ env.SHAPE_CONTRACT_RESULT_SCHEMA }}
+        run: |
+          node <<'NODE'
+          const { appendFileSync, readFileSync } = require("node:fs");
+          const schema = JSON.stringify(JSON.parse(readFileSync(process.env.SCHEMA_PATH, "utf8")));
+          appendFileSync(process.env.GITHUB_OUTPUT, `json_schema=${schema}\n`);
+          NODE
+
       - name: Run Claude Shape contract review
         id: claude
         if: steps.claude-token.outputs.available == 'true'
@@ -198,16 +210,19 @@ jobs:
             Changed files are listed in changed.txt.
             Shape command output is in shape-claude-context.txt.
             Use the prompt file's review policy and output contract.
-            The final JSON object must match ${{ env.SHAPE_CONTRACT_RESULT_SCHEMA }}.
-            Write the final JSON object to claude-shape-review.json.
-            Do not modify tracked repository files.
+            Populate the structured-output fields required by
+            ${{ env.SHAPE_CONTRACT_RESULT_SCHEMA }}; do not print a standalone
+            JSON blob as prose or Markdown. Do not modify tracked repository files.
           claude_args: |
             --max-turns 100
-            --allowedTools "Read,Write,Glob,Grep,LS,Bash(git diff *),Bash(git log *),Bash(git show *),Bash(git ls-files *),Bash(bun run shape:ci),Bash(bun shp --help),Bash(bun shp check *),Bash(bun shp obligations *),Bash(bun shp memory *),Bash(bun shp explain *),Bash(bun shp analyze *),Bash(rg *),Bash(sed -n *),Bash(ls *),Bash(pwd)"
-            --disallowedTools "Edit,MultiEdit,NotebookEditCell"
+            --allowedTools "Read,Glob,Grep,LS,Bash(git diff *),Bash(git log *),Bash(git show *),Bash(git ls-files *),Bash(bun run shape:ci),Bash(bun shp --help),Bash(bun shp check *),Bash(bun shp obligations *),Bash(bun shp memory *),Bash(bun shp explain *),Bash(bun shp analyze *),Bash(rg *),Bash(sed -n *),Bash(ls *),Bash(pwd)"
+            --disallowedTools "Write,Edit,MultiEdit,NotebookEditCell"
+            --json-schema '${{ steps.schema.outputs.json_schema }}'
 
       - name: Check Claude review result
         if: steps.claude-token.outputs.available == 'true'
+        env:
+          CLAUDE_SHAPE_REVIEW_RESULT: ${{ steps.claude.outputs.structured_output }}
         run: node .github/scripts/check-claude-shape-review.mjs
 
   docs:

@@ -81,7 +81,19 @@ shape-claude-review:
       env:
         GITHUB_BASE_REF: ${{ github.base_ref }}
         GITHUB_SHA: ${{ github.sha }}
+    - name: Load structured output schema
+      id: schema
+      if: steps.claude-token.outputs.available == 'true'
+      env:
+        SCHEMA_PATH: .github/shape-contract/schemas/shape-contract-result.schema.json
+      run: |
+        node <<'NODE'
+        const { appendFileSync, readFileSync } = require("node:fs");
+        const schema = JSON.stringify(JSON.parse(readFileSync(process.env.SCHEMA_PATH, "utf8")));
+        appendFileSync(process.env.GITHUB_OUTPUT, `json_schema=${schema}\n`);
+        NODE
     - uses: anthropics/claude-code-action@v1.0.88
+      id: claude
       if: steps.claude-token.outputs.available == 'true'
       env:
         API_TIMEOUT_MS: 18000
@@ -99,14 +111,17 @@ shape-claude-review:
 
           Analyze this repository for Shape contract drift.
           Changed files are listed in changed.txt.
-          Write the final JSON object to claude-shape-review.json.
+          Populate the configured structured-output fields.
           Do not modify tracked repository files.
         claude_args: |
           --max-turns 100
-          --allowedTools "Read,Write,Glob,Grep,LS,Bash(git diff *),Bash(git show *),Bash(bun run shape:ci),Bash(bun shp check *),Bash(bun shp obligations *),Bash(bun shp memory *),Bash(bun shp explain *),Bash(bun shp analyze *)"
-          --disallowedTools "Edit,MultiEdit,NotebookEditCell"
+          --allowedTools "Read,Glob,Grep,LS,Bash(git diff *),Bash(git show *),Bash(bun run shape:ci),Bash(bun shp check *),Bash(bun shp obligations *),Bash(bun shp memory *),Bash(bun shp explain *),Bash(bun shp analyze *)"
+          --disallowedTools "Write,Edit,MultiEdit,NotebookEditCell"
+          --json-schema '${{ steps.schema.outputs.json_schema }}'
     - run: node .github/scripts/check-claude-shape-review.mjs
       if: steps.claude-token.outputs.available == 'true'
+      env:
+        CLAUDE_SHAPE_REVIEW_RESULT: ${{ steps.claude.outputs.structured_output }}
 ```
 
 Use a short prompt that makes `shape/` the authority:
@@ -122,8 +137,8 @@ Run `bun shp check --changed-files changed.txt`, `bun shp obligations`, and
 `bun shp memory`. Use `bun shp explain` when a symbol needs context and
 `bun shp analyze` only as advisory input.
 
-Write `claude-shape-review.json` with `status: "pass" | "drift" | "error"`
-and terse evidence-backed findings.
+Return structured output with `status: "pass" | "drift" | "error"` and terse
+evidence-backed findings.
 ```
 
 ## Shape repo workflow
