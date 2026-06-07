@@ -210,8 +210,9 @@ jobs:
             Changed files are listed in changed.txt.
             Shape command output is in shape-claude-context.txt.
             Use the prompt file's review policy and output contract.
-            The structured result must match ${{ env.SHAPE_CONTRACT_RESULT_SCHEMA }}.
-            Return only the JSON result. Do not modify tracked repository files.
+            Populate the structured-output fields required by
+            ${{ env.SHAPE_CONTRACT_RESULT_SCHEMA }}; do not print a standalone
+            JSON blob as prose or Markdown. Do not modify tracked repository files.
           claude_args: |
             --max-turns 100
             --allowedTools "Read,Glob,Grep,LS,Bash(git diff *),Bash(git log *),Bash(git show *),Bash(git ls-files *),Bash(bun run shape:ci),Bash(bun shp --help),Bash(bun shp check *),Bash(bun shp obligations *),Bash(bun shp memory *),Bash(bun shp explain *),Bash(bun shp analyze *),Bash(rg *),Bash(sed -n *),Bash(ls *),Bash(pwd)"

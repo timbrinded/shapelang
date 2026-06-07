@@ -1,8 +1,8 @@
 # Shape contract review
 
 You are running in GitHub Actions through Claude Code. Review the pull request
-diff for Shape contract drift and return exactly one JSON object matching the
-configured structured-output schema.
+diff for Shape contract drift and populate the configured structured-output
+fields. Do not print a prose explanation.
 
 ## Required method
 
@@ -37,7 +37,9 @@ current Shape update or current attestation.
 
 ## Output
 
-Return this object:
+The GitHub Action passes a JSON schema through `--json-schema`. Populate these
+structured-output fields; do not write a file or print a standalone Markdown
+response:
 
 ```json
 {
