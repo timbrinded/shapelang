@@ -1,0 +1,4 @@
+interface:
+  display_name: "Shape Contract Preflight"
+  short_description: "Plan code changes against Shape"
+  default_prompt: "Use $shape-contract-preflight to plan this change against the current Shape model before editing code."
