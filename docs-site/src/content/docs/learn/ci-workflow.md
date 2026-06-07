@@ -116,6 +116,7 @@ shape-claude-review:
           Do not modify tracked repository files.
         claude_args: |
           --max-turns 100
+          --output-format json
           --allowedTools "Read,Glob,Grep,LS,Bash(git diff *),Bash(git show *),Bash(bun run shape:ci),Bash(bun shp check *),Bash(bun shp obligations *),Bash(bun shp memory *),Bash(bun shp explain *),Bash(bun shp analyze *)"
           --disallowedTools "Write,Edit,MultiEdit,NotebookEditCell"
           --json-schema '${{ steps.schema.outputs.json_schema }}'

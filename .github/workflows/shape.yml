@@ -216,6 +216,7 @@ jobs:
             JSON blob as prose or Markdown. Do not modify tracked repository files.
           claude_args: |
             --max-turns 100
+            --output-format json
             --allowedTools "Read,Glob,Grep,LS,Bash(git diff *),Bash(git log *),Bash(git show *),Bash(git ls-files *),Bash(bun run shape:ci),Bash(bun shp --help),Bash(bun shp check *),Bash(bun shp obligations *),Bash(bun shp memory *),Bash(bun shp explain *),Bash(bun shp analyze *),Bash(rg *),Bash(sed -n *),Bash(ls *),Bash(pwd)"
             --disallowedTools "Write,Edit,MultiEdit,NotebookEditCell"
             --json-schema '${{ steps.schema.outputs.json_schema }}'
