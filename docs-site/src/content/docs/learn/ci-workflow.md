@@ -49,23 +49,23 @@ If a governed source path changes without a Shape update or current attestation,
 
 CI can also run Claude Code as a PR job to check source semantics against the Shape model. This is separate from the deterministic checker: `shp check --changed-files` enforces current coverage and bindings, while Claude reviews whether the committed Shape claims faithfully describe the changed behavior.
 
-The job needs `CLAUDE_CODE_OAUTH_TOKEN`. Repositories that proxy Anthropic traffic can also set `ANTHROPIC_BASE_URL` and `ANTHROPIC_AUTH_TOKEN`. Detect the token first so forked pull requests skip the Claude-only work instead of failing on an unavailable secret:
+The job needs `ANTHROPIC_API_KEY`. Repositories that proxy Anthropic traffic can also set `ANTHROPIC_BASE_URL` and `ANTHROPIC_AUTH_TOKEN`. Detect the credential first so forked pull requests skip the Claude-only work instead of failing on an unavailable secret:
 
 ```yaml
 shape-claude-review:
   if: github.event_name == 'pull_request'
   runs-on: ubuntu-latest
   steps:
-    - name: Detect Claude token
+    - name: Detect Claude credentials
       id: claude-token
       env:
-        CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+        ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
       run: |
-        if [ -n "${CLAUDE_CODE_OAUTH_TOKEN:-}" ]; then
+        if [ -n "${ANTHROPIC_API_KEY:-}" ]; then
           echo "available=true" >> "$GITHUB_OUTPUT"
         else
           echo "available=false" >> "$GITHUB_OUTPUT"
-          echo "Skipping Claude Shape contract review because CLAUDE_CODE_OAUTH_TOKEN is not available."
+          echo "Skipping Claude Shape contract review because ANTHROPIC_API_KEY is not available."
         fi
     - uses: actions/checkout@v4
       if: steps.claude-token.outputs.available == 'true'
@@ -102,7 +102,7 @@ shape-claude-review:
         ANTHROPIC_AUTH_TOKEN: ${{ secrets.ANTHROPIC_AUTH_TOKEN }}
       with:
         github_token: ${{ github.token }}
-        claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+        anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
         path_to_bun_executable: ${{ steps.setup-bun.outputs.bun-path }}
         classify_inline_comments: false
         prompt: |
