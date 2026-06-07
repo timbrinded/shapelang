@@ -99,11 +99,14 @@ shape-claude-review:
 
           Analyze this repository for Shape contract drift.
           Changed files are listed in changed.txt.
-          Return only the JSON result. Do not modify tracked repository files.
+          Write the final JSON object to claude-shape-review.json.
+          Do not modify tracked repository files.
         claude_args: |
           --max-turns 100
-          --allowedTools "Read,Glob,Grep,LS,Bash(git diff *),Bash(git show *),Bash(bun run shape:ci),Bash(bun shp check *),Bash(bun shp obligations *),Bash(bun shp memory *),Bash(bun shp explain *),Bash(bun shp analyze *)"
-          --disallowedTools "Write,Edit,MultiEdit,NotebookEditCell"
+          --allowedTools "Read,Write,Glob,Grep,LS,Bash(git diff *),Bash(git show *),Bash(bun run shape:ci),Bash(bun shp check *),Bash(bun shp obligations *),Bash(bun shp memory *),Bash(bun shp explain *),Bash(bun shp analyze *)"
+          --disallowedTools "Edit,MultiEdit,NotebookEditCell"
+    - run: node .github/scripts/check-claude-shape-review.mjs
+      if: steps.claude-token.outputs.available == 'true'
 ```
 
 Use a short prompt that makes `shape/` the authority:
@@ -119,8 +122,8 @@ Run `bun shp check --changed-files changed.txt`, `bun shp obligations`, and
 `bun shp memory`. Use `bun shp explain` when a symbol needs context and
 `bun shp analyze` only as advisory input.
 
-Return JSON with `status: "pass" | "drift" | "error"` and terse
-evidence-backed findings.
+Write `claude-shape-review.json` with `status: "pass" | "drift" | "error"`
+and terse evidence-backed findings.
 ```
 
 ## Shape repo workflow

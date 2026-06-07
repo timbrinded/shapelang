@@ -1,8 +1,8 @@
 # Shape contract review
 
 You are running in GitHub Actions through Claude Code. Review the pull request
-diff for Shape contract drift and populate the configured structured-output
-fields. Do not print a prose explanation.
+diff for Shape contract drift and write exactly one JSON object to
+`claude-shape-review.json`.
 
 ## Required method
 
@@ -37,9 +37,7 @@ current Shape update or current attestation.
 
 ## Output
 
-The GitHub Action passes a JSON schema through `--json-schema`. Populate these
-structured-output fields; do not write a file or print a standalone Markdown
-response:
+Write this object to `claude-shape-review.json`:
 
 ```json
 {

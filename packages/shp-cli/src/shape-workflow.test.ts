@@ -46,7 +46,7 @@ describe("Shape workflow", () => {
     expect(result.summary).toContain("Findings: 0");
   });
 
-  test("passes Claude review gate with structured output from the action", async () => {
+  test("passes Claude review gate with an environment result override", async () => {
     const result = await runClaudeReviewGate(
       {
         status: "pass",
