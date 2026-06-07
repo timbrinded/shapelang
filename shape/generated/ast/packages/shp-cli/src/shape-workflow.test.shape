@@ -6,23 +6,23 @@ trait GeneratedAstAnchor {
 trait GeneratedCandidate {
 }
 
-resource ShapeWorkflowTestModuleRunCopilotReviewGateAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-cli/src/shape-workflow.test.ts:50-88")
-  fingerprint ast.semantic_subtree_v1("sha256:1cfb77eee5c0149c5dd0358bc18321fcac37ea05b23827558e61808bc024c670")
+resource ShapeWorkflowTestModuleRunClaudeReviewGateAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/shape-workflow.test.ts:65-109")
+  fingerprint ast.semantic_subtree_v1("sha256:3d1e185361d1b82aeb313ff5ed105075c15003266282482e62981d53481e83fd")
 }
 
 component ShapeWorkflowTestModule : GeneratedCandidate {
-  fn runCopilotReviewGate
-    source ts("packages/shp-cli/src/shape-workflow.test.ts:50-88")
+  fn runClaudeReviewGate
+    source ts("packages/shp-cli/src/shape-workflow.test.ts:65-109")
     effects unknown
 }
 
-relation ShapeWorkflowTestModuleRunCopilotReviewGateGeneratedFromShapeWorkflowTestModuleRunCopilotReviewGateAstAnchor {
+relation ShapeWorkflowTestModuleRunClaudeReviewGateGeneratedFromShapeWorkflowTestModuleRunClaudeReviewGateAstAnchor {
   kind generated_from
-  connects ShapeWorkflowTestModule -> ShapeWorkflowTestModuleRunCopilotReviewGateAstAnchor
-  roles { ShapeWorkflowTestModule as generated, ShapeWorkflowTestModuleRunCopilotReviewGateAstAnchor as syntax }
-  expects ShapeWorkflowTestModuleRunCopilotReviewGateAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1cfb77eee5c0149c5dd0358bc18321fcac37ea05b23827558e61808bc024c670")
-  summary "fn ShapeWorkflowTestModule.runCopilotReviewGate generated from typescript function_declaration at packages/shp-cli/src/shape-workflow.test.ts:50-88."
+  connects ShapeWorkflowTestModule -> ShapeWorkflowTestModuleRunClaudeReviewGateAstAnchor
+  roles { ShapeWorkflowTestModule as generated, ShapeWorkflowTestModuleRunClaudeReviewGateAstAnchor as syntax }
+  expects ShapeWorkflowTestModuleRunClaudeReviewGateAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3d1e185361d1b82aeb313ff5ed105075c15003266282482e62981d53481e83fd")
+  summary "fn ShapeWorkflowTestModule.runClaudeReviewGate generated from typescript function_declaration at packages/shp-cli/src/shape-workflow.test.ts:65-109."
 }
 
 implementation ShapeWorkflowTestModuleImpl {

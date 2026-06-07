@@ -1,8 +1,8 @@
 # Shape contract review
 
-You are running in GitHub Actions through GitHub Copilot CLI. Review the pull
-request diff for Shape contract drift and write exactly one JSON object to
-`copilot-shape-review.json`.
+You are running in GitHub Actions through Claude Code. Review the pull request
+diff for Shape contract drift and return exactly one JSON object matching the
+configured structured-output schema.
 
 ## Required method
 
@@ -37,7 +37,7 @@ current Shape update or current attestation.
 
 ## Output
 
-Write this object to `copilot-shape-review.json`:
+Return this object:
 
 ```json
 {

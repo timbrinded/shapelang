@@ -3,10 +3,10 @@
   "generatedAt": "deterministic",
   "entries": [
     {
-      "module": "shape.generated.ast.github.scripts.check_copilot_shape_review",
-      "path": "shape/generated/ast/.github/scripts/check-copilot-shape-review.shape",
+      "module": "shape.generated.ast.github.scripts.check_claude_shape_review",
+      "path": "shape/generated/ast/.github/scripts/check-claude-shape-review.shape",
       "sources": [
-        ".github/scripts/check-copilot-shape-review.mjs"
+        ".github/scripts/check-claude-shape-review.mjs"
       ]
     },
     {

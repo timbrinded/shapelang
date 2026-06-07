@@ -4,11 +4,11 @@ import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 
 const repoRoot = resolve(import.meta.dir, "../../..");
-const gateScriptPath = resolve(repoRoot, ".github/scripts/check-copilot-shape-review.mjs");
+const gateScriptPath = resolve(repoRoot, ".github/scripts/check-claude-shape-review.mjs");
 
 describe("Shape workflow", () => {
-  test("fails Copilot review gate when a pass result includes findings", async () => {
-    const result = await runCopilotReviewGate({
+  test("fails Claude review gate when a pass result includes findings", async () => {
+    const result = await runClaudeReviewGate({
       status: "pass",
       summary: "No drift found.",
       findings: [
@@ -23,8 +23,8 @@ describe("Shape workflow", () => {
     expect(result.stderr).toContain("findings");
   });
 
-  test("fails Copilot review gate when findings are missing", async () => {
-    const result = await runCopilotReviewGate({
+  test("fails Claude review gate when findings are missing", async () => {
+    const result = await runClaudeReviewGate({
       status: "pass",
       summary: "No drift found."
     });
@@ -33,8 +33,8 @@ describe("Shape workflow", () => {
     expect(result.stderr).toContain("findings must be an array");
   });
 
-  test("passes Copilot review gate when a pass result has no findings", async () => {
-    const result = await runCopilotReviewGate({
+  test("passes Claude review gate when a pass result has no findings", async () => {
+    const result = await runClaudeReviewGate({
       status: "pass",
       summary: "No drift found.",
       findings: []
@@ -45,26 +45,47 @@ describe("Shape workflow", () => {
     expect(result.summary).toContain("Status: `pass`");
     expect(result.summary).toContain("Findings: 0");
   });
+
+  test("passes Claude review gate with structured output from the action", async () => {
+    const result = await runClaudeReviewGate(
+      {
+        status: "pass",
+        summary: "No drift found.",
+        findings: []
+      },
+      { useStructuredOutput: true }
+    );
+
+    expect(result.exitCode).toBe(0);
+    expect(result.stderr).toBe("");
+    expect(result.summary).toContain("Shape Claude Review");
+  });
 });
 
-async function runCopilotReviewGate(review: unknown): Promise<{
+async function runClaudeReviewGate(
+  review: unknown,
+  options: { useStructuredOutput?: boolean } = {}
+): Promise<{
   exitCode: number;
   stdout: string;
   stderr: string;
   summary: string;
 }> {
-  const tempDir = await mkdtemp(join(tmpdir(), "shape-copilot-review-"));
+  const tempDir = await mkdtemp(join(tmpdir(), "shape-claude-review-"));
   try {
     const summaryPath = join(tempDir, "summary.md");
 
-    await Bun.write(join(tempDir, "copilot-shape-review.json"), JSON.stringify(review));
+    await Bun.write(join(tempDir, "claude-shape-review.json"), JSON.stringify(review));
     await Bun.write(summaryPath, "");
 
     const child = Bun.spawn(["node", gateScriptPath], {
       cwd: tempDir,
       env: {
         ...process.env,
-        GITHUB_STEP_SUMMARY: summaryPath
+        GITHUB_STEP_SUMMARY: summaryPath,
+        ...(options.useStructuredOutput
+          ? { CLAUDE_SHAPE_REVIEW_RESULT: JSON.stringify(review) }
+          : {})
       },
       stdout: "pipe",
       stderr: "pipe"

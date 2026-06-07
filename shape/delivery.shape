@@ -8,11 +8,11 @@ import shape.tooling
 
 resource CiWorkflow
 
+resource ClaudeReviewPrompt
+
+resource ClaudeReviewResult
+
 resource CliPackageManifest
-
-resource CopilotReviewPrompt
-
-resource CopilotReviewResult
 
 resource DocsContent
 
@@ -26,13 +26,13 @@ resource ReleaseVersionTag
 
 component CiPipeline {
   owns CiWorkflow
-  owns CopilotReviewPrompt
-  owns CopilotReviewResult
+  owns ClaudeReviewPrompt
+  owns ClaudeReviewResult
   grants Read<ChangedFileList>
   grants Read<CiWorkflow>
+  grants Read<ClaudeReviewPrompt>
+  grants Read<ClaudeReviewResult>
   grants Read<CliPackageManifest>
-  grants Read<CopilotReviewPrompt>
-  grants Read<CopilotReviewResult>
   grants Read<GeneratedAstManifest>
   grants Read<LanguageSource>
   grants Read<NativeParserAsset>
@@ -43,7 +43,7 @@ component CiPipeline {
   grants Read<ShapeSource>
   grants Read<SourceSyntaxTree>
   grants Update<ChangedFileList>
-  grants Update<CopilotReviewResult>
+  grants Update<ClaudeReviewResult>
   grants Update<GeneratedAstManifest>
   grants Update<ShapeModelDraft>
   fn checkReleaseVersion : RefactorSensitive
@@ -97,14 +97,16 @@ component CiPipeline {
         evidence yaml(".github/workflows/shape.yml")
       Read<CiWorkflow>
         evidence yaml(".github/workflows/shape.yml")
-      Read<CopilotReviewPrompt>
+      Read<ClaudeReviewPrompt>
         evidence md(".github/prompts/shape-contract-review.md")
-      Read<CopilotReviewResult>
-        evidence mjs(".github/scripts/check-copilot-shape-review.mjs")
+      Read<ClaudeReviewResult>
+        evidence mjs(".github/scripts/check-claude-shape-review.mjs")
+      Read<ClaudeReviewResult>
+        evidence json(".github/shape-contract/schemas/shape-contract-result.schema.json")
       Read<SemanticDiagnostics>
         evidence yaml(".github/workflows/shape.yml")
-      Update<CopilotReviewResult>
-        evidence mjs(".github/scripts/check-copilot-shape-review.mjs")
+      Update<ClaudeReviewResult>
+        evidence mjs(".github/scripts/check-claude-shape-review.mjs")
     }
   fn smokeReleaseBinary
     source yaml(".github/workflows/release.yml#Smoke test release binary")
@@ -371,6 +373,15 @@ implementation CiScripts {
   on_change require shape_update
 }
 
+implementation ClaudeReviewSource {
+  paths {
+    ".github/prompts/**/*.md"
+    ".github/shape-contract/**/*.json"
+  }
+  conforms_to CiPipeline
+  on_change require shape_update
+}
+
 implementation CliSource {
   paths {
     "packages/shp-cli/src/app.ts"
@@ -384,14 +395,6 @@ implementation CliSource {
     "packages/shp-cli/src/version.ts"
   }
   conforms_to ShpCli
-  on_change require shape_update
-}
-
-implementation CopilotReviewSource {
-  paths {
-    ".github/prompts/**/*.md"
-  }
-  conforms_to CiPipeline
   on_change require shape_update
 }
 

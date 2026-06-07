@@ -110,58 +110,54 @@ jobs:
       - name: Shape CI
         run: bun run shape:ci
 
-  shape-copilot-review:
-    name: Shape Copilot Review
+  shape-claude-review:
+    name: Shape Claude Review
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request'
+    permissions:
+      contents: read
+      pull-requests: read
+    env:
+      SHAPE_CONTRACT_RESULT_SCHEMA: .github/shape-contract/schemas/shape-contract-result.schema.json
 
     steps:
-      - name: Detect Copilot token
-        id: copilot-token
+      - name: Detect Claude token
+        id: claude-token
         env:
-          COPILOT_GITHUB_TOKEN: ${{ secrets.COPILOT_GITHUB_TOKEN }}
+          CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
         run: |
-          if [ -n "${COPILOT_GITHUB_TOKEN:-}" ]; then
+          if [ -n "${CLAUDE_CODE_OAUTH_TOKEN:-}" ]; then
             echo "available=true" >> "$GITHUB_OUTPUT"
           else
             echo "available=false" >> "$GITHUB_OUTPUT"
-            echo "Skipping Copilot Shape contract review because COPILOT_GITHUB_TOKEN is not available."
+            echo "Skipping Claude Shape contract review because CLAUDE_CODE_OAUTH_TOKEN is not available."
           fi
 
       - name: Checkout
-        if: steps.copilot-token.outputs.available == 'true'
+        if: steps.claude-token.outputs.available == 'true'
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: Setup Bun
-        if: steps.copilot-token.outputs.available == 'true'
+        if: steps.claude-token.outputs.available == 'true'
+        id: setup-bun
         uses: oven-sh/setup-bun@v2
 
       - name: Install
-        if: steps.copilot-token.outputs.available == 'true'
+        if: steps.claude-token.outputs.available == 'true'
         run: bun install --frozen-lockfile
 
-      - name: Setup Node
-        if: steps.copilot-token.outputs.available == 'true'
-        uses: actions/setup-node@v4
-        with:
-          node-version: 24
-
-      - name: Install Copilot CLI
-        if: steps.copilot-token.outputs.available == 'true'
-        run: npm install -g @github/copilot
-
       - name: Changed files
-        if: steps.copilot-token.outputs.available == 'true'
+        if: steps.claude-token.outputs.available == 'true'
         run: bun run changed-files
         env:
           GITHUB_BASE_REF: ${{ github.base_ref }}
           GITHUB_EVENT_BEFORE: ${{ github.event.before }}
           GITHUB_SHA: ${{ github.sha }}
 
-      - name: Shape diagnostics for Copilot
-        if: steps.copilot-token.outputs.available == 'true'
+      - name: Shape diagnostics for Claude
+        if: steps.claude-token.outputs.available == 'true'
         run: |
           set +e
           {
@@ -173,34 +169,60 @@ jobs:
             status=$?
             echo
             echo "shape_ci_exit=$status"
-          } > shape-copilot-context.txt 2>&1
+          } > shape-claude-context.txt 2>&1
 
-      - name: Run Copilot Shape contract review
-        if: steps.copilot-token.outputs.available == 'true'
+      - name: Load structured output schema
+        id: schema
+        if: steps.claude-token.outputs.available == 'true'
+        uses: actions/github-script@v7
         env:
-          COPILOT_GITHUB_TOKEN: ${{ secrets.COPILOT_GITHUB_TOKEN }}
+          SCHEMA_PATH: ${{ env.SHAPE_CONTRACT_RESULT_SCHEMA }}
+        with:
+          script: |
+            const { readFileSync } = require("node:fs");
+            const schema = JSON.stringify(JSON.parse(readFileSync(process.env.SCHEMA_PATH, "utf8")));
+            core.setOutput("json_schema", schema);
+
+      - name: Run Claude Shape contract review
+        id: claude
+        if: steps.claude-token.outputs.available == 'true'
+        uses: anthropics/claude-code-action@v1.0.88
+        env:
+          API_TIMEOUT_MS: 18000
+          DISABLE_NON_ESSENTIAL_MODE_CALLS: 1
+          ANTHROPIC_BASE_URL: ${{ secrets.ANTHROPIC_BASE_URL }}
+          ANTHROPIC_AUTH_TOKEN: ${{ secrets.ANTHROPIC_AUTH_TOKEN }}
+          CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS: ${{ secrets.CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS }}
           GITHUB_BASE_REF: ${{ github.base_ref }}
           GITHUB_SHA: ${{ github.sha }}
-        run: |
-          set -euo pipefail
-          prompt="$(<.github/prompts/shape-contract-review.md)"
-          prompt="$prompt
+        with:
+          github_token: ${{ github.token }}
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          path_to_bun_executable: ${{ steps.setup-bun.outputs.bun-path }}
+          classify_inline_comments: false
+          prompt: |
+            Read AGENTS.md when it exists, then read
+            .github/prompts/shape-contract-review.md.
 
-          CI context:
-          - Base ref: ${GITHUB_BASE_REF:-unknown}
-          - Head SHA: ${GITHUB_SHA:-unknown}
-          - Changed files are listed in changed.txt.
-          - Shape command output is in shape-copilot-context.txt.
-          - Write the final JSON object to copilot-shape-review.json."
+            Analyze this repository for Shape contract drift.
+            Scope: BASE_REF=${{ github.base_ref || '' }},
+            HEAD_SHA=${{ github.sha }}.
+            Changed files are listed in changed.txt.
+            Shape command output is in shape-claude-context.txt.
+            Use the prompt file's review policy and output contract.
+            The structured result must match ${{ env.SHAPE_CONTRACT_RESULT_SCHEMA }}.
+            Return only the JSON result. Do not modify tracked repository files.
+          claude_args: |
+            --max-turns 100
+            --allowedTools "Read,Glob,Grep,LS,Bash(git diff *),Bash(git log *),Bash(git show *),Bash(git ls-files *),Bash(bun run shape:ci),Bash(bun shp --help),Bash(bun shp check *),Bash(bun shp obligations *),Bash(bun shp memory *),Bash(bun shp explain *),Bash(bun shp analyze *),Bash(rg *),Bash(sed -n *),Bash(ls *),Bash(pwd)"
+            --disallowedTools "Write,Edit,MultiEdit,NotebookEditCell"
+            --json-schema '${{ steps.schema.outputs.json_schema }}'
 
-          copilot -p "$prompt" \
-            --allow-tool='read,write(copilot-shape-review.json),shell(git:*),shell(bun:*),shell(rg:*),shell(ls:*),shell(pwd)' \
-            --deny-tool='shell(git push),shell(git commit),shell(git reset),shell(git checkout)' \
-            --no-ask-user
-
-      - name: Check Copilot review result
-        if: steps.copilot-token.outputs.available == 'true'
-        run: node .github/scripts/check-copilot-shape-review.mjs
+      - name: Check Claude review result
+        if: steps.claude-token.outputs.available == 'true'
+        env:
+          CLAUDE_SHAPE_REVIEW_RESULT: ${{ steps.claude.outputs.structured_output }}
+        run: node .github/scripts/check-claude-shape-review.mjs
 
   docs:
     name: Docs

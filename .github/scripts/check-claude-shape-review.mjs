@@ -1,33 +1,35 @@
 import { appendFileSync, readFileSync } from "node:fs";
 
-const resultPath = process.env.COPILOT_SHAPE_REVIEW_RESULT ?? "copilot-shape-review.json";
+const resultPath = process.env.CLAUDE_SHAPE_REVIEW_RESULT_PATH ?? "claude-shape-review.json";
+const resultJson = process.env.CLAUDE_SHAPE_REVIEW_RESULT;
 let review;
 
 try {
-  review = JSON.parse(readFileSync(resultPath, "utf8"));
+  review = JSON.parse(resultJson ?? readFileSync(resultPath, "utf8"));
 } catch (error) {
-  console.error(`Could not parse ${resultPath}: ${error}`);
+  const source = resultJson === undefined ? resultPath : "CLAUDE_SHAPE_REVIEW_RESULT";
+  console.error(`Could not parse ${source}: ${error}`);
   process.exit(1);
 }
 
 const validStatuses = new Set(["pass", "drift", "error"]);
 if (review === null || typeof review !== "object" || Array.isArray(review)) {
-  console.error("Invalid Shape Copilot review: result must be a JSON object.");
+  console.error("Invalid Shape Claude review: result must be a JSON object.");
   process.exit(1);
 }
 
 if (!validStatuses.has(review.status)) {
-  console.error(`Invalid Shape Copilot review status: ${review?.status}`);
+  console.error(`Invalid Shape Claude review status: ${review?.status}`);
   process.exit(1);
 }
 
 if (typeof review.summary !== "string") {
-  console.error("Invalid Shape Copilot review: summary must be a string.");
+  console.error("Invalid Shape Claude review: summary must be a string.");
   process.exit(1);
 }
 
 if (!Array.isArray(review.findings)) {
-  console.error("Invalid Shape Copilot review: findings must be an array.");
+  console.error("Invalid Shape Claude review: findings must be an array.");
   process.exit(1);
 }
 
@@ -38,7 +40,7 @@ if (process.env.GITHUB_STEP_SUMMARY) {
   appendFileSync(
     process.env.GITHUB_STEP_SUMMARY,
     [
-      "## Shape Copilot Review",
+      "## Shape Claude Review",
       "",
       `Status: \`${review.status}\``,
       "",
@@ -51,7 +53,7 @@ if (process.env.GITHUB_STEP_SUMMARY) {
 }
 
 if (review.status === "pass" && findings.length > 0) {
-  console.error("Invalid Shape Copilot review: pass status cannot include findings.");
+  console.error("Invalid Shape Claude review: pass status cannot include findings.");
   console.error(JSON.stringify(review, null, 2));
   process.exit(1);
 }
