@@ -1,0 +1,129 @@
+module shape.generated.ast.github.scripts.shape_review_contract
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource ShapeReviewContractModuleIsRecordAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor(".github/scripts/shape-review-contract.mjs:19-21")
+  fingerprint ast.semantic_subtree_v1("sha256:a022d7dbfa14db80e74798d64d8d760da63e713674dbdf0fb200a683ca191be8")
+}
+
+resource ShapeReviewContractModuleParseJsonObjectCandidateAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor(".github/scripts/shape-review-contract.mjs:31-51")
+  fingerprint ast.semantic_subtree_v1("sha256:f03381bc6bedfab5ad6d7d4f18b9ad56a6202a7246c6c118350df0511e589f01")
+}
+
+resource ShapeReviewContractModuleParseJsonTextAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor(".github/scripts/shape-review-contract.mjs:23-29")
+  fingerprint ast.semantic_subtree_v1("sha256:0c40cbede9697a5edb572c0e3acf53214e536a133f1eb9d774050cdfa761573e")
+}
+
+resource ShapeReviewContractModuleRequireShapeReviewAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor(".github/scripts/shape-review-contract.mjs:122-128")
+  fingerprint ast.semantic_subtree_v1("sha256:0dfbbcd66c9721cd34cc72b16a79a5e5483aae3dcd4e941773557a9f5c89376a")
+}
+
+resource ShapeReviewContractModuleShapeReviewFindingValidationErrorsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor(".github/scripts/shape-review-contract.mjs:91-120")
+  fingerprint ast.semantic_subtree_v1("sha256:5e8c1d219624c3ce126a953a11f35dbd9d3f23874f6b51896e0d24b5c02d204b")
+}
+
+resource ShapeReviewContractModuleShapeReviewValidationErrorsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor(".github/scripts/shape-review-contract.mjs:53-89")
+  fingerprint ast.semantic_subtree_v1("sha256:02a8c1abba0ad29992afc1aea749e1573a7184d16463b5366dcadcb0bf81832b")
+}
+
+resource ShapeReviewContractModuleWriteGitHubOutputAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor(".github/scripts/shape-review-contract.mjs:130-143")
+  fingerprint ast.semantic_subtree_v1("sha256:62690e217f6d5786a354bd4e17c9d31779ee1fcdc7cf66ef0d47fc81d6a3bb21")
+}
+
+component ShapeReviewContractModule : GeneratedCandidate {
+  fn isRecord
+    source js(".github/scripts/shape-review-contract.mjs:19-21")
+    effects unknown
+  fn parseJsonObjectCandidate
+    source js(".github/scripts/shape-review-contract.mjs:31-51")
+    effects unknown
+  fn parseJsonText
+    source js(".github/scripts/shape-review-contract.mjs:23-29")
+    effects unknown
+  fn requireShapeReview
+    source js(".github/scripts/shape-review-contract.mjs:122-128")
+    effects unknown
+  fn shapeReviewFindingValidationErrors
+    source js(".github/scripts/shape-review-contract.mjs:91-120")
+    effects unknown
+  fn shapeReviewValidationErrors
+    source js(".github/scripts/shape-review-contract.mjs:53-89")
+    effects unknown
+  fn writeGitHubOutput
+    source js(".github/scripts/shape-review-contract.mjs:130-143")
+    effects unknown
+}
+
+relation ShapeReviewContractModuleIsRecordGeneratedFromShapeReviewContractModuleIsRecordAstAnchor {
+  kind generated_from
+  connects ShapeReviewContractModule -> ShapeReviewContractModuleIsRecordAstAnchor
+  roles { ShapeReviewContractModule as generated, ShapeReviewContractModuleIsRecordAstAnchor as syntax }
+  expects ShapeReviewContractModuleIsRecordAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a022d7dbfa14db80e74798d64d8d760da63e713674dbdf0fb200a683ca191be8")
+  summary "fn ShapeReviewContractModule.isRecord generated from javascript function_declaration at .github/scripts/shape-review-contract.mjs:19-21."
+}
+
+relation ShapeReviewContractModuleParseJsonObjectCandidateGeneratedFromShapeReviewContractModuleParseJsonObjectCandidateAstAnchor {
+  kind generated_from
+  connects ShapeReviewContractModule -> ShapeReviewContractModuleParseJsonObjectCandidateAstAnchor
+  roles { ShapeReviewContractModule as generated, ShapeReviewContractModuleParseJsonObjectCandidateAstAnchor as syntax }
+  expects ShapeReviewContractModuleParseJsonObjectCandidateAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f03381bc6bedfab5ad6d7d4f18b9ad56a6202a7246c6c118350df0511e589f01")
+  summary "fn ShapeReviewContractModule.parseJsonObjectCandidate generated from javascript function_declaration at .github/scripts/shape-review-contract.mjs:31-51."
+}
+
+relation ShapeReviewContractModuleParseJsonTextGeneratedFromShapeReviewContractModuleParseJsonTextAstAnchor {
+  kind generated_from
+  connects ShapeReviewContractModule -> ShapeReviewContractModuleParseJsonTextAstAnchor
+  roles { ShapeReviewContractModule as generated, ShapeReviewContractModuleParseJsonTextAstAnchor as syntax }
+  expects ShapeReviewContractModuleParseJsonTextAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0c40cbede9697a5edb572c0e3acf53214e536a133f1eb9d774050cdfa761573e")
+  summary "fn ShapeReviewContractModule.parseJsonText generated from javascript function_declaration at .github/scripts/shape-review-contract.mjs:23-29."
+}
+
+relation ShapeReviewContractModuleRequireShapeReviewGeneratedFromShapeReviewContractModuleRequireShapeReviewAstAnchor {
+  kind generated_from
+  connects ShapeReviewContractModule -> ShapeReviewContractModuleRequireShapeReviewAstAnchor
+  roles { ShapeReviewContractModule as generated, ShapeReviewContractModuleRequireShapeReviewAstAnchor as syntax }
+  expects ShapeReviewContractModuleRequireShapeReviewAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0dfbbcd66c9721cd34cc72b16a79a5e5483aae3dcd4e941773557a9f5c89376a")
+  summary "fn ShapeReviewContractModule.requireShapeReview generated from javascript function_declaration at .github/scripts/shape-review-contract.mjs:122-128."
+}
+
+relation ShapeReviewContractModuleShapeReviewFindingValidationErrorsGeneratedFromShapeReviewContractModuleShapeReviewFindingValidationErrorsAstAnchor {
+  kind generated_from
+  connects ShapeReviewContractModule -> ShapeReviewContractModuleShapeReviewFindingValidationErrorsAstAnchor
+  roles { ShapeReviewContractModule as generated, ShapeReviewContractModuleShapeReviewFindingValidationErrorsAstAnchor as syntax }
+  expects ShapeReviewContractModuleShapeReviewFindingValidationErrorsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5e8c1d219624c3ce126a953a11f35dbd9d3f23874f6b51896e0d24b5c02d204b")
+  summary "fn ShapeReviewContractModule.shapeReviewFindingValidationErrors generated from javascript function_declaration at .github/scripts/shape-review-contract.mjs:91-120."
+}
+
+relation ShapeReviewContractModuleShapeReviewValidationErrorsGeneratedFromShapeReviewContractModuleShapeReviewValidationErrorsAstAnchor {
+  kind generated_from
+  connects ShapeReviewContractModule -> ShapeReviewContractModuleShapeReviewValidationErrorsAstAnchor
+  roles { ShapeReviewContractModule as generated, ShapeReviewContractModuleShapeReviewValidationErrorsAstAnchor as syntax }
+  expects ShapeReviewContractModuleShapeReviewValidationErrorsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:02a8c1abba0ad29992afc1aea749e1573a7184d16463b5366dcadcb0bf81832b")
+  summary "fn ShapeReviewContractModule.shapeReviewValidationErrors generated from javascript function_declaration at .github/scripts/shape-review-contract.mjs:53-89."
+}
+
+relation ShapeReviewContractModuleWriteGitHubOutputGeneratedFromShapeReviewContractModuleWriteGitHubOutputAstAnchor {
+  kind generated_from
+  connects ShapeReviewContractModule -> ShapeReviewContractModuleWriteGitHubOutputAstAnchor
+  roles { ShapeReviewContractModule as generated, ShapeReviewContractModuleWriteGitHubOutputAstAnchor as syntax }
+  expects ShapeReviewContractModuleWriteGitHubOutputAstAnchor fingerprint ast.semantic_subtree_v1("sha256:62690e217f6d5786a354bd4e17c9d31779ee1fcdc7cf66ef0d47fc81d6a3bb21")
+  summary "fn ShapeReviewContractModule.writeGitHubOutput generated from javascript function_declaration at .github/scripts/shape-review-contract.mjs:130-143."
+}
+
+implementation ShapeReviewContractModuleImpl {
+  paths {
+    ".github/scripts/shape-review-contract.mjs"
+  }
+  conforms_to ShapeReviewContractModule
+}

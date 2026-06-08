@@ -2,10 +2,18 @@ import { Glob } from "bun";
 import {
   formatDiagnostics,
   parseShapeModule,
+  type CheckModuleInput,
   type ParseDiagnostic,
   type ShapeModule
 } from "@shape/shp-checker";
 import { CliDiagnosticError, EXIT_USAGE, errorMessage } from "./errors";
+
+export type LoadedShapeModule = { module: ShapeModule; filePath: string };
+
+export type LoadedShapeModulesResult = {
+  modules: LoadedShapeModule[];
+  diagnostics: ParseDiagnostic[];
+};
 
 export async function defaultShapeFiles(): Promise<string[]> {
   const patterns = ["shape/**/*.shape"];
@@ -27,10 +35,16 @@ export async function readChangedFiles(path: string): Promise<string[]> {
     .filter((line) => line.length > 0);
 }
 
-export async function parseModules(
-  paths: string[]
-): Promise<{ module: ShapeModule; filePath: string }[]> {
-  const modules: { module: ShapeModule; filePath: string }[] = [];
+export async function providedOrDefaultShapeFiles(
+  providedFiles: readonly string[]
+): Promise<string[]> {
+  return providedFiles.length > 0 ? [...providedFiles] : await defaultShapeFiles();
+}
+
+export async function loadShapeModules(
+  paths: readonly string[]
+): Promise<LoadedShapeModulesResult> {
+  const modules: LoadedShapeModule[] = [];
   const diagnostics: ParseDiagnostic[] = [];
   for (const filePath of paths) {
     try {
@@ -48,14 +62,24 @@ export async function parseModules(
       });
     }
   }
+  return { modules, diagnostics };
+}
 
-  if (diagnostics.length > 0) {
+export async function parseModules(paths: readonly string[]): Promise<LoadedShapeModule[]> {
+  const result = await loadShapeModules(paths);
+  if (result.diagnostics.length > 0) {
     throw new CliDiagnosticError(
-      formatDiagnostics({ ok: false, exitCode: EXIT_USAGE, diagnostics }),
+      formatDiagnostics({ ok: false, exitCode: EXIT_USAGE, diagnostics: result.diagnostics }),
       EXIT_USAGE
     );
   }
-  return modules;
+  return result.modules;
+}
+
+export async function parseProvidedOrDefaultModules(
+  providedFiles: readonly string[]
+): Promise<CheckModuleInput[]> {
+  return parseModules(await providedOrDefaultShapeFiles(providedFiles));
 }
 
 export async function readCliTextFile(path: string): Promise<string> {

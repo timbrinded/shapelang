@@ -1,6 +1,7 @@
 import { createHash } from "node:crypto";
 
 import type { SourceSpan } from "./ast-generation-types.ts";
+import { parseSourceLanguageName, type SourceLanguageName } from "./source-languages.ts";
 import { compareCodepointStrings } from "./shape-strings.ts";
 export { compareCodepointStrings } from "./shape-strings.ts";
 
@@ -292,27 +293,13 @@ export function sourceLanguage(language: string): string {
   return "file";
 }
 
-export function normalizeLanguageName(language: string | undefined): string | undefined {
+export function normalizeLanguageName(
+  language: string | undefined
+): SourceLanguageName | undefined {
   if (!language) {
     return undefined;
   }
-  const lower = language.toLowerCase();
-  if (lower === "ts") {
-    return "typescript";
-  }
-  if (lower === "js" || lower === "jsx") {
-    return "javascript";
-  }
-  if (lower === "tsx") {
-    return "tsx";
-  }
-  if (lower === "rs") {
-    return "rust";
-  }
-  if (lower === "py") {
-    return "python";
-  }
-  return lower;
+  return parseSourceLanguageName(language);
 }
 
 export function normalizeModuleName(moduleName: string): string {

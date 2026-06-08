@@ -1,7 +1,7 @@
 import { listMemoryGuardsShapeModules } from "@shape/shp-checker";
 import type { CliContext } from "../../context";
 import { stdout } from "../../io";
-import { defaultShapeFiles, parseModules } from "../../shape-files";
+import { parseProvidedOrDefaultModules } from "../../shape-files";
 
 export type MemoryFlags = Record<never, never>;
 
@@ -10,7 +10,6 @@ export default async function memory(
   _flags: MemoryFlags,
   ...providedFiles: string[]
 ): Promise<void> {
-  const files = providedFiles.length > 0 ? providedFiles : await defaultShapeFiles();
-  const modules = await parseModules(files);
+  const modules = await parseProvidedOrDefaultModules(providedFiles);
   stdout(this, listMemoryGuardsShapeModules(modules));
 }

@@ -8,12 +8,16 @@ import type {
 import { globMatches, normalizeRepoPath } from "../globs.ts";
 import { describeProvenance } from "../provenance.ts";
 
-export function checkCoverage(model: Model, changedFiles: string[]): SemanticDiagnostic[] {
+export function checkCoverage(
+  model: Model,
+  changedFiles: string[],
+  repoRoot: string
+): SemanticDiagnostic[] {
   if (changedFiles.length === 0) {
     return [];
   }
 
-  const changed = changedFileContext(changedFiles);
+  const changed = changedFileContext(changedFiles, repoRoot);
   const noShapeChangeAttestations = new Set(["no_shape_change"]);
   const diagnostics: SemanticDiagnostic[] = [];
 
@@ -34,11 +38,19 @@ export function checkCoverage(model: Model, changedFiles: string[]): SemanticDia
         continue;
       }
 
-      if (currentShapeUpdateExists(model, changedFile, changed.set)) {
+      if (currentShapeUpdateExists(model, changedFile, changed.set, repoRoot)) {
         continue;
       }
 
-      if (currentAttestationExists(model, changedFile, changed.set, noShapeChangeAttestations)) {
+      if (
+        currentAttestationExists(
+          model,
+          changedFile,
+          changed.set,
+          noShapeChangeAttestations,
+          repoRoot
+        )
+      ) {
         continue;
       }
 
@@ -59,9 +71,9 @@ export function checkCoverage(model: Model, changedFiles: string[]): SemanticDia
   return diagnostics;
 }
 
-export function changedFileContext(changedFiles: string[]): ChangedFileContext {
+export function changedFileContext(changedFiles: string[], repoRoot: string): ChangedFileContext {
   const files = changedFiles
-    .map((file) => normalizeRepoPath(file))
+    .map((file) => normalizeRepoPath(file, repoRoot))
     .filter((file) => file.length > 0);
   return {
     files,
@@ -72,12 +84,13 @@ export function changedFileContext(changedFiles: string[]): ChangedFileContext {
 export function currentShapeUpdateExists(
   model: Model,
   changedFile: string,
-  changedSet: Set<string>
+  changedSet: Set<string>,
+  repoRoot: string
 ): boolean {
   return (
     model.shapeUpdatePaths
       .get(changedFile)
-      ?.some((provenance) => provenanceFileChanged(provenance, changedSet)) ?? false
+      ?.some((provenance) => provenanceFileChanged(provenance, changedSet, repoRoot)) ?? false
   );
 }
 
@@ -85,10 +98,11 @@ export function currentAttestationExists(
   model: Model,
   changedFile: string,
   changedSet: Set<string>,
-  allowedKinds: ReadonlySet<string>
+  allowedKinds: ReadonlySet<string>,
+  repoRoot: string
 ): boolean {
   return model.attestations.some((attestation) =>
-    isCurrentAttestation(attestation, changedFile, changedSet, allowedKinds)
+    isCurrentAttestation(attestation, changedFile, changedSet, allowedKinds, repoRoot)
   );
 }
 
@@ -96,28 +110,38 @@ export function isCurrentAttestation(
   attestation: AttestationInfo,
   changedFile: string,
   changedSet: Set<string>,
-  allowedKinds: ReadonlySet<string>
+  allowedKinds: ReadonlySet<string>,
+  repoRoot: string
 ): boolean {
   return (
     allowedKinds.has(attestation.kind) &&
     attestation.path === changedFile &&
     attestation.reason.trim().length > 0 &&
-    provenanceFileChanged(attestation.provenance, changedSet)
+    provenanceFileChanged(attestation.provenance, changedSet, repoRoot)
   );
 }
 
-export function provenanceFileChanged(provenance: Provenance, changedSet: Set<string>): boolean {
+export function provenanceFileChanged(
+  provenance: Provenance,
+  changedSet: Set<string>,
+  repoRoot: string
+): boolean {
   return (
-    provenance.filePath !== undefined && changedSet.has(normalizeRepoPath(provenance.filePath))
+    provenance.filePath !== undefined &&
+    changedSet.has(normalizeRepoPath(provenance.filePath, repoRoot))
   );
 }
 
-export function checkBindings(model: Model, changedFiles: string[]): SemanticDiagnostic[] {
+export function checkBindings(
+  model: Model,
+  changedFiles: string[],
+  repoRoot: string
+): SemanticDiagnostic[] {
   if (changedFiles.length === 0) {
     return [];
   }
 
-  const changed = changedFileContext(changedFiles);
+  const changed = changedFileContext(changedFiles, repoRoot);
   const diagnostics: SemanticDiagnostic[] = [];
 
   for (const binding of model.bindings.values()) {
@@ -135,7 +159,7 @@ export function checkBindings(model: Model, changedFiles: string[]): SemanticDia
         continue;
       }
 
-      if (currentAttestationExists(model, changedFile, changed.set, allowedKinds)) {
+      if (currentAttestationExists(model, changedFile, changed.set, allowedKinds, repoRoot)) {
         continue;
       }
 

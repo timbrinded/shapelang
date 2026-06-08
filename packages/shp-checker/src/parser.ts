@@ -24,20 +24,6 @@ export type ParseShapeModuleResult =
       diagnostics: ParseDiagnostic[];
     };
 
-type LexerErrorLike = {
-  message: string;
-  line?: number;
-  column?: number;
-};
-
-type ParserErrorLike = {
-  message: string;
-  token?: {
-    startLine?: number;
-    startColumn?: number;
-  };
-};
-
 export function parseShapeModule(
   source: string,
   filePath = "memory.shape"
@@ -55,10 +41,10 @@ export function parseShapeModule(
   };
   (parseResult.value as Mutable<ShapeModule>).$document = document;
   const lexerErrors = document.parseResult.lexerErrors.map((error) =>
-    lexerDiagnostic(error as LexerErrorLike, filePath)
+    lexerDiagnostic(error, filePath)
   );
   const parserErrors = document.parseResult.parserErrors.map((error) =>
-    parserDiagnostic(error as ParserErrorLike, filePath)
+    parserDiagnostic(error, filePath)
   );
   const diagnostics = [...lexerErrors, ...parserErrors];
 
@@ -78,22 +64,47 @@ export function parseShapeModule(
   };
 }
 
-function lexerDiagnostic(error: LexerErrorLike, filePath: string): ParseDiagnostic {
+function lexerDiagnostic(error: unknown, filePath: string): ParseDiagnostic {
   return {
     kind: "parse",
     filePath,
-    message: error.message,
-    line: error.line,
-    column: error.column
+    message: messageProperty(error),
+    line: numberProperty(error, "line"),
+    column: numberProperty(error, "column")
   };
 }
 
-function parserDiagnostic(error: ParserErrorLike, filePath: string): ParseDiagnostic {
+function parserDiagnostic(error: unknown, filePath: string): ParseDiagnostic {
+  const token = recordProperty(error, "token");
   return {
     kind: "parse",
     filePath,
-    message: error.message,
-    line: error.token?.startLine,
-    column: error.token?.startColumn
+    message: messageProperty(error),
+    line: numberProperty(token, "startLine"),
+    column: numberProperty(token, "startColumn")
   };
+}
+
+function messageProperty(value: unknown): string {
+  const message = stringProperty(value, "message");
+  return message ?? String(value);
+}
+
+function recordProperty(value: unknown, key: string): Record<string, unknown> | undefined {
+  const propertyValue = isRecord(value) ? value[key] : undefined;
+  return isRecord(propertyValue) ? propertyValue : undefined;
+}
+
+function stringProperty(value: unknown, key: string): string | undefined {
+  const propertyValue = isRecord(value) ? value[key] : undefined;
+  return typeof propertyValue === "string" ? propertyValue : undefined;
+}
+
+function numberProperty(value: unknown, key: string): number | undefined {
+  const propertyValue = isRecord(value) ? value[key] : undefined;
+  return typeof propertyValue === "number" ? propertyValue : undefined;
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null;
 }
