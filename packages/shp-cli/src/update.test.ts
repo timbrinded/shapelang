@@ -1,7 +1,8 @@
 import { describe, expect, test } from "bun:test";
 import {
   compareReleaseVersions,
-  decideUpdateVersion,
+  decideReleaseUpdate,
+  decideRequestedVersion,
   expectedChecksumForAsset,
   isUnsafeDefaultTarget,
   normalizeReleaseVersion,
@@ -44,29 +45,21 @@ describe("shp update helpers", () => {
     expect(compareReleaseVersions("0.2.0", "0.10.0")).toBe(-1);
   });
 
-  test("decides update version policy without release side effects", () => {
+  test("decides requested-version and release-version policies separately", () => {
     expect(
-      decideUpdateVersion({
-        currentVersion: "0.4.0",
-        installedVersion: "0.4.0",
-        requestedVersion: "0.4.0"
-      })
+      decideRequestedVersion({ installedVersion: "0.4.0", requestedVersion: "0.4.0" })
     ).toEqual({
       kind: "skip",
       message: "shp 0.4.0 is already installed\n"
     });
     expect(
-      decideUpdateVersion({
-        currentVersion: "0.4.0",
-        installedVersion: "0.5.0",
-        requestedVersion: "0.4.0"
-      })
+      decideRequestedVersion({ installedVersion: "0.5.0", requestedVersion: "0.4.0" })
     ).toEqual({
       kind: "reject",
       message: "target release v0.4.0 is older than installed version 0.5.0"
     });
     expect(
-      decideUpdateVersion({
+      decideReleaseUpdate({
         currentVersion: "0.4.0",
         installedVersion: "0.5.0",
         targetVersion: "0.4.0",

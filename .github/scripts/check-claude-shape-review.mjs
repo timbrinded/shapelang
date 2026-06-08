@@ -1,64 +1,85 @@
 import { appendFileSync, readFileSync } from "node:fs";
+import { resolve } from "node:path";
+import { pathToFileURL } from "node:url";
+import { parseJsonText, requireShapeReview } from "./shape-review-contract.mjs";
 
 const resultPath = process.env.CLAUDE_SHAPE_REVIEW_RESULT_PATH ?? "claude-shape-review.json";
 const resultJson = process.env.CLAUDE_SHAPE_REVIEW_RESULT;
-let review;
 
-try {
-  review = JSON.parse(resultJson ?? readFileSync(resultPath, "utf8"));
-} catch (error) {
-  const source = resultJson === undefined ? resultPath : "CLAUDE_SHAPE_REVIEW_RESULT";
-  console.error(`Could not parse ${source}: ${error}`);
-  process.exit(1);
+export function renderReviewSummary(review) {
+  return [
+    "## Shape Claude Review",
+    "",
+    `Status: \`${review.status}\``,
+    "",
+    review.summary,
+    "",
+    review.findings.length > 0 ? `Findings: ${review.findings.length}` : "Findings: 0",
+    ""
+  ].join("\n");
 }
 
-const validStatuses = new Set(["pass", "drift", "error"]);
-if (review === null || typeof review !== "object" || Array.isArray(review)) {
-  console.error("Invalid Shape Claude review: result must be a JSON object.");
-  process.exit(1);
+export function parseReviewInput(input, source) {
+  const parsed = parseJsonText(input, source);
+  if (!parsed.ok) {
+    throw new Error(parsed.errors.join("; "));
+  }
+  return requireShapeReview(parsed.value, "Shape Claude review");
 }
 
-if (!validStatuses.has(review.status)) {
-  console.error(`Invalid Shape Claude review status: ${review?.status}`);
-  process.exit(1);
+export function readReviewFromEnvironment(env = process.env) {
+  if (env.CLAUDE_SHAPE_REVIEW_RESULT !== undefined) {
+    return parseReviewInput(env.CLAUDE_SHAPE_REVIEW_RESULT, "CLAUDE_SHAPE_REVIEW_RESULT");
+  }
+
+  const path = env.CLAUDE_SHAPE_REVIEW_RESULT_PATH ?? "claude-shape-review.json";
+  return parseReviewInput(readFileSync(path, "utf8"), path);
 }
 
-if (typeof review.summary !== "string") {
-  console.error("Invalid Shape Claude review: summary must be a string.");
-  process.exit(1);
+export function reviewFailureMessage(review) {
+  if (review.status === "pass" && review.findings.length > 0) {
+    return "Invalid Shape Claude review: pass status cannot include findings.";
+  }
+
+  if (review.status !== "pass") {
+    return JSON.stringify(review, null, 2);
+  }
+
+  return undefined;
 }
 
-if (!Array.isArray(review.findings)) {
-  console.error("Invalid Shape Claude review: findings must be an array.");
-  process.exit(1);
-}
-
-const summary = review.summary;
-const findings = review.findings;
-
-if (process.env.GITHUB_STEP_SUMMARY) {
-  appendFileSync(
-    process.env.GITHUB_STEP_SUMMARY,
-    [
-      "## Shape Claude Review",
-      "",
-      `Status: \`${review.status}\``,
-      "",
-      summary,
-      "",
-      findings.length > 0 ? `Findings: ${findings.length}` : "Findings: 0",
-      ""
-    ].join("\n")
+function isMainModule() {
+  return (
+    process.argv[1] !== undefined &&
+    import.meta.url === pathToFileURL(resolve(process.argv[1])).href
   );
 }
 
-if (review.status === "pass" && findings.length > 0) {
-  console.error("Invalid Shape Claude review: pass status cannot include findings.");
-  console.error(JSON.stringify(review, null, 2));
-  process.exit(1);
-}
+if (isMainModule()) {
+  let review;
+  try {
+    review =
+      resultJson === undefined
+        ? readReviewFromEnvironment()
+        : parseReviewInput(resultJson, "CLAUDE_SHAPE_REVIEW_RESULT");
+  } catch (error) {
+    const source = resultJson === undefined ? resultPath : "CLAUDE_SHAPE_REVIEW_RESULT";
+    const message = error instanceof Error ? error.message : String(error);
+    console.error(
+      message.startsWith("Could not parse") || message.startsWith("Invalid")
+        ? message
+        : `Could not parse ${source}: ${message}`
+    );
+    process.exit(1);
+  }
 
-if (review.status !== "pass") {
-  console.error(JSON.stringify(review, null, 2));
-  process.exit(1);
+  if (process.env.GITHUB_STEP_SUMMARY) {
+    appendFileSync(process.env.GITHUB_STEP_SUMMARY, renderReviewSummary(review));
+  }
+
+  const failureMessage = reviewFailureMessage(review);
+  if (failureMessage) {
+    console.error(failureMessage);
+    process.exit(1);
+  }
 }

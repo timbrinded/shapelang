@@ -17,6 +17,20 @@
       ]
     },
     {
+      "module": "shape.generated.ast.github.scripts.run_claude_shape_review",
+      "path": "shape/generated/ast/.github/scripts/run-claude-shape-review.shape",
+      "sources": [
+        ".github/scripts/run-claude-shape-review.mjs"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.github.scripts.shape_review_contract",
+      "path": "shape/generated/ast/.github/scripts/shape-review-contract.shape",
+      "sources": [
+        ".github/scripts/shape-review-contract.mjs"
+      ]
+    },
+    {
       "module": "shape.generated.ast.github.scripts.upsert_shape_ci_comment",
       "path": "shape/generated/ast/.github/scripts/upsert-shape-ci-comment.shape",
       "sources": [

@@ -76,18 +76,26 @@ export type UpdateOptions = {
   readonly repository?: string;
 };
 
-export type UpdateVersionDecision =
-  | { readonly kind: "fetch_release" }
+export type RequestedVersionDecision =
+  | { readonly kind: "continue" }
   | { readonly kind: "skip"; readonly message: string }
-  | { readonly kind: "reject"; readonly message: string }
+  | { readonly kind: "reject"; readonly message: string };
+
+export type ReleaseUpdateDecision =
+  | { readonly kind: "skip"; readonly message: string }
   | { readonly kind: "update"; readonly versionBeforeUpdate: string };
 
-type UpdateVersionDecisionInput = {
+type RequestedVersionDecisionInput = {
+  readonly installedVersion?: string;
+  readonly requestedVersion?: string;
+};
+
+type ReleaseUpdateDecisionInput = {
   readonly currentVersion: string;
   readonly installedVersion?: string;
   readonly requestedVersion?: string;
-  readonly targetVersion?: string;
-  readonly releaseTagName?: string;
+  readonly targetVersion: string;
+  readonly releaseTagName: string;
 };
 
 type ReleaseInfoResponse = {
@@ -141,23 +149,19 @@ export async function runUpdate(
     options.requestedVersion === undefined
       ? undefined
       : normalizeReleaseVersion(options.requestedVersion);
-  const earlyDecision = decideUpdateVersion({
-    currentVersion,
-    installedVersion,
-    requestedVersion
-  });
-  if (earlyDecision.kind === "skip") {
-    return earlyDecision.message;
+  const requestedDecision = decideRequestedVersion({ installedVersion, requestedVersion });
+  if (requestedDecision.kind === "skip") {
+    return requestedDecision.message;
   }
-  if (earlyDecision.kind === "reject") {
-    throw usageError(earlyDecision.message);
+  if (requestedDecision.kind === "reject") {
+    throw usageError(requestedDecision.message);
   }
 
   const release = parseReleaseInfo(
     await services.fetchJson(releaseApiUrl(repository, requestedVersion))
   );
   const targetVersion = normalizeReleaseVersion(release.tagName);
-  const releaseDecision = decideUpdateVersion({
+  const releaseDecision = decideReleaseUpdate({
     currentVersion,
     installedVersion,
     requestedVersion,
@@ -166,12 +170,6 @@ export async function runUpdate(
   });
   if (releaseDecision.kind === "skip") {
     return releaseDecision.message;
-  }
-  if (releaseDecision.kind === "reject") {
-    throw usageError(releaseDecision.message);
-  }
-  if (releaseDecision.kind !== "update") {
-    throw failureError("release version decision did not resolve an update target");
   }
   const versionBeforeUpdate = releaseDecision.versionBeforeUpdate;
 
@@ -289,27 +287,30 @@ export function compareReleaseVersions(left: string, right: string): number {
   return 0;
 }
 
-export function decideUpdateVersion(input: UpdateVersionDecisionInput): UpdateVersionDecision {
-  if (input.requestedVersion && input.installedVersion !== undefined) {
-    const requestedComparison = compareReleaseVersions(
-      input.requestedVersion,
-      input.installedVersion
-    );
-    if (requestedComparison === 0) {
-      return { kind: "skip", message: `shp ${input.installedVersion} is already installed\n` };
-    }
-    if (requestedComparison < 0) {
-      return {
-        kind: "reject",
-        message: `target release v${input.requestedVersion} is older than installed version ${input.installedVersion}`
-      };
-    }
+export function decideRequestedVersion(
+  input: RequestedVersionDecisionInput
+): RequestedVersionDecision {
+  if (!input.requestedVersion || input.installedVersion === undefined) {
+    return { kind: "continue" };
   }
 
-  if (input.targetVersion === undefined) {
-    return { kind: "fetch_release" };
+  const requestedComparison = compareReleaseVersions(
+    input.requestedVersion,
+    input.installedVersion
+  );
+  if (requestedComparison === 0) {
+    return { kind: "skip", message: `shp ${input.installedVersion} is already installed\n` };
   }
+  if (requestedComparison < 0) {
+    return {
+      kind: "reject",
+      message: `target release v${input.requestedVersion} is older than installed version ${input.installedVersion}`
+    };
+  }
+  return { kind: "continue" };
+}
 
+export function decideReleaseUpdate(input: ReleaseUpdateDecisionInput): ReleaseUpdateDecision {
   if (input.installedVersion !== undefined && !input.requestedVersion) {
     const latestComparison = compareReleaseVersions(input.targetVersion, input.installedVersion);
     if (latestComparison === 0) {
@@ -318,9 +319,7 @@ export function decideUpdateVersion(input: UpdateVersionDecisionInput): UpdateVe
     if (latestComparison < 0) {
       return {
         kind: "skip",
-        message: `shp ${input.installedVersion} is newer than latest release ${
-          input.releaseTagName ?? `v${input.targetVersion}`
-        }\n`
+        message: `shp ${input.installedVersion} is newer than latest release ${input.releaseTagName}\n`
       };
     }
   }

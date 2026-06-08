@@ -110,10 +110,12 @@ component CiPipeline {
         evidence yaml(".github/workflows/shape.yml")
     }
   fn runShapeContractReview
-    source yaml(".github/workflows/shape.yml")
+    source mjs(".github/scripts/run-claude-shape-review.mjs")
     effects complete {
       Read<ChangedFileList>
         evidence yaml(".github/workflows/shape.yml")
+      Read<CiWorkflow>
+        evidence mjs(".github/scripts/run-claude-shape-review.mjs")
       Read<CiWorkflow>
         evidence yaml(".github/workflows/shape.yml")
       Read<ClaudeReviewPrompt>
@@ -123,6 +125,8 @@ component CiPipeline {
       Read<ClaudeReviewResult>
         evidence mjs(".github/scripts/extract-claude-shape-review.mjs")
       Read<ClaudeReviewResult>
+        evidence mjs(".github/scripts/shape-review-contract.mjs")
+      Read<ClaudeReviewResult>
         evidence json(".github/shape-contract/schemas/shape-contract-result.schema.json")
       Read<SemanticDiagnostics>
         evidence yaml(".github/workflows/shape.yml")
@@ -130,6 +134,8 @@ component CiPipeline {
         evidence mjs(".github/scripts/check-claude-shape-review.mjs")
       Update<ClaudeReviewResult>
         evidence mjs(".github/scripts/extract-claude-shape-review.mjs")
+      Update<ClaudeReviewResult>
+        evidence mjs(".github/scripts/run-claude-shape-review.mjs")
     }
   fn smokeReleaseBinary
     source yaml(".github/workflows/release.yml#Smoke test release binary")

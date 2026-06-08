@@ -5,3 +5,77 @@ trait GeneratedAstAnchor {
 
 trait GeneratedCandidate {
 }
+
+resource ExtractClaudeShapeReviewModuleDebugClaudeOutputAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor(".github/scripts/extract-claude-shape-review.mjs:46-57")
+  fingerprint ast.semantic_subtree_v1("sha256:1965acd9374e8c4397cc6e7f18bb25b3f2a787514ece2991dd45ff9e92db20c2")
+}
+
+resource ExtractClaudeShapeReviewModuleExtractShapeReviewFromClaudeOutputAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor(".github/scripts/extract-claude-shape-review.mjs:35-44")
+  fingerprint ast.semantic_subtree_v1("sha256:6b427a79d7d43a7b6bfbcc23de9e0553b6ed3cb590d0a341c6785f79fa60bc5f")
+}
+
+resource ExtractClaudeShapeReviewModuleIsMainModuleAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor(".github/scripts/extract-claude-shape-review.mjs:59-64")
+  fingerprint ast.semantic_subtree_v1("sha256:a7630a5e5fbe44b11a467fb490a2c52019708e3bbc0e6d3476897795228c2a3f")
+}
+
+resource ExtractClaudeShapeReviewModuleSelectShapeReviewFromClaudeResultAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor(".github/scripts/extract-claude-shape-review.mjs:14-33")
+  fingerprint ast.semantic_subtree_v1("sha256:4b38538c20dee555811e1dc4b39e1f35f4ec920fba585f10e5ee7d3b3e1f13c7")
+}
+
+component ExtractClaudeShapeReviewModule : GeneratedCandidate {
+  fn debugClaudeOutput
+    source js(".github/scripts/extract-claude-shape-review.mjs:46-57")
+    effects unknown
+  fn extractShapeReviewFromClaudeOutput
+    source js(".github/scripts/extract-claude-shape-review.mjs:35-44")
+    effects unknown
+  fn isMainModule
+    source js(".github/scripts/extract-claude-shape-review.mjs:59-64")
+    effects unknown
+  fn selectShapeReviewFromClaudeResult
+    source js(".github/scripts/extract-claude-shape-review.mjs:14-33")
+    effects unknown
+}
+
+relation ExtractClaudeShapeReviewModuleDebugClaudeOutputGeneratedFromExtractClaudeShapeReviewModuleDebugClaudeOutputAstAnchor {
+  kind generated_from
+  connects ExtractClaudeShapeReviewModule -> ExtractClaudeShapeReviewModuleDebugClaudeOutputAstAnchor
+  roles { ExtractClaudeShapeReviewModule as generated, ExtractClaudeShapeReviewModuleDebugClaudeOutputAstAnchor as syntax }
+  expects ExtractClaudeShapeReviewModuleDebugClaudeOutputAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1965acd9374e8c4397cc6e7f18bb25b3f2a787514ece2991dd45ff9e92db20c2")
+  summary "fn ExtractClaudeShapeReviewModule.debugClaudeOutput generated from javascript function_declaration at .github/scripts/extract-claude-shape-review.mjs:46-57."
+}
+
+relation ExtractClaudeShapeReviewModuleExtractShapeReviewFromClaudeOutputGeneratedFromExtractClaudeShapeReviewModuleExtractShapeReviewFromClaudeOutputAstAnchor {
+  kind generated_from
+  connects ExtractClaudeShapeReviewModule -> ExtractClaudeShapeReviewModuleExtractShapeReviewFromClaudeOutputAstAnchor
+  roles { ExtractClaudeShapeReviewModule as generated, ExtractClaudeShapeReviewModuleExtractShapeReviewFromClaudeOutputAstAnchor as syntax }
+  expects ExtractClaudeShapeReviewModuleExtractShapeReviewFromClaudeOutputAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6b427a79d7d43a7b6bfbcc23de9e0553b6ed3cb590d0a341c6785f79fa60bc5f")
+  summary "fn ExtractClaudeShapeReviewModule.extractShapeReviewFromClaudeOutput generated from javascript function_declaration at .github/scripts/extract-claude-shape-review.mjs:35-44."
+}
+
+relation ExtractClaudeShapeReviewModuleIsMainModuleGeneratedFromExtractClaudeShapeReviewModuleIsMainModuleAstAnchor {
+  kind generated_from
+  connects ExtractClaudeShapeReviewModule -> ExtractClaudeShapeReviewModuleIsMainModuleAstAnchor
+  roles { ExtractClaudeShapeReviewModule as generated, ExtractClaudeShapeReviewModuleIsMainModuleAstAnchor as syntax }
+  expects ExtractClaudeShapeReviewModuleIsMainModuleAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a7630a5e5fbe44b11a467fb490a2c52019708e3bbc0e6d3476897795228c2a3f")
+  summary "fn ExtractClaudeShapeReviewModule.isMainModule generated from javascript function_declaration at .github/scripts/extract-claude-shape-review.mjs:59-64."
+}
+
+relation ExtractClaudeShapeReviewModuleSelectShapeReviewFromClaudeResultGeneratedFromExtractClaudeShapeReviewModuleSelectShapeReviewFromClaudeResultAstAnchor {
+  kind generated_from
+  connects ExtractClaudeShapeReviewModule -> ExtractClaudeShapeReviewModuleSelectShapeReviewFromClaudeResultAstAnchor
+  roles { ExtractClaudeShapeReviewModule as generated, ExtractClaudeShapeReviewModuleSelectShapeReviewFromClaudeResultAstAnchor as syntax }
+  expects ExtractClaudeShapeReviewModuleSelectShapeReviewFromClaudeResultAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4b38538c20dee555811e1dc4b39e1f35f4ec920fba585f10e5ee7d3b3e1f13c7")
+  summary "fn ExtractClaudeShapeReviewModule.selectShapeReviewFromClaudeResult generated from javascript function_declaration at .github/scripts/extract-claude-shape-review.mjs:14-33."
+}
+
+implementation ExtractClaudeShapeReviewModuleImpl {
+  paths {
+    ".github/scripts/extract-claude-shape-review.mjs"
+  }
+  conforms_to ExtractClaudeShapeReviewModule
+}
