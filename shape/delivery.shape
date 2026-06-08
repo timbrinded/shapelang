@@ -706,17 +706,17 @@ attest no_shape_change {
 
 attest no_shape_change {
   source md("docs-site/src/content/docs/learn/ci-workflow.md")
-  reason "Release-prep version pin update from v0.3.0 to v0.4.0; CI workflow semantics and DocsSite architecture are unchanged."
+  reason "Release-prep version pin update from v0.4.0 to v0.4.1; CI workflow semantics and DocsSite architecture are unchanged."
 }
 
 attest no_shape_change {
   source md("docs-site/src/content/docs/learn/quickstart.md")
-  reason "Release-prep version pin update from v0.3.0 to v0.4.0; install workflow semantics and DocsSite architecture are unchanged."
+  reason "Release-prep version pin update from v0.4.0 to v0.4.1; install workflow semantics and DocsSite architecture are unchanged."
 }
 
 attest no_shape_change {
   source md("docs-site/src/content/docs/reference/cli.md")
-  reason "Documented AST source language flag validation; DocsSite architecture and the CLI command inventory remain unchanged."
+  reason "Release-prep update of the shp update version example from v0.4.0 to v0.4.1; DocsSite architecture and the CLI command inventory remain unchanged."
 }
 
 attest no_shape_change {
