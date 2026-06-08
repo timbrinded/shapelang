@@ -198,9 +198,16 @@ describe("shp CLI contract matrix (area #60)", () => {
 
       // Negative control: this exit code is meaningful only against a contrast.
       // A valid alias on the same subcommand gets past argument validation and
-      // fails later only because the fixture is not source code.
-      const alias = await runCli(["ast", "source", "--language", "ts", PASS_FIXTURE]);
-      expect(alias.exitCode).toBe(1);
+      // fails later on ordinary file loading, before any parser can initialize.
+      const alias = await runCli([
+        "ast",
+        "source",
+        "--language",
+        "ts",
+        "fixtures/missing-source.ts"
+      ]);
+      expect(alias.exitCode).toBe(2);
+      expect(alias.stderr).toContain("failed to read fixtures/missing-source.ts");
       expect(alias.stderr).not.toContain("unsupported source language");
     }
   );
