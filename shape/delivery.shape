@@ -20,6 +20,8 @@ resource InstallScript
 
 resource NativeParserAsset
 
+resource PullRequestStatusComment
+
 resource ReleaseArtifact
 
 resource ReleaseVersionTag
@@ -28,6 +30,7 @@ component CiPipeline {
   owns CiWorkflow
   owns ClaudeReviewPrompt
   owns ClaudeReviewResult
+  owns PullRequestStatusComment
   grants Read<ChangedFileList>
   grants Read<CiWorkflow>
   grants Read<ClaudeReviewPrompt>
@@ -36,6 +39,7 @@ component CiPipeline {
   grants Read<GeneratedAstManifest>
   grants Read<LanguageSource>
   grants Read<NativeParserAsset>
+  grants Read<PullRequestStatusComment>
   grants Read<ReleaseArtifact>
   grants Read<ReleaseVersionTag>
   grants Read<SemanticDiagnostics>
@@ -45,6 +49,7 @@ component CiPipeline {
   grants Update<ChangedFileList>
   grants Update<ClaudeReviewResult>
   grants Update<GeneratedAstManifest>
+  grants Update<PullRequestStatusComment>
   grants Update<ShapeModelDraft>
   fn checkReleaseVersion : RefactorSensitive
     source yaml(".github/workflows/release.yml#Check release tag matches CLI package version")
@@ -77,6 +82,20 @@ component CiPipeline {
         evidence ts("scripts/generate-ast-shapes.ts")
       Update<ShapeModelDraft>
         evidence ts("scripts/generate-ast-shapes.ts")
+    }
+  fn reportShapeCiStatus
+    source mjs(".github/scripts/upsert-shape-ci-comment.mjs")
+    effects complete {
+      Read<CiWorkflow>
+        evidence yaml(".github/workflows/shape.yml")
+      Read<ClaudeReviewResult>
+        evidence yaml(".github/workflows/shape.yml")
+      Read<PullRequestStatusComment>
+        evidence mjs(".github/scripts/upsert-shape-ci-comment.mjs")
+      Read<SemanticDiagnostics>
+        evidence yaml(".github/workflows/shape.yml")
+      Update<PullRequestStatusComment>
+        evidence mjs(".github/scripts/upsert-shape-ci-comment.mjs")
     }
   fn runShapeCi
     source yaml(".github/workflows/shape.yml")

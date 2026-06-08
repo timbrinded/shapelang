@@ -1,0 +1,7 @@
+module shape.generated.ast.github.scripts.upsert_shape_ci_comment
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}

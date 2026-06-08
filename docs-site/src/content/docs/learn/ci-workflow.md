@@ -198,6 +198,8 @@ bun run shape:ci
 
 `shape:ci` runs `bun run ast:check` and then `bun shp check --changed-files changed.txt`, so generated AST context, implementation coverage, and bindings are checked together. Bindings are used for documentation coupling: if Shape-affecting code or model files change, the associated docs must change too, unless the current change set includes a narrow current `docs_not_needed` attestation.
 
+On pull requests from repository branches, CI also upserts a single Shape CI summary comment. The comment reports the `Shape` and `Shape Claude Review` job results for the latest commit and links back to the workflow run.
+
 ## Direct binary install
 
 If you do not want to use the setup action, use the release installer directly:

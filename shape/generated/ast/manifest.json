@@ -17,6 +17,13 @@
       ]
     },
     {
+      "module": "shape.generated.ast.github.scripts.upsert_shape_ci_comment",
+      "path": "shape/generated/ast/.github/scripts/upsert-shape-ci-comment.shape",
+      "sources": [
+        ".github/scripts/upsert-shape-ci-comment.mjs"
+      ]
+    },
+    {
       "module": "shape.generated.ast.docs_site.astro_config",
       "path": "shape/generated/ast/docs-site/astro.config.shape",
       "sources": [
