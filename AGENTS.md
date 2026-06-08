@@ -41,12 +41,19 @@ deterministic checker accepts or rejects those claims.
 - `packages/shp-checker/src/language/shape.langium`: Langium grammar source.
 - `packages/shp-checker/src/language/generated`: generated Langium artifacts.
   Regenerate these with `bun run langium:generate`; do not hand-edit them.
+- `.agents/plugins/marketplace.json` and `.claude-plugin/marketplace.json`:
+  marketplace indexes that expose the local Shape plugin.
+- `plugins/shapelang/.codex-plugin/plugin.json` and
+  `plugins/shapelang/.claude-plugin/plugin.json`: dual-compatible plugin
+  manifests for publishing the bundled Shape skills to Codex and Claude Code.
 - `shape`: Shape's own architecture model for the language, checker, tooling, and
   delivery pipeline.
 - `fixtures/pass` and `fixtures/fail`: focused semantic examples used by tests.
 - `docs-site`: Astro/Starlight documentation site. Complete `shape` code fences
   are parsed by the docs verifier unless marked `shape no-verify`.
-- `skill/shape-lang`: the downstream Codex skill for using Shape in other repos.
+- `plugins/shapelang/skills`: downstream agent skills for using Shape in other
+  repositories. Keep new skills in `plugins/shapelang/skills/<skill-name>/SKILL.md`
+  so both plugin manifests expose them.
 - `scripts/build-release-assets.sh`: builds release archives and injects the tag
   version into installer scripts.
 - `scripts/write-changed-files.sh`: writes `changed.txt` for local and CI Shape

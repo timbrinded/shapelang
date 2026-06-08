@@ -1,0 +1,27 @@
+{
+  "name": "shapelang",
+  "version": "0.4.0",
+  "description": "Shape language skills for authoring, validating, preflighting, and reviewing architecture contracts.",
+  "author": {
+    "name": "Tim Brinded"
+  },
+  "homepage": "https://timbrinded.github.io/shapelang/",
+  "repository": "https://github.com/timbrinded/shapelang",
+  "license": "BSD-3-Clause",
+  "keywords": ["shape", "architecture", "contracts", "conformance", "code-review"],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Shape",
+    "shortDescription": "Author and review Shape architecture contracts",
+    "longDescription": "Use Shape skills to author, debug, preflight, and review .shape architecture claims with deterministic shp workflows and advisory contract-risk checks.",
+    "developerName": "Tim Brinded",
+    "category": "Developer Tools",
+    "capabilities": ["Interactive", "Read", "Write"],
+    "websiteURL": "https://timbrinded.github.io/shapelang/",
+    "defaultPrompt": [
+      "Use Shape skills to author, validate, preflight, and review .shape architecture contracts."
+    ],
+    "screenshots": [],
+    "brandColor": "#2F6F9F"
+  }
+}

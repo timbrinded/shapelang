@@ -1,0 +1,20 @@
+{
+  "name": "shapelang-local",
+  "interface": {
+    "displayName": "Shape Local"
+  },
+  "plugins": [
+    {
+      "name": "shapelang",
+      "source": {
+        "source": "local",
+        "path": "./plugins/shapelang"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools"
+    }
+  ]
+}
