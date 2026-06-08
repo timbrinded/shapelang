@@ -1,0 +1,4 @@
+interface:
+  display_name: "Shape Contract Guard"
+  short_description: "Review Shape contract-diff risk"
+  default_prompt: "Use $shape-contract-guard to review this Shape contract diff before PR."
