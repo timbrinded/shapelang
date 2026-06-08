@@ -848,3 +848,8 @@ attest no_shape_change {
   source ts("packages/shp-checker/src/parser.ts")
   reason "Parser diagnostics now explicitly narrow Langium error fields; parse diagnostic surface and parser contract are unchanged."
 }
+
+attest no_shape_change {
+  source mjs(".github/scripts/check-copilot-shape-review.mjs")
+  reason "The removed Copilot review gate is superseded by the modeled Claude review scripts; CI review ownership and result semantics now live in CiPipeline.runShapeContractReview."
+}
