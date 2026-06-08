@@ -385,6 +385,7 @@ implementation ClaudeReviewSource {
 implementation CliSource {
   paths {
     "packages/shp-cli/src/app.ts"
+    "packages/shp-cli/src/check-runner.ts"
     "packages/shp-cli/src/commands/**/*.ts"
     "packages/shp-cli/src/context.ts"
     "packages/shp-cli/src/errors.ts"
@@ -472,6 +473,7 @@ implementation WorkflowSource {
 binding CliDocs {
   when_changed paths {
     "packages/shp-cli/src/app.ts"
+    "packages/shp-cli/src/check-runner.ts"
     "packages/shp-cli/src/commands/**/*.ts"
     "packages/shp-cli/src/context.ts"
     "packages/shp-cli/src/errors.ts"
@@ -641,6 +643,11 @@ attest docs_not_needed {
 attest docs_not_needed {
   source ts("packages/shp-checker/src/checker/rules/coverage.ts")
   reason "Repo-root injection is an embedding/testability boundary change; documented coverage and binding behavior is unchanged."
+}
+
+attest docs_not_needed {
+  source shape("shape/tooling.shape")
+  reason "The CLI runner helper is now explicitly modeled for governance; user-facing CLI commands, flags, and docs-visible behavior are unchanged."
 }
 
 attest no_shape_change {
