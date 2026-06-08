@@ -1,0 +1,7 @@
+module shape.generated.ast.packages.shp_checker.src.shape_domain
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}

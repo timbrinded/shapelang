@@ -21,7 +21,11 @@ export {
   isGeneratedAstModuleName,
   normalizeGeneratedModuleName,
   normalizeGeneratedAstPath,
+  AST_SOURCE_EXTENSIONS,
+  isSourceLanguageName,
+  parseSourceLanguageName,
   TREE_SITTER_NATIVE_BINDING_TARGETS,
+  SOURCE_LANGUAGES,
   type AstGenerationDiagnostic,
   type AstGenerationResult,
   type AstSourceFileInput,
@@ -30,6 +34,9 @@ export {
   type GeneratedAstManifestEntry,
   type GeneratedShapeOutput,
   type GenerateShapeOptions,
+  type SourceLanguageAlias,
+  type SourceLanguageInput,
+  type SourceLanguageName,
   type SourceSpan,
   type TreeSitterNativeBindingTarget
 } from "./ast-generation.ts";
@@ -67,3 +74,4 @@ export {
 export { formatShapeModule, formatShapeSource, type FormatResult } from "./formatter.ts";
 export type { ShapeModule } from "./language/generated/ast.ts";
 export { parseShapeModule, type ParseDiagnostic, type ParseShapeModuleResult } from "./parser.ts";
+export { compareCodepointStrings } from "./shape-strings.ts";

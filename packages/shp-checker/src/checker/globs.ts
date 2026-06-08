@@ -4,13 +4,13 @@
 import { isAbsolute, relative } from "node:path";
 import { normalizeShapePath } from "../shape-strings.ts";
 
-export function normalizeRepoPath(path: string): string {
+export function normalizeRepoPath(path: string, repoRoot: string): string {
   const normalized = normalizeShapePath(path);
   if (!isAbsolute(normalized)) {
     return normalized;
   }
 
-  return normalizeShapePath(relative(process.cwd(), normalized));
+  return normalizeShapePath(relative(repoRoot, normalized));
 }
 
 export function globMatches(glob: string, path: string): boolean {

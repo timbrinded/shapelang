@@ -1,4 +1,9 @@
 import { buildCommand, buildRouteMap } from "@stricli/core";
+import {
+  parseSourceLanguageName,
+  SOURCE_LANGUAGES,
+  type SourceLanguageName
+} from "@shape/shp-checker";
 import type { CliContext } from "../../context";
 import { requiredStringArguments } from "../../parameters";
 import type { AstJsonFlags, AstSourceFlags } from "./impl";
@@ -33,13 +38,13 @@ const outDirFlag = {
   placeholder: "DIR"
 };
 
-export const astSourceCommand = buildCommand<AstSourceFlags, string[], CliContext>({
+const astSourceCommand = buildCommand<AstSourceFlags, string[], CliContext>({
   loader: async () => (await import("./impl")).astSource,
   parameters: {
     flags: {
       language: {
         kind: "parsed",
-        parse: (input: string) => input,
+        parse: parseLanguageFlag,
         optional: true,
         brief: "Override source language for every input file.",
         placeholder: "LANG"
@@ -73,7 +78,17 @@ export const astSourceCommand = buildCommand<AstSourceFlags, string[], CliContex
   }
 });
 
-export const astJsonCommand = buildCommand<AstJsonFlags, string[], CliContext>({
+function parseLanguageFlag(input: string): SourceLanguageName {
+  const language = parseSourceLanguageName(input);
+  if (!language) {
+    throw new Error(
+      `unsupported source language ${input}; expected ${SOURCE_LANGUAGES.join(", ")}`
+    );
+  }
+  return language;
+}
+
+const astJsonCommand = buildCommand<AstJsonFlags, string[], CliContext>({
   loader: async () => (await import("./impl")).astJson,
   parameters: {
     flags: {

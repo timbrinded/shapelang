@@ -322,67 +322,11 @@ function parseJsonAstInput(value: unknown): AstGenerationResult<JsonAstInput> {
     }
     const nodes: JsonAstNode[] = [];
     nodesValue.forEach((nodeValue, nodeIndex) => {
-      if (!isRecord(nodeValue)) {
-        diagnostics.push({
-          kind: "error",
-          code: "invalid_node",
-          path,
-          message: `nodes[${nodeIndex}] must be an object`
-        });
-        return;
+      const result = parseJsonAstNode(nodeValue, nodeIndex, path);
+      diagnostics.push(...result.diagnostics);
+      if (result.node) {
+        nodes.push(result.node);
       }
-      const id = stringProperty(nodeValue, "id");
-      const kind = stringProperty(nodeValue, "kind");
-      if (!id || !kind) {
-        diagnostics.push({
-          kind: "error",
-          code: "invalid_node",
-          path,
-          message: `nodes[${nodeIndex}] must include id and kind`
-        });
-        return;
-      }
-      const childrenValue = nodeValue.children;
-      const children: JsonAstChild[] = [];
-      if (Array.isArray(childrenValue)) {
-        childrenValue.forEach((childValue, childIndex) => {
-          if (typeof childValue === "string") {
-            children.push({ id: childValue });
-          } else if (isRecord(childValue) && stringProperty(childValue, "id")) {
-            children.push({
-              id: stringProperty(childValue, "id") ?? "",
-              field: stringProperty(childValue, "field")
-            });
-          } else {
-            diagnostics.push({
-              kind: "error",
-              code: "invalid_child",
-              path,
-              nodeId: id,
-              message: `children[${childIndex}] for ${id} must be a string or { id }`
-            });
-          }
-        });
-      }
-      if (hasNonScalarRecordEntry(nodeValue, "attributes")) {
-        diagnostics.push({
-          kind: "error",
-          code: "nested_attribute",
-          path,
-          nodeId: id,
-          message: `AST node ${id} has a nested attribute; represent nested structure as child nodes`
-        });
-      }
-      nodes.push({
-        id,
-        kind,
-        named: booleanProperty(nodeValue, "named"),
-        span: spanProperty(nodeValue, "span"),
-        text: stringProperty(nodeValue, "text"),
-        textHash: stringProperty(nodeValue, "textHash"),
-        attributes: scalarRecordProperty(nodeValue, "attributes"),
-        children
-      });
     });
     files.push({
       path,
@@ -401,6 +345,86 @@ function parseJsonAstInput(value: unknown): AstGenerationResult<JsonAstInput> {
       module: stringProperty(value, "module"),
       language: stringProperty(value, "language"),
       files
+    },
+    diagnostics
+  };
+}
+
+function parseJsonAstNode(
+  nodeValue: unknown,
+  nodeIndex: number,
+  path: string
+): { node?: JsonAstNode; diagnostics: AstGenerationDiagnostic[] } {
+  const diagnostics: AstGenerationDiagnostic[] = [];
+  if (!isRecord(nodeValue)) {
+    return {
+      diagnostics: [
+        {
+          kind: "error",
+          code: "invalid_node",
+          path,
+          message: `nodes[${nodeIndex}] must be an object`
+        }
+      ]
+    };
+  }
+  const id = stringProperty(nodeValue, "id");
+  const kind = stringProperty(nodeValue, "kind");
+  if (!id || !kind) {
+    return {
+      diagnostics: [
+        {
+          kind: "error",
+          code: "invalid_node",
+          path,
+          message: `nodes[${nodeIndex}] must include id and kind`
+        }
+      ]
+    };
+  }
+
+  const childrenValue = nodeValue.children;
+  const children: JsonAstChild[] = [];
+  if (Array.isArray(childrenValue)) {
+    childrenValue.forEach((childValue, childIndex) => {
+      if (typeof childValue === "string") {
+        children.push({ id: childValue });
+      } else if (isRecord(childValue) && stringProperty(childValue, "id")) {
+        children.push({
+          id: stringProperty(childValue, "id") ?? "",
+          field: stringProperty(childValue, "field")
+        });
+      } else {
+        diagnostics.push({
+          kind: "error",
+          code: "invalid_child",
+          path,
+          nodeId: id,
+          message: `children[${childIndex}] for ${id} must be a string or { id }`
+        });
+      }
+    });
+  }
+  if (hasNonScalarRecordEntry(nodeValue, "attributes")) {
+    diagnostics.push({
+      kind: "error",
+      code: "nested_attribute",
+      path,
+      nodeId: id,
+      message: `AST node ${id} has a nested attribute; represent nested structure as child nodes`
+    });
+  }
+
+  return {
+    node: {
+      id,
+      kind,
+      named: booleanProperty(nodeValue, "named"),
+      span: spanProperty(nodeValue, "span"),
+      text: stringProperty(nodeValue, "text"),
+      textHash: stringProperty(nodeValue, "textHash"),
+      attributes: scalarRecordProperty(nodeValue, "attributes"),
+      children
     },
     diagnostics
   };

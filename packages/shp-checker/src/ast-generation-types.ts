@@ -1,7 +1,9 @@
+import type { SourceLanguageInput } from "./source-languages.ts";
+
 export type AstSourceFileInput = {
   path: string;
   source: string;
-  language?: string;
+  language?: SourceLanguageInput;
 };
 
 export type AstGenerationDiagnostic = {

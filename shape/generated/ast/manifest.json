@@ -66,6 +66,13 @@
       ]
     },
     {
+      "module": "shape.generated.ast.packages.shp_checker.src.analyzer_test",
+      "path": "shape/generated/ast/packages/shp-checker/src/analyzer.test.shape",
+      "sources": [
+        "packages/shp-checker/src/analyzer.test.ts"
+      ]
+    },
+    {
       "module": "shape.generated.ast.packages.shp_checker.src.analyzer",
       "path": "shape/generated/ast/packages/shp-checker/src/analyzer.shape",
       "sources": [
@@ -570,6 +577,13 @@
       ]
     },
     {
+      "module": "shape.generated.ast.packages.shp_checker.src.shape_domain",
+      "path": "shape/generated/ast/packages/shp-checker/src/shape-domain.shape",
+      "sources": [
+        "packages/shp-checker/src/shape-domain.ts"
+      ]
+    },
+    {
       "module": "shape.generated.ast.packages.shp_checker.src.shape_strings_test",
       "path": "shape/generated/ast/packages/shp-checker/src/shape-strings.test.shape",
       "sources": [
@@ -616,6 +630,13 @@
       "path": "shape/generated/ast/packages/shp-cli/src/app.shape",
       "sources": [
         "packages/shp-cli/src/app.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_cli.src.check_runner",
+      "path": "shape/generated/ast/packages/shp-cli/src/check-runner.shape",
+      "sources": [
+        "packages/shp-cli/src/check-runner.ts"
       ]
     },
     {

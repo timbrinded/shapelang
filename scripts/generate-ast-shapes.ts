@@ -1,6 +1,9 @@
 #!/usr/bin/env bun
 import { existsSync } from "node:fs";
-import { AST_SOURCE_EXTENSIONS } from "../packages/shp-checker/src/source-languages.ts";
+import {
+  AST_SOURCE_EXTENSIONS,
+  compareCodepointStrings
+} from "../packages/shp-checker/src/index.ts";
 
 const passthroughArgs = Bun.argv.slice(2);
 
@@ -13,7 +16,7 @@ const excludePathspecs = [
   ":(exclude)shape/generated/**"
 ];
 
-const sourceFiles = await trackedSourceFiles([...includePathspecs, ...excludePathspecs]);
+const sourceFiles = await discoverAstSourceFiles([...includePathspecs, ...excludePathspecs]);
 const child = Bun.spawn(
   [
     "bun",
@@ -33,7 +36,7 @@ const child = Bun.spawn(
 
 process.exit(await child.exited);
 
-async function trackedSourceFiles(pathspecs: string[]): Promise<string[]> {
+async function discoverAstSourceFiles(pathspecs: string[]): Promise<string[]> {
   const child = Bun.spawn(
     ["git", "ls-files", "-z", "--cached", "--others", "--exclude-standard", "--", ...pathspecs],
     {
@@ -50,18 +53,4 @@ async function trackedSourceFiles(pathspecs: string[]): Promise<string[]> {
     .split("\0")
     .filter((path) => path.length > 0 && existsSync(path))
     .sort(compareCodepointStrings);
-}
-
-function compareCodepointStrings(left: string, right: string): number {
-  const leftCodepoints = Array.from(left);
-  const rightCodepoints = Array.from(right);
-  const length = Math.min(leftCodepoints.length, rightCodepoints.length);
-  for (let index = 0; index < length; index += 1) {
-    const leftCodepoint = leftCodepoints[index]?.codePointAt(0) ?? 0;
-    const rightCodepoint = rightCodepoints[index]?.codePointAt(0) ?? 0;
-    if (leftCodepoint !== rightCodepoint) {
-      return leftCodepoint - rightCodepoint;
-    }
-  }
-  return leftCodepoints.length - rightCodepoints.length;
 }

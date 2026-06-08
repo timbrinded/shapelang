@@ -2,9 +2,15 @@
 // modules or files. checkShapeModules lowers the model, runs the ordered
 // semantic checks, and (unless disabled) binding enforcement; checkShapeFiles
 // parses files first. Individual rule logic lives in checker/rules.ts.
+import { resolve } from "node:path";
 import type { ShapeModule } from "../language/generated/ast.ts";
 import { parseShapeModule, type ParseDiagnostic } from "../parser.ts";
-import type { CheckModuleInput, CheckOptions, CheckResult } from "./model.ts";
+import type {
+  CheckModuleInput,
+  CheckOptions,
+  CheckResult,
+  NormalizedCheckOptions
+} from "./model.ts";
 import { lowerShapeModules } from "./lowerer.ts";
 import { requireIsoCalendarDate } from "./iso-date.ts";
 import { checkBindings, runSemanticChecks } from "./rules.ts";
@@ -21,7 +27,7 @@ export function checkShapeModules(
     ...runSemanticChecks(model, normalizedOptions),
     ...(normalizedOptions.enforceBindings === false
       ? []
-      : checkBindings(model, normalizedOptions.changedFiles ?? []))
+      : checkBindings(model, normalizedOptions.changedFiles ?? [], normalizedOptions.repoRoot))
   ];
 
   return {
@@ -32,13 +38,14 @@ export function checkShapeModules(
   };
 }
 
-function normalizeCheckOptions(options: CheckOptions): CheckOptions {
-  if (options.freshnessDate === undefined) {
-    return options;
-  }
+function normalizeCheckOptions(options: CheckOptions): NormalizedCheckOptions {
   return {
     ...options,
-    freshnessDate: requireIsoCalendarDate(options.freshnessDate, "CheckOptions.freshnessDate")
+    repoRoot: resolve(options.repoRoot ?? process.cwd()),
+    freshnessDate:
+      options.freshnessDate === undefined
+        ? undefined
+        : requireIsoCalendarDate(options.freshnessDate, "CheckOptions.freshnessDate")
   };
 }
 
