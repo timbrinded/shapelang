@@ -10,6 +10,13 @@
       ]
     },
     {
+      "module": "shape.generated.ast.github.scripts.extract_claude_shape_review",
+      "path": "shape/generated/ast/.github/scripts/extract-claude-shape-review.shape",
+      "sources": [
+        ".github/scripts/extract-claude-shape-review.mjs"
+      ]
+    },
+    {
       "module": "shape.generated.ast.docs_site.astro_config",
       "path": "shape/generated/ast/docs-site/astro.config.shape",
       "sources": [

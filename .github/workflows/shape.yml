@@ -224,74 +224,57 @@ jobs:
           PROMPT
           )
 
+          json_only_system_prompt=$(cat <<'PROMPT'
+          You are producing machine input for CI. Your final response must be exactly one JSON object matching the configured JSON schema. The first character must be "{" and the last character must be "}". Do not include prose, bullets, Markdown, code fences, preamble, or postscript. If there are no verified drift findings, return status "pass" with an empty findings array.
+          PROMPT
+          )
+
           claude -p "$prompt" \
             --max-turns 100 \
             --output-format json \
+            --append-system-prompt "$json_only_system_prompt" \
             --allowedTools "Read,Glob,Grep,LS,Bash(git diff *),Bash(git log *),Bash(git show *),Bash(git ls-files *),Bash(bun run shape:ci),Bash(bun shp --help),Bash(bun shp check *),Bash(bun shp obligations *),Bash(bun shp memory *),Bash(bun shp explain *),Bash(bun shp analyze *),Bash(rg *),Bash(sed -n *),Bash(ls *),Bash(pwd)" \
             --disallowedTools "Write,Edit" \
             --json-schema "$JSON_SCHEMA" \
             > claude-shape-review.json
 
-          node <<'NODE'
-          const { appendFileSync, readFileSync } = require("node:fs");
+          if node .github/scripts/extract-claude-shape-review.mjs; then
+            exit 0
+          fi
 
-          const parseJsonValue = (value) => {
-            if (typeof value !== "string") {
-              return value;
-            }
-            const trimmed = value.trim();
-            const candidates = [trimmed];
-            const fenced = trimmed.match(/^```(?:json)?\s*([\s\S]*?)\s*```$/);
-            if (fenced?.[1]) {
-              candidates.push(fenced[1].trim());
-            }
-            const start = value.indexOf("{");
-            const end = value.lastIndexOf("}");
-            if (start !== -1 && end > start) {
-              candidates.push(value.slice(start, end + 1));
-            }
-            for (const candidate of candidates) {
-              try {
-                return JSON.parse(candidate);
-              } catch {
-                // Try the next representation.
-              }
-            }
-            return undefined;
-          };
-
-          const isShapeReview = (value) =>
-            value !== null &&
-            typeof value === "object" &&
-            !Array.isArray(value) &&
-            typeof value.status === "string" &&
-            typeof value.summary === "string" &&
-            Array.isArray(value.findings);
-
+          echo "Primary Claude output was not structured JSON; retrying with a no-tools JSON normalizer."
+          node <<'NODE' > claude-shape-review-normalize-prompt.md
+          const { readFileSync } = require("node:fs");
           const result = JSON.parse(readFileSync("claude-shape-review.json", "utf8"));
-          const candidates = [
-            ["structured_output", result.structured_output],
-            ["result", parseJsonValue(result.result)],
-            ["direct", result],
-          ];
-          const selected = candidates.find(([, value]) => isShapeReview(value));
-          if (!selected) {
-            console.error("Claude output did not include a valid Shape review object.");
-            console.error(JSON.stringify({
-              type: result.type,
-              subtype: result.subtype,
-              session_id: result.session_id,
-              keys: Object.keys(result),
-              result_preview: typeof result.result === "string" ? result.result.slice(0, 500) : undefined,
-            }, null, 2));
-            process.exit(1);
-          }
-          const [source, review] = selected;
-          const structuredOutput = JSON.stringify(review);
-          console.log(`Claude structured output source: ${source}`);
-          console.log(`Claude structured output fields: ${Object.keys(review).join(", ")}`);
-          appendFileSync(process.env.GITHUB_OUTPUT, `structured_output=${structuredOutput}\n`);
+          const rawReview = typeof result.result === "string" ? result.result : JSON.stringify(result);
+
+          console.log(`The previous Shape contract review returned text instead of the required JSON object.
+
+          Convert that review into exactly one JSON object matching this schema:
+
+          ${process.env.JSON_SCHEMA}
+
+          Rules:
+          - Preserve verified drift or error findings if the text reports them.
+          - If the text reports no verified Shape contract drift, return status "pass" with an empty findings array.
+          - Do not invent findings that are not present in the text.
+          - Do not include prose, Markdown, code fences, preamble, or postscript.
+
+          Review text:
+
+          ${rawReview}`);
           NODE
+
+          claude -p "$(cat claude-shape-review-normalize-prompt.md)" \
+            --max-turns 20 \
+            --output-format json \
+            --append-system-prompt "$json_only_system_prompt" \
+            --tools "" \
+            --json-schema "$JSON_SCHEMA" \
+            > claude-shape-review-normalized.json
+
+          CLAUDE_SHAPE_REVIEW_RESULT_PATH=claude-shape-review-normalized.json \
+            node .github/scripts/extract-claude-shape-review.mjs
 
       - name: Check Claude review result
         if: steps.claude-token.outputs.available == 'true'

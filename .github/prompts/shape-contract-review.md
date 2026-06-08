@@ -37,6 +37,10 @@ current Shape update or current attestation.
 
 ## Output
 
+Return the final review directly as one JSON object. The first character of the
+final response must be `{` and the last character must be `}`. Do not include a
+prose explanation, Markdown, bullets, headings, or code fences.
+
 The GitHub Action passes a JSON schema through `--json-schema`. Populate these
 structured-output fields; do not write a file or print a standalone Markdown
 response:
