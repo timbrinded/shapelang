@@ -1,6 +1,8 @@
 import { describe, expect, test } from "bun:test";
 import {
   compareReleaseVersions,
+  decideReleaseUpdate,
+  decideRequestedVersion,
   expectedChecksumForAsset,
   isUnsafeDefaultTarget,
   normalizeReleaseVersion,
@@ -43,6 +45,32 @@ describe("shp update helpers", () => {
     expect(compareReleaseVersions("0.2.0", "0.10.0")).toBe(-1);
   });
 
+  test("decides requested-version and release-version policies separately", () => {
+    expect(
+      decideRequestedVersion({ installedVersion: "0.4.0", requestedVersion: "0.4.0" })
+    ).toEqual({
+      kind: "skip",
+      message: "shp 0.4.0 is already installed\n"
+    });
+    expect(
+      decideRequestedVersion({ installedVersion: "0.5.0", requestedVersion: "0.4.0" })
+    ).toEqual({
+      kind: "reject",
+      message: "target release v0.4.0 is older than installed version 0.5.0"
+    });
+    expect(
+      decideReleaseUpdate({
+        currentVersion: "0.4.0",
+        installedVersion: "0.5.0",
+        targetVersion: "0.4.0",
+        releaseTagName: "v0.4.0"
+      })
+    ).toEqual({
+      kind: "skip",
+      message: "shp 0.5.0 is newer than latest release v0.4.0\n"
+    });
+  });
+
   test("parses checksums with or without a leading dot slash", () => {
     const checksums = [
       "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa  ./shp-linux-x64.tar.gz",
@@ -79,6 +107,18 @@ describe("shp update helpers", () => {
       browserDownloadUrl: "https://example.test/shp-linux-x64.tar.gz",
       digest: "sha256:abc"
     });
+  });
+
+  test("rejects malformed release and asset JSON", () => {
+    expect(() => parseReleaseInfo({ tag_name: "v0.3.0", assets: "missing" })).toThrow(
+      "GitHub release response is missing tag_name or assets"
+    );
+    expect(() =>
+      parseReleaseInfo({
+        tag_name: "v0.3.0",
+        assets: [{ name: "shp-linux-x64.tar.gz" }]
+      })
+    ).toThrow("GitHub release asset is missing name or browser_download_url");
   });
 
   test("recognizes Bun runtime paths as unsafe default targets", () => {

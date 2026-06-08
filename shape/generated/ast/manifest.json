@@ -3,10 +3,38 @@
   "generatedAt": "deterministic",
   "entries": [
     {
-      "module": "shape.generated.ast.github.scripts.check_copilot_shape_review",
-      "path": "shape/generated/ast/.github/scripts/check-copilot-shape-review.shape",
+      "module": "shape.generated.ast.github.scripts.check_claude_shape_review",
+      "path": "shape/generated/ast/.github/scripts/check-claude-shape-review.shape",
       "sources": [
-        ".github/scripts/check-copilot-shape-review.mjs"
+        ".github/scripts/check-claude-shape-review.mjs"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.github.scripts.extract_claude_shape_review",
+      "path": "shape/generated/ast/.github/scripts/extract-claude-shape-review.shape",
+      "sources": [
+        ".github/scripts/extract-claude-shape-review.mjs"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.github.scripts.run_claude_shape_review",
+      "path": "shape/generated/ast/.github/scripts/run-claude-shape-review.shape",
+      "sources": [
+        ".github/scripts/run-claude-shape-review.mjs"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.github.scripts.shape_review_contract",
+      "path": "shape/generated/ast/.github/scripts/shape-review-contract.shape",
+      "sources": [
+        ".github/scripts/shape-review-contract.mjs"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.github.scripts.upsert_shape_ci_comment",
+      "path": "shape/generated/ast/.github/scripts/upsert-shape-ci-comment.shape",
+      "sources": [
+        ".github/scripts/upsert-shape-ci-comment.mjs"
       ]
     },
     {
@@ -63,6 +91,13 @@
       "path": "shape/generated/ast/fixtures/source/rust/audit_store.shape",
       "sources": [
         "fixtures/source/rust/audit_store.rs"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.analyzer_test",
+      "path": "shape/generated/ast/packages/shp-checker/src/analyzer.test.shape",
+      "sources": [
+        "packages/shp-checker/src/analyzer.test.ts"
       ]
     },
     {
@@ -570,6 +605,13 @@
       ]
     },
     {
+      "module": "shape.generated.ast.packages.shp_checker.src.shape_domain",
+      "path": "shape/generated/ast/packages/shp-checker/src/shape-domain.shape",
+      "sources": [
+        "packages/shp-checker/src/shape-domain.ts"
+      ]
+    },
+    {
       "module": "shape.generated.ast.packages.shp_checker.src.shape_strings_test",
       "path": "shape/generated/ast/packages/shp-checker/src/shape-strings.test.shape",
       "sources": [
@@ -616,6 +658,13 @@
       "path": "shape/generated/ast/packages/shp-cli/src/app.shape",
       "sources": [
         "packages/shp-cli/src/app.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_cli.src.check_runner",
+      "path": "shape/generated/ast/packages/shp-cli/src/check-runner.shape",
+      "sources": [
+        "packages/shp-cli/src/check-runner.ts"
       ]
     },
     {

@@ -178,16 +178,10 @@ describe("shp CLI contract matrix (area #60)", () => {
   );
 
   test(
-    "[characterization] ast source --language <unknown> fails as a runtime " +
-      "error (exit 1, stderr) rather than an argument error (exit 2) " +
+    "[locked-intended] ast source --language <unknown> fails as a usage error " +
+      "(exit 2, stderr) before parser loading " +
       "— anchor: docs-site/src/content/docs/reference/cli.md ast source --language LANG",
     async () => {
-      // REASON: `--language` is resolved against the Tree-sitter parser loader,
-      // not validated as a closed enum at parse time, so an unknown language is
-      // surfaced as a parse/generation failure (exit 1 -> stderr), the same
-      // class as a genuine parse failure — NOT as a usage error (exit 2).
-      // FOLLOW-UP (#34/#60): if invalid `--language` should be a fast usage
-      // rejection, that becomes a [shouldBe] expectation against this baseline.
       const unknown = await runCli([
         "ast",
         "source",
@@ -195,21 +189,26 @@ describe("shp CLI contract matrix (area #60)", () => {
         "definitely-not-a-language",
         PASS_FIXTURE
       ]);
-      expect(unknown.exitCode).toBe(1);
+      expect(unknown.exitCode).toBe(2);
       expect(unknown.stdout).toBe("");
       expect(unknown.stderr.length).toBeGreaterThan(0);
-      // It is reported as an AST-generation failure naming the bad language,
-      // not a raw stack trace.
       expect(unknown.stderr).toContain("definitely-not-a-language");
+      expect(unknown.stderr).toContain("unsupported source language");
       expect(unknown.stderr).not.toContain("at ");
 
       // Negative control: this exit code is meaningful only against a contrast.
-      // An invalid FLAG on the same subcommand is exit 2 (argument layer), so
-      // exit 1 here genuinely distinguishes "bad value, runtime failure" from
-      // "bad flag, usage failure".
-      const badFlag = await runCli(["ast", "source", "--not-a-real-flag", PASS_FIXTURE]);
-      expect(badFlag.exitCode).toBe(2);
-      expect(unknown.exitCode).not.toBe(badFlag.exitCode);
+      // A valid alias on the same subcommand gets past argument validation and
+      // fails later on ordinary file loading, before any parser can initialize.
+      const alias = await runCli([
+        "ast",
+        "source",
+        "--language",
+        "ts",
+        "fixtures/missing-source.ts"
+      ]);
+      expect(alias.exitCode).toBe(2);
+      expect(alias.stderr).toContain("failed to read fixtures/missing-source.ts");
+      expect(alias.stderr).not.toContain("unsupported source language");
     }
   );
 

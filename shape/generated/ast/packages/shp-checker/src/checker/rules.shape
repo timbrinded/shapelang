@@ -7,13 +7,13 @@ trait GeneratedCandidate {
 }
 
 resource RulesModuleRunSemanticChecksAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/rules.ts:49-51")
-  fingerprint ast.semantic_subtree_v1("sha256:7eb1a7f0d1b44cf7548c6ce46549d217e8364a7cce85e4b64550d871f92304ef")
+  storage ast.anchor("packages/shp-checker/src/checker/rules.ts:49-54")
+  fingerprint ast.semantic_subtree_v1("sha256:71193772bc469066f6bdf0589897b2c73fab97ad3fdce3bb8918a904904c89ec")
 }
 
 component RulesModule : GeneratedCandidate {
   fn runSemanticChecks
-    source ts("packages/shp-checker/src/checker/rules.ts:49-51")
+    source ts("packages/shp-checker/src/checker/rules.ts:49-54")
     effects unknown
 }
 
@@ -21,8 +21,8 @@ relation RulesModuleRunSemanticChecksGeneratedFromRulesModuleRunSemanticChecksAs
   kind generated_from
   connects RulesModule -> RulesModuleRunSemanticChecksAstAnchor
   roles { RulesModule as generated, RulesModuleRunSemanticChecksAstAnchor as syntax }
-  expects RulesModuleRunSemanticChecksAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7eb1a7f0d1b44cf7548c6ce46549d217e8364a7cce85e4b64550d871f92304ef")
-  summary "fn RulesModule.runSemanticChecks generated from typescript function_declaration at packages/shp-checker/src/checker/rules.ts:49-51."
+  expects RulesModuleRunSemanticChecksAstAnchor fingerprint ast.semantic_subtree_v1("sha256:71193772bc469066f6bdf0589897b2c73fab97ad3fdce3bb8918a904904c89ec")
+  summary "fn RulesModule.runSemanticChecks generated from typescript function_declaration at packages/shp-checker/src/checker/rules.ts:49-54."
 }
 
 implementation RulesModuleImpl {

@@ -110,58 +110,57 @@ jobs:
       - name: Shape CI
         run: bun run shape:ci
 
-  shape-copilot-review:
-    name: Shape Copilot Review
+  shape-claude-review:
+    name: Shape Claude Review
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request'
+    permissions:
+      contents: read
+      pull-requests: read
+    outputs:
+      claude_available: ${{ steps.claude-token.outputs.available }}
+    env:
+      SHAPE_CONTRACT_RESULT_SCHEMA: .github/shape-contract/schemas/shape-contract-result.schema.json
 
     steps:
-      - name: Detect Copilot token
-        id: copilot-token
+      - name: Detect Claude credentials
+        id: claude-token
         env:
-          COPILOT_GITHUB_TOKEN: ${{ secrets.COPILOT_GITHUB_TOKEN }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ANTHROPIC_AUTH_TOKEN: ${{ secrets.ANTHROPIC_AUTH_TOKEN }}
         run: |
-          if [ -n "${COPILOT_GITHUB_TOKEN:-}" ]; then
+          if [ -n "${ANTHROPIC_API_KEY:-}" ] || [ -n "${ANTHROPIC_AUTH_TOKEN:-}" ]; then
             echo "available=true" >> "$GITHUB_OUTPUT"
           else
             echo "available=false" >> "$GITHUB_OUTPUT"
-            echo "Skipping Copilot Shape contract review because COPILOT_GITHUB_TOKEN is not available."
+            echo "Skipping Claude Shape contract review because no Anthropic API credential is available."
           fi
 
       - name: Checkout
-        if: steps.copilot-token.outputs.available == 'true'
+        if: steps.claude-token.outputs.available == 'true'
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: Setup Bun
-        if: steps.copilot-token.outputs.available == 'true'
+        if: steps.claude-token.outputs.available == 'true'
+        id: setup-bun
         uses: oven-sh/setup-bun@v2
 
       - name: Install
-        if: steps.copilot-token.outputs.available == 'true'
+        if: steps.claude-token.outputs.available == 'true'
         run: bun install --frozen-lockfile
 
-      - name: Setup Node
-        if: steps.copilot-token.outputs.available == 'true'
-        uses: actions/setup-node@v4
-        with:
-          node-version: 24
-
-      - name: Install Copilot CLI
-        if: steps.copilot-token.outputs.available == 'true'
-        run: npm install -g @github/copilot
-
       - name: Changed files
-        if: steps.copilot-token.outputs.available == 'true'
+        if: steps.claude-token.outputs.available == 'true'
         run: bun run changed-files
         env:
           GITHUB_BASE_REF: ${{ github.base_ref }}
           GITHUB_EVENT_BEFORE: ${{ github.event.before }}
           GITHUB_SHA: ${{ github.sha }}
 
-      - name: Shape diagnostics for Copilot
-        if: steps.copilot-token.outputs.available == 'true'
+      - name: Shape diagnostics for Claude
+        if: steps.claude-token.outputs.available == 'true'
         run: |
           set +e
           {
@@ -173,34 +172,63 @@ jobs:
             status=$?
             echo
             echo "shape_ci_exit=$status"
-          } > shape-copilot-context.txt 2>&1
+          } > shape-claude-context.txt 2>&1
 
-      - name: Run Copilot Shape contract review
-        if: steps.copilot-token.outputs.available == 'true'
+      - name: Install Claude Code
+        if: steps.claude-token.outputs.available == 'true'
+        run: |
+          curl -fsSL https://claude.ai/install.sh | bash
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+          "$HOME/.local/bin/claude" --version
+
+      - name: Run Claude Shape contract review
+        id: claude
+        if: steps.claude-token.outputs.available == 'true'
         env:
-          COPILOT_GITHUB_TOKEN: ${{ secrets.COPILOT_GITHUB_TOKEN }}
+          API_TIMEOUT_MS: 18000
+          DISABLE_NON_ESSENTIAL_MODE_CALLS: 1
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ANTHROPIC_BASE_URL: ${{ secrets.ANTHROPIC_BASE_URL }}
+          ANTHROPIC_AUTH_TOKEN: ${{ secrets.ANTHROPIC_AUTH_TOKEN }}
+          CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS: ${{ secrets.CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS }}
           GITHUB_BASE_REF: ${{ github.base_ref }}
           GITHUB_SHA: ${{ github.sha }}
-        run: |
-          set -euo pipefail
-          prompt="$(<.github/prompts/shape-contract-review.md)"
-          prompt="$prompt
+        run: node .github/scripts/run-claude-shape-review.mjs
 
-          CI context:
-          - Base ref: ${GITHUB_BASE_REF:-unknown}
-          - Head SHA: ${GITHUB_SHA:-unknown}
-          - Changed files are listed in changed.txt.
-          - Shape command output is in shape-copilot-context.txt.
-          - Write the final JSON object to copilot-shape-review.json."
+      - name: Check Claude review result
+        if: steps.claude-token.outputs.available == 'true'
+        env:
+          CLAUDE_SHAPE_REVIEW_RESULT: ${{ steps.claude.outputs.structured_output }}
+        run: node .github/scripts/check-claude-shape-review.mjs
 
-          copilot -p "$prompt" \
-            --allow-tool='read,write(copilot-shape-review.json),shell(git:*),shell(bun:*),shell(rg:*),shell(ls:*),shell(pwd)' \
-            --deny-tool='shell(git push),shell(git commit),shell(git reset),shell(git checkout)' \
-            --no-ask-user
+  shape-pr-comment:
+    name: Shape PR Summary Comment
+    runs-on: ubuntu-latest
+    needs:
+      - shape
+      - shape-claude-review
+    if: ${{ always() && github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository }}
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: write
 
-      - name: Check Copilot review result
-        if: steps.copilot-token.outputs.available == 'true'
-        run: node .github/scripts/check-copilot-shape-review.mjs
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Upsert Shape CI summary comment
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          REPOSITORY: ${{ github.repository }}
+          RUN_ID: ${{ github.run_id }}
+          SERVER_URL: ${{ github.server_url }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          SHAPE_RESULT: ${{ needs.shape.result }}
+          SHAPE_CLAUDE_REVIEW_RESULT: ${{ needs['shape-claude-review'].result }}
+          CLAUDE_AVAILABLE: ${{ needs['shape-claude-review'].outputs.claude_available }}
+        run: node .github/scripts/upsert-shape-ci-comment.mjs
 
   docs:
     name: Docs

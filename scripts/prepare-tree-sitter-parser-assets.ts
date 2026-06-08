@@ -25,6 +25,8 @@ type LanguagePackModule = {
   };
 };
 
+const FETCH_RETRY_DELAYS_MS = [1000, 3000, 7000] as const;
+
 const releasePlatformKeys = new Map<string, { manifestKey: string; nodePlatform: NodeJS.Platform }>(
   [
     ["shp-linux-x64", { manifestKey: "linux-x86_64", nodePlatform: "linux" }],
@@ -131,11 +133,38 @@ try {
 }
 
 async function fetchBytes(url: string): Promise<Uint8Array> {
-  const response = await fetch(url);
-  if (!response.ok) {
-    throw new Error(`failed to fetch ${url}: ${response.status} ${response.statusText}`);
+  let lastFailure = "unknown failure";
+  for (let attempt = 0; attempt <= FETCH_RETRY_DELAYS_MS.length; attempt++) {
+    try {
+      const response = await fetch(url);
+      if (response.ok) {
+        return new Uint8Array(await response.arrayBuffer());
+      }
+
+      lastFailure = `${response.status} ${response.statusText}`;
+      if (!isRetryableFetchStatus(response.status)) {
+        break;
+      }
+    } catch (error) {
+      lastFailure = error instanceof Error ? error.message : String(error);
+    }
+
+    const delayMs = FETCH_RETRY_DELAYS_MS[attempt];
+    if (delayMs === undefined) {
+      break;
+    }
+
+    console.error(`failed to fetch ${url}: ${lastFailure}; retrying in ${delayMs}ms`);
+    await Bun.sleep(delayMs);
   }
-  return new Uint8Array(await response.arrayBuffer());
+
+  throw new Error(
+    `failed to fetch ${url} after ${FETCH_RETRY_DELAYS_MS.length + 1} attempts: ${lastFailure}`
+  );
+}
+
+function isRetryableFetchStatus(status: number): boolean {
+  return status === 408 || status === 429 || (status >= 500 && status <= 599);
 }
 
 async function extractTarZst(archivePath: string, destination: string): Promise<void> {

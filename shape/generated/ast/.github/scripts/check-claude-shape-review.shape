@@ -1,0 +1,97 @@
+module shape.generated.ast.github.scripts.check_claude_shape_review
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource CheckClaudeShapeReviewModuleIsMainModuleAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor(".github/scripts/check-claude-shape-review.mjs:51-56")
+  fingerprint ast.semantic_subtree_v1("sha256:a7630a5e5fbe44b11a467fb490a2c52019708e3bbc0e6d3476897795228c2a3f")
+}
+
+resource CheckClaudeShapeReviewModuleParseReviewInputAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor(".github/scripts/check-claude-shape-review.mjs:22-28")
+  fingerprint ast.semantic_subtree_v1("sha256:504bec4e8b1b96a2f59ded2763c4efabea97a2b23910dd68d062956eb08123cc")
+}
+
+resource CheckClaudeShapeReviewModuleReadReviewFromEnvironmentAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor(".github/scripts/check-claude-shape-review.mjs:30-37")
+  fingerprint ast.semantic_subtree_v1("sha256:f2f2ac522f4a2dff2ea647e8871ac5a2f6ff5934c9ea79262c1de618c9c40d73")
+}
+
+resource CheckClaudeShapeReviewModuleRenderReviewSummaryAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor(".github/scripts/check-claude-shape-review.mjs:9-20")
+  fingerprint ast.semantic_subtree_v1("sha256:b49dacc40b089fad18334362f7bc67b8953efe02ca425d8cce55c2d093173c79")
+}
+
+resource CheckClaudeShapeReviewModuleReviewFailureMessageAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor(".github/scripts/check-claude-shape-review.mjs:39-49")
+  fingerprint ast.semantic_subtree_v1("sha256:ca6a57155359c144d4ef418590540e99c6c4cf2bb70fbc6458dc7b890beb6dbf")
+}
+
+component CheckClaudeShapeReviewModule : GeneratedCandidate {
+  fn isMainModule
+    source js(".github/scripts/check-claude-shape-review.mjs:51-56")
+    effects unknown
+  fn parseReviewInput
+    source js(".github/scripts/check-claude-shape-review.mjs:22-28")
+    effects unknown
+  fn readReviewFromEnvironment
+    source js(".github/scripts/check-claude-shape-review.mjs:30-37")
+    effects unknown
+  fn renderReviewSummary
+    source js(".github/scripts/check-claude-shape-review.mjs:9-20")
+    effects unknown
+  fn reviewFailureMessage
+    source js(".github/scripts/check-claude-shape-review.mjs:39-49")
+    effects unknown
+}
+
+relation CheckClaudeShapeReviewModuleIsMainModuleGeneratedFromCheckClaudeShapeReviewModuleIsMainModuleAstAnchor {
+  kind generated_from
+  connects CheckClaudeShapeReviewModule -> CheckClaudeShapeReviewModuleIsMainModuleAstAnchor
+  roles { CheckClaudeShapeReviewModule as generated, CheckClaudeShapeReviewModuleIsMainModuleAstAnchor as syntax }
+  expects CheckClaudeShapeReviewModuleIsMainModuleAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a7630a5e5fbe44b11a467fb490a2c52019708e3bbc0e6d3476897795228c2a3f")
+  summary "fn CheckClaudeShapeReviewModule.isMainModule generated from javascript function_declaration at .github/scripts/check-claude-shape-review.mjs:51-56."
+}
+
+relation CheckClaudeShapeReviewModuleParseReviewInputGeneratedFromCheckClaudeShapeReviewModuleParseReviewInputAstAnchor {
+  kind generated_from
+  connects CheckClaudeShapeReviewModule -> CheckClaudeShapeReviewModuleParseReviewInputAstAnchor
+  roles { CheckClaudeShapeReviewModule as generated, CheckClaudeShapeReviewModuleParseReviewInputAstAnchor as syntax }
+  expects CheckClaudeShapeReviewModuleParseReviewInputAstAnchor fingerprint ast.semantic_subtree_v1("sha256:504bec4e8b1b96a2f59ded2763c4efabea97a2b23910dd68d062956eb08123cc")
+  summary "fn CheckClaudeShapeReviewModule.parseReviewInput generated from javascript function_declaration at .github/scripts/check-claude-shape-review.mjs:22-28."
+}
+
+relation CheckClaudeShapeReviewModuleReadReviewFromEnvironmentGeneratedFromCheckClaudeShapeReviewModuleReadReviewFromEnvironmentAstAnchor {
+  kind generated_from
+  connects CheckClaudeShapeReviewModule -> CheckClaudeShapeReviewModuleReadReviewFromEnvironmentAstAnchor
+  roles { CheckClaudeShapeReviewModule as generated, CheckClaudeShapeReviewModuleReadReviewFromEnvironmentAstAnchor as syntax }
+  expects CheckClaudeShapeReviewModuleReadReviewFromEnvironmentAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f2f2ac522f4a2dff2ea647e8871ac5a2f6ff5934c9ea79262c1de618c9c40d73")
+  summary "fn CheckClaudeShapeReviewModule.readReviewFromEnvironment generated from javascript function_declaration at .github/scripts/check-claude-shape-review.mjs:30-37."
+}
+
+relation CheckClaudeShapeReviewModuleRenderReviewSummaryGeneratedFromCheckClaudeShapeReviewModuleRenderReviewSummaryAstAnchor {
+  kind generated_from
+  connects CheckClaudeShapeReviewModule -> CheckClaudeShapeReviewModuleRenderReviewSummaryAstAnchor
+  roles { CheckClaudeShapeReviewModule as generated, CheckClaudeShapeReviewModuleRenderReviewSummaryAstAnchor as syntax }
+  expects CheckClaudeShapeReviewModuleRenderReviewSummaryAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b49dacc40b089fad18334362f7bc67b8953efe02ca425d8cce55c2d093173c79")
+  summary "fn CheckClaudeShapeReviewModule.renderReviewSummary generated from javascript function_declaration at .github/scripts/check-claude-shape-review.mjs:9-20."
+}
+
+relation CheckClaudeShapeReviewModuleReviewFailureMessageGeneratedFromCheckClaudeShapeReviewModuleReviewFailureMessageAstAnchor {
+  kind generated_from
+  connects CheckClaudeShapeReviewModule -> CheckClaudeShapeReviewModuleReviewFailureMessageAstAnchor
+  roles { CheckClaudeShapeReviewModule as generated, CheckClaudeShapeReviewModuleReviewFailureMessageAstAnchor as syntax }
+  expects CheckClaudeShapeReviewModuleReviewFailureMessageAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ca6a57155359c144d4ef418590540e99c6c4cf2bb70fbc6458dc7b890beb6dbf")
+  summary "fn CheckClaudeShapeReviewModule.reviewFailureMessage generated from javascript function_declaration at .github/scripts/check-claude-shape-review.mjs:39-49."
+}
+
+implementation CheckClaudeShapeReviewModuleImpl {
+  paths {
+    ".github/scripts/check-claude-shape-review.mjs"
+  }
+  conforms_to CheckClaudeShapeReviewModule
+}

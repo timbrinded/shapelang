@@ -76,6 +76,39 @@ export type UpdateOptions = {
   readonly repository?: string;
 };
 
+export type RequestedVersionDecision =
+  | { readonly kind: "continue" }
+  | { readonly kind: "skip"; readonly message: string }
+  | { readonly kind: "reject"; readonly message: string };
+
+export type ReleaseUpdateDecision =
+  | { readonly kind: "skip"; readonly message: string }
+  | { readonly kind: "update"; readonly versionBeforeUpdate: string };
+
+type RequestedVersionDecisionInput = {
+  readonly installedVersion?: string;
+  readonly requestedVersion?: string;
+};
+
+type ReleaseUpdateDecisionInput = {
+  readonly currentVersion: string;
+  readonly installedVersion?: string;
+  readonly requestedVersion?: string;
+  readonly targetVersion: string;
+  readonly releaseTagName: string;
+};
+
+type ReleaseInfoResponse = {
+  readonly tag_name: string;
+  readonly assets: readonly unknown[];
+};
+
+type ReleaseAssetResponse = {
+  readonly name: string;
+  readonly browser_download_url: string;
+  readonly digest?: unknown;
+};
+
 export default async function update(this: CliContext, flags: UpdateFlags): Promise<void> {
   stdout(
     this,
@@ -112,33 +145,33 @@ export async function runUpdate(
   );
   const repository = options.repository ?? DEFAULT_REPOSITORY;
 
-  if (options.requestedVersion && installedVersion !== undefined) {
-    const requestedVersion = normalizeReleaseVersion(options.requestedVersion);
-    const comparison = compareReleaseVersions(requestedVersion, installedVersion);
-    if (comparison === 0) {
-      return `shp ${installedVersion} is already installed\n`;
-    }
-    if (comparison < 0) {
-      throw usageError(
-        `target release v${requestedVersion} is older than installed version ${installedVersion}`
-      );
-    }
+  const requestedVersion =
+    options.requestedVersion === undefined
+      ? undefined
+      : normalizeReleaseVersion(options.requestedVersion);
+  const requestedDecision = decideRequestedVersion({ installedVersion, requestedVersion });
+  if (requestedDecision.kind === "skip") {
+    return requestedDecision.message;
+  }
+  if (requestedDecision.kind === "reject") {
+    throw usageError(requestedDecision.message);
   }
 
   const release = parseReleaseInfo(
-    await services.fetchJson(releaseApiUrl(repository, options.requestedVersion))
+    await services.fetchJson(releaseApiUrl(repository, requestedVersion))
   );
   const targetVersion = normalizeReleaseVersion(release.tagName);
-  const versionBeforeUpdate = installedVersion ?? currentVersion;
-  if (installedVersion !== undefined) {
-    const comparison = compareReleaseVersions(targetVersion, installedVersion);
-    if (!options.requestedVersion && comparison === 0) {
-      return `shp ${installedVersion} is already up to date\n`;
-    }
-    if (!options.requestedVersion && comparison < 0) {
-      return `shp ${installedVersion} is newer than latest release ${release.tagName}\n`;
-    }
+  const releaseDecision = decideReleaseUpdate({
+    currentVersion,
+    installedVersion,
+    requestedVersion,
+    targetVersion,
+    releaseTagName: release.tagName
+  });
+  if (releaseDecision.kind === "skip") {
+    return releaseDecision.message;
   }
+  const versionBeforeUpdate = releaseDecision.versionBeforeUpdate;
 
   const archiveAsset = selectReleaseAsset(release, platform.assetName);
   const checksumAsset = selectReleaseAsset(release, "checksums.txt");
@@ -254,17 +287,57 @@ export function compareReleaseVersions(left: string, right: string): number {
   return 0;
 }
 
+export function decideRequestedVersion(
+  input: RequestedVersionDecisionInput
+): RequestedVersionDecision {
+  if (!input.requestedVersion || input.installedVersion === undefined) {
+    return { kind: "continue" };
+  }
+
+  const requestedComparison = compareReleaseVersions(
+    input.requestedVersion,
+    input.installedVersion
+  );
+  if (requestedComparison === 0) {
+    return { kind: "skip", message: `shp ${input.installedVersion} is already installed\n` };
+  }
+  if (requestedComparison < 0) {
+    return {
+      kind: "reject",
+      message: `target release v${input.requestedVersion} is older than installed version ${input.installedVersion}`
+    };
+  }
+  return { kind: "continue" };
+}
+
+export function decideReleaseUpdate(input: ReleaseUpdateDecisionInput): ReleaseUpdateDecision {
+  if (input.installedVersion !== undefined && !input.requestedVersion) {
+    const latestComparison = compareReleaseVersions(input.targetVersion, input.installedVersion);
+    if (latestComparison === 0) {
+      return { kind: "skip", message: `shp ${input.installedVersion} is already up to date\n` };
+    }
+    if (latestComparison < 0) {
+      return {
+        kind: "skip",
+        message: `shp ${input.installedVersion} is newer than latest release ${input.releaseTagName}\n`
+      };
+    }
+  }
+
+  return {
+    kind: "update",
+    versionBeforeUpdate: input.installedVersion ?? input.currentVersion
+  };
+}
+
 export function parseReleaseInfo(value: unknown): ReleaseInfo {
-  const release = record(value);
-  const tagName = release?.tag_name;
-  const assets = release?.assets;
-  if (typeof tagName !== "string" || !Array.isArray(assets)) {
+  if (!isReleaseInfoResponse(value)) {
     throw failureError("GitHub release response is missing tag_name or assets");
   }
 
   return {
-    tagName,
-    assets: assets.map(parseReleaseAsset)
+    tagName: value.tag_name,
+    assets: value.assets.map(parseReleaseAsset)
   };
 }
 
@@ -351,18 +424,14 @@ function releaseApiUrl(repository: string, requestedVersion: string | undefined)
 }
 
 function parseReleaseAsset(value: unknown): ReleaseAsset {
-  const asset = record(value);
-  const name = asset?.name;
-  const browserDownloadUrl = asset?.browser_download_url;
-  const digest = asset?.digest;
-  if (typeof name !== "string" || typeof browserDownloadUrl !== "string") {
+  if (!isReleaseAssetResponse(value)) {
     throw failureError("GitHub release asset is missing name or browser_download_url");
   }
 
   return {
-    name,
-    browserDownloadUrl,
-    digest: typeof digest === "string" ? digest : undefined
+    name: value.name,
+    browserDownloadUrl: value.browser_download_url,
+    digest: typeof value.digest === "string" ? value.digest : undefined
   };
 }
 
@@ -397,10 +466,20 @@ function hasShpHelpIdentity(output: string): boolean {
   );
 }
 
-function record(value: unknown): Record<string, unknown> | undefined {
-  return typeof value === "object" && value !== null
-    ? (value as Record<string, unknown>)
-    : undefined;
+function isReleaseInfoResponse(value: unknown): value is ReleaseInfoResponse {
+  return isRecord(value) && typeof value["tag_name"] === "string" && Array.isArray(value["assets"]);
+}
+
+function isReleaseAssetResponse(value: unknown): value is ReleaseAssetResponse {
+  return (
+    isRecord(value) &&
+    typeof value["name"] === "string" &&
+    typeof value["browser_download_url"] === "string"
+  );
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null;
 }
 
 function usageError(message: string): CliDiagnosticError {

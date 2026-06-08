@@ -417,6 +417,14 @@ component ShpCli {
       Read<SystemClock>
         evidence ts("packages/shp-cli/src/freshness.ts")
     }
+  fn runShapeFileCheck
+    source ts("packages/shp-cli/src/check-runner.ts#runShapeFileCheck")
+    effects complete {
+      Read<DiagnosticText>
+        evidence ts("packages/shp-cli/src/check-runner.ts")
+      Read<ShapeSource>
+        evidence ts("packages/shp-cli/src/check-runner.ts")
+    }
   fn updateInstalledBinary : RefactorSensitive
     source ts("packages/shp-cli/src/commands/update/impl.ts#update")
     effects complete {

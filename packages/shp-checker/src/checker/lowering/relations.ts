@@ -15,7 +15,8 @@ import type {
   HyperedgeInfo,
   HyperedgeMember,
   LoweringContext,
-  Model
+  Model,
+  Provenance
 } from "../model.ts";
 import { PRELUDE_RELATION_KINDS } from "../../prelude.ts";
 import { declKey, displaySymbol } from "../display.ts";
@@ -44,6 +45,55 @@ export function lowerRelation(
     return;
   }
 
+  const info = buildRelationInfo(relation, name, prov, context, model);
+  if (!info) {
+    return;
+  }
+  const members = info.members;
+
+  model.hypergraph.edges.set(name, info);
+  for (const member of members) {
+    const incident = model.hypergraph.incidence.get(member.endpoint) ?? [];
+    incident.push(name);
+    model.hypergraph.incidence.set(member.endpoint, incident);
+  }
+
+  model.facts.push({
+    kind: "hyperedge",
+    name,
+    relationKind: info.kind,
+    ordered: info.ordered,
+    provenance: prov
+  });
+  for (const member of members) {
+    model.facts.push({
+      kind: "hyperedge_member",
+      hyperedge: name,
+      endpoint: member.endpoint,
+      index: member.index,
+      role: member.role,
+      provenance: provenance(context.filePath, `relation ${name} connects ${member.endpoint}`)
+    });
+  }
+  for (const expectation of info.fingerprintExpectations) {
+    model.facts.push({
+      kind: "hyperedge_fingerprint_expectation",
+      hyperedge: name,
+      endpoint: expectation.endpoint,
+      provider: expectation.provider,
+      value: expectation.value,
+      provenance: expectation.provenance
+    });
+  }
+}
+
+function buildRelationInfo(
+  relation: RelationDecl,
+  name: string,
+  prov: Provenance,
+  context: LoweringContext,
+  model: Model
+): HyperedgeInfo | undefined {
   let kindValue: string | undefined;
   let kindSeen = false;
   let connectsDecl: ReturnType<typeof collectConnects> | undefined;
@@ -257,41 +307,7 @@ export function lowerRelation(
     summary,
     provenance: prov
   };
-
-  model.hypergraph.edges.set(name, info);
-  for (const member of members) {
-    const incident = model.hypergraph.incidence.get(member.endpoint) ?? [];
-    incident.push(name);
-    model.hypergraph.incidence.set(member.endpoint, incident);
-  }
-
-  model.facts.push({
-    kind: "hyperedge",
-    name,
-    relationKind: kindValue,
-    ordered: connectsDecl.ordered,
-    provenance: prov
-  });
-  for (const member of members) {
-    model.facts.push({
-      kind: "hyperedge_member",
-      hyperedge: name,
-      endpoint: member.endpoint,
-      index: member.index,
-      role: member.role,
-      provenance: provenance(context.filePath, `relation ${name} connects ${member.endpoint}`)
-    });
-  }
-  for (const expectation of fingerprintExpectations) {
-    model.facts.push({
-      kind: "hyperedge_fingerprint_expectation",
-      hyperedge: name,
-      endpoint: expectation.endpoint,
-      provider: expectation.provider,
-      value: expectation.value,
-      provenance: expectation.provenance
-    });
-  }
+  return info;
 }
 
 export function removeRelation(name: string, model: Model): void {
