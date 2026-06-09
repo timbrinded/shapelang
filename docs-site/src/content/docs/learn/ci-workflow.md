@@ -26,7 +26,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - uses: timbrinded/shapelang@v0.4.0
+      - uses: timbrinded/shapelang@v0.4.1
       - run: shp check
       - run: shp fmt --check
 ```
@@ -45,54 +45,129 @@ Coverage checks compare changed source paths with implementation blocks. A gover
 
 If a governed source path changes without a Shape update or current attestation, the checker rejects the change.
 
-## Copilot CLI contract review
+## Claude Code contract review
 
-CI can also run GitHub Copilot CLI as a PR job to check source semantics against the Shape model. This is separate from the deterministic checker: `shp check --changed-files` enforces current coverage and bindings, while Copilot reviews whether the committed Shape claims faithfully describe the changed behavior.
+CI can also run Claude Code as a PR job to check source semantics against the Shape model. This is separate from the deterministic checker: `shp check --changed-files` enforces current coverage and bindings, while Claude reviews whether the committed Shape claims faithfully describe the changed behavior.
 
-The job needs a repository secret such as `COPILOT_GITHUB_TOKEN`, containing a fine-grained personal access token for a Copilot-licensed account with Copilot Requests permission. Detect the token first so forked pull requests skip the Copilot-only work instead of failing on an unavailable secret:
+The job needs `ANTHROPIC_API_KEY`, or `ANTHROPIC_AUTH_TOKEN` for proxy-backed repositories. Repositories that proxy Anthropic traffic can also set `ANTHROPIC_BASE_URL`. Detect the credential first so forked pull requests skip the Claude-only work instead of failing on an unavailable secret:
 
 ```yaml
-shape-copilot-review:
+shape-claude-review:
   if: github.event_name == 'pull_request'
   runs-on: ubuntu-latest
   steps:
-    - name: Detect Copilot token
-      id: copilot-token
+    - name: Detect Claude credentials
+      id: claude-token
       env:
-        COPILOT_GITHUB_TOKEN: ${{ secrets.COPILOT_GITHUB_TOKEN }}
+        ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        ANTHROPIC_AUTH_TOKEN: ${{ secrets.ANTHROPIC_AUTH_TOKEN }}
       run: |
-        if [ -n "${COPILOT_GITHUB_TOKEN:-}" ]; then
+        if [ -n "${ANTHROPIC_API_KEY:-}" ] || [ -n "${ANTHROPIC_AUTH_TOKEN:-}" ]; then
           echo "available=true" >> "$GITHUB_OUTPUT"
         else
           echo "available=false" >> "$GITHUB_OUTPUT"
-          echo "Skipping Copilot Shape contract review because COPILOT_GITHUB_TOKEN is not available."
+          echo "Skipping Claude Shape contract review because no Anthropic API credential is available."
         fi
     - uses: actions/checkout@v4
-      if: steps.copilot-token.outputs.available == 'true'
+      if: steps.claude-token.outputs.available == 'true'
       with:
         fetch-depth: 0
     - uses: oven-sh/setup-bun@v2
-      if: steps.copilot-token.outputs.available == 'true'
+      id: setup-bun
+      if: steps.claude-token.outputs.available == 'true'
     - run: bun install --frozen-lockfile
-      if: steps.copilot-token.outputs.available == 'true'
-    - uses: actions/setup-node@v4
-      if: steps.copilot-token.outputs.available == 'true'
-      with:
-        node-version: 24
-    - run: npm install -g @github/copilot
-      if: steps.copilot-token.outputs.available == 'true'
+      if: steps.claude-token.outputs.available == 'true'
     - run: bun run changed-files
-      if: steps.copilot-token.outputs.available == 'true'
+      if: steps.claude-token.outputs.available == 'true'
       env:
         GITHUB_BASE_REF: ${{ github.base_ref }}
         GITHUB_SHA: ${{ github.sha }}
-    - run: |
-        copilot -p "$(<.github/prompts/shape-contract-review.md)" \
-          --allow-tool='read,write(copilot-shape-review.json),shell(git:*),shell(bun:*)' \
-          --no-ask-user
-      if: steps.copilot-token.outputs.available == 'true'
+    - name: Load structured output schema
+      id: schema
+      if: steps.claude-token.outputs.available == 'true'
       env:
-        COPILOT_GITHUB_TOKEN: ${{ secrets.COPILOT_GITHUB_TOKEN }}
+        SCHEMA_PATH: .github/shape-contract/schemas/shape-contract-result.schema.json
+      run: |
+        node <<'NODE'
+        const { appendFileSync, readFileSync } = require("node:fs");
+        const schema = JSON.stringify(JSON.parse(readFileSync(process.env.SCHEMA_PATH, "utf8")));
+        appendFileSync(process.env.GITHUB_OUTPUT, `json_schema=${schema}\n`);
+        NODE
+    - name: Install Claude Code
+      if: steps.claude-token.outputs.available == 'true'
+      run: |
+        curl -fsSL https://claude.ai/install.sh | bash
+        echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+        "$HOME/.local/bin/claude" --version
+    - name: Run Claude Shape contract review
+      id: claude
+      if: steps.claude-token.outputs.available == 'true'
+      env:
+        ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        ANTHROPIC_BASE_URL: ${{ secrets.ANTHROPIC_BASE_URL }}
+        ANTHROPIC_AUTH_TOKEN: ${{ secrets.ANTHROPIC_AUTH_TOKEN }}
+        JSON_SCHEMA: ${{ steps.schema.outputs.json_schema }}
+      run: |
+        set -euo pipefail
+        prompt=$(cat <<'PROMPT'
+        Read AGENTS.md when it exists, then read
+        .github/prompts/shape-contract-review.md.
+
+        Analyze this repository for Shape contract drift.
+        Changed files are listed in changed.txt.
+        Return a single JSON object matching the configured schema.
+        Do not include prose, Markdown, or code fences outside that object.
+        Do not modify tracked repository files.
+        PROMPT
+        )
+        claude -p "$prompt" \
+          --max-turns 100 \
+          --output-format json \
+          --allowedTools "Read,Glob,Grep,LS,Bash(git diff *),Bash(git show *),Bash(bun run shape:ci),Bash(bun shp check *),Bash(bun shp obligations *),Bash(bun shp memory *),Bash(bun shp explain *),Bash(bun shp analyze *)" \
+          --disallowedTools "Write,Edit" \
+          --json-schema "$JSON_SCHEMA" \
+          > claude-shape-review.json
+        node <<'NODE'
+        const { appendFileSync, readFileSync } = require("node:fs");
+        const parseJsonValue = (value) => {
+          if (typeof value !== "string") return value;
+          const trimmed = value.trim();
+          const candidates = [trimmed];
+          const fenced = trimmed.match(/^```(?:json)?\s*([\s\S]*?)\s*```$/);
+          if (fenced?.[1]) candidates.push(fenced[1].trim());
+          const start = value.indexOf("{");
+          const end = value.lastIndexOf("}");
+          if (start !== -1 && end > start) candidates.push(value.slice(start, end + 1));
+          for (const candidate of candidates) {
+            try {
+              return JSON.parse(candidate);
+            } catch {}
+          }
+          return undefined;
+        };
+        const isShapeReview = (value) =>
+          value !== null &&
+          typeof value === "object" &&
+          !Array.isArray(value) &&
+          typeof value.status === "string" &&
+          typeof value.summary === "string" &&
+          Array.isArray(value.findings);
+        const result = JSON.parse(readFileSync("claude-shape-review.json", "utf8"));
+        const selected = [
+          result.structured_output,
+          parseJsonValue(result.result),
+          result,
+        ].find(isShapeReview);
+        if (!selected) {
+          console.error("Claude output did not include a valid Shape review object.");
+          process.exit(1);
+        }
+        appendFileSync(process.env.GITHUB_OUTPUT, `structured_output=${JSON.stringify(selected)}\n`);
+        NODE
+    - run: node .github/scripts/check-claude-shape-review.mjs
+      if: steps.claude-token.outputs.available == 'true'
+      env:
+        CLAUDE_SHAPE_REVIEW_RESULT: ${{ steps.claude.outputs.structured_output }}
 ```
 
 Use a short prompt that makes `shape/` the authority:
@@ -108,8 +183,8 @@ Run `bun shp check --changed-files changed.txt`, `bun shp obligations`, and
 `bun shp memory`. Use `bun shp explain` when a symbol needs context and
 `bun shp analyze` only as advisory input.
 
-Write JSON to `copilot-shape-review.json` with `status: "pass" | "drift" |
-"error"` and terse evidence-backed findings.
+Return structured output with `status: "pass" | "drift" | "error"` and terse
+evidence-backed findings.
 ```
 
 ## Shape repo workflow
@@ -123,6 +198,8 @@ bun run shape:ci
 
 `shape:ci` runs `bun run ast:check` and then `bun shp check --changed-files changed.txt`, so generated AST context, implementation coverage, and bindings are checked together. Bindings are used for documentation coupling: if Shape-affecting code or model files change, the associated docs must change too, unless the current change set includes a narrow current `docs_not_needed` attestation.
 
+On pull requests from repository branches, CI also upserts a single Shape CI summary comment. The comment reports the `Shape` and `Shape Claude Review` job results for the latest commit and links back to the workflow run.
+
 ## Direct binary install
 
 If you do not want to use the setup action, use the release installer directly:
@@ -130,7 +207,7 @@ If you do not want to use the setup action, use the release installer directly:
 ```yaml
 - name: Install shp
   run: |
-    curl --proto '=https' --tlsv1.2 -LsSf https://github.com/timbrinded/shapelang/releases/download/v0.4.0/install.sh | sh
+    curl --proto '=https' --tlsv1.2 -LsSf https://github.com/timbrinded/shapelang/releases/download/v0.4.1/install.sh | sh
 ```
 
 Keep CI installs pinned to an explicit release. `shp update` is intended for local developer binaries and should not replace pinned CI installation.

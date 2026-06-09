@@ -83,13 +83,6 @@ export function checkSourceAs(
   return checkShapeModules([{ module: parseModuleOrThrow(source), ...input }], options);
 }
 
-/** The semantic diagnostics of a result (parse diagnostics excluded). */
-export function semanticDiagnostics(result: CheckResult): SemanticDiagnostic[] {
-  return result.diagnostics.filter(
-    (diagnostic): diagnostic is SemanticDiagnostic => diagnostic.kind !== "parse"
-  );
-}
-
 /** The multiset of diagnostic kinds, sorted for stable comparison. */
 export function diagnosticKinds(result: CheckResult): string[] {
   return result.diagnostics.map((diagnostic) => diagnostic.kind).sort();

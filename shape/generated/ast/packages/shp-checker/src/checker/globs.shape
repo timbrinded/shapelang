@@ -23,7 +23,7 @@ resource GlobsModuleGlobToRegexAstAnchor : GeneratedAstAnchor {
 
 resource GlobsModuleNormalizeRepoPathAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/checker/globs.ts:7-14")
-  fingerprint ast.semantic_subtree_v1("sha256:f19cb48a154343d1f7068adfc51b35db48d13f28b8e0d32c535338ef70d02dfd")
+  fingerprint ast.semantic_subtree_v1("sha256:5fa3d6e75f9afd695029b048ddec056130ca318636022a2f7cdcd9d419714223")
 }
 
 component GlobsModule : GeneratedCandidate {
@@ -69,7 +69,7 @@ relation GlobsModuleNormalizeRepoPathGeneratedFromGlobsModuleNormalizeRepoPathAs
   kind generated_from
   connects GlobsModule -> GlobsModuleNormalizeRepoPathAstAnchor
   roles { GlobsModule as generated, GlobsModuleNormalizeRepoPathAstAnchor as syntax }
-  expects GlobsModuleNormalizeRepoPathAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f19cb48a154343d1f7068adfc51b35db48d13f28b8e0d32c535338ef70d02dfd")
+  expects GlobsModuleNormalizeRepoPathAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5fa3d6e75f9afd695029b048ddec056130ca318636022a2f7cdcd9d419714223")
   summary "fn GlobsModule.normalizeRepoPath generated from typescript function_declaration at packages/shp-checker/src/checker/globs.ts:7-14."
 }
 

@@ -2,7 +2,7 @@ import { graphAllShapeModules, graphShapeModules, statsShapeHypergraph } from "@
 import type { CliContext } from "../../context";
 import { CliDiagnosticError, EXIT_USAGE } from "../../errors";
 import { stdout } from "../../io";
-import { defaultShapeFiles, parseModules } from "../../shape-files";
+import { parseProvidedOrDefaultModules } from "../../shape-files";
 
 export type GraphFlags = {
   readonly kind?: string;
@@ -17,9 +17,7 @@ export async function graphAll(
   flags: GraphFlags,
   ...providedFiles: string[]
 ): Promise<void> {
-  const modules = await parseModules(
-    providedFiles.length > 0 ? providedFiles : await defaultShapeFiles()
-  );
+  const modules = await parseProvidedOrDefaultModules(providedFiles);
   stdout(this, graphAllShapeModules(modules, flags.kind));
 }
 
@@ -29,9 +27,7 @@ export async function graphShow(
   ...args: string[]
 ): Promise<void> {
   const [symbol, ...providedFiles] = args;
-  const modules = await parseModules(
-    providedFiles.length > 0 ? providedFiles : await defaultShapeFiles()
-  );
+  const modules = await parseProvidedOrDefaultModules(providedFiles);
   stdout(this, graphShapeModules(modules, symbol ?? "", flags.kind));
 }
 
@@ -40,9 +36,7 @@ export async function graphStats(
   flags: GraphFlags,
   ...providedFiles: string[]
 ): Promise<void> {
-  const modules = await parseModules(
-    providedFiles.length > 0 ? providedFiles : await defaultShapeFiles()
-  );
+  const modules = await parseProvidedOrDefaultModules(providedFiles);
   stdout(this, statsShapeHypergraph(modules, flags.kind));
 }
 

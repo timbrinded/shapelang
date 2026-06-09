@@ -1,0 +1,19 @@
+{
+  "name": "shapelang-local",
+  "description": "Local marketplace for the Shape language plugin.",
+  "owner": {
+    "name": "Tim Brinded"
+  },
+  "plugins": [
+    {
+      "name": "shapelang",
+      "description": "Shape language skills for authoring, validating, preflighting, and reviewing architecture contracts.",
+      "author": {
+        "name": "Tim Brinded"
+      },
+      "category": "development",
+      "source": "./plugins/shapelang",
+      "homepage": "https://timbrinded.github.io/shapelang/"
+    }
+  ]
+}

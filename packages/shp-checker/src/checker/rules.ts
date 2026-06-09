@@ -1,7 +1,7 @@
 // Semantic rule engine orchestration. Domain checks live under checker/rules/*
 // and this file owns only the deterministic ordering registry plus the public
 // binding-rule re-export used by the checker API.
-import type { CheckOptions, Model, SemanticDiagnostic } from "./model.ts";
+import type { Model, NormalizedCheckOptions, SemanticDiagnostic } from "./model.ts";
 import { checkRules } from "./rules/declarations.ts";
 import {
   checkContextTargets,
@@ -28,7 +28,7 @@ export { checkBindings } from "./rules/coverage.ts";
  * and coverage read CheckOptions; every other check ignores its second argument.
  */
 export const SEMANTIC_CHECKS: ReadonlyArray<
-  (model: Model, options: CheckOptions) => SemanticDiagnostic[]
+  (model: Model, options: NormalizedCheckOptions) => SemanticDiagnostic[]
 > = [
   (model) => checkResolvedNames(model),
   (model) => checkRules(model),
@@ -43,9 +43,12 @@ export const SEMANTIC_CHECKS: ReadonlyArray<
   (model) => checkFunctions(model),
   (model) => checkProvidesRules(model),
   (model) => checkHypercycles(model),
-  (model, options) => checkCoverage(model, options.changedFiles ?? [])
+  (model, options) => checkCoverage(model, options.changedFiles ?? [], options.repoRoot)
 ];
 
-export function runSemanticChecks(model: Model, options: CheckOptions): SemanticDiagnostic[] {
+export function runSemanticChecks(
+  model: Model,
+  options: NormalizedCheckOptions
+): SemanticDiagnostic[] {
   return SEMANTIC_CHECKS.flatMap((check) => check(model, options));
 }

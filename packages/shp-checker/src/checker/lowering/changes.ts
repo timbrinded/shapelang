@@ -1,8 +1,11 @@
 import type {
   AddDeclarationChange,
+  AddFunctionChange,
   ChangeDecl,
   ModifyDeclarationChange,
-  RemoveDeclarationChange
+  ModifyFunctionChange,
+  RemoveDeclarationChange,
+  RemoveFunctionChange
 } from "../../language/generated/ast.ts";
 import {
   isAddDeclarationChange,
@@ -41,104 +44,9 @@ import { lowerRelation, removeRelation } from "./relations.ts";
 export function lowerChange(change: ChangeDecl, context: LoweringContext, model: Model): void {
   for (const entry of change.entries) {
     if (isAddFunctionChange(entry) || isModifyFunctionChange(entry)) {
-      const [componentName, functionName] = resolveFunctionTargetParts(
-        entry.target,
-        context,
-        model
-      );
-      if (!componentName || !functionName) {
-        model.diagnostics.push({
-          kind: "unknown_name",
-          nameKind: "component",
-          name: entry.target,
-          filePath: context.filePath,
-          causedBy: [
-            describeProvenance(
-              provenance(context.filePath, `change ${change.name} ${entry.$type} ${entry.target}`)
-            )
-          ]
-        });
-        continue;
-      }
-      const component = model.components.get(componentName);
-      if (!component) {
-        model.diagnostics.push({
-          kind: "unknown_name",
-          nameKind: "component",
-          name: componentName,
-          filePath: context.filePath,
-          causedBy: [
-            describeProvenance(
-              provenance(
-                context.filePath,
-                `change ${change.name} ${entry.$type} ${componentName}.${functionName}`
-              )
-            )
-          ]
-        });
-        continue;
-      }
-
-      const previous = component.functions.get(functionName);
-      const fn = lowerFunction(entry, componentName, context, model, `change ${change.name}`);
-      if (isModifyFunctionChange(entry)) {
-        const target = functionTarget(componentName, functionName);
-        const changeProvenance = provenance(
-          context.filePath,
-          `change ${change.name} modify fn ${componentName}.${functionName}`
-        );
-        emitTargetChange(
-          target,
-          removedTraitsBetween(previous?.shapeTraits, fn.shapeTraits),
-          descriptionDropped(previous, fn),
-          changeProvenance,
-          model
-        );
-        for (const label of entry.transforms?.labels ?? []) {
-          model.changeEvents.push({
-            kind: "transform_applied",
-            target,
-            label,
-            provenance: changeProvenance
-          });
-        }
-      }
-      removeFunctionFacts(model, componentName, functionName);
-      component.functions.set(fn.name, fn);
-      emitFunctionFacts(fn, model);
+      lowerFunctionChangeEntry(change, entry, context, model);
     } else if (isRemoveFunctionChange(entry)) {
-      const [componentName, functionName] = resolveFunctionTargetParts(
-        entry.target,
-        context,
-        model
-      );
-      if (!componentName || !functionName) {
-        model.diagnostics.push({
-          kind: "unknown_name",
-          nameKind: "component",
-          name: entry.target,
-          filePath: context.filePath,
-          causedBy: [
-            describeProvenance(
-              provenance(context.filePath, `change ${change.name} remove fn ${entry.target}`)
-            )
-          ]
-        });
-        continue;
-      }
-      const removed = model.components.get(componentName)?.functions.get(functionName);
-      emitTargetChange(
-        functionTarget(componentName, functionName),
-        removed ? [...removed.shapeTraits.keys()] : [],
-        removed ? hasNonEmptyDescription(removed) : false,
-        provenance(
-          context.filePath,
-          `change ${change.name} remove fn ${componentName}.${functionName}`
-        ),
-        model
-      );
-      removeFunctionFacts(model, componentName, functionName);
-      model.components.get(componentName)?.functions.delete(functionName);
+      removeFunctionChangeEntry(change, entry, context, model);
     } else if (isAddDeclarationChange(entry)) {
       lowerDeclaration(entry.declaration, context, model);
     } else if (isModifyDeclarationChange(entry)) {
@@ -174,6 +82,111 @@ export function lowerChange(change: ChangeDecl, context: LoweringContext, model:
       removeDeclaration(entry.kind, entry.name, context, model);
     }
   }
+}
+
+function lowerFunctionChangeEntry(
+  change: ChangeDecl,
+  entry: AddFunctionChange | ModifyFunctionChange,
+  context: LoweringContext,
+  model: Model
+): void {
+  const [componentName, functionName] = resolveFunctionTargetParts(entry.target, context, model);
+  if (!componentName || !functionName) {
+    model.diagnostics.push({
+      kind: "unknown_name",
+      nameKind: "component",
+      name: entry.target,
+      filePath: context.filePath,
+      causedBy: [
+        describeProvenance(
+          provenance(context.filePath, `change ${change.name} ${entry.$type} ${entry.target}`)
+        )
+      ]
+    });
+    return;
+  }
+  const component = model.components.get(componentName);
+  if (!component) {
+    model.diagnostics.push({
+      kind: "unknown_name",
+      nameKind: "component",
+      name: componentName,
+      filePath: context.filePath,
+      causedBy: [
+        describeProvenance(
+          provenance(
+            context.filePath,
+            `change ${change.name} ${entry.$type} ${componentName}.${functionName}`
+          )
+        )
+      ]
+    });
+    return;
+  }
+
+  const previous = component.functions.get(functionName);
+  const fn = lowerFunction(entry, componentName, context, model, `change ${change.name}`);
+  if (isModifyFunctionChange(entry)) {
+    const target = functionTarget(componentName, functionName);
+    const changeProvenance = provenance(
+      context.filePath,
+      `change ${change.name} modify fn ${componentName}.${functionName}`
+    );
+    emitTargetChange(
+      target,
+      removedTraitsBetween(previous?.shapeTraits, fn.shapeTraits),
+      descriptionDropped(previous, fn),
+      changeProvenance,
+      model
+    );
+    for (const label of entry.transforms?.labels ?? []) {
+      model.changeEvents.push({
+        kind: "transform_applied",
+        target,
+        label,
+        provenance: changeProvenance
+      });
+    }
+  }
+  removeFunctionFacts(model, componentName, functionName);
+  component.functions.set(fn.name, fn);
+  emitFunctionFacts(fn, model);
+}
+
+function removeFunctionChangeEntry(
+  change: ChangeDecl,
+  entry: RemoveFunctionChange,
+  context: LoweringContext,
+  model: Model
+): void {
+  const [componentName, functionName] = resolveFunctionTargetParts(entry.target, context, model);
+  if (!componentName || !functionName) {
+    model.diagnostics.push({
+      kind: "unknown_name",
+      nameKind: "component",
+      name: entry.target,
+      filePath: context.filePath,
+      causedBy: [
+        describeProvenance(
+          provenance(context.filePath, `change ${change.name} remove fn ${entry.target}`)
+        )
+      ]
+    });
+    return;
+  }
+  const removed = model.components.get(componentName)?.functions.get(functionName);
+  emitTargetChange(
+    functionTarget(componentName, functionName),
+    removed ? [...removed.shapeTraits.keys()] : [],
+    removed ? hasNonEmptyDescription(removed) : false,
+    provenance(
+      context.filePath,
+      `change ${change.name} remove fn ${componentName}.${functionName}`
+    ),
+    model
+  );
+  removeFunctionFacts(model, componentName, functionName);
+  model.components.get(componentName)?.functions.delete(functionName);
 }
 
 export function resolveFunctionTargetParts(

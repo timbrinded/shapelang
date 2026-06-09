@@ -84,7 +84,7 @@ shp update --dry-run
 
 By default, `shp ast source` parses files with the platform Tree-sitter native binding and prints the semantic draft: stable files, modules, types, functions, high-confidence calls, compact AST anchors, anchor fingerprints where token evidence exists, candidate effect evidence, and unresolved uncertainty. Generated functions use `effects unknown`.
 
-Source language inference covers TypeScript, TSX, JavaScript/JSX, Rust, Go, and Python. JSX files use the JavaScript parser; TSX files use the TSX parser bundled beside released `shp` binaries.
+Source language inference covers TypeScript, TSX, JavaScript/JSX, Rust, Go, and Python. JSX files use the JavaScript parser; TSX files use the TSX parser bundled beside released `shp` binaries. `--language` accepts `javascript`, `typescript`, `tsx`, `rust`, `go`, and `python`; aliases `js`, `jsx`, `ts`, `rs`, and `py` normalize to their parser names. Unsupported values are rejected as usage errors before parser loading.
 
 Use `--out-dir shape/generated/ast` to write checked generated AST context as deterministic files plus a manifest. Source identities are normalized relative to the workspace root, so absolute source paths and invocations from nested directories produce the same generated modules and source references for the same file. These generated files use `shape.generated.ast...` modules and are allowed to keep `effects unknown`, because they are candidate evidence rather than reviewed architecture truth. Use `--check` with `--out-dir` in CI to fail when the checked-in generated AST files are stale. Freshness checks and cleanup are scoped to files recorded in the generated AST manifest, so unrelated authored `.shape` files in the output tree are not treated as generated output.
 
@@ -204,6 +204,6 @@ Only ISO `YYYY-MM-DD` dates are enforced; missing or non-ISO `review_by` values 
 
 `shp update` is for local developer installs of the released single binary. It checks the current version, resolves a GitHub release, downloads the matching published platform archive, verifies it with `checksums.txt`, and replaces the selected executable path. The published archive matrix follows the native parser target table used by release builds.
 
-Use `shp update --dry-run` to see the selected release, asset, and binary path without downloading. Use `shp update --version v0.4.0` to target a specific newer release. Use `--path PATH` when testing from source or when replacing a custom installed binary; if that path already exists, it must identify as the Shape CLI and report a valid version.
+Use `shp update --dry-run` to see the selected release, asset, and binary path without downloading. Use `shp update --version v0.4.1` to target a specific newer release. Use `--path PATH` when testing from source or when replacing a custom installed binary; if that path already exists, it must identify as the Shape CLI and report a valid version.
 
 CI should continue installing pinned releases through the setup action or installer script instead of calling `shp update`.

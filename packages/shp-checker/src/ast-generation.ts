@@ -30,6 +30,15 @@ export {
   treeSitterNativePackageSpecifiers,
   type TreeSitterNativeBindingTarget
 } from "./tree-sitter-native-targets.ts";
+export {
+  AST_SOURCE_EXTENSIONS,
+  SOURCE_LANGUAGES,
+  isSourceLanguageName,
+  parseSourceLanguageName,
+  type SourceLanguageAlias,
+  type SourceLanguageInput,
+  type SourceLanguageName
+} from "./source-languages.ts";
 export type {
   AstGenerationDiagnostic,
   AstGenerationResult,

@@ -12,8 +12,10 @@ import type {
 } from "../language/generated/ast.ts";
 import type { ContextKind } from "../prelude.ts";
 import type { ParseDiagnostic } from "../parser.ts";
-import type { ChangeTrigger } from "../memory-guards.ts";
+import type { ChangeTrigger, Provenance, ShapeTarget } from "../shape-domain.ts";
 import type { IsoDateString } from "./iso-date.ts";
+
+export type { ChangeTrigger, Provenance, ShapeTarget } from "../shape-domain.ts";
 
 export type SemanticDiagnostic =
   | {
@@ -254,12 +256,22 @@ export type CheckOptions = {
   enforceBindings?: boolean;
   includeFacts?: boolean;
   /**
+   * Repository root used to normalize absolute changed-file and provenance
+   * paths before coverage and binding matching. Defaults at the public checker
+   * boundary.
+   */
+  repoRoot?: string;
+  /**
    * When set to an ISO `YYYY-MM-DD` date, design memory whose `review_by` is
    * strictly before this date is reported as stale. Absent disables freshness
    * checking. The checker never reads the system clock; callers inject the date
    * so checking stays deterministic.
    */
   freshnessDate?: IsoDateString;
+};
+
+export type NormalizedCheckOptions = CheckOptions & {
+  repoRoot: string;
 };
 
 export type Fact =
@@ -440,11 +452,6 @@ export type ResolutionResult =
   | { kind: "unknown"; name: string }
   | { kind: "ambiguous"; name: string; matches: string[] };
 
-export type Provenance = {
-  filePath?: string;
-  label: string;
-};
-
 export type TermInfo = {
   name: string;
   target?: string;
@@ -464,11 +471,6 @@ export type EffectSummaryInfo =
   | {
       kind: "unknown";
     };
-
-export type ShapeTarget = {
-  kind: TargetKind;
-  name: string;
-};
 
 export type DescriptionInfo = {
   required: boolean;

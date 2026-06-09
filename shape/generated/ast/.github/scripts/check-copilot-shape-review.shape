@@ -1,7 +1,0 @@
-module shape.generated.ast.github.scripts.check_copilot_shape_review
-
-trait GeneratedAstAnchor {
-}
-
-trait GeneratedCandidate {
-}

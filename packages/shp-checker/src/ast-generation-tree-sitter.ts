@@ -3,6 +3,7 @@ import { createRequire } from "node:module";
 import { dirname, join } from "node:path";
 
 import type { AstGenerationDiagnostic, TreeSitterParseProvider } from "./ast-generation-types.ts";
+import { errorMessage, isRecord } from "./ast-generation-utils.ts";
 import {
   currentTreeSitterNativeBindingTarget as currentNativeBindingTarget,
   type TreeSitterNativeBindingEmbeddedSpecifier,
@@ -13,6 +14,18 @@ import {
 type NativeBindingLoadResult =
   | { ok: true; moduleValue: unknown }
   | { ok: false; diagnostics: AstGenerationDiagnostic[] };
+
+type TreeSitterNativeConfigurator = {
+  configure?(options: { cacheDir: string }): unknown;
+};
+
+type TreeSitterNativeLanguagePack = TreeSitterNativeConfigurator & {
+  getParser(language: string): Promise<unknown> | unknown;
+};
+
+type TreeSitterNativeParser = {
+  parse(source: string): unknown;
+};
 
 const treeSitterNativeRequire = createRequire(import.meta.url);
 
@@ -35,8 +48,8 @@ export async function loadTreeSitterProvider(): Promise<
     return nativeBinding;
   }
 
-  const moduleValue = nativeBinding.moduleValue;
-  if (!isRecord(moduleValue)) {
+  const moduleValue = treeSitterNativeLanguagePack(nativeBinding.moduleValue);
+  if (!moduleValue) {
     return {
       ok: false,
       diagnostics: [
@@ -57,25 +70,14 @@ export async function loadTreeSitterProvider(): Promise<
     };
   }
 
-  const getParser = methodFunction(moduleValue, ["getParser"]);
-  if (!getParser) {
-    return {
-      ok: false,
-      diagnostics: [
-        {
-          kind: "error",
-          code: "invalid_tree_sitter_language_pack",
-          message: "@kreuzberg/tree-sitter-language-pack native binding does not expose getParser"
-        }
-      ]
-    };
-  }
-
   return {
     ok: true,
     provider: async (language, source) => {
-      const parser = await getParser(undefined, language);
-      const tree = await callMethod(parser, ["parse"], [source]);
+      const parser = treeSitterNativeParser(await moduleValue.getParser(language));
+      if (!parser) {
+        throw new Error(`parser for ${language} did not expose parse`);
+      }
+      const tree = parser.parse(source);
       if (!tree) {
         throw new Error(`parser for ${language} returned no tree`);
       }
@@ -85,7 +87,7 @@ export async function loadTreeSitterProvider(): Promise<
 }
 
 export function configureBundledTreeSitterParsers(
-  moduleValue: Record<string, unknown>,
+  moduleValue: TreeSitterNativeConfigurator,
   executablePath: string = process.execPath
 ): AstGenerationDiagnostic[] {
   const assetRoot = bundledTreeSitterParserAssetRoot(executablePath);
@@ -107,8 +109,7 @@ export function configureBundledTreeSitterParsers(
     ];
   }
 
-  const configure = methodFunction(moduleValue, ["configure"]);
-  if (!configure) {
+  if (!moduleValue.configure) {
     return [
       {
         kind: "error",
@@ -119,7 +120,7 @@ export function configureBundledTreeSitterParsers(
   }
 
   try {
-    configure(undefined, { cacheDir: libsDir });
+    moduleValue.configure({ cacheDir: libsDir });
   } catch (error) {
     return [
       {
@@ -323,36 +324,22 @@ function linuxMuslLoaderPaths(arch: NodeJS.Architecture): string[] {
   }
 }
 
-function methodFunction(
-  receiver: Record<string, unknown>,
-  names: string[]
-): ((thisValue: unknown, ...args: unknown[]) => Promise<unknown> | unknown) | undefined {
-  for (const name of names) {
-    const method = receiver[name];
-    if (typeof method === "function") {
-      return (thisValue, ...args) => Reflect.apply(method, thisValue ?? receiver, args) as unknown;
-    }
-  }
-  return undefined;
+function treeSitterNativeLanguagePack(value: unknown): TreeSitterNativeLanguagePack | undefined {
+  return isTreeSitterNativeLanguagePack(value) ? value : undefined;
 }
 
-function callMethod(receiver: unknown, names: string[], args: unknown[]): unknown {
-  if (!isRecord(receiver)) {
-    return undefined;
-  }
-  for (const name of names) {
-    const method = receiver[name];
-    if (typeof method === "function") {
-      return Reflect.apply(method, receiver, args) as unknown;
-    }
-  }
-  return undefined;
+function treeSitterNativeParser(value: unknown): TreeSitterNativeParser | undefined {
+  return isTreeSitterNativeParser(value) ? value : undefined;
 }
 
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === "object" && value !== null;
+function isTreeSitterNativeLanguagePack(value: unknown): value is TreeSitterNativeLanguagePack {
+  return (
+    isRecord(value) &&
+    typeof value["getParser"] === "function" &&
+    (value["configure"] === undefined || typeof value["configure"] === "function")
+  );
 }
 
-function errorMessage(error: unknown): string {
-  return error instanceof Error ? error.message : String(error);
+function isTreeSitterNativeParser(value: unknown): value is TreeSitterNativeParser {
+  return isRecord(value) && typeof value["parse"] === "function";
 }

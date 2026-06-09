@@ -8,11 +8,11 @@ import shape.tooling
 
 resource CiWorkflow
 
+resource ClaudeReviewPrompt
+
+resource ClaudeReviewResult
+
 resource CliPackageManifest
-
-resource CopilotReviewPrompt
-
-resource CopilotReviewResult
 
 resource DocsContent
 
@@ -20,22 +20,26 @@ resource InstallScript
 
 resource NativeParserAsset
 
+resource PullRequestStatusComment
+
 resource ReleaseArtifact
 
 resource ReleaseVersionTag
 
 component CiPipeline {
   owns CiWorkflow
-  owns CopilotReviewPrompt
-  owns CopilotReviewResult
+  owns ClaudeReviewPrompt
+  owns ClaudeReviewResult
+  owns PullRequestStatusComment
   grants Read<ChangedFileList>
   grants Read<CiWorkflow>
+  grants Read<ClaudeReviewPrompt>
+  grants Read<ClaudeReviewResult>
   grants Read<CliPackageManifest>
-  grants Read<CopilotReviewPrompt>
-  grants Read<CopilotReviewResult>
   grants Read<GeneratedAstManifest>
   grants Read<LanguageSource>
   grants Read<NativeParserAsset>
+  grants Read<PullRequestStatusComment>
   grants Read<ReleaseArtifact>
   grants Read<ReleaseVersionTag>
   grants Read<SemanticDiagnostics>
@@ -43,8 +47,9 @@ component CiPipeline {
   grants Read<ShapeSource>
   grants Read<SourceSyntaxTree>
   grants Update<ChangedFileList>
-  grants Update<CopilotReviewResult>
+  grants Update<ClaudeReviewResult>
   grants Update<GeneratedAstManifest>
+  grants Update<PullRequestStatusComment>
   grants Update<ShapeModelDraft>
   fn checkReleaseVersion : RefactorSensitive
     source yaml(".github/workflows/release.yml#Check release tag matches CLI package version")
@@ -78,6 +83,20 @@ component CiPipeline {
       Update<ShapeModelDraft>
         evidence ts("scripts/generate-ast-shapes.ts")
     }
+  fn reportShapeCiStatus
+    source mjs(".github/scripts/upsert-shape-ci-comment.mjs")
+    effects complete {
+      Read<CiWorkflow>
+        evidence yaml(".github/workflows/shape.yml")
+      Read<ClaudeReviewResult>
+        evidence yaml(".github/workflows/shape.yml")
+      Read<PullRequestStatusComment>
+        evidence mjs(".github/scripts/upsert-shape-ci-comment.mjs")
+      Read<SemanticDiagnostics>
+        evidence yaml(".github/workflows/shape.yml")
+      Update<PullRequestStatusComment>
+        evidence mjs(".github/scripts/upsert-shape-ci-comment.mjs")
+    }
   fn runShapeCi
     source yaml(".github/workflows/shape.yml")
     effects complete {
@@ -91,20 +110,32 @@ component CiPipeline {
         evidence yaml(".github/workflows/shape.yml")
     }
   fn runShapeContractReview
-    source yaml(".github/workflows/shape.yml")
+    source mjs(".github/scripts/run-claude-shape-review.mjs")
     effects complete {
       Read<ChangedFileList>
         evidence yaml(".github/workflows/shape.yml")
       Read<CiWorkflow>
+        evidence mjs(".github/scripts/run-claude-shape-review.mjs")
+      Read<CiWorkflow>
         evidence yaml(".github/workflows/shape.yml")
-      Read<CopilotReviewPrompt>
+      Read<ClaudeReviewPrompt>
         evidence md(".github/prompts/shape-contract-review.md")
-      Read<CopilotReviewResult>
-        evidence mjs(".github/scripts/check-copilot-shape-review.mjs")
+      Read<ClaudeReviewResult>
+        evidence mjs(".github/scripts/check-claude-shape-review.mjs")
+      Read<ClaudeReviewResult>
+        evidence mjs(".github/scripts/extract-claude-shape-review.mjs")
+      Read<ClaudeReviewResult>
+        evidence mjs(".github/scripts/shape-review-contract.mjs")
+      Read<ClaudeReviewResult>
+        evidence json(".github/shape-contract/schemas/shape-contract-result.schema.json")
       Read<SemanticDiagnostics>
         evidence yaml(".github/workflows/shape.yml")
-      Update<CopilotReviewResult>
-        evidence mjs(".github/scripts/check-copilot-shape-review.mjs")
+      Update<ClaudeReviewResult>
+        evidence mjs(".github/scripts/check-claude-shape-review.mjs")
+      Update<ClaudeReviewResult>
+        evidence mjs(".github/scripts/extract-claude-shape-review.mjs")
+      Update<ClaudeReviewResult>
+        evidence mjs(".github/scripts/run-claude-shape-review.mjs")
     }
   fn smokeReleaseBinary
     source yaml(".github/workflows/release.yml#Smoke test release binary")
@@ -371,9 +402,19 @@ implementation CiScripts {
   on_change require shape_update
 }
 
+implementation ClaudeReviewSource {
+  paths {
+    ".github/prompts/**/*.md"
+    ".github/shape-contract/**/*.json"
+  }
+  conforms_to CiPipeline
+  on_change require shape_update
+}
+
 implementation CliSource {
   paths {
     "packages/shp-cli/src/app.ts"
+    "packages/shp-cli/src/check-runner.ts"
     "packages/shp-cli/src/commands/**/*.ts"
     "packages/shp-cli/src/context.ts"
     "packages/shp-cli/src/errors.ts"
@@ -384,14 +425,6 @@ implementation CliSource {
     "packages/shp-cli/src/version.ts"
   }
   conforms_to ShpCli
-  on_change require shape_update
-}
-
-implementation CopilotReviewSource {
-  paths {
-    ".github/prompts/**/*.md"
-  }
-  conforms_to CiPipeline
   on_change require shape_update
 }
 
@@ -469,6 +502,7 @@ implementation WorkflowSource {
 binding CliDocs {
   when_changed paths {
     "packages/shp-cli/src/app.ts"
+    "packages/shp-cli/src/check-runner.ts"
     "packages/shp-cli/src/commands/**/*.ts"
     "packages/shp-cli/src/context.ts"
     "packages/shp-cli/src/errors.ts"
@@ -630,34 +664,24 @@ attest docs_not_needed {
   reason "The verifier refactor preserves observed behaviour and CLI output; the documented docs:check workflow and grammar reference describe no internal verifier structure that changed."
 }
 
+attest docs_not_needed {
+  source ts("packages/shp-checker/src/checker/rules.ts")
+  reason "The rule-engine change only threads normalized options through the existing coverage rule; rule evaluation docs need no update."
+}
+
+attest docs_not_needed {
+  source ts("packages/shp-checker/src/checker/rules/coverage.ts")
+  reason "Repo-root injection is an embedding/testability boundary change; documented coverage and binding behavior is unchanged."
+}
+
+attest docs_not_needed {
+  source shape("shape/tooling.shape")
+  reason "The CLI runner helper is now explicitly modeled for governance; user-facing CLI commands, flags, and docs-visible behavior are unchanged."
+}
+
 attest no_shape_change {
   source ts("packages/shp-checker/src/generated-ast-policy.ts")
   reason "Generated AST manifest helper cleanup is covered by the checker origin model update; the remaining manifest schema and path helper contract is unchanged."
-}
-
-attest no_shape_change {
-  source md("docs-site/src/content/docs/concepts/rules-dependency-graphs.md")
-  reason "Dependency graph docs were replaced by hypercycle docs in the hypergraph redesign."
-}
-
-attest no_shape_change {
-  source md("docs-site/src/content/docs/concepts/change-files-attestations.md")
-  reason "Legacy change-file docs were renamed and replaced by global model update documentation."
-}
-
-attest no_shape_change {
-  source md("docs-site/src/content/docs/examples/authoring-pr-delta.md")
-  reason "Legacy PR delta example was renamed and replaced by global model update documentation."
-}
-
-attest no_shape_change {
-  source md("docs-site/src/content/docs/examples/missing-shape-delta.md")
-  reason "Legacy example page was renamed to missing-shape-update; the deleted path is intentionally obsolete."
-}
-
-attest no_shape_change {
-  source md("docs-site/src/content/docs/learn/pr-change-files.md")
-  reason "Legacy PR change-file guide was renamed and replaced by global model update documentation."
 }
 
 attest no_shape_change {
@@ -682,15 +706,150 @@ attest no_shape_change {
 
 attest no_shape_change {
   source md("docs-site/src/content/docs/learn/ci-workflow.md")
-  reason "Release-prep version pin update from v0.3.0 to v0.4.0; CI workflow semantics and DocsSite architecture are unchanged."
+  reason "Release-prep version pin update from v0.4.0 to v0.4.1; CI workflow semantics and DocsSite architecture are unchanged."
 }
 
 attest no_shape_change {
   source md("docs-site/src/content/docs/learn/quickstart.md")
-  reason "Release-prep version pin update from v0.3.0 to v0.4.0; install workflow semantics and DocsSite architecture are unchanged."
+  reason "Release-prep version pin update from v0.4.0 to v0.4.1; install workflow semantics and DocsSite architecture are unchanged."
 }
 
 attest no_shape_change {
   source md("docs-site/src/content/docs/reference/cli.md")
-  reason "Release-prep version pin update from v0.3.0 to v0.4.0; CLI update command semantics and DocsSite architecture are unchanged."
+  reason "Release-prep update of the shp update version example from v0.4.0 to v0.4.1; DocsSite architecture and the CLI command inventory remain unchanged."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/ast-generation-json.ts")
+  reason "JSON AST parsing was split into a node-level helper while preserving normalized AST input/output contracts."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/ast-generation-tree-sitter.ts")
+  reason "Native Tree-sitter calls now use explicit structural guards; parser loading and AST generation contracts are unchanged."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/ast-generation-types.ts")
+  reason "AST source language input now uses the shared source-language union; generated AST resource semantics are unchanged."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/ast-generation-utils.ts")
+  reason "Language normalization delegates to the shared source-language parser; AST rendering and fingerprint conventions are unchanged."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/ast-generation.ts")
+  reason "The AST generation facade exposes source-language helpers for reuse; no generated Shape model contract changed."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/source-languages.ts")
+  reason "Source language names and aliases are centralized for CLI/checker reuse; supported parser coverage is unchanged."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/checker/api.ts")
+  reason "Checker repo-root normalization was moved to the public checker boundary; semantic rule ordering and diagnostics are unchanged."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/checker/globs.ts")
+  reason "Repo path normalization now consumes an injected root instead of process cwd; coverage matching semantics stay repo-relative."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/checker/lowering/changes.ts")
+  reason "Function change lowering was split into helper branches without changing mutation order, facts, or diagnostics."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/checker/lowering/relations.ts")
+  reason "Relation validation now builds a HyperedgeInfo before mutation while preserving fatal and non-fatal diagnostics."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/checker/model.ts")
+  reason "Shared target, provenance, and change-trigger DTOs moved to a neutral type module with compatible checker re-exports."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/checker/rules.ts")
+  reason "Rule orchestration now receives normalized checker options; rule order and enabled checks are unchanged."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/checker/rules/coverage.ts")
+  reason "Coverage and binding checks now normalize paths with an injected repo root; diagnostics and coverage obligations are unchanged."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/memory-guards.ts")
+  reason "Memory guard matching now imports neutral DTOs instead of checker model types; guard matching behavior is unchanged."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/targets.ts")
+  reason "Target comparison now imports the neutral ShapeTarget DTO; equality semantics are unchanged."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-cli/src/commands/ast/command.ts")
+  reason "AST source language validation moved to the CLI argument boundary and is documented; command shape remains the same."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-cli/src/commands/ast/impl.ts")
+  reason "AST command implementation reuses shared deterministic sorting and typed language values; output generation is unchanged."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-cli/src/commands/check/impl.ts")
+  reason "Check command result routing moved to a shared CLI helper; check options, streams, and exit codes are unchanged."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-cli/src/commands/coverage/impl.ts")
+  reason "Coverage command result routing moved to a shared CLI helper; coverage options, streams, and exit codes are unchanged."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-cli/src/commands/explain/impl.ts")
+  reason "Explain command now uses shared provided-or-default module loading; explain output semantics are unchanged."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-cli/src/commands/graph/impl.ts")
+  reason "Graph commands now use shared provided-or-default module loading; graph output semantics are unchanged."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-cli/src/commands/memory/impl.ts")
+  reason "Memory command now uses shared provided-or-default module loading; memory listing semantics are unchanged."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-cli/src/commands/obligations/impl.ts")
+  reason "Obligations command now uses shared provided-or-default module loading; obligation listing semantics are unchanged."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-cli/src/commands/update/impl.ts")
+  reason "Updater version decisions and release response guards were extracted without changing update safety checks or asset replacement flow."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-cli/src/shape-files.ts")
+  reason "Shape file loading now separates structured parse results from CLI diagnostic rendering; command parse behavior is unchanged."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/parser.ts")
+  reason "Parser diagnostics now explicitly narrow Langium error fields; parse diagnostic surface and parser contract are unchanged."
+}
+
+attest no_shape_change {
+  source mjs(".github/scripts/check-copilot-shape-review.mjs")
+  reason "The removed Copilot review gate is superseded by the modeled Claude review scripts; CI review ownership and result semantics now live in CiPipeline.runShapeContractReview."
 }

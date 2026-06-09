@@ -7,9 +7,9 @@
 // metadata and does no post-hoc dedupe over diagnostics — it consumes typed
 // rules and triggers and returns typed violations.
 //
-// Shared shape types are imported type-only from the checker data model, so this
-// module has no runtime dependency on the checker (no import cycle).
-import type { Provenance, ShapeTarget } from "./checker/model.ts";
+// Shared shape DTOs live in a neutral module so guard matching and the checker
+// model do not own each other's types.
+import type { ChangeTrigger, Provenance, ShapeTarget } from "./shape-domain.ts";
 import type { ContextKind } from "./prelude.ts";
 import { targetsEqual } from "./targets.ts";
 
@@ -21,13 +21,6 @@ export type GuardedProperty =
   | { kind: "description" }
   | { kind: "shapeTrait"; trait: string; display: string }
   | { kind: "opaque" };
-
-/** A change that occurred, at the granularity it was observed. */
-export type ChangeTrigger =
-  | { kind: "target_changed"; target: ShapeTarget; provenance: Provenance }
-  | { kind: "shape_trait_removed"; target: ShapeTarget; trait: string; provenance: Provenance }
-  | { kind: "description_removed"; target: ShapeTarget; provenance: Provenance }
-  | { kind: "transform_applied"; target: ShapeTarget; label: string; provenance: Provenance };
 
 /** A context (rationale/memory) whose guards may fire on a change to its target. */
 export type GuardContext = {

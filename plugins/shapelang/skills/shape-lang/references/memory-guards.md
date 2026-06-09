@@ -244,7 +244,7 @@ trait PreserveLocal<T: Fn> {
 
 A `<T>` that names no declared type parameter, or an unrecognised bound, is reported as `invalid require_context` rather than silently defaulting. A trait declared with the same name as a built-in shape trait replaces (shadows) the built-in obligation through name resolution — so a local `trait RefactorSensitive { require_context ... }` governs instead of the built-in `RefactorConstraint`.
 
-## Guard Blocks
+## Nested Guard Blocks
 
 `protects`, `guards`, `who` (owner), and `when` (review_by) members are authored as grouped blocks. This is the only guard-member syntax — `shp fmt` always emits these blocks. `protects` entries are comma-separated; `who` and `when` each hold a single value.
 

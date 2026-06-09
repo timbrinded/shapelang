@@ -1,4 +1,5 @@
 import {
+  compareCodepointStrings,
   generateShapeFromAstJson,
   generateShapeFromSourceFiles,
   isGeneratedAstManifest,
@@ -8,7 +9,8 @@ import {
   type AstGenerationDiagnostic,
   type AstSourceFileInput,
   type GeneratedAstManifestEntry,
-  type GenerateShapeOptions
+  type GenerateShapeOptions,
+  type SourceLanguageName
 } from "@shape/shp-checker";
 import { createHash } from "node:crypto";
 import { mkdir, readFile, rm } from "node:fs/promises";
@@ -25,7 +27,7 @@ type AstOutputFlags = {
 };
 
 export type AstSourceFlags = AstOutputFlags & {
-  readonly language?: string;
+  readonly language?: SourceLanguageName;
   readonly allowParseErrors?: boolean;
   readonly outDir?: string;
   readonly check?: boolean;
@@ -198,20 +200,6 @@ function generatedRelativeSourcePath(sourcePath: string, workspaceRoot: string):
     );
   }
   return normalized;
-}
-
-function compareCodepointStrings(left: string, right: string): number {
-  const leftCodepoints = Array.from(left);
-  const rightCodepoints = Array.from(right);
-  const length = Math.min(leftCodepoints.length, rightCodepoints.length);
-  for (let index = 0; index < length; index += 1) {
-    const leftCodepoint = leftCodepoints[index]?.codePointAt(0) ?? 0;
-    const rightCodepoint = rightCodepoints[index]?.codePointAt(0) ?? 0;
-    if (leftCodepoint !== rightCodepoint) {
-      return leftCodepoint - rightCodepoint;
-    }
-  }
-  return leftCodepoints.length - rightCodepoints.length;
 }
 
 function sourcePathToModuleSuffix(sourcePath: string): string {
