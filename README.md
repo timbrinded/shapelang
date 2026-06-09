@@ -68,6 +68,18 @@ steps:
 
 Manual archive downloads are available on the GitHub release if you do not want to run the installer script.
 
+### Use with Claude Code
+
+Shape's authoring and review skills ship as a Claude Code plugin. Add the marketplace and install the plugin:
+
+```text
+/plugin marketplace add timbrinded/shapelang
+/plugin install shapelang@shapelang-local
+/reload-plugins
+```
+
+This adds the `shapelang:shape-lang`, `shapelang:shape-contract-preflight`, `shapelang:shape-contract-guard`, `shapelang:shape-index`, and `shapelang:shape-review` skills. The skills drive the `shp` CLI, so install the binary above and keep it on your `PATH`.
+
 ## What It Catches
 
 The first core use case is append-only resource protection.
