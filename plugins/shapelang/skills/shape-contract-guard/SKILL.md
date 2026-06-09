@@ -1,6 +1,6 @@
 ---
 name: shape-contract-guard
-description: Use when Codex needs to review `.shape` diffs before a PR or during implementation to find advisory architecture-contract risk that `shp check` may permit after the live model was loosened, including removed final forbids, weakened traits, widened grants/effects, removed coverage or bindings, relation weakening, traceability loss, epistemic regression, or weak attestations.
+description: Use when reviewing `.shape` diffs before a PR or during implementation to find advisory architecture-contract risk that `shp check` may permit after the live model was loosened, including removed final forbids, weakened traits, widened grants/effects, removed coverage or bindings, relation weakening, traceability loss, epistemic regression, or weak attestations.
 ---
 
 # Shape Contract Guard
