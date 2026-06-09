@@ -12,6 +12,7 @@ import {
   type GenerateShapeOptions,
   type SourceLanguageName
 } from "@shape/shp-checker";
+import { createHash } from "node:crypto";
 import { mkdir, readFile, rm } from "node:fs/promises";
 import { dirname, isAbsolute, join, relative, resolve } from "node:path";
 import type { CliContext } from "../../context";
@@ -118,10 +119,11 @@ async function writeGeneratedAstDirectory(
       source: await readCliTextFile(sourcePath),
       language: flags.language
     };
-    const moduleName = normalizeGeneratedModuleName(
-      `${moduleBase}.${sourcePathToModuleSuffix(relativeSourcePath)}`
+    const moduleName = disambiguateGeneratedModule(
+      moduleNames,
+      normalizeGeneratedModuleName(`${moduleBase}.${sourcePathToModuleSuffix(relativeSourcePath)}`),
+      relativeSourcePath
     );
-    ensureUniqueGeneratedValue(moduleNames, moduleName, relativeSourcePath, "module");
     const result = await generateShapeFromSourceFiles([file], {
       moduleName,
       allowParseErrors: flags.allowParseErrors
@@ -224,6 +226,34 @@ function ensureUniqueGeneratedValue(
     );
   }
   seen.set(value, sourcePath);
+}
+
+// Distinct source paths can normalize to the same module name (e.g. Python
+// `__init__.py` vs `init.py` both collapse to `…init`). Rather than abort the
+// whole batch, append a short, deterministic hash of the source path to keep
+// module names unique. Output-path collisions (two files → one .shape) remain a
+// hard error since they cannot be disambiguated.
+function disambiguateGeneratedModule(
+  seen: Map<string, string>,
+  moduleName: string,
+  sourcePath: string
+): string {
+  if (!seen.has(moduleName)) {
+    seen.set(moduleName, sourcePath);
+    return moduleName;
+  }
+  let attempt = 0;
+  let candidate = moduleName;
+  do {
+    const hash = createHash("sha256")
+      .update(attempt === 0 ? sourcePath : `${sourcePath}#${attempt}`)
+      .digest("hex")
+      .slice(0, 8);
+    candidate = `${moduleName}_g${hash}`;
+    attempt += 1;
+  } while (seen.has(candidate));
+  seen.set(candidate, sourcePath);
+  return candidate;
 }
 
 async function changedGeneratedFiles(

@@ -679,6 +679,16 @@ attest docs_not_needed {
   reason "The CLI runner helper is now explicitly modeled for governance; user-facing CLI commands, flags, and docs-visible behavior are unchanged."
 }
 
+attest docs_not_needed {
+  source ts("packages/shp-checker/src/ast-generation-tree-sitter.ts")
+  reason "Honoring SHP_TREE_SITTER_ASSET_ROOT lets a bundled binary locate tree-sitter parser assets off-binary for offline AST generation; it is an internal asset-resolution path with no change to documented AST-generation behavior, CLI surface, or analyzer-hint output."
+}
+
+attest docs_not_needed {
+  source ts("packages/shp-cli/src/commands/ast/impl.ts")
+  reason "Generated-module name disambiguation (a path-hash suffix when distinct source paths normalize to the same module name, e.g. Python __init__.py vs init.py) is internal robustness for `shp ast`; documented CLI commands, flags, and the output contract are unchanged."
+}
+
 attest no_shape_change {
   source ts("packages/shp-checker/src/generated-ast-policy.ts")
   reason "Generated AST manifest helper cleanup is covered by the checker origin model update; the remaining manifest schema and path helper contract is unchanged."

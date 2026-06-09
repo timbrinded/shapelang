@@ -446,8 +446,10 @@ describe("shp CLI", () => {
         tsxFile
       ]);
 
+      // foo.ts and foo.tsx both target foo.shape — an output-path collision that
+      // cannot be disambiguated (module-name collisions are now auto-resolved).
       expect(result.exitCode).toBe(2);
-      expect(result.stderr).toContain("generated AST module collision");
+      expect(result.stderr).toContain("generated AST output path collision");
       expect(result.stderr).toContain("foo.ts");
       expect(result.stderr).toContain("foo.tsx");
     } finally {
