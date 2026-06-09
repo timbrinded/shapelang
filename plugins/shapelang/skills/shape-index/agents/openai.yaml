@@ -1,0 +1,4 @@
+interface:
+  display_name: "Shape Index"
+  short_description: "Build a whole-codebase Shape model"
+  default_prompt: "Use $shape-index to author a whole-codebase Shape model (architecture, boundaries, invariants) for this repo, grounded in the generated AST layer."

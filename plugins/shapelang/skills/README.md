@@ -36,8 +36,8 @@ plugins/shapelang/skills/shape-review/SKILL.md
 
 ## Validate
 
-After changing a skill or plugin manifest, run the Codex plugin validator as
-part of your agent setup and confirm each `SKILL.md` still has valid frontmatter.
+After changing a skill or plugin manifest, run the plugin validator as part of
+your agent setup and confirm each `SKILL.md` still has valid frontmatter.
 
 If the skill change accompanies Shape implementation changes in this repository, also run the local project checks from the repository README.
 
