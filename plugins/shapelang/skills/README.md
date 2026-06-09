@@ -24,11 +24,15 @@ Skill entrypoints:
 plugins/shapelang/skills/shape-lang/SKILL.md
 plugins/shapelang/skills/shape-contract-guard/SKILL.md
 plugins/shapelang/skills/shape-contract-preflight/SKILL.md
+plugins/shapelang/skills/shape-index/SKILL.md
+plugins/shapelang/skills/shape-review/SKILL.md
 ```
 
 - `shape-lang`: general Shape authoring, review, formatting, debugging, and CLI workflows.
 - `shape-contract-guard`: advisory review of authored `.shape` contract diffs for suspicious loosenings that may pass `shp check`.
 - `shape-contract-preflight`: pre-implementation planning against an existing Shape model, with optional temporary `change` block checks.
+- `shape-index`: build a whole-codebase Shape model — author broad architecture/boundary/invariant shapes on top of the generated AST layer (extends `shape-lang` from incremental to whole-project authoring).
+- `shape-review`: review a code change (PR/diff) for real bugs, using the Shape model to add cross-object findings the diff can't show, with a recall-first pass and a human-salience emission gate.
 
 ## Validate
 
