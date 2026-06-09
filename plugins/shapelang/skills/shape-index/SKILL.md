@@ -1,6 +1,6 @@
 ---
 name: shape-index
-description: Use when Codex needs to build a whole-codebase Shape model — author higher-level architecture, boundary, and INVARIANT shapes on top of the generated AST layer, grounded in the AST anchors, so that Shape-aware tooling (review, navigation) has an accurate map of the architecture and the rules the code must uphold. Extends the shape-lang skill from incremental changed-file authoring to whole-project authoring.
+description: Use when building a whole-codebase Shape model — author higher-level architecture, boundary, and INVARIANT shapes on top of the generated AST layer, grounded in the AST anchors, so that Shape-aware tooling (review, navigation) has an accurate map of the architecture and the rules the code must uphold. Extends the shape-lang skill from incremental changed-file authoring to whole-project authoring.
 ---
 
 # Shape Index — whole-codebase architecture & invariant authoring

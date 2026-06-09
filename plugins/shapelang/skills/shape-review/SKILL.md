@@ -1,6 +1,6 @@
 ---
 name: shape-review
-description: Use when Codex needs to review a code change (a PR or diff) for real bugs, using a whole-codebase Shape model to catch cross-object issues the diff alone can't show. Runs an exhaustive local recall pass (prune nothing), augments with cited cross-object findings from the Shape model, then applies a closed-list reality gate and a human-salience emission gate — emit the issues a careful reviewer would flag, and never drop a severe bug.
+description: Use when reviewing a code change (a PR or diff) for real bugs, using a whole-codebase Shape model to catch cross-object issues the diff alone can't show. Runs an exhaustive local recall pass (prune nothing), augments with cited cross-object findings from the Shape model, then applies a closed-list reality gate and a human-salience emission gate — emit the issues a careful reviewer would flag, and never drop a severe bug.
 ---
 
 # Shape Review — human-salience prediction gate
