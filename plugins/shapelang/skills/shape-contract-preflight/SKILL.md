@@ -1,6 +1,6 @@
 ---
 name: shape-contract-preflight
-description: Use when Codex needs to plan a code or model change against an existing Shape model before editing, including locating relevant Shape symbols, reading `shp explain`/`shp graph`/`shp memory` context, surfacing constraints, guards, effects, ownership, coverage, bindings, and optionally drafting a temporary `change` block for `shp check` precheck diagnostics.
+description: Use when planning a code or model change against an existing Shape model before editing, including locating relevant Shape symbols, reading `shp explain`/`shp graph`/`shp memory` context, surfacing constraints, guards, effects, ownership, coverage, bindings, and optionally drafting a temporary `change` block for `shp check` precheck diagnostics.
 ---
 
 # Shape Contract Preflight
