@@ -853,3 +853,8 @@ attest no_shape_change {
   source mjs(".github/scripts/check-copilot-shape-review.mjs")
   reason "The removed Copilot review gate is superseded by the modeled Claude review scripts; CI review ownership and result semantics now live in CiPipeline.runShapeContractReview."
 }
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/reference/diagnostics.md")
+  reason "The diagnostics catalog now documents the canonical diagnostic ordering introduced by ShapeDiagnostics.compareShapeDiagnostics; the docs surface gains prose only and the delivery contract is unchanged."
+}

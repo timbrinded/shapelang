@@ -46,7 +46,11 @@ const repoRoot = resolve(import.meta.dir, "../../../..");
 //    checker emits a `guarded_shape_changed` obligation (non-trivial output);
 //  - a top-level `calls` relation, so the hypergraph / stats / explain surfaces
 //    have an edge to render;
-//  - two resources, one of which is isolated, so stats has structure.
+//  - two resources, one of which is isolated, so stats has structure;
+//  - a second component (Audit) whose RefactorSensitive fn has no memory and
+//    `effects unknown`, adding two more diagnostics anchored to a DIFFERENT
+//    declaration — so the permutation test exercises multi-diagnostic ordering
+//    rather than passing vacuously on a single-diagnostic model.
 // Built inline (per the epic's suggestion) rather than from a shared fixture so
 // the declaration-order-permutation test can reorder these exact declarations.
 const DECLARATIONS = {
@@ -98,6 +102,12 @@ const DECLARATIONS = {
     "      Write<Ledger>",
     "    }",
     "}"
+  ].join("\n"),
+  componentAudit: [
+    "component Audit {",
+    "  fn reviewTrail : RefactorSensitive",
+    "    effects unknown",
+    "}"
   ].join("\n")
 } as const;
 
@@ -109,7 +119,8 @@ const NATURAL_ORDER: readonly (keyof typeof DECLARATIONS)[] = [
   "componentPricing",
   "relationCalls",
   "memoryGuard",
-  "changeWithoutReeval"
+  "changeWithoutReeval",
+  "componentAudit"
 ];
 
 function sourceFromOrder(order: readonly (keyof typeof DECLARATIONS)[]): string {
@@ -190,6 +201,11 @@ describe("#55 determinism + no-clock-in-checker", () => {
 
       const natural = checkShapeModules([parseModuleOrThrow(MODEL_SOURCE)]);
       const permuted = checkShapeModules([parseModuleOrThrow(sourceFromOrder(permutedOrder))]);
+
+      // NON-VACUITY GUARD: the model must emit several diagnostics anchored to
+      // different declarations, otherwise byte-identical rendering below could
+      // never catch source order leaking into diagnostic order.
+      expect(natural.diagnostics.length).toBeGreaterThanOrEqual(3);
 
       // Same diagnostic multiset (sorted), regardless of source order.
       expect(diagnosticKinds(permuted)).toEqual(diagnosticKinds(natural));

@@ -95,6 +95,13 @@ component ShapeChecker {
 component ShapeDiagnostics {
   grants Append<DiagnosticText>
   grants Read<SemanticDiagnostics>
+  fn compareShapeDiagnostics
+    source ts("packages/shp-checker/src/checker/diagnostics.ts#compareShapeDiagnostics")
+    description "Canonical diagnostic order (kind, then rendered text) so checker output never leaks source declaration order."
+    effects complete {
+      Read<SemanticDiagnostics>
+        evidence ts("packages/shp-checker/src/checker/diagnostics.ts")
+    }
   fn formatDiagnostics : RefactorSensitive
     source ts("packages/shp-checker/src/checker/diagnostics.ts#formatDiagnostics")
     effects complete {

@@ -9,8 +9,11 @@ import type {
   CheckModuleInput,
   CheckOptions,
   CheckResult,
+  Fact,
   NormalizedCheckOptions
 } from "./model.ts";
+import { compareCodepointStrings } from "../shape-strings.ts";
+import { compareShapeDiagnostics } from "./diagnostics.ts";
 import { lowerShapeModules } from "./lowerer.ts";
 import { requireIsoCalendarDate } from "./iso-date.ts";
 import { checkBindings, runSemanticChecks } from "./rules.ts";
@@ -33,9 +36,13 @@ export function checkShapeModules(
   return {
     ok: diagnostics.length === 0,
     exitCode: diagnostics.length === 0 ? 0 : 1,
-    diagnostics,
-    facts: normalizedOptions.includeFacts ? model.facts : undefined
+    diagnostics: diagnostics.toSorted(compareShapeDiagnostics),
+    facts: normalizedOptions.includeFacts ? model.facts.toSorted(compareFacts) : undefined
   };
+}
+
+function compareFacts(left: Fact, right: Fact): number {
+  return compareCodepointStrings(JSON.stringify(left), JSON.stringify(right));
 }
 
 function normalizeCheckOptions(options: CheckOptions): NormalizedCheckOptions {
