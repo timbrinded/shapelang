@@ -120,7 +120,7 @@ export function requireValidResult(value, validationErrors, source) {
 
 // Same candidate order as extract-claude-shape-review.mjs: structured output,
 // then the result text, then the parsed value itself.
-export function selectResultFromClaudeOutput(text, validationErrors, source) {
+export function selectResultFromClaudeOutput(text, validationErrors) {
   let parsed;
   try {
     parsed = JSON.parse(text);
@@ -138,11 +138,7 @@ export function selectResultFromClaudeOutput(text, validationErrors, source) {
   for (const [candidateSource, value] of candidates) {
     const candidateErrors = validationErrors(value);
     if (candidateErrors.length === 0) {
-      return {
-        ok: true,
-        source: candidateSource,
-        result: requireValidResult(value, validationErrors, source)
-      };
+      return { ok: true, source: candidateSource, result: value };
     }
     if (value !== undefined) {
       errors.push(`${candidateSource}: ${candidateErrors.join("; ")}`);

@@ -3,24 +3,12 @@
 // fast path: changed source files already referenced by an authored source/
 // evidence ref or implementation/paths glob need no LLM judgment, so Claude is
 // only invoked for the uncovered remainder.
-import { readFileSync, readdirSync, writeFileSync } from "node:fs";
+import { readFileSync, readdirSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
-import {
-  JSON_ONLY_SYSTEM_PROMPT,
-  claudeNormalizerArgs,
-  loadJsonSchema,
-  rawReviewTextForNormalizer,
-  runClaude
-} from "./run-claude-shape-review.mjs";
-import { writeGitHubOutput } from "./shape-review-contract.mjs";
-import {
-  selectResultFromClaudeOutput,
-  shapeIndexValidationErrors
-} from "./shape-skill-contract.mjs";
+import { emitSkillResult, runSkillReviewPipeline } from "./claude-skill-pipeline.mjs";
+import { shapeIndexValidationErrors } from "./shape-skill-contract.mjs";
 
-const PRIMARY_RESULT_PATH = "claude-shape-index.json";
-const NORMALIZED_RESULT_PATH = "claude-shape-index-normalized.json";
 const INDEX_SKILL_PATH = "plugins/shapelang/skills/shape-index/SKILL.md";
 
 const INDEX_ALLOWED_TOOLS = [
@@ -90,31 +78,20 @@ export function authoredCoverageFromShapeSource(text) {
   return { refs, globs };
 }
 
-export function collectAuthoredCoverage(
-  shapeDir = "shape",
-  readFile = defaultReadFile,
-  listShapeFiles = defaultListShapeFiles
-) {
+export function collectAuthoredCoverage() {
   const refs = new Set();
   const globs = [];
-  for (const file of listShapeFiles(shapeDir)) {
-    const fromFile = authoredCoverageFromShapeSource(readFile(file));
+  const shapeFiles = readdirSync("shape")
+    .filter((name) => name.endsWith(".shape"))
+    .map((name) => join("shape", name));
+  for (const file of shapeFiles) {
+    const fromFile = authoredCoverageFromShapeSource(readFileSync(file, "utf8"));
     for (const ref of fromFile.refs) {
       refs.add(ref);
     }
     globs.push(...fromFile.globs);
   }
   return { refs, globMatchers: globs.map(globToRegExp) };
-}
-
-function defaultListShapeFiles(shapeDir) {
-  return readdirSync(shapeDir)
-    .filter((name) => name.endsWith(".shape"))
-    .map((name) => join(shapeDir, name));
-}
-
-function defaultReadFile(path) {
-  return readFileSync(path, "utf8");
 }
 
 export function uncoveredChangedFiles(changedFiles, coverage) {
@@ -166,45 +143,15 @@ Audit text:
 ${rawText}`;
 }
 
-function indexAuditArgs(prompt, jsonSchema) {
-  return [
-    "-p",
-    prompt,
-    "--max-turns",
-    "100",
-    "--output-format",
-    "json",
-    "--append-system-prompt",
-    JSON_ONLY_SYSTEM_PROMPT,
-    "--allowedTools",
-    INDEX_ALLOWED_TOOLS,
-    "--disallowedTools",
-    "Write,Edit",
-    "--json-schema",
-    jsonSchema
-  ];
-}
-
-function emitIndexResult(source, result) {
-  const structuredOutput = JSON.stringify(result);
-  console.log(`Claude index output source: ${source}`);
-  if (!writeGitHubOutput("structured_output", structuredOutput)) {
-    console.log(structuredOutput);
-  }
-  return result;
-}
-
 export async function runClaudeShapeIndex(env = process.env) {
-  const changedFilesPath = env.SHAPE_CHANGED_FILES ?? "changed.txt";
-  const changedFiles = readFileSync(changedFilesPath, "utf8")
+  const changedFiles = readFileSync(env.SHAPE_CHANGED_FILES ?? "changed.txt", "utf8")
     .split(/\r?\n/)
     .map((line) => line.trim())
     .filter((line) => line.length > 0);
 
-  const coverage = collectAuthoredCoverage();
-  const uncovered = uncoveredChangedFiles(changedFiles, coverage);
+  const uncovered = uncoveredChangedFiles(changedFiles, collectAuthoredCoverage());
   if (uncovered.length === 0) {
-    return emitIndexResult("prefilter", {
+    return emitSkillResult("index", "prefilter", {
       status: "pass",
       summary:
         "Every changed source file is referenced by an authored Shape source/evidence ref or implementation glob.",
@@ -217,62 +164,19 @@ export async function runClaudeShapeIndex(env = process.env) {
     console.log(`- ${file}`);
   }
 
-  const schemaPath =
-    env.SHAPE_INDEX_RESULT_SCHEMA ??
-    ".github/shape-contract/schemas/shape-index-result.schema.json";
-  const jsonSchema = loadJsonSchema(schemaPath);
-
-  const primary = await runClaude(indexAuditArgs(buildIndexPrompt(uncovered, env), jsonSchema));
-  writeFileSync(PRIMARY_RESULT_PATH, primary.stdout);
-  if (primary.exitCode !== 0) {
-    const detail = primary.stderr.trim() || primary.stdout.trim();
-    throw new Error(
-      `Claude Shape index audit failed with exit ${primary.exitCode}${detail ? `: ${detail}` : ""}`
-    );
-  }
-
-  const primaryResult = selectResultFromClaudeOutput(
-    primary.stdout,
-    shapeIndexValidationErrors,
-    "Shape index audit"
-  );
-  if (primaryResult.ok) {
-    return emitIndexResult(primaryResult.source, primaryResult.result);
-  }
-
-  console.error(
-    "Primary Claude index output was not structured JSON; retrying with a no-tools JSON normalizer."
-  );
-  if (primaryResult.errors.length > 0) {
-    console.error(primaryResult.errors.join("\n"));
-  }
-
-  const normalized = await runClaude(
-    claudeNormalizerArgs(
-      buildIndexNormalizerPrompt(rawReviewTextForNormalizer(primary.stdout), jsonSchema),
-      jsonSchema
-    )
-  );
-  writeFileSync(NORMALIZED_RESULT_PATH, normalized.stdout);
-  if (normalized.exitCode !== 0) {
-    const detail = normalized.stderr.trim() || normalized.stdout.trim();
-    throw new Error(
-      `Claude Shape index normalizer failed with exit ${normalized.exitCode}${detail ? `: ${detail}` : ""}`
-    );
-  }
-
-  const normalizedResult = selectResultFromClaudeOutput(
-    normalized.stdout,
-    shapeIndexValidationErrors,
-    "Shape index audit"
-  );
-  if (!normalizedResult.ok) {
-    throw new Error(
-      `Claude index normalizer output did not include a valid Shape index object: ${normalizedResult.errors.join("; ")}`
-    );
-  }
-
-  return emitIndexResult(normalizedResult.source, normalizedResult.result);
+  return runSkillReviewPipeline({
+    label: "index",
+    title: "Shape index audit",
+    resultPath: "claude-shape-index.json",
+    normalizedResultPath: "claude-shape-index-normalized.json",
+    schemaPath:
+      env.SHAPE_INDEX_RESULT_SCHEMA ??
+      ".github/shape-contract/schemas/shape-index-result.schema.json",
+    allowedTools: INDEX_ALLOWED_TOOLS,
+    buildPrompt: () => buildIndexPrompt(uncovered, env),
+    buildNormalizerPrompt: buildIndexNormalizerPrompt,
+    validationErrors: shapeIndexValidationErrors
+  });
 }
 
 function isMainModule() {

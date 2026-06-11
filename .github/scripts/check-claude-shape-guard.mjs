@@ -1,18 +1,9 @@
 // Gate for the shape-contract-guard CI review. Guard findings are advisory by
 // design; only high-severity findings (or a review error) fail the job.
-import { appendFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
-import { parseJsonText } from "./shape-review-contract.mjs";
-import { requireValidResult, shapeGuardValidationErrors } from "./shape-skill-contract.mjs";
-
-export function parseGuardInput(input, source) {
-  const parsed = parseJsonText(input, source);
-  if (!parsed.ok) {
-    throw new Error(parsed.errors.join("; "));
-  }
-  return requireValidResult(parsed.value, shapeGuardValidationErrors, source);
-}
+import { runSkillGate } from "./claude-skill-pipeline.mjs";
+import { shapeGuardValidationErrors } from "./shape-skill-contract.mjs";
 
 export function renderGuardSummary(result) {
   const bySeverity = { high: 0, medium: 0, low: 0 };
@@ -58,31 +49,14 @@ function isMainModule() {
 }
 
 if (isMainModule()) {
-  const input = process.env.CLAUDE_SHAPE_GUARD_RESULT;
-  if (!input) {
-    console.error("CLAUDE_SHAPE_GUARD_RESULT is required.");
-    process.exit(1);
-  }
-
-  let result;
-  try {
-    result = parseGuardInput(input, "CLAUDE_SHAPE_GUARD_RESULT");
-  } catch (error) {
-    console.error(error instanceof Error ? error.message : String(error));
-    process.exit(1);
-  }
-
-  if (process.env.GITHUB_STEP_SUMMARY) {
-    appendFileSync(process.env.GITHUB_STEP_SUMMARY, renderGuardSummary(result));
-  }
-
-  const failureMessage = guardFailureMessage(result);
-  if (failureMessage) {
-    console.error(failureMessage);
-    process.exit(1);
-  }
-
-  if (result.findings.length > 0) {
-    console.log(`Advisory guard findings (non-blocking): ${result.findings.length}`);
-  }
+  runSkillGate({
+    title: "Shape guard result",
+    validationErrors: shapeGuardValidationErrors,
+    renderSummary: renderGuardSummary,
+    failureMessage: guardFailureMessage,
+    nonBlockingNote: (result) =>
+      result.findings.length > 0
+        ? `Advisory guard findings (non-blocking): ${result.findings.length}`
+        : undefined
+  });
 }

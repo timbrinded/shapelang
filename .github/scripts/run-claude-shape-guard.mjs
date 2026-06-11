@@ -2,24 +2,11 @@
 // of authored .shape diffs. Deterministic fast path: when the PR changes no
 // authored .shape file, emit a pass result without invoking Claude.
 import { spawnSync } from "node:child_process";
-import { writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
-import {
-  JSON_ONLY_SYSTEM_PROMPT,
-  claudeNormalizerArgs,
-  loadJsonSchema,
-  rawReviewTextForNormalizer,
-  runClaude
-} from "./run-claude-shape-review.mjs";
-import { writeGitHubOutput } from "./shape-review-contract.mjs";
-import {
-  selectResultFromClaudeOutput,
-  shapeGuardValidationErrors
-} from "./shape-skill-contract.mjs";
+import { emitSkillResult, runSkillReviewPipeline } from "./claude-skill-pipeline.mjs";
+import { shapeGuardValidationErrors } from "./shape-skill-contract.mjs";
 
-const PRIMARY_RESULT_PATH = "claude-shape-guard.json";
-const NORMALIZED_RESULT_PATH = "claude-shape-guard-normalized.json";
 const GUARD_SKILL_PATH = "plugins/shapelang/skills/shape-contract-guard/SKILL.md";
 
 const GUARD_ALLOWED_TOOLS = [
@@ -111,101 +98,29 @@ Review text:
 ${rawText}`;
 }
 
-function guardReviewArgs(prompt, jsonSchema) {
-  return [
-    "-p",
-    prompt,
-    "--max-turns",
-    "100",
-    "--output-format",
-    "json",
-    "--append-system-prompt",
-    JSON_ONLY_SYSTEM_PROMPT,
-    "--allowedTools",
-    GUARD_ALLOWED_TOOLS,
-    "--disallowedTools",
-    "Write,Edit",
-    "--json-schema",
-    jsonSchema
-  ];
-}
-
-function emitGuardResult(source, result) {
-  const structuredOutput = JSON.stringify(result);
-  console.log(`Claude guard output source: ${source}`);
-  if (!writeGitHubOutput("structured_output", structuredOutput)) {
-    console.log(structuredOutput);
-  }
-  return result;
-}
-
 export async function runClaudeShapeGuard(env = process.env) {
   const baseRef = guardBaseRef(env);
-  const authoredChanges = changedAuthoredShapeFiles(baseRef);
-  if (authoredChanges.length === 0) {
-    return emitGuardResult("prefilter", {
+  if (changedAuthoredShapeFiles(baseRef).length === 0) {
+    return emitSkillResult("guard", "prefilter", {
       status: "pass",
       summary: `No authored .shape files changed against ${baseRef}; guard review not needed.`,
       findings: []
     });
   }
 
-  const schemaPath =
-    env.SHAPE_GUARD_RESULT_SCHEMA ??
-    ".github/shape-contract/schemas/shape-guard-result.schema.json";
-  const jsonSchema = loadJsonSchema(schemaPath);
-
-  const primary = await runClaude(guardReviewArgs(buildGuardPrompt(env), jsonSchema));
-  writeFileSync(PRIMARY_RESULT_PATH, primary.stdout);
-  if (primary.exitCode !== 0) {
-    const detail = primary.stderr.trim() || primary.stdout.trim();
-    throw new Error(
-      `Claude Shape guard review failed with exit ${primary.exitCode}${detail ? `: ${detail}` : ""}`
-    );
-  }
-
-  const primaryResult = selectResultFromClaudeOutput(
-    primary.stdout,
-    shapeGuardValidationErrors,
-    "Shape guard review"
-  );
-  if (primaryResult.ok) {
-    return emitGuardResult(primaryResult.source, primaryResult.result);
-  }
-
-  console.error(
-    "Primary Claude guard output was not structured JSON; retrying with a no-tools JSON normalizer."
-  );
-  if (primaryResult.errors.length > 0) {
-    console.error(primaryResult.errors.join("\n"));
-  }
-
-  const normalized = await runClaude(
-    claudeNormalizerArgs(
-      buildGuardNormalizerPrompt(rawReviewTextForNormalizer(primary.stdout), jsonSchema),
-      jsonSchema
-    )
-  );
-  writeFileSync(NORMALIZED_RESULT_PATH, normalized.stdout);
-  if (normalized.exitCode !== 0) {
-    const detail = normalized.stderr.trim() || normalized.stdout.trim();
-    throw new Error(
-      `Claude Shape guard normalizer failed with exit ${normalized.exitCode}${detail ? `: ${detail}` : ""}`
-    );
-  }
-
-  const normalizedResult = selectResultFromClaudeOutput(
-    normalized.stdout,
-    shapeGuardValidationErrors,
-    "Shape guard review"
-  );
-  if (!normalizedResult.ok) {
-    throw new Error(
-      `Claude guard normalizer output did not include a valid Shape guard object: ${normalizedResult.errors.join("; ")}`
-    );
-  }
-
-  return emitGuardResult(normalizedResult.source, normalizedResult.result);
+  return runSkillReviewPipeline({
+    label: "guard",
+    title: "Shape guard review",
+    resultPath: "claude-shape-guard.json",
+    normalizedResultPath: "claude-shape-guard-normalized.json",
+    schemaPath:
+      env.SHAPE_GUARD_RESULT_SCHEMA ??
+      ".github/shape-contract/schemas/shape-guard-result.schema.json",
+    allowedTools: GUARD_ALLOWED_TOOLS,
+    buildPrompt: () => buildGuardPrompt(env),
+    buildNormalizerPrompt: buildGuardNormalizerPrompt,
+    validationErrors: shapeGuardValidationErrors
+  });
 }
 
 function isMainModule() {

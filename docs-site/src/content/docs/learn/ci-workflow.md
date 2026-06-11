@@ -208,7 +208,7 @@ Two further PR jobs drive the bundled plugin skills through Claude Code. Both de
 
 **Shape Index Coverage** (`shape-index`) applies `plugins/shapelang/skills/shape-index/SKILL.md` as an audit: `run-claude-shape-index.mjs` first computes which changed source files are not referenced by any authored `shape/*.shape` source/evidence ref or `implementation` paths glob, and only asks Claude to judge that uncovered remainder for architecture-significant subsystems lacking Layer-2 coverage. Gaps are reported in the job summary and PR comment but stay non-blocking unless the repository sets the `SHAPE_INDEX_STRICT` Actions variable to `true`.
 
-Both jobs validate the model output against strict JSON schemas under `.github/shape-contract/schemas/` before anything reaches `GITHUB_OUTPUT`.
+Both jobs share the `.github/actions/claude-skill-review` composite action (toolchain setup, Claude install, run, gate) and the `claude-skill-pipeline.mjs` runner harness, and validate the model output against strict JSON schemas under `.github/shape-contract/schemas/` before anything reaches `GITHUB_OUTPUT`.
 
 ## Direct binary install
 

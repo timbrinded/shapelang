@@ -1,0 +1,54 @@
+name: Claude skill review
+description: >-
+  Install the Bun toolchain and Claude Code, run a skill-review script that
+  emits a structured_output result, and gate the job on that result. The
+  calling step provides Anthropic credentials and git context via env; the
+  check script reads the result from CLAUDE_SKILL_RESULT.
+
+inputs:
+  run-script:
+    description: Node script that runs the skill review and emits structured_output.
+    required: true
+  check-script:
+    description: Node script that gates on the structured result via CLAUDE_SKILL_RESULT.
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Setup Bun
+      uses: oven-sh/setup-bun@v2
+
+    - name: Cache Bun downloads
+      uses: actions/cache@v4
+      with:
+        path: ~/.bun/install/cache
+        key: bun-${{ runner.os }}-${{ hashFiles('bun.lock') }}
+        restore-keys: |
+          bun-${{ runner.os }}-
+
+    - name: Install
+      shell: bash
+      run: bun install --frozen-lockfile
+
+    - name: Changed files
+      shell: bash
+      run: bun run changed-files
+
+    - name: Install Claude Code
+      shell: bash
+      run: |
+        curl -fsSL https://claude.ai/install.sh | bash
+        echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+        "$HOME/.local/bin/claude" --version
+
+    - name: Run skill review
+      id: run
+      shell: bash
+      run: node ${{ inputs.run-script }}
+
+    - name: Check result
+      shell: bash
+      env:
+        CLAUDE_SKILL_RESULT: ${{ steps.run.outputs.structured_output }}
+      run: node ${{ inputs.check-script }}

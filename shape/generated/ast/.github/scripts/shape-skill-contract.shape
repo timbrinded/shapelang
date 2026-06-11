@@ -17,8 +17,8 @@ resource ShapeSkillContractModuleRequireValidResultAstAnchor : GeneratedAstAncho
 }
 
 resource ShapeSkillContractModuleSelectResultFromClaudeOutputAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor(".github/scripts/shape-skill-contract.mjs:123-153")
-  fingerprint ast.semantic_subtree_v1("sha256:44081f26466f4fcfd55249f401ec6b782a88b5e0c7d36b8a6a093a01cd55b495")
+  storage ast.anchor(".github/scripts/shape-skill-contract.mjs:123-149")
+  fingerprint ast.semantic_subtree_v1("sha256:db7ffa0e018ce9bac2a65aa3f7c759f5dd8bb9fcd86c1ed9238b7151e585bb66")
 }
 
 resource ShapeSkillContractModuleShapeGuardValidationErrorsAstAnchor : GeneratedAstAnchor {
@@ -39,7 +39,7 @@ component ShapeSkillContractModule : GeneratedCandidate {
     source js(".github/scripts/shape-skill-contract.mjs:113-119")
     effects unknown
   fn selectResultFromClaudeOutput
-    source js(".github/scripts/shape-skill-contract.mjs:123-153")
+    source js(".github/scripts/shape-skill-contract.mjs:123-149")
     effects unknown
   fn shapeGuardValidationErrors
     source js(".github/scripts/shape-skill-contract.mjs:41-75")
@@ -69,8 +69,8 @@ relation ShapeSkillContractModuleSelectResultFromClaudeOutputGeneratedFromShapeS
   kind generated_from
   connects ShapeSkillContractModule -> ShapeSkillContractModuleSelectResultFromClaudeOutputAstAnchor
   roles { ShapeSkillContractModule as generated, ShapeSkillContractModuleSelectResultFromClaudeOutputAstAnchor as syntax }
-  expects ShapeSkillContractModuleSelectResultFromClaudeOutputAstAnchor fingerprint ast.semantic_subtree_v1("sha256:44081f26466f4fcfd55249f401ec6b782a88b5e0c7d36b8a6a093a01cd55b495")
-  summary "fn ShapeSkillContractModule.selectResultFromClaudeOutput generated from javascript function_declaration at .github/scripts/shape-skill-contract.mjs:123-153."
+  expects ShapeSkillContractModuleSelectResultFromClaudeOutputAstAnchor fingerprint ast.semantic_subtree_v1("sha256:db7ffa0e018ce9bac2a65aa3f7c759f5dd8bb9fcd86c1ed9238b7151e585bb66")
+  summary "fn ShapeSkillContractModule.selectResultFromClaudeOutput generated from javascript function_declaration at .github/scripts/shape-skill-contract.mjs:123-149."
 }
 
 relation ShapeSkillContractModuleShapeGuardValidationErrorsGeneratedFromShapeSkillContractModuleShapeGuardValidationErrorsAstAnchor {

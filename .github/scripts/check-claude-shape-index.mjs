@@ -1,19 +1,10 @@
 // Gate for the shape-index coverage audit. Gaps are authoring debt, not a PR
 // defect, so the job stays green on gaps unless SHAPE_INDEX_STRICT=true; only
 // an audit error (or strict-mode gaps) fails.
-import { appendFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
-import { parseJsonText } from "./shape-review-contract.mjs";
-import { requireValidResult, shapeIndexValidationErrors } from "./shape-skill-contract.mjs";
-
-export function parseIndexInput(input, source) {
-  const parsed = parseJsonText(input, source);
-  if (!parsed.ok) {
-    throw new Error(parsed.errors.join("; "));
-  }
-  return requireValidResult(parsed.value, shapeIndexValidationErrors, source);
-}
+import { runSkillGate } from "./claude-skill-pipeline.mjs";
+import { shapeIndexValidationErrors } from "./shape-skill-contract.mjs";
 
 export function renderIndexSummary(result) {
   const lines = [
@@ -61,31 +52,14 @@ function isMainModule() {
 }
 
 if (isMainModule()) {
-  const input = process.env.CLAUDE_SHAPE_INDEX_RESULT;
-  if (!input) {
-    console.error("CLAUDE_SHAPE_INDEX_RESULT is required.");
-    process.exit(1);
-  }
-
-  let result;
-  try {
-    result = parseIndexInput(input, "CLAUDE_SHAPE_INDEX_RESULT");
-  } catch (error) {
-    console.error(error instanceof Error ? error.message : String(error));
-    process.exit(1);
-  }
-
-  if (process.env.GITHUB_STEP_SUMMARY) {
-    appendFileSync(process.env.GITHUB_STEP_SUMMARY, renderIndexSummary(result));
-  }
-
-  const failureMessage = indexFailureMessage(result);
-  if (failureMessage) {
-    console.error(failureMessage);
-    process.exit(1);
-  }
-
-  if (result.gaps.length > 0) {
-    console.log(`Advisory index coverage gaps (non-blocking): ${result.gaps.length}`);
-  }
+  runSkillGate({
+    title: "Shape index result",
+    validationErrors: shapeIndexValidationErrors,
+    renderSummary: renderIndexSummary,
+    failureMessage: indexFailureMessage,
+    nonBlockingNote: (result) =>
+      result.gaps.length > 0
+        ? `Advisory index coverage gaps (non-blocking): ${result.gaps.length}`
+        : undefined
+  });
 }

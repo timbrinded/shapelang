@@ -7,37 +7,29 @@ trait GeneratedCandidate {
 }
 
 resource CheckClaudeShapeGuardModuleGuardFailureMessageAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor(".github/scripts/check-claude-shape-guard.mjs:34-51")
+  storage ast.anchor(".github/scripts/check-claude-shape-guard.mjs:25-42")
   fingerprint ast.semantic_subtree_v1("sha256:f51e88e94360158eb3ba60af81b28ecc1e6160bf4cd6f67beec3d16f5df7e50b")
 }
 
 resource CheckClaudeShapeGuardModuleIsMainModuleAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor(".github/scripts/check-claude-shape-guard.mjs:53-58")
+  storage ast.anchor(".github/scripts/check-claude-shape-guard.mjs:44-49")
   fingerprint ast.semantic_subtree_v1("sha256:a7630a5e5fbe44b11a467fb490a2c52019708e3bbc0e6d3476897795228c2a3f")
 }
 
-resource CheckClaudeShapeGuardModuleParseGuardInputAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor(".github/scripts/check-claude-shape-guard.mjs:9-15")
-  fingerprint ast.semantic_subtree_v1("sha256:e1b0057338d798df1feffecc8bc5c16848af2c79b1ffcbff3f08ebeb4c3557e1")
-}
-
 resource CheckClaudeShapeGuardModuleRenderGuardSummaryAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor(".github/scripts/check-claude-shape-guard.mjs:17-32")
+  storage ast.anchor(".github/scripts/check-claude-shape-guard.mjs:8-23")
   fingerprint ast.semantic_subtree_v1("sha256:5f6ef0f5a9723a71d2451e9a6db0c57c38cfaeb6d099cdd765e8a3735d4e225b")
 }
 
 component CheckClaudeShapeGuardModule : GeneratedCandidate {
   fn guardFailureMessage
-    source js(".github/scripts/check-claude-shape-guard.mjs:34-51")
+    source js(".github/scripts/check-claude-shape-guard.mjs:25-42")
     effects unknown
   fn isMainModule
-    source js(".github/scripts/check-claude-shape-guard.mjs:53-58")
-    effects unknown
-  fn parseGuardInput
-    source js(".github/scripts/check-claude-shape-guard.mjs:9-15")
+    source js(".github/scripts/check-claude-shape-guard.mjs:44-49")
     effects unknown
   fn renderGuardSummary
-    source js(".github/scripts/check-claude-shape-guard.mjs:17-32")
+    source js(".github/scripts/check-claude-shape-guard.mjs:8-23")
     effects unknown
 }
 
@@ -46,7 +38,7 @@ relation CheckClaudeShapeGuardModuleGuardFailureMessageGeneratedFromCheckClaudeS
   connects CheckClaudeShapeGuardModule -> CheckClaudeShapeGuardModuleGuardFailureMessageAstAnchor
   roles { CheckClaudeShapeGuardModule as generated, CheckClaudeShapeGuardModuleGuardFailureMessageAstAnchor as syntax }
   expects CheckClaudeShapeGuardModuleGuardFailureMessageAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f51e88e94360158eb3ba60af81b28ecc1e6160bf4cd6f67beec3d16f5df7e50b")
-  summary "fn CheckClaudeShapeGuardModule.guardFailureMessage generated from javascript function_declaration at .github/scripts/check-claude-shape-guard.mjs:34-51."
+  summary "fn CheckClaudeShapeGuardModule.guardFailureMessage generated from javascript function_declaration at .github/scripts/check-claude-shape-guard.mjs:25-42."
 }
 
 relation CheckClaudeShapeGuardModuleIsMainModuleGeneratedFromCheckClaudeShapeGuardModuleIsMainModuleAstAnchor {
@@ -54,15 +46,7 @@ relation CheckClaudeShapeGuardModuleIsMainModuleGeneratedFromCheckClaudeShapeGua
   connects CheckClaudeShapeGuardModule -> CheckClaudeShapeGuardModuleIsMainModuleAstAnchor
   roles { CheckClaudeShapeGuardModule as generated, CheckClaudeShapeGuardModuleIsMainModuleAstAnchor as syntax }
   expects CheckClaudeShapeGuardModuleIsMainModuleAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a7630a5e5fbe44b11a467fb490a2c52019708e3bbc0e6d3476897795228c2a3f")
-  summary "fn CheckClaudeShapeGuardModule.isMainModule generated from javascript function_declaration at .github/scripts/check-claude-shape-guard.mjs:53-58."
-}
-
-relation CheckClaudeShapeGuardModuleParseGuardInputGeneratedFromCheckClaudeShapeGuardModuleParseGuardInputAstAnchor {
-  kind generated_from
-  connects CheckClaudeShapeGuardModule -> CheckClaudeShapeGuardModuleParseGuardInputAstAnchor
-  roles { CheckClaudeShapeGuardModule as generated, CheckClaudeShapeGuardModuleParseGuardInputAstAnchor as syntax }
-  expects CheckClaudeShapeGuardModuleParseGuardInputAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e1b0057338d798df1feffecc8bc5c16848af2c79b1ffcbff3f08ebeb4c3557e1")
-  summary "fn CheckClaudeShapeGuardModule.parseGuardInput generated from javascript function_declaration at .github/scripts/check-claude-shape-guard.mjs:9-15."
+  summary "fn CheckClaudeShapeGuardModule.isMainModule generated from javascript function_declaration at .github/scripts/check-claude-shape-guard.mjs:44-49."
 }
 
 relation CheckClaudeShapeGuardModuleRenderGuardSummaryGeneratedFromCheckClaudeShapeGuardModuleRenderGuardSummaryAstAnchor {
@@ -70,7 +54,7 @@ relation CheckClaudeShapeGuardModuleRenderGuardSummaryGeneratedFromCheckClaudeSh
   connects CheckClaudeShapeGuardModule -> CheckClaudeShapeGuardModuleRenderGuardSummaryAstAnchor
   roles { CheckClaudeShapeGuardModule as generated, CheckClaudeShapeGuardModuleRenderGuardSummaryAstAnchor as syntax }
   expects CheckClaudeShapeGuardModuleRenderGuardSummaryAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5f6ef0f5a9723a71d2451e9a6db0c57c38cfaeb6d099cdd765e8a3735d4e225b")
-  summary "fn CheckClaudeShapeGuardModule.renderGuardSummary generated from javascript function_declaration at .github/scripts/check-claude-shape-guard.mjs:17-32."
+  summary "fn CheckClaudeShapeGuardModule.renderGuardSummary generated from javascript function_declaration at .github/scripts/check-claude-shape-guard.mjs:8-23."
 }
 
 implementation CheckClaudeShapeGuardModuleImpl {

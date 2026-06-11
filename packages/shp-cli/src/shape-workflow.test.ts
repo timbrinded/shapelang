@@ -149,7 +149,7 @@ describe("Shape workflow", () => {
   });
 
   test("fails Shape guard gate on a high-severity finding", async () => {
-    const result = await runResultGate(guardGateScriptPath, "CLAUDE_SHAPE_GUARD_RESULT", {
+    const result = await runResultGate(guardGateScriptPath, {
       status: "advisory",
       summary: "AppendOnly was removed while HardDelete was granted.",
       findings: [guardFinding("high")]
@@ -160,7 +160,7 @@ describe("Shape workflow", () => {
   });
 
   test("passes Shape guard gate with only medium and low advisory findings", async () => {
-    const result = await runResultGate(guardGateScriptPath, "CLAUDE_SHAPE_GUARD_RESULT", {
+    const result = await runResultGate(guardGateScriptPath, {
       status: "advisory",
       summary: "Broad authority was added with generic justification.",
       findings: [guardFinding("medium"), guardFinding("low")]
@@ -173,7 +173,7 @@ describe("Shape workflow", () => {
   });
 
   test("fails Shape guard gate when a pass result includes findings", async () => {
-    const result = await runResultGate(guardGateScriptPath, "CLAUDE_SHAPE_GUARD_RESULT", {
+    const result = await runResultGate(guardGateScriptPath, {
       status: "pass",
       summary: "No loosening found.",
       findings: [guardFinding("low")]
@@ -184,7 +184,7 @@ describe("Shape workflow", () => {
   });
 
   test("fails Shape guard gate on schema-violating severity", async () => {
-    const result = await runResultGate(guardGateScriptPath, "CLAUDE_SHAPE_GUARD_RESULT", {
+    const result = await runResultGate(guardGateScriptPath, {
       status: "advisory",
       summary: "Bad severity.",
       findings: [{ ...guardFinding("low"), severity: "error" }]
@@ -209,29 +209,20 @@ describe("Shape workflow", () => {
       ]
     };
 
-    const lenient = await runResultGate(
-      indexGateScriptPath,
-      "CLAUDE_SHAPE_INDEX_RESULT",
-      gapsResult
-    );
+    const lenient = await runResultGate(indexGateScriptPath, gapsResult);
     expect(lenient.exitCode).toBe(0);
     expect(lenient.stdout).toContain("non-blocking");
     expect(lenient.summary).toContain("payment adapter");
 
-    const strict = await runResultGate(
-      indexGateScriptPath,
-      "CLAUDE_SHAPE_INDEX_RESULT",
-      gapsResult,
-      {
-        SHAPE_INDEX_STRICT: "true"
-      }
-    );
+    const strict = await runResultGate(indexGateScriptPath, gapsResult, {
+      SHAPE_INDEX_STRICT: "true"
+    });
     expect(strict.exitCode).toBe(1);
     expect(strict.stderr).toContain("SHAPE_INDEX_STRICT");
   });
 
   test("fails Shape index gate on an error status", async () => {
-    const result = await runResultGate(indexGateScriptPath, "CLAUDE_SHAPE_INDEX_RESULT", {
+    const result = await runResultGate(indexGateScriptPath, {
       status: "error",
       summary: "Audit could not run.",
       gaps: []
@@ -336,7 +327,6 @@ function guardFinding(severity: "high" | "medium" | "low") {
 
 async function runResultGate(
   scriptPath: string,
-  envName: string,
   result: unknown,
   extraEnv: Record<string, string> = {}
 ): Promise<{
@@ -355,7 +345,7 @@ async function runResultGate(
       env: {
         ...process.env,
         GITHUB_STEP_SUMMARY: summaryPath,
-        [envName]: JSON.stringify(result),
+        CLAUDE_SKILL_RESULT: JSON.stringify(result),
         ...extraEnv
       },
       stdout: "pipe",

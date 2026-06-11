@@ -145,8 +145,12 @@ component CiPipeline {
         evidence yaml(".github/workflows/shape.yml")
       Read<CiWorkflow>
         evidence mjs(".github/scripts/run-claude-shape-guard.mjs")
+      Read<CiWorkflow>
+        evidence yaml(".github/actions/claude-skill-review/action.yml")
       Read<ClaudeReviewPrompt>
         evidence md("plugins/shapelang/skills/shape-contract-guard/SKILL.md")
+      Read<ClaudeReviewResult>
+        evidence mjs(".github/scripts/claude-skill-pipeline.mjs")
       Read<ClaudeReviewResult>
         evidence mjs(".github/scripts/check-claude-shape-guard.mjs")
       Read<ClaudeReviewResult>
@@ -166,8 +170,12 @@ component CiPipeline {
         evidence mjs(".github/scripts/run-claude-shape-index.mjs")
       Read<CiWorkflow>
         evidence mjs(".github/scripts/run-claude-shape-index.mjs")
+      Read<CiWorkflow>
+        evidence yaml(".github/actions/claude-skill-review/action.yml")
       Read<ClaudeReviewPrompt>
         evidence md("plugins/shapelang/skills/shape-index/SKILL.md")
+      Read<ClaudeReviewResult>
+        evidence mjs(".github/scripts/claude-skill-pipeline.mjs")
       Read<ClaudeReviewResult>
         evidence mjs(".github/scripts/check-claude-shape-index.mjs")
       Read<ClaudeReviewResult>
