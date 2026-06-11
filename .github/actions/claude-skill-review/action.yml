@@ -1,10 +1,11 @@
 name: Claude skill review
 description: >-
-  Install the Bun toolchain and a pinned Claude Code CLI, then run one of the
-  Shape skill reviews (review, guard, index) through
-  .github/scripts/run-claude-skill.mjs, which validates the structured result
-  against the skill's JSON schema and gates the job on its policy. The calling
-  step provides Anthropic credentials and git context via env.
+  Install the Bun toolchain, prefilter one of the Shape skill reviews (review,
+  guard, index) through .github/scripts/run-claude-skill.mjs, run the model
+  call through anthropics/claude-code-action when the prefilter requires one,
+  then validate the structured result against the skill's JSON schema and gate
+  the job on its policy. The calling step provides Anthropic credentials and
+  git context via env.
 
 inputs:
   skill:
@@ -12,6 +13,10 @@ inputs:
     required: true
   prepare-command:
     description: Optional shell command run after changed-files, before the review (e.g. capturing shp context output).
+    required: false
+    default: ""
+  model:
+    description: Claude model passed to the Claude Code action. Defaults to Sonnet in run-claude-skill.mjs.
     required: false
     default: ""
 
@@ -42,13 +47,25 @@ runs:
       shell: bash
       run: ${{ inputs.prepare-command }}
 
-    - name: Install Claude Code
+    - name: Prefilter skill
+      id: prefilter
       shell: bash
-      run: |
-        curl -fsSL https://claude.ai/install.sh | bash -s 2.1.173
-        echo "$HOME/.local/bin" >> "$GITHUB_PATH"
-        "$HOME/.local/bin/claude" --version
+      env:
+        CLAUDE_SKILL_MODEL: ${{ inputs.model }}
+      run: node .github/scripts/run-claude-skill.mjs ${{ inputs.skill }} --prefilter
 
-    - name: Run skill review
+    - name: Run skill through Claude Code
+      id: claude
+      if: ${{ steps.prefilter.outputs.skip != 'true' }}
+      uses: anthropics/claude-code-action@v1
+      with:
+        anthropic_api_key: ${{ env.ANTHROPIC_API_KEY }}
+        github_token: ${{ github.token }}
+        prompt: ${{ steps.prefilter.outputs.prompt }}
+        claude_args: ${{ steps.prefilter.outputs.claude_args }}
+
+    - name: Validate and gate structured result
       shell: bash
+      env:
+        CLAUDE_SKILL_RESULT: ${{ steps.prefilter.outputs.skip == 'true' && steps.prefilter.outputs.result || steps.claude.outputs.structured_output }}
       run: node .github/scripts/run-claude-skill.mjs ${{ inputs.skill }}

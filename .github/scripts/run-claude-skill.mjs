@@ -1,21 +1,28 @@
 // One runner for every Claude-driven Shape CI job (review, guard, index).
-// Invoke as `node run-claude-skill.mjs <skill>`. Each skill contributes named
-// functions (prompt, prefilter, gate policy, summary) via the SKILLS table;
-// this file owns the shared flow: prefilter -> claude -> extract -> validate
-// against the skill's JSON schema -> step summary -> gate exit code.
+// The claude-skill-review composite action invokes it twice per job:
 //
-// Test/operations seam: when CLAUDE_SKILL_RESULT is set, the model call is
-// skipped and the provided result is validated and gated directly.
-import { spawn, spawnSync } from "node:child_process";
-import { appendFileSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
+//   node run-claude-skill.mjs <skill> --prefilter
+//     Deterministic prefilter. Emits GitHub step outputs: either a finished
+//     result (skip=true) or the prompt and claude_args that
+//     anthropics/claude-code-action uses to run the model call with
+//     structured output.
+//
+//   node run-claude-skill.mjs <skill>
+//     Gate. Validates CLAUDE_SKILL_RESULT (the action's structured_output or
+//     the prefilter result) against the skill's JSON schema, renders the step
+//     summary, and exits per the skill's gate policy.
+import { spawnSync } from "node:child_process";
+import { appendFileSync, readFileSync, readdirSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 
 const JSON_ONLY_SYSTEM_PROMPT =
   'You are producing machine input for CI. Your final response must be exactly one JSON object matching the configured JSON schema. The first character must be "{" and the last character must be "}". Do not include prose, bullets, Markdown, code fences, preamble, or postscript. If there are no verified drift findings, return status "pass" with an empty findings array.';
 
+const DEFAULT_MODEL = "claude-sonnet-4-6";
+
 // ---------------------------------------------------------------------------
-// Shared: schema validation and Claude output extraction
+// Shared: schema validation
 // ---------------------------------------------------------------------------
 
 function isRecord(value) {
@@ -96,187 +103,67 @@ export function schemaValidationErrors(value, schema, path = "result") {
   }
 }
 
-function parseJsonObjectCandidate(value) {
-  if (typeof value !== "string") {
-    return value;
-  }
-
-  const trimmed = value.trim();
-  const fenced = trimmed.match(/^```(?:json)?\s*([\s\S]*?)\s*```$/);
-  const candidates = fenced?.[1] ? [trimmed, fenced[1].trim()] : [trimmed];
-
-  for (const candidate of candidates) {
-    try {
-      return JSON.parse(candidate);
-    } catch {
-      // Try the next complete representation. Deliberately do not slice from
-      // the first `{` to the last `}`; CI should consume structured output or a
-      // whole JSON object, not implicitly scrape prose.
-    }
-  }
-
-  return undefined;
-}
-
-// Candidate order matches observed CLI behavior: the validated structured
-// output field, then a whole-JSON result text, then a bare result object.
-export function extractValidResult(text, schema) {
-  let envelope;
-  try {
-    envelope = JSON.parse(text);
-  } catch (error) {
-    return { ok: false, errors: [`Could not parse Claude JSON output: ${error}`] };
-  }
-
-  const candidates = [
-    ["structured_output", isRecord(envelope) ? envelope.structured_output : undefined],
-    ["result", isRecord(envelope) ? parseJsonObjectCandidate(envelope.result) : undefined],
-    ["direct", envelope]
-  ];
-
-  const errors = [];
-  for (const [source, value] of candidates) {
-    if (value === undefined) {
-      continue;
-    }
-    const candidateErrors = schemaValidationErrors(value, schema);
-    if (candidateErrors.length === 0) {
-      return { ok: true, source, result: value };
-    }
-    errors.push(`${source}: ${candidateErrors.join("; ")}`);
-  }
-
-  return { ok: false, errors };
-}
-
 // ---------------------------------------------------------------------------
-// Shared: Claude invocation
+// Shared: claude-code-action inputs
 // ---------------------------------------------------------------------------
 
-async function runClaude(args) {
-  const child = spawn("claude", args, {
-    env: process.env,
-    stdio: ["ignore", "pipe", "pipe"]
-  });
+// claude_args values are re-parsed shell-style by the Claude Code action. Its
+// docs show single-quoted values without defining escape rules, so fail closed
+// on embedded single quotes instead of guessing how they would be interpreted.
+export function shellSingleQuote(value) {
+  if (value.includes("'")) {
+    throw new Error(`Cannot single-quote a claude_args value containing a single quote: ${value}`);
+  }
+  return `'${value}'`;
+}
 
-  const stdoutChunks = [];
-  const stderrChunks = [];
-  child.stdout.on("data", (chunk) => stdoutChunks.push(chunk));
-  child.stderr.on("data", (chunk) => stderrChunks.push(chunk));
+export function claudeModel(env = process.env) {
+  const model = env.CLAUDE_SKILL_MODEL || DEFAULT_MODEL;
+  if (!/^[A-Za-z0-9._-]+$/.test(model)) {
+    throw new Error(`CLAUDE_SKILL_MODEL must be a bare model id, got "${model}"`);
+  }
+  return model;
+}
 
-  const exitCode = await new Promise((resolveExit, reject) => {
-    child.on("error", reject);
-    child.on("close", resolveExit);
-  });
+export function buildClaudeArgs(skill, schema, env = process.env) {
+  return [
+    `--model ${claudeModel(env)}`,
+    "--max-turns 100",
+    `--allowedTools ${shellSingleQuote(skill.allowedTools)}`,
+    "--disallowedTools Write,Edit",
+    `--append-system-prompt ${shellSingleQuote(JSON_ONLY_SYSTEM_PROMPT)}`,
+    `--json-schema ${shellSingleQuote(JSON.stringify(schema))}`
+  ].join("\n");
+}
 
+// GitHub Actions multiline output format. The delimiter is fixed so the
+// serialization stays deterministic; reject values that would terminate the
+// heredoc early rather than emit corrupted outputs.
+const OUTPUT_DELIMITER = "CLAUDE_SKILL_OUTPUT";
+
+export function serializeGitHubOutputs(outputs) {
+  const lines = [];
+  for (const [key, value] of Object.entries(outputs)) {
+    if (value.split(/\r?\n/).includes(OUTPUT_DELIMITER)) {
+      throw new Error(`Output ${key} contains the reserved delimiter line ${OUTPUT_DELIMITER}`);
+    }
+    lines.push(`${key}<<${OUTPUT_DELIMITER}`, value, OUTPUT_DELIMITER);
+  }
+  return `${lines.join("\n")}\n`;
+}
+
+export function prefilterOutputs(name, env = process.env) {
+  const skill = requireSkill(name);
+  const pre = skill.prefilter ? skill.prefilter(env) : {};
+  if (pre.result) {
+    return { skip: "true", result: JSON.stringify(pre.result) };
+  }
+  const schema = JSON.parse(readFileSync(skill.schemaPath(env), "utf8"));
   return {
-    exitCode,
-    stdout: Buffer.concat(stdoutChunks).toString("utf8"),
-    stderr: Buffer.concat(stderrChunks).toString("utf8")
+    skip: "false",
+    prompt: skill.buildPrompt(env, pre.promptContext),
+    claude_args: buildClaudeArgs(skill, schema, env)
   };
-}
-
-// Empirically (current CLI through proxy gateways), the final message
-// sometimes arrives as prose in the envelope's result text instead of
-// structured output. When extraction fails, a cheap no-tools normalizer call
-// converts that text into the required JSON object rather than failing the job.
-function buildNormalizerPrompt(title, rawText, schema) {
-  return `The previous ${title} returned text instead of the required JSON object.
-
-Convert that text into exactly one JSON object matching this schema:
-
-${JSON.stringify(schema)}
-
-Rules:
-- Preserve findings or gaps that the text reports; do not invent any that are not present.
-- If the text reports nothing wrong, return status "pass" with an empty array.
-- Do not include prose, Markdown, code fences, preamble, or postscript.
-
-Text:
-
-${rawText}`;
-}
-
-function rawTextForNormalizer(output) {
-  try {
-    const envelope = JSON.parse(output);
-    return typeof envelope.result === "string" ? envelope.result : JSON.stringify(envelope);
-  } catch {
-    return output;
-  }
-}
-
-async function runClaudeCapture(name, skill, args, resultPath) {
-  const run = await runClaude(args);
-  writeFileSync(resultPath, run.stdout);
-  if (run.exitCode !== 0) {
-    const detail = run.stderr.trim() || run.stdout.trim();
-    throw new Error(
-      `Claude ${name} run failed with exit ${run.exitCode}${detail ? `: ${detail}` : ""}`
-    );
-  }
-  return run.stdout;
-}
-
-async function runSkillThroughClaude(name, skill, schema, promptContext) {
-  const primaryOutput = await runClaudeCapture(
-    name,
-    skill,
-    [
-      "-p",
-      skill.buildPrompt(process.env, promptContext),
-      "--max-turns",
-      "100",
-      "--output-format",
-      "json",
-      "--append-system-prompt",
-      JSON_ONLY_SYSTEM_PROMPT,
-      "--allowedTools",
-      skill.allowedTools,
-      "--disallowedTools",
-      "Write,Edit",
-      "--json-schema",
-      JSON.stringify(schema)
-    ],
-    skill.resultPath
-  );
-  const primary = extractValidResult(primaryOutput, schema);
-  if (primary.ok) {
-    return primary;
-  }
-
-  console.error(
-    `Primary Claude ${name} output was not structured JSON; retrying with a no-tools JSON normalizer.`
-  );
-  console.error(primary.errors.join("\n"));
-
-  const normalizedPath = skill.resultPath.replace(/\.json$/, "-normalized.json");
-  const normalizedOutput = await runClaudeCapture(
-    name,
-    skill,
-    [
-      "-p",
-      buildNormalizerPrompt(skill.title, rawTextForNormalizer(primaryOutput), schema),
-      "--max-turns",
-      "20",
-      "--output-format",
-      "json",
-      "--append-system-prompt",
-      JSON_ONLY_SYSTEM_PROMPT,
-      "--tools",
-      "",
-      "--json-schema",
-      JSON.stringify(schema)
-    ],
-    normalizedPath
-  );
-  const normalized = extractValidResult(normalizedOutput, schema);
-  if (!normalized.ok) {
-    throw new Error(
-      `Claude ${name} output did not include a valid ${skill.title} after normalizing (raw output captured in ${skill.resultPath} and ${normalizedPath}):\n${normalized.errors.join("\n")}`
-    );
-  }
-  return normalized;
 }
 
 // ---------------------------------------------------------------------------
@@ -592,7 +479,6 @@ const SKILLS = {
     schemaPath: (env) =>
       env.SHAPE_CONTRACT_RESULT_SCHEMA ??
       ".github/shape-contract/schemas/shape-contract-result.schema.json",
-    resultPath: "claude-shape-review.json",
     allowedTools: [
       ...READ_ONLY_TOOLS,
       "Bash(bun run shape:ci)",
@@ -608,7 +494,6 @@ const SKILLS = {
     schemaPath: (env) =>
       env.SHAPE_GUARD_RESULT_SCHEMA ??
       ".github/shape-contract/schemas/shape-guard-result.schema.json",
-    resultPath: "claude-shape-guard.json",
     allowedTools: [...READ_ONLY_TOOLS, "Bash(git merge-base *)", "Bash(bun shp graph *)"].join(","),
     prefilter: guardPrefilter,
     buildPrompt: buildGuardPrompt,
@@ -624,7 +509,6 @@ const SKILLS = {
     schemaPath: (env) =>
       env.SHAPE_INDEX_RESULT_SCHEMA ??
       ".github/shape-contract/schemas/shape-index-result.schema.json",
-    resultPath: "claude-shape-index.json",
     allowedTools: [...READ_ONLY_TOOLS, "Bash(bun shp graph *)"].join(","),
     prefilter: indexPrefilter,
     buildPrompt: buildIndexPrompt,
@@ -637,40 +521,48 @@ const SKILLS = {
   }
 };
 
-async function main() {
-  const name = process.argv[2] ?? "";
+function requireSkill(name) {
   const skill = SKILLS[name];
   if (!skill) {
     throw new Error(`unknown skill "${name}"; expected one of ${Object.keys(SKILLS).join(", ")}`);
   }
+  return skill;
+}
+
+function runPrefilter(name) {
+  const outputs = prefilterOutputs(name);
+  const serialized = serializeGitHubOutputs(outputs);
+  if (process.env.GITHUB_OUTPUT) {
+    appendFileSync(process.env.GITHUB_OUTPUT, serialized);
+  } else {
+    process.stdout.write(serialized);
+  }
+  if (outputs.skip === "true") {
+    console.log(`Prefilter satisfied the ${name} skill without a model call.`);
+  }
+}
+
+function runGate(name) {
+  const skill = requireSkill(name);
   const schema = JSON.parse(readFileSync(skill.schemaPath(process.env), "utf8"));
 
+  const raw = process.env.CLAUDE_SKILL_RESULT;
+  if (raw === undefined || raw.trim() === "") {
+    throw new Error(
+      "CLAUDE_SKILL_RESULT is empty; the Claude Code action returned no schema-valid structured output and there was no prefilter result."
+    );
+  }
   let result;
-  let source;
-  if (process.env.CLAUDE_SKILL_RESULT !== undefined) {
-    let provided;
-    try {
-      provided = JSON.parse(process.env.CLAUDE_SKILL_RESULT);
-    } catch (error) {
-      throw new Error(`Could not parse CLAUDE_SKILL_RESULT: ${error}`);
-    }
-    const errors = schemaValidationErrors(provided, schema);
-    if (errors.length > 0) {
-      throw new Error(`Invalid ${skill.title}: ${errors.join("; ")}.`);
-    }
-    result = provided;
-    source = "provided";
-  } else {
-    const pre = skill.prefilter ? skill.prefilter(process.env) : {};
-    if (pre.result) {
-      result = pre.result;
-      source = "prefilter";
-    } else {
-      ({ result, source } = await runSkillThroughClaude(name, skill, schema, pre.promptContext));
-    }
+  try {
+    result = JSON.parse(raw);
+  } catch (error) {
+    throw new Error(`Could not parse CLAUDE_SKILL_RESULT: ${error}`);
+  }
+  const errors = schemaValidationErrors(result, schema);
+  if (errors.length > 0) {
+    throw new Error(`Invalid ${skill.title}: ${errors.join("; ")}.`);
   }
 
-  console.log(`Claude ${name} output source: ${source}`);
   if (process.env.GITHUB_STEP_SUMMARY) {
     appendFileSync(process.env.GITHUB_STEP_SUMMARY, skill.renderSummary(result));
   }
@@ -687,6 +579,19 @@ async function main() {
   }
 }
 
+function main() {
+  const name = process.argv[2] ?? "";
+  const mode = process.argv[3] ?? "--gate";
+  if (mode === "--prefilter") {
+    runPrefilter(name);
+    return;
+  }
+  if (mode !== "--gate") {
+    throw new Error(`unknown mode "${mode}"; expected --prefilter or --gate`);
+  }
+  runGate(name);
+}
+
 function isMainModule() {
   return (
     process.argv[1] !== undefined &&
@@ -695,8 +600,10 @@ function isMainModule() {
 }
 
 if (isMainModule()) {
-  main().catch((error) => {
+  try {
+    main();
+  } catch (error) {
     console.error(error instanceof Error ? error.message : String(error));
     process.exit(1);
-  });
+  }
 }

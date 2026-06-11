@@ -150,48 +150,78 @@ describe("Shape workflow", () => {
     expect(unknown.stderr).toContain("unknown skill");
   });
 
-  test("extracts structured output and rejects prose-wrapped result text", async () => {
+  test("fails the gate when the Claude action returns no structured output", async () => {
+    const result = await runSkillGate("review", "");
+
+    expect(result.exitCode).toBe(1);
+    expect(result.stderr).toContain("CLAUDE_SKILL_RESULT is empty");
+  });
+
+  test("prefilter emits the prompt and sonnet-default claude_args for the review skill", async () => {
     const result = await runNodeModuleProbe(`
-      import { extractValidResult } from ${JSON.stringify(pathToFileURL(skillRunnerPath).href)};
+      import { prefilterOutputs } from ${JSON.stringify(pathToFileURL(skillRunnerPath).href)};
 
-      const schema = {
-        type: "object",
-        additionalProperties: false,
-        required: ["status", "summary", "findings"],
-        properties: {
-          status: { type: "string", enum: ["pass", "advisory", "error"] },
-          summary: { type: "string" },
-          findings: { type: "array", items: { type: "string" } }
-        }
-      };
-      const review = { status: "pass", summary: "clean", findings: [] };
-
-      const fromStructured = extractValidResult(
-        JSON.stringify({ structured_output: review, result: "ignored" }),
-        schema
-      );
-      const fromResultText = extractValidResult(
-        JSON.stringify({ result: JSON.stringify(review) }),
-        schema
-      );
-      const proseWrapped = extractValidResult(
-        JSON.stringify({ result: "Here is the review: " + JSON.stringify(review) }),
-        schema
-      );
+      const outputs = prefilterOutputs("review", {
+        GITHUB_BASE_REF: "master",
+        GITHUB_SHA: "abc123"
+      });
 
       console.log(JSON.stringify({
-        structuredSource: fromStructured.source,
-        resultTextSource: fromResultText.source,
-        proseOk: proseWrapped.ok
+        skip: outputs.skip,
+        promptReadsPolicy: outputs.prompt.includes(".github/prompts/shape-contract-review.md"),
+        promptScopesSha: outputs.prompt.includes("HEAD_SHA=abc123"),
+        defaultsToSonnet: outputs.claude_args.includes("--model claude-sonnet-4-6"),
+        inlinesSchema: outputs.claude_args.includes("--json-schema '{"),
+        quotesAllowedTools: outputs.claude_args.includes("--allowedTools 'Read,"),
+        disallowsWrites: outputs.claude_args.includes("--disallowedTools Write,Edit")
       }));
     `);
 
     expect(result.exitCode).toBe(0);
     expect(JSON.parse(result.stdout)).toEqual({
-      structuredSource: "structured_output",
-      resultTextSource: "result",
-      proseOk: false
+      skip: "false",
+      promptReadsPolicy: true,
+      promptScopesSha: true,
+      defaultsToSonnet: true,
+      inlinesSchema: true,
+      quotesAllowedTools: true,
+      disallowsWrites: true
     });
+  });
+
+  test("claude_args construction fails closed on unquotable values and bad models", async () => {
+    const result = await runNodeModuleProbe(`
+      import {
+        prefilterOutputs,
+        serializeGitHubOutputs,
+        shellSingleQuote
+      } from ${JSON.stringify(pathToFileURL(skillRunnerPath).href)};
+
+      const messageOf = (fn) => {
+        try {
+          fn();
+          return "";
+        } catch (error) {
+          return error.message;
+        }
+      };
+
+      console.log(JSON.stringify({
+        quoteError: messageOf(() => shellSingleQuote("don't")),
+        modelError: messageOf(() => prefilterOutputs("review", { CLAUDE_SKILL_MODEL: "sonnet'; ls" })),
+        delimiterError: messageOf(() => serializeGitHubOutputs({ prompt: "CLAUDE_SKILL_OUTPUT" })),
+        multiline: serializeGitHubOutputs({ prompt: "line one\\nline two" })
+      }));
+    `);
+
+    expect(result.exitCode).toBe(0);
+    const probes = JSON.parse(result.stdout);
+    expect(probes.quoteError).toContain("single quote");
+    expect(probes.modelError).toContain("bare model id");
+    expect(probes.delimiterError).toContain("reserved delimiter");
+    expect(probes.multiline).toBe(
+      "prompt<<CLAUDE_SKILL_OUTPUT\nline one\nline two\nCLAUDE_SKILL_OUTPUT\n"
+    );
   });
 
   test("schema validator recurses and fails closed on unsupported keywords", async () => {
