@@ -7,6 +7,11 @@ sidebar:
 
 Shape diagnostics should name the failed claim and show the causal path behind it.
 
+Diagnostics are reported in a canonical order: by diagnostic kind, then by
+rendered text. The order is deterministic over the input set and does not
+depend on the order of declarations in `.shape` source files, so reordering
+declarations never churns checker output in CI or review diffs.
+
 ## Forbidden effect
 
 Cause: a function emits an effect forbidden by a resource trait or rule.

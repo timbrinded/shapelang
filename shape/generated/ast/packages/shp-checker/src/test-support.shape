@@ -21,6 +21,11 @@ resource TestSupportModuleFnTargetAstAnchor : GeneratedAstAnchor {
   fingerprint ast.semantic_subtree_v1("sha256:d57c4f94adf20b0b3a1b43e1177e7c0d264797b7eb4c46bd88fbd2c83ac68bf6")
 }
 
+resource TestSupportModuleFormatAstTestDiagnosticsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/test-support.ts:31-33")
+  fingerprint ast.semantic_subtree_v1("sha256:4d7c3dc8ce3e8e8a6bfd29c2e736a54796436ef4eec731c43fc7e0463d1dd0d7")
+}
+
 resource TestSupportModuleRequireParsedAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/test-support.ts:17-23")
   fingerprint ast.semantic_subtree_v1("sha256:93a215c41f5d4b841075b5c11610bf69de3642f91e9f1e1ed5d855aef3b1c9ba")
@@ -35,6 +40,9 @@ component TestSupportModule : GeneratedCandidate {
     effects unknown
   fn fnTarget
     source ts("packages/shp-checker/src/test-support.ts:7-9")
+    effects unknown
+  fn formatAstTestDiagnostics
+    source ts("packages/shp-checker/src/test-support.ts:31-33")
     effects unknown
   fn requireParsed
     source ts("packages/shp-checker/src/test-support.ts:17-23")
@@ -63,6 +71,14 @@ relation TestSupportModuleFnTargetGeneratedFromTestSupportModuleFnTargetAstAncho
   roles { TestSupportModule as generated, TestSupportModuleFnTargetAstAnchor as syntax }
   expects TestSupportModuleFnTargetAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d57c4f94adf20b0b3a1b43e1177e7c0d264797b7eb4c46bd88fbd2c83ac68bf6")
   summary "fn TestSupportModule.fnTarget generated from typescript function_declaration at packages/shp-checker/src/test-support.ts:7-9."
+}
+
+relation TestSupportModuleFormatAstTestDiagnosticsGeneratedFromTestSupportModuleFormatAstTestDiagnosticsAstAnchor {
+  kind generated_from
+  connects TestSupportModule -> TestSupportModuleFormatAstTestDiagnosticsAstAnchor
+  roles { TestSupportModule as generated, TestSupportModuleFormatAstTestDiagnosticsAstAnchor as syntax }
+  expects TestSupportModuleFormatAstTestDiagnosticsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4d7c3dc8ce3e8e8a6bfd29c2e736a54796436ef4eec731c43fc7e0463d1dd0d7")
+  summary "fn TestSupportModule.formatAstTestDiagnostics generated from typescript function_declaration at packages/shp-checker/src/test-support.ts:31-33."
 }
 
 relation TestSupportModuleRequireParsedGeneratedFromTestSupportModuleRequireParsedAstAnchor {

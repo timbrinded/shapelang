@@ -95,6 +95,13 @@ component ShapeChecker {
 component ShapeDiagnostics {
   grants Append<DiagnosticText>
   grants Read<SemanticDiagnostics>
+  fn compareShapeDiagnostics
+    source ts("packages/shp-checker/src/checker/diagnostics.ts#compareShapeDiagnostics")
+    description "Canonical diagnostic order (kind, then rendered text) so checker output never leaks source declaration order."
+    effects complete {
+      Read<SemanticDiagnostics>
+        evidence ts("packages/shp-checker/src/checker/diagnostics.ts")
+    }
   fn formatDiagnostics : RefactorSensitive
     source ts("packages/shp-checker/src/checker/diagnostics.ts#formatDiagnostics")
     effects complete {
@@ -293,6 +300,12 @@ relation ShapeCheckerUsesBindings {
   summary "BindingRules"
 }
 
+relation ShapeCheckerUsesDiagnostics {
+  kind calls
+  connects ShapeChecker -> ShapeDiagnostics
+  summary "CanonicalDiagnosticOrdering"
+}
+
 relation ShapeCheckerUsesModelPipeline {
   kind calls
   connects ShapeChecker -> ShapeModelLowerer
@@ -303,6 +316,12 @@ relation ShapeCheckerUsesRulePipeline {
   kind calls
   connects ShapeChecker -> ShapeRuleEngine
   summary "RulePipeline"
+}
+
+relation ShapeCheckerUsesStringHelpers {
+  kind calls
+  connects ShapeChecker -> ShapeStringHelpers
+  summary "CanonicalFactOrdering"
 }
 
 relation ShapeDiagnosticsProvidesText {

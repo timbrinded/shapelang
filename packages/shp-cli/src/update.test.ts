@@ -480,6 +480,239 @@ describe("shp update helpers", () => {
   });
 });
 
+describe("shp update failure paths", () => {
+  test("failure harness baseline performs a full update", async () => {
+    const { services, calls } = failureHarness();
+
+    const output = await runUpdate(baseUpdateOptions(), services);
+
+    expect(output).toBe("updated shp 0.3.0 -> 0.4.0 at /opt/bin/shp\n");
+    expect(calls.replaced).toHaveLength(1);
+    expect(calls.removedDirs).toEqual(["/tmp/shp-update-test"]);
+  });
+
+  test("rejects an archive whose checksum does not match checksums.txt", async () => {
+    const { services, calls } = failureHarness({
+      sha256File: async () => "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+    });
+
+    const message = await runUpdateFailureMessage(services);
+
+    expect(message).toContain("checksum verification failed for shp-linux-x64.tar.gz");
+    expect(calls.replaced).toEqual([]);
+    expect(calls.removedDirs).toEqual(["/tmp/shp-update-test"]);
+  });
+
+  test("rejects a checksums.txt that has no entry for the archive", async () => {
+    const { services, calls } = failureHarness({
+      downloadBytes: async (url: string) => {
+        if (url.endsWith("checksums.txt")) {
+          return new TextEncoder().encode(
+            "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc  shp-darwin-arm64.tar.gz\n"
+          );
+        }
+        return new Uint8Array([1, 2, 3]);
+      }
+    });
+
+    const message = await runUpdateFailureMessage(services);
+
+    expect(message).toContain("checksum for shp-linux-x64.tar.gz not found");
+    expect(calls.replaced).toEqual([]);
+    expect(calls.removedDirs).toEqual(["/tmp/shp-update-test"]);
+  });
+
+  test("rejects a release that is missing the platform archive asset", async () => {
+    const { services, calls } = failureHarness({
+      fetchJson: async () => ({
+        tag_name: "v0.4.0",
+        assets: [
+          {
+            name: "checksums.txt",
+            browser_download_url: "https://example.test/checksums.txt"
+          }
+        ]
+      })
+    });
+
+    const message = await runUpdateFailureMessage(services);
+
+    expect(message).toContain("does not include shp-linux-x64.tar.gz");
+    expect(calls.replaced).toEqual([]);
+    // The failure happens while selecting assets, before any temp dir exists.
+    expect(calls.tempDirs).toBe(0);
+    expect(calls.removedDirs).toEqual([]);
+  });
+
+  test("rejects a release that is missing checksums.txt", async () => {
+    const { services, calls } = failureHarness({
+      fetchJson: async () => ({
+        tag_name: "v0.4.0",
+        assets: [
+          {
+            name: "shp-linux-x64.tar.gz",
+            browser_download_url: "https://example.test/shp-linux-x64.tar.gz"
+          }
+        ]
+      })
+    });
+
+    const message = await runUpdateFailureMessage(services);
+
+    expect(message).toContain("does not include checksums.txt");
+    expect(calls.replaced).toEqual([]);
+    expect(calls.tempDirs).toBe(0);
+    expect(calls.removedDirs).toEqual([]);
+  });
+
+  test("rejects an extracted archive missing the parser assets", async () => {
+    const { services, calls } = failureHarness({
+      pathExists: async (path: string) => path === "/opt/bin/shp"
+    });
+
+    const message = await runUpdateFailureMessage(services);
+
+    expect(message).toContain(
+      "shp-linux-x64.tar.gz is missing tree-sitter-language-pack parser assets"
+    );
+    expect(calls.replaced).toEqual([]);
+    expect(calls.removedDirs).toEqual(["/tmp/shp-update-test"]);
+  });
+
+  test("rejects a downloaded binary that fails --version", async () => {
+    const { services, calls } = failureHarness({
+      runVersion: async (binaryPath: string) =>
+        binaryPath === "/opt/bin/shp"
+          ? { exitCode: 0, stdout: "0.3.0\n", stderr: "" }
+          : { exitCode: 1, stdout: "", stderr: "boom" }
+    });
+
+    const message = await runUpdateFailureMessage(services);
+
+    expect(message).toContain("downloaded shp failed --version: boom");
+    expect(calls.replaced).toEqual([]);
+    expect(calls.removedDirs).toEqual(["/tmp/shp-update-test"]);
+  });
+
+  test("rejects a downloaded binary that reports the wrong version", async () => {
+    const { services, calls } = failureHarness({
+      runVersion: async (binaryPath: string) => ({
+        exitCode: 0,
+        stdout: binaryPath === "/opt/bin/shp" ? "0.3.0\n" : "0.3.9\n",
+        stderr: ""
+      })
+    });
+
+    const message = await runUpdateFailureMessage(services);
+
+    expect(message).toContain("downloaded shp reports 0.3.9, expected 0.4.0");
+    expect(calls.replaced).toEqual([]);
+    expect(calls.removedDirs).toEqual(["/tmp/shp-update-test"]);
+  });
+
+  test("propagates a download failure and still removes the temp dir", async () => {
+    const { services, calls } = failureHarness({
+      downloadBytes: async () => {
+        throw new Error("network down");
+      }
+    });
+
+    const message = await runUpdateFailureMessage(services);
+
+    expect(message).toContain("network down");
+    expect(calls.replaced).toEqual([]);
+    expect(calls.removedDirs).toEqual(["/tmp/shp-update-test"]);
+  });
+});
+
+type FailureHarnessCalls = {
+  replaced: string[];
+  removedDirs: string[];
+  tempDirs: number;
+};
+
+// Known-good mocked update flow (mirrors "runs the update flow with mocked
+// services"); each failure test overrides exactly one service so the rejection
+// is attributable to that single seam.
+function failureHarness(overrides: Partial<UpdateServices> = {}): {
+  services: UpdateServices;
+  calls: FailureHarnessCalls;
+} {
+  const calls: FailureHarnessCalls = { replaced: [], removedDirs: [], tempDirs: 0 };
+  const services: UpdateServices = {
+    fetchJson: async () => ({
+      tag_name: "v0.4.0",
+      assets: [
+        {
+          name: "checksums.txt",
+          browser_download_url: "https://example.test/checksums.txt"
+        },
+        {
+          name: "shp-linux-x64.tar.gz",
+          browser_download_url: "https://example.test/shp-linux-x64.tar.gz"
+        }
+      ]
+    }),
+    downloadBytes: async (url: string) => {
+      if (url.endsWith("checksums.txt")) {
+        return new TextEncoder().encode(
+          "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc  shp-linux-x64.tar.gz\n"
+        );
+      }
+      return new Uint8Array([1, 2, 3]);
+    },
+    makeTempDir: async () => {
+      calls.tempDirs += 1;
+      return "/tmp/shp-update-test";
+    },
+    removeDir: async (path: string) => {
+      calls.removedDirs.push(path);
+    },
+    pathExists: async (path: string) =>
+      path === "/opt/bin/shp" || path === "/tmp/shp-update-test/tree-sitter-language-pack",
+    writeFile: async () => {},
+    sha256File: async () => "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+    extractTarGz: async () => {},
+    runVersion: async (binaryPath: string) => ({
+      exitCode: 0,
+      stdout: binaryPath === "/opt/bin/shp" ? "0.3.0\n" : "0.4.0\n",
+      stderr: ""
+    }),
+    runHelp: async () => validShpHelp(),
+    replaceBinary: async (
+      sourcePath: string,
+      targetPath: string,
+      platform: ReleasePlatform,
+      parserAssetsPath: string
+    ) => {
+      calls.replaced.push(`${sourcePath}:${targetPath}:${platform.assetName}:${parserAssetsPath}`);
+      return { pending: false };
+    },
+    ...overrides
+  };
+  return { services, calls };
+}
+
+function baseUpdateOptions() {
+  return {
+    currentVersion: "0.3.0",
+    dryRun: false,
+    targetPath: "/opt/bin/shp",
+    defaultTargetPath: "/usr/bin/shp",
+    processPlatform: "linux" as const,
+    processArch: "x64"
+  };
+}
+
+async function runUpdateFailureMessage(services: UpdateServices): Promise<string> {
+  try {
+    await runUpdate(baseUpdateOptions(), services);
+  } catch (error) {
+    return error instanceof Error ? error.message : String(error);
+  }
+  throw new Error("expected runUpdate to fail");
+}
+
 function validShpHelp() {
   return {
     exitCode: 0,

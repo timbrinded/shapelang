@@ -5,6 +5,7 @@
 // rules, so lowering and query code never import from diagnostics.
 import type { CheckResult, SemanticDiagnostic, ShapeDiagnostic } from "./model.ts";
 import type { ParseDiagnostic } from "../parser.ts";
+import { compareCodepointStrings } from "../shape-strings.ts";
 import { displaySymbol, formatTarget, formatTerm } from "./display.ts";
 
 export function formatDiagnostics(result: CheckResult): string {
@@ -13,6 +14,17 @@ export function formatDiagnostics(result: CheckResult): string {
   }
 
   return `${result.diagnostics.map(formatDiagnostic).join("\n\n")}\n`;
+}
+
+// Canonical diagnostic order: by kind, then by rendered text. Checker output
+// must be deterministic over the input set, not its source declaration order,
+// so rule evaluation order is never allowed to leak into the diagnostics list.
+export function compareShapeDiagnostics(left: ShapeDiagnostic, right: ShapeDiagnostic): number {
+  const byKind = compareCodepointStrings(left.kind, right.kind);
+  if (byKind !== 0) {
+    return byKind;
+  }
+  return compareCodepointStrings(formatDiagnostic(left), formatDiagnostic(right));
 }
 
 function formatDiagnostic(diagnostic: ShapeDiagnostic): string {

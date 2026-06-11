@@ -26,3 +26,8 @@ export function requireParsed(source: string) {
 export function checkShapeSource(source: string, options: CheckOptions = {}) {
   return checkShapeModules([requireParsed(source)], options);
 }
+
+/** Join diagnostic messages for readable test failure output. */
+export function formatAstTestDiagnostics(diagnostics: { message: string }[]): string {
+  return diagnostics.map((diagnostic) => diagnostic.message).join("\n");
+}
