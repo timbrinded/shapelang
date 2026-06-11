@@ -141,7 +141,7 @@ describe("Shape workflow", () => {
     expect(garbage.exitCode).toBe(1);
     expect(garbage.stderr).toContain("Could not parse CLAUDE_SKILL_RESULT");
 
-    const unknown = await runSkillGate("gaurd", {
+    const unknown = await runSkillGate("bogus", {
       status: "pass",
       summary: "",
       findings: []

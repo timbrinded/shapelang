@@ -7,37 +7,42 @@ trait GeneratedCandidate {
 }
 
 resource RunClaudeSkillModuleAuthoredCoverageFromShapeSourceAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor(".github/scripts/run-claude-skill.mjs:381-399")
+  storage ast.anchor(".github/scripts/run-claude-skill.mjs:450-468")
   fingerprint ast.semantic_subtree_v1("sha256:f338a92f7417106c59e846ed4e03752f65330e5d1520e1cde5ea3ba6068fd81f")
 }
 
 resource RunClaudeSkillModuleBuildGuardPromptAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor(".github/scripts/run-claude-skill.mjs:303-309")
+  storage ast.anchor(".github/scripts/run-claude-skill.mjs:372-378")
   fingerprint ast.semantic_subtree_v1("sha256:96be7b43d866bae630a5b7f0f1f5c867e2c21be11a242c50ec8fa58ba5364a45")
 }
 
 resource RunClaudeSkillModuleBuildIndexPromptAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor(".github/scripts/run-claude-skill.mjs:451-458")
+  storage ast.anchor(".github/scripts/run-claude-skill.mjs:520-527")
   fingerprint ast.semantic_subtree_v1("sha256:2e1193d7ef69729c22b0078b90c9968f20f493d882013c27a533ef6c8a0b2d54")
 }
 
+resource RunClaudeSkillModuleBuildNormalizerPromptAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor(".github/scripts/run-claude-skill.mjs:183-198")
+  fingerprint ast.semantic_subtree_v1("sha256:eacee8c18e98429aaf84b0338e82684b89e8a08cbcc33cba80b8db6c57a0b30d")
+}
+
 resource RunClaudeSkillModuleBuildReviewPromptAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor(".github/scripts/run-claude-skill.mjs:217-230")
+  storage ast.anchor(".github/scripts/run-claude-skill.mjs:286-299")
   fingerprint ast.semantic_subtree_v1("sha256:3cf741f6d80198c6bdf2a1c44df9355fc9b079e9e6a74b55ebcedf6c1b02d118")
 }
 
 resource RunClaudeSkillModuleChangedAuthoredShapeFilesAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor(".github/scripts/run-claude-skill.mjs:263-268")
+  storage ast.anchor(".github/scripts/run-claude-skill.mjs:332-337")
   fingerprint ast.semantic_subtree_v1("sha256:46eb14c0662bf4283f25e49784ebf58b10ed8c8659ecff39c7ab5bac9f61b793")
 }
 
 resource RunClaudeSkillModuleCollectAuthoredCoverageAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor(".github/scripts/run-claude-skill.mjs:401-415")
+  storage ast.anchor(".github/scripts/run-claude-skill.mjs:470-484")
   fingerprint ast.semantic_subtree_v1("sha256:674edcfb686fdc8fc49fcd168c12180ce8964434d4808df98c65968f02a73b9f")
 }
 
 resource RunClaudeSkillModuleDefaultRunGitDiffAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor(".github/scripts/run-claude-skill.mjs:270-287")
+  storage ast.anchor(".github/scripts/run-claude-skill.mjs:339-356")
   fingerprint ast.semantic_subtree_v1("sha256:69da8fb4418fffd969251d8c98b903c64ac3120f4bea360bc69999a694e250a7")
 }
 
@@ -47,42 +52,42 @@ resource RunClaudeSkillModuleExtractValidResultAstAnchor : GeneratedAstAnchor {
 }
 
 resource RunClaudeSkillModuleGlobToRegExpAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor(".github/scripts/run-claude-skill.mjs:366-377")
+  storage ast.anchor(".github/scripts/run-claude-skill.mjs:435-446")
   fingerprint ast.semantic_subtree_v1("sha256:5efd1489ac83bb89cbee46c207a76efeef2a721839cebf54f4958a6f6f2e8740")
 }
 
 resource RunClaudeSkillModuleGuardBaseRefAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor(".github/scripts/run-claude-skill.mjs:259-261")
+  storage ast.anchor(".github/scripts/run-claude-skill.mjs:328-330")
   fingerprint ast.semantic_subtree_v1("sha256:ea2e722273455f9ae9596e15cb666e0eb0e64a82ee60e2261be771271a4c8b50")
 }
 
 resource RunClaudeSkillModuleGuardFailureMessageAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor(".github/scripts/run-claude-skill.mjs:328-345")
+  storage ast.anchor(".github/scripts/run-claude-skill.mjs:397-414")
   fingerprint ast.semantic_subtree_v1("sha256:f51e88e94360158eb3ba60af81b28ecc1e6160bf4cd6f67beec3d16f5df7e50b")
 }
 
 resource RunClaudeSkillModuleGuardPrefilterAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor(".github/scripts/run-claude-skill.mjs:289-301")
+  storage ast.anchor(".github/scripts/run-claude-skill.mjs:358-370")
   fingerprint ast.semantic_subtree_v1("sha256:f40b1df67b6abc1b6f837ed586d1a6ef2f1e102f2802e3f46a8c635248c270f7")
 }
 
 resource RunClaudeSkillModuleIndexFailureMessageAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor(".github/scripts/run-claude-skill.mjs:481-495")
+  storage ast.anchor(".github/scripts/run-claude-skill.mjs:550-564")
   fingerprint ast.semantic_subtree_v1("sha256:d58fd7d041dba6e62309590846498813f01ed75809c137f8499c4a94e8d6168f")
 }
 
 resource RunClaudeSkillModuleIndexPrefilterAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor(".github/scripts/run-claude-skill.mjs:426-449")
+  storage ast.anchor(".github/scripts/run-claude-skill.mjs:495-518")
   fingerprint ast.semantic_subtree_v1("sha256:96286a4ab54adb2d5b80c67dde141771554bb7c2b1d1ab9e9b9f37e50ffa1896")
 }
 
 resource RunClaudeSkillModuleIsAuditableSourceFileAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor(".github/scripts/run-claude-skill.mjs:353-364")
+  storage ast.anchor(".github/scripts/run-claude-skill.mjs:422-433")
   fingerprint ast.semantic_subtree_v1("sha256:9d92e6076fa966173c06cc3c1fcb1c5fa3ee0741e8f7774f52ba03c558b225a1")
 }
 
 resource RunClaudeSkillModuleIsMainModuleAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor(".github/scripts/run-claude-skill.mjs:621-626")
+  storage ast.anchor(".github/scripts/run-claude-skill.mjs:690-695")
   fingerprint ast.semantic_subtree_v1("sha256:a7630a5e5fbe44b11a467fb490a2c52019708e3bbc0e6d3476897795228c2a3f")
 }
 
@@ -92,7 +97,7 @@ resource RunClaudeSkillModuleIsRecordAstAnchor : GeneratedAstAnchor {
 }
 
 resource RunClaudeSkillModuleMainAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor(".github/scripts/run-claude-skill.mjs:571-619")
+  storage ast.anchor(".github/scripts/run-claude-skill.mjs:640-688")
   fingerprint ast.semantic_subtree_v1("sha256:d47e6bbd2ec1e8e95e75e82e0b28b1f7a4f40025921b9f348a277cf8bca66e83")
 }
 
@@ -101,23 +106,28 @@ resource RunClaudeSkillModuleParseJsonObjectCandidateAstAnchor : GeneratedAstAnc
   fingerprint ast.semantic_subtree_v1("sha256:1368ada2fc2238e828323121f5e23af03804937de2c6b6f4f7a3e37413d0d065")
 }
 
+resource RunClaudeSkillModuleRawTextForNormalizerAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor(".github/scripts/run-claude-skill.mjs:200-207")
+  fingerprint ast.semantic_subtree_v1("sha256:37a0fa8400376df89f3253af2175f7f7bc00cb4ff993f91580158756dbe91c81")
+}
+
 resource RunClaudeSkillModuleRenderGuardSummaryAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor(".github/scripts/run-claude-skill.mjs:311-326")
+  storage ast.anchor(".github/scripts/run-claude-skill.mjs:380-395")
   fingerprint ast.semantic_subtree_v1("sha256:5f6ef0f5a9723a71d2451e9a6db0c57c38cfaeb6d099cdd765e8a3735d4e225b")
 }
 
 resource RunClaudeSkillModuleRenderIndexSummaryAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor(".github/scripts/run-claude-skill.mjs:460-479")
+  storage ast.anchor(".github/scripts/run-claude-skill.mjs:529-548")
   fingerprint ast.semantic_subtree_v1("sha256:fec75fedc3192723d029414cdc5468fb6e1474744000fd587378ac8a048b7ad5")
 }
 
 resource RunClaudeSkillModuleRenderReviewSummaryAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor(".github/scripts/run-claude-skill.mjs:232-243")
+  storage ast.anchor(".github/scripts/run-claude-skill.mjs:301-312")
   fingerprint ast.semantic_subtree_v1("sha256:9daa7b891df0518162c34ecfe3b163b3a9e3ce399a796e03f3c1e6aefab9d981")
 }
 
 resource RunClaudeSkillModuleReviewFailureMessageAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor(".github/scripts/run-claude-skill.mjs:245-253")
+  storage ast.anchor(".github/scripts/run-claude-skill.mjs:314-322")
   fingerprint ast.semantic_subtree_v1("sha256:17d3ccaf5881bad40eda2dd089b73f2b8c0463c996194bbc3aefe9275a208081")
 }
 
@@ -126,9 +136,14 @@ resource RunClaudeSkillModuleRunClaudeAstAnchor : GeneratedAstAnchor {
   fingerprint ast.semantic_subtree_v1("sha256:4815ca2608f38f1bb5b86f819542ba65b275d90de4a6bee7d270de4b7c604bf1")
 }
 
+resource RunClaudeSkillModuleRunClaudeCaptureAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor(".github/scripts/run-claude-skill.mjs:209-219")
+  fingerprint ast.semantic_subtree_v1("sha256:b38af306025052357dd5b455979f9b55429fe87432229e8cf4483b4e6586f867")
+}
+
 resource RunClaudeSkillModuleRunSkillThroughClaudeAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor(".github/scripts/run-claude-skill.mjs:179-211")
-  fingerprint ast.semantic_subtree_v1("sha256:89348f0b20d533af97a6246c151cc90d78147546a1e142aac1b0f50d8d084b56")
+  storage ast.anchor(".github/scripts/run-claude-skill.mjs:221-280")
+  fingerprint ast.semantic_subtree_v1("sha256:f09278c4af469a71922e773500adf73da6c81f031b69c65732e102ea4b22481e")
 }
 
 resource RunClaudeSkillModuleSchemaValidationErrorsAstAnchor : GeneratedAstAnchor {
@@ -137,91 +152,100 @@ resource RunClaudeSkillModuleSchemaValidationErrorsAstAnchor : GeneratedAstAncho
 }
 
 resource RunClaudeSkillModuleUncoveredChangedFilesAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor(".github/scripts/run-claude-skill.mjs:417-424")
+  storage ast.anchor(".github/scripts/run-claude-skill.mjs:486-493")
   fingerprint ast.semantic_subtree_v1("sha256:d6c22002aa880ae19b696518a9d7c607c90d2b26588ded910a79192204808b36")
 }
 
 component RunClaudeSkillModule : GeneratedCandidate {
   fn authoredCoverageFromShapeSource
-    source js(".github/scripts/run-claude-skill.mjs:381-399")
+    source js(".github/scripts/run-claude-skill.mjs:450-468")
     effects unknown
   fn buildGuardPrompt
-    source js(".github/scripts/run-claude-skill.mjs:303-309")
+    source js(".github/scripts/run-claude-skill.mjs:372-378")
     effects unknown
   fn buildIndexPrompt
-    source js(".github/scripts/run-claude-skill.mjs:451-458")
+    source js(".github/scripts/run-claude-skill.mjs:520-527")
+    effects unknown
+  fn buildNormalizerPrompt
+    source js(".github/scripts/run-claude-skill.mjs:183-198")
     effects unknown
   fn buildReviewPrompt
-    source js(".github/scripts/run-claude-skill.mjs:217-230")
+    source js(".github/scripts/run-claude-skill.mjs:286-299")
     effects unknown
   fn changedAuthoredShapeFiles
-    source js(".github/scripts/run-claude-skill.mjs:263-268")
+    source js(".github/scripts/run-claude-skill.mjs:332-337")
     effects unknown
   fn collectAuthoredCoverage
-    source js(".github/scripts/run-claude-skill.mjs:401-415")
+    source js(".github/scripts/run-claude-skill.mjs:470-484")
     effects unknown
   fn defaultRunGitDiff
-    source js(".github/scripts/run-claude-skill.mjs:270-287")
+    source js(".github/scripts/run-claude-skill.mjs:339-356")
     effects unknown
   fn extractValidResult
     source js(".github/scripts/run-claude-skill.mjs:123-150")
     effects unknown
   fn globToRegExp
-    source js(".github/scripts/run-claude-skill.mjs:366-377")
+    source js(".github/scripts/run-claude-skill.mjs:435-446")
     effects unknown
   fn guardBaseRef
-    source js(".github/scripts/run-claude-skill.mjs:259-261")
+    source js(".github/scripts/run-claude-skill.mjs:328-330")
     effects unknown
   fn guardFailureMessage
-    source js(".github/scripts/run-claude-skill.mjs:328-345")
+    source js(".github/scripts/run-claude-skill.mjs:397-414")
     effects unknown
   fn guardPrefilter
-    source js(".github/scripts/run-claude-skill.mjs:289-301")
+    source js(".github/scripts/run-claude-skill.mjs:358-370")
     effects unknown
   fn indexFailureMessage
-    source js(".github/scripts/run-claude-skill.mjs:481-495")
+    source js(".github/scripts/run-claude-skill.mjs:550-564")
     effects unknown
   fn indexPrefilter
-    source js(".github/scripts/run-claude-skill.mjs:426-449")
+    source js(".github/scripts/run-claude-skill.mjs:495-518")
     effects unknown
   fn isAuditableSourceFile
-    source js(".github/scripts/run-claude-skill.mjs:353-364")
+    source js(".github/scripts/run-claude-skill.mjs:422-433")
     effects unknown
   fn isMainModule
-    source js(".github/scripts/run-claude-skill.mjs:621-626")
+    source js(".github/scripts/run-claude-skill.mjs:690-695")
     effects unknown
   fn isRecord
     source js(".github/scripts/run-claude-skill.mjs:21-23")
     effects unknown
   fn main
-    source js(".github/scripts/run-claude-skill.mjs:571-619")
+    source js(".github/scripts/run-claude-skill.mjs:640-688")
     effects unknown
   fn parseJsonObjectCandidate
     source js(".github/scripts/run-claude-skill.mjs:99-119")
     effects unknown
+  fn rawTextForNormalizer
+    source js(".github/scripts/run-claude-skill.mjs:200-207")
+    effects unknown
   fn renderGuardSummary
-    source js(".github/scripts/run-claude-skill.mjs:311-326")
+    source js(".github/scripts/run-claude-skill.mjs:380-395")
     effects unknown
   fn renderIndexSummary
-    source js(".github/scripts/run-claude-skill.mjs:460-479")
+    source js(".github/scripts/run-claude-skill.mjs:529-548")
     effects unknown
   fn renderReviewSummary
-    source js(".github/scripts/run-claude-skill.mjs:232-243")
+    source js(".github/scripts/run-claude-skill.mjs:301-312")
     effects unknown
   fn reviewFailureMessage
-    source js(".github/scripts/run-claude-skill.mjs:245-253")
+    source js(".github/scripts/run-claude-skill.mjs:314-322")
     effects unknown
   fn runClaude
     source js(".github/scripts/run-claude-skill.mjs:156-177")
     effects unknown
+  fn runClaudeCapture
+    source js(".github/scripts/run-claude-skill.mjs:209-219")
+    effects unknown
   fn runSkillThroughClaude
-    source js(".github/scripts/run-claude-skill.mjs:179-211")
+    source js(".github/scripts/run-claude-skill.mjs:221-280")
     effects unknown
   fn schemaValidationErrors
     source js(".github/scripts/run-claude-skill.mjs:28-97")
     effects unknown
   fn uncoveredChangedFiles
-    source js(".github/scripts/run-claude-skill.mjs:417-424")
+    source js(".github/scripts/run-claude-skill.mjs:486-493")
     effects unknown
 }
 
@@ -230,7 +254,7 @@ relation RunClaudeSkillModuleAuthoredCoverageFromShapeSourceGeneratedFromRunClau
   connects RunClaudeSkillModule -> RunClaudeSkillModuleAuthoredCoverageFromShapeSourceAstAnchor
   roles { RunClaudeSkillModule as generated, RunClaudeSkillModuleAuthoredCoverageFromShapeSourceAstAnchor as syntax }
   expects RunClaudeSkillModuleAuthoredCoverageFromShapeSourceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f338a92f7417106c59e846ed4e03752f65330e5d1520e1cde5ea3ba6068fd81f")
-  summary "fn RunClaudeSkillModule.authoredCoverageFromShapeSource generated from javascript function_declaration at .github/scripts/run-claude-skill.mjs:381-399."
+  summary "fn RunClaudeSkillModule.authoredCoverageFromShapeSource generated from javascript function_declaration at .github/scripts/run-claude-skill.mjs:450-468."
 }
 
 relation RunClaudeSkillModuleBuildGuardPromptGeneratedFromRunClaudeSkillModuleBuildGuardPromptAstAnchor {
@@ -238,7 +262,7 @@ relation RunClaudeSkillModuleBuildGuardPromptGeneratedFromRunClaudeSkillModuleBu
   connects RunClaudeSkillModule -> RunClaudeSkillModuleBuildGuardPromptAstAnchor
   roles { RunClaudeSkillModule as generated, RunClaudeSkillModuleBuildGuardPromptAstAnchor as syntax }
   expects RunClaudeSkillModuleBuildGuardPromptAstAnchor fingerprint ast.semantic_subtree_v1("sha256:96be7b43d866bae630a5b7f0f1f5c867e2c21be11a242c50ec8fa58ba5364a45")
-  summary "fn RunClaudeSkillModule.buildGuardPrompt generated from javascript function_declaration at .github/scripts/run-claude-skill.mjs:303-309."
+  summary "fn RunClaudeSkillModule.buildGuardPrompt generated from javascript function_declaration at .github/scripts/run-claude-skill.mjs:372-378."
 }
 
 relation RunClaudeSkillModuleBuildIndexPromptGeneratedFromRunClaudeSkillModuleBuildIndexPromptAstAnchor {
@@ -246,7 +270,15 @@ relation RunClaudeSkillModuleBuildIndexPromptGeneratedFromRunClaudeSkillModuleBu
   connects RunClaudeSkillModule -> RunClaudeSkillModuleBuildIndexPromptAstAnchor
   roles { RunClaudeSkillModule as generated, RunClaudeSkillModuleBuildIndexPromptAstAnchor as syntax }
   expects RunClaudeSkillModuleBuildIndexPromptAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2e1193d7ef69729c22b0078b90c9968f20f493d882013c27a533ef6c8a0b2d54")
-  summary "fn RunClaudeSkillModule.buildIndexPrompt generated from javascript function_declaration at .github/scripts/run-claude-skill.mjs:451-458."
+  summary "fn RunClaudeSkillModule.buildIndexPrompt generated from javascript function_declaration at .github/scripts/run-claude-skill.mjs:520-527."
+}
+
+relation RunClaudeSkillModuleBuildNormalizerPromptGeneratedFromRunClaudeSkillModuleBuildNormalizerPromptAstAnchor {
+  kind generated_from
+  connects RunClaudeSkillModule -> RunClaudeSkillModuleBuildNormalizerPromptAstAnchor
+  roles { RunClaudeSkillModule as generated, RunClaudeSkillModuleBuildNormalizerPromptAstAnchor as syntax }
+  expects RunClaudeSkillModuleBuildNormalizerPromptAstAnchor fingerprint ast.semantic_subtree_v1("sha256:eacee8c18e98429aaf84b0338e82684b89e8a08cbcc33cba80b8db6c57a0b30d")
+  summary "fn RunClaudeSkillModule.buildNormalizerPrompt generated from javascript function_declaration at .github/scripts/run-claude-skill.mjs:183-198."
 }
 
 relation RunClaudeSkillModuleBuildReviewPromptGeneratedFromRunClaudeSkillModuleBuildReviewPromptAstAnchor {
@@ -254,7 +286,7 @@ relation RunClaudeSkillModuleBuildReviewPromptGeneratedFromRunClaudeSkillModuleB
   connects RunClaudeSkillModule -> RunClaudeSkillModuleBuildReviewPromptAstAnchor
   roles { RunClaudeSkillModule as generated, RunClaudeSkillModuleBuildReviewPromptAstAnchor as syntax }
   expects RunClaudeSkillModuleBuildReviewPromptAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3cf741f6d80198c6bdf2a1c44df9355fc9b079e9e6a74b55ebcedf6c1b02d118")
-  summary "fn RunClaudeSkillModule.buildReviewPrompt generated from javascript function_declaration at .github/scripts/run-claude-skill.mjs:217-230."
+  summary "fn RunClaudeSkillModule.buildReviewPrompt generated from javascript function_declaration at .github/scripts/run-claude-skill.mjs:286-299."
 }
 
 relation RunClaudeSkillModuleChangedAuthoredShapeFilesGeneratedFromRunClaudeSkillModuleChangedAuthoredShapeFilesAstAnchor {
@@ -262,7 +294,7 @@ relation RunClaudeSkillModuleChangedAuthoredShapeFilesGeneratedFromRunClaudeSkil
   connects RunClaudeSkillModule -> RunClaudeSkillModuleChangedAuthoredShapeFilesAstAnchor
   roles { RunClaudeSkillModule as generated, RunClaudeSkillModuleChangedAuthoredShapeFilesAstAnchor as syntax }
   expects RunClaudeSkillModuleChangedAuthoredShapeFilesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:46eb14c0662bf4283f25e49784ebf58b10ed8c8659ecff39c7ab5bac9f61b793")
-  summary "fn RunClaudeSkillModule.changedAuthoredShapeFiles generated from javascript function_declaration at .github/scripts/run-claude-skill.mjs:263-268."
+  summary "fn RunClaudeSkillModule.changedAuthoredShapeFiles generated from javascript function_declaration at .github/scripts/run-claude-skill.mjs:332-337."
 }
 
 relation RunClaudeSkillModuleCollectAuthoredCoverageGeneratedFromRunClaudeSkillModuleCollectAuthoredCoverageAstAnchor {
@@ -270,7 +302,7 @@ relation RunClaudeSkillModuleCollectAuthoredCoverageGeneratedFromRunClaudeSkillM
   connects RunClaudeSkillModule -> RunClaudeSkillModuleCollectAuthoredCoverageAstAnchor
   roles { RunClaudeSkillModule as generated, RunClaudeSkillModuleCollectAuthoredCoverageAstAnchor as syntax }
   expects RunClaudeSkillModuleCollectAuthoredCoverageAstAnchor fingerprint ast.semantic_subtree_v1("sha256:674edcfb686fdc8fc49fcd168c12180ce8964434d4808df98c65968f02a73b9f")
-  summary "fn RunClaudeSkillModule.collectAuthoredCoverage generated from javascript function_declaration at .github/scripts/run-claude-skill.mjs:401-415."
+  summary "fn RunClaudeSkillModule.collectAuthoredCoverage generated from javascript function_declaration at .github/scripts/run-claude-skill.mjs:470-484."
 }
 
 relation RunClaudeSkillModuleDefaultRunGitDiffGeneratedFromRunClaudeSkillModuleDefaultRunGitDiffAstAnchor {
@@ -278,7 +310,7 @@ relation RunClaudeSkillModuleDefaultRunGitDiffGeneratedFromRunClaudeSkillModuleD
   connects RunClaudeSkillModule -> RunClaudeSkillModuleDefaultRunGitDiffAstAnchor
   roles { RunClaudeSkillModule as generated, RunClaudeSkillModuleDefaultRunGitDiffAstAnchor as syntax }
   expects RunClaudeSkillModuleDefaultRunGitDiffAstAnchor fingerprint ast.semantic_subtree_v1("sha256:69da8fb4418fffd969251d8c98b903c64ac3120f4bea360bc69999a694e250a7")
-  summary "fn RunClaudeSkillModule.defaultRunGitDiff generated from javascript function_declaration at .github/scripts/run-claude-skill.mjs:270-287."
+  summary "fn RunClaudeSkillModule.defaultRunGitDiff generated from javascript function_declaration at .github/scripts/run-claude-skill.mjs:339-356."
 }
 
 relation RunClaudeSkillModuleExtractValidResultGeneratedFromRunClaudeSkillModuleExtractValidResultAstAnchor {
@@ -294,7 +326,7 @@ relation RunClaudeSkillModuleGlobToRegExpGeneratedFromRunClaudeSkillModuleGlobTo
   connects RunClaudeSkillModule -> RunClaudeSkillModuleGlobToRegExpAstAnchor
   roles { RunClaudeSkillModule as generated, RunClaudeSkillModuleGlobToRegExpAstAnchor as syntax }
   expects RunClaudeSkillModuleGlobToRegExpAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5efd1489ac83bb89cbee46c207a76efeef2a721839cebf54f4958a6f6f2e8740")
-  summary "fn RunClaudeSkillModule.globToRegExp generated from javascript function_declaration at .github/scripts/run-claude-skill.mjs:366-377."
+  summary "fn RunClaudeSkillModule.globToRegExp generated from javascript function_declaration at .github/scripts/run-claude-skill.mjs:435-446."
 }
 
 relation RunClaudeSkillModuleGuardBaseRefGeneratedFromRunClaudeSkillModuleGuardBaseRefAstAnchor {
@@ -302,7 +334,7 @@ relation RunClaudeSkillModuleGuardBaseRefGeneratedFromRunClaudeSkillModuleGuardB
   connects RunClaudeSkillModule -> RunClaudeSkillModuleGuardBaseRefAstAnchor
   roles { RunClaudeSkillModule as generated, RunClaudeSkillModuleGuardBaseRefAstAnchor as syntax }
   expects RunClaudeSkillModuleGuardBaseRefAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ea2e722273455f9ae9596e15cb666e0eb0e64a82ee60e2261be771271a4c8b50")
-  summary "fn RunClaudeSkillModule.guardBaseRef generated from javascript function_declaration at .github/scripts/run-claude-skill.mjs:259-261."
+  summary "fn RunClaudeSkillModule.guardBaseRef generated from javascript function_declaration at .github/scripts/run-claude-skill.mjs:328-330."
 }
 
 relation RunClaudeSkillModuleGuardFailureMessageGeneratedFromRunClaudeSkillModuleGuardFailureMessageAstAnchor {
@@ -310,7 +342,7 @@ relation RunClaudeSkillModuleGuardFailureMessageGeneratedFromRunClaudeSkillModul
   connects RunClaudeSkillModule -> RunClaudeSkillModuleGuardFailureMessageAstAnchor
   roles { RunClaudeSkillModule as generated, RunClaudeSkillModuleGuardFailureMessageAstAnchor as syntax }
   expects RunClaudeSkillModuleGuardFailureMessageAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f51e88e94360158eb3ba60af81b28ecc1e6160bf4cd6f67beec3d16f5df7e50b")
-  summary "fn RunClaudeSkillModule.guardFailureMessage generated from javascript function_declaration at .github/scripts/run-claude-skill.mjs:328-345."
+  summary "fn RunClaudeSkillModule.guardFailureMessage generated from javascript function_declaration at .github/scripts/run-claude-skill.mjs:397-414."
 }
 
 relation RunClaudeSkillModuleGuardPrefilterGeneratedFromRunClaudeSkillModuleGuardPrefilterAstAnchor {
@@ -318,7 +350,7 @@ relation RunClaudeSkillModuleGuardPrefilterGeneratedFromRunClaudeSkillModuleGuar
   connects RunClaudeSkillModule -> RunClaudeSkillModuleGuardPrefilterAstAnchor
   roles { RunClaudeSkillModule as generated, RunClaudeSkillModuleGuardPrefilterAstAnchor as syntax }
   expects RunClaudeSkillModuleGuardPrefilterAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f40b1df67b6abc1b6f837ed586d1a6ef2f1e102f2802e3f46a8c635248c270f7")
-  summary "fn RunClaudeSkillModule.guardPrefilter generated from javascript function_declaration at .github/scripts/run-claude-skill.mjs:289-301."
+  summary "fn RunClaudeSkillModule.guardPrefilter generated from javascript function_declaration at .github/scripts/run-claude-skill.mjs:358-370."
 }
 
 relation RunClaudeSkillModuleIndexFailureMessageGeneratedFromRunClaudeSkillModuleIndexFailureMessageAstAnchor {
@@ -326,7 +358,7 @@ relation RunClaudeSkillModuleIndexFailureMessageGeneratedFromRunClaudeSkillModul
   connects RunClaudeSkillModule -> RunClaudeSkillModuleIndexFailureMessageAstAnchor
   roles { RunClaudeSkillModule as generated, RunClaudeSkillModuleIndexFailureMessageAstAnchor as syntax }
   expects RunClaudeSkillModuleIndexFailureMessageAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d58fd7d041dba6e62309590846498813f01ed75809c137f8499c4a94e8d6168f")
-  summary "fn RunClaudeSkillModule.indexFailureMessage generated from javascript function_declaration at .github/scripts/run-claude-skill.mjs:481-495."
+  summary "fn RunClaudeSkillModule.indexFailureMessage generated from javascript function_declaration at .github/scripts/run-claude-skill.mjs:550-564."
 }
 
 relation RunClaudeSkillModuleIndexPrefilterGeneratedFromRunClaudeSkillModuleIndexPrefilterAstAnchor {
@@ -334,7 +366,7 @@ relation RunClaudeSkillModuleIndexPrefilterGeneratedFromRunClaudeSkillModuleInde
   connects RunClaudeSkillModule -> RunClaudeSkillModuleIndexPrefilterAstAnchor
   roles { RunClaudeSkillModule as generated, RunClaudeSkillModuleIndexPrefilterAstAnchor as syntax }
   expects RunClaudeSkillModuleIndexPrefilterAstAnchor fingerprint ast.semantic_subtree_v1("sha256:96286a4ab54adb2d5b80c67dde141771554bb7c2b1d1ab9e9b9f37e50ffa1896")
-  summary "fn RunClaudeSkillModule.indexPrefilter generated from javascript function_declaration at .github/scripts/run-claude-skill.mjs:426-449."
+  summary "fn RunClaudeSkillModule.indexPrefilter generated from javascript function_declaration at .github/scripts/run-claude-skill.mjs:495-518."
 }
 
 relation RunClaudeSkillModuleIsAuditableSourceFileGeneratedFromRunClaudeSkillModuleIsAuditableSourceFileAstAnchor {
@@ -342,7 +374,7 @@ relation RunClaudeSkillModuleIsAuditableSourceFileGeneratedFromRunClaudeSkillMod
   connects RunClaudeSkillModule -> RunClaudeSkillModuleIsAuditableSourceFileAstAnchor
   roles { RunClaudeSkillModule as generated, RunClaudeSkillModuleIsAuditableSourceFileAstAnchor as syntax }
   expects RunClaudeSkillModuleIsAuditableSourceFileAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9d92e6076fa966173c06cc3c1fcb1c5fa3ee0741e8f7774f52ba03c558b225a1")
-  summary "fn RunClaudeSkillModule.isAuditableSourceFile generated from javascript function_declaration at .github/scripts/run-claude-skill.mjs:353-364."
+  summary "fn RunClaudeSkillModule.isAuditableSourceFile generated from javascript function_declaration at .github/scripts/run-claude-skill.mjs:422-433."
 }
 
 relation RunClaudeSkillModuleIsMainModuleGeneratedFromRunClaudeSkillModuleIsMainModuleAstAnchor {
@@ -350,7 +382,7 @@ relation RunClaudeSkillModuleIsMainModuleGeneratedFromRunClaudeSkillModuleIsMain
   connects RunClaudeSkillModule -> RunClaudeSkillModuleIsMainModuleAstAnchor
   roles { RunClaudeSkillModule as generated, RunClaudeSkillModuleIsMainModuleAstAnchor as syntax }
   expects RunClaudeSkillModuleIsMainModuleAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a7630a5e5fbe44b11a467fb490a2c52019708e3bbc0e6d3476897795228c2a3f")
-  summary "fn RunClaudeSkillModule.isMainModule generated from javascript function_declaration at .github/scripts/run-claude-skill.mjs:621-626."
+  summary "fn RunClaudeSkillModule.isMainModule generated from javascript function_declaration at .github/scripts/run-claude-skill.mjs:690-695."
 }
 
 relation RunClaudeSkillModuleIsRecordGeneratedFromRunClaudeSkillModuleIsRecordAstAnchor {
@@ -366,7 +398,7 @@ relation RunClaudeSkillModuleMainGeneratedFromRunClaudeSkillModuleMainAstAnchor 
   connects RunClaudeSkillModule -> RunClaudeSkillModuleMainAstAnchor
   roles { RunClaudeSkillModule as generated, RunClaudeSkillModuleMainAstAnchor as syntax }
   expects RunClaudeSkillModuleMainAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d47e6bbd2ec1e8e95e75e82e0b28b1f7a4f40025921b9f348a277cf8bca66e83")
-  summary "fn RunClaudeSkillModule.main generated from javascript function_declaration at .github/scripts/run-claude-skill.mjs:571-619."
+  summary "fn RunClaudeSkillModule.main generated from javascript function_declaration at .github/scripts/run-claude-skill.mjs:640-688."
 }
 
 relation RunClaudeSkillModuleParseJsonObjectCandidateGeneratedFromRunClaudeSkillModuleParseJsonObjectCandidateAstAnchor {
@@ -377,12 +409,20 @@ relation RunClaudeSkillModuleParseJsonObjectCandidateGeneratedFromRunClaudeSkill
   summary "fn RunClaudeSkillModule.parseJsonObjectCandidate generated from javascript function_declaration at .github/scripts/run-claude-skill.mjs:99-119."
 }
 
+relation RunClaudeSkillModuleRawTextForNormalizerGeneratedFromRunClaudeSkillModuleRawTextForNormalizerAstAnchor {
+  kind generated_from
+  connects RunClaudeSkillModule -> RunClaudeSkillModuleRawTextForNormalizerAstAnchor
+  roles { RunClaudeSkillModule as generated, RunClaudeSkillModuleRawTextForNormalizerAstAnchor as syntax }
+  expects RunClaudeSkillModuleRawTextForNormalizerAstAnchor fingerprint ast.semantic_subtree_v1("sha256:37a0fa8400376df89f3253af2175f7f7bc00cb4ff993f91580158756dbe91c81")
+  summary "fn RunClaudeSkillModule.rawTextForNormalizer generated from javascript function_declaration at .github/scripts/run-claude-skill.mjs:200-207."
+}
+
 relation RunClaudeSkillModuleRenderGuardSummaryGeneratedFromRunClaudeSkillModuleRenderGuardSummaryAstAnchor {
   kind generated_from
   connects RunClaudeSkillModule -> RunClaudeSkillModuleRenderGuardSummaryAstAnchor
   roles { RunClaudeSkillModule as generated, RunClaudeSkillModuleRenderGuardSummaryAstAnchor as syntax }
   expects RunClaudeSkillModuleRenderGuardSummaryAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5f6ef0f5a9723a71d2451e9a6db0c57c38cfaeb6d099cdd765e8a3735d4e225b")
-  summary "fn RunClaudeSkillModule.renderGuardSummary generated from javascript function_declaration at .github/scripts/run-claude-skill.mjs:311-326."
+  summary "fn RunClaudeSkillModule.renderGuardSummary generated from javascript function_declaration at .github/scripts/run-claude-skill.mjs:380-395."
 }
 
 relation RunClaudeSkillModuleRenderIndexSummaryGeneratedFromRunClaudeSkillModuleRenderIndexSummaryAstAnchor {
@@ -390,7 +430,7 @@ relation RunClaudeSkillModuleRenderIndexSummaryGeneratedFromRunClaudeSkillModule
   connects RunClaudeSkillModule -> RunClaudeSkillModuleRenderIndexSummaryAstAnchor
   roles { RunClaudeSkillModule as generated, RunClaudeSkillModuleRenderIndexSummaryAstAnchor as syntax }
   expects RunClaudeSkillModuleRenderIndexSummaryAstAnchor fingerprint ast.semantic_subtree_v1("sha256:fec75fedc3192723d029414cdc5468fb6e1474744000fd587378ac8a048b7ad5")
-  summary "fn RunClaudeSkillModule.renderIndexSummary generated from javascript function_declaration at .github/scripts/run-claude-skill.mjs:460-479."
+  summary "fn RunClaudeSkillModule.renderIndexSummary generated from javascript function_declaration at .github/scripts/run-claude-skill.mjs:529-548."
 }
 
 relation RunClaudeSkillModuleRenderReviewSummaryGeneratedFromRunClaudeSkillModuleRenderReviewSummaryAstAnchor {
@@ -398,7 +438,7 @@ relation RunClaudeSkillModuleRenderReviewSummaryGeneratedFromRunClaudeSkillModul
   connects RunClaudeSkillModule -> RunClaudeSkillModuleRenderReviewSummaryAstAnchor
   roles { RunClaudeSkillModule as generated, RunClaudeSkillModuleRenderReviewSummaryAstAnchor as syntax }
   expects RunClaudeSkillModuleRenderReviewSummaryAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9daa7b891df0518162c34ecfe3b163b3a9e3ce399a796e03f3c1e6aefab9d981")
-  summary "fn RunClaudeSkillModule.renderReviewSummary generated from javascript function_declaration at .github/scripts/run-claude-skill.mjs:232-243."
+  summary "fn RunClaudeSkillModule.renderReviewSummary generated from javascript function_declaration at .github/scripts/run-claude-skill.mjs:301-312."
 }
 
 relation RunClaudeSkillModuleReviewFailureMessageGeneratedFromRunClaudeSkillModuleReviewFailureMessageAstAnchor {
@@ -406,7 +446,15 @@ relation RunClaudeSkillModuleReviewFailureMessageGeneratedFromRunClaudeSkillModu
   connects RunClaudeSkillModule -> RunClaudeSkillModuleReviewFailureMessageAstAnchor
   roles { RunClaudeSkillModule as generated, RunClaudeSkillModuleReviewFailureMessageAstAnchor as syntax }
   expects RunClaudeSkillModuleReviewFailureMessageAstAnchor fingerprint ast.semantic_subtree_v1("sha256:17d3ccaf5881bad40eda2dd089b73f2b8c0463c996194bbc3aefe9275a208081")
-  summary "fn RunClaudeSkillModule.reviewFailureMessage generated from javascript function_declaration at .github/scripts/run-claude-skill.mjs:245-253."
+  summary "fn RunClaudeSkillModule.reviewFailureMessage generated from javascript function_declaration at .github/scripts/run-claude-skill.mjs:314-322."
+}
+
+relation RunClaudeSkillModuleRunClaudeCaptureGeneratedFromRunClaudeSkillModuleRunClaudeCaptureAstAnchor {
+  kind generated_from
+  connects RunClaudeSkillModule -> RunClaudeSkillModuleRunClaudeCaptureAstAnchor
+  roles { RunClaudeSkillModule as generated, RunClaudeSkillModuleRunClaudeCaptureAstAnchor as syntax }
+  expects RunClaudeSkillModuleRunClaudeCaptureAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b38af306025052357dd5b455979f9b55429fe87432229e8cf4483b4e6586f867")
+  summary "fn RunClaudeSkillModule.runClaudeCapture generated from javascript function_declaration at .github/scripts/run-claude-skill.mjs:209-219."
 }
 
 relation RunClaudeSkillModuleRunClaudeGeneratedFromRunClaudeSkillModuleRunClaudeAstAnchor {
@@ -421,8 +469,8 @@ relation RunClaudeSkillModuleRunSkillThroughClaudeGeneratedFromRunClaudeSkillMod
   kind generated_from
   connects RunClaudeSkillModule -> RunClaudeSkillModuleRunSkillThroughClaudeAstAnchor
   roles { RunClaudeSkillModule as generated, RunClaudeSkillModuleRunSkillThroughClaudeAstAnchor as syntax }
-  expects RunClaudeSkillModuleRunSkillThroughClaudeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:89348f0b20d533af97a6246c151cc90d78147546a1e142aac1b0f50d8d084b56")
-  summary "fn RunClaudeSkillModule.runSkillThroughClaude generated from javascript function_declaration at .github/scripts/run-claude-skill.mjs:179-211."
+  expects RunClaudeSkillModuleRunSkillThroughClaudeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f09278c4af469a71922e773500adf73da6c81f031b69c65732e102ea4b22481e")
+  summary "fn RunClaudeSkillModule.runSkillThroughClaude generated from javascript function_declaration at .github/scripts/run-claude-skill.mjs:221-280."
 }
 
 relation RunClaudeSkillModuleSchemaValidationErrorsGeneratedFromRunClaudeSkillModuleSchemaValidationErrorsAstAnchor {
@@ -438,7 +486,7 @@ relation RunClaudeSkillModuleUncoveredChangedFilesGeneratedFromRunClaudeSkillMod
   connects RunClaudeSkillModule -> RunClaudeSkillModuleUncoveredChangedFilesAstAnchor
   roles { RunClaudeSkillModule as generated, RunClaudeSkillModuleUncoveredChangedFilesAstAnchor as syntax }
   expects RunClaudeSkillModuleUncoveredChangedFilesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d6c22002aa880ae19b696518a9d7c607c90d2b26588ded910a79192204808b36")
-  summary "fn RunClaudeSkillModule.uncoveredChangedFiles generated from javascript function_declaration at .github/scripts/run-claude-skill.mjs:417-424."
+  summary "fn RunClaudeSkillModule.uncoveredChangedFiles generated from javascript function_declaration at .github/scripts/run-claude-skill.mjs:486-493."
 }
 
 implementation RunClaudeSkillModuleImpl {

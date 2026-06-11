@@ -176,38 +176,107 @@ async function runClaude(args) {
   };
 }
 
-async function runSkillThroughClaude(name, skill, schema, promptContext) {
-  const run = await runClaude([
-    "-p",
-    skill.buildPrompt(process.env, promptContext),
-    "--max-turns",
-    "100",
-    "--output-format",
-    "json",
-    "--append-system-prompt",
-    JSON_ONLY_SYSTEM_PROMPT,
-    "--allowedTools",
-    skill.allowedTools,
-    "--disallowedTools",
-    "Write,Edit",
-    "--json-schema",
-    JSON.stringify(schema)
-  ]);
-  writeFileSync(skill.resultPath, run.stdout);
+// Empirically (current CLI through proxy gateways), the final message
+// sometimes arrives as prose in the envelope's result text instead of
+// structured output. When extraction fails, a cheap no-tools normalizer call
+// converts that text into the required JSON object rather than failing the job.
+function buildNormalizerPrompt(title, rawText, schema) {
+  return `The previous ${title} returned text instead of the required JSON object.
+
+Convert that text into exactly one JSON object matching this schema:
+
+${JSON.stringify(schema)}
+
+Rules:
+- Preserve findings or gaps that the text reports; do not invent any that are not present.
+- If the text reports nothing wrong, return status "pass" with an empty array.
+- Do not include prose, Markdown, code fences, preamble, or postscript.
+
+Text:
+
+${rawText}`;
+}
+
+function rawTextForNormalizer(output) {
+  try {
+    const envelope = JSON.parse(output);
+    return typeof envelope.result === "string" ? envelope.result : JSON.stringify(envelope);
+  } catch {
+    return output;
+  }
+}
+
+async function runClaudeCapture(name, skill, args, resultPath) {
+  const run = await runClaude(args);
+  writeFileSync(resultPath, run.stdout);
   if (run.exitCode !== 0) {
     const detail = run.stderr.trim() || run.stdout.trim();
     throw new Error(
       `Claude ${name} run failed with exit ${run.exitCode}${detail ? `: ${detail}` : ""}`
     );
   }
+  return run.stdout;
+}
 
-  const extracted = extractValidResult(run.stdout, schema);
-  if (!extracted.ok) {
+async function runSkillThroughClaude(name, skill, schema, promptContext) {
+  const primaryOutput = await runClaudeCapture(
+    name,
+    skill,
+    [
+      "-p",
+      skill.buildPrompt(process.env, promptContext),
+      "--max-turns",
+      "100",
+      "--output-format",
+      "json",
+      "--append-system-prompt",
+      JSON_ONLY_SYSTEM_PROMPT,
+      "--allowedTools",
+      skill.allowedTools,
+      "--disallowedTools",
+      "Write,Edit",
+      "--json-schema",
+      JSON.stringify(schema)
+    ],
+    skill.resultPath
+  );
+  const primary = extractValidResult(primaryOutput, schema);
+  if (primary.ok) {
+    return primary;
+  }
+
+  console.error(
+    `Primary Claude ${name} output was not structured JSON; retrying with a no-tools JSON normalizer.`
+  );
+  console.error(primary.errors.join("\n"));
+
+  const normalizedPath = skill.resultPath.replace(/\.json$/, "-normalized.json");
+  const normalizedOutput = await runClaudeCapture(
+    name,
+    skill,
+    [
+      "-p",
+      buildNormalizerPrompt(skill.title, rawTextForNormalizer(primaryOutput), schema),
+      "--max-turns",
+      "20",
+      "--output-format",
+      "json",
+      "--append-system-prompt",
+      JSON_ONLY_SYSTEM_PROMPT,
+      "--tools",
+      "",
+      "--json-schema",
+      JSON.stringify(schema)
+    ],
+    normalizedPath
+  );
+  const normalized = extractValidResult(normalizedOutput, schema);
+  if (!normalized.ok) {
     throw new Error(
-      `Claude ${name} output did not include a valid ${skill.title} (raw output captured in ${skill.resultPath}):\n${extracted.errors.join("\n")}`
+      `Claude ${name} output did not include a valid ${skill.title} after normalizing (raw output captured in ${skill.resultPath} and ${normalizedPath}):\n${normalized.errors.join("\n")}`
     );
   }
-  return extracted;
+  return normalized;
 }
 
 // ---------------------------------------------------------------------------
