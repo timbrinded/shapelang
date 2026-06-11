@@ -24,6 +24,15 @@ jobs:
         name: Setup Bun
         uses: oven-sh/setup-bun@v2
 
+      - &bun-cache
+        name: Cache Bun downloads
+        uses: actions/cache@v4
+        with:
+          path: ~/.bun/install/cache
+          key: bun-${{ runner.os }}-${{ hashFiles('bun.lock') }}
+          restore-keys: |
+            bun-${{ runner.os }}-
+
       - &install
         name: Install
         run: bun install --frozen-lockfile
@@ -83,6 +92,7 @@ jobs:
     steps:
       - *checkout
       - *setup-bun
+      - *bun-cache
       - *install
 
       - name: Build release assets

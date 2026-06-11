@@ -25,6 +25,15 @@ jobs:
         name: Setup Bun
         uses: oven-sh/setup-bun@v2
 
+      - &bun-cache
+        name: Cache Bun downloads
+        uses: actions/cache@v4
+        with:
+          path: ~/.bun/install/cache
+          key: bun-${{ runner.os }}-${{ hashFiles('bun.lock') }}
+          restore-keys: |
+            bun-${{ runner.os }}-
+
       - &install
         name: Install
         run: bun install --frozen-lockfile
@@ -50,6 +59,7 @@ jobs:
     steps:
       - *checkout
       - *setup-bun
+      - *bun-cache
       - *install
 
       - name: Format check
@@ -62,6 +72,7 @@ jobs:
     steps:
       - *checkout
       - *setup-bun
+      - *bun-cache
       - *install
 
       - name: Lint
@@ -74,6 +85,7 @@ jobs:
     steps:
       - *checkout
       - *setup-bun
+      - *bun-cache
       - *install
 
       - name: Typecheck
@@ -86,6 +98,7 @@ jobs:
     steps:
       - *checkout
       - *setup-bun
+      - *bun-cache
       - *install
 
       - name: Tests
@@ -98,6 +111,7 @@ jobs:
     steps:
       - *checkout
       - *setup-bun
+      - *bun-cache
       - *install
 
       - name: Changed files
@@ -146,6 +160,15 @@ jobs:
         if: steps.claude-token.outputs.available == 'true'
         id: setup-bun
         uses: oven-sh/setup-bun@v2
+
+      - name: Cache Bun downloads
+        if: steps.claude-token.outputs.available == 'true'
+        uses: actions/cache@v4
+        with:
+          path: ~/.bun/install/cache
+          key: bun-${{ runner.os }}-${{ hashFiles('bun.lock') }}
+          restore-keys: |
+            bun-${{ runner.os }}-
 
       - name: Install
         if: steps.claude-token.outputs.available == 'true'
@@ -237,6 +260,7 @@ jobs:
     steps:
       - *checkout
       - *setup-bun
+      - *bun-cache
       - *install
 
       - name: Setup Node
@@ -254,6 +278,7 @@ jobs:
     steps:
       - *checkout
       - *setup-bun
+      - *bun-cache
       - *install
 
       - name: Build release assets
