@@ -300,6 +300,12 @@ relation ShapeCheckerUsesBindings {
   summary "BindingRules"
 }
 
+relation ShapeCheckerUsesDiagnostics {
+  kind calls
+  connects ShapeChecker -> ShapeDiagnostics
+  summary "CanonicalDiagnosticOrdering"
+}
+
 relation ShapeCheckerUsesModelPipeline {
   kind calls
   connects ShapeChecker -> ShapeModelLowerer
@@ -310,6 +316,12 @@ relation ShapeCheckerUsesRulePipeline {
   kind calls
   connects ShapeChecker -> ShapeRuleEngine
   summary "RulePipeline"
+}
+
+relation ShapeCheckerUsesStringHelpers {
+  kind calls
+  connects ShapeChecker -> ShapeStringHelpers
+  summary "CanonicalFactOrdering"
 }
 
 relation ShapeDiagnosticsProvidesText {
