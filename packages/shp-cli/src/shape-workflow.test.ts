@@ -157,6 +157,31 @@ describe("Shape workflow", () => {
     expect(result.stderr).toContain("CLAUDE_SKILL_RESULT is empty");
   });
 
+  test("recovers a prose-wrapped result from the execution log when structured output is missing", async () => {
+    const review = { status: "pass", summary: "No drift found.", findings: [] };
+    const result = await runSkillGateWithExecutionLog("review", [
+      { type: "system", subtype: "init" },
+      {
+        type: "result",
+        subtype: "success",
+        result: `Here is the final review:\n${JSON.stringify(review)}`
+      }
+    ]);
+
+    expect(result.exitCode).toBe(0);
+    expect(result.stdout).toContain("Recovered the Shape Claude review");
+    expect(result.summary).toContain("Status: `pass`");
+  });
+
+  test("fails closed when the execution log result text is not schema-valid", async () => {
+    const result = await runSkillGateWithExecutionLog("review", [
+      { type: "result", subtype: "success", result: "I was unable to produce the JSON object." }
+    ]);
+
+    expect(result.exitCode).toBe(1);
+    expect(result.stderr).toContain("did not contain a valid Shape Claude review");
+  });
+
   test("prefilter emits the prompt and sonnet-default claude_args for the review skill", async () => {
     const result = await runNodeModuleProbe(`
       import { prefilterOutputs } from ${JSON.stringify(pathToFileURL(skillRunnerPath).href)};
@@ -414,9 +439,23 @@ function guardFinding(severity: "high" | "medium" | "low") {
   };
 }
 
-// Runs the unified skill runner in gate-only mode: CLAUDE_SKILL_RESULT skips
-// the model call, so this exercises validation, summary rendering, and the
-// gate exit code as a real process.
+// Runs the unified skill runner in gate-only mode against an execution log,
+// exercising the structured-output fallback path used when a proxy gateway
+// drops structured output.
+async function runSkillGateWithExecutionLog(skill: string, messages: unknown[]) {
+  const tempDir = await mkdtemp(join(tmpdir(), "shape-skill-execution-"));
+  try {
+    const executionPath = join(tempDir, "claude-execution-output.json");
+    await Bun.write(executionPath, JSON.stringify(messages));
+    return await runSkillGate(skill, undefined, { CLAUDE_EXECUTION_FILE: executionPath });
+  } finally {
+    await rm(tempDir, { recursive: true, force: true });
+  }
+}
+
+// Runs the unified skill runner in gate-only mode: CLAUDE_SKILL_RESULT (or an
+// execution log via extraEnv) replaces the model call, so this exercises
+// validation, summary rendering, and the gate exit code as a real process.
 async function runSkillGate(
   skill: string,
   result: unknown,
@@ -432,14 +471,18 @@ async function runSkillGate(
     const summaryPath = join(tempDir, "summary.md");
     await Bun.write(summaryPath, "");
 
+    const env: Record<string, string | undefined> = {
+      ...process.env,
+      GITHUB_STEP_SUMMARY: summaryPath,
+      ...extraEnv
+    };
+    if (result !== undefined) {
+      env.CLAUDE_SKILL_RESULT = typeof result === "string" ? result : JSON.stringify(result);
+    }
+
     const child = Bun.spawn(["node", skillRunnerPath, skill], {
       cwd: repoRoot,
-      env: {
-        ...process.env,
-        GITHUB_STEP_SUMMARY: summaryPath,
-        CLAUDE_SKILL_RESULT: typeof result === "string" ? result : JSON.stringify(result),
-        ...extraEnv
-      },
+      env,
       stdout: "pipe",
       stderr: "pipe"
     });

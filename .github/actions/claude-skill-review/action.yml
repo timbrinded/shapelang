@@ -57,6 +57,12 @@ runs:
     - name: Run skill through Claude Code
       id: claude
       if: ${{ steps.prefilter.outputs.skip != 'true' }}
+      # Through proxy gateways the structured-output channel can degrade to
+      # plain text, which this action reports as a step failure even though
+      # the model run succeeded. The gate step below recovers the result from
+      # the execution log in that case and remains the single pass/fail
+      # authority for the job.
+      continue-on-error: true
       uses: anthropics/claude-code-action@v1
       with:
         # The action's credential check only recognizes anthropic_api_key or
@@ -73,4 +79,5 @@ runs:
       shell: bash
       env:
         CLAUDE_SKILL_RESULT: ${{ steps.prefilter.outputs.skip == 'true' && steps.prefilter.outputs.result || steps.claude.outputs.structured_output }}
+        CLAUDE_EXECUTION_FILE: ${{ steps.claude.outputs.execution_file }}
       run: node .github/scripts/run-claude-skill.mjs ${{ inputs.skill }}

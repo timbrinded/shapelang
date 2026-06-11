@@ -12,7 +12,7 @@
 //     the prefilter result) against the skill's JSON schema, renders the step
 //     summary, and exits per the skill's gate policy.
 import { spawnSync } from "node:child_process";
-import { appendFileSync, readFileSync, readdirSync } from "node:fs";
+import { appendFileSync, existsSync, readFileSync, readdirSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 
@@ -161,9 +161,78 @@ export function prefilterOutputs(name, env = process.env) {
   const schema = JSON.parse(readFileSync(skill.schemaPath(env), "utf8"));
   return {
     skip: "false",
-    prompt: skill.buildPrompt(env, pre.promptContext),
+    // The schema is restated in the prompt because proxy gateways can strip
+    // the CLI's structured-output configuration; the model must still know
+    // the exact result shape for the gate's execution-log fallback.
+    prompt: [
+      skill.buildPrompt(env, pre.promptContext),
+      "",
+      "The required JSON schema for the final response is:",
+      JSON.stringify(schema)
+    ].join("\n"),
     claude_args: buildClaudeArgs(skill, schema, env)
   };
+}
+
+// ---------------------------------------------------------------------------
+// Shared: result extraction from the Claude Code action execution log
+// ---------------------------------------------------------------------------
+
+// Candidate readings of the model's final text, strictest first: the whole
+// text, a fenced block's contents, then JSON-object suffixes (tolerates a
+// short prose preamble when a gateway drops structured output). Every
+// candidate must still validate against the skill's schema, so this salvage
+// fails closed.
+export function jsonObjectCandidates(text) {
+  const trimmed = text.trim();
+  const candidates = [trimmed];
+  const fenced = trimmed.match(/^```(?:json)?\s*([\s\S]*?)\s*```$/);
+  if (fenced?.[1]) {
+    candidates.push(fenced[1].trim());
+  }
+  if (trimmed.endsWith("}")) {
+    let from = trimmed.indexOf("{");
+    for (let attempts = 0; from > 0 && attempts < 20; attempts += 1) {
+      candidates.push(trimmed.slice(from));
+      from = trimmed.indexOf("{", from + 1);
+    }
+  }
+  return candidates;
+}
+
+export function extractValidResult(text, schema) {
+  const errors = [];
+  for (const candidate of jsonObjectCandidates(text)) {
+    let parsed;
+    try {
+      parsed = JSON.parse(candidate);
+    } catch (error) {
+      errors.push(String(error));
+      continue;
+    }
+    const validationErrors = schemaValidationErrors(parsed, schema);
+    if (validationErrors.length === 0) {
+      return { ok: true, result: parsed };
+    }
+    errors.push(validationErrors.join("; "));
+  }
+  return { ok: false, errors };
+}
+
+// The execution file written by anthropics/claude-code-action is the SDK
+// message array; the final "result" message carries the model's final text.
+export function resultTextFromExecutionFile(path) {
+  const messages = JSON.parse(readFileSync(path, "utf8"));
+  if (!Array.isArray(messages)) {
+    throw new Error(`Execution file ${path} is not a JSON message array`);
+  }
+  for (let index = messages.length - 1; index >= 0; index -= 1) {
+    const message = messages[index];
+    if (isRecord(message) && message.type === "result") {
+      return typeof message.result === "string" ? message.result : "";
+    }
+  }
+  return "";
 }
 
 // ---------------------------------------------------------------------------
@@ -542,26 +611,49 @@ function runPrefilter(name) {
   }
 }
 
+function resolveGateResult(skill, schema, env) {
+  const raw = env.CLAUDE_SKILL_RESULT;
+  if (raw !== undefined && raw.trim() !== "") {
+    let result;
+    try {
+      result = JSON.parse(raw);
+    } catch (error) {
+      throw new Error(`Could not parse CLAUDE_SKILL_RESULT: ${error}`);
+    }
+    const errors = schemaValidationErrors(result, schema);
+    if (errors.length > 0) {
+      throw new Error(`Invalid ${skill.title}: ${errors.join("; ")}.`);
+    }
+    return result;
+  }
+
+  // Fallback for proxy gateways that drop structured output: the action step
+  // fails but still writes the execution log, whose final result text is the
+  // JSON object the system prompt demanded.
+  const executionFile = env.CLAUDE_EXECUTION_FILE;
+  if (executionFile && existsSync(executionFile)) {
+    const text = resultTextFromExecutionFile(executionFile);
+    if (text.trim() !== "") {
+      const extracted = extractValidResult(text, schema);
+      if (extracted.ok) {
+        console.log(`Recovered the ${skill.title} from the execution log result text.`);
+        return extracted.result;
+      }
+      throw new Error(
+        `The execution log result text did not contain a valid ${skill.title}: ${extracted.errors.join("; ")}`
+      );
+    }
+  }
+
+  throw new Error(
+    "CLAUDE_SKILL_RESULT is empty and no execution log was usable; the Claude Code action did not produce a schema-valid result. Check the 'Run skill through Claude Code' step logs."
+  );
+}
+
 function runGate(name) {
   const skill = requireSkill(name);
   const schema = JSON.parse(readFileSync(skill.schemaPath(process.env), "utf8"));
-
-  const raw = process.env.CLAUDE_SKILL_RESULT;
-  if (raw === undefined || raw.trim() === "") {
-    throw new Error(
-      "CLAUDE_SKILL_RESULT is empty; the Claude Code action returned no schema-valid structured output and there was no prefilter result."
-    );
-  }
-  let result;
-  try {
-    result = JSON.parse(raw);
-  } catch (error) {
-    throw new Error(`Could not parse CLAUDE_SKILL_RESULT: ${error}`);
-  }
-  const errors = schemaValidationErrors(result, schema);
-  if (errors.length > 0) {
-    throw new Error(`Invalid ${skill.title}: ${errors.join("; ")}.`);
-  }
+  const result = resolveGateResult(skill, schema, process.env);
 
   if (process.env.GITHUB_STEP_SUMMARY) {
     appendFileSync(process.env.GITHUB_STEP_SUMMARY, skill.renderSummary(result));

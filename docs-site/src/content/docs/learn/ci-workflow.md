@@ -149,7 +149,9 @@ the prompt and `claude_args` (Sonnet by default), the official
 `anthropics/claude-code-action` runs the model call with `--json-schema`
 structured output, and a gate pass validates the result against the strict
 JSON schema under `.github/shape-contract/schemas/`, renders a job summary,
-and gates on a per-skill policy. Each job detects Anthropic credentials first
+and gates on a per-skill policy. When a proxy gateway drops structured
+output, the gate recovers the JSON result from the action's execution log
+instead. Each job detects Anthropic credentials first
 and skips cleanly when none are available. Two of the jobs start with a
 deterministic prefilter, so most pull requests never invoke the model.
 
