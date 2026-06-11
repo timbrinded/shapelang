@@ -133,8 +133,6 @@ jobs:
       pull-requests: read
     outputs:
       claude_available: ${{ steps.claude-token.outputs.available }}
-    env:
-      SHAPE_CONTRACT_RESULT_SCHEMA: .github/shape-contract/schemas/shape-contract-result.schema.json
 
     steps:
       - &detect-claude
@@ -157,57 +155,23 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup Bun
-        if: steps.claude-token.outputs.available == 'true'
-        id: setup-bun
-        uses: oven-sh/setup-bun@v2
-
-      - name: Cache Bun downloads
-        if: steps.claude-token.outputs.available == 'true'
-        uses: actions/cache@v4
-        with:
-          path: ~/.bun/install/cache
-          key: bun-${{ runner.os }}-${{ hashFiles('bun.lock') }}
-          restore-keys: |
-            bun-${{ runner.os }}-
-
-      - name: Install
-        if: steps.claude-token.outputs.available == 'true'
-        run: bun install --frozen-lockfile
-
-      - name: Changed files
-        if: steps.claude-token.outputs.available == 'true'
-        run: bun run changed-files
-        env:
-          GITHUB_BASE_REF: ${{ github.base_ref }}
-          GITHUB_EVENT_BEFORE: ${{ github.event.before }}
-          GITHUB_SHA: ${{ github.sha }}
-
-      - name: Shape diagnostics for Claude
-        if: steps.claude-token.outputs.available == 'true'
-        run: |
-          set +e
-          {
-            echo "## changed.txt"
-            sed -n '1,200p' changed.txt
-            echo
-            echo "## bun run shape:ci"
-            bun run shape:ci
-            status=$?
-            echo
-            echo "shape_ci_exit=$status"
-          } > shape-claude-context.txt 2>&1
-
-      - name: Install Claude Code
-        if: steps.claude-token.outputs.available == 'true'
-        run: |
-          curl -fsSL https://claude.ai/install.sh | bash
-          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
-          "$HOME/.local/bin/claude" --version
-
       - name: Run Claude Shape contract review
-        id: claude
         if: steps.claude-token.outputs.available == 'true'
+        uses: ./.github/actions/claude-skill-review
+        with:
+          skill: review
+          prepare-command: |
+            set +e
+            {
+              echo "## changed.txt"
+              sed -n '1,200p' changed.txt
+              echo
+              echo "## bun run shape:ci"
+              bun run shape:ci
+              status=$?
+              echo
+              echo "shape_ci_exit=$status"
+            } > shape-claude-context.txt 2>&1
         env:
           API_TIMEOUT_MS: 18000
           DISABLE_NON_ESSENTIAL_MODE_CALLS: 1
@@ -216,14 +180,8 @@ jobs:
           ANTHROPIC_AUTH_TOKEN: ${{ secrets.ANTHROPIC_AUTH_TOKEN }}
           CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS: ${{ secrets.CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS }}
           GITHUB_BASE_REF: ${{ github.base_ref }}
+          GITHUB_EVENT_BEFORE: ${{ github.event.before }}
           GITHUB_SHA: ${{ github.sha }}
-        run: node .github/scripts/run-claude-shape-review.mjs
-
-      - name: Check Claude review result
-        if: steps.claude-token.outputs.available == 'true'
-        env:
-          CLAUDE_SHAPE_REVIEW_RESULT: ${{ steps.claude.outputs.structured_output }}
-        run: node .github/scripts/check-claude-shape-review.mjs
 
   shape-guard:
     name: Shape Contract Guard
@@ -246,8 +204,7 @@ jobs:
         if: steps.claude-token.outputs.available == 'true'
         uses: ./.github/actions/claude-skill-review
         with:
-          run-script: .github/scripts/run-claude-shape-guard.mjs
-          check-script: .github/scripts/check-claude-shape-guard.mjs
+          skill: guard
         env:
           API_TIMEOUT_MS: 18000
           DISABLE_NON_ESSENTIAL_MODE_CALLS: 1
@@ -279,8 +236,7 @@ jobs:
         if: steps.claude-token.outputs.available == 'true'
         uses: ./.github/actions/claude-skill-review
         with:
-          run-script: .github/scripts/run-claude-shape-index.mjs
-          check-script: .github/scripts/check-claude-shape-index.mjs
+          skill: index
         env:
           API_TIMEOUT_MS: 18000
           DISABLE_NON_ESSENTIAL_MODE_CALLS: 1

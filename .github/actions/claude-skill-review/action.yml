@@ -1,17 +1,19 @@
 name: Claude skill review
 description: >-
-  Install the Bun toolchain and Claude Code, run a skill-review script that
-  emits a structured_output result, and gate the job on that result. The
-  calling step provides Anthropic credentials and git context via env; the
-  check script reads the result from CLAUDE_SKILL_RESULT.
+  Install the Bun toolchain and a pinned Claude Code CLI, then run one of the
+  Shape skill reviews (review, guard, index) through
+  .github/scripts/run-claude-skill.mjs, which validates the structured result
+  against the skill's JSON schema and gates the job on its policy. The calling
+  step provides Anthropic credentials and git context via env.
 
 inputs:
-  run-script:
-    description: Node script that runs the skill review and emits structured_output.
+  skill:
+    description: Skill name understood by run-claude-skill.mjs (review, guard, or index).
     required: true
-  check-script:
-    description: Node script that gates on the structured result via CLAUDE_SKILL_RESULT.
-    required: true
+  prepare-command:
+    description: Optional shell command run after changed-files, before the review (e.g. capturing shp context output).
+    required: false
+    default: ""
 
 runs:
   using: composite
@@ -35,20 +37,18 @@ runs:
       shell: bash
       run: bun run changed-files
 
+    - name: Prepare review context
+      if: ${{ inputs.prepare-command != '' }}
+      shell: bash
+      run: ${{ inputs.prepare-command }}
+
     - name: Install Claude Code
       shell: bash
       run: |
-        curl -fsSL https://claude.ai/install.sh | bash
+        curl -fsSL https://claude.ai/install.sh | bash -s 2.1.173
         echo "$HOME/.local/bin" >> "$GITHUB_PATH"
         "$HOME/.local/bin/claude" --version
 
     - name: Run skill review
-      id: run
       shell: bash
-      run: node ${{ inputs.run-script }}
-
-    - name: Check result
-      shell: bash
-      env:
-        CLAUDE_SKILL_RESULT: ${{ steps.run.outputs.structured_output }}
-      run: node ${{ inputs.check-script }}
+      run: node .github/scripts/run-claude-skill.mjs ${{ inputs.skill }}

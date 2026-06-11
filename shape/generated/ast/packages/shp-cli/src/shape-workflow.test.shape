@@ -7,53 +7,37 @@ trait GeneratedCandidate {
 }
 
 resource ShapeWorkflowTestModuleGuardFindingAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-cli/src/shape-workflow.test.ts:316-326")
+  storage ast.anchor("packages/shp-cli/src/shape-workflow.test.ts:375-385")
   fingerprint ast.semantic_subtree_v1("sha256:a4931ce9fcdc6c932c7f0766278cc1c5a54dcccab0960d8dd50bbd435b6244ee")
 }
 
-resource ShapeWorkflowTestModulePassReviewAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-cli/src/shape-workflow.test.ts:308-314")
-  fingerprint ast.semantic_subtree_v1("sha256:047ea45755be6c9786144e3f92c0f929dfb5f81017c973838e97a6d0db3a4d05")
-}
-
-resource ShapeWorkflowTestModuleRunClaudeReviewExtractorAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-cli/src/shape-workflow.test.ts:438-475")
-  fingerprint ast.semantic_subtree_v1("sha256:bb4bcf757b2da02c0bdbab3ecab8ad19d51d9e9170966bc4d4b93e15d42c5a48")
-}
-
-resource ShapeWorkflowTestModuleRunClaudeReviewGateAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-cli/src/shape-workflow.test.ts:372-416")
-  fingerprint ast.semantic_subtree_v1("sha256:3d1e185361d1b82aeb313ff5ed105075c15003266282482e62981d53481e83fd")
+resource ShapeWorkflowTestModuleReviewFindingAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/shape-workflow.test.ts:362-373")
+  fingerprint ast.semantic_subtree_v1("sha256:3f58110cabe58ab99ebd3d731a5abaa6c81fbadbdf96e756f9203642586b6e1f")
 }
 
 resource ShapeWorkflowTestModuleRunNodeModuleProbeAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-cli/src/shape-workflow.test.ts:418-436")
+  storage ast.anchor("packages/shp-cli/src/shape-workflow.test.ts:434-452")
   fingerprint ast.semantic_subtree_v1("sha256:75745c66740ccf4636f864ea2e9d312379117a9584dded509c2f55b19075fa43")
 }
 
-resource ShapeWorkflowTestModuleRunResultGateAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-cli/src/shape-workflow.test.ts:328-370")
-  fingerprint ast.semantic_subtree_v1("sha256:64c34f998878134aa3fc79c1834b7b9b5ecc563c72734203f4c7eb0efeca8250")
+resource ShapeWorkflowTestModuleRunSkillGateAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/shape-workflow.test.ts:390-432")
+  fingerprint ast.semantic_subtree_v1("sha256:29479eb9b6ea761a07af635cb93e9b4095bbeafa9d53a1708491401c8ba0f7f3")
 }
 
 component ShapeWorkflowTestModule : GeneratedCandidate {
   fn guardFinding
-    source ts("packages/shp-cli/src/shape-workflow.test.ts:316-326")
+    source ts("packages/shp-cli/src/shape-workflow.test.ts:375-385")
     effects unknown
-  fn passReview
-    source ts("packages/shp-cli/src/shape-workflow.test.ts:308-314")
-    effects unknown
-  fn runClaudeReviewExtractor
-    source ts("packages/shp-cli/src/shape-workflow.test.ts:438-475")
-    effects unknown
-  fn runClaudeReviewGate
-    source ts("packages/shp-cli/src/shape-workflow.test.ts:372-416")
+  fn reviewFinding
+    source ts("packages/shp-cli/src/shape-workflow.test.ts:362-373")
     effects unknown
   fn runNodeModuleProbe
-    source ts("packages/shp-cli/src/shape-workflow.test.ts:418-436")
+    source ts("packages/shp-cli/src/shape-workflow.test.ts:434-452")
     effects unknown
-  fn runResultGate
-    source ts("packages/shp-cli/src/shape-workflow.test.ts:328-370")
+  fn runSkillGate
+    source ts("packages/shp-cli/src/shape-workflow.test.ts:390-432")
     effects unknown
 }
 
@@ -62,31 +46,15 @@ relation ShapeWorkflowTestModuleGuardFindingGeneratedFromShapeWorkflowTestModule
   connects ShapeWorkflowTestModule -> ShapeWorkflowTestModuleGuardFindingAstAnchor
   roles { ShapeWorkflowTestModule as generated, ShapeWorkflowTestModuleGuardFindingAstAnchor as syntax }
   expects ShapeWorkflowTestModuleGuardFindingAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a4931ce9fcdc6c932c7f0766278cc1c5a54dcccab0960d8dd50bbd435b6244ee")
-  summary "fn ShapeWorkflowTestModule.guardFinding generated from typescript function_declaration at packages/shp-cli/src/shape-workflow.test.ts:316-326."
+  summary "fn ShapeWorkflowTestModule.guardFinding generated from typescript function_declaration at packages/shp-cli/src/shape-workflow.test.ts:375-385."
 }
 
-relation ShapeWorkflowTestModulePassReviewGeneratedFromShapeWorkflowTestModulePassReviewAstAnchor {
+relation ShapeWorkflowTestModuleReviewFindingGeneratedFromShapeWorkflowTestModuleReviewFindingAstAnchor {
   kind generated_from
-  connects ShapeWorkflowTestModule -> ShapeWorkflowTestModulePassReviewAstAnchor
-  roles { ShapeWorkflowTestModule as generated, ShapeWorkflowTestModulePassReviewAstAnchor as syntax }
-  expects ShapeWorkflowTestModulePassReviewAstAnchor fingerprint ast.semantic_subtree_v1("sha256:047ea45755be6c9786144e3f92c0f929dfb5f81017c973838e97a6d0db3a4d05")
-  summary "fn ShapeWorkflowTestModule.passReview generated from typescript function_declaration at packages/shp-cli/src/shape-workflow.test.ts:308-314."
-}
-
-relation ShapeWorkflowTestModuleRunClaudeReviewExtractorGeneratedFromShapeWorkflowTestModuleRunClaudeReviewExtractorAstAnchor {
-  kind generated_from
-  connects ShapeWorkflowTestModule -> ShapeWorkflowTestModuleRunClaudeReviewExtractorAstAnchor
-  roles { ShapeWorkflowTestModule as generated, ShapeWorkflowTestModuleRunClaudeReviewExtractorAstAnchor as syntax }
-  expects ShapeWorkflowTestModuleRunClaudeReviewExtractorAstAnchor fingerprint ast.semantic_subtree_v1("sha256:bb4bcf757b2da02c0bdbab3ecab8ad19d51d9e9170966bc4d4b93e15d42c5a48")
-  summary "fn ShapeWorkflowTestModule.runClaudeReviewExtractor generated from typescript function_declaration at packages/shp-cli/src/shape-workflow.test.ts:438-475."
-}
-
-relation ShapeWorkflowTestModuleRunClaudeReviewGateGeneratedFromShapeWorkflowTestModuleRunClaudeReviewGateAstAnchor {
-  kind generated_from
-  connects ShapeWorkflowTestModule -> ShapeWorkflowTestModuleRunClaudeReviewGateAstAnchor
-  roles { ShapeWorkflowTestModule as generated, ShapeWorkflowTestModuleRunClaudeReviewGateAstAnchor as syntax }
-  expects ShapeWorkflowTestModuleRunClaudeReviewGateAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3d1e185361d1b82aeb313ff5ed105075c15003266282482e62981d53481e83fd")
-  summary "fn ShapeWorkflowTestModule.runClaudeReviewGate generated from typescript function_declaration at packages/shp-cli/src/shape-workflow.test.ts:372-416."
+  connects ShapeWorkflowTestModule -> ShapeWorkflowTestModuleReviewFindingAstAnchor
+  roles { ShapeWorkflowTestModule as generated, ShapeWorkflowTestModuleReviewFindingAstAnchor as syntax }
+  expects ShapeWorkflowTestModuleReviewFindingAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3f58110cabe58ab99ebd3d731a5abaa6c81fbadbdf96e756f9203642586b6e1f")
+  summary "fn ShapeWorkflowTestModule.reviewFinding generated from typescript function_declaration at packages/shp-cli/src/shape-workflow.test.ts:362-373."
 }
 
 relation ShapeWorkflowTestModuleRunNodeModuleProbeGeneratedFromShapeWorkflowTestModuleRunNodeModuleProbeAstAnchor {
@@ -94,15 +62,15 @@ relation ShapeWorkflowTestModuleRunNodeModuleProbeGeneratedFromShapeWorkflowTest
   connects ShapeWorkflowTestModule -> ShapeWorkflowTestModuleRunNodeModuleProbeAstAnchor
   roles { ShapeWorkflowTestModule as generated, ShapeWorkflowTestModuleRunNodeModuleProbeAstAnchor as syntax }
   expects ShapeWorkflowTestModuleRunNodeModuleProbeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:75745c66740ccf4636f864ea2e9d312379117a9584dded509c2f55b19075fa43")
-  summary "fn ShapeWorkflowTestModule.runNodeModuleProbe generated from typescript function_declaration at packages/shp-cli/src/shape-workflow.test.ts:418-436."
+  summary "fn ShapeWorkflowTestModule.runNodeModuleProbe generated from typescript function_declaration at packages/shp-cli/src/shape-workflow.test.ts:434-452."
 }
 
-relation ShapeWorkflowTestModuleRunResultGateGeneratedFromShapeWorkflowTestModuleRunResultGateAstAnchor {
+relation ShapeWorkflowTestModuleRunSkillGateGeneratedFromShapeWorkflowTestModuleRunSkillGateAstAnchor {
   kind generated_from
-  connects ShapeWorkflowTestModule -> ShapeWorkflowTestModuleRunResultGateAstAnchor
-  roles { ShapeWorkflowTestModule as generated, ShapeWorkflowTestModuleRunResultGateAstAnchor as syntax }
-  expects ShapeWorkflowTestModuleRunResultGateAstAnchor fingerprint ast.semantic_subtree_v1("sha256:64c34f998878134aa3fc79c1834b7b9b5ecc563c72734203f4c7eb0efeca8250")
-  summary "fn ShapeWorkflowTestModule.runResultGate generated from typescript function_declaration at packages/shp-cli/src/shape-workflow.test.ts:328-370."
+  connects ShapeWorkflowTestModule -> ShapeWorkflowTestModuleRunSkillGateAstAnchor
+  roles { ShapeWorkflowTestModule as generated, ShapeWorkflowTestModuleRunSkillGateAstAnchor as syntax }
+  expects ShapeWorkflowTestModuleRunSkillGateAstAnchor fingerprint ast.semantic_subtree_v1("sha256:29479eb9b6ea761a07af635cb93e9b4095bbeafa9d53a1708491401c8ba0f7f3")
+  summary "fn ShapeWorkflowTestModule.runSkillGate generated from typescript function_declaration at packages/shp-cli/src/shape-workflow.test.ts:390-432."
 }
 
 implementation ShapeWorkflowTestModuleImpl {

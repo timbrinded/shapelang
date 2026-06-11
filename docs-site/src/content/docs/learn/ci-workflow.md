@@ -89,55 +89,13 @@ shape-claude-review:
         SCHEMA_PATH: .github/shape-contract/schemas/shape-contract-result.schema.json
       run: |
         node <<'NODE'
-        const { appendFileSync, readFileSync } = require("node:fs");
-        const schema = JSON.stringify(JSON.parse(readFileSync(process.env.SCHEMA_PATH, "utf8")));
-        appendFileSync(process.env.GITHUB_OUTPUT, `json_schema=${schema}\n`);
-        NODE
-    - name: Install Claude Code
-      if: steps.claude-token.outputs.available == 'true'
-      run: |
-        curl -fsSL https://claude.ai/install.sh | bash
-        echo "$HOME/.local/bin" >> "$GITHUB_PATH"
-        "$HOME/.local/bin/claude" --version
-    - name: Run Claude Shape contract review
-      id: claude
-      if: steps.claude-token.outputs.available == 'true'
-      env:
-        ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-        ANTHROPIC_BASE_URL: ${{ secrets.ANTHROPIC_BASE_URL }}
-        ANTHROPIC_AUTH_TOKEN: ${{ secrets.ANTHROPIC_AUTH_TOKEN }}
-        JSON_SCHEMA: ${{ steps.schema.outputs.json_schema }}
-      run: |
-        set -euo pipefail
-        prompt=$(cat <<'PROMPT'
-        Read AGENTS.md when it exists, then read
-        .github/prompts/shape-contract-review.md.
-
-        Analyze this repository for Shape contract drift.
-        Changed files are listed in changed.txt.
-        Return a single JSON object matching the configured schema.
-        Do not include prose, Markdown, or code fences outside that object.
-        Do not modify tracked repository files.
-        PROMPT
-        )
-        claude -p "$prompt" \
-          --max-turns 100 \
-          --output-format json \
-          --allowedTools "Read,Glob,Grep,LS,Bash(git diff *),Bash(git show *),Bash(bun run shape:ci),Bash(bun shp check *),Bash(bun shp obligations *),Bash(bun shp memory *),Bash(bun shp explain *),Bash(bun shp analyze *)" \
-          --disallowedTools "Write,Edit" \
-          --json-schema "$JSON_SCHEMA" \
-          > claude-shape-review.json
-        node <<'NODE'
-        const { appendFileSync, readFileSync } = require("node:fs");
+        const { readFileSync } = require("node:fs");
         const parseJsonValue = (value) => {
           if (typeof value !== "string") return value;
           const trimmed = value.trim();
           const candidates = [trimmed];
           const fenced = trimmed.match(/^```(?:json)?\s*([\s\S]*?)\s*```$/);
           if (fenced?.[1]) candidates.push(fenced[1].trim());
-          const start = value.indexOf("{");
-          const end = value.lastIndexOf("}");
-          if (start !== -1 && end > start) candidates.push(value.slice(start, end + 1));
           for (const candidate of candidates) {
             try {
               return JSON.parse(candidate);
@@ -162,12 +120,12 @@ shape-claude-review:
           console.error("Claude output did not include a valid Shape review object.");
           process.exit(1);
         }
-        appendFileSync(process.env.GITHUB_OUTPUT, `structured_output=${JSON.stringify(selected)}\n`);
+        if (selected.status !== "pass" || selected.findings.length > 0) {
+          console.error(JSON.stringify(selected, null, 2));
+          process.exit(1);
+        }
+        console.log(selected.summary);
         NODE
-    - run: node .github/scripts/check-claude-shape-review.mjs
-      if: steps.claude-token.outputs.available == 'true'
-      env:
-        CLAUDE_SHAPE_REVIEW_RESULT: ${{ steps.claude.outputs.structured_output }}
 ```
 
 Use a short prompt that makes `shape/` the authority:
@@ -202,13 +160,38 @@ On pull requests from repository branches, CI also upserts a single Shape CI sum
 
 ## Skill-driven PR jobs
 
-Two further PR jobs drive the bundled plugin skills through Claude Code. Both detect Anthropic credentials the same way as the contract review and skip cleanly when none are available, and both start with a deterministic prefilter so most pull requests never invoke the model.
+The Shape repository runs three Claude-powered PR jobs, all driven by one
+script: `.github/scripts/run-claude-skill.mjs`, invoked as
+`node run-claude-skill.mjs review|guard|index` from the shared
+`.github/actions/claude-skill-review` composite action (Bun toolchain, pinned
+Claude Code CLI, run, gate). Each job detects Anthropic credentials first and
+skips cleanly when none are available, validates the model's structured result
+against a strict JSON schema under `.github/shape-contract/schemas/`, renders a
+job summary, and gates on a per-skill policy. Two of the jobs start with a
+deterministic prefilter, so most pull requests never invoke the model.
 
-**Shape Contract Guard** (`shape-guard`) applies `plugins/shapelang/skills/shape-contract-guard/SKILL.md` to the authored `.shape` diff against the PR base: removed final forbids, weakened traits, widened grants or effects, relation or coverage weakening, and weak attestations. If no authored `.shape` file changed, `run-claude-shape-guard.mjs` emits a `pass` result without calling Claude. Findings are advisory by design; the job fails only on a `high`-severity finding or when the review itself errors (`check-claude-shape-guard.mjs`).
+**Shape Claude Review** (`shape-claude-review`) checks source-to-model drift
+using the policy in `.github/prompts/shape-contract-review.md`; any finding or
+non-pass status fails the job.
 
-**Shape Index Coverage** (`shape-index`) applies `plugins/shapelang/skills/shape-index/SKILL.md` as an audit: `run-claude-shape-index.mjs` first computes which changed source files are not referenced by any authored `shape/*.shape` source/evidence ref or `implementation` paths glob, and only asks Claude to judge that uncovered remainder for architecture-significant subsystems lacking Layer-2 coverage. Gaps are reported in the job summary and PR comment but stay non-blocking unless the repository sets the `SHAPE_INDEX_STRICT` Actions variable to `true`.
+**Shape Contract Guard** (`shape-guard`) applies
+`plugins/shapelang/skills/shape-contract-guard/SKILL.md` (policy in
+`.github/prompts/shape-guard.md`) to the authored `.shape` diff against the PR
+base: removed final forbids, weakened traits, widened grants or effects,
+relation or coverage weakening, and weak attestations. If no authored `.shape`
+file changed, the prefilter emits a `pass` result without calling Claude.
+Findings are advisory by design; only a `high`-severity finding (or a review
+error) fails the job.
 
-Both jobs share the `.github/actions/claude-skill-review` composite action (toolchain setup, Claude install, run, gate) and the `claude-skill-pipeline.mjs` runner harness, and validate the model output against strict JSON schemas under `.github/shape-contract/schemas/` before anything reaches `GITHUB_OUTPUT`.
+**Shape Index Coverage** (`shape-index`) applies
+`plugins/shapelang/skills/shape-index/SKILL.md` (policy in
+`.github/prompts/shape-index.md`) as an audit: the prefilter computes which
+changed source files no authored `shape/*.shape` source/evidence ref or
+`implementation` paths glob covers, and only asks Claude to judge that
+uncovered remainder for architecture-significant subsystems lacking Layer-2
+coverage. Gaps are reported in the job summary and PR comment but stay
+non-blocking unless the repository sets the `SHAPE_INDEX_STRICT` Actions
+variable to `true`.
 
 ## Direct binary install
 
