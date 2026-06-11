@@ -167,6 +167,7 @@ shp graph show Gateway --kind calls
 shp graph stats --kind calls
 shp memory
 shp obligations
+shp author --changed-files changed.txt --component AuditStore
 shp analyze --shape-files fixtures/pass/append_only_append/audit.shape src/audit/purge.ts
 shp ast source --language rust --module generated.audit src/audit/store.rs
 shp ast json --module generated.audit --raw-out ast.raw.shape ast.json
@@ -187,6 +188,7 @@ Useful commands:
 - `shp graph stats [--kind KIND]`: print aggregate vertex, hyperedge, and incidence counts.
 - `shp memory`: list rationale and memory entries that protect design context.
 - `shp obligations`: list open design-memory obligations such as missing rationale or reevaluation.
+- `shp author --changed-files changed.txt --component AuditStore [--module module.name]`: generate a conservative global-model draft from changed files.
 - `shp analyze --shape-files fixtures/pass/append_only_append/audit.shape src/file.ts`: compare obvious source hints against declared effects.
 - `shp ast source [--language LANG] [--module NAME] src/file.rs`: parse source with Tree-sitter and print a conservative Shape draft with compact AST anchors and semantic fingerprints.
 - `shp ast json [--module NAME] [--include-ast-layer] ast.json`: read normalized AST JSON from another parser, with raw AST resources opt-in.
@@ -222,7 +224,9 @@ The Starlight documentation site lives in `docs-site/` and is configured for sta
 
 ## Local Development
 
-Use the Bun workspace only when contributing to Shape itself:
+Use the Bun workspace only when contributing to Shape itself. Contributing also
+requires Node 24+ on `PATH`: `bun run langium:generate` and `bun run docs:check`
+invoke tooling through Node, and CI pins Node 24 (the repo ships an `.nvmrc`).
 
 ```bash
 bun install --frozen-lockfile

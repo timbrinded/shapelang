@@ -9,6 +9,10 @@ Use the Bun workspace when contributing to Shape itself. Application repos shoul
 
 ## Setup
 
+Node 24+ must be on `PATH` alongside Bun: `bun run langium:generate` and
+`bun run docs:check` invoke tooling through Node, and CI pins Node 24. The repo
+ships an `.nvmrc`, so `nvm use` selects the right version.
+
 ```bash
 bun install --frozen-lockfile
 bun run langium:generate
