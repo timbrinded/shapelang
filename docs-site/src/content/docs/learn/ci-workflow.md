@@ -49,7 +49,7 @@ If a governed source path changes without a Shape update or current attestation,
 
 CI can also run Claude Code as a PR job to check source semantics against the Shape model. This is separate from the deterministic checker: `shp check --changed-files` enforces current coverage and bindings, while Claude reviews whether the committed Shape claims faithfully describe the changed behavior.
 
-Run the review through the official [`anthropics/claude-code-action`](https://github.com/anthropics/claude-code-action). It installs Claude Code, runs the prompt headless, and when `--json-schema` is passed in `claude_args` it validates the model's final answer and exposes it as a `structured_output` step output. The action authenticates with `ANTHROPIC_API_KEY` (or a Claude Code OAuth token); detect the credential first so forked pull requests skip the Claude-only work instead of failing on an unavailable secret:
+Run the review through the official [`anthropics/claude-code-action`](https://github.com/anthropics/claude-code-action). It installs Claude Code, runs the prompt headless, and when `--json-schema` is passed in `claude_args` it validates the model's final answer and exposes it as a `structured_output` step output. The action's credential check accepts `ANTHROPIC_API_KEY` or a Claude Code OAuth token. Proxy-backed repositories can authenticate with `ANTHROPIC_AUTH_TOKEN` and `ANTHROPIC_BASE_URL` instead: the action forwards its environment to Claude Code, so set both on the job env and pass the token through the `anthropic_api_key` input to satisfy the credential check. Detect the credential first so forked pull requests skip the Claude-only work instead of failing on an unavailable secret:
 
 ```yaml
 shape-claude-review:
@@ -60,8 +60,9 @@ shape-claude-review:
       id: claude-token
       env:
         ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        ANTHROPIC_AUTH_TOKEN: ${{ secrets.ANTHROPIC_AUTH_TOKEN }}
       run: |
-        if [ -n "${ANTHROPIC_API_KEY:-}" ]; then
+        if [ -n "${ANTHROPIC_API_KEY:-}" ] || [ -n "${ANTHROPIC_AUTH_TOKEN:-}" ]; then
           echo "available=true" >> "$GITHUB_OUTPUT"
         else
           echo "available=false" >> "$GITHUB_OUTPUT"
@@ -77,8 +78,11 @@ shape-claude-review:
       id: claude
       if: steps.claude-token.outputs.available == 'true'
       uses: anthropics/claude-code-action@v1
+      env:
+        ANTHROPIC_AUTH_TOKEN: ${{ secrets.ANTHROPIC_AUTH_TOKEN }}
+        ANTHROPIC_BASE_URL: ${{ secrets.ANTHROPIC_BASE_URL }}
       with:
-        anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+        anthropic_api_key: ${{ secrets.ANTHROPIC_AUTH_TOKEN || secrets.ANTHROPIC_API_KEY }}
         github_token: ${{ github.token }}
         prompt: |
           Review changed.txt against the durable Shape model in shape/**/*.shape.
