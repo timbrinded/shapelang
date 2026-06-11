@@ -199,10 +199,24 @@
       ]
     },
     {
+      "module": "shape.generated.ast.packages.shp_checker.src.ast_generation_test",
+      "path": "shape/generated/ast/packages/shp-checker/src/ast-generation.test.shape",
+      "sources": [
+        "packages/shp-checker/src/ast-generation.test.ts"
+      ]
+    },
+    {
       "module": "shape.generated.ast.packages.shp_checker.src.ast_generation",
       "path": "shape/generated/ast/packages/shp-checker/src/ast-generation.shape",
       "sources": [
         "packages/shp-checker/src/ast-generation.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.authoring_test",
+      "path": "shape/generated/ast/packages/shp-checker/src/authoring.test.shape",
+      "sources": [
+        "packages/shp-checker/src/authoring.test.ts"
       ]
     },
     {
@@ -549,10 +563,24 @@
       ]
     },
     {
+      "module": "shape.generated.ast.packages.shp_checker.src.editor_test",
+      "path": "shape/generated/ast/packages/shp-checker/src/editor.test.shape",
+      "sources": [
+        "packages/shp-checker/src/editor.test.ts"
+      ]
+    },
+    {
       "module": "shape.generated.ast.packages.shp_checker.src.editor",
       "path": "shape/generated/ast/packages/shp-checker/src/editor.shape",
       "sources": [
         "packages/shp-checker/src/editor.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.formatter_test",
+      "path": "shape/generated/ast/packages/shp-checker/src/formatter.test.shape",
+      "sources": [
+        "packages/shp-checker/src/formatter.test.ts"
       ]
     },
     {
@@ -588,6 +616,13 @@
       "path": "shape/generated/ast/packages/shp-checker/src/memory-guards.shape",
       "sources": [
         "packages/shp-checker/src/memory-guards.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.parser_test",
+      "path": "shape/generated/ast/packages/shp-checker/src/parser.test.shape",
+      "sources": [
+        "packages/shp-checker/src/parser.test.ts"
       ]
     },
     {

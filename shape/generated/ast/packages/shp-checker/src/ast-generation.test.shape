@@ -1,0 +1,225 @@
+module shape.generated.ast.packages.shp_checker.src.ast_generation_test
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource AstGenerationTestModuleAstAnchorForTargetAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/ast-generation.test.ts:1277-1282")
+  fingerprint ast.semantic_subtree_v1("sha256:a920df85354835719f6402864b399efd32af83b7329cba4db7059164e283186c")
+}
+
+resource AstGenerationTestModuleClassFixtureAstAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/ast-generation.test.ts:1421-1476")
+  fingerprint ast.semantic_subtree_v1("sha256:b80e4e4b0906f00640bd639f1ab00ba18946a1f188e1342ebe49c82af35b92d7")
+}
+
+resource AstGenerationTestModuleComponentShellFingerprintAstAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/ast-generation.test.ts:1165-1210")
+  fingerprint ast.semantic_subtree_v1("sha256:abf456ed506a8d69c7d3b92c422eed1e21d99eb8768ccc3506b24f490816e9a7")
+}
+
+resource AstGenerationTestModuleFakeTreeSitterNodeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/ast-generation.test.ts:1511-1553")
+  fingerprint ast.semantic_subtree_v1("sha256:011707033302131a64a8b039e04d128d483d2fb414ad9007e7bd775785accd44")
+}
+
+resource AstGenerationTestModuleFunctionFingerprintAstAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/ast-generation.test.ts:1104-1107")
+  fingerprint ast.semantic_subtree_v1("sha256:53e95f7252e2e3b932a4e1b0611547998bb40a0ea8d5b45871557d42a37d70e2")
+}
+
+resource AstGenerationTestModuleGraphFromAstForTestAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/ast-generation.test.ts:1284-1291")
+  fingerprint ast.semantic_subtree_v1("sha256:1a154b6e99e3ef2c45b1eb961c3d223b22e2fd4870b93aac2eda4d45c21b2c61")
+}
+
+resource AstGenerationTestModuleLanguageAstFixturesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/ast-generation.test.ts:1306-1345")
+  fingerprint ast.semantic_subtree_v1("sha256:298bd18a4b2062de7f2e9a9cbd67e9244481055c3331130cdd26d0d2e204ab33")
+}
+
+resource AstGenerationTestModuleMultiFunctionFingerprintAstAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/ast-generation.test.ts:1109-1151")
+  fingerprint ast.semantic_subtree_v1("sha256:ba81a13622e44b780b0a5fc1e5a1c9a0e2f794e669001901541f816a521a8e8d")
+}
+
+resource AstGenerationTestModuleRequireAstAnchorAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/ast-generation.test.ts:1293-1304")
+  fingerprint ast.semantic_subtree_v1("sha256:99fa9c06d989e62d6977c1de3e14281868557c1ccd4fd9dc4d4db8fe984405a3")
+}
+
+resource AstGenerationTestModuleRequireGeneratedOutputAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/ast-generation.test.ts:28-33")
+  fingerprint ast.semantic_subtree_v1("sha256:9183561ab487206f79d9f2ec6c937fecb4dceba81f485d0b26e0f98bbb2bcccf")
+}
+
+resource AstGenerationTestModuleResourceShellFingerprintAstAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/ast-generation.test.ts:1223-1271")
+  fingerprint ast.semantic_subtree_v1("sha256:38f53430e266f3405a7c443b8073e2271282fff09e8bd445c28c4850570a8c39")
+}
+
+resource AstGenerationTestModuleRustAuditAstJsonAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/ast-generation.test.ts:1015-1094")
+  fingerprint ast.semantic_subtree_v1("sha256:16ee82219b6f4f6d4e6cd9f79a42037f87aceb744e53d3aafdff83d3fbfe6897")
+}
+
+resource AstGenerationTestModuleSpanAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/ast-generation.test.ts:1478-1485")
+  fingerprint ast.semantic_subtree_v1("sha256:98b858224277fa5de75888654180d5e74decab72d039c7c8bb67b14b2c20bef9")
+}
+
+component AstGenerationTestModule : GeneratedCandidate {
+  fn astAnchorForTarget
+    source ts("packages/shp-checker/src/ast-generation.test.ts:1277-1282")
+    effects unknown
+  fn classFixtureAst
+    source ts("packages/shp-checker/src/ast-generation.test.ts:1421-1476")
+    effects unknown
+  fn componentShellFingerprintAst
+    source ts("packages/shp-checker/src/ast-generation.test.ts:1165-1210")
+    effects unknown
+  fn fakeTreeSitterNode
+    source ts("packages/shp-checker/src/ast-generation.test.ts:1511-1553")
+    effects unknown
+  fn functionFingerprintAst
+    source ts("packages/shp-checker/src/ast-generation.test.ts:1104-1107")
+    effects unknown
+  fn graphFromAstForTest
+    source ts("packages/shp-checker/src/ast-generation.test.ts:1284-1291")
+    effects unknown
+  fn languageAstFixtures
+    source ts("packages/shp-checker/src/ast-generation.test.ts:1306-1345")
+    effects unknown
+  fn multiFunctionFingerprintAst
+    source ts("packages/shp-checker/src/ast-generation.test.ts:1109-1151")
+    effects unknown
+  fn requireAstAnchor
+    source ts("packages/shp-checker/src/ast-generation.test.ts:1293-1304")
+    effects unknown
+  fn requireGeneratedOutput
+    source ts("packages/shp-checker/src/ast-generation.test.ts:28-33")
+    effects unknown
+  fn resourceShellFingerprintAst
+    source ts("packages/shp-checker/src/ast-generation.test.ts:1223-1271")
+    effects unknown
+  fn rustAuditAstJson
+    source ts("packages/shp-checker/src/ast-generation.test.ts:1015-1094")
+    effects unknown
+  fn span
+    source ts("packages/shp-checker/src/ast-generation.test.ts:1478-1485")
+    effects unknown
+}
+
+relation AstGenerationTestModuleAstAnchorForTargetGeneratedFromAstGenerationTestModuleAstAnchorForTargetAstAnchor {
+  kind generated_from
+  connects AstGenerationTestModule -> AstGenerationTestModuleAstAnchorForTargetAstAnchor
+  roles { AstGenerationTestModule as generated, AstGenerationTestModuleAstAnchorForTargetAstAnchor as syntax }
+  expects AstGenerationTestModuleAstAnchorForTargetAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a920df85354835719f6402864b399efd32af83b7329cba4db7059164e283186c")
+  summary "fn AstGenerationTestModule.astAnchorForTarget generated from typescript function_declaration at packages/shp-checker/src/ast-generation.test.ts:1277-1282."
+}
+
+relation AstGenerationTestModuleClassFixtureAstGeneratedFromAstGenerationTestModuleClassFixtureAstAstAnchor {
+  kind generated_from
+  connects AstGenerationTestModule -> AstGenerationTestModuleClassFixtureAstAstAnchor
+  roles { AstGenerationTestModule as generated, AstGenerationTestModuleClassFixtureAstAstAnchor as syntax }
+  expects AstGenerationTestModuleClassFixtureAstAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b80e4e4b0906f00640bd639f1ab00ba18946a1f188e1342ebe49c82af35b92d7")
+  summary "fn AstGenerationTestModule.classFixtureAst generated from typescript function_declaration at packages/shp-checker/src/ast-generation.test.ts:1421-1476."
+}
+
+relation AstGenerationTestModuleComponentShellFingerprintAstGeneratedFromAstGenerationTestModuleComponentShellFingerprintAstAstAnchor {
+  kind generated_from
+  connects AstGenerationTestModule -> AstGenerationTestModuleComponentShellFingerprintAstAstAnchor
+  roles { AstGenerationTestModule as generated, AstGenerationTestModuleComponentShellFingerprintAstAstAnchor as syntax }
+  expects AstGenerationTestModuleComponentShellFingerprintAstAstAnchor fingerprint ast.semantic_subtree_v1("sha256:abf456ed506a8d69c7d3b92c422eed1e21d99eb8768ccc3506b24f490816e9a7")
+  summary "fn AstGenerationTestModule.componentShellFingerprintAst generated from typescript function_declaration at packages/shp-checker/src/ast-generation.test.ts:1165-1210."
+}
+
+relation AstGenerationTestModuleFakeTreeSitterNodeGeneratedFromAstGenerationTestModuleFakeTreeSitterNodeAstAnchor {
+  kind generated_from
+  connects AstGenerationTestModule -> AstGenerationTestModuleFakeTreeSitterNodeAstAnchor
+  roles { AstGenerationTestModule as generated, AstGenerationTestModuleFakeTreeSitterNodeAstAnchor as syntax }
+  expects AstGenerationTestModuleFakeTreeSitterNodeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:011707033302131a64a8b039e04d128d483d2fb414ad9007e7bd775785accd44")
+  summary "fn AstGenerationTestModule.fakeTreeSitterNode generated from typescript function_declaration at packages/shp-checker/src/ast-generation.test.ts:1511-1553."
+}
+
+relation AstGenerationTestModuleFunctionFingerprintAstGeneratedFromAstGenerationTestModuleFunctionFingerprintAstAstAnchor {
+  kind generated_from
+  connects AstGenerationTestModule -> AstGenerationTestModuleFunctionFingerprintAstAstAnchor
+  roles { AstGenerationTestModule as generated, AstGenerationTestModuleFunctionFingerprintAstAstAnchor as syntax }
+  expects AstGenerationTestModuleFunctionFingerprintAstAstAnchor fingerprint ast.semantic_subtree_v1("sha256:53e95f7252e2e3b932a4e1b0611547998bb40a0ea8d5b45871557d42a37d70e2")
+  summary "fn AstGenerationTestModule.functionFingerprintAst generated from typescript function_declaration at packages/shp-checker/src/ast-generation.test.ts:1104-1107."
+}
+
+relation AstGenerationTestModuleGraphFromAstForTestGeneratedFromAstGenerationTestModuleGraphFromAstForTestAstAnchor {
+  kind generated_from
+  connects AstGenerationTestModule -> AstGenerationTestModuleGraphFromAstForTestAstAnchor
+  roles { AstGenerationTestModule as generated, AstGenerationTestModuleGraphFromAstForTestAstAnchor as syntax }
+  expects AstGenerationTestModuleGraphFromAstForTestAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1a154b6e99e3ef2c45b1eb961c3d223b22e2fd4870b93aac2eda4d45c21b2c61")
+  summary "fn AstGenerationTestModule.graphFromAstForTest generated from typescript function_declaration at packages/shp-checker/src/ast-generation.test.ts:1284-1291."
+}
+
+relation AstGenerationTestModuleLanguageAstFixturesGeneratedFromAstGenerationTestModuleLanguageAstFixturesAstAnchor {
+  kind generated_from
+  connects AstGenerationTestModule -> AstGenerationTestModuleLanguageAstFixturesAstAnchor
+  roles { AstGenerationTestModule as generated, AstGenerationTestModuleLanguageAstFixturesAstAnchor as syntax }
+  expects AstGenerationTestModuleLanguageAstFixturesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:298bd18a4b2062de7f2e9a9cbd67e9244481055c3331130cdd26d0d2e204ab33")
+  summary "fn AstGenerationTestModule.languageAstFixtures generated from typescript function_declaration at packages/shp-checker/src/ast-generation.test.ts:1306-1345."
+}
+
+relation AstGenerationTestModuleMultiFunctionFingerprintAstGeneratedFromAstGenerationTestModuleMultiFunctionFingerprintAstAstAnchor {
+  kind generated_from
+  connects AstGenerationTestModule -> AstGenerationTestModuleMultiFunctionFingerprintAstAstAnchor
+  roles { AstGenerationTestModule as generated, AstGenerationTestModuleMultiFunctionFingerprintAstAstAnchor as syntax }
+  expects AstGenerationTestModuleMultiFunctionFingerprintAstAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ba81a13622e44b780b0a5fc1e5a1c9a0e2f794e669001901541f816a521a8e8d")
+  summary "fn AstGenerationTestModule.multiFunctionFingerprintAst generated from typescript function_declaration at packages/shp-checker/src/ast-generation.test.ts:1109-1151."
+}
+
+relation AstGenerationTestModuleRequireAstAnchorGeneratedFromAstGenerationTestModuleRequireAstAnchorAstAnchor {
+  kind generated_from
+  connects AstGenerationTestModule -> AstGenerationTestModuleRequireAstAnchorAstAnchor
+  roles { AstGenerationTestModule as generated, AstGenerationTestModuleRequireAstAnchorAstAnchor as syntax }
+  expects AstGenerationTestModuleRequireAstAnchorAstAnchor fingerprint ast.semantic_subtree_v1("sha256:99fa9c06d989e62d6977c1de3e14281868557c1ccd4fd9dc4d4db8fe984405a3")
+  summary "fn AstGenerationTestModule.requireAstAnchor generated from typescript function_declaration at packages/shp-checker/src/ast-generation.test.ts:1293-1304."
+}
+
+relation AstGenerationTestModuleRequireGeneratedOutputGeneratedFromAstGenerationTestModuleRequireGeneratedOutputAstAnchor {
+  kind generated_from
+  connects AstGenerationTestModule -> AstGenerationTestModuleRequireGeneratedOutputAstAnchor
+  roles { AstGenerationTestModule as generated, AstGenerationTestModuleRequireGeneratedOutputAstAnchor as syntax }
+  expects AstGenerationTestModuleRequireGeneratedOutputAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9183561ab487206f79d9f2ec6c937fecb4dceba81f485d0b26e0f98bbb2bcccf")
+  summary "fn AstGenerationTestModule.requireGeneratedOutput generated from typescript function_declaration at packages/shp-checker/src/ast-generation.test.ts:28-33."
+}
+
+relation AstGenerationTestModuleResourceShellFingerprintAstGeneratedFromAstGenerationTestModuleResourceShellFingerprintAstAstAnchor {
+  kind generated_from
+  connects AstGenerationTestModule -> AstGenerationTestModuleResourceShellFingerprintAstAstAnchor
+  roles { AstGenerationTestModule as generated, AstGenerationTestModuleResourceShellFingerprintAstAstAnchor as syntax }
+  expects AstGenerationTestModuleResourceShellFingerprintAstAstAnchor fingerprint ast.semantic_subtree_v1("sha256:38f53430e266f3405a7c443b8073e2271282fff09e8bd445c28c4850570a8c39")
+  summary "fn AstGenerationTestModule.resourceShellFingerprintAst generated from typescript function_declaration at packages/shp-checker/src/ast-generation.test.ts:1223-1271."
+}
+
+relation AstGenerationTestModuleRustAuditAstJsonGeneratedFromAstGenerationTestModuleRustAuditAstJsonAstAnchor {
+  kind generated_from
+  connects AstGenerationTestModule -> AstGenerationTestModuleRustAuditAstJsonAstAnchor
+  roles { AstGenerationTestModule as generated, AstGenerationTestModuleRustAuditAstJsonAstAnchor as syntax }
+  expects AstGenerationTestModuleRustAuditAstJsonAstAnchor fingerprint ast.semantic_subtree_v1("sha256:16ee82219b6f4f6d4e6cd9f79a42037f87aceb744e53d3aafdff83d3fbfe6897")
+  summary "fn AstGenerationTestModule.rustAuditAstJson generated from typescript function_declaration at packages/shp-checker/src/ast-generation.test.ts:1015-1094."
+}
+
+relation AstGenerationTestModuleSpanGeneratedFromAstGenerationTestModuleSpanAstAnchor {
+  kind generated_from
+  connects AstGenerationTestModule -> AstGenerationTestModuleSpanAstAnchor
+  roles { AstGenerationTestModule as generated, AstGenerationTestModuleSpanAstAnchor as syntax }
+  expects AstGenerationTestModuleSpanAstAnchor fingerprint ast.semantic_subtree_v1("sha256:98b858224277fa5de75888654180d5e74decab72d039c7c8bb67b14b2c20bef9")
+  summary "fn AstGenerationTestModule.span generated from typescript function_declaration at packages/shp-checker/src/ast-generation.test.ts:1478-1485."
+}
+
+implementation AstGenerationTestModuleImpl {
+  paths {
+    "packages/shp-checker/src/ast-generation.test.ts"
+  }
+  conforms_to AstGenerationTestModule
+}
