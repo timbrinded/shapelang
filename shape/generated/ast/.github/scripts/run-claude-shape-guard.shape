@@ -1,0 +1,161 @@
+module shape.generated.ast.github.scripts.run_claude_shape_guard
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource RunClaudeShapeGuardModuleBuildGuardNormalizerPromptAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor(".github/scripts/run-claude-shape-guard.mjs:96-112")
+  fingerprint ast.semantic_subtree_v1("sha256:2f75a9f218653d6c1c7a9d37c5cd1cd78f0db58aee5233f28d558b073726fb97")
+}
+
+resource RunClaudeShapeGuardModuleBuildGuardPromptAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor(".github/scripts/run-claude-shape-guard.mjs:76-94")
+  fingerprint ast.semantic_subtree_v1("sha256:088abd18bba344ab2c24b13e7f9c63a1e2c32c2e8b6203c1063bf0e1acdca495")
+}
+
+resource RunClaudeShapeGuardModuleChangedAuthoredShapeFilesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor(".github/scripts/run-claude-shape-guard.mjs:50-55")
+  fingerprint ast.semantic_subtree_v1("sha256:46eb14c0662bf4283f25e49784ebf58b10ed8c8659ecff39c7ab5bac9f61b793")
+}
+
+resource RunClaudeShapeGuardModuleDefaultRunGitDiffAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor(".github/scripts/run-claude-shape-guard.mjs:57-74")
+  fingerprint ast.semantic_subtree_v1("sha256:69da8fb4418fffd969251d8c98b903c64ac3120f4bea360bc69999a694e250a7")
+}
+
+resource RunClaudeShapeGuardModuleEmitGuardResultAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor(".github/scripts/run-claude-shape-guard.mjs:133-140")
+  fingerprint ast.semantic_subtree_v1("sha256:3bd1b2874735139378b352dfcbafdcd9d3afcd5f02dd6cc79e38c9e2fff3818f")
+}
+
+resource RunClaudeShapeGuardModuleGuardBaseRefAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor(".github/scripts/run-claude-shape-guard.mjs:46-48")
+  fingerprint ast.semantic_subtree_v1("sha256:ea2e722273455f9ae9596e15cb666e0eb0e64a82ee60e2261be771271a4c8b50")
+}
+
+resource RunClaudeShapeGuardModuleGuardReviewArgsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor(".github/scripts/run-claude-shape-guard.mjs:114-131")
+  fingerprint ast.semantic_subtree_v1("sha256:f8ff3c0e2e9bec4eae28c5eb52e8fd423db4f03e76da964b35024c433a52c78c")
+}
+
+resource RunClaudeShapeGuardModuleIsMainModuleAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor(".github/scripts/run-claude-shape-guard.mjs:211-216")
+  fingerprint ast.semantic_subtree_v1("sha256:a7630a5e5fbe44b11a467fb490a2c52019708e3bbc0e6d3476897795228c2a3f")
+}
+
+resource RunClaudeShapeGuardModuleRunClaudeShapeGuardAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor(".github/scripts/run-claude-shape-guard.mjs:142-209")
+  fingerprint ast.semantic_subtree_v1("sha256:d7f92b3d578e6dfbe866a1df53d63254a6673484677cbc8eb68a9a140caff38e")
+}
+
+component RunClaudeShapeGuardModule : GeneratedCandidate {
+  fn buildGuardNormalizerPrompt
+    source js(".github/scripts/run-claude-shape-guard.mjs:96-112")
+    effects unknown
+  fn buildGuardPrompt
+    source js(".github/scripts/run-claude-shape-guard.mjs:76-94")
+    effects unknown
+  fn changedAuthoredShapeFiles
+    source js(".github/scripts/run-claude-shape-guard.mjs:50-55")
+    effects unknown
+  fn defaultRunGitDiff
+    source js(".github/scripts/run-claude-shape-guard.mjs:57-74")
+    effects unknown
+  fn emitGuardResult
+    source js(".github/scripts/run-claude-shape-guard.mjs:133-140")
+    effects unknown
+  fn guardBaseRef
+    source js(".github/scripts/run-claude-shape-guard.mjs:46-48")
+    effects unknown
+  fn guardReviewArgs
+    source js(".github/scripts/run-claude-shape-guard.mjs:114-131")
+    effects unknown
+  fn isMainModule
+    source js(".github/scripts/run-claude-shape-guard.mjs:211-216")
+    effects unknown
+  fn runClaudeShapeGuard
+    source js(".github/scripts/run-claude-shape-guard.mjs:142-209")
+    effects unknown
+}
+
+relation RunClaudeShapeGuardModuleBuildGuardNormalizerPromptGeneratedFromRunClaudeShapeGuardModuleBuildGuardNormalizerPromptAstAnchor {
+  kind generated_from
+  connects RunClaudeShapeGuardModule -> RunClaudeShapeGuardModuleBuildGuardNormalizerPromptAstAnchor
+  roles { RunClaudeShapeGuardModule as generated, RunClaudeShapeGuardModuleBuildGuardNormalizerPromptAstAnchor as syntax }
+  expects RunClaudeShapeGuardModuleBuildGuardNormalizerPromptAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2f75a9f218653d6c1c7a9d37c5cd1cd78f0db58aee5233f28d558b073726fb97")
+  summary "fn RunClaudeShapeGuardModule.buildGuardNormalizerPrompt generated from javascript function_declaration at .github/scripts/run-claude-shape-guard.mjs:96-112."
+}
+
+relation RunClaudeShapeGuardModuleBuildGuardPromptGeneratedFromRunClaudeShapeGuardModuleBuildGuardPromptAstAnchor {
+  kind generated_from
+  connects RunClaudeShapeGuardModule -> RunClaudeShapeGuardModuleBuildGuardPromptAstAnchor
+  roles { RunClaudeShapeGuardModule as generated, RunClaudeShapeGuardModuleBuildGuardPromptAstAnchor as syntax }
+  expects RunClaudeShapeGuardModuleBuildGuardPromptAstAnchor fingerprint ast.semantic_subtree_v1("sha256:088abd18bba344ab2c24b13e7f9c63a1e2c32c2e8b6203c1063bf0e1acdca495")
+  summary "fn RunClaudeShapeGuardModule.buildGuardPrompt generated from javascript function_declaration at .github/scripts/run-claude-shape-guard.mjs:76-94."
+}
+
+relation RunClaudeShapeGuardModuleChangedAuthoredShapeFilesGeneratedFromRunClaudeShapeGuardModuleChangedAuthoredShapeFilesAstAnchor {
+  kind generated_from
+  connects RunClaudeShapeGuardModule -> RunClaudeShapeGuardModuleChangedAuthoredShapeFilesAstAnchor
+  roles { RunClaudeShapeGuardModule as generated, RunClaudeShapeGuardModuleChangedAuthoredShapeFilesAstAnchor as syntax }
+  expects RunClaudeShapeGuardModuleChangedAuthoredShapeFilesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:46eb14c0662bf4283f25e49784ebf58b10ed8c8659ecff39c7ab5bac9f61b793")
+  summary "fn RunClaudeShapeGuardModule.changedAuthoredShapeFiles generated from javascript function_declaration at .github/scripts/run-claude-shape-guard.mjs:50-55."
+}
+
+relation RunClaudeShapeGuardModuleDefaultRunGitDiffGeneratedFromRunClaudeShapeGuardModuleDefaultRunGitDiffAstAnchor {
+  kind generated_from
+  connects RunClaudeShapeGuardModule -> RunClaudeShapeGuardModuleDefaultRunGitDiffAstAnchor
+  roles { RunClaudeShapeGuardModule as generated, RunClaudeShapeGuardModuleDefaultRunGitDiffAstAnchor as syntax }
+  expects RunClaudeShapeGuardModuleDefaultRunGitDiffAstAnchor fingerprint ast.semantic_subtree_v1("sha256:69da8fb4418fffd969251d8c98b903c64ac3120f4bea360bc69999a694e250a7")
+  summary "fn RunClaudeShapeGuardModule.defaultRunGitDiff generated from javascript function_declaration at .github/scripts/run-claude-shape-guard.mjs:57-74."
+}
+
+relation RunClaudeShapeGuardModuleEmitGuardResultGeneratedFromRunClaudeShapeGuardModuleEmitGuardResultAstAnchor {
+  kind generated_from
+  connects RunClaudeShapeGuardModule -> RunClaudeShapeGuardModuleEmitGuardResultAstAnchor
+  roles { RunClaudeShapeGuardModule as generated, RunClaudeShapeGuardModuleEmitGuardResultAstAnchor as syntax }
+  expects RunClaudeShapeGuardModuleEmitGuardResultAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3bd1b2874735139378b352dfcbafdcd9d3afcd5f02dd6cc79e38c9e2fff3818f")
+  summary "fn RunClaudeShapeGuardModule.emitGuardResult generated from javascript function_declaration at .github/scripts/run-claude-shape-guard.mjs:133-140."
+}
+
+relation RunClaudeShapeGuardModuleGuardBaseRefGeneratedFromRunClaudeShapeGuardModuleGuardBaseRefAstAnchor {
+  kind generated_from
+  connects RunClaudeShapeGuardModule -> RunClaudeShapeGuardModuleGuardBaseRefAstAnchor
+  roles { RunClaudeShapeGuardModule as generated, RunClaudeShapeGuardModuleGuardBaseRefAstAnchor as syntax }
+  expects RunClaudeShapeGuardModuleGuardBaseRefAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ea2e722273455f9ae9596e15cb666e0eb0e64a82ee60e2261be771271a4c8b50")
+  summary "fn RunClaudeShapeGuardModule.guardBaseRef generated from javascript function_declaration at .github/scripts/run-claude-shape-guard.mjs:46-48."
+}
+
+relation RunClaudeShapeGuardModuleGuardReviewArgsGeneratedFromRunClaudeShapeGuardModuleGuardReviewArgsAstAnchor {
+  kind generated_from
+  connects RunClaudeShapeGuardModule -> RunClaudeShapeGuardModuleGuardReviewArgsAstAnchor
+  roles { RunClaudeShapeGuardModule as generated, RunClaudeShapeGuardModuleGuardReviewArgsAstAnchor as syntax }
+  expects RunClaudeShapeGuardModuleGuardReviewArgsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f8ff3c0e2e9bec4eae28c5eb52e8fd423db4f03e76da964b35024c433a52c78c")
+  summary "fn RunClaudeShapeGuardModule.guardReviewArgs generated from javascript function_declaration at .github/scripts/run-claude-shape-guard.mjs:114-131."
+}
+
+relation RunClaudeShapeGuardModuleIsMainModuleGeneratedFromRunClaudeShapeGuardModuleIsMainModuleAstAnchor {
+  kind generated_from
+  connects RunClaudeShapeGuardModule -> RunClaudeShapeGuardModuleIsMainModuleAstAnchor
+  roles { RunClaudeShapeGuardModule as generated, RunClaudeShapeGuardModuleIsMainModuleAstAnchor as syntax }
+  expects RunClaudeShapeGuardModuleIsMainModuleAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a7630a5e5fbe44b11a467fb490a2c52019708e3bbc0e6d3476897795228c2a3f")
+  summary "fn RunClaudeShapeGuardModule.isMainModule generated from javascript function_declaration at .github/scripts/run-claude-shape-guard.mjs:211-216."
+}
+
+relation RunClaudeShapeGuardModuleRunClaudeShapeGuardGeneratedFromRunClaudeShapeGuardModuleRunClaudeShapeGuardAstAnchor {
+  kind generated_from
+  connects RunClaudeShapeGuardModule -> RunClaudeShapeGuardModuleRunClaudeShapeGuardAstAnchor
+  roles { RunClaudeShapeGuardModule as generated, RunClaudeShapeGuardModuleRunClaudeShapeGuardAstAnchor as syntax }
+  expects RunClaudeShapeGuardModuleRunClaudeShapeGuardAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d7f92b3d578e6dfbe866a1df53d63254a6673484677cbc8eb68a9a140caff38e")
+  summary "fn RunClaudeShapeGuardModule.runClaudeShapeGuard generated from javascript function_declaration at .github/scripts/run-claude-shape-guard.mjs:142-209."
+}
+
+implementation RunClaudeShapeGuardModuleImpl {
+  paths {
+    ".github/scripts/run-claude-shape-guard.mjs"
+  }
+  conforms_to RunClaudeShapeGuardModule
+}

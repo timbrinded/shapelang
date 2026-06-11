@@ -3,6 +3,20 @@
   "generatedAt": "deterministic",
   "entries": [
     {
+      "module": "shape.generated.ast.github.scripts.check_claude_shape_guard",
+      "path": "shape/generated/ast/.github/scripts/check-claude-shape-guard.shape",
+      "sources": [
+        ".github/scripts/check-claude-shape-guard.mjs"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.github.scripts.check_claude_shape_index",
+      "path": "shape/generated/ast/.github/scripts/check-claude-shape-index.shape",
+      "sources": [
+        ".github/scripts/check-claude-shape-index.mjs"
+      ]
+    },
+    {
       "module": "shape.generated.ast.github.scripts.check_claude_shape_review",
       "path": "shape/generated/ast/.github/scripts/check-claude-shape-review.shape",
       "sources": [
@@ -17,6 +31,20 @@
       ]
     },
     {
+      "module": "shape.generated.ast.github.scripts.run_claude_shape_guard",
+      "path": "shape/generated/ast/.github/scripts/run-claude-shape-guard.shape",
+      "sources": [
+        ".github/scripts/run-claude-shape-guard.mjs"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.github.scripts.run_claude_shape_index",
+      "path": "shape/generated/ast/.github/scripts/run-claude-shape-index.shape",
+      "sources": [
+        ".github/scripts/run-claude-shape-index.mjs"
+      ]
+    },
+    {
       "module": "shape.generated.ast.github.scripts.run_claude_shape_review",
       "path": "shape/generated/ast/.github/scripts/run-claude-shape-review.shape",
       "sources": [
@@ -28,6 +56,13 @@
       "path": "shape/generated/ast/.github/scripts/shape-review-contract.shape",
       "sources": [
         ".github/scripts/shape-review-contract.mjs"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.github.scripts.shape_skill_contract",
+      "path": "shape/generated/ast/.github/scripts/shape-skill-contract.shape",
+      "sources": [
+        ".github/scripts/shape-skill-contract.mjs"
       ]
     },
     {

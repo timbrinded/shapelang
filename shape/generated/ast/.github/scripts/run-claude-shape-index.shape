@@ -1,0 +1,225 @@
+module shape.generated.ast.github.scripts.run_claude_shape_index
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource RunClaudeShapeIndexModuleAuthoredCoverageFromShapeSourceAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor(".github/scripts/run-claude-shape-index.mjs:73-91")
+  fingerprint ast.semantic_subtree_v1("sha256:f338a92f7417106c59e846ed4e03752f65330e5d1520e1cde5ea3ba6068fd81f")
+}
+
+resource RunClaudeShapeIndexModuleBuildIndexNormalizerPromptAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor(".github/scripts/run-claude-shape-index.mjs:151-167")
+  fingerprint ast.semantic_subtree_v1("sha256:1aba9eddb77eb3d377c6682f87d738520437ece1f8d8738e1438c56e01869abd")
+}
+
+resource RunClaudeShapeIndexModuleBuildIndexPromptAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor(".github/scripts/run-claude-shape-index.mjs:129-149")
+  fingerprint ast.semantic_subtree_v1("sha256:a62b4e1030cc99a2ae38ac6c9c18e02184b6fce7e431ca712e309adb49d75c82")
+}
+
+resource RunClaudeShapeIndexModuleCollectAuthoredCoverageAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor(".github/scripts/run-claude-shape-index.mjs:93-108")
+  fingerprint ast.semantic_subtree_v1("sha256:727484036e4d4940147ef57bbdd1d856da186f004a951cc4a523f0b67bcd2b71")
+}
+
+resource RunClaudeShapeIndexModuleDefaultListShapeFilesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor(".github/scripts/run-claude-shape-index.mjs:110-114")
+  fingerprint ast.semantic_subtree_v1("sha256:174024d69bd762eb1481873c903e078f098a11f80777576b8207a67a2a528ddf")
+}
+
+resource RunClaudeShapeIndexModuleDefaultReadFileAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor(".github/scripts/run-claude-shape-index.mjs:116-118")
+  fingerprint ast.semantic_subtree_v1("sha256:2b70a6217e740f4724fe93052b57bff9e85f4e80895bd656addc2183b49637a5")
+}
+
+resource RunClaudeShapeIndexModuleEmitIndexResultAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor(".github/scripts/run-claude-shape-index.mjs:188-195")
+  fingerprint ast.semantic_subtree_v1("sha256:8fa362a8e66b52863b60d5bd0a692fbd49920e460788772a3a6675735009053a")
+}
+
+resource RunClaudeShapeIndexModuleGlobToRegExpAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor(".github/scripts/run-claude-shape-index.mjs:58-69")
+  fingerprint ast.semantic_subtree_v1("sha256:5efd1489ac83bb89cbee46c207a76efeef2a721839cebf54f4958a6f6f2e8740")
+}
+
+resource RunClaudeShapeIndexModuleIndexAuditArgsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor(".github/scripts/run-claude-shape-index.mjs:169-186")
+  fingerprint ast.semantic_subtree_v1("sha256:b21f1b415f889d41e48655fbaac3b1ee21c7b452b793b1763685d4eccc52bcf5")
+}
+
+resource RunClaudeShapeIndexModuleIsAuditableSourceFileAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor(".github/scripts/run-claude-shape-index.mjs:45-56")
+  fingerprint ast.semantic_subtree_v1("sha256:9d92e6076fa966173c06cc3c1fcb1c5fa3ee0741e8f7774f52ba03c558b225a1")
+}
+
+resource RunClaudeShapeIndexModuleIsMainModuleAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor(".github/scripts/run-claude-shape-index.mjs:278-283")
+  fingerprint ast.semantic_subtree_v1("sha256:a7630a5e5fbe44b11a467fb490a2c52019708e3bbc0e6d3476897795228c2a3f")
+}
+
+resource RunClaudeShapeIndexModuleRunClaudeShapeIndexAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor(".github/scripts/run-claude-shape-index.mjs:197-276")
+  fingerprint ast.semantic_subtree_v1("sha256:3390eaad1f6251516efc6fee25fe38919f25ea3f6675f219b8f06330c90d5a5c")
+}
+
+resource RunClaudeShapeIndexModuleUncoveredChangedFilesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor(".github/scripts/run-claude-shape-index.mjs:120-127")
+  fingerprint ast.semantic_subtree_v1("sha256:d6c22002aa880ae19b696518a9d7c607c90d2b26588ded910a79192204808b36")
+}
+
+component RunClaudeShapeIndexModule : GeneratedCandidate {
+  fn authoredCoverageFromShapeSource
+    source js(".github/scripts/run-claude-shape-index.mjs:73-91")
+    effects unknown
+  fn buildIndexNormalizerPrompt
+    source js(".github/scripts/run-claude-shape-index.mjs:151-167")
+    effects unknown
+  fn buildIndexPrompt
+    source js(".github/scripts/run-claude-shape-index.mjs:129-149")
+    effects unknown
+  fn collectAuthoredCoverage
+    source js(".github/scripts/run-claude-shape-index.mjs:93-108")
+    effects unknown
+  fn defaultListShapeFiles
+    source js(".github/scripts/run-claude-shape-index.mjs:110-114")
+    effects unknown
+  fn defaultReadFile
+    source js(".github/scripts/run-claude-shape-index.mjs:116-118")
+    effects unknown
+  fn emitIndexResult
+    source js(".github/scripts/run-claude-shape-index.mjs:188-195")
+    effects unknown
+  fn globToRegExp
+    source js(".github/scripts/run-claude-shape-index.mjs:58-69")
+    effects unknown
+  fn indexAuditArgs
+    source js(".github/scripts/run-claude-shape-index.mjs:169-186")
+    effects unknown
+  fn isAuditableSourceFile
+    source js(".github/scripts/run-claude-shape-index.mjs:45-56")
+    effects unknown
+  fn isMainModule
+    source js(".github/scripts/run-claude-shape-index.mjs:278-283")
+    effects unknown
+  fn runClaudeShapeIndex
+    source js(".github/scripts/run-claude-shape-index.mjs:197-276")
+    effects unknown
+  fn uncoveredChangedFiles
+    source js(".github/scripts/run-claude-shape-index.mjs:120-127")
+    effects unknown
+}
+
+relation RunClaudeShapeIndexModuleAuthoredCoverageFromShapeSourceGeneratedFromRunClaudeShapeIndexModuleAuthoredCoverageFromShapeSourceAstAnchor {
+  kind generated_from
+  connects RunClaudeShapeIndexModule -> RunClaudeShapeIndexModuleAuthoredCoverageFromShapeSourceAstAnchor
+  roles { RunClaudeShapeIndexModule as generated, RunClaudeShapeIndexModuleAuthoredCoverageFromShapeSourceAstAnchor as syntax }
+  expects RunClaudeShapeIndexModuleAuthoredCoverageFromShapeSourceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f338a92f7417106c59e846ed4e03752f65330e5d1520e1cde5ea3ba6068fd81f")
+  summary "fn RunClaudeShapeIndexModule.authoredCoverageFromShapeSource generated from javascript function_declaration at .github/scripts/run-claude-shape-index.mjs:73-91."
+}
+
+relation RunClaudeShapeIndexModuleBuildIndexNormalizerPromptGeneratedFromRunClaudeShapeIndexModuleBuildIndexNormalizerPromptAstAnchor {
+  kind generated_from
+  connects RunClaudeShapeIndexModule -> RunClaudeShapeIndexModuleBuildIndexNormalizerPromptAstAnchor
+  roles { RunClaudeShapeIndexModule as generated, RunClaudeShapeIndexModuleBuildIndexNormalizerPromptAstAnchor as syntax }
+  expects RunClaudeShapeIndexModuleBuildIndexNormalizerPromptAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1aba9eddb77eb3d377c6682f87d738520437ece1f8d8738e1438c56e01869abd")
+  summary "fn RunClaudeShapeIndexModule.buildIndexNormalizerPrompt generated from javascript function_declaration at .github/scripts/run-claude-shape-index.mjs:151-167."
+}
+
+relation RunClaudeShapeIndexModuleBuildIndexPromptGeneratedFromRunClaudeShapeIndexModuleBuildIndexPromptAstAnchor {
+  kind generated_from
+  connects RunClaudeShapeIndexModule -> RunClaudeShapeIndexModuleBuildIndexPromptAstAnchor
+  roles { RunClaudeShapeIndexModule as generated, RunClaudeShapeIndexModuleBuildIndexPromptAstAnchor as syntax }
+  expects RunClaudeShapeIndexModuleBuildIndexPromptAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a62b4e1030cc99a2ae38ac6c9c18e02184b6fce7e431ca712e309adb49d75c82")
+  summary "fn RunClaudeShapeIndexModule.buildIndexPrompt generated from javascript function_declaration at .github/scripts/run-claude-shape-index.mjs:129-149."
+}
+
+relation RunClaudeShapeIndexModuleCollectAuthoredCoverageGeneratedFromRunClaudeShapeIndexModuleCollectAuthoredCoverageAstAnchor {
+  kind generated_from
+  connects RunClaudeShapeIndexModule -> RunClaudeShapeIndexModuleCollectAuthoredCoverageAstAnchor
+  roles { RunClaudeShapeIndexModule as generated, RunClaudeShapeIndexModuleCollectAuthoredCoverageAstAnchor as syntax }
+  expects RunClaudeShapeIndexModuleCollectAuthoredCoverageAstAnchor fingerprint ast.semantic_subtree_v1("sha256:727484036e4d4940147ef57bbdd1d856da186f004a951cc4a523f0b67bcd2b71")
+  summary "fn RunClaudeShapeIndexModule.collectAuthoredCoverage generated from javascript function_declaration at .github/scripts/run-claude-shape-index.mjs:93-108."
+}
+
+relation RunClaudeShapeIndexModuleDefaultListShapeFilesGeneratedFromRunClaudeShapeIndexModuleDefaultListShapeFilesAstAnchor {
+  kind generated_from
+  connects RunClaudeShapeIndexModule -> RunClaudeShapeIndexModuleDefaultListShapeFilesAstAnchor
+  roles { RunClaudeShapeIndexModule as generated, RunClaudeShapeIndexModuleDefaultListShapeFilesAstAnchor as syntax }
+  expects RunClaudeShapeIndexModuleDefaultListShapeFilesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:174024d69bd762eb1481873c903e078f098a11f80777576b8207a67a2a528ddf")
+  summary "fn RunClaudeShapeIndexModule.defaultListShapeFiles generated from javascript function_declaration at .github/scripts/run-claude-shape-index.mjs:110-114."
+}
+
+relation RunClaudeShapeIndexModuleDefaultReadFileGeneratedFromRunClaudeShapeIndexModuleDefaultReadFileAstAnchor {
+  kind generated_from
+  connects RunClaudeShapeIndexModule -> RunClaudeShapeIndexModuleDefaultReadFileAstAnchor
+  roles { RunClaudeShapeIndexModule as generated, RunClaudeShapeIndexModuleDefaultReadFileAstAnchor as syntax }
+  expects RunClaudeShapeIndexModuleDefaultReadFileAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2b70a6217e740f4724fe93052b57bff9e85f4e80895bd656addc2183b49637a5")
+  summary "fn RunClaudeShapeIndexModule.defaultReadFile generated from javascript function_declaration at .github/scripts/run-claude-shape-index.mjs:116-118."
+}
+
+relation RunClaudeShapeIndexModuleEmitIndexResultGeneratedFromRunClaudeShapeIndexModuleEmitIndexResultAstAnchor {
+  kind generated_from
+  connects RunClaudeShapeIndexModule -> RunClaudeShapeIndexModuleEmitIndexResultAstAnchor
+  roles { RunClaudeShapeIndexModule as generated, RunClaudeShapeIndexModuleEmitIndexResultAstAnchor as syntax }
+  expects RunClaudeShapeIndexModuleEmitIndexResultAstAnchor fingerprint ast.semantic_subtree_v1("sha256:8fa362a8e66b52863b60d5bd0a692fbd49920e460788772a3a6675735009053a")
+  summary "fn RunClaudeShapeIndexModule.emitIndexResult generated from javascript function_declaration at .github/scripts/run-claude-shape-index.mjs:188-195."
+}
+
+relation RunClaudeShapeIndexModuleGlobToRegExpGeneratedFromRunClaudeShapeIndexModuleGlobToRegExpAstAnchor {
+  kind generated_from
+  connects RunClaudeShapeIndexModule -> RunClaudeShapeIndexModuleGlobToRegExpAstAnchor
+  roles { RunClaudeShapeIndexModule as generated, RunClaudeShapeIndexModuleGlobToRegExpAstAnchor as syntax }
+  expects RunClaudeShapeIndexModuleGlobToRegExpAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5efd1489ac83bb89cbee46c207a76efeef2a721839cebf54f4958a6f6f2e8740")
+  summary "fn RunClaudeShapeIndexModule.globToRegExp generated from javascript function_declaration at .github/scripts/run-claude-shape-index.mjs:58-69."
+}
+
+relation RunClaudeShapeIndexModuleIndexAuditArgsGeneratedFromRunClaudeShapeIndexModuleIndexAuditArgsAstAnchor {
+  kind generated_from
+  connects RunClaudeShapeIndexModule -> RunClaudeShapeIndexModuleIndexAuditArgsAstAnchor
+  roles { RunClaudeShapeIndexModule as generated, RunClaudeShapeIndexModuleIndexAuditArgsAstAnchor as syntax }
+  expects RunClaudeShapeIndexModuleIndexAuditArgsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b21f1b415f889d41e48655fbaac3b1ee21c7b452b793b1763685d4eccc52bcf5")
+  summary "fn RunClaudeShapeIndexModule.indexAuditArgs generated from javascript function_declaration at .github/scripts/run-claude-shape-index.mjs:169-186."
+}
+
+relation RunClaudeShapeIndexModuleIsAuditableSourceFileGeneratedFromRunClaudeShapeIndexModuleIsAuditableSourceFileAstAnchor {
+  kind generated_from
+  connects RunClaudeShapeIndexModule -> RunClaudeShapeIndexModuleIsAuditableSourceFileAstAnchor
+  roles { RunClaudeShapeIndexModule as generated, RunClaudeShapeIndexModuleIsAuditableSourceFileAstAnchor as syntax }
+  expects RunClaudeShapeIndexModuleIsAuditableSourceFileAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9d92e6076fa966173c06cc3c1fcb1c5fa3ee0741e8f7774f52ba03c558b225a1")
+  summary "fn RunClaudeShapeIndexModule.isAuditableSourceFile generated from javascript function_declaration at .github/scripts/run-claude-shape-index.mjs:45-56."
+}
+
+relation RunClaudeShapeIndexModuleIsMainModuleGeneratedFromRunClaudeShapeIndexModuleIsMainModuleAstAnchor {
+  kind generated_from
+  connects RunClaudeShapeIndexModule -> RunClaudeShapeIndexModuleIsMainModuleAstAnchor
+  roles { RunClaudeShapeIndexModule as generated, RunClaudeShapeIndexModuleIsMainModuleAstAnchor as syntax }
+  expects RunClaudeShapeIndexModuleIsMainModuleAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a7630a5e5fbe44b11a467fb490a2c52019708e3bbc0e6d3476897795228c2a3f")
+  summary "fn RunClaudeShapeIndexModule.isMainModule generated from javascript function_declaration at .github/scripts/run-claude-shape-index.mjs:278-283."
+}
+
+relation RunClaudeShapeIndexModuleRunClaudeShapeIndexGeneratedFromRunClaudeShapeIndexModuleRunClaudeShapeIndexAstAnchor {
+  kind generated_from
+  connects RunClaudeShapeIndexModule -> RunClaudeShapeIndexModuleRunClaudeShapeIndexAstAnchor
+  roles { RunClaudeShapeIndexModule as generated, RunClaudeShapeIndexModuleRunClaudeShapeIndexAstAnchor as syntax }
+  expects RunClaudeShapeIndexModuleRunClaudeShapeIndexAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3390eaad1f6251516efc6fee25fe38919f25ea3f6675f219b8f06330c90d5a5c")
+  summary "fn RunClaudeShapeIndexModule.runClaudeShapeIndex generated from javascript function_declaration at .github/scripts/run-claude-shape-index.mjs:197-276."
+}
+
+relation RunClaudeShapeIndexModuleUncoveredChangedFilesGeneratedFromRunClaudeShapeIndexModuleUncoveredChangedFilesAstAnchor {
+  kind generated_from
+  connects RunClaudeShapeIndexModule -> RunClaudeShapeIndexModuleUncoveredChangedFilesAstAnchor
+  roles { RunClaudeShapeIndexModule as generated, RunClaudeShapeIndexModuleUncoveredChangedFilesAstAnchor as syntax }
+  expects RunClaudeShapeIndexModuleUncoveredChangedFilesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d6c22002aa880ae19b696518a9d7c607c90d2b26588ded910a79192204808b36")
+  summary "fn RunClaudeShapeIndexModule.uncoveredChangedFiles generated from javascript function_declaration at .github/scripts/run-claude-shape-index.mjs:120-127."
+}
+
+implementation RunClaudeShapeIndexModuleImpl {
+  paths {
+    ".github/scripts/run-claude-shape-index.mjs"
+  }
+  conforms_to RunClaudeShapeIndexModule
+}

@@ -30,7 +30,7 @@ const ALLOWED_TOOLS = [
   "Bash(pwd)"
 ].join(",");
 
-const JSON_ONLY_SYSTEM_PROMPT =
+export const JSON_ONLY_SYSTEM_PROMPT =
   'You are producing machine input for CI. Your final response must be exactly one JSON object matching the configured JSON schema. The first character must be "{" and the last character must be "}". Do not include prose, bullets, Markdown, code fences, preamble, or postscript. If there are no verified drift findings, return status "pass" with an empty findings array.';
 
 export function loadJsonSchema(schemaPath) {

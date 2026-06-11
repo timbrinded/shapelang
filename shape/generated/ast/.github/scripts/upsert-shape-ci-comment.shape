@@ -7,93 +7,93 @@ trait GeneratedCandidate {
 }
 
 resource UpsertShapeCiCommentModuleBuildShapeCiCommentAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor(".github/scripts/upsert-shape-ci-comment.mjs:36-66")
-  fingerprint ast.semantic_subtree_v1("sha256:6a597e884e49723d429b4a71f8cd4d20f969390013aae867cdfbc9a1088090fe")
+  storage ast.anchor(".github/scripts/upsert-shape-ci-comment.mjs:38-74")
+  fingerprint ast.semantic_subtree_v1("sha256:8b4987eceb0ac0e683f840bfc01246149b3bd91ab029c9191147337d7cac3478")
 }
 
 resource UpsertShapeCiCommentModuleCommentInputFromEnvAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor(".github/scripts/upsert-shape-ci-comment.mjs:87-100")
-  fingerprint ast.semantic_subtree_v1("sha256:fe1ebf54b953da617d2c1477a343973ff85e2fce0aed6c811145301b2bff5eeb")
+  storage ast.anchor(".github/scripts/upsert-shape-ci-comment.mjs:95-110")
+  fingerprint ast.semantic_subtree_v1("sha256:f968d134868e5ab931a423e7414b402ff9d14dd5a5b5fe506d03b53f00ab4eed")
 }
 
 resource UpsertShapeCiCommentModuleCommentWasWrittenByActionsBotAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor(".github/scripts/upsert-shape-ci-comment.mjs:68-70")
+  storage ast.anchor(".github/scripts/upsert-shape-ci-comment.mjs:76-78")
   fingerprint ast.semantic_subtree_v1("sha256:6f159027c5bae5027877b17ab8e8a2992cfbf355ad6bd7cc1c05e4e2aec39c54")
 }
 
 resource UpsertShapeCiCommentModuleCreateGitHubClientAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor(".github/scripts/upsert-shape-ci-comment.mjs:102-126")
+  storage ast.anchor(".github/scripts/upsert-shape-ci-comment.mjs:112-136")
   fingerprint ast.semantic_subtree_v1("sha256:73601537dd628752eac8d3eada0a3fccdd0997c5ac794037ec7d0ede90b60715")
 }
 
 resource UpsertShapeCiCommentModuleIsMainModuleAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor(".github/scripts/upsert-shape-ci-comment.mjs:166-171")
+  storage ast.anchor(".github/scripts/upsert-shape-ci-comment.mjs:176-181")
   fingerprint ast.semantic_subtree_v1("sha256:a7630a5e5fbe44b11a467fb490a2c52019708e3bbc0e6d3476897795228c2a3f")
 }
 
 resource UpsertShapeCiCommentModuleLabelForWorkflowResultAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor(".github/scripts/upsert-shape-ci-comment.mjs:25-34")
+  storage ast.anchor(".github/scripts/upsert-shape-ci-comment.mjs:27-36")
   fingerprint ast.semantic_subtree_v1("sha256:4f204f69abdb17dc57aac3c27ec90f129d23b28401ae1cb78d528112b8d5104a")
 }
 
 resource UpsertShapeCiCommentModuleListIssueCommentsAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor(".github/scripts/upsert-shape-ci-comment.mjs:128-143")
+  storage ast.anchor(".github/scripts/upsert-shape-ci-comment.mjs:138-153")
   fingerprint ast.semantic_subtree_v1("sha256:c9c3aca2a8e344c4b04e35db0d16c43e93c9697601083f196794539aa44eb5a1")
 }
 
 resource UpsertShapeCiCommentModuleParseRepositoryAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor(".github/scripts/upsert-shape-ci-comment.mjs:79-85")
+  storage ast.anchor(".github/scripts/upsert-shape-ci-comment.mjs:87-93")
   fingerprint ast.semantic_subtree_v1("sha256:976f15b090ae71771cd736675cb24d16f09bcd949e137ec4c810e7da9b29798b")
 }
 
 resource UpsertShapeCiCommentModuleRequireEnvAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor(".github/scripts/upsert-shape-ci-comment.mjs:18-23")
+  storage ast.anchor(".github/scripts/upsert-shape-ci-comment.mjs:20-25")
   fingerprint ast.semantic_subtree_v1("sha256:45f4b1fdabbe8ca2d64e38878da47c5bba1758c7574227fdec6917e0c3a62340")
 }
 
 resource UpsertShapeCiCommentModuleSelectExistingShapeCiCommentAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor(".github/scripts/upsert-shape-ci-comment.mjs:72-77")
+  storage ast.anchor(".github/scripts/upsert-shape-ci-comment.mjs:80-85")
   fingerprint ast.semantic_subtree_v1("sha256:474d5f556d262925418712bc3efdca0899ba20ae119f047de8e826c6d1386458")
 }
 
 resource UpsertShapeCiCommentModuleUpsertShapeCiCommentAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor(".github/scripts/upsert-shape-ci-comment.mjs:145-164")
+  storage ast.anchor(".github/scripts/upsert-shape-ci-comment.mjs:155-174")
   fingerprint ast.semantic_subtree_v1("sha256:ced48551d2a8d012c2901003da9598bbc419feb478f1fe269ef06e5e7814d5dc")
 }
 
 component UpsertShapeCiCommentModule : GeneratedCandidate {
   fn buildShapeCiComment
-    source js(".github/scripts/upsert-shape-ci-comment.mjs:36-66")
+    source js(".github/scripts/upsert-shape-ci-comment.mjs:38-74")
     effects unknown
   fn commentInputFromEnv
-    source js(".github/scripts/upsert-shape-ci-comment.mjs:87-100")
+    source js(".github/scripts/upsert-shape-ci-comment.mjs:95-110")
     effects unknown
   fn commentWasWrittenByActionsBot
-    source js(".github/scripts/upsert-shape-ci-comment.mjs:68-70")
+    source js(".github/scripts/upsert-shape-ci-comment.mjs:76-78")
     effects unknown
   fn createGitHubClient
-    source js(".github/scripts/upsert-shape-ci-comment.mjs:102-126")
+    source js(".github/scripts/upsert-shape-ci-comment.mjs:112-136")
     effects unknown
   fn isMainModule
-    source js(".github/scripts/upsert-shape-ci-comment.mjs:166-171")
+    source js(".github/scripts/upsert-shape-ci-comment.mjs:176-181")
     effects unknown
   fn labelForWorkflowResult
-    source js(".github/scripts/upsert-shape-ci-comment.mjs:25-34")
+    source js(".github/scripts/upsert-shape-ci-comment.mjs:27-36")
     effects unknown
   fn listIssueComments
-    source js(".github/scripts/upsert-shape-ci-comment.mjs:128-143")
+    source js(".github/scripts/upsert-shape-ci-comment.mjs:138-153")
     effects unknown
   fn parseRepository
-    source js(".github/scripts/upsert-shape-ci-comment.mjs:79-85")
+    source js(".github/scripts/upsert-shape-ci-comment.mjs:87-93")
     effects unknown
   fn requireEnv
-    source js(".github/scripts/upsert-shape-ci-comment.mjs:18-23")
+    source js(".github/scripts/upsert-shape-ci-comment.mjs:20-25")
     effects unknown
   fn selectExistingShapeCiComment
-    source js(".github/scripts/upsert-shape-ci-comment.mjs:72-77")
+    source js(".github/scripts/upsert-shape-ci-comment.mjs:80-85")
     effects unknown
   fn upsertShapeCiComment
-    source js(".github/scripts/upsert-shape-ci-comment.mjs:145-164")
+    source js(".github/scripts/upsert-shape-ci-comment.mjs:155-174")
     effects unknown
 }
 
@@ -101,16 +101,16 @@ relation UpsertShapeCiCommentModuleBuildShapeCiCommentGeneratedFromUpsertShapeCi
   kind generated_from
   connects UpsertShapeCiCommentModule -> UpsertShapeCiCommentModuleBuildShapeCiCommentAstAnchor
   roles { UpsertShapeCiCommentModule as generated, UpsertShapeCiCommentModuleBuildShapeCiCommentAstAnchor as syntax }
-  expects UpsertShapeCiCommentModuleBuildShapeCiCommentAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6a597e884e49723d429b4a71f8cd4d20f969390013aae867cdfbc9a1088090fe")
-  summary "fn UpsertShapeCiCommentModule.buildShapeCiComment generated from javascript function_declaration at .github/scripts/upsert-shape-ci-comment.mjs:36-66."
+  expects UpsertShapeCiCommentModuleBuildShapeCiCommentAstAnchor fingerprint ast.semantic_subtree_v1("sha256:8b4987eceb0ac0e683f840bfc01246149b3bd91ab029c9191147337d7cac3478")
+  summary "fn UpsertShapeCiCommentModule.buildShapeCiComment generated from javascript function_declaration at .github/scripts/upsert-shape-ci-comment.mjs:38-74."
 }
 
 relation UpsertShapeCiCommentModuleCommentInputFromEnvGeneratedFromUpsertShapeCiCommentModuleCommentInputFromEnvAstAnchor {
   kind generated_from
   connects UpsertShapeCiCommentModule -> UpsertShapeCiCommentModuleCommentInputFromEnvAstAnchor
   roles { UpsertShapeCiCommentModule as generated, UpsertShapeCiCommentModuleCommentInputFromEnvAstAnchor as syntax }
-  expects UpsertShapeCiCommentModuleCommentInputFromEnvAstAnchor fingerprint ast.semantic_subtree_v1("sha256:fe1ebf54b953da617d2c1477a343973ff85e2fce0aed6c811145301b2bff5eeb")
-  summary "fn UpsertShapeCiCommentModule.commentInputFromEnv generated from javascript function_declaration at .github/scripts/upsert-shape-ci-comment.mjs:87-100."
+  expects UpsertShapeCiCommentModuleCommentInputFromEnvAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f968d134868e5ab931a423e7414b402ff9d14dd5a5b5fe506d03b53f00ab4eed")
+  summary "fn UpsertShapeCiCommentModule.commentInputFromEnv generated from javascript function_declaration at .github/scripts/upsert-shape-ci-comment.mjs:95-110."
 }
 
 relation UpsertShapeCiCommentModuleCommentWasWrittenByActionsBotGeneratedFromUpsertShapeCiCommentModuleCommentWasWrittenByActionsBotAstAnchor {
@@ -118,7 +118,7 @@ relation UpsertShapeCiCommentModuleCommentWasWrittenByActionsBotGeneratedFromUps
   connects UpsertShapeCiCommentModule -> UpsertShapeCiCommentModuleCommentWasWrittenByActionsBotAstAnchor
   roles { UpsertShapeCiCommentModule as generated, UpsertShapeCiCommentModuleCommentWasWrittenByActionsBotAstAnchor as syntax }
   expects UpsertShapeCiCommentModuleCommentWasWrittenByActionsBotAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6f159027c5bae5027877b17ab8e8a2992cfbf355ad6bd7cc1c05e4e2aec39c54")
-  summary "fn UpsertShapeCiCommentModule.commentWasWrittenByActionsBot generated from javascript function_declaration at .github/scripts/upsert-shape-ci-comment.mjs:68-70."
+  summary "fn UpsertShapeCiCommentModule.commentWasWrittenByActionsBot generated from javascript function_declaration at .github/scripts/upsert-shape-ci-comment.mjs:76-78."
 }
 
 relation UpsertShapeCiCommentModuleCreateGitHubClientGeneratedFromUpsertShapeCiCommentModuleCreateGitHubClientAstAnchor {
@@ -126,7 +126,7 @@ relation UpsertShapeCiCommentModuleCreateGitHubClientGeneratedFromUpsertShapeCiC
   connects UpsertShapeCiCommentModule -> UpsertShapeCiCommentModuleCreateGitHubClientAstAnchor
   roles { UpsertShapeCiCommentModule as generated, UpsertShapeCiCommentModuleCreateGitHubClientAstAnchor as syntax }
   expects UpsertShapeCiCommentModuleCreateGitHubClientAstAnchor fingerprint ast.semantic_subtree_v1("sha256:73601537dd628752eac8d3eada0a3fccdd0997c5ac794037ec7d0ede90b60715")
-  summary "fn UpsertShapeCiCommentModule.createGitHubClient generated from javascript function_declaration at .github/scripts/upsert-shape-ci-comment.mjs:102-126."
+  summary "fn UpsertShapeCiCommentModule.createGitHubClient generated from javascript function_declaration at .github/scripts/upsert-shape-ci-comment.mjs:112-136."
 }
 
 relation UpsertShapeCiCommentModuleIsMainModuleGeneratedFromUpsertShapeCiCommentModuleIsMainModuleAstAnchor {
@@ -134,7 +134,7 @@ relation UpsertShapeCiCommentModuleIsMainModuleGeneratedFromUpsertShapeCiComment
   connects UpsertShapeCiCommentModule -> UpsertShapeCiCommentModuleIsMainModuleAstAnchor
   roles { UpsertShapeCiCommentModule as generated, UpsertShapeCiCommentModuleIsMainModuleAstAnchor as syntax }
   expects UpsertShapeCiCommentModuleIsMainModuleAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a7630a5e5fbe44b11a467fb490a2c52019708e3bbc0e6d3476897795228c2a3f")
-  summary "fn UpsertShapeCiCommentModule.isMainModule generated from javascript function_declaration at .github/scripts/upsert-shape-ci-comment.mjs:166-171."
+  summary "fn UpsertShapeCiCommentModule.isMainModule generated from javascript function_declaration at .github/scripts/upsert-shape-ci-comment.mjs:176-181."
 }
 
 relation UpsertShapeCiCommentModuleLabelForWorkflowResultGeneratedFromUpsertShapeCiCommentModuleLabelForWorkflowResultAstAnchor {
@@ -142,7 +142,7 @@ relation UpsertShapeCiCommentModuleLabelForWorkflowResultGeneratedFromUpsertShap
   connects UpsertShapeCiCommentModule -> UpsertShapeCiCommentModuleLabelForWorkflowResultAstAnchor
   roles { UpsertShapeCiCommentModule as generated, UpsertShapeCiCommentModuleLabelForWorkflowResultAstAnchor as syntax }
   expects UpsertShapeCiCommentModuleLabelForWorkflowResultAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4f204f69abdb17dc57aac3c27ec90f129d23b28401ae1cb78d528112b8d5104a")
-  summary "fn UpsertShapeCiCommentModule.labelForWorkflowResult generated from javascript function_declaration at .github/scripts/upsert-shape-ci-comment.mjs:25-34."
+  summary "fn UpsertShapeCiCommentModule.labelForWorkflowResult generated from javascript function_declaration at .github/scripts/upsert-shape-ci-comment.mjs:27-36."
 }
 
 relation UpsertShapeCiCommentModuleListIssueCommentsGeneratedFromUpsertShapeCiCommentModuleListIssueCommentsAstAnchor {
@@ -150,7 +150,7 @@ relation UpsertShapeCiCommentModuleListIssueCommentsGeneratedFromUpsertShapeCiCo
   connects UpsertShapeCiCommentModule -> UpsertShapeCiCommentModuleListIssueCommentsAstAnchor
   roles { UpsertShapeCiCommentModule as generated, UpsertShapeCiCommentModuleListIssueCommentsAstAnchor as syntax }
   expects UpsertShapeCiCommentModuleListIssueCommentsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c9c3aca2a8e344c4b04e35db0d16c43e93c9697601083f196794539aa44eb5a1")
-  summary "fn UpsertShapeCiCommentModule.listIssueComments generated from javascript function_declaration at .github/scripts/upsert-shape-ci-comment.mjs:128-143."
+  summary "fn UpsertShapeCiCommentModule.listIssueComments generated from javascript function_declaration at .github/scripts/upsert-shape-ci-comment.mjs:138-153."
 }
 
 relation UpsertShapeCiCommentModuleParseRepositoryGeneratedFromUpsertShapeCiCommentModuleParseRepositoryAstAnchor {
@@ -158,7 +158,7 @@ relation UpsertShapeCiCommentModuleParseRepositoryGeneratedFromUpsertShapeCiComm
   connects UpsertShapeCiCommentModule -> UpsertShapeCiCommentModuleParseRepositoryAstAnchor
   roles { UpsertShapeCiCommentModule as generated, UpsertShapeCiCommentModuleParseRepositoryAstAnchor as syntax }
   expects UpsertShapeCiCommentModuleParseRepositoryAstAnchor fingerprint ast.semantic_subtree_v1("sha256:976f15b090ae71771cd736675cb24d16f09bcd949e137ec4c810e7da9b29798b")
-  summary "fn UpsertShapeCiCommentModule.parseRepository generated from javascript function_declaration at .github/scripts/upsert-shape-ci-comment.mjs:79-85."
+  summary "fn UpsertShapeCiCommentModule.parseRepository generated from javascript function_declaration at .github/scripts/upsert-shape-ci-comment.mjs:87-93."
 }
 
 relation UpsertShapeCiCommentModuleRequireEnvGeneratedFromUpsertShapeCiCommentModuleRequireEnvAstAnchor {
@@ -166,7 +166,7 @@ relation UpsertShapeCiCommentModuleRequireEnvGeneratedFromUpsertShapeCiCommentMo
   connects UpsertShapeCiCommentModule -> UpsertShapeCiCommentModuleRequireEnvAstAnchor
   roles { UpsertShapeCiCommentModule as generated, UpsertShapeCiCommentModuleRequireEnvAstAnchor as syntax }
   expects UpsertShapeCiCommentModuleRequireEnvAstAnchor fingerprint ast.semantic_subtree_v1("sha256:45f4b1fdabbe8ca2d64e38878da47c5bba1758c7574227fdec6917e0c3a62340")
-  summary "fn UpsertShapeCiCommentModule.requireEnv generated from javascript function_declaration at .github/scripts/upsert-shape-ci-comment.mjs:18-23."
+  summary "fn UpsertShapeCiCommentModule.requireEnv generated from javascript function_declaration at .github/scripts/upsert-shape-ci-comment.mjs:20-25."
 }
 
 relation UpsertShapeCiCommentModuleSelectExistingShapeCiCommentGeneratedFromUpsertShapeCiCommentModuleSelectExistingShapeCiCommentAstAnchor {
@@ -174,7 +174,7 @@ relation UpsertShapeCiCommentModuleSelectExistingShapeCiCommentGeneratedFromUpse
   connects UpsertShapeCiCommentModule -> UpsertShapeCiCommentModuleSelectExistingShapeCiCommentAstAnchor
   roles { UpsertShapeCiCommentModule as generated, UpsertShapeCiCommentModuleSelectExistingShapeCiCommentAstAnchor as syntax }
   expects UpsertShapeCiCommentModuleSelectExistingShapeCiCommentAstAnchor fingerprint ast.semantic_subtree_v1("sha256:474d5f556d262925418712bc3efdca0899ba20ae119f047de8e826c6d1386458")
-  summary "fn UpsertShapeCiCommentModule.selectExistingShapeCiComment generated from javascript function_declaration at .github/scripts/upsert-shape-ci-comment.mjs:72-77."
+  summary "fn UpsertShapeCiCommentModule.selectExistingShapeCiComment generated from javascript function_declaration at .github/scripts/upsert-shape-ci-comment.mjs:80-85."
 }
 
 relation UpsertShapeCiCommentModuleUpsertShapeCiCommentGeneratedFromUpsertShapeCiCommentModuleUpsertShapeCiCommentAstAnchor {
@@ -182,7 +182,7 @@ relation UpsertShapeCiCommentModuleUpsertShapeCiCommentGeneratedFromUpsertShapeC
   connects UpsertShapeCiCommentModule -> UpsertShapeCiCommentModuleUpsertShapeCiCommentAstAnchor
   roles { UpsertShapeCiCommentModule as generated, UpsertShapeCiCommentModuleUpsertShapeCiCommentAstAnchor as syntax }
   expects UpsertShapeCiCommentModuleUpsertShapeCiCommentAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ced48551d2a8d012c2901003da9598bbc419feb478f1fe269ef06e5e7814d5dc")
-  summary "fn UpsertShapeCiCommentModule.upsertShapeCiComment generated from javascript function_declaration at .github/scripts/upsert-shape-ci-comment.mjs:145-164."
+  summary "fn UpsertShapeCiCommentModule.upsertShapeCiComment generated from javascript function_declaration at .github/scripts/upsert-shape-ci-comment.mjs:155-174."
 }
 
 implementation UpsertShapeCiCommentModuleImpl {

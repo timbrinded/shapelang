@@ -1,0 +1,97 @@
+module shape.generated.ast.github.scripts.shape_skill_contract
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource ShapeSkillContractModuleRecordValidationErrorsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor(".github/scripts/shape-skill-contract.mjs:23-39")
+  fingerprint ast.semantic_subtree_v1("sha256:de4a10628d0584f2ec6c6851b091e9e79159707a3d5596ef7f1ec38bce833bd6")
+}
+
+resource ShapeSkillContractModuleRequireValidResultAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor(".github/scripts/shape-skill-contract.mjs:113-119")
+  fingerprint ast.semantic_subtree_v1("sha256:a2b999c141ac29726a55818bf49613bb8cbcff30dcbc8d24a3e894633232347a")
+}
+
+resource ShapeSkillContractModuleSelectResultFromClaudeOutputAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor(".github/scripts/shape-skill-contract.mjs:123-153")
+  fingerprint ast.semantic_subtree_v1("sha256:44081f26466f4fcfd55249f401ec6b782a88b5e0c7d36b8a6a093a01cd55b495")
+}
+
+resource ShapeSkillContractModuleShapeGuardValidationErrorsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor(".github/scripts/shape-skill-contract.mjs:41-75")
+  fingerprint ast.semantic_subtree_v1("sha256:47d440dcd6e0aeee363d628be9f8d0caffa0c337349ea37f5e6fa1bf0e788edb")
+}
+
+resource ShapeSkillContractModuleShapeIndexValidationErrorsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor(".github/scripts/shape-skill-contract.mjs:77-111")
+  fingerprint ast.semantic_subtree_v1("sha256:a5b73aea65386b73fc0fb6bd84b523df7c4d430eb13675fc166eb5bf1ad25f2b")
+}
+
+component ShapeSkillContractModule : GeneratedCandidate {
+  fn recordValidationErrors
+    source js(".github/scripts/shape-skill-contract.mjs:23-39")
+    effects unknown
+  fn requireValidResult
+    source js(".github/scripts/shape-skill-contract.mjs:113-119")
+    effects unknown
+  fn selectResultFromClaudeOutput
+    source js(".github/scripts/shape-skill-contract.mjs:123-153")
+    effects unknown
+  fn shapeGuardValidationErrors
+    source js(".github/scripts/shape-skill-contract.mjs:41-75")
+    effects unknown
+  fn shapeIndexValidationErrors
+    source js(".github/scripts/shape-skill-contract.mjs:77-111")
+    effects unknown
+}
+
+relation ShapeSkillContractModuleRecordValidationErrorsGeneratedFromShapeSkillContractModuleRecordValidationErrorsAstAnchor {
+  kind generated_from
+  connects ShapeSkillContractModule -> ShapeSkillContractModuleRecordValidationErrorsAstAnchor
+  roles { ShapeSkillContractModule as generated, ShapeSkillContractModuleRecordValidationErrorsAstAnchor as syntax }
+  expects ShapeSkillContractModuleRecordValidationErrorsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:de4a10628d0584f2ec6c6851b091e9e79159707a3d5596ef7f1ec38bce833bd6")
+  summary "fn ShapeSkillContractModule.recordValidationErrors generated from javascript function_declaration at .github/scripts/shape-skill-contract.mjs:23-39."
+}
+
+relation ShapeSkillContractModuleRequireValidResultGeneratedFromShapeSkillContractModuleRequireValidResultAstAnchor {
+  kind generated_from
+  connects ShapeSkillContractModule -> ShapeSkillContractModuleRequireValidResultAstAnchor
+  roles { ShapeSkillContractModule as generated, ShapeSkillContractModuleRequireValidResultAstAnchor as syntax }
+  expects ShapeSkillContractModuleRequireValidResultAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a2b999c141ac29726a55818bf49613bb8cbcff30dcbc8d24a3e894633232347a")
+  summary "fn ShapeSkillContractModule.requireValidResult generated from javascript function_declaration at .github/scripts/shape-skill-contract.mjs:113-119."
+}
+
+relation ShapeSkillContractModuleSelectResultFromClaudeOutputGeneratedFromShapeSkillContractModuleSelectResultFromClaudeOutputAstAnchor {
+  kind generated_from
+  connects ShapeSkillContractModule -> ShapeSkillContractModuleSelectResultFromClaudeOutputAstAnchor
+  roles { ShapeSkillContractModule as generated, ShapeSkillContractModuleSelectResultFromClaudeOutputAstAnchor as syntax }
+  expects ShapeSkillContractModuleSelectResultFromClaudeOutputAstAnchor fingerprint ast.semantic_subtree_v1("sha256:44081f26466f4fcfd55249f401ec6b782a88b5e0c7d36b8a6a093a01cd55b495")
+  summary "fn ShapeSkillContractModule.selectResultFromClaudeOutput generated from javascript function_declaration at .github/scripts/shape-skill-contract.mjs:123-153."
+}
+
+relation ShapeSkillContractModuleShapeGuardValidationErrorsGeneratedFromShapeSkillContractModuleShapeGuardValidationErrorsAstAnchor {
+  kind generated_from
+  connects ShapeSkillContractModule -> ShapeSkillContractModuleShapeGuardValidationErrorsAstAnchor
+  roles { ShapeSkillContractModule as generated, ShapeSkillContractModuleShapeGuardValidationErrorsAstAnchor as syntax }
+  expects ShapeSkillContractModuleShapeGuardValidationErrorsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:47d440dcd6e0aeee363d628be9f8d0caffa0c337349ea37f5e6fa1bf0e788edb")
+  summary "fn ShapeSkillContractModule.shapeGuardValidationErrors generated from javascript function_declaration at .github/scripts/shape-skill-contract.mjs:41-75."
+}
+
+relation ShapeSkillContractModuleShapeIndexValidationErrorsGeneratedFromShapeSkillContractModuleShapeIndexValidationErrorsAstAnchor {
+  kind generated_from
+  connects ShapeSkillContractModule -> ShapeSkillContractModuleShapeIndexValidationErrorsAstAnchor
+  roles { ShapeSkillContractModule as generated, ShapeSkillContractModuleShapeIndexValidationErrorsAstAnchor as syntax }
+  expects ShapeSkillContractModuleShapeIndexValidationErrorsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a5b73aea65386b73fc0fb6bd84b523df7c4d430eb13675fc166eb5bf1ad25f2b")
+  summary "fn ShapeSkillContractModule.shapeIndexValidationErrors generated from javascript function_declaration at .github/scripts/shape-skill-contract.mjs:77-111."
+}
+
+implementation ShapeSkillContractModuleImpl {
+  paths {
+    ".github/scripts/shape-skill-contract.mjs"
+  }
+  conforms_to ShapeSkillContractModule
+}

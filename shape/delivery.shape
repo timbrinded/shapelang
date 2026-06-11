@@ -137,6 +137,50 @@ component CiPipeline {
       Update<ClaudeReviewResult>
         evidence mjs(".github/scripts/run-claude-shape-review.mjs")
     }
+  fn runShapeGuardReview
+    source mjs(".github/scripts/run-claude-shape-guard.mjs")
+    description "Advisory loosening review of authored .shape diffs driven by the shape-contract-guard skill; only high-severity findings fail the job."
+    effects complete {
+      Read<ChangedFileList>
+        evidence yaml(".github/workflows/shape.yml")
+      Read<CiWorkflow>
+        evidence mjs(".github/scripts/run-claude-shape-guard.mjs")
+      Read<ClaudeReviewPrompt>
+        evidence md("plugins/shapelang/skills/shape-contract-guard/SKILL.md")
+      Read<ClaudeReviewResult>
+        evidence mjs(".github/scripts/check-claude-shape-guard.mjs")
+      Read<ClaudeReviewResult>
+        evidence mjs(".github/scripts/shape-skill-contract.mjs")
+      Read<ClaudeReviewResult>
+        evidence json(".github/shape-contract/schemas/shape-guard-result.schema.json")
+      Update<ClaudeReviewResult>
+        evidence mjs(".github/scripts/check-claude-shape-guard.mjs")
+      Update<ClaudeReviewResult>
+        evidence mjs(".github/scripts/run-claude-shape-guard.mjs")
+    }
+  fn runShapeIndexAudit
+    source mjs(".github/scripts/run-claude-shape-index.mjs")
+    description "Layer-2 coverage audit driven by the shape-index skill; a deterministic prefilter skips the model call when authored refs or globs cover every changed source file, and gaps stay advisory unless SHAPE_INDEX_STRICT."
+    effects complete {
+      Read<ChangedFileList>
+        evidence mjs(".github/scripts/run-claude-shape-index.mjs")
+      Read<CiWorkflow>
+        evidence mjs(".github/scripts/run-claude-shape-index.mjs")
+      Read<ClaudeReviewPrompt>
+        evidence md("plugins/shapelang/skills/shape-index/SKILL.md")
+      Read<ClaudeReviewResult>
+        evidence mjs(".github/scripts/check-claude-shape-index.mjs")
+      Read<ClaudeReviewResult>
+        evidence mjs(".github/scripts/shape-skill-contract.mjs")
+      Read<ClaudeReviewResult>
+        evidence json(".github/shape-contract/schemas/shape-index-result.schema.json")
+      Read<ShapeSource>
+        evidence mjs(".github/scripts/run-claude-shape-index.mjs")
+      Update<ClaudeReviewResult>
+        evidence mjs(".github/scripts/check-claude-shape-index.mjs")
+      Update<ClaudeReviewResult>
+        evidence mjs(".github/scripts/run-claude-shape-index.mjs")
+    }
   fn smokeReleaseBinary
     source yaml(".github/workflows/release.yml#Smoke test release binary")
     effects complete {

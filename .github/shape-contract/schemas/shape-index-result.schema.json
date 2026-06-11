@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["status", "summary", "gaps"],
+  "properties": {
+    "status": {
+      "type": "string",
+      "enum": ["pass", "gaps", "error"]
+    },
+    "summary": {
+      "type": "string"
+    },
+    "gaps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["subsystem", "files", "why_significant", "suggested_shapes"],
+        "properties": {
+          "subsystem": {
+            "type": "string"
+          },
+          "files": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "why_significant": {
+            "type": "string"
+          },
+          "suggested_shapes": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

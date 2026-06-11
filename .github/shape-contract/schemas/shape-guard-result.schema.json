@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["status", "summary", "findings"],
+  "properties": {
+    "status": {
+      "type": "string",
+      "enum": ["pass", "advisory", "error"]
+    },
+    "summary": {
+      "type": "string"
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "severity",
+          "signal",
+          "outcome",
+          "symbol",
+          "evidence",
+          "model_context",
+          "recommended_action"
+        ],
+        "properties": {
+          "severity": {
+            "type": "string",
+            "enum": ["high", "medium", "low"]
+          },
+          "signal": {
+            "type": "string"
+          },
+          "outcome": {
+            "type": "string"
+          },
+          "symbol": {
+            "type": "string"
+          },
+          "evidence": {
+            "type": "string"
+          },
+          "model_context": {
+            "type": "string"
+          },
+          "recommended_action": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

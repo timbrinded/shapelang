@@ -198,7 +198,17 @@ bun run shape:ci
 
 `shape:ci` runs `bun run ast:check` and then `bun shp check --changed-files changed.txt`, so generated AST context, implementation coverage, and bindings are checked together. Bindings are used for documentation coupling: if Shape-affecting code or model files change, the associated docs must change too, unless the current change set includes a narrow current `docs_not_needed` attestation.
 
-On pull requests from repository branches, CI also upserts a single Shape CI summary comment. The comment reports the `Shape` and `Shape Claude Review` job results for the latest commit and links back to the workflow run.
+On pull requests from repository branches, CI also upserts a single Shape CI summary comment. The comment reports the `Shape`, `Shape Claude Review`, `Shape Contract Guard`, and `Shape Index Coverage` job results for the latest commit and links back to the workflow run.
+
+## Skill-driven PR jobs
+
+Two further PR jobs drive the bundled plugin skills through Claude Code. Both detect Anthropic credentials the same way as the contract review and skip cleanly when none are available, and both start with a deterministic prefilter so most pull requests never invoke the model.
+
+**Shape Contract Guard** (`shape-guard`) applies `plugins/shapelang/skills/shape-contract-guard/SKILL.md` to the authored `.shape` diff against the PR base: removed final forbids, weakened traits, widened grants or effects, relation or coverage weakening, and weak attestations. If no authored `.shape` file changed, `run-claude-shape-guard.mjs` emits a `pass` result without calling Claude. Findings are advisory by design; the job fails only on a `high`-severity finding or when the review itself errors (`check-claude-shape-guard.mjs`).
+
+**Shape Index Coverage** (`shape-index`) applies `plugins/shapelang/skills/shape-index/SKILL.md` as an audit: `run-claude-shape-index.mjs` first computes which changed source files are not referenced by any authored `shape/*.shape` source/evidence ref or `implementation` paths glob, and only asks Claude to judge that uncovered remainder for architecture-significant subsystems lacking Layer-2 coverage. Gaps are reported in the job summary and PR comment but stay non-blocking unless the repository sets the `SHAPE_INDEX_STRICT` Actions variable to `true`.
+
+Both jobs validate the model output against strict JSON schemas under `.github/shape-contract/schemas/` before anything reaches `GITHUB_OUTPUT`.
 
 ## Direct binary install
 

@@ -1,0 +1,81 @@
+module shape.generated.ast.github.scripts.check_claude_shape_index
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource CheckClaudeShapeIndexModuleIndexFailureMessageAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor(".github/scripts/check-claude-shape-index.mjs:39-54")
+  fingerprint ast.semantic_subtree_v1("sha256:d58fd7d041dba6e62309590846498813f01ed75809c137f8499c4a94e8d6168f")
+}
+
+resource CheckClaudeShapeIndexModuleIsMainModuleAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor(".github/scripts/check-claude-shape-index.mjs:56-61")
+  fingerprint ast.semantic_subtree_v1("sha256:a7630a5e5fbe44b11a467fb490a2c52019708e3bbc0e6d3476897795228c2a3f")
+}
+
+resource CheckClaudeShapeIndexModuleParseIndexInputAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor(".github/scripts/check-claude-shape-index.mjs:10-16")
+  fingerprint ast.semantic_subtree_v1("sha256:9d21e407f259ead662ed7d00af0e9e7dee3d8350f32b96246ec0f8de54e58754")
+}
+
+resource CheckClaudeShapeIndexModuleRenderIndexSummaryAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor(".github/scripts/check-claude-shape-index.mjs:18-37")
+  fingerprint ast.semantic_subtree_v1("sha256:fec75fedc3192723d029414cdc5468fb6e1474744000fd587378ac8a048b7ad5")
+}
+
+component CheckClaudeShapeIndexModule : GeneratedCandidate {
+  fn indexFailureMessage
+    source js(".github/scripts/check-claude-shape-index.mjs:39-54")
+    effects unknown
+  fn isMainModule
+    source js(".github/scripts/check-claude-shape-index.mjs:56-61")
+    effects unknown
+  fn parseIndexInput
+    source js(".github/scripts/check-claude-shape-index.mjs:10-16")
+    effects unknown
+  fn renderIndexSummary
+    source js(".github/scripts/check-claude-shape-index.mjs:18-37")
+    effects unknown
+}
+
+relation CheckClaudeShapeIndexModuleIndexFailureMessageGeneratedFromCheckClaudeShapeIndexModuleIndexFailureMessageAstAnchor {
+  kind generated_from
+  connects CheckClaudeShapeIndexModule -> CheckClaudeShapeIndexModuleIndexFailureMessageAstAnchor
+  roles { CheckClaudeShapeIndexModule as generated, CheckClaudeShapeIndexModuleIndexFailureMessageAstAnchor as syntax }
+  expects CheckClaudeShapeIndexModuleIndexFailureMessageAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d58fd7d041dba6e62309590846498813f01ed75809c137f8499c4a94e8d6168f")
+  summary "fn CheckClaudeShapeIndexModule.indexFailureMessage generated from javascript function_declaration at .github/scripts/check-claude-shape-index.mjs:39-54."
+}
+
+relation CheckClaudeShapeIndexModuleIsMainModuleGeneratedFromCheckClaudeShapeIndexModuleIsMainModuleAstAnchor {
+  kind generated_from
+  connects CheckClaudeShapeIndexModule -> CheckClaudeShapeIndexModuleIsMainModuleAstAnchor
+  roles { CheckClaudeShapeIndexModule as generated, CheckClaudeShapeIndexModuleIsMainModuleAstAnchor as syntax }
+  expects CheckClaudeShapeIndexModuleIsMainModuleAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a7630a5e5fbe44b11a467fb490a2c52019708e3bbc0e6d3476897795228c2a3f")
+  summary "fn CheckClaudeShapeIndexModule.isMainModule generated from javascript function_declaration at .github/scripts/check-claude-shape-index.mjs:56-61."
+}
+
+relation CheckClaudeShapeIndexModuleParseIndexInputGeneratedFromCheckClaudeShapeIndexModuleParseIndexInputAstAnchor {
+  kind generated_from
+  connects CheckClaudeShapeIndexModule -> CheckClaudeShapeIndexModuleParseIndexInputAstAnchor
+  roles { CheckClaudeShapeIndexModule as generated, CheckClaudeShapeIndexModuleParseIndexInputAstAnchor as syntax }
+  expects CheckClaudeShapeIndexModuleParseIndexInputAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9d21e407f259ead662ed7d00af0e9e7dee3d8350f32b96246ec0f8de54e58754")
+  summary "fn CheckClaudeShapeIndexModule.parseIndexInput generated from javascript function_declaration at .github/scripts/check-claude-shape-index.mjs:10-16."
+}
+
+relation CheckClaudeShapeIndexModuleRenderIndexSummaryGeneratedFromCheckClaudeShapeIndexModuleRenderIndexSummaryAstAnchor {
+  kind generated_from
+  connects CheckClaudeShapeIndexModule -> CheckClaudeShapeIndexModuleRenderIndexSummaryAstAnchor
+  roles { CheckClaudeShapeIndexModule as generated, CheckClaudeShapeIndexModuleRenderIndexSummaryAstAnchor as syntax }
+  expects CheckClaudeShapeIndexModuleRenderIndexSummaryAstAnchor fingerprint ast.semantic_subtree_v1("sha256:fec75fedc3192723d029414cdc5468fb6e1474744000fd587378ac8a048b7ad5")
+  summary "fn CheckClaudeShapeIndexModule.renderIndexSummary generated from javascript function_declaration at .github/scripts/check-claude-shape-index.mjs:18-37."
+}
+
+implementation CheckClaudeShapeIndexModuleImpl {
+  paths {
+    ".github/scripts/check-claude-shape-index.mjs"
+  }
+  conforms_to CheckClaudeShapeIndexModule
+}

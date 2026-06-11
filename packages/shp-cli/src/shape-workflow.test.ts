@@ -8,6 +8,10 @@ const repoRoot = resolve(import.meta.dir, "../../..");
 const gateScriptPath = resolve(repoRoot, ".github/scripts/check-claude-shape-review.mjs");
 const extractScriptPath = resolve(repoRoot, ".github/scripts/extract-claude-shape-review.mjs");
 const upsertCommentScriptPath = resolve(repoRoot, ".github/scripts/upsert-shape-ci-comment.mjs");
+const guardGateScriptPath = resolve(repoRoot, ".github/scripts/check-claude-shape-guard.mjs");
+const indexGateScriptPath = resolve(repoRoot, ".github/scripts/check-claude-shape-index.mjs");
+const guardRunScriptPath = resolve(repoRoot, ".github/scripts/run-claude-shape-guard.mjs");
+const indexRunScriptPath = resolve(repoRoot, ".github/scripts/run-claude-shape-index.mjs");
 
 describe("Shape workflow", () => {
   test("fails Claude review gate when a pass result includes findings", async () => {
@@ -143,6 +147,171 @@ describe("Shape workflow", () => {
       bodyIncludesSkipped: true
     });
   });
+
+  test("fails Shape guard gate on a high-severity finding", async () => {
+    const result = await runResultGate(guardGateScriptPath, "CLAUDE_SHAPE_GUARD_RESULT", {
+      status: "advisory",
+      summary: "AppendOnly was removed while HardDelete was granted.",
+      findings: [guardFinding("high")]
+    });
+
+    expect(result.exitCode).toBe(1);
+    expect(result.stderr).toContain("high-severity");
+  });
+
+  test("passes Shape guard gate with only medium and low advisory findings", async () => {
+    const result = await runResultGate(guardGateScriptPath, "CLAUDE_SHAPE_GUARD_RESULT", {
+      status: "advisory",
+      summary: "Broad authority was added with generic justification.",
+      findings: [guardFinding("medium"), guardFinding("low")]
+    });
+
+    expect(result.exitCode).toBe(0);
+    expect(result.stdout).toContain("non-blocking");
+    expect(result.summary).toContain("Status: `advisory`");
+    expect(result.summary).toContain("high: 0, medium: 1, low: 1");
+  });
+
+  test("fails Shape guard gate when a pass result includes findings", async () => {
+    const result = await runResultGate(guardGateScriptPath, "CLAUDE_SHAPE_GUARD_RESULT", {
+      status: "pass",
+      summary: "No loosening found.",
+      findings: [guardFinding("low")]
+    });
+
+    expect(result.exitCode).toBe(1);
+    expect(result.stderr).toContain("pass status cannot include findings");
+  });
+
+  test("fails Shape guard gate on schema-violating severity", async () => {
+    const result = await runResultGate(guardGateScriptPath, "CLAUDE_SHAPE_GUARD_RESULT", {
+      status: "advisory",
+      summary: "Bad severity.",
+      findings: [{ ...guardFinding("low"), severity: "error" }]
+    });
+
+    expect(result.exitCode).toBe(1);
+    expect(result.stderr).toContain("severity must be one of");
+  });
+
+  test("passes Shape index gate on gaps by default and fails when strict", async () => {
+    const gapsResult = {
+      status: "gaps",
+      summary: "One subsystem lacks authored coverage.",
+      gaps: [
+        {
+          subsystem: "payment adapter",
+          files: ["packages/foo/src/payments.ts"],
+          why_significant: "External integration with money movement.",
+          suggested_shapes:
+            "Author a PaymentsAdapter component with owned resources and forbid rules."
+        }
+      ]
+    };
+
+    const lenient = await runResultGate(
+      indexGateScriptPath,
+      "CLAUDE_SHAPE_INDEX_RESULT",
+      gapsResult
+    );
+    expect(lenient.exitCode).toBe(0);
+    expect(lenient.stdout).toContain("non-blocking");
+    expect(lenient.summary).toContain("payment adapter");
+
+    const strict = await runResultGate(
+      indexGateScriptPath,
+      "CLAUDE_SHAPE_INDEX_RESULT",
+      gapsResult,
+      {
+        SHAPE_INDEX_STRICT: "true"
+      }
+    );
+    expect(strict.exitCode).toBe(1);
+    expect(strict.stderr).toContain("SHAPE_INDEX_STRICT");
+  });
+
+  test("fails Shape index gate on an error status", async () => {
+    const result = await runResultGate(indexGateScriptPath, "CLAUDE_SHAPE_INDEX_RESULT", {
+      status: "error",
+      summary: "Audit could not run.",
+      gaps: []
+    });
+
+    expect(result.exitCode).toBe(1);
+  });
+
+  test("shape guard prefilter keeps authored shape files and drops generated ones", async () => {
+    const result = await runNodeModuleProbe(`
+      import { changedAuthoredShapeFiles } from ${JSON.stringify(pathToFileURL(guardRunScriptPath).href)};
+
+      const files = changedAuthoredShapeFiles("origin/main", () =>
+        [
+          "shape/checker.shape",
+          "shape/generated/ast/packages/foo.shape",
+          "packages/shp-checker/src/checker.ts",
+          "fixtures/pass/append_only_append/audit.shape"
+        ].join("\\n")
+      );
+      console.log(JSON.stringify(files));
+    `);
+
+    expect(result.exitCode).toBe(0);
+    expect(JSON.parse(result.stdout)).toEqual([
+      "shape/checker.shape",
+      "fixtures/pass/append_only_append/audit.shape"
+    ]);
+  });
+
+  test("shape index prefilter matches authored refs and paths globs", async () => {
+    const result = await runNodeModuleProbe(`
+      import {
+        authoredCoverageFromShapeSource,
+        globToRegExp,
+        isAuditableSourceFile,
+        uncoveredChangedFiles
+      } from ${JSON.stringify(pathToFileURL(indexRunScriptPath).href)};
+
+      const shapeSource = [
+        'fn doWork',
+        '  source ts("packages/foo/src/work.ts#doWork")',
+        'implementation FooSource {',
+        '  paths {',
+        '    "packages/foo/src/jobs/**/*.ts"',
+        '  }',
+        '}'
+      ].join("\\n");
+      const fromSource = authoredCoverageFromShapeSource(shapeSource);
+      const coverage = {
+        refs: fromSource.refs,
+        globMatchers: fromSource.globs.map(globToRegExp)
+      };
+
+      const uncovered = uncoveredChangedFiles(
+        [
+          "packages/foo/src/work.ts",
+          "packages/foo/src/jobs/nested/queue.ts",
+          "packages/foo/src/unmodeled.ts",
+          "packages/foo/src/unmodeled.test.ts",
+          "docs-site/src/content/docs/index.md",
+          "packages/shp-checker/src/language/generated/ast.ts"
+        ],
+        coverage
+      );
+
+      console.log(JSON.stringify({
+        uncovered,
+        auditsDocs: isAuditableSourceFile("docs-site/src/index.md"),
+        auditsScripts: isAuditableSourceFile(".github/scripts/run-claude-shape-guard.mjs")
+      }));
+    `);
+
+    expect(result.exitCode).toBe(0);
+    expect(JSON.parse(result.stdout)).toEqual({
+      uncovered: ["packages/foo/src/unmodeled.ts"],
+      auditsDocs: false,
+      auditsScripts: true
+    });
+  });
 });
 
 function passReview(summary: string): unknown {
@@ -151,6 +320,63 @@ function passReview(summary: string): unknown {
     summary,
     findings: []
   };
+}
+
+function guardFinding(severity: "high" | "medium" | "low") {
+  return {
+    severity,
+    signal: "constraint-removal-plus-destructive-effect",
+    outcome: "suspicious loosening",
+    symbol: "AuditEvent / AuditStore.deleteEvent",
+    evidence: "AppendOnly was removed from AuditEvent; HardDelete<AuditEvent> was added.",
+    model_context: "AuditStore owns AuditEvent; no reevaluation references the change.",
+    recommended_action: "Restore the constraint or add a specific reevaluation."
+  };
+}
+
+async function runResultGate(
+  scriptPath: string,
+  envName: string,
+  result: unknown,
+  extraEnv: Record<string, string> = {}
+): Promise<{
+  exitCode: number;
+  stdout: string;
+  stderr: string;
+  summary: string;
+}> {
+  const tempDir = await mkdtemp(join(tmpdir(), "shape-skill-gate-"));
+  try {
+    const summaryPath = join(tempDir, "summary.md");
+    await Bun.write(summaryPath, "");
+
+    const child = Bun.spawn(["node", scriptPath], {
+      cwd: tempDir,
+      env: {
+        ...process.env,
+        GITHUB_STEP_SUMMARY: summaryPath,
+        [envName]: JSON.stringify(result),
+        ...extraEnv
+      },
+      stdout: "pipe",
+      stderr: "pipe"
+    });
+
+    const [exitCode, stdout, stderr] = await Promise.all([
+      child.exited,
+      new Response(child.stdout).text(),
+      new Response(child.stderr).text()
+    ]);
+
+    return {
+      exitCode,
+      stdout,
+      stderr,
+      summary: await Bun.file(summaryPath).text()
+    };
+  } finally {
+    await rm(tempDir, { recursive: true, force: true });
+  }
 }
 
 async function runClaudeReviewGate(

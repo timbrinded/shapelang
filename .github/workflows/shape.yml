@@ -224,12 +224,177 @@ jobs:
           CLAUDE_SHAPE_REVIEW_RESULT: ${{ steps.claude.outputs.structured_output }}
         run: node .github/scripts/check-claude-shape-review.mjs
 
+  shape-guard:
+    name: Shape Contract Guard
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    permissions:
+      contents: read
+      pull-requests: read
+    env:
+      SHAPE_GUARD_RESULT_SCHEMA: .github/shape-contract/schemas/shape-guard-result.schema.json
+
+    steps:
+      - name: Detect Claude credentials
+        id: claude-token
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ANTHROPIC_AUTH_TOKEN: ${{ secrets.ANTHROPIC_AUTH_TOKEN }}
+        run: |
+          if [ -n "${ANTHROPIC_API_KEY:-}" ] || [ -n "${ANTHROPIC_AUTH_TOKEN:-}" ]; then
+            echo "available=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "available=false" >> "$GITHUB_OUTPUT"
+            echo "Skipping Shape contract guard because no Anthropic API credential is available."
+          fi
+
+      - name: Checkout
+        if: steps.claude-token.outputs.available == 'true'
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Bun
+        if: steps.claude-token.outputs.available == 'true'
+        uses: oven-sh/setup-bun@v2
+
+      - name: Cache Bun downloads
+        if: steps.claude-token.outputs.available == 'true'
+        uses: actions/cache@v4
+        with:
+          path: ~/.bun/install/cache
+          key: bun-${{ runner.os }}-${{ hashFiles('bun.lock') }}
+          restore-keys: |
+            bun-${{ runner.os }}-
+
+      - name: Install
+        if: steps.claude-token.outputs.available == 'true'
+        run: bun install --frozen-lockfile
+
+      - name: Changed files
+        if: steps.claude-token.outputs.available == 'true'
+        run: bun run changed-files
+        env:
+          GITHUB_BASE_REF: ${{ github.base_ref }}
+          GITHUB_EVENT_BEFORE: ${{ github.event.before }}
+          GITHUB_SHA: ${{ github.sha }}
+
+      - name: Install Claude Code
+        if: steps.claude-token.outputs.available == 'true'
+        run: |
+          curl -fsSL https://claude.ai/install.sh | bash
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+          "$HOME/.local/bin/claude" --version
+
+      - name: Run Shape contract guard
+        id: guard
+        if: steps.claude-token.outputs.available == 'true'
+        env:
+          API_TIMEOUT_MS: 18000
+          DISABLE_NON_ESSENTIAL_MODE_CALLS: 1
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ANTHROPIC_BASE_URL: ${{ secrets.ANTHROPIC_BASE_URL }}
+          ANTHROPIC_AUTH_TOKEN: ${{ secrets.ANTHROPIC_AUTH_TOKEN }}
+          GITHUB_BASE_REF: ${{ github.base_ref }}
+          GITHUB_SHA: ${{ github.sha }}
+        run: node .github/scripts/run-claude-shape-guard.mjs
+
+      - name: Check Shape guard result
+        if: steps.claude-token.outputs.available == 'true'
+        env:
+          CLAUDE_SHAPE_GUARD_RESULT: ${{ steps.guard.outputs.structured_output }}
+        run: node .github/scripts/check-claude-shape-guard.mjs
+
+  shape-index:
+    name: Shape Index Coverage
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    permissions:
+      contents: read
+      pull-requests: read
+    env:
+      SHAPE_INDEX_RESULT_SCHEMA: .github/shape-contract/schemas/shape-index-result.schema.json
+
+    steps:
+      - name: Detect Claude credentials
+        id: claude-token
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ANTHROPIC_AUTH_TOKEN: ${{ secrets.ANTHROPIC_AUTH_TOKEN }}
+        run: |
+          if [ -n "${ANTHROPIC_API_KEY:-}" ] || [ -n "${ANTHROPIC_AUTH_TOKEN:-}" ]; then
+            echo "available=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "available=false" >> "$GITHUB_OUTPUT"
+            echo "Skipping Shape index coverage audit because no Anthropic API credential is available."
+          fi
+
+      - name: Checkout
+        if: steps.claude-token.outputs.available == 'true'
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Bun
+        if: steps.claude-token.outputs.available == 'true'
+        uses: oven-sh/setup-bun@v2
+
+      - name: Cache Bun downloads
+        if: steps.claude-token.outputs.available == 'true'
+        uses: actions/cache@v4
+        with:
+          path: ~/.bun/install/cache
+          key: bun-${{ runner.os }}-${{ hashFiles('bun.lock') }}
+          restore-keys: |
+            bun-${{ runner.os }}-
+
+      - name: Install
+        if: steps.claude-token.outputs.available == 'true'
+        run: bun install --frozen-lockfile
+
+      - name: Changed files
+        if: steps.claude-token.outputs.available == 'true'
+        run: bun run changed-files
+        env:
+          GITHUB_BASE_REF: ${{ github.base_ref }}
+          GITHUB_EVENT_BEFORE: ${{ github.event.before }}
+          GITHUB_SHA: ${{ github.sha }}
+
+      - name: Install Claude Code
+        if: steps.claude-token.outputs.available == 'true'
+        run: |
+          curl -fsSL https://claude.ai/install.sh | bash
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+          "$HOME/.local/bin/claude" --version
+
+      - name: Run Shape index coverage audit
+        id: index
+        if: steps.claude-token.outputs.available == 'true'
+        env:
+          API_TIMEOUT_MS: 18000
+          DISABLE_NON_ESSENTIAL_MODE_CALLS: 1
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ANTHROPIC_BASE_URL: ${{ secrets.ANTHROPIC_BASE_URL }}
+          ANTHROPIC_AUTH_TOKEN: ${{ secrets.ANTHROPIC_AUTH_TOKEN }}
+          GITHUB_BASE_REF: ${{ github.base_ref }}
+          GITHUB_SHA: ${{ github.sha }}
+        run: node .github/scripts/run-claude-shape-index.mjs
+
+      - name: Check Shape index result
+        if: steps.claude-token.outputs.available == 'true'
+        env:
+          CLAUDE_SHAPE_INDEX_RESULT: ${{ steps.index.outputs.structured_output }}
+          SHAPE_INDEX_STRICT: ${{ vars.SHAPE_INDEX_STRICT }}
+        run: node .github/scripts/check-claude-shape-index.mjs
+
   shape-pr-comment:
     name: Shape PR Summary Comment
     runs-on: ubuntu-latest
     needs:
       - shape
       - shape-claude-review
+      - shape-guard
+      - shape-index
     if: ${{ always() && github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository }}
     permissions:
       contents: read
@@ -250,6 +415,8 @@ jobs:
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
           SHAPE_RESULT: ${{ needs.shape.result }}
           SHAPE_CLAUDE_REVIEW_RESULT: ${{ needs['shape-claude-review'].result }}
+          SHAPE_GUARD_RESULT: ${{ needs['shape-guard'].result }}
+          SHAPE_INDEX_RESULT: ${{ needs['shape-index'].result }}
           CLAUDE_AVAILABLE: ${{ needs['shape-claude-review'].outputs.claude_available }}
         run: node .github/scripts/upsert-shape-ci-comment.mjs
 
