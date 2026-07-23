@@ -110,32 +110,71 @@ component CiPipeline {
         evidence yaml(".github/workflows/shape.yml")
     }
   fn runShapeContractReview
-    source mjs(".github/scripts/run-claude-shape-review.mjs")
+    source mjs(".github/scripts/run-claude-skill.mjs#buildReviewPrompt")
+    description "Source-to-model drift review: the review skill of the unified Claude skill runner; the model call is delegated to anthropics/claude-code-action with structured output, and any finding or drift status fails the job."
     effects complete {
       Read<ChangedFileList>
         evidence yaml(".github/workflows/shape.yml")
       Read<CiWorkflow>
-        evidence mjs(".github/scripts/run-claude-shape-review.mjs")
+        evidence mjs(".github/scripts/run-claude-skill.mjs")
       Read<CiWorkflow>
         evidence yaml(".github/workflows/shape.yml")
+      Read<CiWorkflow>
+        evidence yaml(".github/actions/claude-skill-review/action.yml")
       Read<ClaudeReviewPrompt>
         evidence md(".github/prompts/shape-contract-review.md")
       Read<ClaudeReviewResult>
-        evidence mjs(".github/scripts/check-claude-shape-review.mjs")
-      Read<ClaudeReviewResult>
-        evidence mjs(".github/scripts/extract-claude-shape-review.mjs")
-      Read<ClaudeReviewResult>
-        evidence mjs(".github/scripts/shape-review-contract.mjs")
-      Read<ClaudeReviewResult>
         evidence json(".github/shape-contract/schemas/shape-contract-result.schema.json")
+      Read<ClaudeReviewResult>
+        evidence mjs(".github/scripts/run-claude-skill.mjs")
       Read<SemanticDiagnostics>
         evidence yaml(".github/workflows/shape.yml")
       Update<ClaudeReviewResult>
-        evidence mjs(".github/scripts/check-claude-shape-review.mjs")
+        evidence yaml(".github/actions/claude-skill-review/action.yml")
+    }
+  fn runShapeGuardReview
+    source mjs(".github/scripts/run-claude-skill.mjs#buildGuardPrompt")
+    description "Advisory loosening review of authored .shape diffs driven by the shape-contract-guard skill; a git-diff prefilter skips the model call when no authored .shape changed, the model call is delegated to anthropics/claude-code-action with structured output, and only high-severity findings fail the job."
+    effects complete {
+      Read<ChangedFileList>
+        evidence yaml(".github/workflows/shape.yml")
+      Read<CiWorkflow>
+        evidence mjs(".github/scripts/run-claude-skill.mjs")
+      Read<CiWorkflow>
+        evidence yaml(".github/actions/claude-skill-review/action.yml")
+      Read<ClaudeReviewPrompt>
+        evidence md(".github/prompts/shape-guard.md")
+      Read<ClaudeReviewResult>
+        evidence json(".github/shape-contract/schemas/shape-guard-result.schema.json")
+      Read<ClaudeReviewResult>
+        evidence mjs(".github/scripts/run-claude-skill.mjs")
       Update<ClaudeReviewResult>
-        evidence mjs(".github/scripts/extract-claude-shape-review.mjs")
+        evidence mjs(".github/scripts/run-claude-skill.mjs")
       Update<ClaudeReviewResult>
-        evidence mjs(".github/scripts/run-claude-shape-review.mjs")
+        evidence yaml(".github/actions/claude-skill-review/action.yml")
+    }
+  fn runShapeIndexAudit
+    source mjs(".github/scripts/run-claude-skill.mjs#buildIndexPrompt")
+    description "Layer-2 coverage audit driven by the shape-index skill; a deterministic prefilter skips the model call when authored refs or globs cover every changed source file, the model call is delegated to anthropics/claude-code-action with structured output, and gaps stay advisory unless SHAPE_INDEX_STRICT."
+    effects complete {
+      Read<ChangedFileList>
+        evidence mjs(".github/scripts/run-claude-skill.mjs")
+      Read<CiWorkflow>
+        evidence mjs(".github/scripts/run-claude-skill.mjs")
+      Read<CiWorkflow>
+        evidence yaml(".github/actions/claude-skill-review/action.yml")
+      Read<ClaudeReviewPrompt>
+        evidence md(".github/prompts/shape-index.md")
+      Read<ClaudeReviewResult>
+        evidence json(".github/shape-contract/schemas/shape-index-result.schema.json")
+      Read<ClaudeReviewResult>
+        evidence mjs(".github/scripts/run-claude-skill.mjs")
+      Read<ShapeSource>
+        evidence mjs(".github/scripts/run-claude-skill.mjs")
+      Update<ClaudeReviewResult>
+        evidence mjs(".github/scripts/run-claude-skill.mjs")
+      Update<ClaudeReviewResult>
+        evidence yaml(".github/actions/claude-skill-review/action.yml")
     }
   fn smokeReleaseBinary
     source yaml(".github/workflows/release.yml#Smoke test release binary")
@@ -492,6 +531,7 @@ implementation SyntaxHighlighterSource {
 
 implementation WorkflowSource {
   paths {
+    ".github/actions/**/*.yml"
     ".github/scripts/**/*.mjs"
     ".github/workflows/**/*.yml"
   }
@@ -867,4 +907,54 @@ attest no_shape_change {
 attest no_shape_change {
   source md("docs-site/src/content/docs/reference/diagnostics.md")
   reason "The diagnostics catalog now documents the canonical diagnostic ordering introduced by ShapeDiagnostics.compareShapeDiagnostics; the docs surface gains prose only and the delivery contract is unchanged."
+}
+
+attest no_shape_change {
+  source mjs(".github/scripts/run-claude-shape-review.mjs")
+  reason "The standalone review runner is superseded by the unified skill runner; the review contract now lives in CiPipeline.runShapeContractReview sourcing run-claude-skill.mjs."
+}
+
+attest no_shape_change {
+  source mjs(".github/scripts/check-claude-shape-review.mjs")
+  reason "The separate review gate step is folded into the unified skill runner, which renders the summary and gates the job in one process."
+}
+
+attest no_shape_change {
+  source mjs(".github/scripts/extract-claude-shape-review.mjs")
+  reason "Output extraction is superseded by extractValidResult in run-claude-skill.mjs, which validates candidates against the skill's JSON schema."
+}
+
+attest no_shape_change {
+  source mjs(".github/scripts/shape-review-contract.mjs")
+  reason "Hand-written result validation is superseded by the schema-interpreting validator in run-claude-skill.mjs; the JSON schema files remain the contract."
+}
+
+attest no_shape_change {
+  source mjs(".github/scripts/run-claude-shape-guard.mjs")
+  reason "The guard runner is folded into the unified skill runner as the guard skill of CiPipeline.runShapeGuardReview."
+}
+
+attest no_shape_change {
+  source mjs(".github/scripts/check-claude-shape-guard.mjs")
+  reason "The guard gate is folded into the unified skill runner; the high-severity policy is unchanged."
+}
+
+attest no_shape_change {
+  source mjs(".github/scripts/run-claude-shape-index.mjs")
+  reason "The index runner and its coverage prefilter are folded into the unified skill runner as the index skill of CiPipeline.runShapeIndexAudit."
+}
+
+attest no_shape_change {
+  source mjs(".github/scripts/check-claude-shape-index.mjs")
+  reason "The index gate is folded into the unified skill runner; the SHAPE_INDEX_STRICT policy is unchanged."
+}
+
+attest no_shape_change {
+  source mjs(".github/scripts/claude-skill-pipeline.mjs")
+  reason "The shared pipeline module is superseded by the unified skill runner; run/validate/gate orchestration now lives in run-claude-skill.mjs."
+}
+
+attest no_shape_change {
+  source mjs(".github/scripts/shape-skill-contract.mjs")
+  reason "The per-skill validator module is superseded by the schema-interpreting validator in run-claude-skill.mjs; the JSON schema files remain the contract."
 }

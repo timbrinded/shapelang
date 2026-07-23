@@ -1,0 +1,83 @@
+name: Claude skill review
+description: >-
+  Install the Bun toolchain, prefilter one of the Shape skill reviews (review,
+  guard, index) through .github/scripts/run-claude-skill.mjs, run the model
+  call through anthropics/claude-code-action when the prefilter requires one,
+  then validate the structured result against the skill's JSON schema and gate
+  the job on its policy. The calling step provides Anthropic credentials and
+  git context via env.
+
+inputs:
+  skill:
+    description: Skill name understood by run-claude-skill.mjs (review, guard, or index).
+    required: true
+  prepare-command:
+    description: Optional shell command run after changed-files, before the review (e.g. capturing shp context output).
+    required: false
+    default: ""
+  model:
+    description: Claude model passed to the Claude Code action. Defaults to Sonnet in run-claude-skill.mjs.
+    required: false
+    default: ""
+
+runs:
+  using: composite
+  steps:
+    - name: Setup Bun
+      uses: oven-sh/setup-bun@v2
+
+    - name: Cache Bun downloads
+      uses: actions/cache@v4
+      with:
+        path: ~/.bun/install/cache
+        key: bun-${{ runner.os }}-${{ hashFiles('bun.lock') }}
+        restore-keys: |
+          bun-${{ runner.os }}-
+
+    - name: Install
+      shell: bash
+      run: bun install --frozen-lockfile
+
+    - name: Changed files
+      shell: bash
+      run: bun run changed-files
+
+    - name: Prepare review context
+      if: ${{ inputs.prepare-command != '' }}
+      shell: bash
+      run: ${{ inputs.prepare-command }}
+
+    - name: Prefilter skill
+      id: prefilter
+      shell: bash
+      env:
+        CLAUDE_SKILL_MODEL: ${{ inputs.model }}
+      run: node .github/scripts/run-claude-skill.mjs ${{ inputs.skill }} --prefilter
+
+    - name: Run skill through Claude Code
+      id: claude
+      if: ${{ steps.prefilter.outputs.skip != 'true' }}
+      # Through proxy gateways the structured-output channel can degrade to
+      # plain text, which this action reports as a step failure even though
+      # the model run succeeded. The gate step below recovers the result from
+      # the execution log in that case and remains the single pass/fail
+      # authority for the job.
+      continue-on-error: true
+      uses: anthropics/claude-code-action@v1
+      with:
+        # The action's credential check only recognizes anthropic_api_key or
+        # claude_code_oauth_token. The real gateway credential is the
+        # ANTHROPIC_AUTH_TOKEN + ANTHROPIC_BASE_URL pair, which reaches Claude
+        # Code through the inherited step env; the token passed here exists to
+        # satisfy that check.
+        anthropic_api_key: ${{ env.ANTHROPIC_AUTH_TOKEN || env.ANTHROPIC_API_KEY }}
+        github_token: ${{ github.token }}
+        prompt: ${{ steps.prefilter.outputs.prompt }}
+        claude_args: ${{ steps.prefilter.outputs.claude_args }}
+
+    - name: Validate and gate structured result
+      shell: bash
+      env:
+        CLAUDE_SKILL_RESULT: ${{ steps.prefilter.outputs.skip == 'true' && steps.prefilter.outputs.result || steps.claude.outputs.structured_output }}
+        CLAUDE_EXECUTION_FILE: ${{ steps.claude.outputs.execution_file }}
+      run: node .github/scripts/run-claude-skill.mjs ${{ inputs.skill }}

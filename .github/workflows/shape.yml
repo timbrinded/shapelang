@@ -133,11 +133,10 @@ jobs:
       pull-requests: read
     outputs:
       claude_available: ${{ steps.claude-token.outputs.available }}
-    env:
-      SHAPE_CONTRACT_RESULT_SCHEMA: .github/shape-contract/schemas/shape-contract-result.schema.json
 
     steps:
-      - name: Detect Claude credentials
+      - &detect-claude
+        name: Detect Claude credentials
         id: claude-token
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
@@ -147,7 +146,7 @@ jobs:
             echo "available=true" >> "$GITHUB_OUTPUT"
           else
             echo "available=false" >> "$GITHUB_OUTPUT"
-            echo "Skipping Claude Shape contract review because no Anthropic API credential is available."
+            echo "Skipping Claude-powered Shape job because no Anthropic API credential is available."
           fi
 
       - name: Checkout
@@ -156,57 +155,23 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup Bun
-        if: steps.claude-token.outputs.available == 'true'
-        id: setup-bun
-        uses: oven-sh/setup-bun@v2
-
-      - name: Cache Bun downloads
-        if: steps.claude-token.outputs.available == 'true'
-        uses: actions/cache@v4
-        with:
-          path: ~/.bun/install/cache
-          key: bun-${{ runner.os }}-${{ hashFiles('bun.lock') }}
-          restore-keys: |
-            bun-${{ runner.os }}-
-
-      - name: Install
-        if: steps.claude-token.outputs.available == 'true'
-        run: bun install --frozen-lockfile
-
-      - name: Changed files
-        if: steps.claude-token.outputs.available == 'true'
-        run: bun run changed-files
-        env:
-          GITHUB_BASE_REF: ${{ github.base_ref }}
-          GITHUB_EVENT_BEFORE: ${{ github.event.before }}
-          GITHUB_SHA: ${{ github.sha }}
-
-      - name: Shape diagnostics for Claude
-        if: steps.claude-token.outputs.available == 'true'
-        run: |
-          set +e
-          {
-            echo "## changed.txt"
-            sed -n '1,200p' changed.txt
-            echo
-            echo "## bun run shape:ci"
-            bun run shape:ci
-            status=$?
-            echo
-            echo "shape_ci_exit=$status"
-          } > shape-claude-context.txt 2>&1
-
-      - name: Install Claude Code
-        if: steps.claude-token.outputs.available == 'true'
-        run: |
-          curl -fsSL https://claude.ai/install.sh | bash
-          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
-          "$HOME/.local/bin/claude" --version
-
       - name: Run Claude Shape contract review
-        id: claude
         if: steps.claude-token.outputs.available == 'true'
+        uses: ./.github/actions/claude-skill-review
+        with:
+          skill: review
+          prepare-command: |
+            set +e
+            {
+              echo "## changed.txt"
+              sed -n '1,200p' changed.txt
+              echo
+              echo "## bun run shape:ci"
+              bun run shape:ci
+              status=$?
+              echo
+              echo "shape_ci_exit=$status"
+            } > shape-claude-context.txt 2>&1
         env:
           API_TIMEOUT_MS: 18000
           DISABLE_NON_ESSENTIAL_MODE_CALLS: 1
@@ -215,14 +180,73 @@ jobs:
           ANTHROPIC_AUTH_TOKEN: ${{ secrets.ANTHROPIC_AUTH_TOKEN }}
           CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS: ${{ secrets.CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS }}
           GITHUB_BASE_REF: ${{ github.base_ref }}
+          GITHUB_EVENT_BEFORE: ${{ github.event.before }}
           GITHUB_SHA: ${{ github.sha }}
-        run: node .github/scripts/run-claude-shape-review.mjs
 
-      - name: Check Claude review result
+  shape-guard:
+    name: Shape Contract Guard
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    permissions:
+      contents: read
+      pull-requests: read
+
+    steps:
+      - *detect-claude
+
+      - name: Checkout
         if: steps.claude-token.outputs.available == 'true'
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run Shape contract guard
+        if: steps.claude-token.outputs.available == 'true'
+        uses: ./.github/actions/claude-skill-review
+        with:
+          skill: guard
         env:
-          CLAUDE_SHAPE_REVIEW_RESULT: ${{ steps.claude.outputs.structured_output }}
-        run: node .github/scripts/check-claude-shape-review.mjs
+          API_TIMEOUT_MS: 18000
+          DISABLE_NON_ESSENTIAL_MODE_CALLS: 1
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ANTHROPIC_BASE_URL: ${{ secrets.ANTHROPIC_BASE_URL }}
+          ANTHROPIC_AUTH_TOKEN: ${{ secrets.ANTHROPIC_AUTH_TOKEN }}
+          GITHUB_BASE_REF: ${{ github.base_ref }}
+          GITHUB_EVENT_BEFORE: ${{ github.event.before }}
+          GITHUB_SHA: ${{ github.sha }}
+
+  shape-index:
+    name: Shape Index Coverage
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    permissions:
+      contents: read
+      pull-requests: read
+
+    steps:
+      - *detect-claude
+
+      - name: Checkout
+        if: steps.claude-token.outputs.available == 'true'
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run Shape index coverage audit
+        if: steps.claude-token.outputs.available == 'true'
+        uses: ./.github/actions/claude-skill-review
+        with:
+          skill: index
+        env:
+          API_TIMEOUT_MS: 18000
+          DISABLE_NON_ESSENTIAL_MODE_CALLS: 1
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ANTHROPIC_BASE_URL: ${{ secrets.ANTHROPIC_BASE_URL }}
+          ANTHROPIC_AUTH_TOKEN: ${{ secrets.ANTHROPIC_AUTH_TOKEN }}
+          GITHUB_BASE_REF: ${{ github.base_ref }}
+          GITHUB_EVENT_BEFORE: ${{ github.event.before }}
+          GITHUB_SHA: ${{ github.sha }}
+          SHAPE_INDEX_STRICT: ${{ vars.SHAPE_INDEX_STRICT }}
 
   shape-pr-comment:
     name: Shape PR Summary Comment
@@ -230,6 +254,8 @@ jobs:
     needs:
       - shape
       - shape-claude-review
+      - shape-guard
+      - shape-index
     if: ${{ always() && github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository }}
     permissions:
       contents: read
@@ -250,6 +276,8 @@ jobs:
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
           SHAPE_RESULT: ${{ needs.shape.result }}
           SHAPE_CLAUDE_REVIEW_RESULT: ${{ needs['shape-claude-review'].result }}
+          SHAPE_GUARD_RESULT: ${{ needs['shape-guard'].result }}
+          SHAPE_INDEX_RESULT: ${{ needs['shape-index'].result }}
           CLAUDE_AVAILABLE: ${{ needs['shape-claude-review'].outputs.claude_available }}
         run: node .github/scripts/upsert-shape-ci-comment.mjs
 

@@ -3,31 +3,10 @@
   "generatedAt": "deterministic",
   "entries": [
     {
-      "module": "shape.generated.ast.github.scripts.check_claude_shape_review",
-      "path": "shape/generated/ast/.github/scripts/check-claude-shape-review.shape",
+      "module": "shape.generated.ast.github.scripts.run_claude_skill",
+      "path": "shape/generated/ast/.github/scripts/run-claude-skill.shape",
       "sources": [
-        ".github/scripts/check-claude-shape-review.mjs"
-      ]
-    },
-    {
-      "module": "shape.generated.ast.github.scripts.extract_claude_shape_review",
-      "path": "shape/generated/ast/.github/scripts/extract-claude-shape-review.shape",
-      "sources": [
-        ".github/scripts/extract-claude-shape-review.mjs"
-      ]
-    },
-    {
-      "module": "shape.generated.ast.github.scripts.run_claude_shape_review",
-      "path": "shape/generated/ast/.github/scripts/run-claude-shape-review.shape",
-      "sources": [
-        ".github/scripts/run-claude-shape-review.mjs"
-      ]
-    },
-    {
-      "module": "shape.generated.ast.github.scripts.shape_review_contract",
-      "path": "shape/generated/ast/.github/scripts/shape-review-contract.shape",
-      "sources": [
-        ".github/scripts/shape-review-contract.mjs"
+        ".github/scripts/run-claude-skill.mjs"
       ]
     },
     {

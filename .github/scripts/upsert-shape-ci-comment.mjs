@@ -12,6 +12,8 @@ const REQUIRED_ENV = [
   "RUN_ID",
   "SERVER_URL",
   "SHAPE_CLAUDE_REVIEW_RESULT",
+  "SHAPE_GUARD_RESULT",
+  "SHAPE_INDEX_RESULT",
   "SHAPE_RESULT"
 ];
 
@@ -34,16 +36,20 @@ export function labelForWorkflowResult(result) {
 }
 
 export function buildShapeCiComment(input) {
-  const claudeReviewResult =
+  const claudeJobResult = (result) =>
     input.claudeAvailable === "true"
-      ? labelForWorkflowResult(input.shapeClaudeReviewResult)
+      ? labelForWorkflowResult(result)
       : "skipped (no Claude credential)";
+  const claudeReviewResult = claudeJobResult(input.shapeClaudeReviewResult);
+  const guardResult = claudeJobResult(input.shapeGuardResult);
+  const indexResult = claudeJobResult(input.shapeIndexResult);
   const shapeResult = labelForWorkflowResult(input.shapeResult);
-  const overall =
-    input.shapeResult === "success" &&
-    (input.claudeAvailable !== "true" || input.shapeClaudeReviewResult === "success")
-      ? "passed"
-      : "needs attention";
+  const claudeJobsOk =
+    input.claudeAvailable !== "true" ||
+    (input.shapeClaudeReviewResult === "success" &&
+      input.shapeGuardResult === "success" &&
+      input.shapeIndexResult === "success");
+  const overall = input.shapeResult === "success" && claudeJobsOk ? "passed" : "needs attention";
   const runUrl = `${input.serverUrl}/${input.repository}/actions/runs/${input.runId}`;
   const shortSha = input.headSha.slice(0, 7);
 
@@ -57,6 +63,8 @@ export function buildShapeCiComment(input) {
     "| --- | --- |",
     `| Shape (\`bun run shape:ci\`) | ${shapeResult} |`,
     `| Shape Claude Review | ${claudeReviewResult} |`,
+    `| Shape Contract Guard | ${guardResult} |`,
+    `| Shape Index Coverage | ${indexResult} |`,
     "",
     `Commit: \`${shortSha}\``,
     `Workflow run: [${input.runId}](${runUrl})`,
@@ -94,6 +102,8 @@ export function commentInputFromEnv(env = process.env) {
     runId: env.RUN_ID,
     serverUrl: env.SERVER_URL,
     shapeClaudeReviewResult: env.SHAPE_CLAUDE_REVIEW_RESULT,
+    shapeGuardResult: env.SHAPE_GUARD_RESULT,
+    shapeIndexResult: env.SHAPE_INDEX_RESULT,
     shapeResult: env.SHAPE_RESULT,
     claudeAvailable: env.CLAUDE_AVAILABLE ?? "false"
   };
