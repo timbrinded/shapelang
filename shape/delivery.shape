@@ -719,7 +719,7 @@ attest docs_not_needed {
 
 attest docs_not_needed {
   source shape("shape/tooling.shape")
-  reason "The CLI runner helper is now explicitly modeled for governance; user-facing CLI commands, flags, and docs-visible behavior are unchanged."
+  reason "The tooling model now promotes the existing public evidence-span extractor; no CLI command or flag changed, and the authoring-helper guide documents the behavior directly."
 }
 
 attest docs_not_needed {
@@ -754,7 +754,7 @@ attest no_shape_change {
 
 attest no_shape_change {
   source md("docs-site/src/content/docs/inside-shape/formatter-editor-authoring.md")
-  reason "Documented add-entry symbol discovery and non-definition modify/remove behavior for editor helpers; the docs source remains within the existing DocsSite surface."
+  reason "Documents precise new-file evidence-span extraction for authoring helpers; the guide remains within the existing DocsSite content boundary."
 }
 
 attest no_shape_change {

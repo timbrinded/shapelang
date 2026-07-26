@@ -135,6 +135,10 @@ component AuditStore {
 
 That `effects unknown` is doing real work. It stops an agent from producing an empty `effects complete` block that looks clean but hides uncertainty. The reviewer can then inspect the diff, add effect entries, attach evidence spans, and include any required rationale, memory, or reevaluation.
 
+`extractEvidenceSpansFromUnifiedDiff` maps added lines in an unquoted, `b/`-prefixed two-way Git patch to repository-relative `EvidenceSpan` values. Its line numbers always refer to the new file. Consecutive additions are coalesced, unchanged context starts a new span, and deletion or no-newline marker lines do not shift new-file coordinates. Multiple hunks remain in patch order so callers can attach the returned spans without reconstructing the edited file.
+
+The extractor is intentionally structural. It identifies reviewable added-line ranges but does not decide which additions are material evidence or interpret the source code inside them. Quoted path headers, `--no-prefix` output, and combined merge diffs are outside this helper's current input boundary.
+
 ## Prompt Helpers
 
 `buildShapeAuthorPrompt` and `buildShapeCriticPrompt` encode the same review posture in text. They tell an authoring agent to:

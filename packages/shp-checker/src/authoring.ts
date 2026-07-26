@@ -27,6 +27,13 @@ export type EvidenceSpan = {
   endLine: number;
 };
 
+type UnifiedDiffHunk = {
+  activeStart?: number;
+  newLine: number;
+  oldRemaining: number;
+  newRemaining: number;
+};
+
 export function buildShapeAuthorPrompt(input: ShapeAuthorPromptInput): string {
   return [
     "You are authoring a Shape .shape global model update for human review.",
@@ -141,57 +148,117 @@ export function generateShapeUpdateDraft(input: ShapeUpdateInput): string {
 export function extractEvidenceSpansFromUnifiedDiff(diff: string): EvidenceSpan[] {
   const spans: EvidenceSpan[] = [];
   let currentPath: string | undefined;
-  let newLine = 0;
-  let activeStart: number | undefined;
-  let activeEnd: number | undefined;
+  let hunk: UnifiedDiffHunk | undefined;
 
-  function flush(): void {
-    if (currentPath && activeStart !== undefined && activeEnd !== undefined) {
+  function flushActiveSpan(): void {
+    if (currentPath && hunk?.activeStart !== undefined) {
       spans.push({
         language: languageForPath(currentPath),
         path: currentPath,
-        startLine: activeStart,
-        endLine: activeEnd
+        startLine: hunk.activeStart,
+        endLine: hunk.newLine - 1
       });
     }
-    activeStart = undefined;
-    activeEnd = undefined;
+    if (hunk) {
+      hunk.activeStart = undefined;
+    }
+  }
+
+  function finishHunk(): void {
+    flushActiveSpan();
+    hunk = undefined;
+  }
+
+  function consumeHunkLine(line: string): boolean {
+    if (!hunk) {
+      return false;
+    }
+
+    if (line === "\\ No newline at end of file") {
+      return true;
+    }
+
+    if (line.startsWith("+")) {
+      if (hunk.newRemaining === 0) {
+        return false;
+      }
+      hunk.activeStart ??= hunk.newLine;
+      hunk.newLine += 1;
+      hunk.newRemaining -= 1;
+    } else if (line.startsWith("-")) {
+      if (hunk.oldRemaining === 0) {
+        return false;
+      }
+      hunk.oldRemaining -= 1;
+    } else if (line.startsWith(" ")) {
+      if (hunk.oldRemaining === 0 || hunk.newRemaining === 0) {
+        return false;
+      }
+      flushActiveSpan();
+      hunk.newLine += 1;
+      hunk.oldRemaining -= 1;
+      hunk.newRemaining -= 1;
+    } else {
+      return false;
+    }
+
+    if (hunk.oldRemaining === 0 && hunk.newRemaining === 0) {
+      finishHunk();
+    }
+    return true;
   }
 
   for (const line of diff.split(/\r?\n/)) {
+    if (hunk) {
+      if (consumeHunkLine(line)) {
+        continue;
+      }
+      finishHunk();
+    }
+
+    if (line.startsWith("diff --git ") || line.startsWith("--- ")) {
+      currentPath = undefined;
+      continue;
+    }
+
     if (line.startsWith("+++ b/")) {
-      flush();
       currentPath = line.slice("+++ b/".length);
       continue;
     }
 
-    const hunk = /^@@ -\d+(?:,\d+)? \+(\d+)(?:,\d+)? @@/.exec(line);
-    if (hunk) {
-      flush();
-      newLine = Number(hunk[1]);
+    if (line === "+++ /dev/null") {
+      currentPath = undefined;
       continue;
     }
 
-    if (!currentPath || line.startsWith("+++") || line.startsWith("---")) {
-      continue;
-    }
-
-    if (line.startsWith("+")) {
-      if (activeStart === undefined) {
-        activeStart = newLine;
-      }
-      activeEnd = newLine;
-      newLine += 1;
-    } else {
-      flush();
-      if (!line.startsWith("-")) {
-        newLine += 1;
-      }
+    const nextHunk = currentPath ? parseUnifiedDiffHunk(line) : undefined;
+    if (nextHunk && (nextHunk.oldRemaining > 0 || nextHunk.newRemaining > 0)) {
+      hunk = nextHunk;
     }
   }
 
-  flush();
+  finishHunk();
   return spans;
+}
+
+function parseUnifiedDiffHunk(line: string): UnifiedDiffHunk | undefined {
+  const match = /^@@ -\d+(?:,(\d+))? \+(\d+)(?:,(\d+))? @@(?: .*)?$/.exec(line);
+  if (!match) {
+    return undefined;
+  }
+
+  const oldRemaining = Number(match[1] ?? "1");
+  const newLine = Number(match[2]);
+  const newRemaining = Number(match[3] ?? "1");
+  if (
+    !Number.isSafeInteger(oldRemaining) ||
+    !Number.isSafeInteger(newLine) ||
+    !Number.isSafeInteger(newRemaining)
+  ) {
+    return undefined;
+  }
+
+  return { newLine, oldRemaining, newRemaining };
 }
 
 function formatUnknownFunction(file: string, functionName: string): string {

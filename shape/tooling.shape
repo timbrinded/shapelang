@@ -20,6 +20,8 @@ resource DiagnosticText
 
 resource EditorOutput
 
+resource EvidenceSpan
+
 resource FormattedShape
 
 resource GeneratedAstAnchor
@@ -47,6 +49,8 @@ resource ShapeModelDraft
 resource SourceSyntaxTree
 
 resource SystemClock
+
+resource UnifiedDiff
 
 component ShapeAnalyzer {
   owns AnalyzerHint
@@ -212,11 +216,14 @@ component ShapeAstGenerator {
 
 component ShapeAuthoring {
   owns AuthoringPrompt
+  owns EvidenceSpan
   owns ShapeModelDraft
   grants Append<AuthoringPrompt>
+  grants Append<EvidenceSpan>
   grants Append<ShapeModelDraft>
   grants Read<ChangedFileList>
   grants Read<PreludeMetadata>
+  grants Read<UnifiedDiff>
   fn buildShapeAuthorPrompt : RefactorSensitive
     source ts("packages/shp-checker/src/authoring.ts#buildShapeAuthorPrompt")
     effects complete {
@@ -225,6 +232,15 @@ component ShapeAuthoring {
       Read<ChangedFileList>
         evidence ts("packages/shp-checker/src/authoring.ts")
       Read<PreludeMetadata>
+        evidence ts("packages/shp-checker/src/authoring.ts")
+    }
+  fn extractEvidenceSpansFromUnifiedDiff
+    source ts("packages/shp-checker/src/authoring.ts#extractEvidenceSpansFromUnifiedDiff")
+    description "Maps added lines in conventional unquoted b/-prefixed two-way Git diffs to deterministic new-file evidence spans without interpreting source semantics."
+    effects complete {
+      Append<EvidenceSpan>
+        evidence ts("packages/shp-checker/src/authoring.ts")
+      Read<UnifiedDiff>
         evidence ts("packages/shp-checker/src/authoring.ts")
     }
   fn generateShapeUpdateDraft : RefactorSensitive

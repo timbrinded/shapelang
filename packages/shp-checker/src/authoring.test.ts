@@ -69,12 +69,12 @@ describe("Shape authoring assistant", () => {
     expect(parsed.ok).toBe(true);
   });
 
-  test("extracts evidence spans from unified diffs", () => {
+  test("extracts a precise evidence span from a single unified-diff hunk", () => {
     const spans =
       extractEvidenceSpansFromUnifiedDiff(`diff --git a/src/audit/purge.ts b/src/audit/purge.ts
 --- a/src/audit/purge.ts
 +++ b/src/audit/purge.ts
-@@ -10,2 +10,3 @@
+@@ -10,2 +10,4 @@
  context
 +deleteAuditEvent()
 +truncateAudit()
@@ -87,6 +87,123 @@ describe("Shape authoring assistant", () => {
         path: "src/audit/purge.ts",
         startLine: 11,
         endLine: 12
+      }
+    ]);
+  });
+
+  test("extracts stable evidence spans from multiple hunks in the same file", () => {
+    const diff = `diff --git a/src/audit/purge.ts b/src/audit/purge.ts
+--- a/src/audit/purge.ts
++++ b/src/audit/purge.ts
+@@ -2,2 +2,4 @@
+ context
++deleteAuditEvent()
++truncateAudit()
+ unchanged
+@@ -20,2 +22,3 @@
+ context
++dropAuditTable()
+ unchanged
+`;
+
+    expect(extractEvidenceSpansFromUnifiedDiff(diff)).toEqual([
+      {
+        language: "ts",
+        path: "src/audit/purge.ts",
+        startLine: 3,
+        endLine: 4
+      },
+      {
+        language: "ts",
+        path: "src/audit/purge.ts",
+        startLine: 23,
+        endLine: 23
+      }
+    ]);
+  });
+
+  test("uses new-file line numbers for addition-only hunks", () => {
+    const spans =
+      extractEvidenceSpansFromUnifiedDiff(`diff --git a/src/audit/events.sql b/src/audit/events.sql
+new file mode 100644
+--- /dev/null
++++ b/src/audit/events.sql
+@@ -0,0 +1,3 @@
++DELETE FROM audit_events;
++
++SELECT 1;
+`);
+
+    expect(spans).toEqual([
+      {
+        language: "sql",
+        path: "src/audit/events.sql",
+        startLine: 1,
+        endLine: 3
+      }
+    ]);
+  });
+
+  test("coalesces additions that are adjacent in the new file", () => {
+    const spans =
+      extractEvidenceSpansFromUnifiedDiff(`diff --git a/src/audit/purge.ts b/src/audit/purge.ts
+--- a/src/audit/purge.ts
++++ b/src/audit/purge.ts
+@@ -5,2 +5,3 @@
++firstReplacement()
+-removedBetweenAdditions()
++secondReplacement()
+ context
+`);
+
+    expect(spans).toEqual([
+      {
+        language: "ts",
+        path: "src/audit/purge.ts",
+        startLine: 5,
+        endLine: 6
+      }
+    ]);
+  });
+
+  test("does not count no-newline markers as new-file lines", () => {
+    const spans =
+      extractEvidenceSpansFromUnifiedDiff(`diff --git a/src/audit/purge.ts b/src/audit/purge.ts
+--- a/src/audit/purge.ts
++++ b/src/audit/purge.ts
+@@ -1 +1 @@
+-oldCall()
+\\ No newline at end of file
++newCall()
+\\ No newline at end of file
+`);
+
+    expect(spans).toEqual([
+      {
+        language: "ts",
+        path: "src/audit/purge.ts",
+        startLine: 1,
+        endLine: 1
+      }
+    ]);
+  });
+
+  test("treats header-like added content as hunk content", () => {
+    const spans =
+      extractEvidenceSpansFromUnifiedDiff(`diff --git a/src/audit/purge.ts b/src/audit/purge.ts
+--- a/src/audit/purge.ts
++++ b/src/audit/purge.ts
+@@ -1 +1 @@
+-oldCall()
++++ b/not-a-file-header.ts
+`);
+
+    expect(spans).toEqual([
+      {
+        language: "ts",
+        path: "src/audit/purge.ts",
+        startLine: 1,
+        endLine: 1
       }
     ]);
   });
