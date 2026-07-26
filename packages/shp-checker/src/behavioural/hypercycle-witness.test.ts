@@ -4,7 +4,7 @@
 // DETERMINISTIC witness path — a concrete closed walk through the hypergraph,
 // over only the kinds the rule names — so the rejected structural relation is
 // understandable, not just "a cycle exists somewhere". See
-// shape/checker.shape:389 HypercycleWitness ("deterministic witness path") and
+// shape/checker.shape HypercycleWitness ("deterministic witness path") and
 // docs-site/.../concepts/relations-hypergraphs.md (relation kinds + cycle
 // traversal).
 //
@@ -21,8 +21,7 @@ import {
   findDiagnostic,
   lockedIntended,
   requireDiagnostic,
-  requireNoDiagnostic,
-  shouldBe
+  requireNoDiagnostic
 } from "./harness.ts";
 
 const repoRoot = resolve(import.meta.dir, "../../../..");
@@ -56,7 +55,7 @@ describe("#59 hypercycle witness correctness, determinism, multi-kind filtering"
   test(
     lockedIntended(
       "hypercycle_calls yields the exact closed single-kind witness, identically on repeated runs",
-      "shape/checker.shape:389 HypercycleWitness (deterministic witness path)"
+      "shape/checker.shape HypercycleWitness (deterministic witness path)"
     ),
     async () => {
       const path = fixture("fixtures/fail/hypercycle_calls/deps.shape");
@@ -136,7 +135,7 @@ describe("#59 hypercycle witness correctness, determinism, multi-kind filtering"
   test(
     lockedIntended(
       "restricting the rule to a single kind that cannot close the cycle reports NO hypercycle",
-      "shape/checker.shape:389 HypercycleWitness; relations-hypergraphs.md (kind-induced subgraph)"
+      "shape/checker.shape HypercycleWitness; relations-hypergraphs.md (kind-induced subgraph)"
     ),
     () => {
       // Same topology as hypercycle_coordinated, but the rule now ranges over
@@ -264,22 +263,18 @@ describe("#59 hypercycle witness correctness, determinism, multi-kind filtering"
     }
   );
 
-  // INVARIANT 3 — MINIMALITY.
+  // INVARIANT 3 — SHORTEST CYCLE SELECTION.
   //
   // The cyc_nested_minimal fixture contains two cycles over `calls`: an outer
   // 3-cycle (Entry -> Mid -> Tail -> Entry) and an inner 2-cycle
-  // (Mid -> Spur -> Mid). The minimal closeable cycle is the 2-cycle
-  // { Mid, Spur }. We pin the law we CAN guarantee today (the witness is a
-  // valid cycle over `calls`) as locked-intended, and document the unmet ideal
-  // (it should be MINIMAL) as a should-be `test.todo` so the gap is visible and
-  // tracked rather than silently crystallised. The current DFS-first search
-  // returns the 3-cycle.
+  // (Mid -> Spur -> Mid). The SCC-backed search must report the shorter inner
+  // cycle while retaining the general structural-validity invariant.
   const CALLS_ONLY = new Set(["calls"]);
 
   test(
     lockedIntended(
-      "cyc_nested_minimal yields a structurally valid closed witness over calls",
-      "shape/checker.shape:389 HypercycleWitness (deterministic witness path)"
+      "cyc_nested_minimal witness is the shortest (inner 2-cycle) over calls",
+      "issue #21 SCC-based detection; shape/checker.shape HypercycleWitness"
     ),
     async () => {
       const result = await checkShapeFiles([
@@ -289,46 +284,54 @@ describe("#59 hypercycle witness correctness, determinism, multi-kind filtering"
 
       expect(diagnostic.rule).toBe("deps::no_calls_cycle");
       assertValidWitnessOverKinds(diagnostic, CALLS_ONLY);
-
-      // The reported witness must be one of the two actual cycles in the
-      // fixture — not an invented walk. The edge-name set identifies which.
-      const edgeNames = new Set(diagnostic.hyperedges.map((edge) => edge.name));
-      const outerThreeCycle = new Set([
-        "deps::EntryCallsMid",
-        "deps::MidCallsTail",
-        "deps::TailCallsEntry"
-      ]);
-      const innerTwoCycle = new Set(["deps::MidCallsSpur", "deps::SpurCallsMid"]);
-      const isOuter = edgeNames.size === 3 && [...outerThreeCycle].every((n) => edgeNames.has(n));
-      const isInner = edgeNames.size === 2 && [...innerTwoCycle].every((n) => edgeNames.has(n));
-      expect(isOuter || isInner).toBe(true);
-    }
-  );
-
-  // should-be: the witness ought to be the SMALLEST cycle (the inner 2-cycle),
-  // so the reviewer sees the tightest structural relation. The current
-  // DFS-first search does not minimise; an SCC/shortest-cycle search would.
-  // Tracked by issue #21 (Replace ad hoc cycle search with SCC-based
-  // detection). Marked todo so the unmet ideal is recorded without breaking the
-  // green suite; promote to a live `test` once #21 lands.
-  test.todo(
-    shouldBe(
-      "cyc_nested_minimal witness is the minimal (inner 2-cycle) over calls",
-      "issue #21 SCC-based detection; shape/checker.shape:389 HypercycleWitness"
-    ),
-    async () => {
-      const result = await checkShapeFiles([
-        fixture("fixtures/fail/cyc_nested_minimal/deps.shape")
-      ]);
-      const diagnostic = requireDiagnostic(result, "forbidden_hypercycle");
-      // The minimal cycle uses exactly the inner two edges; the outer 3-cycle
-      // is a non-minimal alternative the current search returns instead.
       expect(diagnostic.hyperedges.map((edge) => edge.name).sort()).toEqual([
         "deps::MidCallsSpur",
         "deps::SpurCallsMid"
       ]);
-      // Two distinct vertices + closing repeat.
+      expect(diagnostic.vertices).toEqual(["deps::Mid", "deps::Spur", "deps::Mid"]);
       expect(diagnostic.vertices).toHaveLength(3);
+    }
+  );
+
+  test(
+    lockedIntended(
+      "equal-length cyclic SCCs yield the canonical witness regardless of relation order",
+      "issue #21 canonical filtered graph and SCC-based detection"
+    ),
+    () => {
+      const relations = [
+        "relation ACallsB {\n  kind calls\n  connects A -> B\n}",
+        "relation BCallsA {\n  kind calls\n  connects B -> A\n}",
+        "relation XCallsY {\n  kind calls\n  connects X -> Y\n}",
+        "relation YCallsX {\n  kind calls\n  connects Y -> X\n}"
+      ];
+      const sourceWith = (relationBlocks: string[]): string =>
+        [
+          "module deps",
+          "component A {\n}",
+          "component B {\n}",
+          "component X {\n}",
+          "component Y {\n}",
+          ...relationBlocks,
+          "rule no_calls_cycle {\n  forbid hypercycle over calls\n}"
+        ].join("\n\n");
+
+      const declared = requireDiagnostic(
+        checkSource(sourceWith(relations)),
+        "forbidden_hypercycle"
+      );
+      const reversed = requireDiagnostic(
+        checkSource(sourceWith([...relations].reverse())),
+        "forbidden_hypercycle"
+      );
+
+      expect(declared.vertices).toEqual(["deps::A", "deps::B", "deps::A"]);
+      expect(declared.hyperedges.map((edge) => edge.name)).toEqual([
+        "deps::ACallsB",
+        "deps::BCallsA"
+      ]);
+      expect(reversed.vertices).toEqual(declared.vertices);
+      expect(reversed.hyperedges).toEqual(declared.hyperedges);
     }
   );
 
