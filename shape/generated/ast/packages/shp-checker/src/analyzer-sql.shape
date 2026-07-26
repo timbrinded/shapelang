@@ -1,0 +1,177 @@
+module shape.generated.ast.packages.shp_checker.src.analyzer_sql
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource AnalyzerSqlModuleIsBareSqlKeywordAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer-sql.ts#isBareSqlKeyword")
+  fingerprint ast.semantic_subtree_v1("sha256:e86bca41dca9db73bd69c124addc82847e14f93f7268a477ab3b66c08017e4d0")
+}
+
+resource AnalyzerSqlModuleReadDeleteTargetsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer-sql.ts#readDeleteTargets")
+  fingerprint ast.semantic_subtree_v1("sha256:0de5e682f963a5cc98397a66ae52ef0e920e0b0075da72507bc7e202d2c5cb35")
+}
+
+resource AnalyzerSqlModuleReadDropTargetsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer-sql.ts#readDropTargets")
+  fingerprint ast.semantic_subtree_v1("sha256:521f73f7c85781cc02607e3d334c3689a81a0f420de2202f4535bd8424546429")
+}
+
+resource AnalyzerSqlModuleReadSqlIdentifierSegmentAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer-sql.ts#readSqlIdentifierSegment")
+  fingerprint ast.semantic_subtree_v1("sha256:94d1210064630f9d985daa53a1eabe2368ac13f1463719c1c87bf825d3e6cb74")
+}
+
+resource AnalyzerSqlModuleReadSqlTargetAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer-sql.ts#readSqlTarget")
+  fingerprint ast.semantic_subtree_v1("sha256:bc10272fc5dce492e2e136c8a719fee38085efda88207f80c265f3112c10789b")
+}
+
+resource AnalyzerSqlModuleReadSqlTargetListAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer-sql.ts#readSqlTargetList")
+  fingerprint ast.semantic_subtree_v1("sha256:552f1f88dd406abafdaa74464292a1f867f2f26da3a68727ee8ae516775651ec")
+}
+
+resource AnalyzerSqlModuleReadTruncateTargetsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer-sql.ts#readTruncateTargets")
+  fingerprint ast.semantic_subtree_v1("sha256:785f53c6ca1aed733c043e5f3dd248fdb4cdda4ff019810dabdae642a57402a9")
+}
+
+resource AnalyzerSqlModuleScanDestructiveSqlAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer-sql.ts#scanDestructiveSql")
+  fingerprint ast.semantic_subtree_v1("sha256:ca4ce510a6150a04261d8b87b0a9bcdef85cb72695c90816cafb1aecf5357e87")
+}
+
+resource AnalyzerSqlModuleSqlMatchesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer-sql.ts#sqlMatches")
+  fingerprint ast.semantic_subtree_v1("sha256:f46b097c9f8620289fd91deb3b1fd6cf12990acbfdeda5ba90ab77c54cc989b4")
+}
+
+resource AnalyzerSqlModuleSqlStatementEvidenceSpanAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer-sql.ts#sqlStatementEvidenceSpan")
+  fingerprint ast.semantic_subtree_v1("sha256:ffbd9b25acd71226af4d5868e42cc4ba7a0f63b64459304fb1e290dde3d77014")
+}
+
+component AnalyzerSqlModule : GeneratedCandidate {
+  fn isBareSqlKeyword
+    source ts("packages/shp-checker/src/analyzer-sql.ts#isBareSqlKeyword")
+    effects unknown
+  fn readDeleteTargets
+    source ts("packages/shp-checker/src/analyzer-sql.ts#readDeleteTargets")
+    effects unknown
+  fn readDropTargets
+    source ts("packages/shp-checker/src/analyzer-sql.ts#readDropTargets")
+    effects unknown
+  fn readSqlIdentifierSegment
+    source ts("packages/shp-checker/src/analyzer-sql.ts#readSqlIdentifierSegment")
+    effects unknown
+  fn readSqlTarget
+    source ts("packages/shp-checker/src/analyzer-sql.ts#readSqlTarget")
+    effects unknown
+  fn readSqlTargetList
+    source ts("packages/shp-checker/src/analyzer-sql.ts#readSqlTargetList")
+    effects unknown
+  fn readTruncateTargets
+    source ts("packages/shp-checker/src/analyzer-sql.ts#readTruncateTargets")
+    effects unknown
+  fn scanDestructiveSql
+    source ts("packages/shp-checker/src/analyzer-sql.ts#scanDestructiveSql")
+    effects unknown
+  fn sqlMatches
+    source ts("packages/shp-checker/src/analyzer-sql.ts#sqlMatches")
+    effects unknown
+  fn sqlStatementEvidenceSpan
+    source ts("packages/shp-checker/src/analyzer-sql.ts#sqlStatementEvidenceSpan")
+    effects unknown
+}
+
+relation AnalyzerSqlModuleIsBareSqlKeywordGeneratedFromAnalyzerSqlModuleIsBareSqlKeywordAstAnchor {
+  kind generated_from
+  connects AnalyzerSqlModule -> AnalyzerSqlModuleIsBareSqlKeywordAstAnchor
+  roles { AnalyzerSqlModule as generated, AnalyzerSqlModuleIsBareSqlKeywordAstAnchor as syntax }
+  expects AnalyzerSqlModuleIsBareSqlKeywordAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e86bca41dca9db73bd69c124addc82847e14f93f7268a477ab3b66c08017e4d0")
+  summary "fn AnalyzerSqlModule.isBareSqlKeyword generated from typescript function_declaration at packages/shp-checker/src/analyzer-sql.ts#isBareSqlKeyword."
+}
+
+relation AnalyzerSqlModuleReadDeleteTargetsGeneratedFromAnalyzerSqlModuleReadDeleteTargetsAstAnchor {
+  kind generated_from
+  connects AnalyzerSqlModule -> AnalyzerSqlModuleReadDeleteTargetsAstAnchor
+  roles { AnalyzerSqlModule as generated, AnalyzerSqlModuleReadDeleteTargetsAstAnchor as syntax }
+  expects AnalyzerSqlModuleReadDeleteTargetsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0de5e682f963a5cc98397a66ae52ef0e920e0b0075da72507bc7e202d2c5cb35")
+  summary "fn AnalyzerSqlModule.readDeleteTargets generated from typescript function_declaration at packages/shp-checker/src/analyzer-sql.ts#readDeleteTargets."
+}
+
+relation AnalyzerSqlModuleReadDropTargetsGeneratedFromAnalyzerSqlModuleReadDropTargetsAstAnchor {
+  kind generated_from
+  connects AnalyzerSqlModule -> AnalyzerSqlModuleReadDropTargetsAstAnchor
+  roles { AnalyzerSqlModule as generated, AnalyzerSqlModuleReadDropTargetsAstAnchor as syntax }
+  expects AnalyzerSqlModuleReadDropTargetsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:521f73f7c85781cc02607e3d334c3689a81a0f420de2202f4535bd8424546429")
+  summary "fn AnalyzerSqlModule.readDropTargets generated from typescript function_declaration at packages/shp-checker/src/analyzer-sql.ts#readDropTargets."
+}
+
+relation AnalyzerSqlModuleReadSqlIdentifierSegmentGeneratedFromAnalyzerSqlModuleReadSqlIdentifierSegmentAstAnchor {
+  kind generated_from
+  connects AnalyzerSqlModule -> AnalyzerSqlModuleReadSqlIdentifierSegmentAstAnchor
+  roles { AnalyzerSqlModule as generated, AnalyzerSqlModuleReadSqlIdentifierSegmentAstAnchor as syntax }
+  expects AnalyzerSqlModuleReadSqlIdentifierSegmentAstAnchor fingerprint ast.semantic_subtree_v1("sha256:94d1210064630f9d985daa53a1eabe2368ac13f1463719c1c87bf825d3e6cb74")
+  summary "fn AnalyzerSqlModule.readSqlIdentifierSegment generated from typescript function_declaration at packages/shp-checker/src/analyzer-sql.ts#readSqlIdentifierSegment."
+}
+
+relation AnalyzerSqlModuleReadSqlTargetGeneratedFromAnalyzerSqlModuleReadSqlTargetAstAnchor {
+  kind generated_from
+  connects AnalyzerSqlModule -> AnalyzerSqlModuleReadSqlTargetAstAnchor
+  roles { AnalyzerSqlModule as generated, AnalyzerSqlModuleReadSqlTargetAstAnchor as syntax }
+  expects AnalyzerSqlModuleReadSqlTargetAstAnchor fingerprint ast.semantic_subtree_v1("sha256:bc10272fc5dce492e2e136c8a719fee38085efda88207f80c265f3112c10789b")
+  summary "fn AnalyzerSqlModule.readSqlTarget generated from typescript function_declaration at packages/shp-checker/src/analyzer-sql.ts#readSqlTarget."
+}
+
+relation AnalyzerSqlModuleReadSqlTargetListGeneratedFromAnalyzerSqlModuleReadSqlTargetListAstAnchor {
+  kind generated_from
+  connects AnalyzerSqlModule -> AnalyzerSqlModuleReadSqlTargetListAstAnchor
+  roles { AnalyzerSqlModule as generated, AnalyzerSqlModuleReadSqlTargetListAstAnchor as syntax }
+  expects AnalyzerSqlModuleReadSqlTargetListAstAnchor fingerprint ast.semantic_subtree_v1("sha256:552f1f88dd406abafdaa74464292a1f867f2f26da3a68727ee8ae516775651ec")
+  summary "fn AnalyzerSqlModule.readSqlTargetList generated from typescript function_declaration at packages/shp-checker/src/analyzer-sql.ts#readSqlTargetList."
+}
+
+relation AnalyzerSqlModuleReadTruncateTargetsGeneratedFromAnalyzerSqlModuleReadTruncateTargetsAstAnchor {
+  kind generated_from
+  connects AnalyzerSqlModule -> AnalyzerSqlModuleReadTruncateTargetsAstAnchor
+  roles { AnalyzerSqlModule as generated, AnalyzerSqlModuleReadTruncateTargetsAstAnchor as syntax }
+  expects AnalyzerSqlModuleReadTruncateTargetsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:785f53c6ca1aed733c043e5f3dd248fdb4cdda4ff019810dabdae642a57402a9")
+  summary "fn AnalyzerSqlModule.readTruncateTargets generated from typescript function_declaration at packages/shp-checker/src/analyzer-sql.ts#readTruncateTargets."
+}
+
+relation AnalyzerSqlModuleScanDestructiveSqlGeneratedFromAnalyzerSqlModuleScanDestructiveSqlAstAnchor {
+  kind generated_from
+  connects AnalyzerSqlModule -> AnalyzerSqlModuleScanDestructiveSqlAstAnchor
+  roles { AnalyzerSqlModule as generated, AnalyzerSqlModuleScanDestructiveSqlAstAnchor as syntax }
+  expects AnalyzerSqlModuleScanDestructiveSqlAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ca4ce510a6150a04261d8b87b0a9bcdef85cb72695c90816cafb1aecf5357e87")
+  summary "fn AnalyzerSqlModule.scanDestructiveSql generated from typescript function_declaration at packages/shp-checker/src/analyzer-sql.ts#scanDestructiveSql."
+}
+
+relation AnalyzerSqlModuleSqlMatchesGeneratedFromAnalyzerSqlModuleSqlMatchesAstAnchor {
+  kind generated_from
+  connects AnalyzerSqlModule -> AnalyzerSqlModuleSqlMatchesAstAnchor
+  roles { AnalyzerSqlModule as generated, AnalyzerSqlModuleSqlMatchesAstAnchor as syntax }
+  expects AnalyzerSqlModuleSqlMatchesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f46b097c9f8620289fd91deb3b1fd6cf12990acbfdeda5ba90ab77c54cc989b4")
+  summary "fn AnalyzerSqlModule.sqlMatches generated from typescript function_declaration at packages/shp-checker/src/analyzer-sql.ts#sqlMatches."
+}
+
+relation AnalyzerSqlModuleSqlStatementEvidenceSpanGeneratedFromAnalyzerSqlModuleSqlStatementEvidenceSpanAstAnchor {
+  kind generated_from
+  connects AnalyzerSqlModule -> AnalyzerSqlModuleSqlStatementEvidenceSpanAstAnchor
+  roles { AnalyzerSqlModule as generated, AnalyzerSqlModuleSqlStatementEvidenceSpanAstAnchor as syntax }
+  expects AnalyzerSqlModuleSqlStatementEvidenceSpanAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ffbd9b25acd71226af4d5868e42cc4ba7a0f63b64459304fb1e290dde3d77014")
+  summary "fn AnalyzerSqlModule.sqlStatementEvidenceSpan generated from typescript function_declaration at packages/shp-checker/src/analyzer-sql.ts#sqlStatementEvidenceSpan."
+}
+
+implementation AnalyzerSqlModuleImpl {
+  paths {
+    "packages/shp-checker/src/analyzer-sql.ts"
+  }
+  conforms_to AnalyzerSqlModule
+}

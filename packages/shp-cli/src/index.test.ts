@@ -748,6 +748,29 @@ describe("shp CLI", () => {
     expect(warnings.stderr).toMatchSnapshot();
   });
 
+  test("distinguishes matching storage aliases from analyzer target mismatches", async () => {
+    const sourcePath = "fixtures/source/analyzer/sql/destructive.sql";
+    const matching = await runCli([
+      "analyze",
+      "--shape-files",
+      "fixtures/source/analyzer/declared-targets.shape",
+      sourcePath
+    ]);
+    expect(matching.exitCode).toBe(0);
+    expect(matching.stdout).toBe("Shape analyzer found no mismatches.\n");
+    expect(matching.stderr).toBe("");
+
+    const mismatch = await runCli([
+      "analyze",
+      "--shape-files",
+      "fixtures/source/analyzer/mismatched-targets.shape",
+      sourcePath
+    ]);
+    expect(mismatch.exitCode).toBe(1);
+    expect(mismatch.stdout).toBe("");
+    expect(mismatch.stderr).toMatchSnapshot();
+  });
+
   test("scans multiline SQL while keeping comments and quoted examples silent", async () => {
     const destructive = await runCli(["analyze", "fixtures/source/analyzer/sql/destructive.sql"]);
     expect(destructive.exitCode).toBe(0);

@@ -1,0 +1,321 @@
+module shape.generated.ast.packages.shp_checker.src.analyzer_lexical
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource AnalyzerLexicalModuleAddMaskedRegionAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer-lexical.ts#addMaskedRegion")
+  fingerprint ast.semantic_subtree_v1("sha256:e76e52d3b0f5ebbfebb011c968fedf1bca6da9e7e45ec3c734799229c8f7a11d")
+}
+
+resource AnalyzerLexicalModuleConsumeBlockCommentAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer-lexical.ts#consumeBlockComment")
+  fingerprint ast.semantic_subtree_v1("sha256:9b55230c3b0073178ab7f1425cc9b651679c3558e90562b489d283e84764a29d")
+}
+
+resource AnalyzerLexicalModuleConsumeBracketIdentifierAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer-lexical.ts#consumeBracketIdentifier")
+  fingerprint ast.semantic_subtree_v1("sha256:a1be57e0c12c8e2eb38dbe48c628abb3a9d894faa6afee491a230e17af275f92")
+}
+
+resource AnalyzerLexicalModuleConsumeDollarQuotedAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer-lexical.ts#consumeDollarQuoted")
+  fingerprint ast.semantic_subtree_v1("sha256:580af7965670a39e66b3e091e10ccbc512a633bde0aa3c57b8c1a0683673c7ed")
+}
+
+resource AnalyzerLexicalModuleConsumeLineCommentAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer-lexical.ts#consumeLineComment")
+  fingerprint ast.semantic_subtree_v1("sha256:196aecc254b99ef6a1bd5dcfa9b88b7c8abfe9b4e5aaaa52eaea84ab08b24fa7")
+}
+
+resource AnalyzerLexicalModuleConsumeQuotedAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer-lexical.ts#consumeQuoted")
+  fingerprint ast.semantic_subtree_v1("sha256:2a5c592a1dfffcc4d53a0116b7bead90d1029266b1f22c98796242141df1e13d")
+}
+
+resource AnalyzerLexicalModuleConsumeTemplateAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer-lexical.ts#consumeTemplate")
+  fingerprint ast.semantic_subtree_v1("sha256:86552af7e8be1731a4feaf6e4148c8d24da1e5e7fe3992873c462a794dfc4e19")
+}
+
+resource AnalyzerLexicalModuleIsHorizontalWhitespaceAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer-lexical.ts#isHorizontalWhitespace")
+  fingerprint ast.semantic_subtree_v1("sha256:4e443cf33732cadb25d3705cff1aedba506a06ad44be00eae541232502580f27")
+}
+
+resource AnalyzerLexicalModuleIsIdentifierPartAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer-lexical.ts#isIdentifierPart")
+  fingerprint ast.semantic_subtree_v1("sha256:5541a31fb817f2ed756e9e15eee587f2b7a8305dbdefc524f2cf3ca998efa48c")
+}
+
+resource AnalyzerLexicalModuleIsIdentifierStartAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer-lexical.ts#isIdentifierStart")
+  fingerprint ast.semantic_subtree_v1("sha256:aa24edf68012e84bae6a3eb8c99247f6a8c048455f529a967cb14a8b993a114c")
+}
+
+resource AnalyzerLexicalModuleIsWhitespaceAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer-lexical.ts#isWhitespace")
+  fingerprint ast.semantic_subtree_v1("sha256:ae86ed504bfec5d9a93f2c963888661622d3488f29083cb7e0d5847b86ac3810")
+}
+
+resource AnalyzerLexicalModuleLiteralAtAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer-lexical.ts#literalAt")
+  fingerprint ast.semantic_subtree_v1("sha256:3deffd089034aa69edb92a259d9578f32df95091d4cfc2e5562ac7d4099c0cff")
+}
+
+resource AnalyzerLexicalModuleNormalizeStaticTargetAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer-lexical.ts#normalizeStaticTarget")
+  fingerprint ast.semantic_subtree_v1("sha256:101fce3bc0f68865aee62f5d1d4623ce73278b75557f99f22196967543a261d6")
+}
+
+resource AnalyzerLexicalModuleReadDollarQuoteDelimiterAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer-lexical.ts#readDollarQuoteDelimiter")
+  fingerprint ast.semantic_subtree_v1("sha256:2e42b212be01556c50a51ad471e19dc0aba9638a7b4914ac0b3070243ec3394c")
+}
+
+resource AnalyzerLexicalModuleReadUnquotedIdentifierAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer-lexical.ts#readUnquotedIdentifier")
+  fingerprint ast.semantic_subtree_v1("sha256:1ac29fd47d0891edd79eb025ddbb862a5d45e128f5c83ee94e9335c8126687b6")
+}
+
+resource AnalyzerLexicalModuleScanLexicalRegionsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer-lexical.ts#scanLexicalRegions")
+  fingerprint ast.semantic_subtree_v1("sha256:2c53241c377f1ec12c6e38a923ee2287d0009ab900c503ac51ba1351694636c8")
+}
+
+resource AnalyzerLexicalModuleShiftSpanAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer-lexical.ts#shiftSpan")
+  fingerprint ast.semantic_subtree_v1("sha256:ba12cd4565f018f196aff560144780cdce9ce866c0ab6a9d69eb524797fb00ca")
+}
+
+resource AnalyzerLexicalModuleSkipTriviaAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer-lexical.ts#skipTrivia")
+  fingerprint ast.semantic_subtree_v1("sha256:fdaab725857853c00385de04f69b856578a8f62af8465a6d2bad35147f9de272")
+}
+
+resource AnalyzerLexicalModuleTrimHorizontalWhitespaceAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer-lexical.ts#trimHorizontalWhitespace")
+  fingerprint ast.semantic_subtree_v1("sha256:e4af5c2d6ffff6a43e13e193b0776d0e54e0b2f1b71282b9e27c35c4fab31130")
+}
+
+component AnalyzerLexicalModule : GeneratedCandidate {
+  fn addMaskedRegion
+    source ts("packages/shp-checker/src/analyzer-lexical.ts#addMaskedRegion")
+    effects unknown
+  fn consumeBlockComment
+    source ts("packages/shp-checker/src/analyzer-lexical.ts#consumeBlockComment")
+    effects unknown
+  fn consumeBracketIdentifier
+    source ts("packages/shp-checker/src/analyzer-lexical.ts#consumeBracketIdentifier")
+    effects unknown
+  fn consumeDollarQuoted
+    source ts("packages/shp-checker/src/analyzer-lexical.ts#consumeDollarQuoted")
+    effects unknown
+  fn consumeLineComment
+    source ts("packages/shp-checker/src/analyzer-lexical.ts#consumeLineComment")
+    effects unknown
+  fn consumeQuoted
+    source ts("packages/shp-checker/src/analyzer-lexical.ts#consumeQuoted")
+    effects unknown
+  fn consumeTemplate
+    source ts("packages/shp-checker/src/analyzer-lexical.ts#consumeTemplate")
+    effects unknown
+  fn isHorizontalWhitespace
+    source ts("packages/shp-checker/src/analyzer-lexical.ts#isHorizontalWhitespace")
+    effects unknown
+  fn isIdentifierPart
+    source ts("packages/shp-checker/src/analyzer-lexical.ts#isIdentifierPart")
+    effects unknown
+  fn isIdentifierStart
+    source ts("packages/shp-checker/src/analyzer-lexical.ts#isIdentifierStart")
+    effects unknown
+  fn isWhitespace
+    source ts("packages/shp-checker/src/analyzer-lexical.ts#isWhitespace")
+    effects unknown
+  fn literalAt
+    source ts("packages/shp-checker/src/analyzer-lexical.ts#literalAt")
+    effects unknown
+  fn normalizeStaticTarget
+    source ts("packages/shp-checker/src/analyzer-lexical.ts#normalizeStaticTarget")
+    effects unknown
+  fn readDollarQuoteDelimiter
+    source ts("packages/shp-checker/src/analyzer-lexical.ts#readDollarQuoteDelimiter")
+    effects unknown
+  fn readUnquotedIdentifier
+    source ts("packages/shp-checker/src/analyzer-lexical.ts#readUnquotedIdentifier")
+    effects unknown
+  fn scanLexicalRegions
+    source ts("packages/shp-checker/src/analyzer-lexical.ts#scanLexicalRegions")
+    effects unknown
+  fn shiftSpan
+    source ts("packages/shp-checker/src/analyzer-lexical.ts#shiftSpan")
+    effects unknown
+  fn skipTrivia
+    source ts("packages/shp-checker/src/analyzer-lexical.ts#skipTrivia")
+    effects unknown
+  fn trimHorizontalWhitespace
+    source ts("packages/shp-checker/src/analyzer-lexical.ts#trimHorizontalWhitespace")
+    effects unknown
+}
+
+relation AnalyzerLexicalModuleAddMaskedRegionGeneratedFromAnalyzerLexicalModuleAddMaskedRegionAstAnchor {
+  kind generated_from
+  connects AnalyzerLexicalModule -> AnalyzerLexicalModuleAddMaskedRegionAstAnchor
+  roles { AnalyzerLexicalModule as generated, AnalyzerLexicalModuleAddMaskedRegionAstAnchor as syntax }
+  expects AnalyzerLexicalModuleAddMaskedRegionAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e76e52d3b0f5ebbfebb011c968fedf1bca6da9e7e45ec3c734799229c8f7a11d")
+  summary "fn AnalyzerLexicalModule.addMaskedRegion generated from typescript function_declaration at packages/shp-checker/src/analyzer-lexical.ts#addMaskedRegion."
+}
+
+relation AnalyzerLexicalModuleConsumeBlockCommentGeneratedFromAnalyzerLexicalModuleConsumeBlockCommentAstAnchor {
+  kind generated_from
+  connects AnalyzerLexicalModule -> AnalyzerLexicalModuleConsumeBlockCommentAstAnchor
+  roles { AnalyzerLexicalModule as generated, AnalyzerLexicalModuleConsumeBlockCommentAstAnchor as syntax }
+  expects AnalyzerLexicalModuleConsumeBlockCommentAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9b55230c3b0073178ab7f1425cc9b651679c3558e90562b489d283e84764a29d")
+  summary "fn AnalyzerLexicalModule.consumeBlockComment generated from typescript function_declaration at packages/shp-checker/src/analyzer-lexical.ts#consumeBlockComment."
+}
+
+relation AnalyzerLexicalModuleConsumeBracketIdentifierGeneratedFromAnalyzerLexicalModuleConsumeBracketIdentifierAstAnchor {
+  kind generated_from
+  connects AnalyzerLexicalModule -> AnalyzerLexicalModuleConsumeBracketIdentifierAstAnchor
+  roles { AnalyzerLexicalModule as generated, AnalyzerLexicalModuleConsumeBracketIdentifierAstAnchor as syntax }
+  expects AnalyzerLexicalModuleConsumeBracketIdentifierAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a1be57e0c12c8e2eb38dbe48c628abb3a9d894faa6afee491a230e17af275f92")
+  summary "fn AnalyzerLexicalModule.consumeBracketIdentifier generated from typescript function_declaration at packages/shp-checker/src/analyzer-lexical.ts#consumeBracketIdentifier."
+}
+
+relation AnalyzerLexicalModuleConsumeDollarQuotedGeneratedFromAnalyzerLexicalModuleConsumeDollarQuotedAstAnchor {
+  kind generated_from
+  connects AnalyzerLexicalModule -> AnalyzerLexicalModuleConsumeDollarQuotedAstAnchor
+  roles { AnalyzerLexicalModule as generated, AnalyzerLexicalModuleConsumeDollarQuotedAstAnchor as syntax }
+  expects AnalyzerLexicalModuleConsumeDollarQuotedAstAnchor fingerprint ast.semantic_subtree_v1("sha256:580af7965670a39e66b3e091e10ccbc512a633bde0aa3c57b8c1a0683673c7ed")
+  summary "fn AnalyzerLexicalModule.consumeDollarQuoted generated from typescript function_declaration at packages/shp-checker/src/analyzer-lexical.ts#consumeDollarQuoted."
+}
+
+relation AnalyzerLexicalModuleConsumeLineCommentGeneratedFromAnalyzerLexicalModuleConsumeLineCommentAstAnchor {
+  kind generated_from
+  connects AnalyzerLexicalModule -> AnalyzerLexicalModuleConsumeLineCommentAstAnchor
+  roles { AnalyzerLexicalModule as generated, AnalyzerLexicalModuleConsumeLineCommentAstAnchor as syntax }
+  expects AnalyzerLexicalModuleConsumeLineCommentAstAnchor fingerprint ast.semantic_subtree_v1("sha256:196aecc254b99ef6a1bd5dcfa9b88b7c8abfe9b4e5aaaa52eaea84ab08b24fa7")
+  summary "fn AnalyzerLexicalModule.consumeLineComment generated from typescript function_declaration at packages/shp-checker/src/analyzer-lexical.ts#consumeLineComment."
+}
+
+relation AnalyzerLexicalModuleConsumeQuotedGeneratedFromAnalyzerLexicalModuleConsumeQuotedAstAnchor {
+  kind generated_from
+  connects AnalyzerLexicalModule -> AnalyzerLexicalModuleConsumeQuotedAstAnchor
+  roles { AnalyzerLexicalModule as generated, AnalyzerLexicalModuleConsumeQuotedAstAnchor as syntax }
+  expects AnalyzerLexicalModuleConsumeQuotedAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2a5c592a1dfffcc4d53a0116b7bead90d1029266b1f22c98796242141df1e13d")
+  summary "fn AnalyzerLexicalModule.consumeQuoted generated from typescript function_declaration at packages/shp-checker/src/analyzer-lexical.ts#consumeQuoted."
+}
+
+relation AnalyzerLexicalModuleConsumeTemplateGeneratedFromAnalyzerLexicalModuleConsumeTemplateAstAnchor {
+  kind generated_from
+  connects AnalyzerLexicalModule -> AnalyzerLexicalModuleConsumeTemplateAstAnchor
+  roles { AnalyzerLexicalModule as generated, AnalyzerLexicalModuleConsumeTemplateAstAnchor as syntax }
+  expects AnalyzerLexicalModuleConsumeTemplateAstAnchor fingerprint ast.semantic_subtree_v1("sha256:86552af7e8be1731a4feaf6e4148c8d24da1e5e7fe3992873c462a794dfc4e19")
+  summary "fn AnalyzerLexicalModule.consumeTemplate generated from typescript function_declaration at packages/shp-checker/src/analyzer-lexical.ts#consumeTemplate."
+}
+
+relation AnalyzerLexicalModuleIsHorizontalWhitespaceGeneratedFromAnalyzerLexicalModuleIsHorizontalWhitespaceAstAnchor {
+  kind generated_from
+  connects AnalyzerLexicalModule -> AnalyzerLexicalModuleIsHorizontalWhitespaceAstAnchor
+  roles { AnalyzerLexicalModule as generated, AnalyzerLexicalModuleIsHorizontalWhitespaceAstAnchor as syntax }
+  expects AnalyzerLexicalModuleIsHorizontalWhitespaceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4e443cf33732cadb25d3705cff1aedba506a06ad44be00eae541232502580f27")
+  summary "fn AnalyzerLexicalModule.isHorizontalWhitespace generated from typescript function_declaration at packages/shp-checker/src/analyzer-lexical.ts#isHorizontalWhitespace."
+}
+
+relation AnalyzerLexicalModuleIsIdentifierPartGeneratedFromAnalyzerLexicalModuleIsIdentifierPartAstAnchor {
+  kind generated_from
+  connects AnalyzerLexicalModule -> AnalyzerLexicalModuleIsIdentifierPartAstAnchor
+  roles { AnalyzerLexicalModule as generated, AnalyzerLexicalModuleIsIdentifierPartAstAnchor as syntax }
+  expects AnalyzerLexicalModuleIsIdentifierPartAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5541a31fb817f2ed756e9e15eee587f2b7a8305dbdefc524f2cf3ca998efa48c")
+  summary "fn AnalyzerLexicalModule.isIdentifierPart generated from typescript function_declaration at packages/shp-checker/src/analyzer-lexical.ts#isIdentifierPart."
+}
+
+relation AnalyzerLexicalModuleIsIdentifierStartGeneratedFromAnalyzerLexicalModuleIsIdentifierStartAstAnchor {
+  kind generated_from
+  connects AnalyzerLexicalModule -> AnalyzerLexicalModuleIsIdentifierStartAstAnchor
+  roles { AnalyzerLexicalModule as generated, AnalyzerLexicalModuleIsIdentifierStartAstAnchor as syntax }
+  expects AnalyzerLexicalModuleIsIdentifierStartAstAnchor fingerprint ast.semantic_subtree_v1("sha256:aa24edf68012e84bae6a3eb8c99247f6a8c048455f529a967cb14a8b993a114c")
+  summary "fn AnalyzerLexicalModule.isIdentifierStart generated from typescript function_declaration at packages/shp-checker/src/analyzer-lexical.ts#isIdentifierStart."
+}
+
+relation AnalyzerLexicalModuleIsWhitespaceGeneratedFromAnalyzerLexicalModuleIsWhitespaceAstAnchor {
+  kind generated_from
+  connects AnalyzerLexicalModule -> AnalyzerLexicalModuleIsWhitespaceAstAnchor
+  roles { AnalyzerLexicalModule as generated, AnalyzerLexicalModuleIsWhitespaceAstAnchor as syntax }
+  expects AnalyzerLexicalModuleIsWhitespaceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ae86ed504bfec5d9a93f2c963888661622d3488f29083cb7e0d5847b86ac3810")
+  summary "fn AnalyzerLexicalModule.isWhitespace generated from typescript function_declaration at packages/shp-checker/src/analyzer-lexical.ts#isWhitespace."
+}
+
+relation AnalyzerLexicalModuleLiteralAtGeneratedFromAnalyzerLexicalModuleLiteralAtAstAnchor {
+  kind generated_from
+  connects AnalyzerLexicalModule -> AnalyzerLexicalModuleLiteralAtAstAnchor
+  roles { AnalyzerLexicalModule as generated, AnalyzerLexicalModuleLiteralAtAstAnchor as syntax }
+  expects AnalyzerLexicalModuleLiteralAtAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3deffd089034aa69edb92a259d9578f32df95091d4cfc2e5562ac7d4099c0cff")
+  summary "fn AnalyzerLexicalModule.literalAt generated from typescript function_declaration at packages/shp-checker/src/analyzer-lexical.ts#literalAt."
+}
+
+relation AnalyzerLexicalModuleNormalizeStaticTargetGeneratedFromAnalyzerLexicalModuleNormalizeStaticTargetAstAnchor {
+  kind generated_from
+  connects AnalyzerLexicalModule -> AnalyzerLexicalModuleNormalizeStaticTargetAstAnchor
+  roles { AnalyzerLexicalModule as generated, AnalyzerLexicalModuleNormalizeStaticTargetAstAnchor as syntax }
+  expects AnalyzerLexicalModuleNormalizeStaticTargetAstAnchor fingerprint ast.semantic_subtree_v1("sha256:101fce3bc0f68865aee62f5d1d4623ce73278b75557f99f22196967543a261d6")
+  summary "fn AnalyzerLexicalModule.normalizeStaticTarget generated from typescript function_declaration at packages/shp-checker/src/analyzer-lexical.ts#normalizeStaticTarget."
+}
+
+relation AnalyzerLexicalModuleReadDollarQuoteDelimiterGeneratedFromAnalyzerLexicalModuleReadDollarQuoteDelimiterAstAnchor {
+  kind generated_from
+  connects AnalyzerLexicalModule -> AnalyzerLexicalModuleReadDollarQuoteDelimiterAstAnchor
+  roles { AnalyzerLexicalModule as generated, AnalyzerLexicalModuleReadDollarQuoteDelimiterAstAnchor as syntax }
+  expects AnalyzerLexicalModuleReadDollarQuoteDelimiterAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2e42b212be01556c50a51ad471e19dc0aba9638a7b4914ac0b3070243ec3394c")
+  summary "fn AnalyzerLexicalModule.readDollarQuoteDelimiter generated from typescript function_declaration at packages/shp-checker/src/analyzer-lexical.ts#readDollarQuoteDelimiter."
+}
+
+relation AnalyzerLexicalModuleReadUnquotedIdentifierGeneratedFromAnalyzerLexicalModuleReadUnquotedIdentifierAstAnchor {
+  kind generated_from
+  connects AnalyzerLexicalModule -> AnalyzerLexicalModuleReadUnquotedIdentifierAstAnchor
+  roles { AnalyzerLexicalModule as generated, AnalyzerLexicalModuleReadUnquotedIdentifierAstAnchor as syntax }
+  expects AnalyzerLexicalModuleReadUnquotedIdentifierAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1ac29fd47d0891edd79eb025ddbb862a5d45e128f5c83ee94e9335c8126687b6")
+  summary "fn AnalyzerLexicalModule.readUnquotedIdentifier generated from typescript function_declaration at packages/shp-checker/src/analyzer-lexical.ts#readUnquotedIdentifier."
+}
+
+relation AnalyzerLexicalModuleScanLexicalRegionsGeneratedFromAnalyzerLexicalModuleScanLexicalRegionsAstAnchor {
+  kind generated_from
+  connects AnalyzerLexicalModule -> AnalyzerLexicalModuleScanLexicalRegionsAstAnchor
+  roles { AnalyzerLexicalModule as generated, AnalyzerLexicalModuleScanLexicalRegionsAstAnchor as syntax }
+  expects AnalyzerLexicalModuleScanLexicalRegionsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2c53241c377f1ec12c6e38a923ee2287d0009ab900c503ac51ba1351694636c8")
+  summary "fn AnalyzerLexicalModule.scanLexicalRegions generated from typescript function_declaration at packages/shp-checker/src/analyzer-lexical.ts#scanLexicalRegions."
+}
+
+relation AnalyzerLexicalModuleShiftSpanGeneratedFromAnalyzerLexicalModuleShiftSpanAstAnchor {
+  kind generated_from
+  connects AnalyzerLexicalModule -> AnalyzerLexicalModuleShiftSpanAstAnchor
+  roles { AnalyzerLexicalModule as generated, AnalyzerLexicalModuleShiftSpanAstAnchor as syntax }
+  expects AnalyzerLexicalModuleShiftSpanAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ba12cd4565f018f196aff560144780cdce9ce866c0ab6a9d69eb524797fb00ca")
+  summary "fn AnalyzerLexicalModule.shiftSpan generated from typescript function_declaration at packages/shp-checker/src/analyzer-lexical.ts#shiftSpan."
+}
+
+relation AnalyzerLexicalModuleSkipTriviaGeneratedFromAnalyzerLexicalModuleSkipTriviaAstAnchor {
+  kind generated_from
+  connects AnalyzerLexicalModule -> AnalyzerLexicalModuleSkipTriviaAstAnchor
+  roles { AnalyzerLexicalModule as generated, AnalyzerLexicalModuleSkipTriviaAstAnchor as syntax }
+  expects AnalyzerLexicalModuleSkipTriviaAstAnchor fingerprint ast.semantic_subtree_v1("sha256:fdaab725857853c00385de04f69b856578a8f62af8465a6d2bad35147f9de272")
+  summary "fn AnalyzerLexicalModule.skipTrivia generated from typescript function_declaration at packages/shp-checker/src/analyzer-lexical.ts#skipTrivia."
+}
+
+relation AnalyzerLexicalModuleTrimHorizontalWhitespaceGeneratedFromAnalyzerLexicalModuleTrimHorizontalWhitespaceAstAnchor {
+  kind generated_from
+  connects AnalyzerLexicalModule -> AnalyzerLexicalModuleTrimHorizontalWhitespaceAstAnchor
+  roles { AnalyzerLexicalModule as generated, AnalyzerLexicalModuleTrimHorizontalWhitespaceAstAnchor as syntax }
+  expects AnalyzerLexicalModuleTrimHorizontalWhitespaceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e4af5c2d6ffff6a43e13e193b0776d0e54e0b2f1b71282b9e27c35c4fab31130")
+  summary "fn AnalyzerLexicalModule.trimHorizontalWhitespace generated from typescript function_declaration at packages/shp-checker/src/analyzer-lexical.ts#trimHorizontalWhitespace."
+}
+
+implementation AnalyzerLexicalModuleImpl {
+  paths {
+    "packages/shp-checker/src/analyzer-lexical.ts"
+  }
+  conforms_to AnalyzerLexicalModule
+}

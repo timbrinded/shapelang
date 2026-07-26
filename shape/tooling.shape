@@ -6,6 +6,8 @@ import shape.language
 
 resource AnalyzerHint
 
+resource AnalyzerWarning
+
 resource AstAnchorFingerprint
 
 resource AuthoringPrompt
@@ -50,19 +52,37 @@ resource SystemClock
 
 component ShapeAnalyzer {
   owns AnalyzerHint
+  owns AnalyzerWarning
   grants Append<AnalyzerHint>
+  grants Append<AnalyzerWarning>
+  grants Read<AnalyzerHint>
   grants Read<LanguageSource>
   grants Read<NormalizedShapeReference>
   fn analyzeSourceText
     source ts("packages/shp-checker/src/analyzer.ts#analyzeSourceText")
-    description "Lexically emits advisory destructive-operation hints from multiline SQL and supported TypeScript persistence calls while excluding comments and inert string or template literals."
+    description "Lexically emits advisory destructive-operation hints with quote-aware direct static targets, one hint per supported SQL list target, and conservative balanced TypeScript function anchors while excluding comments, inert literals, malformed scopes, and dynamic target guesses."
     effects complete {
       Append<AnalyzerHint>
         evidence ts("packages/shp-checker/src/analyzer.ts")
       Read<LanguageSource>
         evidence ts("packages/shp-checker/src/analyzer.ts")
+      Read<LanguageSource>
+        evidence ts("packages/shp-checker/src/analyzer-lexical.ts")
+      Read<LanguageSource>
+        evidence ts("packages/shp-checker/src/analyzer-scopes.ts")
+      Read<LanguageSource>
+        evidence ts("packages/shp-checker/src/analyzer-sql.ts")
+    }
+  fn compareAnalyzerHintsToShape
+    source ts("packages/shp-checker/src/analyzer-shape.ts#compareAnalyzerHintsToShape")
+    description "Compares advisory hints against exact function-anchored or path-scoped complete Shape effects, preserving explicit SQL quote identity and reporting ambiguity instead of unioning divergent scoped targets."
+    effects complete {
+      Append<AnalyzerWarning>
+        evidence ts("packages/shp-checker/src/analyzer-shape.ts")
+      Read<AnalyzerHint>
+        evidence ts("packages/shp-checker/src/analyzer-shape.ts")
       Read<NormalizedShapeReference>
-        evidence ts("packages/shp-checker/src/analyzer.ts")
+        evidence ts("packages/shp-checker/src/analyzer-shape.ts")
     }
 }
 

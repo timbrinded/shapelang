@@ -7,18 +7,48 @@ exports[`Shape analyzer fixture corpus SQL destructive fixture snapshots hints 1
     "evidence": "DELETE\\n/* retention applies to the selected table */\\nFROM audit_events\\nWHERE created_at < CURRENT_TIMESTAMP;",
     "line": 1,
     "sourcePath": "fixtures/source/analyzer/sql/destructive.sql",
+    "target": "audit_events",
+    "targetIdentity": {
+      "kind": "sql",
+      "segments": [
+        {
+          "quoted": false,
+          "value": "audit_events",
+        },
+      ],
+    },
   },
   {
     "effect": "Truncate",
     "evidence": "TRUNCATE\\n-- the optional TABLE keyword may start on the next line\\nTABLE audit_event_staging;",
     "line": 5,
     "sourcePath": "fixtures/source/analyzer/sql/destructive.sql",
+    "target": "audit_event_staging",
+    "targetIdentity": {
+      "kind": "sql",
+      "segments": [
+        {
+          "quoted": false,
+          "value": "audit_event_staging",
+        },
+      ],
+    },
   },
   {
     "effect": "DropStorage",
     "evidence": "DROP\\n/* schema operation split across tokens */\\nTABLE audit_event_archive;",
     "line": 8,
     "sourcePath": "fixtures/source/analyzer/sql/destructive.sql",
+    "target": "audit_event_archive",
+    "targetIdentity": {
+      "kind": "sql",
+      "segments": [
+        {
+          "quoted": false,
+          "value": "audit_event_archive",
+        },
+      ],
+    },
   },
 ]
 `;
@@ -29,19 +59,42 @@ exports[`Shape analyzer fixture corpus Kysely destructive fixture snapshots hint
     "effect": "HardDelete",
     "evidence": "await db\\n    .deleteFrom("audit_events").execute();",
     "line": 6,
+    "sourceAnchor": "purgeAuditEvents",
     "sourcePath": "fixtures/source/analyzer/kysely/destructive.ts",
+    "target": "audit_events",
+    "targetIdentity": {
+      "kind": "orm",
+      "value": "audit_events",
+    },
   },
   {
     "effect": "DropStorage",
     "evidence": "await db.schema.dropTable("audit_event_archive").execute();",
     "line": 8,
+    "sourceAnchor": "purgeAuditEvents",
     "sourcePath": "fixtures/source/analyzer/kysely/destructive.ts",
+    "target": "audit_event_archive",
+    "targetIdentity": {
+      "kind": "orm",
+      "value": "audit_event_archive",
+    },
   },
   {
     "effect": "Truncate",
     "evidence": "await db.executeQuery(\`\\n    TRUNCATE\\n    TABLE audit_event_staging\\n  \`);",
     "line": 10,
+    "sourceAnchor": "purgeAuditEvents",
     "sourcePath": "fixtures/source/analyzer/kysely/destructive.ts",
+    "target": "audit_event_staging",
+    "targetIdentity": {
+      "kind": "sql",
+      "segments": [
+        {
+          "quoted": false,
+          "value": "audit_event_staging",
+        },
+      ],
+    },
   },
 ]
 `;
@@ -52,25 +105,59 @@ exports[`Shape analyzer fixture corpus Prisma destructive fixture snapshots hint
     "effect": "HardDelete",
     "evidence": "await prisma.auditEvent.delete({ where: { id: 1 } });",
     "line": 8,
+    "sourceAnchor": "purgeAuditEvents",
     "sourcePath": "fixtures/source/analyzer/prisma/destructive.ts",
+    "target": "auditEvent",
+    "targetIdentity": {
+      "kind": "orm",
+      "value": "auditEvent",
+    },
   },
   {
     "effect": "HardDelete",
     "evidence": "await prisma.auditEvent\\n    .deleteMany({ where: { expired: true } });",
     "line": 9,
+    "sourceAnchor": "purgeAuditEvents",
     "sourcePath": "fixtures/source/analyzer/prisma/destructive.ts",
+    "target": "auditEvent",
+    "targetIdentity": {
+      "kind": "orm",
+      "value": "auditEvent",
+    },
   },
   {
     "effect": "Truncate",
     "evidence": "await prisma.$executeRawUnsafe(\`\\n    TRUNCATE\\n    TABLE audit_event_staging\\n  \`);",
     "line": 12,
+    "sourceAnchor": "purgeAuditEvents",
     "sourcePath": "fixtures/source/analyzer/prisma/destructive.ts",
+    "target": "audit_event_staging",
+    "targetIdentity": {
+      "kind": "sql",
+      "segments": [
+        {
+          "quoted": false,
+          "value": "audit_event_staging",
+        },
+      ],
+    },
   },
   {
     "effect": "DropStorage",
     "evidence": "await prisma.$executeRawUnsafe("DROP TABLE audit_event_archive");",
     "line": 15,
+    "sourceAnchor": "purgeAuditEvents",
     "sourcePath": "fixtures/source/analyzer/prisma/destructive.ts",
+    "target": "audit_event_archive",
+    "targetIdentity": {
+      "kind": "sql",
+      "segments": [
+        {
+          "quoted": false,
+          "value": "audit_event_archive",
+        },
+      ],
+    },
   },
 ]
 `;
@@ -81,25 +168,59 @@ exports[`Shape analyzer fixture corpus Drizzle destructive fixture snapshots hin
     "effect": "HardDelete",
     "evidence": "await db.delete(auditEvents);",
     "line": 10,
+    "sourceAnchor": "purgeAuditEvents",
     "sourcePath": "fixtures/source/analyzer/drizzle/destructive.ts",
+    "target": "auditEvents",
+    "targetIdentity": {
+      "kind": "orm",
+      "value": "auditEvents",
+    },
   },
   {
     "effect": "HardDelete",
     "evidence": "await tx\\n    .delete(auditArchive);",
     "line": 11,
+    "sourceAnchor": "purgeAuditEvents",
     "sourcePath": "fixtures/source/analyzer/drizzle/destructive.ts",
+    "target": "auditArchive",
+    "targetIdentity": {
+      "kind": "orm",
+      "value": "auditArchive",
+    },
   },
   {
     "effect": "Truncate",
     "evidence": "await db.execute(\`\\n    TRUNCATE\\n    TABLE audit_event_staging\\n  \`);",
     "line": 14,
+    "sourceAnchor": "purgeAuditEvents",
     "sourcePath": "fixtures/source/analyzer/drizzle/destructive.ts",
+    "target": "audit_event_staging",
+    "targetIdentity": {
+      "kind": "sql",
+      "segments": [
+        {
+          "quoted": false,
+          "value": "audit_event_staging",
+        },
+      ],
+    },
   },
   {
     "effect": "DropStorage",
     "evidence": "await db.execute("DROP TABLE audit_event_archive");",
     "line": 17,
+    "sourceAnchor": "purgeAuditEvents",
     "sourcePath": "fixtures/source/analyzer/drizzle/destructive.ts",
+    "target": "audit_event_archive",
+    "targetIdentity": {
+      "kind": "sql",
+      "segments": [
+        {
+          "quoted": false,
+          "value": "audit_event_archive",
+        },
+      ],
+    },
   },
 ]
 `;

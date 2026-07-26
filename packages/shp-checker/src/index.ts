@@ -3,6 +3,8 @@ export {
   compareAnalyzerHintsToShape,
   formatAnalyzerWarnings,
   type AnalyzerHint,
+  type AnalyzerTargetIdentity,
+  type AnalyzerTargetSegment,
   type AnalyzerWarning
 } from "./analyzer.ts";
 export {
