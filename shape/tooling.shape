@@ -437,6 +437,8 @@ component ShpCli {
         evidence ts("packages/shp-cli/src/commands/analyze/impl.ts")
       Read<LanguageSource>
         evidence ts("packages/shp-cli/src/commands/ast/impl.ts")
+      Read<ShapeSource>
+        evidence ts("packages/shp-cli/src/commands/analyze/impl.ts")
       Read<SystemClock>
         evidence ts("packages/shp-cli/src/freshness.ts")
     }
