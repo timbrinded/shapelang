@@ -1,0 +1,7 @@
+module domain.audit.v1
+
+trait DurableAudit<T: Resource> {
+  allow Append<T>
+  allow Read<T>
+  forbid final HardDelete<T>
+}

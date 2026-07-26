@@ -1,0 +1,17 @@
+module graph_project
+
+component Api {
+}
+
+component Store {
+}
+
+relation ApiCallsStore {
+  kind calls
+  connects Api -> Store
+}
+
+relation StoreCallsApi {
+  kind calls
+  connects Store -> Api
+}

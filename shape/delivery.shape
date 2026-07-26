@@ -249,6 +249,8 @@ component DocsSite {
       Read<DocsContent>
         evidence md("docs-site/src/content/docs/concepts/ast-generation.md")
       Read<DocsContent>
+        evidence md("docs-site/src/content/docs/concepts/domain-packs.md")
+      Read<DocsContent>
         evidence md("docs-site/src/content/docs/concepts/model-updates-attestations.md")
       Read<DocsContent>
         evidence md("docs-site/src/content/docs/concepts/components-ownership-grants.md")

@@ -15,6 +15,44 @@ describe("shp CLI", () => {
     expect(result.stderr).toBe("");
   });
 
+  test("loads a vendored domain pack for check, format, and explain", async () => {
+    const projectRoot = resolve(repoRoot, "fixtures/projects/domain-pack-consumer");
+    const [checkResult, formatResult, explainResult] = await Promise.all([
+      runCli(["check"], cliPath, projectRoot),
+      runCli(["fmt", "--check"], cliPath, projectRoot),
+      runCli(["explain", "CheckoutAudit"], cliPath, projectRoot)
+    ]);
+
+    expect(checkResult.exitCode).toBe(0);
+    expect(checkResult.stdout).toContain("Shape check passed");
+    expect(checkResult.stderr).toBe("");
+
+    expect(formatResult.exitCode).toBe(0);
+    expect(formatResult.stdout).toContain("Shape format check passed");
+    expect(formatResult.stderr).toBe("");
+
+    expect(explainResult.exitCode).toBe(0);
+    expect(explainResult.stdout).toContain("CheckoutAudit");
+    expect(explainResult.stdout).toContain("domain.audit.v1::DurableAudit");
+    expect(explainResult.stderr).toBe("");
+  });
+
+  test("evaluates an unimported pack rule during default discovery", async () => {
+    const projectRoot = resolve(repoRoot, "fixtures/projects/domain-pack-global-rule");
+    const [defaultResult, projectOnlyResult] = await Promise.all([
+      runCli(["check"], cliPath, projectRoot),
+      runCli(["check", "shape/project.shape"], cliPath, projectRoot)
+    ]);
+
+    expect(defaultResult.exitCode).toBe(1);
+    expect(defaultResult.stderr).toContain("error: forbidden hypercycle");
+    expect(defaultResult.stderr).toContain("rule no_call_cycles");
+
+    expect(projectOnlyResult.exitCode).toBe(0);
+    expect(projectOnlyResult.stdout).toContain("Shape check passed");
+    expect(projectOnlyResult.stderr).toBe("");
+  });
+
   test("returns exit code 1 for semantic violations", async () => {
     const result = await runCli(["check", "fixtures/fail/append_only_hard_delete/audit.shape"]);
 
