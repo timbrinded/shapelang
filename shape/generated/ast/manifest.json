@@ -528,6 +528,20 @@
       ]
     },
     {
+      "module": "shape.generated.ast.packages.shp_checker.src.checker.change_planning_test",
+      "path": "shape/generated/ast/packages/shp-checker/src/checker/change-planning.test.shape",
+      "sources": [
+        "packages/shp-checker/src/checker/change-planning.test.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.checker.change_planning",
+      "path": "shape/generated/ast/packages/shp-checker/src/checker/change-planning.shape",
+      "sources": [
+        "packages/shp-checker/src/checker/change-planning.ts"
+      ]
+    },
+    {
       "module": "shape.generated.ast.packages.shp_checker.src.checker.derivations",
       "path": "shape/generated/ast/packages/shp-checker/src/checker/derivations.shape",
       "sources": [
