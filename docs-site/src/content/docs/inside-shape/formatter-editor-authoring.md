@@ -100,6 +100,8 @@ These helpers use the same parser and checker as the CLI. That is important: an 
 
 Definition lookup and completions also walk `change` entries, so declarations and functions introduced by `add` entries resolve through the same editor surface as global declarations. `modify` and `remove` entries are treated as references or removals, not definition sites.
 
+Memory Guard context is target-aware. A definition query for a complete reference such as `InlineRationale<fn Gateway.derivePolicyDecision>` resolves the matching rationale or memory instead of the first declaration that happens to use `InlineRationale`. A reevaluation's satisfied memory or rationale continues to resolve by its declared name. Completion candidates include parsed memory and rationale names plus context types derived from the shared prelude, such as `InlineRationale` and `RefactorConstraint`.
+
 ```mermaid
 flowchart TD
   A["open document"] --> B["parseShapeModule"]

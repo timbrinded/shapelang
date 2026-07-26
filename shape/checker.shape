@@ -832,6 +832,17 @@ reevaluation LoweringFunctionRegistryRechecked {
   evidence test("packages/shp-checker/src/checker.test.ts")
 }
 
+reevaluation PreludeEditorContextTypesRechecked {
+  satisfies memory PreludeMetadataContract
+  outcome Confirmed
+  summary "Editor completions derive context type names from the guarded prelude context registry, while exact typed context references resolve the matching rationale or memory and reevaluation targets continue to resolve by declared name."
+  reviewer ShapeMaintainers
+  decided_on "2026-07-26"
+  evidence md("docs-site/src/content/docs/inside-shape/formatter-editor-authoring.md")
+  evidence test("packages/shp-checker/src/editor.smoke.test.ts")
+  evidence test("packages/shp-checker/src/editor.test.ts")
+}
+
 reevaluation PreludeRelationTraversalRechecked {
   satisfies memory PreludeMetadataContract
   outcome Confirmed

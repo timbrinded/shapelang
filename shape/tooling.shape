@@ -277,7 +277,7 @@ component ShapeEditorServices {
     }
   fn getCompletions
     source ts("packages/shp-checker/src/editor.ts#getCompletions")
-    description "Offers declarations, prelude names, and canonical rule prefixes including constrained forbidden paths."
+    description "Offers declarations, context-object names, prelude context types, and canonical rule prefixes including constrained forbidden paths."
     effects complete {
       Append<EditorOutput>
         evidence ts("packages/shp-checker/src/editor.ts")
@@ -288,6 +288,7 @@ component ShapeEditorServices {
     }
   fn getDefinitionLocation
     source ts("packages/shp-checker/src/editor.ts#getDefinitionLocation")
+    description "Resolves declarations plus exact target-aware rationale and memory context references while preserving unresolved-symbol fallback."
     effects complete {
       Append<EditorOutput>
         evidence ts("packages/shp-checker/src/editor.ts")

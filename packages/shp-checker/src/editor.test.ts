@@ -6,7 +6,11 @@ import {
   getEditorDiagnostics,
   getHoverText
 } from "./index.ts";
-import { PRELUDE_CONTEXT_REQUIREMENTS, PRELUDE_RELATION_KIND_NAMES } from "./prelude.ts";
+import {
+  PRELUDE_CONTEXT_REQUIREMENTS,
+  PRELUDE_CONTEXT_TYPE_NAMES,
+  PRELUDE_RELATION_KIND_NAMES
+} from "./prelude.ts";
 import { contextRef, fnTarget } from "./test-support.ts";
 
 describe("Shape editor support", () => {
@@ -91,6 +95,53 @@ describe("Shape editor support", () => {
     expect(beta?.line).toBeGreaterThan(alpha?.line ?? 0);
   });
 
+  test("resolves exact context obligations and reevaluation targets", () => {
+    const contextSource = `module context
+
+component Alpha {
+  fn handle
+    effects complete {
+    }
+}
+
+component Beta {
+  fn handle
+    effects complete {
+    }
+}
+
+rationale AlphaInline : InlineRationale<fn Alpha.handle> {
+}
+
+rationale BetaInline : InlineRationale<fn Beta.handle> {
+}
+
+reevaluation BetaInlineRechecked {
+  satisfies rationale BetaInline
+}
+`;
+
+    expect(getDefinitionLocation(contextSource, "InlineRationale<fn Alpha.handle>")).toEqual({
+      symbol: "InlineRationale<fn Alpha.handle>",
+      line: 15,
+      column: 25
+    });
+    expect(getDefinitionLocation(contextSource, "InlineRationale<fn Beta.handle>")).toEqual({
+      symbol: "InlineRationale<fn Beta.handle>",
+      line: 18,
+      column: 24
+    });
+    expect(getDefinitionLocation(contextSource, "BetaInline")).toEqual({
+      symbol: "BetaInline",
+      line: 18,
+      column: 1
+    });
+    expect(getCompletions(contextSource, "BetaInline")).toEqual([
+      "BetaInline",
+      "BetaInlineRechecked"
+    ]);
+  });
+
   test("derives editor shape-trait help from the prelude registry", () => {
     for (const requirement of PRELUDE_CONTEXT_REQUIREMENTS) {
       expect(getCompletions("", requirement.trait)).toContain(requirement.trait);
@@ -98,6 +149,9 @@ describe("Shape editor support", () => {
     }
     for (const relationKind of PRELUDE_RELATION_KIND_NAMES) {
       expect(getCompletions("", relationKind)).toContain(relationKind);
+    }
+    for (const contextType of PRELUDE_CONTEXT_TYPE_NAMES) {
+      expect(getCompletions("", contextType)).toContain(contextType);
     }
   });
 });

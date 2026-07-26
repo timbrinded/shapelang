@@ -13,6 +13,7 @@ import {
   isBindingDecl,
   isChangeDecl,
   isComponentDecl,
+  type ContextTypeRef,
   type AddableDeclaration,
   type ChangeEntry,
   type Declaration,
@@ -231,7 +232,10 @@ function* editorSymbolsForDeclaration(
 
   if (isRationaleDecl(declaration) || isMemoryDecl(declaration)) {
     yield { names: [declaration.name], node: declaration };
-    yield { names: [declaration.contextType.name], node: declaration.contextType };
+    yield {
+      names: [declaration.contextType.name, formatContextTypeReference(declaration.contextType)],
+      node: declaration.contextType
+    };
     return;
   }
 
@@ -281,6 +285,10 @@ function changeFunctionTargetNames(target: string): string[] {
   const localTarget = localNameOf(target);
   const functionName = localTarget.slice(localTarget.lastIndexOf(".") + 1);
   return uniqueNames([target, localTarget, functionName]);
+}
+
+function formatContextTypeReference(contextType: ContextTypeRef): string {
+  return `${contextType.name}<${contextType.target.kind} ${contextType.target.name}>`;
 }
 
 function uniqueNames(candidates: readonly string[]): string[] {

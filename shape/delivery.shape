@@ -737,7 +737,12 @@ attest docs_not_needed {
 
 attest docs_not_needed {
   source shape("shape/tooling.shape")
-  reason "The modeled CLI runner helper and forbidden path formatter/editor claims do not change user-facing CLI commands, flags, or CLI workflow documentation."
+  reason "The modeled CLI runner helper, forbidden path formatter claims, and target-aware editor context support do not change user-facing CLI commands, flags, or workflows."
+}
+
+attest docs_not_needed {
+  source shape("shape/checker.shape")
+  reason "The editor prelude reevaluation records completion parity and does not change checker rule evaluation or its documented diagnostic behavior."
 }
 
 attest docs_not_needed {

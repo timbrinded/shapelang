@@ -26,6 +26,11 @@ resource EditorModuleDiagnosticToEditorDiagnosticAstAnchor : GeneratedAstAnchor 
   fingerprint ast.semantic_subtree_v1("sha256:8789c371ce36ce2e83529de0a0ed243f4a30e3b9d75d17a2e62bbb118f4ab5af")
 }
 
+resource EditorModuleFormatContextTypeReferenceAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/editor.ts#formatContextTypeReference")
+  fingerprint ast.semantic_subtree_v1("sha256:b5c87d1ea3d22ace777e1aa864fff16ac26ceb0376d5f9d77041538b722fc45b")
+}
+
 resource EditorModuleFormatOnSaveAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/editor.ts#formatOnSave")
   fingerprint ast.semantic_subtree_v1("sha256:72056ca6ae47f6b205ccaf07b93bd0d144fd106573101f36a22b19e37c90104e")
@@ -83,6 +88,9 @@ component EditorModule : GeneratedCandidate {
     effects unknown
   fn diagnosticToEditorDiagnostic
     source ts("packages/shp-checker/src/editor.ts#diagnosticToEditorDiagnostic")
+    effects unknown
+  fn formatContextTypeReference
+    source ts("packages/shp-checker/src/editor.ts#formatContextTypeReference")
     effects unknown
   fn formatOnSave
     source ts("packages/shp-checker/src/editor.ts#formatOnSave")
@@ -143,6 +151,14 @@ relation EditorModuleDiagnosticToEditorDiagnosticGeneratedFromEditorModuleDiagno
   roles { EditorModule as generated, EditorModuleDiagnosticToEditorDiagnosticAstAnchor as syntax }
   expects EditorModuleDiagnosticToEditorDiagnosticAstAnchor fingerprint ast.semantic_subtree_v1("sha256:8789c371ce36ce2e83529de0a0ed243f4a30e3b9d75d17a2e62bbb118f4ab5af")
   summary "fn EditorModule.diagnosticToEditorDiagnostic generated from typescript function_declaration at packages/shp-checker/src/editor.ts#diagnosticToEditorDiagnostic."
+}
+
+relation EditorModuleFormatContextTypeReferenceGeneratedFromEditorModuleFormatContextTypeReferenceAstAnchor {
+  kind generated_from
+  connects EditorModule -> EditorModuleFormatContextTypeReferenceAstAnchor
+  roles { EditorModule as generated, EditorModuleFormatContextTypeReferenceAstAnchor as syntax }
+  expects EditorModuleFormatContextTypeReferenceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b5c87d1ea3d22ace777e1aa864fff16ac26ceb0376d5f9d77041538b722fc45b")
+  summary "fn EditorModule.formatContextTypeReference generated from typescript function_declaration at packages/shp-checker/src/editor.ts#formatContextTypeReference."
 }
 
 relation EditorModuleFormatOnSaveGeneratedFromEditorModuleFormatOnSaveAstAnchor {

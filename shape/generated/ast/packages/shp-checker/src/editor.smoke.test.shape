@@ -1,0 +1,7 @@
+module shape.generated.ast.packages.shp_checker.src.editor_smoke_test
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
