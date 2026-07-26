@@ -1,0 +1,25 @@
+module experimental.kernel
+
+resource AppendEventAnchor {
+  fingerprint ast.semantic_subtree_v1("sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+}
+
+resource AuditEvent
+
+component AuditStore {
+  grants Append<AuditEvent>
+  fn appendEvent
+    source ts("src/audit/store.ts:8-14")
+    effects complete {
+      Append<AuditEvent>
+        evidence ts("src/audit/store.ts:8-14")
+    }
+}
+
+effect candidate AppendEventCandidate {
+  fn AuditStore.appendEvent
+  effect Append<AuditEvent>
+  source ts("src/audit/store.ts:8-14")
+  confidence low
+  pin AppendEventAnchor fingerprint ast.semantic_subtree_v1("sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb")
+}

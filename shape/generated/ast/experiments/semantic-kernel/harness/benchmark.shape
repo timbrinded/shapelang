@@ -1,0 +1,97 @@
+module shape.generated.ast.experiments.semantic_kernel.harness.benchmark
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource BenchmarkModuleAssertDiagnosticCountAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/semantic-kernel/harness/benchmark.ts#assertDiagnosticCount")
+  fingerprint ast.semantic_subtree_v1("sha256:d1f73b3a5851c890758d65808741a3f19aae687b30184f4330b6bacbb41b705c")
+}
+
+resource BenchmarkModuleBenchmarkShapeSourceAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/semantic-kernel/harness/benchmark.ts#benchmarkShapeSource")
+  fingerprint ast.semantic_subtree_v1("sha256:e3f23ca0aef0899ece2fdd4c942be09fb702a0512cb43c287df8325bd877a39e")
+}
+
+resource BenchmarkModuleCheckSourceAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/semantic-kernel/harness/benchmark.ts#checkSource")
+  fingerprint ast.semantic_subtree_v1("sha256:4353aaf37a5b09fc9956a645d8ee9d832df39adcb9a10fd43f4b5ebbf93ec095")
+}
+
+resource BenchmarkModuleFormatMsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/semantic-kernel/harness/benchmark.ts#formatMs")
+  fingerprint ast.semantic_subtree_v1("sha256:d19520c124529173dca4b8a6a2270a85ac1ec4df2376462cc5753761d1ef8dc7")
+}
+
+resource BenchmarkModuleMedianDurationAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/semantic-kernel/harness/benchmark.ts#medianDuration")
+  fingerprint ast.semantic_subtree_v1("sha256:fec59aee9b796d7cbab6d58f74893b38401fdaac8fc185dbda979eaa3e408459")
+}
+
+component BenchmarkModule : GeneratedCandidate {
+  fn assertDiagnosticCount
+    source ts("experiments/semantic-kernel/harness/benchmark.ts#assertDiagnosticCount")
+    effects unknown
+  fn benchmarkShapeSource
+    source ts("experiments/semantic-kernel/harness/benchmark.ts#benchmarkShapeSource")
+    effects unknown
+  fn checkSource
+    source ts("experiments/semantic-kernel/harness/benchmark.ts#checkSource")
+    effects unknown
+  fn formatMs
+    source ts("experiments/semantic-kernel/harness/benchmark.ts#formatMs")
+    effects unknown
+  fn medianDuration
+    source ts("experiments/semantic-kernel/harness/benchmark.ts#medianDuration")
+    effects unknown
+}
+
+relation BenchmarkModuleAssertDiagnosticCountGeneratedFromBenchmarkModuleAssertDiagnosticCountAstAnchor {
+  kind generated_from
+  connects BenchmarkModule -> BenchmarkModuleAssertDiagnosticCountAstAnchor
+  roles { BenchmarkModule as generated, BenchmarkModuleAssertDiagnosticCountAstAnchor as syntax }
+  expects BenchmarkModuleAssertDiagnosticCountAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d1f73b3a5851c890758d65808741a3f19aae687b30184f4330b6bacbb41b705c")
+  summary "fn BenchmarkModule.assertDiagnosticCount generated from typescript function_declaration at experiments/semantic-kernel/harness/benchmark.ts#assertDiagnosticCount."
+}
+
+relation BenchmarkModuleBenchmarkShapeSourceGeneratedFromBenchmarkModuleBenchmarkShapeSourceAstAnchor {
+  kind generated_from
+  connects BenchmarkModule -> BenchmarkModuleBenchmarkShapeSourceAstAnchor
+  roles { BenchmarkModule as generated, BenchmarkModuleBenchmarkShapeSourceAstAnchor as syntax }
+  expects BenchmarkModuleBenchmarkShapeSourceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e3f23ca0aef0899ece2fdd4c942be09fb702a0512cb43c287df8325bd877a39e")
+  summary "fn BenchmarkModule.benchmarkShapeSource generated from typescript function_declaration at experiments/semantic-kernel/harness/benchmark.ts#benchmarkShapeSource."
+}
+
+relation BenchmarkModuleCheckSourceGeneratedFromBenchmarkModuleCheckSourceAstAnchor {
+  kind generated_from
+  connects BenchmarkModule -> BenchmarkModuleCheckSourceAstAnchor
+  roles { BenchmarkModule as generated, BenchmarkModuleCheckSourceAstAnchor as syntax }
+  expects BenchmarkModuleCheckSourceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4353aaf37a5b09fc9956a645d8ee9d832df39adcb9a10fd43f4b5ebbf93ec095")
+  summary "fn BenchmarkModule.checkSource generated from typescript function_declaration at experiments/semantic-kernel/harness/benchmark.ts#checkSource."
+}
+
+relation BenchmarkModuleFormatMsGeneratedFromBenchmarkModuleFormatMsAstAnchor {
+  kind generated_from
+  connects BenchmarkModule -> BenchmarkModuleFormatMsAstAnchor
+  roles { BenchmarkModule as generated, BenchmarkModuleFormatMsAstAnchor as syntax }
+  expects BenchmarkModuleFormatMsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d19520c124529173dca4b8a6a2270a85ac1ec4df2376462cc5753761d1ef8dc7")
+  summary "fn BenchmarkModule.formatMs generated from typescript function_declaration at experiments/semantic-kernel/harness/benchmark.ts#formatMs."
+}
+
+relation BenchmarkModuleMedianDurationGeneratedFromBenchmarkModuleMedianDurationAstAnchor {
+  kind generated_from
+  connects BenchmarkModule -> BenchmarkModuleMedianDurationAstAnchor
+  roles { BenchmarkModule as generated, BenchmarkModuleMedianDurationAstAnchor as syntax }
+  expects BenchmarkModuleMedianDurationAstAnchor fingerprint ast.semantic_subtree_v1("sha256:fec59aee9b796d7cbab6d58f74893b38401fdaac8fc185dbda979eaa3e408459")
+  summary "fn BenchmarkModule.medianDuration generated from typescript function_declaration at experiments/semantic-kernel/harness/benchmark.ts#medianDuration."
+}
+
+implementation BenchmarkModuleImpl {
+  paths {
+    "experiments/semantic-kernel/harness/benchmark.ts"
+  }
+  conforms_to BenchmarkModule
+}

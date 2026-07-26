@@ -74,21 +74,19 @@ component AuditStore {
     ]);
     expect(getEditorDiagnosticsForDocuments(documents)).toEqual([]);
 
+    const authoredShapeFiles = [...new Bun.Glob("shape/*.shape").scanSync()].sort();
     const authoredModel = await Promise.all(
-      [
-        "shape/language.shape",
-        "shape/checker.shape",
-        "shape/tooling.shape",
-        "shape/incremental-checker.shape",
-        "shape/delivery.shape"
-      ].map(async (filePath) => ({
+      authoredShapeFiles.map(async (filePath) => ({
         filePath,
         source: await Bun.file(filePath).text()
       }))
     );
+    const toolingDocument = authoredModel.find(
+      (document) => document.filePath === "shape/tooling.shape"
+    );
     const toolingOnly = getEditorDiagnostics(
-      authoredModel[2]?.source ?? "",
-      authoredModel[2]?.filePath
+      toolingDocument?.source ?? "",
+      toolingDocument?.filePath
     );
 
     expect(

@@ -6,6 +6,7 @@ dist/
 specs/
 .clawpatch/
 .research/
+experiments/semantic-kernel/target/
 
 TODO.md
 plans/

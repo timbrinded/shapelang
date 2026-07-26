@@ -104,6 +104,51 @@ jobs:
       - name: Tests
         run: bun test
 
+  semantic-kernel:
+    name: Semantic Kernel Prototype
+    runs-on: ubuntu-latest
+
+    steps:
+      - *checkout
+      - *setup-bun
+      - *bun-cache
+      - *install
+
+      - name: Cache Rust prototype
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/git
+            ~/.cargo/registry
+            experiments/semantic-kernel/target
+          key: semantic-kernel-${{ runner.os }}-${{ hashFiles('experiments/semantic-kernel/Cargo.lock', 'experiments/semantic-kernel/rust-toolchain.toml', 'experiments/semantic-kernel/scripts/install-wasm-bindgen.sh') }}
+          restore-keys: |
+            semantic-kernel-${{ runner.os }}-
+
+      - name: Resolve pinned Rust toolchain
+        working-directory: experiments/semantic-kernel
+        run: rustup show active-toolchain
+
+      - name: Check native semantic kernel
+        run: bun run kernel:check
+
+      - name: Build native and browser WASM kernels
+        run: bun run kernel:build
+
+      - name: Run native and browser WASM E2E
+        run: bun run kernel:e2e
+
+      - name: Upload browser WASM prototype
+        uses: actions/upload-artifact@v4
+        with:
+          name: semantic-kernel-wasm-${{ github.sha }}
+          path: |
+            experiments/semantic-kernel/target/wasm-web/*.js
+            experiments/semantic-kernel/target/wasm-web/*.d.ts
+            experiments/semantic-kernel/target/wasm-web/*.wasm
+          if-no-files-found: error
+          retention-days: 7
+
   shape:
     name: Shape
     runs-on: ubuntu-latest

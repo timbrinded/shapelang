@@ -1,0 +1,33 @@
+module shape.generated.ast.experiments.semantic_kernel.harness.protocol_test
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource ProtocolTestModuleResponseJsonAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/semantic-kernel/harness/protocol.test.ts#responseJson")
+  fingerprint ast.semantic_subtree_v1("sha256:fb09a30cf166be262ad63b103186847f16f7f724f351729896373a9bd7ac4bf1")
+}
+
+component ProtocolTestModule : GeneratedCandidate {
+  fn responseJson
+    source ts("experiments/semantic-kernel/harness/protocol.test.ts#responseJson")
+    effects unknown
+}
+
+relation ProtocolTestModuleResponseJsonGeneratedFromProtocolTestModuleResponseJsonAstAnchor {
+  kind generated_from
+  connects ProtocolTestModule -> ProtocolTestModuleResponseJsonAstAnchor
+  roles { ProtocolTestModule as generated, ProtocolTestModuleResponseJsonAstAnchor as syntax }
+  expects ProtocolTestModuleResponseJsonAstAnchor fingerprint ast.semantic_subtree_v1("sha256:fb09a30cf166be262ad63b103186847f16f7f724f351729896373a9bd7ac4bf1")
+  summary "fn ProtocolTestModule.responseJson generated from typescript function_declaration at experiments/semantic-kernel/harness/protocol.test.ts#responseJson."
+}
+
+implementation ProtocolTestModuleImpl {
+  paths {
+    "experiments/semantic-kernel/harness/protocol.test.ts"
+  }
+  conforms_to ProtocolTestModule
+}

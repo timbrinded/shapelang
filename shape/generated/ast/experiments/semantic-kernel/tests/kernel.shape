@@ -1,0 +1,177 @@
+module shape.generated.ast.experiments.semantic_kernel.tests.kernel
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource KernelModuleAcceptsACurrentCandidatePinAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/semantic-kernel/tests/kernel.rs#accepts_a_current_candidate_pin")
+  fingerprint ast.semantic_subtree_v1("sha256:b04d22ec73eadb78643ec6b378debcd0262c72608b7ec0531247132a51e24ad6")
+}
+
+resource KernelModuleIgnoresUnpinnedCandidatesAndUnknownAnchorsLikeTheTypescriptRuleAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/semantic-kernel/tests/kernel.rs#ignores_unpinned_candidates_and_unknown_anchors_like_the_typescript_rule")
+  fingerprint ast.semantic_subtree_v1("sha256:5689d2240d6919f130227e636a4cf354bdc931561d82f9845c8921dfd8cabcfa")
+}
+
+resource KernelModuleOutputIsIndependentOfFactOrderAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/semantic-kernel/tests/kernel.rs#output_is_independent_of_fact_order")
+  fingerprint ast.semantic_subtree_v1("sha256:25d85f8e30456f8143704881ced22fbd0e05d297141d1b62825db3ff9e676ee5")
+}
+
+resource KernelModuleProvenanceAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/semantic-kernel/tests/kernel.rs#provenance")
+  fingerprint ast.semantic_subtree_v1("sha256:9dce7f8f272d1ae3c40788ce1ccd0851fe5de75d2a139f30452295f5d651d9ae")
+}
+
+resource KernelModuleRejectsDuplicateFactIdentitiesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/semantic-kernel/tests/kernel.rs#rejects_duplicate_fact_identities")
+  fingerprint ast.semantic_subtree_v1("sha256:dfbedb77e0da77ddffd270ed85a4795b674299c5b293679c122aa4dbcb4da2bd")
+}
+
+resource KernelModuleRejectsNullOptionalStringsAndOmitsAbsentValuesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/semantic-kernel/tests/kernel.rs#rejects_null_optional_strings_and_omits_absent_values")
+  fingerprint ast.semantic_subtree_v1("sha256:c02a48b0fa16d9ac880599cdb269d738b5f7dacb2b082cd9d48ab72f159bae54")
+}
+
+resource KernelModuleRejectsUnknownSchemaVersionsAndFieldsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/semantic-kernel/tests/kernel.rs#rejects_unknown_schema_versions_and_fields")
+  fingerprint ast.semantic_subtree_v1("sha256:d77767be11d506d3e4a8ee05f3119ca6187453a6e5ac20c78cb2fb89decc899e")
+}
+
+resource KernelModuleReportsAMissingCandidatePinFingerprintAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/semantic-kernel/tests/kernel.rs#reports_a_missing_candidate_pin_fingerprint")
+  fingerprint ast.semantic_subtree_v1("sha256:a0e9d08c07e148150dc8ea490135bfac128c942c6ef6fc20bacbed6cf9719d9e")
+}
+
+resource KernelModuleReportsAStaleCandidatePinWithOrderedProvenanceAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/semantic-kernel/tests/kernel.rs#reports_a_stale_candidate_pin_with_ordered_provenance")
+  fingerprint ast.semantic_subtree_v1("sha256:af754e308bd16691cfd470c0a896635b80d1ab516709296e359e9fe51fd1de54")
+}
+
+resource KernelModuleRequestAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/semantic-kernel/tests/kernel.rs#request")
+  fingerprint ast.semantic_subtree_v1("sha256:04d31d152df381e96eff8b648c51c5a394358731587c8d7349ba0fc29f940703")
+}
+
+component KernelModule : GeneratedCandidate {
+  fn accepts_a_current_candidate_pin
+    source rust("experiments/semantic-kernel/tests/kernel.rs#accepts_a_current_candidate_pin")
+    effects unknown
+  fn ignores_unpinned_candidates_and_unknown_anchors_like_the_typescript_rule
+    source rust("experiments/semantic-kernel/tests/kernel.rs#ignores_unpinned_candidates_and_unknown_anchors_like_the_typescript_rule")
+    effects unknown
+  fn output_is_independent_of_fact_order
+    source rust("experiments/semantic-kernel/tests/kernel.rs#output_is_independent_of_fact_order")
+    effects unknown
+  fn provenance
+    source rust("experiments/semantic-kernel/tests/kernel.rs#provenance")
+    effects unknown
+  fn rejects_duplicate_fact_identities
+    source rust("experiments/semantic-kernel/tests/kernel.rs#rejects_duplicate_fact_identities")
+    effects unknown
+  fn rejects_null_optional_strings_and_omits_absent_values
+    source rust("experiments/semantic-kernel/tests/kernel.rs#rejects_null_optional_strings_and_omits_absent_values")
+    effects unknown
+  fn rejects_unknown_schema_versions_and_fields
+    source rust("experiments/semantic-kernel/tests/kernel.rs#rejects_unknown_schema_versions_and_fields")
+    effects unknown
+  fn reports_a_missing_candidate_pin_fingerprint
+    source rust("experiments/semantic-kernel/tests/kernel.rs#reports_a_missing_candidate_pin_fingerprint")
+    effects unknown
+  fn reports_a_stale_candidate_pin_with_ordered_provenance
+    source rust("experiments/semantic-kernel/tests/kernel.rs#reports_a_stale_candidate_pin_with_ordered_provenance")
+    effects unknown
+  fn request
+    source rust("experiments/semantic-kernel/tests/kernel.rs#request")
+    effects unknown
+}
+
+relation KernelModuleAcceptsACurrentCandidatePinGeneratedFromKernelModuleAcceptsACurrentCandidatePinAstAnchor {
+  kind generated_from
+  connects KernelModule -> KernelModuleAcceptsACurrentCandidatePinAstAnchor
+  roles { KernelModule as generated, KernelModuleAcceptsACurrentCandidatePinAstAnchor as syntax }
+  expects KernelModuleAcceptsACurrentCandidatePinAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b04d22ec73eadb78643ec6b378debcd0262c72608b7ec0531247132a51e24ad6")
+  summary "fn KernelModule.accepts_a_current_candidate_pin generated from rust function_item at experiments/semantic-kernel/tests/kernel.rs#accepts_a_current_candidate_pin."
+}
+
+relation KernelModuleIgnoresUnpinnedCandidatesAndUnknownAnchorsLikeTheTypescriptRuleGeneratedFromKernelModuleIgnoresUnpinnedCandidatesAndUnknownAnchorsLikeTheTypescriptRuleAstAnchor {
+  kind generated_from
+  connects KernelModule -> KernelModuleIgnoresUnpinnedCandidatesAndUnknownAnchorsLikeTheTypescriptRuleAstAnchor
+  roles { KernelModule as generated, KernelModuleIgnoresUnpinnedCandidatesAndUnknownAnchorsLikeTheTypescriptRuleAstAnchor as syntax }
+  expects KernelModuleIgnoresUnpinnedCandidatesAndUnknownAnchorsLikeTheTypescriptRuleAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5689d2240d6919f130227e636a4cf354bdc931561d82f9845c8921dfd8cabcfa")
+  summary "fn KernelModule.ignores_unpinned_candidates_and_unknown_anchors_like_the_typescript_rule generated from rust function_item at experiments/semantic-kernel/tests/kernel.rs#ignores_unpinned_candidates_and_unknown_anchors_like_the_typescript_rule."
+}
+
+relation KernelModuleOutputIsIndependentOfFactOrderGeneratedFromKernelModuleOutputIsIndependentOfFactOrderAstAnchor {
+  kind generated_from
+  connects KernelModule -> KernelModuleOutputIsIndependentOfFactOrderAstAnchor
+  roles { KernelModule as generated, KernelModuleOutputIsIndependentOfFactOrderAstAnchor as syntax }
+  expects KernelModuleOutputIsIndependentOfFactOrderAstAnchor fingerprint ast.semantic_subtree_v1("sha256:25d85f8e30456f8143704881ced22fbd0e05d297141d1b62825db3ff9e676ee5")
+  summary "fn KernelModule.output_is_independent_of_fact_order generated from rust function_item at experiments/semantic-kernel/tests/kernel.rs#output_is_independent_of_fact_order."
+}
+
+relation KernelModuleProvenanceGeneratedFromKernelModuleProvenanceAstAnchor {
+  kind generated_from
+  connects KernelModule -> KernelModuleProvenanceAstAnchor
+  roles { KernelModule as generated, KernelModuleProvenanceAstAnchor as syntax }
+  expects KernelModuleProvenanceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9dce7f8f272d1ae3c40788ce1ccd0851fe5de75d2a139f30452295f5d651d9ae")
+  summary "fn KernelModule.provenance generated from rust function_item at experiments/semantic-kernel/tests/kernel.rs#provenance."
+}
+
+relation KernelModuleRejectsDuplicateFactIdentitiesGeneratedFromKernelModuleRejectsDuplicateFactIdentitiesAstAnchor {
+  kind generated_from
+  connects KernelModule -> KernelModuleRejectsDuplicateFactIdentitiesAstAnchor
+  roles { KernelModule as generated, KernelModuleRejectsDuplicateFactIdentitiesAstAnchor as syntax }
+  expects KernelModuleRejectsDuplicateFactIdentitiesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:dfbedb77e0da77ddffd270ed85a4795b674299c5b293679c122aa4dbcb4da2bd")
+  summary "fn KernelModule.rejects_duplicate_fact_identities generated from rust function_item at experiments/semantic-kernel/tests/kernel.rs#rejects_duplicate_fact_identities."
+}
+
+relation KernelModuleRejectsNullOptionalStringsAndOmitsAbsentValuesGeneratedFromKernelModuleRejectsNullOptionalStringsAndOmitsAbsentValuesAstAnchor {
+  kind generated_from
+  connects KernelModule -> KernelModuleRejectsNullOptionalStringsAndOmitsAbsentValuesAstAnchor
+  roles { KernelModule as generated, KernelModuleRejectsNullOptionalStringsAndOmitsAbsentValuesAstAnchor as syntax }
+  expects KernelModuleRejectsNullOptionalStringsAndOmitsAbsentValuesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c02a48b0fa16d9ac880599cdb269d738b5f7dacb2b082cd9d48ab72f159bae54")
+  summary "fn KernelModule.rejects_null_optional_strings_and_omits_absent_values generated from rust function_item at experiments/semantic-kernel/tests/kernel.rs#rejects_null_optional_strings_and_omits_absent_values."
+}
+
+relation KernelModuleRejectsUnknownSchemaVersionsAndFieldsGeneratedFromKernelModuleRejectsUnknownSchemaVersionsAndFieldsAstAnchor {
+  kind generated_from
+  connects KernelModule -> KernelModuleRejectsUnknownSchemaVersionsAndFieldsAstAnchor
+  roles { KernelModule as generated, KernelModuleRejectsUnknownSchemaVersionsAndFieldsAstAnchor as syntax }
+  expects KernelModuleRejectsUnknownSchemaVersionsAndFieldsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d77767be11d506d3e4a8ee05f3119ca6187453a6e5ac20c78cb2fb89decc899e")
+  summary "fn KernelModule.rejects_unknown_schema_versions_and_fields generated from rust function_item at experiments/semantic-kernel/tests/kernel.rs#rejects_unknown_schema_versions_and_fields."
+}
+
+relation KernelModuleReportsAMissingCandidatePinFingerprintGeneratedFromKernelModuleReportsAMissingCandidatePinFingerprintAstAnchor {
+  kind generated_from
+  connects KernelModule -> KernelModuleReportsAMissingCandidatePinFingerprintAstAnchor
+  roles { KernelModule as generated, KernelModuleReportsAMissingCandidatePinFingerprintAstAnchor as syntax }
+  expects KernelModuleReportsAMissingCandidatePinFingerprintAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a0e9d08c07e148150dc8ea490135bfac128c942c6ef6fc20bacbed6cf9719d9e")
+  summary "fn KernelModule.reports_a_missing_candidate_pin_fingerprint generated from rust function_item at experiments/semantic-kernel/tests/kernel.rs#reports_a_missing_candidate_pin_fingerprint."
+}
+
+relation KernelModuleReportsAStaleCandidatePinWithOrderedProvenanceGeneratedFromKernelModuleReportsAStaleCandidatePinWithOrderedProvenanceAstAnchor {
+  kind generated_from
+  connects KernelModule -> KernelModuleReportsAStaleCandidatePinWithOrderedProvenanceAstAnchor
+  roles { KernelModule as generated, KernelModuleReportsAStaleCandidatePinWithOrderedProvenanceAstAnchor as syntax }
+  expects KernelModuleReportsAStaleCandidatePinWithOrderedProvenanceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:af754e308bd16691cfd470c0a896635b80d1ab516709296e359e9fe51fd1de54")
+  summary "fn KernelModule.reports_a_stale_candidate_pin_with_ordered_provenance generated from rust function_item at experiments/semantic-kernel/tests/kernel.rs#reports_a_stale_candidate_pin_with_ordered_provenance."
+}
+
+relation KernelModuleRequestGeneratedFromKernelModuleRequestAstAnchor {
+  kind generated_from
+  connects KernelModule -> KernelModuleRequestAstAnchor
+  roles { KernelModule as generated, KernelModuleRequestAstAnchor as syntax }
+  expects KernelModuleRequestAstAnchor fingerprint ast.semantic_subtree_v1("sha256:04d31d152df381e96eff8b648c51c5a394358731587c8d7349ba0fc29f940703")
+  summary "fn KernelModule.request generated from rust function_item at experiments/semantic-kernel/tests/kernel.rs#request."
+}
+
+implementation KernelModuleImpl {
+  paths {
+    "experiments/semantic-kernel/tests/kernel.rs"
+  }
+  conforms_to KernelModule
+}

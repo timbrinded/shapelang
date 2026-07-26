@@ -1,0 +1,81 @@
+module shape.generated.ast.experiments.semantic_kernel.harness.runtime
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource RuntimeModuleIsWasmKernelBindingsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/semantic-kernel/harness/runtime.ts#isWasmKernelBindings")
+  fingerprint ast.semantic_subtree_v1("sha256:f2834d6f2e003352988985547d7564da315de92a64f9f103ee035446b9279f54")
+}
+
+resource RuntimeModuleLoadWasmKernelAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/semantic-kernel/harness/runtime.ts#loadWasmKernel")
+  fingerprint ast.semantic_subtree_v1("sha256:15dcd714e24c0a551439fa325a6110f686420b6a88f61e45fc06b011630db16f")
+}
+
+resource RuntimeModuleLoadWasmKernelUncachedAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/semantic-kernel/harness/runtime.ts#loadWasmKernelUncached")
+  fingerprint ast.semantic_subtree_v1("sha256:2690b25798abdc660a2095980325fecb1f0cbc47edcb68f004ba11d10c53794c")
+}
+
+resource RuntimeModuleRunNativeKernelAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/semantic-kernel/harness/runtime.ts#runNativeKernel")
+  fingerprint ast.semantic_subtree_v1("sha256:855ae0f7319286076d77f737221e3d8e4eb834cde7665173595980517d3721f5")
+}
+
+component RuntimeModule : GeneratedCandidate {
+  fn isWasmKernelBindings
+    source ts("experiments/semantic-kernel/harness/runtime.ts#isWasmKernelBindings")
+    effects unknown
+  fn loadWasmKernel
+    source ts("experiments/semantic-kernel/harness/runtime.ts#loadWasmKernel")
+    effects unknown
+  fn loadWasmKernelUncached
+    source ts("experiments/semantic-kernel/harness/runtime.ts#loadWasmKernelUncached")
+    effects unknown
+  fn runNativeKernel
+    source ts("experiments/semantic-kernel/harness/runtime.ts#runNativeKernel")
+    effects unknown
+}
+
+relation RuntimeModuleIsWasmKernelBindingsGeneratedFromRuntimeModuleIsWasmKernelBindingsAstAnchor {
+  kind generated_from
+  connects RuntimeModule -> RuntimeModuleIsWasmKernelBindingsAstAnchor
+  roles { RuntimeModule as generated, RuntimeModuleIsWasmKernelBindingsAstAnchor as syntax }
+  expects RuntimeModuleIsWasmKernelBindingsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f2834d6f2e003352988985547d7564da315de92a64f9f103ee035446b9279f54")
+  summary "fn RuntimeModule.isWasmKernelBindings generated from typescript function_declaration at experiments/semantic-kernel/harness/runtime.ts#isWasmKernelBindings."
+}
+
+relation RuntimeModuleLoadWasmKernelGeneratedFromRuntimeModuleLoadWasmKernelAstAnchor {
+  kind generated_from
+  connects RuntimeModule -> RuntimeModuleLoadWasmKernelAstAnchor
+  roles { RuntimeModule as generated, RuntimeModuleLoadWasmKernelAstAnchor as syntax }
+  expects RuntimeModuleLoadWasmKernelAstAnchor fingerprint ast.semantic_subtree_v1("sha256:15dcd714e24c0a551439fa325a6110f686420b6a88f61e45fc06b011630db16f")
+  summary "fn RuntimeModule.loadWasmKernel generated from typescript function_declaration at experiments/semantic-kernel/harness/runtime.ts#loadWasmKernel."
+}
+
+relation RuntimeModuleLoadWasmKernelUncachedGeneratedFromRuntimeModuleLoadWasmKernelUncachedAstAnchor {
+  kind generated_from
+  connects RuntimeModule -> RuntimeModuleLoadWasmKernelUncachedAstAnchor
+  roles { RuntimeModule as generated, RuntimeModuleLoadWasmKernelUncachedAstAnchor as syntax }
+  expects RuntimeModuleLoadWasmKernelUncachedAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2690b25798abdc660a2095980325fecb1f0cbc47edcb68f004ba11d10c53794c")
+  summary "fn RuntimeModule.loadWasmKernelUncached generated from typescript function_declaration at experiments/semantic-kernel/harness/runtime.ts#loadWasmKernelUncached."
+}
+
+relation RuntimeModuleRunNativeKernelGeneratedFromRuntimeModuleRunNativeKernelAstAnchor {
+  kind generated_from
+  connects RuntimeModule -> RuntimeModuleRunNativeKernelAstAnchor
+  roles { RuntimeModule as generated, RuntimeModuleRunNativeKernelAstAnchor as syntax }
+  expects RuntimeModuleRunNativeKernelAstAnchor fingerprint ast.semantic_subtree_v1("sha256:855ae0f7319286076d77f737221e3d8e4eb834cde7665173595980517d3721f5")
+  summary "fn RuntimeModule.runNativeKernel generated from typescript function_declaration at experiments/semantic-kernel/harness/runtime.ts#runNativeKernel."
+}
+
+implementation RuntimeModuleImpl {
+  paths {
+    "experiments/semantic-kernel/harness/runtime.ts"
+  }
+  conforms_to RuntimeModule
+}
