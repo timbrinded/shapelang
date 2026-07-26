@@ -7,9 +7,14 @@ export type PreludeFinalForbid = {
   target?: string;
 };
 
+export type TraitTypeParameter = {
+  name: string;
+  bound?: string;
+};
+
 export type PreludeTraitDefinition = {
   name: string;
-  typeParams: string[];
+  typeParams: TraitTypeParameter[];
   finalForbids: PreludeFinalForbid[];
 };
 
@@ -46,7 +51,7 @@ export type PreludeRelationKindRule = {
 export const PRELUDE_TRAITS: PreludeTraitDefinition[] = [
   {
     name: "AppendOnly",
-    typeParams: ["T"],
+    typeParams: [{ name: "T", bound: "Resource" }],
     finalForbids: [
       { effect: "HardDelete", target: "T" },
       { effect: "Truncate", target: "T" },

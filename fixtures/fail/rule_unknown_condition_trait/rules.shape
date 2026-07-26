@@ -1,0 +1,6 @@
+module rules
+
+rule unknown_condition_trait {
+  forbid final HardDelete<T>
+  when T has MissingTrait
+}

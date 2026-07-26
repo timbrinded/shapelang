@@ -10,7 +10,7 @@ import type {
   ShapeModule,
   TargetKind
 } from "../language/generated/ast.ts";
-import type { ContextKind } from "../prelude.ts";
+import type { ContextKind, TraitTypeParameter } from "../prelude.ts";
 import type { ParseDiagnostic } from "../parser.ts";
 import type { ChangeTrigger, Provenance, ShapeTarget } from "../shape-domain.ts";
 import type { IsoDateString } from "./iso-date.ts";
@@ -630,7 +630,7 @@ export type FingerprintInfo = {
 
 export type TraitInfo = {
   name: string;
-  typeParams: string[];
+  typeParams: TraitTypeParameter[];
   finalForbids: FinalForbidPattern[];
   contextRequirements: TraitContextRequirement[];
   provenance: Provenance;
@@ -672,7 +672,12 @@ export type BindingInfo = {
 
 export type RuleInfo = {
   name: string;
-  whenHas: { subject: string; trait: string }[];
+  whenHas: {
+    subject: string;
+    trait: string;
+    traitResolution: ResolutionResult["kind"];
+    provenance: Provenance;
+  }[];
   finalForbidSubject?: string;
   forbidEffects: FinalForbidPattern[];
   forbidProvides: {

@@ -175,6 +175,19 @@ export function checkResolvedNames(model: Model): SemanticDiagnostic[] {
   }
 
   for (const rule of model.rules) {
+    for (const when of rule.whenHas) {
+      if (when.traitResolution === "ambiguous" || knownTraits.has(when.trait)) {
+        continue;
+      }
+      diagnostics.push({
+        kind: "unknown_name",
+        nameKind: "trait",
+        name: when.trait,
+        filePath: when.provenance.filePath,
+        causedBy: [describeProvenance(when.provenance)]
+      });
+    }
+
     for (const forbid of rule.forbidEffects) {
       if (
         forbid.target &&

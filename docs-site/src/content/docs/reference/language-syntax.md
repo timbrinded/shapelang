@@ -252,7 +252,7 @@ rule GatewayBoundary {
 }
 ```
 
-Rules currently support `when subject has TraitName`, `forbid` effect patterns (including `forbid final`), `forbid provides TARGET except COMPONENT`, and `forbid hypercycle [over KIND or KIND ...]`. Rule headers do not take type parameters; `when T has TraitName` binds the subject name used by final effect forbids. Repeated `when` clauses for the same subject are conjunctive. Concrete forbid targets, trait references, and exception references may be module-qualified with `module.name::Declaration`.
+Rules currently support `when subject has TraitName`, `forbid` effect patterns (including `forbid final`), `forbid provides TARGET except COMPONENT`, and `forbid hypercycle [over KIND or KIND ...]`. Rule headers do not take type parameters; `when T has TraitName` binds the subject name used by final effect forbids. Repeated `when` clauses for the same subject are conjunctive. A final-effect condition trait is either a zero-parameter marker or declares exactly one explicit `Resource` parameter; other generic shapes are rejected. Concrete forbid targets, trait references, and exception references may be module-qualified with `module.name::Declaration`.
 
 ## Rationale, memory, and reevaluation
 

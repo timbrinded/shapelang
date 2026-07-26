@@ -1,0 +1,20 @@
+module rules
+
+trait Protected<T: Resource> {
+}
+
+resource AuditEvent : Protected
+
+component AuditStore {
+  owns AuditEvent
+  grants Read<AuditEvent>
+  fn readEvents
+    effects complete {
+      Read<AuditEvent>
+    }
+}
+
+rule protected_events_are_not_deleted {
+  forbid final HardDelete<T>
+  when T has Protected
+}

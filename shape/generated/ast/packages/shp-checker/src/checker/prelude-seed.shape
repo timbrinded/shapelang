@@ -13,7 +13,7 @@ resource PreludeSeedModuleIsPreludeTraitAstAnchor : GeneratedAstAnchor {
 
 resource PreludeSeedModulePreludeTraitInfoAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/checker/prelude-seed.ts#preludeTraitInfo")
-  fingerprint ast.semantic_subtree_v1("sha256:8d4de07c418b20ee47ae81a3c3c0d5daa3f67f494a042876b78ed98d285643e6")
+  fingerprint ast.semantic_subtree_v1("sha256:e195925a40bc428d1f172e580351008f838bbb909d23f06113baecefc7e95a48")
 }
 
 resource PreludeSeedModulePreludeTraitSeedAstAnchor : GeneratedAstAnchor {
@@ -45,7 +45,7 @@ relation PreludeSeedModulePreludeTraitInfoGeneratedFromPreludeSeedModulePreludeT
   kind generated_from
   connects PreludeSeedModule -> PreludeSeedModulePreludeTraitInfoAstAnchor
   roles { PreludeSeedModule as generated, PreludeSeedModulePreludeTraitInfoAstAnchor as syntax }
-  expects PreludeSeedModulePreludeTraitInfoAstAnchor fingerprint ast.semantic_subtree_v1("sha256:8d4de07c418b20ee47ae81a3c3c0d5daa3f67f494a042876b78ed98d285643e6")
+  expects PreludeSeedModulePreludeTraitInfoAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e195925a40bc428d1f172e580351008f838bbb909d23f06113baecefc7e95a48")
   summary "fn PreludeSeedModule.preludeTraitInfo generated from typescript function_declaration at packages/shp-checker/src/checker/prelude-seed.ts#preludeTraitInfo."
 }
 

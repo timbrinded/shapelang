@@ -170,13 +170,18 @@ export function lowerTrait(trait: TraitDecl, context: LoweringContext, model: Mo
     return;
   }
 
-  const typeParams = trait.typeParams?.params.map((param) => param.name) ?? [];
+  const typeParams =
+    trait.typeParams?.params.map((param) => ({
+      name: param.name,
+      ...(param.bound === undefined ? {} : { bound: param.bound })
+    })) ?? [];
+  const typeParamNames = new Set(typeParams.map((param) => param.name));
   const finalForbids: FinalForbidPattern[] = [];
   const contextRequirements: TraitContextRequirement[] = [];
   for (const member of trait.members) {
     if (isTraitForbidDecl(member)) {
       finalForbids.push(
-        lowerForbidPattern(member, context, model, `trait ${name}`, new Set(typeParams))
+        lowerForbidPattern(member, context, model, `trait ${name}`, typeParamNames)
       );
     } else if (isRequireContextDecl(member)) {
       const memberProvenance = provenance(
@@ -605,9 +610,26 @@ export function lowerRule(rule: RuleDecl, context: LoweringContext, model: Model
 
   for (const member of rule.members) {
     if (isRuleWhenHasDecl(member)) {
+      const traitResolution = resolveDeclReference(member.trait, "trait", context, model);
+      const whenProvenance = provenance(
+        context.filePath,
+        `rule ${name} when ${member.subject} has ${traitResolution.name}`
+      );
+      if (traitResolution.kind === "ambiguous") {
+        model.diagnostics.push({
+          kind: "ambiguous_name",
+          nameKind: "trait",
+          name: member.trait,
+          matches: traitResolution.matches,
+          filePath: context.filePath,
+          causedBy: [describeProvenance(whenProvenance)]
+        });
+      }
       info.whenHas.push({
         subject: member.subject,
-        trait: resolveDeclName(member.trait, "trait", context, model)
+        trait: traitResolution.name,
+        traitResolution: traitResolution.kind,
+        provenance: whenProvenance
       });
     } else if (isRuleForbidEffectDecl(member)) {
       info.forbidEffects.push(lowerRuleForbid(member, context, model, name, finalForbidSubjects));

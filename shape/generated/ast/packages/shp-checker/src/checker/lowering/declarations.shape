@@ -78,7 +78,7 @@ resource DeclarationsModuleLowerResourceAstAnchor : GeneratedAstAnchor {
 
 resource DeclarationsModuleLowerRuleAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/checker/lowering/declarations.ts#lowerRule")
-  fingerprint ast.semantic_subtree_v1("sha256:7241944bd58df5924f921ab99fbaac1559c03b10c13bed05c0f2bde4a0791913")
+  fingerprint ast.semantic_subtree_v1("sha256:42ba8a1c1e54ff95b61c6624d4a9c5a48ed76d7c3a9afa23b135c6491acc7ab2")
 }
 
 resource DeclarationsModuleLowerRuleForbidAstAnchor : GeneratedAstAnchor {
@@ -123,7 +123,7 @@ resource DeclarationsModuleLowerTermAstAnchor : GeneratedAstAnchor {
 
 resource DeclarationsModuleLowerTraitAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/checker/lowering/declarations.ts#lowerTrait")
-  fingerprint ast.semantic_subtree_v1("sha256:62bfbe6fb20c8b44739c71323c39f6923e6f838d5c09cf3b6028ec4320daefd8")
+  fingerprint ast.semantic_subtree_v1("sha256:4178b2f392f16aba45ee6be266e0e7de9ffcbf90961d4cdbd1eb0a22172fda2c")
 }
 
 resource DeclarationsModulePushInvalidCandidateEffectAstAnchor : GeneratedAstAnchor {
@@ -357,7 +357,7 @@ relation DeclarationsModuleLowerRuleGeneratedFromDeclarationsModuleLowerRuleAstA
   kind generated_from
   connects DeclarationsModule -> DeclarationsModuleLowerRuleAstAnchor
   roles { DeclarationsModule as generated, DeclarationsModuleLowerRuleAstAnchor as syntax }
-  expects DeclarationsModuleLowerRuleAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7241944bd58df5924f921ab99fbaac1559c03b10c13bed05c0f2bde4a0791913")
+  expects DeclarationsModuleLowerRuleAstAnchor fingerprint ast.semantic_subtree_v1("sha256:42ba8a1c1e54ff95b61c6624d4a9c5a48ed76d7c3a9afa23b135c6491acc7ab2")
   summary "fn DeclarationsModule.lowerRule generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/declarations.ts#lowerRule."
 }
 
@@ -405,7 +405,7 @@ relation DeclarationsModuleLowerTraitGeneratedFromDeclarationsModuleLowerTraitAs
   kind generated_from
   connects DeclarationsModule -> DeclarationsModuleLowerTraitAstAnchor
   roles { DeclarationsModule as generated, DeclarationsModuleLowerTraitAstAnchor as syntax }
-  expects DeclarationsModuleLowerTraitAstAnchor fingerprint ast.semantic_subtree_v1("sha256:62bfbe6fb20c8b44739c71323c39f6923e6f838d5c09cf3b6028ec4320daefd8")
+  expects DeclarationsModuleLowerTraitAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4178b2f392f16aba45ee6be266e0e7de9ffcbf90961d4cdbd1eb0a22172fda2c")
   summary "fn DeclarationsModule.lowerTrait generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/declarations.ts#lowerTrait."
 }
 

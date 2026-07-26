@@ -8,7 +8,7 @@ trait GeneratedCandidate {
 
 resource DeclarationsModuleCheckRulesAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/checker/rules/declarations.ts#checkRules")
-  fingerprint ast.semantic_subtree_v1("sha256:4f7f2335157b622ec9fb18afd67a277106171d8e7ac89177d20ab81a74218006")
+  fingerprint ast.semantic_subtree_v1("sha256:53f34f7041dc41d9ec2ecfeceb0c11517f57a8af03e23214cb961ef201566e07")
 }
 
 component DeclarationsModule : GeneratedCandidate {
@@ -21,7 +21,7 @@ relation DeclarationsModuleCheckRulesGeneratedFromDeclarationsModuleCheckRulesAs
   kind generated_from
   connects DeclarationsModule -> DeclarationsModuleCheckRulesAstAnchor
   roles { DeclarationsModule as generated, DeclarationsModuleCheckRulesAstAnchor as syntax }
-  expects DeclarationsModuleCheckRulesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4f7f2335157b622ec9fb18afd67a277106171d8e7ac89177d20ab81a74218006")
+  expects DeclarationsModuleCheckRulesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:53f34f7041dc41d9ec2ecfeceb0c11517f57a8af03e23214cb961ef201566e07")
   summary "fn DeclarationsModule.checkRules generated from typescript function_declaration at packages/shp-checker/src/checker/rules/declarations.ts#checkRules."
 }
 

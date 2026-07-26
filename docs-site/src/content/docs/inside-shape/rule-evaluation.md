@@ -96,7 +96,7 @@ flowchart LR
 
 The failure is not an accident; it is the intended precedence rule. If final forbids could be overridden by adding a grant, traits would not be reliable architecture boundaries.
 
-Rule-derived final forbids use the subject name from `when T has TraitName` as their generic binder. Multiple `when` clauses for the same subject must all match the resource. A final-forbid rule cannot bind multiple different subjects, and any concrete effect target such as `HardDelete<audit::AuditEvent>` is resolved through normal module/import scoping before the rule runs.
+Rule-derived final forbids use the subject name from `when T has TraitName` as their generic binder. Multiple `when` clauses for the same subject must all match the resource. The condition trait must be either a marker trait with no type parameters or a trait with exactly one explicitly `Resource`-bound parameter, such as `AppendOnly<T: Resource>`. Unbound parameters, non-resource bounds, and multiple parameters are rejected because the rule syntax has no way to bind them to the resource subject; an invalid rule contributes no derived forbids. A final-forbid rule cannot bind multiple different subjects. Generic targets such as `HardDelete<T>` bind to the matching resource, while a concrete target such as `HardDelete<audit::AuditEvent>` remains that exact resource after normal module/import resolution.
 
 ## Missing Grants
 

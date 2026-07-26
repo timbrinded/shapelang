@@ -359,7 +359,7 @@ Reference the trait's declared type parameter and give it a supported bound (`Fn
 
 ## Invalid rule
 
-Cause: a `rule` declaration is malformed for the semantic check it asks the checker to perform. For final effect forbids, rules may bind only one subject name. Repeated `when T has Trait` clauses are allowed and are treated as conjunctions; different subject names in the same final-forbid rule are rejected.
+Cause: a `rule` declaration is malformed for the semantic check it asks the checker to perform. For final effect forbids, rules may bind only one subject name. Repeated `when T has Trait` clauses are allowed and are treated as conjunctions; different subject names in the same final-forbid rule are rejected. Each condition must name a declared marker trait or a trait with exactly one explicitly `Resource`-bound parameter. Unbound, function-bound, component-bound, unsupported, and multi-parameter traits cannot be used as resource conditions.
 
 ```text
 error: invalid rule
@@ -367,7 +367,7 @@ error: invalid rule
 rule invalid_multi_subject_final_forbid is invalid: final effect forbids may bind only one subject, but found T, U.
 ```
 
-Use one subject name for the resource being constrained, or split unrelated subjects into separate rules.
+Use one subject name for the resource being constrained, or split unrelated subjects into separate rules. Correct misspelled condition traits, and declare a single `T: Resource` parameter when the trait needs a generic resource bearer. Invalid rules are inert: the checker reports the rule error without deriving its final forbids.
 
 ## Unknown relation endpoint
 
