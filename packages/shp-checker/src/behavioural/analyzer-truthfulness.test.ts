@@ -1,8 +1,8 @@
 // #62 — Analyzer truthfulness + the advisory-boundary law.
 //
-// The source analyzer is an ADVISORY surface. It is a naive per-line regex
-// detector (see ../analyzer.ts) that points at suspicious destructive
-// operations. This suite pins three things the vision actually guarantees:
+// The source analyzer is an ADVISORY surface. Its lexical scanner points at
+// suspicious destructive operations while excluding inert comments and
+// literals. This suite pins three things the vision actually guarantees:
 //
 //   1. The advisory boundary: analyzer hints NEVER change checker pass/fail.
 //      Anchor: docs-site/.../learn/what-is-shape.md — "analyzer hints do not
@@ -10,9 +10,8 @@
 //      AstGenerationUnknownSafety (candidate effect evidence is review hints,
 //      not failures).
 //   2. Truthful detection against REAL source fixtures at their ACTUAL lines.
-//   3. Honest false-positive accounting: safe operations produce no hints, and
-//      the naive detector's comment/string false positives are pinned as
-//      CHARACTERIZATION (current, not ideal) with a should-be for the ideal.
+//   3. Truthful lexical boundaries: safe operations and inert destructive text
+//      produce no hints, while SQL passed to supported execution sinks does.
 //
 // Every fixture line number is DERIVED from the fixture text at runtime, never
 // hard-coded as a magic value. Detector fixtures are the REAL source files, not
@@ -28,7 +27,7 @@ import {
   compareAnalyzerHintsToShape,
   type AnalyzerHint
 } from "../index.ts";
-import { characterization, lockedIntended, parseModuleOrThrow, shouldBe } from "./harness.ts";
+import { lockedIntended, parseModuleOrThrow } from "./harness.ts";
 
 const repoRoot = resolve(import.meta.dir, "../../../..");
 const fixture = (rel: string): string => resolve(repoRoot, rel);
@@ -53,6 +52,7 @@ function lineMatching(source: string, pattern: RegExp): number {
 const PURGE_PATH = "fixtures/source/audit_purge.ts";
 const STORE_TS_PATH = "fixtures/source/audit_store.ts";
 const STORE_RS_PATH = "fixtures/source/rust/audit_store.rs";
+const DESTRUCTIVE_SQL_PATH = "fixtures/source/analyzer/sql/destructive.sql";
 
 describe("#62 analyzer truthfulness + advisory boundary", () => {
   // ── Invariant 1: ADVISORY BOUNDARY ──────────────────────────────────────
@@ -127,6 +127,24 @@ describe("#62 analyzer truthfulness + advisory boundary", () => {
     }
   );
 
+  test(
+    lockedIntended(
+      "multiline SQL with comments between operation tokens emits all destructive hints at their starting lines",
+      "shape/tooling.shape ShapeAnalyzer.analyzeSourceText: multiline lexical SQL detection"
+    ),
+    () => {
+      const source = readFixture(DESTRUCTIVE_SQL_PATH);
+      const hints = analyzeSourceText(DESTRUCTIVE_SQL_PATH, source);
+
+      expect(hints.map((hint) => hint.effect)).toEqual(["HardDelete", "Truncate", "DropStorage"]);
+      expect(hints.map((hint) => hint.line)).toEqual([
+        lineMatching(source, /^DELETE$/),
+        lineMatching(source, /^TRUNCATE$/),
+        lineMatching(source, /^DROP$/)
+      ]);
+    }
+  );
+
   // ── Invariant 3 + 6: FALSE-POSITIVE / NEGATIVE controls on real fixtures ─
   test(
     lockedIntended(
@@ -175,52 +193,38 @@ describe("#62 analyzer truthfulness + advisory boundary", () => {
     }
   );
 
-  // ── Invariant 4: the comment / string-literal naive-regex case ───────────
-  //
-  // The detector matches lines, not parsed tokens, so destructive keywords in
-  // comments and string literals are (falsely) flagged. We pin the CURRENT
-  // behaviour as a characterization (not a guarantee) AND state the ideal as a
-  // should-be that is allowed to fail without breaking CI.
+  // ── Invariant 4: lexical boundaries around comments and literals ──────────
   test(
-    characterization(
-      'a `// DELETE FROM ...` comment and a "DELETE FROM ..." string literal each produce a (false) hint',
-      {
-        reason:
-          "the detector is a naive per-line regex that matches inside comments and string literals",
-        followUp: "harden analyzer to ignore comments/strings (open a follow-up issue)"
-      }
+    lockedIntended(
+      "destructive text in comments and inert literals stays silent, while a supported raw-execution literal is detected",
+      "docs-site/.../concepts/analyzer-hints.md: lexical hints distinguish executable sinks from inert text"
     ),
     () => {
-      const source = ["// DELETE FROM users", '"DELETE FROM users"', "const ok = 1;"].join("\n");
-      const commentLine = lineMatching(source, /^\/\//);
-      const stringLine = lineMatching(source, /^"/);
+      const inert = [
+        "// DELETE FROM users",
+        "/* TRUNCATE TABLE sessions */",
+        'const quoted = "DROP TABLE audit_log";',
+        "const template = `DELETE FROM archived_users`;",
+        'logger.info("TRUNCATE TABLE sessions");'
+      ].join("\n");
+      expect(analyzeSourceText("src/inert.ts", inert)).toEqual([]);
 
-      const hints = analyzeSourceText("src/false-positive.ts", source);
+      const executable = [
+        "await prisma.$executeRawUnsafe(`",
+        "  DELETE",
+        "  FROM users",
+        "`);"
+      ].join("\n");
+      const hints = analyzeSourceText("src/executable.ts", executable);
 
-      // Current behaviour: BOTH non-executable lines are flagged HardDelete.
-      expect(hints).toHaveLength(2);
-      expect(hints.map((hint) => hint.line).sort((a, b) => a - b)).toEqual([
-        commentLine,
-        stringLine
-      ]);
-      for (const hint of hints) {
-        expect(hint.effect).toBe("HardDelete");
-      }
-    }
-  );
-
-  test.todo(
-    shouldBe(
-      "destructive keywords inside comments and string literals produce NO hints",
-      "docs-site/.../learn/what-is-shape.md: hints must point at real destructive OPERATIONS, not text"
-    ),
-    () => {
-      // The ideal: a comment and a string literal are not executable deletes,
-      // so a truthful analyzer emits nothing. Currently fails (see the
-      // characterization above); kept as test.todo so it documents intent
-      // without freezing the bug or breaking CI.
-      const source = ["// DELETE FROM users", '"DELETE FROM users"', "const ok = 1;"].join("\n");
-      expect(analyzeSourceText("src/false-positive.ts", source)).toHaveLength(0);
+      expect(hints).toHaveLength(1);
+      expect(hints[0]).toEqual(
+        expect.objectContaining({
+          effect: "HardDelete",
+          sourcePath: "src/executable.ts",
+          line: 2
+        })
+      );
     }
   );
 

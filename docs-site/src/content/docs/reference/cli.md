@@ -91,7 +91,7 @@ Unknown effects are rendered as warnings and the command exits `0` only when no 
 
 ## Analyzer hints
 
-`shp analyze` scans for obvious destructive SQL plus common Kysely, Prisma, and Drizzle delete patterns. Without `--shape-files`, it prints advisory hints and exits successfully. With `--shape-files`, it compares those hints with declared effects and exits with code `1` when a hint is missing from the model.
+`shp analyze` lexically scans for obvious destructive SQL plus common Kysely, Prisma, and Drizzle delete patterns. It recognizes multiline SQL and direct raw-execution literals while ignoring comments and inert string or template literals. Destructive SQL must begin with the destructive keyword; the analyzer does not follow SQL stored in variables or resolve arbitrary library aliases. Without `--shape-files`, it prints advisory hints and exits successfully. With `--shape-files`, it compares those hints with declared effects and exits with code `1` when a hint is missing from the model.
 
 See [Analyzer Hints](../concepts/analyzer-hints) for the supported pattern families and matcher limitations.
 

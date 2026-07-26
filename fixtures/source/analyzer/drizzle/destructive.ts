@@ -10,6 +10,9 @@ export async function purgeAuditEvents(
   await db.delete(auditEvents);
   await tx
     .delete(auditArchive);
-  await db.execute("TRUNCATE TABLE audit_event_staging");
+  await db.execute(`
+    TRUNCATE
+    TABLE audit_event_staging
+  `);
   await db.execute("DROP TABLE audit_event_archive");
 }

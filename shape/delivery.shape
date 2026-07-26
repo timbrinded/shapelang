@@ -774,12 +774,12 @@ attest no_shape_change {
 
 attest no_shape_change {
   source md("docs-site/src/content/docs/concepts/analyzer-hints.md")
-  reason "Expanded the documented advisory matcher families and limitations; the guide remains within the existing DocsSite content boundary."
+  reason "Documents multiline lexical SQL detection, direct raw-execution literals, and inert-text exclusions; the guide remains within the existing DocsSite content boundary."
 }
 
 attest no_shape_change {
   source md("docs-site/src/content/docs/reference/cli.md")
-  reason "Documented the existing analyze command's expanded matcher coverage and comparison exit behavior; the DocsSite architecture is unchanged."
+  reason "Documents the analyze command's lexical matcher boundary while preserving its command, comparison, and exit behavior; the DocsSite architecture is unchanged."
 }
 
 attest no_shape_change {

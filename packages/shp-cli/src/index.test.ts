@@ -744,6 +744,20 @@ describe("shp CLI", () => {
     expect(warnings.stderr).toMatchSnapshot();
   });
 
+  test("scans multiline SQL while keeping comments and quoted examples silent", async () => {
+    const destructive = await runCli(["analyze", "fixtures/source/analyzer/sql/destructive.sql"]);
+    expect(destructive.exitCode).toBe(0);
+    expect(destructive.stderr).toBe("");
+    expect(destructive.stdout).toContain("HardDelete");
+    expect(destructive.stdout).toContain("Truncate");
+    expect(destructive.stdout).toContain("DropStorage");
+
+    const safe = await runCli(["analyze", "fixtures/source/analyzer/sql/safe.sql"]);
+    expect(safe.exitCode).toBe(0);
+    expect(safe.stdout).toBe("");
+    expect(safe.stderr).toBe("");
+  });
+
   test("reports missing analyzer source files without a stack trace", async () => {
     const result = await runCli(["analyze", "fixtures/source/missing.ts"]);
 

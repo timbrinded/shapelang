@@ -6,55 +6,327 @@ trait GeneratedAstAnchor {
 trait GeneratedCandidate {
 }
 
+resource AnalyzerModuleAddMaskedRegionAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer.ts:659-671")
+  fingerprint ast.semantic_subtree_v1("sha256:e76e52d3b0f5ebbfebb011c968fedf1bca6da9e7e45ec3c734799229c8f7a11d")
+}
+
 resource AnalyzerModuleAnalyzeSourceTextAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/analyzer.ts:47-95")
-  fingerprint ast.semantic_subtree_v1("sha256:a6532894479c73e38f384a1871d632f51a209b815ab8a191bc457a04cf99be2c")
+  storage ast.anchor("packages/shp-checker/src/analyzer.ts:117-141")
+  fingerprint ast.semantic_subtree_v1("sha256:c2c00c517124cbe6d894f54040f48a98e24f8b07e9ece96c97b67374fd5b33db")
+}
+
+resource AnalyzerModuleCallEvidenceSpanAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer.ts:673-687")
+  fingerprint ast.semantic_subtree_v1("sha256:4123d4695cb8c1e7239c2e6fdd5c2e6179008f95b89697c3226546a7ba48bb06")
 }
 
 resource AnalyzerModuleCollectDeclaredEffectsBySourcePathAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/analyzer.ts:135-157")
+  storage ast.anchor("packages/shp-checker/src/analyzer.ts:804-826")
   fingerprint ast.semantic_subtree_v1("sha256:837a96062409fa3e5fed6f3f286d54bfb0b1781a964eda72ad6d18197ad723da")
 }
 
 resource AnalyzerModuleCollectFunctionEffectsAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/analyzer.ts:159-188")
+  storage ast.anchor("packages/shp-checker/src/analyzer.ts:828-857")
   fingerprint ast.semantic_subtree_v1("sha256:83059b8e4a5dfb2809d700f89fd43668f8284411e81c3a7e4c5fb4b28f5c6d65")
 }
 
+resource AnalyzerModuleCollectLibraryCallMatchesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer.ts:161-180")
+  fingerprint ast.semantic_subtree_v1("sha256:ebf114b1fb3de70a8bc3a74adf307dd17959328f0d02e1e0542f68ae9be37968")
+}
+
+resource AnalyzerModuleCollectLineStartsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer.ts:721-729")
+  fingerprint ast.semantic_subtree_v1("sha256:fb88468a7992656fd944eb5a7cb861eaa43887a30e91f0fbdd2c17dbf97fde45")
+}
+
+resource AnalyzerModuleCollectRawSqlMatchesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer.ts:182-210")
+  fingerprint ast.semantic_subtree_v1("sha256:a55800270d33fc01e50792670445d750c9b4b0028dbedef4f2ff92a11970b381")
+}
+
+resource AnalyzerModuleCollectSqlFileMatchesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer.ts:143-151")
+  fingerprint ast.semantic_subtree_v1("sha256:05d9f6236d91aab514a84f506845c2c9f18beec47de90bca6d5fceba1bd7aae5")
+}
+
+resource AnalyzerModuleCollectTypeScriptMatchesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer.ts:153-159")
+  fingerprint ast.semantic_subtree_v1("sha256:16bf908964eca483d54df5710810bd0a2a8c812b48862ad6613b74efbdb5b6e8")
+}
+
 resource AnalyzerModuleCompareAnalyzerHintsToShapeAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/analyzer.ts:97-116")
+  storage ast.anchor("packages/shp-checker/src/analyzer.ts:766-785")
   fingerprint ast.semantic_subtree_v1("sha256:2b3e117da1212fe8645c7659bb5fbbcb1e8813fb1f1405ec0028633491ab01ab")
 }
 
+resource AnalyzerModuleCompareAnalyzerMatchesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer.ts:711-719")
+  fingerprint ast.semantic_subtree_v1("sha256:9fe1ad20bceccbc9a29a0757d72328ec6db8a13c94874c7a6c708d0ad3d98f05")
+}
+
+resource AnalyzerModuleConsumeBlockCommentAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer.ts:484-501")
+  fingerprint ast.semantic_subtree_v1("sha256:9b55230c3b0073178ab7f1425cc9b651679c3558e90562b489d283e84764a29d")
+}
+
+resource AnalyzerModuleConsumeBracketIdentifierAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer.ts:604-622")
+  fingerprint ast.semantic_subtree_v1("sha256:a1be57e0c12c8e2eb38dbe48c628abb3a9d894faa6afee491a230e17af275f92")
+}
+
+resource AnalyzerModuleConsumeDollarQuotedAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer.ts:639-657")
+  fingerprint ast.semantic_subtree_v1("sha256:580af7965670a39e66b3e091e10ccbc512a633bde0aa3c57b8c1a0683673c7ed")
+}
+
+resource AnalyzerModuleConsumeLineCommentAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer.ts:476-482")
+  fingerprint ast.semantic_subtree_v1("sha256:196aecc254b99ef6a1bd5dcfa9b88b7c8abfe9b4e5aaaa52eaea84ab08b24fa7")
+}
+
+resource AnalyzerModuleConsumeQuotedAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer.ts:503-531")
+  fingerprint ast.semantic_subtree_v1("sha256:2a5c592a1dfffcc4d53a0116b7bead90d1029266b1f22c98796242141df1e13d")
+}
+
+resource AnalyzerModuleConsumeTemplateAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer.ts:533-602")
+  fingerprint ast.semantic_subtree_v1("sha256:86552af7e8be1731a4feaf6e4148c8d24da1e5e7fe3992873c462a794dfc4e19")
+}
+
+resource AnalyzerModuleFindDirectRawSqlLiteralAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer.ts:212-244")
+  fingerprint ast.semantic_subtree_v1("sha256:a5790560280c9e15e96b301eb9ecfbd7b083a6f09c0e7a7ff4b4e5e159d892f0")
+}
+
 resource AnalyzerModuleFormatAnalyzerWarningsAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/analyzer.ts:118-133")
+  storage ast.anchor("packages/shp-checker/src/analyzer.ts:787-802")
   fingerprint ast.semantic_subtree_v1("sha256:09fe3839995abefbd70e712c86cc428892c54248ec2dcce95b7c856344982fd2")
 }
 
+resource AnalyzerModuleIsHorizontalWhitespaceAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer.ts:752-754")
+  fingerprint ast.semantic_subtree_v1("sha256:3b3deca0e3776a194e46be4cad5d7288bced5be9be64f2c2e810134b82666366")
+}
+
+resource AnalyzerModuleIsIdentifierPartAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer.ts:762-764")
+  fingerprint ast.semantic_subtree_v1("sha256:65dae8852fa57c534b5a919a2b1b2a1900a7624f950545948706367404121bf8")
+}
+
+resource AnalyzerModuleIsIdentifierStartAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer.ts:756-760")
+  fingerprint ast.semantic_subtree_v1("sha256:38fc6c478caa269ceb94e55fd800cd15306b3c717f1c3edc2a4d2f2c976ea566")
+}
+
+resource AnalyzerModuleIsSqlTemplateTagAtAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer.ts:250-256")
+  fingerprint ast.semantic_subtree_v1("sha256:1aaf7ec0ced84be04867992f312dc1a6e98411f000bf0c473522d488ac12ed4c")
+}
+
+resource AnalyzerModuleIsUsableRawSqlLiteralAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer.ts:246-248")
+  fingerprint ast.semantic_subtree_v1("sha256:6e51f8f73ad2c43507d3029c4ee6d79a6614a31415c5778f4b13270b81a544c3")
+}
+
+resource AnalyzerModuleIsWhitespaceAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer.ts:748-750")
+  fingerprint ast.semantic_subtree_v1("sha256:8d67d24f4ec91c255b84a6220a3413fc55109dca793cae1f1994f788437ec350")
+}
+
+resource AnalyzerModuleLineNumberAtOffsetAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer.ts:731-746")
+  fingerprint ast.semantic_subtree_v1("sha256:eb132453b124a0e4d30c9ae36da0b7327f77d3b9efe2c4b57531e5ce32f79a03")
+}
+
+resource AnalyzerModuleLineStartOffsetAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer.ts:689-691")
+  fingerprint ast.semantic_subtree_v1("sha256:c3f3f1dd825f88054bf54dc849611f2308ca886d9de6f4fc77f9abe04b949825")
+}
+
+resource AnalyzerModuleLiteralAtAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer.ts:258-264")
+  fingerprint ast.semantic_subtree_v1("sha256:4345515f4969b136f1a0f23ff9fba274205d9b3b8d713b5d9d26d347e2f91770")
+}
+
+resource AnalyzerModuleReadDollarQuoteDelimiterAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer.ts:624-637")
+  fingerprint ast.semantic_subtree_v1("sha256:2e42b212be01556c50a51ad471e19dc0aba9638a7b4914ac0b3070243ec3394c")
+}
+
+resource AnalyzerModuleScanDestructiveSqlAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer.ts:287-338")
+  fingerprint ast.semantic_subtree_v1("sha256:2a417a0ce88187b68a9eb6ac708b2473943ed14e4652ca71b36cbb11f12147b3")
+}
+
+resource AnalyzerModuleScanLexicalRegionsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer.ts:366-474")
+  fingerprint ast.semantic_subtree_v1("sha256:00c4c44b33baefc2f158900711e6627cc8061231b565494e323da50360e9bc29")
+}
+
+resource AnalyzerModuleShiftSpanAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer.ts:704-709")
+  fingerprint ast.semantic_subtree_v1("sha256:b2e7a031843391c2c59bbd4e687e04e7505122436e130023d033d498241e7248")
+}
+
+resource AnalyzerModuleSkipTriviaAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer.ts:266-285")
+  fingerprint ast.semantic_subtree_v1("sha256:1fe5d2051803b471ffbf1f4d2869ddc1952cfef45234dac619601848eac65097")
+}
+
+resource AnalyzerModuleSqlMatchAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer.ts:340-352")
+  fingerprint ast.semantic_subtree_v1("sha256:6842a6a9b0c730a86dc9e4c7980f85334e0bf6f05cd5f1bb9bea72f1c2650b67")
+}
+
+resource AnalyzerModuleSqlStatementEvidenceSpanAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer.ts:354-364")
+  fingerprint ast.semantic_subtree_v1("sha256:ffbd9b25acd71226af4d5868e42cc4ba7a0f63b64459304fb1e290dde3d77014")
+}
+
+resource AnalyzerModuleTrimHorizontalWhitespaceAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer.ts:693-702")
+  fingerprint ast.semantic_subtree_v1("sha256:76029c97de0e975eaf7e610d2392839b94822aebfcc3bf59e564cfc32a0a91fb")
+}
+
 component AnalyzerModule : GeneratedCandidate {
+  fn addMaskedRegion
+    source ts("packages/shp-checker/src/analyzer.ts:659-671")
+    effects unknown
   fn analyzeSourceText
-    source ts("packages/shp-checker/src/analyzer.ts:47-95")
+    source ts("packages/shp-checker/src/analyzer.ts:117-141")
+    effects unknown
+  fn callEvidenceSpan
+    source ts("packages/shp-checker/src/analyzer.ts:673-687")
     effects unknown
   fn collectDeclaredEffectsBySourcePath
-    source ts("packages/shp-checker/src/analyzer.ts:135-157")
+    source ts("packages/shp-checker/src/analyzer.ts:804-826")
     effects unknown
   fn collectFunctionEffects
-    source ts("packages/shp-checker/src/analyzer.ts:159-188")
+    source ts("packages/shp-checker/src/analyzer.ts:828-857")
+    effects unknown
+  fn collectLibraryCallMatches
+    source ts("packages/shp-checker/src/analyzer.ts:161-180")
+    effects unknown
+  fn collectLineStarts
+    source ts("packages/shp-checker/src/analyzer.ts:721-729")
+    effects unknown
+  fn collectRawSqlMatches
+    source ts("packages/shp-checker/src/analyzer.ts:182-210")
+    effects unknown
+  fn collectSqlFileMatches
+    source ts("packages/shp-checker/src/analyzer.ts:143-151")
+    effects unknown
+  fn collectTypeScriptMatches
+    source ts("packages/shp-checker/src/analyzer.ts:153-159")
     effects unknown
   fn compareAnalyzerHintsToShape
-    source ts("packages/shp-checker/src/analyzer.ts:97-116")
+    source ts("packages/shp-checker/src/analyzer.ts:766-785")
+    effects unknown
+  fn compareAnalyzerMatches
+    source ts("packages/shp-checker/src/analyzer.ts:711-719")
+    effects unknown
+  fn consumeBlockComment
+    source ts("packages/shp-checker/src/analyzer.ts:484-501")
+    effects unknown
+  fn consumeBracketIdentifier
+    source ts("packages/shp-checker/src/analyzer.ts:604-622")
+    effects unknown
+  fn consumeDollarQuoted
+    source ts("packages/shp-checker/src/analyzer.ts:639-657")
+    effects unknown
+  fn consumeLineComment
+    source ts("packages/shp-checker/src/analyzer.ts:476-482")
+    effects unknown
+  fn consumeQuoted
+    source ts("packages/shp-checker/src/analyzer.ts:503-531")
+    effects unknown
+  fn consumeTemplate
+    source ts("packages/shp-checker/src/analyzer.ts:533-602")
+    effects unknown
+  fn findDirectRawSqlLiteral
+    source ts("packages/shp-checker/src/analyzer.ts:212-244")
     effects unknown
   fn formatAnalyzerWarnings
-    source ts("packages/shp-checker/src/analyzer.ts:118-133")
+    source ts("packages/shp-checker/src/analyzer.ts:787-802")
     effects unknown
+  fn isHorizontalWhitespace
+    source ts("packages/shp-checker/src/analyzer.ts:752-754")
+    effects unknown
+  fn isIdentifierPart
+    source ts("packages/shp-checker/src/analyzer.ts:762-764")
+    effects unknown
+  fn isIdentifierStart
+    source ts("packages/shp-checker/src/analyzer.ts:756-760")
+    effects unknown
+  fn isSqlTemplateTagAt
+    source ts("packages/shp-checker/src/analyzer.ts:250-256")
+    effects unknown
+  fn isUsableRawSqlLiteral
+    source ts("packages/shp-checker/src/analyzer.ts:246-248")
+    effects unknown
+  fn isWhitespace
+    source ts("packages/shp-checker/src/analyzer.ts:748-750")
+    effects unknown
+  fn lineNumberAtOffset
+    source ts("packages/shp-checker/src/analyzer.ts:731-746")
+    effects unknown
+  fn lineStartOffset
+    source ts("packages/shp-checker/src/analyzer.ts:689-691")
+    effects unknown
+  fn literalAt
+    source ts("packages/shp-checker/src/analyzer.ts:258-264")
+    effects unknown
+  fn readDollarQuoteDelimiter
+    source ts("packages/shp-checker/src/analyzer.ts:624-637")
+    effects unknown
+  fn scanDestructiveSql
+    source ts("packages/shp-checker/src/analyzer.ts:287-338")
+    effects unknown
+  fn scanLexicalRegions
+    source ts("packages/shp-checker/src/analyzer.ts:366-474")
+    effects unknown
+  fn shiftSpan
+    source ts("packages/shp-checker/src/analyzer.ts:704-709")
+    effects unknown
+  fn skipTrivia
+    source ts("packages/shp-checker/src/analyzer.ts:266-285")
+    effects unknown
+  fn sqlMatch
+    source ts("packages/shp-checker/src/analyzer.ts:340-352")
+    effects unknown
+  fn sqlStatementEvidenceSpan
+    source ts("packages/shp-checker/src/analyzer.ts:354-364")
+    effects unknown
+  fn trimHorizontalWhitespace
+    source ts("packages/shp-checker/src/analyzer.ts:693-702")
+    effects unknown
+}
+
+relation AnalyzerModuleAddMaskedRegionGeneratedFromAnalyzerModuleAddMaskedRegionAstAnchor {
+  kind generated_from
+  connects AnalyzerModule -> AnalyzerModuleAddMaskedRegionAstAnchor
+  roles { AnalyzerModule as generated, AnalyzerModuleAddMaskedRegionAstAnchor as syntax }
+  expects AnalyzerModuleAddMaskedRegionAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e76e52d3b0f5ebbfebb011c968fedf1bca6da9e7e45ec3c734799229c8f7a11d")
+  summary "fn AnalyzerModule.addMaskedRegion generated from typescript function_declaration at packages/shp-checker/src/analyzer.ts:659-671."
 }
 
 relation AnalyzerModuleAnalyzeSourceTextGeneratedFromAnalyzerModuleAnalyzeSourceTextAstAnchor {
   kind generated_from
   connects AnalyzerModule -> AnalyzerModuleAnalyzeSourceTextAstAnchor
   roles { AnalyzerModule as generated, AnalyzerModuleAnalyzeSourceTextAstAnchor as syntax }
-  expects AnalyzerModuleAnalyzeSourceTextAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a6532894479c73e38f384a1871d632f51a209b815ab8a191bc457a04cf99be2c")
-  summary "fn AnalyzerModule.analyzeSourceText generated from typescript function_declaration at packages/shp-checker/src/analyzer.ts:47-95."
+  expects AnalyzerModuleAnalyzeSourceTextAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c2c00c517124cbe6d894f54040f48a98e24f8b07e9ece96c97b67374fd5b33db")
+  summary "fn AnalyzerModule.analyzeSourceText generated from typescript function_declaration at packages/shp-checker/src/analyzer.ts:117-141."
+}
+
+relation AnalyzerModuleCallEvidenceSpanGeneratedFromAnalyzerModuleCallEvidenceSpanAstAnchor {
+  kind generated_from
+  connects AnalyzerModule -> AnalyzerModuleCallEvidenceSpanAstAnchor
+  roles { AnalyzerModule as generated, AnalyzerModuleCallEvidenceSpanAstAnchor as syntax }
+  expects AnalyzerModuleCallEvidenceSpanAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4123d4695cb8c1e7239c2e6fdd5c2e6179008f95b89697c3226546a7ba48bb06")
+  summary "fn AnalyzerModule.callEvidenceSpan generated from typescript function_declaration at packages/shp-checker/src/analyzer.ts:673-687."
 }
 
 relation AnalyzerModuleCollectDeclaredEffectsBySourcePathGeneratedFromAnalyzerModuleCollectDeclaredEffectsBySourcePathAstAnchor {
@@ -62,7 +334,7 @@ relation AnalyzerModuleCollectDeclaredEffectsBySourcePathGeneratedFromAnalyzerMo
   connects AnalyzerModule -> AnalyzerModuleCollectDeclaredEffectsBySourcePathAstAnchor
   roles { AnalyzerModule as generated, AnalyzerModuleCollectDeclaredEffectsBySourcePathAstAnchor as syntax }
   expects AnalyzerModuleCollectDeclaredEffectsBySourcePathAstAnchor fingerprint ast.semantic_subtree_v1("sha256:837a96062409fa3e5fed6f3f286d54bfb0b1781a964eda72ad6d18197ad723da")
-  summary "fn AnalyzerModule.collectDeclaredEffectsBySourcePath generated from typescript function_declaration at packages/shp-checker/src/analyzer.ts:135-157."
+  summary "fn AnalyzerModule.collectDeclaredEffectsBySourcePath generated from typescript function_declaration at packages/shp-checker/src/analyzer.ts:804-826."
 }
 
 relation AnalyzerModuleCollectFunctionEffectsGeneratedFromAnalyzerModuleCollectFunctionEffectsAstAnchor {
@@ -70,7 +342,47 @@ relation AnalyzerModuleCollectFunctionEffectsGeneratedFromAnalyzerModuleCollectF
   connects AnalyzerModule -> AnalyzerModuleCollectFunctionEffectsAstAnchor
   roles { AnalyzerModule as generated, AnalyzerModuleCollectFunctionEffectsAstAnchor as syntax }
   expects AnalyzerModuleCollectFunctionEffectsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:83059b8e4a5dfb2809d700f89fd43668f8284411e81c3a7e4c5fb4b28f5c6d65")
-  summary "fn AnalyzerModule.collectFunctionEffects generated from typescript function_declaration at packages/shp-checker/src/analyzer.ts:159-188."
+  summary "fn AnalyzerModule.collectFunctionEffects generated from typescript function_declaration at packages/shp-checker/src/analyzer.ts:828-857."
+}
+
+relation AnalyzerModuleCollectLibraryCallMatchesGeneratedFromAnalyzerModuleCollectLibraryCallMatchesAstAnchor {
+  kind generated_from
+  connects AnalyzerModule -> AnalyzerModuleCollectLibraryCallMatchesAstAnchor
+  roles { AnalyzerModule as generated, AnalyzerModuleCollectLibraryCallMatchesAstAnchor as syntax }
+  expects AnalyzerModuleCollectLibraryCallMatchesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ebf114b1fb3de70a8bc3a74adf307dd17959328f0d02e1e0542f68ae9be37968")
+  summary "fn AnalyzerModule.collectLibraryCallMatches generated from typescript function_declaration at packages/shp-checker/src/analyzer.ts:161-180."
+}
+
+relation AnalyzerModuleCollectLineStartsGeneratedFromAnalyzerModuleCollectLineStartsAstAnchor {
+  kind generated_from
+  connects AnalyzerModule -> AnalyzerModuleCollectLineStartsAstAnchor
+  roles { AnalyzerModule as generated, AnalyzerModuleCollectLineStartsAstAnchor as syntax }
+  expects AnalyzerModuleCollectLineStartsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:fb88468a7992656fd944eb5a7cb861eaa43887a30e91f0fbdd2c17dbf97fde45")
+  summary "fn AnalyzerModule.collectLineStarts generated from typescript function_declaration at packages/shp-checker/src/analyzer.ts:721-729."
+}
+
+relation AnalyzerModuleCollectRawSqlMatchesGeneratedFromAnalyzerModuleCollectRawSqlMatchesAstAnchor {
+  kind generated_from
+  connects AnalyzerModule -> AnalyzerModuleCollectRawSqlMatchesAstAnchor
+  roles { AnalyzerModule as generated, AnalyzerModuleCollectRawSqlMatchesAstAnchor as syntax }
+  expects AnalyzerModuleCollectRawSqlMatchesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a55800270d33fc01e50792670445d750c9b4b0028dbedef4f2ff92a11970b381")
+  summary "fn AnalyzerModule.collectRawSqlMatches generated from typescript function_declaration at packages/shp-checker/src/analyzer.ts:182-210."
+}
+
+relation AnalyzerModuleCollectSqlFileMatchesGeneratedFromAnalyzerModuleCollectSqlFileMatchesAstAnchor {
+  kind generated_from
+  connects AnalyzerModule -> AnalyzerModuleCollectSqlFileMatchesAstAnchor
+  roles { AnalyzerModule as generated, AnalyzerModuleCollectSqlFileMatchesAstAnchor as syntax }
+  expects AnalyzerModuleCollectSqlFileMatchesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:05d9f6236d91aab514a84f506845c2c9f18beec47de90bca6d5fceba1bd7aae5")
+  summary "fn AnalyzerModule.collectSqlFileMatches generated from typescript function_declaration at packages/shp-checker/src/analyzer.ts:143-151."
+}
+
+relation AnalyzerModuleCollectTypeScriptMatchesGeneratedFromAnalyzerModuleCollectTypeScriptMatchesAstAnchor {
+  kind generated_from
+  connects AnalyzerModule -> AnalyzerModuleCollectTypeScriptMatchesAstAnchor
+  roles { AnalyzerModule as generated, AnalyzerModuleCollectTypeScriptMatchesAstAnchor as syntax }
+  expects AnalyzerModuleCollectTypeScriptMatchesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:16bf908964eca483d54df5710810bd0a2a8c812b48862ad6613b74efbdb5b6e8")
+  summary "fn AnalyzerModule.collectTypeScriptMatches generated from typescript function_declaration at packages/shp-checker/src/analyzer.ts:153-159."
 }
 
 relation AnalyzerModuleCompareAnalyzerHintsToShapeGeneratedFromAnalyzerModuleCompareAnalyzerHintsToShapeAstAnchor {
@@ -78,7 +390,71 @@ relation AnalyzerModuleCompareAnalyzerHintsToShapeGeneratedFromAnalyzerModuleCom
   connects AnalyzerModule -> AnalyzerModuleCompareAnalyzerHintsToShapeAstAnchor
   roles { AnalyzerModule as generated, AnalyzerModuleCompareAnalyzerHintsToShapeAstAnchor as syntax }
   expects AnalyzerModuleCompareAnalyzerHintsToShapeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2b3e117da1212fe8645c7659bb5fbbcb1e8813fb1f1405ec0028633491ab01ab")
-  summary "fn AnalyzerModule.compareAnalyzerHintsToShape generated from typescript function_declaration at packages/shp-checker/src/analyzer.ts:97-116."
+  summary "fn AnalyzerModule.compareAnalyzerHintsToShape generated from typescript function_declaration at packages/shp-checker/src/analyzer.ts:766-785."
+}
+
+relation AnalyzerModuleCompareAnalyzerMatchesGeneratedFromAnalyzerModuleCompareAnalyzerMatchesAstAnchor {
+  kind generated_from
+  connects AnalyzerModule -> AnalyzerModuleCompareAnalyzerMatchesAstAnchor
+  roles { AnalyzerModule as generated, AnalyzerModuleCompareAnalyzerMatchesAstAnchor as syntax }
+  expects AnalyzerModuleCompareAnalyzerMatchesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9fe1ad20bceccbc9a29a0757d72328ec6db8a13c94874c7a6c708d0ad3d98f05")
+  summary "fn AnalyzerModule.compareAnalyzerMatches generated from typescript function_declaration at packages/shp-checker/src/analyzer.ts:711-719."
+}
+
+relation AnalyzerModuleConsumeBlockCommentGeneratedFromAnalyzerModuleConsumeBlockCommentAstAnchor {
+  kind generated_from
+  connects AnalyzerModule -> AnalyzerModuleConsumeBlockCommentAstAnchor
+  roles { AnalyzerModule as generated, AnalyzerModuleConsumeBlockCommentAstAnchor as syntax }
+  expects AnalyzerModuleConsumeBlockCommentAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9b55230c3b0073178ab7f1425cc9b651679c3558e90562b489d283e84764a29d")
+  summary "fn AnalyzerModule.consumeBlockComment generated from typescript function_declaration at packages/shp-checker/src/analyzer.ts:484-501."
+}
+
+relation AnalyzerModuleConsumeBracketIdentifierGeneratedFromAnalyzerModuleConsumeBracketIdentifierAstAnchor {
+  kind generated_from
+  connects AnalyzerModule -> AnalyzerModuleConsumeBracketIdentifierAstAnchor
+  roles { AnalyzerModule as generated, AnalyzerModuleConsumeBracketIdentifierAstAnchor as syntax }
+  expects AnalyzerModuleConsumeBracketIdentifierAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a1be57e0c12c8e2eb38dbe48c628abb3a9d894faa6afee491a230e17af275f92")
+  summary "fn AnalyzerModule.consumeBracketIdentifier generated from typescript function_declaration at packages/shp-checker/src/analyzer.ts:604-622."
+}
+
+relation AnalyzerModuleConsumeDollarQuotedGeneratedFromAnalyzerModuleConsumeDollarQuotedAstAnchor {
+  kind generated_from
+  connects AnalyzerModule -> AnalyzerModuleConsumeDollarQuotedAstAnchor
+  roles { AnalyzerModule as generated, AnalyzerModuleConsumeDollarQuotedAstAnchor as syntax }
+  expects AnalyzerModuleConsumeDollarQuotedAstAnchor fingerprint ast.semantic_subtree_v1("sha256:580af7965670a39e66b3e091e10ccbc512a633bde0aa3c57b8c1a0683673c7ed")
+  summary "fn AnalyzerModule.consumeDollarQuoted generated from typescript function_declaration at packages/shp-checker/src/analyzer.ts:639-657."
+}
+
+relation AnalyzerModuleConsumeLineCommentGeneratedFromAnalyzerModuleConsumeLineCommentAstAnchor {
+  kind generated_from
+  connects AnalyzerModule -> AnalyzerModuleConsumeLineCommentAstAnchor
+  roles { AnalyzerModule as generated, AnalyzerModuleConsumeLineCommentAstAnchor as syntax }
+  expects AnalyzerModuleConsumeLineCommentAstAnchor fingerprint ast.semantic_subtree_v1("sha256:196aecc254b99ef6a1bd5dcfa9b88b7c8abfe9b4e5aaaa52eaea84ab08b24fa7")
+  summary "fn AnalyzerModule.consumeLineComment generated from typescript function_declaration at packages/shp-checker/src/analyzer.ts:476-482."
+}
+
+relation AnalyzerModuleConsumeQuotedGeneratedFromAnalyzerModuleConsumeQuotedAstAnchor {
+  kind generated_from
+  connects AnalyzerModule -> AnalyzerModuleConsumeQuotedAstAnchor
+  roles { AnalyzerModule as generated, AnalyzerModuleConsumeQuotedAstAnchor as syntax }
+  expects AnalyzerModuleConsumeQuotedAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2a5c592a1dfffcc4d53a0116b7bead90d1029266b1f22c98796242141df1e13d")
+  summary "fn AnalyzerModule.consumeQuoted generated from typescript function_declaration at packages/shp-checker/src/analyzer.ts:503-531."
+}
+
+relation AnalyzerModuleConsumeTemplateGeneratedFromAnalyzerModuleConsumeTemplateAstAnchor {
+  kind generated_from
+  connects AnalyzerModule -> AnalyzerModuleConsumeTemplateAstAnchor
+  roles { AnalyzerModule as generated, AnalyzerModuleConsumeTemplateAstAnchor as syntax }
+  expects AnalyzerModuleConsumeTemplateAstAnchor fingerprint ast.semantic_subtree_v1("sha256:86552af7e8be1731a4feaf6e4148c8d24da1e5e7fe3992873c462a794dfc4e19")
+  summary "fn AnalyzerModule.consumeTemplate generated from typescript function_declaration at packages/shp-checker/src/analyzer.ts:533-602."
+}
+
+relation AnalyzerModuleFindDirectRawSqlLiteralGeneratedFromAnalyzerModuleFindDirectRawSqlLiteralAstAnchor {
+  kind generated_from
+  connects AnalyzerModule -> AnalyzerModuleFindDirectRawSqlLiteralAstAnchor
+  roles { AnalyzerModule as generated, AnalyzerModuleFindDirectRawSqlLiteralAstAnchor as syntax }
+  expects AnalyzerModuleFindDirectRawSqlLiteralAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a5790560280c9e15e96b301eb9ecfbd7b083a6f09c0e7a7ff4b4e5e159d892f0")
+  summary "fn AnalyzerModule.findDirectRawSqlLiteral generated from typescript function_declaration at packages/shp-checker/src/analyzer.ts:212-244."
 }
 
 relation AnalyzerModuleFormatAnalyzerWarningsGeneratedFromAnalyzerModuleFormatAnalyzerWarningsAstAnchor {
@@ -86,7 +462,143 @@ relation AnalyzerModuleFormatAnalyzerWarningsGeneratedFromAnalyzerModuleFormatAn
   connects AnalyzerModule -> AnalyzerModuleFormatAnalyzerWarningsAstAnchor
   roles { AnalyzerModule as generated, AnalyzerModuleFormatAnalyzerWarningsAstAnchor as syntax }
   expects AnalyzerModuleFormatAnalyzerWarningsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:09fe3839995abefbd70e712c86cc428892c54248ec2dcce95b7c856344982fd2")
-  summary "fn AnalyzerModule.formatAnalyzerWarnings generated from typescript function_declaration at packages/shp-checker/src/analyzer.ts:118-133."
+  summary "fn AnalyzerModule.formatAnalyzerWarnings generated from typescript function_declaration at packages/shp-checker/src/analyzer.ts:787-802."
+}
+
+relation AnalyzerModuleIsHorizontalWhitespaceGeneratedFromAnalyzerModuleIsHorizontalWhitespaceAstAnchor {
+  kind generated_from
+  connects AnalyzerModule -> AnalyzerModuleIsHorizontalWhitespaceAstAnchor
+  roles { AnalyzerModule as generated, AnalyzerModuleIsHorizontalWhitespaceAstAnchor as syntax }
+  expects AnalyzerModuleIsHorizontalWhitespaceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3b3deca0e3776a194e46be4cad5d7288bced5be9be64f2c2e810134b82666366")
+  summary "fn AnalyzerModule.isHorizontalWhitespace generated from typescript function_declaration at packages/shp-checker/src/analyzer.ts:752-754."
+}
+
+relation AnalyzerModuleIsIdentifierPartGeneratedFromAnalyzerModuleIsIdentifierPartAstAnchor {
+  kind generated_from
+  connects AnalyzerModule -> AnalyzerModuleIsIdentifierPartAstAnchor
+  roles { AnalyzerModule as generated, AnalyzerModuleIsIdentifierPartAstAnchor as syntax }
+  expects AnalyzerModuleIsIdentifierPartAstAnchor fingerprint ast.semantic_subtree_v1("sha256:65dae8852fa57c534b5a919a2b1b2a1900a7624f950545948706367404121bf8")
+  summary "fn AnalyzerModule.isIdentifierPart generated from typescript function_declaration at packages/shp-checker/src/analyzer.ts:762-764."
+}
+
+relation AnalyzerModuleIsIdentifierStartGeneratedFromAnalyzerModuleIsIdentifierStartAstAnchor {
+  kind generated_from
+  connects AnalyzerModule -> AnalyzerModuleIsIdentifierStartAstAnchor
+  roles { AnalyzerModule as generated, AnalyzerModuleIsIdentifierStartAstAnchor as syntax }
+  expects AnalyzerModuleIsIdentifierStartAstAnchor fingerprint ast.semantic_subtree_v1("sha256:38fc6c478caa269ceb94e55fd800cd15306b3c717f1c3edc2a4d2f2c976ea566")
+  summary "fn AnalyzerModule.isIdentifierStart generated from typescript function_declaration at packages/shp-checker/src/analyzer.ts:756-760."
+}
+
+relation AnalyzerModuleIsSqlTemplateTagAtGeneratedFromAnalyzerModuleIsSqlTemplateTagAtAstAnchor {
+  kind generated_from
+  connects AnalyzerModule -> AnalyzerModuleIsSqlTemplateTagAtAstAnchor
+  roles { AnalyzerModule as generated, AnalyzerModuleIsSqlTemplateTagAtAstAnchor as syntax }
+  expects AnalyzerModuleIsSqlTemplateTagAtAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1aaf7ec0ced84be04867992f312dc1a6e98411f000bf0c473522d488ac12ed4c")
+  summary "fn AnalyzerModule.isSqlTemplateTagAt generated from typescript function_declaration at packages/shp-checker/src/analyzer.ts:250-256."
+}
+
+relation AnalyzerModuleIsUsableRawSqlLiteralGeneratedFromAnalyzerModuleIsUsableRawSqlLiteralAstAnchor {
+  kind generated_from
+  connects AnalyzerModule -> AnalyzerModuleIsUsableRawSqlLiteralAstAnchor
+  roles { AnalyzerModule as generated, AnalyzerModuleIsUsableRawSqlLiteralAstAnchor as syntax }
+  expects AnalyzerModuleIsUsableRawSqlLiteralAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6e51f8f73ad2c43507d3029c4ee6d79a6614a31415c5778f4b13270b81a544c3")
+  summary "fn AnalyzerModule.isUsableRawSqlLiteral generated from typescript function_declaration at packages/shp-checker/src/analyzer.ts:246-248."
+}
+
+relation AnalyzerModuleIsWhitespaceGeneratedFromAnalyzerModuleIsWhitespaceAstAnchor {
+  kind generated_from
+  connects AnalyzerModule -> AnalyzerModuleIsWhitespaceAstAnchor
+  roles { AnalyzerModule as generated, AnalyzerModuleIsWhitespaceAstAnchor as syntax }
+  expects AnalyzerModuleIsWhitespaceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:8d67d24f4ec91c255b84a6220a3413fc55109dca793cae1f1994f788437ec350")
+  summary "fn AnalyzerModule.isWhitespace generated from typescript function_declaration at packages/shp-checker/src/analyzer.ts:748-750."
+}
+
+relation AnalyzerModuleLineNumberAtOffsetGeneratedFromAnalyzerModuleLineNumberAtOffsetAstAnchor {
+  kind generated_from
+  connects AnalyzerModule -> AnalyzerModuleLineNumberAtOffsetAstAnchor
+  roles { AnalyzerModule as generated, AnalyzerModuleLineNumberAtOffsetAstAnchor as syntax }
+  expects AnalyzerModuleLineNumberAtOffsetAstAnchor fingerprint ast.semantic_subtree_v1("sha256:eb132453b124a0e4d30c9ae36da0b7327f77d3b9efe2c4b57531e5ce32f79a03")
+  summary "fn AnalyzerModule.lineNumberAtOffset generated from typescript function_declaration at packages/shp-checker/src/analyzer.ts:731-746."
+}
+
+relation AnalyzerModuleLineStartOffsetGeneratedFromAnalyzerModuleLineStartOffsetAstAnchor {
+  kind generated_from
+  connects AnalyzerModule -> AnalyzerModuleLineStartOffsetAstAnchor
+  roles { AnalyzerModule as generated, AnalyzerModuleLineStartOffsetAstAnchor as syntax }
+  expects AnalyzerModuleLineStartOffsetAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c3f3f1dd825f88054bf54dc849611f2308ca886d9de6f4fc77f9abe04b949825")
+  summary "fn AnalyzerModule.lineStartOffset generated from typescript function_declaration at packages/shp-checker/src/analyzer.ts:689-691."
+}
+
+relation AnalyzerModuleLiteralAtGeneratedFromAnalyzerModuleLiteralAtAstAnchor {
+  kind generated_from
+  connects AnalyzerModule -> AnalyzerModuleLiteralAtAstAnchor
+  roles { AnalyzerModule as generated, AnalyzerModuleLiteralAtAstAnchor as syntax }
+  expects AnalyzerModuleLiteralAtAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4345515f4969b136f1a0f23ff9fba274205d9b3b8d713b5d9d26d347e2f91770")
+  summary "fn AnalyzerModule.literalAt generated from typescript function_declaration at packages/shp-checker/src/analyzer.ts:258-264."
+}
+
+relation AnalyzerModuleReadDollarQuoteDelimiterGeneratedFromAnalyzerModuleReadDollarQuoteDelimiterAstAnchor {
+  kind generated_from
+  connects AnalyzerModule -> AnalyzerModuleReadDollarQuoteDelimiterAstAnchor
+  roles { AnalyzerModule as generated, AnalyzerModuleReadDollarQuoteDelimiterAstAnchor as syntax }
+  expects AnalyzerModuleReadDollarQuoteDelimiterAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2e42b212be01556c50a51ad471e19dc0aba9638a7b4914ac0b3070243ec3394c")
+  summary "fn AnalyzerModule.readDollarQuoteDelimiter generated from typescript function_declaration at packages/shp-checker/src/analyzer.ts:624-637."
+}
+
+relation AnalyzerModuleScanDestructiveSqlGeneratedFromAnalyzerModuleScanDestructiveSqlAstAnchor {
+  kind generated_from
+  connects AnalyzerModule -> AnalyzerModuleScanDestructiveSqlAstAnchor
+  roles { AnalyzerModule as generated, AnalyzerModuleScanDestructiveSqlAstAnchor as syntax }
+  expects AnalyzerModuleScanDestructiveSqlAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2a417a0ce88187b68a9eb6ac708b2473943ed14e4652ca71b36cbb11f12147b3")
+  summary "fn AnalyzerModule.scanDestructiveSql generated from typescript function_declaration at packages/shp-checker/src/analyzer.ts:287-338."
+}
+
+relation AnalyzerModuleScanLexicalRegionsGeneratedFromAnalyzerModuleScanLexicalRegionsAstAnchor {
+  kind generated_from
+  connects AnalyzerModule -> AnalyzerModuleScanLexicalRegionsAstAnchor
+  roles { AnalyzerModule as generated, AnalyzerModuleScanLexicalRegionsAstAnchor as syntax }
+  expects AnalyzerModuleScanLexicalRegionsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:00c4c44b33baefc2f158900711e6627cc8061231b565494e323da50360e9bc29")
+  summary "fn AnalyzerModule.scanLexicalRegions generated from typescript function_declaration at packages/shp-checker/src/analyzer.ts:366-474."
+}
+
+relation AnalyzerModuleShiftSpanGeneratedFromAnalyzerModuleShiftSpanAstAnchor {
+  kind generated_from
+  connects AnalyzerModule -> AnalyzerModuleShiftSpanAstAnchor
+  roles { AnalyzerModule as generated, AnalyzerModuleShiftSpanAstAnchor as syntax }
+  expects AnalyzerModuleShiftSpanAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b2e7a031843391c2c59bbd4e687e04e7505122436e130023d033d498241e7248")
+  summary "fn AnalyzerModule.shiftSpan generated from typescript function_declaration at packages/shp-checker/src/analyzer.ts:704-709."
+}
+
+relation AnalyzerModuleSkipTriviaGeneratedFromAnalyzerModuleSkipTriviaAstAnchor {
+  kind generated_from
+  connects AnalyzerModule -> AnalyzerModuleSkipTriviaAstAnchor
+  roles { AnalyzerModule as generated, AnalyzerModuleSkipTriviaAstAnchor as syntax }
+  expects AnalyzerModuleSkipTriviaAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1fe5d2051803b471ffbf1f4d2869ddc1952cfef45234dac619601848eac65097")
+  summary "fn AnalyzerModule.skipTrivia generated from typescript function_declaration at packages/shp-checker/src/analyzer.ts:266-285."
+}
+
+relation AnalyzerModuleSqlMatchGeneratedFromAnalyzerModuleSqlMatchAstAnchor {
+  kind generated_from
+  connects AnalyzerModule -> AnalyzerModuleSqlMatchAstAnchor
+  roles { AnalyzerModule as generated, AnalyzerModuleSqlMatchAstAnchor as syntax }
+  expects AnalyzerModuleSqlMatchAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6842a6a9b0c730a86dc9e4c7980f85334e0bf6f05cd5f1bb9bea72f1c2650b67")
+  summary "fn AnalyzerModule.sqlMatch generated from typescript function_declaration at packages/shp-checker/src/analyzer.ts:340-352."
+}
+
+relation AnalyzerModuleSqlStatementEvidenceSpanGeneratedFromAnalyzerModuleSqlStatementEvidenceSpanAstAnchor {
+  kind generated_from
+  connects AnalyzerModule -> AnalyzerModuleSqlStatementEvidenceSpanAstAnchor
+  roles { AnalyzerModule as generated, AnalyzerModuleSqlStatementEvidenceSpanAstAnchor as syntax }
+  expects AnalyzerModuleSqlStatementEvidenceSpanAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ffbd9b25acd71226af4d5868e42cc4ba7a0f63b64459304fb1e290dde3d77014")
+  summary "fn AnalyzerModule.sqlStatementEvidenceSpan generated from typescript function_declaration at packages/shp-checker/src/analyzer.ts:354-364."
+}
+
+relation AnalyzerModuleTrimHorizontalWhitespaceGeneratedFromAnalyzerModuleTrimHorizontalWhitespaceAstAnchor {
+  kind generated_from
+  connects AnalyzerModule -> AnalyzerModuleTrimHorizontalWhitespaceAstAnchor
+  roles { AnalyzerModule as generated, AnalyzerModuleTrimHorizontalWhitespaceAstAnchor as syntax }
+  expects AnalyzerModuleTrimHorizontalWhitespaceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:76029c97de0e975eaf7e610d2392839b94822aebfcc3bf59e564cfc32a0a91fb")
+  summary "fn AnalyzerModule.trimHorizontalWhitespace generated from typescript function_declaration at packages/shp-checker/src/analyzer.ts:693-702."
 }
 
 implementation AnalyzerModuleImpl {

@@ -7,13 +7,13 @@ trait GeneratedCandidate {
 }
 
 resource SafeModuleRetainAuditEventsAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("fixtures/source/analyzer/prisma/safe.ts:1-13")
-  fingerprint ast.semantic_subtree_v1("sha256:58bbc5f0ff25df312803e18885f05d98100329308ee9a2dad080a3d083ad9061")
+  storage ast.anchor("fixtures/source/analyzer/prisma/safe.ts:1-16")
+  fingerprint ast.semantic_subtree_v1("sha256:0425f58f31e7fffee6c95e6e0308000fbb2cdc3084507d9b574100002a56ec99")
 }
 
 component SafeModule : GeneratedCandidate {
   fn retainAuditEvents
-    source ts("fixtures/source/analyzer/prisma/safe.ts:1-13")
+    source ts("fixtures/source/analyzer/prisma/safe.ts:1-16")
     effects unknown
 }
 
@@ -21,8 +21,8 @@ relation SafeModuleRetainAuditEventsGeneratedFromSafeModuleRetainAuditEventsAstA
   kind generated_from
   connects SafeModule -> SafeModuleRetainAuditEventsAstAnchor
   roles { SafeModule as generated, SafeModuleRetainAuditEventsAstAnchor as syntax }
-  expects SafeModuleRetainAuditEventsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:58bbc5f0ff25df312803e18885f05d98100329308ee9a2dad080a3d083ad9061")
-  summary "fn SafeModule.retainAuditEvents generated from typescript function_declaration at fixtures/source/analyzer/prisma/safe.ts:1-13."
+  expects SafeModuleRetainAuditEventsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0425f58f31e7fffee6c95e6e0308000fbb2cdc3084507d9b574100002a56ec99")
+  summary "fn SafeModule.retainAuditEvents generated from typescript function_declaration at fixtures/source/analyzer/prisma/safe.ts:1-16."
 }
 
 implementation SafeModuleImpl {

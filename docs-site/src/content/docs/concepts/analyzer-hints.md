@@ -26,7 +26,11 @@ The analyzer recognizes a deliberately small set of obvious patterns:
 | Prisma | `prisma.<model>.delete(...)`, `deleteMany(...)`, and destructive raw SQL |
 | Drizzle | `db.delete(...)` or transaction `delete(...)`, plus destructive raw SQL |
 
-The TypeScript matchers cover common `prisma`/`db`/`tx`/`trx` receiver names and a single member-call line wrap. Project-specific aliases or more heavily split chains may not be recognized. Conversely, textual SQL in an inert string or comment can still produce a hint because the analyzer does not parse control flow or string usage.
+The SQL scanner accepts whitespace, newlines, and comments between operation keywords, so statements such as a multiline `DELETE … FROM` are still visible. It ignores SQL comments and quoted text that merely mentions a destructive statement.
+
+The TypeScript matchers cover common `prisma`/`db`/`tx`/`trx` receiver names. Library calls are matched in unquoted source regions, while SQL inside a string or template is scanned only when that literal is passed directly to a supported raw-execution sink. Comments, standalone string or template literals, and strings passed to unrelated calls stay silent.
+
+The analyzer expects the destructive keyword to begin the SQL statement. It does not parse CTE-prefixed statements, evaluate control flow, follow SQL stored in variables, resolve project-specific aliases or dynamic call targets, or mask JavaScript regular-expression literals. Those cases still require review of the implementation and its declared Shape effects.
 
 These hints are useful review aids. They are not a substitute for the `.shape` file.
 
