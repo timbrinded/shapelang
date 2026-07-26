@@ -6,9 +6,19 @@ trait GeneratedAstAnchor {
 trait GeneratedCandidate {
 }
 
+resource IndexTestModuleCleanCriticProposalAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/index.test.ts#cleanCriticProposal")
+  fingerprint ast.semantic_subtree_v1("sha256:2a9ee9878050f1dfe870bbde1c09089b71d627bf063181c20735e90b59ffacba")
+}
+
 resource IndexTestModuleCliAstJsonAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-cli/src/index.test.ts#cliAstJson")
   fingerprint ast.semantic_subtree_v1("sha256:7119cc30e476e1a6d62217985a08cd16d36c852a3ab121050c7ca74c7f56961d")
+}
+
+resource IndexTestModuleGuardedCriticShapeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/index.test.ts#guardedCriticShape")
+  fingerprint ast.semantic_subtree_v1("sha256:555d0de1bc7d54f6847933c1841ff632a0391d2a50cd2885c4acf20bce539158")
 }
 
 resource IndexTestModuleIsCliManifestAstAnchor : GeneratedAstAnchor {
@@ -27,8 +37,14 @@ resource IndexTestModuleRunCliAstAnchor : GeneratedAstAnchor {
 }
 
 component IndexTestModule : GeneratedCandidate {
+  fn cleanCriticProposal
+    source ts("packages/shp-cli/src/index.test.ts#cleanCriticProposal")
+    effects unknown
   fn cliAstJson
     source ts("packages/shp-cli/src/index.test.ts#cliAstJson")
+    effects unknown
+  fn guardedCriticShape
+    source ts("packages/shp-cli/src/index.test.ts#guardedCriticShape")
     effects unknown
   fn isCliManifest
     source ts("packages/shp-cli/src/index.test.ts#isCliManifest")
@@ -41,12 +57,28 @@ component IndexTestModule : GeneratedCandidate {
     effects unknown
 }
 
+relation IndexTestModuleCleanCriticProposalGeneratedFromIndexTestModuleCleanCriticProposalAstAnchor {
+  kind generated_from
+  connects IndexTestModule -> IndexTestModuleCleanCriticProposalAstAnchor
+  roles { IndexTestModule as generated, IndexTestModuleCleanCriticProposalAstAnchor as syntax }
+  expects IndexTestModuleCleanCriticProposalAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2a9ee9878050f1dfe870bbde1c09089b71d627bf063181c20735e90b59ffacba")
+  summary "fn IndexTestModule.cleanCriticProposal generated from typescript function_declaration at packages/shp-cli/src/index.test.ts#cleanCriticProposal."
+}
+
 relation IndexTestModuleCliAstJsonGeneratedFromIndexTestModuleCliAstJsonAstAnchor {
   kind generated_from
   connects IndexTestModule -> IndexTestModuleCliAstJsonAstAnchor
   roles { IndexTestModule as generated, IndexTestModuleCliAstJsonAstAnchor as syntax }
   expects IndexTestModuleCliAstJsonAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7119cc30e476e1a6d62217985a08cd16d36c852a3ab121050c7ca74c7f56961d")
   summary "fn IndexTestModule.cliAstJson generated from typescript function_declaration at packages/shp-cli/src/index.test.ts#cliAstJson."
+}
+
+relation IndexTestModuleGuardedCriticShapeGeneratedFromIndexTestModuleGuardedCriticShapeAstAnchor {
+  kind generated_from
+  connects IndexTestModule -> IndexTestModuleGuardedCriticShapeAstAnchor
+  roles { IndexTestModule as generated, IndexTestModuleGuardedCriticShapeAstAnchor as syntax }
+  expects IndexTestModuleGuardedCriticShapeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:555d0de1bc7d54f6847933c1841ff632a0391d2a50cd2885c4acf20bce539158")
+  summary "fn IndexTestModule.guardedCriticShape generated from typescript function_declaration at packages/shp-cli/src/index.test.ts#guardedCriticShape."
 }
 
 relation IndexTestModuleIsCliManifestGeneratedFromIndexTestModuleIsCliManifestAstAnchor {

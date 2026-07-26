@@ -468,6 +468,7 @@ implementation AstGenerationSource {
 implementation AuthoringSource {
   paths {
     "packages/shp-checker/src/authoring.ts"
+    "packages/shp-checker/src/critic.ts"
   }
   conforms_to ShapeAuthoring
   on_change require shape_update
@@ -709,6 +710,7 @@ binding ToolingDocs {
     "packages/shp-checker/src/ast-generation-utils.ts"
     "packages/shp-checker/src/ast-generation.ts"
     "packages/shp-checker/src/authoring.ts"
+    "packages/shp-checker/src/critic.ts"
     "packages/shp-checker/src/editor.ts"
     "packages/shp-checker/src/formatter.ts"
     "packages/shp-checker/src/generated-ast-policy.ts"
@@ -812,6 +814,11 @@ attest docs_not_needed {
 attest docs_not_needed {
   source shape("shape/checker.shape")
   reason "The editor prelude reevaluation records completion parity and does not change checker rule evaluation or its documented diagnostic behavior."
+}
+
+attest docs_not_needed {
+  source shape("shape/checker.shape")
+  reason "The checker model now names the shared reevaluation-requirement predicate used by the existing checker semantics and the new advisory critic; checker behavior and diagnostics are unchanged, while critic behavior is documented in the authoring-helper guide."
 }
 
 attest docs_not_needed {

@@ -16,11 +16,6 @@ resource AuthoringModuleBuildShapeAuthoringBundleAstAnchor : GeneratedAstAnchor 
   fingerprint ast.semantic_subtree_v1("sha256:3c25579148ef5eef16753c53c6bfc5af082896c8226ea6f3a3cb471150aabf99")
 }
 
-resource AuthoringModuleBuildShapeCriticPromptAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/authoring.ts#buildShapeCriticPrompt")
-  fingerprint ast.semantic_subtree_v1("sha256:8185eff92f096b18ebec40ee08421080803018b29440aa76d9f2aed0dcc92b15")
-}
-
 resource AuthoringModuleContextRefAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/authoring.ts#contextRef")
   fingerprint ast.semantic_subtree_v1("sha256:b33634f508ae3fbeb68177d1170ed6a19f625eeffa3617b9bd32617e43323f13")
@@ -88,9 +83,6 @@ component AuthoringModule : GeneratedCandidate {
   fn buildShapeAuthoringBundle
     source ts("packages/shp-checker/src/authoring.ts#buildShapeAuthoringBundle")
     effects unknown
-  fn buildShapeCriticPrompt
-    source ts("packages/shp-checker/src/authoring.ts#buildShapeCriticPrompt")
-    effects unknown
   fn contextRef
     source ts("packages/shp-checker/src/authoring.ts#contextRef")
     effects unknown
@@ -143,14 +135,6 @@ relation AuthoringModuleBuildShapeAuthoringBundleGeneratedFromAuthoringModuleBui
   roles { AuthoringModule as generated, AuthoringModuleBuildShapeAuthoringBundleAstAnchor as syntax }
   expects AuthoringModuleBuildShapeAuthoringBundleAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3c25579148ef5eef16753c53c6bfc5af082896c8226ea6f3a3cb471150aabf99")
   summary "fn AuthoringModule.buildShapeAuthoringBundle generated from typescript function_declaration at packages/shp-checker/src/authoring.ts#buildShapeAuthoringBundle."
-}
-
-relation AuthoringModuleBuildShapeCriticPromptGeneratedFromAuthoringModuleBuildShapeCriticPromptAstAnchor {
-  kind generated_from
-  connects AuthoringModule -> AuthoringModuleBuildShapeCriticPromptAstAnchor
-  roles { AuthoringModule as generated, AuthoringModuleBuildShapeCriticPromptAstAnchor as syntax }
-  expects AuthoringModuleBuildShapeCriticPromptAstAnchor fingerprint ast.semantic_subtree_v1("sha256:8185eff92f096b18ebec40ee08421080803018b29440aa76d9f2aed0dcc92b15")
-  summary "fn AuthoringModule.buildShapeCriticPrompt generated from typescript function_declaration at packages/shp-checker/src/authoring.ts#buildShapeCriticPrompt."
 }
 
 relation AuthoringModuleContextRefGeneratedFromAuthoringModuleContextRefAstAnchor {

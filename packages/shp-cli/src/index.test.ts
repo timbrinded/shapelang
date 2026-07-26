@@ -171,7 +171,15 @@ component AuditStore {
     expect(result.stderr).toBe("");
   });
 
-  test("rejects diff context outside prompt mode", async () => {
+  test("requires a component outside critic mode", async () => {
+    const result = await runCli(["author", "--changed-files", "fixtures/changed/audit_purge.txt"]);
+
+    expect(result.exitCode).toBe(2);
+    expect(result.stderr).toContain("--component is required unless --critic-prompt is used");
+    expect(result.stdout).toBe("");
+  });
+
+  test("rejects diff context outside prompt or critic mode", async () => {
     const result = await runCli([
       "author",
       "--changed-files",
@@ -185,7 +193,7 @@ component AuditStore {
     ]);
 
     expect(result.exitCode).toBe(2);
-    expect(result.stderr).toContain("--diff requires --prompt");
+    expect(result.stderr).toContain("--diff requires --prompt or --critic-prompt");
     expect(result.stderr).not.toContain("at author");
     expect(result.stdout).toBe("");
   });
@@ -229,6 +237,126 @@ component AuditStore {
     expect(result.stdout).toContain("Human instructions:\nKeep the proposed update narrow.");
     expect(result.stdout.endsWith("\n")).toBe(true);
     expect(result.stderr).toBe("");
+  });
+
+  test("emits a critic prompt on stdout and advisory warnings on stderr without failing", async () => {
+    const tempDir = await mkdtemp(join(tmpdir(), "shp-critic-test-"));
+    const existingShape = join(tempDir, "audit.shape");
+    const proposedShape = join(tempDir, "proposed.shape");
+    try {
+      await Promise.all([
+        writeFile(existingShape, guardedCriticShape()),
+        writeFile(proposedShape, "module audit.update\n\ncomponent AuditUpdate {\n}\n")
+      ]);
+
+      const result = await runCli([
+        "author",
+        "--changed-files",
+        "fixtures/changed/audit_purge.txt",
+        "--diff",
+        "fixtures/diffs/audit_purge.diff",
+        "--critic-prompt",
+        proposedShape,
+        "--shape-files",
+        existingShape,
+        "--snippet-files",
+        "fixtures/source/audit_purge.ts",
+        "--instructions",
+        "Review only the proposed delta."
+      ]);
+
+      expect(result.exitCode).toBe(0);
+      expect(result.stdout).toStartWith(
+        "Review this proposed Shape .shape model update before a deterministic checker runs."
+      );
+      expect(result.stdout).toContain(`--- ${existingShape} ---`);
+      expect(result.stdout).toContain("--- fixtures/source/audit_purge.ts ---");
+      expect(result.stdout).toContain(`--- ${proposedShape} ---`);
+      expect(result.stdout).toContain("Human instructions:\nReview only the proposed delta.");
+      expect(result.stderr).toContain("warning: guarded target changed without reevaluation");
+      expect(result.stderr).toContain(
+        "warning: destructive operation missing from declared effects"
+      );
+      expect(result.stderr).toContain("src/audit/purge.ts suggests HardDelete");
+      expect(result.stderr).not.toContain("src/audit/purge.ts:");
+    } finally {
+      await rm(tempDir, { recursive: true, force: true });
+    }
+  });
+
+  test("keeps a clean critic review advisory-free and successful", async () => {
+    const tempDir = await mkdtemp(join(tmpdir(), "shp-critic-test-"));
+    const existingShape = join(tempDir, "audit.shape");
+    const proposedShape = join(tempDir, "proposed.shape");
+    try {
+      await Promise.all([
+        writeFile(existingShape, guardedCriticShape()),
+        writeFile(proposedShape, cleanCriticProposal())
+      ]);
+
+      const result = await runCli([
+        "author",
+        "--changed-files",
+        "fixtures/changed/audit_purge.txt",
+        "--diff",
+        "fixtures/diffs/audit_purge.diff",
+        "--critic-prompt",
+        proposedShape,
+        "--shape-files",
+        existingShape
+      ]);
+
+      expect(result.exitCode).toBe(0);
+      expect(result.stdout).toContain("Proposed shape update:");
+      expect(result.stderr).toBe("");
+    } finally {
+      await rm(tempDir, { recursive: true, force: true });
+    }
+  });
+
+  test("rejects conflicting or malformed critic input as usage errors", async () => {
+    const conflicting = await runCli([
+      "author",
+      "--changed-files",
+      "fixtures/missing-changed-files.txt",
+      "--component",
+      "AuditStore",
+      "--diff",
+      "fixtures/diffs/audit_purge.diff",
+      "--prompt",
+      "--critic-prompt",
+      "fixtures/missing-proposed.shape",
+      "--shape-files",
+      "fixtures/pass/append_only_append/audit.shape"
+    ]);
+    expect(conflicting.exitCode).toBe(2);
+    expect(conflicting.stderr).toContain("--prompt and --critic-prompt cannot be used together");
+    expect(conflicting.stderr).not.toContain("failed to read");
+    expect(conflicting.stdout).toBe("");
+
+    const tempDir = await mkdtemp(join(tmpdir(), "shp-critic-test-"));
+    const proposedShape = join(tempDir, "proposed.shape");
+    try {
+      await writeFile(proposedShape, "not valid Shape");
+      const malformed = await runCli([
+        "author",
+        "--changed-files",
+        "fixtures/changed/audit_purge.txt",
+        "--diff",
+        "fixtures/diffs/audit_purge.diff",
+        "--critic-prompt",
+        proposedShape,
+        "--shape-files",
+        "fixtures/pass/append_only_append/audit.shape"
+      ]);
+
+      expect(malformed.exitCode).toBe(2);
+      expect(malformed.stderr).toContain(`error: failed to parse ${proposedShape}`);
+      expect(malformed.stderr).not.toContain("\n    at ");
+      expect(malformed.stdout).toBe("");
+    } finally {
+      await rm(tempDir, { recursive: true, force: true });
+    }
   });
 
   test("rejects incomplete authoring prompt context without a stack trace", async () => {
@@ -1368,6 +1496,49 @@ function isCliManifest(value: unknown): value is CliManifest {
     "shp" in bin &&
     typeof bin.shp === "string"
   );
+}
+
+function guardedCriticShape(): string {
+  return `module audit
+
+component AuditStore {
+  fn purgeOldEvents
+    source ts("src/audit/purge.ts#purgeOldEvents")
+    effects complete {
+    }
+}
+
+memory PurgeShapeGuard : RefactorConstraint<fn AuditStore.purgeOldEvents> {
+  applies_to fn AuditStore.purgeOldEvents
+  status Explained
+  confidence High
+  summary "Purging must retain the reviewed failure behavior."
+  guards { on_change require ReEvaluation<Self> }
+  who { owner AuditTeam }
+}
+`;
+}
+
+function cleanCriticProposal(): string {
+  return `module audit.update
+
+component ProposedAuditStore {
+  fn purgeOldEvents
+    source ts("src/audit/purge.ts")
+    effects complete {
+      HardDelete<AuditEvent>
+    }
+}
+
+reevaluation PurgeShapeRechecked {
+  satisfies memory audit::PurgeShapeGuard
+  outcome Confirmed
+  summary "The reviewed purge behavior remains unchanged."
+  evidence test("tests/audit/purge.test.ts")
+  reviewer AuditTeam
+  decided_on "2026-07-26"
+}
+`;
 }
 
 function cliAstJson(): unknown {

@@ -731,6 +731,20 @@
       ]
     },
     {
+      "module": "shape.generated.ast.packages.shp_checker.src.critic_test",
+      "path": "shape/generated/ast/packages/shp-checker/src/critic.test.shape",
+      "sources": [
+        "packages/shp-checker/src/critic.test.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.critic",
+      "path": "shape/generated/ast/packages/shp-checker/src/critic.shape",
+      "sources": [
+        "packages/shp-checker/src/critic.ts"
+      ]
+    },
+    {
       "module": "shape.generated.ast.packages.shp_checker.src.editor_smoke_test",
       "path": "shape/generated/ast/packages/shp-checker/src/editor.smoke.test.shape",
       "sources": [

@@ -48,6 +48,11 @@ export type PreludeRelationKindRule = {
   traversal: RelationTraversal;
 };
 
+export function isReevaluationRequirement(requirement: string): boolean {
+  const normalized = requirement.replace(/\s+/g, "").toLowerCase();
+  return normalized === "reevaluation" || normalized === "reevaluation<self>";
+}
+
 export const PRELUDE_TRAITS: PreludeTraitDefinition[] = [
   {
     name: "AppendOnly",

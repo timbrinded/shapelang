@@ -230,12 +230,19 @@ component ShapeModelLowerer {
 
 component ShapePreludeRegistry {
   owns PreludeMetadata
+  grants Read<PreludeMetadata>
   grants Update<PreludeMetadata>
   fn definePreludeMetadata : RefactorSensitive
     source ts("packages/shp-checker/src/prelude.ts")
     description "Defines built-in traits, context requirements, and directed relation traversal metadata shared by checker and tooling."
     effects complete {
       Update<PreludeMetadata>
+        evidence ts("packages/shp-checker/src/prelude.ts")
+    }
+  fn isReevaluationRequirement
+    source ts("packages/shp-checker/src/prelude.ts#isReevaluationRequirement")
+    effects complete {
+      Read<PreludeMetadata>
         evidence ts("packages/shp-checker/src/prelude.ts")
     }
 }
@@ -358,6 +365,12 @@ component ShapeRuleEngine {
         evidence ts("packages/shp-checker/src/checker/rules/relations.ts")
       Read<PreludeMetadata>
         evidence ts("packages/shp-checker/src/checker/rules/relations.ts")
+    }
+  fn requiresReevaluation
+    source ts("packages/shp-checker/src/checker/derivations.ts#requiresReevaluation")
+    effects complete {
+      Read<PreludeMetadata>
+        evidence ts("packages/shp-checker/src/checker/derivations.ts")
     }
 }
 

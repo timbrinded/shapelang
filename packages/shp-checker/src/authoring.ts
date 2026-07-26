@@ -124,35 +124,6 @@ function formatHumanList(items: string[]): string {
   return `${items.slice(0, -1).join(", ")}, or ${items.at(-1) ?? ""}`;
 }
 
-export function buildShapeCriticPrompt(
-  input: ShapeAuthorPromptInput,
-  proposedShapeUpdate: string
-): string {
-  return [
-    "Review this proposed Shape .shape model update before a deterministic checker runs.",
-    "",
-    "Critic checklist:",
-    "- Did the model update cover every governed changed file?",
-    "- Are destructive effects represented honestly?",
-    "- Are unknowns marked explicitly?",
-    "- Are source and evidence references stable #symbol or file-only references without line-number suffixes?",
-    "- Did the model update avoid weakening final invariants?",
-    `- Did structural dependency changes appear as relation declarations with ${formatHumanList(PRELUDE_RELATION_KIND_NAMES)} or an intentional custom kind?`,
-    "- Did the model update add shape traits without matching context?",
-    "- Did the model update touch a guarded target without reevaluation?",
-    "- Did the model update remove a required description?",
-    "- Are memory/rationale blocks compact and typed rather than generic prose?",
-    "- Did the model update try to justify a final forbidden effect instead of preserving the error?",
-    "",
-    "Changed files:",
-    ...input.changedFiles.map((file) => `- ${file}`),
-    input.diff ? `\nPR diff:\n${input.diff}` : "",
-    `\nProposed shape update:\n${proposedShapeUpdate}`
-  ]
-    .filter((part) => part.length > 0)
-    .join("\n");
-}
-
 export function generateShapeUpdateDraft(input: ShapeUpdateInput): string {
   const moduleName = input.moduleName ?? "generated";
   const changedFunctions = input.changedFiles.map((file, index) => ({

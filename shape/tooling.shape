@@ -10,6 +10,8 @@ resource AnalyzerWarning
 
 resource AstAnchorFingerprint
 
+resource AuthoringAdvisory
+
 resource AuthoringPrompt
 
 resource CanonicalShapeFormat
@@ -236,10 +238,15 @@ component ShapeAstGenerator {
 }
 
 component ShapeAuthoring {
+  owns AuthoringAdvisory
   owns AuthoringPrompt
   owns ShapeModelDraft
+  grants Append<AuthoringAdvisory>
   grants Append<AuthoringPrompt>
+  grants Append<DiagnosticText>
   grants Append<ShapeModelDraft>
+  grants Read<AnalyzerHint>
+  grants Read<AuthoringAdvisory>
   grants Read<ChangedFileList>
   grants Read<LanguageSource>
   grants Read<PreludeMetadata>
@@ -281,19 +288,29 @@ component ShapeAuthoring {
         evidence ts("packages/shp-checker/src/authoring.ts")
     }
   fn buildShapeCriticPrompt : RefactorSensitive
-    source ts("packages/shp-checker/src/authoring.ts#buildShapeCriticPrompt")
-    description "Builds review instructions that flag unstable references, false certainty, missing architectural claims, and attempted final-forbid waivers."
+    source ts("packages/shp-checker/src/critic.ts#buildShapeCriticPrompt")
+    description "Builds review instructions that reject numbered Shape references and flag false certainty, missing architectural claims, and attempted final-forbid waivers."
     effects complete {
       Append<AuthoringPrompt>
-        evidence ts("packages/shp-checker/src/authoring.ts")
+        evidence ts("packages/shp-checker/src/critic.ts")
       Read<ChangedFileList>
-        evidence ts("packages/shp-checker/src/authoring.ts")
+        evidence ts("packages/shp-checker/src/critic.ts")
+      Read<LanguageSource>
+        evidence ts("packages/shp-checker/src/critic.ts")
       Read<PreludeMetadata>
-        evidence ts("packages/shp-checker/src/authoring.ts")
+        evidence ts("packages/shp-checker/src/critic.ts")
       Read<ShapeSource>
-        evidence ts("packages/shp-checker/src/authoring.ts")
+        evidence ts("packages/shp-checker/src/critic.ts")
       Read<UnifiedDiff>
-        evidence ts("packages/shp-checker/src/authoring.ts")
+        evidence ts("packages/shp-checker/src/critic.ts")
+    }
+  fn formatShapeCriticAdvisories
+    source ts("packages/shp-checker/src/critic.ts#formatShapeCriticAdvisories")
+    effects complete {
+      Append<DiagnosticText>
+        evidence ts("packages/shp-checker/src/critic.ts")
+      Read<AuthoringAdvisory>
+        evidence ts("packages/shp-checker/src/critic.ts")
     }
   fn generateShapeUpdateDraft : RefactorSensitive
     source ts("packages/shp-checker/src/authoring.ts#generateShapeUpdateDraft")
@@ -302,6 +319,27 @@ component ShapeAuthoring {
         evidence ts("packages/shp-checker/src/authoring.ts")
       Read<ChangedFileList>
         evidence ts("packages/shp-checker/src/authoring.ts")
+    }
+  fn reviewShapeAuthoringProposal
+    source ts("packages/shp-checker/src/critic.ts#reviewShapeAuthoringProposal")
+    description "Builds a provider-neutral critic prompt and deterministic advisories from explicit Shape context plus added diff lines, without invoking the checker, a provider, a subprocess, or a network service."
+    effects complete {
+      Append<AuthoringAdvisory>
+        evidence ts("packages/shp-checker/src/critic.ts")
+      Append<AuthoringPrompt>
+        evidence ts("packages/shp-checker/src/critic.ts")
+      Read<AnalyzerHint>
+        evidence ts("packages/shp-checker/src/critic.ts")
+      Read<ChangedFileList>
+        evidence ts("packages/shp-checker/src/critic.ts")
+      Read<LanguageSource>
+        evidence ts("packages/shp-checker/src/critic.ts")
+      Read<PreludeMetadata>
+        evidence ts("packages/shp-checker/src/critic.ts")
+      Read<ShapeSource>
+        evidence ts("packages/shp-checker/src/critic.ts")
+      Read<UnifiedDiff>
+        evidence ts("packages/shp-checker/src/critic.ts")
     }
 }
 
@@ -407,6 +445,7 @@ component ShapeLanguageServer {
 }
 
 component ShpCli {
+  grants Append<AuthoringAdvisory>
   grants Append<AuthoringPrompt>
   grants Append<EditorOutput>
   grants Append<GeneratedAstAnchor>
@@ -414,6 +453,7 @@ component ShpCli {
   grants Append<GeneratedAstTrace>
   grants Append<GeneratedCandidateEffect>
   grants Append<ShapeModelDraft>
+  grants Read<AuthoringAdvisory>
   grants Read<ChangedFileList>
   grants Read<DiagnosticText>
   grants Read<FormattedShape>
@@ -445,6 +485,8 @@ component ShpCli {
   fn main : ProtectedCheckOrder
     source ts("packages/shp-cli/src/index.ts#main")
     effects complete {
+      Append<AuthoringAdvisory>
+        evidence ts("packages/shp-cli/src/commands/author/impl.ts")
       Append<AuthoringPrompt>
         evidence ts("packages/shp-cli/src/commands/author/impl.ts")
       Append<EditorOutput>
@@ -462,6 +504,8 @@ component ShpCli {
       Append<ShapeModelDraft>
         evidence ts("packages/shp-cli/src/commands/ast/impl.ts")
       Append<ShapeModelDraft>
+        evidence ts("packages/shp-cli/src/commands/author/impl.ts")
+      Read<AuthoringAdvisory>
         evidence ts("packages/shp-cli/src/commands/author/impl.ts")
       Read<ChangedFileList>
         evidence ts("packages/shp-cli/src/commands/check/impl.ts")
@@ -569,12 +613,6 @@ component ShpCli {
     }
 }
 
-relation ShapeAnalyzerUsesChecker {
-  kind calls
-  connects ShapeAnalyzer -> ShapeChecker
-  summary "AnalyzerComparison"
-}
-
 relation ShapeAnalyzerUsesStringHelpers {
   kind calls
   connects ShapeAnalyzer -> ShapeStringHelpers
@@ -586,16 +624,28 @@ relation ShapeAstGeneratorProvidesDraft {
   connects ShapeAstGenerator -> ShapeModelDraft
 }
 
-relation ShapeAuthoringUsesChecker {
+relation ShapeAuthoringUsesAnalyzer {
   kind calls
-  connects ShapeAuthoring -> ShapeChecker
-  summary "ModelDraftValidation"
+  connects ShapeAuthoring -> ShapeAnalyzer
+  summary "CriticDestructiveHints"
+}
+
+relation ShapeAuthoringUsesParser {
+  kind calls
+  connects ShapeAuthoring -> ShapeParser
+  summary "CriticInputParsing"
 }
 
 relation ShapeAuthoringUsesPreludeRegistry {
   kind calls
   connects ShapeAuthoring -> ShapePreludeRegistry
-  summary "PromptPreludeRules"
+  summary "PromptAndCriticPreludeRules"
+}
+
+relation ShapeAuthoringUsesStringHelpers {
+  kind calls
+  connects ShapeAuthoring -> ShapeStringHelpers
+  summary "CriticReferenceNormalization"
 }
 
 relation ShapeEditorUsesChecker {
@@ -932,6 +982,16 @@ reevaluation CliCommandErrorsRechecked {
   evidence test("packages/shp-cli/src/index.test.ts")
 }
 
+reevaluation CliCriticDispatchRechecked {
+  satisfies memory CliCommandDispatchOrder
+  outcome Confirmed
+  summary "Critic mode validates explicit diff and Shape context before review, routes provider-neutral prompts to stdout and advisory-only findings to stderr, and leaves deterministic checker acceptance as a later gate."
+  reviewer ShapeMaintainers
+  decided_on "2026-07-27"
+  evidence md("docs-site/src/content/docs/reference/cli.md")
+  evidence test("packages/shp-cli/src/index.test.ts")
+}
+
 reevaluation CliLspDispatchRechecked {
   satisfies memory CliCommandDispatchOrder
   outcome Confirmed
@@ -966,6 +1026,16 @@ reevaluation CliUpdateHelpIdentityRechecked {
   reviewer ShapeMaintainers
   decided_on "2026-05-21"
   evidence test("packages/shp-cli/src/update.test.ts")
+}
+
+reevaluation CriticPromptAdvisoryPassRechecked {
+  satisfies memory CriticPromptSafetyRules
+  outcome Confirmed
+  summary "The critic now combines explicit prompt context with deterministic guarded-target and destructive-effect advisories while preserving stable symbol or file-only Shape references and omitting diff line coordinates from advisory evidence."
+  reviewer ShapeMaintainers
+  decided_on "2026-07-27"
+  evidence md("docs-site/src/content/docs/inside-shape/formatter-editor-authoring.md")
+  evidence test("packages/shp-checker/src/critic.test.ts")
 }
 
 reevaluation CriticPromptPrDiffWorkflowRechecked {

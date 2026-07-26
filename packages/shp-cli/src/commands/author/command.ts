@@ -15,8 +15,16 @@ export const authorCommand = buildCommand<AuthorFlags, [], CliContext>({
       component: {
         kind: "parsed",
         parse: (input: string) => input,
+        optional: true,
         brief: "Component to scaffold.",
         placeholder: "ComponentName"
+      },
+      criticPrompt: {
+        kind: "parsed",
+        parse: (input: string) => input,
+        optional: true,
+        brief: "Proposed Shape update to review with a provider-neutral critic prompt.",
+        placeholder: "proposed.shape"
       },
       diff: {
         kind: "parsed",
@@ -68,7 +76,7 @@ export const authorCommand = buildCommand<AuthorFlags, [], CliContext>({
     }
   },
   docs: {
-    brief: "Generate a conservative Shape draft or provider-neutral authoring prompt.",
+    brief: "Generate a Shape draft, authoring prompt, or advisory critic review.",
     customUsage: [
       {
         input: "--changed-files changed.txt --component ComponentName [--module module.name]",
@@ -78,6 +86,11 @@ export const authorCommand = buildCommand<AuthorFlags, [], CliContext>({
         input:
           "--changed-files changed.txt --component ComponentName --diff pr.diff --prompt --shape-files file1.shape,file2.shape [--snippet-files file1.ts,file2.rs] [--project-prelude prelude.shape] [--instructions TEXT]",
         brief: "Emit a context-rich prompt without invoking a model provider."
+      },
+      {
+        input:
+          "--changed-files changed.txt --diff pr.diff --critic-prompt proposed.shape --shape-files file1.shape,file2.shape [--snippet-files file1.ts,file2.rs] [--project-prelude prelude.shape] [--instructions TEXT]",
+        brief: "Emit a critic prompt plus deterministic local advisories."
       }
     ]
   }

@@ -5,3 +5,29 @@ trait GeneratedAstAnchor {
 
 trait GeneratedCandidate {
 }
+
+resource PreludeModuleIsReevaluationRequirementAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/prelude.ts#isReevaluationRequirement")
+  fingerprint ast.semantic_subtree_v1("sha256:3588456b43620fa44d6d6fd1667d7bf1ef12b01f75d61dc41bfed7f3c1619bc7")
+}
+
+component PreludeModule : GeneratedCandidate {
+  fn isReevaluationRequirement
+    source ts("packages/shp-checker/src/prelude.ts#isReevaluationRequirement")
+    effects unknown
+}
+
+relation PreludeModuleIsReevaluationRequirementGeneratedFromPreludeModuleIsReevaluationRequirementAstAnchor {
+  kind generated_from
+  connects PreludeModule -> PreludeModuleIsReevaluationRequirementAstAnchor
+  roles { PreludeModule as generated, PreludeModuleIsReevaluationRequirementAstAnchor as syntax }
+  expects PreludeModuleIsReevaluationRequirementAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3588456b43620fa44d6d6fd1667d7bf1ef12b01f75d61dc41bfed7f3c1619bc7")
+  summary "fn PreludeModule.isReevaluationRequirement generated from typescript function_declaration at packages/shp-checker/src/prelude.ts#isReevaluationRequirement."
+}
+
+implementation PreludeModuleImpl {
+  paths {
+    "packages/shp-checker/src/prelude.ts"
+  }
+  conforms_to PreludeModule
+}
