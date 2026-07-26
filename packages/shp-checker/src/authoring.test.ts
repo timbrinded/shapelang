@@ -1,8 +1,8 @@
 import { describe, expect, test } from "bun:test";
 import {
   buildShapeAuthorPrompt,
+  buildShapeAuthoringBundle,
   buildShapeCriticPrompt,
-  extractEvidenceSpansFromUnifiedDiff,
   generateShapeUpdateDraft,
   parseShapeModule
 } from "./index.ts";
@@ -24,10 +24,85 @@ describe("Shape authoring assistant", () => {
     expect(prompt).toContain("If adding PreserveInline");
     expect(prompt).toContain("Prefer stable #symbol source/evidence references");
     expect(prompt).toContain("do not add line-number or line-range suffixes");
+    expect(prompt).toContain("do not infer architecture from names alone");
     expect(prompt).toContain("Do not use rationale or memory to waive final forbidden effects");
     expect(critic).toContain("Did the model update cover every governed changed file?");
     expect(critic).toContain("stable #symbol or file-only references");
     expect(critic).toContain("Did the model update touch a guarded target without reevaluation?");
+  });
+
+  test("builds a provider-neutral PR authoring bundle with a parseable conservative draft", () => {
+    const bundle = buildShapeAuthoringBundle({
+      moduleName: "audit",
+      componentName: "AuditStore",
+      changedFiles: ["src/audit/purge.ts"],
+      existingShape: [
+        {
+          path: "shape/audit.shape",
+          content: `module audit
+
+component AuditStore {
+}
+`
+        }
+      ],
+      diff: `diff --git a/src/audit/purge.ts b/src/audit/purge.ts
+--- a/src/audit/purge.ts
++++ b/src/audit/purge.ts
+@@ -10,2 +10,4 @@
+ context
++deleteAuditEvent()
++truncateAudit()
+ unchanged
+`,
+      projectPrelude: {
+        path: "shape/prelude.shape",
+        content: "trait AppendOnly"
+      },
+      relevantSnippets: [
+        {
+          path: "src/audit/purge.ts",
+          content: 'return db.deleteFrom("audit_events");'
+        }
+      ],
+      instructions: "Keep the update narrow."
+    });
+    const parsed = parseShapeModule(bundle.draft);
+
+    expect(parsed.ok).toBe(true);
+    expect(bundle.draft).toContain('source ts("src/audit/purge.ts")');
+    expect(bundle.draft).not.toContain("src/audit/purge.ts:11-12");
+    expect(bundle.draft).toContain("effects unknown");
+    expect(bundle.draft).not.toContain("resource ");
+    expect(bundle.draft).not.toContain("HardDelete<");
+    expect(bundle.authorPrompt).toContain('return db.deleteFrom("audit_events");');
+    expect(bundle.authorPrompt).toContain("HardDelete");
+    expect(bundle.authorPrompt).toContain(
+      "Project prelude:\n--- shape/prelude.shape ---\ntrait AppendOnly"
+    );
+    expect(bundle.authorPrompt).toContain(
+      "Existing shape:\n--- shape/audit.shape ---\nmodule audit"
+    );
+    expect(bundle.authorPrompt).toContain("PR diff:\ndiff --git");
+    expect(bundle.authorPrompt).toContain(
+      'Relevant source snippets:\n--- src/audit/purge.ts ---\nreturn db.deleteFrom("audit_events");'
+    );
+    expect(bundle.authorPrompt).not.toContain("Candidate evidence spans:");
+    expect(bundle.authorPrompt).toContain("Initial conservative draft:\nmodule audit");
+    expect(bundle.authorPrompt).toContain("Human instructions:\nKeep the update narrow.");
+
+    const sections = [
+      "Changed files:",
+      "Project prelude:",
+      "Existing shape:",
+      "PR diff:",
+      "Relevant source snippets:",
+      "Initial conservative draft:",
+      "Human instructions:"
+    ];
+    const sectionIndexes = sections.map((section) => bundle.authorPrompt.indexOf(section));
+    expect(sectionIndexes.every((index) => index >= 0)).toBe(true);
+    expect(sectionIndexes).toEqual([...sectionIndexes].sort((left, right) => left - right));
   });
 
   test("generates a valid reviewable global model scaffold", () => {
@@ -38,8 +113,14 @@ describe("Shape authoring assistant", () => {
     });
     const parsed = parseShapeModule(source);
 
-    expect(source).toContain("effects unknown");
-    expect(source).toContain('source ts("src/audit/purge.ts")');
+    expect(source).toBe(`module audit
+
+component AuditStore {
+  fn reviewPurgeShape1
+    source ts("src/audit/purge.ts")
+    effects unknown
+}
+`);
     expect(parsed.ok).toBe(true);
   });
 
@@ -70,27 +151,5 @@ describe("Shape authoring assistant", () => {
     );
     expect(source).toContain("status Unexplained");
     expect(parsed.ok).toBe(true);
-  });
-
-  test("extracts evidence spans from unified diffs", () => {
-    const spans =
-      extractEvidenceSpansFromUnifiedDiff(`diff --git a/src/audit/purge.ts b/src/audit/purge.ts
---- a/src/audit/purge.ts
-+++ b/src/audit/purge.ts
-@@ -10,2 +10,3 @@
- context
-+deleteAuditEvent()
-+truncateAudit()
- unchanged
-`);
-
-    expect(spans).toEqual([
-      {
-        language: "ts",
-        path: "src/audit/purge.ts",
-        startLine: 11,
-        endLine: 12
-      }
-    ]);
   });
 });

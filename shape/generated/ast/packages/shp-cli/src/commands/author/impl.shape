@@ -8,12 +8,44 @@ trait GeneratedCandidate {
 
 resource ImplModuleAuthorAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-cli/src/commands/author/impl.ts#author")
-  fingerprint ast.semantic_subtree_v1("sha256:05e42a199afd32656ba37eb383b8cb177c4d747342a074fd5bbb79e9de9fa271")
+  fingerprint ast.semantic_subtree_v1("sha256:a199a0c80c938104b7cdf8ff00c0bb988474de516772d7e54516d7bb31adfca8")
+}
+
+resource ImplModuleParseFileListAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/commands/author/impl.ts#parseFileList")
+  fingerprint ast.semantic_subtree_v1("sha256:eba530e8fe6804dd604fdf5590ee702f3b9ae17f410ec8c36a2ddc178d06dc8f")
+}
+
+resource ImplModuleReadContextFileAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/commands/author/impl.ts#readContextFile")
+  fingerprint ast.semantic_subtree_v1("sha256:09ee9f82c3706b276185b846f875f817bab06c04cb44104a4f7008b286d88fdb")
+}
+
+resource ImplModuleReadContextFilesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/commands/author/impl.ts#readContextFiles")
+  fingerprint ast.semantic_subtree_v1("sha256:f0c3ad9369577617d6e250d473c830341f82bbad88275d5978f794f7e9dcd903")
+}
+
+resource ImplModuleValidateAuthorFlagsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/commands/author/impl.ts#validateAuthorFlags")
+  fingerprint ast.semantic_subtree_v1("sha256:e0ba367e4b71be60eed9cd1eb4e3e1dcd4b571e662f2f4dea9be721719a36aa6")
 }
 
 component ImplModule : GeneratedCandidate {
   fn author
     source ts("packages/shp-cli/src/commands/author/impl.ts#author")
+    effects unknown
+  fn parseFileList
+    source ts("packages/shp-cli/src/commands/author/impl.ts#parseFileList")
+    effects unknown
+  fn readContextFile
+    source ts("packages/shp-cli/src/commands/author/impl.ts#readContextFile")
+    effects unknown
+  fn readContextFiles
+    source ts("packages/shp-cli/src/commands/author/impl.ts#readContextFiles")
+    effects unknown
+  fn validateAuthorFlags
+    source ts("packages/shp-cli/src/commands/author/impl.ts#validateAuthorFlags")
     effects unknown
 }
 
@@ -21,8 +53,40 @@ relation ImplModuleAuthorGeneratedFromImplModuleAuthorAstAnchor {
   kind generated_from
   connects ImplModule -> ImplModuleAuthorAstAnchor
   roles { ImplModule as generated, ImplModuleAuthorAstAnchor as syntax }
-  expects ImplModuleAuthorAstAnchor fingerprint ast.semantic_subtree_v1("sha256:05e42a199afd32656ba37eb383b8cb177c4d747342a074fd5bbb79e9de9fa271")
+  expects ImplModuleAuthorAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a199a0c80c938104b7cdf8ff00c0bb988474de516772d7e54516d7bb31adfca8")
   summary "fn ImplModule.author generated from typescript function_declaration at packages/shp-cli/src/commands/author/impl.ts#author."
+}
+
+relation ImplModuleParseFileListGeneratedFromImplModuleParseFileListAstAnchor {
+  kind generated_from
+  connects ImplModule -> ImplModuleParseFileListAstAnchor
+  roles { ImplModule as generated, ImplModuleParseFileListAstAnchor as syntax }
+  expects ImplModuleParseFileListAstAnchor fingerprint ast.semantic_subtree_v1("sha256:eba530e8fe6804dd604fdf5590ee702f3b9ae17f410ec8c36a2ddc178d06dc8f")
+  summary "fn ImplModule.parseFileList generated from typescript function_declaration at packages/shp-cli/src/commands/author/impl.ts#parseFileList."
+}
+
+relation ImplModuleReadContextFileGeneratedFromImplModuleReadContextFileAstAnchor {
+  kind generated_from
+  connects ImplModule -> ImplModuleReadContextFileAstAnchor
+  roles { ImplModule as generated, ImplModuleReadContextFileAstAnchor as syntax }
+  expects ImplModuleReadContextFileAstAnchor fingerprint ast.semantic_subtree_v1("sha256:09ee9f82c3706b276185b846f875f817bab06c04cb44104a4f7008b286d88fdb")
+  summary "fn ImplModule.readContextFile generated from typescript function_declaration at packages/shp-cli/src/commands/author/impl.ts#readContextFile."
+}
+
+relation ImplModuleReadContextFilesGeneratedFromImplModuleReadContextFilesAstAnchor {
+  kind generated_from
+  connects ImplModule -> ImplModuleReadContextFilesAstAnchor
+  roles { ImplModule as generated, ImplModuleReadContextFilesAstAnchor as syntax }
+  expects ImplModuleReadContextFilesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f0c3ad9369577617d6e250d473c830341f82bbad88275d5978f794f7e9dcd903")
+  summary "fn ImplModule.readContextFiles generated from typescript function_declaration at packages/shp-cli/src/commands/author/impl.ts#readContextFiles."
+}
+
+relation ImplModuleValidateAuthorFlagsGeneratedFromImplModuleValidateAuthorFlagsAstAnchor {
+  kind generated_from
+  connects ImplModule -> ImplModuleValidateAuthorFlagsAstAnchor
+  roles { ImplModule as generated, ImplModuleValidateAuthorFlagsAstAnchor as syntax }
+  expects ImplModuleValidateAuthorFlagsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e0ba367e4b71be60eed9cd1eb4e3e1dcd4b571e662f2f4dea9be721719a36aa6")
+  summary "fn ImplModule.validateAuthorFlags generated from typescript function_declaration at packages/shp-cli/src/commands/author/impl.ts#validateAuthorFlags."
 }
 
 implementation ImplModuleImpl {

@@ -9,11 +9,13 @@ export {
 } from "./analyzer.ts";
 export {
   buildShapeAuthorPrompt,
+  buildShapeAuthoringBundle,
   buildShapeCriticPrompt,
-  extractEvidenceSpansFromUnifiedDiff,
   generateShapeUpdateDraft,
-  type EvidenceSpan,
+  type ShapeAuthorContextFile,
   type ShapeAuthorPromptInput,
+  type ShapeAuthoringBundle,
+  type ShapeAuthoringBundleInput,
   type ShapeUpdateInput
 } from "./authoring.ts";
 export {

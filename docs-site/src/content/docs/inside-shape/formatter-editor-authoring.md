@@ -163,7 +163,9 @@ component AuditStore {
 }
 ```
 
-That `effects unknown` is doing real work. It stops an agent from producing an empty `effects complete` block that looks clean but hides uncertainty. The reviewer can then inspect the diff, add effect entries, attach evidence spans, and include any required rationale, memory, or reevaluation.
+That `effects unknown` is doing real work. It stops an agent from producing an empty `effects complete` block that looks clean but hides uncertainty. The reviewer can then inspect the diff, add effect entries, refine file-scoped references to stable `#symbol` anchors when supported by source evidence, and include any required rationale, memory, or reevaluation.
+
+The conservative scaffold remains file-scoped. A unified diff is prompt context only: the authoring workflow does not convert hunk coordinates into `path:start-end` references or guess which added lines represent the architectural change.
 
 ## Prompt Helpers
 
@@ -173,12 +175,33 @@ That `effects unknown` is doing real work. It stops an agent from producing an e
 - cover every governed changed file
 - use `effects complete` only when material effects are represented
 - keep destructive operations explicit
-- include evidence spans when available
+- prefer stable `#symbol` references and otherwise keep evidence file-scoped
+- never add line-number or line-range suffixes
 - add context for function shape traits
 - add reevaluation for guarded changes
 - never use memory or rationale to waive final forbidden effects
 
 The critic prompt asks the inverse questions. It is designed to catch the common failure modes before the deterministic checker runs.
+
+`buildShapeAuthoringBundle` connects the deterministic pieces without adding a model runtime. It accepts changed-file and component metadata plus a unified diff, path-preserving existing Shape files, optional source snippets, an optional project-prelude context file, and human instructions. It returns:
+
+- a conservative parseable draft
+- an author prompt containing all supplied context and the draft
+
+The CLI exposes that bundle with `--prompt`:
+
+```bash
+bun run shp -- author \
+  --changed-files fixtures/changed/audit_purge.txt \
+  --component AuditStore \
+  --module audit \
+  --diff fixtures/diffs/audit_purge.diff \
+  --prompt \
+  --shape-files fixtures/pass/append_only_append/audit.shape \
+  --snippet-files fixtures/source/audit_purge.ts
+```
+
+Prompt mode requires an explicit Shape-file list instead of loading every file under `shape/`, which keeps generated AST context and unrelated models out of the prompt. A supplied project prelude is context only; the authoring command does not discover, import, or install domain libraries. Shape writes the prompt to stdout and never invokes a provider, subprocess, or network service.
 
 ## A Typical Agentic Review Loop
 
@@ -186,16 +209,18 @@ The critic prompt asks the inverse questions. It is designed to catch the common
 sequenceDiagram
   participant Diff as Source diff
   participant Author as Authoring helper
+  participant Agent as Existing human or agent surface
   participant Human as Human reviewer
   participant Checker as Shape checker
-  Diff->>Author: changed files and optional diff
-  Author->>Human: conservative .shape scaffold
+  Diff->>Author: changed files, diff, and explicit context
+  Author->>Agent: provider-neutral prompt and conservative draft
+  Agent->>Human: proposed .shape update
   Human->>Human: replace unknowns with reviewed effects and context
   Human->>Checker: run fmt and check
   Checker-->>Human: pass or diagnostics with provenance
 ```
 
-The loop is agentic without being credulous. Agents can scaffold, remind, and compare. Humans still review the claims. The checker rejects contradictions deterministically.
+The loop is agentic without being credulous. Agents can scaffold, remind, and compare. Humans still review the claims. The generated draft is parseable but authored `effects unknown` remains unresolved; after folding the update into its owning global model, strict `shp check --changed-files changed.txt` is the final gate.
 
 ## What Not To Put In Helpers
 

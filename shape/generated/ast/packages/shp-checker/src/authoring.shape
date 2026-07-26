@@ -8,7 +8,12 @@ trait GeneratedCandidate {
 
 resource AuthoringModuleBuildShapeAuthorPromptAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/authoring.ts#buildShapeAuthorPrompt")
-  fingerprint ast.semantic_subtree_v1("sha256:96c483c6c0c9d0eca221601e1846080a8e0d872666e4c88bb5b3b07a2b3a4649")
+  fingerprint ast.semantic_subtree_v1("sha256:1327fd147a33042aebe183734de566c22cd8448e07b955dffe2f633b3b2b116e")
+}
+
+resource AuthoringModuleBuildShapeAuthoringBundleAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/authoring.ts#buildShapeAuthoringBundle")
+  fingerprint ast.semantic_subtree_v1("sha256:3c25579148ef5eef16753c53c6bfc5af082896c8226ea6f3a3cb471150aabf99")
 }
 
 resource AuthoringModuleBuildShapeCriticPromptAstAnchor : GeneratedAstAnchor {
@@ -21,14 +26,9 @@ resource AuthoringModuleContextRefAstAnchor : GeneratedAstAnchor {
   fingerprint ast.semantic_subtree_v1("sha256:b33634f508ae3fbeb68177d1170ed6a19f625eeffa3617b9bd32617e43323f13")
 }
 
-resource AuthoringModuleExtractEvidenceSpansFromUnifiedDiffAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/authoring.ts#extractEvidenceSpansFromUnifiedDiff")
-  fingerprint ast.semantic_subtree_v1("sha256:899a4bd3352a13b29b325c5956b83198a4191b2d0e2de112c7b4cf9d914d2f77")
-}
-
-resource AuthoringModuleFlushAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/authoring.ts#flush")
-  fingerprint ast.semantic_subtree_v1("sha256:4c1b273bc33550e624bf8c751bf829df2f25e955d652fec00af63246331e26a4")
+resource AuthoringModuleFormatContextFilesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/authoring.ts#formatContextFiles")
+  fingerprint ast.semantic_subtree_v1("sha256:f88b63f778c2be3ca149eedf4d1a68c95e4cecdd57ade3d16d3fed3e43988a3d")
 }
 
 resource AuthoringModuleFormatContextTraitGuidanceAstAnchor : GeneratedAstAnchor {
@@ -85,17 +85,17 @@ component AuthoringModule : GeneratedCandidate {
   fn buildShapeAuthorPrompt
     source ts("packages/shp-checker/src/authoring.ts#buildShapeAuthorPrompt")
     effects unknown
+  fn buildShapeAuthoringBundle
+    source ts("packages/shp-checker/src/authoring.ts#buildShapeAuthoringBundle")
+    effects unknown
   fn buildShapeCriticPrompt
     source ts("packages/shp-checker/src/authoring.ts#buildShapeCriticPrompt")
     effects unknown
   fn contextRef
     source ts("packages/shp-checker/src/authoring.ts#contextRef")
     effects unknown
-  fn extractEvidenceSpansFromUnifiedDiff
-    source ts("packages/shp-checker/src/authoring.ts#extractEvidenceSpansFromUnifiedDiff")
-    effects unknown
-  fn flush
-    source ts("packages/shp-checker/src/authoring.ts#flush")
+  fn formatContextFiles
+    source ts("packages/shp-checker/src/authoring.ts#formatContextFiles")
     effects unknown
   fn formatContextTraitGuidance
     source ts("packages/shp-checker/src/authoring.ts#formatContextTraitGuidance")
@@ -133,8 +133,16 @@ relation AuthoringModuleBuildShapeAuthorPromptGeneratedFromAuthoringModuleBuildS
   kind generated_from
   connects AuthoringModule -> AuthoringModuleBuildShapeAuthorPromptAstAnchor
   roles { AuthoringModule as generated, AuthoringModuleBuildShapeAuthorPromptAstAnchor as syntax }
-  expects AuthoringModuleBuildShapeAuthorPromptAstAnchor fingerprint ast.semantic_subtree_v1("sha256:96c483c6c0c9d0eca221601e1846080a8e0d872666e4c88bb5b3b07a2b3a4649")
+  expects AuthoringModuleBuildShapeAuthorPromptAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1327fd147a33042aebe183734de566c22cd8448e07b955dffe2f633b3b2b116e")
   summary "fn AuthoringModule.buildShapeAuthorPrompt generated from typescript function_declaration at packages/shp-checker/src/authoring.ts#buildShapeAuthorPrompt."
+}
+
+relation AuthoringModuleBuildShapeAuthoringBundleGeneratedFromAuthoringModuleBuildShapeAuthoringBundleAstAnchor {
+  kind generated_from
+  connects AuthoringModule -> AuthoringModuleBuildShapeAuthoringBundleAstAnchor
+  roles { AuthoringModule as generated, AuthoringModuleBuildShapeAuthoringBundleAstAnchor as syntax }
+  expects AuthoringModuleBuildShapeAuthoringBundleAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3c25579148ef5eef16753c53c6bfc5af082896c8226ea6f3a3cb471150aabf99")
+  summary "fn AuthoringModule.buildShapeAuthoringBundle generated from typescript function_declaration at packages/shp-checker/src/authoring.ts#buildShapeAuthoringBundle."
 }
 
 relation AuthoringModuleBuildShapeCriticPromptGeneratedFromAuthoringModuleBuildShapeCriticPromptAstAnchor {
@@ -153,20 +161,12 @@ relation AuthoringModuleContextRefGeneratedFromAuthoringModuleContextRefAstAncho
   summary "fn AuthoringModule.contextRef generated from typescript function_declaration at packages/shp-checker/src/authoring.ts#contextRef."
 }
 
-relation AuthoringModuleExtractEvidenceSpansFromUnifiedDiffGeneratedFromAuthoringModuleExtractEvidenceSpansFromUnifiedDiffAstAnchor {
+relation AuthoringModuleFormatContextFilesGeneratedFromAuthoringModuleFormatContextFilesAstAnchor {
   kind generated_from
-  connects AuthoringModule -> AuthoringModuleExtractEvidenceSpansFromUnifiedDiffAstAnchor
-  roles { AuthoringModule as generated, AuthoringModuleExtractEvidenceSpansFromUnifiedDiffAstAnchor as syntax }
-  expects AuthoringModuleExtractEvidenceSpansFromUnifiedDiffAstAnchor fingerprint ast.semantic_subtree_v1("sha256:899a4bd3352a13b29b325c5956b83198a4191b2d0e2de112c7b4cf9d914d2f77")
-  summary "fn AuthoringModule.extractEvidenceSpansFromUnifiedDiff generated from typescript function_declaration at packages/shp-checker/src/authoring.ts#extractEvidenceSpansFromUnifiedDiff."
-}
-
-relation AuthoringModuleFlushGeneratedFromAuthoringModuleFlushAstAnchor {
-  kind generated_from
-  connects AuthoringModule -> AuthoringModuleFlushAstAnchor
-  roles { AuthoringModule as generated, AuthoringModuleFlushAstAnchor as syntax }
-  expects AuthoringModuleFlushAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4c1b273bc33550e624bf8c751bf829df2f25e955d652fec00af63246331e26a4")
-  summary "fn AuthoringModule.flush generated from typescript function_declaration at packages/shp-checker/src/authoring.ts#flush."
+  connects AuthoringModule -> AuthoringModuleFormatContextFilesAstAnchor
+  roles { AuthoringModule as generated, AuthoringModuleFormatContextFilesAstAnchor as syntax }
+  expects AuthoringModuleFormatContextFilesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f88b63f778c2be3ca149eedf4d1a68c95e4cecdd57ade3d16d3fed3e43988a3d")
+  summary "fn AuthoringModule.formatContextFiles generated from typescript function_declaration at packages/shp-checker/src/authoring.ts#formatContextFiles."
 }
 
 relation AuthoringModuleFormatContextTraitGuidanceGeneratedFromAuthoringModuleFormatContextTraitGuidanceAstAnchor {
