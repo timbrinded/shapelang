@@ -419,6 +419,7 @@ component ShpCli {
     }
   fn runShapeFileCheck
     source ts("packages/shp-cli/src/check-runner.ts#runShapeFileCheck")
+    description "Runs the shared checker and routes strict failures to stderr or successful draft warnings to stdout."
     effects complete {
       Read<DiagnosticText>
         evidence ts("packages/shp-cli/src/check-runner.ts")

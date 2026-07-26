@@ -36,6 +36,7 @@ const cliPath = resolve(repoRoot, "packages/shp-cli/src/index.ts");
 // real byte comparison rather than a path-rewriting artefact.
 const PASS_FIXTURE = "fixtures/pass/append_only_append/audit.shape";
 const FAIL_FIXTURE = "fixtures/fail/append_only_hard_delete/audit.shape";
+const UNKNOWN_EFFECTS_FIXTURE = "fixtures/fail/unknown_effects/audit.shape";
 
 // The 11 commands documented in docs-site/src/content/docs/reference/cli.md.
 // The help-completeness test is driven from this list, so adding a command
@@ -290,6 +291,28 @@ describe("shp CLI / library semantic parity (area #60)", () => {
       // are not comparing one constant rendering against itself.
       expect(passLibResult.exitCode).not.toBe(failLibResult.exitCode);
       expect(passLibBody).not.toBe(failLibBody);
+    }
+  );
+
+  test(
+    "[locked-intended] draft validation only softens unknown effects " +
+      "— anchor: docs-site/src/content/docs/reference/cli.md Draft validation",
+    async () => {
+      const strict = await runCli(["check", UNKNOWN_EFFECTS_FIXTURE]);
+      expect(strict.exitCode).toBe(1);
+      expect(strict.stdout).toBe("");
+      expect(strict.stderr).toContain("error: unknown effects");
+
+      const draft = await runCli(["check", "--allow-unknown-effects", UNKNOWN_EFFECTS_FIXTURE]);
+      expect(draft.exitCode).toBe(0);
+      expect(draft.stderr).toBe("");
+      expect(draft.stdout).toContain("warning: unknown effects");
+      expect(draft.stdout).toContain("Shape check passed with warnings.");
+
+      const forbidden = await runCli(["check", "--allow-unknown-effects", FAIL_FIXTURE]);
+      expect(forbidden.exitCode).toBe(1);
+      expect(forbidden.stdout).toBe("");
+      expect(forbidden.stderr).toContain("error: forbidden effect");
     }
   );
 });

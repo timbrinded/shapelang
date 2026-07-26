@@ -42,6 +42,7 @@ export type SemanticDiagnostic =
       kind: "unknown_effects";
       component: string;
       functionName: string;
+      severity: "error" | "warning";
       filePath?: string;
       causedBy: string[];
     }
@@ -252,6 +253,11 @@ export type CheckResult = {
 };
 
 export type CheckOptions = {
+  /**
+   * Treat `effects unknown` as a non-fatal warning for draft validation.
+   * Every other parse and semantic diagnostic remains blocking.
+   */
+  allowUnknownEffects?: boolean;
   changedFiles?: string[];
   enforceBindings?: boolean;
   includeFacts?: boolean;

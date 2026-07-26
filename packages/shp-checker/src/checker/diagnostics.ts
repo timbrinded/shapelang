@@ -13,7 +13,8 @@ export function formatDiagnostics(result: CheckResult): string {
     return "Shape check passed.\n";
   }
 
-  return `${result.diagnostics.map(formatDiagnostic).join("\n\n")}\n`;
+  const diagnostics = result.diagnostics.map(formatDiagnostic).join("\n\n");
+  return result.ok ? `${diagnostics}\n\nShape check passed with warnings.\n` : `${diagnostics}\n`;
 }
 
 // Canonical diagnostic order: by kind, then by rendered text. Checker output
@@ -119,7 +120,7 @@ function formatUnknownEffectsDiagnostic(
   diagnostic: Extract<SemanticDiagnostic, { kind: "unknown_effects" }>
 ): string {
   return [
-    "error: unknown effects",
+    `${diagnostic.severity}: unknown effects`,
     "",
     `${displaySymbol(diagnostic.component)}.${diagnostic.functionName} declares effects unknown.`,
     formatCausedBy(diagnostic.causedBy)

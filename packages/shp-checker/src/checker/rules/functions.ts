@@ -69,6 +69,7 @@ export function checkFunctions(model: Model): SemanticDiagnostic[] {
           kind: "unknown_effects",
           component: component.name,
           functionName: fn.name,
+          severity: "error",
           filePath: fn.provenance.filePath,
           causedBy: [describeProvenance(fn.provenance)]
         });

@@ -1,0 +1,6 @@
+module audit
+
+component AuditStore {
+  fn appendEvent
+    effects unknown
+}
