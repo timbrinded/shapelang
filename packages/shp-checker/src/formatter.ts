@@ -94,6 +94,7 @@ import {
   isRuleDecl,
   isRuleForbidEffectDecl,
   isRuleForbidHypercycleDecl,
+  isRuleForbidPathDecl,
   isRuleForbidProvidesDecl,
   isRuleWhenHasDecl,
   isSatisfiesDecl,
@@ -623,6 +624,9 @@ function formatRule(rule: RuleDecl): string {
       if (isRuleForbidHypercycleDecl(member)) {
         const kinds = member.kinds.length > 0 ? ` over ${member.kinds.join(" or ")}` : "";
         return `forbid hypercycle${kinds}`;
+      }
+      if (isRuleForbidPathDecl(member)) {
+        return `forbid path ${member.source} -> ${member.target} over ${member.kinds.join(" or ")}`;
       }
       return "";
     })

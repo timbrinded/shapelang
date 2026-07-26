@@ -27,6 +27,23 @@ Fix the model by removing the effect, changing the architecture decision, or mov
 
 For rule-derived final forbids, the rule must bind exactly one subject with `when T has TraitName`. Concrete forbid targets are resolved through module/import scoping before this check runs.
 
+## Forbidden path
+
+Cause: a `forbid path SOURCE -> TARGET over KIND ...` rule found a directed path whose every hop uses an allowed relation kind. Relations with unresolved or ambiguous endpoints, or invalid `provides` endpoint roles, do not contribute to this witness.
+
+The diagnostic reports the canonical fewest-hop witness. Each line identifies the relation kind, relation declaration, and directed endpoints for one hop. If two witness vertices or relations share a local name across modules, only those colliding names are module-qualified.
+
+```text
+error: forbidden path
+
+rule no_gateway_to_secrets rejects this dependency path:
+  calls GatewayCallsPolicy: Gateway -> PolicyService
+  provides PolicyProvidesSecret: PolicyService -> SecretStore
+witness: Gateway -> PolicyService -> SecretStore
+```
+
+Remove or redirect a relation, narrow the rule's explicit kind set, or revise the architecture decision. Reverse-only and disconnected graphs do not match. Use `forbid hypercycle` rather than identical path endpoints.
+
 ## Forbidden hypercycle
 
 Cause: a `forbid hypercycle` rule found a directed cycle in the structural hypergraph. The diagnostic cites the relations forming the cycle and a vertex witness path. Each relation kind contributes steps to the cycle graph according to its declared traversal semantics (binary kinds contribute one step `A -> B`; ordered kinds contribute consecutive steps along their members).

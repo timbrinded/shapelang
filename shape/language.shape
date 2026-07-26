@@ -47,6 +47,7 @@ component ShapeGrammar {
   grants Update<SyntaxHighlighting>
   fn generateAst : RefactorSensitive
     source langium("packages/shp-checker/src/language/shape.langium")
+    description "Generates the typed AST and parser grammar, including constrained forbidden path rule members with explicit endpoint and kind fields."
     effects complete {
       Read<LangiumGrammar>
         evidence langium("packages/shp-checker/src/language/shape.langium")
@@ -61,6 +62,7 @@ component ShapeGrammar {
     }
   fn updateSyntaxHighlighting
     source js("docs-site/src/syntax/shape-language.mjs")
+    description "Keeps documentation highlighting aligned with every reserved Shape keyword, including singular path rules."
     effects complete {
       Update<SyntaxHighlighting>
         evidence js("docs-site/src/syntax/shape-language.mjs")
@@ -138,7 +140,7 @@ memory GrammarMemoryGuardForms : RefactorConstraint<fn ShapeGrammar.generateAst>
   applies_to fn ShapeGrammar.generateAst
   status Explained
   confidence High
-  summary "Grammar changes ripple to the generated AST, parser, checker, formatter, and docs; the memory-guard protects clause supports a shape-trait form with a value and a valueless description form, guards support on_change require and forbid transform forms alongside modify-fn transform intent, review governance adds role, policy, and sensitive keywords, traits support require_context obligations, and rationale/memory members may be grouped in nested protects/guards/who/when blocks that lower to the flat form; new keywords must also be reserved in the AST generator."
+  summary "Grammar changes ripple to the generated AST, parser, checker, formatter, and docs; the memory-guard protects clause supports a shape-trait form with a value and a valueless description form, guards support on_change require and forbid transform forms alongside modify-fn transform intent, review governance adds role, policy, and sensitive keywords, traits support require_context obligations, forbidden paths require explicit endpoints and relation kinds, and rationale/memory members may be grouped in nested protects/guards/who/when blocks that lower to the flat form; new keywords must also be reserved in the AST generator."
   who {
     owner ShapeMaintainers
   }
@@ -154,7 +156,7 @@ memory ParseDocumentContract : RefactorConstraint<fn ShapeParser.parseShapeModul
   applies_to fn ShapeParser.parseShapeModule
   status Explained
   confidence High
-  summary "Parser output must preserve Langium document state, source URI, module-qualified references, candidate effect syntax, and parse diagnostics for downstream checker and editor use."
+  summary "Parser output must preserve Langium document state, source URI, module-qualified references, candidate effect and forbidden path syntax, and parse diagnostics for downstream checker and editor use."
   who {
     owner ShapeMaintainers
   }
@@ -164,4 +166,27 @@ memory ParseDocumentContract : RefactorConstraint<fn ShapeParser.parseShapeModul
   guards {
     on_change require ReEvaluation<Self>
   }
+}
+
+reevaluation ForbiddenPathGrammarRechecked {
+  satisfies memory GrammarMemoryGuardForms
+  outcome Confirmed
+  summary "The path keyword is reserved and highlighted, Langium generates source, target, and kinds fields, and parser, formatter, checker, editor, AST-reservation, and docs checks cover the constrained syntax."
+  reviewer ShapeMaintainers
+  decided_on "2026-07-26"
+  evidence langium("packages/shp-checker/src/language/shape.langium")
+  evidence md("docs-site/src/content/docs/inside-shape/langium-grammar.md")
+  evidence test("packages/shp-checker/src/checker.guard-syntax.test.ts")
+  evidence test("packages/shp-checker/src/formatter.test.ts")
+  evidence test("packages/shp-checker/src/parser.test.ts")
+}
+
+reevaluation ForbiddenPathParserRechecked {
+  satisfies memory ParseDocumentContract
+  outcome Confirmed
+  summary "Parser coverage preserves local and module-qualified forbidden path endpoints, explicit ordered kind filters, and rejects an omitted filter."
+  reviewer ShapeMaintainers
+  decided_on "2026-07-26"
+  evidence md("docs-site/src/content/docs/reference/language-syntax.md")
+  evidence test("packages/shp-checker/src/parser.test.ts")
 }

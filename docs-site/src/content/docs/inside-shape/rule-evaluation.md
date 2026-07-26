@@ -51,6 +51,7 @@ The current checker covers these major categories:
 | Bindings | Did a Shape-affecting change require a paired docs or workflow change? | Update the bound path or add a narrow `docs_not_needed` attestation. |
 | Required context | Did a shape trait require rationale, memory, or description? | Add the typed context block. |
 | Guarded changes | Did a protected target change without reevaluation? | Add a matching `reevaluation` or preserve the shape. |
+| Forbidden paths | Did a `forbid path` rule find a directed route over its explicit relation kinds? | Remove or redirect a hop, or revise the rule intentionally. |
 | Hypercycles | Did a `forbid hypercycle` rule find a cycle in the directed hypergraph? | Break the cycle or revise the rule intentionally. |
 | Provider rules | Does any `provides` relation expose a target outside the allowed component? | Move provider responsibility, remove the relation, or change the rule. |
 
@@ -248,9 +249,38 @@ reevaluation DecisionShapeRechecked {
 
 Memory is not a waiver. It can satisfy required design context and create review obligations, but it does not suppress final forbids, missing grants, or other hard model failures.
 
-## Hypercycle Witness Paths
+## Path and Hypercycle Witnesses
 
-Hypergraph rules need to show their work. If a rule forbids cycles over `calls`, the diagnostic should include the relations and the vertex path that prove the cycle.
+Hypergraph rules need to show their work. A forbidden path reports each directed relation hop, while a hypercycle reports the relations and closed vertex walk that prove the cycle. Both use the same canonical traversal semantics and deterministic tie-break order; path witnesses exclude semantically invalid relation endpoints.
+
+```shape
+module platform_path
+
+resource SecretStore
+
+component Api {
+}
+component PolicyService {
+}
+
+relation ApiCallsPolicy {
+  kind calls
+  connects Api -> PolicyService
+}
+
+relation PolicyProvidesSecret {
+  kind provides
+  connects PolicyService -> SecretStore
+}
+
+rule no_api_secret_route {
+  forbid path Api -> SecretStore over calls or provides
+}
+```
+
+The path witness is the fewest-hop matching route. A BFS visited set makes evaluation terminate even when the graph also contains cycles.
+
+If a rule forbids cycles over `calls`, the diagnostic should include the relations and the vertex path that prove the cycle.
 
 ```shape
 module platform

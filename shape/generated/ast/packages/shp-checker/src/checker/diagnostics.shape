@@ -6,6 +6,11 @@ trait GeneratedAstAnchor {
 trait GeneratedCandidate {
 }
 
+resource DiagnosticsModuleCollisionAwareDisplayAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/diagnostics.ts#collisionAwareDisplay")
+  fingerprint ast.semantic_subtree_v1("sha256:d413caace91453f7991e1ff84b7c653218ffc152b8ecffd5999b7a8544fff8e1")
+}
+
 resource DiagnosticsModuleCompareShapeDiagnosticsAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/checker/diagnostics.ts#compareShapeDiagnostics")
   fingerprint ast.semantic_subtree_v1("sha256:e4de37c313f44d057619be0d7846037700579aa039950477f5a07a4c165199d1")
@@ -33,7 +38,7 @@ resource DiagnosticsModuleFormatContextTargetMismatchDiagnosticAstAnchor : Gener
 
 resource DiagnosticsModuleFormatDiagnosticAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/checker/diagnostics.ts#formatDiagnostic")
-  fingerprint ast.semantic_subtree_v1("sha256:991222ddf6ac0e38da1361471beec2f3d50279a967a2d705467741839cedb78b")
+  fingerprint ast.semantic_subtree_v1("sha256:483b0d19abbb91426624a589b21e956b51be41591a96812605c8ad3c50fec3a0")
 }
 
 resource DiagnosticsModuleFormatDiagnosticsAstAnchor : GeneratedAstAnchor {
@@ -64,6 +69,11 @@ resource DiagnosticsModuleFormatFingerprintMismatchDiagnosticAstAnchor : Generat
 resource DiagnosticsModuleFormatForbiddenHypercycleDiagnosticAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/checker/diagnostics.ts#formatForbiddenHypercycleDiagnostic")
   fingerprint ast.semantic_subtree_v1("sha256:52ce67242c43cb91ee84aba6e5fae8f6f665529c4c9cfea4d9c5a7f723263033")
+}
+
+resource DiagnosticsModuleFormatForbiddenPathDiagnosticAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/diagnostics.ts#formatForbiddenPathDiagnostic")
+  fingerprint ast.semantic_subtree_v1("sha256:9186c8a1852d0d7b5e441ad1d333270aeb0273b5e19424a2f1ab09f99713658d")
 }
 
 resource DiagnosticsModuleFormatForbiddenProvidesDiagnosticAstAnchor : GeneratedAstAnchor {
@@ -167,6 +177,9 @@ resource DiagnosticsModuleGuardedShapeChangeSummaryAstAnchor : GeneratedAstAncho
 }
 
 component DiagnosticsModule : GeneratedCandidate {
+  fn collisionAwareDisplay
+    source ts("packages/shp-checker/src/checker/diagnostics.ts#collisionAwareDisplay")
+    effects unknown
   fn compareShapeDiagnostics
     source ts("packages/shp-checker/src/checker/diagnostics.ts#compareShapeDiagnostics")
     effects unknown
@@ -202,6 +215,9 @@ component DiagnosticsModule : GeneratedCandidate {
     effects unknown
   fn formatForbiddenHypercycleDiagnostic
     source ts("packages/shp-checker/src/checker/diagnostics.ts#formatForbiddenHypercycleDiagnostic")
+    effects unknown
+  fn formatForbiddenPathDiagnostic
+    source ts("packages/shp-checker/src/checker/diagnostics.ts#formatForbiddenPathDiagnostic")
     effects unknown
   fn formatForbiddenProvidesDiagnostic
     source ts("packages/shp-checker/src/checker/diagnostics.ts#formatForbiddenProvidesDiagnostic")
@@ -265,6 +281,14 @@ component DiagnosticsModule : GeneratedCandidate {
     effects unknown
 }
 
+relation DiagnosticsModuleCollisionAwareDisplayGeneratedFromDiagnosticsModuleCollisionAwareDisplayAstAnchor {
+  kind generated_from
+  connects DiagnosticsModule -> DiagnosticsModuleCollisionAwareDisplayAstAnchor
+  roles { DiagnosticsModule as generated, DiagnosticsModuleCollisionAwareDisplayAstAnchor as syntax }
+  expects DiagnosticsModuleCollisionAwareDisplayAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d413caace91453f7991e1ff84b7c653218ffc152b8ecffd5999b7a8544fff8e1")
+  summary "fn DiagnosticsModule.collisionAwareDisplay generated from typescript function_declaration at packages/shp-checker/src/checker/diagnostics.ts#collisionAwareDisplay."
+}
+
 relation DiagnosticsModuleCompareShapeDiagnosticsGeneratedFromDiagnosticsModuleCompareShapeDiagnosticsAstAnchor {
   kind generated_from
   connects DiagnosticsModule -> DiagnosticsModuleCompareShapeDiagnosticsAstAnchor
@@ -309,7 +333,7 @@ relation DiagnosticsModuleFormatDiagnosticGeneratedFromDiagnosticsModuleFormatDi
   kind generated_from
   connects DiagnosticsModule -> DiagnosticsModuleFormatDiagnosticAstAnchor
   roles { DiagnosticsModule as generated, DiagnosticsModuleFormatDiagnosticAstAnchor as syntax }
-  expects DiagnosticsModuleFormatDiagnosticAstAnchor fingerprint ast.semantic_subtree_v1("sha256:991222ddf6ac0e38da1361471beec2f3d50279a967a2d705467741839cedb78b")
+  expects DiagnosticsModuleFormatDiagnosticAstAnchor fingerprint ast.semantic_subtree_v1("sha256:483b0d19abbb91426624a589b21e956b51be41591a96812605c8ad3c50fec3a0")
   summary "fn DiagnosticsModule.formatDiagnostic generated from typescript function_declaration at packages/shp-checker/src/checker/diagnostics.ts#formatDiagnostic."
 }
 
@@ -359,6 +383,14 @@ relation DiagnosticsModuleFormatForbiddenHypercycleDiagnosticGeneratedFromDiagno
   roles { DiagnosticsModule as generated, DiagnosticsModuleFormatForbiddenHypercycleDiagnosticAstAnchor as syntax }
   expects DiagnosticsModuleFormatForbiddenHypercycleDiagnosticAstAnchor fingerprint ast.semantic_subtree_v1("sha256:52ce67242c43cb91ee84aba6e5fae8f6f665529c4c9cfea4d9c5a7f723263033")
   summary "fn DiagnosticsModule.formatForbiddenHypercycleDiagnostic generated from typescript function_declaration at packages/shp-checker/src/checker/diagnostics.ts#formatForbiddenHypercycleDiagnostic."
+}
+
+relation DiagnosticsModuleFormatForbiddenPathDiagnosticGeneratedFromDiagnosticsModuleFormatForbiddenPathDiagnosticAstAnchor {
+  kind generated_from
+  connects DiagnosticsModule -> DiagnosticsModuleFormatForbiddenPathDiagnosticAstAnchor
+  roles { DiagnosticsModule as generated, DiagnosticsModuleFormatForbiddenPathDiagnosticAstAnchor as syntax }
+  expects DiagnosticsModuleFormatForbiddenPathDiagnosticAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9186c8a1852d0d7b5e441ad1d333270aeb0273b5e19424a2f1ab09f99713658d")
+  summary "fn DiagnosticsModule.formatForbiddenPathDiagnostic generated from typescript function_declaration at packages/shp-checker/src/checker/diagnostics.ts#formatForbiddenPathDiagnostic."
 }
 
 relation DiagnosticsModuleFormatForbiddenProvidesDiagnosticGeneratedFromDiagnosticsModuleFormatForbiddenProvidesDiagnosticAstAnchor {

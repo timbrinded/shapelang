@@ -57,6 +57,7 @@ const SHAPE_RESERVED_WORDS = new Set([
   "over",
   "owner",
   "owns",
+  "path",
   "paths",
   "pin",
   "policy",

@@ -105,6 +105,7 @@ component ShapeDiagnostics {
     }
   fn formatDiagnostics : RefactorSensitive
     source ts("packages/shp-checker/src/checker/diagnostics.ts#formatDiagnostics")
+    description "Formats deterministic causal diagnostics, including collision-aware per-hop forbidden path witnesses."
     effects complete {
       Append<DiagnosticText>
         evidence ts("packages/shp-checker/src/checker/diagnostics.ts")
@@ -147,7 +148,7 @@ component ShapeModelLowerer {
     }
   fn lowerRule
     source ts("packages/shp-checker/src/checker/lowering/declarations.ts#lowerRule")
-    description "Preserves condition provenance and resolves trait and effect references before rule validation."
+    description "Preserves condition provenance and resolves trait, effect, and forbidden-path endpoint references before rule validation."
     effects complete {
       Append<FactSet>
         evidence ts("packages/shp-checker/src/checker/lowering/declarations.ts")
@@ -197,8 +198,8 @@ component ShapePreludeRegistry {
   owns PreludeMetadata
   grants Update<PreludeMetadata>
   fn definePreludeMetadata : RefactorSensitive
-    source ts("packages/shp-checker/src/prelude.ts#PRELUDE_TRAITS")
-    description "Defines built-in trait names and resource-compatible parameter bounds for prelude seeding and rule validation."
+    source ts("packages/shp-checker/src/prelude.ts")
+    description "Defines built-in traits, context requirements, and directed relation traversal metadata shared by checker and tooling."
     effects complete {
       Update<PreludeMetadata>
         evidence ts("packages/shp-checker/src/prelude.ts")
@@ -237,6 +238,17 @@ component ShapeRuleEngine {
       Read<FactSet>
         evidence ts("packages/shp-checker/src/checker/rules/relations.ts")
     }
+  fn checkForbiddenPaths
+    source ts("packages/shp-checker/src/checker/rules/relations.ts#checkForbiddenPaths")
+    description "Validates constrained path rules and appends one deterministic per-hop witness diagnostic for each matching directed path."
+    effects complete {
+      Append<SemanticDiagnostics>
+        evidence ts("packages/shp-checker/src/checker/rules/relations.ts")
+      Read<EffectiveModel>
+        evidence ts("packages/shp-checker/src/checker/rules/relations.ts")
+      Read<PreludeMetadata>
+        evidence ts("packages/shp-checker/src/checker/rules/relations.ts")
+    }
   fn checkFreshness : RefactorSensitive
     source ts("packages/shp-checker/src/checker/rules/guards.ts#checkFreshness")
     effects complete {
@@ -263,7 +275,7 @@ component ShapeRuleEngine {
     }
   fn checkResolvedNames
     source ts("packages/shp-checker/src/checker/rules/names.ts#checkResolvedNames")
-    description "Rejects unresolved rule-condition traits with the provenance of the exact when clause."
+    description "Rejects unresolved rule-condition traits and forbidden-path endpoints with provenance from the exact rule member."
     effects complete {
       Append<SemanticDiagnostics>
         evidence ts("packages/shp-checker/src/checker/rules/names.ts")
@@ -294,7 +306,16 @@ component ShapeRuleEngine {
     }
   fn findHypercycle : RefactorSensitive
     source ts("packages/shp-checker/src/checker/rules/relations.ts#findHypercycle")
-    description "Builds one relation-kind-filtered traversal graph, partitions it into strongly connected components, and selects a deterministic shortest witness."
+    description "Uses the shared relation-kind-filtered traversal graph, partitions it into strongly connected components, and selects a deterministic shortest cycle witness."
+    effects complete {
+      Read<EffectiveModel>
+        evidence ts("packages/shp-checker/src/checker/rules/relations.ts")
+      Read<PreludeMetadata>
+        evidence ts("packages/shp-checker/src/checker/rules/relations.ts")
+    }
+  fn findShortestPath : RefactorSensitive
+    source ts("packages/shp-checker/src/checker/rules/relations.ts#findShortestPath")
+    description "Uses canonical breadth-first traversal to select the fewest-hop directed path, breaking ties by vertices, relation kinds, and relation names."
     effects complete {
       Read<EffectiveModel>
         evidence ts("packages/shp-checker/src/checker/rules/relations.ts")
@@ -538,6 +559,22 @@ memory FinalForbidPrecedence : RefactorConstraint<fn ShapeRuleEngine.deriveFinal
   }
 }
 
+memory ForbiddenPathWitness : RefactorConstraint<fn ShapeRuleEngine.findShortestPath> {
+  applies_to fn ShapeRuleEngine.findShortestPath
+  status Explained
+  confidence High
+  summary "Forbidden path diagnostics must choose a deterministic fewest-hop directed witness and preserve relation kind, name, and provenance for every hop."
+  who {
+    owner ShapeMaintainers
+  }
+  protects {
+    shape ForbiddenPathWitness
+  }
+  guards {
+    on_change require ReEvaluation<Self>
+  }
+}
+
 memory FreshnessDeterminism : RefactorConstraint<fn ShapeRuleEngine.checkFreshness> {
   applies_to fn ShapeRuleEngine.checkFreshness
   status Explained
@@ -724,6 +761,38 @@ reevaluation FinalForbidRuleConditionsRechecked {
   evidence test("packages/shp-checker/src/checker.test.ts")
 }
 
+reevaluation ForbiddenPathCheckOrderRechecked {
+  satisfies memory CheckPipelineOrder
+  outcome Confirmed
+  summary "Forbidden path evaluation runs after effective-model lowering, name validation, relation validation, and provides checks, and before hypercycle and coverage checks."
+  reviewer ShapeMaintainers
+  decided_on "2026-07-26"
+  evidence test("packages/shp-checker/src/behavioural/forbidden-path.test.ts")
+  evidence ts("packages/shp-checker/src/checker/rules.ts")
+}
+
+reevaluation ForbiddenPathDiagnosticOutputRechecked {
+  satisfies memory DiagnosticContract
+  outcome Confirmed
+  summary "Forbidden path diagnostics retain each directed hop and its provenance, render local names when unique, and qualify only colliding cross-module vertex and relation names."
+  reviewer ShapeMaintainers
+  decided_on "2026-07-26"
+  evidence md("docs-site/src/content/docs/reference/diagnostics.md")
+  evidence test("packages/shp-checker/src/behavioural/forbidden-path.test.ts")
+}
+
+reevaluation ForbiddenPathTraversalRechecked {
+  satisfies memory ForbiddenPathWitness
+  outcome Confirmed
+  summary "Behavioral coverage proves explicit kind filtering, directionality, disconnected and cyclic graphs, canonical fewest-hop selection, declaration-order independence, ordered-relation hop provenance, qualified endpoint resolution, and exclusion of unresolved or endpoint-type-invalid relations."
+  reviewer ShapeMaintainers
+  decided_on "2026-07-26"
+  evidence md("docs-site/src/content/docs/concepts/rules-hypercycles.md")
+  evidence md("docs-site/src/content/docs/inside-shape/fact-lowering.md")
+  evidence test("packages/shp-checker/src/behavioural/forbidden-path.test.ts")
+  evidence test("packages/shp-checker/src/checker.test.ts")
+}
+
 reevaluation HypercycleSccTraversalRechecked {
   satisfies memory HypercycleWitness
   outcome Confirmed
@@ -733,6 +802,16 @@ reevaluation HypercycleSccTraversalRechecked {
   evidence md("docs-site/src/content/docs/concepts/rules-hypercycles.md")
   evidence test("packages/shp-checker/src/behavioural/hypercycle-witness.test.ts")
   evidence test("packages/shp-checker/src/checker.test.ts")
+}
+
+reevaluation HypercycleSharedTraversalRechecked {
+  satisfies memory HypercycleWitness
+  outcome Confirmed
+  summary "SCC detection keeps its canonical shortest-cycle behavior while sharing the directed traversal graph and path comparator with forbidden path evaluation."
+  reviewer ShapeMaintainers
+  decided_on "2026-07-26"
+  evidence test("packages/shp-checker/src/behavioural/forbidden-path.test.ts")
+  evidence test("packages/shp-checker/src/behavioural/hypercycle-witness.test.ts")
 }
 
 reevaluation HypercycleTraversalRechecked {
@@ -753,6 +832,17 @@ reevaluation LoweringFunctionRegistryRechecked {
   evidence test("packages/shp-checker/src/checker.test.ts")
 }
 
+reevaluation PreludeRelationTraversalRechecked {
+  satisfies memory PreludeMetadataContract
+  outcome Confirmed
+  summary "The guarded prelude source now covers the complete trait, context, and relation metadata module; relation kinds expose shared directed traversal semantics consumed consistently by hypercycle detection, forbidden path evaluation, relation validation, and editor tooling without weakening the existing trait/context contract."
+  reviewer ShapeMaintainers
+  decided_on "2026-07-26"
+  evidence test("packages/shp-checker/src/behavioural/forbidden-path.test.ts")
+  evidence test("packages/shp-checker/src/behavioural/hypercycle-witness.test.ts")
+  evidence test("packages/shp-checker/src/editor.test.ts")
+}
+
 reevaluation PreludeRuleTraitBoundsRechecked {
   satisfies memory PreludeMetadataContract
   outcome Confirmed
@@ -764,22 +854,22 @@ reevaluation PreludeRuleTraitBoundsRechecked {
 
 attest no_shape_change {
   source md("docs-site/src/content/docs/inside-shape/rule-evaluation.md")
-  reason "Documents the rule-condition compatibility and inert-invalid-rule semantics modeled by ShapeRuleEngine; the documentation itself does not change the architecture contract."
+  reason "Documents forbidden path evaluation and existing rule semantics modeled by ShapeRuleEngine; the documentation itself does not change the architecture contract."
 }
 
 attest no_shape_change {
   source md("docs-site/src/content/docs/reference/diagnostics.md")
-  reason "Documents targeted invalid-rule diagnostics and SCC-backed shortest hypercycle witness selection modeled by ShapeRuleEngine; the documentation itself does not change the architecture contract."
+  reason "Documents per-hop forbidden path diagnostics and existing checker diagnostics modeled by ShapeRuleEngine and ShapeDiagnostics; the documentation itself does not change the architecture contract."
 }
 
 attest no_shape_change {
   source md("docs-site/src/content/docs/reference/language-syntax.md")
-  reason "Clarifies the existing rule grammar's supported semantic subset without changing syntax or the architecture contract."
+  reason "Documents the forbidden path grammar modeled by ShapeGrammar and ShapeRuleEngine; the documentation itself does not change the architecture contract."
 }
 
 attest no_shape_change {
   source md("docs-site/src/content/docs/concepts/rules-hypercycles.md")
-  reason "Documents the SCC-backed shortest hypercycle witness behavior modeled by ShapeRuleEngine; the documentation itself does not change the architecture contract."
+  reason "Documents canonical forbidden path and hypercycle traversal modeled by ShapeRuleEngine; the documentation itself does not change the architecture contract."
 }
 
 attest no_shape_change {

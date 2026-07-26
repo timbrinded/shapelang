@@ -15,6 +15,7 @@ import { checkFreshness, checkGuardedChanges } from "./rules/guards.ts";
 import { checkResolvedNames } from "./rules/names.ts";
 import {
   checkFingerprintExpectations,
+  checkForbiddenPaths,
   checkHypercycles,
   checkProvidesRules
 } from "./rules/relations.ts";
@@ -42,6 +43,7 @@ export const SEMANTIC_CHECKS: ReadonlyArray<
   (model, options) => (options.freshnessDate ? checkFreshness(model, options.freshnessDate) : []),
   (model) => checkFunctions(model),
   (model) => checkProvidesRules(model),
+  (model) => checkForbiddenPaths(model),
   (model) => checkHypercycles(model),
   (model, options) => checkCoverage(model, options.changedFiles ?? [], options.repoRoot)
 ];

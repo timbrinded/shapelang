@@ -78,7 +78,7 @@ resource DeclarationsModuleLowerResourceAstAnchor : GeneratedAstAnchor {
 
 resource DeclarationsModuleLowerRuleAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/checker/lowering/declarations.ts#lowerRule")
-  fingerprint ast.semantic_subtree_v1("sha256:42ba8a1c1e54ff95b61c6624d4a9c5a48ed76d7c3a9afa23b135c6491acc7ab2")
+  fingerprint ast.semantic_subtree_v1("sha256:3f986345b44a76686bec34d3a987fcddf97826cd6e440ebcd6d7f739559e05d3")
 }
 
 resource DeclarationsModuleLowerRuleForbidAstAnchor : GeneratedAstAnchor {
@@ -89,6 +89,11 @@ resource DeclarationsModuleLowerRuleForbidAstAnchor : GeneratedAstAnchor {
 resource DeclarationsModuleLowerRuleForbidHypercycleAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/checker/lowering/declarations.ts#lowerRuleForbidHypercycle")
   fingerprint ast.semantic_subtree_v1("sha256:f60967725f9ffde58f4995ec5cecf48fbe9f490798d8e4fa71b04fed5e21e9b8")
+}
+
+resource DeclarationsModuleLowerRuleForbidPathAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/lowering/declarations.ts#lowerRuleForbidPath")
+  fingerprint ast.semantic_subtree_v1("sha256:bcb375744a34e4ce70431bf5b99c97c71004f05a6e916f2724173aef253ad630")
 }
 
 resource DeclarationsModuleLowerRuleForbidProvidesAstAnchor : GeneratedAstAnchor {
@@ -187,6 +192,9 @@ component DeclarationsModule : GeneratedCandidate {
     effects unknown
   fn lowerRuleForbidHypercycle
     source ts("packages/shp-checker/src/checker/lowering/declarations.ts#lowerRuleForbidHypercycle")
+    effects unknown
+  fn lowerRuleForbidPath
+    source ts("packages/shp-checker/src/checker/lowering/declarations.ts#lowerRuleForbidPath")
     effects unknown
   fn lowerRuleForbidProvides
     source ts("packages/shp-checker/src/checker/lowering/declarations.ts#lowerRuleForbidProvides")
@@ -345,6 +353,14 @@ relation DeclarationsModuleLowerRuleForbidHypercycleGeneratedFromDeclarationsMod
   summary "fn DeclarationsModule.lowerRuleForbidHypercycle generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/declarations.ts#lowerRuleForbidHypercycle."
 }
 
+relation DeclarationsModuleLowerRuleForbidPathGeneratedFromDeclarationsModuleLowerRuleForbidPathAstAnchor {
+  kind generated_from
+  connects DeclarationsModule -> DeclarationsModuleLowerRuleForbidPathAstAnchor
+  roles { DeclarationsModule as generated, DeclarationsModuleLowerRuleForbidPathAstAnchor as syntax }
+  expects DeclarationsModuleLowerRuleForbidPathAstAnchor fingerprint ast.semantic_subtree_v1("sha256:bcb375744a34e4ce70431bf5b99c97c71004f05a6e916f2724173aef253ad630")
+  summary "fn DeclarationsModule.lowerRuleForbidPath generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/declarations.ts#lowerRuleForbidPath."
+}
+
 relation DeclarationsModuleLowerRuleForbidProvidesGeneratedFromDeclarationsModuleLowerRuleForbidProvidesAstAnchor {
   kind generated_from
   connects DeclarationsModule -> DeclarationsModuleLowerRuleForbidProvidesAstAnchor
@@ -357,7 +373,7 @@ relation DeclarationsModuleLowerRuleGeneratedFromDeclarationsModuleLowerRuleAstA
   kind generated_from
   connects DeclarationsModule -> DeclarationsModuleLowerRuleAstAnchor
   roles { DeclarationsModule as generated, DeclarationsModuleLowerRuleAstAnchor as syntax }
-  expects DeclarationsModuleLowerRuleAstAnchor fingerprint ast.semantic_subtree_v1("sha256:42ba8a1c1e54ff95b61c6624d4a9c5a48ed76d7c3a9afa23b135c6491acc7ab2")
+  expects DeclarationsModuleLowerRuleAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3f986345b44a76686bec34d3a987fcddf97826cd6e440ebcd6d7f739559e05d3")
   summary "fn DeclarationsModule.lowerRule generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/declarations.ts#lowerRule."
 }
 

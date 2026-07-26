@@ -1,0 +1,23 @@
+module deps
+
+resource SecretStore
+
+component Gateway {
+}
+
+component PolicyService {
+}
+
+relation GatewayCallsPolicy {
+  kind calls
+  connects Gateway -> PolicyService
+}
+
+relation PolicyProvidesSecret {
+  kind provides
+  connects PolicyService -> SecretStore
+}
+
+rule no_gateway_to_secrets {
+  forbid path Gateway -> SecretStore over calls or provides
+}

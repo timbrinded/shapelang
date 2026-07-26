@@ -241,7 +241,7 @@ function buildRelationInfo(
       });
       return;
     }
-    if (rule.cycleTraversal === "directed_pairs" && !connectsDecl.ordered) {
+    if (rule.traversal === "directed_pairs" && !connectsDecl.ordered) {
       model.diagnostics.push({
         kind: "invalid_relation",
         name,

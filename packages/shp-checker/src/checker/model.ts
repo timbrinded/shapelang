@@ -117,6 +117,16 @@ export type SemanticDiagnostic =
       causedBy: string[];
     }
   | {
+      kind: "forbidden_path";
+      rule: string;
+      source: string;
+      target: string;
+      kinds: string[];
+      steps: { from: string; to: string; relation: string; kind: string }[];
+      filePath?: string;
+      causedBy: string[];
+    }
+  | {
       kind: "forbidden_provides";
       rule: string;
       provider: string;
@@ -686,6 +696,14 @@ export type RuleInfo = {
     provenance: Provenance;
   }[];
   forbidHypercycles: {
+    kinds: string[];
+    provenance: Provenance;
+  }[];
+  forbidPaths: {
+    source: string;
+    sourceResolution: ResolutionResult["kind"];
+    target: string;
+    targetResolution: ResolutionResult["kind"];
     kinds: string[];
     provenance: Provenance;
   }[];

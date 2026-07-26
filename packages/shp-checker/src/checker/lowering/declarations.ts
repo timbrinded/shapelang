@@ -14,6 +14,7 @@ import type {
   RuleDecl,
   RuleForbidEffectDecl,
   RuleForbidHypercycleDecl,
+  RuleForbidPathDecl,
   RuleForbidProvidesDecl,
   SourceRef,
   TargetKind,
@@ -42,6 +43,7 @@ import {
   isRequireContextDecl,
   isRuleForbidEffectDecl,
   isRuleForbidHypercycleDecl,
+  isRuleForbidPathDecl,
   isRuleForbidProvidesDecl,
   isRuleWhenHasDecl,
   isTraitForbidDecl,
@@ -77,7 +79,8 @@ import {
   resolveDeclName,
   resolveDeclReference,
   resolveFunctionTargetName,
-  resolveTargetName
+  resolveTargetName,
+  resolveVertexReference
 } from "../symbols.ts";
 import { normalizeShapeSourcePath, unquoteShapeString } from "../../shape-strings.ts";
 import { emitFunctionFacts } from "./facts.ts";
@@ -605,6 +608,7 @@ export function lowerRule(rule: RuleDecl, context: LoweringContext, model: Model
     forbidEffects: [],
     forbidProvides: [],
     forbidHypercycles: [],
+    forbidPaths: [],
     provenance: provenance(context.filePath, `rule ${name}`)
   };
 
@@ -637,6 +641,8 @@ export function lowerRule(rule: RuleDecl, context: LoweringContext, model: Model
       info.forbidProvides.push(lowerRuleForbidProvides(member, context, model, name));
     } else if (isRuleForbidHypercycleDecl(member)) {
       info.forbidHypercycles.push(lowerRuleForbidHypercycle(member, context.filePath, name));
+    } else if (isRuleForbidPathDecl(member)) {
+      info.forbidPaths.push(lowerRuleForbidPath(member, context, model, name));
     }
   }
 
@@ -855,6 +861,47 @@ export function lowerRuleForbidHypercycle(
       filePath,
       `rule ${ruleName} forbids hypercycle${member.kinds.length > 0 ? ` over ${member.kinds.join(" or ")}` : ""}`
     )
+  };
+}
+
+export function lowerRuleForbidPath(
+  member: RuleForbidPathDecl,
+  context: LoweringContext,
+  model: Model,
+  ruleName: string
+): RuleInfo["forbidPaths"][number] {
+  const source = resolveVertexReference(member.source, context, model);
+  const target = resolveVertexReference(member.target, context, model);
+  const prov = provenance(
+    context.filePath,
+    `rule ${ruleName} forbids path ${source.name} -> ${target.name} over ${member.kinds.join(" or ")}`
+  );
+
+  const reportedAmbiguousNames = new Set<string>();
+  for (const [name, resolution] of [
+    [member.source, source],
+    [member.target, target]
+  ] as const) {
+    if (resolution.kind === "ambiguous" && !reportedAmbiguousNames.has(name)) {
+      reportedAmbiguousNames.add(name);
+      model.diagnostics.push({
+        kind: "ambiguous_name",
+        nameKind: "relation_endpoint",
+        name,
+        matches: resolution.matches,
+        filePath: context.filePath,
+        causedBy: [describeProvenance(prov)]
+      });
+    }
+  }
+
+  return {
+    source: source.name,
+    sourceResolution: source.kind,
+    target: target.name,
+    targetResolution: target.kind,
+    kinds: [...member.kinds],
+    provenance: prov
   };
 }
 

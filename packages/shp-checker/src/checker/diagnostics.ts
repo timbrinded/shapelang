@@ -52,6 +52,8 @@ function formatDiagnostic(diagnostic: ShapeDiagnostic): string {
       return formatMissingShapeUpdateDiagnostic(diagnostic);
     case "missing_bound_docs_change":
       return formatMissingBoundDocsChangeDiagnostic(diagnostic);
+    case "forbidden_path":
+      return formatForbiddenPathDiagnostic(diagnostic);
     case "forbidden_hypercycle":
       return formatForbiddenHypercycleDiagnostic(diagnostic);
     case "forbidden_provides":
@@ -225,6 +227,44 @@ function formatForbiddenHypercycleDiagnostic(
     `witness: ${diagnostic.vertices.map(displaySymbol).join(" -> ")}`,
     formatCausedBy(diagnostic.causedBy)
   ].join("\n");
+}
+
+function formatForbiddenPathDiagnostic(
+  diagnostic: Extract<SemanticDiagnostic, { kind: "forbidden_path" }>
+): string {
+  const displayVertex = collisionAwareDisplay([
+    diagnostic.source,
+    diagnostic.target,
+    ...diagnostic.steps.flatMap((step) => [step.from, step.to])
+  ]);
+  const displayRelation = collisionAwareDisplay(diagnostic.steps.map((step) => step.relation));
+  return [
+    "error: forbidden path",
+    "",
+    `rule ${displaySymbol(diagnostic.rule)} rejects this dependency path:`,
+    ...diagnostic.steps.map(
+      (step) =>
+        `  ${step.kind} ${displayRelation(step.relation)}: ${displayVertex(step.from)} -> ${displayVertex(step.to)}`
+    ),
+    `witness: ${[diagnostic.source, ...diagnostic.steps.map((step) => step.to)]
+      .map(displayVertex)
+      .join(" -> ")}`,
+    formatCausedBy(diagnostic.causedBy)
+  ].join("\n");
+}
+
+function collisionAwareDisplay(names: string[]): (name: string) => string {
+  const canonicalNamesByLocalName = new Map<string, Set<string>>();
+  for (const name of names) {
+    const localName = displaySymbol(name);
+    const canonicalNames = canonicalNamesByLocalName.get(localName) ?? new Set<string>();
+    canonicalNames.add(name);
+    canonicalNamesByLocalName.set(localName, canonicalNames);
+  }
+  return (name) =>
+    (canonicalNamesByLocalName.get(displaySymbol(name))?.size ?? 0) > 1
+      ? name
+      : displaySymbol(name);
 }
 
 function formatForbiddenProvidesDiagnostic(

@@ -150,6 +150,7 @@ resource NewResource
 
 rule new_policy {
   forbid hypercycle over calls
+  forbid path Gateway -> SecretStore over calls or provides
 }
 ```
 

@@ -8,7 +8,7 @@ trait GeneratedCandidate {
 
 resource RelationsModuleBuildRelationInfoAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/checker/lowering/relations.ts#buildRelationInfo")
-  fingerprint ast.semantic_subtree_v1("sha256:a102150c9f60cc6cc8e687aae86ba49eace62b2c8c4db5f75998ad547ef0ddcb")
+  fingerprint ast.semantic_subtree_v1("sha256:a76cb49667eea01a9a03e13e5475ff245cab4a63009a607ce699d28f5edffb2c")
 }
 
 resource RelationsModuleCollectConnectsAstAnchor : GeneratedAstAnchor {
@@ -45,7 +45,7 @@ relation RelationsModuleBuildRelationInfoGeneratedFromRelationsModuleBuildRelati
   kind generated_from
   connects RelationsModule -> RelationsModuleBuildRelationInfoAstAnchor
   roles { RelationsModule as generated, RelationsModuleBuildRelationInfoAstAnchor as syntax }
-  expects RelationsModuleBuildRelationInfoAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a102150c9f60cc6cc8e687aae86ba49eace62b2c8c4db5f75998ad547ef0ddcb")
+  expects RelationsModuleBuildRelationInfoAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a76cb49667eea01a9a03e13e5475ff245cab4a63009a607ce699d28f5edffb2c")
   summary "fn RelationsModule.buildRelationInfo generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/relations.ts#buildRelationInfo."
 }
 

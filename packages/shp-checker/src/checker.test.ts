@@ -1351,6 +1351,26 @@ describe("Shape checker", () => {
     expect(output).toContain("coordinated_call AuditWritePath");
   });
 
+  test("rejects forbidden_path fixture with a per-hop witness", async () => {
+    const result = await checkShapeFiles([
+      resolve(repoRoot, "fixtures/fail/forbidden_path/deps.shape")
+    ]);
+    const output = formatDiagnostics(result);
+    expect(result.exitCode).toBe(1);
+    expect(output).toContain("error: forbidden path");
+    expect(output).toContain("calls GatewayCallsPolicy: Gateway -> PolicyService");
+    expect(output).toContain("provides PolicyProvidesSecret: PolicyService -> SecretStore");
+    expect(output).toContain("witness: Gateway -> PolicyService -> SecretStore");
+  });
+
+  test("passes forbidden_path_absent fixture", async () => {
+    const result = await checkShapeFiles([
+      resolve(repoRoot, "fixtures/pass/forbidden_path_absent/deps.shape")
+    ]);
+    expect(result.exitCode).toBe(0);
+    expect(result.diagnostics).toEqual([]);
+  });
+
   test("rejects relation_unknown_endpoint fixture", async () => {
     const result = await checkShapeFiles([
       resolve(repoRoot, "fixtures/fail/relation_unknown_endpoint/deps.shape")
