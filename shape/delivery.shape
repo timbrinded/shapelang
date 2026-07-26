@@ -773,6 +773,16 @@ attest no_shape_change {
 }
 
 attest no_shape_change {
+  source md("docs-site/src/content/docs/concepts/analyzer-hints.md")
+  reason "Expanded the documented advisory matcher families and limitations; the guide remains within the existing DocsSite content boundary."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/reference/cli.md")
+  reason "Documented the existing analyze command's expanded matcher coverage and comparison exit behavior; the DocsSite architecture is unchanged."
+}
+
+attest no_shape_change {
   source ts("packages/shp-checker/src/ast-generation-json.ts")
   reason "JSON AST parsing was split into a node-level helper while preserving normalized AST input/output contracts."
 }

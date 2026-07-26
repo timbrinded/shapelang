@@ -17,11 +17,16 @@ If a source file appears to hard-delete data but the shape model does not declar
 
 ## What the analyzer catches
 
-The current analyzer focuses on simple textual hints:
+The analyzer recognizes a deliberately small set of obvious patterns:
 
-- `DELETE`
-- `TRUNCATE`
-- `DROP`
+| Pattern family | Destructive hints |
+| --- | --- |
+| SQL | `DELETE FROM`, `TRUNCATE`, and `DROP TABLE` |
+| Kysely | `deleteFrom(...)`, `dropTable(...)`, and destructive raw SQL |
+| Prisma | `prisma.<model>.delete(...)`, `deleteMany(...)`, and destructive raw SQL |
+| Drizzle | `db.delete(...)` or transaction `delete(...)`, plus destructive raw SQL |
+
+The TypeScript matchers cover common `prisma`/`db`/`tx`/`trx` receiver names and a single member-call line wrap. Project-specific aliases or more heavily split chains may not be recognized. Conversely, textual SQL in an inert string or comment can still produce a hint because the analyzer does not parse control flow or string usage.
 
 These hints are useful review aids. They are not a substitute for the `.shape` file.
 

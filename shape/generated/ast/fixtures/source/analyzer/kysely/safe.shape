@@ -1,0 +1,33 @@
+module shape.generated.ast.fixtures.generated_source.analyzer.kysely.safe
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource SafeModuleRetainAuditEventsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("fixtures/source/analyzer/kysely/safe.ts:1-12")
+  fingerprint ast.semantic_subtree_v1("sha256:a362cb3ccae839766b1a605d69ac57c3e3d1c9f79ab21be72dd32ab105092f47")
+}
+
+component SafeModule : GeneratedCandidate {
+  fn retainAuditEvents
+    source ts("fixtures/source/analyzer/kysely/safe.ts:1-12")
+    effects unknown
+}
+
+relation SafeModuleRetainAuditEventsGeneratedFromSafeModuleRetainAuditEventsAstAnchor {
+  kind generated_from
+  connects SafeModule -> SafeModuleRetainAuditEventsAstAnchor
+  roles { SafeModule as generated, SafeModuleRetainAuditEventsAstAnchor as syntax }
+  expects SafeModuleRetainAuditEventsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a362cb3ccae839766b1a605d69ac57c3e3d1c9f79ab21be72dd32ab105092f47")
+  summary "fn SafeModule.retainAuditEvents generated from typescript function_declaration at fixtures/source/analyzer/kysely/safe.ts:1-12."
+}
+
+implementation SafeModuleImpl {
+  paths {
+    "fixtures/source/analyzer/kysely/safe.ts"
+  }
+  conforms_to SafeModule
+}

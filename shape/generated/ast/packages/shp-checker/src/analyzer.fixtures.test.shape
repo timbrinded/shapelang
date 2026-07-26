@@ -1,0 +1,33 @@
+module shape.generated.ast.packages.shp_checker.src.analyzer_fixtures_test
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource AnalyzerFixturesTestModuleReadFixtureAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer.fixtures.test.ts:31-33")
+  fingerprint ast.semantic_subtree_v1("sha256:75a4b6de5c9d5f5fe7414b02229cf8b838727a19eb2b0361b2858c4e775d8459")
+}
+
+component AnalyzerFixturesTestModule : GeneratedCandidate {
+  fn readFixture
+    source ts("packages/shp-checker/src/analyzer.fixtures.test.ts:31-33")
+    effects unknown
+}
+
+relation AnalyzerFixturesTestModuleReadFixtureGeneratedFromAnalyzerFixturesTestModuleReadFixtureAstAnchor {
+  kind generated_from
+  connects AnalyzerFixturesTestModule -> AnalyzerFixturesTestModuleReadFixtureAstAnchor
+  roles { AnalyzerFixturesTestModule as generated, AnalyzerFixturesTestModuleReadFixtureAstAnchor as syntax }
+  expects AnalyzerFixturesTestModuleReadFixtureAstAnchor fingerprint ast.semantic_subtree_v1("sha256:75a4b6de5c9d5f5fe7414b02229cf8b838727a19eb2b0361b2858c4e775d8459")
+  summary "fn AnalyzerFixturesTestModule.readFixture generated from typescript function_declaration at packages/shp-checker/src/analyzer.fixtures.test.ts:31-33."
+}
+
+implementation AnalyzerFixturesTestModuleImpl {
+  paths {
+    "packages/shp-checker/src/analyzer.fixtures.test.ts"
+  }
+  conforms_to AnalyzerFixturesTestModule
+}

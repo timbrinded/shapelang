@@ -1,0 +1,33 @@
+module shape.generated.ast.fixtures.generated_source.analyzer.prisma.safe
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource SafeModuleRetainAuditEventsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("fixtures/source/analyzer/prisma/safe.ts:1-13")
+  fingerprint ast.semantic_subtree_v1("sha256:58bbc5f0ff25df312803e18885f05d98100329308ee9a2dad080a3d083ad9061")
+}
+
+component SafeModule : GeneratedCandidate {
+  fn retainAuditEvents
+    source ts("fixtures/source/analyzer/prisma/safe.ts:1-13")
+    effects unknown
+}
+
+relation SafeModuleRetainAuditEventsGeneratedFromSafeModuleRetainAuditEventsAstAnchor {
+  kind generated_from
+  connects SafeModule -> SafeModuleRetainAuditEventsAstAnchor
+  roles { SafeModule as generated, SafeModuleRetainAuditEventsAstAnchor as syntax }
+  expects SafeModuleRetainAuditEventsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:58bbc5f0ff25df312803e18885f05d98100329308ee9a2dad080a3d083ad9061")
+  summary "fn SafeModule.retainAuditEvents generated from typescript function_declaration at fixtures/source/analyzer/prisma/safe.ts:1-13."
+}
+
+implementation SafeModuleImpl {
+  paths {
+    "fixtures/source/analyzer/prisma/safe.ts"
+  }
+  conforms_to SafeModule
+}

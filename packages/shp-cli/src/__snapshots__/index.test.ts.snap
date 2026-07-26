@@ -1,0 +1,34 @@
+// Bun Snapshot v1, https://bun.sh/docs/test/snapshots
+
+exports[`shp CLI keeps analyzer hint and warning output stable for library fixtures 1`] = `
+"fixtures/source/analyzer/prisma/destructive.ts:8 HardDelete await prisma.auditEvent.delete({ where: { id: 1 } });
+fixtures/source/analyzer/prisma/destructive.ts:9 HardDelete await prisma.auditEvent
+    .deleteMany({ where: { expired: true } });
+fixtures/source/analyzer/prisma/destructive.ts:11 Truncate await prisma.$executeRawUnsafe("TRUNCATE TABLE audit_event_staging");
+fixtures/source/analyzer/prisma/destructive.ts:12 DropStorage await prisma.$executeRawUnsafe("DROP TABLE audit_event_archive");
+"
+`;
+
+exports[`shp CLI keeps analyzer hint and warning output stable for library fixtures 2`] = `
+"warning: analyzer hint missing from shape effects
+
+fixtures/source/analyzer/prisma/destructive.ts:8 suggests HardDelete.
+evidence: await prisma.auditEvent.delete({ where: { id: 1 } });
+
+warning: analyzer hint missing from shape effects
+
+fixtures/source/analyzer/prisma/destructive.ts:9 suggests HardDelete.
+evidence: await prisma.auditEvent
+    .deleteMany({ where: { expired: true } });
+
+warning: analyzer hint missing from shape effects
+
+fixtures/source/analyzer/prisma/destructive.ts:11 suggests Truncate.
+evidence: await prisma.$executeRawUnsafe("TRUNCATE TABLE audit_event_staging");
+
+warning: analyzer hint missing from shape effects
+
+fixtures/source/analyzer/prisma/destructive.ts:12 suggests DropStorage.
+evidence: await prisma.$executeRawUnsafe("DROP TABLE audit_event_archive");
+"
+`;

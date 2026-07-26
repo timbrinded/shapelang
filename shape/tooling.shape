@@ -55,6 +55,7 @@ component ShapeAnalyzer {
   grants Read<NormalizedShapeReference>
   fn analyzeSourceText
     source ts("packages/shp-checker/src/analyzer.ts#analyzeSourceText")
+    description "Emits advisory destructive-operation hints from obvious SQL and supported TypeScript persistence-library patterns."
     effects complete {
       Append<AnalyzerHint>
         evidence ts("packages/shp-checker/src/analyzer.ts")
