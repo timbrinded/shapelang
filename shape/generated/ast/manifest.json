@@ -738,6 +738,20 @@
       ]
     },
     {
+      "module": "shape.generated.ast.packages.shp_checker.src.experiments.datalog_rule_engine_spike_test",
+      "path": "shape/generated/ast/packages/shp-checker/src/experiments/datalog-rule-engine-spike.test.shape",
+      "sources": [
+        "packages/shp-checker/src/experiments/datalog-rule-engine-spike.test.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.experiments.datalog_rule_engine_spike",
+      "path": "shape/generated/ast/packages/shp-checker/src/experiments/datalog-rule-engine-spike.shape",
+      "sources": [
+        "packages/shp-checker/src/experiments/datalog-rule-engine-spike.ts"
+      ]
+    },
+    {
       "module": "shape.generated.ast.packages.shp_checker.src.formatter_test",
       "path": "shape/generated/ast/packages/shp-checker/src/formatter.test.shape",
       "sources": [

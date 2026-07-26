@@ -341,3 +341,5 @@ When adding a new rule, ask:
 - Can a human fix the issue without knowing checker internals?
 
 That discipline is what keeps Shape useful to both agents and human reviewers.
+
+The [rule engine strategy](./rule-engine-strategy/) records why these direct checks remain the production approach, what the Datalog-like comparison spike proved, and which evidence would justify revisiting the decision.

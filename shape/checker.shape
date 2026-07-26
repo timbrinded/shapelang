@@ -956,6 +956,26 @@ attest no_shape_change {
 }
 
 attest no_shape_change {
+  source ts("packages/shp-checker/src/experiments/datalog-rule-engine-spike.ts")
+  reason "Unexported executable comparison for issue #39; it reads public facts in tests but is not registered with or called by the production ShapeRuleEngine."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/experiments/datalog-rule-engine-spike.test.ts")
+  reason "Differential tests exercise the isolated rule-engine comparison without adding a production checker component or changing semantic rule order."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/inside-shape/rule-engine-strategy.md")
+  reason "Records the decision to retain the modeled direct ShapeRuleEngine and the criteria for reconsideration; it introduces no runtime architecture claim."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/inside-shape/rule-evaluation.md")
+  reason "Links the existing direct-rule documentation to the accepted rule-engine strategy; it does not change the modeled ShapeRuleEngine or semantic rule order."
+}
+
+attest no_shape_change {
   source ts("packages/shp-checker/src/checker/prelude-seed.ts")
   reason "Prelude-to-model seeding moved into the checker layer to remove the prelude dependency inversion; the ShapePreludeRegistry relation already models this dependency."
 }
