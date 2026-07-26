@@ -190,3 +190,8 @@ reevaluation ForbiddenPathParserRechecked {
   evidence md("docs-site/src/content/docs/reference/language-syntax.md")
   evidence test("packages/shp-checker/src/parser.test.ts")
 }
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/inside-shape/langium-grammar.md")
+  reason "Documents forbidden path grammar already modeled by ShapeGrammar; the documentation itself does not change the architecture contract."
+}

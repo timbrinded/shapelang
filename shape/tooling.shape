@@ -855,3 +855,8 @@ reevaluation UpdateRuntimeAssetsRechecked {
   evidence test("packages/shp-cli/src/update.test.ts")
   evidence ts("packages/shp-cli/src/commands/update/impl.ts")
 }
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/inside-shape/formatter-editor-authoring.md")
+  reason "Documents forbidden path formatter and editor behavior already modeled by ShapeFormatter and ShapeEditorServices; the documentation itself does not change the architecture contract."
+}

@@ -858,6 +858,11 @@ attest no_shape_change {
 }
 
 attest no_shape_change {
+  source md("docs-site/src/content/docs/inside-shape/fact-lowering.md")
+  reason "Documents forbidden path lowering already modeled by ShapeModelLowerer; the documentation itself does not change the architecture contract."
+}
+
+attest no_shape_change {
   source md("docs-site/src/content/docs/reference/diagnostics.md")
   reason "Documents per-hop forbidden path diagnostics and existing checker diagnostics modeled by ShapeRuleEngine and ShapeDiagnostics; the documentation itself does not change the architecture contract."
 }
