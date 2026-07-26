@@ -111,7 +111,7 @@ component CiPipeline {
     }
   fn runShapeContractReview
     source mjs(".github/scripts/run-claude-skill.mjs#buildReviewPrompt")
-    description "Source-to-model drift review: the review skill of the unified Claude skill runner; the model call is delegated to anthropics/claude-code-action with structured output, and any finding or drift status fails the job."
+    description "Source-to-model drift review: the review skill of the unified Claude skill runner; the model call is delegated to anthropics/claude-code-action with a draft-07-compatible structured-output schema, and any finding or drift status fails the job."
     effects complete {
       Read<ChangedFileList>
         evidence yaml(".github/workflows/shape.yml")
@@ -134,7 +134,7 @@ component CiPipeline {
     }
   fn runShapeGuardReview
     source mjs(".github/scripts/run-claude-skill.mjs#buildGuardPrompt")
-    description "Advisory loosening review of authored .shape diffs driven by the shape-contract-guard skill; a git-diff prefilter skips the model call when no authored .shape changed, the model call is delegated to anthropics/claude-code-action with structured output, and only high-severity findings fail the job."
+    description "Advisory loosening review of authored .shape diffs driven by the shape-contract-guard skill; a git-diff prefilter skips the model call when no authored .shape changed, the model call is delegated to anthropics/claude-code-action with a draft-07-compatible structured-output schema, and only high-severity findings fail the job."
     effects complete {
       Read<ChangedFileList>
         evidence yaml(".github/workflows/shape.yml")
@@ -155,7 +155,7 @@ component CiPipeline {
     }
   fn runShapeIndexAudit
     source mjs(".github/scripts/run-claude-skill.mjs#buildIndexPrompt")
-    description "Layer-2 coverage audit driven by the shape-index skill; a deterministic prefilter skips the model call when authored refs or globs cover every changed source file, the model call is delegated to anthropics/claude-code-action with structured output, and gaps stay advisory unless SHAPE_INDEX_STRICT."
+    description "Layer-2 coverage audit driven by the shape-index skill; a deterministic prefilter skips the model call when authored refs or globs cover every changed source file, the model call is delegated to anthropics/claude-code-action with a draft-07-compatible structured-output schema, and gaps stay advisory unless SHAPE_INDEX_STRICT."
     effects complete {
       Read<ChangedFileList>
         evidence mjs(".github/scripts/run-claude-skill.mjs")
