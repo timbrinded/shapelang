@@ -64,9 +64,13 @@ export function moduleContext(input: CheckModuleInput): LoweringContext {
   };
 }
 
-export function moduleOriginForShapeFile(module: ShapeModule, filePath: string): CheckModuleOrigin {
+export function moduleOriginForShapeFile(
+  module: ShapeModule,
+  filePath: string,
+  normalizationRoot: string
+): CheckModuleOrigin {
   const moduleName = module.name ?? "";
-  const path = normalizeGeneratedAstPath(filePath);
+  const path = normalizeGeneratedAstPath(filePath, normalizationRoot);
   return isGeneratedAstModuleName(moduleName) && path.startsWith(`${GENERATED_AST_DIR}/`)
     ? "generated_ast"
     : "authored";

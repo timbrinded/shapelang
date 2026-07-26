@@ -58,8 +58,24 @@ component ShapeChecker {
   grants Read<EffectiveModel>
   grants Read<FactSet>
   grants Read<PreludeMetadata>
+  fn checkLoweredShapeModel : ProtectedCheckOrder
+    source ts("packages/shp-checker/src/checker/api.ts#checkLoweredShapeModel")
+    description "Runs the shared semantic and binding pipeline over an already lowered model without changing the public full-check authority."
+    effects complete {
+      Append<SemanticDiagnostics>
+        evidence ts("packages/shp-checker/src/checker/api.ts")
+      Read<ChangedFileList>
+        evidence ts("packages/shp-checker/src/checker/api.ts")
+      Read<EffectiveModel>
+        evidence ts("packages/shp-checker/src/checker/api.ts")
+      Read<FactSet>
+        evidence ts("packages/shp-checker/src/checker/api.ts")
+      Read<PreludeMetadata>
+        evidence ts("packages/shp-checker/src/checker/api.ts")
+    }
   fn checkShapeFiles
     source ts("packages/shp-checker/src/checker/api.ts#checkShapeFiles")
+    description "Parses Shape files and classifies implicit generated-AST origins against the normalized repository root before running the authoritative full check."
     effects complete {
       Append<SemanticDiagnostics>
         evidence ts("packages/shp-checker/src/checker/api.ts")
@@ -703,6 +719,22 @@ memory ShapeStringLiteralContract : RefactorConstraint<fn ShapeStringHelpers.unq
   }
 }
 
+memory SharedCheckPipelineOrder : CheckOrderRationale<fn ShapeChecker.checkLoweredShapeModel> {
+  applies_to fn ShapeChecker.checkLoweredShapeModel
+  status Explained
+  confidence High
+  summary "The shared lowered-model pipeline must retain model diagnostics, semantic rules, binding checks, canonical diagnostic sorting, and optional fact output in that order."
+  who {
+    owner ShapeMaintainers
+  }
+  protects {
+    shape PhaseOrder
+  }
+  guards {
+    on_change require ReEvaluation<Self>
+  }
+}
+
 reevaluation BindingCurrentAttestationsRechecked {
   satisfies memory BindingDocsCouplingContract
   outcome Confirmed
@@ -861,16 +893,6 @@ reevaluation PreludeRuleTraitBoundsRechecked {
   reviewer ShapeMaintainers
   decided_on "2026-07-26"
   evidence test("packages/shp-checker/src/checker.rule-validation.test.ts")
-}
-
-attest no_shape_change {
-  source md("docs-site/src/content/docs/inside-shape/rule-evaluation.md")
-  reason "Documents forbidden path evaluation and existing rule semantics modeled by ShapeRuleEngine; the documentation itself does not change the architecture contract."
-}
-
-attest no_shape_change {
-  source md("docs-site/src/content/docs/inside-shape/fact-lowering.md")
-  reason "Documents forbidden path lowering already modeled by ShapeModelLowerer; the documentation itself does not change the architecture contract."
 }
 
 attest no_shape_change {

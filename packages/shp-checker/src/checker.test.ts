@@ -209,10 +209,14 @@ describe("Shape checker", () => {
     ).toBe(false);
     expect(explicitOrigin.facts?.some((fact) => fact.kind === "shape_update_for")).toBe(false);
 
-    const checkedFile = await checkShapeFiles(
-      [resolve(repoRoot, "shape/generated/ast/fixtures/source/audit_store.shape")],
-      { includeFacts: true }
+    const generatedShapePath = resolve(
+      repoRoot,
+      "shape/generated/ast/fixtures/source/audit_store.shape"
     );
+    const checkedFile = await checkShapeFiles([generatedShapePath], {
+      includeFacts: true,
+      repoRoot
+    });
     expect(checkedFile.exitCode).toBe(0);
     expect(checkedFile.facts).toContainEqual(
       expect.objectContaining({
@@ -227,6 +231,15 @@ describe("Shape checker", () => {
       })
     );
     expect(checkedFile.facts?.some((fact) => fact.kind === "shape_update_for")).toBe(false);
+
+    const checkedOutsideRoot = await checkShapeFiles([generatedShapePath], {
+      includeFacts: true,
+      repoRoot: resolve(repoRoot, "fixtures")
+    });
+    expect(checkedOutsideRoot.diagnostics).toContainEqual(
+      expect.objectContaining({ kind: "unknown_effects" })
+    );
+    expect(checkedOutsideRoot.facts?.some((fact) => fact.kind === "shape_update_for")).toBe(true);
   });
 
   test("rejects duplicate and missing candidate effect fields", () => {

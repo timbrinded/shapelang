@@ -10,6 +10,7 @@ import type {
   CheckOptions,
   CheckResult,
   Fact,
+  Model,
   NormalizedCheckOptions,
   SemanticDiagnostic
 } from "./model.ts";
@@ -26,6 +27,18 @@ export function checkShapeModules(
 ): CheckResult {
   const normalizedOptions = normalizeCheckOptions(options);
   const model = lowerShapeModules(modules);
+  return checkLoweredShapeModel(model, normalizedOptions);
+}
+
+/**
+ * Runs the authoritative semantic and binding pipeline over an already lowered
+ * model. This is an internal reuse boundary for the incremental checker; public
+ * callers should normally use {@link checkShapeModules}.
+ */
+export function checkLoweredShapeModel(
+  model: Model,
+  normalizedOptions: NormalizedCheckOptions
+): CheckResult {
   const diagnostics: SemanticDiagnostic[] = [
     ...model.diagnostics,
     ...runSemanticChecks(model, normalizedOptions),
@@ -53,7 +66,8 @@ function compareFacts(left: Fact, right: Fact): number {
   return compareCodepointStrings(JSON.stringify(left), JSON.stringify(right));
 }
 
-function normalizeCheckOptions(options: CheckOptions): NormalizedCheckOptions {
+/** @internal Shared by the full and incremental checker entrypoints. */
+export function normalizeCheckOptions(options: CheckOptions): NormalizedCheckOptions {
   return {
     ...options,
     repoRoot: resolve(options.repoRoot ?? process.cwd()),
@@ -68,7 +82,7 @@ export async function checkShapeFiles(
   paths: string[],
   options: CheckOptions = {}
 ): Promise<CheckResult> {
-  const parsedModules: CheckModuleInput[] = [];
+  const parsedModules: { module: ShapeModule; filePath: string }[] = [];
   const parseDiagnostics: ParseDiagnostic[] = [];
 
   for (const filePath of paths) {
@@ -78,8 +92,7 @@ export async function checkShapeFiles(
       if (parsed.ok) {
         parsedModules.push({
           module: parsed.module,
-          filePath,
-          origin: moduleOriginForShapeFile(parsed.module, filePath)
+          filePath
         });
       } else {
         parseDiagnostics.push(...parsed.diagnostics);
@@ -101,5 +114,13 @@ export async function checkShapeFiles(
     };
   }
 
-  return checkShapeModules(parsedModules, options);
+  const normalizedOptions = normalizeCheckOptions(options);
+  return checkShapeModules(
+    parsedModules.map(({ module, filePath }) => ({
+      module,
+      filePath,
+      origin: moduleOriginForShapeFile(module, filePath, normalizedOptions.repoRoot)
+    })),
+    normalizedOptions
+  );
 }

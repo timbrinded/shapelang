@@ -2,6 +2,8 @@ module shape.delivery
 
 import shape.checker
 
+import shape.checker.incremental
+
 import shape.language
 
 import shape.tooling
@@ -517,6 +519,14 @@ implementation GrammarSource {
   on_change require shape_update
 }
 
+implementation IncrementalCheckerSource {
+  paths {
+    "packages/shp-checker/src/checker/incremental.ts"
+  }
+  conforms_to ShapeIncrementalChecker
+  on_change require shape_update
+}
+
 implementation LanguageServerSource {
   paths {
     "packages/shp-cli/src/lsp/positions.ts"
@@ -610,6 +620,18 @@ binding GrammarDocs {
   require_changed paths {
     "docs-site/src/content/docs/inside-shape/langium-grammar.md"
     "docs-site/src/content/docs/reference/language-syntax.md"
+  }
+  allow attest docs_not_needed
+}
+
+binding IncrementalCheckerDocs {
+  when_changed paths {
+    "packages/shp-checker/src/checker/incremental.ts"
+    "shape/incremental-checker.shape"
+  }
+  require_changed paths {
+    "docs-site/src/content/docs/inside-shape/fact-lowering.md"
+    "docs-site/src/content/docs/inside-shape/rule-evaluation.md"
   }
   allow attest docs_not_needed
 }

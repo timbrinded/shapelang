@@ -1,0 +1,115 @@
+module shape.checker.incremental
+
+import shape.checker
+
+import shape.language
+
+resource IncrementalCheckState
+
+resource IncrementalInvalidationReport
+
+component ShapeIncrementalChecker {
+  owns IncrementalCheckState
+  owns IncrementalInvalidationReport
+  grants Append<IncrementalInvalidationReport>
+  grants Append<SemanticDiagnostics>
+  grants Read<ChangedFileList>
+  grants Read<EffectiveModel>
+  grants Read<FactSet>
+  grants Read<IncrementalCheckState>
+  grants Read<ParsedModule>
+  grants Read<PreludeMetadata>
+  grants Update<IncrementalCheckState>
+  fn check : ProtectedCheckOrder
+    source ts("packages/shp-checker/src/checker/incremental.ts#check")
+    description "Reuses parsed documents and a globally lowered model, rebuilding derived facts after document or implicit-origin changes and reporting deterministic invalidation."
+    effects complete {
+      Append<IncrementalInvalidationReport>
+        evidence ts("packages/shp-checker/src/checker/incremental.ts")
+      Append<SemanticDiagnostics>
+        evidence ts("packages/shp-checker/src/checker/incremental.ts")
+      Read<ChangedFileList>
+        evidence ts("packages/shp-checker/src/checker/incremental.ts")
+      Read<EffectiveModel>
+        evidence ts("packages/shp-checker/src/checker/incremental.ts")
+      Read<FactSet>
+        evidence ts("packages/shp-checker/src/checker/incremental.ts")
+      Read<IncrementalCheckState>
+        evidence ts("packages/shp-checker/src/checker/incremental.ts")
+      Read<ParsedModule>
+        evidence ts("packages/shp-checker/src/checker/incremental.ts")
+      Read<PreludeMetadata>
+        evidence ts("packages/shp-checker/src/checker/incremental.ts")
+      Update<IncrementalCheckState>
+        evidence ts("packages/shp-checker/src/checker/incremental.ts")
+    }
+}
+
+relation ShapeIncrementalCheckerProvidesInvalidationReport {
+  kind provides
+  connects ShapeIncrementalChecker -> IncrementalInvalidationReport
+}
+
+relation ShapeIncrementalCheckerUsesFullPipeline {
+  kind calls
+  connects ShapeIncrementalChecker -> ShapeChecker
+  summary "SharedSemanticAndBindingPipeline"
+}
+
+relation ShapeIncrementalCheckerUsesModelPipeline {
+  kind calls
+  connects ShapeIncrementalChecker -> ShapeModelLowerer
+  summary "GlobalRebuildOnDocumentMutation"
+}
+
+relation ShapeIncrementalCheckerUsesParser {
+  kind calls
+  connects ShapeIncrementalChecker -> ShapeParser
+  summary "PerDocumentParseCache"
+}
+
+relation ShapeIncrementalCheckerUsesStringHelpers {
+  kind calls
+  connects ShapeIncrementalChecker -> ShapeStringHelpers
+  summary "DeterministicPathOrdering"
+}
+
+memory IncrementalInvalidationContract : CheckOrderRationale<fn ShapeIncrementalChecker.check> {
+  applies_to fn ShapeIncrementalChecker.check
+  status Explained
+  confidence High
+  summary "Document mutations and implicit generated-AST origin changes must rebuild the complete two-pass effective model and derived facts; option-only checks may reuse the model when origins stay stable, and exact no-ops may also reuse diagnostics."
+  who {
+    owner ShapeMaintainers
+  }
+  protects {
+    shape EffectiveModelOrder
+  }
+  guards {
+    on_change require ReEvaluation<Self>
+  }
+}
+
+reevaluation IncrementalFullCheckOrderRechecked {
+  satisfies memory CheckPipelineOrder
+  outcome Confirmed
+  summary "The public full-check path still normalizes options and lowers the complete model before the shared semantic and binding pipeline runs."
+  reviewer ShapeMaintainers
+  decided_on "2026-07-26"
+  evidence test("packages/shp-checker/src/checker/incremental.test.ts")
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/checker/incremental.test.ts")
+  reason "Differential, invalidation, and generated-AST origin tests exercise the modeled ShapeIncrementalChecker boundary without adding another architecture component."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/inside-shape/rule-evaluation.md")
+  reason "Documents the modeled ShapeIncrementalChecker and ShapeChecker shared semantic and binding pipeline; the documentation does not add another architecture boundary."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/inside-shape/fact-lowering.md")
+  reason "Documents the modeled ShapeIncrementalChecker parse cache, effective-model invalidation, and derived-fact reuse contract; the documentation does not add another architecture boundary."
+}

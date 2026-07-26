@@ -57,6 +57,12 @@ The current checker covers these major categories:
 
 Coverage and binding checks use a normalized changed-file context. A source, evidence reference, or attestation only counts for the current run when the declaring Shape file is also in the changed-file list; stale attestations from older reviews are deliberately ignored. Function facts are emitted from the final component function registry, so add, modify, and remove changes update the model first and then produce facts from that final state.
 
+## Incremental Runs
+
+`IncrementalShapeChecker` may reuse a globally lowered model when only checker options change, but it always reruns semantic and binding rules against the new options. If a `repoRoot` change reclassifies an absolute, implicit-origin generated-AST document, it rebuilds the model without reparsing. An exact no-op may reuse the prior diagnostics. Adding, changing, or removing a Shape document rebuilds the complete effective model and fact set before any rule runs, so incremental execution preserves the same phase order and diagnostics as `checkShapeModules`.
+
+This is work reuse, not a second rule engine. The uncached full-check APIs remain available and authoritative.
+
 ## Final Forbids
 
 Final forbids are intentionally stronger than grants. A grant says a component may emit an effect. A final forbid says the effect is not allowed for that target at all.

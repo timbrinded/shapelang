@@ -112,6 +112,42 @@ component AuditStore {
 
 This lowers into a function fact plus an `effect_unknown` fact. The checker can then require the reviewer to replace uncertainty with a reviewed effect summary before treating the shape as complete.
 
+## Incremental Invalidation
+
+Library integrations that repeatedly check an in-memory workspace can use `IncrementalShapeChecker`. Each call supplies the complete current document snapshot:
+
+```ts
+import { IncrementalShapeChecker } from "@shape/shp-checker";
+
+const checker = new IncrementalShapeChecker();
+const checked = checker.check(
+  [
+    {
+      filePath: "shape/audit.shape",
+      source: "module audit\nresource AuditEvent\n"
+    }
+  ],
+  { includeFacts: true }
+);
+```
+
+The incremental boundary is deliberately conservative:
+
+- an unchanged document reuses its parsed syntax tree;
+- adding, changing, or removing any Shape document rebuilds the complete effective model and all derived facts;
+- changing only checker options, including `changedFiles`, reuses the lowered model but reruns semantic and binding diagnostics when those options do not change an implicit document origin;
+- changing `repoRoot` rebuilds the lowered model without reparsing only when it changes whether an absolute, implicit-origin document is trusted as generated AST;
+- an exact no-op reuses the previous diagnostics;
+- any parse failure makes derived facts unavailable until the document set parses again.
+
+The global rebuild on document mutation is required because imports, duplicate declarations, change blocks, concrete targets, and derived facts can cross file boundaries. The checker does not claim that one file owns an independent fact shard.
+
+Each result includes an `invalidation` report with the cause, reparsed/reused/removed document paths, and whether facts and diagnostics were rebuilt or reused. Paths are sorted deterministically. Returned check results are cloned so caller mutation cannot corrupt the cache.
+
+Document paths must be unique within a snapshot. A duplicate path is rejected rather than making array order decide which source wins.
+
+`checkShapeModules` and `checkShapeFiles` remain the uncached full-check APIs and the semantic authority. `checkShapeFiles` and the incremental checker both resolve implicit generated-AST origins against the normalized `repoRoot`, rather than ambient process state. Incremental results are tested differentially against the full path; the cache changes work reuse, not checker meaning.
+
 ## Trait Lowering
 
 Traits are compact syntax for reusable architectural constraints. During lowering, a trait declaration is recorded separately from the resources that use it.
