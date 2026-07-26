@@ -48,7 +48,7 @@ resource EditorModuleGetCompletionsAstAnchor : GeneratedAstAnchor {
 
 resource EditorModuleGetDefinitionLocationAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/editor.ts#getDefinitionLocation")
-  fingerprint ast.semantic_subtree_v1("sha256:ee327e914ee8e5ce670041b5d74dfc85e66aa47aae1d69bbe3215369071bc772")
+  fingerprint ast.semantic_subtree_v1("sha256:058148b591a30deb97ec017d1539068bb0fd38ef879b8e4fa1970d82c3f74d2b")
 }
 
 resource EditorModuleGetEditorDiagnosticsAstAnchor : GeneratedAstAnchor {
@@ -56,9 +56,19 @@ resource EditorModuleGetEditorDiagnosticsAstAnchor : GeneratedAstAnchor {
   fingerprint ast.semantic_subtree_v1("sha256:e600582530e83387bdfdb810a8a5dbd1a4cc02c7afcd9938b11034dee4707fab")
 }
 
+resource EditorModuleGetEditorDiagnosticsForDocumentsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/editor.ts#getEditorDiagnosticsForDocuments")
+  fingerprint ast.semantic_subtree_v1("sha256:bd540ea4fd737e4af9c680e540bc7747096fa1f199528749c0b3b3fd7e07548b")
+}
+
 resource EditorModuleGetHoverTextAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/editor.ts#getHoverText")
   fingerprint ast.semantic_subtree_v1("sha256:47a735adddd0cf4e880d8683e45eca2b206bb0865a721680a6bedf8b34a3a927")
+}
+
+resource EditorModuleLocalEditorReferenceAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/editor.ts#localEditorReference")
+  fingerprint ast.semantic_subtree_v1("sha256:eea61480c830f9a6de1a1ac2bf7d14473d16af4db639aedf5626cd61aec1da2f")
 }
 
 resource EditorModuleShapeContextRefAstAnchor : GeneratedAstAnchor {
@@ -107,8 +117,14 @@ component EditorModule : GeneratedCandidate {
   fn getEditorDiagnostics
     source ts("packages/shp-checker/src/editor.ts#getEditorDiagnostics")
     effects unknown
+  fn getEditorDiagnosticsForDocuments
+    source ts("packages/shp-checker/src/editor.ts#getEditorDiagnosticsForDocuments")
+    effects unknown
   fn getHoverText
     source ts("packages/shp-checker/src/editor.ts#getHoverText")
+    effects unknown
+  fn localEditorReference
+    source ts("packages/shp-checker/src/editor.ts#localEditorReference")
     effects unknown
   fn shapeContextRef
     source ts("packages/shp-checker/src/editor.ts#shapeContextRef")
@@ -189,8 +205,16 @@ relation EditorModuleGetDefinitionLocationGeneratedFromEditorModuleGetDefinition
   kind generated_from
   connects EditorModule -> EditorModuleGetDefinitionLocationAstAnchor
   roles { EditorModule as generated, EditorModuleGetDefinitionLocationAstAnchor as syntax }
-  expects EditorModuleGetDefinitionLocationAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ee327e914ee8e5ce670041b5d74dfc85e66aa47aae1d69bbe3215369071bc772")
+  expects EditorModuleGetDefinitionLocationAstAnchor fingerprint ast.semantic_subtree_v1("sha256:058148b591a30deb97ec017d1539068bb0fd38ef879b8e4fa1970d82c3f74d2b")
   summary "fn EditorModule.getDefinitionLocation generated from typescript function_declaration at packages/shp-checker/src/editor.ts#getDefinitionLocation."
+}
+
+relation EditorModuleGetEditorDiagnosticsForDocumentsGeneratedFromEditorModuleGetEditorDiagnosticsForDocumentsAstAnchor {
+  kind generated_from
+  connects EditorModule -> EditorModuleGetEditorDiagnosticsForDocumentsAstAnchor
+  roles { EditorModule as generated, EditorModuleGetEditorDiagnosticsForDocumentsAstAnchor as syntax }
+  expects EditorModuleGetEditorDiagnosticsForDocumentsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:bd540ea4fd737e4af9c680e540bc7747096fa1f199528749c0b3b3fd7e07548b")
+  summary "fn EditorModule.getEditorDiagnosticsForDocuments generated from typescript function_declaration at packages/shp-checker/src/editor.ts#getEditorDiagnosticsForDocuments."
 }
 
 relation EditorModuleGetEditorDiagnosticsGeneratedFromEditorModuleGetEditorDiagnosticsAstAnchor {
@@ -207,6 +231,14 @@ relation EditorModuleGetHoverTextGeneratedFromEditorModuleGetHoverTextAstAnchor 
   roles { EditorModule as generated, EditorModuleGetHoverTextAstAnchor as syntax }
   expects EditorModuleGetHoverTextAstAnchor fingerprint ast.semantic_subtree_v1("sha256:47a735adddd0cf4e880d8683e45eca2b206bb0865a721680a6bedf8b34a3a927")
   summary "fn EditorModule.getHoverText generated from typescript function_declaration at packages/shp-checker/src/editor.ts#getHoverText."
+}
+
+relation EditorModuleLocalEditorReferenceGeneratedFromEditorModuleLocalEditorReferenceAstAnchor {
+  kind generated_from
+  connects EditorModule -> EditorModuleLocalEditorReferenceAstAnchor
+  roles { EditorModule as generated, EditorModuleLocalEditorReferenceAstAnchor as syntax }
+  expects EditorModuleLocalEditorReferenceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:eea61480c830f9a6de1a1ac2bf7d14473d16af4db639aedf5626cd61aec1da2f")
+  summary "fn EditorModule.localEditorReference generated from typescript function_declaration at packages/shp-checker/src/editor.ts#localEditorReference."
 }
 
 relation EditorModuleShapeContextRefGeneratedFromEditorModuleShapeContextRefAstAnchor {

@@ -17,6 +17,7 @@ import {
   type AddableDeclaration,
   type ChangeEntry,
   type Declaration,
+  type ShapeModule,
   isFunctionSummary,
   isImplementationDecl,
   isMemoryDecl,
@@ -35,12 +36,22 @@ import {
   type PreludeContextRule
 } from "./prelude.ts";
 import type { AstNode } from "langium";
+import { compareCodepointStrings } from "./shape-strings.ts";
 
 export type EditorDiagnostic = {
   message: string;
   severity: "error";
   line?: number;
   column?: number;
+};
+
+export type EditorDocumentInput = {
+  filePath: string;
+  source: string;
+};
+
+export type EditorDocumentDiagnostic = EditorDiagnostic & {
+  filePath: string;
 };
 
 export type DefinitionLocation = {
@@ -130,6 +141,40 @@ export function getEditorDiagnostics(
   return result.diagnostics.map((diagnostic) => diagnosticToEditorDiagnostic(diagnostic));
 }
 
+export function getEditorDiagnosticsForDocuments(
+  documents: readonly EditorDocumentInput[]
+): EditorDocumentDiagnostic[] {
+  const orderedDocuments = documents.toSorted((left, right) =>
+    compareCodepointStrings(left.filePath, right.filePath)
+  );
+  const parsedModules: { module: ShapeModule; filePath: string }[] = [];
+  const parseDiagnostics: EditorDocumentDiagnostic[] = [];
+
+  for (const document of orderedDocuments) {
+    const parsed = parseShapeModule(document.source, document.filePath);
+    if (parsed.ok) {
+      parsedModules.push({ module: parsed.module, filePath: document.filePath });
+    } else {
+      parseDiagnostics.push(
+        ...parsed.diagnostics.map((diagnostic) => ({
+          ...diagnosticToEditorDiagnostic(diagnostic),
+          filePath: document.filePath
+        }))
+      );
+    }
+  }
+
+  if (parseDiagnostics.length > 0) {
+    return parseDiagnostics;
+  }
+
+  const fallbackFilePath = orderedDocuments[0]?.filePath ?? "memory.shape";
+  return checkShapeModules(parsedModules).diagnostics.map((diagnostic) => ({
+    ...diagnosticToEditorDiagnostic(diagnostic),
+    filePath: diagnostic.filePath ?? fallbackFilePath
+  }));
+}
+
 export function getHoverText(source: string, symbol: string, filePath = "memory.shape"): string {
   const preludeHover = PRELUDE_SHAPE_TRAIT_HOVERS.get(symbol);
   if (preludeHover) {
@@ -153,13 +198,24 @@ export function getDefinitionLocation(
     return undefined;
   }
 
-  const name = definitionName(symbol);
+  const editorSymbols = [...editorSymbolsForDeclarations(parsed.module.declarations)];
+  const exactMatch = editorSymbols.find((editorSymbol) => editorSymbol.names.includes(symbol));
+  if (exactMatch) {
+    return astNodeToLocation(exactMatch.node, symbol);
+  }
+
+  const localSymbol = localEditorReference(parsed.module.name, symbol);
+  if (!localSymbol) {
+    return undefined;
+  }
+
+  const name = definitionName(localSymbol);
   if (!name) {
     return undefined;
   }
 
-  for (const editorSymbol of editorSymbolsForDeclarations(parsed.module.declarations)) {
-    if (editorSymbol.names.some((candidate) => symbolMatches(candidate, symbol, name))) {
+  for (const editorSymbol of editorSymbols) {
+    if (editorSymbol.names.some((candidate) => symbolMatches(candidate, localSymbol, name))) {
       return astNodeToLocation(editorSymbol.node, symbol);
     }
   }
@@ -303,6 +359,17 @@ function uniqueNames(candidates: readonly string[]): string[] {
 
 function definitionName(symbol: string): string | undefined {
   return symbol.includes(".") ? symbol.split(".").at(-1) : symbol;
+}
+
+function localEditorReference(moduleName: string | undefined, symbol: string): string | undefined {
+  const qualifierSeparator = symbol.indexOf("::");
+  if (qualifierSeparator < 0 || symbol.includes("<")) {
+    return symbol;
+  }
+  if (moduleName !== symbol.slice(0, qualifierSeparator)) {
+    return undefined;
+  }
+  return symbol.slice(qualifierSeparator + "::".length);
 }
 
 function symbolMatches(candidate: string, symbol: string, name: string): boolean {

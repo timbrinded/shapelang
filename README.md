@@ -40,6 +40,7 @@ shp fmt --check
 shp coverage --changed-files changed.txt
 shp memory
 shp obligations
+shp lsp
 ```
 
 `--allow-unknown-effects` is a local authoring aid: it reports `effects unknown` as a warning while every other diagnostic remains blocking. Resolve those warnings and run strict `shp check` before review or CI.
@@ -182,6 +183,7 @@ shp graph show Gateway --kind calls
 shp graph stats --kind calls
 shp memory
 shp obligations
+shp lsp
 shp author --changed-files changed.txt --component AuditStore
 shp analyze --shape-files fixtures/pass/append_only_append/audit.shape src/audit/purge.ts
 shp ast source --language rust --module generated.audit src/audit/store.rs
@@ -203,11 +205,25 @@ Useful commands:
 - `shp graph stats [--kind KIND]`: print aggregate vertex, hyperedge, and incidence counts.
 - `shp memory`: list rationale and memory entries that protect design context.
 - `shp obligations`: list open design-memory obligations such as missing rationale or reevaluation.
+- `shp lsp`: serve Shape diagnostics, hover, definitions, completions, and formatting over the Language Server Protocol on stdio.
 - `shp author --changed-files changed.txt --component AuditStore [--module module.name]`: generate a conservative global-model draft from changed files.
 - `shp analyze --shape-files fixtures/pass/append_only_append/audit.shape src/file.ts`: compare obvious source hints against declared effects.
 - `shp ast source [--language LANG] [--module NAME] src/file.rs`: parse source with Tree-sitter and print a conservative Shape draft with compact AST anchors and semantic fingerprints.
 - `shp ast json [--module NAME] [--include-ast-layer] ast.json`: read normalized AST JSON from another parser, with raw AST resources opt-in.
 - `shp update`: update a local released binary from GitHub Releases.
+
+### Editor Integration
+
+`shp lsp` runs the language server over standard input and output. Configure an
+LSP-capable editor to launch `shp` with `["lsp"]` as its arguments. The server
+publishes checker diagnostics, hover text, go-to-definition locations,
+completions, and canonical document formatting.
+
+The server loads `shape/**/*.shape` from each initial workspace folder and
+overlays unsaved open documents before checking the model. This keeps imported
+modules available to semantic diagnostics instead of checking each file in
+isolation. Editors that support format-on-save should invoke
+`textDocument/formatting`; the server does not rewrite files on its own.
 
 ## Project Layout
 

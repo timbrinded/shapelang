@@ -47,8 +47,11 @@ export {
   getCompletions,
   getDefinitionLocation,
   getEditorDiagnostics,
+  getEditorDiagnosticsForDocuments,
   getHoverText,
   type DefinitionLocation,
+  type EditorDocumentDiagnostic,
+  type EditorDocumentInput,
   type EditorDiagnostic
 } from "./editor.ts";
 export {

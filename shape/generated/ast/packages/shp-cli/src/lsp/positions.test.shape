@@ -1,0 +1,7 @@
+module shape.generated.ast.packages.shp_cli.src.lsp.positions_test
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}

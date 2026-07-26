@@ -517,6 +517,15 @@ implementation GrammarSource {
   on_change require shape_update
 }
 
+implementation LanguageServerSource {
+  paths {
+    "packages/shp-cli/src/lsp/positions.ts"
+    "packages/shp-cli/src/lsp/server.ts"
+  }
+  conforms_to ShapeLanguageServer
+  on_change require shape_update
+}
+
 implementation ParserSource {
   paths {
     "packages/shp-checker/src/parser.ts"
@@ -564,6 +573,8 @@ binding CliDocs {
     "packages/shp-cli/src/errors.ts"
     "packages/shp-cli/src/index.ts"
     "packages/shp-cli/src/io.ts"
+    "packages/shp-cli/src/lsp/positions.ts"
+    "packages/shp-cli/src/lsp/server.ts"
     "packages/shp-cli/src/parameters.ts"
     "packages/shp-cli/src/shape-files.ts"
     "packages/shp-cli/src/version.ts"
@@ -647,6 +658,8 @@ binding ToolingDocs {
     "packages/shp-checker/src/generated-ast-policy.ts"
     "packages/shp-checker/src/source-languages.ts"
     "packages/shp-checker/src/tree-sitter-native-targets.ts"
+    "packages/shp-cli/src/lsp/positions.ts"
+    "packages/shp-cli/src/lsp/server.ts"
     "shape/tooling.shape"
   }
   require_changed paths {

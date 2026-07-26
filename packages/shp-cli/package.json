@@ -9,6 +9,8 @@
   "type": "module",
   "dependencies": {
     "@shape/shp-checker": "workspace:*",
-    "@stricli/core": "^1.2.7"
+    "@stricli/core": "^1.2.7",
+    "vscode-languageserver": "~9.0.1",
+    "vscode-languageserver-textdocument": "~1.0.12"
   }
 }

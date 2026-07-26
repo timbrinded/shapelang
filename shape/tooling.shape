@@ -36,6 +36,8 @@ resource InstalledShpBinary
 
 resource InstalledShpRuntimeAssets
 
+resource LanguageServerProtocol
+
 resource LanguageSource
 
 resource ReleaseArchive
@@ -288,7 +290,7 @@ component ShapeEditorServices {
     }
   fn getDefinitionLocation
     source ts("packages/shp-checker/src/editor.ts#getDefinitionLocation")
-    description "Resolves declarations plus exact target-aware rationale and memory context references while preserving unresolved-symbol fallback."
+    description "Resolves local and matching module-qualified declarations plus exact target-aware rationale and memory context references while preserving unresolved-symbol fallback."
     effects complete {
       Append<EditorOutput>
         evidence ts("packages/shp-checker/src/editor.ts")
@@ -301,6 +303,17 @@ component ShapeEditorServices {
       Append<EditorOutput>
         evidence ts("packages/shp-checker/src/editor.ts")
       Read<SemanticDiagnostics>
+        evidence ts("packages/shp-checker/src/editor.ts")
+    }
+  fn getEditorDiagnosticsForDocuments
+    source ts("packages/shp-checker/src/editor.ts#getEditorDiagnosticsForDocuments")
+    description "Checks an ordered workspace document set together so imports resolve before diagnostics are associated with their source files."
+    effects complete {
+      Append<EditorOutput>
+        evidence ts("packages/shp-checker/src/editor.ts")
+      Read<SemanticDiagnostics>
+        evidence ts("packages/shp-checker/src/editor.ts")
+      Read<ShapeSource>
         evidence ts("packages/shp-checker/src/editor.ts")
     }
   fn getHoverText
@@ -333,7 +346,24 @@ component ShapeFormatter {
     }
 }
 
+component ShapeLanguageServer {
+  grants Append<EditorOutput>
+  grants Read<ShapeSource>
+  fn serve
+    source ts("packages/shp-cli/src/lsp/server.ts#startShapeLanguageServer")
+    description "Adapts standard-input Language Server Protocol requests to deterministic workspace-aware editor services, with open documents overriding disk sources."
+    effects complete {
+      Append<EditorOutput>
+        evidence ts("packages/shp-cli/src/lsp/positions.ts")
+      Append<EditorOutput>
+        evidence ts("packages/shp-cli/src/lsp/server.ts")
+      Read<ShapeSource>
+        evidence ts("packages/shp-cli/src/lsp/server.ts")
+    }
+}
+
 component ShpCli {
+  grants Append<EditorOutput>
   grants Append<GeneratedAstAnchor>
   grants Append<GeneratedAstManifest>
   grants Append<GeneratedAstTrace>
@@ -368,6 +398,10 @@ component ShpCli {
   fn main : ProtectedCheckOrder
     source ts("packages/shp-cli/src/index.ts#main")
     effects complete {
+      Append<EditorOutput>
+        evidence ts("packages/shp-cli/src/commands/lsp/impl.ts")
+      Append<EditorOutput>
+        evidence ts("packages/shp-cli/src/lsp/server.ts")
       Append<GeneratedAstAnchor>
         evidence ts("packages/shp-cli/src/commands/ast/impl.ts")
       Append<GeneratedAstManifest>
@@ -409,6 +443,8 @@ component ShpCli {
       Read<DiagnosticText>
         evidence ts("packages/shp-cli/src/commands/graph/impl.ts")
       Read<DiagnosticText>
+        evidence ts("packages/shp-cli/src/commands/lsp/command.ts")
+      Read<DiagnosticText>
         evidence ts("packages/shp-cli/src/commands/memory/command.ts")
       Read<DiagnosticText>
         evidence ts("packages/shp-cli/src/commands/memory/impl.ts")
@@ -442,6 +478,8 @@ component ShpCli {
         evidence ts("packages/shp-cli/src/commands/ast/impl.ts")
       Read<ShapeSource>
         evidence ts("packages/shp-cli/src/commands/analyze/impl.ts")
+      Read<ShapeSource>
+        evidence ts("packages/shp-cli/src/lsp/server.ts")
       Read<SystemClock>
         evidence ts("packages/shp-cli/src/freshness.ts")
     }
@@ -544,6 +582,17 @@ relation ShapeFormatterUsesStringHelpers {
   summary "LiteralNormalization"
 }
 
+relation ShapeLanguageServerProvidesProtocol {
+  kind provides
+  connects ShapeLanguageServer -> LanguageServerProtocol
+}
+
+relation ShapeLanguageServerUsesEditorServices {
+  kind calls
+  connects ShapeLanguageServer -> ShapeEditorServices
+  summary "LanguageServerRequests"
+}
+
 relation ShpCliProvidesInterface {
   kind provides
   connects ShpCli -> CommandLineInterface
@@ -585,9 +634,16 @@ relation ShpCliUsesFormatter {
   summary "FormatCommand"
 }
 
+relation ShpCliUsesLanguageServer {
+  kind calls
+  connects ShpCli -> ShapeLanguageServer
+  summary "LspCommand"
+}
+
 rule tooling_contract_providers {
   forbid provides CanonicalShapeFormat except ShapeFormatter
   forbid provides CommandLineInterface except ShpCli
+  forbid provides LanguageServerProtocol except ShapeLanguageServer
 }
 
 memory AstGenerationUnknownSafety : RefactorConstraint<fn ShapeAstGenerator.generateShapeFromCodeSemanticGraph> {
@@ -779,6 +835,15 @@ reevaluation CliCommandErrorsRechecked {
   reviewer ShapeMaintainers
   decided_on "2026-05-20"
   evidence test("packages/shp-cli/src/index.test.ts")
+}
+
+reevaluation CliLspDispatchRechecked {
+  satisfies memory CliCommandDispatchOrder
+  outcome Confirmed
+  summary "The lsp command uses the same checker, formatter, and editor helper semantics through a standard-input protocol adapter, with wire-level tests covering dispatch."
+  reviewer ShapeMaintainers
+  decided_on "2026-07-26"
+  evidence test("packages/shp-cli/src/lsp/server.test.ts")
 }
 
 reevaluation CliUpdateDispatchRechecked {

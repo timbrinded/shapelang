@@ -1,0 +1,81 @@
+module shape.generated.ast.packages.shp_cli.src.lsp.server_test
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource ServerTestModuleDiagnosticsCollectorAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/lsp/server.test.ts#diagnosticsCollector")
+  fingerprint ast.semantic_subtree_v1("sha256:775c3f3102ddafab72f194e3d3e552be352b4d1b6188f601338b0bb7cbd86d03")
+}
+
+resource ServerTestModuleLspSpawnCommandAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/lsp/server.test.ts#lspSpawnCommand")
+  fingerprint ast.semantic_subtree_v1("sha256:f5af7e7872d03e25c19555b598bec605e71b7881e3a595190e2fc7664f9d3dbe")
+}
+
+resource ServerTestModulePositionOfAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/lsp/server.test.ts#positionOf")
+  fingerprint ast.semantic_subtree_v1("sha256:ad9f523173287dad6513899655faa27be0040a0f1c1dff57629955723f1ca3e2")
+}
+
+resource ServerTestModuleStreamTextAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/lsp/server.test.ts#streamText")
+  fingerprint ast.semantic_subtree_v1("sha256:3142ad5899530d555cfa22465f45940969e0838a4f6abd5eddfba0b609171163")
+}
+
+component ServerTestModule : GeneratedCandidate {
+  fn diagnosticsCollector
+    source ts("packages/shp-cli/src/lsp/server.test.ts#diagnosticsCollector")
+    effects unknown
+  fn lspSpawnCommand
+    source ts("packages/shp-cli/src/lsp/server.test.ts#lspSpawnCommand")
+    effects unknown
+  fn positionOf
+    source ts("packages/shp-cli/src/lsp/server.test.ts#positionOf")
+    effects unknown
+  fn streamText
+    source ts("packages/shp-cli/src/lsp/server.test.ts#streamText")
+    effects unknown
+}
+
+relation ServerTestModuleDiagnosticsCollectorGeneratedFromServerTestModuleDiagnosticsCollectorAstAnchor {
+  kind generated_from
+  connects ServerTestModule -> ServerTestModuleDiagnosticsCollectorAstAnchor
+  roles { ServerTestModule as generated, ServerTestModuleDiagnosticsCollectorAstAnchor as syntax }
+  expects ServerTestModuleDiagnosticsCollectorAstAnchor fingerprint ast.semantic_subtree_v1("sha256:775c3f3102ddafab72f194e3d3e552be352b4d1b6188f601338b0bb7cbd86d03")
+  summary "fn ServerTestModule.diagnosticsCollector generated from typescript function_declaration at packages/shp-cli/src/lsp/server.test.ts#diagnosticsCollector."
+}
+
+relation ServerTestModuleLspSpawnCommandGeneratedFromServerTestModuleLspSpawnCommandAstAnchor {
+  kind generated_from
+  connects ServerTestModule -> ServerTestModuleLspSpawnCommandAstAnchor
+  roles { ServerTestModule as generated, ServerTestModuleLspSpawnCommandAstAnchor as syntax }
+  expects ServerTestModuleLspSpawnCommandAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f5af7e7872d03e25c19555b598bec605e71b7881e3a595190e2fc7664f9d3dbe")
+  summary "fn ServerTestModule.lspSpawnCommand generated from typescript function_declaration at packages/shp-cli/src/lsp/server.test.ts#lspSpawnCommand."
+}
+
+relation ServerTestModulePositionOfGeneratedFromServerTestModulePositionOfAstAnchor {
+  kind generated_from
+  connects ServerTestModule -> ServerTestModulePositionOfAstAnchor
+  roles { ServerTestModule as generated, ServerTestModulePositionOfAstAnchor as syntax }
+  expects ServerTestModulePositionOfAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ad9f523173287dad6513899655faa27be0040a0f1c1dff57629955723f1ca3e2")
+  summary "fn ServerTestModule.positionOf generated from typescript function_declaration at packages/shp-cli/src/lsp/server.test.ts#positionOf."
+}
+
+relation ServerTestModuleStreamTextGeneratedFromServerTestModuleStreamTextAstAnchor {
+  kind generated_from
+  connects ServerTestModule -> ServerTestModuleStreamTextAstAnchor
+  roles { ServerTestModule as generated, ServerTestModuleStreamTextAstAnchor as syntax }
+  expects ServerTestModuleStreamTextAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3142ad5899530d555cfa22465f45940969e0838a4f6abd5eddfba0b609171163")
+  summary "fn ServerTestModule.streamText generated from typescript function_declaration at packages/shp-cli/src/lsp/server.test.ts#streamText."
+}
+
+implementation ServerTestModuleImpl {
+  paths {
+    "packages/shp-cli/src/lsp/server.test.ts"
+  }
+  conforms_to ServerTestModule
+}
