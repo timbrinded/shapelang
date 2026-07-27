@@ -23,11 +23,19 @@ import {
   isRuleDecl,
   isTraitDecl
 } from "../../language/generated/ast.ts";
-import type { FunctionInfo, LoweringContext, Model, Provenance, ShapeTarget } from "../model.ts";
+import type { ComponentInfo, LoweringContext, Model, Provenance, ShapeTarget } from "../model.ts";
 import { functionTarget, splitFunctionTarget, splitQualifiedName } from "../display.ts";
-import { hasNonEmptyDescription } from "../derivations.ts";
 import { describeProvenance, provenance } from "../provenance.ts";
 import { resolveDeclName, resolveFunctionTargetName } from "../symbols.ts";
+import {
+  changeEventsForTransition,
+  commitPlannedChange,
+  snapshotChangeTarget,
+  stageModelForChange,
+  type ChangeTargetSnapshot,
+  type ChangeTransition,
+  type PlannedChange
+} from "../change-planning.ts";
 import {
   lowerAttestation,
   lowerBinding,
@@ -42,54 +50,97 @@ import { emitFunctionFacts, removeFunctionFacts } from "./facts.ts";
 import { lowerRelation, removeRelation } from "./relations.ts";
 
 export function lowerChange(change: ChangeDecl, context: LoweringContext, model: Model): void {
-  for (const entry of change.entries) {
-    if (isAddFunctionChange(entry) || isModifyFunctionChange(entry)) {
-      lowerFunctionChangeEntry(change, entry, context, model);
-    } else if (isRemoveFunctionChange(entry)) {
-      removeFunctionChangeEntry(change, entry, context, model);
-    } else if (isAddDeclarationChange(entry)) {
-      lowerDeclaration(entry.declaration, context, model);
-    } else if (isModifyDeclarationChange(entry)) {
-      const kind = declarationKind(entry.declaration);
-      if (kind !== "attestation") {
-        const localName = declarationName(entry.declaration);
-        const targetContext = contextForDeclarationChange(kind, localName, context, model);
-        const resolvedName = resolveDeclName(localName, kind, targetContext, model);
-        const before = declarationShapeTraits(kind, resolvedName, model);
-        removeDeclaration(kind, localName, targetContext, model);
-        lowerDeclaration(entry.declaration, targetContext, model);
-        const after = declarationShapeTraits(kind, resolvedName, model);
-        emitDeclarationChange(
-          kind,
-          resolvedName,
-          removedTraitsBetween(before, after),
-          provenance(context.filePath, `change ${change.name} modify ${kind} ${resolvedName}`),
-          model
-        );
-        continue;
-      }
-      lowerDeclaration(entry.declaration, context, model);
-    } else if (isRemoveDeclarationChange(entry)) {
-      const resolvedName = resolveDeclName(entry.name, entry.kind, context, model);
-      const before = declarationShapeTraits(entry.kind, resolvedName, model);
-      emitDeclarationChange(
-        entry.kind,
-        resolvedName,
-        before ? [...before.keys()] : [],
-        provenance(context.filePath, `change ${change.name} remove ${entry.kind} ${resolvedName}`),
-        model
-      );
-      removeDeclaration(entry.kind, entry.name, context, model);
-    }
-  }
+  commitPlannedChange(model, planChange(change, context, model));
 }
 
-function lowerFunctionChangeEntry(
+export function planChange(
+  change: ChangeDecl,
+  context: LoweringContext,
+  model: Model
+): PlannedChange {
+  const stagedModel = stageModelForChange(model, {
+    copyHypergraph: change.entries.some(changesRelation)
+  });
+  const transitions: ChangeTransition[] = [];
+  for (const entry of change.entries) {
+    const transition = applyChangeEntry(change, entry, context, stagedModel);
+    if (transition) {
+      transitions.push(transition);
+    }
+  }
+  return {
+    stagedModel,
+    events: transitions.flatMap(changeEventsForTransition)
+  };
+}
+
+function applyChangeEntry(
+  change: ChangeDecl,
+  entry: ChangeDecl["entries"][number],
+  context: LoweringContext,
+  model: Model
+): ChangeTransition | undefined {
+  if (isAddFunctionChange(entry) || isModifyFunctionChange(entry)) {
+    return applyFunctionChangeEntry(change, entry, context, model);
+  } else if (isRemoveFunctionChange(entry)) {
+    return applyRemoveFunctionChangeEntry(change, entry, context, model);
+  } else if (isAddDeclarationChange(entry)) {
+    lowerDeclaration(entry.declaration, context, model);
+  } else if (isModifyDeclarationChange(entry)) {
+    const kind = declarationKind(entry.declaration);
+    if (kind !== "attestation") {
+      const localName = declarationName(entry.declaration);
+      const targetContext = contextForDeclarationChange(kind, localName, context, model);
+      const resolvedName = resolveDeclName(localName, kind, targetContext, model);
+      const target = guardedDeclarationTarget(kind, resolvedName);
+      const before = target ? snapshotChangeTarget(model, target) : undefined;
+      removeDeclaration(kind, localName, targetContext, model);
+      lowerDeclaration(entry.declaration, targetContext, model);
+      return target && before
+        ? transitionAfter(
+            target,
+            before,
+            [],
+            provenance(context.filePath, `change ${change.name} modify ${kind} ${resolvedName}`),
+            model
+          )
+        : undefined;
+    }
+    lowerDeclaration(entry.declaration, context, model);
+  } else if (isRemoveDeclarationChange(entry)) {
+    const resolvedName = resolveDeclName(entry.name, entry.kind, context, model);
+    const target = guardedDeclarationTarget(entry.kind, resolvedName);
+    const before = target ? snapshotChangeTarget(model, target) : undefined;
+    removeDeclaration(entry.kind, entry.name, context, model);
+    return target && before
+      ? transitionAfter(
+          target,
+          before,
+          [],
+          provenance(
+            context.filePath,
+            `change ${change.name} remove ${entry.kind} ${resolvedName}`
+          ),
+          model
+        )
+      : undefined;
+  }
+  return undefined;
+}
+
+function changesRelation(entry: ChangeDecl["entries"][number]): boolean {
+  if (isAddDeclarationChange(entry) || isModifyDeclarationChange(entry)) {
+    return isRelationDecl(entry.declaration);
+  }
+  return isRemoveDeclarationChange(entry) && entry.kind === "relation";
+}
+
+function applyFunctionChangeEntry(
   change: ChangeDecl,
   entry: AddFunctionChange | ModifyFunctionChange,
   context: LoweringContext,
   model: Model
-): void {
+): ChangeTransition | undefined {
   const [componentName, functionName] = resolveFunctionTargetParts(entry.target, context, model);
   if (!componentName || !functionName) {
     model.diagnostics.push({
@@ -103,9 +154,9 @@ function lowerFunctionChangeEntry(
         )
       ]
     });
-    return;
+    return undefined;
   }
-  const component = model.components.get(componentName);
+  const component = stageComponentForFunctionChange(model, componentName);
   if (!component) {
     model.diagnostics.push({
       kind: "unknown_name",
@@ -121,44 +172,35 @@ function lowerFunctionChangeEntry(
         )
       ]
     });
-    return;
+    return undefined;
   }
 
-  const previous = component.functions.get(functionName);
+  const target = functionTarget(componentName, functionName);
+  const before = snapshotChangeTarget(model, target);
   const fn = lowerFunction(entry, componentName, context, model, `change ${change.name}`);
-  if (isModifyFunctionChange(entry)) {
-    const target = functionTarget(componentName, functionName);
-    const changeProvenance = provenance(
-      context.filePath,
-      `change ${change.name} modify fn ${componentName}.${functionName}`
-    );
-    emitTargetChange(
-      target,
-      removedTraitsBetween(previous?.shapeTraits, fn.shapeTraits),
-      descriptionDropped(previous, fn),
-      changeProvenance,
-      model
-    );
-    for (const label of entry.transforms?.labels ?? []) {
-      model.changeEvents.push({
-        kind: "transform_applied",
-        target,
-        label,
-        provenance: changeProvenance
-      });
-    }
-  }
   removeFunctionFacts(model, componentName, functionName);
   component.functions.set(fn.name, fn);
   emitFunctionFacts(fn, model);
+  return isModifyFunctionChange(entry)
+    ? transitionAfter(
+        target,
+        before,
+        entry.transforms?.labels ?? [],
+        provenance(
+          context.filePath,
+          `change ${change.name} modify fn ${componentName}.${functionName}`
+        ),
+        model
+      )
+    : undefined;
 }
 
-function removeFunctionChangeEntry(
+function applyRemoveFunctionChangeEntry(
   change: ChangeDecl,
   entry: RemoveFunctionChange,
   context: LoweringContext,
   model: Model
-): void {
+): ChangeTransition | undefined {
   const [componentName, functionName] = resolveFunctionTargetParts(entry.target, context, model);
   if (!componentName || !functionName) {
     model.diagnostics.push({
@@ -172,21 +214,23 @@ function removeFunctionChangeEntry(
         )
       ]
     });
-    return;
+    return undefined;
   }
-  const removed = model.components.get(componentName)?.functions.get(functionName);
-  emitTargetChange(
-    functionTarget(componentName, functionName),
-    removed ? [...removed.shapeTraits.keys()] : [],
-    removed ? hasNonEmptyDescription(removed) : false,
+  const target = functionTarget(componentName, functionName);
+  const before = snapshotChangeTarget(model, target);
+  const component = stageComponentForFunctionChange(model, componentName);
+  removeFunctionFacts(model, componentName, functionName);
+  component?.functions.delete(functionName);
+  return transitionAfter(
+    target,
+    before,
+    [],
     provenance(
       context.filePath,
       `change ${change.name} remove fn ${componentName}.${functionName}`
     ),
     model
   );
-  removeFunctionFacts(model, componentName, functionName);
-  model.components.get(componentName)?.functions.delete(functionName);
 }
 
 export function resolveFunctionTargetParts(
@@ -197,74 +241,46 @@ export function resolveFunctionTargetParts(
   return splitFunctionTarget(resolveFunctionTargetName(target, context, model));
 }
 
-/**
- * Records a change to a target: a coarse `target_changed` event plus a
- * property-level `shape_trait_removed`/`description_removed` event for each
- * dropped property, so guarded-change checking can match either granularity.
- */
+function stageComponentForFunctionChange(
+  model: Model,
+  componentName: string
+): ComponentInfo | undefined {
+  const component = model.components.get(componentName);
+  if (!component) {
+    return undefined;
+  }
+  const stagedComponent = {
+    ...component,
+    functions: new Map(component.functions)
+  };
+  model.components.set(componentName, stagedComponent);
+  return stagedComponent;
+}
 
-export function emitTargetChange(
+function transitionAfter(
   target: ShapeTarget,
-  removedTraits: string[],
-  descriptionRemoved: boolean,
-  prov: Provenance,
+  before: ChangeTargetSnapshot,
+  transforms: readonly string[],
+  provenanceInfo: Provenance,
   model: Model
-): void {
-  model.changeEvents.push({ kind: "target_changed", target, provenance: prov });
-  for (const trait of removedTraits) {
-    model.changeEvents.push({ kind: "shape_trait_removed", target, trait, provenance: prov });
-  }
-  if (descriptionRemoved) {
-    model.changeEvents.push({ kind: "description_removed", target, provenance: prov });
-  }
+): ChangeTransition {
+  return {
+    target,
+    before,
+    after: snapshotChangeTarget(model, target),
+    transforms,
+    provenance: provenanceInfo
+  };
 }
 
-export function emitDeclarationChange(
+function guardedDeclarationTarget(
   kind: RemoveDeclarationChange["kind"],
-  resolvedName: string,
-  removedTraits: string[],
-  prov: Provenance,
-  model: Model
-): void {
-  // Only target kinds that a guard can protect emit change events. Relations
-  // carry no shape traits, so they record a coarse target change only.
-  if (kind !== "component" && kind !== "resource" && kind !== "relation") {
-    return;
-  }
-  emitTargetChange({ kind, name: resolvedName }, removedTraits, false, prov, model);
-}
-
-export function declarationShapeTraits(
-  kind: RemoveDeclarationChange["kind"],
-  resolvedName: string,
-  model: Model
-): ReadonlyMap<string, Provenance> | undefined {
-  if (kind === "component") {
-    return model.components.get(resolvedName)?.classifiers;
-  }
-  if (kind === "resource") {
-    return model.resources.get(resolvedName)?.traits;
+  resolvedName: string
+): ShapeTarget | undefined {
+  if (kind === "component" || kind === "resource" || kind === "relation") {
+    return { kind, name: resolvedName };
   }
   return undefined;
-}
-
-export function removedTraitsBetween(
-  before: ReadonlyMap<string, Provenance> | undefined,
-  after: ReadonlyMap<string, Provenance> | undefined
-): string[] {
-  if (!before) {
-    return [];
-  }
-  return [...before.keys()].filter((trait) => after?.has(trait) !== true);
-}
-
-export function descriptionDropped(
-  previous: FunctionInfo | undefined,
-  next: FunctionInfo
-): boolean {
-  return (
-    previous !== undefined && hasNonEmptyDescription(previous) && !hasNonEmptyDescription(next)
-  );
 }
 
 export function contextForDeclarationChange(

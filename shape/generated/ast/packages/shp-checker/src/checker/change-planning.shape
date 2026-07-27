@@ -1,0 +1,81 @@
+module shape.generated.ast.packages.shp_checker.src.checker.change_planning
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource ChangePlanningModuleChangeEventsForTransitionAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/change-planning.ts#changeEventsForTransition")
+  fingerprint ast.semantic_subtree_v1("sha256:12bf71cd7b4d5c0b14e6578a4b1953aa5e5b1f22099977745b78d238aa2cdef7")
+}
+
+resource ChangePlanningModuleCommitPlannedChangeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/change-planning.ts#commitPlannedChange")
+  fingerprint ast.semantic_subtree_v1("sha256:abab79963583444c621bbd416e81d2f9a8ad069daa3f2d3757341f09e3a87865")
+}
+
+resource ChangePlanningModuleSnapshotChangeTargetAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/change-planning.ts#snapshotChangeTarget")
+  fingerprint ast.semantic_subtree_v1("sha256:720094536986cd73d66b7867c169685cb21f402aa183dedb49de837bfe4ee5af")
+}
+
+resource ChangePlanningModuleStageModelForChangeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/change-planning.ts#stageModelForChange")
+  fingerprint ast.semantic_subtree_v1("sha256:e0afaa7dffd1db68d0a4c12854e9654a5c10ecb3d46535efdcc48aa9c4bf7722")
+}
+
+component ChangePlanningModule : GeneratedCandidate {
+  fn changeEventsForTransition
+    source ts("packages/shp-checker/src/checker/change-planning.ts#changeEventsForTransition")
+    effects unknown
+  fn commitPlannedChange
+    source ts("packages/shp-checker/src/checker/change-planning.ts#commitPlannedChange")
+    effects unknown
+  fn snapshotChangeTarget
+    source ts("packages/shp-checker/src/checker/change-planning.ts#snapshotChangeTarget")
+    effects unknown
+  fn stageModelForChange
+    source ts("packages/shp-checker/src/checker/change-planning.ts#stageModelForChange")
+    effects unknown
+}
+
+relation ChangePlanningModuleChangeEventsForTransitionGeneratedFromChangePlanningModuleChangeEventsForTransitionAstAnchor {
+  kind generated_from
+  connects ChangePlanningModule -> ChangePlanningModuleChangeEventsForTransitionAstAnchor
+  roles { ChangePlanningModule as generated, ChangePlanningModuleChangeEventsForTransitionAstAnchor as syntax }
+  expects ChangePlanningModuleChangeEventsForTransitionAstAnchor fingerprint ast.semantic_subtree_v1("sha256:12bf71cd7b4d5c0b14e6578a4b1953aa5e5b1f22099977745b78d238aa2cdef7")
+  summary "fn ChangePlanningModule.changeEventsForTransition generated from typescript function_declaration at packages/shp-checker/src/checker/change-planning.ts#changeEventsForTransition."
+}
+
+relation ChangePlanningModuleCommitPlannedChangeGeneratedFromChangePlanningModuleCommitPlannedChangeAstAnchor {
+  kind generated_from
+  connects ChangePlanningModule -> ChangePlanningModuleCommitPlannedChangeAstAnchor
+  roles { ChangePlanningModule as generated, ChangePlanningModuleCommitPlannedChangeAstAnchor as syntax }
+  expects ChangePlanningModuleCommitPlannedChangeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:abab79963583444c621bbd416e81d2f9a8ad069daa3f2d3757341f09e3a87865")
+  summary "fn ChangePlanningModule.commitPlannedChange generated from typescript function_declaration at packages/shp-checker/src/checker/change-planning.ts#commitPlannedChange."
+}
+
+relation ChangePlanningModuleSnapshotChangeTargetGeneratedFromChangePlanningModuleSnapshotChangeTargetAstAnchor {
+  kind generated_from
+  connects ChangePlanningModule -> ChangePlanningModuleSnapshotChangeTargetAstAnchor
+  roles { ChangePlanningModule as generated, ChangePlanningModuleSnapshotChangeTargetAstAnchor as syntax }
+  expects ChangePlanningModuleSnapshotChangeTargetAstAnchor fingerprint ast.semantic_subtree_v1("sha256:720094536986cd73d66b7867c169685cb21f402aa183dedb49de837bfe4ee5af")
+  summary "fn ChangePlanningModule.snapshotChangeTarget generated from typescript function_declaration at packages/shp-checker/src/checker/change-planning.ts#snapshotChangeTarget."
+}
+
+relation ChangePlanningModuleStageModelForChangeGeneratedFromChangePlanningModuleStageModelForChangeAstAnchor {
+  kind generated_from
+  connects ChangePlanningModule -> ChangePlanningModuleStageModelForChangeAstAnchor
+  roles { ChangePlanningModule as generated, ChangePlanningModuleStageModelForChangeAstAnchor as syntax }
+  expects ChangePlanningModuleStageModelForChangeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e0afaa7dffd1db68d0a4c12854e9654a5c10ecb3d46535efdcc48aa9c4bf7722")
+  summary "fn ChangePlanningModule.stageModelForChange generated from typescript function_declaration at packages/shp-checker/src/checker/change-planning.ts#stageModelForChange."
+}
+
+implementation ChangePlanningModuleImpl {
+  paths {
+    "packages/shp-checker/src/checker/change-planning.ts"
+  }
+  conforms_to ChangePlanningModule
+}

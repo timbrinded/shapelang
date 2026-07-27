@@ -4,6 +4,8 @@ import shape.language
 
 import shape.tooling
 
+resource ChangeEventSet
+
 resource ChangedFileList
 
 resource EffectiveModel
@@ -131,9 +133,11 @@ component ShapeDiagnostics {
 }
 
 component ShapeModelLowerer {
+  owns ChangeEventSet
   owns EffectiveModel
   owns FactSet
   owns ModuleNamespace
+  grants Append<ChangeEventSet>
   grants Append<FactSet>
   grants Append<ModuleNamespace>
   grants Append<SemanticDiagnostics>
@@ -149,6 +153,20 @@ component ShapeModelLowerer {
         evidence ts("packages/shp-checker/src/checker/symbols.ts")
       Read<ParsedModule>
         evidence ts("packages/shp-checker/src/checker/symbols.ts")
+    }
+  fn lowerChange : RefactorSensitive
+    source ts("packages/shp-checker/src/checker/lowering/changes.ts#lowerChange")
+    effects complete {
+      Append<ChangeEventSet>
+        evidence ts("packages/shp-checker/src/checker/change-planning.ts")
+      Append<FactSet>
+        evidence ts("packages/shp-checker/src/checker/lowering/changes.ts")
+      Append<SemanticDiagnostics>
+        evidence ts("packages/shp-checker/src/checker/lowering/changes.ts")
+      Read<ParsedModule>
+        evidence ts("packages/shp-checker/src/checker/lowering/changes.ts")
+      Update<EffectiveModel>
+        evidence ts("packages/shp-checker/src/checker/lowering/changes.ts")
     }
   fn lowerComponent
     source ts("packages/shp-checker/src/checker/lowering/declarations.ts#lowerComponent")
@@ -226,6 +244,7 @@ component ShapeRuleEngine {
   owns SemanticDiagnostics
   owns ShapeHypergraph
   grants Append<SemanticDiagnostics>
+  grants Read<ChangeEventSet>
   grants Read<ChangedFileList>
   grants Read<EffectiveModel>
   grants Read<FactSet>
@@ -277,6 +296,8 @@ component ShapeRuleEngine {
     source ts("packages/shp-checker/src/checker/rules/guards.ts#checkGuardedChanges")
     effects complete {
       Append<SemanticDiagnostics>
+        evidence ts("packages/shp-checker/src/checker/rules/guards.ts")
+      Read<ChangeEventSet>
         evidence ts("packages/shp-checker/src/checker/rules/guards.ts")
       Read<EffectiveModel>
         evidence ts("packages/shp-checker/src/checker/rules/guards.ts")
@@ -420,6 +441,11 @@ relation ShapeDiagnosticsReadsRuleOutput {
   summary "DiagnosticInput"
 }
 
+relation ShapeModelLowererProvidesChangeEvents {
+  kind provides
+  connects ShapeModelLowerer -> ChangeEventSet
+}
+
 relation ShapeModelLowererProvidesEffectiveModel {
   kind provides
   connects ShapeModelLowerer -> EffectiveShapeModel
@@ -493,6 +519,23 @@ rule checker_contract_providers {
 
 rule no_runtime_dependency_cycles {
   forbid hypercycle over calls
+}
+
+memory AtomicChangePlanning : RefactorConstraint<fn ShapeModelLowerer.lowerChange> {
+  applies_to fn ShapeModelLowerer.lowerChange
+  status Explained
+  confidence High
+  summary "Each change declaration is applied to an isolated effective-model snapshot; ordered before/after target transitions produce normalized guard events, and the complete plan is committed only after every entry has been staged."
+  who {
+    owner ShapeMaintainers
+  }
+  protects {
+    shape AtomicChangePlanning
+  }
+  guards {
+    on_change require ReEvaluation<Self>
+  }
+  evidence test("packages/shp-checker/src/checker/change-planning.test.ts")
 }
 
 memory BindingDocsCouplingContract : RefactorConstraint<fn ShapeBindings.checkBindings> {
@@ -928,11 +971,6 @@ attest no_shape_change {
 attest no_shape_change {
   source ts("packages/shp-checker/src/checker/lowerers.ts")
   reason "Deleted monolithic lowerer file after extracting the same lowering domains into checker/lowering modules modeled above."
-}
-
-attest no_shape_change {
-  source ts("packages/shp-checker/src/checker/lowering/changes.ts")
-  reason "Change lowering was extracted from the former lowerers module without changing the ShapeModelLowerer architecture contract."
 }
 
 attest no_shape_change {
