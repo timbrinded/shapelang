@@ -23,10 +23,10 @@ component AuditMaintenance {
     source sql("fixtures/source/analyzer/sql/destructive.sql")
     effects complete {
       DropStorage<AuditEventArchive>
-        evidence sql("fixtures/source/analyzer/sql/destructive.sql:8-10")
+        evidence sql("fixtures/source/analyzer/sql/destructive.sql")
       HardDelete<AuditEventArchive>
-        evidence sql("fixtures/source/analyzer/sql/destructive.sql:1-4")
+        evidence sql("fixtures/source/analyzer/sql/destructive.sql")
       Truncate<AuditEventStaging>
-        evidence sql("fixtures/source/analyzer/sql/destructive.sql:5-7")
+        evidence sql("fixtures/source/analyzer/sql/destructive.sql")
     }
 }
