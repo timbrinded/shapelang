@@ -10,7 +10,6 @@ export {
 export {
   buildShapeAuthorPrompt,
   buildShapeAuthoringBundle,
-  buildShapeCriticPrompt,
   generateShapeUpdateDraft,
   type ShapeAuthorContextFile,
   type ShapeAuthorPromptInput,
@@ -18,6 +17,16 @@ export {
   type ShapeAuthoringBundleInput,
   type ShapeUpdateInput
 } from "./authoring.ts";
+export {
+  buildShapeCriticPrompt,
+  formatShapeCriticAdvisories,
+  reviewShapeAuthoringProposal,
+  type DestructiveEffectOmissionAdvisory,
+  type GuardedTargetWithoutReevaluationAdvisory,
+  type ShapeCriticAdvisory,
+  type ShapeCriticInput,
+  type ShapeCriticReviewResult
+} from "./critic.ts";
 export {
   generateShapeFromAstJson,
   generateShapeFromSourceFiles,

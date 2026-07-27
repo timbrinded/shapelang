@@ -53,7 +53,7 @@ resource SymbolsModuleResolveDeclNameAstAnchor : GeneratedAstAnchor {
 
 resource SymbolsModuleResolveDeclReferenceAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/checker/symbols.ts#resolveDeclReference")
-  fingerprint ast.semantic_subtree_v1("sha256:2b1e87a2e35c622f3502568c24c236facca2c52169d601269f0a168f408b92b5")
+  fingerprint ast.semantic_subtree_v1("sha256:2cd08cb69945862b9529a1d6865e0e5073ca34f327113a5acb735eef6f2b241a")
 }
 
 resource SymbolsModuleResolveFunctionTargetNameAstAnchor : GeneratedAstAnchor {
@@ -73,7 +73,7 @@ resource SymbolsModuleResolveVertexNameAstAnchor : GeneratedAstAnchor {
 
 resource SymbolsModuleResolveVertexReferenceAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/checker/symbols.ts#resolveVertexReference")
-  fingerprint ast.semantic_subtree_v1("sha256:7e023448643adb833f76d4af8bc18337d932974d794b83849fda91531af101d9")
+  fingerprint ast.semantic_subtree_v1("sha256:b0a3e377c92d8f61047cab8180928ba01e65317be8a163d92762bc3f68ad6bbf")
 }
 
 component SymbolsModule : GeneratedCandidate {
@@ -197,7 +197,7 @@ relation SymbolsModuleResolveDeclReferenceGeneratedFromSymbolsModuleResolveDeclR
   kind generated_from
   connects SymbolsModule -> SymbolsModuleResolveDeclReferenceAstAnchor
   roles { SymbolsModule as generated, SymbolsModuleResolveDeclReferenceAstAnchor as syntax }
-  expects SymbolsModuleResolveDeclReferenceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2b1e87a2e35c622f3502568c24c236facca2c52169d601269f0a168f408b92b5")
+  expects SymbolsModuleResolveDeclReferenceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2cd08cb69945862b9529a1d6865e0e5073ca34f327113a5acb735eef6f2b241a")
   summary "fn SymbolsModule.resolveDeclReference generated from typescript function_declaration at packages/shp-checker/src/checker/symbols.ts#resolveDeclReference."
 }
 
@@ -229,7 +229,7 @@ relation SymbolsModuleResolveVertexReferenceGeneratedFromSymbolsModuleResolveVer
   kind generated_from
   connects SymbolsModule -> SymbolsModuleResolveVertexReferenceAstAnchor
   roles { SymbolsModule as generated, SymbolsModuleResolveVertexReferenceAstAnchor as syntax }
-  expects SymbolsModuleResolveVertexReferenceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7e023448643adb833f76d4af8bc18337d932974d794b83849fda91531af101d9")
+  expects SymbolsModuleResolveVertexReferenceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b0a3e377c92d8f61047cab8180928ba01e65317be8a163d92762bc3f68ad6bbf")
   summary "fn SymbolsModule.resolveVertexReference generated from typescript function_declaration at packages/shp-checker/src/checker/symbols.ts#resolveVertexReference."
 }
 

@@ -78,7 +78,7 @@ resource DerivationsModuleRequirementsForTargetAstAnchor : GeneratedAstAnchor {
 
 resource DerivationsModuleRequiresReevaluationAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/checker/derivations.ts#requiresReevaluation")
-  fingerprint ast.semantic_subtree_v1("sha256:2ed4c0e9cc7f184d89e923b1e0b746a1cc37db8275fda282d283595936b11c71")
+  fingerprint ast.semantic_subtree_v1("sha256:df3f6c13cce83a78ef3b91f5f7bfa1c7cff73903d3d94499274ce42bf2f1fbc0")
 }
 
 resource DerivationsModuleResourceRuleConditionCompatibilityAstAnchor : GeneratedAstAnchor {
@@ -277,7 +277,7 @@ relation DerivationsModuleRequiresReevaluationGeneratedFromDerivationsModuleRequ
   kind generated_from
   connects DerivationsModule -> DerivationsModuleRequiresReevaluationAstAnchor
   roles { DerivationsModule as generated, DerivationsModuleRequiresReevaluationAstAnchor as syntax }
-  expects DerivationsModuleRequiresReevaluationAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2ed4c0e9cc7f184d89e923b1e0b746a1cc37db8275fda282d283595936b11c71")
+  expects DerivationsModuleRequiresReevaluationAstAnchor fingerprint ast.semantic_subtree_v1("sha256:df3f6c13cce83a78ef3b91f5f7bfa1c7cff73903d3d94499274ce42bf2f1fbc0")
   summary "fn DerivationsModule.requiresReevaluation generated from typescript function_declaration at packages/shp-checker/src/checker/derivations.ts#requiresReevaluation."
 }
 

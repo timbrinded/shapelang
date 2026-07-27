@@ -129,15 +129,24 @@ describe("shp CLI contract matrix (area #60)", () => {
       expect(coverage.stderr).not.toContain("at ");
       expect(coverage.stderr).not.toMatch(/Error: .*\n\s+at /);
 
-      // `author` requires --changed-files AND --component (cli.md usage).
-      // Verified empirically: with neither flag the CLI reports BOTH missing
-      // inputs and exits 2 before generating any draft.
+      // `author` always requires --changed-files. Draft and author-prompt modes
+      // additionally require --component; critic mode reviews an existing
+      // proposal and therefore does not.
       const author = await runCli(["author"]);
       expect(author.exitCode).toBe(2);
       expect(author.stdout).toBe("");
       expect(author.stderr).toContain("--changed-files");
-      expect(author.stderr).toContain("--component");
       expect(author.stderr).not.toContain("at ");
+
+      const authorWithoutComponent = await runCli([
+        "author",
+        "--changed-files",
+        "fixtures/changed/audit_purge.txt"
+      ]);
+      expect(authorWithoutComponent.exitCode).toBe(2);
+      expect(authorWithoutComponent.stdout).toBe("");
+      expect(authorWithoutComponent.stderr).toContain("--component");
+      expect(authorWithoutComponent.stderr).not.toContain("at ");
     }
   );
 

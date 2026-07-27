@@ -186,6 +186,7 @@ shp obligations
 shp lsp
 shp author --changed-files changed.txt --component AuditStore
 shp author --changed-files changed.txt --component AuditStore --diff pr.diff --prompt --shape-files shape/audit.shape --snippet-files src/audit/purge.ts
+shp author --changed-files changed.txt --diff pr.diff --critic-prompt proposed.shape --shape-files shape/audit.shape --snippet-files src/audit/purge.ts
 shp analyze --shape-files fixtures/pass/append_only_append/audit.shape src/audit/purge.ts
 shp ast source --language rust --module generated.audit src/audit/store.rs
 shp ast json --module generated.audit --raw-out ast.raw.shape ast.json
@@ -209,6 +210,7 @@ Useful commands:
 - `shp lsp`: serve Shape diagnostics, hover, definitions, completions, and formatting over the Language Server Protocol on stdio.
 - `shp author --changed-files changed.txt --component AuditStore [--module module.name]`: generate a conservative global-model draft from changed files.
 - `shp author ... --diff pr.diff --prompt --shape-files shape/audit.shape [--snippet-files src/audit/purge.ts] [--project-prelude prelude.shape] [--instructions TEXT]`: emit a provider-neutral prompt bundle containing explicit review context and the conservative draft. Shape does not invoke a model provider.
+- `shp author ... --diff pr.diff --critic-prompt proposed.shape --shape-files shape/audit.shape [--snippet-files src/audit/purge.ts] [--project-prelude prelude.shape] [--instructions TEXT]`: write a provider-neutral critic prompt to stdout and deterministic advisory warnings to stderr. Warnings remain exit `0`; malformed input exits `2`.
 - `shp analyze --shape-files fixtures/pass/append_only_append/audit.shape src/file.ts`: compare obvious source hints against declared effects.
 - `shp ast source [--language LANG] [--module NAME] src/file.rs`: parse source with Tree-sitter and print a conservative Shape draft with compact AST anchors and semantic fingerprints.
 - `shp ast json [--module NAME] [--include-ast-layer] ast.json`: read normalized AST JSON from another parser, with raw AST resources opt-in.
@@ -227,7 +229,7 @@ modules available to semantic diagnostics instead of checking each file in
 isolation. Editors that support format-on-save should invoke
 `textDocument/formatting`; the server does not rewrite files on its own.
 
-The authoring prompt mode requires a non-empty unified diff and an explicit comma-separated `--shape-files` list. Relevant source snippets and a project prelude are opt-in context files; their paths stay labeled in the prompt. The generated draft remains file-scoped with `effects unknown` wherever semantics are uncertain; it never derives numbered source references or invents resources and destructive effects. Review and fold the proposed update into the owning global model, refine references to stable `#symbol` anchors when supported, then run `shp fmt --check` and strict `shp check --changed-files changed.txt` as the final gate.
+The authoring prompt and critic modes require a non-empty unified diff and an explicit comma-separated `--shape-files` list. Relevant source snippets and a project prelude are opt-in context files; their paths stay labeled in the prompt. The generated draft remains file-scoped with `effects unknown` wherever semantics are uncertain; it never derives numbered source references or invents resources and destructive effects. Critic mode inspects added diff lines for destructive operations and source-backed guarded functions for missing reevaluation, but it reports file paths and code evidence without authoring line-number references. It does not invoke a provider, subprocess, network service, or checker pass. Its warnings are advisory; review and fold the proposed update into the owning global model, refine references to stable `#symbol` anchors when supported, then run `shp fmt --check` and strict `shp check --changed-files changed.txt` as the final gate.
 
 ## Project Layout
 

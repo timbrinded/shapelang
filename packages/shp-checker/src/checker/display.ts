@@ -6,26 +6,17 @@
 // keep the dependency direction symbols -> display -> model acyclic. This is a
 // different concern from the parse-side source-string handling in
 // shape-strings.ts.
+import { splitModuleReference } from "../module-resolution.ts";
 import type { FingerprintInfo, ShapeTarget, SourceRefInfo, TermInfo } from "./model.ts";
 
-// A declared name is keyed as `module::local`; these build and split that key.
-export function declKey(moduleName: string, localName: string): string {
-  return moduleName ? `${moduleName}::${localName}` : localName;
-}
-
-export function splitQualifiedName(name: string): { moduleName?: string; localName: string } {
-  const separator = name.lastIndexOf("::");
-  if (separator < 0) {
-    return { localName: name };
-  }
-  return {
-    moduleName: name.slice(0, separator),
-    localName: name.slice(separator + 2)
-  };
-}
+export {
+  qualifyModuleReference as declKey,
+  splitFunctionReference as splitFunctionTarget,
+  splitModuleReference as splitQualifiedName
+} from "../module-resolution.ts";
 
 export function localNameOf(name: string): string {
-  return splitQualifiedName(name).localName;
+  return splitModuleReference(name).localName;
 }
 
 export function displaySymbol(name: string): string {
@@ -47,17 +38,6 @@ export function termKey(term: TermInfo): string {
 
 export function functionKey(component: string, name: string): string {
   return `${component}.${name}`;
-}
-
-// Parse a `Component.fn` function-target string into its parts; the inverse of
-// functionKey. Returns [undefined, undefined] when the string is not a
-// well-formed function target.
-export function splitFunctionTarget(target: string): [string | undefined, string | undefined] {
-  const separator = target.lastIndexOf(".");
-  if (separator <= 0 || separator === target.length - 1) {
-    return [undefined, undefined];
-  }
-  return [target.slice(0, separator), target.slice(separator + 1)];
 }
 
 // Construct the canonical `fn` ShapeTarget for a component function.

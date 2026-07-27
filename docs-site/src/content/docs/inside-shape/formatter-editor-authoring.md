@@ -169,7 +169,7 @@ The conservative scaffold remains file-scoped. A unified diff is prompt context 
 
 ## Prompt Helpers
 
-`buildShapeAuthorPrompt` and `buildShapeCriticPrompt` encode the same review posture in text. They tell an authoring agent to:
+`buildShapeAuthorPrompt` and `buildShapeCriticPrompt` encode the same review posture in text. The critic helper accepts a typed `ShapeCriticInput`, so the changed files, diff, path-labeled existing Shape, proposed update, optional snippets, optional project prelude, and human instructions stay explicit and deterministic. The prompts tell an authoring or reviewing agent to:
 
 - output valid Shape syntax
 - cover every governed changed file
@@ -182,6 +182,13 @@ The conservative scaffold remains file-scoped. A unified diff is prompt context 
 - never use memory or rationale to waive final forbidden effects
 
 The critic prompt asks the inverse questions. It is designed to catch the common failure modes before the deterministic checker runs.
+
+`reviewShapeAuthoringProposal` adds two deterministic advisory categories without turning the helper into another checker:
+
+- `guarded_target_without_reevaluation` matches changed files coarsely against source-backed functions protected by an `on_change require ReEvaluation` or `ReEvaluation<Self>` guard, then checks the proposal for a namespace-resolved reevaluation satisfying that memory or rationale. Critic and checker lowering share the same qualified, local, imported, ambiguous, and unknown module-reference precedence.
+- `destructive_effect_omission` runs the existing lexical analyzer over added diff lines only, then compares its hints with effects declared by the existing and proposed Shape modules. Deleted lines are excluded, and the advisory reports the affected file plus code evidence without turning diff coordinates into authored Shape references.
+
+The result is typed and returns parse diagnostics for malformed Shape input. `formatShapeCriticAdvisories` gives the advisory union stable ordering and text. These helpers do not invoke `checkShapeModules`, a model provider, a subprocess, or a network service; they only prepare review context and flag likely omissions.
 
 `buildShapeAuthoringBundle` connects the deterministic pieces without adding a model runtime. It accepts changed-file and component metadata plus a unified diff, path-preserving existing Shape files, optional source snippets, an optional project-prelude context file, and human instructions. It returns:
 
@@ -202,6 +209,19 @@ bun run shp -- author \
 ```
 
 Prompt mode requires an explicit Shape-file list instead of loading every file under `shape/`, which keeps generated AST context and unrelated models out of the prompt. A supplied project prelude is context only; the authoring command does not discover, import, or install domain libraries. Shape writes the prompt to stdout and never invokes a provider, subprocess, or network service.
+
+Critic mode uses the same explicit context and reads the proposed update from `--critic-prompt`:
+
+```bash
+bun run shp -- author \
+  --changed-files fixtures/changed/audit_purge.txt \
+  --diff fixtures/diffs/audit_purge.diff \
+  --critic-prompt proposed.shape \
+  --shape-files fixtures/pass/append_only_append/audit.shape \
+  --snippet-files fixtures/source/audit_purge.ts
+```
+
+The critic prompt is written to stdout and deterministic advisories are written to stderr. Advisory findings still exit `0`, because strict checker results remain the authoritative gate. Invalid critic input exits `2`, and `--critic-prompt` cannot be combined with `--prompt`.
 
 ## A Typical Agentic Review Loop
 

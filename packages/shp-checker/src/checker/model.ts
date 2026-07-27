@@ -13,6 +13,7 @@ import type {
 import type { ContextKind, TraitTypeParameter } from "../prelude.ts";
 import type { ParseDiagnostic } from "../parser.ts";
 import type { ChangeTrigger, Provenance, ShapeTarget } from "../shape-domain.ts";
+import type { ModuleReferenceResolution } from "../module-resolution.ts";
 import type { IsoDateString } from "./iso-date.ts";
 
 export type { ChangeTrigger, Provenance, ShapeTarget } from "../shape-domain.ts";
@@ -463,10 +464,7 @@ export type DeclarationKind =
 
 export type DeclarationIndex = Record<DeclarationKind, Map<string, Set<string>>>;
 
-export type ResolutionResult =
-  | { kind: "resolved"; name: string }
-  | { kind: "unknown"; name: string }
-  | { kind: "ambiguous"; name: string; matches: string[] };
+export type ResolutionResult = ModuleReferenceResolution;
 
 export type TermInfo = {
   name: string;
