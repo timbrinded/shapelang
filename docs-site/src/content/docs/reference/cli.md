@@ -35,6 +35,11 @@ When no files are provided, commands scan:
 shape/**/*.shape
 ```
 
+This recursive file set includes source-controlled domain packs vendored below
+`shape/vendor/`. Vendoring installs those modules into the checked model; explicit
+imports make project references to their declarations reviewable but do not
+activate or deactivate pack-level rules. See [Domain Packs](../concepts/domain-packs).
+
 ## Commands
 
 | Command | Purpose |

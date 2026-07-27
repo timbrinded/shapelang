@@ -1,0 +1,20 @@
+module checkout
+
+import domain.audit.v1
+
+trait CheckoutRetention<T: Resource> {
+  forbid final Truncate<T>
+}
+
+resource CheckoutAudit : CheckoutRetention, DurableAudit
+
+component CheckoutStore {
+  owns CheckoutAudit
+  grants Append<CheckoutAudit>
+  fn recordCheckout
+    source test("checkout.test.ts#recordCheckout")
+    effects complete {
+      Append<CheckoutAudit>
+        evidence test("checkout.test.ts#recordCheckout")
+    }
+}

@@ -1,0 +1,5 @@
+module domain.no_cycles.v1
+
+rule no_call_cycles {
+  forbid hypercycle over calls
+}

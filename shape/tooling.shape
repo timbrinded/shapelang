@@ -385,6 +385,7 @@ component ShpCli {
   grants Update<InstalledShpRuntimeAssets>
   fn defaultShapeFiles : RefactorSensitive
     source ts("packages/shp-cli/src/shape-files.ts#defaultShapeFiles")
+    description "Recursively installs project Shape and source-controlled domain packs below shape; imports make project references explicit but do not activate discovered pack rules."
     effects complete {
       Read<ShapeSource>
         evidence ts("packages/shp-cli/src/shape-files.ts")
@@ -730,7 +731,7 @@ memory DefaultShapeFileDiscovery : RefactorConstraint<fn ShpCli.defaultShapeFile
   applies_to fn ShpCli.defaultShapeFiles
   status Explained
   confidence High
-  summary "Default discovery loads every Shape file under the shape directory, including nested subdirectories."
+  summary "Default discovery loads every Shape file under the shape directory, including source-controlled domain packs in nested vendor directories."
   who {
     owner ShapeMaintainers
   }
