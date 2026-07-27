@@ -7,13 +7,13 @@ trait GeneratedCandidate {
 }
 
 resource ImplModuleGeneratedFunctionMemoryAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-cli/src/commands/memory/impl.ts:8-15")
+  storage ast.anchor("packages/shp-cli/src/commands/memory/impl.ts#memory")
   fingerprint ast.semantic_subtree_v1("sha256:b5f1e7922fe93439ff7eb1bb5ade06b50ea8aaf7bfc753a6157c53c40637f83c")
 }
 
 component ImplModule : GeneratedCandidate {
   fn generatedFunction_memory
-    source ts("packages/shp-cli/src/commands/memory/impl.ts:8-15")
+    source ts("packages/shp-cli/src/commands/memory/impl.ts#memory")
     effects unknown
 }
 
@@ -22,7 +22,7 @@ relation ImplModuleGeneratedFunctionMemoryGeneratedFromImplModuleGeneratedFuncti
   connects ImplModule -> ImplModuleGeneratedFunctionMemoryAstAnchor
   roles { ImplModule as generated, ImplModuleGeneratedFunctionMemoryAstAnchor as syntax }
   expects ImplModuleGeneratedFunctionMemoryAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b5f1e7922fe93439ff7eb1bb5ade06b50ea8aaf7bfc753a6157c53c40637f83c")
-  summary "fn ImplModule.generatedFunction_memory generated from typescript function_declaration at packages/shp-cli/src/commands/memory/impl.ts:8-15."
+  summary "fn ImplModule.generatedFunction_memory generated from typescript function_declaration at packages/shp-cli/src/commands/memory/impl.ts#memory."
 }
 
 implementation ImplModuleImpl {

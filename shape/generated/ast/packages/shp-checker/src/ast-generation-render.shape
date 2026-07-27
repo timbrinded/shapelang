@@ -7,93 +7,93 @@ trait GeneratedCandidate {
 }
 
 resource AstGenerationRenderModuleAppendCandidateEffectsAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/ast-generation-render.ts:285-314")
+  storage ast.anchor("packages/shp-checker/src/ast-generation-render.ts#appendCandidateEffects")
   fingerprint ast.semantic_subtree_v1("sha256:907a799df86b37c2cd64865eb1e93133c8f5232b31f820e03fc62ebfcdedf376")
 }
 
 resource AstGenerationRenderModuleAppendGeneratedFromRelationsAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/ast-generation-render.ts:316-386")
+  storage ast.anchor("packages/shp-checker/src/ast-generation-render.ts#appendGeneratedFromRelations")
   fingerprint ast.semantic_subtree_v1("sha256:c38a74e9eae5faef1b1fc6e8d8f71edf3ab85617cc82cd92357e300c0037fbe0")
 }
 
 resource AstGenerationRenderModuleAppendRawAstDeclarationsAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/ast-generation-render.ts:413-488")
+  storage ast.anchor("packages/shp-checker/src/ast-generation-render.ts#appendRawAstDeclarations")
   fingerprint ast.semantic_subtree_v1("sha256:acf23a7454fa0017d2d1fb4ae9f859d28be742d0538128ee987098be6a25e431")
 }
 
 resource AstGenerationRenderModuleFormatGeneratedShapeAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/ast-generation-render.ts:397-411")
+  storage ast.anchor("packages/shp-checker/src/ast-generation-render.ts#formatGeneratedShape")
   fingerprint ast.semantic_subtree_v1("sha256:067d3f37c978ca7b82a60c880fe2f3e8ee8eda1f2dc009d99fb593bbcb608ea2")
 }
 
 resource AstGenerationRenderModuleFormatRawAstShapeAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/ast-generation-render.ts:388-395")
+  storage ast.anchor("packages/shp-checker/src/ast-generation-render.ts#formatRawAstShape")
   fingerprint ast.semantic_subtree_v1("sha256:5a96b67e6db1bd02e9cbec0fcc495d2814346af1a61be49a68b41b86afe8299a")
 }
 
 resource AstGenerationRenderModuleFormatSemanticShapeAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/ast-generation-render.ts:150-283")
+  storage ast.anchor("packages/shp-checker/src/ast-generation-render.ts#formatSemanticShape")
   fingerprint ast.semantic_subtree_v1("sha256:e7ba65f4ded93aec715cd3167994378280c9e79e1865377c3ac14d4a43436cc3")
 }
 
 resource AstGenerationRenderModuleGenerateShapeFromAstJsonAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/ast-generation-render.ts:75-87")
+  storage ast.anchor("packages/shp-checker/src/ast-generation-render.ts#generateShapeFromAstJson")
   fingerprint ast.semantic_subtree_v1("sha256:9a9f36a0d56bca6c742026123ae2047fef7ba1494bd88e42ad47614aa26a8252")
 }
 
 resource AstGenerationRenderModuleGenerateShapeFromCodeSemanticGraphAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/ast-generation-render.ts:26-52")
+  storage ast.anchor("packages/shp-checker/src/ast-generation-render.ts#generateShapeFromCodeSemanticGraph")
   fingerprint ast.semantic_subtree_v1("sha256:9acfe6079a7e3377ab1b5410bdd0f05f40953c121b6dc46f3e058f7511d49728")
 }
 
 resource AstGenerationRenderModuleGenerateShapeFromSourceFilesAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/ast-generation-render.ts:58-73")
+  storage ast.anchor("packages/shp-checker/src/ast-generation-render.ts#generateShapeFromSourceFiles")
   fingerprint ast.semantic_subtree_v1("sha256:b07f86b5c13fdb981d9901a9efd1009d31ad761412b4e814acc37c036587aee6")
 }
 
 resource AstGenerationRenderModuleNormalizeGeneratedModuleNameAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/ast-generation-render.ts:54-56")
+  storage ast.anchor("packages/shp-checker/src/ast-generation-render.ts#normalizeGeneratedModuleName")
   fingerprint ast.semantic_subtree_v1("sha256:e7957257b26a4e38613b08b5d6f4a6dd6755a9c7a0c61f44fc5929de678e5a29")
 }
 
 resource AstGenerationRenderModuleValidateCodeSemanticGraphForRenderingAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/ast-generation-render.ts:89-148")
+  storage ast.anchor("packages/shp-checker/src/ast-generation-render.ts#validateCodeSemanticGraphForRendering")
   fingerprint ast.semantic_subtree_v1("sha256:12c11e34889f8f696b4df726c1ed1113e6b695904e53d9a6a649da74e9f23424")
 }
 
 component AstGenerationRenderModule : GeneratedCandidate {
   fn appendCandidateEffects
-    source ts("packages/shp-checker/src/ast-generation-render.ts:285-314")
+    source ts("packages/shp-checker/src/ast-generation-render.ts#appendCandidateEffects")
     effects unknown
   fn appendGeneratedFromRelations
-    source ts("packages/shp-checker/src/ast-generation-render.ts:316-386")
+    source ts("packages/shp-checker/src/ast-generation-render.ts#appendGeneratedFromRelations")
     effects unknown
   fn appendRawAstDeclarations
-    source ts("packages/shp-checker/src/ast-generation-render.ts:413-488")
+    source ts("packages/shp-checker/src/ast-generation-render.ts#appendRawAstDeclarations")
     effects unknown
   fn formatGeneratedShape
-    source ts("packages/shp-checker/src/ast-generation-render.ts:397-411")
+    source ts("packages/shp-checker/src/ast-generation-render.ts#formatGeneratedShape")
     effects unknown
   fn formatRawAstShape
-    source ts("packages/shp-checker/src/ast-generation-render.ts:388-395")
+    source ts("packages/shp-checker/src/ast-generation-render.ts#formatRawAstShape")
     effects unknown
   fn formatSemanticShape
-    source ts("packages/shp-checker/src/ast-generation-render.ts:150-283")
+    source ts("packages/shp-checker/src/ast-generation-render.ts#formatSemanticShape")
     effects unknown
   fn generateShapeFromAstJson
-    source ts("packages/shp-checker/src/ast-generation-render.ts:75-87")
+    source ts("packages/shp-checker/src/ast-generation-render.ts#generateShapeFromAstJson")
     effects unknown
   fn generateShapeFromCodeSemanticGraph
-    source ts("packages/shp-checker/src/ast-generation-render.ts:26-52")
+    source ts("packages/shp-checker/src/ast-generation-render.ts#generateShapeFromCodeSemanticGraph")
     effects unknown
   fn generateShapeFromSourceFiles
-    source ts("packages/shp-checker/src/ast-generation-render.ts:58-73")
+    source ts("packages/shp-checker/src/ast-generation-render.ts#generateShapeFromSourceFiles")
     effects unknown
   fn normalizeGeneratedModuleName
-    source ts("packages/shp-checker/src/ast-generation-render.ts:54-56")
+    source ts("packages/shp-checker/src/ast-generation-render.ts#normalizeGeneratedModuleName")
     effects unknown
   fn validateCodeSemanticGraphForRendering
-    source ts("packages/shp-checker/src/ast-generation-render.ts:89-148")
+    source ts("packages/shp-checker/src/ast-generation-render.ts#validateCodeSemanticGraphForRendering")
     effects unknown
 }
 
@@ -102,7 +102,7 @@ relation AstGenerationRenderModuleAppendCandidateEffectsGeneratedFromAstGenerati
   connects AstGenerationRenderModule -> AstGenerationRenderModuleAppendCandidateEffectsAstAnchor
   roles { AstGenerationRenderModule as generated, AstGenerationRenderModuleAppendCandidateEffectsAstAnchor as syntax }
   expects AstGenerationRenderModuleAppendCandidateEffectsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:907a799df86b37c2cd64865eb1e93133c8f5232b31f820e03fc62ebfcdedf376")
-  summary "fn AstGenerationRenderModule.appendCandidateEffects generated from typescript function_declaration at packages/shp-checker/src/ast-generation-render.ts:285-314."
+  summary "fn AstGenerationRenderModule.appendCandidateEffects generated from typescript function_declaration at packages/shp-checker/src/ast-generation-render.ts#appendCandidateEffects."
 }
 
 relation AstGenerationRenderModuleAppendGeneratedFromRelationsGeneratedFromAstGenerationRenderModuleAppendGeneratedFromRelationsAstAnchor {
@@ -110,7 +110,7 @@ relation AstGenerationRenderModuleAppendGeneratedFromRelationsGeneratedFromAstGe
   connects AstGenerationRenderModule -> AstGenerationRenderModuleAppendGeneratedFromRelationsAstAnchor
   roles { AstGenerationRenderModule as generated, AstGenerationRenderModuleAppendGeneratedFromRelationsAstAnchor as syntax }
   expects AstGenerationRenderModuleAppendGeneratedFromRelationsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c38a74e9eae5faef1b1fc6e8d8f71edf3ab85617cc82cd92357e300c0037fbe0")
-  summary "fn AstGenerationRenderModule.appendGeneratedFromRelations generated from typescript function_declaration at packages/shp-checker/src/ast-generation-render.ts:316-386."
+  summary "fn AstGenerationRenderModule.appendGeneratedFromRelations generated from typescript function_declaration at packages/shp-checker/src/ast-generation-render.ts#appendGeneratedFromRelations."
 }
 
 relation AstGenerationRenderModuleAppendRawAstDeclarationsGeneratedFromAstGenerationRenderModuleAppendRawAstDeclarationsAstAnchor {
@@ -118,7 +118,7 @@ relation AstGenerationRenderModuleAppendRawAstDeclarationsGeneratedFromAstGenera
   connects AstGenerationRenderModule -> AstGenerationRenderModuleAppendRawAstDeclarationsAstAnchor
   roles { AstGenerationRenderModule as generated, AstGenerationRenderModuleAppendRawAstDeclarationsAstAnchor as syntax }
   expects AstGenerationRenderModuleAppendRawAstDeclarationsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:acf23a7454fa0017d2d1fb4ae9f859d28be742d0538128ee987098be6a25e431")
-  summary "fn AstGenerationRenderModule.appendRawAstDeclarations generated from typescript function_declaration at packages/shp-checker/src/ast-generation-render.ts:413-488."
+  summary "fn AstGenerationRenderModule.appendRawAstDeclarations generated from typescript function_declaration at packages/shp-checker/src/ast-generation-render.ts#appendRawAstDeclarations."
 }
 
 relation AstGenerationRenderModuleFormatGeneratedShapeGeneratedFromAstGenerationRenderModuleFormatGeneratedShapeAstAnchor {
@@ -126,7 +126,7 @@ relation AstGenerationRenderModuleFormatGeneratedShapeGeneratedFromAstGeneration
   connects AstGenerationRenderModule -> AstGenerationRenderModuleFormatGeneratedShapeAstAnchor
   roles { AstGenerationRenderModule as generated, AstGenerationRenderModuleFormatGeneratedShapeAstAnchor as syntax }
   expects AstGenerationRenderModuleFormatGeneratedShapeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:067d3f37c978ca7b82a60c880fe2f3e8ee8eda1f2dc009d99fb593bbcb608ea2")
-  summary "fn AstGenerationRenderModule.formatGeneratedShape generated from typescript function_declaration at packages/shp-checker/src/ast-generation-render.ts:397-411."
+  summary "fn AstGenerationRenderModule.formatGeneratedShape generated from typescript function_declaration at packages/shp-checker/src/ast-generation-render.ts#formatGeneratedShape."
 }
 
 relation AstGenerationRenderModuleFormatRawAstShapeGeneratedFromAstGenerationRenderModuleFormatRawAstShapeAstAnchor {
@@ -134,7 +134,7 @@ relation AstGenerationRenderModuleFormatRawAstShapeGeneratedFromAstGenerationRen
   connects AstGenerationRenderModule -> AstGenerationRenderModuleFormatRawAstShapeAstAnchor
   roles { AstGenerationRenderModule as generated, AstGenerationRenderModuleFormatRawAstShapeAstAnchor as syntax }
   expects AstGenerationRenderModuleFormatRawAstShapeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5a96b67e6db1bd02e9cbec0fcc495d2814346af1a61be49a68b41b86afe8299a")
-  summary "fn AstGenerationRenderModule.formatRawAstShape generated from typescript function_declaration at packages/shp-checker/src/ast-generation-render.ts:388-395."
+  summary "fn AstGenerationRenderModule.formatRawAstShape generated from typescript function_declaration at packages/shp-checker/src/ast-generation-render.ts#formatRawAstShape."
 }
 
 relation AstGenerationRenderModuleFormatSemanticShapeGeneratedFromAstGenerationRenderModuleFormatSemanticShapeAstAnchor {
@@ -142,7 +142,7 @@ relation AstGenerationRenderModuleFormatSemanticShapeGeneratedFromAstGenerationR
   connects AstGenerationRenderModule -> AstGenerationRenderModuleFormatSemanticShapeAstAnchor
   roles { AstGenerationRenderModule as generated, AstGenerationRenderModuleFormatSemanticShapeAstAnchor as syntax }
   expects AstGenerationRenderModuleFormatSemanticShapeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e7ba65f4ded93aec715cd3167994378280c9e79e1865377c3ac14d4a43436cc3")
-  summary "fn AstGenerationRenderModule.formatSemanticShape generated from typescript function_declaration at packages/shp-checker/src/ast-generation-render.ts:150-283."
+  summary "fn AstGenerationRenderModule.formatSemanticShape generated from typescript function_declaration at packages/shp-checker/src/ast-generation-render.ts#formatSemanticShape."
 }
 
 relation AstGenerationRenderModuleGenerateShapeFromAstJsonGeneratedFromAstGenerationRenderModuleGenerateShapeFromAstJsonAstAnchor {
@@ -150,7 +150,7 @@ relation AstGenerationRenderModuleGenerateShapeFromAstJsonGeneratedFromAstGenera
   connects AstGenerationRenderModule -> AstGenerationRenderModuleGenerateShapeFromAstJsonAstAnchor
   roles { AstGenerationRenderModule as generated, AstGenerationRenderModuleGenerateShapeFromAstJsonAstAnchor as syntax }
   expects AstGenerationRenderModuleGenerateShapeFromAstJsonAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9a9f36a0d56bca6c742026123ae2047fef7ba1494bd88e42ad47614aa26a8252")
-  summary "fn AstGenerationRenderModule.generateShapeFromAstJson generated from typescript function_declaration at packages/shp-checker/src/ast-generation-render.ts:75-87."
+  summary "fn AstGenerationRenderModule.generateShapeFromAstJson generated from typescript function_declaration at packages/shp-checker/src/ast-generation-render.ts#generateShapeFromAstJson."
 }
 
 relation AstGenerationRenderModuleGenerateShapeFromCodeSemanticGraphGeneratedFromAstGenerationRenderModuleGenerateShapeFromCodeSemanticGraphAstAnchor {
@@ -158,7 +158,7 @@ relation AstGenerationRenderModuleGenerateShapeFromCodeSemanticGraphGeneratedFro
   connects AstGenerationRenderModule -> AstGenerationRenderModuleGenerateShapeFromCodeSemanticGraphAstAnchor
   roles { AstGenerationRenderModule as generated, AstGenerationRenderModuleGenerateShapeFromCodeSemanticGraphAstAnchor as syntax }
   expects AstGenerationRenderModuleGenerateShapeFromCodeSemanticGraphAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9acfe6079a7e3377ab1b5410bdd0f05f40953c121b6dc46f3e058f7511d49728")
-  summary "fn AstGenerationRenderModule.generateShapeFromCodeSemanticGraph generated from typescript function_declaration at packages/shp-checker/src/ast-generation-render.ts:26-52."
+  summary "fn AstGenerationRenderModule.generateShapeFromCodeSemanticGraph generated from typescript function_declaration at packages/shp-checker/src/ast-generation-render.ts#generateShapeFromCodeSemanticGraph."
 }
 
 relation AstGenerationRenderModuleGenerateShapeFromSourceFilesGeneratedFromAstGenerationRenderModuleGenerateShapeFromSourceFilesAstAnchor {
@@ -166,7 +166,7 @@ relation AstGenerationRenderModuleGenerateShapeFromSourceFilesGeneratedFromAstGe
   connects AstGenerationRenderModule -> AstGenerationRenderModuleGenerateShapeFromSourceFilesAstAnchor
   roles { AstGenerationRenderModule as generated, AstGenerationRenderModuleGenerateShapeFromSourceFilesAstAnchor as syntax }
   expects AstGenerationRenderModuleGenerateShapeFromSourceFilesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b07f86b5c13fdb981d9901a9efd1009d31ad761412b4e814acc37c036587aee6")
-  summary "fn AstGenerationRenderModule.generateShapeFromSourceFiles generated from typescript function_declaration at packages/shp-checker/src/ast-generation-render.ts:58-73."
+  summary "fn AstGenerationRenderModule.generateShapeFromSourceFiles generated from typescript function_declaration at packages/shp-checker/src/ast-generation-render.ts#generateShapeFromSourceFiles."
 }
 
 relation AstGenerationRenderModuleNormalizeGeneratedModuleNameGeneratedFromAstGenerationRenderModuleNormalizeGeneratedModuleNameAstAnchor {
@@ -174,7 +174,7 @@ relation AstGenerationRenderModuleNormalizeGeneratedModuleNameGeneratedFromAstGe
   connects AstGenerationRenderModule -> AstGenerationRenderModuleNormalizeGeneratedModuleNameAstAnchor
   roles { AstGenerationRenderModule as generated, AstGenerationRenderModuleNormalizeGeneratedModuleNameAstAnchor as syntax }
   expects AstGenerationRenderModuleNormalizeGeneratedModuleNameAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e7957257b26a4e38613b08b5d6f4a6dd6755a9c7a0c61f44fc5929de678e5a29")
-  summary "fn AstGenerationRenderModule.normalizeGeneratedModuleName generated from typescript function_declaration at packages/shp-checker/src/ast-generation-render.ts:54-56."
+  summary "fn AstGenerationRenderModule.normalizeGeneratedModuleName generated from typescript function_declaration at packages/shp-checker/src/ast-generation-render.ts#normalizeGeneratedModuleName."
 }
 
 relation AstGenerationRenderModuleValidateCodeSemanticGraphForRenderingGeneratedFromAstGenerationRenderModuleValidateCodeSemanticGraphForRenderingAstAnchor {
@@ -182,7 +182,7 @@ relation AstGenerationRenderModuleValidateCodeSemanticGraphForRenderingGenerated
   connects AstGenerationRenderModule -> AstGenerationRenderModuleValidateCodeSemanticGraphForRenderingAstAnchor
   roles { AstGenerationRenderModule as generated, AstGenerationRenderModuleValidateCodeSemanticGraphForRenderingAstAnchor as syntax }
   expects AstGenerationRenderModuleValidateCodeSemanticGraphForRenderingAstAnchor fingerprint ast.semantic_subtree_v1("sha256:12c11e34889f8f696b4df726c1ed1113e6b695904e53d9a6a649da74e9f23424")
-  summary "fn AstGenerationRenderModule.validateCodeSemanticGraphForRendering generated from typescript function_declaration at packages/shp-checker/src/ast-generation-render.ts:89-148."
+  summary "fn AstGenerationRenderModule.validateCodeSemanticGraphForRendering generated from typescript function_declaration at packages/shp-checker/src/ast-generation-render.ts#validateCodeSemanticGraphForRendering."
 }
 
 implementation AstGenerationRenderModuleImpl {

@@ -7,13 +7,13 @@ trait GeneratedCandidate {
 }
 
 resource AstGenerationGraphModuleCreateEmptyCodeSemanticGraphAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/ast-generation-graph.ts:3-15")
+  storage ast.anchor("packages/shp-checker/src/ast-generation-graph.ts#createEmptyCodeSemanticGraph")
   fingerprint ast.semantic_subtree_v1("sha256:99082dc9c87e4893d9e77baea9c1968958adcb5555a472b7c091da38c7cfb09a")
 }
 
 component AstGenerationGraphModule : GeneratedCandidate {
   fn createEmptyCodeSemanticGraph
-    source ts("packages/shp-checker/src/ast-generation-graph.ts:3-15")
+    source ts("packages/shp-checker/src/ast-generation-graph.ts#createEmptyCodeSemanticGraph")
     effects unknown
 }
 
@@ -22,7 +22,7 @@ relation AstGenerationGraphModuleCreateEmptyCodeSemanticGraphGeneratedFromAstGen
   connects AstGenerationGraphModule -> AstGenerationGraphModuleCreateEmptyCodeSemanticGraphAstAnchor
   roles { AstGenerationGraphModule as generated, AstGenerationGraphModuleCreateEmptyCodeSemanticGraphAstAnchor as syntax }
   expects AstGenerationGraphModuleCreateEmptyCodeSemanticGraphAstAnchor fingerprint ast.semantic_subtree_v1("sha256:99082dc9c87e4893d9e77baea9c1968958adcb5555a472b7c091da38c7cfb09a")
-  summary "fn AstGenerationGraphModule.createEmptyCodeSemanticGraph generated from typescript function_declaration at packages/shp-checker/src/ast-generation-graph.ts:3-15."
+  summary "fn AstGenerationGraphModule.createEmptyCodeSemanticGraph generated from typescript function_declaration at packages/shp-checker/src/ast-generation-graph.ts#createEmptyCodeSemanticGraph."
 }
 
 implementation AstGenerationGraphModuleImpl {

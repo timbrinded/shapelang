@@ -60,7 +60,7 @@ component AuditStore {
     source ts("src/audit/store.ts#appendEvent")
     effects complete {
       Append<AuditEvent>
-        evidence ts("src/audit/store.ts:8-14")
+        evidence ts("src/audit/store.ts#appendEvent")
     }
 }
 ```

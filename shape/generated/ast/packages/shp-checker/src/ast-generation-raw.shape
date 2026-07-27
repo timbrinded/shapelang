@@ -7,133 +7,133 @@ trait GeneratedCandidate {
 }
 
 resource AstGenerationRawModuleChildByFieldAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/ast-generation-raw.ts:20-26")
+  storage ast.anchor("packages/shp-checker/src/ast-generation-raw.ts#childByField")
   fingerprint ast.semantic_subtree_v1("sha256:707ec46cab083b6f81cc5b2e2c6adb8f67ca5c0cd0c34da46951db5abb1b8eaf")
 }
 
 resource AstGenerationRawModuleDescendantsAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/ast-generation-raw.ts:36-51")
+  storage ast.anchor("packages/shp-checker/src/ast-generation-raw.ts#descendants")
   fingerprint ast.semantic_subtree_v1("sha256:0f093fa70c1682019c5950fe1e6dd8b59c10b363d318b3af5e80e0a4a19f7312")
 }
 
 resource AstGenerationRawModuleFallbackFunctionNameAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/ast-generation-raw.ts:164-166")
+  storage ast.anchor("packages/shp-checker/src/ast-generation-raw.ts#fallbackFunctionName")
   fingerprint ast.semantic_subtree_v1("sha256:7b6ed977a51ab3b9a6cc882f0729eba09b978ab4f03c1356e2ba46c39e3bb040")
 }
 
 resource AstGenerationRawModuleFirstMatchingChildAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/ast-generation-raw.ts:28-34")
+  storage ast.anchor("packages/shp-checker/src/ast-generation-raw.ts#firstMatchingChild")
   fingerprint ast.semantic_subtree_v1("sha256:5675eb6d629e403d246e9140cf920cd543ee96356a63bcb7d590b85dc43d0b5b")
 }
 
 resource AstGenerationRawModuleGroupChildrenAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/ast-generation-raw.ts:4-18")
+  storage ast.anchor("packages/shp-checker/src/ast-generation-raw.ts#groupChildren")
   fingerprint ast.semantic_subtree_v1("sha256:c955b629fd3853be644f8640bd80c4110697bb62cee57726b462dffd0a643f4c")
 }
 
 resource AstGenerationRawModuleIsFunctionNodeAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/ast-generation-raw.ts:63-67")
+  storage ast.anchor("packages/shp-checker/src/ast-generation-raw.ts#isFunctionNode")
   fingerprint ast.semantic_subtree_v1("sha256:1e6be1b55bd59f6372492bd5995b686d5dd2d8b92824ed529e8cfad987c4eb5f")
 }
 
 resource AstGenerationRawModuleIsImplNodeAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/ast-generation-raw.ts:59-61")
+  storage ast.anchor("packages/shp-checker/src/ast-generation-raw.ts#isImplNode")
   fingerprint ast.semantic_subtree_v1("sha256:51c6a347c48e6acacc2add91210ac60f23eb2a3545c732edaedaa45129c90758")
 }
 
 resource AstGenerationRawModuleIsTypeDeclarationNodeAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/ast-generation-raw.ts:53-57")
+  storage ast.anchor("packages/shp-checker/src/ast-generation-raw.ts#isTypeDeclarationNode")
   fingerprint ast.semantic_subtree_v1("sha256:d7cccff0ecafa19a57ee5bf2dd81d8e6489beb7fcfbb3f2121923fd46069bc31")
 }
 
 resource AstGenerationRawModuleNameFromTextAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/ast-generation-raw.ts:85-107")
+  storage ast.anchor("packages/shp-checker/src/ast-generation-raw.ts#nameFromText")
   fingerprint ast.semantic_subtree_v1("sha256:05ca20d2e51c7bed87afd0d088b61794b87aa40de1bbe8166963de5af497bfce")
 }
 
 resource AstGenerationRawModuleNearestNamedTextAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/ast-generation-raw.ts:109-113")
+  storage ast.anchor("packages/shp-checker/src/ast-generation-raw.ts#nearestNamedText")
   fingerprint ast.semantic_subtree_v1("sha256:ce3d545b2330dc56375e0f8ce3104ad8546dcc6b09a00d3fdf22ccde82ff9636")
 }
 
 resource AstGenerationRawModuleNearestTypeOwnerAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/ast-generation-raw.ts:115-127")
+  storage ast.anchor("packages/shp-checker/src/ast-generation-raw.ts#nearestTypeOwner")
   fingerprint ast.semantic_subtree_v1("sha256:d2dfd38840f5ff3c5900038a6fcc422a8bdd9f368fb08ae2f15e2b80c1cd5bde")
 }
 
 resource AstGenerationRawModuleReceiverTypeNameAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/ast-generation-raw.ts:129-139")
+  storage ast.anchor("packages/shp-checker/src/ast-generation-raw.ts#receiverTypeName")
   fingerprint ast.semantic_subtree_v1("sha256:36c2a2f3fc5282a1382e69f5661f33671966052c49e95eaa74e9a0d4043a1865")
 }
 
 resource AstGenerationRawModuleSemanticNameAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/ast-generation-raw.ts:69-83")
+  storage ast.anchor("packages/shp-checker/src/ast-generation-raw.ts#semanticName")
   fingerprint ast.semantic_subtree_v1("sha256:874a61fa4420fb74771d57f33c35e8e19dabe7cdaabfe03f72f25eca2f088e71")
 }
 
 resource AstGenerationRawModuleSourceRefAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/ast-generation-raw.ts:168-173")
-  fingerprint ast.semantic_subtree_v1("sha256:2ce748dc04317868250fd63584929671e11ca32a1dbf8067f76a451608ac0c61")
+  storage ast.anchor("packages/shp-checker/src/ast-generation-raw.ts#sourceRef")
+  fingerprint ast.semantic_subtree_v1("sha256:6909b31127ca0d882eed638fd78ad842e516cdf3c1a2879c34a5c70edad53773")
 }
 
 resource AstGenerationRawModuleTypeLooksStatefulAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/ast-generation-raw.ts:154-162")
+  storage ast.anchor("packages/shp-checker/src/ast-generation-raw.ts#typeLooksStateful")
   fingerprint ast.semantic_subtree_v1("sha256:59e64c9510b22385c7a1c0c568e35ea721d360edc027565600b03c22e5131a8c")
 }
 
 resource AstGenerationRawModuleUniqueNodesAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/ast-generation-raw.ts:141-152")
+  storage ast.anchor("packages/shp-checker/src/ast-generation-raw.ts#uniqueNodes")
   fingerprint ast.semantic_subtree_v1("sha256:adb318db5ce65ae54b1b8c5fd296539a1d1952d19d4ddc6415b3637aa5bdab11")
 }
 
 component AstGenerationRawModule : GeneratedCandidate {
   fn childByField
-    source ts("packages/shp-checker/src/ast-generation-raw.ts:20-26")
+    source ts("packages/shp-checker/src/ast-generation-raw.ts#childByField")
     effects unknown
   fn descendants
-    source ts("packages/shp-checker/src/ast-generation-raw.ts:36-51")
+    source ts("packages/shp-checker/src/ast-generation-raw.ts#descendants")
     effects unknown
   fn fallbackFunctionName
-    source ts("packages/shp-checker/src/ast-generation-raw.ts:164-166")
+    source ts("packages/shp-checker/src/ast-generation-raw.ts#fallbackFunctionName")
     effects unknown
   fn firstMatchingChild
-    source ts("packages/shp-checker/src/ast-generation-raw.ts:28-34")
+    source ts("packages/shp-checker/src/ast-generation-raw.ts#firstMatchingChild")
     effects unknown
   fn groupChildren
-    source ts("packages/shp-checker/src/ast-generation-raw.ts:4-18")
+    source ts("packages/shp-checker/src/ast-generation-raw.ts#groupChildren")
     effects unknown
   fn isFunctionNode
-    source ts("packages/shp-checker/src/ast-generation-raw.ts:63-67")
+    source ts("packages/shp-checker/src/ast-generation-raw.ts#isFunctionNode")
     effects unknown
   fn isImplNode
-    source ts("packages/shp-checker/src/ast-generation-raw.ts:59-61")
+    source ts("packages/shp-checker/src/ast-generation-raw.ts#isImplNode")
     effects unknown
   fn isTypeDeclarationNode
-    source ts("packages/shp-checker/src/ast-generation-raw.ts:53-57")
+    source ts("packages/shp-checker/src/ast-generation-raw.ts#isTypeDeclarationNode")
     effects unknown
   fn nameFromText
-    source ts("packages/shp-checker/src/ast-generation-raw.ts:85-107")
+    source ts("packages/shp-checker/src/ast-generation-raw.ts#nameFromText")
     effects unknown
   fn nearestNamedText
-    source ts("packages/shp-checker/src/ast-generation-raw.ts:109-113")
+    source ts("packages/shp-checker/src/ast-generation-raw.ts#nearestNamedText")
     effects unknown
   fn nearestTypeOwner
-    source ts("packages/shp-checker/src/ast-generation-raw.ts:115-127")
+    source ts("packages/shp-checker/src/ast-generation-raw.ts#nearestTypeOwner")
     effects unknown
   fn receiverTypeName
-    source ts("packages/shp-checker/src/ast-generation-raw.ts:129-139")
+    source ts("packages/shp-checker/src/ast-generation-raw.ts#receiverTypeName")
     effects unknown
   fn semanticName
-    source ts("packages/shp-checker/src/ast-generation-raw.ts:69-83")
+    source ts("packages/shp-checker/src/ast-generation-raw.ts#semanticName")
     effects unknown
   fn sourceRef
-    source ts("packages/shp-checker/src/ast-generation-raw.ts:168-173")
+    source ts("packages/shp-checker/src/ast-generation-raw.ts#sourceRef")
     effects unknown
   fn typeLooksStateful
-    source ts("packages/shp-checker/src/ast-generation-raw.ts:154-162")
+    source ts("packages/shp-checker/src/ast-generation-raw.ts#typeLooksStateful")
     effects unknown
   fn uniqueNodes
-    source ts("packages/shp-checker/src/ast-generation-raw.ts:141-152")
+    source ts("packages/shp-checker/src/ast-generation-raw.ts#uniqueNodes")
     effects unknown
 }
 
@@ -142,7 +142,7 @@ relation AstGenerationRawModuleChildByFieldGeneratedFromAstGenerationRawModuleCh
   connects AstGenerationRawModule -> AstGenerationRawModuleChildByFieldAstAnchor
   roles { AstGenerationRawModule as generated, AstGenerationRawModuleChildByFieldAstAnchor as syntax }
   expects AstGenerationRawModuleChildByFieldAstAnchor fingerprint ast.semantic_subtree_v1("sha256:707ec46cab083b6f81cc5b2e2c6adb8f67ca5c0cd0c34da46951db5abb1b8eaf")
-  summary "fn AstGenerationRawModule.childByField generated from typescript function_declaration at packages/shp-checker/src/ast-generation-raw.ts:20-26."
+  summary "fn AstGenerationRawModule.childByField generated from typescript function_declaration at packages/shp-checker/src/ast-generation-raw.ts#childByField."
 }
 
 relation AstGenerationRawModuleDescendantsGeneratedFromAstGenerationRawModuleDescendantsAstAnchor {
@@ -150,7 +150,7 @@ relation AstGenerationRawModuleDescendantsGeneratedFromAstGenerationRawModuleDes
   connects AstGenerationRawModule -> AstGenerationRawModuleDescendantsAstAnchor
   roles { AstGenerationRawModule as generated, AstGenerationRawModuleDescendantsAstAnchor as syntax }
   expects AstGenerationRawModuleDescendantsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0f093fa70c1682019c5950fe1e6dd8b59c10b363d318b3af5e80e0a4a19f7312")
-  summary "fn AstGenerationRawModule.descendants generated from typescript function_declaration at packages/shp-checker/src/ast-generation-raw.ts:36-51."
+  summary "fn AstGenerationRawModule.descendants generated from typescript function_declaration at packages/shp-checker/src/ast-generation-raw.ts#descendants."
 }
 
 relation AstGenerationRawModuleFallbackFunctionNameGeneratedFromAstGenerationRawModuleFallbackFunctionNameAstAnchor {
@@ -158,7 +158,7 @@ relation AstGenerationRawModuleFallbackFunctionNameGeneratedFromAstGenerationRaw
   connects AstGenerationRawModule -> AstGenerationRawModuleFallbackFunctionNameAstAnchor
   roles { AstGenerationRawModule as generated, AstGenerationRawModuleFallbackFunctionNameAstAnchor as syntax }
   expects AstGenerationRawModuleFallbackFunctionNameAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7b6ed977a51ab3b9a6cc882f0729eba09b978ab4f03c1356e2ba46c39e3bb040")
-  summary "fn AstGenerationRawModule.fallbackFunctionName generated from typescript function_declaration at packages/shp-checker/src/ast-generation-raw.ts:164-166."
+  summary "fn AstGenerationRawModule.fallbackFunctionName generated from typescript function_declaration at packages/shp-checker/src/ast-generation-raw.ts#fallbackFunctionName."
 }
 
 relation AstGenerationRawModuleFirstMatchingChildGeneratedFromAstGenerationRawModuleFirstMatchingChildAstAnchor {
@@ -166,7 +166,7 @@ relation AstGenerationRawModuleFirstMatchingChildGeneratedFromAstGenerationRawMo
   connects AstGenerationRawModule -> AstGenerationRawModuleFirstMatchingChildAstAnchor
   roles { AstGenerationRawModule as generated, AstGenerationRawModuleFirstMatchingChildAstAnchor as syntax }
   expects AstGenerationRawModuleFirstMatchingChildAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5675eb6d629e403d246e9140cf920cd543ee96356a63bcb7d590b85dc43d0b5b")
-  summary "fn AstGenerationRawModule.firstMatchingChild generated from typescript function_declaration at packages/shp-checker/src/ast-generation-raw.ts:28-34."
+  summary "fn AstGenerationRawModule.firstMatchingChild generated from typescript function_declaration at packages/shp-checker/src/ast-generation-raw.ts#firstMatchingChild."
 }
 
 relation AstGenerationRawModuleGroupChildrenGeneratedFromAstGenerationRawModuleGroupChildrenAstAnchor {
@@ -174,7 +174,7 @@ relation AstGenerationRawModuleGroupChildrenGeneratedFromAstGenerationRawModuleG
   connects AstGenerationRawModule -> AstGenerationRawModuleGroupChildrenAstAnchor
   roles { AstGenerationRawModule as generated, AstGenerationRawModuleGroupChildrenAstAnchor as syntax }
   expects AstGenerationRawModuleGroupChildrenAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c955b629fd3853be644f8640bd80c4110697bb62cee57726b462dffd0a643f4c")
-  summary "fn AstGenerationRawModule.groupChildren generated from typescript function_declaration at packages/shp-checker/src/ast-generation-raw.ts:4-18."
+  summary "fn AstGenerationRawModule.groupChildren generated from typescript function_declaration at packages/shp-checker/src/ast-generation-raw.ts#groupChildren."
 }
 
 relation AstGenerationRawModuleIsFunctionNodeGeneratedFromAstGenerationRawModuleIsFunctionNodeAstAnchor {
@@ -182,7 +182,7 @@ relation AstGenerationRawModuleIsFunctionNodeGeneratedFromAstGenerationRawModule
   connects AstGenerationRawModule -> AstGenerationRawModuleIsFunctionNodeAstAnchor
   roles { AstGenerationRawModule as generated, AstGenerationRawModuleIsFunctionNodeAstAnchor as syntax }
   expects AstGenerationRawModuleIsFunctionNodeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1e6be1b55bd59f6372492bd5995b686d5dd2d8b92824ed529e8cfad987c4eb5f")
-  summary "fn AstGenerationRawModule.isFunctionNode generated from typescript function_declaration at packages/shp-checker/src/ast-generation-raw.ts:63-67."
+  summary "fn AstGenerationRawModule.isFunctionNode generated from typescript function_declaration at packages/shp-checker/src/ast-generation-raw.ts#isFunctionNode."
 }
 
 relation AstGenerationRawModuleIsImplNodeGeneratedFromAstGenerationRawModuleIsImplNodeAstAnchor {
@@ -190,7 +190,7 @@ relation AstGenerationRawModuleIsImplNodeGeneratedFromAstGenerationRawModuleIsIm
   connects AstGenerationRawModule -> AstGenerationRawModuleIsImplNodeAstAnchor
   roles { AstGenerationRawModule as generated, AstGenerationRawModuleIsImplNodeAstAnchor as syntax }
   expects AstGenerationRawModuleIsImplNodeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:51c6a347c48e6acacc2add91210ac60f23eb2a3545c732edaedaa45129c90758")
-  summary "fn AstGenerationRawModule.isImplNode generated from typescript function_declaration at packages/shp-checker/src/ast-generation-raw.ts:59-61."
+  summary "fn AstGenerationRawModule.isImplNode generated from typescript function_declaration at packages/shp-checker/src/ast-generation-raw.ts#isImplNode."
 }
 
 relation AstGenerationRawModuleIsTypeDeclarationNodeGeneratedFromAstGenerationRawModuleIsTypeDeclarationNodeAstAnchor {
@@ -198,7 +198,7 @@ relation AstGenerationRawModuleIsTypeDeclarationNodeGeneratedFromAstGenerationRa
   connects AstGenerationRawModule -> AstGenerationRawModuleIsTypeDeclarationNodeAstAnchor
   roles { AstGenerationRawModule as generated, AstGenerationRawModuleIsTypeDeclarationNodeAstAnchor as syntax }
   expects AstGenerationRawModuleIsTypeDeclarationNodeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d7cccff0ecafa19a57ee5bf2dd81d8e6489beb7fcfbb3f2121923fd46069bc31")
-  summary "fn AstGenerationRawModule.isTypeDeclarationNode generated from typescript function_declaration at packages/shp-checker/src/ast-generation-raw.ts:53-57."
+  summary "fn AstGenerationRawModule.isTypeDeclarationNode generated from typescript function_declaration at packages/shp-checker/src/ast-generation-raw.ts#isTypeDeclarationNode."
 }
 
 relation AstGenerationRawModuleNameFromTextGeneratedFromAstGenerationRawModuleNameFromTextAstAnchor {
@@ -206,7 +206,7 @@ relation AstGenerationRawModuleNameFromTextGeneratedFromAstGenerationRawModuleNa
   connects AstGenerationRawModule -> AstGenerationRawModuleNameFromTextAstAnchor
   roles { AstGenerationRawModule as generated, AstGenerationRawModuleNameFromTextAstAnchor as syntax }
   expects AstGenerationRawModuleNameFromTextAstAnchor fingerprint ast.semantic_subtree_v1("sha256:05ca20d2e51c7bed87afd0d088b61794b87aa40de1bbe8166963de5af497bfce")
-  summary "fn AstGenerationRawModule.nameFromText generated from typescript function_declaration at packages/shp-checker/src/ast-generation-raw.ts:85-107."
+  summary "fn AstGenerationRawModule.nameFromText generated from typescript function_declaration at packages/shp-checker/src/ast-generation-raw.ts#nameFromText."
 }
 
 relation AstGenerationRawModuleNearestNamedTextGeneratedFromAstGenerationRawModuleNearestNamedTextAstAnchor {
@@ -214,7 +214,7 @@ relation AstGenerationRawModuleNearestNamedTextGeneratedFromAstGenerationRawModu
   connects AstGenerationRawModule -> AstGenerationRawModuleNearestNamedTextAstAnchor
   roles { AstGenerationRawModule as generated, AstGenerationRawModuleNearestNamedTextAstAnchor as syntax }
   expects AstGenerationRawModuleNearestNamedTextAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ce3d545b2330dc56375e0f8ce3104ad8546dcc6b09a00d3fdf22ccde82ff9636")
-  summary "fn AstGenerationRawModule.nearestNamedText generated from typescript function_declaration at packages/shp-checker/src/ast-generation-raw.ts:109-113."
+  summary "fn AstGenerationRawModule.nearestNamedText generated from typescript function_declaration at packages/shp-checker/src/ast-generation-raw.ts#nearestNamedText."
 }
 
 relation AstGenerationRawModuleNearestTypeOwnerGeneratedFromAstGenerationRawModuleNearestTypeOwnerAstAnchor {
@@ -222,7 +222,7 @@ relation AstGenerationRawModuleNearestTypeOwnerGeneratedFromAstGenerationRawModu
   connects AstGenerationRawModule -> AstGenerationRawModuleNearestTypeOwnerAstAnchor
   roles { AstGenerationRawModule as generated, AstGenerationRawModuleNearestTypeOwnerAstAnchor as syntax }
   expects AstGenerationRawModuleNearestTypeOwnerAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d2dfd38840f5ff3c5900038a6fcc422a8bdd9f368fb08ae2f15e2b80c1cd5bde")
-  summary "fn AstGenerationRawModule.nearestTypeOwner generated from typescript function_declaration at packages/shp-checker/src/ast-generation-raw.ts:115-127."
+  summary "fn AstGenerationRawModule.nearestTypeOwner generated from typescript function_declaration at packages/shp-checker/src/ast-generation-raw.ts#nearestTypeOwner."
 }
 
 relation AstGenerationRawModuleReceiverTypeNameGeneratedFromAstGenerationRawModuleReceiverTypeNameAstAnchor {
@@ -230,7 +230,7 @@ relation AstGenerationRawModuleReceiverTypeNameGeneratedFromAstGenerationRawModu
   connects AstGenerationRawModule -> AstGenerationRawModuleReceiverTypeNameAstAnchor
   roles { AstGenerationRawModule as generated, AstGenerationRawModuleReceiverTypeNameAstAnchor as syntax }
   expects AstGenerationRawModuleReceiverTypeNameAstAnchor fingerprint ast.semantic_subtree_v1("sha256:36c2a2f3fc5282a1382e69f5661f33671966052c49e95eaa74e9a0d4043a1865")
-  summary "fn AstGenerationRawModule.receiverTypeName generated from typescript function_declaration at packages/shp-checker/src/ast-generation-raw.ts:129-139."
+  summary "fn AstGenerationRawModule.receiverTypeName generated from typescript function_declaration at packages/shp-checker/src/ast-generation-raw.ts#receiverTypeName."
 }
 
 relation AstGenerationRawModuleSemanticNameGeneratedFromAstGenerationRawModuleSemanticNameAstAnchor {
@@ -238,15 +238,15 @@ relation AstGenerationRawModuleSemanticNameGeneratedFromAstGenerationRawModuleSe
   connects AstGenerationRawModule -> AstGenerationRawModuleSemanticNameAstAnchor
   roles { AstGenerationRawModule as generated, AstGenerationRawModuleSemanticNameAstAnchor as syntax }
   expects AstGenerationRawModuleSemanticNameAstAnchor fingerprint ast.semantic_subtree_v1("sha256:874a61fa4420fb74771d57f33c35e8e19dabe7cdaabfe03f72f25eca2f088e71")
-  summary "fn AstGenerationRawModule.semanticName generated from typescript function_declaration at packages/shp-checker/src/ast-generation-raw.ts:69-83."
+  summary "fn AstGenerationRawModule.semanticName generated from typescript function_declaration at packages/shp-checker/src/ast-generation-raw.ts#semanticName."
 }
 
 relation AstGenerationRawModuleSourceRefGeneratedFromAstGenerationRawModuleSourceRefAstAnchor {
   kind generated_from
   connects AstGenerationRawModule -> AstGenerationRawModuleSourceRefAstAnchor
   roles { AstGenerationRawModule as generated, AstGenerationRawModuleSourceRefAstAnchor as syntax }
-  expects AstGenerationRawModuleSourceRefAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2ce748dc04317868250fd63584929671e11ca32a1dbf8067f76a451608ac0c61")
-  summary "fn AstGenerationRawModule.sourceRef generated from typescript function_declaration at packages/shp-checker/src/ast-generation-raw.ts:168-173."
+  expects AstGenerationRawModuleSourceRefAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6909b31127ca0d882eed638fd78ad842e516cdf3c1a2879c34a5c70edad53773")
+  summary "fn AstGenerationRawModule.sourceRef generated from typescript function_declaration at packages/shp-checker/src/ast-generation-raw.ts#sourceRef."
 }
 
 relation AstGenerationRawModuleTypeLooksStatefulGeneratedFromAstGenerationRawModuleTypeLooksStatefulAstAnchor {
@@ -254,7 +254,7 @@ relation AstGenerationRawModuleTypeLooksStatefulGeneratedFromAstGenerationRawMod
   connects AstGenerationRawModule -> AstGenerationRawModuleTypeLooksStatefulAstAnchor
   roles { AstGenerationRawModule as generated, AstGenerationRawModuleTypeLooksStatefulAstAnchor as syntax }
   expects AstGenerationRawModuleTypeLooksStatefulAstAnchor fingerprint ast.semantic_subtree_v1("sha256:59e64c9510b22385c7a1c0c568e35ea721d360edc027565600b03c22e5131a8c")
-  summary "fn AstGenerationRawModule.typeLooksStateful generated from typescript function_declaration at packages/shp-checker/src/ast-generation-raw.ts:154-162."
+  summary "fn AstGenerationRawModule.typeLooksStateful generated from typescript function_declaration at packages/shp-checker/src/ast-generation-raw.ts#typeLooksStateful."
 }
 
 relation AstGenerationRawModuleUniqueNodesGeneratedFromAstGenerationRawModuleUniqueNodesAstAnchor {
@@ -262,7 +262,7 @@ relation AstGenerationRawModuleUniqueNodesGeneratedFromAstGenerationRawModuleUni
   connects AstGenerationRawModule -> AstGenerationRawModuleUniqueNodesAstAnchor
   roles { AstGenerationRawModule as generated, AstGenerationRawModuleUniqueNodesAstAnchor as syntax }
   expects AstGenerationRawModuleUniqueNodesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:adb318db5ce65ae54b1b8c5fd296539a1d1952d19d4ddc6415b3637aa5bdab11")
-  summary "fn AstGenerationRawModule.uniqueNodes generated from typescript function_declaration at packages/shp-checker/src/ast-generation-raw.ts:141-152."
+  summary "fn AstGenerationRawModule.uniqueNodes generated from typescript function_declaration at packages/shp-checker/src/ast-generation-raw.ts#uniqueNodes."
 }
 
 implementation AstGenerationRawModuleImpl {

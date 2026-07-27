@@ -7,13 +7,13 @@ trait GeneratedCandidate {
 }
 
 resource DestructiveModulePurgeAuditEventsAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("fixtures/source/analyzer/drizzle/destructive.ts:1-15")
-  fingerprint ast.semantic_subtree_v1("sha256:55a457f60e185f0f164ff6968dc66c483aba1d6ef2497bffac8b59161b117d88")
+  storage ast.anchor("fixtures/source/analyzer/drizzle/destructive.ts#purgeAuditEvents")
+  fingerprint ast.semantic_subtree_v1("sha256:b1c778a2a1a20fc9d576f292cae99a2a7bea41ffb4f4e54ae38cf261242cce5b")
 }
 
 component DestructiveModule : GeneratedCandidate {
   fn purgeAuditEvents
-    source ts("fixtures/source/analyzer/drizzle/destructive.ts:1-15")
+    source ts("fixtures/source/analyzer/drizzle/destructive.ts#purgeAuditEvents")
     effects unknown
 }
 
@@ -21,8 +21,8 @@ relation DestructiveModulePurgeAuditEventsGeneratedFromDestructiveModulePurgeAud
   kind generated_from
   connects DestructiveModule -> DestructiveModulePurgeAuditEventsAstAnchor
   roles { DestructiveModule as generated, DestructiveModulePurgeAuditEventsAstAnchor as syntax }
-  expects DestructiveModulePurgeAuditEventsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:55a457f60e185f0f164ff6968dc66c483aba1d6ef2497bffac8b59161b117d88")
-  summary "fn DestructiveModule.purgeAuditEvents generated from typescript function_declaration at fixtures/source/analyzer/drizzle/destructive.ts:1-15."
+  expects DestructiveModulePurgeAuditEventsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b1c778a2a1a20fc9d576f292cae99a2a7bea41ffb4f4e54ae38cf261242cce5b")
+  summary "fn DestructiveModule.purgeAuditEvents generated from typescript function_declaration at fixtures/source/analyzer/drizzle/destructive.ts#purgeAuditEvents."
 }
 
 implementation DestructiveModuleImpl {

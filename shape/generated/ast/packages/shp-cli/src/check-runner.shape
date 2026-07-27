@@ -7,13 +7,13 @@ trait GeneratedCandidate {
 }
 
 resource CheckRunnerModuleRunShapeFileCheckAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-cli/src/check-runner.ts:11-26")
+  storage ast.anchor("packages/shp-cli/src/check-runner.ts#runShapeFileCheck")
   fingerprint ast.semantic_subtree_v1("sha256:9fa7aab5bfa3e237dc1e3ff2990ec60dfd0d87563070fb9cc9fe8cd6574e8c4d")
 }
 
 component CheckRunnerModule : GeneratedCandidate {
   fn runShapeFileCheck
-    source ts("packages/shp-cli/src/check-runner.ts:11-26")
+    source ts("packages/shp-cli/src/check-runner.ts#runShapeFileCheck")
     effects unknown
 }
 
@@ -22,7 +22,7 @@ relation CheckRunnerModuleRunShapeFileCheckGeneratedFromCheckRunnerModuleRunShap
   connects CheckRunnerModule -> CheckRunnerModuleRunShapeFileCheckAstAnchor
   roles { CheckRunnerModule as generated, CheckRunnerModuleRunShapeFileCheckAstAnchor as syntax }
   expects CheckRunnerModuleRunShapeFileCheckAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9fa7aab5bfa3e237dc1e3ff2990ec60dfd0d87563070fb9cc9fe8cd6574e8c4d")
-  summary "fn CheckRunnerModule.runShapeFileCheck generated from typescript function_declaration at packages/shp-cli/src/check-runner.ts:11-26."
+  summary "fn CheckRunnerModule.runShapeFileCheck generated from typescript function_declaration at packages/shp-cli/src/check-runner.ts#runShapeFileCheck."
 }
 
 implementation CheckRunnerModuleImpl {

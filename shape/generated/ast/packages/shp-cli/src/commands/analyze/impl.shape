@@ -7,13 +7,13 @@ trait GeneratedCandidate {
 }
 
 resource ImplModuleAnalyzeAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-cli/src/commands/analyze/impl.ts:15-46")
+  storage ast.anchor("packages/shp-cli/src/commands/analyze/impl.ts#analyze")
   fingerprint ast.semantic_subtree_v1("sha256:b684439742bcc138b62c7e45507c6e5c8e0f745511d3220f7fbb749a5b89b8bc")
 }
 
 component ImplModule : GeneratedCandidate {
   fn analyze
-    source ts("packages/shp-cli/src/commands/analyze/impl.ts:15-46")
+    source ts("packages/shp-cli/src/commands/analyze/impl.ts#analyze")
     effects unknown
 }
 
@@ -22,7 +22,7 @@ relation ImplModuleAnalyzeGeneratedFromImplModuleAnalyzeAstAnchor {
   connects ImplModule -> ImplModuleAnalyzeAstAnchor
   roles { ImplModule as generated, ImplModuleAnalyzeAstAnchor as syntax }
   expects ImplModuleAnalyzeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b684439742bcc138b62c7e45507c6e5c8e0f745511d3220f7fbb749a5b89b8bc")
-  summary "fn ImplModule.analyze generated from typescript function_declaration at packages/shp-cli/src/commands/analyze/impl.ts:15-46."
+  summary "fn ImplModule.analyze generated from typescript function_declaration at packages/shp-cli/src/commands/analyze/impl.ts#analyze."
 }
 
 implementation ImplModuleImpl {

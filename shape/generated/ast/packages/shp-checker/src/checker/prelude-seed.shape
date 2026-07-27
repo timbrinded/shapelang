@@ -7,29 +7,29 @@ trait GeneratedCandidate {
 }
 
 resource PreludeSeedModuleIsPreludeTraitAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/prelude-seed.ts:10-15")
+  storage ast.anchor("packages/shp-checker/src/checker/prelude-seed.ts#isPreludeTrait")
   fingerprint ast.semantic_subtree_v1("sha256:0a576cb12b1e7bc14863ed3a4f2a6c0019001e4d77d05053308e9ce201978229")
 }
 
 resource PreludeSeedModulePreludeTraitInfoAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/prelude-seed.ts:17-42")
+  storage ast.anchor("packages/shp-checker/src/checker/prelude-seed.ts#preludeTraitInfo")
   fingerprint ast.semantic_subtree_v1("sha256:8d4de07c418b20ee47ae81a3c3c0d5daa3f67f494a042876b78ed98d285643e6")
 }
 
 resource PreludeSeedModulePreludeTraitSeedAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/prelude-seed.ts:52-78")
+  storage ast.anchor("packages/shp-checker/src/checker/prelude-seed.ts#preludeTraitSeed")
   fingerprint ast.semantic_subtree_v1("sha256:adbd09770d17e26d9cc9c00fe0ecedab97020800f41cc161ab9ee18c814c10bb")
 }
 
 component PreludeSeedModule : GeneratedCandidate {
   fn isPreludeTrait
-    source ts("packages/shp-checker/src/checker/prelude-seed.ts:10-15")
+    source ts("packages/shp-checker/src/checker/prelude-seed.ts#isPreludeTrait")
     effects unknown
   fn preludeTraitInfo
-    source ts("packages/shp-checker/src/checker/prelude-seed.ts:17-42")
+    source ts("packages/shp-checker/src/checker/prelude-seed.ts#preludeTraitInfo")
     effects unknown
   fn preludeTraitSeed
-    source ts("packages/shp-checker/src/checker/prelude-seed.ts:52-78")
+    source ts("packages/shp-checker/src/checker/prelude-seed.ts#preludeTraitSeed")
     effects unknown
 }
 
@@ -38,7 +38,7 @@ relation PreludeSeedModuleIsPreludeTraitGeneratedFromPreludeSeedModuleIsPreludeT
   connects PreludeSeedModule -> PreludeSeedModuleIsPreludeTraitAstAnchor
   roles { PreludeSeedModule as generated, PreludeSeedModuleIsPreludeTraitAstAnchor as syntax }
   expects PreludeSeedModuleIsPreludeTraitAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0a576cb12b1e7bc14863ed3a4f2a6c0019001e4d77d05053308e9ce201978229")
-  summary "fn PreludeSeedModule.isPreludeTrait generated from typescript function_declaration at packages/shp-checker/src/checker/prelude-seed.ts:10-15."
+  summary "fn PreludeSeedModule.isPreludeTrait generated from typescript function_declaration at packages/shp-checker/src/checker/prelude-seed.ts#isPreludeTrait."
 }
 
 relation PreludeSeedModulePreludeTraitInfoGeneratedFromPreludeSeedModulePreludeTraitInfoAstAnchor {
@@ -46,7 +46,7 @@ relation PreludeSeedModulePreludeTraitInfoGeneratedFromPreludeSeedModulePreludeT
   connects PreludeSeedModule -> PreludeSeedModulePreludeTraitInfoAstAnchor
   roles { PreludeSeedModule as generated, PreludeSeedModulePreludeTraitInfoAstAnchor as syntax }
   expects PreludeSeedModulePreludeTraitInfoAstAnchor fingerprint ast.semantic_subtree_v1("sha256:8d4de07c418b20ee47ae81a3c3c0d5daa3f67f494a042876b78ed98d285643e6")
-  summary "fn PreludeSeedModule.preludeTraitInfo generated from typescript function_declaration at packages/shp-checker/src/checker/prelude-seed.ts:17-42."
+  summary "fn PreludeSeedModule.preludeTraitInfo generated from typescript function_declaration at packages/shp-checker/src/checker/prelude-seed.ts#preludeTraitInfo."
 }
 
 relation PreludeSeedModulePreludeTraitSeedGeneratedFromPreludeSeedModulePreludeTraitSeedAstAnchor {
@@ -54,7 +54,7 @@ relation PreludeSeedModulePreludeTraitSeedGeneratedFromPreludeSeedModulePreludeT
   connects PreludeSeedModule -> PreludeSeedModulePreludeTraitSeedAstAnchor
   roles { PreludeSeedModule as generated, PreludeSeedModulePreludeTraitSeedAstAnchor as syntax }
   expects PreludeSeedModulePreludeTraitSeedAstAnchor fingerprint ast.semantic_subtree_v1("sha256:adbd09770d17e26d9cc9c00fe0ecedab97020800f41cc161ab9ee18c814c10bb")
-  summary "fn PreludeSeedModule.preludeTraitSeed generated from typescript function_declaration at packages/shp-checker/src/checker/prelude-seed.ts:52-78."
+  summary "fn PreludeSeedModule.preludeTraitSeed generated from typescript function_declaration at packages/shp-checker/src/checker/prelude-seed.ts#preludeTraitSeed."
 }
 
 implementation PreludeSeedModuleImpl {

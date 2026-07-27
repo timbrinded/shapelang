@@ -22,8 +22,11 @@ describe("Shape authoring assistant", () => {
     expect(prompt).toContain("Use effects unknown when uncertainty remains");
     expect(prompt).toContain("HardDelete");
     expect(prompt).toContain("If adding PreserveInline");
+    expect(prompt).toContain("Prefer stable #symbol source/evidence references");
+    expect(prompt).toContain("do not add line-number or line-range suffixes");
     expect(prompt).toContain("Do not use rationale or memory to waive final forbidden effects");
     expect(critic).toContain("Did the model update cover every governed changed file?");
+    expect(critic).toContain("stable #symbol or file-only references");
     expect(critic).toContain("Did the model update touch a guarded target without reevaluation?");
   });
 

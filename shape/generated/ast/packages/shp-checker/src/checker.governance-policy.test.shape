@@ -7,13 +7,13 @@ trait GeneratedCandidate {
 }
 
 resource CheckerGovernancePolicyTestModulePolicyModelAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker.governance-policy.test.ts:6-52")
+  storage ast.anchor("packages/shp-checker/src/checker.governance-policy.test.ts#policyModel")
   fingerprint ast.semantic_subtree_v1("sha256:7b151bd4b1f367b474cd14032fa1c41e9d7524ac4f0a843d99ddb9df4429f16b")
 }
 
 component CheckerGovernancePolicyTestModule : GeneratedCandidate {
   fn policyModel
-    source ts("packages/shp-checker/src/checker.governance-policy.test.ts:6-52")
+    source ts("packages/shp-checker/src/checker.governance-policy.test.ts#policyModel")
     effects unknown
 }
 
@@ -22,7 +22,7 @@ relation CheckerGovernancePolicyTestModulePolicyModelGeneratedFromCheckerGoverna
   connects CheckerGovernancePolicyTestModule -> CheckerGovernancePolicyTestModulePolicyModelAstAnchor
   roles { CheckerGovernancePolicyTestModule as generated, CheckerGovernancePolicyTestModulePolicyModelAstAnchor as syntax }
   expects CheckerGovernancePolicyTestModulePolicyModelAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7b151bd4b1f367b474cd14032fa1c41e9d7524ac4f0a843d99ddb9df4429f16b")
-  summary "fn CheckerGovernancePolicyTestModule.policyModel generated from typescript function_declaration at packages/shp-checker/src/checker.governance-policy.test.ts:6-52."
+  summary "fn CheckerGovernancePolicyTestModule.policyModel generated from typescript function_declaration at packages/shp-checker/src/checker.governance-policy.test.ts#policyModel."
 }
 
 implementation CheckerGovernancePolicyTestModuleImpl {

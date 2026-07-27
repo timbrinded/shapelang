@@ -7,13 +7,13 @@ trait GeneratedCandidate {
 }
 
 resource IndexModuleMainAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-cli/src/index.ts:8-35")
+  storage ast.anchor("packages/shp-cli/src/index.ts#main")
   fingerprint ast.semantic_subtree_v1("sha256:10aebef1456774560039c0c0d80e99600c27e5ee627abe77d61db4d7be1dd4ad")
 }
 
 component IndexModule : GeneratedCandidate {
   fn main
-    source ts("packages/shp-cli/src/index.ts:8-35")
+    source ts("packages/shp-cli/src/index.ts#main")
     effects unknown
 }
 
@@ -22,7 +22,7 @@ relation IndexModuleMainGeneratedFromIndexModuleMainAstAnchor {
   connects IndexModule -> IndexModuleMainAstAnchor
   roles { IndexModule as generated, IndexModuleMainAstAnchor as syntax }
   expects IndexModuleMainAstAnchor fingerprint ast.semantic_subtree_v1("sha256:10aebef1456774560039c0c0d80e99600c27e5ee627abe77d61db4d7be1dd4ad")
-  summary "fn IndexModule.main generated from typescript function_declaration at packages/shp-cli/src/index.ts:8-35."
+  summary "fn IndexModule.main generated from typescript function_declaration at packages/shp-cli/src/index.ts#main."
 }
 
 implementation IndexModuleImpl {

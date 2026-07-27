@@ -7,13 +7,13 @@ trait GeneratedCandidate {
 }
 
 resource DestructiveModulePurgeAuditEventsAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("fixtures/source/analyzer/prisma/destructive.ts:1-13")
-  fingerprint ast.semantic_subtree_v1("sha256:a8de1460a412cc4dc89e040009242e6e7dea5f3a3bf37c818db00a8dacc47a0c")
+  storage ast.anchor("fixtures/source/analyzer/prisma/destructive.ts#purgeAuditEvents")
+  fingerprint ast.semantic_subtree_v1("sha256:abf8578d690efc1627916d1dc30d5f541f946f6bb24ef48ef8bda087187840b8")
 }
 
 component DestructiveModule : GeneratedCandidate {
   fn purgeAuditEvents
-    source ts("fixtures/source/analyzer/prisma/destructive.ts:1-13")
+    source ts("fixtures/source/analyzer/prisma/destructive.ts#purgeAuditEvents")
     effects unknown
 }
 
@@ -21,8 +21,8 @@ relation DestructiveModulePurgeAuditEventsGeneratedFromDestructiveModulePurgeAud
   kind generated_from
   connects DestructiveModule -> DestructiveModulePurgeAuditEventsAstAnchor
   roles { DestructiveModule as generated, DestructiveModulePurgeAuditEventsAstAnchor as syntax }
-  expects DestructiveModulePurgeAuditEventsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a8de1460a412cc4dc89e040009242e6e7dea5f3a3bf37c818db00a8dacc47a0c")
-  summary "fn DestructiveModule.purgeAuditEvents generated from typescript function_declaration at fixtures/source/analyzer/prisma/destructive.ts:1-13."
+  expects DestructiveModulePurgeAuditEventsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:abf8578d690efc1627916d1dc30d5f541f946f6bb24ef48ef8bda087187840b8")
+  summary "fn DestructiveModule.purgeAuditEvents generated from typescript function_declaration at fixtures/source/analyzer/prisma/destructive.ts#purgeAuditEvents."
 }
 
 implementation DestructiveModuleImpl {

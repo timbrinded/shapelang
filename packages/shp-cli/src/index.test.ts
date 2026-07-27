@@ -201,7 +201,9 @@ describe("shp CLI", () => {
     expect(result.stdout).toContain("module generated.audit");
     expect(result.stdout).toContain("component AuditPurgeModule : GeneratedCandidate");
     expect(result.stdout).toContain("GeneratedAstAnchor");
-    expect(result.stdout).toContain('storage ast.anchor("fixtures/source/audit_purge.ts:1-3")');
+    expect(result.stdout).toContain(
+      'storage ast.anchor("fixtures/source/audit_purge.ts#purgeOldEvents")'
+    );
     expect(result.stdout).not.toContain('storage ast.anchor("{\\"target\\"');
     expect(result.stdout).toContain("fingerprint ast.semantic_subtree_v1");
     expect(result.stdout).toContain("kind generated_from");
@@ -235,7 +237,9 @@ describe("shp CLI", () => {
     expect(result.stdout).toContain("module generated.audit");
     expect(result.stdout).toContain("component AuditStore : GeneratedCandidate");
     expect(result.stdout).toContain("fn append_event");
-    expect(result.stdout).toContain('source rust("fixtures/source/rust/audit_store.rs:16-18")');
+    expect(result.stdout).toContain(
+      'source rust("fixtures/source/rust/audit_store.rs#AuditStore.append_event")'
+    );
     expect(result.stdout).toContain("AuditStoreAppendEventAstAnchor");
     expect(result.stdout).toContain("kind generated_from");
     expect(result.stdout).toContain("kind calls");
@@ -742,6 +746,20 @@ describe("shp CLI", () => {
     expect(warnings.exitCode).toBe(1);
     expect(warnings.stdout).toBe("");
     expect(warnings.stderr).toMatchSnapshot();
+  });
+
+  test("scans multiline SQL while keeping comments and quoted examples silent", async () => {
+    const destructive = await runCli(["analyze", "fixtures/source/analyzer/sql/destructive.sql"]);
+    expect(destructive.exitCode).toBe(0);
+    expect(destructive.stderr).toBe("");
+    expect(destructive.stdout).toContain("HardDelete");
+    expect(destructive.stdout).toContain("Truncate");
+    expect(destructive.stdout).toContain("DropStorage");
+
+    const safe = await runCli(["analyze", "fixtures/source/analyzer/sql/safe.sql"]);
+    expect(safe.exitCode).toBe(0);
+    expect(safe.stdout).toBe("");
+    expect(safe.stderr).toBe("");
   });
 
   test("reports missing analyzer source files without a stack trace", async () => {

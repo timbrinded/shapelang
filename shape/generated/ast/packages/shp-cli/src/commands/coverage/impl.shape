@@ -7,13 +7,13 @@ trait GeneratedCandidate {
 }
 
 resource ImplModuleCoverageAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-cli/src/commands/coverage/impl.ts:9-19")
+  storage ast.anchor("packages/shp-cli/src/commands/coverage/impl.ts#coverage")
   fingerprint ast.semantic_subtree_v1("sha256:0ca96d16f28fb63d6de7d8fc59f0a3081c46269e911e65f9168afdad99105772")
 }
 
 component ImplModule : GeneratedCandidate {
   fn coverage
-    source ts("packages/shp-cli/src/commands/coverage/impl.ts:9-19")
+    source ts("packages/shp-cli/src/commands/coverage/impl.ts#coverage")
     effects unknown
 }
 
@@ -22,7 +22,7 @@ relation ImplModuleCoverageGeneratedFromImplModuleCoverageAstAnchor {
   connects ImplModule -> ImplModuleCoverageAstAnchor
   roles { ImplModule as generated, ImplModuleCoverageAstAnchor as syntax }
   expects ImplModuleCoverageAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0ca96d16f28fb63d6de7d8fc59f0a3081c46269e911e65f9168afdad99105772")
-  summary "fn ImplModule.coverage generated from typescript function_declaration at packages/shp-cli/src/commands/coverage/impl.ts:9-19."
+  summary "fn ImplModule.coverage generated from typescript function_declaration at packages/shp-cli/src/commands/coverage/impl.ts#coverage."
 }
 
 implementation ImplModuleImpl {

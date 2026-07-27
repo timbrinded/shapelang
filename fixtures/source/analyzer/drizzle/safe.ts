@@ -13,4 +13,7 @@ export async function retainAuditEvents(
   await db.update(auditEvents);
   cache.delete("audit-events");
   router.delete("/audit-events/:id");
+  const documentationExample = "DELETE FROM audit_events";
+  // TRUNCATE TABLE audit_event_staging;
+  void documentationExample;
 }

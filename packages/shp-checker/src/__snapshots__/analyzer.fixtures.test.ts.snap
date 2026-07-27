@@ -4,20 +4,20 @@ exports[`Shape analyzer fixture corpus SQL destructive fixture snapshots hints 1
 [
   {
     "effect": "HardDelete",
-    "evidence": "DELETE FROM audit_events WHERE created_at < CURRENT_TIMESTAMP;",
+    "evidence": "DELETE\\n/* retention applies to the selected table */\\nFROM audit_events\\nWHERE created_at < CURRENT_TIMESTAMP;",
     "line": 1,
     "sourcePath": "fixtures/source/analyzer/sql/destructive.sql",
   },
   {
     "effect": "Truncate",
-    "evidence": "TRUNCATE TABLE audit_event_staging;",
-    "line": 2,
+    "evidence": "TRUNCATE\\n-- the optional TABLE keyword may start on the next line\\nTABLE audit_event_staging;",
+    "line": 5,
     "sourcePath": "fixtures/source/analyzer/sql/destructive.sql",
   },
   {
     "effect": "DropStorage",
-    "evidence": "DROP TABLE audit_event_archive;",
-    "line": 3,
+    "evidence": "DROP\\n/* schema operation split across tokens */\\nTABLE audit_event_archive;",
+    "line": 8,
     "sourcePath": "fixtures/source/analyzer/sql/destructive.sql",
   },
 ]
@@ -39,8 +39,8 @@ exports[`Shape analyzer fixture corpus Kysely destructive fixture snapshots hint
   },
   {
     "effect": "Truncate",
-    "evidence": "await db.executeQuery("TRUNCATE TABLE audit_event_staging");",
-    "line": 9,
+    "evidence": "await db.executeQuery(\`\\n    TRUNCATE\\n    TABLE audit_event_staging\\n  \`);",
+    "line": 10,
     "sourcePath": "fixtures/source/analyzer/kysely/destructive.ts",
   },
 ]
@@ -62,14 +62,14 @@ exports[`Shape analyzer fixture corpus Prisma destructive fixture snapshots hint
   },
   {
     "effect": "Truncate",
-    "evidence": "await prisma.$executeRawUnsafe("TRUNCATE TABLE audit_event_staging");",
-    "line": 11,
+    "evidence": "await prisma.$executeRawUnsafe(\`\\n    TRUNCATE\\n    TABLE audit_event_staging\\n  \`);",
+    "line": 12,
     "sourcePath": "fixtures/source/analyzer/prisma/destructive.ts",
   },
   {
     "effect": "DropStorage",
     "evidence": "await prisma.$executeRawUnsafe("DROP TABLE audit_event_archive");",
-    "line": 12,
+    "line": 15,
     "sourcePath": "fixtures/source/analyzer/prisma/destructive.ts",
   },
 ]
@@ -91,14 +91,14 @@ exports[`Shape analyzer fixture corpus Drizzle destructive fixture snapshots hin
   },
   {
     "effect": "Truncate",
-    "evidence": "await db.execute("TRUNCATE TABLE audit_event_staging");",
-    "line": 13,
+    "evidence": "await db.execute(\`\\n    TRUNCATE\\n    TABLE audit_event_staging\\n  \`);",
+    "line": 14,
     "sourcePath": "fixtures/source/analyzer/drizzle/destructive.ts",
   },
   {
     "effect": "DropStorage",
     "evidence": "await db.execute("DROP TABLE audit_event_archive");",
-    "line": 14,
+    "line": 17,
     "sourcePath": "fixtures/source/analyzer/drizzle/destructive.ts",
   },
 ]

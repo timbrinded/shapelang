@@ -7,13 +7,13 @@ trait GeneratedCandidate {
 }
 
 resource TargetsModuleTargetsEqualAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/targets.ts:3-5")
+  storage ast.anchor("packages/shp-checker/src/targets.ts#targetsEqual")
   fingerprint ast.semantic_subtree_v1("sha256:3b0cd421865016bde294857e27bd2fb3b56dc6ab135b5ef766abc277ce39fae6")
 }
 
 component TargetsModule : GeneratedCandidate {
   fn targetsEqual
-    source ts("packages/shp-checker/src/targets.ts:3-5")
+    source ts("packages/shp-checker/src/targets.ts#targetsEqual")
     effects unknown
 }
 
@@ -22,7 +22,7 @@ relation TargetsModuleTargetsEqualGeneratedFromTargetsModuleTargetsEqualAstAncho
   connects TargetsModule -> TargetsModuleTargetsEqualAstAnchor
   roles { TargetsModule as generated, TargetsModuleTargetsEqualAstAnchor as syntax }
   expects TargetsModuleTargetsEqualAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3b0cd421865016bde294857e27bd2fb3b56dc6ab135b5ef766abc277ce39fae6")
-  summary "fn TargetsModule.targetsEqual generated from typescript function_declaration at packages/shp-checker/src/targets.ts:3-5."
+  summary "fn TargetsModule.targetsEqual generated from typescript function_declaration at packages/shp-checker/src/targets.ts#targetsEqual."
 }
 
 implementation TargetsModuleImpl {

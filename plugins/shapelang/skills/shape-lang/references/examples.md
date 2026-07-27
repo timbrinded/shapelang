@@ -24,7 +24,7 @@ component AuditStore {
     source ts("src/audit/store.ts#appendEvent")
     effects complete {
       Append<AuditEvent>
-        evidence ts("src/audit/store.ts:8-14")
+        evidence ts("src/audit/store.ts#appendEvent")
     }
 }
 ```
@@ -195,8 +195,8 @@ memory BridgeDelayConstraint : RefactorConstraint<fn BridgePoller.pollAttestatio
 Analyzer-backed effect after review:
 
 ```shape
-HardDelete<AuditEvent>
-  evidence ts("src/audit/purge.ts:12-16")
+      HardDelete<AuditEvent>
+        evidence ts("src/audit/purge.ts#purgeOldEvents")
 ```
 
 ## Counterexamples

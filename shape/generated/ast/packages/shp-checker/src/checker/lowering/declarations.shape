@@ -7,213 +7,213 @@ trait GeneratedCandidate {
 }
 
 resource DeclarationsModuleFunctionNameForAstAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/lowering/declarations.ts:678-684")
+  storage ast.anchor("packages/shp-checker/src/checker/lowering/declarations.ts#functionNameForAst")
   fingerprint ast.semantic_subtree_v1("sha256:41289bb112998f9f633df02fe6a026a2fa250eabff8021b0053954d673e1c9c7")
 }
 
 resource DeclarationsModuleLowerAttestationAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/lowering/declarations.ts:567-584")
+  storage ast.anchor("packages/shp-checker/src/checker/lowering/declarations.ts#lowerAttestation")
   fingerprint ast.semantic_subtree_v1("sha256:3dc5e3e70f946302a1e3e32b117381dbd1843702900dcb257dc892fbaa6886ca")
 }
 
 resource DeclarationsModuleLowerBindingAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/lowering/declarations.ts:501-565")
+  storage ast.anchor("packages/shp-checker/src/checker/lowering/declarations.ts#lowerBinding")
   fingerprint ast.semantic_subtree_v1("sha256:0504b8a2d9e241ea707b92131d7d23bc07163a01be7727feec7e8b3187a2b700")
 }
 
 resource DeclarationsModuleLowerCandidateEffectAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/lowering/declarations.ts:343-437")
+  storage ast.anchor("packages/shp-checker/src/checker/lowering/declarations.ts#lowerCandidateEffect")
   fingerprint ast.semantic_subtree_v1("sha256:93dca0ccfff8ee714073613f94273cb5eaf9e72914ee1476d11b326b75fb39b2")
 }
 
 resource DeclarationsModuleLowerComponentAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/lowering/declarations.ts:263-341")
+  storage ast.anchor("packages/shp-checker/src/checker/lowering/declarations.ts#lowerComponent")
   fingerprint ast.semantic_subtree_v1("sha256:5d20408dd6edc4db2d0b36f5bb55421a01eb1d65fc69286aaf4c34e39a1b1350")
 }
 
 resource DeclarationsModuleLowerDescriptionAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/lowering/declarations.ts:708-723")
+  storage ast.anchor("packages/shp-checker/src/checker/lowering/declarations.ts#lowerDescription")
   fingerprint ast.semantic_subtree_v1("sha256:7c6009808d8a49ef2ee6a966d89aeb878af8fde43905d1484dde13b13c79e221")
 }
 
 resource DeclarationsModuleLowerEffectEntryAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/lowering/declarations.ts:749-766")
+  storage ast.anchor("packages/shp-checker/src/checker/lowering/declarations.ts#lowerEffectEntry")
   fingerprint ast.semantic_subtree_v1("sha256:368be1d91ed8269451810e66fce10d41248c15fe1d9a67d0984f27f3cfe61e15")
 }
 
 resource DeclarationsModuleLowerEffectsAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/lowering/declarations.ts:725-747")
+  storage ast.anchor("packages/shp-checker/src/checker/lowering/declarations.ts#lowerEffects")
   fingerprint ast.semantic_subtree_v1("sha256:abb34e0c01f2d3f0b0725c19a80760bc11ef6366bab270937049338187d882f0")
 }
 
 resource DeclarationsModuleLowerFingerprintAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/lowering/declarations.ts:893-903")
+  storage ast.anchor("packages/shp-checker/src/checker/lowering/declarations.ts#lowerFingerprint")
   fingerprint ast.semantic_subtree_v1("sha256:a4b09ba7c75ea8c3cdd5cc7464043aeca1172fd54b7d886d62a9c4cae536da04")
 }
 
 resource DeclarationsModuleLowerForbidPatternAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/lowering/declarations.ts:768-786")
+  storage ast.anchor("packages/shp-checker/src/checker/lowering/declarations.ts#lowerForbidPattern")
   fingerprint ast.semantic_subtree_v1("sha256:81df4a24a1f4810db826e6a7c953d2142d106536c8d929f75c56882ce6d5b343")
 }
 
 resource DeclarationsModuleLowerFunctionAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/lowering/declarations.ts:625-676")
+  storage ast.anchor("packages/shp-checker/src/checker/lowering/declarations.ts#lowerFunction")
   fingerprint ast.semantic_subtree_v1("sha256:7901f16b66e22e8d07713ba621e56583bf1b52ed84e31deab11bd05e7c653a35")
 }
 
 resource DeclarationsModuleLowerImplementationAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/lowering/declarations.ts:455-499")
+  storage ast.anchor("packages/shp-checker/src/checker/lowering/declarations.ts#lowerImplementation")
   fingerprint ast.semantic_subtree_v1("sha256:9df4f0a1503669246705cb2d0e88f0a3c0c2f6938dfa32bcc7741319f3256519")
 }
 
 resource DeclarationsModuleLowerPatternAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/lowering/declarations.ts:846-884")
+  storage ast.anchor("packages/shp-checker/src/checker/lowering/declarations.ts#lowerPattern")
   fingerprint ast.semantic_subtree_v1("sha256:f53c7b9d03c28bd795e9f1c1f4813c53f25132c661b0dcc2c47d59f98c43b59c")
 }
 
 resource DeclarationsModuleLowerResourceAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/lowering/declarations.ts:85-157")
+  storage ast.anchor("packages/shp-checker/src/checker/lowering/declarations.ts#lowerResource")
   fingerprint ast.semantic_subtree_v1("sha256:3da12f5bdf531343450c4a48cbcad581b84c4e50b05b0c644db48e4cc6784bc6")
 }
 
 resource DeclarationsModuleLowerRuleAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/lowering/declarations.ts:586-623")
+  storage ast.anchor("packages/shp-checker/src/checker/lowering/declarations.ts#lowerRule")
   fingerprint ast.semantic_subtree_v1("sha256:7241944bd58df5924f921ab99fbaac1559c03b10c13bed05c0f2bde4a0791913")
 }
 
 resource DeclarationsModuleLowerRuleForbidAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/lowering/declarations.ts:788-806")
+  storage ast.anchor("packages/shp-checker/src/checker/lowering/declarations.ts#lowerRuleForbid")
   fingerprint ast.semantic_subtree_v1("sha256:f4f76c8c17801d5a9be990c8f987399c98b526935fc5981a8447f4d37e3f7eb2")
 }
 
 resource DeclarationsModuleLowerRuleForbidHypercycleAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/lowering/declarations.ts:825-837")
+  storage ast.anchor("packages/shp-checker/src/checker/lowering/declarations.ts#lowerRuleForbidHypercycle")
   fingerprint ast.semantic_subtree_v1("sha256:f60967725f9ffde58f4995ec5cecf48fbe9f490798d8e4fa71b04fed5e21e9b8")
 }
 
 resource DeclarationsModuleLowerRuleForbidProvidesAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/lowering/declarations.ts:808-823")
+  storage ast.anchor("packages/shp-checker/src/checker/lowering/declarations.ts#lowerRuleForbidProvides")
   fingerprint ast.semantic_subtree_v1("sha256:00f0d60ed3293785d89561b46fcf9a39be19ebb11d744b803d34fd48afafb86e")
 }
 
 resource DeclarationsModuleLowerSatisfiedByKindsAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/lowering/declarations.ts:256-261")
+  storage ast.anchor("packages/shp-checker/src/checker/lowering/declarations.ts#lowerSatisfiedByKinds")
   fingerprint ast.semantic_subtree_v1("sha256:3f22073405906a35c22059ea18cb5a6c479e1637fced821b4b1390ce02b2e75c")
 }
 
 resource DeclarationsModuleLowerShapeTraitsAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/lowering/declarations.ts:686-706")
+  storage ast.anchor("packages/shp-checker/src/checker/lowering/declarations.ts#lowerShapeTraits")
   fingerprint ast.semantic_subtree_v1("sha256:dc26649cd20f8eeda1d3e8551d616fdf33567ca0f7e3ee0660ba03725fd669b0")
 }
 
 resource DeclarationsModuleLowerSourceRefAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/lowering/declarations.ts:886-891")
+  storage ast.anchor("packages/shp-checker/src/checker/lowering/declarations.ts#lowerSourceRef")
   fingerprint ast.semantic_subtree_v1("sha256:066c392ad2bc5ac7b1b33c48c2b352e35544cf77b28ad98b42344d95169aae30")
 }
 
 resource DeclarationsModuleLowerTargetRefAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/lowering/declarations.ts:905-918")
+  storage ast.anchor("packages/shp-checker/src/checker/lowering/declarations.ts#lowerTargetRef")
   fingerprint ast.semantic_subtree_v1("sha256:ab818589b6f17df5e9a11bf1d9b2575c5f7b01dc6c8771fa2049054c7bce8619")
 }
 
 resource DeclarationsModuleLowerTermAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/lowering/declarations.ts:839-844")
+  storage ast.anchor("packages/shp-checker/src/checker/lowering/declarations.ts#lowerTerm")
   fingerprint ast.semantic_subtree_v1("sha256:9254091311bd21f181b3763b308bfcad71ec349cfd4227bccb3a2400bd2154e6")
 }
 
 resource DeclarationsModuleLowerTraitAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/lowering/declarations.ts:159-216")
+  storage ast.anchor("packages/shp-checker/src/checker/lowering/declarations.ts#lowerTrait")
   fingerprint ast.semantic_subtree_v1("sha256:62bfbe6fb20c8b44739c71323c39f6923e6f838d5c09cf3b6028ec4320daefd8")
 }
 
 resource DeclarationsModulePushInvalidCandidateEffectAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/lowering/declarations.ts:439-453")
+  storage ast.anchor("packages/shp-checker/src/checker/lowering/declarations.ts#pushInvalidCandidateEffect")
   fingerprint ast.semantic_subtree_v1("sha256:ef2a2591612faf128c601caeedfaa30deaa63f9e50c41daa1633325d8c1a1807")
 }
 
 resource DeclarationsModuleRequireContextTargetKindAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/lowering/declarations.ts:226-250")
+  storage ast.anchor("packages/shp-checker/src/checker/lowering/declarations.ts#requireContextTargetKind")
   fingerprint ast.semantic_subtree_v1("sha256:72e19dfa98c154bbb34b3c8ec1cb342ecdd3a4fd4636ee919ef4a7e0627aa5b8")
 }
 
 component DeclarationsModule : GeneratedCandidate {
   fn functionNameForAst
-    source ts("packages/shp-checker/src/checker/lowering/declarations.ts:678-684")
+    source ts("packages/shp-checker/src/checker/lowering/declarations.ts#functionNameForAst")
     effects unknown
   fn lowerAttestation
-    source ts("packages/shp-checker/src/checker/lowering/declarations.ts:567-584")
+    source ts("packages/shp-checker/src/checker/lowering/declarations.ts#lowerAttestation")
     effects unknown
   fn lowerBinding
-    source ts("packages/shp-checker/src/checker/lowering/declarations.ts:501-565")
+    source ts("packages/shp-checker/src/checker/lowering/declarations.ts#lowerBinding")
     effects unknown
   fn lowerCandidateEffect
-    source ts("packages/shp-checker/src/checker/lowering/declarations.ts:343-437")
+    source ts("packages/shp-checker/src/checker/lowering/declarations.ts#lowerCandidateEffect")
     effects unknown
   fn lowerComponent
-    source ts("packages/shp-checker/src/checker/lowering/declarations.ts:263-341")
+    source ts("packages/shp-checker/src/checker/lowering/declarations.ts#lowerComponent")
     effects unknown
   fn lowerDescription
-    source ts("packages/shp-checker/src/checker/lowering/declarations.ts:708-723")
+    source ts("packages/shp-checker/src/checker/lowering/declarations.ts#lowerDescription")
     effects unknown
   fn lowerEffectEntry
-    source ts("packages/shp-checker/src/checker/lowering/declarations.ts:749-766")
+    source ts("packages/shp-checker/src/checker/lowering/declarations.ts#lowerEffectEntry")
     effects unknown
   fn lowerEffects
-    source ts("packages/shp-checker/src/checker/lowering/declarations.ts:725-747")
+    source ts("packages/shp-checker/src/checker/lowering/declarations.ts#lowerEffects")
     effects unknown
   fn lowerFingerprint
-    source ts("packages/shp-checker/src/checker/lowering/declarations.ts:893-903")
+    source ts("packages/shp-checker/src/checker/lowering/declarations.ts#lowerFingerprint")
     effects unknown
   fn lowerForbidPattern
-    source ts("packages/shp-checker/src/checker/lowering/declarations.ts:768-786")
+    source ts("packages/shp-checker/src/checker/lowering/declarations.ts#lowerForbidPattern")
     effects unknown
   fn lowerFunction
-    source ts("packages/shp-checker/src/checker/lowering/declarations.ts:625-676")
+    source ts("packages/shp-checker/src/checker/lowering/declarations.ts#lowerFunction")
     effects unknown
   fn lowerImplementation
-    source ts("packages/shp-checker/src/checker/lowering/declarations.ts:455-499")
+    source ts("packages/shp-checker/src/checker/lowering/declarations.ts#lowerImplementation")
     effects unknown
   fn lowerPattern
-    source ts("packages/shp-checker/src/checker/lowering/declarations.ts:846-884")
+    source ts("packages/shp-checker/src/checker/lowering/declarations.ts#lowerPattern")
     effects unknown
   fn lowerResource
-    source ts("packages/shp-checker/src/checker/lowering/declarations.ts:85-157")
+    source ts("packages/shp-checker/src/checker/lowering/declarations.ts#lowerResource")
     effects unknown
   fn lowerRule
-    source ts("packages/shp-checker/src/checker/lowering/declarations.ts:586-623")
+    source ts("packages/shp-checker/src/checker/lowering/declarations.ts#lowerRule")
     effects unknown
   fn lowerRuleForbid
-    source ts("packages/shp-checker/src/checker/lowering/declarations.ts:788-806")
+    source ts("packages/shp-checker/src/checker/lowering/declarations.ts#lowerRuleForbid")
     effects unknown
   fn lowerRuleForbidHypercycle
-    source ts("packages/shp-checker/src/checker/lowering/declarations.ts:825-837")
+    source ts("packages/shp-checker/src/checker/lowering/declarations.ts#lowerRuleForbidHypercycle")
     effects unknown
   fn lowerRuleForbidProvides
-    source ts("packages/shp-checker/src/checker/lowering/declarations.ts:808-823")
+    source ts("packages/shp-checker/src/checker/lowering/declarations.ts#lowerRuleForbidProvides")
     effects unknown
   fn lowerSatisfiedByKinds
-    source ts("packages/shp-checker/src/checker/lowering/declarations.ts:256-261")
+    source ts("packages/shp-checker/src/checker/lowering/declarations.ts#lowerSatisfiedByKinds")
     effects unknown
   fn lowerShapeTraits
-    source ts("packages/shp-checker/src/checker/lowering/declarations.ts:686-706")
+    source ts("packages/shp-checker/src/checker/lowering/declarations.ts#lowerShapeTraits")
     effects unknown
   fn lowerSourceRef
-    source ts("packages/shp-checker/src/checker/lowering/declarations.ts:886-891")
+    source ts("packages/shp-checker/src/checker/lowering/declarations.ts#lowerSourceRef")
     effects unknown
   fn lowerTargetRef
-    source ts("packages/shp-checker/src/checker/lowering/declarations.ts:905-918")
+    source ts("packages/shp-checker/src/checker/lowering/declarations.ts#lowerTargetRef")
     effects unknown
   fn lowerTerm
-    source ts("packages/shp-checker/src/checker/lowering/declarations.ts:839-844")
+    source ts("packages/shp-checker/src/checker/lowering/declarations.ts#lowerTerm")
     effects unknown
   fn lowerTrait
-    source ts("packages/shp-checker/src/checker/lowering/declarations.ts:159-216")
+    source ts("packages/shp-checker/src/checker/lowering/declarations.ts#lowerTrait")
     effects unknown
   fn pushInvalidCandidateEffect
-    source ts("packages/shp-checker/src/checker/lowering/declarations.ts:439-453")
+    source ts("packages/shp-checker/src/checker/lowering/declarations.ts#pushInvalidCandidateEffect")
     effects unknown
   fn requireContextTargetKind
-    source ts("packages/shp-checker/src/checker/lowering/declarations.ts:226-250")
+    source ts("packages/shp-checker/src/checker/lowering/declarations.ts#requireContextTargetKind")
     effects unknown
 }
 
@@ -222,7 +222,7 @@ relation DeclarationsModuleFunctionNameForAstGeneratedFromDeclarationsModuleFunc
   connects DeclarationsModule -> DeclarationsModuleFunctionNameForAstAstAnchor
   roles { DeclarationsModule as generated, DeclarationsModuleFunctionNameForAstAstAnchor as syntax }
   expects DeclarationsModuleFunctionNameForAstAstAnchor fingerprint ast.semantic_subtree_v1("sha256:41289bb112998f9f633df02fe6a026a2fa250eabff8021b0053954d673e1c9c7")
-  summary "fn DeclarationsModule.functionNameForAst generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/declarations.ts:678-684."
+  summary "fn DeclarationsModule.functionNameForAst generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/declarations.ts#functionNameForAst."
 }
 
 relation DeclarationsModuleLowerAttestationGeneratedFromDeclarationsModuleLowerAttestationAstAnchor {
@@ -230,7 +230,7 @@ relation DeclarationsModuleLowerAttestationGeneratedFromDeclarationsModuleLowerA
   connects DeclarationsModule -> DeclarationsModuleLowerAttestationAstAnchor
   roles { DeclarationsModule as generated, DeclarationsModuleLowerAttestationAstAnchor as syntax }
   expects DeclarationsModuleLowerAttestationAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3dc5e3e70f946302a1e3e32b117381dbd1843702900dcb257dc892fbaa6886ca")
-  summary "fn DeclarationsModule.lowerAttestation generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/declarations.ts:567-584."
+  summary "fn DeclarationsModule.lowerAttestation generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/declarations.ts#lowerAttestation."
 }
 
 relation DeclarationsModuleLowerBindingGeneratedFromDeclarationsModuleLowerBindingAstAnchor {
@@ -238,7 +238,7 @@ relation DeclarationsModuleLowerBindingGeneratedFromDeclarationsModuleLowerBindi
   connects DeclarationsModule -> DeclarationsModuleLowerBindingAstAnchor
   roles { DeclarationsModule as generated, DeclarationsModuleLowerBindingAstAnchor as syntax }
   expects DeclarationsModuleLowerBindingAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0504b8a2d9e241ea707b92131d7d23bc07163a01be7727feec7e8b3187a2b700")
-  summary "fn DeclarationsModule.lowerBinding generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/declarations.ts:501-565."
+  summary "fn DeclarationsModule.lowerBinding generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/declarations.ts#lowerBinding."
 }
 
 relation DeclarationsModuleLowerCandidateEffectGeneratedFromDeclarationsModuleLowerCandidateEffectAstAnchor {
@@ -246,7 +246,7 @@ relation DeclarationsModuleLowerCandidateEffectGeneratedFromDeclarationsModuleLo
   connects DeclarationsModule -> DeclarationsModuleLowerCandidateEffectAstAnchor
   roles { DeclarationsModule as generated, DeclarationsModuleLowerCandidateEffectAstAnchor as syntax }
   expects DeclarationsModuleLowerCandidateEffectAstAnchor fingerprint ast.semantic_subtree_v1("sha256:93dca0ccfff8ee714073613f94273cb5eaf9e72914ee1476d11b326b75fb39b2")
-  summary "fn DeclarationsModule.lowerCandidateEffect generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/declarations.ts:343-437."
+  summary "fn DeclarationsModule.lowerCandidateEffect generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/declarations.ts#lowerCandidateEffect."
 }
 
 relation DeclarationsModuleLowerComponentGeneratedFromDeclarationsModuleLowerComponentAstAnchor {
@@ -254,7 +254,7 @@ relation DeclarationsModuleLowerComponentGeneratedFromDeclarationsModuleLowerCom
   connects DeclarationsModule -> DeclarationsModuleLowerComponentAstAnchor
   roles { DeclarationsModule as generated, DeclarationsModuleLowerComponentAstAnchor as syntax }
   expects DeclarationsModuleLowerComponentAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5d20408dd6edc4db2d0b36f5bb55421a01eb1d65fc69286aaf4c34e39a1b1350")
-  summary "fn DeclarationsModule.lowerComponent generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/declarations.ts:263-341."
+  summary "fn DeclarationsModule.lowerComponent generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/declarations.ts#lowerComponent."
 }
 
 relation DeclarationsModuleLowerDescriptionGeneratedFromDeclarationsModuleLowerDescriptionAstAnchor {
@@ -262,7 +262,7 @@ relation DeclarationsModuleLowerDescriptionGeneratedFromDeclarationsModuleLowerD
   connects DeclarationsModule -> DeclarationsModuleLowerDescriptionAstAnchor
   roles { DeclarationsModule as generated, DeclarationsModuleLowerDescriptionAstAnchor as syntax }
   expects DeclarationsModuleLowerDescriptionAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7c6009808d8a49ef2ee6a966d89aeb878af8fde43905d1484dde13b13c79e221")
-  summary "fn DeclarationsModule.lowerDescription generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/declarations.ts:708-723."
+  summary "fn DeclarationsModule.lowerDescription generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/declarations.ts#lowerDescription."
 }
 
 relation DeclarationsModuleLowerEffectEntryGeneratedFromDeclarationsModuleLowerEffectEntryAstAnchor {
@@ -270,7 +270,7 @@ relation DeclarationsModuleLowerEffectEntryGeneratedFromDeclarationsModuleLowerE
   connects DeclarationsModule -> DeclarationsModuleLowerEffectEntryAstAnchor
   roles { DeclarationsModule as generated, DeclarationsModuleLowerEffectEntryAstAnchor as syntax }
   expects DeclarationsModuleLowerEffectEntryAstAnchor fingerprint ast.semantic_subtree_v1("sha256:368be1d91ed8269451810e66fce10d41248c15fe1d9a67d0984f27f3cfe61e15")
-  summary "fn DeclarationsModule.lowerEffectEntry generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/declarations.ts:749-766."
+  summary "fn DeclarationsModule.lowerEffectEntry generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/declarations.ts#lowerEffectEntry."
 }
 
 relation DeclarationsModuleLowerEffectsGeneratedFromDeclarationsModuleLowerEffectsAstAnchor {
@@ -278,7 +278,7 @@ relation DeclarationsModuleLowerEffectsGeneratedFromDeclarationsModuleLowerEffec
   connects DeclarationsModule -> DeclarationsModuleLowerEffectsAstAnchor
   roles { DeclarationsModule as generated, DeclarationsModuleLowerEffectsAstAnchor as syntax }
   expects DeclarationsModuleLowerEffectsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:abb34e0c01f2d3f0b0725c19a80760bc11ef6366bab270937049338187d882f0")
-  summary "fn DeclarationsModule.lowerEffects generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/declarations.ts:725-747."
+  summary "fn DeclarationsModule.lowerEffects generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/declarations.ts#lowerEffects."
 }
 
 relation DeclarationsModuleLowerFingerprintGeneratedFromDeclarationsModuleLowerFingerprintAstAnchor {
@@ -286,7 +286,7 @@ relation DeclarationsModuleLowerFingerprintGeneratedFromDeclarationsModuleLowerF
   connects DeclarationsModule -> DeclarationsModuleLowerFingerprintAstAnchor
   roles { DeclarationsModule as generated, DeclarationsModuleLowerFingerprintAstAnchor as syntax }
   expects DeclarationsModuleLowerFingerprintAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a4b09ba7c75ea8c3cdd5cc7464043aeca1172fd54b7d886d62a9c4cae536da04")
-  summary "fn DeclarationsModule.lowerFingerprint generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/declarations.ts:893-903."
+  summary "fn DeclarationsModule.lowerFingerprint generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/declarations.ts#lowerFingerprint."
 }
 
 relation DeclarationsModuleLowerForbidPatternGeneratedFromDeclarationsModuleLowerForbidPatternAstAnchor {
@@ -294,7 +294,7 @@ relation DeclarationsModuleLowerForbidPatternGeneratedFromDeclarationsModuleLowe
   connects DeclarationsModule -> DeclarationsModuleLowerForbidPatternAstAnchor
   roles { DeclarationsModule as generated, DeclarationsModuleLowerForbidPatternAstAnchor as syntax }
   expects DeclarationsModuleLowerForbidPatternAstAnchor fingerprint ast.semantic_subtree_v1("sha256:81df4a24a1f4810db826e6a7c953d2142d106536c8d929f75c56882ce6d5b343")
-  summary "fn DeclarationsModule.lowerForbidPattern generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/declarations.ts:768-786."
+  summary "fn DeclarationsModule.lowerForbidPattern generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/declarations.ts#lowerForbidPattern."
 }
 
 relation DeclarationsModuleLowerFunctionGeneratedFromDeclarationsModuleLowerFunctionAstAnchor {
@@ -302,7 +302,7 @@ relation DeclarationsModuleLowerFunctionGeneratedFromDeclarationsModuleLowerFunc
   connects DeclarationsModule -> DeclarationsModuleLowerFunctionAstAnchor
   roles { DeclarationsModule as generated, DeclarationsModuleLowerFunctionAstAnchor as syntax }
   expects DeclarationsModuleLowerFunctionAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7901f16b66e22e8d07713ba621e56583bf1b52ed84e31deab11bd05e7c653a35")
-  summary "fn DeclarationsModule.lowerFunction generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/declarations.ts:625-676."
+  summary "fn DeclarationsModule.lowerFunction generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/declarations.ts#lowerFunction."
 }
 
 relation DeclarationsModuleLowerImplementationGeneratedFromDeclarationsModuleLowerImplementationAstAnchor {
@@ -310,7 +310,7 @@ relation DeclarationsModuleLowerImplementationGeneratedFromDeclarationsModuleLow
   connects DeclarationsModule -> DeclarationsModuleLowerImplementationAstAnchor
   roles { DeclarationsModule as generated, DeclarationsModuleLowerImplementationAstAnchor as syntax }
   expects DeclarationsModuleLowerImplementationAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9df4f0a1503669246705cb2d0e88f0a3c0c2f6938dfa32bcc7741319f3256519")
-  summary "fn DeclarationsModule.lowerImplementation generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/declarations.ts:455-499."
+  summary "fn DeclarationsModule.lowerImplementation generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/declarations.ts#lowerImplementation."
 }
 
 relation DeclarationsModuleLowerPatternGeneratedFromDeclarationsModuleLowerPatternAstAnchor {
@@ -318,7 +318,7 @@ relation DeclarationsModuleLowerPatternGeneratedFromDeclarationsModuleLowerPatte
   connects DeclarationsModule -> DeclarationsModuleLowerPatternAstAnchor
   roles { DeclarationsModule as generated, DeclarationsModuleLowerPatternAstAnchor as syntax }
   expects DeclarationsModuleLowerPatternAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f53c7b9d03c28bd795e9f1c1f4813c53f25132c661b0dcc2c47d59f98c43b59c")
-  summary "fn DeclarationsModule.lowerPattern generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/declarations.ts:846-884."
+  summary "fn DeclarationsModule.lowerPattern generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/declarations.ts#lowerPattern."
 }
 
 relation DeclarationsModuleLowerResourceGeneratedFromDeclarationsModuleLowerResourceAstAnchor {
@@ -326,7 +326,7 @@ relation DeclarationsModuleLowerResourceGeneratedFromDeclarationsModuleLowerReso
   connects DeclarationsModule -> DeclarationsModuleLowerResourceAstAnchor
   roles { DeclarationsModule as generated, DeclarationsModuleLowerResourceAstAnchor as syntax }
   expects DeclarationsModuleLowerResourceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3da12f5bdf531343450c4a48cbcad581b84c4e50b05b0c644db48e4cc6784bc6")
-  summary "fn DeclarationsModule.lowerResource generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/declarations.ts:85-157."
+  summary "fn DeclarationsModule.lowerResource generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/declarations.ts#lowerResource."
 }
 
 relation DeclarationsModuleLowerRuleForbidGeneratedFromDeclarationsModuleLowerRuleForbidAstAnchor {
@@ -334,7 +334,7 @@ relation DeclarationsModuleLowerRuleForbidGeneratedFromDeclarationsModuleLowerRu
   connects DeclarationsModule -> DeclarationsModuleLowerRuleForbidAstAnchor
   roles { DeclarationsModule as generated, DeclarationsModuleLowerRuleForbidAstAnchor as syntax }
   expects DeclarationsModuleLowerRuleForbidAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f4f76c8c17801d5a9be990c8f987399c98b526935fc5981a8447f4d37e3f7eb2")
-  summary "fn DeclarationsModule.lowerRuleForbid generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/declarations.ts:788-806."
+  summary "fn DeclarationsModule.lowerRuleForbid generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/declarations.ts#lowerRuleForbid."
 }
 
 relation DeclarationsModuleLowerRuleForbidHypercycleGeneratedFromDeclarationsModuleLowerRuleForbidHypercycleAstAnchor {
@@ -342,7 +342,7 @@ relation DeclarationsModuleLowerRuleForbidHypercycleGeneratedFromDeclarationsMod
   connects DeclarationsModule -> DeclarationsModuleLowerRuleForbidHypercycleAstAnchor
   roles { DeclarationsModule as generated, DeclarationsModuleLowerRuleForbidHypercycleAstAnchor as syntax }
   expects DeclarationsModuleLowerRuleForbidHypercycleAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f60967725f9ffde58f4995ec5cecf48fbe9f490798d8e4fa71b04fed5e21e9b8")
-  summary "fn DeclarationsModule.lowerRuleForbidHypercycle generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/declarations.ts:825-837."
+  summary "fn DeclarationsModule.lowerRuleForbidHypercycle generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/declarations.ts#lowerRuleForbidHypercycle."
 }
 
 relation DeclarationsModuleLowerRuleForbidProvidesGeneratedFromDeclarationsModuleLowerRuleForbidProvidesAstAnchor {
@@ -350,7 +350,7 @@ relation DeclarationsModuleLowerRuleForbidProvidesGeneratedFromDeclarationsModul
   connects DeclarationsModule -> DeclarationsModuleLowerRuleForbidProvidesAstAnchor
   roles { DeclarationsModule as generated, DeclarationsModuleLowerRuleForbidProvidesAstAnchor as syntax }
   expects DeclarationsModuleLowerRuleForbidProvidesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:00f0d60ed3293785d89561b46fcf9a39be19ebb11d744b803d34fd48afafb86e")
-  summary "fn DeclarationsModule.lowerRuleForbidProvides generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/declarations.ts:808-823."
+  summary "fn DeclarationsModule.lowerRuleForbidProvides generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/declarations.ts#lowerRuleForbidProvides."
 }
 
 relation DeclarationsModuleLowerRuleGeneratedFromDeclarationsModuleLowerRuleAstAnchor {
@@ -358,7 +358,7 @@ relation DeclarationsModuleLowerRuleGeneratedFromDeclarationsModuleLowerRuleAstA
   connects DeclarationsModule -> DeclarationsModuleLowerRuleAstAnchor
   roles { DeclarationsModule as generated, DeclarationsModuleLowerRuleAstAnchor as syntax }
   expects DeclarationsModuleLowerRuleAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7241944bd58df5924f921ab99fbaac1559c03b10c13bed05c0f2bde4a0791913")
-  summary "fn DeclarationsModule.lowerRule generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/declarations.ts:586-623."
+  summary "fn DeclarationsModule.lowerRule generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/declarations.ts#lowerRule."
 }
 
 relation DeclarationsModuleLowerSatisfiedByKindsGeneratedFromDeclarationsModuleLowerSatisfiedByKindsAstAnchor {
@@ -366,7 +366,7 @@ relation DeclarationsModuleLowerSatisfiedByKindsGeneratedFromDeclarationsModuleL
   connects DeclarationsModule -> DeclarationsModuleLowerSatisfiedByKindsAstAnchor
   roles { DeclarationsModule as generated, DeclarationsModuleLowerSatisfiedByKindsAstAnchor as syntax }
   expects DeclarationsModuleLowerSatisfiedByKindsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3f22073405906a35c22059ea18cb5a6c479e1637fced821b4b1390ce02b2e75c")
-  summary "fn DeclarationsModule.lowerSatisfiedByKinds generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/declarations.ts:256-261."
+  summary "fn DeclarationsModule.lowerSatisfiedByKinds generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/declarations.ts#lowerSatisfiedByKinds."
 }
 
 relation DeclarationsModuleLowerShapeTraitsGeneratedFromDeclarationsModuleLowerShapeTraitsAstAnchor {
@@ -374,7 +374,7 @@ relation DeclarationsModuleLowerShapeTraitsGeneratedFromDeclarationsModuleLowerS
   connects DeclarationsModule -> DeclarationsModuleLowerShapeTraitsAstAnchor
   roles { DeclarationsModule as generated, DeclarationsModuleLowerShapeTraitsAstAnchor as syntax }
   expects DeclarationsModuleLowerShapeTraitsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:dc26649cd20f8eeda1d3e8551d616fdf33567ca0f7e3ee0660ba03725fd669b0")
-  summary "fn DeclarationsModule.lowerShapeTraits generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/declarations.ts:686-706."
+  summary "fn DeclarationsModule.lowerShapeTraits generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/declarations.ts#lowerShapeTraits."
 }
 
 relation DeclarationsModuleLowerSourceRefGeneratedFromDeclarationsModuleLowerSourceRefAstAnchor {
@@ -382,7 +382,7 @@ relation DeclarationsModuleLowerSourceRefGeneratedFromDeclarationsModuleLowerSou
   connects DeclarationsModule -> DeclarationsModuleLowerSourceRefAstAnchor
   roles { DeclarationsModule as generated, DeclarationsModuleLowerSourceRefAstAnchor as syntax }
   expects DeclarationsModuleLowerSourceRefAstAnchor fingerprint ast.semantic_subtree_v1("sha256:066c392ad2bc5ac7b1b33c48c2b352e35544cf77b28ad98b42344d95169aae30")
-  summary "fn DeclarationsModule.lowerSourceRef generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/declarations.ts:886-891."
+  summary "fn DeclarationsModule.lowerSourceRef generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/declarations.ts#lowerSourceRef."
 }
 
 relation DeclarationsModuleLowerTargetRefGeneratedFromDeclarationsModuleLowerTargetRefAstAnchor {
@@ -390,7 +390,7 @@ relation DeclarationsModuleLowerTargetRefGeneratedFromDeclarationsModuleLowerTar
   connects DeclarationsModule -> DeclarationsModuleLowerTargetRefAstAnchor
   roles { DeclarationsModule as generated, DeclarationsModuleLowerTargetRefAstAnchor as syntax }
   expects DeclarationsModuleLowerTargetRefAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ab818589b6f17df5e9a11bf1d9b2575c5f7b01dc6c8771fa2049054c7bce8619")
-  summary "fn DeclarationsModule.lowerTargetRef generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/declarations.ts:905-918."
+  summary "fn DeclarationsModule.lowerTargetRef generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/declarations.ts#lowerTargetRef."
 }
 
 relation DeclarationsModuleLowerTermGeneratedFromDeclarationsModuleLowerTermAstAnchor {
@@ -398,7 +398,7 @@ relation DeclarationsModuleLowerTermGeneratedFromDeclarationsModuleLowerTermAstA
   connects DeclarationsModule -> DeclarationsModuleLowerTermAstAnchor
   roles { DeclarationsModule as generated, DeclarationsModuleLowerTermAstAnchor as syntax }
   expects DeclarationsModuleLowerTermAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9254091311bd21f181b3763b308bfcad71ec349cfd4227bccb3a2400bd2154e6")
-  summary "fn DeclarationsModule.lowerTerm generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/declarations.ts:839-844."
+  summary "fn DeclarationsModule.lowerTerm generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/declarations.ts#lowerTerm."
 }
 
 relation DeclarationsModuleLowerTraitGeneratedFromDeclarationsModuleLowerTraitAstAnchor {
@@ -406,7 +406,7 @@ relation DeclarationsModuleLowerTraitGeneratedFromDeclarationsModuleLowerTraitAs
   connects DeclarationsModule -> DeclarationsModuleLowerTraitAstAnchor
   roles { DeclarationsModule as generated, DeclarationsModuleLowerTraitAstAnchor as syntax }
   expects DeclarationsModuleLowerTraitAstAnchor fingerprint ast.semantic_subtree_v1("sha256:62bfbe6fb20c8b44739c71323c39f6923e6f838d5c09cf3b6028ec4320daefd8")
-  summary "fn DeclarationsModule.lowerTrait generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/declarations.ts:159-216."
+  summary "fn DeclarationsModule.lowerTrait generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/declarations.ts#lowerTrait."
 }
 
 relation DeclarationsModulePushInvalidCandidateEffectGeneratedFromDeclarationsModulePushInvalidCandidateEffectAstAnchor {
@@ -414,7 +414,7 @@ relation DeclarationsModulePushInvalidCandidateEffectGeneratedFromDeclarationsMo
   connects DeclarationsModule -> DeclarationsModulePushInvalidCandidateEffectAstAnchor
   roles { DeclarationsModule as generated, DeclarationsModulePushInvalidCandidateEffectAstAnchor as syntax }
   expects DeclarationsModulePushInvalidCandidateEffectAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ef2a2591612faf128c601caeedfaa30deaa63f9e50c41daa1633325d8c1a1807")
-  summary "fn DeclarationsModule.pushInvalidCandidateEffect generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/declarations.ts:439-453."
+  summary "fn DeclarationsModule.pushInvalidCandidateEffect generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/declarations.ts#pushInvalidCandidateEffect."
 }
 
 relation DeclarationsModuleRequireContextTargetKindGeneratedFromDeclarationsModuleRequireContextTargetKindAstAnchor {
@@ -422,7 +422,7 @@ relation DeclarationsModuleRequireContextTargetKindGeneratedFromDeclarationsModu
   connects DeclarationsModule -> DeclarationsModuleRequireContextTargetKindAstAnchor
   roles { DeclarationsModule as generated, DeclarationsModuleRequireContextTargetKindAstAnchor as syntax }
   expects DeclarationsModuleRequireContextTargetKindAstAnchor fingerprint ast.semantic_subtree_v1("sha256:72e19dfa98c154bbb34b3c8ec1cb342ecdd3a4fd4636ee919ef4a7e0627aa5b8")
-  summary "fn DeclarationsModule.requireContextTargetKind generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/declarations.ts:226-250."
+  summary "fn DeclarationsModule.requireContextTargetKind generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/declarations.ts#requireContextTargetKind."
 }
 
 implementation DeclarationsModuleImpl {

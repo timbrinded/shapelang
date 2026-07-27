@@ -4,8 +4,11 @@ exports[`shp CLI keeps analyzer hint and warning output stable for library fixtu
 "fixtures/source/analyzer/prisma/destructive.ts:8 HardDelete await prisma.auditEvent.delete({ where: { id: 1 } });
 fixtures/source/analyzer/prisma/destructive.ts:9 HardDelete await prisma.auditEvent
     .deleteMany({ where: { expired: true } });
-fixtures/source/analyzer/prisma/destructive.ts:11 Truncate await prisma.$executeRawUnsafe("TRUNCATE TABLE audit_event_staging");
-fixtures/source/analyzer/prisma/destructive.ts:12 DropStorage await prisma.$executeRawUnsafe("DROP TABLE audit_event_archive");
+fixtures/source/analyzer/prisma/destructive.ts:12 Truncate await prisma.$executeRawUnsafe(\`
+    TRUNCATE
+    TABLE audit_event_staging
+  \`);
+fixtures/source/analyzer/prisma/destructive.ts:15 DropStorage await prisma.$executeRawUnsafe("DROP TABLE audit_event_archive");
 "
 `;
 
@@ -23,12 +26,15 @@ evidence: await prisma.auditEvent
 
 warning: analyzer hint missing from shape effects
 
-fixtures/source/analyzer/prisma/destructive.ts:11 suggests Truncate.
-evidence: await prisma.$executeRawUnsafe("TRUNCATE TABLE audit_event_staging");
+fixtures/source/analyzer/prisma/destructive.ts:12 suggests Truncate.
+evidence: await prisma.$executeRawUnsafe(\`
+    TRUNCATE
+    TABLE audit_event_staging
+  \`);
 
 warning: analyzer hint missing from shape effects
 
-fixtures/source/analyzer/prisma/destructive.ts:12 suggests DropStorage.
+fixtures/source/analyzer/prisma/destructive.ts:15 suggests DropStorage.
 evidence: await prisma.$executeRawUnsafe("DROP TABLE audit_event_archive");
 "
 `;

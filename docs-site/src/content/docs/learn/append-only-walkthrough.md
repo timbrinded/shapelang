@@ -52,13 +52,13 @@ component AuditStore {
     source ts("src/audit/store.ts#appendEvent")
     effects complete {
       Append<AuditEvent>
-        evidence ts("src/audit/store.ts:8-14")
+        evidence ts("src/audit/store.ts#appendEvent")
     }
   fn listEvents
     source ts("src/audit/store.ts#listEvents")
     effects complete {
       Read<AuditEvent>
-        evidence ts("src/audit/store.ts:18-25")
+        evidence ts("src/audit/store.ts#listEvents")
     }
 }
 ```
@@ -89,7 +89,7 @@ component AuditStore {
     source ts("src/audit/purge.ts#purgeOldEvents")
     effects complete {
       HardDelete<AuditEvent>
-        evidence ts("src/audit/purge.ts:12-16")
+        evidence ts("src/audit/purge.ts#purgeOldEvents")
     }
 }
 ```

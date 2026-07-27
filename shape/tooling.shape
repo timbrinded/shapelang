@@ -55,7 +55,7 @@ component ShapeAnalyzer {
   grants Read<NormalizedShapeReference>
   fn analyzeSourceText
     source ts("packages/shp-checker/src/analyzer.ts#analyzeSourceText")
-    description "Emits advisory destructive-operation hints from obvious SQL and supported TypeScript persistence-library patterns."
+    description "Lexically emits advisory destructive-operation hints from multiline SQL and supported TypeScript persistence calls while excluding comments and inert string or template literals."
     effects complete {
       Append<AnalyzerHint>
         evidence ts("packages/shp-checker/src/analyzer.ts")
@@ -144,6 +144,7 @@ component ShapeAstGenerator {
     }
   fn generateShapeFromCodeSemanticGraph : RefactorSensitive
     source ts("packages/shp-checker/src/ast-generation-render.ts#generateShapeFromCodeSemanticGraph")
+    description "Renders deterministic semantic drafts with stable symbol or file references and fingerprinted AST anchors."
     effects complete {
       Append<GeneratedAstAnchor>
         evidence ts("packages/shp-checker/src/ast-generation-render.ts")
@@ -219,6 +220,7 @@ component ShapeAuthoring {
   grants Read<PreludeMetadata>
   fn buildShapeAuthorPrompt : RefactorSensitive
     source ts("packages/shp-checker/src/authoring.ts#buildShapeAuthorPrompt")
+    description "Builds conservative authoring instructions that require stable symbol or file references without line suffixes."
     effects complete {
       Append<AuthoringPrompt>
         evidence ts("packages/shp-checker/src/authoring.ts")
@@ -567,7 +569,7 @@ memory AstGenerationUnknownSafety : RefactorConstraint<fn ShapeAstGenerator.gene
   applies_to fn ShapeAstGenerator.generateShapeFromCodeSemanticGraph
   status Explained
   confidence High
-  summary "AST-derived architecture drafts must preserve uncertainty with effects unknown, include compact syntax anchors with semantic fingerprints when token evidence exists, warn instead of failing on tokenless anchors, emit candidate effect evidence only as review hints with checkable pins, and keep raw syntax traces opt-in."
+  summary "AST-derived architecture drafts must preserve uncertainty with effects unknown, use stable symbol or file references that do not churn on line-only movement, include compact syntax anchors with semantic fingerprints when token evidence exists, warn instead of failing on tokenless anchors, emit candidate effect evidence only as review hints with checkable pins, and keep raw syntax traces opt-in."
   who {
     owner ShapeMaintainers
   }
@@ -583,7 +585,7 @@ memory AuthorPromptSafetyRules : RefactorConstraint<fn ShapeAuthoring.buildShape
   applies_to fn ShapeAuthoring.buildShapeAuthorPrompt
   status Explained
   confidence High
-  summary "Authoring prompts must require evidence, explicit destructive effects, and no memory waiver for final forbids."
+  summary "Authoring prompts must require stable symbol or file evidence without line suffixes, explicit destructive effects, and no memory waiver for final forbids."
   who {
     owner ShapeMaintainers
   }
@@ -700,12 +702,30 @@ reevaluation AstGenerationDraftSafetyRechecked {
   evidence test("packages/shp-checker/src/ast-generation.test.ts")
 }
 
+reevaluation AstGenerationStableReferencesRechecked {
+  satisfies memory AstGenerationUnknownSafety
+  outcome Confirmed
+  summary "Generated semantic drafts now use qualified symbol references for named declarations and file-only fallbacks for anonymous nodes; line-only span shifts remain byte-identical while semantic fingerprints and review pins stay intact."
+  reviewer ShapeMaintainers
+  decided_on "2026-07-27"
+  evidence test("packages/shp-checker/src/ast-generation.test.ts")
+}
+
 reevaluation AuthorPromptPreludeRechecked {
   satisfies memory AuthorPromptSafetyRules
   outcome Confirmed
   summary "Author prompts now derive final-forbid, context, and relation-kind guidance from the shared prelude registry."
   reviewer ShapeMaintainers
   decided_on "2026-05-20"
+  evidence test("packages/shp-checker/src/authoring.test.ts")
+}
+
+reevaluation AuthorPromptStableReferencesRechecked {
+  satisfies memory AuthorPromptSafetyRules
+  outcome Confirmed
+  summary "Author and critic prompts now require stable symbol or file-only source and evidence references and explicitly reject line-number suffixes."
+  reviewer ShapeMaintainers
+  decided_on "2026-07-27"
   evidence test("packages/shp-checker/src/authoring.test.ts")
 }
 

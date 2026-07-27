@@ -54,7 +54,7 @@ Storage and fingerprint declarations use provider names and string values. Finge
 module generated.audit
 
 resource PurgeOldEventsAstAnchor {
-  storage ast.anchor("src/audit/store.rs:42-58")
+  storage ast.anchor("src/audit/store.rs#purge_old_events")
   fingerprint ast.semantic_subtree_v1("sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
 }
 ```
@@ -90,7 +90,7 @@ component AuditStore {
     source ts("src/audit/store.ts#appendEvent")
     effects complete {
       Append<AuditEvent>
-        evidence ts("src/audit/store.ts:8-14")
+        evidence ts("src/audit/store.ts#appendEvent")
     }
 }
 ```
@@ -110,14 +110,14 @@ resource AuditStoreAppendEventAstAnchor {
 
 component AuditStore {
   fn appendEvent
-    source ts("src/audit/store.ts:8-14")
+    source ts("src/audit/store.ts#AuditStore.appendEvent")
     effects unknown
 }
 
 effect candidate AppendEventCandidate {
   fn AuditStore.appendEvent
   effect Append<AuditEvent>
-  source ts("src/audit/store.ts:8-14")
+  source ts("src/audit/store.ts#AuditStore.appendEvent")
   confidence low
   pin AuditStoreAppendEventAstAnchor fingerprint ast.semantic_subtree_v1("sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
 }
@@ -217,7 +217,7 @@ component AuditStore {
     source ts("src/audit/purge.ts#purgeOldEvents")
     effects complete {
       HardDelete<AuditEvent>
-        evidence ts("src/audit/purge.ts:12-16")
+        evidence ts("src/audit/purge.ts#purgeOldEvents")
     }
 }
 ```

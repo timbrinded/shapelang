@@ -165,9 +165,7 @@ export function fallbackFunctionName(node: RawAstNode): string {
   return `generated${stableHash(node.id).slice(0, 8)}`;
 }
 
-export function sourceRef(node: RawAstNode): string {
-  if (!node.span) {
-    return node.path;
-  }
-  return `${node.path}:${node.span.startLine}-${node.span.endLine}`;
+export function sourceRef(node: RawAstNode, symbol?: string): string {
+  const stableSymbol = symbol?.trim();
+  return stableSymbol ? `${node.path}#${stableSymbol}` : node.path;
 }

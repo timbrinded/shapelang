@@ -7,37 +7,37 @@ trait GeneratedCandidate {
 }
 
 resource MemoryGuardsModuleDescribeGuardedPropertyAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/memory-guards.ts:54-56")
+  storage ast.anchor("packages/shp-checker/src/memory-guards.ts#describeGuardedProperty")
   fingerprint ast.semantic_subtree_v1("sha256:923a5c6ee86abd1e684c87eebac66c3bb742beafb386ab3ead0e4d8818f943ee")
 }
 
 resource MemoryGuardsModuleEvaluateGuardsAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/memory-guards.ts:103-175")
+  storage ast.anchor("packages/shp-checker/src/memory-guards.ts#evaluateGuards")
   fingerprint ast.semantic_subtree_v1("sha256:f2153bb7dd7b5e134f0e0cebe6fd3f4f32a58d8e620cd87fbaa4e5cf6e65efdc")
 }
 
 resource MemoryGuardsModuleFindCoarseTriggerAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/memory-guards.ts:78-85")
+  storage ast.anchor("packages/shp-checker/src/memory-guards.ts#findCoarseTrigger")
   fingerprint ast.semantic_subtree_v1("sha256:2fc5219ba90391605ed31ad43476f8a8067b6cb6a39165430ca74904d5ff59d9")
 }
 
 resource MemoryGuardsModuleFindPropertyTriggerAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/memory-guards.ts:58-76")
+  storage ast.anchor("packages/shp-checker/src/memory-guards.ts#findPropertyTrigger")
   fingerprint ast.semantic_subtree_v1("sha256:210d23b8bcdca377a164179932b29bf01c99431d6957e9f8099107f0b8ae28d8")
 }
 
 component MemoryGuardsModule : GeneratedCandidate {
   fn describeGuardedProperty
-    source ts("packages/shp-checker/src/memory-guards.ts:54-56")
+    source ts("packages/shp-checker/src/memory-guards.ts#describeGuardedProperty")
     effects unknown
   fn evaluateGuards
-    source ts("packages/shp-checker/src/memory-guards.ts:103-175")
+    source ts("packages/shp-checker/src/memory-guards.ts#evaluateGuards")
     effects unknown
   fn findCoarseTrigger
-    source ts("packages/shp-checker/src/memory-guards.ts:78-85")
+    source ts("packages/shp-checker/src/memory-guards.ts#findCoarseTrigger")
     effects unknown
   fn findPropertyTrigger
-    source ts("packages/shp-checker/src/memory-guards.ts:58-76")
+    source ts("packages/shp-checker/src/memory-guards.ts#findPropertyTrigger")
     effects unknown
 }
 
@@ -46,7 +46,7 @@ relation MemoryGuardsModuleDescribeGuardedPropertyGeneratedFromMemoryGuardsModul
   connects MemoryGuardsModule -> MemoryGuardsModuleDescribeGuardedPropertyAstAnchor
   roles { MemoryGuardsModule as generated, MemoryGuardsModuleDescribeGuardedPropertyAstAnchor as syntax }
   expects MemoryGuardsModuleDescribeGuardedPropertyAstAnchor fingerprint ast.semantic_subtree_v1("sha256:923a5c6ee86abd1e684c87eebac66c3bb742beafb386ab3ead0e4d8818f943ee")
-  summary "fn MemoryGuardsModule.describeGuardedProperty generated from typescript function_declaration at packages/shp-checker/src/memory-guards.ts:54-56."
+  summary "fn MemoryGuardsModule.describeGuardedProperty generated from typescript function_declaration at packages/shp-checker/src/memory-guards.ts#describeGuardedProperty."
 }
 
 relation MemoryGuardsModuleEvaluateGuardsGeneratedFromMemoryGuardsModuleEvaluateGuardsAstAnchor {
@@ -54,7 +54,7 @@ relation MemoryGuardsModuleEvaluateGuardsGeneratedFromMemoryGuardsModuleEvaluate
   connects MemoryGuardsModule -> MemoryGuardsModuleEvaluateGuardsAstAnchor
   roles { MemoryGuardsModule as generated, MemoryGuardsModuleEvaluateGuardsAstAnchor as syntax }
   expects MemoryGuardsModuleEvaluateGuardsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f2153bb7dd7b5e134f0e0cebe6fd3f4f32a58d8e620cd87fbaa4e5cf6e65efdc")
-  summary "fn MemoryGuardsModule.evaluateGuards generated from typescript function_declaration at packages/shp-checker/src/memory-guards.ts:103-175."
+  summary "fn MemoryGuardsModule.evaluateGuards generated from typescript function_declaration at packages/shp-checker/src/memory-guards.ts#evaluateGuards."
 }
 
 relation MemoryGuardsModuleFindCoarseTriggerGeneratedFromMemoryGuardsModuleFindCoarseTriggerAstAnchor {
@@ -62,7 +62,7 @@ relation MemoryGuardsModuleFindCoarseTriggerGeneratedFromMemoryGuardsModuleFindC
   connects MemoryGuardsModule -> MemoryGuardsModuleFindCoarseTriggerAstAnchor
   roles { MemoryGuardsModule as generated, MemoryGuardsModuleFindCoarseTriggerAstAnchor as syntax }
   expects MemoryGuardsModuleFindCoarseTriggerAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2fc5219ba90391605ed31ad43476f8a8067b6cb6a39165430ca74904d5ff59d9")
-  summary "fn MemoryGuardsModule.findCoarseTrigger generated from typescript function_declaration at packages/shp-checker/src/memory-guards.ts:78-85."
+  summary "fn MemoryGuardsModule.findCoarseTrigger generated from typescript function_declaration at packages/shp-checker/src/memory-guards.ts#findCoarseTrigger."
 }
 
 relation MemoryGuardsModuleFindPropertyTriggerGeneratedFromMemoryGuardsModuleFindPropertyTriggerAstAnchor {
@@ -70,7 +70,7 @@ relation MemoryGuardsModuleFindPropertyTriggerGeneratedFromMemoryGuardsModuleFin
   connects MemoryGuardsModule -> MemoryGuardsModuleFindPropertyTriggerAstAnchor
   roles { MemoryGuardsModule as generated, MemoryGuardsModuleFindPropertyTriggerAstAnchor as syntax }
   expects MemoryGuardsModuleFindPropertyTriggerAstAnchor fingerprint ast.semantic_subtree_v1("sha256:210d23b8bcdca377a164179932b29bf01c99431d6957e9f8099107f0b8ae28d8")
-  summary "fn MemoryGuardsModule.findPropertyTrigger generated from typescript function_declaration at packages/shp-checker/src/memory-guards.ts:58-76."
+  summary "fn MemoryGuardsModule.findPropertyTrigger generated from typescript function_declaration at packages/shp-checker/src/memory-guards.ts#findPropertyTrigger."
 }
 
 implementation MemoryGuardsModuleImpl {

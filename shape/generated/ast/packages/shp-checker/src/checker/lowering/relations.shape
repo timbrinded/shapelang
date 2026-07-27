@@ -7,37 +7,37 @@ trait GeneratedCandidate {
 }
 
 resource RelationsModuleBuildRelationInfoAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/lowering/relations.ts:90-311")
+  storage ast.anchor("packages/shp-checker/src/checker/lowering/relations.ts#buildRelationInfo")
   fingerprint ast.semantic_subtree_v1("sha256:a102150c9f60cc6cc8e687aae86ba49eace62b2c8c4db5f75998ad547ef0ddcb")
 }
 
 resource RelationsModuleCollectConnectsAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/lowering/relations.ts:333-345")
+  storage ast.anchor("packages/shp-checker/src/checker/lowering/relations.ts#collectConnects")
   fingerprint ast.semantic_subtree_v1("sha256:420871c441d80da1ad7e8827ced2dfddcfa42661f78bdef60de2e88efefc4db7")
 }
 
 resource RelationsModuleLowerRelationAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/lowering/relations.ts:27-88")
+  storage ast.anchor("packages/shp-checker/src/checker/lowering/relations.ts#lowerRelation")
   fingerprint ast.semantic_subtree_v1("sha256:22d8734ecd3bc38f1d28b069c0bc2fbb818dcd377ad88c7db548edb3b21b259e")
 }
 
 resource RelationsModuleRemoveRelationAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/lowering/relations.ts:313-331")
+  storage ast.anchor("packages/shp-checker/src/checker/lowering/relations.ts#removeRelation")
   fingerprint ast.semantic_subtree_v1("sha256:28220984b63cba5164572b568474323db02f6fbe94f4a355408d3e188aded959")
 }
 
 component RelationsModule : GeneratedCandidate {
   fn buildRelationInfo
-    source ts("packages/shp-checker/src/checker/lowering/relations.ts:90-311")
+    source ts("packages/shp-checker/src/checker/lowering/relations.ts#buildRelationInfo")
     effects unknown
   fn collectConnects
-    source ts("packages/shp-checker/src/checker/lowering/relations.ts:333-345")
+    source ts("packages/shp-checker/src/checker/lowering/relations.ts#collectConnects")
     effects unknown
   fn lowerRelation
-    source ts("packages/shp-checker/src/checker/lowering/relations.ts:27-88")
+    source ts("packages/shp-checker/src/checker/lowering/relations.ts#lowerRelation")
     effects unknown
   fn removeRelation
-    source ts("packages/shp-checker/src/checker/lowering/relations.ts:313-331")
+    source ts("packages/shp-checker/src/checker/lowering/relations.ts#removeRelation")
     effects unknown
 }
 
@@ -46,7 +46,7 @@ relation RelationsModuleBuildRelationInfoGeneratedFromRelationsModuleBuildRelati
   connects RelationsModule -> RelationsModuleBuildRelationInfoAstAnchor
   roles { RelationsModule as generated, RelationsModuleBuildRelationInfoAstAnchor as syntax }
   expects RelationsModuleBuildRelationInfoAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a102150c9f60cc6cc8e687aae86ba49eace62b2c8c4db5f75998ad547ef0ddcb")
-  summary "fn RelationsModule.buildRelationInfo generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/relations.ts:90-311."
+  summary "fn RelationsModule.buildRelationInfo generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/relations.ts#buildRelationInfo."
 }
 
 relation RelationsModuleCollectConnectsGeneratedFromRelationsModuleCollectConnectsAstAnchor {
@@ -54,7 +54,7 @@ relation RelationsModuleCollectConnectsGeneratedFromRelationsModuleCollectConnec
   connects RelationsModule -> RelationsModuleCollectConnectsAstAnchor
   roles { RelationsModule as generated, RelationsModuleCollectConnectsAstAnchor as syntax }
   expects RelationsModuleCollectConnectsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:420871c441d80da1ad7e8827ced2dfddcfa42661f78bdef60de2e88efefc4db7")
-  summary "fn RelationsModule.collectConnects generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/relations.ts:333-345."
+  summary "fn RelationsModule.collectConnects generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/relations.ts#collectConnects."
 }
 
 relation RelationsModuleLowerRelationGeneratedFromRelationsModuleLowerRelationAstAnchor {
@@ -62,7 +62,7 @@ relation RelationsModuleLowerRelationGeneratedFromRelationsModuleLowerRelationAs
   connects RelationsModule -> RelationsModuleLowerRelationAstAnchor
   roles { RelationsModule as generated, RelationsModuleLowerRelationAstAnchor as syntax }
   expects RelationsModuleLowerRelationAstAnchor fingerprint ast.semantic_subtree_v1("sha256:22d8734ecd3bc38f1d28b069c0bc2fbb818dcd377ad88c7db548edb3b21b259e")
-  summary "fn RelationsModule.lowerRelation generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/relations.ts:27-88."
+  summary "fn RelationsModule.lowerRelation generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/relations.ts#lowerRelation."
 }
 
 relation RelationsModuleRemoveRelationGeneratedFromRelationsModuleRemoveRelationAstAnchor {
@@ -70,7 +70,7 @@ relation RelationsModuleRemoveRelationGeneratedFromRelationsModuleRemoveRelation
   connects RelationsModule -> RelationsModuleRemoveRelationAstAnchor
   roles { RelationsModule as generated, RelationsModuleRemoveRelationAstAnchor as syntax }
   expects RelationsModuleRemoveRelationAstAnchor fingerprint ast.semantic_subtree_v1("sha256:28220984b63cba5164572b568474323db02f6fbe94f4a355408d3e188aded959")
-  summary "fn RelationsModule.removeRelation generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/relations.ts:313-331."
+  summary "fn RelationsModule.removeRelation generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/relations.ts#removeRelation."
 }
 
 implementation RelationsModuleImpl {

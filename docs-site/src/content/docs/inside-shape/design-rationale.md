@@ -73,7 +73,7 @@ component AuditStore {
     source ts("src/audit/store.ts#appendEvent")
     effects complete {
       Append<AuditEvent>
-        evidence ts("src/audit/store.ts:8-14")
+        evidence ts("src/audit/store.ts#appendEvent")
     }
 }
 ```
@@ -106,7 +106,7 @@ component AuditStore {
     source ts("src/audit/purge.ts#purgeOldEvents")
     effects complete {
       HardDelete<AuditEvent>
-        evidence ts("src/audit/purge.ts:12-16")
+        evidence ts("src/audit/purge.ts#purgeOldEvents")
     }
 }
 ```
@@ -114,7 +114,7 @@ component AuditStore {
 Avoid compressed notation that saves characters but hides meaning from reviewers:
 
 ```shape no-verify
-AuditStore.purgeOldEvents -> HardDelete(AuditEvent) @ src/audit/purge.ts:12
+AuditStore.purgeOldEvents -> HardDelete(AuditEvent) @ src/audit/purge.ts#purgeOldEvents
 ```
 
 The compact version is shorter, but it loses important structure. Is `AuditStore` a component? Is `AuditEvent` a resource? Is this a complete effect summary or a hint? Where would a rationale attach? Where would a future formatter put evidence?

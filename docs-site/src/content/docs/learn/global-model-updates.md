@@ -23,7 +23,7 @@ component AuditStore {
     source ts("src/audit/purge.ts#purgeOldEvents")
     effects complete {
       HardDelete<AuditEvent>
-        evidence ts("src/audit/purge.ts:12-16")
+        evidence ts("src/audit/purge.ts#purgeOldEvents")
     }
 }
 ```

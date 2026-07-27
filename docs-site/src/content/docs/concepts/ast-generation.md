@@ -20,6 +20,7 @@ The semantic draft maps stable code concepts into Shape:
 - durable data concepts become `resource` only when the name or input evidence supports it
 - high-confidence resolved calls become `relation kind calls`
 - compact `GeneratedAstAnchor` resources and `generated_from` relations point semantic claims back to syntax evidence
+- generated source references use stable `#symbol` anchors for named declarations and file-only references when no stable symbol exists
 - AST anchors carry `ast.semantic_subtree_v1` fingerprints so reviewed claims can pin exact syntax evidence without putting hashes in resource names
 - generated `effect candidate` declarations record machine-readable effect hints without claiming reviewed completeness
 - unresolved references stay out of prelude `calls`
@@ -37,19 +38,19 @@ trait GeneratedAstAnchor {
 }
 
 resource AuditEvent : GeneratedCandidate {
-  storage rust.type("src/audit/store.rs:1-3")
+  storage rust.type("src/audit/store.rs#AuditEvent")
 }
 
 component AuditStore : GeneratedCandidate {
   fn append_event
-    source rust("src/audit/store.rs:20-22")
+    source rust("src/audit/store.rs#AuditStore.append_event")
     effects unknown
 }
 
 effect candidate AppendEventAppendAuditEventCandidate {
   fn AuditStore.append_event
   effect Append<AuditEvent>
-  source rust("src/audit/store.rs:20-22")
+  source rust("src/audit/store.rs#AuditStore.append_event")
   confidence low
   pin AuditStoreAppendEventAstAnchor fingerprint ast.semantic_subtree_v1("sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb")
 }
@@ -62,7 +63,7 @@ implementation AuditStoreImpl {
 }
 
 resource AuditStoreAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("src/audit/store.rs:9-11")
+  storage ast.anchor("src/audit/store.rs#AuditStore")
   fingerprint ast.semantic_subtree_v1("sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
 }
 
@@ -71,7 +72,7 @@ relation AuditStoreGeneratedFromAuditStoreAstAnchor {
   connects AuditStore -> AuditStoreAstAnchor
   roles { AuditStore as generated, AuditStoreAstAnchor as syntax }
   expects AuditStoreAstAnchor fingerprint ast.semantic_subtree_v1("sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
-  summary "component AuditStore generated from rust struct_item at src/audit/store.rs:9-11."
+  summary "component AuditStore generated from rust struct_item at src/audit/store.rs#AuditStore."
 }
 ```
 
@@ -94,7 +95,7 @@ trait GeneratedAstAnchor {
 }
 
 resource AuditStoreAppendEventAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("src/audit/store.rs:20-22")
+  storage ast.anchor("src/audit/store.rs#AuditStore.append_event")
   fingerprint ast.semantic_subtree_v1("sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb")
 }
 ```
@@ -112,10 +113,10 @@ component AuditStore {
   owns AuditEvent
   grants Append<AuditEvent>
   fn append_event
-    source rust("src/audit/store.rs:20-22")
+    source rust("src/audit/store.rs#AuditStore.append_event")
     effects complete {
       Append<AuditEvent>
-        evidence rust("src/audit/store.rs:20-22")
+        evidence rust("src/audit/store.rs#AuditStore.append_event")
     }
 }
 
@@ -124,7 +125,7 @@ relation AuditStoreAppendEventReviewedFromAst {
   connects AuditStore -> shape.generated.ast.src.audit.store::AuditStoreAppendEventAstAnchor
   roles { AuditStore as reviewed, shape.generated.ast.src.audit.store::AuditStoreAppendEventAstAnchor as syntax }
   expects shape.generated.ast.src.audit.store::AuditStoreAppendEventAstAnchor fingerprint ast.semantic_subtree_v1("sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb")
-  summary "Reviewed AuditStore.append_event effects are backed by the generated AST anchor for src/audit/store.rs:20-22."
+  summary "Reviewed AuditStore.append_event effects are backed by the generated AST anchor for src/audit/store.rs#AuditStore.append_event."
 }
 ```
 

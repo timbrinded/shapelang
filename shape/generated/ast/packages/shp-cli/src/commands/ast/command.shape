@@ -7,13 +7,13 @@ trait GeneratedCandidate {
 }
 
 resource CommandModuleParseLanguageFlagAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-cli/src/commands/ast/command.ts:81-89")
+  storage ast.anchor("packages/shp-cli/src/commands/ast/command.ts#parseLanguageFlag")
   fingerprint ast.semantic_subtree_v1("sha256:458dbf65f3adc516eba4aa874fbcca5d3781c15629e76bad74235e808545823a")
 }
 
 component CommandModule : GeneratedCandidate {
   fn parseLanguageFlag
-    source ts("packages/shp-cli/src/commands/ast/command.ts:81-89")
+    source ts("packages/shp-cli/src/commands/ast/command.ts#parseLanguageFlag")
     effects unknown
 }
 
@@ -22,7 +22,7 @@ relation CommandModuleParseLanguageFlagGeneratedFromCommandModuleParseLanguageFl
   connects CommandModule -> CommandModuleParseLanguageFlagAstAnchor
   roles { CommandModule as generated, CommandModuleParseLanguageFlagAstAnchor as syntax }
   expects CommandModuleParseLanguageFlagAstAnchor fingerprint ast.semantic_subtree_v1("sha256:458dbf65f3adc516eba4aa874fbcca5d3781c15629e76bad74235e808545823a")
-  summary "fn CommandModule.parseLanguageFlag generated from typescript function_declaration at packages/shp-cli/src/commands/ast/command.ts:81-89."
+  summary "fn CommandModule.parseLanguageFlag generated from typescript function_declaration at packages/shp-cli/src/commands/ast/command.ts#parseLanguageFlag."
 }
 
 implementation CommandModuleImpl {

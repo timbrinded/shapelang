@@ -7,101 +7,101 @@ trait GeneratedCandidate {
 }
 
 resource HarnessModuleCharacterizationAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/behavioural/harness.ts:43-49")
+  storage ast.anchor("packages/shp-checker/src/behavioural/harness.ts#characterization")
   fingerprint ast.semantic_subtree_v1("sha256:1d195ab43a102e7664b84b5487e6a40e8578044949c84e39e0d2074f4bda923b")
 }
 
 resource HarnessModuleCheckSourceAsAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/behavioural/harness.ts:78-84")
+  storage ast.anchor("packages/shp-checker/src/behavioural/harness.ts#checkSourceAs")
   fingerprint ast.semantic_subtree_v1("sha256:1954d48d2e57a5303bc7d6700ff09a322ac4ff507ea724e8af460d4fbd29c04c")
 }
 
 resource HarnessModuleCheckSourceAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/behavioural/harness.ts:73-75")
+  storage ast.anchor("packages/shp-checker/src/behavioural/harness.ts#checkSource")
   fingerprint ast.semantic_subtree_v1("sha256:972b05398aa8b30ac9e17f876724067e29e81dfe69fc72d81fccd8a2ae03b8ce")
 }
 
 resource HarnessModuleDiagnosticKindsAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/behavioural/harness.ts:87-89")
+  storage ast.anchor("packages/shp-checker/src/behavioural/harness.ts#diagnosticKinds")
   fingerprint ast.semantic_subtree_v1("sha256:a7f5eae25f09984ec36d416b30b8cdaed0c98b89d7c7a88698bf5dd813dfcc3f")
 }
 
 resource HarnessModuleExpectOrderedFragmentsAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/behavioural/harness.ts:142-156")
+  storage ast.anchor("packages/shp-checker/src/behavioural/harness.ts#expectOrderedFragments")
   fingerprint ast.semantic_subtree_v1("sha256:b46c9b39b3a9e87948832826945edd5b10a635e8e73d5cad7e1e0a198a4a58dc")
 }
 
 resource HarnessModuleFindDiagnosticAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/behavioural/harness.ts:92-99")
+  storage ast.anchor("packages/shp-checker/src/behavioural/harness.ts#findDiagnostic")
   fingerprint ast.semantic_subtree_v1("sha256:7968381a1db3288907e61d0c0bed29505c7dbeaceb60368532c14d02e5df5de2")
 }
 
 resource HarnessModuleLockedIntendedAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/behavioural/harness.ts:34-36")
+  storage ast.anchor("packages/shp-checker/src/behavioural/harness.ts#lockedIntended")
   fingerprint ast.semantic_subtree_v1("sha256:2f3a8ae90918e0108b6a3429381568f07828ddf01de757168d45254fa5ab2bc4")
 }
 
 resource HarnessModuleParseModuleOrThrowAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/behavioural/harness.ts:60-70")
+  storage ast.anchor("packages/shp-checker/src/behavioural/harness.ts#parseModuleOrThrow")
   fingerprint ast.semantic_subtree_v1("sha256:6072eb11e6e6bc7572f572c195dca11c6fd7a790c301b5bea55c0553b5d5d64e")
 }
 
 resource HarnessModuleRenderAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/behavioural/harness.ts:131-133")
+  storage ast.anchor("packages/shp-checker/src/behavioural/harness.ts#render")
   fingerprint ast.semantic_subtree_v1("sha256:9951db637c7d5969a6da6967bd9a9b2dea9e76f58ce1753cab576c73d8927c37")
 }
 
 resource HarnessModuleRequireDiagnosticAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/behavioural/harness.ts:107-120")
+  storage ast.anchor("packages/shp-checker/src/behavioural/harness.ts#requireDiagnostic")
   fingerprint ast.semantic_subtree_v1("sha256:bfca6ee407c86e913eec883bd3f5dcc31d73a3cf467da1dc1d1038dff63d70f5")
 }
 
 resource HarnessModuleRequireNoDiagnosticAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/behavioural/harness.ts:123-128")
+  storage ast.anchor("packages/shp-checker/src/behavioural/harness.ts#requireNoDiagnostic")
   fingerprint ast.semantic_subtree_v1("sha256:5fe39cab461e02f528ef1281a90e3814f9f205fd766b1a0628dfe3e3fe6a857a")
 }
 
 resource HarnessModuleShouldBeAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/behavioural/harness.ts:55-57")
+  storage ast.anchor("packages/shp-checker/src/behavioural/harness.ts#shouldBe")
   fingerprint ast.semantic_subtree_v1("sha256:7e3a9733fe97ec82fdd4728bf5afdaec879b248eb3da5295f66c6f90e316d5f8")
 }
 
 component HarnessModule : GeneratedCandidate {
   fn characterization
-    source ts("packages/shp-checker/src/behavioural/harness.ts:43-49")
+    source ts("packages/shp-checker/src/behavioural/harness.ts#characterization")
     effects unknown
   fn checkSource
-    source ts("packages/shp-checker/src/behavioural/harness.ts:73-75")
+    source ts("packages/shp-checker/src/behavioural/harness.ts#checkSource")
     effects unknown
   fn checkSourceAs
-    source ts("packages/shp-checker/src/behavioural/harness.ts:78-84")
+    source ts("packages/shp-checker/src/behavioural/harness.ts#checkSourceAs")
     effects unknown
   fn diagnosticKinds
-    source ts("packages/shp-checker/src/behavioural/harness.ts:87-89")
+    source ts("packages/shp-checker/src/behavioural/harness.ts#diagnosticKinds")
     effects unknown
   fn expectOrderedFragments
-    source ts("packages/shp-checker/src/behavioural/harness.ts:142-156")
+    source ts("packages/shp-checker/src/behavioural/harness.ts#expectOrderedFragments")
     effects unknown
   fn findDiagnostic
-    source ts("packages/shp-checker/src/behavioural/harness.ts:92-99")
+    source ts("packages/shp-checker/src/behavioural/harness.ts#findDiagnostic")
     effects unknown
   fn lockedIntended
-    source ts("packages/shp-checker/src/behavioural/harness.ts:34-36")
+    source ts("packages/shp-checker/src/behavioural/harness.ts#lockedIntended")
     effects unknown
   fn parseModuleOrThrow
-    source ts("packages/shp-checker/src/behavioural/harness.ts:60-70")
+    source ts("packages/shp-checker/src/behavioural/harness.ts#parseModuleOrThrow")
     effects unknown
   fn render
-    source ts("packages/shp-checker/src/behavioural/harness.ts:131-133")
+    source ts("packages/shp-checker/src/behavioural/harness.ts#render")
     effects unknown
   fn requireDiagnostic
-    source ts("packages/shp-checker/src/behavioural/harness.ts:107-120")
+    source ts("packages/shp-checker/src/behavioural/harness.ts#requireDiagnostic")
     effects unknown
   fn requireNoDiagnostic
-    source ts("packages/shp-checker/src/behavioural/harness.ts:123-128")
+    source ts("packages/shp-checker/src/behavioural/harness.ts#requireNoDiagnostic")
     effects unknown
   fn shouldBe
-    source ts("packages/shp-checker/src/behavioural/harness.ts:55-57")
+    source ts("packages/shp-checker/src/behavioural/harness.ts#shouldBe")
     effects unknown
 }
 
@@ -110,7 +110,7 @@ relation HarnessModuleCharacterizationGeneratedFromHarnessModuleCharacterization
   connects HarnessModule -> HarnessModuleCharacterizationAstAnchor
   roles { HarnessModule as generated, HarnessModuleCharacterizationAstAnchor as syntax }
   expects HarnessModuleCharacterizationAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1d195ab43a102e7664b84b5487e6a40e8578044949c84e39e0d2074f4bda923b")
-  summary "fn HarnessModule.characterization generated from typescript function_declaration at packages/shp-checker/src/behavioural/harness.ts:43-49."
+  summary "fn HarnessModule.characterization generated from typescript function_declaration at packages/shp-checker/src/behavioural/harness.ts#characterization."
 }
 
 relation HarnessModuleCheckSourceAsGeneratedFromHarnessModuleCheckSourceAsAstAnchor {
@@ -118,7 +118,7 @@ relation HarnessModuleCheckSourceAsGeneratedFromHarnessModuleCheckSourceAsAstAnc
   connects HarnessModule -> HarnessModuleCheckSourceAsAstAnchor
   roles { HarnessModule as generated, HarnessModuleCheckSourceAsAstAnchor as syntax }
   expects HarnessModuleCheckSourceAsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1954d48d2e57a5303bc7d6700ff09a322ac4ff507ea724e8af460d4fbd29c04c")
-  summary "fn HarnessModule.checkSourceAs generated from typescript function_declaration at packages/shp-checker/src/behavioural/harness.ts:78-84."
+  summary "fn HarnessModule.checkSourceAs generated from typescript function_declaration at packages/shp-checker/src/behavioural/harness.ts#checkSourceAs."
 }
 
 relation HarnessModuleCheckSourceGeneratedFromHarnessModuleCheckSourceAstAnchor {
@@ -126,7 +126,7 @@ relation HarnessModuleCheckSourceGeneratedFromHarnessModuleCheckSourceAstAnchor 
   connects HarnessModule -> HarnessModuleCheckSourceAstAnchor
   roles { HarnessModule as generated, HarnessModuleCheckSourceAstAnchor as syntax }
   expects HarnessModuleCheckSourceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:972b05398aa8b30ac9e17f876724067e29e81dfe69fc72d81fccd8a2ae03b8ce")
-  summary "fn HarnessModule.checkSource generated from typescript function_declaration at packages/shp-checker/src/behavioural/harness.ts:73-75."
+  summary "fn HarnessModule.checkSource generated from typescript function_declaration at packages/shp-checker/src/behavioural/harness.ts#checkSource."
 }
 
 relation HarnessModuleDiagnosticKindsGeneratedFromHarnessModuleDiagnosticKindsAstAnchor {
@@ -134,7 +134,7 @@ relation HarnessModuleDiagnosticKindsGeneratedFromHarnessModuleDiagnosticKindsAs
   connects HarnessModule -> HarnessModuleDiagnosticKindsAstAnchor
   roles { HarnessModule as generated, HarnessModuleDiagnosticKindsAstAnchor as syntax }
   expects HarnessModuleDiagnosticKindsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a7f5eae25f09984ec36d416b30b8cdaed0c98b89d7c7a88698bf5dd813dfcc3f")
-  summary "fn HarnessModule.diagnosticKinds generated from typescript function_declaration at packages/shp-checker/src/behavioural/harness.ts:87-89."
+  summary "fn HarnessModule.diagnosticKinds generated from typescript function_declaration at packages/shp-checker/src/behavioural/harness.ts#diagnosticKinds."
 }
 
 relation HarnessModuleExpectOrderedFragmentsGeneratedFromHarnessModuleExpectOrderedFragmentsAstAnchor {
@@ -142,7 +142,7 @@ relation HarnessModuleExpectOrderedFragmentsGeneratedFromHarnessModuleExpectOrde
   connects HarnessModule -> HarnessModuleExpectOrderedFragmentsAstAnchor
   roles { HarnessModule as generated, HarnessModuleExpectOrderedFragmentsAstAnchor as syntax }
   expects HarnessModuleExpectOrderedFragmentsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b46c9b39b3a9e87948832826945edd5b10a635e8e73d5cad7e1e0a198a4a58dc")
-  summary "fn HarnessModule.expectOrderedFragments generated from typescript function_declaration at packages/shp-checker/src/behavioural/harness.ts:142-156."
+  summary "fn HarnessModule.expectOrderedFragments generated from typescript function_declaration at packages/shp-checker/src/behavioural/harness.ts#expectOrderedFragments."
 }
 
 relation HarnessModuleFindDiagnosticGeneratedFromHarnessModuleFindDiagnosticAstAnchor {
@@ -150,7 +150,7 @@ relation HarnessModuleFindDiagnosticGeneratedFromHarnessModuleFindDiagnosticAstA
   connects HarnessModule -> HarnessModuleFindDiagnosticAstAnchor
   roles { HarnessModule as generated, HarnessModuleFindDiagnosticAstAnchor as syntax }
   expects HarnessModuleFindDiagnosticAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7968381a1db3288907e61d0c0bed29505c7dbeaceb60368532c14d02e5df5de2")
-  summary "fn HarnessModule.findDiagnostic generated from typescript function_declaration at packages/shp-checker/src/behavioural/harness.ts:92-99."
+  summary "fn HarnessModule.findDiagnostic generated from typescript function_declaration at packages/shp-checker/src/behavioural/harness.ts#findDiagnostic."
 }
 
 relation HarnessModuleLockedIntendedGeneratedFromHarnessModuleLockedIntendedAstAnchor {
@@ -158,7 +158,7 @@ relation HarnessModuleLockedIntendedGeneratedFromHarnessModuleLockedIntendedAstA
   connects HarnessModule -> HarnessModuleLockedIntendedAstAnchor
   roles { HarnessModule as generated, HarnessModuleLockedIntendedAstAnchor as syntax }
   expects HarnessModuleLockedIntendedAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2f3a8ae90918e0108b6a3429381568f07828ddf01de757168d45254fa5ab2bc4")
-  summary "fn HarnessModule.lockedIntended generated from typescript function_declaration at packages/shp-checker/src/behavioural/harness.ts:34-36."
+  summary "fn HarnessModule.lockedIntended generated from typescript function_declaration at packages/shp-checker/src/behavioural/harness.ts#lockedIntended."
 }
 
 relation HarnessModuleParseModuleOrThrowGeneratedFromHarnessModuleParseModuleOrThrowAstAnchor {
@@ -166,7 +166,7 @@ relation HarnessModuleParseModuleOrThrowGeneratedFromHarnessModuleParseModuleOrT
   connects HarnessModule -> HarnessModuleParseModuleOrThrowAstAnchor
   roles { HarnessModule as generated, HarnessModuleParseModuleOrThrowAstAnchor as syntax }
   expects HarnessModuleParseModuleOrThrowAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6072eb11e6e6bc7572f572c195dca11c6fd7a790c301b5bea55c0553b5d5d64e")
-  summary "fn HarnessModule.parseModuleOrThrow generated from typescript function_declaration at packages/shp-checker/src/behavioural/harness.ts:60-70."
+  summary "fn HarnessModule.parseModuleOrThrow generated from typescript function_declaration at packages/shp-checker/src/behavioural/harness.ts#parseModuleOrThrow."
 }
 
 relation HarnessModuleRenderGeneratedFromHarnessModuleRenderAstAnchor {
@@ -174,7 +174,7 @@ relation HarnessModuleRenderGeneratedFromHarnessModuleRenderAstAnchor {
   connects HarnessModule -> HarnessModuleRenderAstAnchor
   roles { HarnessModule as generated, HarnessModuleRenderAstAnchor as syntax }
   expects HarnessModuleRenderAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9951db637c7d5969a6da6967bd9a9b2dea9e76f58ce1753cab576c73d8927c37")
-  summary "fn HarnessModule.render generated from typescript function_declaration at packages/shp-checker/src/behavioural/harness.ts:131-133."
+  summary "fn HarnessModule.render generated from typescript function_declaration at packages/shp-checker/src/behavioural/harness.ts#render."
 }
 
 relation HarnessModuleRequireDiagnosticGeneratedFromHarnessModuleRequireDiagnosticAstAnchor {
@@ -182,7 +182,7 @@ relation HarnessModuleRequireDiagnosticGeneratedFromHarnessModuleRequireDiagnost
   connects HarnessModule -> HarnessModuleRequireDiagnosticAstAnchor
   roles { HarnessModule as generated, HarnessModuleRequireDiagnosticAstAnchor as syntax }
   expects HarnessModuleRequireDiagnosticAstAnchor fingerprint ast.semantic_subtree_v1("sha256:bfca6ee407c86e913eec883bd3f5dcc31d73a3cf467da1dc1d1038dff63d70f5")
-  summary "fn HarnessModule.requireDiagnostic generated from typescript function_declaration at packages/shp-checker/src/behavioural/harness.ts:107-120."
+  summary "fn HarnessModule.requireDiagnostic generated from typescript function_declaration at packages/shp-checker/src/behavioural/harness.ts#requireDiagnostic."
 }
 
 relation HarnessModuleRequireNoDiagnosticGeneratedFromHarnessModuleRequireNoDiagnosticAstAnchor {
@@ -190,7 +190,7 @@ relation HarnessModuleRequireNoDiagnosticGeneratedFromHarnessModuleRequireNoDiag
   connects HarnessModule -> HarnessModuleRequireNoDiagnosticAstAnchor
   roles { HarnessModule as generated, HarnessModuleRequireNoDiagnosticAstAnchor as syntax }
   expects HarnessModuleRequireNoDiagnosticAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5fe39cab461e02f528ef1281a90e3814f9f205fd766b1a0628dfe3e3fe6a857a")
-  summary "fn HarnessModule.requireNoDiagnostic generated from typescript function_declaration at packages/shp-checker/src/behavioural/harness.ts:123-128."
+  summary "fn HarnessModule.requireNoDiagnostic generated from typescript function_declaration at packages/shp-checker/src/behavioural/harness.ts#requireNoDiagnostic."
 }
 
 relation HarnessModuleShouldBeGeneratedFromHarnessModuleShouldBeAstAnchor {
@@ -198,7 +198,7 @@ relation HarnessModuleShouldBeGeneratedFromHarnessModuleShouldBeAstAnchor {
   connects HarnessModule -> HarnessModuleShouldBeAstAnchor
   roles { HarnessModule as generated, HarnessModuleShouldBeAstAnchor as syntax }
   expects HarnessModuleShouldBeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7e3a9733fe97ec82fdd4728bf5afdaec879b248eb3da5295f66c6f90e316d5f8")
-  summary "fn HarnessModule.shouldBe generated from typescript function_declaration at packages/shp-checker/src/behavioural/harness.ts:55-57."
+  summary "fn HarnessModule.shouldBe generated from typescript function_declaration at packages/shp-checker/src/behavioural/harness.ts#shouldBe."
 }
 
 implementation HarnessModuleImpl {

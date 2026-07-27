@@ -91,7 +91,7 @@ Unknown effects are rendered as warnings and the command exits `0` only when no 
 
 ## Analyzer hints
 
-`shp analyze` scans for obvious destructive SQL plus common Kysely, Prisma, and Drizzle delete patterns. Without `--shape-files`, it prints advisory hints and exits successfully. With `--shape-files`, it compares those hints with declared effects and exits with code `1` when a hint is missing from the model.
+`shp analyze` lexically scans for obvious destructive SQL plus common Kysely, Prisma, and Drizzle delete patterns. It recognizes multiline SQL and direct raw-execution literals while ignoring comments and inert string or template literals. Destructive SQL must begin with the destructive keyword; the analyzer does not follow SQL stored in variables or resolve arbitrary library aliases. Without `--shape-files`, it prints advisory hints and exits successfully. With `--shape-files`, it compares those hints with declared effects and exits with code `1` when a hint is missing from the model.
 
 See [Analyzer Hints](../concepts/analyzer-hints) for the supported pattern families and matcher limitations.
 
@@ -99,7 +99,7 @@ See [Analyzer Hints](../concepts/analyzer-hints) for the supported pattern famil
 
 `shp ast` is a drafting tool. It turns syntax evidence into conservative Shape, not final architecture truth.
 
-By default, `shp ast source` parses files with the platform Tree-sitter native binding and prints the semantic draft: stable files, modules, types, functions, high-confidence calls, compact AST anchors, anchor fingerprints where token evidence exists, candidate effect evidence, and unresolved uncertainty. Generated functions use `effects unknown`.
+By default, `shp ast source` parses files with the platform Tree-sitter native binding and prints the semantic draft: stable files, modules, types, functions, high-confidence calls, compact AST anchors, anchor fingerprints where token evidence exists, candidate effect evidence, and unresolved uncertainty. Generated source references use stable `#symbol` anchors for named declarations and file-only references otherwise, so line-only movement does not churn the semantic draft. Generated functions use `effects unknown`.
 
 Source language inference covers TypeScript, TSX, JavaScript/JSX, Rust, Go, and Python. JSX files use the JavaScript parser; TSX files use the TSX parser bundled beside released `shp` binaries. `--language` accepts `javascript`, `typescript`, `tsx`, `rust`, `go`, and `python`; aliases `js`, `jsx`, `ts`, `rs`, and `py` normalize to their parser names. Unsupported values are rejected as usage errors before parser loading.
 

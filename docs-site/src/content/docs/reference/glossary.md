@@ -31,6 +31,6 @@ sidebar:
 | Required description | A non-empty function description required by a function shape trait or explicit `description required`. |
 | Shape update | A changed global `.shape` declaration that keeps the architecture model aligned with source changes. |
 | Shape trait | A function-level trait such as `PreserveInline` or `RefactorSensitive` that derives review obligations. |
-| Source ref | A language-tagged path such as `ts("src/audit/store.ts:8-14")`. |
+| Source ref | A language-tagged path with an optional stable symbol, such as `ts("src/audit/store.ts#appendEvent")`. |
 | Trait | A reusable set of allowed, required, or forbidden effect patterns. |
 | Unknown effects | An explicit marker that a function's effects are not known yet. |
