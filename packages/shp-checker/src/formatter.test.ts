@@ -78,6 +78,24 @@ component AuditStore {
 `);
   });
 
+  test("formats forbidden path rules canonically", () => {
+    const result = formatShapeSource(`
+      module deps
+      component Gateway {}
+      resource SecretStore
+      rule no_gateway_to_secrets { forbid path Gateway->SecretStore over calls or provides }
+    `);
+
+    expect(result.ok).toBe(true);
+    if (!result.ok) {
+      return;
+    }
+
+    expect(result.formatted).toContain(
+      "rule no_gateway_to_secrets {\n  forbid path Gateway -> SecretStore over calls or provides\n}"
+    );
+  });
+
   test("formats memory guard syntax canonically", () => {
     const result = formatShapeSource(`
       reevaluation DecisionShapeRechecked { evidence test('gateway/error-normalisation.test.ts') decided_on '2026-06-02' reviewer GatewayTeam summary 'Refactor preserves behaviour.' outcome Confirmed satisfies memory DecisionRefactorConstraint }

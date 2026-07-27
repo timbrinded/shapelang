@@ -299,7 +299,7 @@ RuleDecl:
     '}';
 
 RuleMember:
-    RuleWhenHasDecl | RuleForbidEffectDecl | RuleForbidProvidesDecl | RuleForbidHypercycleDecl;
+    RuleWhenHasDecl | RuleForbidEffectDecl | RuleForbidProvidesDecl | RuleForbidHypercycleDecl | RuleForbidPathDecl;
 
 RuleWhenHasDecl:
     'when' subject=ID 'has' trait=QualifiedTargetName;
@@ -312,6 +312,10 @@ RuleForbidProvidesDecl:
 
 RuleForbidHypercycleDecl:
     'forbid' 'hypercycle' ('over' kinds+=RelationKindName ('or' kinds+=RelationKindName)*)?;
+
+RuleForbidPathDecl:
+    'forbid' 'path' source=QualifiedTargetName '->' target=QualifiedTargetName
+    'over' kinds+=RelationKindName ('or' kinds+=RelationKindName)*;
 
 RationaleDecl:
     'rationale' name=ID ':' contextType=ContextTypeRef

@@ -223,6 +223,44 @@ export function checkResolvedNames(model: Model): SemanticDiagnostic[] {
         });
       }
     }
+    for (const forbid of rule.forbidPaths) {
+      const endpoints = [
+        {
+          name: forbid.source,
+          resolution: forbid.sourceResolution
+        },
+        ...(forbid.target === forbid.source
+          ? []
+          : [
+              {
+                name: forbid.target,
+                resolution: forbid.targetResolution
+              }
+            ])
+      ];
+      for (const endpoint of endpoints) {
+        if (endpoint.resolution === "ambiguous") {
+          continue;
+        }
+        if (endpoint.resolution === "unknown" || !isResolvedVertex(endpoint.name, model)) {
+          diagnostics.push({
+            kind: "unknown_name",
+            nameKind: "relation_endpoint",
+            name: endpoint.name,
+            filePath: forbid.provenance.filePath,
+            causedBy: [describeProvenance(forbid.provenance)]
+          });
+        } else if (isAmbiguousVertex(endpoint.name, model)) {
+          diagnostics.push({
+            kind: "invalid_rule",
+            rule: rule.name,
+            reason: `path endpoint ${displaySymbol(endpoint.name)} resolves to both a component and a resource`,
+            filePath: forbid.provenance.filePath,
+            causedBy: [describeProvenance(forbid.provenance)]
+          });
+        }
+      }
+    }
   }
 
   return diagnostics;

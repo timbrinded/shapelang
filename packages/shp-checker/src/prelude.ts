@@ -40,12 +40,12 @@ export type PreludeContextRule = {
   requiresDescription?: boolean;
 };
 
-export type RelationCycleTraversal = "none" | "directed_pairs" | "ordered_path";
+export type RelationTraversal = "none" | "directed_pairs" | "ordered_path";
 
 export type PreludeRelationKindRule = {
   name: string;
   arity: "binary" | "ordered" | "any";
-  cycleTraversal: RelationCycleTraversal;
+  traversal: RelationTraversal;
 };
 
 export const PRELUDE_TRAITS: PreludeTraitDefinition[] = [
@@ -166,10 +166,10 @@ export const PRELUDE_FINAL_FORBID_EFFECT_NAMES = [
 ];
 
 export const PRELUDE_RELATION_KIND_RULES: PreludeRelationKindRule[] = [
-  { name: "calls", arity: "binary", cycleTraversal: "directed_pairs" },
-  { name: "callbacks", arity: "binary", cycleTraversal: "directed_pairs" },
-  { name: "provides", arity: "binary", cycleTraversal: "directed_pairs" },
-  { name: "coordinated_call", arity: "ordered", cycleTraversal: "ordered_path" }
+  { name: "calls", arity: "binary", traversal: "directed_pairs" },
+  { name: "callbacks", arity: "binary", traversal: "directed_pairs" },
+  { name: "provides", arity: "binary", traversal: "directed_pairs" },
+  { name: "coordinated_call", arity: "ordered", traversal: "ordered_path" }
 ];
 
 export const PRELUDE_RELATION_KIND_NAMES = PRELUDE_RELATION_KIND_RULES.map((rule) => rule.name);
@@ -183,8 +183,8 @@ export const PRELUDE_COMPLETION_SYMBOLS = [
 
 /**
  * Kind registry: every relation kind declares whether its members are
- * traversed as an ordered path, as directed pairs, or not at all for cycle
- * checks. This is the single source of truth for hypercycle traversal.
+ * traversed as an ordered path, as directed pairs, or not at all for graph
+ * rules. This is the single source of truth for directed relation traversal.
  */
 export const PRELUDE_RELATION_KINDS = new Map(
   PRELUDE_RELATION_KIND_RULES.map(({ name, ...rule }) => [name, rule])

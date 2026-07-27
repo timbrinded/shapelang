@@ -72,6 +72,7 @@ export type ShapeKeywordNames =
     | "over"
     | "owner"
     | "owns"
+    | "path"
     | "paths"
     | "pin"
     | "policy"
@@ -1507,6 +1508,25 @@ export function isRuleForbidHypercycleDecl(item: unknown): item is RuleForbidHyp
     return reflection.isInstance(item, RuleForbidHypercycleDecl.$type);
 }
 
+export interface RuleForbidPathDecl extends langium.AstNode {
+    readonly $container: RuleDecl;
+    readonly $type: 'RuleForbidPathDecl';
+    kinds: Array<RelationKindName>;
+    source: QualifiedTargetName;
+    target: QualifiedTargetName;
+}
+
+export const RuleForbidPathDecl = {
+    $type: 'RuleForbidPathDecl',
+    kinds: 'kinds',
+    source: 'source',
+    target: 'target'
+} as const;
+
+export function isRuleForbidPathDecl(item: unknown): item is RuleForbidPathDecl {
+    return reflection.isInstance(item, RuleForbidPathDecl.$type);
+}
+
 export interface RuleForbidProvidesDecl extends langium.AstNode {
     readonly $container: RuleDecl;
     readonly $type: 'RuleForbidProvidesDecl';
@@ -1524,7 +1544,7 @@ export function isRuleForbidProvidesDecl(item: unknown): item is RuleForbidProvi
     return reflection.isInstance(item, RuleForbidProvidesDecl.$type);
 }
 
-export type RuleMember = RuleForbidEffectDecl | RuleForbidHypercycleDecl | RuleForbidProvidesDecl | RuleWhenHasDecl;
+export type RuleMember = RuleForbidEffectDecl | RuleForbidHypercycleDecl | RuleForbidPathDecl | RuleForbidProvidesDecl | RuleWhenHasDecl;
 
 export const RuleMember = {
     $type: 'RuleMember'
@@ -2001,6 +2021,7 @@ export type ShapeAstType = {
     RuleDecl: RuleDecl
     RuleForbidEffectDecl: RuleForbidEffectDecl
     RuleForbidHypercycleDecl: RuleForbidHypercycleDecl
+    RuleForbidPathDecl: RuleForbidPathDecl
     RuleForbidProvidesDecl: RuleForbidProvidesDecl
     RuleMember: RuleMember
     RuleWhenHasDecl: RuleWhenHasDecl
@@ -2961,6 +2982,22 @@ export class ShapeAstReflection extends langium.AbstractAstReflection {
                 kinds: {
                     name: RuleForbidHypercycleDecl.kinds,
                     defaultValue: []
+                }
+            },
+            superTypes: [RuleMember.$type]
+        },
+        RuleForbidPathDecl: {
+            name: RuleForbidPathDecl.$type,
+            properties: {
+                kinds: {
+                    name: RuleForbidPathDecl.kinds,
+                    defaultValue: []
+                },
+                source: {
+                    name: RuleForbidPathDecl.source
+                },
+                target: {
+                    name: RuleForbidPathDecl.target
                 }
             },
             superTypes: [RuleMember.$type]

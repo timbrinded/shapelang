@@ -177,7 +177,7 @@ hyperedge_member AuditWritePath AuditStore index=1
 hyperedge_member AuditWritePath AuditEvent index=2
 ```
 
-Lowering also builds a vertex-to-hyperedge incidence index keyed by endpoint name. Rule evaluation uses it to answer hypergraph questions without rescanning the AST: `forbid hypercycle` walks the directed step graph derived from each kind's traversal semantics, and `forbid provides T except C` filters incidence at `T`.
+Lowering also builds a vertex-to-hyperedge incidence index keyed by endpoint name. Rule evaluation uses it to answer hypergraph questions without rescanning the AST: `forbid path` performs canonical shortest-path search, `forbid hypercycle` finds a canonical shortest cycle, and `forbid provides T except C` filters incidence at `T`. Path and hypercycle rules share the directed step-graph builder and kind traversal semantics; path evaluation excludes unresolved, ambiguous, or endpoint-type-invalid relations from witnesses.
 
 A binary dependency is just a 2-vertex hyperedge. Shape does not maintain a separate binary-edge layer.
 

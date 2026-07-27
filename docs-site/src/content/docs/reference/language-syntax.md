@@ -247,12 +247,18 @@ rule NoCallsCycle {
   forbid hypercycle over calls or callbacks
 }
 
+rule NoSecretRoute {
+  forbid path Gateway -> SecretStore over calls or provides
+}
+
 rule GatewayBoundary {
   forbid provides JsonRpcEndpoint except Gateway
 }
 ```
 
-Rules currently support `when subject has TraitName`, `forbid` effect patterns (including `forbid final`), `forbid provides TARGET except COMPONENT`, and `forbid hypercycle [over KIND or KIND ...]`. Rule headers do not take type parameters; `when T has TraitName` binds the subject name used by final effect forbids. Repeated `when` clauses for the same subject are conjunctive. A final-effect condition trait is either a zero-parameter marker or declares exactly one explicit `Resource` parameter; other generic shapes are rejected. Concrete forbid targets, trait references, and exception references may be module-qualified with `module.name::Declaration`.
+Rules currently support `when subject has TraitName`, `forbid` effect patterns (including `forbid final`), `forbid provides TARGET except COMPONENT`, `forbid hypercycle [over KIND or KIND ...]`, and `forbid path SOURCE -> TARGET over KIND or KIND ...`. A path's kind filter is mandatory, its endpoints must be distinct declared components or resources, and each listed kind must have directed traversal semantics. The checker rejects any matching path and reports the canonical fewest-hop witness.
+
+Rule headers do not take type parameters; `when T has TraitName` binds the subject name used by final effect forbids. Repeated `when` clauses for the same subject are conjunctive. A final-effect condition trait is either a zero-parameter marker or declares exactly one explicit `Resource` parameter; other generic shapes are rejected. Concrete forbid targets, path endpoints, trait references, and exception references may be module-qualified with `module.name::Declaration`.
 
 ## Rationale, memory, and reevaluation
 

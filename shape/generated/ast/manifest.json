@@ -332,6 +332,13 @@
       ]
     },
     {
+      "module": "shape.generated.ast.packages.shp_checker.src.behavioural.forbidden_path_test",
+      "path": "shape/generated/ast/packages/shp-checker/src/behavioural/forbidden-path.test.shape",
+      "sources": [
+        "packages/shp-checker/src/behavioural/forbidden-path.test.ts"
+      ]
+    },
+    {
       "module": "shape.generated.ast.packages.shp_checker.src.behavioural.formatter_roundtrip_test",
       "path": "shape/generated/ast/packages/shp-checker/src/behavioural/formatter-roundtrip.test.shape",
       "sources": [

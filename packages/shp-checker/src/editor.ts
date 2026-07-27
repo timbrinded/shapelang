@@ -79,6 +79,7 @@ const KEYWORD_COMPLETIONS = [
   "evidence",
   "forbid final",
   "forbid hypercycle",
+  "forbid path",
   "forbid provides",
   "when_changed",
   "require_changed",

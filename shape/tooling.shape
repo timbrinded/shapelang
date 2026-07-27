@@ -277,6 +277,7 @@ component ShapeEditorServices {
     }
   fn getCompletions
     source ts("packages/shp-checker/src/editor.ts#getCompletions")
+    description "Offers declarations, prelude names, and canonical rule prefixes including constrained forbidden paths."
     effects complete {
       Append<EditorOutput>
         evidence ts("packages/shp-checker/src/editor.ts")
@@ -320,6 +321,7 @@ component ShapeFormatter {
   grants Update<FormattedShape>
   fn formatShapeModule : RefactorSensitive
     source ts("packages/shp-checker/src/formatter.ts#formatShapeModule")
+    description "Produces canonical declaration and member formatting, including explicit spacing and ordered kind filters for forbidden path rules."
     effects complete {
       Read<NormalizedShapeReference>
         evidence ts("packages/shp-checker/src/formatter.ts")
@@ -687,7 +689,7 @@ memory FormatterCanonicalDiffs : RefactorConstraint<fn ShapeFormatter.formatShap
   applies_to fn ShapeFormatter.formatShapeModule
   status Explained
   confidence High
-  summary "Formatter ordering and indentation keep Shape files reviewable and stable in diffs, and nested rationale/memory grouping blocks are canonicalized to their flat members so there is one on-disk form."
+  summary "Formatter ordering and indentation keep Shape files reviewable and stable in diffs, nested rationale/memory grouping blocks are canonicalized to their flat members, and graph-rule endpoints and kind filters have one canonical on-disk form."
   who {
     owner ShapeMaintainers
   }
@@ -814,6 +816,27 @@ reevaluation DefaultShapeDiscoveryRechecked {
   evidence test("packages/shp-cli/src/index.test.ts")
 }
 
+reevaluation ForbiddenPathFormattingRechecked {
+  satisfies memory FormatterCanonicalDiffs
+  outcome Confirmed
+  summary "Forbidden path members round-trip to one spaced endpoint arrow and explicit ordered kind filter, while editor completions expose the same canonical rule prefix."
+  reviewer ShapeMaintainers
+  decided_on "2026-07-26"
+  evidence md("docs-site/src/content/docs/inside-shape/formatter-editor-authoring.md")
+  evidence test("packages/shp-checker/src/editor.test.ts")
+  evidence test("packages/shp-checker/src/formatter.test.ts")
+}
+
+reevaluation ForbiddenPathReservedWordRechecked {
+  satisfies memory AstGenerationUnknownSafety
+  outcome Confirmed
+  summary "The AST generator escapes source identifiers named path now that path is reserved, without changing conservative unknown-effect generation or anchor behavior."
+  reviewer ShapeMaintainers
+  decided_on "2026-07-26"
+  evidence test("packages/shp-checker/src/behavioural/ast-generation-behaviour.test.ts")
+  evidence test("packages/shp-checker/src/checker.guard-syntax.test.ts")
+}
+
 reevaluation FormatterSharedStringHelpersRechecked {
   satisfies memory FormatterCanonicalDiffs
   outcome Confirmed
@@ -831,4 +854,9 @@ reevaluation UpdateRuntimeAssetsRechecked {
   decided_on "2026-05-28"
   evidence test("packages/shp-cli/src/update.test.ts")
   evidence ts("packages/shp-cli/src/commands/update/impl.ts")
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/inside-shape/formatter-editor-authoring.md")
+  reason "Documents forbidden path formatter and editor behavior already modeled by ShapeFormatter and ShapeEditorServices; the documentation itself does not change the architecture contract."
 }

@@ -163,7 +163,7 @@ resource FormatterModuleFormatResourceAstAnchor : GeneratedAstAnchor {
 
 resource FormatterModuleFormatRuleAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/formatter.ts#formatRule")
-  fingerprint ast.semantic_subtree_v1("sha256:c98e40138a9b5b6975e57392eaaff99da29811e3baebd9567421471a68f30a67")
+  fingerprint ast.semantic_subtree_v1("sha256:59d9193321a1bc66aa138a51561eb3dddccc388ac2afa45aa01ea2c8e7f6e8a6")
 }
 
 resource FormatterModuleFormatShapeModuleAstAnchor : GeneratedAstAnchor {
@@ -621,7 +621,7 @@ relation FormatterModuleFormatRuleGeneratedFromFormatterModuleFormatRuleAstAncho
   kind generated_from
   connects FormatterModule -> FormatterModuleFormatRuleAstAnchor
   roles { FormatterModule as generated, FormatterModuleFormatRuleAstAnchor as syntax }
-  expects FormatterModuleFormatRuleAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c98e40138a9b5b6975e57392eaaff99da29811e3baebd9567421471a68f30a67")
+  expects FormatterModuleFormatRuleAstAnchor fingerprint ast.semantic_subtree_v1("sha256:59d9193321a1bc66aa138a51561eb3dddccc388ac2afa45aa01ea2c8e7f6e8a6")
   summary "fn FormatterModule.formatRule generated from typescript function_declaration at packages/shp-checker/src/formatter.ts#formatRule."
 }
 

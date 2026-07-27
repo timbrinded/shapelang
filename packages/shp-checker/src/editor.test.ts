@@ -61,6 +61,7 @@ describe("Shape editor support", () => {
     ).toBeGreaterThan(1);
     expect(getCompletions(source, "Audit")).toContain("AuditStore.appendEvent");
     expect(getCompletions(source, "Preserve")).toContain("PreserveInline");
+    expect(getCompletions(source, "forbid p")).toContain("forbid path");
     expect(getCompletions(source, "requ")).toContain("requires");
 
     const formatted = formatOnSave(source);

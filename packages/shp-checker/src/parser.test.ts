@@ -1,5 +1,6 @@
 import { describe, expect, test } from "bun:test";
 import { parseShapeModule } from "./index.ts";
+import { isRuleDecl, isRuleForbidPathDecl } from "./language/generated/ast.ts";
 import { contextRef, fnTarget } from "./test-support.ts";
 
 describe("Shape parser", () => {
@@ -39,6 +40,45 @@ describe("Shape parser", () => {
     `);
 
     expect(parsed.ok).toBe(true);
+  });
+
+  test("parses constrained forbidden path rules", () => {
+    const parsed = parseShapeModule(`
+      module deps
+
+      component Gateway {
+      }
+      component PolicyService {
+      }
+      resource SecretStore
+
+      rule no_gateway_to_secrets {
+        forbid path Gateway -> SecretStore over calls or provides
+      }
+    `);
+
+    expect(parsed.ok).toBe(true);
+    if (!parsed.ok) {
+      return;
+    }
+    const rule = parsed.module.declarations.find(isRuleDecl);
+    const forbid = rule?.members.find(isRuleForbidPathDecl);
+    expect(forbid?.source).toBe("Gateway");
+    expect(forbid?.target).toBe("SecretStore");
+    expect(forbid?.kinds).toEqual(["calls", "provides"]);
+  });
+
+  test("requires an explicit kind filter for forbidden paths", () => {
+    const parsed = parseShapeModule(`
+      module deps
+      component Gateway {}
+      resource SecretStore
+      rule no_gateway_to_secrets {
+        forbid path Gateway -> SecretStore
+      }
+    `);
+
+    expect(parsed.ok).toBe(false);
   });
 
   test("parses effect candidate declarations", () => {

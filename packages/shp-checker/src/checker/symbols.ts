@@ -215,7 +215,7 @@ export function resolveVertexName(name: string, context: LoweringContext, model:
   return result.name;
 }
 
-function resolveVertexReference(
+export function resolveVertexReference(
   name: string,
   context: LoweringContext,
   model: Model
