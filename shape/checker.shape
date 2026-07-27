@@ -68,6 +68,7 @@ component ShapeChecker {
     }
   fn checkShapeModules : ProtectedCheckOrder
     source ts("packages/shp-checker/src/checker/api.ts#checkShapeModules")
+    description "Runs the complete semantic and binding pipeline, classifying only effects unknown as non-fatal when draft validation is explicitly requested."
     effects complete {
       Append<SemanticDiagnostics>
         evidence ts("packages/shp-checker/src/checker/api.ts")

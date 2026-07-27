@@ -159,6 +159,8 @@ component AuditStore {
 }
 ```
 
+Strict `shp check` reports this as an error. While iterating on an authored draft, `shp check --allow-unknown-effects draft.shape` reports it as a non-fatal warning but leaves every other parse, policy, coverage, binding, and semantic diagnostic blocking.
+
 Replace unknowns with a source-backed `effects complete` block before accepting protected changes.
 
 ## Governed source changed without Shape update

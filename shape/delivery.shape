@@ -222,6 +222,7 @@ component DocsSite {
   grants Update<DocsContent>
   fn verifyDocs
     source ts("docs-site/scripts/verify-shape-blocks.ts")
+    description "Verifies complete Shape examples and publishes current strict and draft-validation checker behavior."
     effects complete {
       Read<DocsContent>
         evidence md("docs-site/src/content/docs/concepts/analyzer-hints.md")
@@ -291,6 +292,8 @@ component DocsSite {
         evidence md("docs-site/src/content/docs/concepts/ast-generation.md")
       Update<DocsContent>
         evidence md("docs-site/src/content/docs/inside-shape/langium-grammar.md")
+      Update<DocsContent>
+        evidence md("docs-site/src/content/docs/learn/global-model-updates.md")
       Update<DocsContent>
         evidence md("docs-site/src/content/docs/reference/cli.md")
       Update<DocsContent>

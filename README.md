@@ -35,11 +35,14 @@ Run the checker from a repo that contains Shape files:
 
 ```bash
 shp check
+shp check --allow-unknown-effects draft.shape
 shp fmt --check
 shp coverage --changed-files changed.txt
 shp memory
 shp obligations
 ```
+
+`--allow-unknown-effects` is a local authoring aid: it reports `effects unknown` as a warning while every other diagnostic remains blocking. Resolve those warnings and run strict `shp check` before review or CI.
 
 For local developer installs, update the released binary explicitly:
 

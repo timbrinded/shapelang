@@ -10,7 +10,8 @@ import type {
   CheckOptions,
   CheckResult,
   Fact,
-  NormalizedCheckOptions
+  NormalizedCheckOptions,
+  SemanticDiagnostic
 } from "./model.ts";
 import { compareCodepointStrings } from "../shape-strings.ts";
 import { compareShapeDiagnostics } from "./diagnostics.ts";
@@ -25,17 +26,24 @@ export function checkShapeModules(
 ): CheckResult {
   const normalizedOptions = normalizeCheckOptions(options);
   const model = lowerShapeModules(modules);
-  const diagnostics = [
+  const diagnostics: SemanticDiagnostic[] = [
     ...model.diagnostics,
     ...runSemanticChecks(model, normalizedOptions),
     ...(normalizedOptions.enforceBindings === false
       ? []
       : checkBindings(model, normalizedOptions.changedFiles ?? [], normalizedOptions.repoRoot))
-  ];
+  ].map((diagnostic) =>
+    normalizedOptions.allowUnknownEffects && diagnostic.kind === "unknown_effects"
+      ? { ...diagnostic, severity: "warning" }
+      : diagnostic
+  );
+  const ok = diagnostics.every(
+    (diagnostic) => diagnostic.kind === "unknown_effects" && diagnostic.severity === "warning"
+  );
 
   return {
-    ok: diagnostics.length === 0,
-    exitCode: diagnostics.length === 0 ? 0 : 1,
+    ok,
+    exitCode: ok ? 0 : 1,
     diagnostics: diagnostics.toSorted(compareShapeDiagnostics),
     facts: normalizedOptions.includeFacts ? model.facts.toSorted(compareFacts) : undefined
   };

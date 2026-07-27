@@ -290,6 +290,13 @@
       ]
     },
     {
+      "module": "shape.generated.ast.packages.shp_checker.src.checker_draft_validation_test",
+      "path": "shape/generated/ast/packages/shp-checker/src/checker.draft-validation.test.shape",
+      "sources": [
+        "packages/shp-checker/src/checker.draft-validation.test.ts"
+      ]
+    },
+    {
       "module": "shape.generated.ast.packages.shp_checker.src.checker_governance_policy_test",
       "path": "shape/generated/ast/packages/shp-checker/src/checker.governance-policy.test.shape",
       "sources": [

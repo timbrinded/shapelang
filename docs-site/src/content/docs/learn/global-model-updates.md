@@ -39,6 +39,18 @@ The checker evaluates the model as committed. Coverage then confirms that change
 5. Add a `reevaluation` when changing a guarded function shape.
 6. Run `shp fmt --check` and `shp check --changed-files changed.txt`.
 
+## Validate Draft Unknowns
+
+Authoring helpers deliberately emit `effects unknown` when the source evidence is not enough to make a complete effect claim. Validate that draft explicitly without weakening the default checker:
+
+```bash
+shp check --allow-unknown-effects draft.shape
+```
+
+The command reports each unknown effect as a warning and exits successfully only when every other parse and semantic check passes. Final forbids, missing grants for known effects, guarded-change obligations, coverage, bindings, and malformed model structure remain blocking.
+
+This flag is for local draft iteration. Resolve every unknown and run strict `shp check` before committing the model or using it in CI.
+
 ## Attestation Path
 
 If a governed source change does not alter the architecture model, add a narrow attestation in a changed global `.shape` file:

@@ -10,7 +10,7 @@ The released `shp` binary exposes these commands.
 ## Usage
 
 ```text
-shp check [--changed-files changed.txt] [--strict-freshness] [files...]
+shp check [--allow-unknown-effects] [--changed-files changed.txt] [--strict-freshness] [files...]
 shp coverage --changed-files changed.txt [files...]
 shp fmt [--check] [files...]
 shp explain SYMBOL [files...]
@@ -38,7 +38,7 @@ shape/**/*.shape
 
 | Command | Purpose |
 | --- | --- |
-| `check` | Parse modules, lower facts, and run semantic checks. With `--changed-files`, it also runs coverage and bindings. With `--strict-freshness`, stale design memory becomes a check failure. |
+| `check` | Parse modules, lower facts, and run semantic checks. With `--allow-unknown-effects`, draft unknowns become non-fatal warnings while all other diagnostics remain blocking. With `--changed-files`, it also runs coverage and bindings. With `--strict-freshness`, stale design memory becomes a check failure. |
 | `coverage` | Require Shape updates or current attestations when governed source paths change. |
 | `fmt` | Format Shape files, or check formatting with `--check`. |
 | `explain` | Print derived facts and incident relations for a symbol. |
@@ -57,6 +57,7 @@ shape/**/*.shape
 
 ```bash
 shp check
+shp check --allow-unknown-effects draft.shape
 shp check --changed-files changed.txt
 shp coverage --changed-files changed.txt
 shp fmt --check
@@ -77,6 +78,16 @@ shp ast source --language rust --out-dir shape/generated/ast --check src/audit/s
 shp ast json --module generated.audit --raw-out ast.raw.shape ast.json
 shp update --dry-run
 ```
+
+## Draft validation
+
+`effects unknown` is conservative draft syntax, but strict `shp check` rejects it so committed models and CI cannot silently retain unresolved effects. During authoring, opt into draft validation:
+
+```bash
+shp check --allow-unknown-effects draft.shape
+```
+
+Unknown effects are rendered as warnings and the command exits `0` only when no other diagnostic is present. The flag does not soften parse errors, final forbids, missing grants for known effects, guarded-change obligations, coverage, bindings, or any other semantic failure. Resolve the warnings and run strict `shp check` before review or CI.
 
 ## AST generation
 
