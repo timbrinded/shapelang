@@ -24,19 +24,36 @@ export type AuthorFlags = {
   readonly snippetFiles?: string;
 };
 
-type ContextModeInput =
+type AuthorModeInput = {
+  readonly changedFilesPath: string;
+} & (
+  | {
+      readonly kind: "draft";
+      readonly componentName: string;
+      readonly moduleName?: string;
+    }
   | {
       readonly kind: "author_prompt";
       readonly componentName: string;
       readonly diffPath: string;
+      readonly instructions?: string;
+      readonly moduleName?: string;
+      readonly projectPreludePath?: string;
       readonly shapeFiles: string[];
+      readonly snippetFiles: string[];
     }
   | {
       readonly kind: "critic_prompt";
       readonly diffPath: string;
+      readonly instructions?: string;
+      readonly projectPreludePath?: string;
       readonly shapeFiles: string[];
+      readonly snippetFiles: string[];
       readonly proposedShapePath: string;
-    };
+    }
+);
+
+type PromptModeInput = Exclude<AuthorModeInput, { kind: "draft" }>;
 
 type ExplicitPromptContext = {
   readonly diff: string;
@@ -47,17 +64,20 @@ type ExplicitPromptContext = {
 
 type PromptInput = {
   readonly diffPath: string;
+  readonly instructions?: string;
+  readonly projectPreludePath?: string;
   readonly shapeFiles: string[];
+  readonly snippetFiles: string[];
 };
 
 export default async function author(this: CliContext, flags: AuthorFlags): Promise<void> {
-  const contextMode = validateAuthorFlags(flags);
-  const changedFiles = await readChangedFiles(flags.changedFiles);
+  const mode = validateAuthorFlags(flags);
+  const changedFiles = await readChangedFiles(mode.changedFilesPath);
 
-  if (contextMode) {
-    const context = await readExplicitPromptContext(flags, contextMode, changedFiles);
-    if (contextMode.kind === "critic_prompt") {
-      const proposedShapeUpdate = await readContextFile(contextMode.proposedShapePath);
+  if (mode.kind !== "draft") {
+    const context = await readExplicitPromptContext(mode, changedFiles);
+    if (mode.kind === "critic_prompt") {
+      const proposedShapeUpdate = await readContextFile(mode.proposedShapePath);
       if (proposedShapeUpdate.content.trim().length === 0) {
         throw new CliDiagnosticError(
           "error: --critic-prompt requires a non-empty proposed Shape file.\n"
@@ -71,7 +91,7 @@ export default async function author(this: CliContext, flags: AuthorFlags): Prom
         proposedShapeUpdate,
         relevantSnippets: context.relevantSnippets,
         projectPrelude: context.projectPrelude,
-        instructions: flags.instructions
+        instructions: mode.instructions
       });
       if (!result.ok) {
         throw new CliDiagnosticError(formatCriticInputDiagnostics(result.diagnostics));
@@ -87,13 +107,13 @@ export default async function author(this: CliContext, flags: AuthorFlags): Prom
 
     const bundle = buildShapeAuthoringBundle({
       changedFiles,
-      componentName: contextMode.componentName,
-      moduleName: flags.module,
+      componentName: mode.componentName,
+      moduleName: mode.moduleName,
       diff: context.diff,
       existingShape: context.existingShape,
       relevantSnippets: context.relevantSnippets,
       projectPrelude: context.projectPrelude,
-      instructions: flags.instructions
+      instructions: mode.instructions
     });
 
     stdout(this, `${bundle.authorPrompt}\n`);
@@ -104,13 +124,13 @@ export default async function author(this: CliContext, flags: AuthorFlags): Prom
     this,
     generateShapeUpdateDraft({
       changedFiles,
-      componentName: requireComponent(flags),
-      moduleName: flags.module
+      componentName: mode.componentName,
+      moduleName: mode.moduleName
     })
   );
 }
 
-function validateAuthorFlags(flags: AuthorFlags): ContextModeInput | undefined {
+function validateAuthorFlags(flags: AuthorFlags): AuthorModeInput {
   if (flags.prompt && flags.criticPrompt !== undefined) {
     throw new CliDiagnosticError("error: --prompt and --critic-prompt cannot be used together.\n");
   }
@@ -119,15 +139,24 @@ function validateAuthorFlags(flags: AuthorFlags): ContextModeInput | undefined {
     const promptInput = requirePromptInput(flags, "--prompt");
     return {
       kind: "author_prompt",
+      changedFilesPath: flags.changedFiles,
       componentName: requireComponent(flags),
+      moduleName: flags.module,
       ...promptInput
     };
   }
 
   if (flags.criticPrompt !== undefined) {
+    if (flags.component !== undefined) {
+      throw new CliDiagnosticError("error: --component cannot be used with --critic-prompt.\n");
+    }
+    if (flags.module !== undefined) {
+      throw new CliDiagnosticError("error: --module cannot be used with --critic-prompt.\n");
+    }
     const promptInput = requirePromptInput(flags, "--critic-prompt");
     return {
       kind: "critic_prompt",
+      changedFilesPath: flags.changedFiles,
       ...promptInput,
       proposedShapePath: flags.criticPrompt
     };
@@ -146,8 +175,12 @@ function validateAuthorFlags(flags: AuthorFlags): ContextModeInput | undefined {
     );
   }
 
-  requireComponent(flags);
-  return undefined;
+  return {
+    kind: "draft",
+    changedFilesPath: flags.changedFiles,
+    componentName: requireComponent(flags),
+    moduleName: flags.module
+  };
 }
 
 function requireComponent(flags: AuthorFlags): string {
@@ -170,16 +203,21 @@ function requirePromptInput(
   if (shapeFiles.length === 0) {
     throw new CliDiagnosticError(`error: ${modeFlag} requires --shape-files.\n`);
   }
-  return { diffPath: flags.diff, shapeFiles };
+  return {
+    diffPath: flags.diff,
+    instructions: flags.instructions,
+    projectPreludePath: flags.projectPrelude,
+    shapeFiles,
+    snippetFiles: parseFileList(flags.snippetFiles)
+  };
 }
 
 async function readExplicitPromptContext(
-  flags: AuthorFlags,
-  contextMode: ContextModeInput,
+  mode: PromptModeInput,
   changedFiles: string[]
 ): Promise<ExplicitPromptContext> {
-  const diff = await readCliTextFile(contextMode.diffPath);
-  const modeFlag = contextMode.kind === "author_prompt" ? "--prompt" : "--critic-prompt";
+  const diff = await readCliTextFile(mode.diffPath);
+  const modeFlag = mode.kind === "author_prompt" ? "--prompt" : "--critic-prompt";
   if (diff.trim().length === 0) {
     throw new CliDiagnosticError(`error: ${modeFlag} requires a non-empty unified diff.\n`);
   }
@@ -187,13 +225,15 @@ async function readExplicitPromptContext(
     throw new CliDiagnosticError(`error: ${modeFlag} requires at least one changed file.\n`);
   }
 
-  const snippetFiles = parseFileList(flags.snippetFiles);
   return {
     diff,
-    existingShape: await readContextFiles(contextMode.shapeFiles),
-    relevantSnippets: snippetFiles.length > 0 ? await readContextFiles(snippetFiles) : undefined,
+    existingShape: await readContextFiles(mode.shapeFiles),
+    relevantSnippets:
+      mode.snippetFiles.length > 0 ? await readContextFiles(mode.snippetFiles) : undefined,
     projectPrelude:
-      flags.projectPrelude === undefined ? undefined : await readContextFile(flags.projectPrelude)
+      mode.projectPreludePath === undefined
+        ? undefined
+        : await readContextFile(mode.projectPreludePath)
   };
 }
 

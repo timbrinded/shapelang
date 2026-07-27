@@ -822,6 +822,13 @@
       ]
     },
     {
+      "module": "shape.generated.ast.packages.shp_checker.src.module_resolution",
+      "path": "shape/generated/ast/packages/shp-checker/src/module-resolution.shape",
+      "sources": [
+        "packages/shp-checker/src/module-resolution.ts"
+      ]
+    },
+    {
       "module": "shape.generated.ast.packages.shp_checker.src.parser_test",
       "path": "shape/generated/ast/packages/shp-checker/src/parser.test.shape",
       "sources": [

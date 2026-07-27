@@ -143,7 +143,7 @@ shp author \
   > critic-prompt.txt
 ```
 
-The provider-neutral critic prompt is written to stdout. Deterministic local advisories are written to stderr for a source-backed guarded function changed without a matching reevaluation, or for a destructive operation found on added diff lines but absent from the existing and proposed declared effects. Deleted diff lines are never analyzed. Advisories report file paths and code evidence without producing numbered Shape references. These checks are deliberately coarse and lexical: warnings exit `0`, malformed input exits `2`, and only a later `shp check` can authoritatively accept or reject the model. `--critic-prompt` and `--prompt` are mutually exclusive, and neither mode invokes a model provider, subprocess, network service, or checker pass.
+The provider-neutral critic prompt is written to stdout. Deterministic local advisories are written to stderr for a source-backed guarded function changed without a matching reevaluation, or for a destructive operation found on added diff lines but absent from the existing and proposed declared effects. Deleted diff lines are never analyzed. Advisories report file paths and code evidence without producing numbered Shape references. These checks are deliberately coarse and lexical: warnings exit `0`, malformed input exits `2`, and only a later `shp check` can authoritatively accept or reject the model. `--critic-prompt` and `--prompt` are mutually exclusive; draft-only `--component` and `--module` flags are rejected in critic mode. Neither mode invokes a model provider, subprocess, network service, or checker pass.
 
 ## AST generation
 

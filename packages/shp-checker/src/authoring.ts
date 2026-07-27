@@ -116,7 +116,7 @@ function formatRelationKindGuidance(): string {
   return `- Prefer prelude relation kinds ${formatHumanList(PRELUDE_RELATION_KIND_NAMES)} for structural dependencies unless project docs define a custom kind.`;
 }
 
-function formatHumanList(items: string[]): string {
+export function formatHumanList(items: string[]): string {
   if (items.length <= 2) {
     return items.join(" or ");
   }
@@ -157,7 +157,7 @@ function formatUnknownFunction(file: string, functionName: string): string {
   ].join("\n");
 }
 
-function formatContextFiles(files: ShapeAuthorContextFile[]): string {
+export function formatContextFiles(files: ShapeAuthorContextFile[]): string {
   return files.map((file) => `--- ${file.path} ---\n${file.content}`).join("\n\n");
 }
 

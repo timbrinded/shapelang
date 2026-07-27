@@ -29,6 +29,7 @@ import type {
   ResolutionResult,
   ShapeTarget
 } from "./model.ts";
+import { resolveModuleReference } from "../module-resolution.ts";
 import { KNOWN_PRELUDE_TRAITS, type ContextKind } from "../prelude.ts";
 import { declKey, functionKey, splitFunctionTarget, splitQualifiedName } from "./display.ts";
 import { describeProvenance, provenance } from "./provenance.ts";
@@ -177,29 +178,19 @@ export function resolveDeclReference(
   model: Model
 ): ResolutionResult {
   const qualified = splitQualifiedName(name);
-  if (qualified.moduleName !== undefined) {
-    return { kind: "resolved", name: declKey(qualified.moduleName, qualified.localName) };
-  }
   if (
+    qualified.moduleName === undefined &&
     kind === "trait" &&
     KNOWN_PRELUDE_TRAITS.has(name) &&
     !declaredLocally(model, kind, context.name, name)
   ) {
     return { kind: "resolved", name };
   }
-  if (declaredLocally(model, kind, context.name, name)) {
-    return { kind: "resolved", name: declKey(context.name, name) };
-  }
-  const importedMatches = context.imports
-    .filter((moduleName) => declaredLocally(model, kind, moduleName, name))
-    .map((moduleName) => declKey(moduleName, name))
-    .sort();
-  if (importedMatches.length > 1) {
-    return { kind: "ambiguous", name: declKey(context.name, name), matches: importedMatches };
-  }
-  return importedMatches[0]
-    ? { kind: "resolved", name: importedMatches[0] }
-    : { kind: "unknown", name: declKey(context.name, name) };
+  return resolveModuleReference(
+    name,
+    { moduleName: context.name, imports: context.imports },
+    (moduleName, localName) => declaredLocally(model, kind, moduleName ?? "", localName)
+  );
 }
 
 export function resolveVertexName(name: string, context: LoweringContext, model: Model): string {
@@ -224,33 +215,13 @@ export function resolveVertexReference(
   context: LoweringContext,
   model: Model
 ): ResolutionResult {
-  const qualified = splitQualifiedName(name);
-  if (qualified.moduleName !== undefined) {
-    return { kind: "resolved", name: declKey(qualified.moduleName, qualified.localName) };
-  }
-  if (
-    declaredLocally(model, "component", context.name, name) ||
-    declaredLocally(model, "resource", context.name, name)
-  ) {
-    return { kind: "resolved", name: declKey(context.name, name) };
-  }
-  const importedMatches = [
-    ...new Set(
-      context.imports
-        .filter(
-          (moduleName) =>
-            declaredLocally(model, "component", moduleName, name) ||
-            declaredLocally(model, "resource", moduleName, name)
-        )
-        .map((moduleName) => declKey(moduleName, name))
-    )
-  ].sort();
-  if (importedMatches.length > 1) {
-    return { kind: "ambiguous", name: declKey(context.name, name), matches: importedMatches };
-  }
-  return importedMatches[0]
-    ? { kind: "resolved", name: importedMatches[0] }
-    : { kind: "unknown", name: declKey(context.name, name) };
+  return resolveModuleReference(
+    name,
+    { moduleName: context.name, imports: [...new Set(context.imports)] },
+    (moduleName, localName) =>
+      declaredLocally(model, "component", moduleName ?? "", localName) ||
+      declaredLocally(model, "resource", moduleName ?? "", localName)
+  );
 }
 
 export function resolveTargetName(

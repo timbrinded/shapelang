@@ -579,6 +579,14 @@ implementation ParserSource {
   on_change require shape_update
 }
 
+implementation ReferenceResolutionSource {
+  paths {
+    "packages/shp-checker/src/module-resolution.ts"
+  }
+  conforms_to ShapeModuleResolver
+  on_change require shape_update
+}
+
 implementation ReleaseSource {
   paths {
     "action.yml"
@@ -714,6 +722,7 @@ binding ToolingDocs {
     "packages/shp-checker/src/editor.ts"
     "packages/shp-checker/src/formatter.ts"
     "packages/shp-checker/src/generated-ast-policy.ts"
+    "packages/shp-checker/src/module-resolution.ts"
     "packages/shp-checker/src/source-languages.ts"
     "packages/shp-checker/src/tree-sitter-native-targets.ts"
     "packages/shp-cli/src/lsp/positions.ts"

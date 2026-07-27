@@ -23,7 +23,7 @@ resource AuthoringModuleContextRefAstAnchor : GeneratedAstAnchor {
 
 resource AuthoringModuleFormatContextFilesAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/authoring.ts#formatContextFiles")
-  fingerprint ast.semantic_subtree_v1("sha256:f88b63f778c2be3ca149eedf4d1a68c95e4cecdd57ade3d16d3fed3e43988a3d")
+  fingerprint ast.semantic_subtree_v1("sha256:6e06db15b755a7c8a823199eee0fc57da094da4fbf42a199c96c4b0fefd33838")
 }
 
 resource AuthoringModuleFormatContextTraitGuidanceAstAnchor : GeneratedAstAnchor {
@@ -38,7 +38,7 @@ resource AuthoringModuleFormatFinalForbidEffectGuidanceAstAnchor : GeneratedAstA
 
 resource AuthoringModuleFormatHumanListAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/authoring.ts#formatHumanList")
-  fingerprint ast.semantic_subtree_v1("sha256:fb382ba62ffdb0f870a8eb949829762ad10e96773212bd1069f828dc647e0660")
+  fingerprint ast.semantic_subtree_v1("sha256:e736dcc907489771f3ba329e87703b2eab23276c6c10c6c7f2a3dcf9b4913954")
 }
 
 resource AuthoringModuleFormatMemoryGuardScaffoldAstAnchor : GeneratedAstAnchor {
@@ -149,7 +149,7 @@ relation AuthoringModuleFormatContextFilesGeneratedFromAuthoringModuleFormatCont
   kind generated_from
   connects AuthoringModule -> AuthoringModuleFormatContextFilesAstAnchor
   roles { AuthoringModule as generated, AuthoringModuleFormatContextFilesAstAnchor as syntax }
-  expects AuthoringModuleFormatContextFilesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f88b63f778c2be3ca149eedf4d1a68c95e4cecdd57ade3d16d3fed3e43988a3d")
+  expects AuthoringModuleFormatContextFilesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6e06db15b755a7c8a823199eee0fc57da094da4fbf42a199c96c4b0fefd33838")
   summary "fn AuthoringModule.formatContextFiles generated from typescript function_declaration at packages/shp-checker/src/authoring.ts#formatContextFiles."
 }
 
@@ -173,7 +173,7 @@ relation AuthoringModuleFormatHumanListGeneratedFromAuthoringModuleFormatHumanLi
   kind generated_from
   connects AuthoringModule -> AuthoringModuleFormatHumanListAstAnchor
   roles { AuthoringModule as generated, AuthoringModuleFormatHumanListAstAnchor as syntax }
-  expects AuthoringModuleFormatHumanListAstAnchor fingerprint ast.semantic_subtree_v1("sha256:fb382ba62ffdb0f870a8eb949829762ad10e96773212bd1069f828dc647e0660")
+  expects AuthoringModuleFormatHumanListAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e736dcc907489771f3ba329e87703b2eab23276c6c10c6c7f2a3dcf9b4913954")
   summary "fn AuthoringModule.formatHumanList generated from typescript function_declaration at packages/shp-checker/src/authoring.ts#formatHumanList."
 }
 

@@ -1,5 +1,10 @@
 import { analyzeSourceText, compareAnalyzerHintsToShape, type AnalyzerHint } from "./analyzer.ts";
-import type { ShapeAuthorContextFile, ShapeAuthorPromptInput } from "./authoring.ts";
+import {
+  formatContextFiles,
+  formatHumanList,
+  type ShapeAuthorContextFile,
+  type ShapeAuthorPromptInput
+} from "./authoring.ts";
 import {
   isComponentDecl,
   isFunctionSummary,
@@ -15,6 +20,12 @@ import {
   type RationaleDecl,
   type ShapeModule
 } from "./language/generated/ast.ts";
+import {
+  qualifyModuleReference,
+  resolveModuleReference,
+  splitFunctionReference,
+  splitModuleReference
+} from "./module-resolution.ts";
 import { parseShapeModule, type ParseDiagnostic } from "./parser.ts";
 import {
   isReevaluationRequirement,
@@ -295,41 +306,44 @@ function findSourceBackedFunction(
   contextModule: ShapeModule,
   existingFiles: ParsedContextFile[]
 ): FunctionSummary | undefined {
-  const qualifierSeparator = target.indexOf("::");
-  const moduleQualifier = qualifierSeparator < 0 ? undefined : target.slice(0, qualifierSeparator);
-  const localTarget =
-    qualifierSeparator < 0 ? target : target.slice(qualifierSeparator + "::".length);
-  const separator = localTarget.lastIndexOf(".");
-  if (separator <= 0 || separator === localTarget.length - 1) {
+  const [componentReference, functionName] = splitFunctionReference(target);
+  if (!componentReference || !functionName) {
     return undefined;
   }
 
-  const componentName = localTarget.slice(0, separator);
-  const functionName = localTarget.slice(separator + 1);
-  if (moduleQualifier !== undefined) {
-    const qualifiedComponents = existingFiles
-      .filter((file) => file.module.name === moduleQualifier)
-      .map((file) => findComponent(file.module, componentName))
-      .filter((component): component is ComponentDecl => component !== undefined);
-    const [qualifiedComponent] = qualifiedComponents;
-    return qualifiedComponents.length === 1 && qualifiedComponent
-      ? findComponentFunction(qualifiedComponent, functionName)
+  const reference = splitModuleReference(componentReference);
+  const localComponent =
+    reference.moduleName === undefined
+      ? findComponent(contextModule, reference.localName)
       : undefined;
-  }
-
-  const localComponent = findComponent(contextModule, componentName);
-  if (localComponent) {
+  if (localComponent !== undefined) {
     return findComponentFunction(localComponent, functionName);
   }
 
-  const importedModules = new Set(contextModule.imports.map((item) => item.path));
-  const importedComponents = existingFiles
-    .filter((file) => file.module.name !== undefined && importedModules.has(file.module.name))
-    .map((file) => findComponent(file.module, componentName))
+  const resolution = resolveModuleReference(
+    componentReference,
+    {
+      moduleName: contextModule.name,
+      imports: [...new Set(contextModule.imports.map((item) => item.path))]
+    },
+    (moduleName, componentName) =>
+      existingFiles.some(
+        (file) =>
+          file.module.name === moduleName && findComponent(file.module, componentName) !== undefined
+      )
+  );
+  if (resolution.kind !== "resolved") {
+    return undefined;
+  }
+
+  const resolved = splitModuleReference(resolution.name);
+  const components = existingFiles
+    .filter((file) => file.module.name === resolved.moduleName)
+    .map((file) => findComponent(file.module, resolved.localName))
     .filter((component): component is ComponentDecl => component !== undefined);
-  const [importedComponent] = importedComponents;
-  return importedComponents.length === 1 && importedComponent
-    ? findComponentFunction(importedComponent, functionName)
+  const [component] = components;
+  return components.length === 1 && component
+    ? findComponentFunction(component, functionName)
     : undefined;
 }
 
@@ -356,7 +370,7 @@ function proposalSatisfiesContext(
   contextModuleName: string | undefined,
   existingFiles: ParsedContextFile[]
 ): boolean {
-  const expectedName = qualifyName(contextModuleName, contextName);
+  const expectedName = qualifyModuleReference(contextModuleName, contextName);
   const modules = [...existingFiles.map((file) => file.module), proposedModule];
 
   return proposedModule.declarations.some(
@@ -378,27 +392,15 @@ function resolveContextReference(
   contextModule: ShapeModule,
   modules: ShapeModule[]
 ): string | undefined {
-  const qualifierSeparator = name.indexOf("::");
-  if (qualifierSeparator >= 0) {
-    return qualifyName(
-      name.slice(0, qualifierSeparator),
-      name.slice(qualifierSeparator + "::".length)
-    );
-  }
-
-  if (moduleDeclaresContext(modules, contextModule.name, contextKind, name)) {
-    return qualifyName(contextModule.name, name);
-  }
-
-  const importedMatches = [
-    ...new Set(
-      contextModule.imports
-        .map((item) => item.path)
-        .filter((moduleName) => moduleDeclaresContext(modules, moduleName, contextKind, name))
-        .map((moduleName) => qualifyName(moduleName, name))
-    )
-  ];
-  return importedMatches.length === 1 ? importedMatches[0] : undefined;
+  const resolution = resolveModuleReference(
+    name,
+    {
+      moduleName: contextModule.name,
+      imports: [...new Set(contextModule.imports.map((item) => item.path))]
+    },
+    (moduleName, localName) => moduleDeclaresContext(modules, moduleName, contextKind, localName)
+  );
+  return resolution.kind === "resolved" ? resolution.name : undefined;
 }
 
 function moduleDeclaresContext(
@@ -416,10 +418,6 @@ function moduleDeclaresContext(
           : isRationaleDecl(declaration) && declaration.name === contextName
       )
     );
-}
-
-function qualifyName(moduleName: string | undefined, localName: string): string {
-  return moduleName ? `${moduleName}::${localName}` : localName;
 }
 
 function reviewDestructiveEffects(
@@ -613,15 +611,4 @@ function parseUnifiedDiffHunk(line: string): UnifiedDiffHunk | undefined {
     return undefined;
   }
   return { activeLines: [], oldRemaining, newRemaining };
-}
-
-function formatContextFiles(files: ShapeAuthorContextFile[]): string {
-  return files.map((file) => `--- ${file.path} ---\n${file.content}`).join("\n\n");
-}
-
-function formatHumanList(items: string[]): string {
-  if (items.length <= 2) {
-    return items.join(" or ");
-  }
-  return `${items.slice(0, -1).join(", ")}, or ${items.at(-1) ?? ""}`;
 }

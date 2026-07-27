@@ -22,6 +22,8 @@ resource NormalizedShapeReference
 
 resource PreludeMetadata
 
+resource ResolvedModuleReference
+
 resource SemanticDiagnosticSet
 
 resource SemanticDiagnostics
@@ -225,6 +227,21 @@ component ShapeModelLowerer {
         evidence ts("packages/shp-checker/src/checker/prelude-seed.ts")
       Update<EffectiveModel>
         evidence ts("packages/shp-checker/src/checker/lowering/declarations.ts")
+    }
+}
+
+component ShapeModuleResolver {
+  owns ResolvedModuleReference
+  grants Read<ModuleNamespace>
+  grants Update<ResolvedModuleReference>
+  fn resolveModuleReference
+    source ts("packages/shp-checker/src/module-resolution.ts#resolveModuleReference")
+    description "Applies the shared qualified, local, imported, ambiguous, and unknown module-reference precedence used by checker lowering and advisory authoring."
+    effects complete {
+      Read<ModuleNamespace>
+        evidence ts("packages/shp-checker/src/module-resolution.ts#resolveModuleReference")
+      Update<ResolvedModuleReference>
+        evidence ts("packages/shp-checker/src/module-resolution.ts#resolveModuleReference")
     }
 }
 
@@ -469,6 +486,12 @@ relation ShapeModelLowererProvidesFacts {
   connects ShapeModelLowerer -> ShapeFacts
 }
 
+relation ShapeModelLowererUsesModuleResolver {
+  kind calls
+  connects ShapeModelLowerer -> ShapeModuleResolver
+  summary "CanonicalNamespaceResolution"
+}
+
 relation ShapeModelLowererUsesParser {
   kind calls
   connects ShapeModelLowerer -> ShapeParser
@@ -485,6 +508,11 @@ relation ShapeModelLowererUsesStringHelpers {
   kind calls
   connects ShapeModelLowerer -> ShapeStringHelpers
   summary "SourceReferenceNormalization"
+}
+
+relation ShapeModuleResolverProvidesReference {
+  kind provides
+  connects ShapeModuleResolver -> ResolvedModuleReference
 }
 
 relation ShapePreludeRegistryProvidesMetadata {

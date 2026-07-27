@@ -334,6 +334,29 @@ component AuditStore {
     expect(conflicting.stderr).not.toContain("failed to read");
     expect(conflicting.stdout).toBe("");
 
+    for (const [flag, value] of [
+      ["--component", "IgnoredComponent"],
+      ["--module", "ignored.module"]
+    ] as const) {
+      const ignoredDraftFlag = await runCli([
+        "author",
+        "--changed-files",
+        "fixtures/missing-changed-files.txt",
+        "--diff",
+        "fixtures/missing.diff",
+        "--critic-prompt",
+        "fixtures/missing-proposed.shape",
+        "--shape-files",
+        "fixtures/missing-existing.shape",
+        flag,
+        value
+      ]);
+      expect(ignoredDraftFlag.exitCode).toBe(2);
+      expect(ignoredDraftFlag.stderr).toContain(`${flag} cannot be used with --critic-prompt`);
+      expect(ignoredDraftFlag.stderr).not.toContain("failed to read");
+      expect(ignoredDraftFlag.stdout).toBe("");
+    }
+
     const tempDir = await mkdtemp(join(tmpdir(), "shp-critic-test-"));
     const proposedShape = join(tempDir, "proposed.shape");
     try {

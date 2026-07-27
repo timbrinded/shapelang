@@ -185,7 +185,7 @@ The critic prompt asks the inverse questions. It is designed to catch the common
 
 `reviewShapeAuthoringProposal` adds two deterministic advisory categories without turning the helper into another checker:
 
-- `guarded_target_without_reevaluation` matches changed files coarsely against source-backed functions protected by an `on_change require ReEvaluation` or `ReEvaluation<Self>` guard, then checks the proposal for a namespace-resolved reevaluation satisfying that memory or rationale.
+- `guarded_target_without_reevaluation` matches changed files coarsely against source-backed functions protected by an `on_change require ReEvaluation` or `ReEvaluation<Self>` guard, then checks the proposal for a namespace-resolved reevaluation satisfying that memory or rationale. Critic and checker lowering share the same qualified, local, imported, ambiguous, and unknown module-reference precedence.
 - `destructive_effect_omission` runs the existing lexical analyzer over added diff lines only, then compares its hints with effects declared by the existing and proposed Shape modules. Deleted lines are excluded, and the advisory reports the affected file plus code evidence without turning diff coordinates into authored Shape references.
 
 The result is typed and returns parse diagnostics for malformed Shape input. `formatShapeCriticAdvisories` gives the advisory union stable ordering and text. These helpers do not invoke `checkShapeModules`, a model provider, a subprocess, or a network service; they only prepare review context and flag likely omissions.

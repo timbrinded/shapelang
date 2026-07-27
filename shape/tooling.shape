@@ -250,6 +250,7 @@ component ShapeAuthoring {
   grants Read<ChangedFileList>
   grants Read<LanguageSource>
   grants Read<PreludeMetadata>
+  grants Read<ResolvedModuleReference>
   grants Read<ShapeSource>
   grants Read<UnifiedDiff>
   fn buildShapeAuthorPrompt : RefactorSensitive
@@ -336,6 +337,8 @@ component ShapeAuthoring {
         evidence ts("packages/shp-checker/src/critic.ts")
       Read<PreludeMetadata>
         evidence ts("packages/shp-checker/src/critic.ts")
+      Read<ResolvedModuleReference>
+        evidence ts("packages/shp-checker/src/module-resolution.ts#resolveModuleReference")
       Read<ShapeSource>
         evidence ts("packages/shp-checker/src/critic.ts")
       Read<UnifiedDiff>
@@ -630,6 +633,12 @@ relation ShapeAuthoringUsesAnalyzer {
   summary "CriticDestructiveHints"
 }
 
+relation ShapeAuthoringUsesModuleResolver {
+  kind calls
+  connects ShapeAuthoring -> ShapeModuleResolver
+  summary "CanonicalNamespaceResolution"
+}
+
 relation ShapeAuthoringUsesParser {
   kind calls
   connects ShapeAuthoring -> ShapeParser
@@ -751,6 +760,16 @@ rule tooling_contract_providers {
   forbid provides CanonicalShapeFormat except ShapeFormatter
   forbid provides CommandLineInterface except ShpCli
   forbid provides LanguageServerProtocol except ShapeLanguageServer
+}
+
+rationale AnalyzerCheckerSeparation : DesignRationale<component ShapeAnalyzer> {
+  applies_to component ShapeAnalyzer
+  why AdvisoryBoundary
+  summary "The analyzer compares source hints directly with parsed Shape and remains advisory; it does not call the authoritative deterministic checker."
+  who {
+    owner ShapeMaintainers
+  }
+  evidence ts("packages/shp-checker/src/analyzer-shape.ts#compareAnalyzerHintsToShape")
 }
 
 memory AstGenerationUnknownSafety : RefactorConstraint<fn ShapeAstGenerator.generateShapeFromCodeSemanticGraph> {
@@ -985,7 +1004,7 @@ reevaluation CliCommandErrorsRechecked {
 reevaluation CliCriticDispatchRechecked {
   satisfies memory CliCommandDispatchOrder
   outcome Confirmed
-  summary "Critic mode validates explicit diff and Shape context before review, routes provider-neutral prompts to stdout and advisory-only findings to stderr, and leaves deterministic checker acceptance as a later gate."
+  summary "Critic mode is an explicit dispatch variant that rejects draft-only component and module flags before reading files, validates diff and Shape context, routes prompts to stdout and advisories to stderr, and leaves checker acceptance as a later gate."
   reviewer ShapeMaintainers
   decided_on "2026-07-27"
   evidence md("docs-site/src/content/docs/reference/cli.md")
@@ -1031,10 +1050,11 @@ reevaluation CliUpdateHelpIdentityRechecked {
 reevaluation CriticPromptAdvisoryPassRechecked {
   satisfies memory CriticPromptSafetyRules
   outcome Confirmed
-  summary "The critic now combines explicit prompt context with deterministic guarded-target and destructive-effect advisories while preserving stable symbol or file-only Shape references and omitting diff line coordinates from advisory evidence."
+  summary "The critic combines explicit prompt context with deterministic guarded-target and destructive-effect advisories, shares canonical namespace precedence with checker lowering without calling the checker, and omits diff line coordinates from advisory evidence."
   reviewer ShapeMaintainers
   decided_on "2026-07-27"
   evidence md("docs-site/src/content/docs/inside-shape/formatter-editor-authoring.md")
+  evidence test("packages/shp-checker/src/checker.test.ts")
   evidence test("packages/shp-checker/src/critic.test.ts")
 }
 
