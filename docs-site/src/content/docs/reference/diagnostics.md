@@ -31,6 +31,8 @@ For rule-derived final forbids, the rule must bind exactly one subject with `whe
 
 Cause: a `forbid hypercycle` rule found a directed cycle in the structural hypergraph. The diagnostic cites the relations forming the cycle and a vertex witness path. Each relation kind contributes steps to the cycle graph according to its declared traversal semantics (binary kinds contribute one step `A -> B`; ordered kinds contribute consecutive steps along their members).
 
+The checker filters that graph by the rule's relation kinds, partitions it into strongly connected components, and selects the cycle with the fewest traversal steps. Equal-length cycles are resolved in canonical name order, so declaration order does not change the witness.
+
 ```shape
 module gateway
 

@@ -1,5 +1,6 @@
 import type { HyperedgeInfo, Model, Provenance, SemanticDiagnostic } from "../model.ts";
 import { PRELUDE_RELATION_KINDS } from "../../prelude.ts";
+import { compareCodepointStrings } from "../../shape-strings.ts";
 import { displaySymbol } from "../display.ts";
 import { describeProvenance } from "../provenance.ts";
 
@@ -202,8 +203,13 @@ type HyperedgeStep = {
   to: string;
 };
 
+type HypercycleGraph = {
+  vertices: string[];
+  adjacency: Map<string, HyperedgeStep[]>;
+};
+
 /**
- * Find a cycle in the directed hypergraph.
+ * Find the shortest deterministic cycle in the directed hypergraph.
  *
  * Each relation kind contributes directed steps to the traversal according
  * to its `cycleTraversal` rule in the prelude kind registry:
@@ -220,68 +226,220 @@ type HyperedgeStep = {
  */
 
 export function findHypercycle(model: Model, kindsFilter: string[]): HypercycleWitness | undefined {
-  const allSteps = buildHyperedgeSteps(model);
-  const allowedKinds = kindsFilter.length === 0 ? undefined : new Set(kindsFilter);
-  const steps = allowedKinds
-    ? allSteps.filter((step) => allowedKinds.has(step.hyperedge.kind))
-    : allSteps;
-  if (steps.length === 0) {
-    return undefined;
+  const graph = buildHypercycleGraph(model, kindsFilter);
+  let shortestCycle: HyperedgeStep[] | undefined;
+
+  for (const component of stronglyConnectedComponents(graph)) {
+    if (!isCyclicComponent(component, graph)) {
+      continue;
+    }
+    const candidate = shortestCycleInComponent(component, graph);
+    if (candidate && (!shortestCycle || compareCyclePaths(candidate, shortestCycle) < 0)) {
+      shortestCycle = candidate;
+    }
   }
 
+  return shortestCycle ? witnessFromPath(shortestCycle) : undefined;
+}
+
+function buildHypercycleGraph(model: Model, kindsFilter: string[]): HypercycleGraph {
+  const allowedKinds = kindsFilter.length === 0 ? undefined : new Set(kindsFilter);
   const adjacency = new Map<string, HyperedgeStep[]>();
   const vertices = new Set<string>();
-  for (const step of steps) {
-    vertices.add(step.from);
-    vertices.add(step.to);
-    const existing = adjacency.get(step.from) ?? [];
-    existing.push(step);
-    adjacency.set(step.from, existing);
-  }
 
-  for (const start of [...vertices].sort()) {
-    const visited = new Set<string>();
-    const witness = dfsHypercycle(start, start, adjacency, [], visited);
-    if (witness) {
-      return witness;
+  const addStep = (hyperedge: HyperedgeInfo, from: string, to: string): void => {
+    vertices.add(from);
+    vertices.add(to);
+    const steps = adjacency.get(from) ?? [];
+    steps.push({ hyperedge, from, to });
+    adjacency.set(from, steps);
+  };
+
+  for (const edge of model.hypergraph.edges.values()) {
+    if (allowedKinds && !allowedKinds.has(edge.kind)) {
+      continue;
+    }
+    const traversal = PRELUDE_RELATION_KINDS.get(edge.kind)?.cycleTraversal ?? "none";
+    if (traversal === "directed_pairs") {
+      const from = edge.members[0]?.endpoint;
+      const to = edge.members[1]?.endpoint;
+      if (from && to) {
+        addStep(edge, from, to);
+      }
+    } else if (traversal === "ordered_path") {
+      for (let index = 0; index < edge.members.length - 1; index += 1) {
+        addStep(edge, edge.members[index]!.endpoint, edge.members[index + 1]!.endpoint);
+      }
     }
   }
 
-  return undefined;
+  for (const steps of adjacency.values()) {
+    steps.sort(compareHyperedgeSteps);
+  }
+
+  return {
+    vertices: [...vertices].sort(compareCodepointStrings),
+    adjacency
+  };
 }
 
-export function dfsHypercycle(
+function compareHyperedgeSteps(left: HyperedgeStep, right: HyperedgeStep): number {
+  const byTarget = compareCodepointStrings(left.to, right.to);
+  if (byTarget !== 0) {
+    return byTarget;
+  }
+  const byKind = compareCodepointStrings(left.hyperedge.kind, right.hyperedge.kind);
+  if (byKind !== 0) {
+    return byKind;
+  }
+  return compareCodepointStrings(left.hyperedge.name, right.hyperedge.name);
+}
+
+function stronglyConnectedComponents(graph: HypercycleGraph): string[][] {
+  const components: string[][] = [];
+  const indexByVertex = new Map<string, number>();
+  const lowLinkByVertex = new Map<string, number>();
+  const stack: string[] = [];
+  const onStack = new Set<string>();
+  let nextIndex = 0;
+
+  const visit = (vertex: string): void => {
+    const vertexIndex = nextIndex;
+    nextIndex += 1;
+    indexByVertex.set(vertex, vertexIndex);
+    lowLinkByVertex.set(vertex, vertexIndex);
+    stack.push(vertex);
+    onStack.add(vertex);
+
+    for (const step of graph.adjacency.get(vertex) ?? []) {
+      const targetIndex = indexByVertex.get(step.to);
+      if (targetIndex === undefined) {
+        visit(step.to);
+        lowLinkByVertex.set(
+          vertex,
+          Math.min(lowLinkByVertex.get(vertex)!, lowLinkByVertex.get(step.to)!)
+        );
+      } else if (onStack.has(step.to)) {
+        lowLinkByVertex.set(vertex, Math.min(lowLinkByVertex.get(vertex)!, targetIndex));
+      }
+    }
+
+    if (lowLinkByVertex.get(vertex) !== vertexIndex) {
+      return;
+    }
+
+    const component: string[] = [];
+    while (true) {
+      const member = stack.pop()!;
+      onStack.delete(member);
+      component.push(member);
+      if (member === vertex) {
+        break;
+      }
+    }
+    components.push(component);
+  };
+
+  for (const vertex of graph.vertices) {
+    if (!indexByVertex.has(vertex)) {
+      visit(vertex);
+    }
+  }
+
+  return components;
+}
+
+function isCyclicComponent(component: string[], graph: HypercycleGraph): boolean {
+  if (component.length > 1) {
+    return true;
+  }
+  const vertex = component[0];
+  return (
+    vertex !== undefined && (graph.adjacency.get(vertex) ?? []).some((step) => step.to === vertex)
+  );
+}
+
+function shortestCycleInComponent(
+  component: string[],
+  graph: HypercycleGraph
+): HyperedgeStep[] | undefined {
+  const members = new Set(component);
+  let shortestCycle: HyperedgeStep[] | undefined;
+
+  for (const start of component) {
+    const candidate = shortestCycleFrom(start, members, graph);
+    if (candidate && (!shortestCycle || compareCyclePaths(candidate, shortestCycle) < 0)) {
+      shortestCycle = candidate;
+    }
+  }
+
+  return shortestCycle;
+}
+
+function shortestCycleFrom(
   start: string,
-  current: string,
-  adjacency: Map<string, HyperedgeStep[]>,
-  path: HyperedgeStep[],
-  visited: Set<string>
-): HypercycleWitness | undefined {
-  if (visited.has(current)) {
-    return undefined;
-  }
-  visited.add(current);
+  members: ReadonlySet<string>,
+  graph: HypercycleGraph
+): HyperedgeStep[] | undefined {
+  const queue: { vertex: string; path: HyperedgeStep[] }[] = [{ vertex: start, path: [] }];
+  const visited = new Set([start]);
 
-  const nextSteps = adjacency.get(current) ?? [];
-  for (const step of nextSteps) {
-    path.push(step);
-    if (step.to === start) {
-      return witnessFromPath(start, path);
+  for (let cursor = 0; cursor < queue.length; cursor += 1) {
+    const current = queue[cursor]!;
+    for (const step of graph.adjacency.get(current.vertex) ?? []) {
+      if (!members.has(step.to)) {
+        continue;
+      }
+      const path = [...current.path, step];
+      if (step.to === start) {
+        return path;
+      }
+      if (!visited.has(step.to)) {
+        visited.add(step.to);
+        queue.push({ vertex: step.to, path });
+      }
     }
-
-    const witness = dfsHypercycle(start, step.to, adjacency, path, visited);
-    if (witness) {
-      return witness;
-    }
-    path.pop();
   }
 
-  visited.delete(current);
   return undefined;
 }
 
-export function witnessFromPath(start: string, path: HyperedgeStep[]): HypercycleWitness {
-  const vertices = [start, ...path.map((step) => step.to)];
+function compareCyclePaths(left: HyperedgeStep[], right: HyperedgeStep[]): number {
+  if (left.length !== right.length) {
+    return left.length - right.length;
+  }
+
+  const leftVertices = [left[0]!.from, ...left.map((step) => step.to)];
+  const rightVertices = [right[0]!.from, ...right.map((step) => step.to)];
+  for (let index = 0; index < leftVertices.length; index += 1) {
+    const byVertex = compareCodepointStrings(leftVertices[index]!, rightVertices[index]!);
+    if (byVertex !== 0) {
+      return byVertex;
+    }
+  }
+
+  for (let index = 0; index < left.length; index += 1) {
+    const byKind = compareCodepointStrings(
+      left[index]!.hyperedge.kind,
+      right[index]!.hyperedge.kind
+    );
+    if (byKind !== 0) {
+      return byKind;
+    }
+    const byName = compareCodepointStrings(
+      left[index]!.hyperedge.name,
+      right[index]!.hyperedge.name
+    );
+    if (byName !== 0) {
+      return byName;
+    }
+  }
+
+  return 0;
+}
+
+function witnessFromPath(path: HyperedgeStep[]): HypercycleWitness {
+  const vertices = [path[0]!.from, ...path.map((step) => step.to)];
   const seenEdges = new Set<string>();
   const hyperedges: HyperedgeInfo[] = [];
   for (const step of path) {
@@ -295,35 +453,4 @@ export function witnessFromPath(start: string, path: HyperedgeStep[]): Hypercycl
     hyperedges,
     provenance: hyperedges.map((edge) => edge.provenance)
   };
-}
-
-export function buildHyperedgeSteps(model: Model): HyperedgeStep[] {
-  const steps: HyperedgeStep[] = [];
-  for (const edge of model.hypergraph.edges.values()) {
-    const rule = PRELUDE_RELATION_KINDS.get(edge.kind);
-    const traversal = rule?.cycleTraversal ?? "none";
-    if (traversal === "none") {
-      continue;
-    }
-
-    if (traversal === "directed_pairs") {
-      if (edge.members.length < 2) {
-        continue;
-      }
-      steps.push({
-        hyperedge: edge,
-        from: edge.members[0]!.endpoint,
-        to: edge.members[1]!.endpoint
-      });
-    } else if (traversal === "ordered_path") {
-      for (let index = 0; index < edge.members.length - 1; index += 1) {
-        steps.push({
-          hyperedge: edge,
-          from: edge.members[index]!.endpoint,
-          to: edge.members[index + 1]!.endpoint
-        });
-      }
-    }
-  }
-  return steps;
 }

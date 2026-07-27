@@ -294,14 +294,11 @@ component ShapeRuleEngine {
     }
   fn findHypercycle : RefactorSensitive
     source ts("packages/shp-checker/src/checker/rules/relations.ts#findHypercycle")
+    description "Builds one relation-kind-filtered traversal graph, partitions it into strongly connected components, and selects a deterministic shortest witness."
     effects complete {
-      Append<SemanticDiagnostics>
-        evidence ts("packages/shp-checker/src/checker/rules/relations.ts")
       Read<EffectiveModel>
         evidence ts("packages/shp-checker/src/checker/rules/relations.ts")
       Read<PreludeMetadata>
-        evidence ts("packages/shp-checker/src/checker/rules/relations.ts")
-      Update<ShapeHypergraph>
         evidence ts("packages/shp-checker/src/checker/rules/relations.ts")
     }
 }
@@ -577,7 +574,7 @@ memory HypercycleWitness : RefactorConstraint<fn ShapeRuleEngine.findHypercycle>
   applies_to fn ShapeRuleEngine.findHypercycle
   status Explained
   confidence High
-  summary "Hypercycle diagnostics need a deterministic witness path so reviewers can understand the rejected structural relation."
+  summary "Hypercycle diagnostics need a deterministic shortest witness path so reviewers can understand the tightest rejected structural relation."
   who {
     owner ShapeMaintainers
   }
@@ -727,6 +724,17 @@ reevaluation FinalForbidRuleConditionsRechecked {
   evidence test("packages/shp-checker/src/checker.test.ts")
 }
 
+reevaluation HypercycleSccTraversalRechecked {
+  satisfies memory HypercycleWitness
+  outcome Confirmed
+  summary "Tarjan SCC detection runs over one relation-kind-filtered local graph, and pure canonical shortest-cycle selection returns a stable reviewer-readable witness without appending diagnostics or mutating the model hypergraph."
+  reviewer ShapeMaintainers
+  decided_on "2026-07-26"
+  evidence md("docs-site/src/content/docs/concepts/rules-hypercycles.md")
+  evidence test("packages/shp-checker/src/behavioural/hypercycle-witness.test.ts")
+  evidence test("packages/shp-checker/src/checker.test.ts")
+}
+
 reevaluation HypercycleTraversalRechecked {
   satisfies memory HypercycleWitness
   outcome Confirmed
@@ -761,12 +769,17 @@ attest no_shape_change {
 
 attest no_shape_change {
   source md("docs-site/src/content/docs/reference/diagnostics.md")
-  reason "Documents targeted invalid-rule diagnostics and remediation for the modeled checker behavior; the documentation itself does not change the architecture contract."
+  reason "Documents targeted invalid-rule diagnostics and SCC-backed shortest hypercycle witness selection modeled by ShapeRuleEngine; the documentation itself does not change the architecture contract."
 }
 
 attest no_shape_change {
   source md("docs-site/src/content/docs/reference/language-syntax.md")
   reason "Clarifies the existing rule grammar's supported semantic subset without changing syntax or the architecture contract."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/concepts/rules-hypercycles.md")
+  reason "Documents the SCC-backed shortest hypercycle witness behavior modeled by ShapeRuleEngine; the documentation itself does not change the architecture contract."
 }
 
 attest no_shape_change {

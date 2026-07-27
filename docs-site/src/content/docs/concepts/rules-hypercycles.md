@@ -62,6 +62,8 @@ rule no_runtime_cycle {
 
 `forbid hypercycle` without `over` looks for cycles across every relation kind that participates in cycle detection.
 
+After relation-kind filtering, the checker partitions the traversal graph into strongly connected components and reports the shortest cycle witness. Equal-length witnesses are resolved in canonical name order, so the result does not depend on relation declaration order.
+
 The diagnostic cites the relations forming the cycle and prints a vertex witness path:
 
 ```text
