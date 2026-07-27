@@ -5,19 +5,25 @@ sidebar:
   order: 6
 ---
 
-This example marks a polling function as `RefactorSensitive`. That trait requires a matching `RefactorConstraint` memory for the same function target.
+## Intent
+
+Show that `RefactorSensitive` on a function requires a matching `RefactorConstraint` memory for the same function target. Without that context, the checker reports `missing required context`.
+
+## Model
+
+Matches `fixtures/pass/memory_guard_refactor_constraint_unknown/audit.shape`:
 
 ```shape
 module bridge
 
-resource Attestation
+resource PolicySnapshot
 
 component BridgePoller {
-  owns Attestation
-  grants Read<Attestation>
+  owns PolicySnapshot
+  grants Read<PolicySnapshot>
   fn pollAttestation : RefactorSensitive
     effects complete {
-      Read<Attestation>
+      Read<PolicySnapshot>
     }
 }
 
@@ -30,21 +36,23 @@ memory BridgePollingDelayConstraint : RefactorConstraint<fn BridgePoller.pollAtt
 }
 ```
 
-Run the checker against the fixture:
+`status Unexplained` keeps uncertainty explicit: the team records that the shape is refactor-sensitive even when the full explanation lives elsewhere.
+
+## Expected result
 
 ```bash
 shp check fixtures/pass/memory_guard_refactor_constraint_unknown/audit.shape
 ```
 
-The model passes because the function has the required design memory. `status Unexplained` keeps uncertainty explicit: the team knows this shape is refactor-sensitive, even if the full explanation still lives in issue history or incident notes.
+```text
+Shape check passed.
+```
 
-Use `shp memory` to list recorded rationale and memory entries:
+List recorded memory with:
 
 ```bash
 shp memory fixtures/pass/memory_guard_refactor_constraint_unknown/audit.shape
 ```
-
-Example output:
 
 ```text
 Memory Guards
@@ -56,3 +64,15 @@ fn BridgePoller.pollAttestation
   confidence: High
   owner: BridgeTeam
 ```
+
+## Why it passes
+
+- Prelude trait `RefactorSensitive` requires `RefactorConstraint` satisfied by memory.
+- The memory type target and `applies_to` both name `fn BridgePoller.pollAttestation`.
+- No guarded change is present, so reevaluation is not required.
+
+## Related concepts
+
+- [Refactor constraints](../concepts/refactor-constraints.md)
+- [Guarded change reevaluation](./guarded-change-reevaluation.md)
+- [CLI: memory](../reference/cli.md)

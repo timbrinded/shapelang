@@ -1,17 +1,17 @@
 ---
 title: Quickstart
-description: Download the released Shape typechecker and run it against `.shape` files.
+description: Install the released shp binary and run Shape checks against .shape files.
 sidebar:
   order: 2
 ---
 
-Shape ships a self-contained `shp` typechecker binary. You do not need Bun or Node to run it in a project that already has `.shape` files.
+This page installs the released `shp` typechecker and runs the commands you need in an application repo that already has, or is about to add, `.shape` files. You do not need Bun or Node to run the released binary.
 
 ![Quickstart loop showing install shp, shape files, shp check, diagnostics, update model, and CI.](../../../assets/infographics/quickstart-loop.png)
 
 ## Install
 
-Use a pinned version in scripts and CI:
+Pin a release version in scripts and CI. The current docs pin is `v0.4.1`:
 
 ```bash
 curl --proto '=https' --tlsv1.2 -LsSf https://github.com/timbrinded/shapelang/releases/download/v0.4.1/install.sh | sh
@@ -23,12 +23,19 @@ On Windows:
 irm https://github.com/timbrinded/shapelang/releases/download/v0.4.1/install.ps1 | iex
 ```
 
-The installer downloads the matching release archive, verifies its SHA-256 checksum, and installs `shp` plus its bundled Tree-sitter parser assets into `~/.local/bin`. Replace `v0.4.1` with the release tag you want to pin.
+The installer downloads the matching release archive, verifies its SHA-256 checksum, and installs `shp` plus bundled Tree-sitter parser assets into `~/.local/bin`. Replace `v0.4.1` with the release tag you want to pin.
 
-If your shell cannot find `shp` after installation, add the install directory to your `PATH`:
+If your shell cannot find `shp` after installation:
 
 ```bash
 export PATH="$HOME/.local/bin:$PATH"
+```
+
+Confirm the binary:
+
+```bash
+shp --version
+shp --help
 ```
 
 ## Check a repo
@@ -37,10 +44,16 @@ export PATH="$HOME/.local/bin:$PATH"
 shp check
 ```
 
-With no file arguments, `shp check` scans:
+With no file arguments, Shape file commands scan:
 
 ```text
 shape/**/*.shape
+```
+
+That recursive set includes modules under `shape/vendor/` when you vendor domain packs. Pass explicit paths when you want a narrower check:
+
+```bash
+shp check shape/audit.shape
 ```
 
 ## Format shape files
@@ -49,16 +62,44 @@ shape/**/*.shape
 shp fmt --check
 ```
 
-Use `shp fmt` without `--check` to rewrite shape files with canonical formatting.
+Use `shp fmt` without `--check` to rewrite files with canonical formatting.
 
-## Check changed files
+## Coverage for changed files
+
+When governed source changes, coverage requires a current Shape update or a narrow attestation in a changed `.shape` file:
 
 ```bash
 git diff --name-only origin/main...HEAD > changed.txt
 shp coverage --changed-files changed.txt
 ```
 
-If a governed source path changes without a Shape update or current attestation, the checker rejects the change.
+`shp check --changed-files changed.txt` also runs coverage and bindings as part of the check. Prefer listing the same `changed.txt` in CI that you use for local validation.
+
+## Draft unknowns while authoring
+
+Strict `shp check` rejects `effects unknown` so committed models cannot keep unresolved effects silently. For local draft iteration:
+
+```bash
+shp check --allow-unknown-effects draft.shape
+```
+
+Unknowns become warnings; parse errors, final forbids, missing grants for known effects, guarded-change obligations, coverage, and bindings still fail the command. Resolve unknowns and run strict `shp check` before review or CI.
+
+## Other useful commands
+
+| Command | Purpose |
+| --- | --- |
+| `shp explain SYMBOL` | Facts and incident relations for a symbol |
+| `shp graph stats` / `show` / `all` | Inspect the relation hypergraph |
+| `shp memory` | List design-memory guards |
+| `shp obligations` | List open review obligations |
+| `shp analyze` | Advisory source hints vs declared effects |
+| `shp author` | Conservative draft or authoring prompt |
+| `shp ast source` / `json` | AST-backed draft generation |
+| `shp lsp` | Language server on stdio |
+| `shp update` | Update a local released binary (not for pinned CI installs) |
+
+See [CLI Reference](../reference/cli) for flags and full usage.
 
 ## GitHub Actions
 
@@ -67,11 +108,14 @@ steps:
   - uses: actions/checkout@v4
   - uses: timbrinded/shapelang@v0.4.1
   - run: shp check
+  - run: shp fmt --check
 ```
+
+For coverage on pull requests, produce `changed.txt` and run `shp coverage --changed-files changed.txt` or `shp check --changed-files changed.txt`. See [CI Workflow](./ci-workflow).
 
 ## Use with Claude Code
 
-Shape's authoring and review skills are also packaged as a Claude Code plugin. Add the marketplace and install the plugin:
+Shape authoring and review skills ship as a Claude Code plugin. They call the `shp` CLI, so keep the binary on your `PATH`.
 
 ```text
 /plugin marketplace add timbrinded/shapelang
@@ -79,6 +123,25 @@ Shape's authoring and review skills are also packaged as a Claude Code plugin. A
 /reload-plugins
 ```
 
-This makes the `shapelang:shape-lang`, `shapelang:shape-contract-preflight`, `shapelang:shape-contract-guard`, `shapelang:shape-index`, and `shapelang:shape-review` skills available in Claude Code. They call the `shp` CLI, so install the binary (above) and keep it on your `PATH`.
+That exposes skills such as `shapelang:shape-lang`, `shapelang:shape-contract-preflight`, `shapelang:shape-contract-guard`, `shapelang:shape-index`, and `shapelang:shape-review`.
 
-For contributor setup, see [Local Development](../reference/local-development).
+## Practice
+
+**Do**
+
+- Pin install and action versions to an explicit tag such as `v0.4.1`
+- Keep the durable model under `shape/**/*.shape`
+- Run strict `shp check` before merge; use `--allow-unknown-effects` only for drafts
+
+**Do not**
+
+- Use `shp update` as a substitute for pinned CI installation
+- Treat analyzer or authoring output as checker approval
+- Expect Shape to validate application runtime behavior outside the declared model
+
+## Related pages
+
+- [What Shape Is](./what-is-shape) — product boundary
+- [First Shape File](./first-shape-file) — write a minimal model
+- [CI Workflow](./ci-workflow) — full PR gates
+- [Local Development](../reference/local-development) — contributor Bun workspace setup

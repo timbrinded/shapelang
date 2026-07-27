@@ -1,17 +1,25 @@
 ---
 title: Append-Only Walkthrough
-description: Follow the core Shape failure from trait declaration to checker diagnostic.
+description: Follow an append-only resource from trait declaration to a forbidden-effect diagnostic.
 sidebar:
   order: 4
 ---
 
-The first Shape use case is append-only resource protection.
+This walkthrough is the core Shape failure path: declare an append-only resource, model safe functions, then add a hard-delete function and read the diagnostic. Use it when you need a concrete pass/fail pair for resource traits and final forbids.
 
 ![Append-only rejection diagram showing AuditEvent, AppendOnly, forbid final, a HardDelete claim, the witness path, and the rejected diagnostic.](../../../assets/infographics/append-only-rejection.png)
 
+## When this applies
+
+- You protect a resource that must not be hard-deleted, truncated, or dropped
+- You want CI to reject models that claim those effects even when a component grants them
+- You need a diagnostic that names the function, the resource trait, and the final forbid
+
+Shape still does not prove that production code cannot delete the resource. It checks whether the declared model claims a forbidden effect.
+
 ## Declare the invariant
 
-An append-only trait allows appends and reads, then forbids final destructive effects:
+Prelude `AppendOnly` finally forbids `HardDelete`, `Truncate`, and `DropStorage` on the resource. You can also declare an equivalent trait in the module (as the failure fixture does) so the constraint is visible in the same file:
 
 ```shape
 module audit
@@ -27,7 +35,7 @@ trait AppendOnly<T: Resource> {
 resource AuditEvent : AppendOnly
 ```
 
-`final` matters because a component grant cannot override it. A component may grant `HardDelete<AuditEvent>`, but the checker still rejects a function that emits it.
+`final` means a component grant cannot override the forbid. Memory, rationale, and reevaluation also cannot waive it.
 
 ## Model the safe functions
 
@@ -63,7 +71,7 @@ component AuditStore {
 }
 ```
 
-This model passes because the component grants the emitted effects and the trait does not forbid them.
+This model passes: the component grants the emitted effects, and the trait does not forbid them. The smaller pass fixture is `fixtures/pass/append_only_append/audit.shape` (prelude trait, no local trait body).
 
 ## Add the unsafe function
 
@@ -100,12 +108,38 @@ Run:
 shp check fixtures/fail/append_only_hard_delete/audit.shape
 ```
 
-The checker reports a forbidden effect and includes the causal trail:
+The checker reports a forbidden effect and a causal trail:
 
 ```text
-AuditStore.purgeOldEvents emits HardDelete<AuditEvent>
-AuditEvent has trait AppendOnly
-AppendOnly forbids final HardDelete<AuditEvent>
+error: forbidden effect
+
+AuditStore.purgeOldEvents emits HardDelete<AuditEvent>.
+AuditEvent has trait AppendOnly.
+AppendOnly forbids final HardDelete<AuditEvent>.
+evidence: ts("src/audit/purge.ts#purgeOldEvents")
 ```
 
-That is the product: a compact declaration, a deterministic rejection, and a diagnostic that reviewers can follow.
+The grant for `HardDelete<AuditEvent>` is present and still insufficient. Final forbids win over grants.
+
+The same final forbid still applies when design memory is attached to the function. See fixture `fixtures/fail/memory_guard_does_not_override_final_forbid/`.
+
+## Best practices
+
+**Do**
+
+- Put destructive effects in the model when source actually performs them, then fix architecture or remove the claim
+- Keep final forbids for invariants that must not be waived by component-local grants
+- Attach evidence on material effects so diagnostics and review point at the same source
+
+**Do not**
+
+- Add a grant to “allow” a final-forbidden effect; the checker still rejects the emission
+- Use memory or reevaluation to silence a final forbid
+- Mark effects complete while omitting a known destructive path
+
+## Related pages
+
+- [First Shape File](./first-shape-file)
+- [Append-Only Pass](../examples/append-only-pass) and [Append-Only Hard-Delete Failure](../examples/append-only-hard-delete-failure)
+- [Resources, Traits, and Effects](../concepts/resources-traits-effects)
+- [Diagnostics and Provenance](../concepts/diagnostics-provenance)

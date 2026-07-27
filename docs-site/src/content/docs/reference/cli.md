@@ -5,12 +5,12 @@ sidebar:
   order: 2
 ---
 
-The released `shp` binary exposes these commands.
+The released `shp` binary (version `0.4.1` / tag `v0.4.1`) exposes these commands.
 
 ## Usage
 
 ```text
-shp check [--allow-unknown-effects] [--changed-files changed.txt] [--strict-freshness] [files...]
+shp check [--allow-unknown-effects] [--changed-files changed.txt] [--as-of YYYY-MM-DD] [--strict-freshness] [files...]
 shp coverage --changed-files changed.txt [files...]
 shp fmt [--check] [files...]
 shp explain SYMBOL [files...]
@@ -19,7 +19,7 @@ shp graph show SYMBOL [--kind KIND] [files...]
 shp graph stats [--kind KIND] [files...]
 shp lsp
 shp memory [files...]
-shp obligations [--strict-freshness] [files...]
+shp obligations [--as-of YYYY-MM-DD] [--strict-freshness] [files...]
 shp author --changed-files changed.txt --component ComponentName [--module module.name]
 shp author --changed-files changed.txt --component ComponentName --diff pr.diff --prompt --shape-files file1.shape,file2.shape [--snippet-files file1.ts,file2.rs] [--project-prelude prelude.shape] [--instructions TEXT]
 shp analyze [--shape-files file1.shape,file2.shape] [source-files...]
@@ -30,7 +30,7 @@ shp --help
 shp --version
 ```
 
-When no files are provided, commands scan:
+When no files are provided, Shape file commands scan:
 
 ```text
 shape/**/*.shape
@@ -45,8 +45,8 @@ activate or deactivate pack-level rules. See [Domain Packs](../concepts/domain-p
 
 | Command | Purpose |
 | --- | --- |
-| `check` | Parse modules, lower facts, and run semantic checks. With `--allow-unknown-effects`, draft unknowns become non-fatal warnings while all other diagnostics remain blocking. With `--changed-files`, it also runs coverage and bindings. With `--strict-freshness`, stale design memory becomes a check failure. |
-| `coverage` | Require Shape updates or current attestations when governed source paths change. |
+| `check` | Parse modules, lower facts, and run semantic checks. With `--allow-unknown-effects`, draft unknowns become non-fatal warnings while all other diagnostics remain blocking. With `--changed-files`, also runs coverage and bindings. With `--as-of YYYY-MM-DD` or `--strict-freshness`, stale design memory becomes a check failure. |
+| `coverage` | Require Shape updates or current attestations when governed source paths change. Bindings are not enforced in coverage-only mode. |
 | `fmt` | Format Shape files, or check formatting with `--check`. |
 | `explain` | Print derived facts and incident relations for a symbol. |
 | `graph all` | Print the entire hypergraph. Filter by `--kind KIND`. |
@@ -54,12 +54,23 @@ activate or deactivate pack-level rules. See [Domain Packs](../concepts/domain-p
 | `graph stats` | Print aggregate hypergraph counts. Filter by `--kind KIND`. |
 | `lsp` | Serve Shape diagnostics and editor requests over the Language Server Protocol on stdio. |
 | `memory` | List rationale and memory entries grouped by protected target. |
-| `obligations` | List open design-memory obligations from checker diagnostics. With `--strict-freshness`, also list design memory whose `review_by` date is past. |
+| `obligations` | List open design-memory obligations from checker diagnostics. With `--as-of` or `--strict-freshness`, also list design memory whose `review_by` date is past the reference date. |
 | `author` | Generate a conservative global-model draft, or emit a provider-neutral PR-diff authoring prompt with explicit context. |
 | `analyze` | Emit source hints or compare source hints with declared effects. |
 | `ast source` | Parse source with Tree-sitter and emit a conservative semantic Shape draft. |
 | `ast json` | Read external AST JSON and emit the same draft format. |
 | `update` | Update a local released binary from GitHub Releases. |
+
+## Check flags
+
+| Flag | Meaning |
+| --- | --- |
+| `--allow-unknown-effects` | Report `effects unknown` as a non-fatal draft warning; every other diagnostic stays blocking. |
+| `--changed-files PATH` | Path to a newline-delimited changed-file list; also runs coverage and bindings. |
+| `--as-of YYYY-MM-DD` | Freshness reference date (ISO calendar day). Design memory with `review_by` strictly before this date fails the check. |
+| `--strict-freshness` | Shorthand for `--as-of` today (UTC). The CLI supplies today's date; the checker itself only compares the provided date and does not read the clock. |
+
+`--as-of` and `--strict-freshness` are alternatives for the same freshness gate. When both are present, `--as-of` wins.
 
 ## Common commands
 
@@ -67,6 +78,8 @@ activate or deactivate pack-level rules. See [Domain Packs](../concepts/domain-p
 shp check
 shp check --allow-unknown-effects draft.shape
 shp check --changed-files changed.txt
+shp check --as-of 2026-05-30
+shp check --strict-freshness
 shp coverage --changed-files changed.txt
 shp fmt --check
 shp explain AuditEvent
@@ -79,14 +92,17 @@ shp graph stats --kind calls
 shp lsp
 shp memory
 shp obligations
+shp obligations --as-of 2026-05-30
+shp obligations --strict-freshness
 shp author --changed-files changed.txt --component AuditStore
 shp author --changed-files changed.txt --component AuditStore --diff pr.diff --prompt --shape-files shape/audit.shape --snippet-files src/audit/purge.ts
-shp analyze --shape-files fixtures/pass/append_only_append/audit.shape src/audit/purge.ts
+shp analyze --shape-files fixtures/pass/append_only_append/audit.shape fixtures/source/audit_purge.ts
 shp ast source --language rust --module generated.audit src/audit/store.rs
 shp ast source --language rust --out-dir shape/generated/ast src/audit/store.rs
 shp ast source --language rust --out-dir shape/generated/ast --check src/audit/store.rs
 shp ast json --module generated.audit --raw-out ast.raw.shape ast.json
 shp update --dry-run
+shp update --version v0.4.1
 ```
 
 ## Draft validation
@@ -101,7 +117,7 @@ Unknown effects are rendered as warnings and the command exits `0` only when no 
 
 ## Analyzer hints
 
-`shp analyze` lexically scans for obvious destructive SQL plus common Kysely, Prisma, and Drizzle delete patterns. It recognizes multiline SQL and direct raw-execution literals while ignoring comments and inert string or template literals. When a direct static table, model, or schema identifier is available, hint output includes `target=<name>`; supported comma-separated destructive SQL lists emit one hint per target. Destructive SQL must begin with the destructive keyword; the analyzer does not follow SQL stored in variables or resolve arbitrary library aliases. Without `--shape-files`, it prints advisory hints and exits successfully. With `--shape-files`, it compares hints with declared effects and compares static targets with declared resource names and `storage` aliases. Quoted SQL components compare exactly, while unquoted SQL uses case folding without erasing separators. The TypeScript scanner conservatively associates recognized balanced forms of named functions, methods, and block-bodied assigned arrows with Shape `#function` source anchors. Unsupported TypeScript forms remain unanchored; this includes literal return types and assigned arrows with a newline between `=` and the parameter list. Missing effects, target mismatches, and ambiguous source attribution have distinct warnings; any warning exits with code `1`.
+`shp analyze` lexically scans for obvious destructive SQL plus common Kysely, Prisma, and Drizzle delete patterns. It recognizes multiline SQL and direct raw-execution literals while ignoring comments and inert string or template literals. When a direct static table, model, or schema identifier is available, hint output includes a suspected target; supported comma-separated destructive SQL lists emit one hint per target. Destructive SQL must begin with the destructive keyword; the analyzer does not follow SQL stored in variables or resolve arbitrary library aliases. Without `--shape-files`, it prints advisory hints and exits successfully. With `--shape-files`, it compares hints with declared effects and compares static targets with declared resource names and `storage` aliases. Quoted SQL components compare exactly, while unquoted SQL uses case folding without erasing separators. The TypeScript scanner conservatively associates recognized balanced forms of named functions, methods, and block-bodied assigned arrows with Shape `#function` source anchors. Unsupported TypeScript forms remain unanchored; this includes literal return types and assigned arrows with a newline between `=` and the parameter list. Missing effects, target mismatches, and ambiguous source attribution have distinct warnings; any warning exits with code `1`.
 
 See [Analyzer Hints](../concepts/analyzer-hints) for the supported pattern families and matcher limitations.
 
@@ -143,7 +159,7 @@ In this repo, `bun run ast:generate` refreshes the committed generated AST conte
 
 Use `--include-ast-layer` to include raw AST resources and `ast_child` relations in stdout. Use `--raw-out PATH` to keep the raw trace in a sidecar Shape file while stdout stays focused on the semantic draft. These flags are mutually exclusive.
 
-`shp ast json` accepts normalized AST JSON with this shape when another parser already produced syntax data. It is an input adapter, not a Shapes-to-AST export path. Anchored nodes should include token/source text in their subtree so `ast.semantic_subtree_v1` fingerprints can be computed. If an anchor has no token evidence, generation reports a warning, keeps the draft, omits that fingerprint expectation, and skips candidate effects that would need an uncheckable pin:
+`shp ast json` accepts normalized AST JSON with this shape when another parser already produced syntax data. It is an input adapter, not a Shape-to-AST export path. Anchored nodes should include token/source text in their subtree so `ast.semantic_subtree_v1` fingerprints can be computed. If an anchor has no token evidence, generation reports a warning, keeps the draft, omits that fingerprint expectation, and skips candidate effects that would need an uncheckable pin:
 
 ```json
 {
@@ -190,7 +206,7 @@ coordinated_call:
 
 `--kind KIND` filters by relation kind in graph modes. There is no separate binary view; every structural dependency is a hyperedge.
 
-The older forms `shp graph`, `shp graph SYMBOL`, and `shp graph --stats` remain supported for compatibility, but the explicit subcommands are preferred.
+The older forms `shp graph`, `shp graph SYMBOL`, and `shp graph --stats` remain supported for compatibility, but the explicit subcommands are preferred. Legacy symbols named `all`, `show`, or `stats` must use `graph show SYMBOL`.
 
 ### Stats
 
@@ -258,7 +274,7 @@ guarded changes:
 
 ### Review freshness
 
-`review_by` is informational by default. Pass `--strict-freshness` to enforce it: design memory and rationale whose `review_by` is an ISO `YYYY-MM-DD` date strictly before today is reported. `shp obligations --strict-freshness` lists those entries under `stale design memory:`, and `shp check --strict-freshness` turns them into a failing diagnostic so CI can require periodic review.
+`review_by` is informational by default. Pass `--as-of YYYY-MM-DD` or `--strict-freshness` to enforce it: design memory and rationale whose `review_by` is an ISO `YYYY-MM-DD` date strictly before the reference date is reported. `shp obligations` lists those entries under `stale design memory:`, and `shp check` turns them into a failing diagnostic so CI can require periodic review.
 
 ```text
 Open Shape Obligations
@@ -267,7 +283,7 @@ stale design memory:
   memory DecisionRefactorConstraint review_by 2026-01-01 is before 2026-05-30
 ```
 
-Only ISO `YYYY-MM-DD` dates are enforced; missing or non-ISO `review_by` values are never reported as stale. The checker reads the date from the caller, never the system clock, so freshness results stay deterministic and reproducible.
+Only ISO `YYYY-MM-DD` dates are enforced; missing or non-ISO `review_by` values are never reported as stale. Prefer `--as-of` for deterministic CI dates. `--strict-freshness` is shorthand for today (UTC) at the CLI boundary; the checker only compares the date it is given.
 
 ## Exit codes
 

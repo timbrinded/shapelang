@@ -5,9 +5,9 @@ sidebar:
   order: 1
 ---
 
-The checker pipeline is the part of Shape that turns reviewable architecture claims into pass or fail output. It is intentionally deterministic: the same set of `.shape` files and changed-file inputs should always produce the same facts, the same rule decisions, and the same diagnostics.
+This page describes the production checker pipeline for contributors. The pipeline turns reviewed `.shape` claims into pass or fail diagnostics. It validates the declared architecture model; it does not prove that application source code is correct, execute application logic, or replace tests and code review.
 
-That determinism is important because Shape is not trying to infer intent from source code at review time. The language records claims that a human can inspect, then the checker rejects claims that conflict with the model. Analyzer output and authoring helpers can assist the workflow, but the checker itself is built around explicit declarations.
+The pipeline is deterministic: the same set of `.shape` files and changed-file inputs should produce the same lowered model, the same rule decisions, and the same diagnostics. Analyzer hints and authoring helpers may assist drafting, but they are not part of semantic pass/fail unless a human turns them into reviewed Shape claims.
 
 ![Checker pipeline diagram showing parse, lower facts, run rules, and emit diagnostics with facts, rules, and provenance.](../../../assets/infographics/checker-pipeline.png)
 
@@ -15,32 +15,33 @@ That determinism is important because Shape is not trying to infer intent from s
 flowchart TD
   A[".shape files"] --> B["Parse with Langium"]
   B --> C["ShapeModule ASTs"]
-  C --> E["Effective model"]
-  E --> F["Lower declarations into facts"]
-  F --> G["Run semantic rules"]
-  G --> H{"Diagnostics?"}
-  H -->|"none"| I["pass"]
-  H -->|"one or more"| J["reject with causal trail"]
+  C --> D["Lower into Model and facts"]
+  D --> E["Run semantic rules"]
+  E --> F{"Diagnostics?"}
+  F -->|"none blocking"| G["pass"]
+  F -->|"one or more"| H["reject with causal trail"]
 ```
 
-## The Useful Mental Model
+## Phases
 
-Think of the checker as five small phases rather than one large validator.
+The production path is four phases. Entrypoints live under `packages/shp-checker/src/checker/`:
 
-| Phase | Input | Output | Main job |
-| --- | --- | --- | --- |
-| Parse | Source text | `ShapeModule` ASTs | Reject syntax the language cannot understand. |
-| Lower facts | Effective model | Fact list and internal indexes | Normalize syntax into records rules can consume. |
-| Run rules | Facts and indexes | Semantic diagnostics | Reject incoherent claims and missing obligations. |
-| Format diagnostics | Diagnostics with provenance | CLI/editor output | Explain the shortest causal path to the reviewer. |
+| Phase | Code | Input | Output | Job |
+| --- | --- | --- | --- | --- |
+| Parse | `parseShapeModule` / `checkShapeFiles` | Source text | `ShapeModule` ASTs or parse diagnostics | Reject text the grammar cannot accept. |
+| Lower facts | `lowerShapeModules` | Parsed modules | `Model` (typed indexes + `facts` + lowering diagnostics) | Normalize declarations into records rules can use. |
+| Run rules | `runSemanticChecks` + optional `checkBindings` | Lowered `Model` and check options | Semantic diagnostics | Reject incoherent claims and missing obligations. |
+| Format diagnostics | `formatDiagnostics` and CLI/editor presentation | Diagnostics with provenance | Human-readable output | Show the causal path to the reviewer. |
 
-This split keeps each phase honest. The parser does not decide whether `HardDelete<AuditEvent>` is allowed. Rule evaluation does not re-parse source text. Diagnostic formatting does not invent new facts. The checker becomes easier to extend because each new concept must choose where it belongs in the pipeline.
+Public orchestration is `checkShapeFiles` (parse then check) and `checkShapeModules` (lower then check). `checkLoweredShapeModel` reuses an already lowered model for the incremental checker.
+
+Each phase stays narrow. The parser does not decide whether `HardDelete<AuditEvent>` is allowed. Rule evaluation does not re-parse source text. Diagnostic formatting does not invent new facts.
 
 ## Parse
 
-Langium parses each loaded `.shape` file into a `ShapeModule`. A module contains imports and a list of top-level declarations: resources, traits, components, relations, implementations, attestations, rules, rationales, memories, and reevaluations.
+Langium parses each loaded `.shape` file into a `ShapeModule`. A module contains imports and top-level declarations: resources, traits, components, relations, candidate effects, implementations, bindings, changes, attestations, rules, rationales, memories, reevaluations, roles, and policies.
 
-At this stage the checker only knows whether the text follows the grammar. For example, this is syntactically meaningful even if later rules reject it:
+At this stage the checker only knows whether the text follows the grammar. The following is syntactically meaningful even if later rules reject it:
 
 ```shape
 module audit
@@ -59,43 +60,23 @@ component AuditStore {
 }
 ```
 
-The parser accepts the shape of the declaration. The later semantic stages decide that an append-only resource cannot be hard-deleted.
+The parser accepts the shape of the declaration. Later stages decide that an append-only resource cannot be hard-deleted.
 
-Parser diagnostics have exit code `2` because the checker could not build a semantic model at all. Semantic diagnostics have exit code `1` because the model was understood and rejected.
-
-## Build Effective Model
-
-Files under `shape/` are the normal CI contract. The checker lowers the committed global model before evaluating rules, so rules see the architecture exactly as the repo declares it.
-
-```mermaid
-flowchart TD
-  A["global declarations"] --> C["effective model"]
-  C --> D["facts"]
-  D --> E["rules"]
-```
-
-A global model update can add, modify, or remove functions and declarations:
-
-```shape
-module audit
-
-component AuditStore {
-  fn purgeOldEvents
-    source ts("src/audit/purge.ts#purgeOldEvents")
-    effects complete {
-      HardDelete<AuditEvent>
-        evidence ts("src/audit/purge.ts#purgeOldEvents")
-    }
-}
-```
-
-Coverage, memory guard, grant, and final-forbid checks all evaluate the same effective model.
+Parse failures return exit code `2` because no semantic model was built. Semantic failures return exit code `1` because the model was understood and rejected.
 
 ## Lower Facts
 
-The semantic checker does not want every rule to walk the raw AST. Instead it lowers declarations into small records such as resources, traits, grants, function effects, implementation paths, shape traits, context objects, and rule declarations.
+`lowerShapeModules` builds the effective `Model` used by rules. Lowering is a fixed multi-pass process inside that function, not a separate public API:
 
-For the `AuditStore` example above, lowering produces facts conceptually like:
+1. Index module declarations and seed prelude traits.
+2. Lower ordinary declarations into typed indexes and facts.
+3. Apply `change` declarations on top of that base.
+4. Rebuild shape-update paths from the final function registry.
+5. Emit derived facts (for example final-forbid and context-required facts).
+
+Files under `shape/` are the usual CI contract. Rules evaluate the committed global model as lowered, including any `change` blocks present in the loaded set.
+
+For the `AuditStore` example above, lowered records include (conceptually):
 
 ```text
 resource AuditEvent
@@ -107,24 +88,24 @@ function AuditStore.purgeOldEvents
 effect AuditStore.purgeOldEvents HardDelete<AuditEvent>
 ```
 
-The real checker keeps more detail than this simplified view, including provenance for each fact. Provenance is the bridge between internal reasoning and useful diagnostics: every fact knows which source declaration created it.
+The real `Model` keeps more detail: typed maps such as `components`, `resources`, `traits`, `hypergraph`, `memories`, plus a `facts` list with provenance. Production rules primarily read the typed indexes; the fact list is the public inspection stream and the input used by experimental engines.
 
 ## Run Rules
 
-Rules consume facts and internal indexes. They answer questions such as:
+`SEMANTIC_CHECKS` in `packages/shp-checker/src/checker/rules.ts` runs domain checks in a fixed order, then binding enforcement runs unless disabled. Checks answer questions such as:
 
 - Does a function emit an effect its component does not grant?
 - Does a resource trait create a final forbid for an emitted effect?
 - Did a governed source file change without a matching Shape update or current attestation?
 - Did a function marked `RefactorSensitive` receive the required memory?
 - Did a guarded target change without a matching reevaluation?
-- Did a hypercycle rule find a forbidden hypercycle in the directed hypergraph, and what relations and vertex path prove it?
+- Did a hypercycle or forbidden-path rule find a witness in the directed hypergraph?
 
-The important detail is that these checks are deterministic comparisons over a lowered model. The checker can be conservative because it is not guessing from code. If a function has `effects unknown`, the model says uncertainty remains. If a function has `effects complete`, the author is claiming every material effect is represented.
+These checks are deterministic comparisons over the lowered model and check options (`changedFiles`, `repoRoot`, optional `freshnessDate`). The checker does not infer effects from application source. If a function has `effects unknown`, the model records uncertainty; strict check treats that as a blocking diagnostic unless `allowUnknownEffects` downgrades it to a warning. If a function has `effects complete`, the author claims every material effect is represented in the model.
 
 ## Emit Diagnostics
 
-A good diagnostic should explain the rejection as a causal trail. For a final-forbid failure, the reviewer needs to see more than "effect rejected." They need the function effect, target resource, trait on the resource, and specific final forbid.
+A diagnostic should explain rejection as a causal trail. For a final-forbid failure, the reviewer needs the function effect, target resource, trait on the resource, and the specific final forbid.
 
 ```mermaid
 flowchart TD
@@ -134,16 +115,17 @@ flowchart TD
   D --> E["diagnostic: final forbidden effect"]
 ```
 
-That causal trail is the product surface. Shape is meant to make architecture review explicit, so an error should help a reviewer decide whether to change the code, change the claim, add missing context, or accept that the model is protecting a real invariant.
+That trail is the product surface for review and CI: change the code, change the claim, add missing context, or accept that the model is protecting an invariant.
 
 ## Pipeline Boundaries
 
-When extending the checker, these boundaries keep the design predictable:
+When extending the checker:
 
 - Grammar changes belong in `packages/shp-checker/src/language/shape.langium`.
-- Normalization from declarations to records belongs in lowering.
-- Project coherence checks belong in semantic rule functions.
+- Normalization from declarations to `Model` / facts belongs in `checker/lowerer.ts` and `checker/lowering/*`.
+- Project coherence checks belong in `checker/rules/*` and the ordered registry in `checker/rules.ts`.
 - Human-facing explanation belongs in diagnostic formatting, `explain`, `graph`, `memory`, and `obligations` output.
-- Analyzer hints remain advisory unless a human turns them into reviewed Shape claims.
+- Analyzer hints remain advisory unless turned into reviewed Shape claims.
+- Experimental engines (Datalog spike, semantic kernel) stay outside this production pipeline until explicitly adopted.
 
-The result is a small but teachable architecture: parse the language, build the effective model, lower it into facts, evaluate coherence, then explain any rejection.
+Related: [Fact Lowering](./fact-lowering/), [Rule Evaluation](./rule-evaluation/), [Rule Engine Strategy](./rule-engine-strategy/).

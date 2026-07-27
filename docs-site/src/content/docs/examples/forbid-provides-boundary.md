@@ -5,7 +5,13 @@ sidebar:
   order: 8
 ---
 
-This example exercises first-class structural relations. Two components both declare a `kind provides` hyperedge into the same resource, and a `forbid provides ... except` rule rejects every provider except the allowed one.
+## Intent
+
+Show a first-class structural relation check: two components declare `kind provides` hyperedges into the same resource, and a `forbid provides ... except` rule rejects every provider except the allowed one.
+
+## Model
+
+Matches `fixtures/fail/forbid_provides_boundary/gateway.shape`:
 
 ```shape
 module rules
@@ -33,13 +39,11 @@ rule gateway_only_rpc_ingress {
 }
 ```
 
-Run:
+## Expected result
 
 ```bash
 shp check fixtures/fail/forbid_provides_boundary/gateway.shape
 ```
-
-Expected diagnostic:
 
 ```text
 error: forbidden provides
@@ -52,14 +56,14 @@ caused by:
   - fixtures/fail/forbid_provides_boundary/gateway.shape: rule gateway_only_rpc_ingress forbids provides JsonRpcEndpoint
 ```
 
-`GatewayProvidesRpc` passes because the rule allows `Gateway` as the provider. `PublicApiProvidesRpc` is the offending hyperedge: it provides the same resource from a different component.
+Exit code `1`.
+
+`GatewayProvidesRpc` is allowed. `PublicApiProvidesRpc` is the offending hyperedge.
 
 ## Inspect the hypergraph
 
-`shp graph` projects the hypergraph into reviewable text. Filter by relation kind to look at just the provider boundary:
-
 ```bash
-shp graph --kind provides fixtures/fail/forbid_provides_boundary/gateway.shape
+shp graph all --kind provides fixtures/fail/forbid_provides_boundary/gateway.shape
 ```
 
 ```text
@@ -70,4 +74,14 @@ provides:
   provides PublicApiProvidesRpc: PublicApi (component) -> JsonRpcEndpoint (resource)
 ```
 
-The two `provides` hyperedges both terminate at `JsonRpcEndpoint`, which is exactly why `forbid provides JsonRpcEndpoint except Gateway` rejects the model. Removing or redirecting `PublicApiProvidesRpc` (or widening the rule's `except` list) is what makes the model pass.
+Both `provides` hyperedges terminate at `JsonRpcEndpoint`. Removing or redirecting `PublicApiProvidesRpc`, or widening the rule's `except` list, is what makes the model pass.
+
+## Why it fails
+
+`provides` relations are structural claims, not component-body dependencies. The rule filters the hypergraph for providers of `JsonRpcEndpoint` and rejects any component outside the exception list.
+
+## Related concepts
+
+- [Relations and hypergraphs](../concepts/relations-hypergraphs.md)
+- [Rules and hypercycles](../concepts/rules-hypercycles.md)
+- [CLI: graph](../reference/cli.md)

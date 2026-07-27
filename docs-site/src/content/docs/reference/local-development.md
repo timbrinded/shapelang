@@ -5,7 +5,7 @@ sidebar:
   order: 5
 ---
 
-Use the Bun workspace when contributing to Shape itself. Application repos should usually install the released `shp` binary instead.
+Use the Bun workspace when contributing to Shape itself. Application repos should usually install the released `shp` binary (currently `0.4.1` / `v0.4.1`) instead.
 
 ## Setup
 
@@ -36,7 +36,7 @@ Docs verification walks Markdown-family docs files under the content tree (`.md`
 
 `bun run ast:check` verifies the committed generated AST context under `shape/generated/ast`. `bun run ast:generate` refreshes it from tracked and untracked non-ignored first-party source files.
 
-`bun run shape:ci` is the local version of the repo's Shape gate. It runs the generated AST freshness check, then uses `changed.txt` to enforce governed source coverage and bindings. A governed source change needs a faithful `shape` update or current `attest no_shape_change`; a Shape-affecting source/model change with a docs binding also needs a docs update or current `attest docs_not_needed`.
+`bun run shape:ci` is the local version of the repo's Shape gate. It runs the generated AST freshness check, Shape format check, then uses `changed.txt` with `shp check --changed-files` for governed source coverage and bindings, and lists obligations and memory. A governed source change needs a faithful `shape` update or current `attest no_shape_change`; a Shape-affecting source/model change with a docs binding also needs a docs update or current `attest docs_not_needed`.
 
 Incomplete docs snippets must opt out explicitly:
 

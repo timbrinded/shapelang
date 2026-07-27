@@ -5,36 +5,29 @@ sidebar:
   order: 3
 ---
 
-The parser gives the checker syntax trees. Semantic checks become clearer after those trees are lowered into facts: small normalized records that describe what the model claims to be true.
+This page describes fact lowering for contributors. The parser produces syntax trees. Semantic checks become clearer after those trees are lowered into a `Model`: typed indexes plus a list of facts (small normalized records with provenance).
 
-This page is about that translation layer. If the grammar is the front door to Shape, fact lowering is the point where review syntax becomes an internal architecture database.
+Lowering is part of the production pipeline: parse → lower → run rules → diagnostics. It validates and normalizes the declared model. It does not inspect application runtime behavior or prove implementation correctness.
 
 ![Fact lowering diagram showing declarations, applied changes, an effective model, facts, rules, diagnostics, and provenance.](../../../assets/infographics/fact-lowering-map.png)
 
 ```mermaid
 flowchart TD
-  A["ShapeModule declarations"] --> B["lowerResource"]
-  A --> C["lowerTrait"]
-  A --> D["lowerComponent"]
-  A --> R["lowerRelation"]
-  A --> E["lowerImplementation"]
-  A --> F["lowerContext"]
-  A --> G["lowerRule"]
-  B --> H["facts[]"]
-  C --> H
-  D --> H
-  R --> H
-  E --> H
-  F --> H
-  G --> H
-  H --> I["semantic checks"]
+  A["ShapeModule declarations"] --> B["index + lower declarations"]
+  B --> C["apply change declarations"]
+  C --> D["rebuild shape-update paths"]
+  D --> E["emit derived facts"]
+  E --> F["Model: indexes + facts"]
+  F --> G["semantic checks"]
 ```
 
-## Why Facts Exist
+## Why Facts and Indexes Exist
 
-Raw ASTs preserve exactly what the author wrote. That is valuable for formatting and source locations, but it is awkward for rule evaluation. A rule should not need to know whether a grant came before or after a function in the component body. It should ask a direct question: does this component grant this effect on this resource?
+Raw ASTs preserve exactly what the author wrote. That is useful for formatting and source locations, but awkward for rule evaluation. A rule should not need to know whether a grant appeared before or after a function in the component body. It should ask: does this component grant this effect on this resource?
 
-Lowering gives the checker direct records for those questions.
+Lowering produces direct records for those questions. Production rules primarily use typed indexes on `Model` (`components`, `resources`, `traits`, `hypergraph`, `memories`, and similar). The `facts` array is the public inspection stream, used by `includeFacts`, explain/graph helpers, and experimental engines. It is not currently a complete substitute for the typed indexes (see [Rule Engine Strategy](./rule-engine-strategy/)).
+
+Conceptual records look like:
 
 ```text
 component AuditStore owns AuditEvent
@@ -81,24 +74,28 @@ effect AuditStore.appendEvent Append<AuditEvent>
 shape_update_for src/audit/store.ts
 ```
 
-They also preserve provenance. Conceptually, the effect fact is not just `Append<AuditEvent>`; it is `Append<AuditEvent>` caused by the `fn appendEvent` summary, with optional evidence from `src/audit/store.ts#appendEvent`.
+They also preserve provenance. Conceptually, the effect fact is not only `Append<AuditEvent>`; it is `Append<AuditEvent>` caused by the `fn appendEvent` summary, with optional evidence from `src/audit/store.ts#appendEvent`.
 
-Provenance is why the checker can produce a useful diagnostic instead of a generic failure. When a rule rejects a fact, it can tell the reviewer which declaration created the fact and which declaration created the constraint.
+Provenance is why the checker can produce a useful diagnostic instead of a generic failure. When a rule rejects a claim, it can point at which declaration created the claim and which declaration created the constraint.
 
-## Effective Model First
+## How Lowering Builds the Effective Model
 
-The committed global model is assembled before facts are lowered. The checker does not lower separate fact sets and reconcile them later.
+`lowerShapeModules` in `packages/shp-checker/src/checker/lowerer.ts` builds one effective model from all loaded modules before rules run. Domain lowerers live under `checker/lowering/*`.
 
 ```mermaid
 sequenceDiagram
-  participant Global as Global modules
-  participant Model as Effective model
-  participant Facts as Lowered facts
-  Global->>Model: declare resources, components, functions
-  Model->>Facts: emit one normalized fact set
+  participant Modules as Parsed modules
+  participant Pass1 as Declaration lowering
+  participant Pass2 as Change application
+  participant Facts as Derived facts
+  participant Rules as Semantic checks
+  Modules->>Pass1: index and lower resources, components, relations, ...
+  Pass1->>Pass2: apply change declarations
+  Pass2->>Facts: rebuild shape-update paths and emit derived facts
+  Facts->>Rules: Model indexes + facts
 ```
 
-That design keeps review straightforward. If the global model contains a function with `effects unknown`, the lowered model really contains an unknown effect fact, and the relevant rule can reject or surface that uncertainty.
+If the global model contains a function with `effects unknown`, lowering emits a function fact plus an `effect_unknown` fact, and the unknown-effects rule can reject that uncertainty under strict check.
 
 ```shape
 module audit
@@ -109,8 +106,6 @@ component AuditStore {
     effects unknown
 }
 ```
-
-This lowers into a function fact plus an `effect_unknown` fact. The checker can then require the reviewer to replace uncertainty with a reviewed effect summary before treating the shape as complete.
 
 ## Incremental Invalidation
 
@@ -177,7 +172,7 @@ This split is why diagnostics can say both things: the resource has `AppendOnly`
 
 ## Relation Lowering
 
-Structural links between components and resources live exclusively in top-level `relation` declarations. Lowering turns each `relation` into a hyperedge in the model's directed hypergraph plus one fact per endpoint.
+Structural links between components and resources live in top-level `relation` declarations. Lowering turns each `relation` into a hyperedge in the model's directed hypergraph plus one fact per endpoint.
 
 ```shape
 module audit
@@ -215,11 +210,11 @@ hyperedge_member AuditWritePath AuditEvent index=2
 
 Lowering also builds a vertex-to-hyperedge incidence index keyed by endpoint name. Rule evaluation uses it to answer hypergraph questions without rescanning the AST: `forbid path` performs canonical shortest-path search, `forbid hypercycle` finds a canonical shortest cycle, and `forbid provides T except C` filters incidence at `T`. Path and hypercycle rules share the directed step-graph builder and kind traversal semantics; path evaluation excludes unresolved, ambiguous, or endpoint-type-invalid relations from witnesses.
 
-A binary dependency is just a 2-vertex hyperedge. Shape does not maintain a separate binary-edge layer.
+A binary dependency is a 2-vertex hyperedge. Shape does not maintain a separate binary-edge layer.
 
 ## Context Lowering
 
-Function shape traits such as `PreserveInline`, `RequiresDescription`, and `RefactorSensitive` lower into context requirements. Matching `rationale`, `memory`, and `reevaluation` blocks lower into context facts that may satisfy those requirements.
+Function shape traits such as `PreserveInline`, `RequiresDescription`, and `RefactorSensitive` lower into context requirements. Matching `rationale`, `memory`, and `reevaluation` blocks lower into context facts that may satisfy those requirements. Nested `protects` / `guards` / `who` / `when` blocks are flattened into the shared context-info fields used by rules.
 
 ```shape
 module gateway
@@ -258,7 +253,7 @@ That is enough to check both the current state and future changes. The memory sa
 
 ## Coverage Lowering
 
-Implementations connect source paths to components. They are how Shape can say, "this kind of source change needs a Shape update or current attestation."
+Implementations connect source paths to components. They are how Shape can say that a kind of source change needs a Shape update or current attestation.
 
 ```shape
 module audit
@@ -290,4 +285,4 @@ Lowering records implementation paths and function source paths. Coverage checks
 
 Fact lowering should stay deterministic and local. If a fact cannot be explained from loaded declarations, standard prelude facts, or the explicit changed-file input, it should not appear in diagnostics.
 
-That rule keeps Shape useful for technical reviewers. A reviewer should be able to ask, "why does the checker believe this?" and trace the answer back to source text.
+A reviewer should be able to ask why the checker believes a claim and trace the answer back to source text.

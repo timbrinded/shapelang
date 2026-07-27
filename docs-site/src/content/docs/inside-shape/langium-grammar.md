@@ -5,9 +5,9 @@ sidebar:
   order: 2
 ---
 
-Shape uses Langium for the language front end. The grammar lives at `packages/shp-checker/src/language/shape.langium`, and its job is deliberately narrow: define which source text can become a `ShapeModule` AST.
+This page is for contributors changing Shape syntax. Shape uses Langium for the language front end. The grammar lives at `packages/shp-checker/src/language/shape.langium`. Its job is narrow: define which source text can become a `ShapeModule` AST.
 
-The grammar does not decide whether a model is architecturally coherent. It gives the rest of the checker a typed syntax tree so semantic code can make those decisions deterministically.
+The grammar does not decide whether a model is architecturally coherent. It gives the rest of the checker a typed syntax tree so semantic code can make those decisions deterministically. Parsing is the first phase of the production pipeline: parse → lower facts → evaluate rules → diagnostics. The grammar does not prove application correctness.
 
 ```mermaid
 flowchart LR
@@ -42,16 +42,18 @@ Top-level declarations currently include:
 | `effect candidate` | Generated, machine-readable effect evidence that can point at AST anchors without becoming a reviewed effect claim. |
 | `implementation` | Source path governance for coverage checks. |
 | `binding` | Changed-file coupling, such as requiring docs when Shape-affecting code changes. |
-| `change` | A patch to the architecture model. |
+| `change` | A patch applied during lowering on top of the base model. |
 | `attest` | A typed statement such as `no_shape_change`. |
 | `rule` | Project-specific semantic policy. |
 | `rationale` | Typed design context for non-obvious function shapes. |
 | `memory` | Durable design memory and guards. |
 | `reevaluation` | A review record satisfying a memory or rationale guard. |
+| `role` | A named review role for governance policy. |
+| `policy` | Approver requirements for sensitive memory. |
 
 ## Syntax Bias
 
-Shape syntax should stay boring. That is a design choice, not a lack of ambition. The files are meant to be read in code review by humans and agents who need to answer, "what architectural claim is this line making?"
+Shape syntax should stay explicit. The files are review surfaces for humans and agents who need to answer, "what architectural claim is this line making?"
 
 ```shape
 module audit
@@ -70,7 +72,7 @@ component AuditStore {
 }
 ```
 
-This is intentionally more verbose than a compact policy DSL. The verbosity buys reviewability:
+This is more verbose than a compact policy DSL. The verbosity buys reviewability:
 
 - declarations have stable names
 - module-qualified references can disambiguate same-named declarations with `other.module::Name`, including function targets such as `other.module::Component.fn`
@@ -154,7 +156,7 @@ rule new_policy {
 }
 ```
 
-The checker lowers the committed global model into facts before evaluating rules.
+The checker lowers the committed global model into the effective `Model` before evaluating rules.
 Rule headers are intentionally simple names; subject variables for final effect forbids are introduced by `when T has TraitName` members, not by rule-level type parameters.
 
 ## Binding Syntax
@@ -175,7 +177,7 @@ binding GrammarDocs {
 }
 ```
 
-This is deliberately a language feature rather than ad hoc CI shell logic because bindings are architecture claims: the repo is saying that one surface cannot change without another being reviewed.
+This is a language feature rather than ad hoc CI shell logic because bindings are architecture claims: the repo is saying that one surface cannot change without another being reviewed.
 
 ## Context Syntax
 
@@ -209,7 +211,7 @@ That explicit target is useful in two places. The parser can produce structured 
 
 A `protects` clause uses `ProtectsPropertyKind`, which accepts the `description` keyword or any identifier, followed by an optional value. This keeps the value-bearing form `protects shape PreserveInline` while also allowing the valueless `protects description`. Adding a literal such as `'shape'` here would reserve it as a global keyword and break identifiers (module segments like `shape.generated.ast`), so only the already-reserved `description` keyword is listed.
 
-A `guards` clause is a choice between `'on_change' 'require' ContextTypeName` and `'forbid' 'transform' ID`, and a `ModifyFunctionChange` carries an optional `TransformDecl` (`'transform' ID (',' ID)*`) after its shape-trait list. The `transform` keyword is new; it is safe to add because no identifier in the model uses it as a name.
+A `guards` clause is a choice between `'on_change' 'require' ContextTypeName` and `'forbid' 'transform' ID`, and a `ModifyFunctionChange` carries an optional `TransformDecl` (`'transform' ID (',' ID)*`) after its shape-trait list. The `transform` keyword is reserved for that purpose.
 
 Typed review governance adds three more keywords: top-level `RoleDecl` (`'role' ID`) and `PolicyDecl` (`'policy' ID '{' RequireApproverDecl* '}'`), plus a valueless `SensitiveDecl` (`'sensitive'`) as a memory member. Reserving `role`, `policy`, and `sensitive` means they can no longer be used as bare lowercase identifiers (module segments or function names); PascalCase names such as `Policy` are unaffected.
 

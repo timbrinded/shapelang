@@ -5,9 +5,9 @@ sidebar:
   order: 5
 ---
 
-The checker package exports more than parse and check. Shape files are review artifacts, so the surrounding helper APIs exist to make authoring, editing, formatting, and review loops predictable.
+This page describes helper APIs in `@shape/shp-checker` for contributors. The checker package exports more than parse and check. Shape files are review artifacts, so formatter, editor, and authoring helpers exist to make authoring and review loops predictable.
 
-The short version is: the checker owns semantic truth, while the helper APIs make that truth easier to work with in a CLI, editor, or agent workflow.
+The checker owns semantic truth: pass/fail for model coherence. Helpers make that truth easier to work with in a CLI, editor, or agent workflow. They do not prove application correctness and must not implement a softer or different semantic checker.
 
 ![Review helpers diagram showing formatter, editor APIs, and authoring lanes for stable diffs, diagnostics, explicit unknowns, and human-filled evidence.](../../../assets/infographics/review-helpers.png)
 
@@ -25,7 +25,7 @@ flowchart LR
 
 ## Why These Helpers Exist
 
-Shape is meant to sit in a feedback loop:
+Shape sits in a feedback loop:
 
 1. A human or agent proposes architecture claims.
 2. The formatter makes the diff stable.
@@ -33,11 +33,11 @@ Shape is meant to sit in a feedback loop:
 4. Editor and CLI helpers explain what to fix.
 5. The reviewer turns uncertainty into explicit effects, rationale, memory, or reevaluation.
 
-The helper APIs keep that loop from becoming a collection of one-off scripts. The `shp lsp` adapter now exposes them through the Language Server Protocol without moving semantics into the CLI.
+The helper APIs keep that loop from becoming a collection of one-off scripts. The `shp lsp` adapter exposes them through the Language Server Protocol without moving semantics into the CLI.
 
-The formatter and editor helpers also understand repository binding declarations. Bindings remain semantic checker claims, but helper surfaces should keep them readable, discoverable, and highlighted like other top-level Shape declarations.
+The formatter and editor helpers also understand repository binding declarations. Bindings remain semantic checker claims; helper surfaces keep them readable and discoverable like other top-level Shape declarations.
 
-Shared checker-package metadata backs the helper surfaces. Prelude shape traits, context requirements, relation-kind names, and source-reference string normalization live in package-local helpers, and the formatter, editor, analyzer, checker, and authoring prompt derive their own output from those helpers instead of maintaining separate copies.
+Shared checker-package metadata backs the helper surfaces. Prelude shape traits, context requirements, relation-kind names, and source-reference string normalization live in package-local helpers. The formatter, editor, analyzer, checker, and authoring prompt derive output from those helpers instead of maintaining separate copies.
 
 ## Formatter
 
@@ -47,7 +47,7 @@ Shared checker-package metadata backs the helper surfaces. Prelude shape traits,
 bun run shp -- fmt --check fixtures/pass/append_only_append/audit.shape
 ```
 
-Canonical formatting matters because Shape files are meant to be reviewed in diffs. The formatter sorts declarations and members in a predictable way, normalizes indentation, and keeps function shape traits, descriptions, rationale, memory, and reevaluation blocks easy to scan. It also canonicalizes graph rules such as `forbid path Gateway -> SecretStore over calls or provides`, and editor completions expose that rule prefix alongside the existing hypercycle and provider forms. Rationale/memory guard members are authored as grouped blocks (`protects`, `guards`, `who`, `when`), and the formatter aggregates repeated blocks of the same kind into one, so there is a single canonical on-disk form.
+Canonical formatting matters because Shape files are reviewed in diffs. The formatter sorts declarations and members in a predictable way, normalizes indentation, and keeps function shape traits, descriptions, rationale, memory, and reevaluation blocks easy to scan. It also canonicalizes graph rules such as `forbid path Gateway -> SecretStore over calls or provides`, and editor completions expose that rule prefix alongside the existing hypercycle and provider forms. Rationale/memory guard members are authored as grouped blocks (`protects`, `guards`, `who`, `when`), and the formatter aggregates repeated blocks of the same kind into one, so there is a single canonical on-disk form.
 
 For example, an author might write:
 
@@ -97,7 +97,7 @@ The editor helpers expose the building blocks used by `shp lsp`:
 | `getDefinitionLocation` | Locate declarations for resources, traits, components, rules, contexts, and functions. |
 | `formatOnSave` | Run the same canonical formatter used by the CLI. |
 
-These helpers use the same parser and checker as the CLI. That is important: an editor should not have a softer or different understanding of Shape than CI.
+These helpers use the same parser and checker as the CLI. An editor should not have a different understanding of Shape than CI.
 
 Definition lookup and completions also walk `change` entries, so declarations and functions introduced by `add` entries resolve through the same editor surface as global declarations. `modify` and `remove` entries are treated as references or removals, not definition sites.
 
@@ -112,7 +112,7 @@ flowchart TD
   D --> F["hover/explain/completion context"]
 ```
 
-For a new reader, the practical takeaway is that editor behavior is a projection of checker behavior. Hover text can teach what `RefactorSensitive` requires because the checker already has that prelude concept. Diagnostics can point to missing context because semantic rules already found the obligation.
+Editor behavior is a projection of checker behavior. Hover text can teach what `RefactorSensitive` requires because the checker already has that prelude concept. Diagnostics can point to missing context because semantic rules already found the obligation.
 
 ## Language Server
 
@@ -143,7 +143,7 @@ The server's formatting capability returns the same canonical output as
 
 ## Authoring Helpers
 
-Authoring helpers are built for agent-assisted review. They should help create a safe draft, not pretend to know more than the reviewer knows.
+Authoring helpers are built for agent-assisted review. They help create a conservative draft; they do not claim to know more than the reviewer knows.
 
 Authoring helpers start from changed files and a component:
 
@@ -163,7 +163,7 @@ component AuditStore {
 }
 ```
 
-That `effects unknown` is doing real work. It stops an agent from producing an empty `effects complete` block that looks clean but hides uncertainty. The reviewer can then inspect the diff, add effect entries, refine file-scoped references to stable `#symbol` anchors when supported by source evidence, and include any required rationale, memory, or reevaluation.
+`effects unknown` stops an agent from producing an empty `effects complete` block that looks clean but hides uncertainty. The reviewer can then inspect the diff, add effect entries, refine file-scoped references to stable `#symbol` anchors when supported by source evidence, and include any required rationale, memory, or reevaluation.
 
 The conservative scaffold remains file-scoped. A unified diff is prompt context only: the authoring workflow does not convert hunk coordinates into `path:start-end` references or guess which added lines represent the architectural change.
 
@@ -181,7 +181,7 @@ The conservative scaffold remains file-scoped. A unified diff is prompt context 
 - add reevaluation for guarded changes
 - never use memory or rationale to waive final forbidden effects
 
-The critic prompt asks the inverse questions. It is designed to catch the common failure modes before the deterministic checker runs.
+The critic prompt asks the inverse questions. It is designed to catch common failure modes before the deterministic checker runs.
 
 `buildShapeAuthoringBundle` connects the deterministic pieces without adding a model runtime. It accepts changed-file and component metadata plus a unified diff, path-preserving existing Shape files, optional source snippets, an optional project-prelude context file, and human instructions. It returns:
 
@@ -203,7 +203,7 @@ bun run shp -- author \
 
 Prompt mode requires an explicit Shape-file list instead of loading every file under `shape/`, which keeps generated AST context and unrelated models out of the prompt. A supplied project prelude is context only; the authoring command does not discover, import, or install domain libraries. Shape writes the prompt to stdout and never invokes a provider, subprocess, or network service.
 
-## A Typical Agentic Review Loop
+## A Typical Draft-and-Review Loop
 
 ```mermaid
 sequenceDiagram
@@ -220,10 +220,10 @@ sequenceDiagram
   Checker-->>Human: pass or diagnostics with provenance
 ```
 
-The loop is agentic without being credulous. Agents can scaffold, remind, and compare. Humans still review the claims. The generated draft is parseable but authored `effects unknown` remains unresolved; after folding the update into its owning global model, strict `shp check --changed-files changed.txt` is the final gate.
+Agents can scaffold, remind, and compare. Humans still review the claims. The generated draft is parseable but authored `effects unknown` remains unresolved; after folding the update into its owning global model, strict `shp check --changed-files changed.txt` is the final gate.
 
 ## What Not To Put In Helpers
 
 Keep helper APIs out of semantic decision-making. If a behavior changes whether a model passes, it belongs in the checker or language, not in the formatter, editor adapter, or prompt text.
 
-That boundary prevents the CLI, docs, future editor extension, and CI from drifting into subtly different versions of Shape.
+That boundary prevents the CLI, docs, editor extension, and CI from drifting into different versions of Shape.

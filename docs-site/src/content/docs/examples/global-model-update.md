@@ -5,9 +5,13 @@ sidebar:
   order: 4
 ---
 
-A source change that adds a material effect should be reflected in the global Shape model.
+## Intent
 
-Before:
+Show how a source change that adds a material effect is reflected in the global Shape model, and how that update can still fail policy checks for the right reason.
+
+## Model
+
+**Before** (passes): the store only grants append.
 
 ```shape
 module audit
@@ -20,7 +24,7 @@ component AuditStore {
 }
 ```
 
-After:
+**After** (fails): purge is declared with `HardDelete` grant and effect.
 
 ```shape
 module audit
@@ -40,4 +44,43 @@ component AuditStore {
 }
 ```
 
-Because `AuditEvent` is append-only, this global model update fails for the right reason: the declared `HardDelete<AuditEvent>` effect violates the final forbid.
+## Expected result
+
+Before:
+
+```bash
+shp check path/to/before.shape
+```
+
+```text
+Shape check passed.
+```
+
+After:
+
+```bash
+shp check path/to/after.shape
+```
+
+```text
+error: forbidden effect
+
+AuditStore.purgeOldEvents emits HardDelete<AuditEvent>.
+AuditEvent has trait AppendOnly.
+AppendOnly forbids final HardDelete<AuditEvent>.
+evidence: ts("src/audit/purge.ts#purgeOldEvents")
+```
+
+The closely related fail fixture is `fixtures/fail/append_only_hard_delete/audit.shape`.
+
+## Why
+
+Updating the global model is required when architecture claims change, but an accurate claim can still be illegal under resource policy. Final forbids reject the purge effect even when the grant and evidence are explicit.
+
+To land a purge, the architecture decision must change (for example, stop treating the resource as append-only), or the behavior must not be claimed against that resource.
+
+## Related concepts
+
+- [Model updates and attestations](../concepts/model-updates-attestations.md)
+- [Global model updates](../learn/global-model-updates.md)
+- [Append-only hard-delete failure](./append-only-hard-delete-failure.md)
