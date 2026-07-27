@@ -6,6 +6,8 @@ import shape.checker.incremental
 
 import shape.language
 
+import shape.runtime
+
 import shape.tooling
 
 resource CiWorkflow
@@ -38,6 +40,8 @@ component CiPipeline {
   grants Read<ClaudeReviewPrompt>
   grants Read<ClaudeReviewResult>
   grants Read<CliPackageManifest>
+  grants Read<ExperimentalKernelDiagnosticSet>
+  grants Read<ExperimentalKernelEnvelope>
   grants Read<GeneratedAstManifest>
   grants Read<LanguageSource>
   grants Read<NativeParserAsset>
@@ -50,6 +54,7 @@ component CiPipeline {
   grants Read<SourceSyntaxTree>
   grants Update<ChangedFileList>
   grants Update<ClaudeReviewResult>
+  grants Update<ExperimentalKernelWasmArtifact>
   grants Update<GeneratedAstManifest>
   grants Update<PullRequestStatusComment>
   grants Update<ShapeModelDraft>
@@ -98,6 +103,19 @@ component CiPipeline {
         evidence yaml(".github/workflows/shape.yml")
       Update<PullRequestStatusComment>
         evidence mjs(".github/scripts/upsert-shape-ci-comment.mjs")
+    }
+  fn runExperimentalSemanticKernel
+    source yaml(".github/workflows/shape.yml#Semantic Kernel Prototype")
+    description "Runs the isolated Rust checks, native and browser-WASM builds, and parity harness, then uploads short-lived prototype artifacts."
+    effects complete {
+      Read<CiWorkflow>
+        evidence yaml(".github/workflows/shape.yml")
+      Read<ExperimentalKernelDiagnosticSet>
+        evidence yaml(".github/workflows/shape.yml")
+      Read<ExperimentalKernelEnvelope>
+        evidence yaml(".github/workflows/shape.yml")
+      Update<ExperimentalKernelWasmArtifact>
+        evidence yaml(".github/workflows/shape.yml")
     }
   fn runShapeCi
     source yaml(".github/workflows/shape.yml")
@@ -261,6 +279,8 @@ component DocsSite {
       Read<DocsContent>
         evidence md("docs-site/src/content/docs/inside-shape/design-rationale.md")
       Read<DocsContent>
+        evidence md("docs-site/src/content/docs/inside-shape/experimental-semantic-kernel.md")
+      Read<DocsContent>
         evidence md("docs-site/src/content/docs/inside-shape/fact-lowering.md")
       Read<DocsContent>
         evidence md("docs-site/src/content/docs/inside-shape/formatter-editor-authoring.md")
@@ -356,6 +376,18 @@ component ReleasePipeline {
       Read<ReleaseArtifact>
         evidence ps1("install.ps1")
     }
+}
+
+relation CiPipelineUsesExperimentalSemanticKernel {
+  kind calls
+  connects CiPipeline -> ExperimentalSemanticKernel
+  summary "PrototypeBuild"
+}
+
+relation CiPipelineUsesExperimentalSemanticKernelHarness {
+  kind calls
+  connects CiPipeline -> ExperimentalSemanticKernelHarness
+  summary "PrototypeParity"
 }
 
 relation CiPipelineUsesShapeCi {

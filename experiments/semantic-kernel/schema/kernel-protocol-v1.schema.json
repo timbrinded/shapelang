@@ -1,0 +1,246 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://shape.dev/schemas/experimental-semantic-kernel-v1.json",
+  "title": "Shape experimental semantic kernel protocol v1",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/request"
+    },
+    {
+      "$ref": "#/$defs/response"
+    }
+  ],
+  "$defs": {
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["label"],
+      "properties": {
+        "filePath": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        }
+      }
+    },
+    "resourceFact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "name", "provenance"],
+      "properties": {
+        "kind": {
+          "const": "resource"
+        },
+        "name": {
+          "type": "string"
+        },
+        "provenance": {
+          "$ref": "#/$defs/provenance"
+        }
+      }
+    },
+    "resourceFingerprintFact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "resource", "provider", "value", "provenance"],
+      "properties": {
+        "kind": {
+          "const": "resource_fingerprint"
+        },
+        "resource": {
+          "type": "string"
+        },
+        "provider": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        },
+        "provenance": {
+          "$ref": "#/$defs/provenance"
+        }
+      }
+    },
+    "candidateEffectFact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "name", "provenance"],
+      "properties": {
+        "kind": {
+          "const": "candidate_effect"
+        },
+        "name": {
+          "type": "string"
+        },
+        "anchor": {
+          "type": "string"
+        },
+        "fingerprintProvider": {
+          "type": "string"
+        },
+        "fingerprintValue": {
+          "type": "string"
+        },
+        "provenance": {
+          "$ref": "#/$defs/provenance"
+        }
+      }
+    },
+    "request": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schemaVersion", "facts"],
+      "properties": {
+        "schemaVersion": {
+          "const": 1
+        },
+        "facts": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/resourceFact"
+              },
+              {
+                "$ref": "#/$defs/resourceFingerprintFact"
+              },
+              {
+                "$ref": "#/$defs/candidateEffectFact"
+              }
+            ]
+          }
+        }
+      }
+    },
+    "diagnosticCause": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["role", "provenance"],
+      "properties": {
+        "role": {
+          "enum": ["candidate_effect", "anchor", "actual_fingerprint"]
+        },
+        "provenance": {
+          "$ref": "#/$defs/provenance"
+        }
+      }
+    },
+    "candidatePinFingerprintMismatch": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "candidateEffect", "anchor", "provider", "expected", "causes"],
+      "properties": {
+        "kind": {
+          "const": "candidate_pin_fingerprint_mismatch"
+        },
+        "candidateEffect": {
+          "type": "string"
+        },
+        "anchor": {
+          "type": "string"
+        },
+        "provider": {
+          "type": "string"
+        },
+        "expected": {
+          "type": "string"
+        },
+        "actual": {
+          "type": "string"
+        },
+        "causes": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 3,
+          "prefixItems": [
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/diagnosticCause"
+                },
+                {
+                  "properties": {
+                    "role": {
+                      "const": "candidate_effect"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/diagnosticCause"
+                },
+                {
+                  "properties": {
+                    "role": {
+                      "const": "anchor"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/diagnosticCause"
+                },
+                {
+                  "properties": {
+                    "role": {
+                      "const": "actual_fingerprint"
+                    }
+                  }
+                }
+              ]
+            }
+          ],
+          "items": false
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "required": ["actual"]
+          },
+          "then": {
+            "properties": {
+              "causes": {
+                "minItems": 3
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "causes": {
+                "maxItems": 2
+              }
+            }
+          }
+        }
+      ]
+    },
+    "response": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schemaVersion", "ok", "diagnostics"],
+      "properties": {
+        "schemaVersion": {
+          "const": 1
+        },
+        "ok": {
+          "type": "boolean"
+        },
+        "diagnostics": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/candidatePinFingerprintMismatch"
+          }
+        }
+      }
+    }
+  }
+}

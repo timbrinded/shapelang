@@ -1,0 +1,49 @@
+module shape.generated.ast.experiments.semantic_kernel.src.main
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource MainModuleMainAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/semantic-kernel/src/main.rs#main")
+  fingerprint ast.semantic_subtree_v1("sha256:2d73544925a1b028d4e1b4b8043b11a67a5465b2e96995adc1e9d3a2f44ce98b")
+}
+
+resource MainModuleRunAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/semantic-kernel/src/main.rs#run")
+  fingerprint ast.semantic_subtree_v1("sha256:c0a18c0a1e22030092c610b1b84b3e35ed550919509fbc2ef36a15eddaf6c4b9")
+}
+
+component MainModule : GeneratedCandidate {
+  fn main
+    source rust("experiments/semantic-kernel/src/main.rs#main")
+    effects unknown
+  fn run
+    source rust("experiments/semantic-kernel/src/main.rs#run")
+    effects unknown
+}
+
+relation MainModuleMainGeneratedFromMainModuleMainAstAnchor {
+  kind generated_from
+  connects MainModule -> MainModuleMainAstAnchor
+  roles { MainModule as generated, MainModuleMainAstAnchor as syntax }
+  expects MainModuleMainAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2d73544925a1b028d4e1b4b8043b11a67a5465b2e96995adc1e9d3a2f44ce98b")
+  summary "fn MainModule.main generated from rust function_item at experiments/semantic-kernel/src/main.rs#main."
+}
+
+relation MainModuleRunGeneratedFromMainModuleRunAstAnchor {
+  kind generated_from
+  connects MainModule -> MainModuleRunAstAnchor
+  roles { MainModule as generated, MainModuleRunAstAnchor as syntax }
+  expects MainModuleRunAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c0a18c0a1e22030092c610b1b84b3e35ed550919509fbc2ef36a15eddaf6c4b9")
+  summary "fn MainModule.run generated from rust function_item at experiments/semantic-kernel/src/main.rs#run."
+}
+
+implementation MainModuleImpl {
+  paths {
+    "experiments/semantic-kernel/src/main.rs"
+  }
+  conforms_to MainModule
+}

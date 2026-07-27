@@ -1,0 +1,168 @@
+module shape.generated.ast.experiments.semantic_kernel.src.lib
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource KernelErrorAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/semantic-kernel/src/lib.rs#KernelError")
+  fingerprint ast.semantic_subtree_v1("sha256:81c4fb708d27b408839383e2b0ef5b89b5afa9540e1c6373e23062bd42168954")
+}
+
+resource KernelErrorFmtAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/semantic-kernel/src/lib.rs#KernelError.fmt")
+  fingerprint ast.semantic_subtree_v1("sha256:46815f4ff243982075920b5e184c2b44c91bff7bb925e57063246c9a603fc44c")
+}
+
+resource LibModuleCheckAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/semantic-kernel/src/lib.rs#check")
+  fingerprint ast.semantic_subtree_v1("sha256:cbd0648ce0850532ae913b1ec490a5c49723cba4b8720748395e0cc96f57fa85")
+}
+
+resource LibModuleCheckFactsJsonAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/semantic-kernel/src/lib.rs#check_facts_json")
+  fingerprint ast.semantic_subtree_v1("sha256:5526b79750cf4ff9ab920e757181bcce883feb426d6921a2dad6a16c0d61e5fb")
+}
+
+resource LibModuleCheckJsonAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/semantic-kernel/src/lib.rs#check_json")
+  fingerprint ast.semantic_subtree_v1("sha256:606dd8a91ea1ca8bd70e65bbc978c86913b10b93cccd873060d583d252fdda67")
+}
+
+resource LibModuleDeserializeOptionalStringAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/semantic-kernel/src/lib.rs#deserialize_optional_string")
+  fingerprint ast.semantic_subtree_v1("sha256:4f5630ee0b555aad081c59584fb0e24bbbfa690efb33c3ab4e8d840fa792ca0c")
+}
+
+resource LibModuleDiagnosticSortKeyAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/semantic-kernel/src/lib.rs#diagnostic_sort_key")
+  fingerprint ast.semantic_subtree_v1("sha256:02d678c61ea3f16bab7213a0f44a6307de6cef1cb8b9dc91541142346ff76158")
+}
+
+resource LibModuleEvaluateCandidateFingerprintFactsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/semantic-kernel/src/lib.rs#evaluate_candidate_fingerprint_facts")
+  fingerprint ast.semantic_subtree_v1("sha256:f617bc5f223a4f85a07f16081e7d8a3f14093812c2ca6764970dd7ccd481a6f7")
+}
+
+resource LibModuleValidateFactIdentitiesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/semantic-kernel/src/lib.rs#validate_fact_identities")
+  fingerprint ast.semantic_subtree_v1("sha256:33c625a9ccbbcb1122e736c2ca050119524f35f58341e293744b6ba9265a2990")
+}
+
+component KernelError : GeneratedCandidate {
+  fn fmt
+    source rust("experiments/semantic-kernel/src/lib.rs#KernelError.fmt")
+    effects unknown
+}
+
+component LibModule : GeneratedCandidate {
+  fn check
+    source rust("experiments/semantic-kernel/src/lib.rs#check")
+    effects unknown
+  fn check_facts_json
+    source rust("experiments/semantic-kernel/src/lib.rs#check_facts_json")
+    effects unknown
+  fn check_json
+    source rust("experiments/semantic-kernel/src/lib.rs#check_json")
+    effects unknown
+  fn deserialize_optional_string
+    source rust("experiments/semantic-kernel/src/lib.rs#deserialize_optional_string")
+    effects unknown
+  fn diagnostic_sort_key
+    source rust("experiments/semantic-kernel/src/lib.rs#diagnostic_sort_key")
+    effects unknown
+  fn evaluate_candidate_fingerprint_facts
+    source rust("experiments/semantic-kernel/src/lib.rs#evaluate_candidate_fingerprint_facts")
+    effects unknown
+  fn validate_fact_identities
+    source rust("experiments/semantic-kernel/src/lib.rs#validate_fact_identities")
+    effects unknown
+}
+
+relation KernelErrorFmtGeneratedFromKernelErrorFmtAstAnchor {
+  kind generated_from
+  connects KernelError -> KernelErrorFmtAstAnchor
+  roles { KernelError as generated, KernelErrorFmtAstAnchor as syntax }
+  expects KernelErrorFmtAstAnchor fingerprint ast.semantic_subtree_v1("sha256:46815f4ff243982075920b5e184c2b44c91bff7bb925e57063246c9a603fc44c")
+  summary "fn KernelError.fmt generated from rust function_item at experiments/semantic-kernel/src/lib.rs#KernelError.fmt."
+}
+
+relation KernelErrorGeneratedFromKernelErrorAstAnchor {
+  kind generated_from
+  connects KernelError -> KernelErrorAstAnchor
+  roles { KernelError as generated, KernelErrorAstAnchor as syntax }
+  expects KernelErrorAstAnchor fingerprint ast.semantic_subtree_v1("sha256:81c4fb708d27b408839383e2b0ef5b89b5afa9540e1c6373e23062bd42168954")
+  summary "component KernelError generated from rust enum_item at experiments/semantic-kernel/src/lib.rs#KernelError."
+}
+
+relation LibModuleCheckFactsJsonGeneratedFromLibModuleCheckFactsJsonAstAnchor {
+  kind generated_from
+  connects LibModule -> LibModuleCheckFactsJsonAstAnchor
+  roles { LibModule as generated, LibModuleCheckFactsJsonAstAnchor as syntax }
+  expects LibModuleCheckFactsJsonAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5526b79750cf4ff9ab920e757181bcce883feb426d6921a2dad6a16c0d61e5fb")
+  summary "fn LibModule.check_facts_json generated from rust function_item at experiments/semantic-kernel/src/lib.rs#check_facts_json."
+}
+
+relation LibModuleCheckGeneratedFromLibModuleCheckAstAnchor {
+  kind generated_from
+  connects LibModule -> LibModuleCheckAstAnchor
+  roles { LibModule as generated, LibModuleCheckAstAnchor as syntax }
+  expects LibModuleCheckAstAnchor fingerprint ast.semantic_subtree_v1("sha256:cbd0648ce0850532ae913b1ec490a5c49723cba4b8720748395e0cc96f57fa85")
+  summary "fn LibModule.check generated from rust function_item at experiments/semantic-kernel/src/lib.rs#check."
+}
+
+relation LibModuleCheckJsonGeneratedFromLibModuleCheckJsonAstAnchor {
+  kind generated_from
+  connects LibModule -> LibModuleCheckJsonAstAnchor
+  roles { LibModule as generated, LibModuleCheckJsonAstAnchor as syntax }
+  expects LibModuleCheckJsonAstAnchor fingerprint ast.semantic_subtree_v1("sha256:606dd8a91ea1ca8bd70e65bbc978c86913b10b93cccd873060d583d252fdda67")
+  summary "fn LibModule.check_json generated from rust function_item at experiments/semantic-kernel/src/lib.rs#check_json."
+}
+
+relation LibModuleDeserializeOptionalStringGeneratedFromLibModuleDeserializeOptionalStringAstAnchor {
+  kind generated_from
+  connects LibModule -> LibModuleDeserializeOptionalStringAstAnchor
+  roles { LibModule as generated, LibModuleDeserializeOptionalStringAstAnchor as syntax }
+  expects LibModuleDeserializeOptionalStringAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4f5630ee0b555aad081c59584fb0e24bbbfa690efb33c3ab4e8d840fa792ca0c")
+  summary "fn LibModule.deserialize_optional_string generated from rust function_item at experiments/semantic-kernel/src/lib.rs#deserialize_optional_string."
+}
+
+relation LibModuleDiagnosticSortKeyGeneratedFromLibModuleDiagnosticSortKeyAstAnchor {
+  kind generated_from
+  connects LibModule -> LibModuleDiagnosticSortKeyAstAnchor
+  roles { LibModule as generated, LibModuleDiagnosticSortKeyAstAnchor as syntax }
+  expects LibModuleDiagnosticSortKeyAstAnchor fingerprint ast.semantic_subtree_v1("sha256:02d678c61ea3f16bab7213a0f44a6307de6cef1cb8b9dc91541142346ff76158")
+  summary "fn LibModule.diagnostic_sort_key generated from rust function_item at experiments/semantic-kernel/src/lib.rs#diagnostic_sort_key."
+}
+
+relation LibModuleEvaluateCandidateFingerprintFactsGeneratedFromLibModuleEvaluateCandidateFingerprintFactsAstAnchor {
+  kind generated_from
+  connects LibModule -> LibModuleEvaluateCandidateFingerprintFactsAstAnchor
+  roles { LibModule as generated, LibModuleEvaluateCandidateFingerprintFactsAstAnchor as syntax }
+  expects LibModuleEvaluateCandidateFingerprintFactsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f617bc5f223a4f85a07f16081e7d8a3f14093812c2ca6764970dd7ccd481a6f7")
+  summary "fn LibModule.evaluate_candidate_fingerprint_facts generated from rust function_item at experiments/semantic-kernel/src/lib.rs#evaluate_candidate_fingerprint_facts."
+}
+
+relation LibModuleValidateFactIdentitiesGeneratedFromLibModuleValidateFactIdentitiesAstAnchor {
+  kind generated_from
+  connects LibModule -> LibModuleValidateFactIdentitiesAstAnchor
+  roles { LibModule as generated, LibModuleValidateFactIdentitiesAstAnchor as syntax }
+  expects LibModuleValidateFactIdentitiesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:33c625a9ccbbcb1122e736c2ca050119524f35f58341e293744b6ba9265a2990")
+  summary "fn LibModule.validate_fact_identities generated from rust function_item at experiments/semantic-kernel/src/lib.rs#validate_fact_identities."
+}
+
+implementation KernelErrorImpl {
+  paths {
+    "experiments/semantic-kernel/src/lib.rs"
+  }
+  conforms_to KernelError
+}
+
+implementation LibModuleImpl {
+  paths {
+    "experiments/semantic-kernel/src/lib.rs"
+  }
+  conforms_to LibModule
+}

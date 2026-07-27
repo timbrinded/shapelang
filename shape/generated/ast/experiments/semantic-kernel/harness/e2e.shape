@@ -1,0 +1,97 @@
+module shape.generated.ast.experiments.semantic_kernel.harness.e2e
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource E2eModuleAssertProductionParityAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/semantic-kernel/harness/e2e.ts#assertProductionParity")
+  fingerprint ast.semantic_subtree_v1("sha256:c9af989fd5701ef2e837ce7cf26a029ac8201919889b5bf227ab4c899a6cda03")
+}
+
+resource E2eModuleCompareSemanticSummariesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/semantic-kernel/harness/e2e.ts#compareSemanticSummaries")
+  fingerprint ast.semantic_subtree_v1("sha256:3b3be4869bbf12e33c09c03a52413d406ff2bcbaa4f33f1f700ca28ee11dcc20")
+}
+
+resource E2eModuleLoadFixturesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/semantic-kernel/harness/e2e.ts#loadFixtures")
+  fingerprint ast.semantic_subtree_v1("sha256:ff66acfcdb5715b15ded94f68bf0c084027f31e20302a882c1d02e438fe93c41")
+}
+
+resource E2eModuleToSemanticSummaryAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/semantic-kernel/harness/e2e.ts#toSemanticSummary")
+  fingerprint ast.semantic_subtree_v1("sha256:e42d7684f778ea3081c55a0e108323847afc3dcc3e62906c65bfe80de42302a1")
+}
+
+resource E2eModuleVerifySuccessfulCaseAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/semantic-kernel/harness/e2e.ts#verifySuccessfulCase")
+  fingerprint ast.semantic_subtree_v1("sha256:4c74e4b92a0fccef8d6311202cb9866dcb97e8f07562c462fec1cca8aa072e4e")
+}
+
+component E2eModule : GeneratedCandidate {
+  fn assertProductionParity
+    source ts("experiments/semantic-kernel/harness/e2e.ts#assertProductionParity")
+    effects unknown
+  fn compareSemanticSummaries
+    source ts("experiments/semantic-kernel/harness/e2e.ts#compareSemanticSummaries")
+    effects unknown
+  fn loadFixtures
+    source ts("experiments/semantic-kernel/harness/e2e.ts#loadFixtures")
+    effects unknown
+  fn toSemanticSummary
+    source ts("experiments/semantic-kernel/harness/e2e.ts#toSemanticSummary")
+    effects unknown
+  fn verifySuccessfulCase
+    source ts("experiments/semantic-kernel/harness/e2e.ts#verifySuccessfulCase")
+    effects unknown
+}
+
+relation E2eModuleAssertProductionParityGeneratedFromE2eModuleAssertProductionParityAstAnchor {
+  kind generated_from
+  connects E2eModule -> E2eModuleAssertProductionParityAstAnchor
+  roles { E2eModule as generated, E2eModuleAssertProductionParityAstAnchor as syntax }
+  expects E2eModuleAssertProductionParityAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c9af989fd5701ef2e837ce7cf26a029ac8201919889b5bf227ab4c899a6cda03")
+  summary "fn E2eModule.assertProductionParity generated from typescript function_declaration at experiments/semantic-kernel/harness/e2e.ts#assertProductionParity."
+}
+
+relation E2eModuleCompareSemanticSummariesGeneratedFromE2eModuleCompareSemanticSummariesAstAnchor {
+  kind generated_from
+  connects E2eModule -> E2eModuleCompareSemanticSummariesAstAnchor
+  roles { E2eModule as generated, E2eModuleCompareSemanticSummariesAstAnchor as syntax }
+  expects E2eModuleCompareSemanticSummariesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3b3be4869bbf12e33c09c03a52413d406ff2bcbaa4f33f1f700ca28ee11dcc20")
+  summary "fn E2eModule.compareSemanticSummaries generated from typescript function_declaration at experiments/semantic-kernel/harness/e2e.ts#compareSemanticSummaries."
+}
+
+relation E2eModuleLoadFixturesGeneratedFromE2eModuleLoadFixturesAstAnchor {
+  kind generated_from
+  connects E2eModule -> E2eModuleLoadFixturesAstAnchor
+  roles { E2eModule as generated, E2eModuleLoadFixturesAstAnchor as syntax }
+  expects E2eModuleLoadFixturesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ff66acfcdb5715b15ded94f68bf0c084027f31e20302a882c1d02e438fe93c41")
+  summary "fn E2eModule.loadFixtures generated from typescript function_declaration at experiments/semantic-kernel/harness/e2e.ts#loadFixtures."
+}
+
+relation E2eModuleToSemanticSummaryGeneratedFromE2eModuleToSemanticSummaryAstAnchor {
+  kind generated_from
+  connects E2eModule -> E2eModuleToSemanticSummaryAstAnchor
+  roles { E2eModule as generated, E2eModuleToSemanticSummaryAstAnchor as syntax }
+  expects E2eModuleToSemanticSummaryAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e42d7684f778ea3081c55a0e108323847afc3dcc3e62906c65bfe80de42302a1")
+  summary "fn E2eModule.toSemanticSummary generated from typescript function_declaration at experiments/semantic-kernel/harness/e2e.ts#toSemanticSummary."
+}
+
+relation E2eModuleVerifySuccessfulCaseGeneratedFromE2eModuleVerifySuccessfulCaseAstAnchor {
+  kind generated_from
+  connects E2eModule -> E2eModuleVerifySuccessfulCaseAstAnchor
+  roles { E2eModule as generated, E2eModuleVerifySuccessfulCaseAstAnchor as syntax }
+  expects E2eModuleVerifySuccessfulCaseAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4c74e4b92a0fccef8d6311202cb9866dcb97e8f07562c462fec1cca8aa072e4e")
+  summary "fn E2eModule.verifySuccessfulCase generated from typescript function_declaration at experiments/semantic-kernel/harness/e2e.ts#verifySuccessfulCase."
+}
+
+implementation E2eModuleImpl {
+  paths {
+    "experiments/semantic-kernel/harness/e2e.ts"
+  }
+  conforms_to E2eModule
+}

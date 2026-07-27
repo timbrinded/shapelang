@@ -52,6 +52,62 @@
       ]
     },
     {
+      "module": "shape.generated.ast.experiments.semantic_kernel.harness.benchmark",
+      "path": "shape/generated/ast/experiments/semantic-kernel/harness/benchmark.shape",
+      "sources": [
+        "experiments/semantic-kernel/harness/benchmark.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.semantic_kernel.harness.e2e",
+      "path": "shape/generated/ast/experiments/semantic-kernel/harness/e2e.shape",
+      "sources": [
+        "experiments/semantic-kernel/harness/e2e.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.semantic_kernel.harness.protocol_test",
+      "path": "shape/generated/ast/experiments/semantic-kernel/harness/protocol.test.shape",
+      "sources": [
+        "experiments/semantic-kernel/harness/protocol.test.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.semantic_kernel.harness.protocol",
+      "path": "shape/generated/ast/experiments/semantic-kernel/harness/protocol.shape",
+      "sources": [
+        "experiments/semantic-kernel/harness/protocol.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.semantic_kernel.harness.runtime",
+      "path": "shape/generated/ast/experiments/semantic-kernel/harness/runtime.shape",
+      "sources": [
+        "experiments/semantic-kernel/harness/runtime.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.semantic_kernel.src.lib",
+      "path": "shape/generated/ast/experiments/semantic-kernel/src/lib.shape",
+      "sources": [
+        "experiments/semantic-kernel/src/lib.rs"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.semantic_kernel.src.main",
+      "path": "shape/generated/ast/experiments/semantic-kernel/src/main.shape",
+      "sources": [
+        "experiments/semantic-kernel/src/main.rs"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.semantic_kernel.tests.kernel",
+      "path": "shape/generated/ast/experiments/semantic-kernel/tests/kernel.shape",
+      "sources": [
+        "experiments/semantic-kernel/tests/kernel.rs"
+      ]
+    },
+    {
       "module": "shape.generated.ast.fixtures.generated_source.analyzer.drizzle.destructive",
       "path": "shape/generated/ast/fixtures/source/analyzer/drizzle/destructive.shape",
       "sources": [

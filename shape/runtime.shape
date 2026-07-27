@@ -1,0 +1,189 @@
+module shape.runtime
+
+import shape.checker
+
+import shape.tooling
+
+resource ExperimentalKernelBenchmarkResult
+
+resource ExperimentalKernelBuildConfiguration
+
+resource ExperimentalKernelDiagnosticSet
+
+resource ExperimentalKernelEnvelope
+
+resource ExperimentalKernelProtocolV1
+
+resource ExperimentalKernelWasmArtifact
+
+component ExperimentalSemanticKernel {
+  owns ExperimentalKernelBuildConfiguration
+  owns ExperimentalKernelDiagnosticSet
+  owns ExperimentalKernelProtocolV1
+  owns ExperimentalKernelWasmArtifact
+  grants Append<ExperimentalKernelDiagnosticSet>
+  grants Read<ExperimentalKernelBuildConfiguration>
+  grants Read<ExperimentalKernelEnvelope>
+  grants Read<ExperimentalKernelProtocolV1>
+  grants Read<LanguageSource>
+  grants Update<ExperimentalKernelWasmArtifact>
+  fn buildBrowserWasm
+    source sh("experiments/semantic-kernel/scripts/build-wasm.sh")
+    description "Builds browser-targeted wasm-bindgen output under the ignored experiment target directory; it does not alter release assets."
+    effects complete {
+      Read<ExperimentalKernelBuildConfiguration>
+        evidence sh("experiments/semantic-kernel/scripts/install-wasm-bindgen.sh")
+      Read<ExperimentalKernelBuildConfiguration>
+        evidence toml("experiments/semantic-kernel/Cargo.lock")
+      Read<ExperimentalKernelBuildConfiguration>
+        evidence toml("experiments/semantic-kernel/Cargo.toml")
+      Read<ExperimentalKernelBuildConfiguration>
+        evidence toml("experiments/semantic-kernel/rust-toolchain.toml")
+      Read<LanguageSource>
+        evidence rust("experiments/semantic-kernel/src/lib.rs")
+      Update<ExperimentalKernelWasmArtifact>
+        evidence sh("experiments/semantic-kernel/scripts/build-wasm.sh")
+    }
+  fn checkFactsJson
+    source rust("experiments/semantic-kernel/src/lib.rs#check_json")
+    description "Experimental protocol-v1 boundary for deterministic candidate-pin fingerprint diagnostics only; it is not the production checker."
+    effects complete {
+      Append<ExperimentalKernelDiagnosticSet>
+        evidence rust("experiments/semantic-kernel/src/lib.rs#evaluate_candidate_fingerprint_facts")
+      Read<ExperimentalKernelEnvelope>
+        evidence rust("experiments/semantic-kernel/src/lib.rs#check_json")
+      Read<ExperimentalKernelProtocolV1>
+        evidence json("experiments/semantic-kernel/schema/kernel-protocol-v1.schema.json")
+    }
+  fn runNativeProtocol
+    source rust("experiments/semantic-kernel/src/main.rs")
+    description "Exposes the strict protocol over stdin and stdout for the native parity harness."
+    effects complete {
+      Append<ExperimentalKernelDiagnosticSet>
+        evidence rust("experiments/semantic-kernel/src/main.rs")
+      Read<ExperimentalKernelEnvelope>
+        evidence rust("experiments/semantic-kernel/src/main.rs")
+      Read<ExperimentalKernelProtocolV1>
+        evidence rust("experiments/semantic-kernel/src/main.rs")
+    }
+}
+
+component ExperimentalSemanticKernelHarness {
+  owns ExperimentalKernelBenchmarkResult
+  owns ExperimentalKernelEnvelope
+  grants Append<ExperimentalKernelBenchmarkResult>
+  grants Append<ExperimentalKernelEnvelope>
+  grants Read<ExperimentalKernelDiagnosticSet>
+  grants Read<ExperimentalKernelEnvelope>
+  grants Read<ExperimentalKernelWasmArtifact>
+  grants Read<ShapeFacts>
+  fn benchmarkCandidateFingerprintPrototype
+    source ts("experiments/semantic-kernel/harness/benchmark.ts")
+    description "Reports measured, non-threshold native and browser-WASM timings against the production TypeScript pipeline."
+    effects complete {
+      Append<ExperimentalKernelBenchmarkResult>
+        evidence ts("experiments/semantic-kernel/harness/benchmark.ts")
+      Read<ExperimentalKernelDiagnosticSet>
+        evidence ts("experiments/semantic-kernel/harness/benchmark.ts")
+      Read<ExperimentalKernelWasmArtifact>
+        evidence ts("experiments/semantic-kernel/harness/runtime.ts")
+      Read<ShapeFacts>
+        evidence ts("experiments/semantic-kernel/harness/protocol.ts#createKernelRequestV1")
+    }
+  fn createKernelRequestV1
+    source ts("experiments/semantic-kernel/harness/protocol.ts#createKernelRequestV1")
+    description "Projects the fact-complete candidate-pin subset of public checker facts into strict protocol v1."
+    effects complete {
+      Append<ExperimentalKernelEnvelope>
+        evidence ts("experiments/semantic-kernel/harness/protocol.ts#createKernelRequestV1")
+      Read<ShapeFacts>
+        evidence ts("experiments/semantic-kernel/harness/protocol.ts#createKernelRequestV1")
+    }
+  fn runKernelE2e
+    source ts("experiments/semantic-kernel/harness/e2e.ts")
+    description "Checks native and browser-targeted WASM byte parity, normalized production semantic-set parity, qualified protocol ordering, provenance, determinism, and strict malformed-input rejection."
+    effects complete {
+      Read<ExperimentalKernelDiagnosticSet>
+        evidence ts("experiments/semantic-kernel/harness/e2e.ts")
+      Read<ExperimentalKernelEnvelope>
+        evidence ts("experiments/semantic-kernel/harness/e2e.ts")
+      Read<ExperimentalKernelWasmArtifact>
+        evidence ts("experiments/semantic-kernel/harness/runtime.ts")
+      Read<ShapeFacts>
+        evidence ts("experiments/semantic-kernel/harness/e2e.ts")
+    }
+}
+
+relation ExperimentalHarnessUsesProductionChecker {
+  kind calls
+  connects ExperimentalSemanticKernelHarness -> ShapeChecker
+  summary "ParityOracle"
+}
+
+relation ExperimentalHarnessUsesSemanticKernel {
+  kind calls
+  connects ExperimentalSemanticKernelHarness -> ExperimentalSemanticKernel
+  summary "NativeAndBrowserWasm"
+}
+
+relation ExperimentalKernelProvidesDiagnostics {
+  kind provides
+  connects ExperimentalSemanticKernel -> ExperimentalKernelDiagnosticSet
+  summary "PrototypeDiagnostics"
+}
+
+relation ExperimentalKernelProvidesWasm {
+  kind provides
+  connects ExperimentalSemanticKernel -> ExperimentalKernelWasmArtifact
+  summary "IgnoredCiArtifact"
+}
+
+implementation ExperimentalSemanticKernelHarnessSource {
+  paths {
+    "experiments/semantic-kernel/fixtures/**/*.shape"
+    "experiments/semantic-kernel/harness/**/*.ts"
+  }
+  conforms_to ExperimentalSemanticKernelHarness
+  on_change require shape_update
+}
+
+implementation ExperimentalSemanticKernelSource {
+  paths {
+    "experiments/semantic-kernel/Cargo.lock"
+    "experiments/semantic-kernel/Cargo.toml"
+    "experiments/semantic-kernel/rust-toolchain.toml"
+    "experiments/semantic-kernel/schema/**/*.json"
+    "experiments/semantic-kernel/scripts/**/*.sh"
+    "experiments/semantic-kernel/src/**/*.rs"
+    "experiments/semantic-kernel/tests/**/*.rs"
+  }
+  conforms_to ExperimentalSemanticKernel
+  on_change require shape_update
+}
+
+binding ExperimentalSemanticKernelDocs {
+  when_changed paths {
+    "experiments/semantic-kernel/**"
+    "shape/runtime.shape"
+  }
+  require_changed paths {
+    "docs-site/src/content/docs/inside-shape/experimental-semantic-kernel.md"
+  }
+  allow attest docs_not_needed
+}
+
+rule ExperimentalSemanticKernelIsolation {
+  forbid path ShapeChecker -> ExperimentalSemanticKernel over calls
+  forbid path ShapeEditorServices -> ExperimentalSemanticKernel over calls
+  forbid path ShpCli -> ExperimentalSemanticKernel over calls
+}
+
+attest no_shape_change {
+  source test("experiments/semantic-kernel/tests/kernel.rs")
+  reason "Rust unit tests exercise the modeled protocol and candidate-pin rule boundary; they add no separately callable runtime surface."
+}
+
+attest no_shape_change {
+  source test("experiments/semantic-kernel/harness/protocol.test.ts")
+  reason "TypeScript protocol parser tests exercise the modeled protocol boundary; they add no separately callable runtime surface."
+}

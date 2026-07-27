@@ -1,0 +1,161 @@
+module shape.generated.ast.experiments.semantic_kernel.harness.protocol
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource ProtocolModuleCreateKernelRequestV1AstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/semantic-kernel/harness/protocol.ts#createKernelRequestV1")
+  fingerprint ast.semantic_subtree_v1("sha256:67c3d0f79f54c145bb92a1f90b54dad43cb7b49a82b1ae8f1e5e5b55e1b54656")
+}
+
+resource ProtocolModuleHasOnlyKeysAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/semantic-kernel/harness/protocol.ts#hasOnlyKeys")
+  fingerprint ast.semantic_subtree_v1("sha256:30daf6a9faa2698118b35ffd010e0065add61c9827b847a1caf6780937265c0d")
+}
+
+resource ProtocolModuleIsKernelDiagnosticCauseAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/semantic-kernel/harness/protocol.ts#isKernelDiagnosticCause")
+  fingerprint ast.semantic_subtree_v1("sha256:b989792a10d45b26852bc73f07c9010f50665257cfbc52186b726625f179c89c")
+}
+
+resource ProtocolModuleIsKernelDiagnosticCauseRoleAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/semantic-kernel/harness/protocol.ts#isKernelDiagnosticCauseRole")
+  fingerprint ast.semantic_subtree_v1("sha256:e78441c132f3f617ef414144755ec52fcc22cadf24b040b7dca6922ea1e26064")
+}
+
+resource ProtocolModuleIsKernelDiagnosticV1AstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/semantic-kernel/harness/protocol.ts#isKernelDiagnosticV1")
+  fingerprint ast.semantic_subtree_v1("sha256:4a88251943942674f9d66ddb3be1f5df59c9fe5808d00e4fb5299e655982a637")
+}
+
+resource ProtocolModuleIsKernelProvenanceAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/semantic-kernel/harness/protocol.ts#isKernelProvenance")
+  fingerprint ast.semantic_subtree_v1("sha256:6af6bd55b735a081a29ffa32b739c314e60cbfb2995ae41fa27ee5ab48899ac7")
+}
+
+resource ProtocolModuleIsKernelResponseV1AstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/semantic-kernel/harness/protocol.ts#isKernelResponseV1")
+  fingerprint ast.semantic_subtree_v1("sha256:bfe4395bf60468903aac41451792c2998936ca877ac26d5d2594a8c4f789a109")
+}
+
+resource ProtocolModuleIsRecordAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/semantic-kernel/harness/protocol.ts#isRecord")
+  fingerprint ast.semantic_subtree_v1("sha256:98ca321accf22a29112964b94c74202e5c5cae9cabe997d1fb6cd43426c70f8c")
+}
+
+resource ProtocolModuleParseKernelResponseV1AstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/semantic-kernel/harness/protocol.ts#parseKernelResponseV1")
+  fingerprint ast.semantic_subtree_v1("sha256:0410f5705bb759f0a1c79b471d73da86107758f767c080327602548b85573ebe")
+}
+
+component ProtocolModule : GeneratedCandidate {
+  fn createKernelRequestV1
+    source ts("experiments/semantic-kernel/harness/protocol.ts#createKernelRequestV1")
+    effects unknown
+  fn hasOnlyKeys
+    source ts("experiments/semantic-kernel/harness/protocol.ts#hasOnlyKeys")
+    effects unknown
+  fn isKernelDiagnosticCause
+    source ts("experiments/semantic-kernel/harness/protocol.ts#isKernelDiagnosticCause")
+    effects unknown
+  fn isKernelDiagnosticCauseRole
+    source ts("experiments/semantic-kernel/harness/protocol.ts#isKernelDiagnosticCauseRole")
+    effects unknown
+  fn isKernelDiagnosticV1
+    source ts("experiments/semantic-kernel/harness/protocol.ts#isKernelDiagnosticV1")
+    effects unknown
+  fn isKernelProvenance
+    source ts("experiments/semantic-kernel/harness/protocol.ts#isKernelProvenance")
+    effects unknown
+  fn isKernelResponseV1
+    source ts("experiments/semantic-kernel/harness/protocol.ts#isKernelResponseV1")
+    effects unknown
+  fn isRecord
+    source ts("experiments/semantic-kernel/harness/protocol.ts#isRecord")
+    effects unknown
+  fn parseKernelResponseV1
+    source ts("experiments/semantic-kernel/harness/protocol.ts#parseKernelResponseV1")
+    effects unknown
+}
+
+relation ProtocolModuleCreateKernelRequestV1GeneratedFromProtocolModuleCreateKernelRequestV1AstAnchor {
+  kind generated_from
+  connects ProtocolModule -> ProtocolModuleCreateKernelRequestV1AstAnchor
+  roles { ProtocolModule as generated, ProtocolModuleCreateKernelRequestV1AstAnchor as syntax }
+  expects ProtocolModuleCreateKernelRequestV1AstAnchor fingerprint ast.semantic_subtree_v1("sha256:67c3d0f79f54c145bb92a1f90b54dad43cb7b49a82b1ae8f1e5e5b55e1b54656")
+  summary "fn ProtocolModule.createKernelRequestV1 generated from typescript function_declaration at experiments/semantic-kernel/harness/protocol.ts#createKernelRequestV1."
+}
+
+relation ProtocolModuleHasOnlyKeysGeneratedFromProtocolModuleHasOnlyKeysAstAnchor {
+  kind generated_from
+  connects ProtocolModule -> ProtocolModuleHasOnlyKeysAstAnchor
+  roles { ProtocolModule as generated, ProtocolModuleHasOnlyKeysAstAnchor as syntax }
+  expects ProtocolModuleHasOnlyKeysAstAnchor fingerprint ast.semantic_subtree_v1("sha256:30daf6a9faa2698118b35ffd010e0065add61c9827b847a1caf6780937265c0d")
+  summary "fn ProtocolModule.hasOnlyKeys generated from typescript function_declaration at experiments/semantic-kernel/harness/protocol.ts#hasOnlyKeys."
+}
+
+relation ProtocolModuleIsKernelDiagnosticCauseGeneratedFromProtocolModuleIsKernelDiagnosticCauseAstAnchor {
+  kind generated_from
+  connects ProtocolModule -> ProtocolModuleIsKernelDiagnosticCauseAstAnchor
+  roles { ProtocolModule as generated, ProtocolModuleIsKernelDiagnosticCauseAstAnchor as syntax }
+  expects ProtocolModuleIsKernelDiagnosticCauseAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b989792a10d45b26852bc73f07c9010f50665257cfbc52186b726625f179c89c")
+  summary "fn ProtocolModule.isKernelDiagnosticCause generated from typescript function_declaration at experiments/semantic-kernel/harness/protocol.ts#isKernelDiagnosticCause."
+}
+
+relation ProtocolModuleIsKernelDiagnosticCauseRoleGeneratedFromProtocolModuleIsKernelDiagnosticCauseRoleAstAnchor {
+  kind generated_from
+  connects ProtocolModule -> ProtocolModuleIsKernelDiagnosticCauseRoleAstAnchor
+  roles { ProtocolModule as generated, ProtocolModuleIsKernelDiagnosticCauseRoleAstAnchor as syntax }
+  expects ProtocolModuleIsKernelDiagnosticCauseRoleAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e78441c132f3f617ef414144755ec52fcc22cadf24b040b7dca6922ea1e26064")
+  summary "fn ProtocolModule.isKernelDiagnosticCauseRole generated from typescript function_declaration at experiments/semantic-kernel/harness/protocol.ts#isKernelDiagnosticCauseRole."
+}
+
+relation ProtocolModuleIsKernelDiagnosticV1GeneratedFromProtocolModuleIsKernelDiagnosticV1AstAnchor {
+  kind generated_from
+  connects ProtocolModule -> ProtocolModuleIsKernelDiagnosticV1AstAnchor
+  roles { ProtocolModule as generated, ProtocolModuleIsKernelDiagnosticV1AstAnchor as syntax }
+  expects ProtocolModuleIsKernelDiagnosticV1AstAnchor fingerprint ast.semantic_subtree_v1("sha256:4a88251943942674f9d66ddb3be1f5df59c9fe5808d00e4fb5299e655982a637")
+  summary "fn ProtocolModule.isKernelDiagnosticV1 generated from typescript function_declaration at experiments/semantic-kernel/harness/protocol.ts#isKernelDiagnosticV1."
+}
+
+relation ProtocolModuleIsKernelProvenanceGeneratedFromProtocolModuleIsKernelProvenanceAstAnchor {
+  kind generated_from
+  connects ProtocolModule -> ProtocolModuleIsKernelProvenanceAstAnchor
+  roles { ProtocolModule as generated, ProtocolModuleIsKernelProvenanceAstAnchor as syntax }
+  expects ProtocolModuleIsKernelProvenanceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6af6bd55b735a081a29ffa32b739c314e60cbfb2995ae41fa27ee5ab48899ac7")
+  summary "fn ProtocolModule.isKernelProvenance generated from typescript function_declaration at experiments/semantic-kernel/harness/protocol.ts#isKernelProvenance."
+}
+
+relation ProtocolModuleIsKernelResponseV1GeneratedFromProtocolModuleIsKernelResponseV1AstAnchor {
+  kind generated_from
+  connects ProtocolModule -> ProtocolModuleIsKernelResponseV1AstAnchor
+  roles { ProtocolModule as generated, ProtocolModuleIsKernelResponseV1AstAnchor as syntax }
+  expects ProtocolModuleIsKernelResponseV1AstAnchor fingerprint ast.semantic_subtree_v1("sha256:bfe4395bf60468903aac41451792c2998936ca877ac26d5d2594a8c4f789a109")
+  summary "fn ProtocolModule.isKernelResponseV1 generated from typescript function_declaration at experiments/semantic-kernel/harness/protocol.ts#isKernelResponseV1."
+}
+
+relation ProtocolModuleIsRecordGeneratedFromProtocolModuleIsRecordAstAnchor {
+  kind generated_from
+  connects ProtocolModule -> ProtocolModuleIsRecordAstAnchor
+  roles { ProtocolModule as generated, ProtocolModuleIsRecordAstAnchor as syntax }
+  expects ProtocolModuleIsRecordAstAnchor fingerprint ast.semantic_subtree_v1("sha256:98ca321accf22a29112964b94c74202e5c5cae9cabe997d1fb6cd43426c70f8c")
+  summary "fn ProtocolModule.isRecord generated from typescript function_declaration at experiments/semantic-kernel/harness/protocol.ts#isRecord."
+}
+
+relation ProtocolModuleParseKernelResponseV1GeneratedFromProtocolModuleParseKernelResponseV1AstAnchor {
+  kind generated_from
+  connects ProtocolModule -> ProtocolModuleParseKernelResponseV1AstAnchor
+  roles { ProtocolModule as generated, ProtocolModuleParseKernelResponseV1AstAnchor as syntax }
+  expects ProtocolModuleParseKernelResponseV1AstAnchor fingerprint ast.semantic_subtree_v1("sha256:0410f5705bb759f0a1c79b471d73da86107758f767c080327602548b85573ebe")
+  summary "fn ProtocolModule.parseKernelResponseV1 generated from typescript function_declaration at experiments/semantic-kernel/harness/protocol.ts#parseKernelResponseV1."
+}
+
+implementation ProtocolModuleImpl {
+  paths {
+    "experiments/semantic-kernel/harness/protocol.ts"
+  }
+  conforms_to ProtocolModule
+}

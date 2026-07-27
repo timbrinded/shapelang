@@ -1,0 +1,23 @@
+module z
+
+resource AnchorA {
+  fingerprint ast.semantic_subtree_v1("sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+}
+
+resource EventA
+
+component StoreA {
+  grants Append<EventA>
+  fn appendA
+    effects complete {
+      Append<EventA>
+    }
+}
+
+effect candidate CandidateA {
+  fn StoreA.appendA
+  effect Append<EventA>
+  source ts("src/order-z.ts:1-3")
+  confidence low
+  pin AnchorA fingerprint ast.semantic_subtree_v1("sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb")
+}
