@@ -1,14 +1,14 @@
 // Bun Snapshot v1, https://bun.sh/docs/test/snapshots
 
 exports[`shp CLI keeps analyzer hint and warning output stable for library fixtures 1`] = `
-"fixtures/source/analyzer/prisma/destructive.ts:8 HardDelete await prisma.auditEvent.delete({ where: { id: 1 } });
-fixtures/source/analyzer/prisma/destructive.ts:9 HardDelete await prisma.auditEvent
+"fixtures/source/analyzer/prisma/destructive.ts:8 HardDelete target=auditEvent await prisma.auditEvent.delete({ where: { id: 1 } });
+fixtures/source/analyzer/prisma/destructive.ts:9 HardDelete target=auditEvent await prisma.auditEvent
     .deleteMany({ where: { expired: true } });
-fixtures/source/analyzer/prisma/destructive.ts:12 Truncate await prisma.$executeRawUnsafe(\`
+fixtures/source/analyzer/prisma/destructive.ts:12 Truncate target=audit_event_staging await prisma.$executeRawUnsafe(\`
     TRUNCATE
     TABLE audit_event_staging
   \`);
-fixtures/source/analyzer/prisma/destructive.ts:15 DropStorage await prisma.$executeRawUnsafe("DROP TABLE audit_event_archive");
+fixtures/source/analyzer/prisma/destructive.ts:15 DropStorage target=audit_event_archive await prisma.$executeRawUnsafe("DROP TABLE audit_event_archive");
 "
 `;
 
@@ -16,17 +16,20 @@ exports[`shp CLI keeps analyzer hint and warning output stable for library fixtu
 "warning: analyzer hint missing from shape effects
 
 fixtures/source/analyzer/prisma/destructive.ts:8 suggests HardDelete.
+suspected target: auditEvent
 evidence: await prisma.auditEvent.delete({ where: { id: 1 } });
 
 warning: analyzer hint missing from shape effects
 
 fixtures/source/analyzer/prisma/destructive.ts:9 suggests HardDelete.
+suspected target: auditEvent
 evidence: await prisma.auditEvent
     .deleteMany({ where: { expired: true } });
 
 warning: analyzer hint missing from shape effects
 
 fixtures/source/analyzer/prisma/destructive.ts:12 suggests Truncate.
+suspected target: audit_event_staging
 evidence: await prisma.$executeRawUnsafe(\`
     TRUNCATE
     TABLE audit_event_staging
@@ -35,6 +38,20 @@ evidence: await prisma.$executeRawUnsafe(\`
 warning: analyzer hint missing from shape effects
 
 fixtures/source/analyzer/prisma/destructive.ts:15 suggests DropStorage.
+suspected target: audit_event_archive
 evidence: await prisma.$executeRawUnsafe("DROP TABLE audit_event_archive");
+"
+`;
+
+exports[`shp CLI distinguishes matching storage aliases from analyzer target mismatches 1`] = `
+"warning: analyzer hint target does not match shape effects
+
+fixtures/source/analyzer/sql/destructive.sql:1 suggests HardDelete.
+suspected target: audit_events
+declared targets: AuditEventArchive
+evidence: DELETE
+/* retention applies to the selected table */
+FROM audit_events
+WHERE created_at < CURRENT_TIMESTAMP;
 "
 `;

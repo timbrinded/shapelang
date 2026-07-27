@@ -394,6 +394,11 @@ relation ReleasePipelineUsesCli {
 
 implementation AnalyzerSource {
   paths {
+    "packages/shp-checker/src/analyzer-lexical.ts"
+    "packages/shp-checker/src/analyzer-scopes.ts"
+    "packages/shp-checker/src/analyzer-shape.ts"
+    "packages/shp-checker/src/analyzer-sql.ts"
+    "packages/shp-checker/src/analyzer-types.ts"
     "packages/shp-checker/src/analyzer.ts"
   }
   conforms_to ShapeAnalyzer
@@ -616,6 +621,11 @@ binding RuleEngineDocs {
 
 binding ToolingDocs {
   when_changed paths {
+    "packages/shp-checker/src/analyzer-lexical.ts"
+    "packages/shp-checker/src/analyzer-scopes.ts"
+    "packages/shp-checker/src/analyzer-shape.ts"
+    "packages/shp-checker/src/analyzer-sql.ts"
+    "packages/shp-checker/src/analyzer-types.ts"
     "packages/shp-checker/src/analyzer.ts"
     "packages/shp-checker/src/ast-generation-core.ts"
     "packages/shp-checker/src/ast-generation-fingerprints.ts"
@@ -781,13 +791,18 @@ attest no_shape_change {
 }
 
 attest no_shape_change {
+  source ts("packages/shp-checker/src/analyzer-types.ts")
+  reason "Defines the typed AnalyzerHint and AnalyzerWarning data contracts represented in ShapeAnalyzer; it adds no independent runtime effect, relation, or component boundary."
+}
+
+attest no_shape_change {
   source md("docs-site/src/content/docs/concepts/analyzer-hints.md")
-  reason "Documents multiline lexical SQL detection, direct raw-execution literals, and inert-text exclusions; the guide remains within the existing DocsSite content boundary."
+  reason "Documents scoped source attribution, quote-aware target comparison, ordered SQL target lists, and dynamic-target limits; the guide remains within the existing DocsSite content boundary."
 }
 
 attest no_shape_change {
   source md("docs-site/src/content/docs/reference/cli.md")
-  reason "Documents the analyze command's lexical matcher boundary while preserving its command, comparison, and exit behavior; the DocsSite architecture is unchanged."
+  reason "Documents target-bearing analyze output, scoped attribution, quote-aware comparison, SQL target lists, and the added advisory ambiguity warning; the DocsSite architecture is unchanged."
 }
 
 attest no_shape_change {

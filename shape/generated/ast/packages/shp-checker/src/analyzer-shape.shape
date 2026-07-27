@@ -1,0 +1,305 @@
+module shape.generated.ast.packages.shp_checker.src.analyzer_shape
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource AnalyzerShapeModuleAnalyzerTargetMatchesResourceAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer-shape.ts#analyzerTargetMatchesResource")
+  fingerprint ast.semantic_subtree_v1("sha256:b7750666017a44b7aa5d816169525539cbb67d0c096b9f6c6f93e37bc064bfc3")
+}
+
+resource AnalyzerShapeModuleCollectDeclaredEffectsBySourcePathAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer-shape.ts#collectDeclaredEffectsBySourcePath")
+  fingerprint ast.semantic_subtree_v1("sha256:576ebb00de8f38d612c73d0d5c41a07c2da245b07ad42d9ea3badebbe8a1cc05")
+}
+
+resource AnalyzerShapeModuleCollectFunctionEffectsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer-shape.ts#collectFunctionEffects")
+  fingerprint ast.semantic_subtree_v1("sha256:7c51bd0d7629d75312c8fb32db90f26d1e200b9a506fc9d81d01af4cdb83b786")
+}
+
+resource AnalyzerShapeModuleCollectResourceInfosAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer-shape.ts#collectResourceInfos")
+  fingerprint ast.semantic_subtree_v1("sha256:ef64131f1e36fce2c7d0c288067ee23affeb179eaa70824e5a4205f3d5716ab2")
+}
+
+resource AnalyzerShapeModuleCompareAnalyzerHintsToShapeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer-shape.ts#compareAnalyzerHintsToShape")
+  fingerprint ast.semantic_subtree_v1("sha256:45189f8189ba680827859818f3816bcc8833732f4e760ad5b7d0a9c33a42b247")
+}
+
+resource AnalyzerShapeModuleDeclaredEffectMatchesHintAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer-shape.ts#declaredEffectMatchesHint")
+  fingerprint ast.semantic_subtree_v1("sha256:dc33328870f474a7fea3519828ca50b47f4bcd6e1e45f22a0db2b15369472407")
+}
+
+resource AnalyzerShapeModuleDeclaredEffectsForAnchorsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer-shape.ts#declaredEffectsForAnchors")
+  fingerprint ast.semantic_subtree_v1("sha256:db8f302ea5e8f4f35b62a4a5155eb03bb6adf34afe13ccac49210a00918f5d58")
+}
+
+resource AnalyzerShapeModuleDeclaredTargetsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer-shape.ts#declaredTargets")
+  fingerprint ast.semantic_subtree_v1("sha256:90f586f639b782e18993f6ea3c3fa63e7274ba8a2a9a61bfed5f43a78fd80539")
+}
+
+resource AnalyzerShapeModuleEnsureDeclaredScopeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer-shape.ts#ensureDeclaredScope")
+  fingerprint ast.semantic_subtree_v1("sha256:b6d828de24ebcacce1a5820ed9e5a02cdc1ece5f313a488951d19dadd07ca22b")
+}
+
+resource AnalyzerShapeModuleFormatAnalyzerWarningAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer-shape.ts#formatAnalyzerWarning")
+  fingerprint ast.semantic_subtree_v1("sha256:7d5f46b64ee07f6fa13501a82607da23bd949e3bca857ef27d134c82bb3a7d4c")
+}
+
+resource AnalyzerShapeModuleFormatAnalyzerWarningsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer-shape.ts#formatAnalyzerWarnings")
+  fingerprint ast.semantic_subtree_v1("sha256:4ffa0aa99ffbfcb738b378d624f6bd6079f53bc6be7d966e02538d7d8a7457a5")
+}
+
+resource AnalyzerShapeModuleOrmTargetKeyAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer-shape.ts#ormTargetKey")
+  fingerprint ast.semantic_subtree_v1("sha256:322cbc1ae6c324458a2b346fada4243a53ed5f7aeb1ea09e3febdd28fa58e452")
+}
+
+resource AnalyzerShapeModuleParseSourceReferenceAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer-shape.ts#parseSourceReference")
+  fingerprint ast.semantic_subtree_v1("sha256:55cc3dd6c7aa6226957c1dda996f63cb7507f1b6f86bb9af3677baf9fb0f6275")
+}
+
+resource AnalyzerShapeModuleResolveDeclaredResourcesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer-shape.ts#resolveDeclaredResources")
+  fingerprint ast.semantic_subtree_v1("sha256:b0c8cc307c34a5080d5fc5c8dd0c398b4d23ae3830bf22a96458185e5b5d7e4b")
+}
+
+resource AnalyzerShapeModuleResourceInfoAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer-shape.ts#resourceInfo")
+  fingerprint ast.semantic_subtree_v1("sha256:508d4bb75f7d88e027908de94da93042226796eb33a8df48069d96c4a9fb1b33")
+}
+
+resource AnalyzerShapeModuleSelectDeclaredEffectsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer-shape.ts#selectDeclaredEffects")
+  fingerprint ast.semantic_subtree_v1("sha256:22a3f3275567d62707b9335727e2748faea3153994d34a353b491584667f550a")
+}
+
+resource AnalyzerShapeModuleSourceReferenceKeyAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer-shape.ts#sourceReferenceKey")
+  fingerprint ast.semantic_subtree_v1("sha256:c358caa5e6340fd4e4bd2982d767c06cbe3b4d33015dee1e4471ec867591a84d")
+}
+
+resource AnalyzerShapeModuleSqlTargetMatchesNameAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer-shape.ts#sqlTargetMatchesName")
+  fingerprint ast.semantic_subtree_v1("sha256:ab8a4303542c4650741e480ea0e9434fe2998fa800bcfbfbad170788067da136")
+}
+
+component AnalyzerShapeModule : GeneratedCandidate {
+  fn analyzerTargetMatchesResource
+    source ts("packages/shp-checker/src/analyzer-shape.ts#analyzerTargetMatchesResource")
+    effects unknown
+  fn collectDeclaredEffectsBySourcePath
+    source ts("packages/shp-checker/src/analyzer-shape.ts#collectDeclaredEffectsBySourcePath")
+    effects unknown
+  fn collectFunctionEffects
+    source ts("packages/shp-checker/src/analyzer-shape.ts#collectFunctionEffects")
+    effects unknown
+  fn collectResourceInfos
+    source ts("packages/shp-checker/src/analyzer-shape.ts#collectResourceInfos")
+    effects unknown
+  fn compareAnalyzerHintsToShape
+    source ts("packages/shp-checker/src/analyzer-shape.ts#compareAnalyzerHintsToShape")
+    effects unknown
+  fn declaredEffectMatchesHint
+    source ts("packages/shp-checker/src/analyzer-shape.ts#declaredEffectMatchesHint")
+    effects unknown
+  fn declaredEffectsForAnchors
+    source ts("packages/shp-checker/src/analyzer-shape.ts#declaredEffectsForAnchors")
+    effects unknown
+  fn declaredTargets
+    source ts("packages/shp-checker/src/analyzer-shape.ts#declaredTargets")
+    effects unknown
+  fn ensureDeclaredScope
+    source ts("packages/shp-checker/src/analyzer-shape.ts#ensureDeclaredScope")
+    effects unknown
+  fn formatAnalyzerWarning
+    source ts("packages/shp-checker/src/analyzer-shape.ts#formatAnalyzerWarning")
+    effects unknown
+  fn formatAnalyzerWarnings
+    source ts("packages/shp-checker/src/analyzer-shape.ts#formatAnalyzerWarnings")
+    effects unknown
+  fn ormTargetKey
+    source ts("packages/shp-checker/src/analyzer-shape.ts#ormTargetKey")
+    effects unknown
+  fn parseSourceReference
+    source ts("packages/shp-checker/src/analyzer-shape.ts#parseSourceReference")
+    effects unknown
+  fn resolveDeclaredResources
+    source ts("packages/shp-checker/src/analyzer-shape.ts#resolveDeclaredResources")
+    effects unknown
+  fn resourceInfo
+    source ts("packages/shp-checker/src/analyzer-shape.ts#resourceInfo")
+    effects unknown
+  fn selectDeclaredEffects
+    source ts("packages/shp-checker/src/analyzer-shape.ts#selectDeclaredEffects")
+    effects unknown
+  fn sourceReferenceKey
+    source ts("packages/shp-checker/src/analyzer-shape.ts#sourceReferenceKey")
+    effects unknown
+  fn sqlTargetMatchesName
+    source ts("packages/shp-checker/src/analyzer-shape.ts#sqlTargetMatchesName")
+    effects unknown
+}
+
+relation AnalyzerShapeModuleAnalyzerTargetMatchesResourceGeneratedFromAnalyzerShapeModuleAnalyzerTargetMatchesResourceAstAnchor {
+  kind generated_from
+  connects AnalyzerShapeModule -> AnalyzerShapeModuleAnalyzerTargetMatchesResourceAstAnchor
+  roles { AnalyzerShapeModule as generated, AnalyzerShapeModuleAnalyzerTargetMatchesResourceAstAnchor as syntax }
+  expects AnalyzerShapeModuleAnalyzerTargetMatchesResourceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b7750666017a44b7aa5d816169525539cbb67d0c096b9f6c6f93e37bc064bfc3")
+  summary "fn AnalyzerShapeModule.analyzerTargetMatchesResource generated from typescript function_declaration at packages/shp-checker/src/analyzer-shape.ts#analyzerTargetMatchesResource."
+}
+
+relation AnalyzerShapeModuleCollectDeclaredEffectsBySourcePathGeneratedFromAnalyzerShapeModuleCollectDeclaredEffectsBySourcePathAstAnchor {
+  kind generated_from
+  connects AnalyzerShapeModule -> AnalyzerShapeModuleCollectDeclaredEffectsBySourcePathAstAnchor
+  roles { AnalyzerShapeModule as generated, AnalyzerShapeModuleCollectDeclaredEffectsBySourcePathAstAnchor as syntax }
+  expects AnalyzerShapeModuleCollectDeclaredEffectsBySourcePathAstAnchor fingerprint ast.semantic_subtree_v1("sha256:576ebb00de8f38d612c73d0d5c41a07c2da245b07ad42d9ea3badebbe8a1cc05")
+  summary "fn AnalyzerShapeModule.collectDeclaredEffectsBySourcePath generated from typescript function_declaration at packages/shp-checker/src/analyzer-shape.ts#collectDeclaredEffectsBySourcePath."
+}
+
+relation AnalyzerShapeModuleCollectFunctionEffectsGeneratedFromAnalyzerShapeModuleCollectFunctionEffectsAstAnchor {
+  kind generated_from
+  connects AnalyzerShapeModule -> AnalyzerShapeModuleCollectFunctionEffectsAstAnchor
+  roles { AnalyzerShapeModule as generated, AnalyzerShapeModuleCollectFunctionEffectsAstAnchor as syntax }
+  expects AnalyzerShapeModuleCollectFunctionEffectsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7c51bd0d7629d75312c8fb32db90f26d1e200b9a506fc9d81d01af4cdb83b786")
+  summary "fn AnalyzerShapeModule.collectFunctionEffects generated from typescript function_declaration at packages/shp-checker/src/analyzer-shape.ts#collectFunctionEffects."
+}
+
+relation AnalyzerShapeModuleCollectResourceInfosGeneratedFromAnalyzerShapeModuleCollectResourceInfosAstAnchor {
+  kind generated_from
+  connects AnalyzerShapeModule -> AnalyzerShapeModuleCollectResourceInfosAstAnchor
+  roles { AnalyzerShapeModule as generated, AnalyzerShapeModuleCollectResourceInfosAstAnchor as syntax }
+  expects AnalyzerShapeModuleCollectResourceInfosAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ef64131f1e36fce2c7d0c288067ee23affeb179eaa70824e5a4205f3d5716ab2")
+  summary "fn AnalyzerShapeModule.collectResourceInfos generated from typescript function_declaration at packages/shp-checker/src/analyzer-shape.ts#collectResourceInfos."
+}
+
+relation AnalyzerShapeModuleCompareAnalyzerHintsToShapeGeneratedFromAnalyzerShapeModuleCompareAnalyzerHintsToShapeAstAnchor {
+  kind generated_from
+  connects AnalyzerShapeModule -> AnalyzerShapeModuleCompareAnalyzerHintsToShapeAstAnchor
+  roles { AnalyzerShapeModule as generated, AnalyzerShapeModuleCompareAnalyzerHintsToShapeAstAnchor as syntax }
+  expects AnalyzerShapeModuleCompareAnalyzerHintsToShapeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:45189f8189ba680827859818f3816bcc8833732f4e760ad5b7d0a9c33a42b247")
+  summary "fn AnalyzerShapeModule.compareAnalyzerHintsToShape generated from typescript function_declaration at packages/shp-checker/src/analyzer-shape.ts#compareAnalyzerHintsToShape."
+}
+
+relation AnalyzerShapeModuleDeclaredEffectMatchesHintGeneratedFromAnalyzerShapeModuleDeclaredEffectMatchesHintAstAnchor {
+  kind generated_from
+  connects AnalyzerShapeModule -> AnalyzerShapeModuleDeclaredEffectMatchesHintAstAnchor
+  roles { AnalyzerShapeModule as generated, AnalyzerShapeModuleDeclaredEffectMatchesHintAstAnchor as syntax }
+  expects AnalyzerShapeModuleDeclaredEffectMatchesHintAstAnchor fingerprint ast.semantic_subtree_v1("sha256:dc33328870f474a7fea3519828ca50b47f4bcd6e1e45f22a0db2b15369472407")
+  summary "fn AnalyzerShapeModule.declaredEffectMatchesHint generated from typescript function_declaration at packages/shp-checker/src/analyzer-shape.ts#declaredEffectMatchesHint."
+}
+
+relation AnalyzerShapeModuleDeclaredEffectsForAnchorsGeneratedFromAnalyzerShapeModuleDeclaredEffectsForAnchorsAstAnchor {
+  kind generated_from
+  connects AnalyzerShapeModule -> AnalyzerShapeModuleDeclaredEffectsForAnchorsAstAnchor
+  roles { AnalyzerShapeModule as generated, AnalyzerShapeModuleDeclaredEffectsForAnchorsAstAnchor as syntax }
+  expects AnalyzerShapeModuleDeclaredEffectsForAnchorsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:db8f302ea5e8f4f35b62a4a5155eb03bb6adf34afe13ccac49210a00918f5d58")
+  summary "fn AnalyzerShapeModule.declaredEffectsForAnchors generated from typescript function_declaration at packages/shp-checker/src/analyzer-shape.ts#declaredEffectsForAnchors."
+}
+
+relation AnalyzerShapeModuleDeclaredTargetsGeneratedFromAnalyzerShapeModuleDeclaredTargetsAstAnchor {
+  kind generated_from
+  connects AnalyzerShapeModule -> AnalyzerShapeModuleDeclaredTargetsAstAnchor
+  roles { AnalyzerShapeModule as generated, AnalyzerShapeModuleDeclaredTargetsAstAnchor as syntax }
+  expects AnalyzerShapeModuleDeclaredTargetsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:90f586f639b782e18993f6ea3c3fa63e7274ba8a2a9a61bfed5f43a78fd80539")
+  summary "fn AnalyzerShapeModule.declaredTargets generated from typescript function_declaration at packages/shp-checker/src/analyzer-shape.ts#declaredTargets."
+}
+
+relation AnalyzerShapeModuleEnsureDeclaredScopeGeneratedFromAnalyzerShapeModuleEnsureDeclaredScopeAstAnchor {
+  kind generated_from
+  connects AnalyzerShapeModule -> AnalyzerShapeModuleEnsureDeclaredScopeAstAnchor
+  roles { AnalyzerShapeModule as generated, AnalyzerShapeModuleEnsureDeclaredScopeAstAnchor as syntax }
+  expects AnalyzerShapeModuleEnsureDeclaredScopeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b6d828de24ebcacce1a5820ed9e5a02cdc1ece5f313a488951d19dadd07ca22b")
+  summary "fn AnalyzerShapeModule.ensureDeclaredScope generated from typescript function_declaration at packages/shp-checker/src/analyzer-shape.ts#ensureDeclaredScope."
+}
+
+relation AnalyzerShapeModuleFormatAnalyzerWarningGeneratedFromAnalyzerShapeModuleFormatAnalyzerWarningAstAnchor {
+  kind generated_from
+  connects AnalyzerShapeModule -> AnalyzerShapeModuleFormatAnalyzerWarningAstAnchor
+  roles { AnalyzerShapeModule as generated, AnalyzerShapeModuleFormatAnalyzerWarningAstAnchor as syntax }
+  expects AnalyzerShapeModuleFormatAnalyzerWarningAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7d5f46b64ee07f6fa13501a82607da23bd949e3bca857ef27d134c82bb3a7d4c")
+  summary "fn AnalyzerShapeModule.formatAnalyzerWarning generated from typescript function_declaration at packages/shp-checker/src/analyzer-shape.ts#formatAnalyzerWarning."
+}
+
+relation AnalyzerShapeModuleFormatAnalyzerWarningsGeneratedFromAnalyzerShapeModuleFormatAnalyzerWarningsAstAnchor {
+  kind generated_from
+  connects AnalyzerShapeModule -> AnalyzerShapeModuleFormatAnalyzerWarningsAstAnchor
+  roles { AnalyzerShapeModule as generated, AnalyzerShapeModuleFormatAnalyzerWarningsAstAnchor as syntax }
+  expects AnalyzerShapeModuleFormatAnalyzerWarningsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4ffa0aa99ffbfcb738b378d624f6bd6079f53bc6be7d966e02538d7d8a7457a5")
+  summary "fn AnalyzerShapeModule.formatAnalyzerWarnings generated from typescript function_declaration at packages/shp-checker/src/analyzer-shape.ts#formatAnalyzerWarnings."
+}
+
+relation AnalyzerShapeModuleOrmTargetKeyGeneratedFromAnalyzerShapeModuleOrmTargetKeyAstAnchor {
+  kind generated_from
+  connects AnalyzerShapeModule -> AnalyzerShapeModuleOrmTargetKeyAstAnchor
+  roles { AnalyzerShapeModule as generated, AnalyzerShapeModuleOrmTargetKeyAstAnchor as syntax }
+  expects AnalyzerShapeModuleOrmTargetKeyAstAnchor fingerprint ast.semantic_subtree_v1("sha256:322cbc1ae6c324458a2b346fada4243a53ed5f7aeb1ea09e3febdd28fa58e452")
+  summary "fn AnalyzerShapeModule.ormTargetKey generated from typescript function_declaration at packages/shp-checker/src/analyzer-shape.ts#ormTargetKey."
+}
+
+relation AnalyzerShapeModuleParseSourceReferenceGeneratedFromAnalyzerShapeModuleParseSourceReferenceAstAnchor {
+  kind generated_from
+  connects AnalyzerShapeModule -> AnalyzerShapeModuleParseSourceReferenceAstAnchor
+  roles { AnalyzerShapeModule as generated, AnalyzerShapeModuleParseSourceReferenceAstAnchor as syntax }
+  expects AnalyzerShapeModuleParseSourceReferenceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:55cc3dd6c7aa6226957c1dda996f63cb7507f1b6f86bb9af3677baf9fb0f6275")
+  summary "fn AnalyzerShapeModule.parseSourceReference generated from typescript function_declaration at packages/shp-checker/src/analyzer-shape.ts#parseSourceReference."
+}
+
+relation AnalyzerShapeModuleResolveDeclaredResourcesGeneratedFromAnalyzerShapeModuleResolveDeclaredResourcesAstAnchor {
+  kind generated_from
+  connects AnalyzerShapeModule -> AnalyzerShapeModuleResolveDeclaredResourcesAstAnchor
+  roles { AnalyzerShapeModule as generated, AnalyzerShapeModuleResolveDeclaredResourcesAstAnchor as syntax }
+  expects AnalyzerShapeModuleResolveDeclaredResourcesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b0c8cc307c34a5080d5fc5c8dd0c398b4d23ae3830bf22a96458185e5b5d7e4b")
+  summary "fn AnalyzerShapeModule.resolveDeclaredResources generated from typescript function_declaration at packages/shp-checker/src/analyzer-shape.ts#resolveDeclaredResources."
+}
+
+relation AnalyzerShapeModuleResourceInfoGeneratedFromAnalyzerShapeModuleResourceInfoAstAnchor {
+  kind generated_from
+  connects AnalyzerShapeModule -> AnalyzerShapeModuleResourceInfoAstAnchor
+  roles { AnalyzerShapeModule as generated, AnalyzerShapeModuleResourceInfoAstAnchor as syntax }
+  expects AnalyzerShapeModuleResourceInfoAstAnchor fingerprint ast.semantic_subtree_v1("sha256:508d4bb75f7d88e027908de94da93042226796eb33a8df48069d96c4a9fb1b33")
+  summary "fn AnalyzerShapeModule.resourceInfo generated from typescript function_declaration at packages/shp-checker/src/analyzer-shape.ts#resourceInfo."
+}
+
+relation AnalyzerShapeModuleSelectDeclaredEffectsGeneratedFromAnalyzerShapeModuleSelectDeclaredEffectsAstAnchor {
+  kind generated_from
+  connects AnalyzerShapeModule -> AnalyzerShapeModuleSelectDeclaredEffectsAstAnchor
+  roles { AnalyzerShapeModule as generated, AnalyzerShapeModuleSelectDeclaredEffectsAstAnchor as syntax }
+  expects AnalyzerShapeModuleSelectDeclaredEffectsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:22a3f3275567d62707b9335727e2748faea3153994d34a353b491584667f550a")
+  summary "fn AnalyzerShapeModule.selectDeclaredEffects generated from typescript function_declaration at packages/shp-checker/src/analyzer-shape.ts#selectDeclaredEffects."
+}
+
+relation AnalyzerShapeModuleSourceReferenceKeyGeneratedFromAnalyzerShapeModuleSourceReferenceKeyAstAnchor {
+  kind generated_from
+  connects AnalyzerShapeModule -> AnalyzerShapeModuleSourceReferenceKeyAstAnchor
+  roles { AnalyzerShapeModule as generated, AnalyzerShapeModuleSourceReferenceKeyAstAnchor as syntax }
+  expects AnalyzerShapeModuleSourceReferenceKeyAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c358caa5e6340fd4e4bd2982d767c06cbe3b4d33015dee1e4471ec867591a84d")
+  summary "fn AnalyzerShapeModule.sourceReferenceKey generated from typescript function_declaration at packages/shp-checker/src/analyzer-shape.ts#sourceReferenceKey."
+}
+
+relation AnalyzerShapeModuleSqlTargetMatchesNameGeneratedFromAnalyzerShapeModuleSqlTargetMatchesNameAstAnchor {
+  kind generated_from
+  connects AnalyzerShapeModule -> AnalyzerShapeModuleSqlTargetMatchesNameAstAnchor
+  roles { AnalyzerShapeModule as generated, AnalyzerShapeModuleSqlTargetMatchesNameAstAnchor as syntax }
+  expects AnalyzerShapeModuleSqlTargetMatchesNameAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ab8a4303542c4650741e480ea0e9434fe2998fa800bcfbfbad170788067da136")
+  summary "fn AnalyzerShapeModule.sqlTargetMatchesName generated from typescript function_declaration at packages/shp-checker/src/analyzer-shape.ts#sqlTargetMatchesName."
+}
+
+implementation AnalyzerShapeModuleImpl {
+  paths {
+    "packages/shp-checker/src/analyzer-shape.ts"
+  }
+  conforms_to AnalyzerShapeModule
+}

@@ -1,0 +1,289 @@
+module shape.generated.ast.packages.shp_checker.src.analyzer_scopes
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource AnalyzerScopesModuleAddBalancedFunctionScopeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer-scopes.ts#addBalancedFunctionScope")
+  fingerprint ast.semantic_subtree_v1("sha256:cafd8eb9078603d876acc523e529b37206d4cad60bad0d593efa72a69085aa18")
+}
+
+resource AnalyzerScopesModuleAddFunctionScopeAfterParametersAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer-scopes.ts#addFunctionScopeAfterParameters")
+  fingerprint ast.semantic_subtree_v1("sha256:da48af5f65c9bfaa4a4d2ad8ba9ed79b531b57512ed51a7c71fa7dafa66bd4d6")
+}
+
+resource AnalyzerScopesModuleCollectAssignedArrowScopesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer-scopes.ts#collectAssignedArrowScopes")
+  fingerprint ast.semantic_subtree_v1("sha256:64dacc859b5e12c03fddee9c5438b08c92d7daa5c7f514f5314e432e8b967a88")
+}
+
+resource AnalyzerScopesModuleCollectFunctionDeclarationScopesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer-scopes.ts#collectFunctionDeclarationScopes")
+  fingerprint ast.semantic_subtree_v1("sha256:46b2263bfcfa4336d07f59034416fe91ef81671fe48c7f26c8aa59cb78e94f0c")
+}
+
+resource AnalyzerScopesModuleCollectMethodScopesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer-scopes.ts#collectMethodScopes")
+  fingerprint ast.semantic_subtree_v1("sha256:632a7dd736f6fe1658d24a6f16f221d895c8092205d8e709dfc070ce239939ec")
+}
+
+resource AnalyzerScopesModuleCollectTypeScriptFunctionScopesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer-scopes.ts#collectTypeScriptFunctionScopes")
+  fingerprint ast.semantic_subtree_v1("sha256:393d06ad00fcd1a5b63b9fd7f218a99c3bfb8c48b00feddc6ff2c83790df3303")
+}
+
+resource AnalyzerScopesModuleFindBodyAfterReturnTypeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer-scopes.ts#findBodyAfterReturnType")
+  fingerprint ast.semantic_subtree_v1("sha256:bc5cdf06f4833938c0ce28d5d2e2a4bb5a2f0b8b2a04ef4a1b27872d435e34e4")
+}
+
+resource AnalyzerScopesModuleFindFunctionBodyStartAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer-scopes.ts#findFunctionBodyStart")
+  fingerprint ast.semantic_subtree_v1("sha256:76f770ddd55d8e853f8827937021958e1383075a4859d1caf26ff28031900ffd")
+}
+
+resource AnalyzerScopesModuleFindMatchingDelimiterAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer-scopes.ts#findMatchingDelimiter")
+  fingerprint ast.semantic_subtree_v1("sha256:95199d517d9089af1d5898d8a3eae19a6f7d33ec8ae9244867e56b6055cfcf35")
+}
+
+resource AnalyzerScopesModuleFindMatchingTypeParameterListAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer-scopes.ts#findMatchingTypeParameterList")
+  fingerprint ast.semantic_subtree_v1("sha256:1fbc2e8a7f58672cc945522e32fa54098221e4002b9ffd23c064552fa606f017")
+}
+
+resource AnalyzerScopesModuleFindParameterListAfterNameAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer-scopes.ts#findParameterListAfterName")
+  fingerprint ast.semantic_subtree_v1("sha256:74792ec703235f2230093678c4c5c599a1675ecb510dcd03b74c2bae9d785e21")
+}
+
+resource AnalyzerScopesModuleFindTopLevelArrowAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer-scopes.ts#findTopLevelArrow")
+  fingerprint ast.semantic_subtree_v1("sha256:7035fc3260043d014fcf99a511addd9dc466262bb60776faf59feba716d6b928")
+}
+
+resource AnalyzerScopesModuleFindVariableAssignmentAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer-scopes.ts#findVariableAssignment")
+  fingerprint ast.semantic_subtree_v1("sha256:f466dd6f1784d0b5f569471240cc2ae1a8619e8e664f197345b5a1dedbfd14bb")
+}
+
+resource AnalyzerScopesModuleIdentifierEndingAtAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer-scopes.ts#identifierEndingAt")
+  fingerprint ast.semantic_subtree_v1("sha256:01ae1f9479170d07c9acd9cdcf0b0e28f11419a6c137ad618c578b1095d519f1")
+}
+
+resource AnalyzerScopesModulePreviousNonWhitespaceAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer-scopes.ts#previousNonWhitespace")
+  fingerprint ast.semantic_subtree_v1("sha256:6dcb677ff6628d49f321e279f534726da15ff5057ce9dc91326d173674526c8c")
+}
+
+resource AnalyzerScopesModuleSkipMaskedWhitespaceAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer-scopes.ts#skipMaskedWhitespace")
+  fingerprint ast.semantic_subtree_v1("sha256:d0c669bf299b774dc3fe1ca97713e06fae34e07f43e885ac5264b4491c07482a")
+}
+
+resource AnalyzerScopesModuleSourceAnchorAtOffsetAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer-scopes.ts#sourceAnchorAtOffset")
+  fingerprint ast.semantic_subtree_v1("sha256:33341a4fea73b886652862d67ef1acb37c4f6d6378f723b53abc62676a017458")
+}
+
+component AnalyzerScopesModule : GeneratedCandidate {
+  fn addBalancedFunctionScope
+    source ts("packages/shp-checker/src/analyzer-scopes.ts#addBalancedFunctionScope")
+    effects unknown
+  fn addFunctionScopeAfterParameters
+    source ts("packages/shp-checker/src/analyzer-scopes.ts#addFunctionScopeAfterParameters")
+    effects unknown
+  fn collectAssignedArrowScopes
+    source ts("packages/shp-checker/src/analyzer-scopes.ts#collectAssignedArrowScopes")
+    effects unknown
+  fn collectFunctionDeclarationScopes
+    source ts("packages/shp-checker/src/analyzer-scopes.ts#collectFunctionDeclarationScopes")
+    effects unknown
+  fn collectMethodScopes
+    source ts("packages/shp-checker/src/analyzer-scopes.ts#collectMethodScopes")
+    effects unknown
+  fn collectTypeScriptFunctionScopes
+    source ts("packages/shp-checker/src/analyzer-scopes.ts#collectTypeScriptFunctionScopes")
+    effects unknown
+  fn findBodyAfterReturnType
+    source ts("packages/shp-checker/src/analyzer-scopes.ts#findBodyAfterReturnType")
+    effects unknown
+  fn findFunctionBodyStart
+    source ts("packages/shp-checker/src/analyzer-scopes.ts#findFunctionBodyStart")
+    effects unknown
+  fn findMatchingDelimiter
+    source ts("packages/shp-checker/src/analyzer-scopes.ts#findMatchingDelimiter")
+    effects unknown
+  fn findMatchingTypeParameterList
+    source ts("packages/shp-checker/src/analyzer-scopes.ts#findMatchingTypeParameterList")
+    effects unknown
+  fn findParameterListAfterName
+    source ts("packages/shp-checker/src/analyzer-scopes.ts#findParameterListAfterName")
+    effects unknown
+  fn findTopLevelArrow
+    source ts("packages/shp-checker/src/analyzer-scopes.ts#findTopLevelArrow")
+    effects unknown
+  fn findVariableAssignment
+    source ts("packages/shp-checker/src/analyzer-scopes.ts#findVariableAssignment")
+    effects unknown
+  fn identifierEndingAt
+    source ts("packages/shp-checker/src/analyzer-scopes.ts#identifierEndingAt")
+    effects unknown
+  fn previousNonWhitespace
+    source ts("packages/shp-checker/src/analyzer-scopes.ts#previousNonWhitespace")
+    effects unknown
+  fn skipMaskedWhitespace
+    source ts("packages/shp-checker/src/analyzer-scopes.ts#skipMaskedWhitespace")
+    effects unknown
+  fn sourceAnchorAtOffset
+    source ts("packages/shp-checker/src/analyzer-scopes.ts#sourceAnchorAtOffset")
+    effects unknown
+}
+
+relation AnalyzerScopesModuleAddBalancedFunctionScopeGeneratedFromAnalyzerScopesModuleAddBalancedFunctionScopeAstAnchor {
+  kind generated_from
+  connects AnalyzerScopesModule -> AnalyzerScopesModuleAddBalancedFunctionScopeAstAnchor
+  roles { AnalyzerScopesModule as generated, AnalyzerScopesModuleAddBalancedFunctionScopeAstAnchor as syntax }
+  expects AnalyzerScopesModuleAddBalancedFunctionScopeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:cafd8eb9078603d876acc523e529b37206d4cad60bad0d593efa72a69085aa18")
+  summary "fn AnalyzerScopesModule.addBalancedFunctionScope generated from typescript function_declaration at packages/shp-checker/src/analyzer-scopes.ts#addBalancedFunctionScope."
+}
+
+relation AnalyzerScopesModuleAddFunctionScopeAfterParametersGeneratedFromAnalyzerScopesModuleAddFunctionScopeAfterParametersAstAnchor {
+  kind generated_from
+  connects AnalyzerScopesModule -> AnalyzerScopesModuleAddFunctionScopeAfterParametersAstAnchor
+  roles { AnalyzerScopesModule as generated, AnalyzerScopesModuleAddFunctionScopeAfterParametersAstAnchor as syntax }
+  expects AnalyzerScopesModuleAddFunctionScopeAfterParametersAstAnchor fingerprint ast.semantic_subtree_v1("sha256:da48af5f65c9bfaa4a4d2ad8ba9ed79b531b57512ed51a7c71fa7dafa66bd4d6")
+  summary "fn AnalyzerScopesModule.addFunctionScopeAfterParameters generated from typescript function_declaration at packages/shp-checker/src/analyzer-scopes.ts#addFunctionScopeAfterParameters."
+}
+
+relation AnalyzerScopesModuleCollectAssignedArrowScopesGeneratedFromAnalyzerScopesModuleCollectAssignedArrowScopesAstAnchor {
+  kind generated_from
+  connects AnalyzerScopesModule -> AnalyzerScopesModuleCollectAssignedArrowScopesAstAnchor
+  roles { AnalyzerScopesModule as generated, AnalyzerScopesModuleCollectAssignedArrowScopesAstAnchor as syntax }
+  expects AnalyzerScopesModuleCollectAssignedArrowScopesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:64dacc859b5e12c03fddee9c5438b08c92d7daa5c7f514f5314e432e8b967a88")
+  summary "fn AnalyzerScopesModule.collectAssignedArrowScopes generated from typescript function_declaration at packages/shp-checker/src/analyzer-scopes.ts#collectAssignedArrowScopes."
+}
+
+relation AnalyzerScopesModuleCollectFunctionDeclarationScopesGeneratedFromAnalyzerScopesModuleCollectFunctionDeclarationScopesAstAnchor {
+  kind generated_from
+  connects AnalyzerScopesModule -> AnalyzerScopesModuleCollectFunctionDeclarationScopesAstAnchor
+  roles { AnalyzerScopesModule as generated, AnalyzerScopesModuleCollectFunctionDeclarationScopesAstAnchor as syntax }
+  expects AnalyzerScopesModuleCollectFunctionDeclarationScopesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:46b2263bfcfa4336d07f59034416fe91ef81671fe48c7f26c8aa59cb78e94f0c")
+  summary "fn AnalyzerScopesModule.collectFunctionDeclarationScopes generated from typescript function_declaration at packages/shp-checker/src/analyzer-scopes.ts#collectFunctionDeclarationScopes."
+}
+
+relation AnalyzerScopesModuleCollectMethodScopesGeneratedFromAnalyzerScopesModuleCollectMethodScopesAstAnchor {
+  kind generated_from
+  connects AnalyzerScopesModule -> AnalyzerScopesModuleCollectMethodScopesAstAnchor
+  roles { AnalyzerScopesModule as generated, AnalyzerScopesModuleCollectMethodScopesAstAnchor as syntax }
+  expects AnalyzerScopesModuleCollectMethodScopesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:632a7dd736f6fe1658d24a6f16f221d895c8092205d8e709dfc070ce239939ec")
+  summary "fn AnalyzerScopesModule.collectMethodScopes generated from typescript function_declaration at packages/shp-checker/src/analyzer-scopes.ts#collectMethodScopes."
+}
+
+relation AnalyzerScopesModuleCollectTypeScriptFunctionScopesGeneratedFromAnalyzerScopesModuleCollectTypeScriptFunctionScopesAstAnchor {
+  kind generated_from
+  connects AnalyzerScopesModule -> AnalyzerScopesModuleCollectTypeScriptFunctionScopesAstAnchor
+  roles { AnalyzerScopesModule as generated, AnalyzerScopesModuleCollectTypeScriptFunctionScopesAstAnchor as syntax }
+  expects AnalyzerScopesModuleCollectTypeScriptFunctionScopesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:393d06ad00fcd1a5b63b9fd7f218a99c3bfb8c48b00feddc6ff2c83790df3303")
+  summary "fn AnalyzerScopesModule.collectTypeScriptFunctionScopes generated from typescript function_declaration at packages/shp-checker/src/analyzer-scopes.ts#collectTypeScriptFunctionScopes."
+}
+
+relation AnalyzerScopesModuleFindBodyAfterReturnTypeGeneratedFromAnalyzerScopesModuleFindBodyAfterReturnTypeAstAnchor {
+  kind generated_from
+  connects AnalyzerScopesModule -> AnalyzerScopesModuleFindBodyAfterReturnTypeAstAnchor
+  roles { AnalyzerScopesModule as generated, AnalyzerScopesModuleFindBodyAfterReturnTypeAstAnchor as syntax }
+  expects AnalyzerScopesModuleFindBodyAfterReturnTypeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:bc5cdf06f4833938c0ce28d5d2e2a4bb5a2f0b8b2a04ef4a1b27872d435e34e4")
+  summary "fn AnalyzerScopesModule.findBodyAfterReturnType generated from typescript function_declaration at packages/shp-checker/src/analyzer-scopes.ts#findBodyAfterReturnType."
+}
+
+relation AnalyzerScopesModuleFindFunctionBodyStartGeneratedFromAnalyzerScopesModuleFindFunctionBodyStartAstAnchor {
+  kind generated_from
+  connects AnalyzerScopesModule -> AnalyzerScopesModuleFindFunctionBodyStartAstAnchor
+  roles { AnalyzerScopesModule as generated, AnalyzerScopesModuleFindFunctionBodyStartAstAnchor as syntax }
+  expects AnalyzerScopesModuleFindFunctionBodyStartAstAnchor fingerprint ast.semantic_subtree_v1("sha256:76f770ddd55d8e853f8827937021958e1383075a4859d1caf26ff28031900ffd")
+  summary "fn AnalyzerScopesModule.findFunctionBodyStart generated from typescript function_declaration at packages/shp-checker/src/analyzer-scopes.ts#findFunctionBodyStart."
+}
+
+relation AnalyzerScopesModuleFindMatchingDelimiterGeneratedFromAnalyzerScopesModuleFindMatchingDelimiterAstAnchor {
+  kind generated_from
+  connects AnalyzerScopesModule -> AnalyzerScopesModuleFindMatchingDelimiterAstAnchor
+  roles { AnalyzerScopesModule as generated, AnalyzerScopesModuleFindMatchingDelimiterAstAnchor as syntax }
+  expects AnalyzerScopesModuleFindMatchingDelimiterAstAnchor fingerprint ast.semantic_subtree_v1("sha256:95199d517d9089af1d5898d8a3eae19a6f7d33ec8ae9244867e56b6055cfcf35")
+  summary "fn AnalyzerScopesModule.findMatchingDelimiter generated from typescript function_declaration at packages/shp-checker/src/analyzer-scopes.ts#findMatchingDelimiter."
+}
+
+relation AnalyzerScopesModuleFindMatchingTypeParameterListGeneratedFromAnalyzerScopesModuleFindMatchingTypeParameterListAstAnchor {
+  kind generated_from
+  connects AnalyzerScopesModule -> AnalyzerScopesModuleFindMatchingTypeParameterListAstAnchor
+  roles { AnalyzerScopesModule as generated, AnalyzerScopesModuleFindMatchingTypeParameterListAstAnchor as syntax }
+  expects AnalyzerScopesModuleFindMatchingTypeParameterListAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1fbc2e8a7f58672cc945522e32fa54098221e4002b9ffd23c064552fa606f017")
+  summary "fn AnalyzerScopesModule.findMatchingTypeParameterList generated from typescript function_declaration at packages/shp-checker/src/analyzer-scopes.ts#findMatchingTypeParameterList."
+}
+
+relation AnalyzerScopesModuleFindParameterListAfterNameGeneratedFromAnalyzerScopesModuleFindParameterListAfterNameAstAnchor {
+  kind generated_from
+  connects AnalyzerScopesModule -> AnalyzerScopesModuleFindParameterListAfterNameAstAnchor
+  roles { AnalyzerScopesModule as generated, AnalyzerScopesModuleFindParameterListAfterNameAstAnchor as syntax }
+  expects AnalyzerScopesModuleFindParameterListAfterNameAstAnchor fingerprint ast.semantic_subtree_v1("sha256:74792ec703235f2230093678c4c5c599a1675ecb510dcd03b74c2bae9d785e21")
+  summary "fn AnalyzerScopesModule.findParameterListAfterName generated from typescript function_declaration at packages/shp-checker/src/analyzer-scopes.ts#findParameterListAfterName."
+}
+
+relation AnalyzerScopesModuleFindTopLevelArrowGeneratedFromAnalyzerScopesModuleFindTopLevelArrowAstAnchor {
+  kind generated_from
+  connects AnalyzerScopesModule -> AnalyzerScopesModuleFindTopLevelArrowAstAnchor
+  roles { AnalyzerScopesModule as generated, AnalyzerScopesModuleFindTopLevelArrowAstAnchor as syntax }
+  expects AnalyzerScopesModuleFindTopLevelArrowAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7035fc3260043d014fcf99a511addd9dc466262bb60776faf59feba716d6b928")
+  summary "fn AnalyzerScopesModule.findTopLevelArrow generated from typescript function_declaration at packages/shp-checker/src/analyzer-scopes.ts#findTopLevelArrow."
+}
+
+relation AnalyzerScopesModuleFindVariableAssignmentGeneratedFromAnalyzerScopesModuleFindVariableAssignmentAstAnchor {
+  kind generated_from
+  connects AnalyzerScopesModule -> AnalyzerScopesModuleFindVariableAssignmentAstAnchor
+  roles { AnalyzerScopesModule as generated, AnalyzerScopesModuleFindVariableAssignmentAstAnchor as syntax }
+  expects AnalyzerScopesModuleFindVariableAssignmentAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f466dd6f1784d0b5f569471240cc2ae1a8619e8e664f197345b5a1dedbfd14bb")
+  summary "fn AnalyzerScopesModule.findVariableAssignment generated from typescript function_declaration at packages/shp-checker/src/analyzer-scopes.ts#findVariableAssignment."
+}
+
+relation AnalyzerScopesModuleIdentifierEndingAtGeneratedFromAnalyzerScopesModuleIdentifierEndingAtAstAnchor {
+  kind generated_from
+  connects AnalyzerScopesModule -> AnalyzerScopesModuleIdentifierEndingAtAstAnchor
+  roles { AnalyzerScopesModule as generated, AnalyzerScopesModuleIdentifierEndingAtAstAnchor as syntax }
+  expects AnalyzerScopesModuleIdentifierEndingAtAstAnchor fingerprint ast.semantic_subtree_v1("sha256:01ae1f9479170d07c9acd9cdcf0b0e28f11419a6c137ad618c578b1095d519f1")
+  summary "fn AnalyzerScopesModule.identifierEndingAt generated from typescript function_declaration at packages/shp-checker/src/analyzer-scopes.ts#identifierEndingAt."
+}
+
+relation AnalyzerScopesModulePreviousNonWhitespaceGeneratedFromAnalyzerScopesModulePreviousNonWhitespaceAstAnchor {
+  kind generated_from
+  connects AnalyzerScopesModule -> AnalyzerScopesModulePreviousNonWhitespaceAstAnchor
+  roles { AnalyzerScopesModule as generated, AnalyzerScopesModulePreviousNonWhitespaceAstAnchor as syntax }
+  expects AnalyzerScopesModulePreviousNonWhitespaceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6dcb677ff6628d49f321e279f534726da15ff5057ce9dc91326d173674526c8c")
+  summary "fn AnalyzerScopesModule.previousNonWhitespace generated from typescript function_declaration at packages/shp-checker/src/analyzer-scopes.ts#previousNonWhitespace."
+}
+
+relation AnalyzerScopesModuleSkipMaskedWhitespaceGeneratedFromAnalyzerScopesModuleSkipMaskedWhitespaceAstAnchor {
+  kind generated_from
+  connects AnalyzerScopesModule -> AnalyzerScopesModuleSkipMaskedWhitespaceAstAnchor
+  roles { AnalyzerScopesModule as generated, AnalyzerScopesModuleSkipMaskedWhitespaceAstAnchor as syntax }
+  expects AnalyzerScopesModuleSkipMaskedWhitespaceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d0c669bf299b774dc3fe1ca97713e06fae34e07f43e885ac5264b4491c07482a")
+  summary "fn AnalyzerScopesModule.skipMaskedWhitespace generated from typescript function_declaration at packages/shp-checker/src/analyzer-scopes.ts#skipMaskedWhitespace."
+}
+
+relation AnalyzerScopesModuleSourceAnchorAtOffsetGeneratedFromAnalyzerScopesModuleSourceAnchorAtOffsetAstAnchor {
+  kind generated_from
+  connects AnalyzerScopesModule -> AnalyzerScopesModuleSourceAnchorAtOffsetAstAnchor
+  roles { AnalyzerScopesModule as generated, AnalyzerScopesModuleSourceAnchorAtOffsetAstAnchor as syntax }
+  expects AnalyzerScopesModuleSourceAnchorAtOffsetAstAnchor fingerprint ast.semantic_subtree_v1("sha256:33341a4fea73b886652862d67ef1acb37c4f6d6378f723b53abc62676a017458")
+  summary "fn AnalyzerScopesModule.sourceAnchorAtOffset generated from typescript function_declaration at packages/shp-checker/src/analyzer-scopes.ts#sourceAnchorAtOffset."
+}
+
+implementation AnalyzerScopesModuleImpl {
+  paths {
+    "packages/shp-checker/src/analyzer-scopes.ts"
+  }
+  conforms_to AnalyzerScopesModule
+}

@@ -1,0 +1,32 @@
+module analyzer.mismatched_targets
+
+resource AuditEvent {
+  storage postgres.table("audit_events")
+}
+
+resource AuditEventArchive {
+  storage postgres.table("audit_event_archive")
+}
+
+resource AuditEventStaging {
+  storage postgres.table("audit_event_staging")
+}
+
+component AuditMaintenance {
+  owns AuditEvent
+  owns AuditEventArchive
+  owns AuditEventStaging
+  grants DropStorage<AuditEventArchive>
+  grants HardDelete<AuditEventArchive>
+  grants Truncate<AuditEventStaging>
+  fn purge
+    source sql("fixtures/source/analyzer/sql/destructive.sql")
+    effects complete {
+      DropStorage<AuditEventArchive>
+        evidence sql("fixtures/source/analyzer/sql/destructive.sql")
+      HardDelete<AuditEventArchive>
+        evidence sql("fixtures/source/analyzer/sql/destructive.sql")
+      Truncate<AuditEventStaging>
+        evidence sql("fixtures/source/analyzer/sql/destructive.sql")
+    }
+}

@@ -24,7 +24,8 @@ export default async function analyze(
 
   if (!flags.shapeFiles) {
     for (const hint of hints) {
-      stdout(this, `${hint.sourcePath}:${hint.line} ${hint.effect} ${hint.evidence}\n`);
+      const target = hint.target === undefined ? "" : ` target=${hint.target}`;
+      stdout(this, `${hint.sourcePath}:${hint.line} ${hint.effect}${target} ${hint.evidence}\n`);
     }
     return;
   }

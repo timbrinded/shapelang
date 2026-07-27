@@ -115,6 +115,41 @@
       ]
     },
     {
+      "module": "shape.generated.ast.packages.shp_checker.src.analyzer_lexical",
+      "path": "shape/generated/ast/packages/shp-checker/src/analyzer-lexical.shape",
+      "sources": [
+        "packages/shp-checker/src/analyzer-lexical.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.analyzer_scopes",
+      "path": "shape/generated/ast/packages/shp-checker/src/analyzer-scopes.shape",
+      "sources": [
+        "packages/shp-checker/src/analyzer-scopes.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.analyzer_shape",
+      "path": "shape/generated/ast/packages/shp-checker/src/analyzer-shape.shape",
+      "sources": [
+        "packages/shp-checker/src/analyzer-shape.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.analyzer_sql",
+      "path": "shape/generated/ast/packages/shp-checker/src/analyzer-sql.shape",
+      "sources": [
+        "packages/shp-checker/src/analyzer-sql.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.analyzer_types",
+      "path": "shape/generated/ast/packages/shp-checker/src/analyzer-types.shape",
+      "sources": [
+        "packages/shp-checker/src/analyzer-types.ts"
+      ]
+    },
+    {
       "module": "shape.generated.ast.packages.shp_checker.src.analyzer_fixtures_test",
       "path": "shape/generated/ast/packages/shp-checker/src/analyzer.fixtures.test.shape",
       "sources": [

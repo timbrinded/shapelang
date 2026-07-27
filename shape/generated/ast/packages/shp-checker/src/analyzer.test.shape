@@ -5,3 +5,29 @@ trait GeneratedAstAnchor {
 
 trait GeneratedCandidate {
 }
+
+resource AnalyzerTestModuleWithoutTargetIdentityAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer.test.ts#withoutTargetIdentity")
+  fingerprint ast.semantic_subtree_v1("sha256:f1f8194030f37f6ae378fcd00574fbfd901e33b1a9a844d36dfe27cc23ba19c5")
+}
+
+component AnalyzerTestModule : GeneratedCandidate {
+  fn withoutTargetIdentity
+    source ts("packages/shp-checker/src/analyzer.test.ts#withoutTargetIdentity")
+    effects unknown
+}
+
+relation AnalyzerTestModuleWithoutTargetIdentityGeneratedFromAnalyzerTestModuleWithoutTargetIdentityAstAnchor {
+  kind generated_from
+  connects AnalyzerTestModule -> AnalyzerTestModuleWithoutTargetIdentityAstAnchor
+  roles { AnalyzerTestModule as generated, AnalyzerTestModuleWithoutTargetIdentityAstAnchor as syntax }
+  expects AnalyzerTestModuleWithoutTargetIdentityAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f1f8194030f37f6ae378fcd00574fbfd901e33b1a9a844d36dfe27cc23ba19c5")
+  summary "fn AnalyzerTestModule.withoutTargetIdentity generated from typescript function_declaration at packages/shp-checker/src/analyzer.test.ts#withoutTargetIdentity."
+}
+
+implementation AnalyzerTestModuleImpl {
+  paths {
+    "packages/shp-checker/src/analyzer.test.ts"
+  }
+  conforms_to AnalyzerTestModule
+}

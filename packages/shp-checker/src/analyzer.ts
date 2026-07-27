@@ -1,74 +1,35 @@
+import {
+  isIdentifierPart,
+  literalAt,
+  normalizeStaticTarget,
+  readUnquotedIdentifier,
+  scanLexicalRegions,
+  shiftSpan,
+  skipTrivia,
+  trimHorizontalWhitespace
+} from "./analyzer-lexical.ts";
+import { collectTypeScriptFunctionScopes, sourceAnchorAtOffset } from "./analyzer-scopes.ts";
+import { scanDestructiveSql } from "./analyzer-sql.ts";
 import type {
-  AddFunctionChange,
-  ModifyFunctionChange,
-  ShapeModule
-} from "./language/generated/ast.ts";
-import {
-  isAddFunctionChange,
-  isChangeDecl,
-  isCompleteEffects,
-  isComponentDecl,
-  isFunctionSummary,
-  isModifyFunctionChange
-} from "./language/generated/ast.ts";
-import {
-  normalizeShapePath,
-  normalizeShapeSourcePath,
-  unquoteShapeString
-} from "./shape-strings.ts";
+  AnalyzerEffect,
+  AnalyzerHint,
+  AnalyzerMatch,
+  AnalyzerTargetIdentity,
+  LexicalRegion,
+  LexicalScan,
+  LiteralRegion,
+  SourceSpan
+} from "./analyzer-types.ts";
 
-export type AnalyzerHint = {
-  effect: "HardDelete" | "Truncate" | "DropStorage";
-  sourcePath: string;
-  line: number;
-  evidence: string;
-};
+export { compareAnalyzerHintsToShape, formatAnalyzerWarnings } from "./analyzer-shape.ts";
+export type {
+  AnalyzerHint,
+  AnalyzerTargetIdentity,
+  AnalyzerTargetSegment,
+  AnalyzerWarning
+} from "./analyzer-types.ts";
 
-export type AnalyzerWarning = {
-  kind: "missing_declared_effect";
-  hint: AnalyzerHint;
-};
-
-type AnalyzerEffect = AnalyzerHint["effect"];
-
-type SourceSpan = {
-  start: number;
-  end: number;
-};
-
-type AnalyzerMatch = {
-  effect: AnalyzerEffect;
-  span: SourceSpan;
-  evidenceSpan: SourceSpan;
-  lineOffset: number;
-};
-
-type LiteralRegion = {
-  kind: "literal";
-  span: SourceSpan;
-  contentSpan: SourceSpan;
-  literalKind: "single" | "double" | "template" | "quoted_identifier" | "dollar";
-  closed: boolean;
-  static: boolean;
-};
-
-type CommentRegion = {
-  kind: "comment";
-  span: SourceSpan;
-};
-
-type LexicalRegion = LiteralRegion | CommentRegion;
-
-type LexicalScan = {
-  masked: string;
-  regionsByStart: Map<number, LexicalRegion>;
-};
-
-type SqlMatch = {
-  effect: AnalyzerEffect;
-  span: SourceSpan;
-  statementSpan: SourceSpan;
-};
+type LibraryTargetMode = "captured_model" | "identifier_argument" | "literal_argument";
 
 const EFFECT_ORDER: Record<AnalyzerEffect, number> = {
   HardDelete: 0,
@@ -79,25 +40,34 @@ const EFFECT_ORDER: Record<AnalyzerEffect, number> = {
 const LIBRARY_CALL_PATTERNS = [
   {
     effect: "HardDelete",
-    pattern: /\.\s*deleteFrom\s*\(/g
+    pattern: /\.\s*deleteFrom\s*\(/g,
+    targetMode: "literal_argument"
   },
   {
     effect: "HardDelete",
-    pattern: /\b(?:prisma|tx)\s*\.\s*[A-Za-z_$][\w$]*\s*\.\s*delete(?:Many)?\s*\(/g
+    pattern: /\b(?:prisma|tx)\s*\.\s*([A-Za-z_$][\w$]*)\s*\.\s*delete(?:Many)?\s*\(/g,
+    targetMode: "captured_model"
   },
   {
     effect: "HardDelete",
-    pattern: /\b(?:db|tx|trx)\s*\.\s*delete\s*\(/g
+    pattern: /\b(?:db|tx|trx)\s*\.\s*delete\s*\(/g,
+    targetMode: "identifier_argument"
   },
   {
     effect: "Truncate",
-    pattern: /\.truncate\s*\(/g
+    pattern: /\.truncate\s*\(/g,
+    targetMode: "literal_argument"
   },
   {
     effect: "DropStorage",
-    pattern: /\.dropTable\s*\(/g
+    pattern: /\.dropTable\s*\(/g,
+    targetMode: "literal_argument"
   }
-] as const satisfies readonly { effect: AnalyzerEffect; pattern: RegExp }[];
+] as const satisfies readonly {
+  effect: AnalyzerEffect;
+  pattern: RegExp;
+  targetMode: LibraryTargetMode;
+}[];
 
 const RAW_SQL_SINK_PATTERNS = [
   {
@@ -115,68 +85,144 @@ const RAW_SQL_SINK_PATTERNS = [
 ] as const;
 
 export function analyzeSourceText(sourcePath: string, source: string): AnalyzerHint[] {
-  const matches = sourcePath.toLowerCase().endsWith(".sql")
-    ? collectSqlFileMatches(source)
-    : collectTypeScriptMatches(source);
+  const isSqlFile = sourcePath.toLowerCase().endsWith(".sql");
+  const lexical = scanLexicalRegions(source, isSqlFile ? "sql" : "typescript");
+  const matches = isSqlFile
+    ? collectSqlFileMatches(source, lexical)
+    : collectTypeScriptMatches(source, lexical);
+  const functionScopes = isSqlFile ? [] : collectTypeScriptFunctionScopes(lexical.masked);
   const lineStarts = collectLineStarts(source);
   const hints: AnalyzerHint[] = [];
   const seen = new Set<string>();
 
   matches.sort(compareAnalyzerMatches);
   for (const match of matches) {
-    const key = `${match.effect}:${match.evidenceSpan.start}:${match.evidenceSpan.end}`;
+    const key = [
+      match.effect,
+      match.evidenceSpan.start,
+      match.evidenceSpan.end,
+      targetIdentityKey(match.targetIdentity),
+      match.targetSpan?.start ?? ""
+    ].join(":");
     if (seen.has(key)) {
       continue;
     }
     seen.add(key);
-    hints.push({
+    const hint: AnalyzerHint = {
       effect: match.effect,
       sourcePath,
       line: lineNumberAtOffset(lineStarts, match.lineOffset),
       evidence: source.slice(match.evidenceSpan.start, match.evidenceSpan.end)
-    });
+    };
+    if (match.target !== undefined) {
+      hint.target = match.target;
+    }
+    if (match.targetIdentity !== undefined) {
+      hint.targetIdentity = match.targetIdentity;
+    }
+    const sourceAnchor = sourceAnchorAtOffset(functionScopes, match.span.start);
+    if (sourceAnchor !== undefined) {
+      hint.sourceAnchor = sourceAnchor;
+    }
+    hints.push(hint);
   }
 
   return hints;
 }
 
-function collectSqlFileMatches(source: string): AnalyzerMatch[] {
-  const lexical = scanLexicalRegions(source, "sql");
-  return scanDestructiveSql(source, lexical.masked).map((match) => ({
+function collectSqlFileMatches(source: string, lexical: LexicalScan): AnalyzerMatch[] {
+  return scanDestructiveSql(source, lexical).map((match) => ({
     effect: match.effect,
     span: match.span,
     evidenceSpan: match.statementSpan,
-    lineOffset: match.span.start
+    lineOffset: match.span.start,
+    ...(match.target === undefined ? {} : { target: match.target }),
+    ...(match.targetIdentity === undefined ? {} : { targetIdentity: match.targetIdentity }),
+    ...(match.targetSpan === undefined ? {} : { targetSpan: match.targetSpan })
   }));
 }
 
-function collectTypeScriptMatches(source: string): AnalyzerMatch[] {
-  const lexical = scanLexicalRegions(source, "typescript");
-  return [
-    ...collectLibraryCallMatches(source, lexical.masked),
-    ...collectRawSqlMatches(source, lexical)
-  ];
+function collectTypeScriptMatches(source: string, lexical: LexicalScan): AnalyzerMatch[] {
+  return [...collectLibraryCallMatches(source, lexical), ...collectRawSqlMatches(source, lexical)];
 }
 
-function collectLibraryCallMatches(source: string, masked: string): AnalyzerMatch[] {
+function collectLibraryCallMatches(source: string, lexical: LexicalScan): AnalyzerMatch[] {
   const matches: AnalyzerMatch[] = [];
 
   for (const definition of LIBRARY_CALL_PATTERNS) {
     const pattern = new RegExp(definition.pattern.source, definition.pattern.flags);
-    for (const match of masked.matchAll(pattern)) {
+    for (const match of lexical.masked.matchAll(pattern)) {
       const start = match.index;
       const end = start + match[0].length;
       const evidenceSpan = callEvidenceSpan(source, start, end);
+      const target =
+        definition.targetMode === "captured_model"
+          ? normalizeStaticTarget(match[1])
+          : readDirectLibraryTarget(source, lexical, end, definition.targetMode);
       matches.push({
         effect: definition.effect,
         span: { start, end },
         evidenceSpan,
-        lineOffset: evidenceSpan.start
+        lineOffset: evidenceSpan.start,
+        ...(target === undefined
+          ? {}
+          : {
+              target,
+              targetIdentity: {
+                kind: "orm",
+                value: target
+              }
+            })
       });
     }
   }
 
   return matches;
+}
+
+function readDirectLibraryTarget(
+  source: string,
+  lexical: LexicalScan,
+  argumentStart: number,
+  mode: Exclude<LibraryTargetMode, "captured_model">
+): string | undefined {
+  const cursor = skipTrivia(source, lexical.regionsByStart, argumentStart);
+  const literal = literalAt(lexical.regionsByStart, cursor);
+
+  if (mode === "literal_argument") {
+    if (
+      !literal ||
+      !literal.closed ||
+      !literal.static ||
+      literal.literalKind === "quoted_identifier" ||
+      literal.literalKind === "dollar"
+    ) {
+      return undefined;
+    }
+    const value = source.slice(literal.contentSpan.start, literal.contentSpan.end);
+    if (
+      value.includes("\\") ||
+      !isDirectArgumentBoundary(source, lexical.regionsByStart, literal.span.end)
+    ) {
+      return undefined;
+    }
+    return normalizeStaticTarget(value);
+  }
+
+  const identifier = readUnquotedIdentifier(lexical.masked, cursor);
+  if (!identifier || !isDirectArgumentBoundary(source, lexical.regionsByStart, identifier.end)) {
+    return undefined;
+  }
+  return normalizeStaticTarget(identifier.value);
+}
+
+function isDirectArgumentBoundary(
+  source: string,
+  regionsByStart: Map<number, LexicalRegion>,
+  start: number
+): boolean {
+  const cursor = skipTrivia(source, regionsByStart, start);
+  return source[cursor] === ")" || source[cursor] === ",";
 }
 
 function collectRawSqlMatches(source: string, lexical: LexicalScan): AnalyzerMatch[] {
@@ -195,12 +241,19 @@ function collectRawSqlMatches(source: string, lexical: LexicalScan): AnalyzerMat
       const sql = source.slice(literal.contentSpan.start, literal.contentSpan.end);
       const sqlLexical = scanLexicalRegions(sql, "sql");
       const evidenceSpan = callEvidenceSpan(source, sinkStart, literal.span.end);
-      for (const sqlMatch of scanDestructiveSql(sql, sqlLexical.masked)) {
+      for (const sqlMatch of scanDestructiveSql(sql, sqlLexical)) {
         matches.push({
           effect: sqlMatch.effect,
           span: shiftSpan(sqlMatch.span, literal.contentSpan.start),
           evidenceSpan,
-          lineOffset: sqlMatch.span.start + literal.contentSpan.start
+          lineOffset: sqlMatch.span.start + literal.contentSpan.start,
+          ...(sqlMatch.target === undefined ? {} : { target: sqlMatch.target }),
+          ...(sqlMatch.targetIdentity === undefined
+            ? {}
+            : { targetIdentity: sqlMatch.targetIdentity }),
+          ...(sqlMatch.targetSpan === undefined
+            ? {}
+            : { targetSpan: shiftSpan(sqlMatch.targetSpan, literal.contentSpan.start) })
         });
       }
     }
@@ -255,421 +308,6 @@ function isSqlTemplateTagAt(masked: string, offset: number): boolean {
   return next === undefined || !isIdentifierPart(next);
 }
 
-function literalAt(
-  regionsByStart: Map<number, LexicalRegion>,
-  offset: number
-): LiteralRegion | undefined {
-  const region = regionsByStart.get(offset);
-  return region?.kind === "literal" ? region : undefined;
-}
-
-function skipTrivia(
-  source: string,
-  regionsByStart: Map<number, LexicalRegion>,
-  start: number
-): number {
-  let cursor = start;
-
-  while (cursor < source.length) {
-    while (cursor < source.length && isWhitespace(source[cursor] ?? "")) {
-      cursor += 1;
-    }
-    const region = regionsByStart.get(cursor);
-    if (region?.kind !== "comment") {
-      return cursor;
-    }
-    cursor = region.span.end;
-  }
-
-  return cursor;
-}
-
-function scanDestructiveSql(source: string, masked: string): SqlMatch[] {
-  const matches: SqlMatch[] = [];
-  let pendingDeleteStart: number | undefined;
-  let pendingDropStart: number | undefined;
-  let statementStarted = false;
-  let cursor = 0;
-
-  while (cursor < masked.length) {
-    const char = masked[cursor] ?? "";
-    if (char === ";") {
-      pendingDeleteStart = undefined;
-      pendingDropStart = undefined;
-      statementStarted = false;
-      cursor += 1;
-      continue;
-    }
-    if (!isIdentifierStart(char)) {
-      cursor += 1;
-      continue;
-    }
-
-    const tokenStart = cursor;
-    cursor += 1;
-    while (cursor < masked.length && isIdentifierPart(masked[cursor] ?? "")) {
-      cursor += 1;
-    }
-    const token = masked.slice(tokenStart, cursor).toUpperCase();
-
-    if (!statementStarted) {
-      statementStarted = true;
-      if (token === "DELETE") {
-        pendingDeleteStart = tokenStart;
-      } else if (token === "DROP") {
-        pendingDropStart = tokenStart;
-      } else if (token === "TRUNCATE") {
-        matches.push(sqlMatch("Truncate", source, masked, tokenStart, cursor));
-      }
-      continue;
-    }
-
-    if (pendingDeleteStart !== undefined && token === "FROM") {
-      matches.push(sqlMatch("HardDelete", source, masked, pendingDeleteStart, cursor));
-      pendingDeleteStart = undefined;
-    }
-    if (pendingDropStart !== undefined && token === "TABLE") {
-      matches.push(sqlMatch("DropStorage", source, masked, pendingDropStart, cursor));
-      pendingDropStart = undefined;
-    }
-  }
-
-  return matches;
-}
-
-function sqlMatch(
-  effect: AnalyzerEffect,
-  source: string,
-  masked: string,
-  start: number,
-  end: number
-): SqlMatch {
-  return {
-    effect,
-    span: { start, end },
-    statementSpan: sqlStatementEvidenceSpan(source, masked, start, end)
-  };
-}
-
-function sqlStatementEvidenceSpan(
-  source: string,
-  masked: string,
-  start: number,
-  matchedEnd: number
-): SourceSpan {
-  const semicolon = masked.indexOf(";", matchedEnd);
-  const lineEnd = source.indexOf("\n", matchedEnd);
-  const end = semicolon >= 0 ? semicolon + 1 : lineEnd >= 0 ? lineEnd : source.length;
-  return trimHorizontalWhitespace(source, { start, end });
-}
-
-function scanLexicalRegions(source: string, dialect: "sql" | "typescript"): LexicalScan {
-  const masked = source.split("");
-  const regionsByStart = new Map<number, LexicalRegion>();
-  let cursor = 0;
-
-  while (cursor < source.length) {
-    if (
-      (dialect === "typescript" && source.startsWith("//", cursor)) ||
-      (dialect === "sql" && (source.startsWith("--", cursor) || source[cursor] === "#"))
-    ) {
-      const end = consumeLineComment(source, cursor);
-      addMaskedRegion(source, masked, regionsByStart, {
-        kind: "comment",
-        span: { start: cursor, end }
-      });
-      cursor = end;
-      continue;
-    }
-    if (source.startsWith("/*", cursor)) {
-      const end = consumeBlockComment(source, cursor, dialect === "sql");
-      addMaskedRegion(source, masked, regionsByStart, {
-        kind: "comment",
-        span: { start: cursor, end }
-      });
-      cursor = end;
-      continue;
-    }
-
-    const char = source[cursor] ?? "";
-    if (dialect === "typescript" && (char === "'" || char === '"')) {
-      const consumed = consumeQuoted(source, cursor, char, false);
-      addMaskedRegion(source, masked, regionsByStart, {
-        kind: "literal",
-        span: { start: cursor, end: consumed.end },
-        contentSpan: { start: cursor + 1, end: consumed.contentEnd },
-        literalKind: char === "'" ? "single" : "double",
-        closed: consumed.closed,
-        static: true
-      });
-      cursor = consumed.end;
-      continue;
-    }
-    if (dialect === "typescript" && char === "`") {
-      const consumed = consumeTemplate(source, cursor);
-      addMaskedRegion(source, masked, regionsByStart, {
-        kind: "literal",
-        span: { start: cursor, end: consumed.end },
-        contentSpan: { start: cursor + 1, end: consumed.contentEnd },
-        literalKind: "template",
-        closed: consumed.closed,
-        static: consumed.static
-      });
-      cursor = consumed.end;
-      continue;
-    }
-    if (dialect === "sql" && (char === "'" || char === '"' || char === "`")) {
-      const consumed = consumeQuoted(source, cursor, char, true);
-      addMaskedRegion(source, masked, regionsByStart, {
-        kind: "literal",
-        span: { start: cursor, end: consumed.end },
-        contentSpan: { start: cursor + 1, end: consumed.contentEnd },
-        literalKind: char === "'" ? "single" : "quoted_identifier",
-        closed: consumed.closed,
-        static: true
-      });
-      cursor = consumed.end;
-      continue;
-    }
-    if (dialect === "sql" && char === "[") {
-      const consumed = consumeBracketIdentifier(source, cursor);
-      addMaskedRegion(source, masked, regionsByStart, {
-        kind: "literal",
-        span: { start: cursor, end: consumed.end },
-        contentSpan: { start: cursor + 1, end: consumed.contentEnd },
-        literalKind: "quoted_identifier",
-        closed: consumed.closed,
-        static: true
-      });
-      cursor = consumed.end;
-      continue;
-    }
-    if (dialect === "sql" && char === "$") {
-      const delimiter = readDollarQuoteDelimiter(source, cursor);
-      if (delimiter) {
-        const consumed = consumeDollarQuoted(source, cursor, delimiter);
-        addMaskedRegion(source, masked, regionsByStart, {
-          kind: "literal",
-          span: { start: cursor, end: consumed.end },
-          contentSpan: {
-            start: cursor + delimiter.length,
-            end: consumed.contentEnd
-          },
-          literalKind: "dollar",
-          closed: consumed.closed,
-          static: true
-        });
-        cursor = consumed.end;
-        continue;
-      }
-    }
-
-    cursor += 1;
-  }
-
-  return {
-    masked: masked.join(""),
-    regionsByStart
-  };
-}
-
-function consumeLineComment(source: string, start: number): number {
-  let cursor = start;
-  while (cursor < source.length && source[cursor] !== "\n" && source[cursor] !== "\r") {
-    cursor += 1;
-  }
-  return cursor;
-}
-
-function consumeBlockComment(source: string, start: number, allowsNesting: boolean): number {
-  let cursor = start + 2;
-  let depth = 1;
-
-  while (cursor < source.length && depth > 0) {
-    if (allowsNesting && source.startsWith("/*", cursor)) {
-      depth += 1;
-      cursor += 2;
-    } else if (source.startsWith("*/", cursor)) {
-      depth -= 1;
-      cursor += 2;
-    } else {
-      cursor += 1;
-    }
-  }
-
-  return cursor;
-}
-
-function consumeQuoted(
-  source: string,
-  start: number,
-  quote: "'" | '"' | "`",
-  allowsNewlines: boolean
-): { end: number; contentEnd: number; closed: boolean } {
-  let cursor = start + 1;
-
-  while (cursor < source.length) {
-    const char = source[cursor] ?? "";
-    if (!allowsNewlines && (char === "\n" || char === "\r")) {
-      return { end: cursor, contentEnd: cursor, closed: false };
-    }
-    if (char === "\\") {
-      cursor = Math.min(source.length, cursor + 2);
-      continue;
-    }
-    if (char === quote) {
-      if (allowsNewlines && source[cursor + 1] === quote) {
-        cursor += 2;
-        continue;
-      }
-      return { end: cursor + 1, contentEnd: cursor, closed: true };
-    }
-    cursor += 1;
-  }
-
-  return { end: source.length, contentEnd: source.length, closed: false };
-}
-
-function consumeTemplate(
-  source: string,
-  start: number
-): { end: number; contentEnd: number; closed: boolean; static: boolean } {
-  const modes: ({ kind: "template" } | { kind: "expression"; depth: number })[] = [
-    { kind: "template" }
-  ];
-  let cursor = start + 1;
-  let staticTemplate = true;
-
-  while (cursor < source.length && modes.length > 0) {
-    const mode = modes[modes.length - 1];
-    if (!mode) {
-      break;
-    }
-    if (mode.kind === "template") {
-      if (source[cursor] === "\\") {
-        cursor = Math.min(source.length, cursor + 2);
-      } else if (source.startsWith("${", cursor)) {
-        staticTemplate = false;
-        modes.push({ kind: "expression", depth: 1 });
-        cursor += 2;
-      } else if (source[cursor] === "`") {
-        modes.pop();
-        cursor += 1;
-        if (modes.length === 0) {
-          return {
-            end: cursor,
-            contentEnd: cursor - 1,
-            closed: true,
-            static: staticTemplate
-          };
-        }
-      } else {
-        cursor += 1;
-      }
-      continue;
-    }
-
-    const char = source[cursor] ?? "";
-    if (source.startsWith("//", cursor)) {
-      cursor = consumeLineComment(source, cursor);
-    } else if (source.startsWith("/*", cursor)) {
-      cursor = consumeBlockComment(source, cursor, false);
-    } else if (char === "'" || char === '"') {
-      cursor = consumeQuoted(source, cursor, char, false).end;
-    } else if (char === "`") {
-      modes.push({ kind: "template" });
-      cursor += 1;
-    } else if (char === "{") {
-      mode.depth += 1;
-      cursor += 1;
-    } else if (char === "}") {
-      mode.depth -= 1;
-      cursor += 1;
-      if (mode.depth === 0) {
-        modes.pop();
-      }
-    } else {
-      cursor += 1;
-    }
-  }
-
-  return {
-    end: source.length,
-    contentEnd: source.length,
-    closed: false,
-    static: staticTemplate
-  };
-}
-
-function consumeBracketIdentifier(
-  source: string,
-  start: number
-): { end: number; contentEnd: number; closed: boolean } {
-  let cursor = start + 1;
-
-  while (cursor < source.length) {
-    if (source[cursor] === "]") {
-      if (source[cursor + 1] === "]") {
-        cursor += 2;
-        continue;
-      }
-      return { end: cursor + 1, contentEnd: cursor, closed: true };
-    }
-    cursor += 1;
-  }
-
-  return { end: source.length, contentEnd: source.length, closed: false };
-}
-
-function readDollarQuoteDelimiter(source: string, start: number): string | undefined {
-  let cursor = start + 1;
-  if (source[cursor] === "$") {
-    return "$$";
-  }
-  if (!isIdentifierStart(source[cursor] ?? "")) {
-    return undefined;
-  }
-  cursor += 1;
-  while (cursor < source.length && isIdentifierPart(source[cursor] ?? "")) {
-    cursor += 1;
-  }
-  return source[cursor] === "$" ? source.slice(start, cursor + 1) : undefined;
-}
-
-function consumeDollarQuoted(
-  source: string,
-  start: number,
-  delimiter: string
-): { end: number; contentEnd: number; closed: boolean } {
-  const contentStart = start + delimiter.length;
-  const closing = source.indexOf(delimiter, contentStart);
-  return closing >= 0
-    ? {
-        end: closing + delimiter.length,
-        contentEnd: closing,
-        closed: true
-      }
-    : {
-        end: source.length,
-        contentEnd: source.length,
-        closed: false
-      };
-}
-
-function addMaskedRegion(
-  source: string,
-  masked: string[],
-  regionsByStart: Map<number, LexicalRegion>,
-  region: LexicalRegion
-): void {
-  regionsByStart.set(region.span.start, region);
-  for (let index = region.span.start; index < region.span.end; index += 1) {
-    if (source[index] !== "\n" && source[index] !== "\r") {
-      masked[index] = " ";
-    }
-  }
-}
-
 function callEvidenceSpan(source: string, matchStart: number, matchEnd: number): SourceSpan {
   let start = lineStartOffset(source, matchStart);
   const prefix = source.slice(start, matchStart);
@@ -690,31 +328,14 @@ function lineStartOffset(source: string, offset: number): number {
   return source.lastIndexOf("\n", Math.max(0, offset - 1)) + 1;
 }
 
-function trimHorizontalWhitespace(source: string, span: SourceSpan): SourceSpan {
-  let { start, end } = span;
-  while (start < end && isHorizontalWhitespace(source[start] ?? "")) {
-    start += 1;
-  }
-  while (end > start && isHorizontalWhitespace(source[end - 1] ?? "")) {
-    end -= 1;
-  }
-  return { start, end };
-}
-
-function shiftSpan(span: SourceSpan, offset: number): SourceSpan {
-  return {
-    start: span.start + offset,
-    end: span.end + offset
-  };
-}
-
 function compareAnalyzerMatches(left: AnalyzerMatch, right: AnalyzerMatch): number {
   return (
     left.span.start - right.span.start ||
     left.span.end - right.span.end ||
     EFFECT_ORDER[left.effect] - EFFECT_ORDER[right.effect] ||
     left.evidenceSpan.start - right.evidenceSpan.start ||
-    left.evidenceSpan.end - right.evidenceSpan.end
+    left.evidenceSpan.end - right.evidenceSpan.end ||
+    (left.targetSpan?.start ?? left.span.start) - (right.targetSpan?.start ?? right.span.start)
   );
 }
 
@@ -745,113 +366,14 @@ function lineNumberAtOffset(lineStarts: number[], offset: number): number {
   return low;
 }
 
-function isWhitespace(char: string): boolean {
-  return /\s/u.test(char);
-}
-
-function isHorizontalWhitespace(char: string): boolean {
-  return char === " " || char === "\t" || char === "\r";
-}
-
-function isIdentifierStart(char: string): boolean {
-  return (
-    (char >= "A" && char <= "Z") || (char >= "a" && char <= "z") || char === "_" || char === "$"
-  );
-}
-
-function isIdentifierPart(char: string): boolean {
-  return isIdentifierStart(char) || (char >= "0" && char <= "9");
-}
-
-export function compareAnalyzerHintsToShape(
-  hints: AnalyzerHint[],
-  modules: ShapeModule[]
-): AnalyzerWarning[] {
-  const declaredEffectsByPath = collectDeclaredEffectsBySourcePath(modules);
-  const warnings: AnalyzerWarning[] = [];
-
-  for (const hint of hints) {
-    const declared =
-      declaredEffectsByPath.get(normalizeShapePath(hint.sourcePath)) ?? new Set<string>();
-    if (!declared.has(hint.effect)) {
-      warnings.push({
-        kind: "missing_declared_effect",
-        hint
-      });
-    }
+function targetIdentityKey(identity: AnalyzerTargetIdentity | undefined): string {
+  if (identity === undefined) {
+    return "";
   }
-
-  return warnings;
-}
-
-export function formatAnalyzerWarnings(warnings: AnalyzerWarning[]): string {
-  if (warnings.length === 0) {
-    return "Shape analyzer found no mismatches.\n";
+  if (identity.kind === "orm") {
+    return `orm:${identity.value}`;
   }
-
-  return `${warnings
-    .map((warning) =>
-      [
-        "warning: analyzer hint missing from shape effects",
-        "",
-        `${warning.hint.sourcePath}:${warning.hint.line} suggests ${warning.hint.effect}.`,
-        `evidence: ${warning.hint.evidence}`
-      ].join("\n")
-    )
-    .join("\n\n")}\n`;
-}
-
-function collectDeclaredEffectsBySourcePath(modules: ShapeModule[]): Map<string, Set<string>> {
-  const effects = new Map<string, Set<string>>();
-
-  for (const module of modules) {
-    for (const declaration of module.declarations) {
-      if (isComponentDecl(declaration)) {
-        for (const member of declaration.members) {
-          if (isFunctionSummary(member)) {
-            collectFunctionEffects(member, effects);
-          }
-        }
-      } else if (isChangeDecl(declaration)) {
-        for (const entry of declaration.entries) {
-          if (isAddFunctionChange(entry) || isModifyFunctionChange(entry)) {
-            collectFunctionEffects(entry, effects);
-          }
-        }
-      }
-    }
-  }
-
-  return effects;
-}
-
-function collectFunctionEffects(
-  fn:
-    | AddFunctionChange
-    | ModifyFunctionChange
-    | Extract<ShapeModule["declarations"][number], { $type: "ComponentDecl" }>["members"][number],
-  effects: Map<string, Set<string>>
-): void {
-  if (!("effects" in fn) || !isCompleteEffects(fn.effects)) {
-    return;
-  }
-
-  const sourcePath = fn.source
-    ? normalizeShapeSourcePath(unquoteShapeString(fn.source.ref.path))
-    : undefined;
-  for (const entry of fn.effects.effects) {
-    const paths = new Set<string>();
-    if (sourcePath) {
-      paths.add(sourcePath);
-    }
-    if (entry.evidence) {
-      paths.add(normalizeShapeSourcePath(unquoteShapeString(entry.evidence.ref.path)));
-    }
-
-    for (const path of paths) {
-      const declared = effects.get(path) ?? new Set<string>();
-      declared.add(entry.term.name);
-      effects.set(path, declared);
-    }
-  }
+  return `sql:${identity.segments
+    .map((segment) => `${segment.quoted ? "q" : "u"}${segment.value.length}:${segment.value}`)
+    .join(".")}`;
 }
