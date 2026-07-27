@@ -52,6 +52,48 @@
       ]
     },
     {
+      "module": "shape.generated.ast.fixtures.generated_source.analyzer.drizzle.destructive",
+      "path": "shape/generated/ast/fixtures/source/analyzer/drizzle/destructive.shape",
+      "sources": [
+        "fixtures/source/analyzer/drizzle/destructive.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.fixtures.generated_source.analyzer.drizzle.safe",
+      "path": "shape/generated/ast/fixtures/source/analyzer/drizzle/safe.shape",
+      "sources": [
+        "fixtures/source/analyzer/drizzle/safe.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.fixtures.generated_source.analyzer.kysely.destructive",
+      "path": "shape/generated/ast/fixtures/source/analyzer/kysely/destructive.shape",
+      "sources": [
+        "fixtures/source/analyzer/kysely/destructive.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.fixtures.generated_source.analyzer.kysely.safe",
+      "path": "shape/generated/ast/fixtures/source/analyzer/kysely/safe.shape",
+      "sources": [
+        "fixtures/source/analyzer/kysely/safe.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.fixtures.generated_source.analyzer.prisma.destructive",
+      "path": "shape/generated/ast/fixtures/source/analyzer/prisma/destructive.shape",
+      "sources": [
+        "fixtures/source/analyzer/prisma/destructive.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.fixtures.generated_source.analyzer.prisma.safe",
+      "path": "shape/generated/ast/fixtures/source/analyzer/prisma/safe.shape",
+      "sources": [
+        "fixtures/source/analyzer/prisma/safe.ts"
+      ]
+    },
+    {
       "module": "shape.generated.ast.fixtures.generated_source.audit_purge",
       "path": "shape/generated/ast/fixtures/source/audit_purge.shape",
       "sources": [
@@ -70,6 +112,13 @@
       "path": "shape/generated/ast/fixtures/source/rust/audit_store.shape",
       "sources": [
         "fixtures/source/rust/audit_store.rs"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.analyzer_fixtures_test",
+      "path": "shape/generated/ast/packages/shp-checker/src/analyzer.fixtures.test.shape",
+      "sources": [
+        "packages/shp-checker/src/analyzer.fixtures.test.ts"
       ]
     },
     {

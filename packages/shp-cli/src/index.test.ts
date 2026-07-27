@@ -726,6 +726,24 @@ describe("shp CLI", () => {
     expect(result.stdout).toBe("");
   });
 
+  test("keeps analyzer hint and warning output stable for library fixtures", async () => {
+    const sourcePath = "fixtures/source/analyzer/prisma/destructive.ts";
+    const hints = await runCli(["analyze", sourcePath]);
+    expect(hints.exitCode).toBe(0);
+    expect(hints.stderr).toBe("");
+    expect(hints.stdout).toMatchSnapshot();
+
+    const warnings = await runCli([
+      "analyze",
+      "--shape-files",
+      "fixtures/pass/append_only_append/audit.shape",
+      sourcePath
+    ]);
+    expect(warnings.exitCode).toBe(1);
+    expect(warnings.stdout).toBe("");
+    expect(warnings.stderr).toMatchSnapshot();
+  });
+
   test("reports missing analyzer source files without a stack trace", async () => {
     const result = await runCli(["analyze", "fixtures/source/missing.ts"]);
 

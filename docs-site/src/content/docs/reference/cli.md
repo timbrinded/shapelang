@@ -89,6 +89,12 @@ shp check --allow-unknown-effects draft.shape
 
 Unknown effects are rendered as warnings and the command exits `0` only when no other diagnostic is present. The flag does not soften parse errors, final forbids, missing grants for known effects, guarded-change obligations, coverage, bindings, or any other semantic failure. Resolve the warnings and run strict `shp check` before review or CI.
 
+## Analyzer hints
+
+`shp analyze` scans for obvious destructive SQL plus common Kysely, Prisma, and Drizzle delete patterns. Without `--shape-files`, it prints advisory hints and exits successfully. With `--shape-files`, it compares those hints with declared effects and exits with code `1` when a hint is missing from the model.
+
+See [Analyzer Hints](../concepts/analyzer-hints) for the supported pattern families and matcher limitations.
+
 ## AST generation
 
 `shp ast` is a drafting tool. It turns syntax evidence into conservative Shape, not final architecture truth.

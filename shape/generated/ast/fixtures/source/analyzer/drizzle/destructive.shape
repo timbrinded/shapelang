@@ -1,0 +1,33 @@
+module shape.generated.ast.fixtures.generated_source.analyzer.drizzle.destructive
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource DestructiveModulePurgeAuditEventsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("fixtures/source/analyzer/drizzle/destructive.ts:1-15")
+  fingerprint ast.semantic_subtree_v1("sha256:55a457f60e185f0f164ff6968dc66c483aba1d6ef2497bffac8b59161b117d88")
+}
+
+component DestructiveModule : GeneratedCandidate {
+  fn purgeAuditEvents
+    source ts("fixtures/source/analyzer/drizzle/destructive.ts:1-15")
+    effects unknown
+}
+
+relation DestructiveModulePurgeAuditEventsGeneratedFromDestructiveModulePurgeAuditEventsAstAnchor {
+  kind generated_from
+  connects DestructiveModule -> DestructiveModulePurgeAuditEventsAstAnchor
+  roles { DestructiveModule as generated, DestructiveModulePurgeAuditEventsAstAnchor as syntax }
+  expects DestructiveModulePurgeAuditEventsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:55a457f60e185f0f164ff6968dc66c483aba1d6ef2497bffac8b59161b117d88")
+  summary "fn DestructiveModule.purgeAuditEvents generated from typescript function_declaration at fixtures/source/analyzer/drizzle/destructive.ts:1-15."
+}
+
+implementation DestructiveModuleImpl {
+  paths {
+    "fixtures/source/analyzer/drizzle/destructive.ts"
+  }
+  conforms_to DestructiveModule
+}

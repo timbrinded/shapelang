@@ -1,0 +1,33 @@
+module shape.generated.ast.fixtures.generated_source.analyzer.kysely.destructive
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource DestructiveModulePurgeAuditEventsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("fixtures/source/analyzer/kysely/destructive.ts:1-10")
+  fingerprint ast.semantic_subtree_v1("sha256:e293e05b327406977629f046f76114975d6f59757bb0f40fddb4126ab2c7574f")
+}
+
+component DestructiveModule : GeneratedCandidate {
+  fn purgeAuditEvents
+    source ts("fixtures/source/analyzer/kysely/destructive.ts:1-10")
+    effects unknown
+}
+
+relation DestructiveModulePurgeAuditEventsGeneratedFromDestructiveModulePurgeAuditEventsAstAnchor {
+  kind generated_from
+  connects DestructiveModule -> DestructiveModulePurgeAuditEventsAstAnchor
+  roles { DestructiveModule as generated, DestructiveModulePurgeAuditEventsAstAnchor as syntax }
+  expects DestructiveModulePurgeAuditEventsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e293e05b327406977629f046f76114975d6f59757bb0f40fddb4126ab2c7574f")
+  summary "fn DestructiveModule.purgeAuditEvents generated from typescript function_declaration at fixtures/source/analyzer/kysely/destructive.ts:1-10."
+}
+
+implementation DestructiveModuleImpl {
+  paths {
+    "fixtures/source/analyzer/kysely/destructive.ts"
+  }
+  conforms_to DestructiveModule
+}

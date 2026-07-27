@@ -29,23 +29,46 @@ export type AnalyzerWarning = {
   hint: AnalyzerHint;
 };
 
+const HARD_DELETE_CALL_PATTERNS = [
+  {
+    call: /\.\s*deleteFrom\s*\(/,
+    wrapped: /^\.\s*deleteFrom\s*\(/
+  },
+  {
+    call: /\b(?:prisma|tx)\s*\.\s*[A-Za-z_$][\w$]*\s*\.\s*delete(?:Many)?\s*\(/,
+    wrapped: /^\.\s*delete(?:Many)?\s*\(/
+  },
+  {
+    call: /\b(?:db|tx|trx)\s*\.\s*delete\s*\(/,
+    wrapped: /^\.\s*delete\s*\(/
+  }
+] as const;
+
 export function analyzeSourceText(sourcePath: string, source: string): AnalyzerHint[] {
   const hints: AnalyzerHint[] = [];
   const lines = source.split(/\r?\n/);
 
   lines.forEach((line, index) => {
     const lineNumber = index + 1;
+    const trimmedLine = line.trim();
+    const previousLine = lines[index - 1];
+    const wrappedHardDeleteCall =
+      previousLine !== undefined &&
+      previousLine.trim().length > 0 &&
+      HARD_DELETE_CALL_PATTERNS.some((pattern) => pattern.wrapped.test(trimmedLine))
+        ? `${previousLine.trim()}\n${line.trimEnd()}`
+        : undefined;
+    const hardDeleteCallText = wrappedHardDeleteCall ?? line;
+
     if (
       /\bDELETE\s+FROM\b/i.test(line) ||
-      /\bdeleteFrom\s*\(/.test(line) ||
-      /\bdeleteMany\s*\(/.test(line) ||
-      /\.delete\s*\(/.test(line)
+      HARD_DELETE_CALL_PATTERNS.some((pattern) => pattern.call.test(hardDeleteCallText))
     ) {
       hints.push({
         effect: "HardDelete",
         sourcePath,
-        line: lineNumber,
-        evidence: line.trim()
+        line: wrappedHardDeleteCall ? lineNumber - 1 : lineNumber,
+        evidence: wrappedHardDeleteCall ?? trimmedLine
       });
     }
 
@@ -54,7 +77,7 @@ export function analyzeSourceText(sourcePath: string, source: string): AnalyzerH
         effect: "Truncate",
         sourcePath,
         line: lineNumber,
-        evidence: line.trim()
+        evidence: trimmedLine
       });
     }
 
@@ -63,7 +86,7 @@ export function analyzeSourceText(sourcePath: string, source: string): AnalyzerH
         effect: "DropStorage",
         sourcePath,
         line: lineNumber,
-        evidence: line.trim()
+        evidence: trimmedLine
       });
     }
   });
