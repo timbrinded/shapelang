@@ -7,13 +7,13 @@ trait GeneratedCandidate {
 }
 
 resource HypercycleWitnessTestModuleAssertValidWitnessOverKindsAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/behavioural/hypercycle-witness.test.ts:42-52")
+  storage ast.anchor("packages/shp-checker/src/behavioural/hypercycle-witness.test.ts#assertValidWitnessOverKinds")
   fingerprint ast.semantic_subtree_v1("sha256:a6c86dfa9325711ceffdf474bad69820def368ec8bc8d0229d668df3eeaa5512")
 }
 
 component HypercycleWitnessTestModule : GeneratedCandidate {
   fn assertValidWitnessOverKinds
-    source ts("packages/shp-checker/src/behavioural/hypercycle-witness.test.ts:42-52")
+    source ts("packages/shp-checker/src/behavioural/hypercycle-witness.test.ts#assertValidWitnessOverKinds")
     effects unknown
 }
 
@@ -22,7 +22,7 @@ relation HypercycleWitnessTestModuleAssertValidWitnessOverKindsGeneratedFromHype
   connects HypercycleWitnessTestModule -> HypercycleWitnessTestModuleAssertValidWitnessOverKindsAstAnchor
   roles { HypercycleWitnessTestModule as generated, HypercycleWitnessTestModuleAssertValidWitnessOverKindsAstAnchor as syntax }
   expects HypercycleWitnessTestModuleAssertValidWitnessOverKindsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a6c86dfa9325711ceffdf474bad69820def368ec8bc8d0229d668df3eeaa5512")
-  summary "fn HypercycleWitnessTestModule.assertValidWitnessOverKinds generated from typescript function_declaration at packages/shp-checker/src/behavioural/hypercycle-witness.test.ts:42-52."
+  summary "fn HypercycleWitnessTestModule.assertValidWitnessOverKinds generated from typescript function_declaration at packages/shp-checker/src/behavioural/hypercycle-witness.test.ts#assertValidWitnessOverKinds."
 }
 
 implementation HypercycleWitnessTestModuleImpl {

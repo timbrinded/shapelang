@@ -7,13 +7,13 @@ trait GeneratedCandidate {
 }
 
 resource CheckerShapeTraitsTestModuleObligationModuleAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker.shape-traits.test.ts:11-28")
+  storage ast.anchor("packages/shp-checker/src/checker.shape-traits.test.ts#obligationModule")
   fingerprint ast.semantic_subtree_v1("sha256:5f3c87474e9191764bdbc3d0ecaf165369a16daafc1f27ebb2f0a99c1efcb34c")
 }
 
 component CheckerShapeTraitsTestModule : GeneratedCandidate {
   fn obligationModule
-    source ts("packages/shp-checker/src/checker.shape-traits.test.ts:11-28")
+    source ts("packages/shp-checker/src/checker.shape-traits.test.ts#obligationModule")
     effects unknown
 }
 
@@ -22,7 +22,7 @@ relation CheckerShapeTraitsTestModuleObligationModuleGeneratedFromCheckerShapeTr
   connects CheckerShapeTraitsTestModule -> CheckerShapeTraitsTestModuleObligationModuleAstAnchor
   roles { CheckerShapeTraitsTestModule as generated, CheckerShapeTraitsTestModuleObligationModuleAstAnchor as syntax }
   expects CheckerShapeTraitsTestModuleObligationModuleAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5f3c87474e9191764bdbc3d0ecaf165369a16daafc1f27ebb2f0a99c1efcb34c")
-  summary "fn CheckerShapeTraitsTestModule.obligationModule generated from typescript function_declaration at packages/shp-checker/src/checker.shape-traits.test.ts:11-28."
+  summary "fn CheckerShapeTraitsTestModule.obligationModule generated from typescript function_declaration at packages/shp-checker/src/checker.shape-traits.test.ts#obligationModule."
 }
 
 implementation CheckerShapeTraitsTestModuleImpl {

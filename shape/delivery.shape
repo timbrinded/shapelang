@@ -291,7 +291,15 @@ component DocsSite {
       Update<DocsContent>
         evidence md("docs-site/src/content/docs/concepts/ast-generation.md")
       Update<DocsContent>
+        evidence md("docs-site/src/content/docs/concepts/diagnostics-provenance.md")
+      Update<DocsContent>
+        evidence md("docs-site/src/content/docs/concepts/evidence-source-refs.md")
+      Update<DocsContent>
+        evidence md("docs-site/src/content/docs/examples/append-only-hard-delete-failure.md")
+      Update<DocsContent>
         evidence md("docs-site/src/content/docs/inside-shape/langium-grammar.md")
+      Update<DocsContent>
+        evidence md("docs-site/src/content/docs/learn/append-only-walkthrough.md")
       Update<DocsContent>
         evidence md("docs-site/src/content/docs/learn/global-model-updates.md")
       Update<DocsContent>

@@ -7,69 +7,69 @@ trait GeneratedCandidate {
 }
 
 resource ParserModuleIsRecordAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/parser.ts:108-110")
+  storage ast.anchor("packages/shp-checker/src/parser.ts#isRecord")
   fingerprint ast.semantic_subtree_v1("sha256:98ca321accf22a29112964b94c74202e5c5cae9cabe997d1fb6cd43426c70f8c")
 }
 
 resource ParserModuleLexerDiagnosticAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/parser.ts:67-75")
+  storage ast.anchor("packages/shp-checker/src/parser.ts#lexerDiagnostic")
   fingerprint ast.semantic_subtree_v1("sha256:f221f6ae47b5fc5221856f28c47b1629d09a14569e9804f1910895476bd87fb7")
 }
 
 resource ParserModuleMessagePropertyAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/parser.ts:88-91")
+  storage ast.anchor("packages/shp-checker/src/parser.ts#messageProperty")
   fingerprint ast.semantic_subtree_v1("sha256:63ccae4834b26afd4b96431aef3d2f3d52ba5ccad832ff87b7718e30b0f8949b")
 }
 
 resource ParserModuleNumberPropertyAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/parser.ts:103-106")
+  storage ast.anchor("packages/shp-checker/src/parser.ts#numberProperty")
   fingerprint ast.semantic_subtree_v1("sha256:809fe9b7db7e06ca6e9ba05a2cb92d4952d43d6d7c1bb13902652552b65c0735")
 }
 
 resource ParserModuleParseShapeModuleAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/parser.ts:27-65")
+  storage ast.anchor("packages/shp-checker/src/parser.ts#parseShapeModule")
   fingerprint ast.semantic_subtree_v1("sha256:28475fdaba8dedd726f994e01fa357e1ee2fbfaa66eef8be69abcc228b32b782")
 }
 
 resource ParserModuleParserDiagnosticAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/parser.ts:77-86")
+  storage ast.anchor("packages/shp-checker/src/parser.ts#parserDiagnostic")
   fingerprint ast.semantic_subtree_v1("sha256:f22a71c462aa5352d134d52c8e0e57017829ee558a1e5f92ad15db62f846814e")
 }
 
 resource ParserModuleRecordPropertyAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/parser.ts:93-96")
+  storage ast.anchor("packages/shp-checker/src/parser.ts#recordProperty")
   fingerprint ast.semantic_subtree_v1("sha256:20a34062c7c6f523f25b0eb61bf839b6a6706a2c570dd6a51d7a2ebd1a84ee89")
 }
 
 resource ParserModuleStringPropertyAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/parser.ts:98-101")
+  storage ast.anchor("packages/shp-checker/src/parser.ts#stringProperty")
   fingerprint ast.semantic_subtree_v1("sha256:5c05dc39a408529c4c23f6d04eba8d2af930a593aa4352ba8ff37617b7082501")
 }
 
 component ParserModule : GeneratedCandidate {
   fn isRecord
-    source ts("packages/shp-checker/src/parser.ts:108-110")
+    source ts("packages/shp-checker/src/parser.ts#isRecord")
     effects unknown
   fn lexerDiagnostic
-    source ts("packages/shp-checker/src/parser.ts:67-75")
+    source ts("packages/shp-checker/src/parser.ts#lexerDiagnostic")
     effects unknown
   fn messageProperty
-    source ts("packages/shp-checker/src/parser.ts:88-91")
+    source ts("packages/shp-checker/src/parser.ts#messageProperty")
     effects unknown
   fn numberProperty
-    source ts("packages/shp-checker/src/parser.ts:103-106")
+    source ts("packages/shp-checker/src/parser.ts#numberProperty")
     effects unknown
   fn parseShapeModule
-    source ts("packages/shp-checker/src/parser.ts:27-65")
+    source ts("packages/shp-checker/src/parser.ts#parseShapeModule")
     effects unknown
   fn parserDiagnostic
-    source ts("packages/shp-checker/src/parser.ts:77-86")
+    source ts("packages/shp-checker/src/parser.ts#parserDiagnostic")
     effects unknown
   fn recordProperty
-    source ts("packages/shp-checker/src/parser.ts:93-96")
+    source ts("packages/shp-checker/src/parser.ts#recordProperty")
     effects unknown
   fn stringProperty
-    source ts("packages/shp-checker/src/parser.ts:98-101")
+    source ts("packages/shp-checker/src/parser.ts#stringProperty")
     effects unknown
 }
 
@@ -78,7 +78,7 @@ relation ParserModuleIsRecordGeneratedFromParserModuleIsRecordAstAnchor {
   connects ParserModule -> ParserModuleIsRecordAstAnchor
   roles { ParserModule as generated, ParserModuleIsRecordAstAnchor as syntax }
   expects ParserModuleIsRecordAstAnchor fingerprint ast.semantic_subtree_v1("sha256:98ca321accf22a29112964b94c74202e5c5cae9cabe997d1fb6cd43426c70f8c")
-  summary "fn ParserModule.isRecord generated from typescript function_declaration at packages/shp-checker/src/parser.ts:108-110."
+  summary "fn ParserModule.isRecord generated from typescript function_declaration at packages/shp-checker/src/parser.ts#isRecord."
 }
 
 relation ParserModuleLexerDiagnosticGeneratedFromParserModuleLexerDiagnosticAstAnchor {
@@ -86,7 +86,7 @@ relation ParserModuleLexerDiagnosticGeneratedFromParserModuleLexerDiagnosticAstA
   connects ParserModule -> ParserModuleLexerDiagnosticAstAnchor
   roles { ParserModule as generated, ParserModuleLexerDiagnosticAstAnchor as syntax }
   expects ParserModuleLexerDiagnosticAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f221f6ae47b5fc5221856f28c47b1629d09a14569e9804f1910895476bd87fb7")
-  summary "fn ParserModule.lexerDiagnostic generated from typescript function_declaration at packages/shp-checker/src/parser.ts:67-75."
+  summary "fn ParserModule.lexerDiagnostic generated from typescript function_declaration at packages/shp-checker/src/parser.ts#lexerDiagnostic."
 }
 
 relation ParserModuleMessagePropertyGeneratedFromParserModuleMessagePropertyAstAnchor {
@@ -94,7 +94,7 @@ relation ParserModuleMessagePropertyGeneratedFromParserModuleMessagePropertyAstA
   connects ParserModule -> ParserModuleMessagePropertyAstAnchor
   roles { ParserModule as generated, ParserModuleMessagePropertyAstAnchor as syntax }
   expects ParserModuleMessagePropertyAstAnchor fingerprint ast.semantic_subtree_v1("sha256:63ccae4834b26afd4b96431aef3d2f3d52ba5ccad832ff87b7718e30b0f8949b")
-  summary "fn ParserModule.messageProperty generated from typescript function_declaration at packages/shp-checker/src/parser.ts:88-91."
+  summary "fn ParserModule.messageProperty generated from typescript function_declaration at packages/shp-checker/src/parser.ts#messageProperty."
 }
 
 relation ParserModuleNumberPropertyGeneratedFromParserModuleNumberPropertyAstAnchor {
@@ -102,7 +102,7 @@ relation ParserModuleNumberPropertyGeneratedFromParserModuleNumberPropertyAstAnc
   connects ParserModule -> ParserModuleNumberPropertyAstAnchor
   roles { ParserModule as generated, ParserModuleNumberPropertyAstAnchor as syntax }
   expects ParserModuleNumberPropertyAstAnchor fingerprint ast.semantic_subtree_v1("sha256:809fe9b7db7e06ca6e9ba05a2cb92d4952d43d6d7c1bb13902652552b65c0735")
-  summary "fn ParserModule.numberProperty generated from typescript function_declaration at packages/shp-checker/src/parser.ts:103-106."
+  summary "fn ParserModule.numberProperty generated from typescript function_declaration at packages/shp-checker/src/parser.ts#numberProperty."
 }
 
 relation ParserModuleParseShapeModuleGeneratedFromParserModuleParseShapeModuleAstAnchor {
@@ -110,7 +110,7 @@ relation ParserModuleParseShapeModuleGeneratedFromParserModuleParseShapeModuleAs
   connects ParserModule -> ParserModuleParseShapeModuleAstAnchor
   roles { ParserModule as generated, ParserModuleParseShapeModuleAstAnchor as syntax }
   expects ParserModuleParseShapeModuleAstAnchor fingerprint ast.semantic_subtree_v1("sha256:28475fdaba8dedd726f994e01fa357e1ee2fbfaa66eef8be69abcc228b32b782")
-  summary "fn ParserModule.parseShapeModule generated from typescript function_declaration at packages/shp-checker/src/parser.ts:27-65."
+  summary "fn ParserModule.parseShapeModule generated from typescript function_declaration at packages/shp-checker/src/parser.ts#parseShapeModule."
 }
 
 relation ParserModuleParserDiagnosticGeneratedFromParserModuleParserDiagnosticAstAnchor {
@@ -118,7 +118,7 @@ relation ParserModuleParserDiagnosticGeneratedFromParserModuleParserDiagnosticAs
   connects ParserModule -> ParserModuleParserDiagnosticAstAnchor
   roles { ParserModule as generated, ParserModuleParserDiagnosticAstAnchor as syntax }
   expects ParserModuleParserDiagnosticAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f22a71c462aa5352d134d52c8e0e57017829ee558a1e5f92ad15db62f846814e")
-  summary "fn ParserModule.parserDiagnostic generated from typescript function_declaration at packages/shp-checker/src/parser.ts:77-86."
+  summary "fn ParserModule.parserDiagnostic generated from typescript function_declaration at packages/shp-checker/src/parser.ts#parserDiagnostic."
 }
 
 relation ParserModuleRecordPropertyGeneratedFromParserModuleRecordPropertyAstAnchor {
@@ -126,7 +126,7 @@ relation ParserModuleRecordPropertyGeneratedFromParserModuleRecordPropertyAstAnc
   connects ParserModule -> ParserModuleRecordPropertyAstAnchor
   roles { ParserModule as generated, ParserModuleRecordPropertyAstAnchor as syntax }
   expects ParserModuleRecordPropertyAstAnchor fingerprint ast.semantic_subtree_v1("sha256:20a34062c7c6f523f25b0eb61bf839b6a6706a2c570dd6a51d7a2ebd1a84ee89")
-  summary "fn ParserModule.recordProperty generated from typescript function_declaration at packages/shp-checker/src/parser.ts:93-96."
+  summary "fn ParserModule.recordProperty generated from typescript function_declaration at packages/shp-checker/src/parser.ts#recordProperty."
 }
 
 relation ParserModuleStringPropertyGeneratedFromParserModuleStringPropertyAstAnchor {
@@ -134,7 +134,7 @@ relation ParserModuleStringPropertyGeneratedFromParserModuleStringPropertyAstAnc
   connects ParserModule -> ParserModuleStringPropertyAstAnchor
   roles { ParserModule as generated, ParserModuleStringPropertyAstAnchor as syntax }
   expects ParserModuleStringPropertyAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5c05dc39a408529c4c23f6d04eba8d2af930a593aa4352ba8ff37617b7082501")
-  summary "fn ParserModule.stringProperty generated from typescript function_declaration at packages/shp-checker/src/parser.ts:98-101."
+  summary "fn ParserModule.stringProperty generated from typescript function_declaration at packages/shp-checker/src/parser.ts#stringProperty."
 }
 
 implementation ParserModuleImpl {

@@ -58,7 +58,7 @@ describe("Shape parser", () => {
       effect candidate AppendEventCandidate {
         fn AuditStore.appendEvent
         effect Append<AuditEvent>
-        source ts("src/audit/store.ts:8-14")
+        source ts("src/audit/store.ts#AuditStore.appendEvent")
         confidence low
         pin AuditStoreAppendEventAstAnchor fingerprint ast.semantic_subtree_v1("sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
       }

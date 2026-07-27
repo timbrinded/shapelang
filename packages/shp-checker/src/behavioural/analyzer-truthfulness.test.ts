@@ -77,7 +77,7 @@ describe("#62 analyzer truthfulness + advisory boundary", () => {
           `    source ts("${PURGE_PATH}#purgeOldEvents")`,
           "    effects complete {",
           "      Read<Ledger>",
-          `        evidence ts("${PURGE_PATH}:1-3")`,
+          `        evidence ts("${PURGE_PATH}#purgeOldEvents")`,
           "    }",
           "}"
         ].join("\n")
@@ -247,7 +247,7 @@ describe("#62 analyzer truthfulness + advisory boundary", () => {
           '    source ts("src/x.ts#purge")',
           "    effects complete {",
           "      HardDelete<Ledger>",
-          '        evidence ts("src/x.ts:1-2")',
+          '        evidence ts("src/x.ts#purge")',
           "    }",
           "}"
         ].join("\n")

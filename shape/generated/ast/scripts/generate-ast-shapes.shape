@@ -7,13 +7,13 @@ trait GeneratedCandidate {
 }
 
 resource GenerateAstShapesModuleDiscoverAstSourceFilesAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("scripts/generate-ast-shapes.ts:39-56")
+  storage ast.anchor("scripts/generate-ast-shapes.ts#discoverAstSourceFiles")
   fingerprint ast.semantic_subtree_v1("sha256:2b87ddc5b9e8b6999619b9a424e9f6e6dda4db8ab37e03a4f276e574b674b4a9")
 }
 
 component GenerateAstShapesModule : GeneratedCandidate {
   fn discoverAstSourceFiles
-    source ts("scripts/generate-ast-shapes.ts:39-56")
+    source ts("scripts/generate-ast-shapes.ts#discoverAstSourceFiles")
     effects unknown
 }
 
@@ -22,7 +22,7 @@ relation GenerateAstShapesModuleDiscoverAstSourceFilesGeneratedFromGenerateAstSh
   connects GenerateAstShapesModule -> GenerateAstShapesModuleDiscoverAstSourceFilesAstAnchor
   roles { GenerateAstShapesModule as generated, GenerateAstShapesModuleDiscoverAstSourceFilesAstAnchor as syntax }
   expects GenerateAstShapesModuleDiscoverAstSourceFilesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2b87ddc5b9e8b6999619b9a424e9f6e6dda4db8ab37e03a4f276e574b674b4a9")
-  summary "fn GenerateAstShapesModule.discoverAstSourceFiles generated from typescript function_declaration at scripts/generate-ast-shapes.ts:39-56."
+  summary "fn GenerateAstShapesModule.discoverAstSourceFiles generated from typescript function_declaration at scripts/generate-ast-shapes.ts#discoverAstSourceFiles."
 }
 
 implementation GenerateAstShapesModuleImpl {

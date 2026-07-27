@@ -40,7 +40,7 @@ component AuditStore {
     source ts("src/audit/store.ts#listEvents")
     effects complete {
       Read<AuditEvent>
-        evidence ts("src/audit/store.ts:18-25")
+        evidence ts("src/audit/store.ts#listEvents")
     }
 }
 ```

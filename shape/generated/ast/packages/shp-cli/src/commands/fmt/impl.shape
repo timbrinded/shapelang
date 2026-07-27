@@ -7,13 +7,13 @@ trait GeneratedCandidate {
 }
 
 resource ImplModuleFmtAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-cli/src/commands/fmt/impl.ts:11-46")
+  storage ast.anchor("packages/shp-cli/src/commands/fmt/impl.ts#fmt")
   fingerprint ast.semantic_subtree_v1("sha256:6b57ce977b55cabc7a2b5231901e605ca32ea009dd5a200497534e709af62252")
 }
 
 component ImplModule : GeneratedCandidate {
   fn fmt
-    source ts("packages/shp-cli/src/commands/fmt/impl.ts:11-46")
+    source ts("packages/shp-cli/src/commands/fmt/impl.ts#fmt")
     effects unknown
 }
 
@@ -22,7 +22,7 @@ relation ImplModuleFmtGeneratedFromImplModuleFmtAstAnchor {
   connects ImplModule -> ImplModuleFmtAstAnchor
   roles { ImplModule as generated, ImplModuleFmtAstAnchor as syntax }
   expects ImplModuleFmtAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6b57ce977b55cabc7a2b5231901e605ca32ea009dd5a200497534e709af62252")
-  summary "fn ImplModule.fmt generated from typescript function_declaration at packages/shp-cli/src/commands/fmt/impl.ts:11-46."
+  summary "fn ImplModule.fmt generated from typescript function_declaration at packages/shp-cli/src/commands/fmt/impl.ts#fmt."
 }
 
 implementation ImplModuleImpl {

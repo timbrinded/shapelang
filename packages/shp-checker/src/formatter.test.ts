@@ -49,7 +49,7 @@ relation GatewayProvidesRpc {
       module audit
       import zeta
       import alpha
-      component AuditStore { grants Append<AuditEvent> owns AuditEvent fn appendEvent effects complete { Append<AuditEvent> evidence ts('src/audit/store.ts:8-14') } }
+      component AuditStore { grants Append<AuditEvent> owns AuditEvent fn appendEvent effects complete { Append<AuditEvent> evidence ts('src/audit/store.ts#appendEvent') } }
       resource AuditEvent : AppendOnly
     `);
 
@@ -72,7 +72,7 @@ component AuditStore {
   fn appendEvent
     effects complete {
       Append<AuditEvent>
-        evidence ts("src/audit/store.ts:8-14")
+        evidence ts("src/audit/store.ts#appendEvent")
     }
 }
 `);
@@ -163,7 +163,7 @@ reevaluation DecisionShapeRechecked {
       resource AuditEvent
       resource AuditStoreAppendEventAstAnchor { fingerprint ast.semantic_subtree_v1('sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa') }
       component AuditStore { fn appendEvent effects unknown }
-      effect candidate AppendEventCandidate { confidence low source ts('src/audit/store.ts:8-14') effect Append<AuditEvent> fn AuditStore.appendEvent pin AuditStoreAppendEventAstAnchor fingerprint ast.semantic_subtree_v1('sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa') }
+      effect candidate AppendEventCandidate { confidence low source ts('src/audit/store.ts#AuditStore.appendEvent') effect Append<AuditEvent> fn AuditStore.appendEvent pin AuditStoreAppendEventAstAnchor fingerprint ast.semantic_subtree_v1('sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa') }
     `);
 
     expect(result.ok).toBe(true);

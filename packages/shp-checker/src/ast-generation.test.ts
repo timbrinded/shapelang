@@ -20,6 +20,7 @@ import {
   treeSitterParserLibraryName,
   type CodeSemanticGraph
 } from "./ast-generation-core.ts";
+import { sourceRef } from "./ast-generation-raw.ts";
 import { signatureText } from "./ast-generation-tokens.ts";
 import { stableJson, stableShapeId } from "./ast-generation-utils.ts";
 import { detectLinuxMuslRuntime } from "./ast-generation.ts";
@@ -69,6 +70,22 @@ describe("AST to Shape generation", () => {
     expect(signatureText("fn handle(\n  a: A,\n  b: B\n);", "rust")).toContain("b: B");
   });
 
+  test("uses stable symbols or file-only fallbacks for generated source references", () => {
+    const node = {
+      id: "anonymous",
+      path: "src/audit/store.ts",
+      language: "typescript",
+      kind: "function_declaration",
+      named: true,
+      span: span(42, 1, 50, 2)
+    };
+
+    expect(sourceRef(node, "AuditStore.appendEvent")).toBe(
+      "src/audit/store.ts#AuditStore.appendEvent"
+    );
+    expect(sourceRef(node)).toBe("src/audit/store.ts");
+  });
+
   test("projects Rust AST JSON into a semantic draft plus optional raw trace", () => {
     const ast = rustAuditAstJson();
     const graphResult = buildCodeSemanticGraphFromAstJson(ast);
@@ -92,7 +109,7 @@ describe("AST to Shape generation", () => {
     expect(output.semanticShape).toContain("kind calls");
     expect(output.semanticShape).toContain("trait GeneratedAstAnchor");
     expect(output.semanticShape).toContain("fingerprint ast.semantic_subtree_v1");
-    expect(output.semanticShape).toContain('storage ast.anchor("src/audit/store.rs:9-11")');
+    expect(output.semanticShape).toContain('storage ast.anchor("src/audit/store.rs#AuditStore")');
     expect(output.semanticShape).not.toContain('storage ast.anchor("{\\"target\\"');
     expect(output.semanticShape).toContain("kind generated_from");
     expect(output.semanticShape).toContain("expects AuditStoreAstAnchor fingerprint");
@@ -129,6 +146,33 @@ describe("AST to Shape generation", () => {
       expect(formattedRaw.formatted).toBe(rawShape);
     }
     expect(checkShapeModules([raw.module]).exitCode).toBe(0);
+  });
+
+  test("keeps generated semantic references stable across line-only span shifts", () => {
+    const original = rustAuditAstJson();
+    const shifted = rustAuditAstJson();
+    for (const node of shifted.files[0]?.nodes ?? []) {
+      node.span.startLine += 100;
+      node.span.endLine += 100;
+    }
+
+    const originalOutput = requireGeneratedOutput(
+      generateShapeFromAstJson(original, { moduleName: "generated.audit" })
+    );
+    const shiftedOutput = requireGeneratedOutput(
+      generateShapeFromAstJson(shifted, { moduleName: "generated.audit" })
+    );
+
+    expect(shiftedOutput.semanticShape).toBe(originalOutput.semanticShape);
+    expect(originalOutput.semanticShape).toContain(
+      'source rust("src/audit/store.rs#AuditStore.append_event")'
+    );
+    expect(originalOutput.semanticShape).toContain(
+      'storage ast.anchor("src/audit/store.rs#AuditStore")'
+    );
+    expect(originalOutput.semanticShape).not.toMatch(
+      /(?:source|storage)\s+[^(]+\("[^"]+:\d+(?:-\d+)?"/
+    );
   });
 
   for (const fixture of languageAstFixtures()) {
@@ -609,7 +653,7 @@ describe("AST to Shape generation", () => {
           ownerId: "owner",
           anchorId: "anchor",
           confidence: "medium",
-          sourceRef: "src/audit.ts:1-3"
+          sourceRef: "src/audit.ts#AuditStore.saveEvent"
         }
       ],
       resources: [
@@ -620,7 +664,7 @@ describe("AST to Shape generation", () => {
           language: "typescript",
           confidence: "medium",
           reason: "test resource",
-          sourceRef: "src/audit.ts:1-1"
+          sourceRef: "src/audit.ts#AuditEvent"
         }
       ],
       anchors: [
@@ -631,7 +675,7 @@ describe("AST to Shape generation", () => {
           language: "typescript",
           nodeId: "fn-node",
           kind: "method_definition",
-          sourceRef: "src/audit.ts:1-3",
+          sourceRef: "src/audit.ts#AuditStore.saveEvent",
           target: "AuditStore.saveEvent",
           targetKind: "fn"
         }
@@ -644,7 +688,7 @@ describe("AST to Shape generation", () => {
           functionId: "fn",
           effect: "Append",
           targetResourceId: "resource",
-          sourceRef: "src/audit.ts:1-3",
+          sourceRef: "src/audit.ts#AuditStore.saveEvent",
           confidence: "low",
           anchorId: "anchor",
           summary: "saveEvent may append AuditEvent"
@@ -814,8 +858,8 @@ describe("AST to Shape generation", () => {
         moduleName: "generated.rust"
       })
     );
-    expect(output.semanticShape).toContain('source rust("src/main:1-1")');
-    expect(output.semanticShape).not.toContain('source file("src/main:1-1")');
+    expect(output.semanticShape).toContain('source rust("src/main#main")');
+    expect(output.semanticShape).not.toContain('source file("src/main#main")');
   });
 
   test("infers JSX and TSX parser languages from file extensions", async () => {

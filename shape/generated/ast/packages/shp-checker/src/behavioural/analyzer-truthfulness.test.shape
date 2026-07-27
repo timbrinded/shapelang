@@ -7,13 +7,13 @@ trait GeneratedCandidate {
 }
 
 resource AnalyzerTruthfulnessTestModuleLineMatchingAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/behavioural/analyzer-truthfulness.test.ts:43-50")
+  storage ast.anchor("packages/shp-checker/src/behavioural/analyzer-truthfulness.test.ts#lineMatching")
   fingerprint ast.semantic_subtree_v1("sha256:e4b921ab099bc759fb79a692f33e606586b78ac6f48336956e353f710c961ba0")
 }
 
 component AnalyzerTruthfulnessTestModule : GeneratedCandidate {
   fn lineMatching
-    source ts("packages/shp-checker/src/behavioural/analyzer-truthfulness.test.ts:43-50")
+    source ts("packages/shp-checker/src/behavioural/analyzer-truthfulness.test.ts#lineMatching")
     effects unknown
 }
 
@@ -22,7 +22,7 @@ relation AnalyzerTruthfulnessTestModuleLineMatchingGeneratedFromAnalyzerTruthful
   connects AnalyzerTruthfulnessTestModule -> AnalyzerTruthfulnessTestModuleLineMatchingAstAnchor
   roles { AnalyzerTruthfulnessTestModule as generated, AnalyzerTruthfulnessTestModuleLineMatchingAstAnchor as syntax }
   expects AnalyzerTruthfulnessTestModuleLineMatchingAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e4b921ab099bc759fb79a692f33e606586b78ac6f48336956e353f710c961ba0")
-  summary "fn AnalyzerTruthfulnessTestModule.lineMatching generated from typescript function_declaration at packages/shp-checker/src/behavioural/analyzer-truthfulness.test.ts:43-50."
+  summary "fn AnalyzerTruthfulnessTestModule.lineMatching generated from typescript function_declaration at packages/shp-checker/src/behavioural/analyzer-truthfulness.test.ts#lineMatching."
 }
 
 implementation AnalyzerTruthfulnessTestModuleImpl {

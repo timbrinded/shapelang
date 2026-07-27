@@ -7,53 +7,53 @@ trait GeneratedCandidate {
 }
 
 resource FactsModuleAddShapeUpdatePathAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/lowering/facts.ts:130-138")
+  storage ast.anchor("packages/shp-checker/src/checker/lowering/facts.ts#addShapeUpdatePath")
   fingerprint ast.semantic_subtree_v1("sha256:9d2dd55c9216f4cb7147c10f8cecb00171611e5d535383c8d872753eb4910816")
 }
 
 resource FactsModuleCollectShapeUpdatePathsFromFunctionAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/lowering/facts.ts:101-124")
+  storage ast.anchor("packages/shp-checker/src/checker/lowering/facts.ts#collectShapeUpdatePathsFromFunction")
   fingerprint ast.semantic_subtree_v1("sha256:842f3aca91fd61726ff4a2babe52395e560de872a92c669a4b758a005ec4cfeb")
 }
 
 resource FactsModuleEmitDerivedFactsAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/lowering/facts.ts:74-99")
+  storage ast.anchor("packages/shp-checker/src/checker/lowering/facts.ts#emitDerivedFacts")
   fingerprint ast.semantic_subtree_v1("sha256:afa1f2062d60af47fed8e8a9e9b46075ffa33f016acdd0ce0907e5f28572ec1f")
 }
 
 resource FactsModuleEmitFunctionFactsAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/lowering/facts.ts:6-52")
+  storage ast.anchor("packages/shp-checker/src/checker/lowering/facts.ts#emitFunctionFacts")
   fingerprint ast.semantic_subtree_v1("sha256:eefd929b6592727d99f0ffab35f599d73c9b2eaee066b528149fcb6b887a078b")
 }
 
 resource FactsModuleRemoveFunctionFactsAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/lowering/facts.ts:54-72")
+  storage ast.anchor("packages/shp-checker/src/checker/lowering/facts.ts#removeFunctionFacts")
   fingerprint ast.semantic_subtree_v1("sha256:daa14bf17a6f7276a4a81f30dfc49d83e76f43e406c269f7eacb906644f6bcf4")
 }
 
 resource FactsModuleShouldIgnoreFunctionForCoverageAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/lowering/facts.ts:126-128")
+  storage ast.anchor("packages/shp-checker/src/checker/lowering/facts.ts#shouldIgnoreFunctionForCoverage")
   fingerprint ast.semantic_subtree_v1("sha256:a515ada20aa7173b91894977ce79880760770039ac954e014444f4ab229cca33")
 }
 
 component FactsModule : GeneratedCandidate {
   fn addShapeUpdatePath
-    source ts("packages/shp-checker/src/checker/lowering/facts.ts:130-138")
+    source ts("packages/shp-checker/src/checker/lowering/facts.ts#addShapeUpdatePath")
     effects unknown
   fn collectShapeUpdatePathsFromFunction
-    source ts("packages/shp-checker/src/checker/lowering/facts.ts:101-124")
+    source ts("packages/shp-checker/src/checker/lowering/facts.ts#collectShapeUpdatePathsFromFunction")
     effects unknown
   fn emitDerivedFacts
-    source ts("packages/shp-checker/src/checker/lowering/facts.ts:74-99")
+    source ts("packages/shp-checker/src/checker/lowering/facts.ts#emitDerivedFacts")
     effects unknown
   fn emitFunctionFacts
-    source ts("packages/shp-checker/src/checker/lowering/facts.ts:6-52")
+    source ts("packages/shp-checker/src/checker/lowering/facts.ts#emitFunctionFacts")
     effects unknown
   fn removeFunctionFacts
-    source ts("packages/shp-checker/src/checker/lowering/facts.ts:54-72")
+    source ts("packages/shp-checker/src/checker/lowering/facts.ts#removeFunctionFacts")
     effects unknown
   fn shouldIgnoreFunctionForCoverage
-    source ts("packages/shp-checker/src/checker/lowering/facts.ts:126-128")
+    source ts("packages/shp-checker/src/checker/lowering/facts.ts#shouldIgnoreFunctionForCoverage")
     effects unknown
 }
 
@@ -62,7 +62,7 @@ relation FactsModuleAddShapeUpdatePathGeneratedFromFactsModuleAddShapeUpdatePath
   connects FactsModule -> FactsModuleAddShapeUpdatePathAstAnchor
   roles { FactsModule as generated, FactsModuleAddShapeUpdatePathAstAnchor as syntax }
   expects FactsModuleAddShapeUpdatePathAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9d2dd55c9216f4cb7147c10f8cecb00171611e5d535383c8d872753eb4910816")
-  summary "fn FactsModule.addShapeUpdatePath generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/facts.ts:130-138."
+  summary "fn FactsModule.addShapeUpdatePath generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/facts.ts#addShapeUpdatePath."
 }
 
 relation FactsModuleCollectShapeUpdatePathsFromFunctionGeneratedFromFactsModuleCollectShapeUpdatePathsFromFunctionAstAnchor {
@@ -70,7 +70,7 @@ relation FactsModuleCollectShapeUpdatePathsFromFunctionGeneratedFromFactsModuleC
   connects FactsModule -> FactsModuleCollectShapeUpdatePathsFromFunctionAstAnchor
   roles { FactsModule as generated, FactsModuleCollectShapeUpdatePathsFromFunctionAstAnchor as syntax }
   expects FactsModuleCollectShapeUpdatePathsFromFunctionAstAnchor fingerprint ast.semantic_subtree_v1("sha256:842f3aca91fd61726ff4a2babe52395e560de872a92c669a4b758a005ec4cfeb")
-  summary "fn FactsModule.collectShapeUpdatePathsFromFunction generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/facts.ts:101-124."
+  summary "fn FactsModule.collectShapeUpdatePathsFromFunction generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/facts.ts#collectShapeUpdatePathsFromFunction."
 }
 
 relation FactsModuleEmitDerivedFactsGeneratedFromFactsModuleEmitDerivedFactsAstAnchor {
@@ -78,7 +78,7 @@ relation FactsModuleEmitDerivedFactsGeneratedFromFactsModuleEmitDerivedFactsAstA
   connects FactsModule -> FactsModuleEmitDerivedFactsAstAnchor
   roles { FactsModule as generated, FactsModuleEmitDerivedFactsAstAnchor as syntax }
   expects FactsModuleEmitDerivedFactsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:afa1f2062d60af47fed8e8a9e9b46075ffa33f016acdd0ce0907e5f28572ec1f")
-  summary "fn FactsModule.emitDerivedFacts generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/facts.ts:74-99."
+  summary "fn FactsModule.emitDerivedFacts generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/facts.ts#emitDerivedFacts."
 }
 
 relation FactsModuleEmitFunctionFactsGeneratedFromFactsModuleEmitFunctionFactsAstAnchor {
@@ -86,7 +86,7 @@ relation FactsModuleEmitFunctionFactsGeneratedFromFactsModuleEmitFunctionFactsAs
   connects FactsModule -> FactsModuleEmitFunctionFactsAstAnchor
   roles { FactsModule as generated, FactsModuleEmitFunctionFactsAstAnchor as syntax }
   expects FactsModuleEmitFunctionFactsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:eefd929b6592727d99f0ffab35f599d73c9b2eaee066b528149fcb6b887a078b")
-  summary "fn FactsModule.emitFunctionFacts generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/facts.ts:6-52."
+  summary "fn FactsModule.emitFunctionFacts generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/facts.ts#emitFunctionFacts."
 }
 
 relation FactsModuleRemoveFunctionFactsGeneratedFromFactsModuleRemoveFunctionFactsAstAnchor {
@@ -94,7 +94,7 @@ relation FactsModuleRemoveFunctionFactsGeneratedFromFactsModuleRemoveFunctionFac
   connects FactsModule -> FactsModuleRemoveFunctionFactsAstAnchor
   roles { FactsModule as generated, FactsModuleRemoveFunctionFactsAstAnchor as syntax }
   expects FactsModuleRemoveFunctionFactsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:daa14bf17a6f7276a4a81f30dfc49d83e76f43e406c269f7eacb906644f6bcf4")
-  summary "fn FactsModule.removeFunctionFacts generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/facts.ts:54-72."
+  summary "fn FactsModule.removeFunctionFacts generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/facts.ts#removeFunctionFacts."
 }
 
 relation FactsModuleShouldIgnoreFunctionForCoverageGeneratedFromFactsModuleShouldIgnoreFunctionForCoverageAstAnchor {
@@ -102,7 +102,7 @@ relation FactsModuleShouldIgnoreFunctionForCoverageGeneratedFromFactsModuleShoul
   connects FactsModule -> FactsModuleShouldIgnoreFunctionForCoverageAstAnchor
   roles { FactsModule as generated, FactsModuleShouldIgnoreFunctionForCoverageAstAnchor as syntax }
   expects FactsModuleShouldIgnoreFunctionForCoverageAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a515ada20aa7173b91894977ce79880760770039ac954e014444f4ab229cca33")
-  summary "fn FactsModule.shouldIgnoreFunctionForCoverage generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/facts.ts:126-128."
+  summary "fn FactsModule.shouldIgnoreFunctionForCoverage generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/facts.ts#shouldIgnoreFunctionForCoverage."
 }
 
 implementation FactsModuleImpl {

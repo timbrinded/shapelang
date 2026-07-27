@@ -7,109 +7,109 @@ trait GeneratedCandidate {
 }
 
 resource DisplayModuleDeclKeyAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/display.ts:12-14")
+  storage ast.anchor("packages/shp-checker/src/checker/display.ts#declKey")
   fingerprint ast.semantic_subtree_v1("sha256:090ed029b2806fdf84dc64a1c772ed7d48ae0e86b9f7816012121c970737341c")
 }
 
 resource DisplayModuleDisplaySymbolAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/display.ts:31-33")
+  storage ast.anchor("packages/shp-checker/src/checker/display.ts#displaySymbol")
   fingerprint ast.semantic_subtree_v1("sha256:af340162aff9403bbdfc0e4a0231cf0859dc07250a3e62f269f6d18a6cdd8cde")
 }
 
 resource DisplayModuleFormatContextRequirementAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/display.ts:73-75")
+  storage ast.anchor("packages/shp-checker/src/checker/display.ts#formatContextRequirement")
   fingerprint ast.semantic_subtree_v1("sha256:4a2f3912fa35884b59625c05d4c1690fc925d8b9db1e8791ccab8f9483213446")
 }
 
 resource DisplayModuleFormatFingerprintInfoAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/display.ts:81-83")
+  storage ast.anchor("packages/shp-checker/src/checker/display.ts#formatFingerprintInfo")
   fingerprint ast.semantic_subtree_v1("sha256:bcdd1e5a2ee454dadef9520407bb264e5337a21c6053c41759d930de944d8537")
 }
 
 resource DisplayModuleFormatSourceRefInfoAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/display.ts:77-79")
+  storage ast.anchor("packages/shp-checker/src/checker/display.ts#formatSourceRefInfo")
   fingerprint ast.semantic_subtree_v1("sha256:45eff74df6f0d6a7a8e8f38583ab0377736a5bd839f2ddaddc1c5f5c1274f30b")
 }
 
 resource DisplayModuleFormatTargetAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/display.ts:35-37")
+  storage ast.anchor("packages/shp-checker/src/checker/display.ts#formatTarget")
   fingerprint ast.semantic_subtree_v1("sha256:eb4ef36cf42a5f2b219e924b8cd4819b73c919e3da4225f13f81232e1b0e9cd3")
 }
 
 resource DisplayModuleFormatTermAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/display.ts:39-41")
+  storage ast.anchor("packages/shp-checker/src/checker/display.ts#formatTerm")
   fingerprint ast.semantic_subtree_v1("sha256:116bb0029e72228e4dd57d7b8c2ac8cb65debd6d8de51179400399c9cd6f04f1")
 }
 
 resource DisplayModuleFunctionKeyAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/display.ts:48-50")
+  storage ast.anchor("packages/shp-checker/src/checker/display.ts#functionKey")
   fingerprint ast.semantic_subtree_v1("sha256:b2b187399aa02a81325ba816122550e9e1c2146976d35c23f4e37c20ce2103b0")
 }
 
 resource DisplayModuleFunctionTargetAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/display.ts:64-69")
+  storage ast.anchor("packages/shp-checker/src/checker/display.ts#functionTarget")
   fingerprint ast.semantic_subtree_v1("sha256:7b7c9871e7cac246b61a8a6a579dde6ef72950499f003868c46e54609cdc1638")
 }
 
 resource DisplayModuleLocalNameOfAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/display.ts:27-29")
+  storage ast.anchor("packages/shp-checker/src/checker/display.ts#localNameOf")
   fingerprint ast.semantic_subtree_v1("sha256:72f2bcfe896064b450202f8d37118ba8771a9ebfbb3656e252dd411a9bcffa11")
 }
 
 resource DisplayModuleSplitFunctionTargetAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/display.ts:55-61")
+  storage ast.anchor("packages/shp-checker/src/checker/display.ts#splitFunctionTarget")
   fingerprint ast.semantic_subtree_v1("sha256:6f0637349fbba4355349e4fd376a889421a41205751c4f6a0371dee31858869e")
 }
 
 resource DisplayModuleSplitQualifiedNameAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/display.ts:16-25")
+  storage ast.anchor("packages/shp-checker/src/checker/display.ts#splitQualifiedName")
   fingerprint ast.semantic_subtree_v1("sha256:82b36e5aacb43ddaa83a75cfaa40cee7c8bee3c1d75274e5848bbe85e0d8e606")
 }
 
 resource DisplayModuleTermKeyAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/display.ts:44-46")
+  storage ast.anchor("packages/shp-checker/src/checker/display.ts#termKey")
   fingerprint ast.semantic_subtree_v1("sha256:4c8bfedfbdceea8f00ee336ae7b31fb329cd439df8a92a92eeb213927ba71459")
 }
 
 component DisplayModule : GeneratedCandidate {
   fn declKey
-    source ts("packages/shp-checker/src/checker/display.ts:12-14")
+    source ts("packages/shp-checker/src/checker/display.ts#declKey")
     effects unknown
   fn displaySymbol
-    source ts("packages/shp-checker/src/checker/display.ts:31-33")
+    source ts("packages/shp-checker/src/checker/display.ts#displaySymbol")
     effects unknown
   fn formatContextRequirement
-    source ts("packages/shp-checker/src/checker/display.ts:73-75")
+    source ts("packages/shp-checker/src/checker/display.ts#formatContextRequirement")
     effects unknown
   fn formatFingerprintInfo
-    source ts("packages/shp-checker/src/checker/display.ts:81-83")
+    source ts("packages/shp-checker/src/checker/display.ts#formatFingerprintInfo")
     effects unknown
   fn formatSourceRefInfo
-    source ts("packages/shp-checker/src/checker/display.ts:77-79")
+    source ts("packages/shp-checker/src/checker/display.ts#formatSourceRefInfo")
     effects unknown
   fn formatTarget
-    source ts("packages/shp-checker/src/checker/display.ts:35-37")
+    source ts("packages/shp-checker/src/checker/display.ts#formatTarget")
     effects unknown
   fn formatTerm
-    source ts("packages/shp-checker/src/checker/display.ts:39-41")
+    source ts("packages/shp-checker/src/checker/display.ts#formatTerm")
     effects unknown
   fn functionKey
-    source ts("packages/shp-checker/src/checker/display.ts:48-50")
+    source ts("packages/shp-checker/src/checker/display.ts#functionKey")
     effects unknown
   fn functionTarget
-    source ts("packages/shp-checker/src/checker/display.ts:64-69")
+    source ts("packages/shp-checker/src/checker/display.ts#functionTarget")
     effects unknown
   fn localNameOf
-    source ts("packages/shp-checker/src/checker/display.ts:27-29")
+    source ts("packages/shp-checker/src/checker/display.ts#localNameOf")
     effects unknown
   fn splitFunctionTarget
-    source ts("packages/shp-checker/src/checker/display.ts:55-61")
+    source ts("packages/shp-checker/src/checker/display.ts#splitFunctionTarget")
     effects unknown
   fn splitQualifiedName
-    source ts("packages/shp-checker/src/checker/display.ts:16-25")
+    source ts("packages/shp-checker/src/checker/display.ts#splitQualifiedName")
     effects unknown
   fn termKey
-    source ts("packages/shp-checker/src/checker/display.ts:44-46")
+    source ts("packages/shp-checker/src/checker/display.ts#termKey")
     effects unknown
 }
 
@@ -118,7 +118,7 @@ relation DisplayModuleDeclKeyGeneratedFromDisplayModuleDeclKeyAstAnchor {
   connects DisplayModule -> DisplayModuleDeclKeyAstAnchor
   roles { DisplayModule as generated, DisplayModuleDeclKeyAstAnchor as syntax }
   expects DisplayModuleDeclKeyAstAnchor fingerprint ast.semantic_subtree_v1("sha256:090ed029b2806fdf84dc64a1c772ed7d48ae0e86b9f7816012121c970737341c")
-  summary "fn DisplayModule.declKey generated from typescript function_declaration at packages/shp-checker/src/checker/display.ts:12-14."
+  summary "fn DisplayModule.declKey generated from typescript function_declaration at packages/shp-checker/src/checker/display.ts#declKey."
 }
 
 relation DisplayModuleDisplaySymbolGeneratedFromDisplayModuleDisplaySymbolAstAnchor {
@@ -126,7 +126,7 @@ relation DisplayModuleDisplaySymbolGeneratedFromDisplayModuleDisplaySymbolAstAnc
   connects DisplayModule -> DisplayModuleDisplaySymbolAstAnchor
   roles { DisplayModule as generated, DisplayModuleDisplaySymbolAstAnchor as syntax }
   expects DisplayModuleDisplaySymbolAstAnchor fingerprint ast.semantic_subtree_v1("sha256:af340162aff9403bbdfc0e4a0231cf0859dc07250a3e62f269f6d18a6cdd8cde")
-  summary "fn DisplayModule.displaySymbol generated from typescript function_declaration at packages/shp-checker/src/checker/display.ts:31-33."
+  summary "fn DisplayModule.displaySymbol generated from typescript function_declaration at packages/shp-checker/src/checker/display.ts#displaySymbol."
 }
 
 relation DisplayModuleFormatContextRequirementGeneratedFromDisplayModuleFormatContextRequirementAstAnchor {
@@ -134,7 +134,7 @@ relation DisplayModuleFormatContextRequirementGeneratedFromDisplayModuleFormatCo
   connects DisplayModule -> DisplayModuleFormatContextRequirementAstAnchor
   roles { DisplayModule as generated, DisplayModuleFormatContextRequirementAstAnchor as syntax }
   expects DisplayModuleFormatContextRequirementAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4a2f3912fa35884b59625c05d4c1690fc925d8b9db1e8791ccab8f9483213446")
-  summary "fn DisplayModule.formatContextRequirement generated from typescript function_declaration at packages/shp-checker/src/checker/display.ts:73-75."
+  summary "fn DisplayModule.formatContextRequirement generated from typescript function_declaration at packages/shp-checker/src/checker/display.ts#formatContextRequirement."
 }
 
 relation DisplayModuleFormatFingerprintInfoGeneratedFromDisplayModuleFormatFingerprintInfoAstAnchor {
@@ -142,7 +142,7 @@ relation DisplayModuleFormatFingerprintInfoGeneratedFromDisplayModuleFormatFinge
   connects DisplayModule -> DisplayModuleFormatFingerprintInfoAstAnchor
   roles { DisplayModule as generated, DisplayModuleFormatFingerprintInfoAstAnchor as syntax }
   expects DisplayModuleFormatFingerprintInfoAstAnchor fingerprint ast.semantic_subtree_v1("sha256:bcdd1e5a2ee454dadef9520407bb264e5337a21c6053c41759d930de944d8537")
-  summary "fn DisplayModule.formatFingerprintInfo generated from typescript function_declaration at packages/shp-checker/src/checker/display.ts:81-83."
+  summary "fn DisplayModule.formatFingerprintInfo generated from typescript function_declaration at packages/shp-checker/src/checker/display.ts#formatFingerprintInfo."
 }
 
 relation DisplayModuleFormatSourceRefInfoGeneratedFromDisplayModuleFormatSourceRefInfoAstAnchor {
@@ -150,7 +150,7 @@ relation DisplayModuleFormatSourceRefInfoGeneratedFromDisplayModuleFormatSourceR
   connects DisplayModule -> DisplayModuleFormatSourceRefInfoAstAnchor
   roles { DisplayModule as generated, DisplayModuleFormatSourceRefInfoAstAnchor as syntax }
   expects DisplayModuleFormatSourceRefInfoAstAnchor fingerprint ast.semantic_subtree_v1("sha256:45eff74df6f0d6a7a8e8f38583ab0377736a5bd839f2ddaddc1c5f5c1274f30b")
-  summary "fn DisplayModule.formatSourceRefInfo generated from typescript function_declaration at packages/shp-checker/src/checker/display.ts:77-79."
+  summary "fn DisplayModule.formatSourceRefInfo generated from typescript function_declaration at packages/shp-checker/src/checker/display.ts#formatSourceRefInfo."
 }
 
 relation DisplayModuleFormatTargetGeneratedFromDisplayModuleFormatTargetAstAnchor {
@@ -158,7 +158,7 @@ relation DisplayModuleFormatTargetGeneratedFromDisplayModuleFormatTargetAstAncho
   connects DisplayModule -> DisplayModuleFormatTargetAstAnchor
   roles { DisplayModule as generated, DisplayModuleFormatTargetAstAnchor as syntax }
   expects DisplayModuleFormatTargetAstAnchor fingerprint ast.semantic_subtree_v1("sha256:eb4ef36cf42a5f2b219e924b8cd4819b73c919e3da4225f13f81232e1b0e9cd3")
-  summary "fn DisplayModule.formatTarget generated from typescript function_declaration at packages/shp-checker/src/checker/display.ts:35-37."
+  summary "fn DisplayModule.formatTarget generated from typescript function_declaration at packages/shp-checker/src/checker/display.ts#formatTarget."
 }
 
 relation DisplayModuleFormatTermGeneratedFromDisplayModuleFormatTermAstAnchor {
@@ -166,7 +166,7 @@ relation DisplayModuleFormatTermGeneratedFromDisplayModuleFormatTermAstAnchor {
   connects DisplayModule -> DisplayModuleFormatTermAstAnchor
   roles { DisplayModule as generated, DisplayModuleFormatTermAstAnchor as syntax }
   expects DisplayModuleFormatTermAstAnchor fingerprint ast.semantic_subtree_v1("sha256:116bb0029e72228e4dd57d7b8c2ac8cb65debd6d8de51179400399c9cd6f04f1")
-  summary "fn DisplayModule.formatTerm generated from typescript function_declaration at packages/shp-checker/src/checker/display.ts:39-41."
+  summary "fn DisplayModule.formatTerm generated from typescript function_declaration at packages/shp-checker/src/checker/display.ts#formatTerm."
 }
 
 relation DisplayModuleFunctionKeyGeneratedFromDisplayModuleFunctionKeyAstAnchor {
@@ -174,7 +174,7 @@ relation DisplayModuleFunctionKeyGeneratedFromDisplayModuleFunctionKeyAstAnchor 
   connects DisplayModule -> DisplayModuleFunctionKeyAstAnchor
   roles { DisplayModule as generated, DisplayModuleFunctionKeyAstAnchor as syntax }
   expects DisplayModuleFunctionKeyAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b2b187399aa02a81325ba816122550e9e1c2146976d35c23f4e37c20ce2103b0")
-  summary "fn DisplayModule.functionKey generated from typescript function_declaration at packages/shp-checker/src/checker/display.ts:48-50."
+  summary "fn DisplayModule.functionKey generated from typescript function_declaration at packages/shp-checker/src/checker/display.ts#functionKey."
 }
 
 relation DisplayModuleFunctionTargetGeneratedFromDisplayModuleFunctionTargetAstAnchor {
@@ -182,7 +182,7 @@ relation DisplayModuleFunctionTargetGeneratedFromDisplayModuleFunctionTargetAstA
   connects DisplayModule -> DisplayModuleFunctionTargetAstAnchor
   roles { DisplayModule as generated, DisplayModuleFunctionTargetAstAnchor as syntax }
   expects DisplayModuleFunctionTargetAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7b7c9871e7cac246b61a8a6a579dde6ef72950499f003868c46e54609cdc1638")
-  summary "fn DisplayModule.functionTarget generated from typescript function_declaration at packages/shp-checker/src/checker/display.ts:64-69."
+  summary "fn DisplayModule.functionTarget generated from typescript function_declaration at packages/shp-checker/src/checker/display.ts#functionTarget."
 }
 
 relation DisplayModuleLocalNameOfGeneratedFromDisplayModuleLocalNameOfAstAnchor {
@@ -190,7 +190,7 @@ relation DisplayModuleLocalNameOfGeneratedFromDisplayModuleLocalNameOfAstAnchor 
   connects DisplayModule -> DisplayModuleLocalNameOfAstAnchor
   roles { DisplayModule as generated, DisplayModuleLocalNameOfAstAnchor as syntax }
   expects DisplayModuleLocalNameOfAstAnchor fingerprint ast.semantic_subtree_v1("sha256:72f2bcfe896064b450202f8d37118ba8771a9ebfbb3656e252dd411a9bcffa11")
-  summary "fn DisplayModule.localNameOf generated from typescript function_declaration at packages/shp-checker/src/checker/display.ts:27-29."
+  summary "fn DisplayModule.localNameOf generated from typescript function_declaration at packages/shp-checker/src/checker/display.ts#localNameOf."
 }
 
 relation DisplayModuleSplitFunctionTargetGeneratedFromDisplayModuleSplitFunctionTargetAstAnchor {
@@ -198,7 +198,7 @@ relation DisplayModuleSplitFunctionTargetGeneratedFromDisplayModuleSplitFunction
   connects DisplayModule -> DisplayModuleSplitFunctionTargetAstAnchor
   roles { DisplayModule as generated, DisplayModuleSplitFunctionTargetAstAnchor as syntax }
   expects DisplayModuleSplitFunctionTargetAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6f0637349fbba4355349e4fd376a889421a41205751c4f6a0371dee31858869e")
-  summary "fn DisplayModule.splitFunctionTarget generated from typescript function_declaration at packages/shp-checker/src/checker/display.ts:55-61."
+  summary "fn DisplayModule.splitFunctionTarget generated from typescript function_declaration at packages/shp-checker/src/checker/display.ts#splitFunctionTarget."
 }
 
 relation DisplayModuleSplitQualifiedNameGeneratedFromDisplayModuleSplitQualifiedNameAstAnchor {
@@ -206,7 +206,7 @@ relation DisplayModuleSplitQualifiedNameGeneratedFromDisplayModuleSplitQualified
   connects DisplayModule -> DisplayModuleSplitQualifiedNameAstAnchor
   roles { DisplayModule as generated, DisplayModuleSplitQualifiedNameAstAnchor as syntax }
   expects DisplayModuleSplitQualifiedNameAstAnchor fingerprint ast.semantic_subtree_v1("sha256:82b36e5aacb43ddaa83a75cfaa40cee7c8bee3c1d75274e5848bbe85e0d8e606")
-  summary "fn DisplayModule.splitQualifiedName generated from typescript function_declaration at packages/shp-checker/src/checker/display.ts:16-25."
+  summary "fn DisplayModule.splitQualifiedName generated from typescript function_declaration at packages/shp-checker/src/checker/display.ts#splitQualifiedName."
 }
 
 relation DisplayModuleTermKeyGeneratedFromDisplayModuleTermKeyAstAnchor {
@@ -214,7 +214,7 @@ relation DisplayModuleTermKeyGeneratedFromDisplayModuleTermKeyAstAnchor {
   connects DisplayModule -> DisplayModuleTermKeyAstAnchor
   roles { DisplayModule as generated, DisplayModuleTermKeyAstAnchor as syntax }
   expects DisplayModuleTermKeyAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4c8bfedfbdceea8f00ee336ae7b31fb329cd439df8a92a92eeb213927ba71459")
-  summary "fn DisplayModule.termKey generated from typescript function_declaration at packages/shp-checker/src/checker/display.ts:44-46."
+  summary "fn DisplayModule.termKey generated from typescript function_declaration at packages/shp-checker/src/checker/display.ts#termKey."
 }
 
 implementation DisplayModuleImpl {

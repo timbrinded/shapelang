@@ -65,7 +65,7 @@ component AuditStore {
     source ts("src/audit/store.ts#appendEvent")
     effects complete {
       Append<AuditEvent>
-        evidence ts("src/audit/store.ts:8-14")
+        evidence ts("src/audit/store.ts#appendEvent")
     }
 }
 ```
@@ -89,7 +89,7 @@ fn derivePolicyDecision : RequiresDescription, RefactorSensitive
   description required "Policy decision branches remain local for auditability."
   effects complete {
     Read<PolicySnapshot>
-      evidence ts("src/gateway/authorize.ts:34-41")
+        evidence ts("src/gateway/authorize.ts#authorize")
   }
 ```
 
@@ -108,7 +108,7 @@ Generated AST drafts may also emit candidate effect declarations:
 effect candidate AppendAuditEventCandidate {
   fn AuditStore.appendEvent
   effect Append<AuditEvent>
-  source ts("src/audit/store.ts:8-14")
+    source ts("src/audit/store.ts#AuditStore.appendEvent")
   confidence low
   pin AuditStoreAppendEventAstAnchor fingerprint ast.semantic_subtree_v1("sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
 }
@@ -128,7 +128,7 @@ component AuditStore {
     source ts("src/audit/purge.ts#purgeOldEvents")
     effects complete {
       HardDelete<AuditEvent>
-        evidence ts("src/audit/purge.ts:12-16")
+        evidence ts("src/audit/purge.ts#purgeOldEvents")
     }
 }
 ```

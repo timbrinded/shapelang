@@ -63,7 +63,7 @@ component AuditStore {
     source ts("src/audit/store.ts#appendEvent")
     effects complete {
       Append<AuditEvent>
-        evidence ts("src/audit/store.ts:8-14")
+        evidence ts("src/audit/store.ts#appendEvent")
     }
 }
 ```
@@ -81,7 +81,7 @@ effect AuditStore.appendEvent Append<AuditEvent>
 shape_update_for src/audit/store.ts
 ```
 
-They also preserve provenance. Conceptually, the effect fact is not just `Append<AuditEvent>`; it is `Append<AuditEvent>` caused by the `fn appendEvent` summary, with optional evidence from `src/audit/store.ts:8-14`.
+They also preserve provenance. Conceptually, the effect fact is not just `Append<AuditEvent>`; it is `Append<AuditEvent>` caused by the `fn appendEvent` summary, with optional evidence from `src/audit/store.ts#appendEvent`.
 
 Provenance is why the checker can produce a useful diagnostic instead of a generic failure. When a rule rejects a fact, it can tell the reviewer which declaration created the fact and which declaration created the constraint.
 

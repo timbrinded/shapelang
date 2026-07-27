@@ -7,13 +7,13 @@ trait GeneratedCandidate {
 }
 
 resource CoverageBindingsTestModuleChangedFilesFromAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/behavioural/coverage-bindings.test.ts:33-39")
+  storage ast.anchor("packages/shp-checker/src/behavioural/coverage-bindings.test.ts#changedFilesFrom")
   fingerprint ast.semantic_subtree_v1("sha256:c7a29c21c06ea738536c50294626f286173af5a912dabb89ed75a87b3419d0d1")
 }
 
 component CoverageBindingsTestModule : GeneratedCandidate {
   fn changedFilesFrom
-    source ts("packages/shp-checker/src/behavioural/coverage-bindings.test.ts:33-39")
+    source ts("packages/shp-checker/src/behavioural/coverage-bindings.test.ts#changedFilesFrom")
     effects unknown
 }
 
@@ -22,7 +22,7 @@ relation CoverageBindingsTestModuleChangedFilesFromGeneratedFromCoverageBindings
   connects CoverageBindingsTestModule -> CoverageBindingsTestModuleChangedFilesFromAstAnchor
   roles { CoverageBindingsTestModule as generated, CoverageBindingsTestModuleChangedFilesFromAstAnchor as syntax }
   expects CoverageBindingsTestModuleChangedFilesFromAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c7a29c21c06ea738536c50294626f286173af5a912dabb89ed75a87b3419d0d1")
-  summary "fn CoverageBindingsTestModule.changedFilesFrom generated from typescript function_declaration at packages/shp-checker/src/behavioural/coverage-bindings.test.ts:33-39."
+  summary "fn CoverageBindingsTestModule.changedFilesFrom generated from typescript function_declaration at packages/shp-checker/src/behavioural/coverage-bindings.test.ts#changedFilesFrom."
 }
 
 implementation CoverageBindingsTestModuleImpl {

@@ -7,29 +7,29 @@ trait GeneratedCandidate {
 }
 
 resource FunctionsModuleCheckCandidateEffectFingerprintsAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/rules/functions.ts:6-43")
+  storage ast.anchor("packages/shp-checker/src/checker/rules/functions.ts#checkCandidateEffectFingerprints")
   fingerprint ast.semantic_subtree_v1("sha256:ce75f7cc9ce02936fbbb32ad8231304e762a8729bf7ee73232f24fad338d8008")
 }
 
 resource FunctionsModuleCheckFunctionsAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/rules/functions.ts:45-127")
+  storage ast.anchor("packages/shp-checker/src/checker/rules/functions.ts#checkFunctions")
   fingerprint ast.semantic_subtree_v1("sha256:18e5a7e1d8461049f7f36f7c90b81a80217e96376a2783fd99d424062aaed78f")
 }
 
 resource FunctionsModuleMissingUnsafeRequirementsAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/rules/functions.ts:129-141")
+  storage ast.anchor("packages/shp-checker/src/checker/rules/functions.ts#missingUnsafeRequirements")
   fingerprint ast.semantic_subtree_v1("sha256:9d8e219172de0be340cc94482ccbee19b1bcd6768bfb2cc35a001757f18457db")
 }
 
 component FunctionsModule : GeneratedCandidate {
   fn checkCandidateEffectFingerprints
-    source ts("packages/shp-checker/src/checker/rules/functions.ts:6-43")
+    source ts("packages/shp-checker/src/checker/rules/functions.ts#checkCandidateEffectFingerprints")
     effects unknown
   fn checkFunctions
-    source ts("packages/shp-checker/src/checker/rules/functions.ts:45-127")
+    source ts("packages/shp-checker/src/checker/rules/functions.ts#checkFunctions")
     effects unknown
   fn missingUnsafeRequirements
-    source ts("packages/shp-checker/src/checker/rules/functions.ts:129-141")
+    source ts("packages/shp-checker/src/checker/rules/functions.ts#missingUnsafeRequirements")
     effects unknown
 }
 
@@ -38,7 +38,7 @@ relation FunctionsModuleCheckCandidateEffectFingerprintsGeneratedFromFunctionsMo
   connects FunctionsModule -> FunctionsModuleCheckCandidateEffectFingerprintsAstAnchor
   roles { FunctionsModule as generated, FunctionsModuleCheckCandidateEffectFingerprintsAstAnchor as syntax }
   expects FunctionsModuleCheckCandidateEffectFingerprintsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ce75f7cc9ce02936fbbb32ad8231304e762a8729bf7ee73232f24fad338d8008")
-  summary "fn FunctionsModule.checkCandidateEffectFingerprints generated from typescript function_declaration at packages/shp-checker/src/checker/rules/functions.ts:6-43."
+  summary "fn FunctionsModule.checkCandidateEffectFingerprints generated from typescript function_declaration at packages/shp-checker/src/checker/rules/functions.ts#checkCandidateEffectFingerprints."
 }
 
 relation FunctionsModuleCheckFunctionsGeneratedFromFunctionsModuleCheckFunctionsAstAnchor {
@@ -46,7 +46,7 @@ relation FunctionsModuleCheckFunctionsGeneratedFromFunctionsModuleCheckFunctions
   connects FunctionsModule -> FunctionsModuleCheckFunctionsAstAnchor
   roles { FunctionsModule as generated, FunctionsModuleCheckFunctionsAstAnchor as syntax }
   expects FunctionsModuleCheckFunctionsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:18e5a7e1d8461049f7f36f7c90b81a80217e96376a2783fd99d424062aaed78f")
-  summary "fn FunctionsModule.checkFunctions generated from typescript function_declaration at packages/shp-checker/src/checker/rules/functions.ts:45-127."
+  summary "fn FunctionsModule.checkFunctions generated from typescript function_declaration at packages/shp-checker/src/checker/rules/functions.ts#checkFunctions."
 }
 
 relation FunctionsModuleMissingUnsafeRequirementsGeneratedFromFunctionsModuleMissingUnsafeRequirementsAstAnchor {
@@ -54,7 +54,7 @@ relation FunctionsModuleMissingUnsafeRequirementsGeneratedFromFunctionsModuleMis
   connects FunctionsModule -> FunctionsModuleMissingUnsafeRequirementsAstAnchor
   roles { FunctionsModule as generated, FunctionsModuleMissingUnsafeRequirementsAstAnchor as syntax }
   expects FunctionsModuleMissingUnsafeRequirementsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9d8e219172de0be340cc94482ccbee19b1bcd6768bfb2cc35a001757f18457db")
-  summary "fn FunctionsModule.missingUnsafeRequirements generated from typescript function_declaration at packages/shp-checker/src/checker/rules/functions.ts:129-141."
+  summary "fn FunctionsModule.missingUnsafeRequirements generated from typescript function_declaration at packages/shp-checker/src/checker/rules/functions.ts#missingUnsafeRequirements."
 }
 
 implementation FunctionsModuleImpl {

@@ -7,29 +7,29 @@ trait GeneratedCandidate {
 }
 
 resource FreshnessModuleIsoTodayAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-cli/src/freshness.ts:10-16")
+  storage ast.anchor("packages/shp-cli/src/freshness.ts#isoToday")
   fingerprint ast.semantic_subtree_v1("sha256:fa95dd3d4fd67cda4e7de2bf9bb354e36f74495f183587f9a21384dffb75a5bb")
 }
 
 resource FreshnessModuleParseAsOfDateAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-cli/src/freshness.ts:23-32")
+  storage ast.anchor("packages/shp-cli/src/freshness.ts#parseAsOfDate")
   fingerprint ast.semantic_subtree_v1("sha256:c259d020f57d19b10edfa491485280e29ed81ec677eed1081b67f1f2ab8fa8d3")
 }
 
 resource FreshnessModuleResolveFreshnessDateAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-cli/src/freshness.ts:40-48")
+  storage ast.anchor("packages/shp-cli/src/freshness.ts#resolveFreshnessDate")
   fingerprint ast.semantic_subtree_v1("sha256:bc102d1d2efb08f444572f0aee4680af36b6b13ebe64d56a5125b9e2cd665891")
 }
 
 component FreshnessModule : GeneratedCandidate {
   fn isoToday
-    source ts("packages/shp-cli/src/freshness.ts:10-16")
+    source ts("packages/shp-cli/src/freshness.ts#isoToday")
     effects unknown
   fn parseAsOfDate
-    source ts("packages/shp-cli/src/freshness.ts:23-32")
+    source ts("packages/shp-cli/src/freshness.ts#parseAsOfDate")
     effects unknown
   fn resolveFreshnessDate
-    source ts("packages/shp-cli/src/freshness.ts:40-48")
+    source ts("packages/shp-cli/src/freshness.ts#resolveFreshnessDate")
     effects unknown
 }
 
@@ -38,7 +38,7 @@ relation FreshnessModuleIsoTodayGeneratedFromFreshnessModuleIsoTodayAstAnchor {
   connects FreshnessModule -> FreshnessModuleIsoTodayAstAnchor
   roles { FreshnessModule as generated, FreshnessModuleIsoTodayAstAnchor as syntax }
   expects FreshnessModuleIsoTodayAstAnchor fingerprint ast.semantic_subtree_v1("sha256:fa95dd3d4fd67cda4e7de2bf9bb354e36f74495f183587f9a21384dffb75a5bb")
-  summary "fn FreshnessModule.isoToday generated from typescript function_declaration at packages/shp-cli/src/freshness.ts:10-16."
+  summary "fn FreshnessModule.isoToday generated from typescript function_declaration at packages/shp-cli/src/freshness.ts#isoToday."
 }
 
 relation FreshnessModuleParseAsOfDateGeneratedFromFreshnessModuleParseAsOfDateAstAnchor {
@@ -46,7 +46,7 @@ relation FreshnessModuleParseAsOfDateGeneratedFromFreshnessModuleParseAsOfDateAs
   connects FreshnessModule -> FreshnessModuleParseAsOfDateAstAnchor
   roles { FreshnessModule as generated, FreshnessModuleParseAsOfDateAstAnchor as syntax }
   expects FreshnessModuleParseAsOfDateAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c259d020f57d19b10edfa491485280e29ed81ec677eed1081b67f1f2ab8fa8d3")
-  summary "fn FreshnessModule.parseAsOfDate generated from typescript function_declaration at packages/shp-cli/src/freshness.ts:23-32."
+  summary "fn FreshnessModule.parseAsOfDate generated from typescript function_declaration at packages/shp-cli/src/freshness.ts#parseAsOfDate."
 }
 
 relation FreshnessModuleResolveFreshnessDateGeneratedFromFreshnessModuleResolveFreshnessDateAstAnchor {
@@ -54,7 +54,7 @@ relation FreshnessModuleResolveFreshnessDateGeneratedFromFreshnessModuleResolveF
   connects FreshnessModule -> FreshnessModuleResolveFreshnessDateAstAnchor
   roles { FreshnessModule as generated, FreshnessModuleResolveFreshnessDateAstAnchor as syntax }
   expects FreshnessModuleResolveFreshnessDateAstAnchor fingerprint ast.semantic_subtree_v1("sha256:bc102d1d2efb08f444572f0aee4680af36b6b13ebe64d56a5125b9e2cd665891")
-  summary "fn FreshnessModule.resolveFreshnessDate generated from typescript function_declaration at packages/shp-cli/src/freshness.ts:40-48."
+  summary "fn FreshnessModule.resolveFreshnessDate generated from typescript function_declaration at packages/shp-cli/src/freshness.ts#resolveFreshnessDate."
 }
 
 implementation FreshnessModuleImpl {

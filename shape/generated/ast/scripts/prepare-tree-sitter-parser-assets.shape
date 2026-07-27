@@ -7,37 +7,37 @@ trait GeneratedCandidate {
 }
 
 resource PrepareTreeSitterParserAssetsModuleExtractTarZstAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("scripts/prepare-tree-sitter-parser-assets.ts:170-182")
+  storage ast.anchor("scripts/prepare-tree-sitter-parser-assets.ts#extractTarZst")
   fingerprint ast.semantic_subtree_v1("sha256:2688026e136638083b45c7a1b9961572eca3969c57580cfaf23549c6c6d8186d")
 }
 
 resource PrepareTreeSitterParserAssetsModuleFetchBytesAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("scripts/prepare-tree-sitter-parser-assets.ts:135-164")
+  storage ast.anchor("scripts/prepare-tree-sitter-parser-assets.ts#fetchBytes")
   fingerprint ast.semantic_subtree_v1("sha256:5d9a5d39327d686f761c79be0823e076b520736b780e16a730ed59487e313a23")
 }
 
 resource PrepareTreeSitterParserAssetsModuleFindExtractedFileAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("scripts/prepare-tree-sitter-parser-assets.ts:184-192")
+  storage ast.anchor("scripts/prepare-tree-sitter-parser-assets.ts#findExtractedFile")
   fingerprint ast.semantic_subtree_v1("sha256:51506609163669b97529329aa5ef374c051711bfe1ddac35ee1bf0305cfea19c")
 }
 
 resource PrepareTreeSitterParserAssetsModuleIsRetryableFetchStatusAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("scripts/prepare-tree-sitter-parser-assets.ts:166-168")
+  storage ast.anchor("scripts/prepare-tree-sitter-parser-assets.ts#isRetryableFetchStatus")
   fingerprint ast.semantic_subtree_v1("sha256:d97b4d9713fe4b579d8363f5588b419c3e394187b718ebd3976b7d03650f5eec")
 }
 
 component PrepareTreeSitterParserAssetsModule : GeneratedCandidate {
   fn extractTarZst
-    source ts("scripts/prepare-tree-sitter-parser-assets.ts:170-182")
+    source ts("scripts/prepare-tree-sitter-parser-assets.ts#extractTarZst")
     effects unknown
   fn fetchBytes
-    source ts("scripts/prepare-tree-sitter-parser-assets.ts:135-164")
+    source ts("scripts/prepare-tree-sitter-parser-assets.ts#fetchBytes")
     effects unknown
   fn findExtractedFile
-    source ts("scripts/prepare-tree-sitter-parser-assets.ts:184-192")
+    source ts("scripts/prepare-tree-sitter-parser-assets.ts#findExtractedFile")
     effects unknown
   fn isRetryableFetchStatus
-    source ts("scripts/prepare-tree-sitter-parser-assets.ts:166-168")
+    source ts("scripts/prepare-tree-sitter-parser-assets.ts#isRetryableFetchStatus")
     effects unknown
 }
 
@@ -46,7 +46,7 @@ relation PrepareTreeSitterParserAssetsModuleExtractTarZstGeneratedFromPrepareTre
   connects PrepareTreeSitterParserAssetsModule -> PrepareTreeSitterParserAssetsModuleExtractTarZstAstAnchor
   roles { PrepareTreeSitterParserAssetsModule as generated, PrepareTreeSitterParserAssetsModuleExtractTarZstAstAnchor as syntax }
   expects PrepareTreeSitterParserAssetsModuleExtractTarZstAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2688026e136638083b45c7a1b9961572eca3969c57580cfaf23549c6c6d8186d")
-  summary "fn PrepareTreeSitterParserAssetsModule.extractTarZst generated from typescript function_declaration at scripts/prepare-tree-sitter-parser-assets.ts:170-182."
+  summary "fn PrepareTreeSitterParserAssetsModule.extractTarZst generated from typescript function_declaration at scripts/prepare-tree-sitter-parser-assets.ts#extractTarZst."
 }
 
 relation PrepareTreeSitterParserAssetsModuleFetchBytesGeneratedFromPrepareTreeSitterParserAssetsModuleFetchBytesAstAnchor {
@@ -54,7 +54,7 @@ relation PrepareTreeSitterParserAssetsModuleFetchBytesGeneratedFromPrepareTreeSi
   connects PrepareTreeSitterParserAssetsModule -> PrepareTreeSitterParserAssetsModuleFetchBytesAstAnchor
   roles { PrepareTreeSitterParserAssetsModule as generated, PrepareTreeSitterParserAssetsModuleFetchBytesAstAnchor as syntax }
   expects PrepareTreeSitterParserAssetsModuleFetchBytesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5d9a5d39327d686f761c79be0823e076b520736b780e16a730ed59487e313a23")
-  summary "fn PrepareTreeSitterParserAssetsModule.fetchBytes generated from typescript function_declaration at scripts/prepare-tree-sitter-parser-assets.ts:135-164."
+  summary "fn PrepareTreeSitterParserAssetsModule.fetchBytes generated from typescript function_declaration at scripts/prepare-tree-sitter-parser-assets.ts#fetchBytes."
 }
 
 relation PrepareTreeSitterParserAssetsModuleFindExtractedFileGeneratedFromPrepareTreeSitterParserAssetsModuleFindExtractedFileAstAnchor {
@@ -62,7 +62,7 @@ relation PrepareTreeSitterParserAssetsModuleFindExtractedFileGeneratedFromPrepar
   connects PrepareTreeSitterParserAssetsModule -> PrepareTreeSitterParserAssetsModuleFindExtractedFileAstAnchor
   roles { PrepareTreeSitterParserAssetsModule as generated, PrepareTreeSitterParserAssetsModuleFindExtractedFileAstAnchor as syntax }
   expects PrepareTreeSitterParserAssetsModuleFindExtractedFileAstAnchor fingerprint ast.semantic_subtree_v1("sha256:51506609163669b97529329aa5ef374c051711bfe1ddac35ee1bf0305cfea19c")
-  summary "fn PrepareTreeSitterParserAssetsModule.findExtractedFile generated from typescript function_declaration at scripts/prepare-tree-sitter-parser-assets.ts:184-192."
+  summary "fn PrepareTreeSitterParserAssetsModule.findExtractedFile generated from typescript function_declaration at scripts/prepare-tree-sitter-parser-assets.ts#findExtractedFile."
 }
 
 relation PrepareTreeSitterParserAssetsModuleIsRetryableFetchStatusGeneratedFromPrepareTreeSitterParserAssetsModuleIsRetryableFetchStatusAstAnchor {
@@ -70,7 +70,7 @@ relation PrepareTreeSitterParserAssetsModuleIsRetryableFetchStatusGeneratedFromP
   connects PrepareTreeSitterParserAssetsModule -> PrepareTreeSitterParserAssetsModuleIsRetryableFetchStatusAstAnchor
   roles { PrepareTreeSitterParserAssetsModule as generated, PrepareTreeSitterParserAssetsModuleIsRetryableFetchStatusAstAnchor as syntax }
   expects PrepareTreeSitterParserAssetsModuleIsRetryableFetchStatusAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d97b4d9713fe4b579d8363f5588b419c3e394187b718ebd3976b7d03650f5eec")
-  summary "fn PrepareTreeSitterParserAssetsModule.isRetryableFetchStatus generated from typescript function_declaration at scripts/prepare-tree-sitter-parser-assets.ts:166-168."
+  summary "fn PrepareTreeSitterParserAssetsModule.isRetryableFetchStatus generated from typescript function_declaration at scripts/prepare-tree-sitter-parser-assets.ts#isRetryableFetchStatus."
 }
 
 implementation PrepareTreeSitterParserAssetsModuleImpl {

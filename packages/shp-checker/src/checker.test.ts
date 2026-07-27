@@ -157,14 +157,14 @@ describe("Shape checker", () => {
 
       component AuditStore {
         fn appendEvent
-          source ts("src/audit/store.ts:8-14")
+          source ts("src/audit/store.ts#AuditStore.appendEvent")
           effects unknown
       }
 
       effect candidate AppendEventCandidate {
         fn AuditStore.appendEvent
         effect Append<AuditEvent>
-        source ts("src/audit/store.ts:8-14")
+        source ts("src/audit/store.ts#AuditStore.appendEvent")
         confidence low
         pin AuditStoreAppendEventAstAnchor fingerprint ast.semantic_subtree_v1("sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
       }
@@ -343,7 +343,7 @@ describe("Shape checker", () => {
     expect(output).toContain("HardDelete<AuditEvent>");
     expect(output).toContain("AuditEvent has trait AppendOnly");
     expect(output).toContain("AppendOnly forbids final HardDelete<AuditEvent>");
-    expect(output).toContain('evidence: ts("src/audit/purge.ts:12-16")');
+    expect(output).toContain('evidence: ts("src/audit/purge.ts#purgeOldEvents")');
   });
 
   test("uses explicit trait final forbid declarations", () => {
@@ -564,7 +564,7 @@ describe("Shape checker", () => {
           source ts("src/audit/purge.ts#purgeOldEvents")
           effects complete {
             HardDelete<AuditEvent>
-              evidence ts("src/audit/purge.ts:12-16")
+              evidence ts("src/audit/purge.ts#purgeOldEvents")
           }
       }
     `);
@@ -1060,7 +1060,7 @@ describe("Shape checker", () => {
           source ts("src/audit/store.ts#appendEvent")
           effects complete {
             Append<AuditEvent>
-              evidence ts("src/audit/store.ts:8-14")
+              evidence ts("src/audit/store.ts#appendEvent")
           }
       }
     `);
@@ -1098,7 +1098,7 @@ describe("Shape checker", () => {
           source ts("src/audit/store.ts#appendEvent")
           effects complete {
             Append<AuditEvent>
-              evidence ts("src/audit/store.ts:8-14")
+              evidence ts("src/audit/store.ts#appendEvent")
           }
       }
 
@@ -1154,7 +1154,7 @@ describe("Shape checker", () => {
           source ts("src/audit/store.ts#appendEvent")
           effects complete {
             Append<AuditEvent>
-              evidence ts("src/audit/store.ts:8-14")
+              evidence ts("src/audit/store.ts#appendEvent")
           }
       }
     `);

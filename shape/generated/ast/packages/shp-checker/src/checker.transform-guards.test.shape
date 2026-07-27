@@ -7,13 +7,13 @@ trait GeneratedCandidate {
 }
 
 resource CheckerTransformGuardsTestModuleTransformGuardModelAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker.transform-guards.test.ts:6-37")
+  storage ast.anchor("packages/shp-checker/src/checker.transform-guards.test.ts#transformGuardModel")
   fingerprint ast.semantic_subtree_v1("sha256:2e7a023dd2eb488a70c1c22d7e3d9255bd2c561c4a13ee148e1cce8dc2c77602")
 }
 
 component CheckerTransformGuardsTestModule : GeneratedCandidate {
   fn transformGuardModel
-    source ts("packages/shp-checker/src/checker.transform-guards.test.ts:6-37")
+    source ts("packages/shp-checker/src/checker.transform-guards.test.ts#transformGuardModel")
     effects unknown
 }
 
@@ -22,7 +22,7 @@ relation CheckerTransformGuardsTestModuleTransformGuardModelGeneratedFromChecker
   connects CheckerTransformGuardsTestModule -> CheckerTransformGuardsTestModuleTransformGuardModelAstAnchor
   roles { CheckerTransformGuardsTestModule as generated, CheckerTransformGuardsTestModuleTransformGuardModelAstAnchor as syntax }
   expects CheckerTransformGuardsTestModuleTransformGuardModelAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2e7a023dd2eb488a70c1c22d7e3d9255bd2c561c4a13ee148e1cce8dc2c77602")
-  summary "fn CheckerTransformGuardsTestModule.transformGuardModel generated from typescript function_declaration at packages/shp-checker/src/checker.transform-guards.test.ts:6-37."
+  summary "fn CheckerTransformGuardsTestModule.transformGuardModel generated from typescript function_declaration at packages/shp-checker/src/checker.transform-guards.test.ts#transformGuardModel."
 }
 
 implementation CheckerTransformGuardsTestModuleImpl {

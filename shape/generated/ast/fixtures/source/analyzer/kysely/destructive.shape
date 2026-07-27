@@ -7,13 +7,13 @@ trait GeneratedCandidate {
 }
 
 resource DestructiveModulePurgeAuditEventsAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("fixtures/source/analyzer/kysely/destructive.ts:1-13")
+  storage ast.anchor("fixtures/source/analyzer/kysely/destructive.ts#purgeAuditEvents")
   fingerprint ast.semantic_subtree_v1("sha256:102a916880a139c7a1a9dae807b0dd3a281711d01b0e99c64c790a41bb822f3a")
 }
 
 component DestructiveModule : GeneratedCandidate {
   fn purgeAuditEvents
-    source ts("fixtures/source/analyzer/kysely/destructive.ts:1-13")
+    source ts("fixtures/source/analyzer/kysely/destructive.ts#purgeAuditEvents")
     effects unknown
 }
 
@@ -22,7 +22,7 @@ relation DestructiveModulePurgeAuditEventsGeneratedFromDestructiveModulePurgeAud
   connects DestructiveModule -> DestructiveModulePurgeAuditEventsAstAnchor
   roles { DestructiveModule as generated, DestructiveModulePurgeAuditEventsAstAnchor as syntax }
   expects DestructiveModulePurgeAuditEventsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:102a916880a139c7a1a9dae807b0dd3a281711d01b0e99c64c790a41bb822f3a")
-  summary "fn DestructiveModule.purgeAuditEvents generated from typescript function_declaration at fixtures/source/analyzer/kysely/destructive.ts:1-13."
+  summary "fn DestructiveModule.purgeAuditEvents generated from typescript function_declaration at fixtures/source/analyzer/kysely/destructive.ts#purgeAuditEvents."
 }
 
 implementation DestructiveModuleImpl {

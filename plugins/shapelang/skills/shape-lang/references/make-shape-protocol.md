@@ -7,7 +7,7 @@ Use this when authoring or reviewing global `.shape` model updates. For command 
 1. Read the current model first: `shape/**/*.shape` and nearby fixtures.
 2. Identify the claim type: resource invariant, component ownership, grant, structural relation, function effect, implementation coverage, rule, attestation, rationale, memory, or reevaluation.
 3. Update the owning global model file directly; do not create a separate staging area for model drafts.
-4. Include `source` for changed functions and `evidence` for material effects when the source or diff gives line context.
+4. Include `source` for changed functions and `evidence` for material effects. Prefer stable `#symbol` references and use file-only references when no stable symbol exists; do not add line ranges.
 5. Validate with `shp fmt --check`, `shp check`, and `shp coverage --changed-files changed.txt` when changed files are available.
 
 ## Authoring Patterns
@@ -45,7 +45,7 @@ component AuditStore {
     source ts("src/audit/purge.ts#purgeOldEvents")
     effects complete {
       HardDelete<AuditEvent>
-        evidence ts("src/audit/purge.ts:12-16")
+        evidence ts("src/audit/purge.ts#purgeOldEvents")
     }
 }
 ```

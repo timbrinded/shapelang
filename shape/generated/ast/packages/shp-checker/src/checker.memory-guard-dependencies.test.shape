@@ -7,13 +7,13 @@ trait GeneratedCandidate {
 }
 
 resource CheckerMemoryGuardDependenciesTestModuleRelationGuardModelAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker.memory-guard-dependencies.test.ts:6-68")
+  storage ast.anchor("packages/shp-checker/src/checker.memory-guard-dependencies.test.ts#relationGuardModel")
   fingerprint ast.semantic_subtree_v1("sha256:f8395a6c20d1d608923483e9793a3c88d7637092293d62123901a2f777e5fc0b")
 }
 
 component CheckerMemoryGuardDependenciesTestModule : GeneratedCandidate {
   fn relationGuardModel
-    source ts("packages/shp-checker/src/checker.memory-guard-dependencies.test.ts:6-68")
+    source ts("packages/shp-checker/src/checker.memory-guard-dependencies.test.ts#relationGuardModel")
     effects unknown
 }
 
@@ -22,7 +22,7 @@ relation CheckerMemoryGuardDependenciesTestModuleRelationGuardModelGeneratedFrom
   connects CheckerMemoryGuardDependenciesTestModule -> CheckerMemoryGuardDependenciesTestModuleRelationGuardModelAstAnchor
   roles { CheckerMemoryGuardDependenciesTestModule as generated, CheckerMemoryGuardDependenciesTestModuleRelationGuardModelAstAnchor as syntax }
   expects CheckerMemoryGuardDependenciesTestModuleRelationGuardModelAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f8395a6c20d1d608923483e9793a3c88d7637092293d62123901a2f777e5fc0b")
-  summary "fn CheckerMemoryGuardDependenciesTestModule.relationGuardModel generated from typescript function_declaration at packages/shp-checker/src/checker.memory-guard-dependencies.test.ts:6-68."
+  summary "fn CheckerMemoryGuardDependenciesTestModule.relationGuardModel generated from typescript function_declaration at packages/shp-checker/src/checker.memory-guard-dependencies.test.ts#relationGuardModel."
 }
 
 implementation CheckerMemoryGuardDependenciesTestModuleImpl {

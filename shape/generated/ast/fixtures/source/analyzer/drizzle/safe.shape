@@ -7,13 +7,13 @@ trait GeneratedCandidate {
 }
 
 resource SafeModuleRetainAuditEventsAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("fixtures/source/analyzer/drizzle/safe.ts:1-19")
+  storage ast.anchor("fixtures/source/analyzer/drizzle/safe.ts#retainAuditEvents")
   fingerprint ast.semantic_subtree_v1("sha256:d731c115d396709e4134344acee7a5444d27473e24fb3ea16fecb0e8c9a5ead9")
 }
 
 component SafeModule : GeneratedCandidate {
   fn retainAuditEvents
-    source ts("fixtures/source/analyzer/drizzle/safe.ts:1-19")
+    source ts("fixtures/source/analyzer/drizzle/safe.ts#retainAuditEvents")
     effects unknown
 }
 
@@ -22,7 +22,7 @@ relation SafeModuleRetainAuditEventsGeneratedFromSafeModuleRetainAuditEventsAstA
   connects SafeModule -> SafeModuleRetainAuditEventsAstAnchor
   roles { SafeModule as generated, SafeModuleRetainAuditEventsAstAnchor as syntax }
   expects SafeModuleRetainAuditEventsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d731c115d396709e4134344acee7a5444d27473e24fb3ea16fecb0e8c9a5ead9")
-  summary "fn SafeModule.retainAuditEvents generated from typescript function_declaration at fixtures/source/analyzer/drizzle/safe.ts:1-19."
+  summary "fn SafeModule.retainAuditEvents generated from typescript function_declaration at fixtures/source/analyzer/drizzle/safe.ts#retainAuditEvents."
 }
 
 implementation SafeModuleImpl {

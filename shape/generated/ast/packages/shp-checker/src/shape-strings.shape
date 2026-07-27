@@ -7,37 +7,37 @@ trait GeneratedCandidate {
 }
 
 resource ShapeStringsModuleCompareCodepointStringsAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/shape-strings.ts:11-23")
+  storage ast.anchor("packages/shp-checker/src/shape-strings.ts#compareCodepointStrings")
   fingerprint ast.semantic_subtree_v1("sha256:1e852737d61c81fb3b4326f13cb95f5adfda906254cacb78f946076c583e983c")
 }
 
 resource ShapeStringsModuleNormalizeShapePathAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/shape-strings.ts:7-9")
+  storage ast.anchor("packages/shp-checker/src/shape-strings.ts#normalizeShapePath")
   fingerprint ast.semantic_subtree_v1("sha256:5f0aaceefa1de0641a79187c4b18b8ee4ca2d1f29b09690f1fb6ef231f390f95")
 }
 
 resource ShapeStringsModuleNormalizeShapeSourcePathAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/shape-strings.ts:1-5")
+  storage ast.anchor("packages/shp-checker/src/shape-strings.ts#normalizeShapeSourcePath")
   fingerprint ast.semantic_subtree_v1("sha256:964b06b9c13ff73424bd14fcc1ce65871127b6e6df85f20c9b48bae0138f1219")
 }
 
 resource ShapeStringsModuleUnquoteShapeStringAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/shape-strings.ts:25-32")
+  storage ast.anchor("packages/shp-checker/src/shape-strings.ts#unquoteShapeString")
   fingerprint ast.semantic_subtree_v1("sha256:6c53dbd6ba45892737dbf7ed292c57a42c4209d4859ff32f19d87db1b82c2ee6")
 }
 
 component ShapeStringsModule : GeneratedCandidate {
   fn compareCodepointStrings
-    source ts("packages/shp-checker/src/shape-strings.ts:11-23")
+    source ts("packages/shp-checker/src/shape-strings.ts#compareCodepointStrings")
     effects unknown
   fn normalizeShapePath
-    source ts("packages/shp-checker/src/shape-strings.ts:7-9")
+    source ts("packages/shp-checker/src/shape-strings.ts#normalizeShapePath")
     effects unknown
   fn normalizeShapeSourcePath
-    source ts("packages/shp-checker/src/shape-strings.ts:1-5")
+    source ts("packages/shp-checker/src/shape-strings.ts#normalizeShapeSourcePath")
     effects unknown
   fn unquoteShapeString
-    source ts("packages/shp-checker/src/shape-strings.ts:25-32")
+    source ts("packages/shp-checker/src/shape-strings.ts#unquoteShapeString")
     effects unknown
 }
 
@@ -46,7 +46,7 @@ relation ShapeStringsModuleCompareCodepointStringsGeneratedFromShapeStringsModul
   connects ShapeStringsModule -> ShapeStringsModuleCompareCodepointStringsAstAnchor
   roles { ShapeStringsModule as generated, ShapeStringsModuleCompareCodepointStringsAstAnchor as syntax }
   expects ShapeStringsModuleCompareCodepointStringsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1e852737d61c81fb3b4326f13cb95f5adfda906254cacb78f946076c583e983c")
-  summary "fn ShapeStringsModule.compareCodepointStrings generated from typescript function_declaration at packages/shp-checker/src/shape-strings.ts:11-23."
+  summary "fn ShapeStringsModule.compareCodepointStrings generated from typescript function_declaration at packages/shp-checker/src/shape-strings.ts#compareCodepointStrings."
 }
 
 relation ShapeStringsModuleNormalizeShapePathGeneratedFromShapeStringsModuleNormalizeShapePathAstAnchor {
@@ -54,7 +54,7 @@ relation ShapeStringsModuleNormalizeShapePathGeneratedFromShapeStringsModuleNorm
   connects ShapeStringsModule -> ShapeStringsModuleNormalizeShapePathAstAnchor
   roles { ShapeStringsModule as generated, ShapeStringsModuleNormalizeShapePathAstAnchor as syntax }
   expects ShapeStringsModuleNormalizeShapePathAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5f0aaceefa1de0641a79187c4b18b8ee4ca2d1f29b09690f1fb6ef231f390f95")
-  summary "fn ShapeStringsModule.normalizeShapePath generated from typescript function_declaration at packages/shp-checker/src/shape-strings.ts:7-9."
+  summary "fn ShapeStringsModule.normalizeShapePath generated from typescript function_declaration at packages/shp-checker/src/shape-strings.ts#normalizeShapePath."
 }
 
 relation ShapeStringsModuleNormalizeShapeSourcePathGeneratedFromShapeStringsModuleNormalizeShapeSourcePathAstAnchor {
@@ -62,7 +62,7 @@ relation ShapeStringsModuleNormalizeShapeSourcePathGeneratedFromShapeStringsModu
   connects ShapeStringsModule -> ShapeStringsModuleNormalizeShapeSourcePathAstAnchor
   roles { ShapeStringsModule as generated, ShapeStringsModuleNormalizeShapeSourcePathAstAnchor as syntax }
   expects ShapeStringsModuleNormalizeShapeSourcePathAstAnchor fingerprint ast.semantic_subtree_v1("sha256:964b06b9c13ff73424bd14fcc1ce65871127b6e6df85f20c9b48bae0138f1219")
-  summary "fn ShapeStringsModule.normalizeShapeSourcePath generated from typescript function_declaration at packages/shp-checker/src/shape-strings.ts:1-5."
+  summary "fn ShapeStringsModule.normalizeShapeSourcePath generated from typescript function_declaration at packages/shp-checker/src/shape-strings.ts#normalizeShapeSourcePath."
 }
 
 relation ShapeStringsModuleUnquoteShapeStringGeneratedFromShapeStringsModuleUnquoteShapeStringAstAnchor {
@@ -70,7 +70,7 @@ relation ShapeStringsModuleUnquoteShapeStringGeneratedFromShapeStringsModuleUnqu
   connects ShapeStringsModule -> ShapeStringsModuleUnquoteShapeStringAstAnchor
   roles { ShapeStringsModule as generated, ShapeStringsModuleUnquoteShapeStringAstAnchor as syntax }
   expects ShapeStringsModuleUnquoteShapeStringAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6c53dbd6ba45892737dbf7ed292c57a42c4209d4859ff32f19d87db1b82c2ee6")
-  summary "fn ShapeStringsModule.unquoteShapeString generated from typescript function_declaration at packages/shp-checker/src/shape-strings.ts:25-32."
+  summary "fn ShapeStringsModule.unquoteShapeString generated from typescript function_declaration at packages/shp-checker/src/shape-strings.ts#unquoteShapeString."
 }
 
 implementation ShapeStringsModuleImpl {

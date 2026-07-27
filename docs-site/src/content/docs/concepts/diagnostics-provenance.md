@@ -40,7 +40,7 @@ Shape keeps the declarations that caused a violation close to the diagnostic. Ev
 
 ```shape no-verify
 HardDelete<AuditEvent>
-  evidence ts("src/audit/purge.ts:12-16")
+        evidence ts("src/audit/purge.ts#purgeOldEvents")
 ```
 
 The diagnostic should lead the reviewer from the failed function to the source span behind the claim.

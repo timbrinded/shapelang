@@ -7,149 +7,149 @@ trait GeneratedCandidate {
 }
 
 resource DerivationsModuleApproverRequiredByAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/derivations.ts:223-231")
+  storage ast.anchor("packages/shp-checker/src/checker/derivations.ts#approverRequiredBy")
   fingerprint ast.semantic_subtree_v1("sha256:78afa16f43e0666bbdf770f505b29408df00e1acb2a3ffc728f9e2f9acf4a1c0")
 }
 
 resource DerivationsModuleContextObjectExistsAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/derivations.ts:233-235")
+  storage ast.anchor("packages/shp-checker/src/checker/derivations.ts#contextObjectExists")
   fingerprint ast.semantic_subtree_v1("sha256:72d92082f391a159abfc256998142e237bbe9ac2ce048d386a5ef4cf935da7b1")
 }
 
 resource DerivationsModuleContextSatisfiesRequirementAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/derivations.ts:136-147")
+  storage ast.anchor("packages/shp-checker/src/checker/derivations.ts#contextSatisfiesRequirement")
   fingerprint ast.semantic_subtree_v1("sha256:f8efda3994302fd3ae78289d56930f5458d460cdf98de3b2314a4f7abfb3b8d5")
 }
 
 resource DerivationsModuleDedupeForbidsAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/derivations.ts:353-365")
+  storage ast.anchor("packages/shp-checker/src/checker/derivations.ts#dedupeForbids")
   fingerprint ast.semantic_subtree_v1("sha256:3c8287087c7741ba05c885b858cd526939ef4801ef0e0bb1b26ad8406800f4ea")
 }
 
 resource DerivationsModuleDeriveFinalForbidsForResourceAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/derivations.ts:277-330")
+  storage ast.anchor("packages/shp-checker/src/checker/derivations.ts#deriveFinalForbidsForResource")
   fingerprint ast.semantic_subtree_v1("sha256:85e87ce5531c4aa654bb5f76187e9d62a36760d76f95fe0da835e7f14414c492")
 }
 
 resource DerivationsModuleFindFinalForbiddenAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/derivations.ts:332-340")
+  storage ast.anchor("packages/shp-checker/src/checker/derivations.ts#findFinalForbidden")
   fingerprint ast.semantic_subtree_v1("sha256:990a1f9239306db6379daaca0549d4fc2e9545c49cc981c36b8cfc726a8cb939")
 }
 
 resource DerivationsModuleHasGuardActionAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/derivations.ts:243-245")
+  storage ast.anchor("packages/shp-checker/src/checker/derivations.ts#hasGuardAction")
   fingerprint ast.semantic_subtree_v1("sha256:8bc82e6c89a075b4f101f63e215b2ea1e260c9c7d8a65c4bd0ce0f54b01f8c3e")
 }
 
 resource DerivationsModuleHasNonEmptyDescriptionAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/derivations.ts:98-100")
+  storage ast.anchor("packages/shp-checker/src/checker/derivations.ts#hasNonEmptyDescription")
   fingerprint ast.semantic_subtree_v1("sha256:2939a5d7dde49ed99c092e93730fc2023913c017e8a6434907537a54c3031fa5")
 }
 
 resource DerivationsModuleHasRequiredContextAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/derivations.ts:113-134")
+  storage ast.anchor("packages/shp-checker/src/checker/derivations.ts#hasRequiredContext")
   fingerprint ast.semantic_subtree_v1("sha256:fd0600e0fe82646565f0ec4bcb5aa3cd196f7dcf19730879be5aa359f2167d10")
 }
 
 resource DerivationsModuleHasValidReevaluationForGuardAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/derivations.ts:247-258")
+  storage ast.anchor("packages/shp-checker/src/checker/derivations.ts#hasValidReevaluationForGuard")
   fingerprint ast.semantic_subtree_v1("sha256:c436ad2a4206f731992031f806fb8edb64f056e3fbd1a594085fc7f5891abdee")
 }
 
 resource DerivationsModuleMatchingContextsForTargetAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/derivations.ts:260-276")
+  storage ast.anchor("packages/shp-checker/src/checker/derivations.ts#matchingContextsForTarget")
   fingerprint ast.semantic_subtree_v1("sha256:b32601269ff9e46ec79d5477655b6e142f5632aa7e0e20108920b889807b7655")
 }
 
 resource DerivationsModuleReevaluationValidationReasonsAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/derivations.ts:177-216")
+  storage ast.anchor("packages/shp-checker/src/checker/derivations.ts#reevaluationValidationReasons")
   fingerprint ast.semantic_subtree_v1("sha256:6e98ee2863410ab705683fa98a882177bdaeff474b7acc96f3738e3664358316")
 }
 
 resource DerivationsModuleRequirementsForTargetAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/derivations.ts:72-97")
+  storage ast.anchor("packages/shp-checker/src/checker/derivations.ts#requirementsForTarget")
   fingerprint ast.semantic_subtree_v1("sha256:924e539a80bdc2c572bf6ffee4d736190953b7722c02ff6c8bf55b05e9a2d5fa")
 }
 
 resource DerivationsModuleRequiresReevaluationAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/derivations.ts:108-111")
+  storage ast.anchor("packages/shp-checker/src/checker/derivations.ts#requiresReevaluation")
   fingerprint ast.semantic_subtree_v1("sha256:2ed4c0e9cc7f184d89e923b1e0b746a1cc37db8275fda282d283595936b11c71")
 }
 
 resource DerivationsModuleShapeTraitBearersAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/derivations.ts:36-63")
+  storage ast.anchor("packages/shp-checker/src/checker/derivations.ts#shapeTraitBearers")
   fingerprint ast.semantic_subtree_v1("sha256:45495149f2859f57e6d046e7cc236aa05b2a14413cae4a499bc173f41504e5a0")
 }
 
 resource DerivationsModuleShouldIgnoreUnknownEffectsDiagnosticAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/derivations.ts:104-106")
+  storage ast.anchor("packages/shp-checker/src/checker/derivations.ts#shouldIgnoreUnknownEffectsDiagnostic")
   fingerprint ast.semantic_subtree_v1("sha256:996679565d0da6b064243ee4cec53c95f5f547bfab564fae893d539c63dbc8c2")
 }
 
 resource DerivationsModuleSubstituteTargetAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/derivations.ts:342-351")
+  storage ast.anchor("packages/shp-checker/src/checker/derivations.ts#substituteTarget")
   fingerprint ast.semantic_subtree_v1("sha256:f372c20b1c1c0f21029e8ffe92c69532e1731e2dd848d1a4b9dd8469f2a1b00b")
 }
 
 resource DerivationsModuleTargetExistsAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/derivations.ts:149-175")
+  storage ast.anchor("packages/shp-checker/src/checker/derivations.ts#targetExists")
   fingerprint ast.semantic_subtree_v1("sha256:42dfd2419b2cb951273fa1bc5c8cb99ae4807d7668a9989a7ff27946814958e3")
 }
 
 component DerivationsModule : GeneratedCandidate {
   fn approverRequiredBy
-    source ts("packages/shp-checker/src/checker/derivations.ts:223-231")
+    source ts("packages/shp-checker/src/checker/derivations.ts#approverRequiredBy")
     effects unknown
   fn contextObjectExists
-    source ts("packages/shp-checker/src/checker/derivations.ts:233-235")
+    source ts("packages/shp-checker/src/checker/derivations.ts#contextObjectExists")
     effects unknown
   fn contextSatisfiesRequirement
-    source ts("packages/shp-checker/src/checker/derivations.ts:136-147")
+    source ts("packages/shp-checker/src/checker/derivations.ts#contextSatisfiesRequirement")
     effects unknown
   fn dedupeForbids
-    source ts("packages/shp-checker/src/checker/derivations.ts:353-365")
+    source ts("packages/shp-checker/src/checker/derivations.ts#dedupeForbids")
     effects unknown
   fn deriveFinalForbidsForResource
-    source ts("packages/shp-checker/src/checker/derivations.ts:277-330")
+    source ts("packages/shp-checker/src/checker/derivations.ts#deriveFinalForbidsForResource")
     effects unknown
   fn findFinalForbidden
-    source ts("packages/shp-checker/src/checker/derivations.ts:332-340")
+    source ts("packages/shp-checker/src/checker/derivations.ts#findFinalForbidden")
     effects unknown
   fn hasGuardAction
-    source ts("packages/shp-checker/src/checker/derivations.ts:243-245")
+    source ts("packages/shp-checker/src/checker/derivations.ts#hasGuardAction")
     effects unknown
   fn hasNonEmptyDescription
-    source ts("packages/shp-checker/src/checker/derivations.ts:98-100")
+    source ts("packages/shp-checker/src/checker/derivations.ts#hasNonEmptyDescription")
     effects unknown
   fn hasRequiredContext
-    source ts("packages/shp-checker/src/checker/derivations.ts:113-134")
+    source ts("packages/shp-checker/src/checker/derivations.ts#hasRequiredContext")
     effects unknown
   fn hasValidReevaluationForGuard
-    source ts("packages/shp-checker/src/checker/derivations.ts:247-258")
+    source ts("packages/shp-checker/src/checker/derivations.ts#hasValidReevaluationForGuard")
     effects unknown
   fn matchingContextsForTarget
-    source ts("packages/shp-checker/src/checker/derivations.ts:260-276")
+    source ts("packages/shp-checker/src/checker/derivations.ts#matchingContextsForTarget")
     effects unknown
   fn reevaluationValidationReasons
-    source ts("packages/shp-checker/src/checker/derivations.ts:177-216")
+    source ts("packages/shp-checker/src/checker/derivations.ts#reevaluationValidationReasons")
     effects unknown
   fn requirementsForTarget
-    source ts("packages/shp-checker/src/checker/derivations.ts:72-97")
+    source ts("packages/shp-checker/src/checker/derivations.ts#requirementsForTarget")
     effects unknown
   fn requiresReevaluation
-    source ts("packages/shp-checker/src/checker/derivations.ts:108-111")
+    source ts("packages/shp-checker/src/checker/derivations.ts#requiresReevaluation")
     effects unknown
   fn shapeTraitBearers
-    source ts("packages/shp-checker/src/checker/derivations.ts:36-63")
+    source ts("packages/shp-checker/src/checker/derivations.ts#shapeTraitBearers")
     effects unknown
   fn shouldIgnoreUnknownEffectsDiagnostic
-    source ts("packages/shp-checker/src/checker/derivations.ts:104-106")
+    source ts("packages/shp-checker/src/checker/derivations.ts#shouldIgnoreUnknownEffectsDiagnostic")
     effects unknown
   fn substituteTarget
-    source ts("packages/shp-checker/src/checker/derivations.ts:342-351")
+    source ts("packages/shp-checker/src/checker/derivations.ts#substituteTarget")
     effects unknown
   fn targetExists
-    source ts("packages/shp-checker/src/checker/derivations.ts:149-175")
+    source ts("packages/shp-checker/src/checker/derivations.ts#targetExists")
     effects unknown
 }
 
@@ -158,7 +158,7 @@ relation DerivationsModuleApproverRequiredByGeneratedFromDerivationsModuleApprov
   connects DerivationsModule -> DerivationsModuleApproverRequiredByAstAnchor
   roles { DerivationsModule as generated, DerivationsModuleApproverRequiredByAstAnchor as syntax }
   expects DerivationsModuleApproverRequiredByAstAnchor fingerprint ast.semantic_subtree_v1("sha256:78afa16f43e0666bbdf770f505b29408df00e1acb2a3ffc728f9e2f9acf4a1c0")
-  summary "fn DerivationsModule.approverRequiredBy generated from typescript function_declaration at packages/shp-checker/src/checker/derivations.ts:223-231."
+  summary "fn DerivationsModule.approverRequiredBy generated from typescript function_declaration at packages/shp-checker/src/checker/derivations.ts#approverRequiredBy."
 }
 
 relation DerivationsModuleContextObjectExistsGeneratedFromDerivationsModuleContextObjectExistsAstAnchor {
@@ -166,7 +166,7 @@ relation DerivationsModuleContextObjectExistsGeneratedFromDerivationsModuleConte
   connects DerivationsModule -> DerivationsModuleContextObjectExistsAstAnchor
   roles { DerivationsModule as generated, DerivationsModuleContextObjectExistsAstAnchor as syntax }
   expects DerivationsModuleContextObjectExistsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:72d92082f391a159abfc256998142e237bbe9ac2ce048d386a5ef4cf935da7b1")
-  summary "fn DerivationsModule.contextObjectExists generated from typescript function_declaration at packages/shp-checker/src/checker/derivations.ts:233-235."
+  summary "fn DerivationsModule.contextObjectExists generated from typescript function_declaration at packages/shp-checker/src/checker/derivations.ts#contextObjectExists."
 }
 
 relation DerivationsModuleContextSatisfiesRequirementGeneratedFromDerivationsModuleContextSatisfiesRequirementAstAnchor {
@@ -174,7 +174,7 @@ relation DerivationsModuleContextSatisfiesRequirementGeneratedFromDerivationsMod
   connects DerivationsModule -> DerivationsModuleContextSatisfiesRequirementAstAnchor
   roles { DerivationsModule as generated, DerivationsModuleContextSatisfiesRequirementAstAnchor as syntax }
   expects DerivationsModuleContextSatisfiesRequirementAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f8efda3994302fd3ae78289d56930f5458d460cdf98de3b2314a4f7abfb3b8d5")
-  summary "fn DerivationsModule.contextSatisfiesRequirement generated from typescript function_declaration at packages/shp-checker/src/checker/derivations.ts:136-147."
+  summary "fn DerivationsModule.contextSatisfiesRequirement generated from typescript function_declaration at packages/shp-checker/src/checker/derivations.ts#contextSatisfiesRequirement."
 }
 
 relation DerivationsModuleDedupeForbidsGeneratedFromDerivationsModuleDedupeForbidsAstAnchor {
@@ -182,7 +182,7 @@ relation DerivationsModuleDedupeForbidsGeneratedFromDerivationsModuleDedupeForbi
   connects DerivationsModule -> DerivationsModuleDedupeForbidsAstAnchor
   roles { DerivationsModule as generated, DerivationsModuleDedupeForbidsAstAnchor as syntax }
   expects DerivationsModuleDedupeForbidsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3c8287087c7741ba05c885b858cd526939ef4801ef0e0bb1b26ad8406800f4ea")
-  summary "fn DerivationsModule.dedupeForbids generated from typescript function_declaration at packages/shp-checker/src/checker/derivations.ts:353-365."
+  summary "fn DerivationsModule.dedupeForbids generated from typescript function_declaration at packages/shp-checker/src/checker/derivations.ts#dedupeForbids."
 }
 
 relation DerivationsModuleDeriveFinalForbidsForResourceGeneratedFromDerivationsModuleDeriveFinalForbidsForResourceAstAnchor {
@@ -190,7 +190,7 @@ relation DerivationsModuleDeriveFinalForbidsForResourceGeneratedFromDerivationsM
   connects DerivationsModule -> DerivationsModuleDeriveFinalForbidsForResourceAstAnchor
   roles { DerivationsModule as generated, DerivationsModuleDeriveFinalForbidsForResourceAstAnchor as syntax }
   expects DerivationsModuleDeriveFinalForbidsForResourceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:85e87ce5531c4aa654bb5f76187e9d62a36760d76f95fe0da835e7f14414c492")
-  summary "fn DerivationsModule.deriveFinalForbidsForResource generated from typescript function_declaration at packages/shp-checker/src/checker/derivations.ts:277-330."
+  summary "fn DerivationsModule.deriveFinalForbidsForResource generated from typescript function_declaration at packages/shp-checker/src/checker/derivations.ts#deriveFinalForbidsForResource."
 }
 
 relation DerivationsModuleFindFinalForbiddenGeneratedFromDerivationsModuleFindFinalForbiddenAstAnchor {
@@ -198,7 +198,7 @@ relation DerivationsModuleFindFinalForbiddenGeneratedFromDerivationsModuleFindFi
   connects DerivationsModule -> DerivationsModuleFindFinalForbiddenAstAnchor
   roles { DerivationsModule as generated, DerivationsModuleFindFinalForbiddenAstAnchor as syntax }
   expects DerivationsModuleFindFinalForbiddenAstAnchor fingerprint ast.semantic_subtree_v1("sha256:990a1f9239306db6379daaca0549d4fc2e9545c49cc981c36b8cfc726a8cb939")
-  summary "fn DerivationsModule.findFinalForbidden generated from typescript function_declaration at packages/shp-checker/src/checker/derivations.ts:332-340."
+  summary "fn DerivationsModule.findFinalForbidden generated from typescript function_declaration at packages/shp-checker/src/checker/derivations.ts#findFinalForbidden."
 }
 
 relation DerivationsModuleHasGuardActionGeneratedFromDerivationsModuleHasGuardActionAstAnchor {
@@ -206,7 +206,7 @@ relation DerivationsModuleHasGuardActionGeneratedFromDerivationsModuleHasGuardAc
   connects DerivationsModule -> DerivationsModuleHasGuardActionAstAnchor
   roles { DerivationsModule as generated, DerivationsModuleHasGuardActionAstAnchor as syntax }
   expects DerivationsModuleHasGuardActionAstAnchor fingerprint ast.semantic_subtree_v1("sha256:8bc82e6c89a075b4f101f63e215b2ea1e260c9c7d8a65c4bd0ce0f54b01f8c3e")
-  summary "fn DerivationsModule.hasGuardAction generated from typescript function_declaration at packages/shp-checker/src/checker/derivations.ts:243-245."
+  summary "fn DerivationsModule.hasGuardAction generated from typescript function_declaration at packages/shp-checker/src/checker/derivations.ts#hasGuardAction."
 }
 
 relation DerivationsModuleHasNonEmptyDescriptionGeneratedFromDerivationsModuleHasNonEmptyDescriptionAstAnchor {
@@ -214,7 +214,7 @@ relation DerivationsModuleHasNonEmptyDescriptionGeneratedFromDerivationsModuleHa
   connects DerivationsModule -> DerivationsModuleHasNonEmptyDescriptionAstAnchor
   roles { DerivationsModule as generated, DerivationsModuleHasNonEmptyDescriptionAstAnchor as syntax }
   expects DerivationsModuleHasNonEmptyDescriptionAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2939a5d7dde49ed99c092e93730fc2023913c017e8a6434907537a54c3031fa5")
-  summary "fn DerivationsModule.hasNonEmptyDescription generated from typescript function_declaration at packages/shp-checker/src/checker/derivations.ts:98-100."
+  summary "fn DerivationsModule.hasNonEmptyDescription generated from typescript function_declaration at packages/shp-checker/src/checker/derivations.ts#hasNonEmptyDescription."
 }
 
 relation DerivationsModuleHasRequiredContextGeneratedFromDerivationsModuleHasRequiredContextAstAnchor {
@@ -222,7 +222,7 @@ relation DerivationsModuleHasRequiredContextGeneratedFromDerivationsModuleHasReq
   connects DerivationsModule -> DerivationsModuleHasRequiredContextAstAnchor
   roles { DerivationsModule as generated, DerivationsModuleHasRequiredContextAstAnchor as syntax }
   expects DerivationsModuleHasRequiredContextAstAnchor fingerprint ast.semantic_subtree_v1("sha256:fd0600e0fe82646565f0ec4bcb5aa3cd196f7dcf19730879be5aa359f2167d10")
-  summary "fn DerivationsModule.hasRequiredContext generated from typescript function_declaration at packages/shp-checker/src/checker/derivations.ts:113-134."
+  summary "fn DerivationsModule.hasRequiredContext generated from typescript function_declaration at packages/shp-checker/src/checker/derivations.ts#hasRequiredContext."
 }
 
 relation DerivationsModuleHasValidReevaluationForGuardGeneratedFromDerivationsModuleHasValidReevaluationForGuardAstAnchor {
@@ -230,7 +230,7 @@ relation DerivationsModuleHasValidReevaluationForGuardGeneratedFromDerivationsMo
   connects DerivationsModule -> DerivationsModuleHasValidReevaluationForGuardAstAnchor
   roles { DerivationsModule as generated, DerivationsModuleHasValidReevaluationForGuardAstAnchor as syntax }
   expects DerivationsModuleHasValidReevaluationForGuardAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c436ad2a4206f731992031f806fb8edb64f056e3fbd1a594085fc7f5891abdee")
-  summary "fn DerivationsModule.hasValidReevaluationForGuard generated from typescript function_declaration at packages/shp-checker/src/checker/derivations.ts:247-258."
+  summary "fn DerivationsModule.hasValidReevaluationForGuard generated from typescript function_declaration at packages/shp-checker/src/checker/derivations.ts#hasValidReevaluationForGuard."
 }
 
 relation DerivationsModuleMatchingContextsForTargetGeneratedFromDerivationsModuleMatchingContextsForTargetAstAnchor {
@@ -238,7 +238,7 @@ relation DerivationsModuleMatchingContextsForTargetGeneratedFromDerivationsModul
   connects DerivationsModule -> DerivationsModuleMatchingContextsForTargetAstAnchor
   roles { DerivationsModule as generated, DerivationsModuleMatchingContextsForTargetAstAnchor as syntax }
   expects DerivationsModuleMatchingContextsForTargetAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b32601269ff9e46ec79d5477655b6e142f5632aa7e0e20108920b889807b7655")
-  summary "fn DerivationsModule.matchingContextsForTarget generated from typescript function_declaration at packages/shp-checker/src/checker/derivations.ts:260-276."
+  summary "fn DerivationsModule.matchingContextsForTarget generated from typescript function_declaration at packages/shp-checker/src/checker/derivations.ts#matchingContextsForTarget."
 }
 
 relation DerivationsModuleReevaluationValidationReasonsGeneratedFromDerivationsModuleReevaluationValidationReasonsAstAnchor {
@@ -246,7 +246,7 @@ relation DerivationsModuleReevaluationValidationReasonsGeneratedFromDerivationsM
   connects DerivationsModule -> DerivationsModuleReevaluationValidationReasonsAstAnchor
   roles { DerivationsModule as generated, DerivationsModuleReevaluationValidationReasonsAstAnchor as syntax }
   expects DerivationsModuleReevaluationValidationReasonsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6e98ee2863410ab705683fa98a882177bdaeff474b7acc96f3738e3664358316")
-  summary "fn DerivationsModule.reevaluationValidationReasons generated from typescript function_declaration at packages/shp-checker/src/checker/derivations.ts:177-216."
+  summary "fn DerivationsModule.reevaluationValidationReasons generated from typescript function_declaration at packages/shp-checker/src/checker/derivations.ts#reevaluationValidationReasons."
 }
 
 relation DerivationsModuleRequirementsForTargetGeneratedFromDerivationsModuleRequirementsForTargetAstAnchor {
@@ -254,7 +254,7 @@ relation DerivationsModuleRequirementsForTargetGeneratedFromDerivationsModuleReq
   connects DerivationsModule -> DerivationsModuleRequirementsForTargetAstAnchor
   roles { DerivationsModule as generated, DerivationsModuleRequirementsForTargetAstAnchor as syntax }
   expects DerivationsModuleRequirementsForTargetAstAnchor fingerprint ast.semantic_subtree_v1("sha256:924e539a80bdc2c572bf6ffee4d736190953b7722c02ff6c8bf55b05e9a2d5fa")
-  summary "fn DerivationsModule.requirementsForTarget generated from typescript function_declaration at packages/shp-checker/src/checker/derivations.ts:72-97."
+  summary "fn DerivationsModule.requirementsForTarget generated from typescript function_declaration at packages/shp-checker/src/checker/derivations.ts#requirementsForTarget."
 }
 
 relation DerivationsModuleRequiresReevaluationGeneratedFromDerivationsModuleRequiresReevaluationAstAnchor {
@@ -262,7 +262,7 @@ relation DerivationsModuleRequiresReevaluationGeneratedFromDerivationsModuleRequ
   connects DerivationsModule -> DerivationsModuleRequiresReevaluationAstAnchor
   roles { DerivationsModule as generated, DerivationsModuleRequiresReevaluationAstAnchor as syntax }
   expects DerivationsModuleRequiresReevaluationAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2ed4c0e9cc7f184d89e923b1e0b746a1cc37db8275fda282d283595936b11c71")
-  summary "fn DerivationsModule.requiresReevaluation generated from typescript function_declaration at packages/shp-checker/src/checker/derivations.ts:108-111."
+  summary "fn DerivationsModule.requiresReevaluation generated from typescript function_declaration at packages/shp-checker/src/checker/derivations.ts#requiresReevaluation."
 }
 
 relation DerivationsModuleShapeTraitBearersGeneratedFromDerivationsModuleShapeTraitBearersAstAnchor {
@@ -270,7 +270,7 @@ relation DerivationsModuleShapeTraitBearersGeneratedFromDerivationsModuleShapeTr
   connects DerivationsModule -> DerivationsModuleShapeTraitBearersAstAnchor
   roles { DerivationsModule as generated, DerivationsModuleShapeTraitBearersAstAnchor as syntax }
   expects DerivationsModuleShapeTraitBearersAstAnchor fingerprint ast.semantic_subtree_v1("sha256:45495149f2859f57e6d046e7cc236aa05b2a14413cae4a499bc173f41504e5a0")
-  summary "fn DerivationsModule.shapeTraitBearers generated from typescript function_declaration at packages/shp-checker/src/checker/derivations.ts:36-63."
+  summary "fn DerivationsModule.shapeTraitBearers generated from typescript function_declaration at packages/shp-checker/src/checker/derivations.ts#shapeTraitBearers."
 }
 
 relation DerivationsModuleShouldIgnoreUnknownEffectsDiagnosticGeneratedFromDerivationsModuleShouldIgnoreUnknownEffectsDiagnosticAstAnchor {
@@ -278,7 +278,7 @@ relation DerivationsModuleShouldIgnoreUnknownEffectsDiagnosticGeneratedFromDeriv
   connects DerivationsModule -> DerivationsModuleShouldIgnoreUnknownEffectsDiagnosticAstAnchor
   roles { DerivationsModule as generated, DerivationsModuleShouldIgnoreUnknownEffectsDiagnosticAstAnchor as syntax }
   expects DerivationsModuleShouldIgnoreUnknownEffectsDiagnosticAstAnchor fingerprint ast.semantic_subtree_v1("sha256:996679565d0da6b064243ee4cec53c95f5f547bfab564fae893d539c63dbc8c2")
-  summary "fn DerivationsModule.shouldIgnoreUnknownEffectsDiagnostic generated from typescript function_declaration at packages/shp-checker/src/checker/derivations.ts:104-106."
+  summary "fn DerivationsModule.shouldIgnoreUnknownEffectsDiagnostic generated from typescript function_declaration at packages/shp-checker/src/checker/derivations.ts#shouldIgnoreUnknownEffectsDiagnostic."
 }
 
 relation DerivationsModuleSubstituteTargetGeneratedFromDerivationsModuleSubstituteTargetAstAnchor {
@@ -286,7 +286,7 @@ relation DerivationsModuleSubstituteTargetGeneratedFromDerivationsModuleSubstitu
   connects DerivationsModule -> DerivationsModuleSubstituteTargetAstAnchor
   roles { DerivationsModule as generated, DerivationsModuleSubstituteTargetAstAnchor as syntax }
   expects DerivationsModuleSubstituteTargetAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f372c20b1c1c0f21029e8ffe92c69532e1731e2dd848d1a4b9dd8469f2a1b00b")
-  summary "fn DerivationsModule.substituteTarget generated from typescript function_declaration at packages/shp-checker/src/checker/derivations.ts:342-351."
+  summary "fn DerivationsModule.substituteTarget generated from typescript function_declaration at packages/shp-checker/src/checker/derivations.ts#substituteTarget."
 }
 
 relation DerivationsModuleTargetExistsGeneratedFromDerivationsModuleTargetExistsAstAnchor {
@@ -294,7 +294,7 @@ relation DerivationsModuleTargetExistsGeneratedFromDerivationsModuleTargetExists
   connects DerivationsModule -> DerivationsModuleTargetExistsAstAnchor
   roles { DerivationsModule as generated, DerivationsModuleTargetExistsAstAnchor as syntax }
   expects DerivationsModuleTargetExistsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:42dfd2419b2cb951273fa1bc5c8cb99ae4807d7668a9989a7ff27946814958e3")
-  summary "fn DerivationsModule.targetExists generated from typescript function_declaration at packages/shp-checker/src/checker/derivations.ts:149-175."
+  summary "fn DerivationsModule.targetExists generated from typescript function_declaration at packages/shp-checker/src/checker/derivations.ts#targetExists."
 }
 
 implementation DerivationsModuleImpl {

@@ -7,13 +7,13 @@ trait GeneratedCandidate {
 }
 
 resource SafeModuleRetainAuditEventsAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("fixtures/source/analyzer/kysely/safe.ts:1-17")
+  storage ast.anchor("fixtures/source/analyzer/kysely/safe.ts#retainAuditEvents")
   fingerprint ast.semantic_subtree_v1("sha256:6dff60aaa1029753149984aecd80643c981413e51848a533ccfea3f92f0cf0db")
 }
 
 component SafeModule : GeneratedCandidate {
   fn retainAuditEvents
-    source ts("fixtures/source/analyzer/kysely/safe.ts:1-17")
+    source ts("fixtures/source/analyzer/kysely/safe.ts#retainAuditEvents")
     effects unknown
 }
 
@@ -22,7 +22,7 @@ relation SafeModuleRetainAuditEventsGeneratedFromSafeModuleRetainAuditEventsAstA
   connects SafeModule -> SafeModuleRetainAuditEventsAstAnchor
   roles { SafeModule as generated, SafeModuleRetainAuditEventsAstAnchor as syntax }
   expects SafeModuleRetainAuditEventsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6dff60aaa1029753149984aecd80643c981413e51848a533ccfea3f92f0cf0db")
-  summary "fn SafeModule.retainAuditEvents generated from typescript function_declaration at fixtures/source/analyzer/kysely/safe.ts:1-17."
+  summary "fn SafeModule.retainAuditEvents generated from typescript function_declaration at fixtures/source/analyzer/kysely/safe.ts#retainAuditEvents."
 }
 
 implementation SafeModuleImpl {

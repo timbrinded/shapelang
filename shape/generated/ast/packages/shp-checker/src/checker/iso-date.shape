@@ -7,37 +7,37 @@ trait GeneratedCandidate {
 }
 
 resource IsoDateModuleDaysInMonthAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/iso-date.ts:31-37")
+  storage ast.anchor("packages/shp-checker/src/checker/iso-date.ts#daysInMonth")
   fingerprint ast.semantic_subtree_v1("sha256:c3af3edf98954e1b844311b580f24718686c8e4289e4209ab92508cf6c3a8879")
 }
 
 resource IsoDateModuleIsIsoCalendarDateAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/iso-date.ts:3-14")
+  storage ast.anchor("packages/shp-checker/src/checker/iso-date.ts#isIsoCalendarDate")
   fingerprint ast.semantic_subtree_v1("sha256:5fae0a256b2ef649b9646cd257cdda87d24e3742ce291f55120f1eeb062b464d")
 }
 
 resource IsoDateModuleParseIsoCalendarDateAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/iso-date.ts:16-18")
+  storage ast.anchor("packages/shp-checker/src/checker/iso-date.ts#parseIsoCalendarDate")
   fingerprint ast.semantic_subtree_v1("sha256:7dde9d2cb451a5ce75b833ae7fdd0ff219a7ebc378b572bd36c0958e0d1ba46e")
 }
 
 resource IsoDateModuleRequireIsoCalendarDateAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/iso-date.ts:20-26")
+  storage ast.anchor("packages/shp-checker/src/checker/iso-date.ts#requireIsoCalendarDate")
   fingerprint ast.semantic_subtree_v1("sha256:a4e492d45c16e8134a8b9b567266b70ede0314a774abe942e3bc947b62c7edf5")
 }
 
 component IsoDateModule : GeneratedCandidate {
   fn daysInMonth
-    source ts("packages/shp-checker/src/checker/iso-date.ts:31-37")
+    source ts("packages/shp-checker/src/checker/iso-date.ts#daysInMonth")
     effects unknown
   fn isIsoCalendarDate
-    source ts("packages/shp-checker/src/checker/iso-date.ts:3-14")
+    source ts("packages/shp-checker/src/checker/iso-date.ts#isIsoCalendarDate")
     effects unknown
   fn parseIsoCalendarDate
-    source ts("packages/shp-checker/src/checker/iso-date.ts:16-18")
+    source ts("packages/shp-checker/src/checker/iso-date.ts#parseIsoCalendarDate")
     effects unknown
   fn requireIsoCalendarDate
-    source ts("packages/shp-checker/src/checker/iso-date.ts:20-26")
+    source ts("packages/shp-checker/src/checker/iso-date.ts#requireIsoCalendarDate")
     effects unknown
 }
 
@@ -46,7 +46,7 @@ relation IsoDateModuleDaysInMonthGeneratedFromIsoDateModuleDaysInMonthAstAnchor 
   connects IsoDateModule -> IsoDateModuleDaysInMonthAstAnchor
   roles { IsoDateModule as generated, IsoDateModuleDaysInMonthAstAnchor as syntax }
   expects IsoDateModuleDaysInMonthAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c3af3edf98954e1b844311b580f24718686c8e4289e4209ab92508cf6c3a8879")
-  summary "fn IsoDateModule.daysInMonth generated from typescript function_declaration at packages/shp-checker/src/checker/iso-date.ts:31-37."
+  summary "fn IsoDateModule.daysInMonth generated from typescript function_declaration at packages/shp-checker/src/checker/iso-date.ts#daysInMonth."
 }
 
 relation IsoDateModuleIsIsoCalendarDateGeneratedFromIsoDateModuleIsIsoCalendarDateAstAnchor {
@@ -54,7 +54,7 @@ relation IsoDateModuleIsIsoCalendarDateGeneratedFromIsoDateModuleIsIsoCalendarDa
   connects IsoDateModule -> IsoDateModuleIsIsoCalendarDateAstAnchor
   roles { IsoDateModule as generated, IsoDateModuleIsIsoCalendarDateAstAnchor as syntax }
   expects IsoDateModuleIsIsoCalendarDateAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5fae0a256b2ef649b9646cd257cdda87d24e3742ce291f55120f1eeb062b464d")
-  summary "fn IsoDateModule.isIsoCalendarDate generated from typescript function_declaration at packages/shp-checker/src/checker/iso-date.ts:3-14."
+  summary "fn IsoDateModule.isIsoCalendarDate generated from typescript function_declaration at packages/shp-checker/src/checker/iso-date.ts#isIsoCalendarDate."
 }
 
 relation IsoDateModuleParseIsoCalendarDateGeneratedFromIsoDateModuleParseIsoCalendarDateAstAnchor {
@@ -62,7 +62,7 @@ relation IsoDateModuleParseIsoCalendarDateGeneratedFromIsoDateModuleParseIsoCale
   connects IsoDateModule -> IsoDateModuleParseIsoCalendarDateAstAnchor
   roles { IsoDateModule as generated, IsoDateModuleParseIsoCalendarDateAstAnchor as syntax }
   expects IsoDateModuleParseIsoCalendarDateAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7dde9d2cb451a5ce75b833ae7fdd0ff219a7ebc378b572bd36c0958e0d1ba46e")
-  summary "fn IsoDateModule.parseIsoCalendarDate generated from typescript function_declaration at packages/shp-checker/src/checker/iso-date.ts:16-18."
+  summary "fn IsoDateModule.parseIsoCalendarDate generated from typescript function_declaration at packages/shp-checker/src/checker/iso-date.ts#parseIsoCalendarDate."
 }
 
 relation IsoDateModuleRequireIsoCalendarDateGeneratedFromIsoDateModuleRequireIsoCalendarDateAstAnchor {
@@ -70,7 +70,7 @@ relation IsoDateModuleRequireIsoCalendarDateGeneratedFromIsoDateModuleRequireIso
   connects IsoDateModule -> IsoDateModuleRequireIsoCalendarDateAstAnchor
   roles { IsoDateModule as generated, IsoDateModuleRequireIsoCalendarDateAstAnchor as syntax }
   expects IsoDateModuleRequireIsoCalendarDateAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a4e492d45c16e8134a8b9b567266b70ede0314a774abe942e3bc947b62c7edf5")
-  summary "fn IsoDateModule.requireIsoCalendarDate generated from typescript function_declaration at packages/shp-checker/src/checker/iso-date.ts:20-26."
+  summary "fn IsoDateModule.requireIsoCalendarDate generated from typescript function_declaration at packages/shp-checker/src/checker/iso-date.ts#requireIsoCalendarDate."
 }
 
 implementation IsoDateModuleImpl {

@@ -7,13 +7,13 @@ trait GeneratedCandidate {
 }
 
 resource SafetyInvariantsTestModuleAuditComponentAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/behavioural/safety-invariants.test.ts:63-76")
+  storage ast.anchor("packages/shp-checker/src/behavioural/safety-invariants.test.ts#auditComponent")
   fingerprint ast.semantic_subtree_v1("sha256:5be8b005652dfc93e8cf7d675f1df8cbea56b1e8947b51ec11837d6081964868")
 }
 
 component SafetyInvariantsTestModule : GeneratedCandidate {
   fn auditComponent
-    source ts("packages/shp-checker/src/behavioural/safety-invariants.test.ts:63-76")
+    source ts("packages/shp-checker/src/behavioural/safety-invariants.test.ts#auditComponent")
     effects unknown
 }
 
@@ -22,7 +22,7 @@ relation SafetyInvariantsTestModuleAuditComponentGeneratedFromSafetyInvariantsTe
   connects SafetyInvariantsTestModule -> SafetyInvariantsTestModuleAuditComponentAstAnchor
   roles { SafetyInvariantsTestModule as generated, SafetyInvariantsTestModuleAuditComponentAstAnchor as syntax }
   expects SafetyInvariantsTestModuleAuditComponentAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5be8b005652dfc93e8cf7d675f1df8cbea56b1e8947b51ec11837d6081964868")
-  summary "fn SafetyInvariantsTestModule.auditComponent generated from typescript function_declaration at packages/shp-checker/src/behavioural/safety-invariants.test.ts:63-76."
+  summary "fn SafetyInvariantsTestModule.auditComponent generated from typescript function_declaration at packages/shp-checker/src/behavioural/safety-invariants.test.ts#auditComponent."
 }
 
 implementation SafetyInvariantsTestModuleImpl {

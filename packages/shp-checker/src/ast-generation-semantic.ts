@@ -78,7 +78,7 @@ export function addSemanticProjection(graph: CodeSemanticGraph): void {
             language: typeNode.language,
             nodeId: typeNode.id,
             kind: typeNode.kind,
-            sourceRef: sourceRef(typeNode),
+            sourceRef: sourceRef(typeNode, name),
             target: container.name,
             targetKind: "component"
           },
@@ -98,7 +98,7 @@ export function addSemanticProjection(graph: CodeSemanticGraph): void {
           nodeId: typeNode.id,
           confidence: "medium",
           reason: `Generated candidate from ${typeNode.language} ${typeNode.kind}`,
-          sourceRef: sourceRef(typeNode)
+          sourceRef: sourceRef(typeNode, name)
         });
         const anchor = addAnchor(graph, {
           input: {
@@ -107,7 +107,7 @@ export function addSemanticProjection(graph: CodeSemanticGraph): void {
             language: typeNode.language,
             nodeId: typeNode.id,
             kind: typeNode.kind,
-            sourceRef: sourceRef(typeNode),
+            sourceRef: sourceRef(typeNode, name),
             target: resource.name,
             targetKind: "resource"
           },
@@ -186,7 +186,13 @@ function addFunction(
   childrenByParent: Map<string, RawAstNode[]>,
   nodeById: Map<string, RawAstNode>
 ): void {
-  const name = semanticName(node, childrenByParent, nodeById) ?? fallbackFunctionName(node);
+  const semanticFunctionName = semanticName(node, childrenByParent, nodeById);
+  const name = semanticFunctionName ?? fallbackFunctionName(node);
+  const sourceSymbol = semanticFunctionName
+    ? owner.kind === "file" || owner.kind === "module"
+      ? semanticFunctionName
+      : `${originalName(owner.name)}.${semanticFunctionName}`
+    : undefined;
   const id = stableShapeId(`fn_${owner.name}_${name}_${node.id}`, "Function");
   if (graph.functions.some((fn) => fn.id === id)) {
     return;
@@ -203,7 +209,7 @@ function addFunction(
     nodeId: node.id,
     ownerId: owner.id,
     confidence: "medium",
-    sourceRef: sourceRef(node)
+    sourceRef: sourceRef(node, sourceSymbol)
   });
   const fn = graph.functions.at(-1);
   if (!fn) {
@@ -361,7 +367,7 @@ function addResolvedReceiverCalls(
         path: fnNode.path,
         nodeId: fnNode.id,
         confidence: "high",
-        summary: `${owner.name}.${fn.name} calls ${target.name}; generated from ${sourceRef(fnNode)}.`
+        summary: `${owner.name}.${fn.name} calls ${target.name}; generated from ${fn.sourceRef}.`
       });
     }
   }
