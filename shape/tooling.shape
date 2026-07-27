@@ -52,6 +52,8 @@ resource SourceSyntaxTree
 
 resource SystemClock
 
+resource UnifiedDiff
+
 component ShapeAnalyzer {
   owns AnalyzerHint
   owns AnalyzerWarning
@@ -239,7 +241,10 @@ component ShapeAuthoring {
   grants Append<AuthoringPrompt>
   grants Append<ShapeModelDraft>
   grants Read<ChangedFileList>
+  grants Read<LanguageSource>
   grants Read<PreludeMetadata>
+  grants Read<ShapeSource>
+  grants Read<UnifiedDiff>
   fn buildShapeAuthorPrompt : RefactorSensitive
     source ts("packages/shp-checker/src/authoring.ts#buildShapeAuthorPrompt")
     description "Builds conservative authoring instructions that require stable symbol or file references without line suffixes."
@@ -248,7 +253,46 @@ component ShapeAuthoring {
         evidence ts("packages/shp-checker/src/authoring.ts")
       Read<ChangedFileList>
         evidence ts("packages/shp-checker/src/authoring.ts")
+      Read<LanguageSource>
+        evidence ts("packages/shp-checker/src/authoring.ts")
       Read<PreludeMetadata>
+        evidence ts("packages/shp-checker/src/authoring.ts")
+      Read<ShapeSource>
+        evidence ts("packages/shp-checker/src/authoring.ts")
+      Read<UnifiedDiff>
+        evidence ts("packages/shp-checker/src/authoring.ts")
+    }
+  fn buildShapeAuthoringBundle
+    source ts("packages/shp-checker/src/authoring.ts#buildShapeAuthoringBundle")
+    effects complete {
+      Append<AuthoringPrompt>
+        evidence ts("packages/shp-checker/src/authoring.ts")
+      Append<ShapeModelDraft>
+        evidence ts("packages/shp-checker/src/authoring.ts")
+      Read<ChangedFileList>
+        evidence ts("packages/shp-checker/src/authoring.ts")
+      Read<LanguageSource>
+        evidence ts("packages/shp-checker/src/authoring.ts")
+      Read<PreludeMetadata>
+        evidence ts("packages/shp-checker/src/authoring.ts")
+      Read<ShapeSource>
+        evidence ts("packages/shp-checker/src/authoring.ts")
+      Read<UnifiedDiff>
+        evidence ts("packages/shp-checker/src/authoring.ts")
+    }
+  fn buildShapeCriticPrompt : RefactorSensitive
+    source ts("packages/shp-checker/src/authoring.ts#buildShapeCriticPrompt")
+    description "Builds review instructions that flag unstable references, false certainty, missing architectural claims, and attempted final-forbid waivers."
+    effects complete {
+      Append<AuthoringPrompt>
+        evidence ts("packages/shp-checker/src/authoring.ts")
+      Read<ChangedFileList>
+        evidence ts("packages/shp-checker/src/authoring.ts")
+      Read<PreludeMetadata>
+        evidence ts("packages/shp-checker/src/authoring.ts")
+      Read<ShapeSource>
+        evidence ts("packages/shp-checker/src/authoring.ts")
+      Read<UnifiedDiff>
         evidence ts("packages/shp-checker/src/authoring.ts")
     }
   fn generateShapeUpdateDraft : RefactorSensitive
@@ -363,6 +407,7 @@ component ShapeLanguageServer {
 }
 
 component ShpCli {
+  grants Append<AuthoringPrompt>
   grants Append<EditorOutput>
   grants Append<GeneratedAstAnchor>
   grants Append<GeneratedAstManifest>
@@ -381,6 +426,7 @@ component ShpCli {
   grants Read<ReleaseMetadata>
   grants Read<ShapeSource>
   grants Read<SystemClock>
+  grants Read<UnifiedDiff>
   grants Update<InstalledShpBinary>
   grants Update<InstalledShpRuntimeAssets>
   fn defaultShapeFiles : RefactorSensitive
@@ -399,6 +445,8 @@ component ShpCli {
   fn main : ProtectedCheckOrder
     source ts("packages/shp-cli/src/index.ts#main")
     effects complete {
+      Append<AuthoringPrompt>
+        evidence ts("packages/shp-cli/src/commands/author/impl.ts")
       Append<EditorOutput>
         evidence ts("packages/shp-cli/src/commands/lsp/impl.ts")
       Append<EditorOutput>
@@ -413,6 +461,8 @@ component ShpCli {
         evidence ts("packages/shp-cli/src/commands/ast/impl.ts")
       Append<ShapeModelDraft>
         evidence ts("packages/shp-cli/src/commands/ast/impl.ts")
+      Append<ShapeModelDraft>
+        evidence ts("packages/shp-cli/src/commands/author/impl.ts")
       Read<ChangedFileList>
         evidence ts("packages/shp-cli/src/commands/check/impl.ts")
       Read<ChangedFileList>
@@ -477,12 +527,18 @@ component ShpCli {
         evidence ts("packages/shp-cli/src/commands/analyze/impl.ts")
       Read<LanguageSource>
         evidence ts("packages/shp-cli/src/commands/ast/impl.ts")
+      Read<LanguageSource>
+        evidence ts("packages/shp-cli/src/commands/author/impl.ts")
       Read<ShapeSource>
         evidence ts("packages/shp-cli/src/commands/analyze/impl.ts")
+      Read<ShapeSource>
+        evidence ts("packages/shp-cli/src/commands/author/impl.ts")
       Read<ShapeSource>
         evidence ts("packages/shp-cli/src/lsp/server.ts")
       Read<SystemClock>
         evidence ts("packages/shp-cli/src/freshness.ts")
+      Read<UnifiedDiff>
+        evidence ts("packages/shp-cli/src/commands/author/impl.ts")
     }
   fn runShapeFileCheck
     source ts("packages/shp-cli/src/check-runner.ts#runShapeFileCheck")
@@ -727,6 +783,22 @@ memory ClockReadAtCliBoundary : RefactorConstraint<fn ShpCli.isoToday> {
   }
 }
 
+memory CriticPromptSafetyRules : RefactorConstraint<fn ShapeAuthoring.buildShapeCriticPrompt> {
+  applies_to fn ShapeAuthoring.buildShapeCriticPrompt
+  status Explained
+  confidence High
+  summary "Critic prompts must flag unstable numbered references, omitted destructive effects, false certainty, missing reevaluations, and attempted waivers of final forbids."
+  who {
+    owner ShapeMaintainers
+  }
+  protects {
+    shape AgentReviewSafety
+  }
+  guards {
+    on_change require ReEvaluation<Self>
+  }
+}
+
 memory DefaultShapeFileDiscovery : RefactorConstraint<fn ShpCli.defaultShapeFiles> {
   applies_to fn ShpCli.defaultShapeFiles
   status Explained
@@ -793,6 +865,18 @@ reevaluation AstGenerationStableReferencesRechecked {
   evidence test("packages/shp-checker/src/ast-generation.test.ts")
 }
 
+reevaluation AuthorPromptPrDiffWorkflowRechecked {
+  satisfies memory AuthorPromptSafetyRules
+  outcome Confirmed
+  summary "PR-diff prompt bundles keep context path-labeled, preserve file-scoped drafts until stable symbol evidence exists, reject numbered references, and instruct the authoring agent not to use human instructions to waive final forbids."
+  reviewer ShapeMaintainers
+  decided_on "2026-07-27"
+  evidence md("docs-site/src/content/docs/inside-shape/formatter-editor-authoring.md")
+  evidence md("docs-site/src/content/docs/reference/cli.md")
+  evidence test("packages/shp-checker/src/authoring.test.ts")
+  evidence test("packages/shp-cli/src/index.test.ts")
+}
+
 reevaluation AuthorPromptPreludeRechecked {
   satisfies memory AuthorPromptSafetyRules
   outcome Confirmed
@@ -826,6 +910,16 @@ reevaluation CliAstOutputModesRechecked {
   summary "AST CLI tests reject ambiguous raw trace output flags, keep generated AST freshness and cleanup scoped to manifest-owned files, reject generated output collisions, preserve workspace-root source identity, and keep source and JSON draft paths on the same generator semantics."
   reviewer ShapeMaintainers
   decided_on "2026-05-22"
+  evidence test("packages/shp-cli/src/index.test.ts")
+}
+
+reevaluation CliAuthorPromptDispatchRechecked {
+  satisfies memory CliCommandDispatchOrder
+  outcome Confirmed
+  summary "Author prompt mode validates required context before output, treats diff input as prompt-only context, rejects prompt-only flags in draft mode, and leaves the byte-compatible file-scoped draft dispatch unchanged."
+  reviewer ShapeMaintainers
+  decided_on "2026-07-27"
+  evidence md("docs-site/src/content/docs/reference/cli.md")
   evidence test("packages/shp-cli/src/index.test.ts")
 }
 
@@ -872,6 +966,16 @@ reevaluation CliUpdateHelpIdentityRechecked {
   reviewer ShapeMaintainers
   decided_on "2026-05-21"
   evidence test("packages/shp-cli/src/update.test.ts")
+}
+
+reevaluation CriticPromptPrDiffWorkflowRechecked {
+  satisfies memory CriticPromptSafetyRules
+  outcome Confirmed
+  summary "The critic checklist rejects numbered references, false complete effects, missing structural relations or reevaluations, and attempts to justify final forbidden effects."
+  reviewer ShapeMaintainers
+  decided_on "2026-07-27"
+  evidence md("docs-site/src/content/docs/inside-shape/formatter-editor-authoring.md")
+  evidence test("packages/shp-checker/src/authoring.test.ts")
 }
 
 reevaluation DefaultShapeDiscoveryRechecked {
@@ -925,5 +1029,10 @@ reevaluation UpdateRuntimeAssetsRechecked {
 
 attest no_shape_change {
   source md("docs-site/src/content/docs/inside-shape/formatter-editor-authoring.md")
-  reason "Documents forbidden path formatter and editor behavior already modeled by ShapeFormatter and ShapeEditorServices; the documentation itself does not change the architecture contract."
+  reason "Documents the diff-aware authoring bundle, file-or-symbol reference policy, and provider-neutral prompt handoff modeled above; the DocsSite architecture is unchanged."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/reference/cli.md")
+  reason "Documents shp author prompt options and the no-numbered-reference boundary; the command remains part of the existing ShpCli interface modeled above."
 }

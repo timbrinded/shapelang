@@ -160,10 +160,222 @@ describe("shp CLI", () => {
     ]);
 
     expect(result.exitCode).toBe(0);
-    expect(result.stdout).toContain("module audit");
-    expect(result.stdout).toContain("component AuditStore");
-    expect(result.stdout).toContain("effects unknown");
+    expect(result.stdout).toBe(`module audit
+
+component AuditStore {
+  fn reviewPurgeShape1
+    source ts("src/audit/purge.ts")
+    effects unknown
+}
+`);
     expect(result.stderr).toBe("");
+  });
+
+  test("rejects diff context outside prompt mode", async () => {
+    const result = await runCli([
+      "author",
+      "--changed-files",
+      "fixtures/changed/audit_purge.txt",
+      "--component",
+      "AuditStore",
+      "--module",
+      "audit",
+      "--diff",
+      "fixtures/diffs/audit_purge.diff"
+    ]);
+
+    expect(result.exitCode).toBe(2);
+    expect(result.stderr).toContain("--diff requires --prompt");
+    expect(result.stderr).not.toContain("at author");
+    expect(result.stdout).toBe("");
+  });
+
+  test("emits a provider-neutral authoring prompt bundle with explicit context", async () => {
+    const result = await runCli([
+      "author",
+      "--changed-files",
+      "fixtures/changed/audit_purge.txt",
+      "--component",
+      "AuditStore",
+      "--module",
+      "audit",
+      "--diff",
+      "fixtures/diffs/audit_purge.diff",
+      "--prompt",
+      "--shape-files",
+      "fixtures/pass/append_only_append/audit.shape",
+      "--snippet-files",
+      "fixtures/source/audit_purge.ts",
+      "--project-prelude",
+      "fixtures/pass/memory_guard_preserve_inline/audit.shape",
+      "--instructions",
+      "Keep the proposed update narrow."
+    ]);
+
+    expect(result.exitCode).toBe(0);
+    expect(result.stdout).toStartWith(
+      "You are authoring a Shape .shape global model update for human review."
+    );
+    expect(result.stdout).toContain("--- fixtures/pass/append_only_append/audit.shape ---");
+    expect(result.stdout).toContain("--- fixtures/source/audit_purge.ts ---");
+    expect(result.stdout).toContain(
+      "--- fixtures/pass/memory_guard_preserve_inline/audit.shape ---"
+    );
+    expect(result.stdout).toContain(
+      'Initial conservative draft:\nmodule audit\n\ncomponent AuditStore {\n  fn reviewPurgeShape1\n    source ts("src/audit/purge.ts")\n    effects unknown'
+    );
+    expect(result.stdout).not.toContain("Candidate evidence spans:");
+    expect(result.stdout).not.toContain("src/audit/purge.ts:1-3");
+    expect(result.stdout).toContain("Human instructions:\nKeep the proposed update narrow.");
+    expect(result.stdout.endsWith("\n")).toBe(true);
+    expect(result.stderr).toBe("");
+  });
+
+  test("rejects incomplete authoring prompt context without a stack trace", async () => {
+    const missingDiff = await runCli([
+      "author",
+      "--changed-files",
+      "fixtures/changed/audit_purge.txt",
+      "--component",
+      "AuditStore",
+      "--prompt",
+      "--shape-files",
+      "fixtures/pass/append_only_append/audit.shape"
+    ]);
+    expect(missingDiff.exitCode).toBe(2);
+    expect(missingDiff.stderr).toContain("--prompt requires --diff");
+    expect(missingDiff.stderr).not.toContain("at author");
+    expect(missingDiff.stdout).toBe("");
+
+    const missingShape = await runCli([
+      "author",
+      "--changed-files",
+      "fixtures/changed/audit_purge.txt",
+      "--component",
+      "AuditStore",
+      "--diff",
+      "fixtures/diffs/audit_purge.diff",
+      "--prompt"
+    ]);
+    expect(missingShape.exitCode).toBe(2);
+    expect(missingShape.stderr).toContain("--prompt requires --shape-files");
+    expect(missingShape.stderr).not.toContain("at author");
+    expect(missingShape.stdout).toBe("");
+  });
+
+  test("rejects prompt-only context flags outside prompt mode", async () => {
+    const result = await runCli([
+      "author",
+      "--changed-files",
+      "fixtures/changed/audit_purge.txt",
+      "--component",
+      "AuditStore",
+      "--shape-files",
+      "fixtures/pass/append_only_append/audit.shape"
+    ]);
+
+    expect(result.exitCode).toBe(2);
+    expect(result.stderr).toContain("--shape-files requires --prompt");
+    expect(result.stderr).not.toContain("at author");
+    expect(result.stdout).toBe("");
+  });
+
+  test("rejects invalid author flags before reading input files", async () => {
+    const result = await runCli([
+      "author",
+      "--changed-files",
+      "fixtures/missing-changed-files.txt",
+      "--component",
+      "AuditStore",
+      "--shape-files",
+      "fixtures/pass/append_only_append/audit.shape"
+    ]);
+
+    expect(result.exitCode).toBe(2);
+    expect(result.stderr).toContain("--shape-files requires --prompt");
+    expect(result.stderr).not.toContain("failed to read");
+    expect(result.stderr).not.toContain("at author");
+    expect(result.stdout).toBe("");
+  });
+
+  test("rejects empty or unreadable authoring prompt context without a stack trace", async () => {
+    const tempDir = await mkdtemp(join(tmpdir(), "shp-author-test-"));
+    const emptyDiff = join(tempDir, "empty.diff");
+    const emptyChangedFiles = join(tempDir, "empty-changed.txt");
+    try {
+      await Promise.all([writeFile(emptyDiff, " \n"), writeFile(emptyChangedFiles, "\n")]);
+
+      const emptyDiffResult = await runCli([
+        "author",
+        "--changed-files",
+        "fixtures/changed/audit_purge.txt",
+        "--component",
+        "AuditStore",
+        "--diff",
+        emptyDiff,
+        "--prompt",
+        "--shape-files",
+        "fixtures/pass/append_only_append/audit.shape"
+      ]);
+      expect(emptyDiffResult.exitCode).toBe(2);
+      expect(emptyDiffResult.stderr).toContain("requires a non-empty unified diff");
+      expect(emptyDiffResult.stderr).not.toContain("\n    at ");
+      expect(emptyDiffResult.stdout).toBe("");
+
+      const emptyChangedFilesResult = await runCli([
+        "author",
+        "--changed-files",
+        emptyChangedFiles,
+        "--component",
+        "AuditStore",
+        "--diff",
+        "fixtures/diffs/audit_purge.diff",
+        "--prompt",
+        "--shape-files",
+        "fixtures/pass/append_only_append/audit.shape"
+      ]);
+      expect(emptyChangedFilesResult.exitCode).toBe(2);
+      expect(emptyChangedFilesResult.stderr).toContain("requires at least one changed file");
+      expect(emptyChangedFilesResult.stderr).not.toContain("\n    at ");
+      expect(emptyChangedFilesResult.stdout).toBe("");
+
+      const emptyShapeFilesResult = await runCli([
+        "author",
+        "--changed-files",
+        "fixtures/changed/audit_purge.txt",
+        "--component",
+        "AuditStore",
+        "--diff",
+        "fixtures/diffs/audit_purge.diff",
+        "--prompt",
+        "--shape-files",
+        " , "
+      ]);
+      expect(emptyShapeFilesResult.exitCode).toBe(2);
+      expect(emptyShapeFilesResult.stderr).toContain("--prompt requires --shape-files");
+      expect(emptyShapeFilesResult.stderr).not.toContain("\n    at ");
+      expect(emptyShapeFilesResult.stdout).toBe("");
+
+      const unreadableContextResult = await runCli([
+        "author",
+        "--changed-files",
+        "fixtures/changed/audit_purge.txt",
+        "--component",
+        "AuditStore",
+        "--diff",
+        "fixtures/diffs/audit_purge.diff",
+        "--prompt",
+        "--shape-files",
+        "fixtures/missing-author-context.shape"
+      ]);
+      expect(unreadableContextResult.exitCode).toBe(2);
+      expect(unreadableContextResult.stderr).toContain("error: failed to read");
+      expect(unreadableContextResult.stderr).toContain("fixtures/missing-author-context.shape");
+      expect(unreadableContextResult.stderr).not.toContain("\n    at ");
+      expect(unreadableContextResult.stdout).toBe("");
+    } finally {
+      await rm(tempDir, { recursive: true, force: true });
+    }
   });
 
   test("generates AST JSON shape drafts with raw trace sidecars", async () => {

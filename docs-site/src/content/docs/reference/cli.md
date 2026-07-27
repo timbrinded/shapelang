@@ -21,6 +21,7 @@ shp lsp
 shp memory [files...]
 shp obligations [--strict-freshness] [files...]
 shp author --changed-files changed.txt --component ComponentName [--module module.name]
+shp author --changed-files changed.txt --component ComponentName --diff pr.diff --prompt --shape-files file1.shape,file2.shape [--snippet-files file1.ts,file2.rs] [--project-prelude prelude.shape] [--instructions TEXT]
 shp analyze [--shape-files file1.shape,file2.shape] [source-files...]
 shp ast source [--language LANG] [--module NAME] [--include-ast-layer] [--raw-out PATH] [--out-dir DIR] [--check] [--allow-parse-errors] files...
 shp ast json [--module NAME] [--include-ast-layer] [--raw-out PATH] ast.json
@@ -54,7 +55,7 @@ activate or deactivate pack-level rules. See [Domain Packs](../concepts/domain-p
 | `lsp` | Serve Shape diagnostics and editor requests over the Language Server Protocol on stdio. |
 | `memory` | List rationale and memory entries grouped by protected target. |
 | `obligations` | List open design-memory obligations from checker diagnostics. With `--strict-freshness`, also list design memory whose `review_by` date is past. |
-| `author` | Generate a conservative global-model draft from changed files. |
+| `author` | Generate a conservative global-model draft, or emit a provider-neutral PR-diff authoring prompt with explicit context. |
 | `analyze` | Emit source hints or compare source hints with declared effects. |
 | `ast source` | Parse source with Tree-sitter and emit a conservative semantic Shape draft. |
 | `ast json` | Read external AST JSON and emit the same draft format. |
@@ -79,6 +80,7 @@ shp lsp
 shp memory
 shp obligations
 shp author --changed-files changed.txt --component AuditStore
+shp author --changed-files changed.txt --component AuditStore --diff pr.diff --prompt --shape-files shape/audit.shape --snippet-files src/audit/purge.ts
 shp analyze --shape-files fixtures/pass/append_only_append/audit.shape src/audit/purge.ts
 shp ast source --language rust --module generated.audit src/audit/store.rs
 shp ast source --language rust --out-dir shape/generated/ast src/audit/store.rs
@@ -102,6 +104,30 @@ Unknown effects are rendered as warnings and the command exits `0` only when no 
 `shp analyze` lexically scans for obvious destructive SQL plus common Kysely, Prisma, and Drizzle delete patterns. It recognizes multiline SQL and direct raw-execution literals while ignoring comments and inert string or template literals. When a direct static table, model, or schema identifier is available, hint output includes `target=<name>`; supported comma-separated destructive SQL lists emit one hint per target. Destructive SQL must begin with the destructive keyword; the analyzer does not follow SQL stored in variables or resolve arbitrary library aliases. Without `--shape-files`, it prints advisory hints and exits successfully. With `--shape-files`, it compares hints with declared effects and compares static targets with declared resource names and `storage` aliases. Quoted SQL components compare exactly, while unquoted SQL uses case folding without erasing separators. The TypeScript scanner conservatively associates recognized balanced forms of named functions, methods, and block-bodied assigned arrows with Shape `#function` source anchors. Unsupported TypeScript forms remain unanchored; this includes literal return types and assigned arrows with a newline between `=` and the parameter list. Missing effects, target mismatches, and ambiguous source attribution have distinct warnings; any warning exits with code `1`.
 
 See [Analyzer Hints](../concepts/analyzer-hints) for the supported pattern families and matcher limitations.
+
+## PR-diff authoring
+
+Without `--prompt`, `shp author` keeps its existing stdout contract: a parseable conservative global-model scaffold with file-scoped source references. Diff context is accepted only in prompt mode. The helper never converts hunk coordinates into numbered Shape references; a reviewer or authoring agent may refine a file-scoped reference to a stable `#symbol` anchor when the supplied source evidence supports it.
+
+Prompt mode packages the same draft with the evidence an external human or agent needs:
+
+```bash
+shp author \
+  --changed-files changed.txt \
+  --component AuditStore \
+  --module audit \
+  --diff pr.diff \
+  --prompt \
+  --shape-files shape/audit.shape \
+  --snippet-files src/audit/purge.ts \
+  --project-prelude shape/project-prelude.shape \
+  --instructions "Keep the update narrow." \
+  > author-prompt.txt
+```
+
+`--prompt` requires a non-empty unified diff and a non-empty comma-separated `--shape-files` list. `--snippet-files` and `--project-prelude` add explicit path-labeled context; Shape does not discover a project prelude or invoke a model provider. Prompt-only context flags are rejected outside prompt mode instead of being silently ignored.
+
+The bundle requires evidence for resources, components, effects, and relations, keeps destructive operations explicit, and includes `effects unknown` in the initial draft when semantics remain uncertain. It is an authoring artifact, not checker approval. Review and fold the result into the owning global model, run `shp fmt --check`, then run strict `shp check --changed-files changed.txt`.
 
 ## AST generation
 
