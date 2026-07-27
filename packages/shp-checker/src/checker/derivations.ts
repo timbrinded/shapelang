@@ -6,6 +6,7 @@
 import type { TargetKind } from "../language/generated/ast.ts";
 import type {
   ContextRequirement,
+  FinalForbidPattern,
   FunctionInfo,
   GuardInfo,
   MemoryInfo,
@@ -14,10 +15,11 @@ import type {
   RationaleInfo,
   ReevaluationInfo,
   ResourceInfo,
+  RuleInfo,
   ShapeTarget
 } from "./model.ts";
-import type { ContextKind } from "../prelude.ts";
-import { functionTarget, splitFunctionTarget } from "./display.ts";
+import { KNOWN_PRELUDE_TRAITS, type ContextKind } from "../prelude.ts";
+import { displaySymbol, functionTarget, splitFunctionTarget } from "./display.ts";
 import { compareKindName } from "./sort.ts";
 import { targetsEqual } from "../targets.ts";
 
@@ -274,6 +276,65 @@ export function matchingContextsForTarget(
   }
   return contexts.sort(compareKindName);
 }
+
+export type ResourceRuleConditionCompatibility =
+  | { kind: "compatible" }
+  | { kind: "unresolved" }
+  | { kind: "invalid"; reason: string; traitProvenance: Provenance };
+
+/**
+ * Classifies whether a `when <subject> has <trait>` condition can safely bind
+ * the subject to a resource for a final-effect rule. Validation and derivation
+ * share this predicate so an invalid or unresolved condition cannot still
+ * derive a misleading final forbid.
+ */
+export function resourceRuleConditionCompatibility(
+  condition: RuleInfo["whenHas"][number],
+  model: Model
+): ResourceRuleConditionCompatibility {
+  if (condition.traitResolution === "ambiguous") {
+    return { kind: "unresolved" };
+  }
+
+  const trait = model.traits.get(condition.trait);
+  if (!trait) {
+    return condition.traitResolution === "resolved" && KNOWN_PRELUDE_TRAITS.has(condition.trait)
+      ? { kind: "compatible" }
+      : { kind: "unresolved" };
+  }
+
+  if (trait.typeParams.length === 0) {
+    return { kind: "compatible" };
+  }
+  if (trait.typeParams.length > 1) {
+    return {
+      kind: "invalid",
+      reason: `rule condition trait ${displaySymbol(trait.name)} declares ${trait.typeParams.length} type parameters; expected no type parameters or exactly one Resource-bound parameter`,
+      traitProvenance: trait.provenance
+    };
+  }
+
+  const typeParam = trait.typeParams[0];
+  if (!typeParam) {
+    return { kind: "unresolved" };
+  }
+  if (typeParam.bound === undefined) {
+    return {
+      kind: "invalid",
+      reason: `rule condition trait ${displaySymbol(trait.name)} type parameter ${typeParam.name} is unbound; expected Resource`,
+      traitProvenance: trait.provenance
+    };
+  }
+  if (typeParam.bound.toLowerCase() !== "resource") {
+    return {
+      kind: "invalid",
+      reason: `rule condition trait ${displaySymbol(trait.name)} type parameter ${typeParam.name} has incompatible bound ${typeParam.bound}; expected Resource`,
+      traitProvenance: trait.provenance
+    };
+  }
+  return { kind: "compatible" };
+}
+
 export function deriveFinalForbidsForResource(
   resource: ResourceInfo,
   model: Model
@@ -292,7 +353,7 @@ export function deriveFinalForbidsForResource(
       }
       forbids.push({
         effect: forbid.effect,
-        target: substituteTarget(forbid.target, resource.name, trait.typeParams),
+        target: instantiateFinalForbidTarget(forbid, resource.name),
         trait: traitName,
         provenance: forbid.provenance
       });
@@ -305,7 +366,14 @@ export function deriveFinalForbidsForResource(
       continue;
     }
     const whens = rule.whenHas.filter((when) => when.subject === subject);
-    if (whens.length === 0 || !whens.every((when) => resource.traits.has(when.trait))) {
+    if (
+      whens.length === 0 ||
+      !whens.every(
+        (when) =>
+          resourceRuleConditionCompatibility(when, model).kind === "compatible" &&
+          resource.traits.has(when.trait)
+      )
+    ) {
       continue;
     }
     const diagnosticTrait = whens[0]?.trait;
@@ -319,7 +387,7 @@ export function deriveFinalForbidsForResource(
       }
       forbids.push({
         effect: forbid.effect,
-        target: substituteTarget(forbid.target, resource.name, [subject]),
+        target: instantiateFinalForbidTarget(forbid, resource.name),
         trait: diagnosticTrait,
         provenance: forbid.provenance
       });
@@ -339,15 +407,11 @@ export function findFinalForbidden(
   );
 }
 
-function substituteTarget(
-  target: string | undefined,
-  resourceName: string,
-  typeParams: string[]
-): string {
-  if (!target) {
+function instantiateFinalForbidTarget(forbid: FinalForbidPattern, resourceName: string): string {
+  if (forbid.targetBinding === "omitted" || forbid.targetBinding === "generic") {
     return resourceName;
   }
-  return typeParams.includes(target) ? resourceName : target;
+  return forbid.target ?? resourceName;
 }
 
 function dedupeForbids(

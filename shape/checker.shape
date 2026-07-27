@@ -145,6 +145,21 @@ component ShapeModelLowerer {
       Update<EffectiveModel>
         evidence ts("packages/shp-checker/src/checker/lowering/declarations.ts")
     }
+  fn lowerRule
+    source ts("packages/shp-checker/src/checker/lowering/declarations.ts#lowerRule")
+    description "Preserves condition provenance and resolves trait and effect references before rule validation."
+    effects complete {
+      Append<FactSet>
+        evidence ts("packages/shp-checker/src/checker/lowering/declarations.ts")
+      Append<SemanticDiagnostics>
+        evidence ts("packages/shp-checker/src/checker/lowering/declarations.ts")
+      Read<ParsedModule>
+        evidence ts("packages/shp-checker/src/checker/lowering/declarations.ts")
+      Read<PreludeMetadata>
+        evidence ts("packages/shp-checker/src/checker/symbols.ts")
+      Update<EffectiveModel>
+        evidence ts("packages/shp-checker/src/checker/lowering/declarations.ts")
+    }
   fn lowerShapeModules : ProtectedCheckOrder
     source ts("packages/shp-checker/src/checker/lowerer.ts#lowerShapeModules")
     effects complete {
@@ -163,13 +178,27 @@ component ShapeModelLowerer {
       Update<EffectiveModel>
         evidence ts("packages/shp-checker/src/checker/lowerer.ts")
     }
+  fn lowerTrait
+    source ts("packages/shp-checker/src/checker/lowering/declarations.ts#lowerTrait")
+    description "Preserves trait parameter names and bounds so downstream rules can validate target compatibility."
+    effects complete {
+      Append<SemanticDiagnostics>
+        evidence ts("packages/shp-checker/src/checker/lowering/declarations.ts")
+      Read<ParsedModule>
+        evidence ts("packages/shp-checker/src/checker/lowering/declarations.ts")
+      Read<PreludeMetadata>
+        evidence ts("packages/shp-checker/src/checker/prelude-seed.ts")
+      Update<EffectiveModel>
+        evidence ts("packages/shp-checker/src/checker/lowering/declarations.ts")
+    }
 }
 
 component ShapePreludeRegistry {
   owns PreludeMetadata
   grants Update<PreludeMetadata>
   fn definePreludeMetadata : RefactorSensitive
-    source ts("packages/shp-checker/src/prelude.ts#PRELUDE_CONTEXT_REQUIREMENTS")
+    source ts("packages/shp-checker/src/prelude.ts#PRELUDE_TRAITS")
+    description "Defines built-in trait names and resource-compatible parameter bounds for prelude seeding and rule validation."
     effects complete {
       Update<PreludeMetadata>
         evidence ts("packages/shp-checker/src/prelude.ts")
@@ -232,12 +261,33 @@ component ShapeRuleEngine {
       Read<EffectiveModel>
         evidence ts("packages/shp-checker/src/checker/rules/context.ts")
     }
-  fn deriveFinalForbidsForResource : RefactorSensitive
-    source ts("packages/shp-checker/src/checker/derivations.ts#deriveFinalForbidsForResource")
+  fn checkResolvedNames
+    source ts("packages/shp-checker/src/checker/rules/names.ts#checkResolvedNames")
+    description "Rejects unresolved rule-condition traits with the provenance of the exact when clause."
     effects complete {
       Append<SemanticDiagnostics>
-        evidence ts("packages/shp-checker/src/checker/derivations.ts")
-      Read<FactSet>
+        evidence ts("packages/shp-checker/src/checker/rules/names.ts")
+      Read<EffectiveModel>
+        evidence ts("packages/shp-checker/src/checker/rules/names.ts")
+      Read<PreludeMetadata>
+        evidence ts("packages/shp-checker/src/checker/rules/names.ts")
+    }
+  fn checkRules
+    source ts("packages/shp-checker/src/checker/rules/declarations.ts#checkRules")
+    description "Final-effect rule conditions accept marker traits or one explicitly Resource-bound parameter and reject ambiguous generic shapes deterministically."
+    effects complete {
+      Append<SemanticDiagnostics>
+        evidence ts("packages/shp-checker/src/checker/rules/declarations.ts")
+      Read<EffectiveModel>
+        evidence ts("packages/shp-checker/src/checker/rules/declarations.ts")
+      Read<PreludeMetadata>
+        evidence ts("packages/shp-checker/src/checker/derivations.ts#resourceRuleConditionCompatibility")
+    }
+  fn deriveFinalForbidsForResource : RefactorSensitive
+    source ts("packages/shp-checker/src/checker/derivations.ts#deriveFinalForbidsForResource")
+    description "Derives final forbids from the effective model and returns them without reading lowered facts or appending diagnostics."
+    effects complete {
+      Read<EffectiveModel>
         evidence ts("packages/shp-checker/src/checker/derivations.ts")
       Read<PreludeMetadata>
         evidence ts("packages/shp-checker/src/checker/derivations.ts")
@@ -664,6 +714,19 @@ reevaluation FinalForbidPrecedenceRechecked {
   evidence test("packages/shp-checker/src/checker.test.ts")
 }
 
+reevaluation FinalForbidRuleConditionsRechecked {
+  satisfies memory FinalForbidPrecedence
+  outcome Confirmed
+  summary "Rule-condition validation rejects unresolved or non-resource-compatible trait generics before final-forbid derivation. The derivation already consumes EffectiveModel and returns forbids; FactSet production and diagnostic appends remain in lowering and checkRules. Regression coverage preserves marker traits, conjunctive conditions, concrete and generic targets, final-forbid enforcement, and grant precedence."
+  reviewer ShapeMaintainers
+  decided_on "2026-07-26"
+  evidence md("docs-site/src/content/docs/inside-shape/rule-evaluation.md")
+  evidence md("docs-site/src/content/docs/reference/diagnostics.md")
+  evidence md("docs-site/src/content/docs/reference/language-syntax.md")
+  evidence test("packages/shp-checker/src/checker.rule-validation.test.ts")
+  evidence test("packages/shp-checker/src/checker.test.ts")
+}
+
 reevaluation HypercycleTraversalRechecked {
   satisfies memory HypercycleWitness
   outcome Confirmed
@@ -680,6 +743,30 @@ reevaluation LoweringFunctionRegistryRechecked {
   reviewer ShapeMaintainers
   decided_on "2026-05-28"
   evidence test("packages/shp-checker/src/checker.test.ts")
+}
+
+reevaluation PreludeRuleTraitBoundsRechecked {
+  satisfies memory PreludeMetadataContract
+  outcome Confirmed
+  summary "Prelude AppendOnly retains its explicit Resource parameter bound through effective-model seeding, matching user-defined rule-condition validation. The guarded source anchor now targets PRELUDE_TRAITS because this contract change is in the trait registry; prelude context requirements are unchanged."
+  reviewer ShapeMaintainers
+  decided_on "2026-07-26"
+  evidence test("packages/shp-checker/src/checker.rule-validation.test.ts")
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/inside-shape/rule-evaluation.md")
+  reason "Documents the rule-condition compatibility and inert-invalid-rule semantics modeled by ShapeRuleEngine; the documentation itself does not change the architecture contract."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/reference/diagnostics.md")
+  reason "Documents targeted invalid-rule diagnostics and remediation for the modeled checker behavior; the documentation itself does not change the architecture contract."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/reference/language-syntax.md")
+  reason "Clarifies the existing rule grammar's supported semantic subset without changing syntax or the architecture contract."
 }
 
 attest no_shape_change {

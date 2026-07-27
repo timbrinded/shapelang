@@ -17,7 +17,7 @@ export function isPreludeTrait(trait: TraitInfo | undefined): boolean {
 function preludeTraitInfo(trait: PreludeTraitDefinition): TraitInfo {
   return {
     name: trait.name,
-    typeParams: [...trait.typeParams],
+    typeParams: trait.typeParams.map((typeParam) => ({ ...typeParam })),
     finalForbids: trait.finalForbids.map((forbid) => {
       const target = forbid.target ? `<${forbid.target}>` : "";
       return {
@@ -26,7 +26,7 @@ function preludeTraitInfo(trait: PreludeTraitDefinition): TraitInfo {
         targetBinding:
           forbid.target === undefined
             ? "omitted"
-            : trait.typeParams.includes(forbid.target)
+            : trait.typeParams.some((typeParam) => typeParam.name === forbid.target)
               ? "generic"
               : "concrete",
         final: true,
