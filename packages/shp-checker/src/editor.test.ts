@@ -79,6 +79,7 @@ component AuditStore {
         "shape/language.shape",
         "shape/checker.shape",
         "shape/tooling.shape",
+        "shape/incremental-checker.shape",
         "shape/delivery.shape"
       ].map(async (filePath) => ({
         filePath,

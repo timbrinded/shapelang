@@ -57,6 +57,7 @@ export {
 export {
   checkShapeFiles,
   checkShapeModules,
+  IncrementalShapeChecker,
   explainShapeModules,
   formatDiagnostics,
   graphAllShapeModules,
@@ -68,6 +69,10 @@ export {
   requireIsoCalendarDate,
   statsShapeHypergraph,
   type CheckResult,
+  type IncrementalCheckResult,
+  type IncrementalInvalidationCause,
+  type IncrementalInvalidationReport,
+  type IncrementalShapeDocument,
   type CheckModuleInput,
   type CheckModuleOrigin,
   type CheckOptions,

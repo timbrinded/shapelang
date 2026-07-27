@@ -500,6 +500,20 @@
       ]
     },
     {
+      "module": "shape.generated.ast.packages.shp_checker.src.checker.incremental_test",
+      "path": "shape/generated/ast/packages/shp-checker/src/checker/incremental.test.shape",
+      "sources": [
+        "packages/shp-checker/src/checker/incremental.test.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.checker.incremental",
+      "path": "shape/generated/ast/packages/shp-checker/src/checker/incremental.shape",
+      "sources": [
+        "packages/shp-checker/src/checker/incremental.ts"
+      ]
+    },
+    {
       "module": "shape.generated.ast.packages.shp_checker.src.checker.iso_date",
       "path": "shape/generated/ast/packages/shp-checker/src/checker/iso-date.shape",
       "sources": [

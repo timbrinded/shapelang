@@ -6,6 +6,13 @@
 // "./checker.ts" — notably src/index.ts — keep working unchanged.
 export { checkShapeFiles, checkShapeModules } from "./checker/api.ts";
 export {
+  IncrementalShapeChecker,
+  type IncrementalCheckResult,
+  type IncrementalInvalidationCause,
+  type IncrementalInvalidationReport,
+  type IncrementalShapeDocument
+} from "./checker/incremental.ts";
+export {
   explainShapeModules,
   graphAllShapeModules,
   graphShapeModules,

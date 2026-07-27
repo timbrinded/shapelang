@@ -38,7 +38,7 @@ resource SymbolsModuleModuleContextAstAnchor : GeneratedAstAnchor {
 
 resource SymbolsModuleModuleOriginForShapeFileAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/checker/symbols.ts#moduleOriginForShapeFile")
-  fingerprint ast.semantic_subtree_v1("sha256:d83f72dffce5a4903446c81bef3f8378759976e1cc83badf94de7f6eaa8d3c3f")
+  fingerprint ast.semantic_subtree_v1("sha256:497bef8cd7cd30a104c6ca29a17fb37a324970e2da3ed53c6872f03d2a15d08f")
 }
 
 resource SymbolsModuleResolveContextObjectNameAstAnchor : GeneratedAstAnchor {
@@ -173,7 +173,7 @@ relation SymbolsModuleModuleOriginForShapeFileGeneratedFromSymbolsModuleModuleOr
   kind generated_from
   connects SymbolsModule -> SymbolsModuleModuleOriginForShapeFileAstAnchor
   roles { SymbolsModule as generated, SymbolsModuleModuleOriginForShapeFileAstAnchor as syntax }
-  expects SymbolsModuleModuleOriginForShapeFileAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d83f72dffce5a4903446c81bef3f8378759976e1cc83badf94de7f6eaa8d3c3f")
+  expects SymbolsModuleModuleOriginForShapeFileAstAnchor fingerprint ast.semantic_subtree_v1("sha256:497bef8cd7cd30a104c6ca29a17fb37a324970e2da3ed53c6872f03d2a15d08f")
   summary "fn SymbolsModule.moduleOriginForShapeFile generated from typescript function_declaration at packages/shp-checker/src/checker/symbols.ts#moduleOriginForShapeFile."
 }
 

@@ -1,0 +1,49 @@
+module shape.generated.ast.packages.shp_checker.src.checker.incremental_test
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource IncrementalTestModuleFullCheckAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/incremental.test.ts#fullCheck")
+  fingerprint ast.semantic_subtree_v1("sha256:6679598a753da7d8bda419da8eae2c23268419ff97b1622037487594407fbdbd")
+}
+
+resource IncrementalTestModuleParseDocumentAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/incremental.test.ts#parseDocument")
+  fingerprint ast.semantic_subtree_v1("sha256:ffbd16bc6a45289ceb9f1a6a7d3b2461af6487a6779cda679ad7b978f1cb1f78")
+}
+
+component IncrementalTestModule : GeneratedCandidate {
+  fn fullCheck
+    source ts("packages/shp-checker/src/checker/incremental.test.ts#fullCheck")
+    effects unknown
+  fn parseDocument
+    source ts("packages/shp-checker/src/checker/incremental.test.ts#parseDocument")
+    effects unknown
+}
+
+relation IncrementalTestModuleFullCheckGeneratedFromIncrementalTestModuleFullCheckAstAnchor {
+  kind generated_from
+  connects IncrementalTestModule -> IncrementalTestModuleFullCheckAstAnchor
+  roles { IncrementalTestModule as generated, IncrementalTestModuleFullCheckAstAnchor as syntax }
+  expects IncrementalTestModuleFullCheckAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6679598a753da7d8bda419da8eae2c23268419ff97b1622037487594407fbdbd")
+  summary "fn IncrementalTestModule.fullCheck generated from typescript function_declaration at packages/shp-checker/src/checker/incremental.test.ts#fullCheck."
+}
+
+relation IncrementalTestModuleParseDocumentGeneratedFromIncrementalTestModuleParseDocumentAstAnchor {
+  kind generated_from
+  connects IncrementalTestModule -> IncrementalTestModuleParseDocumentAstAnchor
+  roles { IncrementalTestModule as generated, IncrementalTestModuleParseDocumentAstAnchor as syntax }
+  expects IncrementalTestModuleParseDocumentAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ffbd16bc6a45289ceb9f1a6a7d3b2461af6487a6779cda679ad7b978f1cb1f78")
+  summary "fn IncrementalTestModule.parseDocument generated from typescript function_declaration at packages/shp-checker/src/checker/incremental.test.ts#parseDocument."
+}
+
+implementation IncrementalTestModuleImpl {
+  paths {
+    "packages/shp-checker/src/checker/incremental.test.ts"
+  }
+  conforms_to IncrementalTestModule
+}
