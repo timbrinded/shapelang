@@ -101,6 +101,10 @@ export const PRELUDE_CONTEXT_RULES: PreludeContextRule[] = [
   }
 ];
 
+export const PRELUDE_CONTEXT_TYPE_NAMES = [
+  ...new Set(PRELUDE_CONTEXT_RULES.map((rule) => rule.contextType))
+];
+
 // Row-shaped view (one entry per trait/targetKind) for consumers that match on
 // a concrete target kind. Flattened target-kind-major to keep a stable order.
 const PRELUDE_TARGET_ORDER: TargetKind[] = ["fn", "component", "resource"];
@@ -178,6 +182,7 @@ export const PRELUDE_COMPLETION_SYMBOLS = [
   ...PRELUDE_EFFECT_NAMES,
   ...PRELUDE_TRAIT_NAMES,
   ...PRELUDE_COMPONENT_TRAIT_NAMES,
+  ...PRELUDE_CONTEXT_TYPE_NAMES,
   ...PRELUDE_RELATION_KIND_NAMES
 ];
 
