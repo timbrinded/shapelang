@@ -1,0 +1,65 @@
+module shape.generated.ast.packages.shp_checker.src.experiments.datalog_rule_engine_spike_test
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource DatalogRuleEngineSpikeTestModuleCheckAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/experiments/datalog-rule-engine-spike.test.ts#check")
+  fingerprint ast.semantic_subtree_v1("sha256:726fdb9a04f578b5e99ab80482e229d6a0edb6788d82a481d69c0638c4f49e3a")
+}
+
+resource DatalogRuleEngineSpikeTestModuleMissingGrantDiagnosticsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/experiments/datalog-rule-engine-spike.test.ts#missingGrantDiagnostics")
+  fingerprint ast.semantic_subtree_v1("sha256:24cb4ce576b3732a44137cc048890e836e55030b8ddddca7b9b89813077b1350")
+}
+
+resource DatalogRuleEngineSpikeTestModuleRequiredFactsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/experiments/datalog-rule-engine-spike.test.ts#requiredFacts")
+  fingerprint ast.semantic_subtree_v1("sha256:514d50c63b22fd15e7908bb6a34436ff27373fa26675392bf3dedffeb3cb99df")
+}
+
+component DatalogRuleEngineSpikeTestModule : GeneratedCandidate {
+  fn check
+    source ts("packages/shp-checker/src/experiments/datalog-rule-engine-spike.test.ts#check")
+    effects unknown
+  fn missingGrantDiagnostics
+    source ts("packages/shp-checker/src/experiments/datalog-rule-engine-spike.test.ts#missingGrantDiagnostics")
+    effects unknown
+  fn requiredFacts
+    source ts("packages/shp-checker/src/experiments/datalog-rule-engine-spike.test.ts#requiredFacts")
+    effects unknown
+}
+
+relation DatalogRuleEngineSpikeTestModuleCheckGeneratedFromDatalogRuleEngineSpikeTestModuleCheckAstAnchor {
+  kind generated_from
+  connects DatalogRuleEngineSpikeTestModule -> DatalogRuleEngineSpikeTestModuleCheckAstAnchor
+  roles { DatalogRuleEngineSpikeTestModule as generated, DatalogRuleEngineSpikeTestModuleCheckAstAnchor as syntax }
+  expects DatalogRuleEngineSpikeTestModuleCheckAstAnchor fingerprint ast.semantic_subtree_v1("sha256:726fdb9a04f578b5e99ab80482e229d6a0edb6788d82a481d69c0638c4f49e3a")
+  summary "fn DatalogRuleEngineSpikeTestModule.check generated from typescript function_declaration at packages/shp-checker/src/experiments/datalog-rule-engine-spike.test.ts#check."
+}
+
+relation DatalogRuleEngineSpikeTestModuleMissingGrantDiagnosticsGeneratedFromDatalogRuleEngineSpikeTestModuleMissingGrantDiagnosticsAstAnchor {
+  kind generated_from
+  connects DatalogRuleEngineSpikeTestModule -> DatalogRuleEngineSpikeTestModuleMissingGrantDiagnosticsAstAnchor
+  roles { DatalogRuleEngineSpikeTestModule as generated, DatalogRuleEngineSpikeTestModuleMissingGrantDiagnosticsAstAnchor as syntax }
+  expects DatalogRuleEngineSpikeTestModuleMissingGrantDiagnosticsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:24cb4ce576b3732a44137cc048890e836e55030b8ddddca7b9b89813077b1350")
+  summary "fn DatalogRuleEngineSpikeTestModule.missingGrantDiagnostics generated from typescript function_declaration at packages/shp-checker/src/experiments/datalog-rule-engine-spike.test.ts#missingGrantDiagnostics."
+}
+
+relation DatalogRuleEngineSpikeTestModuleRequiredFactsGeneratedFromDatalogRuleEngineSpikeTestModuleRequiredFactsAstAnchor {
+  kind generated_from
+  connects DatalogRuleEngineSpikeTestModule -> DatalogRuleEngineSpikeTestModuleRequiredFactsAstAnchor
+  roles { DatalogRuleEngineSpikeTestModule as generated, DatalogRuleEngineSpikeTestModuleRequiredFactsAstAnchor as syntax }
+  expects DatalogRuleEngineSpikeTestModuleRequiredFactsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:514d50c63b22fd15e7908bb6a34436ff27373fa26675392bf3dedffeb3cb99df")
+  summary "fn DatalogRuleEngineSpikeTestModule.requiredFacts generated from typescript function_declaration at packages/shp-checker/src/experiments/datalog-rule-engine-spike.test.ts#requiredFacts."
+}
+
+implementation DatalogRuleEngineSpikeTestModuleImpl {
+  paths {
+    "packages/shp-checker/src/experiments/datalog-rule-engine-spike.test.ts"
+  }
+  conforms_to DatalogRuleEngineSpikeTestModule
+}

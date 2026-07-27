@@ -1,0 +1,113 @@
+module shape.generated.ast.packages.shp_checker.src.experiments.datalog_rule_engine_spike
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource DatalogRuleEngineSpikeModuleBoundValueAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/experiments/datalog-rule-engine-spike.ts#boundValue")
+  fingerprint ast.semantic_subtree_v1("sha256:5d6e019e0bd8f7d8462df435f0b29357f828f46b960e1bcebc992f6b7eea1196")
+}
+
+resource DatalogRuleEngineSpikeModuleEvaluateMissingGrantPrototypeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/experiments/datalog-rule-engine-spike.ts#evaluateMissingGrantPrototype")
+  fingerprint ast.semantic_subtree_v1("sha256:49481a1968449467b41a467fff67772c76deef09f5952f578518a0e35261c285")
+}
+
+resource DatalogRuleEngineSpikeModuleEvaluateRuleAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/experiments/datalog-rule-engine-spike.ts#evaluateRule")
+  fingerprint ast.semantic_subtree_v1("sha256:5e17ca88712770b0214062bc880a1070fcb23e50d3829277bb9808935e626ba1")
+}
+
+resource DatalogRuleEngineSpikeModuleToTupleAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/experiments/datalog-rule-engine-spike.ts#toTuple")
+  fingerprint ast.semantic_subtree_v1("sha256:f369e9e1d3d93cb25cd101a80dfe7e3b2a5a149064878bf5ddca3880f59ac9d4")
+}
+
+resource DatalogRuleEngineSpikeModuleTupleKeyAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/experiments/datalog-rule-engine-spike.ts#tupleKey")
+  fingerprint ast.semantic_subtree_v1("sha256:46094bcbc4be2aa4b0099eaa9efb21ddaa8f6582eefce489a28ab873340cb13f")
+}
+
+resource DatalogRuleEngineSpikeModuleUnifyAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/experiments/datalog-rule-engine-spike.ts#unify")
+  fingerprint ast.semantic_subtree_v1("sha256:372ff25548feba09831f77de773b8d3b587f28822131d7a65f8ad36a8b95c4e3")
+}
+
+component DatalogRuleEngineSpikeModule : GeneratedCandidate {
+  fn boundValue
+    source ts("packages/shp-checker/src/experiments/datalog-rule-engine-spike.ts#boundValue")
+    effects unknown
+  fn evaluateMissingGrantPrototype
+    source ts("packages/shp-checker/src/experiments/datalog-rule-engine-spike.ts#evaluateMissingGrantPrototype")
+    effects unknown
+  fn evaluateRule
+    source ts("packages/shp-checker/src/experiments/datalog-rule-engine-spike.ts#evaluateRule")
+    effects unknown
+  fn toTuple
+    source ts("packages/shp-checker/src/experiments/datalog-rule-engine-spike.ts#toTuple")
+    effects unknown
+  fn tupleKey
+    source ts("packages/shp-checker/src/experiments/datalog-rule-engine-spike.ts#tupleKey")
+    effects unknown
+  fn unify
+    source ts("packages/shp-checker/src/experiments/datalog-rule-engine-spike.ts#unify")
+    effects unknown
+}
+
+relation DatalogRuleEngineSpikeModuleBoundValueGeneratedFromDatalogRuleEngineSpikeModuleBoundValueAstAnchor {
+  kind generated_from
+  connects DatalogRuleEngineSpikeModule -> DatalogRuleEngineSpikeModuleBoundValueAstAnchor
+  roles { DatalogRuleEngineSpikeModule as generated, DatalogRuleEngineSpikeModuleBoundValueAstAnchor as syntax }
+  expects DatalogRuleEngineSpikeModuleBoundValueAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5d6e019e0bd8f7d8462df435f0b29357f828f46b960e1bcebc992f6b7eea1196")
+  summary "fn DatalogRuleEngineSpikeModule.boundValue generated from typescript function_declaration at packages/shp-checker/src/experiments/datalog-rule-engine-spike.ts#boundValue."
+}
+
+relation DatalogRuleEngineSpikeModuleEvaluateMissingGrantPrototypeGeneratedFromDatalogRuleEngineSpikeModuleEvaluateMissingGrantPrototypeAstAnchor {
+  kind generated_from
+  connects DatalogRuleEngineSpikeModule -> DatalogRuleEngineSpikeModuleEvaluateMissingGrantPrototypeAstAnchor
+  roles { DatalogRuleEngineSpikeModule as generated, DatalogRuleEngineSpikeModuleEvaluateMissingGrantPrototypeAstAnchor as syntax }
+  expects DatalogRuleEngineSpikeModuleEvaluateMissingGrantPrototypeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:49481a1968449467b41a467fff67772c76deef09f5952f578518a0e35261c285")
+  summary "fn DatalogRuleEngineSpikeModule.evaluateMissingGrantPrototype generated from typescript function_declaration at packages/shp-checker/src/experiments/datalog-rule-engine-spike.ts#evaluateMissingGrantPrototype."
+}
+
+relation DatalogRuleEngineSpikeModuleEvaluateRuleGeneratedFromDatalogRuleEngineSpikeModuleEvaluateRuleAstAnchor {
+  kind generated_from
+  connects DatalogRuleEngineSpikeModule -> DatalogRuleEngineSpikeModuleEvaluateRuleAstAnchor
+  roles { DatalogRuleEngineSpikeModule as generated, DatalogRuleEngineSpikeModuleEvaluateRuleAstAnchor as syntax }
+  expects DatalogRuleEngineSpikeModuleEvaluateRuleAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5e17ca88712770b0214062bc880a1070fcb23e50d3829277bb9808935e626ba1")
+  summary "fn DatalogRuleEngineSpikeModule.evaluateRule generated from typescript function_declaration at packages/shp-checker/src/experiments/datalog-rule-engine-spike.ts#evaluateRule."
+}
+
+relation DatalogRuleEngineSpikeModuleToTupleGeneratedFromDatalogRuleEngineSpikeModuleToTupleAstAnchor {
+  kind generated_from
+  connects DatalogRuleEngineSpikeModule -> DatalogRuleEngineSpikeModuleToTupleAstAnchor
+  roles { DatalogRuleEngineSpikeModule as generated, DatalogRuleEngineSpikeModuleToTupleAstAnchor as syntax }
+  expects DatalogRuleEngineSpikeModuleToTupleAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f369e9e1d3d93cb25cd101a80dfe7e3b2a5a149064878bf5ddca3880f59ac9d4")
+  summary "fn DatalogRuleEngineSpikeModule.toTuple generated from typescript function_declaration at packages/shp-checker/src/experiments/datalog-rule-engine-spike.ts#toTuple."
+}
+
+relation DatalogRuleEngineSpikeModuleTupleKeyGeneratedFromDatalogRuleEngineSpikeModuleTupleKeyAstAnchor {
+  kind generated_from
+  connects DatalogRuleEngineSpikeModule -> DatalogRuleEngineSpikeModuleTupleKeyAstAnchor
+  roles { DatalogRuleEngineSpikeModule as generated, DatalogRuleEngineSpikeModuleTupleKeyAstAnchor as syntax }
+  expects DatalogRuleEngineSpikeModuleTupleKeyAstAnchor fingerprint ast.semantic_subtree_v1("sha256:46094bcbc4be2aa4b0099eaa9efb21ddaa8f6582eefce489a28ab873340cb13f")
+  summary "fn DatalogRuleEngineSpikeModule.tupleKey generated from typescript function_declaration at packages/shp-checker/src/experiments/datalog-rule-engine-spike.ts#tupleKey."
+}
+
+relation DatalogRuleEngineSpikeModuleUnifyGeneratedFromDatalogRuleEngineSpikeModuleUnifyAstAnchor {
+  kind generated_from
+  connects DatalogRuleEngineSpikeModule -> DatalogRuleEngineSpikeModuleUnifyAstAnchor
+  roles { DatalogRuleEngineSpikeModule as generated, DatalogRuleEngineSpikeModuleUnifyAstAnchor as syntax }
+  expects DatalogRuleEngineSpikeModuleUnifyAstAnchor fingerprint ast.semantic_subtree_v1("sha256:372ff25548feba09831f77de773b8d3b587f28822131d7a65f8ad36a8b95c4e3")
+  summary "fn DatalogRuleEngineSpikeModule.unify generated from typescript function_declaration at packages/shp-checker/src/experiments/datalog-rule-engine-spike.ts#unify."
+}
+
+implementation DatalogRuleEngineSpikeModuleImpl {
+  paths {
+    "packages/shp-checker/src/experiments/datalog-rule-engine-spike.ts"
+  }
+  conforms_to DatalogRuleEngineSpikeModule
+}
