@@ -17,6 +17,7 @@ shp explain SYMBOL [files...]
 shp graph all [--kind KIND] [files...]
 shp graph show SYMBOL [--kind KIND] [files...]
 shp graph stats [--kind KIND] [files...]
+shp lsp
 shp memory [files...]
 shp obligations [--strict-freshness] [files...]
 shp author --changed-files changed.txt --component ComponentName [--module module.name]
@@ -45,6 +46,7 @@ shape/**/*.shape
 | `graph all` | Print the entire hypergraph. Filter by `--kind KIND`. |
 | `graph show` | Print the hyperedges incident to a symbol. Filter by `--kind KIND`. |
 | `graph stats` | Print aggregate hypergraph counts. Filter by `--kind KIND`. |
+| `lsp` | Serve Shape diagnostics and editor requests over the Language Server Protocol on stdio. |
 | `memory` | List rationale and memory entries grouped by protected target. |
 | `obligations` | List open design-memory obligations from checker diagnostics. With `--strict-freshness`, also list design memory whose `review_by` date is past. |
 | `author` | Generate a conservative global-model draft from changed files. |
@@ -68,6 +70,7 @@ shp graph show Gateway
 shp graph show Gateway --kind calls
 shp graph stats
 shp graph stats --kind calls
+shp lsp
 shp memory
 shp obligations
 shp author --changed-files changed.txt --component AuditStore
@@ -175,6 +178,28 @@ Hypergraph stats
 ```
 
 `graph stats` combines with `--kind KIND` to scope the hyperedge, incidence, and arity counts to a single relation kind. It is a whole-graph mode and does not accept a symbol. Vertex counts always reflect the full model; `isolated vertices` then reports vertices that do not participate in any hyperedge of the selected kind.
+
+## Language server
+
+`shp lsp` reserves standard input and output for Language Server Protocol
+messages. Configure an editor to launch the `shp` executable with `lsp` as its
+only argument. Do not wrap it with a command that writes banners or logs to
+stdout.
+
+The server advertises incremental document synchronization, diagnostics, hover,
+go to definition, completion, and whole-document formatting. Format-on-save is
+client driven: an editor with that setting enabled sends
+`textDocument/formatting`, and Shape returns the canonical full-document edit.
+
+At initialization, the server discovers `shape/**/*.shape` under every initial
+file-backed workspace folder. Open documents override the corresponding disk
+source, and open Shape documents outside that default tree are included too.
+Semantic diagnostics therefore see imported workspace modules together. Closing
+or fixing a document publishes an empty diagnostic set to clear stale problems.
+
+Definitions resolve in the current document first. If the declaration is
+external, the server returns it only when exactly one workspace document
+matches; ambiguous names do not jump to an arbitrary file.
 
 ## Memory and obligations
 

@@ -1,0 +1,33 @@
+module shape.generated.ast.packages.shp_cli.src.commands.lsp.impl
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource ImplModuleLspAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/commands/lsp/impl.ts#lsp")
+  fingerprint ast.semantic_subtree_v1("sha256:99b15137fd773c46ae91e4354971031a61702b7ee1c59f2e4288fa65d12f930b")
+}
+
+component ImplModule : GeneratedCandidate {
+  fn lsp
+    source ts("packages/shp-cli/src/commands/lsp/impl.ts#lsp")
+    effects unknown
+}
+
+relation ImplModuleLspGeneratedFromImplModuleLspAstAnchor {
+  kind generated_from
+  connects ImplModule -> ImplModuleLspAstAnchor
+  roles { ImplModule as generated, ImplModuleLspAstAnchor as syntax }
+  expects ImplModuleLspAstAnchor fingerprint ast.semantic_subtree_v1("sha256:99b15137fd773c46ae91e4354971031a61702b7ee1c59f2e4288fa65d12f930b")
+  summary "fn ImplModule.lsp generated from typescript function_declaration at packages/shp-cli/src/commands/lsp/impl.ts#lsp."
+}
+
+implementation ImplModuleImpl {
+  paths {
+    "packages/shp-cli/src/commands/lsp/impl.ts"
+  }
+  conforms_to ImplModule
+}

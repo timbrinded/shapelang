@@ -33,7 +33,7 @@ Shape is meant to sit in a feedback loop:
 4. Editor and CLI helpers explain what to fix.
 5. The reviewer turns uncertainty into explicit effects, rationale, memory, or reevaluation.
 
-The helper APIs keep that loop from becoming a collection of one-off scripts. They also make it possible to build a language server later without moving semantics into the CLI.
+The helper APIs keep that loop from becoming a collection of one-off scripts. The `shp lsp` adapter now exposes them through the Language Server Protocol without moving semantics into the CLI.
 
 The formatter and editor helpers also understand repository binding declarations. Bindings remain semantic checker claims, but helper surfaces should keep them readable, discoverable, and highlighted like other top-level Shape declarations.
 
@@ -86,11 +86,12 @@ The formatter does not approve the model. It only makes the model easier to insp
 
 ## Editor Helpers
 
-The editor helpers expose building blocks that a future language server can use:
+The editor helpers expose the building blocks used by `shp lsp`:
 
 | Helper | Purpose |
 | --- | --- |
 | `getEditorDiagnostics` | Parse and check a source string, then return editor-shaped diagnostics. |
+| `getEditorDiagnosticsForDocuments` | Parse and check a deterministic document set so imports participate in one semantic model and diagnostics retain their source file. |
 | `getCompletions` | Offer language keywords, known prelude names, and declarations from the current document. |
 | `getHoverText` | Explain prelude shape traits or show `explain` output for known symbols. |
 | `getDefinitionLocation` | Locate declarations for resources, traits, components, rules, contexts, and functions. |
@@ -112,6 +113,33 @@ flowchart TD
 ```
 
 For a new reader, the practical takeaway is that editor behavior is a projection of checker behavior. Hover text can teach what `RefactorSensitive` requires because the checker already has that prelude concept. Diagnostics can point to missing context because semantic rules already found the obligation.
+
+## Language Server
+
+`shp lsp` is a small stdio transport around the editor helpers. It advertises
+incremental text synchronization, diagnostics, hover, go to definition,
+completion, and whole-document formatting. The transport converts between LSP's
+zero-based UTF-16 positions and the helpers' source locations; it does not
+implement an alternative parser or checker.
+
+For semantic diagnostics, the server discovers `shape/**/*.shape` beneath each
+initial workspace folder and overlays the current text of open documents. That
+full document set is passed to `getEditorDiagnosticsForDocuments`, so a valid
+file does not report unknown names merely because its imported module lives in
+another file. Validation results are generation-checked before publication, and
+previously published URIs receive an empty diagnostic set when their problems or
+documents disappear.
+
+Hover and definitions begin with the current document. An external definition
+is returned only when exactly one other workspace document matches the
+reference; ambiguous declarations deliberately return no location. Completion
+candidates are the deterministic union of the open workspace snapshot, with
+replacement ranges derived from the candidates so phrases such as
+`forbid path` replace the full typed prefix.
+
+The server's formatting capability returns the same canonical output as
+`formatOnSave`. Editors implement format-on-save by requesting
+`textDocument/formatting`; the server never writes the document itself.
 
 ## Authoring Helpers
 

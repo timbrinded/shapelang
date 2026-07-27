@@ -38,7 +38,7 @@ const PASS_FIXTURE = "fixtures/pass/append_only_append/audit.shape";
 const FAIL_FIXTURE = "fixtures/fail/append_only_hard_delete/audit.shape";
 const UNKNOWN_EFFECTS_FIXTURE = "fixtures/fail/unknown_effects/audit.shape";
 
-// The 11 commands documented in docs-site/src/content/docs/reference/cli.md.
+// The 12 commands documented in docs-site/src/content/docs/reference/cli.md.
 // The help-completeness test is driven from this list, so adding a command
 // without surfacing it in `shp --help` will break invariant 4.
 const ALL_COMMANDS = [
@@ -47,6 +47,7 @@ const ALL_COMMANDS = [
   "fmt",
   "explain",
   "graph",
+  "lsp",
   "memory",
   "obligations",
   "author",

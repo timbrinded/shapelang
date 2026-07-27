@@ -1,0 +1,97 @@
+module shape.generated.ast.packages.shp_cli.src.lsp.positions
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource PositionsModuleCompletionCandidateStartsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/lsp/positions.ts#completionCandidateStarts")
+  fingerprint ast.semantic_subtree_v1("sha256:5d20d66bb4fb3e4ea740790b5667b8dab36a0f3b96febabe6a563fc4a53b3bf6")
+}
+
+resource PositionsModuleCompletionReplacementRangeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/lsp/positions.ts#completionReplacementRange")
+  fingerprint ast.semantic_subtree_v1("sha256:14ca2562d33a9a8521bc5fdba192ee39eadb7044b4c08588c7e47aad6eed457f")
+}
+
+resource PositionsModuleReferenceContainingOffsetAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/lsp/positions.ts#referenceContainingOffset")
+  fingerprint ast.semantic_subtree_v1("sha256:e36f9a3ec1ff15e681181a48de43ff198dfa48553127e8d239bbdc621bf9b4ca")
+}
+
+resource PositionsModuleShapeCompletionContextAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/lsp/positions.ts#shapeCompletionContext")
+  fingerprint ast.semantic_subtree_v1("sha256:8aad350e1158176d36ea078b145a3120141a82c9621be37321a52f7fd2c8af72")
+}
+
+resource PositionsModuleShapeReferenceAtPositionAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/lsp/positions.ts#shapeReferenceAtPosition")
+  fingerprint ast.semantic_subtree_v1("sha256:aaa2bea67e1514881004729975790b6615da4b52e90eef171b8c9df210d951dd")
+}
+
+component PositionsModule : GeneratedCandidate {
+  fn completionCandidateStarts
+    source ts("packages/shp-cli/src/lsp/positions.ts#completionCandidateStarts")
+    effects unknown
+  fn completionReplacementRange
+    source ts("packages/shp-cli/src/lsp/positions.ts#completionReplacementRange")
+    effects unknown
+  fn referenceContainingOffset
+    source ts("packages/shp-cli/src/lsp/positions.ts#referenceContainingOffset")
+    effects unknown
+  fn shapeCompletionContext
+    source ts("packages/shp-cli/src/lsp/positions.ts#shapeCompletionContext")
+    effects unknown
+  fn shapeReferenceAtPosition
+    source ts("packages/shp-cli/src/lsp/positions.ts#shapeReferenceAtPosition")
+    effects unknown
+}
+
+relation PositionsModuleCompletionCandidateStartsGeneratedFromPositionsModuleCompletionCandidateStartsAstAnchor {
+  kind generated_from
+  connects PositionsModule -> PositionsModuleCompletionCandidateStartsAstAnchor
+  roles { PositionsModule as generated, PositionsModuleCompletionCandidateStartsAstAnchor as syntax }
+  expects PositionsModuleCompletionCandidateStartsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5d20d66bb4fb3e4ea740790b5667b8dab36a0f3b96febabe6a563fc4a53b3bf6")
+  summary "fn PositionsModule.completionCandidateStarts generated from typescript function_declaration at packages/shp-cli/src/lsp/positions.ts#completionCandidateStarts."
+}
+
+relation PositionsModuleCompletionReplacementRangeGeneratedFromPositionsModuleCompletionReplacementRangeAstAnchor {
+  kind generated_from
+  connects PositionsModule -> PositionsModuleCompletionReplacementRangeAstAnchor
+  roles { PositionsModule as generated, PositionsModuleCompletionReplacementRangeAstAnchor as syntax }
+  expects PositionsModuleCompletionReplacementRangeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:14ca2562d33a9a8521bc5fdba192ee39eadb7044b4c08588c7e47aad6eed457f")
+  summary "fn PositionsModule.completionReplacementRange generated from typescript function_declaration at packages/shp-cli/src/lsp/positions.ts#completionReplacementRange."
+}
+
+relation PositionsModuleReferenceContainingOffsetGeneratedFromPositionsModuleReferenceContainingOffsetAstAnchor {
+  kind generated_from
+  connects PositionsModule -> PositionsModuleReferenceContainingOffsetAstAnchor
+  roles { PositionsModule as generated, PositionsModuleReferenceContainingOffsetAstAnchor as syntax }
+  expects PositionsModuleReferenceContainingOffsetAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e36f9a3ec1ff15e681181a48de43ff198dfa48553127e8d239bbdc621bf9b4ca")
+  summary "fn PositionsModule.referenceContainingOffset generated from typescript function_declaration at packages/shp-cli/src/lsp/positions.ts#referenceContainingOffset."
+}
+
+relation PositionsModuleShapeCompletionContextGeneratedFromPositionsModuleShapeCompletionContextAstAnchor {
+  kind generated_from
+  connects PositionsModule -> PositionsModuleShapeCompletionContextAstAnchor
+  roles { PositionsModule as generated, PositionsModuleShapeCompletionContextAstAnchor as syntax }
+  expects PositionsModuleShapeCompletionContextAstAnchor fingerprint ast.semantic_subtree_v1("sha256:8aad350e1158176d36ea078b145a3120141a82c9621be37321a52f7fd2c8af72")
+  summary "fn PositionsModule.shapeCompletionContext generated from typescript function_declaration at packages/shp-cli/src/lsp/positions.ts#shapeCompletionContext."
+}
+
+relation PositionsModuleShapeReferenceAtPositionGeneratedFromPositionsModuleShapeReferenceAtPositionAstAnchor {
+  kind generated_from
+  connects PositionsModule -> PositionsModuleShapeReferenceAtPositionAstAnchor
+  roles { PositionsModule as generated, PositionsModuleShapeReferenceAtPositionAstAnchor as syntax }
+  expects PositionsModuleShapeReferenceAtPositionAstAnchor fingerprint ast.semantic_subtree_v1("sha256:aaa2bea67e1514881004729975790b6615da4b52e90eef171b8c9df210d951dd")
+  summary "fn PositionsModule.shapeReferenceAtPosition generated from typescript function_declaration at packages/shp-cli/src/lsp/positions.ts#shapeReferenceAtPosition."
+}
+
+implementation PositionsModuleImpl {
+  paths {
+    "packages/shp-cli/src/lsp/positions.ts"
+  }
+  conforms_to PositionsModule
+}

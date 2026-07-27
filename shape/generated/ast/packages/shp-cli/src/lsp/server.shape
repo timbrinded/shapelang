@@ -1,0 +1,225 @@
+module shape.generated.ast.packages.shp_cli.src.lsp.server
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource ServerModuleCollectWorkspaceSnapshotAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/lsp/server.ts#collectWorkspaceSnapshot")
+  fingerprint ast.semantic_subtree_v1("sha256:f50f87ad952afab2152edf748e58f7469013b11f13c9041cb4e01d8f043d96ee")
+}
+
+resource ServerModuleDefinitionMatchesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/lsp/server.ts#definitionMatches")
+  fingerprint ast.semantic_subtree_v1("sha256:0b7d53660922ae51a1c4613b51acd36791cdffd7079e0a28ad528f17086a22c4")
+}
+
+resource ServerModuleDiagnosticsForSnapshotAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/lsp/server.ts#diagnosticsForSnapshot")
+  fingerprint ast.semantic_subtree_v1("sha256:76d1781b38810f9d455a2c2dd375174cf6d85c7c7652285094a53689a2cd80e2")
+}
+
+resource ServerModuleFilePathForFileUriAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/lsp/server.ts#filePathForFileUri")
+  fingerprint ast.semantic_subtree_v1("sha256:a2a7eb3b453ef9cab93c78e36c00dde5e59a9276ceb52681281c675c958ae0ad")
+}
+
+resource ServerModuleHasShapeFactsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/lsp/server.ts#hasShapeFacts")
+  fingerprint ast.semantic_subtree_v1("sha256:12657efcfc9e212eb22f48096eefdcf7e08a7c43eeadc73af441782eaf3a0d70")
+}
+
+resource ServerModuleIdentityForUriAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/lsp/server.ts#identityForUri")
+  fingerprint ast.semantic_subtree_v1("sha256:427af040ebff575eef4c9658854a7946dbec62c8994a46d00b48f9b9ecfb5af1")
+}
+
+resource ServerModuleRegisterShapeLanguageServerAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/lsp/server.ts#registerShapeLanguageServer")
+  fingerprint ast.semantic_subtree_v1("sha256:f74761c53c4506e337341b1d9a06fe0f6a7719c2c3fe3f8b6ec50cb31f037ff8")
+}
+
+resource ServerModuleSnapshotWithOpenDocumentsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/lsp/server.ts#snapshotWithOpenDocuments")
+  fingerprint ast.semantic_subtree_v1("sha256:9f974b44a939ffcbab53c603905c0a45de2378be5321c6d76666503974c215d0")
+}
+
+resource ServerModuleStartShapeLanguageServerAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/lsp/server.ts#startShapeLanguageServer")
+  fingerprint ast.semantic_subtree_v1("sha256:71a53a6c349b252418d26f54475985541309ea765c0f409a91d9d816e1e0568a")
+}
+
+resource ServerModuleToProtocolDiagnosticAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/lsp/server.ts#toProtocolDiagnostic")
+  fingerprint ast.semantic_subtree_v1("sha256:b13d45d9668823903bb10df1a9ad1b712ec23ff6385e10f092955f6b79f53e63")
+}
+
+resource ServerModuleWorkspaceCompletionsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/lsp/server.ts#workspaceCompletions")
+  fingerprint ast.semantic_subtree_v1("sha256:09efe402c06a2afa335c04bf8510fa2a64be5cc457d365878cf2f0b79aa8cbf5")
+}
+
+resource ServerModuleWorkspaceRootsFromInitializeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/lsp/server.ts#workspaceRootsFromInitialize")
+  fingerprint ast.semantic_subtree_v1("sha256:8aaade74676d46cf62f4a88be51fd791599bc6e579ca83b7755ac5b404f7e43e")
+}
+
+resource ServerModuleZeroWidthDefinitionRangeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/lsp/server.ts#zeroWidthDefinitionRange")
+  fingerprint ast.semantic_subtree_v1("sha256:3a3f8a03c20a2469fbce48820f04370296c2d2345e34f19ce5f452440f83d8e6")
+}
+
+component ServerModule : GeneratedCandidate {
+  fn collectWorkspaceSnapshot
+    source ts("packages/shp-cli/src/lsp/server.ts#collectWorkspaceSnapshot")
+    effects unknown
+  fn definitionMatches
+    source ts("packages/shp-cli/src/lsp/server.ts#definitionMatches")
+    effects unknown
+  fn diagnosticsForSnapshot
+    source ts("packages/shp-cli/src/lsp/server.ts#diagnosticsForSnapshot")
+    effects unknown
+  fn filePathForFileUri
+    source ts("packages/shp-cli/src/lsp/server.ts#filePathForFileUri")
+    effects unknown
+  fn hasShapeFacts
+    source ts("packages/shp-cli/src/lsp/server.ts#hasShapeFacts")
+    effects unknown
+  fn identityForUri
+    source ts("packages/shp-cli/src/lsp/server.ts#identityForUri")
+    effects unknown
+  fn registerShapeLanguageServer
+    source ts("packages/shp-cli/src/lsp/server.ts#registerShapeLanguageServer")
+    effects unknown
+  fn snapshotWithOpenDocuments
+    source ts("packages/shp-cli/src/lsp/server.ts#snapshotWithOpenDocuments")
+    effects unknown
+  fn startShapeLanguageServer
+    source ts("packages/shp-cli/src/lsp/server.ts#startShapeLanguageServer")
+    effects unknown
+  fn toProtocolDiagnostic
+    source ts("packages/shp-cli/src/lsp/server.ts#toProtocolDiagnostic")
+    effects unknown
+  fn workspaceCompletions
+    source ts("packages/shp-cli/src/lsp/server.ts#workspaceCompletions")
+    effects unknown
+  fn workspaceRootsFromInitialize
+    source ts("packages/shp-cli/src/lsp/server.ts#workspaceRootsFromInitialize")
+    effects unknown
+  fn zeroWidthDefinitionRange
+    source ts("packages/shp-cli/src/lsp/server.ts#zeroWidthDefinitionRange")
+    effects unknown
+}
+
+relation ServerModuleCollectWorkspaceSnapshotGeneratedFromServerModuleCollectWorkspaceSnapshotAstAnchor {
+  kind generated_from
+  connects ServerModule -> ServerModuleCollectWorkspaceSnapshotAstAnchor
+  roles { ServerModule as generated, ServerModuleCollectWorkspaceSnapshotAstAnchor as syntax }
+  expects ServerModuleCollectWorkspaceSnapshotAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f50f87ad952afab2152edf748e58f7469013b11f13c9041cb4e01d8f043d96ee")
+  summary "fn ServerModule.collectWorkspaceSnapshot generated from typescript function_declaration at packages/shp-cli/src/lsp/server.ts#collectWorkspaceSnapshot."
+}
+
+relation ServerModuleDefinitionMatchesGeneratedFromServerModuleDefinitionMatchesAstAnchor {
+  kind generated_from
+  connects ServerModule -> ServerModuleDefinitionMatchesAstAnchor
+  roles { ServerModule as generated, ServerModuleDefinitionMatchesAstAnchor as syntax }
+  expects ServerModuleDefinitionMatchesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0b7d53660922ae51a1c4613b51acd36791cdffd7079e0a28ad528f17086a22c4")
+  summary "fn ServerModule.definitionMatches generated from typescript function_declaration at packages/shp-cli/src/lsp/server.ts#definitionMatches."
+}
+
+relation ServerModuleDiagnosticsForSnapshotGeneratedFromServerModuleDiagnosticsForSnapshotAstAnchor {
+  kind generated_from
+  connects ServerModule -> ServerModuleDiagnosticsForSnapshotAstAnchor
+  roles { ServerModule as generated, ServerModuleDiagnosticsForSnapshotAstAnchor as syntax }
+  expects ServerModuleDiagnosticsForSnapshotAstAnchor fingerprint ast.semantic_subtree_v1("sha256:76d1781b38810f9d455a2c2dd375174cf6d85c7c7652285094a53689a2cd80e2")
+  summary "fn ServerModule.diagnosticsForSnapshot generated from typescript function_declaration at packages/shp-cli/src/lsp/server.ts#diagnosticsForSnapshot."
+}
+
+relation ServerModuleFilePathForFileUriGeneratedFromServerModuleFilePathForFileUriAstAnchor {
+  kind generated_from
+  connects ServerModule -> ServerModuleFilePathForFileUriAstAnchor
+  roles { ServerModule as generated, ServerModuleFilePathForFileUriAstAnchor as syntax }
+  expects ServerModuleFilePathForFileUriAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a2a7eb3b453ef9cab93c78e36c00dde5e59a9276ceb52681281c675c958ae0ad")
+  summary "fn ServerModule.filePathForFileUri generated from typescript function_declaration at packages/shp-cli/src/lsp/server.ts#filePathForFileUri."
+}
+
+relation ServerModuleHasShapeFactsGeneratedFromServerModuleHasShapeFactsAstAnchor {
+  kind generated_from
+  connects ServerModule -> ServerModuleHasShapeFactsAstAnchor
+  roles { ServerModule as generated, ServerModuleHasShapeFactsAstAnchor as syntax }
+  expects ServerModuleHasShapeFactsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:12657efcfc9e212eb22f48096eefdcf7e08a7c43eeadc73af441782eaf3a0d70")
+  summary "fn ServerModule.hasShapeFacts generated from typescript function_declaration at packages/shp-cli/src/lsp/server.ts#hasShapeFacts."
+}
+
+relation ServerModuleIdentityForUriGeneratedFromServerModuleIdentityForUriAstAnchor {
+  kind generated_from
+  connects ServerModule -> ServerModuleIdentityForUriAstAnchor
+  roles { ServerModule as generated, ServerModuleIdentityForUriAstAnchor as syntax }
+  expects ServerModuleIdentityForUriAstAnchor fingerprint ast.semantic_subtree_v1("sha256:427af040ebff575eef4c9658854a7946dbec62c8994a46d00b48f9b9ecfb5af1")
+  summary "fn ServerModule.identityForUri generated from typescript function_declaration at packages/shp-cli/src/lsp/server.ts#identityForUri."
+}
+
+relation ServerModuleRegisterShapeLanguageServerGeneratedFromServerModuleRegisterShapeLanguageServerAstAnchor {
+  kind generated_from
+  connects ServerModule -> ServerModuleRegisterShapeLanguageServerAstAnchor
+  roles { ServerModule as generated, ServerModuleRegisterShapeLanguageServerAstAnchor as syntax }
+  expects ServerModuleRegisterShapeLanguageServerAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f74761c53c4506e337341b1d9a06fe0f6a7719c2c3fe3f8b6ec50cb31f037ff8")
+  summary "fn ServerModule.registerShapeLanguageServer generated from typescript function_declaration at packages/shp-cli/src/lsp/server.ts#registerShapeLanguageServer."
+}
+
+relation ServerModuleSnapshotWithOpenDocumentsGeneratedFromServerModuleSnapshotWithOpenDocumentsAstAnchor {
+  kind generated_from
+  connects ServerModule -> ServerModuleSnapshotWithOpenDocumentsAstAnchor
+  roles { ServerModule as generated, ServerModuleSnapshotWithOpenDocumentsAstAnchor as syntax }
+  expects ServerModuleSnapshotWithOpenDocumentsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9f974b44a939ffcbab53c603905c0a45de2378be5321c6d76666503974c215d0")
+  summary "fn ServerModule.snapshotWithOpenDocuments generated from typescript function_declaration at packages/shp-cli/src/lsp/server.ts#snapshotWithOpenDocuments."
+}
+
+relation ServerModuleStartShapeLanguageServerGeneratedFromServerModuleStartShapeLanguageServerAstAnchor {
+  kind generated_from
+  connects ServerModule -> ServerModuleStartShapeLanguageServerAstAnchor
+  roles { ServerModule as generated, ServerModuleStartShapeLanguageServerAstAnchor as syntax }
+  expects ServerModuleStartShapeLanguageServerAstAnchor fingerprint ast.semantic_subtree_v1("sha256:71a53a6c349b252418d26f54475985541309ea765c0f409a91d9d816e1e0568a")
+  summary "fn ServerModule.startShapeLanguageServer generated from typescript function_declaration at packages/shp-cli/src/lsp/server.ts#startShapeLanguageServer."
+}
+
+relation ServerModuleToProtocolDiagnosticGeneratedFromServerModuleToProtocolDiagnosticAstAnchor {
+  kind generated_from
+  connects ServerModule -> ServerModuleToProtocolDiagnosticAstAnchor
+  roles { ServerModule as generated, ServerModuleToProtocolDiagnosticAstAnchor as syntax }
+  expects ServerModuleToProtocolDiagnosticAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b13d45d9668823903bb10df1a9ad1b712ec23ff6385e10f092955f6b79f53e63")
+  summary "fn ServerModule.toProtocolDiagnostic generated from typescript function_declaration at packages/shp-cli/src/lsp/server.ts#toProtocolDiagnostic."
+}
+
+relation ServerModuleWorkspaceCompletionsGeneratedFromServerModuleWorkspaceCompletionsAstAnchor {
+  kind generated_from
+  connects ServerModule -> ServerModuleWorkspaceCompletionsAstAnchor
+  roles { ServerModule as generated, ServerModuleWorkspaceCompletionsAstAnchor as syntax }
+  expects ServerModuleWorkspaceCompletionsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:09efe402c06a2afa335c04bf8510fa2a64be5cc457d365878cf2f0b79aa8cbf5")
+  summary "fn ServerModule.workspaceCompletions generated from typescript function_declaration at packages/shp-cli/src/lsp/server.ts#workspaceCompletions."
+}
+
+relation ServerModuleWorkspaceRootsFromInitializeGeneratedFromServerModuleWorkspaceRootsFromInitializeAstAnchor {
+  kind generated_from
+  connects ServerModule -> ServerModuleWorkspaceRootsFromInitializeAstAnchor
+  roles { ServerModule as generated, ServerModuleWorkspaceRootsFromInitializeAstAnchor as syntax }
+  expects ServerModuleWorkspaceRootsFromInitializeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:8aaade74676d46cf62f4a88be51fd791599bc6e579ca83b7755ac5b404f7e43e")
+  summary "fn ServerModule.workspaceRootsFromInitialize generated from typescript function_declaration at packages/shp-cli/src/lsp/server.ts#workspaceRootsFromInitialize."
+}
+
+relation ServerModuleZeroWidthDefinitionRangeGeneratedFromServerModuleZeroWidthDefinitionRangeAstAnchor {
+  kind generated_from
+  connects ServerModule -> ServerModuleZeroWidthDefinitionRangeAstAnchor
+  roles { ServerModule as generated, ServerModuleZeroWidthDefinitionRangeAstAnchor as syntax }
+  expects ServerModuleZeroWidthDefinitionRangeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3a3f8a03c20a2469fbce48820f04370296c2d2345e34f19ce5f452440f83d8e6")
+  summary "fn ServerModule.zeroWidthDefinitionRange generated from typescript function_declaration at packages/shp-cli/src/lsp/server.ts#zeroWidthDefinitionRange."
+}
+
+implementation ServerModuleImpl {
+  paths {
+    "packages/shp-cli/src/lsp/server.ts"
+  }
+  conforms_to ServerModule
+}

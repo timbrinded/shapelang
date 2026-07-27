@@ -913,6 +913,20 @@
       ]
     },
     {
+      "module": "shape.generated.ast.packages.shp_cli.src.commands.lsp.command",
+      "path": "shape/generated/ast/packages/shp-cli/src/commands/lsp/command.shape",
+      "sources": [
+        "packages/shp-cli/src/commands/lsp/command.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_cli.src.commands.lsp.impl",
+      "path": "shape/generated/ast/packages/shp-cli/src/commands/lsp/impl.shape",
+      "sources": [
+        "packages/shp-cli/src/commands/lsp/impl.ts"
+      ]
+    },
+    {
       "module": "shape.generated.ast.packages.shp_cli.src.commands.generated_memory.command",
       "path": "shape/generated/ast/packages/shp-cli/src/commands/memory/command.shape",
       "sources": [
@@ -994,6 +1008,34 @@
       "path": "shape/generated/ast/packages/shp-cli/src/io.shape",
       "sources": [
         "packages/shp-cli/src/io.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_cli.src.lsp.positions_test",
+      "path": "shape/generated/ast/packages/shp-cli/src/lsp/positions.test.shape",
+      "sources": [
+        "packages/shp-cli/src/lsp/positions.test.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_cli.src.lsp.positions",
+      "path": "shape/generated/ast/packages/shp-cli/src/lsp/positions.shape",
+      "sources": [
+        "packages/shp-cli/src/lsp/positions.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_cli.src.lsp.server_test",
+      "path": "shape/generated/ast/packages/shp-cli/src/lsp/server.test.shape",
+      "sources": [
+        "packages/shp-cli/src/lsp/server.test.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_cli.src.lsp.server",
+      "path": "shape/generated/ast/packages/shp-cli/src/lsp/server.shape",
+      "sources": [
+        "packages/shp-cli/src/lsp/server.ts"
       ]
     },
     {

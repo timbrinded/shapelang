@@ -36,13 +36,15 @@
     },
     "packages/shp-cli": {
       "name": "@shape/shp-cli",
-      "version": "0.3.0",
+      "version": "0.4.1",
       "bin": {
         "shp": "./src/index.ts",
       },
       "dependencies": {
         "@shape/shp-checker": "workspace:*",
         "@stricli/core": "^1.2.7",
+        "vscode-languageserver": "~9.0.1",
+        "vscode-languageserver-textdocument": "~1.0.12",
       },
     },
   },

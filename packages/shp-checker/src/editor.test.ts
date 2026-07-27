@@ -4,6 +4,7 @@ import {
   getCompletions,
   getDefinitionLocation,
   getEditorDiagnostics,
+  getEditorDiagnosticsForDocuments,
   getHoverText
 } from "./index.ts";
 import {
@@ -44,6 +45,121 @@ describe("Shape editor support", () => {
     expect(diagnostics[0]?.message).toContain("unknown effects");
   });
 
+  test("checks imported modules as one editor document set", async () => {
+    const documents = [
+      {
+        filePath: "/workspace/base.shape",
+        source: `module base
+
+resource AuditEvent
+`
+      },
+      {
+        filePath: "/workspace/consumer.shape",
+        source: `module consumer
+
+import base
+
+component AuditStore {
+  owns AuditEvent
+}
+`
+      }
+    ];
+
+    expect(getEditorDiagnostics(documents[1]?.source ?? "", documents[1]?.filePath)).toEqual([
+      expect.objectContaining({
+        message: expect.stringContaining("unknown resource")
+      })
+    ]);
+    expect(getEditorDiagnosticsForDocuments(documents)).toEqual([]);
+
+    const authoredModel = await Promise.all(
+      [
+        "shape/language.shape",
+        "shape/checker.shape",
+        "shape/tooling.shape",
+        "shape/delivery.shape"
+      ].map(async (filePath) => ({
+        filePath,
+        source: await Bun.file(filePath).text()
+      }))
+    );
+    const toolingOnly = getEditorDiagnostics(
+      authoredModel[2]?.source ?? "",
+      authoredModel[2]?.filePath
+    );
+
+    expect(
+      toolingOnly.some((diagnostic) => diagnostic.message.includes("unknown relation_endpoint"))
+    ).toBe(true);
+    expect(getEditorDiagnosticsForDocuments(authoredModel)).toEqual([]);
+  });
+
+  test("associates multi-document semantic diagnostics with their source file", () => {
+    const diagnostics = getEditorDiagnosticsForDocuments([
+      {
+        filePath: "/workspace/valid.shape",
+        source: `module valid
+
+resource Healthy
+`
+      },
+      {
+        filePath: "/workspace/broken.shape",
+        source: `module broken
+
+resource AuditEvent : AppendOnly
+
+component AuditStore {
+  owns AuditEvent
+
+  fn mystery
+    effects unknown
+}
+`
+      }
+    ]);
+
+    expect(diagnostics).toEqual([
+      expect.objectContaining({
+        filePath: "/workspace/broken.shape",
+        message: expect.stringContaining("unknown effects")
+      })
+    ]);
+  });
+
+  test("returns parse diagnostics before multi-document semantic diagnostics", () => {
+    const diagnostics = getEditorDiagnosticsForDocuments([
+      {
+        filePath: "/workspace/broken-semantics.shape",
+        source: `module broken
+
+resource AuditEvent : AppendOnly
+
+component AuditStore {
+  owns AuditEvent
+
+  fn mystery
+    effects unknown
+}
+`
+      },
+      {
+        filePath: "/workspace/broken-syntax.shape",
+        source: "component {"
+      }
+    ]);
+
+    expect(diagnostics.length).toBeGreaterThan(0);
+    expect(
+      diagnostics.every((diagnostic) => diagnostic.filePath === "/workspace/broken-syntax.shape")
+    ).toBe(true);
+    expect(diagnostics.every((diagnostic) => !diagnostic.message.includes("unknown effects"))).toBe(
+      true
+    );
+  });
+
   test("provides hover, definition, completions, and format-on-save", () => {
     expect(getHoverText(source, "AuditEvent")).toContain("kind: resource");
     expect(getHoverText(source, "PreserveInline")).toContain("InlineRationale");
@@ -77,6 +193,8 @@ describe("Shape editor support", () => {
 
   test("keeps qualified function definition lookup scoped to components", () => {
     const scopedSource = `
+      module scoped
+
       component Alpha {
         fn handle
           effects unknown
@@ -93,6 +211,24 @@ describe("Shape editor support", () => {
 
     expect(alpha?.line).toBeGreaterThan(1);
     expect(beta?.line).toBeGreaterThan(alpha?.line ?? 0);
+    if (!alpha) {
+      throw new Error("Expected Alpha.handle to have a definition.");
+    }
+    expect(getDefinitionLocation(scopedSource, "scoped::Alpha.handle")).toEqual({
+      ...alpha,
+      symbol: "scoped::Alpha.handle"
+    });
+    expect(getDefinitionLocation(scopedSource, "other::Alpha.handle")).toBeUndefined();
+  });
+
+  test("keeps module-qualified definition lookup scoped to the parsed module", () => {
+    expect(getDefinitionLocation(source, "audit::AuditEvent")).toEqual({
+      symbol: "audit::AuditEvent",
+      line: 4,
+      column: 5
+    });
+    expect(getDefinitionLocation(source, "other::AuditEvent")).toBeUndefined();
+    expect(getHoverText(source, "audit::AuditEvent")).toContain("kind: resource");
   });
 
   test("resolves exact context obligations and reevaluation targets", () => {
