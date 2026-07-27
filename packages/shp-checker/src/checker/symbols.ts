@@ -31,7 +31,7 @@ import type {
 } from "./model.ts";
 import { resolveModuleReference } from "../module-resolution.ts";
 import { KNOWN_PRELUDE_TRAITS, type ContextKind } from "../prelude.ts";
-import { declKey, functionKey, splitFunctionTarget, splitQualifiedName } from "./display.ts";
+import { functionKey, splitFunctionTarget, splitQualifiedName } from "./display.ts";
 import { describeProvenance, provenance } from "./provenance.ts";
 import {
   GENERATED_AST_DIR,
