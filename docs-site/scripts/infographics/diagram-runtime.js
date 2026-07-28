@@ -17,7 +17,9 @@
       right: { x: x + rect.width, y: y + rect.height / 2 },
       top: { x: x + rect.width / 2, y }
     };
-    return points[port] ?? points.center;
+    const point = points[port];
+    if (!point) throw new Error(`Unknown connector port: ${port}`);
+    return point;
   }
 
   function offsetPoint(point, port, distance) {
@@ -28,19 +30,22 @@
       right: { x: distance, y: 0 },
       top: { x: 0, y: -distance }
     };
-    const offset = offsets[port] ?? offsets.center;
+    const offset = offsets[port];
+    if (!offset) throw new Error(`Unknown connector port: ${port}`);
     return { x: point.x + offset.x, y: point.y + offset.y };
   }
 
   function curveByPorts(start, end, fromPort, toPort, tension) {
     const vectors = {
       bottom: { x: 0, y: 1 },
+      center: { x: 0, y: 0 },
       left: { x: -1, y: 0 },
       right: { x: 1, y: 0 },
       top: { x: 0, y: -1 }
     };
-    const sourceVector = vectors[fromPort] ?? { x: 0, y: 0 };
-    const targetVector = vectors[toPort] ?? { x: 0, y: 0 };
+    const sourceVector = vectors[fromPort];
+    const targetVector = vectors[toPort];
+    if (!sourceVector || !targetVector) throw new Error("Unknown connector port");
     const control = Math.max(36, Math.hypot(end.x - start.x, end.y - start.y) * tension);
     const sourceControl = {
       x: start.x + sourceVector.x * control,
@@ -57,14 +62,18 @@
     const routeType = edge.dataset.route ?? "straight";
     const tension = Number(edge.dataset.tension ?? 0.42);
 
-    if (routeType === "curve") {
-      return curveByPorts(start, end, fromPort, toPort, tension);
+    switch (routeType) {
+      case "curve":
+        return curveByPorts(start, end, fromPort, toPort, tension);
+      case "orthogonal": {
+        const middleX = start.x + (end.x - start.x) / 2;
+        return `M${start.x} ${start.y}H${middleX}V${end.y}H${end.x}`;
+      }
+      case "straight":
+        return `M${start.x} ${start.y}L${end.x} ${end.y}`;
+      default:
+        throw new Error(`Unknown connector route: ${routeType}`);
     }
-    if (routeType === "orthogonal") {
-      const middleX = start.x + (end.x - start.x) / 2;
-      return `M${start.x} ${start.y}H${middleX}V${end.y}H${end.x}`;
-    }
-    return `M${start.x} ${start.y}L${end.x} ${end.y}`;
   }
 
   function distance(left, right) {
@@ -124,42 +133,34 @@
     }
   }
 
-  function validateAlignment(boxes, attribute, axis, errors) {
+  function groupsByAttribute(elements, attribute) {
     const groups = new Map();
-    for (const box of boxes.filter((candidate) => candidate.hasAttribute(attribute))) {
-      const group = box.getAttribute(attribute);
+    for (const element of elements) {
+      if (!element.hasAttribute(attribute)) continue;
+      const group = element.getAttribute(attribute);
       const members = groups.get(group) ?? [];
-      members.push(box);
+      members.push(element);
       groups.set(group, members);
     }
+    return groups;
+  }
 
-    for (const [group, members] of groups) {
+  function validateRowAlignment(boxes, errors) {
+    for (const [group, members] of groupsByAttribute(boxes, "data-align-row")) {
       if (members.length < 2) continue;
       const values = members.map((member) => {
         const rect = member.getBoundingClientRect();
-        return axis === "row" ? rect.top + rect.height / 2 : rect.left + rect.width / 2;
+        return rect.top + rect.height / 2;
       });
       const drift = Math.max(...values) - Math.min(...values);
       if (drift > 0.75) {
-        errors.push({
-          drift,
-          group,
-          kind: axis === "row" ? "row-alignment" : "column-alignment"
-        });
+        errors.push({ drift, group, kind: "row-alignment" });
       }
     }
   }
 
   function validateEqualSizes(boxes, errors) {
-    const groups = new Map();
-    for (const box of boxes.filter((candidate) => candidate.hasAttribute("data-equal-size"))) {
-      const group = box.dataset.equalSize;
-      const members = groups.get(group) ?? [];
-      members.push(box);
-      groups.set(group, members);
-    }
-
-    for (const [group, members] of groups) {
+    for (const [group, members] of groupsByAttribute(boxes, "data-equal-size")) {
       if (members.length < 2) continue;
       const rects = members.map((member) => member.getBoundingClientRect());
       const widthDrift =
@@ -224,8 +225,8 @@
 
       const startAnchor = portPoint(source, from.port, diagramRect);
       const endAnchor = portPoint(target, to.port, diagramRect);
-      const start = offsetPoint(startAnchor, from.port, Number(edge.dataset.sourceGap ?? 0));
-      const end = offsetPoint(endAnchor, to.port, Number(edge.dataset.targetGap ?? 8));
+      const start = startAnchor;
+      const end = offsetPoint(endAnchor, to.port, 9);
       edge.setAttribute("d", route(edge, start, end, from.port, to.port));
 
       const length = edge.getTotalLength();
@@ -244,8 +245,6 @@
           startError
         });
       }
-
-      if (edge.hasAttribute("data-allow-obstruction")) continue;
 
       const edgeName = `${edge.dataset.from}->${edge.dataset.to}`;
       const obstructions = [...diagram.querySelectorAll("[data-box]")]
@@ -294,8 +293,7 @@
       }
     }
 
-    validateAlignment(boxes, "data-align-row", "row", errors);
-    validateAlignment(boxes, "data-align-column", "column", errors);
+    validateRowAlignment(boxes, errors);
     validateEqualSizes(boxes, errors);
 
     for (const element of diagram.querySelectorAll("[data-fit]")) {

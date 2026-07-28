@@ -21,6 +21,11 @@ resource GenerateIconsModuleRenderMaskAstAnchor : GeneratedAstAnchor {
   fingerprint ast.semantic_subtree_v1("sha256:b98ed4ebf4ae73cd4c6448c8d5fdd0261889f0b2fcc02949966a49648cabdd7f")
 }
 
+resource GenerateIconsModuleWriteIconCssAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("docs-site/scripts/infographics/generate-icons.mjs#writeIconCss")
+  fingerprint ast.semantic_subtree_v1("sha256:5b3fb06c2e9284f91c46cb2f4ae228a98b4cd4e440c58bc3700a5d7c40b36f64")
+}
+
 component GenerateIconsModule : GeneratedCandidate {
   fn escapeAttribute
     source js("docs-site/scripts/infographics/generate-icons.mjs#escapeAttribute")
@@ -30,6 +35,9 @@ component GenerateIconsModule : GeneratedCandidate {
     effects unknown
   fn renderMask
     source js("docs-site/scripts/infographics/generate-icons.mjs#renderMask")
+    effects unknown
+  fn writeIconCss
+    source js("docs-site/scripts/infographics/generate-icons.mjs#writeIconCss")
     effects unknown
 }
 
@@ -55,6 +63,14 @@ relation GenerateIconsModuleRenderMaskGeneratedFromGenerateIconsModuleRenderMask
   roles { GenerateIconsModule as generated, GenerateIconsModuleRenderMaskAstAnchor as syntax }
   expects GenerateIconsModuleRenderMaskAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b98ed4ebf4ae73cd4c6448c8d5fdd0261889f0b2fcc02949966a49648cabdd7f")
   summary "fn GenerateIconsModule.renderMask generated from javascript function_declaration at docs-site/scripts/infographics/generate-icons.mjs#renderMask."
+}
+
+relation GenerateIconsModuleWriteIconCssGeneratedFromGenerateIconsModuleWriteIconCssAstAnchor {
+  kind generated_from
+  connects GenerateIconsModule -> GenerateIconsModuleWriteIconCssAstAnchor
+  roles { GenerateIconsModule as generated, GenerateIconsModuleWriteIconCssAstAnchor as syntax }
+  expects GenerateIconsModuleWriteIconCssAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5b3fb06c2e9284f91c46cb2f4ae228a98b4cd4e440c58bc3700a5d7c40b36f64")
+  summary "fn GenerateIconsModule.writeIconCss generated from javascript function_declaration at docs-site/scripts/infographics/generate-icons.mjs#writeIconCss."
 }
 
 implementation GenerateIconsModuleImpl {

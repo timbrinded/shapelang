@@ -24,10 +24,24 @@
       ]
     },
     {
+      "module": "shape.generated.ast.docs_site.scripts.infographics.concepts",
+      "path": "shape/generated/ast/docs-site/scripts/infographics/concepts.shape",
+      "sources": [
+        "docs-site/scripts/infographics/concepts.mjs"
+      ]
+    },
+    {
       "module": "shape.generated.ast.docs_site.scripts.infographics.diagram_runtime",
       "path": "shape/generated/ast/docs-site/scripts/infographics/diagram-runtime.shape",
       "sources": [
         "docs-site/scripts/infographics/diagram-runtime.js"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.docs_site.scripts.infographics.frame_template",
+      "path": "shape/generated/ast/docs-site/scripts/infographics/frame-template.shape",
+      "sources": [
+        "docs-site/scripts/infographics/frame-template.mjs"
       ]
     },
     {

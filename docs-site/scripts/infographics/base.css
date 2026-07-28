@@ -1,5 +1,3 @@
-@import url("../../../node_modules/@fontsource-variable/geist/wght.css");
-@import url("../../../node_modules/@fontsource-variable/geist-mono/wght.css");
 @import url("../../src/styles/tokens.css");
 
 :root {
@@ -211,11 +209,6 @@ code {
   overflow-wrap: anywhere;
 }
 
-.node-token.plain {
-  font-family: var(--sans);
-  font-weight: 500;
-}
-
 .note {
   position: absolute;
   z-index: 2;
@@ -390,33 +383,6 @@ code {
   inset-inline-start: 50%;
   transform: translateX(-50%);
   max-width: 1200px;
-}
-
-/* Two aligned paths feeding one result */
-.layout-lanes {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr)) 270px;
-  grid-template-rows: repeat(2, minmax(0, 1fr));
-  align-items: center;
-  gap: 34px 68px;
-  padding: 46px 16px 88px;
-}
-
-.layout-lanes .node {
-  min-height: 150px;
-}
-
-.layout-lanes .lane-output {
-  grid-column: 4;
-  grid-row: 1 / 3;
-  min-height: 220px;
-}
-
-.layout-lanes .note {
-  inset-block-end: 22px;
-  inset-inline-start: 50%;
-  transform: translateX(-50%);
-  white-space: nowrap;
 }
 
 /* Explicit product boundary */

@@ -1,0 +1,257 @@
+module shape.generated.ast.docs_site.scripts.infographics.frame_template
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource FrameTemplateModuleConnectorLayerAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("docs-site/scripts/infographics/frame-template.mjs#connectorLayer")
+  fingerprint ast.semantic_subtree_v1("sha256:0ef7eea4bcb34781d1a5b33caf4dcf4dea0338b57942472a6aa26a7e9e9efbbe")
+}
+
+resource FrameTemplateModuleEdgeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("docs-site/scripts/infographics/frame-template.mjs#edge")
+  fingerprint ast.semantic_subtree_v1("sha256:da36aef61c2d931fdfaca4420a4cd0b3ecd09a58f026a102e0b1fb47175a6fe0")
+}
+
+resource FrameTemplateModuleEscapeHtmlAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("docs-site/scripts/infographics/frame-template.mjs#escapeHtml")
+  fingerprint ast.semantic_subtree_v1("sha256:204b352e99772421284f6a8b68084b852cac6a45f1cb782736bb646abf27a2c8")
+}
+
+resource FrameTemplateModuleMarkerDefinitionsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("docs-site/scripts/infographics/frame-template.mjs#markerDefinitions")
+  fingerprint ast.semantic_subtree_v1("sha256:c4c8f56e9d0d5d59ae9def1b5a396a8143484df33fd520d5ec1fbea01becc5bf")
+}
+
+resource FrameTemplateModuleNodeCardAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("docs-site/scripts/infographics/frame-template.mjs#nodeCard")
+  fingerprint ast.semantic_subtree_v1("sha256:ba150ca67e44717bbea30dbc724f1a8fec0c35a26a1c9134a75f0f08f020ce6e")
+}
+
+resource FrameTemplateModuleNoteHtmlAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("docs-site/scripts/infographics/frame-template.mjs#noteHtml")
+  fingerprint ast.semantic_subtree_v1("sha256:4ce6325e0a9f1c661b0652728deb0409a46225c4fb79de944799c32239ea12fe")
+}
+
+resource FrameTemplateModuleRenderBoundaryAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("docs-site/scripts/infographics/frame-template.mjs#renderBoundary")
+  fingerprint ast.semantic_subtree_v1("sha256:bba3e3f199909ef908cd9e0739eb0fef2c676a316b30ffbc67cec3a70c375972")
+}
+
+resource FrameTemplateModuleRenderCycleAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("docs-site/scripts/infographics/frame-template.mjs#renderCycle")
+  fingerprint ast.semantic_subtree_v1("sha256:f0369a7e2e67945074ee842fdf2e28d9da85b41bedae4e9cab0350c31ab170ee")
+}
+
+resource FrameTemplateModuleRenderDecisionAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("docs-site/scripts/infographics/frame-template.mjs#renderDecision")
+  fingerprint ast.semantic_subtree_v1("sha256:3f675ee9b9e07cd7cc20970d1756c1a65596097b44ca5b320e8cd39e7dffec50")
+}
+
+resource FrameTemplateModuleRenderFrameAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("docs-site/scripts/infographics/frame-template.mjs#renderFrame")
+  fingerprint ast.semantic_subtree_v1("sha256:96575ec6dab1f2efb8ce571063e0c0fb0a756a7274e576afad1185c60abc7846")
+}
+
+resource FrameTemplateModuleRenderHubAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("docs-site/scripts/infographics/frame-template.mjs#renderHub")
+  fingerprint ast.semantic_subtree_v1("sha256:c77b74ef306a939a13dd4552b0fcdd5fe0f1f9739e2fcc61287b6e251ba69900")
+}
+
+resource FrameTemplateModuleRenderSequenceAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("docs-site/scripts/infographics/frame-template.mjs#renderSequence")
+  fingerprint ast.semantic_subtree_v1("sha256:65c336b929673010c14d75d8d7744a73b028fb6dbc5192254d967fb496775ee2")
+}
+
+resource FrameTemplateModuleRenderSplitAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("docs-site/scripts/infographics/frame-template.mjs#renderSplit")
+  fingerprint ast.semantic_subtree_v1("sha256:9238842cc8ebab10bd5a29a7fba07a647dce992fc2888249124eedf34c4db266")
+}
+
+resource FrameTemplateModuleShellAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("docs-site/scripts/infographics/frame-template.mjs#shell")
+  fingerprint ast.semantic_subtree_v1("sha256:c52a9b37731a789f9a85234539bf3bd70c0f6d76041d7321746d12c566a94bae")
+}
+
+resource FrameTemplateModuleTokenHtmlAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("docs-site/scripts/infographics/frame-template.mjs#tokenHtml")
+  fingerprint ast.semantic_subtree_v1("sha256:8b06885c410789aae712e338b5861017d97732b5fd5e860f2730c1d90c7e417a")
+}
+
+component FrameTemplateModule : GeneratedCandidate {
+  fn connectorLayer
+    source js("docs-site/scripts/infographics/frame-template.mjs#connectorLayer")
+    effects unknown
+  fn edge
+    source js("docs-site/scripts/infographics/frame-template.mjs#edge")
+    effects unknown
+  fn escapeHtml
+    source js("docs-site/scripts/infographics/frame-template.mjs#escapeHtml")
+    effects unknown
+  fn markerDefinitions
+    source js("docs-site/scripts/infographics/frame-template.mjs#markerDefinitions")
+    effects unknown
+  fn nodeCard
+    source js("docs-site/scripts/infographics/frame-template.mjs#nodeCard")
+    effects unknown
+  fn noteHtml
+    source js("docs-site/scripts/infographics/frame-template.mjs#noteHtml")
+    effects unknown
+  fn renderBoundary
+    source js("docs-site/scripts/infographics/frame-template.mjs#renderBoundary")
+    effects unknown
+  fn renderCycle
+    source js("docs-site/scripts/infographics/frame-template.mjs#renderCycle")
+    effects unknown
+  fn renderDecision
+    source js("docs-site/scripts/infographics/frame-template.mjs#renderDecision")
+    effects unknown
+  fn renderFrame
+    source js("docs-site/scripts/infographics/frame-template.mjs#renderFrame")
+    effects unknown
+  fn renderHub
+    source js("docs-site/scripts/infographics/frame-template.mjs#renderHub")
+    effects unknown
+  fn renderSequence
+    source js("docs-site/scripts/infographics/frame-template.mjs#renderSequence")
+    effects unknown
+  fn renderSplit
+    source js("docs-site/scripts/infographics/frame-template.mjs#renderSplit")
+    effects unknown
+  fn shell
+    source js("docs-site/scripts/infographics/frame-template.mjs#shell")
+    effects unknown
+  fn tokenHtml
+    source js("docs-site/scripts/infographics/frame-template.mjs#tokenHtml")
+    effects unknown
+}
+
+relation FrameTemplateModuleConnectorLayerGeneratedFromFrameTemplateModuleConnectorLayerAstAnchor {
+  kind generated_from
+  connects FrameTemplateModule -> FrameTemplateModuleConnectorLayerAstAnchor
+  roles { FrameTemplateModule as generated, FrameTemplateModuleConnectorLayerAstAnchor as syntax }
+  expects FrameTemplateModuleConnectorLayerAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0ef7eea4bcb34781d1a5b33caf4dcf4dea0338b57942472a6aa26a7e9e9efbbe")
+  summary "fn FrameTemplateModule.connectorLayer generated from javascript function_declaration at docs-site/scripts/infographics/frame-template.mjs#connectorLayer."
+}
+
+relation FrameTemplateModuleEdgeGeneratedFromFrameTemplateModuleEdgeAstAnchor {
+  kind generated_from
+  connects FrameTemplateModule -> FrameTemplateModuleEdgeAstAnchor
+  roles { FrameTemplateModule as generated, FrameTemplateModuleEdgeAstAnchor as syntax }
+  expects FrameTemplateModuleEdgeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:da36aef61c2d931fdfaca4420a4cd0b3ecd09a58f026a102e0b1fb47175a6fe0")
+  summary "fn FrameTemplateModule.edge generated from javascript function_declaration at docs-site/scripts/infographics/frame-template.mjs#edge."
+}
+
+relation FrameTemplateModuleEscapeHtmlGeneratedFromFrameTemplateModuleEscapeHtmlAstAnchor {
+  kind generated_from
+  connects FrameTemplateModule -> FrameTemplateModuleEscapeHtmlAstAnchor
+  roles { FrameTemplateModule as generated, FrameTemplateModuleEscapeHtmlAstAnchor as syntax }
+  expects FrameTemplateModuleEscapeHtmlAstAnchor fingerprint ast.semantic_subtree_v1("sha256:204b352e99772421284f6a8b68084b852cac6a45f1cb782736bb646abf27a2c8")
+  summary "fn FrameTemplateModule.escapeHtml generated from javascript function_declaration at docs-site/scripts/infographics/frame-template.mjs#escapeHtml."
+}
+
+relation FrameTemplateModuleMarkerDefinitionsGeneratedFromFrameTemplateModuleMarkerDefinitionsAstAnchor {
+  kind generated_from
+  connects FrameTemplateModule -> FrameTemplateModuleMarkerDefinitionsAstAnchor
+  roles { FrameTemplateModule as generated, FrameTemplateModuleMarkerDefinitionsAstAnchor as syntax }
+  expects FrameTemplateModuleMarkerDefinitionsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c4c8f56e9d0d5d59ae9def1b5a396a8143484df33fd520d5ec1fbea01becc5bf")
+  summary "fn FrameTemplateModule.markerDefinitions generated from javascript function_declaration at docs-site/scripts/infographics/frame-template.mjs#markerDefinitions."
+}
+
+relation FrameTemplateModuleNodeCardGeneratedFromFrameTemplateModuleNodeCardAstAnchor {
+  kind generated_from
+  connects FrameTemplateModule -> FrameTemplateModuleNodeCardAstAnchor
+  roles { FrameTemplateModule as generated, FrameTemplateModuleNodeCardAstAnchor as syntax }
+  expects FrameTemplateModuleNodeCardAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ba150ca67e44717bbea30dbc724f1a8fec0c35a26a1c9134a75f0f08f020ce6e")
+  summary "fn FrameTemplateModule.nodeCard generated from javascript function_declaration at docs-site/scripts/infographics/frame-template.mjs#nodeCard."
+}
+
+relation FrameTemplateModuleNoteHtmlGeneratedFromFrameTemplateModuleNoteHtmlAstAnchor {
+  kind generated_from
+  connects FrameTemplateModule -> FrameTemplateModuleNoteHtmlAstAnchor
+  roles { FrameTemplateModule as generated, FrameTemplateModuleNoteHtmlAstAnchor as syntax }
+  expects FrameTemplateModuleNoteHtmlAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4ce6325e0a9f1c661b0652728deb0409a46225c4fb79de944799c32239ea12fe")
+  summary "fn FrameTemplateModule.noteHtml generated from javascript function_declaration at docs-site/scripts/infographics/frame-template.mjs#noteHtml."
+}
+
+relation FrameTemplateModuleRenderBoundaryGeneratedFromFrameTemplateModuleRenderBoundaryAstAnchor {
+  kind generated_from
+  connects FrameTemplateModule -> FrameTemplateModuleRenderBoundaryAstAnchor
+  roles { FrameTemplateModule as generated, FrameTemplateModuleRenderBoundaryAstAnchor as syntax }
+  expects FrameTemplateModuleRenderBoundaryAstAnchor fingerprint ast.semantic_subtree_v1("sha256:bba3e3f199909ef908cd9e0739eb0fef2c676a316b30ffbc67cec3a70c375972")
+  summary "fn FrameTemplateModule.renderBoundary generated from javascript function_declaration at docs-site/scripts/infographics/frame-template.mjs#renderBoundary."
+}
+
+relation FrameTemplateModuleRenderCycleGeneratedFromFrameTemplateModuleRenderCycleAstAnchor {
+  kind generated_from
+  connects FrameTemplateModule -> FrameTemplateModuleRenderCycleAstAnchor
+  roles { FrameTemplateModule as generated, FrameTemplateModuleRenderCycleAstAnchor as syntax }
+  expects FrameTemplateModuleRenderCycleAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f0369a7e2e67945074ee842fdf2e28d9da85b41bedae4e9cab0350c31ab170ee")
+  summary "fn FrameTemplateModule.renderCycle generated from javascript function_declaration at docs-site/scripts/infographics/frame-template.mjs#renderCycle."
+}
+
+relation FrameTemplateModuleRenderDecisionGeneratedFromFrameTemplateModuleRenderDecisionAstAnchor {
+  kind generated_from
+  connects FrameTemplateModule -> FrameTemplateModuleRenderDecisionAstAnchor
+  roles { FrameTemplateModule as generated, FrameTemplateModuleRenderDecisionAstAnchor as syntax }
+  expects FrameTemplateModuleRenderDecisionAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3f675ee9b9e07cd7cc20970d1756c1a65596097b44ca5b320e8cd39e7dffec50")
+  summary "fn FrameTemplateModule.renderDecision generated from javascript function_declaration at docs-site/scripts/infographics/frame-template.mjs#renderDecision."
+}
+
+relation FrameTemplateModuleRenderFrameGeneratedFromFrameTemplateModuleRenderFrameAstAnchor {
+  kind generated_from
+  connects FrameTemplateModule -> FrameTemplateModuleRenderFrameAstAnchor
+  roles { FrameTemplateModule as generated, FrameTemplateModuleRenderFrameAstAnchor as syntax }
+  expects FrameTemplateModuleRenderFrameAstAnchor fingerprint ast.semantic_subtree_v1("sha256:96575ec6dab1f2efb8ce571063e0c0fb0a756a7274e576afad1185c60abc7846")
+  summary "fn FrameTemplateModule.renderFrame generated from javascript function_declaration at docs-site/scripts/infographics/frame-template.mjs#renderFrame."
+}
+
+relation FrameTemplateModuleRenderHubGeneratedFromFrameTemplateModuleRenderHubAstAnchor {
+  kind generated_from
+  connects FrameTemplateModule -> FrameTemplateModuleRenderHubAstAnchor
+  roles { FrameTemplateModule as generated, FrameTemplateModuleRenderHubAstAnchor as syntax }
+  expects FrameTemplateModuleRenderHubAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c77b74ef306a939a13dd4552b0fcdd5fe0f1f9739e2fcc61287b6e251ba69900")
+  summary "fn FrameTemplateModule.renderHub generated from javascript function_declaration at docs-site/scripts/infographics/frame-template.mjs#renderHub."
+}
+
+relation FrameTemplateModuleRenderSequenceGeneratedFromFrameTemplateModuleRenderSequenceAstAnchor {
+  kind generated_from
+  connects FrameTemplateModule -> FrameTemplateModuleRenderSequenceAstAnchor
+  roles { FrameTemplateModule as generated, FrameTemplateModuleRenderSequenceAstAnchor as syntax }
+  expects FrameTemplateModuleRenderSequenceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:65c336b929673010c14d75d8d7744a73b028fb6dbc5192254d967fb496775ee2")
+  summary "fn FrameTemplateModule.renderSequence generated from javascript function_declaration at docs-site/scripts/infographics/frame-template.mjs#renderSequence."
+}
+
+relation FrameTemplateModuleRenderSplitGeneratedFromFrameTemplateModuleRenderSplitAstAnchor {
+  kind generated_from
+  connects FrameTemplateModule -> FrameTemplateModuleRenderSplitAstAnchor
+  roles { FrameTemplateModule as generated, FrameTemplateModuleRenderSplitAstAnchor as syntax }
+  expects FrameTemplateModuleRenderSplitAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9238842cc8ebab10bd5a29a7fba07a647dce992fc2888249124eedf34c4db266")
+  summary "fn FrameTemplateModule.renderSplit generated from javascript function_declaration at docs-site/scripts/infographics/frame-template.mjs#renderSplit."
+}
+
+relation FrameTemplateModuleShellGeneratedFromFrameTemplateModuleShellAstAnchor {
+  kind generated_from
+  connects FrameTemplateModule -> FrameTemplateModuleShellAstAnchor
+  roles { FrameTemplateModule as generated, FrameTemplateModuleShellAstAnchor as syntax }
+  expects FrameTemplateModuleShellAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c52a9b37731a789f9a85234539bf3bd70c0f6d76041d7321746d12c566a94bae")
+  summary "fn FrameTemplateModule.shell generated from javascript function_declaration at docs-site/scripts/infographics/frame-template.mjs#shell."
+}
+
+relation FrameTemplateModuleTokenHtmlGeneratedFromFrameTemplateModuleTokenHtmlAstAnchor {
+  kind generated_from
+  connects FrameTemplateModule -> FrameTemplateModuleTokenHtmlAstAnchor
+  roles { FrameTemplateModule as generated, FrameTemplateModuleTokenHtmlAstAnchor as syntax }
+  expects FrameTemplateModuleTokenHtmlAstAnchor fingerprint ast.semantic_subtree_v1("sha256:8b06885c410789aae712e338b5861017d97732b5fd5e860f2730c1d90c7e417a")
+  summary "fn FrameTemplateModule.tokenHtml generated from javascript function_declaration at docs-site/scripts/infographics/frame-template.mjs#tokenHtml."
+}
+
+implementation FrameTemplateModuleImpl {
+  paths {
+    "docs-site/scripts/infographics/frame-template.mjs"
+  }
+  conforms_to FrameTemplateModule
+}

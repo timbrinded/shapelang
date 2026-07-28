@@ -10,7 +10,6 @@
     "docs-site/dist/**",
     "docs-site/scripts/infographics/frames/**",
     "docs-site/scripts/infographics/icons.css",
-    "docs-site/scripts/infographics/manifest.json",
     "docs-site/scripts/infographics/review-report.json",
     "docs-site/src/assets/**",
     "fixtures/**",

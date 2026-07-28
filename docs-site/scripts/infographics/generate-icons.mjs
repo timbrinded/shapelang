@@ -104,4 +104,6 @@ const iconCss = Object.entries(icons)
   .map(([name, nodes]) => `.hi-${name}{--hi-mask:${renderMask(nodes)}}`)
   .join("\n");
 
-writeFileSync(join(here, "icons.css"), `${iconCss}\n`, "utf8");
+export function writeIconCss() {
+  writeFileSync(join(here, "icons.css"), `${iconCss}\n`, "utf8");
+}

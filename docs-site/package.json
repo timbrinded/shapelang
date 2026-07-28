@@ -9,8 +9,7 @@
     "dev": "astro dev",
     "preview": "astro preview",
     "verify:shape": "bun scripts/verify-shape-blocks.ts",
-    "infographics": "bun scripts/infographics/frames.mjs && bun scripts/infographics/render.mjs",
-    "art": "bun scripts/art/build-all.mjs"
+    "infographics": "bun scripts/infographics/frames.mjs && bun scripts/infographics/render.mjs"
   },
   "dependencies": {
     "@astrojs/starlight": "^0.39.2",

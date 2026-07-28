@@ -6,9 +6,10 @@
  */
 import { spawnSync } from "node:child_process";
 import { copyFileSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
-import { dirname, join } from "node:path";
+import { basename, dirname, join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import puppeteer from "puppeteer-core";
+import { concepts } from "./concepts.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const repoRoot = join(here, "../../..");
@@ -17,7 +18,6 @@ const outInfographics = join(here, "../../src/assets/infographics");
 const outAssets = join(here, "../../src/assets");
 const outDocs = join(here, "../../../../docs");
 const tmpDir = join(here, ".render-tmp");
-const manifest = JSON.parse(readFileSync(join(here, "manifest.json"), "utf8"));
 
 const width = 1680;
 const height = 944;
@@ -54,8 +54,7 @@ function validateSemanticLabels(concept, report) {
 }
 
 function validateSourceMapping(concept) {
-  const assetName =
-    concept.name === "shape-workflow" ? "shape-workflow.png" : `${concept.name}.png`;
+  const assetName = basename(outputPaths(concept.name)[0]);
   const sources = concept.sources.map((source) => {
     const path = join(repoRoot, source);
     if (!existsSync(path))
@@ -65,6 +64,13 @@ function validateSourceMapping(concept) {
   if (!sources.some(({ path }) => readFileSync(path, "utf8").includes(assetName))) {
     throw new Error(`${concept.name}: no source page references ${assetName}`);
   }
+}
+
+function outputPaths(name) {
+  if (name === "shape-workflow") {
+    return [join(outAssets, "shape-workflow.png"), join(outDocs, "shape-workflow.png")];
+  }
+  return [join(outInfographics, `${name}.png`)];
 }
 
 function validatePngDimensions(path, frameName) {
@@ -89,7 +95,7 @@ mkdirSync(tmpDir, { recursive: true });
 mkdirSync(outInfographics, { recursive: true });
 
 const reports = [];
-console.log(`Validating ${manifest.length} frames at ${width}×${height} with ${chromium}\n`);
+console.log(`Validating ${concepts.length} frames at ${width}×${height} with ${chromium}\n`);
 
 const browser = await puppeteer.launch({
   args: ["--allow-file-access-from-files", "--disable-dev-shm-usage", "--no-sandbox"],
@@ -106,7 +112,7 @@ try {
     pageErrors.push(`${activeFrame}: ${error.message}`);
   });
 
-  for (const concept of manifest) {
+  for (const concept of concepts) {
     activeFrame = concept.name;
     pageErrors.length = 0;
     validateSourceMapping(concept);
@@ -157,14 +163,11 @@ try {
 
 console.log("\nAll frames passed. Publishing assets…\n");
 
-for (const concept of manifest) {
+for (const concept of concepts) {
   const source = join(tmpDir, `${concept.name}.png`);
-  if (concept.name === "shape-workflow") {
-    copyFileSync(source, join(outAssets, "shape-workflow.png"));
-    mkdirSync(outDocs, { recursive: true });
-    copyFileSync(source, join(outDocs, "shape-workflow.png"));
-  } else {
-    copyFileSync(source, join(outInfographics, `${concept.name}.png`));
+  for (const output of outputPaths(concept.name)) {
+    mkdirSync(dirname(output), { recursive: true });
+    copyFileSync(source, output);
   }
   console.log(`published ${concept.name}`);
 }
