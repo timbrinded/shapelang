@@ -11,19 +11,19 @@ This page installs the released `shp` typechecker and runs the commands you need
 
 ## Install
 
-Pin a release version in scripts and CI. The current docs pin is `v0.4.1`:
+Pin a release version in scripts and CI. The current docs pin is `v0.7.0`:
 
 ```bash
-curl --proto '=https' --tlsv1.2 -LsSf https://github.com/timbrinded/shapelang/releases/download/v0.4.1/install.sh | sh
+curl --proto '=https' --tlsv1.2 -LsSf https://github.com/timbrinded/shapelang/releases/download/v0.7.0/install.sh | sh
 ```
 
 On Windows:
 
 ```powershell
-irm https://github.com/timbrinded/shapelang/releases/download/v0.4.1/install.ps1 | iex
+irm https://github.com/timbrinded/shapelang/releases/download/v0.7.0/install.ps1 | iex
 ```
 
-The installer downloads the matching release archive, verifies its SHA-256 checksum, and installs `shp` plus bundled Tree-sitter parser assets into `~/.local/bin`. Replace `v0.4.1` with the release tag you want to pin.
+The installer downloads the matching release archive, verifies its SHA-256 checksum, and installs `shp` plus bundled Tree-sitter parser assets into `~/.local/bin`. Replace `v0.7.0` with the release tag you want to pin.
 
 If your shell cannot find `shp` after installation:
 
@@ -106,7 +106,7 @@ See [CLI Reference](../reference/cli) for flags and full usage.
 ```yaml
 steps:
   - uses: actions/checkout@v4
-  - uses: timbrinded/shapelang@v0.4.1
+  - uses: timbrinded/shapelang@v0.7.0
   - run: shp check
   - run: shp fmt --check
 ```
@@ -129,7 +129,7 @@ That exposes skills such as `shapelang:shape-lang`, `shapelang:shape-contract-pr
 
 **Do**
 
-- Pin install and action versions to an explicit tag such as `v0.4.1`
+- Pin install and action versions to an explicit tag such as `v0.7.0`
 - Keep the durable model under `shape/**/*.shape`
 - Run strict `shp check` before merge; use `--allow-unknown-effects` only for drafts
 

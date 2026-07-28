@@ -31,6 +31,11 @@ resource RunClaudeSkillModuleBuildReviewPromptAstAnchor : GeneratedAstAnchor {
   fingerprint ast.semantic_subtree_v1("sha256:3cf741f6d80198c6bdf2a1c44df9355fc9b079e9e6a74b55ebcedf6c1b02d118")
 }
 
+resource RunClaudeSkillModuleBuildSkillsReleasePromptAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor(".github/scripts/run-claude-skill.mjs#buildSkillsReleasePrompt")
+  fingerprint ast.semantic_subtree_v1("sha256:eb39e0a28aa88cea68b86cd8d2bcce4643c9f43c78bbd051f71b11dfd5e85ccd")
+}
+
 resource RunClaudeSkillModuleChangedAuthoredShapeFilesAstAnchor : GeneratedAstAnchor {
   storage ast.anchor(".github/scripts/run-claude-skill.mjs#changedAuthoredShapeFiles")
   fingerprint ast.semantic_subtree_v1("sha256:46eb14c0662bf4283f25e49784ebf58b10ed8c8659ecff39c7ab5bac9f61b793")
@@ -131,6 +136,11 @@ resource RunClaudeSkillModuleRenderReviewSummaryAstAnchor : GeneratedAstAnchor {
   fingerprint ast.semantic_subtree_v1("sha256:9daa7b891df0518162c34ecfe3b163b3a9e3ce399a796e03f3c1e6aefab9d981")
 }
 
+resource RunClaudeSkillModuleRenderSkillsReleaseSummaryAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor(".github/scripts/run-claude-skill.mjs#renderSkillsReleaseSummary")
+  fingerprint ast.semantic_subtree_v1("sha256:246cb103b96213d5ed237bd3c0831677726f4ff3d3c1d06640749e090994fba3")
+}
+
 resource RunClaudeSkillModuleRequireSkillAstAnchor : GeneratedAstAnchor {
   storage ast.anchor(".github/scripts/run-claude-skill.mjs#requireSkill")
   fingerprint ast.semantic_subtree_v1("sha256:83fe7c2a60f9f0be7a326d6f71e376516affd304f9482f218a3ca6f0de29374e")
@@ -153,7 +163,7 @@ resource RunClaudeSkillModuleReviewFailureMessageAstAnchor : GeneratedAstAnchor 
 
 resource RunClaudeSkillModuleRunGateAstAnchor : GeneratedAstAnchor {
   storage ast.anchor(".github/scripts/run-claude-skill.mjs#runGate")
-  fingerprint ast.semantic_subtree_v1("sha256:375377c85512b7b951e9c58710da435b48e23b4e00e1c26de07e4fa0af496849")
+  fingerprint ast.semantic_subtree_v1("sha256:e29c9976c816ca82c574a607c48cb81177702aefddfb23fd2ea7042e8a88dadd")
 }
 
 resource RunClaudeSkillModuleRunPrefilterAstAnchor : GeneratedAstAnchor {
@@ -176,6 +186,11 @@ resource RunClaudeSkillModuleShellSingleQuoteAstAnchor : GeneratedAstAnchor {
   fingerprint ast.semantic_subtree_v1("sha256:caa360d38a155a0208ae501c182a25f36387cbce39dbf95ca90e8b7aab567920")
 }
 
+resource RunClaudeSkillModuleSkillsReleaseFailureMessageAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor(".github/scripts/run-claude-skill.mjs#skillsReleaseFailureMessage")
+  fingerprint ast.semantic_subtree_v1("sha256:a07a19150159677e963c885b00eb3b0fb4f3007c4773e28f0b9374ad16cd19ac")
+}
+
 resource RunClaudeSkillModuleUncoveredChangedFilesAstAnchor : GeneratedAstAnchor {
   storage ast.anchor(".github/scripts/run-claude-skill.mjs#uncoveredChangedFiles")
   fingerprint ast.semantic_subtree_v1("sha256:d6c22002aa880ae19b696518a9d7c607c90d2b26588ded910a79192204808b36")
@@ -196,6 +211,9 @@ component RunClaudeSkillModule : GeneratedCandidate {
     effects unknown
   fn buildReviewPrompt
     source js(".github/scripts/run-claude-skill.mjs#buildReviewPrompt")
+    effects unknown
+  fn buildSkillsReleasePrompt
+    source js(".github/scripts/run-claude-skill.mjs#buildSkillsReleasePrompt")
     effects unknown
   fn changedAuthoredShapeFiles
     source js(".github/scripts/run-claude-skill.mjs#changedAuthoredShapeFiles")
@@ -257,6 +275,9 @@ component RunClaudeSkillModule : GeneratedCandidate {
   fn renderReviewSummary
     source js(".github/scripts/run-claude-skill.mjs#renderReviewSummary")
     effects unknown
+  fn renderSkillsReleaseSummary
+    source js(".github/scripts/run-claude-skill.mjs#renderSkillsReleaseSummary")
+    effects unknown
   fn requireSkill
     source js(".github/scripts/run-claude-skill.mjs#requireSkill")
     effects unknown
@@ -283,6 +304,9 @@ component RunClaudeSkillModule : GeneratedCandidate {
     effects unknown
   fn shellSingleQuote
     source js(".github/scripts/run-claude-skill.mjs#shellSingleQuote")
+    effects unknown
+  fn skillsReleaseFailureMessage
+    source js(".github/scripts/run-claude-skill.mjs#skillsReleaseFailureMessage")
     effects unknown
   fn uncoveredChangedFiles
     source js(".github/scripts/run-claude-skill.mjs#uncoveredChangedFiles")
@@ -327,6 +351,14 @@ relation RunClaudeSkillModuleBuildReviewPromptGeneratedFromRunClaudeSkillModuleB
   roles { RunClaudeSkillModule as generated, RunClaudeSkillModuleBuildReviewPromptAstAnchor as syntax }
   expects RunClaudeSkillModuleBuildReviewPromptAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3cf741f6d80198c6bdf2a1c44df9355fc9b079e9e6a74b55ebcedf6c1b02d118")
   summary "fn RunClaudeSkillModule.buildReviewPrompt generated from javascript function_declaration at .github/scripts/run-claude-skill.mjs#buildReviewPrompt."
+}
+
+relation RunClaudeSkillModuleBuildSkillsReleasePromptGeneratedFromRunClaudeSkillModuleBuildSkillsReleasePromptAstAnchor {
+  kind generated_from
+  connects RunClaudeSkillModule -> RunClaudeSkillModuleBuildSkillsReleasePromptAstAnchor
+  roles { RunClaudeSkillModule as generated, RunClaudeSkillModuleBuildSkillsReleasePromptAstAnchor as syntax }
+  expects RunClaudeSkillModuleBuildSkillsReleasePromptAstAnchor fingerprint ast.semantic_subtree_v1("sha256:eb39e0a28aa88cea68b86cd8d2bcce4643c9f43c78bbd051f71b11dfd5e85ccd")
+  summary "fn RunClaudeSkillModule.buildSkillsReleasePrompt generated from javascript function_declaration at .github/scripts/run-claude-skill.mjs#buildSkillsReleasePrompt."
 }
 
 relation RunClaudeSkillModuleChangedAuthoredShapeFilesGeneratedFromRunClaudeSkillModuleChangedAuthoredShapeFilesAstAnchor {
@@ -489,6 +521,14 @@ relation RunClaudeSkillModuleRenderReviewSummaryGeneratedFromRunClaudeSkillModul
   summary "fn RunClaudeSkillModule.renderReviewSummary generated from javascript function_declaration at .github/scripts/run-claude-skill.mjs#renderReviewSummary."
 }
 
+relation RunClaudeSkillModuleRenderSkillsReleaseSummaryGeneratedFromRunClaudeSkillModuleRenderSkillsReleaseSummaryAstAnchor {
+  kind generated_from
+  connects RunClaudeSkillModule -> RunClaudeSkillModuleRenderSkillsReleaseSummaryAstAnchor
+  roles { RunClaudeSkillModule as generated, RunClaudeSkillModuleRenderSkillsReleaseSummaryAstAnchor as syntax }
+  expects RunClaudeSkillModuleRenderSkillsReleaseSummaryAstAnchor fingerprint ast.semantic_subtree_v1("sha256:246cb103b96213d5ed237bd3c0831677726f4ff3d3c1d06640749e090994fba3")
+  summary "fn RunClaudeSkillModule.renderSkillsReleaseSummary generated from javascript function_declaration at .github/scripts/run-claude-skill.mjs#renderSkillsReleaseSummary."
+}
+
 relation RunClaudeSkillModuleRequireSkillGeneratedFromRunClaudeSkillModuleRequireSkillAstAnchor {
   kind generated_from
   connects RunClaudeSkillModule -> RunClaudeSkillModuleRequireSkillAstAnchor
@@ -525,7 +565,7 @@ relation RunClaudeSkillModuleRunGateGeneratedFromRunClaudeSkillModuleRunGateAstA
   kind generated_from
   connects RunClaudeSkillModule -> RunClaudeSkillModuleRunGateAstAnchor
   roles { RunClaudeSkillModule as generated, RunClaudeSkillModuleRunGateAstAnchor as syntax }
-  expects RunClaudeSkillModuleRunGateAstAnchor fingerprint ast.semantic_subtree_v1("sha256:375377c85512b7b951e9c58710da435b48e23b4e00e1c26de07e4fa0af496849")
+  expects RunClaudeSkillModuleRunGateAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e29c9976c816ca82c574a607c48cb81177702aefddfb23fd2ea7042e8a88dadd")
   summary "fn RunClaudeSkillModule.runGate generated from javascript function_declaration at .github/scripts/run-claude-skill.mjs#runGate."
 }
 
@@ -559,6 +599,14 @@ relation RunClaudeSkillModuleShellSingleQuoteGeneratedFromRunClaudeSkillModuleSh
   roles { RunClaudeSkillModule as generated, RunClaudeSkillModuleShellSingleQuoteAstAnchor as syntax }
   expects RunClaudeSkillModuleShellSingleQuoteAstAnchor fingerprint ast.semantic_subtree_v1("sha256:caa360d38a155a0208ae501c182a25f36387cbce39dbf95ca90e8b7aab567920")
   summary "fn RunClaudeSkillModule.shellSingleQuote generated from javascript function_declaration at .github/scripts/run-claude-skill.mjs#shellSingleQuote."
+}
+
+relation RunClaudeSkillModuleSkillsReleaseFailureMessageGeneratedFromRunClaudeSkillModuleSkillsReleaseFailureMessageAstAnchor {
+  kind generated_from
+  connects RunClaudeSkillModule -> RunClaudeSkillModuleSkillsReleaseFailureMessageAstAnchor
+  roles { RunClaudeSkillModule as generated, RunClaudeSkillModuleSkillsReleaseFailureMessageAstAnchor as syntax }
+  expects RunClaudeSkillModuleSkillsReleaseFailureMessageAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a07a19150159677e963c885b00eb3b0fb4f3007c4773e28f0b9374ad16cd19ac")
+  summary "fn RunClaudeSkillModule.skillsReleaseFailureMessage generated from javascript function_declaration at .github/scripts/run-claude-skill.mjs#skillsReleaseFailureMessage."
 }
 
 relation RunClaudeSkillModuleUncoveredChangedFilesGeneratedFromRunClaudeSkillModuleUncoveredChangedFilesAstAnchor {

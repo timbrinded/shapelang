@@ -1,6 +1,6 @@
 ---
 name: shape-index
-description: Use when building a whole-codebase Shape model — author higher-level architecture, boundary, and INVARIANT shapes on top of the generated AST layer, grounded in the AST anchors, so that Shape-aware tooling (review, navigation) has an accurate map of the architecture and the rules the code must uphold. Extends the shape-lang skill from incremental changed-file authoring to whole-project authoring.
+description: Use when building or refreshing a whole-codebase Shape model. Treat generated AST as navigation evidence, then author reviewed architecture, boundaries, invariants, domain packs, and stable source-backed claims for downstream checking and review.
 ---
 
 # Shape Index — whole-codebase architecture & invariant authoring
@@ -10,15 +10,17 @@ reviewable model of an entire project. This skill is a faithful extension: follo
 rule in the `shape-lang` skill and its `cli-workflows` reference; this file adds the
 whole-codebase authoring workflow. Assume `shp` is on `PATH`.
 
-The output (the `shape/` model) is what downstream Shape-aware tooling reads — make it an
-accurate, navigable map of the architecture and the invariants the code must uphold.
+The output (the authored `shape/` model) is what downstream Shape-aware tooling
+trusts as contract. Make it an accurate, navigable map of the architecture and
+the invariants the code must uphold.
 
 ## Two layers
 
-- **Layer 1 — generated AST (already done).** `shape/generated/ast/` already
-  contains deterministic, source-backed AST Shape context for the whole codebase:
-  per-function anchors, candidate effects, and `source` refs. This is the
-  concrete, low-level layer. Do NOT edit it.
+- **Layer 1 — generated AST (already done).** `shape/generated/ast/` contains
+  deterministic, source-backed navigation context for the whole codebase:
+  per-function anchors, candidate effects, and `source` refs. It is evidence for
+  investigation, not an automatically trusted architecture contract. Do NOT
+  edit it.
 - **Layer 2 — authored architecture (your job).** Author `.shape` files under
   `shape/` (NOT under `shape/generated/`) capturing what the AST cannot:
 
@@ -32,15 +34,20 @@ accurate, navigable map of the architecture and the invariants the code must uph
      and transactional constraints, and contracts between modules (e.g. "this
      helper returns the parsed credential, never the raw response"; "only the
      owner or an admin may mutate X"; "every write to Y is audited").
+  5. **Implementation coverage and review bindings** — authored
+     `implementation` declarations that govern significant source paths and
+     authored `binding` declarations that require paired docs, generated,
+     workflow, or other review-surface changes.
 
 ## Grounding (important)
 
-Every authored claim must be **traceable to concrete code**. Reference the
-generated AST anchors/resources and `source` refs so an invariant points at the
-exact function/file it governs — e.g. relate an authored component or invariant
-to the generated AST resource for `parseRefreshTokenResponse`, or attach
-`source ts("packages/.../file.ts#fn")`. Prefer prelude relation kinds
-(`calls`, `provides`, `coordinated_call`, `callbacks`).
+Every authored claim must be **reviewed and traceable to concrete code**. Use
+the generated layer to find relevant implementation, then confirm the claim in
+source before promoting it. Attach stable references such as
+`source ts("packages/.../file.ts#parseRefreshTokenResponse")`; prefer
+`file#symbol`, then file-only when no durable symbol exists. Never author
+line-number or line-range references. Prefer prelude relation kinds (`calls`,
+`provides`, `coordinated_call`, `callbacks`).
 
 ## Breadth: cover the WHOLE architecture, not a few subsystems
 
@@ -50,10 +57,10 @@ diff-only read there. So the value of this model is set by how much of the
 architecture-significant surface it covers. **Author broadly.**
 
 - Begin by ENUMERATING every architecture-significant subsystem in the repo (the
-  top-level domains/services/packages, the cross-cutting concerns — auth/permissions,
+  top-level domains/services/packages, active domain packs, the cross-cutting concerns — auth/permissions,
   data access & transactions, background/async work, caching, eventing/outbox,
   external integrations, request lifecycle). Produce this list FIRST, from the
-  directory layout + `shape/generated/ast/manifest.json` + `shp graph --stats`.
+  directory layout + `shape/generated/ast/manifest.json` + `shp graph stats`.
 - Then author Layer-2 components, boundaries, and INVARIANTS for **each** subsystem
   on that list — aim for comprehensive coverage of the major subsystems, not a
   handful. A large codebase warrants many authored `.shape` files across many
@@ -81,18 +88,32 @@ must come from the architecture, never from a known change. Model honest uncerta
 ## Procedure
 
 1. Survey & enumerate: use the directory layout, `shape/generated/ast/manifest.json`,
-   and `shp graph --stats` to build the full list of architecture-significant
-   subsystems (see Breadth). Sample key modules within each; do not read every file.
+   and `shp graph stats` to build the full list of architecture-significant
+   subsystems (see Breadth). Use `shp graph all` for the complete graph and
+   `shp graph show SYMBOL --kind KIND` for focused investigation. Sample key
+   modules within each; do not read every file.
 2. Author Layer 2 shapes per the categories above for EACH subsystem on the list,
-   grounding each claim in Layer 1.
+   using Layer 1 to navigate and reviewed source to ground each claim. Include
+   `implementation` coverage for architecture-significant source and `binding`
+   declarations where changes must remain coupled to docs, generated artifacts,
+   workflows, or other review surfaces.
+   Put reusable domain policy in packs discovered under the repository's Shape
+   roots. A pack is active when it is in default discovery; an `import` controls
+   name visibility and does not activate or waive a pack.
 3. Model honest uncertainty (`effects unknown`) rather than inventing claims.
    Keep final forbids final.
-4. Validate: `shp fmt --check` then `shp check`. Investigate with `shp explain`,
-   `shp graph`, `shp analyze` as needed.
+4. During authoring, use `shp check --allow-unknown-effects` only while explicit
+   draft `effects unknown` claims remain. Before handoff, resolve those drafts or
+   document why they remain, then run strict `shp fmt --check` and `shp check`.
+   The draft flag relaxes only the explicit unknown-effect check; it does not
+   weaken unrelated diagnostics.
+5. Investigate with `shp explain`, `shp analyze`, analyzer hints, and editor/LSP
+   navigation as needed. Analyzer hints and generated facts remain candidates
+   until confirmed against source.
 
 ## Done when
 
 `shape/` contains an accurate Layer-2 architecture+invariant model that covers the
-major subsystems **broadly** (not just a few), every claim grounded in the generated
-AST, authored purely from the architecture (no change-targeting), and `shp fmt
---check` + `shp check` pass.
+major subsystems **broadly** (not just a few), every contract claim reviewed
+against source, authored purely from the architecture (no change-targeting),
+and strict `shp fmt --check` + `shp check` pass.

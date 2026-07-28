@@ -22,13 +22,13 @@ The checker does not prove the application implementation is correct. It checks 
 Install the released `shp` typechecker binary. Pin the version in scripts and CI so checks are reproducible.
 
 ```bash
-curl --proto '=https' --tlsv1.2 -LsSf https://github.com/timbrinded/shapelang/releases/download/v0.4.1/install.sh | sh
+curl --proto '=https' --tlsv1.2 -LsSf https://github.com/timbrinded/shapelang/releases/download/v0.7.0/install.sh | sh
 ```
 
 On Windows:
 
 ```powershell
-irm https://github.com/timbrinded/shapelang/releases/download/v0.4.1/install.ps1 | iex
+irm https://github.com/timbrinded/shapelang/releases/download/v0.7.0/install.ps1 | iex
 ```
 
 Run the checker from a repo that contains Shape files:
@@ -66,7 +66,7 @@ In GitHub Actions, install the same pinned release with the setup action:
 ```yaml
 steps:
   - uses: actions/checkout@v4
-  - uses: timbrinded/shapelang@v0.4.1
+  - uses: timbrinded/shapelang@v0.7.0
   - run: shp check
 ```
 
@@ -307,21 +307,28 @@ CI is wired in `.github/workflows/shape.yml` for generated AST freshness, format
 
 ## Release
 
-Releases are built from version tags:
+Release preparation synchronizes the CLI and both plugin manifest versions,
+updates pinned public docs, audits all five shipped skills, and passes the full
+repository suite. Run the `Release Candidate: Skills` workflow on the exact
+`master` commit first. Its behavioral evaluation is blocking, and its final
+`skills-release-approval` environment requires a manual reviewer.
 
-```bash
-git tag v0.4.1
-git push origin v0.4.1
-```
+Only after that exact commit has a successful, manually approved candidate run
+may a maintainer create `v0.7.0`. The release workflow rejects tags that are not
+current `master`, lack that approval, or disagree with package/plugin metadata.
+It validates and builds the release, publishes archives and checksums, then
+installs the published binary through the setup action on Linux and Windows.
+The plugin tag `shapelang--v0.7.0` must point at the same commit.
 
-The release workflow validates the repo, cross-compiles `shp` for the native parser target matrix, publishes tarballs as GitHub release assets, and includes SHA-256 checksums. The current matrix is Linux x64, Linux ARM64, macOS ARM64, and Windows x64.
+See [RELEASING.md](RELEASING.md) for the complete preparation, manual gate,
+tagging, and post-release verification checklist.
 
 Other GitHub Actions workflows can install `shp` with the setup action shown in Quick Start. Use `with.version` to install a different release than the action ref:
 
 ```yaml
 - uses: timbrinded/shapelang@master
   with:
-    version: v0.4.1
+    version: v0.7.0
 ```
 
 ## License

@@ -15,6 +15,13 @@ Use this when explaining Shape to another agent or human. Teach by running or sh
 9. Memory Guards add typed design memory for non-obvious or refactor-sensitive shapes — on functions, components, and resources.
 10. Guards can be precise (`protects shape`/`description`, `guards forbid transform`) and can carry review policy: `sensitive` memories under an approver `policy` need an `approver`, declared `role`s validate identities, and `review_by` enables opt-in freshness via `--strict-freshness`.
 11. Projects can define their own obligations with `require_context`; a same-named trait shadows the built-in.
+12. `forbid path A -> B over calls or provides` constrains multi-hop declared
+    architecture paths, not just direct edges.
+13. Vendored domain packs are ordinary discovered Shape modules. Vendoring
+    installs policy; imports provide names.
+14. Generated AST and analyzer results help navigate source but remain advisory.
+15. Provider-neutral author/critic prompts and the LSP improve authoring; strict
+    checker validation remains the acceptance boundary.
 
 ## CLI-Backed Teaching Path
 
@@ -46,6 +53,22 @@ Show source hints as advisory:
 
 ```bash
 shp analyze --shape-files shape/system/audit.shape fixtures/source/audit_purge.ts
+```
+
+Show explicit graph modes and a forbidden path:
+
+```bash
+shp graph stats fixtures/fail/forbidden_path/deps.shape
+shp graph all --kind calls fixtures/fail/forbidden_path/deps.shape
+shp graph show Gateway fixtures/fail/forbidden_path/deps.shape
+shp check fixtures/fail/forbidden_path/deps.shape
+```
+
+Show draft validation without weakening other diagnostics:
+
+```bash
+shp check --allow-unknown-effects draft.shape
+shp check draft.shape
 ```
 
 Show Memory Guard review:
@@ -92,6 +115,16 @@ Teach instead: Memory Guards add obligations and cannot waive final forbids.
 Do not teach: `effects complete` is aspirational.
 
 Teach instead: `effects complete` claims every material effect is represented.
+
+Do not teach: importing a domain pack turns its rules on.
+
+Teach instead: discovery installs the pack; imports make its declarations easy
+to reference.
+
+Do not teach: generated AST is the lower architecture layer to trust.
+
+Teach instead: generated AST is a deterministic navigation layer whose
+candidates require source review before promotion.
 
 ## Useful Analogies
 

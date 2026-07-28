@@ -1,0 +1,102 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["status", "summary", "skills", "findings"],
+  "properties": {
+    "status": {
+      "type": "string",
+      "enum": ["pass", "fail", "error"]
+    },
+    "summary": {
+      "type": "string"
+    },
+    "skills": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "status", "summary", "scenarios"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "enum": [
+              "shape-lang",
+              "shape-contract-preflight",
+              "shape-contract-guard",
+              "shape-index",
+              "shape-review"
+            ]
+          },
+          "status": {
+            "type": "string",
+            "enum": ["pass", "fail"]
+          },
+          "summary": {
+            "type": "string"
+          },
+          "scenarios": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "draft-strict",
+                "explicit-graph",
+                "domain-packs",
+                "forbidden-paths",
+                "author-critic",
+                "lsp",
+                "target-aware-analyzer",
+                "stable-refs",
+                "guarded-unknown-plan",
+                "forbidden-path-removal",
+                "domain-pack-weakening",
+                "generated-only-exclusion",
+                "generated-navigation-only",
+                "authored-contract-surfaces",
+                "evidence-backed-cross-object",
+                "speculation-suppression"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["skill", "severity", "scenario", "problem", "evidence", "recommended_change"],
+        "properties": {
+          "skill": {
+            "type": "string",
+            "enum": [
+              "shape-lang",
+              "shape-contract-preflight",
+              "shape-contract-guard",
+              "shape-index",
+              "shape-review"
+            ]
+          },
+          "severity": {
+            "type": "string",
+            "enum": ["high", "medium", "low"]
+          },
+          "scenario": {
+            "type": "string"
+          },
+          "problem": {
+            "type": "string"
+          },
+          "evidence": {
+            "type": "string"
+          },
+          "recommended_change": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

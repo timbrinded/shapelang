@@ -1,0 +1,158 @@
+name: "Release Candidate: Skills"
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate release candidate
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.metadata.outputs.version }}
+      tag: ${{ steps.metadata.outputs.tag }}
+      plugin_tag: ${{ steps.metadata.outputs.plugin_tag }}
+
+    steps:
+      - name: Require master
+        run: |
+          set -euo pipefail
+          if [ "$GITHUB_REF" != "refs/heads/master" ]; then
+            echo "Release candidates must run from master; got $GITHUB_REF." >&2
+            exit 1
+          fi
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+
+      - name: Cache Bun downloads
+        uses: actions/cache@v4
+        with:
+          path: ~/.bun/install/cache
+          key: bun-${{ runner.os }}-${{ hashFiles('bun.lock') }}
+          restore-keys: |
+            bun-${{ runner.os }}-
+
+      - name: Install
+        run: bun install --frozen-lockfile
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Validate release metadata
+        id: metadata
+        run: bun scripts/check-release-metadata.ts --github-output >> "$GITHUB_OUTPUT"
+
+      - name: Validate shipped skills
+        run: bun run skills:check
+
+      - name: Generate Langium artifacts
+        run: bun run langium:generate
+
+      - name: Check generated artifacts
+        run: git diff --exit-code -- packages/shp-checker/src/language/generated
+
+      - name: Check generated AST context
+        run: bun run ast:check
+
+      - name: Format
+        run: bun run format:check
+
+      - name: Lint
+        run: bun run lint
+
+      - name: Test
+        run: bun test
+
+      - name: Typecheck
+        run: bun run typecheck
+
+      - name: Shape
+        run: |
+          bun run changed-files
+          bun run shape:ci
+
+      - name: Docs
+        run: bun run docs:check
+
+      - name: Build release assets
+        env:
+          SHAPE_RELEASE_VERSION: ${{ steps.metadata.outputs.tag }}
+        run: bun run build:release
+
+  skills:
+    name: Evaluate all shipped skills
+    needs: validate
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Require Claude credentials
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ANTHROPIC_AUTH_TOKEN: ${{ secrets.ANTHROPIC_AUTH_TOKEN }}
+        run: |
+          set -euo pipefail
+          if [ -z "${ANTHROPIC_API_KEY:-}" ] && [ -z "${ANTHROPIC_AUTH_TOKEN:-}" ]; then
+            echo "The blocking skills evaluation requires Claude credentials." >&2
+            exit 1
+          fi
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run blocking skills evaluation
+        uses: ./.github/actions/claude-skill-review
+        with:
+          skill: release
+          result-path: skill-release-result.json
+        env:
+          API_TIMEOUT_MS: 18000
+          DISABLE_NON_ESSENTIAL_MODE_CALLS: 1
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ANTHROPIC_BASE_URL: ${{ secrets.ANTHROPIC_BASE_URL }}
+          ANTHROPIC_AUTH_TOKEN: ${{ secrets.ANTHROPIC_AUTH_TOKEN }}
+          GITHUB_SHA: ${{ github.sha }}
+          SHAPE_RELEASE_VERSION: ${{ needs.validate.outputs.version }}
+
+      - name: Upload skills release report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: skill-release-report-${{ github.sha }}
+          path: skill-release-result.json
+          if-no-files-found: error
+          retention-days: 90
+
+  approval:
+    name: Skill Release Approval
+    needs:
+      - validate
+      - skills
+    runs-on: ubuntu-latest
+    environment: skills-release-approval
+
+    steps:
+      - name: Record approved release candidate
+        run: |
+          {
+            echo "## Approved Shape release candidate"
+            echo
+            echo "- Version: \`${{ needs.validate.outputs.version }}\`"
+            echo "- Tag: \`${{ needs.validate.outputs.tag }}\`"
+            echo "- Plugin tag: \`${{ needs.validate.outputs.plugin_tag }}\`"
+            echo "- Commit: \`${{ github.sha }}\`"
+            echo "- Skills report: \`skill-release-report-${{ github.sha }}\`"
+          } >> "$GITHUB_STEP_SUMMARY"

@@ -33,12 +33,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - uses: timbrinded/shapelang@v0.4.1
+      - uses: timbrinded/shapelang@v0.7.0
       - run: shp check
       - run: shp fmt --check
 ```
 
-Pin the setup action (or installer) to an explicit release such as `v0.4.1`. Do not use `shp update` as the CI install path; that command is for local developer binaries.
+Pin the setup action (or installer) to an explicit release such as `v0.7.0`. Do not use `shp update` as the CI install path; that command is for local developer binaries.
 
 ## Coverage gate
 
@@ -67,7 +67,7 @@ If you do not use the setup action:
 ```yaml
 - name: Install shp
   run: |
-    curl --proto '=https' --tlsv1.2 -LsSf https://github.com/timbrinded/shapelang/releases/download/v0.4.1/install.sh | sh
+    curl --proto '=https' --tlsv1.2 -LsSf https://github.com/timbrinded/shapelang/releases/download/v0.7.0/install.sh | sh
     echo "$HOME/.local/bin" >> "$GITHUB_PATH"
 ```
 
@@ -184,6 +184,9 @@ The Shape repository runs three Claude-powered PR jobs, all driven by one script
 The Shape repository itself also runs Bun workspace tests, typechecking, docs verification, and release smoke tests. Those are contributor checks, not required for application repos that only consume `shp`.
 
 See [Local Development](../reference/local-development) for the contributor commands.
+
+Official releases add a separate blocking skills candidate workflow and manual
+environment approval before tagging. See [Releasing Shape](../reference/releasing).
 
 ## Practice
 

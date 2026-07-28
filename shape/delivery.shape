@@ -24,33 +24,48 @@ resource InstallScript
 
 resource NativeParserAsset
 
+resource PluginPackageManifest
+
 resource PullRequestStatusComment
 
 resource ReleaseArtifact
 
 resource ReleaseVersionTag
 
+resource ShapeAgentSkill
+
+resource SkillReleaseApproval
+
+resource SkillReleaseReport
+
 component CiPipeline {
   owns CiWorkflow
   owns ClaudeReviewPrompt
   owns ClaudeReviewResult
   owns PullRequestStatusComment
+  owns SkillReleaseApproval
+  owns SkillReleaseReport
   grants Read<ChangedFileList>
   grants Read<CiWorkflow>
   grants Read<ClaudeReviewPrompt>
   grants Read<ClaudeReviewResult>
   grants Read<CliPackageManifest>
+  grants Read<DocsContent>
   grants Read<ExperimentalKernelDiagnosticSet>
   grants Read<ExperimentalKernelEnvelope>
   grants Read<GeneratedAstManifest>
   grants Read<LanguageSource>
   grants Read<NativeParserAsset>
+  grants Read<PluginPackageManifest>
   grants Read<PullRequestStatusComment>
   grants Read<ReleaseArtifact>
   grants Read<ReleaseVersionTag>
   grants Read<SemanticDiagnostics>
+  grants Read<ShapeAgentSkill>
   grants Read<ShapeModelDraft>
   grants Read<ShapeSource>
+  grants Read<SkillReleaseApproval>
+  grants Read<SkillReleaseReport>
   grants Read<SourceSyntaxTree>
   grants Update<ChangedFileList>
   grants Update<ClaudeReviewResult>
@@ -58,15 +73,86 @@ component CiPipeline {
   grants Update<GeneratedAstManifest>
   grants Update<PullRequestStatusComment>
   grants Update<ShapeModelDraft>
+  grants Update<SkillReleaseApproval>
+  grants Update<SkillReleaseReport>
+  fn approveReleaseSkills
+    source yaml(".github/workflows/release-candidate.yml#Skill Release Approval")
+    description "Records manual approval only after deterministic release validation and the blocking five-skill evaluation pass."
+    effects complete {
+      Read<CiWorkflow>
+        evidence yaml(".github/workflows/release-candidate.yml")
+      Read<SkillReleaseReport>
+        evidence yaml(".github/workflows/release-candidate.yml")
+      Update<SkillReleaseApproval>
+        evidence yaml(".github/workflows/release-candidate.yml")
+    }
   fn checkReleaseVersion : RefactorSensitive
-    source yaml(".github/workflows/release.yml#Check release tag matches CLI package version")
+    source ts("scripts/check-release-metadata.ts#validateReleaseMetadata")
+    description "Requires the release tag, CLI package, both plugin manifests, and authored release notes to carry one X.Y.Z version."
     effects complete {
       Read<CiWorkflow>
         evidence yaml(".github/workflows/release.yml")
       Read<CliPackageManifest>
         evidence json("packages/shp-cli/package.json")
+      Read<DocsContent>
+        evidence md("docs/releases/v0.7.0.md")
+      Read<PluginPackageManifest>
+        evidence json("plugins/shapelang/.claude-plugin/plugin.json")
+      Read<PluginPackageManifest>
+        evidence json("plugins/shapelang/.codex-plugin/plugin.json")
       Read<ReleaseVersionTag>
-        evidence yaml(".github/workflows/release.yml")
+        evidence ts("scripts/check-release-metadata.ts#validateReleaseMetadata")
+    }
+  fn evaluateReleaseSkills
+    source mjs(".github/scripts/run-claude-skill.mjs#buildSkillsReleasePrompt")
+    description "Evaluates all five shipped skills against current CLI, model, docs, and behavior scenarios and emits a blocking structured report."
+    effects complete {
+      Read<CiWorkflow>
+        evidence yaml(".github/workflows/release-candidate.yml")
+      Read<ClaudeReviewPrompt>
+        evidence md(".github/prompts/shape-skills-release.md")
+      Read<ShapeAgentSkill>
+        evidence md("plugins/shapelang/skills/shape-lang/SKILL.md")
+      Read<ShapeAgentSkill>
+        evidence md("plugins/shapelang/skills/shape-contract-preflight/SKILL.md")
+      Read<ShapeAgentSkill>
+        evidence md("plugins/shapelang/skills/shape-contract-guard/SKILL.md")
+      Read<ShapeAgentSkill>
+        evidence md("plugins/shapelang/skills/shape-index/SKILL.md")
+      Read<ShapeAgentSkill>
+        evidence md("plugins/shapelang/skills/shape-review/SKILL.md")
+      Read<ShapeAgentSkill>
+        evidence md("plugins/shapelang/skills/README.md")
+      Read<ShapeAgentSkill>
+        evidence yaml("plugins/shapelang/skills/shape-contract-guard/agents/openai.yaml")
+      Read<ShapeAgentSkill>
+        evidence md("plugins/shapelang/skills/shape-contract-guard/references/examples.md")
+      Read<ShapeAgentSkill>
+        evidence md("plugins/shapelang/skills/shape-contract-guard/references/signals.md")
+      Read<ShapeAgentSkill>
+        evidence yaml("plugins/shapelang/skills/shape-contract-preflight/agents/openai.yaml")
+      Read<ShapeAgentSkill>
+        evidence md("plugins/shapelang/skills/shape-contract-preflight/references/examples.md")
+      Read<ShapeAgentSkill>
+        evidence sh("plugins/shapelang/skills/shape-contract-preflight/scripts/precheck.sh")
+      Read<ShapeAgentSkill>
+        evidence yaml("plugins/shapelang/skills/shape-index/agents/openai.yaml")
+      Read<ShapeAgentSkill>
+        evidence yaml("plugins/shapelang/skills/shape-lang/agents/openai.yaml")
+      Read<ShapeAgentSkill>
+        evidence md("plugins/shapelang/skills/shape-lang/references/antipatterns.md")
+      Read<ShapeAgentSkill>
+        evidence md("plugins/shapelang/skills/shape-lang/references/cli-workflows.md")
+      Read<ShapeAgentSkill>
+        evidence md("plugins/shapelang/skills/shape-lang/references/examples.md")
+      Read<ShapeAgentSkill>
+        evidence md("plugins/shapelang/skills/shape-lang/references/make-shape-protocol.md")
+      Read<ShapeAgentSkill>
+        evidence md("plugins/shapelang/skills/shape-lang/references/teaching-guide.md")
+      Read<ShapeAgentSkill>
+        evidence yaml("plugins/shapelang/skills/shape-review/agents/openai.yaml")
+      Update<SkillReleaseReport>
+        evidence json(".github/shape-contract/schemas/shape-skills-release-result.schema.json")
     }
   fn generateAstContext
     source ts("scripts/generate-ast-shapes.ts")
@@ -228,6 +314,44 @@ component CiPipeline {
       Read<SourceSyntaxTree>
         evidence yaml(".github/workflows/shape.yml")
     }
+  fn validateShippedSkills
+    source ts("scripts/check-skills.ts#validateSkillPackage")
+    description "Deterministically validates the shipped skill set, entrypoint frontmatter, current CLI spelling, and agent interface metadata."
+    effects complete {
+      Read<ShapeAgentSkill>
+        evidence md("plugins/shapelang/skills/shape-lang/SKILL.md")
+      Read<ShapeAgentSkill>
+        evidence md("plugins/shapelang/skills/shape-contract-preflight/SKILL.md")
+      Read<ShapeAgentSkill>
+        evidence md("plugins/shapelang/skills/shape-contract-guard/SKILL.md")
+      Read<ShapeAgentSkill>
+        evidence md("plugins/shapelang/skills/shape-index/SKILL.md")
+      Read<ShapeAgentSkill>
+        evidence md("plugins/shapelang/skills/shape-review/SKILL.md")
+      Read<ShapeAgentSkill>
+        evidence yaml("plugins/shapelang/skills/shape-lang/agents/openai.yaml")
+      Read<ShapeAgentSkill>
+        evidence yaml("plugins/shapelang/skills/shape-contract-preflight/agents/openai.yaml")
+      Read<ShapeAgentSkill>
+        evidence yaml("plugins/shapelang/skills/shape-contract-guard/agents/openai.yaml")
+      Read<ShapeAgentSkill>
+        evidence yaml("plugins/shapelang/skills/shape-index/agents/openai.yaml")
+      Read<ShapeAgentSkill>
+        evidence yaml("plugins/shapelang/skills/shape-review/agents/openai.yaml")
+    }
+  fn verifyReleaseSkillsApproval
+    source yaml(".github/workflows/release.yml#Verify skill release approval")
+    description "Rejects an official tag unless it is current master and the exact commit has a successful release-candidate run that includes manual skills approval."
+    effects complete {
+      Read<CiWorkflow>
+        evidence yaml(".github/workflows/release.yml")
+      Read<ReleaseVersionTag>
+        evidence yaml(".github/workflows/release.yml")
+      Read<SkillReleaseApproval>
+        evidence yaml(".github/workflows/release.yml")
+      Read<SkillReleaseReport>
+        evidence yaml(".github/workflows/release-candidate.yml")
+    }
   fn writeChangedFiles
     source sh("scripts/write-changed-files.sh")
     effects complete {
@@ -311,6 +435,8 @@ component DocsSite {
       Read<DocsContent>
         evidence md("docs-site/src/content/docs/reference/local-development.md")
       Read<DocsContent>
+        evidence md("docs-site/src/content/docs/reference/releasing.md")
+      Read<DocsContent>
         evidence ts("docs-site/scripts/verify-shape-blocks.ts")
       Update<DocsContent>
         evidence md("docs-site/src/content/docs/concepts/ast-generation.md")
@@ -332,6 +458,8 @@ component DocsSite {
         evidence md("docs-site/src/content/docs/reference/diagnostics.md")
       Update<DocsContent>
         evidence md("docs-site/src/content/docs/reference/language-syntax.md")
+      Update<DocsContent>
+        evidence md("docs-site/src/content/docs/reference/releasing.md")
     }
 }
 
@@ -486,6 +614,8 @@ implementation CheckerSource {
 
 implementation CiScripts {
   paths {
+    "scripts/check-release-metadata.ts"
+    "scripts/check-skills.ts"
     "scripts/generate-ast-shapes.sh"
     "scripts/generate-ast-shapes.ts"
     "scripts/write-changed-files.sh"
@@ -592,10 +722,22 @@ implementation ReleaseSource {
     "action.yml"
     "install.ps1"
     "install.sh"
+    "plugins/shapelang/.claude-plugin/plugin.json"
+    "plugins/shapelang/.codex-plugin/plugin.json"
     "scripts/build-release-assets.sh"
     "scripts/prepare-tree-sitter-parser-assets.ts"
   }
   conforms_to ReleasePipeline
+  on_change require shape_update
+}
+
+implementation ShapeSkillSource {
+  paths {
+    "plugins/shapelang/skills/**/*.md"
+    "plugins/shapelang/skills/**/*.sh"
+    "plugins/shapelang/skills/**/*.yaml"
+  }
+  conforms_to CiPipeline
   on_change require shape_update
 }
 
@@ -758,7 +900,7 @@ memory ReleaseVersionTagContract : RefactorConstraint<fn CiPipeline.checkRelease
   applies_to fn CiPipeline.checkReleaseVersion
   status Explained
   confidence High
-  summary "Release tags must match the CLI package manifest version before release assets are published."
+  summary "Release tags, the CLI package, and both plugin manifests must share one version before approved release assets are published."
   who {
     owner ShapeMaintainers
   }
@@ -777,6 +919,17 @@ reevaluation DocsShapeBlockVerificationRechecked {
   reviewer ShapeMaintainers
   decided_on "2026-05-20"
   evidence test("docs-site/scripts/verify-shape-blocks.ts")
+}
+
+reevaluation ReleaseDistributionVersionsRechecked {
+  satisfies memory ReleaseVersionTagContract
+  outcome Confirmed
+  summary "The shared metadata validator rejects a release unless the tag, CLI package, and both plugin manifests agree."
+  reviewer ShapeMaintainers
+  decided_on "2026-07-28"
+  evidence test("scripts/check-release-metadata.test.ts")
+  evidence ts("scripts/check-release-metadata.ts#validateReleaseMetadata")
+  evidence yaml(".github/workflows/release.yml")
 }
 
 reevaluation ReleaseNativeParserAssetsRechecked {

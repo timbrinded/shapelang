@@ -29,7 +29,16 @@ change RefactorPolicyDecision {
 }
 ```
 
-Decision: proceed only after guard obligations are known.
+Run the default draft precheck because the proposal deliberately uses
+`effects unknown`:
+
+```bash
+plugins/shapelang/skills/shape-contract-preflight/scripts/precheck.sh /tmp/change.shape
+```
+
+Decision: proceed only after guard obligations are known. Draft mode relaxes
+only the explicit unknown-effect diagnostic; any guard or final-forbid failure
+still blocks.
 
 ## Add Storage Effect
 
@@ -59,6 +68,8 @@ change AddAuditPurge {
 ```
 
 Decision: revise plan if `shp check` reports a final-forbid violation.
+Because the effects are fully enumerated, use
+`precheck.sh --strict /tmp/change.shape`.
 
 ## Add Relation
 
@@ -89,6 +100,40 @@ change AddAnalyzeCommandRelation {
 ```
 
 Decision: proceed if relation semantics match the source change and no graph rule fails.
+Use strict precheck because the proposal contains no unknown effects.
+
+## Add A Route Across A Forbidden Path
+
+User task:
+
+```text
+Let Gateway obtain secrets through PolicyService.
+```
+
+Expected workflow:
+
+- Run `shp graph show Gateway`, `shp graph show PolicyService`, and
+  `shp explain SecretStore`.
+- Inspect graph rules and active vendored domain-pack policy.
+- Model the intended relation instead of assuming an indirect path bypasses a
+  boundary.
+
+Temporary block:
+
+```shape
+module preflight
+
+change AddSecretRoute {
+  add relation PolicyProvidesSecret {
+    kind provides
+    connects PolicyService -> SecretStore
+  }
+}
+```
+
+Decision: if a final `forbid path Gateway -> SecretStore over calls or provides`
+fails, revise the implementation plan or ask for an architecture decision.
+Neither draft validation nor an import change can waive the rule.
 
 ## Remove Guarded Function
 

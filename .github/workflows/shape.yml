@@ -78,6 +78,9 @@ jobs:
       - name: Lint
         run: bun run lint
 
+      - name: Validate shipped skills
+        run: bun run skills:check
+
   typecheck:
     name: Typecheck
     runs-on: ubuntu-latest

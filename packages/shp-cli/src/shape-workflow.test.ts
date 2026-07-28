@@ -136,6 +136,67 @@ describe("Shape workflow", () => {
     expect(result.exitCode).toBe(1);
   });
 
+  test("passes the skills release gate only when all five skills pass", async () => {
+    const result = await runSkillGate("release", skillsReleaseResult());
+
+    expect(result.exitCode).toBe(0);
+    expect(result.stderr).toBe("");
+    expect(result.summary).toContain("Shape Skills Release Evaluation");
+    expect(result.summary).toContain("**shape-review**: `pass`");
+  });
+
+  test("fails the skills release gate when a shipped skill is missing or duplicated", async () => {
+    const missing = skillsReleaseResult();
+    missing.skills.pop();
+    const missingResult = await runSkillGate("release", missing);
+    expect(missingResult.exitCode).toBe(1);
+    expect(missingResult.stderr).toContain("missing shape-review");
+
+    const duplicate = skillsReleaseResult();
+    const firstSkill = duplicate.skills[0];
+    if (!firstSkill) {
+      throw new Error("skills release fixture is empty");
+    }
+    duplicate.skills[4] = { ...firstSkill };
+    const duplicateResult = await runSkillGate("release", duplicate);
+    expect(duplicateResult.exitCode).toBe(1);
+    expect(duplicateResult.stderr).toContain("duplicate or unknown skill shape-lang");
+  });
+
+  test("fails the skills release gate when pass carries a blocking finding", async () => {
+    const release = skillsReleaseResult();
+    release.findings.push({
+      skill: "shape-lang",
+      severity: "high",
+      scenario: "CLI syntax",
+      problem: "Legacy graph syntax is taught.",
+      evidence: "The entrypoint uses graph --stats.",
+      recommended_change: "Teach graph stats."
+    });
+
+    const result = await runSkillGate("release", release);
+    expect(result.exitCode).toBe(1);
+    expect(result.stderr).toContain("pass status cannot include findings");
+  });
+
+  test("fails the skills release gate on vacuous or incomplete scenario evidence", async () => {
+    const vacuous = skillsReleaseResult();
+    vacuous.summary = "";
+    for (const skill of vacuous.skills) {
+      skill.summary = "";
+      skill.scenarios = [];
+    }
+    const vacuousResult = await runSkillGate("release", vacuous);
+    expect(vacuousResult.exitCode).toBe(1);
+    expect(vacuousResult.stderr).toContain("summary must not be empty");
+
+    const incomplete = skillsReleaseResult();
+    incomplete.skills[0]?.scenarios.pop();
+    const incompleteResult = await runSkillGate("release", incomplete);
+    expect(incompleteResult.exitCode).toBe(1);
+    expect(incompleteResult.stderr).toContain("missing scenarios stable-refs");
+  });
+
   test("fails closed on garbage results and unknown skills", async () => {
     const garbage = await runSkillGate("guard", "this is not json");
     expect(garbage.exitCode).toBe(1);
@@ -436,6 +497,53 @@ function guardFinding(severity: "high" | "medium" | "low") {
     evidence: "AppendOnly was removed from AuditEvent; HardDelete<AuditEvent> was added.",
     model_context: "AuditStore owns AuditEvent; no reevaluation references the change.",
     recommended_action: "Restore the constraint or add a specific reevaluation."
+  };
+}
+
+function skillsReleaseResult() {
+  const scenarios = {
+    "shape-lang": [
+      "draft-strict",
+      "explicit-graph",
+      "domain-packs",
+      "forbidden-paths",
+      "author-critic",
+      "lsp",
+      "target-aware-analyzer",
+      "stable-refs"
+    ],
+    "shape-contract-preflight": ["guarded-unknown-plan", "stable-refs"],
+    "shape-contract-guard": [
+      "forbidden-path-removal",
+      "domain-pack-weakening",
+      "generated-only-exclusion"
+    ],
+    "shape-index": ["generated-navigation-only", "authored-contract-surfaces", "stable-refs"],
+    "shape-review": ["evidence-backed-cross-object", "speculation-suppression", "stable-refs"]
+  };
+  return {
+    status: "pass",
+    summary: "All shipped skills passed their release scenarios.",
+    skills: [
+      "shape-lang",
+      "shape-contract-preflight",
+      "shape-contract-guard",
+      "shape-index",
+      "shape-review"
+    ].map((name) => ({
+      name,
+      status: "pass",
+      summary: "Current commands and behavioral patterns are correct.",
+      scenarios: [...(scenarios[name as keyof typeof scenarios] ?? [])]
+    })),
+    findings: [] as Array<{
+      skill: string;
+      severity: string;
+      scenario: string;
+      problem: string;
+      evidence: string;
+      recommended_change: string;
+    }>
   };
 }
 

@@ -40,7 +40,9 @@ Report when the diff removes or weakens:
 - Built-in or project-significant trait names through shadowing.
 - Whole authored `.shape` files containing constraints, coverage, bindings, provider rules, guarded design context, memory, rationale, reevaluation, or relation declarations.
 
-Default severity: high when a real constraint is removed. Use critical only when the same diff also introduces capability/effect that uses the loosened path.
+Default severity: high when a real constraint is removed. Keep it high when the
+same diff also introduces a capability or effect that uses the loosened path;
+describe that co-occurrence in the signal and evidence.
 
 ## Capability Or Effect Widening
 
@@ -80,8 +82,26 @@ Report when the diff:
 - Removes `calls`, `callbacks`, `provides`, or `coordinated_call`.
 - Changes a relation from a prelude kind to a custom or weaker kind.
 - Removes endpoints from a `coordinated_call` path.
+- Removes or narrows traversal kinds from a `forbid path`.
+- Changes path endpoints so a previously forbidden route becomes reachable.
 
 Removed roles or summaries are low by themselves, but become stronger when paired with endpoint or kind changes.
+
+## Domain-Pack And Resolution Changes
+
+Score vendored pack changes as effective contract changes because default
+discovery installs the modules without requiring a project import.
+
+Report when a diff:
+
+- removes or weakens a pack-owned trait, final forbid, path rule, or global rule;
+- replaces an exact vendored version without reviewable provenance;
+- changes a module/import so a reference resolves to a different declaration;
+- shadows an imported name locally; or
+- assumes deleting an import disables pack-level policy.
+
+Do not report an import-only removal as disabling a pack rule when the pack file
+remains discovered. Report the actual resolution or reference impact.
 
 ## Traceability Loss
 

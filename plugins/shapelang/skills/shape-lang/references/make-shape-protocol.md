@@ -5,10 +5,12 @@ Use this when authoring or reviewing global `.shape` model updates. For command 
 ## Workflow
 
 1. Read the current model first: `shape/**/*.shape` and nearby fixtures.
-2. Identify the claim type: resource invariant, component ownership, grant, structural relation, function effect, implementation coverage, rule, attestation, rationale, memory, or reevaluation.
+2. Identify the claim type: resource invariant, component ownership, grant, structural relation, path or hypercycle rule, function effect, implementation coverage, domain-pack policy, attestation, rationale, memory, or reevaluation.
 3. Update the owning global model file directly; do not create a separate staging area for model drafts.
 4. Include `source` for changed functions and `evidence` for material effects. Prefer stable `#symbol` references and use file-only references when no stable symbol exists; do not add line ranges.
 5. Validate with `shp fmt --check`, `shp check`, and `shp coverage --changed-files changed.txt` when changed files are available.
+6. If generated AST points to a possible claim, inspect the named source before
+   authoring it. Generated context is navigation evidence, not contract.
 
 ## Authoring Patterns
 
@@ -61,6 +63,31 @@ component AuditStore {
 
 Smallest fix: only add the grant if the component is genuinely allowed to perform that effect. A final forbid still fails even with the grant.
 
+Good: prevent any declared calls/provides route from reaching a protected
+resource:
+
+```shape
+rule no_gateway_to_secrets {
+  forbid path Gateway -> SecretStore over calls or provides
+}
+```
+
+Counterexample: describing the same constraint only in a summary. Prose does
+not constrain graph traversal.
+
+## Domain Packs
+
+Vendored `.shape` files under the discovered Shape root are part of the checked
+model even when no project module imports them. Treat an exact vendored revision
+as installed policy. Imports make references available without qualification;
+they are not activation switches.
+
+- Prefer pack traits for policy a project opts into.
+- Use pack-level rules only for policy that should apply immediately on install.
+- Review an upgrade like a dependency and contract change: removed final
+  forbids, path rules, renamed modules, weakened traits, and new effects matter.
+- Never fetch a floating pack during CI or shadow an imported declaration.
+
 ## Coverage and Attestation
 
 Good: a governed file with no architecture-relevant change uses a narrow attestation.
@@ -90,5 +117,7 @@ Smallest fix: update the global Shape model for the effect, or make the attestat
 - Are grants present only where the component is actually allowed to emit the effect?
 - Do final forbidden effects still fail?
 - Are structural-dependency changes represented as a top-level `relation` with the right `kind` (`calls`, `callbacks`, `provides`, `coordinated_call`)?
+- Do path and hypercycle rules cover the intended traversal kinds and endpoints?
+- Are vendored pack changes pinned, reviewed as policy, and understood as active under discovery?
 - Are Memory Guard obligations satisfied when shape traits or guarded changes appear?
 - Does `shp check` still run after any filtered command such as `shp obligations` or `shp analyze`?

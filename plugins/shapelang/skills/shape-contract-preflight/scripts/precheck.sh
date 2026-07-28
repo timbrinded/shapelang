@@ -5,10 +5,12 @@ usage() {
   cat <<'USAGE'
 Usage:
   precheck.sh --init [--module NAME]
-  precheck.sh [--shape-root DIR] CHANGE_FILE.shape
+  precheck.sh [--shape-root DIR] [--strict] CHANGE_FILE.shape
 
 Creates a temporary Shape change-file template or checks the current model plus
-an existing temporary change file with `shp check`.
+an existing temporary change file. Draft checks allow explicit unknown effects
+while keeping every other diagnostic blocking. Use --strict when the proposed
+change contains no unknown effects.
 
 Set SHAPE_CMD to use a repo wrapper, for example:
   SHAPE_CMD="bun shp" precheck.sh CHANGE_FILE.shape
@@ -18,6 +20,7 @@ USAGE
 shape_root="shape"
 module_name="preflight"
 init=0
+strict=0
 change_file=""
 
 while [[ $# -gt 0 ]]; do
@@ -45,6 +48,10 @@ while [[ $# -gt 0 ]]; do
         exit 2
       fi
       shift 2
+      ;;
+    --strict)
+      strict=1
+      shift
       ;;
     -*)
       echo "precheck.sh: unknown option $1" >&2
@@ -111,7 +118,12 @@ if [[ "${#shape_files[@]}" -eq 0 ]]; then
 fi
 
 set +e
-check_output="$("${shape_cmd[@]}" check "${shape_files[@]}" "$change_file" 2>&1)"
+check_args=(check)
+if [[ "$strict" -eq 0 ]]; then
+  check_args+=(--allow-unknown-effects)
+fi
+check_args+=("${shape_files[@]}" "$change_file")
+check_output="$("${shape_cmd[@]}" "${check_args[@]}" 2>&1)"
 check_status=$?
 set -e
 

@@ -1,0 +1,81 @@
+module shape.generated.ast.scripts.check_release_metadata
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource CheckReleaseMetadataModuleLoadReleaseMetadataAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("scripts/check-release-metadata.ts#loadReleaseMetadata")
+  fingerprint ast.semantic_subtree_v1("sha256:2875930bbc979e68e3e404a6860577887615df13461943bc6be01df2e0f69b3a")
+}
+
+resource CheckReleaseMetadataModuleMainAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("scripts/check-release-metadata.ts#main")
+  fingerprint ast.semantic_subtree_v1("sha256:f6b55c2247226e4a2ee4175791de86c0363efbb02b5c6393d10349a48cd150e5")
+}
+
+resource CheckReleaseMetadataModulePackageVersionAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("scripts/check-release-metadata.ts#packageVersion")
+  fingerprint ast.semantic_subtree_v1("sha256:220061b2847410c8b112171ea110fca1724e297e5be2a21c905ae5eddd6e9b31")
+}
+
+resource CheckReleaseMetadataModuleValidateReleaseMetadataAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("scripts/check-release-metadata.ts#validateReleaseMetadata")
+  fingerprint ast.semantic_subtree_v1("sha256:2b9e2247497f8ba25e7e60a51dee41443e9ecfbd866adcf221eba61e2f9a0b62")
+}
+
+component CheckReleaseMetadataModule : GeneratedCandidate {
+  fn loadReleaseMetadata
+    source ts("scripts/check-release-metadata.ts#loadReleaseMetadata")
+    effects unknown
+  fn main
+    source ts("scripts/check-release-metadata.ts#main")
+    effects unknown
+  fn packageVersion
+    source ts("scripts/check-release-metadata.ts#packageVersion")
+    effects unknown
+  fn validateReleaseMetadata
+    source ts("scripts/check-release-metadata.ts#validateReleaseMetadata")
+    effects unknown
+}
+
+relation CheckReleaseMetadataModuleLoadReleaseMetadataGeneratedFromCheckReleaseMetadataModuleLoadReleaseMetadataAstAnchor {
+  kind generated_from
+  connects CheckReleaseMetadataModule -> CheckReleaseMetadataModuleLoadReleaseMetadataAstAnchor
+  roles { CheckReleaseMetadataModule as generated, CheckReleaseMetadataModuleLoadReleaseMetadataAstAnchor as syntax }
+  expects CheckReleaseMetadataModuleLoadReleaseMetadataAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2875930bbc979e68e3e404a6860577887615df13461943bc6be01df2e0f69b3a")
+  summary "fn CheckReleaseMetadataModule.loadReleaseMetadata generated from typescript function_declaration at scripts/check-release-metadata.ts#loadReleaseMetadata."
+}
+
+relation CheckReleaseMetadataModuleMainGeneratedFromCheckReleaseMetadataModuleMainAstAnchor {
+  kind generated_from
+  connects CheckReleaseMetadataModule -> CheckReleaseMetadataModuleMainAstAnchor
+  roles { CheckReleaseMetadataModule as generated, CheckReleaseMetadataModuleMainAstAnchor as syntax }
+  expects CheckReleaseMetadataModuleMainAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f6b55c2247226e4a2ee4175791de86c0363efbb02b5c6393d10349a48cd150e5")
+  summary "fn CheckReleaseMetadataModule.main generated from typescript function_declaration at scripts/check-release-metadata.ts#main."
+}
+
+relation CheckReleaseMetadataModulePackageVersionGeneratedFromCheckReleaseMetadataModulePackageVersionAstAnchor {
+  kind generated_from
+  connects CheckReleaseMetadataModule -> CheckReleaseMetadataModulePackageVersionAstAnchor
+  roles { CheckReleaseMetadataModule as generated, CheckReleaseMetadataModulePackageVersionAstAnchor as syntax }
+  expects CheckReleaseMetadataModulePackageVersionAstAnchor fingerprint ast.semantic_subtree_v1("sha256:220061b2847410c8b112171ea110fca1724e297e5be2a21c905ae5eddd6e9b31")
+  summary "fn CheckReleaseMetadataModule.packageVersion generated from typescript function_declaration at scripts/check-release-metadata.ts#packageVersion."
+}
+
+relation CheckReleaseMetadataModuleValidateReleaseMetadataGeneratedFromCheckReleaseMetadataModuleValidateReleaseMetadataAstAnchor {
+  kind generated_from
+  connects CheckReleaseMetadataModule -> CheckReleaseMetadataModuleValidateReleaseMetadataAstAnchor
+  roles { CheckReleaseMetadataModule as generated, CheckReleaseMetadataModuleValidateReleaseMetadataAstAnchor as syntax }
+  expects CheckReleaseMetadataModuleValidateReleaseMetadataAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2b9e2247497f8ba25e7e60a51dee41443e9ecfbd866adcf221eba61e2f9a0b62")
+  summary "fn CheckReleaseMetadataModule.validateReleaseMetadata generated from typescript function_declaration at scripts/check-release-metadata.ts#validateReleaseMetadata."
+}
+
+implementation CheckReleaseMetadataModuleImpl {
+  paths {
+    "scripts/check-release-metadata.ts"
+  }
+  conforms_to CheckReleaseMetadataModule
+}

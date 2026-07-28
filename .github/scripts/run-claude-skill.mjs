@@ -12,7 +12,7 @@
 //     the prefilter result) against the skill's JSON schema, renders the step
 //     summary, and exits per the skill's gate policy.
 import { spawnSync } from "node:child_process";
-import { appendFileSync, existsSync, readFileSync, readdirSync } from "node:fs";
+import { appendFileSync, existsSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 
@@ -520,6 +520,108 @@ export function indexFailureMessage(result, env = process.env) {
 }
 
 // ---------------------------------------------------------------------------
+// Release skill: blocking evaluation of every shipped skill
+// ---------------------------------------------------------------------------
+
+export function buildSkillsReleasePrompt(env = process.env) {
+  return [
+    readFileSync(".github/prompts/shape-skills-release.md", "utf8").trim(),
+    "",
+    `Release candidate: version=${env.SHAPE_RELEASE_VERSION ?? ""}, commit=${env.GITHUB_SHA ?? ""}.`,
+    "Return the final evaluation as a single JSON object matching the configured schema."
+  ].join("\n");
+}
+
+export function renderSkillsReleaseSummary(result) {
+  const lines = [
+    "## Shape Skills Release Evaluation",
+    "",
+    `Status: \`${result.status}\``,
+    "",
+    result.summary,
+    ""
+  ];
+  for (const skill of result.skills) {
+    lines.push(`- **${skill.name}**: \`${skill.status}\` — ${skill.summary}`);
+    for (const scenario of skill.scenarios) {
+      lines.push(`  - ${scenario}`);
+    }
+  }
+  if (result.findings.length > 0) {
+    lines.push("", "### Blocking findings", "");
+    for (const finding of result.findings) {
+      lines.push(
+        `- **${finding.skill} / ${finding.severity}**: ${finding.problem}`,
+        `  - Scenario: ${finding.scenario}`,
+        `  - Evidence: ${finding.evidence}`,
+        `  - Required change: ${finding.recommended_change}`
+      );
+    }
+  }
+  lines.push("");
+  return lines.join("\n");
+}
+
+export const RELEASE_SKILL_SCENARIOS = {
+  "shape-lang": [
+    "draft-strict",
+    "explicit-graph",
+    "domain-packs",
+    "forbidden-paths",
+    "author-critic",
+    "lsp",
+    "target-aware-analyzer",
+    "stable-refs"
+  ],
+  "shape-contract-preflight": ["guarded-unknown-plan", "stable-refs"],
+  "shape-contract-guard": [
+    "forbidden-path-removal",
+    "domain-pack-weakening",
+    "generated-only-exclusion"
+  ],
+  "shape-index": ["generated-navigation-only", "authored-contract-surfaces", "stable-refs"],
+  "shape-review": ["evidence-backed-cross-object", "speculation-suppression", "stable-refs"]
+};
+
+export function skillsReleaseFailureMessage(result) {
+  if (result.summary.trim() === "") {
+    return "Invalid skills release result: summary must not be empty.";
+  }
+
+  const expected = new Set(Object.keys(RELEASE_SKILL_SCENARIOS));
+  for (const skill of result.skills) {
+    if (!expected.delete(skill.name)) {
+      return `Invalid skills release result: duplicate or unknown skill ${skill.name}.`;
+    }
+    if (skill.summary.trim() === "") {
+      return `Invalid skills release result: ${skill.name} summary must not be empty.`;
+    }
+
+    const expectedScenarios = new Set(RELEASE_SKILL_SCENARIOS[skill.name]);
+    for (const scenario of skill.scenarios) {
+      if (!expectedScenarios.delete(scenario)) {
+        return `Invalid skills release result: ${skill.name} has duplicate or unknown scenario ${scenario}.`;
+      }
+    }
+    if (expectedScenarios.size > 0) {
+      return `Invalid skills release result: ${skill.name} is missing scenarios ${[
+        ...expectedScenarios
+      ].join(", ")}.`;
+    }
+  }
+  if (expected.size > 0) {
+    return `Invalid skills release result: missing ${[...expected].join(", ")}.`;
+  }
+  if (result.status === "pass" && result.findings.length > 0) {
+    return "Invalid skills release result: pass status cannot include findings.";
+  }
+  if (result.status !== "pass" || result.skills.some((skill) => skill.status !== "pass")) {
+    return JSON.stringify(result, null, 2);
+  }
+  return undefined;
+}
+
+// ---------------------------------------------------------------------------
 // Skill table and gate flow
 // ---------------------------------------------------------------------------
 
@@ -587,6 +689,21 @@ const SKILLS = {
       result.gaps.length > 0
         ? `Advisory index coverage gaps (non-blocking): ${result.gaps.length}`
         : undefined
+  },
+  release: {
+    title: "Shape skills release result",
+    schemaPath: (env) =>
+      env.SHAPE_SKILLS_RELEASE_RESULT_SCHEMA ??
+      ".github/shape-contract/schemas/shape-skills-release-result.schema.json",
+    allowedTools: [
+      ...READ_ONLY_TOOLS,
+      "Bash(bun shp * --help)",
+      "Bash(bun shp graph *)",
+      "Bash(bun shp analyze *)"
+    ].join(","),
+    buildPrompt: buildSkillsReleasePrompt,
+    renderSummary: renderSkillsReleaseSummary,
+    failureMessage: skillsReleaseFailureMessage
   }
 };
 
@@ -654,6 +771,10 @@ function runGate(name) {
   const skill = requireSkill(name);
   const schema = JSON.parse(readFileSync(skill.schemaPath(process.env), "utf8"));
   const result = resolveGateResult(skill, schema, process.env);
+
+  if (process.env.CLAUDE_SKILL_RESULT_PATH) {
+    writeFileSync(process.env.CLAUDE_SKILL_RESULT_PATH, `${JSON.stringify(result, null, 2)}\n`);
+  }
 
   if (process.env.GITHUB_STEP_SUMMARY) {
     appendFileSync(process.env.GITHUB_STEP_SUMMARY, skill.renderSummary(result));

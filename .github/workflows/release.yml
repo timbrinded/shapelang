@@ -7,11 +7,66 @@ on:
 
 permissions:
   contents: write
+  actions: read
 
 jobs:
+  approval:
+    name: Verify skill release approval
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Require approved release candidate
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+
+          master_sha="$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/master" --jq '.object.sha')"
+          if [ "$GITHUB_SHA" != "$master_sha" ]; then
+            echo "Release tag commit $GITHUB_SHA is not current master $master_sha." >&2
+            exit 1
+          fi
+
+          plugin_tag="shapelang--$GITHUB_REF_NAME"
+          plugin_sha="$(
+            gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/$plugin_tag" --jq '.object.sha'
+          )"
+          if [ "$plugin_sha" != "$GITHUB_SHA" ]; then
+            echo "Plugin tag $plugin_tag resolves to $plugin_sha, not release commit $GITHUB_SHA." >&2
+            exit 1
+          fi
+
+          runs="$(
+            gh api \
+              "repos/$GITHUB_REPOSITORY/actions/workflows/release-candidate.yml/runs?branch=master&event=workflow_dispatch&status=completed&per_page=100"
+          )"
+          candidate_run_id="$(
+            jq -r --arg sha "$GITHUB_SHA" \
+              '[.workflow_runs[] | select(.head_sha == $sha and .head_branch == "master" and .conclusion == "success")] | max_by(.run_number) | .id // empty' \
+              <<<"$runs"
+          )"
+          if [ -z "$candidate_run_id" ]; then
+            echo "No successful, manually approved Release Candidate: Skills run exists for $GITHUB_SHA." >&2
+            exit 1
+          fi
+
+          approvals="$(
+            gh api "repos/$GITHUB_REPOSITORY/actions/runs/$candidate_run_id/approvals"
+          )"
+          manual_approval_count="$(
+            jq \
+              '[.[] | select(.state == "approved") | select(any(.environments[]?; .name == "skills-release-approval"))] | length' \
+              <<<"$approvals"
+          )"
+          if [ "$manual_approval_count" -lt 1 ]; then
+            echo "Release candidate run $candidate_run_id has no approved review for skills-release-approval." >&2
+            exit 1
+          fi
+
   validate:
     name: Validate
     runs-on: ubuntu-latest
+    needs: approval
 
     steps:
       - &checkout
@@ -37,16 +92,11 @@ jobs:
         name: Install
         run: bun install --frozen-lockfile
 
-      - name: Check release tag matches CLI package version
-        run: |
-          set -euo pipefail
-          cli_version="$(bun -e 'console.log((await import("./packages/shp-cli/package.json")).default.version)')"
-          expected_tag="v${cli_version}"
-          if [ "$GITHUB_REF_NAME" != "$expected_tag" ]; then
-            echo "Release tag $GITHUB_REF_NAME does not match packages/shp-cli/package.json version $cli_version."
-            echo "Expected tag: $expected_tag"
-            exit 1
-          fi
+      - name: Check release tag matches CLI and plugin versions
+        run: bun scripts/check-release-metadata.ts --tag "$GITHUB_REF_NAME"
+
+      - name: Validate shipped skills
+        run: bun run skills:check
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -103,8 +153,52 @@ jobs:
           set -euo pipefail
           mkdir -p /tmp/shp-smoke
           tar -xzf dist/release/shp-linux-x64.tar.gz -C /tmp/shp-smoke
+          expected_version="${GITHUB_REF_NAME#v}"
+          actual_version="$(/tmp/shp-smoke/shp --version)"
+          if [ "$actual_version" != "$expected_version" ]; then
+            echo "Expected packaged shp version $expected_version, got $actual_version." >&2
+            exit 1
+          fi
           /tmp/shp-smoke/shp --help >/dev/null
+          /tmp/shp-smoke/shp lsp --help >/dev/null
           /tmp/shp-smoke/shp check
+          /tmp/shp-smoke/shp check \
+            fixtures/projects/domain-pack-consumer/shape/project.shape \
+            fixtures/projects/domain-pack-consumer/shape/vendor/audit-policy/v1/audit-policy.shape
+          /tmp/shp-smoke/shp graph stats >/dev/null
+          /tmp/shp-smoke/shp graph all --kind calls >/dev/null
+          /tmp/shp-smoke/shp graph show CiPipeline --kind calls >/dev/null
+
+          /tmp/shp-smoke/shp check \
+            --allow-unknown-effects \
+            fixtures/fail/unknown_effects/audit.shape \
+            >/tmp/shp-smoke/draft.out
+          grep -q "passed with warnings" /tmp/shp-smoke/draft.out
+
+          set +e
+          /tmp/shp-smoke/shp check fixtures/fail/unknown_effects/audit.shape \
+            >/tmp/shp-smoke/strict.out 2>&1
+          strict_status=$?
+          /tmp/shp-smoke/shp check fixtures/fail/forbidden_path/deps.shape \
+            >/tmp/shp-smoke/path.out 2>&1
+          path_status=$?
+          set -e
+          if [ "$strict_status" -ne 1 ]; then
+            echo "Expected strict unknown-effect check to fail, got exit $strict_status." >&2
+            exit 1
+          fi
+          if [ "$path_status" -ne 1 ]; then
+            echo "Expected forbidden-path check to fail, got exit $path_status." >&2
+            exit 1
+          fi
+          grep -q "unknown effects" /tmp/shp-smoke/strict.out
+          grep -q "forbidden path" /tmp/shp-smoke/path.out
+
+          /tmp/shp-smoke/shp author \
+            --changed-files fixtures/changed/audit_purge.txt \
+            --component AuditStore \
+            >/tmp/shp-smoke/author.shape
+          grep -q "effects unknown" /tmp/shp-smoke/author.shape
           /tmp/shp-smoke/shp ast source \
             --language typescript \
             --module generated.audit \
@@ -145,4 +239,127 @@ jobs:
       - name: Publish GitHub release
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release create "$GITHUB_REF_NAME" dist/release/* --generate-notes --verify-tag
+        run: |
+          set -euo pipefail
+          master_sha="$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/master" --jq '.object.sha')"
+          plugin_tag="shapelang--$GITHUB_REF_NAME"
+          plugin_sha="$(
+            gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/$plugin_tag" --jq '.object.sha'
+          )"
+          if [ "$GITHUB_SHA" != "$master_sha" ] || [ "$plugin_sha" != "$GITHUB_SHA" ]; then
+            echo "Release refs changed after approval; refusing publication." >&2
+            echo "release=$GITHUB_SHA master=$master_sha plugin=$plugin_sha" >&2
+            exit 1
+          fi
+          gh release create "$GITHUB_REF_NAME" dist/release/* \
+            --notes-file "docs/releases/$GITHUB_REF_NAME.md" \
+            --verify-tag
+
+  verify:
+    name: Verify published release (${{ matrix.os }})
+    needs: release
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - windows-latest
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install published shp through the setup action
+        uses: ./
+        with:
+          version: ${{ github.ref_name }}
+
+      - name: Verify installed version
+        shell: bash
+        run: |
+          set -euo pipefail
+          expected="${GITHUB_REF_NAME#v}"
+          actual="$(shp --version)"
+          if [[ "$actual" != *"$expected"* ]]; then
+            echo "Expected shp version $expected, got $actual." >&2
+            exit 1
+          fi
+          shp check
+
+      - name: Download release-hosted installers
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/release-installer"
+          gh release download "$GITHUB_REF_NAME" \
+            --dir "$RUNNER_TEMP/release-installer" \
+            --pattern install.sh \
+            --pattern install.ps1
+
+      - name: Verify release-hosted installer (Linux)
+        if: runner.os == 'Linux'
+        shell: bash
+        run: |
+          set -euo pipefail
+          SHAPE_INSTALL_DIR="$RUNNER_TEMP/shp-installer" \
+            sh "$RUNNER_TEMP/release-installer/install.sh"
+          test "$("$RUNNER_TEMP/shp-installer/shp" --version)" = "${GITHUB_REF_NAME#v}"
+
+      - name: Verify release-hosted installer (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $InstallDir = Join-Path $env:RUNNER_TEMP "shp-installer"
+          & (Join-Path $env:RUNNER_TEMP "release-installer/install.ps1") -InstallDir $InstallDir
+          $Expected = $env:GITHUB_REF_NAME.TrimStart("v")
+          $Actual = & (Join-Path $InstallDir "shp.exe") --version
+          if ($Actual -ne $Expected) {
+            throw "Expected shp version $Expected, got $Actual."
+          }
+
+  verify-publication:
+    name: Verify published release metadata and assets
+    needs: release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Verify release record and assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          release_dir="$RUNNER_TEMP/published-release"
+          mkdir -p "$release_dir"
+
+          release_json="$(gh release view "$GITHUB_REF_NAME" --json isDraft,isPrerelease,body,assets)"
+          jq -e '.isDraft == false and .isPrerelease == false' <<<"$release_json" >/dev/null
+
+          jq -r '.assets[].name' <<<"$release_json" | sort >"$release_dir/actual-assets.txt"
+          printf '%s\n' \
+            checksums.txt \
+            install.ps1 \
+            install.sh \
+            shp-darwin-arm64.tar.gz \
+            shp-linux-arm64.tar.gz \
+            shp-linux-x64.tar.gz \
+            shp-windows-x64.tar.gz \
+            | sort >"$release_dir/expected-assets.txt"
+          diff -u "$release_dir/expected-assets.txt" "$release_dir/actual-assets.txt"
+
+          jq -r '.body' <<<"$release_json" >"$release_dir/published-notes.md"
+          diff -u "docs/releases/$GITHUB_REF_NAME.md" "$release_dir/published-notes.md"
+
+          mkdir -p "$release_dir/assets"
+          gh release download "$GITHUB_REF_NAME" --dir "$release_dir/assets"
+          (
+            cd "$release_dir/assets"
+            sha256sum --check checksums.txt
+          )
+          grep -q "$GITHUB_REF_NAME" "$release_dir/assets/install.sh"
+          grep -q "$GITHUB_REF_NAME" "$release_dir/assets/install.ps1"

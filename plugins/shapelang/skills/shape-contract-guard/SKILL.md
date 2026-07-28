@@ -1,6 +1,6 @@
 ---
 name: shape-contract-guard
-description: Use when reviewing `.shape` diffs before a PR or during implementation to find advisory architecture-contract risk that `shp check` may permit after the live model was loosened, including removed final forbids, weakened traits, widened grants/effects, removed coverage or bindings, relation weakening, traceability loss, epistemic regression, or weak attestations.
+description: Use when reviewing authored `.shape` or vendored domain-pack diffs before a PR or during implementation to find advisory contract risk that `shp check` may permit after the live model was loosened, including removed final forbids or path rules, weakened traits, widened grants/effects, coverage or binding removal, relation weakening, resolution changes, traceability loss, epistemic regression, or weak attestations.
 ---
 
 # Shape Contract Guard
@@ -14,6 +14,8 @@ In v1:
 - Do not read application source code.
 - Do read changed file paths, authored `.shape` diffs, base contents for changed/deleted authored `.shape` files, `shp check`, `shp memory`, and focused graph/explain/obligations output.
 - Do not score `shape/generated/ast/**` diffs as contract changes. Mention generated AST only when an authored fingerprint expectation, checker diagnostic, analyzer hint, or user request points at it.
+- Do score source-controlled `.shape` modules under `shape/vendor/**`: vendoring installs their
+  declarations and pack-level rules even when no project import changed.
 - Do not switch the whole worktree to the base ref. If base content is needed, use path-limited reads such as `git show <base>:<path>`.
 - Keep checker diagnostics separate from Guard findings. Guard findings are advisory and must not use blocking language.
 
@@ -57,6 +59,8 @@ In v1:
    - Read `references/signals.md` before scoring nontrivial diffs.
    - Prefer exact symbol names and diff evidence over broad claims.
    - Escalate co-occurring constraint removal plus newly allowed capability/effect on the same resource, component, function, or relation neighborhood.
+   - Treat removed or widened `forbid path` rules, traversal-kind changes, pack replacements, and
+     imports that alter name resolution as first-class contract changes.
    - Lower severity when the diff includes specific rationale, memory, reevaluation, evidence, or attestation tied to the changed symbol.
 
 7. Emit Markdown.
