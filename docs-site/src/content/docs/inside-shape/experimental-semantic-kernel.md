@@ -5,14 +5,18 @@ sidebar:
   order: 7
 ---
 
-The experimental semantic kernel is a narrow feasibility prototype for
+**Experimental.** This page documents an isolated feasibility prototype, not production Shape. The production TypeScript checker remains the only semantic authority for parsing, lowering, rule orchestration, diagnostics, CLI, and editor services.
+
+The experimental semantic kernel addresses
 [#36](https://github.com/timbrinded/shapelang/issues/36) and
 [#38](https://github.com/timbrinded/shapelang/issues/38). It answers one
 question: can a deterministic Shape rule consume lowered facts through the same
 strict protocol in native Rust and browser-targeted WebAssembly?
 
 The prototype answer is yes for candidate-effect pin fingerprint matching. That
-does not make the Rust crate a replacement checker.
+does not make the Rust crate a replacement checker, a general rule engine, or a
+proof that application code is correct. It only shows protocol parity for one
+narrow rule over already-lowered facts.
 
 ## Boundary
 
@@ -146,4 +150,6 @@ The experiment should stay isolated until a follow-up design can demonstrate:
   prototype
 
 Until then, new checker semantics belong in the production TypeScript rule
-engine.
+engine under `packages/shp-checker/src/checker/rules/*`.
+
+Related strategy context (also non-production): [Rule Engine Strategy](./rule-engine-strategy/).

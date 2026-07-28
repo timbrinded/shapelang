@@ -19,6 +19,8 @@ resource AuditEvent : AppendOnly
 
 `module` is optional, but named modules make imports and diagnostics clearer. Declarations are scoped by module, so two modules may both declare `Store` without colliding. References resolve local declarations first and then explicit imports. Use `other.module::Name` when an authored claim should point at a specific module unambiguously.
 
+Module path segments and other bare identifiers cannot be reserved keywords. Keywords such as `evidence`, `effect`, `resource`, `component`, `relation`, `change`, `memory`, and `fn` are not valid module segments (`module experiment.evidence` is a parse error; use `module experiment.with_evidence` or similar).
+
 ## Top-level declarations
 
 Shape modules can contain:
@@ -31,11 +33,14 @@ relation AuditWritePath { ... }
 effect candidate AppendEventCandidate { ... }
 implementation AuditStoreImpl { ... }
 binding CheckerDocs { ... }
+change RefactorDecision { ... }
 attest no_shape_change { ... }
 rule NoCallsCycle { ... }
 rationale InlineDecision : InlineRationale<fn Gateway.derivePolicyDecision> { ... }
 memory DecisionRefactorConstraint : RefactorConstraint<fn Gateway.derivePolicyDecision> { ... }
 reevaluation DecisionShapeRechecked { ... }
+role GatewayTeam
+policy RequireApprover { require approver }
 ```
 
 ## Resources
@@ -72,7 +77,9 @@ trait AppendOnly<T: Resource> {
 }
 ```
 
-Trait members are `allow`, `forbid`, and `require` effect patterns.
+Trait members are `allow`, `forbid`, `require` effect patterns, and optional `require_context ContextType<T>` obligations (`satisfied_by rationale`, `memory`, or either).
+
+A trait can define its own context obligation with `require_context ContextType<T>`, where `T` is the trait's type parameter and its bound sets the target kind: `Fn` (or unbound) maps to a function target, `Component` to a component, and `Resource` to a resource. A parameter that is not declared, or an unrecognised bound, is reported as `invalid require_context`. An optional `satisfied_by` clause restricts which context kind satisfies the obligation; the default accepts either rationale or memory. A trait declared with the same name as a built-in shape trait replaces (shadows) the built-in obligation through name resolution. `require_context` and `satisfied_by` are reserved keywords.
 
 ## Components
 
@@ -170,9 +177,31 @@ Relation members:
 
 Directional prelude kinds must use ordered `A -> B` syntax. Binary directional kinds (`calls`, `callbacks`, `provides`) must have exactly two endpoints, and `provides` must connect a component provider to a resource target. `coordinated_call` must use ordered `A -> B -> ...` syntax.
 
-Fingerprint expectations must name one of the relation endpoints. The endpoint must be a resource with a matching fingerprint provider and value, otherwise `shp check` reports stale syntax evidence.
+Fingerprint expectations must name one of the relation endpoints. The endpoint must be a resource with a matching fingerprint provider and value, otherwise `shp check` reports a stale fingerprint expectation.
 
 See [Relations and Hypergraphs](../concepts/relations-hypergraphs.md) for the kind registry and traversal semantics.
+
+## Implementations
+
+```shape
+module audit
+
+resource AuditEvent : AppendOnly
+
+component AuditStore {
+  owns AuditEvent
+}
+
+implementation AuditStoreImpl {
+  paths {
+    "src/audit/**/*.ts"
+  }
+  conforms_to AuditStore
+  on_change require shape_update
+}
+```
+
+Implementation members are `paths`, `conforms_to`, and optional `on_change require shape_update`.
 
 ## Bindings
 
@@ -207,7 +236,9 @@ attest docs_not_needed {
 
 Bindings enforce review coupling. They do not prove that the paired docs are complete.
 
-## Global model edits
+## Global model edits and change blocks
+
+The repository workflow updates the global model directly. Add, modify, or remove normal declarations in the owning module:
 
 ```shape
 module audit
@@ -222,21 +253,20 @@ component AuditStore {
 }
 ```
 
-The repository workflow updates the global model directly. Add, modify, or remove normal declarations in the owning module.
+Guarded refactors can also use a top-level `change` block to declare intended adds, modifies, and removes without rewriting history as free prose:
 
 ```shape
-module audit
+module gateway
 
-relation AuditCallsGateway {
-  kind calls
-  connects AuditStore -> Gateway
-}
-
-relation GatewayCallsAudit {
-  kind calls
-  connects Gateway -> AuditStore
+change RefactorDecision {
+  modify fn Gateway.derivePolicyDecision
+    effects complete {
+      Read<PolicySnapshot>
+    }
 }
 ```
+
+Change entries include `add`/`modify`/`remove` for functions. Declaration entries support `add`/`modify` for `resource`, `trait`, `component`, `relation`, `implementation`, `binding`, `attest`, and `rule`, plus `remove` for those kinds except `attest`. A `modify fn` may declare `transform Label1, Label2` for intent-sensitive guards.
 
 ## Rules
 
@@ -297,8 +327,6 @@ A `protects` block lists the protected properties, comma-separated: each entry i
 A `guards` block lists guard actions: each is either `on_change require ReEvaluation<Self>` or `forbid transform Label`. A `modify fn` change can declare its intent with `transform Label1, Label2`; a `forbid transform` guard fires only when a matching transform intent is declared.
 
 A `memory` may carry a `sensitive` flag. A top-level `role Name` declaration registers a valid reviewer/approver identity, and a top-level `policy Name { require approver }` declaration requires an approver on reevaluations that satisfy a `sensitive` memory. `role`, `policy`, and `sensitive` are reserved keywords.
-
-A `trait` can define its own context obligation with a `require_context ContextType<T>` member, where `T` is the trait's type parameter and its bound sets the target kind: `Fn` (or unbound) maps to a function target, `Component` to a component, and `Resource` to a resource. A `<T>` that names no declared type parameter, or an unrecognised bound, is reported as `invalid require_context` rather than silently defaulting. An optional `satisfied_by rationale`, `satisfied_by memory`, or `satisfied_by rationale or memory` clause restricts which context kind satisfies it; the default accepts either. A trait declared with the same name as a built-in shape trait replaces (shadows) the built-in obligation through name resolution. `require_context` and `satisfied_by` are reserved keywords.
 
 Guard members are authored as grouped blocks — `protects { ... }`, `guards { ... }`, `who { owner ... }`, and `when { review_by ... }`. This is the single canonical syntax; `shp fmt` always emits these blocks. `who` and `when` are single-valued (one `owner`, one `review_by`). `who` is a reserved keyword.
 

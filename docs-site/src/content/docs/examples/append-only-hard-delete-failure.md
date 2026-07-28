@@ -5,7 +5,13 @@ sidebar:
   order: 2
 ---
 
-This fixture is the core demo. `AuditEvent` is append-only, but `AuditStore.purgeOldEvents` emits `HardDelete<AuditEvent>`.
+## Intent
+
+Show that `forbid final` on a resource trait wins over component grants. The model can grant `HardDelete` and still fail when a function emits it against an append-only resource.
+
+## Model
+
+The fail fixture at `fixtures/fail/append_only_hard_delete/audit.shape` is a fuller store (append, list, and purge). The minimal claim that fails is:
 
 ```shape
 module audit
@@ -34,21 +40,45 @@ component AuditStore {
 }
 ```
 
-Run:
+A project can also rely on the prelude `AppendOnly` trait (`resource AuditEvent : AppendOnly` without redefining the trait). The checker outcome is the same: final forbids still apply.
+
+## Expected result
+
+Save the model (for example `shape/audit.shape`) and run:
+
+```bash
+shp check shape/audit.shape
+```
+
+In this repository the fuller fail fixture is:
 
 ```bash
 shp check fixtures/fail/append_only_hard_delete/audit.shape
 ```
 
-Expected diagnostic shape:
-
 ```text
 error: forbidden effect
-AuditStore.purgeOldEvents
-HardDelete<AuditEvent>
-AuditEvent has trait AppendOnly
-AppendOnly forbids final HardDelete<AuditEvent>
+
+AuditStore.purgeOldEvents emits HardDelete<AuditEvent>.
+AuditEvent has trait AppendOnly.
+AppendOnly forbids final HardDelete<AuditEvent>.
 evidence: ts("src/audit/purge.ts#purgeOldEvents")
+
+caused by:
+  - fixtures/fail/append_only_hard_delete/audit.shape: effect AuditStore.purgeOldEvents emits HardDelete<AuditEvent>
+  - fixtures/fail/append_only_hard_delete/audit.shape: resource AuditEvent : AppendOnly
+  - fixtures/fail/append_only_hard_delete/audit.shape: trait AppendOnly forbids final HardDelete<T>
 ```
 
-The important behavior is that final forbids win over grants.
+Exit code `1`.
+
+## Why it fails
+
+`grants HardDelete<AuditEvent>` does not override `forbid final HardDelete<T>`. Final forbids are absolute: rationale, memory, reevaluation, and grants cannot waive them.
+
+## Related concepts
+
+- [Resources, traits, and effects](../concepts/resources-traits-effects.md)
+- [Unknowns and safety](../concepts/unknowns-safety.md)
+- [Diagnostics catalog](../reference/diagnostics.md)
+- [Append-only pass](./append-only-pass.md)

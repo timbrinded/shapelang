@@ -2,6 +2,7 @@ node_modules/
 bun.lockb
 dist/
 .astro/
+changed.txt
 .DS_Store
 specs/
 .clawpatch/

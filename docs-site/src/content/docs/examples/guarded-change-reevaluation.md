@@ -5,9 +5,13 @@ sidebar:
   order: 7
 ---
 
-A memory can guard a function with `guards on_change require ReEvaluation<Self>`. Once that guard exists, modifying or removing the function requires a matching `reevaluation`.
+## Intent
 
-This model fails because it modifies `Gateway.derivePolicyDecision` without reevaluating the recorded refactor constraint:
+Show that a memory with `guards { on_change require ReEvaluation<Self> }` blocks `modify`/`remove` of the guarded target until a matching `reevaluation` is present.
+
+## Model (fails without reevaluation)
+
+Matches `fixtures/fail/memory_guard_modify_without_reevaluation/audit.shape`:
 
 ```shape
 module gateway
@@ -40,13 +44,11 @@ change RefactorDecision {
 }
 ```
 
-Run:
+## Expected result (failure)
 
 ```bash
 shp check fixtures/fail/memory_guard_modify_without_reevaluation/audit.shape
 ```
-
-The relevant diagnostic is:
 
 ```text
 error: guarded shape changed
@@ -57,9 +59,17 @@ This change modifies the guarded target.
 Required:
   add reevaluation satisfying memory DecisionRefactorConstraint
   or preserve the protected shape.
+
+caused by:
+  - fixtures/fail/memory_guard_modify_without_reevaluation/audit.shape: change RefactorDecision modify fn Gateway.derivePolicyDecision
+  - fixtures/fail/memory_guard_modify_without_reevaluation/audit.shape: memory DecisionRefactorConstraint guards on_change require ReEvaluation<Self>
 ```
 
-Adding a valid reevaluation makes the guarded change explicit:
+Exit code `1`.
+
+## Model (passes with reevaluation)
+
+Matches `fixtures/pass/memory_guard_modify_with_reevaluation/audit.shape`. Adding a valid reevaluation makes the guarded change explicit:
 
 ```shape
 module gateway
@@ -101,10 +111,20 @@ change RefactorDecision {
 }
 ```
 
-Run:
-
 ```bash
 shp check fixtures/pass/memory_guard_modify_with_reevaluation/audit.shape
 ```
 
-The model passes because the change includes review evidence for the protected target.
+```text
+Shape check passed.
+```
+
+## Why
+
+Guards force review of protected targets. The reevaluation records outcome, summary, reviewer, date, and evidence against the memory that owns the guard. Design memory still does not waive final forbids on effects.
+
+## Related concepts
+
+- [Refactor constraints](../concepts/refactor-constraints.md)
+- [Refactor-sensitive function](./refactor-sensitive-function.md)
+- [Diagnostics: guarded shape changed](../reference/diagnostics.md)

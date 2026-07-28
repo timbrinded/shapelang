@@ -1,11 +1,11 @@
 ---
 title: Evidence and Source Refs
-description: Make Shape claims inspectable by linking them to stable source references.
+description: Link Shape effect claims to stable source references for review.
 sidebar:
   order: 3
 ---
 
-Evidence is how Shape stays reviewable. An effect summary should point to the stable source symbol that supports the claim, or to the containing file when no stable symbol exists.
+Evidence makes Shape claims reviewable. An effect summary should point at the stable source symbol that supports the claim, or at the containing file when no stable symbol exists. The checker does not prove that the implementation is correct; evidence gives reviewers a concrete place to compare source with the declared model.
 
 ![Evidence path diagram showing a claim, effect, evidence, source reference, reviewer check, and checker provenance.](../../../assets/infographics/evidence-review-path.png)
 
@@ -35,16 +35,42 @@ source ts("src/audit/store.ts#appendEvent")
 evidence ts("src/audit/store.ts#appendEvent")
 ```
 
-The parser accepts the structure; reviewers interpret the path convention. Prefer `#symbol` references because they survive unrelated line movement. Use a file-only reference when the evidence has no stable named symbol. Avoid line and line-range suffixes in authored Shape.
+The fragment above is intentionally incomplete (`shape no-verify`). In a full module, `source` sits on the function summary and `evidence` sits on individual effects.
+
+The parser accepts the structure; reviewers interpret the path convention. Prefer `#symbol` anchors because they survive unrelated line movement. Use a file-only reference when the evidence has no stable named symbol. Avoid line and line-range suffixes in authored Shape.
+
+Common language tags in fixtures and the repo model include `ts(...)`, `rust(...)`, and `test(...)`. The tag is part of the ref; keep it consistent with the evidence kind.
 
 ## Why evidence matters
 
-The checker intentionally does not prove the implementation is correct. Evidence gives reviewers a concrete place to compare source code with the declared effect.
+Coverage and change review use source and evidence paths to decide whether a governed source change already has a current Shape update. A matching `source` or `evidence` path counts for coverage only when the declaring `.shape` file is also in the current changed-file list. See [Implementations and Coverage](./implementations-coverage.md).
 
-Good evidence is narrow, stable, and points at the behavior being claimed. File-level evidence is appropriate when no stable symbol exists, but it is less precise during review.
+Diagnostics can surface attached evidence on forbidden-effect failures so the causal trail ends at the claimed source span.
 
 ## Analyzer relationship
 
-The analyzer can flag obvious destructive operations such as `DELETE`, `TRUNCATE`, or `DROP`, then compare hints with declared effects. It is advisory.
+The optional source analyzer can flag obvious destructive operations such as `DELETE`, `TRUNCATE`, or `DROP`, then compare hints with declared effects. Those warnings are advisory. They do not authorize or reject the model.
 
-The declared `.shape` model remains the source of truth.
+The declared `.shape` model remains the source of truth. See [Analyzer Hints](./analyzer-hints.md).
+
+## Practice
+
+Do:
+
+- Prefer `#symbol` anchors for named functions, methods, and types.
+- Put function-level `source` on the summary and per-effect `evidence` when effects map to different spans.
+- Use file-only refs only when no stable symbol exists.
+- Keep evidence narrow: one claim, one supporting location.
+
+Do not:
+
+- Encode line numbers or ranges as the primary review handle.
+- Point evidence at unrelated files to satisfy coverage without a real model update.
+- Treat analyzer warnings as proof that effects are complete.
+- Omit evidence on production effect claims that reviewers cannot locate.
+
+## Related pages
+
+- [Diagnostics and Provenance](./diagnostics-provenance.md)
+- [Implementations and Coverage](./implementations-coverage.md)
+- [Analyzer Hints](./analyzer-hints.md)

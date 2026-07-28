@@ -1,13 +1,13 @@
 ---
 title: Refactor Constraints
-description: Require typed design context before accepting refactor-sensitive function shapes.
+description: Require typed design context before accepting refactor-sensitive shapes.
 sidebar:
-  order: 6
+  order: 8
 ---
 
-Refactor constraints let Shape record why a function shape should not be changed casually. They are useful when the risky part of the architecture is not only an effect like `HardDelete<AuditEvent>`, but the local structure of a function: inline checks, error ordering, compatibility code, or a test-only helper that looks production-shaped.
+Refactor constraints record why a function, component, resource, or relation shape should not change casually. They matter when the risk is not only an effect such as `HardDelete<AuditEvent>`, but local structure: inline checks, error ordering, compatibility code, or a test-only helper that looks production-shaped.
 
-The checker treats this as design memory with types. A function shape trait creates an obligation, a `rationale` or `memory` satisfies that obligation, and a guarded change requires a `reevaluation`.
+The checker treats this as typed design memory. A shape trait creates an obligation; a `rationale` or `memory` satisfies that obligation; a guarded change requires a `reevaluation`. Shape still only accepts or rejects declared claims. It does not prove that refactors preserve runtime behavior.
 
 Refactor constraints are not waivers. They cannot make a final-forbidden effect pass.
 
@@ -344,11 +344,27 @@ rationale PolicyInline : CheckOrderRationale<fn Gateway.derivePolicyDecision> {
 
 Grouped blocks are the canonical and only guard-member syntax: `protects`, `guards`, `who`, and `when` each gather their members, and `shp fmt` emits this one grouped form. Entries in a `protects` block are comma-separated; `who` and `when` hold a single `owner`/`review_by` because those fields are single-valued.
 
-## What To Check In Review
+## Practice
 
-- Use a function shape trait only when it changes review obligations.
-- Keep summaries short and specific to the target function.
-- Prefer `rationale` for intentional choices and `memory` for refactor constraints.
+Do:
+
+- Attach a shape trait only when it changes review obligations.
+- Prefer `rationale` for intentional local choices and `memory` for historical or refactor constraints.
 - Use `status Unexplained` when the constraint is known but not fully explained.
-- Add `reevaluation` only after reviewing a guarded change.
-- Fix final-forbidden effects directly; design memory cannot waive them.
+- Add `reevaluation` only after reviewing a guarded change; cite real evidence.
+- Use `shp obligations` and `shp memory` to list open context and guards before editing protected shapes.
+- Enable `--strict-freshness` in CI only when the team is ready to fail on past `review_by` dates.
+
+Do not:
+
+- Use design memory, rationale, or reevaluation to waive `forbid final`.
+- Leave a guarded `modify` / `remove` without a matching reevaluation.
+- Treat `status Unexplained` as a permanent exemption from review.
+- Protect free-form labels when you need property-level precision; name detectable shape traits or `description` in `protects`.
+- Confuse coverage attestations with reevaluation obligations.
+
+## Related pages
+
+- [Model Updates and Attestations](./model-updates-attestations.md)
+- [Unknowns and Safety](./unknowns-safety.md)
+- [Diagnostics and Provenance](./diagnostics-provenance.md)

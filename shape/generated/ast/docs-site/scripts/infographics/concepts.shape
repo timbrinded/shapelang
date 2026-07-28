@@ -1,0 +1,7 @@
+module shape.generated.ast.docs_site.scripts.infographics.concepts
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}

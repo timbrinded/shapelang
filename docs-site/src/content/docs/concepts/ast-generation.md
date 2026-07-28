@@ -2,10 +2,10 @@
 title: AST Generation
 description: How `shp ast` turns source syntax into conservative Shape drafts.
 sidebar:
-  order: 11
+  order: 13
 ---
 
-`shp ast` helps bootstrap a Shape model from code. It is intentionally conservative: Tree-sitter can show syntax, but it cannot prove the architecture contract that the team intends to maintain.
+`shp ast` bootstraps a conservative Shape draft from source syntax. Tree-sitter can show structure and stable anchors; it cannot prove the architecture contract a team intends to maintain. Generated drafts are candidate evidence for review. Authored `.shape` modules remain the checked source of truth for production claims.
 
 The primary path is `shp ast source`: parse source files, project syntax evidence into a Code Semantic Graph, and print a review-sized Shape draft. `shp ast json` is only an input adapter for tools that already parsed the code; Shape does not generate AST JSON from `.shape` files.
 
@@ -191,3 +191,25 @@ Use `shp ast json` when another tool already parsed the code. The JSON input mus
   ]
 }
 ```
+
+## Practice
+
+Do:
+
+- Treat generated output as a draft: promote reviewed claims into authored modules with complete effects and evidence.
+- Keep durable agent context under `shape/generated/ast` and refresh it with `shp ast source --out-dir ...` or this repo's `bun run ast:generate`.
+- Pin reviewed claims to generated anchors with `expects ... fingerprint ...` in authored relations so stale syntax fails `shp check`.
+- Prefer `#symbol` anchors and leave unresolved calls out of prelude `calls`.
+
+Do not:
+
+- Commit generated `effects unknown` as if they were reviewed complete summaries in authored modules.
+- Hand-edit generated files under `shape/generated/ast` as the long-term contract; regenerate and overlay.
+- Use the manifest as a trust boundary; the checker trusts explicit generated origin (`shape/generated/ast` + `shape.generated.ast...` modules).
+- Enable the raw AST layer by default on large trees; use it for adapter debugging or exact parser provenance only.
+
+## Related pages
+
+- [Unknowns and Safety](./unknowns-safety.md)
+- [Relations and Hypergraphs](./relations-hypergraphs.md)
+- [Evidence and Source Refs](./evidence-source-refs.md)

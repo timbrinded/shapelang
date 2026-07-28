@@ -1,6 +1,39 @@
 # Shape Infographic Prompts
 
-These prompts were written with the `$infographic` skill conventions and use `@file:DESIGN.md` as the style reference. Density is `medium`, orientation is `landscape`, and the intended audience is technical readers of the Shape docs.
+The production assets are deterministic HTML diagrams. The older image-model
+prompts later in this file are retained only as historical concept notes; their
+styling, density, typography, and "required visible label" instructions are not
+the current rendering contract.
+
+## Current pipeline (HTML → screenshot)
+
+`frames.mjs` holds the concise semantic content and selects one of the shared
+diagram structures: sequence, hub, decision, lanes, boundary, split, cycle, or
+hero. The generated frames use:
+
+- the docs site's shared tokens from `src/styles/tokens.css`;
+- Geist Sans and Geist Mono at the real 720–840 px embed target;
+- free Hugeicons glyphs generated from `@hugeicons/core-free-icons`;
+- measured SVG connectors whose endpoints come from live DOM geometry;
+- blue for processing and structural links, with green, amber, and red reserved
+  for pass, review, and rejection meaning.
+
+```bash
+bun run --cwd docs-site infographics
+```
+
+The renderer performs two passes before publishing any image. It verifies source
+page mappings and essential concept labels, then rejects text overflow, tiny
+type, box overlap, out-of-bounds content, misaligned rows, unequal template
+nodes, missing icons, obstructed paths, connector endpoint drift, and incorrect
+image dimensions. Results are recorded in
+`docs-site/scripts/infographics/review-report.json`.
+
+Sources live under `docs-site/scripts/infographics/`. PNG outputs overwrite
+`docs-site/src/assets/infographics/*.png`; the README workflow and home hero are
+published to their existing asset paths.
+
+The original image-model prompts below remain as concept specs / required labels for each asset.
 
 ## Inspection Notes
 
@@ -82,50 +115,30 @@ Content constraints:
 
 ## shape-model-loop.png
 
-Parameters: context=`docs-site/src/content/docs/index.md`, `docs-site/src/content/docs/learn/what-is-shape.md`; orientation=landscape; level=medium; format=markdown; model=gpt-image-2; quality=high; size=1680x944.
+Generated from `docs-site/scripts/infographics/frames.mjs` (code frame, not an image model).
+Render: `bun docs-site/scripts/infographics/frames.mjs` then screenshot `frames/shape-model-loop.html` at 1680×944.
 
 ```text
-Use case: infographic-diagram
-Asset type: docs-site hero and concept explainer
-
-Create a landscape 16:9 infographic for senior software engineers learning Shape.
-Use @file:DESIGN.md as the visual style reference.
-
-Design system:
-professional enterprise workstation aesthetic; Space Grotesk typography; Arbitrum Blue #00639a, deep slate text, light structured surfaces; tight 4px-grid alignment, compact panels, crisp 1px borders; tonal layering instead of soft shadows; high-density but readable information hierarchy.
-Also use Shape-specific SWE-native architecture surfaces: code diff, .shape claims, source evidence, deterministic checker, CI gate, and diagnostics.
+Use case: infographic-diagram (sparse product model)
+Asset type: docs-site splash + what-is-shape explainer
 
 Main message:
-Shape turns human and agent-authored architecture claims into reviewable, deterministic CI feedback.
+Write rules as text → review → check → CI gate → diagnose; failures return to review.
 
 Required visible text:
 - "Shape Review Loop"
-- "Code diff"
-- "Agent draft"
-- ".shape claims"
-- "Human review"
-- "Source evidence"
-- "Unknowns"
-- "shp check"
-- "CI gate"
-- "Diagnostics"
+- Write / Review / Check / Gate / Diagnose
+- ".shape" and "shp check"
+- Return label: failures return to review
 
 Required layout:
-- Left-to-right workflow with a subtle return loop from "Diagnostics" back to "Human review".
-- Left cluster: "Code diff" and "Agent draft".
-- Center cluster: ".shape claims", "Human review", "Source evidence", and "Unknowns".
-- Right cluster: "shp check", "CI gate", and "Diagnostics".
-- Use blue arrows for model flow, violet accent only for "Agent draft", amber only for "Unknowns", red only for failed "Diagnostics", and green for passing CI cues.
-
-Text rendering rules:
-- Render every quoted label verbatim, exactly once, with no extra characters, no duplicate labels, and no spelling changes.
-- Do not render any visible text other than the quoted labels.
-- Use large readable Space Grotesk text with strong contrast.
+- Five equal steps left-to-right with colored top borders (blue / cyan / blue / green / red).
+- Dashed return path under the track from Diagnose toward Write/Review.
+- Large type, generous whitespace, no dense multi-panel dashboard.
 
 Content constraints:
 - Do not imply Shape proves implementation correctness.
-- Do not imply analyzer hints replace .shape files.
-- No stock photography, decorative blockchain art, glowing AI clouds, ornamental orbs, illegible microtext, or invented logos.
+- Keep copy short and plain; avoid unexplained jargon.
 ```
 
 ## core-vocabulary-map.png

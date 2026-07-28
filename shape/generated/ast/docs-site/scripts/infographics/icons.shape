@@ -1,0 +1,49 @@
+module shape.generated.ast.docs_site.scripts.infographics.icons
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource IconsModuleGlyphAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("docs-site/scripts/infographics/icons.js#glyph")
+  fingerprint ast.semantic_subtree_v1("sha256:240dc8cfae615934a26f9239b034cf5b1a6981fb9aedda5cd1ac395fa26fca16")
+}
+
+resource IconsModuleIconAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("docs-site/scripts/infographics/icons.js#icon")
+  fingerprint ast.semantic_subtree_v1("sha256:213f60fc8361f1d1b99cf0101502cfd01460788f5299e2c2678a83db5d97a9a5")
+}
+
+component IconsModule : GeneratedCandidate {
+  fn glyph
+    source js("docs-site/scripts/infographics/icons.js#glyph")
+    effects unknown
+  fn icon
+    source js("docs-site/scripts/infographics/icons.js#icon")
+    effects unknown
+}
+
+relation IconsModuleGlyphGeneratedFromIconsModuleGlyphAstAnchor {
+  kind generated_from
+  connects IconsModule -> IconsModuleGlyphAstAnchor
+  roles { IconsModule as generated, IconsModuleGlyphAstAnchor as syntax }
+  expects IconsModuleGlyphAstAnchor fingerprint ast.semantic_subtree_v1("sha256:240dc8cfae615934a26f9239b034cf5b1a6981fb9aedda5cd1ac395fa26fca16")
+  summary "fn IconsModule.glyph generated from javascript function_declaration at docs-site/scripts/infographics/icons.js#glyph."
+}
+
+relation IconsModuleIconGeneratedFromIconsModuleIconAstAnchor {
+  kind generated_from
+  connects IconsModule -> IconsModuleIconAstAnchor
+  roles { IconsModule as generated, IconsModuleIconAstAnchor as syntax }
+  expects IconsModuleIconAstAnchor fingerprint ast.semantic_subtree_v1("sha256:213f60fc8361f1d1b99cf0101502cfd01460788f5299e2c2678a83db5d97a9a5")
+  summary "fn IconsModule.icon generated from javascript function_declaration at docs-site/scripts/infographics/icons.js#icon."
+}
+
+implementation IconsModuleImpl {
+  paths {
+    "docs-site/scripts/infographics/icons.js"
+  }
+  conforms_to IconsModule
+}

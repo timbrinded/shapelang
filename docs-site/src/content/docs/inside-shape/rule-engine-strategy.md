@@ -2,8 +2,12 @@
 title: Rule Engine Strategy
 description: Why Shape keeps direct semantic checks until a relational engine shows a measurable advantage.
 sidebar:
-  order: 5
+  order: 8
 ---
+
+## Status
+
+This page records a **design decision and strategy**, not a second production rule engine. Production Shape continues to evaluate rules with direct TypeScript checks over the lowered `Model`. The Datalog-like spike is an unexported experiment. Do not treat this page as documentation of shipped relational evaluation.
 
 ## Decision
 
@@ -13,6 +17,8 @@ Status: accepted on 2026-07-26, with explicit revisit criteria.
 
 This decision answers one question: should Shape replace its current typed, in-memory checks with a Datalog-like evaluator now?
 
+The answer for production is no, unless the revisit criteria below are met.
+
 ## Decision Drivers
 
 - Preserve deterministic, reviewer-readable diagnostics and their causal provenance.
@@ -21,6 +27,7 @@ This decision answers one question: should Shape replace its current typed, in-m
 - Require measured maintenance or performance pressure before adding an engine.
 - Keep graph witnesses, rule precedence, changed-file inputs, and Memory Guard policy explicit.
 - Preserve offline Bun builds without adding a runtime dependency unless it earns its cost.
+- Preserve the product boundary: rules check the declared model; they do not prove application source correctness.
 
 ## Current Evidence
 
@@ -88,7 +95,7 @@ Those limits keep the experiment proportional to the question. They also show wh
 
 ## Decision Outcome
 
-Direct evaluation remains canonical. The prototype proves that provenance can survive a relational join, but it does not show a clear maintenance, correctness, or performance benefit over the current rule modules.
+Direct evaluation remains canonical. The prototype shows that provenance can survive a relational join, but it does not show a clear maintenance, correctness, or performance benefit over the current rule modules.
 
 No production behavior changes:
 
@@ -134,3 +141,4 @@ CI confirms the spike compiles and its differential tests pass. Code review conf
 - [Fact Lowering](./fact-lowering/)
 - [Rule Evaluation](./rule-evaluation/)
 - [Checker Pipeline](./checker-pipeline/)
+- [Experimental Semantic Kernel](./experimental-semantic-kernel/) for a separate, also non-production experiment
