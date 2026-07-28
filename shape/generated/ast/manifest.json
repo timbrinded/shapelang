@@ -24,13 +24,6 @@
       ]
     },
     {
-      "module": "shape.generated.ast.docs_site.scripts.art.build_all",
-      "path": "shape/generated/ast/docs-site/scripts/art/build-all.shape",
-      "sources": [
-        "docs-site/scripts/art/build-all.mjs"
-      ]
-    },
-    {
       "module": "shape.generated.ast.docs_site.scripts.infographics.diagram_runtime",
       "path": "shape/generated/ast/docs-site/scripts/infographics/diagram-runtime.shape",
       "sources": [
@@ -63,13 +56,6 @@
       "path": "shape/generated/ast/docs-site/scripts/infographics/render.shape",
       "sources": [
         "docs-site/scripts/infographics/render.mjs"
-      ]
-    },
-    {
-      "module": "shape.generated.ast.docs_site.scripts.playwright_docs_access",
-      "path": "shape/generated/ast/docs-site/scripts/playwright-docs-access.shape",
-      "sources": [
-        "docs-site/scripts/playwright-docs-access.mjs"
       ]
     },
     {
