@@ -29,6 +29,7 @@ describe("Shape authoring assistant", () => {
     expect(critic).toContain("Did the model update cover every governed changed file?");
     expect(critic).toContain("stable #symbol or file-only references");
     expect(critic).toContain("Did the model update touch a guarded target without reevaluation?");
+    expect(critic).toContain("Proposed shape update:\ncomponent AuditStore {}");
   });
 
   test("builds a provider-neutral PR authoring bundle with a parseable conservative draft", () => {

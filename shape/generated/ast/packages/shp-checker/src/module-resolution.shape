@@ -1,0 +1,81 @@
+module shape.generated.ast.packages.shp_checker.src.module_resolution
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource ModuleResolutionModuleQualifyModuleReferenceAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/module-resolution.ts#qualifyModuleReference")
+  fingerprint ast.semantic_subtree_v1("sha256:45643c7fada19f970fa69349b92175586fd3f970d438418ac5919008662ac989")
+}
+
+resource ModuleResolutionModuleResolveModuleReferenceAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/module-resolution.ts#resolveModuleReference")
+  fingerprint ast.semantic_subtree_v1("sha256:d75dae5a46d5f690a076e138b4eefb950f52a47a64d4abf0eb2e8b52dc2a316e")
+}
+
+resource ModuleResolutionModuleSplitFunctionReferenceAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/module-resolution.ts#splitFunctionReference")
+  fingerprint ast.semantic_subtree_v1("sha256:937588c878b76bea5919a349ec6db40a33a6b64eb2a8e5d560973904deb629bb")
+}
+
+resource ModuleResolutionModuleSplitModuleReferenceAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/module-resolution.ts#splitModuleReference")
+  fingerprint ast.semantic_subtree_v1("sha256:d44cd8874cf3753a9b3331fa2b08a5574c7ddc7d37b95fa4bfad39660d3262dd")
+}
+
+component ModuleResolutionModule : GeneratedCandidate {
+  fn qualifyModuleReference
+    source ts("packages/shp-checker/src/module-resolution.ts#qualifyModuleReference")
+    effects unknown
+  fn resolveModuleReference
+    source ts("packages/shp-checker/src/module-resolution.ts#resolveModuleReference")
+    effects unknown
+  fn splitFunctionReference
+    source ts("packages/shp-checker/src/module-resolution.ts#splitFunctionReference")
+    effects unknown
+  fn splitModuleReference
+    source ts("packages/shp-checker/src/module-resolution.ts#splitModuleReference")
+    effects unknown
+}
+
+relation ModuleResolutionModuleQualifyModuleReferenceGeneratedFromModuleResolutionModuleQualifyModuleReferenceAstAnchor {
+  kind generated_from
+  connects ModuleResolutionModule -> ModuleResolutionModuleQualifyModuleReferenceAstAnchor
+  roles { ModuleResolutionModule as generated, ModuleResolutionModuleQualifyModuleReferenceAstAnchor as syntax }
+  expects ModuleResolutionModuleQualifyModuleReferenceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:45643c7fada19f970fa69349b92175586fd3f970d438418ac5919008662ac989")
+  summary "fn ModuleResolutionModule.qualifyModuleReference generated from typescript function_declaration at packages/shp-checker/src/module-resolution.ts#qualifyModuleReference."
+}
+
+relation ModuleResolutionModuleResolveModuleReferenceGeneratedFromModuleResolutionModuleResolveModuleReferenceAstAnchor {
+  kind generated_from
+  connects ModuleResolutionModule -> ModuleResolutionModuleResolveModuleReferenceAstAnchor
+  roles { ModuleResolutionModule as generated, ModuleResolutionModuleResolveModuleReferenceAstAnchor as syntax }
+  expects ModuleResolutionModuleResolveModuleReferenceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d75dae5a46d5f690a076e138b4eefb950f52a47a64d4abf0eb2e8b52dc2a316e")
+  summary "fn ModuleResolutionModule.resolveModuleReference generated from typescript function_declaration at packages/shp-checker/src/module-resolution.ts#resolveModuleReference."
+}
+
+relation ModuleResolutionModuleSplitFunctionReferenceGeneratedFromModuleResolutionModuleSplitFunctionReferenceAstAnchor {
+  kind generated_from
+  connects ModuleResolutionModule -> ModuleResolutionModuleSplitFunctionReferenceAstAnchor
+  roles { ModuleResolutionModule as generated, ModuleResolutionModuleSplitFunctionReferenceAstAnchor as syntax }
+  expects ModuleResolutionModuleSplitFunctionReferenceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:937588c878b76bea5919a349ec6db40a33a6b64eb2a8e5d560973904deb629bb")
+  summary "fn ModuleResolutionModule.splitFunctionReference generated from typescript function_declaration at packages/shp-checker/src/module-resolution.ts#splitFunctionReference."
+}
+
+relation ModuleResolutionModuleSplitModuleReferenceGeneratedFromModuleResolutionModuleSplitModuleReferenceAstAnchor {
+  kind generated_from
+  connects ModuleResolutionModule -> ModuleResolutionModuleSplitModuleReferenceAstAnchor
+  roles { ModuleResolutionModule as generated, ModuleResolutionModuleSplitModuleReferenceAstAnchor as syntax }
+  expects ModuleResolutionModuleSplitModuleReferenceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d44cd8874cf3753a9b3331fa2b08a5574c7ddc7d37b95fa4bfad39660d3262dd")
+  summary "fn ModuleResolutionModule.splitModuleReference generated from typescript function_declaration at packages/shp-checker/src/module-resolution.ts#splitModuleReference."
+}
+
+implementation ModuleResolutionModuleImpl {
+  paths {
+    "packages/shp-checker/src/module-resolution.ts"
+  }
+  conforms_to ModuleResolutionModule
+}

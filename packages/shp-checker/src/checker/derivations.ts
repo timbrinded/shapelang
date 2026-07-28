@@ -18,7 +18,7 @@ import type {
   RuleInfo,
   ShapeTarget
 } from "./model.ts";
-import { KNOWN_PRELUDE_TRAITS, type ContextKind } from "../prelude.ts";
+import { isReevaluationRequirement, KNOWN_PRELUDE_TRAITS, type ContextKind } from "../prelude.ts";
 import { displaySymbol, functionTarget, splitFunctionTarget } from "./display.ts";
 import { compareKindName } from "./sort.ts";
 import { targetsEqual } from "../targets.ts";
@@ -108,8 +108,7 @@ export function shouldIgnoreUnknownEffectsDiagnostic(fn: FunctionInfo): boolean 
 }
 
 export function requiresReevaluation(guard: GuardInfo): boolean {
-  const normalized = guard.requirement.replace(/\s+/g, "").toLowerCase();
-  return normalized === "reevaluation" || normalized === "reevaluation<self>";
+  return isReevaluationRequirement(guard.requirement);
 }
 
 export function hasRequiredContext(

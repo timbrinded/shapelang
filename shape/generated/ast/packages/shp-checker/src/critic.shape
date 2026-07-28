@@ -1,0 +1,385 @@
+module shape.generated.ast.packages.shp_checker.src.critic
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource CriticModuleBuildShapeCriticPromptAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/critic.ts#buildShapeCriticPrompt")
+  fingerprint ast.semantic_subtree_v1("sha256:3a255b46abdad7c4ccf2898c15b6d6402853937cec70ba4dd009b34c0e7d1e32")
+}
+
+resource CriticModuleConsumeHunkLineAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/critic.ts#consumeHunkLine")
+  fingerprint ast.semantic_subtree_v1("sha256:96e403296dead50713b6a7c0bd799cb5bcf770233e190e8127c5c4f27e02beb9")
+}
+
+resource CriticModuleDeduplicateAnalyzerHintsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/critic.ts#deduplicateAnalyzerHints")
+  fingerprint ast.semantic_subtree_v1("sha256:efa7d113e99da7c3e85781ff1fb8374bcc2dcaec3bea69076a8569a1f4b246df")
+}
+
+resource CriticModuleExtractAddedDiffSourcesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/critic.ts#extractAddedDiffSources")
+  fingerprint ast.semantic_subtree_v1("sha256:02cf6139a224c32aa7ccfe0d3525896c91a3f55a880c5440129ada0f3ab56ebc")
+}
+
+resource CriticModuleFindComponentAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/critic.ts#findComponent")
+  fingerprint ast.semantic_subtree_v1("sha256:fa6f75398225ce63ce9420673f6cb612390ce45d947045ae143f34e2c8a8812e")
+}
+
+resource CriticModuleFindComponentFunctionAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/critic.ts#findComponentFunction")
+  fingerprint ast.semantic_subtree_v1("sha256:4ce54294b8b012179e06a80ae2ea6d83a75ac51119a2718884719a7c320449fe")
+}
+
+resource CriticModuleFindSourceBackedFunctionAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/critic.ts#findSourceBackedFunction")
+  fingerprint ast.semantic_subtree_v1("sha256:102a206c8e1cfbe1028bca0c41781ae361fa01973cf704ba278d5b4edc7d84b4")
+}
+
+resource CriticModuleFinishHunkAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/critic.ts#finishHunk")
+  fingerprint ast.semantic_subtree_v1("sha256:3b9f47722921fbd39ef444cf18ea38668eba695c6e0217a822a936ecc4b8039d")
+}
+
+resource CriticModuleFlushActiveSourceAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/critic.ts#flushActiveSource")
+  fingerprint ast.semantic_subtree_v1("sha256:6d7934713868ee19adf67e5e25f15e3f63eaa1ceade04a6f58f13ce760b827f5")
+}
+
+resource CriticModuleFormatShapeCriticAdvisoriesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/critic.ts#formatShapeCriticAdvisories")
+  fingerprint ast.semantic_subtree_v1("sha256:83742436845f4a7e874576e4433de2cee4967e7eae9b4fc1afd017a864df7827")
+}
+
+resource CriticModuleFormatShapeCriticAdvisoryAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/critic.ts#formatShapeCriticAdvisory")
+  fingerprint ast.semantic_subtree_v1("sha256:ca7adacf34efcb5cd0aa8bbd688bb5169b9764f4aa79d46670c6e29adf8ee2a4")
+}
+
+resource CriticModuleHasReevaluationGuardAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/critic.ts#hasReevaluationGuard")
+  fingerprint ast.semantic_subtree_v1("sha256:1a296c4f8613e9a03d4ef47a0a0c380066107911f112d1abd49f802c89bbb73d")
+}
+
+resource CriticModuleModuleDeclaresAnalyzerEffectAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/critic.ts#moduleDeclaresAnalyzerEffect")
+  fingerprint ast.semantic_subtree_v1("sha256:c94a666866f26482717514a859e3c7048289cb804d22ac8b768a4d37491946a8")
+}
+
+resource CriticModuleModuleDeclaresContextAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/critic.ts#moduleDeclaresContext")
+  fingerprint ast.semantic_subtree_v1("sha256:6476fcec493da43691babbb002af5c9f772a2df1cf2bd6360d73475555936139")
+}
+
+resource CriticModuleNormalizeCriticPromptInputAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/critic.ts#normalizeCriticPromptInput")
+  fingerprint ast.semantic_subtree_v1("sha256:4ff47f7a44b0563fa1b6db6c39da5f1e6fe67c4750a6a23590a378588a71a839")
+}
+
+resource CriticModuleParseContextFilesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/critic.ts#parseContextFiles")
+  fingerprint ast.semantic_subtree_v1("sha256:37468a33a8397391d9ffc87a1eb9337c73c42f6bdf05a03ef0cb7ee4dbfa73f2")
+}
+
+resource CriticModuleParseUnifiedDiffHunkAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/critic.ts#parseUnifiedDiffHunk")
+  fingerprint ast.semantic_subtree_v1("sha256:37e812cc138dc8fc0c982f522efe0505c1effa3e664c1b16c552fe97e7af3f59")
+}
+
+resource CriticModuleProposalSatisfiesContextAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/critic.ts#proposalSatisfiesContext")
+  fingerprint ast.semantic_subtree_v1("sha256:2231a692e451d460f116e3b6588176964408314fc9ae1672fbafcd7808cd079f")
+}
+
+resource CriticModuleResolveContextReferenceAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/critic.ts#resolveContextReference")
+  fingerprint ast.semantic_subtree_v1("sha256:4e51872ad6a2ff184eecd2516be9c964778405085236f2437fbae0afc7c878f9")
+}
+
+resource CriticModuleReviewDestructiveEffectsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/critic.ts#reviewDestructiveEffects")
+  fingerprint ast.semantic_subtree_v1("sha256:8958d1fb1e243dd154bc2dab5eaa4010abf05e09565950c4e9888ebca6271157")
+}
+
+resource CriticModuleReviewGuardedTargetsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/critic.ts#reviewGuardedTargets")
+  fingerprint ast.semantic_subtree_v1("sha256:dffb066cd9a4f4f3c64da6e4518252b15ac9a2d42b125f356cc211dc42d215f2")
+}
+
+resource CriticModuleReviewShapeAuthoringProposalAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/critic.ts#reviewShapeAuthoringProposal")
+  fingerprint ast.semantic_subtree_v1("sha256:ba611275b6d3d3e7c044605fec0c40c6a6373a7e81e9f58dab14c0cdeadc3db8")
+}
+
+resource CriticModuleSortShapeCriticAdvisoriesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/critic.ts#sortShapeCriticAdvisories")
+  fingerprint ast.semantic_subtree_v1("sha256:563d142cfa3e2b7ed73e4b4cab6b2f870c0e9c8f4945db9347dbee0958ceeea0")
+}
+
+component CriticModule : GeneratedCandidate {
+  fn buildShapeCriticPrompt
+    source ts("packages/shp-checker/src/critic.ts#buildShapeCriticPrompt")
+    effects unknown
+  fn consumeHunkLine
+    source ts("packages/shp-checker/src/critic.ts#consumeHunkLine")
+    effects unknown
+  fn deduplicateAnalyzerHints
+    source ts("packages/shp-checker/src/critic.ts#deduplicateAnalyzerHints")
+    effects unknown
+  fn extractAddedDiffSources
+    source ts("packages/shp-checker/src/critic.ts#extractAddedDiffSources")
+    effects unknown
+  fn findComponent
+    source ts("packages/shp-checker/src/critic.ts#findComponent")
+    effects unknown
+  fn findComponentFunction
+    source ts("packages/shp-checker/src/critic.ts#findComponentFunction")
+    effects unknown
+  fn findSourceBackedFunction
+    source ts("packages/shp-checker/src/critic.ts#findSourceBackedFunction")
+    effects unknown
+  fn finishHunk
+    source ts("packages/shp-checker/src/critic.ts#finishHunk")
+    effects unknown
+  fn flushActiveSource
+    source ts("packages/shp-checker/src/critic.ts#flushActiveSource")
+    effects unknown
+  fn formatShapeCriticAdvisories
+    source ts("packages/shp-checker/src/critic.ts#formatShapeCriticAdvisories")
+    effects unknown
+  fn formatShapeCriticAdvisory
+    source ts("packages/shp-checker/src/critic.ts#formatShapeCriticAdvisory")
+    effects unknown
+  fn hasReevaluationGuard
+    source ts("packages/shp-checker/src/critic.ts#hasReevaluationGuard")
+    effects unknown
+  fn moduleDeclaresAnalyzerEffect
+    source ts("packages/shp-checker/src/critic.ts#moduleDeclaresAnalyzerEffect")
+    effects unknown
+  fn moduleDeclaresContext
+    source ts("packages/shp-checker/src/critic.ts#moduleDeclaresContext")
+    effects unknown
+  fn normalizeCriticPromptInput
+    source ts("packages/shp-checker/src/critic.ts#normalizeCriticPromptInput")
+    effects unknown
+  fn parseContextFiles
+    source ts("packages/shp-checker/src/critic.ts#parseContextFiles")
+    effects unknown
+  fn parseUnifiedDiffHunk
+    source ts("packages/shp-checker/src/critic.ts#parseUnifiedDiffHunk")
+    effects unknown
+  fn proposalSatisfiesContext
+    source ts("packages/shp-checker/src/critic.ts#proposalSatisfiesContext")
+    effects unknown
+  fn resolveContextReference
+    source ts("packages/shp-checker/src/critic.ts#resolveContextReference")
+    effects unknown
+  fn reviewDestructiveEffects
+    source ts("packages/shp-checker/src/critic.ts#reviewDestructiveEffects")
+    effects unknown
+  fn reviewGuardedTargets
+    source ts("packages/shp-checker/src/critic.ts#reviewGuardedTargets")
+    effects unknown
+  fn reviewShapeAuthoringProposal
+    source ts("packages/shp-checker/src/critic.ts#reviewShapeAuthoringProposal")
+    effects unknown
+  fn sortShapeCriticAdvisories
+    source ts("packages/shp-checker/src/critic.ts#sortShapeCriticAdvisories")
+    effects unknown
+}
+
+relation CriticModuleBuildShapeCriticPromptGeneratedFromCriticModuleBuildShapeCriticPromptAstAnchor {
+  kind generated_from
+  connects CriticModule -> CriticModuleBuildShapeCriticPromptAstAnchor
+  roles { CriticModule as generated, CriticModuleBuildShapeCriticPromptAstAnchor as syntax }
+  expects CriticModuleBuildShapeCriticPromptAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3a255b46abdad7c4ccf2898c15b6d6402853937cec70ba4dd009b34c0e7d1e32")
+  summary "fn CriticModule.buildShapeCriticPrompt generated from typescript function_declaration at packages/shp-checker/src/critic.ts#buildShapeCriticPrompt."
+}
+
+relation CriticModuleConsumeHunkLineGeneratedFromCriticModuleConsumeHunkLineAstAnchor {
+  kind generated_from
+  connects CriticModule -> CriticModuleConsumeHunkLineAstAnchor
+  roles { CriticModule as generated, CriticModuleConsumeHunkLineAstAnchor as syntax }
+  expects CriticModuleConsumeHunkLineAstAnchor fingerprint ast.semantic_subtree_v1("sha256:96e403296dead50713b6a7c0bd799cb5bcf770233e190e8127c5c4f27e02beb9")
+  summary "fn CriticModule.consumeHunkLine generated from typescript function_declaration at packages/shp-checker/src/critic.ts#consumeHunkLine."
+}
+
+relation CriticModuleDeduplicateAnalyzerHintsGeneratedFromCriticModuleDeduplicateAnalyzerHintsAstAnchor {
+  kind generated_from
+  connects CriticModule -> CriticModuleDeduplicateAnalyzerHintsAstAnchor
+  roles { CriticModule as generated, CriticModuleDeduplicateAnalyzerHintsAstAnchor as syntax }
+  expects CriticModuleDeduplicateAnalyzerHintsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:efa7d113e99da7c3e85781ff1fb8374bcc2dcaec3bea69076a8569a1f4b246df")
+  summary "fn CriticModule.deduplicateAnalyzerHints generated from typescript function_declaration at packages/shp-checker/src/critic.ts#deduplicateAnalyzerHints."
+}
+
+relation CriticModuleExtractAddedDiffSourcesGeneratedFromCriticModuleExtractAddedDiffSourcesAstAnchor {
+  kind generated_from
+  connects CriticModule -> CriticModuleExtractAddedDiffSourcesAstAnchor
+  roles { CriticModule as generated, CriticModuleExtractAddedDiffSourcesAstAnchor as syntax }
+  expects CriticModuleExtractAddedDiffSourcesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:02cf6139a224c32aa7ccfe0d3525896c91a3f55a880c5440129ada0f3ab56ebc")
+  summary "fn CriticModule.extractAddedDiffSources generated from typescript function_declaration at packages/shp-checker/src/critic.ts#extractAddedDiffSources."
+}
+
+relation CriticModuleFindComponentFunctionGeneratedFromCriticModuleFindComponentFunctionAstAnchor {
+  kind generated_from
+  connects CriticModule -> CriticModuleFindComponentFunctionAstAnchor
+  roles { CriticModule as generated, CriticModuleFindComponentFunctionAstAnchor as syntax }
+  expects CriticModuleFindComponentFunctionAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4ce54294b8b012179e06a80ae2ea6d83a75ac51119a2718884719a7c320449fe")
+  summary "fn CriticModule.findComponentFunction generated from typescript function_declaration at packages/shp-checker/src/critic.ts#findComponentFunction."
+}
+
+relation CriticModuleFindComponentGeneratedFromCriticModuleFindComponentAstAnchor {
+  kind generated_from
+  connects CriticModule -> CriticModuleFindComponentAstAnchor
+  roles { CriticModule as generated, CriticModuleFindComponentAstAnchor as syntax }
+  expects CriticModuleFindComponentAstAnchor fingerprint ast.semantic_subtree_v1("sha256:fa6f75398225ce63ce9420673f6cb612390ce45d947045ae143f34e2c8a8812e")
+  summary "fn CriticModule.findComponent generated from typescript function_declaration at packages/shp-checker/src/critic.ts#findComponent."
+}
+
+relation CriticModuleFindSourceBackedFunctionGeneratedFromCriticModuleFindSourceBackedFunctionAstAnchor {
+  kind generated_from
+  connects CriticModule -> CriticModuleFindSourceBackedFunctionAstAnchor
+  roles { CriticModule as generated, CriticModuleFindSourceBackedFunctionAstAnchor as syntax }
+  expects CriticModuleFindSourceBackedFunctionAstAnchor fingerprint ast.semantic_subtree_v1("sha256:102a206c8e1cfbe1028bca0c41781ae361fa01973cf704ba278d5b4edc7d84b4")
+  summary "fn CriticModule.findSourceBackedFunction generated from typescript function_declaration at packages/shp-checker/src/critic.ts#findSourceBackedFunction."
+}
+
+relation CriticModuleFinishHunkGeneratedFromCriticModuleFinishHunkAstAnchor {
+  kind generated_from
+  connects CriticModule -> CriticModuleFinishHunkAstAnchor
+  roles { CriticModule as generated, CriticModuleFinishHunkAstAnchor as syntax }
+  expects CriticModuleFinishHunkAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3b9f47722921fbd39ef444cf18ea38668eba695c6e0217a822a936ecc4b8039d")
+  summary "fn CriticModule.finishHunk generated from typescript function_declaration at packages/shp-checker/src/critic.ts#finishHunk."
+}
+
+relation CriticModuleFlushActiveSourceGeneratedFromCriticModuleFlushActiveSourceAstAnchor {
+  kind generated_from
+  connects CriticModule -> CriticModuleFlushActiveSourceAstAnchor
+  roles { CriticModule as generated, CriticModuleFlushActiveSourceAstAnchor as syntax }
+  expects CriticModuleFlushActiveSourceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6d7934713868ee19adf67e5e25f15e3f63eaa1ceade04a6f58f13ce760b827f5")
+  summary "fn CriticModule.flushActiveSource generated from typescript function_declaration at packages/shp-checker/src/critic.ts#flushActiveSource."
+}
+
+relation CriticModuleFormatShapeCriticAdvisoriesGeneratedFromCriticModuleFormatShapeCriticAdvisoriesAstAnchor {
+  kind generated_from
+  connects CriticModule -> CriticModuleFormatShapeCriticAdvisoriesAstAnchor
+  roles { CriticModule as generated, CriticModuleFormatShapeCriticAdvisoriesAstAnchor as syntax }
+  expects CriticModuleFormatShapeCriticAdvisoriesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:83742436845f4a7e874576e4433de2cee4967e7eae9b4fc1afd017a864df7827")
+  summary "fn CriticModule.formatShapeCriticAdvisories generated from typescript function_declaration at packages/shp-checker/src/critic.ts#formatShapeCriticAdvisories."
+}
+
+relation CriticModuleFormatShapeCriticAdvisoryGeneratedFromCriticModuleFormatShapeCriticAdvisoryAstAnchor {
+  kind generated_from
+  connects CriticModule -> CriticModuleFormatShapeCriticAdvisoryAstAnchor
+  roles { CriticModule as generated, CriticModuleFormatShapeCriticAdvisoryAstAnchor as syntax }
+  expects CriticModuleFormatShapeCriticAdvisoryAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ca7adacf34efcb5cd0aa8bbd688bb5169b9764f4aa79d46670c6e29adf8ee2a4")
+  summary "fn CriticModule.formatShapeCriticAdvisory generated from typescript function_declaration at packages/shp-checker/src/critic.ts#formatShapeCriticAdvisory."
+}
+
+relation CriticModuleHasReevaluationGuardGeneratedFromCriticModuleHasReevaluationGuardAstAnchor {
+  kind generated_from
+  connects CriticModule -> CriticModuleHasReevaluationGuardAstAnchor
+  roles { CriticModule as generated, CriticModuleHasReevaluationGuardAstAnchor as syntax }
+  expects CriticModuleHasReevaluationGuardAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1a296c4f8613e9a03d4ef47a0a0c380066107911f112d1abd49f802c89bbb73d")
+  summary "fn CriticModule.hasReevaluationGuard generated from typescript function_declaration at packages/shp-checker/src/critic.ts#hasReevaluationGuard."
+}
+
+relation CriticModuleModuleDeclaresAnalyzerEffectGeneratedFromCriticModuleModuleDeclaresAnalyzerEffectAstAnchor {
+  kind generated_from
+  connects CriticModule -> CriticModuleModuleDeclaresAnalyzerEffectAstAnchor
+  roles { CriticModule as generated, CriticModuleModuleDeclaresAnalyzerEffectAstAnchor as syntax }
+  expects CriticModuleModuleDeclaresAnalyzerEffectAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c94a666866f26482717514a859e3c7048289cb804d22ac8b768a4d37491946a8")
+  summary "fn CriticModule.moduleDeclaresAnalyzerEffect generated from typescript function_declaration at packages/shp-checker/src/critic.ts#moduleDeclaresAnalyzerEffect."
+}
+
+relation CriticModuleModuleDeclaresContextGeneratedFromCriticModuleModuleDeclaresContextAstAnchor {
+  kind generated_from
+  connects CriticModule -> CriticModuleModuleDeclaresContextAstAnchor
+  roles { CriticModule as generated, CriticModuleModuleDeclaresContextAstAnchor as syntax }
+  expects CriticModuleModuleDeclaresContextAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6476fcec493da43691babbb002af5c9f772a2df1cf2bd6360d73475555936139")
+  summary "fn CriticModule.moduleDeclaresContext generated from typescript function_declaration at packages/shp-checker/src/critic.ts#moduleDeclaresContext."
+}
+
+relation CriticModuleNormalizeCriticPromptInputGeneratedFromCriticModuleNormalizeCriticPromptInputAstAnchor {
+  kind generated_from
+  connects CriticModule -> CriticModuleNormalizeCriticPromptInputAstAnchor
+  roles { CriticModule as generated, CriticModuleNormalizeCriticPromptInputAstAnchor as syntax }
+  expects CriticModuleNormalizeCriticPromptInputAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4ff47f7a44b0563fa1b6db6c39da5f1e6fe67c4750a6a23590a378588a71a839")
+  summary "fn CriticModule.normalizeCriticPromptInput generated from typescript function_declaration at packages/shp-checker/src/critic.ts#normalizeCriticPromptInput."
+}
+
+relation CriticModuleParseContextFilesGeneratedFromCriticModuleParseContextFilesAstAnchor {
+  kind generated_from
+  connects CriticModule -> CriticModuleParseContextFilesAstAnchor
+  roles { CriticModule as generated, CriticModuleParseContextFilesAstAnchor as syntax }
+  expects CriticModuleParseContextFilesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:37468a33a8397391d9ffc87a1eb9337c73c42f6bdf05a03ef0cb7ee4dbfa73f2")
+  summary "fn CriticModule.parseContextFiles generated from typescript function_declaration at packages/shp-checker/src/critic.ts#parseContextFiles."
+}
+
+relation CriticModuleParseUnifiedDiffHunkGeneratedFromCriticModuleParseUnifiedDiffHunkAstAnchor {
+  kind generated_from
+  connects CriticModule -> CriticModuleParseUnifiedDiffHunkAstAnchor
+  roles { CriticModule as generated, CriticModuleParseUnifiedDiffHunkAstAnchor as syntax }
+  expects CriticModuleParseUnifiedDiffHunkAstAnchor fingerprint ast.semantic_subtree_v1("sha256:37e812cc138dc8fc0c982f522efe0505c1effa3e664c1b16c552fe97e7af3f59")
+  summary "fn CriticModule.parseUnifiedDiffHunk generated from typescript function_declaration at packages/shp-checker/src/critic.ts#parseUnifiedDiffHunk."
+}
+
+relation CriticModuleProposalSatisfiesContextGeneratedFromCriticModuleProposalSatisfiesContextAstAnchor {
+  kind generated_from
+  connects CriticModule -> CriticModuleProposalSatisfiesContextAstAnchor
+  roles { CriticModule as generated, CriticModuleProposalSatisfiesContextAstAnchor as syntax }
+  expects CriticModuleProposalSatisfiesContextAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2231a692e451d460f116e3b6588176964408314fc9ae1672fbafcd7808cd079f")
+  summary "fn CriticModule.proposalSatisfiesContext generated from typescript function_declaration at packages/shp-checker/src/critic.ts#proposalSatisfiesContext."
+}
+
+relation CriticModuleResolveContextReferenceGeneratedFromCriticModuleResolveContextReferenceAstAnchor {
+  kind generated_from
+  connects CriticModule -> CriticModuleResolveContextReferenceAstAnchor
+  roles { CriticModule as generated, CriticModuleResolveContextReferenceAstAnchor as syntax }
+  expects CriticModuleResolveContextReferenceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4e51872ad6a2ff184eecd2516be9c964778405085236f2437fbae0afc7c878f9")
+  summary "fn CriticModule.resolveContextReference generated from typescript function_declaration at packages/shp-checker/src/critic.ts#resolveContextReference."
+}
+
+relation CriticModuleReviewDestructiveEffectsGeneratedFromCriticModuleReviewDestructiveEffectsAstAnchor {
+  kind generated_from
+  connects CriticModule -> CriticModuleReviewDestructiveEffectsAstAnchor
+  roles { CriticModule as generated, CriticModuleReviewDestructiveEffectsAstAnchor as syntax }
+  expects CriticModuleReviewDestructiveEffectsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:8958d1fb1e243dd154bc2dab5eaa4010abf05e09565950c4e9888ebca6271157")
+  summary "fn CriticModule.reviewDestructiveEffects generated from typescript function_declaration at packages/shp-checker/src/critic.ts#reviewDestructiveEffects."
+}
+
+relation CriticModuleReviewGuardedTargetsGeneratedFromCriticModuleReviewGuardedTargetsAstAnchor {
+  kind generated_from
+  connects CriticModule -> CriticModuleReviewGuardedTargetsAstAnchor
+  roles { CriticModule as generated, CriticModuleReviewGuardedTargetsAstAnchor as syntax }
+  expects CriticModuleReviewGuardedTargetsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:dffb066cd9a4f4f3c64da6e4518252b15ac9a2d42b125f356cc211dc42d215f2")
+  summary "fn CriticModule.reviewGuardedTargets generated from typescript function_declaration at packages/shp-checker/src/critic.ts#reviewGuardedTargets."
+}
+
+relation CriticModuleReviewShapeAuthoringProposalGeneratedFromCriticModuleReviewShapeAuthoringProposalAstAnchor {
+  kind generated_from
+  connects CriticModule -> CriticModuleReviewShapeAuthoringProposalAstAnchor
+  roles { CriticModule as generated, CriticModuleReviewShapeAuthoringProposalAstAnchor as syntax }
+  expects CriticModuleReviewShapeAuthoringProposalAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ba611275b6d3d3e7c044605fec0c40c6a6373a7e81e9f58dab14c0cdeadc3db8")
+  summary "fn CriticModule.reviewShapeAuthoringProposal generated from typescript function_declaration at packages/shp-checker/src/critic.ts#reviewShapeAuthoringProposal."
+}
+
+relation CriticModuleSortShapeCriticAdvisoriesGeneratedFromCriticModuleSortShapeCriticAdvisoriesAstAnchor {
+  kind generated_from
+  connects CriticModule -> CriticModuleSortShapeCriticAdvisoriesAstAnchor
+  roles { CriticModule as generated, CriticModuleSortShapeCriticAdvisoriesAstAnchor as syntax }
+  expects CriticModuleSortShapeCriticAdvisoriesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:563d142cfa3e2b7ed73e4b4cab6b2f870c0e9c8f4945db9347dbee0958ceeea0")
+  summary "fn CriticModule.sortShapeCriticAdvisories generated from typescript function_declaration at packages/shp-checker/src/critic.ts#sortShapeCriticAdvisories."
+}
+
+implementation CriticModuleImpl {
+  paths {
+    "packages/shp-checker/src/critic.ts"
+  }
+  conforms_to CriticModule
+}

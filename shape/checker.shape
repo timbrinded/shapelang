@@ -22,6 +22,8 @@ resource NormalizedShapeReference
 
 resource PreludeMetadata
 
+resource ResolvedModuleReference
+
 resource SemanticDiagnosticSet
 
 resource SemanticDiagnostics
@@ -228,14 +230,36 @@ component ShapeModelLowerer {
     }
 }
 
+component ShapeModuleResolver {
+  owns ResolvedModuleReference
+  grants Read<ModuleNamespace>
+  grants Update<ResolvedModuleReference>
+  fn resolveModuleReference
+    source ts("packages/shp-checker/src/module-resolution.ts#resolveModuleReference")
+    description "Applies the shared qualified, local, imported, ambiguous, and unknown module-reference precedence used by checker lowering and advisory authoring."
+    effects complete {
+      Read<ModuleNamespace>
+        evidence ts("packages/shp-checker/src/module-resolution.ts#resolveModuleReference")
+      Update<ResolvedModuleReference>
+        evidence ts("packages/shp-checker/src/module-resolution.ts#resolveModuleReference")
+    }
+}
+
 component ShapePreludeRegistry {
   owns PreludeMetadata
+  grants Read<PreludeMetadata>
   grants Update<PreludeMetadata>
   fn definePreludeMetadata : RefactorSensitive
     source ts("packages/shp-checker/src/prelude.ts")
     description "Defines built-in traits, context requirements, and directed relation traversal metadata shared by checker and tooling."
     effects complete {
       Update<PreludeMetadata>
+        evidence ts("packages/shp-checker/src/prelude.ts")
+    }
+  fn isReevaluationRequirement
+    source ts("packages/shp-checker/src/prelude.ts#isReevaluationRequirement")
+    effects complete {
+      Read<PreludeMetadata>
         evidence ts("packages/shp-checker/src/prelude.ts")
     }
 }
@@ -359,6 +383,12 @@ component ShapeRuleEngine {
       Read<PreludeMetadata>
         evidence ts("packages/shp-checker/src/checker/rules/relations.ts")
     }
+  fn requiresReevaluation
+    source ts("packages/shp-checker/src/checker/derivations.ts#requiresReevaluation")
+    effects complete {
+      Read<PreludeMetadata>
+        evidence ts("packages/shp-checker/src/checker/derivations.ts")
+    }
 }
 
 component ShapeStringHelpers {
@@ -456,6 +486,12 @@ relation ShapeModelLowererProvidesFacts {
   connects ShapeModelLowerer -> ShapeFacts
 }
 
+relation ShapeModelLowererUsesModuleResolver {
+  kind calls
+  connects ShapeModelLowerer -> ShapeModuleResolver
+  summary "CanonicalNamespaceResolution"
+}
+
 relation ShapeModelLowererUsesParser {
   kind calls
   connects ShapeModelLowerer -> ShapeParser
@@ -472,6 +508,11 @@ relation ShapeModelLowererUsesStringHelpers {
   kind calls
   connects ShapeModelLowerer -> ShapeStringHelpers
   summary "SourceReferenceNormalization"
+}
+
+relation ShapeModuleResolverProvidesReference {
+  kind provides
+  connects ShapeModuleResolver -> ResolvedModuleReference
 }
 
 relation ShapePreludeRegistryProvidesMetadata {

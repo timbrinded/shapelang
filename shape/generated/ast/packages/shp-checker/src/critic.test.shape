@@ -1,0 +1,49 @@
+module shape.generated.ast.packages.shp_checker.src.critic_test
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource CriticTestModuleCriticInputAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/critic.test.ts#criticInput")
+  fingerprint ast.semantic_subtree_v1("sha256:b75502086601087e811fb13d57c0845c9ea27e8bd361ed9a2e1f32f30cc8d819")
+}
+
+resource CriticTestModuleReevaluatedProposalAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/critic.test.ts#reevaluatedProposal")
+  fingerprint ast.semantic_subtree_v1("sha256:76aaf3d1931b258bd68d9b51fd394e7bc7ed9fa9e415514ddcb71185b32e2af8")
+}
+
+component CriticTestModule : GeneratedCandidate {
+  fn criticInput
+    source ts("packages/shp-checker/src/critic.test.ts#criticInput")
+    effects unknown
+  fn reevaluatedProposal
+    source ts("packages/shp-checker/src/critic.test.ts#reevaluatedProposal")
+    effects unknown
+}
+
+relation CriticTestModuleCriticInputGeneratedFromCriticTestModuleCriticInputAstAnchor {
+  kind generated_from
+  connects CriticTestModule -> CriticTestModuleCriticInputAstAnchor
+  roles { CriticTestModule as generated, CriticTestModuleCriticInputAstAnchor as syntax }
+  expects CriticTestModuleCriticInputAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b75502086601087e811fb13d57c0845c9ea27e8bd361ed9a2e1f32f30cc8d819")
+  summary "fn CriticTestModule.criticInput generated from typescript function_declaration at packages/shp-checker/src/critic.test.ts#criticInput."
+}
+
+relation CriticTestModuleReevaluatedProposalGeneratedFromCriticTestModuleReevaluatedProposalAstAnchor {
+  kind generated_from
+  connects CriticTestModule -> CriticTestModuleReevaluatedProposalAstAnchor
+  roles { CriticTestModule as generated, CriticTestModuleReevaluatedProposalAstAnchor as syntax }
+  expects CriticTestModuleReevaluatedProposalAstAnchor fingerprint ast.semantic_subtree_v1("sha256:76aaf3d1931b258bd68d9b51fd394e7bc7ed9fa9e415514ddcb71185b32e2af8")
+  summary "fn CriticTestModule.reevaluatedProposal generated from typescript function_declaration at packages/shp-checker/src/critic.test.ts#reevaluatedProposal."
+}
+
+implementation CriticTestModuleImpl {
+  paths {
+    "packages/shp-checker/src/critic.test.ts"
+  }
+  conforms_to CriticTestModule
+}

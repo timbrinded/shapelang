@@ -22,6 +22,7 @@ shp memory [files...]
 shp obligations [--as-of YYYY-MM-DD] [--strict-freshness] [files...]
 shp author --changed-files changed.txt --component ComponentName [--module module.name]
 shp author --changed-files changed.txt --component ComponentName --diff pr.diff --prompt --shape-files file1.shape,file2.shape [--snippet-files file1.ts,file2.rs] [--project-prelude prelude.shape] [--instructions TEXT]
+shp author --changed-files changed.txt --diff pr.diff --critic-prompt proposed.shape --shape-files file1.shape,file2.shape [--snippet-files file1.ts,file2.rs] [--project-prelude prelude.shape] [--instructions TEXT]
 shp analyze [--shape-files file1.shape,file2.shape] [source-files...]
 shp ast source [--language LANG] [--module NAME] [--include-ast-layer] [--raw-out PATH] [--out-dir DIR] [--check] [--allow-parse-errors] files...
 shp ast json [--module NAME] [--include-ast-layer] [--raw-out PATH] ast.json
@@ -55,7 +56,7 @@ activate or deactivate pack-level rules. See [Domain Packs](../concepts/domain-p
 | `lsp` | Serve Shape diagnostics and editor requests over the Language Server Protocol on stdio. |
 | `memory` | List rationale and memory entries grouped by protected target. |
 | `obligations` | List open design-memory obligations from checker diagnostics. With `--as-of` or `--strict-freshness`, also list design memory whose `review_by` date is past the reference date. |
-| `author` | Generate a conservative global-model draft, or emit a provider-neutral PR-diff authoring prompt with explicit context. |
+| `author` | Generate a conservative global-model draft, emit a provider-neutral PR-diff authoring prompt, or review a proposed update with a provider-neutral critic prompt and deterministic local advisories. |
 | `analyze` | Emit source hints or compare source hints with declared effects. |
 | `ast source` | Parse source with Tree-sitter and emit a conservative semantic Shape draft. |
 | `ast json` | Read external AST JSON and emit the same draft format. |
@@ -96,7 +97,8 @@ shp obligations --as-of 2026-05-30
 shp obligations --strict-freshness
 shp author --changed-files changed.txt --component AuditStore
 shp author --changed-files changed.txt --component AuditStore --diff pr.diff --prompt --shape-files shape/audit.shape --snippet-files src/audit/purge.ts
-shp analyze --shape-files fixtures/pass/append_only_append/audit.shape fixtures/source/audit_purge.ts
+shp author --changed-files changed.txt --diff pr.diff --critic-prompt proposed.shape --shape-files shape/audit.shape --snippet-files src/audit/purge.ts
+shp analyze --shape-files fixtures/pass/append_only_append/audit.shape src/audit/purge.ts
 shp ast source --language rust --module generated.audit src/audit/store.rs
 shp ast source --language rust --out-dir shape/generated/ast src/audit/store.rs
 shp ast source --language rust --out-dir shape/generated/ast --check src/audit/store.rs
@@ -141,9 +143,23 @@ shp author \
   > author-prompt.txt
 ```
 
-`--prompt` requires a non-empty unified diff and a non-empty comma-separated `--shape-files` list. `--snippet-files` and `--project-prelude` add explicit path-labeled context; Shape does not discover a project prelude or invoke a model provider. Prompt-only context flags are rejected outside prompt mode instead of being silently ignored.
+`--prompt` requires a non-empty unified diff and a non-empty comma-separated `--shape-files` list. `--snippet-files` and `--project-prelude` add explicit path-labeled context; Shape does not discover a project prelude or invoke a model provider. Context flags are rejected outside prompt or critic mode instead of being silently ignored.
 
 The bundle requires evidence for resources, components, effects, and relations, keeps destructive operations explicit, and includes `effects unknown` in the initial draft when semantics remain uncertain. It is an authoring artifact, not checker approval. Review and fold the result into the owning global model, run `shp fmt --check`, then run strict `shp check --changed-files changed.txt`.
+
+Critic mode reviews an already proposed Shape update with the same explicit diff, existing-Shape, snippet, prelude, and instruction context:
+
+```bash
+shp author \
+  --changed-files changed.txt \
+  --diff pr.diff \
+  --critic-prompt proposed.shape \
+  --shape-files shape/audit.shape \
+  --snippet-files src/audit/purge.ts \
+  > critic-prompt.txt
+```
+
+The provider-neutral critic prompt is written to stdout. Deterministic local advisories are written to stderr for a source-backed guarded function changed without a matching reevaluation, or for a destructive operation found on added diff lines but absent from the existing and proposed declared effects. Deleted diff lines are never analyzed. Advisories report file paths and code evidence without producing numbered Shape references. These checks are deliberately coarse and lexical: warnings exit `0`, malformed input exits `2`, and only a later `shp check` can authoritatively accept or reject the model. `--critic-prompt` and `--prompt` are mutually exclusive; draft-only `--component` and `--module` flags are rejected in critic mode. Neither mode invokes a model provider, subprocess, network service, or checker pass.
 
 ## AST generation
 
@@ -287,7 +303,7 @@ Only ISO `YYYY-MM-DD` dates are enforced; missing or non-ISO `review_by` values 
 
 ## Exit codes
 
-`0` means the command passed. `1` means semantic checks, formatting checks, coverage, analyzer comparison, download, checksum, extraction, or binary replacement failed. `2` means the CLI arguments were invalid or the update target platform/path is unsupported.
+`0` means the command passed or an advisory-only critic review completed, even when critic warnings were emitted. `1` means semantic checks, formatting checks, coverage, analyzer comparison, download, checksum, extraction, or binary replacement failed. `2` means the CLI arguments or critic inputs were invalid, or the update target platform/path is unsupported.
 
 ## Updating
 
