@@ -1104,7 +1104,8 @@ const renderers = {
 for (const concept of concepts) {
   const renderer = renderers[concept.layout];
   if (!renderer) throw new Error(`Unknown infographic layout: ${concept.layout}`);
-  writeFileSync(join(framesDir, `${concept.name}.html`), renderer(concept), "utf8");
+  const html = renderer(concept).replace(/[ \t]+$/gm, "");
+  writeFileSync(join(framesDir, `${concept.name}.html`), html, "utf8");
   console.log(`wrote ${concept.name}.html`);
 }
 
