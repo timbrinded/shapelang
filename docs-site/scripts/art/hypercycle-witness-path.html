@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<title>Hypercycle Witness</title>
+<link rel="stylesheet" href="file:///home/timbo/workspace/personal/shapelang/docs-site/scripts/art/theme.css"/>
+</head><body>
+<div class="stage">
+  <header>
+    <div class="kicker ">Rules</div>
+    <h1>Hypercycle Witness</h1>
+    <p class="lede">Forbidden cycles ship a clear vertex path.</p>
+  </header>
+  <div class="board"><div class="flow">
+        <div class="card ">
+    <div class="card-head">
+      <div class="card-title">Graph</div>
+      <div class="card-meta">calls</div>
+    </div>
+    <div class="card-body"><div class="line"><span class="mark"></span><span>Api → Worker</span></div><div class="line"><span class="mark"></span><span>Worker → Queue</span></div><div class="line"><span class="mark"></span><span>Queue → Api</span></div></div>
+  </div>
+        <div class="arrow" aria-hidden="true">→</div>
+        <div class="card red">
+    <div class="card-head">
+      <div class="card-title">Rule</div>
+      <div class="card-meta">constraint</div>
+    </div>
+    <div class="card-body"><div class="line fail"><span class="mark"></span><span>forbid hypercycle over calls</span></div></div>
+  </div>
+        <div class="arrow" aria-hidden="true">→</div>
+        <div class="card red">
+    <div class="card-head">
+      <div class="card-title">Witness</div>
+      <div class="card-meta">closed walk</div>
+    </div>
+    <div class="card-body"><div class="line fail"><span class="mark"></span><span>Api → Worker → Queue → Api</span></div><div class="line "><span class="mark"></span><span>Relations named in the diagnostic</span></div></div>
+  </div>
+      </div></div>
+  <div class="footer"><span>shape</span><span>graph · cycle · witness</span></div>
+</div>
+</body></html>

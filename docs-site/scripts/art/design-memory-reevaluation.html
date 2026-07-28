@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<title>Design Memory</title>
+<link rel="stylesheet" href="file:///home/timbo/workspace/personal/shapelang/docs-site/scripts/art/theme.css"/>
+</head><body>
+<div class="stage">
+  <header>
+    <div class="kicker ">Guards</div>
+    <h1>Design Memory</h1>
+    <p class="lede">Fragile shapes can require a recorded reevaluation before they change.</p>
+  </header>
+  <div class="board"><div class="flow">
+        <div class="card ">
+    <div class="card-head">
+      <div class="card-title">Protected function</div>
+      <div class="card-meta">target</div>
+    </div>
+    <div class="card-body"><div class="line"><span class="mark"></span><span>RefactorSensitive</span></div><div class="line"><span class="mark"></span><span>Shape is intentional</span></div></div>
+  </div>
+        <div class="arrow" aria-hidden="true">→</div>
+        <div class="card red">
+    <div class="card-head">
+      <div class="card-title">Without reevaluation</div>
+      <div class="card-meta">change</div>
+    </div>
+    <div class="card-body"><div class="line fail"><span class="mark"></span><span>modify fn → fail</span></div><div class="line fail"><span class="mark"></span><span>guarded shape changed</span></div></div>
+  </div>
+        <div class="arrow" aria-hidden="true">→</div>
+        <div class="card green">
+    <div class="card-head">
+      <div class="card-title">With reevaluation</div>
+      <div class="card-meta">review record</div>
+    </div>
+    <div class="card-body"><div class="line pass"><span class="mark"></span><span>outcome + evidence</span></div><div class="line pass"><span class="mark"></span><span>check can pass</span></div></div>
+  </div>
+      </div></div>
+  <div class="footer"><span>shape</span><span>memory · reevaluation</span></div>
+</div>
+</body></html>

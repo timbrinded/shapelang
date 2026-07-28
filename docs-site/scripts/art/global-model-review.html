@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<title>Global Model Review</title>
+<link rel="stylesheet" href="file:///home/timbo/workspace/personal/shapelang/docs-site/scripts/art/theme.css"/>
+</head><body>
+<div class="stage">
+  <header>
+    <div class="kicker green">CI</div>
+    <h1>Global Model Review</h1>
+    <p class="lede">Architecture lives in shape/. Coverage watches changed files. CI is the gate.</p>
+  </header>
+  <div class="board"><div class="flow">
+        <div class="card ">
+    <div class="card-head">
+      <div class="card-title">Model</div>
+      <div class="card-meta">source of truth</div>
+    </div>
+    <div class="card-body"><div class="line"><span class="mark"></span><span>shape/**/*.shape</span></div><div class="line"><span class="mark"></span><span>Committed with the PR</span></div></div>
+  </div>
+        <div class="arrow" aria-hidden="true">→</div>
+        <div class="card amber">
+    <div class="card-head">
+      <div class="card-title">Coverage</div>
+      <div class="card-meta">changed files</div>
+    </div>
+    <div class="card-body"><div class="line warn"><span class="mark"></span><span>Governed path changed</span></div><div class="line "><span class="mark"></span><span>Need shape update or attestation</span></div></div>
+  </div>
+        <div class="arrow" aria-hidden="true">→</div>
+        <div class="card green">
+    <div class="card-head">
+      <div class="card-title">Gate</div>
+      <div class="card-meta">shp check</div>
+    </div>
+    <div class="card-body"><div class="line pass"><span class="mark"></span><span>pass</span></div><div class="line fail"><span class="mark"></span><span>reject</span></div></div>
+  </div>
+      </div></div>
+  <div class="footer"><span>shape</span><span>model · coverage · check</span></div>
+</div>
+</body></html>

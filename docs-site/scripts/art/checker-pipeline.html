@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<title>Checker Pipeline</title>
+<link rel="stylesheet" href="file:///home/timbo/workspace/personal/shapelang/docs-site/scripts/art/theme.css"/>
+</head><body>
+<div class="stage">
+  <header>
+    <div class="kicker ">Internals</div>
+    <h1>Checker Pipeline</h1>
+    <p class="lede">Parse · lower · rules · diagnostics. No application execution.</p>
+  </header>
+  <div class="board"><div class="stack-v">
+        <div class="flow">
+          <div class="card ">
+    <div class="card-head">
+      <div class="card-title">Parse</div>
+      <div class="card-meta">modules</div>
+    </div>
+    <div class="card-body" style="align-items:center;text-align:center;gap:20px">
+      <div class="orb "><svg viewBox="0 0 24 24"><path d="M7 3h7l5 5v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg></div>
+      <div class="chip ">Langium</div>
+    </div>
+  </div>
+          <div class="arrow" aria-hidden="true">→</div>
+          <div class="card ">
+    <div class="card-head">
+      <div class="card-title">Lower</div>
+      <div class="card-meta">facts</div>
+    </div>
+    <div class="card-body" style="align-items:center;text-align:center;gap:20px">
+      <div class="orb "><svg viewBox="0 0 24 24"><path d="M12 4l8 4-8 4-8-4 8-4z"/><path d="M4 12l8 4 8-4"/><path d="M4 16l8 4 8-4"/></svg></div>
+      <div class="chip ">provenance</div>
+    </div>
+  </div>
+          <div class="arrow" aria-hidden="true">→</div>
+          <div class="card ">
+    <div class="card-head">
+      <div class="card-title">Rules</div>
+      <div class="card-meta">semantics</div>
+    </div>
+    <div class="card-body" style="align-items:center;text-align:center;gap:20px">
+      <div class="orb "><svg viewBox="0 0 24 24"><path d="M12 3.5l7.5 3v5.2c0 4.4-3 7.5-7.5 8.3-4.5-.8-7.5-3.9-7.5-8.3V6.5l7.5-3z"/><path d="M9 12l2 2 4-4"/></svg></div>
+      <div class="chip ">indexes</div>
+    </div>
+  </div>
+          <div class="arrow" aria-hidden="true">→</div>
+          <div class="card red">
+    <div class="card-head">
+      <div class="card-title">Diagnose</div>
+      <div class="card-meta">output</div>
+    </div>
+    <div class="card-body" style="align-items:center;text-align:center;gap:20px">
+      <div class="orb red"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="7.5"/><path d="M9 9l6 6M15 9l-6 6"/></svg></div>
+      <div class="chip red">stable text</div>
+    </div>
+  </div>
+        </div>
+        <div class="banner"><span class="primary">Declared model only</span><span class="secondary">not runtime proof</span></div>
+      </div></div>
+  <div class="footer"><span>shape</span><span>four stages</span></div>
+</div>
+</body></html>

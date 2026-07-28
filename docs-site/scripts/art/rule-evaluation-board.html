@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<title>Rule Evaluation</title>
+<link rel="stylesheet" href="file:///home/timbo/workspace/personal/shapelang/docs-site/scripts/art/theme.css"/>
+</head><body>
+<div class="stage">
+  <header>
+    <div class="kicker ">Internals</div>
+    <h1>Rule Evaluation</h1>
+    <p class="lede">Rules reject incoherent claims—not taste.</p>
+  </header>
+  <div class="board"><div class="flow">
+        <div class="card ">
+    <div class="card-head">
+      <div class="card-title">Inputs</div>
+      <div class="card-meta">indexes</div>
+    </div>
+    <div class="card-body"><div class="line"><span class="mark"></span><span>Effects · grants</span></div><div class="line"><span class="mark"></span><span>Relation graph</span></div><div class="line"><span class="mark"></span><span>Memory · changes</span></div></div>
+  </div>
+        <div class="arrow" aria-hidden="true">→</div>
+        <div class="card ">
+    <div class="card-head">
+      <div class="card-title">Checks</div>
+      <div class="card-meta">semantics</div>
+    </div>
+    <div class="card-body"><div class="line fail"><span class="mark"></span><span>Forbidden effects</span></div><div class="line fail"><span class="mark"></span><span>Missing grants</span></div><div class="line warn"><span class="mark"></span><span>Cycles · guards</span></div></div>
+  </div>
+        <div class="arrow" aria-hidden="true">→</div>
+        <div class="card ">
+    <div class="card-head">
+      <div class="card-title">Output</div>
+      <div class="card-meta">result</div>
+    </div>
+    <div class="card-body"><div class="line pass"><span class="mark"></span><span>pass</span></div><div class="line fail"><span class="mark"></span><span>reject + witness</span></div></div>
+  </div>
+      </div></div>
+  <div class="footer"><span>shape</span><span>facts in · diagnostics out</span></div>
+</div>
+</body></html>

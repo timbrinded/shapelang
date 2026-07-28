@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<title>Fact Lowering</title>
+<link rel="stylesheet" href="file:///home/timbo/workspace/personal/shapelang/docs-site/scripts/art/theme.css"/>
+</head><body>
+<div class="stage">
+  <header>
+    <div class="kicker ">Internals</div>
+    <h1>Fact Lowering</h1>
+    <p class="lede">Declarations become facts with provenance so rules can explain themselves.</p>
+  </header>
+  <div class="board"><div class="flow">
+        <div class="card ">
+    <div class="card-head">
+      <div class="card-title">Write</div>
+      <div class="card-meta">.shape text</div>
+    </div>
+    <div class="card-body"><div class="line"><span class="mark"></span><span>Resources · traits</span></div><div class="line"><span class="mark"></span><span>Components · relations</span></div></div>
+  </div>
+        <div class="arrow" aria-hidden="true">→</div>
+        <div class="card ">
+    <div class="card-head">
+      <div class="card-title">Lower</div>
+      <div class="card-meta">facts</div>
+    </div>
+    <div class="card-body"><div class="line"><span class="mark"></span><span>Effects + grants</span></div><div class="line"><span class="mark"></span><span>Graph + guards</span></div><div class="line"><span class="mark"></span><span>Provenance kept</span></div></div>
+  </div>
+        <div class="arrow" aria-hidden="true">→</div>
+        <div class="card ">
+    <div class="card-head">
+      <div class="card-title">Evaluate</div>
+      <div class="card-meta">rules</div>
+    </div>
+    <div class="card-body"><div class="line "><span class="mark"></span><span>Forbids · grants · cycles</span></div><div class="line fail"><span class="mark"></span><span>Diagnostics with a trail</span></div></div>
+  </div>
+      </div></div>
+  <div class="footer"><span>shape</span><span>write → lower → evaluate</span></div>
+</div>
+</body></html>

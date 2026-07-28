@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<title>Analyzer Hints</title>
+<link rel="stylesheet" href="file:///home/timbo/workspace/personal/shapelang/docs-site/scripts/art/theme.css"/>
+</head><body>
+<div class="stage">
+  <header>
+    <div class="kicker amber">Analyzer</div>
+    <h1>Analyzer Hints</h1>
+    <p class="lede">Source scanners can warn. They never replace the declared model.</p>
+  </header>
+  <div class="board"><div class="stack-v">
+        <div class="flow">
+          <div class="card amber">
+    <div class="card-head">
+      <div class="card-title">Source scan</div>
+      <div class="card-meta">lexical</div>
+    </div>
+    <div class="card-body"><div class="line fail"><span class="mark"></span><span>DELETE / TRUNCATE / DROP</span></div><div class="line warn"><span class="mark"></span><span>Incomplete by design</span></div></div>
+  </div>
+          <div class="arrow" aria-hidden="true">→</div>
+          <div class="card amber">
+    <div class="card-head">
+      <div class="card-title">Warning</div>
+      <div class="card-meta">advisory only</div>
+    </div>
+    <div class="card-body"><div class="line warn"><span class="mark"></span><span>Possible missing effect</span></div><div class="line "><span class="mark"></span><span>Does not rewrite the model</span></div></div>
+  </div>
+          <div class="arrow" aria-hidden="true">→</div>
+          <div class="card green">
+    <div class="card-head">
+      <div class="card-title">.shape model</div>
+      <div class="card-meta">source of truth</div>
+    </div>
+    <div class="card-body"><div class="line pass"><span class="mark"></span><span>Declared claims win</span></div><div class="line pass"><span class="mark"></span><span>Checker enforces this only</span></div></div>
+  </div>
+        </div>
+        <div class="banner"><span class="primary">Declared architecture wins</span><span class="secondary">shp analyze · never authoritative</span></div>
+      </div></div>
+  <div class="footer"><span>shape</span><span>advisory · not authority</span></div>
+</div>
+</body></html>
