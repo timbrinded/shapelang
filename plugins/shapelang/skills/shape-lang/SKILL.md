@@ -1,6 +1,6 @@
 ---
 name: shape-lang
-description: Use when working with .shape files in repositories that use the Shape language to author, review, teach, format, debug, or validate Shape architecture claims, including global model updates, Memory Guards on functions/components/resources, property-level and forbid-transform guards, design-memory freshness (review_by, --strict-freshness), sensitive memories with role and approver policy, user-defined require_context/satisfied_by obligations and built-in trait shadowing, nested guard blocks, typed component/resource/effect models, top-level relation declarations, hypergraphs, hypercycles, relation kinds such as calls/callbacks/provides/coordinated_call, forbid hypercycle rules, coverage attestations, and agent-safe workflows using all shp CLI commands including shp graph.
+description: Use when authoring, reviewing, teaching, formatting, debugging, or validating .shape architecture claims and shp workflows, including effects and draft validation, Memory Guards, coverage and bindings, stable source/evidence refs, relations and graph rules, domain packs, analyzer hints, AST drafts, provider-neutral author/critic flows, and LSP/editor integration.
 ---
 
 # Shape Lang
@@ -32,12 +32,21 @@ Load only the reference needed for the task:
 - Prefer `effects complete` only when every material effect is represented.
 - Use `effects unknown` when uncertainty remains.
 - Include `source` for functions and `evidence` for material effects when available.
+- Prefer stable `file#symbol` refs for named declarations and file-only refs otherwise. Do not
+  author numeric positions.
 - For governed source changes, update the global Shape model directly or add a narrow `attest no_shape_change`.
 - For guarded targets, add a valid `reevaluation` or preserve the protected shape; for `sensitive` memories under an approver `policy`, the reevaluation must name an `approver` (a declared `role` when any role exists).
 - Shape traits and their obligations apply to functions, components, and resources; match the required-context target to where the trait is borne.
 - Treat `review_by` freshness as opt-in: it is enforced only under `--strict-freshness`, and the checker reads no clock of its own.
 - Represent structural dependencies as top-level `relation` declarations, not component members.
 - Use prelude relation kinds (`calls`, `callbacks`, `provides`, `coordinated_call`) unless the project documents a custom kind.
+- Treat vendored modules below `shape/vendor/` as active policy under default discovery. Imports
+  enable unqualified references; they do not activate or deactivate pack rules.
+- Use generated AST as navigation evidence. Promote a claim into authored Shape only after source
+  review.
+- Treat analyzer targets as advisory but material: compare suspected targets with declared resource
+  names and storage aliases, preserve source-symbol attribution, and investigate target mismatch or
+  attribution-ambiguity warnings rather than collapsing them into a generic missing-effect claim.
 - Avoid ambiguous relation endpoints; component and resource names should not collide when relations reference them.
 - Use compact summaries; link longer detail through `evidence issue(...)`, `evidence test(...)`, or similar source refs.
 
@@ -47,12 +56,16 @@ Load only the reference needed for the task:
 - Run `shp coverage --changed-files changed.txt` only when the workflow provides a changed-files list.
 - Use `shp obligations` and `shp memory` before fixing Memory Guard failures.
 - Use `shp check --strict-freshness` / `shp obligations --strict-freshness` to surface design memory past its `review_by`; today's date is computed only at the CLI boundary.
-- Use `shp explain`, `shp graph`, and `shp analyze` for investigation before changing model semantics.
+- Use `shp explain`, explicit `shp graph all|show|stats`, and `shp analyze` for investigation before changing model semantics.
 - Use `shp ast source` for generated source-backed AST context and `shp ast json` only when another tool already produced normalized AST JSON.
 - When a repo commits generated AST context under `shape/generated/ast`, run its `ast:generate`/`ast:check` scripts or equivalent `shp ast source --out-dir ... --check` workflow after source changes.
-- Use `shp graph --stats` before editing relation-heavy models.
-- Use `shp graph SYMBOL --kind KIND` to inspect focused incidence for a relation kind.
+- Use `shp graph stats` before editing relation-heavy models.
+- Use `shp graph show SYMBOL --kind KIND` to inspect focused incidence for a relation kind.
 - Use `shp author` to scaffold, then review and replace `effects unknown` when evidence is available.
+- Use `shp check --allow-unknown-effects` only for drafts. Always finish with strict `shp check`.
+- Use `shp author --prompt` and `--critic-prompt` as provider-neutral context builders; neither
+  invokes a model or replaces the checker.
+- Use `shp lsp` for stdio editor integration.
 - Run `shp --help` if a repository uses a newer CLI than this skill describes.
 
 ## Validation

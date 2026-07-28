@@ -21,7 +21,7 @@ Diff:
 
 Expected finding:
 
-- Severity: critical or high.
+- Severity: high.
 - Signal: `constraint-removal-plus-destructive-effect`.
 - Outcome: `suspicious loosening`.
 - Recommended action: restore `AppendOnly`, remove the destructive effect, or add a specific reevaluation/evidence and obtain explicit reviewer acceptance.
@@ -96,6 +96,44 @@ No deterministic Shape diagnostics and no advisory Guard risk findings from the 
 ```
 
 An informational note is acceptable if the user asked for every material change.
+
+## Forbidden Path Weakened
+
+Diff:
+
+```diff
+ rule no_gateway_to_secrets {
+-  forbid path Gateway -> SecretStore over calls or provides
++  forbid path Gateway -> SecretStore over calls
+ }
+```
+
+Expected finding:
+
+- Severity: high when a `provides` route exists or is added in the same diff.
+- Signal: `forbidden-path-traversal-weakening`.
+- Outcome: `suspicious loosening`.
+- Evidence: `provides` was removed from the forbidden traversal kinds.
+
+## Vendored Pack Upgrade
+
+Diff:
+
+```diff
+ trait DurableAudit<T: Resource> {
+   allow Append<T>
+-  forbid final HardDelete<T>
+ }
+```
+
+Expected finding:
+
+- Severity: high.
+- Signal: `domain-pack-final-forbid-removal`.
+- Outcome: `suspicious loosening` unless a specific reviewed pack update and
+  replacement constraint explains it.
+- Model context: the vendored module is active under default discovery even
+  when no project import changed.
 
 ## Deleted Authored Shape File
 

@@ -73,6 +73,57 @@ rule no_runtime_control_cycle {
 }
 ```
 
+Forbidden multi-hop path:
+
+```shape
+resource SecretStore
+
+component Gateway {
+}
+
+component PolicyService {
+}
+
+relation GatewayCallsPolicy {
+  kind calls
+  connects Gateway -> PolicyService
+}
+
+relation PolicyProvidesSecret {
+  kind provides
+  connects PolicyService -> SecretStore
+}
+
+rule no_gateway_to_secrets {
+  forbid path Gateway -> SecretStore over calls or provides
+}
+```
+
+Vendored domain-pack trait:
+
+```shape
+module domain.audit.v1
+
+trait DurableAudit<T: Resource> {
+  allow Append<T>
+  allow Read<T>
+  forbid final HardDelete<T>
+}
+```
+
+A consumer imports the trait for an unqualified reference and applies it:
+
+```shape
+module checkout
+
+import domain.audit.v1
+
+resource CheckoutAudit : DurableAudit
+```
+
+The vendored module was already active under default discovery. The import did
+not activate it.
+
 Preserve inline with rationale:
 
 ```shape
@@ -248,6 +299,24 @@ attest no_shape_change {
   reason "No shape update needed."
 }
 ```
+
+Unstable numbered source reference:
+
+```shape
+source ts("src/audit/store.ts:42-61")
+```
+
+Smallest fix: use `src/audit/store.ts#appendEvent`, or the file alone when no
+durable symbol exists.
+
+Generated candidate promoted without review:
+
+```text
+The generated AST suggests HardDelete, so copy it into effects complete.
+```
+
+Smallest fix: inspect the source path and symbol, confirm every material effect,
+then author the reviewed claim with stable evidence.
 
 Sensitive memory reevaluated without an approver under an approver policy:
 

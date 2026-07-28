@@ -1242,6 +1242,27 @@
       ]
     },
     {
+      "module": "shape.generated.ast.scripts.check_release_metadata_test",
+      "path": "shape/generated/ast/scripts/check-release-metadata.test.shape",
+      "sources": [
+        "scripts/check-release-metadata.test.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.scripts.check_release_metadata",
+      "path": "shape/generated/ast/scripts/check-release-metadata.shape",
+      "sources": [
+        "scripts/check-release-metadata.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.scripts.check_skills",
+      "path": "shape/generated/ast/scripts/check-skills.shape",
+      "sources": [
+        "scripts/check-skills.ts"
+      ]
+    },
+    {
       "module": "shape.generated.ast.scripts.generate_ast_shapes",
       "path": "shape/generated/ast/scripts/generate-ast-shapes.shape",
       "sources": [

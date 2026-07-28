@@ -5,7 +5,7 @@ sidebar:
   order: 5
 ---
 
-Use the Bun workspace when contributing to Shape itself. Application repos should usually install the released `shp` binary (currently `0.4.1` / `v0.4.1`) instead.
+Use the Bun workspace when contributing to Shape itself. Application repos should usually install the released `shp` binary (currently `0.7.0` / `v0.7.0`) instead.
 
 ## Setup
 

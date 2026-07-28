@@ -116,6 +116,48 @@ Why wrong: `shp analyze` is advisory.
 
 Smallest fix: inspect source, then add reviewed effects with evidence.
 
+### Generated AST treated as architecture truth
+
+Detect: generated anchors, candidate effects, or `generated_from` relations are
+copied into authored invariants without inspecting implementation source.
+
+Why wrong: generated Shape records syntax evidence and deliberately preserves
+unknowns; it does not decide architecture.
+
+Smallest fix: use the anchor to locate source, review the behavior, then promote
+only the supported claim into authored Shape.
+
+### Numbered source or evidence reference
+
+Detect: `source` or `evidence` includes a line number or range.
+
+Why wrong: line movement churns fingerprints and review evidence without a
+semantic change.
+
+Smallest fix: use `file#symbol`, or file-only when no durable symbol exists.
+
+### Import treated as domain-pack activation
+
+Detect: an agent assumes a pack-level rule is inactive because no project module
+imports the pack.
+
+Why wrong: default discovery loads every `.shape` file below the Shape root;
+imports affect name resolution, not activation.
+
+Smallest fix: evaluate the full discovered model and reserve pack-level rules
+for install-time policy.
+
+### Draft flag used as acceptance
+
+Detect: work is handed off after only
+`shp check --allow-unknown-effects`.
+
+Why wrong: the flag is an authoring aid that makes explicit unknown-effect
+diagnostics non-fatal; accepted models still require strict validation.
+
+Smallest fix: resolve or deliberately model the uncertainty according to project
+policy, then run strict `shp check`.
+
 ### Parser success treated as semantic success
 
 Detect: an agent stops after syntax parses.

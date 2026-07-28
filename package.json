@@ -26,6 +26,8 @@
     "kernel:e2e": "bun experiments/semantic-kernel/harness/e2e.ts",
     "langium:generate": "bunx langium-cli generate",
     "lint": "oxlint --deny-warnings .",
+    "release:metadata": "bun scripts/check-release-metadata.ts",
+    "skills:check": "bun scripts/check-skills.ts",
     "shape:check": "bun shp check",
     "shape:ci": "bun run ast:check && bun run format:shape:check && bun shp check --changed-files changed.txt && bun shp obligations && bun shp memory",
     "shape:coverage": "bun shp coverage --changed-files changed.txt",

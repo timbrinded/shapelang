@@ -31,13 +31,21 @@ plugins/shapelang/skills/shape-review/SKILL.md
 - `shape-lang`: general Shape authoring, review, formatting, debugging, and CLI workflows.
 - `shape-contract-guard`: advisory review of authored `.shape` contract diffs for suspicious loosenings that may pass `shp check`.
 - `shape-contract-preflight`: pre-implementation planning against an existing Shape model, with optional temporary `change` block checks.
-- `shape-index`: build a whole-codebase Shape model — author broad architecture/boundary/invariant shapes on top of the generated AST layer (extends `shape-lang` from incremental to whole-project authoring).
-- `shape-review`: review a code change (PR/diff) for real bugs, using the Shape model to add cross-object findings the diff can't show, with a recall-first pass and a human-salience emission gate.
+- `shape-index`: build a whole-codebase authored contract, using generated AST as navigation evidence and reviewing source before promoting architecture, boundaries, invariants, and domain-pack policy.
+- `shape-review`: review a code change for concrete local and cross-object bugs, verifying Shape-derived leads against real source before emitting findings.
 
 ## Validate
 
-After changing a skill or plugin manifest, run the plugin validator as part of
-your agent setup and confirm each `SKILL.md` still has valid frontmatter.
+After changing a skill or plugin manifest, run:
+
+```bash
+bun run skills:check
+```
+
+This validates the shipped skill set, entrypoint frontmatter, interface metadata,
+skill invocation prompts, and current CLI spelling. The release-candidate
+workflow also runs a blocking behavioral evaluation across all five skills,
+then pauses for manual approval in the `skills-release-approval` environment.
 
 If the skill change accompanies Shape implementation changes in this repository, also run the local project checks from the repository README.
 

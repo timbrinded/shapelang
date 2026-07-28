@@ -102,8 +102,8 @@ The TypeScript project is strict (`strict`, `noUncheckedIndexedAccess`,
 - Represent structural dependencies as top-level `relation` declarations. Prefer
   prelude relation kinds such as `calls`, `callbacks`, `provides`, and
   `coordinated_call`.
-- Use `bun shp graph --stats` before editing relation-heavy models, and
-  `bun shp graph SYMBOL --kind KIND` for focused investigation.
+- Use `bun shp graph stats` before editing relation-heavy models, and
+  `bun shp graph show SYMBOL --kind KIND` for focused investigation.
 
 ## Implementation Guidance
 
@@ -134,90 +134,31 @@ The TypeScript project is strict (`strict`, `noUncheckedIndexedAccess`,
 
 ## Release Process
 
-Public versions are Git tags such as `v0.2.0`. The CLI package version in
-`packages/shp-cli/package.json` must match the release tag without the leading
-`v`; the release workflow rejects mismatches such as tag `v0.3.0` with CLI
-version `0.2.0`. Workspace packages remain private; package versions are used for
-release consistency, not npm publishing.
+Public releases coordinate the CLI/setup action tag `vX.Y.Z` and plugin tag
+`shapelang--vX.Y.Z` from the same commit. These files must all contain `X.Y.Z`:
 
-Only release from committed branch state. Do not create a release tag from a
-dirty worktree, detached `HEAD`, stash-only changes, or uncommitted local edits.
-The tag must point at a pushed branch commit.
+- `packages/shp-cli/package.json`
+- `plugins/shapelang/.codex-plugin/plugin.json`
+- `plugins/shapelang/.claude-plugin/plugin.json`
 
-Before tagging a new release:
+Run `bun run release:metadata` and `bun run skills:check` during preparation.
+Update pinned public examples, all affected skill entrypoints/references/agent
+metadata, and `docs/releases/vX.Y.Z.md`.
 
-1. Pick the next semver tag, for example `v0.3.0`.
-2. Update `packages/shp-cli/package.json` to the tag version without the leading
-   `v`, then update user-facing pinned examples if needed, especially README
-   install snippets, docs quick-start content, and action examples that mention
-   an older release.
-3. Install and regenerate:
+Only release from a clean, pushed, current `master` commit. Before any tag,
+dispatch `.github/workflows/release-candidate.yml` on that exact commit. Its
+deterministic release suite and blocking five-skill behavioral evaluation must
+pass, then a human must approve the protected `skills-release-approval`
+environment. Automated skill output alone does not authorize a release. Any
+fix requires a new merged commit and a new candidate run.
 
-   ```bash
-   bun install --frozen-lockfile
-   bun run langium:generate
-   ```
+After the exact commit's candidate run succeeds, create and push both lightweight
+tags together. The release workflow rejects non-current-master tags, missing or
+mismatched plugin tags, unsynchronized versions, and commits without a successful
+approved candidate run.
 
-4. Verify generated Langium files are committed when the grammar changed:
-
-   ```bash
-   git diff -- packages/shp-checker/src/language/generated
-   ```
-
-5. Run the local release-quality checks:
-
-   ```bash
-   bun run changed-files
-   bun run format:check
-   bun run lint
-   bun test
-   bun run typecheck
-   bun run shape:ci
-   bun run docs:check
-   bun run build:release
-   ```
-
-6. Smoke-test at least the local Linux archive:
-
-   ```bash
-   mkdir -p /tmp/shp-smoke
-   tar -xzf dist/release/shp-linux-x64.tar.gz -C /tmp/shp-smoke
-   /tmp/shp-smoke/shp --help >/dev/null
-   /tmp/shp-smoke/shp check
-   ```
-
-7. Commit any release-prep changes and push the branch:
-
-   ```bash
-   git status --short
-   git add <changed-files>
-   git commit -m "Prepare v0.3.0 release"
-   git push
-   ```
-
-   If there are no release-prep changes, do not create an empty commit. The
-   release still must point at a branch commit that is already pushed.
-
-8. Confirm `HEAD` is a clean branch tip:
-
-   ```bash
-   git status --short
-   git rev-parse --abbrev-ref HEAD
-   git branch --contains HEAD
-   git status --branch --short
-   ```
-
-9. Create and push the version tag from that branch tip:
-
-   ```bash
-   git tag v0.3.0
-   git push origin v0.3.0
-   ```
-
-The `.github/workflows/release.yml` workflow runs on `v*.*.*` tags. It validates
-the repo, builds release assets with `bun run build:release`, smoke-tests the
-Linux x64 binary, and publishes a GitHub release with `gh release create
-"$GITHUB_REF_NAME" dist/release/* --generate-notes --verify-tag`.
+Follow `RELEASING.md` for the command-by-command preparation, manual gate,
+tagging, asset smoke tests, and post-publication checklist.
 
 Release assets produced by `scripts/build-release-assets.sh`:
 
@@ -240,7 +181,7 @@ verification works, and the setup action can install the new version:
 ```yaml
 - uses: timbrinded/shapelang@master
   with:
-    version: v0.3.0
+    version: v0.7.0
 ```
 
 ## CI Expectations

@@ -1,7 +1,7 @@
 name: Claude skill review
 description: >-
   Install the Bun toolchain, prefilter one of the Shape skill reviews (review,
-  guard, index) through .github/scripts/run-claude-skill.mjs, run the model
+  guard, index, release) through .github/scripts/run-claude-skill.mjs, run the model
   call through anthropics/claude-code-action when the prefilter requires one,
   then validate the structured result against the skill's JSON schema and gate
   the job on its policy. The calling step provides Anthropic credentials and
@@ -9,8 +9,12 @@ description: >-
 
 inputs:
   skill:
-    description: Skill name understood by run-claude-skill.mjs (review, guard, or index).
+    description: Skill name understood by run-claude-skill.mjs (review, guard, index, or release).
     required: true
+  result-path:
+    description: Optional path where the validated structured result is written.
+    required: false
+    default: ""
   prepare-command:
     description: Optional shell command run after changed-files, before the review (e.g. capturing shp context output).
     required: false
@@ -80,4 +84,5 @@ runs:
       env:
         CLAUDE_SKILL_RESULT: ${{ steps.prefilter.outputs.skip == 'true' && steps.prefilter.outputs.result || steps.claude.outputs.structured_output }}
         CLAUDE_EXECUTION_FILE: ${{ steps.claude.outputs.execution_file }}
+        CLAUDE_SKILL_RESULT_PATH: ${{ inputs.result-path }}
       run: node .github/scripts/run-claude-skill.mjs ${{ inputs.skill }}

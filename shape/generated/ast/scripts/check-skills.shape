@@ -1,0 +1,49 @@
+module shape.generated.ast.scripts.check_skills
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource CheckSkillsModuleParseFrontmatterAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("scripts/check-skills.ts#parseFrontmatter")
+  fingerprint ast.semantic_subtree_v1("sha256:0b65342d39b4671d3d6529594c182e8834d9fdd0f89302dfde2270447bfcc648")
+}
+
+resource CheckSkillsModuleValidateSkillPackageAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("scripts/check-skills.ts#validateSkillPackage")
+  fingerprint ast.semantic_subtree_v1("sha256:8ec8ce1826d43a0e96c7c3152f71d64259fd1f4aa0e740d4b5a984fdce32bfbb")
+}
+
+component CheckSkillsModule : GeneratedCandidate {
+  fn parseFrontmatter
+    source ts("scripts/check-skills.ts#parseFrontmatter")
+    effects unknown
+  fn validateSkillPackage
+    source ts("scripts/check-skills.ts#validateSkillPackage")
+    effects unknown
+}
+
+relation CheckSkillsModuleParseFrontmatterGeneratedFromCheckSkillsModuleParseFrontmatterAstAnchor {
+  kind generated_from
+  connects CheckSkillsModule -> CheckSkillsModuleParseFrontmatterAstAnchor
+  roles { CheckSkillsModule as generated, CheckSkillsModuleParseFrontmatterAstAnchor as syntax }
+  expects CheckSkillsModuleParseFrontmatterAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0b65342d39b4671d3d6529594c182e8834d9fdd0f89302dfde2270447bfcc648")
+  summary "fn CheckSkillsModule.parseFrontmatter generated from typescript function_declaration at scripts/check-skills.ts#parseFrontmatter."
+}
+
+relation CheckSkillsModuleValidateSkillPackageGeneratedFromCheckSkillsModuleValidateSkillPackageAstAnchor {
+  kind generated_from
+  connects CheckSkillsModule -> CheckSkillsModuleValidateSkillPackageAstAnchor
+  roles { CheckSkillsModule as generated, CheckSkillsModuleValidateSkillPackageAstAnchor as syntax }
+  expects CheckSkillsModuleValidateSkillPackageAstAnchor fingerprint ast.semantic_subtree_v1("sha256:8ec8ce1826d43a0e96c7c3152f71d64259fd1f4aa0e740d4b5a984fdce32bfbb")
+  summary "fn CheckSkillsModule.validateSkillPackage generated from typescript function_declaration at scripts/check-skills.ts#validateSkillPackage."
+}
+
+implementation CheckSkillsModuleImpl {
+  paths {
+    "scripts/check-skills.ts"
+  }
+  conforms_to CheckSkillsModule
+}

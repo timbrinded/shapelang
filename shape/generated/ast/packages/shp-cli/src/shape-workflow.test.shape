@@ -31,6 +31,11 @@ resource ShapeWorkflowTestModuleRunSkillGateWithExecutionLogAstAnchor : Generate
   fingerprint ast.semantic_subtree_v1("sha256:5951985a63345cb3293447af58a1e4cbe6d8f7f18160241293c29419d3632e18")
 }
 
+resource ShapeWorkflowTestModuleSkillsReleaseResultAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/shape-workflow.test.ts#skillsReleaseResult")
+  fingerprint ast.semantic_subtree_v1("sha256:add20944112620f75625d4195534a2c99edfb83cf661166067ef6982fe5dd531")
+}
+
 component ShapeWorkflowTestModule : GeneratedCandidate {
   fn guardFinding
     source ts("packages/shp-cli/src/shape-workflow.test.ts#guardFinding")
@@ -46,6 +51,9 @@ component ShapeWorkflowTestModule : GeneratedCandidate {
     effects unknown
   fn runSkillGateWithExecutionLog
     source ts("packages/shp-cli/src/shape-workflow.test.ts#runSkillGateWithExecutionLog")
+    effects unknown
+  fn skillsReleaseResult
+    source ts("packages/shp-cli/src/shape-workflow.test.ts#skillsReleaseResult")
     effects unknown
 }
 
@@ -87,6 +95,14 @@ relation ShapeWorkflowTestModuleRunSkillGateWithExecutionLogGeneratedFromShapeWo
   roles { ShapeWorkflowTestModule as generated, ShapeWorkflowTestModuleRunSkillGateWithExecutionLogAstAnchor as syntax }
   expects ShapeWorkflowTestModuleRunSkillGateWithExecutionLogAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5951985a63345cb3293447af58a1e4cbe6d8f7f18160241293c29419d3632e18")
   summary "fn ShapeWorkflowTestModule.runSkillGateWithExecutionLog generated from typescript function_declaration at packages/shp-cli/src/shape-workflow.test.ts#runSkillGateWithExecutionLog."
+}
+
+relation ShapeWorkflowTestModuleSkillsReleaseResultGeneratedFromShapeWorkflowTestModuleSkillsReleaseResultAstAnchor {
+  kind generated_from
+  connects ShapeWorkflowTestModule -> ShapeWorkflowTestModuleSkillsReleaseResultAstAnchor
+  roles { ShapeWorkflowTestModule as generated, ShapeWorkflowTestModuleSkillsReleaseResultAstAnchor as syntax }
+  expects ShapeWorkflowTestModuleSkillsReleaseResultAstAnchor fingerprint ast.semantic_subtree_v1("sha256:add20944112620f75625d4195534a2c99edfb83cf661166067ef6982fe5dd531")
+  summary "fn ShapeWorkflowTestModule.skillsReleaseResult generated from typescript function_declaration at packages/shp-cli/src/shape-workflow.test.ts#skillsReleaseResult."
 }
 
 implementation ShapeWorkflowTestModuleImpl {

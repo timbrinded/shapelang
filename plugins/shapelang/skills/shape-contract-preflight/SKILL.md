@@ -51,10 +51,14 @@ Stay in `orientation` when the user intent is vague or when expressing the plan 
 
 6. Run the precheck.
    - Materialize the change block in a temporary `.shape` file.
-   - Run `shp check` against the current model plus the temporary file.
+   - Run `shp check --allow-unknown-effects` against the current model plus the temporary file
+     when the plan intentionally contains unknown effects.
+   - Use strict `shp check` for a fully known plan and always for the final implemented model.
    - Use `scripts/precheck.sh --init` to create a temporary file template, or `scripts/precheck.sh <change-file>` to run the check when the local environment supports Bash.
    - Set `SHAPE_CMD` when the repository wraps the CLI, for example `SHAPE_CMD="bun shp" scripts/precheck.sh <change-file>`.
    - Revise the temporary change block only until diagnostics represent either a valid plan or a real user decision point.
+   - Never interpret the draft flag as weakening final forbids, guards, coverage, bindings, parse
+     errors, or known-effect grant checks.
 
 7. Return the planning brief.
    - State relevant Shape symbols and constraints.
