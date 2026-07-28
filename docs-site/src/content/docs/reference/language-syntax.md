@@ -19,6 +19,8 @@ resource AuditEvent : AppendOnly
 
 `module` is optional, but named modules make imports and diagnostics clearer. Declarations are scoped by module, so two modules may both declare `Store` without colliding. References resolve local declarations first and then explicit imports. Use `other.module::Name` when an authored claim should point at a specific module unambiguously.
 
+Module path segments and other bare identifiers cannot be reserved keywords. Keywords such as `evidence`, `effect`, `resource`, `component`, `relation`, `change`, `memory`, and `fn` are not valid module segments (`module experiment.evidence` is a parse error; use `module experiment.with_evidence` or similar).
+
 ## Top-level declarations
 
 Shape modules can contain:

@@ -24,6 +24,55 @@
       ]
     },
     {
+      "module": "shape.generated.ast.docs_site.scripts.art.build_all",
+      "path": "shape/generated/ast/docs-site/scripts/art/build-all.shape",
+      "sources": [
+        "docs-site/scripts/art/build-all.mjs"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.docs_site.scripts.infographics.diagram_runtime",
+      "path": "shape/generated/ast/docs-site/scripts/infographics/diagram-runtime.shape",
+      "sources": [
+        "docs-site/scripts/infographics/diagram-runtime.js"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.docs_site.scripts.infographics.frames",
+      "path": "shape/generated/ast/docs-site/scripts/infographics/frames.shape",
+      "sources": [
+        "docs-site/scripts/infographics/frames.mjs"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.docs_site.scripts.infographics.generate_icons",
+      "path": "shape/generated/ast/docs-site/scripts/infographics/generate-icons.shape",
+      "sources": [
+        "docs-site/scripts/infographics/generate-icons.mjs"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.docs_site.scripts.infographics.icons",
+      "path": "shape/generated/ast/docs-site/scripts/infographics/icons.shape",
+      "sources": [
+        "docs-site/scripts/infographics/icons.js"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.docs_site.scripts.infographics.render",
+      "path": "shape/generated/ast/docs-site/scripts/infographics/render.shape",
+      "sources": [
+        "docs-site/scripts/infographics/render.mjs"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.docs_site.scripts.playwright_docs_access",
+      "path": "shape/generated/ast/docs-site/scripts/playwright-docs-access.shape",
+      "sources": [
+        "docs-site/scripts/playwright-docs-access.mjs"
+      ]
+    },
+    {
       "module": "shape.generated.ast.docs_site.scripts.verify_shape_blocks_test",
       "path": "shape/generated/ast/docs-site/scripts/verify-shape-blocks.test.shape",
       "sources": [

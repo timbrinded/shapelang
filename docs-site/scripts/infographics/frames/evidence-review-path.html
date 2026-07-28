@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en" data-diagram-theme="site-dark" data-diagram-status="pending">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=1680, initial-scale=1" />
+    <title>Evidence review path</title>
+    <link rel="stylesheet" href="../base.css" />
+    <link rel="stylesheet" href="../icons.css" />
+    <script src="../diagram-runtime.js" defer></script>
+  </head>
+  <body>
+    <main class="canvas">
+      <h1 class="diagram-title" data-fit>Evidence review path</h1>
+      <section class="diagram layout-sequence" style="--count:5"
+        aria-label="A function claim retains its effect, evidence, source reference, and reviewer context."
+        data-concept="evidence-review-path"
+        data-source="docs-site/src/content/docs/concepts/evidence-source-refs.md">
+        <svg class="connectors" aria-hidden="true">
+    
+    <defs>
+      <marker id="evidence-review-path-blue" markerWidth="18" markerHeight="18" refX="16" refY="9"
+        orient="auto" markerUnits="userSpaceOnUse">
+        <path d="M0 0L18 9L0 18Z" fill="#42aee4" />
+      </marker>
+      <marker id="evidence-review-path-green" markerWidth="18" markerHeight="18" refX="16" refY="9"
+        orient="auto" markerUnits="userSpaceOnUse">
+        <path d="M0 0L18 9L0 18Z" fill="#19a66a" />
+      </marker>
+      <marker id="evidence-review-path-amber" markerWidth="18" markerHeight="18" refX="16" refY="9"
+        orient="auto" markerUnits="userSpaceOnUse">
+        <path d="M0 0L18 9L0 18Z" fill="#d28b00" />
+      </marker>
+      <marker id="evidence-review-path-red" markerWidth="18" markerHeight="18" refX="16" refY="9"
+        orient="auto" markerUnits="userSpaceOnUse">
+        <path d="M0 0L18 9L0 18Z" fill="#d13b3b" />
+      </marker>
+    </defs>
+    
+    <path class="connector green" data-edge data-from="claim:right" data-to="effect:left"
+    data-route="straight"
+    data-target-gap="9"
+    
+    
+    marker-end="url(#evidence-review-path-green)" />
+<path class="connector" data-edge data-from="effect:right" data-to="evidence:left"
+    data-route="straight"
+    data-target-gap="9"
+    
+    
+    marker-end="url(#evidence-review-path-blue)" />
+<path class="connector" data-edge data-from="evidence:right" data-to="source:left"
+    data-route="straight"
+    data-target-gap="9"
+    
+    
+    marker-end="url(#evidence-review-path-blue)" />
+<path class="connector" data-edge data-from="source:right" data-to="review:left"
+    data-route="straight"
+    data-target-gap="9"
+    
+    
+    marker-end="url(#evidence-review-path-blue)" />
+  </svg>
+     <article class="node  " data-node="claim" data-box data-align-row="evidence-review-path" data-equal-size="evidence-review-path">
+    <span class="icon-disc "><span class="hi hi-code" aria-hidden="true"></span></span>
+    <div class="node-content">
+      <strong class="node-label" data-fit>Function claim</strong>
+      <span class="node-token" data-fit>appendEvent</span>
+    </div>
+  </article>
+<article class="node green " data-node="effect" data-box data-align-row="evidence-review-path" data-equal-size="evidence-review-path">
+    <span class="icon-disc green"><span class="hi hi-flow" aria-hidden="true"></span></span>
+    <div class="node-content">
+      <strong class="node-label" data-fit>Effect</strong>
+      <span class="node-token" data-fit>Append<wbr />&lt;AuditEvent&gt;</span>
+    </div>
+  </article>
+<article class="node  " data-node="evidence" data-box data-align-row="evidence-review-path" data-equal-size="evidence-review-path">
+    <span class="icon-disc "><span class="hi hi-link" aria-hidden="true"></span></span>
+    <div class="node-content">
+      <strong class="node-label" data-fit>Evidence</strong>
+      <span class="node-token" data-fit>supports claim</span>
+    </div>
+  </article>
+<article class="node  " data-node="source" data-box data-align-row="evidence-review-path" data-equal-size="evidence-review-path">
+    <span class="icon-disc "><span class="hi hi-source" aria-hidden="true"></span></span>
+    <div class="node-content">
+      <strong class="node-label" data-fit>Source ref</strong>
+      <span class="node-token" data-fit>file#symbol</span>
+    </div>
+  </article>
+<article class="node  " data-node="review" data-box data-align-row="evidence-review-path" data-equal-size="evidence-review-path">
+    <span class="icon-disc "><span class="hi hi-userCheck" aria-hidden="true"></span></span>
+    <div class="node-content">
+      <strong class="node-label" data-fit>Reviewer</strong>
+      <span class="node-token" data-fit>checks source</span>
+    </div>
+  </article>
+     <div class="note " data-box data-fit
+    >
+    <span class="hi hi-route" aria-hidden="true"></span>
+    <span>the checker retains provenance • evidence remains a human claim</span>
+  </div>
+      </section>
+    </main>
+  </body>
+</html>

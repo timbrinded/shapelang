@@ -60,7 +60,7 @@ The checker judges the claims in `.shape` files. It does not prove that implemen
 5. CI runs `shp check`, often `shp coverage --changed-files`, format checks, and the repo’s usual tests and type checks.
 6. Diagnostics explain which claim failed and which declaration or evidence caused it.
 
-![Shape review loop showing code diff, agent draft, .shape claims, human review, source evidence, unknowns, shp check, CI gate, and diagnostics.](../../../assets/infographics/shape-model-loop.png)
+![Shape review loop: write rules, review, check, CI gate, diagnose, with failures returning to review.](../../../assets/infographics/shape-model-loop.png)
 
 ## Mental model
 

@@ -1,0 +1,129 @@
+module shape.generated.ast.docs_site.scripts.art.build_all
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource BuildAllModuleCardAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("docs-site/scripts/art/build-all.mjs#card")
+  fingerprint ast.semantic_subtree_v1("sha256:5a5ec3654a406d70d7321c3236f5a3ad6fb233286487674deb61989e39bf5b71")
+}
+
+resource BuildAllModuleFindChromiumAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("docs-site/scripts/art/build-all.mjs#findChromium")
+  fingerprint ast.semantic_subtree_v1("sha256:db4ba5a7f663857cee23ba54cd38fbb7b1f17adc796dc5cd17780ce5dc6476d3")
+}
+
+resource BuildAllModuleFocusAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("docs-site/scripts/art/build-all.mjs#focus")
+  fingerprint ast.semantic_subtree_v1("sha256:46ec3cb85ce421c57169b80ef967618e0090fab63459badf48cc06b4a0d54806")
+}
+
+resource BuildAllModuleFocusCardAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("docs-site/scripts/art/build-all.mjs#focusCard")
+  fingerprint ast.semantic_subtree_v1("sha256:ab3e925e0c08aa1979984d4cdc964f4202cb1f5deca3508d23c9104b4e660912")
+}
+
+resource BuildAllModuleFocusDocsSiteScriptsArtBuildAllMjs5471FunctionDeclaration4559F0abe94d4d5622f3AstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("docs-site/scripts/art/build-all.mjs#focus")
+  fingerprint ast.semantic_subtree_v1("sha256:d33140fd7546c274503efa5c25b51dfde412e24b1bc47a8dd20a8f9eba796c2a")
+}
+
+resource BuildAllModuleFocusImplAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("docs-site/scripts/art/build-all.mjs#focusImpl")
+  fingerprint ast.semantic_subtree_v1("sha256:1d2218c396d666263ceba3f20b2598898aa4c011ad3b1fa8c833ea04aeb32a55")
+}
+
+resource BuildAllModuleShellAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("docs-site/scripts/art/build-all.mjs#shell")
+  fingerprint ast.semantic_subtree_v1("sha256:95b6bd12e0a6b1fc5feb5f568d751b81f1db85c3dff5bc9d45acec7da8a6cb34")
+}
+
+component BuildAllModule : GeneratedCandidate {
+  fn card
+    source js("docs-site/scripts/art/build-all.mjs#card")
+    effects unknown
+  fn findChromium
+    source js("docs-site/scripts/art/build-all.mjs#findChromium")
+    effects unknown
+  fn focus
+    source js("docs-site/scripts/art/build-all.mjs#focus")
+    effects unknown
+  fn focusCard
+    source js("docs-site/scripts/art/build-all.mjs#focusCard")
+    effects unknown
+  fn focusImpl
+    source js("docs-site/scripts/art/build-all.mjs#focusImpl")
+    effects unknown
+  fn focus_docs_site_scripts_art_build_all_mjs_5471_function_declaration_4559_f0abe94d4d5622f3
+    source js("docs-site/scripts/art/build-all.mjs#focus")
+    effects unknown
+  fn shell
+    source js("docs-site/scripts/art/build-all.mjs#shell")
+    effects unknown
+}
+
+relation BuildAllModuleCardGeneratedFromBuildAllModuleCardAstAnchor {
+  kind generated_from
+  connects BuildAllModule -> BuildAllModuleCardAstAnchor
+  roles { BuildAllModule as generated, BuildAllModuleCardAstAnchor as syntax }
+  expects BuildAllModuleCardAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5a5ec3654a406d70d7321c3236f5a3ad6fb233286487674deb61989e39bf5b71")
+  summary "fn BuildAllModule.card generated from javascript function_declaration at docs-site/scripts/art/build-all.mjs#card."
+}
+
+relation BuildAllModuleFindChromiumGeneratedFromBuildAllModuleFindChromiumAstAnchor {
+  kind generated_from
+  connects BuildAllModule -> BuildAllModuleFindChromiumAstAnchor
+  roles { BuildAllModule as generated, BuildAllModuleFindChromiumAstAnchor as syntax }
+  expects BuildAllModuleFindChromiumAstAnchor fingerprint ast.semantic_subtree_v1("sha256:db4ba5a7f663857cee23ba54cd38fbb7b1f17adc796dc5cd17780ce5dc6476d3")
+  summary "fn BuildAllModule.findChromium generated from javascript function_declaration at docs-site/scripts/art/build-all.mjs#findChromium."
+}
+
+relation BuildAllModuleFocusCardGeneratedFromBuildAllModuleFocusCardAstAnchor {
+  kind generated_from
+  connects BuildAllModule -> BuildAllModuleFocusCardAstAnchor
+  roles { BuildAllModule as generated, BuildAllModuleFocusCardAstAnchor as syntax }
+  expects BuildAllModuleFocusCardAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ab3e925e0c08aa1979984d4cdc964f4202cb1f5deca3508d23c9104b4e660912")
+  summary "fn BuildAllModule.focusCard generated from javascript function_declaration at docs-site/scripts/art/build-all.mjs#focusCard."
+}
+
+relation BuildAllModuleFocusDocsSiteScriptsArtBuildAllMjs5471FunctionDeclaration4559F0abe94d4d5622f3GeneratedFromBuildAllModuleFocusDocsSiteScriptsArtBuildAllMjs5471FunctionDeclaration4559F0abe94d4d5622f3AstAnchor {
+  kind generated_from
+  connects BuildAllModule -> BuildAllModuleFocusDocsSiteScriptsArtBuildAllMjs5471FunctionDeclaration4559F0abe94d4d5622f3AstAnchor
+  roles { BuildAllModule as generated, BuildAllModuleFocusDocsSiteScriptsArtBuildAllMjs5471FunctionDeclaration4559F0abe94d4d5622f3AstAnchor as syntax }
+  expects BuildAllModuleFocusDocsSiteScriptsArtBuildAllMjs5471FunctionDeclaration4559F0abe94d4d5622f3AstAnchor fingerprint ast.semantic_subtree_v1("sha256:d33140fd7546c274503efa5c25b51dfde412e24b1bc47a8dd20a8f9eba796c2a")
+  summary "fn BuildAllModule.focus_docs_site_scripts_art_build_all_mjs_5471_function_declaration_4559_f0abe94d4d5622f3 generated from javascript function_declaration at docs-site/scripts/art/build-all.mjs#focus."
+}
+
+relation BuildAllModuleFocusGeneratedFromBuildAllModuleFocusAstAnchor {
+  kind generated_from
+  connects BuildAllModule -> BuildAllModuleFocusAstAnchor
+  roles { BuildAllModule as generated, BuildAllModuleFocusAstAnchor as syntax }
+  expects BuildAllModuleFocusAstAnchor fingerprint ast.semantic_subtree_v1("sha256:46ec3cb85ce421c57169b80ef967618e0090fab63459badf48cc06b4a0d54806")
+  summary "fn BuildAllModule.focus generated from javascript function_declaration at docs-site/scripts/art/build-all.mjs#focus."
+}
+
+relation BuildAllModuleFocusImplGeneratedFromBuildAllModuleFocusImplAstAnchor {
+  kind generated_from
+  connects BuildAllModule -> BuildAllModuleFocusImplAstAnchor
+  roles { BuildAllModule as generated, BuildAllModuleFocusImplAstAnchor as syntax }
+  expects BuildAllModuleFocusImplAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1d2218c396d666263ceba3f20b2598898aa4c011ad3b1fa8c833ea04aeb32a55")
+  summary "fn BuildAllModule.focusImpl generated from javascript function_declaration at docs-site/scripts/art/build-all.mjs#focusImpl."
+}
+
+relation BuildAllModuleShellGeneratedFromBuildAllModuleShellAstAnchor {
+  kind generated_from
+  connects BuildAllModule -> BuildAllModuleShellAstAnchor
+  roles { BuildAllModule as generated, BuildAllModuleShellAstAnchor as syntax }
+  expects BuildAllModuleShellAstAnchor fingerprint ast.semantic_subtree_v1("sha256:95b6bd12e0a6b1fc5feb5f568d751b81f1db85c3dff5bc9d45acec7da8a6cb34")
+  summary "fn BuildAllModule.shell generated from javascript function_declaration at docs-site/scripts/art/build-all.mjs#shell."
+}
+
+implementation BuildAllModuleImpl {
+  paths {
+    "docs-site/scripts/art/build-all.mjs"
+  }
+  conforms_to BuildAllModule
+}

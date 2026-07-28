@@ -28,10 +28,10 @@ component AuditStore {
 }
 ```
 
-Run:
+Save the module under your project’s default discovery tree, for example `shape/audit.shape`. With no file arguments, `shp check` scans `shape/**/*.shape`. You can also pass the file path explicitly:
 
 ```bash
-shp check fixtures/pass/append_only_append/audit.shape
+shp check shape/audit.shape
 ```
 
 Expected result:
@@ -39,6 +39,8 @@ Expected result:
 ```text
 Shape check passed.
 ```
+
+In the Shape language repository, the same pattern is covered by the pass fixture `fixtures/pass/append_only_append/audit.shape`. Application repos should check their own `shape/` files, not that fixture path.
 
 ## Resource
 

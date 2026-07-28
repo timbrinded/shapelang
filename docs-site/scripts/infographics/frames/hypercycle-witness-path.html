@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en" data-diagram-theme="site-dark" data-diagram-status="pending">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=1680, initial-scale=1" />
+    <title>Hypercycle witness</title>
+    <link rel="stylesheet" href="../base.css" />
+    <link rel="stylesheet" href="../icons.css" />
+    <script src="../diagram-runtime.js" defer></script>
+  </head>
+  <body>
+    <main class="canvas">
+      <h1 class="diagram-title" data-fit>Hypercycle witness</h1>
+      <section class="diagram layout-cycle"
+        aria-label="Directed calls and callbacks form a cycle that a final graph rule rejects."
+        data-concept="hypercycle-witness-path"
+        data-source="docs-site/src/content/docs/concepts/rules-hypercycles.md">
+        <svg class="connectors" aria-hidden="true">
+    
+    <defs>
+      <marker id="hypercycle-witness-path-blue" markerWidth="18" markerHeight="18" refX="16" refY="9"
+        orient="auto" markerUnits="userSpaceOnUse">
+        <path d="M0 0L18 9L0 18Z" fill="#42aee4" />
+      </marker>
+      <marker id="hypercycle-witness-path-green" markerWidth="18" markerHeight="18" refX="16" refY="9"
+        orient="auto" markerUnits="userSpaceOnUse">
+        <path d="M0 0L18 9L0 18Z" fill="#19a66a" />
+      </marker>
+      <marker id="hypercycle-witness-path-amber" markerWidth="18" markerHeight="18" refX="16" refY="9"
+        orient="auto" markerUnits="userSpaceOnUse">
+        <path d="M0 0L18 9L0 18Z" fill="#d28b00" />
+      </marker>
+      <marker id="hypercycle-witness-path-red" markerWidth="18" markerHeight="18" refX="16" refY="9"
+        orient="auto" markerUnits="userSpaceOnUse">
+        <path d="M0 0L18 9L0 18Z" fill="#d13b3b" />
+      </marker>
+    </defs>
+    
+    <path class="connector" data-edge data-from="component-a:right" data-to="component-b:left"
+    data-route="curve"
+    data-target-gap="9"
+    
+    
+    marker-end="url(#hypercycle-witness-path-blue)" />
+<path class="connector amber" data-edge data-from="component-b:top" data-to="component-a:top"
+    data-route="curve"
+    data-target-gap="9"
+    data-tension="0.12"
+    
+    marker-end="url(#hypercycle-witness-path-amber)" />
+<path class="connector" data-edge data-from="component-a:bottom" data-to="rule:top"
+    data-route="straight"
+    data-target-gap="9"
+    
+    
+    marker-end="url(#hypercycle-witness-path-blue)" />
+<path class="connector red strong" data-edge data-from="rule:right" data-to="result:left"
+    data-route="straight"
+    data-target-gap="9"
+    
+    
+    marker-end="url(#hypercycle-witness-path-red)" />
+  </svg>
+     <article class="node  cycle-node-a" data-node="component-a" data-box data-align-row="hypercycle-witness-path-top" data-equal-size="hypercycle-witness-path-top">
+    <span class="icon-disc "><span class="hi hi-hierarchy" aria-hidden="true"></span></span>
+    <div class="node-content">
+      <strong class="node-label" data-fit>Component A</strong>
+      <span class="node-token" data-fit>vertex</span>
+    </div>
+  </article>
+     <article class="node  cycle-node-b" data-node="component-b" data-box data-align-row="hypercycle-witness-path-top" data-equal-size="hypercycle-witness-path-top">
+    <span class="icon-disc "><span class="hi hi-hierarchy" aria-hidden="true"></span></span>
+    <div class="node-content">
+      <strong class="node-label" data-fit>Component B</strong>
+      <span class="node-token" data-fit>vertex</span>
+    </div>
+  </article>
+     <article class="node red cycle-rule" data-node="rule" data-box data-align-row="hypercycle-witness-path-bottom" data-equal-size="hypercycle-witness-path-bottom">
+    <span class="icon-disc red"><span class="hi hi-shieldBan" aria-hidden="true"></span></span>
+    <div class="node-content">
+      <strong class="node-label" data-fit>Graph rule</strong>
+      <span class="node-token" data-fit>forbid hypercycle</span>
+    </div>
+  </article>
+     <article class="node red cycle-result" data-node="result" data-box data-align-row="hypercycle-witness-path-bottom" data-equal-size="hypercycle-witness-path-bottom">
+    <span class="icon-disc red"><span class="hi hi-cancel" aria-hidden="true"></span></span>
+    <div class="node-content">
+      <strong class="node-label" data-fit>Rejected</strong>
+      <span class="node-token" data-fit>cycle found</span>
+    </div>
+  </article>
+     <span class="edge-label calls" data-box data-fit data-edge-label="component-a:right->component-b:left">calls</span>
+     <span class="edge-label callbacks" data-box data-fit data-edge-label="component-b:top->component-a:top">callbacks</span>
+     <div class="note red" data-box data-fit
+    >
+    <span class="hi hi-route" aria-hidden="true"></span>
+    <span>witness path names each directed relation hop</span>
+  </div>
+      </section>
+    </main>
+  </body>
+</html>

@@ -32,6 +32,14 @@ component AuditStore {
 
 ## Expected result
 
+Save the model (for example `shape/audit.shape`) and run:
+
+```bash
+shp check shape/audit.shape
+```
+
+In this repository the same model is the pass fixture:
+
 ```bash
 shp check fixtures/pass/append_only_append/audit.shape
 ```

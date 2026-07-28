@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en" data-diagram-theme="site-dark" data-diagram-status="pending">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=1680, initial-scale=1" />
+    <title>Analyzer hints</title>
+    <link rel="stylesheet" href="../base.css" />
+    <link rel="stylesheet" href="../icons.css" />
+    <script src="../diagram-runtime.js" defer></script>
+  </head>
+  <body>
+    <main class="canvas">
+      <h1 class="diagram-title" data-fit>Analyzer hints</h1>
+      <section class="diagram layout-sequence" style="--count:5"
+        aria-label="The analyzer scans source, compares hints with Shape claims, and emits advisory warnings."
+        data-concept="analyzer-advisory-scan"
+        data-source="docs-site/src/content/docs/concepts/analyzer-hints.md">
+        <svg class="connectors" aria-hidden="true">
+    
+    <defs>
+      <marker id="analyzer-advisory-scan-blue" markerWidth="18" markerHeight="18" refX="16" refY="9"
+        orient="auto" markerUnits="userSpaceOnUse">
+        <path d="M0 0L18 9L0 18Z" fill="#42aee4" />
+      </marker>
+      <marker id="analyzer-advisory-scan-green" markerWidth="18" markerHeight="18" refX="16" refY="9"
+        orient="auto" markerUnits="userSpaceOnUse">
+        <path d="M0 0L18 9L0 18Z" fill="#19a66a" />
+      </marker>
+      <marker id="analyzer-advisory-scan-amber" markerWidth="18" markerHeight="18" refX="16" refY="9"
+        orient="auto" markerUnits="userSpaceOnUse">
+        <path d="M0 0L18 9L0 18Z" fill="#d28b00" />
+      </marker>
+      <marker id="analyzer-advisory-scan-red" markerWidth="18" markerHeight="18" refX="16" refY="9"
+        orient="auto" markerUnits="userSpaceOnUse">
+        <path d="M0 0L18 9L0 18Z" fill="#d13b3b" />
+      </marker>
+    </defs>
+    
+    <path class="connector amber" data-edge data-from="source:right" data-to="hint:left"
+    data-route="straight"
+    data-target-gap="9"
+    
+    
+    marker-end="url(#analyzer-advisory-scan-amber)" />
+<path class="connector" data-edge data-from="hint:right" data-to="model:left"
+    data-route="straight"
+    data-target-gap="9"
+    
+    
+    marker-end="url(#analyzer-advisory-scan-blue)" />
+<path class="connector" data-edge data-from="model:right" data-to="compare:left"
+    data-route="straight"
+    data-target-gap="9"
+    
+    
+    marker-end="url(#analyzer-advisory-scan-blue)" />
+<path class="connector amber" data-edge data-from="compare:right" data-to="warning:left"
+    data-route="straight"
+    data-target-gap="9"
+    
+    
+    marker-end="url(#analyzer-advisory-scan-amber)" />
+  </svg>
+     <article class="node  " data-node="source" data-box data-align-row="analyzer-advisory-scan" data-equal-size="analyzer-advisory-scan">
+    <span class="icon-disc "><span class="hi hi-search" aria-hidden="true"></span></span>
+    <div class="node-content">
+      <strong class="node-label" data-fit>Source scan</strong>
+      <span class="node-token" data-fit>implementation files</span>
+    </div>
+  </article>
+<article class="node amber " data-node="hint" data-box data-align-row="analyzer-advisory-scan" data-equal-size="analyzer-advisory-scan">
+    <span class="icon-disc amber"><span class="hi hi-alert" aria-hidden="true"></span></span>
+    <div class="node-content">
+      <strong class="node-label" data-fit>Destructive hints</strong>
+      <span class="node-token" data-fit>DELETE · TRUNCATE · DROP</span>
+    </div>
+  </article>
+<article class="node  " data-node="model" data-box data-align-row="analyzer-advisory-scan" data-equal-size="analyzer-advisory-scan">
+    <span class="icon-disc "><span class="hi hi-fileCode" aria-hidden="true"></span></span>
+    <div class="node-content">
+      <strong class="node-label" data-fit>Shape model</strong>
+      <span class="node-token" data-fit>declared effects</span>
+    </div>
+  </article>
+<article class="node  " data-node="compare" data-box data-align-row="analyzer-advisory-scan" data-equal-size="analyzer-advisory-scan">
+    <span class="icon-disc "><span class="hi hi-compare" aria-hidden="true"></span></span>
+    <div class="node-content">
+      <strong class="node-label" data-fit>Compare</strong>
+      <span class="node-token" data-fit>hint × claim</span>
+    </div>
+  </article>
+<article class="node amber " data-node="warning" data-box data-align-row="analyzer-advisory-scan" data-equal-size="analyzer-advisory-scan">
+    <span class="icon-disc amber"><span class="hi hi-alert" aria-hidden="true"></span></span>
+    <div class="node-content">
+      <strong class="node-label" data-fit>Warning</strong>
+      <span class="node-token" data-fit>review prompt</span>
+    </div>
+  </article>
+     <div class="note " data-box data-fit
+    >
+    <span class="hi hi-shield" aria-hidden="true"></span>
+    <span>advisory only • the .shape model remains the source of truth</span>
+  </div>
+      </section>
+    </main>
+  </body>
+</html>

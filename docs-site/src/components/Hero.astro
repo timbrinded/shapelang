@@ -27,9 +27,13 @@ if (image) {
     rawHtml = image.html;
   }
 }
+const hasMedia = Boolean(darkImage || lightImage || rawHtml);
 ---
 
-<section class="shape-hero" aria-labelledby={PAGE_TITLE_ID}>
+<section
+  class:list={["shape-hero", { "shape-hero--media": hasMedia, "shape-hero--plain": !hasMedia }]}
+  aria-labelledby={PAGE_TITLE_ID}
+>
   <div class="shape-hero__media">
     {
       darkImage && (
@@ -45,7 +49,7 @@ if (image) {
   </div>
   <div class="shape-hero__shade" aria-hidden="true" />
   <div class="shape-hero__copy">
-    <p class="shape-hero__kicker">Typed system memory</p>
+    <p class="shape-hero__kicker">Architecture rules as text</p>
     <h1 id={PAGE_TITLE_ID} data-page-title set:html={title} />
     {data.draft && <DraftContentNotice />}
     {tagline && <p class="shape-hero__tagline" set:html={tagline} />}
@@ -69,14 +73,20 @@ if (image) {
     .shape-hero {
       position: relative;
       display: grid;
-      align-items: end;
-      min-height: clamp(34rem, calc(100svh - var(--sl-nav-height)), 47rem);
+      align-items: center;
+      min-height: clamp(28rem, calc(68svh - var(--sl-nav-height)), 38rem);
       width: 100vw;
       margin-block: -1.5rem 3rem;
       margin-inline: calc(50% - 50vw);
       overflow: hidden;
-      background: #050c13;
+      background: var(--sl-color-bg);
       isolation: isolate;
+    }
+
+    .shape-hero--media {
+      align-items: end;
+      min-height: clamp(34rem, calc(100svh - var(--sl-nav-height)), 47rem);
+      background: #050c13;
     }
 
     .shape-hero__media,
@@ -106,6 +116,11 @@ if (image) {
       pointer-events: none;
     }
 
+    .shape-hero--plain .shape-hero__media,
+    .shape-hero--plain .shape-hero__shade {
+      display: none;
+    }
+
     .shape-hero__shade {
       z-index: -2;
       background:
@@ -122,6 +137,10 @@ if (image) {
       z-index: -1;
       height: 10rem;
       background: linear-gradient(180deg, transparent, var(--sl-color-bg));
+    }
+
+    .shape-hero--plain::after {
+      content: none;
     }
 
     .shape-hero__copy {
@@ -145,20 +164,28 @@ if (image) {
     .shape-hero h1 {
       max-width: 8ch;
       margin: 0;
-      color: #ffffff;
+      color: var(--shape-ink);
       font-size: clamp(4.25rem, 14vw, 9.5rem);
       font-weight: 700;
       letter-spacing: 0;
       line-height: 0.83;
     }
 
+    .shape-hero--media h1 {
+      color: #ffffff;
+    }
+
     .shape-hero__tagline {
       max-width: 34rem;
       margin: clamp(1.25rem, 3vw, 1.8rem) 0 0;
-      color: color-mix(in srgb, white, var(--shape-slate) 16%);
+      color: var(--shape-slate);
       font-size: clamp(1.1rem, 2.4vw, 1.55rem);
       font-weight: 500;
       line-height: 1.28;
+    }
+
+    .shape-hero--media .shape-hero__tagline {
+      color: color-mix(in srgb, white, var(--shape-slate) 16%);
     }
 
     .shape-hero__actions {
@@ -169,7 +196,7 @@ if (image) {
     }
 
     @media (max-width: 42rem) {
-      .shape-hero {
+      .shape-hero--media {
         min-height: calc(100svh - var(--sl-nav-height));
       }
 
@@ -200,7 +227,7 @@ if (image) {
     overflow-x: clip;
   }
 
-  .shape-hero .sl-link-button.primary {
+  .shape-hero--media .sl-link-button.primary {
     color: #ffffff;
     background: linear-gradient(180deg, #0aa3e6, #00639a);
     border-color: transparent;
@@ -209,12 +236,12 @@ if (image) {
       0 14px 34px rgba(0, 99, 154, 0.34);
   }
 
-  .shape-hero .sl-link-button.primary:hover {
+  .shape-hero--media .sl-link-button.primary:hover {
     color: #ffffff;
     background: linear-gradient(180deg, #18b3f4, #0077b8);
   }
 
-  .shape-hero .sl-link-button.secondary {
+  .shape-hero--media .sl-link-button.secondary {
     color: #ffffff;
     background: rgba(255, 255, 255, 0.04);
     border-color: rgba(255, 255, 255, 0.78);

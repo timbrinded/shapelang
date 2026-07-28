@@ -7,7 +7,7 @@ sidebar:
 
 The source analyzer is advisory. It scans implementation files for a small set of obvious destructive operations and, when given Shape files, compares those hints with declared effects. Analyzer warnings prompt better evidence and effect summaries. They do not authorize, reject, or complete an architecture model. The deterministic checker evaluates the declared `.shape` modules.
 
-![Analyzer hints diagram showing a source scan for DELETE, TRUNCATE, and DROP, comparison with the .shape model, a warning, and the source-of-truth boundary.](../../../assets/infographics/analyzer-advisory-scan.png)
+![Analyzer Hints: source scan of destructive SQL is not equal to the .shape model; warnings stay advisory; declared architecture remains the source of truth.](../../../assets/infographics/analyzer-advisory-scan.png)
 
 ```bash
 shp analyze --shape-files fixtures/pass/append_only_append/audit.shape fixtures/source/audit_purge.ts

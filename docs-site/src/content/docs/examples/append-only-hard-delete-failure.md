@@ -44,6 +44,14 @@ A project can also rely on the prelude `AppendOnly` trait (`resource AuditEvent 
 
 ## Expected result
 
+Save the model (for example `shape/audit.shape`) and run:
+
+```bash
+shp check shape/audit.shape
+```
+
+In this repository the fuller fail fixture is:
+
 ```bash
 shp check fixtures/fail/append_only_hard_delete/audit.shape
 ```

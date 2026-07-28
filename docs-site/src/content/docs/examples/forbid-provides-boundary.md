@@ -41,6 +41,8 @@ rule gateway_only_rpc_ingress {
 
 ## Expected result
 
+Save the model (for example `shape/gateway.shape`) and run `shp check shape/gateway.shape`. In this repository the same model is:
+
 ```bash
 shp check fixtures/fail/forbid_provides_boundary/gateway.shape
 ```

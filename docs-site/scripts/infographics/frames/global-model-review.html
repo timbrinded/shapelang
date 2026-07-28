@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en" data-diagram-theme="site-dark" data-diagram-status="pending">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=1680, initial-scale=1" />
+    <title>Global model review</title>
+    <link rel="stylesheet" href="../base.css" />
+    <link rel="stylesheet" href="../icons.css" />
+    <script src="../diagram-runtime.js" defer></script>
+  </head>
+  <body>
+    <main class="canvas">
+      <h1 class="diagram-title" data-fit>Global model review</h1>
+      <section class="diagram layout-decision"
+        aria-label="Architecture changes update the model while unchanged architecture uses a narrow attestation."
+        data-concept="global-model-review"
+        data-source="docs-site/src/content/docs/learn/global-model-updates.md,docs-site/src/content/docs/concepts/model-updates-attestations.md,docs-site/src/content/docs/learn/ci-workflow.md">
+        <svg class="connectors" aria-hidden="true">
+    
+    <defs>
+      <marker id="global-model-review-blue" markerWidth="18" markerHeight="18" refX="16" refY="9"
+        orient="auto" markerUnits="userSpaceOnUse">
+        <path d="M0 0L18 9L0 18Z" fill="#42aee4" />
+      </marker>
+      <marker id="global-model-review-green" markerWidth="18" markerHeight="18" refX="16" refY="9"
+        orient="auto" markerUnits="userSpaceOnUse">
+        <path d="M0 0L18 9L0 18Z" fill="#19a66a" />
+      </marker>
+      <marker id="global-model-review-amber" markerWidth="18" markerHeight="18" refX="16" refY="9"
+        orient="auto" markerUnits="userSpaceOnUse">
+        <path d="M0 0L18 9L0 18Z" fill="#d28b00" />
+      </marker>
+      <marker id="global-model-review-red" markerWidth="18" markerHeight="18" refX="16" refY="9"
+        orient="auto" markerUnits="userSpaceOnUse">
+        <path d="M0 0L18 9L0 18Z" fill="#d13b3b" />
+      </marker>
+    </defs>
+    
+    <path class="connector" data-edge data-from="architecture-change:right" data-to="checks:top"
+    data-route="curve"
+    data-target-gap="9"
+    
+    
+    marker-end="url(#global-model-review-blue)" />
+<path class="connector" data-edge data-from="same-architecture:right" data-to="checks:bottom"
+    data-route="curve"
+    data-target-gap="9"
+    
+    
+    marker-end="url(#global-model-review-blue)" />
+<path class="connector green" data-edge data-from="checks:right" data-to="ci:left"
+    data-route="straight"
+    data-target-gap="9"
+    
+    
+    marker-end="url(#global-model-review-green)" />
+  </svg>
+     <div class="decision-inputs"><article class="node  " data-node="architecture-change" data-box data-equal-size="global-model-review-inputs">
+    <span class="icon-disc "><span class="hi hi-fileEdit" aria-hidden="true"></span></span>
+    <div class="node-content">
+      <strong class="node-label" data-fit>Architecture changed</strong>
+      <span class="node-token" data-fit>changed files + model update</span>
+    </div>
+  </article>
+<article class="node  " data-node="same-architecture" data-box data-equal-size="global-model-review-inputs">
+    <span class="icon-disc "><span class="hi hi-documentCheck" aria-hidden="true"></span></span>
+    <div class="node-content">
+      <strong class="node-label" data-fit>No model change</strong>
+      <span class="node-token" data-fit>narrow attestation</span>
+    </div>
+  </article></div>
+     <div class="decision-core" data-node="checks" data-box
+    data-align-row="global-model-review-center">
+    <div>
+      <span class="hi hi-balance" aria-hidden="true"></span>
+      <strong class="node-label" data-fit>CI checks</strong>
+      <span class="node-token" data-fit>coverage + shp check</span>
+    </div>
+  </div>
+     <article class="node green decision-output" data-node="ci" data-box data-align-row="global-model-review-center">
+    <span class="icon-disc green"><span class="hi hi-check" aria-hidden="true"></span></span>
+    <div class="node-content">
+      <strong class="node-label" data-fit>CI result</strong>
+      <span class="node-token" data-fit>pass or reject</span>
+    </div>
+  </article>
+     <div class="note amber" data-box data-fit
+    >
+    <span class="hi hi-alert" aria-hidden="true"></span>
+    <span>model update or narrow attestation • effects unknown still blocks strict check</span>
+  </div>
+      </section>
+    </main>
+  </body>
+</html>

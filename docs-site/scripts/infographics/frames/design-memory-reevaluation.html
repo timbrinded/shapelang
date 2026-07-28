@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en" data-diagram-theme="site-dark" data-diagram-status="pending">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=1680, initial-scale=1" />
+    <title>Design memory</title>
+    <link rel="stylesheet" href="../base.css" />
+    <link rel="stylesheet" href="../icons.css" />
+    <script src="../diagram-runtime.js" defer></script>
+  </head>
+  <body>
+    <main class="canvas">
+      <h1 class="diagram-title" data-fit>Design memory</h1>
+      <section class="diagram layout-decision"
+        aria-label="A guarded function change creates a review obligation requiring reevaluation."
+        data-concept="design-memory-reevaluation"
+        data-source="docs-site/src/content/docs/concepts/refactor-constraints.md,docs-site/src/content/docs/concepts/model-updates-attestations.md">
+        <svg class="connectors" aria-hidden="true">
+    
+    <defs>
+      <marker id="design-memory-reevaluation-blue" markerWidth="18" markerHeight="18" refX="16" refY="9"
+        orient="auto" markerUnits="userSpaceOnUse">
+        <path d="M0 0L18 9L0 18Z" fill="#42aee4" />
+      </marker>
+      <marker id="design-memory-reevaluation-green" markerWidth="18" markerHeight="18" refX="16" refY="9"
+        orient="auto" markerUnits="userSpaceOnUse">
+        <path d="M0 0L18 9L0 18Z" fill="#19a66a" />
+      </marker>
+      <marker id="design-memory-reevaluation-amber" markerWidth="18" markerHeight="18" refX="16" refY="9"
+        orient="auto" markerUnits="userSpaceOnUse">
+        <path d="M0 0L18 9L0 18Z" fill="#d28b00" />
+      </marker>
+      <marker id="design-memory-reevaluation-red" markerWidth="18" markerHeight="18" refX="16" refY="9"
+        orient="auto" markerUnits="userSpaceOnUse">
+        <path d="M0 0L18 9L0 18Z" fill="#d13b3b" />
+      </marker>
+    </defs>
+    
+    <path class="connector" data-edge data-from="memory:right" data-to="obligation:top"
+    data-route="curve"
+    data-target-gap="9"
+    
+    
+    marker-end="url(#design-memory-reevaluation-blue)" />
+<path class="connector" data-edge data-from="rationale:right" data-to="obligation:left"
+    data-route="curve"
+    data-target-gap="9"
+    
+    
+    marker-end="url(#design-memory-reevaluation-blue)" />
+<path class="connector amber" data-edge data-from="change:right" data-to="obligation:bottom"
+    data-route="curve"
+    data-target-gap="9"
+    
+    
+    marker-end="url(#design-memory-reevaluation-amber)" />
+<path class="connector green" data-edge data-from="obligation:right" data-to="reevaluation:left"
+    data-route="straight"
+    data-target-gap="9"
+    
+    
+    marker-end="url(#design-memory-reevaluation-green)" />
+  </svg>
+     <div class="decision-inputs"><article class="node  " data-node="memory" data-box data-equal-size="design-memory-reevaluation-inputs">
+    <span class="icon-disc "><span class="hi hi-audit" aria-hidden="true"></span></span>
+    <div class="node-content">
+      <strong class="node-label" data-fit>Memory</strong>
+      <span class="node-token" data-fit>known constraint</span>
+    </div>
+  </article>
+<article class="node  " data-node="rationale" data-box data-align-row="design-memory-reevaluation-center" data-equal-size="design-memory-reevaluation-inputs">
+    <span class="icon-disc "><span class="hi hi-documentCheck" aria-hidden="true"></span></span>
+    <div class="node-content">
+      <strong class="node-label" data-fit>Rationale</strong>
+      <span class="node-token" data-fit>why it exists</span>
+    </div>
+  </article>
+<article class="node amber " data-node="change" data-box data-equal-size="design-memory-reevaluation-inputs">
+    <span class="icon-disc amber"><span class="hi hi-branch" aria-hidden="true"></span></span>
+    <div class="node-content">
+      <strong class="node-label" data-fit>Guarded change</strong>
+      <span class="node-token" data-fit>guards on_change</span>
+    </div>
+  </article></div>
+     <div class="decision-core" data-node="obligation" data-box
+    data-align-row="design-memory-reevaluation-center">
+    <div>
+      <span class="hi hi-userCheck" aria-hidden="true"></span>
+      <strong class="node-label" data-fit>Review obligation</strong>
+      <span class="node-token" data-fit>modify fn</span>
+    </div>
+  </div>
+     <article class="node green decision-output" data-node="reevaluation" data-box data-align-row="design-memory-reevaluation-center">
+    <span class="icon-disc green"><span class="hi hi-check" aria-hidden="true"></span></span>
+    <div class="node-content">
+      <strong class="node-label" data-fit>ReEvaluation</strong>
+      <span class="node-token" data-fit>reviewed response</span>
+    </div>
+  </article>
+     <div class="note red" data-box data-fit
+    >
+    <span class="hi hi-shieldBan" aria-hidden="true"></span>
+    <span>not a waiver • final forbids still apply</span>
+  </div>
+      </section>
+    </main>
+  </body>
+</html>

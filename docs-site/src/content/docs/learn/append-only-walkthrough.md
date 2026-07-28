@@ -102,7 +102,13 @@ component AuditStore {
 }
 ```
 
-Run:
+Save the unsafe module (for example as `shape/audit.shape`) and check that file:
+
+```bash
+shp check shape/audit.shape
+```
+
+In the Shape language repository you can also run the equivalent fail fixture:
 
 ```bash
 shp check fixtures/fail/append_only_hard_delete/audit.shape

@@ -1,0 +1,257 @@
+module shape.generated.ast.docs_site.scripts.infographics.diagram_runtime
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource DiagramRuntimeModuleCurveByPortsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("docs-site/scripts/infographics/diagram-runtime.js#curveByPorts")
+  fingerprint ast.semantic_subtree_v1("sha256:50b47f7caca8a880f974602d6643b1d1f9b315bc38f35a099604fc1acf7ac05f")
+}
+
+resource DiagramRuntimeModuleDistanceAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("docs-site/scripts/infographics/diagram-runtime.js#distance")
+  fingerprint ast.semantic_subtree_v1("sha256:c2145ba207c00c30029735cc0675a803b765c0e538b0c2a62a5f32c104e077fa")
+}
+
+resource DiagramRuntimeModuleElementNameAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("docs-site/scripts/infographics/diagram-runtime.js#elementName")
+  fingerprint ast.semantic_subtree_v1("sha256:3358976c42a7917a327871e41f44c5bc1da76a500ced64189c8b515ce0d68a15")
+}
+
+resource DiagramRuntimeModuleOffsetPointAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("docs-site/scripts/infographics/diagram-runtime.js#offsetPoint")
+  fingerprint ast.semantic_subtree_v1("sha256:d0a0981314fec85717698c3dc044104027727ce7b77051ede949ff683b775a11")
+}
+
+resource DiagramRuntimeModuleParseEndpointAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("docs-site/scripts/infographics/diagram-runtime.js#parseEndpoint")
+  fingerprint ast.semantic_subtree_v1("sha256:9ba87997516fc65f404dc411db450395fcbed63a2d113718a17a80dc152bf0a5")
+}
+
+resource DiagramRuntimeModulePortPointAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("docs-site/scripts/infographics/diagram-runtime.js#portPoint")
+  fingerprint ast.semantic_subtree_v1("sha256:821777460204047c2faec2668f66166e6b47961f46ce36d5f4ce7dab51f26abd")
+}
+
+resource DiagramRuntimeModuleRectanglesOverlapAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("docs-site/scripts/infographics/diagram-runtime.js#rectanglesOverlap")
+  fingerprint ast.semantic_subtree_v1("sha256:f39fb77d9065a5b6b20c76f7cfb5bb04ae9d492f77dd743835b951b7d7837b20")
+}
+
+resource DiagramRuntimeModuleRenderDiagramAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("docs-site/scripts/infographics/diagram-runtime.js#renderDiagram")
+  fingerprint ast.semantic_subtree_v1("sha256:40dbb4de9342002e88efb8d8f206375a98c323bbe8cf3176cef93d3d1e83a008")
+}
+
+resource DiagramRuntimeModuleRouteAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("docs-site/scripts/infographics/diagram-runtime.js#route")
+  fingerprint ast.semantic_subtree_v1("sha256:258b431219351f1f714f407655ae8897296118944bd630fb11d04495c8e6ccbf")
+}
+
+resource DiagramRuntimeModuleRunAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("docs-site/scripts/infographics/diagram-runtime.js#run")
+  fingerprint ast.semantic_subtree_v1("sha256:2b3a658fb8c3c64df495df9ebdf812b065cba850b9a05f8dc7d76a86637f0c8c")
+}
+
+resource DiagramRuntimeModuleValidateAlignmentAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("docs-site/scripts/infographics/diagram-runtime.js#validateAlignment")
+  fingerprint ast.semantic_subtree_v1("sha256:81613308c9318d5a27afb1288686a393019ca1a99e8dfe8f8513abe0e529d635")
+}
+
+resource DiagramRuntimeModuleValidateBoundsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("docs-site/scripts/infographics/diagram-runtime.js#validateBounds")
+  fingerprint ast.semantic_subtree_v1("sha256:8e04e22fb1171fe805a1930aa56ade5aa67079c22fc4d8c6c4b0c639c4628333")
+}
+
+resource DiagramRuntimeModuleValidateContainerOverflowAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("docs-site/scripts/infographics/diagram-runtime.js#validateContainerOverflow")
+  fingerprint ast.semantic_subtree_v1("sha256:6343461353bf86330a9c851168de8ff48251513eb4faa8f4f26816f449149dff")
+}
+
+resource DiagramRuntimeModuleValidateEqualSizesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("docs-site/scripts/infographics/diagram-runtime.js#validateEqualSizes")
+  fingerprint ast.semantic_subtree_v1("sha256:0d6c4017285d71c98af06e7cd45d5760a0773a7af0f4112c3a09df0f67d5c149")
+}
+
+resource DiagramRuntimeModuleValidateTextAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("docs-site/scripts/infographics/diagram-runtime.js#validateText")
+  fingerprint ast.semantic_subtree_v1("sha256:88c6bdd7f490aa35bc6381235df147ee8c3219b4f1e1b2e08515ea5dfaaead35")
+}
+
+component DiagramRuntimeModule : GeneratedCandidate {
+  fn curveByPorts
+    source js("docs-site/scripts/infographics/diagram-runtime.js#curveByPorts")
+    effects unknown
+  fn distance
+    source js("docs-site/scripts/infographics/diagram-runtime.js#distance")
+    effects unknown
+  fn elementName
+    source js("docs-site/scripts/infographics/diagram-runtime.js#elementName")
+    effects unknown
+  fn offsetPoint
+    source js("docs-site/scripts/infographics/diagram-runtime.js#offsetPoint")
+    effects unknown
+  fn parseEndpoint
+    source js("docs-site/scripts/infographics/diagram-runtime.js#parseEndpoint")
+    effects unknown
+  fn portPoint
+    source js("docs-site/scripts/infographics/diagram-runtime.js#portPoint")
+    effects unknown
+  fn rectanglesOverlap
+    source js("docs-site/scripts/infographics/diagram-runtime.js#rectanglesOverlap")
+    effects unknown
+  fn renderDiagram
+    source js("docs-site/scripts/infographics/diagram-runtime.js#renderDiagram")
+    effects unknown
+  fn route
+    source js("docs-site/scripts/infographics/diagram-runtime.js#route")
+    effects unknown
+  fn run
+    source js("docs-site/scripts/infographics/diagram-runtime.js#run")
+    effects unknown
+  fn validateAlignment
+    source js("docs-site/scripts/infographics/diagram-runtime.js#validateAlignment")
+    effects unknown
+  fn validateBounds
+    source js("docs-site/scripts/infographics/diagram-runtime.js#validateBounds")
+    effects unknown
+  fn validateContainerOverflow
+    source js("docs-site/scripts/infographics/diagram-runtime.js#validateContainerOverflow")
+    effects unknown
+  fn validateEqualSizes
+    source js("docs-site/scripts/infographics/diagram-runtime.js#validateEqualSizes")
+    effects unknown
+  fn validateText
+    source js("docs-site/scripts/infographics/diagram-runtime.js#validateText")
+    effects unknown
+}
+
+relation DiagramRuntimeModuleCurveByPortsGeneratedFromDiagramRuntimeModuleCurveByPortsAstAnchor {
+  kind generated_from
+  connects DiagramRuntimeModule -> DiagramRuntimeModuleCurveByPortsAstAnchor
+  roles { DiagramRuntimeModule as generated, DiagramRuntimeModuleCurveByPortsAstAnchor as syntax }
+  expects DiagramRuntimeModuleCurveByPortsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:50b47f7caca8a880f974602d6643b1d1f9b315bc38f35a099604fc1acf7ac05f")
+  summary "fn DiagramRuntimeModule.curveByPorts generated from javascript function_declaration at docs-site/scripts/infographics/diagram-runtime.js#curveByPorts."
+}
+
+relation DiagramRuntimeModuleDistanceGeneratedFromDiagramRuntimeModuleDistanceAstAnchor {
+  kind generated_from
+  connects DiagramRuntimeModule -> DiagramRuntimeModuleDistanceAstAnchor
+  roles { DiagramRuntimeModule as generated, DiagramRuntimeModuleDistanceAstAnchor as syntax }
+  expects DiagramRuntimeModuleDistanceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c2145ba207c00c30029735cc0675a803b765c0e538b0c2a62a5f32c104e077fa")
+  summary "fn DiagramRuntimeModule.distance generated from javascript function_declaration at docs-site/scripts/infographics/diagram-runtime.js#distance."
+}
+
+relation DiagramRuntimeModuleElementNameGeneratedFromDiagramRuntimeModuleElementNameAstAnchor {
+  kind generated_from
+  connects DiagramRuntimeModule -> DiagramRuntimeModuleElementNameAstAnchor
+  roles { DiagramRuntimeModule as generated, DiagramRuntimeModuleElementNameAstAnchor as syntax }
+  expects DiagramRuntimeModuleElementNameAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3358976c42a7917a327871e41f44c5bc1da76a500ced64189c8b515ce0d68a15")
+  summary "fn DiagramRuntimeModule.elementName generated from javascript function_declaration at docs-site/scripts/infographics/diagram-runtime.js#elementName."
+}
+
+relation DiagramRuntimeModuleOffsetPointGeneratedFromDiagramRuntimeModuleOffsetPointAstAnchor {
+  kind generated_from
+  connects DiagramRuntimeModule -> DiagramRuntimeModuleOffsetPointAstAnchor
+  roles { DiagramRuntimeModule as generated, DiagramRuntimeModuleOffsetPointAstAnchor as syntax }
+  expects DiagramRuntimeModuleOffsetPointAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d0a0981314fec85717698c3dc044104027727ce7b77051ede949ff683b775a11")
+  summary "fn DiagramRuntimeModule.offsetPoint generated from javascript function_declaration at docs-site/scripts/infographics/diagram-runtime.js#offsetPoint."
+}
+
+relation DiagramRuntimeModuleParseEndpointGeneratedFromDiagramRuntimeModuleParseEndpointAstAnchor {
+  kind generated_from
+  connects DiagramRuntimeModule -> DiagramRuntimeModuleParseEndpointAstAnchor
+  roles { DiagramRuntimeModule as generated, DiagramRuntimeModuleParseEndpointAstAnchor as syntax }
+  expects DiagramRuntimeModuleParseEndpointAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9ba87997516fc65f404dc411db450395fcbed63a2d113718a17a80dc152bf0a5")
+  summary "fn DiagramRuntimeModule.parseEndpoint generated from javascript function_declaration at docs-site/scripts/infographics/diagram-runtime.js#parseEndpoint."
+}
+
+relation DiagramRuntimeModulePortPointGeneratedFromDiagramRuntimeModulePortPointAstAnchor {
+  kind generated_from
+  connects DiagramRuntimeModule -> DiagramRuntimeModulePortPointAstAnchor
+  roles { DiagramRuntimeModule as generated, DiagramRuntimeModulePortPointAstAnchor as syntax }
+  expects DiagramRuntimeModulePortPointAstAnchor fingerprint ast.semantic_subtree_v1("sha256:821777460204047c2faec2668f66166e6b47961f46ce36d5f4ce7dab51f26abd")
+  summary "fn DiagramRuntimeModule.portPoint generated from javascript function_declaration at docs-site/scripts/infographics/diagram-runtime.js#portPoint."
+}
+
+relation DiagramRuntimeModuleRectanglesOverlapGeneratedFromDiagramRuntimeModuleRectanglesOverlapAstAnchor {
+  kind generated_from
+  connects DiagramRuntimeModule -> DiagramRuntimeModuleRectanglesOverlapAstAnchor
+  roles { DiagramRuntimeModule as generated, DiagramRuntimeModuleRectanglesOverlapAstAnchor as syntax }
+  expects DiagramRuntimeModuleRectanglesOverlapAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f39fb77d9065a5b6b20c76f7cfb5bb04ae9d492f77dd743835b951b7d7837b20")
+  summary "fn DiagramRuntimeModule.rectanglesOverlap generated from javascript function_declaration at docs-site/scripts/infographics/diagram-runtime.js#rectanglesOverlap."
+}
+
+relation DiagramRuntimeModuleRenderDiagramGeneratedFromDiagramRuntimeModuleRenderDiagramAstAnchor {
+  kind generated_from
+  connects DiagramRuntimeModule -> DiagramRuntimeModuleRenderDiagramAstAnchor
+  roles { DiagramRuntimeModule as generated, DiagramRuntimeModuleRenderDiagramAstAnchor as syntax }
+  expects DiagramRuntimeModuleRenderDiagramAstAnchor fingerprint ast.semantic_subtree_v1("sha256:40dbb4de9342002e88efb8d8f206375a98c323bbe8cf3176cef93d3d1e83a008")
+  summary "fn DiagramRuntimeModule.renderDiagram generated from javascript function_declaration at docs-site/scripts/infographics/diagram-runtime.js#renderDiagram."
+}
+
+relation DiagramRuntimeModuleRouteGeneratedFromDiagramRuntimeModuleRouteAstAnchor {
+  kind generated_from
+  connects DiagramRuntimeModule -> DiagramRuntimeModuleRouteAstAnchor
+  roles { DiagramRuntimeModule as generated, DiagramRuntimeModuleRouteAstAnchor as syntax }
+  expects DiagramRuntimeModuleRouteAstAnchor fingerprint ast.semantic_subtree_v1("sha256:258b431219351f1f714f407655ae8897296118944bd630fb11d04495c8e6ccbf")
+  summary "fn DiagramRuntimeModule.route generated from javascript function_declaration at docs-site/scripts/infographics/diagram-runtime.js#route."
+}
+
+relation DiagramRuntimeModuleRunGeneratedFromDiagramRuntimeModuleRunAstAnchor {
+  kind generated_from
+  connects DiagramRuntimeModule -> DiagramRuntimeModuleRunAstAnchor
+  roles { DiagramRuntimeModule as generated, DiagramRuntimeModuleRunAstAnchor as syntax }
+  expects DiagramRuntimeModuleRunAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2b3a658fb8c3c64df495df9ebdf812b065cba850b9a05f8dc7d76a86637f0c8c")
+  summary "fn DiagramRuntimeModule.run generated from javascript function_declaration at docs-site/scripts/infographics/diagram-runtime.js#run."
+}
+
+relation DiagramRuntimeModuleValidateAlignmentGeneratedFromDiagramRuntimeModuleValidateAlignmentAstAnchor {
+  kind generated_from
+  connects DiagramRuntimeModule -> DiagramRuntimeModuleValidateAlignmentAstAnchor
+  roles { DiagramRuntimeModule as generated, DiagramRuntimeModuleValidateAlignmentAstAnchor as syntax }
+  expects DiagramRuntimeModuleValidateAlignmentAstAnchor fingerprint ast.semantic_subtree_v1("sha256:81613308c9318d5a27afb1288686a393019ca1a99e8dfe8f8513abe0e529d635")
+  summary "fn DiagramRuntimeModule.validateAlignment generated from javascript function_declaration at docs-site/scripts/infographics/diagram-runtime.js#validateAlignment."
+}
+
+relation DiagramRuntimeModuleValidateBoundsGeneratedFromDiagramRuntimeModuleValidateBoundsAstAnchor {
+  kind generated_from
+  connects DiagramRuntimeModule -> DiagramRuntimeModuleValidateBoundsAstAnchor
+  roles { DiagramRuntimeModule as generated, DiagramRuntimeModuleValidateBoundsAstAnchor as syntax }
+  expects DiagramRuntimeModuleValidateBoundsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:8e04e22fb1171fe805a1930aa56ade5aa67079c22fc4d8c6c4b0c639c4628333")
+  summary "fn DiagramRuntimeModule.validateBounds generated from javascript function_declaration at docs-site/scripts/infographics/diagram-runtime.js#validateBounds."
+}
+
+relation DiagramRuntimeModuleValidateContainerOverflowGeneratedFromDiagramRuntimeModuleValidateContainerOverflowAstAnchor {
+  kind generated_from
+  connects DiagramRuntimeModule -> DiagramRuntimeModuleValidateContainerOverflowAstAnchor
+  roles { DiagramRuntimeModule as generated, DiagramRuntimeModuleValidateContainerOverflowAstAnchor as syntax }
+  expects DiagramRuntimeModuleValidateContainerOverflowAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6343461353bf86330a9c851168de8ff48251513eb4faa8f4f26816f449149dff")
+  summary "fn DiagramRuntimeModule.validateContainerOverflow generated from javascript function_declaration at docs-site/scripts/infographics/diagram-runtime.js#validateContainerOverflow."
+}
+
+relation DiagramRuntimeModuleValidateEqualSizesGeneratedFromDiagramRuntimeModuleValidateEqualSizesAstAnchor {
+  kind generated_from
+  connects DiagramRuntimeModule -> DiagramRuntimeModuleValidateEqualSizesAstAnchor
+  roles { DiagramRuntimeModule as generated, DiagramRuntimeModuleValidateEqualSizesAstAnchor as syntax }
+  expects DiagramRuntimeModuleValidateEqualSizesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0d6c4017285d71c98af06e7cd45d5760a0773a7af0f4112c3a09df0f67d5c149")
+  summary "fn DiagramRuntimeModule.validateEqualSizes generated from javascript function_declaration at docs-site/scripts/infographics/diagram-runtime.js#validateEqualSizes."
+}
+
+relation DiagramRuntimeModuleValidateTextGeneratedFromDiagramRuntimeModuleValidateTextAstAnchor {
+  kind generated_from
+  connects DiagramRuntimeModule -> DiagramRuntimeModuleValidateTextAstAnchor
+  roles { DiagramRuntimeModule as generated, DiagramRuntimeModuleValidateTextAstAnchor as syntax }
+  expects DiagramRuntimeModuleValidateTextAstAnchor fingerprint ast.semantic_subtree_v1("sha256:88c6bdd7f490aa35bc6381235df147ee8c3219b4f1e1b2e08515ea5dfaaead35")
+  summary "fn DiagramRuntimeModule.validateText generated from javascript function_declaration at docs-site/scripts/infographics/diagram-runtime.js#validateText."
+}
+
+implementation DiagramRuntimeModuleImpl {
+  paths {
+    "docs-site/scripts/infographics/diagram-runtime.js"
+  }
+  conforms_to DiagramRuntimeModule
+}

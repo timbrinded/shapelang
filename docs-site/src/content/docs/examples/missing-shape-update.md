@@ -41,6 +41,8 @@ The list names a path under the implementation glob and does not include a `.sha
 
 ## Expected result
 
+For a local change set, write a `changed.txt` that lists only the governed source path, then run `shp coverage --changed-files changed.txt shape/audit.shape`. In this repository the packaged case is:
+
 ```bash
 shp coverage --changed-files fixtures/changed/audit_purge.txt fixtures/fail/missing_shape_update/audit.shape
 ```

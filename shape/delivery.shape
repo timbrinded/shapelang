@@ -1093,3 +1093,173 @@ attest no_shape_change {
   source mjs(".github/scripts/shape-skill-contract.mjs")
   reason "The per-skill validator module is superseded by the schema-interpreting validator in run-claude-skill.mjs; the JSON schema files remain the contract."
 }
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/concepts/ast-generation.md")
+  reason "Docs-only content and infographic refresh within the existing DocsSite surface; no language semantics, checker behavior, CLI contract, or architecture boundary changed."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/concepts/components-ownership-grants.md")
+  reason "Docs-only content and infographic refresh within the existing DocsSite surface; no language semantics, checker behavior, CLI contract, or architecture boundary changed."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/concepts/diagnostics-provenance.md")
+  reason "Docs-only content and infographic refresh within the existing DocsSite surface; no language semantics, checker behavior, CLI contract, or architecture boundary changed."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/concepts/domain-packs.md")
+  reason "Docs-only content and infographic refresh within the existing DocsSite surface; no language semantics, checker behavior, CLI contract, or architecture boundary changed."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/concepts/evidence-source-refs.md")
+  reason "Docs-only content and infographic refresh within the existing DocsSite surface; no language semantics, checker behavior, CLI contract, or architecture boundary changed."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/concepts/implementations-coverage.md")
+  reason "Docs-only content and infographic refresh within the existing DocsSite surface; no language semantics, checker behavior, CLI contract, or architecture boundary changed."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/concepts/model-updates-attestations.md")
+  reason "Docs-only content and infographic refresh within the existing DocsSite surface; no language semantics, checker behavior, CLI contract, or architecture boundary changed."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/concepts/refactor-constraints.md")
+  reason "Docs-only content and infographic refresh within the existing DocsSite surface; no language semantics, checker behavior, CLI contract, or architecture boundary changed."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/concepts/relations-hypergraphs.md")
+  reason "Docs-only content and infographic refresh within the existing DocsSite surface; no language semantics, checker behavior, CLI contract, or architecture boundary changed."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/concepts/resources-traits-effects.md")
+  reason "Docs-only content and infographic refresh within the existing DocsSite surface; no language semantics, checker behavior, CLI contract, or architecture boundary changed."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/concepts/rules-hypercycles.md")
+  reason "Docs-only content and infographic refresh within the existing DocsSite surface; no language semantics, checker behavior, CLI contract, or architecture boundary changed."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/examples/analyzer-warning.md")
+  reason "Docs-only content and infographic refresh within the existing DocsSite surface; no language semantics, checker behavior, CLI contract, or architecture boundary changed."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/examples/append-only-hard-delete-failure.md")
+  reason "Docs-only content and infographic refresh within the existing DocsSite surface; no language semantics, checker behavior, CLI contract, or architecture boundary changed."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/examples/append-only-pass.md")
+  reason "Docs-only content and infographic refresh within the existing DocsSite surface; no language semantics, checker behavior, CLI contract, or architecture boundary changed."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/examples/forbid-provides-boundary.md")
+  reason "Docs-only content and infographic refresh within the existing DocsSite surface; no language semantics, checker behavior, CLI contract, or architecture boundary changed."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/examples/global-model-update.md")
+  reason "Docs-only content and infographic refresh within the existing DocsSite surface; no language semantics, checker behavior, CLI contract, or architecture boundary changed."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/examples/guarded-change-reevaluation.md")
+  reason "Docs-only content and infographic refresh within the existing DocsSite surface; no language semantics, checker behavior, CLI contract, or architecture boundary changed."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/examples/missing-shape-update.md")
+  reason "Docs-only content and infographic refresh within the existing DocsSite surface; no language semantics, checker behavior, CLI contract, or architecture boundary changed."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/examples/refactor-sensitive-function.md")
+  reason "Docs-only content and infographic refresh within the existing DocsSite surface; no language semantics, checker behavior, CLI contract, or architecture boundary changed."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/index.md")
+  reason "Docs-only content and infographic refresh within the existing DocsSite surface; no language semantics, checker behavior, CLI contract, or architecture boundary changed."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/inside-shape/checker-pipeline.md")
+  reason "Docs-only content and infographic refresh within the existing DocsSite surface; no language semantics, checker behavior, CLI contract, or architecture boundary changed."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/inside-shape/design-rationale.md")
+  reason "Docs-only content and infographic refresh within the existing DocsSite surface; no language semantics, checker behavior, CLI contract, or architecture boundary changed."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/inside-shape/experimental-semantic-kernel.md")
+  reason "Docs-only content and infographic refresh within the existing DocsSite surface; no language semantics, checker behavior, CLI contract, or architecture boundary changed."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/inside-shape/fact-lowering.md")
+  reason "Docs-only content and infographic refresh within the existing DocsSite surface; no language semantics, checker behavior, CLI contract, or architecture boundary changed."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/inside-shape/langium-grammar.md")
+  reason "Docs-only content and infographic refresh within the existing DocsSite surface; no language semantics, checker behavior, CLI contract, or architecture boundary changed."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/inside-shape/rule-engine-strategy.md")
+  reason "Docs-only content and infographic refresh within the existing DocsSite surface; no language semantics, checker behavior, CLI contract, or architecture boundary changed."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/inside-shape/rule-evaluation.md")
+  reason "Docs-only content and infographic refresh within the existing DocsSite surface; no language semantics, checker behavior, CLI contract, or architecture boundary changed."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/learn/append-only-walkthrough.md")
+  reason "Docs-only content and infographic refresh within the existing DocsSite surface; no language semantics, checker behavior, CLI contract, or architecture boundary changed."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/learn/first-shape-file.md")
+  reason "Docs-only content and infographic refresh within the existing DocsSite surface; no language semantics, checker behavior, CLI contract, or architecture boundary changed."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/learn/global-model-updates.md")
+  reason "Docs-only content and infographic refresh within the existing DocsSite surface; no language semantics, checker behavior, CLI contract, or architecture boundary changed."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/learn/what-is-shape.md")
+  reason "Docs-only content and infographic refresh within the existing DocsSite surface; no language semantics, checker behavior, CLI contract, or architecture boundary changed."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/reference/glossary.md")
+  reason "Docs-only content and infographic refresh within the existing DocsSite surface; no language semantics, checker behavior, CLI contract, or architecture boundary changed."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/reference/language-syntax.md")
+  reason "Docs-only content and infographic refresh within the existing DocsSite surface; no language semantics, checker behavior, CLI contract, or architecture boundary changed."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/reference/local-development.md")
+  reason "Docs-only content and infographic refresh within the existing DocsSite surface; no language semantics, checker behavior, CLI contract, or architecture boundary changed."
+}

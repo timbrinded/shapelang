@@ -1,0 +1,97 @@
+module shape.generated.ast.docs_site.scripts.infographics.render
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource RenderModuleFindBinaryAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("docs-site/scripts/infographics/render.mjs#findBinary")
+  fingerprint ast.semantic_subtree_v1("sha256:8ee871c5627a0aa47f333d6e09682c0b32d02d38750d18abd4a5f4e0e327c1e3")
+}
+
+resource RenderModuleNormalizeTextAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("docs-site/scripts/infographics/render.mjs#normalizeText")
+  fingerprint ast.semantic_subtree_v1("sha256:93d9f03d9796ddf930e2d55d3cb97535b485dacd31ab103a1cece2ccc6d1497c")
+}
+
+resource RenderModuleValidatePngDimensionsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("docs-site/scripts/infographics/render.mjs#validatePngDimensions")
+  fingerprint ast.semantic_subtree_v1("sha256:89ed2b2a7df070831f8b5afaa6409f01bdaa15241a7fcdfc65a60424a77d80b8")
+}
+
+resource RenderModuleValidateSemanticLabelsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("docs-site/scripts/infographics/render.mjs#validateSemanticLabels")
+  fingerprint ast.semantic_subtree_v1("sha256:a616ce86d86ebce288e6bfc21652fbf466753e404c700abf3205db24b8839246")
+}
+
+resource RenderModuleValidateSourceMappingAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("docs-site/scripts/infographics/render.mjs#validateSourceMapping")
+  fingerprint ast.semantic_subtree_v1("sha256:d904aa3c4ccf0c674a1d6e57a3bc50822424cfd14d4560106f54832dc51a43cf")
+}
+
+component RenderModule : GeneratedCandidate {
+  fn findBinary
+    source js("docs-site/scripts/infographics/render.mjs#findBinary")
+    effects unknown
+  fn normalizeText
+    source js("docs-site/scripts/infographics/render.mjs#normalizeText")
+    effects unknown
+  fn validatePngDimensions
+    source js("docs-site/scripts/infographics/render.mjs#validatePngDimensions")
+    effects unknown
+  fn validateSemanticLabels
+    source js("docs-site/scripts/infographics/render.mjs#validateSemanticLabels")
+    effects unknown
+  fn validateSourceMapping
+    source js("docs-site/scripts/infographics/render.mjs#validateSourceMapping")
+    effects unknown
+}
+
+relation RenderModuleFindBinaryGeneratedFromRenderModuleFindBinaryAstAnchor {
+  kind generated_from
+  connects RenderModule -> RenderModuleFindBinaryAstAnchor
+  roles { RenderModule as generated, RenderModuleFindBinaryAstAnchor as syntax }
+  expects RenderModuleFindBinaryAstAnchor fingerprint ast.semantic_subtree_v1("sha256:8ee871c5627a0aa47f333d6e09682c0b32d02d38750d18abd4a5f4e0e327c1e3")
+  summary "fn RenderModule.findBinary generated from javascript function_declaration at docs-site/scripts/infographics/render.mjs#findBinary."
+}
+
+relation RenderModuleNormalizeTextGeneratedFromRenderModuleNormalizeTextAstAnchor {
+  kind generated_from
+  connects RenderModule -> RenderModuleNormalizeTextAstAnchor
+  roles { RenderModule as generated, RenderModuleNormalizeTextAstAnchor as syntax }
+  expects RenderModuleNormalizeTextAstAnchor fingerprint ast.semantic_subtree_v1("sha256:93d9f03d9796ddf930e2d55d3cb97535b485dacd31ab103a1cece2ccc6d1497c")
+  summary "fn RenderModule.normalizeText generated from javascript function_declaration at docs-site/scripts/infographics/render.mjs#normalizeText."
+}
+
+relation RenderModuleValidatePngDimensionsGeneratedFromRenderModuleValidatePngDimensionsAstAnchor {
+  kind generated_from
+  connects RenderModule -> RenderModuleValidatePngDimensionsAstAnchor
+  roles { RenderModule as generated, RenderModuleValidatePngDimensionsAstAnchor as syntax }
+  expects RenderModuleValidatePngDimensionsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:89ed2b2a7df070831f8b5afaa6409f01bdaa15241a7fcdfc65a60424a77d80b8")
+  summary "fn RenderModule.validatePngDimensions generated from javascript function_declaration at docs-site/scripts/infographics/render.mjs#validatePngDimensions."
+}
+
+relation RenderModuleValidateSemanticLabelsGeneratedFromRenderModuleValidateSemanticLabelsAstAnchor {
+  kind generated_from
+  connects RenderModule -> RenderModuleValidateSemanticLabelsAstAnchor
+  roles { RenderModule as generated, RenderModuleValidateSemanticLabelsAstAnchor as syntax }
+  expects RenderModuleValidateSemanticLabelsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a616ce86d86ebce288e6bfc21652fbf466753e404c700abf3205db24b8839246")
+  summary "fn RenderModule.validateSemanticLabels generated from javascript function_declaration at docs-site/scripts/infographics/render.mjs#validateSemanticLabels."
+}
+
+relation RenderModuleValidateSourceMappingGeneratedFromRenderModuleValidateSourceMappingAstAnchor {
+  kind generated_from
+  connects RenderModule -> RenderModuleValidateSourceMappingAstAnchor
+  roles { RenderModule as generated, RenderModuleValidateSourceMappingAstAnchor as syntax }
+  expects RenderModuleValidateSourceMappingAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d904aa3c4ccf0c674a1d6e57a3bc50822424cfd14d4560106f54832dc51a43cf")
+  summary "fn RenderModule.validateSourceMapping generated from javascript function_declaration at docs-site/scripts/infographics/render.mjs#validateSourceMapping."
+}
+
+implementation RenderModuleImpl {
+  paths {
+    "docs-site/scripts/infographics/render.mjs"
+  }
+  conforms_to RenderModule
+}

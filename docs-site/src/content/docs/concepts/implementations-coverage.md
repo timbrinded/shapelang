@@ -35,21 +35,54 @@ implementation AuditStoreImpl {
 
 ## How coverage counts a Shape update
 
-Run coverage with a newline-delimited changed-file list:
+Build a newline-delimited changed-file list for the current change set (CI and local scripts usually write `changed.txt`):
 
-```bash
-shp coverage --changed-files changed.txt
+```text
+src/audit/purge.ts
 ```
 
-A matching `source` or `evidence` reference counts as a Shape update for a changed governed path only when the declaring `.shape` file is also in the current changed-file list. Alternatively, a current `attest no_shape_change` whose `source` matches the changed path can satisfy coverage when that attestation's declaring `.shape` file is in the same list.
+Run coverage against your model files:
+
+```bash
+shp coverage --changed-files changed.txt shape/audit.shape
+```
+
+With no shape file arguments, coverage also scans `shape/**/*.shape` by default.
+
+A matching `source` or `evidence` reference counts as a Shape update for a changed governed path only when the declaring `.shape` file is also in the current changed-file list. Alternatively, a current `attest no_shape_change` whose `source` matches the changed path can satisfy coverage when that attestation's declaring `.shape` file is in the same list. Example attestation (in a `.shape` file that is itself listed in `changed.txt`):
+
+```shape
+module audit
+
+resource AuditEvent : AppendOnly
+
+component AuditStore {
+  owns AuditEvent
+}
+
+implementation AuditStoreImpl {
+  paths {
+    "src/audit/**/*.ts"
+  }
+  conforms_to AuditStore
+  on_change require shape_update
+}
+
+attest no_shape_change {
+  source ts("src/audit/purge.ts")
+  reason "Formatting-only change; no resource access or effect changed."
+}
+```
 
 ## Missing model update failure
+
+If a governed source path changes and the changed-file list does not include a current Shape update or current attestation, coverage fails with `governed source changed without current Shape update`.
+
+In the Shape language repository, the same case is packaged as:
 
 ```bash
 shp coverage --changed-files fixtures/changed/audit_purge.txt fixtures/fail/missing_shape_update/audit.shape
 ```
-
-If `src/audit/purge.ts` is governed by `AuditStoreImpl` and the change set does not include a current Shape update or current attestation, coverage fails with `governed source changed without current Shape update`.
 
 `shp check --changed-files changed.txt` runs semantic checks and, with the same list, coverage and bindings together.
 

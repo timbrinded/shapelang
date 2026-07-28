@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en" data-diagram-theme="site-dark" data-diagram-status="pending">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=1680, initial-scale=1" />
+    <title>Component boundary</title>
+    <link rel="stylesheet" href="../base.css" />
+    <link rel="stylesheet" href="../icons.css" />
+    <script src="../diagram-runtime.js" defer></script>
+  </head>
+  <body>
+    <main class="canvas">
+      <h1 class="diagram-title" data-fit>Component boundary</h1>
+      <section class="diagram layout-boundary"
+        aria-label="Ownership, grants, and functions live in a component while relations remain external."
+        data-concept="component-boundary-grants"
+        data-source="docs-site/src/content/docs/concepts/components-ownership-grants.md">
+        <svg class="connectors" aria-hidden="true">
+    
+    <defs>
+      <marker id="component-boundary-grants-blue" markerWidth="18" markerHeight="18" refX="16" refY="9"
+        orient="auto" markerUnits="userSpaceOnUse">
+        <path d="M0 0L18 9L0 18Z" fill="#42aee4" />
+      </marker>
+      <marker id="component-boundary-grants-green" markerWidth="18" markerHeight="18" refX="16" refY="9"
+        orient="auto" markerUnits="userSpaceOnUse">
+        <path d="M0 0L18 9L0 18Z" fill="#19a66a" />
+      </marker>
+      <marker id="component-boundary-grants-amber" markerWidth="18" markerHeight="18" refX="16" refY="9"
+        orient="auto" markerUnits="userSpaceOnUse">
+        <path d="M0 0L18 9L0 18Z" fill="#d28b00" />
+      </marker>
+      <marker id="component-boundary-grants-red" markerWidth="18" markerHeight="18" refX="16" refY="9"
+        orient="auto" markerUnits="userSpaceOnUse">
+        <path d="M0 0L18 9L0 18Z" fill="#d13b3b" />
+      </marker>
+    </defs>
+    
+    <path class="connector" data-edge data-from="component:right" data-to="external:left"
+    data-route="straight"
+    data-target-gap="9"
+    
+    
+    marker-end="url(#component-boundary-grants-blue)" />
+  </svg>
+     <section class="boundary-box" data-node="component" data-box>
+    <h2 class="boundary-title" data-fit>
+      <span class="hi hi-hierarchy" aria-hidden="true"></span>
+      Component
+    </h2>
+    <div class="boundary-items">
+      <article class="boundary-item">
+            <strong data-fit>owns</strong>
+            <span data-fit>AuditEvent</span>
+          </article>
+<article class="boundary-item">
+            <strong data-fit>grants</strong>
+            <span data-fit>Append<wbr />&lt;AuditEvent&gt;</span>
+          </article>
+<article class="boundary-item">
+            <strong data-fit>functions</strong>
+            <span data-fit>appendEvent</span>
+          </article>
+    </div>
+  </section>
+     <article class="node  boundary-external" data-node="external" data-box>
+    <span class="icon-disc "><span class="hi hi-database" aria-hidden="true"></span></span>
+    <div class="node-content">
+      <strong class="node-label" data-fit>AuditEvent</strong>
+      <span class="node-token" data-fit>external vertex</span>
+    </div>
+  </article>
+     <span class="edge-label" data-box data-fit data-edge-label="component:right->external:left">
+       relation (external)
+     </span>
+     <div class="note " data-box data-fit
+    >
+    <span class="hi hi-shield" aria-hidden="true"></span>
+    <span>owns names responsibility • not runtime allocation</span>
+  </div>
+      </section>
+    </main>
+  </body>
+</html>

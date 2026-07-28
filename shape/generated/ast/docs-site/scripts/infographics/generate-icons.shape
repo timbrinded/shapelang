@@ -1,0 +1,65 @@
+module shape.generated.ast.docs_site.scripts.infographics.generate_icons
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource GenerateIconsModuleEscapeAttributeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("docs-site/scripts/infographics/generate-icons.mjs#escapeAttribute")
+  fingerprint ast.semantic_subtree_v1("sha256:1671d74a0f7960ebe3a5d045e0d81cac3de7ff9e974ead4b55d9b67e7e0d0e52")
+}
+
+resource GenerateIconsModuleRenderAttributesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("docs-site/scripts/infographics/generate-icons.mjs#renderAttributes")
+  fingerprint ast.semantic_subtree_v1("sha256:20fbc17d536daf2f86f86ea6d2bf7a53779d9e215a26a6b024ba0e103f71bfc4")
+}
+
+resource GenerateIconsModuleRenderMaskAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("docs-site/scripts/infographics/generate-icons.mjs#renderMask")
+  fingerprint ast.semantic_subtree_v1("sha256:b98ed4ebf4ae73cd4c6448c8d5fdd0261889f0b2fcc02949966a49648cabdd7f")
+}
+
+component GenerateIconsModule : GeneratedCandidate {
+  fn escapeAttribute
+    source js("docs-site/scripts/infographics/generate-icons.mjs#escapeAttribute")
+    effects unknown
+  fn renderAttributes
+    source js("docs-site/scripts/infographics/generate-icons.mjs#renderAttributes")
+    effects unknown
+  fn renderMask
+    source js("docs-site/scripts/infographics/generate-icons.mjs#renderMask")
+    effects unknown
+}
+
+relation GenerateIconsModuleEscapeAttributeGeneratedFromGenerateIconsModuleEscapeAttributeAstAnchor {
+  kind generated_from
+  connects GenerateIconsModule -> GenerateIconsModuleEscapeAttributeAstAnchor
+  roles { GenerateIconsModule as generated, GenerateIconsModuleEscapeAttributeAstAnchor as syntax }
+  expects GenerateIconsModuleEscapeAttributeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1671d74a0f7960ebe3a5d045e0d81cac3de7ff9e974ead4b55d9b67e7e0d0e52")
+  summary "fn GenerateIconsModule.escapeAttribute generated from javascript function_declaration at docs-site/scripts/infographics/generate-icons.mjs#escapeAttribute."
+}
+
+relation GenerateIconsModuleRenderAttributesGeneratedFromGenerateIconsModuleRenderAttributesAstAnchor {
+  kind generated_from
+  connects GenerateIconsModule -> GenerateIconsModuleRenderAttributesAstAnchor
+  roles { GenerateIconsModule as generated, GenerateIconsModuleRenderAttributesAstAnchor as syntax }
+  expects GenerateIconsModuleRenderAttributesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:20fbc17d536daf2f86f86ea6d2bf7a53779d9e215a26a6b024ba0e103f71bfc4")
+  summary "fn GenerateIconsModule.renderAttributes generated from javascript function_declaration at docs-site/scripts/infographics/generate-icons.mjs#renderAttributes."
+}
+
+relation GenerateIconsModuleRenderMaskGeneratedFromGenerateIconsModuleRenderMaskAstAnchor {
+  kind generated_from
+  connects GenerateIconsModule -> GenerateIconsModuleRenderMaskAstAnchor
+  roles { GenerateIconsModule as generated, GenerateIconsModuleRenderMaskAstAnchor as syntax }
+  expects GenerateIconsModuleRenderMaskAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b98ed4ebf4ae73cd4c6448c8d5fdd0261889f0b2fcc02949966a49648cabdd7f")
+  summary "fn GenerateIconsModule.renderMask generated from javascript function_declaration at docs-site/scripts/infographics/generate-icons.mjs#renderMask."
+}
+
+implementation GenerateIconsModuleImpl {
+  paths {
+    "docs-site/scripts/infographics/generate-icons.mjs"
+  }
+  conforms_to GenerateIconsModule
+}

@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en" data-diagram-theme="site-dark" data-diagram-status="pending">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=1680, initial-scale=1" />
+    <title>Shape review loop</title>
+    <link rel="stylesheet" href="../base.css" />
+    <link rel="stylesheet" href="../icons.css" />
+    <script src="../diagram-runtime.js" defer></script>
+  </head>
+  <body>
+    <main class="canvas">
+      <h1 class="diagram-title" data-fit>Shape review loop</h1>
+      <section class="diagram layout-sequence" style="--count:5"
+        aria-label="Architecture claims move through human review and deterministic checking."
+        data-concept="shape-model-loop"
+        data-source="docs-site/src/content/docs/index.md,docs-site/src/content/docs/learn/what-is-shape.md">
+        <svg class="connectors" aria-hidden="true">
+    
+    <defs>
+      <marker id="shape-model-loop-blue" markerWidth="18" markerHeight="18" refX="16" refY="9"
+        orient="auto" markerUnits="userSpaceOnUse">
+        <path d="M0 0L18 9L0 18Z" fill="#42aee4" />
+      </marker>
+      <marker id="shape-model-loop-green" markerWidth="18" markerHeight="18" refX="16" refY="9"
+        orient="auto" markerUnits="userSpaceOnUse">
+        <path d="M0 0L18 9L0 18Z" fill="#19a66a" />
+      </marker>
+      <marker id="shape-model-loop-amber" markerWidth="18" markerHeight="18" refX="16" refY="9"
+        orient="auto" markerUnits="userSpaceOnUse">
+        <path d="M0 0L18 9L0 18Z" fill="#d28b00" />
+      </marker>
+      <marker id="shape-model-loop-red" markerWidth="18" markerHeight="18" refX="16" refY="9"
+        orient="auto" markerUnits="userSpaceOnUse">
+        <path d="M0 0L18 9L0 18Z" fill="#d13b3b" />
+      </marker>
+    </defs>
+    
+    <path class="connector" data-edge data-from="write:right" data-to="review:left"
+    data-route="straight"
+    data-target-gap="9"
+    
+    
+    marker-end="url(#shape-model-loop-blue)" />
+<path class="connector" data-edge data-from="review:right" data-to="check:left"
+    data-route="straight"
+    data-target-gap="9"
+    
+    
+    marker-end="url(#shape-model-loop-blue)" />
+<path class="connector green" data-edge data-from="check:right" data-to="gate:left"
+    data-route="straight"
+    data-target-gap="9"
+    
+    
+    marker-end="url(#shape-model-loop-green)" />
+<path class="connector red" data-edge data-from="gate:right" data-to="diagnose:left"
+    data-route="straight"
+    data-target-gap="9"
+    
+    
+    marker-end="url(#shape-model-loop-red)" />
+<path class="connector red" data-edge data-from="diagnose:bottom" data-to="review:bottom"
+    data-route="curve"
+    data-target-gap="9"
+    data-tension="0.34"
+    
+    marker-end="url(#shape-model-loop-red)" />
+  </svg>
+     <article class="node  " data-node="write" data-box data-align-row="shape-model-loop" data-equal-size="shape-model-loop">
+    <span class="icon-disc "><span class="hi hi-fileEdit" aria-hidden="true"></span></span>
+    <div class="node-content">
+      <strong class="node-label" data-fit>Write</strong>
+      <span class="node-token" data-fit>.shape</span>
+    </div>
+  </article>
+<article class="node  " data-node="review" data-box data-align-row="shape-model-loop" data-equal-size="shape-model-loop">
+    <span class="icon-disc "><span class="hi hi-userCheck" aria-hidden="true"></span></span>
+    <div class="node-content">
+      <strong class="node-label" data-fit>Review</strong>
+      <span class="node-token" data-fit>claims</span>
+    </div>
+  </article>
+<article class="node  " data-node="check" data-box data-align-row="shape-model-loop" data-equal-size="shape-model-loop">
+    <span class="icon-disc "><span class="hi hi-terminal" aria-hidden="true"></span></span>
+    <div class="node-content">
+      <strong class="node-label" data-fit>Check</strong>
+      <span class="node-token" data-fit>shp check</span>
+    </div>
+  </article>
+<article class="node green " data-node="gate" data-box data-align-row="shape-model-loop" data-equal-size="shape-model-loop">
+    <span class="icon-disc green"><span class="hi hi-shield" aria-hidden="true"></span></span>
+    <div class="node-content">
+      <strong class="node-label" data-fit>Gate</strong>
+      <span class="node-token" data-fit>CI</span>
+    </div>
+  </article>
+<article class="node red " data-node="diagnose" data-box data-align-row="shape-model-loop" data-equal-size="shape-model-loop">
+    <span class="icon-disc red"><span class="hi hi-alert" aria-hidden="true"></span></span>
+    <div class="node-content">
+      <strong class="node-label" data-fit>Diagnose</strong>
+      <span class="node-token" data-fit>causal trail</span>
+    </div>
+  </article>
+     <div class="note red" data-box data-fit
+    data-edge-label="diagnose:bottom->review:bottom">
+    <span class="hi hi-flow" aria-hidden="true"></span>
+    <span>rejected → revise the reviewed contract</span>
+  </div>
+      </section>
+    </main>
+  </body>
+</html>

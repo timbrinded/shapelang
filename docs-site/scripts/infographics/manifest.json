@@ -1,0 +1,348 @@
+[
+  {
+    "layout": "sequence",
+    "name": "shape-model-loop",
+    "reviewTerms": [
+      "Write",
+      "Review",
+      "shp check",
+      "CI",
+      "Diagnose",
+      "revise"
+    ],
+    "sources": [
+      "docs-site/src/content/docs/index.md",
+      "docs-site/src/content/docs/learn/what-is-shape.md"
+    ],
+    "summary": "Architecture claims move through human review and deterministic checking.",
+    "title": "Shape review loop"
+  },
+  {
+    "layout": "sequence",
+    "name": "quickstart-loop",
+    "reviewTerms": [
+      "Install",
+      "shape/*.shape",
+      "shp check",
+      "diagnostics",
+      "model",
+      "CI"
+    ],
+    "sources": [
+      "docs-site/src/content/docs/learn/quickstart.md"
+    ],
+    "summary": "Install Shape, write a model, check it, read diagnostics, and update the model.",
+    "title": "Your first check"
+  },
+  {
+    "layout": "hub",
+    "name": "first-shape-file-map",
+    "reviewTerms": [
+      "Resource",
+      "Component",
+      "Function",
+      "Effect",
+      "Evidence",
+      "checker reads declared claims"
+    ],
+    "sources": [
+      "docs-site/src/content/docs/learn/first-shape-file.md"
+    ],
+    "summary": "A component connects a resource, ownership, a function effect, and source evidence.",
+    "title": "First Shape file"
+  },
+  {
+    "layout": "hub",
+    "name": "core-vocabulary-map",
+    "reviewTerms": [
+      "Resource",
+      "Trait",
+      "Effect",
+      "Component",
+      "Grant",
+      "Evidence",
+      "AppendOnly"
+    ],
+    "sources": [
+      "docs-site/src/content/docs/concepts/resources-traits-effects.md",
+      "docs-site/src/content/docs/concepts/components-ownership-grants.md"
+    ],
+    "summary": "Shape connects resources, traits, effects, components, grants, and evidence.",
+    "title": "Core vocabulary"
+  },
+  {
+    "layout": "boundary",
+    "name": "component-boundary-grants",
+    "reviewTerms": [
+      "Component",
+      "owns",
+      "grants",
+      "functions",
+      "relation (external)",
+      "not runtime allocation"
+    ],
+    "sources": [
+      "docs-site/src/content/docs/concepts/components-ownership-grants.md"
+    ],
+    "summary": "Ownership, grants, and functions live in a component while relations remain external.",
+    "title": "Component boundary"
+  },
+  {
+    "layout": "sequence",
+    "name": "evidence-review-path",
+    "reviewTerms": [
+      "Function claim",
+      "Effect",
+      "Evidence",
+      "Source ref",
+      "Reviewer",
+      "provenance"
+    ],
+    "sources": [
+      "docs-site/src/content/docs/concepts/evidence-source-refs.md"
+    ],
+    "summary": "A function claim retains its effect, evidence, source reference, and reviewer context.",
+    "title": "Evidence review path"
+  },
+  {
+    "layout": "decision",
+    "name": "append-only-rejection",
+    "reviewTerms": [
+      "HardDelete<AuditEvent>",
+      "Component grant",
+      "AppendOnly",
+      "forbid final",
+      "Rejected"
+    ],
+    "sources": [
+      "docs-site/src/content/docs/learn/append-only-walkthrough.md"
+    ],
+    "summary": "A final forbid rejects a hard-delete effect even when a component grant exists.",
+    "title": "Why HardDelete is rejected"
+  },
+  {
+    "layout": "decision",
+    "name": "global-model-review",
+    "reviewTerms": [
+      "changed files",
+      "Model update",
+      "Attestation",
+      "Coverage",
+      "shp check",
+      "CI result"
+    ],
+    "sources": [
+      "docs-site/src/content/docs/learn/global-model-updates.md",
+      "docs-site/src/content/docs/concepts/model-updates-attestations.md",
+      "docs-site/src/content/docs/learn/ci-workflow.md"
+    ],
+    "summary": "Architecture changes update the model while unchanged architecture uses a narrow attestation.",
+    "title": "Global model review"
+  },
+  {
+    "layout": "sequence",
+    "name": "implementation-coverage-map",
+    "reviewTerms": [
+      "Changed file",
+      "Binding",
+      "Implementation",
+      "model update",
+      "attestation",
+      "Coverage gate"
+    ],
+    "sources": [
+      "docs-site/src/content/docs/concepts/implementations-coverage.md"
+    ],
+    "summary": "A changed governed file must reach its owning model update or a narrow attestation.",
+    "title": "Implementation coverage"
+  },
+  {
+    "layout": "decision",
+    "name": "design-memory-reevaluation",
+    "reviewTerms": [
+      "Memory",
+      "Rationale",
+      "guards on_change",
+      "Review obligation",
+      "ReEvaluation",
+      "not a waiver"
+    ],
+    "sources": [
+      "docs-site/src/content/docs/concepts/refactor-constraints.md",
+      "docs-site/src/content/docs/concepts/model-updates-attestations.md"
+    ],
+    "summary": "A guarded function change creates a review obligation requiring reevaluation.",
+    "title": "Design memory"
+  },
+  {
+    "layout": "sequence",
+    "name": "unknowns-safety-states",
+    "reviewTerms": [
+      "Effects unknown",
+      "review blocker",
+      "Effects complete",
+      "Known effects",
+      "memory"
+    ],
+    "sources": [
+      "docs-site/src/content/docs/concepts/unknowns-safety.md"
+    ],
+    "summary": "Unknown effects block strict checking until evidence supports a complete effect summary.",
+    "title": "Unknowns stay visible"
+  },
+  {
+    "layout": "cycle",
+    "name": "hypercycle-witness-path",
+    "reviewTerms": [
+      "Component A",
+      "Component B",
+      "calls",
+      "callbacks",
+      "forbid hypercycle",
+      "witness path",
+      "Rejected"
+    ],
+    "sources": [
+      "docs-site/src/content/docs/concepts/rules-hypercycles.md"
+    ],
+    "summary": "Directed calls and callbacks form a cycle that a final graph rule rejects.",
+    "title": "Hypercycle witness"
+  },
+  {
+    "layout": "sequence",
+    "name": "analyzer-advisory-scan",
+    "reviewTerms": [
+      "Source scan",
+      "DELETE",
+      "TRUNCATE",
+      "DROP",
+      "Shape model",
+      "Warning",
+      "source of truth"
+    ],
+    "sources": [
+      "docs-site/src/content/docs/concepts/analyzer-hints.md"
+    ],
+    "summary": "The analyzer scans source, compares hints with Shape claims, and emits advisory warnings.",
+    "title": "Analyzer hints"
+  },
+  {
+    "layout": "sequence",
+    "name": "diagnostics-causal-trail",
+    "reviewTerms": [
+      "Function claim",
+      "Effect",
+      "Resource",
+      "Trait constraint",
+      "Diagnostic",
+      "provenance"
+    ],
+    "sources": [
+      "docs-site/src/content/docs/concepts/diagnostics-provenance.md"
+    ],
+    "summary": "A rejected function claim is explained through its effect, resource, trait, and evidence.",
+    "title": "Diagnostic causal trail"
+  },
+  {
+    "layout": "sequence",
+    "name": "checker-pipeline",
+    "reviewTerms": [
+      ".shape files",
+      "Parse",
+      "Lower",
+      "Run rules",
+      "Diagnostics",
+      "declared model"
+    ],
+    "sources": [
+      "docs-site/src/content/docs/inside-shape/checker-pipeline.md"
+    ],
+    "summary": "Shape files are parsed, lowered, evaluated, and formatted into deterministic diagnostics.",
+    "title": "Checker pipeline"
+  },
+  {
+    "layout": "sequence",
+    "name": "fact-lowering-map",
+    "reviewTerms": [
+      "Declarations",
+      "Apply changes",
+      "Effective model",
+      "Facts",
+      "Semantic checks",
+      "provenance"
+    ],
+    "sources": [
+      "docs-site/src/content/docs/inside-shape/fact-lowering.md"
+    ],
+    "summary": "Declarations and changes become one effective model with typed indexes, facts, and provenance.",
+    "title": "Fact lowering"
+  },
+  {
+    "layout": "sequence",
+    "name": "rule-evaluation-board",
+    "reviewTerms": [
+      "Lowered model",
+      "forbids",
+      "grants",
+      "coverage",
+      "memory",
+      "Diagnostics",
+      "Pass or reject"
+    ],
+    "sources": [
+      "docs-site/src/content/docs/inside-shape/rule-evaluation.md"
+    ],
+    "summary": "Rules compare lowered claims and emit stable pass or reject diagnostics.",
+    "title": "Rule evaluation"
+  },
+  {
+    "layout": "sequence",
+    "name": "review-helpers",
+    "reviewTerms": [
+      "Proposed .shape",
+      "Formatter",
+      "Checker",
+      "Editor APIs",
+      "Human review",
+      "effects unknown"
+    ],
+    "sources": [
+      "docs-site/src/content/docs/inside-shape/formatter-editor-authoring.md"
+    ],
+    "summary": "Formatting, checking, editor feedback, and authoring helpers support one human-owned review loop.",
+    "title": "Review helpers"
+  },
+  {
+    "layout": "split",
+    "name": "shape-boundary",
+    "reviewTerms": [
+      "Inside Shape",
+      "Draft claims",
+      "Review claims",
+      "Check coherence",
+      "Tests remain",
+      "Not a proof system"
+    ],
+    "sources": [
+      "docs-site/src/content/docs/learn/what-is-shape.md"
+    ],
+    "summary": "Shape checks declared model coherence while tests, code review, and runtime proof remain separate.",
+    "title": "Shape boundary"
+  },
+  {
+    "layout": "sequence",
+    "name": "shape-workflow",
+    "reviewTerms": [
+      "Code change",
+      "Shape update",
+      "Human review",
+      "shp check",
+      "CI gate"
+    ],
+    "sources": [
+      "README.md"
+    ],
+    "summary": "A code change updates reviewed Shape claims before deterministic checking and CI.",
+    "title": "Architecture review in CI"
+  }
+]

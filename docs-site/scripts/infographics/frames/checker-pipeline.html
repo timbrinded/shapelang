@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en" data-diagram-theme="site-dark" data-diagram-status="pending">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=1680, initial-scale=1" />
+    <title>Checker pipeline</title>
+    <link rel="stylesheet" href="../base.css" />
+    <link rel="stylesheet" href="../icons.css" />
+    <script src="../diagram-runtime.js" defer></script>
+  </head>
+  <body>
+    <main class="canvas">
+      <h1 class="diagram-title" data-fit>Checker pipeline</h1>
+      <section class="diagram layout-sequence" style="--count:5"
+        aria-label="Shape files are parsed, lowered, evaluated, and formatted into deterministic diagnostics."
+        data-concept="checker-pipeline"
+        data-source="docs-site/src/content/docs/inside-shape/checker-pipeline.md">
+        <svg class="connectors" aria-hidden="true">
+    
+    <defs>
+      <marker id="checker-pipeline-blue" markerWidth="18" markerHeight="18" refX="16" refY="9"
+        orient="auto" markerUnits="userSpaceOnUse">
+        <path d="M0 0L18 9L0 18Z" fill="#42aee4" />
+      </marker>
+      <marker id="checker-pipeline-green" markerWidth="18" markerHeight="18" refX="16" refY="9"
+        orient="auto" markerUnits="userSpaceOnUse">
+        <path d="M0 0L18 9L0 18Z" fill="#19a66a" />
+      </marker>
+      <marker id="checker-pipeline-amber" markerWidth="18" markerHeight="18" refX="16" refY="9"
+        orient="auto" markerUnits="userSpaceOnUse">
+        <path d="M0 0L18 9L0 18Z" fill="#d28b00" />
+      </marker>
+      <marker id="checker-pipeline-red" markerWidth="18" markerHeight="18" refX="16" refY="9"
+        orient="auto" markerUnits="userSpaceOnUse">
+        <path d="M0 0L18 9L0 18Z" fill="#d13b3b" />
+      </marker>
+    </defs>
+    
+    <path class="connector" data-edge data-from="source:right" data-to="parse:left"
+    data-route="straight"
+    data-target-gap="9"
+    
+    
+    marker-end="url(#checker-pipeline-blue)" />
+<path class="connector" data-edge data-from="parse:right" data-to="lower:left"
+    data-route="straight"
+    data-target-gap="9"
+    
+    
+    marker-end="url(#checker-pipeline-blue)" />
+<path class="connector" data-edge data-from="lower:right" data-to="rules:left"
+    data-route="straight"
+    data-target-gap="9"
+    
+    
+    marker-end="url(#checker-pipeline-blue)" />
+<path class="connector red" data-edge data-from="rules:right" data-to="diagnostic:left"
+    data-route="straight"
+    data-target-gap="9"
+    
+    
+    marker-end="url(#checker-pipeline-red)" />
+  </svg>
+     <article class="node  " data-node="source" data-box data-align-row="checker-pipeline" data-equal-size="checker-pipeline">
+    <span class="icon-disc "><span class="hi hi-fileCode" aria-hidden="true"></span></span>
+    <div class="node-content">
+      <strong class="node-label" data-fit>.shape files</strong>
+      <span class="node-token" data-fit>reviewed claims</span>
+    </div>
+  </article>
+<article class="node  " data-node="parse" data-box data-align-row="checker-pipeline" data-equal-size="checker-pipeline">
+    <span class="icon-disc "><span class="hi hi-code" aria-hidden="true"></span></span>
+    <div class="node-content">
+      <strong class="node-label" data-fit>Parse</strong>
+      <span class="node-token" data-fit>text → AST</span>
+    </div>
+  </article>
+<article class="node  " data-node="lower" data-box data-align-row="checker-pipeline" data-equal-size="checker-pipeline">
+    <span class="icon-disc "><span class="hi hi-layers" aria-hidden="true"></span></span>
+    <div class="node-content">
+      <strong class="node-label" data-fit>Lower</strong>
+      <span class="node-token" data-fit>AST → model</span>
+    </div>
+  </article>
+<article class="node  " data-node="rules" data-box data-align-row="checker-pipeline" data-equal-size="checker-pipeline">
+    <span class="icon-disc "><span class="hi hi-balance" aria-hidden="true"></span></span>
+    <div class="node-content">
+      <strong class="node-label" data-fit>Run rules</strong>
+      <span class="node-token" data-fit>facts × constraints</span>
+    </div>
+  </article>
+<article class="node red " data-node="diagnostic" data-box data-align-row="checker-pipeline" data-equal-size="checker-pipeline">
+    <span class="icon-disc red"><span class="hi hi-alert" aria-hidden="true"></span></span>
+    <div class="node-content">
+      <strong class="node-label" data-fit>Diagnostics</strong>
+      <span class="node-token" data-fit>pass or reject</span>
+    </div>
+  </article>
+     <div class="note " data-box data-fit
+    >
+    <span class="hi hi-shield" aria-hidden="true"></span>
+    <span>deterministic over the declared model • application runtime stays outside</span>
+  </div>
+      </section>
+    </main>
+  </body>
+</html>
