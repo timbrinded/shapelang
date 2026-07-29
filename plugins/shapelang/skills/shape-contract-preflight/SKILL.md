@@ -61,7 +61,7 @@ Trace the requested outcome end to end before simulating it. A simulation may re
 
 - Model silence is not permission to omit a necessary leg.
 - If an exact necessary leg is absent from the baseline, include it in the temporary proposal when its endpoints and relation kind are known.
-- If a necessary leg cannot be represented without inventing an endpoint, relation kind, resource, or effect, return `model_gap`.
+- If a necessary leg requires invention, return `model_gap` only when no current contract already rejects the requested outcome.
 - Never simulate only a safe facade when the requested outcome necessarily depends on a forbidden downstream route.
 
 ## Workflow
@@ -101,7 +101,7 @@ Return exactly one decision:
 - `proceed`: the strict baseline is valid, the conservative proposal represents the complete requested outcome, and the applicable proposal check passes.
 - `blocked_by_contract`: the proposal conflicts with a current deterministic contract.
 - `architecture_decision_required`: two materially different supported architectures remain.
-- `model_gap`: the current model cannot express or locate the planned work without invention.
+- `model_gap`: missing model information prevents determining whether the current contract permits or represents the planned work.
 - `baseline_invalid`: the current model fails before the proposal is added.
 - `tooling_unavailable`: the canonical command or required files cannot be inspected.
 

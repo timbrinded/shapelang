@@ -58,7 +58,7 @@ Group findings by the smallest code correction that resolves them.
 7. Run `memory` and `obligations` only for guarded targets, permissions, ownership, atomicity, or final forbids.
 8. Run `analyze` only as a source-investigation lead.
 9. Expand by default only to direct authored relations, direct callers/callees, or one explicit coordinated path. Traverse wider only when an authored rule or concrete evidence requires it.
-10. Challenge every candidate with one plausible existing prevention mechanism and verify that it is absent or insufficient.
+10. Test candidates against declared input contracts, source-confirmed callers, and plausible protections; retain only reachable failures.
 11. Group surviving candidates by root cause and smallest correction.
 12. Drop handled, unreachable, stale-model, duplicate, stylistic, or speculative candidates.
 
