@@ -67,12 +67,15 @@ shp memory
 shp check
 ```
 
-Freshness sweep (opt-in; injects today's date at the CLI boundary):
+Reproducible freshness sweep:
 
 ```bash
-shp obligations --strict-freshness
-shp check --strict-freshness
+shp obligations --as-of 2026-07-29
+shp check --as-of 2026-07-29
 ```
+
+Use `--strict-freshness` only when current UTC time is intentionally part of
+an interactive workflow.
 
 Investigate why a resource or function fails:
 
@@ -91,7 +94,9 @@ shp graph show Gateway
 shp graph show Gateway --kind calls
 ```
 
-Start with `shp graph stats` for a single-shot overview (vertex and hyperedge counts, arity range, isolated vertices) before drilling into specific symbols.
+Start with `shp graph show SYMBOL` for a focused question. Use `shp graph stats`
+when model size, relation-heavy work, or a global rule makes aggregate context
+material.
 
 Compare source hints with declared effects:
 

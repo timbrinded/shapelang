@@ -1,10 +1,8 @@
 # Guard Examples
 
-Use these as calibration patterns. Cite exact changed symbols and diff evidence in the final review.
+Use these as normalized calibration cases. Return the canonical JSON fields from the skill.
 
 ## Constraint Removal Plus Destructive Effect
-
-Diff:
 
 ```diff
 -resource AuditEvent : AppendOnly
@@ -19,87 +17,59 @@ Diff:
  }
 ```
 
-Expected finding:
+Expected:
 
-- Severity: high.
-- Signal: `constraint-removal-plus-destructive-effect`.
-- Outcome: `suspicious loosening`.
-- Recommended action: restore `AppendOnly`, remove the destructive effect, or add a specific reevaluation/evidence and obtain explicit reviewer acceptance.
-
-## Provider Boundary Widened
-
-Diff:
-
-```diff
--rule single_writer {
--  forbid provides AuditEvent except AuditStore
--}
-+rule single_writer {
-+  forbid provides AuditEvent except AuditStore or MaintenanceJob
-+}
-
-+relation MaintenanceProvidesAudit {
-+  kind provides
-+  connects MaintenanceJob -> AuditEvent
-+}
+```json
+{
+  "impact": "high",
+  "support": "none",
+  "disposition": "suspicious",
+  "signal": "constraint-removal-plus-destructive-effect",
+  "symbol": "AuditEvent / AuditStore.deleteEvent",
+  "before": "resource AuditEvent : AppendOnly",
+  "after": "resource AuditEvent; HardDelete<AuditEvent> is granted and emitted",
+  "replacement": ""
+}
 ```
 
-Expected finding:
-
-- Severity: high.
-- Signal: `provider-boundary-widening`.
-- Outcome: `suspicious loosening` unless a specific rationale explains the new provider.
-- Model context: declared provider boundary widened.
-
-## Justified Loosening
-
-Diff:
+## Supported High-Impact Loosening
 
 ```diff
 -resource ExportBundle : Protected
 +resource ExportBundle
 
-+reevaluation ExportBundleScopeUpdated {
-+  satisfies memory ExportBundleRetention
-+  outcome Revised
-+  summary "ExportBundle is now an ephemeral packaging artifact; retention is enforced on AuditEvent."
-+  reviewer DataPlatform
-+  decided_on "2026-06-07"
++rationale ExportBundleLifecycle {
++  summary "ExportBundle is ephemeral; retention remains on AuditEvent."
 +  evidence issue("123")
 +}
 ```
 
-Expected finding:
+Expected: `impact: high`, `support: specific`, and `disposition: supported`. Do not lower impact because decision evidence exists. Do not call the change necessary.
 
-- Severity: medium or low, depending on remaining capability changes.
-- Signal: `constraint-removal`.
-- Outcome: `justified loosening`.
-- Recommended action: verify the reevaluation names the correct memory/rationale and cites reviewable evidence.
+## Equivalent Relocation
 
-## Pure Tightening
+Base file:
 
-Diff:
+```shape
+rule audit_no_delete {
+  forbid final HardDelete<AuditEvent>
+}
+```
+
+Candidate moves the identical rule to another authored file.
+
+Expected: no removal finding. Record the candidate as disproved after locating the semantically identical declaration.
+
+## Equal Replacement
 
 ```diff
--resource AuditEvent
+-resource AuditEvent : Protected
 +resource AuditEvent : AppendOnly
-
- component AuditStore {
-   grants Append<AuditEvent>
- }
 ```
 
-Expected output:
-
-```markdown
-No deterministic Shape diagnostics and no advisory Guard risk findings from the authored contract diff reviewed.
-```
-
-An informational note is acceptable if the user asked for every material change.
+When `AppendOnly` supplies an equal or stronger relevant constraint, record the replacement and do not report an unsupported removal.
 
 ## Forbidden Path Weakened
-
-Diff:
 
 ```diff
  rule no_gateway_to_secrets {
@@ -108,16 +78,9 @@ Diff:
  }
 ```
 
-Expected finding:
+Expected: high-impact suspicious change when `provides` is a real declared route or is added by the same candidate.
 
-- Severity: high when a `provides` route exists or is added in the same diff.
-- Signal: `forbidden-path-traversal-weakening`.
-- Outcome: `suspicious loosening`.
-- Evidence: `provides` was removed from the forbidden traversal kinds.
-
-## Vendored Pack Upgrade
-
-Diff:
+## Vendored Pack Final Forbid Removal
 
 ```diff
  trait DurableAudit<T: Resource> {
@@ -126,71 +89,20 @@ Diff:
  }
 ```
 
-Expected finding:
+Expected: high-impact suspicious change. Default discovery keeps the vendored module active even when imports are unchanged.
 
-- Severity: high.
-- Signal: `domain-pack-final-forbid-removal`.
-- Outcome: `suspicious loosening` unless a specific reviewed pack update and
-  replacement constraint explains it.
-- Model context: the vendored module is active under default discovery even
-  when no project import changed.
-
-## Deleted Authored Shape File
-
-Deleted base file:
+## Generic Attestation
 
 ```shape
-module audit.retention
-
-resource AuditEvent : AppendOnly
-
-rule audit_no_runtime_cycle {
-  forbid hypercycle over calls or callbacks
-}
-
-implementation AuditStoreSource {
-  component AuditStore
+attest no_shape_change {
   source ts("src/audit/store.ts")
-  on_change require shape_update
+  reason "No changes."
 }
 ```
 
-Expected finding:
+Expected: medium impact, generic support, suspicious disposition, and an attestation-credibility signal when the changed-path list triggers this attestation.
 
-- Severity: high.
-- Signal: `deleted-authored-contract`.
-- Outcome: `suspicious loosening` or `review-enforcement weakening`.
-- Evidence: removed trait, hypercycle rule, and implementation coverage.
-- Recommended action: restore the contract in another authored `.shape` file or provide explicit rationale and replacement coverage.
-
-## Attestation Credibility Gap
-
-Diff:
-
-```diff
-+attest no_shape_change {
-+  source ts("src/audit/store.ts")
-+  reason "No changes."
-+}
-```
-
-Changed paths:
-
-```text
-src/audit/store.ts
-shape/audit.shape
-```
-
-Expected finding:
-
-- Severity: medium.
-- Signal: `attestation-credibility-gap`.
-- Outcome: `review-enforcement weakening`.
-- Recommended action: replace the generic reason with a path-specific explanation or update the Shape model.
-
-## Epistemic Regression
-
-Diff:
+## False Completeness
 
 ```diff
  fn exportPolicyBundle
@@ -199,9 +111,4 @@ Diff:
 +  }
 ```
 
-Expected finding:
-
-- Severity: high.
-- Signal: `false-completeness`.
-- Outcome: `suspicious loosening`.
-- Recommended action: keep `effects unknown` until effects are inspected, or list complete effects with evidence.
+Expected: high-impact suspicious epistemic regression unless reviewed evidence supports a genuinely complete empty effect set.

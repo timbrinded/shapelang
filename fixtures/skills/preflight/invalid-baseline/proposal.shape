@@ -1,0 +1,7 @@
+module skill_preflight_invalid
+
+change AddListEvents {
+  add fn AuditStore.listEvents
+    effects complete {
+    }
+}

@@ -1,0 +1,33 @@
+module shape.generated.ast.fixtures.skills.review.cross_object.generated_candidate.generated_policy
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource PolicyModuleGetPolicyAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("fixtures/skills/review/cross-object/candidate/policy.ts#getPolicy")
+  fingerprint ast.semantic_subtree_v1("sha256:4badcb740e91fe0c5db2a847d49c326a5cd3b83e18be701628eb8a2317915530")
+}
+
+component PolicyModule : GeneratedCandidate {
+  fn getPolicy
+    source ts("fixtures/skills/review/cross-object/candidate/policy.ts#getPolicy")
+    effects unknown
+}
+
+relation PolicyModuleGetPolicyGeneratedFromPolicyModuleGetPolicyAstAnchor {
+  kind generated_from
+  connects PolicyModule -> PolicyModuleGetPolicyAstAnchor
+  roles { PolicyModule as generated, PolicyModuleGetPolicyAstAnchor as syntax }
+  expects PolicyModuleGetPolicyAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4badcb740e91fe0c5db2a847d49c326a5cd3b83e18be701628eb8a2317915530")
+  summary "fn PolicyModule.getPolicy generated from typescript function_declaration at fixtures/skills/review/cross-object/candidate/policy.ts#getPolicy."
+}
+
+implementation PolicyModuleImpl {
+  paths {
+    "fixtures/skills/review/cross-object/candidate/policy.ts"
+  }
+  conforms_to PolicyModule
+}

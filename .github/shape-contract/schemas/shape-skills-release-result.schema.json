@@ -16,7 +16,7 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["name", "status", "summary", "scenarios"],
+        "required": ["name", "status", "summary", "static_checks", "cases"],
         "properties": {
           "name": {
             "type": "string",
@@ -35,28 +35,87 @@
           "summary": {
             "type": "string"
           },
-          "scenarios": {
+          "static_checks": {
             "type": "array",
             "items": {
-              "type": "string",
-              "enum": [
-                "draft-strict",
-                "explicit-graph",
-                "domain-packs",
-                "forbidden-paths",
-                "author-critic",
-                "lsp",
-                "target-aware-analyzer",
-                "stable-refs",
-                "guarded-unknown-plan",
-                "forbidden-path-removal",
-                "domain-pack-weakening",
-                "generated-only-exclusion",
-                "generated-navigation-only",
-                "authored-contract-surfaces",
-                "evidence-backed-cross-object",
-                "speculation-suppression"
-              ]
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["id", "status", "evidence"],
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "enum": [
+                    "mode-boundaries",
+                    "draft-strict",
+                    "current-cli",
+                    "stable-refs",
+                    "drift-review",
+                    "baseline-separation",
+                    "unknown-plan",
+                    "decision-contract",
+                    "impact-support-separation",
+                    "semantic-normalization",
+                    "source-boundary",
+                    "structured-output",
+                    "explicit-only",
+                    "clean-baseline",
+                    "no-invariant-quota",
+                    "ast-navigation",
+                    "code-first",
+                    "all-incident-relations",
+                    "false-positive-challenge",
+                    "drift-separation"
+                  ]
+                },
+                "status": {
+                  "type": "string",
+                  "enum": ["pass", "fail"]
+                },
+                "evidence": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "cases": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["id", "status", "outcome", "evidence", "commands"],
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "enum": [
+                    "lang-draft-strict",
+                    "lang-final-forbid",
+                    "preflight-guarded-unknown",
+                    "preflight-invalid-baseline",
+                    "guard-policy-removal",
+                    "guard-equivalent-relocation",
+                    "index-missing-ast",
+                    "index-no-invariant",
+                    "review-cross-object",
+                    "review-stale-model"
+                  ]
+                },
+                "status": {
+                  "type": "string",
+                  "enum": ["pass", "fail"]
+                },
+                "outcome": {
+                  "type": "string"
+                },
+                "evidence": {
+                  "type": "string"
+                },
+                "commands": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
             }
           }
         }

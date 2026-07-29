@@ -1,0 +1,33 @@
+module shape.generated.ast.fixtures.skills.review.stale_model.generated_candidate.config
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource ConfigModuleLoadConfigAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("fixtures/skills/review/stale-model/candidate/config.ts#loadConfig")
+  fingerprint ast.semantic_subtree_v1("sha256:9ec58e17f4697404449285a8c384d78ebef3696d4edd7b30d4644e42e1aff60d")
+}
+
+component ConfigModule : GeneratedCandidate {
+  fn loadConfig
+    source ts("fixtures/skills/review/stale-model/candidate/config.ts#loadConfig")
+    effects unknown
+}
+
+relation ConfigModuleLoadConfigGeneratedFromConfigModuleLoadConfigAstAnchor {
+  kind generated_from
+  connects ConfigModule -> ConfigModuleLoadConfigAstAnchor
+  roles { ConfigModule as generated, ConfigModuleLoadConfigAstAnchor as syntax }
+  expects ConfigModuleLoadConfigAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9ec58e17f4697404449285a8c384d78ebef3696d4edd7b30d4644e42e1aff60d")
+  summary "fn ConfigModule.loadConfig generated from typescript function_declaration at fixtures/skills/review/stale-model/candidate/config.ts#loadConfig."
+}
+
+implementation ConfigModuleImpl {
+  paths {
+    "fixtures/skills/review/stale-model/candidate/config.ts"
+  }
+  conforms_to ConfigModule
+}

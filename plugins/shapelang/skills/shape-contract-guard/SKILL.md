@@ -1,100 +1,105 @@
 ---
 name: shape-contract-guard
-description: Use when reviewing authored `.shape` or vendored domain-pack diffs before a PR or during implementation to find advisory contract risk that `shp check` may permit after the live model was loosened, including removed final forbids or path rules, weakened traits, widened grants/effects, coverage or binding removal, relation weakening, resolution changes, traceability loss, epistemic regression, or weak attestations.
+description: >-
+  This skill should be used to compare a base and candidate authored Shape
+  contract for semantic loosening that may remain checker-valid. Review
+  `.shape` and vendored-pack changes only. Do not use it for application-code
+  bugs, source-to-model drift, or whole-repository modeling.
 ---
 
 # Shape Contract Guard
 
 ## Boundary
 
-Review authored Shape contract diffs and report advisory risk. `shp check` is still the deterministic hard gate.
+Review authored Shape contract diffs and return advisory semantic risk. Keep deterministic checker diagnostics separate. Do not read application source.
 
-In v1:
+Read changed paths only for coverage, binding, and attestation context. Exclude `shape/generated/ast/**` from contract scoring. Treat source-controlled vendored `.shape` packs as active policy under default discovery.
 
-- Do not read application source code.
-- Do read changed file paths, authored `.shape` diffs, base contents for changed/deleted authored `.shape` files, `shp check`, `shp memory`, and focused graph/explain/obligations output.
-- Do not score `shape/generated/ast/**` diffs as contract changes. Mention generated AST only when an authored fingerprint expectation, checker diagnostic, analyzer hint, or user request points at it.
-- Do score source-controlled `.shape` modules under `shape/vendor/**`: vendoring installs their
-  declarations and pack-level rules even when no project import changed.
-- Do not switch the whole worktree to the base ref. If base content is needed, use path-limited reads such as `git show <base>:<path>`.
-- Keep checker diagnostics separate from Guard findings. Guard findings are advisory and must not use blocking language.
+## Shape Evidence Contract
+
+- Treat authored Shape as typed architecture claims, not proof of source correctness.
+- Treat generated AST and analyzer output as investigation leads only.
+- Keep final forbids final.
+- Preserve explicit uncertainty.
+- Use exact before/after declarations and current checker output.
+
+Resolve the repository's Shape command once, verify it with `--version`, and reuse it consistently.
+
+## Change Ledger
+
+Normalize each semantic root change before classification:
+
+```text
+Change:
+  symbol:
+  before fact:
+  after fact:
+  replacement:
+  semantic impact:
+  supporting decision evidence:
+  status: open | verified | disproved | blocked
+```
+
+Before retaining a change, check for:
+
+- relocation of the same declaration;
+- rename with equivalent semantics;
+- an equal or stronger replacement constraint;
+- formatter-only or ordering-only churn;
+- several textual edits representing one semantic root cause.
 
 ## Workflow
 
-1. Resolve the comparison.
-   - Use the user-provided base/head when present.
-   - Otherwise prefer the merge base between `HEAD` and the current upstream branch.
-   - If there is no upstream, try the repo's normal main branch.
-   - Treat uncommitted staged or unstaged authored `.shape` edits as part of the head review.
+1. Resolve the user-provided comparison, otherwise the merge base with upstream or the normal default branch. Include staged and unstaged authored edits for local review.
+2. Build an exact newline-delimited changed-file list without switching the worktree.
+3. Inspect the authored `.shape` diff, base content for deletions, and candidate declarations outside generated AST.
+4. Run `<SHAPE_CMD> check --changed-files <list>` when the changed list exists; otherwise run static `check`.
+5. Present deterministic diagnostics separately.
+6. Inspect the exact changed declaration, then focused `explain` and `graph show` output for touched symbols.
+7. Run `memory` and `obligations` only for guarded context. Run global graph output only when focused incidence cannot resolve a global path or rule.
+8. Read `references/signals.md`, complete the change ledger, and return one structured result.
 
-2. Collect changed paths.
-   - Build a newline-delimited changed-file list from base to head.
-   - Include staged and unstaged working-tree paths when the user is reviewing local work.
-   - Keep this list even though application source files are not read; it is needed for coverage, bindings, and attestation credibility.
+Do not use rationale as a semantic-impact discount. Specific support changes the disposition, not the magnitude of removing a boundary.
 
-3. Collect authored contract diff.
-   - Use a diff equivalent to:
+## Classification
 
-     ```bash
-     git diff <base>...HEAD -- '*.shape' ':(exclude)shape/generated/ast/**'
-     ```
+- `impact`: `high | medium | low`
+- `support`: `none | generic | specific`
+- `disposition`: `suspicious | supported | tightening | informational`
 
-   - Also inspect staged/unstaged authored `.shape` diffs when the worktree is dirty.
-   - For deleted authored `.shape` files, read the base file with `git show <base>:<path>`.
+Use `supported`, never `necessary`, for an intentional loosening. Guard normally cannot establish necessity without implementation evidence.
 
-4. Run deterministic Shape checks.
-   - Write changed paths to a temporary file.
-   - Run `shp check --changed-files <temp-list>` when the list is available.
-   - Fall back to `shp check` only when changed paths cannot be determined.
-   - If diagnostics exist, present them first and say they should be resolved before advisory findings.
+The host decides enforcement. The skill must not claim that advisory interpretation is a checker diagnostic.
 
-5. Load declared model context.
-   - Run `shp memory` by default.
-   - Run `shp graph stats` before relation-heavy review.
-   - Run `shp graph all --kind calls` and `shp graph all --kind provides` when relation context affects the finding.
-   - Run `shp graph show SYMBOL` and `shp explain SYMBOL` for touched symbols.
-   - Run `shp obligations` when diagnostics, guarded targets, memory, rationale, or reevaluation changes are involved.
+## Canonical Result
 
-6. Classify and score the diff.
-   - Read `references/signals.md` before scoring nontrivial diffs.
-   - Prefer exact symbol names and diff evidence over broad claims.
-   - Escalate co-occurring constraint removal plus newly allowed capability/effect on the same resource, component, function, or relation neighborhood.
-   - Treat removed or widened `forbid path` rules, traversal-kind changes, pack replacements, and
-     imports that alter name resolution as first-class contract changes.
-   - Lower severity when the diff includes specific rationale, memory, reevaluation, evidence, or attestation tied to the changed symbol.
+Return this JSON shape for automation. Interactive Markdown may render these exact fields without changing their meaning.
 
-7. Emit Markdown.
-   - Use the output template below.
-   - Keep no-finding output to one short paragraph.
-   - Group findings by severity when findings exist.
-
-## Output Template
-
-```markdown
-## Checker Diagnostics
-
-<Exact deterministic diagnostics or "No deterministic Shape diagnostics from <command>.">
-
-## Guard Findings
-
-### <severity>
-
-- Severity: high
-- Signal: constraint-removal-plus-destructive-effect
-- Outcome: suspicious loosening
-- Symbol: AuditEvent / AuditStore.deleteEvent
-- Evidence: `AppendOnly` was removed from `AuditEvent`; `HardDelete<AuditEvent>` was added.
-- Model context: <relevant traits, grants, relations, guards, ownership, implementation, binding, memory, or obligations>
-- Recommended action: restore the constraint, add a specific reevaluation/evidence, or keep the loosening only with explicit reviewer acceptance.
+```json
+{
+  "status": "pass | advisory | error",
+  "summary": "Concise result.",
+  "findings": [
+    {
+      "impact": "high | medium | low",
+      "support": "none | generic | specific",
+      "disposition": "suspicious | supported | tightening | informational",
+      "signal": "constraint-removal",
+      "symbol": "AuditEvent",
+      "before": "resource AuditEvent : AppendOnly",
+      "after": "resource AuditEvent",
+      "replacement": "",
+      "evidence": "Exact authored diff evidence.",
+      "model_context": "Relevant declared context.",
+      "recommended_action": "Restore or replace the constraint, or supply specific review evidence."
+    }
+  ]
+}
 ```
 
-Use one paragraph when there are no findings:
-
-```markdown
-No deterministic Shape diagnostics and no advisory Guard findings from the authored contract diff reviewed.
-```
+Use `pass` only with an empty findings array. Do not emit tightening as a risk finding unless the user requests an inventory of all material changes.
 
 ## References
 
-- `references/signals.md`: v1 signal taxonomy, severity rules, and declared-model-context wording rules.
-- `references/examples.md`: compact example diffs and expected findings.
+- `references/signals.md`: impact, support, disposition, and signal taxonomy.
+- `references/examples.md`: normalized before/after calibration cases.

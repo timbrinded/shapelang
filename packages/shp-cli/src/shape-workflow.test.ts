@@ -55,50 +55,87 @@ describe("Shape workflow", () => {
     expect(result.summary).toContain("Status: `drift`");
   });
 
-  test("fails guard gate on a high-severity finding", async () => {
+  test("fails guard gate on a high-impact suspicious finding", async () => {
     const result = await runSkillGate("guard", {
       status: "advisory",
       summary: "AppendOnly was removed while HardDelete was granted.",
-      findings: [guardFinding("high")]
+      findings: [guardFinding("high", "none", "suspicious")]
     });
 
     expect(result.exitCode).toBe(1);
-    expect(result.stderr).toContain("high-severity");
+    expect(result.stderr).toContain("high-impact suspicious");
   });
 
-  test("passes guard gate with only medium and low advisory findings", async () => {
+  test("passes guard gate for supported high impact and lower-impact findings", async () => {
     const result = await runSkillGate("guard", {
       status: "advisory",
       summary: "Broad authority was added with generic justification.",
-      findings: [guardFinding("medium"), guardFinding("low")]
+      findings: [
+        guardFinding("high", "specific", "supported"),
+        guardFinding("medium", "generic", "suspicious"),
+        guardFinding("low", "none", "informational")
+      ]
     });
 
     expect(result.exitCode).toBe(0);
     expect(result.stdout).toContain("non-blocking");
     expect(result.summary).toContain("Status: `advisory`");
-    expect(result.summary).toContain("high: 0, medium: 1, low: 1");
+    expect(result.summary).toContain("high: 1, medium: 1, low: 1");
+    expect(result.summary).toContain("suspicious: 1, supported: 1");
   });
 
   test("fails guard gate when a pass result includes findings", async () => {
     const result = await runSkillGate("guard", {
       status: "pass",
       summary: "No loosening found.",
-      findings: [guardFinding("low")]
+      findings: [guardFinding("low", "none", "informational")]
     });
 
     expect(result.exitCode).toBe(1);
     expect(result.stderr).toContain("pass status cannot include findings");
   });
 
-  test("fails guard gate on schema-violating severity", async () => {
+  test("fails guard gate on schema-violating impact", async () => {
     const result = await runSkillGate("guard", {
       status: "advisory",
-      summary: "Bad severity.",
-      findings: [{ ...guardFinding("low"), severity: "error" }]
+      summary: "Bad impact.",
+      findings: [{ ...guardFinding("low", "none", "informational"), impact: "error" }]
     });
 
     expect(result.exitCode).toBe(1);
-    expect(result.stderr).toContain("severity must be one of");
+    expect(result.stderr).toContain("impact must be one of");
+  });
+
+  test("preflight helper separates guarded proposal diagnostics from a valid baseline", async () => {
+    const result = await runPrecheck(
+      "fixtures/skills/preflight/guarded-unknown/shape",
+      "fixtures/skills/preflight/guarded-unknown/proposal.shape"
+    );
+
+    expect(result.exitCode).toBe(1);
+    expect(result.stderr).toBe("");
+    expect(JSON.parse(result.stdout)).toMatchObject({
+      mode: "contract-simulation",
+      decision: "blocked_by_contract",
+      baseline: { status: "valid", exit_code: 0 },
+      proposal: { status: "blocked", exit_code: 1 }
+    });
+  });
+
+  test("preflight helper stops on an invalid baseline before checking the proposal", async () => {
+    const result = await runPrecheck(
+      "fixtures/skills/preflight/invalid-baseline/shape",
+      "fixtures/skills/preflight/invalid-baseline/proposal.shape"
+    );
+
+    expect(result.exitCode).toBe(1);
+    expect(result.stderr).toBe("");
+    expect(JSON.parse(result.stdout)).toMatchObject({
+      mode: "contract-simulation",
+      decision: "baseline_invalid",
+      baseline: { status: "invalid", exit_code: 1 },
+      proposal: null
+    });
   });
 
   test("passes index gate on gaps by default and fails when strict", async () => {
@@ -179,22 +216,55 @@ describe("Shape workflow", () => {
     expect(result.stderr).toContain("pass status cannot include findings");
   });
 
-  test("fails the skills release gate on vacuous or incomplete scenario evidence", async () => {
+  test("fails the skills release gate on vacuous or incomplete conformance evidence", async () => {
     const vacuous = skillsReleaseResult();
     vacuous.summary = "";
     for (const skill of vacuous.skills) {
       skill.summary = "";
-      skill.scenarios = [];
+      skill.static_checks = [];
+      skill.cases = [];
     }
     const vacuousResult = await runSkillGate("release", vacuous);
     expect(vacuousResult.exitCode).toBe(1);
     expect(vacuousResult.stderr).toContain("summary must not be empty");
 
     const incomplete = skillsReleaseResult();
-    incomplete.skills[0]?.scenarios.pop();
+    incomplete.skills[0]?.static_checks.pop();
     const incompleteResult = await runSkillGate("release", incomplete);
     expect(incompleteResult.exitCode).toBe(1);
-    expect(incompleteResult.stderr).toContain("missing scenarios stable-refs");
+    expect(incompleteResult.stderr).toContain("missing static checks drift-review");
+
+    const unsupported = skillsReleaseResult();
+    const firstStaticCheck = unsupported.skills[0]?.static_checks[0];
+    if (!firstStaticCheck) {
+      throw new Error("skills release static-check fixture is empty");
+    }
+    firstStaticCheck.evidence = "";
+    const unsupportedResult = await runSkillGate("release", unsupported);
+    expect(unsupportedResult.exitCode).toBe(1);
+    expect(unsupportedResult.stderr).toContain("evidence must not be empty");
+  });
+
+  test("fails the skills release gate on wrong case outcomes or missing command evidence", async () => {
+    const wrongOutcome = skillsReleaseResult();
+    const firstCase = wrongOutcome.skills[0]?.cases[0];
+    if (!firstCase) {
+      throw new Error("skills release case fixture is empty");
+    }
+    firstCase.outcome = "strict_ready";
+    const wrongOutcomeResult = await runSkillGate("release", wrongOutcome);
+    expect(wrongOutcomeResult.exitCode).toBe(1);
+    expect(wrongOutcomeResult.stderr).toContain("outcome must be draft_only");
+
+    const missingCommand = skillsReleaseResult();
+    const commandCase = missingCommand.skills[0]?.cases[0];
+    if (!commandCase) {
+      throw new Error("skills release command fixture is empty");
+    }
+    commandCase.commands.pop();
+    const missingCommandResult = await runSkillGate("release", missingCommand);
+    expect(missingCommandResult.exitCode).toBe(1);
+    expect(missingCommandResult.stderr).toContain("missing command evidence");
   });
 
   test("fails closed on garbage results and unknown skills", async () => {
@@ -251,6 +321,10 @@ describe("Shape workflow", () => {
         GITHUB_BASE_REF: "master",
         GITHUB_SHA: "abc123"
       });
+      const releaseOutputs = prefilterOutputs("release", {
+        GITHUB_SHA: "abc123",
+        SHAPE_RELEASE_VERSION: "0.7.0"
+      });
 
       console.log(JSON.stringify({
         skip: outputs.skip,
@@ -259,7 +333,11 @@ describe("Shape workflow", () => {
         defaultsToSonnet: outputs.claude_args.includes("--model claude-sonnet-4-6"),
         inlinesSchema: outputs.claude_args.includes("--json-schema '{"),
         quotesAllowedTools: outputs.claude_args.includes("--allowedTools 'Read,"),
-        disallowsWrites: outputs.claude_args.includes("--disallowedTools Write,Edit")
+        disallowsWrites: outputs.claude_args.includes("--disallowedTools Write,Edit"),
+        releaseCanRunPrecheck: releaseOutputs.claude_args.includes(
+          "Bash(plugins/shapelang/skills/shape-contract-preflight/scripts/precheck.sh --shape-root fixtures/skills/preflight/guarded-unknown/shape --json fixtures/skills/preflight/guarded-unknown/proposal.shape)"
+        ),
+        releaseRejectsArbitraryShapeCommand: !releaseOutputs.claude_args.includes("SHAPE_CMD=*")
       }));
     `);
 
@@ -271,7 +349,9 @@ describe("Shape workflow", () => {
       defaultsToSonnet: true,
       inlinesSchema: true,
       quotesAllowedTools: true,
-      disallowsWrites: true
+      disallowsWrites: true,
+      releaseCanRunPrecheck: true,
+      releaseRejectsArbitraryShapeCommand: true
     });
   });
 
@@ -488,42 +568,147 @@ function reviewFinding() {
   };
 }
 
-function guardFinding(severity: "high" | "medium" | "low") {
+function guardFinding(
+  impact: "high" | "medium" | "low",
+  support: "none" | "generic" | "specific",
+  disposition: "suspicious" | "supported" | "tightening" | "informational"
+) {
   return {
-    severity,
+    impact,
+    support,
+    disposition,
     signal: "constraint-removal-plus-destructive-effect",
-    outcome: "suspicious loosening",
     symbol: "AuditEvent / AuditStore.deleteEvent",
+    before: "resource AuditEvent : AppendOnly",
+    after: "resource AuditEvent with HardDelete<AuditEvent>",
+    replacement: "",
     evidence: "AppendOnly was removed from AuditEvent; HardDelete<AuditEvent> was added.",
     model_context: "AuditStore owns AuditEvent; no reevaluation references the change.",
-    recommended_action: "Restore the constraint or add a specific reevaluation."
+    recommended_action: "Restore or replace the constraint, or provide specific review evidence."
   };
 }
 
 function skillsReleaseResult() {
-  const scenarios = {
-    "shape-lang": [
-      "draft-strict",
-      "explicit-graph",
-      "domain-packs",
-      "forbidden-paths",
-      "author-critic",
-      "lsp",
-      "target-aware-analyzer",
-      "stable-refs"
+  const staticChecks = {
+    "shape-lang": ["mode-boundaries", "draft-strict", "current-cli", "stable-refs", "drift-review"],
+    "shape-contract-preflight": [
+      "baseline-separation",
+      "unknown-plan",
+      "decision-contract",
+      "current-cli"
     ],
-    "shape-contract-preflight": ["guarded-unknown-plan", "stable-refs"],
     "shape-contract-guard": [
-      "forbidden-path-removal",
-      "domain-pack-weakening",
-      "generated-only-exclusion"
+      "impact-support-separation",
+      "semantic-normalization",
+      "source-boundary",
+      "structured-output"
     ],
-    "shape-index": ["generated-navigation-only", "authored-contract-surfaces", "stable-refs"],
-    "shape-review": ["evidence-backed-cross-object", "speculation-suppression", "stable-refs"]
+    "shape-index": ["explicit-only", "clean-baseline", "no-invariant-quota", "ast-navigation"],
+    "shape-review": [
+      "code-first",
+      "all-incident-relations",
+      "false-positive-challenge",
+      "drift-separation"
+    ]
+  };
+  const cases = {
+    "shape-lang": [
+      {
+        id: "lang-draft-strict",
+        status: "pass",
+        outcome: "draft_only",
+        evidence: "Draft check warns and exits zero; strict check rejects unknown effects.",
+        commands: [
+          "bun shp check --allow-unknown-effects fixtures/fail/unknown_effects/audit.shape",
+          "bun shp check fixtures/fail/unknown_effects/audit.shape"
+        ]
+      },
+      {
+        id: "lang-final-forbid",
+        status: "pass",
+        outcome: "blocked",
+        evidence: "The checker reports the final forbid despite Memory Guard context.",
+        commands: [
+          "bun shp check fixtures/fail/memory_guard_does_not_override_final_forbid/audit.shape"
+        ]
+      }
+    ],
+    "shape-contract-preflight": [
+      {
+        id: "preflight-guarded-unknown",
+        status: "pass",
+        outcome: "blocked_by_contract",
+        evidence: "The valid baseline is separate; the proposal reports its guard obligation.",
+        commands: [
+          "plugins/shapelang/skills/shape-contract-preflight/scripts/precheck.sh --shape-root fixtures/skills/preflight/guarded-unknown/shape --json fixtures/skills/preflight/guarded-unknown/proposal.shape"
+        ]
+      },
+      {
+        id: "preflight-invalid-baseline",
+        status: "pass",
+        outcome: "baseline_invalid",
+        evidence: "Strict baseline validation fails before the proposal is checked.",
+        commands: [
+          "plugins/shapelang/skills/shape-contract-preflight/scripts/precheck.sh --shape-root fixtures/skills/preflight/invalid-baseline/shape --json fixtures/skills/preflight/invalid-baseline/proposal.shape"
+        ]
+      }
+    ],
+    "shape-contract-guard": [
+      {
+        id: "guard-policy-removal",
+        status: "pass",
+        outcome: "high_suspicious",
+        evidence:
+          "AppendOnly is present in the base and absent without replacement in the candidate.",
+        commands: ["bun shp check fixtures/skills/guard/policy-removal/candidate/contract.shape"]
+      },
+      {
+        id: "guard-equivalent-relocation",
+        status: "pass",
+        outcome: "no_finding",
+        evidence: "The candidate retains the identical AppendOnly declaration in a relocated file.",
+        commands: [
+          "bun shp check fixtures/skills/guard/equivalent-relocation/candidate/retention.shape"
+        ]
+      }
+    ],
+    "shape-index": [
+      {
+        id: "index-missing-ast",
+        status: "pass",
+        outcome: "continue_without_ast",
+        evidence:
+          "AuthService remains source-inspectable; missing generated navigation is recorded.",
+        commands: ["bun shp check fixtures/skills/index/missing-ast/shape/system.shape"]
+      },
+      {
+        id: "index-no-invariant",
+        status: "pass",
+        outcome: "no_evidence_backed_invariant",
+        evidence: "The formatting helper supports no enforceable architecture claim.",
+        commands: []
+      }
+    ],
+    "shape-review": [
+      {
+        id: "review-cross-object",
+        status: "pass",
+        outcome: "code_comment",
+        evidence: "A missing policy now throws before the Gateway null-deny branch can run.",
+        commands: ["bun shp check fixtures/skills/review/cross-object/shape/model.shape"]
+      },
+      {
+        id: "review-stale-model",
+        status: "pass",
+        outcome: "model_warning_only",
+        evidence: "Source returns local config and does not make the authored remote call.",
+        commands: ["bun shp check fixtures/skills/review/stale-model/shape/model.shape"]
+      }
+    ]
   };
   return {
     status: "pass",
-    summary: "All shipped skills passed their release scenarios.",
+    summary: "All shipped skills passed static conformance and behavioral cases.",
     skills: [
       "shape-lang",
       "shape-contract-preflight",
@@ -534,7 +719,15 @@ function skillsReleaseResult() {
       name,
       status: "pass",
       summary: "Current commands and behavioral patterns are correct.",
-      scenarios: [...(scenarios[name as keyof typeof scenarios] ?? [])]
+      static_checks: (staticChecks[name as keyof typeof staticChecks] ?? []).map((id) => ({
+        id,
+        status: "pass",
+        evidence: `The shipped skill and current CLI satisfy ${id}.`
+      })),
+      cases: (cases[name as keyof typeof cases] ?? []).map((item) => ({
+        ...item,
+        commands: [...item.commands]
+      }))
     })),
     findings: [] as Array<{
       skill: string;
@@ -610,6 +803,32 @@ async function runSkillGate(
   } finally {
     await rm(tempDir, { recursive: true, force: true });
   }
+}
+
+async function runPrecheck(
+  shapeRoot: string,
+  proposal: string
+): Promise<{ exitCode: number; stdout: string; stderr: string }> {
+  const child = Bun.spawn(
+    [
+      "plugins/shapelang/skills/shape-contract-preflight/scripts/precheck.sh",
+      "--shape-root",
+      shapeRoot,
+      "--json",
+      proposal
+    ],
+    {
+      cwd: repoRoot,
+      stdout: "pipe",
+      stderr: "pipe"
+    }
+  );
+  const [exitCode, stdout, stderr] = await Promise.all([
+    child.exited,
+    new Response(child.stdout).text(),
+    new Response(child.stderr).text()
+  ]);
+  return { exitCode, stdout, stderr };
 }
 
 async function runNodeModuleProbe(source: string): Promise<{

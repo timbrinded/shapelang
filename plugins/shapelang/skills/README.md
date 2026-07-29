@@ -28,11 +28,11 @@ plugins/shapelang/skills/shape-index/SKILL.md
 plugins/shapelang/skills/shape-review/SKILL.md
 ```
 
-- `shape-lang`: general Shape authoring, review, formatting, debugging, and CLI workflows.
-- `shape-contract-guard`: advisory review of authored `.shape` contract diffs for suspicious loosenings that may pass `shp check`.
-- `shape-contract-preflight`: pre-implementation planning against an existing Shape model, with optional temporary `change` block checks.
-- `shape-index`: build a whole-codebase authored contract, using generated AST as navigation evidence and reviewing source before promoting architecture, boundaries, invariants, and domain-pack policy.
-- `shape-review`: review a code change for concrete local and cross-object bugs, verifying Shape-derived leads against real source before emitting findings.
+- `shape-lang`: incremental language authoring, diagnostics, teaching, operation, and source-to-model drift review.
+- `shape-contract-guard`: authored-contract diff review for checker-valid semantic loosening; it does not inspect application source.
+- `shape-contract-preflight`: current-model orientation and optional model-only contract simulation before implementation.
+- `shape-index`: explicit-only whole-repository modeling from a fixed clean baseline, without invariant quotas.
+- `shape-review`: concrete code-bug review with focused Shape evidence and separate stale-model warnings.
 
 ## Validate
 
@@ -42,9 +42,10 @@ After changing a skill or plugin manifest, run:
 bun run skills:check
 ```
 
-This validates the shipped skill set, entrypoint frontmatter, interface metadata,
-skill invocation prompts, and current CLI spelling. The release-candidate
-workflow also runs a blocking behavioral evaluation across all five skills,
+This validates the shipped skill set, entrypoint frontmatter, referenced
+resources, interface metadata, invocation policy, routing cases, output
+contracts, and current CLI spelling. The release-candidate workflow also runs
+a static conformance review and focused behavioral cases across all five skills,
 then pauses for manual approval in the `skills-release-approval` environment.
 
 If the skill change accompanies Shape implementation changes in this repository, also run the local project checks from the repository README.

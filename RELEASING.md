@@ -86,12 +86,14 @@ The workflow:
 
 1. validates metadata, generated artifacts, skills, source, Shape, docs, and
    release assets;
-2. runs a structured behavioral evaluation across all five shipped skills;
+2. runs static conformance and focused behavioral cases across all five
+   shipped skills;
 3. uploads `skill-release-report-<commit>`; and
 4. waits at `Skill Release Approval`.
 
 Inspect the report and job summary. A human must approve the protected
-environment. A model pass alone is insufficient. If any scenario or instruction
+environment. A model pass alone is insufficient. If any static check, fixture
+case, or instruction
 is wrong, reject the deployment, fix it in a new PR, merge, and dispatch a new
 candidate for the new commit.
 

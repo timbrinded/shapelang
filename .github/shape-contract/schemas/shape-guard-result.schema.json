@@ -17,26 +17,44 @@
         "type": "object",
         "additionalProperties": false,
         "required": [
-          "severity",
+          "impact",
+          "support",
+          "disposition",
           "signal",
-          "outcome",
           "symbol",
+          "before",
+          "after",
+          "replacement",
           "evidence",
           "model_context",
           "recommended_action"
         ],
         "properties": {
-          "severity": {
+          "impact": {
             "type": "string",
             "enum": ["high", "medium", "low"]
+          },
+          "support": {
+            "type": "string",
+            "enum": ["none", "generic", "specific"]
+          },
+          "disposition": {
+            "type": "string",
+            "enum": ["suspicious", "supported", "tightening", "informational"]
           },
           "signal": {
             "type": "string"
           },
-          "outcome": {
+          "symbol": {
             "type": "string"
           },
-          "symbol": {
+          "before": {
+            "type": "string"
+          },
+          "after": {
+            "type": "string"
+          },
+          "replacement": {
             "type": "string"
           },
           "evidence": {

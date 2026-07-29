@@ -1,0 +1,25 @@
+module skill_preflight_guarded
+
+resource PolicySnapshot
+
+component Gateway {
+  owns PolicySnapshot
+  grants Read<PolicySnapshot>
+  fn derivePolicyDecision : RefactorSensitive
+    effects complete {
+      Read<PolicySnapshot>
+    }
+}
+
+memory DecisionRefactorConstraint : RefactorConstraint<fn Gateway.derivePolicyDecision> {
+  applies_to fn Gateway.derivePolicyDecision
+  status Unexplained
+  confidence High
+  summary "Previous refactors broke error normalization."
+  who {
+    owner GatewayTeam
+  }
+  guards {
+    on_change require ReEvaluation<Self>
+  }
+}

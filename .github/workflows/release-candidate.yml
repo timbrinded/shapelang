@@ -90,7 +90,7 @@ jobs:
         run: bun run build:release
 
   skills:
-    name: Evaluate all shipped skills
+    name: Evaluate skill conformance and behavior
     needs: validate
     runs-on: ubuntu-latest
     permissions:
@@ -113,7 +113,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Run blocking skills evaluation
+      - name: Run static conformance and behavioral cases
         uses: ./.github/actions/claude-skill-review
         with:
           skill: release

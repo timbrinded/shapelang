@@ -1,0 +1,91 @@
+[
+  {
+    "id": "lang-draft-strict",
+    "skill": "shape-lang",
+    "task": "Determine whether the unknown-effect model is acceptable as a draft and as a final model.",
+    "fixture": "fixtures/fail/unknown_effects/audit.shape",
+    "required_commands": [
+      "bun shp check --allow-unknown-effects fixtures/fail/unknown_effects/audit.shape",
+      "bun shp check fixtures/fail/unknown_effects/audit.shape"
+    ]
+  },
+  {
+    "id": "lang-final-forbid",
+    "skill": "shape-lang",
+    "task": "Determine whether Memory Guard context can waive the final forbid.",
+    "fixture": "fixtures/fail/memory_guard_does_not_override_final_forbid/audit.shape",
+    "required_commands": [
+      "bun shp check fixtures/fail/memory_guard_does_not_override_final_forbid/audit.shape"
+    ]
+  },
+  {
+    "id": "preflight-guarded-unknown",
+    "skill": "shape-contract-preflight",
+    "task": "Simulate the guarded refactor with incomplete effect knowledge and distinguish the unknown-effect warning from the guard failure.",
+    "fixture": "fixtures/skills/preflight/guarded-unknown",
+    "required_commands": [
+      "plugins/shapelang/skills/shape-contract-preflight/scripts/precheck.sh --shape-root fixtures/skills/preflight/guarded-unknown/shape --json fixtures/skills/preflight/guarded-unknown/proposal.shape"
+    ]
+  },
+  {
+    "id": "preflight-invalid-baseline",
+    "skill": "shape-contract-preflight",
+    "task": "Identify whether the baseline or proposal is responsible for the failed simulation.",
+    "fixture": "fixtures/skills/preflight/invalid-baseline",
+    "required_commands": [
+      "plugins/shapelang/skills/shape-contract-preflight/scripts/precheck.sh --shape-root fixtures/skills/preflight/invalid-baseline/shape --json fixtures/skills/preflight/invalid-baseline/proposal.shape"
+    ]
+  },
+  {
+    "id": "guard-policy-removal",
+    "skill": "shape-contract-guard",
+    "task": "Classify the authored contract change without reading application source.",
+    "fixture": "fixtures/skills/guard/policy-removal",
+    "required_commands": [
+      "bun shp check fixtures/skills/guard/policy-removal/candidate/contract.shape"
+    ]
+  },
+  {
+    "id": "guard-equivalent-relocation",
+    "skill": "shape-contract-guard",
+    "task": "Determine whether deleting the base file removed the contract or relocated it unchanged.",
+    "fixture": "fixtures/skills/guard/equivalent-relocation",
+    "required_commands": [
+      "bun shp check fixtures/skills/guard/equivalent-relocation/candidate/retention.shape"
+    ]
+  },
+  {
+    "id": "index-missing-ast",
+    "skill": "shape-index",
+    "task": "Decide how whole-repository indexing should proceed when generated AST navigation is absent.",
+    "fixture": "fixtures/skills/index/missing-ast",
+    "required_commands": [
+      "bun shp check fixtures/skills/index/missing-ast/shape/system.shape"
+    ]
+  },
+  {
+    "id": "index-no-invariant",
+    "skill": "shape-index",
+    "task": "Classify the formatting utility without manufacturing an architecture invariant.",
+    "fixture": "fixtures/skills/index/no-invariant",
+    "required_commands": []
+  },
+  {
+    "id": "review-cross-object",
+    "skill": "shape-review",
+    "task": "Review the candidate change for a reachable bug and use Shape only to locate the affected caller.",
+    "fixture": "fixtures/skills/review/cross-object",
+    "required_commands": [
+      "bun shp check fixtures/skills/review/cross-object/shape/model.shape"
+    ]
+  },
+  {
+    "id": "review-stale-model",
+    "skill": "shape-review",
+    "task": "Determine whether the contradicted authored relation is a code bug comment or a separate model warning.",
+    "fixture": "fixtures/skills/review/stale-model",
+    "required_commands": [
+      "bun shp check fixtures/skills/review/stale-model/shape/model.shape"
+    ]
+  }
+]

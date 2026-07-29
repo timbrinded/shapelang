@@ -1,4 +1,4 @@
 interface:
   display_name: "Shape Lang"
-  short_description: "Author, review, debug, and validate Shape files"
-  default_prompt: "Use $shape-lang to author, review, teach, debug, or validate Shape architecture claims with current explicit graph commands, draft-to-strict checks, stable refs, domain packs, author/critic prompts, and LSP guidance."
+  short_description: "Operate incremental Shape language work"
+  default_prompt: "Use $shape-lang for this incremental Shape task. Inspect local conventions, make only evidence-backed claims, preserve explicit uncertainty, and report the exact deterministic validation performed."

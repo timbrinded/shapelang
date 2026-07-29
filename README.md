@@ -310,7 +310,8 @@ CI is wired in `.github/workflows/shape.yml` for generated AST freshness, format
 Release preparation synchronizes the CLI and both plugin manifest versions,
 updates pinned public docs, audits all five shipped skills, and passes the full
 repository suite. Run the `Release Candidate: Skills` workflow on the exact
-`master` commit first. Its behavioral evaluation is blocking, and its final
+`master` commit first. Its static skill conformance and focused behavioral
+cases are blocking, and its final
 `skills-release-approval` environment requires a manual reviewer.
 
 Only after that exact commit has a successful, manually approved candidate run

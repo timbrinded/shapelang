@@ -6,23 +6,95 @@ trait GeneratedAstAnchor {
 trait GeneratedCandidate {
 }
 
+resource CheckSkillsModuleCommandHelpRouteAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("scripts/check-skills.ts#commandHelpRoute")
+  fingerprint ast.semantic_subtree_v1("sha256:2fc21f831c09962877d79e7979ba0e43a2b396398c30bbedcea2025ae70338c1")
+}
+
+resource CheckSkillsModuleFilesRecursivelyAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("scripts/check-skills.ts#filesRecursively")
+  fingerprint ast.semantic_subtree_v1("sha256:50422e6a906bd0c742f4a8d9543262c9f8937d4b42a34374630776626d5cefc9")
+}
+
 resource CheckSkillsModuleParseFrontmatterAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("scripts/check-skills.ts#parseFrontmatter")
   fingerprint ast.semantic_subtree_v1("sha256:0b65342d39b4671d3d6529594c182e8834d9fdd0f89302dfde2270447bfcc648")
 }
 
+resource CheckSkillsModuleShellCommandExamplesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("scripts/check-skills.ts#shellCommandExamples")
+  fingerprint ast.semantic_subtree_v1("sha256:d2c404c5b93857b762cf611f06c15752d1ef39baeea2683b477b4c9ce58c2cf6")
+}
+
+resource CheckSkillsModuleValidateBehaviorCasesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("scripts/check-skills.ts#validateBehaviorCases")
+  fingerprint ast.semantic_subtree_v1("sha256:dfc73e9c653a761e4b94e2cd907e7a1fbdfe46c32e6923fbc39bfc720deee285")
+}
+
+resource CheckSkillsModuleValidateCurrentCliExamplesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("scripts/check-skills.ts#validateCurrentCliExamples")
+  fingerprint ast.semantic_subtree_v1("sha256:9fe195c51e85d4215667bd3cc6765bd509e1f879b3434ec4a7d5d255b950e0f6")
+}
+
+resource CheckSkillsModuleValidateReferencedResourcesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("scripts/check-skills.ts#validateReferencedResources")
+  fingerprint ast.semantic_subtree_v1("sha256:9ebc035307ea34b41e70fec94f0263b1ff6c574c103c3e4f492542d6545a6968")
+}
+
+resource CheckSkillsModuleValidateRoutingCasesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("scripts/check-skills.ts#validateRoutingCases")
+  fingerprint ast.semantic_subtree_v1("sha256:69af9316cb20fd6e45e65935934e987f35594e9d60da89d65bd93ecc9d924ec0")
+}
+
 resource CheckSkillsModuleValidateSkillPackageAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("scripts/check-skills.ts#validateSkillPackage")
-  fingerprint ast.semantic_subtree_v1("sha256:8ec8ce1826d43a0e96c7c3152f71d64259fd1f4aa0e740d4b5a984fdce32bfbb")
+  fingerprint ast.semantic_subtree_v1("sha256:1fb77e2c409a63c1b13d5f19189ecb32c7ec3d5a3d589e36bc39058aa8b795ee")
 }
 
 component CheckSkillsModule : GeneratedCandidate {
+  fn commandHelpRoute
+    source ts("scripts/check-skills.ts#commandHelpRoute")
+    effects unknown
+  fn filesRecursively
+    source ts("scripts/check-skills.ts#filesRecursively")
+    effects unknown
   fn parseFrontmatter
     source ts("scripts/check-skills.ts#parseFrontmatter")
+    effects unknown
+  fn shellCommandExamples
+    source ts("scripts/check-skills.ts#shellCommandExamples")
+    effects unknown
+  fn validateBehaviorCases
+    source ts("scripts/check-skills.ts#validateBehaviorCases")
+    effects unknown
+  fn validateCurrentCliExamples
+    source ts("scripts/check-skills.ts#validateCurrentCliExamples")
+    effects unknown
+  fn validateReferencedResources
+    source ts("scripts/check-skills.ts#validateReferencedResources")
+    effects unknown
+  fn validateRoutingCases
+    source ts("scripts/check-skills.ts#validateRoutingCases")
     effects unknown
   fn validateSkillPackage
     source ts("scripts/check-skills.ts#validateSkillPackage")
     effects unknown
+}
+
+relation CheckSkillsModuleCommandHelpRouteGeneratedFromCheckSkillsModuleCommandHelpRouteAstAnchor {
+  kind generated_from
+  connects CheckSkillsModule -> CheckSkillsModuleCommandHelpRouteAstAnchor
+  roles { CheckSkillsModule as generated, CheckSkillsModuleCommandHelpRouteAstAnchor as syntax }
+  expects CheckSkillsModuleCommandHelpRouteAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2fc21f831c09962877d79e7979ba0e43a2b396398c30bbedcea2025ae70338c1")
+  summary "fn CheckSkillsModule.commandHelpRoute generated from typescript function_declaration at scripts/check-skills.ts#commandHelpRoute."
+}
+
+relation CheckSkillsModuleFilesRecursivelyGeneratedFromCheckSkillsModuleFilesRecursivelyAstAnchor {
+  kind generated_from
+  connects CheckSkillsModule -> CheckSkillsModuleFilesRecursivelyAstAnchor
+  roles { CheckSkillsModule as generated, CheckSkillsModuleFilesRecursivelyAstAnchor as syntax }
+  expects CheckSkillsModuleFilesRecursivelyAstAnchor fingerprint ast.semantic_subtree_v1("sha256:50422e6a906bd0c742f4a8d9543262c9f8937d4b42a34374630776626d5cefc9")
+  summary "fn CheckSkillsModule.filesRecursively generated from typescript function_declaration at scripts/check-skills.ts#filesRecursively."
 }
 
 relation CheckSkillsModuleParseFrontmatterGeneratedFromCheckSkillsModuleParseFrontmatterAstAnchor {
@@ -33,11 +105,51 @@ relation CheckSkillsModuleParseFrontmatterGeneratedFromCheckSkillsModuleParseFro
   summary "fn CheckSkillsModule.parseFrontmatter generated from typescript function_declaration at scripts/check-skills.ts#parseFrontmatter."
 }
 
+relation CheckSkillsModuleShellCommandExamplesGeneratedFromCheckSkillsModuleShellCommandExamplesAstAnchor {
+  kind generated_from
+  connects CheckSkillsModule -> CheckSkillsModuleShellCommandExamplesAstAnchor
+  roles { CheckSkillsModule as generated, CheckSkillsModuleShellCommandExamplesAstAnchor as syntax }
+  expects CheckSkillsModuleShellCommandExamplesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d2c404c5b93857b762cf611f06c15752d1ef39baeea2683b477b4c9ce58c2cf6")
+  summary "fn CheckSkillsModule.shellCommandExamples generated from typescript function_declaration at scripts/check-skills.ts#shellCommandExamples."
+}
+
+relation CheckSkillsModuleValidateBehaviorCasesGeneratedFromCheckSkillsModuleValidateBehaviorCasesAstAnchor {
+  kind generated_from
+  connects CheckSkillsModule -> CheckSkillsModuleValidateBehaviorCasesAstAnchor
+  roles { CheckSkillsModule as generated, CheckSkillsModuleValidateBehaviorCasesAstAnchor as syntax }
+  expects CheckSkillsModuleValidateBehaviorCasesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:dfc73e9c653a761e4b94e2cd907e7a1fbdfe46c32e6923fbc39bfc720deee285")
+  summary "fn CheckSkillsModule.validateBehaviorCases generated from typescript function_declaration at scripts/check-skills.ts#validateBehaviorCases."
+}
+
+relation CheckSkillsModuleValidateCurrentCliExamplesGeneratedFromCheckSkillsModuleValidateCurrentCliExamplesAstAnchor {
+  kind generated_from
+  connects CheckSkillsModule -> CheckSkillsModuleValidateCurrentCliExamplesAstAnchor
+  roles { CheckSkillsModule as generated, CheckSkillsModuleValidateCurrentCliExamplesAstAnchor as syntax }
+  expects CheckSkillsModuleValidateCurrentCliExamplesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9fe195c51e85d4215667bd3cc6765bd509e1f879b3434ec4a7d5d255b950e0f6")
+  summary "fn CheckSkillsModule.validateCurrentCliExamples generated from typescript function_declaration at scripts/check-skills.ts#validateCurrentCliExamples."
+}
+
+relation CheckSkillsModuleValidateReferencedResourcesGeneratedFromCheckSkillsModuleValidateReferencedResourcesAstAnchor {
+  kind generated_from
+  connects CheckSkillsModule -> CheckSkillsModuleValidateReferencedResourcesAstAnchor
+  roles { CheckSkillsModule as generated, CheckSkillsModuleValidateReferencedResourcesAstAnchor as syntax }
+  expects CheckSkillsModuleValidateReferencedResourcesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9ebc035307ea34b41e70fec94f0263b1ff6c574c103c3e4f492542d6545a6968")
+  summary "fn CheckSkillsModule.validateReferencedResources generated from typescript function_declaration at scripts/check-skills.ts#validateReferencedResources."
+}
+
+relation CheckSkillsModuleValidateRoutingCasesGeneratedFromCheckSkillsModuleValidateRoutingCasesAstAnchor {
+  kind generated_from
+  connects CheckSkillsModule -> CheckSkillsModuleValidateRoutingCasesAstAnchor
+  roles { CheckSkillsModule as generated, CheckSkillsModuleValidateRoutingCasesAstAnchor as syntax }
+  expects CheckSkillsModuleValidateRoutingCasesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:69af9316cb20fd6e45e65935934e987f35594e9d60da89d65bd93ecc9d924ec0")
+  summary "fn CheckSkillsModule.validateRoutingCases generated from typescript function_declaration at scripts/check-skills.ts#validateRoutingCases."
+}
+
 relation CheckSkillsModuleValidateSkillPackageGeneratedFromCheckSkillsModuleValidateSkillPackageAstAnchor {
   kind generated_from
   connects CheckSkillsModule -> CheckSkillsModuleValidateSkillPackageAstAnchor
   roles { CheckSkillsModule as generated, CheckSkillsModuleValidateSkillPackageAstAnchor as syntax }
-  expects CheckSkillsModuleValidateSkillPackageAstAnchor fingerprint ast.semantic_subtree_v1("sha256:8ec8ce1826d43a0e96c7c3152f71d64259fd1f4aa0e740d4b5a984fdce32bfbb")
+  expects CheckSkillsModuleValidateSkillPackageAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1fb77e2c409a63c1b13d5f19189ecb32c7ec3d5a3d589e36bc39058aa8b795ee")
   summary "fn CheckSkillsModule.validateSkillPackage generated from typescript function_declaration at scripts/check-skills.ts#validateSkillPackage."
 }
 

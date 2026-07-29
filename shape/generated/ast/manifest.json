@@ -157,6 +157,48 @@
       ]
     },
     {
+      "module": "shape.generated.ast.fixtures.skills.index.missing_ast.src.auth",
+      "path": "shape/generated/ast/fixtures/skills/index/missing-ast/src/auth.shape",
+      "sources": [
+        "fixtures/skills/index/missing-ast/src/auth.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.fixtures.skills.index.no_invariant.src.format_label",
+      "path": "shape/generated/ast/fixtures/skills/index/no-invariant/src/format-label.shape",
+      "sources": [
+        "fixtures/skills/index/no-invariant/src/format-label.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.fixtures.skills.review.cross_object.base.generated_policy",
+      "path": "shape/generated/ast/fixtures/skills/review/cross-object/base/policy.shape",
+      "sources": [
+        "fixtures/skills/review/cross-object/base/policy.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.fixtures.skills.review.cross_object.generated_candidate.gateway",
+      "path": "shape/generated/ast/fixtures/skills/review/cross-object/candidate/gateway.shape",
+      "sources": [
+        "fixtures/skills/review/cross-object/candidate/gateway.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.fixtures.skills.review.cross_object.generated_candidate.generated_policy",
+      "path": "shape/generated/ast/fixtures/skills/review/cross-object/candidate/policy.shape",
+      "sources": [
+        "fixtures/skills/review/cross-object/candidate/policy.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.fixtures.skills.review.stale_model.generated_candidate.config",
+      "path": "shape/generated/ast/fixtures/skills/review/stale-model/candidate/config.shape",
+      "sources": [
+        "fixtures/skills/review/stale-model/candidate/config.ts"
+      ]
+    },
+    {
       "module": "shape.generated.ast.fixtures.generated_source.analyzer.drizzle.destructive",
       "path": "shape/generated/ast/fixtures/source/analyzer/drizzle/destructive.shape",
       "sources": [
@@ -1253,6 +1295,13 @@
       "path": "shape/generated/ast/scripts/check-release-metadata.shape",
       "sources": [
         "scripts/check-release-metadata.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.scripts.check_skills_test",
+      "path": "shape/generated/ast/scripts/check-skills.test.shape",
+      "sources": [
+        "scripts/check-skills.test.ts"
       ]
     },
     {
