@@ -47,34 +47,17 @@ Simulate the source-supported `HardDelete<AuditEvent>` effect. Return `blocked_b
 
 Do not propose removing the final forbid as a simulation fix.
 
-## Forbidden Route
+## Complete Multi-Leg Outcome
 
 Task:
 
 ```text
-Let RequestHandler read RestrictedRecord through DecisionEngine.
+Preflight a workflow whose requested outcome crosses several declared endpoints.
 ```
 
-Assume the baseline declares `RequestHandler`, `DecisionEngine`, and `RestrictedRecord`, but no route between them. The requested outcome requires both legs:
+List every architecture-significant leg needed to produce the outcome before creating a proposal. Include a missing leg only when its endpoints and relation kind are known. If any required leg would need to be invented, return `model_gap`. Do not treat a checker-valid partial route as evidence that the complete outcome may proceed.
 
-```shape
-module preflight
-
-change RestrictedRecordRoute {
-  add relation RequestHandlerCallsDecision {
-    kind calls
-    connects RequestHandler -> DecisionEngine
-  }
-  add relation DecisionProvidesRestrictedRecord {
-    kind provides
-    connects DecisionEngine -> RestrictedRecord
-  }
-}
-```
-
-Simulate both relations when their endpoints and kinds are known. Do not simulate only `RequestHandler -> DecisionEngine`; that facade omits the necessary `DecisionEngine -> RestrictedRecord` leg and can hide the forbidden end-to-end path.
-
-Return `architecture_decision_required` only when two source-supported architectures remain and have materially different contract consequences. Otherwise return `blocked_by_contract` for a current final forbidden path.
+Return `architecture_decision_required` only when two source-supported architectures remain and have materially different contract consequences. Return `blocked_by_contract` when the complete supported outcome conflicts with a current final rule.
 
 ## Exact Coverage Forecast
 

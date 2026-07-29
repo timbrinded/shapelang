@@ -60,16 +60,18 @@
     "expected_skill": "shape-index"
   },
   {
-    "id": "index-indirect",
-    "kind": "indirect",
+    "id": "index-implicit-negative",
+    "kind": "negative",
     "prompt": "From this clean baseline, inventory every subsystem and create a whole-repository Shape architecture model.",
-    "expected_skill": "shape-index"
+    "expected_skill": null,
+    "excluded_skills": ["shape-index"]
   },
   {
-    "id": "index-incomplete",
-    "kind": "incomplete",
+    "id": "index-incomplete-negative",
+    "kind": "negative",
     "prompt": "Refresh our repository-wide Shape index from a clean commit.",
-    "expected_skill": "shape-index"
+    "expected_skill": null,
+    "excluded_skills": ["shape-index"]
   },
   {
     "id": "review-direct",

@@ -55,6 +55,13 @@ The workflow uploads the structured report, then pauses at the protected
 `skills-release-approval` environment. A human must inspect and approve it. An
 automated pass alone cannot authorize a release.
 
+For material skill-instruction changes, approval also requires fresh held-out
+forward tests on the supported models. A task is not held out after its labels,
+structure, expected answer, or failure-specific wording has been copied into
+the skill. Store raw forward-test artifacts under `.research/`; the release
+workflow's read-only cases are smoke tests rather than a replacement for that
+evidence.
+
 If the candidate changes, merge the fix and rerun the gate. Approval is valid
 only for the exact successful workflow SHA.
 

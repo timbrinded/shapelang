@@ -1,6 +1,6 @@
 module skill_preflight_guarded
 
-change RefactorDecision {
-  modify fn Gateway.derivePolicyDecision
+change RefactorCompilation {
+  modify fn ReportCompiler.compileReport
     effects unknown
 }

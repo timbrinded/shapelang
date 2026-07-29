@@ -70,8 +70,8 @@ Good: prevent any declared calls/provides route from reaching a protected
 resource:
 
 ```shape
-rule no_request_handler_to_restricted_store {
-  forbid path RequestHandler -> RestrictedStore over calls or provides
+rule no_collector_to_external_sink {
+  forbid path TelemetryCollector -> ExternalSink over calls or provides
 }
 ```
 

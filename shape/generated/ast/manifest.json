@@ -157,6 +157,20 @@
       ]
     },
     {
+      "module": "shape.generated.ast.fixtures.skills.index.coverage_gaps.src.upload",
+      "path": "shape/generated/ast/fixtures/skills/index/coverage-gaps/src/upload.shape",
+      "sources": [
+        "fixtures/skills/index/coverage-gaps/src/upload.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.fixtures.skills.index.coverage_gaps.src.worker",
+      "path": "shape/generated/ast/fixtures/skills/index/coverage-gaps/src/worker.shape",
+      "sources": [
+        "fixtures/skills/index/coverage-gaps/src/worker.ts"
+      ]
+    },
+    {
       "module": "shape.generated.ast.fixtures.skills.index.missing_ast.src.auth",
       "path": "shape/generated/ast/fixtures/skills/index/missing-ast/src/auth.shape",
       "sources": [
@@ -171,31 +185,52 @@
       ]
     },
     {
-      "module": "shape.generated.ast.fixtures.skills.review.cross_object.base.generated_policy",
-      "path": "shape/generated/ast/fixtures/skills/review/cross-object/base/policy.shape",
+      "module": "shape.generated.ast.fixtures.skills.review.cross_object.base.catalog",
+      "path": "shape/generated/ast/fixtures/skills/review/cross-object/base/catalog.shape",
       "sources": [
-        "fixtures/skills/review/cross-object/base/policy.ts"
+        "fixtures/skills/review/cross-object/base/catalog.ts"
       ]
     },
     {
-      "module": "shape.generated.ast.fixtures.skills.review.cross_object.generated_candidate.gateway",
-      "path": "shape/generated/ast/fixtures/skills/review/cross-object/candidate/gateway.shape",
+      "module": "shape.generated.ast.fixtures.skills.review.cross_object.generated_candidate.catalog",
+      "path": "shape/generated/ast/fixtures/skills/review/cross-object/candidate/catalog.shape",
       "sources": [
-        "fixtures/skills/review/cross-object/candidate/gateway.ts"
+        "fixtures/skills/review/cross-object/candidate/catalog.ts"
       ]
     },
     {
-      "module": "shape.generated.ast.fixtures.skills.review.cross_object.generated_candidate.generated_policy",
-      "path": "shape/generated/ast/fixtures/skills/review/cross-object/candidate/policy.shape",
+      "module": "shape.generated.ast.fixtures.skills.review.cross_object.generated_candidate.presenter",
+      "path": "shape/generated/ast/fixtures/skills/review/cross-object/candidate/presenter.shape",
       "sources": [
-        "fixtures/skills/review/cross-object/candidate/policy.ts"
+        "fixtures/skills/review/cross-object/candidate/presenter.ts"
       ]
     },
     {
-      "module": "shape.generated.ast.fixtures.skills.review.stale_model.generated_candidate.config",
-      "path": "shape/generated/ast/fixtures/skills/review/stale-model/candidate/config.shape",
+      "module": "shape.generated.ast.fixtures.skills.review.root_cause_grouping.base.range",
+      "path": "shape/generated/ast/fixtures/skills/review/root-cause-grouping/base/range.shape",
       "sources": [
-        "fixtures/skills/review/stale-model/candidate/config.ts"
+        "fixtures/skills/review/root-cause-grouping/base/range.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.fixtures.skills.review.root_cause_grouping.generated_candidate.metrics",
+      "path": "shape/generated/ast/fixtures/skills/review/root-cause-grouping/candidate/metrics.shape",
+      "sources": [
+        "fixtures/skills/review/root-cause-grouping/candidate/metrics.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.fixtures.skills.review.root_cause_grouping.generated_candidate.range",
+      "path": "shape/generated/ast/fixtures/skills/review/root-cause-grouping/candidate/range.shape",
+      "sources": [
+        "fixtures/skills/review/root-cause-grouping/candidate/range.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.fixtures.skills.review.stale_model.generated_candidate.report",
+      "path": "shape/generated/ast/fixtures/skills/review/stale-model/candidate/report.shape",
+      "sources": [
+        "fixtures/skills/review/stale-model/candidate/report.ts"
       ]
     },
     {

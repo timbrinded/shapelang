@@ -148,7 +148,7 @@ metadata, and `docs/releases/vX.Y.Z.md`.
 Only release from a clean, pushed, current `master` commit. Before any tag,
 dispatch `.github/workflows/release-candidate.yml` on that exact commit. Its
 deterministic release suite plus blocking five-skill static conformance and
-focused behavioral cases must
+focused read-only behavioral canaries must
 pass, then a human must approve the protected `skills-release-approval`
 environment. Automated skill output alone does not authorize a release. Any
 fix requires a new merged commit and a new candidate run.

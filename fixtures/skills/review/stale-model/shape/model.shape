@@ -1,16 +1,16 @@
 module skill_review_stale
 
-component Gateway {
-  fn loadConfig
-    source ts("fixtures/skills/review/stale-model/candidate/config.ts#loadConfig")
+component RemoteTemplate {
+}
+
+component ReportLoader {
+  fn loadReport
+    source ts("fixtures/skills/review/stale-model/candidate/report.ts#loadReport")
     effects complete {
     }
 }
 
-component RemoteConfig {
-}
-
-relation GatewayCallsRemoteConfig {
+relation ReportLoaderCallsRemoteTemplate {
   kind calls
-  connects Gateway -> RemoteConfig
+  connects ReportLoader -> RemoteTemplate
 }

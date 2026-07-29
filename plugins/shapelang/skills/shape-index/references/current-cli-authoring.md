@@ -15,7 +15,7 @@ Use these `shp 0.7` patterns when building an authored whole-repository model. P
 | Source/model changes require docs review | `binding` |
 | Important source-supported behavior is not checker-enforceable | typed `rationale` or `memory`; do not call it an enforced invariant |
 
-Common examples of typed review context include deduplication/idempotency semantics and parsed-value versus raw-transport-response boundaries. Non-enforceable does not mean unimportant or omitted.
+Use typed review context only for a concrete behavior that source inspection supports and the current checker cannot represent as an effect, relation, rule, implementation, or binding. Non-enforceable does not mean unimportant or omitted.
 
 ## Stable Evidence
 
@@ -125,30 +125,30 @@ Use a binding when source or model changes require review of a named documentati
 Attach source-supported but non-enforceable behavior to the narrowest relevant target:
 
 ```shape
-resource CatalogResponse
+resource ReportTemplate
 
-component CatalogClient {
-  grants Read<CatalogResponse>
-  fn fetchItem : RefactorSensitive
-    source ts("src/catalog/client.ts#fetchItem")
-    description "Returns the parsed item contract consumed by callers."
+component ReportRenderer {
+  grants Read<ReportTemplate>
+  fn renderSummary : RefactorSensitive
+    source ts("src/reports/renderer.ts#renderSummary")
+    description "Produces the stable summary layout consumed by export adapters."
     effects complete {
-      Read<CatalogResponse>
-        evidence ts("src/catalog/client.ts#fetchItem")
+      Read<ReportTemplate>
+        evidence ts("src/reports/renderer.ts#renderSummary")
     }
 }
 
-memory ParsedItemBoundary : RefactorConstraint<fn CatalogClient.fetchItem> {
-  applies_to fn CatalogClient.fetchItem
+memory SummaryLayoutBoundary : RefactorConstraint<fn ReportRenderer.renderSummary> {
+  applies_to fn ReportRenderer.renderSummary
   status Explained
   confidence High
-  summary "Callers consume parsed item fields; returning the raw transport response breaks this boundary."
-  who { owner CatalogTeam }
+  summary "Export adapters rely on the current section ordering and labels."
+  who { owner ReportingTeam }
   guards { on_change require ReEvaluation<Self> }
 }
 ```
 
-For deduplication/idempotency, author the observed resource effect and coordination facts separately, then attach the retry/key behavior as typed review context when source supports it. The memory makes the behavior reviewable; it does not prove runtime correctness.
+Keep enforceable resource effects and coordination facts separate from typed review context. Memory makes the supported behavior reviewable; it does not prove runtime correctness.
 
 ## Validation
 

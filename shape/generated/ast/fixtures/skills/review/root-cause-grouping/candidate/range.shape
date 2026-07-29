@@ -1,0 +1,33 @@
+module shape.generated.ast.fixtures.skills.review.root_cause_grouping.generated_candidate.range
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource RangeModuleNormalizeRangeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("fixtures/skills/review/root-cause-grouping/candidate/range.ts#normalizeRange")
+  fingerprint ast.semantic_subtree_v1("sha256:c91e9e84477448fe1211dccd7a20042d2f1ba43ddc53bd2a35af76e44339a556")
+}
+
+component RangeModule : GeneratedCandidate {
+  fn normalizeRange
+    source ts("fixtures/skills/review/root-cause-grouping/candidate/range.ts#normalizeRange")
+    effects unknown
+}
+
+relation RangeModuleNormalizeRangeGeneratedFromRangeModuleNormalizeRangeAstAnchor {
+  kind generated_from
+  connects RangeModule -> RangeModuleNormalizeRangeAstAnchor
+  roles { RangeModule as generated, RangeModuleNormalizeRangeAstAnchor as syntax }
+  expects RangeModuleNormalizeRangeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c91e9e84477448fe1211dccd7a20042d2f1ba43ddc53bd2a35af76e44339a556")
+  summary "fn RangeModule.normalizeRange generated from typescript function_declaration at fixtures/skills/review/root-cause-grouping/candidate/range.ts#normalizeRange."
+}
+
+implementation RangeModuleImpl {
+  paths {
+    "fixtures/skills/review/root-cause-grouping/candidate/range.ts"
+  }
+  conforms_to RangeModule
+}

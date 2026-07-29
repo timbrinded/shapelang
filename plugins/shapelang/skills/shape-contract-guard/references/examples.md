@@ -72,9 +72,9 @@ When `AppendOnly` supplies an equal or stronger relevant constraint, record the 
 ## Forbidden Path Weakened
 
 ```diff
- rule no_request_handler_to_restricted_store {
--  forbid path RequestHandler -> RestrictedStore over calls or provides
-+  forbid path RequestHandler -> RestrictedStore over calls
+ rule no_build_to_production_store {
+-  forbid path BuildOrchestrator -> ProductionStore over calls or provides
++  forbid path BuildOrchestrator -> ProductionStore over calls
  }
 ```
 

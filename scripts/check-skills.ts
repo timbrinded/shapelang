@@ -13,13 +13,13 @@ const EXPECTED_SKILLS = [
 
 type ShippedSkill = (typeof EXPECTED_SKILLS)[number];
 
-const LEGACY_COMMANDS = [
-  "shp graph --stats",
-  "shp graph --kind",
-  "shp graph Gateway",
-  "shp graph <Symbol>",
-  "shp graph SYMBOL",
-  "--allow-draft-unknown"
+const LEGACY_COMMANDS = ["--allow-draft-unknown"] as const;
+
+const LEGACY_COMMAND_PATTERNS = [
+  {
+    description: "shp graph <symbol>",
+    pattern: /\bshp graph (?!all(?:\s|$)|show(?:\s|$)|stats(?:\s|$)|--help(?:\s|$))[^\s`]+/
+  }
 ] as const;
 
 const OUTPUT_CONTRACT_MARKERS: Record<ShippedSkill, readonly string[]> = {
@@ -60,6 +60,7 @@ interface RoutingCase {
   kind?: unknown;
   prompt?: unknown;
   expected_skill?: unknown;
+  excluded_skills?: unknown;
 }
 
 interface BehaviorCase {
@@ -247,6 +248,7 @@ function validateRoutingCases(
   const skillKinds = new Map<ShippedSkill, Set<RoutingKind>>(
     EXPECTED_SKILLS.map((skill) => [skill, new Set<RoutingKind>()])
   );
+  const excludedSkills = new Map<ShippedSkill, number>(EXPECTED_SKILLS.map((skill) => [skill, 0]));
 
   for (const item of cases) {
     if (typeof item.id !== "string" || item.id.trim() === "") {
@@ -269,6 +271,27 @@ function validateRoutingCases(
       failures.push(`${displayPath}: ${item.id} needs a non-empty prompt`);
     }
 
+    if (item.excluded_skills !== undefined) {
+      if (
+        !Array.isArray(item.excluded_skills) ||
+        item.excluded_skills.some(
+          (skill) => typeof skill !== "string" || !EXPECTED_SKILLS.includes(skill as ShippedSkill)
+        )
+      ) {
+        failures.push(`${displayPath}: ${item.id} has invalid excluded_skills`);
+      } else {
+        if (kind !== "negative") {
+          failures.push(`${displayPath}: only negative cases may exclude skills`);
+        }
+        for (const skill of item.excluded_skills as ShippedSkill[]) {
+          excludedSkills.set(skill, (excludedSkills.get(skill) ?? 0) + 1);
+          if (item.expected_skill === skill) {
+            failures.push(`${displayPath}: ${item.id} both selects and excludes ${skill}`);
+          }
+        }
+      }
+    }
+
     if (item.expected_skill === null) {
       if (kind !== "negative") {
         failures.push(`${displayPath}: only negative cases may use expected_skill null`);
@@ -282,7 +305,11 @@ function validateRoutingCases(
       failures.push(`${displayPath}: ${item.id} has unknown expected_skill`);
       continue;
     }
-    skillKinds.get(item.expected_skill as ShippedSkill)?.add(kind);
+    const expectedSkill = item.expected_skill as ShippedSkill;
+    if (expectedSkill === "shape-index" && kind !== "direct") {
+      failures.push(`${displayPath}: shape-index may only be selected by direct routing cases`);
+    }
+    skillKinds.get(expectedSkill)?.add(kind);
   }
 
   for (const kind of ROUTING_KINDS) {
@@ -291,11 +318,18 @@ function validateRoutingCases(
     }
   }
   for (const skill of EXPECTED_SKILLS) {
-    for (const kind of ["direct", "indirect", "incomplete"] as const) {
+    const requiredKinds =
+      skill === "shape-index"
+        ? (["direct"] as const)
+        : (["direct", "indirect", "incomplete"] as const);
+    for (const kind of requiredKinds) {
       if (!skillKinds.get(skill)?.has(kind)) {
         failures.push(`${displayPath}: ${skill} needs a ${kind} routing case`);
       }
     }
+  }
+  if ((excludedSkills.get("shape-index") ?? 0) < 2) {
+    failures.push(`${displayPath}: shape-index needs indirect and incomplete negative cases`);
   }
 }
 
@@ -362,8 +396,8 @@ function validateBehaviorCases(repositoryRoot: string, failures: string[]): void
   }
 
   for (const skill of EXPECTED_SKILLS) {
-    if (skillCounts.get(skill) !== 2) {
-      failures.push(`${displayPath}: ${skill} must have exactly two behavioral cases`);
+    if ((skillCounts.get(skill) ?? 0) < 2) {
+      failures.push(`${displayPath}: ${skill} must have at least two behavioral cases`);
     }
   }
 }
@@ -426,6 +460,13 @@ export function validateSkillPackage(repositoryRoot: string): string[] {
     for (const legacyCommand of LEGACY_COMMANDS) {
       if (contents.includes(legacyCommand)) {
         failures.push(`${displayPath}: use current CLI syntax instead of \`${legacyCommand}\``);
+      }
+    }
+    for (const legacyCommand of LEGACY_COMMAND_PATTERNS) {
+      if (legacyCommand.pattern.test(contents)) {
+        failures.push(
+          `${displayPath}: use current CLI syntax instead of \`${legacyCommand.description}\``
+        );
       }
     }
 

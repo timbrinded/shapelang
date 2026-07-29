@@ -1,14 +1,18 @@
-# Shape Skills Static Conformance And Behavioral Canaries
+# Shape Skills Static Conformance And Read-Only Behavioral Canaries
 
 Evaluate all five shipped skills against the current Shape v0.7.0 CLI. This is
 a blocking release-candidate check with two layers:
 
 1. static conformance of routing, evidence boundaries, references, commands,
    output contracts, and completion rules;
-2. focused behavioral cases using committed miniature fixtures.
+2. focused read-only behavioral canaries using committed miniature fixtures.
 
 Do not claim that a case passed merely because its identifier appears in this
 prompt.
+
+Do not inspect `.github/scripts/run-claude-skill.mjs`, workflow gate tests, or
+other grading internals that encode expected results. Derive every case outcome
+from its task, fixture, skill instructions, and command evidence.
 
 Read:
 
@@ -52,7 +56,7 @@ Fail static conformance when a skill:
 
 ## Behavioral cases
 
-Run both cases assigned to each skill in `fixtures/skills/cases.json`. Inspect
+Run every case assigned to each skill in `fixtures/skills/cases.json`. Inspect
 the complete fixture and execute every listed required command. A command that
 is expected to diagnose a failure may exit non-zero; capture that result rather
 than skipping the case.
@@ -62,20 +66,7 @@ Outer-repository authored Shape or generated AST does not supply missing
 fixture evidence.
 
 Record the exact commands in the case result and cite concrete command output,
-authored declarations, or source behavior in `evidence`.
-
-The expected semantic outcomes are:
-
-- `lang-draft-strict`: `draft_only`;
-- `lang-final-forbid`: `blocked`;
-- `preflight-guarded-unknown`: `blocked_by_contract`;
-- `preflight-invalid-baseline`: `baseline_invalid`;
-- `guard-policy-removal`: `high_suspicious`;
-- `guard-equivalent-relocation`: `no_finding`;
-- `index-missing-ast`: `continue_without_ast`;
-- `index-no-invariant`: `no_evidence_backed_invariant`;
-- `review-cross-object`: `code_comment`;
-- `review-stale-model`: `model_warning_only`.
+authored declarations, source behavior, and focused symbols in `evidence`.
 
 Set a case to `fail` when the skill's instructions lead to another outcome,
 when required evidence cannot be obtained, or when a required command was not
@@ -83,3 +74,6 @@ run. Add one release finding for every failed static check or behavioral case.
 
 Return one result for each shipped skill. Overall status may be `pass` only when
 all static checks and behavioral cases pass and `findings` is empty.
+
+These read-only canaries are release smoke tests. They do not replace fresh
+held-out forward tests of material skill changes on supported models.

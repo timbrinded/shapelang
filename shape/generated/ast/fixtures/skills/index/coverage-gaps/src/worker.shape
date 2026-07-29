@@ -1,0 +1,33 @@
+module shape.generated.ast.fixtures.skills.index.coverage_gaps.src.worker
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource WorkerModuleResizeImageAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("fixtures/skills/index/coverage-gaps/src/worker.ts#resizeImage")
+  fingerprint ast.semantic_subtree_v1("sha256:3d8558671cf4d89ee66e51bc112f66f5fd6636f49b8d58d6a949ba909f3a681e")
+}
+
+component WorkerModule : GeneratedCandidate {
+  fn resizeImage
+    source ts("fixtures/skills/index/coverage-gaps/src/worker.ts#resizeImage")
+    effects unknown
+}
+
+relation WorkerModuleResizeImageGeneratedFromWorkerModuleResizeImageAstAnchor {
+  kind generated_from
+  connects WorkerModule -> WorkerModuleResizeImageAstAnchor
+  roles { WorkerModule as generated, WorkerModuleResizeImageAstAnchor as syntax }
+  expects WorkerModuleResizeImageAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3d8558671cf4d89ee66e51bc112f66f5fd6636f49b8d58d6a949ba909f3a681e")
+  summary "fn WorkerModule.resizeImage generated from typescript function_declaration at fixtures/skills/index/coverage-gaps/src/worker.ts#resizeImage."
+}
+
+implementation WorkerModuleImpl {
+  paths {
+    "fixtures/skills/index/coverage-gaps/src/worker.ts"
+  }
+  conforms_to WorkerModule
+}

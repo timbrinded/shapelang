@@ -45,7 +45,7 @@ Group findings by the smallest code correction that resolves them.
 
 - If multiple symptoms arise from the same changed behavior and are fixed by the same correction, emit one comment.
 - Emit a second comment only when it has a distinct root cause and needs a distinct fix.
-- Treat raw-response leakage, changed field names, signature mismatch, and missing parsed fields as one finding when restoring the parsed return contract and its signature fixes them together.
+- Group by the correcting change, not by the number of downstream manifestations.
 
 ## Workflow
 

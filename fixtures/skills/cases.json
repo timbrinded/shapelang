@@ -37,6 +37,15 @@
     ]
   },
   {
+    "id": "preflight-complete-route",
+    "skill": "shape-contract-preflight",
+    "task": "Before implementing archive publishing, preflight the supplied proposal for an outcome in which SubmissionApi retrieves PublishedArchive through ArchiveWorker.",
+    "fixture": "fixtures/skills/preflight/complete-route",
+    "required_commands": [
+      "plugins/shapelang/skills/shape-contract-preflight/scripts/precheck.sh --shape-root fixtures/skills/preflight/complete-route/shape --json fixtures/skills/preflight/complete-route/proposal.shape"
+    ]
+  },
+  {
     "id": "guard-policy-removal",
     "skill": "shape-contract-guard",
     "task": "Classify the authored contract change without reading application source.",
@@ -71,6 +80,15 @@
     "required_commands": []
   },
   {
+    "id": "index-coverage-gaps",
+    "skill": "shape-index",
+    "task": "Refresh the miniature image-processing repository's authored model and report whether it is complete, including any source-supported gaps.",
+    "fixture": "fixtures/skills/index/coverage-gaps",
+    "required_commands": [
+      "bun shp check fixtures/skills/index/coverage-gaps/shape/system.shape"
+    ]
+  },
+  {
     "id": "review-cross-object",
     "skill": "shape-review",
     "task": "Review the candidate change for a reachable bug and use Shape only to locate the affected caller.",
@@ -86,6 +104,17 @@
     "fixture": "fixtures/skills/review/stale-model",
     "required_commands": [
       "bun shp check fixtures/skills/review/stale-model/shape/model.shape"
+    ]
+  },
+  {
+    "id": "review-root-cause-grouping",
+    "skill": "shape-review",
+    "task": "Review the candidate range change for real reachable bugs, using the fixture's contract and authored Shape model as evidence.",
+    "fixture": "fixtures/skills/review/root-cause-grouping",
+    "required_commands": [
+      "bun shp check fixtures/skills/review/root-cause-grouping/shape/model.shape",
+      "bun shp explain RangeNormalizer.normalizeRange fixtures/skills/review/root-cause-grouping/shape/model.shape",
+      "bun shp graph show RangeNormalizer fixtures/skills/review/root-cause-grouping/shape/model.shape"
     ]
   }
 ]

@@ -91,12 +91,15 @@
                     "lang-final-forbid",
                     "preflight-guarded-unknown",
                     "preflight-invalid-baseline",
+                    "preflight-complete-route",
                     "guard-policy-removal",
                     "guard-equivalent-relocation",
                     "index-missing-ast",
                     "index-no-invariant",
+                    "index-coverage-gaps",
                     "review-cross-object",
-                    "review-stale-model"
+                    "review-stale-model",
+                    "review-root-cause-grouping"
                   ]
                 },
                 "status": {

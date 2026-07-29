@@ -86,7 +86,7 @@ The workflow:
 
 1. validates metadata, generated artifacts, skills, source, Shape, docs, and
    release assets;
-2. runs static conformance and focused behavioral cases across all five
+2. runs static conformance and focused read-only behavioral canaries across all five
    shipped skills;
 3. uploads `skill-release-report-<commit>`; and
 4. waits at `Skill Release Approval`.
@@ -96,6 +96,13 @@ environment. A model pass alone is insufficient. If any static check, fixture
 case, or instruction
 is wrong, reject the deployment, fix it in a new PR, merge, and dispatch a new
 candidate for the new commit.
+
+When a release changes skill instructions in response to behavioral evaluation,
+approval also requires fresh held-out forward-test evidence on the supported
+models. Do not reuse a task after copying its labels, structure, expected
+answer, or failure-specific wording into the skill. Keep raw forward-test
+artifacts under `.research/`; the read-only release canaries are smoke tests,
+not a substitute for that evidence.
 
 The candidate run must finish successfully for the exact current `master` SHA.
 Do not reuse approval from an older commit.

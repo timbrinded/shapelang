@@ -1,20 +1,20 @@
 module skill_review_cross_object
 
-component Gateway {
-  fn handleRequest
-    source ts("fixtures/skills/review/cross-object/candidate/gateway.ts#handleRequest")
+component RecordCatalog {
+  fn getLabel
+    source ts("fixtures/skills/review/cross-object/candidate/catalog.ts#getLabel")
     effects complete {
     }
 }
 
-component PolicyService {
-  fn getPolicy
-    source ts("fixtures/skills/review/cross-object/candidate/policy.ts#getPolicy")
+component RecordPresenter {
+  fn presentRecord
+    source ts("fixtures/skills/review/cross-object/candidate/presenter.ts#presentRecord")
     effects complete {
     }
 }
 
-relation GatewayCallsPolicy {
+relation PresenterCallsCatalog {
   kind calls
-  connects Gateway -> PolicyService
+  connects RecordPresenter -> RecordCatalog
 }

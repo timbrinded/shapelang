@@ -265,6 +265,17 @@ describe("Shape workflow", () => {
     const missingCommandResult = await runSkillGate("release", missingCommand);
     expect(missingCommandResult.exitCode).toBe(1);
     expect(missingCommandResult.stderr).toContain("missing command evidence");
+
+    const missingMarker = skillsReleaseResult();
+    const indexSkill = missingMarker.skills.find((skill) => skill.name === "shape-index");
+    const indexCase = indexSkill?.cases.find((item) => item.id === "index-coverage-gaps");
+    if (!indexCase) {
+      throw new Error("skills release evidence-marker fixture is empty");
+    }
+    indexCase.evidence = "The candidate is incomplete.";
+    const missingMarkerResult = await runSkillGate("release", missingMarker);
+    expect(missingMarkerResult.exitCode).toBe(1);
+    expect(missingMarkerResult.stderr).toContain("evidence must include coordinated_call");
   });
 
   test("fails closed on garbage results and unknown skills", async () => {
@@ -337,6 +348,12 @@ describe("Shape workflow", () => {
         releaseCanRunPrecheck: releaseOutputs.claude_args.includes(
           "Bash(plugins/shapelang/skills/shape-contract-preflight/scripts/precheck.sh --shape-root fixtures/skills/preflight/guarded-unknown/shape --json fixtures/skills/preflight/guarded-unknown/proposal.shape)"
         ),
+        releaseCanRunCompleteRoute: releaseOutputs.claude_args.includes(
+          "Bash(plugins/shapelang/skills/shape-contract-preflight/scripts/precheck.sh --shape-root fixtures/skills/preflight/complete-route/shape --json fixtures/skills/preflight/complete-route/proposal.shape)"
+        ),
+        releaseHidesExpectedOutcomes:
+          !releaseOutputs.prompt.includes("draft_only") &&
+          !releaseOutputs.prompt.includes("single_code_comment"),
         releaseRejectsArbitraryShapeCommand: !releaseOutputs.claude_args.includes("SHAPE_CMD=*")
       }));
     `);
@@ -351,6 +368,8 @@ describe("Shape workflow", () => {
       quotesAllowedTools: true,
       disallowsWrites: true,
       releaseCanRunPrecheck: true,
+      releaseCanRunCompleteRoute: true,
+      releaseHidesExpectedOutcomes: true,
       releaseRejectsArbitraryShapeCommand: true
     });
   });
@@ -651,6 +670,16 @@ function skillsReleaseResult() {
         commands: [
           "plugins/shapelang/skills/shape-contract-preflight/scripts/precheck.sh --shape-root fixtures/skills/preflight/invalid-baseline/shape --json fixtures/skills/preflight/invalid-baseline/proposal.shape"
         ]
+      },
+      {
+        id: "preflight-complete-route",
+        status: "pass",
+        outcome: "blocked_by_contract",
+        evidence:
+          "SubmissionApi can reach PublishedArchive only through ArchiveWorker, so the omitted second leg completes the forbidden route.",
+        commands: [
+          "plugins/shapelang/skills/shape-contract-preflight/scripts/precheck.sh --shape-root fixtures/skills/preflight/complete-route/shape --json fixtures/skills/preflight/complete-route/proposal.shape"
+        ]
       }
     ],
     "shape-contract-guard": [
@@ -687,6 +716,14 @@ function skillsReleaseResult() {
         outcome: "no_evidence_backed_invariant",
         evidence: "The formatting helper supports no enforceable architecture claim.",
         commands: []
+      },
+      {
+        id: "index-coverage-gaps",
+        status: "pass",
+        outcome: "incomplete_with_explicit_gaps",
+        evidence:
+          "The source supports a coordinated_call, while docs/images.md requires a missing binding.",
+        commands: ["bun shp check fixtures/skills/index/coverage-gaps/shape/system.shape"]
       }
     ],
     "shape-review": [
@@ -694,7 +731,8 @@ function skillsReleaseResult() {
         id: "review-cross-object",
         status: "pass",
         outcome: "code_comment",
-        evidence: "A missing policy now throws before the Gateway null-deny branch can run.",
+        evidence:
+          "A missing record now throws before the RecordPresenter not-found branch can run.",
         commands: ["bun shp check fixtures/skills/review/cross-object/shape/model.shape"]
       },
       {
@@ -703,6 +741,18 @@ function skillsReleaseResult() {
         outcome: "model_warning_only",
         evidence: "Source returns local config and does not make the authored remote call.",
         commands: ["bun shp check fixtures/skills/review/stale-model/shape/model.shape"]
+      },
+      {
+        id: "review-root-cause-grouping",
+        status: "pass",
+        outcome: "single_code_comment",
+        evidence:
+          "RangeNormalizer.normalizeRange via shp explain RangeNormalizer.normalizeRange changes end to end - 1; both downstream symptoms share that correction.",
+        commands: [
+          "bun shp check fixtures/skills/review/root-cause-grouping/shape/model.shape",
+          "bun shp explain RangeNormalizer.normalizeRange fixtures/skills/review/root-cause-grouping/shape/model.shape",
+          "bun shp graph show RangeNormalizer fixtures/skills/review/root-cause-grouping/shape/model.shape"
+        ]
       }
     ]
   };

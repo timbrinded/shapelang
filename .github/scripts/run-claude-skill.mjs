@@ -628,6 +628,13 @@ export const RELEASE_SKILL_CASES = {
       commands: [
         "plugins/shapelang/skills/shape-contract-preflight/scripts/precheck.sh --shape-root fixtures/skills/preflight/invalid-baseline/shape --json fixtures/skills/preflight/invalid-baseline/proposal.shape"
       ]
+    },
+    "preflight-complete-route": {
+      outcome: "blocked_by_contract",
+      evidenceMarkers: ["SubmissionApi", "ArchiveWorker", "PublishedArchive"],
+      commands: [
+        "plugins/shapelang/skills/shape-contract-preflight/scripts/precheck.sh --shape-root fixtures/skills/preflight/complete-route/shape --json fixtures/skills/preflight/complete-route/proposal.shape"
+      ]
     }
   },
   "shape-contract-guard": {
@@ -650,6 +657,11 @@ export const RELEASE_SKILL_CASES = {
     "index-no-invariant": {
       outcome: "no_evidence_backed_invariant",
       commands: []
+    },
+    "index-coverage-gaps": {
+      outcome: "incomplete_with_explicit_gaps",
+      evidenceMarkers: ["coordinated_call", "binding", "docs/images.md"],
+      commands: ["bun shp check fixtures/skills/index/coverage-gaps/shape/system.shape"]
     }
   },
   "shape-review": {
@@ -660,6 +672,19 @@ export const RELEASE_SKILL_CASES = {
     "review-stale-model": {
       outcome: "model_warning_only",
       commands: ["bun shp check fixtures/skills/review/stale-model/shape/model.shape"]
+    },
+    "review-root-cause-grouping": {
+      outcome: "single_code_comment",
+      evidenceMarkers: [
+        "RangeNormalizer.normalizeRange",
+        "shp explain RangeNormalizer.normalizeRange",
+        "end - 1"
+      ],
+      commands: [
+        "bun shp check fixtures/skills/review/root-cause-grouping/shape/model.shape",
+        "bun shp explain RangeNormalizer.normalizeRange fixtures/skills/review/root-cause-grouping/shape/model.shape",
+        "bun shp graph show RangeNormalizer fixtures/skills/review/root-cause-grouping/shape/model.shape"
+      ]
     }
   }
 };
@@ -711,6 +736,12 @@ export function skillsReleaseFailureMessage(result) {
       }
       if (behaviorCase.evidence.trim() === "") {
         return `Invalid skills release result: ${behaviorCase.id} evidence must not be empty.`;
+      }
+      const normalizedEvidence = behaviorCase.evidence.toLowerCase();
+      for (const marker of expectedCase.evidenceMarkers ?? []) {
+        if (!normalizedEvidence.includes(marker.toLowerCase())) {
+          return `Invalid skills release result: ${behaviorCase.id} evidence must include ${marker}.`;
+        }
       }
       const commands = new Set(behaviorCase.commands);
       for (const requiredCommand of expectedCase.commands) {
@@ -824,7 +855,8 @@ const SKILLS = {
       "Bash(bun shp graph *)",
       "Bash(bun shp analyze *)",
       "Bash(plugins/shapelang/skills/shape-contract-preflight/scripts/precheck.sh --shape-root fixtures/skills/preflight/guarded-unknown/shape --json fixtures/skills/preflight/guarded-unknown/proposal.shape)",
-      "Bash(plugins/shapelang/skills/shape-contract-preflight/scripts/precheck.sh --shape-root fixtures/skills/preflight/invalid-baseline/shape --json fixtures/skills/preflight/invalid-baseline/proposal.shape)"
+      "Bash(plugins/shapelang/skills/shape-contract-preflight/scripts/precheck.sh --shape-root fixtures/skills/preflight/invalid-baseline/shape --json fixtures/skills/preflight/invalid-baseline/proposal.shape)",
+      "Bash(plugins/shapelang/skills/shape-contract-preflight/scripts/precheck.sh --shape-root fixtures/skills/preflight/complete-route/shape --json fixtures/skills/preflight/complete-route/proposal.shape)"
     ].join(","),
     buildPrompt: buildSkillsReleasePrompt,
     renderSummary: renderSkillsReleaseSummary,

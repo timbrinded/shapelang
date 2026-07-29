@@ -108,7 +108,7 @@ component CiPipeline {
     }
   fn evaluateReleaseSkills
     source mjs(".github/scripts/run-claude-skill.mjs#buildSkillsReleasePrompt")
-    description "Runs static conformance checks and focused executable fixture cases across all five shipped skills, then emits one blocking structured report."
+    description "Runs static conformance checks and focused read-only fixture canaries across all five shipped skills, then emits one blocking structured report."
     effects complete {
       Read<CiWorkflow>
         evidence yaml(".github/workflows/release-candidate.yml")

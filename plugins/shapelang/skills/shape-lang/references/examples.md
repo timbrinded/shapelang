@@ -76,26 +76,26 @@ rule no_runtime_control_cycle {
 Forbidden multi-hop path:
 
 ```shape
-resource RestrictedStore
+resource ExternalSink
 
-component RequestHandler {
+component TelemetryCollector {
 }
 
-component DecisionEngine {
+component Exporter {
 }
 
-relation RequestHandlerCallsDecision {
+relation CollectorCallsExporter {
   kind calls
-  connects RequestHandler -> DecisionEngine
+  connects TelemetryCollector -> Exporter
 }
 
-relation DecisionProvidesRestrictedRecord {
+relation ExporterProvidesExternalSink {
   kind provides
-  connects DecisionEngine -> RestrictedStore
+  connects Exporter -> ExternalSink
 }
 
-rule no_request_handler_to_restricted_store {
-  forbid path RequestHandler -> RestrictedStore over calls or provides
+rule no_telemetry_to_external_sink {
+  forbid path TelemetryCollector -> ExternalSink over calls or provides
 }
 ```
 

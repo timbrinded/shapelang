@@ -188,7 +188,7 @@ resource RunClaudeSkillModuleShellSingleQuoteAstAnchor : GeneratedAstAnchor {
 
 resource RunClaudeSkillModuleSkillsReleaseFailureMessageAstAnchor : GeneratedAstAnchor {
   storage ast.anchor(".github/scripts/run-claude-skill.mjs#skillsReleaseFailureMessage")
-  fingerprint ast.semantic_subtree_v1("sha256:e860ceadfb1370dac49f3036de733369f4396cb63beb53d63968569f1b86db97")
+  fingerprint ast.semantic_subtree_v1("sha256:08b5b8776162b0382365f6974f95a171b55f3a840fa03ea33907026aaaf62cc6")
 }
 
 resource RunClaudeSkillModuleUncoveredChangedFilesAstAnchor : GeneratedAstAnchor {
@@ -605,7 +605,7 @@ relation RunClaudeSkillModuleSkillsReleaseFailureMessageGeneratedFromRunClaudeSk
   kind generated_from
   connects RunClaudeSkillModule -> RunClaudeSkillModuleSkillsReleaseFailureMessageAstAnchor
   roles { RunClaudeSkillModule as generated, RunClaudeSkillModuleSkillsReleaseFailureMessageAstAnchor as syntax }
-  expects RunClaudeSkillModuleSkillsReleaseFailureMessageAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e860ceadfb1370dac49f3036de733369f4396cb63beb53d63968569f1b86db97")
+  expects RunClaudeSkillModuleSkillsReleaseFailureMessageAstAnchor fingerprint ast.semantic_subtree_v1("sha256:08b5b8776162b0382365f6974f95a171b55f3a840fa03ea33907026aaaf62cc6")
   summary "fn RunClaudeSkillModule.skillsReleaseFailureMessage generated from javascript function_declaration at .github/scripts/run-claude-skill.mjs#skillsReleaseFailureMessage."
 }
 

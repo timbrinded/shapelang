@@ -1,0 +1,33 @@
+module shape.generated.ast.fixtures.skills.review.stale_model.generated_candidate.report
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource ReportModuleLoadReportAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("fixtures/skills/review/stale-model/candidate/report.ts#loadReport")
+  fingerprint ast.semantic_subtree_v1("sha256:92f8ecbd071e806c958ad3ffb7d376ee80c4ef72cb00df506ce0362daa3a7272")
+}
+
+component ReportModule : GeneratedCandidate {
+  fn loadReport
+    source ts("fixtures/skills/review/stale-model/candidate/report.ts#loadReport")
+    effects unknown
+}
+
+relation ReportModuleLoadReportGeneratedFromReportModuleLoadReportAstAnchor {
+  kind generated_from
+  connects ReportModule -> ReportModuleLoadReportAstAnchor
+  roles { ReportModule as generated, ReportModuleLoadReportAstAnchor as syntax }
+  expects ReportModuleLoadReportAstAnchor fingerprint ast.semantic_subtree_v1("sha256:92f8ecbd071e806c958ad3ffb7d376ee80c4ef72cb00df506ce0362daa3a7272")
+  summary "fn ReportModule.loadReport generated from typescript function_declaration at fixtures/skills/review/stale-model/candidate/report.ts#loadReport."
+}
+
+implementation ReportModuleImpl {
+  paths {
+    "fixtures/skills/review/stale-model/candidate/report.ts"
+  }
+  conforms_to ReportModule
+}
