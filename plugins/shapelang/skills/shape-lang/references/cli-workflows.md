@@ -81,7 +81,7 @@ Investigate why a resource or function fails:
 
 ```bash
 shp explain AuditEvent
-shp explain Gateway.derivePolicyDecision
+shp explain RequestHandler.buildDecision
 ```
 
 Investigate the relations incident to a symbol, or the whole hypergraph:
@@ -90,8 +90,8 @@ Investigate the relations incident to a symbol, or the whole hypergraph:
 shp graph all
 shp graph stats
 shp graph all --kind calls
-shp graph show Gateway
-shp graph show Gateway --kind calls
+shp graph show RequestHandler
+shp graph show RequestHandler --kind calls
 ```
 
 Start with `shp graph show SYMBOL` for a focused question. Use `shp graph stats`
@@ -165,12 +165,12 @@ Good `memory` output to inspect before a refactor:
 ```text
 Memory Guards
 
-fn Gateway.derivePolicyDecision
+fn RequestHandler.buildDecision
   memory DecisionRefactorConstraint
   type: RefactorConstraint
   status: Unexplained
   confidence: High
-  owner: GatewayTeam
+  owner: RuntimeTeam
 ```
 
 Good `obligations` output to drive fixes:
@@ -179,7 +179,7 @@ Good `obligations` output to drive fixes:
 Open Shape Obligations
 
 guarded changes:
-  fn Gateway.derivePolicyDecision changed; requires reevaluation satisfying memory DecisionRefactorConstraint
+  fn RequestHandler.buildDecision changed; requires reevaluation satisfying memory DecisionRefactorConstraint
 ```
 
 `obligations --strict-freshness` also surfaces stale design memory:

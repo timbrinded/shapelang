@@ -3,99 +3,81 @@ name: shape-index
 description: >-
   This skill should be used only when explicitly asked to create or refresh a
   whole-repository authored Shape model from a fixed repository baseline.
-  Inventory subsystems, use generated AST only for navigation, verify claims
-  in source, and validate authored batches. Do not use it for incremental
-  edits, pending-change review, or preflight planning.
+  Survey architecture-significant subsystems, treat generated AST as read-only
+  navigation, verify claims in source, and author validated model batches. Do
+  not use it for incremental edits, pending-change review, or preflight planning.
 ---
 
 # Shape Index
 
 ## Boundary
 
-Build or refresh a repository-wide authored model independently of any pending change. Require an explicit invocation because the workflow is broad and write-heavy.
+Build or refresh a repository-wide authored model independently of any pending change. Require explicit invocation because this workflow is broad and write-heavy.
 
 ## Shape Evidence Contract
 
 - Treat authored Shape as typed architecture claims, not proof of source correctness.
 - Treat generated AST and analyzer output as navigation evidence only.
-- Source-confirm every implementation claim.
+- Source-confirm implementation claims.
 - Keep final forbids final.
-- Preserve uncertainty with `effects unknown`.
-- Finish completed batches with strict validation.
+- Use stable `file#symbol` references when a symbol exists; use file-only references only when no stable symbol exists.
+- Preserve unresolved effects as `effects unknown`.
+- Finish completed work with strict deterministic validation.
 
 Resolve the repository's canonical Shape command once, verify it with `--version`, and reuse it consistently.
 
 ## Establish The Baseline
 
-Require one of:
+Require either a user-provided baseline commit or the current clean default-branch commit. Do not index from a worktree containing uncommitted application changes or a pending review diff. Use a separate clean worktree when invoked from active change work, and record the baseline SHA.
 
-- a user-provided baseline commit; or
-- the current clean default-branch commit.
+## Keep Generated AST Read-Only
 
-Do not index from a worktree containing uncommitted application changes or a pending review diff. Use a separate clean worktree when invoked from active change work. Record the baseline SHA in the final result.
+Detect the generated AST manifest and run an existing freshness check when available. Inspect generated anchors only to locate source.
 
-## Detect Navigation Context
+Do not run an AST generator during authored indexing. A request to create or refresh the authored whole-repository model is not authorization to regenerate Layer 1. Regenerate only when the user explicitly asks for generated-AST or Layer-1 regeneration. Never edit generated Shape directly.
 
-1. Detect a generated AST manifest under the repository's documented Shape root.
-2. Run the repository's AST freshness check when it exists.
-3. Generate AST only when supported and authorized by the task.
-4. Continue with source survey when generated navigation is unavailable, and record that limitation.
+## Authoring Workflow
 
-Never edit generated Shape directly.
+1. Briefly survey repository layout, existing authored Shape, documentation, generated navigation, and source entrypoints. Record each architecture-significant subsystem as `modeled`, `deferred`, or `not architecture-significant`.
+2. Before the first authored batch, read `references/current-cli-authoring.md`. Use it and the repository's existing authored files as the current `shp 0.7` syntax guide.
+3. Start with one high-confidence subsystem or coherent cluster. Do not wait for an exhaustive repo-wide prose inventory before authoring.
+4. Inspect the relevant source and docs, then author all supported architecture facts for that batch:
+   - resources, traits, ownership, grants, and effects;
+   - direct calls/provides relations and significant ordered coordination;
+   - implementation coverage with `on_change require shape_update`;
+   - bindings for documentation or other required review surfaces;
+   - typed rationale or memory for important source-supported behavior that Shape cannot enforce directly.
+5. Format and validate the batch, inspect the authored diff, update the subsystem status, and continue.
 
-## Classify Claims
+For each important source-supported claim, choose the strongest honest representation. A runtime fact that is not checker-enforceable may still be important typed review context. Label it as rationale or memory instead of omitting it or presenting it as an enforced invariant. If the evidence is insufficient, defer the claim explicitly.
 
-| Class | Meaning |
-| --- | --- |
-| Enforceable architecture contract | Shape-checked grants, effects, ownership, relations, implementations, bindings, and rules. |
-| Typed review obligation | Memory, rationale, description, required context, or reevaluation guard; review context, not implementation proof. |
-| Navigation evidence | Stable source refs, generated anchors, and analyzer hints. |
-| Unsupported behavioral claim | Arbitrary runtime, value-level, or business assertions that current Shape cannot enforce. Do not present these as invariants. |
+Do not force every subsystem to have a rule. Breadth means every architecture-significant subsystem receives a coverage decision and every high-confidence boundary receives the applicable Shape declarations.
 
-## Two-Pass Workflow
+## Investigation Budget
 
-### Pass 1: Inventory
+Use the bundled reference and local authored examples before inspecting grammar or prelude implementation. Read grammar or checker internals only to resolve a concrete diagnostic that those sources cannot answer.
 
-For every architecture-significant subsystem, record:
+Do not run scratch mutation probes for every claim. Use at most one focused temporary probe when a material current-CLI semantic question remains unresolved, then remove the temporary file.
 
-```text
-Subsystem:
-  baseline paths:
-  evidence inspected:
-  existing authored symbols:
-  candidate enforceable claims:
-  review-context claims:
-  unresolved gaps:
-  status: modeled | deferred | not architecture-significant
+Format and validate after each coherent batch:
+
+```bash
+<SHAPE_CMD> fmt shape/index.shape
+<SHAPE_CMD> check
 ```
 
-Inspect repository layout, existing authored Shape, generated navigation when available, and focused source entrypoints. Do not author during this pass.
+Use draft checking only while an explicit `effects unknown` remains. Run `check --changed-files` as the final gate when the repository supplies an exact changed-file list.
 
-Breadth means every important subsystem receives an explicit coverage decision. It does not mean every subsystem must receive a new rule.
-
-### Pass 2: Evidence-Backed Authoring
-
-For each subsystem or coherent cluster:
-
-1. Author components and implementation coverage supported by source.
-2. Author effects, relations, ownership, rules, bindings, and review context only when evidence supports them.
-3. Record `no evidence-backed invariant identified` when that is the honest result.
-4. Use `effects unknown` instead of inventing completeness.
-5. Format the edited files.
-6. Run draft checking only while explicit unknown effects remain.
-7. Resolve or explicitly defer unknowns, then run strict checking for a completed batch.
-8. Inspect the authored diff and update the coverage ledger before continuing.
-
-Keep one integrator responsible for global names, domain packs, cross-subsystem rules, and final authored files.
-
-## Completion
+## Completion Gate
 
 Return one state:
 
-- `complete`: intended authored claims are source-reviewed and strict checks pass.
-- `incomplete_with_explicit_gaps`: useful batches exist, but listed unknowns or model gaps remain; include strict diagnostics and the remaining ledger.
-- `blocked`: baseline, toolchain, or source evidence prevents reliable authoring.
+- `complete`: all architecture-significant subsystems have a coverage decision; all intended source-supported resources, effects, relations, coordination, implementations, bindings, and typed review context are authored; generated AST is unchanged; stable evidence is present; and strict checks pass with no relevant deferred gaps.
+- `incomplete_with_explicit_gaps`: useful batches are authored, but listed unknowns, missing evidence, model gaps, or strict diagnostics remain.
+- `blocked`: the baseline, toolchain, or source evidence prevents reliable authoring.
 
-Never describe a model with unresolved strict diagnostics as complete.
+Report the baseline SHA, generated-AST availability and freshness, modeled subsystems, explicit gaps, exact validation commands/results, and whether generated files remained unchanged.
 
-Report the baseline SHA, AST availability/freshness, modeled subsystems, deferred gaps, unsupported behavioral claims rejected, and exact validation results.
+## Reference
+
+- `references/current-cli-authoring.md`: compact `shp 0.7` mapping and syntax for whole-repository authored models.

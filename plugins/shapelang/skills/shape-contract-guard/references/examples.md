@@ -72,9 +72,9 @@ When `AppendOnly` supplies an equal or stronger relevant constraint, record the 
 ## Forbidden Path Weakened
 
 ```diff
- rule no_gateway_to_secrets {
--  forbid path Gateway -> SecretStore over calls or provides
-+  forbid path Gateway -> SecretStore over calls
+ rule no_request_handler_to_restricted_store {
+-  forbid path RequestHandler -> RestrictedStore over calls or provides
++  forbid path RequestHandler -> RestrictedStore over calls
  }
 ```
 
@@ -105,7 +105,7 @@ Expected: medium impact, generic support, suspicious disposition, and an attesta
 ## False Completeness
 
 ```diff
- fn exportPolicyBundle
+ fn exportSnapshot
 -  effects unknown
 +  effects complete {
 +  }

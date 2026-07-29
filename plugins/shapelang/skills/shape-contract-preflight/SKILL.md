@@ -19,6 +19,7 @@ Orient implementation work against the current authored model before code change
 - Treat authored Shape as typed architecture claims, not proof of source behavior.
 - Treat generated AST and analyzer output as navigation leads only.
 - Source-confirm implementation claims.
+- Use stable `file#symbol` references for source and evidence when a symbol exists; use file-only references only when there is no stable symbol.
 - Keep final forbids final.
 - Preserve unresolved effects as `effects unknown`.
 - Finish simulations with the current deterministic checker.
@@ -54,6 +55,15 @@ Unknown:
 
 Only `Known` material effects may enter `effects complete`. Keep assumptions and unknowns explicit or remain in `orientation`.
 
+## Outcome Completeness
+
+Trace the requested outcome end to end before simulating it. A simulation may return `proceed` only when every architecture-significant leg required to produce that outcome is represented by the baseline or the proposal.
+
+- Model silence is not permission to omit a necessary leg.
+- If an exact necessary leg is absent from the baseline, include it in the temporary proposal when its endpoints and relation kind are known.
+- If a necessary leg cannot be represented without inventing an endpoint, relation kind, resource, or effect, return `model_gap`.
+- Never simulate only a safe facade when the requested outcome necessarily depends on a forbidden downstream route.
+
 ## Workflow
 
 1. Locate candidate symbols in authored `.shape` files using task vocabulary and stable source/evidence anchors.
@@ -62,8 +72,11 @@ Only `Known` material effects may enter `effects complete`. Keep assumptions and
 4. Inspect only source named by authored declarations, implementations, bindings, or generated navigation anchors.
 5. Record candidates in an evidence ledger and close, disprove, defer, or block each one.
 6. Forecast coverage and bindings only from exact planned paths. Label inferred paths as a forecast.
-7. Select `contract-simulation` only when the intended contract change can be expressed conservatively.
-8. Read `references/change-blocks.md`, create the temporary file outside tracked source, and run `scripts/precheck.sh`.
+7. Trace the complete requested outcome and identify every necessary architecture-significant leg.
+8. Select `contract-simulation` only when the complete intended contract change can be expressed conservatively.
+9. Read `references/change-blocks.md`, create the temporary file outside tracked source, and run `scripts/precheck.sh`.
+
+When a proposal or recommended final update names implementation behavior, carry the stable `source` anchor and matching effect `evidence` into the declaration. Do not shorten `file#symbol` to a file-only reference when the symbol is known.
 
 The helper must validate the strict baseline first. If it reports `baseline_invalid`, do not attribute those diagnostics to the proposal.
 
@@ -85,7 +98,7 @@ Never remove a final forbid, invent a grant or effect, or add fake attestation/r
 
 Return exactly one decision:
 
-- `proceed`: the baseline and conservative proposal pass the applicable checks.
+- `proceed`: the strict baseline is valid, the conservative proposal represents the complete requested outcome, and the applicable proposal check passes.
 - `blocked_by_contract`: the proposal conflicts with a current deterministic contract.
 - `architecture_decision_required`: two materially different supported architectures remain.
 - `model_gap`: the current model cannot express or locate the planned work without invention.

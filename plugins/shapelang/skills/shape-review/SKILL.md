@@ -39,6 +39,14 @@ Candidate:
 
 Every retained finding must include the changed line, reachable trigger, and observable incorrect result. For Shape-derived candidates, also include the exact authored fact, discovery command, and source confirmation.
 
+## Root-Cause Grouping
+
+Group findings by the smallest code correction that resolves them.
+
+- If multiple symptoms arise from the same changed behavior and are fixed by the same correction, emit one comment.
+- Emit a second comment only when it has a distinct root cause and needs a distinct fix.
+- Treat raw-response leakage, changed field names, signature mismatch, and missing parsed fields as one finding when restoring the parsed return contract and its signature fixes them together.
+
 ## Workflow
 
 1. Read every changed hunk and its immediate implementation context. Record plausible correctness, security, data, lifecycle, concurrency, and API-contract defects.
@@ -51,7 +59,8 @@ Every retained finding must include the changed line, reachable trigger, and obs
 8. Run `analyze` only as a source-investigation lead.
 9. Expand by default only to direct authored relations, direct callers/callees, or one explicit coordinated path. Traverse wider only when an authored rule or concrete evidence requires it.
 10. Challenge every candidate with one plausible existing prevention mechanism and verify that it is absent or insufficient.
-11. Drop handled, unreachable, stale-model, duplicate, stylistic, or speculative candidates.
+11. Group surviving candidates by root cause and smallest correction.
+12. Drop handled, unreachable, stale-model, duplicate, stylistic, or speculative candidates.
 
 Run graph statistics only when the model is unfamiliar, the relationship spans several subsystems, graph size affects the investigation, or a global rule/hypercycle matters.
 
@@ -78,7 +87,9 @@ Return code bugs and model maintenance warnings separately:
 }
 ```
 
-Use one issue per comment. Cite Shape discovery naturally in cross-object findings without dumping internal reasoning.
+Return only the JSON object, without the evidence ledger or surrounding prose.
+
+Use one root cause per comment. In every Shape-derived comment, name the authored symbol and the focused command that exposed it, such as `DocumentParser.parseDocument` via `shp explain DocumentParser.parseDocument`. An independently verified local bug may remain a code-only finding without Shape attribution.
 
 When no result survives verification, return exactly:
 

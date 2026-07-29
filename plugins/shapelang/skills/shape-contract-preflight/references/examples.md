@@ -7,7 +7,7 @@ Use these current-CLI cases to calibrate concise planning briefs.
 Task:
 
 ```text
-Refactor Gateway.derivePolicyDecision without changing behavior.
+Refactor RequestHandler.buildDecision without changing behavior.
 ```
 
 Record the function as known, likely implementation details as assumptions, and effects as unknown until source inspection. Run focused `explain`, `graph show`, `memory`, and `obligations`.
@@ -17,8 +17,8 @@ Simulate:
 ```shape
 module preflight
 
-change RefactorPolicyDecision {
-  modify fn Gateway.derivePolicyDecision
+change RefactorDecision {
+  modify fn RequestHandler.buildDecision
     effects unknown
 }
 ```
@@ -35,7 +35,7 @@ decision: baseline_invalid
 
 Include the baseline diagnostics and do not attribute them to the proposed change.
 
-## Destructive Effect Against Final Policy
+## Destructive Effect Against Final Rule
 
 Task:
 
@@ -52,10 +52,27 @@ Do not propose removing the final forbid as a simulation fix.
 Task:
 
 ```text
-Let Gateway obtain secrets through PolicyService.
+Let RequestHandler read RestrictedRecord through DecisionEngine.
 ```
 
-Inspect focused incidence for `Gateway`, `PolicyService`, and `SecretStore`. Model the intended relation only when exact endpoints and relation kind are known.
+Assume the baseline declares `RequestHandler`, `DecisionEngine`, and `RestrictedRecord`, but no route between them. The requested outcome requires both legs:
+
+```shape
+module preflight
+
+change RestrictedRecordRoute {
+  add relation RequestHandlerCallsDecision {
+    kind calls
+    connects RequestHandler -> DecisionEngine
+  }
+  add relation DecisionProvidesRestrictedRecord {
+    kind provides
+    connects DecisionEngine -> RestrictedRecord
+  }
+}
+```
+
+Simulate both relations when their endpoints and kinds are known. Do not simulate only `RequestHandler -> DecisionEngine`; that facade omits the necessary `DecisionEngine -> RestrictedRecord` leg and can hide the forbidden end-to-end path.
 
 Return `architecture_decision_required` only when two source-supported architectures remain and have materially different contract consequences. Otherwise return `blocked_by_contract` for a current final forbidden path.
 
@@ -68,6 +85,14 @@ Move the parser entrypoint to packages/shp-checker/src/parser/index.ts.
 ```
 
 When that exact path and the governing implementation are known, report the expected implementation and binding updates. When the implementation symbol or destination is inferred, stay in orientation and label coverage as a forecast.
+
+When authoring or recommending the final declaration, preserve a stable symbol anchor:
+
+```shape
+source ts("packages/shp-checker/src/parser/index.ts#parseShapeModule")
+```
+
+Use the same stable anchor as effect evidence when it supports the effect. Use a file-only reference only when the target has no stable symbol.
 
 ## Thin Model
 

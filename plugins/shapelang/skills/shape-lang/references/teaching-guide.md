@@ -60,7 +60,7 @@ Show explicit graph modes and a forbidden path:
 ```bash
 shp graph stats fixtures/fail/forbidden_path/deps.shape
 shp graph all --kind calls fixtures/fail/forbidden_path/deps.shape
-shp graph show Gateway fixtures/fail/forbidden_path/deps.shape
+shp graph show RequestHandler fixtures/fail/forbidden_path/deps.shape
 shp check fixtures/fail/forbidden_path/deps.shape
 ```
 

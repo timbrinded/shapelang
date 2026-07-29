@@ -76,26 +76,26 @@ rule no_runtime_control_cycle {
 Forbidden multi-hop path:
 
 ```shape
-resource SecretStore
+resource RestrictedStore
 
-component Gateway {
+component RequestHandler {
 }
 
-component PolicyService {
+component DecisionEngine {
 }
 
-relation GatewayCallsPolicy {
+relation RequestHandlerCallsDecision {
   kind calls
-  connects Gateway -> PolicyService
+  connects RequestHandler -> DecisionEngine
 }
 
-relation PolicyProvidesSecret {
+relation DecisionProvidesRestrictedRecord {
   kind provides
-  connects PolicyService -> SecretStore
+  connects DecisionEngine -> RestrictedStore
 }
 
-rule no_gateway_to_secrets {
-  forbid path Gateway -> SecretStore over calls or provides
+rule no_request_handler_to_restricted_store {
+  forbid path RequestHandler -> RestrictedStore over calls or provides
 }
 ```
 
@@ -127,23 +127,23 @@ not activate it.
 Preserve inline with rationale:
 
 ```shape
-rationale DerivePolicyDecisionInline : InlineRationale<fn Gateway.derivePolicyDecision> {
-  applies_to fn Gateway.derivePolicyDecision
+rationale BuildDecisionInline : InlineRationale<fn RequestHandler.buildDecision> {
+  applies_to fn RequestHandler.buildDecision
   why CognitiveLocality
-  summary "Policy checks remain inline for auditability."
-  who { owner GatewayTeam }
+  summary "Decision checks remain inline for auditability."
+  who { owner RuntimeTeam }
 }
 ```
 
 Refactor-sensitive memory with guard:
 
 ```shape
-memory DecisionRefactorConstraint : RefactorConstraint<fn Gateway.derivePolicyDecision> {
-  applies_to fn Gateway.derivePolicyDecision
+memory DecisionRefactorConstraint : RefactorConstraint<fn RequestHandler.buildDecision> {
+  applies_to fn RequestHandler.buildDecision
   status Unexplained
   confidence High
   summary "Previous refactors broke error normalisation."
-  who { owner GatewayTeam }
+  who { owner RuntimeTeam }
   guards { on_change require ReEvaluation<Self> }
 }
 ```
@@ -155,26 +155,26 @@ reevaluation DecisionShapeRechecked {
   satisfies memory DecisionRefactorConstraint
   outcome Confirmed
   summary "Refactor preserves error-normalisation behaviour."
-  reviewer GatewayTeam
+  reviewer RuntimeTeam
   decided_on "2026-06-02"
-  evidence test("gateway/error-normalisation.test.ts")
+  evidence test("runtime/error-normalisation.test.ts")
 }
 ```
 
 Component-level shape-trait obligation (also works for `resource`):
 
 ```shape
-component Gateway : RefactorSensitive {
-  owns PolicySnapshot
-  grants Read<PolicySnapshot>
+component RequestHandler : RefactorSensitive {
+  owns DecisionState
+  grants Read<DecisionState>
 }
 
-memory GatewayBoundary : RefactorConstraint<component Gateway> {
-  applies_to component Gateway
+memory RequestHandlerBoundary : RefactorConstraint<component RequestHandler> {
+  applies_to component RequestHandler
   status Unexplained
   confidence High
-  summary "The Gateway boundary isolates policy evaluation."
-  who { owner GatewayTeam }
+  summary "The RequestHandler boundary isolates policy evaluation."
+  who { owner RuntimeTeam }
 }
 ```
 
@@ -189,12 +189,12 @@ trait PreserveLocal<T: Fn> {
 Transform guard requiring review before a named refactor:
 
 ```shape
-memory RenameGuard : DesignRationale<fn Gateway.derivePolicyDecision> {
-  applies_to fn Gateway.derivePolicyDecision
+memory RenameGuard : DesignRationale<fn RequestHandler.buildDecision> {
+  applies_to fn RequestHandler.buildDecision
   status Explained
   confidence High
   summary "Public symbol name is referenced by external dashboards."
-  who { owner GatewayTeam }
+  who { owner RuntimeTeam }
   guards { forbid transform RenameSymbol }
 }
 ```
@@ -203,19 +203,19 @@ Sensitive memory under an approver policy, with a reevaluation that names an app
 
 ```shape
 role Security
-role GatewayTeam
+role RuntimeTeam
 
 policy ReviewPolicy {
   require approver
 }
 
-memory DecisionConstraint : RefactorConstraint<fn Gateway.derivePolicyDecision> {
-  applies_to fn Gateway.derivePolicyDecision
+memory DecisionConstraint : RefactorConstraint<fn RequestHandler.buildDecision> {
+  applies_to fn RequestHandler.buildDecision
   status Unexplained
   confidence High
   sensitive
   summary "Security-sensitive decision path."
-  who { owner GatewayTeam }
+  who { owner RuntimeTeam }
   guards { on_change require ReEvaluation<Self> }
 }
 
@@ -223,8 +223,8 @@ reevaluation DecisionReviewed {
   satisfies memory DecisionConstraint
   outcome Confirmed
   summary "Reviewed and confirmed; behaviour preserved."
-  evidence test("gateway/decision.test.ts")
-  reviewer GatewayTeam
+  evidence test("runtime/decision.test.ts")
+  reviewer RuntimeTeam
   approver Security
   decided_on "2026-06-02"
 }
@@ -283,10 +283,10 @@ memory PurgeDeleteConstraint : RefactorConstraint<fn AuditStore.purgeOldEvents> 
 Guarded model update without reevaluation:
 
 ```shape
-component Gateway {
-  fn derivePolicyDecision
+component RequestHandler {
+  fn buildDecision
     effects complete {
-      Read<PolicySnapshot>
+      Read<DecisionState>
     }
 }
 ```
@@ -325,8 +325,8 @@ reevaluation DecisionReviewed {
   satisfies memory DecisionConstraint
   outcome Confirmed
   summary "Reviewed."
-  evidence test("gateway/decision.test.ts")
-  reviewer GatewayTeam
+  evidence test("runtime/decision.test.ts")
+  reviewer RuntimeTeam
   decided_on "2026-06-02"
 }
 ```

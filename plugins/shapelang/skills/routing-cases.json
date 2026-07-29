@@ -20,7 +20,7 @@
   {
     "id": "preflight-direct",
     "kind": "direct",
-    "prompt": "Run Shape contract preflight before I change Gateway.",
+    "prompt": "Run Shape contract preflight before I change RequestHandler.",
     "expected_skill": "shape-contract-preflight"
   },
   {
@@ -32,7 +32,7 @@
   {
     "id": "preflight-incomplete",
     "kind": "incomplete",
-    "prompt": "I may refactor the policy path; orient the work against the current Shape model.",
+    "prompt": "I may refactor the request path; orient the work against the current Shape model.",
     "expected_skill": "shape-contract-preflight"
   },
   {

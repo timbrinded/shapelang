@@ -39,44 +39,44 @@ A project can also declare its own obligations with `require_context` (see [User
 Good: explain an intentional function shape with a typed target.
 
 ```shape
-rationale DerivePolicyDecisionInline : InlineRationale<fn Gateway.derivePolicyDecision> {
-  applies_to fn Gateway.derivePolicyDecision
+rationale BuildDecisionInline : InlineRationale<fn RequestHandler.buildDecision> {
+  applies_to fn RequestHandler.buildDecision
   why CognitiveLocality
-  summary "Policy checks remain inline for auditability."
-  who { owner GatewayTeam }
+  summary "Decision checks remain inline for auditability."
+  who { owner RuntimeTeam }
 }
 ```
 
 Counterexample: adding the trait without the required context.
 
 ```shape
-fn derivePolicyDecision : PreserveInline
+fn buildDecision : PreserveInline
   effects complete {
-    Read<PolicySnapshot>
+    Read<DecisionState>
   }
 ```
 
-Smallest fix: add a matching `InlineRationale<fn Gateway.derivePolicyDecision>`.
+Smallest fix: add a matching `InlineRationale<fn RequestHandler.buildDecision>`.
 
 ## Required Description
 
 Good: keep compact local purpose next to the function.
 
 ```shape
-fn derivePolicyDecision : RequiresDescription
+fn buildDecision : RequiresDescription
   description required "Builds the visible authorization decision from policy state."
   effects complete {
-    Read<PolicySnapshot>
+    Read<DecisionState>
   }
 ```
 
 Counterexample: empty required description.
 
 ```shape
-fn derivePolicyDecision : RequiresDescription
+fn buildDecision : RequiresDescription
   description required ""
   effects complete {
-    Read<PolicySnapshot>
+    Read<DecisionState>
   }
 ```
 
@@ -87,12 +87,12 @@ Smallest fix: add a non-empty description and a matching `DescriptionRationale`.
 Good: preserve a refactor constraint, including explicit uncertainty.
 
 ```shape
-memory DecisionRefactorConstraint : RefactorConstraint<fn Gateway.derivePolicyDecision> {
-  applies_to fn Gateway.derivePolicyDecision
+memory DecisionRefactorConstraint : RefactorConstraint<fn RequestHandler.buildDecision> {
+  applies_to fn RequestHandler.buildDecision
   status Unexplained
   confidence High
   summary "Previous refactors broke error normalisation."
-  who { owner GatewayTeam }
+  who { owner RuntimeTeam }
   guards { on_change require ReEvaluation<Self> }
 }
 ```
@@ -102,8 +102,8 @@ Use `status Unexplained` when the team knows a refactor constraint exists but ca
 Counterexample: vague memory that behaves like a waiver.
 
 ```shape
-memory DecisionRefactorConstraint : RefactorConstraint<fn Gateway.derivePolicyDecision> {
-  applies_to fn Gateway.derivePolicyDecision
+memory DecisionRefactorConstraint : RefactorConstraint<fn RequestHandler.buildDecision> {
+  applies_to fn RequestHandler.buildDecision
   status Explained
   summary "Known issue approved by team."
 }
@@ -120,9 +120,9 @@ reevaluation DecisionShapeRechecked {
   satisfies memory DecisionRefactorConstraint
   outcome Confirmed
   summary "Refactor preserves error-normalisation behaviour."
-  reviewer GatewayTeam
+  reviewer RuntimeTeam
   decided_on "2026-06-02"
-  evidence test("gateway/error-normalisation.test.ts")
+  evidence test("runtime/error-normalisation.test.ts")
 }
 ```
 
@@ -147,12 +147,12 @@ A `guards on_change require ...` clause fires when its target changes without a 
 - With no detectable `protects` clause — or a free-form `protects shape <label>` that is not a real trait — the guard falls back to coarse matching and fires on any modify/remove of the target.
 
 ```shape
-memory DerivePolicyShape : RefactorConstraint<fn Gateway.derivePolicyDecision> {
-  applies_to fn Gateway.derivePolicyDecision
+memory BuildDecisionShape : RefactorConstraint<fn RequestHandler.buildDecision> {
+  applies_to fn RequestHandler.buildDecision
   status Unexplained
   confidence High
   summary "The inline decision shape is load-bearing for auditability."
-  who { owner GatewayTeam }
+  who { owner RuntimeTeam }
   protects { shape RefactorSensitive }
   guards { on_change require ReEvaluation<Self> }
 }
@@ -161,17 +161,17 @@ memory DerivePolicyShape : RefactorConstraint<fn Gateway.derivePolicyDecision> {
 A `guards forbid transform <Label>` clause fires when a change declares that transform intent on the target via `modify fn ... transform <Label>`. Use it to require review before a specific named refactor (for example a public-symbol rename).
 
 ```shape
-memory RenameGuard : DesignRationale<fn Gateway.derivePolicyDecision> {
-  applies_to fn Gateway.derivePolicyDecision
+memory RenameGuard : DesignRationale<fn RequestHandler.buildDecision> {
+  applies_to fn RequestHandler.buildDecision
   status Explained
   confidence High
   summary "Public symbol name is referenced by external dashboards."
-  who { owner GatewayTeam }
+  who { owner RuntimeTeam }
   guards { forbid transform RenameSymbol }
 }
 ```
 
-A change like `modify fn Gateway.derivePolicyDecision transform RenameSymbol effects complete { ... }` then requires a reevaluation satisfying the memory. Smallest fix: add the reevaluation, or do not declare the forbidden transform.
+A change like `modify fn RequestHandler.buildDecision transform RenameSymbol effects complete { ... }` then requires a reevaluation satisfying the memory. Smallest fix: add the reevaluation, or do not declare the forbidden transform.
 
 ## Freshness
 
@@ -199,19 +199,19 @@ Mark a memory `sensitive` when its review carries elevated risk. Combined with a
 
 ```shape
 role Security
-role GatewayTeam
+role RuntimeTeam
 
 policy ReviewPolicy {
   require approver
 }
 
-memory DecisionConstraint : RefactorConstraint<fn Gateway.derivePolicyDecision> {
-  applies_to fn Gateway.derivePolicyDecision
+memory DecisionConstraint : RefactorConstraint<fn RequestHandler.buildDecision> {
+  applies_to fn RequestHandler.buildDecision
   status Unexplained
   confidence High
   sensitive
   summary "Security-sensitive decision path."
-  who { owner GatewayTeam }
+  who { owner RuntimeTeam }
   guards { on_change require ReEvaluation<Self> }
 }
 
@@ -219,8 +219,8 @@ reevaluation DecisionReviewed {
   satisfies memory DecisionConstraint
   outcome Confirmed
   summary "Reviewed and confirmed; behaviour preserved."
-  evidence test("gateway/decision.test.ts")
-  reviewer GatewayTeam
+  evidence test("runtime/decision.test.ts")
+  reviewer RuntimeTeam
   approver Security
   decided_on "2026-06-02"
 }
@@ -249,14 +249,14 @@ A `<T>` that names no declared type parameter, or an unrecognised bound, is repo
 `protects`, `guards`, `who` (owner), and `when` (review_by) members are authored as grouped blocks. This is the only guard-member syntax — `shp fmt` always emits these blocks. `protects` entries are comma-separated; `who` and `when` each hold a single value.
 
 ```shape
-memory DecisionConstraint : RefactorConstraint<fn Gateway.derivePolicyDecision> {
-  applies_to fn Gateway.derivePolicyDecision
+memory DecisionConstraint : RefactorConstraint<fn RequestHandler.buildDecision> {
+  applies_to fn RequestHandler.buildDecision
   status Unexplained
   confidence High
   summary "The inline decision shape is load-bearing."
   protects { shape RefactorSensitive }
   guards { on_change require ReEvaluation<Self> }
-  who { owner GatewayTeam }
+  who { owner RuntimeTeam }
   when { review_by "2027-01-01" }
 }
 ```
@@ -266,11 +266,11 @@ memory DecisionConstraint : RefactorConstraint<fn Gateway.derivePolicyDecision> 
 Counterexample: type target and `applies_to` disagree.
 
 ```shape
-rationale DerivePolicyDecisionInline : InlineRationale<fn Gateway.derivePolicyDecision> {
-  applies_to fn Gateway.otherDecision
+rationale BuildDecisionInline : InlineRationale<fn RequestHandler.buildDecision> {
+  applies_to fn RequestHandler.otherDecision
   why CognitiveLocality
-  summary "Policy checks remain inline for auditability."
-  who { owner GatewayTeam }
+  summary "Decision checks remain inline for auditability."
+  who { owner RuntimeTeam }
 }
 ```
 

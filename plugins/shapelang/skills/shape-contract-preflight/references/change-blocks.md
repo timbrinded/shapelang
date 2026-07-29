@@ -29,7 +29,7 @@ When unsure, remain in orientation rather than inventing a replacement body.
 module preflight
 
 change ProposedChange {
-  modify fn Gateway.derivePolicyDecision
+  modify fn RequestHandler.buildDecision
     effects unknown
 }
 ```
@@ -54,8 +54,8 @@ Allow the simulation to surface the existing reevaluation obligation:
 ```shape
 module preflight
 
-change RefactorPolicyDecision {
-  modify fn Gateway.derivePolicyDecision
+change RefactorDecision {
+  modify fn RequestHandler.buildDecision
     effects unknown
 }
 ```

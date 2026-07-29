@@ -70,8 +70,8 @@ Good: prevent any declared calls/provides route from reaching a protected
 resource:
 
 ```shape
-rule no_gateway_to_secrets {
-  forbid path Gateway -> SecretStore over calls or provides
+rule no_request_handler_to_restricted_store {
+  forbid path RequestHandler -> RestrictedStore over calls or provides
 }
 ```
 
