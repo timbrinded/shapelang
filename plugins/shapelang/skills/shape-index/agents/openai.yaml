@@ -1,6 +1,6 @@
 interface:
   display_name: "Shape Index"
   short_description: "Build a whole-codebase Shape model"
-  default_prompt: "Use $shape-index from a fixed clean baseline. Keep generated AST read-only, author high-confidence subsystems in current-CLI batches, preserve stable evidence and important typed review context, and report explicit gaps."
+  default_prompt: "Use $shape-index from a fixed clean baseline. Keep generated AST read-only, reconcile source workflows and required review docs against the authored model, validate current-CLI batches, and report explicit gaps."
 policy:
   allow_implicit_invocation: false

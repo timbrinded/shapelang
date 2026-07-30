@@ -41,13 +41,13 @@ Do not run an AST generator during authored indexing. A request to create or ref
 1. Briefly survey repository layout, existing authored Shape, documentation, generated navigation, and source entrypoints. Record each architecture-significant subsystem as `modeled`, `deferred`, or `not architecture-significant`.
 2. Before the first authored batch, read `references/current-cli-authoring.md`. Use it and the repository's existing authored files as the current `shp 0.7` syntax guide.
 3. Start with one high-confidence subsystem or coherent cluster. Do not wait for an exhaustive repo-wide prose inventory before authoring.
-4. Inspect the relevant source and docs, then author all supported architecture facts for that batch:
+4. Reconcile each relevant source workflow and any docs that define its completion, ordering, or required review against the authored model:
    - resources, traits, ownership, grants, and effects;
-   - direct calls/provides relations and significant ordered coordination;
+   - direct calls/provides relations, plus `coordinated_call` when completion or correctness depends on ordered endpoints;
    - implementation coverage with `on_change require shape_update`;
-   - bindings for documentation or other required review surfaces;
+   - bindings when documentation or project policy explicitly requires review with source or model changes;
    - typed rationale or memory for important source-supported behavior that Shape cannot enforce directly.
-5. Format and validate the batch, inspect the authored diff, update the subsystem status, and continue.
+5. Record every evidence-backed fact still absent from the model. A successful check proves model coherence, not source or documentation completeness. Then format and validate the batch, inspect the authored diff, update the subsystem status, and continue.
 
 For each important source-supported claim, choose the strongest honest representation. A runtime fact that is not checker-enforceable may still be important typed review context. Label it as rationale or memory instead of omitting it or presenting it as an enforced invariant. If the evidence is insufficient, defer the claim explicitly.
 
@@ -72,7 +72,7 @@ Use draft checking only while an explicit `effects unknown` remains. Run `check 
 
 Return one state:
 
-- `complete`: all architecture-significant subsystems have a coverage decision; all intended source-supported resources, effects, relations, coordination, implementations, bindings, and typed review context are authored; generated AST is unchanged; stable evidence is present; and strict checks pass with no relevant deferred gaps.
+- `complete`: all architecture-significant subsystems have a coverage decision; source and documentation reconciliation leaves no important unmodeled resources, effects, relations, coordination, implementations, bindings, or typed review context; generated AST is unchanged; stable evidence is present; and strict checks pass with no relevant deferred gaps.
 - `incomplete_with_explicit_gaps`: useful batches are authored, but listed unknowns, missing evidence, model gaps, or strict diagnostics remain.
 - `blocked`: the baseline, toolchain, or source evidence prevents reliable authoring.
 
