@@ -52,6 +52,7 @@ component CiPipeline {
   grants Read<ClaudeReviewPrompt>
   grants Read<ClaudeReviewResult>
   grants Read<CliPackageManifest>
+  grants Read<CommandLineInterface>
   grants Read<DocsContent>
   grants Read<ExperimentalKernelDiagnosticSet>
   grants Read<ExperimentalKernelEnvelope>
@@ -333,6 +334,8 @@ component CiPipeline {
     source ts("scripts/check-skills.ts#validateSkillPackage")
     description "Deterministically validates the shipped set, routing metadata and cases, referenced resources, output contracts, executable scripts, and current CLI examples."
     effects complete {
+      Read<CommandLineInterface>
+        evidence ts("scripts/check-skills.ts#validateCurrentCliExamples")
       Read<ShapeAgentSkill>
         evidence md("plugins/shapelang/skills/shape-lang/SKILL.md")
       Read<ShapeAgentSkill>
