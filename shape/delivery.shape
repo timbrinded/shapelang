@@ -1485,7 +1485,7 @@ attest no_shape_change {
 
 attest no_shape_change {
   source mjs(".github/scripts/run-claude-skill.mjs#skillsReleaseFailureMessage")
-  reason "Release-case outcomes remain required, non-empty, evidence-backed results; removing a hidden exact-label comparison leaves the existing case, command, evidence-marker, pass-status, and findings gates unchanged."
+  reason "Release cases still require non-empty evidence-backed outcomes, exact commands, pass statuses, and no findings; the Index gap canary now verifies both source endpoints and the documentation binding instead of mandating one relation-kind label for an awaited direct call."
 }
 
 attest no_shape_change {
@@ -1495,12 +1495,12 @@ attest no_shape_change {
 
 attest no_shape_change {
   source ts("packages/shp-cli/src/shape-workflow.test.ts")
-  reason "The gate regression fixture now proves that evidence-backed prose outcomes pass and empty outcomes fail; test-only coverage adds no separate architecture surface."
+  reason "Gate regression fixtures verify evidence-backed prose outcomes, reject empty outcomes and missing commands, and require the Index source endpoints plus documentation binding; test-only coverage adds no separate architecture surface."
 }
 
 attest no_shape_change {
   source md("plugins/shapelang/skills/shape-index/SKILL.md")
-  reason "The indexing workflow now distinguishes direct invocation from completion- or correctness-dependent coordination while preserving its existing source-and-documentation completeness contract; it changes agent guidance without changing Shape language, checker, CLI, or delivery architecture."
+  reason "The indexing workflow states its existing source-and-documentation completeness contract precisely without prescribing one relation kind for every awaited direct call; it changes agent guidance without changing Shape language, checker, CLI, or delivery architecture."
 }
 
 attest no_shape_change {
