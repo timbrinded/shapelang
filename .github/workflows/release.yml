@@ -352,7 +352,7 @@ jobs:
             | sort >"$release_dir/expected-assets.txt"
           diff -u "$release_dir/expected-assets.txt" "$release_dir/actual-assets.txt"
 
-          jq -r '.body' <<<"$release_json" >"$release_dir/published-notes.md"
+          jq -j '.body' <<<"$release_json" >"$release_dir/published-notes.md"
           diff -u "docs/releases/$GITHUB_REF_NAME.md" "$release_dir/published-notes.md"
 
           mkdir -p "$release_dir/assets"

@@ -1507,3 +1507,8 @@ attest no_shape_change {
   source yaml("plugins/shapelang/skills/shape-index/agents/openai.yaml")
   reason "The default prompt now matches the skill's existing completeness contract; plugin routing and the Shape delivery architecture are unchanged."
 }
+
+attest no_shape_change {
+  source yaml(".github/workflows/release.yml#Verify release record and assets")
+  reason "The publication verifier now writes the GitHub release body without adding a second trailing newline before comparison; release assets, notes, checksums, installer checks, and delivery architecture are unchanged."
+}
