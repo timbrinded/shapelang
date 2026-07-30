@@ -1500,7 +1500,7 @@ attest no_shape_change {
 
 attest no_shape_change {
   source md("plugins/shapelang/skills/shape-index/SKILL.md")
-  reason "The indexing workflow now states its existing source-and-documentation completeness contract more precisely; it changes agent guidance without changing Shape language, checker, CLI, or delivery architecture."
+  reason "The indexing workflow now distinguishes direct invocation from completion- or correctness-dependent coordination while preserving its existing source-and-documentation completeness contract; it changes agent guidance without changing Shape language, checker, CLI, or delivery architecture."
 }
 
 attest no_shape_change {
