@@ -1,0 +1,33 @@
+module shape.generated.ast.fixtures.skills.review.cross_object.generated_candidate.presenter
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource PresenterModulePresentRecordAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("fixtures/skills/review/cross-object/candidate/presenter.ts#presentRecord")
+  fingerprint ast.semantic_subtree_v1("sha256:fd7888499a0f455d47d77941c43f76f55c31cbf31519e18eeb0e2a136d1e2bf1")
+}
+
+component PresenterModule : GeneratedCandidate {
+  fn presentRecord
+    source ts("fixtures/skills/review/cross-object/candidate/presenter.ts#presentRecord")
+    effects unknown
+}
+
+relation PresenterModulePresentRecordGeneratedFromPresenterModulePresentRecordAstAnchor {
+  kind generated_from
+  connects PresenterModule -> PresenterModulePresentRecordAstAnchor
+  roles { PresenterModule as generated, PresenterModulePresentRecordAstAnchor as syntax }
+  expects PresenterModulePresentRecordAstAnchor fingerprint ast.semantic_subtree_v1("sha256:fd7888499a0f455d47d77941c43f76f55c31cbf31519e18eeb0e2a136d1e2bf1")
+  summary "fn PresenterModule.presentRecord generated from typescript function_declaration at fixtures/skills/review/cross-object/candidate/presenter.ts#presentRecord."
+}
+
+implementation PresenterModuleImpl {
+  paths {
+    "fixtures/skills/review/cross-object/candidate/presenter.ts"
+  }
+  conforms_to PresenterModule
+}

@@ -17,7 +17,7 @@ import { join, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 
 const JSON_ONLY_SYSTEM_PROMPT =
-  'You are producing machine input for CI. Your final response must be exactly one JSON object matching the configured JSON schema. The first character must be "{" and the last character must be "}". Do not include prose, bullets, Markdown, code fences, preamble, or postscript. If there are no verified drift findings, return status "pass" with an empty findings array.';
+  'You are producing machine input for CI. Your final response must be exactly one JSON object matching the configured JSON schema. The first character must be "{" and the last character must be "}". Do not include prose, bullets, Markdown, code fences, preamble, or postscript. Follow the task-specific status and evidence rules exactly; never invent findings, gaps, checks, cases, or command evidence.';
 
 const DEFAULT_MODEL = "claude-sonnet-4-6";
 
@@ -334,9 +334,17 @@ export function buildGuardPrompt(env = process.env) {
 }
 
 export function renderGuardSummary(result) {
-  const bySeverity = { high: 0, medium: 0, low: 0 };
+  const byImpact = { high: 0, medium: 0, low: 0 };
+  let suspicious = 0;
+  let supported = 0;
   for (const finding of result.findings) {
-    bySeverity[finding.severity] += 1;
+    byImpact[finding.impact] += 1;
+    if (finding.disposition === "suspicious") {
+      suspicious += 1;
+    }
+    if (finding.disposition === "supported") {
+      supported += 1;
+    }
   }
   return [
     "## Shape Contract Guard",
@@ -345,7 +353,7 @@ export function renderGuardSummary(result) {
     "",
     result.summary,
     "",
-    `Findings: ${result.findings.length} (high: ${bySeverity.high}, medium: ${bySeverity.medium}, low: ${bySeverity.low})`,
+    `Findings: ${result.findings.length} (high: ${byImpact.high}, medium: ${byImpact.medium}, low: ${byImpact.low}; suspicious: ${suspicious}, supported: ${supported})`,
     ""
   ].join("\n");
 }
@@ -358,10 +366,12 @@ export function guardFailureMessage(result) {
     return JSON.stringify(result, null, 2);
   }
 
-  const highFindings = result.findings.filter((finding) => finding.severity === "high");
+  const highFindings = result.findings.filter(
+    (finding) => finding.impact === "high" && finding.disposition === "suspicious"
+  );
   if (highFindings.length > 0) {
     return [
-      `Shape contract guard reported ${highFindings.length} high-severity finding(s):`,
+      `Shape contract guard reported ${highFindings.length} high-impact suspicious finding(s):`,
       JSON.stringify(highFindings, null, 2)
     ].join("\n");
   }
@@ -543,8 +553,13 @@ export function renderSkillsReleaseSummary(result) {
   ];
   for (const skill of result.skills) {
     lines.push(`- **${skill.name}**: \`${skill.status}\` — ${skill.summary}`);
-    for (const scenario of skill.scenarios) {
-      lines.push(`  - ${scenario}`);
+    for (const staticCheck of skill.static_checks) {
+      lines.push(`  - ${staticCheck.id}: \`${staticCheck.status}\` — ${staticCheck.evidence}`);
+    }
+    for (const behaviorCase of skill.cases) {
+      lines.push(
+        `  - ${behaviorCase.id}: \`${behaviorCase.status}\` / \`${behaviorCase.outcome}\` — ${behaviorCase.evidence}`
+      );
     }
   }
   if (result.findings.length > 0) {
@@ -562,25 +577,116 @@ export function renderSkillsReleaseSummary(result) {
   return lines.join("\n");
 }
 
-export const RELEASE_SKILL_SCENARIOS = {
-  "shape-lang": [
-    "draft-strict",
-    "explicit-graph",
-    "domain-packs",
-    "forbidden-paths",
-    "author-critic",
-    "lsp",
-    "target-aware-analyzer",
-    "stable-refs"
+export const RELEASE_SKILL_STATIC_CHECKS = {
+  "shape-lang": ["mode-boundaries", "draft-strict", "current-cli", "stable-refs", "drift-review"],
+  "shape-contract-preflight": [
+    "baseline-separation",
+    "unknown-plan",
+    "decision-contract",
+    "current-cli"
   ],
-  "shape-contract-preflight": ["guarded-unknown-plan", "stable-refs"],
   "shape-contract-guard": [
-    "forbidden-path-removal",
-    "domain-pack-weakening",
-    "generated-only-exclusion"
+    "impact-support-separation",
+    "semantic-normalization",
+    "source-boundary",
+    "structured-output"
   ],
-  "shape-index": ["generated-navigation-only", "authored-contract-surfaces", "stable-refs"],
-  "shape-review": ["evidence-backed-cross-object", "speculation-suppression", "stable-refs"]
+  "shape-index": ["explicit-only", "clean-baseline", "no-invariant-quota", "ast-navigation"],
+  "shape-review": [
+    "code-first",
+    "all-incident-relations",
+    "false-positive-challenge",
+    "drift-separation"
+  ]
+};
+
+export const RELEASE_SKILL_CASES = {
+  "shape-lang": {
+    "lang-draft-strict": {
+      outcome: "draft_only",
+      commands: [
+        "bun shp check --allow-unknown-effects fixtures/fail/unknown_effects/audit.shape",
+        "bun shp check fixtures/fail/unknown_effects/audit.shape"
+      ]
+    },
+    "lang-final-forbid": {
+      outcome: "blocked",
+      commands: [
+        "bun shp check fixtures/fail/memory_guard_does_not_override_final_forbid/audit.shape"
+      ]
+    }
+  },
+  "shape-contract-preflight": {
+    "preflight-guarded-unknown": {
+      outcome: "blocked_by_contract",
+      commands: [
+        "plugins/shapelang/skills/shape-contract-preflight/scripts/precheck.sh --shape-root fixtures/skills/preflight/guarded-unknown/shape --json fixtures/skills/preflight/guarded-unknown/proposal.shape"
+      ]
+    },
+    "preflight-invalid-baseline": {
+      outcome: "baseline_invalid",
+      commands: [
+        "plugins/shapelang/skills/shape-contract-preflight/scripts/precheck.sh --shape-root fixtures/skills/preflight/invalid-baseline/shape --json fixtures/skills/preflight/invalid-baseline/proposal.shape"
+      ]
+    },
+    "preflight-complete-route": {
+      outcome: "blocked_by_contract",
+      evidenceMarkers: ["SubmissionApi", "ArchiveWorker", "PublishedArchive"],
+      commands: [
+        "plugins/shapelang/skills/shape-contract-preflight/scripts/precheck.sh --shape-root fixtures/skills/preflight/complete-route/shape --json fixtures/skills/preflight/complete-route/proposal.shape"
+      ]
+    }
+  },
+  "shape-contract-guard": {
+    "guard-policy-removal": {
+      outcome: "high_suspicious",
+      commands: ["bun shp check fixtures/skills/guard/policy-removal/candidate/contract.shape"]
+    },
+    "guard-equivalent-relocation": {
+      outcome: "no_finding",
+      commands: [
+        "bun shp check fixtures/skills/guard/equivalent-relocation/candidate/retention.shape"
+      ]
+    }
+  },
+  "shape-index": {
+    "index-missing-ast": {
+      outcome: "continue_without_ast",
+      commands: ["bun shp check fixtures/skills/index/missing-ast/shape/system.shape"]
+    },
+    "index-no-invariant": {
+      outcome: "no_evidence_backed_invariant",
+      commands: []
+    },
+    "index-coverage-gaps": {
+      outcome: "incomplete_with_explicit_gaps",
+      evidenceMarkers: ["coordinated_call", "binding", "docs/images.md"],
+      commands: ["bun shp check fixtures/skills/index/coverage-gaps/shape/system.shape"]
+    }
+  },
+  "shape-review": {
+    "review-cross-object": {
+      outcome: "code_comment",
+      commands: ["bun shp check fixtures/skills/review/cross-object/shape/model.shape"]
+    },
+    "review-stale-model": {
+      outcome: "model_warning_only",
+      commands: ["bun shp check fixtures/skills/review/stale-model/shape/model.shape"]
+    },
+    "review-root-cause-grouping": {
+      outcome: "single_code_comment",
+      evidenceMarkers: [
+        "RangeNormalizer.normalizeRange",
+        "shp explain RangeNormalizer.normalizeRange",
+        "end - 1"
+      ],
+      commands: [
+        "bun shp check fixtures/skills/review/root-cause-grouping/shape/model.shape",
+        "bun shp explain RangeNormalizer.normalizeRange fixtures/skills/review/root-cause-grouping/shape/model.shape",
+        "bun shp graph show RangeNormalizer fixtures/skills/review/root-cause-grouping/shape/model.shape"
+      ]
+    }
+  }
 };
 
 export function skillsReleaseFailureMessage(result) {
@@ -588,7 +694,7 @@ export function skillsReleaseFailureMessage(result) {
     return "Invalid skills release result: summary must not be empty.";
   }
 
-  const expected = new Set(Object.keys(RELEASE_SKILL_SCENARIOS));
+  const expected = new Set(Object.keys(RELEASE_SKILL_STATIC_CHECKS));
   for (const skill of result.skills) {
     if (!expected.delete(skill.name)) {
       return `Invalid skills release result: duplicate or unknown skill ${skill.name}.`;
@@ -597,15 +703,61 @@ export function skillsReleaseFailureMessage(result) {
       return `Invalid skills release result: ${skill.name} summary must not be empty.`;
     }
 
-    const expectedScenarios = new Set(RELEASE_SKILL_SCENARIOS[skill.name]);
-    for (const scenario of skill.scenarios) {
-      if (!expectedScenarios.delete(scenario)) {
-        return `Invalid skills release result: ${skill.name} has duplicate or unknown scenario ${scenario}.`;
+    const expectedStaticChecks = new Set(RELEASE_SKILL_STATIC_CHECKS[skill.name]);
+    for (const staticCheck of skill.static_checks) {
+      if (!expectedStaticChecks.delete(staticCheck.id)) {
+        return `Invalid skills release result: ${skill.name} has duplicate or unknown static check ${staticCheck.id}.`;
+      }
+      if (staticCheck.status !== "pass") {
+        return JSON.stringify(result, null, 2);
+      }
+      if (staticCheck.evidence.trim() === "") {
+        return `Invalid skills release result: ${skill.name} static check ${staticCheck.id} evidence must not be empty.`;
       }
     }
-    if (expectedScenarios.size > 0) {
-      return `Invalid skills release result: ${skill.name} is missing scenarios ${[
-        ...expectedScenarios
+    if (expectedStaticChecks.size > 0) {
+      return `Invalid skills release result: ${skill.name} is missing static checks ${[
+        ...expectedStaticChecks
+      ].join(", ")}.`;
+    }
+
+    const expectedCases = new Map(Object.entries(RELEASE_SKILL_CASES[skill.name]));
+    for (const behaviorCase of skill.cases) {
+      const expectedCase = expectedCases.get(behaviorCase.id);
+      if (!expectedCase) {
+        return `Invalid skills release result: ${skill.name} has duplicate or unknown case ${behaviorCase.id}.`;
+      }
+      expectedCases.delete(behaviorCase.id);
+      if (behaviorCase.status !== "pass") {
+        return JSON.stringify(result, null, 2);
+      }
+      if (behaviorCase.outcome !== expectedCase.outcome) {
+        return `Invalid skills release result: ${behaviorCase.id} outcome must be ${expectedCase.outcome}; got ${behaviorCase.outcome}.`;
+      }
+      if (behaviorCase.evidence.trim() === "") {
+        return `Invalid skills release result: ${behaviorCase.id} evidence must not be empty.`;
+      }
+      const normalizedEvidence = behaviorCase.evidence.toLowerCase();
+      for (const marker of expectedCase.evidenceMarkers ?? []) {
+        if (!normalizedEvidence.includes(marker.toLowerCase())) {
+          return `Invalid skills release result: ${behaviorCase.id} evidence must include ${marker}.`;
+        }
+      }
+      const commands = new Set(behaviorCase.commands);
+      for (const requiredCommand of expectedCase.commands) {
+        if (!commands.delete(requiredCommand)) {
+          return `Invalid skills release result: ${behaviorCase.id} is missing command evidence for ${requiredCommand}.`;
+        }
+      }
+      if (commands.size > 0) {
+        return `Invalid skills release result: ${behaviorCase.id} has unexpected command evidence ${[
+          ...commands
+        ].join(", ")}.`;
+      }
+    }
+    if (expectedCases.size > 0) {
+      return `Invalid skills release result: ${skill.name} is missing cases ${[
+        ...expectedCases.keys()
       ].join(", ")}.`;
     }
   }
@@ -697,9 +849,14 @@ const SKILLS = {
       ".github/shape-contract/schemas/shape-skills-release-result.schema.json",
     allowedTools: [
       ...READ_ONLY_TOOLS,
+      "Bash(bun shp --help)",
+      "Bash(bun shp --version)",
       "Bash(bun shp * --help)",
       "Bash(bun shp graph *)",
-      "Bash(bun shp analyze *)"
+      "Bash(bun shp analyze *)",
+      "Bash(plugins/shapelang/skills/shape-contract-preflight/scripts/precheck.sh --shape-root fixtures/skills/preflight/guarded-unknown/shape --json fixtures/skills/preflight/guarded-unknown/proposal.shape)",
+      "Bash(plugins/shapelang/skills/shape-contract-preflight/scripts/precheck.sh --shape-root fixtures/skills/preflight/invalid-baseline/shape --json fixtures/skills/preflight/invalid-baseline/proposal.shape)",
+      "Bash(plugins/shapelang/skills/shape-contract-preflight/scripts/precheck.sh --shape-root fixtures/skills/preflight/complete-route/shape --json fixtures/skills/preflight/complete-route/proposal.shape)"
     ].join(","),
     buildPrompt: buildSkillsReleasePrompt,
     renderSummary: renderSkillsReleaseSummary,

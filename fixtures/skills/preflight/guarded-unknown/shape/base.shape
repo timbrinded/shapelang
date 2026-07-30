@@ -1,0 +1,25 @@
+module skill_preflight_guarded
+
+resource TemplateCatalog
+
+component ReportCompiler {
+  owns TemplateCatalog
+  grants Read<TemplateCatalog>
+  fn compileReport : RefactorSensitive
+    effects complete {
+      Read<TemplateCatalog>
+    }
+}
+
+memory CompilationRefactorConstraint : RefactorConstraint<fn ReportCompiler.compileReport> {
+  applies_to fn ReportCompiler.compileReport
+  status Unexplained
+  confidence High
+  summary "Previous refactors changed template selection."
+  who {
+    owner ReportingTeam
+  }
+  guards {
+    on_change require ReEvaluation<Self>
+  }
+}

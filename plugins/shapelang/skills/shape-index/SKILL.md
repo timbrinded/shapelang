@@ -1,119 +1,83 @@
 ---
 name: shape-index
-description: Use when building or refreshing a whole-codebase Shape model. Treat generated AST as navigation evidence, then author reviewed architecture, boundaries, invariants, domain packs, and stable source-backed claims for downstream checking and review.
+description: >-
+  This skill should be used only when explicitly asked to create or refresh a
+  whole-repository authored Shape model from a fixed repository baseline.
+  Survey architecture-significant subsystems, treat generated AST as read-only
+  navigation, verify claims in source, and author validated model batches. Do
+  not use it for incremental edits, pending-change review, or preflight planning.
 ---
 
-# Shape Index — whole-codebase architecture & invariant authoring
+# Shape Index
 
-The `shape-lang` skill covers *incremental*, changed-file authoring, not building a
-reviewable model of an entire project. This skill is a faithful extension: follow every
-rule in the `shape-lang` skill and its `cli-workflows` reference; this file adds the
-whole-codebase authoring workflow. Assume `shp` is on `PATH`.
+## Boundary
 
-The output (the authored `shape/` model) is what downstream Shape-aware tooling
-trusts as contract. Make it an accurate, navigable map of the architecture and
-the invariants the code must uphold.
+Build or refresh a repository-wide authored model independently of any pending change. Require explicit invocation because this workflow is broad and write-heavy.
 
-## Two layers
+## Shape Evidence Contract
 
-- **Layer 1 — generated AST (already done).** `shape/generated/ast/` contains
-  deterministic, source-backed navigation context for the whole codebase:
-  per-function anchors, candidate effects, and `source` refs. It is evidence for
-  investigation, not an automatically trusted architecture contract. Do NOT
-  edit it.
-- **Layer 2 — authored architecture (your job).** Author `.shape` files under
-  `shape/` (NOT under `shape/generated/`) capturing what the AST cannot:
+- Treat authored Shape as typed architecture claims, not proof of source correctness.
+- Treat generated AST and analyzer output as navigation evidence only.
+- Source-confirm implementation claims.
+- Keep final forbids final.
+- Use stable `file#symbol` references when a symbol exists; use file-only references only when no stable symbol exists.
+- Preserve unresolved effects as `effects unknown`.
+- Finish completed work with strict deterministic validation.
 
-  1. **Components & responsibilities** — the real architectural units (services,
-     routers, adapters, data access, domain) and what each is responsible for.
-  2. **Code boundaries / allowed dependencies** — which components may depend on
-     which; encode forbidden directions as `forbid` rules where they matter.
-  3. **Owned resources & business logic** — the key domain resources and the
-     rules that govern them.
-  4. **Invariants that must hold** — security/permission rules, data-integrity
-     and transactional constraints, and contracts between modules (e.g. "this
-     helper returns the parsed credential, never the raw response"; "only the
-     owner or an admin may mutate X"; "every write to Y is audited").
-  5. **Implementation coverage and review bindings** — authored
-     `implementation` declarations that govern significant source paths and
-     authored `binding` declarations that require paired docs, generated,
-     workflow, or other review-surface changes.
+Resolve the repository's canonical Shape command once, verify it with `--version`, and reuse it consistently.
 
-## Grounding (important)
+## Establish The Baseline
 
-Every authored claim must be **reviewed and traceable to concrete code**. Use
-the generated layer to find relevant implementation, then confirm the claim in
-source before promoting it. Attach stable references such as
-`source ts("packages/.../file.ts#parseRefreshTokenResponse")`; prefer
-`file#symbol`, then file-only when no durable symbol exists. Never author
-line-number or line-range references. Prefer prelude relation kinds (`calls`,
-`provides`, `coordinated_call`, `callbacks`).
+Require either a user-provided baseline commit or the current clean default-branch commit. Do not index from a worktree containing uncommitted application changes or a pending review diff. Use a separate clean worktree when invoked from active change work, and record the baseline SHA.
 
-## Breadth: cover the WHOLE architecture, not a few subsystems
+## Keep Generated AST Read-Only
 
-Shape-aware tooling can only use the model on code that has authored invariants. Code in
-a subsystem with NO Layer-2 coverage gets no grounding — a reviewer falls back to a
-diff-only read there. So the value of this model is set by how much of the
-architecture-significant surface it covers. **Author broadly.**
+Detect the generated AST manifest and run an existing freshness check when available. Inspect generated anchors only to locate source.
 
-- Begin by ENUMERATING every architecture-significant subsystem in the repo (the
-  top-level domains/services/packages, active domain packs, the cross-cutting concerns — auth/permissions,
-  data access & transactions, background/async work, caching, eventing/outbox,
-  external integrations, request lifecycle). Produce this list FIRST, from the
-  directory layout + `shape/generated/ast/manifest.json` + `shp graph stats`.
-- Then author Layer-2 components, boundaries, and INVARIANTS for **each** subsystem
-  on that list — aim for comprehensive coverage of the major subsystems, not a
-  handful. A large codebase warrants many authored `.shape` files across many
-  subsystem areas, each grounded. Thin coverage (a few files over a huge tree) is
-  the failure mode to avoid: it leaves most code ungrounded.
-- "Do not read every file" is about EFFICIENCY of investigation (sample within a
-  subsystem; lean on the AST layer), NOT a license to cover only a few subsystems.
-  Be efficient per subsystem; be exhaustive across subsystems.
-- Prioritize the invariants most likely to matter to a reviewer: security/permission
-  rules, data-integrity & transactional constraints, ownership/atomicity, audited
-  writes, required call ordering, and module contracts ("this helper returns the
-  parsed credential, never the raw response").
+Do not run an AST generator during authored indexing. A request to create or refresh the authored whole-repository model is not authorization to regenerate Layer 1. Regenerate only when the user explicitly asks for generated-AST or Layer-1 regeneration. Never edit generated Shape directly.
 
-## Author from architecture, not from a pending change (hard rule)
+## Authoring Workflow
 
-This model is authored ONCE from the codebase's **general architecture**, with no
-knowledge of any particular change under review. **Never** author an invariant
-because it would catch a specific pull request, diff, or changed file; never read
-or target the specific change under review. Author what the architecture genuinely
-asserts as an invariant for normal callers; if a real invariant happens to cover a
-changed file later, that is the model working as intended — but the authoring decision
-must come from the architecture, never from a known change. Model honest uncertainty
-(`effects unknown`) rather than inventing a claim to widen coverage.
+1. Briefly survey repository layout, existing authored Shape, documentation, generated navigation, and source entrypoints. Record each architecture-significant subsystem as `modeled`, `deferred`, or `not architecture-significant`.
+2. Before the first authored batch, read `references/current-cli-authoring.md`. Use it and the repository's existing authored files as the current `shp 0.7` syntax guide.
+3. Start with one high-confidence subsystem or coherent cluster. Do not wait for an exhaustive repo-wide prose inventory before authoring.
+4. Inspect the relevant source and docs, then author all supported architecture facts for that batch:
+   - resources, traits, ownership, grants, and effects;
+   - direct calls/provides relations and significant ordered coordination;
+   - implementation coverage with `on_change require shape_update`;
+   - bindings for documentation or other required review surfaces;
+   - typed rationale or memory for important source-supported behavior that Shape cannot enforce directly.
+5. Format and validate the batch, inspect the authored diff, update the subsystem status, and continue.
 
-## Procedure
+For each important source-supported claim, choose the strongest honest representation. A runtime fact that is not checker-enforceable may still be important typed review context. Label it as rationale or memory instead of omitting it or presenting it as an enforced invariant. If the evidence is insufficient, defer the claim explicitly.
 
-1. Survey & enumerate: use the directory layout, `shape/generated/ast/manifest.json`,
-   and `shp graph stats` to build the full list of architecture-significant
-   subsystems (see Breadth). Use `shp graph all` for the complete graph and
-   `shp graph show SYMBOL --kind KIND` for focused investigation. Sample key
-   modules within each; do not read every file.
-2. Author Layer 2 shapes per the categories above for EACH subsystem on the list,
-   using Layer 1 to navigate and reviewed source to ground each claim. Include
-   `implementation` coverage for architecture-significant source and `binding`
-   declarations where changes must remain coupled to docs, generated artifacts,
-   workflows, or other review surfaces.
-   Put reusable domain policy in packs discovered under the repository's Shape
-   roots. A pack is active when it is in default discovery; an `import` controls
-   name visibility and does not activate or waive a pack.
-3. Model honest uncertainty (`effects unknown`) rather than inventing claims.
-   Keep final forbids final.
-4. During authoring, use `shp check --allow-unknown-effects` only while explicit
-   draft `effects unknown` claims remain. Before handoff, resolve those drafts or
-   document why they remain, then run strict `shp fmt --check` and `shp check`.
-   The draft flag relaxes only the explicit unknown-effect check; it does not
-   weaken unrelated diagnostics.
-5. Investigate with `shp explain`, `shp analyze`, analyzer hints, and editor/LSP
-   navigation as needed. Analyzer hints and generated facts remain candidates
-   until confirmed against source.
+Do not force every subsystem to have a rule. Breadth means every architecture-significant subsystem receives a coverage decision and every high-confidence boundary receives the applicable Shape declarations.
 
-## Done when
+## Investigation Budget
 
-`shape/` contains an accurate Layer-2 architecture+invariant model that covers the
-major subsystems **broadly** (not just a few), every contract claim reviewed
-against source, authored purely from the architecture (no change-targeting),
-and strict `shp fmt --check` + `shp check` pass.
+Use the bundled reference and local authored examples before inspecting grammar or prelude implementation. Read grammar or checker internals only to resolve a concrete diagnostic that those sources cannot answer.
+
+Do not run scratch mutation probes for every claim. Use at most one focused temporary probe when a material current-CLI semantic question remains unresolved, then remove the temporary file.
+
+Format and validate after each coherent batch:
+
+```bash
+<SHAPE_CMD> fmt shape/index.shape
+<SHAPE_CMD> check
+```
+
+Use draft checking only while an explicit `effects unknown` remains. Run `check --changed-files` as the final gate when the repository supplies an exact changed-file list.
+
+## Completion Gate
+
+Return one state:
+
+- `complete`: all architecture-significant subsystems have a coverage decision; all intended source-supported resources, effects, relations, coordination, implementations, bindings, and typed review context are authored; generated AST is unchanged; stable evidence is present; and strict checks pass with no relevant deferred gaps.
+- `incomplete_with_explicit_gaps`: useful batches are authored, but listed unknowns, missing evidence, model gaps, or strict diagnostics remain.
+- `blocked`: the baseline, toolchain, or source evidence prevents reliable authoring.
+
+Report the baseline SHA, generated-AST availability and freshness, modeled subsystems, explicit gaps, exact validation commands/results, and whether generated files remained unchanged.
+
+## Reference
+
+- `references/current-cli-authoring.md`: compact `shp 0.7` mapping and syntax for whole-repository authored models.

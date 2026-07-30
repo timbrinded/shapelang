@@ -1,0 +1,33 @@
+module shape.generated.ast.fixtures.skills.review.cross_object.generated_candidate.catalog
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource CatalogModuleGetLabelAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("fixtures/skills/review/cross-object/candidate/catalog.ts#getLabel")
+  fingerprint ast.semantic_subtree_v1("sha256:01ebbbc90802bde283b78df8ec64aaa57a1ef2041c5538b6c57a21a5ef902188")
+}
+
+component CatalogModule : GeneratedCandidate {
+  fn getLabel
+    source ts("fixtures/skills/review/cross-object/candidate/catalog.ts#getLabel")
+    effects unknown
+}
+
+relation CatalogModuleGetLabelGeneratedFromCatalogModuleGetLabelAstAnchor {
+  kind generated_from
+  connects CatalogModule -> CatalogModuleGetLabelAstAnchor
+  roles { CatalogModule as generated, CatalogModuleGetLabelAstAnchor as syntax }
+  expects CatalogModuleGetLabelAstAnchor fingerprint ast.semantic_subtree_v1("sha256:01ebbbc90802bde283b78df8ec64aaa57a1ef2041c5538b6c57a21a5ef902188")
+  summary "fn CatalogModule.getLabel generated from typescript function_declaration at fixtures/skills/review/cross-object/candidate/catalog.ts#getLabel."
+}
+
+implementation CatalogModuleImpl {
+  paths {
+    "fixtures/skills/review/cross-object/candidate/catalog.ts"
+  }
+  conforms_to CatalogModule
+}

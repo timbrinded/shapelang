@@ -1,0 +1,33 @@
+module shape.generated.ast.fixtures.skills.index.no_invariant.src.format_label
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource FormatLabelModuleFormatLabelAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("fixtures/skills/index/no-invariant/src/format-label.ts#formatLabel")
+  fingerprint ast.semantic_subtree_v1("sha256:05a2fed0b8c19704efacd0f757f1fad3ce3420d74b73f6d0477778515a994736")
+}
+
+component FormatLabelModule : GeneratedCandidate {
+  fn formatLabel
+    source ts("fixtures/skills/index/no-invariant/src/format-label.ts#formatLabel")
+    effects unknown
+}
+
+relation FormatLabelModuleFormatLabelGeneratedFromFormatLabelModuleFormatLabelAstAnchor {
+  kind generated_from
+  connects FormatLabelModule -> FormatLabelModuleFormatLabelAstAnchor
+  roles { FormatLabelModule as generated, FormatLabelModuleFormatLabelAstAnchor as syntax }
+  expects FormatLabelModuleFormatLabelAstAnchor fingerprint ast.semantic_subtree_v1("sha256:05a2fed0b8c19704efacd0f757f1fad3ce3420d74b73f6d0477778515a994736")
+  summary "fn FormatLabelModule.formatLabel generated from typescript function_declaration at fixtures/skills/index/no-invariant/src/format-label.ts#formatLabel."
+}
+
+implementation FormatLabelModuleImpl {
+  paths {
+    "fixtures/skills/index/no-invariant/src/format-label.ts"
+  }
+  conforms_to FormatLabelModule
+}

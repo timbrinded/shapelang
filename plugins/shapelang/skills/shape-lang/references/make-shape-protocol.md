@@ -8,7 +8,10 @@ Use this when authoring or reviewing global `.shape` model updates. For command 
 2. Identify the claim type: resource invariant, component ownership, grant, structural relation, path or hypercycle rule, function effect, implementation coverage, domain-pack policy, attestation, rationale, memory, or reevaluation.
 3. Update the owning global model file directly; do not create a separate staging area for model drafts.
 4. Include `source` for changed functions and `evidence` for material effects. Prefer stable `#symbol` references and use file-only references when no stable symbol exists; do not add line ranges.
-5. Validate with `shp fmt --check`, `shp check`, and `shp coverage --changed-files changed.txt` when changed files are available.
+5. Format edited Shape files, then validate with `shp fmt --check` and
+   `shp check --changed-files changed.txt` when changed files are available.
+   Use `shp coverage --changed-files changed.txt` only to isolate coverage
+   diagnostics; it does not enforce bindings.
 6. If generated AST points to a possible claim, inspect the named source before
    authoring it. Generated context is navigation evidence, not contract.
 
@@ -67,8 +70,8 @@ Good: prevent any declared calls/provides route from reaching a protected
 resource:
 
 ```shape
-rule no_gateway_to_secrets {
-  forbid path Gateway -> SecretStore over calls or provides
+rule no_collector_to_external_sink {
+  forbid path TelemetryCollector -> ExternalSink over calls or provides
 }
 ```
 

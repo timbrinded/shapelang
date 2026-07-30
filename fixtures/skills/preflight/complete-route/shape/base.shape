@@ -1,0 +1,13 @@
+module skill_preflight_complete_route
+
+resource PublishedArchive
+
+component ArchiveWorker {
+}
+
+component SubmissionApi {
+}
+
+rule no_submission_to_archive {
+  forbid path SubmissionApi -> PublishedArchive over calls or provides
+}

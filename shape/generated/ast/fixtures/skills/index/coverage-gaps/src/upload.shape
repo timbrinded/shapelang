@@ -1,0 +1,33 @@
+module shape.generated.ast.fixtures.skills.index.coverage_gaps.src.upload
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource UploadModuleAcceptImageAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("fixtures/skills/index/coverage-gaps/src/upload.ts#acceptImage")
+  fingerprint ast.semantic_subtree_v1("sha256:3d05398817d9f436effcb3f87e59310f1262e71461de46cf8752a738f200fca3")
+}
+
+component UploadModule : GeneratedCandidate {
+  fn acceptImage
+    source ts("fixtures/skills/index/coverage-gaps/src/upload.ts#acceptImage")
+    effects unknown
+}
+
+relation UploadModuleAcceptImageGeneratedFromUploadModuleAcceptImageAstAnchor {
+  kind generated_from
+  connects UploadModule -> UploadModuleAcceptImageAstAnchor
+  roles { UploadModule as generated, UploadModuleAcceptImageAstAnchor as syntax }
+  expects UploadModuleAcceptImageAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3d05398817d9f436effcb3f87e59310f1262e71461de46cf8752a738f200fca3")
+  summary "fn UploadModule.acceptImage generated from typescript function_declaration at fixtures/skills/index/coverage-gaps/src/upload.ts#acceptImage."
+}
+
+implementation UploadModuleImpl {
+  paths {
+    "fixtures/skills/index/coverage-gaps/src/upload.ts"
+  }
+  conforms_to UploadModule
+}

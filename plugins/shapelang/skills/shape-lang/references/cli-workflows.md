@@ -67,18 +67,21 @@ shp memory
 shp check
 ```
 
-Freshness sweep (opt-in; injects today's date at the CLI boundary):
+Reproducible freshness sweep:
 
 ```bash
-shp obligations --strict-freshness
-shp check --strict-freshness
+shp obligations --as-of 2026-07-29
+shp check --as-of 2026-07-29
 ```
+
+Use `--strict-freshness` only when current UTC time is intentionally part of
+an interactive workflow.
 
 Investigate why a resource or function fails:
 
 ```bash
 shp explain AuditEvent
-shp explain Gateway.derivePolicyDecision
+shp explain RequestHandler.buildDecision
 ```
 
 Investigate the relations incident to a symbol, or the whole hypergraph:
@@ -87,11 +90,13 @@ Investigate the relations incident to a symbol, or the whole hypergraph:
 shp graph all
 shp graph stats
 shp graph all --kind calls
-shp graph show Gateway
-shp graph show Gateway --kind calls
+shp graph show RequestHandler
+shp graph show RequestHandler --kind calls
 ```
 
-Start with `shp graph stats` for a single-shot overview (vertex and hyperedge counts, arity range, isolated vertices) before drilling into specific symbols.
+Start with `shp graph show SYMBOL` for a focused question. Use `shp graph stats`
+when model size, relation-heavy work, or a global rule makes aggregate context
+material.
 
 Compare source hints with declared effects:
 
@@ -160,12 +165,12 @@ Good `memory` output to inspect before a refactor:
 ```text
 Memory Guards
 
-fn Gateway.derivePolicyDecision
+fn RequestHandler.buildDecision
   memory DecisionRefactorConstraint
   type: RefactorConstraint
   status: Unexplained
   confidence: High
-  owner: GatewayTeam
+  owner: RuntimeTeam
 ```
 
 Good `obligations` output to drive fixes:
@@ -174,7 +179,7 @@ Good `obligations` output to drive fixes:
 Open Shape Obligations
 
 guarded changes:
-  fn Gateway.derivePolicyDecision changed; requires reevaluation satisfying memory DecisionRefactorConstraint
+  fn RequestHandler.buildDecision changed; requires reevaluation satisfying memory DecisionRefactorConstraint
 ```
 
 `obligations --strict-freshness` also surfaces stale design memory:

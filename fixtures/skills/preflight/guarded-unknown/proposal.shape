@@ -1,0 +1,6 @@
+module skill_preflight_guarded
+
+change RefactorCompilation {
+  modify fn ReportCompiler.compileReport
+    effects unknown
+}

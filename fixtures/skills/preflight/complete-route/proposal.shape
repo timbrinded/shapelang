@@ -1,0 +1,8 @@
+module skill_preflight_complete_route
+
+change AddArchiveWorkflow {
+  add relation SubmissionCallsWorker {
+    kind calls
+    connects SubmissionApi -> ArchiveWorker
+  }
+}

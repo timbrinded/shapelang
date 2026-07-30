@@ -1,209 +1,88 @@
 # Preflight Examples
 
-Use these as response calibration patterns. The final brief should be short and implementation-oriented.
+Use these current-CLI cases to calibrate concise planning briefs.
 
-## Modify Existing Function
+## Guarded Refactor With Unknown Effects
 
-User task:
+Task:
 
 ```text
-Refactor Gateway.derivePolicyDecision without changing behavior.
+Refactor RequestHandler.buildDecision without changing behavior.
 ```
 
-Expected workflow:
+Record the function as known, likely implementation details as assumptions, and effects as unknown until source inspection. Run focused `explain`, `graph show`, `memory`, and `obligations`.
 
-- Run `shp explain Gateway.derivePolicyDecision`.
-- Run `shp graph show Gateway`.
-- Run `shp memory` because the task is a refactor.
-- Inspect files named by `source` and `evidence`.
-- If guarded, surface the reevaluation path before implementation.
-
-Temporary block:
+Simulate:
 
 ```shape
 module preflight
 
-change RefactorPolicyDecision {
-  modify fn Gateway.derivePolicyDecision
+change RefactorDecision {
+  modify fn RequestHandler.buildDecision
     effects unknown
 }
 ```
 
-Run the default draft precheck because the proposal deliberately uses
-`effects unknown`:
+Return `blocked_by_contract` if the valid baseline plus proposal reports an unsatisfied guard. Draft unknown-effect allowance does not weaken that obligation.
 
-```bash
-plugins/shapelang/skills/shape-contract-preflight/scripts/precheck.sh /tmp/change.shape
+## Invalid Baseline
+
+When strict baseline checking already fails, return:
+
+```text
+decision: baseline_invalid
 ```
 
-Decision: proceed only after guard obligations are known. Draft mode relaxes
-only the explicit unknown-effect diagnostic; any guard or final-forbid failure
-still blocks.
+Include the baseline diagnostics and do not attribute them to the proposed change.
 
-## Add Storage Effect
+## Destructive Effect Against Final Rule
 
-User task:
+Task:
 
 ```text
 Add purgeExpired to delete old audit events.
 ```
 
-Expected workflow:
+Simulate the source-supported `HardDelete<AuditEvent>` effect. Return `blocked_by_contract` when the current model derives a final forbid.
 
-- Locate `AuditEvent`, `AuditStore`, and existing storage effects.
-- Check for resource traits such as `AppendOnly`.
-- Run `shp explain AuditEvent` and `shp explain AuditStore`.
+Do not propose removing the final forbid as a simulation fix.
 
-Temporary block:
+## Complete Multi-Leg Outcome
 
-```shape
-module preflight
-
-change AddAuditPurge {
-  add fn AuditStore.purgeExpired
-    effects complete {
-      HardDelete<AuditEvent>
-    }
-}
-```
-
-Decision: revise plan if `shp check` reports a final-forbid violation.
-Because the effects are fully enumerated, use
-`precheck.sh --strict /tmp/change.shape`.
-
-## Add Relation
-
-User task:
+Task:
 
 ```text
-Wire the CLI analyze command through ShapeAnalyzer.
+Preflight a workflow whose requested outcome crosses several declared endpoints.
 ```
 
-Expected workflow:
+List every architecture-significant leg needed to produce the outcome before creating a proposal. Include a missing leg only when its endpoints and relation kind are known. If any required leg would need to be invented, return `model_gap`. Do not treat a checker-valid partial route as evidence that the complete outcome may proceed.
 
-- Locate `ShpCli` and `ShapeAnalyzer`.
-- Run `shp graph show ShpCli`.
-- Use `calls` if the model declares this as a command dispatch dependency.
+Return `architecture_decision_required` only when two source-supported architectures remain and have materially different contract consequences. Return `blocked_by_contract` when the complete supported outcome conflicts with a current final rule.
 
-Temporary block:
+## Exact Coverage Forecast
 
-```shape
-module preflight
-
-change AddAnalyzeCommandRelation {
-  add relation ShpCliUsesAnalyzer {
-    kind calls
-    connects ShpCli -> ShapeAnalyzer
-    summary "Analyze command dispatch uses analyzer comparison."
-  }
-}
-```
-
-Decision: proceed if relation semantics match the source change and no graph rule fails.
-Use strict precheck because the proposal contains no unknown effects.
-
-## Add A Route Across A Forbidden Path
-
-User task:
-
-```text
-Let Gateway obtain secrets through PolicyService.
-```
-
-Expected workflow:
-
-- Run `shp graph show Gateway`, `shp graph show PolicyService`, and
-  `shp explain SecretStore`.
-- Inspect graph rules and active vendored domain-pack policy.
-- Model the intended relation instead of assuming an indirect path bypasses a
-  boundary.
-
-Temporary block:
-
-```shape
-module preflight
-
-change AddSecretRoute {
-  add relation PolicyProvidesSecret {
-    kind provides
-    connects PolicyService -> SecretStore
-  }
-}
-```
-
-Decision: if a final `forbid path Gateway -> SecretStore over calls or provides`
-fails, revise the implementation plan or ask for an architecture decision.
-Neither draft validation nor an import change can waive the rule.
-
-## Remove Guarded Function
-
-User task:
-
-```text
-Remove the old release asset checksum function.
-```
-
-Expected workflow:
-
-- Locate the modeled function and source ref.
-- Run `shp explain <Function>`.
-- Run `shp memory` and `shp obligations`.
-- If guarded, precheck should show the required reevaluation unless the function is not actually guarded.
-
-Temporary block:
-
-```shape
-module preflight
-
-change RemoveChecksumBuilder {
-  remove fn ReleasePipeline.buildReleaseAssets
-}
-```
-
-Decision: revise plan or add a real reevaluation path before implementation if the checker reports a guarded change.
-
-## Change Source Covered By Implementation
-
-User task:
+Task:
 
 ```text
 Move the parser entrypoint to packages/shp-checker/src/parser/index.ts.
 ```
 
-Expected workflow:
+When that exact path and the governing implementation are known, report the expected implementation and binding updates. When the implementation symbol or destination is inferred, stay in orientation and label coverage as a forecast.
 
-- Find the implementation declaration covering the current source path, such as `ParserSource`.
-- Check bindings that couple docs, generated AST, release assets, or public review surfaces.
-- If the source path changes, plan the corresponding Shape implementation update or a narrow attestation only if the architecture contract truly did not change.
-
-Temporary block:
+When authoring or recommending the final declaration, preserve a stable symbol anchor:
 
 ```shape
-module preflight
-
-change MoveParserSource {
-  modify implementation ParserSource {
-    paths {
-      "packages/shp-checker/src/parser/index.ts"
-    }
-    conforms_to ShapeParser
-    on_change require shape_update
-  }
-}
+source ts("packages/shp-checker/src/parser/index.ts#parseShapeModule")
 ```
 
-Decision: inspect the actual model syntax and symbol name for the implementation declaration before finalizing the update. If the implementation symbol is unknown, stay in orientation mode and report the model gap.
+Use the same stable anchor as effect evidence when it supports the effect. Use a file-only reference only when the target has no stable symbol.
 
 ## Thin Model
 
-User task:
+Task:
 
 ```text
 Change the UI copy for the settings page.
 ```
 
-Expected output:
-
-```markdown
-The current Shape model does not locate this work. I will fall back to normal repo inspection; a Shape update is only required if the code change touches governed source or changes architecture claims.
-```
+Return `model_gap` only when the model is expected to cover the work but cannot locate it. For non-architecture-significant copy, state that normal repository inspection may proceed and no Shape update is implied by model silence.

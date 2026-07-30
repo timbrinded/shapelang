@@ -1,0 +1,16 @@
+module skill_index_missing_ast
+
+component AuthService {
+  fn requireUser
+    source ts("fixtures/skills/index/missing-ast/src/auth.ts#requireUser")
+    effects complete {
+    }
+}
+
+implementation AuthServiceSource {
+  paths {
+    "fixtures/skills/index/missing-ast/src/**"
+  }
+  conforms_to AuthService
+  on_change require shape_update
+}

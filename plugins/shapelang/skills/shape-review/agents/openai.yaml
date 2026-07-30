@@ -1,4 +1,4 @@
 interface:
   display_name: "Shape Review"
   short_description: "Review a code change for real bugs"
-  default_prompt: "Use $shape-review to review this change for concrete local and cross-object bugs, treating authored Shape as evidence and verifying every Shape-derived lead against reachable source behavior."
+  default_prompt: "Use $shape-review to find concrete reachable bugs in this code diff. Verify Shape-derived leads in source, cite the authored symbol and discovery command, group symptoms by the smallest fixing root cause, and return only the JSON result."

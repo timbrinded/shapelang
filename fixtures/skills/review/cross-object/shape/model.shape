@@ -1,0 +1,20 @@
+module skill_review_cross_object
+
+component RecordCatalog {
+  fn getLabel
+    source ts("fixtures/skills/review/cross-object/candidate/catalog.ts#getLabel")
+    effects complete {
+    }
+}
+
+component RecordPresenter {
+  fn presentRecord
+    source ts("fixtures/skills/review/cross-object/candidate/presenter.ts#presentRecord")
+    effects complete {
+    }
+}
+
+relation PresenterCallsCatalog {
+  kind calls
+  connects RecordPresenter -> RecordCatalog
+}

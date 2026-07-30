@@ -1,171 +1,106 @@
 # Guard Signals
 
-Use this reference when scoring authored `.shape` contract diffs. The output is advisory unless it repeats a deterministic `shp check` diagnostic.
+Use this reference to classify normalized authored-contract changes. Keep checker diagnostics separate from advisory findings.
 
-## Severity Model
+## Independent Dimensions
 
-```text
-severity = contract_change_signal + justification_deficit
-declared_model_context = advisory wording, not a formal multiplier
-```
+### Impact
 
-Contract-change signal:
+- `high`: removes a final or material constraint, enables a destructive capability, introduces false completeness, deletes material contract, or opens a previously forbidden structural path.
+- `medium`: adds broad authority, weakens review enforcement, reduces effect certainty, or removes material traceability.
+- `low`: metadata-only or neutral information change.
 
-- `high`: removed constraint, destructive capability added, false completeness introduced, deleted contract file with constraints.
-- `medium`: broad authority added, review enforcement weakened, certainty or traceability reduced.
-- `low`: metadata-only or neutral information changes.
-- `zero`: pure tightening.
+### Support
 
-Justification deficit:
+- `none`: no decision evidence addresses the changed symbol and risk.
+- `generic`: rationale, evidence, reevaluation, or attestation exists but does not address the exact change.
+- `specific`: reviewable decision evidence names the affected symbol/path, semantic risk, and reason.
 
-- `high`: loosening has no matching rationale, memory, reevaluation, evidence, or specific attestation.
-- `medium`: justification exists but is generic or not tied to the changed symbol/path.
-- `low`: justification names the risk and cites reviewable evidence.
+### Disposition
 
-## Constraint Removal
+- `suspicious`: weaker contract or review surface with absent or generic support.
+- `supported`: weaker contract with specific reviewable decision support or an explicit replacement constraint.
+- `tightening`: equal or stronger contract with no loosening.
+- `informational`: noteworthy neutral change.
 
-Report when the diff removes or weakens:
+Specific support changes disposition, not impact. A supported removal of a major boundary remains high-impact.
 
-- Resource trait, especially `AppendOnly` or a declared local protection trait.
-- `forbid final`.
-- `forbid hypercycle`.
-- `forbid provides ... except ...`, including widened exceptions.
-- `guards { on_change require ... }`.
-- `owns`.
-- Prelude structural relation kind such as `calls`, `callbacks`, `provides`, or `coordinated_call`.
-- `implementation` declaration or `on_change require shape_update`.
-- `binding` declaration or required changed paths.
-- Trait definitions that weaken `allow`, `require`, `forbid`, or `require_context`.
-- Imports that change which trait definition resolves.
-- Built-in or project-significant trait names through shadowing.
-- Whole authored `.shape` files containing constraints, coverage, bindings, provider rules, guarded design context, memory, rationale, reevaluation, or relation declarations.
+## Normalize Before Classifying
 
-Default severity: high when a real constraint is removed. Keep it high when the
-same diff also introduces a capability or effect that uses the loosened path;
-describe that co-occurrence in the signal and evidence.
+Create one before/after record per semantic root change. Search the candidate model before reporting removal:
 
-## Capability Or Effect Widening
+- Was the declaration relocated?
+- Was it renamed without semantic change?
+- Was it replaced by an equal or stronger rule, trait, relation, implementation, or binding?
+- Is the diff formatter-only or ordering-only?
+- Do multiple textual changes express one underlying change?
 
-Report when the diff adds or widens:
+Use an empty `replacement` only after these checks.
 
-- Destructive or data-moving `grants`.
-- Broad unused `grants`; medium by default.
-- Function effects for destructive or data-moving effects.
-- Effect targets from less sensitive to more sensitive resources.
-- Resource trait weakening that permits new effects.
+## High-Impact Signals
 
-Destructive/storage effects include final forbids from traits, explicit `HardDelete<T>`, `Truncate<T>`, `DropStorage<T>`, and project-defined equivalents.
+Report verified removal or weakening of:
 
-## Co-Occurrence
+- a resource protection trait;
+- `forbid final`;
+- `forbid hypercycle`;
+- `forbid path` traversal kinds or endpoints;
+- `forbid provides ... except ...`, including widened exceptions;
+- ownership or a prelude structural relation;
+- guarded change requirements;
+- implementation coverage or binding enforcement;
+- a vendored pack rule or trait;
+- an authored file containing material constraints;
+- `effects unknown` into an unsupported empty `effects complete`.
 
-Escalate first when:
+Escalate co-occurring constraint removal and newly allowed capability/effect on the same symbol or declared relation neighborhood as one high-impact root finding.
 
-- A constraint was removed, and
-- A newly allowed grant/effect/relation affects the same resource, component, function, relation endpoint, or declared neighborhood.
+## Capability And Effect Widening
 
-This is the primary Guard failure mode. It can pass `shp check` because the head model is coherent after loosening.
+Classify destructive/data-moving grants and effects as high when newly enabled by the same loosening. Classify broad unused grants as medium unless current declared context shows a higher-impact boundary.
 
-## Review-Enforcement Weakening
+Examples include `HardDelete<T>`, `Truncate<T>`, `DropStorage<T>`, and project-defined equivalents.
 
-Report separately from resource/effect loosening when the diff weakens:
+## Structural Changes
 
-- Implementation coverage for governed source.
-- Binding coupling for docs, workflows, generated AST, release, or public review surfaces.
-- Attestation allowances that make review coupling easier to bypass.
+Review:
 
-Outcome: `review-enforcement weakening`.
+- removed `calls`, `callbacks`, `provides`, or `coordinated_call`;
+- a prelude kind replaced by a custom or weaker kind;
+- removed coordinated endpoints;
+- removed traversal kinds from a forbidden path;
+- endpoints changed so a formerly forbidden declared route becomes reachable.
 
-## Structural Relation Weakening
+Use focused `graph show <Symbol>` first. Use global graph output only when the exact path or global rule cannot be resolved from focused incidence.
 
-Report when the diff:
+## Domain Packs And Resolution
 
-- Removes `calls`, `callbacks`, `provides`, or `coordinated_call`.
-- Changes a relation from a prelude kind to a custom or weaker kind.
-- Removes endpoints from a `coordinated_call` path.
-- Removes or narrows traversal kinds from a `forbid path`.
-- Changes path endpoints so a previously forbidden route becomes reachable.
+Treat vendored modules under default discovery as active policy without requiring an import.
 
-Removed roles or summaries are low by themselves, but become stronger when paired with endpoint or kind changes.
+Report actual semantic impact when a diff:
 
-## Domain-Pack And Resolution Changes
+- weakens a pack-owned rule, trait, or final forbid;
+- replaces a pinned pack without reviewable provenance;
+- changes module/import resolution to another declaration;
+- shadows an imported name.
 
-Score vendored pack changes as effective contract changes because default
-discovery installs the modules without requiring a project import.
+Do not claim that deleting an import disables a still-discovered pack-level rule.
 
-Report when a diff:
+## Review Enforcement And Traceability
 
-- removes or weakens a pack-owned trait, final forbid, path rule, or global rule;
-- replaces an exact vendored version without reviewable provenance;
-- changes a module/import so a reference resolves to a different declaration;
-- shadows an imported name locally; or
-- assumes deleting an import disables pack-level policy.
+Classify weakened implementations, bindings, or attestation coupling as review-enforcement impact.
 
-Do not report an import-only removal as disabling a pack rule when the pack file
-remains discovered. Report the actual resolution or reference impact.
+Classify removed source/evidence/rationale/memory/reevaluation as traceability loss when no direct constraint also changed. Escalate traceability loss when it accompanies a high-impact loosening.
 
-## Traceability Loss
+An attestation has generic support when its reason is empty-looking, generic, contradicted by the authored diff, or unrelated to the triggering changed path. Do not read application source to judge it.
 
-Report when near a loosening the diff removes:
+## Recommended Actions
 
-- `source`.
-- `evidence`.
-- Rationale.
-- Memory.
-- Reevaluation.
-- Relation roles or summaries.
+Choose only actions supported by the current model:
 
-Outcome: `traceability loss` unless the same diff also weakens constraints or review enforcement.
+- restore or replace the constraint;
+- provide specific rationale, decision, or evidence for intentional change;
+- satisfy a reevaluation only when `memory`, `obligations`, or checker diagnostics require it;
+- obtain explicit human review for a supported high-impact change.
 
-## Epistemic Regression
-
-Report:
-
-- `effects unknown` to thin `effects complete { }`: high risk because it creates false completeness.
-- `effects complete` to `effects unknown`: model completeness regression that preserves uncertainty.
-- Memory confidence/status regression such as `High` to `Low` or `Explained` to `Unexplained`.
-
-## Attestation Credibility Gap
-
-Report when `attest no_shape_change` or `attest docs_not_needed` is added or changed and:
-
-- The reason is empty-looking, generic, or not tied to the triggering path.
-- The reason contradicts the visible `.shape` diff.
-- The reason contradicts the changed-file list.
-
-Judge only changed paths, authored `.shape` diff, and attestation text in v1. Do not read application source to prove or disprove the attestation.
-
-## Declared Model Context
-
-Use declared model context to explain why a reviewer should care, not to compute a centrality score.
-
-Run:
-
-```bash
-shp graph stats
-shp graph all --kind calls
-shp graph all --kind provides
-shp graph show <Symbol>
-shp explain <Symbol>
-shp memory
-shp obligations
-```
-
-Wording rules:
-
-- Say "participates in declared provider boundary" when touched symbols are in `provides` relations.
-- Say "participates in declared call structure" when touched symbols are in `calls`, `callbacks`, or `coordinated_call`.
-- Say "guarded design context" when `shp memory`, `shp explain`, or `shp obligations` shows a memory/rationale guard.
-- Say "review enforcement surface" when implementations, bindings, or attestations are touched.
-- Say "syntax evidence only" for generated AST anchors and `generated_from` relations.
-- Do not call relation incidence a centrality metric.
-- Do not downgrade strong ownership, grants, effects, traits, rules, or final-forbid signals because graph incidence is low.
-- Do not treat Shape `calls` as a TypeScript import graph or runtime trace. It is the declared architecture graph.
-
-## Outcomes
-
-- `suspicious loosening`: weaker constraint/review surface with weak or no justification.
-- `justified loosening`: specific rationale, memory, reevaluation, evidence, or attestation explains the relaxation.
-- `necessary loosening`: model context shows the old constraint was intentionally too narrow or obsolete.
-- `review-enforcement weakening`: coverage, binding, or attestation coupling got weaker.
-- `traceability loss`: review evidence got weaker without direct contract weakening.
-- `informational`: noteworthy but not risky.
+Never present reevaluation as a generic waiver and never call a loosening necessary without source or decision evidence outside Guard's normal boundary.

@@ -1,0 +1,49 @@
+module shape.generated.ast.fixtures.skills.review.root_cause_grouping.generated_candidate.metrics
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource MetricsModuleIncludesValueAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("fixtures/skills/review/root-cause-grouping/candidate/metrics.ts#includesValue")
+  fingerprint ast.semantic_subtree_v1("sha256:7575d61aba507e4bd59f9d76b050a5562a1ea5c99fbd59eeb6bf05cbbb38a463")
+}
+
+resource MetricsModuleInclusiveSizeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("fixtures/skills/review/root-cause-grouping/candidate/metrics.ts#inclusiveSize")
+  fingerprint ast.semantic_subtree_v1("sha256:1f28f2f1912512ad9814995ab697de5ca7ab8b4cc6f53b797b299d801346076a")
+}
+
+component MetricsModule : GeneratedCandidate {
+  fn includesValue
+    source ts("fixtures/skills/review/root-cause-grouping/candidate/metrics.ts#includesValue")
+    effects unknown
+  fn inclusiveSize
+    source ts("fixtures/skills/review/root-cause-grouping/candidate/metrics.ts#inclusiveSize")
+    effects unknown
+}
+
+relation MetricsModuleIncludesValueGeneratedFromMetricsModuleIncludesValueAstAnchor {
+  kind generated_from
+  connects MetricsModule -> MetricsModuleIncludesValueAstAnchor
+  roles { MetricsModule as generated, MetricsModuleIncludesValueAstAnchor as syntax }
+  expects MetricsModuleIncludesValueAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7575d61aba507e4bd59f9d76b050a5562a1ea5c99fbd59eeb6bf05cbbb38a463")
+  summary "fn MetricsModule.includesValue generated from typescript function_declaration at fixtures/skills/review/root-cause-grouping/candidate/metrics.ts#includesValue."
+}
+
+relation MetricsModuleInclusiveSizeGeneratedFromMetricsModuleInclusiveSizeAstAnchor {
+  kind generated_from
+  connects MetricsModule -> MetricsModuleInclusiveSizeAstAnchor
+  roles { MetricsModule as generated, MetricsModuleInclusiveSizeAstAnchor as syntax }
+  expects MetricsModuleInclusiveSizeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1f28f2f1912512ad9814995ab697de5ca7ab8b4cc6f53b797b299d801346076a")
+  summary "fn MetricsModule.inclusiveSize generated from typescript function_declaration at fixtures/skills/review/root-cause-grouping/candidate/metrics.ts#inclusiveSize."
+}
+
+implementation MetricsModuleImpl {
+  paths {
+    "fixtures/skills/review/root-cause-grouping/candidate/metrics.ts"
+  }
+  conforms_to MetricsModule
+}

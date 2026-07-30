@@ -1,0 +1,24 @@
+module skill_review_root_cause
+
+component RangeMetrics {
+  fn includesValue
+    source ts("fixtures/skills/review/root-cause-grouping/candidate/metrics.ts#includesValue")
+    effects complete {
+    }
+  fn inclusiveSize
+    source ts("fixtures/skills/review/root-cause-grouping/candidate/metrics.ts#inclusiveSize")
+    effects complete {
+    }
+}
+
+component RangeNormalizer {
+  fn normalizeRange
+    source ts("fixtures/skills/review/root-cause-grouping/candidate/range.ts#normalizeRange")
+    effects complete {
+    }
+}
+
+relation MetricsCallsNormalizer {
+  kind calls
+  connects RangeMetrics -> RangeNormalizer
+}

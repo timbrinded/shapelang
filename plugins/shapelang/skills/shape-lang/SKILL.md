@@ -1,89 +1,114 @@
 ---
 name: shape-lang
-description: Use when authoring, reviewing, teaching, formatting, debugging, or validating .shape architecture claims and shp workflows, including effects and draft validation, Memory Guards, coverage and bindings, stable source/evidence refs, relations and graph rules, domain packs, analyzer hints, AST drafts, provider-neutral author/critic flows, and LSP/editor integration.
+description: >-
+  This skill should be used for incremental Shape language work: authoring or
+  repairing `.shape` files, explaining syntax or diagnostics, formatting,
+  validation, teaching, source-to-model drift review, and CLI/editor operation.
+  Do not use it for whole-repository modeling (`shape-index`),
+  pre-implementation planning (`shape-contract-preflight`), authored
+  contract-diff risk (`shape-contract-guard`), or code-change bug review
+  (`shape-review`).
 ---
 
 # Shape Lang
 
-## Core Rule
+## Shape Evidence Contract
 
-Shape is a deterministic architecture conformance language. Treat `.shape` files as typed, reviewable claims about architecture, not prose explanations and not proof of application implementation correctness.
+- Treat authored Shape as typed, reviewable architecture claims, not prose and not proof of source correctness.
+- Treat checker output as deterministic evidence about the loaded model.
+- Treat generated AST and analyzer output as investigation leads, never final claims.
+- Source-confirm claims about implementation behavior.
+- Keep final forbids final.
+- Preserve unresolved effects as `effects unknown`; never manufacture completeness.
+- Prefer `file#symbol` references, then file-only references. Never author line numbers or ranges.
 
-Assume the released `shp` binary is installed on `PATH`. Before authoring, reviewing, teaching, or debugging Shape usage:
+## Resolve The Command
 
-- Inspect the repository's existing `.shape` files before inventing syntax.
-- Inspect project docs for local Shape conventions and changed-source workflows.
-- Run `shp check` and `shp fmt --check` after Shape changes.
-- Keep final forbids final; never use rationale or memory to waive them.
+1. Read repository instructions for the canonical Shape command.
+2. Otherwise use `shp`.
+3. Run `<SHAPE_CMD> --version` once.
+4. Run command-specific `--help` only when the installed command rejects or contradicts documented syntax.
+5. Reuse `<SHAPE_CMD>` consistently.
 
-## Router
+Use only the Shape v0.7.0 commands documented by this skill and the installed
+CLI help.
 
-Load only the reference needed for the task:
+## Select A Mode
 
-- Teaching Shape concepts to an agent or human: read `references/teaching-guide.md`.
-- Authoring or reviewing global `.shape` model changes: read `references/make-shape-protocol.md`.
-- Choosing or interpreting CLI commands: read `references/cli-workflows.md`.
-- Memory Guards, rationales, memories, descriptions, reevaluations, property-level/transform guards, freshness, sensitive/role/policy, or user-defined `require_context`: read `references/memory-guards.md`.
-- Need canonical snippets: read `references/examples.md`.
-- Reviewing for mistakes or cleaning up generated Shape: read `references/antipatterns.md`.
+| Mode | Use | Required result |
+| --- | --- | --- |
+| `author` | Create or edit an incremental authored claim. | Edited declarations, evidence used, unresolved uncertainty, and exact validation results. |
+| `review` | Inspect authored Shape for semantic mistakes. | Exact declaration, violated invariant, evidence, and smallest valid correction. |
+| `debug` | Explain and repair a diagnostic. | Diagnostic, semantic cause, minimal fix, and verification. |
+| `teach` | Explain a Shape concept. | Concise explanation plus a parseable, checked example. |
+| `operate` | Choose a CLI or editor workflow. | Exact command, output/exit semantics, and relevant caveat. |
+| `drift-review` | Compare changed source behavior with the current authored model. | Verified faithfulness findings or a clean result; do not report code bugs. |
 
-## Working Defaults
+Load only the supporting reference needed for the selected mode:
 
-- Prefer `effects complete` only when every material effect is represented.
-- Use `effects unknown` when uncertainty remains.
+- `author` or authored-model `review`: `references/make-shape-protocol.md`
+- `debug` or `operate`: `references/cli-workflows.md`
+- `teach`: `references/teaching-guide.md`
+- `drift-review`: `references/drift-review.md`
+- Memory Guards, rationales, reevaluations, policy, or freshness: `references/memory-guards.md`
+- Canonical snippets: `references/examples.md`
+- Antipattern review or generated-draft cleanup: `references/antipatterns.md`
+
+## Work From Evidence
+
+Maintain a compact ledger for investigative work:
+
+```text
+Candidate:
+  trigger:
+  affected symbol/path:
+  evidence class: deterministic | authored | source-confirmed | candidate-only
+  evidence:
+  unresolved question:
+  status: open | verified | disproved | blocked
+```
+
+Close every candidate, explicitly defer it, or state why evidence could not be obtained.
+
+Use tools by need:
+
+- Always: inspect the relevant authored model and run the applicable final deterministic check.
+- Triggered: use `memory` and `obligations` for guarded design context; `graph show` for relevant relations; `analyze` for uncertain effects or targets.
+- Escalation only: use `graph all` when focused incidence cannot resolve a global route or rule; use `graph stats` when model size or relation-heavy work matters.
+
+## Authoring Invariants
+
+- Use `effects complete` only when every material effect is represented.
 - Include `source` for functions and `evidence` for material effects when available.
-- Prefer stable `file#symbol` refs for named declarations and file-only refs otherwise. Do not
-  author numeric positions.
-- For governed source changes, update the global Shape model directly or add a narrow `attest no_shape_change`.
-- For guarded targets, add a valid `reevaluation` or preserve the protected shape; for `sensitive` memories under an approver `policy`, the reevaluation must name an `approver` (a declared `role` when any role exists).
-- Shape traits and their obligations apply to functions, components, and resources; match the required-context target to where the trait is borne.
-- Treat `review_by` freshness as opt-in: it is enforced only under `--strict-freshness`, and the checker reads no clock of its own.
-- Represent structural dependencies as top-level `relation` declarations, not component members.
-- Use prelude relation kinds (`calls`, `callbacks`, `provides`, `coordinated_call`) unless the project documents a custom kind.
-- Treat vendored modules below `shape/vendor/` as active policy under default discovery. Imports
-  enable unqualified references; they do not activate or deactivate pack rules.
-- Use generated AST as navigation evidence. Promote a claim into authored Shape only after source
-  review.
-- Treat analyzer targets as advisory but material: compare suspected targets with declared resource
-  names and storage aliases, preserve source-symbol attribution, and investigate target mismatch or
-  attribution-ambiguity warnings rather than collapsing them into a generic missing-effect claim.
-- Avoid ambiguous relation endpoints; component and resource names should not collide when relations reference them.
-- Use compact summaries; link longer detail through `evidence issue(...)`, `evidence test(...)`, or similar source refs.
+- Represent structural dependencies as top-level relations. Prefer `calls`, `callbacks`, `provides`, and `coordinated_call`.
+- Treat vendored `.shape` modules under the discovered Shape root as active policy. Imports affect name visibility, not policy activation.
+- Update the authored model for governed source changes, or add a narrow current attestation only when the architecture contract truly did not change.
+- Satisfy real guard obligations with a valid reevaluation; never add one merely to silence a diagnostic.
+- Promote generated anchors, analyzer hints, or generated relations only after source review.
 
-## CLI Defaults
+## Complete The Task
 
-- Run `shp fmt --check` before `shp check` when validating edited Shape files.
-- Run `shp coverage --changed-files changed.txt` only when the workflow provides a changed-files list.
-- Use `shp obligations` and `shp memory` before fixing Memory Guard failures.
-- Use `shp check --strict-freshness` / `shp obligations --strict-freshness` to surface design memory past its `review_by`; today's date is computed only at the CLI boundary.
-- Use `shp explain`, explicit `shp graph all|show|stats`, and `shp analyze` for investigation before changing model semantics.
-- Use `shp ast source` for generated source-backed AST context and `shp ast json` only when another tool already produced normalized AST JSON.
-- When a repo commits generated AST context under `shape/generated/ast`, run its `ast:generate`/`ast:check` scripts or equivalent `shp ast source --out-dir ... --check` workflow after source changes.
-- Use `shp graph stats` before editing relation-heavy models.
-- Use `shp graph show SYMBOL --kind KIND` to inspect focused incidence for a relation kind.
-- Use `shp author` to scaffold, then review and replace `effects unknown` when evidence is available.
-- Use `shp check --allow-unknown-effects` only for drafts. Always finish with strict `shp check`.
-- Use `shp author --prompt` and `--critic-prompt` as provider-neutral context builders; neither
-  invokes a model or replaces the checker.
-- Use `shp lsp` for stdio editor integration.
-- Run `shp --help` if a repository uses a newer CLI than this skill describes.
-
-## Validation
-
-After modifying `.shape` files, run:
+For authored edits:
 
 ```bash
-shp fmt --check
-shp check
+<SHAPE_CMD> fmt <edited-shape-files>
+<SHAPE_CMD> fmt --check
 ```
 
-When validating changed-source coverage, also run `shp coverage --changed-files changed.txt` with the repository's changed-files list.
-
-When validating generated AST context, prefer the repository script if present:
+When an exact changed-file list exists, use the combined semantic, coverage, and binding gate:
 
 ```bash
-bun run ast:generate
-bun run ast:check
+<SHAPE_CMD> check --changed-files changed.txt
 ```
 
-Generated AST drafts intentionally leave generated functions at `effects unknown`, add `GeneratedAstAnchor` resources with `ast.semantic_subtree_v1` fingerprints when token evidence is available, and may include candidate effects that need human review before being promoted into authored Shape. If an anchor has no token evidence, Shape emits it without a fingerprint/`expects` pin and reports a warning instead of failing the batch.
+Otherwise finish with:
+
+```bash
+<SHAPE_CMD> check
+```
+
+Use `coverage --changed-files` only to isolate coverage diagnostics; it does not enforce bindings. Use `--allow-unknown-effects` only during draft authoring and never as the final gate.
+
+Use `--as-of YYYY-MM-DD` for reproducible freshness checks. Use `--strict-freshness` only when current UTC time is intentionally part of an interactive check.
+
+When generated AST is committed, run the repository's generation and freshness commands. Change the generator and regenerate; never hand-edit generated Shape.

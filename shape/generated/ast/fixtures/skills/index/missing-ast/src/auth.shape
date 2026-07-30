@@ -1,0 +1,33 @@
+module shape.generated.ast.fixtures.skills.index.missing_ast.src.auth
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource AuthModuleRequireUserAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("fixtures/skills/index/missing-ast/src/auth.ts#requireUser")
+  fingerprint ast.semantic_subtree_v1("sha256:5695365eba3ea8e30dfa46705aae9173986819440645db5d21ea2af6cbebcdd5")
+}
+
+component AuthModule : GeneratedCandidate {
+  fn requireUser
+    source ts("fixtures/skills/index/missing-ast/src/auth.ts#requireUser")
+    effects unknown
+}
+
+relation AuthModuleRequireUserGeneratedFromAuthModuleRequireUserAstAnchor {
+  kind generated_from
+  connects AuthModule -> AuthModuleRequireUserAstAnchor
+  roles { AuthModule as generated, AuthModuleRequireUserAstAnchor as syntax }
+  expects AuthModuleRequireUserAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5695365eba3ea8e30dfa46705aae9173986819440645db5d21ea2af6cbebcdd5")
+  summary "fn AuthModule.requireUser generated from typescript function_declaration at fixtures/skills/index/missing-ast/src/auth.ts#requireUser."
+}
+
+implementation AuthModuleImpl {
+  paths {
+    "fixtures/skills/index/missing-ast/src/auth.ts"
+  }
+  conforms_to AuthModule
+}

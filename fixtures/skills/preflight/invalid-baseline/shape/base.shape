@@ -1,0 +1,6 @@
+module skill_preflight_invalid
+
+component AuditStore {
+  fn appendEvent
+    effects unknown
+}

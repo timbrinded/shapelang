@@ -1,40 +1,40 @@
-# Change Blocks
+# Contract Simulation Change Blocks
 
-Use this reference only in `precheck` mode. A temporary change block is plan feedback, not the final Shape update.
+Use this reference only in `contract-simulation` mode. A temporary `change` block checks a proposed model state against the current baseline; it is not a source transition or final Shape update.
 
 ## Rules
 
+- Validate the current baseline separately and strictly.
 - Prefer underclaiming to overclaiming.
-- Use `effects unknown` when source has not been inspected or effects are not yet known.
-- Use `effects complete` only when every material planned effect is explicit.
-- Do not synthesize destructive effects unless the user task or source evidence supports them.
-- Do not remove a final forbid to make the plan pass.
-- Do not add attestation text unless the reason is specific to the task and changed path.
-- If the model is too thin to express the plan, report the model gap instead of inventing structure.
+- Use `effects unknown` when implementation effects are not source-confirmed.
+- Use `effects complete` only when every material planned effect is known.
+- Do not synthesize resources, relations, grants, destructive effects, attestations, or reevaluations to make a proposal pass.
+- Do not remove a final forbid.
+- Report a thin model as `model_gap`.
 
 ## Declaration Choices
 
-- Existing function behavior changes: `modify fn Component.functionName`.
+- Existing function behavior: `modify fn Component.functionName`.
 - New modeled function: `add fn Component.functionName`.
 - Removed modeled function: `remove fn Component.functionName`.
-- Existing component/resource/relation/implementation/binding changes: `modify` followed by the full updated declaration, for example `modify implementation ParserSource { ... }`.
-- New component/resource/relation/implementation/binding: `add` followed by the full declaration, for example `add relation ShpCliUsesAnalyzer { ... }`.
-- Removed component/resource/relation/implementation/binding: `remove <kind> <Name>`.
+- Existing component, resource, relation, implementation, or binding: `modify` with the complete intended replacement declaration.
+- New declaration: `add` with the complete declaration.
+- Removed declaration: `remove <kind> <Name>`.
 
-When unsure, draft the narrowest function-level change first. For declaration updates, inspect the existing declaration and include the full intended replacement body.
+When unsure, remain in orientation rather than inventing a replacement body.
 
-## Minimal Temporary File
+## Minimal Unknown-Effect Proposal
 
 ```shape
 module preflight
 
 change ProposedChange {
-  modify fn Gateway.derivePolicyDecision
+  modify fn RequestHandler.buildDecision
     effects unknown
 }
 ```
 
-## Known Effects
+## Known Effect Proposal
 
 ```shape
 module preflight
@@ -47,26 +47,24 @@ change AppendAuditEvent {
 }
 ```
 
-## Guarded Function
+## Guarded Target
 
-If `shp memory` or `shp explain` shows `guards { on_change require ReEvaluation<Self> }`, the precheck should expose the missing reevaluation:
+Allow the simulation to surface the existing reevaluation obligation:
 
 ```shape
 module preflight
 
-change RefactorPolicyDecision {
-  modify fn Gateway.derivePolicyDecision
-    effects complete {
-      Read<PolicySnapshot>
-    }
+change RefactorDecision {
+  modify fn RequestHandler.buildDecision
+    effects unknown
 }
 ```
 
-Do not add a reevaluation just to silence the precheck. Add it only when the planned implementation has a real reviewer, outcome, summary, date, and evidence.
+Do not add a reevaluation merely to clear the simulation. A real reevaluation needs the substantive current fields required by the loaded model.
 
-## Storage Effect
+## Destructive Effect
 
-Only draft destructive effects when task intent or source evidence supports them:
+Draft a destructive effect only when task intent or source evidence establishes it:
 
 ```shape
 module preflight
@@ -79,48 +77,27 @@ change PurgeAuditEvents {
 }
 ```
 
-If the target resource has `AppendOnly`, `shp check` should surface the final-forbid violation.
+If `AuditEvent` is append-only, the current checker should reject the proposal.
 
-## Relation Addition
+## Helper
 
-```shape
-module preflight
-
-change AddCliAnalyzeDependency {
-  add relation ShpCliUsesAnalyzer {
-    kind calls
-    connects ShpCli -> ShapeAnalyzer
-    summary "Analyze command dispatch uses analyzer comparison."
-  }
-}
-```
-
-Use prelude relation kinds (`calls`, `callbacks`, `provides`, `coordinated_call`) unless the loaded model declares and uses a custom kind.
-
-## Temporary Helper Commands
-
-When Bash is available:
+Create a template:
 
 ```bash
-skills/shape-contract-preflight/scripts/precheck.sh --init
-skills/shape-contract-preflight/scripts/precheck.sh /tmp/shape-preflight.xxxxxx.shape
+plugins/shapelang/skills/shape-contract-preflight/scripts/precheck.sh --init
 ```
 
-If the repository wraps the CLI or the released `shp` on `PATH` is older than the model grammar:
+Run baseline and draft proposal checks with JSON output:
 
 ```bash
-SHAPE_CMD="bun shp" skills/shape-contract-preflight/scripts/precheck.sh /tmp/shape-preflight.xxxxxx.shape
+SHAPE_CMD="bun shp" plugins/shapelang/skills/shape-contract-preflight/scripts/precheck.sh --json proposal.shape
 ```
 
-Manual equivalent:
+Use `--strict` only when no explicit unknown effects remain:
 
 ```bash
-tmp="$(mktemp "${TMPDIR:-/tmp}/shape-preflight.XXXXXX")"
-shape_tmp="${tmp}.shape"
-mv "$tmp" "$shape_tmp"
-$EDITOR "$shape_tmp"
-shp check $(find shape -type f -name '*.shape') "$shape_tmp"
-rm -f "$shape_tmp"
+SHAPE_CMD="bun shp" plugins/shapelang/skills/shape-contract-preflight/scripts/precheck.sh --strict --json proposal.shape
 ```
 
-Adapt the command to the repository's documented Shape CLI wrapper when it does not call the released binary as `shp`.
+The helper returns `baseline_invalid` without running or interpreting the proposal when the current model fails strict checking.
+When `SHAPE_CMD` is unset, it uses a working repository-local `bun shp` command before falling back to an installed `shp`.

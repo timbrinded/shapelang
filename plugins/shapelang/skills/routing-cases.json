@@ -1,0 +1,112 @@
+[
+  {
+    "id": "lang-direct",
+    "kind": "direct",
+    "prompt": "Use shape-lang to explain why effects unknown fails strict checking.",
+    "expected_skill": "shape-lang"
+  },
+  {
+    "id": "lang-indirect",
+    "kind": "indirect",
+    "prompt": "Repair this Shape parser diagnostic and show the exact validation command.",
+    "expected_skill": "shape-lang"
+  },
+  {
+    "id": "lang-incomplete",
+    "kind": "incomplete",
+    "prompt": "Help me write a Shape declaration for this function.",
+    "expected_skill": "shape-lang"
+  },
+  {
+    "id": "preflight-direct",
+    "kind": "direct",
+    "prompt": "Run Shape contract preflight before I change RequestHandler.",
+    "expected_skill": "shape-contract-preflight"
+  },
+  {
+    "id": "preflight-indirect",
+    "kind": "indirect",
+    "prompt": "Before editing this service, tell me which current Shape guards and bindings constrain the plan.",
+    "expected_skill": "shape-contract-preflight"
+  },
+  {
+    "id": "preflight-incomplete",
+    "kind": "incomplete",
+    "prompt": "I may refactor the request path; orient the work against the current Shape model.",
+    "expected_skill": "shape-contract-preflight"
+  },
+  {
+    "id": "guard-direct",
+    "kind": "direct",
+    "prompt": "Use Shape Contract Guard on this authored .shape diff.",
+    "expected_skill": "shape-contract-guard"
+  },
+  {
+    "id": "guard-indirect",
+    "kind": "indirect",
+    "prompt": "Did this vendored Shape policy change loosen a boundary while still passing shp check?",
+    "expected_skill": "shape-contract-guard"
+  },
+  {
+    "id": "guard-incomplete",
+    "kind": "incomplete",
+    "prompt": "Review these base and candidate Shape declarations for semantic weakening.",
+    "expected_skill": "shape-contract-guard"
+  },
+  {
+    "id": "index-direct",
+    "kind": "direct",
+    "prompt": "Use shape-index to build the initial authored model for this repository.",
+    "expected_skill": "shape-index"
+  },
+  {
+    "id": "index-implicit-negative",
+    "kind": "negative",
+    "prompt": "From this clean baseline, inventory every subsystem and create a whole-repository Shape architecture model.",
+    "expected_skill": null,
+    "excluded_skills": ["shape-index"]
+  },
+  {
+    "id": "index-incomplete-negative",
+    "kind": "negative",
+    "prompt": "Refresh our repository-wide Shape index from a clean commit.",
+    "expected_skill": null,
+    "excluded_skills": ["shape-index"]
+  },
+  {
+    "id": "review-direct",
+    "kind": "direct",
+    "prompt": "Use shape-review to review this code diff for real bugs.",
+    "expected_skill": "shape-review"
+  },
+  {
+    "id": "review-indirect",
+    "kind": "indirect",
+    "prompt": "Find reachable local and cross-object defects in this PR and use authored Shape only as evidence.",
+    "expected_skill": "shape-review"
+  },
+  {
+    "id": "review-incomplete",
+    "kind": "incomplete",
+    "prompt": "Review this code change with the current architecture model.",
+    "expected_skill": "shape-review"
+  },
+  {
+    "id": "adjacent-drift",
+    "kind": "adjacent",
+    "prompt": "Does this source diff faithfully update the authored Shape model?",
+    "expected_skill": "shape-lang"
+  },
+  {
+    "id": "adjacent-guard-not-review",
+    "kind": "adjacent",
+    "prompt": "The application code is out of scope; compare only the base and candidate authored Shape contract.",
+    "expected_skill": "shape-contract-guard"
+  },
+  {
+    "id": "negative-general-code",
+    "kind": "negative",
+    "prompt": "Rename this local variable and run the TypeScript formatter.",
+    "expected_skill": null
+  }
+]

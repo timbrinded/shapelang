@@ -34,6 +34,8 @@ resource ReleaseVersionTag
 
 resource ShapeAgentSkill
 
+resource SkillBehaviorFixture
+
 resource SkillReleaseApproval
 
 resource SkillReleaseReport
@@ -50,6 +52,7 @@ component CiPipeline {
   grants Read<ClaudeReviewPrompt>
   grants Read<ClaudeReviewResult>
   grants Read<CliPackageManifest>
+  grants Read<CommandLineInterface>
   grants Read<DocsContent>
   grants Read<ExperimentalKernelDiagnosticSet>
   grants Read<ExperimentalKernelEnvelope>
@@ -64,6 +67,7 @@ component CiPipeline {
   grants Read<ShapeAgentSkill>
   grants Read<ShapeModelDraft>
   grants Read<ShapeSource>
+  grants Read<SkillBehaviorFixture>
   grants Read<SkillReleaseApproval>
   grants Read<SkillReleaseReport>
   grants Read<SourceSyntaxTree>
@@ -105,7 +109,7 @@ component CiPipeline {
     }
   fn evaluateReleaseSkills
     source mjs(".github/scripts/run-claude-skill.mjs#buildSkillsReleasePrompt")
-    description "Evaluates all five shipped skills against current CLI, model, docs, and behavior scenarios and emits a blocking structured report."
+    description "Runs static conformance checks and focused read-only fixture canaries across all five shipped skills, then emits one blocking structured report."
     effects complete {
       Read<CiWorkflow>
         evidence yaml(".github/workflows/release-candidate.yml")
@@ -132,11 +136,15 @@ component CiPipeline {
       Read<ShapeAgentSkill>
         evidence yaml("plugins/shapelang/skills/shape-contract-preflight/agents/openai.yaml")
       Read<ShapeAgentSkill>
+        evidence md("plugins/shapelang/skills/shape-contract-preflight/references/change-blocks.md")
+      Read<ShapeAgentSkill>
         evidence md("plugins/shapelang/skills/shape-contract-preflight/references/examples.md")
       Read<ShapeAgentSkill>
         evidence sh("plugins/shapelang/skills/shape-contract-preflight/scripts/precheck.sh")
       Read<ShapeAgentSkill>
         evidence yaml("plugins/shapelang/skills/shape-index/agents/openai.yaml")
+      Read<ShapeAgentSkill>
+        evidence md("plugins/shapelang/skills/shape-index/references/current-cli-authoring.md")
       Read<ShapeAgentSkill>
         evidence yaml("plugins/shapelang/skills/shape-lang/agents/openai.yaml")
       Read<ShapeAgentSkill>
@@ -144,13 +152,21 @@ component CiPipeline {
       Read<ShapeAgentSkill>
         evidence md("plugins/shapelang/skills/shape-lang/references/cli-workflows.md")
       Read<ShapeAgentSkill>
+        evidence md("plugins/shapelang/skills/shape-lang/references/drift-review.md")
+      Read<ShapeAgentSkill>
         evidence md("plugins/shapelang/skills/shape-lang/references/examples.md")
       Read<ShapeAgentSkill>
         evidence md("plugins/shapelang/skills/shape-lang/references/make-shape-protocol.md")
       Read<ShapeAgentSkill>
+        evidence md("plugins/shapelang/skills/shape-lang/references/memory-guards.md")
+      Read<ShapeAgentSkill>
         evidence md("plugins/shapelang/skills/shape-lang/references/teaching-guide.md")
       Read<ShapeAgentSkill>
         evidence yaml("plugins/shapelang/skills/shape-review/agents/openai.yaml")
+      Read<ShapeAgentSkill>
+        evidence json("plugins/shapelang/skills/routing-cases.json")
+      Read<SkillBehaviorFixture>
+        evidence json("fixtures/skills/cases.json")
       Update<SkillReleaseReport>
         evidence json(".github/shape-contract/schemas/shape-skills-release-result.schema.json")
     }
@@ -240,7 +256,7 @@ component CiPipeline {
     }
   fn runShapeGuardReview
     source mjs(".github/scripts/run-claude-skill.mjs#buildGuardPrompt")
-    description "Advisory loosening review of authored .shape diffs driven by the shape-contract-guard skill; a git-diff prefilter skips the model call when no authored .shape changed, the model call is delegated to anthropics/claude-code-action with a draft-07-compatible structured-output schema, and only high-severity findings fail the job."
+    description "Advisory loosening review of authored .shape diffs driven by the shape-contract-guard skill; a git-diff prefilter skips the model call when no authored .shape changed, the model call is delegated to anthropics/claude-code-action with structured output, and only high-impact suspicious findings fail the job."
     effects complete {
       Read<ChangedFileList>
         evidence yaml(".github/workflows/shape.yml")
@@ -316,8 +332,10 @@ component CiPipeline {
     }
   fn validateShippedSkills
     source ts("scripts/check-skills.ts#validateSkillPackage")
-    description "Deterministically validates the shipped skill set, entrypoint frontmatter, current CLI spelling, and agent interface metadata."
+    description "Deterministically validates the shipped set, routing metadata and cases, referenced resources, output contracts, executable scripts, and current CLI examples."
     effects complete {
+      Read<CommandLineInterface>
+        evidence ts("scripts/check-skills.ts#validateCurrentCliExamples")
       Read<ShapeAgentSkill>
         evidence md("plugins/shapelang/skills/shape-lang/SKILL.md")
       Read<ShapeAgentSkill>
@@ -338,6 +356,38 @@ component CiPipeline {
         evidence yaml("plugins/shapelang/skills/shape-index/agents/openai.yaml")
       Read<ShapeAgentSkill>
         evidence yaml("plugins/shapelang/skills/shape-review/agents/openai.yaml")
+      Read<ShapeAgentSkill>
+        evidence md("plugins/shapelang/skills/README.md")
+      Read<ShapeAgentSkill>
+        evidence json("plugins/shapelang/skills/routing-cases.json")
+      Read<ShapeAgentSkill>
+        evidence md("plugins/shapelang/skills/shape-contract-guard/references/examples.md")
+      Read<ShapeAgentSkill>
+        evidence md("plugins/shapelang/skills/shape-contract-guard/references/signals.md")
+      Read<ShapeAgentSkill>
+        evidence md("plugins/shapelang/skills/shape-contract-preflight/references/change-blocks.md")
+      Read<ShapeAgentSkill>
+        evidence md("plugins/shapelang/skills/shape-contract-preflight/references/examples.md")
+      Read<ShapeAgentSkill>
+        evidence sh("plugins/shapelang/skills/shape-contract-preflight/scripts/precheck.sh")
+      Read<ShapeAgentSkill>
+        evidence md("plugins/shapelang/skills/shape-index/references/current-cli-authoring.md")
+      Read<ShapeAgentSkill>
+        evidence md("plugins/shapelang/skills/shape-lang/references/antipatterns.md")
+      Read<ShapeAgentSkill>
+        evidence md("plugins/shapelang/skills/shape-lang/references/cli-workflows.md")
+      Read<ShapeAgentSkill>
+        evidence md("plugins/shapelang/skills/shape-lang/references/drift-review.md")
+      Read<ShapeAgentSkill>
+        evidence md("plugins/shapelang/skills/shape-lang/references/examples.md")
+      Read<ShapeAgentSkill>
+        evidence md("plugins/shapelang/skills/shape-lang/references/make-shape-protocol.md")
+      Read<ShapeAgentSkill>
+        evidence md("plugins/shapelang/skills/shape-lang/references/memory-guards.md")
+      Read<ShapeAgentSkill>
+        evidence md("plugins/shapelang/skills/shape-lang/references/teaching-guide.md")
+      Read<SkillBehaviorFixture>
+        evidence json("fixtures/skills/cases.json")
     }
   fn verifyReleaseSkillsApproval
     source yaml(".github/workflows/release.yml#Verify skill release approval")
@@ -1240,7 +1290,7 @@ attest no_shape_change {
 
 attest no_shape_change {
   source mjs(".github/scripts/check-claude-shape-guard.mjs")
-  reason "The guard gate is folded into the unified skill runner; the high-severity policy is unchanged."
+  reason "The guard gate remains folded into the unified skill runner; host policy now blocks high-impact suspicious findings while preserving supported impact for human review."
 }
 
 attest no_shape_change {

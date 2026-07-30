@@ -1,0 +1,34 @@
+module skill_index_coverage_gaps
+
+resource Thumbnail
+
+component ThumbnailWorker {
+  owns Thumbnail
+  fn resizeImage
+    source ts("fixtures/skills/index/coverage-gaps/src/worker.ts#resizeImage")
+    effects complete {
+    }
+}
+
+component UploadApi {
+  fn acceptImage
+    source ts("fixtures/skills/index/coverage-gaps/src/upload.ts#acceptImage")
+    effects complete {
+    }
+}
+
+implementation ThumbnailWorkerImpl {
+  paths {
+    "fixtures/skills/index/coverage-gaps/src/worker.ts"
+  }
+  conforms_to ThumbnailWorker
+  on_change require shape_update
+}
+
+implementation UploadApiImpl {
+  paths {
+    "fixtures/skills/index/coverage-gaps/src/upload.ts"
+  }
+  conforms_to UploadApi
+  on_change require shape_update
+}

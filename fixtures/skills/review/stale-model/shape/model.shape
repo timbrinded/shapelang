@@ -1,0 +1,16 @@
+module skill_review_stale
+
+component RemoteTemplate {
+}
+
+component ReportLoader {
+  fn loadReport
+    source ts("fixtures/skills/review/stale-model/candidate/report.ts#loadReport")
+    effects complete {
+    }
+}
+
+relation ReportLoaderCallsRemoteTemplate {
+  kind calls
+  connects ReportLoader -> RemoteTemplate
+}
