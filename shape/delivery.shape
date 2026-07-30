@@ -1482,3 +1482,18 @@ attest no_shape_change {
   source md("docs-site/src/content/docs/reference/local-development.md")
   reason "Docs-only content and infographic refresh within the existing DocsSite surface; no language semantics, checker behavior, CLI contract, or architecture boundary changed."
 }
+
+attest no_shape_change {
+  source mjs(".github/scripts/run-claude-skill.mjs#skillsReleaseFailureMessage")
+  reason "Release-case outcomes remain required, non-empty, evidence-backed results; removing a hidden exact-label comparison leaves the existing case, command, evidence-marker, pass-status, and findings gates unchanged."
+}
+
+attest no_shape_change {
+  source md(".github/prompts/shape-skills-release.md")
+  reason "The prompt now makes the existing free-text outcome field explicit without changing the five-skill evaluation, fixture scope, tool boundary, or blocking release policy."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-cli/src/shape-workflow.test.ts")
+  reason "The gate regression fixture now proves that evidence-backed prose outcomes pass and empty outcomes fail; test-only coverage adds no separate architecture surface."
+}

@@ -67,6 +67,8 @@ fixture evidence.
 
 Record the exact commands in the case result and cite concrete command output,
 authored declarations, source behavior, and focused symbols in `evidence`.
+Write `outcome` as a concise evidence-backed statement of what happened; do not
+guess a hidden canonical label.
 
 Set a case to `fail` when the skill's instructions lead to another outcome,
 when required evidence cannot be obtained, or when a required command was not
