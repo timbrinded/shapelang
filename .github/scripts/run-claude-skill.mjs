@@ -650,7 +650,7 @@ export const RELEASE_SKILL_CASES = {
       commands: []
     },
     "index-coverage-gaps": {
-      evidenceMarkers: ["coordinated_call", "binding", "docs/images.md"],
+      evidenceMarkers: ["UploadApi", "ThumbnailWorker", "binding", "docs/images.md"],
       commands: ["bun shp check fixtures/skills/index/coverage-gaps/shape/system.shape"]
     }
   },

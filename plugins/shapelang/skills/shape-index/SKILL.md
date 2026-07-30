@@ -43,7 +43,7 @@ Do not run an AST generator during authored indexing. A request to create or ref
 3. Start with one high-confidence subsystem or coherent cluster. Do not wait for an exhaustive repo-wide prose inventory before authoring.
 4. Reconcile each relevant source workflow and any docs that define its completion, ordering, or required review against the authored model:
    - resources, traits, ownership, grants, and effects;
-   - direct `calls`/`provides` relations for invocation or exposure; use `coordinated_call`, not only `calls`, when source or docs make completion or correctness depend on another endpoint;
+   - direct calls/provides relations, plus `coordinated_call` when completion or correctness depends on ordered endpoints;
    - implementation coverage with `on_change require shape_update`;
    - bindings when documentation or project policy explicitly requires review with source or model changes;
    - typed rationale or memory for important source-supported behavior that Shape cannot enforce directly.

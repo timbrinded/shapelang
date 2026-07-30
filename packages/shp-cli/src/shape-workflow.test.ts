@@ -275,7 +275,7 @@ describe("Shape workflow", () => {
     indexCase.evidence = "The candidate is incomplete.";
     const missingMarkerResult = await runSkillGate("release", missingMarker);
     expect(missingMarkerResult.exitCode).toBe(1);
-    expect(missingMarkerResult.stderr).toContain("evidence must include coordinated_call");
+    expect(missingMarkerResult.stderr).toContain("evidence must include UploadApi");
   });
 
   test("fails closed on garbage results and unknown skills", async () => {
@@ -722,7 +722,7 @@ function skillsReleaseResult() {
         status: "pass",
         outcome: "incomplete_with_explicit_gaps",
         evidence:
-          "The source supports a coordinated_call, while docs/images.md requires a missing binding.",
+          "UploadApi calls ThumbnailWorker, while docs/images.md requires a missing binding.",
         commands: ["bun shp check fixtures/skills/index/coverage-gaps/shape/system.shape"]
       }
     ],

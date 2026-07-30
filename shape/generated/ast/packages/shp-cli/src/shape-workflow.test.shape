@@ -38,7 +38,7 @@ resource ShapeWorkflowTestModuleRunSkillGateWithExecutionLogAstAnchor : Generate
 
 resource ShapeWorkflowTestModuleSkillsReleaseResultAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-cli/src/shape-workflow.test.ts#skillsReleaseResult")
-  fingerprint ast.semantic_subtree_v1("sha256:bd359d23fb5c49de2737b032ba9df33ec3ca1e655fd5c2b73aa6c6ec00461a17")
+  fingerprint ast.semantic_subtree_v1("sha256:1597ff4fb4d23e461590760cbb65bf5d05ed74eb90eb4085861db6e841ba84cc")
 }
 
 component ShapeWorkflowTestModule : GeneratedCandidate {
@@ -117,7 +117,7 @@ relation ShapeWorkflowTestModuleSkillsReleaseResultGeneratedFromShapeWorkflowTes
   kind generated_from
   connects ShapeWorkflowTestModule -> ShapeWorkflowTestModuleSkillsReleaseResultAstAnchor
   roles { ShapeWorkflowTestModule as generated, ShapeWorkflowTestModuleSkillsReleaseResultAstAnchor as syntax }
-  expects ShapeWorkflowTestModuleSkillsReleaseResultAstAnchor fingerprint ast.semantic_subtree_v1("sha256:bd359d23fb5c49de2737b032ba9df33ec3ca1e655fd5c2b73aa6c6ec00461a17")
+  expects ShapeWorkflowTestModuleSkillsReleaseResultAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1597ff4fb4d23e461590760cbb65bf5d05ed74eb90eb4085861db6e841ba84cc")
   summary "fn ShapeWorkflowTestModule.skillsReleaseResult generated from typescript function_declaration at packages/shp-cli/src/shape-workflow.test.ts#skillsReleaseResult."
 }
 
