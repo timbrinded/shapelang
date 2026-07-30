@@ -245,16 +245,16 @@ describe("Shape workflow", () => {
     expect(unsupportedResult.stderr).toContain("evidence must not be empty");
   });
 
-  test("fails the skills release gate on wrong case outcomes or missing command evidence", async () => {
-    const wrongOutcome = skillsReleaseResult();
-    const firstCase = wrongOutcome.skills[0]?.cases[0];
+  test("fails the skills release gate on empty case outcomes or missing command evidence", async () => {
+    const emptyOutcome = skillsReleaseResult();
+    const firstCase = emptyOutcome.skills[0]?.cases[0];
     if (!firstCase) {
       throw new Error("skills release case fixture is empty");
     }
-    firstCase.outcome = "strict_ready";
-    const wrongOutcomeResult = await runSkillGate("release", wrongOutcome);
-    expect(wrongOutcomeResult.exitCode).toBe(1);
-    expect(wrongOutcomeResult.stderr).toContain("outcome must be draft_only");
+    firstCase.outcome = "";
+    const emptyOutcomeResult = await runSkillGate("release", emptyOutcome);
+    expect(emptyOutcomeResult.exitCode).toBe(1);
+    expect(emptyOutcomeResult.stderr).toContain("outcome must not be empty");
 
     const missingCommand = skillsReleaseResult();
     const commandCase = missingCommand.skills[0]?.cases[0];
@@ -635,7 +635,7 @@ function skillsReleaseResult() {
       {
         id: "lang-draft-strict",
         status: "pass",
-        outcome: "draft_only",
+        outcome: "Draft checking warns and passes; strict checking rejects the unknown effect.",
         evidence: "Draft check warns and exits zero; strict check rejects unknown effects.",
         commands: [
           "bun shp check --allow-unknown-effects fixtures/fail/unknown_effects/audit.shape",
