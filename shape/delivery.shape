@@ -1497,3 +1497,13 @@ attest no_shape_change {
   source ts("packages/shp-cli/src/shape-workflow.test.ts")
   reason "The gate regression fixture now proves that evidence-backed prose outcomes pass and empty outcomes fail; test-only coverage adds no separate architecture surface."
 }
+
+attest no_shape_change {
+  source md("plugins/shapelang/skills/shape-index/SKILL.md")
+  reason "The indexing workflow now states its existing source-and-documentation completeness contract more precisely; it changes agent guidance without changing Shape language, checker, CLI, or delivery architecture."
+}
+
+attest no_shape_change {
+  source yaml("plugins/shapelang/skills/shape-index/agents/openai.yaml")
+  reason "The default prompt now matches the skill's existing completeness contract; plugin routing and the Shape delivery architecture are unchanged."
+}
