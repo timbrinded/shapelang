@@ -168,13 +168,19 @@ function validateBundledResources(
   }
 
   const generatorPath = join(skillRoot, "scripts/generate.mjs");
+  const atlasModelPath = join(skillRoot, "lib/atlas-model.mjs");
   const templatePath = join(skillRoot, "assets/index.template.html");
-  for (const requiredPath of [generatorPath, templatePath]) {
+  const stylePath = join(skillRoot, "assets/styles.css");
+  const rendererPaths = ["bootstrap.mjs", "canvas.mjs", "details.mjs", "interactions.mjs"].map(
+    (name) => join(skillRoot, "assets/renderer", name)
+  );
+  const requiredPaths = [generatorPath, atlasModelPath, templatePath, stylePath, ...rendererPaths];
+  for (const requiredPath of requiredPaths) {
     if (!existsSync(requiredPath)) {
       failures.push(`${relative(repositoryRoot, requiredPath)}: missing required bundled resource`);
     }
   }
-  if (!existsSync(generatorPath) || !existsSync(templatePath)) {
+  if (requiredPaths.some((requiredPath) => !existsSync(requiredPath))) {
     return;
   }
 
@@ -184,10 +190,11 @@ function validateBundledResources(
       `${relative(repositoryRoot, generatorPath)}: generator must consume the semantic inspect --json interface`
     );
   }
+  const deterministicSources = generator + readFileSync(atlasModelPath, "utf8");
   for (const nondeterministicMarker of ["generatedAt", "Date.now(", "new Date("]) {
-    if (generator.includes(nondeterministicMarker)) {
+    if (deterministicSources.includes(nondeterministicMarker)) {
       failures.push(
-        `${relative(repositoryRoot, generatorPath)}: deterministic generator must not contain ${nondeterministicMarker}`
+        `${relative(repositoryRoot, generatorPath)}: deterministic generation sources must not contain ${nondeterministicMarker}`
       );
     }
   }
@@ -198,29 +205,39 @@ function validateBundledResources(
       `${relative(repositoryRoot, templatePath)}: HTML asset must start with a doctype`
     );
   }
-  const ontologyMarkers = template.match(/__ONTOLOGY_JSON__/g)?.length ?? 0;
-  if (ontologyMarkers !== 1) {
+  for (const marker of ["__STYLE_CSS__", "__RENDERER_JS__"]) {
+    const markerCount = template.split(marker).length - 1;
+    if (markerCount !== 1) {
+      failures.push(
+        `${relative(repositoryRoot, templatePath)}: expected exactly one ${marker} marker; found ${markerCount}`
+      );
+    }
+  }
+  if (!/<style>\s*__STYLE_CSS__\s*<\/style>/.test(template)) {
+    failures.push(`${relative(repositoryRoot, templatePath)}: style marker must be inline`);
+  }
+  if (!/<script type="module">\s*__RENDERER_JS__;?\s*<\/script>/.test(template)) {
+    failures.push(`${relative(repositoryRoot, templatePath)}: renderer marker must be inline`);
+  }
+  const renderer = rendererPaths.map((path) => readFileSync(path, "utf8")).join("\n");
+  const atlasMarkers = renderer.split("__ATLAS_MODEL_JSON__").length - 1;
+  if (atlasMarkers !== 1) {
     failures.push(
-      `${relative(repositoryRoot, templatePath)}: expected exactly one __ONTOLOGY_JSON__ marker; found ${ontologyMarkers}`
+      `${relative(repositoryRoot, rendererPaths[0] ?? templatePath)}: expected exactly one __ATLAS_MODEL_JSON__ marker; found ${atlasMarkers}`
     );
   }
-  const inlineScript = template.match(/<script>([\s\S]*?)<\/script>/)?.[1];
-  if (inlineScript === undefined) {
-    failures.push(`${relative(repositoryRoot, templatePath)}: missing inline renderer script`);
-    return;
-  }
-  const scriptCheck = spawnSync("node", ["--check", "-"], {
+  const scriptCheck = spawnSync("node", ["--input-type=module", "--check", "-"], {
     cwd: repositoryRoot,
     encoding: "utf8",
-    input: inlineScript.replace("__ONTOLOGY_JSON__", "{}")
+    input: renderer.replace("__ATLAS_MODEL_JSON__", "{}")
   });
   if (scriptCheck.error) {
     failures.push(
-      `${relative(repositoryRoot, templatePath)}: could not syntax-check inline renderer: ${scriptCheck.error.message}`
+      `${relative(repositoryRoot, templatePath)}: could not syntax-check combined renderer: ${scriptCheck.error.message}`
     );
   } else if (scriptCheck.status !== 0) {
     failures.push(
-      `${relative(repositoryRoot, templatePath)}: inline renderer syntax check failed: ${scriptCheck.stderr.trim()}`
+      `${relative(repositoryRoot, templatePath)}: combined renderer syntax check failed: ${scriptCheck.stderr.trim()}`
     );
   }
 }

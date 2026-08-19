@@ -1,0 +1,65 @@
+module shape.generated.ast.plugins.shapelang.skills.unix_system_visualiser.scripts.generate_test
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource GenerateTestModuleEmbeddedAtlasAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/scripts/generate.test.mjs#embeddedAtlas")
+  fingerprint ast.semantic_subtree_v1("sha256:089f518b082cc208ea713caa09127f12904dc3ea6688c6fdf69b69ab2f6f8228")
+}
+
+resource GenerateTestModuleInspectionFixtureAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/scripts/generate.test.mjs#inspectionFixture")
+  fingerprint ast.semantic_subtree_v1("sha256:8bbd885d7dba4d2a550801c8bbc1a4be04c798fd8f9cf2a9e1388d10a7334b02")
+}
+
+resource GenerateTestModuleRunVisualiserAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/scripts/generate.test.mjs#runVisualiser")
+  fingerprint ast.semantic_subtree_v1("sha256:6ead870fff498d39ce7572cec0a1553ef01fe568e21c014be877abf768643596")
+}
+
+component GenerateTestModule : GeneratedCandidate {
+  fn embeddedAtlas
+    source js("plugins/shapelang/skills/unix-system-visualiser/scripts/generate.test.mjs#embeddedAtlas")
+    effects unknown
+  fn inspectionFixture
+    source js("plugins/shapelang/skills/unix-system-visualiser/scripts/generate.test.mjs#inspectionFixture")
+    effects unknown
+  fn runVisualiser
+    source js("plugins/shapelang/skills/unix-system-visualiser/scripts/generate.test.mjs#runVisualiser")
+    effects unknown
+}
+
+relation GenerateTestModuleEmbeddedAtlasGeneratedFromGenerateTestModuleEmbeddedAtlasAstAnchor {
+  kind generated_from
+  connects GenerateTestModule -> GenerateTestModuleEmbeddedAtlasAstAnchor
+  roles { GenerateTestModule as generated, GenerateTestModuleEmbeddedAtlasAstAnchor as syntax }
+  expects GenerateTestModuleEmbeddedAtlasAstAnchor fingerprint ast.semantic_subtree_v1("sha256:089f518b082cc208ea713caa09127f12904dc3ea6688c6fdf69b69ab2f6f8228")
+  summary "fn GenerateTestModule.embeddedAtlas generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/scripts/generate.test.mjs#embeddedAtlas."
+}
+
+relation GenerateTestModuleInspectionFixtureGeneratedFromGenerateTestModuleInspectionFixtureAstAnchor {
+  kind generated_from
+  connects GenerateTestModule -> GenerateTestModuleInspectionFixtureAstAnchor
+  roles { GenerateTestModule as generated, GenerateTestModuleInspectionFixtureAstAnchor as syntax }
+  expects GenerateTestModuleInspectionFixtureAstAnchor fingerprint ast.semantic_subtree_v1("sha256:8bbd885d7dba4d2a550801c8bbc1a4be04c798fd8f9cf2a9e1388d10a7334b02")
+  summary "fn GenerateTestModule.inspectionFixture generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/scripts/generate.test.mjs#inspectionFixture."
+}
+
+relation GenerateTestModuleRunVisualiserGeneratedFromGenerateTestModuleRunVisualiserAstAnchor {
+  kind generated_from
+  connects GenerateTestModule -> GenerateTestModuleRunVisualiserAstAnchor
+  roles { GenerateTestModule as generated, GenerateTestModuleRunVisualiserAstAnchor as syntax }
+  expects GenerateTestModuleRunVisualiserAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6ead870fff498d39ce7572cec0a1553ef01fe568e21c014be877abf768643596")
+  summary "fn GenerateTestModule.runVisualiser generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/scripts/generate.test.mjs#runVisualiser."
+}
+
+implementation GenerateTestModuleImpl {
+  paths {
+    "plugins/shapelang/skills/unix-system-visualiser/scripts/generate.test.mjs"
+  }
+  conforms_to GenerateTestModule
+}

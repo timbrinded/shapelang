@@ -1,0 +1,33 @@
+module shape.generated.ast.github.scripts.skills_release_config
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource SkillsReleaseConfigModuleReleaseCaseAllowedToolsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor(".github/scripts/skills-release-config.mjs#releaseCaseAllowedTools")
+  fingerprint ast.semantic_subtree_v1("sha256:56c5aff381aebb828053aab44c12e74b467e00d83968172feace26feb77cbaaa")
+}
+
+component SkillsReleaseConfigModule : GeneratedCandidate {
+  fn releaseCaseAllowedTools
+    source js(".github/scripts/skills-release-config.mjs#releaseCaseAllowedTools")
+    effects unknown
+}
+
+relation SkillsReleaseConfigModuleReleaseCaseAllowedToolsGeneratedFromSkillsReleaseConfigModuleReleaseCaseAllowedToolsAstAnchor {
+  kind generated_from
+  connects SkillsReleaseConfigModule -> SkillsReleaseConfigModuleReleaseCaseAllowedToolsAstAnchor
+  roles { SkillsReleaseConfigModule as generated, SkillsReleaseConfigModuleReleaseCaseAllowedToolsAstAnchor as syntax }
+  expects SkillsReleaseConfigModuleReleaseCaseAllowedToolsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:56c5aff381aebb828053aab44c12e74b467e00d83968172feace26feb77cbaaa")
+  summary "fn SkillsReleaseConfigModule.releaseCaseAllowedTools generated from javascript function_declaration at .github/scripts/skills-release-config.mjs#releaseCaseAllowedTools."
+}
+
+implementation SkillsReleaseConfigModuleImpl {
+  paths {
+    ".github/scripts/skills-release-config.mjs"
+  }
+  conforms_to SkillsReleaseConfigModule
+}

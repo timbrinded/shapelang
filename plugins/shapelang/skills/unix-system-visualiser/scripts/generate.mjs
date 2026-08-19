@@ -4,6 +4,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
+import { buildAtlasModel } from "../lib/atlas-model.mjs";
 
 const scriptDirectory = path.dirname(fileURLToPath(import.meta.url));
 const DEFAULT_OUTPUT = ".research/unix-system-visualiser/index.html";
@@ -16,80 +17,13 @@ if (!options.allowUnignoredOutput) {
   requireIgnoredOutput(repositoryRoot, outputPath);
 }
 
-const ontology = authoredInspection(inspectShapeModel(repositoryRoot, options.shapeCommand));
-const serializedOntology = JSON.stringify(ontology).replace(/</g, "\\u003c");
-
-function authoredInspection(model) {
-  const authored = (items) => items.filter((item) => item.origin !== "generated_ast");
-  const documents = authored(model.documents);
-  const resources = authored(model.resources);
-  const components = authored(model.components);
-  const functions = authored(model.functions);
-  const relations = authored(model.relations);
-  const implementations = authored(model.implementations);
-  const bindings = authored(model.bindings);
-  const rules = authored(model.rules);
-  const memories = authored(model.memories);
-  if (documents.length === 0) {
-    fail("Shape inspection contains no authored documents");
-  }
-  const moduleGroups = groupDocumentsByModule(documents);
-  return {
-    ...model,
-    documents,
-    moduleGroups,
-    resources,
-    components,
-    functions,
-    relations,
-    implementations,
-    bindings,
-    rules,
-    memories,
-    stats: {
-      documents: documents.length,
-      modules: moduleGroups.length,
-      resources: resources.length,
-      components: components.length,
-      functions: functions.length,
-      effects: functions.reduce((count, fn) => count + fn.effects.length, 0),
-      relations: relations.length,
-      implementations: implementations.length,
-      bindings: bindings.length,
-      rules: rules.length,
-      memories: memories.length
-    }
-  };
+let atlas;
+try {
+  atlas = buildAtlasModel(inspectShapeModel(repositoryRoot, options.shapeCommand));
+} catch (error) {
+  fail(error instanceof Error ? error.message : String(error));
 }
-
-function groupDocumentsByModule(documents) {
-  const groups = new Map();
-  for (const document of documents) {
-    const group = groups.get(document.module) ?? {
-      id: `module:${document.module}`,
-      name: document.module,
-      files: new Set(),
-      imports: new Set()
-    };
-    group.files.add(document.file);
-    for (const importedModule of document.imports) {
-      group.imports.add(importedModule);
-    }
-    groups.set(document.module, group);
-  }
-  return [...groups.values()]
-    .map((group) => ({
-      id: group.id,
-      name: group.name,
-      files: [...group.files].sort(compareCodepoints),
-      imports: [...group.imports].sort(compareCodepoints)
-    }))
-    .sort((left, right) => compareCodepoints(left.name, right.name));
-}
-
-function compareCodepoints(left, right) {
-  return left < right ? -1 : left > right ? 1 : 0;
-}
+const serializedAtlas = JSON.stringify(atlas).replace(/</g, "\\u003c");
 
 function parseArguments(arguments_) {
   const parsed = {
@@ -297,29 +231,7 @@ function inspectShapeModel(root, command) {
     fail(result.stderr.trim() || `${command} inspect --json failed`);
   }
   try {
-    const model = JSON.parse(result.stdout);
-    if (model.schemaVersion !== 1) {
-      fail(`unsupported Shape inspection schema: ${String(model.schemaVersion)}`);
-    }
-    const collections = [
-      "documents",
-      "resources",
-      "components",
-      "functions",
-      "relations",
-      "implementations",
-      "bindings",
-      "rules",
-      "memories"
-    ];
-    const missingCollection = collections.find((name) => !Array.isArray(model[name]));
-    if (missingCollection) {
-      fail(`Shape inspection is missing the ${missingCollection} collection`);
-    }
-    if (model.documents.length === 0) {
-      fail("Shape inspection contains no authored documents");
-    }
-    return model;
+    return JSON.parse(result.stdout);
   } catch (error) {
     fail(
       `${command} inspect --json returned invalid JSON: ${
@@ -335,12 +247,32 @@ function fail(message) {
 }
 
 const templatePath = path.resolve(scriptDirectory, "../assets/index.template.html");
-const page = fs.readFileSync(templatePath, "utf8");
-
-writeOutputSafely(
-  repositoryRoot,
-  outputPath,
-  page.replace("__ONTOLOGY_JSON__", serializedOntology)
+const stylePath = path.resolve(scriptDirectory, "../assets/styles.css");
+const rendererPaths = [
+  "../assets/renderer/bootstrap.mjs",
+  "../assets/renderer/canvas.mjs",
+  "../assets/renderer/details.mjs",
+  "../assets/renderer/interactions.mjs"
+].map((relativePath) => path.resolve(scriptDirectory, relativePath));
+const template = fs.readFileSync(templatePath, "utf8");
+const styles = fs.readFileSync(stylePath, "utf8");
+const renderer = rendererPaths
+  .map((rendererPath) => fs.readFileSync(rendererPath, "utf8"))
+  .join("\n");
+const page = replaceOnce(
+  replaceOnce(replaceOnce(template, "__STYLE_CSS__", styles), "__RENDERER_JS__", renderer),
+  "__ATLAS_MODEL_JSON__",
+  serializedAtlas
 );
+
+function replaceOnce(contents, marker, replacement) {
+  const first = contents.indexOf(marker);
+  if (first === -1 || contents.indexOf(marker, first + marker.length) !== -1) {
+    fail(`template must contain exactly one ${marker} marker`);
+  }
+  return contents.slice(0, first) + replacement + contents.slice(first + marker.length);
+}
+
+writeOutputSafely(repositoryRoot, outputPath, page);
 console.log("Wrote " + path.relative(repositoryRoot, outputPath));
-console.log(JSON.stringify(ontology.stats));
+console.log(JSON.stringify(atlas.stats));

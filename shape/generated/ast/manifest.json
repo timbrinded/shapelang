@@ -10,6 +10,13 @@
       ]
     },
     {
+      "module": "shape.generated.ast.github.scripts.skills_release_config",
+      "path": "shape/generated/ast/.github/scripts/skills-release-config.shape",
+      "sources": [
+        ".github/scripts/skills-release-config.mjs"
+      ]
+    },
+    {
       "module": "shape.generated.ast.github.scripts.upsert_shape_ci_comment",
       "path": "shape/generated/ast/.github/scripts/upsert-shape-ci-comment.shape",
       "sources": [
@@ -1354,10 +1361,52 @@
       ]
     },
     {
+      "module": "shape.generated.ast.plugins.shapelang.skills.unix_system_visualiser.assets.renderer.bootstrap",
+      "path": "shape/generated/ast/plugins/shapelang/skills/unix-system-visualiser/assets/renderer/bootstrap.shape",
+      "sources": [
+        "plugins/shapelang/skills/unix-system-visualiser/assets/renderer/bootstrap.mjs"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.plugins.shapelang.skills.unix_system_visualiser.assets.renderer.canvas",
+      "path": "shape/generated/ast/plugins/shapelang/skills/unix-system-visualiser/assets/renderer/canvas.shape",
+      "sources": [
+        "plugins/shapelang/skills/unix-system-visualiser/assets/renderer/canvas.mjs"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.plugins.shapelang.skills.unix_system_visualiser.assets.renderer.details",
+      "path": "shape/generated/ast/plugins/shapelang/skills/unix-system-visualiser/assets/renderer/details.shape",
+      "sources": [
+        "plugins/shapelang/skills/unix-system-visualiser/assets/renderer/details.mjs"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.plugins.shapelang.skills.unix_system_visualiser.assets.renderer.interactions",
+      "path": "shape/generated/ast/plugins/shapelang/skills/unix-system-visualiser/assets/renderer/interactions.shape",
+      "sources": [
+        "plugins/shapelang/skills/unix-system-visualiser/assets/renderer/interactions.mjs"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.plugins.shapelang.skills.unix_system_visualiser.lib.atlas_model",
+      "path": "shape/generated/ast/plugins/shapelang/skills/unix-system-visualiser/lib/atlas-model.shape",
+      "sources": [
+        "plugins/shapelang/skills/unix-system-visualiser/lib/atlas-model.mjs"
+      ]
+    },
+    {
       "module": "shape.generated.ast.plugins.shapelang.skills.unix_system_visualiser.scripts.generate",
       "path": "shape/generated/ast/plugins/shapelang/skills/unix-system-visualiser/scripts/generate.shape",
       "sources": [
         "plugins/shapelang/skills/unix-system-visualiser/scripts/generate.mjs"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.plugins.shapelang.skills.unix_system_visualiser.scripts.generate_test",
+      "path": "shape/generated/ast/plugins/shapelang/skills/unix-system-visualiser/scripts/generate.test.shape",
+      "sources": [
+        "plugins/shapelang/skills/unix-system-visualiser/scripts/generate.test.mjs"
       ]
     },
     {

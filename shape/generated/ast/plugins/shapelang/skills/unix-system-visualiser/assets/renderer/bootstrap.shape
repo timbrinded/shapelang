@@ -1,0 +1,49 @@
+module shape.generated.ast.plugins.shapelang.skills.unix_system_visualiser.assets.renderer.bootstrap
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource BootstrapModuleChildOrderAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/bootstrap.mjs#childOrder")
+  fingerprint ast.semantic_subtree_v1("sha256:73338e655f56558eaa74b679893077f44c0cddc046eec1619aa56c15603309c1")
+}
+
+resource BootstrapModuleCompareCodepointsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/bootstrap.mjs#compareCodepoints")
+  fingerprint ast.semantic_subtree_v1("sha256:ee192b032e64cb1ffdae099e29da3731bf483b7496e2f6c33f26085ed975b5f1")
+}
+
+component BootstrapModule : GeneratedCandidate {
+  fn childOrder
+    source js("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/bootstrap.mjs#childOrder")
+    effects unknown
+  fn compareCodepoints
+    source js("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/bootstrap.mjs#compareCodepoints")
+    effects unknown
+}
+
+relation BootstrapModuleChildOrderGeneratedFromBootstrapModuleChildOrderAstAnchor {
+  kind generated_from
+  connects BootstrapModule -> BootstrapModuleChildOrderAstAnchor
+  roles { BootstrapModule as generated, BootstrapModuleChildOrderAstAnchor as syntax }
+  expects BootstrapModuleChildOrderAstAnchor fingerprint ast.semantic_subtree_v1("sha256:73338e655f56558eaa74b679893077f44c0cddc046eec1619aa56c15603309c1")
+  summary "fn BootstrapModule.childOrder generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/assets/renderer/bootstrap.mjs#childOrder."
+}
+
+relation BootstrapModuleCompareCodepointsGeneratedFromBootstrapModuleCompareCodepointsAstAnchor {
+  kind generated_from
+  connects BootstrapModule -> BootstrapModuleCompareCodepointsAstAnchor
+  roles { BootstrapModule as generated, BootstrapModuleCompareCodepointsAstAnchor as syntax }
+  expects BootstrapModuleCompareCodepointsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ee192b032e64cb1ffdae099e29da3731bf483b7496e2f6c33f26085ed975b5f1")
+  summary "fn BootstrapModule.compareCodepoints generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/assets/renderer/bootstrap.mjs#compareCodepoints."
+}
+
+implementation BootstrapModuleImpl {
+  paths {
+    "plugins/shapelang/skills/unix-system-visualiser/assets/renderer/bootstrap.mjs"
+  }
+  conforms_to BootstrapModule
+}

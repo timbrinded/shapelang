@@ -1,0 +1,257 @@
+module shape.generated.ast.plugins.shapelang.skills.unix_system_visualiser.assets.renderer.interactions
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource InteractionsModuleCheckAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/interactions.mjs#check")
+  fingerprint ast.semantic_subtree_v1("sha256:dbc09703aa624af6adeaf3aa513cc7ddf8275bf96c68605e3240e08c2b9b458f")
+}
+
+resource InteractionsModuleFocusAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/interactions.mjs#focus")
+  fingerprint ast.semantic_subtree_v1("sha256:6c7ff501758c1aecce793129d654f63f3eba4d484058951166c934a9134fca20")
+}
+
+resource InteractionsModuleFocusByIdAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/interactions.mjs#focusById")
+  fingerprint ast.semantic_subtree_v1("sha256:e5f639b1608969b5f4cd80edcf49673dd829c3e8c6a3c7d169add221b41e215f")
+}
+
+resource InteractionsModuleHitAreasAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/interactions.mjs#hitAreas")
+  fingerprint ast.semantic_subtree_v1("sha256:82a8b45c206660da1b078585772c5efb1cb8ccc007ae51fd2d33d3d77cf888ca")
+}
+
+resource InteractionsModuleIdsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/interactions.mjs#ids")
+  fingerprint ast.semantic_subtree_v1("sha256:db51818ce15465c2e5d54486bbc9edf370010e1f39d6aa1d3b9f3f2a4d14f7da")
+}
+
+resource InteractionsModuleIsTypingTargetAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/interactions.mjs#isTypingTarget")
+  fingerprint ast.semantic_subtree_v1("sha256:13ef62f55b6d97c33efd2aa8b5f3de0317cf4cdd18e9b80b30bb724c2f1ed09e")
+}
+
+resource InteractionsModulePointAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/interactions.mjs#point")
+  fingerprint ast.semantic_subtree_v1("sha256:4dec9305f9462f810765b39062d4e89c9bc290b06c3f961051266d6f3972bbb0")
+}
+
+resource InteractionsModuleReadyAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/interactions.mjs#ready")
+  fingerprint ast.semantic_subtree_v1("sha256:ffd83cc9789b61bf6e26efa5673d91d8fc598887838713b2c11da271d4096360")
+}
+
+resource InteractionsModuleReleasePointerAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/interactions.mjs#releasePointer")
+  fingerprint ast.semantic_subtree_v1("sha256:58b4fa2697cac6969c1fed58b14f39a261b02c724774d3ae742432366fd11f9f")
+}
+
+resource InteractionsModuleResetAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/interactions.mjs#reset")
+  fingerprint ast.semantic_subtree_v1("sha256:2764229083bb9be81f60318b4a2185b438a079484543973883aacc1b2a6ef7b8")
+}
+
+resource InteractionsModuleResizeCanvasAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/interactions.mjs#resizeCanvas")
+  fingerprint ast.semantic_subtree_v1("sha256:5bc91b788911c8f65f179fc468565b28ce660221072b75136bc8bef7e43291da")
+}
+
+resource InteractionsModuleSetMotionAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/interactions.mjs#setMotion")
+  fingerprint ast.semantic_subtree_v1("sha256:24f76bf2f04e443b8a10f0653e01e3048a3770a9c2f001621703e4efb2637198")
+}
+
+resource InteractionsModuleSettleAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/interactions.mjs#settle")
+  fingerprint ast.semantic_subtree_v1("sha256:093e7a6dc5bb94948768c8f410a63ffede7e2329ebb2bc6dccebc3fb997a6b43")
+}
+
+resource InteractionsModuleSnapshotAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/interactions.mjs#snapshot")
+  fingerprint ast.semantic_subtree_v1("sha256:9d2e8138bd6c2a73557c52396b2803d6bfcbfbf50f74cdfba4abede1fe22ded7")
+}
+
+resource InteractionsModuleSyncMotionButtonAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/interactions.mjs#syncMotionButton")
+  fingerprint ast.semantic_subtree_v1("sha256:71da128e4f7b561ac24fc5fc83ef382aa786aece42323785ed0621123de4c04a")
+}
+
+component InteractionsModule : GeneratedCandidate {
+  fn check
+    source js("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/interactions.mjs#check")
+    effects unknown
+  fn focus
+    source js("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/interactions.mjs#focus")
+    effects unknown
+  fn focusById
+    source js("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/interactions.mjs#focusById")
+    effects unknown
+  fn hitAreas
+    source js("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/interactions.mjs#hitAreas")
+    effects unknown
+  fn ids
+    source js("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/interactions.mjs#ids")
+    effects unknown
+  fn isTypingTarget
+    source js("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/interactions.mjs#isTypingTarget")
+    effects unknown
+  fn point
+    source js("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/interactions.mjs#point")
+    effects unknown
+  fn ready
+    source js("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/interactions.mjs#ready")
+    effects unknown
+  fn releasePointer
+    source js("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/interactions.mjs#releasePointer")
+    effects unknown
+  fn reset
+    source js("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/interactions.mjs#reset")
+    effects unknown
+  fn resizeCanvas
+    source js("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/interactions.mjs#resizeCanvas")
+    effects unknown
+  fn setMotion
+    source js("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/interactions.mjs#setMotion")
+    effects unknown
+  fn settle
+    source js("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/interactions.mjs#settle")
+    effects unknown
+  fn snapshot
+    source js("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/interactions.mjs#snapshot")
+    effects unknown
+  fn syncMotionButton
+    source js("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/interactions.mjs#syncMotionButton")
+    effects unknown
+}
+
+relation InteractionsModuleCheckGeneratedFromInteractionsModuleCheckAstAnchor {
+  kind generated_from
+  connects InteractionsModule -> InteractionsModuleCheckAstAnchor
+  roles { InteractionsModule as generated, InteractionsModuleCheckAstAnchor as syntax }
+  expects InteractionsModuleCheckAstAnchor fingerprint ast.semantic_subtree_v1("sha256:dbc09703aa624af6adeaf3aa513cc7ddf8275bf96c68605e3240e08c2b9b458f")
+  summary "fn InteractionsModule.check generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/assets/renderer/interactions.mjs#check."
+}
+
+relation InteractionsModuleFocusByIdGeneratedFromInteractionsModuleFocusByIdAstAnchor {
+  kind generated_from
+  connects InteractionsModule -> InteractionsModuleFocusByIdAstAnchor
+  roles { InteractionsModule as generated, InteractionsModuleFocusByIdAstAnchor as syntax }
+  expects InteractionsModuleFocusByIdAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e5f639b1608969b5f4cd80edcf49673dd829c3e8c6a3c7d169add221b41e215f")
+  summary "fn InteractionsModule.focusById generated from javascript method_definition at plugins/shapelang/skills/unix-system-visualiser/assets/renderer/interactions.mjs#focusById."
+}
+
+relation InteractionsModuleFocusGeneratedFromInteractionsModuleFocusAstAnchor {
+  kind generated_from
+  connects InteractionsModule -> InteractionsModuleFocusAstAnchor
+  roles { InteractionsModule as generated, InteractionsModuleFocusAstAnchor as syntax }
+  expects InteractionsModuleFocusAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6c7ff501758c1aecce793129d654f63f3eba4d484058951166c934a9134fca20")
+  summary "fn InteractionsModule.focus generated from javascript method_definition at plugins/shapelang/skills/unix-system-visualiser/assets/renderer/interactions.mjs#focus."
+}
+
+relation InteractionsModuleHitAreasGeneratedFromInteractionsModuleHitAreasAstAnchor {
+  kind generated_from
+  connects InteractionsModule -> InteractionsModuleHitAreasAstAnchor
+  roles { InteractionsModule as generated, InteractionsModuleHitAreasAstAnchor as syntax }
+  expects InteractionsModuleHitAreasAstAnchor fingerprint ast.semantic_subtree_v1("sha256:82a8b45c206660da1b078585772c5efb1cb8ccc007ae51fd2d33d3d77cf888ca")
+  summary "fn InteractionsModule.hitAreas generated from javascript method_definition at plugins/shapelang/skills/unix-system-visualiser/assets/renderer/interactions.mjs#hitAreas."
+}
+
+relation InteractionsModuleIdsGeneratedFromInteractionsModuleIdsAstAnchor {
+  kind generated_from
+  connects InteractionsModule -> InteractionsModuleIdsAstAnchor
+  roles { InteractionsModule as generated, InteractionsModuleIdsAstAnchor as syntax }
+  expects InteractionsModuleIdsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:db51818ce15465c2e5d54486bbc9edf370010e1f39d6aa1d3b9f3f2a4d14f7da")
+  summary "fn InteractionsModule.ids generated from javascript method_definition at plugins/shapelang/skills/unix-system-visualiser/assets/renderer/interactions.mjs#ids."
+}
+
+relation InteractionsModuleIsTypingTargetGeneratedFromInteractionsModuleIsTypingTargetAstAnchor {
+  kind generated_from
+  connects InteractionsModule -> InteractionsModuleIsTypingTargetAstAnchor
+  roles { InteractionsModule as generated, InteractionsModuleIsTypingTargetAstAnchor as syntax }
+  expects InteractionsModuleIsTypingTargetAstAnchor fingerprint ast.semantic_subtree_v1("sha256:13ef62f55b6d97c33efd2aa8b5f3de0317cf4cdd18e9b80b30bb724c2f1ed09e")
+  summary "fn InteractionsModule.isTypingTarget generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/assets/renderer/interactions.mjs#isTypingTarget."
+}
+
+relation InteractionsModulePointGeneratedFromInteractionsModulePointAstAnchor {
+  kind generated_from
+  connects InteractionsModule -> InteractionsModulePointAstAnchor
+  roles { InteractionsModule as generated, InteractionsModulePointAstAnchor as syntax }
+  expects InteractionsModulePointAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4dec9305f9462f810765b39062d4e89c9bc290b06c3f961051266d6f3972bbb0")
+  summary "fn InteractionsModule.point generated from javascript method_definition at plugins/shapelang/skills/unix-system-visualiser/assets/renderer/interactions.mjs#point."
+}
+
+relation InteractionsModuleReadyGeneratedFromInteractionsModuleReadyAstAnchor {
+  kind generated_from
+  connects InteractionsModule -> InteractionsModuleReadyAstAnchor
+  roles { InteractionsModule as generated, InteractionsModuleReadyAstAnchor as syntax }
+  expects InteractionsModuleReadyAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ffd83cc9789b61bf6e26efa5673d91d8fc598887838713b2c11da271d4096360")
+  summary "fn InteractionsModule.ready generated from javascript method_definition at plugins/shapelang/skills/unix-system-visualiser/assets/renderer/interactions.mjs#ready."
+}
+
+relation InteractionsModuleReleasePointerGeneratedFromInteractionsModuleReleasePointerAstAnchor {
+  kind generated_from
+  connects InteractionsModule -> InteractionsModuleReleasePointerAstAnchor
+  roles { InteractionsModule as generated, InteractionsModuleReleasePointerAstAnchor as syntax }
+  expects InteractionsModuleReleasePointerAstAnchor fingerprint ast.semantic_subtree_v1("sha256:58b4fa2697cac6969c1fed58b14f39a261b02c724774d3ae742432366fd11f9f")
+  summary "fn InteractionsModule.releasePointer generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/assets/renderer/interactions.mjs#releasePointer."
+}
+
+relation InteractionsModuleResetGeneratedFromInteractionsModuleResetAstAnchor {
+  kind generated_from
+  connects InteractionsModule -> InteractionsModuleResetAstAnchor
+  roles { InteractionsModule as generated, InteractionsModuleResetAstAnchor as syntax }
+  expects InteractionsModuleResetAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2764229083bb9be81f60318b4a2185b438a079484543973883aacc1b2a6ef7b8")
+  summary "fn InteractionsModule.reset generated from javascript method_definition at plugins/shapelang/skills/unix-system-visualiser/assets/renderer/interactions.mjs#reset."
+}
+
+relation InteractionsModuleResizeCanvasGeneratedFromInteractionsModuleResizeCanvasAstAnchor {
+  kind generated_from
+  connects InteractionsModule -> InteractionsModuleResizeCanvasAstAnchor
+  roles { InteractionsModule as generated, InteractionsModuleResizeCanvasAstAnchor as syntax }
+  expects InteractionsModuleResizeCanvasAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5bc91b788911c8f65f179fc468565b28ce660221072b75136bc8bef7e43291da")
+  summary "fn InteractionsModule.resizeCanvas generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/assets/renderer/interactions.mjs#resizeCanvas."
+}
+
+relation InteractionsModuleSetMotionGeneratedFromInteractionsModuleSetMotionAstAnchor {
+  kind generated_from
+  connects InteractionsModule -> InteractionsModuleSetMotionAstAnchor
+  roles { InteractionsModule as generated, InteractionsModuleSetMotionAstAnchor as syntax }
+  expects InteractionsModuleSetMotionAstAnchor fingerprint ast.semantic_subtree_v1("sha256:24f76bf2f04e443b8a10f0653e01e3048a3770a9c2f001621703e4efb2637198")
+  summary "fn InteractionsModule.setMotion generated from javascript method_definition at plugins/shapelang/skills/unix-system-visualiser/assets/renderer/interactions.mjs#setMotion."
+}
+
+relation InteractionsModuleSettleGeneratedFromInteractionsModuleSettleAstAnchor {
+  kind generated_from
+  connects InteractionsModule -> InteractionsModuleSettleAstAnchor
+  roles { InteractionsModule as generated, InteractionsModuleSettleAstAnchor as syntax }
+  expects InteractionsModuleSettleAstAnchor fingerprint ast.semantic_subtree_v1("sha256:093e7a6dc5bb94948768c8f410a63ffede7e2329ebb2bc6dccebc3fb997a6b43")
+  summary "fn InteractionsModule.settle generated from javascript method_definition at plugins/shapelang/skills/unix-system-visualiser/assets/renderer/interactions.mjs#settle."
+}
+
+relation InteractionsModuleSnapshotGeneratedFromInteractionsModuleSnapshotAstAnchor {
+  kind generated_from
+  connects InteractionsModule -> InteractionsModuleSnapshotAstAnchor
+  roles { InteractionsModule as generated, InteractionsModuleSnapshotAstAnchor as syntax }
+  expects InteractionsModuleSnapshotAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9d2e8138bd6c2a73557c52396b2803d6bfcbfbf50f74cdfba4abede1fe22ded7")
+  summary "fn InteractionsModule.snapshot generated from javascript method_definition at plugins/shapelang/skills/unix-system-visualiser/assets/renderer/interactions.mjs#snapshot."
+}
+
+relation InteractionsModuleSyncMotionButtonGeneratedFromInteractionsModuleSyncMotionButtonAstAnchor {
+  kind generated_from
+  connects InteractionsModule -> InteractionsModuleSyncMotionButtonAstAnchor
+  roles { InteractionsModule as generated, InteractionsModuleSyncMotionButtonAstAnchor as syntax }
+  expects InteractionsModuleSyncMotionButtonAstAnchor fingerprint ast.semantic_subtree_v1("sha256:71da128e4f7b561ac24fc5fc83ef382aa786aece42323785ed0621123de4c04a")
+  summary "fn InteractionsModule.syncMotionButton generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/assets/renderer/interactions.mjs#syncMotionButton."
+}
+
+implementation InteractionsModuleImpl {
+  paths {
+    "plugins/shapelang/skills/unix-system-visualiser/assets/renderer/interactions.mjs"
+  }
+  conforms_to InteractionsModule
+}

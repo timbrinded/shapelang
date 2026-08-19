@@ -1,15 +1,11 @@
 import { describe, expect, test } from "bun:test";
-import { mkdir, mkdtemp, rm, symlink } from "node:fs/promises";
+import { mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 
 const repoRoot = resolve(import.meta.dir, "../../..");
 const skillRunnerPath = resolve(repoRoot, ".github/scripts/run-claude-skill.mjs");
-const visualiserGeneratorPath = resolve(
-  repoRoot,
-  "plugins/shapelang/skills/unix-system-visualiser/scripts/generate.mjs"
-);
 const upsertCommentScriptPath = resolve(repoRoot, ".github/scripts/upsert-shape-ci-comment.mjs");
 
 describe("Shape workflow", () => {
@@ -140,105 +136,6 @@ describe("Shape workflow", () => {
       baseline: { status: "invalid", exit_code: 1 },
       proposal: null
     });
-  });
-
-  test("generates byte-identical visualisers from a recursively discovered Shape model", async () => {
-    const fixtureRoot = resolve(repoRoot, "fixtures/skills/unix-system-visualiser/connected");
-    const researchRoot = join(fixtureRoot, ".research");
-    await mkdir(researchRoot, { recursive: true });
-    const outputRoot = await mkdtemp(join(researchRoot, "shape-workflow-"));
-    try {
-      const firstPath = join(outputRoot, "first.html");
-      const secondPath = join(outputRoot, "second.html");
-      const first = await runVisualiser(fixtureRoot, firstPath);
-      const second = await runVisualiser(fixtureRoot, secondPath);
-
-      expect(first.exitCode).toBe(0);
-      expect(first.stderr).toBe("");
-      expect(second.exitCode).toBe(0);
-      expect(second.stderr).toBe("");
-
-      const firstHtml = await Bun.file(firstPath).text();
-      const secondHtml = await Bun.file(secondPath).text();
-      expect(firstHtml).toBe(secondHtml);
-      expect(firstHtml).toContain('"schemaVersion":1');
-      expect(firstHtml).toContain("unix_visualiser_fixture::SystemEvent");
-      expect(firstHtml).toContain(
-        '"moduleGroups":[{"id":"module:unix_visualiser_fixture","name":"unix_visualiser_fixture","files":["shape/nested/module-metadata.shape","shape/nested/system.shape"]'
-      );
-      expect(firstHtml).not.toContain("GeneratedSyntaxAnchor");
-      expect(firstHtml).not.toContain("generatedAt");
-
-      const statsLine = first.stdout.trim().split(/\r?\n/).at(-1);
-      expect(statsLine).toBeDefined();
-      expect(JSON.parse(statsLine ?? "{}")).toMatchObject({
-        documents: 2,
-        modules: 1,
-        resources: 1,
-        components: 2,
-        functions: 2,
-        effects: 1,
-        relations: 1,
-        implementations: 1,
-        bindings: 1,
-        rules: 1,
-        memories: 1
-      });
-    } finally {
-      await rm(outputRoot, { recursive: true, force: true });
-    }
-  });
-
-  test("refuses the default visualiser output when Git does not ignore it", async () => {
-    const fixtureRoot = resolve(
-      repoRoot,
-      "fixtures/skills/unix-system-visualiser/unignored-output"
-    );
-    const outputRoot = join(fixtureRoot, ".research");
-    try {
-      const result = await runVisualiser(fixtureRoot);
-      expect(result.exitCode).toBe(1);
-      expect(result.stderr).toContain("default output is not ignored by Git");
-      expect(await Bun.file(join(outputRoot, "unix-system-visualiser/index.html")).exists()).toBe(
-        false
-      );
-    } finally {
-      await rm(outputRoot, { recursive: true, force: true });
-    }
-  });
-
-  test("refuses a visualiser output path that escapes through a symbolic link", async () => {
-    const fixtureRoot = resolve(repoRoot, "fixtures/skills/unix-system-visualiser/connected");
-    const researchRoot = join(fixtureRoot, ".research");
-    const externalRoot = await mkdtemp(join(tmpdir(), "shape-visualiser-external-"));
-    const linkedDirectory = join(researchRoot, "linked-output");
-    await mkdir(researchRoot, { recursive: true });
-    await symlink(externalRoot, linkedDirectory, "dir");
-    try {
-      const result = await runVisualiser(fixtureRoot, join(linkedDirectory, "index.html"));
-
-      expect(result.exitCode).toBe(1);
-      expect(result.stderr).toContain("output path must not contain symbolic links");
-      expect(await Bun.file(join(externalRoot, "index.html")).exists()).toBe(false);
-    } finally {
-      await rm(linkedDirectory, { force: true });
-      await rm(externalRoot, { recursive: true, force: true });
-    }
-  });
-
-  test("refuses a visualiser for a semantically invalid Shape model", async () => {
-    const fixtureRoot = resolve(repoRoot, "fixtures/skills/unix-system-visualiser/invalid-model");
-    const outputRoot = join(fixtureRoot, ".research");
-    try {
-      const result = await runVisualiser(fixtureRoot);
-      expect(result.exitCode).toBe(1);
-      expect(result.stderr).toContain("error: missing grant");
-      expect(await Bun.file(join(outputRoot, "unix-system-visualiser/index.html")).exists()).toBe(
-        false
-      );
-    } finally {
-      await rm(outputRoot, { recursive: true, force: true });
-    }
   });
 
   test("passes index gate on gaps by default and fails when strict", async () => {
@@ -996,34 +893,6 @@ async function runSkillGate(
   } finally {
     await rm(tempDir, { recursive: true, force: true });
   }
-}
-
-async function runVisualiser(
-  repository: string,
-  output?: string
-): Promise<{ exitCode: number; stdout: string; stderr: string }> {
-  const args = [
-    "bun",
-    visualiserGeneratorPath,
-    "--repo",
-    repository,
-    "--shape-command",
-    "bun ../../../../packages/shp-cli/src/index.ts"
-  ];
-  if (output) {
-    args.push("--output", output);
-  }
-  const child = Bun.spawn(args, {
-    cwd: repoRoot,
-    stdout: "pipe",
-    stderr: "pipe"
-  });
-  const [exitCode, stdout, stderr] = await Promise.all([
-    child.exited,
-    new Response(child.stdout).text(),
-    new Response(child.stderr).text()
-  ]);
-  return { exitCode, stdout, stderr };
 }
 
 async function runPrecheck(

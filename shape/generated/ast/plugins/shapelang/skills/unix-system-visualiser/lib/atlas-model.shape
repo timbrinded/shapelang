@@ -1,0 +1,145 @@
+module shape.generated.ast.plugins.shapelang.skills.unix_system_visualiser.lib.atlas_model
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource AtlasModelModuleAssertInspectionSchemaAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/lib/atlas-model.mjs#assertInspectionSchema")
+  fingerprint ast.semantic_subtree_v1("sha256:4ab6a749ceca8787ca4c676d94795dcb811388e4d5b089bbb6ca145a4f88c377")
+}
+
+resource AtlasModelModuleAuthoredStatsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/lib/atlas-model.mjs#authoredStats")
+  fingerprint ast.semantic_subtree_v1("sha256:65f2705c2900dc3b3cd03768ff8c2d9f98be20961ba8021a4227543251cfa32a")
+}
+
+resource AtlasModelModuleBuildAtlasModelAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/lib/atlas-model.mjs#buildAtlasModel")
+  fingerprint ast.semantic_subtree_v1("sha256:11c94331973727655f5faba2f0e2c8e8215d5391fff48f55fccfc8d99d865ffc")
+}
+
+resource AtlasModelModuleCompareCodepointsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/lib/atlas-model.mjs#compareCodepoints")
+  fingerprint ast.semantic_subtree_v1("sha256:ee192b032e64cb1ffdae099e29da3731bf483b7496e2f6c33f26085ed975b5f1")
+}
+
+resource AtlasModelModuleDeclarationNodeIdAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/lib/atlas-model.mjs#declarationNodeId")
+  fingerprint ast.semantic_subtree_v1("sha256:fd6a4399f15a14c8c42ad65bed5f91df30eff97b3db4ba16849b5b21071d5623")
+}
+
+resource AtlasModelModuleGroupDocumentsByModuleAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/lib/atlas-model.mjs#groupDocumentsByModule")
+  fingerprint ast.semantic_subtree_v1("sha256:ab22b5d8fdd375bba6803c29bf9b41cf399f822ed295d840a3fae437720e79da")
+}
+
+resource AtlasModelModuleModuleIdAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/lib/atlas-model.mjs#moduleId")
+  fingerprint ast.semantic_subtree_v1("sha256:05198f3740de30051c4f4218e48d92de6a980bc025c8f236e672cbf651999f92")
+}
+
+resource AtlasModelModuleRelationEndpointIdsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/lib/atlas-model.mjs#relationEndpointIds")
+  fingerprint ast.semantic_subtree_v1("sha256:9dafb442269f561586a0ca29e8b8ce23f0f64896e8a8787b2ba9274c00e5dcfa")
+}
+
+component AtlasModelModule : GeneratedCandidate {
+  fn assertInspectionSchema
+    source js("plugins/shapelang/skills/unix-system-visualiser/lib/atlas-model.mjs#assertInspectionSchema")
+    effects unknown
+  fn authoredStats
+    source js("plugins/shapelang/skills/unix-system-visualiser/lib/atlas-model.mjs#authoredStats")
+    effects unknown
+  fn buildAtlasModel
+    source js("plugins/shapelang/skills/unix-system-visualiser/lib/atlas-model.mjs#buildAtlasModel")
+    effects unknown
+  fn compareCodepoints
+    source js("plugins/shapelang/skills/unix-system-visualiser/lib/atlas-model.mjs#compareCodepoints")
+    effects unknown
+  fn declarationNodeId
+    source js("plugins/shapelang/skills/unix-system-visualiser/lib/atlas-model.mjs#declarationNodeId")
+    effects unknown
+  fn groupDocumentsByModule
+    source js("plugins/shapelang/skills/unix-system-visualiser/lib/atlas-model.mjs#groupDocumentsByModule")
+    effects unknown
+  fn moduleId
+    source js("plugins/shapelang/skills/unix-system-visualiser/lib/atlas-model.mjs#moduleId")
+    effects unknown
+  fn relationEndpointIds
+    source js("plugins/shapelang/skills/unix-system-visualiser/lib/atlas-model.mjs#relationEndpointIds")
+    effects unknown
+}
+
+relation AtlasModelModuleAssertInspectionSchemaGeneratedFromAtlasModelModuleAssertInspectionSchemaAstAnchor {
+  kind generated_from
+  connects AtlasModelModule -> AtlasModelModuleAssertInspectionSchemaAstAnchor
+  roles { AtlasModelModule as generated, AtlasModelModuleAssertInspectionSchemaAstAnchor as syntax }
+  expects AtlasModelModuleAssertInspectionSchemaAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4ab6a749ceca8787ca4c676d94795dcb811388e4d5b089bbb6ca145a4f88c377")
+  summary "fn AtlasModelModule.assertInspectionSchema generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/lib/atlas-model.mjs#assertInspectionSchema."
+}
+
+relation AtlasModelModuleAuthoredStatsGeneratedFromAtlasModelModuleAuthoredStatsAstAnchor {
+  kind generated_from
+  connects AtlasModelModule -> AtlasModelModuleAuthoredStatsAstAnchor
+  roles { AtlasModelModule as generated, AtlasModelModuleAuthoredStatsAstAnchor as syntax }
+  expects AtlasModelModuleAuthoredStatsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:65f2705c2900dc3b3cd03768ff8c2d9f98be20961ba8021a4227543251cfa32a")
+  summary "fn AtlasModelModule.authoredStats generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/lib/atlas-model.mjs#authoredStats."
+}
+
+relation AtlasModelModuleBuildAtlasModelGeneratedFromAtlasModelModuleBuildAtlasModelAstAnchor {
+  kind generated_from
+  connects AtlasModelModule -> AtlasModelModuleBuildAtlasModelAstAnchor
+  roles { AtlasModelModule as generated, AtlasModelModuleBuildAtlasModelAstAnchor as syntax }
+  expects AtlasModelModuleBuildAtlasModelAstAnchor fingerprint ast.semantic_subtree_v1("sha256:11c94331973727655f5faba2f0e2c8e8215d5391fff48f55fccfc8d99d865ffc")
+  summary "fn AtlasModelModule.buildAtlasModel generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/lib/atlas-model.mjs#buildAtlasModel."
+}
+
+relation AtlasModelModuleCompareCodepointsGeneratedFromAtlasModelModuleCompareCodepointsAstAnchor {
+  kind generated_from
+  connects AtlasModelModule -> AtlasModelModuleCompareCodepointsAstAnchor
+  roles { AtlasModelModule as generated, AtlasModelModuleCompareCodepointsAstAnchor as syntax }
+  expects AtlasModelModuleCompareCodepointsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ee192b032e64cb1ffdae099e29da3731bf483b7496e2f6c33f26085ed975b5f1")
+  summary "fn AtlasModelModule.compareCodepoints generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/lib/atlas-model.mjs#compareCodepoints."
+}
+
+relation AtlasModelModuleDeclarationNodeIdGeneratedFromAtlasModelModuleDeclarationNodeIdAstAnchor {
+  kind generated_from
+  connects AtlasModelModule -> AtlasModelModuleDeclarationNodeIdAstAnchor
+  roles { AtlasModelModule as generated, AtlasModelModuleDeclarationNodeIdAstAnchor as syntax }
+  expects AtlasModelModuleDeclarationNodeIdAstAnchor fingerprint ast.semantic_subtree_v1("sha256:fd6a4399f15a14c8c42ad65bed5f91df30eff97b3db4ba16849b5b21071d5623")
+  summary "fn AtlasModelModule.declarationNodeId generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/lib/atlas-model.mjs#declarationNodeId."
+}
+
+relation AtlasModelModuleGroupDocumentsByModuleGeneratedFromAtlasModelModuleGroupDocumentsByModuleAstAnchor {
+  kind generated_from
+  connects AtlasModelModule -> AtlasModelModuleGroupDocumentsByModuleAstAnchor
+  roles { AtlasModelModule as generated, AtlasModelModuleGroupDocumentsByModuleAstAnchor as syntax }
+  expects AtlasModelModuleGroupDocumentsByModuleAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ab22b5d8fdd375bba6803c29bf9b41cf399f822ed295d840a3fae437720e79da")
+  summary "fn AtlasModelModule.groupDocumentsByModule generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/lib/atlas-model.mjs#groupDocumentsByModule."
+}
+
+relation AtlasModelModuleModuleIdGeneratedFromAtlasModelModuleModuleIdAstAnchor {
+  kind generated_from
+  connects AtlasModelModule -> AtlasModelModuleModuleIdAstAnchor
+  roles { AtlasModelModule as generated, AtlasModelModuleModuleIdAstAnchor as syntax }
+  expects AtlasModelModuleModuleIdAstAnchor fingerprint ast.semantic_subtree_v1("sha256:05198f3740de30051c4f4218e48d92de6a980bc025c8f236e672cbf651999f92")
+  summary "fn AtlasModelModule.moduleId generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/lib/atlas-model.mjs#moduleId."
+}
+
+relation AtlasModelModuleRelationEndpointIdsGeneratedFromAtlasModelModuleRelationEndpointIdsAstAnchor {
+  kind generated_from
+  connects AtlasModelModule -> AtlasModelModuleRelationEndpointIdsAstAnchor
+  roles { AtlasModelModule as generated, AtlasModelModuleRelationEndpointIdsAstAnchor as syntax }
+  expects AtlasModelModuleRelationEndpointIdsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9dafb442269f561586a0ca29e8b8ce23f0f64896e8a8787b2ba9274c00e5dcfa")
+  summary "fn AtlasModelModule.relationEndpointIds generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/lib/atlas-model.mjs#relationEndpointIds."
+}
+
+implementation AtlasModelModuleImpl {
+  paths {
+    "plugins/shapelang/skills/unix-system-visualiser/lib/atlas-model.mjs"
+  }
+  conforms_to AtlasModelModule
+}

@@ -77,5 +77,7 @@ Do not report `complete` from static HTML inspection alone.
 
 ## Resources
 
-- `scripts/generate.mjs`: validates authored Shape and the output location, invokes `shp inspect --json`, and writes the self-contained artifact.
-- `assets/index.template.html`: offline Canvas renderer, accessible controls, non-visual model index, and browser-validation hooks.
+- `scripts/generate.mjs`: validates Shape and the output location, invokes `shp inspect --json`, assembles the bundled assets, and writes the self-contained artifact.
+- `lib/atlas-model.mjs`: converts inspection schema version `1` into the authored atlas model using exact qualified identities.
+- `assets/index.template.html` and `assets/styles.css`: the offline document shell and presentation.
+- `assets/renderer/*.mjs`: ordered Canvas, detail, interaction, accessibility, and browser-validation sources that the generator inlines into the artifact.
