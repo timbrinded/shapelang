@@ -13,6 +13,7 @@ import { coverageCommand } from "./commands/coverage/command";
 import { explainCommand } from "./commands/explain/command";
 import { fmtCommand } from "./commands/fmt/command";
 import { graphCommand } from "./commands/graph/command";
+import { inspectCommand } from "./commands/inspect/command";
 import { lspCommand } from "./commands/lsp/command";
 import { memoryCommand } from "./commands/memory/command";
 import { obligationsCommand } from "./commands/obligations/command";
@@ -31,6 +32,7 @@ const root = buildRouteMap({
     explain: explainCommand,
     fmt: fmtCommand,
     graph: graphCommand,
+    inspect: inspectCommand,
     lsp: lspCommand,
     memory: memoryCommand,
     obligations: obligationsCommand,

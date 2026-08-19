@@ -15,6 +15,73 @@ describe("shp CLI", () => {
     expect(result.stderr).toBe("");
   });
 
+  test("exports a deterministic JSON inspection from recursive default discovery", async () => {
+    const projectRoot = await mkdtemp(join(tmpdir(), "shp-inspect-test-"));
+    const shapeFile = join(projectRoot, "shape", "nested", "system.shape");
+    try {
+      await mkdir(join(projectRoot, "shape", "nested"), { recursive: true });
+      await writeFile(
+        shapeFile,
+        `module demo
+
+resource Record
+
+component Reader {
+  grants Read<Record>
+  fn load
+    effects complete {
+      Read<Record>
+    }
+}
+
+relation ReaderProvidesRecord {
+  kind provides
+  connects Reader -> Record
+}
+`
+      );
+
+      const discovered = await runCli(["inspect", "--json"], cliPath, projectRoot);
+      const explicit = await runCli(["inspect", "--json", shapeFile], cliPath, projectRoot);
+
+      expect(discovered.exitCode).toBe(0);
+      expect(discovered.stderr).toBe("");
+      expect(discovered.stdout).toBe(explicit.stdout);
+      const inspection: unknown = JSON.parse(discovered.stdout);
+      expect(inspection).toMatchObject({
+        schemaVersion: 1,
+        shapeVersion: "0.7.0",
+        documents: [
+          {
+            file: "shape/nested/system.shape",
+            module: "demo",
+            imports: []
+          }
+        ],
+        stats: {
+          documents: 1,
+          modules: 1,
+          resources: 1,
+          components: 1,
+          functions: 1,
+          effects: 1,
+          relations: 1
+        }
+      });
+      expect(discovered.stdout).not.toContain("generatedAt");
+    } finally {
+      await rm(projectRoot, { recursive: true, force: true });
+    }
+  });
+
+  test("requires the explicit inspect JSON output mode", async () => {
+    const result = await runCli(["inspect"]);
+
+    expect(result.exitCode).toBe(2);
+    expect(result.stderr).toContain("`shp inspect` requires --json");
+    expect(result.stdout).toBe("");
+  });
+
   test("loads a vendored domain pack for check, format, and explain", async () => {
     const projectRoot = resolve(repoRoot, "fixtures/projects/domain-pack-consumer");
     const [checkResult, formatResult, explainResult] = await Promise.all([

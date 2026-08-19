@@ -1,0 +1,66 @@
+module shape.generated.ast.fixtures.skills.unix_system_visualiser.connected.src.system
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource SystemEvent : GeneratedCandidate {
+  storage ts.type("fixtures/skills/unix-system-visualiser/connected/src/system.ts#SystemEvent")
+}
+
+resource SystemEventAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("fixtures/skills/unix-system-visualiser/connected/src/system.ts#SystemEvent")
+  fingerprint ast.semantic_subtree_v1("sha256:f8947753c0498a5cb1179cc4205f5900594a68f7df7d8624424ba23a73892ed9")
+}
+
+resource SystemModuleLoadEventsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("fixtures/skills/unix-system-visualiser/connected/src/system.ts#loadEvents")
+  fingerprint ast.semantic_subtree_v1("sha256:402d898e9d877cd84bd4c49945451c3a84e5d6f30087074d81cbf46c3ae86556")
+}
+
+resource SystemModuleRenderEventsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("fixtures/skills/unix-system-visualiser/connected/src/system.ts#renderEvents")
+  fingerprint ast.semantic_subtree_v1("sha256:f7868c09ae13fa61e7b2ef6279228bf5e751ee9eb1aef535530344bfa60a663f")
+}
+
+component SystemModule : GeneratedCandidate {
+  fn loadEvents
+    source ts("fixtures/skills/unix-system-visualiser/connected/src/system.ts#loadEvents")
+    effects unknown
+  fn renderEvents
+    source ts("fixtures/skills/unix-system-visualiser/connected/src/system.ts#renderEvents")
+    effects unknown
+}
+
+relation SystemEventGeneratedFromSystemEventAstAnchor {
+  kind generated_from
+  connects SystemEvent -> SystemEventAstAnchor
+  roles { SystemEvent as generated, SystemEventAstAnchor as syntax }
+  expects SystemEventAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f8947753c0498a5cb1179cc4205f5900594a68f7df7d8624424ba23a73892ed9")
+  summary "resource SystemEvent generated from typescript interface_declaration at fixtures/skills/unix-system-visualiser/connected/src/system.ts#SystemEvent."
+}
+
+relation SystemModuleLoadEventsGeneratedFromSystemModuleLoadEventsAstAnchor {
+  kind generated_from
+  connects SystemModule -> SystemModuleLoadEventsAstAnchor
+  roles { SystemModule as generated, SystemModuleLoadEventsAstAnchor as syntax }
+  expects SystemModuleLoadEventsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:402d898e9d877cd84bd4c49945451c3a84e5d6f30087074d81cbf46c3ae86556")
+  summary "fn SystemModule.loadEvents generated from typescript function_declaration at fixtures/skills/unix-system-visualiser/connected/src/system.ts#loadEvents."
+}
+
+relation SystemModuleRenderEventsGeneratedFromSystemModuleRenderEventsAstAnchor {
+  kind generated_from
+  connects SystemModule -> SystemModuleRenderEventsAstAnchor
+  roles { SystemModule as generated, SystemModuleRenderEventsAstAnchor as syntax }
+  expects SystemModuleRenderEventsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f7868c09ae13fa61e7b2ef6279228bf5e751ee9eb1aef535530344bfa60a663f")
+  summary "fn SystemModule.renderEvents generated from typescript function_declaration at fixtures/skills/unix-system-visualiser/connected/src/system.ts#renderEvents."
+}
+
+implementation SystemModuleImpl {
+  paths {
+    "fixtures/skills/unix-system-visualiser/connected/src/system.ts"
+  }
+  conforms_to SystemModule
+}

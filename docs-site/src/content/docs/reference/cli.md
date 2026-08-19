@@ -17,6 +17,7 @@ shp explain SYMBOL [files...]
 shp graph all [--kind KIND] [files...]
 shp graph show SYMBOL [--kind KIND] [files...]
 shp graph stats [--kind KIND] [files...]
+shp inspect --json [files...]
 shp lsp
 shp memory [files...]
 shp obligations [--as-of YYYY-MM-DD] [--strict-freshness] [files...]
@@ -53,6 +54,7 @@ activate or deactivate pack-level rules. See [Domain Packs](../concepts/domain-p
 | `graph all` | Print the entire hypergraph. Filter by `--kind KIND`. |
 | `graph show` | Print the hyperedges incident to a symbol. Filter by `--kind KIND`. |
 | `graph stats` | Print aggregate hypergraph counts. Filter by `--kind KIND`. |
+| `inspect` | Export the canonically lowered effective model as deterministic, versioned JSON. Requires `--json`. |
 | `lsp` | Serve Shape diagnostics and editor requests over the Language Server Protocol on stdio. |
 | `memory` | List rationale and memory entries grouped by protected target. |
 | `obligations` | List open design-memory obligations from checker diagnostics. With `--as-of` or `--strict-freshness`, also list design memory whose `review_by` date is past the reference date. |
@@ -90,6 +92,7 @@ shp graph show Gateway
 shp graph show Gateway --kind calls
 shp graph stats
 shp graph stats --kind calls
+shp inspect --json > shape-model.json
 shp lsp
 shp memory
 shp obligations
@@ -198,6 +201,46 @@ Use `--include-ast-layer` to include raw AST resources and `ast_child` relations
 }
 ```
 
+## Machine-readable model inspection
+
+`shp inspect --json [files...]` exports the effective Shape model for local
+tools such as architecture visualizers. With no files, it recursively discovers
+`shape/**/*.shape`. Explicit absolute files inside the current project are
+reported as project-relative paths, so the same checkout content does not embed
+machine-specific directory prefixes.
+
+The command uses the official parser, canonical effective-model lowering, and
+module-reference resolution. It writes only JSON to standard output. The
+top-level schema is:
+
+```json
+{
+  "schemaVersion": 1,
+  "shapeVersion": "0.7.0",
+  "documents": [],
+  "resources": [],
+  "components": [],
+  "functions": [],
+  "relations": [],
+  "implementations": [],
+  "bindings": [],
+  "rules": [],
+  "memories": [],
+  "stats": {}
+}
+```
+
+Declaration records include a stable module-qualified `id`, local `name`,
+`module`, source `file`, and `authored` or `generated_ast` origin. Function records contain complete or unknown effect
+status plus resolved effect targets. Relation records contain ordered endpoints
+and compatibility `from` and `to` fields. All order-insensitive arrays use
+Unicode codepoint order. The export contains no generated timestamp.
+
+Inspection accepts any parseable model and does not replace semantic validation.
+Run `shp check` first when the consumer requires an accepted model. Consumers
+must reject unsupported `schemaVersion` values instead of guessing at a changed
+schema.
+
 ## Graph output
 
 `shp graph show SYMBOL` lists the hyperedges incident to a component or resource:
@@ -303,7 +346,7 @@ Only ISO `YYYY-MM-DD` dates are enforced; missing or non-ISO `review_by` values 
 
 ## Exit codes
 
-`0` means the command passed or an advisory-only critic review completed, even when critic warnings were emitted. `1` means semantic checks, formatting checks, coverage, analyzer comparison, download, checksum, extraction, or binary replacement failed. `2` means the CLI arguments or critic inputs were invalid, or the update target platform/path is unsupported.
+`0` means the command passed, a JSON inspection completed, or an advisory-only critic review completed, even when critic warnings were emitted. `1` means semantic checks, formatting checks, coverage, analyzer comparison, download, checksum, extraction, or binary replacement failed. `2` means the CLI arguments, inspection mode, parser input, or critic inputs were invalid, or the update target platform/path is unsupported.
 
 ## Updating
 

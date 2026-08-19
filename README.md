@@ -40,6 +40,7 @@ shp fmt --check
 shp coverage --changed-files changed.txt
 shp memory
 shp obligations
+shp inspect --json > shape-model.json
 shp lsp
 ```
 
@@ -171,6 +172,14 @@ The checker pipeline is:
 
 The optional analyzer is advisory only: it can flag suspicious omissions, but `.shape` remains the source of truth.
 
+`shp inspect --json` uses the same recursive discovery, parser, canonical lowering,
+and module-reference resolution as the other Shape commands. Its JSON includes
+documents, qualified declaration IDs, functions and effects, relations,
+implementations, bindings, rules, memories, and aggregate counts. The export has
+an explicit authored or generated-AST origin, an explicit schema version, and no
+clock-derived timestamp, so identical inputs produce identical output. It is a data export, not a conformance result; run
+`shp check` before consuming it as an accepted architecture model.
+
 ## Commands
 
 ```bash
@@ -181,6 +190,7 @@ shp fmt --check
 shp explain AuditEvent
 shp graph show Gateway --kind calls
 shp graph stats --kind calls
+shp inspect --json > shape-model.json
 shp memory
 shp obligations
 shp lsp
@@ -205,6 +215,7 @@ Useful commands:
 - `shp graph all [--kind KIND]`: print the whole hypergraph grouped by kind.
 - `shp graph show SYMBOL [--kind KIND]`: print the hyperedges incident to a component or resource.
 - `shp graph stats [--kind KIND]`: print aggregate vertex, hyperedge, and incidence counts.
+- `shp inspect --json [files...]`: export the effective model as deterministic, versioned JSON for local tools and visualizers.
 - `shp memory`: list rationale and memory entries that protect design context.
 - `shp obligations`: list open design-memory obligations such as missing rationale or reevaluation.
 - `shp lsp`: serve Shape diagnostics, hover, definitions, completions, and formatting over the Language Server Protocol on stdio.
@@ -308,10 +319,10 @@ CI is wired in `.github/workflows/shape.yml` for generated AST freshness, format
 ## Release
 
 Release preparation synchronizes the CLI and both plugin manifest versions,
-updates pinned public docs, audits all five shipped skills, and passes the full
+updates pinned public docs, audits all six shipped skills, and passes the full
 repository suite. Run the `Release Candidate: Skills` workflow on the exact
-`master` commit first. Its static skill conformance and focused read-only
-behavioral canaries are blocking, and its final
+`master` commit first. Its static skill conformance and focused behavioral
+canaries are blocking, and its final
 `skills-release-approval` environment requires a manual reviewer.
 
 Only after that exact commit has a successful, manually approved candidate run

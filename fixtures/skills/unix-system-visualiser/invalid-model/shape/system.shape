@@ -1,0 +1,10 @@
+module invalid_visualiser_fixture
+
+resource SystemEvent
+
+component EventWriter {
+  fn appendEvent
+    effects complete {
+      Write<SystemEvent>
+    }
+}

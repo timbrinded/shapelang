@@ -597,6 +597,12 @@ export const RELEASE_SKILL_STATIC_CHECKS = {
     "all-incident-relations",
     "false-positive-challenge",
     "drift-separation"
+  ],
+  "unix-system-visualiser": [
+    "semantic-inspection",
+    "ignored-output-safety",
+    "deterministic-offline-artifact",
+    "browser-and-evidence-boundary"
   ]
 };
 
@@ -671,6 +677,33 @@ export const RELEASE_SKILL_CASES = {
         "bun shp check fixtures/skills/review/root-cause-grouping/shape/model.shape",
         "bun shp explain RangeNormalizer.normalizeRange fixtures/skills/review/root-cause-grouping/shape/model.shape",
         "bun shp graph show RangeNormalizer fixtures/skills/review/root-cause-grouping/shape/model.shape"
+      ]
+    }
+  },
+  "unix-system-visualiser": {
+    "visualiser-deterministic-nested-model": {
+      evidenceMarkers: [
+        "SystemEvent",
+        "nested",
+        "identical",
+        "1 resource",
+        "2 components",
+        "2 functions",
+        "1 relation",
+        "authored",
+        "runtime"
+      ],
+      commands: [
+        "bun shp check fixtures/skills/unix-system-visualiser/connected/shape/nested/system.shape",
+        'bun plugins/shapelang/skills/unix-system-visualiser/scripts/generate.mjs --repo fixtures/skills/unix-system-visualiser/connected --output .research/atlas-a.html --shape-command "bun ../../../../packages/shp-cli/src/index.ts"',
+        'bun plugins/shapelang/skills/unix-system-visualiser/scripts/generate.mjs --repo fixtures/skills/unix-system-visualiser/connected --output .research/atlas-b.html --shape-command "bun ../../../../packages/shp-cli/src/index.ts"',
+        "cmp fixtures/skills/unix-system-visualiser/connected/.research/atlas-a.html fixtures/skills/unix-system-visualiser/connected/.research/atlas-b.html"
+      ]
+    },
+    "visualiser-unignored-output": {
+      evidenceMarkers: ["not ignored", "before", "write"],
+      commands: [
+        'bun plugins/shapelang/skills/unix-system-visualiser/scripts/generate.mjs --repo fixtures/skills/unix-system-visualiser/unignored-output --shape-command "bun ../../../../packages/shp-cli/src/index.ts"'
       ]
     }
   }
@@ -841,6 +874,11 @@ const SKILLS = {
       "Bash(bun shp * --help)",
       "Bash(bun shp graph *)",
       "Bash(bun shp analyze *)",
+      "Bash(bun shp check fixtures/skills/unix-system-visualiser/connected/shape/nested/system.shape)",
+      'Bash(bun plugins/shapelang/skills/unix-system-visualiser/scripts/generate.mjs --repo fixtures/skills/unix-system-visualiser/connected --output .research/atlas-a.html --shape-command "bun ../../../../packages/shp-cli/src/index.ts")',
+      'Bash(bun plugins/shapelang/skills/unix-system-visualiser/scripts/generate.mjs --repo fixtures/skills/unix-system-visualiser/connected --output .research/atlas-b.html --shape-command "bun ../../../../packages/shp-cli/src/index.ts")',
+      'Bash(bun plugins/shapelang/skills/unix-system-visualiser/scripts/generate.mjs --repo fixtures/skills/unix-system-visualiser/unignored-output --shape-command "bun ../../../../packages/shp-cli/src/index.ts")',
+      "Bash(cmp fixtures/skills/unix-system-visualiser/connected/.research/atlas-a.html fixtures/skills/unix-system-visualiser/connected/.research/atlas-b.html)",
       "Bash(plugins/shapelang/skills/shape-contract-preflight/scripts/precheck.sh --shape-root fixtures/skills/preflight/guarded-unknown/shape --json fixtures/skills/preflight/guarded-unknown/proposal.shape)",
       "Bash(plugins/shapelang/skills/shape-contract-preflight/scripts/precheck.sh --shape-root fixtures/skills/preflight/invalid-baseline/shape --json fixtures/skills/preflight/invalid-baseline/proposal.shape)",
       "Bash(plugins/shapelang/skills/shape-contract-preflight/scripts/precheck.sh --shape-root fixtures/skills/preflight/complete-route/shape --json fixtures/skills/preflight/complete-route/proposal.shape)"

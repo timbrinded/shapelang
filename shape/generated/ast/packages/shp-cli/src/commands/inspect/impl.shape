@@ -1,0 +1,49 @@
+module shape.generated.ast.packages.shp_cli.src.commands.inspect.impl
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource ImplModuleInspectAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/commands/inspect/impl.ts#inspect")
+  fingerprint ast.semantic_subtree_v1("sha256:c3b96fb628ead10f62966bf45b619dee911b1f273895846dba4ec2bf913a9dd5")
+}
+
+resource ImplModuleProjectRelativePathAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/commands/inspect/impl.ts#projectRelativePath")
+  fingerprint ast.semantic_subtree_v1("sha256:afda409d307a8c29a82d7eea2c285b59a6dae394ab4f415f4f64f47fcbf1526b")
+}
+
+component ImplModule : GeneratedCandidate {
+  fn inspect
+    source ts("packages/shp-cli/src/commands/inspect/impl.ts#inspect")
+    effects unknown
+  fn projectRelativePath
+    source ts("packages/shp-cli/src/commands/inspect/impl.ts#projectRelativePath")
+    effects unknown
+}
+
+relation ImplModuleInspectGeneratedFromImplModuleInspectAstAnchor {
+  kind generated_from
+  connects ImplModule -> ImplModuleInspectAstAnchor
+  roles { ImplModule as generated, ImplModuleInspectAstAnchor as syntax }
+  expects ImplModuleInspectAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c3b96fb628ead10f62966bf45b619dee911b1f273895846dba4ec2bf913a9dd5")
+  summary "fn ImplModule.inspect generated from typescript function_declaration at packages/shp-cli/src/commands/inspect/impl.ts#inspect."
+}
+
+relation ImplModuleProjectRelativePathGeneratedFromImplModuleProjectRelativePathAstAnchor {
+  kind generated_from
+  connects ImplModule -> ImplModuleProjectRelativePathAstAnchor
+  roles { ImplModule as generated, ImplModuleProjectRelativePathAstAnchor as syntax }
+  expects ImplModuleProjectRelativePathAstAnchor fingerprint ast.semantic_subtree_v1("sha256:afda409d307a8c29a82d7eea2c285b59a6dae394ab4f415f4f64f47fcbf1526b")
+  summary "fn ImplModule.projectRelativePath generated from typescript function_declaration at packages/shp-cli/src/commands/inspect/impl.ts#projectRelativePath."
+}
+
+implementation ImplModuleImpl {
+  paths {
+    "packages/shp-cli/src/commands/inspect/impl.ts"
+  }
+  conforms_to ImplModule
+}

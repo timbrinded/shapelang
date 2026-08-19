@@ -234,6 +234,13 @@
       ]
     },
     {
+      "module": "shape.generated.ast.fixtures.skills.unix_system_visualiser.connected.src.system",
+      "path": "shape/generated/ast/fixtures/skills/unix-system-visualiser/connected/src/system.shape",
+      "sources": [
+        "fixtures/skills/unix-system-visualiser/connected/src/system.ts"
+      ]
+    },
+    {
       "module": "shape.generated.ast.fixtures.generated_source.analyzer.drizzle.destructive",
       "path": "shape/generated/ast/fixtures/source/analyzer/drizzle/destructive.shape",
       "sources": [
@@ -710,6 +717,20 @@
       ]
     },
     {
+      "module": "shape.generated.ast.packages.shp_checker.src.checker.inspection_test",
+      "path": "shape/generated/ast/packages/shp-checker/src/checker/inspection.test.shape",
+      "sources": [
+        "packages/shp-checker/src/checker/inspection.test.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.checker.inspection",
+      "path": "shape/generated/ast/packages/shp-checker/src/checker/inspection.shape",
+      "sources": [
+        "packages/shp-checker/src/checker/inspection.ts"
+      ]
+    },
+    {
       "module": "shape.generated.ast.packages.shp_checker.src.checker.iso_date",
       "path": "shape/generated/ast/packages/shp-checker/src/checker/iso-date.shape",
       "sources": [
@@ -1158,6 +1179,20 @@
       ]
     },
     {
+      "module": "shape.generated.ast.packages.shp_cli.src.commands.inspect.command",
+      "path": "shape/generated/ast/packages/shp-cli/src/commands/inspect/command.shape",
+      "sources": [
+        "packages/shp-cli/src/commands/inspect/command.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_cli.src.commands.inspect.impl",
+      "path": "shape/generated/ast/packages/shp-cli/src/commands/inspect/impl.shape",
+      "sources": [
+        "packages/shp-cli/src/commands/inspect/impl.ts"
+      ]
+    },
+    {
       "module": "shape.generated.ast.packages.shp_cli.src.commands.lsp.command",
       "path": "shape/generated/ast/packages/shp-cli/src/commands/lsp/command.shape",
       "sources": [
@@ -1316,6 +1351,13 @@
       "path": "shape/generated/ast/packages/shp-cli/src/version.shape",
       "sources": [
         "packages/shp-cli/src/version.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.plugins.shapelang.skills.unix_system_visualiser.scripts.generate",
+      "path": "shape/generated/ast/plugins/shapelang/skills/unix-system-visualiser/scripts/generate.shape",
+      "sources": [
+        "plugins/shapelang/skills/unix-system-visualiser/scripts/generate.mjs"
       ]
     },
     {

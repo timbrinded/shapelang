@@ -93,6 +93,23 @@ export {
   type IsoDateString
 } from "./checker.ts";
 export { formatShapeModule, formatShapeSource, type FormatResult } from "./formatter.ts";
+export {
+  inspectShapeModules,
+  SHAPE_INSPECTION_SCHEMA_VERSION,
+  type InspectShapeModulesOptions,
+  type ShapeInspection,
+  type ShapeInspectionBinding,
+  type ShapeInspectionComponent,
+  type ShapeInspectionDocument,
+  type ShapeInspectionFunction,
+  type ShapeInspectionImplementation,
+  type ShapeInspectionMemory,
+  type ShapeInspectionRelation,
+  type ShapeInspectionResource,
+  type ShapeInspectionRule,
+  type ShapeInspectionSourceRef,
+  type ShapeInspectionStats
+} from "./checker/inspection.ts";
 export type { ShapeModule } from "./language/generated/ast.ts";
 export { parseShapeModule, type ParseDiagnostic, type ParseShapeModuleResult } from "./parser.ts";
 export { compareCodepointStrings } from "./shape-strings.ts";

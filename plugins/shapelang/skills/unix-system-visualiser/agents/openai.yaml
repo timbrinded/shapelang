@@ -1,0 +1,4 @@
+interface:
+  display_name: "Unix System Visualiser"
+  short_description: "Render an interactive Shape system atlas"
+  default_prompt: "Use $unix-system-visualiser to generate and browser-validate an interactive local atlas of this repository's authored Shape model."

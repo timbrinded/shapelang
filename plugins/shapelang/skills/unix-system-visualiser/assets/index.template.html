@@ -1,0 +1,2904 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#4d9de8" />
+    <meta
+      name="description"
+      content="A local interactive map of a repository's authored Shape model."
+    />
+    <title>Unix System Visualiser</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --sky: #55a4ed;
+        --cyan: #75e2ee;
+        --grass: #4ba274;
+        --blue: #067fbd;
+        --blue-deep: #005a88;
+        --ink: #083b57;
+        --paper: #f5fdff;
+        --line: #bfe8f0;
+        --accent: #ff5a1f;
+        --mono: "SFMono-Regular", "Cascadia Mono", "Liberation Mono", Consolas, monospace;
+        --sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        width: 100%;
+        min-width: 320px;
+        min-height: 100%;
+        margin: 0;
+        overflow: auto;
+        background: var(--sky);
+      }
+
+      body {
+        color: var(--ink);
+        font-family: var(--sans);
+      }
+
+      button,
+      input {
+        font: inherit;
+      }
+
+      button:focus-visible,
+      input:focus-visible,
+      canvas:focus-visible,
+      a:focus-visible {
+        outline: 3px solid #ffdf54;
+        outline-offset: 3px;
+      }
+
+      .plane-atlas {
+        position: relative;
+        isolation: isolate;
+        width: 100%;
+        height: max(100vh, 620px);
+        height: max(100dvh, 620px);
+        min-height: 100svh;
+        overflow: hidden;
+        background: linear-gradient(
+          180deg,
+          #4f9bea 0%,
+          #6bd5ed 18%,
+          #73e4e7 24%,
+          #4ba274 25%,
+          #4ba274 100%
+        );
+      }
+
+      #scene {
+        position: absolute;
+        inset: 0;
+        display: block;
+        width: 100%;
+        height: 100%;
+        cursor: crosshair;
+        touch-action: none;
+      }
+
+      .hover-label {
+        position: absolute;
+        z-index: 30;
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr);
+        gap: 8px;
+        width: max-content;
+        max-width: min(298px, calc(100vw - 24px));
+        border: 2px solid #fff8bd;
+        padding: 7px 9px;
+        color: #073b55;
+        background: rgba(255, 255, 247, 0.97);
+        box-shadow: 3px 3px 0 rgba(6, 78, 112, 0.28);
+        font-family: var(--mono);
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(calc(-100% - 10px)) scale(0.96);
+        transform-origin: 18px 100%;
+        transition:
+          opacity 110ms ease,
+          transform 110ms ease;
+      }
+
+      .hover-label.is-visible {
+        opacity: 1;
+        transform: translateY(calc(-100% - 10px)) scale(1);
+      }
+
+      .hover-label.is-below {
+        transform: translateY(10px) scale(0.96);
+        transform-origin: 18px 0;
+      }
+
+      .hover-label.is-below.is-visible {
+        transform: translateY(10px) scale(1);
+      }
+
+      .hover-label::after {
+        position: absolute;
+        bottom: -9px;
+        left: 15px;
+        width: 0;
+        height: 0;
+        border-top: 8px solid #fff8bd;
+        border-right: 8px solid transparent;
+        content: "";
+      }
+
+      .hover-label.is-below::after {
+        top: -9px;
+        bottom: auto;
+        border-top: 0;
+        border-bottom: 8px solid #fff8bd;
+      }
+
+      .hover-label-swatch {
+        width: 12px;
+        height: 12px;
+        margin-top: 2px;
+        border: 2px solid rgba(8, 63, 89, 0.42);
+        box-shadow: 2px 2px 0 rgba(8, 63, 89, 0.22);
+      }
+
+      .hover-label-kind,
+      .hover-label-name {
+        display: block;
+      }
+
+      .hover-label-kind {
+        color: #42809b;
+        font-size: 0.55rem;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+
+      .hover-label-name {
+        margin-top: 2px;
+        color: #0a405c;
+        font-size: 0.71rem;
+        font-weight: 700;
+        line-height: 1.2;
+        overflow-wrap: anywhere;
+      }
+
+      .skip-link {
+        position: absolute;
+        z-index: 20;
+        top: 8px;
+        left: 8px;
+        padding: 9px 12px;
+        color: #fff;
+        background: #064a72;
+        transform: translateY(-160%);
+      }
+
+      .skip-link:focus {
+        transform: translateY(0);
+      }
+
+      .hud {
+        position: absolute;
+        z-index: 10;
+        inset: 0;
+        pointer-events: none;
+      }
+
+      .hud > * {
+        pointer-events: auto;
+      }
+
+      .masthead {
+        position: absolute;
+        top: 24px;
+        left: 28px;
+        max-width: 290px;
+        color: #f8feff;
+        text-shadow: 0 2px 0 rgba(8, 70, 106, 0.28);
+      }
+
+      .masthead p {
+        margin: 0;
+        font-family: var(--mono);
+        font-size: 0.68rem;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      .masthead h1 {
+        margin: 6px 0 5px;
+        font-family: var(--mono);
+        font-size: clamp(1.16rem, 2.6vw, 1.72rem);
+        letter-spacing: 0.06em;
+        line-height: 1;
+      }
+
+      .masthead .subtitle {
+        max-width: 34ch;
+        color: rgba(249, 255, 255, 0.92);
+        font-family: var(--mono);
+        font-size: 0.71rem;
+        font-weight: 500;
+        letter-spacing: 0;
+        line-height: 1.35;
+        text-transform: none;
+      }
+
+      .locator {
+        position: absolute;
+        top: 24px;
+        right: 28px;
+        width: min(310px, calc(100vw - 80px));
+      }
+
+      .locator label {
+        display: block;
+        margin: 0 0 6px;
+        color: #f7feff;
+        font-family: var(--mono);
+        font-size: 0.64rem;
+        font-weight: 700;
+        letter-spacing: 0.11em;
+        text-shadow: 0 1px 0 rgba(8, 70, 106, 0.35);
+      }
+
+      .locator input {
+        width: 100%;
+        border: 3px solid rgba(238, 255, 255, 0.9);
+        border-radius: 0;
+        padding: 9px 10px;
+        color: #084062;
+        background: rgba(250, 255, 255, 0.94);
+        box-shadow: 3px 3px 0 rgba(8, 79, 117, 0.22);
+        font-family: var(--mono);
+        font-size: 0.75rem;
+      }
+
+      .locator input::placeholder {
+        color: #5e91a6;
+      }
+
+      .results {
+        display: grid;
+        gap: 3px;
+        margin-top: 6px;
+      }
+
+      .result {
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr);
+        gap: 8px;
+        width: 100%;
+        border: 2px solid #d6f5f6;
+        padding: 7px 8px;
+        color: #084062;
+        background: rgba(247, 255, 255, 0.95);
+        box-shadow: 2px 2px 0 rgba(8, 79, 117, 0.18);
+        font-family: var(--mono);
+        font-size: 0.68rem;
+        text-align: left;
+        cursor: pointer;
+      }
+
+      .result:hover,
+      .result:focus-visible {
+        border-color: #ffcf4a;
+        background: #fffce8;
+      }
+
+      .result-kind {
+        color: #d24c26;
+        font-size: 0.57rem;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+
+      .result-name {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .legend {
+        position: absolute;
+        z-index: 11;
+        bottom: 54px;
+        left: 28px;
+        width: min(575px, calc(100vw - 390px));
+        min-width: 250px;
+        border: 2px solid rgba(230, 255, 231, 0.82);
+        padding: 8px 10px;
+        color: #f6ffff;
+        background: rgba(5, 103, 152, 0.78);
+        box-shadow: 3px 3px 0 rgba(3, 66, 101, 0.2);
+        font-family: var(--mono);
+      }
+
+      .legend h2 {
+        margin: 0 0 6px;
+        color: #fff6a6;
+        font-size: 0.58rem;
+        letter-spacing: 0.11em;
+      }
+
+      .legend ul {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px 10px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .legend li {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 0.58rem;
+        font-weight: 700;
+        letter-spacing: 0.025em;
+        text-transform: uppercase;
+      }
+
+      .legend-swatch {
+        width: 10px;
+        height: 10px;
+        border: 1px solid rgba(239, 255, 247, 0.85);
+        box-shadow: 1px 1px 0 rgba(3, 58, 87, 0.35);
+      }
+
+      .navigator {
+        position: absolute;
+        right: 28px;
+        bottom: 28px;
+        width: min(308px, calc(100vw - 56px));
+        max-height: calc(100vh - 56px);
+        border: 5px solid #c8edf2;
+        border-radius: 4px 4px 28px 4px;
+        padding: 16px 16px 14px;
+        color: #144761;
+        background: rgba(248, 255, 255, 0.94);
+        box-shadow:
+          4px 4px 0 rgba(12, 91, 125, 0.2),
+          inset 0 0 0 2px rgba(88, 193, 207, 0.25);
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        transition:
+          width 160ms ease,
+          max-height 160ms ease,
+          border-color 160ms ease;
+      }
+
+      .navigator.is-open {
+        width: min(364px, calc(100vw - 56px));
+        max-height: calc(100vh - 132px);
+        border-color: #ffdb72;
+      }
+
+      .navigator::after {
+        position: absolute;
+        right: 28px;
+        bottom: -20px;
+        width: 0;
+        height: 0;
+        border-top: 22px solid #c8edf2;
+        border-right: 18px solid transparent;
+        content: "";
+      }
+
+      .navigator .eyebrow {
+        margin: 0;
+        color: #1276a1;
+        font-family: var(--mono);
+        font-size: 0.61rem;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+      }
+
+      .navigator h2 {
+        margin: 6px 0 5px;
+        color: #0b405c;
+        font-family: var(--mono);
+        font-size: 1rem;
+        line-height: 1.1;
+        overflow-wrap: anywhere;
+      }
+
+      .navigator .summary {
+        min-height: 3em;
+        margin: 0;
+        font-family: var(--mono);
+        font-size: 0.7rem;
+        line-height: 1.4;
+      }
+
+      .details {
+        display: grid;
+        grid-template-columns: 72px minmax(0, 1fr);
+        gap: 4px 9px;
+        margin: 12px 0 0;
+        padding-top: 10px;
+        border-top: 1px solid #b9dce5;
+      }
+
+      .details dt {
+        color: #39809d;
+        font-family: var(--mono);
+        font-size: 0.58rem;
+        font-weight: 700;
+        letter-spacing: 0.07em;
+      }
+
+      .details dd {
+        min-width: 0;
+        margin: 0;
+        color: #16465d;
+        font-family: var(--mono);
+        font-size: 0.64rem;
+        line-height: 1.28;
+        overflow-wrap: anywhere;
+      }
+
+      .detail-sections {
+        display: none;
+        gap: 12px;
+        margin-top: 13px;
+        padding-top: 11px;
+        border-top: 1px solid #b9dce5;
+      }
+
+      .navigator.is-open .detail-sections {
+        display: grid;
+      }
+
+      .detail-section h3 {
+        display: flex;
+        justify-content: space-between;
+        gap: 9px;
+        margin: 0 0 6px;
+        color: #247391;
+        font-family: var(--mono);
+        font-size: 0.59rem;
+        letter-spacing: 0.08em;
+      }
+
+      .detail-section h3 span {
+        color: #7c9eac;
+        font-size: 0.54rem;
+      }
+
+      .detail-list {
+        display: grid;
+        gap: 5px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .detail-item {
+        border-left: 3px solid #43a9cc;
+        padding: 5px 6px;
+        background: rgba(210, 243, 247, 0.46);
+      }
+
+      .detail-item.memory {
+        border-left-color: #d95ce9;
+        background: rgba(249, 224, 252, 0.58);
+      }
+
+      .detail-meta,
+      .detail-title,
+      .detail-copy {
+        display: block;
+        font-family: var(--mono);
+        overflow-wrap: anywhere;
+      }
+
+      .detail-meta {
+        color: #4d8da4;
+        font-size: 0.53rem;
+        font-weight: 700;
+        letter-spacing: 0.07em;
+      }
+
+      .detail-title {
+        margin-top: 2px;
+        color: #0c415d;
+        font-size: 0.64rem;
+        font-weight: 700;
+        line-height: 1.25;
+      }
+
+      .detail-copy {
+        margin-top: 3px;
+        color: #27566c;
+        font-size: 0.59rem;
+        line-height: 1.35;
+      }
+
+      .detail-link {
+        width: 100%;
+        border: 0;
+        padding: 0;
+        color: inherit;
+        background: transparent;
+        font: inherit;
+        text-align: left;
+        cursor: pointer;
+      }
+
+      .detail-link:hover .detail-title,
+      .detail-link:focus-visible .detail-title {
+        color: #c34120;
+        text-decoration: underline;
+        text-decoration-thickness: 1px;
+        text-underline-offset: 2px;
+      }
+
+      .controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 7px;
+        margin-top: 13px;
+      }
+
+      .control {
+        border: 2px solid #197ca2;
+        border-radius: 0;
+        padding: 7px 8px;
+        color: #fff;
+        background: #1479a4;
+        box-shadow: 2px 2px 0 rgba(6, 63, 93, 0.25);
+        font-family: var(--mono);
+        font-size: 0.59rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        cursor: pointer;
+      }
+
+      .control:hover,
+      .control:focus-visible {
+        border-color: #b84728;
+        background: #ef5b2a;
+      }
+
+      .instruction-strip {
+        position: absolute;
+        bottom: 24px;
+        left: 28px;
+        margin: 0;
+        color: rgba(247, 255, 255, 0.96);
+        font-family: var(--mono);
+        font-size: 0.66rem;
+        font-weight: 700;
+        letter-spacing: 0.045em;
+        text-shadow: 0 1px 0 rgba(8, 70, 106, 0.4);
+      }
+
+      .instruction-strip b {
+        color: #fff5a4;
+      }
+
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip-path: inset(50%);
+        white-space: nowrap;
+        border: 0;
+      }
+
+      @media (max-width: 740px) {
+        .plane-atlas {
+          height: max(100vh, 680px);
+          height: max(100dvh, 680px);
+        }
+
+        .masthead {
+          top: 15px;
+          left: 16px;
+          max-width: 210px;
+        }
+
+        .masthead .subtitle {
+          display: none;
+        }
+
+        .locator {
+          top: 15px;
+          right: 16px;
+          width: min(220px, calc(100vw - 248px));
+        }
+
+        .navigator {
+          right: 14px;
+          bottom: 16px;
+          width: min(285px, calc(100vw - 28px));
+          padding: 12px;
+        }
+
+        .navigator.is-open {
+          width: min(330px, calc(100vw - 28px));
+          max-height: 38vh;
+        }
+
+        .legend {
+          top: 148px;
+          bottom: auto;
+          left: 16px;
+          width: min(290px, calc(100vw - 32px));
+          min-width: 0;
+        }
+
+        .instruction-strip {
+          bottom: auto;
+          top: 93px;
+          left: 16px;
+          max-width: 210px;
+          font-size: 0.57rem;
+          line-height: 1.6;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .locator {
+          top: 76px;
+          left: 16px;
+          width: calc(100vw - 32px);
+        }
+
+        .instruction-strip {
+          display: none;
+        }
+
+        .legend {
+          right: 16px;
+          left: 16px;
+          width: calc(100vw - 32px);
+        }
+
+        .navigator .summary {
+          min-height: 0;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          scroll-behavior: auto !important;
+          transition-duration: 0.01ms !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <a class="skip-link" href="#controls">Skip to map controls</a>
+    <main class="plane-atlas" aria-label="Unix System Visualiser">
+      <canvas
+        id="scene"
+        tabindex="0"
+        role="region"
+        aria-label="Interactive Shape plane map. Use W A S D to travel across the fixed plane, drag to pan, use the wheel to zoom, click a tile to focus it or empty ground to pan there, and press Escape to return to the overview."
+        aria-describedby="map-help"
+      ></canvas>
+      <p id="map-help" class="sr-only">
+        The ontology is arranged as colored, raised tiles on blue module pads. Drag to pan without
+        changing the map angle. Click an empty part of the ground to pan there, or use the locate
+        field for keyboard access to each item.
+      </p>
+      <section class="sr-only" aria-labelledby="model-index-title">
+        <h2 id="model-index-title">Authored Shape model index</h2>
+        <p>The visual map is also available as this non-visual item list.</p>
+        <ul id="model-index-list"></ul>
+      </section>
+
+      <div class="hover-label" id="hover-label" aria-hidden="true">
+        <span class="hover-label-swatch" id="hover-label-swatch"></span>
+        <span>
+          <span class="hover-label-kind" id="hover-label-kind"></span>
+          <strong class="hover-label-name" id="hover-label-name"></strong>
+        </span>
+      </div>
+
+      <section class="hud" aria-label="Map controls and item details">
+        <header class="masthead">
+          <p>Shape / perspective plane / local build</p>
+          <h1>UNIX SYSTEM VISUALISER</h1>
+          <p class="subtitle">
+            Each blue pad is a Shape module. Raised tiles and white paths show authored claims, not
+            verified runtime behaviour.
+          </p>
+        </header>
+
+        <section class="legend" aria-labelledby="legend-title">
+          <h2 id="legend-title">TILE COLOUR LEGEND</h2>
+          <ul>
+            <li><span class="legend-swatch" style="background: #17546f"></span>module</li>
+            <li><span class="legend-swatch" style="background: #ff5a1f"></span>component</li>
+            <li><span class="legend-swatch" style="background: #eaff9b"></span>resource</li>
+            <li><span class="legend-swatch" style="background: #f4ffd0"></span>function</li>
+            <li><span class="legend-swatch" style="background: #d95ce9"></span>relation</li>
+            <li><span class="legend-swatch" style="background: #28566e"></span>implementation</li>
+            <li><span class="legend-swatch" style="background: #35b9ee"></span>binding</li>
+            <li><span class="legend-swatch" style="background: #85ea49"></span>rule</li>
+          </ul>
+        </section>
+
+        <section class="locator" aria-label="Locate an ontology item">
+          <label for="locator">LOCATE A TILE</label>
+          <input
+            id="locator"
+            type="search"
+            autocomplete="off"
+            spellcheck="false"
+            placeholder="Module, component, resource..."
+          />
+          <div class="results" id="results" aria-live="polite"></div>
+        </section>
+
+        <aside class="navigator" id="controls" tabindex="-1" aria-labelledby="selection-title">
+          <p class="eyebrow" id="selection-kind">PLANE OVERVIEW</p>
+          <h2 id="selection-title">START HERE</h2>
+          <p class="summary" id="selection-summary">
+            Fly over the blue module pads, or select a tile to bring its local paths into view.
+          </p>
+          <dl class="details" id="details">
+            <dt>OBJECTS</dt>
+            <dd id="detail-objects">—</dd>
+            <dt>PATHS</dt>
+            <dd id="detail-paths">—</dd>
+            <dt>FILES</dt>
+            <dd id="detail-files">—</dd>
+            <dt>FLIGHT</dt>
+            <dd id="detail-flight">FREE</dd>
+          </dl>
+          <div class="detail-sections" id="detail-sections">
+            <section class="detail-section" aria-labelledby="relationships-heading">
+              <h3 id="relationships-heading">
+                MODELED LINKS <span id="relationship-count"></span>
+              </h3>
+              <ul class="detail-list" id="relationship-list"></ul>
+            </section>
+            <section class="detail-section" aria-labelledby="evidence-heading">
+              <h3 id="evidence-heading">
+                SHAPE MEMORY + EVIDENCE <span id="evidence-count"></span>
+              </h3>
+              <ul class="detail-list" id="evidence-list"></ul>
+            </section>
+          </div>
+          <div class="controls">
+            <button class="control" id="overview" type="button">RETURN TO OVERVIEW</button>
+            <button class="control" id="motion" type="button" aria-pressed="false">
+              RESUME PATH GLOW
+            </button>
+          </div>
+        </aside>
+
+        <p class="instruction-strip" aria-hidden="true">
+          <b>WASD</b> travel &nbsp; <b>DRAG</b> pan &nbsp; <b>WHEEL</b> zoom &nbsp;
+          <b>CLICK</b> focus / pan &nbsp; <b>ESC</b> overview
+        </p>
+      </section>
+      <p id="flight-status" class="sr-only" aria-live="polite"></p>
+    </main>
+
+    <script>
+      const ontology = __ONTOLOGY_JSON__;
+      const canvas = document.getElementById("scene");
+      const context = canvas.getContext("2d", { alpha: false });
+      if (!context) {
+        const failure = document.createElement("p");
+        failure.textContent =
+          "This browser cannot create the canvas view. Use the authored Shape model index instead.";
+        canvas.replaceWith(failure);
+        throw new Error("Canvas 2D is unavailable");
+      }
+      const locator = document.getElementById("locator");
+      const results = document.getElementById("results");
+      const overviewButton = document.getElementById("overview");
+      const motionButton = document.getElementById("motion");
+      const selectionKind = document.getElementById("selection-kind");
+      const selectionTitle = document.getElementById("selection-title");
+      const selectionSummary = document.getElementById("selection-summary");
+      const details = document.getElementById("details");
+      const navigatorPanel = document.getElementById("controls");
+      const relationshipCount = document.getElementById("relationship-count");
+      const relationshipList = document.getElementById("relationship-list");
+      const evidenceCount = document.getElementById("evidence-count");
+      const evidenceList = document.getElementById("evidence-list");
+      const hoverLabel = document.getElementById("hover-label");
+      const hoverLabelSwatch = document.getElementById("hover-label-swatch");
+      const hoverLabelKind = document.getElementById("hover-label-kind");
+      const hoverLabelName = document.getElementById("hover-label-name");
+      const flightStatus = document.getElementById("flight-status");
+      const modelIndexList = document.getElementById("model-index-list");
+      const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+      const styles = {
+        module: {
+          top: "#17546f",
+          front: "#0b3145",
+          side: "#103c52",
+          width: 11,
+          depth: 10,
+          height: 8
+        },
+        component: {
+          top: "#ff5a1f",
+          front: "#c63a11",
+          side: "#df4814",
+          width: 12.2,
+          depth: 10.4,
+          height: 8.5
+        },
+        resource: {
+          top: "#eaff9b",
+          front: "#b9c86b",
+          side: "#d0df7b",
+          width: 10,
+          depth: 8.5,
+          height: 5.1
+        },
+        function: {
+          top: "#f4ffd0",
+          front: "#c7d58c",
+          side: "#ddeca8",
+          width: 8.2,
+          depth: 7.1,
+          height: 3.7
+        },
+        relation: {
+          top: "#d95ce9",
+          front: "#9d3aae",
+          side: "#bb45c7",
+          width: 9.1,
+          depth: 7.7,
+          height: 6.2
+        },
+        implementation: {
+          top: "#28566e",
+          front: "#133745",
+          side: "#1d4a5d",
+          width: 10.1,
+          depth: 8.3,
+          height: 5.8
+        },
+        binding: {
+          top: "#35b9ee",
+          front: "#14749c",
+          side: "#258fbf",
+          width: 9.3,
+          depth: 7.9,
+          height: 5.5
+        },
+        rule: {
+          top: "#85ea49",
+          front: "#4aa72b",
+          side: "#68c639",
+          width: 9.3,
+          depth: 7.9,
+          height: 5.5
+        }
+      };
+      const typeNames = {
+        module: "module",
+        component: "component",
+        resource: "resource",
+        function: "function",
+        relation: "relation",
+        implementation: "implementation",
+        binding: "binding",
+        rule: "rule"
+      };
+
+      const nodes = [];
+      const nodeById = new Map();
+      const nodeByModelId = new Map();
+      const nodeByQualifiedName = new Map();
+      const nodesByShapeName = new Map();
+      const districts = [];
+      const edges = [];
+      const neighbours = new Map();
+
+      function addNode(node) {
+        node.childIds = [];
+        node.memories = [];
+        nodes.push(node);
+        nodeById.set(node.id, node);
+        if (node.modelId) {
+          nodeByModelId.set(node.modelId, node);
+        }
+        if (node.shapeName) {
+          const qualifiedKey = node.module + "\u0000" + node.type + "\u0000" + node.shapeName;
+          nodeByQualifiedName.set(qualifiedKey, node);
+          const sameName = nodesByShapeName.get(node.shapeName) || [];
+          sameName.push(node);
+          nodesByShapeName.set(node.shapeName, sameName);
+        }
+        return node;
+      }
+
+      function referenceValue(reference) {
+        if (typeof reference === "string") {
+          return reference;
+        }
+        return reference?.id || reference?.name || null;
+      }
+
+      function declarationId(type, declaration) {
+        return type + ":" + (declaration.id || declaration.module + "." + declaration.name);
+      }
+
+      function resolveNode(reference, moduleName, type) {
+        const value = referenceValue(reference);
+        if (!value) {
+          return null;
+        }
+        const direct = nodeById.get(value) || nodeByModelId.get(value);
+        if (direct && (!type || direct.type === type)) {
+          return direct;
+        }
+        const localName = value.split(/[.#]/).pop();
+        const qualified = nodeByQualifiedName.get(
+          moduleName + "\u0000" + type + "\u0000" + localName
+        );
+        if (qualified) {
+          return qualified;
+        }
+        const candidates = (
+          nodesByShapeName.get(value) ||
+          nodesByShapeName.get(localName) ||
+          []
+        ).filter(
+          (node) => (!type || node.type === type) && (!moduleName || node.module === moduleName)
+        );
+        return candidates.length === 1 ? candidates[0] : null;
+      }
+
+      function values(list) {
+        return Array.isArray(list) ? list : [];
+      }
+
+      function compareCodepoints(left, right) {
+        return left < right ? -1 : left > right ? 1 : 0;
+      }
+
+      function addEdge(from, to, kind) {
+        if (!from || !to || from === to) {
+          return;
+        }
+        edges.push({ from, to, kind });
+        if (!neighbours.has(from)) {
+          neighbours.set(from, new Set());
+        }
+        if (!neighbours.has(to)) {
+          neighbours.set(to, new Set());
+        }
+        neighbours.get(from).add(to);
+        neighbours.get(to).add(from);
+      }
+
+      function moduleId(moduleName) {
+        return "module:" + moduleName;
+      }
+
+      ontology.moduleGroups.forEach((group, index) => {
+        const fileLabel = group.files.join(", ");
+        const node = addNode({
+          id: group.id,
+          modelId: group.name,
+          shapeName: group.name,
+          type: "module",
+          label: group.name,
+          file: fileLabel,
+          files: group.files,
+          imports: group.imports,
+          module: group.name,
+          documentIndex: index,
+          description:
+            "Shape module defined in " +
+            String(group.files.length) +
+            (group.files.length === 1 ? " file: " : " files: ") +
+            fileLabel +
+            "."
+        });
+        districts.push({
+          id: node.id,
+          module: group.name,
+          file: fileLabel,
+          files: group.files,
+          label: group.name,
+          node,
+          entities: []
+        });
+      });
+
+      ontology.components.forEach((component) => {
+        const owns = values(component.owns);
+        const functions = values(component.functions);
+        const classifiers = values(component.classifiers);
+        const grants = values(component.grants);
+        addNode({
+          id: declarationId("component", component),
+          modelId: component.id,
+          shapeName: component.name,
+          type: "component",
+          label: component.name,
+          file: component.file,
+          module: component.module,
+          parentId: moduleId(component.module),
+          classifiers,
+          grants,
+          description:
+            "Component with " +
+            owns.length +
+            " owned resources and " +
+            functions.length +
+            " modeled functions."
+        });
+      });
+
+      const resourceOwners = new Map();
+      ontology.components.forEach((component) => {
+        const componentNode = resolveNode(
+          component.id || component.name,
+          component.module,
+          "component"
+        );
+        values(component.owns).forEach((reference) => {
+          const value = referenceValue(reference);
+          if (value && componentNode) {
+            resourceOwners.set(value, componentNode.id);
+            resourceOwners.set(
+              component.module + "\u0000" + value.split(/[.#]/).pop(),
+              componentNode.id
+            );
+          }
+        });
+      });
+
+      ontology.resources.forEach((resource) => {
+        const traits = values(resource.traits).map(
+          (trait) => referenceValue(trait) || String(trait)
+        );
+        const explicitOwner = resolveNode(resource.owner, resource.module, "component");
+        const ownedBy =
+          explicitOwner?.id ||
+          resourceOwners.get(resource.id) ||
+          resourceOwners.get(resource.module + "\u0000" + resource.name) ||
+          moduleId(resource.module);
+        addNode({
+          id: declarationId("resource", resource),
+          modelId: resource.id,
+          shapeName: resource.name,
+          type: "resource",
+          label: resource.name,
+          file: resource.file,
+          module: resource.module,
+          parentId: ownedBy,
+          traits,
+          fingerprints: values(resource.fingerprints),
+          storage: values(resource.storage),
+          description: traits.length
+            ? "Resource traits: " + traits.join(", ") + "."
+            : "Resource declared in " + resource.file + "."
+        });
+      });
+
+      ontology.functions.forEach((fn) => {
+        const component = resolveNode(fn.component, fn.module, "component");
+        const effects = values(fn.effects);
+        addNode({
+          id: declarationId("function", fn),
+          modelId: fn.id,
+          shapeName: fn.name,
+          type: "function",
+          label: fn.name,
+          file: fn.file,
+          module: fn.module,
+          parentId: component?.id || moduleId(fn.module),
+          effects,
+          effectsComplete: fn.effectsComplete,
+          requires: values(fn.requires),
+          shapeTraits: values(fn.shapeTraits),
+          source: fn.source,
+          description: effects.length
+            ? "Function with " + effects.length + " modeled effects."
+            : fn.effectsComplete
+              ? "Function with a complete empty effect set."
+              : "Function effects are unknown."
+        });
+      });
+
+      ontology.implementations.forEach((implementation) => {
+        const target = resolveNode(implementation.conformsTo, implementation.module);
+        addNode({
+          id: declarationId("implementation", implementation),
+          modelId: implementation.id,
+          shapeName: implementation.name,
+          type: "implementation",
+          label: implementation.name,
+          file: implementation.file,
+          module: implementation.module,
+          parentId: target?.id || moduleId(implementation.module),
+          conformsTo: implementation.conformsTo,
+          paths: values(implementation.paths),
+          onChangeRequirement: implementation.onChangeRequirement,
+          description:
+            "Implementation conformance for " +
+            (referenceValue(implementation.conformsTo) || "an unbound target") +
+            "."
+        });
+      });
+
+      ontology.bindings.forEach((binding) => {
+        const watched = values(binding.whenChanged);
+        const required = values(binding.requireChanged);
+        addNode({
+          id: declarationId("binding", binding),
+          modelId: binding.id,
+          shapeName: binding.name,
+          type: "binding",
+          label: binding.name,
+          file: binding.file,
+          module: binding.module,
+          parentId: moduleId(binding.module),
+          binding,
+          description:
+            "Change binding with " +
+            watched.length +
+            " watched paths and " +
+            required.length +
+            " required paths."
+        });
+      });
+
+      ontology.rules.forEach((rule) => {
+        const clauseCount =
+          values(rule.whenHas).length +
+          values(rule.forbidEffects).length +
+          values(rule.forbidProvides).length +
+          values(rule.forbidHypercycles).length +
+          values(rule.forbidPaths).length +
+          (rule.finalForbidSubject ? 1 : 0);
+        addNode({
+          id: declarationId("rule", rule),
+          modelId: rule.id,
+          shapeName: rule.name,
+          type: "rule",
+          label: rule.name,
+          file: rule.file,
+          module: rule.module,
+          parentId: moduleId(rule.module),
+          rule,
+          statement: rule.statement,
+          description:
+            rule.statement || "Architecture rule with " + clauseCount + " modeled clauses."
+        });
+      });
+
+      ontology.relations.forEach((relation) => {
+        const endpointReferences = values(relation.endpoints).map((endpoint) => endpoint.id);
+        if (endpointReferences.length === 0) {
+          endpointReferences.push(relation.from, relation.to);
+        }
+        const from = resolveNode(endpointReferences.find(Boolean), relation.module);
+        addNode({
+          id: declarationId("relation", relation),
+          modelId: relation.id,
+          shapeName: relation.name,
+          type: "relation",
+          label: relation.name,
+          file: relation.file,
+          module: relation.module,
+          parentId: from?.parentId || from?.id || moduleId(relation.module),
+          relation,
+          description:
+            relation.summary ||
+            relation.kind +
+              " relation with " +
+              endpointReferences.filter(Boolean).length +
+              " endpoints."
+        });
+      });
+
+      ontology.memories.forEach((memory) => {
+        const target = resolveNode(memory.target || memory.appliesTo, memory.module);
+        if (target) {
+          target.memories.push(memory);
+        }
+      });
+
+      nodes.forEach((node) => {
+        if (node.parentId && nodeById.has(node.parentId)) {
+          nodeById.get(node.parentId).childIds.push(node.id);
+          addEdge(node.parentId, node.id, "contains");
+        }
+      });
+
+      ontology.relations.forEach((relation) => {
+        const relationNode = resolveNode(relation.id || relation.name, relation.module, "relation");
+        const endpointReferences = values(relation.endpoints).map((endpoint) => endpoint.id);
+        if (endpointReferences.length === 0) {
+          endpointReferences.push(relation.from, relation.to);
+        }
+        endpointReferences.forEach((reference) => {
+          const endpoint = resolveNode(reference, relation.module);
+          if (relationNode && endpoint) {
+            addEdge(relationNode.id, endpoint.id, "relation");
+          }
+        });
+      });
+
+      ontology.implementations.forEach((implementation) => {
+        const implementationNode = resolveNode(
+          implementation.id || implementation.name,
+          implementation.module,
+          "implementation"
+        );
+        const target = resolveNode(implementation.conformsTo, implementation.module);
+        if (implementationNode && target) {
+          addEdge(implementationNode.id, target.id, "conforms");
+        }
+      });
+
+      ontology.moduleGroups.forEach((group) => {
+        values(group.imports).forEach((importedModule) => {
+          const source = nodeById.get(group.id);
+          const target = nodeById.get(moduleId(referenceValue(importedModule)));
+          if (source && target) {
+            addEdge(source.id, target.id, "import");
+          }
+        });
+      });
+
+      const districtByModule = new Map(districts.map((district) => [district.module, district]));
+      nodes.forEach((node) => districtByModule.get(node.module)?.entities.push(node));
+
+      nodes
+        .slice()
+        .sort(
+          (left, right) =>
+            compareCodepoints(left.module, right.module) ||
+            compareCodepoints(left.type, right.type) ||
+            compareCodepoints(left.label, right.label)
+        )
+        .forEach((node) => {
+          const item = document.createElement("li");
+          item.textContent = node.module + ": " + node.type + " " + node.label + " in " + node.file;
+          modelIndexList.append(item);
+        });
+
+      function childOrder(node) {
+        const childNodes = node.childIds
+          .map((id) => nodeById.get(id))
+          .filter((child) => child && child.module === node.module);
+        return [node, ...childNodes];
+      }
+
+      const districtColumns = Math.max(1, Math.ceil(Math.sqrt(districts.length)));
+      const cellX = 15;
+      const cellZ = 14;
+      districts.forEach((district) => {
+        const ordered = [];
+        const used = new Set();
+        const moduleNode = district.node;
+        ordered.push(moduleNode);
+        used.add(moduleNode.id);
+        district.entities
+          .filter((node) => node.type === "component")
+          .forEach((component) => {
+            childOrder(component).forEach((node) => {
+              if (!used.has(node.id)) {
+                ordered.push(node);
+                used.add(node.id);
+              }
+            });
+          });
+        district.entities.forEach((node) => {
+          if (!used.has(node.id)) {
+            ordered.push(node);
+            used.add(node.id);
+          }
+        });
+
+        const columns = Math.max(5, Math.ceil(Math.sqrt(ordered.length * 1.55)));
+        const rows = Math.ceil(ordered.length / columns);
+        district.gridColumns = columns;
+        district.width = columns * cellX + 30;
+        district.depth = rows * cellZ + 42;
+        district.entities = ordered;
+      });
+      const districtSpacingX = Math.max(
+        270,
+        Math.max(...districts.map((district) => district.width)) + 90
+      );
+      const districtSpacingZ = Math.max(
+        240,
+        Math.max(...districts.map((district) => district.depth)) + 90
+      );
+      districts.forEach((district, index) => {
+        const xIndex = index % districtColumns;
+        const zIndex = Math.floor(index / districtColumns);
+        const jitterX = ((index * 43) % 31) - 15;
+        const jitterZ = ((index * 29) % 19) - 9;
+        district.x = (xIndex - (districtColumns - 1) / 2) * districtSpacingX + jitterX;
+        district.z = 80 + zIndex * districtSpacingZ + jitterZ;
+        district.entities.forEach((node, nodeIndex) => {
+          const column = nodeIndex % district.gridColumns;
+          const row = Math.floor(nodeIndex / district.gridColumns);
+          node.x = district.x - district.width / 2 + 18 + column * cellX;
+          node.z = district.z - district.depth / 2 + 25 + row * cellZ;
+          node.district = district;
+          node.gridIndex = nodeIndex;
+        });
+      });
+
+      const fixedPerspective = {
+        yaw: 0,
+        pitch: -0.27
+      };
+      const layoutBounds = districts.reduce(
+        (bounds, district) => ({
+          minX: Math.min(bounds.minX, district.x - district.width / 2),
+          maxX: Math.max(bounds.maxX, district.x + district.width / 2),
+          minZ: Math.min(bounds.minZ, district.z - district.depth / 2),
+          maxZ: Math.max(bounds.maxZ, district.z + district.depth / 2)
+        }),
+        { minX: Infinity, maxX: -Infinity, minZ: Infinity, maxZ: -Infinity }
+      );
+      const layoutSpanX = layoutBounds.maxX - layoutBounds.minX;
+      const layoutSpanZ = layoutBounds.maxZ - layoutBounds.minZ;
+      const overviewHeight = Math.max(84, layoutSpanX * 0.34, layoutSpanZ * 0.28);
+      const maximumCameraHeight = Math.max(290, overviewHeight * 1.4);
+      const initialCamera = {
+        x: (layoutBounds.minX + layoutBounds.maxX) / 2,
+        y: overviewHeight,
+        z: layoutBounds.minZ - Math.max(168, overviewHeight * 1.8),
+        yaw: fixedPerspective.yaw,
+        pitch: fixedPerspective.pitch
+      };
+      const state = {
+        width: 0,
+        height: 0,
+        dpr: 1,
+        fov: 0.9,
+        camera: { ...initialCamera },
+        keys: new Set(),
+        selectedId: null,
+        hoverId: null,
+        pointer: null,
+        focus: null,
+        projected: [],
+        lastTime: performance.now(),
+        pathGlow: !prefersReducedMotion.matches && nodes.length <= 1500,
+        frame: 0,
+        rendered: false,
+        startedAt: performance.now()
+      };
+      let animationFrame = null;
+
+      function clamp(value, minimum, maximum) {
+        return Math.max(minimum, Math.min(maximum, value));
+      }
+
+      function project(point) {
+        const dx = point.x - state.camera.x;
+        const dy = point.y - state.camera.y;
+        const dz = point.z - state.camera.z;
+        const yawCos = Math.cos(state.camera.yaw);
+        const yawSin = Math.sin(state.camera.yaw);
+        const pitchCos = Math.cos(state.camera.pitch);
+        const pitchSin = Math.sin(state.camera.pitch);
+        const cameraX = dx * yawCos - dz * yawSin;
+        const yawZ = dx * yawSin + dz * yawCos;
+        const cameraY = dy * pitchCos - yawZ * pitchSin;
+        const cameraZ = dy * pitchSin + yawZ * pitchCos;
+        if (cameraZ < 4) {
+          return null;
+        }
+        const focal = Math.min(state.width, state.height) / (2 * Math.tan(state.fov / 2));
+        return {
+          x: state.width / 2 + (cameraX * focal) / cameraZ,
+          y: state.height / 2 - (cameraY * focal) / cameraZ,
+          z: cameraZ,
+          scale: focal / cameraZ
+        };
+      }
+
+      function polygon(points, fill, stroke, width) {
+        if (points.some((point) => !point)) {
+          return;
+        }
+        context.beginPath();
+        context.moveTo(points[0].x, points[0].y);
+        points.slice(1).forEach((point) => context.lineTo(point.x, point.y));
+        context.closePath();
+        if (fill) {
+          context.fillStyle = fill;
+          context.fill();
+        }
+        if (stroke) {
+          context.strokeStyle = stroke;
+          context.lineWidth = width || 1;
+          context.stroke();
+        }
+      }
+
+      function drawBackground(now) {
+        const sky = context.createLinearGradient(0, 0, 0, state.height);
+        sky.addColorStop(0, "#519bea");
+        sky.addColorStop(0.18, "#6ddbf0");
+        sky.addColorStop(0.24, "#9bf2df");
+        sky.addColorStop(0.245, "#52a371");
+        sky.addColorStop(1, "#469d70");
+        context.fillStyle = sky;
+        context.fillRect(0, 0, state.width, state.height);
+        const shine = context.createLinearGradient(0, state.height * 0.18, 0, state.height * 0.42);
+        shine.addColorStop(0, "rgba(255,255,255,0)");
+        shine.addColorStop(0.5, "rgba(242,255,220,0.34)");
+        shine.addColorStop(1, "rgba(255,255,255,0)");
+        context.fillStyle = shine;
+        context.fillRect(0, 0, state.width, state.height);
+        if (state.pathGlow) {
+          const glint = 0.028 + Math.sin(now / 900) * 0.008;
+          context.fillStyle = "rgba(255,255,255," + glint + ")";
+          context.fillRect(0, state.height * 0.3, state.width, state.height * 0.08);
+        }
+      }
+
+      function drawGround() {
+        const margin = 260;
+        const minX = layoutBounds.minX - margin;
+        const maxX = layoutBounds.maxX + margin;
+        const minZ = layoutBounds.minZ - margin;
+        const maxZ = layoutBounds.maxZ + margin;
+        const corners = [
+          project({ x: minX, y: 0, z: minZ }),
+          project({ x: maxX, y: 0, z: minZ }),
+          project({ x: maxX, y: 0, z: maxZ }),
+          project({ x: minX, y: 0, z: maxZ })
+        ];
+        polygon(corners, "#4aa172");
+
+        const gridStep = 180;
+        const firstGridX = Math.floor(minX / gridStep) * gridStep;
+        for (let x = firstGridX; x <= maxX; x += gridStep) {
+          const from = project({ x, y: 0.18, z: minZ });
+          const to = project({ x, y: 0.18, z: maxZ });
+          if (!from || !to) {
+            continue;
+          }
+          context.beginPath();
+          context.moveTo(from.x, from.y);
+          context.lineTo(to.x, to.y);
+          context.strokeStyle = "rgba(75,145,99,0.14)";
+          context.lineWidth = 1;
+          context.stroke();
+        }
+      }
+
+      function drawPlatform(district) {
+        const y = 0;
+        const thickness = 2.4;
+        const halfWidth = district.width / 2;
+        const halfDepth = district.depth / 2;
+        const frontLeft = project({ x: district.x - halfWidth, y, z: district.z - halfDepth });
+        const frontRight = project({ x: district.x + halfWidth, y, z: district.z - halfDepth });
+        const backRight = project({ x: district.x + halfWidth, y, z: district.z + halfDepth });
+        const backLeft = project({ x: district.x - halfWidth, y, z: district.z + halfDepth });
+        const topLeft = project({
+          x: district.x - halfWidth,
+          y: y + thickness,
+          z: district.z - halfDepth
+        });
+        const topRight = project({
+          x: district.x + halfWidth,
+          y: y + thickness,
+          z: district.z - halfDepth
+        });
+        const topBackRight = project({
+          x: district.x + halfWidth,
+          y: y + thickness,
+          z: district.z + halfDepth
+        });
+        const topBackLeft = project({
+          x: district.x - halfWidth,
+          y: y + thickness,
+          z: district.z + halfDepth
+        });
+        polygon([frontLeft, frontRight, topRight, topLeft], "#00557e");
+        const sideOnRight = state.camera.x > district.x;
+        if (sideOnRight) {
+          polygon([frontRight, backRight, topBackRight, topRight], "#006c9e");
+        } else {
+          polygon([backLeft, frontLeft, topLeft, topBackLeft], "#006c9e");
+        }
+        polygon(
+          [topLeft, topRight, topBackRight, topBackLeft],
+          "#087fb9",
+          "rgba(184,242,255,0.44)",
+          0.75
+        );
+
+        const labelBase = project({
+          x: district.x,
+          y: thickness + 0.2,
+          z: district.z - halfDepth + 8
+        });
+        const labelEnd = project({
+          x: district.x + 20,
+          y: thickness + 0.2,
+          z: district.z - halfDepth + 8
+        });
+        if (labelBase && labelEnd && labelBase.scale > 0.48) {
+          const angle = Math.atan2(labelEnd.y - labelBase.y, labelEnd.x - labelBase.x);
+          context.save();
+          context.translate(labelBase.x, labelBase.y);
+          context.rotate(angle);
+          context.scale(
+            clamp(labelBase.scale * 0.6, 0.45, 1.15),
+            clamp(labelBase.scale * 0.35, 0.3, 0.65)
+          );
+          context.fillStyle = "rgba(241,255,255,0.92)";
+          context.font = '700 12px "SFMono-Regular", Consolas, monospace';
+          context.textAlign = "center";
+          context.textBaseline = "middle";
+          context.fillText(district.label, 0, 0);
+          context.restore();
+        }
+      }
+
+      function cubeCorners(node) {
+        const style = styles[node.type];
+        const base = 2.55;
+        const halfWidth = style.width / 2;
+        const halfDepth = style.depth / 2;
+        return {
+          base,
+          width: style.width,
+          depth: style.depth,
+          frontLeft: { x: node.x - halfWidth, y: base, z: node.z - halfDepth },
+          frontRight: { x: node.x + halfWidth, y: base, z: node.z - halfDepth },
+          backRight: { x: node.x + halfWidth, y: base, z: node.z + halfDepth },
+          backLeft: { x: node.x - halfWidth, y: base, z: node.z + halfDepth },
+          topFrontLeft: { x: node.x - halfWidth, y: base + style.height, z: node.z - halfDepth },
+          topFrontRight: { x: node.x + halfWidth, y: base + style.height, z: node.z - halfDepth },
+          topBackRight: { x: node.x + halfWidth, y: base + style.height, z: node.z + halfDepth },
+          topBackLeft: { x: node.x - halfWidth, y: base + style.height, z: node.z + halfDepth }
+        };
+      }
+
+      function drawBlock(node, now) {
+        const corners = cubeCorners(node);
+        const projected = {};
+        Object.entries(corners).forEach(([key, value]) => {
+          if (key !== "base" && key !== "width" && key !== "depth") {
+            projected[key] = project(value);
+          }
+        });
+        if (Object.values(projected).some((point) => !point)) {
+          return;
+        }
+        const style = styles[node.type];
+        const selected = state.selectedId === node.id;
+        const hovered = state.hoverId === node.id;
+        const pulse = selected && state.pathGlow ? 0.2 + Math.sin(now / 260) * 0.06 : 0;
+        const frontFace = [
+          projected.frontLeft,
+          projected.frontRight,
+          projected.topFrontRight,
+          projected.topFrontLeft
+        ];
+        const topFace = [
+          projected.topFrontLeft,
+          projected.topFrontRight,
+          projected.topBackRight,
+          projected.topBackLeft
+        ];
+        const sideOnRight = state.camera.x > node.x;
+        const sideFace = sideOnRight
+          ? [
+              projected.frontRight,
+              projected.backRight,
+              projected.topBackRight,
+              projected.topFrontRight
+            ]
+          : [
+              projected.backLeft,
+              projected.frontLeft,
+              projected.topFrontLeft,
+              projected.topBackLeft
+            ];
+        const shadow = [
+          project({ x: corners.frontLeft.x + 2.5, y: 0.16, z: corners.frontLeft.z + 2.5 }),
+          project({ x: corners.frontRight.x + 2.5, y: 0.16, z: corners.frontRight.z + 2.5 }),
+          project({ x: corners.backRight.x + 2.5, y: 0.16, z: corners.backRight.z + 2.5 }),
+          project({ x: corners.backLeft.x + 2.5, y: 0.16, z: corners.backLeft.z + 2.5 })
+        ];
+        polygon(shadow, "rgba(0,57,74,0.2)");
+        polygon(frontFace, style.front);
+        polygon(sideFace, style.side);
+        polygon(
+          topFace,
+          style.top,
+          selected || hovered ? "#fff8c5" : "rgba(5,71,91,0.34)",
+          selected ? 2.1 : hovered ? 1.5 : 0.55
+        );
+        if (selected) {
+          const centre = project({
+            x: node.x,
+            y: corners.base + styles[node.type].height + 0.2,
+            z: node.z
+          });
+          if (centre) {
+            context.beginPath();
+            context.arc(centre.x, centre.y, 8 + pulse * 26, 0, Math.PI * 2);
+            context.strokeStyle = "rgba(255,247,166," + (0.74 + pulse) + ")";
+            context.lineWidth = 1.4;
+            context.stroke();
+          }
+        }
+
+        const centre = project({
+          x: node.x,
+          y: corners.base + styles[node.type].height,
+          z: node.z
+        });
+        const radius = Math.max(
+          Math.abs(projected.topFrontRight.x - projected.topFrontLeft.x),
+          Math.abs(projected.topFrontRight.y - projected.topFrontLeft.y),
+          5
+        );
+        state.projected.push({
+          node,
+          point: centre,
+          hitAreas: [topFace, frontFace, sideFace],
+          radius,
+          paintOrder: state.projected.length
+        });
+
+        const shouldLabel =
+          selected ||
+          (node.type === "module" && centre.scale > 0.5) ||
+          (node.type === "component" && centre.scale > 0.85);
+        if (shouldLabel && centre.scale > 0.33) {
+          const labelAnchor = project({
+            x: node.x,
+            y: corners.base + 0.25,
+            z: node.z - styles[node.type].depth / 2 - 3.5
+          });
+          const labelEnd = project({
+            x: node.x + 14,
+            y: corners.base + 0.25,
+            z: node.z - styles[node.type].depth / 2 - 3.5
+          });
+          if (labelAnchor && labelEnd) {
+            const angle = Math.atan2(labelEnd.y - labelAnchor.y, labelEnd.x - labelAnchor.x);
+            context.save();
+            context.translate(labelAnchor.x, labelAnchor.y);
+            context.rotate(angle);
+            context.scale(
+              clamp(centre.scale * 0.47, 0.37, 1),
+              clamp(centre.scale * 0.28, 0.25, 0.58)
+            );
+            context.fillStyle = selected ? "#fff8c5" : "rgba(246,255,255,0.94)";
+            context.font = '700 11px "SFMono-Regular", Consolas, monospace';
+            context.textAlign = "center";
+            context.textBaseline = "middle";
+            context.fillText(node.label.slice(0, 30), 0, 0);
+            context.restore();
+          }
+        }
+      }
+
+      function drawPath(edge, now) {
+        const from = nodeById.get(edge.from);
+        const to = nodeById.get(edge.to);
+        if (!from || !to) {
+          return;
+        }
+        const selected = state.selectedId;
+        const active = selected && (edge.from === selected || edge.to === selected);
+        if (active) {
+          return;
+        }
+        const structural =
+          edge.kind === "relation" || edge.kind === "conforms" || edge.kind === "import";
+        if (!structural) {
+          return;
+        }
+        const lift = 1.7;
+        const fromPoint = project({ x: from.x, y: lift, z: from.z });
+        const toPoint = project({ x: to.x, y: lift, z: to.z });
+        const midpoint = project({
+          x: (from.x + to.x) / 2,
+          y: lift,
+          z: Math.min(from.z, to.z) - 8
+        });
+        if (!fromPoint || !toPoint || !midpoint) {
+          return;
+        }
+        context.beginPath();
+        context.moveTo(fromPoint.x, fromPoint.y);
+        context.lineTo(midpoint.x, midpoint.y);
+        context.lineTo(toPoint.x, toPoint.y);
+        context.strokeStyle =
+          edge.kind === "import" ? "rgba(255,255,255,0.94)" : "rgba(244,255,243,0.72)";
+        context.lineWidth = 1.15;
+        context.setLineDash(edge.kind === "import" ? [6, 5] : [2, 5]);
+        context.lineDashOffset = state.pathGlow ? -now / 120 : 0;
+        context.stroke();
+        context.setLineDash([]);
+      }
+
+      function selectedPathPoints(edge) {
+        const from = nodeById.get(edge.from);
+        const to = nodeById.get(edge.to);
+        if (!from || !to) {
+          return null;
+        }
+        const fromHeight = 2.55 + styles[from.type].height + 1.1;
+        const toHeight = 2.55 + styles[to.type].height + 1.1;
+        const crest = Math.max(fromHeight, toHeight) + 8.5;
+        const fromPoint = project({ x: from.x, y: fromHeight, z: from.z });
+        const toPoint = project({ x: to.x, y: toHeight, z: to.z });
+        const midpoint = project({
+          x: (from.x + to.x) / 2,
+          y: crest,
+          z: (from.z + to.z) / 2
+        });
+        if (!fromPoint || !toPoint || !midpoint) {
+          return null;
+        }
+        return { from, to, fromPoint, midpoint, toPoint };
+      }
+
+      function tracePath(points) {
+        context.beginPath();
+        context.moveTo(points.fromPoint.x, points.fromPoint.y);
+        context.lineTo(points.midpoint.x, points.midpoint.y);
+        context.lineTo(points.toPoint.x, points.toPoint.y);
+      }
+
+      function drawLinkMarker(point, color, radius) {
+        context.beginPath();
+        context.arc(point.x, point.y, radius + 1.8, 0, Math.PI * 2);
+        context.fillStyle = "rgba(4, 61, 83, 0.78)";
+        context.fill();
+        context.beginPath();
+        context.arc(point.x, point.y, radius, 0, Math.PI * 2);
+        context.fillStyle = color;
+        context.fill();
+        context.strokeStyle = "#fff8c5";
+        context.lineWidth = 1.25;
+        context.stroke();
+      }
+
+      function drawSelectedNetwork(now) {
+        const selected = state.selectedId;
+        if (!selected) {
+          return;
+        }
+        edges
+          .filter((edge) => edge.from === selected || edge.to === selected)
+          .forEach((edge, index) => {
+            const points = selectedPathPoints(edge);
+            if (!points) {
+              return;
+            }
+            const selectedNode = edge.from === selected ? points.from : points.to;
+            const selectedColor = styles[selectedNode.type].top;
+            const dashOffset = state.pathGlow ? -(now / 26 + index * 9) : 0;
+            context.save();
+            context.lineCap = "round";
+            context.lineJoin = "round";
+            tracePath(points);
+            context.strokeStyle = "rgba(4, 59, 80, 0.72)";
+            context.lineWidth = 6.2;
+            context.setLineDash([]);
+            context.stroke();
+            tracePath(points);
+            context.strokeStyle = selectedColor;
+            context.lineWidth = 3.7;
+            context.setLineDash([10, 7]);
+            context.lineDashOffset = dashOffset;
+            context.stroke();
+            tracePath(points);
+            context.strokeStyle = "#fffbe5";
+            context.lineWidth = 1.35;
+            context.setLineDash([2.5, 14.5]);
+            context.lineDashOffset = dashOffset * 1.9;
+            context.stroke();
+            context.setLineDash([]);
+            drawLinkMarker(
+              points.fromPoint,
+              styles[points.from.type].top,
+              points.from.id === selected ? 5.1 : 3.8
+            );
+            drawLinkMarker(
+              points.toPoint,
+              styles[points.to.type].top,
+              points.to.id === selected ? 5.1 : 3.8
+            );
+            context.restore();
+          });
+      }
+
+      function drawReticle() {
+        const x = state.width / 2;
+        const y = state.height * 0.58;
+        context.beginPath();
+        context.moveTo(x - 11, y);
+        context.lineTo(x - 3, y);
+        context.moveTo(x + 3, y);
+        context.lineTo(x + 11, y);
+        context.moveTo(x, y - 11);
+        context.lineTo(x, y - 3);
+        context.moveTo(x, y + 3);
+        context.lineTo(x, y + 11);
+        context.strokeStyle = "rgba(248,255,219,0.74)";
+        context.lineWidth = 1.1;
+        context.stroke();
+      }
+
+      function updateHoverLabel() {
+        const item = state.hoverId
+          ? state.projected.find((projected) => projected.node.id === state.hoverId)
+          : null;
+        if (!item?.point) {
+          hoverLabel.classList.remove("is-visible", "is-below");
+          return;
+        }
+        const node = item.node;
+        hoverLabelKind.textContent = typeNames[node.type];
+        hoverLabelName.textContent = node.label;
+        hoverLabelSwatch.style.background = styles[node.type].top;
+        hoverLabel.classList.add("is-visible");
+
+        const labelWidth = hoverLabel.offsetWidth || 220;
+        const labelHeight = hoverLabel.offsetHeight || 44;
+        const needsLowerLabel = item.point.y < labelHeight + 22;
+        const left = clamp(
+          item.point.x + 18 + labelWidth > state.width - 12
+            ? item.point.x - labelWidth - 18
+            : item.point.x + 18,
+          12,
+          Math.max(12, state.width - labelWidth - 12)
+        );
+        const top = needsLowerLabel
+          ? clamp(item.point.y, 12, Math.max(12, state.height - labelHeight - 22))
+          : clamp(item.point.y, labelHeight + 22, state.height - 12);
+        hoverLabel.style.left = left + "px";
+        hoverLabel.style.top = top + "px";
+        hoverLabel.classList.toggle("is-below", needsLowerLabel);
+      }
+
+      function updateFocus(now) {
+        if (!state.focus) {
+          return;
+        }
+        const progress = clamp((now - state.focus.startedAt) / state.focus.duration, 0, 1);
+        const eased = 1 - Math.pow(1 - progress, 4);
+        const start = state.focus.start;
+        const end = state.focus.end;
+        state.camera.x = start.x + (end.x - start.x) * eased;
+        state.camera.y = start.y + (end.y - start.y) * eased;
+        state.camera.z = start.z + (end.z - start.z) * eased;
+        state.camera.yaw = fixedPerspective.yaw;
+        state.camera.pitch = fixedPerspective.pitch;
+        if (progress === 1) {
+          state.focus = null;
+        }
+      }
+
+      function updateMovement(delta) {
+        if (state.keys.size === 0) {
+          return;
+        }
+        state.focus = null;
+        const speed = (state.keys.has("Shift") ? 155 : 68) * delta;
+        if (state.keys.has("w")) {
+          state.camera.z += speed;
+        }
+        if (state.keys.has("s")) {
+          state.camera.z -= speed;
+        }
+        if (state.keys.has("a")) {
+          state.camera.x -= speed;
+        }
+        if (state.keys.has("d")) {
+          state.camera.x += speed;
+        }
+        if (state.keys.has("q")) {
+          state.camera.y = clamp(state.camera.y - speed, 42, maximumCameraHeight);
+        }
+        if (state.keys.has("e")) {
+          state.camera.y = clamp(state.camera.y + speed, 42, maximumCameraHeight);
+        }
+      }
+
+      function scheduleRender() {
+        if (!document.hidden && animationFrame === null) {
+          animationFrame = window.requestAnimationFrame(render);
+        }
+      }
+
+      function render(now) {
+        animationFrame = null;
+        const delta = Math.min(0.05, (now - state.lastTime) / 1000);
+        state.lastTime = now;
+        updateFocus(now);
+        updateMovement(delta);
+        context.setTransform(state.dpr, 0, 0, state.dpr, 0, 0);
+        context.clearRect(0, 0, state.width, state.height);
+        drawBackground(now);
+        drawGround();
+        edges.forEach((edge) => drawPath(edge, now));
+        districts
+          .map((district) => ({ district, point: project({ x: district.x, y: 0, z: district.z }) }))
+          .filter((item) => item.point)
+          .sort((left, right) => right.point.z - left.point.z)
+          .forEach((item) => drawPlatform(item.district));
+        state.projected = [];
+        nodes
+          .map((node) => ({ node, point: project({ x: node.x, y: 3, z: node.z }) }))
+          .filter((item) => item.point)
+          .sort((left, right) => right.point.z - left.point.z)
+          .forEach((item) => drawBlock(item.node, now));
+        drawSelectedNetwork(now);
+        drawReticle();
+        updateHoverLabel();
+        state.frame += 1;
+        state.rendered = true;
+        if (state.pathGlow || state.focus || state.keys.size > 0 || state.pointer) {
+          scheduleRender();
+        }
+      }
+
+      function pointInPolygon(point, polygonPoints) {
+        let inside = false;
+        for (
+          let index = 0, previous = polygonPoints.length - 1;
+          index < polygonPoints.length;
+          previous = index, index += 1
+        ) {
+          const current = polygonPoints[index];
+          const prior = polygonPoints[previous];
+          const intersects =
+            current.y > point.y !== prior.y > point.y &&
+            point.x <
+              ((prior.x - current.x) * (point.y - current.y)) / (prior.y - current.y) + current.x;
+          if (intersects) {
+            inside = !inside;
+          }
+        }
+        return inside;
+      }
+
+      function nodeUnderPointer(event) {
+        const rect = canvas.getBoundingClientRect();
+        const point = {
+          x: event.clientX - rect.left,
+          y: event.clientY - rect.top
+        };
+        let faceCandidate = null;
+        let toleranceCandidate = null;
+        state.projected.forEach((item) => {
+          const withinFace = item.hitAreas.some((area) => pointInPolygon(point, area));
+          if (withinFace) {
+            if (!faceCandidate || item.paintOrder > faceCandidate.paintOrder) {
+              faceCandidate = item;
+            }
+            return;
+          }
+          const tolerance = clamp(item.radius * 0.24, 3, 9);
+          const closeToCentre =
+            Math.hypot(point.x - item.point.x, point.y - item.point.y) < tolerance;
+          if (
+            closeToCentre &&
+            (!toleranceCandidate || item.paintOrder > toleranceCandidate.paintOrder)
+          ) {
+            toleranceCandidate = item;
+          }
+        });
+        return (faceCandidate || toleranceCandidate)?.node || null;
+      }
+
+      function groundPointFromPointer(event) {
+        const rect = canvas.getBoundingClientRect();
+        const focal = Math.min(state.width, state.height) / (2 * Math.tan(state.fov / 2));
+        const viewX = (event.clientX - rect.left - state.width / 2) / focal;
+        const viewY = -(event.clientY - rect.top - state.height / 2) / focal;
+        const viewZ = 1;
+        const yawCos = Math.cos(fixedPerspective.yaw);
+        const yawSin = Math.sin(fixedPerspective.yaw);
+        const pitchCos = Math.cos(fixedPerspective.pitch);
+        const pitchSin = Math.sin(fixedPerspective.pitch);
+        const worldY = viewY * pitchCos + viewZ * pitchSin;
+        const yawZ = -viewY * pitchSin + viewZ * pitchCos;
+        if (worldY >= -0.0001) {
+          return null;
+        }
+        const distance = -state.camera.y / worldY;
+        if (distance <= 0 || distance > 10000) {
+          return null;
+        }
+        return {
+          x: state.camera.x + (viewX * yawCos + yawZ * yawSin) * distance,
+          z: state.camera.z + (-viewX * yawSin + yawZ * yawCos) * distance
+        };
+      }
+
+      function panToGround(point, speak) {
+        if (!point) {
+          return;
+        }
+        state.selectedId = null;
+        closeDetailPanel();
+        const end = {
+          x: point.x,
+          y: state.camera.y,
+          z: point.z - Math.max(110, state.camera.y * 1.75),
+          yaw: fixedPerspective.yaw,
+          pitch: fixedPerspective.pitch
+        };
+        if (prefersReducedMotion.matches) {
+          Object.assign(state.camera, end);
+          state.focus = null;
+        } else {
+          state.focus = {
+            start: { ...state.camera },
+            end,
+            startedAt: performance.now(),
+            duration: 520
+          };
+        }
+        selectionKind.textContent = "PLANE PAN";
+        selectionTitle.textContent = "MOVING ACROSS MAP";
+        selectionSummary.textContent =
+          "The map stays at a fixed perspective while the view moves across the ground plane.";
+        setDetails([
+          ["OBJECTS", String(nodes.length) + " raised tiles"],
+          ["PATHS", String(edges.length) + " modeled"],
+          ["FILES", String(ontology.stats.documents ?? ontology.documents.length) + " Shape files"],
+          ["FLIGHT", "PANNING"]
+        ]);
+        if (speak) {
+          announce("Panning across the fixed Shape plane.");
+        }
+      }
+
+      function formatDetails(node) {
+        const directLinks = neighbours.get(node.id)?.size || 0;
+        const detailRows = [
+          ["TYPE", typeNames[node.type].toUpperCase()],
+          ["MODULE", node.module],
+          ["FILE", node.file],
+          ["NEIGHBORS", String(directLinks) + " direct tiles"]
+        ];
+        if (node.traits?.length) {
+          detailRows.push(["TRAITS", node.traits.join(", ")]);
+        } else if (node.effects?.length) {
+          detailRows.push([
+            "EFFECTS",
+            node.effects.map((effect) => effect.name || effect.operation || "effect").join(", ")
+          ]);
+        } else if (node.relation) {
+          const endpointNames = values(node.relation.endpoints)
+            .map((endpoint) => referenceValue(endpoint))
+            .filter(Boolean);
+          detailRows.push([
+            "CONNECTS",
+            endpointNames.length
+              ? compactValues(endpointNames, 3)
+              : (node.relation.from || "?") + " to " + (node.relation.to || "?")
+          ]);
+        } else if (node.type === "function" && !node.effectsComplete) {
+          detailRows.push(["EFFECTS", "UNKNOWN"]);
+        } else if (node.paths?.length) {
+          detailRows.push(["GOVERNED", String(node.paths.length) + " paths"]);
+        }
+        return detailRows.slice(0, 5);
+      }
+
+      function setDetails(rows) {
+        details.replaceChildren();
+        rows.forEach(([term, description]) => {
+          const dt = document.createElement("dt");
+          const dd = document.createElement("dd");
+          dt.textContent = term;
+          dd.textContent = description;
+          details.append(dt, dd);
+        });
+      }
+
+      function edgeLabel(edge, node) {
+        const startsHere = edge.from === node.id;
+        if (edge.kind === "contains") {
+          return startsHere ? "CONTAINS" : "CONTAINED BY";
+        }
+        if (edge.kind === "relation") {
+          return startsHere ? "RELATES TO" : "RELATION ENDPOINT";
+        }
+        if (edge.kind === "conforms") {
+          return startsHere ? "CONFORMS TO" : "CONFORMANCE";
+        }
+        if (edge.kind === "import") {
+          return startsHere ? "IMPORTS" : "IMPORTED BY";
+        }
+        return edge.kind.toUpperCase();
+      }
+
+      function appendDetailItem(list, item) {
+        const row = document.createElement("li");
+        const content = item.onActivate
+          ? document.createElement("button")
+          : document.createElement("div");
+        const meta = document.createElement("span");
+        const title = document.createElement("span");
+        const copy = document.createElement("span");
+        row.className = "detail-item" + (item.memory ? " memory" : "");
+        if (item.onActivate) {
+          content.className = "detail-link";
+          content.type = "button";
+          content.setAttribute(
+            "aria-label",
+            "Focus " + item.title + " via " + item.meta.toLowerCase()
+          );
+          content.addEventListener("click", item.onActivate);
+        }
+        meta.className = "detail-meta";
+        title.className = "detail-title";
+        copy.className = "detail-copy";
+        meta.textContent = item.meta;
+        title.textContent = item.title;
+        content.append(meta, title);
+        if (item.copy) {
+          copy.textContent = item.copy;
+          content.append(copy);
+        }
+        row.append(content);
+        list.append(row);
+      }
+
+      function renderRelationshipDetails(node) {
+        const linked = edges
+          .filter((edge) => edge.from === node.id || edge.to === node.id)
+          .map((edge) => ({
+            edge,
+            other: nodeById.get(edge.from === node.id ? edge.to : edge.from)
+          }))
+          .filter((item) => item.other)
+          .sort(
+            (left, right) =>
+              compareCodepoints(edgeLabel(left.edge, node), edgeLabel(right.edge, node)) ||
+              compareCodepoints(left.other.label, right.other.label)
+          );
+        relationshipList.replaceChildren();
+        relationshipCount.textContent = String(linked.length) + " TOTAL";
+        if (linked.length === 0) {
+          appendDetailItem(relationshipList, {
+            meta: "NO DIRECT LINKS",
+            title: "This tile has no modeled neighbor.",
+            copy: "The item remains positioned in its authored Shape module."
+          });
+          return;
+        }
+        linked.slice(0, 10).forEach(({ edge, other }) => {
+          appendDetailItem(relationshipList, {
+            meta: edgeLabel(edge, node) + " / " + typeNames[other.type].toUpperCase(),
+            title: other.label,
+            copy: other.description,
+            onActivate: () => focusNode(other, true)
+          });
+        });
+        if (linked.length > 10) {
+          appendDetailItem(relationshipList, {
+            meta: "MORE LINKS",
+            title: String(linked.length - 10) + " additional modeled connections",
+            copy: "Use the locate field to focus another tile."
+          });
+        }
+      }
+
+      function compactValues(values, maximum) {
+        if (values.length <= maximum) {
+          return values.join(", ");
+        }
+        return (
+          values.slice(0, maximum).join(", ") + " +" + String(values.length - maximum) + " more"
+        );
+      }
+
+      function sourceRefLabel(source) {
+        if (typeof source === "string") {
+          return source;
+        }
+        return source?.language && source?.path
+          ? source.language + "(" + source.path + ")"
+          : source?.path || "unknown source";
+      }
+
+      function termLabel(term) {
+        const name = term?.name || String(term);
+        return term?.target ? name + "<" + term.target + ">" : name;
+      }
+
+      function ruleClauseLabels(rule) {
+        const clauses = [];
+        values(rule.whenHas).forEach((item) =>
+          clauses.push("when " + item.subject + " has " + item.trait)
+        );
+        if (rule.finalForbidSubject) {
+          clauses.push("final forbid " + rule.finalForbidSubject);
+        }
+        values(rule.forbidEffects).forEach((item) =>
+          clauses.push(
+            (item.final ? "final " : "") +
+              "forbid " +
+              item.effect +
+              (item.target ? "<" + item.target + ">" : "")
+          )
+        );
+        values(rule.forbidProvides).forEach((item) =>
+          clauses.push(
+            "forbid provides " + item.target + (item.except ? " except " + item.except : "")
+          )
+        );
+        values(rule.forbidHypercycles).forEach((item) =>
+          clauses.push("forbid hypercycle over " + values(item.kinds).join(" or "))
+        );
+        values(rule.forbidPaths).forEach((item) =>
+          clauses.push(
+            "forbid path " +
+              item.source +
+              " to " +
+              item.target +
+              " over " +
+              values(item.kinds).join(" or ")
+          )
+        );
+        return clauses;
+      }
+
+      function evidenceEntries(node) {
+        const entries = [];
+        node.memories.forEach((memory) => {
+          const confidence = memory.confidence
+            ? " / " + String(memory.confidence).toUpperCase()
+            : "";
+          const guardCount = values(memory.guards).length;
+          const evidenceCount = values(memory.evidence).length;
+          entries.push({
+            meta: "MEMORY / " + (memory.status || "MODELED").toUpperCase() + confidence,
+            title: memory.name || memory.id || memory.context || "Authored memory",
+            copy:
+              memory.summary ||
+              memory.context ||
+              String(guardCount) + " guards and " + String(evidenceCount) + " evidence entries.",
+            memory: true
+          });
+        });
+        if (node.source) {
+          entries.push({
+            meta: "SOURCE ANCHOR",
+            title: sourceRefLabel(node.source),
+            copy: "Source path modeled for this function."
+          });
+        }
+        if (node.effects?.length) {
+          entries.push({
+            meta: "MODELED EFFECTS",
+            title: compactValues(
+              node.effects.map((effect) => {
+                const name = effect.name || effect.operation || "effect";
+                return effect.target ? name + " <" + effect.target + ">" : name;
+              }),
+              3
+            ),
+            copy:
+              String(node.effects.length) +
+              " effect" +
+              (node.effects.length === 1 ? "" : "s") +
+              " declared by Shape."
+          });
+        } else if (node.type === "function" && !node.effectsComplete) {
+          entries.push({
+            meta: "EFFECTS UNKNOWN",
+            title: "Shape does not claim a complete effect set.",
+            copy: "Unknown is not the same as an authored empty effect set."
+          });
+        }
+        if (node.requires?.length) {
+          entries.push({
+            meta: "FUNCTION REQUIREMENTS",
+            title: compactValues(node.requires.map(termLabel), 3),
+            copy: "Requirements declared on this function."
+          });
+        }
+        if (node.shapeTraits?.length) {
+          entries.push({
+            meta: "FUNCTION TRAITS",
+            title: compactValues(node.shapeTraits, 4),
+            copy: "Shape traits declared on this function."
+          });
+        }
+        if (node.traits?.length) {
+          entries.push({
+            meta: "RESOURCE TRAITS",
+            title: compactValues(node.traits, 4),
+            copy: "Traits declared on this resource."
+          });
+        }
+        if (node.fingerprints?.length) {
+          entries.push({
+            meta: "RESOURCE FINGERPRINTS",
+            title: compactValues(
+              node.fingerprints.map((item) => item.provider + ":" + item.value),
+              3
+            ),
+            copy: "Fingerprint expectations declared on this resource."
+          });
+        }
+        if (node.classifiers?.length) {
+          entries.push({
+            meta: "COMPONENT CLASSIFIERS",
+            title: compactValues(node.classifiers, 4),
+            copy: "Classifiers declared on this component."
+          });
+        }
+        if (node.grants?.length) {
+          entries.push({
+            meta: "COMPONENT GRANTS",
+            title: compactValues(node.grants.map(termLabel), 3),
+            copy: "Effect grants declared on this component."
+          });
+        }
+        if (node.storage?.length) {
+          entries.push({
+            meta: "STORAGE",
+            title: compactValues(
+              node.storage.map((item) => item.backend + "." + item.kind + "(" + item.target + ")"),
+              2
+            ),
+            copy: "Storage declaration modeled for this resource."
+          });
+        }
+        if (node.relation) {
+          const endpointNames = values(node.relation.endpoints)
+            .map((endpoint) => referenceValue(endpoint))
+            .filter(Boolean);
+          entries.push({
+            meta: "RELATION CONTRACT",
+            title:
+              node.relation.kind +
+              ": " +
+              (endpointNames.length
+                ? compactValues(endpointNames, 3)
+                : (node.relation.from || "?") + " to " + (node.relation.to || "?")),
+            copy: node.relation.summary || "Authored connection between the two endpoints."
+          });
+        }
+        if (node.paths?.length) {
+          entries.push({
+            meta: "GOVERNED PATHS",
+            title: compactValues(node.paths, 2),
+            copy:
+              String(node.paths.length) +
+              " path" +
+              (node.paths.length === 1 ? "" : "s") +
+              " covered by this implementation."
+          });
+        }
+        if (node.onChangeRequirement) {
+          entries.push({
+            meta: "ON CHANGE",
+            title: node.onChangeRequirement,
+            copy: "Required response when a governed implementation path changes."
+          });
+        }
+        if (node.binding) {
+          const watched = node.binding.whenChanged || [];
+          const required = node.binding.requireChanged || [];
+          entries.push({
+            meta: "CHANGE BINDING",
+            title:
+              compactValues(watched.concat(required), 2) ||
+              compactValues(values(node.binding.allowAttestations), 2) ||
+              node.binding.allow ||
+              "Modeled change binding",
+            copy:
+              String(watched.length) +
+              " watched and " +
+              String(required.length) +
+              " required path" +
+              (required.length === 1 ? "" : "s") +
+              "."
+          });
+        }
+        if (node.statement) {
+          entries.push({
+            meta: "ARCHITECTURE RULE",
+            title: node.statement,
+            copy: "Rule declared in " + node.file + "."
+          });
+        } else if (node.rule) {
+          const clauses = ruleClauseLabels(node.rule);
+          entries.push({
+            meta: "ARCHITECTURE RULE",
+            title: compactValues(clauses, 3) || "Rule with no lowered clauses",
+            copy:
+              String(clauses.length) +
+              " deterministic rule clause" +
+              (clauses.length === 1 ? "" : "s") +
+              "."
+          });
+        }
+        if (node.type === "module") {
+          if (node.imports.length) {
+            entries.push({
+              meta: "MODULE IMPORTS",
+              title: compactValues(node.imports, 4),
+              copy:
+                String(node.imports.length) +
+                " imported Shape module" +
+                (node.imports.length === 1 ? "" : "s") +
+                "."
+            });
+          }
+        }
+        if (entries.length === 0) {
+          entries.push({
+            meta: "MODEL SOURCE",
+            title: node.file,
+            copy: "No extra memory or structured evidence is modeled for this tile."
+          });
+        }
+        return entries;
+      }
+
+      function renderEvidenceDetails(node) {
+        const entries = evidenceEntries(node);
+        evidenceList.replaceChildren();
+        evidenceCount.textContent = String(entries.length) + " ITEMS";
+        entries.slice(0, 8).forEach((entry) => appendDetailItem(evidenceList, entry));
+      }
+
+      function closeDetailPanel() {
+        navigatorPanel.classList.remove("is-open");
+        relationshipCount.textContent = "";
+        evidenceCount.textContent = "";
+        relationshipList.replaceChildren();
+        evidenceList.replaceChildren();
+      }
+
+      function announce(message) {
+        flightStatus.textContent = "";
+        window.setTimeout(() => {
+          flightStatus.textContent = message;
+        }, 20);
+      }
+
+      function selectNode(node, speak) {
+        state.selectedId = node.id;
+        navigatorPanel.classList.add("is-open");
+        selectionKind.textContent = typeNames[node.type].toUpperCase() + " / FOCUSED TILE";
+        selectionTitle.textContent = node.label;
+        selectionSummary.textContent = node.description;
+        setDetails(formatDetails(node));
+        renderRelationshipDetails(node);
+        renderEvidenceDetails(node);
+        if (speak) {
+          announce(
+            node.label +
+              " selected. " +
+              (neighbours.get(node.id)?.size || 0) +
+              " directly connected tiles are available."
+          );
+        }
+      }
+
+      function focusFrameFor(node) {
+        const style = styles[node.type];
+        const targetHeight = 2.55 + style.height * 0.72;
+        const cameraHeight = clamp(47 + style.height * 0.36, 47, 52);
+        const focal = Math.max(
+          1,
+          Math.min(state.width, state.height) / (2 * Math.tan(state.fov / 2))
+        );
+        const compactViewport = state.width <= 740;
+        const foregroundLine = state.height * (compactViewport ? 0.5 : 0.64);
+        const screenRatio = (state.height / 2 - foregroundLine) / focal;
+        const pitchCos = Math.cos(fixedPerspective.pitch);
+        const pitchSin = Math.sin(fixedPerspective.pitch);
+        const verticalDelta = targetHeight - cameraHeight;
+        const denominator = -pitchSin - screenRatio * pitchCos;
+        const distance =
+          Math.abs(denominator) > 0.0001
+            ? (verticalDelta * (screenRatio * pitchSin - pitchCos)) / denominator
+            : 96;
+        return {
+          x: node.x,
+          y: cameraHeight,
+          z:
+            node.z -
+            clamp(Number.isFinite(distance) ? distance : 96, 74, compactViewport ? 180 : 150),
+          yaw: fixedPerspective.yaw,
+          pitch: fixedPerspective.pitch
+        };
+      }
+
+      function focusNode(node, speak) {
+        selectNode(node, speak);
+        const end = focusFrameFor(node);
+        if (prefersReducedMotion.matches) {
+          Object.assign(state.camera, end);
+          state.focus = null;
+        } else {
+          state.focus = {
+            start: { ...state.camera },
+            end,
+            startedAt: performance.now(),
+            duration: 820
+          };
+        }
+        scheduleRender();
+      }
+
+      function resetOverview(speak) {
+        state.selectedId = null;
+        state.hoverId = null;
+        closeDetailPanel();
+        if (prefersReducedMotion.matches) {
+          Object.assign(state.camera, initialCamera);
+          state.focus = null;
+        } else {
+          state.focus = {
+            start: { ...state.camera },
+            end: { ...initialCamera },
+            startedAt: performance.now(),
+            duration: 780
+          };
+        }
+        selectionKind.textContent = "PLANE OVERVIEW";
+        selectionTitle.textContent = "START HERE";
+        selectionSummary.textContent =
+          "Fly over the blue module pads, or select a tile to bring its local paths into view.";
+        setDetails([
+          ["OBJECTS", String(nodes.length) + " raised tiles"],
+          ["PATHS", String(edges.length) + " modeled"],
+          ["FILES", String(ontology.stats.documents ?? ontology.documents.length) + " Shape files"],
+          ["FLIGHT", "FREE"]
+        ]);
+        if (speak) {
+          announce("Returned to the complete Shape plane.");
+        }
+        scheduleRender();
+      }
+
+      function renderResults(query) {
+        results.replaceChildren();
+        const normalized = query.trim().toLowerCase();
+        if (!normalized) {
+          return;
+        }
+        const matches = nodes
+          .filter((node) => {
+            const haystack = node.label + " " + node.type + " " + node.module + " " + node.file;
+            return haystack.toLowerCase().includes(normalized);
+          })
+          .sort((left, right) => {
+            const leftStarts = left.label.toLowerCase().startsWith(normalized) ? -1 : 0;
+            const rightStarts = right.label.toLowerCase().startsWith(normalized) ? -1 : 0;
+            return leftStarts - rightStarts || compareCodepoints(left.label, right.label);
+          })
+          .slice(0, 6);
+        matches.forEach((node) => {
+          const button = document.createElement("button");
+          const kind = document.createElement("span");
+          const name = document.createElement("span");
+          button.className = "result";
+          button.type = "button";
+          kind.className = "result-kind";
+          name.className = "result-name";
+          kind.textContent = node.type;
+          name.textContent = node.label;
+          button.append(kind, name);
+          button.addEventListener("click", () => {
+            focusNode(node, true);
+            locator.value = "";
+            results.replaceChildren();
+            canvas.focus();
+          });
+          results.append(button);
+        });
+        if (matches.length === 0) {
+          const empty = document.createElement("p");
+          empty.className = "result-kind";
+          empty.textContent = "NO MATCHING TILES";
+          results.append(empty);
+        }
+      }
+
+      function resizeCanvas() {
+        const rect = canvas.getBoundingClientRect();
+        state.width = Math.max(1, rect.width);
+        state.height = Math.max(1, rect.height);
+        state.dpr = Math.min(window.devicePixelRatio || 1, 2);
+        canvas.width = Math.round(state.width * state.dpr);
+        canvas.height = Math.round(state.height * state.dpr);
+        scheduleRender();
+      }
+
+      function isTypingTarget(target) {
+        return (
+          target instanceof HTMLInputElement ||
+          target instanceof HTMLTextAreaElement ||
+          target instanceof HTMLSelectElement ||
+          target.isContentEditable
+        );
+      }
+
+      canvas.addEventListener("pointerdown", (event) => {
+        canvas.focus();
+        state.hoverId = null;
+        state.pointer = {
+          id: event.pointerId,
+          x: event.clientX,
+          y: event.clientY,
+          startX: event.clientX,
+          startY: event.clientY,
+          dragged: false
+        };
+        canvas.setPointerCapture(event.pointerId);
+        scheduleRender();
+      });
+
+      canvas.addEventListener("pointermove", (event) => {
+        if (state.pointer?.id === event.pointerId) {
+          const dx = event.clientX - state.pointer.x;
+          const dy = event.clientY - state.pointer.y;
+          if (
+            Math.abs(event.clientX - state.pointer.startX) +
+              Math.abs(event.clientY - state.pointer.startY) >
+            5
+          ) {
+            state.pointer.dragged = true;
+          }
+          if (state.pointer.dragged) {
+            state.focus = null;
+            const panScale = Math.max(0.32, state.camera.y * 0.0105);
+            state.camera.x -= dx * panScale;
+            state.camera.z += dy * panScale;
+            state.camera.yaw = fixedPerspective.yaw;
+            state.camera.pitch = fixedPerspective.pitch;
+          }
+          state.pointer.x = event.clientX;
+          state.pointer.y = event.clientY;
+          scheduleRender();
+          return;
+        }
+        const node = nodeUnderPointer(event);
+        const nextHover = node?.id || null;
+        if (nextHover !== state.hoverId) {
+          state.hoverId = nextHover;
+          canvas.style.cursor = node ? "pointer" : "crosshair";
+          scheduleRender();
+        }
+      });
+
+      canvas.addEventListener("pointerleave", () => {
+        if (!state.pointer) {
+          state.hoverId = null;
+          canvas.style.cursor = "crosshair";
+          scheduleRender();
+        }
+      });
+
+      function releasePointer(event) {
+        if (!state.pointer || state.pointer.id !== event.pointerId) {
+          return;
+        }
+        const wasDragged = state.pointer.dragged;
+        state.pointer = null;
+        if (canvas.hasPointerCapture(event.pointerId)) {
+          canvas.releasePointerCapture(event.pointerId);
+        }
+        if (!wasDragged) {
+          const node = nodeUnderPointer(event);
+          if (node) {
+            focusNode(node, true);
+          } else {
+            panToGround(groundPointFromPointer(event), true);
+          }
+        }
+        scheduleRender();
+      }
+
+      canvas.addEventListener("pointerup", releasePointer);
+      canvas.addEventListener("pointercancel", (event) => {
+        if (!state.pointer || state.pointer.id !== event.pointerId) {
+          return;
+        }
+        state.pointer = null;
+        if (canvas.hasPointerCapture(event.pointerId)) {
+          canvas.releasePointerCapture(event.pointerId);
+        }
+        scheduleRender();
+      });
+      canvas.addEventListener(
+        "wheel",
+        (event) => {
+          state.focus = null;
+          state.camera.y = clamp(state.camera.y + event.deltaY * 0.09, 42, maximumCameraHeight);
+          scheduleRender();
+          event.preventDefault();
+        },
+        { passive: false }
+      );
+
+      window.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") {
+          resetOverview(true);
+          return;
+        }
+        if (isTypingTarget(event.target)) {
+          return;
+        }
+        const key = event.key.toLowerCase();
+        if (["w", "a", "s", "d", "q", "e"].includes(key)) {
+          state.keys.add(key);
+          scheduleRender();
+          event.preventDefault();
+        }
+        if (event.key === "Shift") {
+          state.keys.add("Shift");
+        }
+      });
+
+      window.addEventListener("keyup", (event) => {
+        state.keys.delete(event.key.toLowerCase());
+        if (event.key === "Shift") {
+          state.keys.delete("Shift");
+        }
+        scheduleRender();
+      });
+
+      locator.addEventListener("input", () => renderResults(locator.value));
+      locator.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+          const first = results.querySelector("button");
+          if (first) {
+            first.click();
+          }
+        }
+      });
+      overviewButton.addEventListener("click", () => resetOverview(true));
+      function syncMotionButton() {
+        motionButton.setAttribute("aria-pressed", String(state.pathGlow));
+        motionButton.textContent = state.pathGlow ? "PAUSE PATH GLOW" : "RESUME PATH GLOW";
+      }
+      motionButton.addEventListener("click", () => {
+        state.pathGlow = !state.pathGlow;
+        syncMotionButton();
+        scheduleRender();
+        announce(state.pathGlow ? "Path glow resumed." : "Path glow paused.");
+      });
+      prefersReducedMotion.addEventListener("change", (event) => {
+        if (event.matches) {
+          state.pathGlow = false;
+          syncMotionButton();
+          scheduleRender();
+        }
+      });
+      window.addEventListener("blur", () => state.keys.clear());
+      document.addEventListener("visibilitychange", () => {
+        if (document.hidden) {
+          if (animationFrame !== null) {
+            window.cancelAnimationFrame(animationFrame);
+            animationFrame = null;
+          }
+          return;
+        }
+        state.lastTime = performance.now();
+        scheduleRender();
+      });
+      new ResizeObserver(resizeCanvas).observe(canvas);
+
+      resetOverview(false);
+      resizeCanvas();
+      syncMotionButton();
+      const testingApi = {
+        get ready() {
+          return state.rendered;
+        },
+        ids() {
+          return nodes.map((node) => node.id);
+        },
+        focusById(id) {
+          const node = nodeById.get(id) || nodeByModelId.get(id);
+          if (node) {
+            focusNode(node, false);
+          }
+          return Boolean(node);
+        },
+        focus(label) {
+          const node = nodes.find((candidate) => candidate.label === label);
+          if (node) {
+            focusNode(node, false);
+          }
+          return Boolean(node);
+        },
+        reset() {
+          resetOverview(false);
+        },
+        setMotion(enabled) {
+          state.pathGlow = Boolean(enabled) && !prefersReducedMotion.matches;
+          syncMotionButton();
+          scheduleRender();
+          return state.pathGlow;
+        },
+        settle() {
+          const startingFrame = state.frame;
+          scheduleRender();
+          return new Promise((resolve) => {
+            function check() {
+              if (state.frame > startingFrame && !state.focus) {
+                resolve();
+                return;
+              }
+              window.requestAnimationFrame(check);
+            }
+            check();
+          });
+        },
+        point(label) {
+          const item = state.projected.find((candidate) => candidate.node.label === label);
+          return item ? { x: item.point.x, y: item.point.y, radius: item.radius } : null;
+        },
+        hitAreas(label) {
+          const item = state.projected.find((candidate) => candidate.node.label === label);
+          return item
+            ? item.hitAreas.map((area) => area.map((point) => ({ x: point.x, y: point.y })))
+            : null;
+        },
+        snapshot() {
+          return {
+            selectedId: state.selectedId,
+            camera: { ...state.camera },
+            nodes: nodes.length,
+            paths: edges.length,
+            districts: districts.length,
+            moduleFiles: Object.fromEntries(
+              districts.map((district) => [district.module, district.files.slice()])
+            ),
+            pathGlow: state.pathGlow,
+            rendererVersion: 1,
+            schemaVersion: ontology.schemaVersion,
+            shapeVersion: ontology.shapeVersion
+          };
+        }
+      };
+      window.__unixSystemVisualiser = testingApi;
+      window.__shapePlane = testingApi;
+      scheduleRender();
+    </script>
+  </body>
+</html>

@@ -86,7 +86,7 @@ The workflow:
 
 1. validates metadata, generated artifacts, skills, source, Shape, docs, and
    release assets;
-2. runs static conformance and focused read-only behavioral canaries across all five
+2. runs static conformance and focused behavioral canaries across all six
    shipped skills;
 3. uploads `skill-release-report-<commit>`; and
 4. waits at `Skill Release Approval`.

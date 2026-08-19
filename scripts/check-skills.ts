@@ -8,7 +8,8 @@ const EXPECTED_SKILLS = [
   "shape-contract-preflight",
   "shape-index",
   "shape-lang",
-  "shape-review"
+  "shape-review",
+  "unix-system-visualiser"
 ] as const;
 
 type ShippedSkill = (typeof EXPECTED_SKILLS)[number];
@@ -32,7 +33,13 @@ const OUTPUT_CONTRACT_MARKERS: Record<ShippedSkill, readonly string[]> = {
   ],
   "shape-index": ["complete", "incomplete_with_explicit_gaps", "blocked"],
   "shape-lang": ["author", "debug", "drift-review"],
-  "shape-review": ['"comments"', '"shape_model_warnings"']
+  "shape-review": ['"comments"', '"shape_model_warnings"'],
+  "unix-system-visualiser": [
+    "complete",
+    "blocked_invalid_model",
+    "blocked_unignored_output",
+    "tooling_unavailable"
+  ]
 };
 
 const ROUTING_KINDS = ["direct", "indirect", "adjacent", "incomplete", "negative"] as const;
@@ -103,9 +110,9 @@ function validateReferencedResources(
   skillRoot: string,
   failures: string[]
 ): void {
-  const resourcePattern = /\b(?:references|scripts|examples)\/[A-Za-z0-9._/-]+/g;
+  const resourcePattern = /\b(?:assets|examples|references|scripts)\/[A-Za-z0-9._/-]+/g;
   const textFiles = filesRecursively(skillRoot).filter((path) =>
-    [".md", ".yaml", ".yml"].includes(extname(path))
+    [".html", ".md", ".mjs", ".yaml", ".yml"].includes(extname(path))
   );
 
   for (const textFile of textFiles) {
@@ -133,6 +140,88 @@ function validateReferencedResources(
         }
       }
     }
+  }
+}
+
+function validateBundledResources(
+  repositoryRoot: string,
+  skillName: ShippedSkill,
+  skillRoot: string,
+  failures: string[]
+): void {
+  const files = filesRecursively(skillRoot);
+  for (const scriptPath of files.filter((path) => extname(path) === ".mjs")) {
+    const displayPath = relative(repositoryRoot, scriptPath);
+    const result = spawnSync("node", ["--check", scriptPath], {
+      cwd: repositoryRoot,
+      encoding: "utf8"
+    });
+    if (result.error) {
+      failures.push(`${displayPath}: could not run node --check: ${result.error.message}`);
+    } else if (result.status !== 0) {
+      failures.push(`${displayPath}: node --check failed: ${result.stderr.trim()}`);
+    }
+  }
+
+  if (skillName !== "unix-system-visualiser") {
+    return;
+  }
+
+  const generatorPath = join(skillRoot, "scripts/generate.mjs");
+  const templatePath = join(skillRoot, "assets/index.template.html");
+  for (const requiredPath of [generatorPath, templatePath]) {
+    if (!existsSync(requiredPath)) {
+      failures.push(`${relative(repositoryRoot, requiredPath)}: missing required bundled resource`);
+    }
+  }
+  if (!existsSync(generatorPath) || !existsSync(templatePath)) {
+    return;
+  }
+
+  const generator = readFileSync(generatorPath, "utf8");
+  if (!generator.includes("inspect") || !generator.includes("--json")) {
+    failures.push(
+      `${relative(repositoryRoot, generatorPath)}: generator must consume the semantic inspect --json interface`
+    );
+  }
+  for (const nondeterministicMarker of ["generatedAt", "Date.now(", "new Date("]) {
+    if (generator.includes(nondeterministicMarker)) {
+      failures.push(
+        `${relative(repositoryRoot, generatorPath)}: deterministic generator must not contain ${nondeterministicMarker}`
+      );
+    }
+  }
+
+  const template = readFileSync(templatePath, "utf8");
+  if (!/^<!doctype html>/i.test(template)) {
+    failures.push(
+      `${relative(repositoryRoot, templatePath)}: HTML asset must start with a doctype`
+    );
+  }
+  const ontologyMarkers = template.match(/__ONTOLOGY_JSON__/g)?.length ?? 0;
+  if (ontologyMarkers !== 1) {
+    failures.push(
+      `${relative(repositoryRoot, templatePath)}: expected exactly one __ONTOLOGY_JSON__ marker; found ${ontologyMarkers}`
+    );
+  }
+  const inlineScript = template.match(/<script>([\s\S]*?)<\/script>/)?.[1];
+  if (inlineScript === undefined) {
+    failures.push(`${relative(repositoryRoot, templatePath)}: missing inline renderer script`);
+    return;
+  }
+  const scriptCheck = spawnSync("node", ["--check", "-"], {
+    cwd: repositoryRoot,
+    encoding: "utf8",
+    input: inlineScript.replace("__ONTOLOGY_JSON__", "{}")
+  });
+  if (scriptCheck.error) {
+    failures.push(
+      `${relative(repositoryRoot, templatePath)}: could not syntax-check inline renderer: ${scriptCheck.error.message}`
+    );
+  } else if (scriptCheck.status !== 0) {
+    failures.push(
+      `${relative(repositoryRoot, templatePath)}: inline renderer syntax check failed: ${scriptCheck.stderr.trim()}`
+    );
   }
 }
 
@@ -471,6 +560,7 @@ export function validateSkillPackage(repositoryRoot: string): string[] {
     }
 
     validateReferencedResources(repositoryRoot, skillName, skillRoot, failures);
+    validateBundledResources(repositoryRoot, skillName, skillRoot, failures);
 
     const metadataPath = join(skillRoot, "agents/openai.yaml");
     const metadataDisplayPath = relative(repositoryRoot, metadataPath);

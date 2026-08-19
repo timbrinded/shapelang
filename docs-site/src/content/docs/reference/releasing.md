@@ -39,7 +39,7 @@ must never be cut from a dirty worktree, detached head, or unmerged branch.
 ## Blocking skills approval
 
 Dispatch `Release Candidate: Skills` on the exact `master` commit. It validates
-the complete release candidate and evaluates all five shipped skills against
+the complete release candidate and evaluates all six shipped skills against
 current CLI and language behavior, including:
 
 - draft-to-strict validation;

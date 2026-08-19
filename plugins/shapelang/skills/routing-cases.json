@@ -92,6 +92,24 @@
     "expected_skill": "shape-review"
   },
   {
+    "id": "visualiser-direct",
+    "kind": "direct",
+    "prompt": "Use unix-system-visualiser to generate an interactive atlas for this Shape repository.",
+    "expected_skill": "unix-system-visualiser"
+  },
+  {
+    "id": "visualiser-indirect",
+    "kind": "indirect",
+    "prompt": "Turn this repository's authored Shape model into a self-contained Jurassic Park-style Unix system map.",
+    "expected_skill": "unix-system-visualiser"
+  },
+  {
+    "id": "visualiser-incomplete",
+    "kind": "incomplete",
+    "prompt": "Make the Shape architecture in this repository interactive and easy to explore in a browser.",
+    "expected_skill": "unix-system-visualiser"
+  },
+  {
     "id": "adjacent-drift",
     "kind": "adjacent",
     "prompt": "Does this source diff faithfully update the authored Shape model?",

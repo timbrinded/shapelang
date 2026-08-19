@@ -1,0 +1,241 @@
+module shape.generated.ast.plugins.shapelang.skills.unix_system_visualiser.scripts.generate
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource GenerateModuleAssertSafeOutputLocationAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/scripts/generate.mjs#assertSafeOutputLocation")
+  fingerprint ast.semantic_subtree_v1("sha256:ae839cef283cd4ff2d2e0858d62f5fd078aa704283fa97adcc7beea207f903c8")
+}
+
+resource GenerateModuleAuthoredInspectionAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/scripts/generate.mjs#authoredInspection")
+  fingerprint ast.semantic_subtree_v1("sha256:1130eeeff84246cc195b88222de480c447c351c9fc38dfc2b6bc619dc9c76882")
+}
+
+resource GenerateModuleCompareCodepointsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/scripts/generate.mjs#compareCodepoints")
+  fingerprint ast.semantic_subtree_v1("sha256:ee192b032e64cb1ffdae099e29da3731bf483b7496e2f6c33f26085ed975b5f1")
+}
+
+resource GenerateModuleEnsureSafeOutputDirectoryAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/scripts/generate.mjs#ensureSafeOutputDirectory")
+  fingerprint ast.semantic_subtree_v1("sha256:0a736e2bf4d0777de6c24dcc4f051e2bf55d887b8edb825bc9d8fdb0de120185")
+}
+
+resource GenerateModuleFailAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/scripts/generate.mjs#fail")
+  fingerprint ast.semantic_subtree_v1("sha256:2434909224f040fe282abc03d4a7ce6bdbc440f7a1cbc68aa4277006c4fc7b9a")
+}
+
+resource GenerateModuleGroupDocumentsByModuleAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/scripts/generate.mjs#groupDocumentsByModule")
+  fingerprint ast.semantic_subtree_v1("sha256:d5bbe2fc5017fdbfaac42af9031336b94f122721ded9ed8ef23560f99ecf9193")
+}
+
+resource GenerateModuleInspectShapeModelAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/scripts/generate.mjs#inspectShapeModel")
+  fingerprint ast.semantic_subtree_v1("sha256:eef2ccdf13f0793a41111d87b20745e9c916373be7d39ea92f183e8b5b1c6ec4")
+}
+
+resource GenerateModuleLstatIfPresentAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/scripts/generate.mjs#lstatIfPresent")
+  fingerprint ast.semantic_subtree_v1("sha256:90b7b2c5a65feda083a0b546e8eeb917a5a8a18f2915599e867736dc9dd8ee4b")
+}
+
+resource GenerateModuleParseArgumentsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/scripts/generate.mjs#parseArguments")
+  fingerprint ast.semantic_subtree_v1("sha256:1d65701cebeed2c924f366a386a332a6bb1e2e013b2ec5509cb900117ef7e9e5")
+}
+
+resource GenerateModulePrintHelpAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/scripts/generate.mjs#printHelp")
+  fingerprint ast.semantic_subtree_v1("sha256:e4f222f5ab343f8c336d0794dc96dab0e94207d646d12cc741804c8ca76c54a3")
+}
+
+resource GenerateModuleRequireIgnoredOutputAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/scripts/generate.mjs#requireIgnoredOutput")
+  fingerprint ast.semantic_subtree_v1("sha256:59cbe56c7a092755301788a4d624549939ffc63914b57f3169e7824fc064075e")
+}
+
+resource GenerateModuleResolveOutputPathAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/scripts/generate.mjs#resolveOutputPath")
+  fingerprint ast.semantic_subtree_v1("sha256:94f612de94cc91d7922fc7fdb27e4228a8a37928cb345451738a1c9b6de45e9b")
+}
+
+resource GenerateModuleResolveRepositoryRootAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/scripts/generate.mjs#resolveRepositoryRoot")
+  fingerprint ast.semantic_subtree_v1("sha256:44ca19014a1a8fdb5b1e9967a97424e48e7179b4a946bcb5c2e1ddfb3408e007")
+}
+
+resource GenerateModuleWriteOutputSafelyAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/scripts/generate.mjs#writeOutputSafely")
+  fingerprint ast.semantic_subtree_v1("sha256:db50db8eec544d2d999800bae7db7f03d35b8b2e9a4a47e3fd47b12f4481fa7e")
+}
+
+component GenerateModule : GeneratedCandidate {
+  fn assertSafeOutputLocation
+    source js("plugins/shapelang/skills/unix-system-visualiser/scripts/generate.mjs#assertSafeOutputLocation")
+    effects unknown
+  fn authoredInspection
+    source js("plugins/shapelang/skills/unix-system-visualiser/scripts/generate.mjs#authoredInspection")
+    effects unknown
+  fn compareCodepoints
+    source js("plugins/shapelang/skills/unix-system-visualiser/scripts/generate.mjs#compareCodepoints")
+    effects unknown
+  fn ensureSafeOutputDirectory
+    source js("plugins/shapelang/skills/unix-system-visualiser/scripts/generate.mjs#ensureSafeOutputDirectory")
+    effects unknown
+  fn fail
+    source js("plugins/shapelang/skills/unix-system-visualiser/scripts/generate.mjs#fail")
+    effects unknown
+  fn groupDocumentsByModule
+    source js("plugins/shapelang/skills/unix-system-visualiser/scripts/generate.mjs#groupDocumentsByModule")
+    effects unknown
+  fn inspectShapeModel
+    source js("plugins/shapelang/skills/unix-system-visualiser/scripts/generate.mjs#inspectShapeModel")
+    effects unknown
+  fn lstatIfPresent
+    source js("plugins/shapelang/skills/unix-system-visualiser/scripts/generate.mjs#lstatIfPresent")
+    effects unknown
+  fn parseArguments
+    source js("plugins/shapelang/skills/unix-system-visualiser/scripts/generate.mjs#parseArguments")
+    effects unknown
+  fn printHelp
+    source js("plugins/shapelang/skills/unix-system-visualiser/scripts/generate.mjs#printHelp")
+    effects unknown
+  fn requireIgnoredOutput
+    source js("plugins/shapelang/skills/unix-system-visualiser/scripts/generate.mjs#requireIgnoredOutput")
+    effects unknown
+  fn resolveOutputPath
+    source js("plugins/shapelang/skills/unix-system-visualiser/scripts/generate.mjs#resolveOutputPath")
+    effects unknown
+  fn resolveRepositoryRoot
+    source js("plugins/shapelang/skills/unix-system-visualiser/scripts/generate.mjs#resolveRepositoryRoot")
+    effects unknown
+  fn writeOutputSafely
+    source js("plugins/shapelang/skills/unix-system-visualiser/scripts/generate.mjs#writeOutputSafely")
+    effects unknown
+}
+
+relation GenerateModuleAssertSafeOutputLocationGeneratedFromGenerateModuleAssertSafeOutputLocationAstAnchor {
+  kind generated_from
+  connects GenerateModule -> GenerateModuleAssertSafeOutputLocationAstAnchor
+  roles { GenerateModule as generated, GenerateModuleAssertSafeOutputLocationAstAnchor as syntax }
+  expects GenerateModuleAssertSafeOutputLocationAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ae839cef283cd4ff2d2e0858d62f5fd078aa704283fa97adcc7beea207f903c8")
+  summary "fn GenerateModule.assertSafeOutputLocation generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/scripts/generate.mjs#assertSafeOutputLocation."
+}
+
+relation GenerateModuleAuthoredInspectionGeneratedFromGenerateModuleAuthoredInspectionAstAnchor {
+  kind generated_from
+  connects GenerateModule -> GenerateModuleAuthoredInspectionAstAnchor
+  roles { GenerateModule as generated, GenerateModuleAuthoredInspectionAstAnchor as syntax }
+  expects GenerateModuleAuthoredInspectionAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1130eeeff84246cc195b88222de480c447c351c9fc38dfc2b6bc619dc9c76882")
+  summary "fn GenerateModule.authoredInspection generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/scripts/generate.mjs#authoredInspection."
+}
+
+relation GenerateModuleCompareCodepointsGeneratedFromGenerateModuleCompareCodepointsAstAnchor {
+  kind generated_from
+  connects GenerateModule -> GenerateModuleCompareCodepointsAstAnchor
+  roles { GenerateModule as generated, GenerateModuleCompareCodepointsAstAnchor as syntax }
+  expects GenerateModuleCompareCodepointsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ee192b032e64cb1ffdae099e29da3731bf483b7496e2f6c33f26085ed975b5f1")
+  summary "fn GenerateModule.compareCodepoints generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/scripts/generate.mjs#compareCodepoints."
+}
+
+relation GenerateModuleEnsureSafeOutputDirectoryGeneratedFromGenerateModuleEnsureSafeOutputDirectoryAstAnchor {
+  kind generated_from
+  connects GenerateModule -> GenerateModuleEnsureSafeOutputDirectoryAstAnchor
+  roles { GenerateModule as generated, GenerateModuleEnsureSafeOutputDirectoryAstAnchor as syntax }
+  expects GenerateModuleEnsureSafeOutputDirectoryAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0a736e2bf4d0777de6c24dcc4f051e2bf55d887b8edb825bc9d8fdb0de120185")
+  summary "fn GenerateModule.ensureSafeOutputDirectory generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/scripts/generate.mjs#ensureSafeOutputDirectory."
+}
+
+relation GenerateModuleFailGeneratedFromGenerateModuleFailAstAnchor {
+  kind generated_from
+  connects GenerateModule -> GenerateModuleFailAstAnchor
+  roles { GenerateModule as generated, GenerateModuleFailAstAnchor as syntax }
+  expects GenerateModuleFailAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2434909224f040fe282abc03d4a7ce6bdbc440f7a1cbc68aa4277006c4fc7b9a")
+  summary "fn GenerateModule.fail generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/scripts/generate.mjs#fail."
+}
+
+relation GenerateModuleGroupDocumentsByModuleGeneratedFromGenerateModuleGroupDocumentsByModuleAstAnchor {
+  kind generated_from
+  connects GenerateModule -> GenerateModuleGroupDocumentsByModuleAstAnchor
+  roles { GenerateModule as generated, GenerateModuleGroupDocumentsByModuleAstAnchor as syntax }
+  expects GenerateModuleGroupDocumentsByModuleAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d5bbe2fc5017fdbfaac42af9031336b94f122721ded9ed8ef23560f99ecf9193")
+  summary "fn GenerateModule.groupDocumentsByModule generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/scripts/generate.mjs#groupDocumentsByModule."
+}
+
+relation GenerateModuleInspectShapeModelGeneratedFromGenerateModuleInspectShapeModelAstAnchor {
+  kind generated_from
+  connects GenerateModule -> GenerateModuleInspectShapeModelAstAnchor
+  roles { GenerateModule as generated, GenerateModuleInspectShapeModelAstAnchor as syntax }
+  expects GenerateModuleInspectShapeModelAstAnchor fingerprint ast.semantic_subtree_v1("sha256:eef2ccdf13f0793a41111d87b20745e9c916373be7d39ea92f183e8b5b1c6ec4")
+  summary "fn GenerateModule.inspectShapeModel generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/scripts/generate.mjs#inspectShapeModel."
+}
+
+relation GenerateModuleLstatIfPresentGeneratedFromGenerateModuleLstatIfPresentAstAnchor {
+  kind generated_from
+  connects GenerateModule -> GenerateModuleLstatIfPresentAstAnchor
+  roles { GenerateModule as generated, GenerateModuleLstatIfPresentAstAnchor as syntax }
+  expects GenerateModuleLstatIfPresentAstAnchor fingerprint ast.semantic_subtree_v1("sha256:90b7b2c5a65feda083a0b546e8eeb917a5a8a18f2915599e867736dc9dd8ee4b")
+  summary "fn GenerateModule.lstatIfPresent generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/scripts/generate.mjs#lstatIfPresent."
+}
+
+relation GenerateModuleParseArgumentsGeneratedFromGenerateModuleParseArgumentsAstAnchor {
+  kind generated_from
+  connects GenerateModule -> GenerateModuleParseArgumentsAstAnchor
+  roles { GenerateModule as generated, GenerateModuleParseArgumentsAstAnchor as syntax }
+  expects GenerateModuleParseArgumentsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1d65701cebeed2c924f366a386a332a6bb1e2e013b2ec5509cb900117ef7e9e5")
+  summary "fn GenerateModule.parseArguments generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/scripts/generate.mjs#parseArguments."
+}
+
+relation GenerateModulePrintHelpGeneratedFromGenerateModulePrintHelpAstAnchor {
+  kind generated_from
+  connects GenerateModule -> GenerateModulePrintHelpAstAnchor
+  roles { GenerateModule as generated, GenerateModulePrintHelpAstAnchor as syntax }
+  expects GenerateModulePrintHelpAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e4f222f5ab343f8c336d0794dc96dab0e94207d646d12cc741804c8ca76c54a3")
+  summary "fn GenerateModule.printHelp generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/scripts/generate.mjs#printHelp."
+}
+
+relation GenerateModuleRequireIgnoredOutputGeneratedFromGenerateModuleRequireIgnoredOutputAstAnchor {
+  kind generated_from
+  connects GenerateModule -> GenerateModuleRequireIgnoredOutputAstAnchor
+  roles { GenerateModule as generated, GenerateModuleRequireIgnoredOutputAstAnchor as syntax }
+  expects GenerateModuleRequireIgnoredOutputAstAnchor fingerprint ast.semantic_subtree_v1("sha256:59cbe56c7a092755301788a4d624549939ffc63914b57f3169e7824fc064075e")
+  summary "fn GenerateModule.requireIgnoredOutput generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/scripts/generate.mjs#requireIgnoredOutput."
+}
+
+relation GenerateModuleResolveOutputPathGeneratedFromGenerateModuleResolveOutputPathAstAnchor {
+  kind generated_from
+  connects GenerateModule -> GenerateModuleResolveOutputPathAstAnchor
+  roles { GenerateModule as generated, GenerateModuleResolveOutputPathAstAnchor as syntax }
+  expects GenerateModuleResolveOutputPathAstAnchor fingerprint ast.semantic_subtree_v1("sha256:94f612de94cc91d7922fc7fdb27e4228a8a37928cb345451738a1c9b6de45e9b")
+  summary "fn GenerateModule.resolveOutputPath generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/scripts/generate.mjs#resolveOutputPath."
+}
+
+relation GenerateModuleResolveRepositoryRootGeneratedFromGenerateModuleResolveRepositoryRootAstAnchor {
+  kind generated_from
+  connects GenerateModule -> GenerateModuleResolveRepositoryRootAstAnchor
+  roles { GenerateModule as generated, GenerateModuleResolveRepositoryRootAstAnchor as syntax }
+  expects GenerateModuleResolveRepositoryRootAstAnchor fingerprint ast.semantic_subtree_v1("sha256:44ca19014a1a8fdb5b1e9967a97424e48e7179b4a946bcb5c2e1ddfb3408e007")
+  summary "fn GenerateModule.resolveRepositoryRoot generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/scripts/generate.mjs#resolveRepositoryRoot."
+}
+
+relation GenerateModuleWriteOutputSafelyGeneratedFromGenerateModuleWriteOutputSafelyAstAnchor {
+  kind generated_from
+  connects GenerateModule -> GenerateModuleWriteOutputSafelyAstAnchor
+  roles { GenerateModule as generated, GenerateModuleWriteOutputSafelyAstAnchor as syntax }
+  expects GenerateModuleWriteOutputSafelyAstAnchor fingerprint ast.semantic_subtree_v1("sha256:db50db8eec544d2d999800bae7db7f03d35b8b2e9a4a47e3fd47b12f4481fa7e")
+  summary "fn GenerateModule.writeOutputSafely generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/scripts/generate.mjs#writeOutputSafely."
+}
+
+implementation GenerateModuleImpl {
+  paths {
+    "plugins/shapelang/skills/unix-system-visualiser/scripts/generate.mjs"
+  }
+  conforms_to GenerateModule
+}

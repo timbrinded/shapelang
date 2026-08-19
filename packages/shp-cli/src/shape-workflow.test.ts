@@ -1,11 +1,15 @@
 import { describe, expect, test } from "bun:test";
-import { mkdtemp, rm } from "node:fs/promises";
+import { mkdir, mkdtemp, rm, symlink } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 
 const repoRoot = resolve(import.meta.dir, "../../..");
 const skillRunnerPath = resolve(repoRoot, ".github/scripts/run-claude-skill.mjs");
+const visualiserGeneratorPath = resolve(
+  repoRoot,
+  "plugins/shapelang/skills/unix-system-visualiser/scripts/generate.mjs"
+);
 const upsertCommentScriptPath = resolve(repoRoot, ".github/scripts/upsert-shape-ci-comment.mjs");
 
 describe("Shape workflow", () => {
@@ -138,6 +142,105 @@ describe("Shape workflow", () => {
     });
   });
 
+  test("generates byte-identical visualisers from a recursively discovered Shape model", async () => {
+    const fixtureRoot = resolve(repoRoot, "fixtures/skills/unix-system-visualiser/connected");
+    const researchRoot = join(fixtureRoot, ".research");
+    await mkdir(researchRoot, { recursive: true });
+    const outputRoot = await mkdtemp(join(researchRoot, "shape-workflow-"));
+    try {
+      const firstPath = join(outputRoot, "first.html");
+      const secondPath = join(outputRoot, "second.html");
+      const first = await runVisualiser(fixtureRoot, firstPath);
+      const second = await runVisualiser(fixtureRoot, secondPath);
+
+      expect(first.exitCode).toBe(0);
+      expect(first.stderr).toBe("");
+      expect(second.exitCode).toBe(0);
+      expect(second.stderr).toBe("");
+
+      const firstHtml = await Bun.file(firstPath).text();
+      const secondHtml = await Bun.file(secondPath).text();
+      expect(firstHtml).toBe(secondHtml);
+      expect(firstHtml).toContain('"schemaVersion":1');
+      expect(firstHtml).toContain("unix_visualiser_fixture::SystemEvent");
+      expect(firstHtml).toContain(
+        '"moduleGroups":[{"id":"module:unix_visualiser_fixture","name":"unix_visualiser_fixture","files":["shape/nested/module-metadata.shape","shape/nested/system.shape"]'
+      );
+      expect(firstHtml).not.toContain("GeneratedSyntaxAnchor");
+      expect(firstHtml).not.toContain("generatedAt");
+
+      const statsLine = first.stdout.trim().split(/\r?\n/).at(-1);
+      expect(statsLine).toBeDefined();
+      expect(JSON.parse(statsLine ?? "{}")).toMatchObject({
+        documents: 2,
+        modules: 1,
+        resources: 1,
+        components: 2,
+        functions: 2,
+        effects: 1,
+        relations: 1,
+        implementations: 1,
+        bindings: 1,
+        rules: 1,
+        memories: 1
+      });
+    } finally {
+      await rm(outputRoot, { recursive: true, force: true });
+    }
+  });
+
+  test("refuses the default visualiser output when Git does not ignore it", async () => {
+    const fixtureRoot = resolve(
+      repoRoot,
+      "fixtures/skills/unix-system-visualiser/unignored-output"
+    );
+    const outputRoot = join(fixtureRoot, ".research");
+    try {
+      const result = await runVisualiser(fixtureRoot);
+      expect(result.exitCode).toBe(1);
+      expect(result.stderr).toContain("default output is not ignored by Git");
+      expect(await Bun.file(join(outputRoot, "unix-system-visualiser/index.html")).exists()).toBe(
+        false
+      );
+    } finally {
+      await rm(outputRoot, { recursive: true, force: true });
+    }
+  });
+
+  test("refuses a visualiser output path that escapes through a symbolic link", async () => {
+    const fixtureRoot = resolve(repoRoot, "fixtures/skills/unix-system-visualiser/connected");
+    const researchRoot = join(fixtureRoot, ".research");
+    const externalRoot = await mkdtemp(join(tmpdir(), "shape-visualiser-external-"));
+    const linkedDirectory = join(researchRoot, "linked-output");
+    await mkdir(researchRoot, { recursive: true });
+    await symlink(externalRoot, linkedDirectory, "dir");
+    try {
+      const result = await runVisualiser(fixtureRoot, join(linkedDirectory, "index.html"));
+
+      expect(result.exitCode).toBe(1);
+      expect(result.stderr).toContain("output path must not contain symbolic links");
+      expect(await Bun.file(join(externalRoot, "index.html")).exists()).toBe(false);
+    } finally {
+      await rm(linkedDirectory, { force: true });
+      await rm(externalRoot, { recursive: true, force: true });
+    }
+  });
+
+  test("refuses a visualiser for a semantically invalid Shape model", async () => {
+    const fixtureRoot = resolve(repoRoot, "fixtures/skills/unix-system-visualiser/invalid-model");
+    const outputRoot = join(fixtureRoot, ".research");
+    try {
+      const result = await runVisualiser(fixtureRoot);
+      expect(result.exitCode).toBe(1);
+      expect(result.stderr).toContain("error: missing grant");
+      expect(await Bun.file(join(outputRoot, "unix-system-visualiser/index.html")).exists()).toBe(
+        false
+      );
+    } finally {
+      await rm(outputRoot, { recursive: true, force: true });
+    }
+  });
+
   test("passes index gate on gaps by default and fails when strict", async () => {
     const gapsResult = {
       status: "gaps",
@@ -173,13 +276,14 @@ describe("Shape workflow", () => {
     expect(result.exitCode).toBe(1);
   });
 
-  test("passes the skills release gate only when all five skills pass", async () => {
+  test("passes the skills release gate only when all six skills pass", async () => {
     const result = await runSkillGate("release", skillsReleaseResult());
 
     expect(result.exitCode).toBe(0);
     expect(result.stderr).toBe("");
     expect(result.summary).toContain("Shape Skills Release Evaluation");
     expect(result.summary).toContain("**shape-review**: `pass`");
+    expect(result.summary).toContain("**unix-system-visualiser**: `pass`");
   });
 
   test("fails the skills release gate when a shipped skill is missing or duplicated", async () => {
@@ -187,7 +291,7 @@ describe("Shape workflow", () => {
     missing.skills.pop();
     const missingResult = await runSkillGate("release", missing);
     expect(missingResult.exitCode).toBe(1);
-    expect(missingResult.stderr).toContain("missing shape-review");
+    expect(missingResult.stderr).toContain("missing unix-system-visualiser");
 
     const duplicate = skillsReleaseResult();
     const firstSkill = duplicate.skills[0];
@@ -351,6 +455,12 @@ describe("Shape workflow", () => {
         releaseCanRunCompleteRoute: releaseOutputs.claude_args.includes(
           "Bash(plugins/shapelang/skills/shape-contract-preflight/scripts/precheck.sh --shape-root fixtures/skills/preflight/complete-route/shape --json fixtures/skills/preflight/complete-route/proposal.shape)"
         ),
+        releaseCanGenerateVisualiser: releaseOutputs.claude_args.includes(
+          'Bash(bun plugins/shapelang/skills/unix-system-visualiser/scripts/generate.mjs --repo fixtures/skills/unix-system-visualiser/connected --output .research/atlas-a.html --shape-command "bun ../../../../packages/shp-cli/src/index.ts")'
+        ),
+        releaseCanCompareVisualisers: releaseOutputs.claude_args.includes(
+          "Bash(cmp fixtures/skills/unix-system-visualiser/connected/.research/atlas-a.html fixtures/skills/unix-system-visualiser/connected/.research/atlas-b.html)"
+        ),
         releaseHidesExpectedOutcomes:
           !releaseOutputs.prompt.includes("draft_only") &&
           !releaseOutputs.prompt.includes("single_code_comment"),
@@ -369,6 +479,8 @@ describe("Shape workflow", () => {
       disallowsWrites: true,
       releaseCanRunPrecheck: true,
       releaseCanRunCompleteRoute: true,
+      releaseCanGenerateVisualiser: true,
+      releaseCanCompareVisualisers: true,
       releaseHidesExpectedOutcomes: true,
       releaseRejectsArbitraryShapeCommand: true
     });
@@ -628,6 +740,12 @@ function skillsReleaseResult() {
       "all-incident-relations",
       "false-positive-challenge",
       "drift-separation"
+    ],
+    "unix-system-visualiser": [
+      "semantic-inspection",
+      "ignored-output-safety",
+      "deterministic-offline-artifact",
+      "browser-and-evidence-boundary"
     ]
   };
   const cases = {
@@ -754,6 +872,30 @@ function skillsReleaseResult() {
           "bun shp graph show RangeNormalizer fixtures/skills/review/root-cause-grouping/shape/model.shape"
         ]
       }
+    ],
+    "unix-system-visualiser": [
+      {
+        id: "visualiser-deterministic-nested-model",
+        status: "pass",
+        outcome: "complete",
+        evidence:
+          "The nested authored SystemEvent model contains 1 resource, 2 components, 2 functions, and 1 relation. It generated identical offline HTML files; authored claims are not runtime proof.",
+        commands: [
+          "bun shp check fixtures/skills/unix-system-visualiser/connected/shape/nested/system.shape",
+          'bun plugins/shapelang/skills/unix-system-visualiser/scripts/generate.mjs --repo fixtures/skills/unix-system-visualiser/connected --output .research/atlas-a.html --shape-command "bun ../../../../packages/shp-cli/src/index.ts"',
+          'bun plugins/shapelang/skills/unix-system-visualiser/scripts/generate.mjs --repo fixtures/skills/unix-system-visualiser/connected --output .research/atlas-b.html --shape-command "bun ../../../../packages/shp-cli/src/index.ts"',
+          "cmp fixtures/skills/unix-system-visualiser/connected/.research/atlas-a.html fixtures/skills/unix-system-visualiser/connected/.research/atlas-b.html"
+        ]
+      },
+      {
+        id: "visualiser-unignored-output",
+        status: "pass",
+        outcome: "blocked_unignored_output",
+        evidence: "The default path was not ignored, so generation stopped before any HTML write.",
+        commands: [
+          'bun plugins/shapelang/skills/unix-system-visualiser/scripts/generate.mjs --repo fixtures/skills/unix-system-visualiser/unignored-output --shape-command "bun ../../../../packages/shp-cli/src/index.ts"'
+        ]
+      }
     ]
   };
   return {
@@ -764,7 +906,8 @@ function skillsReleaseResult() {
       "shape-contract-preflight",
       "shape-contract-guard",
       "shape-index",
-      "shape-review"
+      "shape-review",
+      "unix-system-visualiser"
     ].map((name) => ({
       name,
       status: "pass",
@@ -853,6 +996,34 @@ async function runSkillGate(
   } finally {
     await rm(tempDir, { recursive: true, force: true });
   }
+}
+
+async function runVisualiser(
+  repository: string,
+  output?: string
+): Promise<{ exitCode: number; stdout: string; stderr: string }> {
+  const args = [
+    "bun",
+    visualiserGeneratorPath,
+    "--repo",
+    repository,
+    "--shape-command",
+    "bun ../../../../packages/shp-cli/src/index.ts"
+  ];
+  if (output) {
+    args.push("--output", output);
+  }
+  const child = Bun.spawn(args, {
+    cwd: repoRoot,
+    stdout: "pipe",
+    stderr: "pipe"
+  });
+  const [exitCode, stdout, stderr] = await Promise.all([
+    child.exited,
+    new Response(child.stdout).text(),
+    new Response(child.stderr).text()
+  ]);
+  return { exitCode, stdout, stderr };
 }
 
 async function runPrecheck(

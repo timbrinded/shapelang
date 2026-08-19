@@ -1,0 +1,7 @@
+module shape.generated.ast.packages.shp_cli.src.commands.inspect.command
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
