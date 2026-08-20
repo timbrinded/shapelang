@@ -2,17 +2,18 @@
 name: unix-system-visualiser
 description: >-
   This skill should be used to generate and browser-validate a deterministic,
-  self-contained Jurassic Park Unix-system-style visual atlas of a repository's
-  authored Shape model. Use it for repositories that contain authored `.shape`
-  files. Do not use it to infer runtime behavior, replace Shape validation, or
-  visualize repositories that do not use Shape.
+  self-contained Jurassic Park Unix-system-style visual atlas and guided
+  architecture journeys from a repository's authored Shape model. Use it for
+  repositories that contain authored `.shape` files. Do not use it to infer
+  runtime behavior, replace Shape validation, or visualize repositories that do
+  not use Shape.
 ---
 
 # Unix System Visualiser
 
 ## Boundary
 
-Generate one local HTML atlas from the deterministic model returned by `shp inspect --json`. The map shows authored Shape claims. It is not proof that the implementation or runtime behaves as modeled.
+Generate one local HTML atlas from the deterministic model returned by `shp inspect --json`. The map and its guided journeys show authored Shape claims and dependency topology. They are not proof that the implementation or runtime behaves as modeled.
 
 Do not:
 
@@ -25,6 +26,13 @@ Do not:
 The generator requires inspection schema version `1`. Fail clearly when the installed Shape CLI does not support that schema. Do not add a parser fallback.
 
 The generator excludes declarations classified as `generated_ast`. They remain available from `shp inspect --json` as navigation evidence, but this atlas presents only authored declarations as architecture claims.
+
+The atlas creates two clearly labeled journey tiers:
+
+- `Authored journey`: the exact ordered endpoints of an authored `coordinated_call` relation.
+- `Inferred dependency tour`: a deterministic, cycle-safe path through authored binary `calls` and `callbacks` relations. It is a navigation aid, not execution order.
+
+Use only relation identity, endpoint order and roles, graph indegree, and declaration descriptions returned by inspection. Do not inspect application source or use declaration-name guesses to manufacture a runtime scenario.
 
 ## Workflow
 
@@ -48,6 +56,8 @@ The generator excludes declarations classified as `generated_ast`. They remain a
    - `ids()` is non-empty and `snapshot()` counts agree with the visible overview;
    - `focusById(ids()[0])` selects a tile and `settle()` completes;
    - the locate field, overview control, motion control, keyboard focus, and reduced-motion mode work;
+   - when journeys exist, the preset selector, written narration, progress, seek, previous, play/pause, next, restart, and speed controls agree with `journeySnapshot()`;
+   - authored journeys and inferred dependency tours are visibly distinct, manual map interaction pauses playback, and playback stops at the final step;
    - the layout remains usable at a narrow viewport and at 200 percent zoom;
    - the page makes the authored-claims versus runtime-proof boundary visible.
 7. Stop the local server, if used. Keep only the ignored HTML artifact.
@@ -68,8 +78,9 @@ Status: complete | blocked_invalid_model | blocked_unignored_output | tooling_un
 Output: <repository-relative path or none>
 Shape command: <resolved command and version>
 Model counts: <documents, components, resources, functions, relations, and total tiles>
+Journeys: <authored journey and inferred dependency-tour counts>
 Determinism: <matching hashes or failure>
-Browser validation: <desktop, narrow viewport, zoom, interaction, accessibility, and console results>
+Browser validation: <desktop, narrow viewport, zoom, journey controls, interaction, accessibility, and console results>
 Evidence boundary: Authored Shape claims, not verified runtime behaviour.
 ```
 
@@ -79,5 +90,6 @@ Do not report `complete` from static HTML inspection alone.
 
 - `scripts/generate.mjs`: validates Shape and the output location, invokes `shp inspect --json`, assembles the bundled assets, and writes the self-contained artifact.
 - `lib/atlas-model.mjs`: converts inspection schema version `1` into the authored atlas model using exact qualified identities.
+- `lib/journey-model.mjs`: extracts ordered authored journeys and deterministic inferred dependency tours without runtime claims.
 - `assets/index.template.html` and `assets/styles.css`: the offline document shell and presentation.
-- `assets/renderer/*.mjs`: ordered Canvas, detail, interaction, accessibility, and browser-validation sources that the generator inlines into the artifact.
+- `assets/renderer/*.mjs`: ordered Canvas, detail, journey player, interaction, accessibility, and browser-validation sources that the generator inlines into the artifact.

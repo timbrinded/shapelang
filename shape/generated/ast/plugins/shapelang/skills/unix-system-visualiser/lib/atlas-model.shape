@@ -18,7 +18,7 @@ resource AtlasModelModuleAuthoredStatsAstAnchor : GeneratedAstAnchor {
 
 resource AtlasModelModuleBuildAtlasModelAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/lib/atlas-model.mjs#buildAtlasModel")
-  fingerprint ast.semantic_subtree_v1("sha256:11c94331973727655f5faba2f0e2c8e8215d5391fff48f55fccfc8d99d865ffc")
+  fingerprint ast.semantic_subtree_v1("sha256:41f9927967eb37549fecbd8390982567275c8d862898cc34f06caf28c98fcda4")
 }
 
 resource AtlasModelModuleCompareCodepointsAstAnchor : GeneratedAstAnchor {
@@ -93,7 +93,7 @@ relation AtlasModelModuleBuildAtlasModelGeneratedFromAtlasModelModuleBuildAtlasM
   kind generated_from
   connects AtlasModelModule -> AtlasModelModuleBuildAtlasModelAstAnchor
   roles { AtlasModelModule as generated, AtlasModelModuleBuildAtlasModelAstAnchor as syntax }
-  expects AtlasModelModuleBuildAtlasModelAstAnchor fingerprint ast.semantic_subtree_v1("sha256:11c94331973727655f5faba2f0e2c8e8215d5391fff48f55fccfc8d99d865ffc")
+  expects AtlasModelModuleBuildAtlasModelAstAnchor fingerprint ast.semantic_subtree_v1("sha256:41f9927967eb37549fecbd8390982567275c8d862898cc34f06caf28c98fcda4")
   summary "fn AtlasModelModule.buildAtlasModel generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/lib/atlas-model.mjs#buildAtlasModel."
 }
 

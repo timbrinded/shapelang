@@ -1,0 +1,273 @@
+module shape.generated.ast.plugins.shapelang.skills.unix_system_visualiser.assets.renderer.journey_player
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource JourneyPlayerModuleClearPendingAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journey-player.mjs#clearPending")
+  fingerprint ast.semantic_subtree_v1("sha256:90cb91c4ee490f3bf97a0b9953bd7806ab2b8e5f56c7c751ecbfc5513e696e13")
+}
+
+resource JourneyPlayerModuleCreateJourneyPlayerAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journey-player.mjs#createJourneyPlayer")
+  fingerprint ast.semantic_subtree_v1("sha256:de2de34debdf8c5bafebc36d36c319b83d4844c88c2ea820451515cb53407946")
+}
+
+resource JourneyPlayerModuleDestroyAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journey-player.mjs#destroy")
+  fingerprint ast.semantic_subtree_v1("sha256:4e08e0d8e4593664c3e6cd6803abdb7e05fb71abee27d74fa13af9fde5e3a884")
+}
+
+resource JourneyPlayerModuleEmitChangeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journey-player.mjs#emitChange")
+  fingerprint ast.semantic_subtree_v1("sha256:bdb34c23b63ebc601f878c7bdaf41d52cce42492ce07148fce1fcbb5a0b1b968")
+}
+
+resource JourneyPlayerModuleEmitStepAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journey-player.mjs#emitStep")
+  fingerprint ast.semantic_subtree_v1("sha256:586534f97950eebc2594638a67a2488c466b7f2e50f571eb4bc1d0f0b211d7ff")
+}
+
+resource JourneyPlayerModuleNextAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journey-player.mjs#next")
+  fingerprint ast.semantic_subtree_v1("sha256:66fd50752dbaaa1686c84783006c69ec67d1d650818b62a8f9bdad333a66da93")
+}
+
+resource JourneyPlayerModulePauseAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journey-player.mjs#pause")
+  fingerprint ast.semantic_subtree_v1("sha256:124ea8da1c26e85ff691478c8710bff42fc941e45b63bb9de0de74a884f2e3db")
+}
+
+resource JourneyPlayerModulePlayAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journey-player.mjs#play")
+  fingerprint ast.semantic_subtree_v1("sha256:485fdee1c0bb3847593698da10ceb14929ff720c04e075b1725b7d18de52e682")
+}
+
+resource JourneyPlayerModulePreviousAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journey-player.mjs#previous")
+  fingerprint ast.semantic_subtree_v1("sha256:0e85e3bbd17a83b0f0f94026d3486612705f107eccedf3e346405d313450ca22")
+}
+
+resource JourneyPlayerModuleRestartAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journey-player.mjs#restart")
+  fingerprint ast.semantic_subtree_v1("sha256:d83453d078f713970e2f9fc7dd6b30acc1ea60c82848bcba32b69413ea3c3aed")
+}
+
+resource JourneyPlayerModuleScheduleNextAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journey-player.mjs#scheduleNext")
+  fingerprint ast.semantic_subtree_v1("sha256:6661ed642c9aa096c81b27297bdf22f73c7fbdff23dfd10c2a36d32b5d4ee398")
+}
+
+resource JourneyPlayerModuleSeekAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journey-player.mjs#seek")
+  fingerprint ast.semantic_subtree_v1("sha256:41589d97198bc69e61e9f878bd4de364c76de4b7ad2b2381bacabb4f846dc496")
+}
+
+resource JourneyPlayerModuleSelectAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journey-player.mjs#select")
+  fingerprint ast.semantic_subtree_v1("sha256:5f064032c785c2d22c46221cc343dd3cb7e2eee390eff29f8f37ce83f285a4d9")
+}
+
+resource JourneyPlayerModuleSelectedJourneyAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journey-player.mjs#selectedJourney")
+  fingerprint ast.semantic_subtree_v1("sha256:ed5fd9a683e511a703d9d72932ea0f772dc40473cf8df8a3b0e60f6c430d5533")
+}
+
+resource JourneyPlayerModuleSetSpeedAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journey-player.mjs#setSpeed")
+  fingerprint ast.semantic_subtree_v1("sha256:192d49f888dd1fa9501072cfea90b9f1ce83876b2101adc67d116fbc52605bef")
+}
+
+resource JourneyPlayerModuleSnapshotAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journey-player.mjs#snapshot")
+  fingerprint ast.semantic_subtree_v1("sha256:df7aecdd74e0609eea7c59b26e27e6cb15174b7b71ed55f85b35085daa3f8e42")
+}
+
+component JourneyPlayerModule : GeneratedCandidate {
+  fn clearPending
+    source js("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journey-player.mjs#clearPending")
+    effects unknown
+  fn createJourneyPlayer
+    source js("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journey-player.mjs#createJourneyPlayer")
+    effects unknown
+  fn destroy
+    source js("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journey-player.mjs#destroy")
+    effects unknown
+  fn emitChange
+    source js("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journey-player.mjs#emitChange")
+    effects unknown
+  fn emitStep
+    source js("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journey-player.mjs#emitStep")
+    effects unknown
+  fn next
+    source js("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journey-player.mjs#next")
+    effects unknown
+  fn pause
+    source js("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journey-player.mjs#pause")
+    effects unknown
+  fn play
+    source js("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journey-player.mjs#play")
+    effects unknown
+  fn previous
+    source js("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journey-player.mjs#previous")
+    effects unknown
+  fn restart
+    source js("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journey-player.mjs#restart")
+    effects unknown
+  fn scheduleNext
+    source js("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journey-player.mjs#scheduleNext")
+    effects unknown
+  fn seek
+    source js("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journey-player.mjs#seek")
+    effects unknown
+  fn select
+    source js("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journey-player.mjs#select")
+    effects unknown
+  fn selectedJourney
+    source js("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journey-player.mjs#selectedJourney")
+    effects unknown
+  fn setSpeed
+    source js("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journey-player.mjs#setSpeed")
+    effects unknown
+  fn snapshot
+    source js("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journey-player.mjs#snapshot")
+    effects unknown
+}
+
+relation JourneyPlayerModuleClearPendingGeneratedFromJourneyPlayerModuleClearPendingAstAnchor {
+  kind generated_from
+  connects JourneyPlayerModule -> JourneyPlayerModuleClearPendingAstAnchor
+  roles { JourneyPlayerModule as generated, JourneyPlayerModuleClearPendingAstAnchor as syntax }
+  expects JourneyPlayerModuleClearPendingAstAnchor fingerprint ast.semantic_subtree_v1("sha256:90cb91c4ee490f3bf97a0b9953bd7806ab2b8e5f56c7c751ecbfc5513e696e13")
+  summary "fn JourneyPlayerModule.clearPending generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journey-player.mjs#clearPending."
+}
+
+relation JourneyPlayerModuleCreateJourneyPlayerGeneratedFromJourneyPlayerModuleCreateJourneyPlayerAstAnchor {
+  kind generated_from
+  connects JourneyPlayerModule -> JourneyPlayerModuleCreateJourneyPlayerAstAnchor
+  roles { JourneyPlayerModule as generated, JourneyPlayerModuleCreateJourneyPlayerAstAnchor as syntax }
+  expects JourneyPlayerModuleCreateJourneyPlayerAstAnchor fingerprint ast.semantic_subtree_v1("sha256:de2de34debdf8c5bafebc36d36c319b83d4844c88c2ea820451515cb53407946")
+  summary "fn JourneyPlayerModule.createJourneyPlayer generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journey-player.mjs#createJourneyPlayer."
+}
+
+relation JourneyPlayerModuleDestroyGeneratedFromJourneyPlayerModuleDestroyAstAnchor {
+  kind generated_from
+  connects JourneyPlayerModule -> JourneyPlayerModuleDestroyAstAnchor
+  roles { JourneyPlayerModule as generated, JourneyPlayerModuleDestroyAstAnchor as syntax }
+  expects JourneyPlayerModuleDestroyAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4e08e0d8e4593664c3e6cd6803abdb7e05fb71abee27d74fa13af9fde5e3a884")
+  summary "fn JourneyPlayerModule.destroy generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journey-player.mjs#destroy."
+}
+
+relation JourneyPlayerModuleEmitChangeGeneratedFromJourneyPlayerModuleEmitChangeAstAnchor {
+  kind generated_from
+  connects JourneyPlayerModule -> JourneyPlayerModuleEmitChangeAstAnchor
+  roles { JourneyPlayerModule as generated, JourneyPlayerModuleEmitChangeAstAnchor as syntax }
+  expects JourneyPlayerModuleEmitChangeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:bdb34c23b63ebc601f878c7bdaf41d52cce42492ce07148fce1fcbb5a0b1b968")
+  summary "fn JourneyPlayerModule.emitChange generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journey-player.mjs#emitChange."
+}
+
+relation JourneyPlayerModuleEmitStepGeneratedFromJourneyPlayerModuleEmitStepAstAnchor {
+  kind generated_from
+  connects JourneyPlayerModule -> JourneyPlayerModuleEmitStepAstAnchor
+  roles { JourneyPlayerModule as generated, JourneyPlayerModuleEmitStepAstAnchor as syntax }
+  expects JourneyPlayerModuleEmitStepAstAnchor fingerprint ast.semantic_subtree_v1("sha256:586534f97950eebc2594638a67a2488c466b7f2e50f571eb4bc1d0f0b211d7ff")
+  summary "fn JourneyPlayerModule.emitStep generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journey-player.mjs#emitStep."
+}
+
+relation JourneyPlayerModuleNextGeneratedFromJourneyPlayerModuleNextAstAnchor {
+  kind generated_from
+  connects JourneyPlayerModule -> JourneyPlayerModuleNextAstAnchor
+  roles { JourneyPlayerModule as generated, JourneyPlayerModuleNextAstAnchor as syntax }
+  expects JourneyPlayerModuleNextAstAnchor fingerprint ast.semantic_subtree_v1("sha256:66fd50752dbaaa1686c84783006c69ec67d1d650818b62a8f9bdad333a66da93")
+  summary "fn JourneyPlayerModule.next generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journey-player.mjs#next."
+}
+
+relation JourneyPlayerModulePauseGeneratedFromJourneyPlayerModulePauseAstAnchor {
+  kind generated_from
+  connects JourneyPlayerModule -> JourneyPlayerModulePauseAstAnchor
+  roles { JourneyPlayerModule as generated, JourneyPlayerModulePauseAstAnchor as syntax }
+  expects JourneyPlayerModulePauseAstAnchor fingerprint ast.semantic_subtree_v1("sha256:124ea8da1c26e85ff691478c8710bff42fc941e45b63bb9de0de74a884f2e3db")
+  summary "fn JourneyPlayerModule.pause generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journey-player.mjs#pause."
+}
+
+relation JourneyPlayerModulePlayGeneratedFromJourneyPlayerModulePlayAstAnchor {
+  kind generated_from
+  connects JourneyPlayerModule -> JourneyPlayerModulePlayAstAnchor
+  roles { JourneyPlayerModule as generated, JourneyPlayerModulePlayAstAnchor as syntax }
+  expects JourneyPlayerModulePlayAstAnchor fingerprint ast.semantic_subtree_v1("sha256:485fdee1c0bb3847593698da10ceb14929ff720c04e075b1725b7d18de52e682")
+  summary "fn JourneyPlayerModule.play generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journey-player.mjs#play."
+}
+
+relation JourneyPlayerModulePreviousGeneratedFromJourneyPlayerModulePreviousAstAnchor {
+  kind generated_from
+  connects JourneyPlayerModule -> JourneyPlayerModulePreviousAstAnchor
+  roles { JourneyPlayerModule as generated, JourneyPlayerModulePreviousAstAnchor as syntax }
+  expects JourneyPlayerModulePreviousAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0e85e3bbd17a83b0f0f94026d3486612705f107eccedf3e346405d313450ca22")
+  summary "fn JourneyPlayerModule.previous generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journey-player.mjs#previous."
+}
+
+relation JourneyPlayerModuleRestartGeneratedFromJourneyPlayerModuleRestartAstAnchor {
+  kind generated_from
+  connects JourneyPlayerModule -> JourneyPlayerModuleRestartAstAnchor
+  roles { JourneyPlayerModule as generated, JourneyPlayerModuleRestartAstAnchor as syntax }
+  expects JourneyPlayerModuleRestartAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d83453d078f713970e2f9fc7dd6b30acc1ea60c82848bcba32b69413ea3c3aed")
+  summary "fn JourneyPlayerModule.restart generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journey-player.mjs#restart."
+}
+
+relation JourneyPlayerModuleScheduleNextGeneratedFromJourneyPlayerModuleScheduleNextAstAnchor {
+  kind generated_from
+  connects JourneyPlayerModule -> JourneyPlayerModuleScheduleNextAstAnchor
+  roles { JourneyPlayerModule as generated, JourneyPlayerModuleScheduleNextAstAnchor as syntax }
+  expects JourneyPlayerModuleScheduleNextAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6661ed642c9aa096c81b27297bdf22f73c7fbdff23dfd10c2a36d32b5d4ee398")
+  summary "fn JourneyPlayerModule.scheduleNext generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journey-player.mjs#scheduleNext."
+}
+
+relation JourneyPlayerModuleSeekGeneratedFromJourneyPlayerModuleSeekAstAnchor {
+  kind generated_from
+  connects JourneyPlayerModule -> JourneyPlayerModuleSeekAstAnchor
+  roles { JourneyPlayerModule as generated, JourneyPlayerModuleSeekAstAnchor as syntax }
+  expects JourneyPlayerModuleSeekAstAnchor fingerprint ast.semantic_subtree_v1("sha256:41589d97198bc69e61e9f878bd4de364c76de4b7ad2b2381bacabb4f846dc496")
+  summary "fn JourneyPlayerModule.seek generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journey-player.mjs#seek."
+}
+
+relation JourneyPlayerModuleSelectGeneratedFromJourneyPlayerModuleSelectAstAnchor {
+  kind generated_from
+  connects JourneyPlayerModule -> JourneyPlayerModuleSelectAstAnchor
+  roles { JourneyPlayerModule as generated, JourneyPlayerModuleSelectAstAnchor as syntax }
+  expects JourneyPlayerModuleSelectAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5f064032c785c2d22c46221cc343dd3cb7e2eee390eff29f8f37ce83f285a4d9")
+  summary "fn JourneyPlayerModule.select generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journey-player.mjs#select."
+}
+
+relation JourneyPlayerModuleSelectedJourneyGeneratedFromJourneyPlayerModuleSelectedJourneyAstAnchor {
+  kind generated_from
+  connects JourneyPlayerModule -> JourneyPlayerModuleSelectedJourneyAstAnchor
+  roles { JourneyPlayerModule as generated, JourneyPlayerModuleSelectedJourneyAstAnchor as syntax }
+  expects JourneyPlayerModuleSelectedJourneyAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ed5fd9a683e511a703d9d72932ea0f772dc40473cf8df8a3b0e60f6c430d5533")
+  summary "fn JourneyPlayerModule.selectedJourney generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journey-player.mjs#selectedJourney."
+}
+
+relation JourneyPlayerModuleSetSpeedGeneratedFromJourneyPlayerModuleSetSpeedAstAnchor {
+  kind generated_from
+  connects JourneyPlayerModule -> JourneyPlayerModuleSetSpeedAstAnchor
+  roles { JourneyPlayerModule as generated, JourneyPlayerModuleSetSpeedAstAnchor as syntax }
+  expects JourneyPlayerModuleSetSpeedAstAnchor fingerprint ast.semantic_subtree_v1("sha256:192d49f888dd1fa9501072cfea90b9f1ce83876b2101adc67d116fbc52605bef")
+  summary "fn JourneyPlayerModule.setSpeed generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journey-player.mjs#setSpeed."
+}
+
+relation JourneyPlayerModuleSnapshotGeneratedFromJourneyPlayerModuleSnapshotAstAnchor {
+  kind generated_from
+  connects JourneyPlayerModule -> JourneyPlayerModuleSnapshotAstAnchor
+  roles { JourneyPlayerModule as generated, JourneyPlayerModuleSnapshotAstAnchor as syntax }
+  expects JourneyPlayerModuleSnapshotAstAnchor fingerprint ast.semantic_subtree_v1("sha256:df7aecdd74e0609eea7c59b26e27e6cb15174b7b71ed55f85b35085daa3f8e42")
+  summary "fn JourneyPlayerModule.snapshot generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journey-player.mjs#snapshot."
+}
+
+implementation JourneyPlayerModuleImpl {
+  paths {
+    "plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journey-player.mjs"
+  }
+  conforms_to JourneyPlayerModule
+}

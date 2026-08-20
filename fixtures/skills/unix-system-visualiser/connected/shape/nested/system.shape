@@ -25,6 +25,13 @@ relation ConsoleCallsStore {
   connects SystemConsole -> EventStore
 }
 
+relation RenderStoredEventsJourney {
+  kind coordinated_call
+  connects SystemConsole -> EventStore -> SystemEvent
+  roles { EventStore as read, SystemConsole as dispatch, SystemEvent as present }
+  summary "Rendering stored events through the authored console path."
+}
+
 implementation EventStoreSource {
   paths {
     "src/system.ts"

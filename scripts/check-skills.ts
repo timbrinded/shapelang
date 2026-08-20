@@ -169,12 +169,25 @@ function validateBundledResources(
 
   const generatorPath = join(skillRoot, "scripts/generate.mjs");
   const atlasModelPath = join(skillRoot, "lib/atlas-model.mjs");
+  const journeyModelPath = join(skillRoot, "lib/journey-model.mjs");
   const templatePath = join(skillRoot, "assets/index.template.html");
   const stylePath = join(skillRoot, "assets/styles.css");
-  const rendererPaths = ["bootstrap.mjs", "canvas.mjs", "details.mjs", "interactions.mjs"].map(
-    (name) => join(skillRoot, "assets/renderer", name)
-  );
-  const requiredPaths = [generatorPath, atlasModelPath, templatePath, stylePath, ...rendererPaths];
+  const rendererPaths = [
+    "bootstrap.mjs",
+    "canvas.mjs",
+    "details.mjs",
+    "journey-player.mjs",
+    "journeys.mjs",
+    "interactions.mjs"
+  ].map((name) => join(skillRoot, "assets/renderer", name));
+  const requiredPaths = [
+    generatorPath,
+    atlasModelPath,
+    journeyModelPath,
+    templatePath,
+    stylePath,
+    ...rendererPaths
+  ];
   for (const requiredPath of requiredPaths) {
     if (!existsSync(requiredPath)) {
       failures.push(`${relative(repositoryRoot, requiredPath)}: missing required bundled resource`);
@@ -190,7 +203,8 @@ function validateBundledResources(
       `${relative(repositoryRoot, generatorPath)}: generator must consume the semantic inspect --json interface`
     );
   }
-  const deterministicSources = generator + readFileSync(atlasModelPath, "utf8");
+  const deterministicSources =
+    generator + readFileSync(atlasModelPath, "utf8") + readFileSync(journeyModelPath, "utf8");
   for (const nondeterministicMarker of ["generatedAt", "Date.now(", "new Date("]) {
     if (deterministicSources.includes(nondeterministicMarker)) {
       failures.push(

@@ -1389,10 +1389,38 @@
       ]
     },
     {
+      "module": "shape.generated.ast.plugins.shapelang.skills.unix_system_visualiser.assets.renderer.journey_player",
+      "path": "shape/generated/ast/plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journey-player.shape",
+      "sources": [
+        "plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journey-player.mjs"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.plugins.shapelang.skills.unix_system_visualiser.assets.renderer.journey_player_test",
+      "path": "shape/generated/ast/plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journey-player.test.shape",
+      "sources": [
+        "plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journey-player.test.mjs"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.plugins.shapelang.skills.unix_system_visualiser.assets.renderer.journeys",
+      "path": "shape/generated/ast/plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journeys.shape",
+      "sources": [
+        "plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journeys.mjs"
+      ]
+    },
+    {
       "module": "shape.generated.ast.plugins.shapelang.skills.unix_system_visualiser.lib.atlas_model",
       "path": "shape/generated/ast/plugins/shapelang/skills/unix-system-visualiser/lib/atlas-model.shape",
       "sources": [
         "plugins/shapelang/skills/unix-system-visualiser/lib/atlas-model.mjs"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.plugins.shapelang.skills.unix_system_visualiser.lib.journey_model",
+      "path": "shape/generated/ast/plugins/shapelang/skills/unix-system-visualiser/lib/journey-model.shape",
+      "sources": [
+        "plugins/shapelang/skills/unix-system-visualiser/lib/journey-model.mjs"
       ]
     },
     {
@@ -1407,6 +1435,13 @@
       "path": "shape/generated/ast/plugins/shapelang/skills/unix-system-visualiser/scripts/generate.test.shape",
       "sources": [
         "plugins/shapelang/skills/unix-system-visualiser/scripts/generate.test.mjs"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.plugins.shapelang.skills.unix_system_visualiser.scripts.journey_model_test",
+      "path": "shape/generated/ast/plugins/shapelang/skills/unix-system-visualiser/scripts/journey-model.test.shape",
+      "sources": [
+        "plugins/shapelang/skills/unix-system-visualiser/scripts/journey-model.test.mjs"
       ]
     },
     {

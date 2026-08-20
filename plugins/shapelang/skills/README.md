@@ -34,7 +34,7 @@ plugins/shapelang/skills/unix-system-visualiser/SKILL.md
 - `shape-contract-preflight`: current-model orientation and optional model-only contract simulation before implementation.
 - `shape-index`: explicit-only whole-repository modeling from a fixed clean baseline, without invariant quotas.
 - `shape-review`: concrete code-bug review with focused Shape evidence and separate stale-model warnings.
-- `unix-system-visualiser`: deterministic generation and browser validation of a self-contained interactive atlas from authored Shape inspection data.
+- `unix-system-visualiser`: deterministic generation and browser validation of a self-contained interactive atlas with authored journeys and inferred dependency tours from Shape inspection data.
 
 ## Validate
 

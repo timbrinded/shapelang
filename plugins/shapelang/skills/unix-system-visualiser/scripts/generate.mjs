@@ -252,6 +252,8 @@ const rendererPaths = [
   "../assets/renderer/bootstrap.mjs",
   "../assets/renderer/canvas.mjs",
   "../assets/renderer/details.mjs",
+  "../assets/renderer/journey-player.mjs",
+  "../assets/renderer/journeys.mjs",
   "../assets/renderer/interactions.mjs"
 ].map((relativePath) => path.resolve(scriptDirectory, relativePath));
 const template = fs.readFileSync(templatePath, "utf8");

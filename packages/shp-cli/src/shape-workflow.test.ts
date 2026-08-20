@@ -776,7 +776,7 @@ function skillsReleaseResult() {
         status: "pass",
         outcome: "complete",
         evidence:
-          "The nested authored SystemEvent model contains 1 resource, 2 components, 2 functions, and 1 relation. It generated identical offline HTML files; authored claims are not runtime proof.",
+          "The nested authored SystemEvent model contains 1 resource, 2 components, 2 functions, and 2 relations. It generated identical offline HTML files with 1 authored journey and 1 inferred dependency tour; authored claims are not runtime proof.",
         commands: [
           "bun shp check fixtures/skills/unix-system-visualiser/connected/shape/nested/system.shape",
           'bun plugins/shapelang/skills/unix-system-visualiser/scripts/generate.mjs --repo fixtures/skills/unix-system-visualiser/connected --output .research/atlas-a.html --shape-command "bun ../../../../packages/shp-cli/src/index.ts"',

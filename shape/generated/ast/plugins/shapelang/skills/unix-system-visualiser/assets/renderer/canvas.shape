@@ -31,6 +31,21 @@ resource CanvasModuleDrawGroundAstAnchor : GeneratedAstAnchor {
   fingerprint ast.semantic_subtree_v1("sha256:69f96fe24cea80360bb495f100e83a33306f9aec59d48d6c6e846a20435ad506")
 }
 
+resource CanvasModuleDrawJourneyLegAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/canvas.mjs#drawJourneyLeg")
+  fingerprint ast.semantic_subtree_v1("sha256:01513456616d7c3c1f0cd8fa1253db0d72ef4f4bd8fb5989e8ac98ff288f88d3")
+}
+
+resource CanvasModuleDrawJourneyNetworkAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/canvas.mjs#drawJourneyNetwork")
+  fingerprint ast.semantic_subtree_v1("sha256:3873ed774839066a381b7c1c642311978d78e0d2a78e588823b2f7b0dcdbc80e")
+}
+
+resource CanvasModuleDrawJourneyStepMarkerAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/canvas.mjs#drawJourneyStepMarker")
+  fingerprint ast.semantic_subtree_v1("sha256:10c56ec4a29e8bc6e40150ac310555a88db45a7c22584061d1bfa276ad8bf16b")
+}
+
 resource CanvasModuleDrawLinkMarkerAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/canvas.mjs#drawLinkMarker")
   fingerprint ast.semantic_subtree_v1("sha256:4b0aa4ef6a6d75710194d87fb5f1a3d13e05d5298d89551a9a397c9dfe45b08f")
@@ -68,7 +83,7 @@ resource CanvasModuleProjectAstAnchor : GeneratedAstAnchor {
 
 resource CanvasModuleRenderAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/canvas.mjs#render")
-  fingerprint ast.semantic_subtree_v1("sha256:1befd08674a2999332ca0c6d264ff274714541ac2500d31af161df594a59c0f5")
+  fingerprint ast.semantic_subtree_v1("sha256:aa7daf56686b2ba0058b729abccd9bf5d18461881225c1cccfd0f22b3b442f51")
 }
 
 resource CanvasModuleScheduleRenderAstAnchor : GeneratedAstAnchor {
@@ -116,6 +131,15 @@ component CanvasModule : GeneratedCandidate {
     effects unknown
   fn drawGround
     source js("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/canvas.mjs#drawGround")
+    effects unknown
+  fn drawJourneyLeg
+    source js("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/canvas.mjs#drawJourneyLeg")
+    effects unknown
+  fn drawJourneyNetwork
+    source js("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/canvas.mjs#drawJourneyNetwork")
+    effects unknown
+  fn drawJourneyStepMarker
+    source js("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/canvas.mjs#drawJourneyStepMarker")
     effects unknown
   fn drawLinkMarker
     source js("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/canvas.mjs#drawLinkMarker")
@@ -201,6 +225,30 @@ relation CanvasModuleDrawGroundGeneratedFromCanvasModuleDrawGroundAstAnchor {
   summary "fn CanvasModule.drawGround generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/assets/renderer/canvas.mjs#drawGround."
 }
 
+relation CanvasModuleDrawJourneyLegGeneratedFromCanvasModuleDrawJourneyLegAstAnchor {
+  kind generated_from
+  connects CanvasModule -> CanvasModuleDrawJourneyLegAstAnchor
+  roles { CanvasModule as generated, CanvasModuleDrawJourneyLegAstAnchor as syntax }
+  expects CanvasModuleDrawJourneyLegAstAnchor fingerprint ast.semantic_subtree_v1("sha256:01513456616d7c3c1f0cd8fa1253db0d72ef4f4bd8fb5989e8ac98ff288f88d3")
+  summary "fn CanvasModule.drawJourneyLeg generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/assets/renderer/canvas.mjs#drawJourneyLeg."
+}
+
+relation CanvasModuleDrawJourneyNetworkGeneratedFromCanvasModuleDrawJourneyNetworkAstAnchor {
+  kind generated_from
+  connects CanvasModule -> CanvasModuleDrawJourneyNetworkAstAnchor
+  roles { CanvasModule as generated, CanvasModuleDrawJourneyNetworkAstAnchor as syntax }
+  expects CanvasModuleDrawJourneyNetworkAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3873ed774839066a381b7c1c642311978d78e0d2a78e588823b2f7b0dcdbc80e")
+  summary "fn CanvasModule.drawJourneyNetwork generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/assets/renderer/canvas.mjs#drawJourneyNetwork."
+}
+
+relation CanvasModuleDrawJourneyStepMarkerGeneratedFromCanvasModuleDrawJourneyStepMarkerAstAnchor {
+  kind generated_from
+  connects CanvasModule -> CanvasModuleDrawJourneyStepMarkerAstAnchor
+  roles { CanvasModule as generated, CanvasModuleDrawJourneyStepMarkerAstAnchor as syntax }
+  expects CanvasModuleDrawJourneyStepMarkerAstAnchor fingerprint ast.semantic_subtree_v1("sha256:10c56ec4a29e8bc6e40150ac310555a88db45a7c22584061d1bfa276ad8bf16b")
+  summary "fn CanvasModule.drawJourneyStepMarker generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/assets/renderer/canvas.mjs#drawJourneyStepMarker."
+}
+
 relation CanvasModuleDrawLinkMarkerGeneratedFromCanvasModuleDrawLinkMarkerAstAnchor {
   kind generated_from
   connects CanvasModule -> CanvasModuleDrawLinkMarkerAstAnchor
@@ -261,7 +309,7 @@ relation CanvasModuleRenderGeneratedFromCanvasModuleRenderAstAnchor {
   kind generated_from
   connects CanvasModule -> CanvasModuleRenderAstAnchor
   roles { CanvasModule as generated, CanvasModuleRenderAstAnchor as syntax }
-  expects CanvasModuleRenderAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1befd08674a2999332ca0c6d264ff274714541ac2500d31af161df594a59c0f5")
+  expects CanvasModuleRenderAstAnchor fingerprint ast.semantic_subtree_v1("sha256:aa7daf56686b2ba0058b729abccd9bf5d18461881225c1cccfd0f22b3b442f51")
   summary "fn CanvasModule.render generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/assets/renderer/canvas.mjs#render."
 }
 

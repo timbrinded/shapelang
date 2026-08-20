@@ -109,7 +109,7 @@ component CiPipeline {
     }
   fn evaluateReleaseSkills
     source mjs(".github/scripts/run-claude-skill.mjs#buildSkillsReleasePrompt")
-    description "Runs configured static conformance checks and focused fixture canaries across all six shipped skills, including deterministic ignored visualiser generation, then emits one blocking structured report."
+    description "Runs configured static conformance checks and focused fixture canaries across all six shipped skills, including deterministic ignored visualiser generation and guided architecture journeys, then emits one blocking structured report."
     effects complete {
       Read<CiWorkflow>
         evidence yaml(".github/workflows/release-candidate.yml")
@@ -174,6 +174,8 @@ component CiPipeline {
       Read<ShapeAgentSkill>
         evidence mjs("plugins/shapelang/skills/unix-system-visualiser/lib/atlas-model.mjs")
       Read<ShapeAgentSkill>
+        evidence mjs("plugins/shapelang/skills/unix-system-visualiser/lib/journey-model.mjs")
+      Read<ShapeAgentSkill>
         evidence html("plugins/shapelang/skills/unix-system-visualiser/assets/index.template.html")
       Read<ShapeAgentSkill>
         evidence css("plugins/shapelang/skills/unix-system-visualiser/assets/styles.css")
@@ -183,6 +185,10 @@ component CiPipeline {
         evidence mjs("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/canvas.mjs")
       Read<ShapeAgentSkill>
         evidence mjs("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/details.mjs")
+      Read<ShapeAgentSkill>
+        evidence mjs("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journey-player.mjs")
+      Read<ShapeAgentSkill>
+        evidence mjs("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journeys.mjs")
       Read<ShapeAgentSkill>
         evidence mjs("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/interactions.mjs")
       Read<ShapeAgentSkill>
@@ -417,7 +423,11 @@ component CiPipeline {
       Read<ShapeAgentSkill>
         evidence mjs("plugins/shapelang/skills/unix-system-visualiser/lib/atlas-model.mjs")
       Read<ShapeAgentSkill>
+        evidence mjs("plugins/shapelang/skills/unix-system-visualiser/lib/journey-model.mjs")
+      Read<ShapeAgentSkill>
         evidence mjs("plugins/shapelang/skills/unix-system-visualiser/scripts/generate.test.mjs")
+      Read<ShapeAgentSkill>
+        evidence mjs("plugins/shapelang/skills/unix-system-visualiser/scripts/journey-model.test.mjs")
       Read<ShapeAgentSkill>
         evidence html("plugins/shapelang/skills/unix-system-visualiser/assets/index.template.html")
       Read<ShapeAgentSkill>
@@ -428,6 +438,12 @@ component CiPipeline {
         evidence mjs("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/canvas.mjs")
       Read<ShapeAgentSkill>
         evidence mjs("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/details.mjs")
+      Read<ShapeAgentSkill>
+        evidence mjs("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journey-player.mjs")
+      Read<ShapeAgentSkill>
+        evidence mjs("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journey-player.test.mjs")
+      Read<ShapeAgentSkill>
+        evidence mjs("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journeys.mjs")
       Read<ShapeAgentSkill>
         evidence mjs("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/interactions.mjs")
       Read<SkillBehaviorFixture>

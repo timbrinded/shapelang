@@ -175,7 +175,10 @@ function appendDetailItem(list, item) {
     content.className = "detail-link";
     content.type = "button";
     content.setAttribute("aria-label", "Focus " + item.title + " via " + item.meta.toLowerCase());
-    content.addEventListener("click", item.onActivate);
+    content.addEventListener("click", () => {
+      pauseJourneyForManualControl();
+      item.onActivate();
+    });
   }
   meta.className = "detail-meta";
   title.className = "detail-title";
@@ -519,6 +522,85 @@ function focusFrameFor(node) {
   };
 }
 
+function journeyFrameFor(step, destination) {
+  const frameNodes = [step.fromNodeId, step.relationNodeId, step.nodeId]
+    .map((id) => (id ? nodeById.get(id) : null))
+    .filter(Boolean);
+  if (frameNodes.length <= 1) {
+    return focusFrameFor(destination);
+  }
+
+  const bounds = frameNodes.reduce(
+    (result, node) => {
+      const style = styles[node.type];
+      return {
+        minX: Math.min(result.minX, node.x - style.width / 2 - 10),
+        maxX: Math.max(result.maxX, node.x + style.width / 2 + 10),
+        minZ: Math.min(result.minZ, node.z - style.depth / 2 - 10),
+        maxZ: Math.max(result.maxZ, node.z + style.depth / 2 + 10),
+        targetHeight: Math.max(result.targetHeight, 2.55 + style.height)
+      };
+    },
+    {
+      minX: Infinity,
+      maxX: -Infinity,
+      minZ: Infinity,
+      maxZ: -Infinity,
+      targetHeight: 0
+    }
+  );
+  const centreX = (bounds.minX + bounds.maxX) / 2;
+  const centreZ = (bounds.minZ + bounds.maxZ) / 2;
+  const spanX = bounds.maxX - bounds.minX;
+  const spanZ = bounds.maxZ - bounds.minZ;
+  const cameraHeight = clamp(Math.max(58, spanX * 0.22, spanZ * 0.2), 58, maximumCameraHeight);
+  const focal = Math.max(1, Math.min(state.width, state.height) / (2 * Math.tan(state.fov / 2)));
+  const panelWidth = navigatorPanel.getBoundingClientRect().width || 308;
+  const usableWidth = Math.max(state.width * 0.5, state.width - panelWidth - 32);
+  const usableHalfWidth = Math.max(80, usableWidth / 2 - 28);
+  const requiredDepth = ((spanX / 2) * focal) / usableHalfWidth;
+  const pitchCos = Math.cos(fixedPerspective.pitch);
+  const pitchSin = Math.sin(fixedPerspective.pitch);
+  const verticalDelta = bounds.targetHeight - cameraHeight;
+  const widthDistance =
+    Math.abs(pitchCos) > 0.0001
+      ? (requiredDepth - verticalDelta * pitchSin) / pitchCos
+      : requiredDepth;
+  const distance = Math.max(104, spanZ * 1.45, widthDistance);
+  const cameraDepth = verticalDelta * pitchSin + distance * pitchCos;
+  const panelShift = Math.min(panelWidth / 2 + 16, state.width * 0.22);
+
+  return {
+    x: centreX + (panelShift * cameraDepth) / focal,
+    y: cameraHeight,
+    z: centreZ - distance,
+    yaw: fixedPerspective.yaw,
+    pitch: fixedPerspective.pitch
+  };
+}
+
+function focusJourneyStep(step) {
+  const destination = nodeById.get(step.nodeId);
+  if (!destination) {
+    return false;
+  }
+  selectNode(destination, false);
+  const end = journeyFrameFor(step, destination);
+  if (prefersReducedMotion.matches) {
+    Object.assign(state.camera, end);
+    state.focus = null;
+  } else {
+    state.focus = {
+      start: { ...state.camera },
+      end,
+      startedAt: performance.now(),
+      duration: 820
+    };
+  }
+  scheduleRender();
+  return true;
+}
+
 function focusNode(node, speak) {
   selectNode(node, speak);
   const end = focusFrameFor(node);
@@ -596,6 +678,7 @@ function renderResults(query) {
     name.textContent = node.label;
     button.append(kind, name);
     button.addEventListener("click", () => {
+      pauseJourneyForManualControl();
       focusNode(node, true);
       locator.value = "";
       results.replaceChildren();
@@ -611,4 +694,11 @@ function renderResults(query) {
   }
 }
 
-export { groundPointFromPointer, nodeUnderPointer, panToGround, renderResults, resetOverview };
+export {
+  focusJourneyStep,
+  groundPointFromPointer,
+  nodeUnderPointer,
+  panToGround,
+  renderResults,
+  resetOverview
+};

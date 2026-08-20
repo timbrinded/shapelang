@@ -1,0 +1,257 @@
+module shape.generated.ast.plugins.shapelang.skills.unix_system_visualiser.assets.renderer.journeys
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource JourneysModuleApplyJourneyStepAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journeys.mjs#applyJourneyStep")
+  fingerprint ast.semantic_subtree_v1("sha256:b46ad05110192e49ad51ac73697ccc8bf32b9afdaa684e0bad5537cb076385fe")
+}
+
+resource JourneysModuleCurrentJourneyAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journeys.mjs#currentJourney")
+  fingerprint ast.semantic_subtree_v1("sha256:eceabe48ac3e4813c31207a8dc69b47bba104e3c554dc0d82645a2c091fe492f")
+}
+
+resource JourneysModuleJourneyDisplayStateAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journeys.mjs#journeyDisplayState")
+  fingerprint ast.semantic_subtree_v1("sha256:41dc9dff09c5f0dd4dd517c7406341aee93d6c07ed298feb372241911251e683")
+}
+
+resource JourneysModuleJourneyIdsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journeys.mjs#journeyIds")
+  fingerprint ast.semantic_subtree_v1("sha256:f99971cc0e7f384796fdcf62f8f89c674737c49117381cb393fcccec243b1630")
+}
+
+resource JourneysModuleJourneySnapshotAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journeys.mjs#journeySnapshot")
+  fingerprint ast.semantic_subtree_v1("sha256:f048c142b5a212fbb135b071839d56e3e1c730baf8681a101c5a36d1a0fb4e46")
+}
+
+resource JourneysModuleNextJourneyStepAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journeys.mjs#nextJourneyStep")
+  fingerprint ast.semantic_subtree_v1("sha256:8406682aaa0b052127b77e71e4cc46906bc689385fc4e631baa31e9e6c6a9c08")
+}
+
+resource JourneysModulePauseJourneyAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journeys.mjs#pauseJourney")
+  fingerprint ast.semantic_subtree_v1("sha256:55c71eb683b1500efac510c6a6ec4f3ca05ad06772085998d4076e2ac075a2d6")
+}
+
+resource JourneysModulePauseJourneyForManualControlAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journeys.mjs#pauseJourneyForManualControl")
+  fingerprint ast.semantic_subtree_v1("sha256:e28746bec79abce107e14de4a2bbc0b4078bc9e035151006e1778e08255138c1")
+}
+
+resource JourneysModulePlayJourneyAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journeys.mjs#playJourney")
+  fingerprint ast.semantic_subtree_v1("sha256:397620879d2abfb3f7e85aa8455216116daee6b35e66e1b92f20fd1f6f68b0be")
+}
+
+resource JourneysModulePreviousJourneyStepAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journeys.mjs#previousJourneyStep")
+  fingerprint ast.semantic_subtree_v1("sha256:4ca5b236f940aead4b4c2e3d523bf73016c424820e8180ced76e8a656fc5b056")
+}
+
+resource JourneysModuleRenderJourneyStateAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journeys.mjs#renderJourneyState")
+  fingerprint ast.semantic_subtree_v1("sha256:112980b2e320d6c7c82fce0d2d6bdf55f902a05512959245fe361631a88a6efc")
+}
+
+resource JourneysModuleRestartJourneyAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journeys.mjs#restartJourney")
+  fingerprint ast.semantic_subtree_v1("sha256:843b828418790ffe58f199314fca05e89f827ec428ed84021545621021216fbd")
+}
+
+resource JourneysModuleSeekJourneyStepAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journeys.mjs#seekJourneyStep")
+  fingerprint ast.semantic_subtree_v1("sha256:38191ca4f73fc3f2cdff6fbd6c790d3f93d36872e5100771130d0c2f6213fb05")
+}
+
+resource JourneysModuleSelectJourneyAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journeys.mjs#selectJourney")
+  fingerprint ast.semantic_subtree_v1("sha256:36a673173a6ef182fe43a70eb16e365fc9600f5aa8a325476ed0fb2a16d498fa")
+}
+
+resource JourneysModuleSetJourneySpeedAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journeys.mjs#setJourneySpeed")
+  fingerprint ast.semantic_subtree_v1("sha256:7c596a4fb0f17e15f2cac2893b7116c8c2033f15b95af777be5f073bd9e5a993")
+}
+
+component JourneysModule : GeneratedCandidate {
+  fn applyJourneyStep
+    source js("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journeys.mjs#applyJourneyStep")
+    effects unknown
+  fn currentJourney
+    source js("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journeys.mjs#currentJourney")
+    effects unknown
+  fn journeyDisplayState
+    source js("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journeys.mjs#journeyDisplayState")
+    effects unknown
+  fn journeyIds
+    source js("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journeys.mjs#journeyIds")
+    effects unknown
+  fn journeySnapshot
+    source js("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journeys.mjs#journeySnapshot")
+    effects unknown
+  fn nextJourneyStep
+    source js("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journeys.mjs#nextJourneyStep")
+    effects unknown
+  fn pauseJourney
+    source js("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journeys.mjs#pauseJourney")
+    effects unknown
+  fn pauseJourneyForManualControl
+    source js("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journeys.mjs#pauseJourneyForManualControl")
+    effects unknown
+  fn playJourney
+    source js("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journeys.mjs#playJourney")
+    effects unknown
+  fn previousJourneyStep
+    source js("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journeys.mjs#previousJourneyStep")
+    effects unknown
+  fn renderJourneyState
+    source js("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journeys.mjs#renderJourneyState")
+    effects unknown
+  fn restartJourney
+    source js("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journeys.mjs#restartJourney")
+    effects unknown
+  fn seekJourneyStep
+    source js("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journeys.mjs#seekJourneyStep")
+    effects unknown
+  fn selectJourney
+    source js("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journeys.mjs#selectJourney")
+    effects unknown
+  fn setJourneySpeed
+    source js("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journeys.mjs#setJourneySpeed")
+    effects unknown
+}
+
+relation JourneysModuleApplyJourneyStepGeneratedFromJourneysModuleApplyJourneyStepAstAnchor {
+  kind generated_from
+  connects JourneysModule -> JourneysModuleApplyJourneyStepAstAnchor
+  roles { JourneysModule as generated, JourneysModuleApplyJourneyStepAstAnchor as syntax }
+  expects JourneysModuleApplyJourneyStepAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b46ad05110192e49ad51ac73697ccc8bf32b9afdaa684e0bad5537cb076385fe")
+  summary "fn JourneysModule.applyJourneyStep generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journeys.mjs#applyJourneyStep."
+}
+
+relation JourneysModuleCurrentJourneyGeneratedFromJourneysModuleCurrentJourneyAstAnchor {
+  kind generated_from
+  connects JourneysModule -> JourneysModuleCurrentJourneyAstAnchor
+  roles { JourneysModule as generated, JourneysModuleCurrentJourneyAstAnchor as syntax }
+  expects JourneysModuleCurrentJourneyAstAnchor fingerprint ast.semantic_subtree_v1("sha256:eceabe48ac3e4813c31207a8dc69b47bba104e3c554dc0d82645a2c091fe492f")
+  summary "fn JourneysModule.currentJourney generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journeys.mjs#currentJourney."
+}
+
+relation JourneysModuleJourneyDisplayStateGeneratedFromJourneysModuleJourneyDisplayStateAstAnchor {
+  kind generated_from
+  connects JourneysModule -> JourneysModuleJourneyDisplayStateAstAnchor
+  roles { JourneysModule as generated, JourneysModuleJourneyDisplayStateAstAnchor as syntax }
+  expects JourneysModuleJourneyDisplayStateAstAnchor fingerprint ast.semantic_subtree_v1("sha256:41dc9dff09c5f0dd4dd517c7406341aee93d6c07ed298feb372241911251e683")
+  summary "fn JourneysModule.journeyDisplayState generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journeys.mjs#journeyDisplayState."
+}
+
+relation JourneysModuleJourneyIdsGeneratedFromJourneysModuleJourneyIdsAstAnchor {
+  kind generated_from
+  connects JourneysModule -> JourneysModuleJourneyIdsAstAnchor
+  roles { JourneysModule as generated, JourneysModuleJourneyIdsAstAnchor as syntax }
+  expects JourneysModuleJourneyIdsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f99971cc0e7f384796fdcf62f8f89c674737c49117381cb393fcccec243b1630")
+  summary "fn JourneysModule.journeyIds generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journeys.mjs#journeyIds."
+}
+
+relation JourneysModuleJourneySnapshotGeneratedFromJourneysModuleJourneySnapshotAstAnchor {
+  kind generated_from
+  connects JourneysModule -> JourneysModuleJourneySnapshotAstAnchor
+  roles { JourneysModule as generated, JourneysModuleJourneySnapshotAstAnchor as syntax }
+  expects JourneysModuleJourneySnapshotAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f048c142b5a212fbb135b071839d56e3e1c730baf8681a101c5a36d1a0fb4e46")
+  summary "fn JourneysModule.journeySnapshot generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journeys.mjs#journeySnapshot."
+}
+
+relation JourneysModuleNextJourneyStepGeneratedFromJourneysModuleNextJourneyStepAstAnchor {
+  kind generated_from
+  connects JourneysModule -> JourneysModuleNextJourneyStepAstAnchor
+  roles { JourneysModule as generated, JourneysModuleNextJourneyStepAstAnchor as syntax }
+  expects JourneysModuleNextJourneyStepAstAnchor fingerprint ast.semantic_subtree_v1("sha256:8406682aaa0b052127b77e71e4cc46906bc689385fc4e631baa31e9e6c6a9c08")
+  summary "fn JourneysModule.nextJourneyStep generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journeys.mjs#nextJourneyStep."
+}
+
+relation JourneysModulePauseJourneyForManualControlGeneratedFromJourneysModulePauseJourneyForManualControlAstAnchor {
+  kind generated_from
+  connects JourneysModule -> JourneysModulePauseJourneyForManualControlAstAnchor
+  roles { JourneysModule as generated, JourneysModulePauseJourneyForManualControlAstAnchor as syntax }
+  expects JourneysModulePauseJourneyForManualControlAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e28746bec79abce107e14de4a2bbc0b4078bc9e035151006e1778e08255138c1")
+  summary "fn JourneysModule.pauseJourneyForManualControl generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journeys.mjs#pauseJourneyForManualControl."
+}
+
+relation JourneysModulePauseJourneyGeneratedFromJourneysModulePauseJourneyAstAnchor {
+  kind generated_from
+  connects JourneysModule -> JourneysModulePauseJourneyAstAnchor
+  roles { JourneysModule as generated, JourneysModulePauseJourneyAstAnchor as syntax }
+  expects JourneysModulePauseJourneyAstAnchor fingerprint ast.semantic_subtree_v1("sha256:55c71eb683b1500efac510c6a6ec4f3ca05ad06772085998d4076e2ac075a2d6")
+  summary "fn JourneysModule.pauseJourney generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journeys.mjs#pauseJourney."
+}
+
+relation JourneysModulePlayJourneyGeneratedFromJourneysModulePlayJourneyAstAnchor {
+  kind generated_from
+  connects JourneysModule -> JourneysModulePlayJourneyAstAnchor
+  roles { JourneysModule as generated, JourneysModulePlayJourneyAstAnchor as syntax }
+  expects JourneysModulePlayJourneyAstAnchor fingerprint ast.semantic_subtree_v1("sha256:397620879d2abfb3f7e85aa8455216116daee6b35e66e1b92f20fd1f6f68b0be")
+  summary "fn JourneysModule.playJourney generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journeys.mjs#playJourney."
+}
+
+relation JourneysModulePreviousJourneyStepGeneratedFromJourneysModulePreviousJourneyStepAstAnchor {
+  kind generated_from
+  connects JourneysModule -> JourneysModulePreviousJourneyStepAstAnchor
+  roles { JourneysModule as generated, JourneysModulePreviousJourneyStepAstAnchor as syntax }
+  expects JourneysModulePreviousJourneyStepAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4ca5b236f940aead4b4c2e3d523bf73016c424820e8180ced76e8a656fc5b056")
+  summary "fn JourneysModule.previousJourneyStep generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journeys.mjs#previousJourneyStep."
+}
+
+relation JourneysModuleRenderJourneyStateGeneratedFromJourneysModuleRenderJourneyStateAstAnchor {
+  kind generated_from
+  connects JourneysModule -> JourneysModuleRenderJourneyStateAstAnchor
+  roles { JourneysModule as generated, JourneysModuleRenderJourneyStateAstAnchor as syntax }
+  expects JourneysModuleRenderJourneyStateAstAnchor fingerprint ast.semantic_subtree_v1("sha256:112980b2e320d6c7c82fce0d2d6bdf55f902a05512959245fe361631a88a6efc")
+  summary "fn JourneysModule.renderJourneyState generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journeys.mjs#renderJourneyState."
+}
+
+relation JourneysModuleRestartJourneyGeneratedFromJourneysModuleRestartJourneyAstAnchor {
+  kind generated_from
+  connects JourneysModule -> JourneysModuleRestartJourneyAstAnchor
+  roles { JourneysModule as generated, JourneysModuleRestartJourneyAstAnchor as syntax }
+  expects JourneysModuleRestartJourneyAstAnchor fingerprint ast.semantic_subtree_v1("sha256:843b828418790ffe58f199314fca05e89f827ec428ed84021545621021216fbd")
+  summary "fn JourneysModule.restartJourney generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journeys.mjs#restartJourney."
+}
+
+relation JourneysModuleSeekJourneyStepGeneratedFromJourneysModuleSeekJourneyStepAstAnchor {
+  kind generated_from
+  connects JourneysModule -> JourneysModuleSeekJourneyStepAstAnchor
+  roles { JourneysModule as generated, JourneysModuleSeekJourneyStepAstAnchor as syntax }
+  expects JourneysModuleSeekJourneyStepAstAnchor fingerprint ast.semantic_subtree_v1("sha256:38191ca4f73fc3f2cdff6fbd6c790d3f93d36872e5100771130d0c2f6213fb05")
+  summary "fn JourneysModule.seekJourneyStep generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journeys.mjs#seekJourneyStep."
+}
+
+relation JourneysModuleSelectJourneyGeneratedFromJourneysModuleSelectJourneyAstAnchor {
+  kind generated_from
+  connects JourneysModule -> JourneysModuleSelectJourneyAstAnchor
+  roles { JourneysModule as generated, JourneysModuleSelectJourneyAstAnchor as syntax }
+  expects JourneysModuleSelectJourneyAstAnchor fingerprint ast.semantic_subtree_v1("sha256:36a673173a6ef182fe43a70eb16e365fc9600f5aa8a325476ed0fb2a16d498fa")
+  summary "fn JourneysModule.selectJourney generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journeys.mjs#selectJourney."
+}
+
+relation JourneysModuleSetJourneySpeedGeneratedFromJourneysModuleSetJourneySpeedAstAnchor {
+  kind generated_from
+  connects JourneysModule -> JourneysModuleSetJourneySpeedAstAnchor
+  roles { JourneysModule as generated, JourneysModuleSetJourneySpeedAstAnchor as syntax }
+  expects JourneysModuleSetJourneySpeedAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7c596a4fb0f17e15f2cac2893b7116c8c2033f15b95af777be5f073bd9e5a993")
+  summary "fn JourneysModule.setJourneySpeed generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journeys.mjs#setJourneySpeed."
+}
+
+implementation JourneysModuleImpl {
+  paths {
+    "plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journeys.mjs"
+  }
+  conforms_to JourneysModule
+}

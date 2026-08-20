@@ -34,6 +34,32 @@ describe("Unix System Visualiser generator", () => {
       expect(firstHtml).not.toContain("__ATLAS_MODEL_JSON__");
       expect(firstHtml).not.toContain("__RENDERER_JS__");
       expect(firstHtml).toContain("window.__unixSystemVisualiser = testingApi");
+      for (const journeyOperation of [
+        "journeyIds",
+        "selectJourney",
+        "playJourney",
+        "pauseJourney",
+        "restartJourney",
+        "nextJourneyStep",
+        "previousJourneyStep",
+        "seekJourneyStep",
+        "setJourneySpeed",
+        "journeySnapshot"
+      ]) {
+        expect(firstHtml).toContain(journeyOperation);
+      }
+      for (const [alias, operation] of [
+        ["select", "selectJourney"],
+        ["play", "playJourney"],
+        ["pause", "pauseJourney"],
+        ["restart", "restartJourney"],
+        ["next", "nextJourneyStep"],
+        ["previous", "previousJourneyStep"],
+        ["seek", "seekJourneyStep"],
+        ["setSpeed", "setJourneySpeed"]
+      ]) {
+        expect(firstHtml).toContain(`${alias}: ${operation}`);
+      }
       expect(firstHtml).not.toContain("window.__shapePlane");
       for (const legacyAdapter of [
         "nodeByQualifiedName",
@@ -53,6 +79,28 @@ describe("Unix System Visualiser generator", () => {
           files: ["shape/nested/module-metadata.shape", "shape/nested/system.shape"]
         })
       );
+      expect(atlas.journeys).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            kind: "authored",
+            steps: expect.arrayContaining([
+              expect.objectContaining({
+                nodeId: "component:unix_visualiser_fixture::SystemConsole"
+              }),
+              expect.objectContaining({ nodeId: "component:unix_visualiser_fixture::EventStore" })
+            ])
+          }),
+          expect.objectContaining({
+            kind: "inferred",
+            steps: expect.arrayContaining([
+              expect.objectContaining({
+                nodeId: "component:unix_visualiser_fixture::SystemConsole"
+              }),
+              expect.objectContaining({ nodeId: "component:unix_visualiser_fixture::EventStore" })
+            ])
+          })
+        ])
+      );
       expect(firstHtml).not.toContain("GeneratedSyntaxAnchor");
       expect(firstHtml).not.toContain("generatedAt");
 
@@ -65,7 +113,7 @@ describe("Unix System Visualiser generator", () => {
         components: 2,
         functions: 2,
         effects: 1,
-        relations: 1,
+        relations: 2,
         implementations: 1,
         bindings: 1,
         rules: 1,

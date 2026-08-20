@@ -18,6 +18,7 @@ function isTypingTarget(target) {
 }
 
 canvas.addEventListener("pointerdown", (event) => {
+  pauseJourneyForManualControl();
   canvas.focus();
   state.hoverId = null;
   state.pointer = {
@@ -107,6 +108,7 @@ canvas.addEventListener("pointercancel", (event) => {
 canvas.addEventListener(
   "wheel",
   (event) => {
+    pauseJourneyForManualControl();
     state.focus = null;
     state.camera.y = clamp(state.camera.y + event.deltaY * 0.09, 42, maximumCameraHeight);
     scheduleRender();
@@ -117,6 +119,7 @@ canvas.addEventListener(
 
 window.addEventListener("keydown", (event) => {
   if (event.key === "Escape") {
+    pauseJourneyForManualControl();
     resetOverview(true);
     return;
   }
@@ -125,6 +128,7 @@ window.addEventListener("keydown", (event) => {
   }
   const key = event.key.toLowerCase();
   if (["w", "a", "s", "d", "q", "e"].includes(key)) {
+    pauseJourneyForManualControl();
     state.keys.add(key);
     scheduleRender();
     event.preventDefault();
@@ -142,7 +146,10 @@ window.addEventListener("keyup", (event) => {
   scheduleRender();
 });
 
-locator.addEventListener("input", () => renderResults(locator.value));
+locator.addEventListener("input", () => {
+  pauseJourneyForManualControl();
+  renderResults(locator.value);
+});
 locator.addEventListener("keydown", (event) => {
   if (event.key === "Enter") {
     const first = results.querySelector("button");
@@ -151,7 +158,10 @@ locator.addEventListener("keydown", (event) => {
     }
   }
 });
-overviewButton.addEventListener("click", () => resetOverview(true));
+overviewButton.addEventListener("click", () => {
+  pauseJourneyForManualControl();
+  resetOverview(true);
+});
 function syncMotionButton() {
   motionButton.setAttribute("aria-pressed", String(state.pathGlow));
   motionButton.textContent = state.pathGlow ? "PAUSE PATH GLOW" : "RESUME PATH GLOW";
@@ -169,9 +179,13 @@ prefersReducedMotion.addEventListener("change", (event) => {
     scheduleRender();
   }
 });
-window.addEventListener("blur", () => state.keys.clear());
+window.addEventListener("blur", () => {
+  state.keys.clear();
+  pauseJourneyForManualControl();
+});
 document.addEventListener("visibilitychange", () => {
   if (document.hidden) {
+    pauseJourneyForManualControl();
     if (animationFrame !== null) {
       window.cancelAnimationFrame(animationFrame);
       animationFrame = null;
@@ -196,6 +210,7 @@ const testingApi = {
   focusById(id) {
     const node = nodeById.get(id) || nodeByModelId.get(id);
     if (node) {
+      pauseJourneyForManualControl();
       focusNode(node, false);
     }
     return Boolean(node);
@@ -203,11 +218,13 @@ const testingApi = {
   focus(label) {
     const node = nodes.find((candidate) => candidate.label === label);
     if (node) {
+      pauseJourneyForManualControl();
       focusNode(node, false);
     }
     return Boolean(node);
   },
   reset() {
+    pauseJourneyForManualControl();
     resetOverview(false);
   },
   setMotion(enabled) {
@@ -240,6 +257,24 @@ const testingApi = {
       ? item.hitAreas.map((area) => area.map((point) => ({ x: point.x, y: point.y })))
       : null;
   },
+  journeyIds,
+  select: selectJourney,
+  play: playJourney,
+  pause: pauseJourney,
+  restart: restartJourney,
+  next: nextJourneyStep,
+  previous: previousJourneyStep,
+  seek: seekJourneyStep,
+  setSpeed: setJourneySpeed,
+  selectJourney,
+  playJourney,
+  pauseJourney,
+  restartJourney,
+  nextJourneyStep,
+  previousJourneyStep,
+  seekJourneyStep,
+  setJourneySpeed,
+  journeySnapshot,
   snapshot() {
     return {
       selectedId: state.selectedId,
@@ -251,7 +286,8 @@ const testingApi = {
         districts.map((district) => [district.module, district.files.slice()])
       ),
       pathGlow: state.pathGlow,
-      rendererVersion: 1,
+      journey: journeySnapshot(),
+      rendererVersion: 2,
       schemaVersion: atlas.schemaVersion,
       shapeVersion: atlas.shapeVersion
     };

@@ -110,7 +110,9 @@ export const RELEASE_SKILL_CASES = {
         "1 resource",
         "2 components",
         "2 functions",
-        "1 relation",
+        "2 relations",
+        "1 authored journey",
+        "1 inferred dependency tour",
         "authored",
         "runtime"
       ],

@@ -431,6 +431,85 @@ function drawSelectedNetwork(now) {
     });
 }
 
+function drawJourneyLeg(fromId, toId, kind, current, now, offset) {
+  const points = selectedPathPoints({ from: fromId, to: toId });
+  if (!points) {
+    return null;
+  }
+  const inferred = kind === "inferred";
+  const dash = inferred ? [10, 7] : [];
+  context.save();
+  context.lineCap = inferred ? "butt" : "round";
+  context.lineJoin = "round";
+  tracePath(points);
+  context.strokeStyle = "rgba(4, 55, 76, 0.84)";
+  context.lineWidth = current ? 8 : 6;
+  context.setLineDash([]);
+  context.stroke();
+  tracePath(points);
+  context.strokeStyle = current ? "#ffcf4a" : "#85e6dc";
+  context.lineWidth = current ? 4.5 : 3;
+  context.setLineDash(dash);
+  context.lineDashOffset = state.pathGlow && inferred ? -(now / 45 + offset * 5) : 0;
+  context.stroke();
+  context.setLineDash([]);
+  context.restore();
+  return points;
+}
+
+function drawJourneyStepMarker(point, current) {
+  context.save();
+  context.translate(point.x, point.y);
+  context.fillStyle = current ? "#ffcf4a" : "#85e6dc";
+  context.strokeStyle = "#073b55";
+  context.lineWidth = 2;
+  if (current) {
+    context.rotate(Math.PI / 4);
+    context.fillRect(-5, -5, 10, 10);
+    context.strokeRect(-5, -5, 10, 10);
+  } else {
+    context.beginPath();
+    context.arc(0, 0, 4.5, 0, Math.PI * 2);
+    context.fill();
+    context.stroke();
+  }
+  context.restore();
+}
+
+function drawJourneyNetwork(now) {
+  const { journey, snapshot } = journeyDisplayState();
+  if (!journey || snapshot.index < 1) {
+    return;
+  }
+  const finalSegment = Math.min(snapshot.index, journey.steps.length - 1);
+  for (let segmentIndex = 1; segmentIndex <= finalSegment; segmentIndex += 1) {
+    const step = journey.steps[segmentIndex];
+    if (!step.fromNodeId || !step.relationNodeId) {
+      continue;
+    }
+    const current = segmentIndex === snapshot.index;
+    drawJourneyLeg(
+      step.fromNodeId,
+      step.relationNodeId,
+      journey.kind,
+      current,
+      now,
+      segmentIndex * 2
+    );
+    const finalLeg = drawJourneyLeg(
+      step.relationNodeId,
+      step.nodeId,
+      journey.kind,
+      current,
+      now,
+      segmentIndex * 2 + 1
+    );
+    if (finalLeg) {
+      drawJourneyStepMarker(finalLeg.toPoint, current);
+    }
+  }
+}
+
 function drawReticle() {
   const x = state.width / 2;
   const y = state.height * 0.58;
@@ -553,6 +632,7 @@ function render(now) {
     .sort((left, right) => right.point.z - left.point.z)
     .forEach((item) => drawBlock(item.node, now));
   drawSelectedNetwork(now);
+  drawJourneyNetwork(now);
   drawReticle();
   updateHoverLabel();
   state.frame += 1;

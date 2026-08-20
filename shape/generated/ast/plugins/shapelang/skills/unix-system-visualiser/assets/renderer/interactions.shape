@@ -13,12 +13,12 @@ resource InteractionsModuleCheckAstAnchor : GeneratedAstAnchor {
 
 resource InteractionsModuleFocusAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/interactions.mjs#focus")
-  fingerprint ast.semantic_subtree_v1("sha256:6c7ff501758c1aecce793129d654f63f3eba4d484058951166c934a9134fca20")
+  fingerprint ast.semantic_subtree_v1("sha256:1a5442d049d0be89fe26ea143b6737cdf3e4d1e10a5be6c19e06bc67797aa436")
 }
 
 resource InteractionsModuleFocusByIdAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/interactions.mjs#focusById")
-  fingerprint ast.semantic_subtree_v1("sha256:e5f639b1608969b5f4cd80edcf49673dd829c3e8c6a3c7d169add221b41e215f")
+  fingerprint ast.semantic_subtree_v1("sha256:821010c41aecd07d2c005fc9b05b20a8ace01f9cc1a1b20705be2c037d3ebdd8")
 }
 
 resource InteractionsModuleHitAreasAstAnchor : GeneratedAstAnchor {
@@ -53,7 +53,7 @@ resource InteractionsModuleReleasePointerAstAnchor : GeneratedAstAnchor {
 
 resource InteractionsModuleResetAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/interactions.mjs#reset")
-  fingerprint ast.semantic_subtree_v1("sha256:2764229083bb9be81f60318b4a2185b438a079484543973883aacc1b2a6ef7b8")
+  fingerprint ast.semantic_subtree_v1("sha256:474f95c92ff9a51248a88dcc6f440d7a01137644c72ee615911433aa1584affc")
 }
 
 resource InteractionsModuleResizeCanvasAstAnchor : GeneratedAstAnchor {
@@ -73,7 +73,7 @@ resource InteractionsModuleSettleAstAnchor : GeneratedAstAnchor {
 
 resource InteractionsModuleSnapshotAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/interactions.mjs#snapshot")
-  fingerprint ast.semantic_subtree_v1("sha256:9d2e8138bd6c2a73557c52396b2803d6bfcbfbf50f74cdfba4abede1fe22ded7")
+  fingerprint ast.semantic_subtree_v1("sha256:403a9c636e1be177b26862426d45167fdce54d1d15fdb5a2e43c6f10d72e06ef")
 }
 
 resource InteractionsModuleSyncMotionButtonAstAnchor : GeneratedAstAnchor {
@@ -141,7 +141,7 @@ relation InteractionsModuleFocusByIdGeneratedFromInteractionsModuleFocusByIdAstA
   kind generated_from
   connects InteractionsModule -> InteractionsModuleFocusByIdAstAnchor
   roles { InteractionsModule as generated, InteractionsModuleFocusByIdAstAnchor as syntax }
-  expects InteractionsModuleFocusByIdAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e5f639b1608969b5f4cd80edcf49673dd829c3e8c6a3c7d169add221b41e215f")
+  expects InteractionsModuleFocusByIdAstAnchor fingerprint ast.semantic_subtree_v1("sha256:821010c41aecd07d2c005fc9b05b20a8ace01f9cc1a1b20705be2c037d3ebdd8")
   summary "fn InteractionsModule.focusById generated from javascript method_definition at plugins/shapelang/skills/unix-system-visualiser/assets/renderer/interactions.mjs#focusById."
 }
 
@@ -149,7 +149,7 @@ relation InteractionsModuleFocusGeneratedFromInteractionsModuleFocusAstAnchor {
   kind generated_from
   connects InteractionsModule -> InteractionsModuleFocusAstAnchor
   roles { InteractionsModule as generated, InteractionsModuleFocusAstAnchor as syntax }
-  expects InteractionsModuleFocusAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6c7ff501758c1aecce793129d654f63f3eba4d484058951166c934a9134fca20")
+  expects InteractionsModuleFocusAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1a5442d049d0be89fe26ea143b6737cdf3e4d1e10a5be6c19e06bc67797aa436")
   summary "fn InteractionsModule.focus generated from javascript method_definition at plugins/shapelang/skills/unix-system-visualiser/assets/renderer/interactions.mjs#focus."
 }
 
@@ -205,7 +205,7 @@ relation InteractionsModuleResetGeneratedFromInteractionsModuleResetAstAnchor {
   kind generated_from
   connects InteractionsModule -> InteractionsModuleResetAstAnchor
   roles { InteractionsModule as generated, InteractionsModuleResetAstAnchor as syntax }
-  expects InteractionsModuleResetAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2764229083bb9be81f60318b4a2185b438a079484543973883aacc1b2a6ef7b8")
+  expects InteractionsModuleResetAstAnchor fingerprint ast.semantic_subtree_v1("sha256:474f95c92ff9a51248a88dcc6f440d7a01137644c72ee615911433aa1584affc")
   summary "fn InteractionsModule.reset generated from javascript method_definition at plugins/shapelang/skills/unix-system-visualiser/assets/renderer/interactions.mjs#reset."
 }
 
@@ -237,7 +237,7 @@ relation InteractionsModuleSnapshotGeneratedFromInteractionsModuleSnapshotAstAnc
   kind generated_from
   connects InteractionsModule -> InteractionsModuleSnapshotAstAnchor
   roles { InteractionsModule as generated, InteractionsModuleSnapshotAstAnchor as syntax }
-  expects InteractionsModuleSnapshotAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9d2e8138bd6c2a73557c52396b2803d6bfcbfbf50f74cdfba4abede1fe22ded7")
+  expects InteractionsModuleSnapshotAstAnchor fingerprint ast.semantic_subtree_v1("sha256:403a9c636e1be177b26862426d45167fdce54d1d15fdb5a2e43c6f10d72e06ef")
   summary "fn InteractionsModule.snapshot generated from javascript method_definition at plugins/shapelang/skills/unix-system-visualiser/assets/renderer/interactions.mjs#snapshot."
 }
 

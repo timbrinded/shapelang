@@ -634,6 +634,13 @@ component ShpCli {
     }
 }
 
+relation CheckShapesWithShpCheck {
+  kind coordinated_call
+  connects ShpCli -> ShapeChecker -> ShapeParser -> ShapeModelLowerer -> ShapeRuleEngine -> ShapeBindings -> ShapeDiagnostics
+  roles { ShapeBindings as bind, ShapeChecker as orchestrate, ShapeDiagnostics as report, ShapeModelLowerer as lower, ShapeParser as parse, ShapeRuleEngine as validate, ShpCli as dispatch }
+  summary "Checking shapes with shp check across the authored validation pipeline."
+}
+
 relation ShapeAnalyzerUsesStringHelpers {
   kind calls
   connects ShapeAnalyzer -> ShapeStringHelpers

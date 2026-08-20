@@ -84,6 +84,57 @@
           <p class="summary" id="selection-summary">
             Fly over the blue module pads, or select a tile to bring its local paths into view.
           </p>
+          <section class="journey-panel" aria-labelledby="journey-heading">
+            <div class="journey-heading-row">
+              <h3 id="journey-heading">GUIDED JOURNEYS</h3>
+              <span class="journey-kind" id="journey-kind">NONE</span>
+            </div>
+            <label class="journey-label" for="journey-select">PRESET</label>
+            <select id="journey-select"></select>
+            <p class="journey-summary" id="journey-summary">
+              No authored or inferred architecture journey is available.
+            </p>
+            <div class="journey-progress-copy">
+              <span id="journey-step-count">STEP 0 OF 0</span>
+              <span id="journey-playback-status">IDLE</span>
+            </div>
+            <progress id="journey-progress" max="1" value="0" aria-labelledby="journey-step-count">
+              0%
+            </progress>
+            <label class="sr-only" for="journey-seek">Jump to a journey step</label>
+            <input
+              id="journey-seek"
+              class="journey-seek"
+              type="range"
+              min="1"
+              max="1"
+              value="1"
+              step="1"
+            />
+            <p
+              class="journey-narration"
+              id="journey-narration"
+              aria-live="polite"
+              aria-atomic="true"
+            >
+              Press Play or Next to start the selected architecture journey.
+            </p>
+            <div class="journey-transport" aria-label="Journey playback controls">
+              <button id="journey-previous" type="button">PREVIOUS</button>
+              <button id="journey-play" type="button">PLAY</button>
+              <button id="journey-next" type="button">NEXT</button>
+              <button id="journey-restart" type="button">RESTART</button>
+            </div>
+            <div class="journey-speed-row">
+              <label for="journey-speed">SPEED</label>
+              <select id="journey-speed">
+                <option value="0.5">0.5×</option>
+                <option value="1" selected>1×</option>
+                <option value="1.5">1.5×</option>
+                <option value="2">2×</option>
+              </select>
+            </div>
+          </section>
           <dl class="details" id="details">
             <dt>OBJECTS</dt>
             <dd id="detail-objects">—</dd>

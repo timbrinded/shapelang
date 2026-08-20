@@ -1,3 +1,5 @@
+import { buildJourneys } from "./journey-model.mjs";
+
 const COLLECTIONS = [
   ["resource", "resources"],
   ["component", "components"],
@@ -352,7 +354,8 @@ export function buildAtlasModel(model) {
     stats: authoredStats(model, documents, moduleGroups),
     nodes,
     districts,
-    edges
+    edges,
+    journeys: buildJourneys(model, nodes)
   };
 }
 
