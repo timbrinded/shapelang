@@ -23,6 +23,10 @@ inputs:
     description: Claude model passed to the Claude Code action. Defaults to Sonnet in run-claude-skill.mjs.
     required: false
     default: ""
+  max-turns:
+    description: Maximum Claude turns. Defaults to 100 in run-claude-skill.mjs.
+    required: false
+    default: ""
 
 runs:
   using: composite
@@ -56,6 +60,7 @@ runs:
       shell: bash
       env:
         CLAUDE_SKILL_MODEL: ${{ inputs.model }}
+        CLAUDE_SKILL_MAX_TURNS: ${{ inputs.max-turns }}
       run: node .github/scripts/run-claude-skill.mjs ${{ inputs.skill }} --prefilter
 
     - name: Run skill through Claude Code

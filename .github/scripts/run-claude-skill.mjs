@@ -26,6 +26,7 @@ const JSON_ONLY_SYSTEM_PROMPT =
   'You are producing machine input for CI. Your final response must be exactly one JSON object matching the configured JSON schema. The first character must be "{" and the last character must be "}". Do not include prose, bullets, Markdown, code fences, preamble, or postscript. Follow the task-specific status and evidence rules exactly; never invent findings, gaps, checks, cases, or command evidence.';
 
 const DEFAULT_MODEL = "claude-sonnet-4-6";
+const DEFAULT_MAX_TURNS = 100;
 
 // ---------------------------------------------------------------------------
 // Shared: schema validation
@@ -131,10 +132,18 @@ export function claudeModel(env = process.env) {
   return model;
 }
 
+export function claudeMaxTurns(env = process.env) {
+  const rawMaxTurns = env.CLAUDE_SKILL_MAX_TURNS || String(DEFAULT_MAX_TURNS);
+  if (!/^[1-9]\d*$/.test(rawMaxTurns) || !Number.isSafeInteger(Number(rawMaxTurns))) {
+    throw new Error(`CLAUDE_SKILL_MAX_TURNS must be a positive integer, got "${rawMaxTurns}"`);
+  }
+  return Number(rawMaxTurns);
+}
+
 export function buildClaudeArgs(skill, schema, env = process.env) {
   return [
     `--model ${claudeModel(env)}`,
-    "--max-turns 100",
+    `--max-turns ${claudeMaxTurns(env)}`,
     `--allowedTools ${shellSingleQuote(skill.allowedTools)}`,
     "--disallowedTools Write,Edit",
     `--append-system-prompt ${shellSingleQuote(JSON_ONLY_SYSTEM_PROMPT)}`,
@@ -586,6 +595,7 @@ export function renderSkillsReleaseSummary(result) {
 function normalizeReleaseEvidence(value) {
   return value
     .toLowerCase()
+    .replace(/\b(?:write|writes|writing|written|wrote)\b/g, "write")
     .replace(/\s*([-+*/=<>])\s*/g, "$1")
     .replace(/\s+/g, " ")
     .trim();

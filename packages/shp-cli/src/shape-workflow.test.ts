@@ -288,6 +288,21 @@ describe("Shape workflow", () => {
     reviewCase.evidence = reviewCase.evidence.replace("end - 1", "the off-by-one expression");
     const normalizedMarkerResult = await runSkillGate("release", normalizedMarker);
     expect(normalizedMarkerResult.exitCode).toBe(0);
+
+    const inflectedMarker = skillsReleaseResult();
+    const visualiserSkill = inflectedMarker.skills.find(
+      (skill) => skill.name === "unix-system-visualiser"
+    );
+    const visualiserCase = visualiserSkill?.cases.find(
+      (item) => item.id === "visualiser-unignored-output"
+    );
+    if (!visualiserCase) {
+      throw new Error("skills release inflected-marker fixture is empty");
+    }
+    visualiserCase.evidence =
+      "The default path was not ignored, so generation stopped before writing the HTML artifact.";
+    const inflectedMarkerResult = await runSkillGate("release", inflectedMarker);
+    expect(inflectedMarkerResult.exitCode).toBe(0);
   });
 
   test("fails closed on garbage results and unknown skills", async () => {
@@ -346,7 +361,8 @@ describe("Shape workflow", () => {
       });
       const releaseOutputs = prefilterOutputs("release", {
         GITHUB_SHA: "abc123",
-        SHAPE_RELEASE_VERSION: "0.8.0"
+        SHAPE_RELEASE_VERSION: "0.8.0",
+        CLAUDE_SKILL_MAX_TURNS: "150"
       });
 
       console.log(JSON.stringify({
@@ -354,6 +370,8 @@ describe("Shape workflow", () => {
         promptReadsPolicy: outputs.prompt.includes(".github/prompts/shape-contract-review.md"),
         promptScopesSha: outputs.prompt.includes("HEAD_SHA=abc123"),
         defaultsToSonnet: outputs.claude_args.includes("--model claude-sonnet-4-6"),
+        defaultsTo100Turns: outputs.claude_args.includes("--max-turns 100"),
+        releaseUses150Turns: releaseOutputs.claude_args.includes("--max-turns 150"),
         inlinesSchema: outputs.claude_args.includes("--json-schema '{"),
         quotesAllowedTools: outputs.claude_args.includes("--allowedTools 'Read,"),
         disallowsWrites: outputs.claude_args.includes("--disallowedTools Write,Edit"),
@@ -382,6 +400,8 @@ describe("Shape workflow", () => {
       promptReadsPolicy: true,
       promptScopesSha: true,
       defaultsToSonnet: true,
+      defaultsTo100Turns: true,
+      releaseUses150Turns: true,
       inlinesSchema: true,
       quotesAllowedTools: true,
       disallowsWrites: true,
@@ -394,7 +414,7 @@ describe("Shape workflow", () => {
     });
   });
 
-  test("claude_args construction fails closed on unquotable values and bad models", async () => {
+  test("claude_args construction fails closed on unquotable values and bad configuration", async () => {
     const result = await runNodeModuleProbe(`
       import {
         prefilterOutputs,
@@ -414,6 +434,9 @@ describe("Shape workflow", () => {
       console.log(JSON.stringify({
         quoteError: messageOf(() => shellSingleQuote("don't")),
         modelError: messageOf(() => prefilterOutputs("review", { CLAUDE_SKILL_MODEL: "sonnet'; ls" })),
+        maxTurnsError: messageOf(() =>
+          prefilterOutputs("review", { CLAUDE_SKILL_MAX_TURNS: "150; ls" })
+        ),
         delimiterError: messageOf(() => serializeGitHubOutputs({ prompt: "CLAUDE_SKILL_OUTPUT" })),
         multiline: serializeGitHubOutputs({ prompt: "line one\\nline two" })
       }));
@@ -423,6 +446,7 @@ describe("Shape workflow", () => {
     const probes = JSON.parse(result.stdout);
     expect(probes.quoteError).toContain("single quote");
     expect(probes.modelError).toContain("bare model id");
+    expect(probes.maxTurnsError).toContain("positive integer");
     expect(probes.delimiterError).toContain("reserved delimiter");
     expect(probes.multiline).toBe(
       "prompt<<CLAUDE_SKILL_OUTPUT\nline one\nline two\nCLAUDE_SKILL_OUTPUT\n"

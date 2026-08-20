@@ -118,6 +118,7 @@ jobs:
         with:
           skill: release
           model: claude-opus-4-8
+          max-turns: "150"
           result-path: skill-release-result.json
         env:
           API_TIMEOUT_MS: 18000

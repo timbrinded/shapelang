@@ -13,7 +13,7 @@ resource RunClaudeSkillModuleAuthoredCoverageFromShapeSourceAstAnchor : Generate
 
 resource RunClaudeSkillModuleBuildClaudeArgsAstAnchor : GeneratedAstAnchor {
   storage ast.anchor(".github/scripts/run-claude-skill.mjs#buildClaudeArgs")
-  fingerprint ast.semantic_subtree_v1("sha256:3866bb4c0a671470f944225f506fb8e01b7516a997b02a6b30793f38363ec338")
+  fingerprint ast.semantic_subtree_v1("sha256:3ef1a71aee878c793ed02e03ee00fff547cc54694e5170e8ecc965995a0bbab8")
 }
 
 resource RunClaudeSkillModuleBuildGuardPromptAstAnchor : GeneratedAstAnchor {
@@ -39,6 +39,11 @@ resource RunClaudeSkillModuleBuildSkillsReleasePromptAstAnchor : GeneratedAstAnc
 resource RunClaudeSkillModuleChangedAuthoredShapeFilesAstAnchor : GeneratedAstAnchor {
   storage ast.anchor(".github/scripts/run-claude-skill.mjs#changedAuthoredShapeFiles")
   fingerprint ast.semantic_subtree_v1("sha256:46eb14c0662bf4283f25e49784ebf58b10ed8c8659ecff39c7ab5bac9f61b793")
+}
+
+resource RunClaudeSkillModuleClaudeMaxTurnsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor(".github/scripts/run-claude-skill.mjs#claudeMaxTurns")
+  fingerprint ast.semantic_subtree_v1("sha256:ab48192cf6c7536675d6ad864b21e1acce73647b8fe72ef0a7a4bd33cb7abd1f")
 }
 
 resource RunClaudeSkillModuleClaudeModelAstAnchor : GeneratedAstAnchor {
@@ -118,7 +123,7 @@ resource RunClaudeSkillModuleMainAstAnchor : GeneratedAstAnchor {
 
 resource RunClaudeSkillModuleNormalizeReleaseEvidenceAstAnchor : GeneratedAstAnchor {
   storage ast.anchor(".github/scripts/run-claude-skill.mjs#normalizeReleaseEvidence")
-  fingerprint ast.semantic_subtree_v1("sha256:2549b5b1298c5696e7eea5b5900eedab41728e8bd42be3d15e9af5568454f611")
+  fingerprint ast.semantic_subtree_v1("sha256:54d026c8b25e28052eaa1d56dd8bde6372a07a4ab252b3b86087301dff7140cb")
 }
 
 resource RunClaudeSkillModulePrefilterOutputsAstAnchor : GeneratedAstAnchor {
@@ -222,6 +227,9 @@ component RunClaudeSkillModule : GeneratedCandidate {
     effects unknown
   fn changedAuthoredShapeFiles
     source js(".github/scripts/run-claude-skill.mjs#changedAuthoredShapeFiles")
+    effects unknown
+  fn claudeMaxTurns
+    source js(".github/scripts/run-claude-skill.mjs#claudeMaxTurns")
     effects unknown
   fn claudeModel
     source js(".github/scripts/run-claude-skill.mjs#claudeModel")
@@ -333,7 +341,7 @@ relation RunClaudeSkillModuleBuildClaudeArgsGeneratedFromRunClaudeSkillModuleBui
   kind generated_from
   connects RunClaudeSkillModule -> RunClaudeSkillModuleBuildClaudeArgsAstAnchor
   roles { RunClaudeSkillModule as generated, RunClaudeSkillModuleBuildClaudeArgsAstAnchor as syntax }
-  expects RunClaudeSkillModuleBuildClaudeArgsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3866bb4c0a671470f944225f506fb8e01b7516a997b02a6b30793f38363ec338")
+  expects RunClaudeSkillModuleBuildClaudeArgsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3ef1a71aee878c793ed02e03ee00fff547cc54694e5170e8ecc965995a0bbab8")
   summary "fn RunClaudeSkillModule.buildClaudeArgs generated from javascript function_declaration at .github/scripts/run-claude-skill.mjs#buildClaudeArgs."
 }
 
@@ -375,6 +383,14 @@ relation RunClaudeSkillModuleChangedAuthoredShapeFilesGeneratedFromRunClaudeSkil
   roles { RunClaudeSkillModule as generated, RunClaudeSkillModuleChangedAuthoredShapeFilesAstAnchor as syntax }
   expects RunClaudeSkillModuleChangedAuthoredShapeFilesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:46eb14c0662bf4283f25e49784ebf58b10ed8c8659ecff39c7ab5bac9f61b793")
   summary "fn RunClaudeSkillModule.changedAuthoredShapeFiles generated from javascript function_declaration at .github/scripts/run-claude-skill.mjs#changedAuthoredShapeFiles."
+}
+
+relation RunClaudeSkillModuleClaudeMaxTurnsGeneratedFromRunClaudeSkillModuleClaudeMaxTurnsAstAnchor {
+  kind generated_from
+  connects RunClaudeSkillModule -> RunClaudeSkillModuleClaudeMaxTurnsAstAnchor
+  roles { RunClaudeSkillModule as generated, RunClaudeSkillModuleClaudeMaxTurnsAstAnchor as syntax }
+  expects RunClaudeSkillModuleClaudeMaxTurnsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ab48192cf6c7536675d6ad864b21e1acce73647b8fe72ef0a7a4bd33cb7abd1f")
+  summary "fn RunClaudeSkillModule.claudeMaxTurns generated from javascript function_declaration at .github/scripts/run-claude-skill.mjs#claudeMaxTurns."
 }
 
 relation RunClaudeSkillModuleClaudeModelGeneratedFromRunClaudeSkillModuleClaudeModelAstAnchor {
@@ -501,7 +517,7 @@ relation RunClaudeSkillModuleNormalizeReleaseEvidenceGeneratedFromRunClaudeSkill
   kind generated_from
   connects RunClaudeSkillModule -> RunClaudeSkillModuleNormalizeReleaseEvidenceAstAnchor
   roles { RunClaudeSkillModule as generated, RunClaudeSkillModuleNormalizeReleaseEvidenceAstAnchor as syntax }
-  expects RunClaudeSkillModuleNormalizeReleaseEvidenceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2549b5b1298c5696e7eea5b5900eedab41728e8bd42be3d15e9af5568454f611")
+  expects RunClaudeSkillModuleNormalizeReleaseEvidenceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:54d026c8b25e28052eaa1d56dd8bde6372a07a4ab252b3b86087301dff7140cb")
   summary "fn RunClaudeSkillModule.normalizeReleaseEvidence generated from javascript function_declaration at .github/scripts/run-claude-skill.mjs#normalizeReleaseEvidence."
 }
 
