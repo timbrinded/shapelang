@@ -1132,6 +1132,16 @@ attest no_shape_change {
 }
 
 attest no_shape_change {
+  source mjs(".github/scripts/run-claude-skill.mjs#skillsReleaseFailureMessage")
+  reason "Release evidence matching now reads both structured report summary fields and ignores insignificant operator spacing; the modeled CI resources, effects, relations, and approval boundary are unchanged."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-cli/src/shape-workflow.test.ts")
+  reason "Test-only coverage locks tolerant release-report evidence matching and adds no separate architecture surface."
+}
+
+attest no_shape_change {
   source ts("packages/shp-checker/src/generated-ast-policy.ts")
   reason "Generated AST manifest helper cleanup is covered by the checker origin model update; the remaining manifest schema and path helper contract is unchanged."
 }
