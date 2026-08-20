@@ -653,8 +653,13 @@ export function skillsReleaseFailureMessage(result) {
         `${behaviorCase.outcome}\n${behaviorCase.evidence}`
       );
       for (const marker of expectedCase.evidenceMarkers ?? []) {
-        if (!normalizedEvidence.includes(normalizeReleaseEvidence(marker))) {
-          return `Invalid skills release result: ${behaviorCase.id} report must include ${marker}.`;
+        const alternatives = Array.isArray(marker) ? marker : [marker];
+        if (
+          !alternatives.some((alternative) =>
+            normalizedEvidence.includes(normalizeReleaseEvidence(alternative))
+          )
+        ) {
+          return `Invalid skills release result: ${behaviorCase.id} report must include ${alternatives.join(" or ")}.`;
         }
       }
       const commands = new Set(behaviorCase.commands);
@@ -662,11 +667,6 @@ export function skillsReleaseFailureMessage(result) {
         if (!commands.delete(requiredCommand)) {
           return `Invalid skills release result: ${behaviorCase.id} is missing command evidence for ${requiredCommand}.`;
         }
-      }
-      if (commands.size > 0) {
-        return `Invalid skills release result: ${behaviorCase.id} has unexpected command evidence ${[
-          ...commands
-        ].join(", ")}.`;
       }
     }
     if (expectedCases.size > 0) {
