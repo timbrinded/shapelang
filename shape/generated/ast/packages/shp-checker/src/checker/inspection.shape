@@ -1,0 +1,321 @@
+module shape.generated.ast.packages.shp_checker.src.checker.inspection
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource InspectionModuleCompareDocumentsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/inspection.ts#compareDocuments")
+  fingerprint ast.semantic_subtree_v1("sha256:741eadd8e06bae11f11312463df8e83323cda999d0086dd42789a8359472293d")
+}
+
+resource InspectionModuleCompareIdentityAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/inspection.ts#compareIdentity")
+  fingerprint ast.semantic_subtree_v1("sha256:9825eead0a7ac7c779ed7a1e2d5151e788fcdafa06aaf5310a617dd683fd3edd")
+}
+
+resource InspectionModuleCompareJsonAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/inspection.ts#compareJson")
+  fingerprint ast.semantic_subtree_v1("sha256:b38532bc883e3668bc9d8c959e5b2b0ae129332a2a432455e8b047c0b53be0b2")
+}
+
+resource InspectionModuleDeclarationOriginAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/inspection.ts#declarationOrigin")
+  fingerprint ast.semantic_subtree_v1("sha256:5dc6b268a8b0536964909b0d7565a8a679e605b4f3373a9d71d305732c8dfc7d")
+}
+
+resource InspectionModuleIdentityAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/inspection.ts#identity")
+  fingerprint ast.semantic_subtree_v1("sha256:31f1f7c1bb43bbb290f65bd1f09d511552ce7c1aa28449250dcd3c0e5de7efb7")
+}
+
+resource InspectionModuleInspectBindingsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/inspection.ts#inspectBindings")
+  fingerprint ast.semantic_subtree_v1("sha256:ee525b9e65735311f2443ace51cf4987a96ff42fdc01e11afc9c43c2844fa7fa")
+}
+
+resource InspectionModuleInspectComponentsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/inspection.ts#inspectComponents")
+  fingerprint ast.semantic_subtree_v1("sha256:9dd17d628754e727000400aa5e127ee4362ba768e89927b60c2f9abd4eb84cfe")
+}
+
+resource InspectionModuleInspectFunctionsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/inspection.ts#inspectFunctions")
+  fingerprint ast.semantic_subtree_v1("sha256:7bee0327bcd476c65833c5b9c8ac770cb4e9205ce36b25a23daf3a54da22e55e")
+}
+
+resource InspectionModuleInspectImplementationsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/inspection.ts#inspectImplementations")
+  fingerprint ast.semantic_subtree_v1("sha256:735c76d96318372123e30d3b499c6a1f1f170358110fe5b525dd38aaec1f39ba")
+}
+
+resource InspectionModuleInspectMemoriesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/inspection.ts#inspectMemories")
+  fingerprint ast.semantic_subtree_v1("sha256:03f7dac9b874076e5b4d65708fd90aaafcbce6c7590687bdc3fb9a477c7d046c")
+}
+
+resource InspectionModuleInspectRelationsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/inspection.ts#inspectRelations")
+  fingerprint ast.semantic_subtree_v1("sha256:08fc4aa9b2b515f226033358a9b7c383057193ba0984e7d105b35390e788f589")
+}
+
+resource InspectionModuleInspectResourcesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/inspection.ts#inspectResources")
+  fingerprint ast.semantic_subtree_v1("sha256:bbf120f49b575f3cf71c57f5efdca253abe43f12f9f4650d8c1462c42dadba82")
+}
+
+resource InspectionModuleInspectRulesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/inspection.ts#inspectRules")
+  fingerprint ast.semantic_subtree_v1("sha256:996f87ff7fb9c0b1eff5176a226bb3a93854463b03d79b2303679191ca3eca43")
+}
+
+resource InspectionModuleInspectShapeModulesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/inspection.ts#inspectShapeModules")
+  fingerprint ast.semantic_subtree_v1("sha256:3aa8951c2d44698f7567dd1fc5cdaedaa547d8fd16997055c264376325e1c984")
+}
+
+resource InspectionModuleInspectionContextAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/inspection.ts#inspectionContext")
+  fingerprint ast.semantic_subtree_v1("sha256:91b6f90f55eeee7990f9ffcc70494b755739f32ed73b71feee9ca789bf3465c8")
+}
+
+resource InspectionModuleSortStringsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/inspection.ts#sortStrings")
+  fingerprint ast.semantic_subtree_v1("sha256:5212a57976c59fd774a9c3028fa0ceb85e3f52997c5897db2fadda9d34627ff8")
+}
+
+resource InspectionModuleSourceRefAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/inspection.ts#sourceRef")
+  fingerprint ast.semantic_subtree_v1("sha256:6839104658475695f07b5f23b02c4b67599eb68077328c276c262e2aaac1152d")
+}
+
+resource InspectionModuleTermAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/inspection.ts#term")
+  fingerprint ast.semantic_subtree_v1("sha256:f35dcef90980906fb1cb180cbb5e20ac57ac6a45c11a4fcec45389a53a7c6009")
+}
+
+resource InspectionModuleTermFromKeyAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/inspection.ts#termFromKey")
+  fingerprint ast.semantic_subtree_v1("sha256:62ce21eec5ad5fcd1afc4ebd95f94688007e85c765d00b3a8c9292344f63e446")
+}
+
+component InspectionModule : GeneratedCandidate {
+  fn compareDocuments
+    source ts("packages/shp-checker/src/checker/inspection.ts#compareDocuments")
+    effects unknown
+  fn compareIdentity
+    source ts("packages/shp-checker/src/checker/inspection.ts#compareIdentity")
+    effects unknown
+  fn compareJson
+    source ts("packages/shp-checker/src/checker/inspection.ts#compareJson")
+    effects unknown
+  fn declarationOrigin
+    source ts("packages/shp-checker/src/checker/inspection.ts#declarationOrigin")
+    effects unknown
+  fn identity
+    source ts("packages/shp-checker/src/checker/inspection.ts#identity")
+    effects unknown
+  fn inspectBindings
+    source ts("packages/shp-checker/src/checker/inspection.ts#inspectBindings")
+    effects unknown
+  fn inspectComponents
+    source ts("packages/shp-checker/src/checker/inspection.ts#inspectComponents")
+    effects unknown
+  fn inspectFunctions
+    source ts("packages/shp-checker/src/checker/inspection.ts#inspectFunctions")
+    effects unknown
+  fn inspectImplementations
+    source ts("packages/shp-checker/src/checker/inspection.ts#inspectImplementations")
+    effects unknown
+  fn inspectMemories
+    source ts("packages/shp-checker/src/checker/inspection.ts#inspectMemories")
+    effects unknown
+  fn inspectRelations
+    source ts("packages/shp-checker/src/checker/inspection.ts#inspectRelations")
+    effects unknown
+  fn inspectResources
+    source ts("packages/shp-checker/src/checker/inspection.ts#inspectResources")
+    effects unknown
+  fn inspectRules
+    source ts("packages/shp-checker/src/checker/inspection.ts#inspectRules")
+    effects unknown
+  fn inspectShapeModules
+    source ts("packages/shp-checker/src/checker/inspection.ts#inspectShapeModules")
+    effects unknown
+  fn inspectionContext
+    source ts("packages/shp-checker/src/checker/inspection.ts#inspectionContext")
+    effects unknown
+  fn sortStrings
+    source ts("packages/shp-checker/src/checker/inspection.ts#sortStrings")
+    effects unknown
+  fn sourceRef
+    source ts("packages/shp-checker/src/checker/inspection.ts#sourceRef")
+    effects unknown
+  fn term
+    source ts("packages/shp-checker/src/checker/inspection.ts#term")
+    effects unknown
+  fn termFromKey
+    source ts("packages/shp-checker/src/checker/inspection.ts#termFromKey")
+    effects unknown
+}
+
+relation InspectionModuleCompareDocumentsGeneratedFromInspectionModuleCompareDocumentsAstAnchor {
+  kind generated_from
+  connects InspectionModule -> InspectionModuleCompareDocumentsAstAnchor
+  roles { InspectionModule as generated, InspectionModuleCompareDocumentsAstAnchor as syntax }
+  expects InspectionModuleCompareDocumentsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:741eadd8e06bae11f11312463df8e83323cda999d0086dd42789a8359472293d")
+  summary "fn InspectionModule.compareDocuments generated from typescript function_declaration at packages/shp-checker/src/checker/inspection.ts#compareDocuments."
+}
+
+relation InspectionModuleCompareIdentityGeneratedFromInspectionModuleCompareIdentityAstAnchor {
+  kind generated_from
+  connects InspectionModule -> InspectionModuleCompareIdentityAstAnchor
+  roles { InspectionModule as generated, InspectionModuleCompareIdentityAstAnchor as syntax }
+  expects InspectionModuleCompareIdentityAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9825eead0a7ac7c779ed7a1e2d5151e788fcdafa06aaf5310a617dd683fd3edd")
+  summary "fn InspectionModule.compareIdentity generated from typescript function_declaration at packages/shp-checker/src/checker/inspection.ts#compareIdentity."
+}
+
+relation InspectionModuleCompareJsonGeneratedFromInspectionModuleCompareJsonAstAnchor {
+  kind generated_from
+  connects InspectionModule -> InspectionModuleCompareJsonAstAnchor
+  roles { InspectionModule as generated, InspectionModuleCompareJsonAstAnchor as syntax }
+  expects InspectionModuleCompareJsonAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b38532bc883e3668bc9d8c959e5b2b0ae129332a2a432455e8b047c0b53be0b2")
+  summary "fn InspectionModule.compareJson generated from typescript function_declaration at packages/shp-checker/src/checker/inspection.ts#compareJson."
+}
+
+relation InspectionModuleDeclarationOriginGeneratedFromInspectionModuleDeclarationOriginAstAnchor {
+  kind generated_from
+  connects InspectionModule -> InspectionModuleDeclarationOriginAstAnchor
+  roles { InspectionModule as generated, InspectionModuleDeclarationOriginAstAnchor as syntax }
+  expects InspectionModuleDeclarationOriginAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5dc6b268a8b0536964909b0d7565a8a679e605b4f3373a9d71d305732c8dfc7d")
+  summary "fn InspectionModule.declarationOrigin generated from typescript function_declaration at packages/shp-checker/src/checker/inspection.ts#declarationOrigin."
+}
+
+relation InspectionModuleIdentityGeneratedFromInspectionModuleIdentityAstAnchor {
+  kind generated_from
+  connects InspectionModule -> InspectionModuleIdentityAstAnchor
+  roles { InspectionModule as generated, InspectionModuleIdentityAstAnchor as syntax }
+  expects InspectionModuleIdentityAstAnchor fingerprint ast.semantic_subtree_v1("sha256:31f1f7c1bb43bbb290f65bd1f09d511552ce7c1aa28449250dcd3c0e5de7efb7")
+  summary "fn InspectionModule.identity generated from typescript function_declaration at packages/shp-checker/src/checker/inspection.ts#identity."
+}
+
+relation InspectionModuleInspectBindingsGeneratedFromInspectionModuleInspectBindingsAstAnchor {
+  kind generated_from
+  connects InspectionModule -> InspectionModuleInspectBindingsAstAnchor
+  roles { InspectionModule as generated, InspectionModuleInspectBindingsAstAnchor as syntax }
+  expects InspectionModuleInspectBindingsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ee525b9e65735311f2443ace51cf4987a96ff42fdc01e11afc9c43c2844fa7fa")
+  summary "fn InspectionModule.inspectBindings generated from typescript function_declaration at packages/shp-checker/src/checker/inspection.ts#inspectBindings."
+}
+
+relation InspectionModuleInspectComponentsGeneratedFromInspectionModuleInspectComponentsAstAnchor {
+  kind generated_from
+  connects InspectionModule -> InspectionModuleInspectComponentsAstAnchor
+  roles { InspectionModule as generated, InspectionModuleInspectComponentsAstAnchor as syntax }
+  expects InspectionModuleInspectComponentsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9dd17d628754e727000400aa5e127ee4362ba768e89927b60c2f9abd4eb84cfe")
+  summary "fn InspectionModule.inspectComponents generated from typescript function_declaration at packages/shp-checker/src/checker/inspection.ts#inspectComponents."
+}
+
+relation InspectionModuleInspectFunctionsGeneratedFromInspectionModuleInspectFunctionsAstAnchor {
+  kind generated_from
+  connects InspectionModule -> InspectionModuleInspectFunctionsAstAnchor
+  roles { InspectionModule as generated, InspectionModuleInspectFunctionsAstAnchor as syntax }
+  expects InspectionModuleInspectFunctionsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7bee0327bcd476c65833c5b9c8ac770cb4e9205ce36b25a23daf3a54da22e55e")
+  summary "fn InspectionModule.inspectFunctions generated from typescript function_declaration at packages/shp-checker/src/checker/inspection.ts#inspectFunctions."
+}
+
+relation InspectionModuleInspectImplementationsGeneratedFromInspectionModuleInspectImplementationsAstAnchor {
+  kind generated_from
+  connects InspectionModule -> InspectionModuleInspectImplementationsAstAnchor
+  roles { InspectionModule as generated, InspectionModuleInspectImplementationsAstAnchor as syntax }
+  expects InspectionModuleInspectImplementationsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:735c76d96318372123e30d3b499c6a1f1f170358110fe5b525dd38aaec1f39ba")
+  summary "fn InspectionModule.inspectImplementations generated from typescript function_declaration at packages/shp-checker/src/checker/inspection.ts#inspectImplementations."
+}
+
+relation InspectionModuleInspectMemoriesGeneratedFromInspectionModuleInspectMemoriesAstAnchor {
+  kind generated_from
+  connects InspectionModule -> InspectionModuleInspectMemoriesAstAnchor
+  roles { InspectionModule as generated, InspectionModuleInspectMemoriesAstAnchor as syntax }
+  expects InspectionModuleInspectMemoriesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:03f7dac9b874076e5b4d65708fd90aaafcbce6c7590687bdc3fb9a477c7d046c")
+  summary "fn InspectionModule.inspectMemories generated from typescript function_declaration at packages/shp-checker/src/checker/inspection.ts#inspectMemories."
+}
+
+relation InspectionModuleInspectRelationsGeneratedFromInspectionModuleInspectRelationsAstAnchor {
+  kind generated_from
+  connects InspectionModule -> InspectionModuleInspectRelationsAstAnchor
+  roles { InspectionModule as generated, InspectionModuleInspectRelationsAstAnchor as syntax }
+  expects InspectionModuleInspectRelationsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:08fc4aa9b2b515f226033358a9b7c383057193ba0984e7d105b35390e788f589")
+  summary "fn InspectionModule.inspectRelations generated from typescript function_declaration at packages/shp-checker/src/checker/inspection.ts#inspectRelations."
+}
+
+relation InspectionModuleInspectResourcesGeneratedFromInspectionModuleInspectResourcesAstAnchor {
+  kind generated_from
+  connects InspectionModule -> InspectionModuleInspectResourcesAstAnchor
+  roles { InspectionModule as generated, InspectionModuleInspectResourcesAstAnchor as syntax }
+  expects InspectionModuleInspectResourcesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:bbf120f49b575f3cf71c57f5efdca253abe43f12f9f4650d8c1462c42dadba82")
+  summary "fn InspectionModule.inspectResources generated from typescript function_declaration at packages/shp-checker/src/checker/inspection.ts#inspectResources."
+}
+
+relation InspectionModuleInspectRulesGeneratedFromInspectionModuleInspectRulesAstAnchor {
+  kind generated_from
+  connects InspectionModule -> InspectionModuleInspectRulesAstAnchor
+  roles { InspectionModule as generated, InspectionModuleInspectRulesAstAnchor as syntax }
+  expects InspectionModuleInspectRulesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:996f87ff7fb9c0b1eff5176a226bb3a93854463b03d79b2303679191ca3eca43")
+  summary "fn InspectionModule.inspectRules generated from typescript function_declaration at packages/shp-checker/src/checker/inspection.ts#inspectRules."
+}
+
+relation InspectionModuleInspectShapeModulesGeneratedFromInspectionModuleInspectShapeModulesAstAnchor {
+  kind generated_from
+  connects InspectionModule -> InspectionModuleInspectShapeModulesAstAnchor
+  roles { InspectionModule as generated, InspectionModuleInspectShapeModulesAstAnchor as syntax }
+  expects InspectionModuleInspectShapeModulesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3aa8951c2d44698f7567dd1fc5cdaedaa547d8fd16997055c264376325e1c984")
+  summary "fn InspectionModule.inspectShapeModules generated from typescript function_declaration at packages/shp-checker/src/checker/inspection.ts#inspectShapeModules."
+}
+
+relation InspectionModuleInspectionContextGeneratedFromInspectionModuleInspectionContextAstAnchor {
+  kind generated_from
+  connects InspectionModule -> InspectionModuleInspectionContextAstAnchor
+  roles { InspectionModule as generated, InspectionModuleInspectionContextAstAnchor as syntax }
+  expects InspectionModuleInspectionContextAstAnchor fingerprint ast.semantic_subtree_v1("sha256:91b6f90f55eeee7990f9ffcc70494b755739f32ed73b71feee9ca789bf3465c8")
+  summary "fn InspectionModule.inspectionContext generated from typescript function_declaration at packages/shp-checker/src/checker/inspection.ts#inspectionContext."
+}
+
+relation InspectionModuleSortStringsGeneratedFromInspectionModuleSortStringsAstAnchor {
+  kind generated_from
+  connects InspectionModule -> InspectionModuleSortStringsAstAnchor
+  roles { InspectionModule as generated, InspectionModuleSortStringsAstAnchor as syntax }
+  expects InspectionModuleSortStringsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5212a57976c59fd774a9c3028fa0ceb85e3f52997c5897db2fadda9d34627ff8")
+  summary "fn InspectionModule.sortStrings generated from typescript function_declaration at packages/shp-checker/src/checker/inspection.ts#sortStrings."
+}
+
+relation InspectionModuleSourceRefGeneratedFromInspectionModuleSourceRefAstAnchor {
+  kind generated_from
+  connects InspectionModule -> InspectionModuleSourceRefAstAnchor
+  roles { InspectionModule as generated, InspectionModuleSourceRefAstAnchor as syntax }
+  expects InspectionModuleSourceRefAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6839104658475695f07b5f23b02c4b67599eb68077328c276c262e2aaac1152d")
+  summary "fn InspectionModule.sourceRef generated from typescript function_declaration at packages/shp-checker/src/checker/inspection.ts#sourceRef."
+}
+
+relation InspectionModuleTermFromKeyGeneratedFromInspectionModuleTermFromKeyAstAnchor {
+  kind generated_from
+  connects InspectionModule -> InspectionModuleTermFromKeyAstAnchor
+  roles { InspectionModule as generated, InspectionModuleTermFromKeyAstAnchor as syntax }
+  expects InspectionModuleTermFromKeyAstAnchor fingerprint ast.semantic_subtree_v1("sha256:62ce21eec5ad5fcd1afc4ebd95f94688007e85c765d00b3a8c9292344f63e446")
+  summary "fn InspectionModule.termFromKey generated from typescript function_declaration at packages/shp-checker/src/checker/inspection.ts#termFromKey."
+}
+
+relation InspectionModuleTermGeneratedFromInspectionModuleTermAstAnchor {
+  kind generated_from
+  connects InspectionModule -> InspectionModuleTermAstAnchor
+  roles { InspectionModule as generated, InspectionModuleTermAstAnchor as syntax }
+  expects InspectionModuleTermAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f35dcef90980906fb1cb180cbb5e20ac57ac6a45c11a4fcec45389a53a7c6009")
+  summary "fn InspectionModule.term generated from typescript function_declaration at packages/shp-checker/src/checker/inspection.ts#term."
+}
+
+implementation InspectionModuleImpl {
+  paths {
+    "packages/shp-checker/src/checker/inspection.ts"
+  }
+  conforms_to InspectionModule
+}

@@ -26,6 +26,7 @@ plugins/shapelang/skills/shape-contract-guard/SKILL.md
 plugins/shapelang/skills/shape-contract-preflight/SKILL.md
 plugins/shapelang/skills/shape-index/SKILL.md
 plugins/shapelang/skills/shape-review/SKILL.md
+plugins/shapelang/skills/unix-system-visualiser/SKILL.md
 ```
 
 - `shape-lang`: incremental language authoring, diagnostics, teaching, operation, and source-to-model drift review.
@@ -33,6 +34,7 @@ plugins/shapelang/skills/shape-review/SKILL.md
 - `shape-contract-preflight`: current-model orientation and optional model-only contract simulation before implementation.
 - `shape-index`: explicit-only whole-repository modeling from a fixed clean baseline, without invariant quotas.
 - `shape-review`: concrete code-bug review with focused Shape evidence and separate stale-model warnings.
+- `unix-system-visualiser`: deterministic generation and browser validation of a self-contained interactive atlas with authored journeys and inferred dependency tours from Shape inspection data.
 
 ## Validate
 
@@ -44,9 +46,10 @@ bun run skills:check
 
 This validates the shipped skill set, entrypoint frontmatter, referenced
 resources, interface metadata, invocation policy, routing cases, output
-contracts, and current CLI spelling. The release-candidate workflow also runs
-a static conformance review and focused behavioral cases across all five skills,
-then pauses for manual approval in the `skills-release-approval` environment.
+contracts, bundled JavaScript and HTML resources, and current CLI spelling. The
+release-candidate workflow also runs a static conformance review and focused
+behavioral cases across all six skills, then pauses for manual approval in the
+`skills-release-approval` environment.
 
 If the skill change accompanies Shape implementation changes in this repository, also run the local project checks from the repository README.
 

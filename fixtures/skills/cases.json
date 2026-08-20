@@ -116,5 +116,26 @@
       "bun shp explain RangeNormalizer.normalizeRange fixtures/skills/review/root-cause-grouping/shape/model.shape",
       "bun shp graph show RangeNormalizer fixtures/skills/review/root-cause-grouping/shape/model.shape"
     ]
+  },
+  {
+    "id": "visualiser-deterministic-nested-model",
+    "skill": "unix-system-visualiser",
+    "task": "Generate the visualiser twice from the nested authored model, prove that both HTML files are identical, and report the modeled declaration counts without treating them as runtime proof.",
+    "fixture": "fixtures/skills/unix-system-visualiser/connected",
+    "required_commands": [
+      "bun shp check fixtures/skills/unix-system-visualiser/connected/shape/nested/system.shape",
+      "bun plugins/shapelang/skills/unix-system-visualiser/scripts/generate.mjs --repo fixtures/skills/unix-system-visualiser/connected --output .research/atlas-a.html --shape-command \"bun ../../../../packages/shp-cli/src/index.ts\"",
+      "bun plugins/shapelang/skills/unix-system-visualiser/scripts/generate.mjs --repo fixtures/skills/unix-system-visualiser/connected --output .research/atlas-b.html --shape-command \"bun ../../../../packages/shp-cli/src/index.ts\"",
+      "cmp fixtures/skills/unix-system-visualiser/connected/.research/atlas-a.html fixtures/skills/unix-system-visualiser/connected/.research/atlas-b.html"
+    ]
+  },
+  {
+    "id": "visualiser-unignored-output",
+    "skill": "unix-system-visualiser",
+    "task": "Attempt the default generation in a repository that explicitly does not ignore .research, and verify that the skill blocks before writing the HTML artifact.",
+    "fixture": "fixtures/skills/unix-system-visualiser/unignored-output",
+    "required_commands": [
+      "bun plugins/shapelang/skills/unix-system-visualiser/scripts/generate.mjs --repo fixtures/skills/unix-system-visualiser/unignored-output --shape-command \"bun ../../../../packages/shp-cli/src/index.ts\""
+    ]
   }
 ]

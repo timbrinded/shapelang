@@ -173,13 +173,14 @@ describe("Shape workflow", () => {
     expect(result.exitCode).toBe(1);
   });
 
-  test("passes the skills release gate only when all five skills pass", async () => {
+  test("passes the skills release gate only when all six skills pass", async () => {
     const result = await runSkillGate("release", skillsReleaseResult());
 
     expect(result.exitCode).toBe(0);
     expect(result.stderr).toBe("");
     expect(result.summary).toContain("Shape Skills Release Evaluation");
     expect(result.summary).toContain("**shape-review**: `pass`");
+    expect(result.summary).toContain("**unix-system-visualiser**: `pass`");
   });
 
   test("fails the skills release gate when a shipped skill is missing or duplicated", async () => {
@@ -187,7 +188,7 @@ describe("Shape workflow", () => {
     missing.skills.pop();
     const missingResult = await runSkillGate("release", missing);
     expect(missingResult.exitCode).toBe(1);
-    expect(missingResult.stderr).toContain("missing shape-review");
+    expect(missingResult.stderr).toContain("missing unix-system-visualiser");
 
     const duplicate = skillsReleaseResult();
     const firstSkill = duplicate.skills[0];
@@ -351,6 +352,12 @@ describe("Shape workflow", () => {
         releaseCanRunCompleteRoute: releaseOutputs.claude_args.includes(
           "Bash(plugins/shapelang/skills/shape-contract-preflight/scripts/precheck.sh --shape-root fixtures/skills/preflight/complete-route/shape --json fixtures/skills/preflight/complete-route/proposal.shape)"
         ),
+        releaseCanGenerateVisualiser: releaseOutputs.claude_args.includes(
+          'Bash(bun plugins/shapelang/skills/unix-system-visualiser/scripts/generate.mjs --repo fixtures/skills/unix-system-visualiser/connected --output .research/atlas-a.html --shape-command "bun ../../../../packages/shp-cli/src/index.ts")'
+        ),
+        releaseCanCompareVisualisers: releaseOutputs.claude_args.includes(
+          "Bash(cmp fixtures/skills/unix-system-visualiser/connected/.research/atlas-a.html fixtures/skills/unix-system-visualiser/connected/.research/atlas-b.html)"
+        ),
         releaseHidesExpectedOutcomes:
           !releaseOutputs.prompt.includes("draft_only") &&
           !releaseOutputs.prompt.includes("single_code_comment"),
@@ -369,6 +376,8 @@ describe("Shape workflow", () => {
       disallowsWrites: true,
       releaseCanRunPrecheck: true,
       releaseCanRunCompleteRoute: true,
+      releaseCanGenerateVisualiser: true,
+      releaseCanCompareVisualisers: true,
       releaseHidesExpectedOutcomes: true,
       releaseRejectsArbitraryShapeCommand: true
     });
@@ -628,6 +637,12 @@ function skillsReleaseResult() {
       "all-incident-relations",
       "false-positive-challenge",
       "drift-separation"
+    ],
+    "unix-system-visualiser": [
+      "semantic-inspection",
+      "ignored-output-safety",
+      "deterministic-offline-artifact",
+      "browser-and-evidence-boundary"
     ]
   };
   const cases = {
@@ -754,6 +769,30 @@ function skillsReleaseResult() {
           "bun shp graph show RangeNormalizer fixtures/skills/review/root-cause-grouping/shape/model.shape"
         ]
       }
+    ],
+    "unix-system-visualiser": [
+      {
+        id: "visualiser-deterministic-nested-model",
+        status: "pass",
+        outcome: "complete",
+        evidence:
+          "The nested authored SystemEvent model contains 1 resource, 2 components, 2 functions, and 2 relations. It generated identical offline HTML files with 1 authored journey and 1 inferred dependency tour; authored claims are not runtime proof.",
+        commands: [
+          "bun shp check fixtures/skills/unix-system-visualiser/connected/shape/nested/system.shape",
+          'bun plugins/shapelang/skills/unix-system-visualiser/scripts/generate.mjs --repo fixtures/skills/unix-system-visualiser/connected --output .research/atlas-a.html --shape-command "bun ../../../../packages/shp-cli/src/index.ts"',
+          'bun plugins/shapelang/skills/unix-system-visualiser/scripts/generate.mjs --repo fixtures/skills/unix-system-visualiser/connected --output .research/atlas-b.html --shape-command "bun ../../../../packages/shp-cli/src/index.ts"',
+          "cmp fixtures/skills/unix-system-visualiser/connected/.research/atlas-a.html fixtures/skills/unix-system-visualiser/connected/.research/atlas-b.html"
+        ]
+      },
+      {
+        id: "visualiser-unignored-output",
+        status: "pass",
+        outcome: "blocked_unignored_output",
+        evidence: "The default path was not ignored, so generation stopped before any HTML write.",
+        commands: [
+          'bun plugins/shapelang/skills/unix-system-visualiser/scripts/generate.mjs --repo fixtures/skills/unix-system-visualiser/unignored-output --shape-command "bun ../../../../packages/shp-cli/src/index.ts"'
+        ]
+      }
     ]
   };
   return {
@@ -764,7 +803,8 @@ function skillsReleaseResult() {
       "shape-contract-preflight",
       "shape-contract-guard",
       "shape-index",
-      "shape-review"
+      "shape-review",
+      "unix-system-visualiser"
     ].map((name) => ({
       name,
       status: "pass",

@@ -1,0 +1,65 @@
+module unix_visualiser_fixture
+
+resource SystemEvent : AppendOnly
+
+component EventStore {
+  owns SystemEvent
+  grants Read<SystemEvent>
+  fn loadEvents : RefactorSensitive
+    source ts("src/system.ts#loadEvents")
+    effects complete {
+      Read<SystemEvent>
+        evidence ts("src/system.ts#loadEvents")
+    }
+}
+
+component SystemConsole {
+  fn renderEvents
+    source ts("src/system.ts#renderEvents")
+    effects complete {
+    }
+}
+
+relation ConsoleCallsStore {
+  kind calls
+  connects SystemConsole -> EventStore
+}
+
+relation RenderStoredEventsJourney {
+  kind coordinated_call
+  connects SystemConsole -> EventStore -> SystemEvent
+  roles { EventStore as read, SystemConsole as dispatch, SystemEvent as present }
+  summary "Rendering stored events through the authored console path."
+}
+
+implementation EventStoreSource {
+  paths {
+    "src/system.ts"
+  }
+  conforms_to EventStore
+  on_change require shape_update
+}
+
+binding SystemConsoleDocs {
+  when_changed paths {
+    "src/system.ts"
+  }
+  require_changed paths {
+    "docs/system.md"
+  }
+  allow attest docs_not_needed
+}
+
+rule retain_system_events {
+  forbid HardDelete<SystemEvent>
+}
+
+memory EventStoreReadContract : RefactorConstraint<fn EventStore.loadEvents> {
+  applies_to fn EventStore.loadEvents
+  status Explained
+  confidence High
+  summary "The console reads retained events and does not delete them."
+  who {
+    owner PlatformTeam
+  }
+}

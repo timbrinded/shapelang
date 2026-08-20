@@ -113,7 +113,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Run static conformance and read-only behavioral canaries
+      - name: Run static conformance and focused behavioral canaries
         uses: ./.github/actions/claude-skill-review
         with:
           skill: release

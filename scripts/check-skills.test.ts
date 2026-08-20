@@ -22,4 +22,10 @@ test("shipped skill package satisfies routing, resource, fixture, metadata, and 
   expect(
     routingCases.filter((item) => item.excluded_skills?.includes("shape-index")).length
   ).toBeGreaterThanOrEqual(2);
+  expect(
+    routingCases
+      .filter((item) => item.expected_skill === "unix-system-visualiser")
+      .map((item) => item.kind)
+      .sort()
+  ).toEqual(["direct", "incomplete", "indirect"]);
 });

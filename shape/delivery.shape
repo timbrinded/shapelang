@@ -81,7 +81,7 @@ component CiPipeline {
   grants Update<SkillReleaseReport>
   fn approveReleaseSkills
     source yaml(".github/workflows/release-candidate.yml#Skill Release Approval")
-    description "Records manual approval only after deterministic release validation and the blocking five-skill evaluation pass."
+    description "Records manual approval only after deterministic release validation and the blocking six-skill evaluation pass."
     effects complete {
       Read<CiWorkflow>
         evidence yaml(".github/workflows/release-candidate.yml")
@@ -109,10 +109,12 @@ component CiPipeline {
     }
   fn evaluateReleaseSkills
     source mjs(".github/scripts/run-claude-skill.mjs#buildSkillsReleasePrompt")
-    description "Runs static conformance checks and focused read-only fixture canaries across all five shipped skills, then emits one blocking structured report."
+    description "Runs configured static conformance checks and focused fixture canaries across all six shipped skills, including deterministic ignored visualiser generation and guided architecture journeys, then emits one blocking structured report."
     effects complete {
       Read<CiWorkflow>
         evidence yaml(".github/workflows/release-candidate.yml")
+      Read<CiWorkflow>
+        evidence mjs(".github/scripts/skills-release-config.mjs")
       Read<ClaudeReviewPrompt>
         evidence md(".github/prompts/shape-skills-release.md")
       Read<ShapeAgentSkill>
@@ -125,6 +127,8 @@ component CiPipeline {
         evidence md("plugins/shapelang/skills/shape-index/SKILL.md")
       Read<ShapeAgentSkill>
         evidence md("plugins/shapelang/skills/shape-review/SKILL.md")
+      Read<ShapeAgentSkill>
+        evidence md("plugins/shapelang/skills/unix-system-visualiser/SKILL.md")
       Read<ShapeAgentSkill>
         evidence md("plugins/shapelang/skills/README.md")
       Read<ShapeAgentSkill>
@@ -163,6 +167,30 @@ component CiPipeline {
         evidence md("plugins/shapelang/skills/shape-lang/references/teaching-guide.md")
       Read<ShapeAgentSkill>
         evidence yaml("plugins/shapelang/skills/shape-review/agents/openai.yaml")
+      Read<ShapeAgentSkill>
+        evidence yaml("plugins/shapelang/skills/unix-system-visualiser/agents/openai.yaml")
+      Read<ShapeAgentSkill>
+        evidence mjs("plugins/shapelang/skills/unix-system-visualiser/scripts/generate.mjs")
+      Read<ShapeAgentSkill>
+        evidence mjs("plugins/shapelang/skills/unix-system-visualiser/lib/atlas-model.mjs")
+      Read<ShapeAgentSkill>
+        evidence mjs("plugins/shapelang/skills/unix-system-visualiser/lib/journey-model.mjs")
+      Read<ShapeAgentSkill>
+        evidence html("plugins/shapelang/skills/unix-system-visualiser/assets/index.template.html")
+      Read<ShapeAgentSkill>
+        evidence css("plugins/shapelang/skills/unix-system-visualiser/assets/styles.css")
+      Read<ShapeAgentSkill>
+        evidence mjs("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/bootstrap.mjs")
+      Read<ShapeAgentSkill>
+        evidence mjs("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/canvas.mjs")
+      Read<ShapeAgentSkill>
+        evidence mjs("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/details.mjs")
+      Read<ShapeAgentSkill>
+        evidence mjs("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journey-player.mjs")
+      Read<ShapeAgentSkill>
+        evidence mjs("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journeys.mjs")
+      Read<ShapeAgentSkill>
+        evidence mjs("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/interactions.mjs")
       Read<ShapeAgentSkill>
         evidence json("plugins/shapelang/skills/routing-cases.json")
       Read<SkillBehaviorFixture>
@@ -332,7 +360,7 @@ component CiPipeline {
     }
   fn validateShippedSkills
     source ts("scripts/check-skills.ts#validateSkillPackage")
-    description "Deterministically validates the shipped set, routing metadata and cases, referenced resources, output contracts, executable scripts, and current CLI examples."
+    description "Deterministically validates the six-skill set, routing metadata and cases, referenced resources, output contracts, executable and parseable scripts, assembled visualiser sources, and current CLI examples."
     effects complete {
       Read<CommandLineInterface>
         evidence ts("scripts/check-skills.ts#validateCurrentCliExamples")
@@ -347,6 +375,8 @@ component CiPipeline {
       Read<ShapeAgentSkill>
         evidence md("plugins/shapelang/skills/shape-review/SKILL.md")
       Read<ShapeAgentSkill>
+        evidence md("plugins/shapelang/skills/unix-system-visualiser/SKILL.md")
+      Read<ShapeAgentSkill>
         evidence yaml("plugins/shapelang/skills/shape-lang/agents/openai.yaml")
       Read<ShapeAgentSkill>
         evidence yaml("plugins/shapelang/skills/shape-contract-preflight/agents/openai.yaml")
@@ -356,6 +386,8 @@ component CiPipeline {
         evidence yaml("plugins/shapelang/skills/shape-index/agents/openai.yaml")
       Read<ShapeAgentSkill>
         evidence yaml("plugins/shapelang/skills/shape-review/agents/openai.yaml")
+      Read<ShapeAgentSkill>
+        evidence yaml("plugins/shapelang/skills/unix-system-visualiser/agents/openai.yaml")
       Read<ShapeAgentSkill>
         evidence md("plugins/shapelang/skills/README.md")
       Read<ShapeAgentSkill>
@@ -386,6 +418,34 @@ component CiPipeline {
         evidence md("plugins/shapelang/skills/shape-lang/references/memory-guards.md")
       Read<ShapeAgentSkill>
         evidence md("plugins/shapelang/skills/shape-lang/references/teaching-guide.md")
+      Read<ShapeAgentSkill>
+        evidence mjs("plugins/shapelang/skills/unix-system-visualiser/scripts/generate.mjs")
+      Read<ShapeAgentSkill>
+        evidence mjs("plugins/shapelang/skills/unix-system-visualiser/lib/atlas-model.mjs")
+      Read<ShapeAgentSkill>
+        evidence mjs("plugins/shapelang/skills/unix-system-visualiser/lib/journey-model.mjs")
+      Read<ShapeAgentSkill>
+        evidence mjs("plugins/shapelang/skills/unix-system-visualiser/scripts/generate.test.mjs")
+      Read<ShapeAgentSkill>
+        evidence mjs("plugins/shapelang/skills/unix-system-visualiser/scripts/journey-model.test.mjs")
+      Read<ShapeAgentSkill>
+        evidence html("plugins/shapelang/skills/unix-system-visualiser/assets/index.template.html")
+      Read<ShapeAgentSkill>
+        evidence css("plugins/shapelang/skills/unix-system-visualiser/assets/styles.css")
+      Read<ShapeAgentSkill>
+        evidence mjs("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/bootstrap.mjs")
+      Read<ShapeAgentSkill>
+        evidence mjs("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/canvas.mjs")
+      Read<ShapeAgentSkill>
+        evidence mjs("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/details.mjs")
+      Read<ShapeAgentSkill>
+        evidence mjs("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journey-player.mjs")
+      Read<ShapeAgentSkill>
+        evidence mjs("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journey-player.test.mjs")
+      Read<ShapeAgentSkill>
+        evidence mjs("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journeys.mjs")
+      Read<ShapeAgentSkill>
+        evidence mjs("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/interactions.mjs")
       Read<SkillBehaviorFixture>
         evidence json("fixtures/skills/cases.json")
     }
@@ -783,7 +843,10 @@ implementation ReleaseSource {
 
 implementation ShapeSkillSource {
   paths {
+    "plugins/shapelang/skills/**/*.css"
+    "plugins/shapelang/skills/**/*.html"
     "plugins/shapelang/skills/**/*.md"
+    "plugins/shapelang/skills/**/*.mjs"
     "plugins/shapelang/skills/**/*.sh"
     "plugins/shapelang/skills/**/*.yaml"
   }

@@ -1,0 +1,129 @@
+module shape.generated.ast.plugins.shapelang.skills.unix_system_visualiser.scripts.journey_model_test
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource JourneyModelTestModuleEndpointsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/scripts/journey-model.test.mjs#endpoints")
+  fingerprint ast.semantic_subtree_v1("sha256:bd3a3e7d7fa51b475a36c5333ef1a4b21bc9691a8bfa13fb04b273b9ac826505")
+}
+
+resource JourneyModelTestModuleLocalNameAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/scripts/journey-model.test.mjs#localName")
+  fingerprint ast.semantic_subtree_v1("sha256:0840cf9488c504e163907a3a826bcacce12bdda1d5f03761239ba30c3f3feeae")
+}
+
+resource JourneyModelTestModuleMakeComponentAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/scripts/journey-model.test.mjs#makeComponent")
+  fingerprint ast.semantic_subtree_v1("sha256:08578c8eef60c4dd63d665caf25e2edadec27dfd4e189e6b8f4922ae0dd9eb37")
+}
+
+resource JourneyModelTestModuleMakeModelAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/scripts/journey-model.test.mjs#makeModel")
+  fingerprint ast.semantic_subtree_v1("sha256:a2c71d928064e5a5cff0a1d06d3a1f3e0bce637869bd5404ffd780bdb46f9193")
+}
+
+resource JourneyModelTestModuleMakeNodesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/scripts/journey-model.test.mjs#makeNodes")
+  fingerprint ast.semantic_subtree_v1("sha256:8e9da68aec96a205ee46780ba5bba949fab0dd3d6ae17fd6d048c3076e152624")
+}
+
+resource JourneyModelTestModuleMakeRelationAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/scripts/journey-model.test.mjs#makeRelation")
+  fingerprint ast.semantic_subtree_v1("sha256:a0330bf4f1792ce21e378ff6027fe43e36799b4b2c1bf353a36a9a6ecb9e944f")
+}
+
+resource JourneyModelTestModuleMakeResourceAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/scripts/journey-model.test.mjs#makeResource")
+  fingerprint ast.semantic_subtree_v1("sha256:9bd1b1355d99f50f1479b735b62e088ed30e7739b962b18359e68bef325128a9")
+}
+
+component JourneyModelTestModule : GeneratedCandidate {
+  fn endpoints
+    source js("plugins/shapelang/skills/unix-system-visualiser/scripts/journey-model.test.mjs#endpoints")
+    effects unknown
+  fn localName
+    source js("plugins/shapelang/skills/unix-system-visualiser/scripts/journey-model.test.mjs#localName")
+    effects unknown
+  fn makeComponent
+    source js("plugins/shapelang/skills/unix-system-visualiser/scripts/journey-model.test.mjs#makeComponent")
+    effects unknown
+  fn makeModel
+    source js("plugins/shapelang/skills/unix-system-visualiser/scripts/journey-model.test.mjs#makeModel")
+    effects unknown
+  fn makeNodes
+    source js("plugins/shapelang/skills/unix-system-visualiser/scripts/journey-model.test.mjs#makeNodes")
+    effects unknown
+  fn makeRelation
+    source js("plugins/shapelang/skills/unix-system-visualiser/scripts/journey-model.test.mjs#makeRelation")
+    effects unknown
+  fn makeResource
+    source js("plugins/shapelang/skills/unix-system-visualiser/scripts/journey-model.test.mjs#makeResource")
+    effects unknown
+}
+
+relation JourneyModelTestModuleEndpointsGeneratedFromJourneyModelTestModuleEndpointsAstAnchor {
+  kind generated_from
+  connects JourneyModelTestModule -> JourneyModelTestModuleEndpointsAstAnchor
+  roles { JourneyModelTestModule as generated, JourneyModelTestModuleEndpointsAstAnchor as syntax }
+  expects JourneyModelTestModuleEndpointsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:bd3a3e7d7fa51b475a36c5333ef1a4b21bc9691a8bfa13fb04b273b9ac826505")
+  summary "fn JourneyModelTestModule.endpoints generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/scripts/journey-model.test.mjs#endpoints."
+}
+
+relation JourneyModelTestModuleLocalNameGeneratedFromJourneyModelTestModuleLocalNameAstAnchor {
+  kind generated_from
+  connects JourneyModelTestModule -> JourneyModelTestModuleLocalNameAstAnchor
+  roles { JourneyModelTestModule as generated, JourneyModelTestModuleLocalNameAstAnchor as syntax }
+  expects JourneyModelTestModuleLocalNameAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0840cf9488c504e163907a3a826bcacce12bdda1d5f03761239ba30c3f3feeae")
+  summary "fn JourneyModelTestModule.localName generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/scripts/journey-model.test.mjs#localName."
+}
+
+relation JourneyModelTestModuleMakeComponentGeneratedFromJourneyModelTestModuleMakeComponentAstAnchor {
+  kind generated_from
+  connects JourneyModelTestModule -> JourneyModelTestModuleMakeComponentAstAnchor
+  roles { JourneyModelTestModule as generated, JourneyModelTestModuleMakeComponentAstAnchor as syntax }
+  expects JourneyModelTestModuleMakeComponentAstAnchor fingerprint ast.semantic_subtree_v1("sha256:08578c8eef60c4dd63d665caf25e2edadec27dfd4e189e6b8f4922ae0dd9eb37")
+  summary "fn JourneyModelTestModule.makeComponent generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/scripts/journey-model.test.mjs#makeComponent."
+}
+
+relation JourneyModelTestModuleMakeModelGeneratedFromJourneyModelTestModuleMakeModelAstAnchor {
+  kind generated_from
+  connects JourneyModelTestModule -> JourneyModelTestModuleMakeModelAstAnchor
+  roles { JourneyModelTestModule as generated, JourneyModelTestModuleMakeModelAstAnchor as syntax }
+  expects JourneyModelTestModuleMakeModelAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a2c71d928064e5a5cff0a1d06d3a1f3e0bce637869bd5404ffd780bdb46f9193")
+  summary "fn JourneyModelTestModule.makeModel generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/scripts/journey-model.test.mjs#makeModel."
+}
+
+relation JourneyModelTestModuleMakeNodesGeneratedFromJourneyModelTestModuleMakeNodesAstAnchor {
+  kind generated_from
+  connects JourneyModelTestModule -> JourneyModelTestModuleMakeNodesAstAnchor
+  roles { JourneyModelTestModule as generated, JourneyModelTestModuleMakeNodesAstAnchor as syntax }
+  expects JourneyModelTestModuleMakeNodesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:8e9da68aec96a205ee46780ba5bba949fab0dd3d6ae17fd6d048c3076e152624")
+  summary "fn JourneyModelTestModule.makeNodes generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/scripts/journey-model.test.mjs#makeNodes."
+}
+
+relation JourneyModelTestModuleMakeRelationGeneratedFromJourneyModelTestModuleMakeRelationAstAnchor {
+  kind generated_from
+  connects JourneyModelTestModule -> JourneyModelTestModuleMakeRelationAstAnchor
+  roles { JourneyModelTestModule as generated, JourneyModelTestModuleMakeRelationAstAnchor as syntax }
+  expects JourneyModelTestModuleMakeRelationAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a0330bf4f1792ce21e378ff6027fe43e36799b4b2c1bf353a36a9a6ecb9e944f")
+  summary "fn JourneyModelTestModule.makeRelation generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/scripts/journey-model.test.mjs#makeRelation."
+}
+
+relation JourneyModelTestModuleMakeResourceGeneratedFromJourneyModelTestModuleMakeResourceAstAnchor {
+  kind generated_from
+  connects JourneyModelTestModule -> JourneyModelTestModuleMakeResourceAstAnchor
+  roles { JourneyModelTestModule as generated, JourneyModelTestModuleMakeResourceAstAnchor as syntax }
+  expects JourneyModelTestModuleMakeResourceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9bd1b1355d99f50f1479b735b62e088ed30e7739b962b18359e68bef325128a9")
+  summary "fn JourneyModelTestModule.makeResource generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/scripts/journey-model.test.mjs#makeResource."
+}
+
+implementation JourneyModelTestModuleImpl {
+  paths {
+    "plugins/shapelang/skills/unix-system-visualiser/scripts/journey-model.test.mjs"
+  }
+  conforms_to JourneyModelTestModule
+}

@@ -1,6 +1,6 @@
-# Shape Skills Static Conformance And Read-Only Behavioral Canaries
+# Shape Skills Static Conformance And Focused Behavioral Canaries
 
-Evaluate all five shipped skills against the current Shape v0.7.0 CLI. This is
+Evaluate all six shipped skills against the current Shape v0.7.0 CLI. This is
 a blocking release-candidate check with two layers:
 
 1. static conformance of routing, evidence boundaries, references, commands,
@@ -38,6 +38,8 @@ Evaluate exactly these checks:
   `no-invariant-quota`, `ast-navigation`.
 - `shape-review`: `code-first`, `all-incident-relations`,
   `false-positive-challenge`, `drift-separation`.
+- `unix-system-visualiser`: `semantic-inspection`, `ignored-output-safety`,
+  `deterministic-offline-artifact`, `browser-and-evidence-boundary`.
 
 Return each static check as an object with its exact ID, `pass` or `fail`
 status, and concrete evidence naming the instruction, metadata, reference, or
@@ -53,6 +55,10 @@ Fail static conformance when a skill:
 - invents effects, invariants, review evidence, or source behavior;
 - conflicts with its metadata, reference, or structured output;
 - routes adjacent work to the wrong shipped skill.
+- parses Shape source with ad hoc text matching instead of `shp inspect --json`;
+- writes the visualiser to an unignored path without explicit user permission;
+- adds a clock, network dependency, or unstable identifier to the visualiser;
+- treats authored Shape claims as proof of runtime behavior or omits browser validation.
 
 ## Behavioral cases
 
@@ -64,6 +70,11 @@ than skipping the case.
 Treat each listed fixture path as an isolated miniature repository snapshot.
 Outer-repository authored Shape or generated AST does not supply missing
 fixture evidence.
+
+The visualiser canaries may write only the declared ignored fixture artifacts.
+They must not modify tracked files. Verify deterministic output with the listed
+comparison command and treat the expected unignored-output failure as evidence,
+not as a skipped case.
 
 Record the exact commands in the case result and cite concrete command output,
 authored declarations, source behavior, and focused symbols in `evidence`.
@@ -77,5 +88,5 @@ run. Add one release finding for every failed static check or behavioral case.
 Return one result for each shipped skill. Overall status may be `pass` only when
 all static checks and behavioral cases pass and `findings` is empty.
 
-These read-only canaries are release smoke tests. They do not replace fresh
+These focused canaries are release smoke tests. They do not replace fresh
 held-out forward tests of material skill changes on supported models.

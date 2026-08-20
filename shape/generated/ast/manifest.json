@@ -10,6 +10,13 @@
       ]
     },
     {
+      "module": "shape.generated.ast.github.scripts.skills_release_config",
+      "path": "shape/generated/ast/.github/scripts/skills-release-config.shape",
+      "sources": [
+        ".github/scripts/skills-release-config.mjs"
+      ]
+    },
+    {
       "module": "shape.generated.ast.github.scripts.upsert_shape_ci_comment",
       "path": "shape/generated/ast/.github/scripts/upsert-shape-ci-comment.shape",
       "sources": [
@@ -231,6 +238,13 @@
       "path": "shape/generated/ast/fixtures/skills/review/stale-model/candidate/report.shape",
       "sources": [
         "fixtures/skills/review/stale-model/candidate/report.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.fixtures.skills.unix_system_visualiser.connected.src.system",
+      "path": "shape/generated/ast/fixtures/skills/unix-system-visualiser/connected/src/system.shape",
+      "sources": [
+        "fixtures/skills/unix-system-visualiser/connected/src/system.ts"
       ]
     },
     {
@@ -710,6 +724,20 @@
       ]
     },
     {
+      "module": "shape.generated.ast.packages.shp_checker.src.checker.inspection_test",
+      "path": "shape/generated/ast/packages/shp-checker/src/checker/inspection.test.shape",
+      "sources": [
+        "packages/shp-checker/src/checker/inspection.test.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.checker.inspection",
+      "path": "shape/generated/ast/packages/shp-checker/src/checker/inspection.shape",
+      "sources": [
+        "packages/shp-checker/src/checker/inspection.ts"
+      ]
+    },
+    {
       "module": "shape.generated.ast.packages.shp_checker.src.checker.iso_date",
       "path": "shape/generated/ast/packages/shp-checker/src/checker/iso-date.shape",
       "sources": [
@@ -1158,6 +1186,20 @@
       ]
     },
     {
+      "module": "shape.generated.ast.packages.shp_cli.src.commands.inspect.command",
+      "path": "shape/generated/ast/packages/shp-cli/src/commands/inspect/command.shape",
+      "sources": [
+        "packages/shp-cli/src/commands/inspect/command.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_cli.src.commands.inspect.impl",
+      "path": "shape/generated/ast/packages/shp-cli/src/commands/inspect/impl.shape",
+      "sources": [
+        "packages/shp-cli/src/commands/inspect/impl.ts"
+      ]
+    },
+    {
       "module": "shape.generated.ast.packages.shp_cli.src.commands.lsp.command",
       "path": "shape/generated/ast/packages/shp-cli/src/commands/lsp/command.shape",
       "sources": [
@@ -1316,6 +1358,90 @@
       "path": "shape/generated/ast/packages/shp-cli/src/version.shape",
       "sources": [
         "packages/shp-cli/src/version.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.plugins.shapelang.skills.unix_system_visualiser.assets.renderer.bootstrap",
+      "path": "shape/generated/ast/plugins/shapelang/skills/unix-system-visualiser/assets/renderer/bootstrap.shape",
+      "sources": [
+        "plugins/shapelang/skills/unix-system-visualiser/assets/renderer/bootstrap.mjs"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.plugins.shapelang.skills.unix_system_visualiser.assets.renderer.canvas",
+      "path": "shape/generated/ast/plugins/shapelang/skills/unix-system-visualiser/assets/renderer/canvas.shape",
+      "sources": [
+        "plugins/shapelang/skills/unix-system-visualiser/assets/renderer/canvas.mjs"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.plugins.shapelang.skills.unix_system_visualiser.assets.renderer.details",
+      "path": "shape/generated/ast/plugins/shapelang/skills/unix-system-visualiser/assets/renderer/details.shape",
+      "sources": [
+        "plugins/shapelang/skills/unix-system-visualiser/assets/renderer/details.mjs"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.plugins.shapelang.skills.unix_system_visualiser.assets.renderer.interactions",
+      "path": "shape/generated/ast/plugins/shapelang/skills/unix-system-visualiser/assets/renderer/interactions.shape",
+      "sources": [
+        "plugins/shapelang/skills/unix-system-visualiser/assets/renderer/interactions.mjs"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.plugins.shapelang.skills.unix_system_visualiser.assets.renderer.journey_player",
+      "path": "shape/generated/ast/plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journey-player.shape",
+      "sources": [
+        "plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journey-player.mjs"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.plugins.shapelang.skills.unix_system_visualiser.assets.renderer.journey_player_test",
+      "path": "shape/generated/ast/plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journey-player.test.shape",
+      "sources": [
+        "plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journey-player.test.mjs"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.plugins.shapelang.skills.unix_system_visualiser.assets.renderer.journeys",
+      "path": "shape/generated/ast/plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journeys.shape",
+      "sources": [
+        "plugins/shapelang/skills/unix-system-visualiser/assets/renderer/journeys.mjs"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.plugins.shapelang.skills.unix_system_visualiser.lib.atlas_model",
+      "path": "shape/generated/ast/plugins/shapelang/skills/unix-system-visualiser/lib/atlas-model.shape",
+      "sources": [
+        "plugins/shapelang/skills/unix-system-visualiser/lib/atlas-model.mjs"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.plugins.shapelang.skills.unix_system_visualiser.lib.journey_model",
+      "path": "shape/generated/ast/plugins/shapelang/skills/unix-system-visualiser/lib/journey-model.shape",
+      "sources": [
+        "plugins/shapelang/skills/unix-system-visualiser/lib/journey-model.mjs"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.plugins.shapelang.skills.unix_system_visualiser.scripts.generate",
+      "path": "shape/generated/ast/plugins/shapelang/skills/unix-system-visualiser/scripts/generate.shape",
+      "sources": [
+        "plugins/shapelang/skills/unix-system-visualiser/scripts/generate.mjs"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.plugins.shapelang.skills.unix_system_visualiser.scripts.generate_test",
+      "path": "shape/generated/ast/plugins/shapelang/skills/unix-system-visualiser/scripts/generate.test.shape",
+      "sources": [
+        "plugins/shapelang/skills/unix-system-visualiser/scripts/generate.test.mjs"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.plugins.shapelang.skills.unix_system_visualiser.scripts.journey_model_test",
+      "path": "shape/generated/ast/plugins/shapelang/skills/unix-system-visualiser/scripts/journey-model.test.shape",
+      "sources": [
+        "plugins/shapelang/skills/unix-system-visualiser/scripts/journey-model.test.mjs"
       ]
     },
     {

@@ -8,7 +8,8 @@ const EXPECTED_SKILLS = [
   "shape-contract-preflight",
   "shape-index",
   "shape-lang",
-  "shape-review"
+  "shape-review",
+  "unix-system-visualiser"
 ] as const;
 
 type ShippedSkill = (typeof EXPECTED_SKILLS)[number];
@@ -32,7 +33,13 @@ const OUTPUT_CONTRACT_MARKERS: Record<ShippedSkill, readonly string[]> = {
   ],
   "shape-index": ["complete", "incomplete_with_explicit_gaps", "blocked"],
   "shape-lang": ["author", "debug", "drift-review"],
-  "shape-review": ['"comments"', '"shape_model_warnings"']
+  "shape-review": ['"comments"', '"shape_model_warnings"'],
+  "unix-system-visualiser": [
+    "complete",
+    "blocked_invalid_model",
+    "blocked_unignored_output",
+    "tooling_unavailable"
+  ]
 };
 
 const ROUTING_KINDS = ["direct", "indirect", "adjacent", "incomplete", "negative"] as const;
@@ -103,9 +110,9 @@ function validateReferencedResources(
   skillRoot: string,
   failures: string[]
 ): void {
-  const resourcePattern = /\b(?:references|scripts|examples)\/[A-Za-z0-9._/-]+/g;
+  const resourcePattern = /\b(?:assets|examples|references|scripts)\/[A-Za-z0-9._/-]+/g;
   const textFiles = filesRecursively(skillRoot).filter((path) =>
-    [".md", ".yaml", ".yml"].includes(extname(path))
+    [".html", ".md", ".mjs", ".yaml", ".yml"].includes(extname(path))
   );
 
   for (const textFile of textFiles) {
@@ -133,6 +140,119 @@ function validateReferencedResources(
         }
       }
     }
+  }
+}
+
+function validateBundledResources(
+  repositoryRoot: string,
+  skillName: ShippedSkill,
+  skillRoot: string,
+  failures: string[]
+): void {
+  const files = filesRecursively(skillRoot);
+  for (const scriptPath of files.filter((path) => extname(path) === ".mjs")) {
+    const displayPath = relative(repositoryRoot, scriptPath);
+    const result = spawnSync("node", ["--check", scriptPath], {
+      cwd: repositoryRoot,
+      encoding: "utf8"
+    });
+    if (result.error) {
+      failures.push(`${displayPath}: could not run node --check: ${result.error.message}`);
+    } else if (result.status !== 0) {
+      failures.push(`${displayPath}: node --check failed: ${result.stderr.trim()}`);
+    }
+  }
+
+  if (skillName !== "unix-system-visualiser") {
+    return;
+  }
+
+  const generatorPath = join(skillRoot, "scripts/generate.mjs");
+  const atlasModelPath = join(skillRoot, "lib/atlas-model.mjs");
+  const journeyModelPath = join(skillRoot, "lib/journey-model.mjs");
+  const templatePath = join(skillRoot, "assets/index.template.html");
+  const stylePath = join(skillRoot, "assets/styles.css");
+  const rendererPaths = [
+    "bootstrap.mjs",
+    "canvas.mjs",
+    "details.mjs",
+    "journey-player.mjs",
+    "journeys.mjs",
+    "interactions.mjs"
+  ].map((name) => join(skillRoot, "assets/renderer", name));
+  const requiredPaths = [
+    generatorPath,
+    atlasModelPath,
+    journeyModelPath,
+    templatePath,
+    stylePath,
+    ...rendererPaths
+  ];
+  for (const requiredPath of requiredPaths) {
+    if (!existsSync(requiredPath)) {
+      failures.push(`${relative(repositoryRoot, requiredPath)}: missing required bundled resource`);
+    }
+  }
+  if (requiredPaths.some((requiredPath) => !existsSync(requiredPath))) {
+    return;
+  }
+
+  const generator = readFileSync(generatorPath, "utf8");
+  if (!generator.includes("inspect") || !generator.includes("--json")) {
+    failures.push(
+      `${relative(repositoryRoot, generatorPath)}: generator must consume the semantic inspect --json interface`
+    );
+  }
+  const deterministicSources =
+    generator + readFileSync(atlasModelPath, "utf8") + readFileSync(journeyModelPath, "utf8");
+  for (const nondeterministicMarker of ["generatedAt", "Date.now(", "new Date("]) {
+    if (deterministicSources.includes(nondeterministicMarker)) {
+      failures.push(
+        `${relative(repositoryRoot, generatorPath)}: deterministic generation sources must not contain ${nondeterministicMarker}`
+      );
+    }
+  }
+
+  const template = readFileSync(templatePath, "utf8");
+  if (!/^<!doctype html>/i.test(template)) {
+    failures.push(
+      `${relative(repositoryRoot, templatePath)}: HTML asset must start with a doctype`
+    );
+  }
+  for (const marker of ["__STYLE_CSS__", "__RENDERER_JS__"]) {
+    const markerCount = template.split(marker).length - 1;
+    if (markerCount !== 1) {
+      failures.push(
+        `${relative(repositoryRoot, templatePath)}: expected exactly one ${marker} marker; found ${markerCount}`
+      );
+    }
+  }
+  if (!/<style>\s*__STYLE_CSS__\s*<\/style>/.test(template)) {
+    failures.push(`${relative(repositoryRoot, templatePath)}: style marker must be inline`);
+  }
+  if (!/<script type="module">\s*__RENDERER_JS__;?\s*<\/script>/.test(template)) {
+    failures.push(`${relative(repositoryRoot, templatePath)}: renderer marker must be inline`);
+  }
+  const renderer = rendererPaths.map((path) => readFileSync(path, "utf8")).join("\n");
+  const atlasMarkers = renderer.split("__ATLAS_MODEL_JSON__").length - 1;
+  if (atlasMarkers !== 1) {
+    failures.push(
+      `${relative(repositoryRoot, rendererPaths[0] ?? templatePath)}: expected exactly one __ATLAS_MODEL_JSON__ marker; found ${atlasMarkers}`
+    );
+  }
+  const scriptCheck = spawnSync("node", ["--input-type=module", "--check", "-"], {
+    cwd: repositoryRoot,
+    encoding: "utf8",
+    input: renderer.replace("__ATLAS_MODEL_JSON__", "{}")
+  });
+  if (scriptCheck.error) {
+    failures.push(
+      `${relative(repositoryRoot, templatePath)}: could not syntax-check combined renderer: ${scriptCheck.error.message}`
+    );
+  } else if (scriptCheck.status !== 0) {
+    failures.push(
+      `${relative(repositoryRoot, templatePath)}: combined renderer syntax check failed: ${scriptCheck.stderr.trim()}`
+    );
   }
 }
 
@@ -471,6 +591,7 @@ export function validateSkillPackage(repositoryRoot: string): string[] {
     }
 
     validateReferencedResources(repositoryRoot, skillName, skillRoot, failures);
+    validateBundledResources(repositoryRoot, skillName, skillRoot, failures);
 
     const metadataPath = join(skillRoot, "agents/openai.yaml");
     const metadataDisplayPath = relative(repositoryRoot, metadataPath);

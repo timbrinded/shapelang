@@ -73,6 +73,26 @@ If you do not use the setup action:
 
 Keep CI installs pinned to an explicit release.
 
+## Optional machine-readable model artifact
+
+After the strict check passes, a workflow can export the accepted authored model
+for a visualizer or another local reporting tool:
+
+```yaml
+- name: Check Shape
+  run: shp check
+
+- name: Export Shape model
+  run: shp inspect --json > shape-model.json
+```
+
+`shp inspect --json` uses the same recursive `shape/**/*.shape` discovery and
+canonical lowering as the CLI's model queries. Its schema is versioned, its IDs
+are module-qualified, and it has no current-time field. Identical inputs and the
+same pinned `shp` version therefore produce identical bytes. The export is not a
+CI gate by itself: keep `shp check` before it, and make downstream consumers
+reject unsupported inspection schema versions.
+
 ## Optional Claude contract review
 
 Some teams run Claude Code as a separate PR job to review whether committed Shape claims faithfully describe changed behavior. That job is not a substitute for `shp check` or `shp coverage`.

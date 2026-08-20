@@ -25,7 +25,8 @@
               "shape-contract-preflight",
               "shape-contract-guard",
               "shape-index",
-              "shape-review"
+              "shape-review",
+              "unix-system-visualiser"
             ]
           },
           "status": {
@@ -64,7 +65,11 @@
                     "code-first",
                     "all-incident-relations",
                     "false-positive-challenge",
-                    "drift-separation"
+                    "drift-separation",
+                    "semantic-inspection",
+                    "ignored-output-safety",
+                    "deterministic-offline-artifact",
+                    "browser-and-evidence-boundary"
                   ]
                 },
                 "status": {
@@ -99,7 +104,9 @@
                     "index-coverage-gaps",
                     "review-cross-object",
                     "review-stale-model",
-                    "review-root-cause-grouping"
+                    "review-root-cause-grouping",
+                    "visualiser-deterministic-nested-model",
+                    "visualiser-unignored-output"
                   ]
                 },
                 "status": {
@@ -138,7 +145,8 @@
               "shape-contract-preflight",
               "shape-contract-guard",
               "shape-index",
-              "shape-review"
+              "shape-review",
+              "unix-system-visualiser"
             ]
           },
           "severity": {

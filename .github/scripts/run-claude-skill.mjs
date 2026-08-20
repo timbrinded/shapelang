@@ -15,6 +15,12 @@ import { spawnSync } from "node:child_process";
 import { appendFileSync, existsSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
+import {
+  RELEASE_SKILL_CASES,
+  RELEASE_SKILL_STATIC_CHECKS,
+  releaseCaseAllowedTools
+} from "./skills-release-config.mjs";
+export { RELEASE_SKILL_CASES, RELEASE_SKILL_STATIC_CHECKS };
 
 const JSON_ONLY_SYSTEM_PROMPT =
   'You are producing machine input for CI. Your final response must be exactly one JSON object matching the configured JSON schema. The first character must be "{" and the last character must be "}". Do not include prose, bullets, Markdown, code fences, preamble, or postscript. Follow the task-specific status and evidence rules exactly; never invent findings, gaps, checks, cases, or command evidence.';
@@ -577,105 +583,6 @@ export function renderSkillsReleaseSummary(result) {
   return lines.join("\n");
 }
 
-export const RELEASE_SKILL_STATIC_CHECKS = {
-  "shape-lang": ["mode-boundaries", "draft-strict", "current-cli", "stable-refs", "drift-review"],
-  "shape-contract-preflight": [
-    "baseline-separation",
-    "unknown-plan",
-    "decision-contract",
-    "current-cli"
-  ],
-  "shape-contract-guard": [
-    "impact-support-separation",
-    "semantic-normalization",
-    "source-boundary",
-    "structured-output"
-  ],
-  "shape-index": ["explicit-only", "clean-baseline", "no-invariant-quota", "ast-navigation"],
-  "shape-review": [
-    "code-first",
-    "all-incident-relations",
-    "false-positive-challenge",
-    "drift-separation"
-  ]
-};
-
-export const RELEASE_SKILL_CASES = {
-  "shape-lang": {
-    "lang-draft-strict": {
-      commands: [
-        "bun shp check --allow-unknown-effects fixtures/fail/unknown_effects/audit.shape",
-        "bun shp check fixtures/fail/unknown_effects/audit.shape"
-      ]
-    },
-    "lang-final-forbid": {
-      commands: [
-        "bun shp check fixtures/fail/memory_guard_does_not_override_final_forbid/audit.shape"
-      ]
-    }
-  },
-  "shape-contract-preflight": {
-    "preflight-guarded-unknown": {
-      commands: [
-        "plugins/shapelang/skills/shape-contract-preflight/scripts/precheck.sh --shape-root fixtures/skills/preflight/guarded-unknown/shape --json fixtures/skills/preflight/guarded-unknown/proposal.shape"
-      ]
-    },
-    "preflight-invalid-baseline": {
-      commands: [
-        "plugins/shapelang/skills/shape-contract-preflight/scripts/precheck.sh --shape-root fixtures/skills/preflight/invalid-baseline/shape --json fixtures/skills/preflight/invalid-baseline/proposal.shape"
-      ]
-    },
-    "preflight-complete-route": {
-      evidenceMarkers: ["SubmissionApi", "ArchiveWorker", "PublishedArchive"],
-      commands: [
-        "plugins/shapelang/skills/shape-contract-preflight/scripts/precheck.sh --shape-root fixtures/skills/preflight/complete-route/shape --json fixtures/skills/preflight/complete-route/proposal.shape"
-      ]
-    }
-  },
-  "shape-contract-guard": {
-    "guard-policy-removal": {
-      commands: ["bun shp check fixtures/skills/guard/policy-removal/candidate/contract.shape"]
-    },
-    "guard-equivalent-relocation": {
-      commands: [
-        "bun shp check fixtures/skills/guard/equivalent-relocation/candidate/retention.shape"
-      ]
-    }
-  },
-  "shape-index": {
-    "index-missing-ast": {
-      commands: ["bun shp check fixtures/skills/index/missing-ast/shape/system.shape"]
-    },
-    "index-no-invariant": {
-      commands: []
-    },
-    "index-coverage-gaps": {
-      evidenceMarkers: ["UploadApi", "ThumbnailWorker", "binding", "docs/images.md"],
-      commands: ["bun shp check fixtures/skills/index/coverage-gaps/shape/system.shape"]
-    }
-  },
-  "shape-review": {
-    "review-cross-object": {
-      commands: ["bun shp check fixtures/skills/review/cross-object/shape/model.shape"]
-    },
-    "review-stale-model": {
-      commands: ["bun shp check fixtures/skills/review/stale-model/shape/model.shape"]
-    },
-    "review-root-cause-grouping": {
-      evidenceMarkers: [
-        "RangeNormalizer.normalizeRange",
-        "shp explain RangeNormalizer.normalizeRange",
-        "end - 1"
-      ],
-      commands: [
-        "bun shp check fixtures/skills/review/root-cause-grouping/shape/model.shape",
-        "bun shp explain RangeNormalizer.normalizeRange fixtures/skills/review/root-cause-grouping/shape/model.shape",
-        "bun shp graph show RangeNormalizer fixtures/skills/review/root-cause-grouping/shape/model.shape"
-      ]
-    }
-  }
-};
-
 export function skillsReleaseFailureMessage(result) {
   if (result.summary.trim() === "") {
     return "Invalid skills release result: summary must not be empty.";
@@ -841,9 +748,7 @@ const SKILLS = {
       "Bash(bun shp * --help)",
       "Bash(bun shp graph *)",
       "Bash(bun shp analyze *)",
-      "Bash(plugins/shapelang/skills/shape-contract-preflight/scripts/precheck.sh --shape-root fixtures/skills/preflight/guarded-unknown/shape --json fixtures/skills/preflight/guarded-unknown/proposal.shape)",
-      "Bash(plugins/shapelang/skills/shape-contract-preflight/scripts/precheck.sh --shape-root fixtures/skills/preflight/invalid-baseline/shape --json fixtures/skills/preflight/invalid-baseline/proposal.shape)",
-      "Bash(plugins/shapelang/skills/shape-contract-preflight/scripts/precheck.sh --shape-root fixtures/skills/preflight/complete-route/shape --json fixtures/skills/preflight/complete-route/proposal.shape)"
+      ...releaseCaseAllowedTools()
     ].join(","),
     buildPrompt: buildSkillsReleasePrompt,
     renderSummary: renderSkillsReleaseSummary,

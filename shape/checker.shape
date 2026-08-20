@@ -16,6 +16,8 @@ resource FactSet
 
 resource HumanReadableDiagnostics
 
+resource MachineReadableShapeModel
+
 resource ModuleNamespace
 
 resource NormalizedShapeReference
@@ -57,10 +59,12 @@ component ShapeBindings {
 }
 
 component ShapeChecker {
+  grants Append<MachineReadableShapeModel>
   grants Append<SemanticDiagnostics>
   grants Read<ChangedFileList>
   grants Read<EffectiveModel>
   grants Read<FactSet>
+  grants Read<ParsedModule>
   grants Read<PreludeMetadata>
   fn checkLoweredShapeModel : ProtectedCheckOrder
     source ts("packages/shp-checker/src/checker/api.ts#checkLoweredShapeModel")
@@ -110,6 +114,17 @@ component ShapeChecker {
         evidence ts("packages/shp-checker/src/checker/query.ts")
       Read<PreludeMetadata>
         evidence ts("packages/shp-checker/src/checker/query.ts")
+    }
+  fn inspectShapeModules : RefactorSensitive
+    source ts("packages/shp-checker/src/checker/inspection.ts#inspectShapeModules")
+    description "Projects the canonically lowered effective model into a versioned, codepoint-sorted JSON data transfer object with qualified identities, authored or generated-AST origin, and no clock-derived fields."
+    effects complete {
+      Append<MachineReadableShapeModel>
+        evidence ts("packages/shp-checker/src/checker/inspection.ts#inspectShapeModules")
+      Read<EffectiveModel>
+        evidence ts("packages/shp-checker/src/checker/inspection.ts#inspectShapeModules")
+      Read<ParsedModule>
+        evidence ts("packages/shp-checker/src/checker/inspection.ts#inspectShapeModules")
     }
 }
 
@@ -430,6 +445,11 @@ relation ShapeCheckerProvidesConformance {
   connects ShapeChecker -> ShapeConformance
 }
 
+relation ShapeCheckerProvidesMachineReadableModel {
+  kind provides
+  connects ShapeChecker -> MachineReadableShapeModel
+}
+
 relation ShapeCheckerUsesBindings {
   kind calls
   connects ShapeChecker -> ShapeBindings
@@ -551,6 +571,7 @@ relation ShapeStringHelpersProvideReferences {
 rule checker_contract_providers {
   forbid provides EffectiveShapeModel except ShapeModelLowerer
   forbid provides HumanReadableDiagnostics except ShapeDiagnostics
+  forbid provides MachineReadableShapeModel except ShapeChecker
   forbid provides NormalizedShapeReference except ShapeStringHelpers
   forbid provides PreludeMetadata except ShapePreludeRegistry
   forbid provides SemanticDiagnosticSet except ShapeRuleEngine
@@ -721,6 +742,24 @@ memory HypercycleWitness : RefactorConstraint<fn ShapeRuleEngine.findHypercycle>
   guards {
     on_change require ReEvaluation<Self>
   }
+}
+
+memory InspectionSchemaContract : RefactorConstraint<fn ShapeChecker.inspectShapeModules> {
+  applies_to fn ShapeChecker.inspectShapeModules
+  status Explained
+  confidence High
+  summary "The inspection DTO is explicitly versioned, uses stable module-qualified identities, preserves authored or generated-AST origin, uses codepoint ordering, normalizes files at the CLI boundary, and never embeds the current time."
+  who {
+    owner ShapeMaintainers
+  }
+  protects {
+    shape DeterministicInspection
+  }
+  guards {
+    on_change require ReEvaluation<Self>
+  }
+  evidence test("packages/shp-checker/src/checker/inspection.test.ts")
+  evidence test("packages/shp-cli/src/index.test.ts")
 }
 
 memory LoweringBeforeRules : CheckOrderRationale<fn ShapeModelLowerer.lowerShapeModules> {
@@ -1097,4 +1136,9 @@ attest no_shape_change {
 attest no_shape_change {
   source ts("packages/shp-checker/src/targets.ts")
   reason "Shared target identity helper removes duplicate equality logic; it does not introduce a new Shape component or resource."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/checker/inspection.test.ts")
+  reason "Test-only coverage verifies the deterministic inspection schema already modeled by ShapeChecker.inspectShapeModules and InspectionSchemaContract; it adds no production architecture claim."
 }

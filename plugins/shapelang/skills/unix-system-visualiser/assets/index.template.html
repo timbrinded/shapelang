@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#4d9de8" />
+    <meta
+      name="description"
+      content="A local interactive map of a repository's authored Shape model."
+    />
+    <title>Unix System Visualiser</title>
+    <style>
+      __STYLE_CSS__
+    </style>
+  </head>
+  <body>
+    <a class="skip-link" href="#controls">Skip to map controls</a>
+    <main class="plane-atlas" aria-label="Unix System Visualiser">
+      <canvas
+        id="scene"
+        tabindex="0"
+        role="region"
+        aria-label="Interactive Shape plane map. Use W A S D to travel across the fixed plane, drag to pan, use the wheel to zoom, click a tile to focus it or empty ground to pan there, and press Escape to return to the overview."
+        aria-describedby="map-help"
+      ></canvas>
+      <p id="map-help" class="sr-only">
+        The ontology is arranged as colored, raised tiles on blue module pads. Drag to pan without
+        changing the map angle. Click an empty part of the ground to pan there, or use the locate
+        field for keyboard access to each item.
+      </p>
+      <section class="sr-only" aria-labelledby="model-index-title">
+        <h2 id="model-index-title">Authored Shape model index</h2>
+        <p>The visual map is also available as this non-visual item list.</p>
+        <ul id="model-index-list"></ul>
+      </section>
+
+      <div class="hover-label" id="hover-label" aria-hidden="true">
+        <span class="hover-label-swatch" id="hover-label-swatch"></span>
+        <span>
+          <span class="hover-label-kind" id="hover-label-kind"></span>
+          <strong class="hover-label-name" id="hover-label-name"></strong>
+        </span>
+      </div>
+
+      <section class="hud" aria-label="Map controls and item details">
+        <header class="masthead">
+          <p>Shape / perspective plane / local build</p>
+          <h1>UNIX SYSTEM VISUALISER</h1>
+          <p class="subtitle">
+            Each blue pad is a Shape module. Raised tiles and white paths show authored claims, not
+            verified runtime behaviour.
+          </p>
+        </header>
+
+        <section class="legend" aria-labelledby="legend-title">
+          <h2 id="legend-title">TILE COLOUR LEGEND</h2>
+          <ul>
+            <li><span class="legend-swatch" style="background: #17546f"></span>module</li>
+            <li><span class="legend-swatch" style="background: #ff5a1f"></span>component</li>
+            <li><span class="legend-swatch" style="background: #eaff9b"></span>resource</li>
+            <li><span class="legend-swatch" style="background: #f4ffd0"></span>function</li>
+            <li><span class="legend-swatch" style="background: #d95ce9"></span>relation</li>
+            <li><span class="legend-swatch" style="background: #28566e"></span>implementation</li>
+            <li><span class="legend-swatch" style="background: #35b9ee"></span>binding</li>
+            <li><span class="legend-swatch" style="background: #85ea49"></span>rule</li>
+          </ul>
+        </section>
+
+        <section class="locator" aria-label="Locate an ontology item">
+          <label for="locator">LOCATE A TILE</label>
+          <input
+            id="locator"
+            type="search"
+            autocomplete="off"
+            spellcheck="false"
+            placeholder="Module, component, resource..."
+          />
+          <div class="results" id="results" aria-live="polite"></div>
+        </section>
+
+        <aside class="navigator" id="controls" tabindex="-1" aria-labelledby="selection-title">
+          <p class="eyebrow" id="selection-kind">PLANE OVERVIEW</p>
+          <h2 id="selection-title">START HERE</h2>
+          <p class="summary" id="selection-summary">
+            Fly over the blue module pads, or select a tile to bring its local paths into view.
+          </p>
+          <section class="journey-panel" aria-labelledby="journey-heading">
+            <div class="journey-heading-row">
+              <h3 id="journey-heading">GUIDED JOURNEYS</h3>
+              <span class="journey-kind" id="journey-kind">NONE</span>
+            </div>
+            <label class="journey-label" for="journey-select">PRESET</label>
+            <select id="journey-select"></select>
+            <p class="journey-summary" id="journey-summary">
+              No authored or inferred architecture journey is available.
+            </p>
+            <div class="journey-progress-copy">
+              <span id="journey-step-count">STEP 0 OF 0</span>
+              <span id="journey-playback-status">IDLE</span>
+            </div>
+            <progress id="journey-progress" max="1" value="0" aria-labelledby="journey-step-count">
+              0%
+            </progress>
+            <label class="sr-only" for="journey-seek">Jump to a journey step</label>
+            <input
+              id="journey-seek"
+              class="journey-seek"
+              type="range"
+              min="1"
+              max="1"
+              value="1"
+              step="1"
+            />
+            <p
+              class="journey-narration"
+              id="journey-narration"
+              aria-live="polite"
+              aria-atomic="true"
+            >
+              Press Play or Next to start the selected architecture journey.
+            </p>
+            <div class="journey-transport" aria-label="Journey playback controls">
+              <button id="journey-previous" type="button">PREVIOUS</button>
+              <button id="journey-play" type="button">PLAY</button>
+              <button id="journey-next" type="button">NEXT</button>
+              <button id="journey-restart" type="button">RESTART</button>
+            </div>
+            <div class="journey-speed-row">
+              <label for="journey-speed">SPEED</label>
+              <select id="journey-speed">
+                <option value="0.5">0.5×</option>
+                <option value="1" selected>1×</option>
+                <option value="1.5">1.5×</option>
+                <option value="2">2×</option>
+              </select>
+            </div>
+          </section>
+          <dl class="details" id="details">
+            <dt>OBJECTS</dt>
+            <dd id="detail-objects">—</dd>
+            <dt>PATHS</dt>
+            <dd id="detail-paths">—</dd>
+            <dt>FILES</dt>
+            <dd id="detail-files">—</dd>
+            <dt>FLIGHT</dt>
+            <dd id="detail-flight">FREE</dd>
+          </dl>
+          <div class="detail-sections" id="detail-sections">
+            <section class="detail-section" aria-labelledby="relationships-heading">
+              <h3 id="relationships-heading">
+                MODELED LINKS <span id="relationship-count"></span>
+              </h3>
+              <ul class="detail-list" id="relationship-list"></ul>
+            </section>
+            <section class="detail-section" aria-labelledby="evidence-heading">
+              <h3 id="evidence-heading">
+                SHAPE MEMORY + EVIDENCE <span id="evidence-count"></span>
+              </h3>
+              <ul class="detail-list" id="evidence-list"></ul>
+            </section>
+          </div>
+          <div class="controls">
+            <button class="control" id="overview" type="button">RETURN TO OVERVIEW</button>
+            <button class="control" id="motion" type="button" aria-pressed="false">
+              RESUME PATH GLOW
+            </button>
+          </div>
+        </aside>
+
+        <p class="instruction-strip" aria-hidden="true">
+          <b>WASD</b> travel &nbsp; <b>DRAG</b> pan &nbsp; <b>WHEEL</b> zoom &nbsp;
+          <b>CLICK</b> focus / pan &nbsp; <b>ESC</b> overview
+        </p>
+      </section>
+      <p id="flight-status" class="sr-only" aria-live="polite"></p>
+    </main>
+
+    <script type="module">
+      __RENDERER_JS__;
+    </script>
+  </body>
+</html>

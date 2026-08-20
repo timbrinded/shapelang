@@ -464,6 +464,7 @@ component ShpCli {
   grants Read<InstalledShpBinary>
   grants Read<InstalledShpRuntimeAssets>
   grants Read<LanguageSource>
+  grants Read<MachineReadableShapeModel>
   grants Read<ReleaseArchive>
   grants Read<ReleaseChecksumManifest>
   grants Read<ReleaseMetadata>
@@ -478,6 +479,15 @@ component ShpCli {
     effects complete {
       Read<ShapeSource>
         evidence ts("packages/shp-cli/src/shape-files.ts")
+    }
+  fn inspectShapeModel
+    source ts("packages/shp-cli/src/commands/inspect/impl.ts#inspect")
+    description "Loads explicit or recursively discovered Shape files and writes the versioned effective-model inspection DTO as deterministic JSON."
+    effects complete {
+      Read<MachineReadableShapeModel>
+        evidence ts("packages/shp-cli/src/commands/inspect/impl.ts#inspect")
+      Read<ShapeSource>
+        evidence ts("packages/shp-cli/src/commands/inspect/impl.ts#inspect")
     }
   fn isoToday : RefactorSensitive
     source ts("packages/shp-cli/src/freshness.ts#isoToday")
@@ -541,6 +551,10 @@ component ShpCli {
       Read<DiagnosticText>
         evidence ts("packages/shp-cli/src/commands/graph/impl.ts")
       Read<DiagnosticText>
+        evidence ts("packages/shp-cli/src/commands/inspect/command.ts")
+      Read<DiagnosticText>
+        evidence ts("packages/shp-cli/src/commands/inspect/impl.ts")
+      Read<DiagnosticText>
         evidence ts("packages/shp-cli/src/commands/lsp/command.ts")
       Read<DiagnosticText>
         evidence ts("packages/shp-cli/src/commands/memory/command.ts")
@@ -576,12 +590,16 @@ component ShpCli {
         evidence ts("packages/shp-cli/src/commands/ast/impl.ts")
       Read<LanguageSource>
         evidence ts("packages/shp-cli/src/commands/author/impl.ts")
+      Read<MachineReadableShapeModel>
+        evidence ts("packages/shp-cli/src/commands/inspect/impl.ts#inspect")
       Read<ShapeSource>
         evidence ts("packages/shp-cli/src/commands/analyze/impl.ts")
       Read<ShapeSource>
         evidence ts("packages/shp-cli/src/commands/author/impl.ts")
       Read<ShapeSource>
         evidence ts("packages/shp-cli/src/lsp/server.ts")
+      Read<ShapeSource>
+        evidence ts("packages/shp-cli/src/commands/inspect/impl.ts#inspect")
       Read<SystemClock>
         evidence ts("packages/shp-cli/src/freshness.ts")
       Read<UnifiedDiff>
@@ -614,6 +632,13 @@ component ShpCli {
       Update<InstalledShpRuntimeAssets>
         evidence ts("packages/shp-cli/src/commands/update/impl.ts")
     }
+}
+
+relation CheckShapesWithShpCheck {
+  kind coordinated_call
+  connects ShpCli -> ShapeChecker -> ShapeParser -> ShapeModelLowerer -> ShapeRuleEngine -> ShapeBindings -> ShapeDiagnostics
+  roles { ShapeBindings as bind, ShapeChecker as orchestrate, ShapeDiagnostics as report, ShapeModelLowerer as lower, ShapeParser as parse, ShapeRuleEngine as validate, ShpCli as dispatch }
+  summary "Checking shapes with shp check across the authored validation pipeline."
 }
 
 relation ShapeAnalyzerUsesStringHelpers {
@@ -754,6 +779,12 @@ relation ShpCliUsesLanguageServer {
   kind calls
   connects ShpCli -> ShapeLanguageServer
   summary "LspCommand"
+}
+
+relation ShpCliUsesModelInspection {
+  kind calls
+  connects ShpCli -> ShapeChecker
+  summary "InspectCommand"
 }
 
 rule tooling_contract_providers {
@@ -1007,6 +1038,16 @@ reevaluation CliCriticDispatchRechecked {
   summary "Critic mode is an explicit dispatch variant that rejects draft-only component and module flags before reading files, validates diff and Shape context, routes prompts to stdout and advisories to stderr, and leaves checker acceptance as a later gate."
   reviewer ShapeMaintainers
   decided_on "2026-07-27"
+  evidence md("docs-site/src/content/docs/reference/cli.md")
+  evidence test("packages/shp-cli/src/index.test.ts")
+}
+
+reevaluation CliInspectDispatchRechecked {
+  satisfies memory CliCommandDispatchOrder
+  outcome Confirmed
+  summary "The inspect command uses the normal Stricli dispatch path, requires an explicit JSON mode, reuses recursive Shape discovery and canonical checker lowering, and keeps stdout machine-readable."
+  reviewer ShapeMaintainers
+  decided_on "2026-08-19"
   evidence md("docs-site/src/content/docs/reference/cli.md")
   evidence test("packages/shp-cli/src/index.test.ts")
 }
