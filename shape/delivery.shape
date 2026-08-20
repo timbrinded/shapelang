@@ -1133,17 +1133,22 @@ attest no_shape_change {
 
 attest no_shape_change {
   source mjs(".github/scripts/run-claude-skill.mjs#skillsReleaseFailureMessage")
-  reason "Release evidence matching now reads both structured report summary fields and ignores insignificant operator spacing; the modeled CI resources, effects, relations, and approval boundary are unchanged."
+  reason "Release evidence matching now reads both structured report summary fields and normalizes insignificant operator spacing and write inflections; the modeled CI resources, effects, relations, and approval boundary are unchanged."
 }
 
 attest no_shape_change {
   source yaml(".github/workflows/release-candidate.yml#Run static conformance and focused behavioral canaries")
-  reason "The release-candidate skill evaluation now selects Claude Opus 4.8 explicitly; the modeled CI resources, effects, relations, and manual approval boundary are unchanged."
+  reason "The release-candidate skill evaluation selects Claude Opus 4.8 with a scoped 150-turn completion limit; the modeled CI resources, effects, relations, and manual approval boundary are unchanged."
+}
+
+attest no_shape_change {
+  source yaml(".github/actions/claude-skill-review/action.yml#Prefilter skill")
+  reason "The shared action now accepts an optional maximum-turn input while retaining the 100-turn default; the modeled CI resources, effects, relations, and write restrictions are unchanged."
 }
 
 attest no_shape_change {
   source ts("packages/shp-cli/src/shape-workflow.test.ts")
-  reason "Test-only coverage locks tolerant release-report evidence matching and adds no separate architecture surface."
+  reason "Test-only coverage locks scoped turn limits and tolerant release-report evidence matching and adds no separate architecture surface."
 }
 
 attest no_shape_change {
