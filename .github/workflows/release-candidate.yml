@@ -117,6 +117,7 @@ jobs:
         uses: ./.github/actions/claude-skill-review
         with:
           skill: release
+          model: claude-opus-4-8
           result-path: skill-release-result.json
         env:
           API_TIMEOUT_MS: 18000

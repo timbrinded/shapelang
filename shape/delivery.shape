@@ -1137,6 +1137,11 @@ attest no_shape_change {
 }
 
 attest no_shape_change {
+  source yaml(".github/workflows/release-candidate.yml#Run static conformance and focused behavioral canaries")
+  reason "The release-candidate skill evaluation now selects Claude Opus 4.8 explicitly; the modeled CI resources, effects, relations, and manual approval boundary are unchanged."
+}
+
+attest no_shape_change {
   source ts("packages/shp-cli/src/shape-workflow.test.ts")
   reason "Test-only coverage locks tolerant release-report evidence matching and adds no separate architecture surface."
 }
