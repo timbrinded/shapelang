@@ -124,25 +124,11 @@ edges.forEach((edge) => {
   neighbours.get(edge.to).add(edge.from);
 });
 
-nodes
-  .slice()
-  .sort(
-    (left, right) =>
-      compareCodepoints(left.module, right.module) ||
-      compareCodepoints(left.type, right.type) ||
-      compareCodepoints(left.label, right.label)
-  )
-  .forEach((node) => {
-    const item = document.createElement("li");
-    item.textContent = node.module + ": " + node.type + " " + node.label + " in " + node.file;
-    modelIndexList.append(item);
-  });
-
 function compareCodepoints(left, right) {
   return left < right ? -1 : left > right ? 1 : 0;
 }
 
-nodes
+const modelIndexItems = nodes
   .slice()
   .sort(
     (left, right) =>
@@ -150,11 +136,13 @@ nodes
       compareCodepoints(left.type, right.type) ||
       compareCodepoints(left.label, right.label)
   )
-  .forEach((node) => {
+  .map((node) => {
     const item = document.createElement("li");
     item.textContent = node.module + ": " + node.type + " " + node.label + " in " + node.file;
-    modelIndexList.append(item);
+    return item;
   });
+
+modelIndexList.replaceChildren(...modelIndexItems);
 
 function childOrder(node) {
   const childNodes = node.childIds

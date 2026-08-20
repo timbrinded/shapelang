@@ -5,7 +5,7 @@ sidebar:
   order: 2
 ---
 
-The released `shp` binary (version `0.7.0` / tag `v0.7.0`) exposes these commands.
+The released `shp` binary (version `0.8.0` / tag `v0.8.0`) exposes these commands.
 
 ## Usage
 
@@ -107,7 +107,7 @@ shp ast source --language rust --out-dir shape/generated/ast src/audit/store.rs
 shp ast source --language rust --out-dir shape/generated/ast --check src/audit/store.rs
 shp ast json --module generated.audit --raw-out ast.raw.shape ast.json
 shp update --dry-run
-shp update --version v0.7.0
+shp update --version v0.8.0
 ```
 
 ## Draft validation
@@ -216,7 +216,7 @@ top-level schema is:
 ```json
 {
   "schemaVersion": 1,
-  "shapeVersion": "0.7.0",
+  "shapeVersion": "0.8.0",
   "documents": [],
   "resources": [],
   "components": [],
@@ -352,6 +352,6 @@ Only ISO `YYYY-MM-DD` dates are enforced; missing or non-ISO `review_by` values 
 
 `shp update` is for local developer installs of the released single binary. It checks the current version, resolves a GitHub release, downloads the matching published platform archive, verifies it with `checksums.txt`, and replaces the selected executable path. The published archive matrix follows the native parser target table used by release builds.
 
-Use `shp update --dry-run` to see the selected release, asset, and binary path without downloading. Use `shp update --version v0.7.0` to target a specific newer release. Use `--path PATH` when testing from source or when replacing a custom installed binary; if that path already exists, it must identify as the Shape CLI and report a valid version.
+Use `shp update --dry-run` to see the selected release, asset, and binary path without downloading. Use `shp update --version v0.8.0` to target a specific newer release. Use `--path PATH` when testing from source or when replacing a custom installed binary; if that path already exists, it must identify as the Shape CLI and report a valid version.
 
 CI should continue installing pinned releases through the setup action or installer script instead of calling `shp update`.

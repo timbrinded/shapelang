@@ -30,7 +30,7 @@ description: >-
 4. Run command-specific `--help` only when the installed command rejects or contradicts documented syntax.
 5. Reuse `<SHAPE_CMD>` consistently.
 
-Use only the Shape v0.7.0 commands documented by this skill and the installed
+Use only the Shape v0.8.0 commands documented by this skill and the installed
 CLI help.
 
 ## Select A Mode

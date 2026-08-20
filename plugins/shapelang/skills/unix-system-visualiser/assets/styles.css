@@ -807,9 +807,18 @@ a:focus-visible {
   }
 }
 
+@media (max-width: 605px) {
+  .navigator,
+  .navigator.is-open {
+    top: 228px;
+    bottom: 16px;
+    max-height: none;
+  }
+}
+
 @media (max-width: 480px) {
   .locator {
-    top: 76px;
+    top: 92px;
     left: 16px;
     width: calc(100vw - 32px);
   }
@@ -819,9 +828,15 @@ a:focus-visible {
   }
 
   .legend {
+    top: 160px;
     right: 16px;
     left: 16px;
     width: calc(100vw - 32px);
+  }
+
+  .navigator,
+  .navigator.is-open {
+    top: 252px;
   }
 
   .navigator .summary {

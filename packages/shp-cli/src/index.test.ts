@@ -50,7 +50,7 @@ relation ReaderProvidesRecord {
       const inspection: unknown = JSON.parse(discovered.stdout);
       expect(inspection).toMatchObject({
         schemaVersion: 1,
-        shapeVersion: "0.7.0",
+        shapeVersion: "0.8.0",
         documents: [
           {
             file: "shape/nested/system.shape",
