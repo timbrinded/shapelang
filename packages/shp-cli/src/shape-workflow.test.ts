@@ -246,7 +246,7 @@ describe("Shape workflow", () => {
     expect(unsupportedResult.stderr).toContain("evidence must not be empty");
   });
 
-  test("fails the skills release gate on empty case outcomes or missing command evidence", async () => {
+  test("requires configured command evidence and permits supporting commands", async () => {
     const emptyOutcome = skillsReleaseResult();
     const firstCase = emptyOutcome.skills[0]?.cases[0];
     if (!firstCase) {
@@ -266,6 +266,42 @@ describe("Shape workflow", () => {
     const missingCommandResult = await runSkillGate("release", missingCommand);
     expect(missingCommandResult.exitCode).toBe(1);
     expect(missingCommandResult.stderr).toContain("missing command evidence");
+
+    const supportingCommand = skillsReleaseResult();
+    const preflightSkill = supportingCommand.skills.find(
+      (skill) => skill.name === "shape-contract-preflight"
+    );
+    const completeRouteCase = preflightSkill?.cases.find(
+      (item) => item.id === "preflight-complete-route"
+    );
+    if (!completeRouteCase) {
+      throw new Error("skills release supporting-command fixture is empty");
+    }
+    completeRouteCase.commands.push("bun shp check fixtures/fail/forbidden_path/deps.shape");
+    const supportingCommandResult = await runSkillGate("release", supportingCommand);
+    expect(supportingCommandResult.exitCode).toBe(0);
+
+    const equivalentMarkers = skillsReleaseResult();
+    const equivalentIndexSkill = equivalentMarkers.skills.find(
+      (skill) => skill.name === "shape-index"
+    );
+    const equivalentIndexCase = equivalentIndexSkill?.cases.find(
+      (item) => item.id === "index-coverage-gaps"
+    );
+    const equivalentReviewSkill = equivalentMarkers.skills.find(
+      (skill) => skill.name === "shape-review"
+    );
+    const equivalentReviewCase = equivalentReviewSkill?.cases.find(
+      (item) => item.id === "review-root-cause-grouping"
+    );
+    if (!equivalentIndexCase || !equivalentReviewCase) {
+      throw new Error("skills release equivalent-marker fixture is empty");
+    }
+    equivalentIndexCase.evidence =
+      "acceptImage calls resizeImage, while docs/images.md requires a missing binding.";
+    equivalentReviewCase.evidence = equivalentReviewCase.evidence.replace("shp explain", "explain");
+    const equivalentMarkerResult = await runSkillGate("release", equivalentMarkers);
+    expect(equivalentMarkerResult.exitCode).toBe(0);
 
     const missingMarker = skillsReleaseResult();
     const indexSkill = missingMarker.skills.find((skill) => skill.name === "shape-index");

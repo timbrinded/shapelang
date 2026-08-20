@@ -1133,7 +1133,12 @@ attest no_shape_change {
 
 attest no_shape_change {
   source mjs(".github/scripts/run-claude-skill.mjs#skillsReleaseFailureMessage")
-  reason "Release evidence matching now reads both structured report summary fields and normalizes insignificant operator spacing and write inflections; the modeled CI resources, effects, relations, and approval boundary are unchanged."
+  reason "Release evidence matching reads both structured report summary fields, normalizes insignificant wording variations, and accepts supporting command evidence after all configured commands are present; the modeled CI resources, effects, relations, and approval boundary are unchanged."
+}
+
+attest no_shape_change {
+  source mjs(".github/scripts/skills-release-config.mjs")
+  reason "Release canary evidence accepts explicit component or function aliases for the same indexed endpoints while retaining every required semantic marker and command; the modeled CI resources, effects, relations, and approval boundary are unchanged."
 }
 
 attest no_shape_change {
@@ -1573,7 +1578,7 @@ attest no_shape_change {
 
 attest no_shape_change {
   source mjs(".github/scripts/run-claude-skill.mjs#skillsReleaseFailureMessage")
-  reason "Release cases still require non-empty evidence-backed outcomes, exact commands, pass statuses, and no findings; the Index gap canary now verifies both source endpoints and the documentation binding instead of mandating one relation-kind label for an awaited direct call."
+  reason "Release cases still require non-empty evidence-backed outcomes, all configured commands, pass statuses, and no findings; the Index gap canary now verifies both source endpoints and the documentation binding instead of mandating one relation-kind label for an awaited direct call."
 }
 
 attest no_shape_change {

@@ -77,7 +77,12 @@ export const RELEASE_SKILL_CASES = {
       commands: []
     },
     "index-coverage-gaps": {
-      evidenceMarkers: ["UploadApi", "ThumbnailWorker", "binding", "docs/images.md"],
+      evidenceMarkers: [
+        ["UploadApi", "acceptImage"],
+        ["ThumbnailWorker", "resizeImage"],
+        "binding",
+        "docs/images.md"
+      ],
       commands: ["bun shp check fixtures/skills/index/coverage-gaps/shape/system.shape"]
     }
   },
@@ -91,7 +96,7 @@ export const RELEASE_SKILL_CASES = {
     "review-root-cause-grouping": {
       evidenceMarkers: [
         "RangeNormalizer.normalizeRange",
-        "shp explain RangeNormalizer.normalizeRange",
+        "explain RangeNormalizer.normalizeRange",
         "end - 1"
       ],
       commands: [
