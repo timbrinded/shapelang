@@ -11,19 +11,19 @@ This page installs the released `shp` typechecker and runs the commands you need
 
 ## Install
 
-Pin a release version in scripts and CI. The current docs pin is `v0.7.0`:
+Pin a release version in scripts and CI. The current docs pin is `v0.8.0`:
 
 ```bash
-curl --proto '=https' --tlsv1.2 -LsSf https://github.com/timbrinded/shapelang/releases/download/v0.7.0/install.sh | sh
+curl --proto '=https' --tlsv1.2 -LsSf https://github.com/timbrinded/shapelang/releases/download/v0.8.0/install.sh | sh
 ```
 
 On Windows:
 
 ```powershell
-irm https://github.com/timbrinded/shapelang/releases/download/v0.7.0/install.ps1 | iex
+irm https://github.com/timbrinded/shapelang/releases/download/v0.8.0/install.ps1 | iex
 ```
 
-The installer downloads the matching release archive, verifies its SHA-256 checksum, and installs `shp` plus bundled Tree-sitter parser assets into `~/.local/bin`. Replace `v0.7.0` with the release tag you want to pin.
+The installer downloads the matching release archive, verifies its SHA-256 checksum, and installs `shp` plus bundled Tree-sitter parser assets into `~/.local/bin`. Replace `v0.8.0` with the release tag you want to pin.
 
 If your shell cannot find `shp` after installation:
 
@@ -106,7 +106,7 @@ See [CLI Reference](../reference/cli) for flags and full usage.
 ```yaml
 steps:
   - uses: actions/checkout@v4
-  - uses: timbrinded/shapelang@v0.7.0
+  - uses: timbrinded/shapelang@v0.8.0
   - run: shp check
   - run: shp fmt --check
 ```
@@ -115,7 +115,7 @@ For coverage on pull requests, produce `changed.txt` and run `shp coverage --cha
 
 ## Use with Claude Code
 
-Shape authoring and review skills ship as a Claude Code plugin. They call the `shp` CLI, so keep the binary on your `PATH`.
+Shape authoring, review, and visualization skills ship as a Claude Code plugin. They call the `shp` CLI, so keep the binary on your `PATH`.
 
 ```text
 /plugin marketplace add timbrinded/shapelang
@@ -123,13 +123,13 @@ Shape authoring and review skills ship as a Claude Code plugin. They call the `s
 /reload-plugins
 ```
 
-That exposes skills such as `shapelang:shape-lang`, `shapelang:shape-contract-preflight`, `shapelang:shape-contract-guard`, `shapelang:shape-index`, and `shapelang:shape-review`.
+That exposes skills such as `shapelang:shape-lang`, `shapelang:shape-contract-preflight`, `shapelang:shape-contract-guard`, `shapelang:shape-index`, `shapelang:shape-review`, and `shapelang:unix-system-visualiser`.
 
 ## Practice
 
 **Do**
 
-- Pin install and action versions to an explicit tag such as `v0.7.0`
+- Pin install and action versions to an explicit tag such as `v0.8.0`
 - Keep the durable model under `shape/**/*.shape`
 - Run strict `shp check` before merge; use `--allow-unknown-effects` only for drafts
 

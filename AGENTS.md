@@ -182,7 +182,7 @@ verification works, and the setup action can install the new version:
 ```yaml
 - uses: timbrinded/shapelang@master
   with:
-    version: v0.7.0
+    version: v0.8.0
 ```
 
 ## CI Expectations

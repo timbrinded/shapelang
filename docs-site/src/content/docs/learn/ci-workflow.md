@@ -33,12 +33,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - uses: timbrinded/shapelang@v0.7.0
+      - uses: timbrinded/shapelang@v0.8.0
       - run: shp check
       - run: shp fmt --check
 ```
 
-Pin the setup action (or installer) to an explicit release such as `v0.7.0`. Do not use `shp update` as the CI install path; that command is for local developer binaries.
+Pin the setup action (or installer) to an explicit release such as `v0.8.0`. Do not use `shp update` as the CI install path; that command is for local developer binaries.
 
 ## Coverage gate
 
@@ -67,7 +67,7 @@ If you do not use the setup action:
 ```yaml
 - name: Install shp
   run: |
-    curl --proto '=https' --tlsv1.2 -LsSf https://github.com/timbrinded/shapelang/releases/download/v0.7.0/install.sh | sh
+    curl --proto '=https' --tlsv1.2 -LsSf https://github.com/timbrinded/shapelang/releases/download/v0.8.0/install.sh | sh
     echo "$HOME/.local/bin" >> "$GITHUB_PATH"
 ```
 

@@ -22,13 +22,13 @@ The checker does not prove the application implementation is correct. It checks 
 Install the released `shp` typechecker binary. Pin the version in scripts and CI so checks are reproducible.
 
 ```bash
-curl --proto '=https' --tlsv1.2 -LsSf https://github.com/timbrinded/shapelang/releases/download/v0.7.0/install.sh | sh
+curl --proto '=https' --tlsv1.2 -LsSf https://github.com/timbrinded/shapelang/releases/download/v0.8.0/install.sh | sh
 ```
 
 On Windows:
 
 ```powershell
-irm https://github.com/timbrinded/shapelang/releases/download/v0.7.0/install.ps1 | iex
+irm https://github.com/timbrinded/shapelang/releases/download/v0.8.0/install.ps1 | iex
 ```
 
 Run the checker from a repo that contains Shape files:
@@ -67,7 +67,7 @@ In GitHub Actions, install the same pinned release with the setup action:
 ```yaml
 steps:
   - uses: actions/checkout@v4
-  - uses: timbrinded/shapelang@v0.7.0
+  - uses: timbrinded/shapelang@v0.8.0
   - run: shp check
 ```
 
@@ -75,7 +75,7 @@ Manual archive downloads are available on the GitHub release if you do not want 
 
 ### Use with Claude Code
 
-Shape's authoring and review skills ship as a Claude Code plugin. Add the marketplace and install the plugin:
+Shape's authoring, review, and visualization skills ship as a Claude Code plugin. Add the marketplace and install the plugin:
 
 ```text
 /plugin marketplace add timbrinded/shapelang
@@ -83,7 +83,7 @@ Shape's authoring and review skills ship as a Claude Code plugin. Add the market
 /reload-plugins
 ```
 
-This adds the `shapelang:shape-lang`, `shapelang:shape-contract-preflight`, `shapelang:shape-contract-guard`, `shapelang:shape-index`, and `shapelang:shape-review` skills. The skills drive the `shp` CLI, so install the binary above and keep it on your `PATH`.
+This adds the `shapelang:shape-lang`, `shapelang:shape-contract-preflight`, `shapelang:shape-contract-guard`, `shapelang:shape-index`, `shapelang:shape-review`, and `shapelang:unix-system-visualiser` skills. The skills drive the `shp` CLI, so install the binary above and keep it on your `PATH`.
 
 ## What It Catches
 
@@ -326,11 +326,11 @@ canaries are blocking, and its final
 `skills-release-approval` environment requires a manual reviewer.
 
 Only after that exact commit has a successful, manually approved candidate run
-may a maintainer create `v0.7.0`. The release workflow rejects tags that are not
+may a maintainer create `v0.8.0`. The release workflow rejects tags that are not
 current `master`, lack that approval, or disagree with package/plugin metadata.
 It validates and builds the release, publishes archives and checksums, then
 installs the published binary through the setup action on Linux and Windows.
-The plugin tag `shapelang--v0.7.0` must point at the same commit.
+The plugin tag `shapelang--v0.8.0` must point at the same commit.
 
 See [RELEASING.md](RELEASING.md) for the complete preparation, manual gate,
 tagging, and post-release verification checklist.
@@ -340,7 +340,7 @@ Other GitHub Actions workflows can install `shp` with the setup action shown in 
 ```yaml
 - uses: timbrinded/shapelang@master
   with:
-    version: v0.7.0
+    version: v0.8.0
 ```
 
 ## License

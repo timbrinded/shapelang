@@ -1,6 +1,6 @@
 # Shape Skills Static Conformance And Focused Behavioral Canaries
 
-Evaluate all six shipped skills against the current Shape v0.7.0 CLI. This is
+Evaluate all six shipped skills against the current Shape v0.8.0 CLI. This is
 a blocking release-candidate check with two layers:
 
 1. static conformance of routing, evidence boundaries, references, commands,
@@ -48,7 +48,7 @@ evaluation.
 
 Fail static conformance when a skill:
 
-- teaches a route or flag contradicted by v0.7.0;
+- teaches a route or flag contradicted by v0.8.0;
 - weakens strict checking, final forbids, guards, coverage, or bindings;
 - treats generated or analyzer output as architecture truth;
 - depends normatively on a sibling skill;

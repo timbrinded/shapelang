@@ -335,7 +335,7 @@ describe("Shape workflow", () => {
       });
       const releaseOutputs = prefilterOutputs("release", {
         GITHUB_SHA: "abc123",
-        SHAPE_RELEASE_VERSION: "0.7.0"
+        SHAPE_RELEASE_VERSION: "0.8.0"
       });
 
       console.log(JSON.stringify({

@@ -34,6 +34,8 @@ describe("Unix System Visualiser generator", () => {
       expect(firstHtml).not.toContain("__ATLAS_MODEL_JSON__");
       expect(firstHtml).not.toContain("__RENDERER_JS__");
       expect(firstHtml).toContain("window.__unixSystemVisualiser = testingApi");
+      expect(firstHtml).toContain("modelIndexList.replaceChildren(...modelIndexItems)");
+      expect(firstHtml).not.toContain("modelIndexList.append(item)");
       for (const journeyOperation of [
         "journeyIds",
         "selectJourney",

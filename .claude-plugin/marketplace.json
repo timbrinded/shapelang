@@ -7,7 +7,7 @@
   "plugins": [
     {
       "name": "shapelang",
-      "description": "Shape language skills for authoring, validating, preflighting, and reviewing architecture contracts.",
+      "description": "Shape language skills for authoring, validating, preflighting, reviewing, and visualizing architecture contracts.",
       "author": {
         "name": "Tim Brinded"
       },

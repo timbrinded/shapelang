@@ -99,7 +99,7 @@ component CiPipeline {
       Read<CliPackageManifest>
         evidence json("packages/shp-cli/package.json")
       Read<DocsContent>
-        evidence md("docs/releases/v0.7.0.md")
+        evidence md("docs/releases/v0.8.0.md")
       Read<PluginPackageManifest>
         evidence json("plugins/shapelang/.claude-plugin/plugin.json")
       Read<PluginPackageManifest>
@@ -1569,4 +1569,19 @@ attest no_shape_change {
 attest no_shape_change {
   source yaml("plugins/shapelang/skills/shape-index/agents/openai.yaml")
   reason "The default prompt now matches the skill's existing completeness contract; plugin routing and the Shape delivery architecture are unchanged."
+}
+
+attest no_shape_change {
+  source mjs("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/bootstrap.mjs")
+  reason "The renderer now populates the existing model index once; this removes duplicate DOM entries without changing atlas data, resource ownership, effects, relations, or delivery boundaries."
+}
+
+attest no_shape_change {
+  source css("plugins/shapelang/skills/unix-system-visualiser/assets/styles.css")
+  reason "Responsive offsets now prevent existing HUD elements from overlapping at narrow widths and 200 percent reflow; the visualiser structure and delivery architecture are unchanged."
+}
+
+attest no_shape_change {
+  source mjs("plugins/shapelang/skills/unix-system-visualiser/scripts/generate.test.mjs")
+  reason "Test-only assertions prevent duplicate model-index population in assembled visualisers; they add no separate architecture surface."
 }
