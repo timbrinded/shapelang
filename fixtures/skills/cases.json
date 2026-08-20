@@ -82,7 +82,7 @@
   {
     "id": "index-coverage-gaps",
     "skill": "shape-index",
-    "task": "Refresh the miniature image-processing repository's authored model and report whether it is complete, including any source-supported gaps.",
+    "task": "Refresh the miniature image-processing repository's authored model and report whether it is complete, including all source- and documentation-supported gaps.",
     "fixture": "fixtures/skills/index/coverage-gaps",
     "required_commands": [
       "bun shp check fixtures/skills/index/coverage-gaps/shape/system.shape"
