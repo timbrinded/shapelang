@@ -276,7 +276,18 @@ describe("Shape workflow", () => {
     indexCase.evidence = "The candidate is incomplete.";
     const missingMarkerResult = await runSkillGate("release", missingMarker);
     expect(missingMarkerResult.exitCode).toBe(1);
-    expect(missingMarkerResult.stderr).toContain("evidence must include UploadApi");
+    expect(missingMarkerResult.stderr).toContain("report must include UploadApi");
+
+    const normalizedMarker = skillsReleaseResult();
+    const reviewSkill = normalizedMarker.skills.find((skill) => skill.name === "shape-review");
+    const reviewCase = reviewSkill?.cases.find((item) => item.id === "review-root-cause-grouping");
+    if (!reviewCase) {
+      throw new Error("skills release normalized-marker fixture is empty");
+    }
+    reviewCase.outcome = `${reviewCase.outcome} The changed expression is end-1.`;
+    reviewCase.evidence = reviewCase.evidence.replace("end - 1", "the off-by-one expression");
+    const normalizedMarkerResult = await runSkillGate("release", normalizedMarker);
+    expect(normalizedMarkerResult.exitCode).toBe(0);
   });
 
   test("fails closed on garbage results and unknown skills", async () => {

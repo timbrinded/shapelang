@@ -583,6 +583,14 @@ export function renderSkillsReleaseSummary(result) {
   return lines.join("\n");
 }
 
+function normalizeReleaseEvidence(value) {
+  return value
+    .toLowerCase()
+    .replace(/\s*([-+*/=<>])\s*/g, "$1")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 export function skillsReleaseFailureMessage(result) {
   if (result.summary.trim() === "") {
     return "Invalid skills release result: summary must not be empty.";
@@ -631,10 +639,12 @@ export function skillsReleaseFailureMessage(result) {
       if (behaviorCase.evidence.trim() === "") {
         return `Invalid skills release result: ${behaviorCase.id} evidence must not be empty.`;
       }
-      const normalizedEvidence = behaviorCase.evidence.toLowerCase();
+      const normalizedEvidence = normalizeReleaseEvidence(
+        `${behaviorCase.outcome}\n${behaviorCase.evidence}`
+      );
       for (const marker of expectedCase.evidenceMarkers ?? []) {
-        if (!normalizedEvidence.includes(marker.toLowerCase())) {
-          return `Invalid skills release result: ${behaviorCase.id} evidence must include ${marker}.`;
+        if (!normalizedEvidence.includes(normalizeReleaseEvidence(marker))) {
+          return `Invalid skills release result: ${behaviorCase.id} report must include ${marker}.`;
         }
       }
       const commands = new Set(behaviorCase.commands);

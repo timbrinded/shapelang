@@ -120,7 +120,7 @@
   {
     "id": "visualiser-deterministic-nested-model",
     "skill": "unix-system-visualiser",
-    "task": "Generate the visualiser twice from the nested authored SystemEvent model, prove that both HTML files are identical, and state the resource, component, function, relation, authored-journey, and inferred-dependency-tour counts in the evidence using natural language. Treat these as authored claims, not runtime proof.",
+    "task": "Generate the visualiser twice from the nested authored SystemEvent model, prove that both HTML files are identical, and state the resource, component, function, relation, authored-journey, and inferred-dependency-tour counts in natural language. Explicitly state that these are authored claims, not runtime proof.",
     "fixture": "fixtures/skills/unix-system-visualiser/connected",
     "required_commands": [
       "bun shp check fixtures/skills/unix-system-visualiser/connected/shape/nested/system.shape",
