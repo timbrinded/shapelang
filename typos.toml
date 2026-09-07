@@ -1,2 +1,6 @@
 [default]
-extend-ignore-re = ['runCli\(\["chek"\]\)']
+extend-ignore-re = [
+  'runCli\(\["chek"\]\)',
+  # Generated declaration anchors include stable hexadecimal hashes.
+  'Declaration[0-9a-f]{8}AstAnchor'
+]
