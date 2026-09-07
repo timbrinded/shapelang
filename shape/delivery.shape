@@ -124,6 +124,8 @@ component CiPipeline {
         evidence ts("scripts/check-release-metadata.ts#validateReleaseMetadata")
       Read<ShapeAgentSkill>
         evidence md("plugins/shapelang/skills/shape-lang/SKILL.md")
+      Read<ShapeSource>
+        evidence ts("scripts/check-release-metadata.ts#missingReleasePins")
     }
   fn evaluateReleaseSkills
     source mjs(".github/scripts/run-claude-skill.mjs#buildSkillsReleasePrompt")
