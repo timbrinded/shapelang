@@ -23,6 +23,7 @@ export type ValidatedReleaseMetadata = {
 const SEMVER = /^\d+\.\d+\.\d+$/;
 
 function packageVersion(path: string): string {
+  // SAFETY: package.json is repo-owned JSON; version is string-checked immediately below.
   const parsed = JSON.parse(readFileSync(path, "utf8")) as { version?: unknown };
   if (typeof parsed.version !== "string") {
     throw new Error(`${path} must declare a string version`);
@@ -130,7 +131,7 @@ export function loadReleaseMetadata(repoRoot: string): ReleaseMetadata {
   if (missingPins.length > 0) {
     throw new Error(
       [
-        `Public release pins must mention ${cliVersion} / v${cliVersion}.`,
+        `Public release pins must contain the current-version snippets for ${cliVersion} / v${cliVersion}.`,
         ...missingPins.map((pin) => `${pin.file} is missing ${JSON.stringify(pin.snippet)}`)
       ].join("\n")
     );

@@ -81,7 +81,7 @@ component CiPipeline {
   grants Update<SkillReleaseReport>
   fn approveReleaseSkills
     source yaml(".github/workflows/release-candidate.yml#Skill Release Approval")
-    description "Records manual approval only after deterministic validation, packed-archive smoke, and the blocking six-skill evaluation pass or an eligible reused report."
+    description "Records manual approval after validation and archive smoke, and after either a passing six-skill evaluation or an eligible copied report."
     effects complete {
       Read<CiWorkflow>
         evidence yaml(".github/workflows/release-candidate.yml")
@@ -253,13 +253,13 @@ component CiPipeline {
         evidence mjs(".github/scripts/upsert-shape-ci-comment.mjs")
     }
   fn reuseReleaseSkillsEvaluation : RefactorSensitive
-    source ts("scripts/check-release-approval.ts#findReusableSkillsApproval")
-    description "Reuses an ancestor commit's approved skills report only when the skills-relevant tree is unchanged, including renamed-out paths. Validate and packed-archive smoke still run on this commit."
+    source ts("scripts/check-release-approval.ts#findReusableSkillsReport")
+    description "Copies an approved skills report for this SHA when this SHA already has one. Copies from an ancestor only when git diff --name-only --no-renames has no path under SKILLS_RELEVANT_PATH_PREFIXES. Validate, archive smoke, and skills-release-approval still run on this commit."
     effects complete {
       Read<CiWorkflow>
         evidence yaml(".github/workflows/release-candidate.yml")
       Read<SkillReleaseApproval>
-        evidence ts("scripts/check-release-approval.ts#findReusableSkillsApproval")
+        evidence ts("scripts/check-release-approval.ts#findReusableSkillsReport")
       Read<SkillReleaseReport>
         evidence ts("scripts/check-release-approval.ts#amendReusedSkillsReport")
       Update<SkillReleaseReport>
@@ -280,7 +280,7 @@ component CiPipeline {
     }
   fn runReleaseCanaries
     source ts("scripts/run-release-canaries.ts#runReleaseCanaries")
-    description "Runs the configured skill-canary commands against a packed release binary so a candidate cannot tag an archive those commands never executed."
+    description "Runs the committed cases.json commands against the Linux x64 release archive. The candidate and the post-tag rebuild both run this list on that archive only."
     effects complete {
       Read<ReleaseArtifact>
         evidence ts("scripts/run-release-canaries.ts#rewriteCanaryCommand")
@@ -518,7 +518,7 @@ component DocsSite {
   grants Update<DocsContent>
   fn verifyDocs
     source ts("docs-site/scripts/verify-shape-blocks.ts")
-    description "Verifies complete Shape examples and publishes current strict checker behavior, including the release-candidate packed-archive smoke and skills-approval reuse rules."
+    description "Verifies complete Shape examples in the docs site, including the releasing page that documents archive smoke and skills-report reuse."
     effects complete {
       Read<DocsContent>
         evidence md("docs-site/src/content/docs/concepts/analyzer-hints.md")
@@ -660,7 +660,7 @@ component ReleasePipeline {
     }
   fn smokeReleaseBinary
     source sh("scripts/smoke-release-binary.sh")
-    description "Extracts a packed archive and runs version, help, check, AST, graph, draft/strict, author, and analyzer smokes before an official tag."
+    description "Extracts a release archive and runs version, help, check, and AST. Without --quick it also runs graph, draft/strict, author, analyzer, and domain-pack checks. Candidate native runners pass --quick; Linux x64 and the post-tag rebuild run the full script."
     effects complete {
       Read<ReleaseArtifact>
         evidence sh("scripts/smoke-release-binary.sh")
@@ -1083,7 +1083,7 @@ memory SkillsApprovalReuseContract : RefactorConstraint<fn CiPipeline.reuseRelea
   applies_to fn CiPipeline.reuseReleaseSkillsEvaluation
   status Explained
   confidence High
-  summary "An ancestor skills report may be reused only when a fail-closed skills-relevant pathset is unchanged. Publishing still requires an approved candidate run on the exact tag SHA."
+  summary "A skills report may be copied from this SHA's approved run, or from an ancestor when git diff --name-only --no-renames has no path under SKILLS_RELEVANT_PATH_PREFIXES. Publishing still requires an approved candidate run on the exact tag SHA."
   who {
     owner ShapeMaintainers
   }
@@ -1141,7 +1141,7 @@ reevaluation ReleaseNotesVersionRechecked {
 reevaluation ReleaseVersionPinsRechecked {
   satisfies memory ReleaseVersionTagContract
   outcome Confirmed
-  summary "Metadata validation still requires one X.Y.Z and now also requires current public docs, action examples, the skills-release prompt, and the shape-lang skill pin to mention that version."
+  summary "Metadata validation still requires one X.Y.Z and now also requires each listed pin file to contain the current-version snippet."
   reviewer ShapeMaintainers
   decided_on "2026-09-07"
   evidence md(".github/prompts/shape-skills-release.md")
@@ -1162,23 +1162,33 @@ reevaluation ReleaseVersionTagCheckRechecked {
 reevaluation SkillsApprovalReuseIntroduced {
   satisfies memory SkillsApprovalReuseContract
   outcome Confirmed
-  summary "Reuse is limited to an approved ancestor whose skills-relevant tree is unchanged; validate and archive smoke still run on this commit, and publishing still requires exact-SHA candidate approval."
+  summary "A skills report may be copied from this SHA's approved run, or from an ancestor when git diff --name-only --no-renames has no path under SKILLS_RELEVANT_PATH_PREFIXES. Validate, archive smoke, and skills-release-approval still run on this commit. Publishing still requires an approved candidate on the exact tag SHA."
   reviewer ShapeMaintainers
   decided_on "2026-09-07"
   evidence mjs(".github/scripts/run-claude-skill.mjs#releasePrefilter")
   evidence test("scripts/check-release-approval.test.ts")
-  evidence ts("scripts/check-release-approval.ts#findReusableSkillsApproval")
+  evidence ts("scripts/check-release-approval.ts#findReusableSkillsReport")
   evidence yaml(".github/workflows/release-candidate.yml")
 }
 
-reevaluation SkillsApprovalReuseRenameClosed {
+reevaluation SkillsRelevantRenameInvalidatesReuse {
   satisfies memory SkillsApprovalReuseContract
   outcome Confirmed
-  summary "Pathset comparison uses git diff --no-renames so a skills-relevant file moved out of the pathset still invalidates ancestor reuse."
+  summary "git diff --name-only --no-renames lists both sides of a move, so a file under SKILLS_RELEVANT_PATH_PREFIXES renamed out of that list still blocks copying an ancestor report."
   reviewer ShapeMaintainers
   decided_on "2026-09-07"
   evidence test("scripts/check-release-approval.test.ts")
-  evidence ts("scripts/check-release-approval.ts#findReusableSkillsApproval")
+  evidence ts("scripts/check-release-approval.ts#findReusableSkillsReport")
+}
+
+reevaluation SkillsReportCopyNamed {
+  satisfies memory SkillsApprovalReuseContract
+  outcome Confirmed
+  summary "The lookup is findReusableSkillsReport. It copies a report for this SHA or an ancestor. Validate, archive smoke, and skills-release-approval still run on this commit."
+  reviewer ShapeMaintainers
+  decided_on "2026-09-07"
+  evidence test("scripts/check-release-approval.test.ts")
+  evidence ts("scripts/check-release-approval.ts#findReusableSkillsReport")
 }
 
 attest docs_not_needed {

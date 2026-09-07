@@ -8,7 +8,7 @@ trait GeneratedCandidate {
 
 resource CheckReleaseApprovalModuleAmendReusedSkillsReportAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("scripts/check-release-approval.ts#amendReusedSkillsReport")
-  fingerprint ast.semantic_subtree_v1("sha256:fd01810dc4adcbf7f17b7b67ece61f43032476766027bf0042a5309d3d8c6f78")
+  fingerprint ast.semantic_subtree_v1("sha256:e7b8860a4e5cda1b9b143dc93970d671de4e0b98764b9e8329b3fb8d432e3263")
 }
 
 resource CheckReleaseApprovalModuleDefaultGetJsonAstAnchor : GeneratedAstAnchor {
@@ -23,12 +23,12 @@ resource CheckReleaseApprovalModuleDownloadSkillsReportAstAnchor : GeneratedAstA
 
 resource CheckReleaseApprovalModuleFindExactApprovedCandidateAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("scripts/check-release-approval.ts#findExactApprovedCandidate")
-  fingerprint ast.semantic_subtree_v1("sha256:1db104e5037a376cabba25ba8c570f1aaa651892c9702d358d9154ee63b7f41f")
+  fingerprint ast.semantic_subtree_v1("sha256:caacbf9d5e24337e1a15e662e5234435b2213d7c6db54726127ce001b83f887f")
 }
 
-resource CheckReleaseApprovalModuleFindReusableSkillsApprovalAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("scripts/check-release-approval.ts#findReusableSkillsApproval")
-  fingerprint ast.semantic_subtree_v1("sha256:78ee11201ed5bc691adfbfe7b4ee66e5d4bec3fed3686958a7ffe126120d9bac")
+resource CheckReleaseApprovalModuleFindReusableSkillsReportAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("scripts/check-release-approval.ts#findReusableSkillsReport")
+  fingerprint ast.semantic_subtree_v1("sha256:311ad129a8dfb5b48f966b63bcc11c2a77a0b95381513a0b8abe63842db7e1a9")
 }
 
 resource CheckReleaseApprovalModuleGitChangedPathsAstAnchor : GeneratedAstAnchor {
@@ -58,7 +58,7 @@ resource CheckReleaseApprovalModuleLoadApprovalsAstAnchor : GeneratedAstAnchor {
 
 resource CheckReleaseApprovalModuleMainAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("scripts/check-release-approval.ts#main")
-  fingerprint ast.semantic_subtree_v1("sha256:f7af48854e6dccd8da15e009174d444bf0f721025988435eb70acf0eb5e3389c")
+  fingerprint ast.semantic_subtree_v1("sha256:e38881070e50d7eec9f59b43968c7080b501db1c050f673c648f99390d12f21d")
 }
 
 resource CheckReleaseApprovalModuleMaxByRunNumberAstAnchor : GeneratedAstAnchor {
@@ -114,8 +114,8 @@ component CheckReleaseApprovalModule : GeneratedCandidate {
   fn findExactApprovedCandidate
     source ts("scripts/check-release-approval.ts#findExactApprovedCandidate")
     effects unknown
-  fn findReusableSkillsApproval
-    source ts("scripts/check-release-approval.ts#findReusableSkillsApproval")
+  fn findReusableSkillsReport
+    source ts("scripts/check-release-approval.ts#findReusableSkillsReport")
     effects unknown
   fn gitChangedPaths
     source ts("scripts/check-release-approval.ts#gitChangedPaths")
@@ -165,7 +165,7 @@ relation CheckReleaseApprovalModuleAmendReusedSkillsReportGeneratedFromCheckRele
   kind generated_from
   connects CheckReleaseApprovalModule -> CheckReleaseApprovalModuleAmendReusedSkillsReportAstAnchor
   roles { CheckReleaseApprovalModule as generated, CheckReleaseApprovalModuleAmendReusedSkillsReportAstAnchor as syntax }
-  expects CheckReleaseApprovalModuleAmendReusedSkillsReportAstAnchor fingerprint ast.semantic_subtree_v1("sha256:fd01810dc4adcbf7f17b7b67ece61f43032476766027bf0042a5309d3d8c6f78")
+  expects CheckReleaseApprovalModuleAmendReusedSkillsReportAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e7b8860a4e5cda1b9b143dc93970d671de4e0b98764b9e8329b3fb8d432e3263")
   summary "fn CheckReleaseApprovalModule.amendReusedSkillsReport generated from typescript function_declaration at scripts/check-release-approval.ts#amendReusedSkillsReport."
 }
 
@@ -189,16 +189,16 @@ relation CheckReleaseApprovalModuleFindExactApprovedCandidateGeneratedFromCheckR
   kind generated_from
   connects CheckReleaseApprovalModule -> CheckReleaseApprovalModuleFindExactApprovedCandidateAstAnchor
   roles { CheckReleaseApprovalModule as generated, CheckReleaseApprovalModuleFindExactApprovedCandidateAstAnchor as syntax }
-  expects CheckReleaseApprovalModuleFindExactApprovedCandidateAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1db104e5037a376cabba25ba8c570f1aaa651892c9702d358d9154ee63b7f41f")
+  expects CheckReleaseApprovalModuleFindExactApprovedCandidateAstAnchor fingerprint ast.semantic_subtree_v1("sha256:caacbf9d5e24337e1a15e662e5234435b2213d7c6db54726127ce001b83f887f")
   summary "fn CheckReleaseApprovalModule.findExactApprovedCandidate generated from typescript function_declaration at scripts/check-release-approval.ts#findExactApprovedCandidate."
 }
 
-relation CheckReleaseApprovalModuleFindReusableSkillsApprovalGeneratedFromCheckReleaseApprovalModuleFindReusableSkillsApprovalAstAnchor {
+relation CheckReleaseApprovalModuleFindReusableSkillsReportGeneratedFromCheckReleaseApprovalModuleFindReusableSkillsReportAstAnchor {
   kind generated_from
-  connects CheckReleaseApprovalModule -> CheckReleaseApprovalModuleFindReusableSkillsApprovalAstAnchor
-  roles { CheckReleaseApprovalModule as generated, CheckReleaseApprovalModuleFindReusableSkillsApprovalAstAnchor as syntax }
-  expects CheckReleaseApprovalModuleFindReusableSkillsApprovalAstAnchor fingerprint ast.semantic_subtree_v1("sha256:78ee11201ed5bc691adfbfe7b4ee66e5d4bec3fed3686958a7ffe126120d9bac")
-  summary "fn CheckReleaseApprovalModule.findReusableSkillsApproval generated from typescript function_declaration at scripts/check-release-approval.ts#findReusableSkillsApproval."
+  connects CheckReleaseApprovalModule -> CheckReleaseApprovalModuleFindReusableSkillsReportAstAnchor
+  roles { CheckReleaseApprovalModule as generated, CheckReleaseApprovalModuleFindReusableSkillsReportAstAnchor as syntax }
+  expects CheckReleaseApprovalModuleFindReusableSkillsReportAstAnchor fingerprint ast.semantic_subtree_v1("sha256:311ad129a8dfb5b48f966b63bcc11c2a77a0b95381513a0b8abe63842db7e1a9")
+  summary "fn CheckReleaseApprovalModule.findReusableSkillsReport generated from typescript function_declaration at scripts/check-release-approval.ts#findReusableSkillsReport."
 }
 
 relation CheckReleaseApprovalModuleGitChangedPathsGeneratedFromCheckReleaseApprovalModuleGitChangedPathsAstAnchor {
@@ -245,7 +245,7 @@ relation CheckReleaseApprovalModuleMainGeneratedFromCheckReleaseApprovalModuleMa
   kind generated_from
   connects CheckReleaseApprovalModule -> CheckReleaseApprovalModuleMainAstAnchor
   roles { CheckReleaseApprovalModule as generated, CheckReleaseApprovalModuleMainAstAnchor as syntax }
-  expects CheckReleaseApprovalModuleMainAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f7af48854e6dccd8da15e009174d444bf0f721025988435eb70acf0eb5e3389c")
+  expects CheckReleaseApprovalModuleMainAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e38881070e50d7eec9f59b43968c7080b501db1c050f673c648f99390d12f21d")
   summary "fn CheckReleaseApprovalModule.main generated from typescript function_declaration at scripts/check-release-approval.ts#main."
 }
 

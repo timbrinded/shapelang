@@ -38,7 +38,7 @@ resource RunReleaseCanariesModuleRewriteCanaryCommandAstAnchor : GeneratedAstAnc
 
 resource RunReleaseCanariesModuleRunReleaseCanariesAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("scripts/run-release-canaries.ts#runReleaseCanaries")
-  fingerprint ast.semantic_subtree_v1("sha256:b389b9e29d0d2d192c3ae562c0d2f8c4baff307fbbdde47fc6ebc608d1dabfa4")
+  fingerprint ast.semantic_subtree_v1("sha256:4779ccc806a72a5307ff7d030de8637c78d982a6352997d3e968a395648e3ef2")
 }
 
 component RunReleaseCanariesModule : GeneratedCandidate {
@@ -117,7 +117,7 @@ relation RunReleaseCanariesModuleRunReleaseCanariesGeneratedFromRunReleaseCanari
   kind generated_from
   connects RunReleaseCanariesModule -> RunReleaseCanariesModuleRunReleaseCanariesAstAnchor
   roles { RunReleaseCanariesModule as generated, RunReleaseCanariesModuleRunReleaseCanariesAstAnchor as syntax }
-  expects RunReleaseCanariesModuleRunReleaseCanariesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b389b9e29d0d2d192c3ae562c0d2f8c4baff307fbbdde47fc6ebc608d1dabfa4")
+  expects RunReleaseCanariesModuleRunReleaseCanariesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4779ccc806a72a5307ff7d030de8637c78d982a6352997d3e968a395648e3ef2")
   summary "fn RunReleaseCanariesModule.runReleaseCanaries generated from typescript function_declaration at scripts/run-release-canaries.ts#runReleaseCanaries."
 }
 

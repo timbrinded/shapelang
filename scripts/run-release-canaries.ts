@@ -42,6 +42,7 @@ export function loadReleaseCanaryCases(repoRoot: string): LoadedCanaryCase[] {
     if (typeof item !== "object" || item === null) {
       throw new Error(`fixtures/skills/cases.json[${index}] must be an object`);
     }
+    // SAFETY: item was just checked to be a non-null object; fields are validated below.
     const record = item as Record<string, unknown>;
     if (typeof record.skill !== "string" || typeof record.id !== "string") {
       throw new Error(`fixtures/skills/cases.json[${index}] must declare string skill and id`);
@@ -108,6 +109,9 @@ export function runReleaseCanaries(
   for (const canary of loadReleaseCanaryCases(cwd)) {
     for (const [index, command] of canary.commands.entries()) {
       const rewritten = rewriteCanaryCommand(command, shpBin);
+      if (rewritten.includes("packages/shp-cli/src/index.ts")) {
+        throw new Error(`${canary.id} command was not rewritten to the packed binary: ${command}`);
+      }
       const spawned = spawnSync("bash", ["-c", rewritten], {
         cwd,
         encoding: "utf8",

@@ -8,7 +8,7 @@ trait GeneratedCandidate {
 
 resource CheckReleaseApprovalTestModuleLookupAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("scripts/check-release-approval.test.ts#lookup")
-  fingerprint ast.semantic_subtree_v1("sha256:7951bd7e4a98304c708e706f9636305e259f84f671288501f27708da5f4789cd")
+  fingerprint ast.semantic_subtree_v1("sha256:76944ba35eeb9f929d6eddd65d65a1b9b4cf084084b8e2126401b4e893a88a7a")
 }
 
 resource CheckReleaseApprovalTestModuleRunAstAnchor : GeneratedAstAnchor {
@@ -29,7 +29,7 @@ relation CheckReleaseApprovalTestModuleLookupGeneratedFromCheckReleaseApprovalTe
   kind generated_from
   connects CheckReleaseApprovalTestModule -> CheckReleaseApprovalTestModuleLookupAstAnchor
   roles { CheckReleaseApprovalTestModule as generated, CheckReleaseApprovalTestModuleLookupAstAnchor as syntax }
-  expects CheckReleaseApprovalTestModuleLookupAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7951bd7e4a98304c708e706f9636305e259f84f671288501f27708da5f4789cd")
+  expects CheckReleaseApprovalTestModuleLookupAstAnchor fingerprint ast.semantic_subtree_v1("sha256:76944ba35eeb9f929d6eddd65d65a1b9b4cf084084b8e2126401b4e893a88a7a")
   summary "fn CheckReleaseApprovalTestModule.lookup generated from typescript function_declaration at scripts/check-release-approval.test.ts#lookup."
 }
 

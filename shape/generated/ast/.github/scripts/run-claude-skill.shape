@@ -133,7 +133,7 @@ resource RunClaudeSkillModulePrefilterOutputsAstAnchor : GeneratedAstAnchor {
 
 resource RunClaudeSkillModuleReleasePrefilterAstAnchor : GeneratedAstAnchor {
   storage ast.anchor(".github/scripts/run-claude-skill.mjs#releasePrefilter")
-  fingerprint ast.semantic_subtree_v1("sha256:94ca0034282d8eb82ddbd073c773c3dd67e8c1d304273ede04b885aa64688ab6")
+  fingerprint ast.semantic_subtree_v1("sha256:c3094bc7c66f07997e4fa0648a6f6f6bb5d1d5272152c4f576540a54e10b7919")
 }
 
 resource RunClaudeSkillModuleRenderGuardSummaryAstAnchor : GeneratedAstAnchor {
@@ -541,7 +541,7 @@ relation RunClaudeSkillModuleReleasePrefilterGeneratedFromRunClaudeSkillModuleRe
   kind generated_from
   connects RunClaudeSkillModule -> RunClaudeSkillModuleReleasePrefilterAstAnchor
   roles { RunClaudeSkillModule as generated, RunClaudeSkillModuleReleasePrefilterAstAnchor as syntax }
-  expects RunClaudeSkillModuleReleasePrefilterAstAnchor fingerprint ast.semantic_subtree_v1("sha256:94ca0034282d8eb82ddbd073c773c3dd67e8c1d304273ede04b885aa64688ab6")
+  expects RunClaudeSkillModuleReleasePrefilterAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c3094bc7c66f07997e4fa0648a6f6f6bb5d1d5272152c4f576540a54e10b7919")
   summary "fn RunClaudeSkillModule.releasePrefilter generated from javascript function_declaration at .github/scripts/run-claude-skill.mjs#releasePrefilter."
 }
 

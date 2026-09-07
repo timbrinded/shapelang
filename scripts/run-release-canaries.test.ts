@@ -46,6 +46,15 @@ describe("rewriteCanaryCommand", () => {
       'bun plugins/shapelang/skills/unix-system-visualiser/scripts/generate.mjs --shape-command "/tmp/shp"'
     );
   });
+
+  test("leaves an unrecognized source path untouched so the runner rejects it", () => {
+    expect(
+      rewriteCanaryCommand(
+        'bun plugins/shapelang/skills/unix-system-visualiser/scripts/generate.mjs --shape-command "bun ../../../packages/shp-cli/src/index.ts"',
+        "/tmp/shp"
+      )
+    ).toContain("packages/shp-cli/src/index.ts");
+  });
 });
 
 describe("canaryFailureMessage", () => {

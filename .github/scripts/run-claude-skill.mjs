@@ -570,7 +570,7 @@ export function releasePrefilter(env = process.env) {
   });
   if (spawned.status !== 0) {
     console.log(
-      `Skills reuse lookup failed; running a fresh evaluation.\n${spawned.stderr || spawned.stdout}`
+      `Skills report copy lookup failed; running a fresh evaluation.\n${spawned.stderr || spawned.stdout}`
     );
     return {};
   }
@@ -579,7 +579,7 @@ export function releasePrefilter(env = process.env) {
   try {
     parsed = JSON.parse(spawned.stdout);
   } catch {
-    console.log("Skills reuse lookup returned invalid JSON; running a fresh evaluation.");
+    console.log("Skills report copy lookup returned invalid JSON; running a fresh evaluation.");
     return {};
   }
   if (!parsed || typeof parsed !== "object" || parsed.reused !== true || !parsed.report) {
@@ -587,7 +587,7 @@ export function releasePrefilter(env = process.env) {
   }
 
   console.log(
-    `Reusing approved skills evaluation from ${parsed.sha} (run ${parsed.runId}, ${parsed.mode}).`
+    `Copied the approved skills report from ${parsed.sha} (run ${parsed.runId}, ${parsed.mode}).`
   );
   return { result: parsed.report };
 }

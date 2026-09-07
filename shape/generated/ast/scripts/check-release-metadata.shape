@@ -8,7 +8,7 @@ trait GeneratedCandidate {
 
 resource CheckReleaseMetadataModuleLoadReleaseMetadataAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("scripts/check-release-metadata.ts#loadReleaseMetadata")
-  fingerprint ast.semantic_subtree_v1("sha256:a9534b440b501c5b3a547cfabfdffb3233b0052f92bd52ac26d3b5dbbbc7e6e8")
+  fingerprint ast.semantic_subtree_v1("sha256:3375cdbb55f2f497da6cee2eaa55baa2a8494ed2d1d269615dca8070ffd4ac73")
 }
 
 resource CheckReleaseMetadataModuleMainAstAnchor : GeneratedAstAnchor {
@@ -69,7 +69,7 @@ relation CheckReleaseMetadataModuleLoadReleaseMetadataGeneratedFromCheckReleaseM
   kind generated_from
   connects CheckReleaseMetadataModule -> CheckReleaseMetadataModuleLoadReleaseMetadataAstAnchor
   roles { CheckReleaseMetadataModule as generated, CheckReleaseMetadataModuleLoadReleaseMetadataAstAnchor as syntax }
-  expects CheckReleaseMetadataModuleLoadReleaseMetadataAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a9534b440b501c5b3a547cfabfdffb3233b0052f92bd52ac26d3b5dbbbc7e6e8")
+  expects CheckReleaseMetadataModuleLoadReleaseMetadataAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3375cdbb55f2f497da6cee2eaa55baa2a8494ed2d1d269615dca8070ffd4ac73")
   summary "fn CheckReleaseMetadataModule.loadReleaseMetadata generated from typescript function_declaration at scripts/check-release-metadata.ts#loadReleaseMetadata."
 }
 

@@ -166,7 +166,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Run static conformance and focused behavioral canaries
+      - name: Run static skill checks and fixture cases
         uses: ./.github/actions/claude-skill-review
         with:
           skill: release

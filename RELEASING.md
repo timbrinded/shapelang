@@ -85,51 +85,53 @@ The workflow:
 
 1. validates metadata, generated artifacts, skills, source, Shape, docs, and
    release assets;
-2. smoke-tests the packed Linux x64 archive, including the skill-canary command
-   list against that binary;
-3. smoke-tests the packed Linux ARM64, macOS ARM64, and Windows x64 archives on
-   native runners;
-4. runs static conformance and focused behavioral canaries across all six
-   shipped skills, or reuses an ancestor report when the skills-relevant tree is
-   unchanged;
+2. smoke-tests the Linux x64 archive with `scripts/smoke-release-binary.sh`, then
+   runs `bun scripts/run-release-canaries.ts --archive` against that archive;
+3. smoke-tests Linux ARM64, macOS ARM64, and Windows x64 archives on native
+   runners with `scripts/smoke-release-binary.sh --quick` (version, help, check,
+   AST only);
+4. runs static conformance and focused behavioral cases across all six shipped
+   skills (`bun shp` on fixtures), or copies an approved skills report from this
+   SHA or from an ancestor when the path list below is unchanged;
 5. uploads `skill-release-report-<commit>`; and
-6. waits at `Skill Release Approval`.
+6. waits at `Skill Release Approval`. Native archive smokes and the skills job
+   both have to pass; they may run at the same time.
 
 Inspect the report and job summary. A human must approve the protected
 environment. A model pass alone is insufficient. If any static check, fixture
-case, or instruction
-is wrong, reject the deployment, fix it in a new PR, merge, and dispatch a new
-candidate for the new commit.
+case, or instruction is wrong, reject the deployment, fix it in a new PR, merge,
+and dispatch a new candidate for the new commit.
 
-The candidate has three separate controls. Do not treat one as a substitute for
-the others:
+The skills job may copy an approved report when
+`git diff --name-only --no-renames ANCESTOR HEAD` has no path under:
 
-- `bun run skills:check` is deterministic lint of the shipped skill corpus.
-- The candidate JSON report is a model evaluation plus schema, required IDs,
-  required commands, and evidence markers. Static-check rationale is still
-  model-written. The human environment review is the control for that layer.
-- Held-out forward tests on supported models, including Codex, are required by
-  this process when skill instructions change. They are not a CI job. Do not
-  reuse a task after copying its labels, structure, expected answer, or
-  failure-specific wording into the skill. Keep raw artifacts under
-  `.research/`.
-
-The skills evaluation may reuse an approved ancestor report when
-`git diff ancestor HEAD` is empty on this fail-closed pathset:
-
-- `plugins/shapelang/`
-- `packages/`
-- `fixtures/`
+- `plugins/shapelang/`, `packages/`, `fixtures/`
 - `.github/prompts/`, `.github/scripts/`, `.github/actions/`,
   `.github/shape-contract/`
 - `.github/workflows/release-candidate.yml`, `.github/workflows/release.yml`
-- `scripts/`
-- `package.json`, `bun.lock`, `action.yml`, `install.sh`, `install.ps1`
+- `scripts/`, `package.json`, `bun.lock`, `action.yml`, `install.sh`,
+  `install.ps1`
 
-Docs-only commits after a successful candidate do not force another model
-evaluation. Validate, packed-archive smoke, and human approval still run on the
-new SHA. Publishing still requires a successful approved candidate run on the
-exact tag SHA. Do not tag an ancestor while `master` has moved.
+A file renamed out of that list still counts as a change. Docs-only commits
+after a successful candidate skip the Opus job only. The new SHA still needs
+validate, archive smoke, and human approval. Publishing still requires a
+successful approved candidate run on the exact tag SHA. Do not tag an ancestor
+while `master` has moved.
+
+Do not treat `skills:check`, the candidate JSON report, and held-out forward
+tests as substitutes for each other.
+
+- `bun run skills:check` lints the shipped skill corpus.
+- The candidate JSON report is a model evaluation. Schema, required IDs,
+  required commands, and evidence markers are checked. The rationale text is
+  still model-written. A human must approve `skills-release-approval` for that
+  layer.
+- When skill instructions change, approval also requires fresh held-out
+  forward-test evidence on the supported models, including Codex. They are not
+  a CI job. Do not reuse a held-out task after copying its labels, structure,
+  expected answer, or failure-specific wording into the skill. Keep raw
+  artifacts under `.research/`. The Linux x64 archive canaries and the model
+  fixture cases are smoke tests, not that evidence.
 
 ## 4. Create both tags
 
@@ -146,15 +148,16 @@ git tag shapelang--vX.Y.Z
 git push origin vX.Y.Z shapelang--vX.Y.Z
 ```
 
-The release workflow fails closed unless `vX.Y.Z` is current `master` and has a
-successful approved candidate run for the same SHA. Never move or replace a
-published release tag.
+The release workflow rejects the tag unless `vX.Y.Z` is current `master` and
+has a successful approved candidate run for the same SHA. Never move or replace
+a published release tag.
 
 ## 5. Verify the publication
 
-Wait for the `Release` workflow. It reruns validation, builds archives,
-smoke-tests the packaged binary, publishes the GitHub release, then installs the
-published version through the setup action on Linux and Windows.
+Wait for the `Release` workflow. It reruns validation, rebuilds archives,
+smoke-tests the Linux x64 binary (including `run-release-canaries.ts`),
+publishes the GitHub release, then installs that published version through the
+setup action on Linux x64, Linux ARM64, macOS ARM64, and Windows x64.
 
 Verify:
 

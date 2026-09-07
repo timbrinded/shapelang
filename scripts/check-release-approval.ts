@@ -7,9 +7,8 @@ import { parseArgs } from "node:util";
 export const SKILLS_RELEASE_APPROVAL_ENVIRONMENT = "skills-release-approval";
 
 /**
- * Paths that invalidate reuse of an ancestor skills-release report.
- * Keep this fail-closed: a docs-only commit may reuse; a CLI, skill, fixture,
- * or release-gate commit must not.
+ * Prefixes that block copying an ancestor skills report.
+ * A docs-only commit may copy; a change under these prefixes may not.
  */
 export const SKILLS_RELEVANT_PATH_PREFIXES = [
   "plugins/shapelang/",
@@ -43,7 +42,7 @@ export type EnvironmentApproval = {
 };
 
 export type ApprovalLookup = {
-  tagSha: string;
+  headSha: string;
   masterSha: string;
   pluginSha: string;
   runs: WorkflowRun[];
@@ -52,7 +51,7 @@ export type ApprovalLookup = {
   changedPaths: (fromSha: string, toSha: string) => string[];
 };
 
-export type ReusableSkillsApproval = {
+export type ReusableSkillsReport = {
   run: WorkflowRun;
   mode: "exact" | "ancestor";
 };
@@ -112,53 +111,53 @@ function successfulMasterRuns(runs: readonly WorkflowRun[]): WorkflowRun[] {
 
 export type ExactApprovalLookup = Pick<
   ApprovalLookup,
-  "tagSha" | "masterSha" | "pluginSha" | "runs" | "approvalsForRun"
+  "headSha" | "masterSha" | "pluginSha" | "runs" | "approvalsForRun"
 >;
 
 export function findExactApprovedCandidate(lookup: ExactApprovalLookup): WorkflowRun {
-  if (lookup.tagSha !== lookup.masterSha) {
+  if (lookup.headSha !== lookup.masterSha) {
     throw new Error(
-      `Release tag commit ${lookup.tagSha} is not current master ${lookup.masterSha}.`
+      `Release tag commit ${lookup.headSha} is not current master ${lookup.masterSha}.`
     );
   }
-  if (lookup.pluginSha !== lookup.tagSha) {
+  if (lookup.pluginSha !== lookup.headSha) {
     throw new Error(
-      `Plugin tag resolves to ${lookup.pluginSha}, not release commit ${lookup.tagSha}.`
+      `Plugin tag resolves to ${lookup.pluginSha}, not release commit ${lookup.headSha}.`
     );
   }
 
   const matches = successfulMasterRuns(lookup.runs).filter(
-    (run) => run.head_sha === lookup.tagSha && runHasSkillsApproval(lookup.approvalsForRun(run.id))
+    (run) => run.head_sha === lookup.headSha && runHasSkillsApproval(lookup.approvalsForRun(run.id))
   );
   const selected = maxByRunNumber(matches);
   if (!selected) {
     throw new Error(
-      `No successful, manually approved Release Candidate: Skills run exists for ${lookup.tagSha}.`
+      `No successful, manually approved Release Candidate: Skills run exists for ${lookup.headSha}.`
     );
   }
   return selected;
 }
 
-export function findReusableSkillsApproval(
+export function findReusableSkillsReport(
   lookup: Pick<
     ApprovalLookup,
-    "tagSha" | "runs" | "approvalsForRun" | "isAncestor" | "changedPaths"
+    "headSha" | "runs" | "approvalsForRun" | "isAncestor" | "changedPaths"
   >
-): ReusableSkillsApproval | undefined {
+): ReusableSkillsReport | undefined {
   const approved = successfulMasterRuns(lookup.runs).filter((run) =>
     runHasSkillsApproval(lookup.approvalsForRun(run.id))
   );
 
-  const exact = maxByRunNumber(approved.filter((run) => run.head_sha === lookup.tagSha));
+  const exact = maxByRunNumber(approved.filter((run) => run.head_sha === lookup.headSha));
   if (exact) {
     return { run: exact, mode: "exact" };
   }
 
   const ancestors = approved.filter((run) => {
-    if (!lookup.isAncestor(run.head_sha, lookup.tagSha)) {
+    if (!lookup.isAncestor(run.head_sha, lookup.headSha)) {
       return false;
     }
-    return !lookup.changedPaths(run.head_sha, lookup.tagSha).some(isSkillsRelevantPath);
+    return !lookup.changedPaths(run.head_sha, lookup.headSha).some(isSkillsRelevantPath);
   });
   const selected = maxByRunNumber(ancestors);
   if (!selected) {
@@ -169,10 +168,13 @@ export function findReusableSkillsApproval(
 
 export function amendReusedSkillsReport(
   report: Record<string, unknown>,
-  reuse: ReusableSkillsApproval
+  reuse: ReusableSkillsReport
 ): Record<string, unknown> {
   const summary = typeof report.summary === "string" ? report.summary.trim() : "";
-  const prefix = `Reused approved skills evaluation from ${reuse.run.head_sha} (run ${reuse.run.id}, ${reuse.mode}). Skills-relevant tree is unchanged on this commit.`;
+  const prefix =
+    reuse.mode === "exact"
+      ? `Copied the approved skills report for ${reuse.run.head_sha} (run ${reuse.run.id}).`
+      : `Copied the approved skills report from ancestor ${reuse.run.head_sha} (run ${reuse.run.id}). git diff --name-only --no-renames found no path under SKILLS_RELEVANT_PATH_PREFIXES.`;
   return {
     ...report,
     summary: summary.length > 0 ? `${prefix} ${summary}` : prefix
@@ -207,6 +209,7 @@ function listCandidateRuns(getJson: GhJson, repo: string): WorkflowRun[] {
     if (typeof payload !== "object" || payload === null || !("workflow_runs" in payload)) {
       throw new Error("Release-candidate run list is missing workflow_runs");
     }
+    // SAFETY: payload was just checked to be a non-null object carrying workflow_runs.
     const pageRuns = (payload as { workflow_runs: unknown }).workflow_runs;
     if (!Array.isArray(pageRuns)) {
       throw new Error("Release-candidate run list workflow_runs is not an array");
@@ -215,6 +218,7 @@ function listCandidateRuns(getJson: GhJson, repo: string): WorkflowRun[] {
       if (typeof run !== "object" || run === null) {
         continue;
       }
+      // SAFETY: run was just checked to be a non-null object; fields are validated below.
       const record = run as Record<string, unknown>;
       if (
         typeof record.id !== "number" ||
@@ -241,12 +245,14 @@ function listCandidateRuns(getJson: GhJson, repo: string): WorkflowRun[] {
 
 function resolveRefCommit(getJson: GhJson, repo: string, ref: string): string {
   const payload = getJson(`repos/${repo}/git/ref/${ref}`);
+  // SAFETY: payload was just checked to be a non-null object; peel validates sha/type shape.
   const object =
     typeof payload === "object" && payload !== null
       ? (payload as { object?: { sha?: unknown; type?: unknown } })
       : {};
   if (object.object?.type === "tag" && typeof object.object.sha === "string") {
     const tagged = getJson(`repos/${repo}/git/tags/${object.object.sha}`);
+    // SAFETY: peelGitObjectSha validates the tagged object shape and throws on mismatch.
     return peelGitObjectSha(object, tagged as { object?: { sha?: unknown; type?: unknown } });
   }
   return peelGitObjectSha(object);
@@ -277,6 +283,7 @@ function readSkillsReport(raw: string): Record<string, unknown> {
   if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
     throw new Error("Skills report is not a JSON object");
   }
+  // SAFETY: parsed was just checked to be a non-array object; unknown values stay unknown.
   return parsed as Record<string, unknown>;
 }
 
@@ -317,6 +324,8 @@ function loadApprovals(getJson: GhJson, repo: string): (runId: number) => Enviro
       return cached;
     }
     const payload = getJson(`repos/${repo}/actions/runs/${runId}/approvals`);
+    // SAFETY: Array.isArray just checked; entries flow into runHasSkillsApproval,
+    // which only reads state/environments and fails closed on unexpected shapes.
     const approvals = Array.isArray(payload) ? (payload as EnvironmentApproval[]) : [];
     cache.set(runId, approvals);
     return approvals;
@@ -347,7 +356,7 @@ function main(): void {
     const masterSha = resolveRefCommit(getJson, repo, "heads/master");
     const pluginSha = resolveRefCommit(getJson, repo, `tags/shapelang--${refName}`);
     const selected = findExactApprovedCandidate({
-      tagSha: sha,
+      headSha: sha,
       masterSha,
       pluginSha,
       runs,
@@ -359,8 +368,8 @@ function main(): void {
     return;
   }
 
-  const reuse = findReusableSkillsApproval({
-    tagSha: sha,
+  const reuse = findReusableSkillsReport({
+    headSha: sha,
     runs,
     approvalsForRun,
     isAncestor: gitIsAncestor,

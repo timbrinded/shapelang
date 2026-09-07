@@ -2,7 +2,7 @@ import { describe, expect, test } from "bun:test";
 import {
   amendReusedSkillsReport,
   findExactApprovedCandidate,
-  findReusableSkillsApproval,
+  findReusableSkillsReport,
   isSkillsRelevantPath,
   peelGitObjectSha,
   runHasSkillsApproval,
@@ -33,7 +33,7 @@ function run(partial: Partial<WorkflowRun> & Pick<WorkflowRun, "id" | "head_sha"
 
 function lookup(overrides: Partial<ApprovalLookup> & Pick<ApprovalLookup, "runs">): ApprovalLookup {
   return {
-    tagSha: shaB,
+    headSha: shaB,
     masterSha: shaB,
     pluginSha: shaB,
     approvalsForRun: () => approved,
@@ -70,7 +70,7 @@ describe("findExactApprovedCandidate", () => {
   test("requires current master, matching plugin tag, and a successful approved run", () => {
     const selected = findExactApprovedCandidate(
       lookup({
-        tagSha: shaB,
+        headSha: shaB,
         masterSha: shaB,
         pluginSha: shaB,
         runs: [run({ id: 5, head_sha: shaA }), run({ id: 9, head_sha: shaB })]
@@ -82,7 +82,7 @@ describe("findExactApprovedCandidate", () => {
   test("rejects a tag that is not current master", () => {
     expect(() =>
       findExactApprovedCandidate(
-        lookup({ tagSha: shaA, masterSha: shaB, pluginSha: shaA, runs: [] })
+        lookup({ headSha: shaA, masterSha: shaB, pluginSha: shaA, runs: [] })
       )
     ).toThrow("not current master");
   });
@@ -107,9 +107,9 @@ describe("findExactApprovedCandidate", () => {
   });
 });
 
-describe("findReusableSkillsApproval", () => {
+describe("findReusableSkillsReport", () => {
   test("prefers an exact SHA run over an ancestor", () => {
-    const selected = findReusableSkillsApproval(
+    const selected = findReusableSkillsReport(
       lookup({
         runs: [run({ id: 4, head_sha: shaA }), run({ id: 8, head_sha: shaB })]
       })
@@ -120,8 +120,8 @@ describe("findReusableSkillsApproval", () => {
     });
   });
 
-  test("reuses an ancestor when the skills-relevant tree is unchanged", () => {
-    const selected = findReusableSkillsApproval(
+  test("copies an ancestor report when listed prefixes are unchanged", () => {
+    const selected = findReusableSkillsReport(
       lookup({
         runs: [run({ id: 4, head_sha: shaA })],
         changedPaths: () => ["README.md", "docs-site/src/content/docs/reference/releasing.md"]
@@ -131,8 +131,8 @@ describe("findReusableSkillsApproval", () => {
     expect(selected?.run.id).toBe(4);
   });
 
-  test("does not reuse an ancestor when a skills-relevant path changed", () => {
-    const selected = findReusableSkillsApproval(
+  test("does not copy an ancestor report when a listed prefix changed", () => {
+    const selected = findReusableSkillsReport(
       lookup({
         runs: [run({ id: 4, head_sha: shaA })],
         changedPaths: () => ["packages/shp-cli/src/app.ts", "README.md"]
@@ -142,9 +142,9 @@ describe("findReusableSkillsApproval", () => {
   });
 
   test("does not reuse a non-ancestor SHA", () => {
-    const selected = findReusableSkillsApproval(
+    const selected = findReusableSkillsReport(
       lookup({
-        tagSha: shaC,
+        headSha: shaC,
         runs: [run({ id: 4, head_sha: shaA })],
         isAncestor: () => false
       })
@@ -154,14 +154,14 @@ describe("findReusableSkillsApproval", () => {
 
   test("does not reuse a failed or cancelled run", () => {
     expect(
-      findReusableSkillsApproval(
+      findReusableSkillsReport(
         lookup({
           runs: [run({ id: 4, head_sha: shaA, conclusion: "failure" })]
         })
       )
     ).toBeUndefined();
     expect(
-      findReusableSkillsApproval(
+      findReusableSkillsReport(
         lookup({
           runs: [run({ id: 5, head_sha: shaA, conclusion: "cancelled" })]
         })
@@ -171,7 +171,7 @@ describe("findReusableSkillsApproval", () => {
 
   test("does not reuse a run without skills-release-approval", () => {
     expect(
-      findReusableSkillsApproval(
+      findReusableSkillsReport(
         lookup({
           runs: [run({ id: 4, head_sha: shaA })],
           approvalsForRun: () => [
@@ -182,9 +182,9 @@ describe("findReusableSkillsApproval", () => {
     ).toBeUndefined();
   });
 
-  test("does not reuse when a skills-relevant path is renamed out of the pathset", () => {
+  test("does not copy when a listed path is renamed out of the prefix list", () => {
     expect(
-      findReusableSkillsApproval(
+      findReusableSkillsReport(
         lookup({
           runs: [run({ id: 4, head_sha: shaA })],
           changedPaths: () => ["plugins/shapelang/skills/shape-lang/SKILL.md", "docs/SKILL.md"]
@@ -221,7 +221,7 @@ describe("runHasSkillsApproval", () => {
 });
 
 describe("amendReusedSkillsReport", () => {
-  test("prefixes the original summary without dropping it", () => {
+  test("prefixes an ancestor copy with the prefix-list check", () => {
     const amended = amendReusedSkillsReport(
       { status: "pass", summary: "All six skills passed." },
       { run: run({ id: 4, head_sha: shaA }), mode: "ancestor" }
@@ -229,5 +229,18 @@ describe("amendReusedSkillsReport", () => {
     expect(String(amended.summary)).toContain("All six skills passed.");
     expect(String(amended.summary)).toContain(shaA);
     expect(String(amended.summary)).toContain("ancestor");
+    expect(String(amended.summary)).toContain("SKILLS_RELEVANT_PATH_PREFIXES");
+  });
+
+  test("prefixes an exact copy without claiming the prefix list is unchanged", () => {
+    const amended = amendReusedSkillsReport(
+      { status: "pass", summary: "All six skills passed." },
+      { run: run({ id: 8, head_sha: shaB }), mode: "exact" }
+    );
+    expect(String(amended.summary)).toContain("Copied the approved skills report for");
+    expect(String(amended.summary)).toContain(shaB);
+    expect(String(amended.summary)).toContain("All six skills passed.");
+    expect(String(amended.summary)).not.toContain("ancestor");
+    expect(String(amended.summary)).not.toContain("SKILLS_RELEVANT_PATH_PREFIXES");
   });
 });
