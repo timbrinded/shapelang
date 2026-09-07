@@ -1,6 +1,6 @@
 {
   "name": "shapelang",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "description": "Shape language skills for authoring, validating, preflighting, reviewing, and visualizing architecture contracts.",
   "author": {
     "name": "Tim Brinded"

@@ -397,7 +397,7 @@ describe("Shape workflow", () => {
       });
       const releaseOutputs = prefilterOutputs("release", {
         GITHUB_SHA: "abc123",
-        SHAPE_RELEASE_VERSION: "0.8.0",
+        SHAPE_RELEASE_VERSION: "0.9.0",
         CLAUDE_SKILL_MAX_TURNS: "150"
       });
 
