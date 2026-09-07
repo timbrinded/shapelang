@@ -8,7 +8,7 @@ trait GeneratedCandidate {
 
 resource AstGenerationSwiftModuleCollectSwiftDeclarationsAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/ast-generation-swift.ts#collectSwiftDeclarations")
-  fingerprint ast.semantic_subtree_v1("sha256:4986a1790c5d15b84195fd0f4e41b6da7f4f47be39b2575301f2f5fb486289d0")
+  fingerprint ast.semantic_subtree_v1("sha256:348147392d2a2836cb5f1cb89f827f7aad89d0f5816f262fe392b99dc0958e92")
 }
 
 resource AstGenerationSwiftModuleFunctionSignatureAstAnchor : GeneratedAstAnchor {
@@ -43,7 +43,7 @@ resource AstGenerationSwiftModuleSwiftTokensAstAnchor : GeneratedAstAnchor {
 
 resource AstGenerationSwiftModuleTypeNameAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/ast-generation-swift.ts#typeName")
-  fingerprint ast.semantic_subtree_v1("sha256:a9c1c728ed38eaf257247e6ddab9e92943b51a9c0b5db0067ea25a9891420964")
+  fingerprint ast.semantic_subtree_v1("sha256:db3e0c7dca349b65f3afc534828640d24d9e3fd031c94069277bb58ad17076ea")
 }
 
 component AstGenerationSwiftModule : GeneratedCandidate {
@@ -77,7 +77,7 @@ relation AstGenerationSwiftModuleCollectSwiftDeclarationsGeneratedFromAstGenerat
   kind generated_from
   connects AstGenerationSwiftModule -> AstGenerationSwiftModuleCollectSwiftDeclarationsAstAnchor
   roles { AstGenerationSwiftModule as generated, AstGenerationSwiftModuleCollectSwiftDeclarationsAstAnchor as syntax }
-  expects AstGenerationSwiftModuleCollectSwiftDeclarationsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4986a1790c5d15b84195fd0f4e41b6da7f4f47be39b2575301f2f5fb486289d0")
+  expects AstGenerationSwiftModuleCollectSwiftDeclarationsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:348147392d2a2836cb5f1cb89f827f7aad89d0f5816f262fe392b99dc0958e92")
   summary "fn AstGenerationSwiftModule.collectSwiftDeclarations generated from typescript function_declaration at packages/shp-checker/src/ast-generation-swift.ts#collectSwiftDeclarations."
 }
 
@@ -133,7 +133,7 @@ relation AstGenerationSwiftModuleTypeNameGeneratedFromAstGenerationSwiftModuleTy
   kind generated_from
   connects AstGenerationSwiftModule -> AstGenerationSwiftModuleTypeNameAstAnchor
   roles { AstGenerationSwiftModule as generated, AstGenerationSwiftModuleTypeNameAstAnchor as syntax }
-  expects AstGenerationSwiftModuleTypeNameAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a9c1c728ed38eaf257247e6ddab9e92943b51a9c0b5db0067ea25a9891420964")
+  expects AstGenerationSwiftModuleTypeNameAstAnchor fingerprint ast.semantic_subtree_v1("sha256:db3e0c7dca349b65f3afc534828640d24d9e3fd031c94069277bb58ad17076ea")
   summary "fn AstGenerationSwiftModule.typeName generated from typescript function_declaration at packages/shp-checker/src/ast-generation-swift.ts#typeName."
 }
 

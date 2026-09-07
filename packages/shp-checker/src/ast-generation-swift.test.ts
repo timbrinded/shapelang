@@ -117,6 +117,25 @@ describe("Swift source drafts", () => {
     expect(members(nested, "OuterInner")).toEqual(["Sources/App.swift#Outer.Inner.run()"]);
   });
 
+  test("excludes nested local types instead of merging them with top-level names", async () => {
+    const graph = await graphFor(`
+      struct Inner { func real() {} }
+      func run() {
+        struct Local {
+          struct Inner { func local() {} }
+        }
+      }
+    `);
+    expect(graph.containers.map((container) => container.name).sort()).toEqual([
+      "AppModule",
+      "Inner"
+    ]);
+    expect(graph.functions.map((fn) => fn.sourceRef).sort()).toEqual([
+      "Sources/App.swift#Inner.real()",
+      "Sources/App.swift#run()"
+    ]);
+  });
+
   test("preserves external extension targets without claiming cross-file resolution", async () => {
     const graph = await graphFor("extension External.Store { func run() {} }");
     expect(graph.functions[0]?.sourceRef).toBe("Sources/App.swift#External.Store.run()");

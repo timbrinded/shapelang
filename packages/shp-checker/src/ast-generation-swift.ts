@@ -101,6 +101,7 @@ export function collectSwiftDeclarations(
     const owner = lexicalOwner(node);
     if (owner && !isSwiftType(owner)) return undefined;
     const ownerName = owner ? typeName(owner) : undefined;
+    if (owner && !ownerName) return undefined;
     const qualified = ownerName ? `${ownerName}.${name}` : name;
     typeNames.set(node.id, qualified);
     return qualified;

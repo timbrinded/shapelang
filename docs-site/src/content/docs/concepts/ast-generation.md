@@ -25,7 +25,8 @@ Functions, protocol requirements, initializers, deinitializers, subscripts, and
 computed properties supply function candidates. A SwiftUI view's computed `body`
 is included even when the view has no ordinary methods. Stored properties are
 part of the type's syntax evidence. Local functions remain inside their containing
-function's evidence.
+function's evidence. Types declared inside functions, including any types nested
+inside them, do not become separate candidates.
 
 Within each file, extensions are grouped with their named type and retain separate
 syntax anchors. Nested types use qualified source names such as `Outer.Inner.run()`.
