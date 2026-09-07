@@ -4,7 +4,8 @@ export const SOURCE_LANGUAGES = [
   "tsx",
   "rust",
   "go",
-  "python"
+  "python",
+  "swift"
 ] as const;
 
 export type SourceLanguageName = (typeof SOURCE_LANGUAGES)[number];
@@ -24,7 +25,8 @@ export const AST_SOURCE_EXTENSIONS = [
   ".cjs",
   ".rs",
   ".go",
-  ".py"
+  ".py",
+  ".swift"
 ] as const;
 
 export function inferAstSourceLanguageFromPath(path: string): SourceLanguageName | undefined {
@@ -50,6 +52,9 @@ export function inferAstSourceLanguageFromPath(path: string): SourceLanguageName
   }
   if (path.endsWith(".py")) {
     return "python";
+  }
+  if (path.endsWith(".swift")) {
+    return "swift";
   }
   return undefined;
 }

@@ -202,6 +202,9 @@ function languageForPath(file: string): string {
   if (file.endsWith(".sol")) {
     return "solidity";
   }
+  if (file.endsWith(".swift")) {
+    return "swift";
+  }
   return "file";
 }
 

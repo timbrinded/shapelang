@@ -1,0 +1,145 @@
+module shape.generated.ast.packages.shp_checker.src.ast_generation_swift
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource AstGenerationSwiftModuleCollectSwiftDeclarationsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/ast-generation-swift.ts#collectSwiftDeclarations")
+  fingerprint ast.semantic_subtree_v1("sha256:4986a1790c5d15b84195fd0f4e41b6da7f4f47be39b2575301f2f5fb486289d0")
+}
+
+resource AstGenerationSwiftModuleFunctionSignatureAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/ast-generation-swift.ts#functionSignature")
+  fingerprint ast.semantic_subtree_v1("sha256:4d4f162b24943d8a193f3c357821a3f9aaf3a77a0e0430cff82ea0447bc4dcf4")
+}
+
+resource AstGenerationSwiftModuleIsSwiftFunctionAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/ast-generation-swift.ts#isSwiftFunction")
+  fingerprint ast.semantic_subtree_v1("sha256:005de8831e57db5a987d08e1cb54ba8b3725d5f7a795165c0b3d523679086475")
+}
+
+resource AstGenerationSwiftModuleIsSwiftTypeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/ast-generation-swift.ts#isSwiftType")
+  fingerprint ast.semantic_subtree_v1("sha256:4a58a7cdf3ff1a5f33479d096d0036e0a54880fe3a8fccb2ee716e3edd1502d6")
+}
+
+resource AstGenerationSwiftModuleLexicalOwnerAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/ast-generation-swift.ts#lexicalOwner")
+  fingerprint ast.semantic_subtree_v1("sha256:0295699756f9dde71789dfdeadfd5f30fe32a30de7fe39d1945b587d7dddaceb")
+}
+
+resource AstGenerationSwiftModuleSwiftSignatureChildrenAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/ast-generation-swift.ts#swiftSignatureChildren")
+  fingerprint ast.semantic_subtree_v1("sha256:711ca98acb2af6ee390f54d73fdb7150d7ef6dc0153022cdfb5af33da15d3408")
+}
+
+resource AstGenerationSwiftModuleSwiftTokensAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/ast-generation-swift.ts#swiftTokens")
+  fingerprint ast.semantic_subtree_v1("sha256:6be304918749802c5b06573afc57a0ac58d3ee74a22e3c353d2208d9476db59c")
+}
+
+resource AstGenerationSwiftModuleTypeNameAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/ast-generation-swift.ts#typeName")
+  fingerprint ast.semantic_subtree_v1("sha256:a9c1c728ed38eaf257247e6ddab9e92943b51a9c0b5db0067ea25a9891420964")
+}
+
+component AstGenerationSwiftModule : GeneratedCandidate {
+  fn collectSwiftDeclarations
+    source ts("packages/shp-checker/src/ast-generation-swift.ts#collectSwiftDeclarations")
+    effects unknown
+  fn functionSignature
+    source ts("packages/shp-checker/src/ast-generation-swift.ts#functionSignature")
+    effects unknown
+  fn isSwiftFunction
+    source ts("packages/shp-checker/src/ast-generation-swift.ts#isSwiftFunction")
+    effects unknown
+  fn isSwiftType
+    source ts("packages/shp-checker/src/ast-generation-swift.ts#isSwiftType")
+    effects unknown
+  fn lexicalOwner
+    source ts("packages/shp-checker/src/ast-generation-swift.ts#lexicalOwner")
+    effects unknown
+  fn swiftSignatureChildren
+    source ts("packages/shp-checker/src/ast-generation-swift.ts#swiftSignatureChildren")
+    effects unknown
+  fn swiftTokens
+    source ts("packages/shp-checker/src/ast-generation-swift.ts#swiftTokens")
+    effects unknown
+  fn typeName
+    source ts("packages/shp-checker/src/ast-generation-swift.ts#typeName")
+    effects unknown
+}
+
+relation AstGenerationSwiftModuleCollectSwiftDeclarationsGeneratedFromAstGenerationSwiftModuleCollectSwiftDeclarationsAstAnchor {
+  kind generated_from
+  connects AstGenerationSwiftModule -> AstGenerationSwiftModuleCollectSwiftDeclarationsAstAnchor
+  roles { AstGenerationSwiftModule as generated, AstGenerationSwiftModuleCollectSwiftDeclarationsAstAnchor as syntax }
+  expects AstGenerationSwiftModuleCollectSwiftDeclarationsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4986a1790c5d15b84195fd0f4e41b6da7f4f47be39b2575301f2f5fb486289d0")
+  summary "fn AstGenerationSwiftModule.collectSwiftDeclarations generated from typescript function_declaration at packages/shp-checker/src/ast-generation-swift.ts#collectSwiftDeclarations."
+}
+
+relation AstGenerationSwiftModuleFunctionSignatureGeneratedFromAstGenerationSwiftModuleFunctionSignatureAstAnchor {
+  kind generated_from
+  connects AstGenerationSwiftModule -> AstGenerationSwiftModuleFunctionSignatureAstAnchor
+  roles { AstGenerationSwiftModule as generated, AstGenerationSwiftModuleFunctionSignatureAstAnchor as syntax }
+  expects AstGenerationSwiftModuleFunctionSignatureAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4d4f162b24943d8a193f3c357821a3f9aaf3a77a0e0430cff82ea0447bc4dcf4")
+  summary "fn AstGenerationSwiftModule.functionSignature generated from typescript function_declaration at packages/shp-checker/src/ast-generation-swift.ts#functionSignature."
+}
+
+relation AstGenerationSwiftModuleIsSwiftFunctionGeneratedFromAstGenerationSwiftModuleIsSwiftFunctionAstAnchor {
+  kind generated_from
+  connects AstGenerationSwiftModule -> AstGenerationSwiftModuleIsSwiftFunctionAstAnchor
+  roles { AstGenerationSwiftModule as generated, AstGenerationSwiftModuleIsSwiftFunctionAstAnchor as syntax }
+  expects AstGenerationSwiftModuleIsSwiftFunctionAstAnchor fingerprint ast.semantic_subtree_v1("sha256:005de8831e57db5a987d08e1cb54ba8b3725d5f7a795165c0b3d523679086475")
+  summary "fn AstGenerationSwiftModule.isSwiftFunction generated from typescript function_declaration at packages/shp-checker/src/ast-generation-swift.ts#isSwiftFunction."
+}
+
+relation AstGenerationSwiftModuleIsSwiftTypeGeneratedFromAstGenerationSwiftModuleIsSwiftTypeAstAnchor {
+  kind generated_from
+  connects AstGenerationSwiftModule -> AstGenerationSwiftModuleIsSwiftTypeAstAnchor
+  roles { AstGenerationSwiftModule as generated, AstGenerationSwiftModuleIsSwiftTypeAstAnchor as syntax }
+  expects AstGenerationSwiftModuleIsSwiftTypeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4a58a7cdf3ff1a5f33479d096d0036e0a54880fe3a8fccb2ee716e3edd1502d6")
+  summary "fn AstGenerationSwiftModule.isSwiftType generated from typescript function_declaration at packages/shp-checker/src/ast-generation-swift.ts#isSwiftType."
+}
+
+relation AstGenerationSwiftModuleLexicalOwnerGeneratedFromAstGenerationSwiftModuleLexicalOwnerAstAnchor {
+  kind generated_from
+  connects AstGenerationSwiftModule -> AstGenerationSwiftModuleLexicalOwnerAstAnchor
+  roles { AstGenerationSwiftModule as generated, AstGenerationSwiftModuleLexicalOwnerAstAnchor as syntax }
+  expects AstGenerationSwiftModuleLexicalOwnerAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0295699756f9dde71789dfdeadfd5f30fe32a30de7fe39d1945b587d7dddaceb")
+  summary "fn AstGenerationSwiftModule.lexicalOwner generated from typescript function_declaration at packages/shp-checker/src/ast-generation-swift.ts#lexicalOwner."
+}
+
+relation AstGenerationSwiftModuleSwiftSignatureChildrenGeneratedFromAstGenerationSwiftModuleSwiftSignatureChildrenAstAnchor {
+  kind generated_from
+  connects AstGenerationSwiftModule -> AstGenerationSwiftModuleSwiftSignatureChildrenAstAnchor
+  roles { AstGenerationSwiftModule as generated, AstGenerationSwiftModuleSwiftSignatureChildrenAstAnchor as syntax }
+  expects AstGenerationSwiftModuleSwiftSignatureChildrenAstAnchor fingerprint ast.semantic_subtree_v1("sha256:711ca98acb2af6ee390f54d73fdb7150d7ef6dc0153022cdfb5af33da15d3408")
+  summary "fn AstGenerationSwiftModule.swiftSignatureChildren generated from typescript function_declaration at packages/shp-checker/src/ast-generation-swift.ts#swiftSignatureChildren."
+}
+
+relation AstGenerationSwiftModuleSwiftTokensGeneratedFromAstGenerationSwiftModuleSwiftTokensAstAnchor {
+  kind generated_from
+  connects AstGenerationSwiftModule -> AstGenerationSwiftModuleSwiftTokensAstAnchor
+  roles { AstGenerationSwiftModule as generated, AstGenerationSwiftModuleSwiftTokensAstAnchor as syntax }
+  expects AstGenerationSwiftModuleSwiftTokensAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6be304918749802c5b06573afc57a0ac58d3ee74a22e3c353d2208d9476db59c")
+  summary "fn AstGenerationSwiftModule.swiftTokens generated from typescript function_declaration at packages/shp-checker/src/ast-generation-swift.ts#swiftTokens."
+}
+
+relation AstGenerationSwiftModuleTypeNameGeneratedFromAstGenerationSwiftModuleTypeNameAstAnchor {
+  kind generated_from
+  connects AstGenerationSwiftModule -> AstGenerationSwiftModuleTypeNameAstAnchor
+  roles { AstGenerationSwiftModule as generated, AstGenerationSwiftModuleTypeNameAstAnchor as syntax }
+  expects AstGenerationSwiftModuleTypeNameAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a9c1c728ed38eaf257247e6ddab9e92943b51a9c0b5db0067ea25a9891420964")
+  summary "fn AstGenerationSwiftModule.typeName generated from typescript function_declaration at packages/shp-checker/src/ast-generation-swift.ts#typeName."
+}
+
+implementation AstGenerationSwiftModuleImpl {
+  paths {
+    "packages/shp-checker/src/ast-generation-swift.ts"
+  }
+  conforms_to AstGenerationSwiftModule
+}

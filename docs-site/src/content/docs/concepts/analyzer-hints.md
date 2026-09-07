@@ -15,6 +15,11 @@ shp analyze --shape-files fixtures/pass/append_only_append/audit.shape fixtures/
 
 Without `--shape-files`, the command emits source hints only. With `--shape-files`, it compares hints to declared effects.
 
+The supported inputs are SQL and the TypeScript-oriented patterns described below.
+Swift support in `shp ast` does not add Swift effect analysis. Do not interpret an
+empty `shp analyze` result for Swift as evidence about SwiftData, Core Data, GRDB,
+or application effects.
+
 ## Warning kinds
 
 When Shape files are supplied:

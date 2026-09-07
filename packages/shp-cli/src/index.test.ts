@@ -715,6 +715,36 @@ component AuditStore {
     expect(result.stderr).toBe("");
   });
 
+  test("infers Swift, accepts its language flag, and checks generated output freshness", async () => {
+    const source = "fixtures/source/swift/architecture.swift";
+    const inferred = await runCli(["ast", "source", source]);
+    const explicit = await runCli(["ast", "source", "--language", "swift", source]);
+    expect(inferred.exitCode).toBe(0);
+    expect(explicit.exitCode).toBe(0);
+    expect(inferred.stdout).toBe(explicit.stdout);
+    expect(inferred.stderr).toBe("");
+    expect(inferred.stdout).toContain(
+      'source swift("fixtures/source/swift/architecture.swift#ContentView.body")'
+    );
+    expect(inferred.stdout).toContain("effects unknown");
+
+    const tempDir = await mkdtemp(join(tmpdir(), "shp-swift-test-"));
+    const outDir = join(tempDir, "shape/generated/ast");
+    try {
+      const args = ["ast", "source", "--out-dir", outDir, source];
+      expect((await runCli(args)).exitCode).toBe(0);
+      expect((await runCli([...args, "--check"])).exitCode).toBe(0);
+      const generated = join(outDir, "fixtures/source/swift/architecture.shape");
+      expect((await runCli(["check", generated], cliPath, tempDir)).exitCode).toBe(0);
+      await writeFile(generated, "module stale\n");
+      const stale = await runCli([...args, "--check"]);
+      expect(stale.exitCode).toBe(1);
+      expect(stale.stderr).toContain("stale");
+    } finally {
+      await rm(tempDir, { recursive: true, force: true });
+    }
+  });
+
   test("generates source candidate effects from AST anchors", async () => {
     const result = await runCli([
       "ast",
