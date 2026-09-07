@@ -99,7 +99,7 @@ component CiPipeline {
       Read<CliPackageManifest>
         evidence json("packages/shp-cli/package.json")
       Read<DocsContent>
-        evidence md("docs/releases/v0.8.0.md")
+        evidence md("docs/releases/v0.9.0.md")
       Read<PluginPackageManifest>
         evidence json("plugins/shapelang/.claude-plugin/plugin.json")
       Read<PluginPackageManifest>
@@ -1057,6 +1057,17 @@ reevaluation ReleaseNativeParserAssetsRechecked {
   evidence sh("install.sh")
   evidence sh("scripts/build-release-assets.sh")
   evidence ts("scripts/prepare-tree-sitter-parser-assets.ts")
+}
+
+reevaluation ReleaseNotesVersionRechecked {
+  satisfies memory ReleaseVersionTagContract
+  outcome Confirmed
+  summary "The shared metadata validator still requires the tag, CLI package, both plugin manifests, and authored release notes to share one X.Y.Z."
+  reviewer ShapeMaintainers
+  decided_on "2026-09-07"
+  evidence md("docs/releases/v0.9.0.md")
+  evidence test("scripts/check-release-metadata.test.ts")
+  evidence ts("scripts/check-release-metadata.ts#validateReleaseMetadata")
 }
 
 reevaluation ReleaseVersionTagCheckRechecked {

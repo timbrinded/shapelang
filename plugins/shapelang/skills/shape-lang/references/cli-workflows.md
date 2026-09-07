@@ -129,13 +129,12 @@ Check generated AST context without writing files:
 shp ast source --out-dir shape/generated/ast --check src/audit/store.rs
 ```
 
-When the local CLI supports Swift, `.swift` inference and `--language swift` use
-the bundled syntax parser. Drafts include protocol requirements, extensions,
-overloads, and computed properties such as SwiftUI `body`. They keep unknown
-effects and omit inferred Swift calls and effect candidates. Do not treat these
-drafts as compiler type resolution, macro expansion, active build-condition
-selection, or Swift support in `shp analyze`. Older released CLIs can reject Swift;
-use the verified repository command and its documented language support.
+Swift files use `.swift` inference and `--language swift` with the bundled
+syntax parser. Drafts include protocol requirements, extensions, overloads, and
+computed properties such as SwiftUI `body`. They keep unknown effects and omit
+inferred Swift calls and effect candidates. Do not treat these drafts as
+compiler type resolution, macro expansion, active build-condition selection, or
+Swift support in `shp analyze`.
 
 Scaffold a global model draft, then review and fold it into the owning model file:
 
