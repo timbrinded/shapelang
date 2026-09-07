@@ -81,7 +81,7 @@ component CiPipeline {
   grants Update<SkillReleaseReport>
   fn approveReleaseSkills
     source yaml(".github/workflows/release-candidate.yml#Skill Release Approval")
-    description "Records manual approval only after deterministic release validation and the blocking six-skill evaluation pass."
+    description "Records manual approval after validation and archive smoke, and after either a passing six-skill evaluation or an eligible copied report."
     effects complete {
       Read<CiWorkflow>
         evidence yaml(".github/workflows/release-candidate.yml")
@@ -92,12 +92,26 @@ component CiPipeline {
     }
   fn checkReleaseVersion : RefactorSensitive
     source ts("scripts/check-release-metadata.ts#validateReleaseMetadata")
-    description "Requires the release tag, CLI package, both plugin manifests, and authored release notes to carry one X.Y.Z version."
+    description "Requires the release tag, CLI package, both plugin manifests, authored release notes, and current public version pins to carry one X.Y.Z version."
     effects complete {
       Read<CiWorkflow>
         evidence yaml(".github/workflows/release.yml")
+      Read<ClaudeReviewPrompt>
+        evidence md(".github/prompts/shape-skills-release.md")
       Read<CliPackageManifest>
         evidence json("packages/shp-cli/package.json")
+      Read<DocsContent>
+        evidence md("AGENTS.md")
+      Read<DocsContent>
+        evidence md("README.md")
+      Read<DocsContent>
+        evidence md("docs-site/src/content/docs/learn/ci-workflow.md")
+      Read<DocsContent>
+        evidence md("docs-site/src/content/docs/learn/quickstart.md")
+      Read<DocsContent>
+        evidence md("docs-site/src/content/docs/reference/cli.md")
+      Read<DocsContent>
+        evidence md("docs-site/src/content/docs/reference/local-development.md")
       Read<DocsContent>
         evidence md("docs/releases/v0.9.0.md")
       Read<PluginPackageManifest>
@@ -105,7 +119,13 @@ component CiPipeline {
       Read<PluginPackageManifest>
         evidence json("plugins/shapelang/.codex-plugin/plugin.json")
       Read<ReleaseVersionTag>
+        evidence ts("scripts/check-release-metadata.ts#missingReleasePins")
+      Read<ReleaseVersionTag>
         evidence ts("scripts/check-release-metadata.ts#validateReleaseMetadata")
+      Read<ShapeAgentSkill>
+        evidence md("plugins/shapelang/skills/shape-lang/SKILL.md")
+      Read<ShapeSource>
+        evidence ts("scripts/check-release-metadata.ts#missingReleasePins")
     }
   fn evaluateReleaseSkills
     source mjs(".github/scripts/run-claude-skill.mjs#buildSkillsReleasePrompt")
@@ -234,6 +254,19 @@ component CiPipeline {
       Update<PullRequestStatusComment>
         evidence mjs(".github/scripts/upsert-shape-ci-comment.mjs")
     }
+  fn reuseReleaseSkillsEvaluation : RefactorSensitive
+    source ts("scripts/check-release-approval.ts#findReusableSkillsReport")
+    description "Copies an approved skills report for this SHA when this SHA already has one. Copies from an ancestor only when git diff --name-only --no-renames has no path under SKILLS_RELEVANT_PATH_PREFIXES. Validate, archive smoke, and skills-release-approval still run on this commit."
+    effects complete {
+      Read<CiWorkflow>
+        evidence yaml(".github/workflows/release-candidate.yml")
+      Read<SkillReleaseApproval>
+        evidence ts("scripts/check-release-approval.ts#findReusableSkillsReport")
+      Read<SkillReleaseReport>
+        evidence ts("scripts/check-release-approval.ts#amendReusedSkillsReport")
+      Update<SkillReleaseReport>
+        evidence mjs(".github/scripts/run-claude-skill.mjs#releasePrefilter")
+    }
   fn runExperimentalSemanticKernel
     source yaml(".github/workflows/shape.yml#Semantic Kernel Prototype")
     description "Runs the isolated Rust checks, native and browser-WASM builds, and parity harness, then uploads short-lived prototype artifacts."
@@ -246,6 +279,17 @@ component CiPipeline {
         evidence yaml(".github/workflows/shape.yml")
       Update<ExperimentalKernelWasmArtifact>
         evidence yaml(".github/workflows/shape.yml")
+    }
+  fn runReleaseCanaries
+    source ts("scripts/run-release-canaries.ts#runReleaseCanaries")
+    description "Runs the committed cases.json commands against the Linux x64 release archive. The candidate and the post-tag rebuild both run this list on that archive only."
+    effects complete {
+      Read<ReleaseArtifact>
+        evidence ts("scripts/run-release-canaries.ts#rewriteCanaryCommand")
+      Read<SkillBehaviorFixture>
+        evidence json("fixtures/skills/cases.json")
+      Read<SkillBehaviorFixture>
+        evidence ts("scripts/run-release-canaries.ts#loadReleaseCanaryCases")
     }
   fn runShapeCi
     source yaml(".github/workflows/shape.yml")
@@ -450,15 +494,15 @@ component CiPipeline {
         evidence json("fixtures/skills/cases.json")
     }
   fn verifyReleaseSkillsApproval
-    source yaml(".github/workflows/release.yml#Verify skill release approval")
-    description "Rejects an official tag unless it is current master and the exact commit has a successful release-candidate run that includes manual skills approval."
+    source ts("scripts/check-release-approval.ts#findExactApprovedCandidate")
+    description "Rejects an official tag unless it is current master, the plugin tag peels to the same commit, and that exact commit has a successful release-candidate run with manual skills approval."
     effects complete {
       Read<CiWorkflow>
         evidence yaml(".github/workflows/release.yml")
       Read<ReleaseVersionTag>
-        evidence yaml(".github/workflows/release.yml")
+        evidence ts("scripts/check-release-approval.ts#peelGitObjectSha")
       Read<SkillReleaseApproval>
-        evidence yaml(".github/workflows/release.yml")
+        evidence ts("scripts/check-release-approval.ts#findExactApprovedCandidate")
       Read<SkillReleaseReport>
         evidence yaml(".github/workflows/release-candidate.yml")
     }
@@ -476,7 +520,7 @@ component DocsSite {
   grants Update<DocsContent>
   fn verifyDocs
     source ts("docs-site/scripts/verify-shape-blocks.ts")
-    description "Verifies complete Shape examples and publishes current strict and draft-validation checker behavior."
+    description "Verifies complete Shape examples in the docs site, including the releasing page that documents archive smoke and skills-report reuse."
     effects complete {
       Read<DocsContent>
         evidence md("docs-site/src/content/docs/concepts/analyzer-hints.md")
@@ -616,6 +660,13 @@ component ReleasePipeline {
       Read<ReleaseArtifact>
         evidence ps1("install.ps1")
     }
+  fn smokeReleaseBinary
+    source sh("scripts/smoke-release-binary.sh")
+    description "Extracts a release archive and runs version, help, check, and AST. Without --quick it also runs graph, draft/strict, author, analyzer, and domain-pack checks. Candidate native runners pass --quick; Linux x64 and the post-tag rebuild run the full script."
+    effects complete {
+      Read<ReleaseArtifact>
+        evidence sh("scripts/smoke-release-binary.sh")
+    }
 }
 
 relation CiPipelineUsesExperimentalSemanticKernel {
@@ -725,10 +776,12 @@ implementation CheckerSource {
 
 implementation CiScripts {
   paths {
+    "scripts/check-release-approval.ts"
     "scripts/check-release-metadata.ts"
     "scripts/check-skills.ts"
     "scripts/generate-ast-shapes.sh"
     "scripts/generate-ast-shapes.ts"
+    "scripts/run-release-canaries.ts"
     "scripts/write-changed-files.sh"
   }
   conforms_to CiPipeline
@@ -837,6 +890,7 @@ implementation ReleaseSource {
     "plugins/shapelang/.codex-plugin/plugin.json"
     "scripts/build-release-assets.sh"
     "scripts/prepare-tree-sitter-parser-assets.ts"
+    "scripts/smoke-release-binary.sh"
   }
   conforms_to ReleasePipeline
   on_change require shape_update
@@ -1015,12 +1069,28 @@ memory ReleaseVersionTagContract : RefactorConstraint<fn CiPipeline.checkRelease
   applies_to fn CiPipeline.checkReleaseVersion
   status Explained
   confidence High
-  summary "Release tags, the CLI package, and both plugin manifests must share one version before approved release assets are published."
+  summary "Release tags, the CLI package, both plugin manifests, authored notes, and current public version pins must share one version before approved release assets are published."
   who {
     owner ShapeMaintainers
   }
   protects {
     shape ReleaseVersionIntegrity
+  }
+  guards {
+    on_change require ReEvaluation<Self>
+  }
+}
+
+memory SkillsApprovalReuseContract : RefactorConstraint<fn CiPipeline.reuseReleaseSkillsEvaluation> {
+  applies_to fn CiPipeline.reuseReleaseSkillsEvaluation
+  status Explained
+  confidence High
+  summary "A skills report may be copied from this SHA's approved run, or from an ancestor when git diff --name-only --no-renames has no path under SKILLS_RELEVANT_PATH_PREFIXES. Publishing still requires an approved candidate run on the exact tag SHA."
+  who {
+    owner ShapeMaintainers
+  }
+  protects {
+    shape SkillsApprovalReuse
   }
   guards {
     on_change require ReEvaluation<Self>
@@ -1070,6 +1140,18 @@ reevaluation ReleaseNotesVersionRechecked {
   evidence ts("scripts/check-release-metadata.ts#validateReleaseMetadata")
 }
 
+reevaluation ReleaseVersionPinsRechecked {
+  satisfies memory ReleaseVersionTagContract
+  outcome Confirmed
+  summary "Metadata validation still requires one X.Y.Z and now also requires each listed pin file to contain the current-version snippet."
+  reviewer ShapeMaintainers
+  decided_on "2026-09-07"
+  evidence md(".github/prompts/shape-skills-release.md")
+  evidence md("README.md")
+  evidence test("scripts/check-release-metadata.test.ts")
+  evidence ts("scripts/check-release-metadata.ts#missingReleasePins")
+}
+
 reevaluation ReleaseVersionTagCheckRechecked {
   satisfies memory ReleaseVersionTagContract
   outcome Confirmed
@@ -1077,6 +1159,38 @@ reevaluation ReleaseVersionTagCheckRechecked {
   reviewer ShapeMaintainers
   decided_on "2026-05-21"
   evidence yaml(".github/workflows/release.yml")
+}
+
+reevaluation SkillsApprovalReuseIntroduced {
+  satisfies memory SkillsApprovalReuseContract
+  outcome Confirmed
+  summary "A skills report may be copied from this SHA's approved run, or from an ancestor when git diff --name-only --no-renames has no path under SKILLS_RELEVANT_PATH_PREFIXES. Validate, archive smoke, and skills-release-approval still run on this commit. Publishing still requires an approved candidate on the exact tag SHA."
+  reviewer ShapeMaintainers
+  decided_on "2026-09-07"
+  evidence mjs(".github/scripts/run-claude-skill.mjs#releasePrefilter")
+  evidence test("scripts/check-release-approval.test.ts")
+  evidence ts("scripts/check-release-approval.ts#findReusableSkillsReport")
+  evidence yaml(".github/workflows/release-candidate.yml")
+}
+
+reevaluation SkillsRelevantRenameInvalidatesReuse {
+  satisfies memory SkillsApprovalReuseContract
+  outcome Confirmed
+  summary "git diff --name-only --no-renames lists both sides of a move, so a file under SKILLS_RELEVANT_PATH_PREFIXES renamed out of that list still blocks copying an ancestor report."
+  reviewer ShapeMaintainers
+  decided_on "2026-09-07"
+  evidence test("scripts/check-release-approval.test.ts")
+  evidence ts("scripts/check-release-approval.ts#findReusableSkillsReport")
+}
+
+reevaluation SkillsReportCopyNamed {
+  satisfies memory SkillsApprovalReuseContract
+  outcome Confirmed
+  summary "The lookup is findReusableSkillsReport. It copies a report for this SHA or an ancestor. Validate, archive smoke, and skills-release-approval still run on this commit."
+  reviewer ShapeMaintainers
+  decided_on "2026-09-07"
+  evidence test("scripts/check-release-approval.test.ts")
+  evidence ts("scripts/check-release-approval.ts#findReusableSkillsReport")
 }
 
 attest docs_not_needed {

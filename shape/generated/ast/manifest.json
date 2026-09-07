@@ -1466,6 +1466,20 @@
       ]
     },
     {
+      "module": "shape.generated.ast.scripts.check_release_approval_test",
+      "path": "shape/generated/ast/scripts/check-release-approval.test.shape",
+      "sources": [
+        "scripts/check-release-approval.test.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.scripts.check_release_approval",
+      "path": "shape/generated/ast/scripts/check-release-approval.shape",
+      "sources": [
+        "scripts/check-release-approval.ts"
+      ]
+    },
+    {
       "module": "shape.generated.ast.scripts.check_release_metadata_test",
       "path": "shape/generated/ast/scripts/check-release-metadata.test.shape",
       "sources": [
@@ -1505,6 +1519,20 @@
       "path": "shape/generated/ast/scripts/prepare-tree-sitter-parser-assets.shape",
       "sources": [
         "scripts/prepare-tree-sitter-parser-assets.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.scripts.run_release_canaries_test",
+      "path": "shape/generated/ast/scripts/run-release-canaries.test.shape",
+      "sources": [
+        "scripts/run-release-canaries.test.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.scripts.run_release_canaries",
+      "path": "shape/generated/ast/scripts/run-release-canaries.shape",
+      "sources": [
+        "scripts/run-release-canaries.ts"
       ]
     }
   ]

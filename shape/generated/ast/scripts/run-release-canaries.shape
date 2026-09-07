@@ -1,0 +1,129 @@
+module shape.generated.ast.scripts.run_release_canaries
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource RunReleaseCanariesModuleCanaryFailureMessageAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("scripts/run-release-canaries.ts#canaryFailureMessage")
+  fingerprint ast.semantic_subtree_v1("sha256:e8d57c153ea83c18db2904aef9c078786aeec0749446d261e3eb7ccc8384ea76")
+}
+
+resource RunReleaseCanariesModuleLoadReleaseCanaryCasesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("scripts/run-release-canaries.ts#loadReleaseCanaryCases")
+  fingerprint ast.semantic_subtree_v1("sha256:bc0d75fd29d5fc2792151ea1a7f9f27503416e20c9e9c0595b98e687df65626f")
+}
+
+resource RunReleaseCanariesModuleMainAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("scripts/run-release-canaries.ts#main")
+  fingerprint ast.semantic_subtree_v1("sha256:aa115f4059af3eda9d1b9fb34d5330a39dd1207542ef688639f938109785bdca")
+}
+
+resource RunReleaseCanariesModulePackedBinaryFromArchiveAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("scripts/run-release-canaries.ts#packedBinaryFromArchive")
+  fingerprint ast.semantic_subtree_v1("sha256:e90e7f14db79c1492617b70c8d71340d0f85286bd33dc260243e7296c35fa32c")
+}
+
+resource RunReleaseCanariesModuleParseExpectedExitsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("scripts/run-release-canaries.ts#parseExpectedExits")
+  fingerprint ast.semantic_subtree_v1("sha256:a27d610e619c6ee41815bc01208e737c1c4d849d6f3943ac7ef855d607df5f2c")
+}
+
+resource RunReleaseCanariesModuleRewriteCanaryCommandAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("scripts/run-release-canaries.ts#rewriteCanaryCommand")
+  fingerprint ast.semantic_subtree_v1("sha256:e4352d67d90327e3bed7f2aeb00da16fa44bb209e673a39b73bf9a5ab0702b5e")
+}
+
+resource RunReleaseCanariesModuleRunReleaseCanariesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("scripts/run-release-canaries.ts#runReleaseCanaries")
+  fingerprint ast.semantic_subtree_v1("sha256:4779ccc806a72a5307ff7d030de8637c78d982a6352997d3e968a395648e3ef2")
+}
+
+component RunReleaseCanariesModule : GeneratedCandidate {
+  fn canaryFailureMessage
+    source ts("scripts/run-release-canaries.ts#canaryFailureMessage")
+    effects unknown
+  fn loadReleaseCanaryCases
+    source ts("scripts/run-release-canaries.ts#loadReleaseCanaryCases")
+    effects unknown
+  fn main
+    source ts("scripts/run-release-canaries.ts#main")
+    effects unknown
+  fn packedBinaryFromArchive
+    source ts("scripts/run-release-canaries.ts#packedBinaryFromArchive")
+    effects unknown
+  fn parseExpectedExits
+    source ts("scripts/run-release-canaries.ts#parseExpectedExits")
+    effects unknown
+  fn rewriteCanaryCommand
+    source ts("scripts/run-release-canaries.ts#rewriteCanaryCommand")
+    effects unknown
+  fn runReleaseCanaries
+    source ts("scripts/run-release-canaries.ts#runReleaseCanaries")
+    effects unknown
+}
+
+relation RunReleaseCanariesModuleCanaryFailureMessageGeneratedFromRunReleaseCanariesModuleCanaryFailureMessageAstAnchor {
+  kind generated_from
+  connects RunReleaseCanariesModule -> RunReleaseCanariesModuleCanaryFailureMessageAstAnchor
+  roles { RunReleaseCanariesModule as generated, RunReleaseCanariesModuleCanaryFailureMessageAstAnchor as syntax }
+  expects RunReleaseCanariesModuleCanaryFailureMessageAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e8d57c153ea83c18db2904aef9c078786aeec0749446d261e3eb7ccc8384ea76")
+  summary "fn RunReleaseCanariesModule.canaryFailureMessage generated from typescript function_declaration at scripts/run-release-canaries.ts#canaryFailureMessage."
+}
+
+relation RunReleaseCanariesModuleLoadReleaseCanaryCasesGeneratedFromRunReleaseCanariesModuleLoadReleaseCanaryCasesAstAnchor {
+  kind generated_from
+  connects RunReleaseCanariesModule -> RunReleaseCanariesModuleLoadReleaseCanaryCasesAstAnchor
+  roles { RunReleaseCanariesModule as generated, RunReleaseCanariesModuleLoadReleaseCanaryCasesAstAnchor as syntax }
+  expects RunReleaseCanariesModuleLoadReleaseCanaryCasesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:bc0d75fd29d5fc2792151ea1a7f9f27503416e20c9e9c0595b98e687df65626f")
+  summary "fn RunReleaseCanariesModule.loadReleaseCanaryCases generated from typescript function_declaration at scripts/run-release-canaries.ts#loadReleaseCanaryCases."
+}
+
+relation RunReleaseCanariesModuleMainGeneratedFromRunReleaseCanariesModuleMainAstAnchor {
+  kind generated_from
+  connects RunReleaseCanariesModule -> RunReleaseCanariesModuleMainAstAnchor
+  roles { RunReleaseCanariesModule as generated, RunReleaseCanariesModuleMainAstAnchor as syntax }
+  expects RunReleaseCanariesModuleMainAstAnchor fingerprint ast.semantic_subtree_v1("sha256:aa115f4059af3eda9d1b9fb34d5330a39dd1207542ef688639f938109785bdca")
+  summary "fn RunReleaseCanariesModule.main generated from typescript function_declaration at scripts/run-release-canaries.ts#main."
+}
+
+relation RunReleaseCanariesModulePackedBinaryFromArchiveGeneratedFromRunReleaseCanariesModulePackedBinaryFromArchiveAstAnchor {
+  kind generated_from
+  connects RunReleaseCanariesModule -> RunReleaseCanariesModulePackedBinaryFromArchiveAstAnchor
+  roles { RunReleaseCanariesModule as generated, RunReleaseCanariesModulePackedBinaryFromArchiveAstAnchor as syntax }
+  expects RunReleaseCanariesModulePackedBinaryFromArchiveAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e90e7f14db79c1492617b70c8d71340d0f85286bd33dc260243e7296c35fa32c")
+  summary "fn RunReleaseCanariesModule.packedBinaryFromArchive generated from typescript function_declaration at scripts/run-release-canaries.ts#packedBinaryFromArchive."
+}
+
+relation RunReleaseCanariesModuleParseExpectedExitsGeneratedFromRunReleaseCanariesModuleParseExpectedExitsAstAnchor {
+  kind generated_from
+  connects RunReleaseCanariesModule -> RunReleaseCanariesModuleParseExpectedExitsAstAnchor
+  roles { RunReleaseCanariesModule as generated, RunReleaseCanariesModuleParseExpectedExitsAstAnchor as syntax }
+  expects RunReleaseCanariesModuleParseExpectedExitsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a27d610e619c6ee41815bc01208e737c1c4d849d6f3943ac7ef855d607df5f2c")
+  summary "fn RunReleaseCanariesModule.parseExpectedExits generated from typescript function_declaration at scripts/run-release-canaries.ts#parseExpectedExits."
+}
+
+relation RunReleaseCanariesModuleRewriteCanaryCommandGeneratedFromRunReleaseCanariesModuleRewriteCanaryCommandAstAnchor {
+  kind generated_from
+  connects RunReleaseCanariesModule -> RunReleaseCanariesModuleRewriteCanaryCommandAstAnchor
+  roles { RunReleaseCanariesModule as generated, RunReleaseCanariesModuleRewriteCanaryCommandAstAnchor as syntax }
+  expects RunReleaseCanariesModuleRewriteCanaryCommandAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e4352d67d90327e3bed7f2aeb00da16fa44bb209e673a39b73bf9a5ab0702b5e")
+  summary "fn RunReleaseCanariesModule.rewriteCanaryCommand generated from typescript function_declaration at scripts/run-release-canaries.ts#rewriteCanaryCommand."
+}
+
+relation RunReleaseCanariesModuleRunReleaseCanariesGeneratedFromRunReleaseCanariesModuleRunReleaseCanariesAstAnchor {
+  kind generated_from
+  connects RunReleaseCanariesModule -> RunReleaseCanariesModuleRunReleaseCanariesAstAnchor
+  roles { RunReleaseCanariesModule as generated, RunReleaseCanariesModuleRunReleaseCanariesAstAnchor as syntax }
+  expects RunReleaseCanariesModuleRunReleaseCanariesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4779ccc806a72a5307ff7d030de8637c78d982a6352997d3e968a395648e3ef2")
+  summary "fn RunReleaseCanariesModule.runReleaseCanaries generated from typescript function_declaration at scripts/run-release-canaries.ts#runReleaseCanaries."
+}
+
+implementation RunReleaseCanariesModuleImpl {
+  paths {
+    "scripts/run-release-canaries.ts"
+  }
+  conforms_to RunReleaseCanariesModule
+}

@@ -7,7 +7,8 @@
     "required_commands": [
       "bun shp check --allow-unknown-effects fixtures/fail/unknown_effects/audit.shape",
       "bun shp check fixtures/fail/unknown_effects/audit.shape"
-    ]
+    ],
+    "expected_exits": [[0], [1]]
   },
   {
     "id": "lang-final-forbid",
@@ -16,7 +17,8 @@
     "fixture": "fixtures/fail/memory_guard_does_not_override_final_forbid/audit.shape",
     "required_commands": [
       "bun shp check fixtures/fail/memory_guard_does_not_override_final_forbid/audit.shape"
-    ]
+    ],
+    "expected_exits": [[1]]
   },
   {
     "id": "preflight-guarded-unknown",
@@ -25,7 +27,8 @@
     "fixture": "fixtures/skills/preflight/guarded-unknown",
     "required_commands": [
       "plugins/shapelang/skills/shape-contract-preflight/scripts/precheck.sh --shape-root fixtures/skills/preflight/guarded-unknown/shape --json fixtures/skills/preflight/guarded-unknown/proposal.shape"
-    ]
+    ],
+    "expected_exits": [[1]]
   },
   {
     "id": "preflight-invalid-baseline",
@@ -34,7 +37,8 @@
     "fixture": "fixtures/skills/preflight/invalid-baseline",
     "required_commands": [
       "plugins/shapelang/skills/shape-contract-preflight/scripts/precheck.sh --shape-root fixtures/skills/preflight/invalid-baseline/shape --json fixtures/skills/preflight/invalid-baseline/proposal.shape"
-    ]
+    ],
+    "expected_exits": [[1]]
   },
   {
     "id": "preflight-complete-route",
@@ -43,7 +47,8 @@
     "fixture": "fixtures/skills/preflight/complete-route",
     "required_commands": [
       "plugins/shapelang/skills/shape-contract-preflight/scripts/precheck.sh --shape-root fixtures/skills/preflight/complete-route/shape --json fixtures/skills/preflight/complete-route/proposal.shape"
-    ]
+    ],
+    "expected_exits": [[0]]
   },
   {
     "id": "guard-policy-removal",
@@ -52,7 +57,8 @@
     "fixture": "fixtures/skills/guard/policy-removal",
     "required_commands": [
       "bun shp check fixtures/skills/guard/policy-removal/candidate/contract.shape"
-    ]
+    ],
+    "expected_exits": [[0]]
   },
   {
     "id": "guard-equivalent-relocation",
@@ -61,7 +67,8 @@
     "fixture": "fixtures/skills/guard/equivalent-relocation",
     "required_commands": [
       "bun shp check fixtures/skills/guard/equivalent-relocation/candidate/retention.shape"
-    ]
+    ],
+    "expected_exits": [[0]]
   },
   {
     "id": "index-missing-ast",
@@ -70,14 +77,16 @@
     "fixture": "fixtures/skills/index/missing-ast",
     "required_commands": [
       "bun shp check fixtures/skills/index/missing-ast/shape/system.shape"
-    ]
+    ],
+    "expected_exits": [[0]]
   },
   {
     "id": "index-no-invariant",
     "skill": "shape-index",
     "task": "Classify the formatting utility without manufacturing an architecture invariant.",
     "fixture": "fixtures/skills/index/no-invariant",
-    "required_commands": []
+    "required_commands": [],
+    "expected_exits": []
   },
   {
     "id": "index-coverage-gaps",
@@ -86,7 +95,8 @@
     "fixture": "fixtures/skills/index/coverage-gaps",
     "required_commands": [
       "bun shp check fixtures/skills/index/coverage-gaps/shape/system.shape"
-    ]
+    ],
+    "expected_exits": [[0]]
   },
   {
     "id": "review-cross-object",
@@ -95,7 +105,8 @@
     "fixture": "fixtures/skills/review/cross-object",
     "required_commands": [
       "bun shp check fixtures/skills/review/cross-object/shape/model.shape"
-    ]
+    ],
+    "expected_exits": [[0]]
   },
   {
     "id": "review-stale-model",
@@ -104,7 +115,8 @@
     "fixture": "fixtures/skills/review/stale-model",
     "required_commands": [
       "bun shp check fixtures/skills/review/stale-model/shape/model.shape"
-    ]
+    ],
+    "expected_exits": [[0]]
   },
   {
     "id": "review-root-cause-grouping",
@@ -115,7 +127,8 @@
       "bun shp check fixtures/skills/review/root-cause-grouping/shape/model.shape",
       "bun shp explain RangeNormalizer.normalizeRange fixtures/skills/review/root-cause-grouping/shape/model.shape",
       "bun shp graph show RangeNormalizer fixtures/skills/review/root-cause-grouping/shape/model.shape"
-    ]
+    ],
+    "expected_exits": [[0], [0], [0]]
   },
   {
     "id": "visualiser-deterministic-nested-model",
@@ -127,7 +140,8 @@
       "bun plugins/shapelang/skills/unix-system-visualiser/scripts/generate.mjs --repo fixtures/skills/unix-system-visualiser/connected --output .research/atlas-a.html --shape-command \"bun ../../../../packages/shp-cli/src/index.ts\"",
       "bun plugins/shapelang/skills/unix-system-visualiser/scripts/generate.mjs --repo fixtures/skills/unix-system-visualiser/connected --output .research/atlas-b.html --shape-command \"bun ../../../../packages/shp-cli/src/index.ts\"",
       "cmp fixtures/skills/unix-system-visualiser/connected/.research/atlas-a.html fixtures/skills/unix-system-visualiser/connected/.research/atlas-b.html"
-    ]
+    ],
+    "expected_exits": [[0], [0], [0], [0]]
   },
   {
     "id": "visualiser-unignored-output",
@@ -136,6 +150,7 @@
     "fixture": "fixtures/skills/unix-system-visualiser/unignored-output",
     "required_commands": [
       "bun plugins/shapelang/skills/unix-system-visualiser/scripts/generate.mjs --repo fixtures/skills/unix-system-visualiser/unignored-output --shape-command \"bun ../../../../packages/shp-cli/src/index.ts\""
-    ]
+    ],
+    "expected_exits": [[1, 2]]
   }
 ]

@@ -557,6 +557,41 @@ export function buildSkillsReleasePrompt(env = process.env) {
   ].join("\n");
 }
 
+export function releasePrefilter(env = process.env) {
+  if (env.SHAPE_SKILLS_REUSE !== "1") {
+    return {};
+  }
+
+  const spawned = spawnSync("bun", ["scripts/check-release-approval.ts", "--reuse-if-eligible"], {
+    encoding: "utf8",
+    env,
+    cwd: env.GITHUB_WORKSPACE || process.cwd(),
+    maxBuffer: 20_000_000
+  });
+  if (spawned.status !== 0) {
+    console.log(
+      `Skills report copy lookup failed; running a fresh evaluation.\n${spawned.stderr || spawned.stdout}`
+    );
+    return {};
+  }
+
+  let parsed;
+  try {
+    parsed = JSON.parse(spawned.stdout);
+  } catch {
+    console.log("Skills report copy lookup returned invalid JSON; running a fresh evaluation.");
+    return {};
+  }
+  if (!parsed || typeof parsed !== "object" || parsed.reused !== true || !parsed.report) {
+    return {};
+  }
+
+  console.log(
+    `Copied the approved skills report from ${parsed.sha} (run ${parsed.runId}, ${parsed.mode}).`
+  );
+  return { result: parsed.report };
+}
+
 export function renderSkillsReleaseSummary(result) {
   const lines = [
     "## Shape Skills Release Evaluation",
@@ -770,6 +805,7 @@ const SKILLS = {
       "Bash(bun shp analyze *)",
       ...releaseCaseAllowedTools()
     ].join(","),
+    prefilter: releasePrefilter,
     buildPrompt: buildSkillsReleasePrompt,
     renderSummary: renderSkillsReleaseSummary,
     failureMessage: skillsReleaseFailureMessage

@@ -15,53 +15,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+
       - name: Require approved release candidate
         env:
           GH_TOKEN: ${{ github.token }}
-        run: |
-          set -euo pipefail
-
-          master_sha="$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/master" --jq '.object.sha')"
-          if [ "$GITHUB_SHA" != "$master_sha" ]; then
-            echo "Release tag commit $GITHUB_SHA is not current master $master_sha." >&2
-            exit 1
-          fi
-
-          plugin_tag="shapelang--$GITHUB_REF_NAME"
-          plugin_sha="$(
-            gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/$plugin_tag" --jq '.object.sha'
-          )"
-          if [ "$plugin_sha" != "$GITHUB_SHA" ]; then
-            echo "Plugin tag $plugin_tag resolves to $plugin_sha, not release commit $GITHUB_SHA." >&2
-            exit 1
-          fi
-
-          runs="$(
-            gh api \
-              "repos/$GITHUB_REPOSITORY/actions/workflows/release-candidate.yml/runs?branch=master&event=workflow_dispatch&status=completed&per_page=100"
-          )"
-          candidate_run_id="$(
-            jq -r --arg sha "$GITHUB_SHA" \
-              '[.workflow_runs[] | select(.head_sha == $sha and .head_branch == "master" and .conclusion == "success")] | max_by(.run_number) | .id // empty' \
-              <<<"$runs"
-          )"
-          if [ -z "$candidate_run_id" ]; then
-            echo "No successful, manually approved Release Candidate: Skills run exists for $GITHUB_SHA." >&2
-            exit 1
-          fi
-
-          approvals="$(
-            gh api "repos/$GITHUB_REPOSITORY/actions/runs/$candidate_run_id/approvals"
-          )"
-          manual_approval_count="$(
-            jq \
-              '[.[] | select(.state == "approved") | select(any(.environments[]?; .name == "skills-release-approval"))] | length' \
-              <<<"$approvals"
-          )"
-          if [ "$manual_approval_count" -lt 1 ]; then
-            echo "Release candidate run $candidate_run_id has no approved review for skills-release-approval." >&2
-            exit 1
-          fi
+        run: bun scripts/check-release-approval.ts --require-exact
 
   validate:
     name: Validate
@@ -150,113 +113,17 @@ jobs:
 
       - name: Smoke test release binary
         run: |
-          set -euo pipefail
-          mkdir -p /tmp/shp-smoke
-          tar -xzf dist/release/shp-linux-x64.tar.gz -C /tmp/shp-smoke
-          expected_version="${GITHUB_REF_NAME#v}"
-          actual_version="$(/tmp/shp-smoke/shp --version)"
-          if [ "$actual_version" != "$expected_version" ]; then
-            echo "Expected packaged shp version $expected_version, got $actual_version." >&2
-            exit 1
-          fi
-          /tmp/shp-smoke/shp --help >/dev/null
-          /tmp/shp-smoke/shp lsp --help >/dev/null
-          /tmp/shp-smoke/shp check
-          /tmp/shp-smoke/shp check \
-            fixtures/projects/domain-pack-consumer/shape/project.shape \
-            fixtures/projects/domain-pack-consumer/shape/vendor/audit-policy/v1/audit-policy.shape
-          /tmp/shp-smoke/shp graph stats >/dev/null
-          /tmp/shp-smoke/shp graph all --kind calls >/dev/null
-          /tmp/shp-smoke/shp graph show CiPipeline --kind calls >/dev/null
-
-          /tmp/shp-smoke/shp check \
-            --allow-unknown-effects \
-            fixtures/fail/unknown_effects/audit.shape \
-            >/tmp/shp-smoke/draft.out
-          grep -q "passed with warnings" /tmp/shp-smoke/draft.out
-
-          set +e
-          /tmp/shp-smoke/shp check fixtures/fail/unknown_effects/audit.shape \
-            >/tmp/shp-smoke/strict.out 2>&1
-          strict_status=$?
-          /tmp/shp-smoke/shp check fixtures/fail/forbidden_path/deps.shape \
-            >/tmp/shp-smoke/path.out 2>&1
-          path_status=$?
-          set -e
-          if [ "$strict_status" -ne 1 ]; then
-            echo "Expected strict unknown-effect check to fail, got exit $strict_status." >&2
-            exit 1
-          fi
-          if [ "$path_status" -ne 1 ]; then
-            echo "Expected forbidden-path check to fail, got exit $path_status." >&2
-            exit 1
-          fi
-          grep -q "unknown effects" /tmp/shp-smoke/strict.out
-          grep -q "forbidden path" /tmp/shp-smoke/path.out
-
-          /tmp/shp-smoke/shp author \
-            --changed-files fixtures/changed/audit_purge.txt \
-            --component AuditStore \
-            >/tmp/shp-smoke/author.shape
-          grep -q "effects unknown" /tmp/shp-smoke/author.shape
-          /tmp/shp-smoke/shp ast source \
-            --language typescript \
-            --module generated.audit \
-            fixtures/source/audit_purge.ts \
-            >/tmp/shp-smoke/ast-source.shape
-          grep -q "GeneratedAstAnchor" /tmp/shp-smoke/ast-source.shape
-          grep -q "kind generated_from" /tmp/shp-smoke/ast-source.shape
-          cat > /tmp/shp-smoke/widget.tsx <<'EOF'
-          export function Widget() {
-            return <section>audit</section>;
-          }
-          EOF
-          /tmp/shp-smoke/shp ast source \
-            --module generated.widget \
-            /tmp/shp-smoke/widget.tsx \
-            >/tmp/shp-smoke/ast-source-tsx.shape
-          grep -q "GeneratedAstAnchor" /tmp/shp-smoke/ast-source-tsx.shape
-          /tmp/shp-smoke/shp ast source \
-            fixtures/source/swift/architecture.swift \
-            >/tmp/shp-smoke/ast-source-swift.shape
-          grep -q 'source swift(' /tmp/shp-smoke/ast-source-swift.shape
-          grep -q 'component ContentView' /tmp/shp-smoke/ast-source-swift.shape
-          grep -q 'effects unknown' /tmp/shp-smoke/ast-source-swift.shape
-          /tmp/shp-smoke/shp memory >/dev/null
-          /tmp/shp-smoke/shp obligations >/tmp/shp-smoke/obligations.txt
-          grep -q "No open shape obligations." /tmp/shp-smoke/obligations.txt
-
-          set +e
-          /tmp/shp-smoke/shp analyze \
-            --shape-files fixtures/pass/append_only_append/audit.shape \
-            fixtures/source/audit_purge.ts \
-            >/tmp/shp-smoke/analyze.out \
-            2>/tmp/shp-smoke/analyze.err
-          analyze_status=$?
-          set -e
-          if [ "$analyze_status" -ne 1 ]; then
-            echo "Expected analyzer smoke test to report a mismatch, got exit $analyze_status."
-            cat /tmp/shp-smoke/analyze.out
-            cat /tmp/shp-smoke/analyze.err >&2
-            exit 1
-          fi
-          grep -q "HardDelete" /tmp/shp-smoke/analyze.err
+          scripts/smoke-release-binary.sh \
+            --expected-version "${GITHUB_REF_NAME#v}" \
+            dist/release/shp-linux-x64.tar.gz
+          bun scripts/run-release-canaries.ts --archive dist/release/shp-linux-x64.tar.gz
 
       - name: Publish GitHub release
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          master_sha="$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/master" --jq '.object.sha')"
-          plugin_tag="shapelang--$GITHUB_REF_NAME"
-          plugin_sha="$(
-            gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/$plugin_tag" --jq '.object.sha'
-          )"
-          if [ "$GITHUB_SHA" != "$master_sha" ] || [ "$plugin_sha" != "$GITHUB_SHA" ]; then
-            echo "Release refs changed after approval; refusing publication." >&2
-            echo "release=$GITHUB_SHA master=$master_sha plugin=$plugin_sha" >&2
-            exit 1
-          fi
+          bun scripts/check-release-approval.ts --require-exact
           gh release create "$GITHUB_REF_NAME" dist/release/* \
             --notes-file "docs/releases/$GITHUB_REF_NAME.md" \
             --verify-tag
@@ -269,6 +136,8 @@ jobs:
       matrix:
         os:
           - ubuntu-latest
+          - ubuntu-24.04-arm
+          - macos-latest
           - windows-latest
     runs-on: ${{ matrix.os }}
 

@@ -1,5 +1,11 @@
 import { describe, expect, test } from "bun:test";
-import { validateReleaseMetadata, type ReleaseMetadata } from "./check-release-metadata";
+import { resolve } from "node:path";
+import {
+  loadReleaseMetadata,
+  missingReleasePins,
+  validateReleaseMetadata,
+  type ReleaseMetadata
+} from "./check-release-metadata";
 
 const synchronized: ReleaseMetadata = {
   cliVersion: "0.7.0",
@@ -42,6 +48,25 @@ describe("validateReleaseMetadata", () => {
   test("rejects non-release semver forms", () => {
     expect(() => validateReleaseMetadata({ ...synchronized, cliVersion: "0.7.0-beta.1" })).toThrow(
       'CLI package version must be X.Y.Z, got "0.7.0-beta.1"'
+    );
+  });
+});
+
+describe("missingReleasePins", () => {
+  test("reports a stale public pin", () => {
+    const missing = missingReleasePins("0.10.0", {
+      "README.md": "https://github.com/timbrinded/shapelang/releases/download/v0.9.0/install.sh"
+    });
+    expect(missing.some((pin) => pin.file === "README.md" && pin.snippet.includes("v0.10.0"))).toBe(
+      true
+    );
+  });
+});
+
+describe("loadReleaseMetadata", () => {
+  test("accepts the current repository pin set", () => {
+    expect(loadReleaseMetadata(resolve(import.meta.dir, "..")).cliVersion).toMatch(
+      /^\d+\.\d+\.\d+$/
     );
   });
 });

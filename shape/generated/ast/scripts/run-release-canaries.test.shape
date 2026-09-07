@@ -1,0 +1,33 @@
+module shape.generated.ast.scripts.run_release_canaries_test
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource RunReleaseCanariesTestModuleResultAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("scripts/run-release-canaries.test.ts#result")
+  fingerprint ast.semantic_subtree_v1("sha256:0780684ded5d4cbb00fd1cbcd6dead12a2524d94fb31a23c9d522a64b34f5ff9")
+}
+
+component RunReleaseCanariesTestModule : GeneratedCandidate {
+  fn result
+    source ts("scripts/run-release-canaries.test.ts#result")
+    effects unknown
+}
+
+relation RunReleaseCanariesTestModuleResultGeneratedFromRunReleaseCanariesTestModuleResultAstAnchor {
+  kind generated_from
+  connects RunReleaseCanariesTestModule -> RunReleaseCanariesTestModuleResultAstAnchor
+  roles { RunReleaseCanariesTestModule as generated, RunReleaseCanariesTestModuleResultAstAnchor as syntax }
+  expects RunReleaseCanariesTestModuleResultAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0780684ded5d4cbb00fd1cbcd6dead12a2524d94fb31a23c9d522a64b34f5ff9")
+  summary "fn RunReleaseCanariesTestModule.result generated from typescript function_declaration at scripts/run-release-canaries.test.ts#result."
+}
+
+implementation RunReleaseCanariesTestModuleImpl {
+  paths {
+    "scripts/run-release-canaries.test.ts"
+  }
+  conforms_to RunReleaseCanariesTestModule
+}

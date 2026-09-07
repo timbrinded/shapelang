@@ -88,5 +88,11 @@ run. Add one release finding for every failed static check or behavioral case.
 Return one result for each shipped skill. Overall status may be `pass` only when
 all static checks and behavioral cases pass and `findings` is empty.
 
-These focused canaries are release smoke tests. They do not replace fresh
-held-out forward tests of material skill changes on supported models.
+These focused cases are release smoke tests. They do not replace fresh
+held-out forward tests of material skill changes on the supported models,
+including Codex. A schema-valid report is not proof that skill instructions
+are correct. A human must still approve `skills-release-approval`.
+
+You run the fixture cases with `bun shp`. A separate candidate job runs the
+same commands against the Linux x64 archive. Do not treat your `bun shp`
+results as evidence about that archive.

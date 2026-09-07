@@ -1,0 +1,321 @@
+module shape.generated.ast.scripts.check_release_approval
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource CheckReleaseApprovalModuleAmendReusedSkillsReportAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("scripts/check-release-approval.ts#amendReusedSkillsReport")
+  fingerprint ast.semantic_subtree_v1("sha256:e7b8860a4e5cda1b9b143dc93970d671de4e0b98764b9e8329b3fb8d432e3263")
+}
+
+resource CheckReleaseApprovalModuleDefaultGetJsonAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("scripts/check-release-approval.ts#defaultGetJson")
+  fingerprint ast.semantic_subtree_v1("sha256:a622df6bf03f8747ebbdf1a09dc6a5f686140aa7eb4637ed83a9d0db45c8d641")
+}
+
+resource CheckReleaseApprovalModuleDownloadSkillsReportAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("scripts/check-release-approval.ts#downloadSkillsReport")
+  fingerprint ast.semantic_subtree_v1("sha256:f1cf73f7f093b0543ef9456c2d84ef7f919a940fdec4ab74d9912309d1c92dd1")
+}
+
+resource CheckReleaseApprovalModuleFindExactApprovedCandidateAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("scripts/check-release-approval.ts#findExactApprovedCandidate")
+  fingerprint ast.semantic_subtree_v1("sha256:caacbf9d5e24337e1a15e662e5234435b2213d7c6db54726127ce001b83f887f")
+}
+
+resource CheckReleaseApprovalModuleFindReusableSkillsReportAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("scripts/check-release-approval.ts#findReusableSkillsReport")
+  fingerprint ast.semantic_subtree_v1("sha256:311ad129a8dfb5b48f966b63bcc11c2a77a0b95381513a0b8abe63842db7e1a9")
+}
+
+resource CheckReleaseApprovalModuleGitChangedPathsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("scripts/check-release-approval.ts#gitChangedPaths")
+  fingerprint ast.semantic_subtree_v1("sha256:1db18867bd94981b8dc15e43442d1cabf47eb48ff657add64157fb519842b01e")
+}
+
+resource CheckReleaseApprovalModuleGitIsAncestorAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("scripts/check-release-approval.ts#gitIsAncestor")
+  fingerprint ast.semantic_subtree_v1("sha256:cbae8676775b3916669643950812a5f1b47b5c3628ed623bacd06fc82d251c23")
+}
+
+resource CheckReleaseApprovalModuleIsSkillsRelevantPathAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("scripts/check-release-approval.ts#isSkillsRelevantPath")
+  fingerprint ast.semantic_subtree_v1("sha256:677dcff91cfae6cccee5607968cd665839b79ef96632c32714811fc5a49f4933")
+}
+
+resource CheckReleaseApprovalModuleListCandidateRunsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("scripts/check-release-approval.ts#listCandidateRuns")
+  fingerprint ast.semantic_subtree_v1("sha256:7533678d13a8e162fa66e5c6c04ba00437d222460fc9006d2b24f0316f0c834f")
+}
+
+resource CheckReleaseApprovalModuleLoadApprovalsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("scripts/check-release-approval.ts#loadApprovals")
+  fingerprint ast.semantic_subtree_v1("sha256:66e32442f4792d70540206807c069ad069070788c6b63e8ab35ee89a987565d2")
+}
+
+resource CheckReleaseApprovalModuleMainAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("scripts/check-release-approval.ts#main")
+  fingerprint ast.semantic_subtree_v1("sha256:e38881070e50d7eec9f59b43968c7080b501db1c050f673c648f99390d12f21d")
+}
+
+resource CheckReleaseApprovalModuleMaxByRunNumberAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("scripts/check-release-approval.ts#maxByRunNumber")
+  fingerprint ast.semantic_subtree_v1("sha256:1198432b77d87ce8d94702880f411c63a477e354d50fb8264798ebbf6b4dd3ac")
+}
+
+resource CheckReleaseApprovalModulePeelGitObjectShaAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("scripts/check-release-approval.ts#peelGitObjectSha")
+  fingerprint ast.semantic_subtree_v1("sha256:fb7a0ba4f6ff220081923c479aaef978425be27baf0bf908961998f4b9a8d2e6")
+}
+
+resource CheckReleaseApprovalModuleReadSkillsReportAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("scripts/check-release-approval.ts#readSkillsReport")
+  fingerprint ast.semantic_subtree_v1("sha256:17804cccebf113142f79cdd8028181bed888108f530f35c8a84976a096ecc3b6")
+}
+
+resource CheckReleaseApprovalModuleRequireEnvAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("scripts/check-release-approval.ts#requireEnv")
+  fingerprint ast.semantic_subtree_v1("sha256:41b63264d4222c331aec3aa533505b2d7fdce845d7fde036a32e5662f344cc3d")
+}
+
+resource CheckReleaseApprovalModuleResolveRefCommitAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("scripts/check-release-approval.ts#resolveRefCommit")
+  fingerprint ast.semantic_subtree_v1("sha256:64fb2170bbe418205f83a23bec38815269769ba00e87bce37aa8809a69c4dffc")
+}
+
+resource CheckReleaseApprovalModuleRunHasSkillsApprovalAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("scripts/check-release-approval.ts#runHasSkillsApproval")
+  fingerprint ast.semantic_subtree_v1("sha256:e7f0060e395fc4121d64953f8491b78029d1361730afaa4228030b03fa870174")
+}
+
+resource CheckReleaseApprovalModuleSpawnGhAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("scripts/check-release-approval.ts#spawnGh")
+  fingerprint ast.semantic_subtree_v1("sha256:f4493e8e82447e9554ac6f02fe364b064d18ad87d0016bfa268bb1afc740c218")
+}
+
+resource CheckReleaseApprovalModuleSuccessfulMasterRunsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("scripts/check-release-approval.ts#successfulMasterRuns")
+  fingerprint ast.semantic_subtree_v1("sha256:da0684687dc64522fb4441a1582568aa3288ed7463812149353649e97d945add")
+}
+
+component CheckReleaseApprovalModule : GeneratedCandidate {
+  fn amendReusedSkillsReport
+    source ts("scripts/check-release-approval.ts#amendReusedSkillsReport")
+    effects unknown
+  fn defaultGetJson
+    source ts("scripts/check-release-approval.ts#defaultGetJson")
+    effects unknown
+  fn downloadSkillsReport
+    source ts("scripts/check-release-approval.ts#downloadSkillsReport")
+    effects unknown
+  fn findExactApprovedCandidate
+    source ts("scripts/check-release-approval.ts#findExactApprovedCandidate")
+    effects unknown
+  fn findReusableSkillsReport
+    source ts("scripts/check-release-approval.ts#findReusableSkillsReport")
+    effects unknown
+  fn gitChangedPaths
+    source ts("scripts/check-release-approval.ts#gitChangedPaths")
+    effects unknown
+  fn gitIsAncestor
+    source ts("scripts/check-release-approval.ts#gitIsAncestor")
+    effects unknown
+  fn isSkillsRelevantPath
+    source ts("scripts/check-release-approval.ts#isSkillsRelevantPath")
+    effects unknown
+  fn listCandidateRuns
+    source ts("scripts/check-release-approval.ts#listCandidateRuns")
+    effects unknown
+  fn loadApprovals
+    source ts("scripts/check-release-approval.ts#loadApprovals")
+    effects unknown
+  fn main
+    source ts("scripts/check-release-approval.ts#main")
+    effects unknown
+  fn maxByRunNumber
+    source ts("scripts/check-release-approval.ts#maxByRunNumber")
+    effects unknown
+  fn peelGitObjectSha
+    source ts("scripts/check-release-approval.ts#peelGitObjectSha")
+    effects unknown
+  fn readSkillsReport
+    source ts("scripts/check-release-approval.ts#readSkillsReport")
+    effects unknown
+  fn requireEnv
+    source ts("scripts/check-release-approval.ts#requireEnv")
+    effects unknown
+  fn resolveRefCommit
+    source ts("scripts/check-release-approval.ts#resolveRefCommit")
+    effects unknown
+  fn runHasSkillsApproval
+    source ts("scripts/check-release-approval.ts#runHasSkillsApproval")
+    effects unknown
+  fn spawnGh
+    source ts("scripts/check-release-approval.ts#spawnGh")
+    effects unknown
+  fn successfulMasterRuns
+    source ts("scripts/check-release-approval.ts#successfulMasterRuns")
+    effects unknown
+}
+
+relation CheckReleaseApprovalModuleAmendReusedSkillsReportGeneratedFromCheckReleaseApprovalModuleAmendReusedSkillsReportAstAnchor {
+  kind generated_from
+  connects CheckReleaseApprovalModule -> CheckReleaseApprovalModuleAmendReusedSkillsReportAstAnchor
+  roles { CheckReleaseApprovalModule as generated, CheckReleaseApprovalModuleAmendReusedSkillsReportAstAnchor as syntax }
+  expects CheckReleaseApprovalModuleAmendReusedSkillsReportAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e7b8860a4e5cda1b9b143dc93970d671de4e0b98764b9e8329b3fb8d432e3263")
+  summary "fn CheckReleaseApprovalModule.amendReusedSkillsReport generated from typescript function_declaration at scripts/check-release-approval.ts#amendReusedSkillsReport."
+}
+
+relation CheckReleaseApprovalModuleDefaultGetJsonGeneratedFromCheckReleaseApprovalModuleDefaultGetJsonAstAnchor {
+  kind generated_from
+  connects CheckReleaseApprovalModule -> CheckReleaseApprovalModuleDefaultGetJsonAstAnchor
+  roles { CheckReleaseApprovalModule as generated, CheckReleaseApprovalModuleDefaultGetJsonAstAnchor as syntax }
+  expects CheckReleaseApprovalModuleDefaultGetJsonAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a622df6bf03f8747ebbdf1a09dc6a5f686140aa7eb4637ed83a9d0db45c8d641")
+  summary "fn CheckReleaseApprovalModule.defaultGetJson generated from typescript function_declaration at scripts/check-release-approval.ts#defaultGetJson."
+}
+
+relation CheckReleaseApprovalModuleDownloadSkillsReportGeneratedFromCheckReleaseApprovalModuleDownloadSkillsReportAstAnchor {
+  kind generated_from
+  connects CheckReleaseApprovalModule -> CheckReleaseApprovalModuleDownloadSkillsReportAstAnchor
+  roles { CheckReleaseApprovalModule as generated, CheckReleaseApprovalModuleDownloadSkillsReportAstAnchor as syntax }
+  expects CheckReleaseApprovalModuleDownloadSkillsReportAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f1cf73f7f093b0543ef9456c2d84ef7f919a940fdec4ab74d9912309d1c92dd1")
+  summary "fn CheckReleaseApprovalModule.downloadSkillsReport generated from typescript function_declaration at scripts/check-release-approval.ts#downloadSkillsReport."
+}
+
+relation CheckReleaseApprovalModuleFindExactApprovedCandidateGeneratedFromCheckReleaseApprovalModuleFindExactApprovedCandidateAstAnchor {
+  kind generated_from
+  connects CheckReleaseApprovalModule -> CheckReleaseApprovalModuleFindExactApprovedCandidateAstAnchor
+  roles { CheckReleaseApprovalModule as generated, CheckReleaseApprovalModuleFindExactApprovedCandidateAstAnchor as syntax }
+  expects CheckReleaseApprovalModuleFindExactApprovedCandidateAstAnchor fingerprint ast.semantic_subtree_v1("sha256:caacbf9d5e24337e1a15e662e5234435b2213d7c6db54726127ce001b83f887f")
+  summary "fn CheckReleaseApprovalModule.findExactApprovedCandidate generated from typescript function_declaration at scripts/check-release-approval.ts#findExactApprovedCandidate."
+}
+
+relation CheckReleaseApprovalModuleFindReusableSkillsReportGeneratedFromCheckReleaseApprovalModuleFindReusableSkillsReportAstAnchor {
+  kind generated_from
+  connects CheckReleaseApprovalModule -> CheckReleaseApprovalModuleFindReusableSkillsReportAstAnchor
+  roles { CheckReleaseApprovalModule as generated, CheckReleaseApprovalModuleFindReusableSkillsReportAstAnchor as syntax }
+  expects CheckReleaseApprovalModuleFindReusableSkillsReportAstAnchor fingerprint ast.semantic_subtree_v1("sha256:311ad129a8dfb5b48f966b63bcc11c2a77a0b95381513a0b8abe63842db7e1a9")
+  summary "fn CheckReleaseApprovalModule.findReusableSkillsReport generated from typescript function_declaration at scripts/check-release-approval.ts#findReusableSkillsReport."
+}
+
+relation CheckReleaseApprovalModuleGitChangedPathsGeneratedFromCheckReleaseApprovalModuleGitChangedPathsAstAnchor {
+  kind generated_from
+  connects CheckReleaseApprovalModule -> CheckReleaseApprovalModuleGitChangedPathsAstAnchor
+  roles { CheckReleaseApprovalModule as generated, CheckReleaseApprovalModuleGitChangedPathsAstAnchor as syntax }
+  expects CheckReleaseApprovalModuleGitChangedPathsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1db18867bd94981b8dc15e43442d1cabf47eb48ff657add64157fb519842b01e")
+  summary "fn CheckReleaseApprovalModule.gitChangedPaths generated from typescript function_declaration at scripts/check-release-approval.ts#gitChangedPaths."
+}
+
+relation CheckReleaseApprovalModuleGitIsAncestorGeneratedFromCheckReleaseApprovalModuleGitIsAncestorAstAnchor {
+  kind generated_from
+  connects CheckReleaseApprovalModule -> CheckReleaseApprovalModuleGitIsAncestorAstAnchor
+  roles { CheckReleaseApprovalModule as generated, CheckReleaseApprovalModuleGitIsAncestorAstAnchor as syntax }
+  expects CheckReleaseApprovalModuleGitIsAncestorAstAnchor fingerprint ast.semantic_subtree_v1("sha256:cbae8676775b3916669643950812a5f1b47b5c3628ed623bacd06fc82d251c23")
+  summary "fn CheckReleaseApprovalModule.gitIsAncestor generated from typescript function_declaration at scripts/check-release-approval.ts#gitIsAncestor."
+}
+
+relation CheckReleaseApprovalModuleIsSkillsRelevantPathGeneratedFromCheckReleaseApprovalModuleIsSkillsRelevantPathAstAnchor {
+  kind generated_from
+  connects CheckReleaseApprovalModule -> CheckReleaseApprovalModuleIsSkillsRelevantPathAstAnchor
+  roles { CheckReleaseApprovalModule as generated, CheckReleaseApprovalModuleIsSkillsRelevantPathAstAnchor as syntax }
+  expects CheckReleaseApprovalModuleIsSkillsRelevantPathAstAnchor fingerprint ast.semantic_subtree_v1("sha256:677dcff91cfae6cccee5607968cd665839b79ef96632c32714811fc5a49f4933")
+  summary "fn CheckReleaseApprovalModule.isSkillsRelevantPath generated from typescript function_declaration at scripts/check-release-approval.ts#isSkillsRelevantPath."
+}
+
+relation CheckReleaseApprovalModuleListCandidateRunsGeneratedFromCheckReleaseApprovalModuleListCandidateRunsAstAnchor {
+  kind generated_from
+  connects CheckReleaseApprovalModule -> CheckReleaseApprovalModuleListCandidateRunsAstAnchor
+  roles { CheckReleaseApprovalModule as generated, CheckReleaseApprovalModuleListCandidateRunsAstAnchor as syntax }
+  expects CheckReleaseApprovalModuleListCandidateRunsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7533678d13a8e162fa66e5c6c04ba00437d222460fc9006d2b24f0316f0c834f")
+  summary "fn CheckReleaseApprovalModule.listCandidateRuns generated from typescript function_declaration at scripts/check-release-approval.ts#listCandidateRuns."
+}
+
+relation CheckReleaseApprovalModuleLoadApprovalsGeneratedFromCheckReleaseApprovalModuleLoadApprovalsAstAnchor {
+  kind generated_from
+  connects CheckReleaseApprovalModule -> CheckReleaseApprovalModuleLoadApprovalsAstAnchor
+  roles { CheckReleaseApprovalModule as generated, CheckReleaseApprovalModuleLoadApprovalsAstAnchor as syntax }
+  expects CheckReleaseApprovalModuleLoadApprovalsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:66e32442f4792d70540206807c069ad069070788c6b63e8ab35ee89a987565d2")
+  summary "fn CheckReleaseApprovalModule.loadApprovals generated from typescript function_declaration at scripts/check-release-approval.ts#loadApprovals."
+}
+
+relation CheckReleaseApprovalModuleMainGeneratedFromCheckReleaseApprovalModuleMainAstAnchor {
+  kind generated_from
+  connects CheckReleaseApprovalModule -> CheckReleaseApprovalModuleMainAstAnchor
+  roles { CheckReleaseApprovalModule as generated, CheckReleaseApprovalModuleMainAstAnchor as syntax }
+  expects CheckReleaseApprovalModuleMainAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e38881070e50d7eec9f59b43968c7080b501db1c050f673c648f99390d12f21d")
+  summary "fn CheckReleaseApprovalModule.main generated from typescript function_declaration at scripts/check-release-approval.ts#main."
+}
+
+relation CheckReleaseApprovalModuleMaxByRunNumberGeneratedFromCheckReleaseApprovalModuleMaxByRunNumberAstAnchor {
+  kind generated_from
+  connects CheckReleaseApprovalModule -> CheckReleaseApprovalModuleMaxByRunNumberAstAnchor
+  roles { CheckReleaseApprovalModule as generated, CheckReleaseApprovalModuleMaxByRunNumberAstAnchor as syntax }
+  expects CheckReleaseApprovalModuleMaxByRunNumberAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1198432b77d87ce8d94702880f411c63a477e354d50fb8264798ebbf6b4dd3ac")
+  summary "fn CheckReleaseApprovalModule.maxByRunNumber generated from typescript function_declaration at scripts/check-release-approval.ts#maxByRunNumber."
+}
+
+relation CheckReleaseApprovalModulePeelGitObjectShaGeneratedFromCheckReleaseApprovalModulePeelGitObjectShaAstAnchor {
+  kind generated_from
+  connects CheckReleaseApprovalModule -> CheckReleaseApprovalModulePeelGitObjectShaAstAnchor
+  roles { CheckReleaseApprovalModule as generated, CheckReleaseApprovalModulePeelGitObjectShaAstAnchor as syntax }
+  expects CheckReleaseApprovalModulePeelGitObjectShaAstAnchor fingerprint ast.semantic_subtree_v1("sha256:fb7a0ba4f6ff220081923c479aaef978425be27baf0bf908961998f4b9a8d2e6")
+  summary "fn CheckReleaseApprovalModule.peelGitObjectSha generated from typescript function_declaration at scripts/check-release-approval.ts#peelGitObjectSha."
+}
+
+relation CheckReleaseApprovalModuleReadSkillsReportGeneratedFromCheckReleaseApprovalModuleReadSkillsReportAstAnchor {
+  kind generated_from
+  connects CheckReleaseApprovalModule -> CheckReleaseApprovalModuleReadSkillsReportAstAnchor
+  roles { CheckReleaseApprovalModule as generated, CheckReleaseApprovalModuleReadSkillsReportAstAnchor as syntax }
+  expects CheckReleaseApprovalModuleReadSkillsReportAstAnchor fingerprint ast.semantic_subtree_v1("sha256:17804cccebf113142f79cdd8028181bed888108f530f35c8a84976a096ecc3b6")
+  summary "fn CheckReleaseApprovalModule.readSkillsReport generated from typescript function_declaration at scripts/check-release-approval.ts#readSkillsReport."
+}
+
+relation CheckReleaseApprovalModuleRequireEnvGeneratedFromCheckReleaseApprovalModuleRequireEnvAstAnchor {
+  kind generated_from
+  connects CheckReleaseApprovalModule -> CheckReleaseApprovalModuleRequireEnvAstAnchor
+  roles { CheckReleaseApprovalModule as generated, CheckReleaseApprovalModuleRequireEnvAstAnchor as syntax }
+  expects CheckReleaseApprovalModuleRequireEnvAstAnchor fingerprint ast.semantic_subtree_v1("sha256:41b63264d4222c331aec3aa533505b2d7fdce845d7fde036a32e5662f344cc3d")
+  summary "fn CheckReleaseApprovalModule.requireEnv generated from typescript function_declaration at scripts/check-release-approval.ts#requireEnv."
+}
+
+relation CheckReleaseApprovalModuleResolveRefCommitGeneratedFromCheckReleaseApprovalModuleResolveRefCommitAstAnchor {
+  kind generated_from
+  connects CheckReleaseApprovalModule -> CheckReleaseApprovalModuleResolveRefCommitAstAnchor
+  roles { CheckReleaseApprovalModule as generated, CheckReleaseApprovalModuleResolveRefCommitAstAnchor as syntax }
+  expects CheckReleaseApprovalModuleResolveRefCommitAstAnchor fingerprint ast.semantic_subtree_v1("sha256:64fb2170bbe418205f83a23bec38815269769ba00e87bce37aa8809a69c4dffc")
+  summary "fn CheckReleaseApprovalModule.resolveRefCommit generated from typescript function_declaration at scripts/check-release-approval.ts#resolveRefCommit."
+}
+
+relation CheckReleaseApprovalModuleRunHasSkillsApprovalGeneratedFromCheckReleaseApprovalModuleRunHasSkillsApprovalAstAnchor {
+  kind generated_from
+  connects CheckReleaseApprovalModule -> CheckReleaseApprovalModuleRunHasSkillsApprovalAstAnchor
+  roles { CheckReleaseApprovalModule as generated, CheckReleaseApprovalModuleRunHasSkillsApprovalAstAnchor as syntax }
+  expects CheckReleaseApprovalModuleRunHasSkillsApprovalAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e7f0060e395fc4121d64953f8491b78029d1361730afaa4228030b03fa870174")
+  summary "fn CheckReleaseApprovalModule.runHasSkillsApproval generated from typescript function_declaration at scripts/check-release-approval.ts#runHasSkillsApproval."
+}
+
+relation CheckReleaseApprovalModuleSpawnGhGeneratedFromCheckReleaseApprovalModuleSpawnGhAstAnchor {
+  kind generated_from
+  connects CheckReleaseApprovalModule -> CheckReleaseApprovalModuleSpawnGhAstAnchor
+  roles { CheckReleaseApprovalModule as generated, CheckReleaseApprovalModuleSpawnGhAstAnchor as syntax }
+  expects CheckReleaseApprovalModuleSpawnGhAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f4493e8e82447e9554ac6f02fe364b064d18ad87d0016bfa268bb1afc740c218")
+  summary "fn CheckReleaseApprovalModule.spawnGh generated from typescript function_declaration at scripts/check-release-approval.ts#spawnGh."
+}
+
+relation CheckReleaseApprovalModuleSuccessfulMasterRunsGeneratedFromCheckReleaseApprovalModuleSuccessfulMasterRunsAstAnchor {
+  kind generated_from
+  connects CheckReleaseApprovalModule -> CheckReleaseApprovalModuleSuccessfulMasterRunsAstAnchor
+  roles { CheckReleaseApprovalModule as generated, CheckReleaseApprovalModuleSuccessfulMasterRunsAstAnchor as syntax }
+  expects CheckReleaseApprovalModuleSuccessfulMasterRunsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:da0684687dc64522fb4441a1582568aa3288ed7463812149353649e97d945add")
+  summary "fn CheckReleaseApprovalModule.successfulMasterRuns generated from typescript function_declaration at scripts/check-release-approval.ts#successfulMasterRuns."
+}
+
+implementation CheckReleaseApprovalModuleImpl {
+  paths {
+    "scripts/check-release-approval.ts"
+  }
+  conforms_to CheckReleaseApprovalModule
+}

@@ -362,53 +362,8 @@ jobs:
 
       - name: Smoke test release binary
         run: |
-          set -euo pipefail
-          mkdir -p /tmp/shp-smoke
-          tar -xzf dist/release/shp-linux-x64.tar.gz -C /tmp/shp-smoke
-          /tmp/shp-smoke/shp --help >/dev/null
-          /tmp/shp-smoke/shp check
-          /tmp/shp-smoke/shp ast source \
-            --language typescript \
-            --module generated.audit \
-            fixtures/source/audit_purge.ts \
-            >/tmp/shp-smoke/ast-source.shape
-          grep -q "GeneratedAstAnchor" /tmp/shp-smoke/ast-source.shape
-          grep -q "kind generated_from" /tmp/shp-smoke/ast-source.shape
-          cat > /tmp/shp-smoke/widget.tsx <<'EOF'
-          export function Widget() {
-            return <section>audit</section>;
-          }
-          EOF
-          /tmp/shp-smoke/shp ast source \
-            --module generated.widget \
-            /tmp/shp-smoke/widget.tsx \
-            >/tmp/shp-smoke/ast-source-tsx.shape
-          grep -q "GeneratedAstAnchor" /tmp/shp-smoke/ast-source-tsx.shape
-          /tmp/shp-smoke/shp ast source \
-            fixtures/source/swift/architecture.swift \
-            >/tmp/shp-smoke/ast-source-swift.shape
-          grep -q 'source swift(' /tmp/shp-smoke/ast-source-swift.shape
-          grep -q 'component ContentView' /tmp/shp-smoke/ast-source-swift.shape
-          grep -q 'effects unknown' /tmp/shp-smoke/ast-source-swift.shape
-          /tmp/shp-smoke/shp memory >/dev/null
-          /tmp/shp-smoke/shp obligations >/tmp/shp-smoke/obligations.txt
-          grep -q "No open shape obligations." /tmp/shp-smoke/obligations.txt
-
-          set +e
-          /tmp/shp-smoke/shp analyze \
-            --shape-files fixtures/pass/append_only_append/audit.shape \
-            fixtures/source/audit_purge.ts \
-            >/tmp/shp-smoke/analyze.out \
-            2>/tmp/shp-smoke/analyze.err
-          analyze_status=$?
-          set -e
-          if [ "$analyze_status" -ne 1 ]; then
-            echo "Expected analyzer smoke test to report a mismatch, got exit $analyze_status."
-            cat /tmp/shp-smoke/analyze.out
-            cat /tmp/shp-smoke/analyze.err >&2
-            exit 1
-          fi
-          grep -q "HardDelete" /tmp/shp-smoke/analyze.err
+          version="$(bun -e 'console.log(require("./packages/shp-cli/package.json").version)')"
+          scripts/smoke-release-binary.sh --expected-version "$version" dist/release/shp-linux-x64.tar.gz
 
   links:
     name: Links
