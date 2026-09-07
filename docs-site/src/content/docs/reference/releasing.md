@@ -51,9 +51,11 @@ current CLI and language behavior, including:
 - author/critic prompts and LSP; and
 - evidence-backed preflight, indexing, Guard, and code review.
 
-The candidate smoke-tests packed archives before the model evaluation: Linux x64
-on the builder, including skill-canary commands against that binary, then Linux
-ARM64, macOS ARM64, and Windows x64 on native runners.
+The candidate smoke-tests packed archives before tagging: Linux x64 on the
+builder, then Linux ARM64, macOS ARM64, and Windows x64 on native runners. A
+separate step runs the skill-canary command list against the packed Linux x64
+binary. The skills evaluation may overlap those native smokes; approval still
+waits for both.
 
 The workflow uploads the structured report, then pauses at the protected
 `skills-release-approval` environment. A human must inspect and approve it. An

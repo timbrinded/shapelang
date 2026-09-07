@@ -6,23 +6,55 @@ trait GeneratedAstAnchor {
 trait GeneratedCandidate {
 }
 
+resource SkillsReleaseConfigModuleLoadReleaseSkillCasesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor(".github/scripts/skills-release-config.mjs#loadReleaseSkillCases")
+  fingerprint ast.semantic_subtree_v1("sha256:04bd0f6391f4c21552d6ec76c4d32504bca9eb36b8dc906c6f2e2e827a21d711")
+}
+
 resource SkillsReleaseConfigModuleReleaseCaseAllowedToolsAstAnchor : GeneratedAstAnchor {
   storage ast.anchor(".github/scripts/skills-release-config.mjs#releaseCaseAllowedTools")
-  fingerprint ast.semantic_subtree_v1("sha256:56c5aff381aebb828053aab44c12e74b467e00d83968172feace26feb77cbaaa")
+  fingerprint ast.semantic_subtree_v1("sha256:0f781567e710271768d3fcd9fe016350d2f5e5655121363798073d05824624c5")
+}
+
+resource SkillsReleaseConfigModuleRepoRootAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor(".github/scripts/skills-release-config.mjs#repoRoot")
+  fingerprint ast.semantic_subtree_v1("sha256:752f12c5cea8c70c16241d3d996c98b91b37b34aaa8488d53150c9486cec9331")
 }
 
 component SkillsReleaseConfigModule : GeneratedCandidate {
+  fn loadReleaseSkillCases
+    source js(".github/scripts/skills-release-config.mjs#loadReleaseSkillCases")
+    effects unknown
   fn releaseCaseAllowedTools
     source js(".github/scripts/skills-release-config.mjs#releaseCaseAllowedTools")
     effects unknown
+  fn repoRoot
+    source js(".github/scripts/skills-release-config.mjs#repoRoot")
+    effects unknown
+}
+
+relation SkillsReleaseConfigModuleLoadReleaseSkillCasesGeneratedFromSkillsReleaseConfigModuleLoadReleaseSkillCasesAstAnchor {
+  kind generated_from
+  connects SkillsReleaseConfigModule -> SkillsReleaseConfigModuleLoadReleaseSkillCasesAstAnchor
+  roles { SkillsReleaseConfigModule as generated, SkillsReleaseConfigModuleLoadReleaseSkillCasesAstAnchor as syntax }
+  expects SkillsReleaseConfigModuleLoadReleaseSkillCasesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:04bd0f6391f4c21552d6ec76c4d32504bca9eb36b8dc906c6f2e2e827a21d711")
+  summary "fn SkillsReleaseConfigModule.loadReleaseSkillCases generated from javascript function_declaration at .github/scripts/skills-release-config.mjs#loadReleaseSkillCases."
 }
 
 relation SkillsReleaseConfigModuleReleaseCaseAllowedToolsGeneratedFromSkillsReleaseConfigModuleReleaseCaseAllowedToolsAstAnchor {
   kind generated_from
   connects SkillsReleaseConfigModule -> SkillsReleaseConfigModuleReleaseCaseAllowedToolsAstAnchor
   roles { SkillsReleaseConfigModule as generated, SkillsReleaseConfigModuleReleaseCaseAllowedToolsAstAnchor as syntax }
-  expects SkillsReleaseConfigModuleReleaseCaseAllowedToolsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:56c5aff381aebb828053aab44c12e74b467e00d83968172feace26feb77cbaaa")
+  expects SkillsReleaseConfigModuleReleaseCaseAllowedToolsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0f781567e710271768d3fcd9fe016350d2f5e5655121363798073d05824624c5")
   summary "fn SkillsReleaseConfigModule.releaseCaseAllowedTools generated from javascript function_declaration at .github/scripts/skills-release-config.mjs#releaseCaseAllowedTools."
+}
+
+relation SkillsReleaseConfigModuleRepoRootGeneratedFromSkillsReleaseConfigModuleRepoRootAstAnchor {
+  kind generated_from
+  connects SkillsReleaseConfigModule -> SkillsReleaseConfigModuleRepoRootAstAnchor
+  roles { SkillsReleaseConfigModule as generated, SkillsReleaseConfigModuleRepoRootAstAnchor as syntax }
+  expects SkillsReleaseConfigModuleRepoRootAstAnchor fingerprint ast.semantic_subtree_v1("sha256:752f12c5cea8c70c16241d3d996c98b91b37b34aaa8488d53150c9486cec9331")
+  summary "fn SkillsReleaseConfigModule.repoRoot generated from javascript function_declaration at .github/scripts/skills-release-config.mjs#repoRoot."
 }
 
 implementation SkillsReleaseConfigModuleImpl {

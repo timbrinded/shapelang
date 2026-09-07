@@ -1,13 +1,34 @@
 import { spawnSync } from "node:child_process";
-import { readFileSync } from "node:fs";
+import { existsSync, mkdtempSync, readFileSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { parseArgs } from "node:util";
 
-type LoadedCanaryCase = {
+export type LoadedCanaryCase = {
   skill: string;
   id: string;
   commands: string[];
+  expectedExits: number[][];
 };
+
+function parseExpectedExits(value: unknown, commandCount: number, id: string): number[][] {
+  if (!Array.isArray(value) || value.length !== commandCount) {
+    throw new Error(`${id} expected_exits must be an array matching required_commands`);
+  }
+  return value.map((entry, index) => {
+    if (!Array.isArray(entry) || entry.length === 0) {
+      throw new Error(`${id} expected_exits[${index}] must be a non-empty number array`);
+    }
+    const codes: number[] = [];
+    for (const code of entry) {
+      if (typeof code !== "number") {
+        throw new Error(`${id} expected_exits[${index}] must be a non-empty number array`);
+      }
+      codes.push(code);
+    }
+    return codes;
+  });
+}
 
 export function loadReleaseCanaryCases(repoRoot: string): LoadedCanaryCase[] {
   const parsed: unknown = JSON.parse(
@@ -36,7 +57,12 @@ export function loadReleaseCanaryCases(repoRoot: string): LoadedCanaryCase[] {
     return {
       skill: record.skill,
       id: record.id,
-      commands: record.required_commands
+      commands: record.required_commands,
+      expectedExits: parseExpectedExits(
+        record.expected_exits,
+        record.required_commands.length,
+        record.id
+      )
     };
   });
 }
@@ -47,8 +73,8 @@ export type CanaryCommandResult = {
   command: string;
   rewritten: string;
   status: number | null;
-  stdout: string;
   stderr: string;
+  allowedExits: number[];
 };
 
 export function rewriteCanaryCommand(command: string, shpBin: string): string {
@@ -58,31 +84,31 @@ export function rewriteCanaryCommand(command: string, shpBin: string): string {
     .replaceAll("bun ../../../../packages/shp-cli/src/index.ts", quoted);
 }
 
-export function expectedCanaryStatuses(id: string): { allow: number[]; requireNonZero?: boolean } {
-  if (id === "visualiser-deterministic-nested-model") {
-    return { allow: [0] };
+export function packedBinaryFromArchive(archive: string): { dir: string; shpBin: string } {
+  const dir = mkdtempSync(join(tmpdir(), "shape-canary-"));
+  const extracted = spawnSync("tar", ["-xzf", archive, "-C", dir], { encoding: "utf8" });
+  if (extracted.status !== 0) {
+    rmSync(dir, { recursive: true, force: true });
+    throw new Error(extracted.stderr.trim() || `failed to extract ${archive}`);
   }
-  if (id === "visualiser-unignored-output") {
-    return { allow: [1, 2], requireNonZero: true };
+  const shpBin = existsSync(join(dir, "shp.exe")) ? join(dir, "shp.exe") : join(dir, "shp");
+  if (!existsSync(shpBin)) {
+    rmSync(dir, { recursive: true, force: true });
+    throw new Error(`packed shp executable not found in ${archive}`);
   }
-  return { allow: [0, 1, 2] };
+  return { dir, shpBin };
 }
 
 export function runReleaseCanaries(
   shpBin: string,
-  options?: {
-    cwd?: string;
-    spawn?: typeof spawnSync;
-  }
+  cwd = resolve(import.meta.dir, "..")
 ): CanaryCommandResult[] {
-  const cwd = options?.cwd ?? resolve(import.meta.dir, "..");
-  const spawn = options?.spawn ?? spawnSync;
   const results: CanaryCommandResult[] = [];
 
   for (const canary of loadReleaseCanaryCases(cwd)) {
-    for (const command of canary.commands) {
+    for (const [index, command] of canary.commands.entries()) {
       const rewritten = rewriteCanaryCommand(command, shpBin);
-      const spawned = spawn("bash", ["-lc", rewritten], {
+      const spawned = spawnSync("bash", ["-c", rewritten], {
         cwd,
         encoding: "utf8",
         env: { ...process.env, SHAPE_CMD: shpBin }
@@ -93,8 +119,8 @@ export function runReleaseCanaries(
         command,
         rewritten,
         status: spawned.status,
-        stdout: spawned.stdout,
-        stderr: spawned.stderr
+        stderr: spawned.stderr,
+        allowedExits: canary.expectedExits[index] ?? []
       });
     }
   }
@@ -104,18 +130,14 @@ export function runReleaseCanaries(
 
 export function canaryFailureMessage(results: readonly CanaryCommandResult[]): string | undefined {
   for (const result of results) {
-    const expected = expectedCanaryStatuses(result.id);
     if (result.status === null) {
       return `${result.id} crashed while running: ${result.rewritten}\n${result.stderr}`;
     }
     if (result.status === 127) {
       return `${result.id} could not execute: ${result.rewritten}\n${result.stderr}`;
     }
-    if (expected.requireNonZero && result.status === 0) {
-      return `${result.id} expected a non-zero exit, got 0 for: ${result.rewritten}`;
-    }
-    if (!expected.allow.includes(result.status)) {
-      return `${result.id} exited ${result.status} for: ${result.rewritten}\n${result.stderr}`;
+    if (!result.allowedExits.includes(result.status)) {
+      return `${result.id} exited ${result.status}, expected ${result.allowedExits.join(" or ")} for: ${result.rewritten}\n${result.stderr}`;
     }
   }
   return undefined;
@@ -124,21 +146,37 @@ export function canaryFailureMessage(results: readonly CanaryCommandResult[]): s
 function main(): void {
   const { values } = parseArgs({
     options: {
-      shp: { type: "string" }
+      shp: { type: "string" },
+      archive: { type: "string" }
     },
     strict: true
   });
-  if (!values.shp) {
-    throw new Error("Usage: bun scripts/run-release-canaries.ts --shp PATH");
+  if (Boolean(values.shp) === Boolean(values.archive)) {
+    throw new Error("Usage: bun scripts/run-release-canaries.ts (--shp PATH | --archive ARCHIVE)");
   }
-  const shpBin = resolve(values.shp);
-  const results = runReleaseCanaries(shpBin);
-  const failure = canaryFailureMessage(results);
-  for (const result of results) {
-    console.log(`${result.id}: exit ${result.status} :: ${result.rewritten}`);
+
+  const cwd = resolve(import.meta.dir, "..");
+  const run = (shpBin: string) => {
+    const results = runReleaseCanaries(shpBin, cwd);
+    for (const result of results) {
+      console.log(`${result.id}: exit ${result.status} :: ${result.rewritten}`);
+    }
+    const failure = canaryFailureMessage(results);
+    if (failure) {
+      throw new Error(failure);
+    }
+  };
+
+  if (values.shp) {
+    run(resolve(values.shp));
+    return;
   }
-  if (failure) {
-    throw new Error(failure);
+
+  const extracted = packedBinaryFromArchive(resolve(values.archive ?? ""));
+  try {
+    run(extracted.shpBin);
+  } finally {
+    rmSync(extracted.dir, { recursive: true, force: true });
   }
 }
 

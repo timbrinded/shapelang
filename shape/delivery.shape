@@ -254,7 +254,7 @@ component CiPipeline {
     }
   fn reuseReleaseSkillsEvaluation : RefactorSensitive
     source ts("scripts/check-release-approval.ts#findReusableSkillsApproval")
-    description "Reuses an ancestor commit's approved skills report only when the skills-relevant tree is unchanged. Validate and packed-archive smoke still run on this commit."
+    description "Reuses an ancestor commit's approved skills report only when the skills-relevant tree is unchanged, including renamed-out paths. Validate and packed-archive smoke still run on this commit."
     effects complete {
       Read<CiWorkflow>
         evidence yaml(".github/workflows/release-candidate.yml")
@@ -1169,6 +1169,16 @@ reevaluation SkillsApprovalReuseIntroduced {
   evidence test("scripts/check-release-approval.test.ts")
   evidence ts("scripts/check-release-approval.ts#findReusableSkillsApproval")
   evidence yaml(".github/workflows/release-candidate.yml")
+}
+
+reevaluation SkillsApprovalReuseRenameClosed {
+  satisfies memory SkillsApprovalReuseContract
+  outcome Confirmed
+  summary "Pathset comparison uses git diff --no-renames so a skills-relevant file moved out of the pathset still invalidates ancestor reuse."
+  reviewer ShapeMaintainers
+  decided_on "2026-09-07"
+  evidence test("scripts/check-release-approval.test.ts")
+  evidence ts("scripts/check-release-approval.ts#findReusableSkillsApproval")
 }
 
 attest docs_not_needed {

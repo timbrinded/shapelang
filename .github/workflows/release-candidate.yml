@@ -92,9 +92,9 @@ jobs:
       - name: Smoke test linux x64 archive
         run: |
           scripts/smoke-release-binary.sh \
-            --canaries \
             --expected-version "${{ steps.metadata.outputs.version }}" \
             dist/release/shp-linux-x64.tar.gz
+          bun scripts/run-release-canaries.ts --archive dist/release/shp-linux-x64.tar.gz
 
       - name: Upload packed archives
         uses: actions/upload-artifact@v4
@@ -135,7 +135,7 @@ jobs:
       - name: Smoke test packed archive
         shell: bash
         run: |
-          scripts/smoke-release-binary.sh \
+          bash scripts/smoke-release-binary.sh \
             --quick \
             --expected-version "${{ needs.validate.outputs.version }}" \
             "dist/release/${{ matrix.asset }}"
@@ -144,7 +144,6 @@ jobs:
     name: Evaluate skill conformance and behavior
     needs:
       - validate
-      - smoke-archives
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -199,6 +198,7 @@ jobs:
     name: Skill Release Approval
     needs:
       - validate
+      - smoke-archives
       - skills
     runs-on: ubuntu-latest
     environment: skills-release-approval

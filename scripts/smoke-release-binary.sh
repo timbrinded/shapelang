@@ -6,17 +6,15 @@ usage() {
 Smoke-test a packed shp release archive.
 
 Usage:
-  scripts/smoke-release-binary.sh [--quick] [--canaries] [--expected-version X.Y.Z] ARCHIVE
+  scripts/smoke-release-binary.sh [--quick] [--expected-version X.Y.Z] ARCHIVE
 
 Run from the repository root. --quick checks version, help, check, and AST
 generation. The default also covers graph, draft/strict, author, analyzer, and
-domain-pack fixtures. --canaries runs the skill-canary command list against the
-packed binary.
+domain-pack fixtures.
 USAGE
 }
 
 quick=0
-canaries=0
 expected_version=""
 archive=""
 
@@ -24,10 +22,6 @@ while [ "$#" -gt 0 ]; do
   case "$1" in
     --quick)
       quick=1
-      shift
-      ;;
-    --canaries)
-      canaries=1
       shift
       ;;
     --expected-version)
@@ -127,10 +121,6 @@ grep -q 'component ContentView' "$smoke_dir/ast-source-swift.shape"
 grep -q 'effects unknown' "$smoke_dir/ast-source-swift.shape"
 
 if [ "$quick" -eq 1 ]; then
-  if [ "$canaries" -eq 1 ]; then
-    echo "--canaries requires the full smoke; omit --quick." >&2
-    exit 2
-  fi
   exit 0
 fi
 
@@ -191,7 +181,3 @@ if [ "$analyze_status" -ne 1 ]; then
   exit 1
 fi
 grep -q "HardDelete" "$smoke_dir/analyze.err"
-
-if [ "$canaries" -eq 1 ]; then
-  bun scripts/run-release-canaries.ts --shp "$shp_bin"
-fi

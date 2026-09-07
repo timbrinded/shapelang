@@ -114,25 +114,16 @@ jobs:
       - name: Smoke test release binary
         run: |
           scripts/smoke-release-binary.sh \
-            --canaries \
             --expected-version "${GITHUB_REF_NAME#v}" \
             dist/release/shp-linux-x64.tar.gz
+          bun scripts/run-release-canaries.ts --archive dist/release/shp-linux-x64.tar.gz
 
       - name: Publish GitHub release
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          master_sha="$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/master" --jq '.object.sha')"
-          plugin_tag="shapelang--$GITHUB_REF_NAME"
-          plugin_sha="$(
-            gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/$plugin_tag" --jq '.object.sha'
-          )"
-          if [ "$GITHUB_SHA" != "$master_sha" ] || [ "$plugin_sha" != "$GITHUB_SHA" ]; then
-            echo "Release refs changed after approval; refusing publication." >&2
-            echo "release=$GITHUB_SHA master=$master_sha plugin=$plugin_sha" >&2
-            exit 1
-          fi
+          bun scripts/check-release-approval.ts --require-exact
           gh release create "$GITHUB_REF_NAME" dist/release/* \
             --notes-file "docs/releases/$GITHUB_REF_NAME.md" \
             --verify-tag

@@ -6,7 +6,6 @@ import {
   isSkillsRelevantPath,
   peelGitObjectSha,
   runHasSkillsApproval,
-  skillsRelevantChanges,
   type ApprovalLookup,
   type EnvironmentApproval,
   type WorkflowRun
@@ -152,6 +151,47 @@ describe("findReusableSkillsApproval", () => {
     );
     expect(selected).toBeUndefined();
   });
+
+  test("does not reuse a failed or cancelled run", () => {
+    expect(
+      findReusableSkillsApproval(
+        lookup({
+          runs: [run({ id: 4, head_sha: shaA, conclusion: "failure" })]
+        })
+      )
+    ).toBeUndefined();
+    expect(
+      findReusableSkillsApproval(
+        lookup({
+          runs: [run({ id: 5, head_sha: shaA, conclusion: "cancelled" })]
+        })
+      )
+    ).toBeUndefined();
+  });
+
+  test("does not reuse a run without skills-release-approval", () => {
+    expect(
+      findReusableSkillsApproval(
+        lookup({
+          runs: [run({ id: 4, head_sha: shaA })],
+          approvalsForRun: () => [
+            { state: "pending", environments: [{ name: "skills-release-approval" }] }
+          ]
+        })
+      )
+    ).toBeUndefined();
+  });
+
+  test("does not reuse when a skills-relevant path is renamed out of the pathset", () => {
+    expect(
+      findReusableSkillsApproval(
+        lookup({
+          runs: [run({ id: 4, head_sha: shaA })],
+          changedPaths: () => ["plugins/shapelang/skills/shape-lang/SKILL.md", "docs/SKILL.md"]
+        })
+      )
+    ).toBeUndefined();
+  });
 });
 
 describe("peelGitObjectSha", () => {
@@ -189,17 +229,5 @@ describe("amendReusedSkillsReport", () => {
     expect(String(amended.summary)).toContain("All six skills passed.");
     expect(String(amended.summary)).toContain(shaA);
     expect(String(amended.summary)).toContain("ancestor");
-  });
-});
-
-describe("skillsRelevantChanges", () => {
-  test("deduplicates and sorts matching paths", () => {
-    expect(
-      skillsRelevantChanges([
-        "README.md",
-        "packages/shp-cli/src/index.ts",
-        "packages/shp-cli/src/index.ts"
-      ])
-    ).toEqual(["packages/shp-cli/src/index.ts"]);
   });
 });

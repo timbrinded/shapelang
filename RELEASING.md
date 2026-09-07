@@ -62,9 +62,9 @@ Linux archive with the same script CI uses:
 
 ```bash
 scripts/smoke-release-binary.sh \
-  --canaries \
   --expected-version X.Y.Z \
   dist/release/shp-linux-x64.tar.gz
+bun scripts/run-release-canaries.ts --archive dist/release/shp-linux-x64.tar.gz
 ```
 
 Commit and push the release-prep branch, open a PR, wait for every required

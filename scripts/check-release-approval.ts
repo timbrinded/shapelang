@@ -66,10 +66,6 @@ export function isSkillsRelevantPath(path: string): boolean {
   });
 }
 
-export function skillsRelevantChanges(paths: readonly string[]): string[] {
-  return [...new Set(paths.filter(isSkillsRelevantPath))].sort();
-}
-
 export function peelGitObjectSha(
   ref: { object?: { sha?: unknown; type?: unknown } },
   taggedObject?: { object?: { sha?: unknown; type?: unknown } }
@@ -114,7 +110,12 @@ function successfulMasterRuns(runs: readonly WorkflowRun[]): WorkflowRun[] {
   );
 }
 
-export function findExactApprovedCandidate(lookup: ApprovalLookup): WorkflowRun {
+export type ExactApprovalLookup = Pick<
+  ApprovalLookup,
+  "tagSha" | "masterSha" | "pluginSha" | "runs" | "approvalsForRun"
+>;
+
+export function findExactApprovedCandidate(lookup: ExactApprovalLookup): WorkflowRun {
   if (lookup.tagSha !== lookup.masterSha) {
     throw new Error(
       `Release tag commit ${lookup.tagSha} is not current master ${lookup.masterSha}.`
@@ -157,7 +158,7 @@ export function findReusableSkillsApproval(
     if (!lookup.isAncestor(run.head_sha, lookup.tagSha)) {
       return false;
     }
-    return skillsRelevantChanges(lookup.changedPaths(run.head_sha, lookup.tagSha)).length === 0;
+    return !lookup.changedPaths(run.head_sha, lookup.tagSha).some(isSkillsRelevantPath);
   });
   const selected = maxByRunNumber(ancestors);
   if (!selected) {
@@ -259,7 +260,9 @@ function gitIsAncestor(ancestor: string, descendant: string): boolean {
 }
 
 function gitChangedPaths(fromSha: string, toSha: string): string[] {
-  const result = spawnSync("git", ["diff", "--name-only", fromSha, toSha], { encoding: "utf8" });
+  const result = spawnSync("git", ["diff", "--name-only", "--no-renames", fromSha, toSha], {
+    encoding: "utf8"
+  });
   if (result.status !== 0) {
     throw new Error(result.stderr.trim() || `git diff ${fromSha} ${toSha} failed`);
   }
@@ -306,12 +309,25 @@ function requireEnv(name: string): string {
   return value;
 }
 
+function loadApprovals(getJson: GhJson, repo: string): (runId: number) => EnvironmentApproval[] {
+  const cache = new Map<number, EnvironmentApproval[]>();
+  return (runId) => {
+    const cached = cache.get(runId);
+    if (cached) {
+      return cached;
+    }
+    const payload = getJson(`repos/${repo}/actions/runs/${runId}/approvals`);
+    const approvals = Array.isArray(payload) ? (payload as EnvironmentApproval[]) : [];
+    cache.set(runId, approvals);
+    return approvals;
+  };
+}
+
 function main(): void {
   const { values } = parseArgs({
     options: {
       "require-exact": { type: "boolean", default: false },
-      "reuse-if-eligible": { type: "boolean", default: false },
-      json: { type: "boolean", default: false }
+      "reuse-if-eligible": { type: "boolean", default: false }
     },
     strict: true
   });
@@ -324,6 +340,7 @@ function main(): void {
   const sha = requireEnv("GITHUB_SHA");
   const getJson: GhJson = defaultGetJson;
   const runs = listCandidateRuns(getJson, repo);
+  const approvalsForRun = loadApprovals(getJson, repo);
 
   if (values["require-exact"]) {
     const refName = requireEnv("GITHUB_REF_NAME");
@@ -334,12 +351,7 @@ function main(): void {
       masterSha,
       pluginSha,
       runs,
-      approvalsForRun: (runId) => {
-        const payload = getJson(`repos/${repo}/actions/runs/${runId}/approvals`);
-        return Array.isArray(payload) ? (payload as EnvironmentApproval[]) : [];
-      },
-      isAncestor: gitIsAncestor,
-      changedPaths: gitChangedPaths
+      approvalsForRun
     });
     console.log(
       `Approved release candidate run ${selected.id} for ${sha} (plugin tag shapelang--${refName}).`
@@ -347,20 +359,10 @@ function main(): void {
     return;
   }
 
-  const approvalsCache = new Map<number, EnvironmentApproval[]>();
   const reuse = findReusableSkillsApproval({
     tagSha: sha,
     runs,
-    approvalsForRun: (runId) => {
-      const cached = approvalsCache.get(runId);
-      if (cached) {
-        return cached;
-      }
-      const payload = getJson(`repos/${repo}/actions/runs/${runId}/approvals`);
-      const approvals = Array.isArray(payload) ? (payload as EnvironmentApproval[]) : [];
-      approvalsCache.set(runId, approvals);
-      return approvals;
-    },
+    approvalsForRun,
     isAncestor: gitIsAncestor,
     changedPaths: gitChangedPaths
   });

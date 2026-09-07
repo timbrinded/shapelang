@@ -2,16 +2,29 @@ import { describe, expect, test } from "bun:test";
 import { resolve } from "node:path";
 import {
   canaryFailureMessage,
-  expectedCanaryStatuses,
   loadReleaseCanaryCases,
   rewriteCanaryCommand,
   type CanaryCommandResult
 } from "./run-release-canaries";
 
+function result(
+  partial: Pick<CanaryCommandResult, "id" | "status" | "allowedExits"> &
+    Partial<CanaryCommandResult>
+): CanaryCommandResult {
+  return {
+    skill: "shape-lang",
+    command: "bun shp check fixtures/fail/unknown_effects/audit.shape",
+    rewritten: "/tmp/shp check fixtures/fail/unknown_effects/audit.shape",
+    stderr: "",
+    ...partial
+  };
+}
+
 describe("loadReleaseCanaryCases", () => {
-  test("loads every committed skill canary command", () => {
+  test("loads every committed skill canary command and expected exits", () => {
     const cases = loadReleaseCanaryCases(resolve(import.meta.dir, ".."));
-    expect(cases.some((item) => item.id === "lang-draft-strict")).toBe(true);
+    const draft = cases.find((item) => item.id === "lang-draft-strict");
+    expect(draft?.expectedExits).toEqual([[0], [1]]);
     expect(cases.some((item) => item.id === "visualiser-unignored-output")).toBe(true);
     expect(
       cases.flatMap((item) => item.commands).some((command) => command.startsWith("bun shp"))
@@ -36,32 +49,41 @@ describe("rewriteCanaryCommand", () => {
 });
 
 describe("canaryFailureMessage", () => {
-  test("accepts configured non-zero exits for fail fixtures", () => {
-    const result: CanaryCommandResult = {
-      skill: "shape-lang",
-      id: "lang-final-forbid",
-      command:
-        "bun shp check fixtures/fail/memory_guard_does_not_override_final_forbid/audit.shape",
-      rewritten:
-        "/tmp/shp check fixtures/fail/memory_guard_does_not_override_final_forbid/audit.shape",
-      status: 1,
-      stdout: "",
-      stderr: "unknown effects"
-    };
-    expect(canaryFailureMessage([result])).toBeUndefined();
-    expect(expectedCanaryStatuses("visualiser-unignored-output").requireNonZero).toBe(true);
+  test("rejects a pass exit on a fail fixture", () => {
+    expect(
+      canaryFailureMessage([
+        result({
+          id: "lang-final-forbid",
+          status: 0,
+          allowedExits: [1]
+        })
+      ])
+    ).toContain("exited 0, expected 1");
+  });
+
+  test("accepts the configured fail-fixture exit", () => {
+    expect(
+      canaryFailureMessage([
+        result({
+          id: "lang-final-forbid",
+          status: 1,
+          allowedExits: [1],
+          stderr: "unknown effects"
+        })
+      ])
+    ).toBeUndefined();
   });
 
   test("rejects a missing executable", () => {
-    const result: CanaryCommandResult = {
-      skill: "shape-lang",
-      id: "lang-draft-strict",
-      command: "bun shp check fixtures/fail/unknown_effects/audit.shape",
-      rewritten: "/tmp/shp check fixtures/fail/unknown_effects/audit.shape",
-      status: 127,
-      stdout: "",
-      stderr: "not found"
-    };
-    expect(canaryFailureMessage([result])).toContain("could not execute");
+    expect(
+      canaryFailureMessage([
+        result({
+          id: "lang-draft-strict",
+          status: 127,
+          allowedExits: [0],
+          stderr: "not found"
+        })
+      ])
+    ).toContain("could not execute");
   });
 });

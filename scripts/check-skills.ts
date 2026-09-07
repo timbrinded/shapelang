@@ -76,6 +76,7 @@ interface BehaviorCase {
   task?: unknown;
   fixture?: unknown;
   required_commands?: unknown;
+  expected_exits?: unknown;
 }
 
 function parseFrontmatter(contents: string, path: string): SkillFrontmatter {
@@ -512,6 +513,21 @@ function validateBehaviorCases(repositoryRoot: string, failures: string[]): void
       item.required_commands.some((command) => typeof command !== "string" || command.trim() === "")
     ) {
       failures.push(`${displayPath}: ${item.id} required_commands must be strings`);
+      continue;
+    }
+    if (
+      !Array.isArray(item.expected_exits) ||
+      item.expected_exits.length !== item.required_commands.length ||
+      item.expected_exits.some(
+        (codes) =>
+          !Array.isArray(codes) ||
+          codes.length === 0 ||
+          codes.some((code) => typeof code !== "number")
+      )
+    ) {
+      failures.push(
+        `${displayPath}: ${item.id} expected_exits must match required_commands with non-empty number arrays`
+      );
     }
   }
 
