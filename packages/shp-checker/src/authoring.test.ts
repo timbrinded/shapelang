@@ -125,6 +125,17 @@ component AuditStore {
     expect(parsed.ok).toBe(true);
   });
 
+  test("uses Swift evidence for a changed Swift source file", () => {
+    const draft = generateShapeUpdateDraft({
+      moduleName: "app",
+      componentName: "Store",
+      changedFiles: ["Sources/Store.swift"]
+    });
+    expect(draft).toContain('source swift("Sources/Store.swift")');
+    expect(draft).toContain("effects unknown");
+    expect(parseShapeModule(draft).ok).toBe(true);
+  });
+
   test("uses a valid fallback source language for unknown file extensions", () => {
     const source = generateShapeUpdateDraft({
       moduleName: "audit",

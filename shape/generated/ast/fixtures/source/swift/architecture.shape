@@ -1,0 +1,357 @@
+module shape.generated.ast.fixtures.generated_source.swift.architecture
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource AuditEvent : GeneratedCandidate {
+  storage swift.type("fixtures/source/swift/architecture.swift#AuditEvent")
+}
+
+resource AuditEventAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("fixtures/source/swift/architecture.swift#AuditEvent")
+  fingerprint ast.semantic_subtree_v1("sha256:fc1d261b4b917d470d1d9d42cea2e67960604642f91528aaf6185088a2cc30fd")
+}
+
+resource AuditStoreAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("fixtures/source/swift/architecture.swift#AuditStore")
+  fingerprint ast.semantic_subtree_v1("sha256:cde10d846a60ff150ed2299daf68029e16cec6aa831847cc4b3088098d38e21b")
+}
+
+resource AuditStoreClearAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("fixtures/source/swift/architecture.swift#AuditStore.clear()")
+  fingerprint ast.semantic_subtree_v1("sha256:8ef53e89323df16734d98bc03b765aa3cfe399f907bf32cad95c05c222ef82a9")
+}
+
+resource AuditStoreDeclarationf7d46a16AstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("fixtures/source/swift/architecture.swift#AuditStore")
+  fingerprint ast.semantic_subtree_v1("sha256:6d0534196935aca44a9d9a527aa60d06e8fc339ed204a68570694fdf9af9e23e")
+}
+
+resource AuditStoreInitEventsAuditEventAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("fixtures/source/swift/architecture.swift#AuditStore.init(events:[AuditEvent])")
+  fingerprint ast.semantic_subtree_v1("sha256:694006044e51ffe293ff43cf9fd692ddf52b4418c4fb4beef1646faf80a58ec1")
+}
+
+resource AuditStoreLoadIdIntAuditEventAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("fixtures/source/swift/architecture.swift#AuditStore.load(id:Int) -> AuditEvent ?")
+  fingerprint ast.semantic_subtree_v1("sha256:beff6b7c7fa8d2587f81425ad7e2ca54609e3fff5230e943ed7cdc7ecbda0692")
+}
+
+resource AuditStoreLoadIdStringAuditEventAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("fixtures/source/swift/architecture.swift#AuditStore.load(id:String) -> AuditEvent ?")
+  fingerprint ast.semantic_subtree_v1("sha256:eade19e7df0125c43fbe4c87a61f1e2e99044299089215b94c829c01bbd88618")
+}
+
+resource AuditStoreSaveAuditEventAsyncThrowsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("fixtures/source/swift/architecture.swift#AuditStore.save(_:AuditEvent) async throws")
+  fingerprint ast.semantic_subtree_v1("sha256:1a8c12f484030cca95f8c46d5c9d3dd02a96ff2d0eb7c1e53fe83257e7deecbb")
+}
+
+resource AuditStoreSnapshotAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("fixtures/source/swift/architecture.swift#AuditStore.Snapshot")
+  fingerprint ast.semantic_subtree_v1("sha256:2f933e3d1c7aa425eadf12d816062cdfd47e28fa9059e4130d3e241ef39755d3")
+}
+
+resource AuditStoreSnapshotCountIntAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("fixtures/source/swift/architecture.swift#AuditStore.Snapshot.count() -> Int")
+  fingerprint ast.semantic_subtree_v1("sha256:6d042d790536d3de6b75cd9713c73fbf92089de5670ca4aee434741634a6cdcb")
+}
+
+resource AuditStoreSubscriptIndexIntAuditEventAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("fixtures/source/swift/architecture.swift#AuditStore.subscript(index:Int) -> AuditEvent")
+  fingerprint ast.semantic_subtree_v1("sha256:dd314e5712f5c338e6371d089ea6953d937fb38790d14feda7f5866a7613b3cb")
+}
+
+resource ConnectionAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("fixtures/source/swift/architecture.swift#Connection")
+  fingerprint ast.semantic_subtree_v1("sha256:20664657e4454af228a4985220a8dc22f845a0c3854c22137d80842b6d4fd51a")
+}
+
+resource ConnectionDeinitAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("fixtures/source/swift/architecture.swift#Connection.deinit()")
+  fingerprint ast.semantic_subtree_v1("sha256:85e1a8621237fc9695ec4ee912a022285a7cb4a6e2ce47755948d1a19ee805c4")
+}
+
+resource ConnectionValueAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("fixtures/source/swift/architecture.swift#Connection.value")
+  fingerprint ast.semantic_subtree_v1("sha256:97f600db8356ea156694479396ab5e65da65d49583f910441d4e2d90dd546478")
+}
+
+resource ContentViewAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("fixtures/source/swift/architecture.swift#ContentView")
+  fingerprint ast.semantic_subtree_v1("sha256:61d8acdb9d9c3ba12b479550eb8dd3d52c41c4fe586772c612ae2e43cdc78509")
+}
+
+resource ContentViewBodyAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("fixtures/source/swift/architecture.swift#ContentView.body")
+  fingerprint ast.semantic_subtree_v1("sha256:cc72b7b06ddf9ac0550c40215c10b7baf0c4c5a56f61c28f514cb88895eda175")
+}
+
+resource RepositoryAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("fixtures/source/swift/architecture.swift#Repository")
+  fingerprint ast.semantic_subtree_v1("sha256:83ebba2a1fc50617a6939bb17e08fb89a09581492e8eef0b97fef9447a85ed9c")
+}
+
+resource RepositoryContainsItemBoolAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("fixtures/source/swift/architecture.swift#Repository.contains(_:Item) -> Bool [where Item : Equatable]")
+  fingerprint ast.semantic_subtree_v1("sha256:3345cedfee4d9eaae8c8fb8b1e4c8798ae50fb8c542754b7ce85be21a03b9d36")
+}
+
+resource RepositoryCountAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("fixtures/source/swift/architecture.swift#Repository.count [requirement]")
+  fingerprint ast.semantic_subtree_v1("sha256:579e33956d557c59965fb02692c31b9404771cd69b04b6033c9befdba8d50557")
+}
+
+resource RepositoryDeclaration3084ba6cAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("fixtures/source/swift/architecture.swift#Repository")
+  fingerprint ast.semantic_subtree_v1("sha256:341243b263c54b261a4e52e6eaf861f1bc81bca9266069eb35fede9e3b7e5355")
+}
+
+resource RepositorySaveItemAsyncThrowsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("fixtures/source/swift/architecture.swift#Repository.save(_:Item) async throws [requirement]")
+  fingerprint ast.semantic_subtree_v1("sha256:16c1bd745f1cfa8126af717a58d8157701ce89c8e7f2a0ae7685910b249fd2af")
+}
+
+component AuditStore : GeneratedCandidate {
+  fn clear
+    source swift("fixtures/source/swift/architecture.swift#AuditStore.clear()")
+    effects unknown
+  fn init_events_AuditEvent
+    source swift("fixtures/source/swift/architecture.swift#AuditStore.init(events:[AuditEvent])")
+    effects unknown
+  fn load_id_Int_AuditEvent
+    source swift("fixtures/source/swift/architecture.swift#AuditStore.load(id:Int) -> AuditEvent ?")
+    effects unknown
+  fn load_id_String_AuditEvent
+    source swift("fixtures/source/swift/architecture.swift#AuditStore.load(id:String) -> AuditEvent ?")
+    effects unknown
+  fn save_AuditEvent_async_throws
+    source swift("fixtures/source/swift/architecture.swift#AuditStore.save(_:AuditEvent) async throws")
+    effects unknown
+  fn subscript_index_Int_AuditEvent
+    source swift("fixtures/source/swift/architecture.swift#AuditStore.subscript(index:Int) -> AuditEvent")
+    effects unknown
+}
+
+component AuditStoreSnapshot : GeneratedCandidate {
+  fn count_Int
+    source swift("fixtures/source/swift/architecture.swift#AuditStore.Snapshot.count() -> Int")
+    effects unknown
+}
+
+component Connection : GeneratedCandidate {
+  fn deinit
+    source swift("fixtures/source/swift/architecture.swift#Connection.deinit()")
+    effects unknown
+  fn value
+    source swift("fixtures/source/swift/architecture.swift#Connection.value")
+    effects unknown
+}
+
+component ContentView : GeneratedCandidate {
+  fn body
+    source swift("fixtures/source/swift/architecture.swift#ContentView.body")
+    effects unknown
+}
+
+component Repository : GeneratedCandidate {
+  fn contains_Item_Bool
+    source swift("fixtures/source/swift/architecture.swift#Repository.contains(_:Item) -> Bool [where Item : Equatable]")
+    effects unknown
+  fn count
+    source swift("fixtures/source/swift/architecture.swift#Repository.count [requirement]")
+    effects unknown
+  fn save_Item_async_throws
+    source swift("fixtures/source/swift/architecture.swift#Repository.save(_:Item) async throws [requirement]")
+    effects unknown
+}
+
+relation AuditEventGeneratedFromAuditEventAstAnchor {
+  kind generated_from
+  connects AuditEvent -> AuditEventAstAnchor
+  roles { AuditEvent as generated, AuditEventAstAnchor as syntax }
+  expects AuditEventAstAnchor fingerprint ast.semantic_subtree_v1("sha256:fc1d261b4b917d470d1d9d42cea2e67960604642f91528aaf6185088a2cc30fd")
+  summary "resource AuditEvent generated from swift class_declaration at fixtures/source/swift/architecture.swift#AuditEvent."
+}
+
+relation AuditStoreClearGeneratedFromAuditStoreClearAstAnchor {
+  kind generated_from
+  connects AuditStore -> AuditStoreClearAstAnchor
+  roles { AuditStore as generated, AuditStoreClearAstAnchor as syntax }
+  expects AuditStoreClearAstAnchor fingerprint ast.semantic_subtree_v1("sha256:8ef53e89323df16734d98bc03b765aa3cfe399f907bf32cad95c05c222ef82a9")
+  summary "fn AuditStore.clear generated from swift function_declaration at fixtures/source/swift/architecture.swift#AuditStore.clear()."
+}
+
+relation AuditStoreGeneratedFromAuditStoreAstAnchor {
+  kind generated_from
+  connects AuditStore -> AuditStoreAstAnchor
+  roles { AuditStore as generated, AuditStoreAstAnchor as syntax }
+  expects AuditStoreAstAnchor fingerprint ast.semantic_subtree_v1("sha256:cde10d846a60ff150ed2299daf68029e16cec6aa831847cc4b3088098d38e21b")
+  summary "component AuditStore generated from swift class_declaration at fixtures/source/swift/architecture.swift#AuditStore."
+}
+
+relation AuditStoreInitEventsAuditEventGeneratedFromAuditStoreInitEventsAuditEventAstAnchor {
+  kind generated_from
+  connects AuditStore -> AuditStoreInitEventsAuditEventAstAnchor
+  roles { AuditStore as generated, AuditStoreInitEventsAuditEventAstAnchor as syntax }
+  expects AuditStoreInitEventsAuditEventAstAnchor fingerprint ast.semantic_subtree_v1("sha256:694006044e51ffe293ff43cf9fd692ddf52b4418c4fb4beef1646faf80a58ec1")
+  summary "fn AuditStore.init_events_AuditEvent generated from swift init_declaration at fixtures/source/swift/architecture.swift#AuditStore.init(events:[AuditEvent])."
+}
+
+relation AuditStoreLoadIdIntAuditEventGeneratedFromAuditStoreLoadIdIntAuditEventAstAnchor {
+  kind generated_from
+  connects AuditStore -> AuditStoreLoadIdIntAuditEventAstAnchor
+  roles { AuditStore as generated, AuditStoreLoadIdIntAuditEventAstAnchor as syntax }
+  expects AuditStoreLoadIdIntAuditEventAstAnchor fingerprint ast.semantic_subtree_v1("sha256:beff6b7c7fa8d2587f81425ad7e2ca54609e3fff5230e943ed7cdc7ecbda0692")
+  summary "fn AuditStore.load_id_Int_AuditEvent generated from swift function_declaration at fixtures/source/swift/architecture.swift#AuditStore.load(id:Int) -> AuditEvent ?."
+}
+
+relation AuditStoreLoadIdStringAuditEventGeneratedFromAuditStoreLoadIdStringAuditEventAstAnchor {
+  kind generated_from
+  connects AuditStore -> AuditStoreLoadIdStringAuditEventAstAnchor
+  roles { AuditStore as generated, AuditStoreLoadIdStringAuditEventAstAnchor as syntax }
+  expects AuditStoreLoadIdStringAuditEventAstAnchor fingerprint ast.semantic_subtree_v1("sha256:eade19e7df0125c43fbe4c87a61f1e2e99044299089215b94c829c01bbd88618")
+  summary "fn AuditStore.load_id_String_AuditEvent generated from swift function_declaration at fixtures/source/swift/architecture.swift#AuditStore.load(id:String) -> AuditEvent ?."
+}
+
+relation AuditStoreSaveAuditEventAsyncThrowsGeneratedFromAuditStoreSaveAuditEventAsyncThrowsAstAnchor {
+  kind generated_from
+  connects AuditStore -> AuditStoreSaveAuditEventAsyncThrowsAstAnchor
+  roles { AuditStore as generated, AuditStoreSaveAuditEventAsyncThrowsAstAnchor as syntax }
+  expects AuditStoreSaveAuditEventAsyncThrowsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1a8c12f484030cca95f8c46d5c9d3dd02a96ff2d0eb7c1e53fe83257e7deecbb")
+  summary "fn AuditStore.save_AuditEvent_async_throws generated from swift function_declaration at fixtures/source/swift/architecture.swift#AuditStore.save(_:AuditEvent) async throws."
+}
+
+relation AuditStoreSnapshotCountIntGeneratedFromAuditStoreSnapshotCountIntAstAnchor {
+  kind generated_from
+  connects AuditStoreSnapshot -> AuditStoreSnapshotCountIntAstAnchor
+  roles { AuditStoreSnapshot as generated, AuditStoreSnapshotCountIntAstAnchor as syntax }
+  expects AuditStoreSnapshotCountIntAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6d042d790536d3de6b75cd9713c73fbf92089de5670ca4aee434741634a6cdcb")
+  summary "fn AuditStoreSnapshot.count_Int generated from swift function_declaration at fixtures/source/swift/architecture.swift#AuditStore.Snapshot.count() -> Int."
+}
+
+relation AuditStoreSnapshotGeneratedFromAuditStoreSnapshotAstAnchor {
+  kind generated_from
+  connects AuditStoreSnapshot -> AuditStoreSnapshotAstAnchor
+  roles { AuditStoreSnapshot as generated, AuditStoreSnapshotAstAnchor as syntax }
+  expects AuditStoreSnapshotAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2f933e3d1c7aa425eadf12d816062cdfd47e28fa9059e4130d3e241ef39755d3")
+  summary "component AuditStoreSnapshot generated from swift class_declaration at fixtures/source/swift/architecture.swift#AuditStore.Snapshot."
+}
+
+relation AuditStoreSubscriptIndexIntAuditEventGeneratedFromAuditStoreSubscriptIndexIntAuditEventAstAnchor {
+  kind generated_from
+  connects AuditStore -> AuditStoreSubscriptIndexIntAuditEventAstAnchor
+  roles { AuditStore as generated, AuditStoreSubscriptIndexIntAuditEventAstAnchor as syntax }
+  expects AuditStoreSubscriptIndexIntAuditEventAstAnchor fingerprint ast.semantic_subtree_v1("sha256:dd314e5712f5c338e6371d089ea6953d937fb38790d14feda7f5866a7613b3cb")
+  summary "fn AuditStore.subscript_index_Int_AuditEvent generated from swift subscript_declaration at fixtures/source/swift/architecture.swift#AuditStore.subscript(index:Int) -> AuditEvent."
+}
+
+relation ConnectionDeinitGeneratedFromConnectionDeinitAstAnchor {
+  kind generated_from
+  connects Connection -> ConnectionDeinitAstAnchor
+  roles { Connection as generated, ConnectionDeinitAstAnchor as syntax }
+  expects ConnectionDeinitAstAnchor fingerprint ast.semantic_subtree_v1("sha256:85e1a8621237fc9695ec4ee912a022285a7cb4a6e2ce47755948d1a19ee805c4")
+  summary "fn Connection.deinit generated from swift deinit_declaration at fixtures/source/swift/architecture.swift#Connection.deinit()."
+}
+
+relation ConnectionGeneratedFromConnectionAstAnchor {
+  kind generated_from
+  connects Connection -> ConnectionAstAnchor
+  roles { Connection as generated, ConnectionAstAnchor as syntax }
+  expects ConnectionAstAnchor fingerprint ast.semantic_subtree_v1("sha256:20664657e4454af228a4985220a8dc22f845a0c3854c22137d80842b6d4fd51a")
+  summary "component Connection generated from swift class_declaration at fixtures/source/swift/architecture.swift#Connection."
+}
+
+relation ConnectionValueGeneratedFromConnectionValueAstAnchor {
+  kind generated_from
+  connects Connection -> ConnectionValueAstAnchor
+  roles { Connection as generated, ConnectionValueAstAnchor as syntax }
+  expects ConnectionValueAstAnchor fingerprint ast.semantic_subtree_v1("sha256:97f600db8356ea156694479396ab5e65da65d49583f910441d4e2d90dd546478")
+  summary "fn Connection.value generated from swift property_declaration at fixtures/source/swift/architecture.swift#Connection.value."
+}
+
+relation ContentViewBodyGeneratedFromContentViewBodyAstAnchor {
+  kind generated_from
+  connects ContentView -> ContentViewBodyAstAnchor
+  roles { ContentView as generated, ContentViewBodyAstAnchor as syntax }
+  expects ContentViewBodyAstAnchor fingerprint ast.semantic_subtree_v1("sha256:cc72b7b06ddf9ac0550c40215c10b7baf0c4c5a56f61c28f514cb88895eda175")
+  summary "fn ContentView.body generated from swift property_declaration at fixtures/source/swift/architecture.swift#ContentView.body."
+}
+
+relation ContentViewGeneratedFromContentViewAstAnchor {
+  kind generated_from
+  connects ContentView -> ContentViewAstAnchor
+  roles { ContentView as generated, ContentViewAstAnchor as syntax }
+  expects ContentViewAstAnchor fingerprint ast.semantic_subtree_v1("sha256:61d8acdb9d9c3ba12b479550eb8dd3d52c41c4fe586772c612ae2e43cdc78509")
+  summary "component ContentView generated from swift class_declaration at fixtures/source/swift/architecture.swift#ContentView."
+}
+
+relation RepositoryContainsItemBoolGeneratedFromRepositoryContainsItemBoolAstAnchor {
+  kind generated_from
+  connects Repository -> RepositoryContainsItemBoolAstAnchor
+  roles { Repository as generated, RepositoryContainsItemBoolAstAnchor as syntax }
+  expects RepositoryContainsItemBoolAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3345cedfee4d9eaae8c8fb8b1e4c8798ae50fb8c542754b7ce85be21a03b9d36")
+  summary "fn Repository.contains_Item_Bool generated from swift function_declaration at fixtures/source/swift/architecture.swift#Repository.contains(_:Item) -> Bool [where Item : Equatable]."
+}
+
+relation RepositoryCountGeneratedFromRepositoryCountAstAnchor {
+  kind generated_from
+  connects Repository -> RepositoryCountAstAnchor
+  roles { Repository as generated, RepositoryCountAstAnchor as syntax }
+  expects RepositoryCountAstAnchor fingerprint ast.semantic_subtree_v1("sha256:579e33956d557c59965fb02692c31b9404771cd69b04b6033c9befdba8d50557")
+  summary "fn Repository.count generated from swift protocol_property_declaration at fixtures/source/swift/architecture.swift#Repository.count [requirement]."
+}
+
+relation RepositoryGeneratedFromRepositoryAstAnchor {
+  kind generated_from
+  connects Repository -> RepositoryAstAnchor
+  roles { Repository as generated, RepositoryAstAnchor as syntax }
+  expects RepositoryAstAnchor fingerprint ast.semantic_subtree_v1("sha256:83ebba2a1fc50617a6939bb17e08fb89a09581492e8eef0b97fef9447a85ed9c")
+  summary "component Repository generated from swift protocol_declaration at fixtures/source/swift/architecture.swift#Repository."
+}
+
+relation RepositorySaveItemAsyncThrowsGeneratedFromRepositorySaveItemAsyncThrowsAstAnchor {
+  kind generated_from
+  connects Repository -> RepositorySaveItemAsyncThrowsAstAnchor
+  roles { Repository as generated, RepositorySaveItemAsyncThrowsAstAnchor as syntax }
+  expects RepositorySaveItemAsyncThrowsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:16c1bd745f1cfa8126af717a58d8157701ce89c8e7f2a0ae7685910b249fd2af")
+  summary "fn Repository.save_Item_async_throws generated from swift protocol_function_declaration at fixtures/source/swift/architecture.swift#Repository.save(_:Item) async throws [requirement]."
+}
+
+implementation AuditStoreImpl {
+  paths {
+    "fixtures/source/swift/architecture.swift"
+  }
+  conforms_to AuditStore
+}
+
+implementation AuditStoreSnapshotImpl {
+  paths {
+    "fixtures/source/swift/architecture.swift"
+  }
+  conforms_to AuditStoreSnapshot
+}
+
+implementation ConnectionImpl {
+  paths {
+    "fixtures/source/swift/architecture.swift"
+  }
+  conforms_to Connection
+}
+
+implementation ContentViewImpl {
+  paths {
+    "fixtures/source/swift/architecture.swift"
+  }
+  conforms_to ContentView
+}
+
+implementation RepositoryImpl {
+  paths {
+    "fixtures/source/swift/architecture.swift"
+  }
+  conforms_to Repository
+}

@@ -7,10 +7,16 @@ import type {
 } from "./ast-generation-types.ts";
 import { fingerprintForAnchor } from "./ast-generation-fingerprints.ts";
 import {
+  collectSwiftDeclarations,
+  swiftTokens,
+  type SwiftFunction
+} from "./ast-generation-swift.ts";
+import {
   baseNameWithoutExtension,
   originalName,
   shapeFunctionName,
   shapeTypeName,
+  stableHash,
   stableShapeId,
   uniqueSemanticName
 } from "./ast-generation-utils.ts";
@@ -44,25 +50,35 @@ export function addSemanticProjection(graph: CodeSemanticGraph): void {
 
   for (const file of graph.files) {
     const fileNodes = graph.rawNodes.filter((node) => node.path === file.path);
-    const declaredTypes = fileNodes.filter(isTypeDeclarationNode);
+    const swift =
+      file.language === "swift"
+        ? collectSwiftDeclarations(fileNodes, childrenByParent, nodeById)
+        : undefined;
+    if (swift) graph.diagnostics.push(...swift.diagnostics);
+    const declaredTypes = swift
+      ? swift.types.flatMap((type) => type.nodes.slice(0, 1))
+      : fileNodes.filter(isTypeDeclarationNode);
     const implByType = collectImplFunctions(fileNodes, childrenByParent);
     const receiverFunctionsByType = collectReceiverFunctions(fileNodes);
     const ownedFunctionNodeIds = new Set<string>();
 
     for (const typeNode of declaredTypes) {
-      const name = semanticName(typeNode, childrenByParent, nodeById);
+      const swiftType = swift?.types.find((type) => type.nodes[0]?.id === typeNode.id);
+      const name = swiftType?.name ?? semanticName(typeNode, childrenByParent, nodeById);
       if (!name) {
         continue;
       }
       const implFunctions = implByType.get(name) ?? [];
       const nestedFunctions = descendants(typeNode.id, childrenByParent).filter(isFunctionNode);
       const receiverFunctions = receiverFunctionsByType.get(name) ?? [];
-      const ownedFunctions = uniqueNodes([
-        ...implFunctions,
-        ...nestedFunctions,
-        ...receiverFunctions
-      ]);
-      if (ownedFunctions.length > 0 || typeLooksStateful(typeNode)) {
+      const ownedFunctions =
+        swiftType?.functions ??
+        uniqueNodes([...implFunctions, ...nestedFunctions, ...receiverFunctions]);
+      if (
+        ownedFunctions.length > 0 ||
+        typeLooksStateful(typeNode) ||
+        (swiftType && (swiftType.nodes.length > 1 || !DATA_RESOURCE_NAME_HINT.test(name)))
+      ) {
         const container = addContainer(graph, containersByName, {
           name,
           kind: "type",
@@ -71,23 +87,38 @@ export function addSemanticProjection(graph: CodeSemanticGraph): void {
           nodeId: typeNode.id,
           confidence: "medium"
         });
-        const anchor = addAnchor(graph, {
-          input: {
-            name: `${container.name}AstAnchor`,
-            path: typeNode.path,
-            language: typeNode.language,
-            nodeId: typeNode.id,
-            kind: typeNode.kind,
-            sourceRef: sourceRef(typeNode, name),
-            target: container.name,
-            targetKind: "component"
-          },
-          childrenByParent,
-          nodeById
-        });
-        container.anchorId = anchor.id;
+        for (const declaration of swiftType?.nodes ?? [typeNode]) {
+          const extensionSuffix =
+            declaration === typeNode
+              ? ""
+              : `Declaration${stableHash(
+                  swiftTokens(declaration, childrenByParent, true).join("\0")
+                )}`;
+          const anchor = addAnchor(graph, {
+            input: {
+              name: `${container.name}${extensionSuffix}AstAnchor`,
+              path: declaration.path,
+              language: declaration.language,
+              nodeId: declaration.id,
+              kind: declaration.kind,
+              sourceRef: sourceRef(declaration, name),
+              target: container.name,
+              targetKind: "component"
+            },
+            childrenByParent,
+            nodeById
+          });
+          container.anchorId ??= anchor.id;
+        }
         for (const fn of ownedFunctions) {
-          addFunction(graph, container, fn, childrenByParent, nodeById);
+          addFunction(
+            graph,
+            container,
+            fn,
+            childrenByParent,
+            nodeById,
+            swift?.functions.get(fn.id)
+          );
           ownedFunctionNodeIds.add(fn.id);
         }
       } else if (DATA_RESOURCE_NAME_HINT.test(name)) {
@@ -118,13 +149,15 @@ export function addSemanticProjection(graph: CodeSemanticGraph): void {
       }
     }
 
-    const freeFunctions = fileNodes.filter(
-      (node) =>
-        isFunctionNode(node) &&
-        !nearestTypeOwner(node, nodeById) &&
-        !receiverTypeName(node) &&
-        !ownedFunctionNodeIds.has(node.id)
-    );
+    const freeFunctions =
+      swift?.freeFunctions ??
+      fileNodes.filter(
+        (node) =>
+          isFunctionNode(node) &&
+          !nearestTypeOwner(node, nodeById) &&
+          !receiverTypeName(node) &&
+          !ownedFunctionNodeIds.has(node.id)
+      );
     if (freeFunctions.length > 0) {
       const fileContainer = addContainer(graph, containersByName, {
         name: `${baseNameWithoutExtension(file.path)}Module`,
@@ -135,12 +168,22 @@ export function addSemanticProjection(graph: CodeSemanticGraph): void {
         confidence: "low"
       });
       for (const fn of freeFunctions) {
-        addFunction(graph, fileContainer, fn, childrenByParent, nodeById);
+        addFunction(
+          graph,
+          fileContainer,
+          fn,
+          childrenByParent,
+          nodeById,
+          swift?.functions.get(fn.id)
+        );
       }
     }
 
-    addResolvedReceiverCalls(graph, fileNodes, containersByName);
-    addCandidateEffects(graph, fileNodes);
+    // Swift dispatch and framework effects require more evidence than lexical heuristics.
+    if (!swift) {
+      addResolvedReceiverCalls(graph, fileNodes, containersByName);
+      addCandidateEffects(graph, fileNodes);
+    }
   }
 }
 
@@ -184,15 +227,18 @@ function addFunction(
   owner: CodeContainer,
   node: RawAstNode,
   childrenByParent: Map<string, RawAstNode[]>,
-  nodeById: Map<string, RawAstNode>
+  nodeById: Map<string, RawAstNode>,
+  swiftFunction?: SwiftFunction
 ): void {
   const semanticFunctionName = semanticName(node, childrenByParent, nodeById);
-  const name = semanticFunctionName ?? fallbackFunctionName(node);
-  const sourceSymbol = semanticFunctionName
-    ? owner.kind === "file" || owner.kind === "module"
-      ? semanticFunctionName
-      : `${originalName(owner.name)}.${semanticFunctionName}`
-    : undefined;
+  const name = swiftFunction?.name ?? semanticFunctionName ?? fallbackFunctionName(node);
+  const sourceSymbol = swiftFunction
+    ? swiftFunction.sourceSymbol
+    : semanticFunctionName
+      ? owner.kind === "file" || owner.kind === "module"
+        ? semanticFunctionName
+        : `${originalName(owner.name)}.${semanticFunctionName}`
+      : undefined;
   const id = stableShapeId(`fn_${owner.name}_${name}_${node.id}`, "Function");
   if (graph.functions.some((fn) => fn.id === id)) {
     return;

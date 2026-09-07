@@ -23,7 +23,7 @@ resource AstGenerationSemanticModuleAddContainerAstAnchor : GeneratedAstAnchor {
 
 resource AstGenerationSemanticModuleAddFunctionAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/ast-generation-semantic.ts#addFunction")
-  fingerprint ast.semantic_subtree_v1("sha256:97f6f78b5b1a13d1d97d157e8404dfee021cc2e3db4ecd84913f36b5a93ff20a")
+  fingerprint ast.semantic_subtree_v1("sha256:c4e09cc9c9d7627f41e0b9a44b7d9678080f38b7926e4674b921167f63c5bd50")
 }
 
 resource AstGenerationSemanticModuleAddResolvedReceiverCallsAstAnchor : GeneratedAstAnchor {
@@ -38,7 +38,7 @@ resource AstGenerationSemanticModuleAddResourceAstAnchor : GeneratedAstAnchor {
 
 resource AstGenerationSemanticModuleAddSemanticProjectionAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/ast-generation-semantic.ts#addSemanticProjection")
-  fingerprint ast.semantic_subtree_v1("sha256:ae196ddf2806096b966af783d944361e81b85b08141df3b629e33a55d7687d12")
+  fingerprint ast.semantic_subtree_v1("sha256:b4b6aca0fc349d62c38a82b9515929ad47ba9ff91ff48e7d5a235930f040a13b")
 }
 
 resource AstGenerationSemanticModuleCandidateEffectNameAstAnchor : GeneratedAstAnchor {
@@ -157,7 +157,7 @@ relation AstGenerationSemanticModuleAddFunctionGeneratedFromAstGenerationSemanti
   kind generated_from
   connects AstGenerationSemanticModule -> AstGenerationSemanticModuleAddFunctionAstAnchor
   roles { AstGenerationSemanticModule as generated, AstGenerationSemanticModuleAddFunctionAstAnchor as syntax }
-  expects AstGenerationSemanticModuleAddFunctionAstAnchor fingerprint ast.semantic_subtree_v1("sha256:97f6f78b5b1a13d1d97d157e8404dfee021cc2e3db4ecd84913f36b5a93ff20a")
+  expects AstGenerationSemanticModuleAddFunctionAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c4e09cc9c9d7627f41e0b9a44b7d9678080f38b7926e4674b921167f63c5bd50")
   summary "fn AstGenerationSemanticModule.addFunction generated from typescript function_declaration at packages/shp-checker/src/ast-generation-semantic.ts#addFunction."
 }
 
@@ -181,7 +181,7 @@ relation AstGenerationSemanticModuleAddSemanticProjectionGeneratedFromAstGenerat
   kind generated_from
   connects AstGenerationSemanticModule -> AstGenerationSemanticModuleAddSemanticProjectionAstAnchor
   roles { AstGenerationSemanticModule as generated, AstGenerationSemanticModuleAddSemanticProjectionAstAnchor as syntax }
-  expects AstGenerationSemanticModuleAddSemanticProjectionAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ae196ddf2806096b966af783d944361e81b85b08141df3b629e33a55d7687d12")
+  expects AstGenerationSemanticModuleAddSemanticProjectionAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b4b6aca0fc349d62c38a82b9515929ad47ba9ff91ff48e7d5a235930f040a13b")
   summary "fn AstGenerationSemanticModule.addSemanticProjection generated from typescript function_declaration at packages/shp-checker/src/ast-generation-semantic.ts#addSemanticProjection."
 }
 

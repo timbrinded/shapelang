@@ -113,7 +113,7 @@ resource AstGenerationUtilsModuleSliceByByteRangeAstAnchor : GeneratedAstAnchor 
 
 resource AstGenerationUtilsModuleSourceLanguageAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/ast-generation-utils.ts#sourceLanguage")
-  fingerprint ast.semantic_subtree_v1("sha256:57d31c53e0a24d2343f0f4d11c2b9a3614d51a19bafd1e29af958419b930fc09")
+  fingerprint ast.semantic_subtree_v1("sha256:c7b2c65a3558edb256932320f2cc29362cedef9884f5db0047bd6856225cc482")
 }
 
 resource AstGenerationUtilsModuleSpanPropertyAstAnchor : GeneratedAstAnchor {
@@ -445,7 +445,7 @@ relation AstGenerationUtilsModuleSourceLanguageGeneratedFromAstGenerationUtilsMo
   kind generated_from
   connects AstGenerationUtilsModule -> AstGenerationUtilsModuleSourceLanguageAstAnchor
   roles { AstGenerationUtilsModule as generated, AstGenerationUtilsModuleSourceLanguageAstAnchor as syntax }
-  expects AstGenerationUtilsModuleSourceLanguageAstAnchor fingerprint ast.semantic_subtree_v1("sha256:57d31c53e0a24d2343f0f4d11c2b9a3614d51a19bafd1e29af958419b930fc09")
+  expects AstGenerationUtilsModuleSourceLanguageAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c7b2c65a3558edb256932320f2cc29362cedef9884f5db0047bd6856225cc482")
   summary "fn AstGenerationUtilsModule.sourceLanguage generated from typescript function_declaration at packages/shp-checker/src/ast-generation-utils.ts#sourceLanguage."
 }
 

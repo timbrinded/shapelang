@@ -1,0 +1,65 @@
+module shape.generated.ast.packages.shp_checker.src.ast_generation_swift_test
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource AstGenerationSwiftTestModuleFingerprintsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/ast-generation-swift.test.ts#fingerprints")
+  fingerprint ast.semantic_subtree_v1("sha256:cdd08d6296cb269dc8d107258be12647782647473e926bf9d87fafaf1ed4b70e")
+}
+
+resource AstGenerationSwiftTestModuleGraphForAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/ast-generation-swift.test.ts#graphFor")
+  fingerprint ast.semantic_subtree_v1("sha256:be07d994ba3f71f187905e980e7519130ca2756004a5c0c5289f2e2f87520833")
+}
+
+resource AstGenerationSwiftTestModuleMembersAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/ast-generation-swift.test.ts#members")
+  fingerprint ast.semantic_subtree_v1("sha256:b8861e37729a6903e87bde6f438ea984d626157ea8c5102570eefdc75c60559f")
+}
+
+component AstGenerationSwiftTestModule : GeneratedCandidate {
+  fn fingerprints
+    source ts("packages/shp-checker/src/ast-generation-swift.test.ts#fingerprints")
+    effects unknown
+  fn graphFor
+    source ts("packages/shp-checker/src/ast-generation-swift.test.ts#graphFor")
+    effects unknown
+  fn members
+    source ts("packages/shp-checker/src/ast-generation-swift.test.ts#members")
+    effects unknown
+}
+
+relation AstGenerationSwiftTestModuleFingerprintsGeneratedFromAstGenerationSwiftTestModuleFingerprintsAstAnchor {
+  kind generated_from
+  connects AstGenerationSwiftTestModule -> AstGenerationSwiftTestModuleFingerprintsAstAnchor
+  roles { AstGenerationSwiftTestModule as generated, AstGenerationSwiftTestModuleFingerprintsAstAnchor as syntax }
+  expects AstGenerationSwiftTestModuleFingerprintsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:cdd08d6296cb269dc8d107258be12647782647473e926bf9d87fafaf1ed4b70e")
+  summary "fn AstGenerationSwiftTestModule.fingerprints generated from typescript function_declaration at packages/shp-checker/src/ast-generation-swift.test.ts#fingerprints."
+}
+
+relation AstGenerationSwiftTestModuleGraphForGeneratedFromAstGenerationSwiftTestModuleGraphForAstAnchor {
+  kind generated_from
+  connects AstGenerationSwiftTestModule -> AstGenerationSwiftTestModuleGraphForAstAnchor
+  roles { AstGenerationSwiftTestModule as generated, AstGenerationSwiftTestModuleGraphForAstAnchor as syntax }
+  expects AstGenerationSwiftTestModuleGraphForAstAnchor fingerprint ast.semantic_subtree_v1("sha256:be07d994ba3f71f187905e980e7519130ca2756004a5c0c5289f2e2f87520833")
+  summary "fn AstGenerationSwiftTestModule.graphFor generated from typescript function_declaration at packages/shp-checker/src/ast-generation-swift.test.ts#graphFor."
+}
+
+relation AstGenerationSwiftTestModuleMembersGeneratedFromAstGenerationSwiftTestModuleMembersAstAnchor {
+  kind generated_from
+  connects AstGenerationSwiftTestModule -> AstGenerationSwiftTestModuleMembersAstAnchor
+  roles { AstGenerationSwiftTestModule as generated, AstGenerationSwiftTestModuleMembersAstAnchor as syntax }
+  expects AstGenerationSwiftTestModuleMembersAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b8861e37729a6903e87bde6f438ea984d626157ea8c5102570eefdc75c60559f")
+  summary "fn AstGenerationSwiftTestModule.members generated from typescript function_declaration at packages/shp-checker/src/ast-generation-swift.test.ts#members."
+}
+
+implementation AstGenerationSwiftTestModuleImpl {
+  paths {
+    "packages/shp-checker/src/ast-generation-swift.test.ts"
+  }
+  conforms_to AstGenerationSwiftTestModule
+}

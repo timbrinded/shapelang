@@ -199,11 +199,16 @@ shp author --changed-files changed.txt --component AuditStore --diff pr.diff --p
 shp author --changed-files changed.txt --diff pr.diff --critic-prompt proposed.shape --shape-files shape/audit.shape --snippet-files src/audit/purge.ts
 shp analyze --shape-files fixtures/pass/append_only_append/audit.shape src/audit/purge.ts
 shp ast source --language rust --module generated.audit src/audit/store.rs
+shp ast source --out-dir shape/generated/ast Sources/AuditStore.swift
 shp ast json --module generated.audit --raw-out ast.raw.shape ast.json
 shp update --dry-run
 ```
 
 `shp check` scans `shape/**/*.shape` when no files are provided. Any `.shape` file under `shape/` is part of the checked model.
+
+`shp ast source` supports Swift and SwiftUI syntax, including protocols, extensions,
+overloads, and computed properties. Drafts keep unknown effects and omit inferred
+Swift calls. They do not load compiler types, expand macros, or require Xcode.
 
 Useful commands:
 

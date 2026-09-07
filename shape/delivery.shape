@@ -689,6 +689,7 @@ implementation AstGenerationSource {
     "packages/shp-checker/src/ast-generation-render.ts"
     "packages/shp-checker/src/ast-generation-semantic.ts"
     "packages/shp-checker/src/ast-generation-source.ts"
+    "packages/shp-checker/src/ast-generation-swift.ts"
     "packages/shp-checker/src/ast-generation-tokens.ts"
     "packages/shp-checker/src/ast-generation-tree-sitter-normalize.ts"
     "packages/shp-checker/src/ast-generation-tree-sitter.ts"
@@ -966,6 +967,7 @@ binding ToolingDocs {
     "packages/shp-checker/src/ast-generation-render.ts"
     "packages/shp-checker/src/ast-generation-semantic.ts"
     "packages/shp-checker/src/ast-generation-source.ts"
+    "packages/shp-checker/src/ast-generation-swift.ts"
     "packages/shp-checker/src/ast-generation-tokens.ts"
     "packages/shp-checker/src/ast-generation-tree-sitter-normalize.ts"
     "packages/shp-checker/src/ast-generation-tree-sitter.ts"
@@ -1153,7 +1155,7 @@ attest no_shape_change {
 
 attest no_shape_change {
   source json("package.json")
-  reason "The root package manifest pins Bun 1.3.14 so CI and release builds do not float to incompatible toolchains; the modeled CI resources, effects, relations, and release outputs are unchanged."
+  reason "The root package manifest pins Bun 1.3.14 and overrides jsonschema to 1.4.1 because Langium config validation fails on Node 24 with jsonschema 1.5.0 URL resolution; generated grammar output and the modeled CI resources, effects, relations, and release outputs are unchanged."
 }
 
 attest no_shape_change {

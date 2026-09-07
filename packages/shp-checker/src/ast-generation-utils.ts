@@ -291,6 +291,9 @@ export function sourceLanguage(language: string): string {
   if (language === "go") {
     return "go";
   }
+  if (language === "swift") {
+    return "swift";
+  }
   return "file";
 }
 

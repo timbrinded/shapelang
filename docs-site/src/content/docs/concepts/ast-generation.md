@@ -9,7 +9,66 @@ sidebar:
 
 The primary path is `shp ast source`: parse source files, project syntax evidence into a Code Semantic Graph, and print a review-sized Shape draft. `shp ast json` is only an input adapter for tools that already parsed the code; Shape does not generate AST JSON from `.shape` files.
 
-Source inference recognizes TypeScript, TSX, JavaScript/JSX, Rust, Go, and Python. JSX is parsed with the JavaScript grammar. TSX uses the TSX Tree-sitter grammar, which release archives install as a bundled parser asset next to the `shp` executable so generated AST checks do not depend on runtime downloads.
+Source inference recognizes TypeScript, TSX, JavaScript/JSX, Rust, Go, Python, and Swift. JSX is parsed with the JavaScript grammar. Release archives bundle the supported parsers next to the `shp` executable so source generation does not depend on runtime downloads.
+
+## Swift
+
+```bash
+shp ast source Sources/AuditStore.swift
+shp ast source --language swift --out-dir shape/generated/ast Sources/AuditStore.swift
+shp ast source --out-dir shape/generated/ast --check Sources/AuditStore.swift
+```
+
+Swift support uses syntax evidence and does not require a Swift compiler or Xcode.
+Classes, structs, enums, actors, protocols, and extensions supply type candidates.
+Functions, protocol requirements, initializers, deinitializers, subscripts, and
+computed properties supply function candidates. A SwiftUI view's computed `body`
+is included even when the view has no ordinary methods. Stored properties are
+part of the type's syntax evidence. Local functions remain inside their containing
+function's evidence. Types declared inside functions, including any types nested
+inside them, do not become separate candidates.
+
+Within each file, extensions are grouped with their named type and retain separate
+syntax anchors. Nested types use qualified source names such as `Outer.Inner.run()`.
+Method references include parameter labels and types, generic parameters, and
+return/effect syntax where present, such as `AuditStore.load(id:Int) -> AuditEvent ?`.
+Constrained extensions retain their `where` clause in the reference, and protocol
+requirements carry `[requirement]`. These are review conventions, not compiler
+symbol IDs. Ambiguous duplicate signatures produce a warning and file-only refs.
+
+The generator keeps all Swift effects unknown and emits no inferred calls or
+candidate effects for Swift. It does not expand macros, choose active `#if`
+branches, resolve protocol or generic dispatch, or prove actor isolation. It does
+not merge types across files or load SwiftPM/Xcode target configuration. Review
+the relevant source before adding those claims to authored Shape.
+
+Swift fingerprints use parser tokens so literal URLs, raw and multiline strings,
+interpolation, and Unicode remain part of the evidence. Comments and formatting
+outside literals do not change a fingerprint. Type anchors exclude method and
+computed-property bodies; function anchors include them.
+
+Authored Swift references use the standard Shape syntax:
+
+```shape
+module swift.audit
+
+resource AuditEvent : AppendOnly
+
+component AuditStore {
+  owns AuditEvent
+  grants Append<AuditEvent>
+  fn save
+    source swift("Sources/AuditStore.swift#AuditStore.save(_:AuditEvent) async throws")
+    effects complete {
+      Append<AuditEvent>
+        evidence swift("Sources/AuditStore.swift#AuditStore.save(_:AuditEvent) async throws")
+    }
+}
+```
+
+The complete effect above is a reviewed claim. Generated functions still use
+`effects unknown`. Swift support in `shp ast` does not add Swift effect analysis
+to [`shp analyze`](./analyzer-hints.md).
 
 ## Default semantic draft
 

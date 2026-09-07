@@ -68,7 +68,7 @@ resource AuthoringModuleIndentBlockAstAnchor : GeneratedAstAnchor {
 
 resource AuthoringModuleLanguageForPathAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/authoring.ts#languageForPath")
-  fingerprint ast.semantic_subtree_v1("sha256:e57d233573f9762a4f5f026c48f67e7b415db0a93f092f69719d990294ec7edb")
+  fingerprint ast.semantic_subtree_v1("sha256:4040f074070f3d4ca2eb4d4e0fa2d0f62fe89f72f334e6b7ec9ebb84078d603f")
 }
 
 resource AuthoringModuleUniqueFunctionNameAstAnchor : GeneratedAstAnchor {
@@ -221,7 +221,7 @@ relation AuthoringModuleLanguageForPathGeneratedFromAuthoringModuleLanguageForPa
   kind generated_from
   connects AuthoringModule -> AuthoringModuleLanguageForPathAstAnchor
   roles { AuthoringModule as generated, AuthoringModuleLanguageForPathAstAnchor as syntax }
-  expects AuthoringModuleLanguageForPathAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e57d233573f9762a4f5f026c48f67e7b415db0a93f092f69719d990294ec7edb")
+  expects AuthoringModuleLanguageForPathAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4040f074070f3d4ca2eb4d4e0fa2d0f62fe89f72f334e6b7ec9ebb84078d603f")
   summary "fn AuthoringModule.languageForPath generated from typescript function_declaration at packages/shp-checker/src/authoring.ts#languageForPath."
 }
 

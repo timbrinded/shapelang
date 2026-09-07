@@ -36,7 +36,8 @@ export const BUNDLED_TREE_SITTER_LANGUAGES = [
   "tsx",
   "rust",
   "go",
-  "python"
+  "python",
+  "swift"
 ] as const;
 
 export async function loadTreeSitterProvider(): Promise<

@@ -384,6 +384,12 @@ jobs:
             /tmp/shp-smoke/widget.tsx \
             >/tmp/shp-smoke/ast-source-tsx.shape
           grep -q "GeneratedAstAnchor" /tmp/shp-smoke/ast-source-tsx.shape
+          /tmp/shp-smoke/shp ast source \
+            fixtures/source/swift/architecture.swift \
+            >/tmp/shp-smoke/ast-source-swift.shape
+          grep -q 'source swift(' /tmp/shp-smoke/ast-source-swift.shape
+          grep -q 'component ContentView' /tmp/shp-smoke/ast-source-swift.shape
+          grep -q 'effects unknown' /tmp/shp-smoke/ast-source-swift.shape
           /tmp/shp-smoke/shp memory >/dev/null
           /tmp/shp-smoke/shp obligations >/tmp/shp-smoke/obligations.txt
           grep -q "No open shape obligations." /tmp/shp-smoke/obligations.txt

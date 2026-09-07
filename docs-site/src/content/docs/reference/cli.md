@@ -170,7 +170,13 @@ The provider-neutral critic prompt is written to stdout. Deterministic local adv
 
 By default, `shp ast source` parses files with the platform Tree-sitter native binding and prints the semantic draft: stable files, modules, types, functions, high-confidence calls, compact AST anchors, anchor fingerprints where token evidence exists, candidate effect evidence, and unresolved uncertainty. Generated source references use stable `#symbol` anchors for named declarations and file-only references otherwise, so line-only movement does not churn the semantic draft. Generated functions use `effects unknown`.
 
-Source language inference covers TypeScript, TSX, JavaScript/JSX, Rust, Go, and Python. JSX files use the JavaScript parser; TSX files use the TSX parser bundled beside released `shp` binaries. `--language` accepts `javascript`, `typescript`, `tsx`, `rust`, `go`, and `python`; aliases `js`, `jsx`, `ts`, `rs`, and `py` normalize to their parser names. Unsupported values are rejected as usage errors before parser loading.
+Source language inference covers TypeScript, TSX, JavaScript/JSX, Rust, Go, Python, and Swift (`.swift`). JSX files use the JavaScript parser. Supported parsers are bundled beside released `shp` binaries. `--language` accepts `javascript`, `typescript`, `tsx`, `rust`, `go`, `python`, and `swift`; aliases `js`, `jsx`, `ts`, `rs`, and `py` normalize to their parser names. Unsupported values are rejected as usage errors before parser loading.
+
+Swift drafts include protocol requirements, extensions, overloads, and computed
+properties such as SwiftUI `body`. They preserve unknown effects and omit inferred
+call and effect candidates. No Swift compiler or Xcode project is loaded. See
+[Swift draft support](../concepts/ast-generation.md#swift) for source-reference
+conventions and limits.
 
 Use `--out-dir shape/generated/ast` to write checked generated AST context as deterministic files plus a manifest. Source identities are normalized relative to the workspace root, so absolute source paths and invocations from nested directories produce the same generated modules and source references for the same file. These generated files use `shape.generated.ast...` modules and are allowed to keep `effects unknown`, because they are candidate evidence rather than reviewed architecture truth. Use `--check` with `--out-dir` in CI to fail when the checked-in generated AST files are stale. Freshness checks and cleanup are scoped to files recorded in the generated AST manifest, so unrelated authored `.shape` files in the output tree are not treated as generated output.
 

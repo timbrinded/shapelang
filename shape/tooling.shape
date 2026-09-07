@@ -110,6 +110,7 @@ component ShapeAstGenerator {
   grants Read<SourceSyntaxTree>
   fn addSemanticProjection
     source ts("packages/shp-checker/src/ast-generation-semantic.ts#addSemanticProjection")
+    description "Projects syntax into conservative drafts. Swift groups file-local extension owners, preserves qualified signatures and protocol requirements, excludes function-local types and their descendants, and emits no inferred calls or candidate effects."
     effects complete {
       Append<AstAnchorFingerprint>
         evidence ts("packages/shp-checker/src/ast-generation-fingerprints.ts")
@@ -123,6 +124,8 @@ component ShapeAstGenerator {
         evidence ts("packages/shp-checker/src/ast-generation-fingerprints.ts")
       Read<SourceSyntaxTree>
         evidence ts("packages/shp-checker/src/ast-generation-raw.ts")
+      Read<SourceSyntaxTree>
+        evidence ts("packages/shp-checker/src/ast-generation-swift.ts#collectSwiftDeclarations")
     }
   fn buildCodeSemanticGraphFromAstJson
     source ts("packages/shp-checker/src/ast-generation-json.ts#buildCodeSemanticGraphFromAstJson")
@@ -142,6 +145,7 @@ component ShapeAstGenerator {
     }
   fn fingerprintForAnchor
     source ts("packages/shp-checker/src/ast-generation-fingerprints.ts#fingerprintForAnchor")
+    description "Pins semantic syntax evidence; Swift preserves literal and Unicode parser tokens and fingerprints declaration signatures separately from executable bodies."
     effects complete {
       Append<AstAnchorFingerprint>
         evidence ts("packages/shp-checker/src/ast-generation-fingerprints.ts")
@@ -149,6 +153,8 @@ component ShapeAstGenerator {
         evidence ts("packages/shp-checker/src/ast-generation-fingerprints.ts")
       Read<SourceSyntaxTree>
         evidence ts("packages/shp-checker/src/ast-generation-tokens.ts")
+      Read<SourceSyntaxTree>
+        evidence ts("packages/shp-checker/src/ast-generation-swift.ts#swiftSignatureChildren")
     }
   fn generateShapeFromAstJson
     source ts("packages/shp-checker/src/ast-generation-render.ts#generateShapeFromAstJson")
@@ -1146,6 +1152,16 @@ reevaluation FormatterSharedStringHelpersRechecked {
   reviewer ShapeMaintainers
   decided_on "2026-05-20"
   evidence test("packages/shp-checker/src/shape-strings.test.ts")
+}
+
+reevaluation SwiftDraftEvidenceRechecked {
+  satisfies memory AstGenerationUnknownSafety
+  outcome Confirmed
+  summary "Swift drafts retain unknown effects and omit inferred calls and candidate effects. Real-parser regressions cover qualified overload and extension refs, protocol requirements, executable property bodies, excluded nested local types with colliding names, and literal-sensitive fingerprints that ignore unrelated formatting."
+  reviewer ShapeMaintainers
+  decided_on "2026-09-07"
+  evidence test("packages/shp-checker/src/ast-generation-swift.test.ts")
+  evidence test("packages/shp-cli/src/index.test.ts")
 }
 
 reevaluation UpdateRuntimeAssetsRechecked {

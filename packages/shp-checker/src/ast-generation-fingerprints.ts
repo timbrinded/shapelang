@@ -5,6 +5,7 @@ import type {
   RawAstNode
 } from "./ast-generation-types.ts";
 import { groupChildren, isFunctionNode } from "./ast-generation-raw.ts";
+import { isSwiftFunction, swiftSignatureChildren } from "./ast-generation-swift.ts";
 import {
   isCommentNode,
   isSkippablePunctuationNode,
@@ -123,9 +124,10 @@ function canonicalizeFingerprintNode(
       const pruneFunctionBody =
         options.mode === "declaration_shell" &&
         frame.node.id !== options.rootId &&
-        isFunctionNode(frame.node);
+        isFunctionNode(frame.node) &&
+        frame.node.language !== "swift";
       if (!pruneFunctionBody) {
-        const children = childrenByParent.get(frame.node.id) ?? [];
+        const children = fingerprintChildren(frame.node, childrenByParent, options);
         for (let index = children.length - 1; index >= 0; index -= 1) {
           const child = children[index];
           if (child) {
@@ -136,11 +138,12 @@ function canonicalizeFingerprintNode(
       continue;
     }
 
-    const children = childrenByParent.get(frame.node.id) ?? [];
+    const children = fingerprintChildren(frame.node, childrenByParent, options);
     const pruneFunctionBody =
       options.mode === "declaration_shell" &&
       frame.node.id !== options.rootId &&
-      isFunctionNode(frame.node);
+      isFunctionNode(frame.node) &&
+      frame.node.language !== "swift";
     const canonicalChildren: CanonicalFingerprintNode[] = [];
     let hasToken = false;
 
@@ -162,7 +165,9 @@ function canonicalizeFingerprintNode(
             frame.node.language
           )
         : children.length === 0
-          ? normalizeSemanticTokenText(frame.node.text, frame.node.language)
+          ? frame.node.language === "swift"
+            ? frame.node.text
+            : normalizeSemanticTokenText(frame.node.text, frame.node.language)
           : undefined;
     if (token) {
       hasToken = true;
@@ -202,6 +207,22 @@ function canonicalizeFingerprintNode(
   }
 
   return results.get(node.id) ?? { hasToken: false };
+}
+
+function fingerprintChildren(
+  node: RawAstNode,
+  children: Map<string, RawAstNode[]>,
+  options: { rootId: string; mode: "function_subtree" | "declaration_shell" }
+): RawAstNode[] {
+  if (
+    node.language === "swift" &&
+    options.mode === "declaration_shell" &&
+    node.id !== options.rootId &&
+    isSwiftFunction(node, children)
+  ) {
+    return swiftSignatureChildren(node, children);
+  }
+  return children.get(node.id) ?? [];
 }
 
 function canonicalAttributes(node: RawAstNode): Record<string, AstScalar> | undefined {
