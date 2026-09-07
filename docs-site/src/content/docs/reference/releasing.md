@@ -51,19 +51,30 @@ current CLI and language behavior, including:
 - author/critic prompts and LSP; and
 - evidence-backed preflight, indexing, Guard, and code review.
 
+The candidate smoke-tests packed archives before the model evaluation: Linux x64
+on the builder, including skill-canary commands against that binary, then Linux
+ARM64, macOS ARM64, and Windows x64 on native runners.
+
 The workflow uploads the structured report, then pauses at the protected
 `skills-release-approval` environment. A human must inspect and approve it. An
 automated pass alone cannot authorize a release.
 
-For material skill-instruction changes, approval also requires fresh held-out
-forward tests on the supported models. A task is not held out after its labels,
-structure, expected answer, or failure-specific wording has been copied into
-the skill. Store raw forward-test artifacts under `.research/`; the release
-workflow's read-only cases are smoke tests rather than a replacement for that
-evidence.
+The candidate has three separate controls:
 
-If the candidate changes, merge the fix and rerun the gate. Approval is valid
-only for the exact successful workflow SHA.
+- `bun run skills:check` lints the shipped skill corpus deterministically.
+- The candidate JSON report is a model evaluation with schema and evidence
+  gates. It is not proof that every skill works on every supported model.
+- Held-out forward tests on supported models, including Codex, remain a human
+  process when skill instructions change. Store raw artifacts under
+  `.research/`. The read-only canaries are smoke tests, not that evidence.
+
+If the skills-relevant tree is unchanged, the candidate may reuse an approved
+ancestor skills report instead of calling the model again. Validate, archive
+smoke, and human approval still run on the current `master` SHA. Publishing
+still requires a successful approved candidate run on the exact tag commit.
+
+If the candidate changes in a skills-relevant way, merge the fix and rerun the
+gate.
 
 ## Tag and verify
 
@@ -76,9 +87,10 @@ git push origin vX.Y.Z shapelang--vX.Y.Z
 ```
 
 The release workflow verifies current `master`, the coordinated plugin tag,
-synchronized metadata, and the successful approved candidate run. It builds and
-smoke-tests the archives, creates the GitHub release, then verifies installation
-through the setup action on Linux and Windows.
+synchronized metadata, and the successful approved candidate run for that exact
+SHA. It builds and smoke-tests the archives, creates the GitHub release, then
+verifies installation through the setup action on Linux, Linux ARM64, macOS
+ARM64, and Windows.
 
 Confirm the release contains all platform archives, both installers, and
 `checksums.txt`; verify checksums and `shp --version`; and confirm both tags

@@ -557,6 +557,59 @@ export function buildSkillsReleasePrompt(env = process.env) {
   ].join("\n");
 }
 
+export function lastJsonObject(text) {
+  const trimmed = text.trim();
+  if (trimmed === "") {
+    return undefined;
+  }
+  try {
+    return JSON.parse(trimmed);
+  } catch {
+    const start = trimmed.indexOf("{");
+    if (start === -1) {
+      return undefined;
+    }
+    try {
+      return JSON.parse(trimmed.slice(start));
+    } catch {
+      return undefined;
+    }
+  }
+}
+
+export function releasePrefilter(env = process.env) {
+  if (env.SHAPE_SKILLS_REUSE !== "1") {
+    return {};
+  }
+
+  const spawned = spawnSync(
+    "bun",
+    ["scripts/check-release-approval.ts", "--reuse-if-eligible", "--json"],
+    {
+      encoding: "utf8",
+      env,
+      cwd: env.GITHUB_WORKSPACE || process.cwd(),
+      maxBuffer: 20_000_000
+    }
+  );
+  if (spawned.status !== 0) {
+    console.log(
+      `Skills reuse lookup failed; running a fresh evaluation.\n${spawned.stderr || spawned.stdout}`
+    );
+    return {};
+  }
+
+  const parsed = lastJsonObject(spawned.stdout);
+  if (!parsed || typeof parsed !== "object" || parsed.reused !== true || !parsed.report) {
+    return {};
+  }
+
+  console.log(
+    `Reusing approved skills evaluation from ${parsed.sha} (run ${parsed.runId}, ${parsed.mode}).`
+  );
+  return { result: parsed.report };
+}
+
 export function renderSkillsReleaseSummary(result) {
   const lines = [
     "## Shape Skills Release Evaluation",
@@ -770,6 +823,7 @@ const SKILLS = {
       "Bash(bun shp analyze *)",
       ...releaseCaseAllowedTools()
     ].join(","),
+    prefilter: releasePrefilter,
     buildPrompt: buildSkillsReleasePrompt,
     renderSummary: renderSkillsReleaseSummary,
     failureMessage: skillsReleaseFailureMessage

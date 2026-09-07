@@ -146,17 +146,18 @@ Update pinned public examples, all affected skill entrypoints/references/agent
 metadata, and `docs/releases/vX.Y.Z.md`.
 
 Only release from a clean, pushed, current `master` commit. Before any tag,
-dispatch `.github/workflows/release-candidate.yml` on that exact commit. Its
-deterministic release suite plus blocking six-skill static conformance and
-focused behavioral canaries must
-pass, then a human must approve the protected `skills-release-approval`
-environment. Automated skill output alone does not authorize a release. Any
-fix requires a new merged commit and a new candidate run.
+dispatch `.github/workflows/release-candidate.yml` on that exact commit. It
+validates the candidate, smoke-tests packed archives on Linux x64, Linux ARM64,
+macOS ARM64, and Windows x64, and runs the blocking six-skill evaluation. The
+skills job may reuse an approved ancestor report when the skills-relevant tree
+is unchanged. A human must then approve the protected `skills-release-approval`
+environment. Automated skill output alone does not authorize a release. A
+skills-relevant fix requires a new merged commit and a new candidate run.
 
 After the exact commit's candidate run succeeds, create and push both lightweight
 tags together. The release workflow rejects non-current-master tags, missing or
 mismatched plugin tags, unsynchronized versions, and commits without a successful
-approved candidate run.
+approved candidate run on that SHA.
 
 Follow `RELEASING.md` for the command-by-command preparation, manual gate,
 tagging, asset smoke tests, and post-publication checklist.

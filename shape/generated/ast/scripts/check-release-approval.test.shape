@@ -1,0 +1,49 @@
+module shape.generated.ast.scripts.check_release_approval_test
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource CheckReleaseApprovalTestModuleLookupAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("scripts/check-release-approval.test.ts#lookup")
+  fingerprint ast.semantic_subtree_v1("sha256:7951bd7e4a98304c708e706f9636305e259f84f671288501f27708da5f4789cd")
+}
+
+resource CheckReleaseApprovalTestModuleRunAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("scripts/check-release-approval.test.ts#run")
+  fingerprint ast.semantic_subtree_v1("sha256:67139ff64f8b9f15994fd74b79c8fc77fee3a3e244677296cbe7e55e395e23d5")
+}
+
+component CheckReleaseApprovalTestModule : GeneratedCandidate {
+  fn lookup
+    source ts("scripts/check-release-approval.test.ts#lookup")
+    effects unknown
+  fn run
+    source ts("scripts/check-release-approval.test.ts#run")
+    effects unknown
+}
+
+relation CheckReleaseApprovalTestModuleLookupGeneratedFromCheckReleaseApprovalTestModuleLookupAstAnchor {
+  kind generated_from
+  connects CheckReleaseApprovalTestModule -> CheckReleaseApprovalTestModuleLookupAstAnchor
+  roles { CheckReleaseApprovalTestModule as generated, CheckReleaseApprovalTestModuleLookupAstAnchor as syntax }
+  expects CheckReleaseApprovalTestModuleLookupAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7951bd7e4a98304c708e706f9636305e259f84f671288501f27708da5f4789cd")
+  summary "fn CheckReleaseApprovalTestModule.lookup generated from typescript function_declaration at scripts/check-release-approval.test.ts#lookup."
+}
+
+relation CheckReleaseApprovalTestModuleRunGeneratedFromCheckReleaseApprovalTestModuleRunAstAnchor {
+  kind generated_from
+  connects CheckReleaseApprovalTestModule -> CheckReleaseApprovalTestModuleRunAstAnchor
+  roles { CheckReleaseApprovalTestModule as generated, CheckReleaseApprovalTestModuleRunAstAnchor as syntax }
+  expects CheckReleaseApprovalTestModuleRunAstAnchor fingerprint ast.semantic_subtree_v1("sha256:67139ff64f8b9f15994fd74b79c8fc77fee3a3e244677296cbe7e55e395e23d5")
+  summary "fn CheckReleaseApprovalTestModule.run generated from typescript function_declaration at scripts/check-release-approval.test.ts#run."
+}
+
+implementation CheckReleaseApprovalTestModuleImpl {
+  paths {
+    "scripts/check-release-approval.test.ts"
+  }
+  conforms_to CheckReleaseApprovalTestModule
+}

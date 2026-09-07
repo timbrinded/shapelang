@@ -326,16 +326,18 @@ CI is wired in `.github/workflows/shape.yml` for generated AST freshness, format
 Release preparation synchronizes the CLI and both plugin manifest versions,
 updates pinned public docs, audits all six shipped skills, and passes the full
 repository suite. Run the `Release Candidate: Skills` workflow on the exact
-`master` commit first. Its static skill conformance and focused behavioral
-canaries are blocking, and its final
-`skills-release-approval` environment requires a manual reviewer.
+`master` commit first. It smoke-tests packed archives before tagging, and its
+static skill conformance and focused behavioral canaries are blocking. The
+skills evaluation may reuse an approved ancestor report when the skills-relevant
+tree is unchanged. The final `skills-release-approval` environment requires a
+manual reviewer.
 
 Only after that exact commit has a successful, manually approved candidate run
 may a maintainer create `v0.9.0`. The release workflow rejects tags that are not
 current `master`, lack that approval, or disagree with package/plugin metadata.
 It validates and builds the release, publishes archives and checksums, then
-installs the published binary through the setup action on Linux and Windows.
-The plugin tag `shapelang--v0.9.0` must point at the same commit.
+installs the published binary through the setup action on Linux, macOS, and
+Windows. The plugin tag `shapelang--v0.9.0` must point at the same commit.
 
 See [RELEASING.md](RELEASING.md) for the complete preparation, manual gate,
 tagging, and post-release verification checklist.

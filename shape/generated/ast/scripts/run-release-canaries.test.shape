@@ -1,0 +1,7 @@
+module shape.generated.ast.scripts.run_release_canaries_test
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}

@@ -426,7 +426,8 @@ describe("Shape workflow", () => {
         releaseHidesExpectedOutcomes:
           !releaseOutputs.prompt.includes("draft_only") &&
           !releaseOutputs.prompt.includes("single_code_comment"),
-        releaseRejectsArbitraryShapeCommand: !releaseOutputs.claude_args.includes("SHAPE_CMD=*")
+        releaseRejectsArbitraryShapeCommand: !releaseOutputs.claude_args.includes("SHAPE_CMD=*"),
+        releaseDoesNotReuseWithoutFlag: releaseOutputs.skip === "false"
       }));
     `);
 
@@ -446,7 +447,8 @@ describe("Shape workflow", () => {
       releaseCanGenerateVisualiser: true,
       releaseCanCompareVisualisers: true,
       releaseHidesExpectedOutcomes: true,
-      releaseRejectsArbitraryShapeCommand: true
+      releaseRejectsArbitraryShapeCommand: true,
+      releaseDoesNotReuseWithoutFlag: true
     });
   });
 
