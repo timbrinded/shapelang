@@ -1,0 +1,33 @@
+module shape.generated.ast.scripts.jev_enforcement_test
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource JevEnforcementTestModuleResponseAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("scripts/jev-enforcement.test.ts#response")
+  fingerprint ast.semantic_subtree_v1("sha256:e9d9104158dad46b48348b9ed4a2d9d73c17d0986d67f3e8fb0b1a13231a155b")
+}
+
+component JevEnforcementTestModule : GeneratedCandidate {
+  fn response
+    source ts("scripts/jev-enforcement.test.ts#response")
+    effects unknown
+}
+
+relation JevEnforcementTestModuleResponseGeneratedFromJevEnforcementTestModuleResponseAstAnchor {
+  kind generated_from
+  connects JevEnforcementTestModule -> JevEnforcementTestModuleResponseAstAnchor
+  roles { JevEnforcementTestModule as generated, JevEnforcementTestModuleResponseAstAnchor as syntax }
+  expects JevEnforcementTestModuleResponseAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e9d9104158dad46b48348b9ed4a2d9d73c17d0986d67f3e8fb0b1a13231a155b")
+  summary "fn JevEnforcementTestModule.response generated from typescript function_declaration at scripts/jev-enforcement.test.ts#response."
+}
+
+implementation JevEnforcementTestModuleImpl {
+  paths {
+    "scripts/jev-enforcement.test.ts"
+  }
+  conforms_to JevEnforcementTestModule
+}

@@ -356,3 +356,15 @@ Other GitHub Actions workflows can install `shp` with the setup action shown in 
 ## License
 
 BSD 3-Clause
+
+### PR-scoped evidence and optional Jev assessment
+
+Projects can opt into `{"attestations":{"mode":"pr"}}` in `shapelang.json` and
+run `shp check --json --base <base> --head <head> --attestations /tmp/bundle.json`.
+The candidate must be checked out and clean. Omit `--attestations` to discover
+outstanding obligation IDs. Bundles bind evidence to exact commits and cannot
+waive unrelated deterministic errors. Existing repository attestations remain
+the default. See [the reference CI workflow](docs/examples/pr-enforcement.yml)
+and [the agent workflow](plugins/shapelang/skills/shape-lang/references/pr-enforcement.md)
+for PR-body extraction and optional fixed-question Jev probability assessments.
+These flags require a build containing this feature.

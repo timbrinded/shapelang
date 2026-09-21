@@ -113,3 +113,5 @@ export {
 export type { ShapeModule } from "./language/generated/ast.ts";
 export { parseShapeModule, type ParseDiagnostic, type ParseShapeModuleResult } from "./parser.ts";
 export { compareCodepointStrings } from "./shape-strings.ts";
+
+export * from "./attestations.ts";

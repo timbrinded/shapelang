@@ -68,7 +68,7 @@ component ShapeChecker {
   grants Read<PreludeMetadata>
   fn checkLoweredShapeModel : ProtectedCheckOrder
     source ts("packages/shp-checker/src/checker/api.ts#checkLoweredShapeModel")
-    description "Runs the shared semantic and binding pipeline over an already lowered model without changing the public full-check authority."
+    description "Runs the shared semantic and binding pipeline, ignores repository evidence in PR mode, then applies transition-bound typed attestations only to explicitly attestable coverage obligations. All other diagnostics remain blocking."
     effects complete {
       Append<SemanticDiagnostics>
         evidence ts("packages/shp-checker/src/checker/api.ts")

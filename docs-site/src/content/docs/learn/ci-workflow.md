@@ -229,3 +229,28 @@ environment approval before tagging. See [Releasing Shape](../reference/releasin
 - [Global Model Updates](./global-model-updates)
 - [CLI Reference](../reference/cli)
 - [Model Updates and Attestations](../concepts/model-updates-attestations)
+
+## Optional PR evidence and Jev workflow
+
+The repository includes `docs/examples/pr-enforcement.yml`, an opt-in reference
+workflow for a ShapeLang source checkout. It checks out the PR head, fetches the
+current PR body, verifies the event base/head, runs a deterministic JSON check,
+extracts typed evidence, reruns with valid evidence and publishes the remaining
+diagnostics. Include the `edited` PR event so editing evidence reruns the check.
+Keep intermediate artifacts outside the repository to preserve a clean candidate.
+
+Set `attestations.mode` to `pr` in `shapelang.json`. The default `repo` mode remains
+unchanged. Require the deterministic job independently in branch protection.
+
+An optional separate job uses the Shape skill and Jev helper to assemble bounded
+evidence, request fixed typed assessments, validate the results and publish agent
+recommendations. Enable `SHAPE_JEV_ENABLED=true` and configure `TYPESAFE_API_KEY`
+and `ANTHROPIC_API_KEY` as secrets. `JEV_FAILURE_POLICY=warn` (default) or `fail`
+controls enrichment failure only. The reference advisory threshold is explicitly
+0.9, configurable via `SHAPE_JEV_THRESHOLD`. No semantic result suppresses a failing deterministic job or approves a PR.
+The sample does not send secrets to forked PRs and never uses
+`pull_request_target` to execute candidate code.
+
+Consumers should use a reviewed tools revision in a separate checkout and adapt
+the documented helper and CLI paths. These examples require a build containing
+the PR-attestation feature, not an older released v0.9.0 binary.

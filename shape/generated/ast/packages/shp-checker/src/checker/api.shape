@@ -8,7 +8,7 @@ trait GeneratedCandidate {
 
 resource ApiModuleCheckLoweredShapeModelAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/checker/api.ts#checkLoweredShapeModel")
-  fingerprint ast.semantic_subtree_v1("sha256:87554ab90db40fa6b5b40374b028379476f774dab4ed1d4741aa2f2fecb84fd2")
+  fingerprint ast.semantic_subtree_v1("sha256:95aa4902b86b15cebd331b6bf7837401479746214893a66c883bd729f9d1b9e1")
 }
 
 resource ApiModuleCheckShapeFilesAstAnchor : GeneratedAstAnchor {
@@ -53,7 +53,7 @@ relation ApiModuleCheckLoweredShapeModelGeneratedFromApiModuleCheckLoweredShapeM
   kind generated_from
   connects ApiModule -> ApiModuleCheckLoweredShapeModelAstAnchor
   roles { ApiModule as generated, ApiModuleCheckLoweredShapeModelAstAnchor as syntax }
-  expects ApiModuleCheckLoweredShapeModelAstAnchor fingerprint ast.semantic_subtree_v1("sha256:87554ab90db40fa6b5b40374b028379476f774dab4ed1d4741aa2f2fecb84fd2")
+  expects ApiModuleCheckLoweredShapeModelAstAnchor fingerprint ast.semantic_subtree_v1("sha256:95aa4902b86b15cebd331b6bf7837401479746214893a66c883bd729f9d1b9e1")
   summary "fn ApiModule.checkLoweredShapeModel generated from typescript function_declaration at packages/shp-checker/src/checker/api.ts#checkLoweredShapeModel."
 }
 

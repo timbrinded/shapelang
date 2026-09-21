@@ -493,6 +493,20 @@
       ]
     },
     {
+      "module": "shape.generated.ast.packages.shp_checker.src.attestations_test",
+      "path": "shape/generated/ast/packages/shp-checker/src/attestations.test.shape",
+      "sources": [
+        "packages/shp-checker/src/attestations.test.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.attestations",
+      "path": "shape/generated/ast/packages/shp-checker/src/attestations.shape",
+      "sources": [
+        "packages/shp-checker/src/attestations.ts"
+      ]
+    },
+    {
       "module": "shape.generated.ast.packages.shp_checker.src.authoring_test",
       "path": "shape/generated/ast/packages/shp-checker/src/authoring.test.shape",
       "sources": [
@@ -1081,6 +1095,13 @@
       ]
     },
     {
+      "module": "shape.generated.ast.packages.shp_cli.src.check_input",
+      "path": "shape/generated/ast/packages/shp-cli/src/check-input.shape",
+      "sources": [
+        "packages/shp-cli/src/check-input.ts"
+      ]
+    },
+    {
       "module": "shape.generated.ast.packages.shp_cli.src.check_runner",
       "path": "shape/generated/ast/packages/shp-cli/src/check-runner.shape",
       "sources": [
@@ -1354,6 +1375,13 @@
       ]
     },
     {
+      "module": "shape.generated.ast.packages.shp_cli.src.pr_attestations_test",
+      "path": "shape/generated/ast/packages/shp-cli/src/pr-attestations.test.shape",
+      "sources": [
+        "packages/shp-cli/src/pr-attestations.test.ts"
+      ]
+    },
+    {
       "module": "shape.generated.ast.packages.shp_cli.src.shape_files",
       "path": "shape/generated/ast/packages/shp-cli/src/shape-files.shape",
       "sources": [
@@ -1379,6 +1407,13 @@
       "path": "shape/generated/ast/packages/shp-cli/src/version.shape",
       "sources": [
         "packages/shp-cli/src/version.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.plugins.shapelang.skills.shape_lang.scripts.jev_enforcement",
+      "path": "shape/generated/ast/plugins/shapelang/skills/shape-lang/scripts/jev-enforcement.shape",
+      "sources": [
+        "plugins/shapelang/skills/shape-lang/scripts/jev-enforcement.ts"
       ]
     },
     {
@@ -1466,6 +1501,13 @@
       ]
     },
     {
+      "module": "shape.generated.ast.scripts.check_pr",
+      "path": "shape/generated/ast/scripts/check-pr.shape",
+      "sources": [
+        "scripts/check-pr.ts"
+      ]
+    },
+    {
       "module": "shape.generated.ast.scripts.check_release_approval_test",
       "path": "shape/generated/ast/scripts/check-release-approval.test.shape",
       "sources": [
@@ -1515,6 +1557,27 @@
       ]
     },
     {
+      "module": "shape.generated.ast.scripts.jev_enforcement_test",
+      "path": "shape/generated/ast/scripts/jev-enforcement.test.shape",
+      "sources": [
+        "scripts/jev-enforcement.test.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.scripts.pr_attestations_test",
+      "path": "shape/generated/ast/scripts/pr-attestations.test.shape",
+      "sources": [
+        "scripts/pr-attestations.test.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.scripts.pr_attestations",
+      "path": "shape/generated/ast/scripts/pr-attestations.shape",
+      "sources": [
+        "scripts/pr-attestations.ts"
+      ]
+    },
+    {
       "module": "shape.generated.ast.scripts.prepare_tree_sitter_parser_assets",
       "path": "shape/generated/ast/scripts/prepare-tree-sitter-parser-assets.shape",
       "sources": [
@@ -1533,6 +1596,20 @@
       "path": "shape/generated/ast/scripts/run-release-canaries.shape",
       "sources": [
         "scripts/run-release-canaries.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.scripts.validate_jev_artifacts_test",
+      "path": "shape/generated/ast/scripts/validate-jev-artifacts.test.shape",
+      "sources": [
+        "scripts/validate-jev-artifacts.test.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.scripts.validate_jev_artifacts",
+      "path": "shape/generated/ast/scripts/validate-jev-artifacts.shape",
+      "sources": [
+        "scripts/validate-jev-artifacts.ts"
       ]
     }
   ]

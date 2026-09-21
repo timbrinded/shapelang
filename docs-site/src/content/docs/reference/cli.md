@@ -361,3 +361,26 @@ Only ISO `YYYY-MM-DD` dates are enforced; missing or non-ISO `review_by` values 
 Use `shp update --dry-run` to see the selected release, asset, and binary path without downloading. Use `shp update --version v0.9.0` to target a specific newer release. Use `--path PATH` when testing from source or when replacing a custom installed binary; if that path already exists, it must identify as the Shape CLI and report a valid version.
 
 CI should continue installing pinned releases through the setup action or installer script instead of calling `shp update`.
+
+## PR-scoped attestation checks
+
+`shp check --json --base <revision> [--head <revision> | --worktree]` checks
+an exact Git transition and emits `diagnostics`, `transition`, and stable
+attestable `obligations`. Run from the repository root with the candidate checked
+out and a clean worktree (including untracked files). The baseline is used
+exactly; compute a merge base explicitly when required. `--worktree` means clean
+HEAD, not uncommitted evidence. `--changed-files` cannot be combined with `--base`.
+
+`--config <path>` selects a project JSON file (default `shapelang.json`). Set
+`{"attestations":{"mode":"pr"}}` to opt into external evidence, then pass
+`--attestations <bundle.json>`. Default `repo` mode preserves existing behaviour
+and rejects external bundles. PR mode ignores all repository attestations; v1
+external bundles can satisfy only `no-shape-change` coverage obligations, so docs
+bindings still require docs edits. A plain check in PR mode requires `--base`.
+
+JSON is written to stdout on success and failure. Exit 0 means pass, 1 means
+semantic or attestation failure, and 2 means parse or usage failure. Evidence
+errors have `kind: "attestation_error"` and a specific `code`, including
+`malformed`, `unsupported_version`, `stale`, `unknown_obligation`, and
+`conflicting_duplicates`. A missing bundle simply leaves obligations open.
+`shp obligations` remains the separate design-memory obligation query.

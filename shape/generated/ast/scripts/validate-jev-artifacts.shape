@@ -1,0 +1,33 @@
+module shape.generated.ast.scripts.validate_jev_artifacts
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource ValidateJevArtifactsModuleValidateArtifactsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("scripts/validate-jev-artifacts.ts#validateArtifacts")
+  fingerprint ast.semantic_subtree_v1("sha256:1fc9a94d5921061aba305e1568455897176a1bfcad5574db91270c0e0870ae83")
+}
+
+component ValidateJevArtifactsModule : GeneratedCandidate {
+  fn validateArtifacts
+    source ts("scripts/validate-jev-artifacts.ts#validateArtifacts")
+    effects unknown
+}
+
+relation ValidateJevArtifactsModuleValidateArtifactsGeneratedFromValidateJevArtifactsModuleValidateArtifactsAstAnchor {
+  kind generated_from
+  connects ValidateJevArtifactsModule -> ValidateJevArtifactsModuleValidateArtifactsAstAnchor
+  roles { ValidateJevArtifactsModule as generated, ValidateJevArtifactsModuleValidateArtifactsAstAnchor as syntax }
+  expects ValidateJevArtifactsModuleValidateArtifactsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1fc9a94d5921061aba305e1568455897176a1bfcad5574db91270c0e0870ae83")
+  summary "fn ValidateJevArtifactsModule.validateArtifacts generated from typescript function_declaration at scripts/validate-jev-artifacts.ts#validateArtifacts."
+}
+
+implementation ValidateJevArtifactsModuleImpl {
+  paths {
+    "scripts/validate-jev-artifacts.ts"
+  }
+  conforms_to ValidateJevArtifactsModule
+}

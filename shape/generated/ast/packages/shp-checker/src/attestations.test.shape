@@ -1,0 +1,49 @@
+module shape.generated.ast.packages.shp_checker.src.attestations_test
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource AttestationsTestModuleBundleAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/attestations.test.ts#bundle")
+  fingerprint ast.semantic_subtree_v1("sha256:b19c661de546f1536cc00eedb72a045a9835cf976baa747c9268859d45f80a20")
+}
+
+resource AttestationsTestModuleCheckAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/attestations.test.ts#check")
+  fingerprint ast.semantic_subtree_v1("sha256:27d3df87b069e7cda8eeff865b3872bb2e5e40ffee446d6ae2d79d0a7c2ccf32")
+}
+
+component AttestationsTestModule : GeneratedCandidate {
+  fn bundle
+    source ts("packages/shp-checker/src/attestations.test.ts#bundle")
+    effects unknown
+  fn check
+    source ts("packages/shp-checker/src/attestations.test.ts#check")
+    effects unknown
+}
+
+relation AttestationsTestModuleBundleGeneratedFromAttestationsTestModuleBundleAstAnchor {
+  kind generated_from
+  connects AttestationsTestModule -> AttestationsTestModuleBundleAstAnchor
+  roles { AttestationsTestModule as generated, AttestationsTestModuleBundleAstAnchor as syntax }
+  expects AttestationsTestModuleBundleAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b19c661de546f1536cc00eedb72a045a9835cf976baa747c9268859d45f80a20")
+  summary "fn AttestationsTestModule.bundle generated from typescript function_declaration at packages/shp-checker/src/attestations.test.ts#bundle."
+}
+
+relation AttestationsTestModuleCheckGeneratedFromAttestationsTestModuleCheckAstAnchor {
+  kind generated_from
+  connects AttestationsTestModule -> AttestationsTestModuleCheckAstAnchor
+  roles { AttestationsTestModule as generated, AttestationsTestModuleCheckAstAnchor as syntax }
+  expects AttestationsTestModuleCheckAstAnchor fingerprint ast.semantic_subtree_v1("sha256:27d3df87b069e7cda8eeff865b3872bb2e5e40ffee446d6ae2d79d0a7c2ccf32")
+  summary "fn AttestationsTestModule.check generated from typescript function_declaration at packages/shp-checker/src/attestations.test.ts#check."
+}
+
+implementation AttestationsTestModuleImpl {
+  paths {
+    "packages/shp-checker/src/attestations.test.ts"
+  }
+  conforms_to AttestationsTestModule
+}

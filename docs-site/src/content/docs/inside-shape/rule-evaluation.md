@@ -347,3 +347,19 @@ When adding a new rule, ask:
 That discipline keeps Shape useful to both agents and human reviewers.
 
 The [rule engine strategy](./rule-engine-strategy/) records why these direct checks remain the production approach, what the Datalog-like comparison spike demonstrated, and which evidence would justify revisiting the decision. That page is a design decision, not a second shipped evaluator.
+
+## Transition-bound external evidence
+
+The shared checker pipeline always runs model diagnostics, semantic rules and
+binding checks before resolving external attestations. In PR mode it evaluates
+coverage and bindings with repository attestations excluded, then derives stable
+IDs for missing-shape-update obligations from the exact base/head and normalised
+coverage condition. The complete versioned bundle is validated before any
+obligation is satisfied. Invalid evidence leaves all coverage failures intact.
+
+Only those explicit coverage diagnostics may be satisfied. Binding failures,
+Memory Guards, final forbids, parser errors and all other deterministic rules
+remain independent. Incremental result caching includes the attestation mode,
+transition and evidence, so changing any of them invalidates a cached result.
+Git discovery and provider orchestration remain outside semantic rules; optional
+Jev assessments live in the agent skill and have no checker dependency.

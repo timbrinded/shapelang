@@ -30,6 +30,8 @@ export function compareShapeDiagnostics(left: ShapeDiagnostic, right: ShapeDiagn
 
 function formatDiagnostic(diagnostic: ShapeDiagnostic): string {
   switch (diagnostic.kind) {
+    case "attestation_error":
+      return `error: attestation ${diagnostic.code}\n\n${diagnostic.message}`;
     case "parse":
       return formatParseDiagnostic(diagnostic);
     case "final_forbidden_effect":

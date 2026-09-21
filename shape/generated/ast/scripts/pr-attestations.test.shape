@@ -1,0 +1,7 @@
+module shape.generated.ast.scripts.pr_attestations_test
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}

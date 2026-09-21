@@ -1,0 +1,33 @@
+module shape.generated.ast.scripts.check_pr
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource CheckPrModuleCheckPullRequestAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("scripts/check-pr.ts#checkPullRequest")
+  fingerprint ast.semantic_subtree_v1("sha256:195ec949053d0874050f09743bd1b87342f55b2474f6c93b5a3e0d5868ef86a3")
+}
+
+component CheckPrModule : GeneratedCandidate {
+  fn checkPullRequest
+    source ts("scripts/check-pr.ts#checkPullRequest")
+    effects unknown
+}
+
+relation CheckPrModuleCheckPullRequestGeneratedFromCheckPrModuleCheckPullRequestAstAnchor {
+  kind generated_from
+  connects CheckPrModule -> CheckPrModuleCheckPullRequestAstAnchor
+  roles { CheckPrModule as generated, CheckPrModuleCheckPullRequestAstAnchor as syntax }
+  expects CheckPrModuleCheckPullRequestAstAnchor fingerprint ast.semantic_subtree_v1("sha256:195ec949053d0874050f09743bd1b87342f55b2474f6c93b5a3e0d5868ef86a3")
+  summary "fn CheckPrModule.checkPullRequest generated from typescript function_declaration at scripts/check-pr.ts#checkPullRequest."
+}
+
+implementation CheckPrModuleImpl {
+  paths {
+    "scripts/check-pr.ts"
+  }
+  conforms_to CheckPrModule
+}

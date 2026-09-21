@@ -1,0 +1,115 @@
+# Copy to .github/workflows/pr-enforcement.yml in a ShapeLang checkout.
+# For consumers, check out a reviewed ShapeLang tools revision separately and
+# adapt the CLI/helper paths. This is opt-in, not a change to existing CI.
+name: PR Shape enforcement
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, edited]
+permissions:
+  contents: read
+  pull-requests: read
+concurrency:
+  group: shape-evidence-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+jobs:
+  deterministic:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.3.14
+      - run: bun install --frozen-lockfile
+      - name: Check exact transition and current PR body
+        env:
+          PR_BASE: ${{ github.event.pull_request.base.sha }}
+          PR_HEAD: ${{ github.event.pull_request.head.sha }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          GITHUB_TOKEN: ${{ github.token }}
+          SHAPE_OUTPUT_DIR: ${{ runner.temp }}/shape-enforcement
+        run: bun scripts/check-pr.ts
+      - name: Publish deterministic result
+        if: always()
+        run: |
+          if test -f "$RUNNER_TEMP/shape-enforcement/check.json"; then
+            echo '## Shape deterministic check' >> "$GITHUB_STEP_SUMMARY"
+            echo '```json' >> "$GITHUB_STEP_SUMMARY"
+            cat "$RUNNER_TEMP/shape-enforcement/check.json" >> "$GITHUB_STEP_SUMMARY"
+            echo '```' >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: shape-enforcement-${{ github.event.pull_request.head.sha }}
+          path: ${{ runner.temp }}/shape-enforcement
+          if-no-files-found: error
+
+  semantic:
+    # Enable only for repositories whose branch authors may use these API keys.
+    # Never use pull_request_target to execute untrusted candidate code.
+    if: ${{ always() && vars.SHAPE_JEV_ENABLED == 'true' && github.event.pull_request.head.repo.full_name == github.repository }}
+    needs: deterministic
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.3.14
+      - run: bun install --frozen-lockfile
+      - uses: actions/download-artifact@v4
+        with:
+          name: shape-enforcement-${{ github.event.pull_request.head.sha }}
+          path: ${{ runner.temp }}/shape-enforcement
+      - name: Assemble evidence and interpret Jev with the Shape skill
+        id: agent
+        continue-on-error: true
+        uses: anthropics/claude-code-action@v1
+        env:
+          TYPESAFE_API_KEY: ${{ secrets.TYPESAFE_API_KEY }}
+          SHAPE_OUTPUT_DIR: ${{ runner.temp }}/shape-enforcement
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          github_token: ${{ github.token }}
+          claude_args: '--max-turns 20 --allowedTools "Read,Glob,Grep,Bash,Write"'
+          prompt: |
+            Use plugins/shapelang/skills/shape-lang/SKILL.md in drift-review mode
+            and its references/pr-enforcement.md workflow. Read deterministic.json
+            and attestations.json (if present) under SHAPE_OUTPUT_DIR. For each
+            attestable obligation, assemble bounded evidence using the exact
+            checked transition and call the bundled jev-enforcement.ts helper.
+            Save evidence as <obligation-id>.input.json and its actual helper
+            output as <obligation-id>.result.json in SHAPE_OUTPUT_DIR.
+            Do not fabricate probabilities or repair provider responses. Validate
+            the resulting contract. Write recommendations.md in that directory,
+            distinguishing shape-update, attestation-candidate and inspect, and
+            record model, distributions, threshold used and whether each result
+            affected your recommendation. Do not edit repository files or the PR.
+            Parser, conformance and integrity errors remain deterministic failures.
+      - name: Validate semantic artifacts
+        if: always()
+        env:
+          SHAPE_OUTPUT_DIR: ${{ runner.temp }}/shape-enforcement
+          JEV_THRESHOLD: ${{ vars.SHAPE_JEV_THRESHOLD || '0.9' }}
+          JEV_FAILURE_POLICY: ${{ vars.SHAPE_JEV_FAILURE_POLICY || 'warn' }}
+        run: bun scripts/validate-jev-artifacts.ts
+      - name: Publish recommendations
+        if: always()
+        run: |
+          if test -f "$RUNNER_TEMP/shape-enforcement/recommendations.md"; then
+            cat "$RUNNER_TEMP/shape-enforcement/recommendations.md" >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: shape-jev-${{ github.event.pull_request.head.sha }}
+          path: ${{ runner.temp }}/shape-enforcement
+# Require the deterministic job independently in branch protection. The semantic
+# job proposes actions only; no probability can turn a deterministic failure green.

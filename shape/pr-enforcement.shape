@@ -1,0 +1,185 @@
+module shape.enforcement
+
+import shape.checker
+
+import shape.tooling
+
+resource AttestationBundle
+
+resource AttestationObligations
+
+resource GitTransition
+
+resource JevEvidence
+
+resource JevProbabilities
+
+resource PullRequestBody
+
+resource SemanticRecommendation
+
+component JevEnforcementSkill {
+  grants Append<JevProbabilities>
+  grants Append<SemanticRecommendation>
+  grants Read<JevEvidence>
+  grants Read<JevProbabilities>
+  fn evaluateJev
+    source ts("plugins/shapelang/skills/shape-lang/scripts/jev-enforcement.ts#evaluateJev")
+    description "Optional network enrichment with fixed typed questions, bounded evidence and strict probability validation. No dependency from the deterministic checker."
+    effects complete {
+      Append<JevProbabilities>
+      Read<JevEvidence>
+    }
+  fn validateArtifacts
+    source ts("scripts/validate-jev-artifacts.ts#validateArtifacts")
+    effects complete {
+      Append<SemanticRecommendation>
+      Read<JevEvidence>
+      Read<JevProbabilities>
+    }
+}
+
+component PullRequestEvidenceWorkflow {
+  grants Append<AttestationBundle>
+  grants Append<SemanticDiagnostics>
+  grants Read<AttestationBundle>
+  grants Read<GitTransition>
+  grants Read<PullRequestBody>
+  grants Update<PullRequestBody>
+  fn checkPullRequest
+    source ts("scripts/check-pr.ts#checkPullRequest")
+    effects complete {
+      Append<AttestationBundle>
+      Append<SemanticDiagnostics>
+      Read<GitTransition>
+      Read<PullRequestBody>
+    }
+  fn extractAttestations
+    source ts("scripts/pr-attestations.ts#extractAttestations")
+    effects complete {
+      Append<AttestationBundle>
+      Read<PullRequestBody>
+    }
+  fn replaceAttestations
+    source ts("scripts/pr-attestations.ts#replaceAttestations")
+    description "Replaces only the marked section while preserving unrelated prose."
+    effects complete {
+      Read<AttestationBundle>
+      Read<PullRequestBody>
+      Update<PullRequestBody>
+    }
+}
+
+component ShapeAttestationValidator {
+  grants Append<AttestationObligations>
+  grants Append<SemanticDiagnostics>
+  grants Read<AttestationBundle>
+  grants Read<GitTransition>
+  grants Read<SemanticDiagnostics>
+  fn applyAttestations
+    source ts("packages/shp-checker/src/attestations.ts#applyAttestations")
+    description "Validates the complete versioned bundle and exact base/head before satisfying only matching coverage obligations. Never waives parser, binding, conformance or final-forbid errors."
+    effects complete {
+      Append<AttestationObligations>
+      Append<SemanticDiagnostics>
+      Read<AttestationBundle>
+      Read<GitTransition>
+      Read<SemanticDiagnostics>
+    }
+}
+
+component ShapeTransitionInput {
+  grants Append<ChangedFileList>
+  grants Read<GitTransition>
+  fn resolveCheckTransition
+    source ts("packages/shp-cli/src/check-input.ts#resolveCheckTransition")
+    description "Resolves exact commits, rejects dirty candidates and checkout mismatches, and derives changed paths with NUL-delimited Git output."
+    effects complete {
+      Append<ChangedFileList>
+      Read<GitTransition>
+    }
+}
+
+relation CheckerValidatesExternalAttestations {
+  kind calls
+  connects ShapeChecker -> ShapeAttestationValidator
+}
+
+relation CliResolvesTransition {
+  kind calls
+  connects ShpCli -> ShapeTransitionInput
+}
+
+relation PrWorkflowChecksShape {
+  kind calls
+  connects PullRequestEvidenceWorkflow -> ShapeChecker
+}
+
+relation PrWorkflowValidatesEvidence {
+  kind calls
+  connects PullRequestEvidenceWorkflow -> ShapeAttestationValidator
+}
+
+reevaluation ExternalEvidencePipelineOrder {
+  satisfies memory SharedCheckPipelineOrder
+  outcome Confirmed
+  summary "All deterministic checks still run before typed external evidence is validated. Only explicit missing-shape-update diagnostics can be satisfied; parser, final forbids and binding errors remain fatal."
+  reviewer ShapeMaintainers
+  decided_on "2026-09-21"
+  evidence test("packages/shp-checker/src/attestations.test.ts")
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/checker/model.ts")
+  reason "Shared type declarations now describe the attestation validator and obligations modeled in shape.enforcement; they introduce no additional behavior beyond those claims."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/checker/diagnostics.ts")
+  reason "Formats evidence error codes without changing the existing diagnostic-rendering architecture."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-cli/src/check-runner.ts")
+  reason "The existing runner renders the same check result as JSON when requested; checker and CLI boundaries remain represented by ShpCli."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-cli/src/commands/check/command.ts")
+  reason "Declares flags for the modeled ShapeTransitionInput and external attestation validation."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-cli/src/commands/check/impl.ts")
+  reason "Connects the modeled transition input, attestation provider and checker without adding another architecture boundary."
+}
+
+attest no_shape_change {
+  source md("plugins/shapelang/skills/shape-lang/SKILL.md")
+  reason "Routes to the modeled PR and Jev enforcement workflow."
+}
+
+attest no_shape_change {
+  source md("plugins/shapelang/skills/shape-lang/references/pr-enforcement.md")
+  reason "Documents the modeled transition, evidence and optional Jev boundaries."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/reference/cli.md")
+  reason "Documents the modeled CLI transition and evidence inputs."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/concepts/model-updates-attestations.md")
+  reason "Documents the modeled provider selection and temporal evidence semantics."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/learn/ci-workflow.md")
+  reason "Documents the modeled deterministic and optional semantic CI paths."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/inside-shape/rule-evaluation.md")
+  reason "Documents the existing semantic pipeline and the separately modeled external-attestation validator."
+}

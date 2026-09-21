@@ -1,3 +1,9 @@
+import type {
+  AttestationMode,
+  AttestationObligation,
+  CheckTransition,
+  AttestationErrorCode
+} from "../attestations.ts";
 // Checker data model: the effective-model and fact/diagnostic shapes the rest
 // of the checker reads and writes. This module is deliberately behavior-free —
 // it defines data shapes only. Lowering, rules, diagnostics, and query output
@@ -19,6 +25,13 @@ import type { IsoDateString } from "./iso-date.ts";
 export type { ChangeTrigger, Provenance, ShapeTarget } from "../shape-domain.ts";
 
 export type SemanticDiagnostic =
+  | {
+      kind: "attestation_error";
+      code: AttestationErrorCode;
+      message: string;
+      filePath?: string;
+      causedBy: string[];
+    }
   | {
       kind: "final_forbidden_effect";
       component: string;
@@ -261,9 +274,15 @@ export type CheckResult = {
   exitCode: 0 | 1 | 2;
   diagnostics: ShapeDiagnostic[];
   facts?: Fact[];
+  transition?: CheckTransition;
+  obligations?: AttestationObligation[];
 };
 
 export type CheckOptions = {
+  attestationMode?: AttestationMode;
+  transition?: CheckTransition;
+  /** Untrusted provider-neutral evidence; validated before use. */
+  attestations?: unknown;
   /**
    * Treat `effects unknown` as a non-fatal warning for draft validation.
    * Every other parse and semantic diagnostic remains blocking.

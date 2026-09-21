@@ -1,0 +1,81 @@
+module shape.generated.ast.packages.shp_cli.src.check_input
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource CheckInputModuleGitAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/check-input.ts#git")
+  fingerprint ast.semantic_subtree_v1("sha256:a2693e3a2c561ccd55049cb63944dbaced99a0171449e831919259669e31a9fc")
+}
+
+resource CheckInputModuleReadAttestationModeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/check-input.ts#readAttestationMode")
+  fingerprint ast.semantic_subtree_v1("sha256:aa477fe299733808209ff8fe4416d35adcc235dca23308ecde67594ee8479ce6")
+}
+
+resource CheckInputModuleRequireCandidateFilesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/check-input.ts#requireCandidateFiles")
+  fingerprint ast.semantic_subtree_v1("sha256:8e150a89e75af7e73a4dcc99b9a8486a9f77901715f95474df8791d68897b3e2")
+}
+
+resource CheckInputModuleResolveCheckTransitionAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/check-input.ts#resolveCheckTransition")
+  fingerprint ast.semantic_subtree_v1("sha256:4fe04c85db12eb435946b58301647b4830bcded61a595bcf3edd4ebd84c379b8")
+}
+
+component CheckInputModule : GeneratedCandidate {
+  fn git
+    source ts("packages/shp-cli/src/check-input.ts#git")
+    effects unknown
+  fn readAttestationMode
+    source ts("packages/shp-cli/src/check-input.ts#readAttestationMode")
+    effects unknown
+  fn requireCandidateFiles
+    source ts("packages/shp-cli/src/check-input.ts#requireCandidateFiles")
+    effects unknown
+  fn resolveCheckTransition
+    source ts("packages/shp-cli/src/check-input.ts#resolveCheckTransition")
+    effects unknown
+}
+
+relation CheckInputModuleGitGeneratedFromCheckInputModuleGitAstAnchor {
+  kind generated_from
+  connects CheckInputModule -> CheckInputModuleGitAstAnchor
+  roles { CheckInputModule as generated, CheckInputModuleGitAstAnchor as syntax }
+  expects CheckInputModuleGitAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a2693e3a2c561ccd55049cb63944dbaced99a0171449e831919259669e31a9fc")
+  summary "fn CheckInputModule.git generated from typescript function_declaration at packages/shp-cli/src/check-input.ts#git."
+}
+
+relation CheckInputModuleReadAttestationModeGeneratedFromCheckInputModuleReadAttestationModeAstAnchor {
+  kind generated_from
+  connects CheckInputModule -> CheckInputModuleReadAttestationModeAstAnchor
+  roles { CheckInputModule as generated, CheckInputModuleReadAttestationModeAstAnchor as syntax }
+  expects CheckInputModuleReadAttestationModeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:aa477fe299733808209ff8fe4416d35adcc235dca23308ecde67594ee8479ce6")
+  summary "fn CheckInputModule.readAttestationMode generated from typescript function_declaration at packages/shp-cli/src/check-input.ts#readAttestationMode."
+}
+
+relation CheckInputModuleRequireCandidateFilesGeneratedFromCheckInputModuleRequireCandidateFilesAstAnchor {
+  kind generated_from
+  connects CheckInputModule -> CheckInputModuleRequireCandidateFilesAstAnchor
+  roles { CheckInputModule as generated, CheckInputModuleRequireCandidateFilesAstAnchor as syntax }
+  expects CheckInputModuleRequireCandidateFilesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:8e150a89e75af7e73a4dcc99b9a8486a9f77901715f95474df8791d68897b3e2")
+  summary "fn CheckInputModule.requireCandidateFiles generated from typescript function_declaration at packages/shp-cli/src/check-input.ts#requireCandidateFiles."
+}
+
+relation CheckInputModuleResolveCheckTransitionGeneratedFromCheckInputModuleResolveCheckTransitionAstAnchor {
+  kind generated_from
+  connects CheckInputModule -> CheckInputModuleResolveCheckTransitionAstAnchor
+  roles { CheckInputModule as generated, CheckInputModuleResolveCheckTransitionAstAnchor as syntax }
+  expects CheckInputModuleResolveCheckTransitionAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4fe04c85db12eb435946b58301647b4830bcded61a595bcf3edd4ebd84c379b8")
+  summary "fn CheckInputModule.resolveCheckTransition generated from typescript function_declaration at packages/shp-cli/src/check-input.ts#resolveCheckTransition."
+}
+
+implementation CheckInputModuleImpl {
+  paths {
+    "packages/shp-cli/src/check-input.ts"
+  }
+  conforms_to CheckInputModule
+}

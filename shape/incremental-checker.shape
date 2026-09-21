@@ -22,7 +22,7 @@ component ShapeIncrementalChecker {
   grants Update<IncrementalCheckState>
   fn check : ProtectedCheckOrder
     source ts("packages/shp-checker/src/checker/incremental.ts#check")
-    description "Reuses parsed documents and a globally lowered model, rebuilding derived facts after document or implicit-origin changes and reporting deterministic invalidation."
+    description "Reuses parsed documents and a globally lowered model, rebuilding after document changes and invalidating cached results when attestation mode, exact transition, evidence or other check options change."
     effects complete {
       Append<IncrementalInvalidationReport>
         evidence ts("packages/shp-checker/src/checker/incremental.ts")

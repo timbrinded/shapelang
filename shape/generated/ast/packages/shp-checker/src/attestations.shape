@@ -1,0 +1,136 @@
+module shape.generated.ast.packages.shp_checker.src.attestations
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource AttestationErrorAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/attestations.ts#AttestationError")
+  fingerprint ast.semantic_subtree_v1("sha256:dfb86f4c4ce115c867bb2950b583530c0f6aa64e01124d60e176d65f6ca994e0")
+}
+
+resource AttestationErrorConstructorAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/attestations.ts#AttestationError.constructor")
+  fingerprint ast.semantic_subtree_v1("sha256:6806a541191b4802af835549cea66dd6baef73945bfe4ba1f76cafbf00da5c89")
+}
+
+resource AttestationsModuleApplyAttestationsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/attestations.ts#applyAttestations")
+  fingerprint ast.semantic_subtree_v1("sha256:d6978f9b71d527458c076034bf9efd4e6d628975d5935dd2a05f241669bdc7c6")
+}
+
+resource AttestationsModuleAttestationObligationAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/attestations.ts#attestationObligation")
+  fingerprint ast.semantic_subtree_v1("sha256:63301ff5b5c25308e69c42fbe8a488bea3415ef5a3cb41dc3675978a0ef22a05")
+}
+
+resource AttestationsModuleExactKeysAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/attestations.ts#exactKeys")
+  fingerprint ast.semantic_subtree_v1("sha256:731bcaf01eae784487be04ad6c5ec7d378987a7c56b88c7551459a63894698f5")
+}
+
+resource AttestationsModuleIsRecordAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/attestations.ts#isRecord")
+  fingerprint ast.semantic_subtree_v1("sha256:ecba35d975af5e144c3505e84562b44665af42d390adf4b7bb95d469b9475d8b")
+}
+
+resource AttestationsModuleParseAttestationBundleAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/attestations.ts#parseAttestationBundle")
+  fingerprint ast.semantic_subtree_v1("sha256:246f8a35060e6a320f5bdd874720c1e667365be0a9d43dd8d111d1b9d9d996ee")
+}
+
+component AttestationError : GeneratedCandidate {
+  fn constructor
+    source ts("packages/shp-checker/src/attestations.ts#AttestationError.constructor")
+    effects unknown
+}
+
+component AttestationsModule : GeneratedCandidate {
+  fn applyAttestations
+    source ts("packages/shp-checker/src/attestations.ts#applyAttestations")
+    effects unknown
+  fn attestationObligation
+    source ts("packages/shp-checker/src/attestations.ts#attestationObligation")
+    effects unknown
+  fn exactKeys
+    source ts("packages/shp-checker/src/attestations.ts#exactKeys")
+    effects unknown
+  fn isRecord
+    source ts("packages/shp-checker/src/attestations.ts#isRecord")
+    effects unknown
+  fn parseAttestationBundle
+    source ts("packages/shp-checker/src/attestations.ts#parseAttestationBundle")
+    effects unknown
+}
+
+relation AttestationErrorConstructorGeneratedFromAttestationErrorConstructorAstAnchor {
+  kind generated_from
+  connects AttestationError -> AttestationErrorConstructorAstAnchor
+  roles { AttestationError as generated, AttestationErrorConstructorAstAnchor as syntax }
+  expects AttestationErrorConstructorAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6806a541191b4802af835549cea66dd6baef73945bfe4ba1f76cafbf00da5c89")
+  summary "fn AttestationError.constructor generated from typescript method_definition at packages/shp-checker/src/attestations.ts#AttestationError.constructor."
+}
+
+relation AttestationErrorGeneratedFromAttestationErrorAstAnchor {
+  kind generated_from
+  connects AttestationError -> AttestationErrorAstAnchor
+  roles { AttestationError as generated, AttestationErrorAstAnchor as syntax }
+  expects AttestationErrorAstAnchor fingerprint ast.semantic_subtree_v1("sha256:dfb86f4c4ce115c867bb2950b583530c0f6aa64e01124d60e176d65f6ca994e0")
+  summary "component AttestationError generated from typescript class_declaration at packages/shp-checker/src/attestations.ts#AttestationError."
+}
+
+relation AttestationsModuleApplyAttestationsGeneratedFromAttestationsModuleApplyAttestationsAstAnchor {
+  kind generated_from
+  connects AttestationsModule -> AttestationsModuleApplyAttestationsAstAnchor
+  roles { AttestationsModule as generated, AttestationsModuleApplyAttestationsAstAnchor as syntax }
+  expects AttestationsModuleApplyAttestationsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d6978f9b71d527458c076034bf9efd4e6d628975d5935dd2a05f241669bdc7c6")
+  summary "fn AttestationsModule.applyAttestations generated from typescript function_declaration at packages/shp-checker/src/attestations.ts#applyAttestations."
+}
+
+relation AttestationsModuleAttestationObligationGeneratedFromAttestationsModuleAttestationObligationAstAnchor {
+  kind generated_from
+  connects AttestationsModule -> AttestationsModuleAttestationObligationAstAnchor
+  roles { AttestationsModule as generated, AttestationsModuleAttestationObligationAstAnchor as syntax }
+  expects AttestationsModuleAttestationObligationAstAnchor fingerprint ast.semantic_subtree_v1("sha256:63301ff5b5c25308e69c42fbe8a488bea3415ef5a3cb41dc3675978a0ef22a05")
+  summary "fn AttestationsModule.attestationObligation generated from typescript function_declaration at packages/shp-checker/src/attestations.ts#attestationObligation."
+}
+
+relation AttestationsModuleExactKeysGeneratedFromAttestationsModuleExactKeysAstAnchor {
+  kind generated_from
+  connects AttestationsModule -> AttestationsModuleExactKeysAstAnchor
+  roles { AttestationsModule as generated, AttestationsModuleExactKeysAstAnchor as syntax }
+  expects AttestationsModuleExactKeysAstAnchor fingerprint ast.semantic_subtree_v1("sha256:731bcaf01eae784487be04ad6c5ec7d378987a7c56b88c7551459a63894698f5")
+  summary "fn AttestationsModule.exactKeys generated from typescript function_declaration at packages/shp-checker/src/attestations.ts#exactKeys."
+}
+
+relation AttestationsModuleIsRecordGeneratedFromAttestationsModuleIsRecordAstAnchor {
+  kind generated_from
+  connects AttestationsModule -> AttestationsModuleIsRecordAstAnchor
+  roles { AttestationsModule as generated, AttestationsModuleIsRecordAstAnchor as syntax }
+  expects AttestationsModuleIsRecordAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ecba35d975af5e144c3505e84562b44665af42d390adf4b7bb95d469b9475d8b")
+  summary "fn AttestationsModule.isRecord generated from typescript function_declaration at packages/shp-checker/src/attestations.ts#isRecord."
+}
+
+relation AttestationsModuleParseAttestationBundleGeneratedFromAttestationsModuleParseAttestationBundleAstAnchor {
+  kind generated_from
+  connects AttestationsModule -> AttestationsModuleParseAttestationBundleAstAnchor
+  roles { AttestationsModule as generated, AttestationsModuleParseAttestationBundleAstAnchor as syntax }
+  expects AttestationsModuleParseAttestationBundleAstAnchor fingerprint ast.semantic_subtree_v1("sha256:246f8a35060e6a320f5bdd874720c1e667365be0a9d43dd8d111d1b9d9d996ee")
+  summary "fn AttestationsModule.parseAttestationBundle generated from typescript function_declaration at packages/shp-checker/src/attestations.ts#parseAttestationBundle."
+}
+
+implementation AttestationErrorImpl {
+  paths {
+    "packages/shp-checker/src/attestations.ts"
+  }
+  conforms_to AttestationError
+}
+
+implementation AttestationsModuleImpl {
+  paths {
+    "packages/shp-checker/src/attestations.ts"
+  }
+  conforms_to AttestationsModule
+}

@@ -7,6 +7,40 @@ export const checkCommand = buildCommand<CheckFlags, string[], CliContext>({
   loader: () => import("./impl"),
   parameters: {
     flags: {
+      json: {
+        kind: "boolean",
+        optional: true,
+        brief: "Emit machine-readable diagnostics, transition, and attestable obligations."
+      },
+      config: {
+        kind: "parsed",
+        parse: (input: string) => input,
+        optional: true,
+        brief: "Project JSON configuration (default: shapelang.json)."
+      },
+      base: {
+        kind: "parsed",
+        parse: (input: string) => input,
+        optional: true,
+        brief: "Exact baseline Git revision; compares against the checked-out head."
+      },
+      head: {
+        kind: "parsed",
+        parse: (input: string) => input,
+        optional: true,
+        brief: "Candidate Git revision (must be checked out; default HEAD)."
+      },
+      worktree: {
+        kind: "boolean",
+        optional: true,
+        brief: "Check the clean worktree at HEAD; requires --base."
+      },
+      attestations: {
+        kind: "parsed",
+        parse: (input: string) => input,
+        optional: true,
+        brief: "Provider-neutral JSON attestation bundle (pr mode only)."
+      },
       allowUnknownEffects: {
         kind: "boolean",
         optional: true,

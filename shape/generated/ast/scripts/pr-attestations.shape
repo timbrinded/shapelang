@@ -1,0 +1,65 @@
+module shape.generated.ast.scripts.pr_attestations
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource PrAttestationsModuleExtractAttestationsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("scripts/pr-attestations.ts#extractAttestations")
+  fingerprint ast.semantic_subtree_v1("sha256:ce19bc857937b310d788b408c3b3d74c7fa4306404c694079387bd4b77866b40")
+}
+
+resource PrAttestationsModuleReplaceAttestationsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("scripts/pr-attestations.ts#replaceAttestations")
+  fingerprint ast.semantic_subtree_v1("sha256:710d04264a72072464844df459c42b2203c5b4b86f05b62a88438601a00de44d")
+}
+
+resource PrAttestationsModuleSectionAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("scripts/pr-attestations.ts#section")
+  fingerprint ast.semantic_subtree_v1("sha256:22639d8c5852b664748e6895c08a8a4b8c2f09693556ac437cc827543b9858fd")
+}
+
+component PrAttestationsModule : GeneratedCandidate {
+  fn extractAttestations
+    source ts("scripts/pr-attestations.ts#extractAttestations")
+    effects unknown
+  fn replaceAttestations
+    source ts("scripts/pr-attestations.ts#replaceAttestations")
+    effects unknown
+  fn section
+    source ts("scripts/pr-attestations.ts#section")
+    effects unknown
+}
+
+relation PrAttestationsModuleExtractAttestationsGeneratedFromPrAttestationsModuleExtractAttestationsAstAnchor {
+  kind generated_from
+  connects PrAttestationsModule -> PrAttestationsModuleExtractAttestationsAstAnchor
+  roles { PrAttestationsModule as generated, PrAttestationsModuleExtractAttestationsAstAnchor as syntax }
+  expects PrAttestationsModuleExtractAttestationsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ce19bc857937b310d788b408c3b3d74c7fa4306404c694079387bd4b77866b40")
+  summary "fn PrAttestationsModule.extractAttestations generated from typescript function_declaration at scripts/pr-attestations.ts#extractAttestations."
+}
+
+relation PrAttestationsModuleReplaceAttestationsGeneratedFromPrAttestationsModuleReplaceAttestationsAstAnchor {
+  kind generated_from
+  connects PrAttestationsModule -> PrAttestationsModuleReplaceAttestationsAstAnchor
+  roles { PrAttestationsModule as generated, PrAttestationsModuleReplaceAttestationsAstAnchor as syntax }
+  expects PrAttestationsModuleReplaceAttestationsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:710d04264a72072464844df459c42b2203c5b4b86f05b62a88438601a00de44d")
+  summary "fn PrAttestationsModule.replaceAttestations generated from typescript function_declaration at scripts/pr-attestations.ts#replaceAttestations."
+}
+
+relation PrAttestationsModuleSectionGeneratedFromPrAttestationsModuleSectionAstAnchor {
+  kind generated_from
+  connects PrAttestationsModule -> PrAttestationsModuleSectionAstAnchor
+  roles { PrAttestationsModule as generated, PrAttestationsModuleSectionAstAnchor as syntax }
+  expects PrAttestationsModuleSectionAstAnchor fingerprint ast.semantic_subtree_v1("sha256:22639d8c5852b664748e6895c08a8a4b8c2f09693556ac437cc827543b9858fd")
+  summary "fn PrAttestationsModule.section generated from typescript function_declaration at scripts/pr-attestations.ts#section."
+}
+
+implementation PrAttestationsModuleImpl {
+  paths {
+    "scripts/pr-attestations.ts"
+  }
+  conforms_to PrAttestationsModule
+}

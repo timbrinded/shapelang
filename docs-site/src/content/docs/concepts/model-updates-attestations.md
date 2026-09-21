@@ -161,3 +161,29 @@ Do not:
 - [Implementations and Coverage](./implementations-coverage.md)
 - [Refactor Constraints](./refactor-constraints.md)
 - [Unknowns and Safety](./unknowns-safety.md)
+
+## Store transition evidence in the PR
+
+Opt in with `attestations.mode: "pr"` in `shapelang.json`; otherwise the existing
+repository workflow remains the default. A PR bundle is versioned JSON containing
+`version: 1`, full `base` and `head` commit IDs, and an `attestations` array. Each
+entry has an exact checker-emitted `obligation` ID, `kind: "no-shape-change"`, and
+a non-empty `rationale`. See the [CLI reference](/shapelang/reference/cli/) for
+transition checks and input flags.
+
+The IDs bind normalised coverage conditions to the exact checked transition.
+Every new commit or baseline invalidates previous evidence. Reinspect the change
+before replacing it. Evidence cannot suppress parser errors, final forbids,
+conformance failures, memory guards or documentation bindings. Repository
+attestations are ignored in PR mode; v1 supports only coverage attestations.
+
+The PR-body contract is one JSON or YAML fenced payload between
+`<!-- shapelang:attestations:v1 -->` and `<!-- /shapelang:attestations -->`.
+An optional details wrapper makes it collapsible. Workflow tooling extracts the
+payload and preserves unrelated PR prose. The core knows nothing about GitHub.
+
+Jev can optionally evaluate bounded diff and authored-model evidence using fixed
+semantic-change, shape-update and claim-plausibility questions. It returns
+probability distributions, not a waiver. The Shape agent reviews those signals
+before proposing a shape update, an attestation, or further inspection. Provider
+failure never changes the deterministic result.

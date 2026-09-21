@@ -1,3 +1,4 @@
+import { applyAttestations, AttestationError } from "../attestations.ts";
 // Public checker orchestration: the two entrypoints callers use to check Shape
 // modules or files. checkShapeModules lowers the model, runs the ordered
 // semantic checks, and (unless disabled) binding enforcement; checkShapeFiles
@@ -39,22 +40,63 @@ export function checkLoweredShapeModel(
   model: Model,
   normalizedOptions: NormalizedCheckOptions
 ): CheckResult {
-  const diagnostics: SemanticDiagnostic[] = [
+  // PR mode never consumes repository attestations, including binding waivers.
+  const checkedModel =
+    normalizedOptions.attestationMode === "pr" ? { ...model, attestations: [] } : model;
+  let diagnostics: SemanticDiagnostic[] = [
     ...model.diagnostics,
-    ...runSemanticChecks(model, normalizedOptions),
+    ...runSemanticChecks(checkedModel, normalizedOptions),
     ...(normalizedOptions.enforceBindings === false
       ? []
-      : checkBindings(model, normalizedOptions.changedFiles ?? [], normalizedOptions.repoRoot))
+      : checkBindings(
+          checkedModel,
+          normalizedOptions.changedFiles ?? [],
+          normalizedOptions.repoRoot
+        ))
   ].map((diagnostic) =>
     normalizedOptions.allowUnknownEffects && diagnostic.kind === "unknown_effects"
       ? { ...diagnostic, severity: "warning" }
       : diagnostic
   );
+  let obligations: CheckResult["obligations"];
+  try {
+    const mode = normalizedOptions.attestationMode ?? "repo";
+    if (mode !== "repo" && mode !== "pr")
+      throw new AttestationError("invalid_mode", "Attestation mode must be repo or pr.");
+    if (mode === "repo" && normalizedOptions.attestations !== undefined)
+      throw new AttestationError("invalid_mode", "External attestations require pr mode.");
+    if (mode === "pr" && !normalizedOptions.transition)
+      throw new AttestationError(
+        "missing_transition",
+        "PR attestations require an explicit base/head transition."
+      );
+    if (normalizedOptions.transition) {
+      obligations = applyAttestations(diagnostics, normalizedOptions.transition).obligations;
+      const applied = applyAttestations(
+        diagnostics,
+        normalizedOptions.transition,
+        normalizedOptions.attestations
+      );
+      diagnostics = applied.diagnostics;
+      obligations = applied.obligations;
+    }
+  } catch (error) {
+    if (!(error instanceof AttestationError)) throw error;
+    diagnostics.push({
+      kind: "attestation_error",
+      code: error.code,
+      message: error.message,
+      causedBy: []
+    });
+  }
   const ok = diagnostics.every(
     (diagnostic) => diagnostic.kind === "unknown_effects" && diagnostic.severity === "warning"
   );
 
   return {
+    ...(normalizedOptions.transition
+      ? { transition: normalizedOptions.transition, obligations: obligations ?? [] }
+      : {}),
     ok,
     exitCode: ok ? 0 : 1,
     diagnostics: diagnostics.toSorted(compareShapeDiagnostics),

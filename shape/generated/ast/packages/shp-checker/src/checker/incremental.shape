@@ -8,7 +8,7 @@ trait GeneratedCandidate {
 
 resource IncrementalModuleCheckOptionsKeyAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/checker/incremental.ts#checkOptionsKey")
-  fingerprint ast.semantic_subtree_v1("sha256:c7cc0cafb8bb6e947a13f487a883a0b88a5e6a3f8114d8166685e5a0d688c08b")
+  fingerprint ast.semantic_subtree_v1("sha256:a72145bf97896a7afb7476b0f6519a7b2e8498089ee9ad4ad773eb2a61d5998e")
 }
 
 resource IncrementalModuleCloneCheckResultAstAnchor : GeneratedAstAnchor {
@@ -85,7 +85,7 @@ relation IncrementalModuleCheckOptionsKeyGeneratedFromIncrementalModuleCheckOpti
   kind generated_from
   connects IncrementalModule -> IncrementalModuleCheckOptionsKeyAstAnchor
   roles { IncrementalModule as generated, IncrementalModuleCheckOptionsKeyAstAnchor as syntax }
-  expects IncrementalModuleCheckOptionsKeyAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c7cc0cafb8bb6e947a13f487a883a0b88a5e6a3f8114d8166685e5a0d688c08b")
+  expects IncrementalModuleCheckOptionsKeyAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a72145bf97896a7afb7476b0f6519a7b2e8498089ee9ad4ad773eb2a61d5998e")
   summary "fn IncrementalModule.checkOptionsKey generated from typescript function_declaration at packages/shp-checker/src/checker/incremental.ts#checkOptionsKey."
 }
 

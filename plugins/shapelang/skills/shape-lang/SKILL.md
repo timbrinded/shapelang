@@ -30,8 +30,9 @@ description: >-
 4. Run command-specific `--help` only when the installed command rejects or contradicts documented syntax.
 5. Reuse `<SHAPE_CMD>` consistently.
 
-Use only the Shape v0.9.0 commands documented by this skill and the installed
-CLI help.
+Use Shape v0.9.0 commands documented by this skill and the installed CLI help. PR
+attestation flags require a build containing that feature; older v0.9.0 binaries
+do not support them.
 
 ## Select A Mode
 
@@ -50,6 +51,7 @@ Load only the supporting reference needed for the selected mode:
 - `debug` or `operate`: `references/cli-workflows.md`
 - `teach`: `references/teaching-guide.md`
 - `drift-review`: `references/drift-review.md`
+- PR-scoped attestations or optional Jev enforcement: `references/pr-enforcement.md`
 - Memory Guards, rationales, reevaluations, policy, or freshness: `references/memory-guards.md`
 - Canonical snippets: `references/examples.md`
 - Antipattern review or generated-draft cleanup: `references/antipatterns.md`
@@ -82,7 +84,7 @@ Use tools by need:
 - Include `source` for functions and `evidence` for material effects when available.
 - Represent structural dependencies as top-level relations. Prefer `calls`, `callbacks`, `provides`, and `coordinated_call`.
 - Treat vendored `.shape` modules under the discovered Shape root as active policy. Imports affect name visibility, not policy activation.
-- Update the authored model for governed source changes, or add a narrow current attestation only when the architecture contract truly did not change.
+- Update the authored model for governed source changes, or add a narrow current attestation only when the architecture contract truly did not change. Read `shapelang.json` before choosing storage; follow `references/pr-enforcement.md` for `pr` mode.
 - Satisfy real guard obligations with a valid reevaluation; never add one merely to silence a diagnostic.
 - Promote generated anchors, analyzer hints, or generated relations only after source review.
 

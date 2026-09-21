@@ -236,6 +236,9 @@ function moduleOriginsChanged(
 
 function checkOptionsKey(options: CheckOptions): string {
   const snapshot = {
+    attestationMode: options.attestationMode ?? null,
+    transition: options.transition ?? null,
+    attestations: options.attestations ?? null,
     allowUnknownEffects: options.allowUnknownEffects ?? null,
     changedFiles: options.changedFiles ?? null,
     enforceBindings: options.enforceBindings ?? null,

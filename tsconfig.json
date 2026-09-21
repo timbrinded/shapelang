@@ -18,6 +18,7 @@
   "include": [
     "packages/**/*.ts",
     "scripts/**/*.ts",
+    "plugins/shapelang/skills/shape-lang/scripts/**/*.ts",
     "docs-site/scripts/**/*.test.ts",
     "experiments/**/*.ts"
   ]
