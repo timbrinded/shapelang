@@ -31,15 +31,16 @@ jobs:
           PR_NUMBER: ${{ github.event.pull_request.number }}
           GITHUB_TOKEN: ${{ github.token }}
           SHAPE_OUTPUT_DIR: ${{ runner.temp }}/shape-enforcement
-        run: bun scripts/check-pr.ts
+        run: |
+          shape_status=0
+          bun scripts/check-pr.ts || shape_status=$?
+          bun scripts/report-pr-check.ts "$shape_status"
+          exit "$shape_status"
       - name: Publish deterministic result
         if: always()
         run: |
-          if test -f "$RUNNER_TEMP/shape-enforcement/check.json"; then
-            echo '## Shape deterministic check' >> "$GITHUB_STEP_SUMMARY"
-            echo '```json' >> "$GITHUB_STEP_SUMMARY"
-            cat "$RUNNER_TEMP/shape-enforcement/check.json" >> "$GITHUB_STEP_SUMMARY"
-            echo '```' >> "$GITHUB_STEP_SUMMARY"
+          if test -f "$RUNNER_TEMP/shape-enforcement/check.md"; then
+            cat "$RUNNER_TEMP/shape-enforcement/check.md" >> "$GITHUB_STEP_SUMMARY"
           fi
       - uses: actions/upload-artifact@v4
         if: always()

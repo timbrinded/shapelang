@@ -4,6 +4,7 @@ import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { spawnSync } from "node:child_process";
 import { checkPullRequest } from "../../../scripts/check-pr.ts";
+import { renderCheckReport } from "../../../scripts/report-pr-check.ts";
 import { extractAttestations, replaceAttestations } from "../../../scripts/pr-attestations.ts";
 
 const cli = resolve(import.meta.dir, "index.ts");
@@ -126,9 +127,13 @@ test("real Git/CLI/PR-body workflow: missing -> accepted -> stale, and parser er
       process.chdir(root);
       const workflow = { base, head, outputDirectory: artifacts, command: [process.execPath, cli] };
       expect(await checkPullRequest({ ...workflow, body: "No evidence" })).toBe(1);
+      expect(
+        renderCheckReport(await Bun.file(join(artifacts, "check.json")).json(), 1).annotations
+      ).toHaveLength(1);
       expect(await checkPullRequest({ ...workflow, body })).toBe(0);
       const report = await Bun.file(join(artifacts, "check.json")).json();
       expect(report.ok).toBe(true);
+      expect(renderCheckReport(report, 0).annotations).toEqual([]);
       expect(await checkPullRequest({ ...workflow, body: body + body })).toBe(1);
     } finally {
       process.chdir(oldCwd);
@@ -142,6 +147,7 @@ test("real Git/CLI/PR-body workflow: missing -> accepted -> stale, and parser er
     git("commit", "-qm", "docs");
     const stale = run("--base", base, "--attestations", evidenceFile);
     expect(stale.status).toBe(1);
+    expect(renderCheckReport(stale.data, 1).text).toContain("attestation stale");
     expect(stale.data.diagnostics).toContainEqual(
       expect.objectContaining({ kind: "attestation_error", code: "stale" })
     );

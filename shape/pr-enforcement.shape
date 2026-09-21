@@ -16,6 +16,8 @@ resource JevProbabilities
 
 resource PullRequestBody
 
+resource PullRequestCheckReport
+
 resource SemanticRecommendation
 
 component JevEnforcementSkill {
@@ -41,10 +43,12 @@ component JevEnforcementSkill {
 
 component PullRequestEvidenceWorkflow {
   grants Append<AttestationBundle>
+  grants Append<PullRequestCheckReport>
   grants Append<SemanticDiagnostics>
   grants Read<AttestationBundle>
   grants Read<GitTransition>
   grants Read<PullRequestBody>
+  grants Read<SemanticDiagnostics>
   grants Update<PullRequestBody>
   fn checkPullRequest
     source ts("scripts/check-pr.ts#checkPullRequest")
@@ -59,6 +63,13 @@ component PullRequestEvidenceWorkflow {
     effects complete {
       Append<AttestationBundle>
       Read<PullRequestBody>
+    }
+  fn renderCheckReport
+    source ts("scripts/report-pr-check.ts#renderCheckReport")
+    description "Renders only the final deterministic result as readable logs, escaped GitHub annotations and a Markdown summary, preserving JSON artifacts and the checker exit status."
+    effects complete {
+      Append<PullRequestCheckReport>
+      Read<SemanticDiagnostics>
     }
   fn replaceAttestations
     source ts("scripts/pr-attestations.ts#replaceAttestations")

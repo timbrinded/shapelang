@@ -239,6 +239,13 @@ extracts typed evidence, reruns with valid evidence and publishes the remaining
 diagnostics. Include the `edited` PR event so editing evidence reruns the check.
 Keep intermediate artifacts outside the repository to preserve a clean candidate.
 
+The failing check step prints human-readable diagnostics and emits GitHub error
+annotations for the final result, with file locations where available. Its exit
+status remains the checker’s status. The job summary publishes `check.md`; full
+`deterministic.json` and `check.json` results remain in the uploaded artifact.
+Errors cleared by accepted evidence are not annotated. Missing or unreadable
+checker output fails reporting explicitly instead of showing a passing summary.
+
 Set `attestations.mode` to `pr` in `shapelang.json`. The default `repo` mode remains
 unchanged. Require the deterministic job independently in branch protection.
 

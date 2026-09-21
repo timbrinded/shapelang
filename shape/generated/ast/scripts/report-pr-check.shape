@@ -1,0 +1,65 @@
+module shape.generated.ast.scripts.report_pr_check
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource ReportPrCheckModuleEscapeDataAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("scripts/report-pr-check.ts#escapeData")
+  fingerprint ast.semantic_subtree_v1("sha256:27c8a361617b502d98a7dad22b9869c5b46e81664be46a33ab426db11cf8d87c")
+}
+
+resource ReportPrCheckModuleEscapePropertyAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("scripts/report-pr-check.ts#escapeProperty")
+  fingerprint ast.semantic_subtree_v1("sha256:4685e6fa9f395afefc8b03460511ac24c18f4cce53754c0c3da74870cd12881f")
+}
+
+resource ReportPrCheckModuleRenderCheckReportAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("scripts/report-pr-check.ts#renderCheckReport")
+  fingerprint ast.semantic_subtree_v1("sha256:379ce4452829d4d09f2cb2712302df52243741148aa72d3e7c2a430708a82848")
+}
+
+component ReportPrCheckModule : GeneratedCandidate {
+  fn escapeData
+    source ts("scripts/report-pr-check.ts#escapeData")
+    effects unknown
+  fn escapeProperty
+    source ts("scripts/report-pr-check.ts#escapeProperty")
+    effects unknown
+  fn renderCheckReport
+    source ts("scripts/report-pr-check.ts#renderCheckReport")
+    effects unknown
+}
+
+relation ReportPrCheckModuleEscapeDataGeneratedFromReportPrCheckModuleEscapeDataAstAnchor {
+  kind generated_from
+  connects ReportPrCheckModule -> ReportPrCheckModuleEscapeDataAstAnchor
+  roles { ReportPrCheckModule as generated, ReportPrCheckModuleEscapeDataAstAnchor as syntax }
+  expects ReportPrCheckModuleEscapeDataAstAnchor fingerprint ast.semantic_subtree_v1("sha256:27c8a361617b502d98a7dad22b9869c5b46e81664be46a33ab426db11cf8d87c")
+  summary "fn ReportPrCheckModule.escapeData generated from typescript function_declaration at scripts/report-pr-check.ts#escapeData."
+}
+
+relation ReportPrCheckModuleEscapePropertyGeneratedFromReportPrCheckModuleEscapePropertyAstAnchor {
+  kind generated_from
+  connects ReportPrCheckModule -> ReportPrCheckModuleEscapePropertyAstAnchor
+  roles { ReportPrCheckModule as generated, ReportPrCheckModuleEscapePropertyAstAnchor as syntax }
+  expects ReportPrCheckModuleEscapePropertyAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4685e6fa9f395afefc8b03460511ac24c18f4cce53754c0c3da74870cd12881f")
+  summary "fn ReportPrCheckModule.escapeProperty generated from typescript function_declaration at scripts/report-pr-check.ts#escapeProperty."
+}
+
+relation ReportPrCheckModuleRenderCheckReportGeneratedFromReportPrCheckModuleRenderCheckReportAstAnchor {
+  kind generated_from
+  connects ReportPrCheckModule -> ReportPrCheckModuleRenderCheckReportAstAnchor
+  roles { ReportPrCheckModule as generated, ReportPrCheckModuleRenderCheckReportAstAnchor as syntax }
+  expects ReportPrCheckModuleRenderCheckReportAstAnchor fingerprint ast.semantic_subtree_v1("sha256:379ce4452829d4d09f2cb2712302df52243741148aa72d3e7c2a430708a82848")
+  summary "fn ReportPrCheckModule.renderCheckReport generated from typescript function_declaration at scripts/report-pr-check.ts#renderCheckReport."
+}
+
+implementation ReportPrCheckModuleImpl {
+  paths {
+    "scripts/report-pr-check.ts"
+  }
+  conforms_to ReportPrCheckModule
+}
