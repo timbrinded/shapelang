@@ -168,7 +168,7 @@ Opt in with `attestations.mode: "pr"` in `shapelang.json`; otherwise the existin
 repository workflow remains the default. A PR bundle is versioned JSON containing
 `version: 1`, full `base` and `head` commit IDs, and an `attestations` array. Each
 entry has an exact checker-emitted `obligation` ID, `kind: "no-shape-change"`, and
-a non-empty `rationale`. See the [CLI reference](/shapelang/reference/cli/) for
+a non-empty `rationale`. See the [CLI reference](../reference/cli.md) for
 transition checks and input flags.
 
 The IDs bind normalised coverage conditions to the exact checked transition.
