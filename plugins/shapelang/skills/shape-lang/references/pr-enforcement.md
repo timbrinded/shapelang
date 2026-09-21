@@ -38,6 +38,9 @@ to `--head` for a clean HEAD; it does not attest uncommitted edits. Do not combi
 these options with `--changed-files`. JSON goes to stdout even on failure; retain
 the exit status. Exit 0 passes, 1 is semantic/evidence failure, 2 is parse/usage
 failure. Do not reinterpret a crash or absent JSON as a pass.
+Default discovery rejects sparse checkouts that omit tracked `shape/**/*.shape`
+files. Include the complete default model in the checkout before generating PR
+evidence; explicit positional file arguments instead check their selected scope.
 
 Read `transition`, `diagnostics`, and `obligations`. Only entries with type
 `shape-change-or-attestation` are attestable. `shp obligations` still reports

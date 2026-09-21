@@ -7,6 +7,63 @@ import { checkPullRequest } from "../../../scripts/check-pr.ts";
 import { extractAttestations, replaceAttestations } from "../../../scripts/pr-attestations.ts";
 
 const cli = resolve(import.meta.dir, "index.ts");
+test("transition default discovery rejects wholly and partially omitted sparse models", async () => {
+  const root = await mkdtemp(join(tmpdir(), "shp-pr-sparse-"));
+  const git = (...args: string[]) => {
+    const result = spawnSync("git", args, { cwd: root, encoding: "utf8" });
+    if (result.status !== 0) throw new Error(result.stderr);
+    return result.stdout.trim();
+  };
+  const run = (base: string, ...files: string[]) => {
+    const result = spawnSync(process.execPath, [cli, "check", "--json", "--base", base, ...files], {
+      cwd: root,
+      encoding: "utf8"
+    });
+    expect(result.stderr).toBe("");
+    return { status: result.status, data: JSON.parse(result.stdout) };
+  };
+  try {
+    git("init", "-q");
+    git("config", "user.email", "tests@example.com");
+    git("config", "user.name", "Tests");
+    git("config", "commit.gpgsign", "false");
+    await mkdir(join(root, "shape", "visible"), { recursive: true });
+    await mkdir(join(root, "shape", "policy"), { recursive: true });
+    await mkdir(join(root, "src"));
+    await writeFile(join(root, "shapelang.json"), '{"attestations":{"mode":"pr"}}');
+    await writeFile(join(root, "shape", "visible", "app.shape"), "module app\n");
+    await writeFile(
+      join(root, "shape", "policy", "coverage.shape"),
+      'module governance\nimplementation App { paths { "src/**" } on_change require shape_update }\n'
+    );
+    await writeFile(join(root, "src", "app.ts"), "export const x = 1;\n");
+    git("add", ".");
+    git("commit", "-qm", "baseline");
+    const base = git("rev-parse", "HEAD");
+    await writeFile(join(root, "src", "app.ts"), "export const x = 2;\n");
+    git("add", ".");
+    git("commit", "-qm", "candidate");
+    const complete = run(base);
+    expect(complete).toMatchObject({ status: 1 });
+    expect(complete.data.obligations).toHaveLength(1);
+
+    for (const directories of [["src"], ["src", "shape/visible"]]) {
+      git("sparse-checkout", "set", "--cone", ...directories);
+      expect(git("status", "--porcelain")).toBe("");
+      const omitted = run(base);
+      expect(omitted.status).toBe(2);
+      expect(omitted.data.diagnostics[0].kind).toBe("check_input_error");
+      expect(omitted.data.diagnostics[0].message).toContain("shape/policy/coverage.shape");
+    }
+    // Explicit file selection continues to check exactly the requested model.
+    expect(run(base, "shape/visible/app.shape").status).toBe(0);
+    git("sparse-checkout", "disable");
+    expect(run(base)).toEqual(complete);
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
+}, 30_000);
+
 test("real Git/CLI/PR-body workflow: missing -> accepted -> stale, and parser errors stay fatal", async () => {
   const root = await mkdtemp(join(tmpdir(), "shp-pr-e2e-"));
   const artifacts = await mkdtemp(join(tmpdir(), "shp-pr-evidence-"));

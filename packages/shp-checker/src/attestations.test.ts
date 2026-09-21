@@ -144,6 +144,22 @@ binding Docs {
       }).result.ok
     ).toBe(false);
   });
+  test.each(["repo", "pr"] as const)(
+    "incremental %s checks distinguish absent evidence from null",
+    (attestationMode) => {
+      const checker = new IncrementalShapeChecker();
+      const documents = [{ filePath: "shape/app.shape", source }];
+      const options = { attestationMode, transition, changedFiles: [] };
+      for (const attestations of [undefined, null, undefined, null]) {
+        const currentOptions = { ...options, attestations };
+        const result = checker.check(documents, currentOptions).result;
+        expect(result).toEqual(
+          new IncrementalShapeChecker().check(documents, currentOptions).result
+        );
+        expect(result.ok).toBe(attestations === undefined);
+      }
+    }
+  );
   test("strict versioned contract rejects null and wrong kinds", () => {
     expect(() => parseAttestationBundle(null)).toThrow();
     expect(() =>

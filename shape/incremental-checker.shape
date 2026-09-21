@@ -22,7 +22,7 @@ component ShapeIncrementalChecker {
   grants Update<IncrementalCheckState>
   fn check : ProtectedCheckOrder
     source ts("packages/shp-checker/src/checker/incremental.ts#check")
-    description "Reuses parsed documents and a globally lowered model, rebuilding after document changes and invalidating cached results when attestation mode, exact transition, evidence or other check options change."
+    description "Reuses parsed documents and a globally lowered model, rebuilding after document changes and invalidating cached results when attestation mode, exact transition, evidence or other check options change. Absent evidence and an invalid null bundle remain distinct cache inputs."
     effects complete {
       Append<IncrementalInvalidationReport>
         evidence ts("packages/shp-checker/src/checker/incremental.ts")
@@ -97,6 +97,15 @@ reevaluation IncrementalFullCheckOrderRechecked {
   reviewer ShapeMaintainers
   decided_on "2026-07-26"
   evidence test("packages/shp-checker/src/checker/incremental.test.ts")
+}
+
+reevaluation NullEvidenceInvalidationRechecked {
+  satisfies memory IncrementalInvalidationContract
+  outcome Confirmed
+  summary "Differential checks in repo and PR modes confirm that switching between absent evidence and an invalid null bundle recomputes diagnostics without rebuilding the unchanged model."
+  reviewer ShapeMaintainers
+  decided_on "2026-09-21"
+  evidence test("packages/shp-checker/src/attestations.test.ts")
 }
 
 attest no_shape_change {

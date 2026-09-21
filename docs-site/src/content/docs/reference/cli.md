@@ -370,6 +370,9 @@ attestable `obligations`. Run from the repository root with the candidate checke
 out and a clean worktree (including untracked files). The baseline is used
 exactly; compute a merge base explicitly when required. `--worktree` means clean
 HEAD, not uncommitted evidence. `--changed-files` cannot be combined with `--base`.
+Default discovery must include every tracked `shape/**/*.shape` file; a sparse
+checkout omitting any of these files fails with a usage error naming the missing
+path. Explicit positional file arguments continue to select only those files.
 
 `--config <path>` selects a project JSON file (default `shapelang.json`). Set
 `{"attestations":{"mode":"pr"}}` to opt into external evidence, then pass

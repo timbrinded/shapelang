@@ -16,7 +16,8 @@ export async function runShapeFileCheck(
   json = false
 ): Promise<CheckResult> {
   const files = await providedOrDefaultShapeFiles(providedFiles);
-  if (options.transition) requireCandidateFiles(files, options.repoRoot ?? process.cwd());
+  if (options.transition)
+    requireCandidateFiles(files, options.repoRoot ?? process.cwd(), providedFiles.length === 0);
   const result = await checkShapeFiles(files, options);
   const output = json ? JSON.stringify(result) + "\n" : formatDiagnostics(result);
   if (json || result.exitCode === 0) {

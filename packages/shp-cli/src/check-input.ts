@@ -1,5 +1,6 @@
 import { spawnSync } from "node:child_process";
 import { isAbsolute, relative, resolve, sep } from "node:path";
+import { Glob } from "bun";
 import { isRecord, type AttestationMode, type CheckTransition } from "@shape/shp-checker";
 import { CliDiagnosticError } from "./errors";
 
@@ -69,8 +70,12 @@ export function resolveCheckTransition(flags: {
   return { transition: { base, head }, changedFiles, repoRoot };
 }
 
-/** Prevent an accidental explicit file outside the checked candidate. */
-export function requireCandidateFiles(files: readonly string[], repoRoot: string): void {
+/** Reject inputs outside the candidate and omissions from its default model scope. */
+export function requireCandidateFiles(
+  files: readonly string[],
+  repoRoot: string,
+  usingDefaultDiscovery = false
+): void {
   const tracked = new Map(
     git(["ls-files", "--stage", "-z"])
       .split("\0")
@@ -80,6 +85,7 @@ export function requireCandidateFiles(files: readonly string[], repoRoot: string
         return [entry.slice(tab + 1), entry.slice(0, 6)];
       })
   );
+  const selected = new Set<string>();
   for (const file of files) {
     const path = relative(repoRoot, resolve(file)).split(sep).join("/");
     if (
@@ -92,6 +98,17 @@ export function requireCandidateFiles(files: readonly string[], repoRoot: string
       throw new CliDiagnosticError(
         "error: transition shape files must be tracked regular files inside the repository.\n"
       );
+    }
+    selected.add(path);
+  }
+  if (usingDefaultDiscovery) {
+    const scope = new Glob("shape/**/*.shape");
+    for (const path of tracked.keys()) {
+      if (scope.match(path) && !selected.has(path)) {
+        throw new CliDiagnosticError(
+          `error: transition default discovery is missing tracked Shape file: ${path}.\n`
+        );
+      }
     }
   }
 }
