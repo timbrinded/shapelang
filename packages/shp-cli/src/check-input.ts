@@ -1,5 +1,5 @@
 import { spawnSync } from "node:child_process";
-import { isAbsolute, relative, resolve } from "node:path";
+import { isAbsolute, relative, resolve, sep } from "node:path";
 import { isRecord, type AttestationMode, type CheckTransition } from "@shape/shp-checker";
 import { CliDiagnosticError } from "./errors";
 
@@ -81,7 +81,7 @@ export function requireCandidateFiles(files: readonly string[], repoRoot: string
       })
   );
   for (const file of files) {
-    const path = relative(repoRoot, resolve(file));
+    const path = relative(repoRoot, resolve(file)).split(sep).join("/");
     if (
       path === ".." ||
       path.startsWith("../") ||
