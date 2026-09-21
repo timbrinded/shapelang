@@ -18,7 +18,7 @@ resource CheckInputModuleReadAttestationModeAstAnchor : GeneratedAstAnchor {
 
 resource CheckInputModuleRequireCandidateFilesAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-cli/src/check-input.ts#requireCandidateFiles")
-  fingerprint ast.semantic_subtree_v1("sha256:1fe94eba1028d74d970a006b2e71fccf8befab3a706daa52aef73922779b650c")
+  fingerprint ast.semantic_subtree_v1("sha256:86cc4ad57f95366fa3383d1075b70a475f357820664a47213ed795ae7a8bb251")
 }
 
 resource CheckInputModuleResolveCheckTransitionAstAnchor : GeneratedAstAnchor {
@@ -61,7 +61,7 @@ relation CheckInputModuleRequireCandidateFilesGeneratedFromCheckInputModuleRequi
   kind generated_from
   connects CheckInputModule -> CheckInputModuleRequireCandidateFilesAstAnchor
   roles { CheckInputModule as generated, CheckInputModuleRequireCandidateFilesAstAnchor as syntax }
-  expects CheckInputModuleRequireCandidateFilesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1fe94eba1028d74d970a006b2e71fccf8befab3a706daa52aef73922779b650c")
+  expects CheckInputModuleRequireCandidateFilesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:86cc4ad57f95366fa3383d1075b70a475f357820664a47213ed795ae7a8bb251")
   summary "fn CheckInputModule.requireCandidateFiles generated from typescript function_declaration at packages/shp-cli/src/check-input.ts#requireCandidateFiles."
 }
 

@@ -104,6 +104,8 @@ export function requireCandidateFiles(
   if (usingDefaultDiscovery) {
     const scope = new Glob("shape/**/*.shape");
     for (const path of tracked.keys()) {
+      // Glob.match includes dot paths, but default Glob.scan discovery excludes them.
+      if (path.split("/").some((part) => part.startsWith("."))) continue;
       if (scope.match(path) && !selected.has(path)) {
         throw new CliDiagnosticError(
           `error: transition default discovery is missing tracked Shape file: ${path}.\n`

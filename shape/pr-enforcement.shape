@@ -93,7 +93,7 @@ component ShapeTransitionInput {
   grants Read<GitTransition>
   fn requireCandidateFiles
     source ts("packages/shp-cli/src/check-input.ts#requireCandidateFiles")
-    description "Rejects untracked or symlinked candidate inputs and requires default discovery to include every tracked shape/**/*.shape path, including paths omitted by sparse checkout. Explicit file selection retains its selected scope."
+    description "Rejects untracked or symlinked candidate inputs and requires default discovery to include every tracked non-hidden shape/**/*.shape path, including paths omitted by sparse checkout. Explicit file selection retains its selected scope."
     effects complete {
       Read<GitTransition>
         evidence ts("packages/shp-cli/src/check-input.ts#requireCandidateFiles")

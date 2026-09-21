@@ -29,9 +29,13 @@ test("transition default discovery rejects wholly and partially omitted sparse m
     git("config", "commit.gpgsign", "false");
     await mkdir(join(root, "shape", "visible"), { recursive: true });
     await mkdir(join(root, "shape", "policy"), { recursive: true });
+    await mkdir(join(root, "shape", ".hidden"), { recursive: true });
     await mkdir(join(root, "src"));
     await writeFile(join(root, "shapelang.json"), '{"attestations":{"mode":"pr"}}');
     await writeFile(join(root, "shape", "visible", "app.shape"), "module app\n");
+    // Hidden paths are deliberately outside ordinary default discovery.
+    await writeFile(join(root, "shape", ".hidden", "ignored.shape"), "invalid Shape !\n");
+    await writeFile(join(root, "shape", ".ignored.shape"), "invalid Shape !\n");
     await writeFile(
       join(root, "shape", "policy", "coverage.shape"),
       'module governance\nimplementation App { paths { "src/**" } on_change require shape_update }\n'
