@@ -175,6 +175,7 @@ jobs:
   shape-claude-review:
     name: Shape Claude Review
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     if: github.event_name == 'pull_request'
     permissions:
       contents: read
@@ -189,12 +190,13 @@ jobs:
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           ANTHROPIC_AUTH_TOKEN: ${{ secrets.ANTHROPIC_AUTH_TOKEN }}
+          CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
         run: |
-          if [ -n "${ANTHROPIC_API_KEY:-}" ] || [ -n "${ANTHROPIC_AUTH_TOKEN:-}" ]; then
+          if [ -n "${CLAUDE_CODE_OAUTH_TOKEN:-}" ] || [ -n "${ANTHROPIC_API_KEY:-}" ] || [ -n "${ANTHROPIC_AUTH_TOKEN:-}" ]; then
             echo "available=true" >> "$GITHUB_OUTPUT"
           else
             echo "available=false" >> "$GITHUB_OUTPUT"
-            echo "Skipping Claude-powered Shape job because no Anthropic API credential is available."
+            echo "Skipping Claude-powered Shape job because no Claude credential is available."
           fi
 
       - name: Checkout
@@ -221,8 +223,9 @@ jobs:
               echo "shape_ci_exit=$status"
             } > shape-claude-context.txt 2>&1
         env:
-          API_TIMEOUT_MS: 18000
-          DISABLE_NON_ESSENTIAL_MODE_CALLS: 1
+          # Keep Claude's default request timeout; gateway calls can exceed 18s.
+          CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: 1
+          CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           ANTHROPIC_BASE_URL: ${{ secrets.ANTHROPIC_BASE_URL }}
           ANTHROPIC_AUTH_TOKEN: ${{ secrets.ANTHROPIC_AUTH_TOKEN }}
@@ -234,6 +237,7 @@ jobs:
   shape-guard:
     name: Shape Contract Guard
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     if: github.event_name == 'pull_request'
     permissions:
       contents: read
@@ -254,8 +258,8 @@ jobs:
         with:
           skill: guard
         env:
-          API_TIMEOUT_MS: 18000
-          DISABLE_NON_ESSENTIAL_MODE_CALLS: 1
+          CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: 1
+          CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           ANTHROPIC_BASE_URL: ${{ secrets.ANTHROPIC_BASE_URL }}
           ANTHROPIC_AUTH_TOKEN: ${{ secrets.ANTHROPIC_AUTH_TOKEN }}
@@ -266,6 +270,7 @@ jobs:
   shape-index:
     name: Shape Index Coverage
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     if: github.event_name == 'pull_request'
     permissions:
       contents: read
@@ -286,8 +291,8 @@ jobs:
         with:
           skill: index
         env:
-          API_TIMEOUT_MS: 18000
-          DISABLE_NON_ESSENTIAL_MODE_CALLS: 1
+          CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: 1
+          CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           ANTHROPIC_BASE_URL: ${{ secrets.ANTHROPIC_BASE_URL }}
           ANTHROPIC_AUTH_TOKEN: ${{ secrets.ANTHROPIC_AUTH_TOKEN }}

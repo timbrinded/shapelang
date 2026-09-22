@@ -1,0 +1,33 @@
+module shape.generated.ast.scripts.jev_canary
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource JevCanaryModuleRunJevCanaryAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("scripts/jev-canary.ts#runJevCanary")
+  fingerprint ast.semantic_subtree_v1("sha256:15277b1c08a9f2efd2c94160326d5d50089c993572b3eebfb8b93db122ba219f")
+}
+
+component JevCanaryModule : GeneratedCandidate {
+  fn runJevCanary
+    source ts("scripts/jev-canary.ts#runJevCanary")
+    effects unknown
+}
+
+relation JevCanaryModuleRunJevCanaryGeneratedFromJevCanaryModuleRunJevCanaryAstAnchor {
+  kind generated_from
+  connects JevCanaryModule -> JevCanaryModuleRunJevCanaryAstAnchor
+  roles { JevCanaryModule as generated, JevCanaryModuleRunJevCanaryAstAnchor as syntax }
+  expects JevCanaryModuleRunJevCanaryAstAnchor fingerprint ast.semantic_subtree_v1("sha256:15277b1c08a9f2efd2c94160326d5d50089c993572b3eebfb8b93db122ba219f")
+  summary "fn JevCanaryModule.runJevCanary generated from typescript function_declaration at scripts/jev-canary.ts#runJevCanary."
+}
+
+implementation JevCanaryModuleImpl {
+  paths {
+    "scripts/jev-canary.ts"
+  }
+  conforms_to JevCanaryModule
+}

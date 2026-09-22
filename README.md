@@ -353,18 +353,44 @@ Other GitHub Actions workflows can install `shp` with the setup action shown in 
     version: v0.9.0
 ```
 
+## PR-scoped evidence and optional Jev review
+
+Projects can opt into `{"attestations":{"mode":"pr"}}` in `shapelang.json` and
+provide typed `no-shape-change` claims in the PR body. Evidence binds to the exact
+base and head commits; the candidate must be checked out and clean, including
+untracked files. Existing repository attestations remain the default.
+
+The deterministic checker validates the evidence's scope and freshness. The
+optional Jev review then compares the actual source change with authored Shape
+claims. For example, a PR that replaces an append with a deletion can carry a
+structurally valid "rename only" attestation; Jev can flag that contradiction and
+require correction through a separate policy gate.
+
+The [reference workflow](docs/examples/pr-enforcement.yml) assembles bounded
+evidence directly from Git and calls TypeSafe with fixed questions. It needs
+`TYPESAFE_API_KEY` and `SHAPE_JEV_ENABLED=true`; no Claude credential is required.
+Both semantic policies default to `warn`. Set `SHAPE_JEV_REVIEW_POLICY=fail` to
+block high-confidence requirements for a Shape update or unsupported claims, and
+`SHAPE_JEV_FAILURE_POLICY=fail` to block missing evidence or provider failures.
+The default threshold is 0.9. Uncertain results remain visible for inspection;
+no probability clears a deterministic failure or approves a PR.
+
+These features currently require this source revision, including its Bun helper
+scripts; they are not provided by the released v0.9.0 binary. In a clean source
+checkout, run `bun shp check --json --base <base> --head <head>` to discover
+obligations, then add `--attestations /tmp/bundle.json` to validate a bundle.
+See [the complete workflow](plugins/shapelang/skills/shape-lang/references/pr-enforcement.md)
+for setup, policies, and retained artifacts. With `TYPESAFE_API_KEY` exported,
+exercise the live rename, false-claim, and injected-claim cases with:
+
+```bash
+SHAPE_OUTPUT_DIR=/tmp/shape-jev-canary bun run jev:canary
+```
+
+The canary retains its real Git transitions, inputs, provider results, and policy
+outcomes, including failures. A successful canary demonstrates those cases;
+it does not establish arbitrary source correctness.
+
 ## License
 
 BSD 3-Clause
-
-### PR-scoped evidence and optional Jev assessment
-
-Projects can opt into `{"attestations":{"mode":"pr"}}` in `shapelang.json` and
-run `shp check --json --base <base> --head <head> --attestations /tmp/bundle.json`.
-The candidate must be checked out and clean. Omit `--attestations` to discover
-outstanding obligation IDs. Bundles bind evidence to exact commits and cannot
-waive unrelated deterministic errors. Existing repository attestations remain
-the default. See [the reference CI workflow](docs/examples/pr-enforcement.yml)
-and [the agent workflow](plugins/shapelang/skills/shape-lang/references/pr-enforcement.md)
-for PR-body extraction and optional fixed-question Jev probability assessments.
-These flags require a build containing this feature.

@@ -1,5 +1,5 @@
 /** Reference orchestration; GitHub knowledge stays outside shp. */
-import { mkdir } from "node:fs/promises";
+import { mkdir, rm } from "node:fs/promises";
 import { join } from "node:path";
 import { isRecord } from "../packages/shp-checker/src/attestations.ts";
 import { extractAttestations } from "./pr-attestations.ts";
@@ -10,8 +10,11 @@ export async function checkPullRequest(options: {
   body: string;
   outputDirectory: string;
   command: string[];
+  cwd?: string;
 }): Promise<number> {
   await mkdir(options.outputDirectory, { recursive: true });
+  // An edited PR body must not reuse evidence from the preceding run.
+  await rm(join(options.outputDirectory, "attestations.json"), { force: true });
   const initialPath = join(options.outputDirectory, "deterministic.json");
   const finalPath = join(options.outputDirectory, "check.json");
   const run = async (extra: string[]) => {
@@ -26,7 +29,7 @@ export async function checkPullRequest(options: {
         options.head,
         ...extra
       ],
-      { stdout: "pipe", stderr: "pipe" }
+      { cwd: options.cwd, stdout: "pipe", stderr: "pipe" }
     );
     const [stdout, stderr, status] = await Promise.all([
       new Response(child.stdout).text(),

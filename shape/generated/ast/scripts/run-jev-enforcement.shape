@@ -1,0 +1,33 @@
+module shape.generated.ast.scripts.run_jev_enforcement
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource RunJevEnforcementModuleRunJevEnforcementAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("scripts/run-jev-enforcement.ts#runJevEnforcement")
+  fingerprint ast.semantic_subtree_v1("sha256:8ef96331839c35aebe4dac6e2ade7012438b979ba7954ff81219710edd582b3b")
+}
+
+component RunJevEnforcementModule : GeneratedCandidate {
+  fn runJevEnforcement
+    source ts("scripts/run-jev-enforcement.ts#runJevEnforcement")
+    effects unknown
+}
+
+relation RunJevEnforcementModuleRunJevEnforcementGeneratedFromRunJevEnforcementModuleRunJevEnforcementAstAnchor {
+  kind generated_from
+  connects RunJevEnforcementModule -> RunJevEnforcementModuleRunJevEnforcementAstAnchor
+  roles { RunJevEnforcementModule as generated, RunJevEnforcementModuleRunJevEnforcementAstAnchor as syntax }
+  expects RunJevEnforcementModuleRunJevEnforcementAstAnchor fingerprint ast.semantic_subtree_v1("sha256:8ef96331839c35aebe4dac6e2ade7012438b979ba7954ff81219710edd582b3b")
+  summary "fn RunJevEnforcementModule.runJevEnforcement generated from typescript function_declaration at scripts/run-jev-enforcement.ts#runJevEnforcement."
+}
+
+implementation RunJevEnforcementModuleImpl {
+  paths {
+    "scripts/run-jev-enforcement.ts"
+  }
+  conforms_to RunJevEnforcementModule
+}

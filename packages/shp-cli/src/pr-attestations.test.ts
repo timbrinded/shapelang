@@ -134,6 +134,8 @@ test("real Git/CLI/PR-body workflow: missing -> accepted -> stale, and parser er
       const report = await Bun.file(join(artifacts, "check.json")).json();
       expect(report.ok).toBe(true);
       expect(renderCheckReport(report, 0).annotations).toEqual([]);
+      expect(await checkPullRequest({ ...workflow, body: "Evidence removed" })).toBe(1);
+      expect(await Bun.file(join(artifacts, "attestations.json")).exists()).toBe(false);
       expect(await checkPullRequest({ ...workflow, body: body + body })).toBe(1);
     } finally {
       process.chdir(oldCwd);

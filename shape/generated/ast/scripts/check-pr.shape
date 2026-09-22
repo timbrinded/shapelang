@@ -8,7 +8,7 @@ trait GeneratedCandidate {
 
 resource CheckPrModuleCheckPullRequestAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("scripts/check-pr.ts#checkPullRequest")
-  fingerprint ast.semantic_subtree_v1("sha256:195ec949053d0874050f09743bd1b87342f55b2474f6c93b5a3e0d5868ef86a3")
+  fingerprint ast.semantic_subtree_v1("sha256:77eccfc60b06140f9ed01adb80caff93daf84141a505274f59d2280ef1b49795")
 }
 
 component CheckPrModule : GeneratedCandidate {
@@ -21,7 +21,7 @@ relation CheckPrModuleCheckPullRequestGeneratedFromCheckPrModuleCheckPullRequest
   kind generated_from
   connects CheckPrModule -> CheckPrModuleCheckPullRequestAstAnchor
   roles { CheckPrModule as generated, CheckPrModuleCheckPullRequestAstAnchor as syntax }
-  expects CheckPrModuleCheckPullRequestAstAnchor fingerprint ast.semantic_subtree_v1("sha256:195ec949053d0874050f09743bd1b87342f55b2474f6c93b5a3e0d5868ef86a3")
+  expects CheckPrModuleCheckPullRequestAstAnchor fingerprint ast.semantic_subtree_v1("sha256:77eccfc60b06140f9ed01adb80caff93daf84141a505274f59d2280ef1b49795")
   summary "fn CheckPrModule.checkPullRequest generated from typescript function_declaration at scripts/check-pr.ts#checkPullRequest."
 }
 

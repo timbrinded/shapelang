@@ -8,17 +8,22 @@ trait GeneratedCandidate {
 
 resource JevEnforcementModuleDistributionAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("plugins/shapelang/skills/shape-lang/scripts/jev-enforcement.ts#distribution")
-  fingerprint ast.semantic_subtree_v1("sha256:29ac7917e75f545cc3a231c15fe075f615772237464140c15dd987069f4331b0")
+  fingerprint ast.semantic_subtree_v1("sha256:faf2bcff40cb69afd282fd9afcfcb9df48283498e4380457b248bd498b755f60")
 }
 
 resource JevEnforcementModuleEvaluateJevAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("plugins/shapelang/skills/shape-lang/scripts/jev-enforcement.ts#evaluateJev")
-  fingerprint ast.semantic_subtree_v1("sha256:e2cdb68c9b9451be8ba1611abef4a79723bacbb8f4cadf543ddd9bbd8ff5a343")
+  fingerprint ast.semantic_subtree_v1("sha256:44c0771d8e9cee7efb4d05e68ef9bfbfee2b450b1dc11e8dc3f8069a4eb76a27")
 }
 
 resource JevEnforcementModuleNormalizeJevResponseAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("plugins/shapelang/skills/shape-lang/scripts/jev-enforcement.ts#normalizeJevResponse")
-  fingerprint ast.semantic_subtree_v1("sha256:1ebce9cedd517fd0955a1613b9ba8ce4b2229974bbdfb452458d4d678efc3b61")
+  fingerprint ast.semantic_subtree_v1("sha256:73e8d5197335009a7904ee935455663eb17aa7f8b757592839bf056c0031ec92")
+}
+
+resource JevEnforcementModuleReadJevResponseAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/shape-lang/scripts/jev-enforcement.ts#readJevResponse")
+  fingerprint ast.semantic_subtree_v1("sha256:34ee011bb459394ed94fc7818d7cd28e2bfbfc0b86d489d8f3d471ffbdce34b5")
 }
 
 resource JevEnforcementModuleRecommendAstAnchor : GeneratedAstAnchor {
@@ -43,17 +48,17 @@ resource JevEnforcementModuleValidateEvidenceAstAnchor : GeneratedAstAnchor {
 
 resource JevEnforcementModuleValidateResultAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("plugins/shapelang/skills/shape-lang/scripts/jev-enforcement.ts#validateResult")
-  fingerprint ast.semantic_subtree_v1("sha256:097cfe11861627f59b7409210a40582d14be404415de7548f0a3a1b424573adf")
+  fingerprint ast.semantic_subtree_v1("sha256:0f6c96197fc49d2338cea970850947b6a560b8b2ea5bd790c28da342585dda59")
 }
 
 resource JevErrorAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("plugins/shapelang/skills/shape-lang/scripts/jev-enforcement.ts#JevError")
-  fingerprint ast.semantic_subtree_v1("sha256:18ec145d00a9676bc4597c86bf327ca13eb326774f122230c7327870c4d2743d")
+  fingerprint ast.semantic_subtree_v1("sha256:260b9af1dc964782dcf23b33f2a594f24107f856e0a1ba56e11e37e06e5f565b")
 }
 
 resource JevErrorConstructorAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("plugins/shapelang/skills/shape-lang/scripts/jev-enforcement.ts#JevError.constructor")
-  fingerprint ast.semantic_subtree_v1("sha256:e774aa5d944670c340b9dcbb75f3e063238b2f01aa350018a57ac78772e7d06d")
+  fingerprint ast.semantic_subtree_v1("sha256:156eb202a848e2c0e6aed57bb85bac051764cdd263ee427df5bce6e51325fa64")
 }
 
 component JevEnforcementModule : GeneratedCandidate {
@@ -65,6 +70,9 @@ component JevEnforcementModule : GeneratedCandidate {
     effects unknown
   fn normalizeJevResponse
     source ts("plugins/shapelang/skills/shape-lang/scripts/jev-enforcement.ts#normalizeJevResponse")
+    effects unknown
+  fn readJevResponse
+    source ts("plugins/shapelang/skills/shape-lang/scripts/jev-enforcement.ts#readJevResponse")
     effects unknown
   fn recommend
     source ts("plugins/shapelang/skills/shape-lang/scripts/jev-enforcement.ts#recommend")
@@ -93,7 +101,7 @@ relation JevEnforcementModuleDistributionGeneratedFromJevEnforcementModuleDistri
   kind generated_from
   connects JevEnforcementModule -> JevEnforcementModuleDistributionAstAnchor
   roles { JevEnforcementModule as generated, JevEnforcementModuleDistributionAstAnchor as syntax }
-  expects JevEnforcementModuleDistributionAstAnchor fingerprint ast.semantic_subtree_v1("sha256:29ac7917e75f545cc3a231c15fe075f615772237464140c15dd987069f4331b0")
+  expects JevEnforcementModuleDistributionAstAnchor fingerprint ast.semantic_subtree_v1("sha256:faf2bcff40cb69afd282fd9afcfcb9df48283498e4380457b248bd498b755f60")
   summary "fn JevEnforcementModule.distribution generated from typescript function_declaration at plugins/shapelang/skills/shape-lang/scripts/jev-enforcement.ts#distribution."
 }
 
@@ -101,7 +109,7 @@ relation JevEnforcementModuleEvaluateJevGeneratedFromJevEnforcementModuleEvaluat
   kind generated_from
   connects JevEnforcementModule -> JevEnforcementModuleEvaluateJevAstAnchor
   roles { JevEnforcementModule as generated, JevEnforcementModuleEvaluateJevAstAnchor as syntax }
-  expects JevEnforcementModuleEvaluateJevAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e2cdb68c9b9451be8ba1611abef4a79723bacbb8f4cadf543ddd9bbd8ff5a343")
+  expects JevEnforcementModuleEvaluateJevAstAnchor fingerprint ast.semantic_subtree_v1("sha256:44c0771d8e9cee7efb4d05e68ef9bfbfee2b450b1dc11e8dc3f8069a4eb76a27")
   summary "fn JevEnforcementModule.evaluateJev generated from typescript function_declaration at plugins/shapelang/skills/shape-lang/scripts/jev-enforcement.ts#evaluateJev."
 }
 
@@ -109,8 +117,16 @@ relation JevEnforcementModuleNormalizeJevResponseGeneratedFromJevEnforcementModu
   kind generated_from
   connects JevEnforcementModule -> JevEnforcementModuleNormalizeJevResponseAstAnchor
   roles { JevEnforcementModule as generated, JevEnforcementModuleNormalizeJevResponseAstAnchor as syntax }
-  expects JevEnforcementModuleNormalizeJevResponseAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1ebce9cedd517fd0955a1613b9ba8ce4b2229974bbdfb452458d4d678efc3b61")
+  expects JevEnforcementModuleNormalizeJevResponseAstAnchor fingerprint ast.semantic_subtree_v1("sha256:73e8d5197335009a7904ee935455663eb17aa7f8b757592839bf056c0031ec92")
   summary "fn JevEnforcementModule.normalizeJevResponse generated from typescript function_declaration at plugins/shapelang/skills/shape-lang/scripts/jev-enforcement.ts#normalizeJevResponse."
+}
+
+relation JevEnforcementModuleReadJevResponseGeneratedFromJevEnforcementModuleReadJevResponseAstAnchor {
+  kind generated_from
+  connects JevEnforcementModule -> JevEnforcementModuleReadJevResponseAstAnchor
+  roles { JevEnforcementModule as generated, JevEnforcementModuleReadJevResponseAstAnchor as syntax }
+  expects JevEnforcementModuleReadJevResponseAstAnchor fingerprint ast.semantic_subtree_v1("sha256:34ee011bb459394ed94fc7818d7cd28e2bfbfc0b86d489d8f3d471ffbdce34b5")
+  summary "fn JevEnforcementModule.readJevResponse generated from typescript function_declaration at plugins/shapelang/skills/shape-lang/scripts/jev-enforcement.ts#readJevResponse."
 }
 
 relation JevEnforcementModuleRecommendGeneratedFromJevEnforcementModuleRecommendAstAnchor {
@@ -149,7 +165,7 @@ relation JevEnforcementModuleValidateResultGeneratedFromJevEnforcementModuleVali
   kind generated_from
   connects JevEnforcementModule -> JevEnforcementModuleValidateResultAstAnchor
   roles { JevEnforcementModule as generated, JevEnforcementModuleValidateResultAstAnchor as syntax }
-  expects JevEnforcementModuleValidateResultAstAnchor fingerprint ast.semantic_subtree_v1("sha256:097cfe11861627f59b7409210a40582d14be404415de7548f0a3a1b424573adf")
+  expects JevEnforcementModuleValidateResultAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0f6c96197fc49d2338cea970850947b6a560b8b2ea5bd790c28da342585dda59")
   summary "fn JevEnforcementModule.validateResult generated from typescript function_declaration at plugins/shapelang/skills/shape-lang/scripts/jev-enforcement.ts#validateResult."
 }
 
@@ -157,7 +173,7 @@ relation JevErrorConstructorGeneratedFromJevErrorConstructorAstAnchor {
   kind generated_from
   connects JevError -> JevErrorConstructorAstAnchor
   roles { JevError as generated, JevErrorConstructorAstAnchor as syntax }
-  expects JevErrorConstructorAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e774aa5d944670c340b9dcbb75f3e063238b2f01aa350018a57ac78772e7d06d")
+  expects JevErrorConstructorAstAnchor fingerprint ast.semantic_subtree_v1("sha256:156eb202a848e2c0e6aed57bb85bac051764cdd263ee427df5bce6e51325fa64")
   summary "fn JevError.constructor generated from typescript method_definition at plugins/shapelang/skills/shape-lang/scripts/jev-enforcement.ts#JevError.constructor."
 }
 
@@ -165,7 +181,7 @@ relation JevErrorGeneratedFromJevErrorAstAnchor {
   kind generated_from
   connects JevError -> JevErrorAstAnchor
   roles { JevError as generated, JevErrorAstAnchor as syntax }
-  expects JevErrorAstAnchor fingerprint ast.semantic_subtree_v1("sha256:18ec145d00a9676bc4597c86bf327ca13eb326774f122230c7327870c4d2743d")
+  expects JevErrorAstAnchor fingerprint ast.semantic_subtree_v1("sha256:260b9af1dc964782dcf23b33f2a594f24107f856e0a1ba56e11e37e06e5f565b")
   summary "component JevError generated from typescript class_declaration at plugins/shapelang/skills/shape-lang/scripts/jev-enforcement.ts#JevError."
 }
 

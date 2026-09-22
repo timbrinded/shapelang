@@ -1,0 +1,161 @@
+module shape.generated.ast.scripts.assemble_jev_evidence
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource AssembleJevEvidenceModuleAssembleEvidenceAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("scripts/assemble-jev-evidence.ts#assembleEvidence")
+  fingerprint ast.semantic_subtree_v1("sha256:a099816a7b2b5b3ebbb9c40c0d3c65252c9bd26e9aa414b827cfcf587d2f2f91")
+}
+
+resource AssembleJevEvidenceModuleAuthoredContextAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("scripts/assemble-jev-evidence.ts#authoredContext")
+  fingerprint ast.semantic_subtree_v1("sha256:71464f2c4cd2780cb1a4c08de885d58c5b2951eff6aefaa9f19e572df3058a91")
+}
+
+resource AssembleJevEvidenceModuleBlobAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("scripts/assemble-jev-evidence.ts#blob")
+  fingerprint ast.semantic_subtree_v1("sha256:c91313ad1ecf4a600dd9f1151f1eb657822ed7449d63984843e64a5b98372a61")
+}
+
+resource AssembleJevEvidenceModuleDeclarationTargetAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("scripts/assemble-jev-evidence.ts#declarationTarget")
+  fingerprint ast.semantic_subtree_v1("sha256:b61cfc57404df09f61c14cdf74c8d6d77232d69b301de25be9c239b743602deb")
+}
+
+resource AssembleJevEvidenceModuleGitAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("scripts/assemble-jev-evidence.ts#git")
+  fingerprint ast.semantic_subtree_v1("sha256:bb9a9c0a9dbb47c2515417eeeedbc33650a3d054a3e1c6cbbab6546c4bceb5fc")
+}
+
+resource AssembleJevEvidenceModuleInvalidAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("scripts/assemble-jev-evidence.ts#invalid")
+  fingerprint ast.semantic_subtree_v1("sha256:d02b8cedb6f0d41cbefde577e222a269ea047c693230f546ed1e4f37c5d47ce4")
+}
+
+resource AssembleJevEvidenceModuleLoadSnapshotAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("scripts/assemble-jev-evidence.ts#loadSnapshot")
+  fingerprint ast.semantic_subtree_v1("sha256:00632a0d243d5a4a3580f20bb99a2189bde1c0a9bff9b455e39d747cb955660a")
+}
+
+resource AssembleJevEvidenceModuleReferenceNamesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("scripts/assemble-jev-evidence.ts#referenceNames")
+  fingerprint ast.semantic_subtree_v1("sha256:924042ca693121f639125c909233ecb6e6a4abc6e9371f6bc8e50f2a98c9782c")
+}
+
+resource AssembleJevEvidenceModuleTreeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("scripts/assemble-jev-evidence.ts#tree")
+  fingerprint ast.semantic_subtree_v1("sha256:29c66c72fc3d9890d0cfa0d46abc671ffed7ac16dfd79193743e0fb888ab05f4")
+}
+
+component AssembleJevEvidenceModule : GeneratedCandidate {
+  fn assembleEvidence
+    source ts("scripts/assemble-jev-evidence.ts#assembleEvidence")
+    effects unknown
+  fn authoredContext
+    source ts("scripts/assemble-jev-evidence.ts#authoredContext")
+    effects unknown
+  fn blob
+    source ts("scripts/assemble-jev-evidence.ts#blob")
+    effects unknown
+  fn declarationTarget
+    source ts("scripts/assemble-jev-evidence.ts#declarationTarget")
+    effects unknown
+  fn git
+    source ts("scripts/assemble-jev-evidence.ts#git")
+    effects unknown
+  fn invalid
+    source ts("scripts/assemble-jev-evidence.ts#invalid")
+    effects unknown
+  fn loadSnapshot
+    source ts("scripts/assemble-jev-evidence.ts#loadSnapshot")
+    effects unknown
+  fn referenceNames
+    source ts("scripts/assemble-jev-evidence.ts#referenceNames")
+    effects unknown
+  fn tree
+    source ts("scripts/assemble-jev-evidence.ts#tree")
+    effects unknown
+}
+
+relation AssembleJevEvidenceModuleAssembleEvidenceGeneratedFromAssembleJevEvidenceModuleAssembleEvidenceAstAnchor {
+  kind generated_from
+  connects AssembleJevEvidenceModule -> AssembleJevEvidenceModuleAssembleEvidenceAstAnchor
+  roles { AssembleJevEvidenceModule as generated, AssembleJevEvidenceModuleAssembleEvidenceAstAnchor as syntax }
+  expects AssembleJevEvidenceModuleAssembleEvidenceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a099816a7b2b5b3ebbb9c40c0d3c65252c9bd26e9aa414b827cfcf587d2f2f91")
+  summary "fn AssembleJevEvidenceModule.assembleEvidence generated from typescript function_declaration at scripts/assemble-jev-evidence.ts#assembleEvidence."
+}
+
+relation AssembleJevEvidenceModuleAuthoredContextGeneratedFromAssembleJevEvidenceModuleAuthoredContextAstAnchor {
+  kind generated_from
+  connects AssembleJevEvidenceModule -> AssembleJevEvidenceModuleAuthoredContextAstAnchor
+  roles { AssembleJevEvidenceModule as generated, AssembleJevEvidenceModuleAuthoredContextAstAnchor as syntax }
+  expects AssembleJevEvidenceModuleAuthoredContextAstAnchor fingerprint ast.semantic_subtree_v1("sha256:71464f2c4cd2780cb1a4c08de885d58c5b2951eff6aefaa9f19e572df3058a91")
+  summary "fn AssembleJevEvidenceModule.authoredContext generated from typescript function_declaration at scripts/assemble-jev-evidence.ts#authoredContext."
+}
+
+relation AssembleJevEvidenceModuleBlobGeneratedFromAssembleJevEvidenceModuleBlobAstAnchor {
+  kind generated_from
+  connects AssembleJevEvidenceModule -> AssembleJevEvidenceModuleBlobAstAnchor
+  roles { AssembleJevEvidenceModule as generated, AssembleJevEvidenceModuleBlobAstAnchor as syntax }
+  expects AssembleJevEvidenceModuleBlobAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c91313ad1ecf4a600dd9f1151f1eb657822ed7449d63984843e64a5b98372a61")
+  summary "fn AssembleJevEvidenceModule.blob generated from typescript function_declaration at scripts/assemble-jev-evidence.ts#blob."
+}
+
+relation AssembleJevEvidenceModuleDeclarationTargetGeneratedFromAssembleJevEvidenceModuleDeclarationTargetAstAnchor {
+  kind generated_from
+  connects AssembleJevEvidenceModule -> AssembleJevEvidenceModuleDeclarationTargetAstAnchor
+  roles { AssembleJevEvidenceModule as generated, AssembleJevEvidenceModuleDeclarationTargetAstAnchor as syntax }
+  expects AssembleJevEvidenceModuleDeclarationTargetAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b61cfc57404df09f61c14cdf74c8d6d77232d69b301de25be9c239b743602deb")
+  summary "fn AssembleJevEvidenceModule.declarationTarget generated from typescript function_declaration at scripts/assemble-jev-evidence.ts#declarationTarget."
+}
+
+relation AssembleJevEvidenceModuleGitGeneratedFromAssembleJevEvidenceModuleGitAstAnchor {
+  kind generated_from
+  connects AssembleJevEvidenceModule -> AssembleJevEvidenceModuleGitAstAnchor
+  roles { AssembleJevEvidenceModule as generated, AssembleJevEvidenceModuleGitAstAnchor as syntax }
+  expects AssembleJevEvidenceModuleGitAstAnchor fingerprint ast.semantic_subtree_v1("sha256:bb9a9c0a9dbb47c2515417eeeedbc33650a3d054a3e1c6cbbab6546c4bceb5fc")
+  summary "fn AssembleJevEvidenceModule.git generated from typescript function_declaration at scripts/assemble-jev-evidence.ts#git."
+}
+
+relation AssembleJevEvidenceModuleInvalidGeneratedFromAssembleJevEvidenceModuleInvalidAstAnchor {
+  kind generated_from
+  connects AssembleJevEvidenceModule -> AssembleJevEvidenceModuleInvalidAstAnchor
+  roles { AssembleJevEvidenceModule as generated, AssembleJevEvidenceModuleInvalidAstAnchor as syntax }
+  expects AssembleJevEvidenceModuleInvalidAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d02b8cedb6f0d41cbefde577e222a269ea047c693230f546ed1e4f37c5d47ce4")
+  summary "fn AssembleJevEvidenceModule.invalid generated from typescript function_declaration at scripts/assemble-jev-evidence.ts#invalid."
+}
+
+relation AssembleJevEvidenceModuleLoadSnapshotGeneratedFromAssembleJevEvidenceModuleLoadSnapshotAstAnchor {
+  kind generated_from
+  connects AssembleJevEvidenceModule -> AssembleJevEvidenceModuleLoadSnapshotAstAnchor
+  roles { AssembleJevEvidenceModule as generated, AssembleJevEvidenceModuleLoadSnapshotAstAnchor as syntax }
+  expects AssembleJevEvidenceModuleLoadSnapshotAstAnchor fingerprint ast.semantic_subtree_v1("sha256:00632a0d243d5a4a3580f20bb99a2189bde1c0a9bff9b455e39d747cb955660a")
+  summary "fn AssembleJevEvidenceModule.loadSnapshot generated from typescript function_declaration at scripts/assemble-jev-evidence.ts#loadSnapshot."
+}
+
+relation AssembleJevEvidenceModuleReferenceNamesGeneratedFromAssembleJevEvidenceModuleReferenceNamesAstAnchor {
+  kind generated_from
+  connects AssembleJevEvidenceModule -> AssembleJevEvidenceModuleReferenceNamesAstAnchor
+  roles { AssembleJevEvidenceModule as generated, AssembleJevEvidenceModuleReferenceNamesAstAnchor as syntax }
+  expects AssembleJevEvidenceModuleReferenceNamesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:924042ca693121f639125c909233ecb6e6a4abc6e9371f6bc8e50f2a98c9782c")
+  summary "fn AssembleJevEvidenceModule.referenceNames generated from typescript function_declaration at scripts/assemble-jev-evidence.ts#referenceNames."
+}
+
+relation AssembleJevEvidenceModuleTreeGeneratedFromAssembleJevEvidenceModuleTreeAstAnchor {
+  kind generated_from
+  connects AssembleJevEvidenceModule -> AssembleJevEvidenceModuleTreeAstAnchor
+  roles { AssembleJevEvidenceModule as generated, AssembleJevEvidenceModuleTreeAstAnchor as syntax }
+  expects AssembleJevEvidenceModuleTreeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:29c66c72fc3d9890d0cfa0d46abc671ffed7ac16dfd79193743e0fb888ab05f4")
+  summary "fn AssembleJevEvidenceModule.tree generated from typescript function_declaration at scripts/assemble-jev-evidence.ts#tree."
+}
+
+implementation AssembleJevEvidenceModuleImpl {
+  paths {
+    "scripts/assemble-jev-evidence.ts"
+  }
+  conforms_to AssembleJevEvidenceModule
+}

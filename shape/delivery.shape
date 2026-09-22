@@ -305,7 +305,7 @@ component CiPipeline {
     }
   fn runShapeContractReview
     source mjs(".github/scripts/run-claude-skill.mjs#buildReviewPrompt")
-    description "Source-to-model drift review: the review skill of the unified Claude skill runner; the model call is delegated to anthropics/claude-code-action with a draft-07-compatible structured-output schema, and any finding or drift status fails the job."
+    description "Source-to-model drift review: the review skill of the unified Claude skill runner; the model call is delegated to anthropics/claude-code-action with a draft-07-compatible structured-output schema, and any finding or drift status fails the job. PR jobs prefer configured Claude OAuth through the official endpoint without higher-priority gateway credentials. Explicitly failed executions cannot supply passing partial results; shared review gates report provider failures without copying sensitive payloads."
     effects complete {
       Read<ChangedFileList>
         evidence yaml(".github/workflows/shape.yml")

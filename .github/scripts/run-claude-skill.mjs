@@ -244,6 +244,21 @@ export function resultTextFromExecutionFile(path) {
   for (let index = messages.length - 1; index >= 0; index -= 1) {
     const message = messages[index];
     if (isRecord(message) && message.type === "result") {
+      if (message.is_error === true || String(message.subtype).startsWith("error")) {
+        // Classify the failure without copying the provider payload, which can
+        // contain credentials, private gateway URLs, or echoed request content.
+        const detail = JSON.stringify([message.result, message.errors]);
+        const cause = /429|rate.?limit|quota/i.test(detail)
+          ? "The provider rejected the request because of a rate limit or exhausted quota. Check the gateway's limits before rerunning."
+          : /401|403|authentication|unauthorized|forbidden/i.test(detail)
+            ? "The provider rejected authentication or access. Check the configured credentials and model access."
+            : /timed?\s*out|timeout/i.test(detail)
+              ? "The provider request timed out. Check gateway availability and API_TIMEOUT_MS."
+              : "The Claude run failed. Check the Claude action logs, gateway availability, and model configuration.";
+        const error = new Error(`Claude execution failed; no review was accepted. ${cause}`);
+        error.name = "ClaudeExecutionError";
+        throw error;
+      }
       return typeof message.result === "string" ? message.result : "";
     }
   }
@@ -834,6 +849,11 @@ function runPrefilter(name) {
 }
 
 function resolveGateResult(skill, schema, env) {
+  // An explicitly failed execution must never be rescued by a schema-valid
+  // partial result, whether it arrives through structured output or plain text.
+  const executionFile = env.CLAUDE_EXECUTION_FILE;
+  const executionText =
+    executionFile && existsSync(executionFile) ? resultTextFromExecutionFile(executionFile) : "";
   const raw = env.CLAUDE_SKILL_RESULT;
   if (raw !== undefined && raw.trim() !== "") {
     let result;
@@ -852,19 +872,15 @@ function resolveGateResult(skill, schema, env) {
   // Fallback for proxy gateways that drop structured output: the action step
   // fails but still writes the execution log, whose final result text is the
   // JSON object the system prompt demanded.
-  const executionFile = env.CLAUDE_EXECUTION_FILE;
-  if (executionFile && existsSync(executionFile)) {
-    const text = resultTextFromExecutionFile(executionFile);
-    if (text.trim() !== "") {
-      const extracted = extractValidResult(text, schema);
-      if (extracted.ok) {
-        console.log(`Recovered the ${skill.title} from the execution log result text.`);
-        return extracted.result;
-      }
-      throw new Error(
-        `The execution log result text did not contain a valid ${skill.title}: ${extracted.errors.join("; ")}`
-      );
+  if (executionText.trim() !== "") {
+    const extracted = extractValidResult(executionText, schema);
+    if (extracted.ok) {
+      console.log(`Recovered the ${skill.title} from the execution log result text.`);
+      return extracted.result;
     }
+    throw new Error(
+      `The execution log result text did not contain a valid ${skill.title}: ${extracted.errors.join("; ")}`
+    );
   }
 
   throw new Error(
@@ -875,7 +891,18 @@ function resolveGateResult(skill, schema, env) {
 function runGate(name) {
   const skill = requireSkill(name);
   const schema = JSON.parse(readFileSync(skill.schemaPath(process.env), "utf8"));
-  const result = resolveGateResult(skill, schema, process.env);
+  let result;
+  try {
+    result = resolveGateResult(skill, schema, process.env);
+  } catch (error) {
+    if (error.name === "ClaudeExecutionError" && process.env.GITHUB_STEP_SUMMARY) {
+      appendFileSync(
+        process.env.GITHUB_STEP_SUMMARY,
+        `## ${skill.title}\n\nStatus: \`error\`\n\n${error.message}\n`
+      );
+    }
+    throw error;
+  }
 
   if (process.env.CLAUDE_SKILL_RESULT_PATH) {
     writeFileSync(process.env.CLAUDE_SKILL_RESULT_PATH, `${JSON.stringify(result, null, 2)}\n`);

@@ -6,22 +6,86 @@ trait GeneratedAstAnchor {
 trait GeneratedCandidate {
 }
 
+resource ValidateJevArtifactsModulePublishSemanticReportAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("scripts/validate-jev-artifacts.ts#publishSemanticReport")
+  fingerprint ast.semantic_subtree_v1("sha256:0fd285c0cbe23b1f34282981c89cb908fbd0a7aa6b3e395637e743473f6a0fa0")
+}
+
+resource ValidateJevArtifactsModuleReadEnforcementContextAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("scripts/validate-jev-artifacts.ts#readEnforcementContext")
+  fingerprint ast.semantic_subtree_v1("sha256:918ec9fee27facf39625efa6a9dfee97848bcf122f32dd4f98ca38b330ab790f")
+}
+
+resource ValidateJevArtifactsModuleSemanticExitCodeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("scripts/validate-jev-artifacts.ts#semanticExitCode")
+  fingerprint ast.semantic_subtree_v1("sha256:866bf084b4c2a501982f21ce4070b4ec7c3765b6437de5c4e9d867b64066936b")
+}
+
+resource ValidateJevArtifactsModuleSemanticPolicyAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("scripts/validate-jev-artifacts.ts#semanticPolicy")
+  fingerprint ast.semantic_subtree_v1("sha256:2b2e8aa5309d23b001c60e3a6f7149a56c69d8390680c6bfb4291d6277fe7033")
+}
+
 resource ValidateJevArtifactsModuleValidateArtifactsAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("scripts/validate-jev-artifacts.ts#validateArtifacts")
-  fingerprint ast.semantic_subtree_v1("sha256:1fc9a94d5921061aba305e1568455897176a1bfcad5574db91270c0e0870ae83")
+  fingerprint ast.semantic_subtree_v1("sha256:e0c3d7145af3f48802cc6ceaf167fa6e54c34aacdc7986b44fffa9b73f7c2500")
 }
 
 component ValidateJevArtifactsModule : GeneratedCandidate {
+  fn publishSemanticReport
+    source ts("scripts/validate-jev-artifacts.ts#publishSemanticReport")
+    effects unknown
+  fn readEnforcementContext
+    source ts("scripts/validate-jev-artifacts.ts#readEnforcementContext")
+    effects unknown
+  fn semanticExitCode
+    source ts("scripts/validate-jev-artifacts.ts#semanticExitCode")
+    effects unknown
+  fn semanticPolicy
+    source ts("scripts/validate-jev-artifacts.ts#semanticPolicy")
+    effects unknown
   fn validateArtifacts
     source ts("scripts/validate-jev-artifacts.ts#validateArtifacts")
     effects unknown
+}
+
+relation ValidateJevArtifactsModulePublishSemanticReportGeneratedFromValidateJevArtifactsModulePublishSemanticReportAstAnchor {
+  kind generated_from
+  connects ValidateJevArtifactsModule -> ValidateJevArtifactsModulePublishSemanticReportAstAnchor
+  roles { ValidateJevArtifactsModule as generated, ValidateJevArtifactsModulePublishSemanticReportAstAnchor as syntax }
+  expects ValidateJevArtifactsModulePublishSemanticReportAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0fd285c0cbe23b1f34282981c89cb908fbd0a7aa6b3e395637e743473f6a0fa0")
+  summary "fn ValidateJevArtifactsModule.publishSemanticReport generated from typescript function_declaration at scripts/validate-jev-artifacts.ts#publishSemanticReport."
+}
+
+relation ValidateJevArtifactsModuleReadEnforcementContextGeneratedFromValidateJevArtifactsModuleReadEnforcementContextAstAnchor {
+  kind generated_from
+  connects ValidateJevArtifactsModule -> ValidateJevArtifactsModuleReadEnforcementContextAstAnchor
+  roles { ValidateJevArtifactsModule as generated, ValidateJevArtifactsModuleReadEnforcementContextAstAnchor as syntax }
+  expects ValidateJevArtifactsModuleReadEnforcementContextAstAnchor fingerprint ast.semantic_subtree_v1("sha256:918ec9fee27facf39625efa6a9dfee97848bcf122f32dd4f98ca38b330ab790f")
+  summary "fn ValidateJevArtifactsModule.readEnforcementContext generated from typescript function_declaration at scripts/validate-jev-artifacts.ts#readEnforcementContext."
+}
+
+relation ValidateJevArtifactsModuleSemanticExitCodeGeneratedFromValidateJevArtifactsModuleSemanticExitCodeAstAnchor {
+  kind generated_from
+  connects ValidateJevArtifactsModule -> ValidateJevArtifactsModuleSemanticExitCodeAstAnchor
+  roles { ValidateJevArtifactsModule as generated, ValidateJevArtifactsModuleSemanticExitCodeAstAnchor as syntax }
+  expects ValidateJevArtifactsModuleSemanticExitCodeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:866bf084b4c2a501982f21ce4070b4ec7c3765b6437de5c4e9d867b64066936b")
+  summary "fn ValidateJevArtifactsModule.semanticExitCode generated from typescript function_declaration at scripts/validate-jev-artifacts.ts#semanticExitCode."
+}
+
+relation ValidateJevArtifactsModuleSemanticPolicyGeneratedFromValidateJevArtifactsModuleSemanticPolicyAstAnchor {
+  kind generated_from
+  connects ValidateJevArtifactsModule -> ValidateJevArtifactsModuleSemanticPolicyAstAnchor
+  roles { ValidateJevArtifactsModule as generated, ValidateJevArtifactsModuleSemanticPolicyAstAnchor as syntax }
+  expects ValidateJevArtifactsModuleSemanticPolicyAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2b2e8aa5309d23b001c60e3a6f7149a56c69d8390680c6bfb4291d6277fe7033")
+  summary "fn ValidateJevArtifactsModule.semanticPolicy generated from typescript function_declaration at scripts/validate-jev-artifacts.ts#semanticPolicy."
 }
 
 relation ValidateJevArtifactsModuleValidateArtifactsGeneratedFromValidateJevArtifactsModuleValidateArtifactsAstAnchor {
   kind generated_from
   connects ValidateJevArtifactsModule -> ValidateJevArtifactsModuleValidateArtifactsAstAnchor
   roles { ValidateJevArtifactsModule as generated, ValidateJevArtifactsModuleValidateArtifactsAstAnchor as syntax }
-  expects ValidateJevArtifactsModuleValidateArtifactsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1fc9a94d5921061aba305e1568455897176a1bfcad5574db91270c0e0870ae83")
+  expects ValidateJevArtifactsModuleValidateArtifactsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e0c3d7145af3f48802cc6ceaf167fa6e54c34aacdc7986b44fffa9b73f7c2500")
   summary "fn ValidateJevArtifactsModule.validateArtifacts generated from typescript function_declaration at scripts/validate-jev-artifacts.ts#validateArtifacts."
 }
 

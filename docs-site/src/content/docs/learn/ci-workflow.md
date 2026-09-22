@@ -191,7 +191,12 @@ On pull requests from repository branches, CI also upserts a single Shape CI sum
 
 ### Skill-driven PR jobs
 
-The Shape repository runs three Claude-powered PR jobs, all driven by one script: `.github/scripts/run-claude-skill.mjs`, invoked from the shared `.github/actions/claude-skill-review` composite action. The script runs twice per job: a `--prefilter` pass that either finishes deterministically or emits the prompt and `claude_args` (Sonnet by default), the official `anthropics/claude-code-action` runs the model call with `--json-schema` structured output, and a gate pass validates the result against the strict JSON schema under `.github/shape-contract/schemas/`, renders a job summary, and gates on a per-skill policy. When a proxy gateway drops structured output, the gate recovers the JSON result from the action’s execution log instead. Each job detects Anthropic credentials first and skips cleanly when none are available. Two of the jobs start with a deterministic prefilter, so most pull requests never invoke the model.
+The Shape repository runs three Claude-powered PR jobs, all driven by one script: `.github/scripts/run-claude-skill.mjs`, invoked from the shared `.github/actions/claude-skill-review` composite action. The script runs twice per job: a `--prefilter` pass that either finishes deterministically or emits the prompt and `claude_args` (Sonnet by default), the official `anthropics/claude-code-action` runs the model call with `--json-schema` structured output, and a gate pass validates the result against the strict JSON schema under `.github/shape-contract/schemas/`, renders a job summary, and gates on a per-skill policy. When a proxy gateway drops structured output, the gate recovers the JSON result from the action’s execution log instead. Each job detects Claude credentials first and skips cleanly when none are available. PR review jobs prefer an existing `CLAUDE_CODE_OAUTH_TOKEN` when configured, clear conflicting gateway credentials, and use the official Anthropic endpoint. Other callers without OAuth retain their configured API route. Two of the jobs start with a deterministic prefilter, so most pull requests never invoke the model.
+
+Recovery requires a successful Claude execution. An explicitly failed run cannot
+pass using a partial JSON result. Rate limits, authentication failures, and
+timeouts produce a failing summary without copying sensitive provider payloads.
+The PR jobs use Claude's default request timeout and a 30-minute job limit.
 
 **Shape Claude Review** (`shape-claude-review`) checks source-to-model drift using the policy in `.github/prompts/shape-contract-review.md`; any finding or non-pass status fails the job.
 
@@ -232,12 +237,25 @@ environment approval before tagging. See [Releasing Shape](../reference/releasin
 
 ## Optional PR evidence and Jev workflow
 
-The repository includes `docs/examples/pr-enforcement.yml`, an opt-in reference
-workflow for a ShapeLang source checkout. It checks out the PR head, fetches the
-current PR body, verifies the event base/head, runs a deterministic JSON check,
-extracts typed evidence, reruns with valid evidence and publishes the remaining
-diagnostics. Include the `edited` PR event so editing evidence reruns the check.
-Keep intermediate artifacts outside the repository to preserve a clean candidate.
+PR attestations close a specific coverage obligation for an exact base/head
+transition. Their deterministic validation establishes scope and freshness; it
+does not establish that the rationale faithfully describes the implementation.
+Jev adds a source review of that claim. A destructive source change accompanied
+by a "rename only" claim can therefore pass evidence validation and still fail
+the separately configured semantic review.
+
+The repository includes an opt-in workflow at
+`.github/workflows/pr-enforcement.yml` and a consumer reference at
+`docs/examples/pr-enforcement.yml`. These require a ShapeLang source revision
+containing PR attestations and its Bun helper scripts. The released v0.9.0 binary
+does not provide this workflow. Consumers should use a reviewed tools revision
+in a separate checkout and adapt the CLI/helper paths.
+
+The deterministic job checks out the exact PR head, fetches the current PR body,
+verifies the event base/head, discovers obligations, extracts typed evidence, and
+reruns the check with that evidence. Include the `edited` PR event so editing
+evidence reruns the check. Commit the candidate first and keep the worktree clean,
+including untracked files. Store intermediate artifacts outside the repository.
 
 The failing check step prints human-readable diagnostics and emits GitHub error
 annotations for the final result, with file locations where available. Its exit
@@ -249,15 +267,63 @@ checker output fails reporting explicitly instead of showing a passing summary.
 Set `attestations.mode` to `pr` in `shapelang.json`. The default `repo` mode remains
 unchanged. Require the deterministic job independently in branch protection.
 
-An optional separate job uses the Shape skill and Jev helper to assemble bounded
-evidence, request fixed typed assessments, validate the results and publish agent
-recommendations. Enable `SHAPE_JEV_ENABLED=true` and configure `TYPESAFE_API_KEY`
-and `ANTHROPIC_API_KEY` as secrets. `JEV_FAILURE_POLICY=warn` (default) or `fail`
-controls enrichment failure only. The reference advisory threshold is explicitly
-0.9, configurable via `SHAPE_JEV_THRESHOLD`. No semantic result suppresses a failing deterministic job or approves a PR.
-The sample does not send secrets to forked PRs and never uses
-`pull_request_target` to execute candidate code.
+### Direct semantic review
 
-Consumers should use a reviewed tools revision in a separate checkout and adapt
-the documented helper and CLI paths. These examples require a build containing
-the PR-attestation feature, not an older released v0.9.0 binary.
+Enable the `SHAPE_JEV_ENABLED` Actions variable and set `TYPESAFE_API_KEY` as a
+secret. The semantic job runs `bun scripts/run-jev-enforcement.ts`; it needs no
+Claude credential or agent to select evidence. Enable this only for repository
+branches whose authors may use the key. Forked PRs receive no provider secrets,
+and the workflow does not use `pull_request_target` to execute candidate code.
+
+For each obligation from the initial deterministic check, the assembler reads
+the exact committed diff and full before/after source files. It includes
+source-anchored authored declarations, direct relationships, referenced claims,
+and relevant constraints. It also includes the current PR attestation, even when
+that attestation already satisfies the deterministic gate. Missing authored
+anchors, ambiguous context, or evidence exceeding 20 files or 64 KiB require
+inspection; the assembler does not silently omit or truncate them.
+
+The fixed questions assess semantic scope, whether a Shape update is required,
+and, when present, whether the attestation is supported. Every returned label,
+probability, and probability sum is validated. At most one retry shares the
+30-second request budget; failed attempts remain in the artifacts. Responses
+are never silently normalized into valid distributions.
+
+| Actions variable | Default | Effect |
+| --- | --- | --- |
+| `SHAPE_JEV_ENABLED` | unset | Set to `true` to run the semantic job; the deterministic PR job runs independently. |
+| `SHAPE_JEV_MODEL` | `jev-latest` | Provider model sent with the fixed questions. |
+| `SHAPE_JEV_THRESHOLD` | `0.9` | Probability required for a confident recommendation; must be greater than 0.5 and at most 1. |
+| `SHAPE_JEV_REVIEW_POLICY` | `warn` | Set to `fail` to block a high-confidence Shape-update requirement or unsupported attestation. |
+| `SHAPE_JEV_FAILURE_POLICY` | `warn` | Set to `fail` to block provider failures or missing/invalid evidence and results. |
+| `SHAPE_JEV_CANARY_ENABLED` | unset | Set to `true` to run the hosted live canary on repository PRs or manual dispatch. |
+
+The scripts use `JEV_THRESHOLD`, `JEV_REVIEW_POLICY`, and `JEV_FAILURE_POLICY`
+environment variables; the workflow maps the Actions variables above to them.
+`SHAPE_JEV_MODEL` maps to `JEV_MODEL`. Scope classified as
+`architectural` alone does not fail review. Mixed or uncertain results request
+inspection and remain visible. Even with both policies set to `fail`, this is a
+review of bounded coverage obligations, not a complete correctness review of the
+PR. Require the semantic job separately when adopting its blocking policy.
+
+Job summaries and file annotations state the recommendation and next action.
+Uploaded artifacts retain `deterministic.json`, `check.json`, any
+`attestations.json`, every `<obligation-id>.input.json` and
+`<obligation-id>.result.json`, `semantic-summary.json`, and `recommendations.md`.
+A failed provider attempt has no semantic verdict. No result creates an
+attestation, edits a model, suppresses a deterministic failure, or approves a PR.
+
+### Live canary
+
+With `TYPESAFE_API_KEY` exported, run from the source checkout:
+
+```bash
+SHAPE_OUTPUT_DIR=/tmp/shape-jev-canary bun run jev:canary
+```
+
+The canary creates real Git fixtures and checks that a rename-only claim is
+accepted, a false claim about a destructive change is blocked, and an injected
+instruction in that claim does not make it pass. It exercises the real provider
+and separate review policy, and retains evidence on success or failure. Assess
+its generated report before claiming a live integration passed; fixture tests
+alone do not demonstrate provider behavior or hosted GitHub execution.

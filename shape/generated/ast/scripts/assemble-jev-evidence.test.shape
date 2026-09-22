@@ -1,0 +1,81 @@
+module shape.generated.ast.scripts.assemble_jev_evidence_test
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource AssembleJevEvidenceTestModuleCommitAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("scripts/assemble-jev-evidence.test.ts#commit")
+  fingerprint ast.semantic_subtree_v1("sha256:85ab1999417fb0a2307f24895f98573819c2e9a3166451ff20fd95f9b21e3974")
+}
+
+resource AssembleJevEvidenceTestModuleFixtureAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("scripts/assemble-jev-evidence.test.ts#fixture")
+  fingerprint ast.semantic_subtree_v1("sha256:fea9dcda1c771415f60b999735864c09035b39cc9478c139872bba1e18467b6e")
+}
+
+resource AssembleJevEvidenceTestModuleGitAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("scripts/assemble-jev-evidence.test.ts#git")
+  fingerprint ast.semantic_subtree_v1("sha256:bc59b942922b2154b0be4fb698e4b336ecd13ff54037ec60ed0bb5c9955e27c5")
+}
+
+resource AssembleJevEvidenceTestModuleWriteAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("scripts/assemble-jev-evidence.test.ts#write")
+  fingerprint ast.semantic_subtree_v1("sha256:a1914eaf19957664e3b436e0b36d41cb765d9b9abdaef81248b8d51c87f3375e")
+}
+
+component AssembleJevEvidenceTestModule : GeneratedCandidate {
+  fn commit
+    source ts("scripts/assemble-jev-evidence.test.ts#commit")
+    effects unknown
+  fn fixture
+    source ts("scripts/assemble-jev-evidence.test.ts#fixture")
+    effects unknown
+  fn git
+    source ts("scripts/assemble-jev-evidence.test.ts#git")
+    effects unknown
+  fn write
+    source ts("scripts/assemble-jev-evidence.test.ts#write")
+    effects unknown
+}
+
+relation AssembleJevEvidenceTestModuleCommitGeneratedFromAssembleJevEvidenceTestModuleCommitAstAnchor {
+  kind generated_from
+  connects AssembleJevEvidenceTestModule -> AssembleJevEvidenceTestModuleCommitAstAnchor
+  roles { AssembleJevEvidenceTestModule as generated, AssembleJevEvidenceTestModuleCommitAstAnchor as syntax }
+  expects AssembleJevEvidenceTestModuleCommitAstAnchor fingerprint ast.semantic_subtree_v1("sha256:85ab1999417fb0a2307f24895f98573819c2e9a3166451ff20fd95f9b21e3974")
+  summary "fn AssembleJevEvidenceTestModule.commit generated from typescript function_declaration at scripts/assemble-jev-evidence.test.ts#commit."
+}
+
+relation AssembleJevEvidenceTestModuleFixtureGeneratedFromAssembleJevEvidenceTestModuleFixtureAstAnchor {
+  kind generated_from
+  connects AssembleJevEvidenceTestModule -> AssembleJevEvidenceTestModuleFixtureAstAnchor
+  roles { AssembleJevEvidenceTestModule as generated, AssembleJevEvidenceTestModuleFixtureAstAnchor as syntax }
+  expects AssembleJevEvidenceTestModuleFixtureAstAnchor fingerprint ast.semantic_subtree_v1("sha256:fea9dcda1c771415f60b999735864c09035b39cc9478c139872bba1e18467b6e")
+  summary "fn AssembleJevEvidenceTestModule.fixture generated from typescript function_declaration at scripts/assemble-jev-evidence.test.ts#fixture."
+}
+
+relation AssembleJevEvidenceTestModuleGitGeneratedFromAssembleJevEvidenceTestModuleGitAstAnchor {
+  kind generated_from
+  connects AssembleJevEvidenceTestModule -> AssembleJevEvidenceTestModuleGitAstAnchor
+  roles { AssembleJevEvidenceTestModule as generated, AssembleJevEvidenceTestModuleGitAstAnchor as syntax }
+  expects AssembleJevEvidenceTestModuleGitAstAnchor fingerprint ast.semantic_subtree_v1("sha256:bc59b942922b2154b0be4fb698e4b336ecd13ff54037ec60ed0bb5c9955e27c5")
+  summary "fn AssembleJevEvidenceTestModule.git generated from typescript function_declaration at scripts/assemble-jev-evidence.test.ts#git."
+}
+
+relation AssembleJevEvidenceTestModuleWriteGeneratedFromAssembleJevEvidenceTestModuleWriteAstAnchor {
+  kind generated_from
+  connects AssembleJevEvidenceTestModule -> AssembleJevEvidenceTestModuleWriteAstAnchor
+  roles { AssembleJevEvidenceTestModule as generated, AssembleJevEvidenceTestModuleWriteAstAnchor as syntax }
+  expects AssembleJevEvidenceTestModuleWriteAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a1914eaf19957664e3b436e0b36d41cb765d9b9abdaef81248b8d51c87f3375e")
+  summary "fn AssembleJevEvidenceTestModule.write generated from typescript function_declaration at scripts/assemble-jev-evidence.test.ts#write."
+}
+
+implementation AssembleJevEvidenceTestModuleImpl {
+  paths {
+    "scripts/assemble-jev-evidence.test.ts"
+  }
+  conforms_to AssembleJevEvidenceTestModule
+}

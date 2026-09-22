@@ -31,8 +31,11 @@ description: >-
 5. Reuse `<SHAPE_CMD>` consistently.
 
 Use Shape v0.9.0 commands documented by this skill and the installed CLI help. PR
-attestation flags require a build containing that feature; older v0.9.0 binaries
-do not support them.
+attestation flags and direct Jev review require a source revision containing that
+feature; the released v0.9.0 binary does not provide them. The source checkout's root `scripts` directory
+contains `run-jev-enforcement.ts`, which assembles exact Git evidence and calls
+TypeSafe without Claude orchestration. Follow `references/pr-enforcement.md` for its
+separate review and provider-failure policies; both default to advisory warnings.
 
 ## Select A Mode
 

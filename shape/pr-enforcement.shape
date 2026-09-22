@@ -2,6 +2,8 @@ module shape.enforcement
 
 import shape.checker
 
+import shape.language
+
 import shape.tooling
 
 resource AttestationBundle
@@ -9,6 +11,10 @@ resource AttestationBundle
 resource AttestationObligations
 
 resource GitTransition
+
+resource JevCanaryFixture
+
+resource JevCanaryReport
 
 resource JevEvidence
 
@@ -20,24 +26,99 @@ resource PullRequestCheckReport
 
 resource SemanticRecommendation
 
+resource SemanticReviewDecision
+
 component JevEnforcementSkill {
   grants Append<JevProbabilities>
   grants Append<SemanticRecommendation>
+  grants Append<SemanticReviewDecision>
+  grants Read<AttestationBundle>
+  grants Read<GitTransition>
   grants Read<JevEvidence>
   grants Read<JevProbabilities>
+  grants Read<SemanticDiagnostics>
+  grants Update<JevEvidence>
+  grants Update<JevProbabilities>
+  grants Update<SemanticRecommendation>
   fn evaluateJev
     source ts("plugins/shapelang/skills/shape-lang/scripts/jev-enforcement.ts#evaluateJev")
-    description "Optional network enrichment with fixed typed questions, bounded evidence and strict probability validation. No dependency from the deterministic checker."
+    description "Optional network enrichment with fixed questions, bounded evidence and response bodies, strict probabilities, one retry within a shared deadline and retained safe rejected-attempt diagnostics. No dependency from the deterministic checker."
     effects complete {
       Append<JevProbabilities>
       Read<JevEvidence>
     }
+  fn runJevEnforcement
+    source ts("scripts/run-jev-enforcement.ts#runJevEnforcement")
+    description "Reviews every initial coverage obligation, including claims later accepted by the deterministic checker, using exact committed evidence without an orchestrating model. Clears prior per-obligation artifacts and records failures explicitly."
+    effects complete {
+      Read<AttestationBundle>
+        evidence ts("scripts/validate-jev-artifacts.ts#readEnforcementContext")
+      Read<GitTransition>
+        evidence ts("scripts/assemble-jev-evidence.ts#assembleEvidence")
+      Read<SemanticDiagnostics>
+        evidence ts("scripts/validate-jev-artifacts.ts#readEnforcementContext")
+      Update<JevEvidence>
+        evidence ts("scripts/run-jev-enforcement.ts#runJevEnforcement")
+      Update<JevProbabilities>
+        evidence ts("scripts/run-jev-enforcement.ts#runJevEnforcement")
+      Update<SemanticRecommendation>
+        evidence ts("scripts/validate-jev-artifacts.ts#publishSemanticReport")
+    }
+  fn semanticExitCode
+    source ts("scripts/validate-jev-artifacts.ts#semanticExitCode")
+    description "Independent opt-in policy gate for high-confidence required model updates or unsupported attestations. Provider failures have a separate policy; architectural scope alone and uncertainty do not count as contradictions. Never clears a deterministic failure."
+    effects complete {
+      Append<SemanticReviewDecision>
+        evidence ts("scripts/validate-jev-artifacts.ts#semanticExitCode")
+      Read<JevProbabilities>
+        evidence ts("scripts/validate-jev-artifacts.ts#semanticExitCode")
+    }
   fn validateArtifacts
     source ts("scripts/validate-jev-artifacts.ts#validateArtifacts")
+    description "Validates stored assessments against initial exact-transition obligations and the current PR rationale, retaining distributions, provider errors and separate policy outcomes."
     effects complete {
       Append<SemanticRecommendation>
+      Read<AttestationBundle>
+        evidence ts("scripts/validate-jev-artifacts.ts#readEnforcementContext")
       Read<JevEvidence>
       Read<JevProbabilities>
+      Read<SemanticDiagnostics>
+        evidence ts("scripts/validate-jev-artifacts.ts#readEnforcementContext")
+    }
+}
+
+component JevEvidenceAssembler {
+  grants Append<JevEvidence>
+  grants Read<GitTransition>
+  grants Read<ShapeSource>
+  fn assembleEvidence
+    source ts("scripts/assemble-jev-evidence.ts#assembleEvidence")
+    description "Reads exact base/head Git blobs, complete changed source and source-anchored authored declarations with dependent policies. Missing, ambiguous or oversized context fails explicitly; generated candidates are not architecture authority."
+    effects complete {
+      Append<JevEvidence>
+        evidence ts("scripts/assemble-jev-evidence.ts#assembleEvidence")
+      Read<GitTransition>
+        evidence ts("scripts/assemble-jev-evidence.ts#assembleEvidence")
+      Read<ShapeSource>
+        evidence ts("scripts/assemble-jev-evidence.ts#loadSnapshot")
+    }
+}
+
+component JevLiveCanary {
+  owns JevCanaryFixture
+  grants Append<JevCanaryReport>
+  grants Read<SemanticRecommendation>
+  grants Update<JevCanaryFixture>
+  fn runCanary
+    source ts("scripts/jev-canary.ts#runJevCanary")
+    description "Creates isolated committed synthetic append-only stores, proves structurally valid PR attestations clear coverage, then requires a live rename acceptance and blocking semantic verdicts for destructive false claims with and without prompt injection. Retains actual provider evidence and decisions."
+    effects complete {
+      Append<JevCanaryReport>
+        evidence ts("scripts/jev-canary.ts#runJevCanary")
+      Read<SemanticRecommendation>
+        evidence ts("scripts/jev-canary.ts#runJevCanary")
+      Update<JevCanaryFixture>
+        evidence ts("scripts/jev-canary.ts#runJevCanary")
     }
 }
 
@@ -52,6 +133,7 @@ component PullRequestEvidenceWorkflow {
   grants Update<PullRequestBody>
   fn checkPullRequest
     source ts("scripts/check-pr.ts#checkPullRequest")
+    description "Checks the current exact transition and PR body from an explicit checkout; removes stale prior evidence before extracting the current block. Hosted deterministic and optional semantic jobs retain artifacts independently."
     effects complete {
       Append<AttestationBundle>
       Append<SemanticDiagnostics>
@@ -128,14 +210,34 @@ relation CliResolvesTransition {
   connects ShpCli -> ShapeTransitionInput
 }
 
+relation LiveCanaryExercisesPrEvidence {
+  kind calls
+  connects JevLiveCanary -> PullRequestEvidenceWorkflow
+}
+
+relation LiveCanaryExercisesSemanticReview {
+  kind calls
+  connects JevLiveCanary -> JevEnforcementSkill
+}
+
 relation PrWorkflowChecksShape {
   kind calls
   connects PullRequestEvidenceWorkflow -> ShapeChecker
 }
 
+relation PrWorkflowRequestsSemanticReview {
+  kind calls
+  connects PullRequestEvidenceWorkflow -> JevEnforcementSkill
+}
+
 relation PrWorkflowValidatesEvidence {
   kind calls
   connects PullRequestEvidenceWorkflow -> ShapeAttestationValidator
+}
+
+relation SemanticWorkflowAssemblesEvidence {
+  kind calls
+  connects JevEnforcementSkill -> JevEvidenceAssembler
 }
 
 reevaluation ExternalEvidencePipelineOrder {
@@ -200,4 +302,19 @@ attest no_shape_change {
 attest no_shape_change {
   source md("docs-site/src/content/docs/inside-shape/rule-evaluation.md")
   reason "Documents the existing semantic pipeline and the separately modeled external-attestation validator."
+}
+
+attest no_shape_change {
+  source yaml("docs/examples/pr-enforcement.yml")
+  reason "The reference workflow connects the modeled exact PR check and direct Jev semantic workflow; provider policy remains outside the checker."
+}
+
+attest no_shape_change {
+  source yaml(".github/workflows/pr-enforcement.yml")
+  reason "Hosts the modeled PullRequestEvidenceWorkflow, JevEnforcementSkill and isolated JevLiveCanary with explicit opt-in variables and separate deterministic results."
+}
+
+attest no_shape_change {
+  source json("package.json")
+  reason "Adds a command alias to the modeled JevLiveCanary; no other package behavior changes."
 }

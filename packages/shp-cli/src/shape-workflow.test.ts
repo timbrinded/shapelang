@@ -3,12 +3,103 @@ import { mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
+import { runInNewContext } from "node:vm";
 
 const repoRoot = resolve(import.meta.dir, "../../..");
 const skillRunnerPath = resolve(repoRoot, ".github/scripts/run-claude-skill.mjs");
 const upsertCommentScriptPath = resolve(repoRoot, ".github/scripts/upsert-shape-ci-comment.mjs");
 
 describe("Shape workflow", () => {
+  test("OAuth routing removes higher-priority gateway credentials and preserves the existing gateway route", async () => {
+    const action = Bun.YAML.parse(
+      await Bun.file(join(repoRoot, ".github/actions/claude-skill-review/action.yml")).text()
+    ) as {
+      runs: {
+        steps: { id?: string; env?: Record<string, string>; with?: Record<string, string> }[];
+      };
+    };
+    const step = action.runs.steps.find((item) => item.id === "claude");
+    if (!step?.env || !step.with) throw new Error("Missing Claude action configuration.");
+    // These expressions use only string operands and JS-compatible ==, &&, ||.
+    // Evaluate the actual YAML expressions so the empty-string ternary trap is
+    // covered, including callers such as release CI that do not pass OAuth.
+    const value = (expression: string, env: Record<string, string>): unknown =>
+      runInNewContext(expression.slice(3, -2), { env });
+    for (const oauth of ["existing-oauth-secret", ""]) {
+      const env = {
+        CLAUDE_CODE_OAUTH_TOKEN: oauth,
+        ANTHROPIC_AUTH_TOKEN: "gateway-bearer",
+        ANTHROPIC_API_KEY: "other-api-key",
+        ANTHROPIC_BASE_URL: "https://gateway.example.invalid"
+      };
+      const effective = Object.fromEntries(
+        Object.entries(step.env).map(([key, expression]) => [key, value(expression, env)])
+      );
+      expect(effective).toEqual({
+        ANTHROPIC_API_KEY: oauth ? "" : "other-api-key",
+        ANTHROPIC_AUTH_TOKEN: oauth ? "" : "gateway-bearer",
+        ANTHROPIC_BASE_URL: oauth ? "https://api.anthropic.com" : "https://gateway.example.invalid"
+      });
+      expect(value(step.with.anthropic_api_key ?? "", env)).toBe(oauth ? "" : "gateway-bearer");
+      expect(value(step.with.claude_code_oauth_token ?? "", env)).toBe(oauth);
+    }
+    const args = step.with.claude_args ?? "";
+    expect(args).toContain("${{ steps.prefilter.outputs.claude_args }}");
+    expect(args).toContain("env.CLAUDE_CODE_OAUTH_TOKEN != '' && '--settings");
+    const settings = /--settings ''(\{.*\})''/.exec(args)?.[1];
+    expect(JSON.parse(settings ?? "null")).toEqual({
+      apiKeyHelper: "",
+      env: {
+        ANTHROPIC_API_KEY: "",
+        ANTHROPIC_AUTH_TOKEN: "",
+        ANTHROPIC_BASE_URL: "https://api.anthropic.com"
+      }
+    });
+  });
+
+  test("all PR reviews receive OAuth and the credential detector recognizes it without leaking it", async () => {
+    const workflow = Bun.YAML.parse(
+      await Bun.file(join(repoRoot, ".github/workflows/shape.yml")).text()
+    ) as {
+      jobs: Record<
+        string,
+        { steps: { id?: string; uses?: string; env?: Record<string, string>; run?: string }[] }
+      >;
+    };
+    for (const name of ["shape-claude-review", "shape-guard", "shape-index"]) {
+      const steps = workflow.jobs[name]?.steps ?? [];
+      const detector = steps.find((step) => step.id === "claude-token");
+      const review = steps.find((step) => step.uses === "./.github/actions/claude-skill-review");
+      expect(detector?.env?.CLAUDE_CODE_OAUTH_TOKEN).toBe("${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}");
+      expect(review?.env?.CLAUDE_CODE_OAUTH_TOKEN).toBe("${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}");
+      if (!detector?.run) throw new Error("Missing credential detector.");
+      const directory = await mkdtemp(join(tmpdir(), "shape-oauth-detector-"));
+      try {
+        for (const oauth of ["existing-oauth-secret", ""]) {
+          const output = join(directory, "output");
+          await Bun.write(output, "");
+          const child = Bun.spawn(["bash", "-c", detector.run], {
+            env: {
+              PATH: process.env.PATH,
+              GITHUB_OUTPUT: output,
+              CLAUDE_CODE_OAUTH_TOKEN: oauth,
+              ANTHROPIC_API_KEY: "",
+              ANTHROPIC_AUTH_TOKEN: ""
+            },
+            stdout: "pipe",
+            stderr: "pipe"
+          });
+          expect(await child.exited).toBe(0);
+          expect(await Bun.file(output).text()).toBe(`available=${Boolean(oauth)}\n`);
+          expect(await new Response(child.stdout).text()).not.toContain("existing-oauth-secret");
+          expect(await new Response(child.stderr).text()).toBe("");
+        }
+      } finally {
+        await rm(directory, { recursive: true, force: true });
+      }
+    }
+  });
+
   test("fails review gate when a pass result includes findings", async () => {
     const result = await runSkillGate("review", {
       status: "pass",
@@ -385,6 +476,56 @@ describe("Shape workflow", () => {
 
     expect(result.exitCode).toBe(1);
     expect(result.stderr).toContain("did not contain a valid Shape Claude review");
+  });
+
+  test("reports provider rate limits without treating them as malformed reviews or leaking payloads", async () => {
+    const result = await runSkillGateWithExecutionLog("review", [
+      {
+        type: "result",
+        subtype: "success",
+        is_error: true,
+        result: "API Error: 429 rate_limit_error private-gateway.example secret-token",
+        num_turns: 1,
+        modelUsage: {}
+      }
+    ]);
+
+    expect(result.exitCode).toBe(1);
+    expect(result.stderr).toContain("rate limit or exhausted quota");
+    expect(result.stderr).not.toContain("SyntaxError");
+    expect(result.summary).toContain("Status: `error`");
+    expect(result.summary).toContain("no review was accepted");
+    expect(result.stderr + result.summary).not.toContain("private-gateway.example");
+    expect(result.stderr + result.summary).not.toContain("secret-token");
+  });
+
+  test("rejects valid-looking partial results from failed executions on either result channel", async () => {
+    const review = { status: "pass", summary: "No drift found.", findings: [] };
+    for (const failure of [{ is_error: true }, { subtype: "error_max_turns" }]) {
+      for (const structuredResult of [undefined, review]) {
+        const result = await runSkillGateWithExecutionLog(
+          "review",
+          [{ type: "result", result: JSON.stringify(review), ...failure }],
+          structuredResult
+        );
+        expect(result.exitCode).toBe(1);
+        expect(result.stderr).toContain("Claude execution failed");
+        expect(result.summary).not.toContain("Status: `pass`");
+      }
+    }
+  });
+
+  test("classifies provider access and timeout failures", async () => {
+    for (const [detail, expected] of [
+      ["API Error: 401 authentication_error", "rejected authentication or access"],
+      ["API Error: Request timed out", "request timed out"]
+    ]) {
+      const result = await runSkillGateWithExecutionLog("guard", [
+        { type: "result", is_error: true, result: detail }
+      ]);
+      expect(result.exitCode).toBe(1);
+      expect(result.stderr).toContain(expected!);
+    }
   });
 
   test("prefilter emits the prompt and sonnet-default claude_args for the review skill", async () => {
@@ -906,12 +1047,16 @@ function skillsReleaseResult() {
 // Runs the unified skill runner in gate-only mode against an execution log,
 // exercising the structured-output fallback path used when a proxy gateway
 // drops structured output.
-async function runSkillGateWithExecutionLog(skill: string, messages: unknown[]) {
+async function runSkillGateWithExecutionLog(
+  skill: string,
+  messages: unknown[],
+  structuredResult?: unknown
+) {
   const tempDir = await mkdtemp(join(tmpdir(), "shape-skill-execution-"));
   try {
     const executionPath = join(tempDir, "claude-execution-output.json");
     await Bun.write(executionPath, JSON.stringify(messages));
-    return await runSkillGate(skill, undefined, { CLAUDE_EXECUTION_FILE: executionPath });
+    return await runSkillGate(skill, structuredResult, { CLAUDE_EXECUTION_FILE: executionPath });
   } finally {
     await rm(tempDir, { recursive: true, force: true });
   }

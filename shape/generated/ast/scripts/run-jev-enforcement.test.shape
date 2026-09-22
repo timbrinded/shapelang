@@ -1,0 +1,7 @@
+module shape.generated.ast.scripts.run_jev_enforcement_test
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}

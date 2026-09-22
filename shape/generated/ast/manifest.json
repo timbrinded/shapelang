@@ -1501,6 +1501,20 @@
       ]
     },
     {
+      "module": "shape.generated.ast.scripts.assemble_jev_evidence_test",
+      "path": "shape/generated/ast/scripts/assemble-jev-evidence.test.shape",
+      "sources": [
+        "scripts/assemble-jev-evidence.test.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.scripts.assemble_jev_evidence",
+      "path": "shape/generated/ast/scripts/assemble-jev-evidence.shape",
+      "sources": [
+        "scripts/assemble-jev-evidence.ts"
+      ]
+    },
+    {
       "module": "shape.generated.ast.scripts.check_pr",
       "path": "shape/generated/ast/scripts/check-pr.shape",
       "sources": [
@@ -1557,6 +1571,13 @@
       ]
     },
     {
+      "module": "shape.generated.ast.scripts.jev_canary",
+      "path": "shape/generated/ast/scripts/jev-canary.shape",
+      "sources": [
+        "scripts/jev-canary.ts"
+      ]
+    },
+    {
       "module": "shape.generated.ast.scripts.jev_enforcement_test",
       "path": "shape/generated/ast/scripts/jev-enforcement.test.shape",
       "sources": [
@@ -1596,6 +1617,20 @@
       "path": "shape/generated/ast/scripts/report-pr-check.shape",
       "sources": [
         "scripts/report-pr-check.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.scripts.run_jev_enforcement_test",
+      "path": "shape/generated/ast/scripts/run-jev-enforcement.test.shape",
+      "sources": [
+        "scripts/run-jev-enforcement.test.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.scripts.run_jev_enforcement",
+      "path": "shape/generated/ast/scripts/run-jev-enforcement.shape",
+      "sources": [
+        "scripts/run-jev-enforcement.ts"
       ]
     },
     {

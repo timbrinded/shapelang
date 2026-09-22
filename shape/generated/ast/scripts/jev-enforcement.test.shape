@@ -6,15 +6,39 @@ trait GeneratedAstAnchor {
 trait GeneratedCandidate {
 }
 
+resource JevEnforcementTestModuleCancelAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("scripts/jev-enforcement.test.ts#cancel")
+  fingerprint ast.semantic_subtree_v1("sha256:088401ecffe4a7c0cf5d50f8b20b37fbcbf9751597319060093abb25d223b3a8")
+}
+
 resource JevEnforcementTestModuleResponseAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("scripts/jev-enforcement.test.ts#response")
   fingerprint ast.semantic_subtree_v1("sha256:e9d9104158dad46b48348b9ed4a2d9d73c17d0986d67f3e8fb0b1a13231a155b")
 }
 
+resource JevEnforcementTestModuleStartAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("scripts/jev-enforcement.test.ts#start")
+  fingerprint ast.semantic_subtree_v1("sha256:7140faae6c4ca4fea06410052220e5b7089cd76c121cc6d4c070cc1d2753007a")
+}
+
 component JevEnforcementTestModule : GeneratedCandidate {
+  fn cancel
+    source ts("scripts/jev-enforcement.test.ts#cancel")
+    effects unknown
   fn response
     source ts("scripts/jev-enforcement.test.ts#response")
     effects unknown
+  fn start
+    source ts("scripts/jev-enforcement.test.ts#start")
+    effects unknown
+}
+
+relation JevEnforcementTestModuleCancelGeneratedFromJevEnforcementTestModuleCancelAstAnchor {
+  kind generated_from
+  connects JevEnforcementTestModule -> JevEnforcementTestModuleCancelAstAnchor
+  roles { JevEnforcementTestModule as generated, JevEnforcementTestModuleCancelAstAnchor as syntax }
+  expects JevEnforcementTestModuleCancelAstAnchor fingerprint ast.semantic_subtree_v1("sha256:088401ecffe4a7c0cf5d50f8b20b37fbcbf9751597319060093abb25d223b3a8")
+  summary "fn JevEnforcementTestModule.cancel generated from typescript method_definition at scripts/jev-enforcement.test.ts#cancel."
 }
 
 relation JevEnforcementTestModuleResponseGeneratedFromJevEnforcementTestModuleResponseAstAnchor {
@@ -23,6 +47,14 @@ relation JevEnforcementTestModuleResponseGeneratedFromJevEnforcementTestModuleRe
   roles { JevEnforcementTestModule as generated, JevEnforcementTestModuleResponseAstAnchor as syntax }
   expects JevEnforcementTestModuleResponseAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e9d9104158dad46b48348b9ed4a2d9d73c17d0986d67f3e8fb0b1a13231a155b")
   summary "fn JevEnforcementTestModule.response generated from typescript function_declaration at scripts/jev-enforcement.test.ts#response."
+}
+
+relation JevEnforcementTestModuleStartGeneratedFromJevEnforcementTestModuleStartAstAnchor {
+  kind generated_from
+  connects JevEnforcementTestModule -> JevEnforcementTestModuleStartAstAnchor
+  roles { JevEnforcementTestModule as generated, JevEnforcementTestModuleStartAstAnchor as syntax }
+  expects JevEnforcementTestModuleStartAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7140faae6c4ca4fea06410052220e5b7089cd76c121cc6d4c070cc1d2753007a")
+  summary "fn JevEnforcementTestModule.start generated from typescript method_definition at scripts/jev-enforcement.test.ts#start."
 }
 
 implementation JevEnforcementTestModuleImpl {
