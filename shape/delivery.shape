@@ -1737,3 +1737,13 @@ attest no_shape_change {
   source md("plugins/shapelang/skills/README.md")
   reason "Repoints the maintainer note from the removed README check list to the CONTRIBUTING.md check list; no skill instruction changes."
 }
+
+attest no_shape_change {
+  source sh("scripts/write-changed-files.sh")
+  reason "The pull-request base branch is fetched without --depth=1 so the full-history checkout is never grafted; the written changed-file list and the modeled ChangedFileList effect are unchanged."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/checker/model.ts")
+  reason "Adds the invalid_implementation variant to the SemanticDiagnostic union; the lowering and formatter behaviour that uses it is modelled in ShapeModelLowerer.lowerImplementation."
+}

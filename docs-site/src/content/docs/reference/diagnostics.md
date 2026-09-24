@@ -13,6 +13,7 @@ In the index, `check` stands for every command that runs the semantic checks: `s
 | [`error: unknown <kind>`](#error-unknown-kind) | `unknown_name` | `check` | [Parse and names](#parse-and-names) |
 | [`error: ambiguous <kind>`](#error-ambiguous-kind) | `ambiguous_name` | `check` | [Parse and names](#parse-and-names) |
 | [`error: duplicate <kind>`](#error-duplicate-kind) | `duplicate_declaration` | `check` | [Parse and names](#parse-and-names) |
+| [`error: invalid implementation`](#error-invalid-implementation) | `invalid_implementation` | `check` | [Parse and names](#parse-and-names) |
 | [`error: forbidden effect`](#error-forbidden-effect) | `final_forbidden_effect` | `check` | [Effects and grants](#effects-and-grants) |
 | [`error: missing grant`](#error-missing-grant) | `missing_grant` | `check` | [Effects and grants](#effects-and-grants) |
 | [`error: unknown effects`](#error-unknown-effects) | `unknown_effects` | `check`; a warning under `--allow-unknown-effects` | [Effects and grants](#effects-and-grants) |
@@ -195,6 +196,23 @@ caused by:
 **Cause.** One module declares the same name twice for one kind. `<kind>` is `resource`, `trait`, `component`, `relation`, `candidate_effect`, `binding`, `rationale`, `memory`, or `reevaluation`. The first declaration, in file order and then declaration order, is kept and the later one is ignored, so diagnostics that only the later one would cause do not appear. Equal names in different modules are not duplicates, and a trait with a prelude trait's name shadows the prelude trait instead. Duplicate `implementation`, `rule`, and `attest` declarations are not reported, and a second `fn` with the same name in one component silently replaces the first.
 
 **Fix.** Remove or rename one declaration.
+
+### `error: invalid implementation`
+
+Kind `invalid_implementation` · emitted by `check`
+
+```text
+error: invalid implementation
+
+implementation AuditStoreImpl is invalid: on_change require shape_delta is not a supported requirement; expected shape_update.
+
+caused by:
+  - audit.shape: implementation AuditStoreImpl on_change require shape_delta
+```
+
+**Cause.** An `implementation` declares an `on_change require` value other than `shape_update`, the only supported requirement. Coverage acts only on `shape_update`, so an unknown value, such as a typo or the pre-rename spelling `shape_delta`, would otherwise leave the implementation's paths silently ungoverned.
+
+**Fix.** Replace the value with `shape_update`, or remove the `on_change` member if the paths should be mapped to a component without a coverage obligation.
 
 ## Effects and grants
 

@@ -197,6 +197,19 @@ component ShapeModelLowerer {
       Update<EffectiveModel>
         evidence ts("packages/shp-checker/src/checker/lowering/declarations.ts")
     }
+  fn lowerImplementation
+    source ts("packages/shp-checker/src/checker/lowering/declarations.ts#lowerImplementation")
+    description "Records implementation paths, conformance, and the on_change requirement, rejecting requirements outside the supported set so a typo cannot silently ungovern paths."
+    effects complete {
+      Append<FactSet>
+        evidence ts("packages/shp-checker/src/checker/lowering/declarations.ts#lowerImplementation")
+      Append<SemanticDiagnostics>
+        evidence ts("packages/shp-checker/src/checker/lowering/declarations.ts#lowerImplementation")
+      Read<ParsedModule>
+        evidence ts("packages/shp-checker/src/checker/lowering/declarations.ts#lowerImplementation")
+      Update<EffectiveModel>
+        evidence ts("packages/shp-checker/src/checker/lowering/declarations.ts#lowerImplementation")
+    }
   fn lowerRule
     source ts("packages/shp-checker/src/checker/lowering/declarations.ts#lowerRule")
     description "Preserves condition provenance and resolves trait, effect, and forbidden-path endpoint references before rule validation."

@@ -9,7 +9,7 @@ cleanup() {
 trap cleanup EXIT INT TERM
 
 if [ -n "${GITHUB_BASE_REF:-}" ]; then
-  git fetch --no-tags --prune --depth=1 origin "$GITHUB_BASE_REF"
+  git fetch --no-tags --prune origin "$GITHUB_BASE_REF"
   git diff --name-only "origin/$GITHUB_BASE_REF"...HEAD > "$tmp_output"
 elif [ -n "${GITHUB_EVENT_BEFORE:-}" ] && [ "${GITHUB_EVENT_BEFORE:-}" != "0000000000000000000000000000000000000000" ]; then
   git diff --name-only "$GITHUB_EVENT_BEFORE" "${GITHUB_SHA:-HEAD}" > "$tmp_output"

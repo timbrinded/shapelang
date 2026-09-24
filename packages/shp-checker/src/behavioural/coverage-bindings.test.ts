@@ -13,6 +13,7 @@ import { Glob } from "bun";
 import { checkShapeFiles, checkShapeModules } from "../index.ts";
 import {
   characterization,
+  diagnosticKinds,
   lockedIntended,
   parseModuleOrThrow,
   requireDiagnostic,
@@ -289,6 +290,39 @@ describe("#61 coverage/bindings enforcement vs vacuity + self-model dogfood", ()
       // Internal symbols are module-qualified (`module::Name`).
       expect(invalid.name).toBe("cov_reeval::WidgetReviewerless");
       expect(invalid.reason).toBe("missing reviewer");
+    }
+  );
+
+  // INVARIANT 6 — an unknown `on_change require` value is rejected rather than
+  // silently leaving the implementation's paths ungoverned. The INVARIANT 2
+  // fixture with the pre-rename `shape_delta` spelling and the same governed
+  // change must fail with invalid_implementation as its only diagnostic: before
+  // the check, coverage skipped the implementation and the run passed.
+  test(
+    lockedIntended(
+      "an unknown on_change requirement is rejected instead of ungoverning its paths",
+      "docs-site/src/content/docs/reference/language-syntax.md implementation members"
+    ),
+    async () => {
+      const source = await readFile(
+        fixture("fixtures/fail/missing_shape_update/audit.shape"),
+        "utf8"
+      );
+      const legacy = source.replace(
+        "on_change require shape_update",
+        "on_change require shape_delta"
+      );
+      expect(legacy).not.toBe(source);
+
+      const result = checkShapeModules([parseModuleOrThrow(legacy)], {
+        changedFiles: await changedFilesFrom("fixtures/changed/audit_purge.txt")
+      });
+
+      expect(result.ok).toBe(false);
+      expect(diagnosticKinds(result)).toEqual(["invalid_implementation"]);
+      const diagnostic = requireDiagnostic(result, "invalid_implementation");
+      expect(diagnostic.name).toBe("audit::AuditStoreImpl");
+      expect(diagnostic.reason).toContain("shape_delta");
     }
   );
 });

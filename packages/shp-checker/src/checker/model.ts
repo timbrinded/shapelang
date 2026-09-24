@@ -252,6 +252,13 @@ export type SemanticDiagnostic =
       reason: string;
       filePath?: string;
       causedBy: string[];
+    }
+  | {
+      kind: "invalid_implementation";
+      name: string;
+      reason: string;
+      filePath?: string;
+      causedBy: string[];
     };
 
 export type ShapeDiagnostic = ParseDiagnostic | SemanticDiagnostic;

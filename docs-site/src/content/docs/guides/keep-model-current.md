@@ -78,7 +78,7 @@ implementation AuditStoreImpl {
 | --- | --- |
 | `paths { ... }` | Globs matched against each whole path in the changed-file list. `*` matches within one path segment, `**` matches across segments, and `?` matches one character. There is no brace or bracket expansion, so `src/**/*.{ts,tsx}` matches neither `.ts` nor `.tsx` files; write one glob per extension. |
 | `conforms_to` | The component that the paths implement. The checker only verifies that the name resolves (otherwise `error: unknown component`); coverage never reads it. |
-| `on_change require shape_update` | Turns on coverage for the paths. Any other value parses but is ignored, so a typo such as `shape_updates` silently disables coverage. |
+| `on_change require shape_update` | Turns on coverage for the paths. `shape_update` is the only supported value; any other, such as the typo `shape_updates`, fails the check with `error: invalid implementation` instead of silently disabling coverage. |
 
 A changed file is *governed* when it matches a `paths` glob of an implementation that declares `on_change require shape_update`. Changed `.shape` files are never governed, even when a glob matches them.
 

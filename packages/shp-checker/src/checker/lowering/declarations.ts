@@ -85,6 +85,8 @@ import {
 import { normalizeShapeSourcePath, unquoteShapeString } from "../../shape-strings.ts";
 import { emitFunctionFacts } from "./facts.ts";
 
+const SUPPORTED_ON_CHANGE_REQUIREMENTS: ReadonlySet<string> = new Set(["shape_update"]);
+
 export function lowerResource(
   resource: ResourceDecl,
   context: LoweringContext,
@@ -498,7 +500,23 @@ export function lowerImplementation(
         )
       });
     } else if (isOnChangeDecl(member)) {
-      info.onChangeRequirement = member.requirement;
+      // Coverage only acts on known requirements, so an unknown value would
+      // silently leave the implementation's paths ungoverned.
+      if (SUPPORTED_ON_CHANGE_REQUIREMENTS.has(member.requirement)) {
+        info.onChangeRequirement = member.requirement;
+      } else {
+        const onChangeProv = provenance(
+          context.filePath,
+          `implementation ${name} on_change require ${member.requirement}`
+        );
+        model.diagnostics.push({
+          kind: "invalid_implementation",
+          name,
+          reason: `on_change require ${member.requirement} is not a supported requirement; expected ${[...SUPPORTED_ON_CHANGE_REQUIREMENTS].join(", ")}`,
+          filePath: context.filePath,
+          causedBy: [describeProvenance(onChangeProv)]
+        });
+      }
     }
   }
 

@@ -84,6 +84,8 @@ function formatDiagnostic(diagnostic: ShapeDiagnostic): string {
       return formatInvalidRelationDiagnostic(diagnostic);
     case "invalid_require_context":
       return formatInvalidRequireContextDiagnostic(diagnostic);
+    case "invalid_implementation":
+      return formatInvalidImplementationDiagnostic(diagnostic);
   }
 }
 
@@ -455,6 +457,17 @@ function formatInvalidRequireContextDiagnostic(
     "error: invalid require_context",
     "",
     `trait ${displaySymbol(diagnostic.trait)} require_context ${diagnostic.contextType}<${diagnostic.typeParam}> is invalid: ${diagnostic.reason}.`,
+    formatCausedBy(diagnostic.causedBy)
+  ].join("\n");
+}
+
+function formatInvalidImplementationDiagnostic(
+  diagnostic: Extract<SemanticDiagnostic, { kind: "invalid_implementation" }>
+): string {
+  return [
+    "error: invalid implementation",
+    "",
+    `implementation ${displaySymbol(diagnostic.name)} is invalid: ${diagnostic.reason}.`,
     formatCausedBy(diagnostic.causedBy)
   ].join("\n");
 }

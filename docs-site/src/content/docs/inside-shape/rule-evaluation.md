@@ -35,7 +35,7 @@ Shared queries that more than one layer needs, such as `deriveFinalForbidsForRes
 | 15 | `checkCoverage` | `rules/coverage.ts` | `missing_shape_update` | `changedFiles`, `repoRoot` |
 | after the registry | `checkBindings` | `rules/coverage.ts` | `missing_bound_docs_change` | `changedFiles`, `repoRoot`; skipped when `enforceBindings` is `false` |
 
-Lowering, not the registry, reports `duplicate_declaration`, `duplicate_fingerprint`, `ambiguous_name`, `invalid_candidate_effect`, and `invalid_require_context`, as well as some `invalid_relation` and `unknown_name` diagnostics.
+Lowering, not the registry, reports `duplicate_declaration`, `duplicate_fingerprint`, `ambiguous_name`, `invalid_candidate_effect`, `invalid_require_context`, and `invalid_implementation`, as well as some `invalid_relation` and `unknown_name` diagnostics.
 
 Diagnostic order does not depend on the `SEMANTIC_CHECKS` order: `checkLoweredShapeModel` sorts every result by kind, then by rendered text. The printed form of each kind, and how to fix it, is in [Diagnostics](/shapelang/reference/diagnostics/).
 
