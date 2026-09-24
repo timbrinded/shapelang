@@ -1,9 +1,12 @@
 import { describe, expect, test } from "bun:test";
-import { resolve } from "node:path";
+import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join, resolve } from "node:path";
 import {
   canaryFailureMessage,
   loadReleaseCanaryCases,
   rewriteCanaryCommand,
+  runReleaseCanaries,
   type CanaryCommandResult
 } from "./run-release-canaries";
 
@@ -47,13 +50,29 @@ describe("rewriteCanaryCommand", () => {
     );
   });
 
-  test("leaves an unrecognized source path untouched so the runner rejects it", () => {
-    expect(
-      rewriteCanaryCommand(
-        'bun plugins/shapelang/skills/unix-system-visualiser/scripts/generate.mjs --shape-command "bun ../../../packages/shp-cli/src/index.ts"',
-        "/tmp/shp"
-      )
-    ).toContain("packages/shp-cli/src/index.ts");
+  test("runner rejects a source CLI path the rewriter does not recognize", () => {
+    const root = mkdtempSync(join(tmpdir(), "shape-canary-cases-"));
+    try {
+      mkdirSync(join(root, "fixtures/skills"), { recursive: true });
+      writeFileSync(
+        join(root, "fixtures/skills/cases.json"),
+        JSON.stringify([
+          {
+            skill: "unix-system-visualiser",
+            id: "visualiser-unrecognized-path",
+            required_commands: [
+              'bun plugins/shapelang/skills/unix-system-visualiser/scripts/generate.mjs --shape-command "bun ../../../packages/shp-cli/src/index.ts"'
+            ],
+            expected_exits: [[0]]
+          }
+        ])
+      );
+      expect(() => runReleaseCanaries("/tmp/shp", root)).toThrow(
+        "visualiser-unrecognized-path command was not rewritten to the packed binary"
+      );
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
   });
 });
 
