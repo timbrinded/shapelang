@@ -906,13 +906,6 @@
       ]
     },
     {
-      "module": "shape.generated.ast.packages.shp_checker.src.editor_smoke_test",
-      "path": "shape/generated/ast/packages/shp-checker/src/editor.smoke.test.shape",
-      "sources": [
-        "packages/shp-checker/src/editor.smoke.test.ts"
-      ]
-    },
-    {
       "module": "shape.generated.ast.packages.shp_checker.src.editor_test",
       "path": "shape/generated/ast/packages/shp-checker/src/editor.test.shape",
       "sources": [
