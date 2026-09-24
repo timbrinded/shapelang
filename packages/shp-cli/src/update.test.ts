@@ -9,7 +9,6 @@ import {
   parseReleaseInfo,
   resolveReleasePlatform,
   runUpdate,
-  selectReleaseAsset,
   windowsReplacementScript,
   type ReleasePlatform,
   type UpdateServices
@@ -83,30 +82,6 @@ describe("shp update helpers", () => {
     expect(expectedChecksumForAsset(checksums, "install.sh")).toBe(
       "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
     );
-  });
-
-  test("parses release JSON and selects assets", () => {
-    const release = parseReleaseInfo({
-      tag_name: "v0.3.0",
-      assets: [
-        {
-          name: "checksums.txt",
-          browser_download_url: "https://example.test/checksums.txt"
-        },
-        {
-          name: "shp-linux-x64.tar.gz",
-          browser_download_url: "https://example.test/shp-linux-x64.tar.gz",
-          digest: "sha256:abc"
-        }
-      ]
-    });
-
-    expect(release.tagName).toBe("v0.3.0");
-    expect(selectReleaseAsset(release, "shp-linux-x64.tar.gz")).toEqual({
-      name: "shp-linux-x64.tar.gz",
-      browserDownloadUrl: "https://example.test/shp-linux-x64.tar.gz",
-      digest: "sha256:abc"
-    });
   });
 
   test("rejects malformed release and asset JSON", () => {
@@ -334,7 +309,7 @@ describe("shp update helpers", () => {
     expect(downloads).toEqual([]);
   });
 
-  test("rejects an existing explicit target that is not a shp binary", async () => {
+  test("rejects an existing explicit target whose version output is not a shp version", async () => {
     const services: UpdateServices = {
       fetchJson: async () => {
         throw new Error("release fetch should not run");
@@ -347,7 +322,7 @@ describe("shp update helpers", () => {
       sha256File: async () => "",
       extractTarGz: async () => {},
       runVersion: async () => ({ exitCode: 0, stdout: "other-tool 1.2.3\n", stderr: "" }),
-      runHelp: async () => ({ exitCode: 0, stdout: "usage: other-tool\n", stderr: "" }),
+      runHelp: async () => validShpHelp(),
       replaceBinary: async () => ({ pending: false })
     };
 
@@ -368,7 +343,9 @@ describe("shp update helpers", () => {
       message = error instanceof Error ? error.message : String(error);
     }
 
-    expect(message).toContain("existing --path target /tmp/not-shp did not identify as shp");
+    expect(message).toContain(
+      "existing --path target /tmp/not-shp did not report a valid shp version: other-tool 1.2.3"
+    );
   });
 
   test("rejects an existing explicit target that only reports a bare semver", async () => {

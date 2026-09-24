@@ -1172,6 +1172,11 @@ reevaluation UpdateRuntimeAssetsRechecked {
   evidence ts("packages/shp-cli/src/commands/update/impl.ts")
 }
 
+attest docs_not_needed {
+  source ts("packages/shp-cli/src/commands/update/impl.ts")
+  reason "Drops the parsed-but-never-read GitHub release asset digest field; checksum verification still uses checksums.txt and no documented update behavior changed."
+}
+
 attest no_shape_change {
   source md("docs-site/src/content/docs/inside-shape/formatter-editor-authoring.md")
   reason "Documents the diff-aware authoring bundle, file-or-symbol reference policy, and provider-neutral prompt handoff modeled above; the DocsSite architecture is unchanged."

@@ -28,7 +28,6 @@ export type ReleasePlatform = {
 export type ReleaseAsset = {
   readonly name: string;
   readonly browserDownloadUrl: string;
-  readonly digest?: string;
 };
 
 export type ReleaseInfo = {
@@ -106,7 +105,6 @@ type ReleaseInfoResponse = {
 type ReleaseAssetResponse = {
   readonly name: string;
   readonly browser_download_url: string;
-  readonly digest?: unknown;
 };
 
 export default async function update(this: CliContext, flags: UpdateFlags): Promise<void> {
@@ -430,8 +428,7 @@ function parseReleaseAsset(value: unknown): ReleaseAsset {
 
   return {
     name: value.name,
-    browserDownloadUrl: value.browser_download_url,
-    digest: typeof value.digest === "string" ? value.digest : undefined
+    browserDownloadUrl: value.browser_download_url
   };
 }
 

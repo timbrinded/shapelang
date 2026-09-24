@@ -78,7 +78,7 @@ resource ImplModuleNormalizeReleaseVersionAstAnchor : GeneratedAstAnchor {
 
 resource ImplModuleParseReleaseAssetAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-cli/src/commands/update/impl.ts#parseReleaseAsset")
-  fingerprint ast.semantic_subtree_v1("sha256:c5bdbf0e08e7769719fcae409824f626113230a8efa7c4d3cf461cc87398b4a6")
+  fingerprint ast.semantic_subtree_v1("sha256:56a827177e0416d02e4fc49e8bc1f912672a1e0062a38bcd7faf64e832532cbe")
 }
 
 resource ImplModuleParseReleaseInfoAstAnchor : GeneratedAstAnchor {
@@ -397,7 +397,7 @@ relation ImplModuleParseReleaseAssetGeneratedFromImplModuleParseReleaseAssetAstA
   kind generated_from
   connects ImplModule -> ImplModuleParseReleaseAssetAstAnchor
   roles { ImplModule as generated, ImplModuleParseReleaseAssetAstAnchor as syntax }
-  expects ImplModuleParseReleaseAssetAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c5bdbf0e08e7769719fcae409824f626113230a8efa7c4d3cf461cc87398b4a6")
+  expects ImplModuleParseReleaseAssetAstAnchor fingerprint ast.semantic_subtree_v1("sha256:56a827177e0416d02e4fc49e8bc1f912672a1e0062a38bcd7faf64e832532cbe")
   summary "fn ImplModule.parseReleaseAsset generated from typescript function_declaration at packages/shp-cli/src/commands/update/impl.ts#parseReleaseAsset."
 }
 
