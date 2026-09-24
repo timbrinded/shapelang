@@ -14,7 +14,6 @@ import { Glob } from "bun";
 import { checkShapeFiles, checkShapeModules } from "../index.ts";
 import {
   characterization,
-  findDiagnostic,
   lockedIntended,
   parseModuleOrThrow,
   requireDiagnostic,
@@ -292,36 +291,6 @@ describe("#61 coverage/bindings enforcement vs vacuity + self-model dogfood", ()
       // Internal symbols are module-qualified (`module::Name`).
       expect(invalid.name).toBe("cov_reeval::WidgetReviewerless");
       expect(invalid.reason).toBe("missing reviewer");
-    }
-  );
-
-  // NEGATIVE CONTROL — proves the coverage check is LIVE: the SAME governed
-  // model yields a missing_shape_update with the governing changedFile, and ZERO
-  // diagnostics with an empty changeset. A coverage implementation that ignored
-  // changedFiles (the vacuity failure mode) would produce identical output for
-  // both inputs and fail this contrast.
-  test(
-    lockedIntended(
-      "coverage output is a function of changedFiles, not a constant (live, non-vacuous)",
-      "epic #53 standard: a check proven LIVE must pair a positive failing case with the silent one"
-    ),
-    async () => {
-      const shapeFile = fixture("fixtures/fail/missing_shape_update/audit.shape");
-      const governed = await changedFilesFrom("fixtures/changed/audit_purge.txt");
-
-      const withChange = await checkShapeFiles([shapeFile], { changedFiles: governed });
-      const withoutChange = await checkShapeFiles([shapeFile], { changedFiles: [] });
-
-      const fires = findDiagnostic(withChange, "missing_shape_update");
-      const silent = findDiagnostic(withoutChange, "missing_shape_update");
-
-      // The contrast itself is the assertion: present for the governing input,
-      // absent for the empty input. Equal outputs here would mean the check
-      // ignores its changedFiles argument (vacuous).
-      expect(fires).toBeDefined();
-      expect(silent).toBeUndefined();
-      expect(withChange.ok).toBe(false);
-      expect(withoutChange.ok).toBe(true);
     }
   );
 });

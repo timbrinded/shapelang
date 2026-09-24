@@ -11,7 +11,6 @@
 import {
   checkShapeModules,
   formatDiagnostics,
-  type CheckModuleInput,
   type CheckOptions,
   type CheckResult,
   type SemanticDiagnostic
@@ -72,15 +71,6 @@ export function parseModuleOrThrow(source: string, filePath?: string): ShapeModu
 /** Parse then check Shape source in one step. */
 export function checkSource(source: string, options: CheckOptions = {}): CheckResult {
   return checkShapeModules([parseModuleOrThrow(source)], options);
-}
-
-/** Parse then check, tagging the module with a file path and/or origin. */
-export function checkSourceAs(
-  source: string,
-  input: Omit<CheckModuleInput, "module">,
-  options: CheckOptions = {}
-): CheckResult {
-  return checkShapeModules([{ module: parseModuleOrThrow(source), ...input }], options);
 }
 
 /** The multiset of diagnostic kinds, sorted for stable comparison. */

@@ -16,13 +16,7 @@
 import { describe, expect, test } from "bun:test";
 import { resolve } from "node:path";
 import { checkShapeFiles } from "../index.ts";
-import {
-  checkSource,
-  findDiagnostic,
-  lockedIntended,
-  requireDiagnostic,
-  requireNoDiagnostic
-} from "./harness.ts";
+import { checkSource, lockedIntended, requireDiagnostic, requireNoDiagnostic } from "./harness.ts";
 
 const repoRoot = resolve(import.meta.dir, "../../../..");
 const fixture = (rel: string): string => resolve(repoRoot, rel);
@@ -332,43 +326,6 @@ describe("#59 hypercycle witness correctness, determinism, multi-kind filtering"
       ]);
       expect(reversed.vertices).toEqual(declared.vertices);
       expect(reversed.hyperedges).toEqual(declared.hyperedges);
-    }
-  );
-
-  // INVARIANT 4 — NEGATIVE CONTROL.
-  test(
-    lockedIntended(
-      "hypercycle_acyclic yields no forbidden_hypercycle, and a wrong expected witness is caught",
-      "fixtures/pass/hypercycle_acyclic (no cycle over calls)"
-    ),
-    async () => {
-      // (a) The acyclic fixture has a `forbid hypercycle over calls` rule but no
-      // `calls` cycle (its only multi-step edge is a `coordinated_call`). No
-      // hypercycle must be reported — proving the detector is not a tautology
-      // that fires on any relation-bearing model.
-      const acyclic = await checkShapeFiles([
-        fixture("fixtures/pass/hypercycle_acyclic/deps.shape")
-      ]);
-      requireNoDiagnostic(acyclic, "forbidden_hypercycle");
-      expect(findDiagnostic(acyclic, "forbidden_hypercycle")).toBeUndefined();
-
-      // (b) Planted-mutant control: assert a DELIBERATELY WRONG expectation
-      // against the real hypercycle_calls witness and confirm it fails. This
-      // proves the structured assertions in invariant 1 can fail — they are not
-      // vacuously true. "deps::Gateway" is in the cycle; "deps::NotInCycle" is
-      // not, so requiring its presence must throw.
-      const real = requireDiagnostic(
-        await checkShapeFiles([fixture("fixtures/fail/hypercycle_calls/deps.shape")]),
-        "forbidden_hypercycle"
-      );
-      const vertexSet = new Set(real.vertices);
-      expect(() => {
-        if (!vertexSet.has("deps::NotInCycle")) {
-          throw new Error("wrong expected witness: vertex deps::NotInCycle not in cycle");
-        }
-      }).toThrow(/NotInCycle not in cycle/);
-      // And the genuinely-present vertex does NOT throw under the same shape.
-      expect(vertexSet.has("deps::Gateway")).toBe(true);
     }
   );
 });

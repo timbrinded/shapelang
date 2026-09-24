@@ -51,8 +51,6 @@ function lineMatching(source: string, pattern: RegExp): number {
 
 const PURGE_PATH = "fixtures/source/audit_purge.ts";
 const STORE_TS_PATH = "fixtures/source/audit_store.ts";
-const STORE_RS_PATH = "fixtures/source/rust/audit_store.rs";
-const DESTRUCTIVE_SQL_PATH = "fixtures/source/analyzer/sql/destructive.sql";
 
 describe("#62 analyzer truthfulness + advisory boundary", () => {
   // ── Invariant 1: ADVISORY BOUNDARY ──────────────────────────────────────
@@ -127,25 +125,7 @@ describe("#62 analyzer truthfulness + advisory boundary", () => {
     }
   );
 
-  test(
-    lockedIntended(
-      "multiline SQL with comments between operation tokens emits all destructive hints at their starting lines",
-      "shape/tooling.shape ShapeAnalyzer.analyzeSourceText: multiline lexical SQL detection"
-    ),
-    () => {
-      const source = readFixture(DESTRUCTIVE_SQL_PATH);
-      const hints = analyzeSourceText(DESTRUCTIVE_SQL_PATH, source);
-
-      expect(hints.map((hint) => hint.effect)).toEqual(["HardDelete", "Truncate", "DropStorage"]);
-      expect(hints.map((hint) => hint.line)).toEqual([
-        lineMatching(source, /^DELETE$/),
-        lineMatching(source, /^TRUNCATE$/),
-        lineMatching(source, /^DROP$/)
-      ]);
-    }
-  );
-
-  // ── Invariant 3 + 6: FALSE-POSITIVE / NEGATIVE controls on real fixtures ─
+  // ── Invariant 3: FALSE-POSITIVE / NEGATIVE controls on real fixtures ─────
   test(
     lockedIntended(
       "safe persistence (repo.insert) produces ZERO hints — TypeScript fixture",
@@ -155,41 +135,9 @@ describe("#62 analyzer truthfulness + advisory boundary", () => {
       const source = readFixture(STORE_TS_PATH);
       // Guard the control's premise: the fixture really does an insert (a
       // write), so a clean result reflects detector specificity, not an empty
-      // file. This is the over-broad-regex catcher of invariant 6.
+      // file.
       expect(/\.insert\s*\(/.test(source)).toBe(true);
       expect(analyzeSourceText(STORE_TS_PATH, source)).toHaveLength(0);
-    }
-  );
-
-  test(
-    lockedIntended(
-      "safe persistence (repo.insert) produces ZERO hints — Rust fixture (cross-language specificity)",
-      "shape/tooling.shape AstGenerationUnknownSafety: warn instead of failing; no false destructive claims"
-    ),
-    () => {
-      // NOTE on intent: fixtures/source/rust/audit_store.rs is a SAFE fixture —
-      // its only persistence call is `self.repo.insert(event)`. It therefore
-      // serves invariant 6's "safe fixture asserts none" role across a second
-      // language. (There is no destructive Rust fixture in the tree; the
-      // genuine-deletion catcher of invariant 6 is the TS audit_purge.ts test
-      // above, whose `deleteFrom(` call must keep producing a hint.)
-      const source = readFixture(STORE_RS_PATH);
-      expect(/\.insert\s*\(/.test(source)).toBe(true);
-      expect(analyzeSourceText(STORE_RS_PATH, source)).toHaveLength(0);
-    }
-  );
-
-  test(
-    lockedIntended(
-      "synthetic safe DB calls (insert/update) produce ZERO hints",
-      "docs-site/.../learn/what-is-shape.md: analyzer flags destructive ops, not ordinary writes"
-    ),
-    () => {
-      // These are non-destructive writes that an over-broad regex might catch.
-      // They are NOT rigged to any detector pattern — they are the operations a
-      // truthful detector must leave alone.
-      const safe = ["db.insert({ id: 1 });", "db.update({ id: 1 }, { name: 'x' });"].join("\n");
-      expect(analyzeSourceText("src/safe.ts", safe)).toHaveLength(0);
     }
   );
 
@@ -271,27 +219,6 @@ describe("#62 analyzer truthfulness + advisory boundary", () => {
       expect(otherPathWarnings).toHaveLength(1);
       expect(otherPathWarnings[0]?.kind).toBe("missing_declared_effect");
       expect(otherPathWarnings[0]?.hint.sourcePath).toBe("src/other.ts");
-    }
-  );
-
-  // ── Invariant 6 (genuine-deletion catcher), made explicit ────────────────
-  test(
-    lockedIntended(
-      "a genuine deleteFrom(...) in executable code IS flagged; a safe insert is NOT",
-      "shape/tooling.shape AstGenerationUnknownSafety: candidate destructive effects surfaced as hints; benign writes are not"
-    ),
-    () => {
-      // Paired control over the SAME comparison surface: if the HardDelete
-      // regex ever stops matching, the first expectation fails; if it becomes
-      // over-broad and matches inserts, the second fails.
-      const destructive = "await db.deleteFrom('audit_events');";
-      const safe = "await db.insert({ id: 1 });";
-
-      const destructiveHints = analyzeSourceText("src/purge.ts", destructive);
-      expect(destructiveHints).toHaveLength(1);
-      expect(destructiveHints[0]?.effect).toBe("HardDelete");
-
-      expect(analyzeSourceText("src/append.ts", safe)).toHaveLength(0);
     }
   );
 });

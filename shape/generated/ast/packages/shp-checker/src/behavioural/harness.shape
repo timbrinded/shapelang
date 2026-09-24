@@ -11,11 +11,6 @@ resource HarnessModuleCharacterizationAstAnchor : GeneratedAstAnchor {
   fingerprint ast.semantic_subtree_v1("sha256:1d195ab43a102e7664b84b5487e6a40e8578044949c84e39e0d2074f4bda923b")
 }
 
-resource HarnessModuleCheckSourceAsAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/behavioural/harness.ts#checkSourceAs")
-  fingerprint ast.semantic_subtree_v1("sha256:1954d48d2e57a5303bc7d6700ff09a322ac4ff507ea724e8af460d4fbd29c04c")
-}
-
 resource HarnessModuleCheckSourceAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/behavioural/harness.ts#checkSource")
   fingerprint ast.semantic_subtree_v1("sha256:972b05398aa8b30ac9e17f876724067e29e81dfe69fc72d81fccd8a2ae03b8ce")
@@ -73,9 +68,6 @@ component HarnessModule : GeneratedCandidate {
   fn checkSource
     source ts("packages/shp-checker/src/behavioural/harness.ts#checkSource")
     effects unknown
-  fn checkSourceAs
-    source ts("packages/shp-checker/src/behavioural/harness.ts#checkSourceAs")
-    effects unknown
   fn diagnosticKinds
     source ts("packages/shp-checker/src/behavioural/harness.ts#diagnosticKinds")
     effects unknown
@@ -111,14 +103,6 @@ relation HarnessModuleCharacterizationGeneratedFromHarnessModuleCharacterization
   roles { HarnessModule as generated, HarnessModuleCharacterizationAstAnchor as syntax }
   expects HarnessModuleCharacterizationAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1d195ab43a102e7664b84b5487e6a40e8578044949c84e39e0d2074f4bda923b")
   summary "fn HarnessModule.characterization generated from typescript function_declaration at packages/shp-checker/src/behavioural/harness.ts#characterization."
-}
-
-relation HarnessModuleCheckSourceAsGeneratedFromHarnessModuleCheckSourceAsAstAnchor {
-  kind generated_from
-  connects HarnessModule -> HarnessModuleCheckSourceAsAstAnchor
-  roles { HarnessModule as generated, HarnessModuleCheckSourceAsAstAnchor as syntax }
-  expects HarnessModuleCheckSourceAsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1954d48d2e57a5303bc7d6700ff09a322ac4ff507ea724e8af460d4fbd29c04c")
-  summary "fn HarnessModule.checkSourceAs generated from typescript function_declaration at packages/shp-checker/src/behavioural/harness.ts#checkSourceAs."
 }
 
 relation HarnessModuleCheckSourceGeneratedFromHarnessModuleCheckSourceAstAnchor {
