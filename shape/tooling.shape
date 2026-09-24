@@ -207,8 +207,6 @@ component ShapeAstGenerator {
       Append<GeneratedCandidateEffect>
         evidence ts("packages/shp-checker/src/ast-generation-render.ts")
       Append<ShapeModelDraft>
-        evidence ts("packages/shp-checker/src/ast-generation-core.ts")
-      Append<ShapeModelDraft>
         evidence ts("packages/shp-checker/src/ast-generation-render.ts")
       Append<ShapeModelDraft>
         evidence ts("packages/shp-checker/src/ast-generation.ts")
