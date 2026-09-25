@@ -469,11 +469,12 @@ describe("#61 coverage/bindings enforcement vs vacuity + self-model dogfood", ()
     }
   );
 
-  // INVARIANT 10 — given the repository file list, every source and evidence
-  // path the model cites must be in it. A function evidence path, a reevaluation
-  // evidence path, and a generated AST function's source that no longer exist
-  // are each reported once; generated functions never count for coverage, but
-  // their citations are checked all the same. The existing source path and an
+  // INVARIANT 10 — given the repository file list, every source, evidence, and
+  // observed path the model cites must be in it. A function evidence path, a
+  // candidate effect source, a memory observed reference, a reevaluation evidence
+  // path, and a generated AST function's source that no longer exist are each
+  // reported once; generated functions never count for coverage, but their
+  // citations are checked all the same. The existing source path and an
   // attestation naming a deleted file are not reported. The check is opt-in, so
   // the same model passes without the file list.
   test(
@@ -505,6 +506,7 @@ describe("#61 coverage/bindings enforcement vs vacuity + self-model dogfood", ()
           "  confidence High",
           `  summary "Docs verification stays read-only."`,
           "  who { owner DocsTeam }",
+          `  observed ts("scripts/observed.ts#verify")`,
           "}",
           "",
           "reevaluation VerifyRechecked {",
@@ -529,10 +531,24 @@ describe("#61 coverage/bindings enforcement vs vacuity + self-model dogfood", ()
           [
             "module shape.generated.ast.scripts.gone",
             "",
+            "resource Output",
+            "",
+            "resource GoneAnchor {",
+            `  fingerprint ast.semantic_subtree_v1("sha256:${"a".repeat(64)}")`,
+            "}",
+            "",
             "component GoneModule {",
             "  fn gone",
             `    source ts("scripts/gone.ts#gone")`,
             "    effects unknown",
+            "}",
+            "",
+            "effect candidate GoneWritesOutput {",
+            "  fn GoneModule.gone",
+            "  effect Update<Output>",
+            `  source ts("scripts/candidate.ts#gone")`,
+            "  confidence low",
+            `  pin GoneAnchor fingerprint ast.semantic_subtree_v1("sha256:${"a".repeat(64)}")`,
             "}",
             ""
           ].join("\n")
@@ -545,16 +561,18 @@ describe("#61 coverage/bindings enforcement vs vacuity + self-model dogfood", ()
         repositoryFiles: ["scripts/verify.ts"]
       });
       expect(result.ok).toBe(false);
-      expect(diagnosticKinds(result)).toEqual([
-        "missing_cited_path",
-        "missing_cited_path",
-        "missing_cited_path"
-      ]);
+      expect(diagnosticKinds(result)).toEqual(Array(5).fill("missing_cited_path"));
       expect(
         result.diagnostics.flatMap((diagnostic) =>
           diagnostic.kind === "missing_cited_path" ? [diagnostic.path] : []
         )
-      ).toEqual(["docs/renamed.md", "scripts/gone.ts", "tests/deleted.test.ts"]);
+      ).toEqual([
+        "docs/renamed.md",
+        "scripts/candidate.ts",
+        "scripts/gone.ts",
+        "scripts/observed.ts",
+        "tests/deleted.test.ts"
+      ]);
 
       const optedOut = checkShapeModules([{ module }, generated]);
       expect(optedOut.ok).toBe(true);

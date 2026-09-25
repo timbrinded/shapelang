@@ -114,9 +114,10 @@ The TypeScript project is strict (`strict`, `noUncheckedIndexedAccess`,
 - Before editing, find the change type in the "What to update per change type"
   table in `CONTRIBUTING.md` and update every file in its row, including the
   Shape model file and the docs binding it names.
-- `DocsSource` in `shape/delivery.shape` governs every `.md` page under
-  `docs-site/src/content/docs/`, so a page edit needs a Shape update or a narrow
-  current `attest no_shape_change`.
+- Docs pages under `docs-site/src/content/docs/` map to `DocsContent` in
+  `shape/delivery.shape`, which has no `on_change`, so a page edit needs no
+  Shape update or attestation. Renaming or deleting a page the model cites
+  fails `shape:ci` with `missing cited path` until the citation is updated.
 - Docs changes must keep every `shape` fence parseable. The docs verifier parses
   every unindented `shape` fence under `docs-site/src/content/docs` unless its
   info string contains `no-verify`; use `shape no-verify` only for intentional

@@ -573,7 +573,7 @@ caused by:
   - shape/docs.shape: effect DocsSite.verifyDocs emits Read<DocsContent>
 ```
 
-**Cause.** A `source` or `evidence` path cited by a function, generated or authored, or by a rationale, memory, or reevaluation is not a file in the repository, usually because the file was renamed or deleted without updating the model. `caused by` names every declaration that cites the path. Attestation sources are not checked, since attesting a deletion names a removed file.
+**Cause.** A `source`, `evidence`, or `observed` path cited by a function (generated or authored), candidate effect, rationale, memory, or reevaluation is not a file in the repository, usually because the file was renamed or deleted without updating the model. `caused by` names every declaration that cites the path. Attestation sources are not checked, since attesting a deletion names a removed file.
 
 **Fix.** Point the citation at the file's new path, or remove the citation if the file is gone.
 

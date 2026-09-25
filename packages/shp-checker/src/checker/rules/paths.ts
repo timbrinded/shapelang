@@ -1,5 +1,5 @@
-// Cited-path existence: every source and evidence path the model cites must name
-// a file in the repository. The checker never reads the filesystem; callers pass
+// Cited-path existence: every source, evidence, and observed path the model cites
+// must name a file in the repository. The checker never reads the filesystem; callers pass
 // the repository's file list, just as they pass the changed files. Attestation
 // sources are not checked, since attesting a deletion names a removed file.
 import type { Model, Provenance, SemanticDiagnostic } from "../model.ts";
@@ -35,6 +35,11 @@ export function checkCitedPaths(
       }
     }
   }
+  for (const candidate of model.candidateEffects.values()) {
+    if (candidate.source) {
+      cite(candidate.source.path, candidate.provenance);
+    }
+  }
   for (const context of [
     ...model.rationales.values(),
     ...model.memories.values(),
@@ -42,6 +47,11 @@ export function checkCitedPaths(
   ]) {
     for (const evidence of context.evidence) {
       cite(evidence.path, context.provenance);
+    }
+  }
+  for (const memory of model.memories.values()) {
+    for (const observed of memory.observed) {
+      cite(observed.path, memory.provenance);
     }
   }
 
