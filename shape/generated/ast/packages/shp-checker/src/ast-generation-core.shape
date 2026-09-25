@@ -1,7 +1,0 @@
-module shape.generated.ast.packages.shp_checker.src.ast_generation_core
-
-trait GeneratedAstAnchor {
-}
-
-trait GeneratedCandidate {
-}

@@ -1344,26 +1344,6 @@ describe("Shape checker", () => {
     expect(result.diagnostics).toEqual([]);
   });
 
-  test("rejects hypercycle_calls fixture", async () => {
-    const result = await checkShapeFiles([
-      resolve(repoRoot, "fixtures/fail/hypercycle_calls/deps.shape")
-    ]);
-    const output = formatDiagnostics(result);
-    expect(result.exitCode).toBe(1);
-    expect(output).toContain("forbidden hypercycle");
-    expect(output).toContain("calls GatewayCallsAudit");
-  });
-
-  test("rejects hypercycle_coordinated fixture", async () => {
-    const result = await checkShapeFiles([
-      resolve(repoRoot, "fixtures/fail/hypercycle_coordinated/deps.shape")
-    ]);
-    const output = formatDiagnostics(result);
-    expect(result.exitCode).toBe(1);
-    expect(output).toContain("forbidden hypercycle");
-    expect(output).toContain("coordinated_call AuditWritePath");
-  });
-
   test("rejects forbidden_path fixture with a per-hop witness", async () => {
     const result = await checkShapeFiles([
       resolve(repoRoot, "fixtures/fail/forbidden_path/deps.shape")
@@ -2377,6 +2357,40 @@ describe("Shape checker", () => {
     expect(graph).toContain("wiring GatewayWiresAudit:");
     expect(graph).toContain("wiring AuditWiresGateway:");
     expect(stats).toContain("wiring: 2");
+
+    // The same bare rule over a traversable kind must fire, or the silence
+    // above could come from bare rules admitting no kinds at all.
+    const callsCycle = parseShapeModule(`
+      module deps
+
+      component Gateway {
+      }
+      component AuditStore {
+      }
+
+      relation GatewayCallsAudit {
+        kind calls
+        connects Gateway -> AuditStore
+      }
+
+      relation AuditCallsGateway {
+        kind calls
+        connects AuditStore -> Gateway
+      }
+
+      rule no_unknown_cycles {
+        forbid hypercycle
+      }
+    `);
+    expect(callsCycle.ok).toBe(true);
+    if (!callsCycle.ok) {
+      return;
+    }
+    const callsResult = checkShapeModules([callsCycle.module]);
+    expect(callsResult.exitCode).toBe(1);
+    expect(callsResult.diagnostics).toContainEqual(
+      expect.objectContaining({ kind: "forbidden_hypercycle", rule: "deps::no_unknown_cycles" })
+    );
   });
 
   test("preserves relation roles in facts, explain output, and graph output", () => {

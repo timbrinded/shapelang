@@ -88,7 +88,7 @@ resource CheckReleaseApprovalModuleResolveRefCommitAstAnchor : GeneratedAstAncho
 
 resource CheckReleaseApprovalModuleRunHasSkillsApprovalAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("scripts/check-release-approval.ts#runHasSkillsApproval")
-  fingerprint ast.semantic_subtree_v1("sha256:e7f0060e395fc4121d64953f8491b78029d1361730afaa4228030b03fa870174")
+  fingerprint ast.semantic_subtree_v1("sha256:afe858640d90ddc8b839020bca78c7c1ac3cb312605c4de29fb51b312be37674")
 }
 
 resource CheckReleaseApprovalModuleSpawnGhAstAnchor : GeneratedAstAnchor {
@@ -293,7 +293,7 @@ relation CheckReleaseApprovalModuleRunHasSkillsApprovalGeneratedFromCheckRelease
   kind generated_from
   connects CheckReleaseApprovalModule -> CheckReleaseApprovalModuleRunHasSkillsApprovalAstAnchor
   roles { CheckReleaseApprovalModule as generated, CheckReleaseApprovalModuleRunHasSkillsApprovalAstAnchor as syntax }
-  expects CheckReleaseApprovalModuleRunHasSkillsApprovalAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e7f0060e395fc4121d64953f8491b78029d1361730afaa4228030b03fa870174")
+  expects CheckReleaseApprovalModuleRunHasSkillsApprovalAstAnchor fingerprint ast.semantic_subtree_v1("sha256:afe858640d90ddc8b839020bca78c7c1ac3cb312605c4de29fb51b312be37674")
   summary "fn CheckReleaseApprovalModule.runHasSkillsApproval generated from typescript function_declaration at scripts/check-release-approval.ts#runHasSkillsApproval."
 }
 

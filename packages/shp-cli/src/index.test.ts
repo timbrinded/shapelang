@@ -50,7 +50,7 @@ relation ReaderProvidesRecord {
       const inspection: unknown = JSON.parse(discovered.stdout);
       expect(inspection).toMatchObject({
         schemaVersion: 1,
-        shapeVersion: "0.9.0",
+        shapeVersion: (await readCliManifest()).version,
         documents: [
           {
             file: "shape/nested/system.shape",
@@ -118,15 +118,6 @@ relation ReaderProvidesRecord {
     expect(projectOnlyResult.exitCode).toBe(0);
     expect(projectOnlyResult.stdout).toContain("Shape check passed");
     expect(projectOnlyResult.stderr).toBe("");
-  });
-
-  test("returns exit code 1 for semantic violations", async () => {
-    const result = await runCli(["check", "fixtures/fail/append_only_hard_delete/audit.shape"]);
-
-    expect(result.exitCode).toBe(1);
-    expect(result.stderr).toContain("error: forbidden effect");
-    expect(result.stderr).toContain("AuditStore.purgeOldEvents");
-    expect(result.stdout).toBe("");
   });
 
   test("rejects unknown options without a stack trace", async () => {
@@ -1210,7 +1201,7 @@ component AuditStore {
       "2026-02-30",
       "fixtures/pass/memory_guard_review_freshness/bridge.shape"
     ]);
-    expect(result.exitCode).not.toBe(0);
+    expect(result.exitCode).toBe(2);
     expect(result.stderr).toContain("--as-of expects an ISO YYYY-MM-DD date");
   });
 

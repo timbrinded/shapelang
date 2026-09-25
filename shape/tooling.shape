@@ -207,8 +207,6 @@ component ShapeAstGenerator {
       Append<GeneratedCandidateEffect>
         evidence ts("packages/shp-checker/src/ast-generation-render.ts")
       Append<ShapeModelDraft>
-        evidence ts("packages/shp-checker/src/ast-generation-core.ts")
-      Append<ShapeModelDraft>
         evidence ts("packages/shp-checker/src/ast-generation-render.ts")
       Append<ShapeModelDraft>
         evidence ts("packages/shp-checker/src/ast-generation.ts")
@@ -1172,6 +1170,11 @@ reevaluation UpdateRuntimeAssetsRechecked {
   decided_on "2026-05-28"
   evidence test("packages/shp-cli/src/update.test.ts")
   evidence ts("packages/shp-cli/src/commands/update/impl.ts")
+}
+
+attest docs_not_needed {
+  source ts("packages/shp-cli/src/commands/update/impl.ts")
+  reason "Drops the parsed-but-never-read GitHub release asset digest field; checksum verification still uses checksums.txt and no documented update behavior changed."
 }
 
 attest no_shape_change {

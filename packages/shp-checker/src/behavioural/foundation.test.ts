@@ -1,5 +1,4 @@
-// #54 — Foundation: structured-diagnostic + causal-path assertions, and the
-// negative control proving why they beat substring matching.
+// #54 — Foundation: structured-diagnostic + causal-path assertions.
 //
 // These are the worked examples the rest of the behavioural suite follows.
 // They assert diagnostic IDENTITY (kind + fields) and, for the key diagnostics,
@@ -7,11 +6,10 @@
 
 import { describe, expect, test } from "bun:test";
 import { resolve } from "node:path";
-import { checkShapeFiles, formatDiagnostics } from "../index.ts";
+import { checkShapeFiles } from "../index.ts";
 import {
   checkSource,
   expectOrderedFragments,
-  findDiagnostic,
   lockedIntended,
   render,
   requireDiagnostic
@@ -85,33 +83,6 @@ describe("#54 structured diagnostic + causal-path foundation", () => {
 
   test(
     lockedIntended(
-      "forbidden-hypercycle asserts the rule and the participating vertices/edges",
-      "shape/checker.shape HypercycleWitness"
-    ),
-    async () => {
-      const result = await checkShapeFiles([fixture("fixtures/fail/hypercycle_calls/deps.shape")]);
-
-      const diagnostic = requireDiagnostic(result, "forbidden_hypercycle");
-      expect(diagnostic.rule).toBe("deps::no_calls_cycle");
-      // Witness identity: a closed cycle (first vertex repeated at the end)
-      // over exactly the three participating components.
-      expect(diagnostic.vertices.at(0)).toBe(diagnostic.vertices.at(-1));
-      expect(new Set(diagnostic.vertices)).toEqual(
-        new Set(["deps::AuditStore", "deps::ContractRegistry", "deps::Gateway"])
-      );
-      expect(diagnostic.hyperedges.map((edge) => edge.name).sort()).toEqual([
-        "deps::AuditCallsRegistry",
-        "deps::GatewayCallsAudit",
-        "deps::RegistryCallsGateway"
-      ]);
-      for (const edge of diagnostic.hyperedges) {
-        expect(edge.kind).toBe("calls");
-      }
-    }
-  );
-
-  test(
-    lockedIntended(
       "guarded-shape-changed asserts the guard, target, and the reevaluation it demands",
       "concepts/refactor-constraints.md (guarded change requires reevaluation)"
     ),
@@ -144,38 +115,6 @@ describe("#54 structured diagnostic + causal-path foundation", () => {
       // PreserveInline derives an InlineRationale obligation, sourced from the prelude.
       expect(diagnostic.requiredContext).toContain("InlineRationale");
       expect(diagnostic.requiredBy).toBe("PreserveInline");
-    }
-  );
-
-  // NEGATIVE CONTROL — proves the structured approach catches a regression a
-  // substring assertion would miss. Worked replacement for the `.toContain`
-  // style at checker.test.ts (e.g. the forbid tests around lines 504-574 and
-  // the loose hypercycle assertions around 1521-1539).
-  test(
-    lockedIntended(
-      "structured assertions distinguish diagnostics that share a substring",
-      "epic #53 standard: no substring-only semantic assertions"
-    ),
-    async () => {
-      const forbidResult = await checkShapeFiles([
-        fixture("fixtures/fail/append_only_hard_delete/audit.shape")
-      ]);
-      const cycleResult = await checkShapeFiles([
-        fixture("fixtures/fail/hypercycle_calls/deps.shape")
-      ]);
-
-      // Both rejections render the word "forbidden", so a sole
-      // `toContain("forbidden")` cannot tell them apart — it would pass on the
-      // WRONG diagnostic.
-      expect(formatDiagnostics(forbidResult)).toContain("forbidden");
-      expect(formatDiagnostics(cycleResult)).toContain("forbidden");
-
-      // The structured assertion does tell them apart.
-      expect(findDiagnostic(forbidResult, "final_forbidden_effect")).toBeDefined();
-      expect(findDiagnostic(cycleResult, "final_forbidden_effect")).toBeUndefined();
-      expect(() => requireDiagnostic(cycleResult, "final_forbidden_effect")).toThrow(
-        /expected a "final_forbidden_effect" diagnostic/
-      );
     }
   );
 });

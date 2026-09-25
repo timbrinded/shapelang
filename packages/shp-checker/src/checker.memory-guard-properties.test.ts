@@ -407,7 +407,7 @@ describe("Shape property-level guarded changes", () => {
     expect(output).not.toContain("removes shape trait");
   });
 
-  test("lists a valueless protects description without a trailing space", () => {
+  test("lists memory guard fields, including a valueless protects description without a trailing space", () => {
     const listing = listMemoryGuardsShapeModules([
       requireParsed(`
         module gateway
@@ -430,12 +430,14 @@ describe("Shape property-level guarded changes", () => {
           confidence High
           summary "The local description is required context for reviewers."
           who { owner GatewayTeam }
+          when { review_by "2026-12-31" }
           protects { description }
         }
       `)
     ]);
 
     expect(listing).toContain("protects: description");
+    expect(listing).toContain("review_by: 2026-12-31");
     expect(listing.split("\n").some((line) => line.endsWith(" "))).toBe(false);
   });
 

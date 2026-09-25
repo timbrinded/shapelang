@@ -11,9 +11,11 @@ today as if it were the design.
 1. **Truthful** — it states something actually guaranteed, checkable by reading
    the fixture.
 2. **Falsifiable** — it can fail. Each area ships a **negative control**: a
-   planted mutant (a broken fixture, a local stub, or a deliberately wrong
-   expectation) that the test catches. A test that cannot be made to fail is
-   rejected.
+   contrasting input (a broken fixture, a mutated model, or a value that must
+   diverge) that goes through the real API and makes it produce a different
+   result. A control that only exercises a local stub, closure, or regex
+   proves the matcher, not the product, and does not count. A test that
+   cannot be made to fail is rejected.
 3. **Non-circular** — no asserting a string the author just wrote; no detector
    fed input rigged to its own pattern; no re-hashing one in-memory value and
    calling it determinism.
@@ -35,6 +37,8 @@ today as if it were the design.
 - Detector tests whose fixtures are hand-crafted to match the detector pattern.
 - "Did not throw" / exit-code-only happy-path tests as behavioural coverage.
 - Determinism claims proven by comparing a value to itself in one process.
+- Re-running a contract another test already owns with the same input; extend
+  the owner instead.
 - Pinning current behaviour as law without a vision anchor.
 
 ## Asserting diagnostics

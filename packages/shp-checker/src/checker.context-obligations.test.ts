@@ -109,29 +109,6 @@ describe("Shape user-defined context obligations", () => {
     expect(output).toContain(contextRef("BoundaryReason", "component AuditStore"));
   });
 
-  test("keeps the hardcoded prelude obligations working alongside user traits", () => {
-    const result = checkShapeSource(`
-      module gateway
-
-      resource PolicySnapshot
-
-      component Gateway {
-        owns PolicySnapshot
-        grants Read<PolicySnapshot>
-        fn derivePolicyDecision : PreserveInline
-          effects complete {
-            Read<PolicySnapshot>
-          }
-      }
-    `);
-    const output = formatDiagnostics(result);
-
-    expect(result.exitCode).toBe(1);
-    expect(output).toContain(
-      contextRef("InlineRationale", fnTarget("Gateway.derivePolicyDecision"))
-    );
-  });
-
   test("parses and formats require_context trait members", () => {
     const result = formatShapeSource(`
       trait PreserveLocal<T: Fn> { require_context LocalRationale<T> satisfied_by rationale or memory }

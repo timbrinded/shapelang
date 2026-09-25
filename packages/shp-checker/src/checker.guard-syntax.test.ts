@@ -131,35 +131,6 @@ describe("Shape nested memory guard blocks", () => {
     expect(output).toContain("applies the ExtractHelper transform to the guarded target");
   });
 
-  test("supports nested blocks in a memory declaration", () => {
-    const result = checkShapeSource(`
-      module bridge
-
-      resource Attestation
-
-      component BridgePoller {
-        owns Attestation
-        grants Read<Attestation>
-        fn pollAttestation : RefactorSensitive
-          effects complete {
-            Read<Attestation>
-          }
-      }
-
-      memory PollConstraint : ${contextRef("RefactorConstraint", fnTarget("BridgePoller.pollAttestation"))} {
-        applies_to fn BridgePoller.pollAttestation
-        status Unexplained
-        confidence High
-        summary "Timing-sensitive."
-        who {
-          owner BridgeTeam
-        }
-      }
-    `);
-
-    expect(result.exitCode).toBe(0);
-  });
-
   test("preserves the exact protected-property set from a nested protects block", () => {
     // Regression: a value-less entry (description) before a valued entry
     // (shape PreserveInline) must not let the optional value swallow the next
