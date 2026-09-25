@@ -259,6 +259,13 @@ export type SemanticDiagnostic =
       reason: string;
       filePath?: string;
       causedBy: string[];
+    }
+  | {
+      kind: "stale_attestation";
+      attestationKind: string;
+      path: string;
+      filePath?: string;
+      causedBy: string[];
     };
 
 export type ShapeDiagnostic = ParseDiagnostic | SemanticDiagnostic;
@@ -276,6 +283,15 @@ export type CheckOptions = {
    * Every other parse and semantic diagnostic remains blocking.
    */
   allowUnknownEffects?: boolean;
+  /**
+   * The model at the change's comparison base, such as the merge base of a pull
+   * request. When set, an attestation satisfies coverage or bindings only if no
+   * attestation with the same kind, path, and reason exists in the base, and
+   * attestations identical to the base are reported as stale warnings. When
+   * absent, an attestation counts when its declaring `.shape` file is in the
+   * changed-file input.
+   */
+  baseModules?: ShapeModule[] | CheckModuleInput[];
   changedFiles?: string[];
   enforceBindings?: boolean;
   includeFacts?: boolean;
@@ -296,6 +312,8 @@ export type CheckOptions = {
 
 export type NormalizedCheckOptions = CheckOptions & {
   repoRoot: string;
+  /** Keys of the base model's attestations; present only when `baseModules` is set. */
+  baseAttestationKeys?: ReadonlySet<string>;
 };
 
 export type Fact =

@@ -6,9 +6,14 @@ trait GeneratedAstAnchor {
 trait GeneratedCandidate {
 }
 
+resource ApiModuleBaseAttestationKeysAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/api.ts#baseAttestationKeys")
+  fingerprint ast.semantic_subtree_v1("sha256:70e1a41fa56496bcc7078bbc704823540f69fe9db36b2826d7f758e3ff52361d")
+}
+
 resource ApiModuleCheckLoweredShapeModelAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/checker/api.ts#checkLoweredShapeModel")
-  fingerprint ast.semantic_subtree_v1("sha256:87554ab90db40fa6b5b40374b028379476f774dab4ed1d4741aa2f2fecb84fd2")
+  fingerprint ast.semantic_subtree_v1("sha256:6548ac436f4e15b2ac24f6c3deff8c6ca90c5cb0cca1181f33bdf46db8d2a383")
 }
 
 resource ApiModuleCheckShapeFilesAstAnchor : GeneratedAstAnchor {
@@ -26,12 +31,20 @@ resource ApiModuleCompareFactsAstAnchor : GeneratedAstAnchor {
   fingerprint ast.semantic_subtree_v1("sha256:69b96d4f8259696122177769d3faf8b1eee05dc5cd0d0a1f6e4dd5746b2d8988")
 }
 
+resource ApiModuleIsWarningAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/api.ts#isWarning")
+  fingerprint ast.semantic_subtree_v1("sha256:2e20ba14c1171372968ebe694bc2e7beaf4e890ae3bcbf97f8b8aa239366c14d")
+}
+
 resource ApiModuleNormalizeCheckOptionsAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/checker/api.ts#normalizeCheckOptions")
-  fingerprint ast.semantic_subtree_v1("sha256:29d550778914f05c80b6f798af4c08f1b4106c0293bfd7037a0a037b09f45488")
+  fingerprint ast.semantic_subtree_v1("sha256:b900f60936e41dc412a6c8af445b4c07a5cc5ce17fd9ba4e530149c117a17cd3")
 }
 
 component ApiModule : GeneratedCandidate {
+  fn baseAttestationKeys
+    source ts("packages/shp-checker/src/checker/api.ts#baseAttestationKeys")
+    effects unknown
   fn checkLoweredShapeModel
     source ts("packages/shp-checker/src/checker/api.ts#checkLoweredShapeModel")
     effects unknown
@@ -44,16 +57,27 @@ component ApiModule : GeneratedCandidate {
   fn compareFacts
     source ts("packages/shp-checker/src/checker/api.ts#compareFacts")
     effects unknown
+  fn isWarning
+    source ts("packages/shp-checker/src/checker/api.ts#isWarning")
+    effects unknown
   fn normalizeCheckOptions
     source ts("packages/shp-checker/src/checker/api.ts#normalizeCheckOptions")
     effects unknown
+}
+
+relation ApiModuleBaseAttestationKeysGeneratedFromApiModuleBaseAttestationKeysAstAnchor {
+  kind generated_from
+  connects ApiModule -> ApiModuleBaseAttestationKeysAstAnchor
+  roles { ApiModule as generated, ApiModuleBaseAttestationKeysAstAnchor as syntax }
+  expects ApiModuleBaseAttestationKeysAstAnchor fingerprint ast.semantic_subtree_v1("sha256:70e1a41fa56496bcc7078bbc704823540f69fe9db36b2826d7f758e3ff52361d")
+  summary "fn ApiModule.baseAttestationKeys generated from typescript function_declaration at packages/shp-checker/src/checker/api.ts#baseAttestationKeys."
 }
 
 relation ApiModuleCheckLoweredShapeModelGeneratedFromApiModuleCheckLoweredShapeModelAstAnchor {
   kind generated_from
   connects ApiModule -> ApiModuleCheckLoweredShapeModelAstAnchor
   roles { ApiModule as generated, ApiModuleCheckLoweredShapeModelAstAnchor as syntax }
-  expects ApiModuleCheckLoweredShapeModelAstAnchor fingerprint ast.semantic_subtree_v1("sha256:87554ab90db40fa6b5b40374b028379476f774dab4ed1d4741aa2f2fecb84fd2")
+  expects ApiModuleCheckLoweredShapeModelAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6548ac436f4e15b2ac24f6c3deff8c6ca90c5cb0cca1181f33bdf46db8d2a383")
   summary "fn ApiModule.checkLoweredShapeModel generated from typescript function_declaration at packages/shp-checker/src/checker/api.ts#checkLoweredShapeModel."
 }
 
@@ -81,11 +105,19 @@ relation ApiModuleCompareFactsGeneratedFromApiModuleCompareFactsAstAnchor {
   summary "fn ApiModule.compareFacts generated from typescript function_declaration at packages/shp-checker/src/checker/api.ts#compareFacts."
 }
 
+relation ApiModuleIsWarningGeneratedFromApiModuleIsWarningAstAnchor {
+  kind generated_from
+  connects ApiModule -> ApiModuleIsWarningAstAnchor
+  roles { ApiModule as generated, ApiModuleIsWarningAstAnchor as syntax }
+  expects ApiModuleIsWarningAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2e20ba14c1171372968ebe694bc2e7beaf4e890ae3bcbf97f8b8aa239366c14d")
+  summary "fn ApiModule.isWarning generated from typescript function_declaration at packages/shp-checker/src/checker/api.ts#isWarning."
+}
+
 relation ApiModuleNormalizeCheckOptionsGeneratedFromApiModuleNormalizeCheckOptionsAstAnchor {
   kind generated_from
   connects ApiModule -> ApiModuleNormalizeCheckOptionsAstAnchor
   roles { ApiModule as generated, ApiModuleNormalizeCheckOptionsAstAnchor as syntax }
-  expects ApiModuleNormalizeCheckOptionsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:29d550778914f05c80b6f798af4c08f1b4106c0293bfd7037a0a037b09f45488")
+  expects ApiModuleNormalizeCheckOptionsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b900f60936e41dc412a6c8af445b4c07a5cc5ce17fd9ba4e530149c117a17cd3")
   summary "fn ApiModule.normalizeCheckOptions generated from typescript function_declaration at packages/shp-checker/src/checker/api.ts#normalizeCheckOptions."
 }
 

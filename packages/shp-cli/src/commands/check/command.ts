@@ -1,6 +1,6 @@
 import { buildCommand } from "@stricli/core";
 import type { CliContext } from "../../context";
-import { fileArguments } from "../../parameters";
+import { baseModelFlags, fileArguments } from "../../parameters";
 import type { CheckFlags } from "./impl";
 
 export const checkCommand = buildCommand<CheckFlags, string[], CliContext>({
@@ -19,6 +19,7 @@ export const checkCommand = buildCommand<CheckFlags, string[], CliContext>({
         brief: "Path to a newline-delimited changed-file list.",
         placeholder: "changed.txt"
       },
+      ...baseModelFlags,
       asOf: {
         kind: "parsed",
         parse: (input: string) => input,
@@ -39,11 +40,11 @@ export const checkCommand = buildCommand<CheckFlags, string[], CliContext>({
   docs: {
     brief: "Run Shape semantic checks.",
     fullDescription:
-      "Parses modules, lowers facts, and runs semantic checks. With --allow-unknown-effects, effects unknown is reported as a non-fatal draft warning while all other diagnostics remain blocking. With --changed-files, also runs coverage and bindings. With --as-of (or --strict-freshness for today), stale design memory becomes a check failure.",
+      "Parses modules, lowers facts, and runs semantic checks. With --allow-unknown-effects, effects unknown is reported as a non-fatal draft warning while all other diagnostics remain blocking. With --changed-files, also runs coverage and bindings. With --base-ref or --base-model, only attestations new relative to that base count, and unchanged ones are reported as stale warnings. With --as-of (or --strict-freshness for today), stale design memory becomes a check failure.",
     customUsage: [
       {
         input:
-          "[--allow-unknown-effects] [--changed-files changed.txt] [--as-of YYYY-MM-DD | --strict-freshness] [files...]",
+          "[--allow-unknown-effects] [--changed-files changed.txt] [--base-ref REF | --base-model DIR] [--as-of YYYY-MM-DD | --strict-freshness] [files...]",
         brief: "Run semantic checks."
       }
     ]

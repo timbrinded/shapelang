@@ -29,6 +29,7 @@ In the index, `check` stands for every command that runs the semantic checks: `s
 | [`error: invalid candidate effect`](#error-invalid-candidate-effect) | `invalid_candidate_effect` | `check` | [Fingerprints and AST candidates](#fingerprints-and-ast-candidates) |
 | [`error: governed source changed without current Shape update`](#error-governed-source-changed-without-current-shape-update) | `missing_shape_update` | `shp check --changed-files`, `shp coverage` | [Change sets](#change-sets) |
 | [`error: bound docs change missing`](#error-bound-docs-change-missing) | `missing_bound_docs_change` | `shp check --changed-files` | [Change sets](#change-sets) |
+| [`warning: stale attestation`](#warning-stale-attestation) | `stale_attestation` | `check` with `--base-ref` or `--base-model` | [Change sets](#change-sets) |
 | [`error: missing required context`](#error-missing-required-context) | `missing_required_context` | `check` | [Design memory](#design-memory) |
 | [`error: missing required description`](#error-missing-required-description) | `missing_required_description` | `check` | [Design memory](#design-memory) |
 | [`error: invalid context target`](#error-invalid-context-target) | `invalid_context_target` | `check` | [Design memory](#design-memory) |
@@ -99,7 +100,7 @@ The graph rules use the same layout with a different body: the rule, one line pe
 
 **Parse errors.** When any file fails to parse or cannot be read, `shp check` reports only the parse errors and exits `2` without running a semantic check. Parse errors are not sorted; they appear in input-file order.
 
-**Streams.** Failing output goes to stderr with exit `1`. When the only diagnostics are `warning: unknown effects` under `--allow-unknown-effects`, they go to stdout, followed by `Shape check passed with warnings.`, with exit `0`. The full exit-code contract is in [CLI Reference](/shapelang/reference/cli/#exit-codes).
+**Streams.** Failing output goes to stderr with exit `1`. When the only diagnostics are warnings, `warning: unknown effects` under `--allow-unknown-effects` or `warning: stale attestation`, they go to stdout, followed by `Shape check passed with warnings.`, with exit `0`. The full exit-code contract is in [CLI Reference](/shapelang/reference/cli/#exit-codes).
 
 `shp analyze` warnings and `shp author` critic advisories are not checker diagnostics. They are advisory hints from separate tools and are not listed here; see [Analyzer Hints](/shapelang/guides/analyzer/) and [Author Updates with an Agent](/shapelang/guides/authoring/).
 
@@ -513,12 +514,12 @@ caused by:
   - shape/audit.shape: implementation AuditStoreImpl path src/audit/**/*.ts
 ```
 
-**Cause.** A changed path that does not end in `.shape` matches a `paths` glob of an `implementation` with `on_change require shape_update`, and nothing current covers it. `Matched path:` is the first matching glob. The path counts as covered only when a `.shape` file that is itself in the changed-file list contains either:
+**Cause.** A changed path that does not end in `.shape` matches a `paths` glob of an `implementation` with `on_change require shape_update`, and nothing current covers it. `Matched path:` is the first matching glob. The path counts as covered only when either exists:
 
-- a function `source`, or an effect `evidence`, naming exactly that path, ignoring any `#anchor` and `:line` or `:line-line` suffix, in a module that is not generated AST; or
-- `attest no_shape_change` whose `source` names exactly that path and whose `reason` is not empty.
+- a function `source`, or an effect `evidence`, naming exactly that path, ignoring any `#anchor` and `:line` or `:line-line` suffix, in a `.shape` file that is itself in the changed-file list and whose module is not generated AST; or
+- a current `attest no_shape_change` whose `source` names exactly that path and whose `reason` is not empty. With a base model (`--base-ref` or `--base-model`), current means its kind, path, and reason are new relative to the base; without one, it means its `.shape` file is in the changed-file list.
 
-**Fix.** Update the claim for that path in a `.shape` file included in the change, or, when the architecture did not change, add a narrow `attest no_shape_change` for it.
+**Fix.** Update the claim for that path in a `.shape` file included in the change, or, when the architecture did not change, add a narrow `attest no_shape_change` for it written for this change.
 
 ### `error: bound docs change missing`
 
@@ -537,7 +538,25 @@ caused by:
 
 **Cause.** A changed path matches a `when_changed` glob of a `binding`, no changed path matches any of its `require_changed` globs, and the triggering path has no current attestation of a kind the binding lists in `allow attest`. One diagnostic is emitted per triggering path. Without `allow attest`, the `Required:` line ends after the path list; with several kinds, they are joined with `or`.
 
-**Fix.** Change one of the required paths in the same change set, or add an attestation of an allowed kind whose `source` is the triggering path, with a non-empty `reason`, in a `.shape` file that is also in the change.
+**Fix.** Change one of the required paths in the same change set, or add a current attestation of an allowed kind whose `source` is the triggering path, with a non-empty `reason`, as described for `missing_shape_update` above.
+
+### `warning: stale attestation`
+
+Kind `stale_attestation` · emitted by `check` when given `--base-ref` or `--base-model`; never fails the check
+
+```text
+warning: stale attestation
+
+attest no_shape_change for src/audit/reporting.ts is unchanged from the base model, so it no longer satisfies coverage or bindings.
+Remove it; git history keeps the decision.
+
+caused by:
+  - shape/audit.shape: attest no_shape_change for src/audit/reporting.ts
+```
+
+**Cause.** An attestation with the same kind, path, and reason already exists in the base model. It was carried over from an earlier change, so it no longer satisfies coverage or bindings.
+
+**Fix.** Delete the attestation. If its path changed again in this change set and the contract is still unchanged, write a new attestation with a reason for this change.
 
 ## Design memory
 

@@ -38,7 +38,7 @@ resource DiagnosticsModuleFormatContextTargetMismatchDiagnosticAstAnchor : Gener
 
 resource DiagnosticsModuleFormatDiagnosticAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/checker/diagnostics.ts#formatDiagnostic")
-  fingerprint ast.semantic_subtree_v1("sha256:956e705a89f717790ae047d5dfffc1b10181aed7558d5b880ff83397c47888c7")
+  fingerprint ast.semantic_subtree_v1("sha256:eb0b4c6a41c0bb29fccfabc96d424f4aa8c9f8041149db1166aa6b4f64deca14")
 }
 
 resource DiagnosticsModuleFormatDiagnosticsAstAnchor : GeneratedAstAnchor {
@@ -154,6 +154,11 @@ resource DiagnosticsModuleFormatMissingShapeUpdateDiagnosticAstAnchor : Generate
 resource DiagnosticsModuleFormatParseDiagnosticAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/checker/diagnostics.ts#formatParseDiagnostic")
   fingerprint ast.semantic_subtree_v1("sha256:4559de0c78940325cebd7a0b323939862eacf4770d5b93fbe6238adff08a51f2")
+}
+
+resource DiagnosticsModuleFormatStaleAttestationDiagnosticAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/diagnostics.ts#formatStaleAttestationDiagnostic")
+  fingerprint ast.semantic_subtree_v1("sha256:888967f9f8953aadb9b4834e067d30b80b1c7b5b54e268d60c85dc20f0a5004d")
 }
 
 resource DiagnosticsModuleFormatStaleMemoryDiagnosticAstAnchor : GeneratedAstAnchor {
@@ -272,6 +277,9 @@ component DiagnosticsModule : GeneratedCandidate {
   fn formatParseDiagnostic
     source ts("packages/shp-checker/src/checker/diagnostics.ts#formatParseDiagnostic")
     effects unknown
+  fn formatStaleAttestationDiagnostic
+    source ts("packages/shp-checker/src/checker/diagnostics.ts#formatStaleAttestationDiagnostic")
+    effects unknown
   fn formatStaleMemoryDiagnostic
     source ts("packages/shp-checker/src/checker/diagnostics.ts#formatStaleMemoryDiagnostic")
     effects unknown
@@ -341,7 +349,7 @@ relation DiagnosticsModuleFormatDiagnosticGeneratedFromDiagnosticsModuleFormatDi
   kind generated_from
   connects DiagnosticsModule -> DiagnosticsModuleFormatDiagnosticAstAnchor
   roles { DiagnosticsModule as generated, DiagnosticsModuleFormatDiagnosticAstAnchor as syntax }
-  expects DiagnosticsModuleFormatDiagnosticAstAnchor fingerprint ast.semantic_subtree_v1("sha256:956e705a89f717790ae047d5dfffc1b10181aed7558d5b880ff83397c47888c7")
+  expects DiagnosticsModuleFormatDiagnosticAstAnchor fingerprint ast.semantic_subtree_v1("sha256:eb0b4c6a41c0bb29fccfabc96d424f4aa8c9f8041149db1166aa6b4f64deca14")
   summary "fn DiagnosticsModule.formatDiagnostic generated from typescript function_declaration at packages/shp-checker/src/checker/diagnostics.ts#formatDiagnostic."
 }
 
@@ -527,6 +535,14 @@ relation DiagnosticsModuleFormatParseDiagnosticGeneratedFromDiagnosticsModuleFor
   roles { DiagnosticsModule as generated, DiagnosticsModuleFormatParseDiagnosticAstAnchor as syntax }
   expects DiagnosticsModuleFormatParseDiagnosticAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4559de0c78940325cebd7a0b323939862eacf4770d5b93fbe6238adff08a51f2")
   summary "fn DiagnosticsModule.formatParseDiagnostic generated from typescript function_declaration at packages/shp-checker/src/checker/diagnostics.ts#formatParseDiagnostic."
+}
+
+relation DiagnosticsModuleFormatStaleAttestationDiagnosticGeneratedFromDiagnosticsModuleFormatStaleAttestationDiagnosticAstAnchor {
+  kind generated_from
+  connects DiagnosticsModule -> DiagnosticsModuleFormatStaleAttestationDiagnosticAstAnchor
+  roles { DiagnosticsModule as generated, DiagnosticsModuleFormatStaleAttestationDiagnosticAstAnchor as syntax }
+  expects DiagnosticsModuleFormatStaleAttestationDiagnosticAstAnchor fingerprint ast.semantic_subtree_v1("sha256:888967f9f8953aadb9b4834e067d30b80b1c7b5b54e268d60c85dc20f0a5004d")
+  summary "fn DiagnosticsModule.formatStaleAttestationDiagnostic generated from typescript function_declaration at packages/shp-checker/src/checker/diagnostics.ts#formatStaleAttestationDiagnostic."
 }
 
 relation DiagnosticsModuleFormatStaleMemoryDiagnosticGeneratedFromDiagnosticsModuleFormatStaleMemoryDiagnosticAstAnchor {

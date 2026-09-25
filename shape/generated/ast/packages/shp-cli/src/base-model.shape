@@ -1,0 +1,81 @@
+module shape.generated.ast.packages.shp_cli.src.base_model
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource BaseModelModuleGitAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/base-model.ts#git")
+  fingerprint ast.semantic_subtree_v1("sha256:75ba213245eb4584161ff356ba0cb922a9176d1a6725b1c699b1c20d583b1ec8")
+}
+
+resource BaseModelModuleLoadBaseModulesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/base-model.ts#loadBaseModules")
+  fingerprint ast.semantic_subtree_v1("sha256:a4853a2f3f21438ca1c4de2ae6843dd4fa9f879f63e6712e3d738ebf4583ccd4")
+}
+
+resource BaseModelModuleReadBaseModelSourcesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/base-model.ts#readBaseModelSources")
+  fingerprint ast.semantic_subtree_v1("sha256:0d1ca3ef71ef592633430b691b7751d90ad61a2ab43bc7cb3590cccda3d6c38a")
+}
+
+resource BaseModelModuleReadBaseRefSourcesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/base-model.ts#readBaseRefSources")
+  fingerprint ast.semantic_subtree_v1("sha256:082dfd1b6ea1bcf18f600f64f400e811afc6d1c43e1de8f41486a56a1ce81f55")
+}
+
+component BaseModelModule : GeneratedCandidate {
+  fn git
+    source ts("packages/shp-cli/src/base-model.ts#git")
+    effects unknown
+  fn loadBaseModules
+    source ts("packages/shp-cli/src/base-model.ts#loadBaseModules")
+    effects unknown
+  fn readBaseModelSources
+    source ts("packages/shp-cli/src/base-model.ts#readBaseModelSources")
+    effects unknown
+  fn readBaseRefSources
+    source ts("packages/shp-cli/src/base-model.ts#readBaseRefSources")
+    effects unknown
+}
+
+relation BaseModelModuleGitGeneratedFromBaseModelModuleGitAstAnchor {
+  kind generated_from
+  connects BaseModelModule -> BaseModelModuleGitAstAnchor
+  roles { BaseModelModule as generated, BaseModelModuleGitAstAnchor as syntax }
+  expects BaseModelModuleGitAstAnchor fingerprint ast.semantic_subtree_v1("sha256:75ba213245eb4584161ff356ba0cb922a9176d1a6725b1c699b1c20d583b1ec8")
+  summary "fn BaseModelModule.git generated from typescript function_declaration at packages/shp-cli/src/base-model.ts#git."
+}
+
+relation BaseModelModuleLoadBaseModulesGeneratedFromBaseModelModuleLoadBaseModulesAstAnchor {
+  kind generated_from
+  connects BaseModelModule -> BaseModelModuleLoadBaseModulesAstAnchor
+  roles { BaseModelModule as generated, BaseModelModuleLoadBaseModulesAstAnchor as syntax }
+  expects BaseModelModuleLoadBaseModulesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a4853a2f3f21438ca1c4de2ae6843dd4fa9f879f63e6712e3d738ebf4583ccd4")
+  summary "fn BaseModelModule.loadBaseModules generated from typescript function_declaration at packages/shp-cli/src/base-model.ts#loadBaseModules."
+}
+
+relation BaseModelModuleReadBaseModelSourcesGeneratedFromBaseModelModuleReadBaseModelSourcesAstAnchor {
+  kind generated_from
+  connects BaseModelModule -> BaseModelModuleReadBaseModelSourcesAstAnchor
+  roles { BaseModelModule as generated, BaseModelModuleReadBaseModelSourcesAstAnchor as syntax }
+  expects BaseModelModuleReadBaseModelSourcesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0d1ca3ef71ef592633430b691b7751d90ad61a2ab43bc7cb3590cccda3d6c38a")
+  summary "fn BaseModelModule.readBaseModelSources generated from typescript function_declaration at packages/shp-cli/src/base-model.ts#readBaseModelSources."
+}
+
+relation BaseModelModuleReadBaseRefSourcesGeneratedFromBaseModelModuleReadBaseRefSourcesAstAnchor {
+  kind generated_from
+  connects BaseModelModule -> BaseModelModuleReadBaseRefSourcesAstAnchor
+  roles { BaseModelModule as generated, BaseModelModuleReadBaseRefSourcesAstAnchor as syntax }
+  expects BaseModelModuleReadBaseRefSourcesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:082dfd1b6ea1bcf18f600f64f400e811afc6d1c43e1de8f41486a56a1ce81f55")
+  summary "fn BaseModelModule.readBaseRefSources generated from typescript function_declaration at packages/shp-cli/src/base-model.ts#readBaseRefSources."
+}
+
+implementation BaseModelModuleImpl {
+  paths {
+    "packages/shp-cli/src/base-model.ts"
+  }
+  conforms_to BaseModelModule
+}

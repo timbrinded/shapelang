@@ -499,6 +499,15 @@ component ShpCli {
       Read<SystemClock>
         evidence ts("packages/shp-cli/src/freshness.ts")
     }
+  fn loadBaseModules
+    source ts("packages/shp-cli/src/base-model.ts#loadBaseModules")
+    description "Reads the base model for check and coverage from git at the merge base of --base-ref and HEAD, or from a --base-model directory, skipping generated AST; an unparsable base file falls back to the declaring-file rule with a warning."
+    effects complete {
+      Read<ShapeSource>
+        evidence ts("packages/shp-cli/src/base-model.ts#readBaseRefSources")
+      Read<ShapeSource>
+        evidence ts("packages/shp-cli/src/base-model.ts#readBaseModelSources")
+    }
   fn main : ProtectedCheckOrder
     source ts("packages/shp-cli/src/index.ts#main")
     effects complete {

@@ -10,6 +10,8 @@ import shape.runtime
 
 import shape.tooling
 
+resource ChangeBaseRevision
+
 resource CiWorkflow
 
 resource ClaudeReviewPrompt
@@ -41,12 +43,14 @@ resource SkillReleaseApproval
 resource SkillReleaseReport
 
 component CiPipeline {
+  owns ChangeBaseRevision
   owns CiWorkflow
   owns ClaudeReviewPrompt
   owns ClaudeReviewResult
   owns PullRequestStatusComment
   owns SkillReleaseApproval
   owns SkillReleaseReport
+  grants Read<ChangeBaseRevision>
   grants Read<ChangedFileList>
   grants Read<CiWorkflow>
   grants Read<ClaudeReviewPrompt>
@@ -71,6 +75,7 @@ component CiPipeline {
   grants Read<SkillReleaseApproval>
   grants Read<SkillReleaseReport>
   grants Read<SourceSyntaxTree>
+  grants Update<ChangeBaseRevision>
   grants Update<ChangedFileList>
   grants Update<ClaudeReviewResult>
   grants Update<ExperimentalKernelWasmArtifact>
@@ -294,6 +299,8 @@ component CiPipeline {
   fn runShapeCi
     source yaml(".github/workflows/shape.yml")
     effects complete {
+      Read<ChangeBaseRevision>
+        evidence json("package.json")
       Read<ChangedFileList>
         evidence yaml(".github/workflows/shape.yml")
       Read<CiWorkflow>
@@ -508,7 +515,10 @@ component CiPipeline {
     }
   fn writeChangedFiles
     source sh("scripts/write-changed-files.sh")
+    description "Writes the files changed since the resolved base commit, and that base commit, so shape:ci compares attestations against the same range the changed files came from."
     effects complete {
+      Update<ChangeBaseRevision>
+        evidence sh("scripts/write-changed-files.sh")
       Update<ChangedFileList>
         evidence sh("scripts/write-changed-files.sh")
     }
@@ -751,6 +761,7 @@ implementation ClaudeReviewSource {
 implementation CliSource {
   paths {
     "packages/shp-cli/src/app.ts"
+    "packages/shp-cli/src/base-model.ts"
     "packages/shp-cli/src/check-runner.ts"
     "packages/shp-cli/src/commands/**/*.ts"
     "packages/shp-cli/src/context.ts"
@@ -881,6 +892,7 @@ implementation WorkflowSource {
 binding CliDocs {
   when_changed paths {
     "packages/shp-cli/src/app.ts"
+    "packages/shp-cli/src/base-model.ts"
     "packages/shp-cli/src/check-runner.ts"
     "packages/shp-cli/src/commands/**/*.ts"
     "packages/shp-cli/src/context.ts"
@@ -1746,4 +1758,14 @@ attest no_shape_change {
 attest no_shape_change {
   source ts("packages/shp-checker/src/checker/model.ts")
   reason "Adds the invalid_implementation variant to the SemanticDiagnostic union; the lowering and formatter behaviour that uses it is modelled in ShapeModelLowerer.lowerImplementation."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/checker/model.ts")
+  reason "Adds the baseModules check option and the stale_attestation diagnostic variant; the base comparison they carry is modelled by BaseShapeModel reads on checkCoverage, checkBindings, and checkStaleAttestations."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/checker/rules.ts")
+  reason "Registers checkStaleAttestations after coverage in the ordered semantic-check list and threads the base attestation keys into checkCoverage; both rules are modelled on ShapeRuleEngine."
 }

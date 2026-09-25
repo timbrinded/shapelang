@@ -1011,6 +1011,13 @@
       ]
     },
     {
+      "module": "shape.generated.ast.packages.shp_cli.src.base_model",
+      "path": "shape/generated/ast/packages/shp-cli/src/base-model.shape",
+      "sources": [
+        "packages/shp-cli/src/base-model.ts"
+      ]
+    },
+    {
       "module": "shape.generated.ast.packages.shp_cli.src.check_runner",
       "path": "shape/generated/ast/packages/shp-cli/src/check-runner.shape",
       "sources": [

@@ -9,7 +9,7 @@ import {
   checkRequiredContext,
   checkRequiredDescriptions
 } from "./rules/context.ts";
-import { checkCoverage } from "./rules/coverage.ts";
+import { checkCoverage, checkStaleAttestations } from "./rules/coverage.ts";
 import { checkCandidateEffectFingerprints, checkFunctions } from "./rules/functions.ts";
 import { checkFreshness, checkGuardedChanges } from "./rules/guards.ts";
 import { checkResolvedNames } from "./rules/names.ts";
@@ -26,8 +26,8 @@ export { checkBindings } from "./rules/coverage.ts";
  * The deterministic order semantic checks run in. runSemanticChecks flattens
  * this list and the checker API appends binding enforcement (which CheckOptions
  * gates) after it, so the order here is the single source of truth and is
- * covered by tests. Freshness and coverage read CheckOptions; every other check
- * ignores its second argument.
+ * covered by tests. Freshness, coverage, and stale-attestation checks read
+ * CheckOptions; every other check ignores its second argument.
  */
 export const SEMANTIC_CHECKS: ReadonlyArray<
   (model: Model, options: NormalizedCheckOptions) => SemanticDiagnostic[]
@@ -46,7 +46,10 @@ export const SEMANTIC_CHECKS: ReadonlyArray<
   (model) => checkProvidesRules(model),
   (model) => checkForbiddenPaths(model),
   (model) => checkHypercycles(model),
-  (model, options) => checkCoverage(model, options.changedFiles ?? [], options.repoRoot)
+  (model, options) =>
+    checkCoverage(model, options.changedFiles ?? [], options.repoRoot, options.baseAttestationKeys),
+  (model, options) =>
+    options.baseAttestationKeys ? checkStaleAttestations(model, options.baseAttestationKeys) : []
 ];
 
 export function runSemanticChecks(

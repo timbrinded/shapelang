@@ -20,6 +20,7 @@ import { compareShapeDiagnostics } from "./diagnostics.ts";
 import { lowerShapeModules } from "./lowerer.ts";
 import { requireIsoCalendarDate } from "./iso-date.ts";
 import { checkBindings, runSemanticChecks } from "./rules.ts";
+import { attestationKey } from "./rules/coverage.ts";
 import { moduleOriginForShapeFile } from "./symbols.ts";
 
 export function checkShapeModules(
@@ -45,15 +46,18 @@ export function checkLoweredShapeModel(
     ...runSemanticChecks(model, normalizedOptions),
     ...(normalizedOptions.enforceBindings === false
       ? []
-      : checkBindings(model, normalizedOptions.changedFiles ?? [], normalizedOptions.repoRoot))
+      : checkBindings(
+          model,
+          normalizedOptions.changedFiles ?? [],
+          normalizedOptions.repoRoot,
+          normalizedOptions.baseAttestationKeys
+        ))
   ].map((diagnostic) =>
     normalizedOptions.allowUnknownEffects && diagnostic.kind === "unknown_effects"
       ? { ...diagnostic, severity: "warning" }
       : diagnostic
   );
-  const ok = diagnostics.every(
-    (diagnostic) => diagnostic.kind === "unknown_effects" && diagnostic.severity === "warning"
-  );
+  const ok = diagnostics.every(isWarning);
 
   return {
     ok,
@@ -63,8 +67,23 @@ export function checkLoweredShapeModel(
   };
 }
 
+function isWarning(diagnostic: SemanticDiagnostic): boolean {
+  return (
+    diagnostic.kind === "stale_attestation" ||
+    (diagnostic.kind === "unknown_effects" && diagnostic.severity === "warning")
+  );
+}
+
 function compareFacts(left: Fact, right: Fact): number {
   return compareCodepointStrings(JSON.stringify(left), JSON.stringify(right));
+}
+
+/**
+ * @internal Sorted attestation keys of a base model. Only these keys influence
+ * the check, so the incremental checker also uses them as its cache key.
+ */
+export function baseAttestationKeys(baseModules: ShapeModule[] | CheckModuleInput[]): string[] {
+  return lowerShapeModules(baseModules).attestations.map(attestationKey).toSorted();
 }
 
 /** @internal Shared by the full and incremental checker entrypoints. */
@@ -72,6 +91,10 @@ export function normalizeCheckOptions(options: CheckOptions): NormalizedCheckOpt
   return {
     ...options,
     repoRoot: resolve(options.repoRoot ?? process.cwd()),
+    baseAttestationKeys:
+      options.baseModules === undefined
+        ? undefined
+        : new Set(baseAttestationKeys(options.baseModules)),
     freshnessDate:
       options.freshnessDate === undefined
         ? undefined

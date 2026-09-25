@@ -86,6 +86,8 @@ function formatDiagnostic(diagnostic: ShapeDiagnostic): string {
       return formatInvalidRequireContextDiagnostic(diagnostic);
     case "invalid_implementation":
       return formatInvalidImplementationDiagnostic(diagnostic);
+    case "stale_attestation":
+      return formatStaleAttestationDiagnostic(diagnostic);
   }
 }
 
@@ -468,6 +470,18 @@ function formatInvalidImplementationDiagnostic(
     "error: invalid implementation",
     "",
     `implementation ${displaySymbol(diagnostic.name)} is invalid: ${diagnostic.reason}.`,
+    formatCausedBy(diagnostic.causedBy)
+  ].join("\n");
+}
+
+function formatStaleAttestationDiagnostic(
+  diagnostic: Extract<SemanticDiagnostic, { kind: "stale_attestation" }>
+): string {
+  return [
+    "warning: stale attestation",
+    "",
+    `attest ${diagnostic.attestationKind} for ${diagnostic.path} is unchanged from the base model, so it no longer satisfies coverage or bindings.`,
+    "Remove it; git history keeps the decision.",
     formatCausedBy(diagnostic.causedBy)
   ].join("\n");
 }

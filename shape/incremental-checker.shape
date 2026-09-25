@@ -13,6 +13,7 @@ component ShapeIncrementalChecker {
   owns IncrementalInvalidationReport
   grants Append<IncrementalInvalidationReport>
   grants Append<SemanticDiagnostics>
+  grants Read<BaseShapeModel>
   grants Read<ChangedFileList>
   grants Read<EffectiveModel>
   grants Read<FactSet>
@@ -28,6 +29,8 @@ component ShapeIncrementalChecker {
         evidence ts("packages/shp-checker/src/checker/incremental.ts")
       Append<SemanticDiagnostics>
         evidence ts("packages/shp-checker/src/checker/incremental.ts")
+      Read<BaseShapeModel>
+        evidence ts("packages/shp-checker/src/checker/incremental.ts#checkOptionsKey")
       Read<ChangedFileList>
         evidence ts("packages/shp-checker/src/checker/incremental.ts")
       Read<EffectiveModel>

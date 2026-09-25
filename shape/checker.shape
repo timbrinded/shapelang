@@ -4,6 +4,8 @@ import shape.language
 
 import shape.tooling
 
+resource BaseShapeModel
+
 resource ChangeEventSet
 
 resource ChangedFileList
@@ -41,6 +43,7 @@ resource ShapeHypergraph
 component ShapeBindings {
   owns ShapeBinding
   grants Append<SemanticDiagnostics>
+  grants Read<BaseShapeModel>
   grants Read<ChangedFileList>
   grants Read<NormalizedShapeReference>
   grants Read<ShapeBinding>
@@ -49,6 +52,8 @@ component ShapeBindings {
     effects complete {
       Append<SemanticDiagnostics>
         evidence ts("packages/shp-checker/src/checker/rules/coverage.ts")
+      Read<BaseShapeModel>
+        evidence ts("packages/shp-checker/src/checker/rules/coverage.ts#isCurrentAttestation")
       Read<ChangedFileList>
         evidence ts("packages/shp-checker/src/checker/rules/coverage.ts")
       Read<NormalizedShapeReference>
@@ -61,6 +66,7 @@ component ShapeBindings {
 component ShapeChecker {
   grants Append<MachineReadableShapeModel>
   grants Append<SemanticDiagnostics>
+  grants Read<BaseShapeModel>
   grants Read<ChangedFileList>
   grants Read<EffectiveModel>
   grants Read<FactSet>
@@ -72,6 +78,8 @@ component ShapeChecker {
     effects complete {
       Append<SemanticDiagnostics>
         evidence ts("packages/shp-checker/src/checker/api.ts")
+      Read<BaseShapeModel>
+        evidence ts("packages/shp-checker/src/checker/api.ts#checkLoweredShapeModel")
       Read<ChangedFileList>
         evidence ts("packages/shp-checker/src/checker/api.ts")
       Read<EffectiveModel>
@@ -92,10 +100,12 @@ component ShapeChecker {
     }
   fn checkShapeModules : ProtectedCheckOrder
     source ts("packages/shp-checker/src/checker/api.ts#checkShapeModules")
-    description "Runs the complete semantic and binding pipeline, classifying only effects unknown as non-fatal when draft validation is explicitly requested."
+    description "Runs the complete semantic and binding pipeline; only draft-requested effects unknown and stale attestations are non-fatal warnings."
     effects complete {
       Append<SemanticDiagnostics>
         evidence ts("packages/shp-checker/src/checker/api.ts")
+      Read<BaseShapeModel>
+        evidence ts("packages/shp-checker/src/checker/api.ts#baseAttestationKeys")
       Read<ChangedFileList>
         evidence ts("packages/shp-checker/src/checker/api.ts")
       Read<EffectiveModel>
@@ -296,6 +306,7 @@ component ShapeRuleEngine {
   owns SemanticDiagnostics
   owns ShapeHypergraph
   grants Append<SemanticDiagnostics>
+  grants Read<BaseShapeModel>
   grants Read<ChangeEventSet>
   grants Read<ChangedFileList>
   grants Read<EffectiveModel>
@@ -308,6 +319,8 @@ component ShapeRuleEngine {
     effects complete {
       Append<SemanticDiagnostics>
         evidence ts("packages/shp-checker/src/checker/rules/coverage.ts")
+      Read<BaseShapeModel>
+        evidence ts("packages/shp-checker/src/checker/rules/coverage.ts#isCurrentAttestation")
       Read<ChangedFileList>
         evidence ts("packages/shp-checker/src/checker/rules/coverage.ts")
       Read<EffectiveModel>
@@ -383,6 +396,17 @@ component ShapeRuleEngine {
         evidence ts("packages/shp-checker/src/checker/rules/declarations.ts")
       Read<PreludeMetadata>
         evidence ts("packages/shp-checker/src/checker/derivations.ts#resourceRuleConditionCompatibility")
+    }
+  fn checkStaleAttestations
+    source ts("packages/shp-checker/src/checker/rules/coverage.ts#checkStaleAttestations")
+    description "Reports each attestation whose kind, path, and reason already exist in the base model as a non-fatal stale warning."
+    effects complete {
+      Append<SemanticDiagnostics>
+        evidence ts("packages/shp-checker/src/checker/rules/coverage.ts#checkStaleAttestations")
+      Read<BaseShapeModel>
+        evidence ts("packages/shp-checker/src/checker/rules/coverage.ts#checkStaleAttestations")
+      Read<EffectiveModel>
+        evidence ts("packages/shp-checker/src/checker/rules/coverage.ts#checkStaleAttestations")
     }
   fn deriveFinalForbidsForResource : RefactorSensitive
     source ts("packages/shp-checker/src/checker/derivations.ts#deriveFinalForbidsForResource")
@@ -617,7 +641,7 @@ memory BindingDocsCouplingContract : RefactorConstraint<fn ShapeBindings.checkBi
   applies_to fn ShapeBindings.checkBindings
   status Explained
   confidence High
-  summary "Bindings enforce review coupling and compare current attestations with normalized repo-relative changed-file paths."
+  summary "Bindings enforce review coupling against normalized repo-relative changed-file paths; an allowed attestation counts only when it is new relative to the base model, or, without a base, when its declaring Shape file changed."
   who {
     owner ShapeMaintainers
   }
@@ -649,7 +673,7 @@ memory CoverageCurrentUpdateContract : RefactorConstraint<fn ShapeRuleEngine.che
   applies_to fn ShapeRuleEngine.checkCoverage
   status Explained
   confidence High
-  summary "Coverage accepts a source or attestation only when the declaring Shape file matches the current changed-file input after path normalization."
+  summary "Coverage accepts a source reference only when its declaring Shape file matches the current changed-file input after path normalization; an attestation counts only when it is new relative to the base model, or, without a base, when its declaring Shape file changed."
   who {
     owner ShapeMaintainers
   }
@@ -871,6 +895,15 @@ memory SharedCheckPipelineOrder : CheckOrderRationale<fn ShapeChecker.checkLower
   }
 }
 
+reevaluation BindingAttestationsComparedWithBase {
+  satisfies memory BindingDocsCouplingContract
+  outcome Confirmed
+  summary "Bindings apply the same base comparison to their allowed attestation kinds, so a docs_not_needed carried over unchanged from the base no longer satisfies a binding."
+  reviewer ShapeMaintainers
+  decided_on "2026-09-25"
+  evidence test("packages/shp-checker/src/behavioural/coverage-bindings.test.ts")
+}
+
 reevaluation BindingCurrentAttestationsRechecked {
   satisfies memory BindingDocsCouplingContract
   outcome Confirmed
@@ -887,6 +920,15 @@ reevaluation CheckerPhaseOrderRechecked {
   reviewer ShapeMaintainers
   decided_on "2026-05-20"
   evidence test("packages/shp-checker/src/checker.test.ts")
+}
+
+reevaluation CoverageAttestationsComparedWithBase {
+  satisfies memory CoverageCurrentUpdateContract
+  outcome Confirmed
+  summary "With a base model, an attestation satisfies coverage only when its kind, path, and reason are new relative to the base, so editing its declaring Shape file no longer revives it; without a base, the declaring-file rule is unchanged."
+  reviewer ShapeMaintainers
+  decided_on "2026-09-25"
+  evidence test("packages/shp-checker/src/behavioural/coverage-bindings.test.ts")
 }
 
 reevaluation CoverageCurrentAttestationsRechecked {

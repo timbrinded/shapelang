@@ -1,9 +1,10 @@
+import { loadBaseModules, type BaseModelFlags } from "../../base-model";
 import { runShapeFileCheck } from "../../check-runner";
 import type { CliContext } from "../../context";
 import { resolveFreshnessDate } from "../../freshness";
 import { readChangedFiles } from "../../shape-files";
 
-export type CheckFlags = {
+export type CheckFlags = BaseModelFlags & {
   readonly allowUnknownEffects?: boolean;
   readonly changedFiles?: string;
   readonly asOf?: string;
@@ -19,6 +20,7 @@ export default async function check(
     flags.changedFiles !== undefined ? await readChangedFiles(flags.changedFiles) : undefined;
   await runShapeFileCheck(this, providedFiles, {
     allowUnknownEffects: flags.allowUnknownEffects,
+    baseModules: await loadBaseModules(this, flags, providedFiles),
     changedFiles,
     enforceBindings: true,
     freshnessDate: resolveFreshnessDate(flags)

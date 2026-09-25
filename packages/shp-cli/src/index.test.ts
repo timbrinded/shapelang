@@ -185,6 +185,60 @@ relation ReaderProvidesRecord {
     expect(result.stdout).toBe("");
   });
 
+  test("compares attestations against a base model read from git or a directory", async () => {
+    const repo = await mkdtemp(join(tmpdir(), "shp-base-model-test-"));
+    const baseDir = await mkdtemp(join(tmpdir(), "shp-base-model-dir-"));
+    try {
+      const fixture = await readFile(
+        resolve(repoRoot, "fixtures/fail/missing_shape_update/audit.shape"),
+        "utf8"
+      );
+      const attested = `${fixture}\nattest no_shape_change {\n  source ts("src/audit/purge.ts")\n  reason "Reviewed in an earlier change."\n}\n`;
+      await mkdir(join(repo, "shape"));
+      await mkdir(join(repo, "src/audit"), { recursive: true });
+      await writeFile(join(repo, "shape/audit.shape"), attested);
+      await writeFile(join(repo, "src/audit/purge.ts"), "export const purge = 1;\n");
+      await writeFile(join(baseDir, "audit.shape"), attested);
+      git(repo, ["init", "-q"]);
+      git(repo, ["add", "."]);
+      git(repo, [
+        "-c",
+        "user.name=shp",
+        "-c",
+        "user.email=shp@example.com",
+        "commit",
+        "-qm",
+        "base"
+      ]);
+
+      // The later change edits the governed source and the .shape file, but only
+      // carries the earlier attestation over.
+      await writeFile(join(repo, "src/audit/purge.ts"), "export const purge = 2;\n");
+      await writeFile(join(repo, "shape/audit.shape"), `${attested}\nresource AuditExport\n`);
+      await writeFile(join(repo, "changed.txt"), "src/audit/purge.ts\nshape/audit.shape\n");
+
+      const fallback = await runCli(["check", "--changed-files", "changed.txt"], cliPath, repo);
+      expect(fallback.exitCode).toBe(0);
+
+      for (const baseFlags of [
+        ["--base-ref", "HEAD"],
+        ["--base-model", baseDir]
+      ]) {
+        const result = await runCli(
+          ["check", "--changed-files", "changed.txt", ...baseFlags],
+          cliPath,
+          repo
+        );
+        expect(result.exitCode).toBe(1);
+        expect(result.stderr).toContain("governed source changed without current Shape update");
+        expect(result.stderr).toContain("warning: stale attestation");
+      }
+    } finally {
+      await rm(repo, { recursive: true, force: true });
+      await rm(baseDir, { recursive: true, force: true });
+    }
+  });
+
   test("rejects empty changed-file path during checks", async () => {
     const result = await runCli([
       "check",
@@ -1711,4 +1765,11 @@ async function runCli(
   ]);
 
   return { exitCode, stdout, stderr };
+}
+
+function git(cwd: string, args: string[]): void {
+  const result = Bun.spawnSync(["git", ...args], { cwd, stdout: "pipe", stderr: "pipe" });
+  if (result.exitCode !== 0) {
+    throw new Error(`git ${args.join(" ")} failed: ${result.stderr.toString()}`);
+  }
 }

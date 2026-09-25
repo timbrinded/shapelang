@@ -1,7 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# Writes the changed-file list and, next to it, the base commit that list was
+# diffed against. `shp check --base-ref "$(cat changed-base.txt)"` then compares
+# attestations against the same base the changed files came from.
 output="${1:-changed.txt}"
+base_output="${2:-changed-base.txt}"
 tmp_output="$(mktemp)"
 cleanup() {
   rm -f "$tmp_output"
@@ -10,30 +14,28 @@ trap cleanup EXIT INT TERM
 
 if [ -n "${GITHUB_BASE_REF:-}" ]; then
   git fetch --no-tags --prune origin "$GITHUB_BASE_REF"
-  git diff --name-only "origin/$GITHUB_BASE_REF"...HEAD > "$tmp_output"
+  base="$(git merge-base "origin/$GITHUB_BASE_REF" HEAD)"
 elif [ -n "${GITHUB_EVENT_BEFORE:-}" ] && [ "${GITHUB_EVENT_BEFORE:-}" != "0000000000000000000000000000000000000000" ]; then
-  git diff --name-only "$GITHUB_EVENT_BEFORE" "${GITHUB_SHA:-HEAD}" > "$tmp_output"
+  base="$GITHUB_EVENT_BEFORE"
 elif [ -n "${BASE_REF:-}" ] && git rev-parse --verify "origin/$BASE_REF" >/dev/null 2>&1; then
   base="$(git merge-base "origin/$BASE_REF" HEAD)"
-  git diff --name-only "$base"...HEAD > "$tmp_output"
 elif git rev-parse --verify origin/HEAD >/dev/null 2>&1; then
   base="$(git merge-base origin/HEAD HEAD)"
-  git diff --name-only "$base"...HEAD > "$tmp_output"
 elif git rev-parse --verify origin/main >/dev/null 2>&1; then
   base="$(git merge-base origin/main HEAD)"
-  git diff --name-only "$base"...HEAD > "$tmp_output"
 elif git rev-parse --verify origin/master >/dev/null 2>&1; then
   base="$(git merge-base origin/master HEAD)"
-  git diff --name-only "$base"...HEAD > "$tmp_output"
 elif git rev-parse --verify HEAD~1 >/dev/null 2>&1; then
-  git diff --name-only HEAD~1...HEAD > "$tmp_output"
+  base="$(git rev-parse HEAD~1)"
 else
-  git diff --name-only HEAD > "$tmp_output"
+  base="$(git rev-parse HEAD)"
 fi
 
+git diff --name-only "$base" "${GITHUB_SHA:-HEAD}" > "$tmp_output"
 git diff --name-only >> "$tmp_output"
 git diff --name-only --cached >> "$tmp_output"
 git ls-files --others --exclude-standard >> "$tmp_output"
-sort -u "$tmp_output" | grep -vxF "$output" > "$output" || true
+sort -u "$tmp_output" | grep -vxF -e "$output" -e "$base_output" > "$output" || true
+printf '%s\n' "$base" > "$base_output"
 
-printf 'Wrote %s changed files to %s\n' "$(wc -l < "$output" | tr -d ' ')" "$output"
+printf 'Wrote %s changed files to %s (base %s)\n' "$(wc -l < "$output" | tr -d ' ')" "$output" "$base"

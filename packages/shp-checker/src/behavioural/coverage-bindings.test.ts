@@ -10,7 +10,7 @@ import { describe, expect, test } from "bun:test";
 import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { Glob } from "bun";
-import { checkShapeFiles, checkShapeModules } from "../index.ts";
+import { checkShapeFiles, checkShapeModules, type CheckModuleInput } from "../index.ts";
 import {
   characterization,
   diagnosticKinds,
@@ -323,6 +323,85 @@ describe("#61 coverage/bindings enforcement vs vacuity + self-model dogfood", ()
       const diagnostic = requireDiagnostic(result, "invalid_implementation");
       expect(diagnostic.name).toBe("audit::AuditStoreImpl");
       expect(diagnostic.reason).toContain("shape_delta");
+    }
+  );
+
+  // INVARIANT 7 — with a base model, an attestation counts only if it is new
+  // relative to the base. The same attestation carried over from the base is
+  // stale: it no longer satisfies coverage even though its declaring .shape file
+  // changed (the fallback rule accepts it, which is the revival this closes), and
+  // it is reported as a stale_attestation warning. A freshly written reason for
+  // the same path counts.
+  test(
+    lockedIntended(
+      "with a base model, only attestations new relative to the base satisfy coverage",
+      "docs-site/src/content/docs/concepts/model-updates-attestations.md; shape/checker.shape CoverageCurrentUpdateContract"
+    ),
+    async () => {
+      const shapeFile = "shape/audit.shape";
+      const source = await readFile(
+        fixture("fixtures/fail/missing_shape_update/audit.shape"),
+        "utf8"
+      );
+      const withAttestation = (reason: string): CheckModuleInput => ({
+        module: parseModuleOrThrow(
+          `${source}\nattest no_shape_change {\n  source ts("src/audit/purge.ts")\n  reason "${reason}"\n}\n`
+        ),
+        filePath: shapeFile
+      });
+      const changedFiles = ["src/audit/purge.ts", shapeFile];
+      const earlier = "Reviewed in an earlier change.";
+      const baseModules = [withAttestation(earlier)];
+
+      const fallback = checkShapeModules([withAttestation(earlier)], { changedFiles });
+      expect(fallback.ok).toBe(true);
+      requireNoDiagnostic(fallback, "missing_shape_update");
+
+      const stale = checkShapeModules([withAttestation(earlier)], { changedFiles, baseModules });
+      expect(stale.ok).toBe(false);
+      expect(diagnosticKinds(stale)).toEqual(["missing_shape_update", "stale_attestation"]);
+      expect(requireDiagnostic(stale, "stale_attestation").path).toBe("src/audit/purge.ts");
+
+      const fresh = checkShapeModules([withAttestation("Reviewed again for this change.")], {
+        changedFiles,
+        baseModules
+      });
+      expect(fresh.ok).toBe(true);
+      expect(diagnosticKinds(fresh)).toEqual([]);
+    }
+  );
+
+  // INVARIANT 8 — bindings apply the same base comparison to the attestation
+  // kinds they allow: a docs_not_needed carried over from the base does not
+  // satisfy the binding, while a freshly written one does.
+  test(
+    lockedIntended(
+      "with a base model, only docs_not_needed attestations new relative to the base satisfy bindings",
+      "docs-site/src/content/docs/concepts/model-updates-attestations.md; shape/checker.shape BindingDocsCouplingContract"
+    ),
+    async () => {
+      const shapeFile = "fixtures/pass/coverage_binding_only/audit.shape";
+      const source = await readFile(fixture(shapeFile), "utf8");
+      const withAttestation = (reason: string): CheckModuleInput => ({
+        module: parseModuleOrThrow(
+          `${source}\nattest docs_not_needed {\n  source ts("src/audit/store.ts")\n  reason "${reason}"\n}\n`
+        ),
+        filePath: shapeFile
+      });
+      const changedFiles = await changedFilesFrom("fixtures/changed/audit_store_with_shape.txt");
+      const earlier = "Internal change; documented behaviour unchanged.";
+      const baseModules = [withAttestation(earlier)];
+
+      const stale = checkShapeModules([withAttestation(earlier)], { changedFiles, baseModules });
+      expect(stale.ok).toBe(false);
+      expect(diagnosticKinds(stale)).toEqual(["missing_bound_docs_change", "stale_attestation"]);
+
+      const fresh = checkShapeModules(
+        [withAttestation("The refactor keeps the documented append behaviour.")],
+        { changedFiles, baseModules }
+      );
+      expect(fresh.ok).toBe(true);
+      expect(diagnosticKinds(fresh)).toEqual([]);
     }
   );
 });

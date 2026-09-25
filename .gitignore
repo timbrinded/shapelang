@@ -3,6 +3,7 @@ bun.lockb
 dist/
 .astro/
 changed.txt
+changed-base.txt
 .DS_Store
 specs/
 .clawpatch/
