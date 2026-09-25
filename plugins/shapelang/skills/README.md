@@ -51,6 +51,6 @@ release-candidate workflow also runs a static conformance review and focused
 behavioral cases across all six skills, then pauses for manual approval in the
 `skills-release-approval` environment.
 
-If the skill change accompanies Shape implementation changes in this repository, also run the local project checks from the repository README.
+If the skill change accompanies Shape implementation changes in this repository, also run the checks in "Checks before a pull request" in the repository `CONTRIBUTING.md`.
 
 `plugins/shapelang/skills/README.md` is maintainer documentation. Each `SKILL.md` is the file agents load.

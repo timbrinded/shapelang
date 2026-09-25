@@ -57,15 +57,15 @@ export function releaseVersionPins(version: string): ReleaseVersionPin[] {
       snippet: `timbrinded/shapelang@${tag}`
     },
     {
-      file: "docs-site/src/content/docs/learn/ci-workflow.md",
+      file: "docs-site/src/content/docs/guides/ci.md",
       snippet: `timbrinded/shapelang@${tag}`
     },
     {
-      file: "docs-site/src/content/docs/learn/ci-workflow.md",
+      file: "docs-site/src/content/docs/guides/ci.md",
       snippet: `releases/download/${tag}/install.sh`
     },
     {
-      file: "docs-site/src/content/docs/learn/ci-workflow.md",
+      file: "docs-site/src/content/docs/guides/ci.md",
       snippet: `such as \`${tag}\``
     },
     {
@@ -81,7 +81,7 @@ export function releaseVersionPins(version: string): ReleaseVersionPin[] {
       snippet: `"shapeVersion": "${version}"`
     },
     {
-      file: "docs-site/src/content/docs/reference/local-development.md",
+      file: "CONTRIBUTING.md",
       snippet: `currently \`${version}\` / \`${tag}\``
     },
     {
