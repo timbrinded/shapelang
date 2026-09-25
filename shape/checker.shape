@@ -334,7 +334,7 @@ component ShapeRuleEngine {
   grants Update<ShapeHypergraph>
   fn checkCitedPaths
     source ts("packages/shp-checker/src/checker/rules/paths.ts#checkCitedPaths")
-    description "When given the repository file list, reports each source and evidence path cited by functions, rationale, memory, or reevaluation that is not in it; attestation sources are exempt so a deletion can be attested."
+    description "When given the repository file list, reports each source and evidence path cited by functions, generated AST functions included, or by rationale, memory, or reevaluation that is not in it; attestation sources are exempt so a deletion can be attested."
     effects complete {
       Append<SemanticDiagnostics>
         evidence ts("packages/shp-checker/src/checker/rules/paths.ts#checkCitedPaths")

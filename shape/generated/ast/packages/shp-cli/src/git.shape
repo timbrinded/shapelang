@@ -13,7 +13,7 @@ resource GitModuleGitAstAnchor : GeneratedAstAnchor {
 
 resource GitModuleRepositoryFilesAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-cli/src/git.ts#repositoryFiles")
-  fingerprint ast.semantic_subtree_v1("sha256:653c2c12287b1fc725019484ddd482a76f4e54ef22ac80e9a49bbaa5a991d297")
+  fingerprint ast.semantic_subtree_v1("sha256:7a17d78d96fd2e29dc2c0019e76170fff1b9946704c5bc26fffdcd40bbf18dae")
 }
 
 component GitModule : GeneratedCandidate {
@@ -37,7 +37,7 @@ relation GitModuleRepositoryFilesGeneratedFromGitModuleRepositoryFilesAstAnchor 
   kind generated_from
   connects GitModule -> GitModuleRepositoryFilesAstAnchor
   roles { GitModule as generated, GitModuleRepositoryFilesAstAnchor as syntax }
-  expects GitModuleRepositoryFilesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:653c2c12287b1fc725019484ddd482a76f4e54ef22ac80e9a49bbaa5a991d297")
+  expects GitModuleRepositoryFilesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7a17d78d96fd2e29dc2c0019e76170fff1b9946704c5bc26fffdcd40bbf18dae")
   summary "fn GitModule.repositoryFiles generated from typescript function_declaration at packages/shp-cli/src/git.ts#repositoryFiles."
 }
 

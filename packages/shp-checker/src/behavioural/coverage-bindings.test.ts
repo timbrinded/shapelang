@@ -470,10 +470,12 @@ describe("#61 coverage/bindings enforcement vs vacuity + self-model dogfood", ()
   );
 
   // INVARIANT 10 — given the repository file list, every source and evidence
-  // path the model cites must be in it. A function evidence path and a
-  // reevaluation evidence path that no longer exist are each reported once; the
-  // existing source path and an attestation naming a deleted file are not. The
-  // check is opt-in, so the same model passes without the file list.
+  // path the model cites must be in it. A function evidence path, a reevaluation
+  // evidence path, and a generated AST function's source that no longer exist
+  // are each reported once; generated functions never count for coverage, but
+  // their citations are checked all the same. The existing source path and an
+  // attestation naming a deleted file are not reported. The check is opt-in, so
+  // the same model passes without the file list.
   test(
     lockedIntended(
       "cited source and evidence paths must exist when the repository file list is given",
@@ -522,16 +524,39 @@ describe("#61 coverage/bindings enforcement vs vacuity + self-model dogfood", ()
         ].join("\n")
       );
 
-      const result = checkShapeModules([module], { repositoryFiles: ["scripts/verify.ts"] });
+      const generated: CheckModuleInput = {
+        module: parseModuleOrThrow(
+          [
+            "module shape.generated.ast.scripts.gone",
+            "",
+            "component GoneModule {",
+            "  fn gone",
+            `    source ts("scripts/gone.ts#gone")`,
+            "    effects unknown",
+            "}",
+            ""
+          ].join("\n")
+        ),
+        filePath: "shape/generated/ast/scripts/gone.shape",
+        origin: "generated_ast"
+      };
+
+      const result = checkShapeModules([{ module }, generated], {
+        repositoryFiles: ["scripts/verify.ts"]
+      });
       expect(result.ok).toBe(false);
-      expect(diagnosticKinds(result)).toEqual(["missing_cited_path", "missing_cited_path"]);
+      expect(diagnosticKinds(result)).toEqual([
+        "missing_cited_path",
+        "missing_cited_path",
+        "missing_cited_path"
+      ]);
       expect(
         result.diagnostics.flatMap((diagnostic) =>
           diagnostic.kind === "missing_cited_path" ? [diagnostic.path] : []
         )
-      ).toEqual(["docs/renamed.md", "tests/deleted.test.ts"]);
+      ).toEqual(["docs/renamed.md", "scripts/gone.ts", "tests/deleted.test.ts"]);
 
-      const optedOut = checkShapeModules([module]);
+      const optedOut = checkShapeModules([{ module }, generated]);
       expect(optedOut.ok).toBe(true);
     }
   );

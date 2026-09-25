@@ -326,6 +326,10 @@ relation ReaderProvidesRecord {
           "      Read<Page>",
           `        evidence ts("src/untracked.ts")`,
           "      Read<Page>",
+          `        evidence ts("src/sparse.ts")`,
+          "      Read<Page>",
+          `        evidence ts("src/deleted.ts")`,
+          "      Read<Page>",
           `        evidence md("docs/missing.md")`,
           "    }",
           "}",
@@ -333,6 +337,8 @@ relation ReaderProvidesRecord {
         ].join("\n")
       );
       await writeFile(join(repo, "src/committed.ts"), "export const verify = 1;\n");
+      await writeFile(join(repo, "src/sparse.ts"), "export const sparse = 1;\n");
+      await writeFile(join(repo, "src/deleted.ts"), "export const deleted = 1;\n");
       git(repo, ["init", "-q"]);
       git(repo, ["add", "."]);
       git(repo, [
@@ -345,12 +351,18 @@ relation ReaderProvidesRecord {
         "base"
       ]);
       await writeFile(join(repo, "src/untracked.ts"), "export const helper = 1;\n");
+      // A sparse checkout leaves a tracked file off disk without deleting it; an
+      // unstaged deletion does delete it.
+      git(repo, ["sparse-checkout", "set", "--no-cone", "/*", "!/src/sparse.ts"]);
+      await rm(join(repo, "src/deleted.ts"));
 
       const result = await runCli(["check", "--check-cited-paths"], cliPath, repo);
       expect(result.exitCode).toBe(1);
       expect(result.stderr).toContain("docs/missing.md is cited by the model");
+      expect(result.stderr).toContain("src/deleted.ts is cited by the model");
       expect(result.stderr).not.toContain("src/committed.ts is cited");
       expect(result.stderr).not.toContain("src/untracked.ts is cited");
+      expect(result.stderr).not.toContain("src/sparse.ts is cited");
 
       const withoutFlag = await runCli(["check"], cliPath, repo);
       expect(withoutFlag.exitCode).toBe(0);

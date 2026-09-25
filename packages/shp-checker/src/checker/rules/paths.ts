@@ -19,9 +19,20 @@ export function checkCitedPaths(
     citations.set(normalized, [...(citations.get(normalized) ?? []), provenance]);
   };
 
-  for (const [path, provenances] of model.shapeUpdatePaths) {
-    for (const provenance of provenances) {
-      cite(path, provenance);
+  // Functions are read directly rather than through `shapeUpdatePaths`, which
+  // leaves out generated AST functions because they never count for coverage.
+  for (const component of model.components.values()) {
+    for (const fn of component.functions.values()) {
+      if (fn.source) {
+        cite(fn.source.path, fn.provenance);
+      }
+      if (fn.effects.kind === "complete") {
+        for (const entry of fn.effects.entries) {
+          if (entry.evidence) {
+            cite(entry.evidence.path, entry.provenance);
+          }
+        }
+      }
     }
   }
   for (const context of [

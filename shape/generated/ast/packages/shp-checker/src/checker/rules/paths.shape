@@ -8,7 +8,7 @@ trait GeneratedCandidate {
 
 resource PathsModuleCheckCitedPathsAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/checker/rules/paths.ts#checkCitedPaths")
-  fingerprint ast.semantic_subtree_v1("sha256:1596c0bcf96167c4c1decab3ee02014ea9edc65647f61cc6712af0d0d4484697")
+  fingerprint ast.semantic_subtree_v1("sha256:c4ea947c71fd8cd8e5df78d51edae2e2903ee70c7574e7d51d31a448c9ee3e38")
 }
 
 component PathsModule : GeneratedCandidate {
@@ -21,7 +21,7 @@ relation PathsModuleCheckCitedPathsGeneratedFromPathsModuleCheckCitedPathsAstAnc
   kind generated_from
   connects PathsModule -> PathsModuleCheckCitedPathsAstAnchor
   roles { PathsModule as generated, PathsModuleCheckCitedPathsAstAnchor as syntax }
-  expects PathsModuleCheckCitedPathsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1596c0bcf96167c4c1decab3ee02014ea9edc65647f61cc6712af0d0d4484697")
+  expects PathsModuleCheckCitedPathsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c4ea947c71fd8cd8e5df78d51edae2e2903ee70c7574e7d51d31a448c9ee3e38")
   summary "fn PathsModule.checkCitedPaths generated from typescript function_declaration at packages/shp-checker/src/checker/rules/paths.ts#checkCitedPaths."
 }
 

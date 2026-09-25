@@ -1,4 +1,3 @@
-import { existsSync } from "node:fs";
 import { CliDiagnosticError, EXIT_USAGE } from "./errors";
 
 export async function git(args: string[], action: string): Promise<string> {
@@ -18,14 +17,16 @@ export async function git(args: string[], action: string): Promise<string> {
 }
 
 /**
- * Tracked and untracked, non-ignored files that exist in the working tree,
- * relative to the current directory. A tracked file deleted but not yet staged
- * is left out.
+ * Tracked and untracked, non-ignored files, relative to the current directory.
+ * A tracked file deleted but not yet staged is left out. A file outside a sparse
+ * checkout stays in, since git still tracks it; that is why deletions come from
+ * git rather than from the filesystem.
  */
 export async function repositoryFiles(): Promise<string[]> {
-  const listing = await git(
-    ["ls-files", "-z", "--cached", "--others", "--exclude-standard"],
-    "list repository files"
-  );
-  return [...new Set(listing.split("\0").filter((path) => path.length > 0 && existsSync(path)))];
+  const [listing, deletedListing] = await Promise.all([
+    git(["ls-files", "-z", "--cached", "--others", "--exclude-standard"], "list repository files"),
+    git(["ls-files", "-z", "--deleted"], "list deleted files")
+  ]);
+  const deleted = new Set(deletedListing.split("\0"));
+  return [...new Set(listing.split("\0").filter((path) => path.length > 0 && !deleted.has(path)))];
 }
