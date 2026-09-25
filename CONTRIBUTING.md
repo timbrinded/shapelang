@@ -110,9 +110,12 @@ failing step:
 1. `bun run ast:check` checks that the generated AST context is fresh.
 2. `bun run format:shape:check` runs the same `shp fmt --check` pass over every
    `.shape` file that `format:check` runs.
-3. `bun shp check --changed-files changed.txt --base-ref "$(cat changed-base.txt)"`
-   runs the semantic checks, coverage, and docs bindings, and counts only
-   attestations written for this change.
+3. `bun shp check --changed-files changed.txt --base-ref "$(cat changed-base.txt)" --check-cited-paths`
+   runs the semantic checks, coverage, and docs bindings, counts only
+   attestations written for this change, and fails if the model cites a file
+   that no longer exists. Docs pages are mapped to `DocsSite` without a coverage
+   obligation, so a docs-only edit needs no attestation; the cited-path check
+   catches a cited page being renamed or deleted.
 4. `bun shp obligations` and `bun shp memory` print open obligations and design
    memory.
 

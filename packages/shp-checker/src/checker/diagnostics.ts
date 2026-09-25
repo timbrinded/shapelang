@@ -88,6 +88,8 @@ function formatDiagnostic(diagnostic: ShapeDiagnostic): string {
       return formatInvalidImplementationDiagnostic(diagnostic);
     case "stale_attestation":
       return formatStaleAttestationDiagnostic(diagnostic);
+    case "missing_cited_path":
+      return formatMissingCitedPathDiagnostic(diagnostic);
   }
 }
 
@@ -470,6 +472,18 @@ function formatInvalidImplementationDiagnostic(
     "error: invalid implementation",
     "",
     `implementation ${displaySymbol(diagnostic.name)} is invalid: ${diagnostic.reason}.`,
+    formatCausedBy(diagnostic.causedBy)
+  ].join("\n");
+}
+
+function formatMissingCitedPathDiagnostic(
+  diagnostic: Extract<SemanticDiagnostic, { kind: "missing_cited_path" }>
+): string {
+  return [
+    "error: missing cited path",
+    "",
+    `${diagnostic.path} is cited by the model but is not in the repository.`,
+    "Update the citation to the file's new path, or remove it if the file is gone.",
     formatCausedBy(diagnostic.causedBy)
   ].join("\n");
 }

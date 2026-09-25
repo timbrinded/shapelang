@@ -20,6 +20,7 @@ component ShapeIncrementalChecker {
   grants Read<IncrementalCheckState>
   grants Read<ParsedModule>
   grants Read<PreludeMetadata>
+  grants Read<RepositoryFileList>
   grants Update<IncrementalCheckState>
   fn check : ProtectedCheckOrder
     source ts("packages/shp-checker/src/checker/incremental.ts#check")
@@ -43,6 +44,8 @@ component ShapeIncrementalChecker {
         evidence ts("packages/shp-checker/src/checker/incremental.ts")
       Read<PreludeMetadata>
         evidence ts("packages/shp-checker/src/checker/incremental.ts")
+      Read<RepositoryFileList>
+        evidence ts("packages/shp-checker/src/checker/incremental.ts#checkOptionsKey")
       Update<IncrementalCheckState>
         evidence ts("packages/shp-checker/src/checker/incremental.ts")
     }

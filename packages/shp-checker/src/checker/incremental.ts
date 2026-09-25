@@ -245,6 +245,7 @@ function checkOptionsKey(options: CheckOptions): string {
     changedFiles: options.changedFiles ?? null,
     enforceBindings: options.enforceBindings ?? null,
     includeFacts: options.includeFacts ?? null,
+    repositoryFiles: options.repositoryFiles ?? null,
     repoRoot: resolve(options.repoRoot ?? process.cwd()),
     freshnessDate: options.freshnessDate ?? null
   } satisfies Record<keyof CheckOptions, unknown>;

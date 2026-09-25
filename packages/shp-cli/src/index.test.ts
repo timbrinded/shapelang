@@ -305,6 +305,60 @@ relation ReaderProvidesRecord {
     }
   });
 
+  test("checks that cited paths exist in the git repository", async () => {
+    const repo = await mkdtemp(join(tmpdir(), "shp-cited-paths-test-"));
+    try {
+      await mkdir(join(repo, "shape"));
+      await mkdir(join(repo, "src"));
+      await writeFile(
+        join(repo, "shape/docs.shape"),
+        [
+          "module docs_cited",
+          "",
+          "resource Page",
+          "",
+          "component Docs {",
+          "  owns Page",
+          "  grants Read<Page>",
+          "  fn verify",
+          `    source ts("src/committed.ts#verify")`,
+          "    effects complete {",
+          "      Read<Page>",
+          `        evidence ts("src/untracked.ts")`,
+          "      Read<Page>",
+          `        evidence md("docs/missing.md")`,
+          "    }",
+          "}",
+          ""
+        ].join("\n")
+      );
+      await writeFile(join(repo, "src/committed.ts"), "export const verify = 1;\n");
+      git(repo, ["init", "-q"]);
+      git(repo, ["add", "."]);
+      git(repo, [
+        "-c",
+        "user.name=shp",
+        "-c",
+        "user.email=shp@example.com",
+        "commit",
+        "-qm",
+        "base"
+      ]);
+      await writeFile(join(repo, "src/untracked.ts"), "export const helper = 1;\n");
+
+      const result = await runCli(["check", "--check-cited-paths"], cliPath, repo);
+      expect(result.exitCode).toBe(1);
+      expect(result.stderr).toContain("docs/missing.md is cited by the model");
+      expect(result.stderr).not.toContain("src/committed.ts is cited");
+      expect(result.stderr).not.toContain("src/untracked.ts is cited");
+
+      const withoutFlag = await runCli(["check"], cliPath, repo);
+      expect(withoutFlag.exitCode).toBe(0);
+    } finally {
+      await rm(repo, { recursive: true, force: true });
+    }
+  });
+
   test("rejects empty changed-file path during checks", async () => {
     const result = await runCli([
       "check",

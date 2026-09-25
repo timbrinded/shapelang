@@ -29,7 +29,7 @@
     "release:metadata": "bun scripts/check-release-metadata.ts",
     "skills:check": "bun scripts/check-skills.ts",
     "shape:check": "bun shp check",
-    "shape:ci": "bun run ast:check && bun run format:shape:check && bun shp check --changed-files changed.txt --base-ref \"$(cat changed-base.txt)\" && bun shp obligations && bun shp memory",
+    "shape:ci": "bun run ast:check && bun run format:shape:check && bun shp check --changed-files changed.txt --base-ref \"$(cat changed-base.txt)\" --check-cited-paths && bun shp obligations && bun shp memory",
     "shape:coverage": "bun shp coverage --changed-files changed.txt --base-ref \"$(cat changed-base.txt)\"",
     "shp": "bun packages/shp-cli/src/index.ts",
     "test": "bun test",

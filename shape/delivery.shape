@@ -766,6 +766,7 @@ implementation CliSource {
     "packages/shp-cli/src/commands/**/*.ts"
     "packages/shp-cli/src/context.ts"
     "packages/shp-cli/src/errors.ts"
+    "packages/shp-cli/src/git.ts"
     "packages/shp-cli/src/index.ts"
     "packages/shp-cli/src/io.ts"
     "packages/shp-cli/src/parameters.ts"
@@ -776,10 +777,16 @@ implementation CliSource {
   on_change require shape_update
 }
 
+implementation DocsContent {
+  paths {
+    "docs-site/src/content/docs/**/*.md"
+  }
+  conforms_to DocsSite
+}
+
 implementation DocsSource {
   paths {
     "docs-site/scripts/**/*.ts"
-    "docs-site/src/content/docs/**/*.md"
   }
   conforms_to DocsSite
   on_change require shape_update
@@ -897,6 +904,7 @@ binding CliDocs {
     "packages/shp-cli/src/commands/**/*.ts"
     "packages/shp-cli/src/context.ts"
     "packages/shp-cli/src/errors.ts"
+    "packages/shp-cli/src/git.ts"
     "packages/shp-cli/src/index.ts"
     "packages/shp-cli/src/io.ts"
     "packages/shp-cli/src/lsp/positions.ts"
@@ -1183,4 +1191,14 @@ attest no_shape_change {
 attest no_shape_change {
   source ts("packages/shp-checker/src/checker/rules.ts")
   reason "Passes the BaseModel option to checkCoverage and checkStaleAttestations; rule order and the enabled checks are unchanged."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/checker/model.ts")
+  reason "Adds the repositoryFiles check option and the missing_cited_path diagnostic variant; the rule that uses them is modelled as ShapeRuleEngine.checkCitedPaths."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/checker/rules.ts")
+  reason "Registers checkCitedPaths last in the ordered semantic-check list, gated on the repositoryFiles option; the earlier checks and their order are unchanged."
 }

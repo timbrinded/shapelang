@@ -266,6 +266,12 @@ export type SemanticDiagnostic =
       path: string;
       filePath?: string;
       causedBy: string[];
+    }
+  | {
+      kind: "missing_cited_path";
+      path: string;
+      filePath?: string;
+      causedBy: string[];
     };
 
 export type ShapeDiagnostic = ParseDiagnostic | SemanticDiagnostic;
@@ -295,6 +301,12 @@ export type CheckOptions = {
   changedFiles?: string[];
   enforceBindings?: boolean;
   includeFacts?: boolean;
+  /**
+   * Every file in the repository, relative to `repoRoot`. When set, each source
+   * and evidence path the model cites (attestation sources excepted) must be in
+   * this list, so a renamed or deleted file cannot leave a dangling citation.
+   */
+  repositoryFiles?: string[];
   /**
    * Repository root used to normalize absolute changed-file and provenance
    * paths before coverage and binding matching. Defaults to the current working

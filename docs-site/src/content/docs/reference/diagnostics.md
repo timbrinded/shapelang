@@ -30,6 +30,7 @@ In the index, `check` stands for every command that runs the semantic checks: `s
 | [`error: governed source changed without current Shape update`](#error-governed-source-changed-without-current-shape-update) | `missing_shape_update` | `shp check --changed-files`, `shp coverage` | [Change sets](#change-sets) |
 | [`error: bound docs change missing`](#error-bound-docs-change-missing) | `missing_bound_docs_change` | `shp check --changed-files` | [Change sets](#change-sets) |
 | [`warning: stale attestation`](#warning-stale-attestation) | `stale_attestation` | `check` with `--base-ref` or `--base-model` | [Change sets](#change-sets) |
+| [`error: missing cited path`](#error-missing-cited-path) | `missing_cited_path` | `shp check --check-cited-paths` | [Change sets](#change-sets) |
 | [`error: missing required context`](#error-missing-required-context) | `missing_required_context` | `check` | [Design memory](#design-memory) |
 | [`error: missing required description`](#error-missing-required-description) | `missing_required_description` | `check` | [Design memory](#design-memory) |
 | [`error: invalid context target`](#error-invalid-context-target) | `invalid_context_target` | `check` | [Design memory](#design-memory) |
@@ -495,7 +496,7 @@ caused by:
 
 ## Change sets
 
-These diagnostics need a changed-file list. What counts as a current update, attestation, or bound change is defined in [Keep the Model Current](/shapelang/guides/keep-model-current/).
+These diagnostics compare the model with a change. The first two need a changed-file list, `stale attestation` needs a base model, and `missing cited path` needs the repository's file list. What counts as a current update, attestation, or bound change is defined in [Keep the Model Current](/shapelang/guides/keep-model-current/).
 
 ### `error: governed source changed without current Shape update`
 
@@ -557,6 +558,24 @@ caused by:
 **Cause.** An attestation with the same kind, path, and reason already exists in the base model. It was carried over from an earlier change, so it no longer satisfies coverage or bindings.
 
 **Fix.** Run [`shp attest prune`](/shapelang/reference/cli/#shp-attest-prune) with the same `--base-ref` or `--base-model` to delete every stale attestation at once. If its path changed again in this change set and the contract is still unchanged, write a new attestation with a reason for this change.
+
+### `error: missing cited path`
+
+Kind `missing_cited_path` · emitted by `shp check --check-cited-paths`
+
+```text
+error: missing cited path
+
+docs-site/src/content/docs/guides/renamed-away.md is cited by the model but is not in the repository.
+Update the citation to the file's new path, or remove it if the file is gone.
+
+caused by:
+  - shape/docs.shape: effect DocsSite.verifyDocs emits Read<DocsContent>
+```
+
+**Cause.** A `source` or `evidence` path cited by a function, rationale, memory, or reevaluation is not a file in the repository, usually because the file was renamed or deleted without updating the model. `caused by` names every declaration that cites the path. Attestation sources are not checked, since attesting a deletion names a removed file.
+
+**Fix.** Point the citation at the file's new path, or remove the citation if the file is gone.
 
 ## Design memory
 

@@ -468,4 +468,71 @@ describe("#61 coverage/bindings enforcement vs vacuity + self-model dogfood", ()
       expect(diagnosticKinds(builtInCode)).toEqual(["missing_bound_docs_change"]);
     }
   );
+
+  // INVARIANT 10 — given the repository file list, every source and evidence
+  // path the model cites must be in it. A function evidence path and a
+  // reevaluation evidence path that no longer exist are each reported once; the
+  // existing source path and an attestation naming a deleted file are not. The
+  // check is opt-in, so the same model passes without the file list.
+  test(
+    lockedIntended(
+      "cited source and evidence paths must exist when the repository file list is given",
+      "docs-site/src/content/docs/reference/diagnostics.md missing_cited_path"
+    ),
+    () => {
+      const module = parseModuleOrThrow(
+        [
+          "module docs_cited",
+          "",
+          "resource Page",
+          "",
+          "component Docs {",
+          "  owns Page",
+          "  grants Read<Page>",
+          "  fn verify",
+          `    source ts("scripts/verify.ts#verify")`,
+          "    effects complete {",
+          "      Read<Page>",
+          `        evidence md("docs/renamed.md")`,
+          "    }",
+          "}",
+          "",
+          "memory VerifyContract : RefactorConstraint<fn Docs.verify> {",
+          "  applies_to fn Docs.verify",
+          "  status Explained",
+          "  confidence High",
+          `  summary "Docs verification stays read-only."`,
+          "  who { owner DocsTeam }",
+          "}",
+          "",
+          "reevaluation VerifyRechecked {",
+          "  satisfies memory VerifyContract",
+          "  outcome Confirmed",
+          `  summary "Still read-only."`,
+          "  reviewer DocsTeam",
+          `  decided_on "2026-09-25"`,
+          `  evidence test("tests/deleted.test.ts")`,
+          "}",
+          "",
+          "attest no_shape_change {",
+          `  source ts("scripts/removed.ts")`,
+          `  reason "The script was deleted; its behaviour moved into verify."`,
+          "}",
+          ""
+        ].join("\n")
+      );
+
+      const result = checkShapeModules([module], { repositoryFiles: ["scripts/verify.ts"] });
+      expect(result.ok).toBe(false);
+      expect(diagnosticKinds(result)).toEqual(["missing_cited_path", "missing_cited_path"]);
+      expect(
+        result.diagnostics.flatMap((diagnostic) =>
+          diagnostic.kind === "missing_cited_path" ? [diagnostic.path] : []
+        )
+      ).toEqual(["docs/renamed.md", "tests/deleted.test.ts"]);
+
+      const optedOut = checkShapeModules([module]);
+      expect(optedOut.ok).toBe(true);
+    }
+  );
 });

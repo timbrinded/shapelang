@@ -2,7 +2,8 @@ import { Glob } from "bun";
 import { join, relative, resolve } from "node:path";
 import { parseShapeModule, type CheckModuleInput } from "@shape/shp-checker";
 import type { CliContext } from "./context";
-import { CliDiagnosticError, EXIT_USAGE } from "./errors";
+import { CliDiagnosticError } from "./errors";
+import { git } from "./git";
 import { stderr } from "./io";
 import { readCliTextFile } from "./shape-files";
 
@@ -106,20 +107,4 @@ async function readBaseModelSources(
       text: await readCliTextFile(join(directory, path))
     }))
   );
-}
-
-async function git(args: string[], action: string): Promise<string> {
-  const child = Bun.spawn(["git", ...args], { stdout: "pipe", stderr: "pipe" });
-  const [output, errorOutput, exitCode] = await Promise.all([
-    new Response(child.stdout).text(),
-    new Response(child.stderr).text(),
-    child.exited
-  ]);
-  if (exitCode !== 0) {
-    throw new CliDiagnosticError(
-      `error: failed to ${action}\n\n${errorOutput.trim()}\n`,
-      EXIT_USAGE
-    );
-  }
-  return output;
 }

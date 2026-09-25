@@ -38,7 +38,7 @@ resource DiagnosticsModuleFormatContextTargetMismatchDiagnosticAstAnchor : Gener
 
 resource DiagnosticsModuleFormatDiagnosticAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/checker/diagnostics.ts#formatDiagnostic")
-  fingerprint ast.semantic_subtree_v1("sha256:eb0b4c6a41c0bb29fccfabc96d424f4aa8c9f8041149db1166aa6b4f64deca14")
+  fingerprint ast.semantic_subtree_v1("sha256:a3eca83b4f52276fa817d65e01fd21c6071d4d1465d09b5f3e0c169b48ffd604")
 }
 
 resource DiagnosticsModuleFormatDiagnosticsAstAnchor : GeneratedAstAnchor {
@@ -129,6 +129,11 @@ resource DiagnosticsModuleFormatLocationAstAnchor : GeneratedAstAnchor {
 resource DiagnosticsModuleFormatMissingBoundDocsChangeDiagnosticAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/checker/diagnostics.ts#formatMissingBoundDocsChangeDiagnostic")
   fingerprint ast.semantic_subtree_v1("sha256:3c15126a624ea9a4503ac9cf64921f5540e7bef289cc3cd9112dd91a2e3652b4")
+}
+
+resource DiagnosticsModuleFormatMissingCitedPathDiagnosticAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/diagnostics.ts#formatMissingCitedPathDiagnostic")
+  fingerprint ast.semantic_subtree_v1("sha256:cf5edb2be4d314c5fabb2aaeb73c07a3af1afd062631cee201fcff988717cbcb")
 }
 
 resource DiagnosticsModuleFormatMissingGrantDiagnosticAstAnchor : GeneratedAstAnchor {
@@ -262,6 +267,9 @@ component DiagnosticsModule : GeneratedCandidate {
   fn formatMissingBoundDocsChangeDiagnostic
     source ts("packages/shp-checker/src/checker/diagnostics.ts#formatMissingBoundDocsChangeDiagnostic")
     effects unknown
+  fn formatMissingCitedPathDiagnostic
+    source ts("packages/shp-checker/src/checker/diagnostics.ts#formatMissingCitedPathDiagnostic")
+    effects unknown
   fn formatMissingGrantDiagnostic
     source ts("packages/shp-checker/src/checker/diagnostics.ts#formatMissingGrantDiagnostic")
     effects unknown
@@ -349,7 +357,7 @@ relation DiagnosticsModuleFormatDiagnosticGeneratedFromDiagnosticsModuleFormatDi
   kind generated_from
   connects DiagnosticsModule -> DiagnosticsModuleFormatDiagnosticAstAnchor
   roles { DiagnosticsModule as generated, DiagnosticsModuleFormatDiagnosticAstAnchor as syntax }
-  expects DiagnosticsModuleFormatDiagnosticAstAnchor fingerprint ast.semantic_subtree_v1("sha256:eb0b4c6a41c0bb29fccfabc96d424f4aa8c9f8041149db1166aa6b4f64deca14")
+  expects DiagnosticsModuleFormatDiagnosticAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a3eca83b4f52276fa817d65e01fd21c6071d4d1465d09b5f3e0c169b48ffd604")
   summary "fn DiagnosticsModule.formatDiagnostic generated from typescript function_declaration at packages/shp-checker/src/checker/diagnostics.ts#formatDiagnostic."
 }
 
@@ -495,6 +503,14 @@ relation DiagnosticsModuleFormatMissingBoundDocsChangeDiagnosticGeneratedFromDia
   roles { DiagnosticsModule as generated, DiagnosticsModuleFormatMissingBoundDocsChangeDiagnosticAstAnchor as syntax }
   expects DiagnosticsModuleFormatMissingBoundDocsChangeDiagnosticAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3c15126a624ea9a4503ac9cf64921f5540e7bef289cc3cd9112dd91a2e3652b4")
   summary "fn DiagnosticsModule.formatMissingBoundDocsChangeDiagnostic generated from typescript function_declaration at packages/shp-checker/src/checker/diagnostics.ts#formatMissingBoundDocsChangeDiagnostic."
+}
+
+relation DiagnosticsModuleFormatMissingCitedPathDiagnosticGeneratedFromDiagnosticsModuleFormatMissingCitedPathDiagnosticAstAnchor {
+  kind generated_from
+  connects DiagnosticsModule -> DiagnosticsModuleFormatMissingCitedPathDiagnosticAstAnchor
+  roles { DiagnosticsModule as generated, DiagnosticsModuleFormatMissingCitedPathDiagnosticAstAnchor as syntax }
+  expects DiagnosticsModuleFormatMissingCitedPathDiagnosticAstAnchor fingerprint ast.semantic_subtree_v1("sha256:cf5edb2be4d314c5fabb2aaeb73c07a3af1afd062631cee201fcff988717cbcb")
+  summary "fn DiagnosticsModule.formatMissingCitedPathDiagnostic generated from typescript function_declaration at packages/shp-checker/src/checker/diagnostics.ts#formatMissingCitedPathDiagnostic."
 }
 
 relation DiagnosticsModuleFormatMissingGrantDiagnosticGeneratedFromDiagnosticsModuleFormatMissingGrantDiagnosticAstAnchor {

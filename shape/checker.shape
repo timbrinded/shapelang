@@ -26,6 +26,8 @@ resource NormalizedShapeReference
 
 resource PreludeMetadata
 
+resource RepositoryFileList
+
 resource ResolvedModuleReference
 
 resource SemanticDiagnosticSet
@@ -328,7 +330,19 @@ component ShapeRuleEngine {
   grants Read<FactSet>
   grants Read<NormalizedShapeReference>
   grants Read<PreludeMetadata>
+  grants Read<RepositoryFileList>
   grants Update<ShapeHypergraph>
+  fn checkCitedPaths
+    source ts("packages/shp-checker/src/checker/rules/paths.ts#checkCitedPaths")
+    description "When given the repository file list, reports each source and evidence path cited by functions, rationale, memory, or reevaluation that is not in it; attestation sources are exempt so a deletion can be attested."
+    effects complete {
+      Append<SemanticDiagnostics>
+        evidence ts("packages/shp-checker/src/checker/rules/paths.ts#checkCitedPaths")
+      Read<EffectiveModel>
+        evidence ts("packages/shp-checker/src/checker/rules/paths.ts#checkCitedPaths")
+      Read<RepositoryFileList>
+        evidence ts("packages/shp-checker/src/checker/rules/paths.ts#checkCitedPaths")
+    }
   fn checkCoverage : RefactorSensitive
     source ts("packages/shp-checker/src/checker/rules/coverage.ts#checkCoverage")
     effects complete {

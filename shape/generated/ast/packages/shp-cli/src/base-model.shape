@@ -6,11 +6,6 @@ trait GeneratedAstAnchor {
 trait GeneratedCandidate {
 }
 
-resource BaseModelModuleGitAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-cli/src/base-model.ts#git")
-  fingerprint ast.semantic_subtree_v1("sha256:75ba213245eb4584161ff356ba0cb922a9176d1a6725b1c699b1c20d583b1ec8")
-}
-
 resource BaseModelModuleLoadBaseModulesAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-cli/src/base-model.ts#loadBaseModules")
   fingerprint ast.semantic_subtree_v1("sha256:3881c1753d68e2de71151cffd8e3fa6dfd25f708a825bf716167d034f7a73b89")
@@ -27,9 +22,6 @@ resource BaseModelModuleReadBaseRefSourcesAstAnchor : GeneratedAstAnchor {
 }
 
 component BaseModelModule : GeneratedCandidate {
-  fn git
-    source ts("packages/shp-cli/src/base-model.ts#git")
-    effects unknown
   fn loadBaseModules
     source ts("packages/shp-cli/src/base-model.ts#loadBaseModules")
     effects unknown
@@ -39,14 +31,6 @@ component BaseModelModule : GeneratedCandidate {
   fn readBaseRefSources
     source ts("packages/shp-cli/src/base-model.ts#readBaseRefSources")
     effects unknown
-}
-
-relation BaseModelModuleGitGeneratedFromBaseModelModuleGitAstAnchor {
-  kind generated_from
-  connects BaseModelModule -> BaseModelModuleGitAstAnchor
-  roles { BaseModelModule as generated, BaseModelModuleGitAstAnchor as syntax }
-  expects BaseModelModuleGitAstAnchor fingerprint ast.semantic_subtree_v1("sha256:75ba213245eb4584161ff356ba0cb922a9176d1a6725b1c699b1c20d583b1ec8")
-  summary "fn BaseModelModule.git generated from typescript function_declaration at packages/shp-cli/src/base-model.ts#git."
 }
 
 relation BaseModelModuleLoadBaseModulesGeneratedFromBaseModelModuleLoadBaseModulesAstAnchor {

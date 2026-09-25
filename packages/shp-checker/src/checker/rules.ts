@@ -10,6 +10,7 @@ import {
   checkRequiredDescriptions
 } from "./rules/context.ts";
 import { checkCoverage, checkStaleAttestations } from "./rules/coverage.ts";
+import { checkCitedPaths } from "./rules/paths.ts";
 import { checkCandidateEffectFingerprints, checkFunctions } from "./rules/functions.ts";
 import { checkFreshness, checkGuardedChanges } from "./rules/guards.ts";
 import { checkResolvedNames } from "./rules/names.ts";
@@ -48,7 +49,9 @@ export const SEMANTIC_CHECKS: ReadonlyArray<
   (model) => checkHypercycles(model),
   (model, options) =>
     checkCoverage(model, options.changedFiles ?? [], options.repoRoot, options.base),
-  (model, options) => (options.base ? checkStaleAttestations(model, options.base) : [])
+  (model, options) => (options.base ? checkStaleAttestations(model, options.base) : []),
+  (model, options) =>
+    options.repositoryFiles ? checkCitedPaths(model, options.repositoryFiles, options.repoRoot) : []
 ];
 
 export function runSemanticChecks(

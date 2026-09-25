@@ -477,6 +477,7 @@ component ShpCli {
   grants Read<UnifiedDiff>
   grants Update<InstalledShpBinary>
   grants Update<InstalledShpRuntimeAssets>
+  grants Update<RepositoryFileList>
   grants Update<ShapeSource>
   fn attestPrune
     source ts("packages/shp-cli/src/commands/attest/impl.ts#attestPrune")
@@ -508,6 +509,13 @@ component ShpCli {
     effects complete {
       Read<SystemClock>
         evidence ts("packages/shp-cli/src/freshness.ts")
+    }
+  fn listRepositoryFiles
+    source ts("packages/shp-cli/src/git.ts#repositoryFiles")
+    description "Lists tracked and untracked, non-ignored files that exist in the working tree, for check --check-cited-paths."
+    effects complete {
+      Update<RepositoryFileList>
+        evidence ts("packages/shp-cli/src/git.ts#repositoryFiles")
     }
   fn loadBaseModules
     source ts("packages/shp-cli/src/base-model.ts#loadBaseModules")
@@ -629,6 +637,8 @@ component ShpCli {
         evidence ts("packages/shp-cli/src/freshness.ts")
       Read<UnifiedDiff>
         evidence ts("packages/shp-cli/src/commands/author/impl.ts")
+      Update<RepositoryFileList>
+        evidence ts("packages/shp-cli/src/commands/check/impl.ts")
       Update<ShapeSource>
         evidence ts("packages/shp-cli/src/commands/attest/impl.ts#attestPrune")
     }

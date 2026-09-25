@@ -8,7 +8,7 @@ trait GeneratedCandidate {
 
 resource ImplModuleCheckAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-cli/src/commands/check/impl.ts#check")
-  fingerprint ast.semantic_subtree_v1("sha256:02958ec011e18ee3258b4f5d1fda66f511a72b21560e86779b098c6679c3721c")
+  fingerprint ast.semantic_subtree_v1("sha256:d306fc871c7d5a6aa1c7d72ba81503f6d7f507a09cd8376c025b592f58d0935d")
 }
 
 component ImplModule : GeneratedCandidate {
@@ -21,7 +21,7 @@ relation ImplModuleCheckGeneratedFromImplModuleCheckAstAnchor {
   kind generated_from
   connects ImplModule -> ImplModuleCheckAstAnchor
   roles { ImplModule as generated, ImplModuleCheckAstAnchor as syntax }
-  expects ImplModuleCheckAstAnchor fingerprint ast.semantic_subtree_v1("sha256:02958ec011e18ee3258b4f5d1fda66f511a72b21560e86779b098c6679c3721c")
+  expects ImplModuleCheckAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d306fc871c7d5a6aa1c7d72ba81503f6d7f507a09cd8376c025b592f58d0935d")
   summary "fn ImplModule.check generated from typescript function_declaration at packages/shp-cli/src/commands/check/impl.ts#check."
 }
 
