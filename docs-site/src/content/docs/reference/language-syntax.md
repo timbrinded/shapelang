@@ -389,7 +389,7 @@ attest no_shape_change {
 }
 ```
 
-An attestation is `attest KIND { source REF reason "TEXT" }`. Both members are required, in that order, and the declaration has no name. `KIND` is any identifier: coverage accepts only `no_shape_change`, and a binding accepts the kinds its `allow attest` lists. An attestation counts only when its `source` path equals the changed path, ignoring anchor and line suffixes, its `reason` is not empty, and its own `.shape` file is in the changed-file list. An attestation never satisfies a guard. See [Keep the Model Current](/shapelang/guides/keep-model-current/).
+An attestation is `attest KIND { source REF reason "TEXT" }`. Both members are required, in that order, and the declaration has no name. `KIND` is any identifier: coverage accepts only `no_shape_change`, and a binding accepts the kinds its `allow attest` lists. An attestation counts only when its `source` path equals the changed path, ignoring anchor and line suffixes, its `reason` is not empty, and it is current: with a base model (`--base-ref` or `--base-model`), its kind, path, and reason are new relative to the base; without one, its own `.shape` file is in the changed-file list. An attestation never satisfies a guard. See [Keep the Model Current](/shapelang/guides/keep-model-current/).
 
 ### `change`
 

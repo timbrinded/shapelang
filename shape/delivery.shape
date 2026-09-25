@@ -1202,3 +1202,18 @@ attest no_shape_change {
   source ts("packages/shp-checker/src/checker/rules.ts")
   reason "Registers checkCitedPaths last in the ordered semantic-check list, gated on the repositoryFiles option; the earlier checks and their order are unchanged."
 }
+
+attest no_shape_change {
+  source md("plugins/shapelang/skills/shape-lang/SKILL.md")
+  reason "Guidance now tells agents to pass --base-ref when the installed CLI supports it and to prune stale attestations; the skill's tools, inputs, and shipped surface are unchanged."
+}
+
+attest no_shape_change {
+  source md("plugins/shapelang/skills/shape-lang/references/cli-workflows.md")
+  reason "The command matrix lists the base-model flags, --check-cited-paths, and attest prune that the CLI already ships; no skill behaviour or packaging changed."
+}
+
+attest no_shape_change {
+  source md("plugins/shapelang/skills/shape-lang/references/make-shape-protocol.md")
+  reason "The coverage section explains that an attestation is evidence for one change and how stale ones are pruned; the authoring protocol's steps are unchanged."
+}

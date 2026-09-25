@@ -82,7 +82,7 @@ Use tools by need:
 - Include `source` for functions and `evidence` for material effects when available.
 - Represent structural dependencies as top-level relations. Prefer `calls`, `callbacks`, `provides`, and `coordinated_call`.
 - Treat vendored `.shape` modules under the discovered Shape root as active policy. Imports affect name visibility, not policy activation.
-- Update the authored model for governed source changes, or add a narrow current attestation only when the architecture contract truly did not change.
+- Update the authored model for governed source changes, or add a narrow current attestation only when the architecture contract truly did not change. Write each attestation for the current change; never copy an old one.
 - Satisfy real guard obligations with a valid reevaluation; never add one merely to silence a diagnostic.
 - Promote generated anchors, analyzer hints, or generated relations only after source review.
 
@@ -100,6 +100,15 @@ When an exact changed-file list exists, use the combined semantic, coverage, and
 ```bash
 <SHAPE_CMD> check --changed-files changed.txt
 ```
+
+If `<SHAPE_CMD> check --help` lists `--base-ref`, also pass the commit the changed-file list was diffed against, so only attestations written for this change count, and delete the attestations it reports as stale:
+
+```bash
+<SHAPE_CMD> check --changed-files changed.txt --base-ref <base>
+<SHAPE_CMD> attest prune --base-ref <base>
+```
+
+Pruning only removes attestations already present in the base; it never removes one written for this change.
 
 Otherwise finish with:
 
