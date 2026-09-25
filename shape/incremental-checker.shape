@@ -13,12 +13,14 @@ component ShapeIncrementalChecker {
   owns IncrementalInvalidationReport
   grants Append<IncrementalInvalidationReport>
   grants Append<SemanticDiagnostics>
+  grants Read<BaseShapeModel>
   grants Read<ChangedFileList>
   grants Read<EffectiveModel>
   grants Read<FactSet>
   grants Read<IncrementalCheckState>
   grants Read<ParsedModule>
   grants Read<PreludeMetadata>
+  grants Read<RepositoryFileList>
   grants Update<IncrementalCheckState>
   fn check : ProtectedCheckOrder
     source ts("packages/shp-checker/src/checker/incremental.ts#check")
@@ -28,6 +30,8 @@ component ShapeIncrementalChecker {
         evidence ts("packages/shp-checker/src/checker/incremental.ts")
       Append<SemanticDiagnostics>
         evidence ts("packages/shp-checker/src/checker/incremental.ts")
+      Read<BaseShapeModel>
+        evidence ts("packages/shp-checker/src/checker/incremental.ts#checkOptionsKey")
       Read<ChangedFileList>
         evidence ts("packages/shp-checker/src/checker/incremental.ts")
       Read<EffectiveModel>
@@ -40,6 +44,8 @@ component ShapeIncrementalChecker {
         evidence ts("packages/shp-checker/src/checker/incremental.ts")
       Read<PreludeMetadata>
         evidence ts("packages/shp-checker/src/checker/incremental.ts")
+      Read<RepositoryFileList>
+        evidence ts("packages/shp-checker/src/checker/incremental.ts#checkOptionsKey")
       Update<IncrementalCheckState>
         evidence ts("packages/shp-checker/src/checker/incremental.ts")
     }
@@ -97,9 +103,4 @@ reevaluation IncrementalFullCheckOrderRechecked {
   reviewer ShapeMaintainers
   decided_on "2026-07-26"
   evidence test("packages/shp-checker/src/checker/incremental.test.ts")
-}
-
-attest no_shape_change {
-  source ts("packages/shp-checker/src/checker/incremental.test.ts")
-  reason "Differential, invalidation, and generated-AST origin tests exercise the modeled ShapeIncrementalChecker boundary without adding another architecture component."
 }

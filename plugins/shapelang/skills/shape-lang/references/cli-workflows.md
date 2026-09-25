@@ -13,8 +13,9 @@ Use this when choosing, sequencing, or interpreting `shp` commands. The released
 
 | Command | Use it for | Do not use it for |
 | --- | --- | --- |
-| `shp check [--allow-unknown-effects] [--changed-files changed.txt] [--as-of YYYY-MM-DD \| --strict-freshness] [files...]` | Full model validation and diagnostics. Draft mode makes only explicit unknown effects non-fatal; freshness flags make stale design memory fail. | Formatting or source analysis. |
-| `shp coverage --changed-files changed.txt [files...]` | Enforcing global model updates or attestations for governed changed files. | Normal validation without a changed-files list. |
+| `shp check [--allow-unknown-effects] [--changed-files changed.txt] [--base-ref REF \| --base-model DIR] [--check-cited-paths] [--as-of YYYY-MM-DD \| --strict-freshness] [files...]` | Full model validation and diagnostics. Draft mode makes only explicit unknown effects non-fatal; `--base-ref` counts only attestations new relative to the base and warns on stale ones; `--check-cited-paths` fails on cited files that no longer exist; freshness flags make stale design memory fail. | Formatting or source analysis. |
+| `shp coverage --changed-files changed.txt [--base-ref REF \| --base-model DIR] [files...]` | Enforcing global model updates or attestations for governed changed files. | Normal validation without a changed-files list. |
+| `shp attest prune (--base-ref REF \| --base-model DIR) [files...]` | Deleting attestations that are unchanged from the base, the ones `check` reports as stale. | Removing an attestation written for the current change. |
 | `shp fmt [--check] [files...]` | Canonical formatting or review-safe format checks. | Semantic validation. |
 | `shp explain SYMBOL [files...]` | Inspecting derived facts for a resource, function, rationale, or memory. | Proving source code correctness. |
 | `shp graph all [--kind KIND] [files...]` / `shp graph show SYMBOL [--kind KIND] [files...]` / `shp graph stats [--kind KIND] [files...]` | Inspecting the whole hypergraph, focused symbol incidence, or aggregate counts. | Effect or Memory Guard checks. |

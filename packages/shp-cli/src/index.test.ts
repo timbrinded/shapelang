@@ -185,6 +185,192 @@ relation ReaderProvidesRecord {
     expect(result.stdout).toBe("");
   });
 
+  test("compares attestations against a base model read from git or a directory", async () => {
+    const repo = await mkdtemp(join(tmpdir(), "shp-base-model-test-"));
+    const baseDir = await mkdtemp(join(tmpdir(), "shp-base-model-dir-"));
+    try {
+      const fixture = await readFile(
+        resolve(repoRoot, "fixtures/fail/missing_shape_update/audit.shape"),
+        "utf8"
+      );
+      const attested = `${fixture}\nattest no_shape_change {\n  source ts("src/audit/purge.ts")\n  reason "Reviewed in an earlier change."\n}\n`;
+      await mkdir(join(repo, "shape"));
+      await mkdir(join(repo, "src/audit"), { recursive: true });
+      await writeFile(join(repo, "shape/audit.shape"), attested);
+      await writeFile(join(repo, "src/audit/purge.ts"), "export const purge = 1;\n");
+      await mkdir(join(baseDir, "shape"));
+      await writeFile(join(baseDir, "shape/audit.shape"), attested);
+      git(repo, ["init", "-q"]);
+      git(repo, ["add", "."]);
+      git(repo, [
+        "-c",
+        "user.name=shp",
+        "-c",
+        "user.email=shp@example.com",
+        "commit",
+        "-qm",
+        "base"
+      ]);
+
+      // The later change edits the governed source and moves the model to a new
+      // .shape file, but only carries the earlier attestation over. Naming just
+      // the new file must still find the attestation in the base's old file.
+      await writeFile(join(repo, "src/audit/purge.ts"), "export const purge = 2;\n");
+      await rm(join(repo, "shape/audit.shape"));
+      await writeFile(join(repo, "shape/moved.shape"), `${attested}\nresource AuditExport\n`);
+      await writeFile(
+        join(repo, "changed.txt"),
+        "src/audit/purge.ts\nshape/audit.shape\nshape/moved.shape\n"
+      );
+
+      for (const files of [[], ["shape/moved.shape"]]) {
+        const fallback = await runCli(
+          ["check", "--changed-files", "changed.txt", ...files],
+          cliPath,
+          repo
+        );
+        expect(fallback.exitCode).toBe(0);
+
+        for (const baseFlags of [
+          ["--base-ref", "HEAD"],
+          ["--base-model", baseDir]
+        ]) {
+          const result = await runCli(
+            ["check", "--changed-files", "changed.txt", ...baseFlags, ...files],
+            cliPath,
+            repo
+          );
+          expect(result.exitCode).toBe(1);
+          expect(result.stderr).toContain("governed source changed without current Shape update");
+          expect(result.stderr).toContain("warning: stale attestation");
+        }
+      }
+
+      // A directory without the repository layout would otherwise be an empty base.
+      const misplaced = await runCli(
+        ["check", "--changed-files", "changed.txt", "--base-model", join(baseDir, "shape")],
+        cliPath,
+        repo
+      );
+      expect(misplaced.exitCode).toBe(2);
+      expect(misplaced.stderr).toContain("holds no .shape files at their repository paths");
+    } finally {
+      await rm(repo, { recursive: true, force: true });
+      await rm(baseDir, { recursive: true, force: true });
+    }
+  });
+
+  test("prunes only attestations that are unchanged from the base model", async () => {
+    const repo = await mkdtemp(join(tmpdir(), "shp-attest-prune-test-"));
+    try {
+      const fixture = await readFile(
+        resolve(repoRoot, "fixtures/fail/missing_shape_update/audit.shape"),
+        "utf8"
+      );
+      // CRLF endings and a change block check that prune finds stale attestations
+      // wherever they are and keeps every other byte.
+      const crlf = (text: string): string => text.replace(/\r?\n/g, "\r\n");
+      const earlier = `attest no_shape_change {\n  source ts("src/audit/purge.ts")\n  reason "Reviewed in an earlier change."\n}\n`;
+      const fresh = `attest no_shape_change {\n  source ts("src/audit/store.ts")\n  reason "Reviewed for this change."\n}\n`;
+      const proposal = (entries: string): string =>
+        `change Proposal {\n  add resource AuditArchive\n${entries}}\n`;
+      const proposed = `  add attest no_shape_change {\n    source ts("src/audit/archive.ts")\n    reason "Proposed with the archive."\n  }\n`;
+      const base = `${fixture}\n${earlier}\n${proposal(proposed)}`;
+      await mkdir(join(repo, "shape"));
+      await writeFile(join(repo, "shape/audit.shape"), crlf(base));
+      git(repo, ["init", "-q"]);
+      git(repo, ["add", "."]);
+      git(repo, [
+        "-c",
+        "user.name=shp",
+        "-c",
+        "user.email=shp@example.com",
+        "commit",
+        "-qm",
+        "base"
+      ]);
+      await writeFile(join(repo, "shape/audit.shape"), crlf(`${base}\n${fresh}`));
+
+      const pruned = await runCli(["attest", "prune", "--base-ref", "HEAD"], cliPath, repo);
+      expect(pruned.exitCode).toBe(0);
+      expect(pruned.stdout).toBe("Removed 2 stale attestation(s) from 1 file(s).\n");
+      expect(await readFile(join(repo, "shape/audit.shape"), "utf8")).toBe(
+        crlf(`${fixture}\n${proposal("")}\n${fresh}`)
+      );
+
+      const again = await runCli(["attest", "prune", "--base-ref", "HEAD"], cliPath, repo);
+      expect(again.stdout).toBe("No stale attestations.\n");
+    } finally {
+      await rm(repo, { recursive: true, force: true });
+    }
+  });
+
+  test("checks that cited paths exist in the git repository", async () => {
+    const repo = await mkdtemp(join(tmpdir(), "shp-cited-paths-test-"));
+    try {
+      await mkdir(join(repo, "shape"));
+      await mkdir(join(repo, "src"));
+      await writeFile(
+        join(repo, "shape/docs.shape"),
+        [
+          "module docs_cited",
+          "",
+          "resource Page",
+          "",
+          "component Docs {",
+          "  owns Page",
+          "  grants Read<Page>",
+          "  fn verify",
+          `    source ts("src/committed.ts#verify")`,
+          "    effects complete {",
+          "      Read<Page>",
+          `        evidence ts("src/untracked.ts")`,
+          "      Read<Page>",
+          `        evidence ts("src/sparse.ts")`,
+          "      Read<Page>",
+          `        evidence ts("src/deleted.ts")`,
+          "      Read<Page>",
+          `        evidence md("docs/missing.md")`,
+          "    }",
+          "}",
+          ""
+        ].join("\n")
+      );
+      await writeFile(join(repo, "src/committed.ts"), "export const verify = 1;\n");
+      await writeFile(join(repo, "src/sparse.ts"), "export const sparse = 1;\n");
+      await writeFile(join(repo, "src/deleted.ts"), "export const deleted = 1;\n");
+      git(repo, ["init", "-q"]);
+      git(repo, ["add", "."]);
+      git(repo, [
+        "-c",
+        "user.name=shp",
+        "-c",
+        "user.email=shp@example.com",
+        "commit",
+        "-qm",
+        "base"
+      ]);
+      await writeFile(join(repo, "src/untracked.ts"), "export const helper = 1;\n");
+      // A sparse checkout leaves a tracked file off disk without deleting it; an
+      // unstaged deletion does delete it.
+      git(repo, ["sparse-checkout", "set", "--no-cone", "/*", "!/src/sparse.ts"]);
+      await rm(join(repo, "src/deleted.ts"));
+
+      const result = await runCli(["check", "--check-cited-paths"], cliPath, repo);
+      expect(result.exitCode).toBe(1);
+      expect(result.stderr).toContain("docs/missing.md is cited by the model");
+      expect(result.stderr).toContain("src/deleted.ts is cited by the model");
+      expect(result.stderr).not.toContain("src/committed.ts is cited");
+      expect(result.stderr).not.toContain("src/untracked.ts is cited");
+      expect(result.stderr).not.toContain("src/sparse.ts is cited");
+
+      const withoutFlag = await runCli(["check"], cliPath, repo);
+      expect(withoutFlag.exitCode).toBe(0);
+    } finally {
+      await rm(repo, { recursive: true, force: true });
+    }
+  });
+
   test("rejects empty changed-file path during checks", async () => {
     const result = await runCli([
       "check",
@@ -1711,4 +1897,11 @@ async function runCli(
   ]);
 
   return { exitCode, stdout, stderr };
+}
+
+function git(cwd: string, args: string[]): void {
+  const result = Bun.spawnSync(["git", ...args], { cwd, stdout: "pipe", stderr: "pipe" });
+  if (result.exitCode !== 0) {
+    throw new Error(`git ${args.join(" ")} failed: ${result.stderr.toString()}`);
+  }
 }

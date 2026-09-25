@@ -7,6 +7,7 @@ import {
 } from "@stricli/core";
 import { analyzeCommand } from "./commands/analyze/command";
 import { astCommand } from "./commands/ast/command";
+import { attestCommand } from "./commands/attest/command";
 import { authorCommand } from "./commands/author/command";
 import { checkCommand } from "./commands/check/command";
 import { coverageCommand } from "./commands/coverage/command";
@@ -26,6 +27,7 @@ const root = buildRouteMap({
   routes: {
     analyze: analyzeCommand,
     ast: astCommand,
+    attest: attestCommand,
     author: authorCommand,
     check: checkCommand,
     coverage: coverageCommand,

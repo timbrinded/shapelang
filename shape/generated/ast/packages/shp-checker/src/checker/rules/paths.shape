@@ -1,0 +1,33 @@
+module shape.generated.ast.packages.shp_checker.src.checker.rules.generated_paths
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource PathsModuleCheckCitedPathsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/rules/paths.ts#checkCitedPaths")
+  fingerprint ast.semantic_subtree_v1("sha256:5e0819d820b8197403699db2f41610085110c746424585c8808e8bc93cfaeef0")
+}
+
+component PathsModule : GeneratedCandidate {
+  fn checkCitedPaths
+    source ts("packages/shp-checker/src/checker/rules/paths.ts#checkCitedPaths")
+    effects unknown
+}
+
+relation PathsModuleCheckCitedPathsGeneratedFromPathsModuleCheckCitedPathsAstAnchor {
+  kind generated_from
+  connects PathsModule -> PathsModuleCheckCitedPathsAstAnchor
+  roles { PathsModule as generated, PathsModuleCheckCitedPathsAstAnchor as syntax }
+  expects PathsModuleCheckCitedPathsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5e0819d820b8197403699db2f41610085110c746424585c8808e8bc93cfaeef0")
+  summary "fn PathsModule.checkCitedPaths generated from typescript function_declaration at packages/shp-checker/src/checker/rules/paths.ts#checkCitedPaths."
+}
+
+implementation PathsModuleImpl {
+  paths {
+    "packages/shp-checker/src/checker/rules/paths.ts"
+  }
+  conforms_to PathsModule
+}

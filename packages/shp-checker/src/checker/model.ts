@@ -252,6 +252,26 @@ export type SemanticDiagnostic =
       reason: string;
       filePath?: string;
       causedBy: string[];
+    }
+  | {
+      kind: "invalid_implementation";
+      name: string;
+      reason: string;
+      filePath?: string;
+      causedBy: string[];
+    }
+  | {
+      kind: "stale_attestation";
+      attestationKind: string;
+      path: string;
+      filePath?: string;
+      causedBy: string[];
+    }
+  | {
+      kind: "missing_cited_path";
+      path: string;
+      filePath?: string;
+      causedBy: string[];
     };
 
 export type ShapeDiagnostic = ParseDiagnostic | SemanticDiagnostic;
@@ -269,9 +289,24 @@ export type CheckOptions = {
    * Every other parse and semantic diagnostic remains blocking.
    */
   allowUnknownEffects?: boolean;
+  /**
+   * The model at the change's comparison base, such as the merge base of a pull
+   * request. When set, an attestation satisfies coverage or bindings only if no
+   * attestation with the same kind, path, and reason exists in the base, and
+   * attestations identical to the base are reported as stale warnings. When
+   * absent, an attestation counts when its declaring `.shape` file is in the
+   * changed-file input.
+   */
+  baseModules?: ShapeModule[] | CheckModuleInput[];
   changedFiles?: string[];
   enforceBindings?: boolean;
   includeFacts?: boolean;
+  /**
+   * Every file in the repository, relative to `repoRoot`. When set, each source
+   * and evidence path the model cites (attestation sources excepted) must be in
+   * this list, so a renamed or deleted file cannot leave a dangling citation.
+   */
+  repositoryFiles?: string[];
   /**
    * Repository root used to normalize absolute changed-file and provenance
    * paths before coverage and binding matching. Defaults to the current working
@@ -289,6 +324,16 @@ export type CheckOptions = {
 
 export type NormalizedCheckOptions = CheckOptions & {
   repoRoot: string;
+  /** Present only when `baseModules` is set. */
+  base?: BaseModel;
+};
+
+/** What checks need from the base model, derived once from `baseModules`. */
+export type BaseModel = {
+  /** Identity keys of every attestation in the base. */
+  attestationKeys: ReadonlySet<string>;
+  /** Each base `.shape` file's source with its attestations removed. */
+  attestationFreeTexts: ReadonlyMap<string, string>;
 };
 
 export type Fact =
@@ -745,6 +790,12 @@ export type Hypergraph = {
 
 export type Model = {
   modules: Map<string, ModuleInfo>;
+  /**
+   * Each input file's source with its attestations removed, by file path. Kept
+   * per file because module names are optional and may repeat. A module built
+   * in code has no source text and no entry.
+   */
+  attestationFreeTexts: Map<string, string>;
   declarations: DeclarationIndex;
   resources: Map<string, ResourceInfo>;
   traits: Map<string, TraitInfo>;

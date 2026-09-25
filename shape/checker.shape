@@ -4,6 +4,8 @@ import shape.language
 
 import shape.tooling
 
+resource BaseShapeModel
+
 resource ChangeEventSet
 
 resource ChangedFileList
@@ -24,6 +26,8 @@ resource NormalizedShapeReference
 
 resource PreludeMetadata
 
+resource RepositoryFileList
+
 resource ResolvedModuleReference
 
 resource SemanticDiagnosticSet
@@ -41,16 +45,25 @@ resource ShapeHypergraph
 component ShapeBindings {
   owns ShapeBinding
   grants Append<SemanticDiagnostics>
+  grants Read<BaseShapeModel>
   grants Read<ChangedFileList>
+  grants Read<EffectiveModel>
   grants Read<NormalizedShapeReference>
   grants Read<ShapeBinding>
   fn checkBindings : RefactorSensitive
     source ts("packages/shp-checker/src/checker/rules/coverage.ts#checkBindings")
+    description "A .shape file whose attestation-free text matches its base version changed only in attestations and does not trigger bindings; the text is compared per file path, and a module without source text never matches."
     effects complete {
       Append<SemanticDiagnostics>
         evidence ts("packages/shp-checker/src/checker/rules/coverage.ts")
+      Read<BaseShapeModel>
+        evidence ts("packages/shp-checker/src/checker/rules/coverage.ts#isCurrentAttestation")
+      Read<BaseShapeModel>
+        evidence ts("packages/shp-checker/src/checker/rules/coverage.ts#isAttestationOnlyChange")
       Read<ChangedFileList>
         evidence ts("packages/shp-checker/src/checker/rules/coverage.ts")
+      Read<EffectiveModel>
+        evidence ts("packages/shp-checker/src/checker/rules/coverage.ts#isAttestationOnlyChange")
       Read<NormalizedShapeReference>
         evidence ts("packages/shp-checker/src/checker/rules/coverage.ts")
       Read<ShapeBinding>
@@ -61,6 +74,7 @@ component ShapeBindings {
 component ShapeChecker {
   grants Append<MachineReadableShapeModel>
   grants Append<SemanticDiagnostics>
+  grants Read<BaseShapeModel>
   grants Read<ChangedFileList>
   grants Read<EffectiveModel>
   grants Read<FactSet>
@@ -72,6 +86,8 @@ component ShapeChecker {
     effects complete {
       Append<SemanticDiagnostics>
         evidence ts("packages/shp-checker/src/checker/api.ts")
+      Read<BaseShapeModel>
+        evidence ts("packages/shp-checker/src/checker/api.ts#checkLoweredShapeModel")
       Read<ChangedFileList>
         evidence ts("packages/shp-checker/src/checker/api.ts")
       Read<EffectiveModel>
@@ -92,10 +108,12 @@ component ShapeChecker {
     }
   fn checkShapeModules : ProtectedCheckOrder
     source ts("packages/shp-checker/src/checker/api.ts#checkShapeModules")
-    description "Runs the complete semantic and binding pipeline, classifying only effects unknown as non-fatal when draft validation is explicitly requested."
+    description "Runs the complete semantic and binding pipeline; only draft-requested effects unknown and stale attestations are non-fatal warnings."
     effects complete {
       Append<SemanticDiagnostics>
         evidence ts("packages/shp-checker/src/checker/api.ts")
+      Read<BaseShapeModel>
+        evidence ts("packages/shp-checker/src/checker/api.ts#summarizeBaseModel")
       Read<ChangedFileList>
         evidence ts("packages/shp-checker/src/checker/api.ts")
       Read<EffectiveModel>
@@ -125,6 +143,15 @@ component ShapeChecker {
         evidence ts("packages/shp-checker/src/checker/inspection.ts#inspectShapeModules")
       Read<ParsedModule>
         evidence ts("packages/shp-checker/src/checker/inspection.ts#inspectShapeModules")
+    }
+  fn staleAttestationPruner
+    source ts("packages/shp-checker/src/checker/api.ts#staleAttestationPruner")
+    description "Returns module source with each attestation already present in the base model removed, top-level or inside a change block, the same attestations the check reports as stale, keeping every byte but the separating whitespace."
+    effects complete {
+      Read<BaseShapeModel>
+        evidence ts("packages/shp-checker/src/checker/api.ts#staleAttestationPruner")
+      Read<ParsedModule>
+        evidence ts("packages/shp-checker/src/checker/attestation-text.ts#removeAttestations")
     }
 }
 
@@ -196,6 +223,19 @@ component ShapeModelLowerer {
         evidence ts("packages/shp-checker/src/checker/lowering/declarations.ts")
       Update<EffectiveModel>
         evidence ts("packages/shp-checker/src/checker/lowering/declarations.ts")
+    }
+  fn lowerImplementation
+    source ts("packages/shp-checker/src/checker/lowering/declarations.ts#lowerImplementation")
+    description "Records implementation paths, conformance, and the on_change requirement, rejecting requirements outside the supported set so a typo cannot silently ungovern paths."
+    effects complete {
+      Append<FactSet>
+        evidence ts("packages/shp-checker/src/checker/lowering/declarations.ts#lowerImplementation")
+      Append<SemanticDiagnostics>
+        evidence ts("packages/shp-checker/src/checker/lowering/declarations.ts#lowerImplementation")
+      Read<ParsedModule>
+        evidence ts("packages/shp-checker/src/checker/lowering/declarations.ts#lowerImplementation")
+      Update<EffectiveModel>
+        evidence ts("packages/shp-checker/src/checker/lowering/declarations.ts#lowerImplementation")
     }
   fn lowerRule
     source ts("packages/shp-checker/src/checker/lowering/declarations.ts#lowerRule")
@@ -283,18 +323,33 @@ component ShapeRuleEngine {
   owns SemanticDiagnostics
   owns ShapeHypergraph
   grants Append<SemanticDiagnostics>
+  grants Read<BaseShapeModel>
   grants Read<ChangeEventSet>
   grants Read<ChangedFileList>
   grants Read<EffectiveModel>
   grants Read<FactSet>
   grants Read<NormalizedShapeReference>
   grants Read<PreludeMetadata>
+  grants Read<RepositoryFileList>
   grants Update<ShapeHypergraph>
+  fn checkCitedPaths
+    source ts("packages/shp-checker/src/checker/rules/paths.ts#checkCitedPaths")
+    description "When given the repository file list, reports each source, evidence, and observed path cited by functions (generated AST functions included), candidate effects, rationale, memory, or reevaluation that is not in it; attestation sources are exempt so a deletion can be attested."
+    effects complete {
+      Append<SemanticDiagnostics>
+        evidence ts("packages/shp-checker/src/checker/rules/paths.ts#checkCitedPaths")
+      Read<EffectiveModel>
+        evidence ts("packages/shp-checker/src/checker/rules/paths.ts#checkCitedPaths")
+      Read<RepositoryFileList>
+        evidence ts("packages/shp-checker/src/checker/rules/paths.ts#checkCitedPaths")
+    }
   fn checkCoverage : RefactorSensitive
     source ts("packages/shp-checker/src/checker/rules/coverage.ts#checkCoverage")
     effects complete {
       Append<SemanticDiagnostics>
         evidence ts("packages/shp-checker/src/checker/rules/coverage.ts")
+      Read<BaseShapeModel>
+        evidence ts("packages/shp-checker/src/checker/rules/coverage.ts#isCurrentAttestation")
       Read<ChangedFileList>
         evidence ts("packages/shp-checker/src/checker/rules/coverage.ts")
       Read<EffectiveModel>
@@ -370,6 +425,17 @@ component ShapeRuleEngine {
         evidence ts("packages/shp-checker/src/checker/rules/declarations.ts")
       Read<PreludeMetadata>
         evidence ts("packages/shp-checker/src/checker/derivations.ts#resourceRuleConditionCompatibility")
+    }
+  fn checkStaleAttestations
+    source ts("packages/shp-checker/src/checker/rules/coverage.ts#checkStaleAttestations")
+    description "Reports each attestation whose kind, path, and reason already exist in the base model as a non-fatal stale warning."
+    effects complete {
+      Append<SemanticDiagnostics>
+        evidence ts("packages/shp-checker/src/checker/rules/coverage.ts#checkStaleAttestations")
+      Read<BaseShapeModel>
+        evidence ts("packages/shp-checker/src/checker/rules/coverage.ts#checkStaleAttestations")
+      Read<EffectiveModel>
+        evidence ts("packages/shp-checker/src/checker/rules/coverage.ts#checkStaleAttestations")
     }
   fn deriveFinalForbidsForResource : RefactorSensitive
     source ts("packages/shp-checker/src/checker/derivations.ts#deriveFinalForbidsForResource")
@@ -604,7 +670,7 @@ memory BindingDocsCouplingContract : RefactorConstraint<fn ShapeBindings.checkBi
   applies_to fn ShapeBindings.checkBindings
   status Explained
   confidence High
-  summary "Bindings enforce review coupling and compare current attestations with normalized repo-relative changed-file paths."
+  summary "Bindings enforce review coupling against normalized repo-relative changed-file paths; an allowed attestation counts only when it is new relative to the base model, or, without a base, when its declaring Shape file changed. With a base, a Shape file that changed only in attestations does not trigger a binding."
   who {
     owner ShapeMaintainers
   }
@@ -636,7 +702,7 @@ memory CoverageCurrentUpdateContract : RefactorConstraint<fn ShapeRuleEngine.che
   applies_to fn ShapeRuleEngine.checkCoverage
   status Explained
   confidence High
-  summary "Coverage accepts a source or attestation only when the declaring Shape file matches the current changed-file input after path normalization."
+  summary "Coverage accepts a source reference only when its declaring Shape file matches the current changed-file input after path normalization; an attestation counts only when it is new relative to the base model, or, without a base, when its declaring Shape file changed."
   who {
     owner ShapeMaintainers
   }
@@ -858,6 +924,15 @@ memory SharedCheckPipelineOrder : CheckOrderRationale<fn ShapeChecker.checkLower
   }
 }
 
+reevaluation BindingAttestationsComparedWithBase {
+  satisfies memory BindingDocsCouplingContract
+  outcome Confirmed
+  summary "Bindings apply the same base comparison to their allowed attestation kinds, so a docs_not_needed carried over unchanged from the base no longer satisfies a binding."
+  reviewer ShapeMaintainers
+  decided_on "2026-09-25"
+  evidence test("packages/shp-checker/src/behavioural/coverage-bindings.test.ts")
+}
+
 reevaluation BindingCurrentAttestationsRechecked {
   satisfies memory BindingDocsCouplingContract
   outcome Confirmed
@@ -867,6 +942,15 @@ reevaluation BindingCurrentAttestationsRechecked {
   evidence test("packages/shp-checker/src/checker.test.ts")
 }
 
+reevaluation BindingsIgnoreAttestationOnlyShapeChanges {
+  satisfies memory BindingDocsCouplingContract
+  outcome Confirmed
+  summary "With a base model, a Shape file whose text without attestations matches its base version does not trigger a binding, so pruning stale attestations or adding new ones never demands a docs change, while any other model edit still does."
+  reviewer ShapeMaintainers
+  decided_on "2026-09-25"
+  evidence test("packages/shp-checker/src/behavioural/coverage-bindings.test.ts")
+}
+
 reevaluation CheckerPhaseOrderRechecked {
   satisfies memory CheckPipelineOrder
   outcome Confirmed
@@ -874,6 +958,15 @@ reevaluation CheckerPhaseOrderRechecked {
   reviewer ShapeMaintainers
   decided_on "2026-05-20"
   evidence test("packages/shp-checker/src/checker.test.ts")
+}
+
+reevaluation CoverageAttestationsComparedWithBase {
+  satisfies memory CoverageCurrentUpdateContract
+  outcome Confirmed
+  summary "With a base model, an attestation satisfies coverage only when its kind, path, and reason are new relative to the base, so editing its declaring Shape file no longer revives it; without a base, the declaring-file rule is unchanged."
+  reviewer ShapeMaintainers
+  decided_on "2026-09-25"
+  evidence test("packages/shp-checker/src/behavioural/coverage-bindings.test.ts")
 }
 
 reevaluation CoverageCurrentAttestationsRechecked {
@@ -1015,104 +1108,4 @@ reevaluation PreludeRuleTraitBoundsRechecked {
   reviewer ShapeMaintainers
   decided_on "2026-07-26"
   evidence test("packages/shp-checker/src/checker.rule-validation.test.ts")
-}
-
-attest no_shape_change {
-  source ts("packages/shp-checker/src/checker/display.ts")
-  reason "Display helpers remain shared formatting support; this Shape update models the checker module split and no separate architecture contract changed."
-}
-
-attest no_shape_change {
-  source ts("packages/shp-checker/src/checker/globs.ts")
-  reason "Glob helpers remain coverage/binding support; CheckerSource now governs them but the logical checker contract is unchanged."
-}
-
-attest no_shape_change {
-  source ts("packages/shp-checker/src/checker/iso-date.ts")
-  reason "Freshness date validation is a checker boundary helper covered by memory freshness tests; no new architecture component is required."
-}
-
-attest no_shape_change {
-  source ts("packages/shp-checker/src/checker/lowerers.ts")
-  reason "Deleted monolithic lowerer file after extracting the same lowering domains into checker/lowering modules modeled above."
-}
-
-attest no_shape_change {
-  source ts("packages/shp-checker/src/checker/lowering/context.ts")
-  reason "Context-object lowering was extracted from the former lowerers module without changing the ShapeModelLowerer architecture contract."
-}
-
-attest no_shape_change {
-  source ts("packages/shp-checker/src/checker/lowering/facts.ts")
-  reason "Fact emission was extracted from the former lowerers module without changing the ShapeModelLowerer architecture contract."
-}
-
-attest no_shape_change {
-  source ts("packages/shp-checker/src/checker/lowering/relations.ts")
-  reason "Relation lowering was extracted from the former lowerers module without changing the ShapeModelLowerer architecture contract."
-}
-
-attest no_shape_change {
-  source ts("packages/shp-checker/src/checker/model.ts")
-  reason "Model types remain shared checker contracts; freshness date typing hardens an existing option rather than adding a new component boundary."
-}
-
-attest no_shape_change {
-  source ts("packages/shp-checker/src/experiments/datalog-rule-engine-spike.ts")
-  reason "Unexported executable comparison for issue #39; it reads public facts in tests but is not registered with or called by the production ShapeRuleEngine."
-}
-
-attest no_shape_change {
-  source ts("packages/shp-checker/src/experiments/datalog-rule-engine-spike.test.ts")
-  reason "Differential tests exercise the isolated rule-engine comparison without adding a production checker component or changing semantic rule order."
-}
-
-attest no_shape_change {
-  source ts("packages/shp-checker/src/checker/prelude-seed.ts")
-  reason "Prelude-to-model seeding moved into the checker layer to remove the prelude dependency inversion; the ShapePreludeRegistry relation already models this dependency."
-}
-
-attest no_shape_change {
-  source ts("packages/shp-checker/src/checker/provenance.ts")
-  reason "Provenance helpers remain diagnostic support with no independent architecture contract."
-}
-
-attest no_shape_change {
-  source ts("packages/shp-checker/src/checker/rules.ts")
-  reason "The rule file is now an ordering registry over domain modules; rule behavior and ordering remain covered by checker tests and modeled ShapeRuleEngine functions."
-}
-
-attest no_shape_change {
-  source ts("packages/shp-checker/src/checker/rules/declarations.ts")
-  reason "Rule declaration validation was extracted from the registry without changing the ShapeRuleEngine architecture contract."
-}
-
-attest no_shape_change {
-  source ts("packages/shp-checker/src/checker/rules/functions.ts")
-  reason "Function/effect rules were extracted from the registry without changing the ShapeRuleEngine architecture contract."
-}
-
-attest no_shape_change {
-  source ts("packages/shp-checker/src/checker/rules/names.ts")
-  reason "Name-resolution diagnostics were extracted from the registry without changing the ShapeRuleEngine architecture contract."
-}
-
-attest no_shape_change {
-  source ts("packages/shp-checker/src/checker/sort.ts")
-  reason "Shared deterministic ordering helpers centralize an existing output-order invariant; no new architecture boundary is introduced."
-}
-
-attest no_shape_change {
-  source ts("packages/shp-checker/src/memory-guards.ts")
-  reason "Guard matching still belongs to the ShapeRuleEngine guarded-change contract; target identity was deduplicated without changing semantics."
-}
-
-attest no_shape_change {
-  source ts("packages/shp-checker/src/targets.ts")
-  reason "Shared target identity helper removes duplicate equality logic; it does not introduce a new Shape component or resource."
-}
-
-attest no_shape_change {
-  source ts("packages/shp-checker/src/checker/inspection.test.ts")
-  reason "Test-only coverage verifies the deterministic inspection schema already modeled by ShapeChecker.inspectShapeModules and InspectionSchemaContract; it adds no production architecture claim."
 }

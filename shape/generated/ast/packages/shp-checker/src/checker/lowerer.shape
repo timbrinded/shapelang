@@ -8,7 +8,7 @@ trait GeneratedCandidate {
 
 resource LowererModuleLowerShapeModulesAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/checker/lowerer.ts#lowerShapeModules")
-  fingerprint ast.semantic_subtree_v1("sha256:6df6c92d3bb9f93a6967a365086ec90fb7d3019b1273329ded7b1b5158a773f2")
+  fingerprint ast.semantic_subtree_v1("sha256:296d23d1a45a4b8bcaa88f1930ef8456f072dc1f225c0011f63c2b56061dcd42")
 }
 
 resource LowererModuleNormalizeModuleInputsAstAnchor : GeneratedAstAnchor {
@@ -37,7 +37,7 @@ relation LowererModuleLowerShapeModulesGeneratedFromLowererModuleLowerShapeModul
   kind generated_from
   connects LowererModule -> LowererModuleLowerShapeModulesAstAnchor
   roles { LowererModule as generated, LowererModuleLowerShapeModulesAstAnchor as syntax }
-  expects LowererModuleLowerShapeModulesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6df6c92d3bb9f93a6967a365086ec90fb7d3019b1273329ded7b1b5158a773f2")
+  expects LowererModuleLowerShapeModulesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:296d23d1a45a4b8bcaa88f1930ef8456f072dc1f225c0011f63c2b56061dcd42")
   summary "fn LowererModule.lowerShapeModules generated from typescript function_declaration at packages/shp-checker/src/checker/lowerer.ts#lowerShapeModules."
 }
 

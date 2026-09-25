@@ -11,6 +11,7 @@ The released `shp` binary (version `0.9.0` / tag `v0.9.0`) exposes the commands 
 | --- | --- |
 | [`check`](#shp-check) | Run the semantic checks; with `--changed-files`, also coverage and bindings. |
 | [`coverage`](#shp-coverage) | Run the semantic checks plus changed-file coverage, without bindings. |
+| [`attest prune`](#shp-attest-prune) | Delete the attestations that are unchanged from a base model. |
 | [`fmt`](#shp-fmt) | Rewrite Shape files in canonical form, or check that they already are. |
 | [`explain`](#shp-explain) | Print the derived facts and incident relations for one symbol. |
 | [`graph`](#shp-graph) | Print the relation hypergraph, one symbol's incident relations, or aggregate counts. |
@@ -46,7 +47,7 @@ Successful output goes to stdout and failing output to stderr, with these except
 ## shp check
 
 ```text
-shp check [--allow-unknown-effects] [--changed-files changed.txt] [--as-of YYYY-MM-DD | --strict-freshness] [files...]
+shp check [--allow-unknown-effects] [--changed-files changed.txt] [--base-ref REF | --base-model DIR] [--check-cited-paths] [--as-of YYYY-MM-DD | --strict-freshness] [files...]
 ```
 
 Parses the Shape model and runs every semantic check. With `--changed-files`, it also runs coverage and bindings, which makes it the single gate recommended for CI.
@@ -55,6 +56,9 @@ Parses the Shape model and runs every semantic check. With `--changed-files`, it
 | --- | --- |
 | `--allow-unknown-effects` | Allow `effects unknown` as a non-fatal warning while validating drafts. See [Draft validation](#draft-validation). |
 | `--changed-files changed.txt` | Path to a newline-delimited changed-file list. Enables coverage and bindings. |
+| `--base-ref REF` | Compare attestations against the Shape model at the merge base of `REF` and `HEAD`, read from git. See [Base model](#base-model). |
+| `--base-model DIR` | Compare attestations against a copy of the base model in `DIR`, kept at repository paths. Cannot be combined with `--base-ref`. |
+| `--check-cited-paths` | Fail when a cited `source` or `evidence` path is not a file in the git repository. See [Cited paths](#cited-paths). |
 | `--as-of YYYY-MM-DD` | Freshness reference date (ISO `YYYY-MM-DD`); enforces stale design memory deterministically. See [Freshness](#freshness). |
 | `--strict-freshness` | Shorthand for `--as-of` today (UTC); fails when `review_by` is before today. |
 | `files...` | Shape files to read. Defaults to `shape/**/*.shape`. |
@@ -66,8 +70,19 @@ A passing run prints `Shape check passed.` to stdout. A failing run prints its d
 ```bash
 shp check
 shp check --changed-files changed.txt
+shp check --changed-files changed.txt --base-ref origin/main
 shp check --as-of 2026-05-30 shape/gateway.shape
 ```
+
+### Base model
+
+With `--base-ref REF`, the CLI reads the base model from git at the merge base of `REF` and `HEAD`: every `.shape` file under `shape/` except generated AST, plus the files named on the command line. It reads all of `shape/` even for a narrower check, so an attestation moved out of a file the check does not name is still found. An attestation satisfies coverage or bindings only when its kind, path, and reason are new relative to the base. Each attestation carried over unchanged is reported as `warning: stale attestation`, which does not fail the check. `--base-model DIR` reads the same paths from `DIR`, a copy of the base kept at repository paths, for example `git archive <base> shape | tar -x -C DIR`. A `DIR` with no `.shape` files at those paths exits `2`.
+
+Without either flag, an attestation counts whenever its `.shape` file is in the changed-file list, so an unrelated edit to that file revives every attestation in it. Pass a base in CI. If a base `.shape` file cannot be parsed, for example after a grammar change, the CLI prints a warning and falls back to that declaring-file rule. An unresolvable `REF` exits `2`.
+
+### Cited paths
+
+With `--check-cited-paths`, every `source`, `evidence`, or `observed` path the model cites, in a function (generated AST functions included), candidate effect, rationale, memory, or reevaluation, must be a file in the git repository: tracked, or untracked and not ignored. A tracked file deleted but not yet staged is missing; one left out of a sparse checkout is not, since git still tracks it. Paths are relative to the working directory, which `shp` takes as the repository root. Each missing path fails the check once with `error: missing cited path`, listing every declaration that cites it. Attestation sources are exempt, so a deleted file can still be attested. The CLI lists the files with `git ls-files`; the checker itself reads no files. Use the flag when cited files can change without a Shape update, for example docs that no implementation governs with `on_change require shape_update`.
 
 ### Draft validation
 
@@ -101,7 +116,7 @@ error: --as-of expects an ISO YYYY-MM-DD date, received "2026-02-30"
 ## shp coverage
 
 ```text
-shp coverage --changed-files changed.txt [files...]
+shp coverage --changed-files changed.txt [--base-ref REF | --base-model DIR] [files...]
 ```
 
 Runs the same semantic checks as `shp check` plus changed-file coverage, but not bindings.
@@ -109,12 +124,32 @@ Runs the same semantic checks as `shp check` plus changed-file coverage, but not
 | Flag | Meaning |
 | --- | --- |
 | `--changed-files changed.txt` | Required. Path to a newline-delimited changed-file list, in the format described under [`shp check`](#shp-check). |
+| `--base-ref REF` / `--base-model DIR` | Compare attestations against a base model, as described under [Base model](#base-model). |
 | `files...` | Shape files to read. Defaults to `shape/**/*.shape`. |
 
 `coverage` accepts no `--allow-unknown-effects`, `--as-of`, or `--strict-freshness` flag, so `effects unknown` in an authored module fails it. Output and exit codes match `shp check`. Prefer `shp check --changed-files`, which adds bindings, as the CI gate.
 
 ```bash
 shp coverage --changed-files changed.txt
+```
+
+## shp attest prune
+
+```text
+shp attest prune (--base-ref REF | --base-model DIR) [files...]
+```
+
+Deletes each attestation whose kind, path, and reason already exist in the base model: the attestations `shp check` reports as `warning: stale attestation`, top-level or an `add` or `modify` entry of a `change` block. Each goes with the whitespace between it and the next declaration, or the whitespace before it when it is the last one in its file or block. Every other byte is kept, so pruned files stay in canonical format, and attestations written for the current change stay.
+
+| Flag | Meaning |
+| --- | --- |
+| `--base-ref REF` / `--base-model DIR` | Required, one of the two. The base model, as described under [Base model](#base-model). |
+| `files...` | Shape files to rewrite. Defaults to `shape/**/*.shape`. |
+
+The command prints `Removed N stale attestation(s) from M file(s).`, or `No stale attestations.`, and exits `0`. Without a base it exits `2`. Git history keeps every removed decision.
+
+```bash
+shp attest prune --base-ref origin/main
 ```
 
 ## shp fmt

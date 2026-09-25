@@ -84,6 +84,12 @@ function formatDiagnostic(diagnostic: ShapeDiagnostic): string {
       return formatInvalidRelationDiagnostic(diagnostic);
     case "invalid_require_context":
       return formatInvalidRequireContextDiagnostic(diagnostic);
+    case "invalid_implementation":
+      return formatInvalidImplementationDiagnostic(diagnostic);
+    case "stale_attestation":
+      return formatStaleAttestationDiagnostic(diagnostic);
+    case "missing_cited_path":
+      return formatMissingCitedPathDiagnostic(diagnostic);
   }
 }
 
@@ -455,6 +461,41 @@ function formatInvalidRequireContextDiagnostic(
     "error: invalid require_context",
     "",
     `trait ${displaySymbol(diagnostic.trait)} require_context ${diagnostic.contextType}<${diagnostic.typeParam}> is invalid: ${diagnostic.reason}.`,
+    formatCausedBy(diagnostic.causedBy)
+  ].join("\n");
+}
+
+function formatInvalidImplementationDiagnostic(
+  diagnostic: Extract<SemanticDiagnostic, { kind: "invalid_implementation" }>
+): string {
+  return [
+    "error: invalid implementation",
+    "",
+    `implementation ${displaySymbol(diagnostic.name)} is invalid: ${diagnostic.reason}.`,
+    formatCausedBy(diagnostic.causedBy)
+  ].join("\n");
+}
+
+function formatMissingCitedPathDiagnostic(
+  diagnostic: Extract<SemanticDiagnostic, { kind: "missing_cited_path" }>
+): string {
+  return [
+    "error: missing cited path",
+    "",
+    `${diagnostic.path} is cited by the model but is not in the repository.`,
+    "Update the citation to the file's new path, or remove it if the file is gone.",
+    formatCausedBy(diagnostic.causedBy)
+  ].join("\n");
+}
+
+function formatStaleAttestationDiagnostic(
+  diagnostic: Extract<SemanticDiagnostic, { kind: "stale_attestation" }>
+): string {
+  return [
+    "warning: stale attestation",
+    "",
+    `attest ${diagnostic.attestationKind} for ${diagnostic.path} is unchanged from the base model, so it no longer satisfies coverage or bindings.`,
+    "Remove it with `shp attest prune`; git history keeps the decision.",
     formatCausedBy(diagnostic.causedBy)
   ].join("\n");
 }

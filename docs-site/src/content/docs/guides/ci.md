@@ -34,13 +34,22 @@ jobs:
           else
             touch changed.txt
           fi
-      - run: shp check --changed-files changed.txt
+      - name: Shape check
+        env:
+          BASE_REF: ${{ github.base_ref }}
+        run: |
+          if [ -n "$BASE_REF" ]; then
+            shp check --changed-files changed.txt --base-ref "origin/$BASE_REF"
+          else
+            shp check --changed-files changed.txt
+          fi
 ```
 
 - `fetch-depth: 0` fetches the full history, including the base branch. The default shallow checkout has no `origin/<base>`, so the diff fails.
 - On a pull request, the diff against the base branch lists every file the pull request changes, including the `.shape` files that make its Shape updates and attestations current.
 - `shp fmt --check` fails on any `.shape` file that is not in canonical format. The formatter drops `//` and `/* */` comments, so a file that contains comments never passes; see the [CLI Reference](/shapelang/reference/cli/).
 - `shp check --changed-files changed.txt` is the only gate needed; it replaces separate `shp check` and `shp coverage` steps.
+- `--base-ref "origin/$BASE_REF"` compares attestations against the model at the merge base, so only attestations written for this pull request count and carried-over ones are reported as stale. It reads that history from git, which `fetch-depth: 0` provides. The flag ships in the first release after v0.9.0; with an older pinned `shp`, leave it out.
 - Design-memory freshness is off by default. To enforce it, add `--as-of YYYY-MM-DD`, which gives the same result on every run, rather than `--strict-freshness`, which uses today's date (UTC). Both flags are in the [CLI Reference](/shapelang/reference/cli/).
 
 A push has no base ref, so this job writes an empty list on push. The push run then checks conformance only, because coverage and bindings check nothing with an empty list; pull requests carry the change-set gate. To check pushes as well, diff `${{ github.event.before }}` against `HEAD`. That SHA is all zeros when the push creates the branch, and the diff then fails.

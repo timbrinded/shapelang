@@ -24,7 +24,7 @@ Flags and exit codes for both commands are in the [CLI Reference](/shapelang/ref
 
 The changed-file list is a text file, conventionally `changed.txt`, with one path per line. Paths are relative to the repository root, and `shp` takes the working directory as the repository root. Blank lines and surrounding whitespace are ignored, a leading `./` is dropped, and absolute paths are made relative to the working directory.
 
-The list must include the `.shape` files that the change edits. That is how coverage tells which `.shape` files this change touched: a reference or attestation counts only when its file is in the list.
+The list must include the `.shape` files that the change edits. That is how coverage tells which `.shape` files this change touched: a reference counts only when its file is in the list, and so does an attestation when the check has no base model.
 
 Build the list the same way locally and in CI: from a diff against the base branch. A diff of commits misses uncommitted and untracked files, so a local run adds them:
 
@@ -78,7 +78,7 @@ implementation AuditStoreImpl {
 | --- | --- |
 | `paths { ... }` | Globs matched against each whole path in the changed-file list. `*` matches within one path segment, `**` matches across segments, and `?` matches one character. There is no brace or bracket expansion, so `src/**/*.{ts,tsx}` matches neither `.ts` nor `.tsx` files; write one glob per extension. |
 | `conforms_to` | The component that the paths implement. The checker only verifies that the name resolves (otherwise `error: unknown component`); coverage never reads it. |
-| `on_change require shape_update` | Turns on coverage for the paths. Any other value parses but is ignored, so a typo such as `shape_updates` silently disables coverage. |
+| `on_change require shape_update` | Turns on coverage for the paths. `shape_update` is the only supported value; any other, such as the typo `shape_updates`, fails the check with `error: invalid implementation` instead of silently disabling coverage. |
 
 A changed file is *governed* when it matches a `paths` glob of an implementation that declares `on_change require shape_update`. Changed `.shape` files are never governed, even when a glob matches them.
 
@@ -86,10 +86,10 @@ Coverage cannot see a path that no such implementation governs: that path can ch
 
 ## What counts as covered and current
 
-A `.shape` file is *current* when it is in the changed-file list, and so is every declaration in it. A changed governed file is *covered* when a current `.shape` file contains either of these:
+A `.shape` file is *current* when it is in the changed-file list. A changed governed file is *covered* when either of these exists:
 
-- **A Shape update.** A function's `source`, or the `evidence` on an entry in its `effects complete` summary, names the changed file.
-- **An attestation.** An `attest no_shape_change` has a `source` that names the changed file and a `reason` that is not empty or whitespace.
+- **A Shape update.** In a current `.shape` file, a function's `source`, or the `evidence` on an entry in its `effects complete` summary, names the changed file.
+- **A current attestation.** An `attest no_shape_change` has a `source` that names the changed file and a `reason` that is not empty or whitespace. With a base model (`--base-ref` or `--base-model`), it is current only when its kind, path, and reason are new relative to that base. Without one, it is current when its `.shape` file is current.
 
 ![Coverage decision for one changed file: an ungoverned or .shape file needs nothing, and a governed file passes only with a current source or evidence reference or a current no_shape_change attestation, otherwise coverage fails.](../../../assets/diagrams/coverage-decision.svg)
 
@@ -100,12 +100,20 @@ Matching compares exact paths after dropping any `#anchor` and any `:line` or `:
 - Functions in generated-AST modules do not count. See [Generate Drafts from Source](/shapelang/guides/ast-drafts/).
 - Other references do not count: `evidence` and `observed` lines in design memory (`rationale`, `memory`, `reevaluation`), and the `source` of an `effect candidate`.
 
-Currency is per file, and the checker does not know which declarations were written for this change. Every reference and attestation in a `.shape` file that is in the list counts, including old ones. Two consequences follow:
+For Shape updates, currency is per file: the checker does not know which references were written for this change, so every reference in a `.shape` file that is in the list counts, including old ones. Two consequences follow:
 
-- A reference or attestation in a file that the change does not touch never covers the change, however well it matches.
-- An old reference or attestation in a file that the change does touch covers its path again. If a change adds an attestation to `shape/audit.shape` for `src/audit/reporting.ts`, the existing `source ts("src/audit/store.ts#appendEvent")` also covers any change to `src/audit/store.ts` in the same change set.
+- A reference in a file that the change does not touch never covers the change, however well it matches.
+- An old reference in a file that the change does touch covers its path again. If a change adds an attestation to `shape/audit.shape` for `src/audit/reporting.ts`, the existing `source ts("src/audit/store.ts#appendEvent")` also covers any change to `src/audit/store.ts` in the same change set.
 
-Reviewers therefore need to check which references and attestations in a touched `.shape` file still describe the change.
+Reviewers therefore need to check which references in a touched `.shape` file still describe the change.
+
+Attestations can be held to the change itself. Give the check the commit the changed-file list was diffed against:
+
+```bash
+shp check --changed-files changed.txt --base-ref origin/main
+```
+
+`--base-ref` reads the Shape model at the merge base of `origin/main` and `HEAD` from git, and an attestation counts only when no attestation with the same kind, path, and reason exists there. One carried over unchanged from an earlier change does not count, even if its file was edited for another reason, and the check reports it as a `stale attestation` warning. Without a base, attestations follow the per-file rule too, so an unrelated edit to their file revives every attestation in it; pass a base in CI.
 
 Coverage verifies co-change, not fidelity. It confirms that a current `.shape` file names each changed governed file. It does not check that the claims describe what the code does; that judgement belongs to the reviewer, optionally helped by the [Claude review job](/shapelang/guides/ci/#claude-contract-review-optional).
 
@@ -161,7 +169,7 @@ attest no_shape_change {
 
 With `shape/audit.shape` and `src/audit/reporting.ts` in `changed.txt`, `shp check --changed-files changed.txt` prints `Shape check passed.`
 
-An attestation declares exactly one `source` and one `reason`, so use one attestation per changed file. Use `no_shape_change` only when the contract is truly unchanged: coverage accepts the attestation whether or not its reason is true, so it can hide real model drift from everyone but the reviewer. An attestation never waives a `forbid final`; nothing does. See the [Effect Model](/shapelang/concepts/effect-model/).
+An attestation declares exactly one `source` and one `reason`, so use one attestation per changed file. Write it for this change: with a base model, an older attestation for the same path does not count, so give the new one its own reason and delete the stale one. Use `no_shape_change` only when the contract is truly unchanged: coverage accepts the attestation whether or not its reason is true, so it can hide real model drift from everyone but the reviewer. An attestation never waives a `forbid final`; nothing does. See the [Effect Model](/shapelang/concepts/effect-model/).
 
 ### The effects are not known yet
 
@@ -239,7 +247,7 @@ binding AuditDocs {
 }
 ```
 
-A changed path that matches a `when_changed` glob is a trigger path, and it triggers the binding. One changed path that matches any `require_changed` glob then satisfies the whole binding. Otherwise, each trigger path needs a current attestation of a kind that the binding lists in `allow attest`, with the same exact-path and non-empty-reason rules as coverage. A binding with no `allow attest` line has no attestation escape. Unlike coverage, bindings do not skip `.shape` files, so a `when_changed` glob can name model files.
+A changed path that matches a `when_changed` glob is a trigger path, and it triggers the binding. One changed path that matches any `require_changed` glob then satisfies the whole binding. Otherwise, each trigger path needs a current attestation of a kind that the binding lists in `allow attest`, with the same exact-path, non-empty-reason, and currency rules as coverage. A binding with no `allow attest` line has no attestation escape. Unlike coverage, bindings do not skip `.shape` files, so a `when_changed` glob can name model files.
 
 With this binding in `shape/audit.shape`, the `exportEvents` update above now fails with exit code `1`, because `docs/audit.md` did not change:
 
@@ -265,6 +273,18 @@ attest docs_not_needed {
 ```
 
 The attestation kind is any identifier, and `docs_not_needed` is a convention: a binding accepts exactly the kinds its `allow attest` lines name, and coverage accepts only `no_shape_change`. Only `shp check --changed-files` enforces bindings; `shp coverage` does not.
+
+With a base model, a `.shape` file that changed only in its attestations does not trigger a binding: its text with attestations removed matches the base version, so no model claim changed. Adding or deleting attestations therefore never demands a docs change.
+
+## Prune stale attestations
+
+Once a change merges, its attestations have done their job. Later checks with a base model report them as `stale attestation` warnings, and `shp attest prune` deletes them:
+
+```bash
+shp attest prune --base-ref origin/main
+```
+
+Prune removes each attestation whose kind, path, and reason already exist in the base model, including one added inside a `change` block, together with the whitespace that separates it from its neighbour. It keeps every other byte of the file and the attestations you wrote for the current change. Git history keeps every removed decision. Running it in any change that touches the model keeps attestations from piling up. Flags are in the [CLI Reference](/shapelang/reference/cli/#shp-attest-prune).
 
 ## Guarded targets
 

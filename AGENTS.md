@@ -94,7 +94,15 @@ The TypeScript project is strict (`strict`, `noUncheckedIndexedAccess`,
   Shape update: inspect `shape/*.shape` and update the relevant
   component/function/effect/relation claims. Add a narrow current
   `attest no_shape_change` only when the architecture contract truly did not
-  change.
+  change. `shape:ci` compares attestations against the base commit in
+  `changed-base.txt`, so only an attestation written for this change counts; one
+  carried over from an earlier change is a stale warning.
+- In every PR that touches `shape/`, run `bun run changed-files` and then
+  `bun shp attest prune --base-ref "$(cat changed-base.txt)"` to delete stale
+  attestations against the same base `shape:ci` uses. On a branch stacked on
+  another branch, run `BASE_REF=<parent branch> bun run changed-files` so the
+  base is the parent rather than `master`. Pruning never triggers docs
+  bindings, and git history keeps the decisions.
 - Use the existing files under `shape/` as the best local guide for Shape syntax,
   modeling style, source/evidence references, relations, memory, and
   reevaluations before inventing new patterns.
@@ -114,9 +122,10 @@ The TypeScript project is strict (`strict`, `noUncheckedIndexedAccess`,
 - Before editing, find the change type in the "What to update per change type"
   table in `CONTRIBUTING.md` and update every file in its row, including the
   Shape model file and the docs binding it names.
-- `DocsSource` in `shape/delivery.shape` governs every `.md` page under
-  `docs-site/src/content/docs/`, so a page edit needs a Shape update or a narrow
-  current `attest no_shape_change`.
+- Docs pages under `docs-site/src/content/docs/` map to `DocsContent` in
+  `shape/delivery.shape`, which has no `on_change`, so a page edit needs no
+  Shape update or attestation. Renaming or deleting a page the model cites
+  fails `shape:ci` with `missing cited path` until the citation is updated.
 - Docs changes must keep every `shape` fence parseable. The docs verifier parses
   every unindented `shape` fence under `docs-site/src/content/docs` unless its
   info string contains `no-verify`; use `shape no-verify` only for intentional

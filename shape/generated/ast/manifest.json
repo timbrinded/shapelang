@@ -626,6 +626,13 @@
       ]
     },
     {
+      "module": "shape.generated.ast.packages.shp_checker.src.checker.attestation_text",
+      "path": "shape/generated/ast/packages/shp-checker/src/checker/attestation-text.shape",
+      "sources": [
+        "packages/shp-checker/src/checker/attestation-text.ts"
+      ]
+    },
+    {
       "module": "shape.generated.ast.packages.shp_checker.src.checker.change_planning_test",
       "path": "shape/generated/ast/packages/shp-checker/src/checker/change-planning.test.shape",
       "sources": [
@@ -822,6 +829,13 @@
       ]
     },
     {
+      "module": "shape.generated.ast.packages.shp_checker.src.checker.rules.generated_paths",
+      "path": "shape/generated/ast/packages/shp-checker/src/checker/rules/paths.shape",
+      "sources": [
+        "packages/shp-checker/src/checker/rules/paths.ts"
+      ]
+    },
+    {
       "module": "shape.generated.ast.packages.shp_checker.src.checker.rules.relations",
       "path": "shape/generated/ast/packages/shp-checker/src/checker/rules/relations.shape",
       "sources": [
@@ -1011,6 +1025,13 @@
       ]
     },
     {
+      "module": "shape.generated.ast.packages.shp_cli.src.base_model",
+      "path": "shape/generated/ast/packages/shp-cli/src/base-model.shape",
+      "sources": [
+        "packages/shp-cli/src/base-model.ts"
+      ]
+    },
+    {
       "module": "shape.generated.ast.packages.shp_cli.src.check_runner",
       "path": "shape/generated/ast/packages/shp-cli/src/check-runner.shape",
       "sources": [
@@ -1050,6 +1071,20 @@
       "path": "shape/generated/ast/packages/shp-cli/src/commands/ast/impl.shape",
       "sources": [
         "packages/shp-cli/src/commands/ast/impl.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_cli.src.commands.generated_attest.command",
+      "path": "shape/generated/ast/packages/shp-cli/src/commands/attest/command.shape",
+      "sources": [
+        "packages/shp-cli/src/commands/attest/command.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_cli.src.commands.generated_attest.impl",
+      "path": "shape/generated/ast/packages/shp-cli/src/commands/attest/impl.shape",
+      "sources": [
+        "packages/shp-cli/src/commands/attest/impl.ts"
       ]
     },
     {
@@ -1225,6 +1260,13 @@
       "path": "shape/generated/ast/packages/shp-cli/src/freshness.shape",
       "sources": [
         "packages/shp-cli/src/freshness.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_cli.src.git",
+      "path": "shape/generated/ast/packages/shp-cli/src/git.shape",
+      "sources": [
+        "packages/shp-cli/src/git.ts"
       ]
     },
     {

@@ -6,6 +6,11 @@ trait GeneratedAstAnchor {
 trait GeneratedCandidate {
 }
 
+resource CoverageModuleAttestationKeyAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/rules/coverage.ts#attestationKey")
+  fingerprint ast.semantic_subtree_v1("sha256:ef32402741edb88ad8422c370d954e1ab8c8875fa425c86ee95c272fe5380b09")
+}
+
 resource CoverageModuleChangedFileContextAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/checker/rules/coverage.ts#changedFileContext")
   fingerprint ast.semantic_subtree_v1("sha256:d2cfe7c6c7943ce175b3aa542fea4af39135078d3293f38ae6cf7db5c0a9962d")
@@ -13,17 +18,22 @@ resource CoverageModuleChangedFileContextAstAnchor : GeneratedAstAnchor {
 
 resource CoverageModuleCheckBindingsAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/checker/rules/coverage.ts#checkBindings")
-  fingerprint ast.semantic_subtree_v1("sha256:94d6bafe4c826bccefcebde9293a44e0af4357fcc07d4fd96ddea921097ff03e")
+  fingerprint ast.semantic_subtree_v1("sha256:f423a0887f5c09960b8ec69df0b58a2286da1fa04868383e20de3c0a60729c6d")
 }
 
 resource CoverageModuleCheckCoverageAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/checker/rules/coverage.ts#checkCoverage")
-  fingerprint ast.semantic_subtree_v1("sha256:4028ebf39a6e9df59dc134712ba78d65901b5a24979b465e1fb17db54686ea5b")
+  fingerprint ast.semantic_subtree_v1("sha256:698dfd370443c9df2fc6b60c60c0e8988d19924810018e55b7b3aac969ce97f1")
+}
+
+resource CoverageModuleCheckStaleAttestationsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/rules/coverage.ts#checkStaleAttestations")
+  fingerprint ast.semantic_subtree_v1("sha256:d490a02ecafc7c17983c64b513c5e88e57cd92fb28a3a9711015377a2109ee63")
 }
 
 resource CoverageModuleCurrentAttestationExistsAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/checker/rules/coverage.ts#currentAttestationExists")
-  fingerprint ast.semantic_subtree_v1("sha256:abdf721a16db625df51a1e0901930887e52d3dbbce9ee48ffef8a25f11f3c110")
+  fingerprint ast.semantic_subtree_v1("sha256:031f52b5e21c9bf7ab06dadcb2d2ad4fbf5eeee132f2ee669ec6397f4cc93a18")
 }
 
 resource CoverageModuleCurrentShapeUpdateExistsAstAnchor : GeneratedAstAnchor {
@@ -31,9 +41,14 @@ resource CoverageModuleCurrentShapeUpdateExistsAstAnchor : GeneratedAstAnchor {
   fingerprint ast.semantic_subtree_v1("sha256:23236c7a5c45eaa8f4c0505d9e840562c4da3dd43ea843256bf73c3eb62c7bc5")
 }
 
+resource CoverageModuleIsAttestationOnlyChangeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/rules/coverage.ts#isAttestationOnlyChange")
+  fingerprint ast.semantic_subtree_v1("sha256:07fc0eb0d76b7c64c7e84b9276b3ef144f1f53a942b710c34f25f7583e637759")
+}
+
 resource CoverageModuleIsCurrentAttestationAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/checker/rules/coverage.ts#isCurrentAttestation")
-  fingerprint ast.semantic_subtree_v1("sha256:f71b26a7303bdc6c7b716d65cfe577277fc0c0370e5dc0bc94cf6d59c28ed26f")
+  fingerprint ast.semantic_subtree_v1("sha256:3423e404a227edc9850986ab343142acda1d00fbc530b8cd76af411832d5c0b8")
 }
 
 resource CoverageModuleProvenanceFileChangedAstAnchor : GeneratedAstAnchor {
@@ -42,6 +57,9 @@ resource CoverageModuleProvenanceFileChangedAstAnchor : GeneratedAstAnchor {
 }
 
 component CoverageModule : GeneratedCandidate {
+  fn attestationKey
+    source ts("packages/shp-checker/src/checker/rules/coverage.ts#attestationKey")
+    effects unknown
   fn changedFileContext
     source ts("packages/shp-checker/src/checker/rules/coverage.ts#changedFileContext")
     effects unknown
@@ -51,11 +69,17 @@ component CoverageModule : GeneratedCandidate {
   fn checkCoverage
     source ts("packages/shp-checker/src/checker/rules/coverage.ts#checkCoverage")
     effects unknown
+  fn checkStaleAttestations
+    source ts("packages/shp-checker/src/checker/rules/coverage.ts#checkStaleAttestations")
+    effects unknown
   fn currentAttestationExists
     source ts("packages/shp-checker/src/checker/rules/coverage.ts#currentAttestationExists")
     effects unknown
   fn currentShapeUpdateExists
     source ts("packages/shp-checker/src/checker/rules/coverage.ts#currentShapeUpdateExists")
+    effects unknown
+  fn isAttestationOnlyChange
+    source ts("packages/shp-checker/src/checker/rules/coverage.ts#isAttestationOnlyChange")
     effects unknown
   fn isCurrentAttestation
     source ts("packages/shp-checker/src/checker/rules/coverage.ts#isCurrentAttestation")
@@ -63,6 +87,14 @@ component CoverageModule : GeneratedCandidate {
   fn provenanceFileChanged
     source ts("packages/shp-checker/src/checker/rules/coverage.ts#provenanceFileChanged")
     effects unknown
+}
+
+relation CoverageModuleAttestationKeyGeneratedFromCoverageModuleAttestationKeyAstAnchor {
+  kind generated_from
+  connects CoverageModule -> CoverageModuleAttestationKeyAstAnchor
+  roles { CoverageModule as generated, CoverageModuleAttestationKeyAstAnchor as syntax }
+  expects CoverageModuleAttestationKeyAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ef32402741edb88ad8422c370d954e1ab8c8875fa425c86ee95c272fe5380b09")
+  summary "fn CoverageModule.attestationKey generated from typescript function_declaration at packages/shp-checker/src/checker/rules/coverage.ts#attestationKey."
 }
 
 relation CoverageModuleChangedFileContextGeneratedFromCoverageModuleChangedFileContextAstAnchor {
@@ -77,7 +109,7 @@ relation CoverageModuleCheckBindingsGeneratedFromCoverageModuleCheckBindingsAstA
   kind generated_from
   connects CoverageModule -> CoverageModuleCheckBindingsAstAnchor
   roles { CoverageModule as generated, CoverageModuleCheckBindingsAstAnchor as syntax }
-  expects CoverageModuleCheckBindingsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:94d6bafe4c826bccefcebde9293a44e0af4357fcc07d4fd96ddea921097ff03e")
+  expects CoverageModuleCheckBindingsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f423a0887f5c09960b8ec69df0b58a2286da1fa04868383e20de3c0a60729c6d")
   summary "fn CoverageModule.checkBindings generated from typescript function_declaration at packages/shp-checker/src/checker/rules/coverage.ts#checkBindings."
 }
 
@@ -85,15 +117,23 @@ relation CoverageModuleCheckCoverageGeneratedFromCoverageModuleCheckCoverageAstA
   kind generated_from
   connects CoverageModule -> CoverageModuleCheckCoverageAstAnchor
   roles { CoverageModule as generated, CoverageModuleCheckCoverageAstAnchor as syntax }
-  expects CoverageModuleCheckCoverageAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4028ebf39a6e9df59dc134712ba78d65901b5a24979b465e1fb17db54686ea5b")
+  expects CoverageModuleCheckCoverageAstAnchor fingerprint ast.semantic_subtree_v1("sha256:698dfd370443c9df2fc6b60c60c0e8988d19924810018e55b7b3aac969ce97f1")
   summary "fn CoverageModule.checkCoverage generated from typescript function_declaration at packages/shp-checker/src/checker/rules/coverage.ts#checkCoverage."
+}
+
+relation CoverageModuleCheckStaleAttestationsGeneratedFromCoverageModuleCheckStaleAttestationsAstAnchor {
+  kind generated_from
+  connects CoverageModule -> CoverageModuleCheckStaleAttestationsAstAnchor
+  roles { CoverageModule as generated, CoverageModuleCheckStaleAttestationsAstAnchor as syntax }
+  expects CoverageModuleCheckStaleAttestationsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d490a02ecafc7c17983c64b513c5e88e57cd92fb28a3a9711015377a2109ee63")
+  summary "fn CoverageModule.checkStaleAttestations generated from typescript function_declaration at packages/shp-checker/src/checker/rules/coverage.ts#checkStaleAttestations."
 }
 
 relation CoverageModuleCurrentAttestationExistsGeneratedFromCoverageModuleCurrentAttestationExistsAstAnchor {
   kind generated_from
   connects CoverageModule -> CoverageModuleCurrentAttestationExistsAstAnchor
   roles { CoverageModule as generated, CoverageModuleCurrentAttestationExistsAstAnchor as syntax }
-  expects CoverageModuleCurrentAttestationExistsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:abdf721a16db625df51a1e0901930887e52d3dbbce9ee48ffef8a25f11f3c110")
+  expects CoverageModuleCurrentAttestationExistsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:031f52b5e21c9bf7ab06dadcb2d2ad4fbf5eeee132f2ee669ec6397f4cc93a18")
   summary "fn CoverageModule.currentAttestationExists generated from typescript function_declaration at packages/shp-checker/src/checker/rules/coverage.ts#currentAttestationExists."
 }
 
@@ -105,11 +145,19 @@ relation CoverageModuleCurrentShapeUpdateExistsGeneratedFromCoverageModuleCurren
   summary "fn CoverageModule.currentShapeUpdateExists generated from typescript function_declaration at packages/shp-checker/src/checker/rules/coverage.ts#currentShapeUpdateExists."
 }
 
+relation CoverageModuleIsAttestationOnlyChangeGeneratedFromCoverageModuleIsAttestationOnlyChangeAstAnchor {
+  kind generated_from
+  connects CoverageModule -> CoverageModuleIsAttestationOnlyChangeAstAnchor
+  roles { CoverageModule as generated, CoverageModuleIsAttestationOnlyChangeAstAnchor as syntax }
+  expects CoverageModuleIsAttestationOnlyChangeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:07fc0eb0d76b7c64c7e84b9276b3ef144f1f53a942b710c34f25f7583e637759")
+  summary "fn CoverageModule.isAttestationOnlyChange generated from typescript function_declaration at packages/shp-checker/src/checker/rules/coverage.ts#isAttestationOnlyChange."
+}
+
 relation CoverageModuleIsCurrentAttestationGeneratedFromCoverageModuleIsCurrentAttestationAstAnchor {
   kind generated_from
   connects CoverageModule -> CoverageModuleIsCurrentAttestationAstAnchor
   roles { CoverageModule as generated, CoverageModuleIsCurrentAttestationAstAnchor as syntax }
-  expects CoverageModuleIsCurrentAttestationAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f71b26a7303bdc6c7b716d65cfe577277fc0c0370e5dc0bc94cf6d59c28ed26f")
+  expects CoverageModuleIsCurrentAttestationAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3423e404a227edc9850986ab343142acda1d00fbc530b8cd76af411832d5c0b8")
   summary "fn CoverageModule.isCurrentAttestation generated from typescript function_declaration at packages/shp-checker/src/checker/rules/coverage.ts#isCurrentAttestation."
 }
 

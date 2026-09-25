@@ -16,6 +16,26 @@ export const fileArguments = (
   minimum: 0
 });
 
+/** `--base-ref` / `--base-model`, shared by `check` and `coverage`. */
+export const baseModelFlags = {
+  baseRef: {
+    kind: "parsed",
+    parse: (input: string) => input,
+    optional: true,
+    brief:
+      "Compare attestations against the Shape model at the merge base of this git revision and HEAD.",
+    placeholder: "REF"
+  },
+  baseModel: {
+    kind: "parsed",
+    parse: (input: string) => input,
+    optional: true,
+    brief:
+      "Compare attestations against a copy of the base model in this directory, kept at repository paths.",
+    placeholder: "DIR"
+  }
+} as const;
+
 export const requiredStringArguments = (
   minimum: number,
   brief: string,

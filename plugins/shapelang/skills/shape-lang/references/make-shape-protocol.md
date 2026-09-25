@@ -113,9 +113,11 @@ attest no_shape_change {
 
 Smallest fix: update the global Shape model for the effect, or make the attestation specific enough to explain why no Shape claim changed.
 
+An attestation is evidence for one change. When the CLI checks against a base (`check --base-ref`), an attestation left over from an earlier change no longer counts and is reported as stale. Write a new one for the current change, and delete stale ones with `attest prune --base-ref <base>`.
+
 ## Review Checklist
 
-- Does every governed changed file have a global model update or narrow attestation?
+- Does every governed changed file have a global model update or narrow attestation written for this change?
 - Are effects honest, including uncertainty?
 - Are grants present only where the component is actually allowed to emit the effect?
 - Do final forbidden effects still fail?

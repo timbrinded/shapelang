@@ -13,6 +13,7 @@ In the index, `check` stands for every command that runs the semantic checks: `s
 | [`error: unknown <kind>`](#error-unknown-kind) | `unknown_name` | `check` | [Parse and names](#parse-and-names) |
 | [`error: ambiguous <kind>`](#error-ambiguous-kind) | `ambiguous_name` | `check` | [Parse and names](#parse-and-names) |
 | [`error: duplicate <kind>`](#error-duplicate-kind) | `duplicate_declaration` | `check` | [Parse and names](#parse-and-names) |
+| [`error: invalid implementation`](#error-invalid-implementation) | `invalid_implementation` | `check` | [Parse and names](#parse-and-names) |
 | [`error: forbidden effect`](#error-forbidden-effect) | `final_forbidden_effect` | `check` | [Effects and grants](#effects-and-grants) |
 | [`error: missing grant`](#error-missing-grant) | `missing_grant` | `check` | [Effects and grants](#effects-and-grants) |
 | [`error: unknown effects`](#error-unknown-effects) | `unknown_effects` | `check`; a warning under `--allow-unknown-effects` | [Effects and grants](#effects-and-grants) |
@@ -28,6 +29,8 @@ In the index, `check` stands for every command that runs the semantic checks: `s
 | [`error: invalid candidate effect`](#error-invalid-candidate-effect) | `invalid_candidate_effect` | `check` | [Fingerprints and AST candidates](#fingerprints-and-ast-candidates) |
 | [`error: governed source changed without current Shape update`](#error-governed-source-changed-without-current-shape-update) | `missing_shape_update` | `shp check --changed-files`, `shp coverage` | [Change sets](#change-sets) |
 | [`error: bound docs change missing`](#error-bound-docs-change-missing) | `missing_bound_docs_change` | `shp check --changed-files` | [Change sets](#change-sets) |
+| [`warning: stale attestation`](#warning-stale-attestation) | `stale_attestation` | `check` with `--base-ref` or `--base-model` | [Change sets](#change-sets) |
+| [`error: missing cited path`](#error-missing-cited-path) | `missing_cited_path` | `shp check --check-cited-paths` | [Change sets](#change-sets) |
 | [`error: missing required context`](#error-missing-required-context) | `missing_required_context` | `check` | [Design memory](#design-memory) |
 | [`error: missing required description`](#error-missing-required-description) | `missing_required_description` | `check` | [Design memory](#design-memory) |
 | [`error: invalid context target`](#error-invalid-context-target) | `invalid_context_target` | `check` | [Design memory](#design-memory) |
@@ -98,7 +101,7 @@ The graph rules use the same layout with a different body: the rule, one line pe
 
 **Parse errors.** When any file fails to parse or cannot be read, `shp check` reports only the parse errors and exits `2` without running a semantic check. Parse errors are not sorted; they appear in input-file order.
 
-**Streams.** Failing output goes to stderr with exit `1`. When the only diagnostics are `warning: unknown effects` under `--allow-unknown-effects`, they go to stdout, followed by `Shape check passed with warnings.`, with exit `0`. The full exit-code contract is in [CLI Reference](/shapelang/reference/cli/#exit-codes).
+**Streams.** Failing output goes to stderr with exit `1`. When the only diagnostics are warnings, `warning: unknown effects` under `--allow-unknown-effects` or `warning: stale attestation`, they go to stdout, followed by `Shape check passed with warnings.`, with exit `0`. The full exit-code contract is in [CLI Reference](/shapelang/reference/cli/#exit-codes).
 
 `shp analyze` warnings and `shp author` critic advisories are not checker diagnostics. They are advisory hints from separate tools and are not listed here; see [Analyzer Hints](/shapelang/guides/analyzer/) and [Author Updates with an Agent](/shapelang/guides/authoring/).
 
@@ -195,6 +198,23 @@ caused by:
 **Cause.** One module declares the same name twice for one kind. `<kind>` is `resource`, `trait`, `component`, `relation`, `candidate_effect`, `binding`, `rationale`, `memory`, or `reevaluation`. The first declaration, in file order and then declaration order, is kept and the later one is ignored, so diagnostics that only the later one would cause do not appear. Equal names in different modules are not duplicates, and a trait with a prelude trait's name shadows the prelude trait instead. Duplicate `implementation`, `rule`, and `attest` declarations are not reported, and a second `fn` with the same name in one component silently replaces the first.
 
 **Fix.** Remove or rename one declaration.
+
+### `error: invalid implementation`
+
+Kind `invalid_implementation` · emitted by `check`
+
+```text
+error: invalid implementation
+
+implementation AuditStoreImpl is invalid: on_change require shape_delta is not a supported requirement; expected shape_update.
+
+caused by:
+  - audit.shape: implementation AuditStoreImpl on_change require shape_delta
+```
+
+**Cause.** An `implementation` declares an `on_change require` value other than `shape_update`, the only supported requirement. Coverage acts only on `shape_update`, so an unknown value, such as a typo or the pre-rename spelling `shape_delta`, would otherwise leave the implementation's paths silently ungoverned.
+
+**Fix.** Replace the value with `shape_update`, or remove the `on_change` member if the paths should be mapped to a component without a coverage obligation.
 
 ## Effects and grants
 
@@ -476,7 +496,7 @@ caused by:
 
 ## Change sets
 
-These diagnostics need a changed-file list. What counts as a current update, attestation, or bound change is defined in [Keep the Model Current](/shapelang/guides/keep-model-current/).
+These diagnostics compare the model with a change. The first two need a changed-file list, `stale attestation` needs a base model, and `missing cited path` needs the repository's file list. What counts as a current update, attestation, or bound change is defined in [Keep the Model Current](/shapelang/guides/keep-model-current/).
 
 ### `error: governed source changed without current Shape update`
 
@@ -495,12 +515,12 @@ caused by:
   - shape/audit.shape: implementation AuditStoreImpl path src/audit/**/*.ts
 ```
 
-**Cause.** A changed path that does not end in `.shape` matches a `paths` glob of an `implementation` with `on_change require shape_update`, and nothing current covers it. `Matched path:` is the first matching glob. The path counts as covered only when a `.shape` file that is itself in the changed-file list contains either:
+**Cause.** A changed path that does not end in `.shape` matches a `paths` glob of an `implementation` with `on_change require shape_update`, and nothing current covers it. `Matched path:` is the first matching glob. The path counts as covered only when either exists:
 
-- a function `source`, or an effect `evidence`, naming exactly that path, ignoring any `#anchor` and `:line` or `:line-line` suffix, in a module that is not generated AST; or
-- `attest no_shape_change` whose `source` names exactly that path and whose `reason` is not empty.
+- a function `source`, or an effect `evidence`, naming exactly that path, ignoring any `#anchor` and `:line` or `:line-line` suffix, in a `.shape` file that is itself in the changed-file list and whose module is not generated AST; or
+- a current `attest no_shape_change` whose `source` names exactly that path and whose `reason` is not empty. With a base model (`--base-ref` or `--base-model`), current means its kind, path, and reason are new relative to the base; without one, it means its `.shape` file is in the changed-file list.
 
-**Fix.** Update the claim for that path in a `.shape` file included in the change, or, when the architecture did not change, add a narrow `attest no_shape_change` for it.
+**Fix.** Update the claim for that path in a `.shape` file included in the change, or, when the architecture did not change, add a narrow `attest no_shape_change` for it written for this change.
 
 ### `error: bound docs change missing`
 
@@ -519,7 +539,43 @@ caused by:
 
 **Cause.** A changed path matches a `when_changed` glob of a `binding`, no changed path matches any of its `require_changed` globs, and the triggering path has no current attestation of a kind the binding lists in `allow attest`. One diagnostic is emitted per triggering path. Without `allow attest`, the `Required:` line ends after the path list; with several kinds, they are joined with `or`.
 
-**Fix.** Change one of the required paths in the same change set, or add an attestation of an allowed kind whose `source` is the triggering path, with a non-empty `reason`, in a `.shape` file that is also in the change.
+**Fix.** Change one of the required paths in the same change set, or add a current attestation of an allowed kind whose `source` is the triggering path, with a non-empty `reason`, as described for `missing_shape_update` above.
+
+### `warning: stale attestation`
+
+Kind `stale_attestation` · emitted by `check` when given `--base-ref` or `--base-model`; never fails the check
+
+```text
+warning: stale attestation
+
+attest no_shape_change for src/audit/reporting.ts is unchanged from the base model, so it no longer satisfies coverage or bindings.
+Remove it with `shp attest prune`; git history keeps the decision.
+
+caused by:
+  - shape/audit.shape: attest no_shape_change for src/audit/reporting.ts
+```
+
+**Cause.** An attestation with the same kind, path, and reason already exists in the base model. It was carried over from an earlier change, so it no longer satisfies coverage or bindings.
+
+**Fix.** Run [`shp attest prune`](/shapelang/reference/cli/#shp-attest-prune) with the same `--base-ref` or `--base-model` to delete every stale attestation at once. If its path changed again in this change set and the contract is still unchanged, write a new attestation with a reason for this change.
+
+### `error: missing cited path`
+
+Kind `missing_cited_path` · emitted by `shp check --check-cited-paths`
+
+```text
+error: missing cited path
+
+docs-site/src/content/docs/guides/renamed-away.md is cited by the model but is not in the repository.
+Update the citation to the file's new path, or remove it if the file is gone.
+
+caused by:
+  - shape/docs.shape: effect DocsSite.verifyDocs emits Read<DocsContent>
+```
+
+**Cause.** A `source`, `evidence`, or `observed` path cited by a function (generated or authored), candidate effect, rationale, memory, or reevaluation is not a file in the repository, usually because the file was renamed or deleted without updating the model. `caused by` names every declaration that cites the path. Attestation sources are not checked, since attesting a deletion names a removed file.
+
+**Fix.** Point the citation at the file's new path, or remove the citation if the file is gone.
 
 ## Design memory
 

@@ -1,5 +1,6 @@
 import type {
   AttestationInfo,
+  BaseModel,
   ChangedFileContext,
   Model,
   Provenance,
@@ -8,10 +9,34 @@ import type {
 import { globMatches, normalizeRepoPath } from "../globs.ts";
 import { describeProvenance } from "../provenance.ts";
 
+/**
+ * Identity used to compare an attestation against the base model. The reason is
+ * part of the key so a freshly written decision for the same path counts, while
+ * an attestation carried over unchanged from the base does not.
+ */
+export function attestationKey(
+  attestation: Pick<AttestationInfo, "kind" | "path" | "reason">
+): string {
+  return JSON.stringify([attestation.kind, attestation.path, attestation.reason]);
+}
+
+export function checkStaleAttestations(model: Model, base: BaseModel): SemanticDiagnostic[] {
+  return model.attestations
+    .filter((attestation) => base.attestationKeys.has(attestationKey(attestation)))
+    .map((attestation) => ({
+      kind: "stale_attestation",
+      attestationKind: attestation.kind,
+      path: attestation.path,
+      filePath: attestation.provenance.filePath,
+      causedBy: [describeProvenance(attestation.provenance)]
+    }));
+}
+
 export function checkCoverage(
   model: Model,
   changedFiles: string[],
-  repoRoot: string
+  repoRoot: string,
+  base?: BaseModel
 ): SemanticDiagnostic[] {
   if (changedFiles.length === 0) {
     return [];
@@ -48,7 +73,8 @@ export function checkCoverage(
           changedFile,
           changed.set,
           noShapeChangeAttestations,
-          repoRoot
+          repoRoot,
+          base
         )
       ) {
         continue;
@@ -99,25 +125,35 @@ export function currentAttestationExists(
   changedFile: string,
   changedSet: Set<string>,
   allowedKinds: ReadonlySet<string>,
-  repoRoot: string
+  repoRoot: string,
+  base?: BaseModel
 ): boolean {
   return model.attestations.some((attestation) =>
-    isCurrentAttestation(attestation, changedFile, changedSet, allowedKinds, repoRoot)
+    isCurrentAttestation(attestation, changedFile, changedSet, allowedKinds, repoRoot, base)
   );
 }
 
+/**
+ * With a base model, an attestation is current only if it is new relative to the
+ * base. Without one, the declaring `.shape` file being in the changed-file input
+ * is the fallback; it lets any unrelated edit to that file revive every
+ * attestation declared in it.
+ */
 export function isCurrentAttestation(
   attestation: AttestationInfo,
   changedFile: string,
   changedSet: Set<string>,
   allowedKinds: ReadonlySet<string>,
-  repoRoot: string
+  repoRoot: string,
+  base?: BaseModel
 ): boolean {
   return (
     allowedKinds.has(attestation.kind) &&
     attestation.path === changedFile &&
     attestation.reason.trim().length > 0 &&
-    provenanceFileChanged(attestation.provenance, changedSet, repoRoot)
+    (base === undefined
+      ? provenanceFileChanged(attestation.provenance, changedSet, repoRoot)
+      : !base.attestationKeys.has(attestationKey(attestation)))
   );
 }
 
@@ -135,7 +171,8 @@ export function provenanceFileChanged(
 export function checkBindings(
   model: Model,
   changedFiles: string[],
-  repoRoot: string
+  repoRoot: string,
+  base?: BaseModel
 ): SemanticDiagnostic[] {
   if (changedFiles.length === 0) {
     return [];
@@ -159,7 +196,11 @@ export function checkBindings(
         continue;
       }
 
-      if (currentAttestationExists(model, changedFile, changed.set, allowedKinds, repoRoot)) {
+      if (isAttestationOnlyChange(model, changedFile, repoRoot, base)) {
+        continue;
+      }
+
+      if (currentAttestationExists(model, changedFile, changed.set, allowedKinds, repoRoot, base)) {
         continue;
       }
 
@@ -176,4 +217,25 @@ export function checkBindings(
   }
 
   return diagnostics;
+}
+
+/**
+ * A `.shape` file whose text, with attestations removed, matches its base
+ * version changed only in attestations. That is change-set evidence, not a model
+ * change, so it does not trigger bindings; pruning stale attestations therefore
+ * never demands a docs change.
+ */
+function isAttestationOnlyChange(
+  model: Model,
+  changedFile: string,
+  repoRoot: string,
+  base: BaseModel | undefined
+): boolean {
+  const baseText = base?.attestationFreeTexts.get(changedFile);
+  if (baseText === undefined) {
+    return false;
+  }
+  return [...model.attestationFreeTexts].some(
+    ([filePath, text]) => normalizeRepoPath(filePath, repoRoot) === changedFile && text === baseText
+  );
 }

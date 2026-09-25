@@ -16,6 +16,11 @@ resource IndexTestModuleCliAstJsonAstAnchor : GeneratedAstAnchor {
   fingerprint ast.semantic_subtree_v1("sha256:7119cc30e476e1a6d62217985a08cd16d36c852a3ab121050c7ca74c7f56961d")
 }
 
+resource IndexTestModuleGitAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/index.test.ts#git")
+  fingerprint ast.semantic_subtree_v1("sha256:dd9a6fb289ab38179d1175fec0c4c460d44fe03650be9ae7194723d346505709")
+}
+
 resource IndexTestModuleGuardedCriticShapeAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-cli/src/index.test.ts#guardedCriticShape")
   fingerprint ast.semantic_subtree_v1("sha256:555d0de1bc7d54f6847933c1841ff632a0391d2a50cd2885c4acf20bce539158")
@@ -42,6 +47,9 @@ component IndexTestModule : GeneratedCandidate {
     effects unknown
   fn cliAstJson
     source ts("packages/shp-cli/src/index.test.ts#cliAstJson")
+    effects unknown
+  fn git
+    source ts("packages/shp-cli/src/index.test.ts#git")
     effects unknown
   fn guardedCriticShape
     source ts("packages/shp-cli/src/index.test.ts#guardedCriticShape")
@@ -71,6 +79,14 @@ relation IndexTestModuleCliAstJsonGeneratedFromIndexTestModuleCliAstJsonAstAncho
   roles { IndexTestModule as generated, IndexTestModuleCliAstJsonAstAnchor as syntax }
   expects IndexTestModuleCliAstJsonAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7119cc30e476e1a6d62217985a08cd16d36c852a3ab121050c7ca74c7f56961d")
   summary "fn IndexTestModule.cliAstJson generated from typescript function_declaration at packages/shp-cli/src/index.test.ts#cliAstJson."
+}
+
+relation IndexTestModuleGitGeneratedFromIndexTestModuleGitAstAnchor {
+  kind generated_from
+  connects IndexTestModule -> IndexTestModuleGitAstAnchor
+  roles { IndexTestModule as generated, IndexTestModuleGitAstAnchor as syntax }
+  expects IndexTestModuleGitAstAnchor fingerprint ast.semantic_subtree_v1("sha256:dd9a6fb289ab38179d1175fec0c4c460d44fe03650be9ae7194723d346505709")
+  summary "fn IndexTestModule.git generated from typescript function_declaration at packages/shp-cli/src/index.test.ts#git."
 }
 
 relation IndexTestModuleGuardedCriticShapeGeneratedFromIndexTestModuleGuardedCriticShapeAstAnchor {

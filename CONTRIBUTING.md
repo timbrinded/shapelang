@@ -51,7 +51,7 @@ committed, and CI's Codegen job fails when regenerating them produces a diff.
 | `plugins/shapelang/.codex-plugin/plugin.json`, `plugins/shapelang/.claude-plugin/plugin.json` | Plugin manifests that publish the bundled skills to Codex and Claude Code. |
 | `.agents/plugins/marketplace.json`, `.claude-plugin/marketplace.json` | Marketplace indexes that expose the local Shape plugin. |
 | `experiments/semantic-kernel` | An isolated Rust/WebAssembly prototype. The checker, CLI, and release archives do not depend on it. |
-| `scripts/` | Repository scripts: release building, smoke tests, and canaries (`build-release-assets.sh`, `smoke-release-binary.sh`, `run-release-canaries.ts`); release gates (`check-release-metadata.ts`, `check-release-approval.ts`); `check-skills.ts`; `generate-ast-shapes.ts`; and `write-changed-files.sh`, which writes `changed.txt`. |
+| `scripts/` | Repository scripts: release building, smoke tests, and canaries (`build-release-assets.sh`, `smoke-release-binary.sh`, `run-release-canaries.ts`); release gates (`check-release-metadata.ts`, `check-release-approval.ts`); `check-skills.ts`; `generate-ast-shapes.ts`; and `write-changed-files.sh`, which writes `changed.txt` and `changed-base.txt`. |
 | `.github/` | Workflows (`shape.yml`, `docs-pages.yml`, `release-candidate.yml`, `release.yml`), the `claude-skill-review` composite action, the Claude job runner in `scripts/`, its prompts in `prompts/`, and result schemas in `shape-contract/schemas/`. |
 | `action.yml`, `install.sh`, `install.ps1` | The GitHub setup action and the installers for released `shp` binaries. |
 | `AGENTS.md` | Instructions for coding agents. `CLAUDE.md` is a symlink to it. |
@@ -77,7 +77,7 @@ bun run docs:check
 
 | Command | What it checks | CI job |
 | --- | --- | --- |
-| `bun run changed-files` | Writes `changed.txt`, the changed-file list that `shape:ci` reads. | Shape |
+| `bun run changed-files` | Writes `changed.txt`, the changed-file list that `shape:ci` reads, and `changed-base.txt`, the commit it was diffed against. | Shape |
 | `bun run format:check` | `oxfmt --check .`, then `shp fmt --check` on every `.shape` file in the repository, fixtures included, except under `./node_modules/` and `./.research/`. | Format |
 | `bun run lint` | `oxlint --deny-warnings .` | Lint |
 | `bun run skills:check` | Lints the shipped skill corpus (`scripts/check-skills.ts`). | Lint |
@@ -104,14 +104,18 @@ with two exceptions:
 ## The Shape gate
 
 `bun run shape:ci` is the Shape gate that CI runs. Run `bun run changed-files`
-first: it writes `changed.txt`, which the gate reads. The gate stops at the first
+first: it writes `changed.txt` and `changed-base.txt`, which the gate reads. The gate stops at the first
 failing step:
 
 1. `bun run ast:check` checks that the generated AST context is fresh.
 2. `bun run format:shape:check` runs the same `shp fmt --check` pass over every
    `.shape` file that `format:check` runs.
-3. `bun shp check --changed-files changed.txt` runs the semantic checks,
-   coverage, and docs bindings.
+3. `bun shp check --changed-files changed.txt --base-ref "$(cat changed-base.txt)" --check-cited-paths`
+   runs the semantic checks, coverage, and docs bindings, counts only
+   attestations written for this change, and fails if the model cites a file
+   that no longer exists. Docs pages are mapped to `DocsSite` without a coverage
+   obligation, so a docs-only edit needs no attestation; the cited-path check
+   catches a cited page being renamed or deleted.
 4. `bun shp obligations` and `bun shp memory` print open obligations and design
    memory.
 
@@ -140,11 +144,14 @@ The gate fails in two common cases:
   current attestation of a kind the binding's `allow attest` lists; every
   binding in this repository allows `docs_not_needed`.
 
-The checker treats every attestation and every `source` or `evidence` ref in a
-`.shape` file listed in `changed.txt` as current, including old ones. When you
-touch a file that holds many attestations, such as `shape/delivery.shape`, check
-which of them still apply. Functions in generated AST modules never count as a
-Shape update.
+The checker treats every `source` or `evidence` ref in a `.shape` file listed in
+`changed.txt` as current, including old ones, so when you touch a file that
+holds many refs, check which of them still apply. Attestations are held to the
+change itself: `shape:ci` compares them with the base in `changed-base.txt`, and
+one carried over from an earlier change does not count and is reported as a
+stale attestation. Delete those with
+`bun shp attest prune --base-ref "$(cat changed-base.txt)"`. Functions in
+generated AST modules never count as a Shape update.
 
 The [Keep the Model Current](https://timbrinded.github.io/shapelang/guides/keep-model-current/)
 guide explains coverage, bindings, and attestations in full.
@@ -160,7 +167,7 @@ relative to `docs-site/src/content/docs/`.
 | Grammar or parser | `packages/shp-checker/src/language/shape.langium`; the regenerated files under `language/generated`; `parser.ts`; `formatter.ts`, which rebuilds files from the AST; the highlighter in `docs-site/src/syntax/shape-language.mjs`; parser, formatter, and lowering tests. | `reference/language-syntax.md` and `inside-shape/langium-grammar.md` (the `GrammarDocs` binding); `shape/language.shape`. |
 | Checker rule | `packages/shp-checker/src/checker/rules/*.ts`, ordered in `checker/rules.ts`; lowering under `checker/lowering/`; rendered output in `checker/diagnostics.ts`; cases under `fixtures/pass` and `fixtures/fail`; `src/checker*.test.ts` and `src/behavioural/`. | The concept or reference page that teaches the behaviour; `reference/diagnostics.md` for a new or changed diagnostic; `inside-shape/rule-evaluation.md`; `shape/checker.shape`. |
 | CLI | `packages/shp-cli/src/commands/<command>/`, and `src/app.ts` for a new command; `src/index.test.ts` and `src/cli-contract.test.ts`. | `reference/cli.md` and `guides/ci.md` (a change to either satisfies the `CliDocs` binding), and `README.md` where it describes the changed behaviour. `shape/tooling.shape`. |
-| Docs | The page; for a new page, the sidebar in `docs-site/astro.config.mjs`. | `DocsSource` in `shape/delivery.shape` governs every `.md` page, so each changed, added, or deleted page path needs a Shape update or an `attest no_shape_change`. |
+| Docs | The page; for a new page, the sidebar in `docs-site/astro.config.mjs`. | Nothing in the model: `DocsContent` in `shape/delivery.shape` maps pages to `DocsSite` without `on_change`. When a renamed or deleted page is cited as `source` or `evidence`, update the citation, or `--check-cited-paths` fails. |
 | Release or install | `install.sh`, `install.ps1`, `action.yml`, `scripts/build-release-assets.sh`, `scripts/smoke-release-binary.sh`, `.github/workflows/release.yml`, and `.github/workflows/release-candidate.yml`. | The README Quick Start snippets and `learn/quickstart.md`; `shape/delivery.shape`; [RELEASING.md](RELEASING.md). |
 
 A new platform target starts in

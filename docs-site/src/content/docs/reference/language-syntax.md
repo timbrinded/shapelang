@@ -342,7 +342,7 @@ implementation AuditStoreImpl {
 | Name | Yes | `implementation Name` | Not checked for duplicates. |
 | `paths` | No | `paths { "glob" … }` | Repeatable. See [path globs](#path-globs). |
 | `conforms_to` | No | `conforms_to Component` | The component must be declared. Coverage never reads it. |
-| `on_change` | No | `on_change require shape_update` | Only `shape_update` has an effect; any other identifier parses and is ignored. |
+| `on_change` | No | `on_change require shape_update` | `shape_update` is the only supported requirement; any other identifier is rejected with `invalid implementation`, so a typo cannot silently ungovern the paths. |
 
 An implementation with `on_change require shape_update` makes its paths governed. How a changed governed path is covered is described in [Keep the Model Current](/shapelang/guides/keep-model-current/).
 
@@ -389,7 +389,7 @@ attest no_shape_change {
 }
 ```
 
-An attestation is `attest KIND { source REF reason "TEXT" }`. Both members are required, in that order, and the declaration has no name. `KIND` is any identifier: coverage accepts only `no_shape_change`, and a binding accepts the kinds its `allow attest` lists. An attestation counts only when its `source` path equals the changed path, ignoring anchor and line suffixes, its `reason` is not empty, and its own `.shape` file is in the changed-file list. An attestation never satisfies a guard. See [Keep the Model Current](/shapelang/guides/keep-model-current/).
+An attestation is `attest KIND { source REF reason "TEXT" }`. Both members are required, in that order, and the declaration has no name. `KIND` is any identifier: coverage accepts only `no_shape_change`, and a binding accepts the kinds its `allow attest` lists. An attestation counts only when its `source` path equals the changed path, ignoring anchor and line suffixes, its `reason` is not empty, and it is current: with a base model (`--base-ref` or `--base-model`), its kind, path, and reason are new relative to the base; without one, its own `.shape` file is in the changed-file list. An attestation never satisfies a guard. See [Keep the Model Current](/shapelang/guides/keep-model-current/).
 
 ### `change`
 

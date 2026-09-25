@@ -177,13 +177,3 @@ rule ExperimentalSemanticKernelIsolation {
   forbid path ShapeEditorServices -> ExperimentalSemanticKernel over calls
   forbid path ShpCli -> ExperimentalSemanticKernel over calls
 }
-
-attest no_shape_change {
-  source test("experiments/semantic-kernel/tests/kernel.rs")
-  reason "Rust unit tests exercise the modeled protocol and candidate-pin rule boundary; they add no separately callable runtime surface."
-}
-
-attest no_shape_change {
-  source test("experiments/semantic-kernel/harness/protocol.test.ts")
-  reason "TypeScript protocol parser tests exercise the modeled protocol boundary; they add no separately callable runtime surface."
-}

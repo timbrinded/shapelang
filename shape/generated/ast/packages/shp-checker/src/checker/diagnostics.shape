@@ -38,7 +38,7 @@ resource DiagnosticsModuleFormatContextTargetMismatchDiagnosticAstAnchor : Gener
 
 resource DiagnosticsModuleFormatDiagnosticAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/checker/diagnostics.ts#formatDiagnostic")
-  fingerprint ast.semantic_subtree_v1("sha256:483b0d19abbb91426624a589b21e956b51be41591a96812605c8ad3c50fec3a0")
+  fingerprint ast.semantic_subtree_v1("sha256:a3eca83b4f52276fa817d65e01fd21c6071d4d1465d09b5f3e0c169b48ffd604")
 }
 
 resource DiagnosticsModuleFormatDiagnosticsAstAnchor : GeneratedAstAnchor {
@@ -96,6 +96,11 @@ resource DiagnosticsModuleFormatInvalidContextTargetDiagnosticAstAnchor : Genera
   fingerprint ast.semantic_subtree_v1("sha256:f06ec5a50ec6ae420b07b6934cbf7bbc8618f2aa27a944c445ddd86c8cfaccf8")
 }
 
+resource DiagnosticsModuleFormatInvalidImplementationDiagnosticAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/diagnostics.ts#formatInvalidImplementationDiagnostic")
+  fingerprint ast.semantic_subtree_v1("sha256:12c5d46d1892303ca56e5a47ccf6dcb79c1b8c688d157f944dc8c99c9ca8f187")
+}
+
 resource DiagnosticsModuleFormatInvalidReevaluationDiagnosticAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/checker/diagnostics.ts#formatInvalidReevaluationDiagnostic")
   fingerprint ast.semantic_subtree_v1("sha256:98195869d323aaa3bbcce52fa26933a68da584749d6d8b4b547c866463932fc8")
@@ -126,6 +131,11 @@ resource DiagnosticsModuleFormatMissingBoundDocsChangeDiagnosticAstAnchor : Gene
   fingerprint ast.semantic_subtree_v1("sha256:3c15126a624ea9a4503ac9cf64921f5540e7bef289cc3cd9112dd91a2e3652b4")
 }
 
+resource DiagnosticsModuleFormatMissingCitedPathDiagnosticAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/diagnostics.ts#formatMissingCitedPathDiagnostic")
+  fingerprint ast.semantic_subtree_v1("sha256:cf5edb2be4d314c5fabb2aaeb73c07a3af1afd062631cee201fcff988717cbcb")
+}
+
 resource DiagnosticsModuleFormatMissingGrantDiagnosticAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/checker/diagnostics.ts#formatMissingGrantDiagnostic")
   fingerprint ast.semantic_subtree_v1("sha256:bf6466cd3626e5033153cbf96688d06a3f0ba17a731f7f3d542583768237fa53")
@@ -149,6 +159,11 @@ resource DiagnosticsModuleFormatMissingShapeUpdateDiagnosticAstAnchor : Generate
 resource DiagnosticsModuleFormatParseDiagnosticAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/checker/diagnostics.ts#formatParseDiagnostic")
   fingerprint ast.semantic_subtree_v1("sha256:4559de0c78940325cebd7a0b323939862eacf4770d5b93fbe6238adff08a51f2")
+}
+
+resource DiagnosticsModuleFormatStaleAttestationDiagnosticAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/diagnostics.ts#formatStaleAttestationDiagnostic")
+  fingerprint ast.semantic_subtree_v1("sha256:111277d76635dcda388b91e56aa9c673af24863d01bc57a451f7923d140eee6f")
 }
 
 resource DiagnosticsModuleFormatStaleMemoryDiagnosticAstAnchor : GeneratedAstAnchor {
@@ -231,6 +246,9 @@ component DiagnosticsModule : GeneratedCandidate {
   fn formatInvalidContextTargetDiagnostic
     source ts("packages/shp-checker/src/checker/diagnostics.ts#formatInvalidContextTargetDiagnostic")
     effects unknown
+  fn formatInvalidImplementationDiagnostic
+    source ts("packages/shp-checker/src/checker/diagnostics.ts#formatInvalidImplementationDiagnostic")
+    effects unknown
   fn formatInvalidReevaluationDiagnostic
     source ts("packages/shp-checker/src/checker/diagnostics.ts#formatInvalidReevaluationDiagnostic")
     effects unknown
@@ -249,6 +267,9 @@ component DiagnosticsModule : GeneratedCandidate {
   fn formatMissingBoundDocsChangeDiagnostic
     source ts("packages/shp-checker/src/checker/diagnostics.ts#formatMissingBoundDocsChangeDiagnostic")
     effects unknown
+  fn formatMissingCitedPathDiagnostic
+    source ts("packages/shp-checker/src/checker/diagnostics.ts#formatMissingCitedPathDiagnostic")
+    effects unknown
   fn formatMissingGrantDiagnostic
     source ts("packages/shp-checker/src/checker/diagnostics.ts#formatMissingGrantDiagnostic")
     effects unknown
@@ -263,6 +284,9 @@ component DiagnosticsModule : GeneratedCandidate {
     effects unknown
   fn formatParseDiagnostic
     source ts("packages/shp-checker/src/checker/diagnostics.ts#formatParseDiagnostic")
+    effects unknown
+  fn formatStaleAttestationDiagnostic
+    source ts("packages/shp-checker/src/checker/diagnostics.ts#formatStaleAttestationDiagnostic")
     effects unknown
   fn formatStaleMemoryDiagnostic
     source ts("packages/shp-checker/src/checker/diagnostics.ts#formatStaleMemoryDiagnostic")
@@ -333,7 +357,7 @@ relation DiagnosticsModuleFormatDiagnosticGeneratedFromDiagnosticsModuleFormatDi
   kind generated_from
   connects DiagnosticsModule -> DiagnosticsModuleFormatDiagnosticAstAnchor
   roles { DiagnosticsModule as generated, DiagnosticsModuleFormatDiagnosticAstAnchor as syntax }
-  expects DiagnosticsModuleFormatDiagnosticAstAnchor fingerprint ast.semantic_subtree_v1("sha256:483b0d19abbb91426624a589b21e956b51be41591a96812605c8ad3c50fec3a0")
+  expects DiagnosticsModuleFormatDiagnosticAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a3eca83b4f52276fa817d65e01fd21c6071d4d1465d09b5f3e0c169b48ffd604")
   summary "fn DiagnosticsModule.formatDiagnostic generated from typescript function_declaration at packages/shp-checker/src/checker/diagnostics.ts#formatDiagnostic."
 }
 
@@ -425,6 +449,14 @@ relation DiagnosticsModuleFormatInvalidContextTargetDiagnosticGeneratedFromDiagn
   summary "fn DiagnosticsModule.formatInvalidContextTargetDiagnostic generated from typescript function_declaration at packages/shp-checker/src/checker/diagnostics.ts#formatInvalidContextTargetDiagnostic."
 }
 
+relation DiagnosticsModuleFormatInvalidImplementationDiagnosticGeneratedFromDiagnosticsModuleFormatInvalidImplementationDiagnosticAstAnchor {
+  kind generated_from
+  connects DiagnosticsModule -> DiagnosticsModuleFormatInvalidImplementationDiagnosticAstAnchor
+  roles { DiagnosticsModule as generated, DiagnosticsModuleFormatInvalidImplementationDiagnosticAstAnchor as syntax }
+  expects DiagnosticsModuleFormatInvalidImplementationDiagnosticAstAnchor fingerprint ast.semantic_subtree_v1("sha256:12c5d46d1892303ca56e5a47ccf6dcb79c1b8c688d157f944dc8c99c9ca8f187")
+  summary "fn DiagnosticsModule.formatInvalidImplementationDiagnostic generated from typescript function_declaration at packages/shp-checker/src/checker/diagnostics.ts#formatInvalidImplementationDiagnostic."
+}
+
 relation DiagnosticsModuleFormatInvalidReevaluationDiagnosticGeneratedFromDiagnosticsModuleFormatInvalidReevaluationDiagnosticAstAnchor {
   kind generated_from
   connects DiagnosticsModule -> DiagnosticsModuleFormatInvalidReevaluationDiagnosticAstAnchor
@@ -473,6 +505,14 @@ relation DiagnosticsModuleFormatMissingBoundDocsChangeDiagnosticGeneratedFromDia
   summary "fn DiagnosticsModule.formatMissingBoundDocsChangeDiagnostic generated from typescript function_declaration at packages/shp-checker/src/checker/diagnostics.ts#formatMissingBoundDocsChangeDiagnostic."
 }
 
+relation DiagnosticsModuleFormatMissingCitedPathDiagnosticGeneratedFromDiagnosticsModuleFormatMissingCitedPathDiagnosticAstAnchor {
+  kind generated_from
+  connects DiagnosticsModule -> DiagnosticsModuleFormatMissingCitedPathDiagnosticAstAnchor
+  roles { DiagnosticsModule as generated, DiagnosticsModuleFormatMissingCitedPathDiagnosticAstAnchor as syntax }
+  expects DiagnosticsModuleFormatMissingCitedPathDiagnosticAstAnchor fingerprint ast.semantic_subtree_v1("sha256:cf5edb2be4d314c5fabb2aaeb73c07a3af1afd062631cee201fcff988717cbcb")
+  summary "fn DiagnosticsModule.formatMissingCitedPathDiagnostic generated from typescript function_declaration at packages/shp-checker/src/checker/diagnostics.ts#formatMissingCitedPathDiagnostic."
+}
+
 relation DiagnosticsModuleFormatMissingGrantDiagnosticGeneratedFromDiagnosticsModuleFormatMissingGrantDiagnosticAstAnchor {
   kind generated_from
   connects DiagnosticsModule -> DiagnosticsModuleFormatMissingGrantDiagnosticAstAnchor
@@ -511,6 +551,14 @@ relation DiagnosticsModuleFormatParseDiagnosticGeneratedFromDiagnosticsModuleFor
   roles { DiagnosticsModule as generated, DiagnosticsModuleFormatParseDiagnosticAstAnchor as syntax }
   expects DiagnosticsModuleFormatParseDiagnosticAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4559de0c78940325cebd7a0b323939862eacf4770d5b93fbe6238adff08a51f2")
   summary "fn DiagnosticsModule.formatParseDiagnostic generated from typescript function_declaration at packages/shp-checker/src/checker/diagnostics.ts#formatParseDiagnostic."
+}
+
+relation DiagnosticsModuleFormatStaleAttestationDiagnosticGeneratedFromDiagnosticsModuleFormatStaleAttestationDiagnosticAstAnchor {
+  kind generated_from
+  connects DiagnosticsModule -> DiagnosticsModuleFormatStaleAttestationDiagnosticAstAnchor
+  roles { DiagnosticsModule as generated, DiagnosticsModuleFormatStaleAttestationDiagnosticAstAnchor as syntax }
+  expects DiagnosticsModuleFormatStaleAttestationDiagnosticAstAnchor fingerprint ast.semantic_subtree_v1("sha256:111277d76635dcda388b91e56aa9c673af24863d01bc57a451f7923d140eee6f")
+  summary "fn DiagnosticsModule.formatStaleAttestationDiagnostic generated from typescript function_declaration at packages/shp-checker/src/checker/diagnostics.ts#formatStaleAttestationDiagnostic."
 }
 
 relation DiagnosticsModuleFormatStaleMemoryDiagnosticGeneratedFromDiagnosticsModuleFormatStaleMemoryDiagnosticAstAnchor {

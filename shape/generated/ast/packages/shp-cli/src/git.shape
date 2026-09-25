@@ -1,0 +1,49 @@
+module shape.generated.ast.packages.shp_cli.src.git
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource GitModuleGitAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/git.ts#git")
+  fingerprint ast.semantic_subtree_v1("sha256:c31a4c7d497937b9222f7ef45556cc7e719e201ab639c504c7bb918a8b792b60")
+}
+
+resource GitModuleRepositoryFilesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/git.ts#repositoryFiles")
+  fingerprint ast.semantic_subtree_v1("sha256:7a17d78d96fd2e29dc2c0019e76170fff1b9946704c5bc26fffdcd40bbf18dae")
+}
+
+component GitModule : GeneratedCandidate {
+  fn git
+    source ts("packages/shp-cli/src/git.ts#git")
+    effects unknown
+  fn repositoryFiles
+    source ts("packages/shp-cli/src/git.ts#repositoryFiles")
+    effects unknown
+}
+
+relation GitModuleGitGeneratedFromGitModuleGitAstAnchor {
+  kind generated_from
+  connects GitModule -> GitModuleGitAstAnchor
+  roles { GitModule as generated, GitModuleGitAstAnchor as syntax }
+  expects GitModuleGitAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c31a4c7d497937b9222f7ef45556cc7e719e201ab639c504c7bb918a8b792b60")
+  summary "fn GitModule.git generated from typescript function_declaration at packages/shp-cli/src/git.ts#git."
+}
+
+relation GitModuleRepositoryFilesGeneratedFromGitModuleRepositoryFilesAstAnchor {
+  kind generated_from
+  connects GitModule -> GitModuleRepositoryFilesAstAnchor
+  roles { GitModule as generated, GitModuleRepositoryFilesAstAnchor as syntax }
+  expects GitModuleRepositoryFilesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7a17d78d96fd2e29dc2c0019e76170fff1b9946704c5bc26fffdcd40bbf18dae")
+  summary "fn GitModule.repositoryFiles generated from typescript function_declaration at packages/shp-cli/src/git.ts#repositoryFiles."
+}
+
+implementation GitModuleImpl {
+  paths {
+    "packages/shp-cli/src/git.ts"
+  }
+  conforms_to GitModule
+}
