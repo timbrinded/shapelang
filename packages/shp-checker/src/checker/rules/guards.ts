@@ -67,9 +67,8 @@ export function classifyProtectedProperty(
     return targetKind === "fn" ? { kind: "description" } : { kind: "opaque" };
   }
   if (property.kind === "shape") {
-    // Detectable iff the protected name resolves to a real trait. Prelude
-    // shape-trait obligations are seeded into model.traits, so this reads only
-    // the effective model — no separate prelude-metadata lookup.
+    // Prelude shape traits are seeded into model.traits, so the effective model
+    // alone decides whether the protected name is a real trait.
     const resolved = property.resolvedValue ?? property.value;
     if (model.traits.has(resolved)) {
       return { kind: "shapeTrait", trait: resolved, display: property.value };
@@ -100,8 +99,8 @@ export function guardViolationDiagnostic(
 
 /**
  * Reports design memory whose `review_by` date is strictly before `asOf`.
- * Only ISO `YYYY-MM-DD` `review_by` values are enforced; non-ISO and missing
- * values are left untouched so freshness never breaks a model on a typo's say-so.
+ * Only valid ISO `YYYY-MM-DD` calendar dates are enforced; any other or missing
+ * `review_by` value is skipped rather than reported.
  */
 
 export function checkFreshness(model: Model, asOf: IsoDateString): SemanticDiagnostic[] {

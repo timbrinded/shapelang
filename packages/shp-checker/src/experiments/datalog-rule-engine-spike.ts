@@ -1,3 +1,12 @@
+// Unexported comparison spike for issue #39; see "Why rules are direct
+// TypeScript checks" in docs-site/src/content/docs/inside-shape/rule-evaluation.md.
+// The spike is intentionally limited:
+// - no recursion, fixpoint iteration, aggregation, or stratification planner;
+// - it assumes the reviewed rule binds every negative variable;
+// - it does not aggregate alternative proofs;
+// - it does not model cross-rule precedence;
+// - it does not implement path or hypercycle witnesses;
+// - it is not optimized and is not benchmark evidence.
 import { compareCodepointStrings } from "../shape-strings.ts";
 import { compareShapeDiagnostics } from "../checker/diagnostics.ts";
 import type { Fact, Provenance, SemanticDiagnostic } from "../checker/model.ts";

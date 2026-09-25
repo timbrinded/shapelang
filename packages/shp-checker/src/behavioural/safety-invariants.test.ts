@@ -11,13 +11,14 @@
 //   - docs-site/.../inside-shape/rule-evaluation.md ("Memory is not a waiver ...
 //     it does not suppress final forbids, missing grants, or other hard model
 //     failures.")
-//   - docs-site/.../concepts/unknowns-safety.md ("`effects unknown` ... is not a
-//     safe final state for protected architecture.")
+//   - docs-site/.../concepts/effect-model.md ("`effects unknown` is the accurate
+//     summary, and `shp check` keeps the gap visible by rejecting it.")
 //
 // Every assertion is structured (requireDiagnostic + fields), layered with the
 // rendered causal path where it teaches the precedence chain. The negative
-// controls plant an allowed-effect / complete-effects mutant so the waiver and
-// unknown tests are demonstrably falsifiable, not constant failures.
+// controls plant an allowed-effect, added-grant, or complete-effects mutant so
+// the waiver, grant, and unknown tests are demonstrably falsifiable, not
+// constant failures.
 
 import { describe, expect, test } from "bun:test";
 import {
@@ -75,10 +76,10 @@ function auditComponent(opts: { effect?: string; shapeTraits?: string[] } = {}):
 `;
 }
 
-// The five waiver mechanisms, each attached to AuditStore.purgeOldEvents. Note
-// the grant is already in `auditComponent`; the "grant" variant simply asserts
-// that the grant the rule-evaluation docs name as the canonical waiver attempt
-// ("If final forbids could be overridden by adding a grant ...") does not work.
+// The five waiver mechanisms, each attached to AuditStore.purgeOldEvents. The
+// grant is already in `auditComponent`, so the "grant" variant needs no extra
+// block: it asserts that the waiver attempt effect-model.md rules out ("A grant
+// does not override a final forbid") does not work.
 const rationaleBlock = `rationale PurgeInline : InlineRationale<fn AuditStore.purgeOldEvents> {
   applies_to fn AuditStore.purgeOldEvents
   why CognitiveLocality
@@ -99,8 +100,9 @@ const memoryBlock = `memory PurgeConstraint : RefactorConstraint<fn AuditStore.p
 
 // A reevaluation that fully satisfies the memory guard's obligation, paired with
 // the change that triggers it. This is the strongest form of the reevaluation
-// waiver: the guard flow is satisfied (no guarded_shape_changed / invalid_
-// reevaluation noise), so the ONLY thing left to fail is the final forbid.
+// waiver: the guard flow is satisfied (no guarded_shape_changed or
+// invalid_reevaluation noise), so the ONLY thing left to fail is the final
+// forbid.
 const reevaluationFlow = `reevaluation PurgeRechecked {
   satisfies memory PurgeConstraint
   outcome Confirmed
@@ -131,10 +133,9 @@ const attestBlock = `attest no_shape_change {
 `;
 
 /**
- * The waiver variants. Each ADDS one mechanism to the forbidden model; `all`
- * combines every mechanism with both required context traits and a satisfied
- * guard flow. Derived from the grammar's declaration forms (rationale, memory,
- * reevaluation, attest) and the pass-fixture shapes for the guard flow.
+ * The waiver variants. Each ADDS one mechanism to the forbidden model (the
+ * reevaluation variant also carries the memory it satisfies); `all` combines
+ * every mechanism with both required context traits and a satisfied guard flow.
  */
 const waiverVariants: Record<string, string> = {
   grant: forbidPreamble + auditComponent(),
@@ -211,10 +212,11 @@ describe("#58 core safety invariants", () => {
     }
   );
 
-  // NEGATIVE CONTROL for invariant 1: the SAME model with the forbidden effect
-  // replaced by an ALLOWED one (Read, which AppendOnly permits) PASSES. This
-  // proves the waiver tests above detect the forbidden effect specifically and
-  // are not a constant failure that any input would trip.
+  // NEGATIVE CONTROL for the final-forbid tests: the SAME model with the
+  // forbidden effect replaced by an ALLOWED one (Read, which AppendOnly
+  // permits) PASSES. This proves the waiver tests above detect the forbidden
+  // effect specifically and are not a constant failure that any input would
+  // trip.
   test(
     lockedIntended(
       "negative control: the same model emitting an allowed effect has no final-forbid diagnostic",
@@ -273,13 +275,13 @@ memory LedgerConstraint : RefactorConstraint<fn Bookkeeper.writeLedger> {
     }
   );
 
-  // NEGATIVE CONTROL for invariant 2: adding the grant the component lacks
-  // clears the diagnostic, proving the missing-grant assertion above is keyed to
-  // the absent grant and not the presence of the memory.
+  // NEGATIVE CONTROL for the missing-grant test: adding the grant the
+  // component lacks clears the diagnostic, proving the missing-grant assertion
+  // above is keyed to the absent grant and not the presence of the memory.
   test(
     lockedIntended(
       "negative control: granting the emitted effect clears the missing-grant diagnostic",
-      "concepts/components-ownership-grants.md; rule-evaluation.md (Missing Grants)"
+      "concepts/effect-model.md (Check order); rule-evaluation.md (Final-forbid precedence)"
     ),
     () => {
       const source = `module safety_grant
@@ -324,7 +326,7 @@ component AuditStore {
   test(
     lockedIntended(
       "an authored `effects unknown` function never silently completes; it raises unknown_effects",
-      "concepts/unknowns-safety.md (not a safe final state); rule-evaluation.md (Unknown Effects)"
+      "concepts/effect-model.md (Unknown and complete effects); rule-evaluation.md (Unknown-effects severity)"
     ),
     () => {
       const result = checkSource(unknownSource);
@@ -341,13 +343,13 @@ component AuditStore {
   test(
     lockedIntended(
       "the generated-AST origin is the only thing that suppresses unknown_effects",
-      "concepts/unknowns-safety.md; checker.ts shouldIgnoreUnknownEffectsDiagnostic (generatedAstCandidate)"
+      "guides/ast-drafts.md (Commit generated context); checker/derivations.ts shouldIgnoreUnknownEffectsDiagnostic (generatedAstCandidate)"
     ),
     () => {
-      // Verified against the checker via scratch: `effects unknown` raises
-      // unknown_effects for authored modules, and origin "generated_ast" (which
-      // sets generatedAstCandidate) is the lone suppressor. This pins that the
-      // suppression is scoped to machine-proposed candidates, not authored ones.
+      // `effects unknown` raises unknown_effects for authored modules. The
+      // checker suppresses it only for modules with origin "generated_ast",
+      // which sets generatedAstCandidate. This pins the suppression to
+      // machine-proposed candidates, not authored ones.
       const authored = checkSourceAs(unknownSource, { origin: "authored" });
       expect(findDiagnostic(authored, "unknown_effects")).toBeDefined();
 
@@ -359,13 +361,14 @@ component AuditStore {
     }
   );
 
-  // NEGATIVE CONTROL for invariant 3: replacing `effects unknown` with a
-  // complete summary produces NO unknown_effects, proving the diagnostic above
-  // is keyed to the unknown state and not to the function's mere existence.
+  // NEGATIVE CONTROL for the unknown-effects tests: replacing `effects unknown`
+  // with a complete summary produces NO unknown_effects, proving the diagnostic
+  // above is keyed to the unknown state and not to the function's mere
+  // existence.
   test(
     lockedIntended(
       "negative control: an `effects complete` function emits no unknown_effects",
-      "concepts/unknowns-safety.md (Complete effects); rule-evaluation.md (Unknown Effects)"
+      "concepts/effect-model.md (Unknown and complete effects); rule-evaluation.md (Unknown-effects severity)"
     ),
     () => {
       const source = `module safety_unknown
@@ -388,25 +391,23 @@ component AuditStore {
   );
 
   // SHOULD-BE: an `effects unknown` on a governed/protected target ought to be a
-  // stricter blocker than a plain diagnostic — unknowns-safety.md calls it "not
-  // a safe final state for protected architecture", which implies escalation
-  // (e.g. a distinct blocking severity or an unsafe-on-protected kind) rather
-  // than a diagnostic of the same weight as any other. The checker currently
-  // emits a single uniform `unknown_effects` regardless of whether the target is
-  // protected, so this documents the ideal without breaking CI.
+  // stricter blocker than a plain diagnostic, which would mean
+  // escalation (e.g. a distinct blocking severity or an unsafe-on-protected
+  // kind) rather than a diagnostic of the same weight as any other. The checker
+  // currently emits a single uniform `unknown_effects` regardless of whether the
+  // target is protected, so `test.todo` documents the ideal without breaking CI.
   test.todo(
     shouldBe(
       "unknown effects on a protected target escalate beyond a plain unknown_effects diagnostic",
-      "concepts/unknowns-safety.md (not a safe final state for protected architecture)"
+      "concepts/effect-model.md (Unknown and complete effects)"
     ),
     () => {
       // The function is protected (a memory guard guards on_change) AND its
-      // effects are unknown. The vision says this is "not a safe final state for
-      // protected architecture": being protected should make the unknown a
-      // STRICTER blocker than the same unknown on an unprotected function — e.g.
-      // a distinct kind, or unknown_effects carrying a "protected" marker. The
-      // checker today emits the identical, unmarked unknown_effects for both, so
-      // this assertion fails and is parked as a tracked gap rather than CI noise.
+      // effects are unknown. Being protected should make the unknown a STRICTER
+      // blocker than the same unknown on an unprotected function — e.g. a
+      // distinct kind, or unknown_effects carrying a "protected" marker. The
+      // checker today emits the identical, unmarked unknown_effects for both,
+      // so this assertion would fail.
       const protectedUnknown = `module safety_unknown
 
 resource AuditEvent

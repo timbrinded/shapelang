@@ -1,26 +1,21 @@
 // #65 — AST-generation determinism + unknown-safety law.
 //
 // Vision anchors:
-//   - shape/tooling.shape:545 memory AstGenerationUnknownSafety: AST-derived
+//   - shape/tooling.shape memory AstGenerationUnknownSafety: AST-derived
 //     architecture drafts "must preserve uncertainty with effects unknown ...
 //     and keep raw syntax traces opt-in."
-//   - shape/tooling.shape:565 memory AuthoringUnknownSafety: generated drafts
+//   - shape/tooling.shape memory AuthoringUnknownSafety: generated drafts
 //     "must prefer effects unknown over false empty complete summaries."
-//   - docs-site/src/content/docs/reference/diagnostics.md:139-143 (Unknown
-//     effects): generated AST candidate files keep `effects unknown` because
-//     their `effect candidate` declarations are evidence hints, not reviewed
-//     effect summaries.
+//   - docs-site/src/content/docs/reference/diagnostics.md (Unknown effects):
+//     generated AST candidate files keep `effects unknown` because their
+//     `effect candidate` declarations are evidence hints, not reviewed effect
+//     summaries.
 //
-// Each invariant is a SEPARATE test. The exact output forms (the absence of any
-// `effects complete { }`, the raw-layer markers, the byte-identity of repeated
-// generation, the module/path normalisation) were derived by running a
-// throwaway scratch against the real API (generateShapeFromAstJson,
-// normalizeGeneratedModuleName, normalizeGeneratedAstPath), then the scratch was
-// deleted. Determinism is proven by generating from INDEPENDENT inputs and
-// comparing the products, never by comparing one value to itself. Two in-test
-// negative controls (a stub that emits empty `effects complete { }`, and a stub
-// whose member order flips on the second call) prove the unknown-safety and
-// byte-identity predicates can fail.
+// Each invariant is a SEPARATE test. Determinism is shown by comparing the
+// products of INDEPENDENT generation runs, never one value against itself. Two
+// in-test negative controls (a stub that emits an empty `effects complete { }`,
+// and a stub whose member order flips on the second call) show that the
+// unknown-safety and byte-identity predicates can fail.
 
 import { describe, expect, test } from "bun:test";
 import {
@@ -33,13 +28,11 @@ import type { AstGenerationResult } from "../ast-generation-types.ts";
 import { parseShapeModule } from "../parser.ts";
 import { lockedIntended, characterization } from "./harness.ts";
 
-// ---------------------------------------------------------------------------
-// Fixtures: AST JSON inputs in the shape buildCodeSemanticGraphFromAstJson
-// accepts (mirrors the helpers in checker.test.ts / index.test.ts). Neither
-// fixture carries any call/effect evidence the projector could turn into an
-// `effects complete` summary, so the unknown-safety law has real teeth: the
-// generator KNOWS the effects are not derivable, yet must still emit a function.
-// ---------------------------------------------------------------------------
+// Fixtures: AST JSON inputs in the form buildCodeSemanticGraphFromAstJson
+// accepts (as in ast-generation.test.ts). Neither fixture carries call or
+// effect evidence the projector could turn into an `effects complete` summary,
+// so the unknown-safety law has real teeth: the generator must still emit a
+// function whose effects it cannot derive.
 
 const tsFixture = {
   language: "typescript",
@@ -86,10 +79,10 @@ const rustFixture = {
   ]
 } as const;
 
-// The exact textual form a unknown-safety violation would take, derived from
-// the language reference (diagnostics.md:131 shows `effects complete {`). The
-// regex is whitespace-robust: it matches an EMPTY complete block however the
-// formatter spaces the braces. It does NOT match a non-empty complete block.
+// An unknown-safety violation: an EMPTY complete block in the `effects complete
+// {` syntax of docs-site/src/content/docs/reference/language-syntax.md. The
+// regex matches the empty block however the braces are spaced, and does NOT
+// match a non-empty complete block.
 const EMPTY_COMPLETE = /effects complete\s*\{\s*\}/;
 
 /** Narrow a generation result to its value or fail with the diagnostics. */
@@ -120,9 +113,9 @@ describe("#65 AST-generation determinism + unknown-safety", () => {
         generateShapeFromAstJson(tsFixture, { moduleName: "generated.audit" })
       );
 
-      // Non-vacuous: the fixture really produced a function declaration (so this
-      // is not "no functions, therefore no empty-complete" — the law applies to
-      // a function whose effects are NOT derivable from the AST).
+      // Non-vacuity: the draft really declares a function, one whose effects
+      // are NOT derivable from the AST, so the law below is not satisfied by
+      // an absence of functions.
       expect(output.semanticShape).toContain("component AuditStore");
       expect(output.semanticShape).toContain("fn appendEvent");
 
@@ -134,8 +127,8 @@ describe("#65 AST-generation determinism + unknown-safety", () => {
       // `effects complete` token at all.
       expect(output.semanticShape).not.toContain("effects complete");
 
-      // Derivable structural property: the generated draft is itself valid Shape
-      // (so `effects unknown` is the real declaration, not a comment or string).
+      // The generated draft is itself valid Shape, so `effects unknown` is read
+      // as a declaration, not as a comment or string.
       const parsed = parseShapeModule(output.semanticShape, "generated.audit.shape");
       expect(parsed.ok).toBe(true);
     }
@@ -147,9 +140,9 @@ describe("#65 AST-generation determinism + unknown-safety", () => {
       "shape/tooling.shape:545 AstGenerationUnknownSafety (keep raw syntax traces opt-in)"
     ),
     () => {
-      // Default: no raw layer anywhere. The raw layer is identified by the
-      // `GeneratedAstNode` trait + `ast_child` relation kind it always emits
-      // (derived via scratch); their absence is the opt-in default.
+      // Default: no raw layer anywhere. The raw layer always emits the
+      // `GeneratedAstNode` trait and `ast_child` relation kind, so their
+      // absence identifies the opt-in default.
       const byDefault = requireGenerated(
         generateShapeFromAstJson(tsFixture, { moduleName: "generated.audit" })
       );
@@ -181,7 +174,6 @@ describe("#65 AST-generation determinism + unknown-safety", () => {
       expect(sidecar.rawShape).toBeDefined();
       expect(sidecar.rawShape ?? "").toContain("GeneratedAstNode");
       expect(sidecar.rawShape ?? "").toContain("kind ast_child");
-      // Sidecar keeps the semantic layer clean (separation of concerns).
       expect(sidecar.semanticShape).not.toContain("GeneratedAstNode");
 
       // NEGATIVE CONTROL for the detector itself: prove the `GeneratedAstNode`
@@ -199,9 +191,9 @@ describe("#65 AST-generation determinism + unknown-safety", () => {
       "shape/tooling.shape:615 AstGenerationDraftSafetyRechecked (deterministic fingerprints); determinism intent"
     ),
     () => {
-      // Determinism is checked over INDEPENDENT generations. We pass the same
-      // module name on both runs (the realistic regeneration scenario) so the
-      // first `module ...` line is included in the byte comparison too.
+      // Determinism is checked over INDEPENDENT generations. Both runs use the
+      // same module name, as a real regeneration does, so the first
+      // `module ...` line is part of the byte comparison too.
       for (const [language, fixture, moduleName, rawModuleName] of [
         ["typescript", tsFixture, "generated.audit", "generated.audit.raw"],
         ["rust", rustFixture, "generated.main", "generated.main.raw"]
@@ -213,7 +205,7 @@ describe("#65 AST-generation determinism + unknown-safety", () => {
           generateShapeFromAstJson(fixture, { moduleName, rawModuleName })
         );
 
-        // Non-trivial: the output is substantial, not an empty/error fallback.
+        // Non-vacuity: both layers are non-empty, not an empty/error fallback.
         expect(first.semanticShape.length, `${language} semantic empty`).toBeGreaterThan(0);
         expect((first.rawShape ?? "").length, `${language} raw empty`).toBeGreaterThan(0);
 
@@ -234,8 +226,8 @@ describe("#65 AST-generation determinism + unknown-safety", () => {
     () => {
       // Stronger, non-circular determinism: feed the SAME AST under two
       // DIFFERENT module names. Everything below the `module` line — anchors,
-      // components, relations, fingerprints — must be byte-identical, proving
-      // the body is a pure function of the AST, not of the chosen module name.
+      // components, relations, fingerprints — must be byte-identical, showing
+      // the body does not depend on the chosen module name.
       const alpha = requireGenerated(
         generateShapeFromAstJson(tsFixture, {
           moduleName: "alpha.one",
@@ -270,9 +262,11 @@ describe("#65 AST-generation determinism + unknown-safety", () => {
       "shape/tooling.shape:579 CliCommandDispatchOrder (generated AST source identity derived from workspace root); mirrors index.test.ts:341-388"
     ),
     () => {
-      // Library-level mirror of the CLI determinism test (index.test.ts:341-388),
-      // which exercises this through `ast source` with absolute vs nested-cwd
-      // relative paths. Here we exercise the two normalisers directly.
+      // Library-level counterpart of the CLI test "keeps generated AST identity
+      // stable for absolute paths and nested cwd" in
+      // packages/shp-cli/src/index.test.ts, which runs `ast source` with an
+      // absolute path and a nested-cwd relative path. This test calls the two
+      // normalisers directly.
       const cwd = "/repo";
       const absolute = `${cwd}/src/audit/store.ts`;
       const relative = "src/audit/store.ts";
@@ -314,9 +308,9 @@ describe("#65 AST-generation determinism + unknown-safety", () => {
       }
     ),
     () => {
-      // Per the standard: do NOT pin an opaque multi-line snapshot. Instead pin
-      // DERIVABLE properties of the generated draft (counts + identities) so any
-      // regression is legible. These were read off the real scratch output.
+      // TESTING.md rejects opaque multi-line snapshots, so this pins legible
+      // counts and identities of the generated draft instead. The values are
+      // read from the generator's current output.
       const output = requireGenerated(
         generateShapeFromAstJson(tsFixture, { moduleName: "generated.audit" })
       );
@@ -324,7 +318,6 @@ describe("#65 AST-generation determinism + unknown-safety", () => {
 
       const count = (needle: string): number => shape.split(needle).length - 1;
 
-      // One component, one function, one conformance.
       expect(count("component AuditStore : GeneratedCandidate")).toBe(1);
       expect(count("fn appendEvent")).toBe(1);
       expect(count("conforms_to AuditStore")).toBe(1);
@@ -348,9 +341,10 @@ describe("#65 AST-generation determinism + unknown-safety", () => {
     }
   );
 
-  // NEGATIVE CONTROL — proves the unknown-safety and byte-identity PREDICATES
-  // used above can actually fail. Self-contained: local stubs stand in for a
-  // incorrectly implemented generator, so this test fails iff the predicates are real.
+  // NEGATIVE CONTROL — shows the unknown-safety and byte-identity PREDICATES
+  // used above can fail. Local stubs stand in for an incorrectly implemented
+  // generator; the test passes only if each predicate rejects its stub and
+  // accepts the real generator's output.
   test(
     lockedIntended(
       "the unknown-safety and byte-identity predicates reject a violating stub generator",

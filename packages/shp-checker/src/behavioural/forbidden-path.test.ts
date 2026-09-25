@@ -9,7 +9,7 @@ import {
   requireNoDiagnostic
 } from "./harness.ts";
 
-const ANCHOR = "docs-site/src/content/docs/concepts/rules-hypercycles.md";
+const ANCHOR = "docs-site/src/content/docs/concepts/relations.md";
 
 describe("#20 forbidden dependency paths", () => {
   test(

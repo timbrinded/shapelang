@@ -274,8 +274,8 @@ export type CheckOptions = {
   includeFacts?: boolean;
   /**
    * Repository root used to normalize absolute changed-file and provenance
-   * paths before coverage and binding matching. Defaults at the public checker
-   * boundary.
+   * paths before coverage and binding matching. Defaults to the current working
+   * directory.
    */
   repoRoot?: string;
   /**
@@ -603,8 +603,9 @@ export type ReevaluationInfo = {
   provenance: Provenance;
 };
 
-// Observed changes are modelled by memory-guards as ChangeTrigger; the checker
-// emits them while lowering `change` declarations.
+// Observed changes use the ChangeTrigger shape from shape-domain.ts that
+// memory-guards matches against; the checker emits them while lowering `change`
+// declarations.
 export type ChangeEvent = ChangeTrigger;
 
 export type FunctionInfo = {

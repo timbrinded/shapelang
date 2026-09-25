@@ -1,8 +1,8 @@
 // User-facing read/query output: graph, explain, obligations, and memory-guard
-// listing. These commands consume the effective model (via lowerShapeModules)
-// and the shared display/derivation helpers to render stable text; they never
-// lower declarations or evaluate rules themselves beyond calling checkShapeModules
-// for obligation listing.
+// listing. These commands render stable text from the effective model (built by
+// lowerShapeModules) and the shared display and derivation helpers. They never
+// lower declarations or evaluate rules themselves; obligation listing calls
+// checkShapeModules for its diagnostics.
 import type { ShapeModule } from "../language/generated/ast.ts";
 import type {
   CheckModuleInput,
@@ -315,8 +315,8 @@ export function explainShapeModules(
 /**
  * Appends the shape-trait obligation sections (required context, satisfying
  * context, and active guards) for a component or resource target to an explain
- * listing. Guarded-change enforcement now fires for component/resource targets
- * via `modify`/`remove` change events, so listed guards are real.
+ * listing. The listed guards are enforced: `modify` and `remove` change entries
+ * emit guarded-change events for component and resource targets.
  */
 function appendShapeTraitContext(
   target: ShapeTarget,
@@ -452,8 +452,9 @@ export function graphShapeModules(
 }
 
 /**
- * Dump every hyperedge in the loaded modules, grouped by kind and sorted by name.
- * Used by `shp graph` with no symbol argument.
+ * Dump every hyperedge in the loaded modules, or only those of `kindFilter`,
+ * grouped by kind and sorted by name. Used by `shp graph` with no symbol
+ * argument.
  */
 export function graphAllShapeModules(
   modules: ShapeModule[] | CheckModuleInput[],

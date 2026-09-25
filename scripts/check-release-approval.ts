@@ -7,8 +7,12 @@ import { parseArgs } from "node:util";
 export const SKILLS_RELEASE_APPROVAL_ENVIRONMENT = "skills-release-approval";
 
 /**
- * Prefixes that block copying an ancestor skills report.
- * A docs-only commit may copy; a change under these prefixes may not.
+ * Paths whose change blocks copying an ancestor's approved skills report. An
+ * entry ending in `/` matches everything under that directory; any other entry
+ * matches one exact path. A commit whose diff from the approved ancestor touches
+ * none of these paths (for example only `docs-site/`, `docs/releases/`, or
+ * `shape/*.shape`) may copy the report. This constant is the authority;
+ * RELEASING.md mirrors it.
  */
 export const SKILLS_RELEVANT_PATH_PREFIXES = [
   "plugins/shapelang/",

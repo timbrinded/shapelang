@@ -26,11 +26,11 @@ export type ChangeStagingOptions = {
 
 /**
  * Create a copy-on-write model for one change declaration. Every top-level
- * container that an addable declaration lowerer mutates is copied here;
- * relation state is copied only when the change contains relation entries, and
- * existing component function maps are copied at their mutation point. The
- * caller's effective model therefore remains untouched until the complete plan
- * is committed without cloning unrelated read-only model state.
+ * container that an addable declaration lowerer mutates is copied here.
+ * Relation state is copied only when the change contains relation entries, and
+ * existing component function maps are copied at their mutation point.
+ * Unrelated read-only model state stays shared, and the caller's effective
+ * model stays untouched until the complete plan is committed.
  */
 export function stageModelForChange(model: Model, options: ChangeStagingOptions): Model {
   return {
@@ -89,8 +89,8 @@ export function snapshotChangeTarget(model: Model, target: ShapeTarget): ChangeT
 
 /**
  * Normalize one before/after target transition into the event vocabulary read
- * by Memory Guard checking. Ordering matches the prior lowering behavior:
- * coarse target, removed traits, removed description, then transforms.
+ * by Memory Guard checking. Events are emitted in a fixed order: coarse target,
+ * removed traits, removed description, then transforms.
  */
 export function changeEventsForTransition(transition: ChangeTransition): ChangeEvent[] {
   const events: ChangeEvent[] = [

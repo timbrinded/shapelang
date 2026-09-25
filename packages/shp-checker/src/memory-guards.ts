@@ -1,21 +1,23 @@
 // Guarded-change matching for Memory Guards.
 //
-// This module owns the guard/change domain as explicit discriminated unions and
-// a single matcher that decides coarse / property / transform precedence in one
-// place. Detectability is decided by the caller while lowering (a protected
-// property arrives here already classified), so the matcher reads no prelude
-// metadata and does no post-hoc dedupe over diagnostics — it consumes typed
-// rules and triggers and returns typed violations.
+// This module defines the guard-matching types and a single matcher that
+// decides coarse / property / transform precedence in one place. The caller
+// (checker/rules/guards.ts) classifies each protected property's detectability
+// before matching, so the matcher reads no prelude metadata. The matcher
+// consumes typed guard contexts and change triggers and returns typed
+// violations. It drops superseded coarse violations itself rather than leaving
+// a later pass to deduplicate diagnostics.
 //
-// Shared shape DTOs live in a neutral module so guard matching and the checker
-// model do not own each other's types.
+// Shared shape types (ChangeTrigger, Provenance, ShapeTarget) live in the
+// neutral shape-domain.ts so guard matching and the checker model do not own
+// each other's types.
 import type { ChangeTrigger, Provenance, ShapeTarget } from "./shape-domain.ts";
 import type { ContextKind } from "./prelude.ts";
 import { targetsEqual } from "./targets.ts";
 
-/** A property a guard protects, classified by what change (if any) we can
- *  detect against it. `opaque` properties (free-form labels, a description on a
- *  non-function target) are not individually detectable and force coarse
+/** A property a guard protects, classified by which change, if any, is
+ *  detectable against it. `opaque` properties (free-form labels, a description
+ *  on a non-function target) are not individually detectable and force coarse
  *  matching. */
 export type GuardedProperty =
   | { kind: "description" }
@@ -88,17 +90,18 @@ const violationKey = (violation: GuardViolation): string =>
   `${violation.guardKind}:${violation.guardName}:${violation.target.kind}:${violation.target.name}`;
 
 /**
- * Match guard contexts against the observed changes and return one violation per
- * fired guard clause. Precedence is owned here:
+ * Match unsatisfied guard contexts against the observed changes and return the
+ * violations of every fired guard clause. Precedence is owned here:
  *
  * - A `require ReEvaluation` clause matches at property granularity when every
  *   protected property is individually detectable (and there is at least one),
  *   firing once per detected property; otherwise it falls back to a single
  *   coarse match on any change to the target.
- * - A `forbid transform` clause matches the declared transform intent.
+ * - A `forbid transform` clause matches a `transform_applied` change with the
+ *   same label on the guarded target.
  * - A coarse violation is dropped when a more specific property/transform
  *   violation exists for the same guard and target, so each guarded target is
- *   reported at its most specific granularity exactly once.
+ *   reported only at its most specific granularity.
  */
 export function evaluateGuards(
   contexts: readonly GuardContext[],

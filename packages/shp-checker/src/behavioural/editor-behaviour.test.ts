@@ -4,7 +4,7 @@
 //
 // The editor surface (getDefinitionLocation/getCompletions/getHoverText/
 // getEditorDiagnostics) shares its prelude with the checker and authoring
-// helpers (shape/checker.shape:453 PreludeMetadataContract). These tests pin
+// helpers (shape/checker.shape PreludeMetadataContract). These tests pin
 // EXACT 1-based positions derived from the fixture source — never `> 1` ordinal
 // checks — and compare the completion/hover prelude surface against the single
 // PRELUDE_* source of truth rather than a hand-copied list, so editor/checker
@@ -207,7 +207,7 @@ describe("#63 #48 regression: definitions inside change entries", () => {
     ),
     () => {
       // Derivation: `change AddAudit {` is line 8 of CHANGE_SOURCE; the `change`
-      // keyword starts at column 1. This part of the editor already works.
+      // keyword starts at column 1.
       expect(getDefinitionLocation(CHANGE_SOURCE, "AddAudit")).toEqual({
         symbol: "AddAudit",
         line: 8,
@@ -464,9 +464,9 @@ describe("#63 prelude context-obligation set surfaced by the editor", () => {
     () => {
       // Pinning the literal CONTENTS of the built-in set is characterization: it
       // documents today's hardcoded obligations and is expected to change when
-      // they move into Shape syntax. Pinned as `trait targetKind` because the
-      // same trait now derives obligations on fn, component, and resource
-      // targets, so the trait name alone no longer identifies an entry.
+      // they move into Shape syntax. Entries are pinned as `trait targetKind`
+      // because one trait can derive obligations on fn, component, and
+      // resource targets, so the trait name alone does not identify an entry.
       expect(
         PRELUDE_CONTEXT_REQUIREMENTS.map((rule) => `${rule.trait} ${rule.targetKind}`)
       ).toEqual([

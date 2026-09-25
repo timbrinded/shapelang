@@ -65,9 +65,9 @@ describe("Shape role and approver policy", () => {
   });
 
   test("merges a later require-approver policy with an earlier empty one", () => {
-    // Regression for PR #66 review: a duplicate policy declaration must not let
-    // an earlier empty policy hide a later `require approver` of the same name,
-    // or sensitive memories would silently stop requiring approvers.
+    // Regression: a duplicate policy declaration must not let an earlier empty
+    // policy hide a later `require approver` of the same name, or sensitive
+    // memories would silently stop requiring approvers.
     const result = checkShapeSource(`
       module gateway
 
@@ -178,7 +178,7 @@ describe("Shape role and approver policy", () => {
     if (reformatted.ok) {
       expect(reformatted.formatted).toBe(result.formatted);
     }
-    // Declaration order: resource (1) < role (7A) < policy (7B) < memory (9).
+    // Formatter sort keys: resource (1) < role (7A) < policy (7B) < memory (9).
     const order = ["resource PolicySnapshot", "role Security", "policy ReviewPolicy", "memory"].map(
       (token) => result.formatted.indexOf(token)
     );

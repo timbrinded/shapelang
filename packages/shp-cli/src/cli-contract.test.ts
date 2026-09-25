@@ -2,45 +2,34 @@ import { checkShapeFiles, formatDiagnostics } from "@shape/shp-checker";
 import { describe, expect, test } from "bun:test";
 import { resolve } from "node:path";
 
-// Behavioural area #60 — CLI contract matrix + CLI/library semantic parity.
+// CLI contract matrix and CLI/library semantic parity (behavioural area #60).
 //
-// Anchors (see packages/shp-checker/TESTING.md, convention 4 "Vision-anchored"):
-//   - shape/tooling.shape  memory CliCommandDispatchOrder
+// Anchors (packages/shp-checker/TESTING.md, "Vision-anchored" convention):
+//   - shape/tooling.shape memory CliCommandDispatchOrder, which protects shape
+//     CommandDispatch and requires a reevaluation on change:
 //       "CLI commands must dispatch to the same checker/formatter/helper
 //        semantics used by tests ... reject ambiguous output modes before
 //        running command work ...".
-//       (protects shape CommandDispatch; guards on_change require
-//        ReEvaluation<Self>.)
 //   - docs-site/src/content/docs/reference/cli.md "Exit codes":
-//       0 = passed, 1 = semantic/coverage/format/etc. failure, 2 = invalid
-//       CLI arguments or unsupported update target. success -> stdout,
-//       failure -> stderr.
+//       0 = passed, 1 = semantic, coverage, formatting, or similar failure,
+//       2 = invalid CLI arguments or unsupported update target.
 //
-// HONEST ANCHOR NOTE: the area brief also names a memory
-// `ClockReadAtCliBoundary`. No such clause exists anywhere in shape/*.shape or
-// the codebase as of this commit (verified by repo-wide search). Per TESTING.md
-// convention 4 ("If no clause exists, write it first"), an unwritten clause is
-// not a valid anchor, and this test file may only create itself — it cannot add
-// the clause. The clock/boundary behaviour is therefore left unasserted here
-// rather than pinned against a non-existent law, and tracked for #34 to author.
-//
-// These tests replicate the spawn-the-source-CLI approach from index.test.ts
-// (no packaged binary path; run via the source `cliPath` with `bun`).
+// Like index.test.ts, these tests spawn the source CLI (`cliPath`) with `bun`
+// rather than a packaged binary.
 
 const repoRoot = resolve(import.meta.dir, "../../..");
 const cliPath = resolve(repoRoot, "packages/shp-cli/src/index.ts");
 
-// Bun test runs with process.cwd() === repoRoot (verified), and runCli spawns
-// the CLI with cwd === repoRoot, so relative fixture paths resolve identically
-// in-process and in the child. That identity is what makes the parity test a
-// real byte comparison rather than a path-rewriting artefact.
+// `bun test` runs from the repository root, and runCli spawns the CLI with
+// cwd === repoRoot, so these relative paths resolve identically in-process and
+// in the child. The parity test depends on this to compare output byte for byte
+// without rewriting paths.
 const PASS_FIXTURE = "fixtures/pass/append_only_append/audit.shape";
 const FAIL_FIXTURE = "fixtures/fail/append_only_hard_delete/audit.shape";
 const UNKNOWN_EFFECTS_FIXTURE = "fixtures/fail/unknown_effects/audit.shape";
 
-// The 12 commands documented in docs-site/src/content/docs/reference/cli.md.
-// The help-completeness test is driven from this list, so adding a command
-// without surfacing it in `shp --help` will break invariant 4.
+// Top-level commands from docs-site/src/content/docs/reference/cli.md. The
+// help-completeness test (invariant 4) requires `shp --help` to list each one.
 const ALL_COMMANDS = [
   "check",
   "coverage",
@@ -82,10 +71,8 @@ async function runCli(
 
 describe("shp CLI contract matrix (area #60)", () => {
   // Invariant 1: the exit-code triple, with stream routing asserted each time.
-  // The pass/fail contrast inside this single test is the in-test negative
-  // control for the exit-code dimension: a CLI hardwired to `exit 0` would pass
-  // the first leg and fail the second; a CLI hardwired to `exit 1` would fail
-  // the first leg. Neither magic value stands alone.
+  // Checking all three codes in one test is the negative control: a CLI
+  // hardwired to any single exit code fails at least one leg.
   test(
     "[locked-intended] exit-code triple routes 0->stdout, 1->stderr, 2->stderr " +
       "— anchor: docs-site/src/content/docs/reference/cli.md Exit codes",
@@ -105,8 +92,6 @@ describe("shp CLI contract matrix (area #60)", () => {
       expect(usageError.stderr.length).toBeGreaterThan(0);
       expect(usageError.stdout).toBe("");
 
-      // Negative control made explicit: the three exit codes are genuinely
-      // distinct, so a constant-exit CLI cannot satisfy all three legs.
       expect(new Set([pass.exitCode, semanticFailure.exitCode, usageError.exitCode]).size).toBe(3);
     }
   );
@@ -150,10 +135,10 @@ describe("shp CLI contract matrix (area #60)", () => {
     }
   );
 
-  // Invariant 3: invalid enum-like values. The brief assumed these reject with
-  // exit 2; running the CLI shows otherwise, so these are characterizations of
-  // the REAL behaviour (TESTING.md: characterization = current behaviour not yet
-  // ratified as ideal; reason + follow-up below), not false locked laws.
+  // Invariant 3: invalid enum-like values. `graph stats --kind` accepts any
+  // value, so its test is a characterization (TESTING.md: current behaviour not
+  // yet ratified as ideal, with a reason and follow-up) rather than a locked law.
+  // `ast source --language` rejects an unknown value with exit 2.
   test(
     "[characterization] graph stats --kind <unknown> is tolerated (exit 0, " +
       "empty filtered view) rather than rejected " +
@@ -172,15 +157,14 @@ describe("shp CLI contract matrix (area #60)", () => {
       ]);
       expect(unknown.exitCode).toBe(0);
       expect(unknown.stderr).toBe("");
-      // The filter is honoured and echoed, proving the value was accepted and
-      // applied (not silently ignored): it scopes the graph to zero edges.
+      // The echoed filter and the zero-edge count show that the value was
+      // applied, not silently ignored.
       expect(unknown.stdout).toContain("filter: kind=definitely-not-a-relation-kind");
       expect(unknown.stdout).toContain("hyperedges: 0");
 
-      // Negative control for this characterization: a VALID kind takes the same
-      // success path and is echoed with its own name — so the assertion above
-      // is about acceptance of the value, not about every input printing the
-      // same constant string.
+      // Negative control: a valid kind takes the same success path and echoes
+      // its own name, so the assertions above test acceptance of the value
+      // rather than a constant output string.
       const valid = await runCli(["graph", "stats", "--kind", "calls", PASS_FIXTURE]);
       expect(valid.exitCode).toBe(0);
       expect(valid.stdout).toContain("filter: kind=calls");
@@ -207,9 +191,9 @@ describe("shp CLI contract matrix (area #60)", () => {
       expect(unknown.stderr).toContain("unsupported source language");
       expect(unknown.stderr).not.toContain("at ");
 
-      // Negative control: this exit code is meaningful only against a contrast.
-      // A valid alias on the same subcommand gets past argument validation and
-      // fails later on ordinary file loading, before any parser can initialize.
+      // Negative control: a valid alias on the same subcommand passes argument
+      // validation and fails later, on ordinary file loading, before any parser
+      // can initialize.
       const alias = await runCli([
         "ast",
         "source",
@@ -233,15 +217,13 @@ describe("shp CLI contract matrix (area #60)", () => {
       expect(help.stderr).toBe("");
       expect(help.stdout.length).toBeGreaterThan(0);
 
-      // Drive the assertion from the command list: a new command that is not
-      // surfaced in help text fails here, which is the point of the invariant.
       for (const command of ALL_COMMANDS) {
         expect(help.stdout).toContain(command);
       }
 
-      // Negative control: a command name that does NOT exist must be absent,
-      // proving the loop above is matching real command tokens and not just
-      // succeeding because the help blob contains arbitrary substrings.
+      // Negative control: a nonexistent command name is absent from both the
+      // list and the help text, so the loop above is not passing on arbitrary
+      // substrings.
       const commandNames: readonly string[] = ALL_COMMANDS;
       expect(commandNames.includes("frobnicate")).toBe(false);
       expect(help.stdout).not.toContain("frobnicate");
@@ -250,22 +232,22 @@ describe("shp CLI contract matrix (area #60)", () => {
 });
 
 describe("shp CLI / library semantic parity (area #60)", () => {
-  // Invariant 5 + the parity half of the negative control.
+  // Invariant 5: `shp check` reports exactly what the library computes.
   //
-  // The CLI `check` command (packages/shp-cli/src/commands/check/impl.ts) is a
-  // thin shell: it calls checkShapeFiles(files, { enforceBindings: true }),
-  // renders formatDiagnostics(result), writes that string verbatim to stdout on
-  // exit 0 or stderr otherwise, and propagates result.exitCode. The library
-  // call below MUST mirror those options (enforceBindings: true) and the same
-  // relative path for the comparison to be exact rather than coincidental.
+  // The CLI `check` command (commands/check/impl.ts, through check-runner.ts)
+  // calls checkShapeFiles(files, { enforceBindings: true, ... }), writes
+  // formatDiagnostics(result) verbatim to stdout on exit 0 or to stderr
+  // otherwise, and sets result.exitCode. The library calls below must use the
+  // same options and relative paths for the comparison to be exact rather than
+  // coincidental.
   test(
     "[locked-intended] check exit code and rendered diagnostics equal the " +
       "library's checkShapeFiles + formatDiagnostics — anchor: shape/tooling.shape " +
       "memory CliCommandDispatchOrder (dispatch to the same checker/formatter semantics)",
     async () => {
-      // Passing fixture: exit codes match AND the CLI stdout is byte-equal to
-      // the library-rendered diagnostics (strongest true equality — verified
-      // empirically that the CLI adds no prefix/suffix on the success path).
+      // Passing fixture: exit codes match, and CLI stdout is byte-equal to the
+      // library-rendered diagnostics because the CLI adds no prefix or suffix
+      // on the success path.
       const passCliResult = await runCli(["check", PASS_FIXTURE]);
       const passLibResult = await checkShapeFiles([PASS_FIXTURE], {
         enforceBindings: true
@@ -277,10 +259,9 @@ describe("shp CLI / library semantic parity (area #60)", () => {
       expect(passCliResult.stdout).toBe(passLibBody);
       expect(passCliResult.stderr).toBe("");
 
-      // Failing fixture: exit codes match AND the CLI's stderr carries the
+      // Failing fixture: exit codes match, and CLI stderr carries the
       // library-rendered diagnostic body. checkShapeFiles is the independent
-      // oracle here — the body is computed by the library, not authored in this
-      // test — so equality proves the CLI is not a divergent re-implementation.
+      // oracle: the library computes the expected body, not this test.
       const failCliResult = await runCli(["check", FAIL_FIXTURE]);
       const failLibResult = await checkShapeFiles([FAIL_FIXTURE], {
         enforceBindings: true
@@ -290,15 +271,14 @@ describe("shp CLI / library semantic parity (area #60)", () => {
       expect(failCliResult.exitCode).toBe(failLibResult.exitCode);
       expect(failCliResult.exitCode).toBe(1);
       expect(failCliResult.stdout).toBe("");
-      // NEGATIVE CONTROL (parity): the CLI stderr CONTAINS the multi-line
-      // library body. A CLI that rendered diagnostics through its own divergent
-      // path would fail this containment. The body is non-trivial (a full
-      // causal chain), so this cannot pass vacuously.
+      // Negative control for parity: a CLI that rendered diagnostics through
+      // its own path would fail this containment check. The body is a full
+      // multi-line causal chain, so the check cannot pass vacuously.
       expect(failLibBody.length).toBeGreaterThan(0);
       expect(failCliResult.stderr).toContain(failLibBody.trimEnd());
 
-      // And the two fixtures genuinely differ, so the parity assertions above
-      // are not comparing one constant rendering against itself.
+      // The two fixtures render differently, so the parity assertions do not
+      // compare one constant rendering with itself.
       expect(passLibResult.exitCode).not.toBe(failLibResult.exitCode);
       expect(passLibBody).not.toBe(failLibBody);
     }

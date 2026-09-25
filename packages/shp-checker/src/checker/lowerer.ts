@@ -1,8 +1,9 @@
 // Lowering orchestrator: the deterministic two-pass pipeline that turns parsed
-// modules into the effective Model. Pass 1 indexes declarations and lowers
-// regular declarations; pass 2 applies change declarations; then shape-update
-// paths are rebuilt and derived facts emitted. Domain-specific lowerers live in
-// checker/lowering/*, which this module drives but never the reverse.
+// modules into the effective Model. Declarations from every module are indexed
+// before any lowering. Pass 1 then lowers regular declarations, and pass 2
+// applies change declarations. Finally, shape-update paths are rebuilt and
+// derived facts emitted. Domain-specific lowerers live in checker/lowering/*;
+// this module drives them, and they never import it.
 import type { ShapeModule } from "../language/generated/ast.ts";
 import {
   isAttestationDecl,

@@ -97,7 +97,6 @@ export const PRELUDE_CONTEXT_RULES: PreludeContextRule[] = [
     satisfiedBy: ["rationale", "memory"],
     targetKinds: ["fn", "component", "resource"]
   },
-  // TestOnly applies to functions and components, but not resources.
   {
     trait: "TestOnly",
     contextType: "TestOnlyPurpose",
@@ -138,8 +137,7 @@ const PRELUDE_COMPONENT_TRAIT_NAMES = ["StorageAdapter", "DataPlane", "ControlPl
 
 /**
  * Names of the standard shape traits that derive context obligations
- * (PreserveInline, RefactorSensitive, ...). Used to tell a guard's protected
- * shape trait apart from a free-form protected-property label.
+ * (PreserveInline, RefactorSensitive, ...).
  */
 export const PRELUDE_SHAPE_TRAIT_NAMES = [
   ...new Set(PRELUDE_CONTEXT_REQUIREMENTS.map((rule) => rule.trait))

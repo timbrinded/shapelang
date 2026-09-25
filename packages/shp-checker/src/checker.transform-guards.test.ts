@@ -338,9 +338,8 @@ describe("Shape transform guards", () => {
   });
 
   test("modifying a trait to drop require_context relaxes the obligation", () => {
-    // The user obligation rule is appended to a flat list at lowering time;
-    // modifying the trait to an empty body must drop the stale rule so the
-    // obligation no longer fires.
+    // Context requirements live on the trait, and `modify trait` replaces the
+    // lowered trait, so an empty body must leave no stale obligation behind.
     const result = checkShapeSource(`
       module gateway
 
@@ -369,9 +368,9 @@ describe("Shape transform guards", () => {
   });
 
   test("explain lists a transform-only guard that has no reevaluation clause", () => {
-    // Regression: a context whose only guard action is `forbid transform` is
-    // enforced by `check` but was previously dropped from `shp explain`'s
-    // memory-guards section, which filtered on reevaluation guards alone.
+    // Regression: `check` enforces a context whose only guard action is
+    // `forbid transform`, so `shp explain` must list it under memory guards
+    // even though it has no reevaluation guard.
     const explanation = explainShapeModules(
       [requireParsed(transformGuardModel("ExtractHelper", "RenameSymbol"))],
       "Gateway.derivePolicyDecision"

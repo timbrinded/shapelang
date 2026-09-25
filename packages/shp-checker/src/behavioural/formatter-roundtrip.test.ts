@@ -1,24 +1,25 @@
 // #56 — Formatter idempotence, round-trip semantic preservation, and the
-// canonical (nested -> flat) on-disk form.
+// canonical grouped on-disk form.
 //
 // The vision: Shape has ONE on-disk form. Formatting is a total normalisation
 // that fixes a single canonical representative per parseable module, so reviews
-// and CI diffs stay stable, and rationale/memory grouping collapses to flat
-// members. We pin that as algebraic laws over a real corpus rather than a single
-// hand-written golden snapshot:
+// and CI diffs stay stable. Rationale and memory guard members take one form:
+// grouped `who`/`when`/`protects`/`guards` blocks. These tests pin that as
+// algebraic laws over a real corpus rather than a single hand-written golden
+// snapshot:
 //   - idempotence: format is a fixed point  (format∘format == format)
 //   - round-trip:  format changes no semantics (same sorted diagnostic kinds)
 // plus a negative control proving the laws can fail.
 //
 // Anchors:
-//   - shape/tooling.shape:595 memory FormatterCanonicalDiffs
+//   - shape/tooling.shape memory FormatterCanonicalDiffs
 //     ("Formatter ordering and indentation keep Shape files reviewable and
-//      stable in diffs."; protects shape CanonicalFormatting)
-//   - docs-site/src/content/docs/inside-shape/design-rationale.md:120
-//     (structure is preserved/derivable; "Where would a future formatter put
+//      stable in diffs"; protects shape CanonicalFormatting)
+//   - docs-site/src/content/docs/inside-shape/design-rationale.md
+//     (explicit syntax keeps structure visible; "Where would the formatter put
 //      evidence?")
-//   - specs/TODO.md:41 + specs/shape-memory-guards-implementation-spec.md:432,2203
-//     (the nested what/why/how/who/when grouping block is an unbuilt TODO).
+//   - docs-site/src/content/docs/reference/language-syntax.md (grouped guard
+//     members are the single canonical syntax; `shp fmt` always emits them).
 
 import { describe, expect, test } from "bun:test";
 import { readFileSync } from "node:fs";
@@ -31,9 +32,10 @@ import { diagnosticKinds, lockedIntended, parseModuleOrThrow, shouldBe } from ".
 
 const repoRoot = resolve(import.meta.dir, "../../../..");
 
-// Every declaration keyword the language reference teaches. Invariant 3 asserts
-// the corpus actually exercises each, so invariants 1 and 2 are not vacuous
-// (they would pass trivially on a corpus of, say, bare modules).
+// Declaration keywords from the grammar's `Declaration` union, except `role`
+// and `policy`. The corpus-coverage test asserts the corpus exercises each, so
+// the idempotence and round-trip tests are not vacuous (they would pass
+// trivially on a corpus of, say, bare modules).
 const DECLARATION_KEYWORDS = [
   "resource",
   "trait",
@@ -51,9 +53,10 @@ const DECLARATION_KEYWORDS = [
 ] as const;
 
 /**
- * The corpus: every tracked `.shape` fixture plus Shape's own self-model. These
- * are real, reviewed inputs — not strings authored to flatter the formatter — so
- * the laws below are tested against the genuine declaration surface.
+ * The corpus: every `.shape` file under fixtures/ plus the top-level
+ * shape/*.shape self-model. These are real, reviewed inputs, not strings
+ * authored to flatter the formatter, so the laws below are tested against the
+ * genuine declaration surface.
  */
 async function loadCorpus(): Promise<{ path: string; source: string }[]> {
   const paths: string[] = [];
@@ -97,10 +100,9 @@ describe("#56 formatter idempotence, round-trip, canonical flat form", () => {
           expect(twice.formatted).toBe(once.formatted);
         }
       }
-      // Non-vacuity: the corpus must really format a large number of files, or
-      // an empty/degenerate corpus would make idempotence trivially "hold".
+      // Non-vacuity: the corpus must really format at least 15 files, or an
+      // empty/degenerate corpus would make idempotence trivially "hold".
       expect(formatted).toBeGreaterThanOrEqual(15);
-      // Sanity that the count split is real, not an accident of a smaller set.
       expect(formatted + skipped).toBe(corpus.length);
     }
   );
@@ -117,9 +119,9 @@ describe("#56 formatter idempotence, round-trip, canonical flat form", () => {
         if (!formatResult.ok) {
           continue;
         }
-        // Both the original and its formatted form must parse for a meaningful
-        // round-trip; the formatter only emits parseable text, so a parse
-        // failure on the formatted side would itself be a real defect.
+        // Only pairs where both the original and its formatted form parse are
+        // compared. The formatter should emit only parseable text, but this
+        // loop skips, rather than fails, a formatted output that does not parse.
         const originalParse = parseShapeModule(source, path);
         const formattedParse = parseShapeModule(formatResult.formatted, path);
         if (!originalParse.ok || !formattedParse.ok) {
@@ -183,9 +185,9 @@ describe("#56 formatter idempotence, round-trip, canonical flat form", () => {
         }
       }
 
-      // The flat member form is no longer a parse-level construct: a bare
-      // `owner`/`guards`/`protects`/`review_by` member outside a block is
-      // rejected.
+      // The grammar has no flat member form: a bare
+      // `owner`/`guards`/`protects`/`review_by` member outside its block does
+      // not parse.
       const flatForm = [
         "module m",
         "",
@@ -200,11 +202,11 @@ describe("#56 formatter idempotence, round-trip, canonical flat form", () => {
   );
 
   // NEGATIVE CONTROL — proves the canonicalisation and idempotence laws above
-  // can FAIL, so a green suite means something. We deliberately reformat a known-good
-  // fixture (reordered members, extra blank lines, odd indentation) in a way
-  // that still PARSES, and assert the formatter collapses it onto the exact
-  // canonical representative. We do NOT mutate the shared fixture on disk — the
-  // mutant is constructed in-memory here (agents run concurrently).
+  // can FAIL, so a green suite means something. A known-good fixture is
+  // deliberately misformatted (reordered members, extra blank lines, odd
+  // indentation) in a way that still PARSES, and the formatter must collapse
+  // it onto the exact canonical representative. The mutant is built in memory;
+  // the shared fixture on disk is never modified.
   test(
     lockedIntended(
       "negative control: a badly-formatted-but-parseable variant normalises to the canonical form, and a stray-newline regression would be caught",
@@ -221,9 +223,8 @@ describe("#56 formatter idempotence, round-trip, canonical flat form", () => {
       }
 
       // The planted mutant: members reordered (grants before owns), doubled
-      // blank lines, deep/odd indentation, and a trailing blank line. It must
-      // still parse — otherwise we would be testing the parser, not the
-      // formatter's normalisation.
+      // blank lines, and deep/odd indentation. It must still parse; otherwise
+      // the test would exercise the parser, not the formatter's normalisation.
       const misformattedVariant = [
         "module audit",
         "",

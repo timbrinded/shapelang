@@ -1,17 +1,16 @@
 // #55 — Determinism + the no-clock-in-checker law.
 //
 // Vision anchors:
-//   - docs-site/src/content/docs/inside-shape/checker-pipeline.md: "the same
-//     set of `.shape` files and changed-file inputs should always produce the
-//     same facts, the same rule decisions, and the same diagnostics."
-//   - shape/checker.shape FinalForbidStrength / HypercycleWitness clauses
-//     require deterministic resolution and a deterministic witness path.
-//   - shape/tooling.shape: the clock is a CLI-boundary concern; the library
-//     checker reads no wall clock (no Date.now / new Date in checker.ts).
+//   - docs-site/src/content/docs/inside-shape/checker-pipeline.md: "The same
+//     `.shape` files and check options produce the same lowered model, facts,
+//     and diagnostics."
+//   - shape/checker.shape memories FinalForbidPrecedence and HypercycleWitness
+//     require deterministic target resolution and a deterministic witness path.
+//   - shape/tooling.shape memory ClockReadAtCliBoundary: the clock is read only
+//     at the CLI boundary; the library checker reads no wall clock (no
+//     Date.now / new Date in checker.ts).
 //
-// Each invariant is a SEPARATE test. Expected values were derived by running a
-// throwaway scratch against the real API (checkShapeModules, graph*, stats*,
-// explain*, list*), not by guessing. The clock invariant carries an in-test
+// Each invariant is a SEPARATE test. The clock invariant carries an in-test
 // negative control (clockStamp) proving the two-clock harness can catch a
 // clock-dependent function, so it is not a value-compared-to-itself tautology.
 
@@ -46,13 +45,14 @@ const repoRoot = resolve(import.meta.dir, "../../../..");
 //    checker emits a `guarded_shape_changed` obligation (non-trivial output);
 //  - a top-level `calls` relation, so the hypergraph / stats / explain surfaces
 //    have an edge to render;
-//  - two resources, one of which is isolated, so stats has structure;
+//  - two resources that no relation touches, so stats reports isolated
+//    vertices;
 //  - a second component (Audit) whose RefactorSensitive fn has no memory and
 //    `effects unknown`, adding two more diagnostics anchored to a DIFFERENT
 //    declaration — so the permutation test exercises multi-diagnostic ordering
 //    rather than passing vacuously on a single-diagnostic model.
-// Built inline (per the epic's suggestion) rather than from a shared fixture so
-// the declaration-order-permutation test can reorder these exact declarations.
+// Built inline rather than from a shared fixture so the
+// declaration-order-permutation test can reorder these exact declarations.
 const DECLARATIONS = {
   resourceLedger: "resource Ledger",
   resourceCatalog: "resource Catalog",
@@ -128,9 +128,9 @@ function sourceFromOrder(order: readonly (keyof typeof DECLARATIONS)[]): string 
 }
 
 const MODEL_SOURCE = sourceFromOrder(NATURAL_ORDER);
-// The symbol whose `explain` output we pin. "Store" resolves unambiguously to
-// the one component named Store; derived via scratch to render grants +
-// functions + the calls relation.
+// The symbol passed to `explain`. "Store" resolves unambiguously to the one
+// component named Store, whose explanation renders its grants, functions, and
+// the calls relation.
 const EXPLAIN_SYMBOL = "Store";
 
 describe("#55 determinism + no-clock-in-checker", () => {
@@ -141,13 +141,13 @@ describe("#55 determinism + no-clock-in-checker", () => {
     ),
     () => {
       // Non-circular: each surface is run twice over freshly parsed modules, so
-      // we are not re-reading one cached in-memory value. Parsing twice also
-      // rules out parser-output object identity leaking determinism.
+      // no single cached in-memory value is re-read, and parser-output object
+      // identity cannot make the runs look deterministic.
       const moduleA = parseModuleOrThrow(MODEL_SOURCE);
       const moduleB = parseModuleOrThrow(MODEL_SOURCE);
 
-      // Sanity: the model actually produces the obligation + graph we rely on,
-      // so this is not a vacuous "two empty strings match" check.
+      // Sanity: the model actually produces the obligation we rely on, so this
+      // is not a vacuous "two empty strings match" check.
       const probe = checkShapeModules([moduleA]);
       expect(requireDiagnostic(probe, "guarded_shape_changed").target).toBe(
         "shop::Store.recordSale"
@@ -194,8 +194,9 @@ describe("#55 determinism + no-clock-in-checker", () => {
     ),
     () => {
       // A non-trivial permutation: reverse the natural order. This moves the
-      // `change` and `memory` BEFORE the `component`/`relation` they reference,
-      // so any order-dependence in lowering or rule evaluation would surface.
+      // `change` and `memory` BEFORE the component they reference, and the
+      // relation before the components it connects, so any order-dependence in
+      // lowering or rule evaluation would surface.
       const permutedOrder = [...NATURAL_ORDER].reverse();
       expect(permutedOrder).not.toEqual([...NATURAL_ORDER]); // guard: real reorder
 
@@ -213,10 +214,8 @@ describe("#55 determinism + no-clock-in-checker", () => {
       // not leak source ordering.
       expect(render(permuted)).toBe(render(natural));
 
-      // NEGATIVE CONTROL: a detector that DID depend on declaration order would
-      // be caught here. Prove the comparison is real by showing the two sources
-      // are genuinely different bytes (so equality of OUTPUT is a property of
-      // the checker, not of identical inputs).
+      // Premise guard: the two sources are genuinely different bytes, so equal
+      // OUTPUT is a property of the checker, not of identical inputs.
       expect(sourceFromOrder(permutedOrder)).not.toBe(MODEL_SOURCE);
     }
   );
@@ -257,8 +256,8 @@ describe("#55 determinism + no-clock-in-checker", () => {
 
       // Two arbitrary, distinct wall-clock instants (derived as UTC epochs from
       // RealDate so the patch math is independent of the local timezone).
-      const CLOCK_A = RealDate.UTC(1997, 6, 4, 13, 45, 1); // wild value A
-      const CLOCK_B = RealDate.UTC(2031, 0, 19, 3, 14, 7); // wild value B (distinct)
+      const CLOCK_A = RealDate.UTC(1997, 6, 4, 13, 45, 1);
+      const CLOCK_B = RealDate.UTC(2031, 0, 19, 3, 14, 7);
       expect(CLOCK_A).not.toBe(CLOCK_B); // guard: the two clocks really differ
 
       let checkerUnderClockA: string;
@@ -324,16 +323,13 @@ describe("#55 determinism + no-clock-in-checker", () => {
       }
     ),
     () => {
-      // Recon (checker.ts, parser.ts, formatter.ts, prelude.ts, shp-cli) found
-      // NO exported API that validates review_by / freshness dates as ISO
-      // YYYY-MM-DD. The grammar types `review_by` as a bare STRING
-      // (shape.langium ReviewByDecl), the checker stores it verbatim
-      // (reviewBy?: string), and the formatter/list surfaces echo it back. So
-      // there is no clean library API to test "valid passes / non-ISO rejected"
-      // against. Per the epic, do not invent one — this test documents where the
-      // value lives and asserts the IDEAL is currently unmet (a non-ISO date is
-      // accepted silently). When/if a validation API lands, this `shouldBe`
-      // becomes a `lockedIntended` and flips to asserting rejection.
+      // The grammar types `review_by` as a bare STRING (shape.langium
+      // ReviewByDecl), the checker stores it verbatim (reviewBy?: string), and
+      // the formatter/list surfaces echo it back. checkFreshness uses
+      // isIsoCalendarDate only to skip non-ISO review_by values, so no checker
+      // path rejects them. This test documents that the IDEAL is currently
+      // unmet: a non-ISO date is accepted silently. If rejection lands, the
+      // `shouldBe` todo below becomes a `lockedIntended` test asserting it.
       const nonIsoReviewBy = "banana-not-a-date"; // deliberately not YYYY-MM-DD
       const source = [
         "module rb",
@@ -361,8 +357,8 @@ describe("#55 determinism + no-clock-in-checker", () => {
 
       const result = checkSource(source);
 
-      // CURRENT behaviour (characterized, derived via scratch): the non-ISO
-      // review_by is accepted with zero diagnostics and echoed back verbatim.
+      // CURRENT behaviour: the non-ISO review_by is accepted with zero
+      // diagnostics and echoed back verbatim.
       expect(result.ok).toBe(true);
       expect(diagnosticKinds(result)).toEqual([]);
       expect(listMemoryGuardsShapeModules([parseModuleOrThrow(source)])).toContain(
@@ -374,25 +370,27 @@ describe("#55 determinism + no-clock-in-checker", () => {
       // A memory whose target function does not exist is rejected, confirming
       // the checker exercises this declaration rather than ignoring it.
       const brokenTarget = source.replace("fn C.f", "fn C.doesNotExist");
-      // It parses (parseModuleOrThrow would throw otherwise); the failure is
-      // semantic — the guarded fn target no longer resolves.
+      // `replace` changes only the first occurrence, the
+      // `RefactorConstraint<fn C.f>` type argument. The result still parses
+      // (parseModuleOrThrow would throw otherwise); the failure is semantic
+      // because that fn target no longer resolves.
       const brokenResult = checkShapeModules([parseModuleOrThrow(brokenTarget)]);
       expect(brokenResult.ok).toBe(false);
       expect(diagnosticKinds(brokenResult).length).toBeGreaterThan(0);
     }
   );
 
-  // The unmet ideal, parked as a todo rather than a no-op `expect(false).toBe(false)`:
-  // were ISO validation a law, a non-ISO review_by would be rejected. Tracked
-  // for epic #55 invariant 5 / #34.
+  // The unmet ideal, kept as `test.todo` so it does not run: were ISO
+  // validation a law, a non-ISO review_by would be rejected. Tracked for epic
+  // #55 invariant 5 / #34.
   test.todo(
     shouldBe(
       "a non-ISO review_by date is rejected",
-      "concepts/unknowns-safety.md (uncertainty must be explicit); epic #55 invariant 5"
+      "concepts/effect-model.md (Unknown and complete effects); epic #55 invariant 5"
     ),
     () => {
-      // Were ISO validation a law this would hold; documented as the future
-      // assertion and NOT executed (no validation API exists today).
+      // The future assertion, NOT executed while no checker path rejects a
+      // non-ISO review_by.
       const result = checkSource(
         [
           "module rb",

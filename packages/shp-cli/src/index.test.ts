@@ -948,8 +948,8 @@ component AuditStore {
         tsxFile
       ]);
 
-      // foo.ts and foo.tsx both target foo.shape — an output-path collision that
-      // cannot be disambiguated (module-name collisions are now auto-resolved).
+      // foo.ts and foo.tsx both target foo.shape. The CLI disambiguates
+      // module-name collisions but rejects output-path collisions.
       expect(result.exitCode).toBe(2);
       expect(result.stderr).toContain("generated AST output path collision");
       expect(result.stderr).toContain("foo.ts");
