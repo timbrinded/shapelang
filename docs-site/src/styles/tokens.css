@@ -18,8 +18,7 @@
   --shape-radius: 8px;
 }
 
-:root[data-theme="dark"],
-:root[data-diagram-theme="site-dark"] {
+:root[data-theme="dark"] {
   --shape-blue: #42aee4;
   --shape-blue-soft: #0b2b3d;
   --shape-ink: #f6f9fb;

@@ -1,0 +1,118 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 608" role="img" aria-labelledby="t d">
+  <title id="t">Design memory: required context and guards</title>
+  <desc id="d">A shape trait requires a matching rationale or memory on every run, and separately a guard on that memory makes a change to the target require a valid reevaluation; neither clears a final forbid.</desc>
+  <style>
+    .paper{fill:#f6f4ee}.grid{stroke:#e6e1d4}.gridM{stroke:#dbd4c4}
+    .ink{fill:#1d2b34}.inkS{stroke:#1d2b34}.mute{fill:#5d6c74}.muteS{stroke:#8a959a}
+    .rule{stroke:#b8b09f}.card{fill:#fffdf8;stroke:#1d2b34}.band{fill:#0b6e99;fill-opacity:.1}
+    .blue{fill:#0b6e99}.blueS{stroke:#0b6e99}.pass{fill:#16734b}.passS{stroke:#16734b}
+    .warn{fill:#8f5a0c}.warnS{stroke:#b7791f}.fail{fill:#c23b32}.failS{stroke:#c23b32}.hatch{stroke:#c9c1ae}
+    .markBg{fill:#101820}.markA{fill:#45c4b0}.markB{fill:#f4b942}
+    .mono{font-family:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace}
+    .sans{font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+    @media (prefers-color-scheme:dark){
+      .paper{fill:#0c1a23}.grid{stroke:#13252f}.gridM{stroke:#1a303c}
+      .ink{fill:#dbe7ec}.inkS{stroke:#dbe7ec}.mute{fill:#8fa4ae}.muteS{stroke:#6f8792}
+      .rule{stroke:#35505e}.card{fill:#10222d;stroke:#dbe7ec}.band{fill:#5bb8e6;fill-opacity:.12}
+      .blue{fill:#5bb8e6}.blueS{stroke:#5bb8e6}.pass{fill:#46c28b}.passS{stroke:#46c28b}
+      .warn{fill:#e0a33a}.warnS{stroke:#e0a33a}.fail{fill:#ec6a5f}.failS{stroke:#ec6a5f}.hatch{stroke:#233946}
+      .markBg{fill:#dbe7ec}
+    }
+  </style>
+  <defs>
+    <pattern id="g" width="16" height="16" patternUnits="userSpaceOnUse"><path d="M16 0H0V16" fill="none" class="grid" stroke-width=".6"/></pattern>
+    <pattern id="gM" width="80" height="80" patternUnits="userSpaceOnUse"><path d="M80 0H0V80" fill="none" class="gridM" stroke-width=".8"/></pattern>
+    <pattern id="h" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path d="M0 0V7" class="hatch" stroke-width="1.1"/></pattern>
+    <marker id="aB" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1L9 5L0 9z" class="blue"/></marker>
+    <marker id="aF" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1L9 5L0 9z" class="fail"/></marker>
+    <marker id="dot" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6"><circle cx="5" cy="5" r="4" class="ink"/></marker>
+  </defs>
+
+  <!-- plate -->
+  <rect width="960" height="608" class="paper"/>
+  <rect width="960" height="608" fill="url(#g)"/>
+  <rect width="960" height="608" fill="url(#gM)"/>
+  <rect x="10.5" y="10.5" width="939" height="587" fill="none" class="inkS" stroke-width="1"/>
+  <rect x="14.5" y="14.5" width="931" height="579" fill="none" class="rule" stroke-width=".6"/>
+
+  <!-- lane 1: required context -->
+  <text x="40" y="52" class="mono blue" font-size="11" letter-spacing="1.6">REQUIRED CONTEXT · EVERY RUN</text>
+  <text x="40" y="76" class="sans ink" font-size="19" font-weight="650">A shape trait requires matching context</text>
+
+  <rect x="40" y="96" width="432" height="40" class="card" stroke-width="1.2"/>
+  <text x="56" y="121" class="mono ink" font-size="12.5">fn Gateway.derivePolicyDecision : <tspan class="blue">RefactorSensitive</tspan></text>
+
+  <path d="M96 136V172" class="blueS" stroke-width="1.4" marker-end="url(#aB)"/>
+  <text x="108" y="159" class="mono blue" font-size="11.5">requires</text>
+
+  <path d="M472 116H630" class="failS" stroke-width="1.4"/>
+  <text x="486" y="107" class="mono fail" font-size="11.5">no matching memory</text>
+  <circle cx="640" cy="116" r="10" fill="none" class="failS" stroke-width="1.6"/>
+  <path d="M635 111l10 10M645 111l-10 10" class="failS" stroke-width="1.6"/>
+  <text x="660" y="120" class="mono fail" font-size="12.5">error: missing required context</text>
+
+  <!-- shared memory -->
+  <rect x="40" y="176" width="720" height="112" class="card" stroke-width="1.4"/>
+  <rect x="40.7" y="234" width="718.6" height="24" class="band"/>
+  <g class="mono ink" font-size="12">
+    <text x="56" y="204">memory DecisionRefactorConstraint : <tspan class="blue">RefactorConstraint&lt;fn Gateway.derivePolicyDecision&gt;</tspan> {</text>
+    <text x="72" y="226">applies_to fn Gateway.derivePolicyDecision</text>
+    <text x="72" y="250">guards { <tspan class="blue">on_change require ReEvaluation&lt;Self&gt;</tspan> }</text>
+    <text x="56" y="274">}</text>
+  </g>
+  <g class="mono mute" font-size="11.5">
+    <text x="784" y="226">one memory,</text>
+    <text x="784" y="242">both lanes</text>
+  </g>
+
+  <!-- lane 2: guard -->
+  <text x="40" y="324" class="mono blue" font-size="11" letter-spacing="1.6">GUARD · WHEN A CHANGE BLOCK TOUCHES THE TARGET</text>
+  <text x="40" y="348" class="sans ink" font-size="19" font-weight="650">A guarded change requires a reevaluation</text>
+
+  <rect x="40" y="368" width="480" height="100" class="card" stroke-width="1.2"/>
+  <g class="mono ink" font-size="12">
+    <text x="56" y="392">change RefactorDecision {</text>
+    <text x="72" y="412">modify fn Gateway.derivePolicyDecision : <tspan class="blue">RefactorSensitive</tspan></text>
+    <text x="88" y="432">effects complete { Read&lt;PolicySnapshot&gt; }</text>
+    <text x="56" y="452">}</text>
+  </g>
+  <text x="40" y="492" class="mono mute" font-size="11.5">editing the fn in place creates no change event</text>
+
+  <path d="M480 368V262" class="blueS" stroke-width="1.4" marker-end="url(#aB)"/>
+  <text x="492" y="314" class="mono blue" font-size="11.5">modifies the guarded target</text>
+
+  <path d="M736 258V364" class="blueS" stroke-width="1.4" marker-end="url(#aB)"/>
+  <text x="748" y="314" class="mono blue" font-size="11.5">requires</text>
+
+  <rect x="552" y="368" width="368" height="116" class="card warnS" stroke-width="1.4" stroke-dasharray="5 3"/>
+  <g class="mono ink" font-size="12">
+    <text x="568" y="392">reevaluation DecisionShapeRechecked {</text>
+    <text x="584" y="412">satisfies memory DecisionRefactorConstraint</text>
+    <text x="568" y="468">}</text>
+  </g>
+  <g class="mono mute" font-size="11.5">
+    <text x="584" y="432">// + outcome, summary, evidence,</text>
+    <text x="584" y="448">// reviewer, decided_on</text>
+  </g>
+
+  <path d="M600 484V512" class="failS" stroke-width="1.4"/>
+  <text x="614" y="502" class="mono fail" font-size="11.5">missing or invalid</text>
+  <circle cx="600" cy="522" r="10" fill="none" class="failS" stroke-width="1.6"/>
+  <path d="M595 517l10 10M605 517l-10 10" class="failS" stroke-width="1.6"/>
+  <text x="620" y="526" class="mono fail" font-size="12.5">error: guarded shape changed</text>
+
+  <!-- final forbid footer -->
+  <rect x="40.5" y="548.5" width="400" height="34" fill="url(#h)"/>
+  <rect x="40.5" y="548.5" width="400" height="34" fill="none" class="failS" stroke-width="1.2"/>
+  <text x="56" y="570" class="mono fail" font-size="12">neither lane clears a forbid final effect</text>
+
+  <!-- title block -->
+  <g transform="translate(700 548)">
+    <rect x=".5" y=".5" width="235" height="34" fill="none" class="inkS" stroke-width="1"/>
+    <path d="M40 .5V34.5" class="inkS" stroke-width="1"/>
+    <rect x="9" y="6" width="23" height="23" rx="5" class="markBg"/>
+    <path d="M14.8 12.5h5.8l5.8 5-5.8 5h-5.8l5.8-5z" class="markA"/>
+    <path d="M20.6 12.5h5.8v10h-5.8l5.8-5z" class="markB"/>
+    <text x="52" y="22" class="mono ink" font-size="11" letter-spacing=".6">design memory</text>
+  </g>
+</svg>

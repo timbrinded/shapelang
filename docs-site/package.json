@@ -8,21 +8,17 @@
     "check": "astro check && bun run verify:shape && bun run build",
     "dev": "astro dev",
     "preview": "astro preview",
-    "verify:shape": "bun scripts/verify-shape-blocks.ts",
-    "infographics": "bun scripts/infographics/frames.mjs && bun scripts/infographics/render.mjs"
+    "verify:shape": "bun scripts/verify-shape-blocks.ts"
   },
   "dependencies": {
     "@astrojs/starlight": "^0.39.2",
-    "astro": "^6.3.3",
-    "mermaid": "^11.15.0"
+    "astro": "^6.3.3"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.9",
     "@fontsource-variable/geist": "^5.2.8",
     "@fontsource-variable/geist-mono": "^5.2.8",
-    "@hugeicons/core-free-icons": "^4.2.3",
     "@shape/shp-checker": "workspace:*",
-    "puppeteer-core": "^25.4.0",
     "typescript": "^6.0.3"
   }
 }

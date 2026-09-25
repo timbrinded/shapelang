@@ -1,0 +1,146 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 608" role="img" aria-labelledby="t d">
+  <title id="t">How relation kinds become traversal steps</title>
+  <desc id="d">Relation kinds turn into directed traversal steps. calls GatewayCallsAudit gives the step Gateway to AuditStore, callbacks AuditCallsGateway gives AuditStore to Gateway, coordinated_call AuditWritePath gives one step per consecutive pair, Gateway to AuditStore and AuditStore to AuditEvent, and the custom kind generated_from gives no steps. The rule no_runtime_cycle forbids a hypercycle over calls or callbacks, so shp check reports one shortest witness: error: forbidden hypercycle, listing callbacks AuditCallsGateway and calls GatewayCallsAudit, witness AuditStore to Gateway to AuditStore. The coordinated_call steps are outside the rule's kinds.</desc>
+  <style>
+    .paper{fill:#f6f4ee}.grid{stroke:#e6e1d4}.gridM{stroke:#dbd4c4}
+    .ink{fill:#1d2b34}.inkS{stroke:#1d2b34}.mute{fill:#5d6c74}.muteS{stroke:#8a959a}
+    .rule{stroke:#b8b09f}.card{fill:#fffdf8;stroke:#1d2b34}.band{fill:#0b6e99;fill-opacity:.1}
+    .blue{fill:#0b6e99}.blueS{stroke:#0b6e99}.pass{fill:#16734b}.passS{stroke:#16734b}
+    .warn{fill:#8f5a0c}.warnS{stroke:#b7791f}.fail{fill:#c23b32}.failS{stroke:#c23b32}.hatch{stroke:#c9c1ae}
+    .markBg{fill:#101820}.markA{fill:#45c4b0}.markB{fill:#f4b942}
+    .mono{font-family:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace}
+    .sans{font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+    @media (prefers-color-scheme:dark){
+      .paper{fill:#0c1a23}.grid{stroke:#13252f}.gridM{stroke:#1a303c}
+      .ink{fill:#dbe7ec}.inkS{stroke:#dbe7ec}.mute{fill:#8fa4ae}.muteS{stroke:#6f8792}
+      .rule{stroke:#35505e}.card{fill:#10222d;stroke:#dbe7ec}.band{fill:#5bb8e6;fill-opacity:.12}
+      .blue{fill:#5bb8e6}.blueS{stroke:#5bb8e6}.pass{fill:#46c28b}.passS{stroke:#46c28b}
+      .warn{fill:#e0a33a}.warnS{stroke:#e0a33a}.fail{fill:#ec6a5f}.failS{stroke:#ec6a5f}.hatch{stroke:#233946}
+      .markBg{fill:#dbe7ec}
+    }
+  </style>
+  <defs>
+    <pattern id="g" width="16" height="16" patternUnits="userSpaceOnUse"><path d="M16 0H0V16" fill="none" class="grid" stroke-width=".6"/></pattern>
+    <pattern id="gM" width="80" height="80" patternUnits="userSpaceOnUse"><path d="M80 0H0V80" fill="none" class="gridM" stroke-width=".8"/></pattern>
+    <pattern id="h" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path d="M0 0V7" class="hatch" stroke-width="1.1"/></pattern>
+    <marker id="aB" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1L9 5L0 9z" class="blue"/></marker>
+    <marker id="aF" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1L9 5L0 9z" class="fail"/></marker>
+    <marker id="dot" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6"><circle cx="5" cy="5" r="4" class="ink"/></marker>
+    <marker id="aM" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1L9 5L0 9z" class="mute"/></marker>
+  </defs>
+
+  <!-- plate -->
+  <rect width="960" height="608" class="paper"/>
+  <rect width="960" height="608" fill="url(#g)"/>
+  <rect width="960" height="608" fill="url(#gM)"/>
+  <rect x="10.5" y="10.5" width="939" height="587" fill="none" class="inkS" stroke-width="1"/>
+  <rect x="14.5" y="14.5" width="931" height="579" fill="none" class="rule" stroke-width=".6"/>
+
+  <text x="40" y="52" class="mono blue" font-size="11" letter-spacing="1.6">RELATIONS AND GRAPH RULES</text>
+  <text x="40" y="76" class="sans ink" font-size="19" font-weight="650">Relation kinds become traversal steps</text>
+
+  <!-- declarations table -->
+  <rect x="40" y="104" width="584" height="176" class="card" stroke-width="1.4"/>
+  <rect x="40.7" y="104.7" width="582.6" height="23.3" class="band"/>
+  <g class="mono mute" font-size="11">
+    <text x="56" y="120">kind</text>
+    <text x="200" y="120">relation</text>
+    <text x="344" y="120">connects</text>
+    <text x="672" y="120">traversal steps</text>
+  </g>
+  <path d="M41 160H623M41 192H623M41 248H623" class="rule" stroke-width=".8"/>
+  <g class="mono ink" font-size="11.5">
+    <text x="56" y="148" class="blue">calls</text>
+    <text x="200" y="148">GatewayCallsAudit</text>
+    <text x="344" y="148">Gateway -&gt; AuditStore</text>
+    <text x="56" y="180" class="blue">callbacks</text>
+    <text x="200" y="180">AuditCallsGateway</text>
+    <text x="344" y="180">AuditStore -&gt; Gateway</text>
+    <text x="56" y="214" class="blue">coordinated_call</text>
+    <text x="200" y="214">AuditWritePath</text>
+    <text x="344" y="214">Gateway -&gt; AuditStore -&gt; AuditEvent</text>
+    <text x="344" y="234" class="mute" font-size="11">one step per consecutive pair</text>
+    <text x="56" y="268">generated_from</text>
+    <text x="200" y="268">AuditEventLineage</text>
+    <text x="344" y="268">AuditEvent -&gt; AuditStore</text>
+  </g>
+
+  <!-- steps each declaration contributes -->
+  <g fill="none" class="blueS" stroke-width="1.3" marker-end="url(#aB)">
+    <path d="M624 144H668"/>
+    <path d="M624 176H668"/>
+    <path d="M624 220C646 220 646 208 668 208"/>
+    <path d="M624 220C646 220 646 234 668 234"/>
+  </g>
+  <g class="mono ink" font-size="11.5">
+    <rect x="672" y="133" width="216" height="22" class="card" stroke-width="1"/>
+    <text x="684" y="148">Gateway</text><text x="804" y="148">AuditStore</text>
+    <rect x="672" y="165" width="216" height="22" class="card" stroke-width="1"/>
+    <text x="684" y="180">AuditStore</text><text x="804" y="180">Gateway</text>
+    <rect x="672" y="197" width="216" height="22" class="card" stroke-width="1"/>
+    <text x="684" y="212">Gateway</text><text x="804" y="212">AuditStore</text>
+    <rect x="672" y="223" width="216" height="22" class="card" stroke-width="1"/>
+    <text x="684" y="238">AuditStore</text><text x="804" y="238">AuditEvent</text>
+  </g>
+  <path d="M764 144H788M764 176H788M764 208H788M764 234H788" fill="none" class="blueS" stroke-width="1.2"/>
+  <g class="blue"><path d="M786 140.5l7 3.5-7 3.5z"/><path d="M786 172.5l7 3.5-7 3.5z"/><path d="M786 204.5l7 3.5-7 3.5z"/><path d="M786 230.5l7 3.5-7 3.5z"/></g>
+  <path d="M624 264H656M656 258V270" fill="none" class="muteS" stroke-width="1.3"/>
+  <text x="672" y="268" class="mono mute" font-size="11.5">no traversal steps (custom kind)</text>
+
+  <!-- rule -->
+  <rect x="40" y="320" width="376" height="88" class="card" stroke-width="1.4"/>
+  <rect x="40.7" y="320.7" width="374.6" height="23.3" class="band"/>
+  <text x="52" y="337" class="mono blue" font-size="12">graph rule</text>
+  <g class="mono ink" font-size="12">
+    <text x="52" y="362">rule no_runtime_cycle {</text>
+    <text x="68" y="380">forbid hypercycle over <tspan class="fail">calls or callbacks</tspan></text>
+    <text x="52" y="398">}</text>
+  </g>
+
+  <!-- output -->
+  <rect x="40" y="424" width="376" height="132" class="card" stroke-width="1.4"/>
+  <rect x="40.7" y="424.7" width="374.6" height="23.3" class="band"/>
+  <text x="52" y="441" class="mono blue" font-size="12">shp check · stderr <tspan class="mute" font-size="11">(excerpt)</tspan></text>
+  <g class="mono ink" font-size="11.5">
+    <text x="52" y="468" class="fail">error: forbidden hypercycle</text>
+    <text x="52" y="486">rule no_runtime_cycle rejects this hypercycle:</text>
+    <text x="68" y="504">callbacks AuditCallsGateway</text>
+    <text x="68" y="522">calls GatewayCallsAudit</text>
+    <text x="52" y="540">witness: AuditStore -&gt; Gateway -&gt; AuditStore</text>
+  </g>
+
+  <!-- step graph -->
+  <text x="464" y="337" class="mono mute" font-size="11">step graph</text>
+  <path d="M532 400C556 360 652 360 676 400" fill="none" class="failS" stroke-width="1.6" marker-end="url(#aF)"/>
+  <path d="M676 428C652 468 556 468 532 428" fill="none" class="failS" stroke-width="1.6" marker-end="url(#aF)"/>
+  <g fill="none" class="muteS" stroke-width="1.3" marker-end="url(#aM)">
+    <path d="M552 414H652"/>
+    <path d="M760 414H812"/>
+  </g>
+  <g class="mono" font-size="12.5" text-anchor="middle">
+    <rect x="464" y="400" width="88" height="28" class="card" stroke-width="1.2"/>
+    <text x="508" y="418" class="ink">Gateway</text>
+    <rect x="656" y="400" width="104" height="28" class="card" stroke-width="1.2"/>
+    <text x="708" y="418" class="ink">AuditStore</text>
+    <rect x="816" y="400" width="104" height="28" class="card" stroke-width="1.2"/>
+    <text x="868" y="418" class="ink">AuditEvent</text>
+  </g>
+  <g fill="none" class="failS" stroke-width="1.4"><circle cx="604" cy="390" r="8"/><path d="M600 386l8 8M608 386l-8 8"/></g>
+  <g class="mono fail" font-size="11.5" text-anchor="middle">
+    <text x="604" y="356">calls GatewayCallsAudit</text>
+    <text x="604" y="482">callbacks AuditCallsGateway</text>
+  </g>
+  <path d="M464 512H488" class="muteS" stroke-width="1.3"/>
+  <text x="496" y="516" class="mono mute" font-size="11.5">coordinated_call steps: not in this rule's kinds</text>
+  <text x="464" y="534" class="mono mute" font-size="11.5">one shortest witness per forbid hypercycle</text>
+
+  <!-- title block -->
+  <g transform="translate(700 548)">
+    <rect x=".5" y=".5" width="235" height="34" fill="none" class="inkS" stroke-width="1"/>
+    <path d="M40 .5V34.5" class="inkS" stroke-width="1"/>
+    <rect x="9" y="6" width="23" height="23" rx="5" class="markBg"/>
+    <path d="M14.8 12.5h5.8l5.8 5-5.8 5h-5.8l5.8-5z" class="markA"/>
+    <path d="M20.6 12.5h5.8v10h-5.8l5.8-5z" class="markB"/>
+    <text x="52" y="22" class="mono ink" font-size="11" letter-spacing=".6">traversal</text>
+  </g>
+</svg>
