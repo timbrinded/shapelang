@@ -16,7 +16,9 @@ if [ -n "${GITHUB_BASE_REF:-}" ]; then
   git fetch --no-tags --prune origin "$GITHUB_BASE_REF"
   base="$(git merge-base "origin/$GITHUB_BASE_REF" HEAD)"
 elif [ -n "${GITHUB_EVENT_BEFORE:-}" ] && [ "${GITHUB_EVENT_BEFORE:-}" != "0000000000000000000000000000000000000000" ]; then
-  base="$GITHUB_EVENT_BEFORE"
+  # After a force push the previous tip is not an ancestor of HEAD. Diff from
+  # their merge base, which is also the commit `--base-ref` resolves.
+  base="$(git merge-base "$GITHUB_EVENT_BEFORE" HEAD)"
 elif [ -n "${BASE_REF:-}" ] && git rev-parse --verify "origin/$BASE_REF" >/dev/null 2>&1; then
   base="$(git merge-base "origin/$BASE_REF" HEAD)"
 elif git rev-parse --verify origin/HEAD >/dev/null 2>&1; then

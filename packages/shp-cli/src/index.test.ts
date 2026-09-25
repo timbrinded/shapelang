@@ -198,7 +198,8 @@ relation ReaderProvidesRecord {
       await mkdir(join(repo, "src/audit"), { recursive: true });
       await writeFile(join(repo, "shape/audit.shape"), attested);
       await writeFile(join(repo, "src/audit/purge.ts"), "export const purge = 1;\n");
-      await writeFile(join(baseDir, "audit.shape"), attested);
+      await mkdir(join(baseDir, "shape"));
+      await writeFile(join(baseDir, "shape/audit.shape"), attested);
       git(repo, ["init", "-q"]);
       git(repo, ["add", "."]);
       git(repo, [
@@ -211,28 +212,48 @@ relation ReaderProvidesRecord {
         "base"
       ]);
 
-      // The later change edits the governed source and the .shape file, but only
-      // carries the earlier attestation over.
+      // The later change edits the governed source and moves the model to a new
+      // .shape file, but only carries the earlier attestation over. Naming just
+      // the new file must still find the attestation in the base's old file.
       await writeFile(join(repo, "src/audit/purge.ts"), "export const purge = 2;\n");
-      await writeFile(join(repo, "shape/audit.shape"), `${attested}\nresource AuditExport\n`);
-      await writeFile(join(repo, "changed.txt"), "src/audit/purge.ts\nshape/audit.shape\n");
+      await rm(join(repo, "shape/audit.shape"));
+      await writeFile(join(repo, "shape/moved.shape"), `${attested}\nresource AuditExport\n`);
+      await writeFile(
+        join(repo, "changed.txt"),
+        "src/audit/purge.ts\nshape/audit.shape\nshape/moved.shape\n"
+      );
 
-      const fallback = await runCli(["check", "--changed-files", "changed.txt"], cliPath, repo);
-      expect(fallback.exitCode).toBe(0);
-
-      for (const baseFlags of [
-        ["--base-ref", "HEAD"],
-        ["--base-model", baseDir]
-      ]) {
-        const result = await runCli(
-          ["check", "--changed-files", "changed.txt", ...baseFlags],
+      for (const files of [[], ["shape/moved.shape"]]) {
+        const fallback = await runCli(
+          ["check", "--changed-files", "changed.txt", ...files],
           cliPath,
           repo
         );
-        expect(result.exitCode).toBe(1);
-        expect(result.stderr).toContain("governed source changed without current Shape update");
-        expect(result.stderr).toContain("warning: stale attestation");
+        expect(fallback.exitCode).toBe(0);
+
+        for (const baseFlags of [
+          ["--base-ref", "HEAD"],
+          ["--base-model", baseDir]
+        ]) {
+          const result = await runCli(
+            ["check", "--changed-files", "changed.txt", ...baseFlags, ...files],
+            cliPath,
+            repo
+          );
+          expect(result.exitCode).toBe(1);
+          expect(result.stderr).toContain("governed source changed without current Shape update");
+          expect(result.stderr).toContain("warning: stale attestation");
+        }
       }
+
+      // A directory without the repository layout would otherwise be an empty base.
+      const misplaced = await runCli(
+        ["check", "--changed-files", "changed.txt", "--base-model", join(baseDir, "shape")],
+        cliPath,
+        repo
+      );
+      expect(misplaced.exitCode).toBe(2);
+      expect(misplaced.stderr).toContain("holds no .shape files at their repository paths");
     } finally {
       await rm(repo, { recursive: true, force: true });
       await rm(baseDir, { recursive: true, force: true });

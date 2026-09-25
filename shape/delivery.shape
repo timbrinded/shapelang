@@ -515,7 +515,7 @@ component CiPipeline {
     }
   fn writeChangedFiles
     source sh("scripts/write-changed-files.sh")
-    description "Writes the files changed since the resolved base commit, and that base commit, so shape:ci compares attestations against the same range the changed files came from."
+    description "Writes the files changed since the resolved base commit, and that base commit, so shape:ci compares attestations against the same range the changed files came from; a push diffs from the merge base of the previous tip and HEAD, the commit --base-ref resolves."
     effects complete {
       Update<ChangeBaseRevision>
         evidence sh("scripts/write-changed-files.sh")

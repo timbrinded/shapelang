@@ -56,7 +56,7 @@ Parses the Shape model and runs every semantic check. With `--changed-files`, it
 | `--allow-unknown-effects` | Allow `effects unknown` as a non-fatal warning while validating drafts. See [Draft validation](#draft-validation). |
 | `--changed-files changed.txt` | Path to a newline-delimited changed-file list. Enables coverage and bindings. |
 | `--base-ref REF` | Compare attestations against the Shape model at the merge base of `REF` and `HEAD`, read from git. See [Base model](#base-model). |
-| `--base-model DIR` | Compare attestations against the `.shape` files in `DIR`. Cannot be combined with `--base-ref`. |
+| `--base-model DIR` | Compare attestations against a copy of the base model in `DIR`, kept at repository paths. Cannot be combined with `--base-ref`. |
 | `--as-of YYYY-MM-DD` | Freshness reference date (ISO `YYYY-MM-DD`); enforces stale design memory deterministically. See [Freshness](#freshness). |
 | `--strict-freshness` | Shorthand for `--as-of` today (UTC); fails when `review_by` is before today. |
 | `files...` | Shape files to read. Defaults to `shape/**/*.shape`. |
@@ -74,7 +74,7 @@ shp check --as-of 2026-05-30 shape/gateway.shape
 
 ### Base model
 
-With `--base-ref REF`, the CLI reads the `.shape` files at the merge base of `REF` and `HEAD` from git, skipping generated AST, and an attestation satisfies coverage or bindings only when its kind, path, and reason are new relative to them. Each attestation carried over unchanged is reported as `warning: stale attestation`, which does not fail the check. `--base-model DIR` does the same with `.shape` files that the caller extracted into `DIR`, for example with `git archive`.
+With `--base-ref REF`, the CLI reads the base model from git at the merge base of `REF` and `HEAD`: every `.shape` file under `shape/` except generated AST, plus the files named on the command line. It reads all of `shape/` even for a narrower check, so an attestation moved out of a file the check does not name is still found. An attestation satisfies coverage or bindings only when its kind, path, and reason are new relative to the base. Each attestation carried over unchanged is reported as `warning: stale attestation`, which does not fail the check. `--base-model DIR` reads the same paths from `DIR`, a copy of the base kept at repository paths, for example `git archive <base> shape | tar -x -C DIR`. A `DIR` with no `.shape` files at those paths exits `2`.
 
 Without either flag, an attestation counts whenever its `.shape` file is in the changed-file list, so an unrelated edit to that file revives every attestation in it. Pass a base in CI. If a base `.shape` file cannot be parsed, for example after a grammar change, the CLI prints a warning and falls back to that declaring-file rule. An unresolvable `REF` exits `2`.
 

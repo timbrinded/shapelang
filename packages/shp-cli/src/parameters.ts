@@ -30,7 +30,8 @@ export const baseModelFlags = {
     kind: "parsed",
     parse: (input: string) => input,
     optional: true,
-    brief: "Compare attestations against the .shape files in this directory.",
+    brief:
+      "Compare attestations against a copy of the base model in this directory, kept at repository paths.",
     placeholder: "DIR"
   }
 } as const;

@@ -501,7 +501,7 @@ component ShpCli {
     }
   fn loadBaseModules
     source ts("packages/shp-cli/src/base-model.ts#loadBaseModules")
-    description "Reads the base model for check and coverage from git at the merge base of --base-ref and HEAD, or from a --base-model directory, skipping generated AST; an unparsable base file falls back to the declaring-file rule with a warning."
+    description "Reads the base model for check and coverage, every .shape file under shape/ except generated AST plus the named files, from git at the merge base of --base-ref and HEAD, or from a --base-model directory kept at repository paths, which must hold at least one; an unparsable base file falls back to the declaring-file rule with a warning."
     effects complete {
       Read<ShapeSource>
         evidence ts("packages/shp-cli/src/base-model.ts#readBaseRefSources")
