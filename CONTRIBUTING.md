@@ -269,7 +269,7 @@ on every push to `master`:
 | Shape | `changed-files`, then `shape:ci` |
 | Docs | `docs:check` |
 | Build | `build:release`, then `smoke-release-binary.sh` on the Linux x64 archive |
-| Links | lychee over the repository |
+| Links | lychee over the repository, including `#fragment` anchors; docs-site, published-site, and `master` links resolve against the checkout |
 | Typos | `crate-ci/typos` |
 
 On pull requests, three Claude-powered jobs also run. One script drives them all:

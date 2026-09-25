@@ -1730,7 +1730,7 @@ attest no_shape_change {
 
 attest no_shape_change {
   source yaml(".github/workflows/shape.yml")
-  reason "The Links job now checks root-absolute docs links, published-site links, and repository links on master against the checkout through lychee remaps; no CI job or gate is added or removed."
+  reason "The Links job now checks root-absolute docs links, published-site links, and repository links on master against the checkout through lychee remaps, including their #fragment anchors; no CI job or gate is added or removed."
 }
 
 attest no_shape_change {
