@@ -335,7 +335,7 @@ describe("#61 coverage/bindings enforcement vs vacuity + self-model dogfood", ()
   test(
     lockedIntended(
       "with a base model, only attestations new relative to the base satisfy coverage",
-      "docs-site/src/content/docs/concepts/model-updates-attestations.md; shape/checker.shape CoverageCurrentUpdateContract"
+      "docs-site/src/content/docs/guides/keep-model-current.md; shape/checker.shape CoverageCurrentUpdateContract"
     ),
     async () => {
       const shapeFile = "shape/audit.shape";
@@ -377,7 +377,7 @@ describe("#61 coverage/bindings enforcement vs vacuity + self-model dogfood", ()
   test(
     lockedIntended(
       "with a base model, only docs_not_needed attestations new relative to the base satisfy bindings",
-      "docs-site/src/content/docs/concepts/model-updates-attestations.md; shape/checker.shape BindingDocsCouplingContract"
+      "docs-site/src/content/docs/guides/keep-model-current.md; shape/checker.shape BindingDocsCouplingContract"
     ),
     async () => {
       const shapeFile = "fixtures/pass/coverage_binding_only/audit.shape";
