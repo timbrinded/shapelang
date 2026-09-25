@@ -977,7 +977,7 @@ reevaluation AuthorPromptPrDiffWorkflowRechecked {
   summary "PR-diff prompt bundles keep context path-labeled, preserve file-scoped drafts until stable symbol evidence exists, reject numbered references, and instruct the authoring agent not to use human instructions to waive final forbids."
   reviewer ShapeMaintainers
   decided_on "2026-07-27"
-  evidence md("docs-site/src/content/docs/inside-shape/formatter-editor-authoring.md")
+  evidence md("docs-site/src/content/docs/guides/authoring.md")
   evidence md("docs-site/src/content/docs/reference/cli.md")
   evidence test("packages/shp-checker/src/authoring.test.ts")
   evidence test("packages/shp-cli/src/index.test.ts")
@@ -1111,7 +1111,7 @@ reevaluation CriticPromptPrDiffWorkflowRechecked {
   summary "The critic checklist rejects numbered references, false complete effects, missing structural relations or reevaluations, and attempts to justify final forbidden effects."
   reviewer ShapeMaintainers
   decided_on "2026-07-27"
-  evidence md("docs-site/src/content/docs/inside-shape/formatter-editor-authoring.md")
+  evidence md("docs-site/src/content/docs/guides/authoring.md")
   evidence test("packages/shp-checker/src/authoring.test.ts")
 }
 
@@ -1172,14 +1172,4 @@ reevaluation UpdateRuntimeAssetsRechecked {
   decided_on "2026-05-28"
   evidence test("packages/shp-cli/src/update.test.ts")
   evidence ts("packages/shp-cli/src/commands/update/impl.ts")
-}
-
-attest no_shape_change {
-  source md("docs-site/src/content/docs/inside-shape/formatter-editor-authoring.md")
-  reason "Documents the diff-aware authoring bundle, file-or-symbol reference policy, and provider-neutral prompt handoff modeled above; the DocsSite architecture is unchanged."
-}
-
-attest no_shape_change {
-  source md("docs-site/src/content/docs/reference/cli.md")
-  reason "Documents shp author prompt options and the no-numbered-reference boundary; the command remains part of the existing ShpCli interface modeled above."
 }

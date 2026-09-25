@@ -1,7 +1,0 @@
-module shape.generated.ast.docs_site.scripts.infographics.frames
-
-trait GeneratedAstAnchor {
-}
-
-trait GeneratedCandidate {
-}

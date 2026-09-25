@@ -105,13 +105,13 @@ component CiPipeline {
       Read<DocsContent>
         evidence md("README.md")
       Read<DocsContent>
-        evidence md("docs-site/src/content/docs/learn/ci-workflow.md")
+        evidence md("docs-site/src/content/docs/guides/ci.md")
       Read<DocsContent>
         evidence md("docs-site/src/content/docs/learn/quickstart.md")
       Read<DocsContent>
         evidence md("docs-site/src/content/docs/reference/cli.md")
       Read<DocsContent>
-        evidence md("docs-site/src/content/docs/reference/local-development.md")
+        evidence md("CONTRIBUTING.md")
       Read<DocsContent>
         evidence md("docs/releases/v0.9.0.md")
       Read<PluginPackageManifest>
@@ -520,46 +520,32 @@ component DocsSite {
   grants Update<DocsContent>
   fn verifyDocs
     source ts("docs-site/scripts/verify-shape-blocks.ts")
-    description "Verifies complete Shape examples in the docs site, including the releasing page that documents archive smoke and skills-report reuse."
+    description "Parses every Shape code fence in the docs site content that is not marked no-verify."
     effects complete {
       Read<DocsContent>
-        evidence md("docs-site/src/content/docs/concepts/analyzer-hints.md")
+        evidence md("docs-site/src/content/docs/concepts/design-memory.md")
       Read<DocsContent>
-        evidence md("docs-site/src/content/docs/concepts/ast-generation.md")
+        evidence md("docs-site/src/content/docs/concepts/effect-model.md")
       Read<DocsContent>
-        evidence md("docs-site/src/content/docs/concepts/domain-packs.md")
+        evidence md("docs-site/src/content/docs/concepts/relations.md")
       Read<DocsContent>
-        evidence md("docs-site/src/content/docs/concepts/model-updates-attestations.md")
+        evidence md("docs-site/src/content/docs/guides/analyzer.md")
       Read<DocsContent>
-        evidence md("docs-site/src/content/docs/concepts/components-ownership-grants.md")
+        evidence md("docs-site/src/content/docs/guides/ast-drafts.md")
       Read<DocsContent>
-        evidence md("docs-site/src/content/docs/concepts/implementations-coverage.md")
+        evidence md("docs-site/src/content/docs/guides/authoring.md")
       Read<DocsContent>
-        evidence md("docs-site/src/content/docs/concepts/relations-hypergraphs.md")
+        evidence md("docs-site/src/content/docs/guides/ci.md")
       Read<DocsContent>
-        evidence md("docs-site/src/content/docs/concepts/rules-hypercycles.md")
+        evidence md("docs-site/src/content/docs/guides/domain-packs.md")
       Read<DocsContent>
-        evidence md("docs-site/src/content/docs/concepts/refactor-constraints.md")
-      Read<DocsContent>
-        evidence md("docs-site/src/content/docs/examples/global-model-update.md")
-      Read<DocsContent>
-        evidence md("docs-site/src/content/docs/examples/guarded-change-reevaluation.md")
-      Read<DocsContent>
-        evidence md("docs-site/src/content/docs/examples/refactor-sensitive-function.md")
-      Read<DocsContent>
-        evidence md("docs-site/src/content/docs/examples/analyzer-warning.md")
-      Read<DocsContent>
-        evidence md("docs-site/src/content/docs/examples/forbid-provides-boundary.md")
-      Read<DocsContent>
-        evidence md("docs-site/src/content/docs/examples/missing-shape-update.md")
+        evidence md("docs-site/src/content/docs/guides/keep-model-current.md")
       Read<DocsContent>
         evidence md("docs-site/src/content/docs/index.md")
       Read<DocsContent>
         evidence md("docs-site/src/content/docs/inside-shape/checker-pipeline.md")
       Read<DocsContent>
         evidence md("docs-site/src/content/docs/inside-shape/design-rationale.md")
-      Read<DocsContent>
-        evidence md("docs-site/src/content/docs/inside-shape/experimental-semantic-kernel.md")
       Read<DocsContent>
         evidence md("docs-site/src/content/docs/inside-shape/fact-lowering.md")
       Read<DocsContent>
@@ -569,15 +555,7 @@ component DocsSite {
       Read<DocsContent>
         evidence md("docs-site/src/content/docs/inside-shape/rule-evaluation.md")
       Read<DocsContent>
-        evidence md("docs-site/src/content/docs/learn/ci-workflow.md")
-      Read<DocsContent>
-        evidence md("docs-site/src/content/docs/learn/first-shape-file.md")
-      Read<DocsContent>
-        evidence md("docs-site/src/content/docs/learn/global-model-updates.md")
-      Read<DocsContent>
         evidence md("docs-site/src/content/docs/learn/quickstart.md")
-      Read<DocsContent>
-        evidence md("docs-site/src/content/docs/learn/what-is-shape.md")
       Read<DocsContent>
         evidence md("docs-site/src/content/docs/reference/cli.md")
       Read<DocsContent>
@@ -587,33 +565,7 @@ component DocsSite {
       Read<DocsContent>
         evidence md("docs-site/src/content/docs/reference/language-syntax.md")
       Read<DocsContent>
-        evidence md("docs-site/src/content/docs/reference/local-development.md")
-      Read<DocsContent>
-        evidence md("docs-site/src/content/docs/reference/releasing.md")
-      Read<DocsContent>
         evidence ts("docs-site/scripts/verify-shape-blocks.ts")
-      Update<DocsContent>
-        evidence md("docs-site/src/content/docs/concepts/ast-generation.md")
-      Update<DocsContent>
-        evidence md("docs-site/src/content/docs/concepts/diagnostics-provenance.md")
-      Update<DocsContent>
-        evidence md("docs-site/src/content/docs/concepts/evidence-source-refs.md")
-      Update<DocsContent>
-        evidence md("docs-site/src/content/docs/examples/append-only-hard-delete-failure.md")
-      Update<DocsContent>
-        evidence md("docs-site/src/content/docs/inside-shape/langium-grammar.md")
-      Update<DocsContent>
-        evidence md("docs-site/src/content/docs/learn/append-only-walkthrough.md")
-      Update<DocsContent>
-        evidence md("docs-site/src/content/docs/learn/global-model-updates.md")
-      Update<DocsContent>
-        evidence md("docs-site/src/content/docs/reference/cli.md")
-      Update<DocsContent>
-        evidence md("docs-site/src/content/docs/reference/diagnostics.md")
-      Update<DocsContent>
-        evidence md("docs-site/src/content/docs/reference/language-syntax.md")
-      Update<DocsContent>
-        evidence md("docs-site/src/content/docs/reference/releasing.md")
     }
 }
 
@@ -944,8 +896,7 @@ binding CliDocs {
     "shape/tooling.shape"
   }
   require_changed paths {
-    "README.md"
-    "docs-site/src/content/docs/learn/ci-workflow.md"
+    "docs-site/src/content/docs/guides/ci.md"
     "docs-site/src/content/docs/reference/cli.md"
   }
   allow attest docs_not_needed
@@ -957,8 +908,8 @@ binding DocsVerifierDocs {
     "shape/language.shape"
   }
   require_changed paths {
+    "CONTRIBUTING.md"
     "docs-site/src/content/docs/inside-shape/langium-grammar.md"
-    "docs-site/src/content/docs/reference/local-development.md"
   }
   allow attest docs_not_needed
 }
@@ -983,6 +934,7 @@ binding IncrementalCheckerDocs {
     "shape/incremental-checker.shape"
   }
   require_changed paths {
+    "docs-site/src/content/docs/inside-shape/checker-pipeline.md"
     "docs-site/src/content/docs/inside-shape/fact-lowering.md"
     "docs-site/src/content/docs/inside-shape/rule-evaluation.md"
   }
@@ -997,8 +949,7 @@ binding RuleEngineDocs {
     "shape/checker.shape"
   }
   require_changed paths {
-    "docs-site/src/content/docs/concepts/diagnostics-provenance.md"
-    "docs-site/src/content/docs/concepts/model-updates-attestations.md"
+    "docs-site/src/content/docs/guides/keep-model-current.md"
     "docs-site/src/content/docs/inside-shape/rule-evaluation.md"
     "docs-site/src/content/docs/reference/diagnostics.md"
   }
@@ -1041,8 +992,9 @@ binding ToolingDocs {
     "shape/tooling.shape"
   }
   require_changed paths {
-    "docs-site/src/content/docs/concepts/analyzer-hints.md"
-    "docs-site/src/content/docs/concepts/ast-generation.md"
+    "docs-site/src/content/docs/guides/analyzer.md"
+    "docs-site/src/content/docs/guides/ast-drafts.md"
+    "docs-site/src/content/docs/guides/authoring.md"
     "docs-site/src/content/docs/inside-shape/formatter-editor-authoring.md"
     "docs-site/src/content/docs/reference/cli.md"
   }
@@ -1299,48 +1251,13 @@ attest no_shape_change {
 }
 
 attest no_shape_change {
-  source md("docs-site/src/content/docs/concepts/unknowns-safety.md")
-  reason "Migrated one memory-guard example from the removed flat member syntax to the canonical grouped blocks; the page's uncertainty/unknowns guidance and architectural surface are unchanged."
-}
-
-attest no_shape_change {
   source ts("packages/shp-checker/src/editor.ts")
   reason "Definition lookup and completions now share add-entry symbol discovery, but ShapeEditorServices retains the same editor-output, source-read, parsed-module, and prelude-read contracts."
 }
 
 attest no_shape_change {
-  source md("docs-site/src/content/docs/inside-shape/formatter-editor-authoring.md")
-  reason "Documented add-entry symbol discovery and non-definition modify/remove behavior for editor helpers; the docs source remains within the existing DocsSite surface."
-}
-
-attest no_shape_change {
-  source md("docs-site/src/content/docs/learn/ci-workflow.md")
-  reason "Release-prep version pin update from v0.4.0 to v0.4.1; CI workflow semantics and DocsSite architecture are unchanged."
-}
-
-attest no_shape_change {
-  source md("docs-site/src/content/docs/learn/quickstart.md")
-  reason "Added a Claude Code plugin install section documenting the existing shapelang plugin; this stays within the existing DocsSite documentation surface, so the delivery architecture and contracts are unchanged."
-}
-
-attest no_shape_change {
-  source md("docs-site/src/content/docs/reference/cli.md")
-  reason "Release-prep update of the shp update version example from v0.4.0 to v0.4.1; DocsSite architecture and the CLI command inventory remain unchanged."
-}
-
-attest no_shape_change {
   source ts("packages/shp-checker/src/analyzer-types.ts")
   reason "Defines the typed AnalyzerHint and AnalyzerWarning data contracts represented in ShapeAnalyzer; it adds no independent runtime effect, relation, or component boundary."
-}
-
-attest no_shape_change {
-  source md("docs-site/src/content/docs/concepts/analyzer-hints.md")
-  reason "Documents scoped source attribution, quote-aware target comparison, ordered SQL target lists, and dynamic-target limits; the guide remains within the existing DocsSite content boundary."
-}
-
-attest no_shape_change {
-  source md("docs-site/src/content/docs/reference/cli.md")
-  reason "Documents target-bearing analyze output, scoped attribution, quote-aware comparison, SQL target lists, and the added advisory ambiguity warning; the DocsSite architecture is unchanged."
 }
 
 attest no_shape_change {
@@ -1479,11 +1396,6 @@ attest no_shape_change {
 }
 
 attest no_shape_change {
-  source md("docs-site/src/content/docs/reference/diagnostics.md")
-  reason "The diagnostics catalog now documents the canonical diagnostic ordering introduced by ShapeDiagnostics.compareShapeDiagnostics; the docs surface gains prose only and the delivery contract is unchanged."
-}
-
-attest no_shape_change {
   source mjs(".github/scripts/run-claude-shape-review.mjs")
   reason "The standalone review runner is superseded by the unified skill runner; the review contract now lives in CiPipeline.runShapeContractReview sourcing run-claude-skill.mjs."
 }
@@ -1534,176 +1446,6 @@ attest no_shape_change {
 }
 
 attest no_shape_change {
-  source md("docs-site/src/content/docs/concepts/ast-generation.md")
-  reason "Docs-only content and infographic refresh within the existing DocsSite surface; no language semantics, checker behavior, CLI contract, or architecture boundary changed."
-}
-
-attest no_shape_change {
-  source md("docs-site/src/content/docs/concepts/components-ownership-grants.md")
-  reason "Docs-only content and infographic refresh within the existing DocsSite surface; no language semantics, checker behavior, CLI contract, or architecture boundary changed."
-}
-
-attest no_shape_change {
-  source md("docs-site/src/content/docs/concepts/diagnostics-provenance.md")
-  reason "Docs-only content and infographic refresh within the existing DocsSite surface; no language semantics, checker behavior, CLI contract, or architecture boundary changed."
-}
-
-attest no_shape_change {
-  source md("docs-site/src/content/docs/concepts/domain-packs.md")
-  reason "Docs-only content and infographic refresh within the existing DocsSite surface; no language semantics, checker behavior, CLI contract, or architecture boundary changed."
-}
-
-attest no_shape_change {
-  source md("docs-site/src/content/docs/concepts/evidence-source-refs.md")
-  reason "Docs-only content and infographic refresh within the existing DocsSite surface; no language semantics, checker behavior, CLI contract, or architecture boundary changed."
-}
-
-attest no_shape_change {
-  source md("docs-site/src/content/docs/concepts/implementations-coverage.md")
-  reason "Docs-only content and infographic refresh within the existing DocsSite surface; no language semantics, checker behavior, CLI contract, or architecture boundary changed."
-}
-
-attest no_shape_change {
-  source md("docs-site/src/content/docs/concepts/model-updates-attestations.md")
-  reason "Docs-only content and infographic refresh within the existing DocsSite surface; no language semantics, checker behavior, CLI contract, or architecture boundary changed."
-}
-
-attest no_shape_change {
-  source md("docs-site/src/content/docs/concepts/refactor-constraints.md")
-  reason "Docs-only content and infographic refresh within the existing DocsSite surface; no language semantics, checker behavior, CLI contract, or architecture boundary changed."
-}
-
-attest no_shape_change {
-  source md("docs-site/src/content/docs/concepts/relations-hypergraphs.md")
-  reason "Docs-only content and infographic refresh within the existing DocsSite surface; no language semantics, checker behavior, CLI contract, or architecture boundary changed."
-}
-
-attest no_shape_change {
-  source md("docs-site/src/content/docs/concepts/resources-traits-effects.md")
-  reason "Docs-only content and infographic refresh within the existing DocsSite surface; no language semantics, checker behavior, CLI contract, or architecture boundary changed."
-}
-
-attest no_shape_change {
-  source md("docs-site/src/content/docs/concepts/rules-hypercycles.md")
-  reason "Docs-only content and infographic refresh within the existing DocsSite surface; no language semantics, checker behavior, CLI contract, or architecture boundary changed."
-}
-
-attest no_shape_change {
-  source md("docs-site/src/content/docs/examples/analyzer-warning.md")
-  reason "Docs-only content and infographic refresh within the existing DocsSite surface; no language semantics, checker behavior, CLI contract, or architecture boundary changed."
-}
-
-attest no_shape_change {
-  source md("docs-site/src/content/docs/examples/append-only-hard-delete-failure.md")
-  reason "Docs-only content and infographic refresh within the existing DocsSite surface; no language semantics, checker behavior, CLI contract, or architecture boundary changed."
-}
-
-attest no_shape_change {
-  source md("docs-site/src/content/docs/examples/append-only-pass.md")
-  reason "Docs-only content and infographic refresh within the existing DocsSite surface; no language semantics, checker behavior, CLI contract, or architecture boundary changed."
-}
-
-attest no_shape_change {
-  source md("docs-site/src/content/docs/examples/forbid-provides-boundary.md")
-  reason "Docs-only content and infographic refresh within the existing DocsSite surface; no language semantics, checker behavior, CLI contract, or architecture boundary changed."
-}
-
-attest no_shape_change {
-  source md("docs-site/src/content/docs/examples/global-model-update.md")
-  reason "Docs-only content and infographic refresh within the existing DocsSite surface; no language semantics, checker behavior, CLI contract, or architecture boundary changed."
-}
-
-attest no_shape_change {
-  source md("docs-site/src/content/docs/examples/guarded-change-reevaluation.md")
-  reason "Docs-only content and infographic refresh within the existing DocsSite surface; no language semantics, checker behavior, CLI contract, or architecture boundary changed."
-}
-
-attest no_shape_change {
-  source md("docs-site/src/content/docs/examples/missing-shape-update.md")
-  reason "Docs-only content and infographic refresh within the existing DocsSite surface; no language semantics, checker behavior, CLI contract, or architecture boundary changed."
-}
-
-attest no_shape_change {
-  source md("docs-site/src/content/docs/examples/refactor-sensitive-function.md")
-  reason "Docs-only content and infographic refresh within the existing DocsSite surface; no language semantics, checker behavior, CLI contract, or architecture boundary changed."
-}
-
-attest no_shape_change {
-  source md("docs-site/src/content/docs/index.md")
-  reason "Docs-only content and infographic refresh within the existing DocsSite surface; no language semantics, checker behavior, CLI contract, or architecture boundary changed."
-}
-
-attest no_shape_change {
-  source md("docs-site/src/content/docs/inside-shape/checker-pipeline.md")
-  reason "Docs-only content and infographic refresh within the existing DocsSite surface; no language semantics, checker behavior, CLI contract, or architecture boundary changed."
-}
-
-attest no_shape_change {
-  source md("docs-site/src/content/docs/inside-shape/design-rationale.md")
-  reason "Docs-only content and infographic refresh within the existing DocsSite surface; no language semantics, checker behavior, CLI contract, or architecture boundary changed."
-}
-
-attest no_shape_change {
-  source md("docs-site/src/content/docs/inside-shape/experimental-semantic-kernel.md")
-  reason "Docs-only content and infographic refresh within the existing DocsSite surface; no language semantics, checker behavior, CLI contract, or architecture boundary changed."
-}
-
-attest no_shape_change {
-  source md("docs-site/src/content/docs/inside-shape/fact-lowering.md")
-  reason "Docs-only content and infographic refresh within the existing DocsSite surface; no language semantics, checker behavior, CLI contract, or architecture boundary changed."
-}
-
-attest no_shape_change {
-  source md("docs-site/src/content/docs/inside-shape/langium-grammar.md")
-  reason "Docs-only content and infographic refresh within the existing DocsSite surface; no language semantics, checker behavior, CLI contract, or architecture boundary changed."
-}
-
-attest no_shape_change {
-  source md("docs-site/src/content/docs/inside-shape/rule-engine-strategy.md")
-  reason "Docs-only content and infographic refresh within the existing DocsSite surface; no language semantics, checker behavior, CLI contract, or architecture boundary changed."
-}
-
-attest no_shape_change {
-  source md("docs-site/src/content/docs/inside-shape/rule-evaluation.md")
-  reason "Docs-only content and infographic refresh within the existing DocsSite surface; no language semantics, checker behavior, CLI contract, or architecture boundary changed."
-}
-
-attest no_shape_change {
-  source md("docs-site/src/content/docs/learn/append-only-walkthrough.md")
-  reason "Docs-only content and infographic refresh within the existing DocsSite surface; no language semantics, checker behavior, CLI contract, or architecture boundary changed."
-}
-
-attest no_shape_change {
-  source md("docs-site/src/content/docs/learn/first-shape-file.md")
-  reason "Docs-only content and infographic refresh within the existing DocsSite surface; no language semantics, checker behavior, CLI contract, or architecture boundary changed."
-}
-
-attest no_shape_change {
-  source md("docs-site/src/content/docs/learn/global-model-updates.md")
-  reason "Docs-only content and infographic refresh within the existing DocsSite surface; no language semantics, checker behavior, CLI contract, or architecture boundary changed."
-}
-
-attest no_shape_change {
-  source md("docs-site/src/content/docs/learn/what-is-shape.md")
-  reason "Docs-only content and infographic refresh within the existing DocsSite surface; no language semantics, checker behavior, CLI contract, or architecture boundary changed."
-}
-
-attest no_shape_change {
-  source md("docs-site/src/content/docs/reference/glossary.md")
-  reason "Docs-only content and infographic refresh within the existing DocsSite surface; no language semantics, checker behavior, CLI contract, or architecture boundary changed."
-}
-
-attest no_shape_change {
-  source md("docs-site/src/content/docs/reference/language-syntax.md")
-  reason "Docs-only content and infographic refresh within the existing DocsSite surface; no language semantics, checker behavior, CLI contract, or architecture boundary changed."
-}
-
-attest no_shape_change {
-  source md("docs-site/src/content/docs/reference/local-development.md")
-  reason "Docs-only content and infographic refresh within the existing DocsSite surface; no language semantics, checker behavior, CLI contract, or architecture boundary changed."
-}
-
-attest no_shape_change {
   source mjs(".github/scripts/run-claude-skill.mjs#skillsReleaseFailureMessage")
   reason "Release cases still require non-empty evidence-backed outcomes, all configured commands, pass statuses, and no findings; the Index gap canary now verifies both source endpoints and the documentation binding instead of mandating one relation-kind label for an awaited direct call."
 }
@@ -1741,4 +1483,259 @@ attest no_shape_change {
 attest no_shape_change {
   source mjs("plugins/shapelang/skills/unix-system-visualiser/scripts/generate.test.mjs")
   reason "Test-only assertions prevent duplicate model-index population in assembled visualisers; they add no separate architecture surface."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/concepts/analyzer-hints.md")
+  reason "Docs restructure: this page was merged into the rewritten docs set (see docs-site/astro.config.mjs redirects); no language, checker, CLI, or architecture behaviour changed."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/concepts/ast-generation.md")
+  reason "Docs restructure: this page was merged into the rewritten docs set (see docs-site/astro.config.mjs redirects); no language, checker, CLI, or architecture behaviour changed."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/concepts/components-ownership-grants.md")
+  reason "Docs restructure: this page was merged into the rewritten docs set (see docs-site/astro.config.mjs redirects); no language, checker, CLI, or architecture behaviour changed."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/concepts/diagnostics-provenance.md")
+  reason "Docs restructure: this page was merged into the rewritten docs set (see docs-site/astro.config.mjs redirects); no language, checker, CLI, or architecture behaviour changed."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/concepts/domain-packs.md")
+  reason "Docs restructure: this page was merged into the rewritten docs set (see docs-site/astro.config.mjs redirects); no language, checker, CLI, or architecture behaviour changed."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/concepts/evidence-source-refs.md")
+  reason "Docs restructure: this page was merged into the rewritten docs set (see docs-site/astro.config.mjs redirects); no language, checker, CLI, or architecture behaviour changed."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/concepts/implementations-coverage.md")
+  reason "Docs restructure: this page was merged into the rewritten docs set (see docs-site/astro.config.mjs redirects); no language, checker, CLI, or architecture behaviour changed."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/concepts/model-updates-attestations.md")
+  reason "Docs restructure: this page was merged into the rewritten docs set (see docs-site/astro.config.mjs redirects); no language, checker, CLI, or architecture behaviour changed."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/concepts/refactor-constraints.md")
+  reason "Docs restructure: this page was merged into the rewritten docs set (see docs-site/astro.config.mjs redirects); no language, checker, CLI, or architecture behaviour changed."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/concepts/relations-hypergraphs.md")
+  reason "Docs restructure: this page was merged into the rewritten docs set (see docs-site/astro.config.mjs redirects); no language, checker, CLI, or architecture behaviour changed."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/concepts/resources-traits-effects.md")
+  reason "Docs restructure: this page was merged into the rewritten docs set (see docs-site/astro.config.mjs redirects); no language, checker, CLI, or architecture behaviour changed."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/concepts/rules-hypercycles.md")
+  reason "Docs restructure: this page was merged into the rewritten docs set (see docs-site/astro.config.mjs redirects); no language, checker, CLI, or architecture behaviour changed."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/concepts/unknowns-safety.md")
+  reason "Docs restructure: this page was merged into the rewritten docs set (see docs-site/astro.config.mjs redirects); no language, checker, CLI, or architecture behaviour changed."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/examples/analyzer-warning.md")
+  reason "Docs restructure: this page was merged into the rewritten docs set (see docs-site/astro.config.mjs redirects); no language, checker, CLI, or architecture behaviour changed."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/examples/append-only-hard-delete-failure.md")
+  reason "Docs restructure: this page was merged into the rewritten docs set (see docs-site/astro.config.mjs redirects); no language, checker, CLI, or architecture behaviour changed."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/examples/append-only-pass.md")
+  reason "Docs restructure: this page was merged into the rewritten docs set (see docs-site/astro.config.mjs redirects); no language, checker, CLI, or architecture behaviour changed."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/examples/forbid-provides-boundary.md")
+  reason "Docs restructure: this page was merged into the rewritten docs set (see docs-site/astro.config.mjs redirects); no language, checker, CLI, or architecture behaviour changed."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/examples/global-model-update.md")
+  reason "Docs restructure: this page was merged into the rewritten docs set (see docs-site/astro.config.mjs redirects); no language, checker, CLI, or architecture behaviour changed."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/examples/guarded-change-reevaluation.md")
+  reason "Docs restructure: this page was merged into the rewritten docs set (see docs-site/astro.config.mjs redirects); no language, checker, CLI, or architecture behaviour changed."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/examples/missing-shape-update.md")
+  reason "Docs restructure: this page was merged into the rewritten docs set (see docs-site/astro.config.mjs redirects); no language, checker, CLI, or architecture behaviour changed."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/examples/refactor-sensitive-function.md")
+  reason "Docs restructure: this page was merged into the rewritten docs set (see docs-site/astro.config.mjs redirects); no language, checker, CLI, or architecture behaviour changed."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/inside-shape/experimental-semantic-kernel.md")
+  reason "Docs restructure: this page was merged into the rewritten docs set (see docs-site/astro.config.mjs redirects); no language, checker, CLI, or architecture behaviour changed."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/inside-shape/rule-engine-strategy.md")
+  reason "Docs restructure: this page was merged into the rewritten docs set (see docs-site/astro.config.mjs redirects); no language, checker, CLI, or architecture behaviour changed."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/learn/append-only-walkthrough.md")
+  reason "Docs restructure: this page was merged into the rewritten docs set (see docs-site/astro.config.mjs redirects); no language, checker, CLI, or architecture behaviour changed."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/learn/ci-workflow.md")
+  reason "Docs restructure: this page was merged into the rewritten docs set (see docs-site/astro.config.mjs redirects); no language, checker, CLI, or architecture behaviour changed."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/learn/first-shape-file.md")
+  reason "Docs restructure: this page was merged into the rewritten docs set (see docs-site/astro.config.mjs redirects); no language, checker, CLI, or architecture behaviour changed."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/learn/global-model-updates.md")
+  reason "Docs restructure: this page was merged into the rewritten docs set (see docs-site/astro.config.mjs redirects); no language, checker, CLI, or architecture behaviour changed."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/learn/what-is-shape.md")
+  reason "Docs restructure: this page was merged into the rewritten docs set (see docs-site/astro.config.mjs redirects); no language, checker, CLI, or architecture behaviour changed."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/reference/local-development.md")
+  reason "Docs restructure: this page was merged into the rewritten docs set (see docs-site/astro.config.mjs redirects); no language, checker, CLI, or architecture behaviour changed."
+}
+
+attest no_shape_change {
+  source md("docs-site/src/content/docs/reference/releasing.md")
+  reason "Docs restructure: this page was merged into the rewritten docs set (see docs-site/astro.config.mjs redirects); no language, checker, CLI, or architecture behaviour changed."
+}
+
+attest no_shape_change {
+  source ts("docs-site/scripts/verify-shape-blocks.test.ts")
+  reason "Comment-only edit from the documentation cleanup; a comment-stripped AST comparison shows no code change, so behaviour and architecture are unchanged."
+}
+
+attest no_shape_change {
+  source ts("docs-site/scripts/verify-shape-blocks.ts")
+  reason "Comment-only edit from the documentation cleanup; a comment-stripped AST comparison shows no code change, so behaviour and architecture are unchanged."
+}
+
+attest no_shape_change {
+  source mjs(".github/scripts/run-claude-skill.mjs")
+  reason "Comment-only edit from the documentation cleanup; a comment-stripped AST comparison shows no code change, so behaviour and architecture are unchanged."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/ast-generation-utils.ts")
+  reason "Comment-only edit from the documentation cleanup; a comment-stripped AST comparison shows no code change, so behaviour and architecture are unchanged."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/checker/api.ts")
+  reason "Comment-only edit from the documentation cleanup; a comment-stripped AST comparison shows no code change, so behaviour and architecture are unchanged."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/checker/change-planning.ts")
+  reason "Comment-only edit from the documentation cleanup; a comment-stripped AST comparison shows no code change, so behaviour and architecture are unchanged."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/checker/derivations.ts")
+  reason "Comment-only edit from the documentation cleanup; a comment-stripped AST comparison shows no code change, so behaviour and architecture are unchanged."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/checker/display.ts")
+  reason "Comment-only edit from the documentation cleanup; a comment-stripped AST comparison shows no code change, so behaviour and architecture are unchanged."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/checker/incremental.ts")
+  reason "Comment-only edit from the documentation cleanup; a comment-stripped AST comparison shows no code change, so behaviour and architecture are unchanged."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/checker/lowerer.ts")
+  reason "Comment-only edit from the documentation cleanup; a comment-stripped AST comparison shows no code change, so behaviour and architecture are unchanged."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/checker/lowering/declarations.ts")
+  reason "Comment-only edit from the documentation cleanup; a comment-stripped AST comparison shows no code change, so behaviour and architecture are unchanged."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/checker/model.ts")
+  reason "Comment-only edit from the documentation cleanup; a comment-stripped AST comparison shows no code change, so behaviour and architecture are unchanged."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/checker/provenance.ts")
+  reason "Comment-only edit from the documentation cleanup; a comment-stripped AST comparison shows no code change, so behaviour and architecture are unchanged."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/checker/query.ts")
+  reason "Comment-only edit from the documentation cleanup; a comment-stripped AST comparison shows no code change, so behaviour and architecture are unchanged."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/checker/rules.ts")
+  reason "Comment-only edit from the documentation cleanup; a comment-stripped AST comparison shows no code change, so behaviour and architecture are unchanged."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/checker/rules/guards.ts")
+  reason "Comment-only edit from the documentation cleanup; a comment-stripped AST comparison shows no code change, so behaviour and architecture are unchanged."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/memory-guards.ts")
+  reason "Comment-only edit from the documentation cleanup; a comment-stripped AST comparison shows no code change, so behaviour and architecture are unchanged."
+}
+
+attest no_shape_change {
+  source ts("scripts/check-release-approval.ts")
+  reason "Comment-only edit from the documentation cleanup; a comment-stripped AST comparison shows no code change, so behaviour and architecture are unchanged."
+}
+
+attest no_shape_change {
+  source mjs("docs-site/src/syntax/shape-language.mjs")
+  reason "Adds the grammar keywords fn, or, policy, require_context, role, satisfied_by, sensitive, transform, and who to the docs highlighter keyword list; this changes highlighting only, not the grammar or checker."
+}
+
+attest no_shape_change {
+  source yaml(".github/workflows/shape.yml")
+  reason "The Links job now checks root-absolute docs links, published-site links, and repository links on master against the checkout through lychee remaps; no CI job or gate is added or removed."
+}
+
+attest no_shape_change {
+  source md("plugins/shapelang/skills/README.md")
+  reason "Repoints the maintainer note from the removed README check list to the CONTRIBUTING.md check list; no skill instruction changes."
 }

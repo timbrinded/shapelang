@@ -942,7 +942,7 @@ reevaluation ForbiddenPathTraversalRechecked {
   summary "Behavioral coverage proves explicit kind filtering, directionality, disconnected and cyclic graphs, canonical fewest-hop selection, declaration-order independence, ordered-relation hop provenance, qualified endpoint resolution, and exclusion of unresolved or endpoint-type-invalid relations."
   reviewer ShapeMaintainers
   decided_on "2026-07-26"
-  evidence md("docs-site/src/content/docs/concepts/rules-hypercycles.md")
+  evidence md("docs-site/src/content/docs/concepts/relations.md")
   evidence md("docs-site/src/content/docs/inside-shape/fact-lowering.md")
   evidence test("packages/shp-checker/src/behavioural/forbidden-path.test.ts")
   evidence test("packages/shp-checker/src/checker.test.ts")
@@ -954,7 +954,7 @@ reevaluation HypercycleSccTraversalRechecked {
   summary "Tarjan SCC detection runs over one relation-kind-filtered local graph, and pure canonical shortest-cycle selection returns a stable reviewer-readable witness without appending diagnostics or mutating the model hypergraph."
   reviewer ShapeMaintainers
   decided_on "2026-07-26"
-  evidence md("docs-site/src/content/docs/concepts/rules-hypercycles.md")
+  evidence md("docs-site/src/content/docs/concepts/relations.md")
   evidence test("packages/shp-checker/src/behavioural/hypercycle-witness.test.ts")
   evidence test("packages/shp-checker/src/checker.test.ts")
 }
@@ -1019,21 +1019,6 @@ reevaluation PreludeRuleTraitBoundsRechecked {
 }
 
 attest no_shape_change {
-  source md("docs-site/src/content/docs/reference/diagnostics.md")
-  reason "Documents per-hop forbidden path diagnostics and existing checker diagnostics modeled by ShapeRuleEngine and ShapeDiagnostics; the documentation itself does not change the architecture contract."
-}
-
-attest no_shape_change {
-  source md("docs-site/src/content/docs/reference/language-syntax.md")
-  reason "Documents the forbidden path grammar modeled by ShapeGrammar and ShapeRuleEngine; the documentation itself does not change the architecture contract."
-}
-
-attest no_shape_change {
-  source md("docs-site/src/content/docs/concepts/rules-hypercycles.md")
-  reason "Documents canonical forbidden path and hypercycle traversal modeled by ShapeRuleEngine; the documentation itself does not change the architecture contract."
-}
-
-attest no_shape_change {
   source ts("packages/shp-checker/src/checker/display.ts")
   reason "Display helpers remain shared formatting support; this Shape update models the checker module split and no separate architecture contract changed."
 }
@@ -1081,16 +1066,6 @@ attest no_shape_change {
 attest no_shape_change {
   source ts("packages/shp-checker/src/experiments/datalog-rule-engine-spike.test.ts")
   reason "Differential tests exercise the isolated rule-engine comparison without adding a production checker component or changing semantic rule order."
-}
-
-attest no_shape_change {
-  source md("docs-site/src/content/docs/inside-shape/rule-engine-strategy.md")
-  reason "Records the decision to retain the modeled direct ShapeRuleEngine and the criteria for reconsideration; it introduces no runtime architecture claim."
-}
-
-attest no_shape_change {
-  source md("docs-site/src/content/docs/inside-shape/rule-evaluation.md")
-  reason "Links the existing direct-rule documentation to the accepted rule-engine strategy; it does not change the modeled ShapeRuleEngine or semantic rule order."
 }
 
 attest no_shape_change {
