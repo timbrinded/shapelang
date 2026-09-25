@@ -235,10 +235,7 @@ function isAttestationOnlyChange(
   if (baseText === undefined) {
     return false;
   }
-  return [...model.modules.values()].some(
-    (module) =>
-      module.filePath !== undefined &&
-      normalizeRepoPath(module.filePath, repoRoot) === changedFile &&
-      module.attestationFreeText === baseText
+  return [...model.attestationFreeTexts].some(
+    ([filePath, text]) => normalizeRepoPath(filePath, repoRoot) === changedFile && text === baseText
   );
 }

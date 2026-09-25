@@ -267,10 +267,17 @@ relation ReaderProvidesRecord {
         resolve(repoRoot, "fixtures/fail/missing_shape_update/audit.shape"),
         "utf8"
       );
+      // CRLF endings and a change block check that prune finds stale attestations
+      // wherever they are and keeps every other byte.
+      const crlf = (text: string): string => text.replace(/\r?\n/g, "\r\n");
       const earlier = `attest no_shape_change {\n  source ts("src/audit/purge.ts")\n  reason "Reviewed in an earlier change."\n}\n`;
       const fresh = `attest no_shape_change {\n  source ts("src/audit/store.ts")\n  reason "Reviewed for this change."\n}\n`;
+      const proposal = (entries: string): string =>
+        `change Proposal {\n  add resource AuditArchive\n${entries}}\n`;
+      const proposed = `  add attest no_shape_change {\n    source ts("src/audit/archive.ts")\n    reason "Proposed with the archive."\n  }\n`;
+      const base = `${fixture}\n${earlier}\n${proposal(proposed)}`;
       await mkdir(join(repo, "shape"));
-      await writeFile(join(repo, "shape/audit.shape"), `${fixture}\n${earlier}`);
+      await writeFile(join(repo, "shape/audit.shape"), crlf(base));
       git(repo, ["init", "-q"]);
       git(repo, ["add", "."]);
       git(repo, [
@@ -282,12 +289,14 @@ relation ReaderProvidesRecord {
         "-qm",
         "base"
       ]);
-      await writeFile(join(repo, "shape/audit.shape"), `${fixture}\n${earlier}\n${fresh}`);
+      await writeFile(join(repo, "shape/audit.shape"), crlf(`${base}\n${fresh}`));
 
       const pruned = await runCli(["attest", "prune", "--base-ref", "HEAD"], cliPath, repo);
       expect(pruned.exitCode).toBe(0);
-      expect(pruned.stdout).toBe("Removed 1 stale attestation(s) from 1 file(s).\n");
-      expect(await readFile(join(repo, "shape/audit.shape"), "utf8")).toBe(`${fixture}\n${fresh}`);
+      expect(pruned.stdout).toBe("Removed 2 stale attestation(s) from 1 file(s).\n");
+      expect(await readFile(join(repo, "shape/audit.shape"), "utf8")).toBe(
+        crlf(`${fixture}\n${proposal("")}\n${fresh}`)
+      );
 
       const again = await runCli(["attest", "prune", "--base-ref", "HEAD"], cliPath, repo);
       expect(again.stdout).toBe("No stale attestations.\n");

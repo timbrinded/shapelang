@@ -320,7 +320,7 @@ export type NormalizedCheckOptions = CheckOptions & {
 export type BaseModel = {
   /** Identity keys of every attestation in the base. */
   attestationKeys: ReadonlySet<string>;
-  /** Each base `.shape` file's source with its top-level attestations removed. */
+  /** Each base `.shape` file's source with its attestations removed. */
   attestationFreeTexts: ReadonlyMap<string, string>;
 };
 
@@ -478,8 +478,6 @@ export type ModuleInfo = {
   imports: string[];
   filePath?: string;
   generatedAst: boolean;
-  /** The module source with its top-level attestations removed. */
-  attestationFreeText?: string;
 };
 
 export type LoweringContext = ModuleInfo;
@@ -780,6 +778,12 @@ export type Hypergraph = {
 
 export type Model = {
   modules: Map<string, ModuleInfo>;
+  /**
+   * Each input file's source with its attestations removed, by file path. Kept
+   * per file because module names are optional and may repeat. A module built
+   * in code has no source text and no entry.
+   */
+  attestationFreeTexts: Map<string, string>;
   declarations: DeclarationIndex;
   resources: Map<string, ResourceInfo>;
   traits: Map<string, TraitInfo>;

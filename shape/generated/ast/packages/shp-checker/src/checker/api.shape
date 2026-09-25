@@ -43,7 +43,7 @@ resource ApiModuleStaleAttestationPrunerAstAnchor : GeneratedAstAnchor {
 
 resource ApiModuleSummarizeBaseModelAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/checker/api.ts#summarizeBaseModel")
-  fingerprint ast.semantic_subtree_v1("sha256:b51716cf77e398e05c51345c6c9c221ae7c4e34ed4c9575871a2cfb7fb525719")
+  fingerprint ast.semantic_subtree_v1("sha256:55e71e7e62f740002548327b5707c075d1afd8ab0f726b981edad4ff5dc9343a")
 }
 
 component ApiModule : GeneratedCandidate {
@@ -133,7 +133,7 @@ relation ApiModuleSummarizeBaseModelGeneratedFromApiModuleSummarizeBaseModelAstA
   kind generated_from
   connects ApiModule -> ApiModuleSummarizeBaseModelAstAnchor
   roles { ApiModule as generated, ApiModuleSummarizeBaseModelAstAnchor as syntax }
-  expects ApiModuleSummarizeBaseModelAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b51716cf77e398e05c51345c6c9c221ae7c4e34ed4c9575871a2cfb7fb525719")
+  expects ApiModuleSummarizeBaseModelAstAnchor fingerprint ast.semantic_subtree_v1("sha256:55e71e7e62f740002548327b5707c075d1afd8ab0f726b981edad4ff5dc9343a")
   summary "fn ApiModule.summarizeBaseModel generated from typescript function_declaration at packages/shp-checker/src/checker/api.ts#summarizeBaseModel."
 }
 

@@ -1177,7 +1177,7 @@ attest no_shape_change {
 
 attest no_shape_change {
   source ts("packages/shp-checker/src/checker/model.ts")
-  reason "Replaces the base attestation-key option with a BaseModel carrying keys and per-file attestation-free text, and records that text on ModuleInfo; the binding behaviour it enables is modelled on ShapeBindings.checkBindings."
+  reason "Replaces the base attestation-key option with a BaseModel carrying keys and per-file attestation-free text, and records each input file's text on Model.attestationFreeTexts by file path; the binding behaviour it enables is modelled on ShapeBindings.checkBindings."
 }
 
 attest no_shape_change {

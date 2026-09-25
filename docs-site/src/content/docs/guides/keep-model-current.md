@@ -284,7 +284,7 @@ Once a change merges, its attestations have done their job. Later checks with a 
 shp attest prune --base-ref origin/main
 ```
 
-Prune removes each top-level attestation whose kind, path, and reason already exist in the base model, keeps every other byte of the file, and keeps the attestations you wrote for the current change. Git history keeps every removed decision. Running it in any change that touches the model keeps attestations from piling up. Flags are in the [CLI Reference](/shapelang/reference/cli/#shp-attest-prune).
+Prune removes each attestation whose kind, path, and reason already exist in the base model, including one added inside a `change` block, together with the whitespace that separates it from its neighbour. It keeps every other byte of the file and the attestations you wrote for the current change. Git history keeps every removed decision. Running it in any change that touches the model keeps attestations from piling up. Flags are in the [CLI Reference](/shapelang/reference/cli/#shp-attest-prune).
 
 ## Guarded targets
 

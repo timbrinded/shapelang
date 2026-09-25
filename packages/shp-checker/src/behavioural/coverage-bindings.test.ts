@@ -409,16 +409,16 @@ describe("#61 coverage/bindings enforcement vs vacuity + self-model dogfood", ()
   // attestations does not trigger bindings, so pruning stale attestations never
   // demands a docs change. The same file with a real model edit still triggers
   // the binding, and without a base the attestation-only edit triggers it too.
+  // Both files are unnamed modules, so the comparison must be per file, and a
+  // module built in code has no source text to compare, so it never skips.
   test(
     lockedIntended(
       "with a base model, attestation-only .shape changes do not trigger bindings",
-      "docs-site/src/content/docs/concepts/model-updates-attestations.md; shape/checker.shape BindingDocsCouplingContract"
+      "docs-site/src/content/docs/guides/keep-model-current.md; shape/checker.shape BindingDocsCouplingContract"
     ),
     () => {
       const shapeFile = "shape/widget.shape";
       const model = [
-        "module docs_coupled",
-        "",
         "resource Widget",
         "",
         "binding ModelDocs {",
@@ -432,29 +432,40 @@ describe("#61 coverage/bindings enforcement vs vacuity + self-model dogfood", ()
         "}",
         ""
       ].join("\n");
-      const input = (source: string): CheckModuleInput => ({
-        module: parseModuleOrThrow(source),
-        filePath: shapeFile
-      });
-      const baseModules = [
-        input(
-          `${model}\nattest no_shape_change {\n  source ts("src/widget.ts")\n  reason "Reviewed in an earlier change."\n}\n`
-        )
+      const other: CheckModuleInput = {
+        module: parseModuleOrThrow("resource Other\n"),
+        filePath: "shape/other.shape"
+      };
+      const inputs = (source: string): CheckModuleInput[] => [
+        { module: parseModuleOrThrow(source), filePath: shapeFile },
+        other
       ];
+      const attested = `${model}\nattest no_shape_change {\n  source ts("src/widget.ts")\n  reason "Reviewed in an earlier change."\n}\n`;
+      const baseModules = inputs(attested);
       const changedFiles = [shapeFile];
 
-      const pruned = checkShapeModules([input(model)], { changedFiles, baseModules });
+      const pruned = checkShapeModules(inputs(model), { changedFiles, baseModules });
       expect(pruned.ok).toBe(true);
       expect(diagnosticKinds(pruned)).toEqual([]);
 
-      const edited = checkShapeModules([input(`${model}\nresource WidgetArchive\n`)], {
+      const edited = checkShapeModules(inputs(`${model}\nresource WidgetArchive\n`), {
         changedFiles,
         baseModules
       });
       expect(diagnosticKinds(edited)).toEqual(["missing_bound_docs_change"]);
 
-      const withoutBase = checkShapeModules([input(model)], { changedFiles });
+      const withoutBase = checkShapeModules(inputs(model), { changedFiles });
       expect(diagnosticKinds(withoutBase)).toEqual(["missing_bound_docs_change"]);
+
+      const withoutSource = (source: string): CheckModuleInput[] => {
+        const { $cstNode: _source, ...module } = parseModuleOrThrow(source);
+        return [{ module, filePath: shapeFile }];
+      };
+      const builtInCode = checkShapeModules(withoutSource(`${model}\nresource WidgetArchive\n`), {
+        changedFiles,
+        baseModules: withoutSource(attested)
+      });
+      expect(diagnosticKinds(builtInCode)).toEqual(["missing_bound_docs_change"]);
     }
   );
 });

@@ -50,7 +50,7 @@ component ShapeBindings {
   grants Read<ShapeBinding>
   fn checkBindings : RefactorSensitive
     source ts("packages/shp-checker/src/checker/rules/coverage.ts#checkBindings")
-    description "A .shape file whose attestation-free text matches its base version changed only in attestations and does not trigger bindings."
+    description "A .shape file whose attestation-free text matches its base version changed only in attestations and does not trigger bindings; the text is compared per file path, and a module without source text never matches."
     effects complete {
       Append<SemanticDiagnostics>
         evidence ts("packages/shp-checker/src/checker/rules/coverage.ts")
@@ -144,7 +144,7 @@ component ShapeChecker {
     }
   fn staleAttestationPruner
     source ts("packages/shp-checker/src/checker/api.ts#staleAttestationPruner")
-    description "Returns module source with each top-level attestation already present in the base model removed, the same attestations the check reports as stale."
+    description "Returns module source with each attestation already present in the base model removed, top-level or inside a change block, the same attestations the check reports as stale, keeping every byte but the separating whitespace."
     effects complete {
       Read<BaseShapeModel>
         evidence ts("packages/shp-checker/src/checker/api.ts#staleAttestationPruner")

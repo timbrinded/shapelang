@@ -23,7 +23,7 @@ import {
   isTraitDecl
 } from "../language/generated/ast.ts";
 import type { CheckModuleInput, LoweringContext, Model } from "./model.ts";
-import { removeAttestations } from "./attestation-text.ts";
+import { attestationFreeText } from "./attestation-text.ts";
 import { preludeTraitSeed } from "./prelude-seed.ts";
 import { emptyDeclarationIndex, indexModuleDeclarations, moduleContext } from "./symbols.ts";
 import { collectShapeUpdatePathsFromFunction, emitDerivedFacts } from "./lowering/facts.ts";
@@ -51,6 +51,7 @@ export function lowerShapeModules(modules: ShapeModule[] | CheckModuleInput[]): 
   const inputs = normalizeModuleInputs(modules);
   const model: Model = {
     modules: new Map(),
+    attestationFreeTexts: new Map(),
     declarations: emptyDeclarationIndex(),
     resources: new Map(),
     traits: preludeTraitSeed(),
@@ -79,10 +80,11 @@ export function lowerShapeModules(modules: ShapeModule[] | CheckModuleInput[]): 
   for (const input of inputs) {
     const context = moduleContext(input);
     contexts.set(input, context);
-    model.modules.set(context.name, {
-      ...context,
-      attestationFreeText: removeAttestations(input.module, () => true).text
-    });
+    model.modules.set(context.name, context);
+    const text = attestationFreeText(input.module);
+    if (input.filePath !== undefined && text !== undefined) {
+      model.attestationFreeTexts.set(input.filePath, text);
+    }
     indexModuleDeclarations(input.module, context, model);
   }
 

@@ -92,19 +92,15 @@ export function summarizeBaseModel(
   const model = lowerShapeModules(baseModules);
   return {
     attestationKeys: model.attestations.map(attestationKey).toSorted(),
-    attestationFreeTexts: [...model.modules.values()]
-      .flatMap((module): [string, string][] =>
-        module.filePath !== undefined && module.attestationFreeText !== undefined
-          ? [[normalizeRepoPath(module.filePath, repoRoot), module.attestationFreeText]]
-          : []
-      )
+    attestationFreeTexts: [...model.attestationFreeTexts]
+      .map(([filePath, text]): [string, string] => [normalizeRepoPath(filePath, repoRoot), text])
       .toSorted(([left], [right]) => compareCodepointStrings(left, right))
   };
 }
 
 /**
- * Returns a function that deletes, from a module's source, each top-level
- * attestation whose kind, path, and reason already exist in the base model.
+ * Returns a function that deletes, from a module's source, each attestation
+ * whose kind, path, and reason already exist in the base model.
  * Backs `shp attest prune`; the checker reports the same attestations as stale.
  */
 export function staleAttestationPruner(

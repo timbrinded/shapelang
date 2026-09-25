@@ -134,7 +134,7 @@ shp coverage --changed-files changed.txt
 shp attest prune (--base-ref REF | --base-model DIR) [files...]
 ```
 
-Deletes each top-level attestation whose kind, path, and reason already exist in the base model: the attestations `shp check` reports as `warning: stale attestation`. It keeps every other byte of each file, so pruned files stay in canonical format, and it keeps attestations written for the current change. Attestations inside `change` blocks are left alone.
+Deletes each attestation whose kind, path, and reason already exist in the base model: the attestations `shp check` reports as `warning: stale attestation`, top-level or an `add` or `modify` entry of a `change` block. Each goes with the whitespace between it and the next declaration, or the whitespace before it when it is the last one in its file or block. Every other byte is kept, so pruned files stay in canonical format, and attestations written for the current change stay.
 
 | Flag | Meaning |
 | --- | --- |

@@ -43,7 +43,7 @@ resource CoverageModuleCurrentShapeUpdateExistsAstAnchor : GeneratedAstAnchor {
 
 resource CoverageModuleIsAttestationOnlyChangeAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/checker/rules/coverage.ts#isAttestationOnlyChange")
-  fingerprint ast.semantic_subtree_v1("sha256:d182b10597a9295c10720758ee932c59f18bb625ca627d96e62d6372ffe71633")
+  fingerprint ast.semantic_subtree_v1("sha256:07fc0eb0d76b7c64c7e84b9276b3ef144f1f53a942b710c34f25f7583e637759")
 }
 
 resource CoverageModuleIsCurrentAttestationAstAnchor : GeneratedAstAnchor {
@@ -149,7 +149,7 @@ relation CoverageModuleIsAttestationOnlyChangeGeneratedFromCoverageModuleIsAttes
   kind generated_from
   connects CoverageModule -> CoverageModuleIsAttestationOnlyChangeAstAnchor
   roles { CoverageModule as generated, CoverageModuleIsAttestationOnlyChangeAstAnchor as syntax }
-  expects CoverageModuleIsAttestationOnlyChangeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d182b10597a9295c10720758ee932c59f18bb625ca627d96e62d6372ffe71633")
+  expects CoverageModuleIsAttestationOnlyChangeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:07fc0eb0d76b7c64c7e84b9276b3ef144f1f53a942b710c34f25f7583e637759")
   summary "fn CoverageModule.isAttestationOnlyChange generated from typescript function_declaration at packages/shp-checker/src/checker/rules/coverage.ts#isAttestationOnlyChange."
 }
 

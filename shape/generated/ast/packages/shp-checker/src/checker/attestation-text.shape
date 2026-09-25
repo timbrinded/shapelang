@@ -6,22 +6,54 @@ trait GeneratedAstAnchor {
 trait GeneratedCandidate {
 }
 
+resource AttestationTextModuleAttestationFreeTextAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/attestation-text.ts#attestationFreeText")
+  fingerprint ast.semantic_subtree_v1("sha256:f995914a8bfd5393ab968388da7cbb2359c96ba37fb26ab28dbc4ca1b9f28068")
+}
+
+resource AttestationTextModuleAttestationNodesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/attestation-text.ts#attestationNodes")
+  fingerprint ast.semantic_subtree_v1("sha256:314d94525842e6e47d49d4562cfae3b83757812d69c3a503e2291143eacff424")
+}
+
 resource AttestationTextModuleRemoveAttestationsAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/checker/attestation-text.ts#removeAttestations")
-  fingerprint ast.semantic_subtree_v1("sha256:444042cb5f7e68a036c6444644afc95ed9a12e9ad1c45e92e388c4d64a2f3932")
+  fingerprint ast.semantic_subtree_v1("sha256:75d6e7d9f0777d997e8fe48a5222b36b92d4844ed20b72777394b89bfbf78f28")
 }
 
 component AttestationTextModule : GeneratedCandidate {
+  fn attestationFreeText
+    source ts("packages/shp-checker/src/checker/attestation-text.ts#attestationFreeText")
+    effects unknown
+  fn attestationNodes
+    source ts("packages/shp-checker/src/checker/attestation-text.ts#attestationNodes")
+    effects unknown
   fn removeAttestations
     source ts("packages/shp-checker/src/checker/attestation-text.ts#removeAttestations")
     effects unknown
+}
+
+relation AttestationTextModuleAttestationFreeTextGeneratedFromAttestationTextModuleAttestationFreeTextAstAnchor {
+  kind generated_from
+  connects AttestationTextModule -> AttestationTextModuleAttestationFreeTextAstAnchor
+  roles { AttestationTextModule as generated, AttestationTextModuleAttestationFreeTextAstAnchor as syntax }
+  expects AttestationTextModuleAttestationFreeTextAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f995914a8bfd5393ab968388da7cbb2359c96ba37fb26ab28dbc4ca1b9f28068")
+  summary "fn AttestationTextModule.attestationFreeText generated from typescript function_declaration at packages/shp-checker/src/checker/attestation-text.ts#attestationFreeText."
+}
+
+relation AttestationTextModuleAttestationNodesGeneratedFromAttestationTextModuleAttestationNodesAstAnchor {
+  kind generated_from
+  connects AttestationTextModule -> AttestationTextModuleAttestationNodesAstAnchor
+  roles { AttestationTextModule as generated, AttestationTextModuleAttestationNodesAstAnchor as syntax }
+  expects AttestationTextModuleAttestationNodesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:314d94525842e6e47d49d4562cfae3b83757812d69c3a503e2291143eacff424")
+  summary "fn AttestationTextModule.attestationNodes generated from typescript function_declaration at packages/shp-checker/src/checker/attestation-text.ts#attestationNodes."
 }
 
 relation AttestationTextModuleRemoveAttestationsGeneratedFromAttestationTextModuleRemoveAttestationsAstAnchor {
   kind generated_from
   connects AttestationTextModule -> AttestationTextModuleRemoveAttestationsAstAnchor
   roles { AttestationTextModule as generated, AttestationTextModuleRemoveAttestationsAstAnchor as syntax }
-  expects AttestationTextModuleRemoveAttestationsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:444042cb5f7e68a036c6444644afc95ed9a12e9ad1c45e92e388c4d64a2f3932")
+  expects AttestationTextModuleRemoveAttestationsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:75d6e7d9f0777d997e8fe48a5222b36b92d4844ed20b72777394b89bfbf78f28")
   summary "fn AttestationTextModule.removeAttestations generated from typescript function_declaration at packages/shp-checker/src/checker/attestation-text.ts#removeAttestations."
 }
 
