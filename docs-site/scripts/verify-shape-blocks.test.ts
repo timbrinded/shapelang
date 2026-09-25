@@ -1,23 +1,22 @@
-// #64 — Docs fence verifier self-tests + parser parity.
+// Docs fence verifier self-tests and parser parity (#64).
 //
 // Vision anchors:
 //   - shape/language.shape DocsShapeBlockVerifier / DocsShapeBlockParsingContract:
 //     "Docs examples must be parsed with the repo parser unless explicitly
 //     marked no-verify."
-//   - shape/delivery.shape DocsSite fn verifyDocs: the docs site "verifies docs
-//     examples parse".
+//   - shape/delivery.shape DocsSite fn verifyDocs: "Verifies complete Shape
+//     examples in the docs site".
 //
-// The gate this file pins is the docs fence verifier in
-// docs-site/scripts/verify-shape-blocks.ts. It exists to enforce one law: a
-// `shape` fence in the docs is VALID iff the repo parser (parseShapeModule)
-// accepts it, and a fence is SKIPPED iff its info string carries `no-verify`.
+// The docs fence verifier in docs-site/scripts/verify-shape-blocks.ts enforces
+// one law: a `shape` fence in the docs is valid iff the repo parser
+// (parseShapeModule) accepts it, and a fence is skipped iff its info string
+// carries `no-verify`.
 //
-// Every invariant runs the verifier over a TEMP in-memory corpus built here, not
-// over the live docs content — so a test fails because the verifier is wrong,
-// not because someone edited a real doc. The parity invariant grounds the
-// verdicts against parseShapeModule directly (so the verifier embeds no divergent
-// grammar), and the broken-fence invariants fail against a no-op verifier
-// (`verify = () => []`) that would silently pass broken docs. See
+// Each test runs the verifier over an in-memory corpus built here rather than
+// the live docs, so a failure points at the verifier, not at an edited doc. The
+// parity test checks verdicts against parseShapeModule directly, and the
+// broken-fence tests fail against a no-op verifier (`verify = () => []`) that
+// would silently pass broken docs. See
 // packages/shp-checker/TESTING.md.
 
 import { describe, expect, test } from "bun:test";
@@ -30,10 +29,10 @@ import {
   verifyShapeCorpus
 } from "./verify-shape-blocks.ts";
 
-// Vision-anchor labels (string literals matching TESTING.md item 4/5). Kept
-// inline rather than imported from the checker harness because this test lives
-// in the docs-site workspace, which depends on @shape/shp-checker only for the
-// parser, not for the internal behavioural harness.
+// Vision-anchor labels (string literals following the TESTING.md "Vision-anchored" and "Labelled" conventions).
+// They are defined here rather than imported from the checker's behavioural
+// harness because the docs-site workspace uses @shape/shp-checker only for the
+// parser, not for that internal harness.
 const VERIFIER_ANCHOR = "shape/language.shape DocsShapeBlockVerifier";
 const DOCS_SITE_ANCHOR = 'shape/delivery.shape DocsSite ("verifies docs examples parse")';
 
@@ -41,10 +40,9 @@ function lockedIntended(title: string, anchor: string): string {
   return `[locked-intended] ${title} — anchor: ${anchor}`;
 }
 
-// Ground-truth snippets. The accept/reject verdict of each was established by
-// running parseShapeModule directly (see the parity invariant, which re-derives
-// it rather than trusting these comments). These are ordinary Shape examples,
-// NOT inputs hand-tuned to any verifier-internal pattern.
+// Ordinary Shape snippets, not inputs tuned to a verifier-internal pattern. The
+// parity test derives each accept/reject verdict from parseShapeModule rather
+// than trusting these names.
 const VALID_RESOURCE = "resource Ledger\n";
 const VALID_COMPONENT = [
   "component Store {",
@@ -95,8 +93,8 @@ describe("docs fence verifier", () => {
       VERIFIER_ANCHOR
     ),
     () => {
-      // The opening fence sits on a line we control, so we can assert the
-      // reported location is the fence's line, not some incidental value.
+      // The preamble fixes the opening fence's line, so the reported location
+      // can be checked against that line rather than an incidental value.
       const preamble = ["# Heading", "", "Intro paragraph.", ""];
       const fenceStartLine = preamble.length + 1; // 1-based line of the ```shape line
       const source = [...preamble, fence("shape", BROKEN_DANGLING_BRACE)].join("\n");
@@ -109,11 +107,10 @@ describe("docs fence verifier", () => {
       // the offending fence (so a reviewer can navigate straight to it).
       expect(failure.filePath).toBe("docs/broken.md");
       expect(failure.line).toBe(fenceStartLine);
-      // The parser's diagnostics are carried through — not an empty/opaque
-      // failure. Each message begins with a location token: either a concrete
-      // `line:col` or the explicit `unknown` the verifier emits when the parser
-      // could not localise the error (the original script's documented
-      // behaviour), never a blank prefix.
+      // The parser's diagnostics are carried through, not an empty or opaque
+      // failure. Each message begins with a location token: a concrete
+      // `line:col`, or `unknown` when the parser could not localise the error;
+      // never a blank prefix.
       expect(failure.messages.length).toBeGreaterThan(0);
       for (const message of failure.messages) {
         expect(message).toMatch(/^(\d+:\d+|unknown) \S/);
@@ -121,8 +118,8 @@ describe("docs fence verifier", () => {
       expect(report.checked).toBe(1);
       expect(report.skipped).toBe(0);
 
-      // And prove the location passthrough is real, not always `unknown`: a
-      // fence the parser CAN localise yields a concrete `line:col` prefix.
+      // The location passthrough is not always `unknown`: a fence the parser
+      // can localise yields a concrete `line:col` prefix.
       const localisable = verifyOneFence(
         { info: "shape", code: BROKEN_GIBBERISH, line: 1 },
         "docs/gibberish.md"
@@ -137,8 +134,8 @@ describe("docs fence verifier", () => {
   test(
     lockedIntended("a broken fence marked no-verify is skipped, not failed", VERIFIER_ANCHOR),
     () => {
-      // Same broken body as the failing case above; only the `no-verify` marker
-      // differs. So this isolates the skip behaviour: the body would fail if
+      // The body matches the failing case above and only the `no-verify` marker
+      // differs, which isolates the skip behaviour: the body would fail if
       // checked.
       const source = ["# Doc", "", fence("shape no-verify", BROKEN_DANGLING_BRACE)].join("\n");
 

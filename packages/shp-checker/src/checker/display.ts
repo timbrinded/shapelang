@@ -1,11 +1,10 @@
 // Model-reference string helpers: rendering a model reference (target, term,
 // symbol) for diagnostics and query output, plus the qualified-name primitives
-// those renderings are built on. These primitives (`declKey`,
-// `splitQualifiedName`, `localNameOf`) are also the substrate for symbol
-// resolution (checker/symbols.ts), so they live in this low-level module to
-// keep the dependency direction symbols -> display -> model acyclic. This is a
-// different concern from the parse-side source-string handling in
-// shape-strings.ts.
+// those renderings are built on. Symbol resolution (checker/symbols.ts) also
+// imports these primitives, so they live in this low-level module to keep the
+// dependency direction symbols -> display -> model acyclic. Some are re-exports
+// from module-resolution.ts. Parse-side source-string handling is a separate
+// concern in shape-strings.ts.
 import { splitModuleReference } from "../module-resolution.ts";
 import type { FingerprintInfo, ShapeTarget, SourceRefInfo, TermInfo } from "./model.ts";
 
@@ -48,8 +47,7 @@ export function functionTarget(component: string, name: string): ShapeTarget {
   };
 }
 
-// Shared model-reference renderings used by lowering, rules, explain,
-// obligations, and diagnostics alike.
+// Renderings shared by rule diagnostics and query output.
 export function formatContextRequirement(contextType: string, target: ShapeTarget): string {
   return `${contextType}<${formatTarget(target)}>`;
 }

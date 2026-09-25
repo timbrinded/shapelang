@@ -8,7 +8,7 @@ trait GeneratedCandidate {
 
 resource CliContractTestModuleDocumentedCommandsAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-cli/src/cli-contract.test.ts#documentedCommands")
-  fingerprint ast.semantic_subtree_v1("sha256:1829a169e0c686441d64e932763c746eacb262db88b2dcf6dde95cf6c9a3ade7")
+  fingerprint ast.semantic_subtree_v1("sha256:0e31d250c61c7660540a4d7fe8be5b29fa1cfc18994bd483091c3f955c1f3b26")
 }
 
 resource CliContractTestModuleHelpCommandsAstAnchor : GeneratedAstAnchor {
@@ -37,7 +37,7 @@ relation CliContractTestModuleDocumentedCommandsGeneratedFromCliContractTestModu
   kind generated_from
   connects CliContractTestModule -> CliContractTestModuleDocumentedCommandsAstAnchor
   roles { CliContractTestModule as generated, CliContractTestModuleDocumentedCommandsAstAnchor as syntax }
-  expects CliContractTestModuleDocumentedCommandsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1829a169e0c686441d64e932763c746eacb262db88b2dcf6dde95cf6c9a3ade7")
+  expects CliContractTestModuleDocumentedCommandsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0e31d250c61c7660540a4d7fe8be5b29fa1cfc18994bd483091c3f955c1f3b26")
   summary "fn CliContractTestModule.documentedCommands generated from typescript function_declaration at packages/shp-cli/src/cli-contract.test.ts#documentedCommands."
 }
 

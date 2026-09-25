@@ -52,7 +52,7 @@ describe("#54 structured diagnostic + causal-path foundation", () => {
   test(
     lockedIntended(
       "missing-grant asserts the offending component, function, effect, and target",
-      "docs-site/.../concepts/components-ownership-grants.md"
+      "docs-site/.../concepts/effect-model.md"
     ),
     () => {
       // A function emits an effect its component never grants. Resource has no
@@ -84,7 +84,7 @@ describe("#54 structured diagnostic + causal-path foundation", () => {
   test(
     lockedIntended(
       "guarded-shape-changed asserts the guard, target, and the reevaluation it demands",
-      "concepts/refactor-constraints.md (guarded change requires reevaluation)"
+      "concepts/design-memory.md (guarded change requires reevaluation)"
     ),
     async () => {
       const result = await checkShapeFiles([
@@ -102,7 +102,7 @@ describe("#54 structured diagnostic + causal-path foundation", () => {
   test(
     lockedIntended(
       "missing-required-context asserts the target and the context the trait requires",
-      "shape/checker.shape PreludeMetadataContract; concepts/refactor-constraints.md"
+      "shape/checker.shape PreludeMetadataContract; concepts/design-memory.md"
     ),
     async () => {
       const result = await checkShapeFiles([

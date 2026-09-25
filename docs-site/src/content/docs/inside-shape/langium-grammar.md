@@ -1,249 +1,51 @@
 ---
 title: Langium Grammar
-description: The current grammar shape and where to change it.
-sidebar:
-  order: 2
+description: Where the Shape grammar lives and how it is regenerated, why every keyword is global, which grammar decisions to preserve, and the checklist for a grammar change.
 ---
 
-This page is for contributors changing Shape syntax. Shape uses Langium for the language front end. The grammar lives at `packages/shp-checker/src/language/shape.langium`. Its job is narrow: define which source text can become a `ShapeModule` AST.
+The Langium grammar at `packages/shp-checker/src/language/shape.langium` defines which text parses into a `ShapeModule` AST. Its entry rule, `ShapeModule`, is an optional `module` name, then `import` declarations, then any number of top-level declarations; the `Declaration` rule lists the 15 declaration kinds. The grammar decides only what parses: lowering and rules give the parsed claims their meaning. The syntax users write is documented in [Language Syntax](/shapelang/reference/language-syntax/).
 
-The grammar does not decide whether a model is architecturally coherent. It gives the rest of the checker a typed syntax tree so semantic code can make those decisions deterministically. Parsing is the first phase of the production pipeline: parse → lower facts → evaluate rules → diagnostics. The grammar does not prove application correctness.
+## Location and regeneration
 
-```mermaid
-flowchart LR
-  A["shape.langium"] --> B["bun run langium:generate"]
-  B --> C["generated AST types"]
-  B --> D["generated grammar metadata"]
-  B --> E["generated module glue"]
-  C --> F["parser"]
-  F --> G["ShapeModule"]
-  G --> H["lowering and semantic checks"]
-```
+`langium-config.json` at the repository root points Langium at the grammar. `bun run langium:generate` (`langium-cli generate`) writes three files to `packages/shp-checker/src/language/generated/`:
 
-## Entry Point
+- `ast.ts`: the AST node types and their `is*` type guards;
+- `grammar.ts`: the serialized grammar;
+- `module.ts`: the generated Langium service modules.
 
-The entry rule is `ShapeModule`. A module has an optional module name, zero or more imports, and zero or more top-level declarations.
+`language/shape-module.ts` is hand-written. Its `createShapeServices` injects the generated modules into the Langium core services, and `parseShapeModule` in `packages/shp-checker/src/parser.ts` uses those services to return either a `ShapeModule` or `parse` diagnostics.
 
-```text
-ShapeModule
-  module declaration?
-  imports*
-  declarations*
-```
+Never hand-edit the generated files: change the grammar and regenerate. CI reruns `bun run langium:generate` and then `git diff --exit-code -- packages/shp-checker/src/language/generated`, so a stale or edited generated file fails the build.
 
-Top-level declarations currently include:
+## Keywords are global
 
-| Declaration | What it represents |
-| --- | --- |
-| `resource` | A modeled thing the architecture cares about, often with traits. |
-| `trait` | Reusable constraints or capabilities, such as final forbidden effects. |
-| `component` | An owner of resources, authority grants, and function summaries. |
-| `relation` | A top-level structural hyperedge over components and resources, with `kind`, `connects`, and optional `roles`/`summary`. |
-| `effect candidate` | Generated, machine-readable effect evidence that can point at AST anchors without becoming a reviewed effect claim. |
-| `implementation` | Source path governance for coverage checks. |
-| `binding` | Changed-file coupling, such as requiring docs when Shape-affecting code changes. |
-| `change` | A patch applied during lowering on top of the base model. |
-| `attest` | A typed statement such as `no_shape_change`. |
-| `rule` | Project-specific semantic policy. |
-| `rationale` | Typed design context for non-obvious function shapes. |
-| `memory` | Durable design memory and guards. |
-| `reevaluation` | A review record satisfying a memory or rationale guard. |
-| `role` | A named review role for governance policy. |
-| `policy` | Approver requirements for sensitive memory. |
+Every ID-shaped quoted literal in `shape.langium`, such as `'role'` or `'transform'`, becomes a keyword everywhere in the language. It can no longer appear as a bare identifier, such as a module-name segment or a lowercase function name: `module policy.audit` and `fn role` both fail to parse. Keywords are case-sensitive, so PascalCase names such as `Policy` are unaffected. A rule that must accept a keyword where an identifier is expected lists it explicitly, as `ProtectsPropertyKind` does with `'description'` and `RelationKindName` does with the prelude relation kinds.
 
-## Syntax Bias
+Add every new keyword to `SHAPE_RESERVED_WORDS` in `packages/shp-checker/src/ast-generation-utils.ts`. The AST generator escapes generated names that match an entry, so it never emits an unparsable bare keyword. The test "reserved words cover every ID-shaped grammar keyword" in `packages/shp-checker/src/checker.guard-syntax.test.ts` extracts every quoted literal from the grammar and fails when one is missing from the set.
 
-Shape syntax should stay explicit. The files are review surfaces for humans and agents who need to answer, "what architectural claim is this line making?"
+## Grammar decisions to preserve
 
-```shape
-module audit
+- **Grouped context blocks are the only guard-member syntax.** `RationaleMember` and `MemoryMember` accept `ProtectsBlock`, `GuardsBlock`, `WhoBlock`, and `WhenBlock`, so there is one canonical on-disk form. `lowerContextMember` flattens block entries into the shared context info, and the formatter merges repeated blocks of one kind into one.
+- **`ProtectsBlock` entries are comma-separated.** A `ProtectsEntry` has an optional value, which would otherwise swallow the next entry's kind. The value-bearing form is `protects { shape PreserveInline }` and the valueless form is `protects { description }`; both can share one block.
+- **`ProtectsPropertyKind` is `'description' | ID`.** Only `description`, which is already a keyword, is listed. Listing `'shape'` would reserve it globally and break identifiers such as the module segments in `shape.generated.ast`.
+- **`GuardsBlock` entries are self-delimiting.** Each starts with `on_change` (`'on_change' 'require' ContextTypeName`) or `forbid` (`'forbid' 'transform' ID`), so they need no separator.
+- **`WhoBlock` and `WhenBlock` are single-valued.** Each holds at most one `OwnerDecl` or `ReviewByDecl`, matching the single-valued lowering, so the formatter cannot reorder repeated entries into a different winner.
+- **`transform` belongs to `ModifyFunctionChange`.** A `modify fn` entry may carry `TransformDecl` (`'transform' ID (',' ID)*`) after its shape-trait list; the labels feed `forbid transform` guards.
+- **Rule headers are plain names.** The subject of a rule-derived final forbid is introduced by a `when T has TraitName` member, not by rule-level type parameters.
+- **`effect candidate` stays separate from `effects complete`.** A candidate carries generated evidence for review, and authored Shape remains responsible for final effect claims.
+- **Bindings are a language feature, not CI shell logic.** A binding is an architecture claim: one surface cannot change without another being reviewed.
 
-resource AuditEvent : AppendOnly
+## Grammar change checklist
 
-component AuditStore {
-  owns AuditEvent
-  grants Append<AuditEvent>
-  fn appendEvent
-    source ts("src/audit/store.ts#appendEvent")
-    effects complete {
-      Append<AuditEvent>
-        evidence ts("src/audit/store.ts#appendEvent")
-    }
-}
-```
+Make every change in the same branch as the grammar edit:
 
-This is more verbose than a compact policy DSL. The verbosity buys reviewability:
-
-- declarations have stable names
-- module-qualified references can disambiguate same-named declarations with `other.module::Name`, including function targets such as `other.module::Component.fn`
-- effects are explicit
-- source and evidence references have obvious targets
-- descriptions, rationale, memory, and reevaluations are typed blocks
-- formatter output can remain predictable
-
-## Function Summaries
-
-Function summaries are the center of most Shape checks. The grammar lets a function declare shape traits, source, an optional description, and either complete or unknown effects.
-
-```shape no-verify
-fn derivePolicyDecision : RequiresDescription, RefactorSensitive
-  source ts("src/gateway/authorize.ts#derivePolicyDecision")
-  description required "Policy decision branches remain local for auditability."
-  effects complete {
-    Read<PolicySnapshot>
-        evidence ts("src/gateway/authorize.ts#authorize")
-  }
-```
-
-The semantic checker gives those fields meaning:
-
-- `RequiresDescription` creates a required description and rationale obligation.
-- `RefactorSensitive` creates a memory requirement.
-- `effects complete` claims every material effect is represented.
-- `evidence` gives diagnostics and reviewers a source-backed trail.
-
-The grammar only says the structure is legal. The checker decides whether obligations are satisfied.
-
-Generated AST drafts may also emit candidate effect declarations:
-
-```shape
-effect candidate AppendAuditEventCandidate {
-  fn AuditStore.appendEvent
-  effect Append<AuditEvent>
-    source ts("src/audit/store.ts#AuditStore.appendEvent")
-  confidence low
-  pin AuditStoreAppendEventAstAnchor fingerprint ast.semantic_subtree_v1("sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
-}
-```
-
-This syntax is intentionally separate from function `effects complete`: it carries evidence for review, while authored Shape remains responsible for final effect claims.
-
-## Global Update Syntax
-
-The repo workflow updates the global model directly. The grammar accepts the normal declarations that make up that model.
-
-```shape
-module audit
-
-component AuditStore {
-  fn purgeOldEvents
-    source ts("src/audit/purge.ts#purgeOldEvents")
-    effects complete {
-      HardDelete<AuditEvent>
-        evidence ts("src/audit/purge.ts#purgeOldEvents")
-    }
-}
-```
-
-Global updates can add, modify, or remove ordinary declarations in the owning module:
-
-```shape no-verify
-component ComponentName {
-  fn newFunction
-    effects unknown
-
-  fn existingFunction
-    effects complete {
-      Read<ResourceName>
-    }
-}
-
-resource NewResource
-
-rule new_policy {
-  forbid hypercycle over calls
-  forbid path Gateway -> SecretStore over calls or provides
-}
-```
-
-The checker lowers the committed global model into the effective `Model` before evaluating rules.
-Rule headers are intentionally simple names; subject variables for final effect forbids are introduced by `when T has TraitName` members, not by rule-level type parameters.
-
-## Binding Syntax
-
-Bindings are checked only when the workflow provides changed files. They connect a trigger path set to a required path set:
-
-```shape
-module repo
-
-binding GrammarDocs {
-  when_changed paths {
-    "packages/shp-checker/src/language/shape.langium"
-  }
-  require_changed paths {
-    "docs-site/src/content/docs/reference/language-syntax.md"
-  }
-  allow attest docs_not_needed
-}
-```
-
-This is a language feature rather than ad hoc CI shell logic because bindings are architecture claims: the repo is saying that one surface cannot change without another being reviewed.
-
-## Context Syntax
-
-Rationale, memory, and reevaluation syntax uses typed references. A context block names both its context type and target:
-
-```shape
-module gateway
-
-resource PolicySnapshot
-
-component Gateway {
-  owns PolicySnapshot
-  grants Read<PolicySnapshot>
-  fn derivePolicyDecision : RefactorSensitive
-    effects complete {
-      Read<PolicySnapshot>
-    }
-}
-
-memory DecisionRefactorConstraint : RefactorConstraint<fn Gateway.derivePolicyDecision> {
-  applies_to fn Gateway.derivePolicyDecision
-  status Unexplained
-  confidence High
-  summary "Previous refactors broke error normalisation."
-  who { owner GatewayTeam }
-  guards { on_change require ReEvaluation<Self> }
-}
-```
-
-That explicit target is useful in two places. The parser can produce structured target references, and the semantic checker can detect unknown targets, mismatched `applies_to` declarations, and guarded changes that need reevaluation.
-
-A `protects` clause uses `ProtectsPropertyKind`, which accepts the `description` keyword or any identifier, followed by an optional value. This keeps the value-bearing form `protects shape PreserveInline` while also allowing the valueless `protects description`. Adding a literal such as `'shape'` here would reserve it as a global keyword and break identifiers (module segments like `shape.generated.ast`), so only the already-reserved `description` keyword is listed.
-
-A `guards` clause is a choice between `'on_change' 'require' ContextTypeName` and `'forbid' 'transform' ID`, and a `ModifyFunctionChange` carries an optional `TransformDecl` (`'transform' ID (',' ID)*`) after its shape-trait list. The `transform` keyword is reserved for that purpose.
-
-Typed review governance adds three more keywords: top-level `RoleDecl` (`'role' ID`) and `PolicyDecl` (`'policy' ID '{' RequireApproverDecl* '}'`), plus a valueless `SensitiveDecl` (`'sensitive'`) as a memory member. Reserving `role`, `policy`, and `sensitive` means they can no longer be used as bare lowercase identifiers (module segments or function names); PascalCase names such as `Policy` are unaffected.
-
-User-defined context obligations add a `RequireContextDecl` trait member (`'require_context' ID '<' ID '>' ('satisfied_by' ContextObjectKind ('or' ContextObjectKind)*)?`), reserving `require_context` and `satisfied_by`. Each new keyword must also be added to `SHAPE_RESERVED_WORDS` in `ast-generation-utils.ts`; the "reserved words cover every ID-shaped grammar keyword" test enforces this so the AST generator never emits an unparsable bare keyword.
-
-Memory-guard members are grouped blocks (`ProtectsBlock`, `GuardsBlock`, `WhoBlock`, `WhenBlock`, reserving `who`) in `RationaleMember`/`MemoryMember`. This is the only guard-member syntax — the earlier flat `ProtectsDecl`/`GuardDecl` (and bare top-level `owner`/`review_by`) members were removed, so there is one canonical on-disk form. The checker lowers block entries into the shared context info, and the formatter aggregates repeated blocks of the same kind into one.
-
-`ProtectsBlock` entries are comma-separated, because a `ProtectsEntry`'s optional value would otherwise swallow the next entry's keyword. `GuardsBlock` entries are self-delimiting (each starts with `on_change` or `forbid`). `WhoBlock`/`WhenBlock` hold a single optional `OwnerDecl`/`ReviewByDecl`, matching the single-valued lowering so the formatter cannot reorder repeated entries into a different document-order winner.
-
-## Generated Artifacts
-
-After grammar edits, run:
-
-```bash
-bun run langium:generate
-```
-
-Generated files live under `packages/shp-checker/src/language/generated/`.
-
-Do not hand-edit generated files. Change the grammar, regenerate, and then update parser, formatter, checker, editor, authoring, and docs code that depends on the new AST shape.
-
-## Safe Grammar Change Checklist
-
-When changing the grammar, make the corresponding semantic and tooling changes in the same branch:
-
-- Add or update parser tests for the syntax.
-- Update formatter output so diffs stay canonical.
-- Lower new semantic concepts into facts or internal indexes.
-- Add rule checks only if the syntax has semantic meaning.
-- Add or update bindings when the syntax affects docs, CLI behavior, or other review surfaces.
-- Add editor completions or hovers if the construct is user-facing.
-- Update docs with a valid example and, when needed, `shape no-verify` for partial snippets.
-- Run `bun run langium:generate`, `bun test`, `bun run docs:check`, and `bun run typecheck`.
-
-The grammar is the first contract users meet. Keep it explicit, stable, and easy to explain.
+1. Edit `shape.langium`, then run `bun run langium:generate` and commit the regenerated files.
+2. Add each new ID-shaped keyword to `SHAPE_RESERVED_WORDS`.
+3. Add each new keyword to the docs highlighter, `docs-site/src/syntax/shape-language.mjs`, and to `KEYWORD_COMPLETIONS` in `packages/shp-checker/src/editor.ts` when users type it. Add hovers for user-facing constructs.
+4. Add parser tests (`packages/shp-checker/src/parser.test.ts`) for the accepted and rejected forms.
+5. Update the formatter (`packages/shp-checker/src/formatter.ts`) so its output stays canonical and round-trips.
+6. Lower new semantic concepts into the `Model` ([Fact Lowering](/shapelang/inside-shape/fact-lowering/)). Add a rule only if the syntax has semantic meaning ([Rule Evaluation](/shapelang/inside-shape/rule-evaluation/#adding-a-rule)).
+7. Update the AST generator and authoring helpers if they emit the construct.
+8. Update `docs-site/src/content/docs/reference/language-syntax.md` and this page. The `GrammarDocs` binding requires one of them when the grammar, the generated files, `docs-site/src/syntax/**`, or `shape/language.shape` changes. Every complete `shape` block in the docs must parse; mark an intentional fragment `shape no-verify`.
+9. Update `shape/language.shape` if the modeled grammar surface changes, and add or update bindings when the syntax affects docs, CLI behaviour, or another review surface.
+10. Run `bun run langium:generate`, `bun test`, `bun run typecheck`, and `bun run docs:check`. [`CONTRIBUTING.md`](https://github.com/timbrinded/shapelang/blob/master/CONTRIBUTING.md) lists the full local check sequence.

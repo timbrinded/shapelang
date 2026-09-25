@@ -42,10 +42,9 @@ export type VerifyReport = {
 };
 
 /**
- * Extract every fenced code block from a markdown source. Each entry carries the
- * trimmed info string, the fence body, and the 1-based line of the opening
- * fence. The verifier inspects the info string itself to decide which fences are
- * `shape` fences; this function does not filter by language, so callers can test
+ * Extract every fenced code block from a markdown source, whatever its language.
+ * Despite the name, this function does not filter to `shape` fences:
+ * verifyShapeCorpus applies isShapeFence to the info string, so callers can test
  * fence detection independently of the shape verdict.
  */
 export function extractShapeFences(source: string): ShapeFence[] {
@@ -72,11 +71,11 @@ export function isNoVerify(info: string): boolean {
 }
 
 /**
- * Decide the verdict for one fence. The contract this whole gate exists to
- * enforce (see shape/language.shape DocsShapeBlockParsingContract): a `shape`
- * fence is valid iff the repo parser accepts it, and a fence is skipped iff its
- * info string carries `no-verify`. The accept/reject decision delegates entirely
- * to `parseShapeModule` so the verifier embeds no divergent grammar.
+ * Decide the verdict for one `shape` fence. This enforces the gate's contract,
+ * shape/language.shape DocsShapeBlockParsingContract: a fence is skipped iff its
+ * info string carries `no-verify`, and is otherwise valid iff the repo parser
+ * accepts it. The accept/reject decision delegates entirely to
+ * `parseShapeModule`, so the verifier embeds no divergent grammar.
  */
 export function verifyOneFence(fence: ShapeFence, filePath: string): FenceVerdict {
   if (isNoVerify(fence.info)) {
@@ -128,7 +127,7 @@ export function verifyShapeCorpus(corpus: CorpusFile[]): VerifyReport {
   return { failures, checked, skipped };
 }
 
-/** Compute the 1-based line number of a byte offset in `source`. */
+/** Compute the 1-based line number of a string index in `source`. */
 export function lineNumberAt(source: string, index: number): number {
   let line = 1;
   for (let cursor = 0; cursor < index; cursor += 1) {
@@ -139,7 +138,7 @@ export function lineNumberAt(source: string, index: number): number {
   return line;
 }
 
-/** Recursively collect markdown documents under a directory, path-sorted. */
+/** Recursively collect markdown file paths under a directory, sorted. */
 export async function collectDocsFiles(directory: string): Promise<string[]> {
   const entries = await readdir(directory, { withFileTypes: true });
   const files: string[] = [];
@@ -158,8 +157,7 @@ export async function collectDocsFiles(directory: string): Promise<string[]> {
 
 /**
  * The CLI entry point: read every docs markdown file, verify its `shape` fences,
- * print a one-line summary, and exit non-zero if any fence is invalid. Output and
- * exit behaviour are unchanged from the original script.
+ * and exit 1 after listing any invalid fences; otherwise print a one-line summary.
  */
 async function runCli(): Promise<void> {
   const scriptDir = dirname(fileURLToPath(import.meta.url));

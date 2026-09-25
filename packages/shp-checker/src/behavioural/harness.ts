@@ -1,12 +1,12 @@
-// Behavioural test harness for Shape (epic #53).
+// Behavioural test harness for Shape (epic #53). The helpers let tests assert a
+// diagnostic's kind and fields, and the ordered causal path in its rendered
+// output, instead of matching free-form substrings. Each behavioural test
+// states a named invariant that is truthful, falsifiable through a negative
+// control, and non-circular; packages/shp-checker/TESTING.md sets out these
+// conventions.
 //
-// Purpose: let behavioural tests assert diagnostic IDENTITY and the vision's
-// causal-path quality, not free-form substrings. Every behavioural test must
-// state a NAMED invariant that is truthful, falsifiable (carries a negative
-// control), and non-circular. See packages/shp-checker/TESTING.md.
-//
-// This module is imported only by *.test.ts files; it is not part of the
-// shipped package surface (it is not re-exported from index.ts).
+// Only *.test.ts files import this module. index.ts does not re-export it, so
+// it is not part of the shipped package surface.
 
 import {
   checkShapeModules,
@@ -20,9 +20,9 @@ import type { ShapeModule } from "../language/generated/ast.ts";
 
 /**
  * A citation to the authoritative clause an invariant tests: a docs-site path
- * or a `shape/*.shape` declaration (optionally with a line). Recorded in the
- * test name so any reviewer can check the test against stated intent, and so
- * CI can grep for tests that omit it. See epic #53, standard item 4.
+ * or a `shape/*.shape` declaration, optionally with a line. The label helpers
+ * write it into the test name so a reviewer can check the test against the
+ * stated intent (TESTING.md, "Vision-anchored" convention).
  */
 export type VisionAnchor = string;
 
@@ -35,9 +35,10 @@ export function lockedIntended(title: string, anchor: VisionAnchor): string {
 }
 
 /**
- * A `characterization` test: it documents CURRENT behaviour that has not been
- * ratified as ideal. It must say why and link a follow-up, so the pin is
- * visible and reversible rather than disguised as a guarantee. See epic #53.
+ * A `characterization` test documents CURRENT behaviour that has not been
+ * ratified as ideal. The required `reason` says why the behaviour is pinned and
+ * the optional `followUp` names the tracked follow-up work, so the pin stays
+ * visible and reversible rather than passing as a guarantee.
  */
 export function characterization(
   title: string,
@@ -89,10 +90,10 @@ export function findDiagnostic<K extends SemanticDiagnostic["kind"]>(
 }
 
 /**
- * Require exactly the named diagnostic kind to be present, returning it
- * narrowed to its variant so callers assert its real fields. Throws with the
- * rendered diagnostics (and the kinds actually seen) when absent — a failure
- * message a reviewer can act on.
+ * Require a diagnostic of the named kind and return the first one, narrowed to
+ * its variant so callers assert its real fields. When none is present it throws
+ * with the kinds actually seen and the rendered diagnostics, a failure message
+ * a reviewer can act on.
  */
 export function requireDiagnostic<K extends SemanticDiagnostic["kind"]>(
   result: CheckResult,
@@ -124,10 +125,10 @@ export function render(result: CheckResult): string {
 
 /**
  * Assert that each fragment appears in `text` and that they appear in the given
- * order. This is how we pin the vision's diagnostic CAUSAL PATH (effect ->
- * authority/trait -> constraint -> rejection) as an ordered chain rather than a
- * bag of substrings. Layer it on top of a structured field assertion; never use
- * it as the sole check for a semantic outcome (epic #53).
+ * order. It pins a diagnostic's CAUSAL PATH (effect -> authority/trait ->
+ * constraint -> rejection) as an ordered chain rather than a bag of substrings.
+ * Layer it on top of a structured field assertion; never use it as the sole
+ * check for a semantic outcome (epic #53).
  */
 export function expectOrderedFragments(text: string, fragments: string[]): void {
   let cursor = 0;

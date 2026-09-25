@@ -257,9 +257,9 @@ export function requireContextTargetKind(
   }
 }
 
-// satisfiedBy is already constrained to memory|rationale by the grammar
-// (ContextObjectKind); the filter is defensive and an empty clause defaults to
-// accepting either kind.
+// An absent `satisfied_by` clause accepts either context kind. The grammar
+// (ContextObjectKind) already limits entries to memory|rationale, so the filter
+// is defensive.
 
 export function lowerSatisfiedByKinds(kinds: string[]): ContextKind[] {
   const allowed = kinds.filter(

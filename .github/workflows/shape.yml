@@ -372,12 +372,25 @@ jobs:
     steps:
       - *checkout
 
+      # Docs pages link to each other as `/shapelang/...` (the only form that
+      # resolves on the built site), and repository docs link to the published
+      # site and to files on `master`. The remaps check all three against this
+      # checkout, so links to pages or files added by the pull request resolve.
+      # Each remap keeps the link's #fragment, and --include-fragments fails a
+      # link whose anchor matches no heading in the target file.
       - name: Check links
         uses: lycheeverse/lychee-action@v2
         with:
           args: >-
             --no-progress
             --max-concurrency 4
+            --include-fragments
+            --root-dir ${{ github.workspace }}/docs-site/src/content/docs
+            --remap '^file://(.*)/docs-site/src/content/docs/shapelang/?(#.*)?$ file://$1/docs-site/src/content/docs/index.md$2'
+            --remap '^file://(.*)/docs-site/src/content/docs/shapelang/(.+?)/?(#.*)?$ file://$1/docs-site/src/content/docs/$2.md$3'
+            --remap '^https://timbrinded\.github\.io/shapelang/?(#.*)?$ file://${{ github.workspace }}/docs-site/src/content/docs/index.md$1'
+            --remap '^https://timbrinded\.github\.io/shapelang/(.+?)/?(#.*)?$ file://${{ github.workspace }}/docs-site/src/content/docs/$1.md$2'
+            --remap '^https://github\.com/timbrinded/shapelang/(?:blob|tree)/master/([^#]*)(#.*)?$ file://${{ github.workspace }}/$1$2'
             --fallback-extensions md
             --exclude-path node_modules
             --exclude-path dist

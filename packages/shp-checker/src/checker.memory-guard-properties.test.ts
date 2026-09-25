@@ -280,10 +280,10 @@ describe("Shape property-level guarded changes", () => {
   });
 
   test("fires a precise guard for a removed user-defined protected trait", () => {
-    // Regression for PR #66 review: the protected `shape` value is raw, but the
-    // removed-trait event stores the resolved (module-qualified) name, and a
-    // user-defined trait is not in the built-in shape-trait set. Both must be
-    // resolved/recognised so the guard matches precisely rather than coarsely.
+    // Regression: the protected `shape` value is raw, but the removed-trait event
+    // stores the resolved (module-qualified) name, and a user-defined trait is
+    // not in the built-in shape-trait set. The guard must resolve the name and
+    // recognise the trait to match precisely rather than coarsely.
     const result = checkShapeSource(`
       module gateway
 

@@ -23,10 +23,11 @@ import {
 export { checkBindings } from "./rules/coverage.ts";
 
 /**
- * The deterministic order semantic checks run in. checkShapeModules flattens
- * this list (then appends binding enforcement, which CheckOptions gates), so the
- * order here is the single source of truth and is covered by tests. Freshness
- * and coverage read CheckOptions; every other check ignores its second argument.
+ * The deterministic order semantic checks run in. runSemanticChecks flattens
+ * this list and the checker API appends binding enforcement (which CheckOptions
+ * gates) after it, so the order here is the single source of truth and is
+ * covered by tests. Freshness and coverage read CheckOptions; every other check
+ * ignores its second argument.
  */
 export const SEMANTIC_CHECKS: ReadonlyArray<
   (model: Model, options: NormalizedCheckOptions) => SemanticDiagnostic[]

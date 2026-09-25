@@ -1,19 +1,17 @@
 // #55 — Determinism + the no-clock-in-checker law.
 //
 // Vision anchors:
-//   - docs-site/src/content/docs/inside-shape/checker-pipeline.md: "the same
-//     set of `.shape` files and changed-file inputs should always produce the
-//     same facts, the same rule decisions, and the same diagnostics."
-//   - shape/checker.shape FinalForbidStrength / HypercycleWitness clauses
-//     require deterministic resolution and a deterministic witness path.
-//   - shape/tooling.shape: the clock is a CLI-boundary concern; the library
-//     checker reads no wall clock.
+//   - docs-site/src/content/docs/inside-shape/checker-pipeline.md: "The same
+//     `.shape` files and check options produce the same lowered model, facts,
+//     and diagnostics."
+//   - shape/checker.shape memories FinalForbidPrecedence and HypercycleWitness
+//     require deterministic target resolution and a deterministic witness path.
+//   - shape/tooling.shape memory ClockReadAtCliBoundary: the clock is read only
+//     at the CLI boundary; the library checker reads no wall clock.
 //
-// Each invariant is a SEPARATE test. Expected values were derived by running a
-// throwaway scratch against the real API (checkShapeModules, graph*, stats*,
-// explain*, list*), not by guessing. The clock invariant feeds a review_by that
-// falls between its two clocks, so a checker that read the clock would render
-// a stale-memory diagnostic under one clock only.
+// Each invariant is a SEPARATE test. The clock invariant feeds a review_by that
+// falls between its two clocks, so a checker that read the clock would render a
+// stale-memory diagnostic under one clock only.
 
 import { describe, expect, test } from "bun:test";
 import {
@@ -40,13 +38,14 @@ import {
 //    checker emits a `guarded_shape_changed` obligation (non-trivial output);
 //  - a top-level `calls` relation, so the hypergraph / stats / explain surfaces
 //    have an edge to render;
-//  - two resources, one of which is isolated, so stats has structure;
+//  - two resources that no relation touches, so stats reports isolated
+//    vertices;
 //  - a second component (Audit) whose RefactorSensitive fn has no memory and
 //    `effects unknown`, adding two more diagnostics anchored to a DIFFERENT
 //    declaration — so the permutation test exercises multi-diagnostic ordering
 //    rather than passing vacuously on a single-diagnostic model.
-// Built inline (per the epic's suggestion) rather than from a shared fixture so
-// the declaration-order-permutation test can reorder these exact declarations.
+// Built inline rather than from a shared fixture so the
+// declaration-order-permutation test can reorder these exact declarations.
 const DECLARATIONS = {
   resourceLedger: "resource Ledger",
   resourceCatalog: "resource Catalog",
@@ -122,9 +121,9 @@ function sourceFromOrder(order: readonly (keyof typeof DECLARATIONS)[]): string 
 }
 
 const MODEL_SOURCE = sourceFromOrder(NATURAL_ORDER);
-// The symbol whose `explain` output we pin. "Store" resolves unambiguously to
-// the one component named Store; derived via scratch to render grants +
-// functions + the calls relation.
+// The symbol passed to `explain`. "Store" resolves unambiguously to the one
+// component named Store, whose explanation renders its grants, functions, and
+// the calls relation.
 const EXPLAIN_SYMBOL = "Store";
 
 describe("#55 determinism + no-clock-in-checker", () => {
@@ -135,13 +134,13 @@ describe("#55 determinism + no-clock-in-checker", () => {
     ),
     () => {
       // Non-circular: each surface is run twice over freshly parsed modules, so
-      // we are not re-reading one cached in-memory value. Parsing twice also
-      // rules out parser-output object identity leaking determinism.
+      // no single cached in-memory value is re-read, and parser-output object
+      // identity cannot make the runs look deterministic.
       const moduleA = parseModuleOrThrow(MODEL_SOURCE);
       const moduleB = parseModuleOrThrow(MODEL_SOURCE);
 
-      // Sanity: the model actually produces the obligation + graph we rely on,
-      // so this is not a vacuous "two empty strings match" check.
+      // Sanity: the model actually produces the obligation we rely on, so this
+      // is not a vacuous "two empty strings match" check.
       const probe = checkShapeModules([moduleA]);
       expect(requireDiagnostic(probe, "guarded_shape_changed").target).toBe(
         "shop::Store.recordSale"
@@ -188,8 +187,9 @@ describe("#55 determinism + no-clock-in-checker", () => {
     ),
     () => {
       // A non-trivial permutation: reverse the natural order. This moves the
-      // `change` and `memory` BEFORE the `component`/`relation` they reference,
-      // so any order-dependence in lowering or rule evaluation would surface.
+      // `change` and `memory` BEFORE the component they reference, and the
+      // relation before the components it connects, so any order-dependence in
+      // lowering or rule evaluation would surface.
       const permutedOrder = [...NATURAL_ORDER].reverse();
       expect(permutedOrder).not.toEqual([...NATURAL_ORDER]); // guard: real reorder
 
@@ -207,10 +207,8 @@ describe("#55 determinism + no-clock-in-checker", () => {
       // not leak source ordering.
       expect(render(permuted)).toBe(render(natural));
 
-      // NEGATIVE CONTROL: a detector that DID depend on declaration order would
-      // be caught here. Prove the comparison is real by showing the two sources
-      // are genuinely different bytes (so equality of OUTPUT is a property of
-      // the checker, not of identical inputs).
+      // Premise guard: the two sources are genuinely different bytes, so equal
+      // OUTPUT is a property of the checker, not of identical inputs.
       expect(sourceFromOrder(permutedOrder)).not.toBe(MODEL_SOURCE);
     }
   );
@@ -246,8 +244,8 @@ describe("#55 determinism + no-clock-in-checker", () => {
 
       // Two arbitrary, distinct wall-clock instants (derived as UTC epochs from
       // RealDate so the patch math is independent of the local timezone).
-      const CLOCK_A = RealDate.UTC(1997, 6, 4, 13, 45, 1); // wild value A
-      const CLOCK_B = RealDate.UTC(2031, 0, 19, 3, 14, 7); // wild value B (distinct)
+      const CLOCK_A = RealDate.UTC(1997, 6, 4, 13, 45, 1);
+      const CLOCK_B = RealDate.UTC(2031, 0, 19, 3, 14, 7);
       expect(CLOCK_A).not.toBe(CLOCK_B); // guard: the two clocks really differ
 
       // A review_by between the two clocks: a checker that defaulted its

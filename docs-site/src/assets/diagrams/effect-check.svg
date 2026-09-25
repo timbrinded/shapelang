@@ -1,0 +1,131 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 544" role="img" aria-labelledby="t d">
+  <title id="t">How shp check judges an emitted effect</title>
+  <desc id="d">shp check first rejects a function that declares effects unknown. For each emitted effect it then applies final forbids from the target resource's traits: AuditEvent has the prelude trait AppendOnly, which finally forbids HardDelete, so HardDelete of AuditEvent is rejected as a forbidden effect even though AuditStore grants it, and the grant is not consulted. Otherwise the component must grant the effect, or the check reports a missing grant. Effects without a resource target skip steps 2 and 3.</desc>
+  <style>
+    .paper{fill:#f6f4ee}.grid{stroke:#e6e1d4}.gridM{stroke:#dbd4c4}
+    .ink{fill:#1d2b34}.inkS{stroke:#1d2b34}.mute{fill:#5d6c74}.muteS{stroke:#8a959a}
+    .rule{stroke:#b8b09f}.card{fill:#fffdf8;stroke:#1d2b34}.band{fill:#0b6e99;fill-opacity:.1}
+    .blue{fill:#0b6e99}.blueS{stroke:#0b6e99}.pass{fill:#16734b}.passS{stroke:#16734b}
+    .warn{fill:#8f5a0c}.warnS{stroke:#b7791f}.fail{fill:#c23b32}.failS{stroke:#c23b32}.hatch{stroke:#c9c1ae}
+    .markBg{fill:#101820}.markA{fill:#45c4b0}.markB{fill:#f4b942}
+    .mono{font-family:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace}
+    .sans{font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+    @media (prefers-color-scheme:dark){
+      .paper{fill:#0c1a23}.grid{stroke:#13252f}.gridM{stroke:#1a303c}
+      .ink{fill:#dbe7ec}.inkS{stroke:#dbe7ec}.mute{fill:#8fa4ae}.muteS{stroke:#6f8792}
+      .rule{stroke:#35505e}.card{fill:#10222d;stroke:#dbe7ec}.band{fill:#5bb8e6;fill-opacity:.12}
+      .blue{fill:#5bb8e6}.blueS{stroke:#5bb8e6}.pass{fill:#46c28b}.passS{stroke:#46c28b}
+      .warn{fill:#e0a33a}.warnS{stroke:#e0a33a}.fail{fill:#ec6a5f}.failS{stroke:#ec6a5f}.hatch{stroke:#233946}
+      .markBg{fill:#dbe7ec}
+    }
+  </style>
+  <defs>
+    <pattern id="g" width="16" height="16" patternUnits="userSpaceOnUse"><path d="M16 0H0V16" fill="none" class="grid" stroke-width=".6"/></pattern>
+    <pattern id="gM" width="80" height="80" patternUnits="userSpaceOnUse"><path d="M80 0H0V80" fill="none" class="gridM" stroke-width=".8"/></pattern>
+    <pattern id="h" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path d="M0 0V7" class="hatch" stroke-width="1.1"/></pattern>
+    <marker id="aB" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1L9 5L0 9z" class="blue"/></marker>
+    <marker id="aF" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1L9 5L0 9z" class="fail"/></marker>
+    <marker id="dot" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6"><circle cx="5" cy="5" r="4" class="ink"/></marker>
+    <pattern id="hF" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path d="M0 0V7" class="failS" stroke-width="1.1" stroke-opacity=".3"/></pattern>
+    <marker id="aP" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1L9 5L0 9z" class="pass"/></marker>
+  </defs>
+
+  <!-- plate -->
+  <rect width="960" height="544" class="paper"/>
+  <rect width="960" height="544" fill="url(#g)"/>
+  <rect width="960" height="544" fill="url(#gM)"/>
+  <rect x="10.5" y="10.5" width="939" height="523" fill="none" class="inkS" stroke-width="1"/>
+  <rect x="14.5" y="14.5" width="931" height="515" fill="none" class="rule" stroke-width=".6"/>
+
+  <text x="40" y="52" class="mono blue" font-size="11" letter-spacing="1.6">CHECK ORDER</text>
+  <text x="40" y="76" class="sans ink" font-size="19" font-weight="650">How shp check judges an emitted effect</text>
+
+  <!-- input -->
+  <rect x="40" y="112" width="272" height="48" class="card" stroke-width="1.4"/>
+  <g class="mono ink" font-size="12">
+    <text x="56" y="132">fn AuditStore.purgeOldEvents</text>
+    <text x="56" y="150">emits <tspan class="blue">HardDelete&lt;AuditEvent&gt;</tspan></text>
+  </g>
+
+  <!-- spine -->
+  <g class="blueS" stroke-width="1.4" fill="none" marker-end="url(#aB)">
+    <path d="M72 160V181"/>
+    <path d="M72 224V245"/>
+    <path d="M72 360V381"/>
+  </g>
+  <path d="M72 424V446" fill="none" class="passS" stroke-width="1.4" marker-end="url(#aP)"/>
+  <g class="mono mute" font-size="11">
+    <text x="84" y="240">no · for each emitted effect</text>
+    <text x="84" y="376">no</text>
+    <text x="84" y="440">yes</text>
+  </g>
+
+  <!-- step 1: unknown effects -->
+  <rect x="40" y="184" width="480" height="40" fill="none" class="warnS" stroke-width="1.4" stroke-dasharray="4 3"/>
+  <text x="56" y="208" class="mono warn" font-size="11" letter-spacing="1.6">STEP 1</text>
+  <text x="120" y="208" class="mono ink" font-size="12">does the function declare <tspan class="warn">effects unknown</tspan>?</text>
+
+  <!-- step 2: final forbids -->
+  <rect x="40" y="248" width="480" height="112" fill="url(#hF)"/>
+  <rect x="40" y="248" width="480" height="32" class="paper"/>
+  <path d="M40 280H520" class="failS" stroke-width=".8" stroke-opacity=".5"/>
+  <rect x="40" y="248" width="480" height="112" fill="none" class="failS" stroke-width="1.4"/>
+  <text x="56" y="273" class="mono fail" font-size="11" letter-spacing="1.6">STEP 2</text>
+  <text x="120" y="273" class="mono ink" font-size="12">does a trait on AuditEvent finally forbid it?</text>
+  <rect x="56" y="296" width="448" height="48" class="card" stroke-width="1"/>
+  <g class="mono ink" font-size="12">
+    <text x="72" y="315">resource AuditEvent : AppendOnly</text>
+    <text x="72" y="333">AppendOnly: <tspan class="fail">forbid final HardDelete&lt;T&gt;</tspan> <tspan class="mute" font-size="11.5">(prelude)</tspan></text>
+  </g>
+
+  <!-- step 3: grants -->
+  <rect x="40" y="384" width="480" height="40" class="card" stroke-width="1.2"/>
+  <text x="56" y="408" class="mono ink" font-size="11" letter-spacing="1.6">STEP 3</text>
+  <text x="120" y="408" class="mono ink" font-size="12">does AuditStore grant HardDelete&lt;AuditEvent&gt;?</text>
+
+  <!-- exits -->
+  <g class="failS" stroke-width="1.4" fill="none" marker-end="url(#aF)">
+    <path d="M520 204H597"/>
+    <path d="M520 273H597"/>
+    <path d="M520 404H597"/>
+  </g>
+  <g class="mono mute" font-size="11">
+    <text x="540" y="197">yes</text>
+    <text x="540" y="266">yes</text>
+    <text x="540" y="397">no</text>
+  </g>
+
+  <!-- outcomes -->
+  <g class="failS" stroke-width="1.5" fill="none">
+    <circle cx="612" cy="204" r="10"/><path d="M607 199l10 10M617 199l-10 10"/>
+    <circle cx="612" cy="273" r="10"/><path d="M607 268l10 10M617 268l-10 10"/>
+    <circle cx="612" cy="404" r="10"/><path d="M607 399l10 10M617 399l-10 10"/>
+  </g>
+  <g class="mono fail" font-size="12.5">
+    <text x="632" y="208">error: unknown effects</text>
+    <text x="632" y="277">error: forbidden effect</text>
+    <text x="632" y="408">error: missing grant</text>
+  </g>
+
+  <!-- the grant that is not consulted -->
+  <rect x="632" y="296" width="248" height="30" fill="none" class="muteS" stroke-width="1"/>
+  <text x="644" y="315" class="mono mute" font-size="12">grants HardDelete&lt;AuditEvent&gt;</text>
+  <text x="632" y="346" class="mono mute" font-size="11.5">not consulted when a final forbid matches</text>
+
+  <!-- accepted -->
+  <circle cx="72" cy="460" r="10" fill="none" class="passS" stroke-width="1.4"/>
+  <path d="M67 460l4 4 6-8" fill="none" class="passS" stroke-width="1.6"/>
+  <text x="92" y="464" class="mono pass" font-size="12.5">effect accepted</text>
+
+  <text x="40" y="508" class="mono mute" font-size="11.5">effects without a &lt;Resource&gt; target skip steps 2 and 3</text>
+
+  <!-- title block -->
+  <g transform="translate(700 484)">
+    <rect x=".5" y=".5" width="235" height="34" fill="none" class="inkS" stroke-width="1"/>
+    <path d="M40 .5V34.5" class="inkS" stroke-width="1"/>
+    <rect x="9" y="6" width="23" height="23" rx="5" class="markBg"/>
+    <path d="M14.8 12.5h5.8l5.8 5-5.8 5h-5.8l5.8-5z" class="markA"/>
+    <path d="M20.6 12.5h5.8v10h-5.8l5.8-5z" class="markB"/>
+    <text x="52" y="22" class="mono ink" font-size="11" letter-spacing=".6">effect check</text>
+  </g>
+</svg>

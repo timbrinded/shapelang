@@ -103,13 +103,3 @@ attest no_shape_change {
   source ts("packages/shp-checker/src/checker/incremental.test.ts")
   reason "Differential, invalidation, and generated-AST origin tests exercise the modeled ShapeIncrementalChecker boundary without adding another architecture component."
 }
-
-attest no_shape_change {
-  source md("docs-site/src/content/docs/inside-shape/rule-evaluation.md")
-  reason "Documents the modeled ShapeIncrementalChecker and ShapeChecker shared semantic and binding pipeline; the documentation does not add another architecture boundary."
-}
-
-attest no_shape_change {
-  source md("docs-site/src/content/docs/inside-shape/fact-lowering.md")
-  reason "Documents the modeled ShapeIncrementalChecker parse cache, effective-model invalidation, and derived-fact reuse contract; the documentation does not add another architecture boundary."
-}

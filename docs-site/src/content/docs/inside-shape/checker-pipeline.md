@@ -1,131 +1,127 @@
 ---
 title: Checker Pipeline
-description: How Shape modules become diagnostics.
-sidebar:
-  order: 1
+description: The phases that turn .shape files into a sorted CheckResult, the entry points into them, how determinism and incremental reuse work, and where each kind of checker change belongs.
 ---
 
-This page describes the production checker pipeline for contributors. The pipeline turns reviewed `.shape` claims into pass or fail diagnostics. It validates the declared architecture model; it does not prove that application source code is correct, execute application logic, or replace tests and code review.
+The checker reads `.shape` files and check options, and nothing else. `checkShapeFiles` parses every file with the Langium grammar ([Langium Grammar](/shapelang/inside-shape/langium-grammar/)), lowers the parsed modules into one `Model` ([Fact Lowering](/shapelang/inside-shape/fact-lowering/)), runs the semantic checks and binding enforcement over that model ([Rule Evaluation](/shapelang/inside-shape/rule-evaluation/)), and returns a `CheckResult` with sorted diagnostics. Each phase reads only the previous phase's output: rules read the `Model` and check options, and `formatDiagnostics` reads only the `CheckResult`.
 
-The pipeline is deterministic: the same set of `.shape` files and changed-file inputs should produce the same lowered model, the same rule decisions, and the same diagnostics. Analyzer hints and authoring helpers may assist drafting, but they are not part of semantic pass/fail unless a human turns them into reviewed Shape claims.
-
-![Checker pipeline diagram showing parse, lower facts, run rules, and emit diagnostics with facts, rules, and provenance.](../../../assets/infographics/checker-pipeline.png)
-
-```mermaid
-flowchart TD
-  A[".shape files"] --> B["Parse with Langium"]
-  B --> C["ShapeModule ASTs"]
-  C --> D["Lower into Model and facts"]
-  D --> E["Run semantic rules"]
-  E --> F{"Diagnostics?"}
-  F -->|"none blocking"| G["pass"]
-  F -->|"one or more"| H["reject with causal trail"]
-```
+![Shape files are parsed, lowered into one Model, checked by the ordered rules and then bindings, and sorted into a CheckResult; a parse failure in any file stops the pipeline with exit code 2 and no Model.](../../../assets/diagrams/checker-pipeline.svg)
 
 ## Phases
 
-The production path is four phases. Entrypoints live under `packages/shp-checker/src/checker/`:
+Paths are relative to `packages/shp-checker/src/`.
 
-| Phase | Code | Input | Output | Job |
+| Phase | Code | Output | Failure outcome |
+| --- | --- | --- | --- |
+| Read and parse | `checkShapeFiles` reads each path; `parseShapeModule` in `parser.ts` parses it with the Langium services from `language/shape-module.ts`. | One `ShapeModule` AST per file. | A read error, or any lexer or parser error in any file, ends the check. The result holds only `parse` diagnostics, `exitCode` is `2`, and no `Model` is built. |
+| Lower | `lowerShapeModules` in `checker/lowerer.ts`, driving the domain lowerers in `checker/lowering/*`. | `Model`: typed indexes, `facts`, and lowering diagnostics. | Lowering always completes. Problems it finds (duplicate declarations, ambiguous or unknown names, invalid relations, invalid candidate effects, invalid `require_context`) become `model.diagnostics`. |
+| Check | `runSemanticChecks` runs `SEMANTIC_CHECKS` in `checker/rules.ts`; then `checkBindings` runs unless `enforceBindings` is `false`. | Semantic diagnostics. | No check stops a later one; each appends its diagnostics. |
+| Assemble | `checkLoweredShapeModel` in `checker/api.ts`. | `CheckResult`: `ok`, `exitCode`, sorted `diagnostics`, and `facts` when `includeFacts` is set. | `exitCode` is `1` when any diagnostic other than a downgraded `unknown_effects` warning remains; otherwise `0`. |
+| Render | `formatDiagnostics` in `checker/diagnostics.ts`. | Text. | None. It reads only the `CheckResult`. |
+
+`checkLoweredShapeModel` assembles the diagnostic list in a fixed order: lowering diagnostics, then the registry's output, then binding diagnostics. It then applies the `allowUnknownEffects` downgrade, computes `ok` and `exitCode`, sorts the diagnostics, and attaches sorted facts when requested. The sort makes the assembly order invisible in the returned list.
+
+## Entry points
+
+- **`checkShapeFiles(paths, options)`** is the path `shp check` takes. It reads and parses every path, in the given order, before lowering any of them. When all of them parse, it classifies each module's origin with `moduleOriginForShapeFile` against the normalized `repoRoot` and passes the modules to `checkShapeModules`. A module is generated AST only when its name is `shape.generated.ast` or starts with `shape.generated.ast.`, and its path relative to `repoRoot` is under `shape/generated/ast/`.
+- **`checkShapeModules(modules, options)`** takes parsed `ShapeModule[]` or `CheckModuleInput[]` (`module`, optional `filePath`, optional `origin`). It trusts only explicit origins: an input without `origin: "generated_ast"` is authored. It normalizes the options, calls `lowerShapeModules`, and passes the model to `checkLoweredShapeModel`. It never returns exit code `2`.
+- **`checkLoweredShapeModel(model, normalizedOptions)`** is internal. `checker/api.ts` exports it, but the package does not. Both entry points and the incremental checker assemble their results through it, so the pass condition and the sort exist in one place.
+- **`IncrementalShapeChecker`** caches parsed documents and the last lowered model for callers that check an in-memory workspace repeatedly. See [Incremental checking](#incremental-checking).
+
+`@shape/shp-checker` (`src/index.ts`) exports `checkShapeFiles`, `checkShapeModules`, and `IncrementalShapeChecker`. It does not export `lowerShapeModules` or `checkLoweredShapeModel`. The read-only query helpers in `checker/query.ts` (`explainShapeModules`, `graphShapeModules`, `listMemoryGuardsShapeModules`, and others) lower the modules themselves and never decide pass or fail; `listShapeObligations` calls `checkShapeModules` and filters its diagnostics.
+
+`normalizeCheckOptions` prepares the options once per check:
+
+| Option | Default | Read by | Effect |
+| --- | --- | --- | --- |
+| `changedFiles` | none | `checkCoverage`, `checkBindings` | Paths are normalized against `repoRoot`. With no paths, coverage and bindings report nothing. |
+| `repoRoot` | the working directory | `checkShapeFiles`, `checkCoverage`, `checkBindings` | Resolved to an absolute path. It classifies module origins and normalizes absolute changed-file and provenance paths. |
+| `freshnessDate` | unset | `checkFreshness` | An ISO `YYYY-MM-DD` date; unset turns freshness off. An invalid value throws a `TypeError` instead of producing a diagnostic. |
+| `enforceBindings` | on | `checkLoweredShapeModel` | `false` skips `checkBindings`. |
+| `allowUnknownEffects` | off | `checkLoweredShapeModel` | Downgrades every `unknown_effects` diagnostic to severity `warning` before `ok` is computed. |
+| `includeFacts` | off | `checkLoweredShapeModel` | Returns `model.facts` in the result. |
+
+`lowerShapeModules` takes no options. Only `repoRoot` can affect its input, through origin classification in `checkShapeFiles` and the incremental checker, so one lowered `Model` can be checked under any values of the other options.
+
+## Pass condition and exit codes
+
+`CheckResult.ok` is `true` only when every diagnostic is an `unknown_effects` diagnostic with severity `warning`. That happens when there are no diagnostics at all, or when `allowUnknownEffects` downgraded every remaining one.
+
+| `exitCode` | Meaning |
+| --- | --- |
+| `0` | `ok` is `true`. `formatDiagnostics` prints `Shape check passed.`, or the warnings followed by `Shape check passed with warnings.` |
+| `1` | The model was lowered, and at least one blocking diagnostic remains. |
+| `2` | `checkShapeFiles` could not read or parse at least one file. Only parse diagnostics are reported, and no semantic check ran. |
+
+The exit codes of each `shp` command, including usage errors, are listed in the [CLI Reference](/shapelang/reference/cli/).
+
+## Determinism
+
+The same `.shape` files and check options produce the same lowered model, facts, and diagnostics. The order of diagnostics is deterministic over the input set, not its source order:
+
+- `checkLoweredShapeModel` sorts diagnostics with `compareShapeDiagnostics` from `checker/diagnostics.ts`: by kind, then by rendered text, comparing by Unicode codepoint (`compareCodepointStrings`), so the order does not depend on locale. Diagnostic order therefore depends on neither the `SEMANTIC_CHECKS` order nor declaration order.
+- With `includeFacts`, facts are sorted by the codepoint order of their JSON text.
+- A parse-failure result is not sorted. Parse diagnostics follow the order of the input paths, and within one file lexer errors come before parser errors. `shp` sorts the paths its default discovery finds; explicit file arguments keep their order.
+- The checker never reads the system clock. `checkFreshness` compares against the injected `freshnessDate`; the CLI computes today's date when `--strict-freshness` asks for it.
+- `forbid path` and `forbid hypercycle` witnesses are chosen canonically. The algorithm and its tie-breaks are in [Rule Evaluation](/shapelang/inside-shape/rule-evaluation/#graph-witnesses).
+
+`packages/shp-checker/src/behavioural/determinism.test.ts` enforces these properties: byte-identical output across repeated runs of every public surface, identical diagnostics under a permutation of top-level declarations, and no clock reads in the checker.
+
+## Incremental checking
+
+`IncrementalShapeChecker` serves library callers that check an in-memory workspace repeatedly. Each `check(documents, options)` call supplies the complete current snapshot, so a document missing from the list counts as removed. It returns the `CheckResult` and an `invalidation` report.
+
+```ts
+import { IncrementalShapeChecker } from "@shape/shp-checker";
+
+const checker = new IncrementalShapeChecker();
+const { result, invalidation } = checker.check(
+  [{ filePath: "shape/audit.shape", source: "module audit\nresource AuditEvent\n" }],
+  { includeFacts: true }
+);
+```
+
+Any document change rebuilds the complete `Model` and fact list, because imports, duplicate declarations, `change` blocks, concrete targets, and derived facts cross file boundaries. No file owns an independent fact shard.
+
+| Change since the previous call | Reparsed | `Model` and facts | Rules | Report (`causes`; `derivedFacts`; `diagnostics`) |
 | --- | --- | --- | --- | --- |
-| Parse | `parseShapeModule` / `checkShapeFiles` | Source text | `ShapeModule` ASTs or parse diagnostics | Reject text the grammar cannot accept. |
-| Lower facts | `lowerShapeModules` | Parsed modules | `Model` (typed indexes + `facts` + lowering diagnostics) | Normalize declarations into records rules can use. |
-| Run rules | `runSemanticChecks` + optional `checkBindings` | Lowered `Model` and check options | Semantic diagnostics | Reject incoherent claims and missing obligations. |
-| Format diagnostics | `formatDiagnostics` and CLI/editor presentation | Diagnostics with provenance | Human-readable output | Show the causal path to the reviewer. |
+| First call | every document | built | run | `initial_check`; `rebuilt`; `recomputed` |
+| A document added, removed, or changed (its `source` or explicit `origin`) | changed documents only | rebuilt | rerun | `shape_documents_changed`; `rebuilt`; `recomputed` |
+| Options only, and the new `repoRoot` reclassifies a document with an absolute path and no explicit `origin` | none | rebuilt without reparsing | rerun | `check_options_changed`; `rebuilt`; `recomputed` |
+| Any other options-only change, including `changedFiles` | none | reused | rerun | `check_options_changed`; `reused`; `recomputed` |
+| Nothing | none | reused | not run; the previous result is returned | empty; `reused`; `reused` |
+| Any document fails to parse | changed documents | discarded | not run; the result holds only parse diagnostics, exit code `2` | the cause from the matching row above; `unavailable`; `recomputed` if documents changed, otherwise `reused` |
 
-Public orchestration is `checkShapeFiles` (parse then check) and `checkShapeModules` (lower then check). `checkLoweredShapeModel` reuses an already lowered model for the incremental checker.
+`causes` lists both `shape_documents_changed` and `check_options_changed` when a call changes documents and options together.
 
-Each phase stays narrow. The parser does not decide whether `HardDelete<AuditEvent>` is allowed. Rule evaluation does not re-parse source text. Diagnostic formatting does not invent new facts.
+The boundary contracts:
 
-## Parse
+- Document paths must be unique within a snapshot. A duplicate path throws a `TypeError` rather than letting array order decide which source wins.
+- `reparsedDocuments`, `reusedDocuments`, and `removedDocuments` are sorted by codepoint.
+- Every returned `CheckResult` is a `structuredClone` of the cached one, so a caller's mutation cannot corrupt the cache.
+- Like `checkShapeFiles`, the incremental checker classifies implicit origins against the normalized `repoRoot`, which defaults to the working directory.
 
-Langium parses each loaded `.shape` file into a `ShapeModule`. A module contains imports and top-level declarations: resources, traits, components, relations, candidate effects, implementations, bindings, changes, attestations, rules, rationales, memories, reevaluations, roles, and policies.
+The cache changes how much work is reused, not what the checker decides. Rules always run through `checkLoweredShapeModel`, and `packages/shp-checker/src/checker/incremental.test.ts` compares incremental results with the uncached full check, which remains authoritative.
 
-At this stage the checker only knows whether the text follows the grammar. The following is syntactically meaningful even if later rules reject it:
+## Where changes belong
 
-```shape
-module audit
+| Change | Where |
+| --- | --- |
+| Syntax | `language/shape.langium`, then regenerate. See [Langium Grammar](/shapelang/inside-shape/langium-grammar/). |
+| Parse diagnostics | `parser.ts` |
+| Model, fact, diagnostic, and option types | `checker/model.ts`, which holds data shapes only |
+| Pass order during lowering | `checker/lowerer.ts` |
+| Lowering one kind of declaration | `checker/lowering/*` |
+| Name and module resolution | `checker/symbols.ts` and `module-resolution.ts` |
+| `change` staging and change events | `checker/lowering/changes.ts` and `checker/change-planning.ts` |
+| Prelude traits, context obligations, and relation kinds | `prelude.ts`; `checker/prelude-seed.ts` seeds its traits and obligations into the model |
+| Queries shared by lowering, rules, and helpers | `checker/derivations.ts` |
+| A semantic check | a module under `checker/rules/`, registered in `SEMANTIC_CHECKS`. See [Rule Evaluation](/shapelang/inside-shape/rule-evaluation/#adding-a-rule). |
+| Guard matching over change events | `memory-guards.ts` |
+| Pass condition, option normalization, and result assembly | `checker/api.ts` |
+| Diagnostic text and ordering | `checker/diagnostics.ts` |
+| `explain`, `graph`, `memory`, and `obligations` output | `checker/query.ts` |
+| `shp inspect` output | `checker/inspection.ts` |
+| Incremental reuse | `checker/incremental.ts` |
 
-resource AuditEvent : AppendOnly
-
-component AuditStore {
-  owns AuditEvent
-  grants HardDelete<AuditEvent>
-  fn purgeOldEvents
-    source ts("src/audit/purge.ts#purgeOldEvents")
-    effects complete {
-      HardDelete<AuditEvent>
-        evidence ts("src/audit/purge.ts#purgeOldEvents")
-    }
-}
-```
-
-The parser accepts the shape of the declaration. Later stages decide that an append-only resource cannot be hard-deleted.
-
-Parse failures return exit code `2` because no semantic model was built. Semantic failures return exit code `1` because the model was understood and rejected.
-
-## Lower Facts
-
-`lowerShapeModules` builds the effective `Model` used by rules. Lowering is a fixed multi-pass process inside that function, not a separate public API:
-
-1. Index module declarations and seed prelude traits.
-2. Lower ordinary declarations into typed indexes and facts.
-3. Apply `change` declarations on top of that base.
-4. Rebuild shape-update paths from the final function registry.
-5. Emit derived facts (for example final-forbid and context-required facts).
-
-Files under `shape/` are the usual CI contract. Rules evaluate the committed global model as lowered, including any `change` blocks present in the loaded set.
-
-For the `AuditStore` example above, lowered records include (conceptually):
-
-```text
-resource AuditEvent
-resource_trait AuditEvent AppendOnly
-component AuditStore
-owns AuditStore AuditEvent
-grants AuditStore HardDelete<AuditEvent>
-function AuditStore.purgeOldEvents
-effect AuditStore.purgeOldEvents HardDelete<AuditEvent>
-```
-
-The real `Model` keeps more detail: typed maps such as `components`, `resources`, `traits`, `hypergraph`, `memories`, plus a `facts` list with provenance. Production rules primarily read the typed indexes; the fact list is the public inspection stream and the input used by experimental engines.
-
-## Run Rules
-
-`SEMANTIC_CHECKS` in `packages/shp-checker/src/checker/rules.ts` runs domain checks in a fixed order, then binding enforcement runs unless disabled. Checks answer questions such as:
-
-- Does a function emit an effect its component does not grant?
-- Does a resource trait create a final forbid for an emitted effect?
-- Did a governed source file change without a matching Shape update or current attestation?
-- Did a function marked `RefactorSensitive` receive the required memory?
-- Did a guarded target change without a matching reevaluation?
-- Did a hypercycle or forbidden-path rule find a witness in the directed hypergraph?
-
-These checks are deterministic comparisons over the lowered model and check options (`changedFiles`, `repoRoot`, optional `freshnessDate`). The checker does not infer effects from application source. If a function has `effects unknown`, the model records uncertainty; strict check treats that as a blocking diagnostic unless `allowUnknownEffects` downgrades it to a warning. If a function has `effects complete`, the author claims every material effect is represented in the model.
-
-## Emit Diagnostics
-
-A diagnostic should explain rejection as a causal trail. For a final-forbid failure, the reviewer needs the function effect, target resource, trait on the resource, and the specific final forbid.
-
-```mermaid
-flowchart TD
-  A["function emitted HardDelete on AuditEvent"] --> B["target resource AuditEvent"]
-  B --> C["AuditEvent has trait AppendOnly"]
-  C --> D["AppendOnly forbids final HardDelete"]
-  D --> E["diagnostic: final forbidden effect"]
-```
-
-That trail is the product surface for review and CI: change the code, change the claim, add missing context, or accept that the model is protecting an invariant.
-
-## Pipeline Boundaries
-
-When extending the checker:
-
-- Grammar changes belong in `packages/shp-checker/src/language/shape.langium`.
-- Normalization from declarations to `Model` / facts belongs in `checker/lowerer.ts` and `checker/lowering/*`.
-- Project coherence checks belong in `checker/rules/*` and the ordered registry in `checker/rules.ts`.
-- Human-facing explanation belongs in diagnostic formatting, `explain`, `graph`, `memory`, and `obligations` output.
-- Analyzer hints remain advisory unless turned into reviewed Shape claims.
-- Experimental engines (Datalog spike, semantic kernel) stay outside this production pipeline until explicitly adopted.
-
-Related: [Fact Lowering](./fact-lowering/), [Rule Evaluation](./rule-evaluation/), [Rule Engine Strategy](./rule-engine-strategy/).
+Analyzer hints, AST drafts, and the authoring helpers sit outside this pipeline and never decide pass or fail; see [Helper APIs](/shapelang/inside-shape/formatter-editor-authoring/). The experiments in `src/experiments/` and `experiments/semantic-kernel/` also stay outside it; see [Rule Evaluation](/shapelang/inside-shape/rule-evaluation/#why-rules-are-direct-typescript-checks).

@@ -4,14 +4,13 @@
 // DETERMINISTIC witness path — a concrete closed walk through the hypergraph,
 // over only the kinds the rule names — so the rejected structural relation is
 // understandable, not just "a cycle exists somewhere". See
-// shape/checker.shape HypercycleWitness ("deterministic witness path") and
-// docs-site/.../concepts/relations-hypergraphs.md (relation kinds + cycle
+// shape/checker.shape HypercycleWitness ("deterministic shortest witness
+// path") and docs-site/.../concepts/relations.md (kinds and
 // traversal).
 //
-// Every test here states a NAMED invariant that is truthful (checkable by
-// reading the cited fixture), falsifiable (the suite carries a negative
-// control), and non-circular. The determinism claim runs the checker TWICE and
-// compares the two independent witnesses — never a value against itself.
+// Each expected witness is checkable by reading the cited fixture. The
+// determinism claim runs the checker TWICE and compares the two independent
+// witnesses — never a value against itself.
 
 import { describe, expect, test } from "bun:test";
 import { resolve } from "node:path";
@@ -24,13 +23,13 @@ const fixture = (rel: string): string => resolve(repoRoot, rel);
 /**
  * Structural validity of a witness, independent of WHICH cycle was chosen.
  *
- * A witness is a valid hypercycle iff:
- *  - it is closed: `vertices.at(0) === vertices.at(-1)` and has at least one step;
- *  - the participating hyperedges all carry a kind permitted by the rule;
- *  - the hyperedge set is non-empty (a real structural relation caused it).
+ * Every valid hypercycle witness:
+ *  - is closed: `vertices.at(0) === vertices.at(-1)`, with at least one step;
+ *  - uses only hyperedges whose kind the rule permits;
+ *  - has a non-empty hyperedge set (a real structural relation caused it).
  *
- * This is derived from the meaning of "cycle over KIND", not from any single
- * fixture's expected answer, so it can be reused as an oracle for any witness.
+ * These checks follow from the meaning of "cycle over KIND", not from any
+ * single fixture's expected answer, so they apply to any witness.
  */
 function assertValidWitnessOverKinds(
   witness: { vertices: string[]; hyperedges: { name: string; kind: string }[] },
@@ -83,8 +82,7 @@ describe("#59 hypercycle witness correctness, determinism, multi-kind filtering"
       }
 
       // DETERMINISM (non-circular): a SECOND independent check of the same
-      // input must produce a deeply-equal witness. We compare two separately
-      // computed values, not one value against itself.
+      // input must produce a deeply-equal witness.
       const second = requireDiagnostic(await checkShapeFiles([path]), "forbidden_hypercycle");
       expect(second.vertices).toEqual(first.vertices);
       expect(second.hyperedges).toEqual(first.hyperedges);
@@ -104,7 +102,7 @@ describe("#59 hypercycle witness correctness, determinism, multi-kind filtering"
   test(
     lockedIntended(
       "hypercycle_coordinated reports the cross-kind cycle under its multi-kind rule",
-      "docs-site/.../concepts/relations-hypergraphs.md (per-kind cycle traversal)"
+      "docs-site/.../concepts/relations.md (Kinds and traversal)"
     ),
     async () => {
       const result = await checkShapeFiles([
@@ -129,7 +127,7 @@ describe("#59 hypercycle witness correctness, determinism, multi-kind filtering"
   test(
     lockedIntended(
       "restricting the rule to a single kind that cannot close the cycle reports NO hypercycle",
-      "shape/checker.shape HypercycleWitness; relations-hypergraphs.md (kind-induced subgraph)"
+      "shape/checker.shape HypercycleWitness; concepts/relations.md (Kinds and traversal)"
     ),
     () => {
       // Same topology as hypercycle_coordinated, but the rule now ranges over

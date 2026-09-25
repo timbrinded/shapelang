@@ -1,8 +1,7 @@
-// Pure model-derived queries needed by more than one layer. Lowering
-// (emitDerivedFacts), the rule engine (required-context / reevaluation / final-
-// forbid checks), and the query commands (explain / obligations) all read these;
-// keeping them here stops any of those layers from importing another's
-// internals.
+// Pure model-derived queries needed by more than one layer: lowering (including
+// emitDerivedFacts), the rule engine, and the query commands (explain,
+// obligations) all read these. Keeping them here stops any of those layers from
+// importing another's internals.
 import type { TargetKind } from "../language/generated/ast.ts";
 import type {
   ContextRequirement,

@@ -36,8 +36,6 @@ describe("Shape memory freshness checking", () => {
     `;
   }
 
-  // Thin wrapper over the shared checkShapeSource helper so the parse/error flow
-  // lives in one place; this only threads the freshness option through.
   function checkWithFreshness(source: string, freshnessDate?: string) {
     return checkShapeSource(source, {
       freshnessDate: freshnessDate === undefined ? undefined : requireIsoCalendarDate(freshnessDate)
@@ -79,9 +77,10 @@ describe("Shape memory freshness checking", () => {
   });
 
   test("does not enforce calendar-invalid ISO-shaped review_by values", () => {
-    // These match the YYYY-MM-DD regex but are not real dates; the calendar
-    // round-trip in isIsoDate must reject them rather than letting Date roll
-    // them forward (2026-02-30 -> 2026-03-02) and suppress a real diagnostic.
+    // These match the YYYY-MM-DD pattern but are not real dates. The calendar
+    // check in isIsoCalendarDate must reject them; `Date` can roll such a value
+    // forward (2026-02-30 -> 2026-03-02) into a real date that freshness
+    // checking would then enforce.
     for (const invalid of ["2026-02-30", "2026-13-40"]) {
       const result = checkWithFreshness(refactorMemorySource(invalid), "2026-05-30");
       expect(result.exitCode).toBe(0);

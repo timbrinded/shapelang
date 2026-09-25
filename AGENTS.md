@@ -9,7 +9,10 @@ the declared `.shape` model: humans and agents write typed claims about resource
 components, effects, relations, coverage, bindings, and design memory; the
 deterministic checker accepts or rejects those claims.
 
-`CLAUDE.md` is a symlink to this file. Keep shared agent instructions here.
+`CLAUDE.md` is a symlink to this file. Keep shared agent instructions here. The
+human contributor workflow is in `CONTRIBUTING.md`, the release procedure in
+`RELEASING.md`, and the behavioural test conventions in
+`packages/shp-checker/TESTING.md`.
 
 ## How To Think About This Repo
 
@@ -34,6 +37,8 @@ deterministic checker accepts or rejects those claims.
 
 ## Repository Layout
 
+`CONTRIBUTING.md` has the complete layout. The parts agents touch most:
+
 - `packages/shp-checker`: parser, formatter, fact lowering, semantic checker,
   graph/explain/memory helpers, authoring helpers, editor helpers, and analyzer
   hints.
@@ -49,13 +54,12 @@ deterministic checker accepts or rejects those claims.
 - `shape`: Shape's own architecture model for the language, checker, tooling, and
   delivery pipeline.
 - `fixtures/pass` and `fixtures/fail`: focused semantic examples used by tests.
-- `docs-site`: Astro/Starlight documentation site. Complete `shape` code fences
-  are parsed by the docs verifier unless marked `shape no-verify`.
+- `docs-site`: Astro/Starlight documentation site.
 - `plugins/shapelang/skills`: downstream agent skills for using Shape in other
   repositories. Keep new skills in `plugins/shapelang/skills/<skill-name>/SKILL.md`
   so both plugin manifests expose them.
-- `scripts/build-release-assets.sh`: builds release archives and injects the tag
-  version into installer scripts.
+- `scripts/build-release-assets.sh`: builds release archives and injects the
+  release version into the installer scripts.
 - `scripts/write-changed-files.sh`: writes `changed.txt` for local and CI Shape
   coverage/binding checks.
 - `action.yml`: GitHub composite action that installs a released `shp` binary.
@@ -85,12 +89,12 @@ The TypeScript project is strict (`strict`, `noUncheckedIndexedAccess`,
   files.
 - Run `bun run changed-files` before `bun run shape:ci` when validating coverage
   locally.
-- Governed source changes require a faithful Shape update or a narrow current
-  `attest no_shape_change`.
 - When a code change adds, removes, or moves functionality, assume the Shape
-  model may need to change too. Inspect `shape/*.shape`, update the relevant
-  component/function/effect/relation claims, or add a narrow current attestation
-  only when the architecture contract truly did not change.
+  model may need to change too. A governed source change requires a faithful
+  Shape update: inspect `shape/*.shape` and update the relevant
+  component/function/effect/relation claims. Add a narrow current
+  `attest no_shape_change` only when the architecture contract truly did not
+  change.
 - Use the existing files under `shape/` as the best local guide for Shape syntax,
   modeling style, source/evidence references, relations, memory, and
   reevaluations before inventing new patterns.
@@ -107,82 +111,52 @@ The TypeScript project is strict (`strict`, `noUncheckedIndexedAccess`,
 
 ## Implementation Guidance
 
-- Parser and grammar changes usually touch:
-  - `packages/shp-checker/src/language/shape.langium`
-  - generated files under `packages/shp-checker/src/language/generated`
-  - `packages/shp-checker/src/parser.ts`
-  - checker/lowering tests and docs syntax reference
-- Checker rule changes usually touch:
-  - `packages/shp-checker/src/checker.ts`
-  - fixtures under `fixtures/pass` and `fixtures/fail`
-  - `packages/shp-checker/src/checker.test.ts`
-  - relevant docs under `docs-site/src/content/docs`
-  - `shape/*.shape` when governed implementation files changed
-- CLI behavior changes usually touch:
-  - `packages/shp-cli/src/index.ts`
-  - `packages/shp-cli/src/index.test.ts`
-  - README command examples and `docs-site/src/content/docs/reference/cli.md`
-- Docs changes should keep complete Shape examples parseable. Use
-  `shape no-verify` only for intentional fragments.
-- Release/install changes usually touch:
-  - `install.sh`
-  - `install.ps1`
-  - `scripts/build-release-assets.sh`
-  - `action.yml`
-  - `.github/workflows/release.yml`
-  - README quick-start snippets
+- Before editing, find the change type in the "What to update per change type"
+  table in `CONTRIBUTING.md` and update every file in its row, including the
+  Shape model file and the docs binding it names.
+- `DocsSource` in `shape/delivery.shape` governs every `.md` page under
+  `docs-site/src/content/docs/`, so a page edit needs a Shape update or a narrow
+  current `attest no_shape_change`.
+- Docs changes must keep every `shape` fence parseable. The docs verifier parses
+  every unindented `shape` fence under `docs-site/src/content/docs` unless its
+  info string contains `no-verify`; use `shape no-verify` only for intentional
+  fragments.
 
-## Release Process
+## Release Rules
 
-Public releases coordinate the CLI/setup action tag `vX.Y.Z` and plugin tag
-`shapelang--vX.Y.Z` from the same commit. These files must all contain `X.Y.Z`:
+`RELEASING.md` is the release procedure; follow it step by step. The rules:
 
-- `packages/shp-cli/package.json`
-- `plugins/shapelang/.codex-plugin/plugin.json`
-- `plugins/shapelang/.claude-plugin/plugin.json`
+- Public releases coordinate the CLI/setup action tag `vX.Y.Z` and the plugin tag
+  `shapelang--vX.Y.Z` on the same commit, which must be clean, pushed, current
+  `master`.
+- These must all carry `X.Y.Z`: `packages/shp-cli/package.json`,
+  `plugins/shapelang/.codex-plugin/plugin.json`,
+  `plugins/shapelang/.claude-plugin/plugin.json`, and the `# Shape vX.Y.Z`
+  heading in `docs/releases/vX.Y.Z.md`.
+- Run `bun run release:metadata` and `bun run skills:check` during preparation.
+  `release:metadata` lists every public version pin from `releaseVersionPins` in
+  `scripts/check-release-metadata.ts`; `bun test` also fails on a stale pin.
+  Update the pinned public examples, all affected skill
+  entrypoints/references/agent metadata, and `docs/releases/vX.Y.Z.md`.
+- Keep pinned snippets verbatim when editing docs. If a pin must move, update
+  `releaseVersionPins` in the same change.
+- Before any tag, dispatch `.github/workflows/release-candidate.yml` on that
+  exact commit. A human must approve the protected `skills-release-approval`
+  environment. Automated skill output alone does not authorize a release.
+- A copied skills report does not skip the candidate: the new commit still needs
+  its own validate job, archive smoke tests, and human approval. Never tag an
+  ancestor commit after `master` has moved.
+- After the exact commit's candidate run succeeds and is approved, create and
+  push both lightweight tags together, in one push.
+- Merge nothing to `master` from candidate dispatch until the Release workflow
+  has published.
+- Never move or replace a published release tag; fix forward with a new version.
 
-Run `bun run release:metadata` and `bun run skills:check` during preparation.
-Update pinned public examples, all affected skill entrypoints/references/agent
-metadata, and `docs/releases/vX.Y.Z.md`.
+After the Release workflow finishes, confirm that its verify jobs passed. They
+check the published assets and checksums, and install the published version
+through the setup action on Linux x64, Linux ARM64, macOS ARM64, and Windows x64.
 
-Only release from a clean, pushed, current `master` commit. Before any tag,
-dispatch `.github/workflows/release-candidate.yml` on that exact commit. It
-validates the candidate, smoke-tests the Linux x64 archive, runs
-`run-release-canaries.ts` against that archive, and runs
-`smoke-release-binary.sh --quick` on Linux ARM64, macOS ARM64, and Windows x64.
-The skills job may copy an approved report from this SHA, or from an ancestor
-when the path list in `RELEASING.md` is unchanged. A change on that list
-cannot copy an ancestor report. Docs-only commits still need a new candidate
-on the new SHA (validate, archive smoke, human approval) and must not tag the
-ancestor. A human must approve the protected `skills-release-approval`
-environment. Automated skill output alone does not authorize a release.
-
-After the exact commit's candidate run succeeds, create and push both lightweight
-tags together. The release workflow rejects non-current-master tags, missing or
-mismatched plugin tags, unsynchronized versions, and commits without a successful
-approved candidate run on that SHA. After publication, the setup action installs
-that version on Linux x64, Linux ARM64, macOS ARM64, and Windows x64.
-
-Follow `RELEASING.md` for the command-by-command preparation, manual gate,
-tagging, asset smoke tests, and post-publication checklist.
-
-Release assets produced by `scripts/build-release-assets.sh`:
-
-- `shp-linux-x64.tar.gz`
-- `shp-linux-arm64.tar.gz`
-- `shp-darwin-arm64.tar.gz`
-- `shp-windows-x64.tar.gz`
-- `install.sh`
-- `install.ps1`
-- `checksums.txt`
-
-The builder sets `SHAPE_RELEASE_VERSION` from `GITHUB_REF_NAME` by default and
-replaces `__SHAPE_DEFAULT_VERSION__` in the installer scripts so release-hosted
-installers default to the tag they came from. If no version is injected, the
-installers fall back to `latest`.
-
-After the workflow finishes, verify the GitHub release has all assets, checksum
-verification works, and the setup action can install the new version:
+A consumer pins a release through the action's `version` input:
 
 ```yaml
 - uses: timbrinded/shapelang@master
@@ -192,16 +166,24 @@ verification works, and the setup action can install the new version:
 
 ## CI Expectations
 
-CI runs codegen checks, formatting, linting, tests, typechecking, Shape CI, docs
-checks, release-asset build smoke tests, link checks, and typos checks.
+CI (`.github/workflows/shape.yml`) runs Langium codegen and generated-AST
+freshness checks, formatting, linting plus `skills:check`, typechecking, tests,
+the semantic-kernel prototype, Shape CI, docs checks, a release-asset build smoke
+test, link checks, and typos checks. On pull requests it also runs the
+Claude-powered Shape Claude Review, Shape Contract Guard, and Shape Index
+Coverage jobs, then upserts a PR summary comment.
 
-For local development, the usual minimum after a code change is:
+For local development, run this list after a code change. It is identical to the
+list in `CONTRIBUTING.md` and repeated in `RELEASING.md` step 2; change all three
+together.
 
 ```bash
 bun run changed-files
 bun run format:check
 bun run lint
+bun run skills:check
 bun test
 bun run typecheck
 bun run shape:ci
+bun run docs:check
 ```

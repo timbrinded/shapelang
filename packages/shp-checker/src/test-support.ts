@@ -1,6 +1,6 @@
-// Shared helpers for the checker test suites. Kept in a non-test module so the
-// memory-guard, context-obligation, and core checker test files can share one
-// parse/check surface without duplicating it.
+// Shared helpers for the checker package's test suites. It is a non-test module
+// so that the package's `*.test.ts` files can share one parse/check surface
+// without duplicating it.
 import { checkShapeModules, parseShapeModule, type CheckOptions } from "./index.ts";
 
 /** A `fn Component.name` target reference. */

@@ -1,349 +1,130 @@
 ---
 title: Rule Evaluation
-description: How deterministic checks reject incoherent Shape models.
-sidebar:
-  order: 4
+description: The ordered SEMANTIC_CHECKS registry and binding enforcement, how checks interact, how graph witnesses are chosen, how to add a rule, and why rules are direct TypeScript checks.
 ---
 
-This page describes production rule evaluation for contributors. Rule evaluation decides whether the lowered Shape model is coherent. By the time rules run, syntax has been parsed and declarations have been lowered into a `Model` (typed indexes and facts with provenance).
+Rule evaluation runs after lowering. `runSemanticChecks` in `packages/shp-checker/src/checker/rules.ts` calls each entry of `SEMANTIC_CHECKS` in order, and `checkLoweredShapeModel` then runs `checkBindings` unless `enforceBindings` is `false`. Every check is a TypeScript function that reads the typed indexes of the lowered `Model` and returns `SemanticDiagnostic[]`. No check stops a later one, and no rule module reads `model.facts`. [Checker Pipeline](/shapelang/inside-shape/checker-pipeline/) covers the phases around this one and how the combined result is sorted. Checker module paths below are relative to `packages/shp-checker/src/checker/`; other paths are relative to the repository root.
 
-The checker rejects incoherent or incomplete claims in the declared model. It does not search application source for hidden behavior, prove implementation correctness, or let prose override hard constraints such as `forbid final`.
+## Inputs
 
-Context lowering normalizes surface structure before rules run: user-defined `require_context` trait obligations are merged with prelude obligations, and nested `protects` / `guards` / `who` / `when` blocks are flattened into the shared context-info fields rules read.
+Each check receives the `Model` and the `NormalizedCheckOptions`:
 
-Rules compare explicit claims. They do not invent effects from source code.
+- The typed indexes described in [Fact Lowering](/shapelang/inside-shape/fact-lowering/#the-model): `resources`, `traits`, `components`, `hypergraph`, `candidateEffects`, `implementations`, `bindings`, `rules`, `rationales`, `memories`, `reevaluations`, `roles`, `policies`, `attestations`, `shapeUpdatePaths`, and `changeEvents`.
+- The options. Only three checks read them: `checkFreshness` reads `freshnessDate`, and `checkCoverage` and `checkBindings` read `changedFiles` and `repoRoot`. `allowUnknownEffects` and `includeFacts` apply after the rules, in `checkLoweredShapeModel`.
 
-![Rule evaluation diagram showing facts flowing into final forbid, missing grant, coverage, design memory, and hypercycle rule checks, then pass or reject outputs.](../../../assets/infographics/rule-evaluation-board.png)
+Shared queries that more than one layer needs, such as `deriveFinalForbidsForResource`, `requirementsForTarget`, and `reevaluationValidationReasons`, live in `derivations.ts`.
 
-```mermaid
-flowchart TD
-  A["lowered Model"] --> B["name and duplicate checks"]
-  A --> C["effect and grant checks"]
-  A --> D["trait final-forbid checks"]
-  A --> E["coverage checks"]
-  A --> F["context and guard checks"]
-  A --> G["hypercycle and provider rules"]
-  B --> H["diagnostics"]
-  C --> H
-  D --> H
-  E --> H
-  F --> H
-  G --> H
-```
+## Registry
 
-## What Rules Consume
+| Order | Function | Module | Diagnostic kinds | Reads options |
+| --- | --- | --- | --- | --- |
+| 1 | `checkResolvedNames` | `rules/names.ts` | `unknown_name`, `invalid_relation`, `invalid_rule` | no |
+| 2 | `checkRules` | `rules/declarations.ts` | `invalid_rule` | no |
+| 3 | `checkFingerprintExpectations` | `rules/relations.ts` | `invalid_relation`, `fingerprint_mismatch` | no |
+| 4 | `checkCandidateEffectFingerprints` | `rules/functions.ts` | `candidate_pin_fingerprint_mismatch` | no |
+| 5 | `checkContextTargets` | `rules/context.ts` | `invalid_context_target`, `context_target_mismatch` | no |
+| 6 | `checkRequiredContext` | `rules/context.ts` | `missing_required_context` | no |
+| 7 | `checkRequiredDescriptions` | `rules/context.ts` | `missing_required_description` | no |
+| 8 | `checkReevaluations` | `rules/context.ts` | `invalid_reevaluation` | no |
+| 9 | `checkGuardedChanges` | `rules/guards.ts` | `guarded_shape_changed` | no |
+| 10 | `checkFreshness` | `rules/guards.ts` | `stale_memory` | `freshnessDate`; runs only when it is set |
+| 11 | `checkFunctions` | `rules/functions.ts` | `unsafe_effects`, `unknown_effects`, `final_forbidden_effect`, `missing_grant` | no |
+| 12 | `checkProvidesRules` | `rules/relations.ts` | `forbidden_provides` | no |
+| 13 | `checkForbiddenPaths` | `rules/relations.ts` | `invalid_rule`, `forbidden_path` | no |
+| 14 | `checkHypercycles` | `rules/relations.ts` | `forbidden_hypercycle` | no |
+| 15 | `checkCoverage` | `rules/coverage.ts` | `missing_shape_update` | `changedFiles`, `repoRoot` |
+| after the registry | `checkBindings` | `rules/coverage.ts` | `missing_bound_docs_change` | `changedFiles`, `repoRoot`; skipped when `enforceBindings` is `false` |
 
-The production checker has two views of the same model:
+Lowering, not the registry, reports `duplicate_declaration`, `duplicate_fingerprint`, `ambiguous_name`, `invalid_candidate_effect`, and `invalid_require_context`, as well as some `invalid_relation` and `unknown_name` diagnostics.
 
-- Typed indexes such as `resources`, `components`, `traits`, `rules`, `memories`, `reevaluations`, and `hypergraph`, which most domain checks read directly.
-- Fact records on `model.facts`, useful for inspection and for experiments. Production modules under `checker/rules/*` currently use the indexes, not a relational join over the fact stream.
+Diagnostic order does not depend on the `SEMANTIC_CHECKS` order: `checkLoweredShapeModel` sorts every result by kind, then by rendered text. The printed form of each kind, and how to fix it, is in [Diagnostics](/shapelang/reference/diagnostics/).
 
-A function effect check looks at a function's lowered effects, the owning component's grants, and final forbids derived from the target resource's traits. It does not scan AST text.
+## Interactions
 
-## Core Checks
+These behaviours span more than one check, or a check and the result assembly. The user-facing rules are taught in [Effect Model](/shapelang/concepts/effect-model/), [Design Memory](/shapelang/concepts/design-memory/), and [Keep the Model Current](/shapelang/guides/keep-model-current/).
 
-`SEMANTIC_CHECKS` in `packages/shp-checker/src/checker/rules.ts` runs domain checks in fixed order. Binding enforcement runs after that list unless disabled. Major categories:
+- **Final-forbid precedence.** For each entry of a complete effect summary, `checkFunctions` first looks at the target. When the target is a declared resource, it checks final forbids with `findFinalForbidden`. A match emits `final_forbidden_effect` and skips the grant check for that entry, so no `missing_grant` is reported for it. When the target is not a declared resource, the final-forbid check is skipped, the grant check still runs, and `checkResolvedNames` also reports `unknown_name`. An entry with no `<Resource>` target skips both checks. Rationale, memory, reevaluations, and attestations never suppress either diagnostic, and a grant never suppresses `final_forbidden_effect`.
+- **Memory is not a waiver.** Memory can satisfy required design context and create review obligations, but it does not suppress final forbids, missing grants, or other hard model failures. `checkFunctions`, the relation checks, and coverage never read `rationales`, `memories`, or `reevaluations`, and attestations are read only by `checkCoverage` and `checkBindings`.
+- **Unknown-effects severity.** `checkFunctions` reports each function with `effects unknown` as `unknown_effects` with severity `error`, and skips that function's final-forbid and grant checks. It skips functions from generated-AST modules (`shouldIgnoreUnknownEffectsDiagnostic`, which reads `FunctionInfo.generatedAstCandidate`). Under `allowUnknownEffects`, `checkLoweredShapeModel` downgrades every `unknown_effects` diagnostic to `warning`; no other kind changes, and a result that holds only these warnings passes.
+- **The current-file filter.** With an empty changed-file list, `checkCoverage` and `checkBindings` report nothing. Otherwise `changedFileContext` normalizes the list against `repoRoot`, and a Shape-update ref or attestation counts only when `provenanceFileChanged` finds its declaring `.shape` file in that list. The attestation, governed-path, and binding rules applied after this filter are in [Keep the Model Current](/shapelang/guides/keep-model-current/).
+- **Guards read change events.** `checkGuardedChanges` passes the contexts from `buildGuardContexts` and `model.changeEvents` to `evaluateGuards` in `packages/shp-checker/src/memory-guards.ts`. Change events come only from `change` declarations, so editing a guarded declaration in place never raises `guarded_shape_changed`. A valid reevaluation (`hasValidReevaluationForGuard`) satisfies every guard of the context it names.
+- **Rule-derived final forbids.** `deriveFinalForbidsForResource` adds forbids from `rule` declarations that contain a `forbid final` member:
+  - The subject name from `when T has TraitName` is the rule's generic binder. `checkRules` reports `invalid_rule` when a rule with a `forbid final` member has no `when` subject or more than one distinct subject.
+  - Every `when` clause for the subject must match: the resource must carry each listed trait.
+  - Each condition trait must be a marker trait with no type parameters, or have exactly one parameter explicitly bound to `Resource`, such as `AppendOnly<T: Resource>`. `resourceRuleConditionCompatibility` rejects unbound, non-`Resource`, and multiple parameters as `invalid_rule`, because the rule syntax cannot bind them to the subject.
+  - An invalid or unresolved condition contributes no forbids.
+  - A generic target such as `HardDelete<T>` binds to the matching resource. A concrete target such as `HardDelete<audit::AuditEvent>` stays that exact resource after module and import resolution.
+  - Plain `forbid` members in a rule derive nothing.
+  - A `final_forbidden_effect` from a rule names the first `when` trait as its trait.
 
-| Check | Question it answers | Typical fix |
-| --- | --- | --- |
-| Final forbidden effects | Did a function emit an effect that a resource trait forbids with `final`? | Change the implementation or model; do not waive it with memory. |
-| Missing grants | Did a function emit an effect its component lacks permission to emit? | Add the narrow grant if the architecture allows it. |
-| Unknown effects | Is a function still marked `effects unknown`? | Replace uncertainty with reviewed complete effects. |
-| Source coverage | Did governed source change without a Shape update or current attestation? | Update `shape` or add a narrow current `attest no_shape_change`. |
-| Bindings | Did a Shape-affecting change require a paired docs or workflow change? | Update the bound path or add a narrow `docs_not_needed` attestation. |
-| Required context | Did a shape trait require rationale, memory, or description? | Add the typed context block. |
-| Guarded changes | Did a protected target change without reevaluation? | Add a matching `reevaluation` or preserve the shape. |
-| Forbidden paths | Did a `forbid path` rule find a directed route over its explicit relation kinds? | Remove or redirect a hop, or revise the rule intentionally. |
-| Hypercycles | Did a `forbid hypercycle` rule find a cycle in the directed hypergraph? | Break the cycle or revise the rule intentionally. |
-| Provider rules | Does any `provides` relation expose a target outside the allowed component? | Move provider responsibility, remove the relation, or change the rule. |
+## Graph witnesses
 
-Coverage and binding checks use a normalized changed-file context. A source, evidence reference, or attestation only counts for the current run when the declaring Shape file is also in the changed-file list; stale attestations from older reviews are ignored. Function facts are emitted from the final component function registry, so add, modify, and remove changes update the model first and then produce facts from that final state.
+`forbid path` and `forbid hypercycle` share one step-graph builder, `buildRelationTraversalGraph` in `rules/relations.ts`, and report one shortest, canonical witness each.
 
-Final forbids take precedence over missing grants for the same effect: if a final forbid matches, the checker emits `final_forbidden_effect` and does not also emit `missing_grant` for that effect.
+**Step graph.** Each hyperedge contributes directed steps according to the traversal its kind declares in `PRELUDE_RELATION_KINDS` (`packages/shp-checker/src/prelude.ts`). `directed_pairs` kinds (`calls`, `callbacks`, `provides`) give one step, `members[0] → members[1]`. The `ordered_path` kind (`coordinated_call`) gives one step per consecutive pair of members. Other kinds give no steps. Only hyperedges whose kind is in the rule's kind list contribute; a `forbid hypercycle` with no `over` clause uses every kind. Each vertex's outgoing steps are sorted by target, then relation kind, then relation name, and the vertex list is sorted; every comparison is by codepoint.
 
-## Incremental Runs
+**Paths.** `checkForbiddenPaths` reports `invalid_rule` for a `forbid path` whose endpoints are equal or whose kinds include one without traversal. It skips a rule whose endpoints are unresolved or ambiguous, which `checkResolvedNames` reports. `findShortestPath` builds the step graph from `validPathHyperedges` only: it leaves out hyperedges with an unresolved or ambiguous endpoint, and `provides` hyperedges whose provider is not a component or whose target is not a resource. A breadth-first search from the source, with a visited set, returns the first path that reaches the target. That path has the fewest hops, with ties broken by the sorted step order, and the visited set makes the search terminate on cyclic graphs. Each `forbid path` member with a witness produces one `forbidden_path` diagnostic that lists every step.
 
-`IncrementalShapeChecker` may reuse a globally lowered model when only checker options change, but it always reruns semantic and binding rules against the new options. If a `repoRoot` change reclassifies an absolute, implicit-origin generated-AST document, it rebuilds the model without reparsing. An exact no-op may reuse the prior diagnostics. Adding, changing, or removing a Shape document rebuilds the complete effective model and fact set before any rule runs, so incremental execution preserves the same phase order and diagnostics as `checkShapeModules`.
+**Hypercycles.** `findHypercycle` builds the step graph from all hyperedges, without endpoint filtering. It finds strongly connected components with Tarjan's algorithm, visiting vertices in sorted order, and keeps the components that contain a cycle: more than one vertex, or a step from a vertex to itself. Within each such component, a breadth-first search from every vertex finds the shortest cycle back to that vertex. Candidates are compared by length, then by their vertex sequence, then by each step's relation kind and name, all by codepoint, and the smallest across all components wins. The walk therefore starts at the codepoint-smallest vertex that lies on a shortest cycle. The witness lists the vertices as a closed walk and the relations in walk order, each relation once. `checkHypercycles` reports at most one diagnostic per `forbid hypercycle` member, and drops a repeat of the same set of relations within one rule.
 
-This is work reuse, not a second rule engine. The uncached full-check APIs remain available and authoritative.
+Examples of both witnesses, and how a reviewer reads them, are in [Relations and Graph Rules](/shapelang/concepts/relations/).
 
-## Final Forbids
+## Adding a rule
 
-Final forbids are stronger than grants. A grant says a component may emit an effect. A final forbid says the effect is not allowed for that target at all.
+A rule belongs in Shape when it rejects an incoherent or incomplete claim and can explain itself through lowered model data and provenance. It must not adjudicate taste. Before writing one, identify which index it reads, which declaration creates that data, which diagnostic a reviewer should see, and whether a reviewer can fix the problem without knowing checker internals.
 
-```shape
-module audit
+1. If the rule needs data the model lacks, add the field to `Model` in `model.ts` and fill it in the matching lowerer under `lowering/`. Add a `Fact` variant as well only if `includeFacts` consumers should see the data.
+2. Add the diagnostic variant to `SemanticDiagnostic` in `model.ts`, with `filePath` and a `causedBy` list built with `describeProvenance`. Add its case to `formatDiagnostic` in `diagnostics.ts`; `bun run typecheck` fails until the switch covers the new kind.
+3. Write the check in the matching module under `rules/`, as a function that takes the `Model` (plus any option values it needs) and returns `SemanticDiagnostic[]`. Read typed indexes and `derivations.ts` helpers, never `model.facts`.
+4. Add an entry to `SEMANTIC_CHECKS` in `rules.ts` that passes it the model and those option values.
+5. Add a passing model under `fixtures/pass/<name>/` and a failing one under `fixtures/fail/<name>/`, and cases in `packages/shp-checker/src/checker.test.ts` that load them. `checker.test.ts` loads each fixture by path, so a fixture that no test names is never checked. The formatter round-trip test and `bun run format:check` do scan every fixture, so run `bun run format:shape` on new fixtures.
+6. Document the printed form, cause, and fix in `docs-site/src/content/docs/reference/diagnostics.md`. The `RuleEngineDocs` binding in `shape/delivery.shape` requires a docs change when `rules.ts`, `rules/**`, `diagnostics.ts`, or `shape/checker.shape` changes.
+7. Model the new function on `ShapeRuleEngine` in `shape/checker.shape`, with its `source` and complete effects. `packages/shp-checker/src/checker/**/*.ts` is governed by the `CheckerSource` implementation, so coverage fails unless a current Shape update or attestation names the changed rule module.
+8. Run the contributor checks listed in [`CONTRIBUTING.md`](https://github.com/timbrinded/shapelang/blob/master/CONTRIBUTING.md).
 
-trait AppendOnly<T: Resource> {
-  allow Append<T>
-  allow Read<T>
-  forbid final HardDelete<T>
-}
+## Why rules are direct TypeScript checks
 
-resource AuditEvent : AppendOnly
-
-component AuditStore {
-  owns AuditEvent
-  grants HardDelete<AuditEvent>
-  fn purgeOldEvents
-    source ts("src/audit/purge.ts#purgeOldEvents")
-    effects complete {
-      HardDelete<AuditEvent>
-        evidence ts("src/audit/purge.ts#purgeOldEvents")
-    }
-}
-```
-
-This model fails. The component has a grant, but the target resource has `AppendOnly`, and `AppendOnly` derives a final forbid for `HardDelete<AuditEvent>`.
-
-```mermaid
-flowchart LR
-  A["AuditStore.purgeOldEvents emits HardDelete"] --> B["AuditStore grants HardDelete"]
-  A --> C["AuditEvent has AppendOnly"]
-  C --> D["AppendOnly forbids final HardDelete"]
-  B --> E["grant check would pass"]
-  D --> F["final-forbid check fails"]
-```
-
-If final forbids could be overridden by adding a grant, traits would not be reliable architecture boundaries. Rationale, memory, reevaluation, and grants do not waive `forbid final`.
-
-Rule-derived final forbids use the subject name from `when T has TraitName` as their generic binder. Multiple `when` clauses for the same subject must all match the resource. The condition trait must be either a marker trait with no type parameters or a trait with exactly one explicitly `Resource`-bound parameter, such as `AppendOnly<T: Resource>`. Unbound parameters, non-resource bounds, and multiple parameters are rejected because the rule syntax has no way to bind them to the resource subject; an invalid rule contributes no derived forbids. A final-forbid rule cannot bind multiple different subjects. Generic targets such as `HardDelete<T>` bind to the matching resource, while a concrete target such as `HardDelete<audit::AuditEvent>` remains that exact resource after normal module/import resolution.
-
-## Missing Grants
-
-Missing-grant checks ask whether the component is allowed to emit the effect it claims.
-
-```shape
-module audit
-
-resource AuditEvent
-
-component AuditStore {
-  owns AuditEvent
-  fn appendEvent
-    effects complete {
-      Append<AuditEvent>
-    }
-}
-```
-
-The checker rejects this because `AuditStore` emits `Append<AuditEvent>` but does not grant it. The usual fix is the smallest grant that reflects intended authority:
-
-```shape
-module audit
-
-resource AuditEvent
-
-component AuditStore {
-  owns AuditEvent
-  grants Append<AuditEvent>
-  fn appendEvent
-    effects complete {
-      Append<AuditEvent>
-    }
-}
-```
-
-Grants are part of the architecture model. They should read like deliberate authority, not like a list of whatever made a test pass.
-
-## Unknown Effects
-
-`effects unknown` is a first-class state. It is useful while a change is being scaffolded, especially when an agent or human has not yet reviewed the diff deeply enough to claim completeness.
-
-```shape
-module audit
-
-component AuditStore {
-  fn reviewPurgeShape1
-    source ts("src/audit/purge.ts")
-    effects unknown
-}
-```
-
-Unknown effects keep uncertainty visible. They are better than an empty `effects complete` block, which would claim that every material effect has been represented when it has not.
-
-Under strict `shp check`, unknown effects are blocking errors. `allowUnknownEffects` can downgrade them to warnings for local authoring; committed models and CI should resolve them.
-
-## Bindings
-
-Bindings extend changed-file checks beyond implementation coverage. They let a repo say that if one source or model surface changes, another review surface must also change.
-
-```shape
-module repo
-
-binding RuleEngineDocs {
-  when_changed paths {
-    "packages/shp-checker/src/checker/rules.ts"
-    "packages/shp-checker/src/checker/rules/**/*.ts"
-    "shape/checker.shape"
-  }
-  require_changed paths {
-    "docs-site/src/content/docs/inside-shape/rule-evaluation.md"
-    "docs-site/src/content/docs/reference/diagnostics.md"
-  }
-  allow attest docs_not_needed
-}
-```
-
-When `shp check --changed-files changed.txt` sees a triggering path, at least one required path must also appear. A `docs_not_needed` attestation can satisfy the binding only when it points at the triggering path, gives a reason, and is declared in a `.shape` file changed by the current run. In this repo the rule engine is split into an ordered registry plus domain rule modules, and the binding watches both surfaces.
-
-## Context And Memory Guards
-
-Some function shapes are intentionally non-obvious. Shape represents those cases with typed context rather than free-form comments. A trait such as `RefactorSensitive` creates a required context fact; a matching `memory` can satisfy it.
-
-```shape
-module gateway
-
-resource PolicySnapshot
-
-component Gateway {
-  owns PolicySnapshot
-  grants Read<PolicySnapshot>
-  fn derivePolicyDecision : RefactorSensitive
-    effects complete {
-      Read<PolicySnapshot>
-    }
-}
-
-memory DecisionRefactorConstraint : RefactorConstraint<fn Gateway.derivePolicyDecision> {
-  applies_to fn Gateway.derivePolicyDecision
-  status Unexplained
-  confidence High
-  protects { shape CheckOrder }
-  guards { on_change require ReEvaluation<Self> }
-  summary "Previous refactors broke error normalisation."
-  who { owner GatewayTeam }
-}
-```
-
-This does two things:
-
-- It explains why the current shape deserves attention.
-- It creates a guard so future modifications need a reevaluation.
-
-If a later model update modifies `Gateway.derivePolicyDecision`, this satisfies the guard:
-
-```shape
-module gateway
-
-resource PolicySnapshot
-
-component Gateway {
-  owns PolicySnapshot
-  grants Read<PolicySnapshot>
-  fn derivePolicyDecision : RefactorSensitive
-    effects complete {
-      Read<PolicySnapshot>
-    }
-}
-
-memory DecisionRefactorConstraint : RefactorConstraint<fn Gateway.derivePolicyDecision> {
-  applies_to fn Gateway.derivePolicyDecision
-  status Unexplained
-  confidence High
-  protects { shape CheckOrder }
-  guards { on_change require ReEvaluation<Self> }
-  summary "Previous refactors broke error normalisation."
-  who { owner GatewayTeam }
-}
-
-reevaluation DecisionShapeRechecked {
-  satisfies memory DecisionRefactorConstraint
-  outcome Confirmed
-  summary "Refactor preserves error-normalisation behaviour."
-  reviewer GatewayTeam
-  decided_on "2026-06-02"
-  evidence test("gateway/error-normalisation.test.ts")
-}
-```
-
-Memory is not a waiver. It can satisfy required design context and create review obligations, but it does not suppress final forbids, missing grants, or other hard model failures.
-
-## Path and Hypercycle Witnesses
-
-Hypergraph rules need to show their work. A forbidden path reports each directed relation hop; a hypercycle reports the relations and closed vertex walk that form the cycle. Both use the same canonical traversal semantics and deterministic tie-break order; path witnesses exclude semantically invalid relation endpoints.
-
-```shape
-module platform_path
-
-resource SecretStore
-
-component Api {
-}
-component PolicyService {
-}
-
-relation ApiCallsPolicy {
-  kind calls
-  connects Api -> PolicyService
-}
-
-relation PolicyProvidesSecret {
-  kind provides
-  connects PolicyService -> SecretStore
-}
-
-rule no_api_secret_route {
-  forbid path Api -> SecretStore over calls or provides
-}
-```
-
-The path witness is the fewest-hop matching route. A BFS visited set makes evaluation terminate even when the graph also contains cycles.
-
-If a rule forbids cycles over `calls`, the diagnostic should include the relations and the vertex path that form the cycle.
-
-```shape
-module platform
-
-component Api {
-}
-component Worker {
-}
-component Queue {
-}
-
-relation ApiCallsWorker {
-  kind calls
-  connects Api -> Worker
-}
-
-relation WorkerCallsQueue {
-  kind calls
-  connects Worker -> Queue
-}
-
-relation QueueCallsApi {
-  kind calls
-  connects Queue -> Api
-}
-
-rule no_runtime_control_cycle {
-  forbid hypercycle over calls
-}
-```
-
-The useful diagnostic is not only "cycle exists." It should point to the relations involved and a vertex witness path:
+Rules are TypeScript functions over the typed indexes (decided 2026-07-26, [issue #39](https://github.com/timbrinded/shapelang/issues/39)). The credible alternative was a Datalog-style engine over `model.facts`. The unexported spike in `packages/shp-checker/src/experiments/datalog-rule-engine-spike.ts` reproduces the production `missing_grant` diagnostic and its provenance with one anti-join rule:
 
 ```text
-calls ApiCallsWorker
-calls WorkerCallsQueue
-calls QueueCallsApi
-witness: Api -> Worker -> Queue -> Api
+missing_grant(Component, Function, Effect, Target) :-
+  effect(Component, Function, Effect, Target),
+  component(Component),
+  not grants(Component, Effect, Target).
 ```
 
-That path gives the reviewer a concrete place to start: invert a dependency, split a component, or use a different relation kind if the model was wrong.
+It consumes the real `Fact[]` stream, carries structured provenance through positive matches, and selects output deterministically. Its tests compare the result field for field with the direct checker for passing, failing, targetless-effect, exact-join, provenance, and input-fact-order cases. A separate test confirms that the spike does not apply final-forbid precedence: for a `HardDelete` on an `AppendOnly` resource it reports a `missing_grant` that production suppresses.
 
-## Rule Design Principle
+The prototype shows that provenance can survive a relational join, but it does not show a clear maintenance, correctness, or performance benefit over the current rule modules. Direct checks keep one authoritative semantic implementation instead of two semantic representations of the same model. Each rule uses the model index that naturally represents its domain, TypeScript exhaustiveness and the existing domain types keep invalid states visible, and diagnostic precedence and witness selection remain explicit. A full migration would also need a richer fact contract and engine extensions: the fact stream is not a complete rule database, and some rule semantics depend on more than tuple membership:
 
-Rules should reject incoherent claims, not adjudicate taste. If a rule cannot explain itself through lowered model data and provenance, it is a poor fit for Shape.
+- A `rule` fact records the rule name, not its conditions or forbidden actions.
+- A `context_required` fact omits `satisfiedBy` and `requiresDescription`.
+- Rationale and memory facts omit effective `applies_to`, freshness dates, and policy metadata.
+- Change events used by guarded-change evaluation are not facts.
+- Diagnostic precedence, such as final forbids suppressing a missing-grant diagnostic for the same effect, lives in direct control flow.
+- Path and hypercycle checks depend on canonical graph traversal and witness selection, not only tuple membership.
+- A `trait_final_forbid` fact is emitted for plain `forbid` members too and carries no `final` flag, and per-resource and rule-derived forbids are not facts.
+- Declaration-level `modify` and `remove` change entries leave the replaced declaration's facts in the stream.
 
-When adding a new rule, ask:
+An in-house engine would also make Shape own rule safety, stratification, indexing, proof selection, and debugging. An external engine would still need adapters for provenance, diagnostic ordering, graph witnesses, Bun packaging, and the browser boundary, and no current maintenance or performance result justifies another production dependency. The accepted cost is that new rules may repeat simple lookup and anti-join code.
 
-- What index or fact does this rule consume?
-- What exact declaration creates that data?
-- What diagnostic should a reviewer see?
-- Can a human fix the issue without knowing checker internals?
+Reopen the decision only when at least one primary trigger holds and every parity requirement is met.
 
-That discipline keeps Shape useful to both agents and human reviewers.
+Primary triggers:
 
-The [rule engine strategy](./rule-engine-strategy/) records why these direct checks remain the production approach, what the Datalog-like comparison spike demonstrated, and which evidence would justify revisiting the decision. That page is a design decision, not a second shipped evaluator.
+- Several new rules duplicate the same multi-relation join or recursive derivation logic, and a shared relational form materially reduces the implementation.
+- Representative profiling identifies semantic rule evaluation, rather than parsing or lowering, as a meaningful bottleneck.
+- An incremental-checking design needs dependency-tracked derived facts that direct indexes cannot provide cleanly.
+
+Parity requirements:
+
+- The fact contract represents every input used by the candidate rules without consulting side indexes.
+- Differential tests cover the complete fixture corpus and compare diagnostic kind, fields, ordering, and causal witnesses.
+- Final-forbid precedence, required-context satisfaction modes, changed-file rules, and guarded changes retain their current semantics.
+- Path and hypercycle rules either preserve canonical shortest witnesses through a documented extension or remain specialized direct checks.
+- Any external dependency passes offline release, binary packaging, browser, and supported-platform checks.
+- Benchmarks use representative large models and show a benefit large enough to justify the added concepts.
+
+Until then, new rules extend the direct modules under `rules/`, and facts remain inspection output. CI compiles the spike and runs its differential tests through `bun run typecheck` and `bun test`. Code review confirms that `packages/shp-checker/src/index.ts` does not export the spike and that `SEMANTIC_CHECKS` does not call it.
+
+`experiments/semantic-kernel/` is a separate, isolated Rust and browser-WASM prototype that evaluates one rule over projected facts. The Shape rule `ExperimentalSemanticKernelIsolation` in `shape/runtime.shape` forbids a modeled `calls` path from `ShapeChecker`, `ShapeEditorServices`, or `ShpCli` to `ExperimentalSemanticKernel`. Its protocol, measurements, and adoption criteria are in the README of [`experiments/semantic-kernel/`](https://github.com/timbrinded/shapelang/tree/master/experiments/semantic-kernel).

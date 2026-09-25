@@ -33,7 +33,7 @@ resource CheckReleaseMetadataModuleReadReleasePinFilesAstAnchor : GeneratedAstAn
 
 resource CheckReleaseMetadataModuleReleaseVersionPinsAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("scripts/check-release-metadata.ts#releaseVersionPins")
-  fingerprint ast.semantic_subtree_v1("sha256:00c47ceb8c847b2f9ee1b962c22882998af3f52060031326e5c28f094641f9a4")
+  fingerprint ast.semantic_subtree_v1("sha256:50671f269d42f0cb740948f7829b9786bd642f9cda235b476d27e065ffdb33a0")
 }
 
 resource CheckReleaseMetadataModuleValidateReleaseMetadataAstAnchor : GeneratedAstAnchor {
@@ -109,7 +109,7 @@ relation CheckReleaseMetadataModuleReleaseVersionPinsGeneratedFromCheckReleaseMe
   kind generated_from
   connects CheckReleaseMetadataModule -> CheckReleaseMetadataModuleReleaseVersionPinsAstAnchor
   roles { CheckReleaseMetadataModule as generated, CheckReleaseMetadataModuleReleaseVersionPinsAstAnchor as syntax }
-  expects CheckReleaseMetadataModuleReleaseVersionPinsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:00c47ceb8c847b2f9ee1b962c22882998af3f52060031326e5c28f094641f9a4")
+  expects CheckReleaseMetadataModuleReleaseVersionPinsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:50671f269d42f0cb740948f7829b9786bd642f9cda235b476d27e065ffdb33a0")
   summary "fn CheckReleaseMetadataModule.releaseVersionPins generated from typescript function_declaration at scripts/check-release-metadata.ts#releaseVersionPins."
 }
 

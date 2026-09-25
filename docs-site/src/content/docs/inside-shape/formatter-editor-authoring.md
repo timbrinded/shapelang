@@ -1,61 +1,79 @@
 ---
-title: Formatter, Editor, and Authoring Helpers
-description: Supporting APIs around the checker package.
-sidebar:
-  order: 5
+title: Helper APIs
+description: How the formatter, editor, language server, authoring, critic, and analyzer helpers in @shape/shp-checker present checker results without deciding them.
 ---
 
-This page describes helper APIs in `@shape/shp-checker` for contributors. The checker package exports more than parse and check. Shape files are review artifacts, so formatter, editor, and authoring helpers exist to make authoring and review loops predictable.
+Besides `parseShapeModule` and `checkShapeModules`, `@shape/shp-checker` exports the helpers behind `shp fmt`, `shp lsp`, `shp author`, and `shp analyze`. One invariant governs all of them: **helpers present checker results; they never decide them.** Any behaviour that changes whether a model passes belongs in the grammar or the checker. Editor diagnostics come from the same parser and checker as `shp check`, so an editor reports the same problems as `shp check` run without a changed-file list, with the one exception described under [Editor helpers](#editor-helpers).
 
-The checker owns semantic truth: pass/fail for model coherence. Helpers make that truth easier to work with in a CLI, editor, or agent workflow. They do not prove application correctness and must not implement a softer or different semantic checker.
+The user workflows are in [Author Updates with an Agent](/shapelang/guides/authoring/) and [Analyzer Hints](/shapelang/guides/analyzer/); `shp fmt` behaviour and editor setup are in the [CLI Reference](/shapelang/reference/cli/).
 
-![Review helpers diagram showing formatter, editor APIs, and authoring lanes for stable diffs, diagnostics, explicit unknowns, and human-filled evidence.](../../../assets/infographics/review-helpers.png)
+## API
 
-```mermaid
-flowchart LR
-  A["source or proposed .shape"] --> B["parser"]
-  B --> C["formatter"]
-  B --> D["checker"]
-  D --> E["editor diagnostics"]
-  D --> F["hover and explain output"]
-  G["changed files or diff"] --> H["authoring helper"]
-  H --> I["reviewable model draft"]
-  I --> D
-```
+| Module | Export | Behaviour | Uses |
+| --- | --- | --- | --- |
+| `formatter.ts` | `formatShapeSource(source, filePath?)` | Returns `{ ok: true, formatted }`, or `{ ok: false, diagnostics }` when the source does not parse | Parser |
+| | `formatShapeModule(module)` | Prints a parsed module in canonical form | |
+| `editor.ts` | `getEditorDiagnostics(source, filePath?)` | Parse diagnostics with line and column, or the checker's diagnostics for that one module | Parser, checker |
+| | `getEditorDiagnosticsForDocuments(documents)` | Sorts the documents by path and checks them as one model, so imports resolve across files. If any document fails to parse, it returns only parse diagnostics. Each diagnostic keeps its file path | Parser, checker |
+| | `getHoverText(source, symbol, filePath?)` | Help text for a prelude shape trait; otherwise `explain` output for the symbol in that document | Prelude metadata, `explainShapeModules` |
+| | `getDefinitionLocation(source, symbol)` | One-based line and column of the symbol's declaration in that document | Parser |
+| | `getCompletions(source, prefix?)` | Keywords, prelude names, and the document's declared names, sorted | Parser, prelude metadata |
+| | `formatOnSave(source, filePath?)` | The same result as `formatShapeSource` | Formatter |
+| `authoring.ts` | `generateShapeUpdateDraft(input)` | The conservative draft that `shp author` prints | |
+| | `buildShapeAuthorPrompt(input)` | The author prompt text | Prelude metadata |
+| | `buildShapeAuthoringBundle(input)` | `{ draft, authorPrompt }`, with each context file labelled by its path | |
+| `critic.ts` | `buildShapeCriticPrompt(input)` | The critic prompt text for a typed `ShapeCriticInput` | Prelude metadata |
+| | `reviewShapeAuthoringProposal(input)` | Parse diagnostics, or the critic prompt with sorted advisories | Parser, analyzer, module resolution |
+| | `formatShapeCriticAdvisories(advisories)` | Stable advisory text | |
+| `analyzer.ts` | `analyzeSourceText(path, source)` | Hints for one source file | |
+| | `compareAnalyzerHintsToShape(hints, modules)` | Warnings for parsed modules | |
+| | `formatAnalyzerWarnings(warnings)` | Warning text, or `Shape analyzer found no mismatches.` | |
 
-## Why These Helpers Exist
+`shp fmt` calls the formatter, `shp lsp` (`packages/shp-cli/src/lsp/server.ts`) calls the editor helpers and the formatter, `shp author` calls the authoring and critic helpers, and `shp analyze` calls the analyzer. None of the authoring, critic, or analyzer helpers calls `checkShapeModules`, a model provider, a subprocess, or a network service. Completion and definition lookup only parse. Hover's `explain` output lowers the document into facts but runs no rules.
 
-Shape sits in a feedback loop:
+Analyzer hints are plain data. A hint's `targetIdentity` records each SQL segment and whether it was quoted, so target comparison keeps quoted-identifier semantics after a hint is cloned, or serialised and parsed.
 
-1. A human or agent proposes architecture claims.
-2. The formatter makes the diff stable.
-3. The checker rejects incoherent claims.
-4. Editor and CLI helpers explain what to fix.
-5. The reviewer turns uncertainty into explicit effects, rationale, memory, or reevaluation.
+## Shared metadata
 
-The helper APIs keep that loop from becoming a collection of one-off scripts. The `shp lsp` adapter exposes them through the Language Server Protocol without moving semantics into the CLI.
+Three package-local modules hold the facts that more than one helper needs, so no helper keeps its own copy:
 
-The formatter and editor helpers also understand repository binding declarations. Bindings remain semantic checker claims; helper surfaces keep them readable and discoverable like other top-level Shape declarations.
+- `prelude.ts` holds the prelude traits and their final forbids, the shape-trait context rules (`PRELUDE_CONTEXT_RULES`, flattened per target kind into `PRELUDE_CONTEXT_REQUIREMENTS`), effect names, relation kinds with their traversal, and the completion symbols. Checker lowering and rules read it, and so do editor completion and hover, the author prompt (destructive effects, context traits, and relation kinds), and the critic (relation kinds and the reevaluation requirement).
+- `shape-strings.ts` holds source-path normalisation (drop the `#anchor` and any `:line` suffix, turn backslashes into `/`, remove a leading `./`), string unquoting, and codepoint ordering. The checker, formatter, analyzer, and critic use it.
+- `module-resolution.ts` holds module-reference precedence: a qualified `module::Name` first, then a declaration in the same module, then exactly one imported module that declares the name. More than one imported match is ambiguous, and none is unknown. Checker lowering and the critic share it.
 
-Shared checker-package metadata backs the helper surfaces. Prelude shape traits, context requirements, relation-kind names, and source-reference string normalization live in package-local helpers. The formatter, editor, analyzer, checker, and authoring prompt derive output from those helpers instead of maintaining separate copies.
+A new prelude trait, context type, or relation kind therefore reaches completions, hover, and the prompts that list it without separate edits.
 
 ## Formatter
 
-`formatShapeSource` parses source text and returns canonical formatting. `formatShapeModule` formats an already parsed `ShapeModule`. The CLI exposes this through `shp fmt`:
+`formatShapeSource` parses the text and `formatShapeModule` rebuilds the file from the AST. Nothing from the original layout survives, and a file that does not parse is never partly formatted. Because `//` and `/* */` comments are hidden terminals in the grammar, they never reach the AST, and the formatter drops them.
 
-```bash
-bun run shp -- fmt --check fixtures/pass/append_only_append/audit.shape
+The canonical form is:
+
+- `module`, then `import` lines sorted by path, then declarations grouped by kind in this order: traits, resources, components, relations, candidate effects, implementations, bindings, rules, roles, policies, rationale, memory, reevaluations, attestations, and `change` blocks. Within a group, declarations are sorted by name in codepoint order; attestations are sorted by kind and keep their source order within a kind.
+- Inside a component, `owns` lines, then `grants` lines, then `fn` members, each group sorted. Effect entries, implementation paths, binding globs, relation roles, and `expects` lines are sorted too.
+- Graph rules are written as `forbid path A -> B over k1 or k2`, with one spaced arrow and an explicit kind filter.
+- Rationale, memory, and reevaluation members follow a fixed order per kind. For `memory` it is `applies_to`, `status`, `confidence`, `sensitive`, `summary`, `who`, `when`, `protects`, `guards`, `observed`, `evidence`. Repeated `protects` or `guards` blocks merge into one block of each kind with sorted entries, repeated `who` or `when` blocks collapse to one that keeps the last owner or review date, and every block is written across several lines.
+- The entries of a `change` block are sorted by their formatted text in codepoint order, so their original order is not kept.
+
+For example, this input puts the memory on one line with its members out of order and two `guards` blocks, and carries a comment:
+
+```shape
+module gateway
+
+memory DecisionRefactorConstraint : RefactorConstraint<fn Gateway.derivePolicyDecision> { summary "Previous refactors broke error normalisation." guards { on_change require ReEvaluation<Self> } status Unexplained guards { forbid transform Inline } applies_to fn Gateway.derivePolicyDecision who { owner GatewayTeam } confidence High }
+
+// Policy reads only.
+component Gateway {
+  fn derivePolicyDecision : RefactorSensitive
+    effects complete { Read<PolicySnapshot> }
+  grants Read<PolicySnapshot>
+  owns PolicySnapshot
+}
+
+resource PolicySnapshot
 ```
 
-Canonical formatting matters because Shape files are reviewed in diffs. The formatter sorts declarations and members in a predictable way, normalizes indentation, and keeps function shape traits, descriptions, rationale, memory, and reevaluation blocks easy to scan. It also canonicalizes graph rules such as `forbid path Gateway -> SecretStore over calls or provides`, and editor completions expose that rule prefix alongside the existing hypercycle and provider forms. Rationale/memory guard members are authored as grouped blocks (`protects`, `guards`, `who`, `when`), and the formatter aggregates repeated blocks of the same kind into one, so there is a single canonical on-disk form.
-
-For example, an author might write:
-
-```shape no-verify
-memory DecisionRefactorConstraint : RefactorConstraint<fn Gateway.derivePolicyDecision> { summary "Previous refactors broke error normalisation." guards on_change require ReEvaluation<Self> confidence High status Unexplained applies_to fn Gateway.derivePolicyDecision owner GatewayTeam protects shape CheckOrder }
-```
-
-The formatter expands that into a reviewable block:
+`shp fmt` rewrites it as follows, dropping the comment:
 
 ```shape
 module gateway
@@ -75,175 +93,50 @@ memory DecisionRefactorConstraint : RefactorConstraint<fn Gateway.derivePolicyDe
   applies_to fn Gateway.derivePolicyDecision
   status Unexplained
   confidence High
-  protects { shape CheckOrder }
-  guards { on_change require ReEvaluation<Self> }
   summary "Previous refactors broke error normalisation."
-  who { owner GatewayTeam }
+  who {
+    owner GatewayTeam
+  }
+  guards {
+    forbid transform Inline
+    on_change require ReEvaluation<Self>
+  }
 }
 ```
 
-The formatter does not approve the model. It only makes the model easier to inspect. Semantic approval still belongs to the checker.
+## Editor helpers
 
-## Editor Helpers
+Definition lookup and completion collect names from the declarations in one document:
 
-The editor helpers expose the building blocks used by `shp lsp`:
+- components, and each function under both `Component.fn` and its bare name;
+- resources, traits, relations, implementations, bindings, rules, reevaluations, and `change` declarations;
+- rationale and memory, under their own names and under their context type, both bare (`RefactorConstraint`) and complete (`RefactorConstraint<fn Gateway.derivePolicyDecision>`);
+- declarations and functions introduced by `add` entries in `change` blocks. `modify` and `remove` entries refer to existing symbols, so they are not definition sites. Attestations have no names.
 
-| Helper | Purpose |
-| --- | --- |
-| `getEditorDiagnostics` | Parse and check a source string, then return editor-shaped diagnostics. |
-| `getEditorDiagnosticsForDocuments` | Parse and check a deterministic document set so imports participate in one semantic model and diagnostics retain their source file. |
-| `getCompletions` | Offer language keywords, known prelude names, and declarations from the current document. |
-| `getHoverText` | Explain prelude shape traits or show `explain` output for known symbols. |
-| `getDefinitionLocation` | Locate declarations for resources, traits, components, rules, contexts, and functions. |
-| `formatOnSave` | Run the same canonical formatter used by the CLI. |
+Context references are therefore target-aware. A definition query for `InlineRationale<fn Gateway.derivePolicyDecision>` finds the rationale or memory for that target, not the first declaration that uses `InlineRationale`. A reevaluation's `satisfies` target still resolves by the context's declared name.
 
-These helpers use the same parser and checker as the CLI. An editor should not have a different understanding of Shape than CI.
+Completion candidates are the keywords, including phrases such as `effects complete`, `forbid final`, `forbid path`, `forbid provides`, and `allow attest`; the prelude effect names, traits, context types, and relation kinds; and the document's declared names when it parses.
 
-Definition lookup and completions also walk `change` entries, so declarations and functions introduced by `add` entries resolve through the same editor surface as global declarations. `modify` and `remove` entries are treated as references or removals, not definition sites.
+An editor diagnostic for a semantic problem carries the checker's complete formatted text, including `caused by:`, and no position. Every editor diagnostic has error severity.
 
-Memory Guard context is target-aware. A definition query for a complete reference such as `InlineRationale<fn Gateway.derivePolicyDecision>` resolves the matching rationale or memory instead of the first declaration that happens to use `InlineRationale`. A reevaluation's satisfied memory or rationale continues to resolve by its declared name. Completion candidates include parsed memory and rationale names plus context types derived from the shared prelude, such as `InlineRationale` and `RefactorConstraint`.
+The editor helpers pass `{ module, filePath }` inputs to `checkShapeModules` without an `origin`, so every module counts as authored. The generated-AST exemption therefore never applies in the editor: a generated file under `shape/generated/ast/` that `shp check` accepts shows `error: unknown effects` for each of its functions. `shp check` assigns the origin through `checkShapeFiles`, which applies the module-name and path test.
 
-```mermaid
-flowchart TD
-  A["open document"] --> B["parseShapeModule"]
-  B -->|"parse error"| C["editor syntax diagnostic"]
-  B -->|"ok"| D["checkShapeModules"]
-  D --> E["semantic diagnostics"]
-  D --> F["hover/explain/completion context"]
-```
+## Language server
 
-Editor behavior is a projection of checker behavior. Hover text can teach what `RefactorSensitive` requires because the checker already has that prelude concept. Diagnostics can point to missing context because semantic rules already found the obligation.
+`shp lsp` (`packages/shp-cli/src/lsp/server.ts`) is a stdio transport around the editor helpers and has no parser or checker of its own. Its capabilities, workspace discovery, validation triggers, lookup order, and formatting behaviour are in the [CLI Reference](/shapelang/reference/cli/#shp-lsp). The internals are:
 
-## Language Server
+- **Positions.** The transport converts between LSP's zero-based UTF-16 positions and the helpers' one-based lines and columns.
+- **Snapshot.** Each validation builds one snapshot, the discovered files with every open document overlaid, and passes it, sorted by path, to `getEditorDiagnosticsForDocuments`.
+- **Publication.** A generation counter discards the results of superseded validations. Each run publishes a diagnostic set, possibly empty, for every document in the snapshot and for every URI it published before, which clears fixed and closed files.
+- **Placement.** Parse diagnostics appear at their position. Semantic diagnostics have none, so they appear on the first character of the file named in the diagnostic, or of the first snapshot document when the diagnostic names none.
+- **Reference under the cursor.** Hover and definition take a complete context reference such as `RefactorConstraint<fn Gateway.derivePolicyDecision>` when the cursor is inside one, and otherwise the qualified identifier there. Definitions return a zero-width range.
+- **Completion.** Candidates are the union of `getCompletions` over the last validated snapshot and the open documents. The replacement range is derived from the chosen candidate, so accepting a phrase such as `forbid path` replaces the whole typed prefix.
 
-`shp lsp` is a small stdio transport around the editor helpers. It advertises
-incremental text synchronization, diagnostics, hover, go to definition,
-completion, and whole-document formatting. The transport converts between LSP's
-zero-based UTF-16 positions and the helpers' source locations; it does not
-implement an alternative parser or checker.
+## Critic
 
-For semantic diagnostics, the server discovers `shape/**/*.shape` beneath each
-initial workspace folder and overlays the current text of open documents. That
-full document set is passed to `getEditorDiagnosticsForDocuments`, so a valid
-file does not report unknown names merely because its imported module lives in
-another file. Validation results are generation-checked before publication, and
-previously published URIs receive an empty diagnostic set when their problems or
-documents disappear.
+`reviewShapeAuthoringProposal` parses the existing Shape files and the proposal. Any parse error returns `{ ok: false, diagnostics }`, which `shp author` prints as `error: failed to parse ...` and exits `2`. Otherwise it computes two kinds of advisory:
 
-Hover and definitions begin with the current document. An external definition
-is returned only when exactly one other workspace document matches the
-reference; ambiguous declarations deliberately return no location. Completion
-candidates are the deterministic union of the open workspace snapshot, with
-replacement ranges derived from the candidates so phrases such as
-`forbid path` replace the full typed prefix.
+- **Guarded target without reevaluation.** For each `memory` or `rationale` in the existing Shape with an `fn` target and a reevaluation guard, the critic resolves the target's component through `module-resolution.ts`. The function must be found in exactly one matching component and must have a `source`. When the normalised `source` path is in the changed-file list, the advisory is raised unless the proposal declares a `reevaluation` whose `satisfies` name resolves, with the same precedence, to the context's qualified name.
+- **Destructive effect omission.** The critic reads the diff's `+++ b/path` sections and keeps only files in the changed-file list; a `+++ /dev/null` section contributes nothing. Each run of consecutive added lines is analysed as its own source text, so a hint gets a function anchor only when the run contains the whole function. Hints are deduplicated by effect, path, and evidence, then compared with the existing and proposed modules together. Only missing-effect warnings survive, and a warning is dropped when any single module declares the effect on its own. Advisory evidence is the source text, never a diff coordinate.
 
-The server's formatting capability returns the same canonical output as
-`formatOnSave`. Editors implement format-on-save by requesting
-`textDocument/formatting`; the server never writes the document itself.
-
-## Authoring Helpers
-
-Authoring helpers are built for agent-assisted review. They help create a conservative draft; they do not claim to know more than the reviewer knows.
-
-Authoring helpers start from changed files and a component:
-
-```bash
-bun run shp -- author --changed-files fixtures/changed/audit_purge.txt --component AuditStore
-```
-
-The generated scaffold is intentionally conservative and should be folded into the owning global model after review:
-
-```shape
-module audit
-
-component AuditStore {
-  fn reviewAuditPurgeShape1
-    source ts("src/audit/purge.ts")
-    effects unknown
-}
-```
-
-`effects unknown` stops an agent from producing an empty `effects complete` block that looks clean but hides uncertainty. The reviewer can then inspect the diff, add effect entries, refine file-scoped references to stable `#symbol` anchors when supported by source evidence, and include any required rationale, memory, or reevaluation.
-
-The conservative scaffold remains file-scoped. A unified diff is prompt context only: the authoring workflow does not convert hunk coordinates into `path:start-end` references or guess which added lines represent the architectural change.
-
-## Prompt Helpers
-
-`buildShapeAuthorPrompt` and `buildShapeCriticPrompt` encode the same review posture in text. The critic helper accepts a typed `ShapeCriticInput`, so the changed files, diff, path-labeled existing Shape, proposed update, optional snippets, optional project prelude, and human instructions stay explicit and deterministic. The prompts tell an authoring or reviewing agent to:
-
-- output valid Shape syntax
-- cover every governed changed file
-- use `effects complete` only when material effects are represented
-- keep destructive operations explicit
-- prefer stable `#symbol` references and otherwise keep evidence file-scoped
-- never add line-number or line-range suffixes
-- add context for function shape traits
-- add reevaluation for guarded changes
-- never use memory or rationale to waive final forbidden effects
-
-The critic prompt asks the inverse questions. It is designed to catch common failure modes before the deterministic checker runs.
-
-`reviewShapeAuthoringProposal` adds two deterministic advisory categories without turning the helper into another checker:
-
-- `guarded_target_without_reevaluation` matches changed files coarsely against source-backed functions protected by an `on_change require ReEvaluation` or `ReEvaluation<Self>` guard, then checks the proposal for a namespace-resolved reevaluation satisfying that memory or rationale. Critic and checker lowering share the same qualified, local, imported, ambiguous, and unknown module-reference precedence.
-- `destructive_effect_omission` runs the existing lexical analyzer over added diff lines only, then compares its hints with effects declared by the existing and proposed Shape modules. Deleted lines are excluded, and the advisory reports the affected file plus code evidence without turning diff coordinates into authored Shape references.
-
-The result is typed and returns parse diagnostics for malformed Shape input. `formatShapeCriticAdvisories` gives the advisory union stable ordering and text. These helpers do not invoke `checkShapeModules`, a model provider, a subprocess, or a network service; they only prepare review context and flag likely omissions.
-
-`buildShapeAuthoringBundle` connects the deterministic pieces without adding a model runtime. It accepts changed-file and component metadata plus a unified diff, path-preserving existing Shape files, optional source snippets, an optional project-prelude context file, and human instructions. It returns:
-
-- a conservative parseable draft
-- an author prompt containing all supplied context and the draft
-
-The CLI exposes that bundle with `--prompt`:
-
-```bash
-bun run shp -- author \
-  --changed-files fixtures/changed/audit_purge.txt \
-  --component AuditStore \
-  --module audit \
-  --diff fixtures/diffs/audit_purge.diff \
-  --prompt \
-  --shape-files fixtures/pass/append_only_append/audit.shape \
-  --snippet-files fixtures/source/audit_purge.ts
-```
-
-Prompt mode requires an explicit Shape-file list instead of loading every file under `shape/`, which keeps generated AST context and unrelated models out of the prompt. A supplied project prelude is context only; the authoring command does not discover, import, or install domain libraries. Shape writes the prompt to stdout and never invokes a provider, subprocess, or network service.
-
-Critic mode uses the same explicit context and reads the proposed update from `--critic-prompt`:
-
-```bash
-bun run shp -- author \
-  --changed-files fixtures/changed/audit_purge.txt \
-  --diff fixtures/diffs/audit_purge.diff \
-  --critic-prompt proposed.shape \
-  --shape-files fixtures/pass/append_only_append/audit.shape \
-  --snippet-files fixtures/source/audit_purge.ts
-```
-
-The critic prompt is written to stdout and deterministic advisories are written to stderr. Advisory findings still exit `0`, because strict checker results remain the authoritative gate. Invalid critic input exits `2`, and `--critic-prompt` cannot be combined with `--prompt`.
-
-## A Typical Agentic Review Loop
-
-```mermaid
-sequenceDiagram
-  participant Diff as Source diff
-  participant Author as Authoring helper
-  participant Agent as Existing human or agent surface
-  participant Human as Human reviewer
-  participant Checker as Shape checker
-  Diff->>Author: changed files, diff, and explicit context
-  Author->>Agent: provider-neutral prompt and conservative draft
-  Agent->>Human: proposed .shape update
-  Human->>Human: replace unknowns with reviewed effects and context
-  Human->>Checker: run fmt and check
-  Checker-->>Human: pass or diagnostics with provenance
-```
-
-Agents can scaffold, remind, and compare. Humans still review the claims. The generated draft is parseable but authored `effects unknown` remains unresolved; after folding the update into its owning global model, strict `shp check --changed-files changed.txt` is the final gate.
-
-## What Not To Put In Helpers
-
-Keep helper APIs out of semantic decision-making. If a behavior changes whether a model passes, it belongs in the checker or language, not in the formatter, editor adapter, or prompt text.
-
-That boundary prevents the CLI, docs, editor extension, and CI from drifting into different versions of Shape.
+Advisories sort by kind (guarded targets first), then by path, then by target and context or by effect and evidence, in codepoint order.

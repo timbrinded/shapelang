@@ -1,7 +1,8 @@
 // Public checker orchestration: the two entrypoints callers use to check Shape
 // modules or files. checkShapeModules lowers the model, runs the ordered
-// semantic checks, and (unless disabled) binding enforcement; checkShapeFiles
-// parses files first. Individual rule logic lives in checker/rules.ts.
+// semantic checks, and runs binding enforcement unless `enforceBindings` is
+// false; checkShapeFiles parses files first. Rule logic lives under
+// checker/rules/, and checker/rules.ts fixes the order the rules run in.
 import { resolve } from "node:path";
 import type { ShapeModule } from "../language/generated/ast.ts";
 import { parseShapeModule, type ParseDiagnostic } from "../parser.ts";

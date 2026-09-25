@@ -1,37 +1,51 @@
 ---
 title: Shape
-description: Record architecture rules as reviewable text files and check them automatically in pull requests and CI.
+description: Shape is a small language for architecture claims, and shp is the checker that accepts or rejects them in pull requests and CI.
 template: splash
 hero:
-  tagline: Architecture rules as text files, reviewed by people, checked by a tool in CI.
+  tagline: Architecture claims as text files, reviewed by people, checked by shp in CI.
   actions:
-    - text: Install and run a check
+    - text: Quickstart
       link: /shapelang/learn/quickstart/
       variant: primary
-    - text: What this tool is
-      link: /shapelang/learn/what-is-shape/
+    - text: Design Rationale
+      link: /shapelang/inside-shape/design-rationale/
       variant: secondary
 ---
 
 ## The problem
 
-Important architecture decisions often live only in people’s heads, chat threads, or outdated diagrams. Code review then depends on whether someone notices that a pull request deleted audit rows, opened a private store to a public path, or broke a dependency rule that the team already agreed on.
+Architecture decisions often live only in people's heads, chat threads, or outdated diagrams. Code review then depends on someone noticing that a pull request deletes audit rows, exposes a private store on a public path, or breaks a dependency rule the team already agreed.
 
-Tests check behavior. Typecheckers check types. Neither is a natural place to state durable rules such as “this store is append-only” or “only the gateway may expose this endpoint,” and keep those rules visible and enforceable as the codebase changes.
+Tests check behaviour and typecheckers check types. Neither is a natural place to state a durable decision such as "audit events are append-only" or "only the gateway may provide this endpoint", and to keep that decision visible and enforced as the code changes.
 
 ## What Shape is
 
-Shape is a small language and a checker for **architecture rules you write down and keep next to the repo**.
+Shape is a small language for writing those decisions down as claims, and `shp` is the checker that accepts or rejects them. A claim is a declaration the author asserts, such as "`AuditEvent` is append-only" or "`AuditStore.appendEvent` appends audit events and does nothing else".
 
-You put short declarations in files under `shape/` (extension `.shape`). Those files describe things the system is allowed or forbidden to do at an architectural level—for example which parts of the system may read or write which data, and which operations are banned for a given store. Humans (and optionally coding agents) draft and edit those files. Reviewers read them like any other change. A command-line checker either accepts the file set or rejects it with a concrete error message.
+Claims live in `.shape` files under `shape/`. Together the files form the Shape model: the checker loads every `.shape` file it finds there and checks them as one model. People, and optionally coding agents, write the claims. Reviewers read them in the pull request like any other change.
 
-Shape does **not** run your application, replace unit tests, or prove that production code is correct. It checks whether the **declared rules are consistent with each other** and whether the process rules you attached (for example “if these source files change, update the architecture description”) are satisfied.
+## The boundary
 
-![Shape review loop: write rules, review, check, CI gate, diagnose, with failures returning to review.](../../assets/infographics/shape-model-loop.png)
+Shape judges only the declared Shape model. `shp check` reads `.shape` files and, when given, a changed-file list. It never opens or runs the application source that `source` and `evidence` refs name. It does not prove that the implementation matches the claims, and it does not replace tests, typechecks, or code review.
 
-## A concrete example
+A passing check means the claims are coherent with each other. When CI also supplies a changed-file list, a pass also covers the change-set checks described under [Where Shape sits in review](#where-shape-sits-in-review). Whether the claims describe the code truthfully is decided in review.
 
-Suppose audit events must never be hard-deleted. You record that rule once, name the store that owns those events, and list the operations you allow:
+## Parts of a model
+
+| Part | Keywords | What it claims | Read more |
+| --- | --- | --- | --- |
+| Resources and traits | `resource`, `trait` | The data that matters, and the effects that are finally forbidden on it | [Effect Model](/shapelang/concepts/effect-model/) |
+| Components | `component`, `owns`, `grants` | Which component owns a resource, and which effects its functions may have | [Effect Model](/shapelang/concepts/effect-model/) |
+| Function summaries | `fn`, `effects complete`, `effects unknown`, `source`, `evidence` | What each source function does to resources, with references to the code | [Effect Model](/shapelang/concepts/effect-model/) |
+| Relations and rules | `relation`, `rule` | How components and resources connect, and which providers, paths, or cycles are forbidden | [Relations and Graph Rules](/shapelang/concepts/relations/) |
+| Change governance | `implementation`, `binding`, `attest` | Which source paths need a model update when they change, and which files must change together | [Keep the Model Current](/shapelang/guides/keep-model-current/) |
+| Design memory | `rationale`, `memory`, `guards`, `change`, `reevaluation` | Why a fragile target looks the way it does, and which changes to it need a recorded review | [Design Memory](/shapelang/concepts/design-memory/) |
+| Modules and packs | `module`, `import` | Namespaces, and shared declarations vendored under `shape/vendor/` | [Domain Packs](/shapelang/guides/domain-packs/) |
+
+## An example
+
+Suppose audit events must never be hard-deleted. `AuditEvent` is an append-only resource. `AuditStore` is the component that owns it; it may append and read events, and its two functions claim only those effects:
 
 ```shape
 module audit
@@ -53,84 +67,66 @@ component AuditStore {
 }
 ```
 
-In plain terms: there is an audit-event store; the audit component may append and read; the two listed functions only claim those operations. The built-in “append-only” rule also bans hard delete, truncate, and dropping storage for that store.
+`AppendOnly` comes from Shape's built-in prelude. Because `AuditEvent` carries it, hard delete, truncate, and drop are finally forbidden for that resource. Saved as `shape/audit.shape`, this model passes, and `shp check` prints `Shape check passed.`
 
-If someone later claims a purge function that hard-deletes audit events—even if they also claim the component is allowed to delete—the checker fails:
+Later, a pull request adds a purge job. Its author adds a grant and a function to `AuditStore`:
 
-```shape
-module audit
-
-resource AuditEvent : AppendOnly
-
-component AuditStore {
-  owns AuditEvent
-  grants Append<AuditEvent>
+```shape no-verify
   grants HardDelete<AuditEvent>
-  grants Read<AuditEvent>
   fn purgeOldEvents
     source ts("src/audit/purge.ts#purgeOldEvents")
     effects complete {
       HardDelete<AuditEvent>
         evidence ts("src/audit/purge.ts#purgeOldEvents")
     }
-}
 ```
 
-```bash
-shp check shape/audit.shape
+`shp check` now fails with exit code 1:
+
+```text
+error: forbidden effect
+
+AuditStore.purgeOldEvents emits HardDelete<AuditEvent>.
+AuditEvent has trait AppendOnly.
+AppendOnly forbids final HardDelete<AuditEvent>.
+evidence: ts("src/audit/purge.ts#purgeOldEvents")
+
+caused by:
+  - shape/audit.shape: effect AuditStore.purgeOldEvents emits HardDelete<AuditEvent>
+  - shape/audit.shape: resource AuditEvent : AppendOnly
+  - standard prelude: trait AppendOnly forbids final HardDelete<T>
 ```
 
-The tool reports that the purge function claims a hard delete, the audit store is marked append-only, and hard delete is not allowed for that store. A grant on the component does not override a final ban on the store.
+The diagnostic names the claim that failed and the declarations that caused it. The grant does not help, because a final forbid on a resource's trait wins over any grant.
 
-You can attach file references (for example a TypeScript path) so reviewers know where to look in source. The checker does not execute that code; the reference is for humans.
+The `source` and `evidence` refs point at the purge code, but the checker never opens that file. Reviewers follow the refs to check the claim against the code, and coverage uses their paths to match changed source files to the model. The [Quickstart](/shapelang/learn/quickstart/) builds this model step by step and shows how to resolve the failure.
 
-## How it fits a normal workflow
+## Where Shape sits in review
 
-1. The team keeps architecture rules in `shape/**/*.shape`.
-2. Pull requests update those files when the change affects architecture (or record a short, reviewable reason when a governed path changed but the rules did not).
-3. Reviewers read the rule files the same way they read code and design notes.
-4. CI installs a pinned `shp` binary and runs the checker (and, when configured, checks that changed source paths still match the architecture description).
+![shp check reads only the authored .shape files and changed.txt and accepts or rejects them; the application source that evidence refs point at stays outside the checker, judged by tests, typechecks, and code review.](../../assets/diagrams/product-boundary.svg)
 
-Default discovery with no file arguments:
+In a pull request that touches the architecture, three parties act on the same change:
 
-```bash
-shp check
-```
+- **The author** changes the code and the `.shape` claims that describe it. When a source file the model governs changes but its architecture does not, the author records an `attest no_shape_change` with a reason instead. `shp author`, `shp ast`, or a coding agent can draft the update; a draft is a suggestion until a person reviews it.
+- **Reviewers** read the changed claims next to the code, follow the `source` and `evidence` refs, and read any rationale, memory, or reevaluation attached to guarded targets.
+- **CI** runs `shp check --changed-files changed.txt`. It checks the whole model, requires a Shape update or attestation in the same change for each changed governed source file, and enforces bindings such as a paired docs change. On failure, the diagnostic names the failing claim and its causes, and the author changes the code, the design decision, or the claim that was wrong.
 
-That scans `shape/**/*.shape`.
+Tests, typechecks, and code review keep running beside Shape.
 
-## Where it helps
+## Limits worth knowing
 
-- Making store and boundary rules explicit and reviewable in git, not only in wikis
-- Catching contradictory or forbidden architecture claims before merge
-- Requiring that certain source-tree changes come with an architecture-file update
-- Recording “why this fragile path looks the way it does” so later refactors need an explicit review note
-- Checking structural rules between named parts of the system (for example who may provide an endpoint)
-- Producing stable, machine-checkable failures suitable for CI
+- **Final forbids are final.** Grants, rationale, memory, reevaluation, attestations, and imports cannot waive a `forbid final`. See [Effect Model](/shapelang/concepts/effect-model/).
+- **Unknown effects must be explicit.** Write `effects unknown` while a function's effects are not known, because an empty `effects complete {}` claims the function has none. Strict `shp check` rejects `effects unknown` in authored modules, so unresolved analysis fails the check.
+- **Coverage checks that the model changed, not that it is right.** A function `source` or effect `evidence` ref, or a `no_shape_change` attestation, for the changed path satisfies coverage whenever its `.shape` file is part of the change, whether or not the claim is accurate. See [Keep the Model Current](/shapelang/guides/keep-model-current/).
+- **Guards fire only from `change` declarations.** A guard requires a `reevaluation` when a `change` declaration modifies or removes its target; editing the target's declaration in place in the Shape model triggers nothing. See [Design Memory](/shapelang/concepts/design-memory/).
+- **Hints and drafts are advisory.** `shp analyze`, `shp ast`, and `shp author` inform the author; only `shp check` decides whether the model passes. `shp analyze --shape-files` exits 1 when it reports a warning, but it never changes the result of `shp check`. See [Analyzer Hints](/shapelang/guides/analyzer/).
 
-## Where it does not help
+## Reading paths
 
-- Proving that application logic is correct at runtime
-- Replacing tests, typechecks, or careful code review of implementations
-- Inferring a complete architecture description from source with no human-written rules
-- Softening a hard ban by adding a comment, grant, or review note—those bans stay final
-- Pretending “we listed no operations” means “we know there are none” when you are still unsure
-
-Optional source scanners can warn about suspicious deletes or similar patterns. Warnings are advisory; the written rule files remain the contract the checker enforces.
-
-## What to read next
-
-Start here if you are new:
-
-1. [What this tool is](./learn/what-is-shape) — boundary, workflow, and limits in more detail
-2. [Install and run a check](./learn/quickstart) — binary install and first `shp check`
-3. [First architecture file](./learn/first-shape-file) — smallest useful example step by step
-4. [Append-only walkthrough](./learn/append-only-walkthrough) — from a rule to a failing check
-
-Then, as needed:
-
-- [CI workflow](./learn/ci-workflow) — pin the tool and gate pull requests
-- [Keep the model current](./learn/global-model-updates) — when source changes, update `shape/`
-- [Command reference](./reference/cli) — full command list
-
-Later pages introduce the formal vocabulary (resources, traits, effects, relations, and so on). You do not need that vocabulary to understand the problem Shape addresses or to run the first check.
+| You want to | Read |
+| --- | --- |
+| Decide whether Shape fits your team | This page, then [Design Rationale](/shapelang/inside-shape/design-rationale/) |
+| Adopt Shape in a repository | [Quickstart](/shapelang/learn/quickstart/), [Keep the Model Current](/shapelang/guides/keep-model-current/), [Run Shape in CI](/shapelang/guides/ci/) |
+| Write and maintain claims | [Effect Model](/shapelang/concepts/effect-model/), [Relations and Graph Rules](/shapelang/concepts/relations/), [Design Memory](/shapelang/concepts/design-memory/), [Language Syntax](/shapelang/reference/language-syntax/) |
+| Look up a command or an error | [CLI Reference](/shapelang/reference/cli/), [Diagnostics](/shapelang/reference/diagnostics/), [Glossary](/shapelang/reference/glossary/) |
+| Contribute to Shape | [CONTRIBUTING.md](https://github.com/timbrinded/shapelang/blob/master/CONTRIBUTING.md), then [Checker Pipeline](/shapelang/inside-shape/checker-pipeline/) |

@@ -10,7 +10,7 @@ const { title = data.title, tagline, actions = [] } = data.hero || {};
 
 <section class="shape-hero" aria-labelledby={PAGE_TITLE_ID}>
   <div class="shape-hero__copy">
-    <p class="shape-hero__kicker">Architecture rules as text</p>
+    <p class="shape-hero__kicker">Typed architecture claims</p>
     <h1 id={PAGE_TITLE_ID} data-page-title set:html={title} />
     {data.draft && <DraftContentNotice />}
     {tagline && <p class="shape-hero__tagline" set:html={tagline} />}

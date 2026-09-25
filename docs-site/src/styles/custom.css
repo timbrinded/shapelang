@@ -27,28 +27,6 @@
   --sl-color-text: var(--shape-slate);
 }
 
-.hero {
-  padding-block: clamp(3.5rem, 7vw, 6.5rem);
-}
-
-.hero img {
-  width: min(920px, 94vw);
-  background: var(--shape-panel);
-  border: 1px solid color-mix(in srgb, var(--shape-blue), var(--shape-border) 58%);
-  border-radius: 8px;
-  box-shadow:
-    0 0 0 1px color-mix(in srgb, var(--shape-panel), transparent 65%) inset,
-    0 20px 56px color-mix(in srgb, var(--shape-ink), transparent 90%);
-}
-
-.hero .tagline {
-  max-width: 16ch;
-  color: var(--shape-ink);
-  font-weight: 700;
-  line-height: 0.98;
-  letter-spacing: 0;
-}
-
 .sl-markdown-content :is(h2, h3) {
   color: var(--shape-ink);
   letter-spacing: 0;
@@ -72,7 +50,7 @@
   padding: 0.08rem 0.28rem;
 }
 
-/* Infographics: full content column, dark matte, no tiny caps */
+/* Diagram plates paint their own background and border (see DESIGN.md). */
 .sl-markdown-content p:has(> img) {
   margin-block: 2rem 2.5rem;
   margin-inline: 0;
@@ -81,15 +59,8 @@
 .sl-markdown-content p > img {
   display: block;
   width: 100%;
-  max-width: 100%;
   height: auto;
-  margin-inline: auto;
-  background: hsl(210, 28%, 8%);
-  border: none;
-  border-radius: 12px;
-  box-shadow:
-    0 0 0 1px hsla(210, 20%, 100%, 0.06),
-    0 20px 50px hsla(210, 40%, 4%, 0.25);
+  border-radius: 2px;
 }
 
 .site-title {
@@ -101,40 +72,4 @@
 .sidebar-pane,
 .right-sidebar-panel {
   border-color: color-mix(in srgb, var(--shape-border), transparent 25%);
-}
-
-.sl-markdown-content .workflow-frame {
-  margin-block: 2rem;
-}
-
-.sl-markdown-content .workflow-frame img {
-  border: 1px solid var(--sl-color-gray-5);
-  border-radius: 8px;
-}
-
-.sl-markdown-content .mermaid-diagram {
-  display: flex;
-  justify-content: center;
-  margin-block: 2rem 2.35rem;
-  overflow-x: auto;
-  background: linear-gradient(
-    180deg,
-    color-mix(in srgb, var(--shape-panel), transparent 0%),
-    color-mix(in srgb, var(--shape-panel), var(--shape-surface) 32%)
-  );
-  border: 1px solid color-mix(in srgb, var(--shape-blue), var(--shape-border) 64%);
-  border-radius: 8px;
-  padding: clamp(1rem, 3vw, 1.5rem);
-  box-shadow:
-    0 0 0 1px color-mix(in srgb, var(--shape-panel), transparent 58%) inset,
-    0 18px 48px color-mix(in srgb, var(--shape-ink), transparent 92%);
-}
-
-.sl-markdown-content .mermaid-diagram svg {
-  width: min(100%, 920px);
-  height: auto;
-}
-
-.sl-markdown-content .mermaid-fallback {
-  border: 1px solid var(--shape-warn);
 }

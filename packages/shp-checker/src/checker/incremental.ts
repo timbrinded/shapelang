@@ -47,10 +47,11 @@ type CachedDocument = {
  * Caches parsed Shape documents and the last globally lowered model.
  *
  * Every document mutation and implicit-origin change rebuilds the complete
- * effective model and fact set because module resolution and change
- * declarations cross file boundaries. Other option-only checks reuse that
- * model, while exact no-op checks also reuse the last diagnostics.
- * `checkShapeModules` remains the uncached full-check path.
+ * effective model and fact set, because module resolution and change
+ * declarations cross file boundaries. Any other options-only check reuses that
+ * model and recomputes diagnostics. An exact no-op check reuses the last result,
+ * and so does an options-only check while a document fails to parse.
+ * `checkShapeModules` is the uncached full-check path.
  */
 export class IncrementalShapeChecker {
   #documents = new Map<string, CachedDocument>();

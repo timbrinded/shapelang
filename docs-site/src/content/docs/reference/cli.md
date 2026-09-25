@@ -1,223 +1,298 @@
 ---
 title: CLI Reference
-description: Commands exposed by the current `shp` CLI.
-sidebar:
-  order: 2
+description: Every shp command with its flags, output streams, and exit codes, plus file discovery and language-server setup.
 ---
 
-The released `shp` binary (version `0.9.0` / tag `v0.9.0`) exposes these commands.
-
-## Usage
-
-```text
-shp check [--allow-unknown-effects] [--changed-files changed.txt] [--as-of YYYY-MM-DD] [--strict-freshness] [files...]
-shp coverage --changed-files changed.txt [files...]
-shp fmt [--check] [files...]
-shp explain SYMBOL [files...]
-shp graph all [--kind KIND] [files...]
-shp graph show SYMBOL [--kind KIND] [files...]
-shp graph stats [--kind KIND] [files...]
-shp inspect --json [files...]
-shp lsp
-shp memory [files...]
-shp obligations [--as-of YYYY-MM-DD] [--strict-freshness] [files...]
-shp author --changed-files changed.txt --component ComponentName [--module module.name]
-shp author --changed-files changed.txt --component ComponentName --diff pr.diff --prompt --shape-files file1.shape,file2.shape [--snippet-files file1.ts,file2.rs] [--project-prelude prelude.shape] [--instructions TEXT]
-shp author --changed-files changed.txt --diff pr.diff --critic-prompt proposed.shape --shape-files file1.shape,file2.shape [--snippet-files file1.ts,file2.rs] [--project-prelude prelude.shape] [--instructions TEXT]
-shp analyze [--shape-files file1.shape,file2.shape] [source-files...]
-shp ast source [--language LANG] [--module NAME] [--include-ast-layer] [--raw-out PATH] [--out-dir DIR] [--check] [--allow-parse-errors] files...
-shp ast json [--module NAME] [--include-ast-layer] [--raw-out PATH] ast.json
-shp update [--version VERSION] [--dry-run] [--path PATH]
-shp --help
-shp --version
-```
-
-When no files are provided, Shape file commands scan:
-
-```text
-shape/**/*.shape
-```
-
-This recursive file set includes source-controlled domain packs vendored below
-`shape/vendor/`. Vendoring installs those modules into the checked model; explicit
-imports make project references to their declarations reviewable but do not
-activate or deactivate pack-level rules. See [Domain Packs](../concepts/domain-packs).
+The released `shp` binary (version `0.9.0` / tag `v0.9.0`) exposes the commands below. Every command accepts `--help` (`-h`). `shp --version` (`-v`) prints the installed version.
 
 ## Commands
 
 | Command | Purpose |
 | --- | --- |
-| `check` | Parse modules, lower facts, and run semantic checks. With `--allow-unknown-effects`, draft unknowns become non-fatal warnings while all other diagnostics remain blocking. With `--changed-files`, also runs coverage and bindings. With `--as-of YYYY-MM-DD` or `--strict-freshness`, stale design memory becomes a check failure. |
-| `coverage` | Require Shape updates or current attestations when governed source paths change. Bindings are not enforced in coverage-only mode. |
-| `fmt` | Format Shape files, or check formatting with `--check`. |
-| `explain` | Print derived facts and incident relations for a symbol. |
-| `graph all` | Print the entire hypergraph. Filter by `--kind KIND`. |
-| `graph show` | Print the hyperedges incident to a symbol. Filter by `--kind KIND`. |
-| `graph stats` | Print aggregate hypergraph counts. Filter by `--kind KIND`. |
-| `inspect` | Export the canonically lowered effective model as deterministic, versioned JSON. Requires `--json`. |
-| `lsp` | Serve Shape diagnostics and editor requests over the Language Server Protocol on stdio. |
-| `memory` | List rationale and memory entries grouped by protected target. |
-| `obligations` | List open design-memory obligations from checker diagnostics. With `--as-of` or `--strict-freshness`, also list design memory whose `review_by` date is past the reference date. |
-| `author` | Generate a conservative global-model draft, emit a provider-neutral PR-diff authoring prompt, or review a proposed update with a provider-neutral critic prompt and deterministic local advisories. |
-| `analyze` | Emit source hints or compare source hints with declared effects. |
-| `ast source` | Parse source with Tree-sitter and emit a conservative semantic Shape draft. |
-| `ast json` | Read external AST JSON and emit the same draft format. |
-| `update` | Update a local released binary from GitHub Releases. |
+| [`check`](#shp-check) | Run the semantic checks; with `--changed-files`, also coverage and bindings. |
+| [`coverage`](#shp-coverage) | Run the semantic checks plus changed-file coverage, without bindings. |
+| [`fmt`](#shp-fmt) | Rewrite Shape files in canonical form, or check that they already are. |
+| [`explain`](#shp-explain) | Print the derived facts and incident relations for one symbol. |
+| [`graph`](#shp-graph) | Print the relation hypergraph, one symbol's incident relations, or aggregate counts. |
+| [`inspect`](#shp-inspect) | Export the effective Shape model as deterministic, versioned JSON. |
+| [`lsp`](#shp-lsp) | Serve diagnostics and editor requests over the Language Server Protocol. |
+| [`memory`](#shp-memory) | List rationale and memory entries grouped by target. |
+| [`obligations`](#shp-obligations) | List open design-memory obligations. |
+| [`author`](#shp-author) | Emit a conservative draft, an authoring prompt, or a critic prompt with advisories. |
+| [`analyze`](#shp-analyze) | Scan source for destructive-operation hints, optionally against declared effects. |
+| [`ast`](#shp-ast-source-and-shp-ast-json) | Generate a conservative Shape draft from source files or from AST JSON. |
+| [`update`](#shp-update) | Replace a locally installed released binary with another GitHub release. |
 
-## Check flags
+## File discovery
+
+With no file arguments, the commands that read the Shape model (`check`, `coverage`, `fmt`, `explain`, `graph`, `inspect`, `memory`, and `obligations`) read every file matching `shape/**/*.shape` under the working directory. The scan is recursive, sorted, and includes vendored domain packs under `shape/vendor/` (see [Domain Packs](/shapelang/guides/domain-packs/)). Explicit file arguments replace discovery entirely: only the named files are read, so omitting a file drops its declarations and rules from the check.
+
+`analyze --shape-files` and `author --shape-files` never discover; they read only the comma-separated list they are given. `shp lsp` discovers per workspace folder, as described in [its entry](#shp-lsp).
+
+## Exit codes
+
+| Code | Meaning |
+| --- | --- |
+| `0` | The command completed. For `check` and `coverage`, no blocking diagnostic remains; unknown-effects warnings under `--allow-unknown-effects` do not block. For `fmt`, every file is formatted. For `analyze --shape-files`, no warnings. The listing commands (`explain`, `graph`, `memory`, `obligations`, `inspect`) exit `0` whenever their input parses, even when the model has errors or open obligations. Critic advisories and AST warnings also exit `0`. |
+| `1` | Semantic, coverage, binding, or freshness diagnostics; a `fmt` parse failure or unformatted file; analyzer warnings; `ast source` Tree-sitter parse errors without `--allow-parse-errors`, or stale files under `--check`; `update` download, checksum, extraction, version-verification, or replacement failures; unexpected internal errors. |
+| `2` | Unknown or missing flags and arguments; unreadable input files; Shape parse errors in `check`, `coverage`, `explain`, `graph`, `memory`, `obligations`, `inspect`, and `analyze --shape-files`; an invalid `--as-of` date; `inspect` without `--json`; invalid `author` inputs; conflicting `ast` flags and AST generation errors other than parse errors; for `update`, an unsupported platform, an invalid version, a requested version older than the installed one, an invalid `--path` target, or a default target that is a `bun` executable. |
+
+Successful output goes to stdout and failing output to stderr, with these exceptions:
+
+- When `--allow-unknown-effects` leaves only warnings, they go to stdout, followed by `Shape check passed with warnings.` When the same run also has a blocking diagnostic, the warnings go to stderr with it.
+- Critic advisories and AST warnings go to stderr while the command exits `0`.
+- `shp lsp` reserves stdout for protocol messages.
+
+## shp check
+
+```text
+shp check [--allow-unknown-effects] [--changed-files changed.txt] [--as-of YYYY-MM-DD | --strict-freshness] [files...]
+```
+
+Parses the Shape model and runs every semantic check. With `--changed-files`, it also runs coverage and bindings, which makes it the single gate recommended for CI.
 
 | Flag | Meaning |
 | --- | --- |
-| `--allow-unknown-effects` | Report `effects unknown` as a non-fatal draft warning; every other diagnostic stays blocking. |
-| `--changed-files PATH` | Path to a newline-delimited changed-file list; also runs coverage and bindings. |
-| `--as-of YYYY-MM-DD` | Freshness reference date (ISO calendar day). Design memory with `review_by` strictly before this date fails the check. |
-| `--strict-freshness` | Shorthand for `--as-of` today (UTC). The CLI supplies today's date; the checker itself only compares the provided date and does not read the clock. |
+| `--allow-unknown-effects` | Allow `effects unknown` as a non-fatal warning while validating drafts. See [Draft validation](#draft-validation). |
+| `--changed-files changed.txt` | Path to a newline-delimited changed-file list. Enables coverage and bindings. |
+| `--as-of YYYY-MM-DD` | Freshness reference date (ISO `YYYY-MM-DD`); enforces stale design memory deterministically. See [Freshness](#freshness). |
+| `--strict-freshness` | Shorthand for `--as-of` today (UTC); fails when `review_by` is before today. |
+| `files...` | Shape files to read. Defaults to `shape/**/*.shape`. |
 
-`--as-of` and `--strict-freshness` are alternatives for the same freshness gate. When both are present, `--as-of` wins.
+The changed-file list holds one path per line, relative to the working directory. Surrounding whitespace and blank lines are ignored, `\` becomes `/`, a leading `./` is dropped, and absolute paths are made relative to the working directory. Without the flag, or with an empty list, coverage and bindings check nothing. What counts as covered is described in [Keep the Model Current](/shapelang/guides/keep-model-current/).
 
-## Common commands
+A passing run prints `Shape check passed.` to stdout. A failing run prints its diagnostics to stderr and exits `1`; each diagnostic's form is catalogued in [Diagnostics](/shapelang/reference/diagnostics/). When any file fails to parse or cannot be read, the command reports only the parse errors and exits `2` without running semantic checks. A missing or unreadable changed-file list also exits `2`.
 
 ```bash
 shp check
-shp check --allow-unknown-effects draft.shape
 shp check --changed-files changed.txt
-shp check --as-of 2026-05-30
-shp check --strict-freshness
+shp check --as-of 2026-05-30 shape/gateway.shape
+```
+
+### Draft validation
+
+Strict `shp check` rejects `effects unknown` in authored modules. `--allow-unknown-effects` downgrades only that diagnostic to `warning: unknown effects`; every other diagnostic stays blocking, including parse errors, forbidden effects, missing grants, guarded changes, coverage, bindings, and freshness. When warnings are all that remain, the command prints them to stdout, ends with `Shape check passed with warnings.`, and exits `0`:
+
+```text
+warning: unknown effects
+
+AuditStore.appendEvent declares effects unknown.
+
+caused by:
+  - draft.shape: fn AuditStore.appendEvent
+
+Shape check passed with warnings.
+```
+
+The flag is for local drafting. CI runs strict `shp check`. Why unknown and complete summaries differ is explained in [Effect Model](/shapelang/concepts/effect-model/); generated AST modules are exempt without the flag, as described in [Generate Drafts from Source](/shapelang/guides/ast-drafts/).
+
+### Freshness
+
+Freshness is off by default, so `review_by` dates are informational. `--as-of YYYY-MM-DD` turns it on and wins when `--strict-freshness` is also given; `--strict-freshness` alone uses today's UTC date. The CLI reads the clock; the checker compares only the date it is given. Prefer `--as-of` in CI so that a run is reproducible.
+
+A `rationale` or `memory` is stale when its `when { review_by "…" }` date is strictly before the reference date. Missing, non-ISO, and impossible `review_by` values are ignored. Each stale entry fails the check with `error: stale design memory`. An `--as-of` value that is not a real calendar date exits `2`:
+
+```text
+error: --as-of expects an ISO YYYY-MM-DD date, received "2026-02-30"
+```
+
+`shp obligations` accepts the same two flags and lists stale entries instead of failing. What `review_by` means for design memory is covered in [Design Memory](/shapelang/concepts/design-memory/).
+
+## shp coverage
+
+```text
+shp coverage --changed-files changed.txt [files...]
+```
+
+Runs the same semantic checks as `shp check` plus changed-file coverage, but not bindings.
+
+| Flag | Meaning |
+| --- | --- |
+| `--changed-files changed.txt` | Required. Path to a newline-delimited changed-file list, in the format described under [`shp check`](#shp-check). |
+| `files...` | Shape files to read. Defaults to `shape/**/*.shape`. |
+
+`coverage` accepts no `--allow-unknown-effects`, `--as-of`, or `--strict-freshness` flag, so `effects unknown` in an authored module fails it. Output and exit codes match `shp check`. Prefer `shp check --changed-files`, which adds bindings, as the CI gate.
+
+```bash
 shp coverage --changed-files changed.txt
-shp fmt --check
-shp explain AuditEvent
-shp graph all
-shp graph all --kind provides
-shp graph show Gateway
-shp graph show Gateway --kind calls
-shp graph stats
-shp graph stats --kind calls
-shp inspect --json > shape-model.json
-shp lsp
-shp memory
-shp obligations
-shp obligations --as-of 2026-05-30
-shp obligations --strict-freshness
-shp author --changed-files changed.txt --component AuditStore
-shp author --changed-files changed.txt --component AuditStore --diff pr.diff --prompt --shape-files shape/audit.shape --snippet-files src/audit/purge.ts
-shp author --changed-files changed.txt --diff pr.diff --critic-prompt proposed.shape --shape-files shape/audit.shape --snippet-files src/audit/purge.ts
-shp analyze --shape-files fixtures/pass/append_only_append/audit.shape src/audit/purge.ts
-shp ast source --language rust --module generated.audit src/audit/store.rs
-shp ast source --language rust --out-dir shape/generated/ast src/audit/store.rs
-shp ast source --language rust --out-dir shape/generated/ast --check src/audit/store.rs
-shp ast json --module generated.audit --raw-out ast.raw.shape ast.json
-shp update --dry-run
-shp update --version v0.9.0
 ```
 
-## Draft validation
+## shp fmt
 
-`effects unknown` is conservative draft syntax, but strict `shp check` rejects it so committed models and CI cannot silently retain unresolved effects. During authoring, opt into draft validation:
-
-```bash
-shp check --allow-unknown-effects draft.shape
+```text
+shp fmt [--check] [files...]
 ```
 
-Unknown effects are rendered as warnings and the command exits `0` only when no other diagnostic is present. The flag does not soften parse errors, final forbids, missing grants for known effects, guarded-change obligations, coverage, bindings, or any other semantic failure. Resolve the warnings and run strict `shp check` before review or CI.
+Rewrites each file in canonical form, or with `--check` reports the files that differ.
 
-## Analyzer hints
+| Flag | Meaning |
+| --- | --- |
+| `--check` | Check formatting without writing files. |
+| `files...` | Shape files to format. Defaults to `shape/**/*.shape`. |
 
-`shp analyze` lexically scans for obvious destructive SQL plus common Kysely, Prisma, and Drizzle delete patterns. It recognizes multiline SQL and direct raw-execution literals while ignoring comments and inert string or template literals. When a direct static table, model, or schema identifier is available, hint output includes a suspected target; supported comma-separated destructive SQL lists emit one hint per target. Destructive SQL must begin with the destructive keyword; the analyzer does not follow SQL stored in variables or resolve arbitrary library aliases. Without `--shape-files`, it prints advisory hints and exits successfully. With `--shape-files`, it compares hints with declared effects and compares static targets with declared resource names and `storage` aliases. Quoted SQL components compare exactly, while unquoted SQL uses case folding without erasing separators. The TypeScript scanner conservatively associates recognized balanced forms of named functions, methods, and block-bodied assigned arrows with Shape `#function` source anchors. Unsupported TypeScript forms remain unanchored; this includes literal return types and assigned arrows with a newline between `=` and the parameter list. Missing effects, target mismatches, and ambiguous source attribution have distinct warnings; any warning exits with code `1`.
+The formatter rebuilds each file from its syntax tree. The rebuild:
 
-See [Analyzer Hints](../concepts/analyzer-hints) for the supported pattern families and matcher limitations.
+- drops every `//` and `/* */` comment, so `shp fmt --check` fails on any file that contains one;
+- sorts declarations by kind and then by name, sorts imports, and sorts the members and entries of most blocks;
+- merges repeated `protects`, `guards`, `who`, and `when` blocks.
 
-## PR-diff authoring
+Keep explanations that must survive in `summary`, `description`, or design-memory declarations. Given this input:
 
-Without `--prompt`, `shp author` keeps its existing stdout contract: a parseable conservative global-model scaffold with file-scoped source references. Diff context is accepted only in prompt mode. The helper never converts hunk coordinates into numbered Shape references; a reviewer or authoring agent may refine a file-scoped reference to a stable `#symbol` anchor when the supplied source evidence supports it.
-
-Prompt mode packages the same draft with the evidence an external human or agent needs:
-
-```bash
-shp author \
-  --changed-files changed.txt \
-  --component AuditStore \
-  --module audit \
-  --diff pr.diff \
-  --prompt \
-  --shape-files shape/audit.shape \
-  --snippet-files src/audit/purge.ts \
-  --project-prelude shape/project-prelude.shape \
-  --instructions "Keep the update narrow." \
-  > author-prompt.txt
+```shape
+module audit
+// Audit events are append-only.
+resource AuditEvent : AppendOnly
+component AuditStore { owns AuditEvent
+  grants Append<AuditEvent>  /* writer */
+  fn appendEvent effects complete { Append<AuditEvent> } }
 ```
 
-`--prompt` requires a non-empty unified diff and a non-empty comma-separated `--shape-files` list. `--snippet-files` and `--project-prelude` add explicit path-labeled context; Shape does not discover a project prelude or invoke a model provider. Context flags are rejected outside prompt or critic mode instead of being silently ignored.
+`shp fmt` writes:
 
-The bundle requires evidence for resources, components, effects, and relations, keeps destructive operations explicit, and includes `effects unknown` in the initial draft when semantics remain uncertain. It is an authoring artifact, not checker approval. Review and fold the result into the owning global model, run `shp fmt --check`, then run strict `shp check --changed-files changed.txt`.
+```shape
+module audit
 
-Critic mode reviews an already proposed Shape update with the same explicit diff, existing-Shape, snippet, prelude, and instruction context:
+resource AuditEvent : AppendOnly
 
-```bash
-shp author \
-  --changed-files changed.txt \
-  --diff pr.diff \
-  --critic-prompt proposed.shape \
-  --shape-files shape/audit.shape \
-  --snippet-files src/audit/purge.ts \
-  > critic-prompt.txt
-```
-
-The provider-neutral critic prompt is written to stdout. Deterministic local advisories are written to stderr for a source-backed guarded function changed without a matching reevaluation, or for a destructive operation found on added diff lines but absent from the existing and proposed declared effects. Deleted diff lines are never analyzed. Advisories report file paths and code evidence without producing numbered Shape references. These checks are deliberately coarse and lexical: warnings exit `0`, malformed input exits `2`, and only a later `shp check` can authoritatively accept or reject the model. `--critic-prompt` and `--prompt` are mutually exclusive; draft-only `--component` and `--module` flags are rejected in critic mode. Neither mode invokes a model provider, subprocess, network service, or checker pass.
-
-## AST generation
-
-`shp ast` is a drafting tool. It turns syntax evidence into conservative Shape, not final architecture truth.
-
-By default, `shp ast source` parses files with the platform Tree-sitter native binding and prints the semantic draft: stable files, modules, types, functions, high-confidence calls, compact AST anchors, anchor fingerprints where token evidence exists, candidate effect evidence, and unresolved uncertainty. Generated source references use stable `#symbol` anchors for named declarations and file-only references otherwise, so line-only movement does not churn the semantic draft. Generated functions use `effects unknown`.
-
-Source language inference covers TypeScript, TSX, JavaScript/JSX, Rust, Go, Python, and Swift (`.swift`). JSX files use the JavaScript parser. Supported parsers are bundled beside released `shp` binaries. `--language` accepts `javascript`, `typescript`, `tsx`, `rust`, `go`, `python`, and `swift`; aliases `js`, `jsx`, `ts`, `rs`, and `py` normalize to their parser names. Unsupported values are rejected as usage errors before parser loading.
-
-Swift drafts include protocol requirements, extensions, overloads, and computed
-properties such as SwiftUI `body`. They preserve unknown effects and omit inferred
-call and effect candidates. No Swift compiler or Xcode project is loaded. See
-[Swift draft support](../concepts/ast-generation.md#swift) for source-reference
-conventions and limits.
-
-Use `--out-dir shape/generated/ast` to write checked generated AST context as deterministic files plus a manifest. Source identities are normalized relative to the workspace root, so absolute source paths and invocations from nested directories produce the same generated modules and source references for the same file. These generated files use `shape.generated.ast...` modules and are allowed to keep `effects unknown`, because they are candidate evidence rather than reviewed architecture truth. Use `--check` with `--out-dir` in CI to fail when the checked-in generated AST files are stale. Freshness checks and cleanup are scoped to files recorded in the generated AST manifest, so unrelated authored `.shape` files in the output tree are not treated as generated output.
-
-In this repo, `bun run ast:generate` refreshes the committed generated AST context for tracked and untracked non-ignored first-party source, and `bun run ast:check` verifies it is fresh in local, CI, and release validation. The source set excludes dependency, build, and generated parser output. Directory output rejects module or output-path collisions before writing.
-
-Use `--include-ast-layer` to include raw AST resources and `ast_child` relations in stdout. Use `--raw-out PATH` to keep the raw trace in a sidecar Shape file while stdout stays focused on the semantic draft. These flags are mutually exclusive.
-
-`shp ast json` accepts normalized AST JSON with this shape when another parser already produced syntax data. It is an input adapter, not a Shape-to-AST export path. Anchored nodes should include token/source text in their subtree so `ast.semantic_subtree_v1` fingerprints can be computed. If an anchor has no token evidence, generation reports a warning, keeps the draft, omits that fingerprint expectation, and skips candidate effects that would need an uncheckable pin:
-
-```json
-{
-  "language": "rust",
-  "files": [
-    {
-      "path": "src/audit/store.rs",
-      "root": "root",
-      "nodes": [
-        { "id": "root", "kind": "source_file", "children": ["store"] },
-        {
-          "id": "store",
-          "kind": "struct_item",
-          "attributes": { "name": "AuditStore" },
-          "text": "struct AuditStore { repo: AuditRepo }"
-        }
-      ]
+component AuditStore {
+  owns AuditEvent
+  grants Append<AuditEvent>
+  fn appendEvent
+    effects complete {
+      Append<AuditEvent>
     }
-  ]
 }
 ```
 
-## Machine-readable model inspection
+`shp fmt` also sorts the entries of a `change` block by their text. When several entries touch one target, this can change the checked result, so give each target at most one entry.
 
-`shp inspect --json [files...]` exports the effective Shape model for local
-tools such as architecture visualizers. With no files, it recursively discovers
-`shape/**/*.shape`. Explicit absolute files inside the current project are
-reported as project-relative paths, so the same checkout content does not embed
-machine-specific directory prefixes.
+A file that already matches is not rewritten. On success the command prints `Shape format complete.` or, with `--check`, `Shape format check passed.` to stdout. Under `--check`, each differing file is reported as `FILE: not formatted` on stderr. A file that fails to parse is reported as `FILE: MESSAGE` on stderr and left untouched while the other files are still processed. Either failure exits `1`. An unreadable file exits `2`.
 
-The command uses the official parser, canonical effective-model lowering, and
-module-reference resolution. It writes only JSON to standard output. The
-top-level schema is:
+```bash
+shp fmt
+shp fmt --check
+```
+
+## shp explain
+
+```text
+shp explain SYMBOL [files...]
+```
+
+Prints the derived facts and incident relations for one symbol.
+
+`SYMBOL` is a resource, component, relation, rationale, or memory name, or a function written `Component.fn`. It may be module-qualified (`gateway::Gateway`). An unmatched symbol prints `No shape facts found for SYMBOL.` A name that matches more than one declaration prints `Ambiguous shape symbol SYMBOL.` and its candidates. Both cases exit `0`.
+
+```text
+$ shp explain AuditEvent
+AuditEvent
+  kind: resource
+  traits:
+    AppendOnly
+
+  final forbidden effects:
+    HardDelete<AuditEvent>
+    Truncate<AuditEvent>
+    DropStorage<AuditEvent>
+
+  relations:
+    coordinated_call AuditWritePath: Gateway (component) -> AuditStore (component) -> AuditEvent (resource)  // Audit writes flow Gateway -> AuditStore -> AuditEvent.
+```
+
+## shp graph
+
+```text
+shp graph all [--kind KIND] [files...]
+shp graph show SYMBOL [--kind KIND] [files...]
+shp graph stats [--kind KIND] [files...]
+```
+
+Prints the relation hypergraph (`all`), the relations incident to one symbol (`show`), or aggregate counts (`stats`).
+
+| Flag | Meaning |
+| --- | --- |
+| `--kind KIND` | Filter by relation kind. Any value is accepted; a kind that no relation uses matches nothing. |
+| `files...` | Shape files to read. Defaults to `shape/**/*.shape`. |
+
+`graph all` groups relations by kind. It prints `No relations declared.` for an empty graph and `No relations match kind KIND.` when the filter matches nothing. A relation's `summary` follows its line as a trailing `//` comment:
+
+```text
+$ shp graph all
+Hypergraph
+
+calls:
+  calls GatewayCallsAudit: Gateway (component) -> AuditStore (component)
+
+coordinated_call:
+  coordinated_call AuditWritePath: Gateway (component) -> AuditStore (component) -> AuditEvent (resource)  // Audit writes flow Gateway -> AuditStore -> AuditEvent.
+```
+
+`graph show SYMBOL` accepts a component, a resource, or a relation name. For a vertex it prints the vertex and each incident relation, or `(no incident relations)`:
+
+```text
+$ shp graph show Gateway --kind calls
+Gateway (component)
+  calls GatewayCallsAudit: Gateway (component) -> AuditStore (component)
+```
+
+`graph stats` counts the whole model and does not accept a symbol:
+
+```text
+$ shp graph stats
+Hypergraph stats
+  vertices: 4 (2 components, 2 resources)
+  hyperedges: 2
+    calls: 1
+    coordinated_call: 1
+  incidences: 5
+  arity: min 2, max 3, avg 2.50
+    widest: coordinated_call AuditWritePath
+  isolated vertices: 1
+    PolicySnapshot (resource)
+```
+
+How relation kinds become traversal steps is explained in [Relations and Graph Rules](/shapelang/concepts/relations/).
+
+### graph stats --kind KIND
+
+With a filter, `graph stats` adds a `filter:` line and scopes the hyperedge, incidence, and arity counts to that kind. Vertex counts still cover the whole model, and `isolated vertices` lists the vertices that no relation of the selected kind touches:
+
+```text
+$ shp graph stats --kind calls
+Hypergraph stats
+  vertices: 4 (2 components, 2 resources)
+  filter: kind=calls
+  hyperedges: 1 (of 2 total)
+    calls: 1
+  incidences: 2
+  arity: min 2, max 2, avg 2.00
+  isolated vertices: 2
+    AuditEvent (resource), PolicySnapshot (resource)
+```
+
+### Legacy forms
+
+```text
+shp graph [SYMBOL] [--kind KIND] [files...]
+shp graph --stats [--kind KIND] [files...]
+```
+
+These forms remain supported. `shp graph` alone behaves as `graph all`, `shp graph SYMBOL` as `graph show SYMBOL`, and `shp graph --stats` as `graph stats`. A first argument that ends in `.shape` is read as a file, not a symbol. A symbol named `all`, `show`, or `stats` needs `graph show SYMBOL`. `shp graph --stats SYMBOL` exits `2`.
+
+## shp inspect
+
+```text
+shp inspect --json [files...]
+```
+
+Exports the effective Shape model as deterministic, versioned JSON for local tools such as architecture visualizers.
+
+| Flag | Meaning |
+| --- | --- |
+| `--json` | Required. Write the versioned effective Shape model as JSON. Without it the command exits `2`. |
+| `files...` | Shape files to read. Defaults to `shape/**/*.shape`. |
+
+The command parses the model with the official parser, applies the same lowering and module resolution as the checker, and writes only JSON to stdout. The top-level schema is:
 
 ```json
 {
@@ -236,88 +311,57 @@ top-level schema is:
 }
 ```
 
-Declaration records include a stable module-qualified `id`, local `name`,
-`module`, source `file`, and `authored` or `generated_ast` origin. Function records contain complete or unknown effect
-status plus resolved effect targets. Relation records contain ordered endpoints
-and compatibility `from` and `to` fields. All order-insensitive arrays use
-Unicode codepoint order. The export contains no generated timestamp.
+- Declaration records carry a module-qualified `id`, the local `name`, `module`, `file`, and an `origin` of `authored` or `generated_ast`.
+- File paths are reported relative to the working directory, so the same checkout, inspected from the same directory, produces the same bytes on any machine.
+- Function records carry `effectsComplete` and resolved effect targets. Relation records carry ordered `endpoints` plus `from` and `to` fields for compatibility.
+- Order-insensitive arrays use Unicode codepoint order, and the export contains no timestamp.
 
-Inspection accepts any parseable model and does not replace semantic validation.
-Run `shp check` first when the consumer requires an accepted model. Consumers
-must reject unsupported `schemaVersion` values instead of guessing at a changed
-schema.
+`inspect` accepts any model that parses and does not run the semantic checks. Run `shp check` first when the consumer needs an accepted model. Consumers must reject a `schemaVersion` they do not support rather than guess at a changed schema.
 
-## Graph output
-
-`shp graph show SYMBOL` lists the hyperedges incident to a component or resource:
-
-```text
-Gateway (component)
-  calls GatewayCallsAudit: Gateway (component) -> AuditStore (component)
-  coordinated_call AuditWritePath: Gateway (component) -> AuditStore (component) -> AuditEvent (resource)
+```bash
+shp inspect --json > shape-model.json
 ```
 
-`shp graph all` prints every relation in the hypergraph, grouped by kind:
+## shp lsp
 
 ```text
-Hypergraph
-
-calls:
-  calls GatewayCallsAudit: Gateway (component) -> AuditStore (component)
-
-coordinated_call:
-  coordinated_call AuditWritePath: Gateway (component) -> AuditStore (component) -> AuditEvent (resource)
+shp lsp
 ```
 
-`--kind KIND` filters by relation kind in graph modes. There is no separate binary view; every structural dependency is a hyperedge.
+Serves Shape diagnostics and editor requests over the Language Server Protocol on stdin and stdout. It takes no flags or arguments.
 
-The older forms `shp graph`, `shp graph SYMBOL`, and `shp graph --stats` remain supported for compatibility, but the explicit subcommands are preferred. Legacy symbols named `all`, `show`, or `stats` must use `graph show SYMBOL`.
+Configure the editor to launch the `shp` executable with `lsp` as its only argument. The server reserves stdout for protocol messages, so do not wrap it in a command that prints banners or logs to stdout.
 
-### Stats
+The server advertises:
 
-`shp graph stats` reports aggregate counts so an agent (or human) can size up a model before drilling into specific relations:
+- incremental document synchronization with open and close notifications;
+- published diagnostics;
+- hover;
+- go to definition;
+- completion, triggered by `.` and `<`, over keywords, prelude names, and every name declared in the workspace;
+- whole-document formatting;
+- workspace folders, without change notifications.
+
+**Workspace discovery.** At initialization the server takes its roots from the file-backed workspace folders. When there are none, it uses `rootUri`, and failing that, its own working directory. Changes to workspace folders after initialization are not tracked. On every validation the server rescans `shape/**/*.shape` under each root. A validation runs after initialization, whenever a document opens, changes, or closes, and on each watched-file notification. When the client supports dynamic registration of watched files, the server registers a watcher for `**/shape/**/*.shape`.
+
+**Open documents.** The text of an open document replaces its copy on disk. Open `.shape` documents outside the discovered tree join the model too. The whole set is checked as one Shape model, so imported modules resolve across files. The checks match strict `shp check` without a changed-file list: coverage, bindings, and freshness do not run, and `effects unknown` in an authored module is an error. One difference: the server does not apply the generated-AST exemption, so it reports `effects unknown` in `shape/generated/ast/` files that `shp check` accepts (see [Helper APIs](/shapelang/inside-shape/formatter-editor-authoring/#editor-helpers)). Every diagnostic is published with error severity. A semantic diagnostic carries its full `shp check` text and is placed at the first character of the file it names, or of the first document when it names none; a parse error is placed at its reported position. When any document fails to parse, only parse errors are published. A document whose problems disappear, or that closes, receives an empty diagnostic set.
+
+**Hover and definition.** The server looks in the current document first. A declaration in another document is used only when exactly one other workspace document declares the name; with more than one match, the server returns nothing rather than pick a file.
+
+**Formatting.** `textDocument/formatting` returns a single full-document edit containing the `shp fmt` output, so comments are dropped here too. A document that fails to parse, or is already formatted, gets no edit. The server never writes files: format-on-save works when the editor sends `textDocument/formatting` on save.
+
+## shp memory
 
 ```text
-Hypergraph stats
-  vertices: 4 (3 components, 1 resource)
-  hyperedges: 3
-    calls: 2
-    coordinated_call: 1
-  incidences: 7
-  arity: min 2, max 3, avg 2.33
-    widest: coordinated_call AuditWritePath
-  isolated vertices: 0
+shp memory [files...]
 ```
 
-`graph stats` combines with `--kind KIND` to scope the hyperedge, incidence, and arity counts to a single relation kind. It is a whole-graph mode and does not accept a symbol. Vertex counts always reflect the full model; `isolated vertices` then reports vertices that do not participate in any hyperedge of the selected kind.
+Lists every `rationale` and `memory` entry, grouped by the target it applies to.
 
-## Language server
-
-`shp lsp` reserves standard input and output for Language Server Protocol
-messages. Configure an editor to launch the `shp` executable with `lsp` as its
-only argument. Do not wrap it with a command that writes banners or logs to
-stdout.
-
-The server advertises incremental document synchronization, diagnostics, hover,
-go to definition, completion, and whole-document formatting. Format-on-save is
-client driven: an editor with that setting enabled sends
-`textDocument/formatting`, and Shape returns the canonical full-document edit.
-
-At initialization, the server discovers `shape/**/*.shape` under every initial
-file-backed workspace folder. Open documents override the corresponding disk
-source, and open Shape documents outside that default tree are included too.
-Semantic diagnostics therefore see imported workspace modules together. Closing
-or fixing a document publishes an empty diagnostic set to clear stale problems.
-
-Definitions resolve in the current document first. If the declaration is
-external, the server returns it only when exactly one workspace document
-matches; ambiguous names do not jump to an arbitrary file.
-
-## Memory and obligations
-
-`shp memory` is useful before reviewing a refactor because it shows design context attached to targets:
+Each entry shows its type and, when declared, `status`, `confidence`, `protects`, `owner`, and `review_by`. A model with neither kind prints `No active memory guards.`
 
 ```text
+$ shp memory
 Memory Guards
 
 fn Gateway.derivePolicyDecision
@@ -326,38 +370,186 @@ fn Gateway.derivePolicyDecision
   status: Unexplained
   confidence: High
   owner: GatewayTeam
+  review_by: 2026-01-01
 ```
 
-`shp obligations` filters checker diagnostics down to open rationale, memory, description, reevaluation, and guarded-change work:
+## shp obligations
 
 ```text
+shp obligations [--as-of YYYY-MM-DD | --strict-freshness] [files...]
+```
+
+Lists the open design-memory obligations that the checker finds.
+
+| Flag | Meaning |
+| --- | --- |
+| `--as-of YYYY-MM-DD` | Freshness reference date (ISO `YYYY-MM-DD`); also lists design memory whose `review_by` is before it. |
+| `--strict-freshness` | Shorthand for `--as-of` today (UTC); also lists design memory whose `review_by` is before today. |
+| `files...` | Shape files to read. Defaults to `shape/**/*.shape`. |
+
+The flags behave as described under [Freshness](#freshness). Output groups the obligations under `missing context:`, `missing description:`, `guarded changes:`, `invalid reevaluations:`, and `stale design memory:`; with none, it prints `No open shape obligations.` Other diagnostics, such as forbidden effects, are not listed. The command exits `0` even when obligations are open, so gate on `shp check`.
+
+```text
+$ shp obligations --as-of 2026-05-30
 Open Shape Obligations
 
 guarded changes:
-  fn Gateway.derivePolicyDecision changed; requires reevaluation satisfying memory DecisionRefactorConstraint
-```
-
-### Review freshness
-
-`review_by` is informational by default. Pass `--as-of YYYY-MM-DD` or `--strict-freshness` to enforce it: design memory and rationale whose `review_by` is an ISO `YYYY-MM-DD` date strictly before the reference date is reported. `shp obligations` lists those entries under `stale design memory:`, and `shp check` turns them into a failing diagnostic so CI can require periodic review.
-
-```text
-Open Shape Obligations
+  fn gateway::Gateway.derivePolicyDecision changed; requires reevaluation satisfying memory DecisionRefactorConstraint
 
 stale design memory:
   memory DecisionRefactorConstraint review_by 2026-01-01 is before 2026-05-30
 ```
 
-Only ISO `YYYY-MM-DD` dates are enforced; missing or non-ISO `review_by` values are never reported as stale. Prefer `--as-of` for deterministic CI dates. `--strict-freshness` is shorthand for today (UTC) at the CLI boundary; the checker only compares the date it is given.
+## shp author
 
-## Exit codes
+```text
+shp author --changed-files changed.txt --component ComponentName [--module module.name]
+shp author --changed-files changed.txt --component ComponentName --diff pr.diff --prompt --shape-files file1.shape,file2.shape [--snippet-files file1.ts,file2.rs] [--project-prelude prelude.shape] [--instructions TEXT]
+shp author --changed-files changed.txt --diff pr.diff --critic-prompt proposed.shape --shape-files file1.shape,file2.shape [--snippet-files file1.ts,file2.rs] [--project-prelude prelude.shape] [--instructions TEXT]
+```
 
-`0` means the command passed, a JSON inspection completed, or an advisory-only critic review completed, even when critic warnings were emitted. `1` means semantic checks, formatting checks, coverage, analyzer comparison, download, checksum, extraction, or binary replacement failed. `2` means the CLI arguments, inspection mode, parser input, or critic inputs were invalid, or the update target platform/path is unsupported.
+Emits a conservative Shape draft for a change set, a provider-neutral authoring prompt, or a critic prompt with deterministic local advisories. No mode calls a model provider or runs the checker; only `shp check` accepts or rejects the result.
 
-## Updating
+| Flag | Meaning |
+| --- | --- |
+| `--changed-files changed.txt` | Required. Path to a newline-delimited changed-file list. |
+| `--component ComponentName` | Component to scaffold. |
+| `--module module.name` | Shape module name for the generated draft. |
+| `--prompt` | Emit a provider-neutral authoring prompt bundle instead of the draft. |
+| `--critic-prompt proposed.shape` | Proposed Shape update to review with a provider-neutral critic prompt. |
+| `--diff pr.diff` | Unified PR diff used as context by prompt and critic modes. |
+| `--shape-files file1.shape,file2.shape` | Comma-separated existing Shape files required by prompt and critic modes. |
+| `--snippet-files file1.ts,file2.rs` | Comma-separated relevant source files for prompt and critic modes. |
+| `--project-prelude prelude.shape` | Project prelude context file for prompt and critic modes. |
+| `--instructions TEXT` | Additional human direction for prompt and critic modes. |
 
-`shp update` is for local developer installs of the released single binary. It checks the current version, resolves a GitHub release, downloads the matching published platform archive, verifies it with `checksums.txt`, and replaces the selected executable path. The published archive matrix follows the native parser target table used by release builds.
+The mode is chosen by `--prompt`, `--critic-prompt`, or neither:
 
-Use `shp update --dry-run` to see the selected release, asset, and binary path without downloading. Use `shp update --version v0.9.0` to target a specific newer release. Use `--path PATH` when testing from source or when replacing a custom installed binary; if that path already exists, it must identify as the Shape CLI and report a valid version.
+| Mode | Requires | Also accepts | Rejects | stdout | stderr |
+| --- | --- | --- | --- | --- | --- |
+| Draft | `--component` | `--module` | `--diff`, `--shape-files`, `--snippet-files`, `--project-prelude`, `--instructions` | Draft Shape | — |
+| Prompt (`--prompt`) | `--component`, a non-empty `--diff`, `--shape-files`, and at least one changed file | `--module`, `--snippet-files`, `--project-prelude`, `--instructions` | `--critic-prompt` | Prompt bundle | — |
+| Critic (`--critic-prompt FILE`) | A non-empty `FILE`, a non-empty `--diff`, `--shape-files`, and at least one changed file | `--snippet-files`, `--project-prelude`, `--instructions` | `--prompt`, `--component`, `--module` | Critic prompt | Advisories |
 
-CI should continue installing pinned releases through the setup action or installer script instead of calling `shp update`.
+Each violation prints a one-line `error:` naming the flag and exits `2`; for example, `error: --prompt requires --shape-files.` In critic mode, a proposed or existing Shape file that fails to parse is reported as `error: failed to parse FILE:LINE:COLUMN: MESSAGE` and exits `2`. Advisories exit `0`.
+
+```bash
+shp author --changed-files changed.txt --component AuditStore --module audit
+```
+
+The draft, prompt, and critic workflow is described in [Author Updates with an Agent](/shapelang/guides/authoring/).
+
+## shp analyze
+
+```text
+shp analyze [--shape-files file1.shape,file2.shape] [source-files...]
+```
+
+Scans source files for destructive-operation hints and, with `--shape-files`, compares them with the declared effects.
+
+| Flag | Meaning |
+| --- | --- |
+| `--shape-files file1.shape,file2.shape` | Comma-separated Shape files to compare against analyzer hints. No other Shape files are read. |
+| `source-files...` | Source files to analyze. |
+
+Without `--shape-files`, the command prints one hint per line to stdout, as `PATH:LINE EFFECT [target=TARGET] EVIDENCE`, and exits `0`:
+
+```text
+$ shp analyze src/audit/purge.ts
+src/audit/purge.ts:2 HardDelete target=audit_events return db.deleteFrom("audit_events");
+```
+
+With `--shape-files`, each mismatch is a warning on stderr and any warning exits `1`. With no mismatch, the command prints `Shape analyzer found no mismatches.` to stdout and exits `0`. A listed Shape file that fails to parse exits `2`, as does an unreadable source file.
+
+```text
+$ shp analyze --shape-files shape/audit.shape src/audit/purge.ts
+warning: analyzer hint missing from shape effects
+
+src/audit/purge.ts:2 suggests HardDelete.
+suspected target: audit_events
+evidence: return db.deleteFrom("audit_events");
+```
+
+The supported patterns, the warning kinds, and the matcher's limits are described in [Analyzer Hints](/shapelang/guides/analyzer/).
+
+## shp ast source and shp ast json
+
+```text
+shp ast source [--language LANG] [--module NAME] [--include-ast-layer] [--raw-out PATH] [--out-dir DIR] [--check] [--allow-parse-errors] files...
+shp ast json [--module NAME] [--include-ast-layer] [--raw-out PATH] ast.json
+```
+
+`ast source` parses source files with Tree-sitter and prints a conservative semantic Shape draft. `ast json` builds the same draft from one normalized AST JSON file produced by another parser.
+
+| Flag | Applies to | Meaning |
+| --- | --- | --- |
+| `--language LANG` | `source` | Override source language for every input file. Values are listed under [`ast source --language LANG`](#ast-source---language-lang). |
+| `--module NAME` | both | Module name for the generated Shape draft. Defaults to `generated.ast`. With `--out-dir` it is a base, defaulting to `shape.generated.ast`, and each file's module appends its source path segments (for example `shape.generated.ast.src.audit.store`). |
+| `--include-ast-layer` | both | Include raw AST resources and `ast_child` relations in stdout. |
+| `--raw-out PATH` | both | Write the raw AST trace to a sidecar Shape file (module `NAME.raw`) while stdout keeps the semantic draft. |
+| `--out-dir DIR` | `source` | Write one generated semantic Shape file per source under `DIR`, plus `DIR/manifest.json`. |
+| `--check` | `source` | With `--out-dir`, fail when generated files are not up to date. Writes nothing. |
+| `--allow-parse-errors` | `source` | Emit a draft even when Tree-sitter reports syntax errors. |
+
+Constraints, each of which exits `2`:
+
+- `--include-ast-layer` and `--raw-out` are mutually exclusive.
+- `--out-dir` rejects `--raw-out` and `--include-ast-layer`.
+- `--check` requires `--out-dir`.
+- With `--out-dir`, `--module` must be `shape.generated.ast` or a child module, and every source path must be inside the workspace (the git top-level directory, otherwise the working directory). Two sources that map to the same output path are rejected.
+- `ast json` takes exactly one file, which must be valid JSON.
+
+The draft goes to stdout. With `--out-dir`, stdout carries a one-line summary instead, such as `Wrote 1 generated AST Shape file(s) to shape/generated/ast.` or, under `--check`, `Generated AST Shape files are up to date in shape/generated/ast.` Warnings go to stderr and exit `0`. A generation failure prints `error: AST generation failed` and its reasons to stderr. Tree-sitter syntax errors without `--allow-parse-errors` exit `1`; other generation errors, such as an unknown file extension, exit `2`. `--check` with stale files prints `error: generated AST Shape files are stale` and each stale path to stderr, and exits `1`.
+
+```bash
+shp ast source --out-dir shape/generated/ast src/audit/store.ts
+shp ast source --out-dir shape/generated/ast --check src/audit/store.ts
+```
+
+The draft contents, the generated-AST exemption for `effects unknown`, the manifest, and the AST JSON input format are described in [Generate Drafts from Source](/shapelang/guides/ast-drafts/).
+
+### ast source --language LANG
+
+| Value | Aliases | Inferred from |
+| --- | --- | --- |
+| `typescript` | `ts` | `.ts`, `.mts`, `.cts` |
+| `tsx` | — | `.tsx` |
+| `javascript` | `js`, `jsx` | `.js`, `.jsx`, `.mjs`, `.cjs` |
+| `rust` | `rs` | `.rs` |
+| `go` | — | `.go` |
+| `python` | `py` | `.py` |
+| `swift` | — | `.swift` |
+
+Values are case-insensitive. An unsupported value exits `2` before any parser loads. Without `--language`, the extension selects the parser; a file with any other extension is rejected with `pass --language LANG`. Released binaries bundle these parsers.
+
+## shp update
+
+```text
+shp update [--version VERSION] [--dry-run] [--path PATH]
+```
+
+Replaces a locally installed released `shp` binary, and the parser assets beside it, with a GitHub release.
+
+| Flag | Meaning |
+| --- | --- |
+| `--version VERSION` | Release to install, written `vX.Y.Z` or `X.Y.Z`. Defaults to the latest release. |
+| `--dry-run` | Show the selected release, asset, and binary path without downloading. |
+| `--path PATH` | Executable path to replace. Defaults to the running `shp` binary. |
+
+The command runs these steps in order and stops at the first that ends it:
+
+1. **Target.** The target is `--path`, or else the running executable. Without `--path`, a running executable named `bun` or `bun.exe`, as when `shp` runs from source, is refused (exit `2`).
+2. **Platform.** Release assets exist for Linux x64, Linux ARM64, macOS ARM64, and Windows x64. Any other platform exits `2`.
+3. **Installed version.** Without `--path`, this is the running binary's version. A `--path` that does not exist is treated as a fresh install. An existing `--path` must run `--version` and `--help` successfully, identify as `shp`, and report an `X.Y.Z` version; otherwise the command exits `2`.
+4. **Requested version.** An invalid `--version` exits `2`. When it equals the installed version, the command prints `shp X.Y.Z is already installed` and exits `0`. When it is older, the command exits `2`.
+5. **Release lookup.** The command reads the requested or latest release of `timbrinded/shapelang` from the GitHub API. Without `--version`, a latest release equal to the installed version prints `shp X.Y.Z is already up to date`, and an older one prints `shp X.Y.Z is newer than latest release vA.B.C`; both exit `0`. A failed request, or a release without the platform archive or `checksums.txt`, exits `1`.
+6. **Dry run.** `--dry-run` prints four lines and exits `0` without downloading anything: `would update shp INSTALLED -> TARGET`, then `release: TAG`, `asset: ARCHIVE` (for example `shp-linux-x64.tar.gz`), and `binary: PATH`.
+7. **Download and verify.** The command downloads `checksums.txt` and the archive, verifies the archive's SHA-256, and extracts it with `tar`, which must be on `PATH`. The archive must contain the `tree-sitter-language-pack` directory, and the extracted binary's `--version` must report the target version. Any failure here exits `1`.
+8. **Replace.** On Linux and macOS, the new binary and `tree-sitter-language-pack` directory are staged beside the target and renamed into place; if the binary cannot be moved, the previous parser directory is restored. The command prints `updated shp A -> B at PATH`. On Windows, the command stages both beside the target and starts a background PowerShell script that waits for `shp` to exit and then moves them into place. It prints `staged shp B; it will replace PATH after this process exits`.
+
+```bash
+shp update --dry-run
+shp update --version v0.9.0
+```
+
+`shp update` is for local installs. CI installs a pinned release through the setup action or installer script, as described in [Run Shape in CI](/shapelang/guides/ci/).

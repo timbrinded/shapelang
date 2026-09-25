@@ -1,11 +1,10 @@
 // #61 — Coverage / bindings enforcement vs vacuity, plus the self-model dogfood.
 //
-// Coverage and binding checks only have value if they (a) fire on a real
-// governed change and (b) stay silent when nothing relevant changed — and the
-// only way to know (b) is not vacuous is to prove the SAME model fires in case
-// (a). Every invariant here pairs a positive failing case with the negative it
-// guards, so an implementation that ignored `changedFiles` (and thus passed
-// everything) would be caught. See packages/shp-checker/TESTING.md.
+// Coverage and binding checks only have value if they fire on a real governed
+// change and stay silent when nothing relevant changed. Silence is not vacuous
+// only when the SAME model also fires, so each enforcement test pairs a failing
+// case with the silent case it guards. An implementation that ignored
+// `changedFiles`, and so passed everything, would be caught.
 
 import { describe, expect, test } from "bun:test";
 import { readFile } from "node:fs/promises";
@@ -24,10 +23,9 @@ const repoRoot = resolve(import.meta.dir, "../../../..");
 const fixture = (rel: string): string => resolve(repoRoot, rel);
 
 /**
- * Read a `fixtures/changed/*.txt` list the way the CLI does (one repo-relative
- * path per non-empty line). Deriving the changed set from the SAME artifact the
- * CLI consumes keeps these tests honest: the governed paths are not magic
- * strings the author invented, they are read from the committed fixture.
+ * Read a `fixtures/changed/*.txt` list the way the CLI does: one repo-relative
+ * path per non-empty line. The changed set therefore comes from the committed
+ * fixture, not from paths invented in the test.
  */
 async function changedFilesFrom(rel: string): Promise<string[]> {
   const text = await readFile(fixture(rel), "utf8");
@@ -46,7 +44,7 @@ describe("#61 coverage/bindings enforcement vs vacuity + self-model dogfood", ()
   test(
     lockedIntended(
       "coverage accepts a bound source change that an enforced check rejects with missing_bound_docs_change",
-      "docs-site/src/content/docs/concepts/implementations-coverage.md; shape/checker.shape CoverageCurrentUpdateContract"
+      "docs-site/src/content/docs/guides/keep-model-current.md; shape/checker.shape CoverageCurrentUpdateContract"
     ),
     async () => {
       const changed = await changedFilesFrom("fixtures/changed/audit_store_with_shape.txt");
@@ -92,7 +90,7 @@ describe("#61 coverage/bindings enforcement vs vacuity + self-model dogfood", ()
   test(
     lockedIntended(
       "missing_shape_update fires for a governed source change but not for ungoverned or empty changesets",
-      "docs-site/src/content/docs/concepts/implementations-coverage.md; shape/checker.shape CoverageCurrentUpdateContract"
+      "docs-site/src/content/docs/guides/keep-model-current.md; shape/checker.shape CoverageCurrentUpdateContract"
     ),
     async () => {
       const shapeFile = fixture("fixtures/fail/missing_shape_update/audit.shape");
@@ -110,8 +108,8 @@ describe("#61 coverage/bindings enforcement vs vacuity + self-model dogfood", ()
       expect(diagnostic.glob).toBe("src/audit/**/*.ts");
 
       // Negative A: a path no implementation governs. The glob in the diagnostic
-      // above (src/audit/**) demonstrably does not match this path, so a live
-      // check must stay silent — only a vacuous check would still complain.
+      // above (src/audit/**) does not match this path, so a correct check stays
+      // silent; one that fired regardless of path would fail here.
       const ungoverned = await checkShapeFiles([shapeFile], {
         changedFiles: ["src/unrelated/elsewhere.ts"]
       });
@@ -134,7 +132,7 @@ describe("#61 coverage/bindings enforcement vs vacuity + self-model dogfood", ()
   test(
     lockedIntended(
       "a no_shape_change attestation satisfies coverage only when its declaring .shape file is in the changeset",
-      "shape/checker.shape CoverageCurrentUpdateContract; concepts/implementations-coverage.md"
+      "shape/checker.shape CoverageCurrentUpdateContract; guides/keep-model-current.md"
     ),
     () => {
       const shapePath = "shape/cov_attest.shape";
@@ -195,9 +193,9 @@ describe("#61 coverage/bindings enforcement vs vacuity + self-model dogfood", ()
       "shape/checker.shape, shape/language.shape, shape/tooling.shape, shape/delivery.shape (self-model dogfood)"
     ),
     async () => {
-      // Discover files exactly as the CLI does: Bun.Glob over shape/**/*.shape
-      // from the repo root (so the set is the shipped self-model, not a list
-      // hand-written here).
+      // Discover files as the CLI's default discovery does: Bun.Glob over
+      // shape/**/*.shape, here from the repo root, so the set is the shipped
+      // self-model rather than a hand-written list.
       const glob = new Glob("shape/**/*.shape");
       const files: string[] = [];
       for await (const relative of glob.scan({ cwd: repoRoot, onlyFiles: true })) {
@@ -214,19 +212,20 @@ describe("#61 coverage/bindings enforcement vs vacuity + self-model dogfood", ()
     }
   );
 
-  // INVARIANT 5 — reevaluation validation does not require an `approver` today.
-  // `approver` is documented as an OPTIONAL reevaluation member, and the
-  // validator only requires satisfies/outcome/summary/evidence/reviewer/
-  // decided_on. We pin this as CURRENT behaviour (not ratified law) because the
-  // typed approver/role policy is the follow-up; #13. The negative half (a
-  // reevaluation missing a truly required field) proves the validator is live
-  // and that the approver omission is genuinely tolerated, not skipped wholesale.
+  // INVARIANT 5 — reevaluation validation does not require an `approver` unless
+  // a `policy Name { require approver }` declaration exists and the
+  // reevaluation satisfies a `sensitive` memory; this model declares neither. The validator always requires satisfies, outcome,
+  // summary, evidence, reviewer, and decided_on. This is pinned as CURRENT
+  // behaviour, not ratified law; the follow-up is #13 (typed approver policy).
+  // The negative half (a reevaluation missing a required field) shows the
+  // validator is live, so the approver omission is a real allowance rather than
+  // skipped validation.
   test(
     characterization(
       "a valid reevaluation without an approver is accepted; a missing required field is rejected",
       {
         reason:
-          "approver is an optional reevaluation member; reevaluation validation requires satisfies/outcome/summary/evidence/reviewer/decided_on, not approver (docs-site/src/content/docs/reference/language-syntax.md:305)",
+          "approver is an optional reevaluation member; reevaluation validation requires satisfies/outcome/summary/evidence/reviewer/decided_on, not approver (docs-site/src/content/docs/reference/language-syntax.md#reevaluation)",
         followUp: "#13 typed-approver-policy"
       }
     ),
@@ -269,11 +268,10 @@ describe("#61 coverage/bindings enforcement vs vacuity + self-model dogfood", ()
       ]);
       requireNoDiagnostic(accepted, "invalid_reevaluation");
 
-      // IN-TEST NEGATIVE CONTROL for the validator: drop `reviewer` (a field the
-      // validator DOES require). If validation were a no-op, this would also
-      // pass and the characterization above would be meaningless. It must fail
-      // with a reviewer-specific reason, proving approver-omission is a real
-      // allowance and not blanket non-validation.
+      // IN-TEST NEGATIVE CONTROL for the validator: drop `reviewer`, a field
+      // the validator DOES require. It must fail with a reviewer-specific
+      // reason; if validation were a no-op, this would pass too and the
+      // accepted case above would prove nothing.
       const rejected = checkShapeModules([
         parseModuleOrThrow(
           withConstraint([

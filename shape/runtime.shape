@@ -167,7 +167,7 @@ binding ExperimentalSemanticKernelDocs {
     "shape/runtime.shape"
   }
   require_changed paths {
-    "docs-site/src/content/docs/inside-shape/experimental-semantic-kernel.md"
+    "experiments/semantic-kernel/README.md"
   }
   allow attest docs_not_needed
 }

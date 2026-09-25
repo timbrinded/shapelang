@@ -1,4 +1,4 @@
-// One runner for every Claude-driven Shape CI job (review, guard, index).
+// One runner for every Claude-driven Shape CI job (review, guard, index, release).
 // The claude-skill-review composite action invokes it twice per job:
 //
 //   node run-claude-skill.mjs <skill> --prefilter

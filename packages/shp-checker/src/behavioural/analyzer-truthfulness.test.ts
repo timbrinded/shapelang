@@ -2,21 +2,23 @@
 //
 // The source analyzer is an ADVISORY surface. Its lexical scanner points at
 // suspicious destructive operations while excluding inert comments and
-// literals. This suite pins three things the vision actually guarantees:
+// literals. This suite pins what the vision guarantees about it:
 //
-//   1. The advisory boundary: analyzer hints NEVER change checker pass/fail.
-//      Anchor: docs-site/.../learn/what-is-shape.md — "analyzer hints do not
-//      replace the declared model"; shape/tooling.shape memory
-//      AstGenerationUnknownSafety (candidate effect evidence is review hints,
-//      not failures).
-//   2. Truthful detection against REAL source fixtures at their ACTUAL lines.
-//   3. Truthful lexical boundaries: safe operations and inert destructive text
-//      produce no hints, while SQL passed to supported execution sinks does.
+//   - The advisory boundary: analyzer hints NEVER change checker pass/fail.
+//     Anchor: docs-site/.../guides/analyzer.md — "Its output is advisory.
+//     `shp check` never reads it"; shape/tooling.shape memory
+//     AstGenerationUnknownSafety (candidate effect evidence is review hints,
+//     not failures).
+//   - Truthful detection against REAL source fixtures at their ACTUAL lines.
+//   - Truthful lexical boundaries: safe operations and inert destructive text
+//     produce no hints, while SQL passed to supported execution sinks does.
+//   - Path normalization: POSIX and Windows spellings of one hint path match
+//     the same declared effect.
 //
-// Every fixture line number is DERIVED from the fixture text at runtime, never
-// hard-coded as a magic value. Detector fixtures are the REAL source files, not
-// strings hand-rigged to the regex (the one synthetic string used is a NEGATIVE
-// control for the comment/string false positive, explicitly labelled as such).
+// Expected lines for the real fixtures are derived from the fixture text at
+// runtime, never hard-coded. The short synthetic strings are controls for
+// false positives, lexical boundaries, and paired detection, not inputs shaped
+// to fit the detector's pattern.
 
 import { describe, expect, test } from "bun:test";
 import { readFileSync } from "node:fs";
@@ -34,11 +36,10 @@ const fixture = (rel: string): string => resolve(repoRoot, rel);
 const readFixture = (rel: string): string => readFileSync(fixture(rel), "utf8");
 
 /**
- * 1-based line number of the first line whose text matches `pattern`. Used to
- * DERIVE the expected hint line from the actual fixture content, so the
- * assertion stays correct if the fixture is edited and never encodes a magic
- * number. Throws if the pattern is absent (the fixture changed out from under
- * the test — a failure a reviewer can act on).
+ * 1-based line number of the first line whose text matches `pattern`. Tests
+ * derive expected hint lines from the fixture content with it, so assertions
+ * survive fixture edits without magic numbers. Throws with the fixture content
+ * when no line matches.
  */
 function lineMatching(source: string, pattern: RegExp): number {
   const lines = source.split(/\r?\n/);
@@ -53,17 +54,17 @@ const PURGE_PATH = "fixtures/source/audit_purge.ts";
 const STORE_TS_PATH = "fixtures/source/audit_store.ts";
 
 describe("#62 analyzer truthfulness + advisory boundary", () => {
-  // ── Invariant 1: ADVISORY BOUNDARY ──────────────────────────────────────
+  // ── Advisory boundary ─────────────────────────────────────────────────────
   test(
     lockedIntended(
       "a model omitting an analyzer-flagged effect still PASSES the checker (hints never gate the build)",
-      "docs-site/.../learn/what-is-shape.md: analyzer hints do not replace the declared model; shape/tooling.shape AstGenerationUnknownSafety"
+      "docs-site/.../guides/analyzer.md: analyzer output is advisory and shp check never reads it; shape/tooling.shape AstGenerationUnknownSafety"
     ),
     () => {
-      // A valid model whose function is sourced at audit_purge.ts but declares
-      // only Read<Ledger> — deliberately OMITTING the HardDelete the analyzer
-      // flags for that path. No trait forbids anything; the granted effect is
-      // declared. The checker has no business reading the source, so it passes.
+      // The function is sourced at audit_purge.ts but declares only
+      // Read<Ledger>, OMITTING the HardDelete the analyzer flags for that path.
+      // No trait forbids anything and the declared effect is granted, so the
+      // model is valid. The checker does not read the source, so it passes.
       const model = parseModuleOrThrow(
         [
           "module advisory",
@@ -83,21 +84,19 @@ describe("#62 analyzer truthfulness + advisory boundary", () => {
 
       const result = checkShapeModules([model]);
 
-      // Structured assertion: the checker accepts the model outright.
       expect(result.ok).toBe(true);
       expect(result.diagnostics).toHaveLength(0);
 
-      // NEGATIVE-CONTROL COMPANION: prove the boundary is REAL, not vacuous —
-      // the analyzer genuinely DOES flag a HardDelete for that exact source,
-      // yet the check above still passed. If the analyzer produced nothing
-      // here, "the check passes" would be a tautology rather than a boundary.
+      // NEGATIVE-CONTROL COMPANION: the analyzer DOES flag a HardDelete for
+      // this exact source, yet the check above passed. Without that hint, the
+      // passing check would say nothing about the advisory boundary.
       const hints = analyzeSourceText(PURGE_PATH, readFixture(PURGE_PATH));
       expect(hints.map((hint) => hint.effect)).toContain("HardDelete");
       expect(hints.some((hint) => hint.sourcePath === PURGE_PATH)).toBe(true);
     }
   );
 
-  // ── Invariant 2: REAL-FIXTURE DETECTION at the ACTUAL line ───────────────
+  // ── Real-fixture detection at the actual line ─────────────────────────────
   test(
     lockedIntended(
       "analyzer flags HardDelete on the real audit_purge.ts at the actual deleteFrom call line",
@@ -106,15 +105,13 @@ describe("#62 analyzer truthfulness + advisory boundary", () => {
     () => {
       const source = readFixture(PURGE_PATH);
       // The executable call is `return db.deleteFrom("audit_events");`. The
-      // signature line mentions `deleteFrom:` (a type, no `(`), so it does NOT
-      // match the `/\bdeleteFrom\s*\(/` rule — only the call line does. We
-      // derive that line from the file rather than asserting a magic "2".
+      // signature line mentions `deleteFrom:` as a parameter type with no `(`,
+      // so the pattern below matches only the call line. The line is derived
+      // from the file rather than asserted as a magic "2".
       const callLine = lineMatching(source, /\bdeleteFrom\s*\(/);
 
       const hints = analyzeSourceText(PURGE_PATH, source);
 
-      // Exactly one hint, fully structured (effect + path + derived line + the
-      // trimmed evidence the analyzer captured).
       expect(hints).toHaveLength(1);
       const hint = hints[0];
       expect(hint).toBeDefined();
@@ -125,27 +122,26 @@ describe("#62 analyzer truthfulness + advisory boundary", () => {
     }
   );
 
-  // ── Invariant 3: FALSE-POSITIVE / NEGATIVE controls on real fixtures ─────
+  // ── False-positive controls: safe writes produce no hints ─────────────────
   test(
     lockedIntended(
       "safe persistence (repo.insert) produces ZERO hints — TypeScript fixture",
-      "docs-site/.../learn/what-is-shape.md: hints point at SUSPICIOUS omissions, not benign writes"
+      "docs-site/.../guides/analyzer.md: hints cover obvious destructive operations, not benign writes"
     ),
     () => {
       const source = readFixture(STORE_TS_PATH);
-      // Guard the control's premise: the fixture really does an insert (a
-      // write), so a clean result reflects detector specificity, not an empty
-      // file.
+      // Premise guard: the fixture really performs an insert (a write), so a
+      // clean result reflects detector specificity rather than an empty file.
       expect(/\.insert\s*\(/.test(source)).toBe(true);
       expect(analyzeSourceText(STORE_TS_PATH, source)).toHaveLength(0);
     }
   );
 
-  // ── Invariant 4: lexical boundaries around comments and literals ──────────
+  // ── Lexical boundaries around comments and literals ───────────────────────
   test(
     lockedIntended(
       "destructive text in comments and inert literals stays silent, while a supported raw-execution literal is detected",
-      "docs-site/.../concepts/analyzer-hints.md: lexical hints distinguish executable sinks from inert text"
+      "docs-site/.../guides/analyzer.md: lexical hints distinguish executable sinks from inert text"
     ),
     () => {
       const inert = [
@@ -176,14 +172,13 @@ describe("#62 analyzer truthfulness + advisory boundary", () => {
     }
   );
 
-  // ── Invariant 5: PATH NORMALIZATION in compareAnalyzerHintsToShape ───────
+  // ── Path normalization in compareAnalyzerHintsToShape ─────────────────────
   test(
     lockedIntended(
       "Windows-style and POSIX hint paths match the same declared effect identically",
       "shape/tooling.shape AstGenerationUnknownSafety: checkable pins; packages/shp-checker/src/shape-strings.ts normalizeShapePath"
     ),
     () => {
-      // The model declares HardDelete for a function sourced at "src/x.ts".
       const model = parseModuleOrThrow(
         [
           "module norm",
@@ -212,9 +207,9 @@ describe("#62 analyzer truthfulness + advisory boundary", () => {
       expect(compareAnalyzerHintsToShape([hintFor("src/x.ts")], [model])).toHaveLength(0);
       expect(compareAnalyzerHintsToShape([hintFor(".\\src\\x.ts")], [model])).toHaveLength(0);
 
-      // CONTRAST CONTROL: a genuinely different path is NOT declared, so it
-      // warns. This proves the zero-counts above come from path EQUALITY under
-      // normalization, not from the comparator ignoring effects wholesale.
+      // CONTRAST CONTROL: an undeclared path does warn, so the empty results
+      // above come from path EQUALITY under normalization, not from a
+      // comparator that never warns.
       const otherPathWarnings = compareAnalyzerHintsToShape([hintFor("src/other.ts")], [model]);
       expect(otherPathWarnings).toHaveLength(1);
       expect(otherPathWarnings[0]?.kind).toBe("missing_declared_effect");
