@@ -994,7 +994,6 @@ reevaluation PreludeEditorContextTypesRechecked {
   reviewer ShapeMaintainers
   decided_on "2026-07-26"
   evidence md("docs-site/src/content/docs/inside-shape/formatter-editor-authoring.md")
-  evidence test("packages/shp-checker/src/editor.smoke.test.ts")
   evidence test("packages/shp-checker/src/editor.test.ts")
 }
 

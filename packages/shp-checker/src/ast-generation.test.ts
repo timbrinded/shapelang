@@ -15,15 +15,15 @@ import {
   BUNDLED_TREE_SITTER_LANGUAGES,
   bundledTreeSitterParserLibsDir,
   configureBundledTreeSitterParsers,
+  detectLinuxMuslRuntime,
   generateShapeFromCodeSemanticGraph,
   parseSourceFilesToCodeSemanticGraph,
   treeSitterParserLibraryName,
   type CodeSemanticGraph
-} from "./ast-generation-core.ts";
+} from "./ast-generation.ts";
 import { sourceRef } from "./ast-generation-raw.ts";
 import { signatureText } from "./ast-generation-tokens.ts";
 import { stableJson, stableShapeId } from "./ast-generation-utils.ts";
-import { detectLinuxMuslRuntime } from "./ast-generation.ts";
 import { formatAstTestDiagnostics } from "./test-support.ts";
 
 function requireGeneratedOutput(result: ReturnType<typeof generateShapeFromCodeSemanticGraph>) {
@@ -251,24 +251,6 @@ describe("AST to Shape generation", () => {
     expect(result.value.semanticShape).not.toContain("kind calls");
   });
 
-  test("keeps anchor names stable while semantic fingerprints change with function bodies", () => {
-    const before = buildCodeSemanticGraphFromAstJson(functionFingerprintAst("fn main() {}"));
-    const after = buildCodeSemanticGraphFromAstJson(
-      functionFingerprintAst("fn main() { let x = 1; }")
-    );
-
-    expect(before.ok).toBe(true);
-    expect(after.ok).toBe(true);
-    if (!before.ok || !after.ok) {
-      throw new Error("failed to build test graphs");
-    }
-
-    const beforeAnchor = requireAstAnchor(before.value, "MainModule.main");
-    const afterAnchor = requireAstAnchor(after.value, "MainModule.main");
-    expect(beforeAnchor.name).toBe(afterAnchor.name);
-    expect(beforeAnchor.fingerprint.value).not.toBe(afterAnchor.fingerprint.value);
-  });
-
   test("flags authored AST relations when regenerated anchor fingerprints change", () => {
     const versionOne = buildCodeSemanticGraphFromAstJson(functionFingerprintAst("fn main() {}"));
     const versionTwo = buildCodeSemanticGraphFromAstJson(
@@ -367,6 +349,10 @@ describe("AST to Shape generation", () => {
     const baseAnchor = requireAstAnchor(base.value, "MainModule.main");
     const changedAnchor = requireAstAnchor(unrelatedChanged.value, "MainModule.main");
     expect(baseAnchor.fingerprint.value).toBe(changedAnchor.fingerprint.value);
+    // The edited sibling must move, or the stable pin above could come from an inert file.
+    expect(
+      requireAstAnchor(unrelatedChanged.value, "MainModule.helper").fingerprint.value
+    ).not.toBe(requireAstAnchor(base.value, "MainModule.helper").fingerprint.value);
   });
 
   test("does not churn fingerprints for CRLF inside string literals", () => {

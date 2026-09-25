@@ -90,7 +90,7 @@ export function peelGitObjectSha(
   throw new Error(`Unsupported git object type "${object.type}"`);
 }
 
-export function runHasSkillsApproval(approvals: readonly EnvironmentApproval[]): boolean {
+function runHasSkillsApproval(approvals: readonly EnvironmentApproval[]): boolean {
   return approvals.some(
     (approval) =>
       approval.state === "approved" &&

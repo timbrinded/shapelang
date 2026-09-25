@@ -325,13 +325,6 @@
       ]
     },
     {
-      "module": "shape.generated.ast.packages.shp_checker.src.ast_generation_core",
-      "path": "shape/generated/ast/packages/shp-checker/src/ast-generation-core.shape",
-      "sources": [
-        "packages/shp-checker/src/ast-generation-core.ts"
-      ]
-    },
-    {
       "module": "shape.generated.ast.packages.shp_checker.src.ast_generation_fingerprints",
       "path": "shape/generated/ast/packages/shp-checker/src/ast-generation-fingerprints.shape",
       "sources": [
@@ -490,13 +483,6 @@
       "path": "shape/generated/ast/packages/shp-checker/src/behavioural/editor-behaviour.test.shape",
       "sources": [
         "packages/shp-checker/src/behavioural/editor-behaviour.test.ts"
-      ]
-    },
-    {
-      "module": "shape.generated.ast.packages.shp_checker.src.behavioural.fingerprint_matrix_test",
-      "path": "shape/generated/ast/packages/shp-checker/src/behavioural/fingerprint-matrix.test.shape",
-      "sources": [
-        "packages/shp-checker/src/behavioural/fingerprint-matrix.test.ts"
       ]
     },
     {
@@ -868,13 +854,6 @@
       "path": "shape/generated/ast/packages/shp-checker/src/critic.shape",
       "sources": [
         "packages/shp-checker/src/critic.ts"
-      ]
-    },
-    {
-      "module": "shape.generated.ast.packages.shp_checker.src.editor_smoke_test",
-      "path": "shape/generated/ast/packages/shp-checker/src/editor.smoke.test.shape",
-      "sources": [
-        "packages/shp-checker/src/editor.smoke.test.ts"
       ]
     },
     {

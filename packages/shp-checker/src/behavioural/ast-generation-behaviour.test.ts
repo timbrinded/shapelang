@@ -12,10 +12,7 @@
 //     summaries.
 //
 // Each invariant is a SEPARATE test. Determinism is shown by comparing the
-// products of INDEPENDENT generation runs, never one value against itself. Two
-// in-test negative controls (a stub that emits an empty `effects complete { }`,
-// and a stub whose member order flips on the second call) show that the
-// unknown-safety and byte-identity predicates can fail.
+// products of INDEPENDENT generation runs, never one value against itself.
 
 import { describe, expect, test } from "bun:test";
 import {
@@ -338,60 +335,6 @@ describe("#65 AST-generation determinism + unknown-safety", () => {
 
       // Exactly two `generated_from` relations (component<-anchor, fn<-anchor).
       expect(count("kind generated_from")).toBe(2);
-    }
-  );
-
-  // NEGATIVE CONTROL — shows the unknown-safety and byte-identity PREDICATES
-  // used above can fail. Local stubs stand in for an incorrectly implemented
-  // generator; the test passes only if each predicate rejects its stub and
-  // accepts the real generator's output.
-  test(
-    lockedIntended(
-      "the unknown-safety and byte-identity predicates reject a violating stub generator",
-      "epic #53 standard: every area ships an in-test negative control"
-    ),
-    () => {
-      // (1) Unknown-safety predicate vs a stub that emits an EMPTY complete block.
-      const violatingDraft = [
-        "module bad",
-        "",
-        "component C {",
-        "  fn f",
-        "    effects complete {",
-        "    }",
-        "}"
-      ].join("\n");
-      // The real generator's output passes the predicate; the stub's fails it.
-      const goodDraft = requireGenerated(
-        generateShapeFromAstJson(tsFixture, { moduleName: "generated.audit" })
-      ).semanticShape;
-      expect(EMPTY_COMPLETE.test(goodDraft)).toBe(false);
-      expect(EMPTY_COMPLETE.test(violatingDraft)).toBe(true);
-
-      // (2) Byte-identity predicate vs a stub whose member order FLIPS on the
-      // second call (a classic nondeterminism bug). The predicate must catch it.
-      const members = ["resource A", "resource B", "resource C"];
-      let call = 0;
-      const nondeterministicGenerate = (): string => {
-        call += 1;
-        const ordered = call % 2 === 0 ? [...members].reverse() : members;
-        return ["module flaky", "", ...ordered].join("\n");
-      };
-      const firstRun = nondeterministicGenerate();
-      const secondRun = nondeterministicGenerate();
-      // The stub is genuinely producing both orderings (not empty/constant).
-      expect(firstRun).toContain("resource A");
-      expect(secondRun).toContain("resource C");
-      // Byte-identity FAILS for the flaky stub...
-      expect(secondRun).not.toBe(firstRun);
-      // ...while it HOLDS for the real generator over independent runs.
-      const realFirst = requireGenerated(
-        generateShapeFromAstJson(tsFixture, { moduleName: "generated.audit" })
-      ).semanticShape;
-      const realSecond = requireGenerated(
-        generateShapeFromAstJson(tsFixture, { moduleName: "generated.audit" })
-      ).semanticShape;
-      expect(realSecond).toBe(realFirst);
     }
   );
 });

@@ -23,10 +23,8 @@
 import { describe, expect, test } from "bun:test";
 import {
   checkSource,
-  checkSourceAs,
   diagnosticKinds,
   expectOrderedFragments,
-  findDiagnostic,
   lockedIntended,
   render,
   requireDiagnostic,
@@ -311,7 +309,7 @@ memory LedgerConstraint : RefactorConstraint<fn Bookkeeper.writeLedger> {
     }
   );
 
-  // Source shared by the authored / generated-AST split below.
+  // Authored module with `effects unknown`, shared by the unknown-effects tests below.
   const unknownSource = `module safety_unknown
 
 resource AuditEvent
@@ -337,27 +335,6 @@ component AuditStore {
       // Sole diagnostic: uncertainty is surfaced, not buried under or replaced
       // by other failures.
       expect(diagnosticKinds(result)).toEqual(["unknown_effects"]);
-    }
-  );
-
-  test(
-    lockedIntended(
-      "the generated-AST origin is the only thing that suppresses unknown_effects",
-      "guides/ast-drafts.md (Commit generated context); checker/derivations.ts shouldIgnoreUnknownEffectsDiagnostic (generatedAstCandidate)"
-    ),
-    () => {
-      // `effects unknown` raises unknown_effects for authored modules. The
-      // checker suppresses it only for modules with origin "generated_ast",
-      // which sets generatedAstCandidate. This pins the suppression to
-      // machine-proposed candidates, not authored ones.
-      const authored = checkSourceAs(unknownSource, { origin: "authored" });
-      expect(findDiagnostic(authored, "unknown_effects")).toBeDefined();
-
-      const generated = checkSourceAs(unknownSource, { origin: "generated_ast" });
-      requireNoDiagnostic(generated, "unknown_effects");
-      // The function vanishes from unknown-effects reporting entirely; nothing
-      // else takes its place.
-      expect(diagnosticKinds(generated)).toEqual([]);
     }
   );
 

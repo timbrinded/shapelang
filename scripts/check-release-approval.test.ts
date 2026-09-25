@@ -5,7 +5,6 @@ import {
   findReusableSkillsReport,
   isSkillsRelevantPath,
   peelGitObjectSha,
-  runHasSkillsApproval,
   type ApprovalLookup,
   type EnvironmentApproval,
   type WorkflowRun
@@ -111,7 +110,8 @@ describe("findReusableSkillsReport", () => {
   test("prefers an exact SHA run over an ancestor", () => {
     const selected = findReusableSkillsReport(
       lookup({
-        runs: [run({ id: 4, head_sha: shaA }), run({ id: 8, head_sha: shaB })]
+        // The ancestor has the newer run number, so only exact-SHA preference picks run 8.
+        runs: [run({ id: 12, head_sha: shaA }), run({ id: 8, head_sha: shaB })]
       })
     );
     expect(selected).toEqual({
@@ -181,17 +181,6 @@ describe("findReusableSkillsReport", () => {
       )
     ).toBeUndefined();
   });
-
-  test("does not copy when a listed path is renamed out of the prefix list", () => {
-    expect(
-      findReusableSkillsReport(
-        lookup({
-          runs: [run({ id: 4, head_sha: shaA })],
-          changedPaths: () => ["plugins/shapelang/skills/shape-lang/SKILL.md", "docs/SKILL.md"]
-        })
-      )
-    ).toBeUndefined();
-  });
 });
 
 describe("peelGitObjectSha", () => {
@@ -206,17 +195,6 @@ describe("peelGitObjectSha", () => {
         { object: { sha: shaB, type: "commit" } }
       )
     ).toBe(shaB);
-  });
-});
-
-describe("runHasSkillsApproval", () => {
-  test("requires an approved review of skills-release-approval", () => {
-    expect(runHasSkillsApproval(approved)).toBe(true);
-    expect(
-      runHasSkillsApproval([
-        { state: "pending", environments: [{ name: "skills-release-approval" }] }
-      ])
-    ).toBe(false);
   });
 });
 

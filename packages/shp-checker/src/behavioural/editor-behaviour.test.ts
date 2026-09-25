@@ -439,22 +439,6 @@ describe("#63 completions: filter, sort, dedup, prelude parity", () => {
 
 describe("#63 prelude context-obligation set surfaced by the editor", () => {
   test(
-    lockedIntended(
-      "every prelude context trait is offered as a completion (parity with the shared prelude)",
-      "shape/checker.shape:453 PreludeMetadataContract; PRELUDE_CONTEXT_REQUIREMENTS"
-    ),
-    () => {
-      // Parity, not a literal pin: whatever the prelude defines, the editor must
-      // surface. This stays correct when TODO #15 moves the obligations into
-      // Shape syntax, because it reads from the same source.
-      const offered = new Set(getCompletions("", ""));
-      for (const requirement of PRELUDE_CONTEXT_REQUIREMENTS) {
-        expect(offered.has(requirement.trait)).toBe(true);
-      }
-    }
-  );
-
-  test(
     characterization("the built-in context-obligation trait set has these exact members", {
       reason:
         "the context obligations are hardcoded in PRELUDE_CONTEXT_REQUIREMENTS, not yet authored in Shape",
@@ -568,25 +552,6 @@ describe("#63 NEGATIVE CONTROL", () => {
       // back to the same-named member in some other component; it is undefined.
       // (Gamma is not declared; Alpha/Beta both have `handle`.)
       expect(getDefinitionLocation(SCOPED_SOURCE, "Gamma.handle")).toBeUndefined();
-    }
-  );
-
-  test(
-    lockedIntended(
-      "the dedup assertion is real: a list with a duplicate fails the Set-size invariant",
-      "epic #53 standard: negative control must be able to fail"
-    ),
-    () => {
-      // A constructed completion-shaped list that DOES contain a duplicate. If
-      // getCompletions ever stopped deduplicating, its output would look like
-      // this, and `new Set(c).size === c.length` would be false. This proves the
-      // dedup assertion above can actually fail.
-      const withDuplicate = ["Append", "AppendOnly", "Append"];
-      expect(new Set(withDuplicate).size).not.toBe(withDuplicate.length);
-
-      // And the real editor output, by contrast, has no duplicate.
-      const real = getCompletions("module m\n", "Append");
-      expect(new Set(real).size).toBe(real.length);
     }
   );
 });

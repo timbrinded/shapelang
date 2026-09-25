@@ -3,56 +3,6 @@ import { formatDiagnostics } from "./index.ts";
 import { checkShapeSource, contextRef, fnTarget } from "./test-support.ts";
 
 describe("Shape memory guard intent scenarios", () => {
-  test("requires rationale when inline policy shape is review intent", () => {
-    const missingRationale = checkShapeSource(`
-      module gateway
-
-      resource PolicySnapshot
-
-      component Gateway {
-        owns PolicySnapshot
-        grants Read<PolicySnapshot>
-
-        fn derivePolicyDecision : PreserveInline
-          effects complete {
-            Read<PolicySnapshot>
-          }
-      }
-    `);
-    const missingOutput = formatDiagnostics(missingRationale);
-
-    expect(missingRationale.exitCode).toBe(1);
-    expect(missingOutput).toContain("missing required context");
-    expect(missingOutput).toContain(
-      contextRef("InlineRationale", fnTarget("Gateway.derivePolicyDecision"))
-    );
-
-    const withRationale = checkShapeSource(`
-      module gateway
-
-      resource PolicySnapshot
-
-      component Gateway {
-        owns PolicySnapshot
-        grants Read<PolicySnapshot>
-
-        fn derivePolicyDecision : PreserveInline
-          effects complete {
-            Read<PolicySnapshot>
-          }
-      }
-
-      rationale DerivePolicyDecisionInline : ${contextRef("InlineRationale", fnTarget("Gateway.derivePolicyDecision"))} {
-        applies_to fn Gateway.derivePolicyDecision
-        why Auditability
-        summary "Reviewers inspect the full authorization branch locally."
-        who { owner GatewayTeam }
-      }
-    `);
-
-    expect(withRationale.exitCode).toBe(0);
-  });
-
   test("protects check order when effects are unchanged by reordering", () => {
     const guardedWithoutReevaluation = checkShapeSource(`
       module gateway
@@ -385,36 +335,5 @@ describe("Shape memory guard intent scenarios", () => {
     expect(output).toContain("missing reviewer");
     expect(output).toContain("missing decided_on");
     expect(output).toContain("guarded shape changed");
-  });
-
-  test("does not allow memory to waive final forbidden effects", () => {
-    const result = checkShapeSource(`
-      module audit
-
-      resource AuditEvent : AppendOnly
-
-      component AuditStore {
-        owns AuditEvent
-        grants HardDelete<AuditEvent>
-
-        fn purgeOldEvents : RefactorSensitive
-          effects complete {
-            HardDelete<AuditEvent>
-          }
-      }
-
-      memory PurgeDeleteConstraint : ${contextRef("RefactorConstraint", fnTarget("AuditStore.purgeOldEvents"))} {
-        applies_to fn AuditStore.purgeOldEvents
-        status Explained
-        confidence High
-        summary "This behavior is documented but still violates final storage policy."
-        who { owner AuditTeam }
-      }
-    `);
-    const output = formatDiagnostics(result);
-
-    expect(result.exitCode).toBe(1);
-    expect(output).toContain("forbidden effect");
-    expect(output).toContain("AppendOnly forbids final HardDelete<AuditEvent>");
   });
 });

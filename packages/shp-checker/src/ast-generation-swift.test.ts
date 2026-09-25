@@ -9,7 +9,7 @@ import {
   buildCodeSemanticGraphFromAstJson,
   parseSourceFilesToCodeSemanticGraph,
   type CodeSemanticGraph
-} from "./ast-generation-core.ts";
+} from "./ast-generation.ts";
 
 async function graphFor(source: string): Promise<CodeSemanticGraph> {
   const result = await parseSourceFilesToCodeSemanticGraph([{ path: "Sources/App.swift", source }]);

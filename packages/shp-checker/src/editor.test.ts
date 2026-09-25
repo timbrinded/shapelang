@@ -266,6 +266,10 @@ reevaluation BetaInlineRechecked {
       line: 18,
       column: 24
     });
+    // A context type no rationale declares for this target must not fall back to another.
+    expect(
+      getDefinitionLocation(contextSource, "DescriptionRationale<fn Alpha.handle>")
+    ).toBeUndefined();
     expect(getDefinitionLocation(contextSource, "BetaInline")).toEqual({
       symbol: "BetaInline",
       line: 18,

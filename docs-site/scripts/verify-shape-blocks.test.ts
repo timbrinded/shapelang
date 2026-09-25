@@ -15,8 +15,8 @@
 // Each test runs the verifier over an in-memory corpus built here rather than
 // the live docs, so a failure points at the verifier, not at an edited doc. The
 // parity test checks verdicts against parseShapeModule directly, and the
-// negative control shows that the suite rejects a no-op verifier that reports no
-// failures and would silently pass broken docs. See
+// broken-fence tests fail against a no-op verifier (`verify = () => []`) that
+// would silently pass broken docs. See
 // packages/shp-checker/TESTING.md.
 
 import { describe, expect, test } from "bun:test";
@@ -189,8 +189,8 @@ describe("docs fence verifier", () => {
     }
   );
 
-  // A corpus with several `shape` fences where EXACTLY ONE is broken. Reused by
-  // the not-a-no-op invariant and by the negative control below.
+  // A corpus with several `shape` fences where EXACTLY ONE is broken, for the
+  // not-a-no-op invariant.
   function corpusWithExactlyOneBrokenFence(): CorpusFile[] {
     const docA = [
       "# Doc A",
@@ -231,40 +231,6 @@ describe("docs fence verifier", () => {
       // no-verify fence in docB is skipped, never checked.
       expect(report.checked).toBe(4);
       expect(report.skipped).toBe(1);
-    }
-  );
-
-  test(
-    lockedIntended(
-      "negative control: a no-op verifier fails the broken-fence and one-failure invariants",
-      VERIFIER_ANCHOR
-    ),
-    () => {
-      // A planted mutant: an always-pass verifier that reports zero failures for
-      // any corpus. Re-running the broken-fence and one-failure assertions
-      // against this stub must throw, which shows the suite is falsifiable
-      // rather than a tautology.
-      const noOpVerify = (_corpus: CorpusFile[]): { failures: Failure[] } => ({ failures: [] });
-
-      // Broken-fence invariant: the stub reports no failure, so the "exactly one
-      // failure" expectation must be violated.
-      const brokenSource = ["# Heading", "", fence("shape", BROKEN_DANGLING_BRACE)].join("\n");
-      const stubBrokenReport = noOpVerify(corpusOf("docs/broken.md", brokenSource));
-      expect(() => {
-        expect(stubBrokenReport.failures).toHaveLength(1);
-      }).toThrow();
-
-      // One-failure invariant (exactly one failure for one broken fence): the
-      // stub reports zero, so this too must be violated.
-      const stubOneReport = noOpVerify(corpusWithExactlyOneBrokenFence());
-      expect(() => {
-        expect(stubOneReport.failures).toHaveLength(1);
-      }).toThrow();
-
-      // The real verifier passes the same assertions on the same inputs;
-      // otherwise the controls above would prove nothing about the real gate.
-      expect(verifyShapeCorpus(corpusOf("docs/broken.md", brokenSource)).failures).toHaveLength(1);
-      expect(verifyShapeCorpus(corpusWithExactlyOneBrokenFence()).failures).toHaveLength(1);
     }
   );
 });

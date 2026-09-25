@@ -26,9 +26,11 @@ The test states something actually guaranteed, checkable by reading the fixture.
 
 ### Falsifiable
 
-The test can fail. Each area ships a **negative control**: a planted mutant (a
-broken fixture, a local stub, or a deliberately wrong expectation) that the test
-catches. A test that cannot be made to fail is rejected.
+The test can fail. Each area ships a **negative control**: a contrasting input
+(a broken fixture, a mutated model, or a value that must diverge) that goes
+through the real API and makes it produce a different result. A control that
+only exercises a local stub, closure, or regex proves the matcher, not the
+product, and does not count. A test that cannot be made to fail is rejected.
 
 ### Non-circular
 
@@ -77,6 +79,8 @@ title yourself. If no clause exists, write the clause first.
 - "Did not throw" or exit-code-only happy-path tests counted as behavioural
   coverage.
 - Determinism claims proven by comparing a value to itself in one process.
+- Re-running a contract another test already owns with the same input; extend
+  the owner instead.
 - Pinning current behaviour as law without a vision anchor.
 
 ## Asserting diagnostics

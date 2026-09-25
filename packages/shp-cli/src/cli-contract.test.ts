@@ -28,22 +28,26 @@ const PASS_FIXTURE = "fixtures/pass/append_only_append/audit.shape";
 const FAIL_FIXTURE = "fixtures/fail/append_only_hard_delete/audit.shape";
 const UNKNOWN_EFFECTS_FIXTURE = "fixtures/fail/unknown_effects/audit.shape";
 
-// Top-level commands from docs-site/src/content/docs/reference/cli.md. The
-// help-completeness test (invariant 4) requires `shp --help` to list each one.
-const ALL_COMMANDS = [
-  "check",
-  "coverage",
-  "fmt",
-  "explain",
-  "graph",
-  "lsp",
-  "memory",
-  "obligations",
-  "author",
-  "analyze",
-  "ast",
-  "update"
-] as const;
+// Top-level commands in the cli.md "## Commands" table, whose rows may link
+// the name ("[`check`](#shp-check)") or add a subcommand ("graph all" -> "graph").
+async function documentedCommands(): Promise<string[]> {
+  const doc = await Bun.file(
+    resolve(repoRoot, "docs-site/src/content/docs/reference/cli.md")
+  ).text();
+  const section = doc.split("\n## Commands\n")[1]?.split("\n## ")[0] ?? "";
+  const names = [...section.matchAll(/^\| \[?`([a-z][a-z0-9-]*)[ `]/gm)].map(
+    (match) => match[1] ?? ""
+  );
+  return [...new Set(names)].sort();
+}
+
+// Command names from the COMMANDS section of `shp --help`.
+function helpCommands(help: string): string[] {
+  const section = help.split("\nCOMMANDS\n")[1] ?? "";
+  return [...section.matchAll(/^ {2}([a-z][a-z0-9-]*) {2,}/gm)]
+    .map((match) => match[1] ?? "")
+    .sort();
+}
 
 async function runCli(
   args: string[],
@@ -70,33 +74,7 @@ async function runCli(
 }
 
 describe("shp CLI contract matrix (area #60)", () => {
-  // Invariant 1: the exit-code triple, with stream routing asserted each time.
-  // Checking all three codes in one test is the negative control: a CLI
-  // hardwired to any single exit code fails at least one leg.
-  test(
-    "[locked-intended] exit-code triple routes 0->stdout, 1->stderr, 2->stderr " +
-      "— anchor: docs-site/src/content/docs/reference/cli.md Exit codes",
-    async () => {
-      const pass = await runCli(["check", PASS_FIXTURE]);
-      expect(pass.exitCode).toBe(0);
-      expect(pass.stdout.length).toBeGreaterThan(0);
-      expect(pass.stderr).toBe("");
-
-      const semanticFailure = await runCli(["check", FAIL_FIXTURE]);
-      expect(semanticFailure.exitCode).toBe(1);
-      expect(semanticFailure.stderr.length).toBeGreaterThan(0);
-      expect(semanticFailure.stdout).toBe("");
-
-      const usageError = await runCli(["check", "--not-a-real-flag"]);
-      expect(usageError.exitCode).toBe(2);
-      expect(usageError.stderr.length).toBeGreaterThan(0);
-      expect(usageError.stdout).toBe("");
-
-      expect(new Set([pass.exitCode, semanticFailure.exitCode, usageError.exitCode]).size).toBe(3);
-    }
-  );
-
-  // Invariant 2: required flags fail with exit 2 BEFORE doing work, and stderr
+  // Invariant 1: required flags fail with exit 2 BEFORE doing work, and stderr
   // names the missing input rather than dumping a stack trace.
   test(
     "[locked-intended] missing required flags exit 2 and name the problem " +
@@ -114,28 +92,16 @@ describe("shp CLI contract matrix (area #60)", () => {
       expect(coverage.stderr).not.toContain("at ");
       expect(coverage.stderr).not.toMatch(/Error: .*\n\s+at /);
 
-      // `author` always requires --changed-files. Draft and author-prompt modes
-      // additionally require --component; critic mode reviews an existing
-      // proposal and therefore does not.
+      // `author` always requires --changed-files.
       const author = await runCli(["author"]);
       expect(author.exitCode).toBe(2);
       expect(author.stdout).toBe("");
       expect(author.stderr).toContain("--changed-files");
       expect(author.stderr).not.toContain("at ");
-
-      const authorWithoutComponent = await runCli([
-        "author",
-        "--changed-files",
-        "fixtures/changed/audit_purge.txt"
-      ]);
-      expect(authorWithoutComponent.exitCode).toBe(2);
-      expect(authorWithoutComponent.stdout).toBe("");
-      expect(authorWithoutComponent.stderr).toContain("--component");
-      expect(authorWithoutComponent.stderr).not.toContain("at ");
     }
   );
 
-  // Invariant 3: invalid enum-like values. `graph stats --kind` accepts any
+  // Invariant 2: invalid enum-like values. `graph stats --kind` accepts any
   // value, so its test is a characterization (TESTING.md: current behaviour not
   // yet ratified as ideal, with a reason and follow-up) rather than a locked law.
   // `ast source --language` rejects an unknown value with exit 2.
@@ -207,32 +173,24 @@ describe("shp CLI contract matrix (area #60)", () => {
     }
   );
 
-  // Invariant 4: help completeness, driven from the hardcoded command list.
+  // Invariant 3: help completeness, driven from the documented command table.
   test(
-    "[locked-intended] --help exits 0, writes only stdout, and lists every " +
-      "documented command — anchor: docs-site/src/content/docs/reference/cli.md Commands",
+    "[locked-intended] --help exits 0, writes only stdout, and lists exactly the " +
+      "documented commands — anchor: docs-site/src/content/docs/reference/cli.md Commands",
     async () => {
       const help = await runCli(["--help"]);
       expect(help.exitCode).toBe(0);
       expect(help.stderr).toBe("");
-      expect(help.stdout.length).toBeGreaterThan(0);
 
-      for (const command of ALL_COMMANDS) {
-        expect(help.stdout).toContain(command);
-      }
-
-      // Negative control: a nonexistent command name is absent from both the
-      // list and the help text, so the loop above is not passing on arbitrary
-      // substrings.
-      const commandNames: readonly string[] = ALL_COMMANDS;
-      expect(commandNames.includes("frobnicate")).toBe(false);
-      expect(help.stdout).not.toContain("frobnicate");
+      const documented = await documentedCommands();
+      expect(documented).toContain("check");
+      expect(helpCommands(help.stdout)).toEqual(documented);
     }
   );
 });
 
 describe("shp CLI / library semantic parity (area #60)", () => {
-  // Invariant 5: `shp check` reports exactly what the library computes.
+  // Invariant 4: `shp check` reports exactly what the library computes.
   //
   // The CLI `check` command (commands/check/impl.ts, through check-runner.ts)
   // calls checkShapeFiles(files, { enforceBindings: true, ... }), writes

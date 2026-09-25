@@ -6,15 +6,47 @@ trait GeneratedAstAnchor {
 trait GeneratedCandidate {
 }
 
+resource CliContractTestModuleDocumentedCommandsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/cli-contract.test.ts#documentedCommands")
+  fingerprint ast.semantic_subtree_v1("sha256:0e31d250c61c7660540a4d7fe8be5b29fa1cfc18994bd483091c3f955c1f3b26")
+}
+
+resource CliContractTestModuleHelpCommandsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/cli-contract.test.ts#helpCommands")
+  fingerprint ast.semantic_subtree_v1("sha256:3d0654842dc7c49b51e00297aacaad4bd441ddf1b8efddebc5fb6a938bab0bb4")
+}
+
 resource CliContractTestModuleRunCliAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-cli/src/cli-contract.test.ts#runCli")
   fingerprint ast.semantic_subtree_v1("sha256:1f9b816c81546aa1a2c8377c7416ea959dc478759e845fc9fa6b3144af863de0")
 }
 
 component CliContractTestModule : GeneratedCandidate {
+  fn documentedCommands
+    source ts("packages/shp-cli/src/cli-contract.test.ts#documentedCommands")
+    effects unknown
+  fn helpCommands
+    source ts("packages/shp-cli/src/cli-contract.test.ts#helpCommands")
+    effects unknown
   fn runCli
     source ts("packages/shp-cli/src/cli-contract.test.ts#runCli")
     effects unknown
+}
+
+relation CliContractTestModuleDocumentedCommandsGeneratedFromCliContractTestModuleDocumentedCommandsAstAnchor {
+  kind generated_from
+  connects CliContractTestModule -> CliContractTestModuleDocumentedCommandsAstAnchor
+  roles { CliContractTestModule as generated, CliContractTestModuleDocumentedCommandsAstAnchor as syntax }
+  expects CliContractTestModuleDocumentedCommandsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0e31d250c61c7660540a4d7fe8be5b29fa1cfc18994bd483091c3f955c1f3b26")
+  summary "fn CliContractTestModule.documentedCommands generated from typescript function_declaration at packages/shp-cli/src/cli-contract.test.ts#documentedCommands."
+}
+
+relation CliContractTestModuleHelpCommandsGeneratedFromCliContractTestModuleHelpCommandsAstAnchor {
+  kind generated_from
+  connects CliContractTestModule -> CliContractTestModuleHelpCommandsAstAnchor
+  roles { CliContractTestModule as generated, CliContractTestModuleHelpCommandsAstAnchor as syntax }
+  expects CliContractTestModuleHelpCommandsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3d0654842dc7c49b51e00297aacaad4bd441ddf1b8efddebc5fb6a938bab0bb4")
+  summary "fn CliContractTestModule.helpCommands generated from typescript function_declaration at packages/shp-cli/src/cli-contract.test.ts#helpCommands."
 }
 
 relation CliContractTestModuleRunCliGeneratedFromCliContractTestModuleRunCliAstAnchor {
