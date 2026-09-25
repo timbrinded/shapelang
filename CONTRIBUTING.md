@@ -144,11 +144,14 @@ The gate fails in two common cases:
   current attestation of a kind the binding's `allow attest` lists; every
   binding in this repository allows `docs_not_needed`.
 
-The checker treats every attestation and every `source` or `evidence` ref in a
-`.shape` file listed in `changed.txt` as current, including old ones. When you
-touch a file that holds many attestations, such as `shape/delivery.shape`, check
-which of them still apply. Functions in generated AST modules never count as a
-Shape update.
+The checker treats every `source` or `evidence` ref in a `.shape` file listed in
+`changed.txt` as current, including old ones, so when you touch a file that
+holds many refs, check which of them still apply. Attestations are held to the
+change itself: `shape:ci` compares them with the base in `changed-base.txt`, and
+one carried over from an earlier change does not count and is reported as a
+stale attestation. Delete those with
+`bun shp attest prune --base-ref "$(cat changed-base.txt)"`. Functions in
+generated AST modules never count as a Shape update.
 
 The [Keep the Model Current](https://timbrinded.github.io/shapelang/guides/keep-model-current/)
 guide explains coverage, bindings, and attestations in full.

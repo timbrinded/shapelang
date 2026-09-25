@@ -97,12 +97,12 @@ The TypeScript project is strict (`strict`, `noUncheckedIndexedAccess`,
   change. `shape:ci` compares attestations against the base commit in
   `changed-base.txt`, so only an attestation written for this change counts; one
   carried over from an earlier change is a stale warning.
-- In every PR that touches `shape/`, run
-  `bun shp attest prune --base-ref origin/master` to delete stale attestations.
-  Pruning never triggers docs bindings, and git history keeps the decisions.
-- Docs prose under `docs-site/src/content/docs/` needs no attestation;
-  `shape:ci --check-cited-paths` fails if a page the model cites is renamed or
-  deleted.
+- In every PR that touches `shape/`, run `bun run changed-files` and then
+  `bun shp attest prune --base-ref "$(cat changed-base.txt)"` to delete stale
+  attestations against the same base `shape:ci` uses. On a branch stacked on
+  another branch, run `BASE_REF=<parent branch> bun run changed-files` so the
+  base is the parent rather than `master`. Pruning never triggers docs
+  bindings, and git history keeps the decisions.
 - Use the existing files under `shape/` as the best local guide for Shape syntax,
   modeling style, source/evidence references, relations, memory, and
   reevaluations before inventing new patterns.

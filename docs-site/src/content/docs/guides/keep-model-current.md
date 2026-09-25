@@ -24,7 +24,7 @@ Flags and exit codes for both commands are in the [CLI Reference](/shapelang/ref
 
 The changed-file list is a text file, conventionally `changed.txt`, with one path per line. Paths are relative to the repository root, and `shp` takes the working directory as the repository root. Blank lines and surrounding whitespace are ignored, a leading `./` is dropped, and absolute paths are made relative to the working directory.
 
-The list must include the `.shape` files that the change edits. That is how coverage tells which `.shape` files this change touched: a reference or attestation counts only when its file is in the list.
+The list must include the `.shape` files that the change edits. That is how coverage tells which `.shape` files this change touched: a reference counts only when its file is in the list, and so does an attestation when the check has no base model.
 
 Build the list the same way locally and in CI: from a diff against the base branch. A diff of commits misses uncommitted and untracked files, so a local run adds them:
 
