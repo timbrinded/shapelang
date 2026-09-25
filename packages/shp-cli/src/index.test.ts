@@ -260,6 +260,42 @@ relation ReaderProvidesRecord {
     }
   });
 
+  test("prunes only attestations that are unchanged from the base model", async () => {
+    const repo = await mkdtemp(join(tmpdir(), "shp-attest-prune-test-"));
+    try {
+      const fixture = await readFile(
+        resolve(repoRoot, "fixtures/fail/missing_shape_update/audit.shape"),
+        "utf8"
+      );
+      const earlier = `attest no_shape_change {\n  source ts("src/audit/purge.ts")\n  reason "Reviewed in an earlier change."\n}\n`;
+      const fresh = `attest no_shape_change {\n  source ts("src/audit/store.ts")\n  reason "Reviewed for this change."\n}\n`;
+      await mkdir(join(repo, "shape"));
+      await writeFile(join(repo, "shape/audit.shape"), `${fixture}\n${earlier}`);
+      git(repo, ["init", "-q"]);
+      git(repo, ["add", "."]);
+      git(repo, [
+        "-c",
+        "user.name=shp",
+        "-c",
+        "user.email=shp@example.com",
+        "commit",
+        "-qm",
+        "base"
+      ]);
+      await writeFile(join(repo, "shape/audit.shape"), `${fixture}\n${earlier}\n${fresh}`);
+
+      const pruned = await runCli(["attest", "prune", "--base-ref", "HEAD"], cliPath, repo);
+      expect(pruned.exitCode).toBe(0);
+      expect(pruned.stdout).toBe("Removed 1 stale attestation(s) from 1 file(s).\n");
+      expect(await readFile(join(repo, "shape/audit.shape"), "utf8")).toBe(`${fixture}\n${fresh}`);
+
+      const again = await runCli(["attest", "prune", "--base-ref", "HEAD"], cliPath, repo);
+      expect(again.stdout).toBe("No stale attestations.\n");
+    } finally {
+      await rm(repo, { recursive: true, force: true });
+    }
+  });
+
   test("rejects empty changed-file path during checks", async () => {
     const result = await runCli([
       "check",

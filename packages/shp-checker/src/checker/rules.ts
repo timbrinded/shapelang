@@ -47,9 +47,8 @@ export const SEMANTIC_CHECKS: ReadonlyArray<
   (model) => checkForbiddenPaths(model),
   (model) => checkHypercycles(model),
   (model, options) =>
-    checkCoverage(model, options.changedFiles ?? [], options.repoRoot, options.baseAttestationKeys),
-  (model, options) =>
-    options.baseAttestationKeys ? checkStaleAttestations(model, options.baseAttestationKeys) : []
+    checkCoverage(model, options.changedFiles ?? [], options.repoRoot, options.base),
+  (model, options) => (options.base ? checkStaleAttestations(model, options.base) : [])
 ];
 
 export function runSemanticChecks(

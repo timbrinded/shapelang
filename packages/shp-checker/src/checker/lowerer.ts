@@ -23,6 +23,7 @@ import {
   isTraitDecl
 } from "../language/generated/ast.ts";
 import type { CheckModuleInput, LoweringContext, Model } from "./model.ts";
+import { removeAttestations } from "./attestation-text.ts";
 import { preludeTraitSeed } from "./prelude-seed.ts";
 import { emptyDeclarationIndex, indexModuleDeclarations, moduleContext } from "./symbols.ts";
 import { collectShapeUpdatePathsFromFunction, emitDerivedFacts } from "./lowering/facts.ts";
@@ -78,7 +79,10 @@ export function lowerShapeModules(modules: ShapeModule[] | CheckModuleInput[]): 
   for (const input of inputs) {
     const context = moduleContext(input);
     contexts.set(input, context);
-    model.modules.set(context.name, context);
+    model.modules.set(context.name, {
+      ...context,
+      attestationFreeText: removeAttestations(input.module, () => true).text
+    });
     indexModuleDeclarations(input.module, context, model);
   }
 

@@ -21,6 +21,8 @@ import { lowerShapeModules } from "./lowerer.ts";
 import { requireIsoCalendarDate } from "./iso-date.ts";
 import { checkBindings, runSemanticChecks } from "./rules.ts";
 import { attestationKey } from "./rules/coverage.ts";
+import { normalizeRepoPath } from "./globs.ts";
+import { removeAttestations, type AttestationRemoval } from "./attestation-text.ts";
 import { moduleOriginForShapeFile } from "./symbols.ts";
 
 export function checkShapeModules(
@@ -50,7 +52,7 @@ export function checkLoweredShapeModel(
           model,
           normalizedOptions.changedFiles ?? [],
           normalizedOptions.repoRoot,
-          normalizedOptions.baseAttestationKeys
+          normalizedOptions.base
         ))
   ].map((diagnostic) =>
     normalizedOptions.allowUnknownEffects && diagnostic.kind === "unknown_effects"
@@ -79,22 +81,56 @@ function compareFacts(left: Fact, right: Fact): number {
 }
 
 /**
- * @internal Sorted attestation keys of a base model. Only these keys influence
- * the check, so the incremental checker also uses them as its cache key.
+ * @internal The parts of a base model the checks read, in a deterministic,
+ * serializable form. The incremental checker also uses it as its cache key, since
+ * nothing else about the base influences the result.
  */
-export function baseAttestationKeys(baseModules: ShapeModule[] | CheckModuleInput[]): string[] {
-  return lowerShapeModules(baseModules).attestations.map(attestationKey).toSorted();
+export function summarizeBaseModel(
+  baseModules: ShapeModule[] | CheckModuleInput[],
+  repoRoot: string
+): { attestationKeys: string[]; attestationFreeTexts: [string, string][] } {
+  const model = lowerShapeModules(baseModules);
+  return {
+    attestationKeys: model.attestations.map(attestationKey).toSorted(),
+    attestationFreeTexts: [...model.modules.values()]
+      .flatMap((module): [string, string][] =>
+        module.filePath !== undefined && module.attestationFreeText !== undefined
+          ? [[normalizeRepoPath(module.filePath, repoRoot), module.attestationFreeText]]
+          : []
+      )
+      .toSorted(([left], [right]) => compareCodepointStrings(left, right))
+  };
+}
+
+/**
+ * Returns a function that deletes, from a module's source, each top-level
+ * attestation whose kind, path, and reason already exist in the base model.
+ * Backs `shp attest prune`; the checker reports the same attestations as stale.
+ */
+export function staleAttestationPruner(
+  baseModules: ShapeModule[] | CheckModuleInput[]
+): (module: ShapeModule) => AttestationRemoval {
+  const keys = new Set(lowerShapeModules(baseModules).attestations.map(attestationKey));
+  return (module) => removeAttestations(module, (key) => keys.has(key));
 }
 
 /** @internal Shared by the full and incremental checker entrypoints. */
 export function normalizeCheckOptions(options: CheckOptions): NormalizedCheckOptions {
+  const repoRoot = resolve(options.repoRoot ?? process.cwd());
+  const base =
+    options.baseModules === undefined
+      ? undefined
+      : summarizeBaseModel(options.baseModules, repoRoot);
   return {
     ...options,
-    repoRoot: resolve(options.repoRoot ?? process.cwd()),
-    baseAttestationKeys:
-      options.baseModules === undefined
+    repoRoot,
+    base:
+      base === undefined
         ? undefined
-        : new Set(baseAttestationKeys(options.baseModules)),
+        : {
+            attestationKeys: new Set(base.attestationKeys),
+            attestationFreeTexts: new Map(base.attestationFreeTexts)
+          },
     freshnessDate:
       options.freshnessDate === undefined
         ? undefined

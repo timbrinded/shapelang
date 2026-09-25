@@ -4,7 +4,8 @@
 // helpers).
 // This file re-exports the public surface so existing imports from
 // "./checker.ts" — notably src/index.ts — keep working unchanged.
-export { checkShapeFiles, checkShapeModules } from "./checker/api.ts";
+export { checkShapeFiles, checkShapeModules, staleAttestationPruner } from "./checker/api.ts";
+export type { AttestationRemoval } from "./checker/attestation-text.ts";
 export {
   IncrementalShapeChecker,
   type IncrementalCheckResult,

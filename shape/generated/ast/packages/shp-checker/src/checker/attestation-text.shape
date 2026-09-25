@@ -1,0 +1,33 @@
+module shape.generated.ast.packages.shp_checker.src.checker.attestation_text
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource AttestationTextModuleRemoveAttestationsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/attestation-text.ts#removeAttestations")
+  fingerprint ast.semantic_subtree_v1("sha256:444042cb5f7e68a036c6444644afc95ed9a12e9ad1c45e92e388c4d64a2f3932")
+}
+
+component AttestationTextModule : GeneratedCandidate {
+  fn removeAttestations
+    source ts("packages/shp-checker/src/checker/attestation-text.ts#removeAttestations")
+    effects unknown
+}
+
+relation AttestationTextModuleRemoveAttestationsGeneratedFromAttestationTextModuleRemoveAttestationsAstAnchor {
+  kind generated_from
+  connects AttestationTextModule -> AttestationTextModuleRemoveAttestationsAstAnchor
+  roles { AttestationTextModule as generated, AttestationTextModuleRemoveAttestationsAstAnchor as syntax }
+  expects AttestationTextModuleRemoveAttestationsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:444042cb5f7e68a036c6444644afc95ed9a12e9ad1c45e92e388c4d64a2f3932")
+  summary "fn AttestationTextModule.removeAttestations generated from typescript function_declaration at packages/shp-checker/src/checker/attestation-text.ts#removeAttestations."
+}
+
+implementation AttestationTextModuleImpl {
+  paths {
+    "packages/shp-checker/src/checker/attestation-text.ts"
+  }
+  conforms_to AttestationTextModule
+}

@@ -477,6 +477,16 @@ component ShpCli {
   grants Read<UnifiedDiff>
   grants Update<InstalledShpBinary>
   grants Update<InstalledShpRuntimeAssets>
+  grants Update<ShapeSource>
+  fn attestPrune
+    source ts("packages/shp-cli/src/commands/attest/impl.ts#attestPrune")
+    description "Requires --base-ref or --base-model, then rewrites each discovered Shape file without the attestations the check reports as stale."
+    effects complete {
+      Read<ShapeSource>
+        evidence ts("packages/shp-cli/src/commands/attest/impl.ts#attestPrune")
+      Update<ShapeSource>
+        evidence ts("packages/shp-cli/src/commands/attest/impl.ts#attestPrune")
+    }
   fn defaultShapeFiles : RefactorSensitive
     source ts("packages/shp-cli/src/shape-files.ts#defaultShapeFiles")
     description "Recursively installs project Shape and source-controlled domain packs below shape; imports make project references explicit but do not activate discovered pack rules."
@@ -548,6 +558,8 @@ component ShpCli {
       Read<DiagnosticText>
         evidence ts("packages/shp-cli/src/commands/ast/impl.ts")
       Read<DiagnosticText>
+        evidence ts("packages/shp-cli/src/commands/attest/command.ts")
+      Read<DiagnosticText>
         evidence ts("packages/shp-cli/src/commands/author/command.ts")
       Read<DiagnosticText>
         evidence ts("packages/shp-cli/src/commands/check/command.ts")
@@ -617,6 +629,8 @@ component ShpCli {
         evidence ts("packages/shp-cli/src/freshness.ts")
       Read<UnifiedDiff>
         evidence ts("packages/shp-cli/src/commands/author/impl.ts")
+      Update<ShapeSource>
+        evidence ts("packages/shp-cli/src/commands/attest/impl.ts#attestPrune")
     }
   fn runShapeFileCheck
     source ts("packages/shp-cli/src/check-runner.ts#runShapeFileCheck")
@@ -1026,6 +1040,15 @@ reevaluation CliAstOutputModesRechecked {
   evidence test("packages/shp-cli/src/index.test.ts")
 }
 
+reevaluation CliAttestPruneDispatchRechecked {
+  satisfies memory CliCommandDispatchOrder
+  outcome Confirmed
+  summary "The attest prune command is registered through the same Stricli route map, rejects a missing base before touching files, and reuses the checker's stale-attestation identity."
+  reviewer ShapeMaintainers
+  decided_on "2026-09-25"
+  evidence test("packages/shp-cli/src/index.test.ts")
+}
+
 reevaluation CliAuthorPromptDispatchRechecked {
   satisfies memory CliCommandDispatchOrder
   outcome Confirmed
@@ -1179,9 +1202,4 @@ reevaluation UpdateRuntimeAssetsRechecked {
   decided_on "2026-05-28"
   evidence test("packages/shp-cli/src/update.test.ts")
   evidence ts("packages/shp-cli/src/commands/update/impl.ts")
-}
-
-attest docs_not_needed {
-  source ts("packages/shp-cli/src/commands/update/impl.ts")
-  reason "Drops the parsed-but-never-read GitHub release asset digest field; checksum verification still uses checksums.txt and no documented update behavior changed."
 }

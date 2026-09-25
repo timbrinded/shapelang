@@ -590,14 +590,25 @@ export function lowerBinding(binding: BindingDecl, context: LoweringContext, mod
   model.facts.push({ kind: "binding", name, provenance: prov });
 }
 
+/** The kind, normalized path, and reason that identify an attestation. */
+export function attestationIdentity(attestation: AttestationDecl): {
+  kind: string;
+  path: string;
+  reason: string;
+} {
+  return {
+    kind: attestation.kind,
+    path: normalizeShapeSourcePath(lowerSourceRef(attestation.source).path),
+    reason: unquoteShapeString(attestation.reason.value)
+  };
+}
+
 export function lowerAttestation(
   attestation: AttestationDecl,
   context: LoweringContext,
   model: Model
 ): void {
-  const source = lowerSourceRef(attestation.source);
-  const path = normalizeShapeSourcePath(source.path);
-  const reason = unquoteShapeString(attestation.reason.value);
+  const { path, reason } = attestationIdentity(attestation);
   const prov = provenance(context.filePath, `attest ${attestation.kind} for ${path}`);
   model.attestations.push({ kind: attestation.kind, path, reason, provenance: prov });
   model.facts.push({

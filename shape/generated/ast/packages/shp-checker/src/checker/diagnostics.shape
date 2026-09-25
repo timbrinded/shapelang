@@ -158,7 +158,7 @@ resource DiagnosticsModuleFormatParseDiagnosticAstAnchor : GeneratedAstAnchor {
 
 resource DiagnosticsModuleFormatStaleAttestationDiagnosticAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/checker/diagnostics.ts#formatStaleAttestationDiagnostic")
-  fingerprint ast.semantic_subtree_v1("sha256:888967f9f8953aadb9b4834e067d30b80b1c7b5b54e268d60c85dc20f0a5004d")
+  fingerprint ast.semantic_subtree_v1("sha256:111277d76635dcda388b91e56aa9c673af24863d01bc57a451f7923d140eee6f")
 }
 
 resource DiagnosticsModuleFormatStaleMemoryDiagnosticAstAnchor : GeneratedAstAnchor {
@@ -541,7 +541,7 @@ relation DiagnosticsModuleFormatStaleAttestationDiagnosticGeneratedFromDiagnosti
   kind generated_from
   connects DiagnosticsModule -> DiagnosticsModuleFormatStaleAttestationDiagnosticAstAnchor
   roles { DiagnosticsModule as generated, DiagnosticsModuleFormatStaleAttestationDiagnosticAstAnchor as syntax }
-  expects DiagnosticsModuleFormatStaleAttestationDiagnosticAstAnchor fingerprint ast.semantic_subtree_v1("sha256:888967f9f8953aadb9b4834e067d30b80b1c7b5b54e268d60c85dc20f0a5004d")
+  expects DiagnosticsModuleFormatStaleAttestationDiagnosticAstAnchor fingerprint ast.semantic_subtree_v1("sha256:111277d76635dcda388b91e56aa9c673af24863d01bc57a451f7923d140eee6f")
   summary "fn DiagnosticsModule.formatStaleAttestationDiagnostic generated from typescript function_declaration at packages/shp-checker/src/checker/diagnostics.ts#formatStaleAttestationDiagnostic."
 }
 

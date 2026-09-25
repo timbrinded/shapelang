@@ -1,7 +1,7 @@
 import { resolve } from "node:path";
 import { parseShapeModule, type ParseDiagnostic, type ParseShapeModuleResult } from "../parser.ts";
 import { compareCodepointStrings } from "../shape-strings.ts";
-import { baseAttestationKeys, checkLoweredShapeModel, normalizeCheckOptions } from "./api.ts";
+import { checkLoweredShapeModel, normalizeCheckOptions, summarizeBaseModel } from "./api.ts";
 import { lowerShapeModules } from "./lowerer.ts";
 import type {
   CheckModuleInput,
@@ -239,7 +239,9 @@ function checkOptionsKey(options: CheckOptions): string {
   const snapshot = {
     allowUnknownEffects: options.allowUnknownEffects ?? null,
     baseModules:
-      options.baseModules === undefined ? null : baseAttestationKeys(options.baseModules),
+      options.baseModules === undefined
+        ? null
+        : summarizeBaseModel(options.baseModules, resolve(options.repoRoot ?? process.cwd())),
     changedFiles: options.changedFiles ?? null,
     enforceBindings: options.enforceBindings ?? null,
     includeFacts: options.includeFacts ?? null,

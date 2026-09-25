@@ -11,6 +11,7 @@ The released `shp` binary (version `0.9.0` / tag `v0.9.0`) exposes the commands 
 | --- | --- |
 | [`check`](#shp-check) | Run the semantic checks; with `--changed-files`, also coverage and bindings. |
 | [`coverage`](#shp-coverage) | Run the semantic checks plus changed-file coverage, without bindings. |
+| [`attest prune`](#shp-attest-prune) | Delete the attestations that are unchanged from a base model. |
 | [`fmt`](#shp-fmt) | Rewrite Shape files in canonical form, or check that they already are. |
 | [`explain`](#shp-explain) | Print the derived facts and incident relations for one symbol. |
 | [`graph`](#shp-graph) | Print the relation hypergraph, one symbol's incident relations, or aggregate counts. |
@@ -125,6 +126,25 @@ Runs the same semantic checks as `shp check` plus changed-file coverage, but not
 
 ```bash
 shp coverage --changed-files changed.txt
+```
+
+## shp attest prune
+
+```text
+shp attest prune (--base-ref REF | --base-model DIR) [files...]
+```
+
+Deletes each top-level attestation whose kind, path, and reason already exist in the base model: the attestations `shp check` reports as `warning: stale attestation`. It keeps every other byte of each file, so pruned files stay in canonical format, and it keeps attestations written for the current change. Attestations inside `change` blocks are left alone.
+
+| Flag | Meaning |
+| --- | --- |
+| `--base-ref REF` / `--base-model DIR` | Required, one of the two. The base model, as described under [Base model](#base-model). |
+| `files...` | Shape files to rewrite. Defaults to `shape/**/*.shape`. |
+
+The command prints `Removed N stale attestation(s) from M file(s).`, or `No stale attestations.`, and exits `0`. Without a base it exits `2`. Git history keeps every removed decision.
+
+```bash
+shp attest prune --base-ref origin/main
 ```
 
 ## shp fmt

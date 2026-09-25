@@ -312,8 +312,16 @@ export type CheckOptions = {
 
 export type NormalizedCheckOptions = CheckOptions & {
   repoRoot: string;
-  /** Keys of the base model's attestations; present only when `baseModules` is set. */
-  baseAttestationKeys?: ReadonlySet<string>;
+  /** Present only when `baseModules` is set. */
+  base?: BaseModel;
+};
+
+/** What checks need from the base model, derived once from `baseModules`. */
+export type BaseModel = {
+  /** Identity keys of every attestation in the base. */
+  attestationKeys: ReadonlySet<string>;
+  /** Each base `.shape` file's source with its top-level attestations removed. */
+  attestationFreeTexts: ReadonlyMap<string, string>;
 };
 
 export type Fact =
@@ -470,6 +478,8 @@ export type ModuleInfo = {
   imports: string[];
   filePath?: string;
   generatedAst: boolean;
+  /** The module source with its top-level attestations removed. */
+  attestationFreeText?: string;
 };
 
 export type LoweringContext = ModuleInfo;

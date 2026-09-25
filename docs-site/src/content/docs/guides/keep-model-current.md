@@ -274,6 +274,18 @@ attest docs_not_needed {
 
 The attestation kind is any identifier, and `docs_not_needed` is a convention: a binding accepts exactly the kinds its `allow attest` lines name, and coverage accepts only `no_shape_change`. Only `shp check --changed-files` enforces bindings; `shp coverage` does not.
 
+With a base model, a `.shape` file that changed only in its attestations does not trigger a binding: its text with attestations removed matches the base version, so no model claim changed. Adding or deleting attestations therefore never demands a docs change.
+
+## Prune stale attestations
+
+Once a change merges, its attestations have done their job. Later checks with a base model report them as `stale attestation` warnings, and `shp attest prune` deletes them:
+
+```bash
+shp attest prune --base-ref origin/main
+```
+
+Prune removes each top-level attestation whose kind, path, and reason already exist in the base model, keeps every other byte of the file, and keeps the attestations you wrote for the current change. Git history keeps every removed decision. Running it in any change that touches the model keeps attestations from piling up. Flags are in the [CLI Reference](/shapelang/reference/cli/#shp-attest-prune).
+
 ## Guarded targets
 
 Some claims carry design-memory guards. A guard fires only from a `change` declaration that modifies or removes the guarded target: `modify fn`, `remove fn`, or the `component`, `resource`, and `relation` forms. Editing a guarded declaration in place produces no change event, so its guard does not fire. The checker therefore does not report an in-place edit to a guarded target. A fired guard is satisfied by a valid `reevaluation`, never by an attestation. Before changing a guarded target, run `shp obligations` for open obligations and `shp explain TARGET` to see which contexts guard it; `shp memory` lists recorded memory and rationale but not their guards. [Design Memory](/shapelang/concepts/design-memory/) explains guards, `change` declarations, and reevaluation.

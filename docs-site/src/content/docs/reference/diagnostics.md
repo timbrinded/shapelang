@@ -548,7 +548,7 @@ Kind `stale_attestation` · emitted by `check` when given `--base-ref` or `--bas
 warning: stale attestation
 
 attest no_shape_change for src/audit/reporting.ts is unchanged from the base model, so it no longer satisfies coverage or bindings.
-Remove it; git history keeps the decision.
+Remove it with `shp attest prune`; git history keeps the decision.
 
 caused by:
   - shape/audit.shape: attest no_shape_change for src/audit/reporting.ts
@@ -556,7 +556,7 @@ caused by:
 
 **Cause.** An attestation with the same kind, path, and reason already exists in the base model. It was carried over from an earlier change, so it no longer satisfies coverage or bindings.
 
-**Fix.** Delete the attestation. If its path changed again in this change set and the contract is still unchanged, write a new attestation with a reason for this change.
+**Fix.** Run [`shp attest prune`](/shapelang/reference/cli/#shp-attest-prune) with the same `--base-ref` or `--base-model` to delete every stale attestation at once. If its path changed again in this change set and the contract is still unchanged, write a new attestation with a reason for this change.
 
 ## Design memory
 

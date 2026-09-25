@@ -1,5 +1,6 @@
 import type {
   AttestationInfo,
+  BaseModel,
   ChangedFileContext,
   Model,
   Provenance,
@@ -19,12 +20,9 @@ export function attestationKey(
   return JSON.stringify([attestation.kind, attestation.path, attestation.reason]);
 }
 
-export function checkStaleAttestations(
-  model: Model,
-  baseAttestationKeys: ReadonlySet<string>
-): SemanticDiagnostic[] {
+export function checkStaleAttestations(model: Model, base: BaseModel): SemanticDiagnostic[] {
   return model.attestations
-    .filter((attestation) => baseAttestationKeys.has(attestationKey(attestation)))
+    .filter((attestation) => base.attestationKeys.has(attestationKey(attestation)))
     .map((attestation) => ({
       kind: "stale_attestation",
       attestationKind: attestation.kind,
@@ -38,7 +36,7 @@ export function checkCoverage(
   model: Model,
   changedFiles: string[],
   repoRoot: string,
-  baseAttestationKeys?: ReadonlySet<string>
+  base?: BaseModel
 ): SemanticDiagnostic[] {
   if (changedFiles.length === 0) {
     return [];
@@ -76,7 +74,7 @@ export function checkCoverage(
           changed.set,
           noShapeChangeAttestations,
           repoRoot,
-          baseAttestationKeys
+          base
         )
       ) {
         continue;
@@ -128,17 +126,10 @@ export function currentAttestationExists(
   changedSet: Set<string>,
   allowedKinds: ReadonlySet<string>,
   repoRoot: string,
-  baseAttestationKeys?: ReadonlySet<string>
+  base?: BaseModel
 ): boolean {
   return model.attestations.some((attestation) =>
-    isCurrentAttestation(
-      attestation,
-      changedFile,
-      changedSet,
-      allowedKinds,
-      repoRoot,
-      baseAttestationKeys
-    )
+    isCurrentAttestation(attestation, changedFile, changedSet, allowedKinds, repoRoot, base)
   );
 }
 
@@ -154,15 +145,15 @@ export function isCurrentAttestation(
   changedSet: Set<string>,
   allowedKinds: ReadonlySet<string>,
   repoRoot: string,
-  baseAttestationKeys?: ReadonlySet<string>
+  base?: BaseModel
 ): boolean {
   return (
     allowedKinds.has(attestation.kind) &&
     attestation.path === changedFile &&
     attestation.reason.trim().length > 0 &&
-    (baseAttestationKeys === undefined
+    (base === undefined
       ? provenanceFileChanged(attestation.provenance, changedSet, repoRoot)
-      : !baseAttestationKeys.has(attestationKey(attestation)))
+      : !base.attestationKeys.has(attestationKey(attestation)))
   );
 }
 
@@ -181,7 +172,7 @@ export function checkBindings(
   model: Model,
   changedFiles: string[],
   repoRoot: string,
-  baseAttestationKeys?: ReadonlySet<string>
+  base?: BaseModel
 ): SemanticDiagnostic[] {
   if (changedFiles.length === 0) {
     return [];
@@ -205,16 +196,11 @@ export function checkBindings(
         continue;
       }
 
-      if (
-        currentAttestationExists(
-          model,
-          changedFile,
-          changed.set,
-          allowedKinds,
-          repoRoot,
-          baseAttestationKeys
-        )
-      ) {
+      if (isAttestationOnlyChange(model, changedFile, repoRoot, base)) {
+        continue;
+      }
+
+      if (currentAttestationExists(model, changedFile, changed.set, allowedKinds, repoRoot, base)) {
         continue;
       }
 
@@ -231,4 +217,28 @@ export function checkBindings(
   }
 
   return diagnostics;
+}
+
+/**
+ * A `.shape` file whose text, with attestations removed, matches its base
+ * version changed only in attestations. That is change-set evidence, not a model
+ * change, so it does not trigger bindings; pruning stale attestations therefore
+ * never demands a docs change.
+ */
+function isAttestationOnlyChange(
+  model: Model,
+  changedFile: string,
+  repoRoot: string,
+  base: BaseModel | undefined
+): boolean {
+  const baseText = base?.attestationFreeTexts.get(changedFile);
+  if (baseText === undefined) {
+    return false;
+  }
+  return [...model.modules.values()].some(
+    (module) =>
+      module.filePath !== undefined &&
+      normalizeRepoPath(module.filePath, repoRoot) === changedFile &&
+      module.attestationFreeText === baseText
+  );
 }

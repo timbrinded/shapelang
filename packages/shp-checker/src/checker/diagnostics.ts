@@ -481,7 +481,7 @@ function formatStaleAttestationDiagnostic(
     "warning: stale attestation",
     "",
     `attest ${diagnostic.attestationKind} for ${diagnostic.path} is unchanged from the base model, so it no longer satisfies coverage or bindings.`,
-    "Remove it; git history keeps the decision.",
+    "Remove it with `shp attest prune`; git history keeps the decision.",
     formatCausedBy(diagnostic.causedBy)
   ].join("\n");
 }

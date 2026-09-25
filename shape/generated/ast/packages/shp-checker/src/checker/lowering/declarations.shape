@@ -6,6 +6,11 @@ trait GeneratedAstAnchor {
 trait GeneratedCandidate {
 }
 
+resource DeclarationsModuleAttestationIdentityAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/lowering/declarations.ts#attestationIdentity")
+  fingerprint ast.semantic_subtree_v1("sha256:ef06594ffc60af7740f131ce6421053418f0568fd0311a043d01377ec577c666")
+}
+
 resource DeclarationsModuleFunctionNameForAstAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/checker/lowering/declarations.ts#functionNameForAst")
   fingerprint ast.semantic_subtree_v1("sha256:41289bb112998f9f633df02fe6a026a2fa250eabff8021b0053954d673e1c9c7")
@@ -13,7 +18,7 @@ resource DeclarationsModuleFunctionNameForAstAstAnchor : GeneratedAstAnchor {
 
 resource DeclarationsModuleLowerAttestationAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/checker/lowering/declarations.ts#lowerAttestation")
-  fingerprint ast.semantic_subtree_v1("sha256:3dc5e3e70f946302a1e3e32b117381dbd1843702900dcb257dc892fbaa6886ca")
+  fingerprint ast.semantic_subtree_v1("sha256:00713280d3d8e1617391e3b3601966b7aafde59282345e0b608257788b570525")
 }
 
 resource DeclarationsModuleLowerBindingAstAnchor : GeneratedAstAnchor {
@@ -142,6 +147,9 @@ resource DeclarationsModuleRequireContextTargetKindAstAnchor : GeneratedAstAncho
 }
 
 component DeclarationsModule : GeneratedCandidate {
+  fn attestationIdentity
+    source ts("packages/shp-checker/src/checker/lowering/declarations.ts#attestationIdentity")
+    effects unknown
   fn functionNameForAst
     source ts("packages/shp-checker/src/checker/lowering/declarations.ts#functionNameForAst")
     effects unknown
@@ -225,6 +233,14 @@ component DeclarationsModule : GeneratedCandidate {
     effects unknown
 }
 
+relation DeclarationsModuleAttestationIdentityGeneratedFromDeclarationsModuleAttestationIdentityAstAnchor {
+  kind generated_from
+  connects DeclarationsModule -> DeclarationsModuleAttestationIdentityAstAnchor
+  roles { DeclarationsModule as generated, DeclarationsModuleAttestationIdentityAstAnchor as syntax }
+  expects DeclarationsModuleAttestationIdentityAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ef06594ffc60af7740f131ce6421053418f0568fd0311a043d01377ec577c666")
+  summary "fn DeclarationsModule.attestationIdentity generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/declarations.ts#attestationIdentity."
+}
+
 relation DeclarationsModuleFunctionNameForAstGeneratedFromDeclarationsModuleFunctionNameForAstAstAnchor {
   kind generated_from
   connects DeclarationsModule -> DeclarationsModuleFunctionNameForAstAstAnchor
@@ -237,7 +253,7 @@ relation DeclarationsModuleLowerAttestationGeneratedFromDeclarationsModuleLowerA
   kind generated_from
   connects DeclarationsModule -> DeclarationsModuleLowerAttestationAstAnchor
   roles { DeclarationsModule as generated, DeclarationsModuleLowerAttestationAstAnchor as syntax }
-  expects DeclarationsModuleLowerAttestationAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3dc5e3e70f946302a1e3e32b117381dbd1843702900dcb257dc892fbaa6886ca")
+  expects DeclarationsModuleLowerAttestationAstAnchor fingerprint ast.semantic_subtree_v1("sha256:00713280d3d8e1617391e3b3601966b7aafde59282345e0b608257788b570525")
   summary "fn DeclarationsModule.lowerAttestation generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/declarations.ts#lowerAttestation."
 }
 

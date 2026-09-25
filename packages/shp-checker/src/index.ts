@@ -68,6 +68,8 @@ export {
 export {
   checkShapeFiles,
   checkShapeModules,
+  staleAttestationPruner,
+  type AttestationRemoval,
   IncrementalShapeChecker,
   explainShapeModules,
   formatDiagnostics,
