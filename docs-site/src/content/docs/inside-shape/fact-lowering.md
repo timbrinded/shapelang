@@ -19,14 +19,13 @@ Lowering is global. Any change to any document rebuilds the whole `Model` and fa
 | `traits` | `TraitInfo`: type parameters, forbid patterns, context requirements; seeded with the prelude traits | `rules/names.ts`, `rules/guards.ts`, `derivations.ts` |
 | `components` | `ComponentInfo`: classifiers, `owns`, `grants`, and `FunctionInfo` per `fn` | `rules/functions.ts`, `rules/names.ts`, `rules/context.ts`, `rules/relations.ts`, `derivations.ts`, `query.ts`, `inspection.ts` |
 | `hypergraph.edges` | one `HyperedgeInfo` per kept `relation` | `rules/names.ts`, `rules/relations.ts`, `derivations.ts`, `query.ts`, `inspection.ts` |
-| `hypergraph.incidence` | vertex name to the names of its hyperedges | `query.ts` only: `graphShapeModules` (`shp graph show`) and the relations section of `explainShapeModules` (`shp explain`) |
 | `candidateEffects` | `effect candidate` declarations | `rules/names.ts`, `rules/functions.ts` |
 | `implementations` | path globs, `conforms_to`, and the `on_change` requirement | `rules/coverage.ts`, `rules/names.ts`, `derivations.ts`, `inspection.ts` |
 | `bindings` | `when_changed`, `require_changed`, and `allow attest` entries | `checkBindings`, `inspection.ts` |
 | `rules` | `RuleInfo` for each `rule` | `rules/declarations.ts`, `rules/names.ts`, `rules/relations.ts`, `derivations.ts`, `inspection.ts` |
-| `rationales`, `memories` | context info with flattened guard blocks | `rules/context.ts` (which also feeds `rules/guards.ts`), `derivations.ts`, `query.ts`; `memories` also `inspection.ts` |
+| `rationales`, `memories` | context info with flattened guard blocks | `rules/context.ts`, `rules/guards.ts`, `derivations.ts`, `query.ts`; `memories` also `inspection.ts` |
 | `reevaluations` | `ReevaluationInfo` | `rules/context.ts`, `derivations.ts` |
-| `roles`, `policies` | declared review roles and approver policies | `derivations.ts` (reevaluation validation) |
+| `roles`, `requiresApprover` | local review-role names and whether any policy requires an approver | `derivations.ts` (reevaluation validation) |
 | `attestations` | kind, normalized path, reason, provenance | `rules/coverage.ts` |
 | `shapeUpdatePaths` | normalized source path to the provenance of every ref that names it | `rules/coverage.ts` |
 | `changeEvents` | guard events produced by `change` declarations | `rules/guards.ts` |
@@ -40,8 +39,8 @@ Lowering is global. Any change to any document rebuilds the whole `Model` and fa
 ## Lowering order
 
 1. `preludeTraitSeed()` in `checker/prelude-seed.ts` fills `model.traits` with the prelude traits: `AppendOnly` with its three final forbids, and the context-obligation traits from `PRELUDE_CONTEXT_REQUIREMENTS` in `prelude.ts`. Then, for every module, `lowerShapeModules` builds the module's lowering context with `moduleContext` and records it in `model.modules`, and `indexModuleDeclarations` records the names of its resources, components, traits, relations, candidate effects, implementations, bindings, rationales, memories, reevaluations, and rules in `model.declarations` (roles, policies, attestations, and `change` declarations are not indexed). Every module is indexed before any declaration is lowered. Name resolution (`resolveDeclReference` in `checker/symbols.ts`) consults this index, so a reference resolves the same way whichever file declares its target.
-2. For each module in input order, each non-`change` declaration is lowered in source order by its domain lowerer: `lowerResource`, `lowerTrait`, `lowerComponent` (which calls `lowerFunction` and `emitFunctionFacts` for each `fn`), `lowerRelation`, `lowerCandidateEffect`, `lowerImplementation`, `lowerBinding`, `lowerAttestation`, `lowerRule`, `lowerRationale`, `lowerMemory`, `lowerReevaluation`, `lowerRole`, and `lowerPolicy`. For resources, traits, components, relations, candidate effects, bindings, rationales, memories, and reevaluations, the first declaration of a name wins, and a later duplicate is dropped with a `duplicate_declaration` diagnostic.
-3. Each `change` declaration, in the same module and source order, is applied by `lowerChange`. See [Changes](#changes).
+2. For each module in input order, each non-`change` declaration passes through `lowerDeclaration` in `lowering/dispatch.ts`, which selects its domain lowerer: `lowerResource`, `lowerTrait`, `lowerComponent` (which calls `lowerFunction` and `emitFunctionFacts` for each `fn`), `lowerRelation`, `lowerCandidateEffect`, `lowerImplementation`, `lowerBinding`, `lowerAttestation`, `lowerRule`, `lowerContextObject`, `lowerReevaluation`, `lowerRole`, and `lowerPolicy`. For resources, traits, components, relations, candidate effects, bindings, rationales, memories, and reevaluations, the first declaration of a name wins, and a later duplicate is dropped with a `duplicate_declaration` diagnostic.
+3. Each `change` declaration, in the same module and source order, is applied by `lowerChange`. Added and modified declarations use the same dispatcher as the first pass. See [Changes](#changes).
 4. `rebuildShapeUpdatePaths` (private to `lowerer.ts`) drops every `shape_update_for` fact, then rebuilds `model.shapeUpdatePaths` from the final function registry with `collectShapeUpdatePathsFromFunction`, re-emitting one `shape_update_for` fact per ref.
 5. `emitDerivedFacts` in `lowering/facts.ts` emits `trait_final_forbid` and `context_required` facts from the final traits and trait bearers. These are the only derived facts.
 
@@ -122,20 +121,22 @@ Obligations live on the trait itself: prelude obligations are seeded onto prelud
 
 A binary dependency is a two-member hyperedge; there is no separate binary-edge layer.
 
-Lowering also builds `model.hypergraph.incidence`, a vertex-to-hyperedge index keyed by endpoint name, which `shp graph show` and `shp explain` use. Rules do not read it. `forbid provides T except C` scans every `provides` hyperedge, and `forbid path` and `forbid hypercycle` build a directed step graph from the hyperedges, filtered by kind; see [Rule Evaluation](/shapelang/inside-shape/rule-evaluation/#graph-witnesses). Whether each endpoint names a declared component or resource is checked at rule time by `checkResolvedNames`.
+`shp graph show` and `shp explain` find incident relations by filtering the effective edges for the requested endpoint, then sorting them. `forbid provides T except C` scans every `provides` hyperedge, and `forbid path` and `forbid hypercycle` build a directed step graph from the hyperedges, filtered by kind; see [Rule Evaluation](/shapelang/inside-shape/rule-evaluation/#graph-witnesses). Whether each endpoint names a declared component or resource is checked at rule time by `checkResolvedNames`.
 
 ## Context
 
-`lowerRationale` and `lowerMemory` in `lowering/context.ts` store a `RationaleInfo` or `MemoryInfo`. `lowerContextMember` flattens the grouped blocks into shared fields:
+`lowerContextObject` in `lowering/context.ts` stores a shared `ContextObjectInfo` in the separate rationale or memory map. Their names remain independent: a rationale and a memory may have the same name. The member loop records memory-only `status`, `confidence`, `sensitive`, and `observed` fields and flattens grouped blocks into shared fields:
 
 - each `protects` entry becomes a `ProtectedProperty`; `pushProtects` resolves a `shape` value as a trait name, so it matches the `shape_trait_removed` events a `change` produces;
 - each `guards` entry becomes a `GuardInfo` (`on_change require`) or a `TransformGuardInfo` (`forbid transform`), through `pushGuard`;
 - `who` sets `owner` and `when` sets `reviewBy`; a later block of the same kind that sets a value overwrites the earlier value;
 - `applies_to`, `summary`, and `evidence` are stored as given.
 
+A rationale's `why` remains in its parsed AST and formatted source; the checker neither interprets it nor copies it into the effective model.
+
 Each rationale or memory emits one `rationale` or `memory` fact. The fact records the context type's own target (`RefactorConstraint<fn Gateway.derivePolicyDecision>`), not `applies_to`. Each `protects` entry emits a `protected_shape` fact, and each guard that requires reevaluation emits a `guard_requires_reevaluation` fact. `forbid transform` guards, `applies_to`, owners, `review_by` dates, `status`, `confidence`, and `sensitive` produce no facts.
 
-`lowerReevaluation` stores a `ReevaluationInfo` and emits a `reevaluation` fact only when the declaration has `satisfies`. Whether a reevaluation is valid is decided at rule time by `reevaluationValidationReasons` in `checker/derivations.ts`. `lowerRole` keys roles by their local name, and `lowerPolicy` merges same-named policies, so `require approver` in any of them applies. Neither emits facts.
+`lowerReevaluation` stores a `ReevaluationInfo` and emits a `reevaluation` fact only when the declaration has `satisfies`. Whether a reevaluation is valid is decided at rule time by `reevaluationValidationReasons` in `checker/derivations.ts`. `lowerRole` collects local role names in a set. `lowerPolicy` sets `requiresApprover` when any policy declares `require approver`; later empty policies cannot clear it. Neither emits facts.
 
 Required context is also decided at rule time. `emitDerivedFacts` emits one `context_required` fact per obligation a bearer carries, without the trait's `satisfied_by` kinds or its description requirement. `hasRequiredContext` accepts a matching `rationale` or `memory`, subject to the trait's `satisfied_by`. A `reevaluation` satisfies guards, never a required-context obligation.
 
@@ -150,7 +151,7 @@ Required context is also decided at rule time. `emitDerivedFacts` emits one `con
 | `remove fn C.f` | removes the function | yes |
 | `add <declaration>` | lowers a resource, trait, component, relation, implementation, binding, attestation, or rule | none |
 | `modify <declaration>` | removes the declaration, then lowers the new one (a modified attestation is only added) | for components, resources, and relations |
-| `remove <kind> <Name>` | deletes the declaration from its index (`removeRelation` also updates `incidence`) | for components, resources, and relations |
+| `remove <kind> <Name>` | deletes the declaration from its index | for components, resources, and relations |
 
 The events land in `model.changeEvents` as `ChangeTrigger` records (`shape-domain.ts`). For each transition, `changeEventsForTransition` emits them in a fixed order: `target_changed`, then `shape_trait_removed` for each trait the target lost, then `description_removed`, then `transform_applied` for each `transform` label. Change events are not facts. `checkGuardedChanges` is their only reader, so guards fire only for targets that a `change` declaration modifies or removes.
 
@@ -161,7 +162,7 @@ The fact list follows function entries but not declaration entries. `add fn`, `m
 - `lowerImplementation` stores the path globs, the `conforms_to` component, and the `on_change` requirement, and emits `implementation`, `implementation_path`, and `conforms_to` facts. No fact records the `on_change` requirement.
 - `lowerBinding` stores the binding and emits `binding`, `binding_when_changed`, `binding_require_changed`, and `binding_allow_attest` facts.
 - `lowerAttestation` stores the attestation kind, its path normalized by `normalizeShapeSourcePath` (which drops a `#anchor` and a `:line` or `:line-line` suffix), its reason, and its provenance, and emits an `attestation` fact.
-- `rebuildShapeUpdatePaths` fills `model.shapeUpdatePaths` from every function's `source` and every `evidence` on a complete effect entry, normalized the same way. It skips functions from generated-AST modules (`shouldIgnoreFunctionForCoverage`). Each ref also emits a `shape_update_for` fact.
+- `rebuildShapeUpdatePaths` fills `model.shapeUpdatePaths` from every function's `source` and every `evidence` on a complete effect entry, normalized the same way. `collectShapeUpdatePathsFromFunction` skips functions marked `generatedAstCandidate`. Each ref also emits a `shape_update_for` fact.
 
 Lowering never sees the changed-file list. At rule time, `checkCoverage` reads `model.shapeUpdatePaths` and `model.attestations`, and `checkBindings` reads `model.bindings` and `model.attestations`. Neither reads facts. Both count a ref only when its declaring `.shape` file is in the changed-file list, and an attestation only when its kind, path, and reason are absent from the base model, falling back to the declaring-file rule when there is no base; see [Rule Evaluation](/shapelang/inside-shape/rule-evaluation/#interactions). The user-facing coverage rules are in [Keep the Model Current](/shapelang/guides/keep-model-current/).
 

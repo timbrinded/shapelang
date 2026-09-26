@@ -1,6 +1,4 @@
 import {
-  isIdentifierPart,
-  isIdentifierStart,
   literalAt,
   normalizeStaticTarget,
   readUnquotedIdentifier,
@@ -23,86 +21,53 @@ type SqlTargetRead = {
 };
 
 type SqlIdentifierSegmentRead = AnalyzerTargetSegment & {
-  start: number;
   end: number;
 };
 
 export function scanDestructiveSql(source: string, lexical: LexicalScan): SqlMatch[] {
   const matches: SqlMatch[] = [];
   const { masked } = lexical;
-  let pendingDeleteStart: number | undefined;
-  let pendingDropStart: number | undefined;
-  let statementStarted = false;
-  let cursor = 0;
+  let command: string | undefined;
+  let statementStart = 0;
 
-  while (cursor < masked.length) {
-    const char = masked[cursor] ?? "";
-    if (char === ";") {
-      pendingDeleteStart = undefined;
-      pendingDropStart = undefined;
-      statementStarted = false;
-      cursor += 1;
+  for (const match of masked.matchAll(/[A-Za-z_$][\w$]*|;/g)) {
+    const token = match[0].toUpperCase();
+    if (token === ";") {
+      command = undefined;
       continue;
     }
-    if (!isIdentifierStart(char)) {
-      cursor += 1;
-      continue;
+    if (command === undefined) {
+      command = token;
+      statementStart = match.index;
     }
-
-    const tokenStart = cursor;
-    cursor += 1;
-    while (cursor < masked.length && isIdentifierPart(masked[cursor] ?? "")) {
-      cursor += 1;
+    const end = match.index + match[0].length;
+    let effect: AnalyzerEffect;
+    let targets: SqlTargetRead[];
+    switch (command) {
+      case "DELETE":
+        if (token !== "FROM") {
+          continue;
+        }
+        effect = "HardDelete";
+        targets = readDeleteTargets(source, lexical, end);
+        break;
+      case "DROP":
+        if (token !== "TABLE") {
+          continue;
+        }
+        effect = "DropStorage";
+        targets = readDropTargets(source, lexical, end);
+        break;
+      case "TRUNCATE":
+        effect = "Truncate";
+        targets = readTruncateTargets(source, lexical, end);
+        break;
+      default:
+        continue;
     }
-    const token = masked.slice(tokenStart, cursor).toUpperCase();
-
-    if (!statementStarted) {
-      statementStarted = true;
-      if (token === "DELETE") {
-        pendingDeleteStart = tokenStart;
-      } else if (token === "DROP") {
-        pendingDropStart = tokenStart;
-      } else if (token === "TRUNCATE") {
-        matches.push(
-          ...sqlMatches(
-            "Truncate",
-            source,
-            masked,
-            tokenStart,
-            cursor,
-            readTruncateTargets(source, lexical, cursor)
-          )
-        );
-      }
-      continue;
-    }
-
-    if (pendingDeleteStart !== undefined && token === "FROM") {
-      matches.push(
-        ...sqlMatches(
-          "HardDelete",
-          source,
-          masked,
-          pendingDeleteStart,
-          cursor,
-          readDeleteTargets(source, lexical, cursor)
-        )
-      );
-      pendingDeleteStart = undefined;
-    }
-    if (pendingDropStart !== undefined && token === "TABLE") {
-      matches.push(
-        ...sqlMatches(
-          "DropStorage",
-          source,
-          masked,
-          pendingDropStart,
-          cursor,
-          readDropTargets(source, lexical, cursor)
-        )
-      );
-      pendingDropStart = undefined;
-    }
+    matches.push(...sqlMatches(effect, source, masked, statementStart, end, targets));
+    // Keep the statement consumed until its semicolon.
+    command = "";
   }
 
   return matches;
@@ -260,14 +225,13 @@ function readSqlIdentifierSegment(
             : undefined;
     return value === undefined || value.length === 0
       ? undefined
-      : { value, start, end: literal.span.end, quoted: true };
+      : { value, end: literal.span.end, quoted: true };
   }
 
   const identifier = readUnquotedIdentifier(lexical.masked, start);
   return identifier
     ? {
         value: identifier.value,
-        start,
         end: identifier.end,
         quoted: false
       }

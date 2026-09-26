@@ -12,10 +12,7 @@ import { compareShapeDiagnostics } from "../checker/diagnostics.ts";
 import type { Fact, Provenance, SemanticDiagnostic } from "../checker/model.ts";
 import { describeProvenance } from "../checker/provenance.ts";
 
-type Atom = {
-  relation: string;
-  variables: readonly string[];
-};
+type Atom = readonly [relation: string, ...variables: string[]];
 
 type Rule = {
   select: readonly string[];
@@ -39,21 +36,10 @@ type PrototypeMissingGrantDiagnostic = Extract<SemanticDiagnostic, { kind: "miss
 const MISSING_GRANT_RULE: Rule = {
   select: ["component", "function", "effect", "target"],
   when: [
-    {
-      relation: "effect",
-      variables: ["component", "function", "effect", "target"]
-    },
-    {
-      relation: "component",
-      variables: ["component"]
-    }
+    ["effect", "component", "function", "effect", "target"],
+    ["component", "component"]
   ],
-  unless: [
-    {
-      relation: "grants",
-      variables: ["component", "effect", "target"]
-    }
-  ]
+  unless: [["grants", "component", "effect", "target"]]
 };
 
 /**
@@ -113,12 +99,12 @@ function evaluateRule(input: readonly Tuple[], rule: Rule): Row[] {
   );
   let rows: Row[] = [{ bindings: new Map(), provenance: [] }];
 
-  for (const atom of rule.when) {
-    const candidates = database.filter((candidate) => candidate.relation === atom.relation);
+  for (const [relation, ...variables] of rule.when) {
+    const candidates = database.filter((candidate) => candidate.relation === relation);
     const joined: Row[] = [];
     for (const row of rows) {
       for (const candidate of candidates) {
-        const bindings = unify(atom, candidate, row.bindings);
+        const bindings = unify(variables, candidate, row.bindings);
         if (bindings) {
           joined.push({
             bindings,
@@ -130,13 +116,13 @@ function evaluateRule(input: readonly Tuple[], rule: Rule): Row[] {
     rows = joined;
   }
 
-  for (const atom of rule.unless) {
+  for (const [relation, ...variables] of rule.unless) {
     rows = rows.filter(
       (row) =>
         !database.some(
           (candidate) =>
-            candidate.relation === atom.relation &&
-            unify(atom, candidate, row.bindings) !== undefined
+            candidate.relation === relation &&
+            unify(variables, candidate, row.bindings) !== undefined
         )
     );
   }
@@ -150,16 +136,16 @@ function evaluateRule(input: readonly Tuple[], rule: Rule): Row[] {
 }
 
 function unify(
-  atom: Atom,
+  variables: readonly string[],
   tuple: Tuple,
   existing: ReadonlyMap<string, string>
 ): ReadonlyMap<string, string> | undefined {
-  if (atom.variables.length !== tuple.values.length) {
+  if (variables.length !== tuple.values.length) {
     return undefined;
   }
 
   const bindings = new Map(existing);
-  for (const [index, variable] of atom.variables.entries()) {
+  for (const [index, variable] of variables.entries()) {
     const value = tuple.values[index];
     const bound = bindings.get(variable);
     if (value === undefined || (bound !== undefined && bound !== value)) {

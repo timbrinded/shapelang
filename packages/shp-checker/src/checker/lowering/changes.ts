@@ -1,32 +1,8 @@
-import type {
-  AddDeclarationChange,
-  AddFunctionChange,
-  ChangeDecl,
-  ModifyDeclarationChange,
-  ModifyFunctionChange,
-  RemoveDeclarationChange,
-  RemoveFunctionChange
-} from "../../language/generated/ast.ts";
-import {
-  isAddDeclarationChange,
-  isAddFunctionChange,
-  isAttestationDecl,
-  isBindingDecl,
-  isComponentDecl,
-  isImplementationDecl,
-  isModifyDeclarationChange,
-  isModifyFunctionChange,
-  isRelationDecl,
-  isRemoveDeclarationChange,
-  isRemoveFunctionChange,
-  isResourceDecl,
-  isRuleDecl,
-  isTraitDecl
-} from "../../language/generated/ast.ts";
+import * as ast from "../../language/generated/ast.ts";
 import type { ComponentInfo, LoweringContext, Model, Provenance, ShapeTarget } from "../model.ts";
 import { functionTarget, splitFunctionTarget, splitQualifiedName } from "../display.ts";
 import { describeProvenance, provenance } from "../provenance.ts";
-import { resolveDeclName, resolveFunctionTargetName } from "../symbols.ts";
+import { declarationKinds, resolveDeclName, resolveFunctionTargetName } from "../symbols.ts";
 import {
   changeEventsForTransition,
   commitPlannedChange,
@@ -36,25 +12,16 @@ import {
   type ChangeTransition,
   type PlannedChange
 } from "../change-planning.ts";
-import {
-  lowerAttestation,
-  lowerBinding,
-  lowerComponent,
-  lowerFunction,
-  lowerImplementation,
-  lowerResource,
-  lowerRule,
-  lowerTrait
-} from "./declarations.ts";
+import { lowerFunction } from "./declarations.ts";
+import { lowerDeclaration } from "./dispatch.ts";
 import { emitFunctionFacts, removeFunctionFacts } from "./facts.ts";
-import { lowerRelation, removeRelation } from "./relations.ts";
 
-export function lowerChange(change: ChangeDecl, context: LoweringContext, model: Model): void {
+export function lowerChange(change: ast.ChangeDecl, context: LoweringContext, model: Model): void {
   commitPlannedChange(model, planChange(change, context, model));
 }
 
 export function planChange(
-  change: ChangeDecl,
+  change: ast.ChangeDecl,
   context: LoweringContext,
   model: Model
 ): PlannedChange {
@@ -75,19 +42,21 @@ export function planChange(
 }
 
 function applyChangeEntry(
-  change: ChangeDecl,
-  entry: ChangeDecl["entries"][number],
+  change: ast.ChangeDecl,
+  entry: ast.ChangeDecl["entries"][number],
   context: LoweringContext,
   model: Model
 ): ChangeTransition | undefined {
-  if (isAddFunctionChange(entry) || isModifyFunctionChange(entry)) {
+  if (
+    ast.isAddFunctionChange(entry) ||
+    ast.isModifyFunctionChange(entry) ||
+    ast.isRemoveFunctionChange(entry)
+  ) {
     return applyFunctionChangeEntry(change, entry, context, model);
-  } else if (isRemoveFunctionChange(entry)) {
-    return applyRemoveFunctionChangeEntry(change, entry, context, model);
-  } else if (isAddDeclarationChange(entry)) {
+  } else if (ast.isAddDeclarationChange(entry)) {
     lowerDeclaration(entry.declaration, context, model);
-  } else if (isModifyDeclarationChange(entry)) {
-    const kind = declarationKind(entry.declaration);
+  } else if (ast.isModifyDeclarationChange(entry)) {
+    const kind = declarationKinds[entry.declaration.$type];
     if (kind !== "attestation") {
       const localName = declarationName(entry.declaration);
       const targetContext = contextForDeclarationChange(kind, localName, context, model);
@@ -107,7 +76,7 @@ function applyChangeEntry(
         : undefined;
     }
     lowerDeclaration(entry.declaration, context, model);
-  } else if (isRemoveDeclarationChange(entry)) {
+  } else if (ast.isRemoveDeclarationChange(entry)) {
     const resolvedName = resolveDeclName(entry.name, entry.kind, context, model);
     const target = guardedDeclarationTarget(entry.kind, resolvedName);
     const before = target ? snapshotChangeTarget(model, target) : undefined;
@@ -128,21 +97,24 @@ function applyChangeEntry(
   return undefined;
 }
 
-function changesRelation(entry: ChangeDecl["entries"][number]): boolean {
-  if (isAddDeclarationChange(entry) || isModifyDeclarationChange(entry)) {
-    return isRelationDecl(entry.declaration);
+function changesRelation(entry: ast.ChangeDecl["entries"][number]): boolean {
+  if (ast.isAddDeclarationChange(entry) || ast.isModifyDeclarationChange(entry)) {
+    return ast.isRelationDecl(entry.declaration);
   }
-  return isRemoveDeclarationChange(entry) && entry.kind === "relation";
+  return ast.isRemoveDeclarationChange(entry) && entry.kind === "relation";
 }
 
 function applyFunctionChangeEntry(
-  change: ChangeDecl,
-  entry: AddFunctionChange | ModifyFunctionChange,
+  change: ast.ChangeDecl,
+  entry: ast.AddFunctionChange | ast.ModifyFunctionChange | ast.RemoveFunctionChange,
   context: LoweringContext,
   model: Model
 ): ChangeTransition | undefined {
-  const [componentName, functionName] = resolveFunctionTargetParts(entry.target, context, model);
+  const [componentName, functionName] = splitFunctionTarget(
+    resolveFunctionTargetName(entry.target, context, model)
+  );
   if (!componentName || !functionName) {
+    const operation = ast.isRemoveFunctionChange(entry) ? "remove fn" : entry.$type;
     model.diagnostics.push({
       kind: "unknown_name",
       nameKind: "component",
@@ -150,14 +122,15 @@ function applyFunctionChangeEntry(
       filePath: context.filePath,
       causedBy: [
         describeProvenance(
-          provenance(context.filePath, `change ${change.name} ${entry.$type} ${entry.target}`)
+          provenance(context.filePath, `change ${change.name} ${operation} ${entry.target}`)
         )
       ]
     });
     return undefined;
   }
   const component = stageComponentForFunctionChange(model, componentName);
-  if (!component) {
+  const removing = ast.isRemoveFunctionChange(entry);
+  if (!component && !removing) {
     model.diagnostics.push({
       kind: "unknown_name",
       nameKind: "component",
@@ -177,68 +150,27 @@ function applyFunctionChangeEntry(
 
   const target = functionTarget(componentName, functionName);
   const before = snapshotChangeTarget(model, target);
-  const fn = lowerFunction(entry, componentName, context, model, `change ${change.name}`);
-  removeFunctionFacts(model, componentName, functionName);
-  component.functions.set(fn.name, fn);
-  emitFunctionFacts(fn, model);
-  return isModifyFunctionChange(entry)
-    ? transitionAfter(
+  if (removing) {
+    removeFunctionFacts(model, componentName, functionName);
+    component?.functions.delete(functionName);
+  } else if (component) {
+    const fn = lowerFunction(entry, componentName, context, model, `change ${change.name}`);
+    removeFunctionFacts(model, componentName, functionName);
+    component.functions.set(fn.name, fn);
+    emitFunctionFacts(fn, model);
+  }
+  return ast.isAddFunctionChange(entry)
+    ? undefined
+    : transitionAfter(
         target,
         before,
-        entry.transforms?.labels ?? [],
+        ast.isModifyFunctionChange(entry) ? (entry.transforms?.labels ?? []) : [],
         provenance(
           context.filePath,
-          `change ${change.name} modify fn ${componentName}.${functionName}`
+          `change ${change.name} ${removing ? "remove" : "modify"} fn ${componentName}.${functionName}`
         ),
         model
-      )
-    : undefined;
-}
-
-function applyRemoveFunctionChangeEntry(
-  change: ChangeDecl,
-  entry: RemoveFunctionChange,
-  context: LoweringContext,
-  model: Model
-): ChangeTransition | undefined {
-  const [componentName, functionName] = resolveFunctionTargetParts(entry.target, context, model);
-  if (!componentName || !functionName) {
-    model.diagnostics.push({
-      kind: "unknown_name",
-      nameKind: "component",
-      name: entry.target,
-      filePath: context.filePath,
-      causedBy: [
-        describeProvenance(
-          provenance(context.filePath, `change ${change.name} remove fn ${entry.target}`)
-        )
-      ]
-    });
-    return undefined;
-  }
-  const target = functionTarget(componentName, functionName);
-  const before = snapshotChangeTarget(model, target);
-  const component = stageComponentForFunctionChange(model, componentName);
-  removeFunctionFacts(model, componentName, functionName);
-  component?.functions.delete(functionName);
-  return transitionAfter(
-    target,
-    before,
-    [],
-    provenance(
-      context.filePath,
-      `change ${change.name} remove fn ${componentName}.${functionName}`
-    ),
-    model
-  );
-}
-
-export function resolveFunctionTargetParts(
-  target: string,
-  context: LoweringContext,
-  model: Model
-): [string | undefined, string | undefined] {
-  return splitFunctionTarget(resolveFunctionTargetName(target, context, model));
+      );
 }
 
 function stageComponentForFunctionChange(
@@ -274,7 +206,7 @@ function transitionAfter(
 }
 
 function guardedDeclarationTarget(
-  kind: RemoveDeclarationChange["kind"],
+  kind: ast.RemoveDeclarationChange["kind"],
   resolvedName: string
 ): ShapeTarget | undefined {
   if (kind === "component" || kind === "resource" || kind === "relation") {
@@ -284,7 +216,7 @@ function guardedDeclarationTarget(
 }
 
 export function contextForDeclarationChange(
-  kind: RemoveDeclarationChange["kind"],
+  kind: ast.RemoveDeclarationChange["kind"],
   name: string,
   context: LoweringContext,
   model: Model
@@ -301,32 +233,8 @@ export function contextForDeclarationChange(
   };
 }
 
-export function lowerDeclaration(
-  declaration: AddDeclarationChange["declaration"] | ModifyDeclarationChange["declaration"],
-  context: LoweringContext,
-  model: Model
-): void {
-  if (isResourceDecl(declaration)) {
-    lowerResource(declaration, context, model);
-  } else if (isTraitDecl(declaration)) {
-    lowerTrait(declaration, context, model);
-  } else if (isComponentDecl(declaration)) {
-    lowerComponent(declaration, context, model);
-  } else if (isRelationDecl(declaration)) {
-    lowerRelation(declaration, context, model);
-  } else if (isImplementationDecl(declaration)) {
-    lowerImplementation(declaration, context, model);
-  } else if (isBindingDecl(declaration)) {
-    lowerBinding(declaration, context, model);
-  } else if (isAttestationDecl(declaration)) {
-    lowerAttestation(declaration, context, model);
-  } else if (isRuleDecl(declaration)) {
-    lowerRule(declaration, context, model);
-  }
-}
-
 export function removeDeclaration(
-  kind: RemoveDeclarationChange["kind"],
+  kind: ast.RemoveDeclarationChange["kind"],
   name: string,
   context: LoweringContext,
   model: Model
@@ -340,7 +248,7 @@ export function removeDeclaration(
   } else if (kind === "component") {
     model.components.delete(resolvedName);
   } else if (kind === "relation") {
-    removeRelation(resolvedName, model);
+    model.hypergraph.edges.delete(resolvedName);
   } else if (kind === "implementation") {
     model.implementations = model.implementations.filter(
       (implementation) => implementation.name !== resolvedName
@@ -352,37 +260,10 @@ export function removeDeclaration(
   }
 }
 
-export function declarationKind(
-  declaration: AddDeclarationChange["declaration"] | ModifyDeclarationChange["declaration"]
-): RemoveDeclarationChange["kind"] | "attestation" {
-  if (isResourceDecl(declaration)) {
-    return "resource";
-  }
-  if (isTraitDecl(declaration)) {
-    return "trait";
-  }
-  if (isComponentDecl(declaration)) {
-    return "component";
-  }
-  if (isRelationDecl(declaration)) {
-    return "relation";
-  }
-  if (isImplementationDecl(declaration)) {
-    return "implementation";
-  }
-  if (isBindingDecl(declaration)) {
-    return "binding";
-  }
-  if (isAttestationDecl(declaration)) {
-    return "attestation";
-  }
-  return "rule";
-}
-
 export function declarationName(
-  declaration: AddDeclarationChange["declaration"] | ModifyDeclarationChange["declaration"]
+  declaration: ast.AddDeclarationChange["declaration"] | ast.ModifyDeclarationChange["declaration"]
 ): string {
-  if (isAttestationDecl(declaration)) {
+  if (ast.isAttestationDecl(declaration)) {
     return declaration.kind;
   }
   return declaration.name;

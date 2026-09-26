@@ -88,16 +88,11 @@ describe("AST to Shape generation", () => {
 
   test("projects Rust AST JSON into a semantic draft plus optional raw trace", () => {
     const ast = rustAuditAstJson();
-    const graphResult = buildCodeSemanticGraphFromAstJson(ast);
+    const graph = graphFromAstForTest(ast);
 
-    expect(graphResult.ok).toBe(true);
-    if (!graphResult.ok) {
-      throw new Error(formatAstTestDiagnostics(graphResult.diagnostics));
-    }
-
-    expect(graphResult.value.rawNodes).toHaveLength(ast.files[0]?.nodes.length ?? 0);
+    expect(graph.rawNodes).toHaveLength(ast.files[0]?.nodes.length ?? 0);
     const output = requireGeneratedOutput(
-      generateShapeFromCodeSemanticGraph(graphResult.value, {
+      generateShapeFromCodeSemanticGraph(graph, {
         moduleName: "generated.audit",
         rawModuleName: "generated.audit.raw"
       })
@@ -252,19 +247,11 @@ describe("AST to Shape generation", () => {
   });
 
   test("flags authored AST relations when regenerated anchor fingerprints change", () => {
-    const versionOne = buildCodeSemanticGraphFromAstJson(functionFingerprintAst("fn main() {}"));
-    const versionTwo = buildCodeSemanticGraphFromAstJson(
-      functionFingerprintAst("fn main() { let x = 1; }")
-    );
+    const versionOne = graphFromAstForTest(functionFingerprintAst("fn main() {}"));
+    const versionTwo = graphFromAstForTest(functionFingerprintAst("fn main() { let x = 1; }"));
 
-    expect(versionOne.ok).toBe(true);
-    expect(versionTwo.ok).toBe(true);
-    if (!versionOne.ok || !versionTwo.ok) {
-      throw new Error("failed to build test graphs");
-    }
-
-    const firstAnchor = requireAstAnchor(versionOne.value, "MainModule.main");
-    const secondAnchor = requireAstAnchor(versionTwo.value, "MainModule.main");
+    const firstAnchor = requireAstAnchor(versionOne, "MainModule.main");
+    const secondAnchor = requireAstAnchor(versionTwo, "MainModule.main");
     expect(firstAnchor.name).toBe(secondAnchor.name);
     expect(firstAnchor.fingerprint.value).not.toBe(secondAnchor.fingerprint.value);
 
@@ -285,14 +272,14 @@ describe("AST to Shape generation", () => {
 
     const generatedVersionOne = parseShapeModule(
       requireGeneratedOutput(
-        generateShapeFromCodeSemanticGraph(versionOne.value, {
+        generateShapeFromCodeSemanticGraph(versionOne, {
           moduleName: "shape.generated.ast.main"
         })
       ).semanticShape
     );
     const generatedVersionTwo = parseShapeModule(
       requireGeneratedOutput(
-        generateShapeFromCodeSemanticGraph(versionTwo.value, {
+        generateShapeFromCodeSemanticGraph(versionTwo, {
           moduleName: "shape.generated.ast.main"
         })
       ).semanticShape
@@ -330,29 +317,23 @@ describe("AST to Shape generation", () => {
   });
 
   test("does not churn semantic fingerprints for unrelated or formatting-only edits", () => {
-    const base = buildCodeSemanticGraphFromAstJson(
+    const base = graphFromAstForTest(
       multiFunctionFingerprintAst("fn main(){let x=1;}", "fn helper() {}")
     );
-    const unrelatedChanged = buildCodeSemanticGraphFromAstJson(
+    const unrelatedChanged = graphFromAstForTest(
       multiFunctionFingerprintAst(
         "fn main() { let   x = 1; } // comment",
         "fn helper() { let y = 2; }"
       )
     );
 
-    expect(base.ok).toBe(true);
-    expect(unrelatedChanged.ok).toBe(true);
-    if (!base.ok || !unrelatedChanged.ok) {
-      throw new Error("failed to build test graphs");
-    }
-
-    const baseAnchor = requireAstAnchor(base.value, "MainModule.main");
-    const changedAnchor = requireAstAnchor(unrelatedChanged.value, "MainModule.main");
+    const baseAnchor = requireAstAnchor(base, "MainModule.main");
+    const changedAnchor = requireAstAnchor(unrelatedChanged, "MainModule.main");
     expect(baseAnchor.fingerprint.value).toBe(changedAnchor.fingerprint.value);
     // The edited sibling must move, or the stable pin above could come from an inert file.
-    expect(
-      requireAstAnchor(unrelatedChanged.value, "MainModule.helper").fingerprint.value
-    ).not.toBe(requireAstAnchor(base.value, "MainModule.helper").fingerprint.value);
+    expect(requireAstAnchor(unrelatedChanged, "MainModule.helper").fingerprint.value).not.toBe(
+      requireAstAnchor(base, "MainModule.helper").fingerprint.value
+    );
   });
 
   test("does not churn fingerprints for CRLF inside string literals", () => {

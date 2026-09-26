@@ -41,29 +41,14 @@ export function shapeCompletionContext(
   const textBeforeCursor = source.slice(lineStartOffset, cursorOffset);
   const candidateStarts = completionCandidateStarts(textBeforeCursor);
 
-  for (const start of candidateStarts) {
+  const matchingStart = candidateStarts.find((start) => {
     const prefix = textBeforeCursor.slice(start);
-    const matchingCandidates = candidates.filter((candidate) => candidate.startsWith(prefix));
-    if (matchingCandidates.length > 0) {
-      const replacementStartOffset = lineStartOffset + start;
-      return {
-        prefix,
-        replacementRange: (candidate) =>
-          completionReplacementRange(
-            document,
-            source,
-            cursorOffset,
-            replacementStartOffset,
-            candidate
-          )
-      };
-    }
-  }
-
-  const fallbackStart = candidateStarts.at(-1) ?? textBeforeCursor.length;
-  const replacementStartOffset = lineStartOffset + fallbackStart;
+    return candidates.some((candidate) => candidate.startsWith(prefix));
+  });
+  const replacementStartOffset =
+    lineStartOffset + (matchingStart ?? candidateStarts.at(-1) ?? textBeforeCursor.length);
   return {
-    prefix: "",
+    prefix: matchingStart === undefined ? "" : textBeforeCursor.slice(matchingStart),
     replacementRange: (candidate) =>
       completionReplacementRange(document, source, cursorOffset, replacementStartOffset, candidate)
   };

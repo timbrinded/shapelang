@@ -5,7 +5,7 @@
 // checker/rules/, and checker/rules.ts fixes the order the rules run in.
 import { resolve } from "node:path";
 import type { ShapeModule } from "../language/generated/ast.ts";
-import { parseShapeModule, type ParseDiagnostic } from "../parser.ts";
+import { loadShapeModules } from "../shape-files.ts";
 import type {
   CheckModuleInput,
   CheckOptions,
@@ -138,29 +138,7 @@ export async function checkShapeFiles(
   paths: string[],
   options: CheckOptions = {}
 ): Promise<CheckResult> {
-  const parsedModules: { module: ShapeModule; filePath: string }[] = [];
-  const parseDiagnostics: ParseDiagnostic[] = [];
-
-  for (const filePath of paths) {
-    try {
-      const source = await Bun.file(filePath).text();
-      const parsed = parseShapeModule(source, filePath);
-      if (parsed.ok) {
-        parsedModules.push({
-          module: parsed.module,
-          filePath
-        });
-      } else {
-        parseDiagnostics.push(...parsed.diagnostics);
-      }
-    } catch (error) {
-      parseDiagnostics.push({
-        kind: "parse",
-        filePath,
-        message: error instanceof Error ? error.message : String(error)
-      });
-    }
-  }
+  const { modules: parsedModules, diagnostics: parseDiagnostics } = await loadShapeModules(paths);
 
   if (parseDiagnostics.length > 0) {
     return {

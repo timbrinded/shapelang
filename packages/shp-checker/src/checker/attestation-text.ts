@@ -2,15 +2,7 @@
 // text without attestations against its base version, and `shp attest prune`
 // deletes stale attestations, so both use one definition of which bytes an
 // attestation occupies.
-import {
-  isAddDeclarationChange,
-  isAttestationDecl,
-  isChangeDecl,
-  isModifyDeclarationChange,
-  type AttestationDecl,
-  type ChangeEntry,
-  type ShapeModule
-} from "../language/generated/ast.ts";
+import * as ast from "../language/generated/ast.ts";
 import { attestationIdentity } from "./lowering/declarations.ts";
 import { attestationKey } from "./rules/coverage.ts";
 
@@ -20,7 +12,7 @@ export type AttestationRemoval = { text: string; removed: number };
  * The module's source with every attestation removed, or undefined when the
  * module has no source text because it was built in code rather than parsed.
  */
-export function attestationFreeText(module: ShapeModule): string | undefined {
+export function attestationFreeText(module: ast.ShapeModule): string | undefined {
   return module.$cstNode === undefined ? undefined : removeAttestations(module, () => true).text;
 }
 
@@ -33,7 +25,7 @@ export function attestationFreeText(module: ShapeModule): string | undefined {
  * its ending. Every other byte is kept.
  */
 export function removeAttestations(
-  module: ShapeModule,
+  module: ast.ShapeModule,
   shouldRemove: (key: string) => boolean
 ): AttestationRemoval {
   const ranges = attestationNodes(module)
@@ -62,19 +54,22 @@ export function removeAttestations(
   return { text, removed: ranges.length };
 }
 
-type AttestationNode = { node: AttestationDecl | ChangeEntry; attestation: AttestationDecl };
+type AttestationNode = {
+  node: ast.AttestationDecl | ast.ChangeEntry;
+  attestation: ast.AttestationDecl;
+};
 
-function attestationNodes(module: ShapeModule): AttestationNode[] {
+function attestationNodes(module: ast.ShapeModule): AttestationNode[] {
   return module.declarations.flatMap((declaration): AttestationNode[] => {
-    if (isAttestationDecl(declaration)) {
+    if (ast.isAttestationDecl(declaration)) {
       return [{ node: declaration, attestation: declaration }];
     }
-    if (!isChangeDecl(declaration)) {
+    if (!ast.isChangeDecl(declaration)) {
       return [];
     }
     return declaration.entries.flatMap((entry) =>
-      (isAddDeclarationChange(entry) || isModifyDeclarationChange(entry)) &&
-      isAttestationDecl(entry.declaration)
+      (ast.isAddDeclarationChange(entry) || ast.isModifyDeclarationChange(entry)) &&
+      ast.isAttestationDecl(entry.declaration)
         ? [{ node: entry, attestation: entry.declaration }]
         : []
     );

@@ -11,102 +11,59 @@ export function scanLexicalRegions(source: string, dialect: "sql" | "typescript"
   let cursor = 0;
 
   while (cursor < source.length) {
-    if (
-      (dialect === "typescript" && source.startsWith("//", cursor)) ||
-      (dialect === "sql" && (source.startsWith("--", cursor) || source[cursor] === "#"))
-    ) {
-      const end = consumeLineComment(source, cursor);
-      addMaskedRegion(source, masked, regionsByStart, {
-        kind: "comment",
-        span: { start: cursor, end }
-      });
-      cursor = end;
-      continue;
-    }
-    if (source.startsWith("/*", cursor)) {
-      const end = consumeBlockComment(source, cursor, dialect === "sql");
-      addMaskedRegion(source, masked, regionsByStart, {
-        kind: "comment",
-        span: { start: cursor, end }
-      });
-      cursor = end;
-      continue;
-    }
-
-    const char = source[cursor] ?? "";
-    if (dialect === "typescript" && (char === "'" || char === '"')) {
-      const consumed = consumeQuoted(source, cursor, char, false);
-      addMaskedRegion(source, masked, regionsByStart, {
-        kind: "literal",
-        span: { start: cursor, end: consumed.end },
-        contentSpan: { start: cursor + 1, end: consumed.contentEnd },
-        literalKind: char === "'" ? "single" : "double",
-        closed: consumed.closed,
-        static: true
-      });
-      cursor = consumed.end;
-      continue;
-    }
-    if (dialect === "typescript" && char === "`") {
-      const consumed = consumeTemplate(source, cursor);
-      addMaskedRegion(source, masked, regionsByStart, {
-        kind: "literal",
-        span: { start: cursor, end: consumed.end },
-        contentSpan: { start: cursor + 1, end: consumed.contentEnd },
-        literalKind: "template",
-        closed: consumed.closed,
-        static: consumed.static
-      });
-      cursor = consumed.end;
-      continue;
-    }
-    if (dialect === "sql" && (char === "'" || char === '"' || char === "`")) {
-      const consumed = consumeQuoted(source, cursor, char, true);
-      addMaskedRegion(source, masked, regionsByStart, {
-        kind: "literal",
-        span: { start: cursor, end: consumed.end },
-        contentSpan: { start: cursor + 1, end: consumed.contentEnd },
-        literalKind: char === "'" ? "single" : "quoted_identifier",
-        closed: consumed.closed,
-        static: true
-      });
-      cursor = consumed.end;
-      continue;
-    }
-    if (dialect === "sql" && char === "[") {
-      const consumed = consumeBracketIdentifier(source, cursor);
-      addMaskedRegion(source, masked, regionsByStart, {
-        kind: "literal",
-        span: { start: cursor, end: consumed.end },
-        contentSpan: { start: cursor + 1, end: consumed.contentEnd },
-        literalKind: "quoted_identifier",
-        closed: consumed.closed,
-        static: true
-      });
-      cursor = consumed.end;
-      continue;
-    }
-    if (dialect === "sql" && char === "$") {
-      const delimiter = readDollarQuoteDelimiter(source, cursor);
-      if (delimiter) {
-        const consumed = consumeDollarQuoted(source, cursor, delimiter);
-        addMaskedRegion(source, masked, regionsByStart, {
-          kind: "literal",
-          span: { start: cursor, end: consumed.end },
-          contentSpan: {
-            start: cursor + delimiter.length,
-            end: consumed.contentEnd
-          },
-          literalKind: "dollar",
-          closed: consumed.closed,
-          static: true
-        });
-        cursor = consumed.end;
+    const start = cursor;
+    const lineComment =
+      dialect === "typescript"
+        ? source.startsWith("//", start)
+        : source.startsWith("--", start) || source[start] === "#";
+    let region: LexicalRegion;
+    if (lineComment || source.startsWith("/*", start)) {
+      const end = lineComment
+        ? consumeLineComment(source, start)
+        : consumeBlockComment(source, start, dialect === "sql");
+      region = { kind: "comment", span: { start, end } };
+    } else {
+      const char = source[start] ?? "";
+      let consumed: ReturnType<typeof consumeQuoted>;
+      let literalKind: LiteralRegion["literalKind"];
+      let contentStart = start + 1;
+      let staticLiteral = true;
+      if (char === "'" || char === '"' || (dialect === "sql" && char === "`")) {
+        consumed = consumeQuoted(source, start, char, dialect === "sql");
+        literalKind = char === "'" ? "single" : dialect === "sql" ? "quoted_identifier" : "double";
+      } else if (dialect === "typescript" && char === "`") {
+        const template = consumeTemplate(source, start);
+        consumed = template;
+        literalKind = "template";
+        staticLiteral = template.static;
+      } else if (dialect === "sql" && char === "[") {
+        consumed = consumeBracketIdentifier(source, start);
+        literalKind = "quoted_identifier";
+      } else if (dialect === "sql" && char === "$") {
+        const delimiter = readDollarQuoteDelimiter(source, start);
+        if (!delimiter) {
+          cursor += 1;
+          continue;
+        }
+        consumed = consumeDollarQuoted(source, start, delimiter);
+        literalKind = "dollar";
+        contentStart = start + delimiter.length;
+      } else {
+        cursor += 1;
         continue;
       }
-    }
 
-    cursor += 1;
+      region = {
+        kind: "literal",
+        span: { start, end: consumed.end },
+        contentSpan: { start: contentStart, end: consumed.contentEnd },
+        literalKind,
+        closed: consumed.closed,
+        static: staticLiteral
+      };
+    }
+    addMaskedRegion(source, masked, regionsByStart, region);
+    cursor = region.span.end;
   }
 
   return {
@@ -351,18 +308,13 @@ function consumeBracketIdentifier(
 }
 
 function readDollarQuoteDelimiter(source: string, start: number): string | undefined {
-  let cursor = start + 1;
-  if (source[cursor] === "$") {
-    return "$$";
-  }
-  if (!isIdentifierStart(source[cursor] ?? "")) {
+  // A dollar quote cannot start inside an unquoted SQL identifier.
+  if (isIdentifierPart(source[start - 1] ?? "") || source.charCodeAt(start - 1) >= 0x80) {
     return undefined;
   }
-  cursor += 1;
-  while (cursor < source.length && isIdentifierPart(source[cursor] ?? "")) {
-    cursor += 1;
-  }
-  return source[cursor] === "$" ? source.slice(start, cursor + 1) : undefined;
+  const delimiter = /\$(?:[A-Za-z_][A-Za-z_0-9]*)?\$/y;
+  delimiter.lastIndex = start;
+  return delimiter.exec(source)?.[0];
 }
 
 function consumeDollarQuoted(

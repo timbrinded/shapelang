@@ -20,7 +20,8 @@ export function normalizeTreeSitterFile(
   path: string,
   language: string,
   source: string,
-  root: unknown
+  root: unknown,
+  checkParseErrors = false
 ): Pick<CodeSemanticGraph, "files" | "rawNodes" | "diagnostics"> {
   const diagnostics: AstGenerationDiagnostic[] = [];
   const rawNodes: RawAstNode[] = [];
@@ -28,13 +29,21 @@ export function normalizeTreeSitterFile(
   const fileId = stableShapeId(`file_${path}`, "File");
   const byteMap = makeByteToStringIndexMap(source);
   let sequence = 0;
+  let hasParseError = false;
 
-  function addNode(
-    node: unknown,
-    parentId: string | undefined,
-    childIndex: number | undefined,
-    fieldName: string | undefined
-  ): string {
+  let rootNodeId = "";
+  const stack: {
+    node: unknown;
+    parentId: string | undefined;
+    childIndex: number | undefined;
+    fieldName: string | undefined;
+  }[] = [{ node: root, parentId: undefined, childIndex: undefined, fieldName: undefined }];
+  while (stack.length > 0) {
+    const frame = stack.pop();
+    if (!frame) {
+      continue;
+    }
+    const { node, parentId, childIndex, fieldName } = frame;
     const id = stableShapeId(`${path}_${sequence}_${nodeKind(node)}`, "AstNode");
     sequence += 1;
     const byteRange = nodeByteRange(node);
@@ -55,24 +64,16 @@ export function normalizeTreeSitterFile(
       textHash: text ? stableHash(text) : undefined,
       text
     });
-    return id;
-  }
-
-  let rootNodeId = "";
-  const stack: {
-    node: unknown;
-    parentId: string | undefined;
-    childIndex: number | undefined;
-    fieldName: string | undefined;
-  }[] = [{ node: root, parentId: undefined, childIndex: undefined, fieldName: undefined }];
-  while (stack.length > 0) {
-    const frame = stack.pop();
-    if (!frame) {
-      continue;
-    }
-    const id = addNode(frame.node, frame.parentId, frame.childIndex, frame.fieldName);
     if (!frame.parentId) {
       rootNodeId = id;
+    }
+    if (checkParseErrors && !hasParseError && node) {
+      hasParseError =
+        (callBooleanMethod(node, ["hasError", "has_error"]) ??
+          booleanPropertyFromUnknown(node, "hasError") ??
+          false) ||
+        nodeKind(node) === "ERROR" ||
+        nodeKind(node) === "MISSING";
     }
     const children = nodeChildren(frame.node);
     for (let index = children.length - 1; index >= 0; index -= 1) {
@@ -84,6 +85,15 @@ export function normalizeTreeSitterFile(
     }
   }
 
+  if (hasParseError) {
+    diagnostics.push({
+      kind: "error",
+      code: "parse_error",
+      path,
+      message: `${path} contains Tree-sitter ERROR or MISSING nodes`
+    });
+  }
+
   return {
     files: [{ id: fileId, path, language, rootNodeId, sourceHash, parser: "tree-sitter" }],
     rawNodes,
@@ -92,14 +102,7 @@ export function normalizeTreeSitterFile(
 }
 
 export function rootNodeFromTree(tree: unknown): unknown | undefined {
-  if (!tree) {
-    return undefined;
-  }
-  const root = propertyOrMethodValue(tree, ["rootNode", "root_node"]);
-  if (root) {
-    return root;
-  }
-  return undefined;
+  return propertyOrMethodValue(tree, ["rootNode", "root_node"]) || undefined;
 }
 
 function nodeKind(node: unknown): string {
@@ -203,34 +206,6 @@ function nodeByteRange(node: unknown): { startByte?: number; endByte?: number } 
   };
 }
 
-export function nodeHasError(node: unknown): boolean {
-  const stack = [node];
-  while (stack.length > 0) {
-    const current = stack.pop();
-    if (!current) {
-      continue;
-    }
-    if (
-      callBooleanMethod(current, ["hasError", "has_error"]) ??
-      booleanPropertyFromUnknown(current, "hasError") ??
-      false
-    ) {
-      return true;
-    }
-    if (nodeKind(current) === "ERROR" || nodeKind(current) === "MISSING") {
-      return true;
-    }
-    const children = nodeChildren(current);
-    for (let index = children.length - 1; index >= 0; index -= 1) {
-      const child = children[index];
-      if (child) {
-        stack.push(child.node);
-      }
-    }
-  }
-  return false;
-}
-
 function positionValue(value: unknown): { row: number; column: number } | undefined {
   if (!isRecord(value)) {
     return undefined;
@@ -273,12 +248,8 @@ function callMethod(receiver: unknown, names: string[], args: unknown[]): unknow
   return undefined;
 }
 
-function callStringMethod(
-  node: unknown,
-  names: string[],
-  args: unknown[] = []
-): string | undefined {
-  const value = callMethod(node, names, args);
+function callStringMethod(node: unknown, names: string[]): string | undefined {
+  const value = callMethod(node, names, []);
   return typeof value === "string" ? value : undefined;
 }
 

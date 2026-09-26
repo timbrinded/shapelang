@@ -18,7 +18,8 @@ import type {
   LexicalRegion,
   LexicalScan,
   LiteralRegion,
-  SourceSpan
+  SourceSpan,
+  SqlMatch
 } from "./analyzer-types.ts";
 
 export { compareAnalyzerHintsToShape, formatAnalyzerWarnings } from "./analyzer-shape.ts";
@@ -88,7 +89,9 @@ export function analyzeSourceText(sourcePath: string, source: string): AnalyzerH
   const isSqlFile = sourcePath.toLowerCase().endsWith(".sql");
   const lexical = scanLexicalRegions(source, isSqlFile ? "sql" : "typescript");
   const matches = isSqlFile
-    ? collectSqlFileMatches(source, lexical)
+    ? scanDestructiveSql(source, lexical).map((match) =>
+        analyzerMatchFromSql(match, match.statementSpan, 0)
+      )
     : collectTypeScriptMatches(source, lexical);
   const functionScopes = isSqlFile ? [] : collectTypeScriptFunctionScopes(lexical.masked);
   const lineStarts = collectLineStarts(source);
@@ -130,16 +133,20 @@ export function analyzeSourceText(sourcePath: string, source: string): AnalyzerH
   return hints;
 }
 
-function collectSqlFileMatches(source: string, lexical: LexicalScan): AnalyzerMatch[] {
-  return scanDestructiveSql(source, lexical).map((match) => ({
+function analyzerMatchFromSql(
+  match: SqlMatch,
+  evidenceSpan: SourceSpan,
+  offset: number
+): AnalyzerMatch {
+  return {
     effect: match.effect,
-    span: match.span,
-    evidenceSpan: match.statementSpan,
-    lineOffset: match.span.start,
+    span: shiftSpan(match.span, offset),
+    evidenceSpan,
+    lineOffset: match.span.start + offset,
     ...(match.target === undefined ? {} : { target: match.target }),
     ...(match.targetIdentity === undefined ? {} : { targetIdentity: match.targetIdentity }),
-    ...(match.targetSpan === undefined ? {} : { targetSpan: match.targetSpan })
-  }));
+    ...(match.targetSpan === undefined ? {} : { targetSpan: shiftSpan(match.targetSpan, offset) })
+  };
 }
 
 function collectTypeScriptMatches(source: string, lexical: LexicalScan): AnalyzerMatch[] {
@@ -242,19 +249,7 @@ function collectRawSqlMatches(source: string, lexical: LexicalScan): AnalyzerMat
       const sqlLexical = scanLexicalRegions(sql, "sql");
       const evidenceSpan = callEvidenceSpan(source, sinkStart, literal.span.end);
       for (const sqlMatch of scanDestructiveSql(sql, sqlLexical)) {
-        matches.push({
-          effect: sqlMatch.effect,
-          span: shiftSpan(sqlMatch.span, literal.contentSpan.start),
-          evidenceSpan,
-          lineOffset: sqlMatch.span.start + literal.contentSpan.start,
-          ...(sqlMatch.target === undefined ? {} : { target: sqlMatch.target }),
-          ...(sqlMatch.targetIdentity === undefined
-            ? {}
-            : { targetIdentity: sqlMatch.targetIdentity }),
-          ...(sqlMatch.targetSpan === undefined
-            ? {}
-            : { targetSpan: shiftSpan(sqlMatch.targetSpan, literal.contentSpan.start) })
-        });
+        matches.push(analyzerMatchFromSql(sqlMatch, evidenceSpan, literal.contentSpan.start));
       }
     }
   }

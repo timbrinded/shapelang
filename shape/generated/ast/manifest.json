@@ -738,6 +738,13 @@
       ]
     },
     {
+      "module": "shape.generated.ast.packages.shp_checker.src.checker.lowering.dispatch",
+      "path": "shape/generated/ast/packages/shp-checker/src/checker/lowering/dispatch.shape",
+      "sources": [
+        "packages/shp-checker/src/checker/lowering/dispatch.ts"
+      ]
+    },
+    {
       "module": "shape.generated.ast.packages.shp_checker.src.checker.lowering.facts",
       "path": "shape/generated/ast/packages/shp-checker/src/checker/lowering/facts.shape",
       "sources": [
@@ -976,6 +983,13 @@
       ]
     },
     {
+      "module": "shape.generated.ast.packages.shp_checker.src.shape_files",
+      "path": "shape/generated/ast/packages/shp-checker/src/shape-files.shape",
+      "sources": [
+        "packages/shp-checker/src/shape-files.ts"
+      ]
+    },
+    {
       "module": "shape.generated.ast.packages.shp_checker.src.shape_strings_test",
       "path": "shape/generated/ast/packages/shp-checker/src/shape-strings.test.shape",
       "sources": [
@@ -1137,13 +1151,6 @@
       ]
     },
     {
-      "module": "shape.generated.ast.packages.shp_cli.src.commands.explain.impl",
-      "path": "shape/generated/ast/packages/shp-cli/src/commands/explain/impl.shape",
-      "sources": [
-        "packages/shp-cli/src/commands/explain/impl.ts"
-      ]
-    },
-    {
       "module": "shape.generated.ast.packages.shp_cli.src.commands.fmt.command",
       "path": "shape/generated/ast/packages/shp-cli/src/commands/fmt/command.shape",
       "sources": [
@@ -1193,24 +1200,10 @@
       ]
     },
     {
-      "module": "shape.generated.ast.packages.shp_cli.src.commands.lsp.impl",
-      "path": "shape/generated/ast/packages/shp-cli/src/commands/lsp/impl.shape",
-      "sources": [
-        "packages/shp-cli/src/commands/lsp/impl.ts"
-      ]
-    },
-    {
       "module": "shape.generated.ast.packages.shp_cli.src.commands.generated_memory.command",
       "path": "shape/generated/ast/packages/shp-cli/src/commands/memory/command.shape",
       "sources": [
         "packages/shp-cli/src/commands/memory/command.ts"
-      ]
-    },
-    {
-      "module": "shape.generated.ast.packages.shp_cli.src.commands.generated_memory.impl",
-      "path": "shape/generated/ast/packages/shp-cli/src/commands/memory/impl.shape",
-      "sources": [
-        "packages/shp-cli/src/commands/memory/impl.ts"
       ]
     },
     {
@@ -1435,6 +1428,13 @@
       "path": "shape/generated/ast/plugins/shapelang/skills/unix-system-visualiser/scripts/journey-model.test.shape",
       "sources": [
         "plugins/shapelang/skills/unix-system-visualiser/scripts/journey-model.test.mjs"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.scripts.build_release_assets_test",
+      "path": "shape/generated/ast/scripts/build-release-assets.test.shape",
+      "sources": [
+        "scripts/build-release-assets.test.ts"
       ]
     },
     {

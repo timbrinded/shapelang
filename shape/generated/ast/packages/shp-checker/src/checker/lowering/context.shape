@@ -8,42 +8,32 @@ trait GeneratedCandidate {
 
 resource ContextModuleEmitGuardFactsAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/checker/lowering/context.ts#emitGuardFacts")
-  fingerprint ast.semantic_subtree_v1("sha256:1433f08ed46f6aa54f4c4a48b148f8323afb039b4944b6ccc23a5b5ed88eaeda")
+  fingerprint ast.semantic_subtree_v1("sha256:c21b6415f89c0eaf00ecab73da8c2dedaba8bea65f2d23e187e4003d0ddc2f7f")
 }
 
-resource ContextModuleLowerContextMemberAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/lowering/context.ts#lowerContextMember")
-  fingerprint ast.semantic_subtree_v1("sha256:10df3bfc6819415ed79c6afc5e988d5176da61c5df3d06cb1b2ea526a6733bb2")
-}
-
-resource ContextModuleLowerMemoryAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/lowering/context.ts#lowerMemory")
-  fingerprint ast.semantic_subtree_v1("sha256:0364af9d0f2c4ddcdf32f370ade679608a69c2fbf7f1c3960e7735c728bd5766")
+resource ContextModuleLowerContextObjectAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/lowering/context.ts#lowerContextObject")
+  fingerprint ast.semantic_subtree_v1("sha256:4ffd5eecd5d4703477544851d5866711aeaa2933c85151dc8576be5ae74bdb9c")
 }
 
 resource ContextModuleLowerPolicyAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/checker/lowering/context.ts#lowerPolicy")
-  fingerprint ast.semantic_subtree_v1("sha256:5bbefd29979b437f6d149f2c1f7373a185cf25567ed0ed24582fd8a67f6d74a2")
-}
-
-resource ContextModuleLowerRationaleAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/lowering/context.ts#lowerRationale")
-  fingerprint ast.semantic_subtree_v1("sha256:0d2709a0177c6e62b01e049a10e02e231f2ec6f837bf4f2711255db9e8015dc4")
+  fingerprint ast.semantic_subtree_v1("sha256:1a3a48cdcdaafd05d799ce31df50ff2a3c098b4e33307723d8eff896c3c72fdc")
 }
 
 resource ContextModuleLowerReevaluationAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/checker/lowering/context.ts#lowerReevaluation")
-  fingerprint ast.semantic_subtree_v1("sha256:cfd6e74b872591a28a35cb838d9e9bddb4c726e99bd3639bb798395686998377")
+  fingerprint ast.semantic_subtree_v1("sha256:1aa0cb7783c921812c3830db31ed96a04b3f945bb3f7aeb8cbc5aaa31343d7c9")
 }
 
 resource ContextModuleLowerRoleAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/checker/lowering/context.ts#lowerRole")
-  fingerprint ast.semantic_subtree_v1("sha256:320d7d69a514ef2070f5cacab9e9bf3dc5f93a475b2f5f9bededaa174dd20aa8")
+  fingerprint ast.semantic_subtree_v1("sha256:25bf36e719e1b8f5078c7be768d042472c942153d964572800b974e861560194")
 }
 
 resource ContextModulePushGuardAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/checker/lowering/context.ts#pushGuard")
-  fingerprint ast.semantic_subtree_v1("sha256:9cb4b5ca8a9df01ebe5982e7b9a730b53d0a412c347302cac72956e9e237b472")
+  fingerprint ast.semantic_subtree_v1("sha256:f910eb7e2be410f50d11629e21851267f47836612232fafe248f30416fae7ee2")
 }
 
 resource ContextModulePushProtectsAstAnchor : GeneratedAstAnchor {
@@ -55,17 +45,11 @@ component ContextModule : GeneratedCandidate {
   fn emitGuardFacts
     source ts("packages/shp-checker/src/checker/lowering/context.ts#emitGuardFacts")
     effects unknown
-  fn lowerContextMember
-    source ts("packages/shp-checker/src/checker/lowering/context.ts#lowerContextMember")
-    effects unknown
-  fn lowerMemory
-    source ts("packages/shp-checker/src/checker/lowering/context.ts#lowerMemory")
+  fn lowerContextObject
+    source ts("packages/shp-checker/src/checker/lowering/context.ts#lowerContextObject")
     effects unknown
   fn lowerPolicy
     source ts("packages/shp-checker/src/checker/lowering/context.ts#lowerPolicy")
-    effects unknown
-  fn lowerRationale
-    source ts("packages/shp-checker/src/checker/lowering/context.ts#lowerRationale")
     effects unknown
   fn lowerReevaluation
     source ts("packages/shp-checker/src/checker/lowering/context.ts#lowerReevaluation")
@@ -85,47 +69,31 @@ relation ContextModuleEmitGuardFactsGeneratedFromContextModuleEmitGuardFactsAstA
   kind generated_from
   connects ContextModule -> ContextModuleEmitGuardFactsAstAnchor
   roles { ContextModule as generated, ContextModuleEmitGuardFactsAstAnchor as syntax }
-  expects ContextModuleEmitGuardFactsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1433f08ed46f6aa54f4c4a48b148f8323afb039b4944b6ccc23a5b5ed88eaeda")
+  expects ContextModuleEmitGuardFactsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c21b6415f89c0eaf00ecab73da8c2dedaba8bea65f2d23e187e4003d0ddc2f7f")
   summary "fn ContextModule.emitGuardFacts generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/context.ts#emitGuardFacts."
 }
 
-relation ContextModuleLowerContextMemberGeneratedFromContextModuleLowerContextMemberAstAnchor {
+relation ContextModuleLowerContextObjectGeneratedFromContextModuleLowerContextObjectAstAnchor {
   kind generated_from
-  connects ContextModule -> ContextModuleLowerContextMemberAstAnchor
-  roles { ContextModule as generated, ContextModuleLowerContextMemberAstAnchor as syntax }
-  expects ContextModuleLowerContextMemberAstAnchor fingerprint ast.semantic_subtree_v1("sha256:10df3bfc6819415ed79c6afc5e988d5176da61c5df3d06cb1b2ea526a6733bb2")
-  summary "fn ContextModule.lowerContextMember generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/context.ts#lowerContextMember."
-}
-
-relation ContextModuleLowerMemoryGeneratedFromContextModuleLowerMemoryAstAnchor {
-  kind generated_from
-  connects ContextModule -> ContextModuleLowerMemoryAstAnchor
-  roles { ContextModule as generated, ContextModuleLowerMemoryAstAnchor as syntax }
-  expects ContextModuleLowerMemoryAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0364af9d0f2c4ddcdf32f370ade679608a69c2fbf7f1c3960e7735c728bd5766")
-  summary "fn ContextModule.lowerMemory generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/context.ts#lowerMemory."
+  connects ContextModule -> ContextModuleLowerContextObjectAstAnchor
+  roles { ContextModule as generated, ContextModuleLowerContextObjectAstAnchor as syntax }
+  expects ContextModuleLowerContextObjectAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4ffd5eecd5d4703477544851d5866711aeaa2933c85151dc8576be5ae74bdb9c")
+  summary "fn ContextModule.lowerContextObject generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/context.ts#lowerContextObject."
 }
 
 relation ContextModuleLowerPolicyGeneratedFromContextModuleLowerPolicyAstAnchor {
   kind generated_from
   connects ContextModule -> ContextModuleLowerPolicyAstAnchor
   roles { ContextModule as generated, ContextModuleLowerPolicyAstAnchor as syntax }
-  expects ContextModuleLowerPolicyAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5bbefd29979b437f6d149f2c1f7373a185cf25567ed0ed24582fd8a67f6d74a2")
+  expects ContextModuleLowerPolicyAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1a3a48cdcdaafd05d799ce31df50ff2a3c098b4e33307723d8eff896c3c72fdc")
   summary "fn ContextModule.lowerPolicy generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/context.ts#lowerPolicy."
-}
-
-relation ContextModuleLowerRationaleGeneratedFromContextModuleLowerRationaleAstAnchor {
-  kind generated_from
-  connects ContextModule -> ContextModuleLowerRationaleAstAnchor
-  roles { ContextModule as generated, ContextModuleLowerRationaleAstAnchor as syntax }
-  expects ContextModuleLowerRationaleAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0d2709a0177c6e62b01e049a10e02e231f2ec6f837bf4f2711255db9e8015dc4")
-  summary "fn ContextModule.lowerRationale generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/context.ts#lowerRationale."
 }
 
 relation ContextModuleLowerReevaluationGeneratedFromContextModuleLowerReevaluationAstAnchor {
   kind generated_from
   connects ContextModule -> ContextModuleLowerReevaluationAstAnchor
   roles { ContextModule as generated, ContextModuleLowerReevaluationAstAnchor as syntax }
-  expects ContextModuleLowerReevaluationAstAnchor fingerprint ast.semantic_subtree_v1("sha256:cfd6e74b872591a28a35cb838d9e9bddb4c726e99bd3639bb798395686998377")
+  expects ContextModuleLowerReevaluationAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1aa0cb7783c921812c3830db31ed96a04b3f945bb3f7aeb8cbc5aaa31343d7c9")
   summary "fn ContextModule.lowerReevaluation generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/context.ts#lowerReevaluation."
 }
 
@@ -133,7 +101,7 @@ relation ContextModuleLowerRoleGeneratedFromContextModuleLowerRoleAstAnchor {
   kind generated_from
   connects ContextModule -> ContextModuleLowerRoleAstAnchor
   roles { ContextModule as generated, ContextModuleLowerRoleAstAnchor as syntax }
-  expects ContextModuleLowerRoleAstAnchor fingerprint ast.semantic_subtree_v1("sha256:320d7d69a514ef2070f5cacab9e9bf3dc5f93a475b2f5f9bededaa174dd20aa8")
+  expects ContextModuleLowerRoleAstAnchor fingerprint ast.semantic_subtree_v1("sha256:25bf36e719e1b8f5078c7be768d042472c942153d964572800b974e861560194")
   summary "fn ContextModule.lowerRole generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/context.ts#lowerRole."
 }
 
@@ -141,7 +109,7 @@ relation ContextModulePushGuardGeneratedFromContextModulePushGuardAstAnchor {
   kind generated_from
   connects ContextModule -> ContextModulePushGuardAstAnchor
   roles { ContextModule as generated, ContextModulePushGuardAstAnchor as syntax }
-  expects ContextModulePushGuardAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9cb4b5ca8a9df01ebe5982e7b9a730b53d0a412c347302cac72956e9e237b472")
+  expects ContextModulePushGuardAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f910eb7e2be410f50d11629e21851267f47836612232fafe248f30416fae7ee2")
   summary "fn ContextModule.pushGuard generated from typescript function_declaration at packages/shp-checker/src/checker/lowering/context.ts#pushGuard."
 }
 

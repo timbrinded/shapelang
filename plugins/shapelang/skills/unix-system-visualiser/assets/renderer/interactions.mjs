@@ -83,7 +83,7 @@ function releasePointer(event) {
   if (canvas.hasPointerCapture(event.pointerId)) {
     canvas.releasePointerCapture(event.pointerId);
   }
-  if (!wasDragged) {
+  if (!wasDragged && event.type === "pointerup") {
     const node = nodeUnderPointer(event);
     if (node) {
       focusNode(node, true);
@@ -95,16 +95,7 @@ function releasePointer(event) {
 }
 
 canvas.addEventListener("pointerup", releasePointer);
-canvas.addEventListener("pointercancel", (event) => {
-  if (!state.pointer || state.pointer.id !== event.pointerId) {
-    return;
-  }
-  state.pointer = null;
-  if (canvas.hasPointerCapture(event.pointerId)) {
-    canvas.releasePointerCapture(event.pointerId);
-  }
-  scheduleRender();
-});
+canvas.addEventListener("pointercancel", releasePointer);
 canvas.addEventListener(
   "wheel",
   (event) => {

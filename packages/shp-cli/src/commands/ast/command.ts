@@ -5,38 +5,21 @@ import {
   type SourceLanguageName
 } from "@shape/shp-checker";
 import type { CliContext } from "../../context";
-import { requiredStringArguments } from "../../parameters";
+import { requiredStringArguments, optionalStringFlag, optionalBooleanFlag } from "../../parameters";
 import type { AstJsonFlags, AstSourceFlags } from "./impl";
 
-const moduleFlag = {
-  kind: "parsed" as const,
-  parse: (input: string) => input,
-  optional: true as const,
-  brief: "Module name for the generated Shape draft.",
-  placeholder: "NAME"
-};
+const moduleFlag = optionalStringFlag("Module name for the generated Shape draft.", "NAME");
 
-const includeAstLayerFlag = {
-  kind: "boolean" as const,
-  optional: true as const,
-  brief: "Include raw AST resources and ast_child relations."
-};
+const includeAstLayerFlag = optionalBooleanFlag(
+  "Include raw AST resources and ast_child relations."
+);
 
-const rawOutFlag = {
-  kind: "parsed" as const,
-  parse: (input: string) => input,
-  optional: true as const,
-  brief: "Write raw AST trace Shape to a sidecar file.",
-  placeholder: "PATH"
-};
+const rawOutFlag = optionalStringFlag("Write raw AST trace Shape to a sidecar file.", "PATH");
 
-const outDirFlag = {
-  kind: "parsed" as const,
-  parse: (input: string) => input,
-  optional: true as const,
-  brief: "Write generated semantic AST Shape files under a directory.",
-  placeholder: "DIR"
-};
+const outDirFlag = optionalStringFlag(
+  "Write generated semantic AST Shape files under a directory.",
+  "DIR"
+);
 
 const astSourceCommand = buildCommand<AstSourceFlags, string[], CliContext>({
   loader: async () => (await import("./impl")).astSource,
@@ -53,16 +36,10 @@ const astSourceCommand = buildCommand<AstSourceFlags, string[], CliContext>({
       includeAstLayer: includeAstLayerFlag,
       rawOut: rawOutFlag,
       outDir: outDirFlag,
-      check: {
-        kind: "boolean",
-        optional: true,
-        brief: "With --out-dir, fail when generated files are not up to date."
-      },
-      allowParseErrors: {
-        kind: "boolean",
-        optional: true,
-        brief: "Emit a draft even when Tree-sitter reports syntax errors."
-      }
+      check: optionalBooleanFlag("With --out-dir, fail when generated files are not up to date."),
+      allowParseErrors: optionalBooleanFlag(
+        "Emit a draft even when Tree-sitter reports syntax errors."
+      )
     },
     positional: requiredStringArguments(1, "Source files to parse.", "files")
   },

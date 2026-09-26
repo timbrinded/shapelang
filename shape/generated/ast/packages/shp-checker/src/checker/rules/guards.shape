@@ -8,7 +8,7 @@ trait GeneratedCandidate {
 
 resource GuardsModuleBuildGuardContextsAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/checker/rules/guards.ts#buildGuardContexts")
-  fingerprint ast.semantic_subtree_v1("sha256:571fee17f904e67cd156ae1ebb4c3b14cedc50e0cade714b595d9c9ccb6fd4f2")
+  fingerprint ast.semantic_subtree_v1("sha256:7984ba8fca83167df2bc4390eccae625ac084d3cb5a93b2183029211a0f7ddb3")
 }
 
 resource GuardsModuleCheckFreshnessAstAnchor : GeneratedAstAnchor {
@@ -53,7 +53,7 @@ relation GuardsModuleBuildGuardContextsGeneratedFromGuardsModuleBuildGuardContex
   kind generated_from
   connects GuardsModule -> GuardsModuleBuildGuardContextsAstAnchor
   roles { GuardsModule as generated, GuardsModuleBuildGuardContextsAstAnchor as syntax }
-  expects GuardsModuleBuildGuardContextsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:571fee17f904e67cd156ae1ebb4c3b14cedc50e0cade714b595d9c9ccb6fd4f2")
+  expects GuardsModuleBuildGuardContextsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7984ba8fca83167df2bc4390eccae625ac084d3cb5a93b2183029211a0f7ddb3")
   summary "fn GuardsModule.buildGuardContexts generated from typescript function_declaration at packages/shp-checker/src/checker/rules/guards.ts#buildGuardContexts."
 }
 

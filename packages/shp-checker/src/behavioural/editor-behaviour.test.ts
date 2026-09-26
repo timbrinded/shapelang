@@ -536,7 +536,7 @@ describe("#63 NEGATIVE CONTROL", () => {
   test(
     lockedIntended(
       "an ambiguous unqualified name never resolves to the wrong scope; a wrong-scope qualified lookup is undefined",
-      "packages/shp-checker/src/editor.ts symbolMatches scope discipline"
+      "packages/shp-checker/src/editor.ts getDefinitionLocation scope discipline"
     ),
     () => {
       // SCOPED_SOURCE has Alpha.handle (line 4) and Beta.handle (line 9). The

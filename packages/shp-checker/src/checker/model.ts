@@ -1,8 +1,6 @@
-// Checker data model: the effective-model and fact/diagnostic shapes the rest
-// of the checker reads and writes. This module is deliberately behavior-free —
-// it defines data shapes only. Lowering, rules, diagnostics, and query output
-// all import their types from here so there is a single source of truth for the
-// model and no behavioral module owns the shared vocabulary.
+// Shared checker records and empty-model construction. Model derives from its
+// constructor so collection types and initialization have one source of truth.
+// This module does not lower declarations or evaluate rules.
 import type {
   AddFunctionChange,
   FunctionSummary,
@@ -18,59 +16,72 @@ import type { IsoDateString } from "./iso-date.ts";
 
 export type { ChangeTrigger, Provenance, ShapeTarget } from "../shape-domain.ts";
 
-export type SemanticDiagnostic =
-  | {
-      kind: "final_forbidden_effect";
-      component: string;
-      functionName: string;
-      effect: string;
-      target: string;
+type ProvenancedRecord = {
+  provenance: Provenance;
+};
+
+type NamedDeclaration = ProvenancedRecord & {
+  name: string;
+};
+
+type FunctionLocation = {
+  component: string;
+  functionName: string;
+};
+
+type FunctionEffect = FunctionLocation & {
+  effect: string;
+  target: string;
+};
+
+type ShapeLocation = {
+  targetKind: TargetKind;
+  target: string;
+};
+
+type GuardedShapeLocation = ShapeLocation & {
+  guardKind: ContextKind;
+  guard: string;
+};
+
+type DiagnosticContext = {
+  filePath?: string;
+  causedBy: string[];
+};
+
+type DiscriminatedUnion<Payloads> = {
+  [Kind in keyof Payloads]: { kind: Kind } & Payloads[Kind];
+}[keyof Payloads];
+
+type InvalidDeclarationDiagnostic = {
+  name: string;
+  reason: string;
+};
+
+export type SemanticDiagnostic = DiagnosticContext &
+  DiscriminatedUnion<{
+    final_forbidden_effect: FunctionEffect & {
       trait: string;
       evidence?: string;
-      filePath?: string;
-      causedBy: string[];
-    }
-  | {
-      kind: "missing_grant";
-      component: string;
-      functionName: string;
-      effect: string;
-      target: string;
-      filePath?: string;
-      causedBy: string[];
-    }
-  | {
-      kind: "unknown_effects";
-      component: string;
-      functionName: string;
+    };
+    missing_grant: FunctionEffect;
+    unknown_effects: FunctionLocation & {
       severity: "error" | "warning";
-      filePath?: string;
-      causedBy: string[];
-    }
-  | {
-      kind: "unknown_name";
+    };
+    unknown_name: {
       nameKind: "resource" | "component" | "trait" | "relation_endpoint";
       name: string;
-      filePath?: string;
-      causedBy: string[];
-    }
-  | {
-      kind: "ambiguous_name";
+    };
+    ambiguous_name: {
       nameKind: DeclarationKind | "relation_endpoint";
       name: string;
       matches: string[];
-      filePath?: string;
-      causedBy: string[];
-    }
-  | {
-      kind: "invalid_rule";
+    };
+    invalid_rule: {
       rule: string;
       reason: string;
-      filePath?: string;
-      causedBy: string[];
-    }
-  | {
-      kind: "duplicate_declaration";
+    };
+    duplicate_declaration: {
       declarationKind:
         | "resource"
         | "component"
@@ -82,197 +93,102 @@ export type SemanticDiagnostic =
         | "memory"
         | "reevaluation";
       name: string;
-      filePath?: string;
-      causedBy: string[];
-    }
-  | {
-      kind: "duplicate_fingerprint";
+    };
+    duplicate_fingerprint: {
       resource: string;
       provider: string;
-      filePath?: string;
-      causedBy: string[];
-    }
-  | {
-      kind: "missing_shape_update";
+    };
+    missing_shape_update: {
       changedFile: string;
       implementation: string;
       glob: string;
-      filePath?: string;
-      causedBy: string[];
-    }
-  | {
-      kind: "missing_bound_docs_change";
+    };
+    missing_bound_docs_change: {
       binding: string;
       changedFile: string;
       requiredPaths: string[];
       attestationKinds: string[];
-      filePath?: string;
-      causedBy: string[];
-    }
-  | {
-      kind: "forbidden_hypercycle";
+    };
+    forbidden_hypercycle: {
       rule: string;
       vertices: string[];
       hyperedges: { name: string; kind: string }[];
-      filePath?: string;
-      causedBy: string[];
-    }
-  | {
-      kind: "forbidden_path";
+    };
+    forbidden_path: {
       rule: string;
       source: string;
       target: string;
       kinds: string[];
       steps: { from: string; to: string; relation: string; kind: string }[];
-      filePath?: string;
-      causedBy: string[];
-    }
-  | {
-      kind: "forbidden_provides";
+    };
+    forbidden_provides: {
       rule: string;
       provider: string;
       target: string;
       hyperedge: string;
       allowedComponent?: string;
-      filePath?: string;
-      causedBy: string[];
-    }
-  | {
-      kind: "fingerprint_mismatch";
+    };
+    fingerprint_mismatch: {
       relation: string;
       endpoint: string;
       provider: string;
       expected: string;
       actual?: string;
-      filePath?: string;
-      causedBy: string[];
-    }
-  | {
-      kind: "candidate_pin_fingerprint_mismatch";
+    };
+    candidate_pin_fingerprint_mismatch: {
       candidateEffect: string;
       anchor: string;
       provider: string;
       expected: string;
       actual?: string;
-      filePath?: string;
-      causedBy: string[];
-    }
-  | {
-      kind: "invalid_candidate_effect";
-      name: string;
-      reason: string;
-      filePath?: string;
-      causedBy: string[];
-    }
-  | {
-      kind: "unsafe_effects";
-      component: string;
-      functionName: string;
+    };
+    invalid_candidate_effect: InvalidDeclarationDiagnostic;
+    unsafe_effects: FunctionLocation & {
       missing: string[];
-      filePath?: string;
-      causedBy: string[];
-    }
-  | {
-      kind: "missing_required_context";
-      targetKind: TargetKind;
-      target: string;
+    };
+    missing_required_context: ShapeLocation & {
       requiredContext: string;
       requiredBy: string;
-      filePath?: string;
-      causedBy: string[];
-    }
-  | {
-      kind: "invalid_context_target";
+    };
+    invalid_context_target: ShapeLocation & {
       contextKind: ContextKind;
       name: string;
-      targetKind: TargetKind;
-      target: string;
-      filePath?: string;
-      causedBy: string[];
-    }
-  | {
-      kind: "context_target_mismatch";
+    };
+    context_target_mismatch: {
       contextKind: ContextKind;
       name: string;
       declaredTarget: ShapeTarget;
       appliesToTarget: ShapeTarget;
-      filePath?: string;
-      causedBy: string[];
-    }
-  | {
-      kind: "missing_required_description";
-      targetKind: TargetKind;
-      target: string;
+    };
+    missing_required_description: ShapeLocation & {
       requiredBy: string;
-      filePath?: string;
-      causedBy: string[];
-    }
-  | {
-      kind: "guarded_shape_changed";
-      guardKind: ContextKind;
-      guard: string;
-      targetKind: TargetKind;
-      target: string;
+    };
+    guarded_shape_changed: GuardedShapeLocation & {
       changedProperty?: string;
       changeKind?: "property" | "transform";
       missingReevaluation: string;
-      filePath?: string;
-      causedBy: string[];
-    }
-  | {
-      kind: "invalid_reevaluation";
-      name: string;
-      reason: string;
-      filePath?: string;
-      causedBy: string[];
-    }
-  | {
-      kind: "stale_memory";
-      guardKind: ContextKind;
-      guard: string;
-      targetKind: TargetKind;
-      target: string;
+    };
+    invalid_reevaluation: InvalidDeclarationDiagnostic;
+    stale_memory: GuardedShapeLocation & {
       reviewBy: string;
       asOf: string;
-      filePath?: string;
-      causedBy: string[];
-    }
-  | {
-      kind: "invalid_relation";
-      name: string;
-      reason: string;
-      filePath?: string;
-      causedBy: string[];
-    }
-  | {
-      kind: "invalid_require_context";
+    };
+    invalid_relation: InvalidDeclarationDiagnostic;
+    invalid_require_context: {
       trait: string;
       contextType: string;
       typeParam: string;
       reason: string;
-      filePath?: string;
-      causedBy: string[];
-    }
-  | {
-      kind: "invalid_implementation";
-      name: string;
-      reason: string;
-      filePath?: string;
-      causedBy: string[];
-    }
-  | {
-      kind: "stale_attestation";
+    };
+    invalid_implementation: InvalidDeclarationDiagnostic;
+    stale_attestation: {
       attestationKind: string;
       path: string;
-      filePath?: string;
-      causedBy: string[];
-    }
-  | {
-      kind: "missing_cited_path";
-      path: string;
-      filePath?: string;
-      causedBy: string[];
     };
+    missing_cited_path: {
+      path: string;
+    };
+  }>;
 
 export type ShapeDiagnostic = ParseDiagnostic | SemanticDiagnostic;
 
@@ -336,61 +252,49 @@ export type BaseModel = {
   attestationFreeTexts: ReadonlyMap<string, string>;
 };
 
-export type Fact =
-  | { kind: "resource"; name: string; provenance: Provenance }
-  | { kind: "resource_trait"; resource: string; trait: string; provenance: Provenance }
-  | {
-      kind: "resource_fingerprint";
+type ContextFactPayload = ShapeLocation & {
+  name: string;
+  contextType: string;
+};
+
+export type Fact = ProvenancedRecord &
+  DiscriminatedUnion<{
+    resource: { name: string };
+    resource_trait: { resource: string; trait: string };
+    resource_fingerprint: {
       resource: string;
       provider: string;
       value: string;
-      provenance: Provenance;
-    }
-  | {
-      kind: "trait_final_forbid";
+    };
+    trait_final_forbid: {
       trait: string;
       effect: string;
       target: string;
-      provenance: Provenance;
-    }
-  | { kind: "component"; name: string; provenance: Provenance }
-  | { kind: "owns"; component: string; resource: string; provenance: Provenance }
-  | { kind: "grants"; component: string; effect: string; target: string; provenance: Provenance }
-  | {
-      kind: "hyperedge";
+    };
+    component: { name: string };
+    owns: { component: string; resource: string };
+    grants: { component: string; effect: string; target: string };
+    hyperedge: {
       name: string;
       relationKind: string;
       ordered: boolean;
-      provenance: Provenance;
-    }
-  | {
-      kind: "hyperedge_member";
+    };
+    hyperedge_member: {
       hyperedge: string;
       endpoint: string;
       index: number;
       role?: string;
-      provenance: Provenance;
-    }
-  | {
-      kind: "hyperedge_fingerprint_expectation";
+    };
+    hyperedge_fingerprint_expectation: {
       hyperedge: string;
       endpoint: string;
       provider: string;
       value: string;
-      provenance: Provenance;
-    }
-  | { kind: "function"; component: string; name: string; provenance: Provenance }
-  | {
-      kind: "effect";
-      component: string;
-      functionName: string;
-      effect: string;
-      target: string;
-      provenance: Provenance;
-    }
-  | { kind: "effect_unknown"; component: string; functionName: string; provenance: Provenance }
-  | {
-      kind: "candidate_effect";
+    };
+    function: { component: string; name: string };
+    effect: FunctionEffect;
+    effect_unknown: FunctionLocation;
+    candidate_effect: {
       name: string;
       functionTarget: string;
       effect: string;
@@ -400,82 +304,41 @@ export type Fact =
       anchor?: string;
       fingerprintProvider?: string;
       fingerprintValue?: string;
-      provenance: Provenance;
-    }
-  | {
-      kind: "shape_trait";
-      targetKind: TargetKind;
-      target: string;
+    };
+    shape_trait: ShapeLocation & {
       trait: string;
-      provenance: Provenance;
-    }
-  | {
-      kind: "description";
-      targetKind: TargetKind;
-      target: string;
+    };
+    description: ShapeLocation & {
       required: boolean;
       summary: string;
-      provenance: Provenance;
-    }
-  | {
-      kind: "context_required";
-      targetKind: TargetKind;
-      target: string;
+    };
+    context_required: ShapeLocation & {
       contextType: string;
       requiredBy: string;
-      provenance: Provenance;
-    }
-  | {
-      kind: "rationale";
-      name: string;
-      contextType: string;
-      targetKind: TargetKind;
-      target: string;
-      provenance: Provenance;
-    }
-  | {
-      kind: "memory";
-      name: string;
-      contextType: string;
-      targetKind: TargetKind;
-      target: string;
-      provenance: Provenance;
-    }
-  | {
-      kind: "reevaluation";
+    };
+    rationale: ContextFactPayload;
+    memory: ContextFactPayload;
+    reevaluation: {
       name: string;
       satisfiesKind: ContextKind;
       satisfies: string;
-      provenance: Provenance;
-    }
-  | {
-      kind: "protected_shape";
-      guardKind: ContextKind;
-      guard: string;
-      targetKind: TargetKind;
-      target: string;
+    };
+    protected_shape: GuardedShapeLocation & {
       propertyKind: string;
       propertyValue: string;
-      provenance: Provenance;
-    }
-  | {
-      kind: "guard_requires_reevaluation";
-      guardKind: ContextKind;
-      guard: string;
-      targetKind: TargetKind;
-      target: string;
-      provenance: Provenance;
-    }
-  | { kind: "implementation"; name: string; provenance: Provenance }
-  | { kind: "implementation_path"; implementation: string; glob: string; provenance: Provenance }
-  | { kind: "conforms_to"; implementation: string; component: string; provenance: Provenance }
-  | { kind: "binding"; name: string; provenance: Provenance }
-  | { kind: "binding_when_changed"; binding: string; glob: string; provenance: Provenance }
-  | { kind: "binding_require_changed"; binding: string; glob: string; provenance: Provenance }
-  | { kind: "binding_allow_attest"; binding: string; kindName: string; provenance: Provenance }
-  | { kind: "shape_update_for"; path: string; provenance: Provenance }
-  | { kind: "attestation"; kindName: string; path: string; reason: string; provenance: Provenance }
-  | { kind: "rule"; name: string; provenance: Provenance };
+    };
+    guard_requires_reevaluation: GuardedShapeLocation;
+    implementation: { name: string };
+    implementation_path: { implementation: string; glob: string };
+    conforms_to: { implementation: string; component: string };
+    binding: { name: string };
+    binding_when_changed: { binding: string; glob: string };
+    binding_require_changed: { binding: string; glob: string };
+    binding_allow_attest: { binding: string; kindName: string };
+    shape_update_for: { path: string };
+    attestation: { kindName: string; path: string; reason: string };
+    rule: { name: string };
+  }>;
 
 export type CheckModuleOrigin = "authored" | "generated_ast";
 
@@ -516,10 +379,9 @@ export type TermInfo = {
   target?: string;
 };
 
-export type EffectEntryInfo = {
+export type EffectEntryInfo = ProvenancedRecord & {
   term: TermInfo;
   evidence?: SourceRefInfo;
-  provenance: Provenance;
 };
 
 export type EffectSummaryInfo =
@@ -531,13 +393,12 @@ export type EffectSummaryInfo =
       kind: "unknown";
     };
 
-export type DescriptionInfo = {
+export type DescriptionInfo = ProvenancedRecord & {
   required: boolean;
   summary: string;
-  provenance: Provenance;
 };
 
-export type ProtectedProperty = {
+export type ProtectedProperty = ProvenancedRecord & {
   kind: string;
   value: string;
   // For `protects shape <trait>`, the trait name resolved into the same key
@@ -546,23 +407,14 @@ export type ProtectedProperty = {
   // like. Undefined for non-shape properties; free-form `shape` labels resolve
   // to a name that matches no declared trait and so stay coarse.
   resolvedValue?: string;
-  provenance: Provenance;
 };
 
-export type GuardInfo = {
+export type GuardInfo = ProvenancedRecord & {
   requirement: string;
-  provenance: Provenance;
 };
 
-export type TransformGuardInfo = {
+export type TransformGuardInfo = ProvenancedRecord & {
   label: string;
-  provenance: Provenance;
-};
-
-export type PolicyInfo = {
-  name: string;
-  requiresApprover: boolean;
-  provenance: Provenance;
 };
 
 /**
@@ -573,58 +425,25 @@ export type PolicyInfo = {
  * through declare/modify/remove, and a same-named user trait shadows a built-in
  * simply by replacing the trait entry — no merge or scrub special-case.
  */
-export type TraitContextRequirement = {
+export type TraitContextRequirement = ProvenancedRecord & {
   targetKind: TargetKind;
   contextType: string;
   satisfiedBy: ContextKind[];
   requiresDescription: boolean;
-  provenance: Provenance;
 };
 
 /** A trait context requirement resolved against a bearer, tagged with the
  *  owning trait name for diagnostics. */
 export type ContextRequirement = TraitContextRequirement & { trait: string };
 
-export type RationaleInfo = {
-  name: string;
-  contextType: string;
-  target: ShapeTarget;
-  appliesTo?: ShapeTarget;
-  why?: string;
-  summary?: string;
-  owner?: string;
-  reviewBy?: string;
-  protects: ProtectedProperty[];
-  guards: GuardInfo[];
-  forbiddenTransforms: TransformGuardInfo[];
-  evidence: SourceRefInfo[];
-  provenance: Provenance;
-};
-
-export type MemoryInfo = {
-  name: string;
+export type ContextObjectInfo = NamedDeclaration & {
   contextType: string;
   target: ShapeTarget;
   appliesTo?: ShapeTarget;
   status?: string;
   confidence?: string;
-  summary?: string;
-  owner?: string;
-  reviewBy?: string;
   sensitive: boolean;
-  protects: ProtectedProperty[];
-  guards: GuardInfo[];
-  forbiddenTransforms: TransformGuardInfo[];
   observed: SourceRefInfo[];
-  evidence: SourceRefInfo[];
-  provenance: Provenance;
-};
-
-export type ContextObjectInfo = {
-  name: string;
-  contextType: string;
-  target: ShapeTarget;
-  appliesTo?: ShapeTarget;
   summary?: string;
   owner?: string;
   reviewBy?: string;
@@ -632,11 +451,9 @@ export type ContextObjectInfo = {
   guards: GuardInfo[];
   forbiddenTransforms: TransformGuardInfo[];
   evidence: SourceRefInfo[];
-  provenance: Provenance;
 };
 
-export type ReevaluationInfo = {
-  name: string;
+export type ReevaluationInfo = NamedDeclaration & {
   satisfiesKind?: ContextKind;
   satisfiesName?: string;
   outcome?: string;
@@ -645,7 +462,6 @@ export type ReevaluationInfo = {
   reviewer?: string;
   approver?: string;
   decidedOn?: string;
-  provenance: Provenance;
 };
 
 // Observed changes use the ChangeTrigger shape from shape-domain.ts that
@@ -653,9 +469,8 @@ export type ReevaluationInfo = {
 // declarations.
 export type ChangeEvent = ChangeTrigger;
 
-export type FunctionInfo = {
+export type FunctionInfo = NamedDeclaration & {
   component: string;
-  name: string;
   source?: SourceRefInfo;
   unsafe: boolean;
   effects: EffectSummaryInfo;
@@ -665,67 +480,51 @@ export type FunctionInfo = {
   shapeTraits: Map<string, Provenance>;
   description?: DescriptionInfo;
   generatedAstCandidate: boolean;
-  provenance: Provenance;
 };
 
-export type ResourceInfo = {
-  name: string;
+export type ResourceInfo = NamedDeclaration & {
   traits: Map<string, Provenance>;
   fingerprints: Map<string, FingerprintInfo>;
-  generatedAstCandidate: boolean;
-  provenance: Provenance;
 };
 
-export type FingerprintInfo = {
+export type FingerprintInfo = ProvenancedRecord & {
   provider: string;
   value: string;
-  provenance: Provenance;
 };
 
-export type TraitInfo = {
-  name: string;
+export type TraitInfo = NamedDeclaration & {
   typeParams: TraitTypeParameter[];
   finalForbids: FinalForbidPattern[];
   contextRequirements: TraitContextRequirement[];
-  provenance: Provenance;
 };
 
-export type FinalForbidPattern = {
+export type FinalForbidPattern = ProvenancedRecord & {
   effect: string;
   target?: string;
   targetBinding: "omitted" | "generic" | "concrete" | "ambiguous";
   final: boolean;
-  provenance: Provenance;
 };
 
-export type ComponentInfo = {
-  name: string;
+export type ComponentInfo = NamedDeclaration & {
   classifiers: Map<string, Provenance>;
   grants: Map<string, Provenance>;
   owns: Map<string, Provenance>;
   functions: Map<string, FunctionInfo>;
-  generatedAstCandidate: boolean;
-  provenance: Provenance;
 };
 
-export type ImplementationInfo = {
-  name: string;
+export type ImplementationInfo = NamedDeclaration & {
   paths: { glob: string; provenance: Provenance }[];
   conformsTo?: string;
   onChangeRequirement?: string;
-  provenance: Provenance;
 };
 
-export type BindingInfo = {
-  name: string;
+export type BindingInfo = NamedDeclaration & {
   whenChanged: { glob: string; provenance: Provenance }[];
   requireChanged: { glob: string; provenance: Provenance }[];
   allowAttestations: { kind: string; provenance: Provenance }[];
-  provenance: Provenance;
 };
 
-export type RuleInfo = {
-  name: string;
+export type RuleInfo = NamedDeclaration & {
   whenHas: {
     subject: string;
     trait: string;
@@ -751,7 +550,6 @@ export type RuleInfo = {
     kinds: string[];
     provenance: Provenance;
   }[];
-  provenance: Provenance;
 };
 
 export type SourceRefInfo = {
@@ -765,69 +563,54 @@ export type HyperedgeMember = {
   role?: string;
 };
 
-export type HyperedgeInfo = {
-  name: string;
+export type HyperedgeInfo = NamedDeclaration & {
   kind: string;
   ordered: boolean;
   members: HyperedgeMember[];
   fingerprintExpectations: FingerprintExpectationInfo[];
   summary?: string;
-  provenance: Provenance;
 };
 
-export type FingerprintExpectationInfo = {
+export type FingerprintExpectationInfo = ProvenancedRecord & {
   endpoint: string;
   provider: string;
   value: string;
-  provenance: Provenance;
 };
 
-export type Hypergraph = {
-  edges: Map<string, HyperedgeInfo>;
-  /** vertex name -> hyperedge names incident to that vertex */
-  incidence: Map<string, string[]>;
-};
+export type Model = ReturnType<typeof createModel>;
 
-export type Model = {
-  modules: Map<string, ModuleInfo>;
-  /**
-   * Each input file's source with its attestations removed, by file path. Kept
-   * per file because module names are optional and may repeat. A module built
-   * in code has no source text and no entry.
-   */
-  attestationFreeTexts: Map<string, string>;
-  declarations: DeclarationIndex;
-  resources: Map<string, ResourceInfo>;
-  traits: Map<string, TraitInfo>;
-  components: Map<string, ComponentInfo>;
-  hypergraph: Hypergraph;
-  candidateEffects: Map<string, CandidateEffectInfo>;
-  implementations: ImplementationInfo[];
-  bindings: Map<string, BindingInfo>;
-  rules: RuleInfo[];
-  rationales: Map<string, RationaleInfo>;
-  memories: Map<string, MemoryInfo>;
-  reevaluations: Map<string, ReevaluationInfo>;
-  roles: Map<string, Provenance>;
-  policies: Map<string, PolicyInfo>;
-  attestations: { kind: string; path: string; reason: string; provenance: Provenance }[];
-  shapeUpdatePaths: Map<string, Provenance[]>;
-  changeEvents: ChangeEvent[];
-  facts: Fact[];
-  diagnostics: SemanticDiagnostic[];
-};
+export function createModel(declarations: DeclarationIndex, traits: Map<string, TraitInfo>) {
+  return {
+    modules: new Map<string, ModuleInfo>(),
+    /**
+     * Each input file's source with its attestations removed, by file path. Kept
+     * per file because module names are optional and may repeat. A module built
+     * in code has no source text and no entry.
+     */
+    attestationFreeTexts: new Map<string, string>(),
+    declarations,
+    resources: new Map<string, ResourceInfo>(),
+    traits,
+    components: new Map<string, ComponentInfo>(),
+    hypergraph: { edges: new Map<string, HyperedgeInfo>() },
+    candidateEffects: new Map<string, CandidateEffectInfo>(),
+    implementations: [] as ImplementationInfo[],
+    bindings: new Map<string, BindingInfo>(),
+    rules: [] as RuleInfo[],
+    rationales: new Map<string, ContextObjectInfo>(),
+    memories: new Map<string, ContextObjectInfo>(),
+    reevaluations: new Map<string, ReevaluationInfo>(),
+    roles: new Set<string>(),
+    requiresApprover: false,
+    attestations: [] as AttestationInfo[],
+    shapeUpdatePaths: new Map<string, Provenance[]>(),
+    changeEvents: [] as ChangeEvent[],
+    facts: [] as Fact[],
+    diagnostics: [] as SemanticDiagnostic[]
+  };
+}
 
-export type CandidateEffectInfo = {
-  name: string;
-  functionTarget?: string;
-  term?: TermInfo;
-  source?: SourceRefInfo;
-  confidence?: string;
-  anchor?: string;
-  fingerprintProvider?: string;
-  fingerprintValue?: string;
-  provenance: Provenance;
-};
+export type CandidateEffectInfo = Extract<Fact, { kind: "candidate_effect" }>;
 
 export type FunctionAst = FunctionSummary | AddFunctionChange | ModifyFunctionChange;
 
@@ -836,4 +619,9 @@ export type ChangedFileContext = {
   set: Set<string>;
 };
 
-export type AttestationInfo = Model["attestations"][number];
+export type AttestationInfo = {
+  kind: string;
+  path: string;
+  reason: string;
+  provenance: Provenance;
+};

@@ -8,12 +8,12 @@ trait GeneratedCandidate {
 
 resource RelationsModuleBuildRelationTraversalGraphAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/checker/rules/relations.ts#buildRelationTraversalGraph")
-  fingerprint ast.semantic_subtree_v1("sha256:3a7ff275ecedca2dad5930e78e49e3fd795f02727abd89f9c052ea7a62c9b913")
+  fingerprint ast.semantic_subtree_v1("sha256:6c38e87c97efaf09ebb33b1aadaab75070ca2c531cb85fd958608dc4fb3e0e09")
 }
 
 resource RelationsModuleCheckFingerprintExpectationsAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/checker/rules/relations.ts#checkFingerprintExpectations")
-  fingerprint ast.semantic_subtree_v1("sha256:fdf9fbda9d014cee2e796fd39a24ac0ee2ebb99c4db1dcfb5493bb26c08a0fbb")
+  fingerprint ast.semantic_subtree_v1("sha256:8058e7c34876f96c91f3999a36254f75251250e0ffd5bfa607b630ca9fe3d13b")
 }
 
 resource RelationsModuleCheckForbiddenPathsAstAnchor : GeneratedAstAnchor {
@@ -28,7 +28,7 @@ resource RelationsModuleCheckHypercyclesAstAnchor : GeneratedAstAnchor {
 
 resource RelationsModuleCheckProvidesEndpointKindsAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/checker/rules/relations.ts#checkProvidesEndpointKinds")
-  fingerprint ast.semantic_subtree_v1("sha256:42a1754297b1b47d9d4a7045ad2903980380745c1c075a2906865e4294b0c473")
+  fingerprint ast.semantic_subtree_v1("sha256:4ea965155f3a8463307dee0dd8b3c8c308d50c3e2dcf24f79de0a30a0b45a18c")
 }
 
 resource RelationsModuleCheckProvidesRulesAstAnchor : GeneratedAstAnchor {
@@ -48,7 +48,7 @@ resource RelationsModuleCompareTraversalPathsAstAnchor : GeneratedAstAnchor {
 
 resource RelationsModuleFindHypercycleAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/checker/rules/relations.ts#findHypercycle")
-  fingerprint ast.semantic_subtree_v1("sha256:34753eef34dfe7b68d2b19541ac6d7530e38f6565400213a46cd08c3a4011434")
+  fingerprint ast.semantic_subtree_v1("sha256:93888e6055b17eb5b91a78149ee740b17352998db4de59682e179d1040149637")
 }
 
 resource RelationsModuleFindShortestPathAstAnchor : GeneratedAstAnchor {
@@ -68,7 +68,7 @@ resource RelationsModuleIsAmbiguousVertexAstAnchor : GeneratedAstAnchor {
 
 resource RelationsModuleIsCyclicComponentAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/checker/rules/relations.ts#isCyclicComponent")
-  fingerprint ast.semantic_subtree_v1("sha256:fb7b48dae20b4d121d2066e3f3965dce264363545fb47d057e02633143bae59e")
+  fingerprint ast.semantic_subtree_v1("sha256:880595949f807830da5e25c4c6f5a7f2b5b7d989081935777950e89b54837dcb")
 }
 
 resource RelationsModuleIsResolvedVertexAstAnchor : GeneratedAstAnchor {
@@ -86,24 +86,14 @@ resource RelationsModuleProvidesTargetAstAnchor : GeneratedAstAnchor {
   fingerprint ast.semantic_subtree_v1("sha256:7dae4cc868272e6176e84a50757dd03aee1ba2332c6b5869593d6dd421a99089")
 }
 
-resource RelationsModuleShortestCycleFromAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/rules/relations.ts#shortestCycleFrom")
-  fingerprint ast.semantic_subtree_v1("sha256:8f818ebcf1fbeaad8448d996f80badf7c27729bd585ebc2f0e55c5e6b2b48a3d")
-}
-
-resource RelationsModuleShortestCycleInComponentAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/rules/relations.ts#shortestCycleInComponent")
-  fingerprint ast.semantic_subtree_v1("sha256:9f7b72fdd8d10d978b6a1cc498d232a929bb09fabb7f87cba658d2f00646a2a7")
-}
-
 resource RelationsModuleShortestPathBetweenAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/checker/rules/relations.ts#shortestPathBetween")
-  fingerprint ast.semantic_subtree_v1("sha256:c3c195638a3538d65753400e27c567067fb4cc7d29f45d7b3a585cfa73766cf2")
+  fingerprint ast.semantic_subtree_v1("sha256:ba7fdf856be0c87d12b6f0c57ceef0c8d07e8e17618e1383740867f6283b924e")
 }
 
 resource RelationsModuleStronglyConnectedComponentsAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/checker/rules/relations.ts#stronglyConnectedComponents")
-  fingerprint ast.semantic_subtree_v1("sha256:e2539e797083ca123b1f5895e1401a69077f78a4ec567bcb4a290d7d63b82d18")
+  fingerprint ast.semantic_subtree_v1("sha256:a1705867c516f86d7d917a2f96c2489007728b6ae631881c1d2fbe0588d22550")
 }
 
 resource RelationsModuleValidPathHyperedgesAstAnchor : GeneratedAstAnchor {
@@ -165,12 +155,6 @@ component RelationsModule : GeneratedCandidate {
   fn providesTarget
     source ts("packages/shp-checker/src/checker/rules/relations.ts#providesTarget")
     effects unknown
-  fn shortestCycleFrom
-    source ts("packages/shp-checker/src/checker/rules/relations.ts#shortestCycleFrom")
-    effects unknown
-  fn shortestCycleInComponent
-    source ts("packages/shp-checker/src/checker/rules/relations.ts#shortestCycleInComponent")
-    effects unknown
   fn shortestPathBetween
     source ts("packages/shp-checker/src/checker/rules/relations.ts#shortestPathBetween")
     effects unknown
@@ -189,7 +173,7 @@ relation RelationsModuleBuildRelationTraversalGraphGeneratedFromRelationsModuleB
   kind generated_from
   connects RelationsModule -> RelationsModuleBuildRelationTraversalGraphAstAnchor
   roles { RelationsModule as generated, RelationsModuleBuildRelationTraversalGraphAstAnchor as syntax }
-  expects RelationsModuleBuildRelationTraversalGraphAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3a7ff275ecedca2dad5930e78e49e3fd795f02727abd89f9c052ea7a62c9b913")
+  expects RelationsModuleBuildRelationTraversalGraphAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6c38e87c97efaf09ebb33b1aadaab75070ca2c531cb85fd958608dc4fb3e0e09")
   summary "fn RelationsModule.buildRelationTraversalGraph generated from typescript function_declaration at packages/shp-checker/src/checker/rules/relations.ts#buildRelationTraversalGraph."
 }
 
@@ -197,7 +181,7 @@ relation RelationsModuleCheckFingerprintExpectationsGeneratedFromRelationsModule
   kind generated_from
   connects RelationsModule -> RelationsModuleCheckFingerprintExpectationsAstAnchor
   roles { RelationsModule as generated, RelationsModuleCheckFingerprintExpectationsAstAnchor as syntax }
-  expects RelationsModuleCheckFingerprintExpectationsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:fdf9fbda9d014cee2e796fd39a24ac0ee2ebb99c4db1dcfb5493bb26c08a0fbb")
+  expects RelationsModuleCheckFingerprintExpectationsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:8058e7c34876f96c91f3999a36254f75251250e0ffd5bfa607b630ca9fe3d13b")
   summary "fn RelationsModule.checkFingerprintExpectations generated from typescript function_declaration at packages/shp-checker/src/checker/rules/relations.ts#checkFingerprintExpectations."
 }
 
@@ -221,7 +205,7 @@ relation RelationsModuleCheckProvidesEndpointKindsGeneratedFromRelationsModuleCh
   kind generated_from
   connects RelationsModule -> RelationsModuleCheckProvidesEndpointKindsAstAnchor
   roles { RelationsModule as generated, RelationsModuleCheckProvidesEndpointKindsAstAnchor as syntax }
-  expects RelationsModuleCheckProvidesEndpointKindsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:42a1754297b1b47d9d4a7045ad2903980380745c1c075a2906865e4294b0c473")
+  expects RelationsModuleCheckProvidesEndpointKindsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4ea965155f3a8463307dee0dd8b3c8c308d50c3e2dcf24f79de0a30a0b45a18c")
   summary "fn RelationsModule.checkProvidesEndpointKinds generated from typescript function_declaration at packages/shp-checker/src/checker/rules/relations.ts#checkProvidesEndpointKinds."
 }
 
@@ -253,7 +237,7 @@ relation RelationsModuleFindHypercycleGeneratedFromRelationsModuleFindHypercycle
   kind generated_from
   connects RelationsModule -> RelationsModuleFindHypercycleAstAnchor
   roles { RelationsModule as generated, RelationsModuleFindHypercycleAstAnchor as syntax }
-  expects RelationsModuleFindHypercycleAstAnchor fingerprint ast.semantic_subtree_v1("sha256:34753eef34dfe7b68d2b19541ac6d7530e38f6565400213a46cd08c3a4011434")
+  expects RelationsModuleFindHypercycleAstAnchor fingerprint ast.semantic_subtree_v1("sha256:93888e6055b17eb5b91a78149ee740b17352998db4de59682e179d1040149637")
   summary "fn RelationsModule.findHypercycle generated from typescript function_declaration at packages/shp-checker/src/checker/rules/relations.ts#findHypercycle."
 }
 
@@ -285,7 +269,7 @@ relation RelationsModuleIsCyclicComponentGeneratedFromRelationsModuleIsCyclicCom
   kind generated_from
   connects RelationsModule -> RelationsModuleIsCyclicComponentAstAnchor
   roles { RelationsModule as generated, RelationsModuleIsCyclicComponentAstAnchor as syntax }
-  expects RelationsModuleIsCyclicComponentAstAnchor fingerprint ast.semantic_subtree_v1("sha256:fb7b48dae20b4d121d2066e3f3965dce264363545fb47d057e02633143bae59e")
+  expects RelationsModuleIsCyclicComponentAstAnchor fingerprint ast.semantic_subtree_v1("sha256:880595949f807830da5e25c4c6f5a7f2b5b7d989081935777950e89b54837dcb")
   summary "fn RelationsModule.isCyclicComponent generated from typescript function_declaration at packages/shp-checker/src/checker/rules/relations.ts#isCyclicComponent."
 }
 
@@ -313,27 +297,11 @@ relation RelationsModuleProvidesTargetGeneratedFromRelationsModuleProvidesTarget
   summary "fn RelationsModule.providesTarget generated from typescript function_declaration at packages/shp-checker/src/checker/rules/relations.ts#providesTarget."
 }
 
-relation RelationsModuleShortestCycleFromGeneratedFromRelationsModuleShortestCycleFromAstAnchor {
-  kind generated_from
-  connects RelationsModule -> RelationsModuleShortestCycleFromAstAnchor
-  roles { RelationsModule as generated, RelationsModuleShortestCycleFromAstAnchor as syntax }
-  expects RelationsModuleShortestCycleFromAstAnchor fingerprint ast.semantic_subtree_v1("sha256:8f818ebcf1fbeaad8448d996f80badf7c27729bd585ebc2f0e55c5e6b2b48a3d")
-  summary "fn RelationsModule.shortestCycleFrom generated from typescript function_declaration at packages/shp-checker/src/checker/rules/relations.ts#shortestCycleFrom."
-}
-
-relation RelationsModuleShortestCycleInComponentGeneratedFromRelationsModuleShortestCycleInComponentAstAnchor {
-  kind generated_from
-  connects RelationsModule -> RelationsModuleShortestCycleInComponentAstAnchor
-  roles { RelationsModule as generated, RelationsModuleShortestCycleInComponentAstAnchor as syntax }
-  expects RelationsModuleShortestCycleInComponentAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9f7b72fdd8d10d978b6a1cc498d232a929bb09fabb7f87cba658d2f00646a2a7")
-  summary "fn RelationsModule.shortestCycleInComponent generated from typescript function_declaration at packages/shp-checker/src/checker/rules/relations.ts#shortestCycleInComponent."
-}
-
 relation RelationsModuleShortestPathBetweenGeneratedFromRelationsModuleShortestPathBetweenAstAnchor {
   kind generated_from
   connects RelationsModule -> RelationsModuleShortestPathBetweenAstAnchor
   roles { RelationsModule as generated, RelationsModuleShortestPathBetweenAstAnchor as syntax }
-  expects RelationsModuleShortestPathBetweenAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c3c195638a3538d65753400e27c567067fb4cc7d29f45d7b3a585cfa73766cf2")
+  expects RelationsModuleShortestPathBetweenAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ba7fdf856be0c87d12b6f0c57ceef0c8d07e8e17618e1383740867f6283b924e")
   summary "fn RelationsModule.shortestPathBetween generated from typescript function_declaration at packages/shp-checker/src/checker/rules/relations.ts#shortestPathBetween."
 }
 
@@ -341,7 +309,7 @@ relation RelationsModuleStronglyConnectedComponentsGeneratedFromRelationsModuleS
   kind generated_from
   connects RelationsModule -> RelationsModuleStronglyConnectedComponentsAstAnchor
   roles { RelationsModule as generated, RelationsModuleStronglyConnectedComponentsAstAnchor as syntax }
-  expects RelationsModuleStronglyConnectedComponentsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e2539e797083ca123b1f5895e1401a69077f78a4ec567bcb4a290d7d63b82d18")
+  expects RelationsModuleStronglyConnectedComponentsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a1705867c516f86d7d917a2f96c2489007728b6ae631881c1d2fbe0588d22550")
   summary "fn RelationsModule.stronglyConnectedComponents generated from typescript function_declaration at packages/shp-checker/src/checker/rules/relations.ts#stronglyConnectedComponents."
 }
 

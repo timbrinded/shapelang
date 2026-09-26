@@ -23,7 +23,7 @@ resource AnalyzerSqlModuleReadDropTargetsAstAnchor : GeneratedAstAnchor {
 
 resource AnalyzerSqlModuleReadSqlIdentifierSegmentAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/analyzer-sql.ts#readSqlIdentifierSegment")
-  fingerprint ast.semantic_subtree_v1("sha256:94d1210064630f9d985daa53a1eabe2368ac13f1463719c1c87bf825d3e6cb74")
+  fingerprint ast.semantic_subtree_v1("sha256:a3bc50be5e76fcf012e9b39e1b833aaba20941129474589b02ba3132c4475cd9")
 }
 
 resource AnalyzerSqlModuleReadSqlTargetAstAnchor : GeneratedAstAnchor {
@@ -43,7 +43,7 @@ resource AnalyzerSqlModuleReadTruncateTargetsAstAnchor : GeneratedAstAnchor {
 
 resource AnalyzerSqlModuleScanDestructiveSqlAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/analyzer-sql.ts#scanDestructiveSql")
-  fingerprint ast.semantic_subtree_v1("sha256:ca4ce510a6150a04261d8b87b0a9bcdef85cb72695c90816cafb1aecf5357e87")
+  fingerprint ast.semantic_subtree_v1("sha256:421e97416eb7f8ccf6f93d7e3a4dc466e5f89baedbc4f1d567f73bf3304096d2")
 }
 
 resource AnalyzerSqlModuleSqlMatchesAstAnchor : GeneratedAstAnchor {
@@ -117,7 +117,7 @@ relation AnalyzerSqlModuleReadSqlIdentifierSegmentGeneratedFromAnalyzerSqlModule
   kind generated_from
   connects AnalyzerSqlModule -> AnalyzerSqlModuleReadSqlIdentifierSegmentAstAnchor
   roles { AnalyzerSqlModule as generated, AnalyzerSqlModuleReadSqlIdentifierSegmentAstAnchor as syntax }
-  expects AnalyzerSqlModuleReadSqlIdentifierSegmentAstAnchor fingerprint ast.semantic_subtree_v1("sha256:94d1210064630f9d985daa53a1eabe2368ac13f1463719c1c87bf825d3e6cb74")
+  expects AnalyzerSqlModuleReadSqlIdentifierSegmentAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a3bc50be5e76fcf012e9b39e1b833aaba20941129474589b02ba3132c4475cd9")
   summary "fn AnalyzerSqlModule.readSqlIdentifierSegment generated from typescript function_declaration at packages/shp-checker/src/analyzer-sql.ts#readSqlIdentifierSegment."
 }
 
@@ -149,7 +149,7 @@ relation AnalyzerSqlModuleScanDestructiveSqlGeneratedFromAnalyzerSqlModuleScanDe
   kind generated_from
   connects AnalyzerSqlModule -> AnalyzerSqlModuleScanDestructiveSqlAstAnchor
   roles { AnalyzerSqlModule as generated, AnalyzerSqlModuleScanDestructiveSqlAstAnchor as syntax }
-  expects AnalyzerSqlModuleScanDestructiveSqlAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ca4ce510a6150a04261d8b87b0a9bcdef85cb72695c90816cafb1aecf5357e87")
+  expects AnalyzerSqlModuleScanDestructiveSqlAstAnchor fingerprint ast.semantic_subtree_v1("sha256:421e97416eb7f8ccf6f93d7e3a4dc466e5f89baedbc4f1d567f73bf3304096d2")
   summary "fn AnalyzerSqlModule.scanDestructiveSql generated from typescript function_declaration at packages/shp-checker/src/analyzer-sql.ts#scanDestructiveSql."
 }
 

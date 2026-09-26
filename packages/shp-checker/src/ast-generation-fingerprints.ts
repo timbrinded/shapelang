@@ -4,7 +4,7 @@ import type {
   CodeSemanticGraph,
   RawAstNode
 } from "./ast-generation-types.ts";
-import { groupChildren, isFunctionNode } from "./ast-generation-raw.ts";
+import { isFunctionNode } from "./ast-generation-raw.ts";
 import { isSwiftFunction, swiftSignatureChildren } from "./ast-generation-swift.ts";
 import {
   isCommentNode,
@@ -42,26 +42,19 @@ export function fingerprintForAnchor(
   graph: CodeSemanticGraph,
   input: Omit<CodeAstAnchor, "id" | "name" | "fingerprint">,
   context: {
-    childrenByParent?: Map<string, RawAstNode[]>;
-    nodeById?: Map<string, RawAstNode>;
-  } = {}
-): AstFingerprint | undefined {
-  const nodeById = context.nodeById ?? new Map(graph.rawNodes.map((node) => [node.id, node]));
-  const node = nodeById.get(input.nodeId);
-  const provider = AST_SEMANTIC_SUBTREE_FINGERPRINT_PROVIDER;
-  if (!node) {
-    graph.diagnostics.push({
-      kind: "error",
-      code: "missing_fingerprint_node",
-      path: input.path,
-      nodeId: input.nodeId,
-      message: `cannot fingerprint AST anchor ${input.target}: node ${input.nodeId} is missing`
-    });
-    return { provider, value: sha256Fingerprint("missing") };
+    childrenByParent: Map<string, RawAstNode[]>;
+    nodeById: Map<string, RawAstNode>;
   }
-
-  const payload = canonicalFingerprintPayload(graph, input, node, context.childrenByParent);
-  if (!payload) {
+): AstFingerprint | undefined {
+  // Projection supplies complete indexes; preserve their last-wins node resolution.
+  const node = context.nodeById.get(input.nodeId)!;
+  const provider = AST_SEMANTIC_SUBTREE_FINGERPRINT_PROVIDER;
+  const mode = input.targetKind === "fn" ? "function_subtree" : "declaration_shell";
+  const result = canonicalizeFingerprintNode(node, context.childrenByParent, {
+    rootId: node.id,
+    mode
+  });
+  if (!result.node || !result.hasToken) {
     graph.diagnostics.push({
       kind: "warning",
       code: "missing_fingerprint_tokens",
@@ -72,30 +65,17 @@ export function fingerprintForAnchor(
     return undefined;
   }
 
-  return { provider, value: sha256Fingerprint(stableJson(payload)) };
-}
-
-function canonicalFingerprintPayload(
-  graph: CodeSemanticGraph,
-  input: Omit<CodeAstAnchor, "id" | "name" | "fingerprint">,
-  node: RawAstNode,
-  existingChildrenByParent?: Map<string, RawAstNode[]>
-): Record<string, unknown> | undefined {
-  const childrenByParent = existingChildrenByParent ?? groupChildren(graph.rawNodes);
-  const mode = input.targetKind === "fn" ? "function_subtree" : "declaration_shell";
-  const result = canonicalizeFingerprintNode(node, childrenByParent, {
-    rootId: node.id,
-    mode
-  });
-  if (!result.node || !result.hasToken) {
-    return undefined;
-  }
   return {
-    provider: AST_SEMANTIC_SUBTREE_FINGERPRINT_PROVIDER,
-    language: normalizeLanguageName(node.language) ?? node.language,
-    targetKind: input.targetKind,
-    mode,
-    node: result.node
+    provider,
+    value: sha256Fingerprint(
+      stableJson({
+        provider,
+        language: normalizeLanguageName(node.language) ?? node.language,
+        targetKind: input.targetKind,
+        mode,
+        node: result.node
+      })
+    )
   };
 }
 
@@ -115,17 +95,17 @@ function canonicalizeFingerprintNode(
     if (!frame) {
       continue;
     }
+    if (!frame.entered && isCommentNode(frame.node)) {
+      results.set(frame.node.id, { hasToken: false });
+      continue;
+    }
+    const pruneFunctionBody =
+      options.mode === "declaration_shell" &&
+      frame.node.id !== options.rootId &&
+      isFunctionNode(frame.node) &&
+      frame.node.language !== "swift";
     if (!frame.entered) {
-      if (isCommentNode(frame.node)) {
-        results.set(frame.node.id, { hasToken: false });
-        continue;
-      }
       stack.push({ node: frame.node, entered: true });
-      const pruneFunctionBody =
-        options.mode === "declaration_shell" &&
-        frame.node.id !== options.rootId &&
-        isFunctionNode(frame.node) &&
-        frame.node.language !== "swift";
       if (!pruneFunctionBody) {
         const children = fingerprintChildren(frame.node, childrenByParent, options);
         for (let index = children.length - 1; index >= 0; index -= 1) {
@@ -139,11 +119,6 @@ function canonicalizeFingerprintNode(
     }
 
     const children = fingerprintChildren(frame.node, childrenByParent, options);
-    const pruneFunctionBody =
-      options.mode === "declaration_shell" &&
-      frame.node.id !== options.rootId &&
-      isFunctionNode(frame.node) &&
-      frame.node.language !== "swift";
     const canonicalChildren: CanonicalFingerprintNode[] = [];
     let hasToken = false;
 

@@ -66,7 +66,7 @@ component ShapeAnalyzer {
   grants Read<NormalizedShapeReference>
   fn analyzeSourceText
     source ts("packages/shp-checker/src/analyzer.ts#analyzeSourceText")
-    description "Lexically emits advisory destructive-operation hints with quote-aware direct static targets, one hint per supported SQL list target, and conservative balanced TypeScript function anchors while excluding comments, inert literals, malformed scopes, and dynamic target guesses."
+    description "Lexically emits advisory destructive-operation hints with quote-aware direct static targets, one hint per supported SQL list target, and conservative balanced TypeScript function anchors while excluding comments, inert literals including SQL dollar-quoted text, malformed scopes, and dynamic target guesses."
     effects complete {
       Append<AnalyzerHint>
         evidence ts("packages/shp-checker/src/analyzer.ts")
@@ -74,6 +74,8 @@ component ShapeAnalyzer {
         evidence ts("packages/shp-checker/src/analyzer.ts")
       Read<LanguageSource>
         evidence ts("packages/shp-checker/src/analyzer-lexical.ts")
+      Read<LanguageSource>
+        evidence ts("packages/shp-checker/src/analyzer-lexical.ts#readDollarQuoteDelimiter")
       Read<LanguageSource>
         evidence ts("packages/shp-checker/src/analyzer-scopes.ts")
       Read<LanguageSource>
@@ -106,6 +108,7 @@ component ShapeAstGenerator {
   grants Append<SemanticDiagnostics>
   grants Append<ShapeModelDraft>
   grants Read<CodeSemanticGraph>
+  grants Read<GeneratedAst>
   grants Read<LanguageSource>
   grants Read<SourceSyntaxTree>
   fn addSemanticProjection
@@ -140,6 +143,8 @@ component ShapeAstGenerator {
         evidence ts("packages/shp-checker/src/ast-generation-utils.ts")
       Append<SemanticDiagnostics>
         evidence ts("packages/shp-checker/src/ast-generation-json.ts")
+      Append<SemanticDiagnostics>
+        evidence ts("packages/shp-checker/src/ast-generation-utils.ts#astErrorReporter")
       Read<SourceSyntaxTree>
         evidence ts("packages/shp-checker/src/ast-generation-json.ts")
     }
@@ -230,6 +235,10 @@ component ShapeAstGenerator {
         evidence ts("packages/shp-checker/src/ast-generation-utils.ts")
       Append<SemanticDiagnostics>
         evidence ts("packages/shp-checker/src/ast-generation-source.ts")
+      Append<SemanticDiagnostics>
+        evidence ts("packages/shp-checker/src/ast-generation-utils.ts#astFailure")
+      Append<SemanticDiagnostics>
+        evidence ts("packages/shp-checker/src/ast-generation-tree-sitter-normalize.ts#normalizeTreeSitterFile")
       Read<LanguageSource>
         evidence ts("packages/shp-checker/src/ast-generation-source.ts")
       Read<LanguageSource>
@@ -238,6 +247,13 @@ component ShapeAstGenerator {
         evidence ts("packages/shp-checker/src/ast-generation-tree-sitter.ts")
       Read<SourceSyntaxTree>
         evidence ts("packages/shp-checker/src/ast-generation-tree-sitter-normalize.ts")
+    }
+  fn shapeReservedWords
+    source ts("packages/shp-checker/src/ast-generation-utils.ts#shapeReservedWords")
+    description "Caches the generated grammar's ID-shaped keywords for deterministic escaping of generated Shape identifiers."
+    effects complete {
+      Read<GeneratedAst>
+        evidence ts("packages/shp-checker/src/ast-generation-utils.ts#shapeReservedWords")
     }
 }
 
@@ -534,8 +550,6 @@ component ShpCli {
       Append<AuthoringPrompt>
         evidence ts("packages/shp-cli/src/commands/author/impl.ts")
       Append<EditorOutput>
-        evidence ts("packages/shp-cli/src/commands/lsp/impl.ts")
-      Append<EditorOutput>
         evidence ts("packages/shp-cli/src/lsp/server.ts")
       Append<GeneratedAstAnchor>
         evidence ts("packages/shp-cli/src/commands/ast/impl.ts")
@@ -576,8 +590,6 @@ component ShpCli {
       Read<DiagnosticText>
         evidence ts("packages/shp-cli/src/commands/explain/command.ts")
       Read<DiagnosticText>
-        evidence ts("packages/shp-cli/src/commands/explain/impl.ts")
-      Read<DiagnosticText>
         evidence ts("packages/shp-cli/src/commands/fmt/command.ts")
       Read<DiagnosticText>
         evidence ts("packages/shp-cli/src/commands/graph/command.ts")
@@ -591,8 +603,6 @@ component ShpCli {
         evidence ts("packages/shp-cli/src/commands/lsp/command.ts")
       Read<DiagnosticText>
         evidence ts("packages/shp-cli/src/commands/memory/command.ts")
-      Read<DiagnosticText>
-        evidence ts("packages/shp-cli/src/commands/memory/impl.ts")
       Read<DiagnosticText>
         evidence ts("packages/shp-cli/src/commands/obligations/command.ts")
       Read<DiagnosticText>
@@ -687,6 +697,12 @@ relation ShapeAnalyzerUsesStringHelpers {
 relation ShapeAstGeneratorProvidesDraft {
   kind provides
   connects ShapeAstGenerator -> ShapeModelDraft
+}
+
+relation ShapeAstGeneratorUsesGrammar {
+  kind calls
+  connects ShapeAstGenerator -> ShapeGrammar
+  summary "GeneratedKeywordVocabulary"
 }
 
 relation ShapeAuthoringUsesAnalyzer {
@@ -993,6 +1009,18 @@ reevaluation AstGenerationDraftSafetyRechecked {
   evidence test("packages/shp-checker/src/ast-generation.test.ts")
 }
 
+reevaluation AstGenerationSharedMetadata {
+  satisfies memory AstGenerationUnknownSafety
+  outcome Confirmed
+  summary "Grammar-derived identifiers and shared graph construction preserve input-specific validation, diagnostic order, fingerprints, deterministic output, optional raw traces, and unknown effects on generated functions. Simpler traversal and signature scanning preserve child order, literal escaping, and declaration-shell pruning. Shared declaration anchors preserve resource classification, Swift extensions, and primary anchors; direct field maps preserve duplicate-field order and values."
+  reviewer Codex
+  decided_on "2026-09-26"
+  evidence test("packages/shp-checker/src/ast-generation-swift.test.ts")
+  evidence test("packages/shp-checker/src/ast-generation.test.ts")
+  evidence test("packages/shp-checker/src/behavioural/ast-generation-behaviour.test.ts")
+  evidence test("packages/shp-checker/src/checker.guard-syntax.test.ts")
+}
+
 reevaluation AstGenerationStableReferencesRechecked {
   satisfies memory AstGenerationUnknownSafety
   outcome Confirmed
@@ -1000,6 +1028,18 @@ reevaluation AstGenerationStableReferencesRechecked {
   reviewer ShapeMaintainers
   decided_on "2026-07-27"
   evidence test("packages/shp-checker/src/ast-generation.test.ts")
+}
+
+reevaluation AstRenderingUsesFinalizedGraph {
+  satisfies memory AstGenerationUnknownSafety
+  outcome Confirmed
+  summary "The source and AST-JSON builders validate external inputs and construct retained relation and candidate references. Rendering drops a redundant graph-wide validation pass while preserving endpoint checks, candidate pin gating, public diagnostics, unknown effects, stable anchors, and optional raw traces. Public input comparisons include duplicate paths, malformed inputs, and parser failures."
+  reviewer Codex
+  decided_on "2026-09-26"
+  evidence test("packages/shp-checker/src/ast-generation-swift.test.ts")
+  evidence test("packages/shp-checker/src/ast-generation.test.ts")
+  evidence ts("packages/shp-checker/src/ast-generation-render.ts#generateShapeFromCodeSemanticGraph")
+  evidence ts("packages/shp-checker/src/ast-generation-semantic.ts#addSemanticProjection")
 }
 
 reevaluation AuthorPromptPrDiffWorkflowRechecked {
@@ -1032,6 +1072,15 @@ reevaluation AuthorPromptStableReferencesRechecked {
   evidence test("packages/shp-checker/src/authoring.test.ts")
 }
 
+reevaluation AuthoringDraftLinesConsolidated {
+  satisfies memory AuthoringUnknownSafety
+  outcome Confirmed
+  summary "Draft construction emits indented lines directly while preserving explicit unknown effects, source references, function names, blank lines, and the optional memory scaffold."
+  reviewer Codex
+  decided_on "2026-09-26"
+  evidence test("packages/shp-checker/src/authoring.test.ts")
+}
+
 reevaluation AuthoringDraftSafetyRechecked {
   satisfies memory AuthoringUnknownSafety
   outcome Confirmed
@@ -1044,7 +1093,7 @@ reevaluation AuthoringDraftSafetyRechecked {
 reevaluation CliAstOutputModesRechecked {
   satisfies memory CliCommandDispatchOrder
   outcome Confirmed
-  summary "AST CLI tests reject ambiguous raw trace output flags, keep generated AST freshness and cleanup scoped to manifest-owned files, reject generated output collisions, preserve workspace-root source identity, and keep source and JSON draft paths on the same generator semantics."
+  summary "AST CLI tests reject ambiguous raw trace output flags, keep generated AST freshness and cleanup scoped to manifest-owned files, reject generated output collisions, preserve workspace-root source identity, and keep source and JSON draft paths on the same generator semantics. All three generation paths share result validation and warning emission before consuming output; failure codes and output ordering are unchanged."
   reviewer ShapeMaintainers
   decided_on "2026-05-22"
   evidence test("packages/shp-cli/src/index.test.ts")
@@ -1088,6 +1137,26 @@ reevaluation CliCriticDispatchRechecked {
   evidence test("packages/shp-cli/src/index.test.ts")
 }
 
+reevaluation CliExitStatusNormalizationRechecked {
+  satisfies memory CliCommandDispatchOrder
+  outcome Confirmed
+  summary "Normalizing wrapped Stricli statuses once preserves usage and internal-error exit codes, leaves other statuses untouched, and retains command dispatch and validation order."
+  reviewer Codex
+  decided_on "2026-09-26"
+  evidence test("packages/shp-cli/src/index.test.ts")
+  evidence ts("packages/shp-cli/src/index.ts#main")
+}
+
+reevaluation CliFlagMetadataConsolidated {
+  satisfies memory CliCommandDispatchOrder
+  outcome Confirmed
+  summary "Shared optional-flag constructors preserve required arguments, custom parsers, flag order, help text, dispatch, and exit codes."
+  reviewer Codex
+  decided_on "2026-09-25"
+  evidence test("packages/shp-cli/src/cli-contract.test.ts")
+  evidence test("packages/shp-cli/src/index.test.ts")
+}
+
 reevaluation CliInspectDispatchRechecked {
   satisfies memory CliCommandDispatchOrder
   outcome Confirmed
@@ -1096,6 +1165,19 @@ reevaluation CliInspectDispatchRechecked {
   decided_on "2026-08-19"
   evidence md("docs-site/src/content/docs/reference/cli.md")
   evidence test("packages/shp-cli/src/index.test.ts")
+}
+
+reevaluation CliLazyHandlersConsolidated {
+  satisfies memory CliCommandDispatchOrder
+  outcome Confirmed
+  summary "Explain and memory handlers live in their existing lazy command loaders, and the LSP loader returns the server entry point directly. Argument validation, help, stdout, protocol dispatch, and dependency-import failures remain in their existing phases."
+  reviewer Codex
+  decided_on "2026-09-26"
+  evidence test("packages/shp-cli/src/index.test.ts")
+  evidence test("packages/shp-cli/src/lsp/server.test.ts")
+  evidence ts("packages/shp-cli/src/commands/explain/command.ts#explainCommand")
+  evidence ts("packages/shp-cli/src/commands/lsp/command.ts#lspCommand")
+  evidence ts("packages/shp-cli/src/commands/memory/command.ts#memoryCommand")
 }
 
 reevaluation CliLspDispatchRechecked {
@@ -1125,6 +1207,17 @@ reevaluation CliUpdateExplicitTargetRechecked {
   evidence test("packages/shp-cli/src/update.test.ts")
 }
 
+reevaluation CliUpdateForwardersRemoved {
+  satisfies memory UpdateBinaryIntegrity
+  outcome Confirmed
+  summary "Inlining private path, subprocess, and release-response helpers preserves validation errors, checksum and identity checks, service-call order, and staged parser-asset replacement. POSIX success and rollback outcomes match; the deferred Windows replacement code and script are unchanged. The service type derives from the readonly default adapter with unchanged signatures and runtime."
+  reviewer Codex
+  decided_on "2026-09-26"
+  evidence test("packages/shp-cli/src/update.test.ts")
+  evidence ts("packages/shp-cli/src/commands/update/impl.ts#replaceBinary")
+  evidence ts("packages/shp-cli/src/commands/update/impl.ts#runUpdate")
+}
+
 reevaluation CliUpdateHelpIdentityRechecked {
   satisfies memory UpdateBinaryIntegrity
   outcome Confirmed
@@ -1142,6 +1235,16 @@ reevaluation CriticPromptAdvisoryPassRechecked {
   decided_on "2026-07-27"
   evidence md("docs-site/src/content/docs/inside-shape/formatter-editor-authoring.md")
   evidence test("packages/shp-checker/src/checker.test.ts")
+  evidence test("packages/shp-checker/src/critic.test.ts")
+}
+
+reevaluation CriticPromptInputsConsolidated {
+  satisfies memory CriticPromptSafetyRules
+  outcome Confirmed
+  summary "Shared input types and direct module arrays preserve both critic prompt overloads, every safety checklist instruction, import-aware guard resolution, and diagnostic and advisory order."
+  reviewer Codex
+  decided_on "2026-09-26"
+  evidence test("packages/shp-checker/src/authoring.test.ts")
   evidence test("packages/shp-checker/src/critic.test.ts")
 }
 
@@ -1185,6 +1288,16 @@ reevaluation ForbiddenPathReservedWordRechecked {
   evidence test("packages/shp-checker/src/checker.guard-syntax.test.ts")
 }
 
+reevaluation FormatterDispatchConsolidated {
+  satisfies memory FormatterCanonicalDiffs
+  outcome Confirmed
+  summary "Shared AST and typed member rendering preserve canonical output, context aggregation, and change-entry ordering. Declaration dispatch directly renders simple blocks, eliminating forwarding helpers without changing headers or member ordering. Members are grouped once by each owner's explicit order before sorting within groups. Shared type-reference suffixes and directly projected implementation path blocks preserve sorting, duplicates, escaping, and owner-specific block order. Corpus and member-variant comparisons preserve spacing, evidence, duplicate handling, and the specialized resource, relation, implementation, and candidate-effect paths."
+  reviewer Codex
+  decided_on "2026-09-26"
+  evidence test("packages/shp-checker/src/behavioural/formatter-roundtrip.test.ts")
+  evidence test("packages/shp-checker/src/formatter.test.ts")
+}
+
 reevaluation FormatterSharedStringHelpersRechecked {
   satisfies memory FormatterCanonicalDiffs
   outcome Confirmed
@@ -1212,4 +1325,99 @@ reevaluation UpdateRuntimeAssetsRechecked {
   decided_on "2026-05-28"
   evidence test("packages/shp-cli/src/update.test.ts")
   evidence ts("packages/shp-cli/src/commands/update/impl.ts")
+}
+
+attest docs_not_needed {
+  source ts("packages/shp-checker/src/analyzer-sql.ts#scanDestructiveSql")
+  reason "The SQL scanner retains its supported statements, quote handling, targets, evidence spans, and advisory boundary. The change simplifies internal token traversal and state only."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/ast-generation-utils.ts#stableJson")
+  reason "One iterative container stack replaces separate array and object continuation paths. Canonical key order, undefined handling, scalar encoding, deep-input support, and fingerprint output are unchanged."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-cli/src/lsp/positions.ts#shapeCompletionContext")
+  reason "Completion selection finds the same first matching prefix and fallback start, then constructs the same replacement-range closure once. UTF-16 ranges, document reads, and protocol responses are unchanged."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/analyzer-sql.ts#scanDestructiveSql")
+  reason "A single statement command replaces mutually exclusive pending flags. The private identifier reader no longer copies an unread start offset; target and statement evidence spans are unchanged. ASCII token boundaries, UTF-16 offsets, semicolon resets, target reads, and advisory hint ordering are unchanged."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/analyzer-scopes.ts#findBodyAfterReturnType")
+  reason "One loop owns cursor advancement and opening-delimiter handling while retaining return-type operand state, body-brace detection, delimiter policies, malformed-input rejection, and UTF-16 offsets."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-cli/src/lsp/server.ts#uniqueDefinitionMatch")
+  reason "Hover and definition share the exactly-one external-match decision. Local precedence, complete snapshot scanning, open-document overlays, document reads, reference ranges, and protocol output are unchanged."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/ast-generation-raw.ts#semanticName")
+  reason "A direct child-map lookup replaces a forwarding helper. Field precedence, first matching identifier, child order, empty-text handling, and naming fallbacks remain unchanged."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/ast-generation-semantic.ts#collectImplFunctions")
+  reason "A direct child-map lookup replaces a forwarding helper. Type-field precedence, first matching identifier, trimming, and implementation ownership remain unchanged."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/ast-generation-tree-sitter.ts#BUNDLED_TREE_SITTER_LANGUAGES")
+  reason "The bundled parser inventory is a fresh tuple derived from the supported source languages. Languages, order, exported types, parser library names, native support, and independence from the source-language array are unchanged."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-cli/src/commands/author/impl.ts#validateAuthorFlags")
+  reason "Private author modes and prompt context types are inferred from their constructors instead of repeated as parallel declarations. Public flags and command signatures are unchanged; emitted JavaScript is identical."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/analyzer-shape.ts#selectDeclaredEffects")
+  reason "The private selection type is inferred from its discriminated results, and the effect collector accepts exactly the three function AST kinds its callers provide. Public signatures and emitted JavaScript are unchanged."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/ast-generation-fingerprints.ts#fingerprintForAnchor")
+  reason "Semantic projection supplies complete indexes for every anchor. Removing unused index reconstruction and missing-node recovery preserves last-wins node resolution, tokenless warnings, canonical traversal, and fingerprint payloads."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-cli/src/commands/explain/impl.ts")
+  reason "The redundant implementation module was removed. Its behavior remains in the command's lazy loader or the existing server entry point, as recorded by CliLazyHandlersConsolidated."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-cli/src/commands/memory/impl.ts")
+  reason "The redundant implementation module was removed. Its behavior remains in the command's lazy loader or the existing server entry point, as recorded by CliLazyHandlersConsolidated."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-cli/src/commands/lsp/impl.ts")
+  reason "The redundant implementation module was removed. Its behavior remains in the command's lazy loader or the existing server entry point, as recorded by CliLazyHandlersConsolidated."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/editor.ts#editorSymbolsForDeclaration")
+  reason "Change-entry symbol dispatch is performed directly in the declaration traversal. Additions retain their definition locations and aliases in source order; modifications and removals still introduce no symbols."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/ast-generation-json.ts#parseJsonAstInput")
+  reason "Private parsed-input and node types derive from the parser returns. Explicit discriminants preserve narrowing; emitted JavaScript is identical, including validation and diagnostic ordering."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/ast-generation-swift.ts#collectSwiftDeclarations")
+  reason "The private return shape is inferred from the already typed construction instead of repeated in an annotation. Emitted JavaScript is identical; data, validation, ordering, and effects are unchanged."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/critic.ts#parseContextFiles")
+  reason "The private return shape is inferred from the already typed construction instead of repeated in an annotation. Emitted JavaScript is identical; data, validation, ordering, and effects are unchanged."
 }

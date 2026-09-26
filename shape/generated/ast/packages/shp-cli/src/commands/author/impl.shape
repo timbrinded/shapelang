@@ -33,7 +33,7 @@ resource ImplModuleReadContextFilesAstAnchor : GeneratedAstAnchor {
 
 resource ImplModuleReadExplicitPromptContextAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-cli/src/commands/author/impl.ts#readExplicitPromptContext")
-  fingerprint ast.semantic_subtree_v1("sha256:53a13f87e1149a1478443f6dd3ca5e10ebb5f0c7971c8a75f3bfde561b9b39da")
+  fingerprint ast.semantic_subtree_v1("sha256:0b87968e46ec62a298f2e13143a4765f35f45fe27bba0a4ba27f551c11e1fe17")
 }
 
 resource ImplModuleRequireComponentAstAnchor : GeneratedAstAnchor {
@@ -43,12 +43,12 @@ resource ImplModuleRequireComponentAstAnchor : GeneratedAstAnchor {
 
 resource ImplModuleRequirePromptInputAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-cli/src/commands/author/impl.ts#requirePromptInput")
-  fingerprint ast.semantic_subtree_v1("sha256:a127013e67d661368848407bcf4f743a0390a1452fd00819844d16a2dd12b9d4")
+  fingerprint ast.semantic_subtree_v1("sha256:a3603ae6d6baf5c7f0cc18745773e676fa723b1818446da1816fcae51c8f238c")
 }
 
 resource ImplModuleValidateAuthorFlagsAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-cli/src/commands/author/impl.ts#validateAuthorFlags")
-  fingerprint ast.semantic_subtree_v1("sha256:eb4f2a117497cc5c3050adefb25c0dedd7c868996c60a46496ae8a82edd2b3a3")
+  fingerprint ast.semantic_subtree_v1("sha256:27613c4eba2136b8cf957bed72bce5f2f74e73420ed63808da94a4506ef3fa40")
 }
 
 component ImplModule : GeneratedCandidate {
@@ -125,7 +125,7 @@ relation ImplModuleReadExplicitPromptContextGeneratedFromImplModuleReadExplicitP
   kind generated_from
   connects ImplModule -> ImplModuleReadExplicitPromptContextAstAnchor
   roles { ImplModule as generated, ImplModuleReadExplicitPromptContextAstAnchor as syntax }
-  expects ImplModuleReadExplicitPromptContextAstAnchor fingerprint ast.semantic_subtree_v1("sha256:53a13f87e1149a1478443f6dd3ca5e10ebb5f0c7971c8a75f3bfde561b9b39da")
+  expects ImplModuleReadExplicitPromptContextAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0b87968e46ec62a298f2e13143a4765f35f45fe27bba0a4ba27f551c11e1fe17")
   summary "fn ImplModule.readExplicitPromptContext generated from typescript function_declaration at packages/shp-cli/src/commands/author/impl.ts#readExplicitPromptContext."
 }
 
@@ -141,7 +141,7 @@ relation ImplModuleRequirePromptInputGeneratedFromImplModuleRequirePromptInputAs
   kind generated_from
   connects ImplModule -> ImplModuleRequirePromptInputAstAnchor
   roles { ImplModule as generated, ImplModuleRequirePromptInputAstAnchor as syntax }
-  expects ImplModuleRequirePromptInputAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a127013e67d661368848407bcf4f743a0390a1452fd00819844d16a2dd12b9d4")
+  expects ImplModuleRequirePromptInputAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a3603ae6d6baf5c7f0cc18745773e676fa723b1818446da1816fcae51c8f238c")
   summary "fn ImplModule.requirePromptInput generated from typescript function_declaration at packages/shp-cli/src/commands/author/impl.ts#requirePromptInput."
 }
 
@@ -149,7 +149,7 @@ relation ImplModuleValidateAuthorFlagsGeneratedFromImplModuleValidateAuthorFlags
   kind generated_from
   connects ImplModule -> ImplModuleValidateAuthorFlagsAstAnchor
   roles { ImplModule as generated, ImplModuleValidateAuthorFlagsAstAnchor as syntax }
-  expects ImplModuleValidateAuthorFlagsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:eb4f2a117497cc5c3050adefb25c0dedd7c868996c60a46496ae8a82edd2b3a3")
+  expects ImplModuleValidateAuthorFlagsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:27613c4eba2136b8cf957bed72bce5f2f74e73420ed63808da94a4506ef3fa40")
   summary "fn ImplModule.validateAuthorFlags generated from typescript function_declaration at packages/shp-cli/src/commands/author/impl.ts#validateAuthorFlags."
 }
 

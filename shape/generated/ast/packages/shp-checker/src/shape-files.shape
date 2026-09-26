@@ -1,0 +1,33 @@
+module shape.generated.ast.packages.shp_checker.src.shape_files
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource ShapeFilesModuleLoadShapeModulesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/shape-files.ts#loadShapeModules")
+  fingerprint ast.semantic_subtree_v1("sha256:7f8241693ba51c64e073d76c6bfb2109f266e142b48b4e7e47794da2df1b8c82")
+}
+
+component ShapeFilesModule : GeneratedCandidate {
+  fn loadShapeModules
+    source ts("packages/shp-checker/src/shape-files.ts#loadShapeModules")
+    effects unknown
+}
+
+relation ShapeFilesModuleLoadShapeModulesGeneratedFromShapeFilesModuleLoadShapeModulesAstAnchor {
+  kind generated_from
+  connects ShapeFilesModule -> ShapeFilesModuleLoadShapeModulesAstAnchor
+  roles { ShapeFilesModule as generated, ShapeFilesModuleLoadShapeModulesAstAnchor as syntax }
+  expects ShapeFilesModuleLoadShapeModulesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7f8241693ba51c64e073d76c6bfb2109f266e142b48b4e7e47794da2df1b8c82")
+  summary "fn ShapeFilesModule.loadShapeModules generated from typescript function_declaration at packages/shp-checker/src/shape-files.ts#loadShapeModules."
+}
+
+implementation ShapeFilesModuleImpl {
+  paths {
+    "packages/shp-checker/src/shape-files.ts"
+  }
+  conforms_to ShapeFilesModule
+}

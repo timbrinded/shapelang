@@ -1,4 +1,5 @@
 import { describe, expect, test } from "bun:test";
+import assert from "node:assert/strict";
 import { resolve } from "node:path";
 import {
   checkShapeFiles,
@@ -42,9 +43,7 @@ describe("Shape checker", () => {
     expect(left.ok).toBe(true);
     expect(right.ok).toBe(true);
     expect(consumer.ok).toBe(true);
-    if (!left.ok || !right.ok || !consumer.ok) {
-      return;
-    }
+    assert(left.ok && right.ok && consumer.ok);
 
     const result = checkShapeModules([left.module, right.module, consumer.module], {
       includeFacts: true
@@ -100,9 +99,7 @@ describe("Shape checker", () => {
 
     const consumer = parseShapeModule(formatted.formatted);
     expect(consumer.ok).toBe(true);
-    if (!consumer.ok) {
-      return;
-    }
+    assert(consumer.ok);
 
     const result = checkShapeModules([left.module, right.module, consumer.module]);
     const output = formatDiagnostics(result);
@@ -138,9 +135,7 @@ describe("Shape checker", () => {
 
     expect(base.ok).toBe(true);
     expect(change.ok).toBe(true);
-    if (!base.ok || !change.ok) {
-      return;
-    }
+    assert(base.ok && change.ok);
 
     const result = checkShapeModules([base.module, change.module]);
     expect(result.exitCode).toBe(0);
@@ -171,9 +166,7 @@ describe("Shape checker", () => {
     `);
 
     expect(parsed.ok).toBe(true);
-    if (!parsed.ok) {
-      return;
-    }
+    assert(parsed.ok);
 
     const untrusted = checkShapeModules(
       [{ module: parsed.module, filePath: "shape/generated/ast/audit.shape" }],
@@ -379,9 +372,7 @@ describe("Shape checker", () => {
     `);
 
     expect(parsed.ok).toBe(true);
-    if (!parsed.ok) {
-      return;
-    }
+    assert(parsed.ok);
 
     const result = checkShapeModules([parsed.module], { includeFacts: true });
     const output = formatDiagnostics(result);
@@ -420,9 +411,7 @@ describe("Shape checker", () => {
     `);
 
     expect(parsed.ok).toBe(true);
-    if (!parsed.ok) {
-      return;
-    }
+    assert(parsed.ok);
 
     const result = checkShapeModules([parsed.module]);
     const output = formatDiagnostics(result);
@@ -462,9 +451,7 @@ describe("Shape checker", () => {
 
     expect(domain.ok).toBe(true);
     expect(policy.ok).toBe(true);
-    if (!domain.ok || !policy.ok) {
-      return;
-    }
+    assert(domain.ok && policy.ok);
 
     const result = checkShapeModules([domain.module, policy.module]);
     const output = formatDiagnostics(result);
@@ -503,9 +490,7 @@ describe("Shape checker", () => {
       }
     `);
     expect(unknown.ok).toBe(true);
-    if (!unknown.ok) {
-      return;
-    }
+    assert(unknown.ok);
     const unknownResult = checkShapeModules([unknown.module]);
     expect(unknownResult.exitCode).toBe(1);
     expect(formatDiagnostics(unknownResult)).toContain("resource MissingEvent is referenced");
@@ -524,9 +509,7 @@ describe("Shape checker", () => {
     expect(left.ok).toBe(true);
     expect(right.ok).toBe(true);
     expect(ambiguous.ok).toBe(true);
-    if (!left.ok || !right.ok || !ambiguous.ok) {
-      return;
-    }
+    assert(left.ok && right.ok && ambiguous.ok);
     const ambiguousResult = checkShapeModules([left.module, right.module, ambiguous.module]);
     const ambiguousOutput = formatDiagnostics(ambiguousResult);
     expect(ambiguousResult.exitCode).toBe(1);
@@ -548,9 +531,7 @@ describe("Shape checker", () => {
     `);
 
     expect(parsed.ok).toBe(true);
-    if (!parsed.ok) {
-      return;
-    }
+    assert(parsed.ok);
 
     const result = checkShapeModules([parsed.module]);
     expect(result.exitCode).toBe(1);
@@ -584,9 +565,7 @@ describe("Shape checker", () => {
 
     expect(base.ok).toBe(true);
     expect(change.ok).toBe(true);
-    if (!base.ok || !change.ok) {
-      return;
-    }
+    assert(base.ok && change.ok);
 
     const result = checkShapeModules([base.module, change.module]);
 
@@ -621,9 +600,7 @@ describe("Shape checker", () => {
 
     expect(base.ok).toBe(true);
     expect(change.ok).toBe(true);
-    if (!base.ok || !change.ok) {
-      return;
-    }
+    assert(base.ok && change.ok);
 
     const result = checkShapeModules([base.module, change.module]);
 
@@ -659,9 +636,7 @@ describe("Shape checker", () => {
 
     expect(base.ok).toBe(true);
     expect(change.ok).toBe(true);
-    if (!base.ok || !change.ok) {
-      return;
-    }
+    assert(base.ok && change.ok);
 
     const result = checkShapeModules([base.module, change.module]);
 
@@ -695,9 +670,7 @@ describe("Shape checker", () => {
 
     expect(base.ok).toBe(true);
     expect(change.ok).toBe(true);
-    if (!base.ok || !change.ok) {
-      return;
-    }
+    assert(base.ok && change.ok);
 
     const result = checkShapeModules([base.module, change.module]);
 
@@ -733,9 +706,7 @@ describe("Shape checker", () => {
 
     expect(base.ok).toBe(true);
     expect(change.ok).toBe(true);
-    if (!base.ok || !change.ok) {
-      return;
-    }
+    assert(base.ok && change.ok);
 
     const result = checkShapeModules([base.module, change.module]);
 
@@ -774,9 +745,7 @@ describe("Shape checker", () => {
 
     expect(base.ok).toBe(true);
     expect(change.ok).toBe(true);
-    if (!base.ok || !change.ok) {
-      return;
-    }
+    assert(base.ok && change.ok);
 
     const result = checkShapeModules([base.module, change.module]);
     const output = formatDiagnostics(result);
@@ -837,9 +806,7 @@ describe("Shape checker", () => {
     expect(base.ok).toBe(true);
     expect(createsViolation.ok).toBe(true);
     expect(removesViolation.ok).toBe(true);
-    if (!base.ok || !createsViolation.ok || !removesViolation.ok) {
-      return;
-    }
+    assert(base.ok && createsViolation.ok && removesViolation.ok);
 
     const created = checkShapeModules([base.module, createsViolation.module]);
     expect(created.exitCode).toBe(1);
@@ -887,9 +854,7 @@ describe("Shape checker", () => {
 
     expect(base.ok).toBe(true);
     expect(change.ok).toBe(true);
-    if (!base.ok || !change.ok) {
-      return;
-    }
+    assert(base.ok && change.ok);
 
     const result = checkShapeModules([base.module, change.module]);
 
@@ -916,9 +881,7 @@ describe("Shape checker", () => {
     `);
 
     expect(parsed.ok).toBe(true);
-    if (!parsed.ok) {
-      return;
-    }
+    assert(parsed.ok);
 
     const result = checkShapeModules([parsed.module], {
       changedFiles: ["src/audit/purge.ts"]
@@ -931,8 +894,7 @@ describe("Shape checker", () => {
     expect(output).toContain("AuditStoreImpl");
   });
 
-  test("passes coverage with no-shape-change attestation", () => {
-    const parsed = parseShapeModule(`
+  const attestedCoverageSource = `
       module audit
 
       resource AuditEvent : AppendOnly
@@ -953,12 +915,13 @@ describe("Shape checker", () => {
         source ts("src/audit/purge.ts")
         reason "renamed local variable only"
       }
-    `);
+    `;
+
+  test("passes coverage with no-shape-change attestation", () => {
+    const parsed = parseShapeModule(attestedCoverageSource);
 
     expect(parsed.ok).toBe(true);
-    if (!parsed.ok) {
-      return;
-    }
+    assert(parsed.ok);
 
     const result = checkShapeModules([{ module: parsed.module, filePath: "shape/audit.shape" }], {
       changedFiles: ["src/audit/purge.ts", "shape/audit.shape"]
@@ -968,33 +931,10 @@ describe("Shape checker", () => {
   });
 
   test("passes coverage with no-shape-change attestation from an absolute Shape path", () => {
-    const parsed = parseShapeModule(`
-      module audit
-
-      resource AuditEvent : AppendOnly
-
-      component AuditStore {
-        owns AuditEvent
-      }
-
-      implementation AuditStoreImpl {
-        paths {
-          "src/audit/**/*.ts"
-        }
-        conforms_to AuditStore
-        on_change require shape_update
-      }
-
-      attest no_shape_change {
-        source ts("src/audit/purge.ts")
-        reason "renamed local variable only"
-      }
-    `);
+    const parsed = parseShapeModule(attestedCoverageSource);
 
     expect(parsed.ok).toBe(true);
-    if (!parsed.ok) {
-      return;
-    }
+    assert(parsed.ok);
 
     const result = checkShapeModules(
       [{ module: parsed.module, filePath: resolve(repoRoot, "shape/audit.shape") }],
@@ -1007,33 +947,10 @@ describe("Shape checker", () => {
   });
 
   test("rejects stale no-shape-change attestation for current coverage", () => {
-    const parsed = parseShapeModule(`
-      module audit
-
-      resource AuditEvent : AppendOnly
-
-      component AuditStore {
-        owns AuditEvent
-      }
-
-      implementation AuditStoreImpl {
-        paths {
-          "src/audit/**/*.ts"
-        }
-        conforms_to AuditStore
-        on_change require shape_update
-      }
-
-      attest no_shape_change {
-        source ts("src/audit/purge.ts")
-        reason "renamed local variable only"
-      }
-    `);
+    const parsed = parseShapeModule(attestedCoverageSource);
 
     expect(parsed.ok).toBe(true);
-    if (!parsed.ok) {
-      return;
-    }
+    assert(parsed.ok);
 
     const result = checkShapeModules([{ module: parsed.module, filePath: "shape/audit.shape" }], {
       changedFiles: ["src/audit/purge.ts"]
@@ -1045,8 +962,7 @@ describe("Shape checker", () => {
     );
   });
 
-  test("passes coverage when a change declaration references the governed source", () => {
-    const base = parseShapeModule(`
+  const coverageBaseSource = `
       module audit
 
       resource AuditEvent : AppendOnly
@@ -1063,8 +979,9 @@ describe("Shape checker", () => {
         conforms_to AuditStore
         on_change require shape_update
       }
-    `);
-    const change = parseShapeModule(`
+    `;
+
+  const coverageChangeSource = `
       module review.add_append
       import audit
 
@@ -1076,13 +993,15 @@ describe("Shape checker", () => {
               evidence ts("src/audit/store.ts#appendEvent")
           }
       }
-    `);
+    `;
+
+  test("passes coverage when a change declaration references the governed source", () => {
+    const base = parseShapeModule(coverageBaseSource);
+    const change = parseShapeModule(coverageChangeSource);
 
     expect(base.ok).toBe(true);
     expect(change.ok).toBe(true);
-    if (!base.ok || !change.ok) {
-      return;
-    }
+    assert(base.ok && change.ok);
 
     const result = checkShapeModules(
       [
@@ -1125,9 +1044,7 @@ describe("Shape checker", () => {
     `);
 
     expect(parsed.ok).toBe(true);
-    if (!parsed.ok) {
-      return;
-    }
+    assert(parsed.ok);
 
     const result = checkShapeModules(
       [{ module: parsed.module, filePath: resolve(repoRoot, "shape/audit.shape") }],
@@ -1140,43 +1057,12 @@ describe("Shape checker", () => {
   });
 
   test("rejects stale change declaration source references for current coverage", () => {
-    const base = parseShapeModule(`
-      module audit
-
-      resource AuditEvent : AppendOnly
-
-      component AuditStore {
-        owns AuditEvent
-        grants Append<AuditEvent>
-      }
-
-      implementation AuditStoreImpl {
-        paths {
-          "src/audit/**/*.ts"
-        }
-        conforms_to AuditStore
-        on_change require shape_update
-      }
-    `);
-    const change = parseShapeModule(`
-      module review.add_append
-      import audit
-
-      change AddAppend {
-        add fn AuditStore.appendEvent
-          source ts("src/audit/store.ts#appendEvent")
-          effects complete {
-            Append<AuditEvent>
-              evidence ts("src/audit/store.ts#appendEvent")
-          }
-      }
-    `);
+    const base = parseShapeModule(coverageBaseSource);
+    const change = parseShapeModule(coverageChangeSource);
 
     expect(base.ok).toBe(true);
     expect(change.ok).toBe(true);
-    if (!base.ok || !change.ok) {
-      return;
-    }
+    assert(base.ok && change.ok);
 
     const result = checkShapeModules(
       [
@@ -1230,9 +1116,7 @@ describe("Shape checker", () => {
 
     expect(base.ok).toBe(true);
     expect(change.ok).toBe(true);
-    if (!base.ok || !change.ok) {
-      return;
-    }
+    assert(base.ok && change.ok);
 
     const result = checkShapeModules(
       [
@@ -1274,9 +1158,7 @@ describe("Shape checker", () => {
     `);
 
     expect(parsed.ok).toBe(true);
-    if (!parsed.ok) {
-      return;
-    }
+    assert(parsed.ok);
 
     const missingDocs = checkShapeModules([parsed.module], {
       changedFiles: ["packages/shp-checker/src/checker.ts"]
@@ -1313,9 +1195,7 @@ describe("Shape checker", () => {
     `);
 
     expect(withAttestation.ok).toBe(true);
-    if (!withAttestation.ok) {
-      return;
-    }
+    assert(withAttestation.ok);
     const staleAttestation = checkShapeModules(
       [{ module: withAttestation.module, filePath: "shape/existing-waiver.shape" }],
       {
@@ -1408,9 +1288,7 @@ describe("Shape checker", () => {
     `);
 
     expect(parsed.ok).toBe(true);
-    if (!parsed.ok) {
-      return;
-    }
+    assert(parsed.ok);
 
     const result = checkShapeModules([parsed.module]);
     const output = formatDiagnostics(result);
@@ -1456,9 +1334,7 @@ describe("Shape checker", () => {
     `);
 
     expect(parsed.ok).toBe(true);
-    if (!parsed.ok) {
-      return;
-    }
+    assert(parsed.ok);
 
     const result = checkShapeModules([parsed.module]);
     const output = formatDiagnostics(result);
@@ -1501,9 +1377,7 @@ describe("Shape checker", () => {
     `);
 
     expect(parsed.ok).toBe(true);
-    if (!parsed.ok) {
-      return;
-    }
+    assert(parsed.ok);
 
     const result = checkShapeModules([parsed.module]);
     const output = formatDiagnostics(result);
@@ -1531,9 +1405,7 @@ describe("Shape checker", () => {
     `);
 
     expect(parsed.ok).toBe(true);
-    if (!parsed.ok) {
-      return;
-    }
+    assert(parsed.ok);
 
     const result = checkShapeModules([parsed.module]);
     const output = formatDiagnostics(result);
@@ -1560,9 +1432,7 @@ describe("Shape checker", () => {
     `);
 
     expect(parsed.ok).toBe(true);
-    if (!parsed.ok) {
-      return;
-    }
+    assert(parsed.ok);
 
     const result = checkShapeModules([parsed.module]);
     const output = formatDiagnostics(result);
@@ -1588,9 +1458,7 @@ describe("Shape checker", () => {
     `);
 
     expect(parsed.ok).toBe(true);
-    if (!parsed.ok) {
-      return;
-    }
+    assert(parsed.ok);
 
     const result = checkShapeModules([parsed.module]);
     const output = formatDiagnostics(result);
@@ -1617,9 +1485,7 @@ describe("Shape checker", () => {
     `);
 
     expect(parsed.ok).toBe(true);
-    if (!parsed.ok) {
-      return;
-    }
+    assert(parsed.ok);
 
     const result = checkShapeModules([parsed.module]);
     const output = formatDiagnostics(result);
@@ -1643,9 +1509,7 @@ describe("Shape checker", () => {
     `);
 
     expect(parsed.ok).toBe(true);
-    if (!parsed.ok) {
-      return;
-    }
+    assert(parsed.ok);
 
     const result = checkShapeModules([parsed.module]);
     const output = formatDiagnostics(result);
@@ -1672,9 +1536,7 @@ describe("Shape checker", () => {
     `);
 
     expect(parsed.ok).toBe(true);
-    if (!parsed.ok) {
-      return;
-    }
+    assert(parsed.ok);
 
     const result = checkShapeModules([parsed.module]);
     const output = formatDiagnostics(result);
@@ -1698,9 +1560,7 @@ describe("Shape checker", () => {
     `);
 
     expect(parsed.ok).toBe(true);
-    if (!parsed.ok) {
-      return;
-    }
+    assert(parsed.ok);
 
     const result = checkShapeModules([parsed.module], { includeFacts: true });
     const output = formatDiagnostics(result);
@@ -1751,9 +1611,7 @@ describe("Shape checker", () => {
     `);
 
     expect(parsed.ok).toBe(true);
-    if (!parsed.ok) {
-      return;
-    }
+    assert(parsed.ok);
 
     const result = checkShapeModules([parsed.module]);
     const output = formatDiagnostics(result);
@@ -1788,9 +1646,7 @@ describe("Shape checker", () => {
     `);
 
     expect(parsed.ok).toBe(true);
-    if (!parsed.ok) {
-      return;
-    }
+    assert(parsed.ok);
 
     const result = checkShapeModules([parsed.module]);
     const output = formatDiagnostics(result);
@@ -1818,9 +1674,7 @@ describe("Shape checker", () => {
     `);
 
     expect(parsed.ok).toBe(true);
-    if (!parsed.ok) {
-      return;
-    }
+    assert(parsed.ok);
 
     const result = checkShapeModules([parsed.module]);
     const output = formatDiagnostics(result);
@@ -1847,9 +1701,7 @@ describe("Shape checker", () => {
     `);
 
     expect(parsed.ok).toBe(true);
-    if (!parsed.ok) {
-      return;
-    }
+    assert(parsed.ok);
 
     const result = checkShapeModules([parsed.module]);
     const output = formatDiagnostics(result);
@@ -1876,9 +1728,7 @@ describe("Shape checker", () => {
     `);
 
     expect(parsed.ok).toBe(true);
-    if (!parsed.ok) {
-      return;
-    }
+    assert(parsed.ok);
 
     const result = checkShapeModules([parsed.module]);
     const output = formatDiagnostics(result);
@@ -1906,9 +1756,7 @@ describe("Shape checker", () => {
     `);
 
     expect(parsed.ok).toBe(true);
-    if (!parsed.ok) {
-      return;
-    }
+    assert(parsed.ok);
 
     const result = checkShapeModules([parsed.module]);
     const output = formatDiagnostics(result);
@@ -1936,9 +1784,7 @@ describe("Shape checker", () => {
     `);
 
     expect(parsed.ok).toBe(true);
-    if (!parsed.ok) {
-      return;
-    }
+    assert(parsed.ok);
 
     const result = checkShapeModules([parsed.module]);
     const output = formatDiagnostics(result);
@@ -1971,9 +1817,7 @@ describe("Shape checker", () => {
     `);
 
     expect(parsed.ok).toBe(true);
-    if (!parsed.ok) {
-      return;
-    }
+    assert(parsed.ok);
 
     const result = checkShapeModules([parsed.module], { includeFacts: true });
 
@@ -2020,9 +1864,7 @@ describe("Shape checker", () => {
     `);
 
     expect(parsed.ok).toBe(true);
-    if (!parsed.ok) {
-      return;
-    }
+    assert(parsed.ok);
 
     const result = checkShapeModules([parsed.module]);
     const output = formatDiagnostics(result);
@@ -2053,9 +1895,7 @@ describe("Shape checker", () => {
     `);
 
     expect(parsed.ok).toBe(true);
-    if (!parsed.ok) {
-      return;
-    }
+    assert(parsed.ok);
 
     const result = checkShapeModules([parsed.module]);
     const output = formatDiagnostics(result);
@@ -2076,9 +1916,7 @@ describe("Shape checker", () => {
     `);
 
     expect(parsed.ok).toBe(true);
-    if (!parsed.ok) {
-      return;
-    }
+    assert(parsed.ok);
 
     const result = checkShapeModules([parsed.module]);
     const output = formatDiagnostics(result);
@@ -2109,9 +1947,7 @@ describe("Shape checker", () => {
     `);
 
     expect(parsed.ok).toBe(true);
-    if (!parsed.ok) {
-      return;
-    }
+    assert(parsed.ok);
 
     const result = checkShapeModules([parsed.module]);
     const output = formatDiagnostics(result);
@@ -2147,9 +1983,7 @@ describe("Shape checker", () => {
     `);
 
     expect(parsed.ok).toBe(true);
-    if (!parsed.ok) {
-      return;
-    }
+    assert(parsed.ok);
 
     const stats = statsShapeHypergraph([parsed.module]);
     expect(stats).toContain("Hypergraph stats");
@@ -2172,8 +2006,7 @@ describe("Shape checker", () => {
     expect(callsOnly).toContain("isolated vertices: 2");
   });
 
-  test("graphAllShapeModules prints the whole hypergraph grouped by kind", () => {
-    const parsed = parseShapeModule(`
+  const graphOutputSource = `
       module deps
 
       component Gateway {
@@ -2191,12 +2024,13 @@ describe("Shape checker", () => {
         kind calls
         connects Gateway -> AuditStore
       }
-    `);
+    `;
+
+  test("graphAllShapeModules prints the whole hypergraph grouped by kind", () => {
+    const parsed = parseShapeModule(graphOutputSource);
 
     expect(parsed.ok).toBe(true);
-    if (!parsed.ok) {
-      return;
-    }
+    assert(parsed.ok);
 
     const all = graphAllShapeModules([parsed.module]);
     expect(all).toContain("Hypergraph");
@@ -2216,30 +2050,10 @@ describe("Shape checker", () => {
   });
 
   test("shp graph prints hyperedge incidence for components and resources", () => {
-    const parsed = parseShapeModule(`
-      module deps
-
-      component Gateway {
-      }
-      component AuditStore {
-      }
-      resource AuditEvent
-
-      relation AuditWritePath {
-        kind coordinated_call
-        connects Gateway -> AuditStore -> AuditEvent
-      }
-
-      relation GatewayCallsAudit {
-        kind calls
-        connects Gateway -> AuditStore
-      }
-    `);
+    const parsed = parseShapeModule(graphOutputSource);
 
     expect(parsed.ok).toBe(true);
-    if (!parsed.ok) {
-      return;
-    }
+    assert(parsed.ok);
 
     const gatewayGraph = graphShapeModules([parsed.module], "Gateway");
     expect(gatewayGraph).toContain("Gateway (component)");
@@ -2272,9 +2086,7 @@ describe("Shape checker", () => {
 
     expect(left.ok).toBe(true);
     expect(right.ok).toBe(true);
-    if (!left.ok || !right.ok) {
-      return;
-    }
+    assert(left.ok && right.ok);
 
     const explanation = explainShapeModules([left.module, right.module], "Ledger");
     expect(explanation).toContain("Ambiguous shape symbol Ledger.");
@@ -2301,9 +2113,7 @@ describe("Shape checker", () => {
 
     expect(left.ok).toBe(true);
     expect(right.ok).toBe(true);
-    if (!left.ok || !right.ok) {
-      return;
-    }
+    assert(left.ok && right.ok);
 
     const explanation = explainShapeModules([left.module, right.module], "Ledger");
     expect(explanation).toContain("Ambiguous shape symbol Ledger.");
@@ -2343,9 +2153,7 @@ describe("Shape checker", () => {
     `);
 
     expect(parsed.ok).toBe(true);
-    if (!parsed.ok) {
-      return;
-    }
+    assert(parsed.ok);
 
     const result = checkShapeModules([parsed.module]);
     const output = formatDiagnostics(result);
@@ -2383,9 +2191,7 @@ describe("Shape checker", () => {
       }
     `);
     expect(callsCycle.ok).toBe(true);
-    if (!callsCycle.ok) {
-      return;
-    }
+    assert(callsCycle.ok);
     const callsResult = checkShapeModules([callsCycle.module]);
     expect(callsResult.exitCode).toBe(1);
     expect(callsResult.diagnostics).toContainEqual(
@@ -2410,9 +2216,7 @@ describe("Shape checker", () => {
     `);
 
     expect(parsed.ok).toBe(true);
-    if (!parsed.ok) {
-      return;
-    }
+    assert(parsed.ok);
 
     const result = checkShapeModules([parsed.module], { includeFacts: true });
     const explanation = explainShapeModules([parsed.module], "GatewayCallsAudit");
@@ -2467,9 +2271,7 @@ describe("Shape checker", () => {
     `);
 
     expect(parsed.ok).toBe(true);
-    if (!parsed.ok) {
-      return;
-    }
+    assert(parsed.ok);
 
     const result = checkShapeModules([parsed.module]);
     const output = formatDiagnostics(result);
@@ -2510,9 +2312,7 @@ describe("Shape checker", () => {
     `);
 
     expect(parsed.ok).toBe(true);
-    if (!parsed.ok) {
-      return;
-    }
+    assert(parsed.ok);
 
     const result = checkShapeModules([parsed.module]);
     const output = formatDiagnostics(result);
@@ -2540,9 +2340,7 @@ describe("Shape checker", () => {
     `);
 
     expect(parsed.ok).toBe(true);
-    if (!parsed.ok) {
-      return;
-    }
+    assert(parsed.ok);
 
     const result = checkShapeModules([parsed.module]);
     const output = formatDiagnostics(result);
@@ -2580,9 +2378,7 @@ describe("Shape checker", () => {
     `);
 
     expect(parsed.ok).toBe(true);
-    if (!parsed.ok) {
-      return;
-    }
+    assert(parsed.ok);
 
     const result = checkShapeModules([parsed.module]);
     const output = formatDiagnostics(result);
@@ -2619,9 +2415,7 @@ describe("Shape checker", () => {
     `);
 
     expect(parsed.ok).toBe(true);
-    if (!parsed.ok) {
-      return;
-    }
+    assert(parsed.ok);
 
     const result = checkShapeModules([parsed.module], { includeFacts: true });
     const explanation = explainShapeModules([parsed.module], "Gateway.derivePolicyDecision");
@@ -2746,9 +2540,7 @@ describe("Shape checker", () => {
       }
     `);
     expect(memoryWrongTarget.ok).toBe(true);
-    if (!memoryWrongTarget.ok) {
-      return;
-    }
+    assert(memoryWrongTarget.ok);
     const memoryWrongTargetResult = checkShapeModules([memoryWrongTarget.module]);
     expect(memoryWrongTargetResult.exitCode).toBe(1);
     expect(formatDiagnostics(memoryWrongTargetResult)).toContain("context target mismatch");
@@ -2771,9 +2563,7 @@ describe("Shape checker", () => {
       }
     `);
     expect(missingMemory.ok).toBe(true);
-    if (!missingMemory.ok) {
-      return;
-    }
+    assert(missingMemory.ok);
     const missingMemoryResult = checkShapeModules([missingMemory.module]);
     expect(missingMemoryResult.exitCode).toBe(1);
     expect(formatDiagnostics(missingMemoryResult)).toContain(
@@ -2793,9 +2583,7 @@ describe("Shape checker", () => {
       }
     `);
     expect(invalidReevaluation.ok).toBe(true);
-    if (!invalidReevaluation.ok) {
-      return;
-    }
+    assert(invalidReevaluation.ok);
     const invalidReevaluationResult = checkShapeModules([invalidReevaluation.module]);
     expect(invalidReevaluationResult.exitCode).toBe(1);
     expect(formatDiagnostics(invalidReevaluationResult)).toContain("unknown satisfied memory");
@@ -2832,9 +2620,7 @@ describe("Shape checker", () => {
     `);
 
     expect(parsed.ok).toBe(true);
-    if (!parsed.ok) {
-      return;
-    }
+    assert(parsed.ok);
 
     const result = checkShapeModules([parsed.module]);
     expect(result.exitCode).toBe(1);

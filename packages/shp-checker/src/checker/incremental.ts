@@ -23,19 +23,8 @@ export type IncrementalInvalidationCause =
   | "shape_documents_changed"
   | "check_options_changed";
 
-export type IncrementalInvalidationReport = {
-  causes: IncrementalInvalidationCause[];
-  reparsedDocuments: string[];
-  reusedDocuments: string[];
-  removedDocuments: string[];
-  derivedFacts: "rebuilt" | "reused" | "unavailable";
-  diagnostics: "recomputed" | "reused";
-};
-
-export type IncrementalCheckResult = {
-  result: CheckResult;
-  invalidation: IncrementalInvalidationReport;
-};
+export type IncrementalCheckResult = ReturnType<IncrementalShapeChecker["check"]>;
+export type IncrementalInvalidationReport = IncrementalCheckResult["invalidation"];
 
 type CachedDocument = {
   source: string;
@@ -59,12 +48,8 @@ export class IncrementalShapeChecker {
   #modelOriginRoot: string | undefined;
   #lastResult: CheckResult | undefined;
   #lastOptionsKey: string | undefined;
-  #initialized = false;
 
-  check(
-    documents: readonly IncrementalShapeDocument[],
-    options: CheckOptions = {}
-  ): IncrementalCheckResult {
+  check(documents: readonly IncrementalShapeDocument[], options: CheckOptions = {}) {
     const sortedDocuments = normalizeDocuments(documents);
     const nextDocuments = new Map<string, CachedDocument>();
     const reparsedDocuments: string[] = [];
@@ -93,15 +78,21 @@ export class IncrementalShapeChecker {
     const removedDocuments = [...this.#documents.keys()]
       .filter((filePath) => !nextDocuments.has(filePath))
       .toSorted(compareCodepointStrings);
+    const initialized = this.#lastResult !== undefined;
     const documentsChanged =
-      !this.#initialized || reparsedDocuments.length > 0 || removedDocuments.length > 0;
+      !initialized || reparsedDocuments.length > 0 || removedDocuments.length > 0;
     const optionsKey = checkOptionsKey(options);
-    const optionsChanged = this.#initialized && optionsKey !== this.#lastOptionsKey;
-    const causes = invalidationCauses(this.#initialized, documentsChanged, optionsChanged);
+    const optionsChanged = initialized && optionsKey !== this.#lastOptionsKey;
+    const causes = invalidationCauses(initialized, documentsChanged, optionsChanged);
     const parseDiagnostics = collectParseDiagnostics(nextDocuments);
+    let nextModel = this.#model;
+    let nextModelOriginRoot = this.#modelOriginRoot;
+    let nextResult: CheckResult;
+    let derivedFacts: "rebuilt" | "reused" | "unavailable";
+    let diagnostics: "recomputed" | "reused";
 
     if (parseDiagnostics.length > 0) {
-      const nextResult: CheckResult =
+      nextResult =
         documentsChanged || this.#lastResult === undefined
           ? {
               ok: false,
@@ -110,60 +101,47 @@ export class IncrementalShapeChecker {
             }
           : this.#lastResult;
 
-      this.#documents = nextDocuments;
-      this.#model = undefined;
-      this.#modelOriginRoot = undefined;
-      this.#lastResult = nextResult;
-      this.#lastOptionsKey = optionsKey;
-      this.#initialized = true;
-      return {
-        result: cloneCheckResult(nextResult),
-        invalidation: {
-          causes,
-          reparsedDocuments,
-          reusedDocuments,
-          removedDocuments,
-          derivedFacts: "unavailable",
-          diagnostics: documentsChanged ? "recomputed" : "reused"
-        }
-      };
+      nextModel = undefined;
+      nextModelOriginRoot = undefined;
+      derivedFacts = "unavailable";
+      diagnostics = documentsChanged ? "recomputed" : "reused";
+    } else {
+      const normalizedOptions = normalizeCheckOptions(options);
+      const originsChanged =
+        !documentsChanged &&
+        nextModel !== undefined &&
+        nextModelOriginRoot !== undefined &&
+        moduleOriginsChanged(nextDocuments, nextModelOriginRoot, normalizedOptions.repoRoot);
+      let modelRebuilt = false;
+      if (documentsChanged || originsChanged || nextModel === undefined) {
+        nextModel = lowerShapeModules(
+          collectModuleInputs(nextDocuments, normalizedOptions.repoRoot)
+        );
+        nextModelOriginRoot = normalizedOptions.repoRoot;
+        modelRebuilt = true;
+      }
+      nextResult =
+        modelRebuilt || optionsChanged || this.#lastResult === undefined
+          ? checkLoweredShapeModel(nextModel, normalizedOptions)
+          : this.#lastResult;
+      derivedFacts = modelRebuilt ? "rebuilt" : "reused";
+      diagnostics = documentsChanged || optionsChanged ? "recomputed" : "reused";
     }
-
-    const normalizedOptions = normalizeCheckOptions(options);
-    let nextModel = this.#model;
-    let modelRebuilt = false;
-    const originsChanged =
-      !documentsChanged &&
-      nextModel !== undefined &&
-      this.#modelOriginRoot !== undefined &&
-      moduleOriginsChanged(nextDocuments, this.#modelOriginRoot, normalizedOptions.repoRoot);
-    if (documentsChanged || originsChanged || nextModel === undefined) {
-      nextModel = lowerShapeModules(collectModuleInputs(nextDocuments, normalizedOptions.repoRoot));
-      modelRebuilt = true;
-    }
-
-    const nextResult =
-      modelRebuilt || optionsChanged || this.#lastResult === undefined
-        ? checkLoweredShapeModel(nextModel, normalizedOptions)
-        : this.#lastResult;
 
     this.#documents = nextDocuments;
     this.#model = nextModel;
-    if (modelRebuilt) {
-      this.#modelOriginRoot = normalizedOptions.repoRoot;
-    }
+    this.#modelOriginRoot = nextModelOriginRoot;
     this.#lastResult = nextResult;
     this.#lastOptionsKey = optionsKey;
-    this.#initialized = true;
     return {
-      result: cloneCheckResult(nextResult),
+      result: structuredClone(nextResult),
       invalidation: {
         causes,
         reparsedDocuments,
         reusedDocuments,
         removedDocuments,
-        derivedFacts: modelRebuilt ? "rebuilt" : "reused",
-        diagnostics: documentsChanged || optionsChanged ? "recomputed" : "reused"
+        derivedFacts,
+        diagnostics
       }
     };
   }
@@ -269,8 +247,4 @@ function invalidationCauses(
     causes.push("check_options_changed");
   }
   return causes;
-}
-
-function cloneCheckResult(result: CheckResult): CheckResult {
-  return structuredClone(result);
 }

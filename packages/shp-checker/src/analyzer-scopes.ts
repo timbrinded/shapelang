@@ -241,57 +241,38 @@ function findFunctionBodyStart(masked: string, start: number): number | undefine
 function findBodyAfterReturnType(masked: string, start: number): number | undefined {
   const delimiters: ("(" | "[" | "<" | "{")[] = [];
   let expectsOperand = true;
-  let cursor = start;
-
-  while (cursor < masked.length) {
+  for (let cursor = start; cursor < masked.length; cursor += 1) {
     const char = masked[cursor] ?? "";
     if (isWhitespace(char)) {
-      cursor += 1;
       continue;
     }
     if (isIdentifierStart(char)) {
       const tokenStart = cursor;
-      cursor += 1;
-      while (cursor < masked.length && isIdentifierPart(masked[cursor] ?? "")) {
+      while (cursor + 1 < masked.length && isIdentifierPart(masked[cursor + 1] ?? "")) {
         cursor += 1;
       }
-      const token = masked.slice(tokenStart, cursor);
+      const token = masked.slice(tokenStart, cursor + 1);
       expectsOperand = TYPE_PREFIX_KEYWORDS.has(token) || TYPE_INFIX_KEYWORDS.has(token);
       continue;
     }
-    if (char === "{") {
-      if (delimiters.length === 0 && !expectsOperand) {
-        return cursor;
-      }
-      delimiters.push("{");
-      expectsOperand = true;
-      cursor += 1;
-      continue;
+    if (char === "{" && delimiters.length === 0 && !expectsOperand) {
+      return cursor;
     }
-    if (char === "(" || char === "[" || char === "<") {
+    if (char === "(" || char === "[" || char === "<" || char === "{") {
       delimiters.push(char);
       expectsOperand = true;
-      cursor += 1;
-      continue;
-    }
-    if (char === ")" || char === "]" || char === ">" || char === "}") {
+    } else if (char === ")" || char === "]" || char === ">" || char === "}") {
       const expected = char === ")" ? "(" : char === "]" ? "[" : char === ">" ? "<" : "{";
       if (delimiters.pop() !== expected) {
         return undefined;
       }
       expectsOperand = false;
-      cursor += 1;
-      continue;
-    }
-    if (char === ";" || char === ",") {
+    } else if (char === ";" || char === ",") {
       if (delimiters.length === 0) {
         return undefined;
       }
       expectsOperand = true;
-      cursor += 1;
-      continue;
-    }
-    if (
+    } else if (
       char === "|" ||
       char === "&" ||
       char === "?" ||
@@ -300,17 +281,15 @@ function findBodyAfterReturnType(masked: string, start: number): number | undefi
       (char === "=" && masked[cursor + 1] === ">")
     ) {
       expectsOperand = true;
-      cursor += char === "=" ? 2 : 1;
-      continue;
-    }
-    if (char === "*" || char === "!") {
+      if (char === "=") {
+        cursor += 1;
+      }
+    } else if (char === "*" || char === "!") {
       expectsOperand = false;
-      cursor += 1;
-      continue;
+    } else {
+      return undefined;
     }
-    return undefined;
   }
-
   return undefined;
 }
 

@@ -84,22 +84,22 @@ export function emitDerivedFacts(model: Model): void {
     }
   }
 
-  for (const bearer of shapeTraitBearers(model)) {
-    for (const requirement of requirementsForTarget(model, bearer.kind, bearer.traits)) {
+  for (const { target, traits } of shapeTraitBearers(model)) {
+    for (const requirement of requirementsForTarget(model, target.kind, traits)) {
       model.facts.push({
         kind: "context_required",
-        targetKind: bearer.kind,
-        target: bearer.target.name,
+        targetKind: target.kind,
+        target: target.name,
         contextType: requirement.contextType,
         requiredBy: requirement.trait,
-        provenance: bearer.traits.get(requirement.trait) ?? bearer.fallback
+        provenance: traits.get(requirement.trait)!
       });
     }
   }
 }
 
 export function collectShapeUpdatePathsFromFunction(fn: FunctionInfo, model: Model): void {
-  if (shouldIgnoreFunctionForCoverage(fn)) {
+  if (fn.generatedAstCandidate) {
     return;
   }
 
@@ -121,10 +121,6 @@ export function collectShapeUpdatePathsFromFunction(fn: FunctionInfo, model: Mod
       }
     }
   }
-}
-
-export function shouldIgnoreFunctionForCoverage(fn: FunctionInfo): boolean {
-  return fn.generatedAstCandidate;
 }
 
 export function addShapeUpdatePath(model: Model, path: string, provenance: Provenance): void {

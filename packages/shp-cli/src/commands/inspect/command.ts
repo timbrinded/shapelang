@@ -1,17 +1,13 @@
 import { buildCommand } from "@stricli/core";
 import type { CliContext } from "../../context";
-import { fileArguments } from "../../parameters";
+import { fileArguments, optionalBooleanFlag } from "../../parameters";
 import type { InspectFlags } from "./impl";
 
 export const inspectCommand = buildCommand<InspectFlags, string[], CliContext>({
   loader: () => import("./impl"),
   parameters: {
     flags: {
-      json: {
-        kind: "boolean",
-        optional: true,
-        brief: "Write the versioned effective Shape model as JSON."
-      }
+      json: optionalBooleanFlag("Write the versioned effective Shape model as JSON.")
     },
     positional: fileArguments()
   },

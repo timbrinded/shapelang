@@ -75,12 +75,7 @@ export function buildShapeAuthorPrompt(input: ShapeAuthorPromptInput): string {
 }
 
 export function buildShapeAuthoringBundle(input: ShapeAuthoringBundleInput): ShapeAuthoringBundle {
-  const draft = generateShapeUpdateDraft({
-    moduleName: input.moduleName,
-    componentName: input.componentName,
-    changedFiles: input.changedFiles,
-    includeMemoryGuardScaffold: input.includeMemoryGuardScaffold
-  });
+  const draft = generateShapeUpdateDraft(input);
   const authorPrompt = buildShapeAuthorPrompt({
     existingShape: formatContextFiles(input.existingShape),
     diff: input.diff,
@@ -130,9 +125,12 @@ export function generateShapeUpdateDraft(input: ShapeUpdateInput): string {
     file,
     functionName: uniqueFunctionName(file, index)
   }));
-  const functions = changedFunctions.map((item) =>
-    formatUnknownFunction(item.file, item.functionName)
-  );
+  const functionLines = changedFunctions.flatMap(({ file, functionName }, index) => [
+    ...(index === 0 ? [] : [""]),
+    `  fn ${functionName}`,
+    `    source ${languageForPath(file)}(${JSON.stringify(file)})`,
+    "    effects unknown"
+  ]);
   const scaffold =
     input.includeMemoryGuardScaffold && changedFunctions[0]
       ? ["", formatMemoryGuardScaffold(input.componentName, changedFunctions[0].functionName)]
@@ -142,18 +140,10 @@ export function generateShapeUpdateDraft(input: ShapeUpdateInput): string {
     `module ${moduleName}`,
     "",
     `component ${input.componentName} {`,
-    ...functions.flatMap((fn, index) => (index === 0 ? indentBlock(fn) : ["", ...indentBlock(fn)])),
+    ...functionLines,
     "}",
     ...scaffold,
     ""
-  ].join("\n");
-}
-
-function formatUnknownFunction(file: string, functionName: string): string {
-  return [
-    `fn ${functionName}`,
-    `  source ${languageForPath(file)}(${JSON.stringify(file)})`,
-    "  effects unknown"
   ].join("\n");
 }
 
@@ -206,8 +196,4 @@ function languageForPath(file: string): string {
     return "swift";
   }
   return "file";
-}
-
-function indentBlock(value: string): string[] {
-  return value.split("\n").map((line) => `  ${line}`);
 }

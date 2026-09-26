@@ -20,29 +20,16 @@ export function globMatches(glob: string, path: string): boolean {
   return regex.test(normalizedPath);
 }
 
-function globToRegex(glob: string): string {
-  let regex = "";
-  for (let index = 0; index < glob.length; index += 1) {
-    const char = glob[index];
-    const next = glob[index + 1];
-    const afterNext = glob[index + 2];
-    if (char === "*" && next === "*" && afterNext === "/") {
-      regex += "(?:.*/)?";
-      index += 2;
-    } else if (char === "*" && next === "*") {
-      regex += ".*";
-      index += 1;
-    } else if (char === "*") {
-      regex += "[^/]*";
-    } else if (char === "?") {
-      regex += ".";
-    } else if (char) {
-      regex += escapeRegex(char);
-    }
-  }
-  return regex;
-}
+const globOperators: Record<string, string> = {
+  "**/": "(?:.*/)?",
+  "**": ".*",
+  "*": "[^/]*",
+  "?": "."
+};
 
-function escapeRegex(value: string): string {
-  return value.replace(/[\\^$.*+?()[\]{}|]/g, "\\$&");
+function globToRegex(glob: string): string {
+  return glob.replace(
+    /\*\*\/|\*\*|[\\^$.*+?()[\]{}|]/g,
+    (token) => globOperators[token] ?? `\\${token}`
+  );
 }

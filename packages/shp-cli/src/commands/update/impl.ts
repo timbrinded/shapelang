@@ -45,24 +45,7 @@ export type ReplaceResult = {
   readonly pending: boolean;
 };
 
-export type UpdateServices = {
-  readonly fetchJson: (url: string) => Promise<unknown>;
-  readonly downloadBytes: (url: string) => Promise<Uint8Array>;
-  readonly makeTempDir: () => Promise<string>;
-  readonly removeDir: (path: string) => Promise<void>;
-  readonly pathExists: (path: string) => Promise<boolean>;
-  readonly writeFile: (path: string, bytes: Uint8Array) => Promise<void>;
-  readonly sha256File: (path: string) => Promise<string>;
-  readonly extractTarGz: (archivePath: string, destinationDir: string) => Promise<void>;
-  readonly runVersion: (binaryPath: string) => Promise<CommandResult>;
-  readonly runHelp: (binaryPath: string) => Promise<CommandResult>;
-  readonly replaceBinary: (
-    sourcePath: string,
-    targetPath: string,
-    platform: ReleasePlatform,
-    parserAssetsPath: string
-  ) => Promise<ReplaceResult>;
-};
+export type UpdateServices = typeof defaultUpdateServices;
 
 export type UpdateOptions = {
   readonly currentVersion: string;
@@ -97,16 +80,6 @@ type ReleaseUpdateDecisionInput = {
   readonly releaseTagName: string;
 };
 
-type ReleaseInfoResponse = {
-  readonly tag_name: string;
-  readonly assets: readonly unknown[];
-};
-
-type ReleaseAssetResponse = {
-  readonly name: string;
-  readonly browser_download_url: string;
-};
-
 export default async function update(this: CliContext, flags: UpdateFlags): Promise<void> {
   stdout(
     this,
@@ -126,7 +99,7 @@ export async function runUpdate(
   options: UpdateOptions,
   services: UpdateServices = defaultUpdateServices
 ): Promise<string> {
-  const targetPath = resolveTargetPath(options.targetPath, options.defaultTargetPath);
+  const targetPath = resolve(options.targetPath ?? options.defaultTargetPath);
   if (!options.targetPath && isUnsafeDefaultTarget(targetPath)) {
     throw usageError(
       `refusing to update ${targetPath}; run a compiled shp binary or pass --path PATH`
@@ -329,7 +302,11 @@ export function decideReleaseUpdate(input: ReleaseUpdateDecisionInput): ReleaseU
 }
 
 export function parseReleaseInfo(value: unknown): ReleaseInfo {
-  if (!isReleaseInfoResponse(value)) {
+  if (
+    !isRecord(value) ||
+    typeof value["tag_name"] !== "string" ||
+    !Array.isArray(value["assets"])
+  ) {
     throw failureError("GitHub release response is missing tag_name or assets");
   }
 
@@ -365,10 +342,6 @@ export function expectedChecksumForAsset(checksumsText: string, assetName: strin
 export function isUnsafeDefaultTarget(path: string): boolean {
   const executable = path.split(/[\\/]/).at(-1)?.toLowerCase();
   return executable === "bun" || executable === "bun.exe";
-}
-
-function resolveTargetPath(targetPath: string | undefined, defaultTargetPath: string): string {
-  return resolve(targetPath ?? defaultTargetPath);
 }
 
 async function resolveInstalledVersion(
@@ -422,7 +395,11 @@ function releaseApiUrl(repository: string, requestedVersion: string | undefined)
 }
 
 function parseReleaseAsset(value: unknown): ReleaseAsset {
-  if (!isReleaseAssetResponse(value)) {
+  if (
+    !isRecord(value) ||
+    typeof value["name"] !== "string" ||
+    typeof value["browser_download_url"] !== "string"
+  ) {
     throw failureError("GitHub release asset is missing name or browser_download_url");
   }
 
@@ -463,18 +440,6 @@ function hasShpHelpIdentity(output: string): boolean {
   );
 }
 
-function isReleaseInfoResponse(value: unknown): value is ReleaseInfoResponse {
-  return isRecord(value) && typeof value["tag_name"] === "string" && Array.isArray(value["assets"]);
-}
-
-function isReleaseAssetResponse(value: unknown): value is ReleaseAssetResponse {
-  return (
-    isRecord(value) &&
-    typeof value["name"] === "string" &&
-    typeof value["browser_download_url"] === "string"
-  );
-}
-
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null;
 }
@@ -487,8 +452,8 @@ function failureError(message: string): CliDiagnosticError {
   return new CliDiagnosticError(`error: ${message}\n`, EXIT_FAILURE);
 }
 
-const defaultUpdateServices: UpdateServices = {
-  fetchJson: async (url: string) => {
+const defaultUpdateServices = {
+  fetchJson: async (url: string): Promise<unknown> => {
     const response = await fetch(url, {
       headers: {
         Accept: "application/vnd.github+json",
@@ -500,7 +465,7 @@ const defaultUpdateServices: UpdateServices = {
     }
     return response.json();
   },
-  downloadBytes: async (url: string) => {
+  downloadBytes: async (url: string): Promise<Uint8Array> => {
     const response = await fetch(url, {
       headers: {
         "User-Agent": `shp/${SHP_VERSION}`
@@ -517,10 +482,10 @@ const defaultUpdateServices: UpdateServices = {
   writeFile: (path: string, bytes: Uint8Array) => writeFile(path, bytes),
   sha256File,
   extractTarGz,
-  runVersion,
-  runHelp,
+  runVersion: async (binaryPath: string) => runCommand([binaryPath, "--version"]),
+  runHelp: async (binaryPath: string) => runCommand([binaryPath, "--help"]),
   replaceBinary
-};
+} as const;
 
 async function sha256File(path: string): Promise<string> {
   const bytes = Buffer.from(await Bun.file(path).arrayBuffer());
@@ -551,14 +516,6 @@ async function extractTarGz(archivePath: string, destinationDir: string): Promis
   }
 }
 
-async function runVersion(binaryPath: string): Promise<CommandResult> {
-  return runCommand([binaryPath, "--version"]);
-}
-
-async function runHelp(binaryPath: string): Promise<CommandResult> {
-  return runCommand([binaryPath, "--help"]);
-}
-
 async function runCommand(args: readonly string[]): Promise<CommandResult> {
   try {
     const subprocess = Bun.spawn([...args], {
@@ -582,21 +539,16 @@ async function replaceBinary(
   platform: ReleasePlatform,
   parserAssetsPath: string
 ): Promise<ReplaceResult> {
-  await mkdir(dirname(targetPath), { recursive: true });
+  const targetDir = dirname(targetPath);
+  await mkdir(targetDir, { recursive: true });
   if (platform.releaseOs === "windows") {
     return replaceWindowsBinary(sourcePath, targetPath, parserAssetsPath);
   }
 
-  const stagedPath = join(dirname(targetPath), `.${basename(targetPath)}.update-${process.pid}`);
-  const targetAssetsPath = join(dirname(targetPath), "tree-sitter-language-pack");
-  const stagedAssetsPath = join(
-    dirname(targetPath),
-    `.tree-sitter-language-pack.update-${process.pid}`
-  );
-  const backupAssetsPath = join(
-    dirname(targetPath),
-    `.tree-sitter-language-pack.previous-${process.pid}`
-  );
+  const stagedPath = join(targetDir, `.${basename(targetPath)}.update-${process.pid}`);
+  const targetAssetsPath = join(targetDir, "tree-sitter-language-pack");
+  const stagedAssetsPath = join(targetDir, `.tree-sitter-language-pack.update-${process.pid}`);
+  const backupAssetsPath = join(targetDir, `.tree-sitter-language-pack.previous-${process.pid}`);
   try {
     await rm(stagedAssetsPath, { recursive: true, force: true });
     await rm(backupAssetsPath, { recursive: true, force: true });

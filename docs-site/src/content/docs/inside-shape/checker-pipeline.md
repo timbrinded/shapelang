@@ -13,10 +13,10 @@ Paths are relative to `packages/shp-checker/src/`.
 
 | Phase | Code | Output | Failure outcome |
 | --- | --- | --- | --- |
-| Read and parse | `checkShapeFiles` reads each path; `parseShapeModule` in `parser.ts` parses it with the Langium services from `language/shape-module.ts`. | One `ShapeModule` AST per file. | A read error, or any lexer or parser error in any file, ends the check. The result holds only `parse` diagnostics, `exitCode` is `2`, and no `Model` is built. |
+| Read and parse | `checkShapeFiles` calls `loadShapeModules` in `shape-files.ts`; each path is read and parsed with `parseShapeModule` and the Langium services from `language/shape-module.ts`. | One `ShapeModule` AST per file. | A read error, or any lexer or parser error in any file, ends the check. The result holds only `parse` diagnostics, `exitCode` is `2`, and no `Model` is built. |
 | Lower | `lowerShapeModules` in `checker/lowerer.ts`, driving the domain lowerers in `checker/lowering/*`. | `Model`: typed indexes, `facts`, and lowering diagnostics. | Lowering always completes. Problems it finds (duplicate declarations, ambiguous or unknown names, invalid relations, invalid candidate effects, invalid `require_context`) become `model.diagnostics`. |
 | Check | `runSemanticChecks` runs `SEMANTIC_CHECKS` in `checker/rules.ts`; then `checkBindings` runs unless `enforceBindings` is `false`. | Semantic diagnostics. | No check stops a later one; each appends its diagnostics. |
-| Assemble | `checkLoweredShapeModel` in `checker/api.ts`. | `CheckResult`: `ok`, `exitCode`, sorted `diagnostics`, and `facts` when `includeFacts` is set. | `exitCode` is `1` when any diagnostic other than a downgraded `unknown_effects` warning remains; otherwise `0`. |
+| Assemble | `checkLoweredShapeModel` in `checker/api.ts`. | `CheckResult`: `ok`, `exitCode`, sorted `diagnostics`, and `facts` when `includeFacts` is set. | `exitCode` is `1` when any blocking diagnostic remains; stale attestations and downgraded `unknown_effects` are warnings. |
 | Render | `formatDiagnostics` in `checker/diagnostics.ts`. | Text. | None. It reads only the `CheckResult`. |
 
 `checkLoweredShapeModel` assembles the diagnostic list in a fixed order: lowering diagnostics, then the registry's output, then binding diagnostics. It then applies the `allowUnknownEffects` downgrade, computes `ok` and `exitCode`, sorts the diagnostics, and attaches sorted facts when requested. The sort makes the assembly order invisible in the returned list.
@@ -24,13 +24,14 @@ Paths are relative to `packages/shp-checker/src/`.
 ## Entry points
 
 - **`checkShapeFiles(paths, options)`** is the path `shp check` takes. It reads and parses every path, in the given order, before lowering any of them. When all of them parse, it classifies each module's origin with `moduleOriginForShapeFile` against the normalized `repoRoot` and passes the modules to `checkShapeModules`. A module is generated AST only when its name is `shape.generated.ast` or starts with `shape.generated.ast.`, and its path relative to `repoRoot` is under `shape/generated/ast/`.
+- **`loadShapeModules(paths)`** is the shared file reader used by `checkShapeFiles` and CLI commands. It returns successful `{ module, filePath }` entries and all read/parse diagnostics in input order. It performs no semantic checks or origin classification; each caller applies its own error policy.
 - **`checkShapeModules(modules, options)`** takes parsed `ShapeModule[]` or `CheckModuleInput[]` (`module`, optional `filePath`, optional `origin`). It trusts only explicit origins: an input without `origin: "generated_ast"` is authored. It normalizes the options, calls `lowerShapeModules`, and passes the model to `checkLoweredShapeModel`. It never returns exit code `2`.
 - **`checkLoweredShapeModel(model, normalizedOptions)`** is internal. `checker/api.ts` exports it, but the package does not. Both entry points and the incremental checker assemble their results through it, so the pass condition and the sort exist in one place.
 - **`IncrementalShapeChecker`** caches parsed documents and the last lowered model for callers that check an in-memory workspace repeatedly. See [Incremental checking](#incremental-checking).
 
-`@shape/shp-checker` (`src/index.ts`) exports `checkShapeFiles`, `checkShapeModules`, and `IncrementalShapeChecker`. It does not export `lowerShapeModules` or `checkLoweredShapeModel`. The read-only query helpers in `checker/query.ts` (`explainShapeModules`, `graphShapeModules`, `listMemoryGuardsShapeModules`, and others) lower the modules themselves and never decide pass or fail; `listShapeObligations` calls `checkShapeModules` and filters its diagnostics.
+`@shape/shp-checker` (`src/index.ts`) exports `checkShapeFiles`, `loadShapeModules`, `checkShapeModules`, and `IncrementalShapeChecker`. It does not export `lowerShapeModules` or `checkLoweredShapeModel`. The read-only query helpers in `checker/query.ts` (`explainShapeModules`, `graphShapeModules`, `listMemoryGuardsShapeModules`, and others) lower the modules themselves and never decide pass or fail; `listShapeObligations` calls `checkShapeModules` and filters its diagnostics.
 
-`normalizeCheckOptions` prepares the options once per check:
+`normalizeCheckOptions` resolves the repository root, summarizes any base model, and validates the freshness date before semantic checking:
 
 | Option | Default | Read by | Effect |
 | --- | --- | --- | --- |
@@ -45,7 +46,7 @@ Paths are relative to `packages/shp-checker/src/`.
 
 ## Pass condition and exit codes
 
-`CheckResult.ok` is `true` only when every diagnostic is an `unknown_effects` diagnostic with severity `warning`. That happens when there are no diagnostics at all, or when `allowUnknownEffects` downgraded every remaining one.
+`CheckResult.ok` is `true` when there are no diagnostics or every diagnostic is a warning: either `stale_attestation` or `unknown_effects` with severity `warning`. `allowUnknownEffects` downgrades only the latter; stale attestations are always warnings.
 
 | `exitCode` | Meaning |
 | --- | --- |
@@ -99,6 +100,7 @@ The boundary contracts:
 - Document paths must be unique within a snapshot. A duplicate path throws a `TypeError` rather than letting array order decide which source wins.
 - `reparsedDocuments`, `reusedDocuments`, and `removedDocuments` are sorted by codepoint.
 - Every returned `CheckResult` is a `structuredClone` of the cached one, so a caller's mutation cannot corrupt the cache.
+- Cache updates share one commit after parsing and checking finish. If option validation throws, the previous document snapshot and result remain available.
 - Like `checkShapeFiles`, the incremental checker classifies implicit origins against the normalized `repoRoot`, which defaults to the working directory.
 
 The cache changes how much work is reused, not what the checker decides. Rules always run through `checkLoweredShapeModel`, and `packages/shp-checker/src/checker/incremental.test.ts` compares incremental results with the uncached full check, which remains authoritative.

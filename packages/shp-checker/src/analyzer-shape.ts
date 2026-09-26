@@ -6,24 +6,7 @@ import type {
   AnalyzerTargetSegment,
   AnalyzerWarning
 } from "./analyzer-types.ts";
-import type {
-  AddFunctionChange,
-  ModifyFunctionChange,
-  ResourceDecl,
-  ShapeModule
-} from "./language/generated/ast.ts";
-import {
-  isAddDeclarationChange,
-  isAddFunctionChange,
-  isChangeDecl,
-  isCompleteEffects,
-  isComponentDecl,
-  isFunctionSummary,
-  isModifyDeclarationChange,
-  isModifyFunctionChange,
-  isResourceDecl,
-  isStorageDecl
-} from "./language/generated/ast.ts";
+import * as ast from "./language/generated/ast.ts";
 import {
   normalizeShapePath,
   normalizeShapeSourcePath,
@@ -53,23 +36,9 @@ type ParsedSourceReference = {
   anchor?: string;
 };
 
-type DeclaredEffectSelection =
-  | {
-      kind: "declared";
-      declared: DeclaredEffect[];
-    }
-  | {
-      kind: "ambiguous";
-      declared: DeclaredEffect[];
-      declaredAnchors: string[];
-    }
-  | {
-      kind: "missing";
-    };
-
 export function compareAnalyzerHintsToShape(
   hints: AnalyzerHint[],
-  modules: ShapeModule[]
+  modules: ast.ShapeModule[]
 ): AnalyzerWarning[] {
   const declaredEffectsByPath = collectDeclaredEffectsBySourcePath(modules);
   const warnings: AnalyzerWarning[] = [];
@@ -119,19 +88,18 @@ export function formatAnalyzerWarnings(warnings: AnalyzerWarning[]): string {
   return `${warnings.map(formatAnalyzerWarning).join("\n\n")}\n`;
 }
 
-function selectDeclaredEffects(
-  scope: DeclaredEffectsByScope | undefined,
-  hint: AnalyzerHint
-): DeclaredEffectSelection {
+function selectDeclaredEffects(scope: DeclaredEffectsByScope | undefined, hint: AnalyzerHint) {
   if (!scope) {
-    return { kind: "missing" };
+    return { kind: "missing" as const };
   }
 
   if (hint.sourceAnchor !== undefined) {
     const exactScope = scope.anchored.get(hint.sourceAnchor);
     if (exactScope !== undefined) {
       const exact = exactScope.get(hint.effect);
-      return exact === undefined ? { kind: "missing" } : { kind: "declared", declared: exact };
+      return exact === undefined
+        ? { kind: "missing" as const }
+        : { kind: "declared" as const, declared: exact };
     }
   }
 
@@ -140,27 +108,27 @@ function selectDeclaredEffects(
   if (pathOnly !== undefined) {
     if (hint.target !== undefined && anchored.length > 0) {
       return {
-        kind: "ambiguous",
+        kind: "ambiguous" as const,
         declared: [...pathOnly, ...anchored.flatMap((entry) => entry.declared)],
         declaredAnchors: anchored.map((entry) => entry.anchor).sort()
       };
     }
-    return { kind: "declared", declared: pathOnly };
+    return { kind: "declared" as const, declared: pathOnly };
   }
 
   if (hint.sourceAnchor === undefined && anchored.length === 1) {
-    return { kind: "declared", declared: anchored[0]?.declared ?? [] };
+    return { kind: "declared" as const, declared: anchored[0]?.declared ?? [] };
   }
 
   if (anchored.length > 0) {
     return {
-      kind: "ambiguous",
+      kind: "ambiguous" as const,
       declared: anchored.flatMap((entry) => entry.declared),
       declaredAnchors: anchored.map((entry) => entry.anchor).sort()
     };
   }
 
-  return { kind: "missing" };
+  return { kind: "missing" as const };
 }
 
 function declaredEffectsForAnchors(
@@ -237,45 +205,40 @@ function formatAnalyzerWarning(warning: AnalyzerWarning): string {
     "",
     `${warning.hint.sourcePath}:${warning.hint.line} suggests ${warning.hint.effect}.`
   ];
-  if (warning.kind === "target_mismatch") {
-    lines.push(`suspected target: ${warning.suspectedTarget}`);
-    lines.push(
-      `declared targets: ${
-        warning.declaredTargets.length === 0 ? "(none)" : warning.declaredTargets.join(", ")
-      }`
-    );
-  } else if (warning.kind === "ambiguous_source_attribution") {
+  if (warning.kind === "ambiguous_source_attribution") {
     lines.push(`declared anchors: ${warning.declaredAnchors.join(", ")}`);
-    if (warning.hint.target !== undefined) {
-      lines.push(`suspected target: ${warning.hint.target}`);
-    }
+  }
+  const suspectedTarget =
+    warning.kind === "target_mismatch" ? warning.suspectedTarget : warning.hint.target;
+  if (suspectedTarget !== undefined) {
+    lines.push(`suspected target: ${suspectedTarget}`);
+  }
+  if (warning.kind !== "missing_declared_effect") {
     lines.push(
       `declared targets: ${
         warning.declaredTargets.length === 0 ? "(none)" : warning.declaredTargets.join(", ")
       }`
     );
-  } else if (warning.hint.target !== undefined) {
-    lines.push(`suspected target: ${warning.hint.target}`);
   }
   lines.push(`evidence: ${warning.hint.evidence}`);
   return lines.join("\n");
 }
 
-function collectDeclaredEffectsBySourcePath(modules: ShapeModule[]): DeclaredEffectsByPath {
+function collectDeclaredEffectsBySourcePath(modules: ast.ShapeModule[]): DeclaredEffectsByPath {
   const effects: DeclaredEffectsByPath = new Map();
   const resources = collectResourceInfos(modules);
 
   for (const module of modules) {
     for (const declaration of module.declarations) {
-      if (isComponentDecl(declaration)) {
+      if (ast.isComponentDecl(declaration)) {
         for (const member of declaration.members) {
-          if (isFunctionSummary(member)) {
+          if (ast.isFunctionSummary(member)) {
             collectFunctionEffects(member, effects, module, resources);
           }
         }
-      } else if (isChangeDecl(declaration)) {
+      } else if (ast.isChangeDecl(declaration)) {
         for (const entry of declaration.entries) {
-          if (isAddFunctionChange(entry) || isModifyFunctionChange(entry)) {
+          if (ast.isAddFunctionChange(entry) || ast.isModifyFunctionChange(entry)) {
             collectFunctionEffects(entry, effects, module, resources);
           }
         }
@@ -287,12 +250,9 @@ function collectDeclaredEffectsBySourcePath(modules: ShapeModule[]): DeclaredEff
 }
 
 function collectFunctionEffects(
-  fn:
-    | AddFunctionChange
-    | ModifyFunctionChange
-    | Extract<ShapeModule["declarations"][number], { $type: "ComponentDecl" }>["members"][number],
+  fn: ast.AddFunctionChange | ast.ModifyFunctionChange | ast.FunctionSummary,
   effects: DeclaredEffectsByPath,
-  module: ShapeModule,
+  module: ast.ShapeModule,
   resources: ResourceInfo[]
 ): void {
   const sourceReference =
@@ -303,7 +263,7 @@ function collectFunctionEffects(
     ensureDeclaredScope(effects, sourceReference);
   }
 
-  if (!("effects" in fn) || !isCompleteEffects(fn.effects)) {
+  if (!("effects" in fn) || !ast.isCompleteEffects(fn.effects)) {
     return;
   }
 
@@ -372,18 +332,18 @@ function ensureDeclaredScope(
   return anchored;
 }
 
-function collectResourceInfos(modules: ShapeModule[]): ResourceInfo[] {
+function collectResourceInfos(modules: ast.ShapeModule[]): ResourceInfo[] {
   const resources: ResourceInfo[] = [];
 
   for (const module of modules) {
     for (const declaration of module.declarations) {
-      if (isResourceDecl(declaration)) {
+      if (ast.isResourceDecl(declaration)) {
         resources.push(resourceInfo(module, declaration));
-      } else if (isChangeDecl(declaration)) {
+      } else if (ast.isChangeDecl(declaration)) {
         for (const entry of declaration.entries) {
           if (
-            (isAddDeclarationChange(entry) || isModifyDeclarationChange(entry)) &&
-            isResourceDecl(entry.declaration)
+            (ast.isAddDeclarationChange(entry) || ast.isModifyDeclarationChange(entry)) &&
+            ast.isResourceDecl(entry.declaration)
           ) {
             resources.push(resourceInfo(module, entry.declaration));
           }
@@ -395,10 +355,10 @@ function collectResourceInfos(modules: ShapeModule[]): ResourceInfo[] {
   return resources;
 }
 
-function resourceInfo(module: ShapeModule, resource: ResourceDecl): ResourceInfo {
+function resourceInfo(module: ast.ShapeModule, resource: ast.ResourceDecl): ResourceInfo {
   const aliases: string[] = [];
   for (const member of resource.body?.members ?? []) {
-    if (isStorageDecl(member)) {
+    if (ast.isStorageDecl(member)) {
       aliases.push(unquoteShapeString(member.value));
     }
   }
@@ -411,7 +371,7 @@ function resourceInfo(module: ShapeModule, resource: ResourceDecl): ResourceInfo
 
 function resolveDeclaredResources(
   declaredTarget: string,
-  module: ShapeModule,
+  module: ast.ShapeModule,
   resources: ResourceInfo[]
 ): ResourceInfo[] {
   const separator = declaredTarget.lastIndexOf("::");

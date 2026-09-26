@@ -12,128 +12,24 @@ import { moduleOriginForShapeFile } from "./symbols.ts";
 
 export const SHAPE_INSPECTION_SCHEMA_VERSION = 1 as const;
 
-export type ShapeInspectionSourceRef = {
-  language: string;
-  path: string;
-};
+// DTO types follow the explicit projections below, never the internal model.
+export type ShapeInspection = ReturnType<typeof inspectShapeModules>;
+export type ShapeInspectionSourceRef = ReturnType<typeof sourceRef>;
+export type ShapeInspectionResource = ShapeInspection["resources"][number];
+export type ShapeInspectionComponent = ShapeInspection["components"][number];
+export type ShapeInspectionFunction = ShapeInspection["functions"][number];
+export type ShapeInspectionRelation = ShapeInspection["relations"][number];
+export type ShapeInspectionImplementation = ShapeInspection["implementations"][number];
+export type ShapeInspectionBinding = ShapeInspection["bindings"][number];
+export type ShapeInspectionRule = ShapeInspection["rules"][number];
+export type ShapeInspectionMemory = ShapeInspection["memories"][number];
+export type ShapeInspectionStats = ShapeInspection["stats"];
 
 export type ShapeInspectionDocument = {
   file: string;
   module: string;
   imports: string[];
   origin: CheckModuleOrigin;
-};
-
-export type ShapeInspectionResource = DeclarationIdentity & {
-  traits: string[];
-  fingerprints: { provider: string; value: string }[];
-};
-
-export type ShapeInspectionComponent = DeclarationIdentity & {
-  classifiers: string[];
-  grants: { name: string; target?: string }[];
-  owns: string[];
-  functions: string[];
-};
-
-export type ShapeInspectionFunction = DeclarationIdentity & {
-  component: string;
-  source?: ShapeInspectionSourceRef;
-  unsafe: boolean;
-  effectsComplete: boolean;
-  effects: {
-    name: string;
-    target?: string;
-    evidence?: ShapeInspectionSourceRef;
-  }[];
-  requires: { name: string; target?: string }[];
-  shapeTraits: string[];
-  description?: {
-    required: boolean;
-    summary: string;
-  };
-};
-
-export type ShapeInspectionRelation = DeclarationIdentity & {
-  kind: string;
-  ordered: boolean;
-  from: string;
-  to: string;
-  endpoints: { id: string; index: number; role?: string }[];
-  fingerprintExpectations: { endpoint: string; provider: string; value: string }[];
-  summary?: string;
-};
-
-export type ShapeInspectionImplementation = DeclarationIdentity & {
-  paths: string[];
-  conformsTo?: string;
-  onChangeRequirement?: string;
-};
-
-export type ShapeInspectionBinding = DeclarationIdentity & {
-  whenChanged: string[];
-  requireChanged: string[];
-  allowAttestations: string[];
-};
-
-export type ShapeInspectionRule = DeclarationIdentity & {
-  whenHas: { subject: string; trait: string }[];
-  finalForbidSubject?: string;
-  forbidEffects: {
-    effect: string;
-    target?: string;
-    targetBinding: "omitted" | "generic" | "concrete" | "ambiguous";
-    final: boolean;
-  }[];
-  forbidProvides: { target: string; except?: string }[];
-  forbidHypercycles: { kinds: string[] }[];
-  forbidPaths: { source: string; target: string; kinds: string[] }[];
-};
-
-export type ShapeInspectionMemory = DeclarationIdentity & {
-  contextType: string;
-  target: { kind: string; id: string };
-  appliesTo?: { kind: string; id: string };
-  status?: string;
-  confidence?: string;
-  summary?: string;
-  owner?: string;
-  reviewBy?: string;
-  sensitive: boolean;
-  protects: { kind: string; value: string }[];
-  guards: string[];
-  forbiddenTransforms: string[];
-  observed: ShapeInspectionSourceRef[];
-  evidence: ShapeInspectionSourceRef[];
-};
-
-export type ShapeInspectionStats = {
-  documents: number;
-  modules: number;
-  resources: number;
-  components: number;
-  functions: number;
-  effects: number;
-  relations: number;
-  implementations: number;
-  bindings: number;
-  rules: number;
-  memories: number;
-};
-
-export type ShapeInspection = {
-  schemaVersion: typeof SHAPE_INSPECTION_SCHEMA_VERSION;
-  shapeVersion: string;
-  documents: ShapeInspectionDocument[];
-  resources: ShapeInspectionResource[];
-  components: ShapeInspectionComponent[];
-  functions: ShapeInspectionFunction[];
-  relations: ShapeInspectionRelation[];
-  implementations: ShapeInspectionImplementation[];
-  bindings: ShapeInspectionBinding[];
-  rules: ShapeInspectionRule[];
-  memories: ShapeInspectionMemory[];
-  stats: ShapeInspectionStats;
 };
 
 export type InspectShapeModulesOptions = {
@@ -152,7 +48,8 @@ type DeclarationIdentity = {
 type InspectionContext = {
   model: Model;
   originByFile: ReadonlyMap<string, CheckModuleOrigin>;
-  originsByModule: ReadonlyMap<string, ReadonlySet<CheckModuleOrigin>>;
+  // Null marks a module whose declarations come from both origins.
+  originsByModule: ReadonlyMap<string, CheckModuleOrigin | null>;
 };
 
 /**
@@ -163,7 +60,7 @@ type InspectionContext = {
 export function inspectShapeModules(
   modules: CheckModuleInput[],
   options: InspectShapeModulesOptions
-): ShapeInspection {
+) {
   const normalizedModules = modules.map((input) => ({
     ...input,
     origin:
@@ -219,7 +116,7 @@ export function inspectShapeModules(
   };
 }
 
-function inspectResources(context: InspectionContext): ShapeInspectionResource[] {
+function inspectResources(context: InspectionContext) {
   return [...context.model.resources.values()]
     .map((resource) => ({
       ...identity(context, resource.name, resource.provenance),
@@ -231,7 +128,7 @@ function inspectResources(context: InspectionContext): ShapeInspectionResource[]
     .toSorted(compareIdentity);
 }
 
-function inspectComponents(context: InspectionContext): ShapeInspectionComponent[] {
+function inspectComponents(context: InspectionContext) {
   return [...context.model.components.values()]
     .map((component) => ({
       ...identity(context, component.name, component.provenance),
@@ -245,16 +142,15 @@ function inspectComponents(context: InspectionContext): ShapeInspectionComponent
     .toSorted(compareIdentity);
 }
 
-function inspectFunctions(context: InspectionContext): ShapeInspectionFunction[] {
-  const functions: ShapeInspectionFunction[] = [];
+function inspectFunctions(context: InspectionContext) {
+  const functions = [];
   for (const component of context.model.components.values()) {
     for (const fn of component.functions.values()) {
       const effects =
         fn.effects.kind === "complete"
           ? fn.effects.entries
               .map((entry) => ({
-                name: entry.term.name,
-                ...(entry.term.target === undefined ? {} : { target: entry.term.target }),
+                ...term(entry.term),
                 ...(entry.evidence === undefined ? {} : { evidence: sourceRef(entry.evidence) })
               }))
               .toSorted(compareJson)
@@ -282,7 +178,7 @@ function inspectFunctions(context: InspectionContext): ShapeInspectionFunction[]
   return functions.toSorted(compareIdentity);
 }
 
-function inspectRelations(context: InspectionContext): ShapeInspectionRelation[] {
+function inspectRelations(context: InspectionContext) {
   return [...context.model.hypergraph.edges.values()]
     .map((relation) => {
       const endpoints = relation.members
@@ -308,7 +204,7 @@ function inspectRelations(context: InspectionContext): ShapeInspectionRelation[]
     .toSorted(compareIdentity);
 }
 
-function inspectImplementations(context: InspectionContext): ShapeInspectionImplementation[] {
+function inspectImplementations(context: InspectionContext) {
   return context.model.implementations
     .map((implementation) => ({
       ...identity(context, implementation.name, implementation.provenance),
@@ -321,7 +217,7 @@ function inspectImplementations(context: InspectionContext): ShapeInspectionImpl
     .toSorted(compareIdentity);
 }
 
-function inspectBindings(context: InspectionContext): ShapeInspectionBinding[] {
+function inspectBindings(context: InspectionContext) {
   return [...context.model.bindings.values()]
     .map((binding) => ({
       ...identity(context, binding.name, binding.provenance),
@@ -332,7 +228,7 @@ function inspectBindings(context: InspectionContext): ShapeInspectionBinding[] {
     .toSorted(compareIdentity);
 }
 
-function inspectRules(context: InspectionContext): ShapeInspectionRule[] {
+function inspectRules(context: InspectionContext) {
   return context.model.rules
     .map((rule) => ({
       ...identity(context, rule.name, rule.provenance),
@@ -364,15 +260,15 @@ function inspectRules(context: InspectionContext): ShapeInspectionRule[] {
     .toSorted(compareIdentity);
 }
 
-function inspectMemories(context: InspectionContext): ShapeInspectionMemory[] {
+function inspectMemories(context: InspectionContext) {
   return [...context.model.memories.values()]
     .map((memory) => ({
       ...identity(context, memory.name, memory.provenance),
       contextType: memory.contextType,
-      target: { kind: memory.target.kind, id: memory.target.name },
+      target: { kind: memory.target.kind as string, id: memory.target.name },
       ...(memory.appliesTo === undefined
         ? {}
-        : { appliesTo: { kind: memory.appliesTo.kind, id: memory.appliesTo.name } }),
+        : { appliesTo: { kind: memory.appliesTo.kind as string, id: memory.appliesTo.name } }),
       ...(memory.status === undefined ? {} : { status: memory.status }),
       ...(memory.confidence === undefined ? {} : { confidence: memory.confidence }),
       ...(memory.summary === undefined ? {} : { summary: memory.summary }),
@@ -407,7 +303,7 @@ function identity(
 
 function inspectionContext(model: Model, modules: CheckModuleInput[]): InspectionContext {
   const originByFile = new Map<string, CheckModuleOrigin>();
-  const originsByModule = new Map<string, Set<CheckModuleOrigin>>();
+  const originsByModule = new Map<string, CheckModuleOrigin | null>();
   for (const { module, filePath, origin = "authored" } of modules) {
     if (filePath !== undefined) {
       const existing = originByFile.get(filePath);
@@ -417,9 +313,8 @@ function inspectionContext(model: Model, modules: CheckModuleInput[]): Inspectio
       originByFile.set(filePath, origin);
     }
     const moduleName = module.name ?? "";
-    const origins = originsByModule.get(moduleName) ?? new Set<CheckModuleOrigin>();
-    origins.add(origin);
-    originsByModule.set(moduleName, origins);
+    const existing = originsByModule.get(moduleName);
+    originsByModule.set(moduleName, existing === undefined || existing === origin ? origin : null);
   }
   return { model, originByFile, originsByModule };
 }
@@ -435,19 +330,16 @@ function declarationOrigin(
       return origin;
     }
   }
-  const origins = context.originsByModule.get(module);
-  if (origins?.size === 1) {
-    return [...origins][0] ?? "authored";
-  }
-  if (origins !== undefined && origins.size > 1) {
+  const origin = context.originsByModule.get(module);
+  if (origin === null) {
     throw new Error(
       `Cannot determine Shape origin for ${provenance.label} without file provenance`
     );
   }
-  return "authored";
+  return origin ?? "authored";
 }
 
-function sourceRef(ref: SourceRefInfo): ShapeInspectionSourceRef {
+function sourceRef(ref: SourceRefInfo) {
   return { language: ref.language, path: ref.path };
 }
 

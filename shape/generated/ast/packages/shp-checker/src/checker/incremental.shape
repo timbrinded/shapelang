@@ -11,11 +11,6 @@ resource IncrementalModuleCheckOptionsKeyAstAnchor : GeneratedAstAnchor {
   fingerprint ast.semantic_subtree_v1("sha256:750b3b6da8fb169110f1532decfb7d7b2c82b6fcae1d57f91a0067f9aa4d5e1e")
 }
 
-resource IncrementalModuleCloneCheckResultAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/incremental.ts#cloneCheckResult")
-  fingerprint ast.semantic_subtree_v1("sha256:b1ba96e3255f1646ae1dafa5b2841f159743fa7d407dbc738243c1f07a3cfc42")
-}
-
 resource IncrementalModuleCollectModuleInputsAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/checker/incremental.ts#collectModuleInputs")
   fingerprint ast.semantic_subtree_v1("sha256:28dfacffbba022eb170a999592c8177e731dd420bddebd0f6fb48bf21f45eb1d")
@@ -43,20 +38,17 @@ resource IncrementalModuleNormalizeDocumentsAstAnchor : GeneratedAstAnchor {
 
 resource IncrementalShapeCheckerAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/checker/incremental.ts#IncrementalShapeChecker")
-  fingerprint ast.semantic_subtree_v1("sha256:c6793f3b8810e3a1eb7822c25326c4bee65f05b1bb9c56cca34ccf11541129b8")
+  fingerprint ast.semantic_subtree_v1("sha256:5c79012ec20025b58c4ef8a075f56046600cacfa61c0f5f75512f2e64dbf901c")
 }
 
 resource IncrementalShapeCheckerCheckAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/checker/incremental.ts#IncrementalShapeChecker.check")
-  fingerprint ast.semantic_subtree_v1("sha256:186ceeae8355ebfee1261838f2a26559dadb1a526592e92cbae92dd8ab43417a")
+  fingerprint ast.semantic_subtree_v1("sha256:164be0248f531b2f1f4a555bacf3408dd703c00d2dab89ddcd29154ab93f32eb")
 }
 
 component IncrementalModule : GeneratedCandidate {
   fn checkOptionsKey
     source ts("packages/shp-checker/src/checker/incremental.ts#checkOptionsKey")
-    effects unknown
-  fn cloneCheckResult
-    source ts("packages/shp-checker/src/checker/incremental.ts#cloneCheckResult")
     effects unknown
   fn collectModuleInputs
     source ts("packages/shp-checker/src/checker/incremental.ts#collectModuleInputs")
@@ -87,14 +79,6 @@ relation IncrementalModuleCheckOptionsKeyGeneratedFromIncrementalModuleCheckOpti
   roles { IncrementalModule as generated, IncrementalModuleCheckOptionsKeyAstAnchor as syntax }
   expects IncrementalModuleCheckOptionsKeyAstAnchor fingerprint ast.semantic_subtree_v1("sha256:750b3b6da8fb169110f1532decfb7d7b2c82b6fcae1d57f91a0067f9aa4d5e1e")
   summary "fn IncrementalModule.checkOptionsKey generated from typescript function_declaration at packages/shp-checker/src/checker/incremental.ts#checkOptionsKey."
-}
-
-relation IncrementalModuleCloneCheckResultGeneratedFromIncrementalModuleCloneCheckResultAstAnchor {
-  kind generated_from
-  connects IncrementalModule -> IncrementalModuleCloneCheckResultAstAnchor
-  roles { IncrementalModule as generated, IncrementalModuleCloneCheckResultAstAnchor as syntax }
-  expects IncrementalModuleCloneCheckResultAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b1ba96e3255f1646ae1dafa5b2841f159743fa7d407dbc738243c1f07a3cfc42")
-  summary "fn IncrementalModule.cloneCheckResult generated from typescript function_declaration at packages/shp-checker/src/checker/incremental.ts#cloneCheckResult."
 }
 
 relation IncrementalModuleCollectModuleInputsGeneratedFromIncrementalModuleCollectModuleInputsAstAnchor {
@@ -141,7 +125,7 @@ relation IncrementalShapeCheckerCheckGeneratedFromIncrementalShapeCheckerCheckAs
   kind generated_from
   connects IncrementalShapeChecker -> IncrementalShapeCheckerCheckAstAnchor
   roles { IncrementalShapeChecker as generated, IncrementalShapeCheckerCheckAstAnchor as syntax }
-  expects IncrementalShapeCheckerCheckAstAnchor fingerprint ast.semantic_subtree_v1("sha256:186ceeae8355ebfee1261838f2a26559dadb1a526592e92cbae92dd8ab43417a")
+  expects IncrementalShapeCheckerCheckAstAnchor fingerprint ast.semantic_subtree_v1("sha256:164be0248f531b2f1f4a555bacf3408dd703c00d2dab89ddcd29154ab93f32eb")
   summary "fn IncrementalShapeChecker.check generated from typescript method_definition at packages/shp-checker/src/checker/incremental.ts#IncrementalShapeChecker.check."
 }
 
@@ -149,7 +133,7 @@ relation IncrementalShapeCheckerGeneratedFromIncrementalShapeCheckerAstAnchor {
   kind generated_from
   connects IncrementalShapeChecker -> IncrementalShapeCheckerAstAnchor
   roles { IncrementalShapeChecker as generated, IncrementalShapeCheckerAstAnchor as syntax }
-  expects IncrementalShapeCheckerAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c6793f3b8810e3a1eb7822c25326c4bee65f05b1bb9c56cca34ccf11541129b8")
+  expects IncrementalShapeCheckerAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5c79012ec20025b58c4ef8a075f56046600cacfa61c0f5f75512f2e64dbf901c")
   summary "component IncrementalShapeChecker generated from typescript class_declaration at packages/shp-checker/src/checker/incremental.ts#IncrementalShapeChecker."
 }
 

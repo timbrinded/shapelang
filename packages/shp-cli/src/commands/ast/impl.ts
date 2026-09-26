@@ -7,6 +7,7 @@ import {
   normalizeGeneratedModuleName,
   normalizeGeneratedAstPath,
   type AstGenerationDiagnostic,
+  type AstGenerationResult,
   type AstSourceFileInput,
   type GeneratedAstManifestEntry,
   type GenerateShapeOptions,
@@ -62,15 +63,8 @@ export async function astSource(
     ...outputOptions,
     allowParseErrors: flags.allowParseErrors
   });
-  if (!result.ok) {
-    throw new CliDiagnosticError(
-      formatAstDiagnostics(result.diagnostics),
-      diagnosticsExitCode(result.diagnostics)
-    );
-  }
-
-  emitAstWarnings.call(this, result.diagnostics);
-  await writeOutput.call(this, flags, result.value.semanticShape, result.value.rawShape);
+  const value = successfulGeneration(this, result);
+  await writeOutput.call(this, flags, value.semanticShape, value.rawShape);
 }
 
 async function writeGeneratedAstDirectory(
@@ -128,16 +122,10 @@ async function writeGeneratedAstDirectory(
       moduleName,
       allowParseErrors: flags.allowParseErrors
     });
-    if (!result.ok) {
-      throw new CliDiagnosticError(
-        formatAstDiagnostics(result.diagnostics),
-        diagnosticsExitCode(result.diagnostics)
-      );
-    }
-    emitAstWarnings.call(this, result.diagnostics);
+    const value = successfulGeneration(this, result);
     const outputPath = join(outDir, `${relativeSourcePath.replace(/\.[^/.]+$/, "")}.shape`);
     ensureUniqueGeneratedValue(outputPaths, outputPath, relativeSourcePath, "output path");
-    writes.push({ path: outputPath, contents: result.value.semanticShape });
+    writes.push({ path: outputPath, contents: value.semanticShape });
     manifestEntries.push({
       module: moduleName,
       path: normalizeGeneratedAstPath(outputPath, workspaceRoot),
@@ -338,15 +326,8 @@ export async function astJson(
   }
 
   const result = generateShapeFromAstJson(astJsonValue, outputOptions);
-  if (!result.ok) {
-    throw new CliDiagnosticError(
-      formatAstDiagnostics(result.diagnostics),
-      diagnosticsExitCode(result.diagnostics)
-    );
-  }
-
-  emitAstWarnings.call(this, result.diagnostics);
-  await writeOutput.call(this, flags, result.value.semanticShape, result.value.rawShape);
+  const value = successfulGeneration(this, result);
+  await writeOutput.call(this, flags, value.semanticShape, value.rawShape);
 }
 
 function shapeOptions(flags: AstOutputFlags): GenerateShapeOptions {
@@ -382,22 +363,23 @@ async function writeOutput(
   stdout(this, semanticShape);
 }
 
-function formatAstDiagnostics(diagnostics: AstGenerationDiagnostic[]): string {
-  const lines = diagnostics.map((diagnostic) => {
-    const location = diagnostic.path
-      ? `${diagnostic.path}${diagnostic.nodeId ? `:${diagnostic.nodeId}` : ""}: `
-      : "";
-    return `${diagnostic.kind} ${diagnostic.code}: ${location}${diagnostic.message}`;
-  });
-  return `error: AST generation failed\n\n${lines.join("\n")}\n`;
+function successfulGeneration<T>(context: CliContext, result: AstGenerationResult<T>): T {
+  if (!result.ok) {
+    throw new CliDiagnosticError(
+      formatAstDiagnostics(result.diagnostics),
+      diagnosticsExitCode(result.diagnostics)
+    );
+  }
+  const warnings = result.diagnostics.filter((diagnostic) => diagnostic.kind === "warning");
+  if (warnings.length > 0) {
+    stderr(context, `${warnings.map(formatAstDiagnosticLine).join("\n")}\n`);
+  }
+  return result.value;
 }
 
-function emitAstWarnings(this: CliContext, diagnostics: AstGenerationDiagnostic[]): void {
-  const warnings = diagnostics.filter((diagnostic) => diagnostic.kind === "warning");
-  if (warnings.length === 0) {
-    return;
-  }
-  stderr(this, `${warnings.map(formatAstDiagnosticLine).join("\n")}\n`);
+function formatAstDiagnostics(diagnostics: AstGenerationDiagnostic[]): string {
+  const lines = diagnostics.map(formatAstDiagnosticLine);
+  return `error: AST generation failed\n\n${lines.join("\n")}\n`;
 }
 
 function formatAstDiagnosticLine(diagnostic: AstGenerationDiagnostic): string {

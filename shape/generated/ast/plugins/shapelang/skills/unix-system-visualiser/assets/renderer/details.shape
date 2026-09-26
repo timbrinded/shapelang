@@ -26,6 +26,11 @@ resource DetailsModuleCompactValuesAstAnchor : GeneratedAstAnchor {
   fingerprint ast.semantic_subtree_v1("sha256:00a3b0d22c5916e669e07d51e80b2261cb4f021c0acc5f35fc0eddb5d243066b")
 }
 
+resource DetailsModuleCountLabelAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/details.mjs#countLabel")
+  fingerprint ast.semantic_subtree_v1("sha256:283c03258b71d2a8a4521415a968603d3a457a995e5be3c9afe20eebf7cb1927")
+}
+
 resource DetailsModuleEdgeLabelAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/details.mjs#edgeLabel")
   fingerprint ast.semantic_subtree_v1("sha256:b5217ad37929ae2edcf5fa2f7b93bb1597b8eea30a13a16b3b71a0547bbb2cec")
@@ -33,7 +38,7 @@ resource DetailsModuleEdgeLabelAstAnchor : GeneratedAstAnchor {
 
 resource DetailsModuleEvidenceEntriesAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/details.mjs#evidenceEntries")
-  fingerprint ast.semantic_subtree_v1("sha256:900f8abf3a1a2984b24c5ce009d40b8a968c0c5fa86b0149ddfe3060d6e4b19d")
+  fingerprint ast.semantic_subtree_v1("sha256:2f3caf9ad91c55f687fe5ac7d3a9cbf060d3e0e6053e67c8014433d96b5f7346")
 }
 
 resource DetailsModuleFocusFrameForAstAnchor : GeneratedAstAnchor {
@@ -43,17 +48,17 @@ resource DetailsModuleFocusFrameForAstAnchor : GeneratedAstAnchor {
 
 resource DetailsModuleFocusJourneyStepAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/details.mjs#focusJourneyStep")
-  fingerprint ast.semantic_subtree_v1("sha256:132bda5f1ff0930b9611030c98321075e9ec57a5a98a8c5ec7b3998f16b8f738")
+  fingerprint ast.semantic_subtree_v1("sha256:750e3bcb239471272eb7f6d3665ea75fb86b28579b216660b4f8f968081da077")
 }
 
 resource DetailsModuleFocusNodeAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/details.mjs#focusNode")
-  fingerprint ast.semantic_subtree_v1("sha256:d72066066092814cc4d44f5340e607564ca15da503b32c627e6fa694046c1a1b")
+  fingerprint ast.semantic_subtree_v1("sha256:88b9af460f8272d5f6b2584873f2ac01066abd49c6628dcc81c881c9004b6801")
 }
 
 resource DetailsModuleFormatDetailsAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/details.mjs#formatDetails")
-  fingerprint ast.semantic_subtree_v1("sha256:1b6438e3f9dd0b44ece5bbe2619a54f25c6960b565ed1f4294d9aa1a62046780")
+  fingerprint ast.semantic_subtree_v1("sha256:2027b9d943818b8aba9aa2acf5e48725b41b677f0506780003b38347f0f15232")
 }
 
 resource DetailsModuleGroundPointFromPointerAstAnchor : GeneratedAstAnchor {
@@ -66,6 +71,11 @@ resource DetailsModuleJourneyFrameForAstAnchor : GeneratedAstAnchor {
   fingerprint ast.semantic_subtree_v1("sha256:253514ac5734d76dc767bbbd5c70ba3888c8a29430d52dbaefb3c5bc16383058")
 }
 
+resource DetailsModuleMoveCameraAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/details.mjs#moveCamera")
+  fingerprint ast.semantic_subtree_v1("sha256:728e43b28e80d86de159261629b17eb69a08cfdcdcc5cb36e6377e73296c1cbc")
+}
+
 resource DetailsModuleNodeUnderPointerAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/details.mjs#nodeUnderPointer")
   fingerprint ast.semantic_subtree_v1("sha256:28f7ec5e6b9a3e78f402644b6bdb60738e0c23b9b08ef38b8f751e7fe9193a7c")
@@ -73,7 +83,7 @@ resource DetailsModuleNodeUnderPointerAstAnchor : GeneratedAstAnchor {
 
 resource DetailsModulePanToGroundAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/details.mjs#panToGround")
-  fingerprint ast.semantic_subtree_v1("sha256:2526130b652921ee4b1d5404ca6d71e04c24d0f785af688242dde11cfdd8ef98")
+  fingerprint ast.semantic_subtree_v1("sha256:ab23856248b62d33a1ae1c392882363eaa74d9ad91587d1dec76a6b5018c0e1a")
 }
 
 resource DetailsModulePointInPolygonAstAnchor : GeneratedAstAnchor {
@@ -103,7 +113,7 @@ resource DetailsModuleRenderResultsAstAnchor : GeneratedAstAnchor {
 
 resource DetailsModuleResetOverviewAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/details.mjs#resetOverview")
-  fingerprint ast.semantic_subtree_v1("sha256:0e9b1bae090e89d1bdaad902f2cf206dec174d5818be33df7f5bfafe3c36f4bd")
+  fingerprint ast.semantic_subtree_v1("sha256:b5f6375a713852810c6b55279877b33fa25fd7eed8f86f1d5ea6bdcad8a4e8e4")
 }
 
 resource DetailsModuleRuleClauseLabelsAstAnchor : GeneratedAstAnchor {
@@ -144,6 +154,9 @@ component DetailsModule : GeneratedCandidate {
   fn compactValues
     source js("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/details.mjs#compactValues")
     effects unknown
+  fn countLabel
+    source js("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/details.mjs#countLabel")
+    effects unknown
   fn edgeLabel
     source js("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/details.mjs#edgeLabel")
     effects unknown
@@ -167,6 +180,9 @@ component DetailsModule : GeneratedCandidate {
     effects unknown
   fn journeyFrameFor
     source js("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/details.mjs#journeyFrameFor")
+    effects unknown
+  fn moveCamera
+    source js("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/details.mjs#moveCamera")
     effects unknown
   fn nodeUnderPointer
     source js("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/details.mjs#nodeUnderPointer")
@@ -241,6 +257,14 @@ relation DetailsModuleCompactValuesGeneratedFromDetailsModuleCompactValuesAstAnc
   summary "fn DetailsModule.compactValues generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/assets/renderer/details.mjs#compactValues."
 }
 
+relation DetailsModuleCountLabelGeneratedFromDetailsModuleCountLabelAstAnchor {
+  kind generated_from
+  connects DetailsModule -> DetailsModuleCountLabelAstAnchor
+  roles { DetailsModule as generated, DetailsModuleCountLabelAstAnchor as syntax }
+  expects DetailsModuleCountLabelAstAnchor fingerprint ast.semantic_subtree_v1("sha256:283c03258b71d2a8a4521415a968603d3a457a995e5be3c9afe20eebf7cb1927")
+  summary "fn DetailsModule.countLabel generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/assets/renderer/details.mjs#countLabel."
+}
+
 relation DetailsModuleEdgeLabelGeneratedFromDetailsModuleEdgeLabelAstAnchor {
   kind generated_from
   connects DetailsModule -> DetailsModuleEdgeLabelAstAnchor
@@ -253,7 +277,7 @@ relation DetailsModuleEvidenceEntriesGeneratedFromDetailsModuleEvidenceEntriesAs
   kind generated_from
   connects DetailsModule -> DetailsModuleEvidenceEntriesAstAnchor
   roles { DetailsModule as generated, DetailsModuleEvidenceEntriesAstAnchor as syntax }
-  expects DetailsModuleEvidenceEntriesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:900f8abf3a1a2984b24c5ce009d40b8a968c0c5fa86b0149ddfe3060d6e4b19d")
+  expects DetailsModuleEvidenceEntriesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2f3caf9ad91c55f687fe5ac7d3a9cbf060d3e0e6053e67c8014433d96b5f7346")
   summary "fn DetailsModule.evidenceEntries generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/assets/renderer/details.mjs#evidenceEntries."
 }
 
@@ -269,7 +293,7 @@ relation DetailsModuleFocusJourneyStepGeneratedFromDetailsModuleFocusJourneyStep
   kind generated_from
   connects DetailsModule -> DetailsModuleFocusJourneyStepAstAnchor
   roles { DetailsModule as generated, DetailsModuleFocusJourneyStepAstAnchor as syntax }
-  expects DetailsModuleFocusJourneyStepAstAnchor fingerprint ast.semantic_subtree_v1("sha256:132bda5f1ff0930b9611030c98321075e9ec57a5a98a8c5ec7b3998f16b8f738")
+  expects DetailsModuleFocusJourneyStepAstAnchor fingerprint ast.semantic_subtree_v1("sha256:750e3bcb239471272eb7f6d3665ea75fb86b28579b216660b4f8f968081da077")
   summary "fn DetailsModule.focusJourneyStep generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/assets/renderer/details.mjs#focusJourneyStep."
 }
 
@@ -277,7 +301,7 @@ relation DetailsModuleFocusNodeGeneratedFromDetailsModuleFocusNodeAstAnchor {
   kind generated_from
   connects DetailsModule -> DetailsModuleFocusNodeAstAnchor
   roles { DetailsModule as generated, DetailsModuleFocusNodeAstAnchor as syntax }
-  expects DetailsModuleFocusNodeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d72066066092814cc4d44f5340e607564ca15da503b32c627e6fa694046c1a1b")
+  expects DetailsModuleFocusNodeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:88b9af460f8272d5f6b2584873f2ac01066abd49c6628dcc81c881c9004b6801")
   summary "fn DetailsModule.focusNode generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/assets/renderer/details.mjs#focusNode."
 }
 
@@ -285,7 +309,7 @@ relation DetailsModuleFormatDetailsGeneratedFromDetailsModuleFormatDetailsAstAnc
   kind generated_from
   connects DetailsModule -> DetailsModuleFormatDetailsAstAnchor
   roles { DetailsModule as generated, DetailsModuleFormatDetailsAstAnchor as syntax }
-  expects DetailsModuleFormatDetailsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1b6438e3f9dd0b44ece5bbe2619a54f25c6960b565ed1f4294d9aa1a62046780")
+  expects DetailsModuleFormatDetailsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2027b9d943818b8aba9aa2acf5e48725b41b677f0506780003b38347f0f15232")
   summary "fn DetailsModule.formatDetails generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/assets/renderer/details.mjs#formatDetails."
 }
 
@@ -305,6 +329,14 @@ relation DetailsModuleJourneyFrameForGeneratedFromDetailsModuleJourneyFrameForAs
   summary "fn DetailsModule.journeyFrameFor generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/assets/renderer/details.mjs#journeyFrameFor."
 }
 
+relation DetailsModuleMoveCameraGeneratedFromDetailsModuleMoveCameraAstAnchor {
+  kind generated_from
+  connects DetailsModule -> DetailsModuleMoveCameraAstAnchor
+  roles { DetailsModule as generated, DetailsModuleMoveCameraAstAnchor as syntax }
+  expects DetailsModuleMoveCameraAstAnchor fingerprint ast.semantic_subtree_v1("sha256:728e43b28e80d86de159261629b17eb69a08cfdcdcc5cb36e6377e73296c1cbc")
+  summary "fn DetailsModule.moveCamera generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/assets/renderer/details.mjs#moveCamera."
+}
+
 relation DetailsModuleNodeUnderPointerGeneratedFromDetailsModuleNodeUnderPointerAstAnchor {
   kind generated_from
   connects DetailsModule -> DetailsModuleNodeUnderPointerAstAnchor
@@ -317,7 +349,7 @@ relation DetailsModulePanToGroundGeneratedFromDetailsModulePanToGroundAstAnchor 
   kind generated_from
   connects DetailsModule -> DetailsModulePanToGroundAstAnchor
   roles { DetailsModule as generated, DetailsModulePanToGroundAstAnchor as syntax }
-  expects DetailsModulePanToGroundAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2526130b652921ee4b1d5404ca6d71e04c24d0f785af688242dde11cfdd8ef98")
+  expects DetailsModulePanToGroundAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ab23856248b62d33a1ae1c392882363eaa74d9ad91587d1dec76a6b5018c0e1a")
   summary "fn DetailsModule.panToGround generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/assets/renderer/details.mjs#panToGround."
 }
 
@@ -365,7 +397,7 @@ relation DetailsModuleResetOverviewGeneratedFromDetailsModuleResetOverviewAstAnc
   kind generated_from
   connects DetailsModule -> DetailsModuleResetOverviewAstAnchor
   roles { DetailsModule as generated, DetailsModuleResetOverviewAstAnchor as syntax }
-  expects DetailsModuleResetOverviewAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0e9b1bae090e89d1bdaad902f2cf206dec174d5818be33df7f5bfafe3c36f4bd")
+  expects DetailsModuleResetOverviewAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b5f6375a713852810c6b55279877b33fa25fd7eed8f86f1d5ea6bdcad8a4e8e4")
   summary "fn DetailsModule.resetOverview generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/assets/renderer/details.mjs#resetOverview."
 }
 

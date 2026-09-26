@@ -6,11 +6,6 @@ trait GeneratedAstAnchor {
 trait GeneratedCandidate {
 }
 
-resource AstGenerationTreeSitterNormalizeModuleAddNodeAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/ast-generation-tree-sitter-normalize.ts#addNode")
-  fingerprint ast.semantic_subtree_v1("sha256:e83c36e00ee523a794d3238264acd5c37217240c46ec5f19a1a4aefce334e8f3")
-}
-
 resource AstGenerationTreeSitterNormalizeModuleCallBooleanMethodAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/ast-generation-tree-sitter-normalize.ts#callBooleanMethod")
   fingerprint ast.semantic_subtree_v1("sha256:75662f6946415ce9c9a1c6bd0264ecac35eeff5fcab0a35bccf18fc99ed92a05")
@@ -28,7 +23,7 @@ resource AstGenerationTreeSitterNormalizeModuleCallNumberMethodAstAnchor : Gener
 
 resource AstGenerationTreeSitterNormalizeModuleCallStringMethodAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/ast-generation-tree-sitter-normalize.ts#callStringMethod")
-  fingerprint ast.semantic_subtree_v1("sha256:6109aa275fee7b198617af2e8ba1d169f7b50ee74c9c3ea8c4af37cb49894194")
+  fingerprint ast.semantic_subtree_v1("sha256:80be0871da2e0df22bdb7f8389b92f1a1b93b3a7b89e32eb6eadad057a5e6fe8")
 }
 
 resource AstGenerationTreeSitterNormalizeModuleNodeByteRangeAstAnchor : GeneratedAstAnchor {
@@ -44,11 +39,6 @@ resource AstGenerationTreeSitterNormalizeModuleNodeChildrenAstAnchor : Generated
 resource AstGenerationTreeSitterNormalizeModuleNodeChildrenFromCursorAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/ast-generation-tree-sitter-normalize.ts#nodeChildrenFromCursor")
   fingerprint ast.semantic_subtree_v1("sha256:df8255632f69f3d82b810d91017cd5b4fdc134ea002875c8c57334b7c6cbf8af")
-}
-
-resource AstGenerationTreeSitterNormalizeModuleNodeHasErrorAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/ast-generation-tree-sitter-normalize.ts#nodeHasError")
-  fingerprint ast.semantic_subtree_v1("sha256:5ce7070acdca2ea71ca3fff029170c70dfeb8d070876f6d5d0133ad20d9d89c9")
 }
 
 resource AstGenerationTreeSitterNormalizeModuleNodeKindAstAnchor : GeneratedAstAnchor {
@@ -68,7 +58,7 @@ resource AstGenerationTreeSitterNormalizeModuleNodeSpanAstAnchor : GeneratedAstA
 
 resource AstGenerationTreeSitterNormalizeModuleNormalizeTreeSitterFileAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/ast-generation-tree-sitter-normalize.ts#normalizeTreeSitterFile")
-  fingerprint ast.semantic_subtree_v1("sha256:e609371c0b369208c1cc5b4ff979e7907645e667b33cddeb4032c57345c0d4a0")
+  fingerprint ast.semantic_subtree_v1("sha256:7a199e53bfd983223d212aab42b1f1bda95ed9843e757a8b7831feb966b4e2e1")
 }
 
 resource AstGenerationTreeSitterNormalizeModulePositionValueAstAnchor : GeneratedAstAnchor {
@@ -88,13 +78,10 @@ resource AstGenerationTreeSitterNormalizeModulePropertyOrMethodValueAstAnchor : 
 
 resource AstGenerationTreeSitterNormalizeModuleRootNodeFromTreeAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/ast-generation-tree-sitter-normalize.ts#rootNodeFromTree")
-  fingerprint ast.semantic_subtree_v1("sha256:1599e762a3a96dc10206842e5f35e26c706205c6f8bc5497e555a036ed18e404")
+  fingerprint ast.semantic_subtree_v1("sha256:89174b53883f8df31db8dee6b8c746452c61bbe3deed252b3234736069f7ea52")
 }
 
 component AstGenerationTreeSitterNormalizeModule : GeneratedCandidate {
-  fn addNode
-    source ts("packages/shp-checker/src/ast-generation-tree-sitter-normalize.ts#addNode")
-    effects unknown
   fn callBooleanMethod
     source ts("packages/shp-checker/src/ast-generation-tree-sitter-normalize.ts#callBooleanMethod")
     effects unknown
@@ -115,9 +102,6 @@ component AstGenerationTreeSitterNormalizeModule : GeneratedCandidate {
     effects unknown
   fn nodeChildrenFromCursor
     source ts("packages/shp-checker/src/ast-generation-tree-sitter-normalize.ts#nodeChildrenFromCursor")
-    effects unknown
-  fn nodeHasError
-    source ts("packages/shp-checker/src/ast-generation-tree-sitter-normalize.ts#nodeHasError")
     effects unknown
   fn nodeKind
     source ts("packages/shp-checker/src/ast-generation-tree-sitter-normalize.ts#nodeKind")
@@ -143,14 +127,6 @@ component AstGenerationTreeSitterNormalizeModule : GeneratedCandidate {
   fn rootNodeFromTree
     source ts("packages/shp-checker/src/ast-generation-tree-sitter-normalize.ts#rootNodeFromTree")
     effects unknown
-}
-
-relation AstGenerationTreeSitterNormalizeModuleAddNodeGeneratedFromAstGenerationTreeSitterNormalizeModuleAddNodeAstAnchor {
-  kind generated_from
-  connects AstGenerationTreeSitterNormalizeModule -> AstGenerationTreeSitterNormalizeModuleAddNodeAstAnchor
-  roles { AstGenerationTreeSitterNormalizeModule as generated, AstGenerationTreeSitterNormalizeModuleAddNodeAstAnchor as syntax }
-  expects AstGenerationTreeSitterNormalizeModuleAddNodeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e83c36e00ee523a794d3238264acd5c37217240c46ec5f19a1a4aefce334e8f3")
-  summary "fn AstGenerationTreeSitterNormalizeModule.addNode generated from typescript function_declaration at packages/shp-checker/src/ast-generation-tree-sitter-normalize.ts#addNode."
 }
 
 relation AstGenerationTreeSitterNormalizeModuleCallBooleanMethodGeneratedFromAstGenerationTreeSitterNormalizeModuleCallBooleanMethodAstAnchor {
@@ -181,7 +157,7 @@ relation AstGenerationTreeSitterNormalizeModuleCallStringMethodGeneratedFromAstG
   kind generated_from
   connects AstGenerationTreeSitterNormalizeModule -> AstGenerationTreeSitterNormalizeModuleCallStringMethodAstAnchor
   roles { AstGenerationTreeSitterNormalizeModule as generated, AstGenerationTreeSitterNormalizeModuleCallStringMethodAstAnchor as syntax }
-  expects AstGenerationTreeSitterNormalizeModuleCallStringMethodAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6109aa275fee7b198617af2e8ba1d169f7b50ee74c9c3ea8c4af37cb49894194")
+  expects AstGenerationTreeSitterNormalizeModuleCallStringMethodAstAnchor fingerprint ast.semantic_subtree_v1("sha256:80be0871da2e0df22bdb7f8389b92f1a1b93b3a7b89e32eb6eadad057a5e6fe8")
   summary "fn AstGenerationTreeSitterNormalizeModule.callStringMethod generated from typescript function_declaration at packages/shp-checker/src/ast-generation-tree-sitter-normalize.ts#callStringMethod."
 }
 
@@ -207,14 +183,6 @@ relation AstGenerationTreeSitterNormalizeModuleNodeChildrenGeneratedFromAstGener
   roles { AstGenerationTreeSitterNormalizeModule as generated, AstGenerationTreeSitterNormalizeModuleNodeChildrenAstAnchor as syntax }
   expects AstGenerationTreeSitterNormalizeModuleNodeChildrenAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2e9e717c77891cd19a9589cd3d9caf40c90709cf3e931ce2e6ab48409c22db46")
   summary "fn AstGenerationTreeSitterNormalizeModule.nodeChildren generated from typescript function_declaration at packages/shp-checker/src/ast-generation-tree-sitter-normalize.ts#nodeChildren."
-}
-
-relation AstGenerationTreeSitterNormalizeModuleNodeHasErrorGeneratedFromAstGenerationTreeSitterNormalizeModuleNodeHasErrorAstAnchor {
-  kind generated_from
-  connects AstGenerationTreeSitterNormalizeModule -> AstGenerationTreeSitterNormalizeModuleNodeHasErrorAstAnchor
-  roles { AstGenerationTreeSitterNormalizeModule as generated, AstGenerationTreeSitterNormalizeModuleNodeHasErrorAstAnchor as syntax }
-  expects AstGenerationTreeSitterNormalizeModuleNodeHasErrorAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5ce7070acdca2ea71ca3fff029170c70dfeb8d070876f6d5d0133ad20d9d89c9")
-  summary "fn AstGenerationTreeSitterNormalizeModule.nodeHasError generated from typescript function_declaration at packages/shp-checker/src/ast-generation-tree-sitter-normalize.ts#nodeHasError."
 }
 
 relation AstGenerationTreeSitterNormalizeModuleNodeKindGeneratedFromAstGenerationTreeSitterNormalizeModuleNodeKindAstAnchor {
@@ -245,7 +213,7 @@ relation AstGenerationTreeSitterNormalizeModuleNormalizeTreeSitterFileGeneratedF
   kind generated_from
   connects AstGenerationTreeSitterNormalizeModule -> AstGenerationTreeSitterNormalizeModuleNormalizeTreeSitterFileAstAnchor
   roles { AstGenerationTreeSitterNormalizeModule as generated, AstGenerationTreeSitterNormalizeModuleNormalizeTreeSitterFileAstAnchor as syntax }
-  expects AstGenerationTreeSitterNormalizeModuleNormalizeTreeSitterFileAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e609371c0b369208c1cc5b4ff979e7907645e667b33cddeb4032c57345c0d4a0")
+  expects AstGenerationTreeSitterNormalizeModuleNormalizeTreeSitterFileAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7a199e53bfd983223d212aab42b1f1bda95ed9843e757a8b7831feb966b4e2e1")
   summary "fn AstGenerationTreeSitterNormalizeModule.normalizeTreeSitterFile generated from typescript function_declaration at packages/shp-checker/src/ast-generation-tree-sitter-normalize.ts#normalizeTreeSitterFile."
 }
 
@@ -277,7 +245,7 @@ relation AstGenerationTreeSitterNormalizeModuleRootNodeFromTreeGeneratedFromAstG
   kind generated_from
   connects AstGenerationTreeSitterNormalizeModule -> AstGenerationTreeSitterNormalizeModuleRootNodeFromTreeAstAnchor
   roles { AstGenerationTreeSitterNormalizeModule as generated, AstGenerationTreeSitterNormalizeModuleRootNodeFromTreeAstAnchor as syntax }
-  expects AstGenerationTreeSitterNormalizeModuleRootNodeFromTreeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1599e762a3a96dc10206842e5f35e26c706205c6f8bc5497e555a036ed18e404")
+  expects AstGenerationTreeSitterNormalizeModuleRootNodeFromTreeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:89174b53883f8df31db8dee6b8c746452c61bbe3deed252b3234736069f7ea52")
   summary "fn AstGenerationTreeSitterNormalizeModule.rootNodeFromTree generated from typescript function_declaration at packages/shp-checker/src/ast-generation-tree-sitter-normalize.ts#rootNodeFromTree."
 }
 

@@ -1,15 +1,14 @@
 import { buildCommand, buildRouteMap } from "@stricli/core";
 import type { CliContext } from "../../context";
-import { fileArguments, requiredStringArguments } from "../../parameters";
+import {
+  fileArguments,
+  requiredStringArguments,
+  optionalStringFlag,
+  optionalBooleanFlag
+} from "../../parameters";
 import type { GraphFlags, LegacyGraphFlags } from "./impl";
 
-const kindFlag = {
-  kind: "parsed" as const,
-  parse: (input: string) => input,
-  optional: true as const,
-  brief: "Filter by relation kind.",
-  placeholder: "KIND"
-};
+const kindFlag = optionalStringFlag("Filter by relation kind.", "KIND");
 
 const graphAllCommand = buildCommand<GraphFlags, string[], CliContext>({
   loader: async () => (await import("./impl")).graphAll,
@@ -73,11 +72,7 @@ const legacyGraphCommand = buildCommand<LegacyGraphFlags, string[], CliContext>(
   parameters: {
     flags: {
       kind: kindFlag,
-      stats: {
-        kind: "boolean",
-        optional: true,
-        brief: "Print aggregate hypergraph statistics."
-      }
+      stats: optionalBooleanFlag("Print aggregate hypergraph statistics.")
     },
     positional: fileArguments("Legacy graph arguments.", "args")
   },

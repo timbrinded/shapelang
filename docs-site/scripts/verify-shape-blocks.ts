@@ -28,12 +28,6 @@ export type CorpusFile = {
   source: string;
 };
 
-/** The verdict for a single `shape` fence. */
-export type FenceVerdict =
-  | { kind: "skip" }
-  | { kind: "pass" }
-  | { kind: "fail"; messages: string[] };
-
 /** Tallies returned when verifying a whole corpus. */
 export type VerifyReport = {
   failures: Failure[];
@@ -48,15 +42,11 @@ export type VerifyReport = {
  * fence detection independently of the shape verdict.
  */
 export function extractShapeFences(source: string): ShapeFence[] {
-  const fences: ShapeFence[] = [];
-  for (const match of source.matchAll(fencePattern)) {
-    fences.push({
-      info: (match[1] ?? "").trim(),
-      code: match[2] ?? "",
-      line: lineNumberAt(source, match.index ?? 0)
-    });
-  }
-  return fences;
+  return Array.from(source.matchAll(fencePattern), (match) => ({
+    info: (match[1] ?? "").trim(),
+    code: match[2] ?? "",
+    line: lineNumberAt(source, match.index ?? 0)
+  }));
 }
 
 /** True when the fence is a `shape` fence (first info token is exactly `shape`). */
@@ -71,35 +61,10 @@ export function isNoVerify(info: string): boolean {
 }
 
 /**
- * Decide the verdict for one `shape` fence. This enforces the gate's contract,
- * shape/language.shape DocsShapeBlockParsingContract: a fence is skipped iff its
- * info string carries `no-verify`, and is otherwise valid iff the repo parser
- * accepts it. The accept/reject decision delegates entirely to
- * `parseShapeModule`, so the verifier embeds no divergent grammar.
- */
-export function verifyOneFence(fence: ShapeFence, filePath: string): FenceVerdict {
-  if (isNoVerify(fence.info)) {
-    return { kind: "skip" };
-  }
-
-  const parsed = parseShapeModule(fence.code, `${filePath}:${fence.line}.shape`);
-  if (parsed.ok) {
-    return { kind: "pass" };
-  }
-
-  return {
-    kind: "fail",
-    messages: parsed.diagnostics.map((diagnostic) => {
-      const location = diagnostic.line ? `${diagnostic.line}:${diagnostic.column ?? 1}` : "unknown";
-      return `${location} ${diagnostic.message}`;
-    })
-  };
-}
-
-/**
  * Verify every `shape` fence across an in-memory corpus, returning the failures
  * (each naming the file and the opening-fence line), the number of fences
- * checked, and the number skipped. Non-`shape` fences are ignored entirely.
+ * checked, and the number skipped. Non-`shape` fences are ignored; `no-verify`
+ * skips parsing. Acceptance is decided entirely by the repository parser.
  */
 export function verifyShapeCorpus(corpus: CorpusFile[]): VerifyReport {
   const failures: Failure[] = [];
@@ -112,14 +77,24 @@ export function verifyShapeCorpus(corpus: CorpusFile[]): VerifyReport {
         continue;
       }
 
-      const verdict = verifyOneFence(fence, filePath);
-      if (verdict.kind === "skip") {
+      if (isNoVerify(fence.info)) {
         skipped += 1;
-      } else if (verdict.kind === "pass") {
-        checked += 1;
-      } else {
-        checked += 1;
-        failures.push({ filePath, line: fence.line, messages: verdict.messages });
+        continue;
+      }
+
+      checked += 1;
+      const parsed = parseShapeModule(fence.code, `${filePath}:${fence.line}.shape`);
+      if (!parsed.ok) {
+        failures.push({
+          filePath,
+          line: fence.line,
+          messages: parsed.diagnostics.map((diagnostic) => {
+            const location = diagnostic.line
+              ? `${diagnostic.line}:${diagnostic.column ?? 1}`
+              : "unknown";
+            return `${location} ${diagnostic.message}`;
+          })
+        });
       }
     }
   }

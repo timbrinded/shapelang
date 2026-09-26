@@ -99,34 +99,22 @@ function drawGround() {
 }
 
 function drawPlatform(district) {
-  const y = 0;
   const thickness = 2.4;
-  const halfWidth = district.width / 2;
   const halfDepth = district.depth / 2;
-  const frontLeft = project({ x: district.x - halfWidth, y, z: district.z - halfDepth });
-  const frontRight = project({ x: district.x + halfWidth, y, z: district.z - halfDepth });
-  const backRight = project({ x: district.x + halfWidth, y, z: district.z + halfDepth });
-  const backLeft = project({ x: district.x - halfWidth, y, z: district.z + halfDepth });
-  const topLeft = project({
-    x: district.x - halfWidth,
-    y: y + thickness,
-    z: district.z - halfDepth
-  });
-  const topRight = project({
-    x: district.x + halfWidth,
-    y: y + thickness,
-    z: district.z - halfDepth
-  });
-  const topBackRight = project({
-    x: district.x + halfWidth,
-    y: y + thickness,
-    z: district.z + halfDepth
-  });
-  const topBackLeft = project({
-    x: district.x - halfWidth,
-    y: y + thickness,
-    z: district.z + halfDepth
-  });
+  const {
+    frontLeft,
+    frontRight,
+    backRight,
+    backLeft,
+    topFrontLeft: topLeft,
+    topFrontRight: topRight,
+    topBackRight,
+    topBackLeft
+  } = projectBoxCorners(
+    district,
+    { width: district.width, depth: district.depth, height: thickness },
+    0
+  );
   polygon([frontLeft, frontRight, topRight, topLeft], "#00557e");
   const sideOnRight = state.camera.x > district.x;
   if (sideOnRight) {
@@ -169,38 +157,29 @@ function drawPlatform(district) {
   }
 }
 
-function cubeCorners(node) {
-  const style = styles[node.type];
-  const base = 2.55;
-  const halfWidth = style.width / 2;
-  const halfDepth = style.depth / 2;
+function projectBoxCorners(node, dimensions, base) {
+  const halfWidth = dimensions.width / 2;
+  const halfDepth = dimensions.depth / 2;
+  const top = base + dimensions.height;
   return {
-    base,
-    width: style.width,
-    depth: style.depth,
-    frontLeft: { x: node.x - halfWidth, y: base, z: node.z - halfDepth },
-    frontRight: { x: node.x + halfWidth, y: base, z: node.z - halfDepth },
-    backRight: { x: node.x + halfWidth, y: base, z: node.z + halfDepth },
-    backLeft: { x: node.x - halfWidth, y: base, z: node.z + halfDepth },
-    topFrontLeft: { x: node.x - halfWidth, y: base + style.height, z: node.z - halfDepth },
-    topFrontRight: { x: node.x + halfWidth, y: base + style.height, z: node.z - halfDepth },
-    topBackRight: { x: node.x + halfWidth, y: base + style.height, z: node.z + halfDepth },
-    topBackLeft: { x: node.x - halfWidth, y: base + style.height, z: node.z + halfDepth }
+    frontLeft: project({ x: node.x - halfWidth, y: base, z: node.z - halfDepth }),
+    frontRight: project({ x: node.x + halfWidth, y: base, z: node.z - halfDepth }),
+    backRight: project({ x: node.x + halfWidth, y: base, z: node.z + halfDepth }),
+    backLeft: project({ x: node.x - halfWidth, y: base, z: node.z + halfDepth }),
+    topFrontLeft: project({ x: node.x - halfWidth, y: top, z: node.z - halfDepth }),
+    topFrontRight: project({ x: node.x + halfWidth, y: top, z: node.z - halfDepth }),
+    topBackRight: project({ x: node.x + halfWidth, y: top, z: node.z + halfDepth }),
+    topBackLeft: project({ x: node.x - halfWidth, y: top, z: node.z + halfDepth })
   };
 }
 
 function drawBlock(node, now) {
-  const corners = cubeCorners(node);
-  const projected = {};
-  Object.entries(corners).forEach(([key, value]) => {
-    if (key !== "base" && key !== "width" && key !== "depth") {
-      projected[key] = project(value);
-    }
-  });
+  const style = styles[node.type];
+  const base = 2.55;
+  const projected = projectBoxCorners(node, style, base);
   if (Object.values(projected).some((point) => !point)) {
     return;
   }
-  const style = styles[node.type];
   const selected = state.selectedId === node.id;
   const hovered = state.hoverId === node.id;
   const pulse = selected && state.pathGlow ? 0.2 + Math.sin(now / 260) * 0.06 : 0;
@@ -220,11 +199,13 @@ function drawBlock(node, now) {
   const sideFace = sideOnRight
     ? [projected.frontRight, projected.backRight, projected.topBackRight, projected.topFrontRight]
     : [projected.backLeft, projected.frontLeft, projected.topFrontLeft, projected.topBackLeft];
+  const halfWidth = style.width / 2;
+  const halfDepth = style.depth / 2;
   const shadow = [
-    project({ x: corners.frontLeft.x + 2.5, y: 0.16, z: corners.frontLeft.z + 2.5 }),
-    project({ x: corners.frontRight.x + 2.5, y: 0.16, z: corners.frontRight.z + 2.5 }),
-    project({ x: corners.backRight.x + 2.5, y: 0.16, z: corners.backRight.z + 2.5 }),
-    project({ x: corners.backLeft.x + 2.5, y: 0.16, z: corners.backLeft.z + 2.5 })
+    project({ x: node.x - halfWidth + 2.5, y: 0.16, z: node.z - halfDepth + 2.5 }),
+    project({ x: node.x + halfWidth + 2.5, y: 0.16, z: node.z - halfDepth + 2.5 }),
+    project({ x: node.x + halfWidth + 2.5, y: 0.16, z: node.z + halfDepth + 2.5 }),
+    project({ x: node.x - halfWidth + 2.5, y: 0.16, z: node.z + halfDepth + 2.5 })
   ];
   polygon(shadow, "rgba(0,57,74,0.2)");
   polygon(frontFace, style.front);
@@ -238,7 +219,7 @@ function drawBlock(node, now) {
   if (selected) {
     const centre = project({
       x: node.x,
-      y: corners.base + styles[node.type].height + 0.2,
+      y: base + styles[node.type].height + 0.2,
       z: node.z
     });
     if (centre) {
@@ -252,7 +233,7 @@ function drawBlock(node, now) {
 
   const centre = project({
     x: node.x,
-    y: corners.base + styles[node.type].height,
+    y: base + styles[node.type].height,
     z: node.z
   });
   const radius = Math.max(
@@ -275,12 +256,12 @@ function drawBlock(node, now) {
   if (shouldLabel && centre.scale > 0.33) {
     const labelAnchor = project({
       x: node.x,
-      y: corners.base + 0.25,
+      y: base + 0.25,
       z: node.z - styles[node.type].depth / 2 - 3.5
     });
     const labelEnd = project({
       x: node.x + 14,
-      y: corners.base + 0.25,
+      y: base + 0.25,
       z: node.z - styles[node.type].depth / 2 - 3.5
     });
     if (labelAnchor && labelEnd) {

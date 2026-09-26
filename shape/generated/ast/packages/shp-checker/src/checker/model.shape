@@ -5,3 +5,29 @@ trait GeneratedAstAnchor {
 
 trait GeneratedCandidate {
 }
+
+resource ModelModuleCreateModelAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/model.ts#createModel")
+  fingerprint ast.semantic_subtree_v1("sha256:118b1c4df2e0077ed62506472ec74d160d377a601ce8c54c1d9a3d2f7b9c9269")
+}
+
+component ModelModule : GeneratedCandidate {
+  fn createModel
+    source ts("packages/shp-checker/src/checker/model.ts#createModel")
+    effects unknown
+}
+
+relation ModelModuleCreateModelGeneratedFromModelModuleCreateModelAstAnchor {
+  kind generated_from
+  connects ModelModule -> ModelModuleCreateModelAstAnchor
+  roles { ModelModule as generated, ModelModuleCreateModelAstAnchor as syntax }
+  expects ModelModuleCreateModelAstAnchor fingerprint ast.semantic_subtree_v1("sha256:118b1c4df2e0077ed62506472ec74d160d377a601ce8c54c1d9a3d2f7b9c9269")
+  summary "fn ModelModule.createModel generated from typescript function_declaration at packages/shp-checker/src/checker/model.ts#createModel."
+}
+
+implementation ModelModuleImpl {
+  paths {
+    "packages/shp-checker/src/checker/model.ts"
+  }
+  conforms_to ModelModule
+}

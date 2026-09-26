@@ -5,21 +5,7 @@ import {
   type ShapeAuthorContextFile,
   type ShapeAuthorPromptInput
 } from "./authoring.ts";
-import {
-  isComponentDecl,
-  isFunctionSummary,
-  isGuardRequireDecl,
-  isGuardsBlock,
-  isMemoryDecl,
-  isRationaleDecl,
-  isReevaluationDecl,
-  isSatisfiesDecl,
-  type ComponentDecl,
-  type FunctionSummary,
-  type MemoryDecl,
-  type RationaleDecl,
-  type ShapeModule
-} from "./language/generated/ast.ts";
+import * as ast from "./language/generated/ast.ts";
 import {
   qualifyModuleReference,
   resolveModuleReference,
@@ -49,20 +35,10 @@ export type ShapeCriticInput = {
   instructions?: string;
 };
 
-export type GuardedTargetWithoutReevaluationAdvisory = {
-  kind: "guarded_target_without_reevaluation";
-  contextKind: "memory" | "rationale";
-  contextName: string;
-  target: string;
-  sourcePath: string;
-};
-
-export type DestructiveEffectOmissionAdvisory = {
-  kind: "destructive_effect_omission";
-  effect: AnalyzerHint["effect"];
-  sourcePath: string;
-  evidence: string;
-};
+export type GuardedTargetWithoutReevaluationAdvisory = ReturnType<
+  typeof reviewGuardedTargets
+>[number];
+export type DestructiveEffectOmissionAdvisory = ReturnType<typeof reviewDestructiveEffects>[number];
 
 export type ShapeCriticAdvisory =
   | GuardedTargetWithoutReevaluationAdvisory
@@ -79,11 +55,7 @@ export type ShapeCriticReviewResult =
       diagnostics: ParseDiagnostic[];
     };
 
-type ParsedContextFile = {
-  module: ShapeModule;
-};
-
-type GuardContext = MemoryDecl | RationaleDecl;
+type GuardContext = ast.MemoryDecl | ast.RationaleDecl;
 
 type AddedDiffSource = {
   path: string;
@@ -96,14 +68,8 @@ type UnifiedDiffHunk = {
   newRemaining: number;
 };
 
-type NormalizedCriticPromptInput = {
-  changedFiles: string[];
-  diff?: string;
-  existingShape?: string;
+type NormalizedCriticPromptInput = Omit<ShapeAuthorPromptInput, "initialDraft"> & {
   proposedShapeUpdate: string;
-  projectPrelude?: string;
-  relevantSnippets?: string;
-  instructions?: string;
 };
 
 const ADVISORY_KIND_ORDER: Record<ShapeCriticAdvisory["kind"], number> = {
@@ -171,15 +137,7 @@ function normalizeCriticPromptInput(
     };
   }
 
-  return {
-    changedFiles: input.changedFiles,
-    diff: input.diff,
-    existingShape: input.existingShape,
-    proposedShapeUpdate: proposedShapeUpdate ?? "",
-    projectPrelude: input.projectPrelude,
-    relevantSnippets: input.relevantSnippets,
-    instructions: input.instructions
-  };
+  return { ...input, proposedShapeUpdate: proposedShapeUpdate ?? "" };
 }
 
 export function reviewShapeAuthoringProposal(input: ShapeCriticInput): ShapeCriticReviewResult {
@@ -196,9 +154,9 @@ export function reviewShapeAuthoringProposal(input: ShapeCriticInput): ShapeCrit
     return { ok: false, diagnostics };
   }
 
-  const modules = [...parsedExisting.files.map((file) => file.module), parsedProposal.module];
+  const modules = [...parsedExisting.modules, parsedProposal.module];
   const advisories = sortShapeCriticAdvisories([
-    ...reviewGuardedTargets(input, parsedExisting.files, parsedProposal.module),
+    ...reviewGuardedTargets(input, parsedExisting.modules, parsedProposal.module),
     ...reviewDestructiveEffects(input, modules)
   ]);
 
@@ -217,37 +175,34 @@ export function formatShapeCriticAdvisories(advisories: ShapeCriticAdvisory[]): 
   return `${sortShapeCriticAdvisories(advisories).map(formatShapeCriticAdvisory).join("\n\n")}\n`;
 }
 
-function parseContextFiles(files: ShapeAuthorContextFile[]): {
-  files: ParsedContextFile[];
-  diagnostics: ParseDiagnostic[];
-} {
-  const parsedFiles: ParsedContextFile[] = [];
+function parseContextFiles(files: ShapeAuthorContextFile[]) {
+  const modules: ast.ShapeModule[] = [];
   const diagnostics: ParseDiagnostic[] = [];
 
   for (const file of files) {
     const parsed = parseShapeModule(file.content, file.path);
     if (parsed.ok) {
-      parsedFiles.push({ module: parsed.module });
+      modules.push(parsed.module);
     } else {
       diagnostics.push(...parsed.diagnostics);
     }
   }
 
-  return { files: parsedFiles, diagnostics };
+  return { modules, diagnostics };
 }
 
 function reviewGuardedTargets(
   input: ShapeCriticInput,
-  existingFiles: ParsedContextFile[],
-  proposedModule: ShapeModule
-): GuardedTargetWithoutReevaluationAdvisory[] {
+  existingModules: ast.ShapeModule[],
+  proposedModule: ast.ShapeModule
+) {
   const changedFiles = new Set(input.changedFiles.map(normalizeShapePath));
-  const advisories: GuardedTargetWithoutReevaluationAdvisory[] = [];
+  const advisories = [];
 
-  for (const contextFile of existingFiles) {
-    for (const declaration of contextFile.module.declarations) {
+  for (const contextModule of existingModules) {
+    for (const declaration of contextModule.declarations) {
       if (
-        (!isMemoryDecl(declaration) && !isRationaleDecl(declaration)) ||
+        (!ast.isMemoryDecl(declaration) && !ast.isRationaleDecl(declaration)) ||
         declaration.contextType.target.kind !== "fn" ||
         !hasReevaluationGuard(declaration)
       ) {
@@ -256,30 +211,30 @@ function reviewGuardedTargets(
 
       const fn = findSourceBackedFunction(
         declaration.contextType.target.name,
-        contextFile.module,
-        existingFiles
+        contextModule,
+        existingModules
       );
       if (!fn?.source) {
         continue;
       }
 
       const sourcePath = normalizeShapeSourcePath(unquoteShapeString(fn.source.ref.path));
-      const contextKind = isMemoryDecl(declaration) ? "memory" : "rationale";
+      const contextKind: ContextKind = ast.isMemoryDecl(declaration) ? "memory" : "rationale";
       if (
         !changedFiles.has(sourcePath) ||
         proposalSatisfiesContext(
           proposedModule,
           contextKind,
           declaration.name,
-          contextFile.module.name,
-          existingFiles
+          contextModule.name,
+          existingModules
         )
       ) {
         continue;
       }
 
       advisories.push({
-        kind: "guarded_target_without_reevaluation",
+        kind: "guarded_target_without_reevaluation" as const,
         contextKind,
         contextName: declaration.name,
         target: declaration.contextType.target.name,
@@ -294,18 +249,18 @@ function reviewGuardedTargets(
 function hasReevaluationGuard(context: GuardContext): boolean {
   return context.members.some(
     (member) =>
-      isGuardsBlock(member) &&
+      ast.isGuardsBlock(member) &&
       member.entries.some(
-        (entry) => isGuardRequireDecl(entry) && isReevaluationRequirement(entry.requirement)
+        (entry) => ast.isGuardRequireDecl(entry) && isReevaluationRequirement(entry.requirement)
       )
   );
 }
 
 function findSourceBackedFunction(
   target: string,
-  contextModule: ShapeModule,
-  existingFiles: ParsedContextFile[]
-): FunctionSummary | undefined {
+  contextModule: ast.ShapeModule,
+  existingModules: ast.ShapeModule[]
+): ast.FunctionSummary | undefined {
   const [componentReference, functionName] = splitFunctionReference(target);
   if (!componentReference || !functionName) {
     return undefined;
@@ -327,9 +282,8 @@ function findSourceBackedFunction(
       imports: [...new Set(contextModule.imports.map((item) => item.path))]
     },
     (moduleName, componentName) =>
-      existingFiles.some(
-        (file) =>
-          file.module.name === moduleName && findComponent(file.module, componentName) !== undefined
+      existingModules.some(
+        (module) => module.name === moduleName && findComponent(module, componentName) !== undefined
       )
   );
   if (resolution.kind !== "resolved") {
@@ -337,48 +291,52 @@ function findSourceBackedFunction(
   }
 
   const resolved = splitModuleReference(resolution.name);
-  const components = existingFiles
-    .filter((file) => file.module.name === resolved.moduleName)
-    .map((file) => findComponent(file.module, resolved.localName))
-    .filter((component): component is ComponentDecl => component !== undefined);
+  const components = existingModules
+    .filter((module) => module.name === resolved.moduleName)
+    .map((module) => findComponent(module, resolved.localName))
+    .filter((component): component is ast.ComponentDecl => component !== undefined);
   const [component] = components;
   return components.length === 1 && component
     ? findComponentFunction(component, functionName)
     : undefined;
 }
 
-function findComponent(module: ShapeModule, componentName: string): ComponentDecl | undefined {
+function findComponent(
+  module: ast.ShapeModule,
+  componentName: string
+): ast.ComponentDecl | undefined {
   return module.declarations.find(
-    (declaration): declaration is ComponentDecl =>
-      isComponentDecl(declaration) && declaration.name === componentName
+    (declaration): declaration is ast.ComponentDecl =>
+      ast.isComponentDecl(declaration) && declaration.name === componentName
   );
 }
 
 function findComponentFunction(
-  component: ComponentDecl,
+  component: ast.ComponentDecl,
   functionName: string
-): FunctionSummary | undefined {
+): ast.FunctionSummary | undefined {
   return component.members.find(
-    (member): member is FunctionSummary => isFunctionSummary(member) && member.name === functionName
+    (member): member is ast.FunctionSummary =>
+      ast.isFunctionSummary(member) && member.name === functionName
   );
 }
 
 function proposalSatisfiesContext(
-  proposedModule: ShapeModule,
+  proposedModule: ast.ShapeModule,
   contextKind: ContextKind,
   contextName: string,
   contextModuleName: string | undefined,
-  existingFiles: ParsedContextFile[]
+  existingModules: ast.ShapeModule[]
 ): boolean {
   const expectedName = qualifyModuleReference(contextModuleName, contextName);
-  const modules = [...existingFiles.map((file) => file.module), proposedModule];
+  const modules = [...existingModules, proposedModule];
 
   return proposedModule.declarations.some(
     (declaration) =>
-      isReevaluationDecl(declaration) &&
+      ast.isReevaluationDecl(declaration) &&
       declaration.members.some(
         (member) =>
-          isSatisfiesDecl(member) &&
+          ast.isSatisfiesDecl(member) &&
           member.kind === contextKind &&
           resolveContextReference(member.name, contextKind, proposedModule, modules) ===
             expectedName
@@ -389,8 +347,8 @@ function proposalSatisfiesContext(
 function resolveContextReference(
   name: string,
   contextKind: ContextKind,
-  contextModule: ShapeModule,
-  modules: ShapeModule[]
+  contextModule: ast.ShapeModule,
+  modules: ast.ShapeModule[]
 ): string | undefined {
   const resolution = resolveModuleReference(
     name,
@@ -404,7 +362,7 @@ function resolveContextReference(
 }
 
 function moduleDeclaresContext(
-  modules: ShapeModule[],
+  modules: ast.ShapeModule[],
   moduleName: string | undefined,
   contextKind: ContextKind,
   contextName: string
@@ -414,16 +372,13 @@ function moduleDeclaresContext(
     .some((module) =>
       module.declarations.some((declaration) =>
         contextKind === "memory"
-          ? isMemoryDecl(declaration) && declaration.name === contextName
-          : isRationaleDecl(declaration) && declaration.name === contextName
+          ? ast.isMemoryDecl(declaration) && declaration.name === contextName
+          : ast.isRationaleDecl(declaration) && declaration.name === contextName
       )
     );
 }
 
-function reviewDestructiveEffects(
-  input: ShapeCriticInput,
-  modules: ShapeModule[]
-): DestructiveEffectOmissionAdvisory[] {
+function reviewDestructiveEffects(input: ShapeCriticInput, modules: ast.ShapeModule[]) {
   const changedFiles = new Set(input.changedFiles.map(normalizeShapePath));
   const hints = deduplicateAnalyzerHints(
     extractAddedDiffSources(input.diff)
@@ -437,14 +392,14 @@ function reviewDestructiveEffects(
   );
 
   return warnings.map(({ hint }) => ({
-    kind: "destructive_effect_omission",
+    kind: "destructive_effect_omission" as const,
     effect: hint.effect,
     sourcePath: hint.sourcePath,
     evidence: hint.evidence
   }));
 }
 
-function moduleDeclaresAnalyzerEffect(module: ShapeModule, hint: AnalyzerHint): boolean {
+function moduleDeclaresAnalyzerEffect(module: ast.ShapeModule, hint: AnalyzerHint): boolean {
   return compareAnalyzerHintsToShape([hint], [module]).every(
     (warning) => warning.kind !== "missing_declared_effect"
   );

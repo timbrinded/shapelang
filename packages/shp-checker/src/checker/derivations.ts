@@ -8,10 +8,9 @@ import type {
   FinalForbidPattern,
   FunctionInfo,
   GuardInfo,
-  MemoryInfo,
+  ContextObjectInfo,
   Model,
   Provenance,
-  RationaleInfo,
   ReevaluationInfo,
   ResourceInfo,
   RuleInfo,
@@ -23,10 +22,8 @@ import { compareKindName } from "./sort.ts";
 import { targetsEqual } from "../targets.ts";
 
 export type ShapeTraitBearer = {
-  kind: TargetKind;
   target: ShapeTarget;
   traits: Map<string, Provenance>;
-  fallback: Provenance;
 };
 
 /**
@@ -39,25 +36,19 @@ export function shapeTraitBearers(model: Model): ShapeTraitBearer[] {
   for (const component of model.components.values()) {
     for (const fn of component.functions.values()) {
       bearers.push({
-        kind: "fn",
         target: functionTarget(fn.component, fn.name),
-        traits: fn.shapeTraits,
-        fallback: fn.provenance
+        traits: fn.shapeTraits
       });
     }
     bearers.push({
-      kind: "component",
       target: { kind: "component", name: component.name },
-      traits: component.classifiers,
-      fallback: component.provenance
+      traits: component.classifiers
     });
   }
   for (const resource of model.resources.values()) {
     bearers.push({
-      kind: "resource",
       target: { kind: "resource", name: resource.name },
-      traits: resource.traits,
-      fallback: resource.provenance
+      traits: resource.traits
     });
   }
   return bearers;
@@ -100,14 +91,18 @@ export function hasNonEmptyDescription(fn: FunctionInfo): boolean {
   return fn.description !== undefined && fn.description.summary.trim().length > 0;
 }
 
-// Generated-AST candidate functions are advisory: their unknown-effects are not
-// reported as defects. Used by the effects rule.
-export function shouldIgnoreUnknownEffectsDiagnostic(fn: FunctionInfo): boolean {
-  return fn.generatedAstCandidate;
-}
-
 export function requiresReevaluation(guard: GuardInfo): boolean {
   return isReevaluationRequirement(guard.requirement);
+}
+
+export type ContextEntry = { kind: ContextKind; info: ContextObjectInfo };
+
+/** Every context in model order: rationales first, then memories. */
+export function allContexts(model: Model): ContextEntry[] {
+  return [
+    ...[...model.rationales.values()].map((info) => ({ kind: "rationale" as const, info })),
+    ...[...model.memories.values()].map((info) => ({ kind: "memory" as const, info }))
+  ];
 }
 
 export function hasRequiredContext(
@@ -115,26 +110,23 @@ export function hasRequiredContext(
   target: ShapeTarget,
   model: Model
 ): boolean {
-  if (requirement.satisfiedBy.includes("rationale")) {
-    const rationale = [...model.rationales.values()].find((item) =>
-      contextSatisfiesRequirement(item, requirement.contextType, target)
-    );
-    if (rationale) {
-      return true;
+  for (const kind of ["rationale", "memory"] as const) {
+    if (!requirement.satisfiedBy.includes(kind)) {
+      continue;
     }
-  }
-
-  if (requirement.satisfiedBy.includes("memory")) {
-    return [...model.memories.values()].some((item) =>
-      contextSatisfiesRequirement(item, requirement.contextType, target)
-    );
+    const contexts = kind === "rationale" ? model.rationales : model.memories;
+    for (const context of contexts.values()) {
+      if (contextSatisfiesRequirement(context, requirement.contextType, target)) {
+        return true;
+      }
+    }
   }
 
   return false;
 }
 
 export function contextSatisfiesRequirement(
-  context: RationaleInfo | MemoryInfo,
+  context: ContextObjectInfo,
   contextType: string,
   target: ShapeTarget
 ): boolean {
@@ -221,7 +213,7 @@ export function reevaluationValidationReasons(
  * optional, preserving the default reviewer-only path.
  */
 export function approverRequiredBy(reevaluation: ReevaluationInfo, model: Model): boolean {
-  if (![...model.policies.values()].some((policy) => policy.requiresApprover)) {
+  if (!model.requiresApprover) {
     return false;
   }
   if (reevaluation.satisfiesKind !== "memory" || !reevaluation.satisfiesName) {
@@ -240,7 +232,7 @@ function contextObjectExists(kind: ContextKind, name: string, model: Model): boo
  * `explain` (via {@link guardsForTarget}) gate on this, so transform-only
  * guards stay visible in explain output instead of being silently dropped.
  */
-export function hasGuardAction(info: RationaleInfo | MemoryInfo): boolean {
+export function hasGuardAction(info: ContextObjectInfo): boolean {
   return info.guards.some(requiresReevaluation) || info.forbiddenTransforms.length > 0;
 }
 
@@ -261,18 +253,10 @@ export function matchingContextsForTarget(
   target: ShapeTarget,
   model: Model
 ): { kind: ContextKind; name: string }[] {
-  const contexts: { kind: ContextKind; name: string }[] = [];
-  for (const rationale of model.rationales.values()) {
-    if (targetsEqual(rationale.appliesTo ?? rationale.target, target)) {
-      contexts.push({ kind: "rationale", name: rationale.name });
-    }
-  }
-  for (const memory of model.memories.values()) {
-    if (targetsEqual(memory.appliesTo ?? memory.target, target)) {
-      contexts.push({ kind: "memory", name: memory.name });
-    }
-  }
-  return contexts.sort(compareKindName);
+  return allContexts(model)
+    .filter(({ info }) => targetsEqual(info.appliesTo ?? info.target, target))
+    .map(({ kind, info }) => ({ kind, name: info.name }))
+    .sort(compareKindName);
 }
 
 export type ResourceRuleConditionCompatibility =
@@ -338,6 +322,19 @@ export function deriveFinalForbidsForResource(
   model: Model
 ): { effect: string; target: string; trait: string; provenance: Provenance }[] {
   const forbids: { effect: string; target: string; trait: string; provenance: Provenance }[] = [];
+  const seen = new Set<string>();
+  function appendFinalForbids(patterns: FinalForbidPattern[], trait: string): void {
+    for (const forbid of patterns) {
+      if (forbid.final) {
+        const target = instantiateFinalForbidTarget(forbid, resource.name);
+        const key = `${forbid.effect}<${target}>:${trait}`;
+        if (!seen.has(key)) {
+          seen.add(key);
+          forbids.push({ effect: forbid.effect, target, trait, provenance: forbid.provenance });
+        }
+      }
+    }
+  }
 
   for (const traitName of resource.traits.keys()) {
     const trait = model.traits.get(traitName);
@@ -345,17 +342,7 @@ export function deriveFinalForbidsForResource(
       continue;
     }
 
-    for (const forbid of trait.finalForbids) {
-      if (!forbid.final) {
-        continue;
-      }
-      forbids.push({
-        effect: forbid.effect,
-        target: instantiateFinalForbidTarget(forbid, resource.name),
-        trait: traitName,
-        provenance: forbid.provenance
-      });
-    }
+    appendFinalForbids(trait.finalForbids, traitName);
   }
 
   for (const rule of model.rules) {
@@ -379,20 +366,10 @@ export function deriveFinalForbidsForResource(
       continue;
     }
 
-    for (const forbid of rule.forbidEffects) {
-      if (!forbid.final) {
-        continue;
-      }
-      forbids.push({
-        effect: forbid.effect,
-        target: instantiateFinalForbidTarget(forbid, resource.name),
-        trait: diagnosticTrait,
-        provenance: forbid.provenance
-      });
-    }
+    appendFinalForbids(rule.forbidEffects, diagnosticTrait);
   }
 
-  return dedupeForbids(forbids);
+  return forbids;
 }
 
 export function findFinalForbidden(
@@ -410,18 +387,4 @@ function instantiateFinalForbidTarget(forbid: FinalForbidPattern, resourceName: 
     return resourceName;
   }
   return forbid.target ?? resourceName;
-}
-
-function dedupeForbids(
-  forbids: { effect: string; target: string; trait: string; provenance: Provenance }[]
-): { effect: string; target: string; trait: string; provenance: Provenance }[] {
-  const seen = new Set<string>();
-  return forbids.filter((forbid) => {
-    const key = `${forbid.effect}<${forbid.target}>:${forbid.trait}`;
-    if (seen.has(key)) {
-      return false;
-    }
-    seen.add(key);
-    return true;
-  });
 }

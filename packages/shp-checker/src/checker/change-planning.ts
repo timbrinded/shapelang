@@ -39,12 +39,7 @@ export function stageModelForChange(model: Model, options: ChangeStagingOptions)
     traits: new Map(model.traits),
     components: new Map(model.components),
     hypergraph: options.copyHypergraph
-      ? {
-          edges: new Map(model.hypergraph.edges),
-          incidence: new Map(
-            [...model.hypergraph.incidence].map(([name, edges]) => [name, [...edges]])
-          )
-        }
+      ? { edges: new Map(model.hypergraph.edges) }
       : model.hypergraph,
     implementations: [...model.implementations],
     bindings: new Map(model.bindings),

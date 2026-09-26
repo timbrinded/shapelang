@@ -2,7 +2,7 @@ import { buildCommand } from "@stricli/core";
 import type { CliContext } from "../../context";
 
 export const lspCommand = buildCommand<{}, [], CliContext>({
-  loader: () => import("./impl"),
+  loader: async () => (await import("../../lsp/server")).startShapeLanguageServer,
   parameters: {
     flags: {},
     positional: {

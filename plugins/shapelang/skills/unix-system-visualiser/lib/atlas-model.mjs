@@ -50,6 +50,19 @@ export function buildAtlasModel(model) {
     return completeNode;
   };
 
+  const addDeclarationNode = (type, declaration, details) =>
+    addNode({
+      id: declarationNodeId(type, declaration.id),
+      modelId: declaration.id,
+      shapeName: declaration.name,
+      type,
+      label: declaration.name,
+      file: declaration.file,
+      module: declaration.module,
+      parentId: moduleId(declaration.module),
+      ...details
+    });
+
   const requireDeclarationNode = (reference, context, expectedType) => {
     const entry = declarations.get(reference);
     if (!entry) {
@@ -111,15 +124,7 @@ export function buildAtlasModel(model) {
   });
 
   for (const component of authored(model.components)) {
-    addNode({
-      id: declarationNodeId("component", component.id),
-      modelId: component.id,
-      shapeName: component.name,
-      type: "component",
-      label: component.name,
-      file: component.file,
-      module: component.module,
-      parentId: moduleId(component.module),
+    addDeclarationNode("component", component, {
       classifiers: component.classifiers,
       grants: component.grants,
       description:
@@ -148,14 +153,7 @@ export function buildAtlasModel(model) {
   }
 
   for (const resource of authored(model.resources)) {
-    addNode({
-      id: declarationNodeId("resource", resource.id),
-      modelId: resource.id,
-      shapeName: resource.name,
-      type: "resource",
-      label: resource.name,
-      file: resource.file,
-      module: resource.module,
+    addDeclarationNode("resource", resource, {
       parentId: resourceOwners.get(resource.id) ?? moduleId(resource.module),
       traits: resource.traits,
       fingerprints: resource.fingerprints,
@@ -167,14 +165,7 @@ export function buildAtlasModel(model) {
 
   for (const fn of authored(model.functions)) {
     const component = requireDeclarationNode(fn.component, `${fn.id}.component`, "component");
-    addNode({
-      id: declarationNodeId("function", fn.id),
-      modelId: fn.id,
-      shapeName: fn.name,
-      type: "function",
-      label: fn.name,
-      file: fn.file,
-      module: fn.module,
+    addDeclarationNode("function", fn, {
       parentId: component.id,
       effects: fn.effects,
       effectsComplete: fn.effectsComplete,
@@ -207,14 +198,7 @@ export function buildAtlasModel(model) {
     const target = implementation.conformsTo
       ? requireDeclarationNode(implementation.conformsTo, `${implementation.id}.conformsTo`)
       : undefined;
-    addNode({
-      id: declarationNodeId("implementation", implementation.id),
-      modelId: implementation.id,
-      shapeName: implementation.name,
-      type: "implementation",
-      label: implementation.name,
-      file: implementation.file,
-      module: implementation.module,
+    addDeclarationNode("implementation", implementation, {
       parentId: target?.id ?? moduleId(implementation.module),
       conformsTo: implementation.conformsTo,
       paths: implementation.paths,
@@ -226,15 +210,7 @@ export function buildAtlasModel(model) {
   }
 
   for (const binding of authored(model.bindings)) {
-    addNode({
-      id: declarationNodeId("binding", binding.id),
-      modelId: binding.id,
-      shapeName: binding.name,
-      type: "binding",
-      label: binding.name,
-      file: binding.file,
-      module: binding.module,
-      parentId: moduleId(binding.module),
+    addDeclarationNode("binding", binding, {
       binding,
       description:
         "Change binding with " +
@@ -253,15 +229,7 @@ export function buildAtlasModel(model) {
       rule.forbidHypercycles.length +
       rule.forbidPaths.length +
       (rule.finalForbidSubject ? 1 : 0);
-    addNode({
-      id: declarationNodeId("rule", rule.id),
-      modelId: rule.id,
-      shapeName: rule.name,
-      type: "rule",
-      label: rule.name,
-      file: rule.file,
-      module: rule.module,
-      parentId: moduleId(rule.module),
+    addDeclarationNode("rule", rule, {
       rule,
       description: "Architecture rule with " + clauseCount + " modeled clauses."
     });
@@ -273,14 +241,7 @@ export function buildAtlasModel(model) {
       requireDeclarationNode(endpointId, `${relation.id}.endpoints`)
     );
     const from = endpoints[0];
-    addNode({
-      id: declarationNodeId("relation", relation.id),
-      modelId: relation.id,
-      shapeName: relation.name,
-      type: "relation",
-      label: relation.name,
-      file: relation.file,
-      module: relation.module,
+    addDeclarationNode("relation", relation, {
       parentId: from.parentId ?? from.id,
       relation,
       description:

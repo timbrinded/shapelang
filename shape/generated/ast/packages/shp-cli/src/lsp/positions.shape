@@ -23,7 +23,7 @@ resource PositionsModuleReferenceContainingOffsetAstAnchor : GeneratedAstAnchor 
 
 resource PositionsModuleShapeCompletionContextAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-cli/src/lsp/positions.ts#shapeCompletionContext")
-  fingerprint ast.semantic_subtree_v1("sha256:8aad350e1158176d36ea078b145a3120141a82c9621be37321a52f7fd2c8af72")
+  fingerprint ast.semantic_subtree_v1("sha256:132d8b59931a5d47d91cf44ff2ff9225a1f4d571eef7a02d4f1dd8ee227bc318")
 }
 
 resource PositionsModuleShapeReferenceAtPositionAstAnchor : GeneratedAstAnchor {
@@ -77,7 +77,7 @@ relation PositionsModuleShapeCompletionContextGeneratedFromPositionsModuleShapeC
   kind generated_from
   connects PositionsModule -> PositionsModuleShapeCompletionContextAstAnchor
   roles { PositionsModule as generated, PositionsModuleShapeCompletionContextAstAnchor as syntax }
-  expects PositionsModuleShapeCompletionContextAstAnchor fingerprint ast.semantic_subtree_v1("sha256:8aad350e1158176d36ea078b145a3120141a82c9621be37321a52f7fd2c8af72")
+  expects PositionsModuleShapeCompletionContextAstAnchor fingerprint ast.semantic_subtree_v1("sha256:132d8b59931a5d47d91cf44ff2ff9225a1f4d571eef7a02d4f1dd8ee227bc318")
   summary "fn PositionsModule.shapeCompletionContext generated from typescript function_declaration at packages/shp-cli/src/lsp/positions.ts#shapeCompletionContext."
 }
 

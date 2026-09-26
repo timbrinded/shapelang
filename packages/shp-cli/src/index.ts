@@ -9,26 +9,15 @@ async function main(): Promise<void> {
   await run(app, Bun.argv.slice(2), { process });
 
   const exitCode = Number(process.exitCode);
-  const wrappedInvalidArgument = 256 + ExitCode.InvalidArgument;
-  const wrappedUnknownCommand = 256 + ExitCode.UnknownCommand;
-  const wrappedInternalError = 256 + ExitCode.InternalError;
-  const wrappedCommandLoadError = 256 + ExitCode.CommandLoadError;
-  const wrappedContextLoadError = 256 + ExitCode.ContextLoadError;
+  // Bun may expose negative Stricli statuses as unsigned exit bytes.
+  const stricliCode = exitCode > 0 ? exitCode - 256 : exitCode;
 
-  if (
-    exitCode === ExitCode.InvalidArgument ||
-    exitCode === ExitCode.UnknownCommand ||
-    exitCode === wrappedInvalidArgument ||
-    exitCode === wrappedUnknownCommand
-  ) {
+  if (stricliCode === ExitCode.InvalidArgument || stricliCode === ExitCode.UnknownCommand) {
     process.exitCode = 2;
   } else if (
-    exitCode === ExitCode.InternalError ||
-    exitCode === ExitCode.CommandLoadError ||
-    exitCode === ExitCode.ContextLoadError ||
-    exitCode === wrappedInternalError ||
-    exitCode === wrappedCommandLoadError ||
-    exitCode === wrappedContextLoadError
+    stricliCode === ExitCode.InternalError ||
+    stricliCode === ExitCode.CommandLoadError ||
+    stricliCode === ExitCode.ContextLoadError
   ) {
     process.exitCode = 1;
   }

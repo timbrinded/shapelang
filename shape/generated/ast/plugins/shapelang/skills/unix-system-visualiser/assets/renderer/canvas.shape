@@ -11,11 +11,6 @@ resource CanvasModuleClampAstAnchor : GeneratedAstAnchor {
   fingerprint ast.semantic_subtree_v1("sha256:cfb66a8a4f8c798aa129390ef40dc97760d8b95617e4634df83ff16a3b2f642a")
 }
 
-resource CanvasModuleCubeCornersAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/canvas.mjs#cubeCorners")
-  fingerprint ast.semantic_subtree_v1("sha256:d618110a328716083a6833f72903a71f28d643e566d4e764ff6d13c473bd9243")
-}
-
 resource CanvasModuleDrawBackgroundAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/canvas.mjs#drawBackground")
   fingerprint ast.semantic_subtree_v1("sha256:f5ba409194c9328eaf8322b6ece842b26349792d9bee38fc492e9fc96232488b")
@@ -23,7 +18,7 @@ resource CanvasModuleDrawBackgroundAstAnchor : GeneratedAstAnchor {
 
 resource CanvasModuleDrawBlockAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/canvas.mjs#drawBlock")
-  fingerprint ast.semantic_subtree_v1("sha256:ef5a0273fcdcde5a84a6c80f708ca1a6a7ab4c2786c45c97b736238202896df8")
+  fingerprint ast.semantic_subtree_v1("sha256:e488ee2fd8023474e5428ce7063c0e392228318739c6df6bd2adafb337165d15")
 }
 
 resource CanvasModuleDrawGroundAstAnchor : GeneratedAstAnchor {
@@ -58,7 +53,7 @@ resource CanvasModuleDrawPathAstAnchor : GeneratedAstAnchor {
 
 resource CanvasModuleDrawPlatformAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/canvas.mjs#drawPlatform")
-  fingerprint ast.semantic_subtree_v1("sha256:1431a192046e3e756e19d296e21a0bed647980663233138c96518e6b067516e7")
+  fingerprint ast.semantic_subtree_v1("sha256:29d93f7bbb3a0fc4e45edf55f87783d0626009d61d39843d07783629b081c1b1")
 }
 
 resource CanvasModuleDrawReticleAstAnchor : GeneratedAstAnchor {
@@ -79,6 +74,11 @@ resource CanvasModulePolygonAstAnchor : GeneratedAstAnchor {
 resource CanvasModuleProjectAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/canvas.mjs#project")
   fingerprint ast.semantic_subtree_v1("sha256:5ae261156cb039c207053fda65693ca2d7cfd67f9df5c2a874f79534d2c04314")
+}
+
+resource CanvasModuleProjectBoxCornersAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/canvas.mjs#projectBoxCorners")
+  fingerprint ast.semantic_subtree_v1("sha256:ccc6e31ed9ec07dae2ff50f1f5de901d759bab5371cbfa3d4bdd33ea066b0f02")
 }
 
 resource CanvasModuleRenderAstAnchor : GeneratedAstAnchor {
@@ -120,9 +120,6 @@ component CanvasModule : GeneratedCandidate {
   fn clamp
     source js("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/canvas.mjs#clamp")
     effects unknown
-  fn cubeCorners
-    source js("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/canvas.mjs#cubeCorners")
-    effects unknown
   fn drawBackground
     source js("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/canvas.mjs#drawBackground")
     effects unknown
@@ -162,6 +159,9 @@ component CanvasModule : GeneratedCandidate {
   fn project
     source js("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/canvas.mjs#project")
     effects unknown
+  fn projectBoxCorners
+    source js("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/canvas.mjs#projectBoxCorners")
+    effects unknown
   fn render
     source js("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/canvas.mjs#render")
     effects unknown
@@ -193,14 +193,6 @@ relation CanvasModuleClampGeneratedFromCanvasModuleClampAstAnchor {
   summary "fn CanvasModule.clamp generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/assets/renderer/canvas.mjs#clamp."
 }
 
-relation CanvasModuleCubeCornersGeneratedFromCanvasModuleCubeCornersAstAnchor {
-  kind generated_from
-  connects CanvasModule -> CanvasModuleCubeCornersAstAnchor
-  roles { CanvasModule as generated, CanvasModuleCubeCornersAstAnchor as syntax }
-  expects CanvasModuleCubeCornersAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d618110a328716083a6833f72903a71f28d643e566d4e764ff6d13c473bd9243")
-  summary "fn CanvasModule.cubeCorners generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/assets/renderer/canvas.mjs#cubeCorners."
-}
-
 relation CanvasModuleDrawBackgroundGeneratedFromCanvasModuleDrawBackgroundAstAnchor {
   kind generated_from
   connects CanvasModule -> CanvasModuleDrawBackgroundAstAnchor
@@ -213,7 +205,7 @@ relation CanvasModuleDrawBlockGeneratedFromCanvasModuleDrawBlockAstAnchor {
   kind generated_from
   connects CanvasModule -> CanvasModuleDrawBlockAstAnchor
   roles { CanvasModule as generated, CanvasModuleDrawBlockAstAnchor as syntax }
-  expects CanvasModuleDrawBlockAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ef5a0273fcdcde5a84a6c80f708ca1a6a7ab4c2786c45c97b736238202896df8")
+  expects CanvasModuleDrawBlockAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e488ee2fd8023474e5428ce7063c0e392228318739c6df6bd2adafb337165d15")
   summary "fn CanvasModule.drawBlock generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/assets/renderer/canvas.mjs#drawBlock."
 }
 
@@ -269,7 +261,7 @@ relation CanvasModuleDrawPlatformGeneratedFromCanvasModuleDrawPlatformAstAnchor 
   kind generated_from
   connects CanvasModule -> CanvasModuleDrawPlatformAstAnchor
   roles { CanvasModule as generated, CanvasModuleDrawPlatformAstAnchor as syntax }
-  expects CanvasModuleDrawPlatformAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1431a192046e3e756e19d296e21a0bed647980663233138c96518e6b067516e7")
+  expects CanvasModuleDrawPlatformAstAnchor fingerprint ast.semantic_subtree_v1("sha256:29d93f7bbb3a0fc4e45edf55f87783d0626009d61d39843d07783629b081c1b1")
   summary "fn CanvasModule.drawPlatform generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/assets/renderer/canvas.mjs#drawPlatform."
 }
 
@@ -295,6 +287,14 @@ relation CanvasModulePolygonGeneratedFromCanvasModulePolygonAstAnchor {
   roles { CanvasModule as generated, CanvasModulePolygonAstAnchor as syntax }
   expects CanvasModulePolygonAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ec35c6cae0e947b34b80486014b4930326939e6aa538d13ca1e663066107b37e")
   summary "fn CanvasModule.polygon generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/assets/renderer/canvas.mjs#polygon."
+}
+
+relation CanvasModuleProjectBoxCornersGeneratedFromCanvasModuleProjectBoxCornersAstAnchor {
+  kind generated_from
+  connects CanvasModule -> CanvasModuleProjectBoxCornersAstAnchor
+  roles { CanvasModule as generated, CanvasModuleProjectBoxCornersAstAnchor as syntax }
+  expects CanvasModuleProjectBoxCornersAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ccc6e31ed9ec07dae2ff50f1f5de901d759bab5371cbfa3d4bdd33ea066b0f02")
+  summary "fn CanvasModule.projectBoxCorners generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/assets/renderer/canvas.mjs#projectBoxCorners."
 }
 
 relation CanvasModuleProjectGeneratedFromCanvasModuleProjectAstAnchor {

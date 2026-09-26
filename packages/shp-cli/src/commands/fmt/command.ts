@@ -1,17 +1,13 @@
 import { buildCommand } from "@stricli/core";
 import type { CliContext } from "../../context";
-import { fileArguments } from "../../parameters";
+import { fileArguments, optionalBooleanFlag } from "../../parameters";
 import type { FmtFlags } from "./impl";
 
 export const fmtCommand = buildCommand<FmtFlags, string[], CliContext>({
   loader: () => import("./impl"),
   parameters: {
     flags: {
-      check: {
-        kind: "boolean",
-        optional: true,
-        brief: "Check formatting without writing files."
-      }
+      check: optionalBooleanFlag("Check formatting without writing files.")
     },
     positional: fileArguments()
   },

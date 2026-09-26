@@ -80,15 +80,12 @@ function inferDependencyJourneys(model, relations, nodeByModelId) {
     candidates.sort((left, right) => compareCodepoints(left.relation.id, right.relation.id));
   }
 
-  const starts = new Set([...outgoing.keys()].filter((modelId) => !incoming.has(modelId)));
+  const starts = [...outgoing.keys()].filter((modelId) => !incoming.has(modelId));
 
   const journeys = [];
-  for (const start of [...starts].sort(compareCodepoints)) {
+  for (const start of starts.sort(compareCodepoints)) {
     for (const seed of outgoing.get(start) ?? []) {
-      const journey = inferredJourney(seed, outgoing, nodeByModelId);
-      if (journey.steps.length >= 2) {
-        journeys.push(journey);
-      }
+      journeys.push(inferredJourney(seed, outgoing, nodeByModelId));
     }
   }
   return journeys.sort((left, right) => compareCodepoints(left.id, right.id));
@@ -97,11 +94,9 @@ function inferDependencyJourneys(model, relations, nodeByModelId) {
 function inferredJourney(seed, outgoing, nodeByModelId) {
   const journeyId = `journey:inferred:${seed.relation.id}`;
   const links = [seed];
+  // A zero-indegree seed cannot be a self-loop, so every tour has at least two nodes.
   const visited = new Set([seed.from]);
   let current = seed.to;
-  if (visited.has(current)) {
-    return inferredJourneyRecord(journeyId, seed, [], nodeByModelId);
-  }
   visited.add(current);
 
   while (links.length + 1 < MAX_INFERRED_STEPS) {
@@ -114,21 +109,6 @@ function inferredJourney(seed, outgoing, nodeByModelId) {
     visited.add(current);
   }
 
-  return inferredJourneyRecord(journeyId, seed, links, nodeByModelId);
-}
-
-function inferredJourneyRecord(journeyId, seed, links, nodeByModelId) {
-  if (links.length === 0) {
-    return {
-      id: journeyId,
-      title: humanize(seed.relation.summary || seed.relation.name),
-      summary: "Inferred dependency topology from authored calls and callbacks, not runtime order.",
-      kind: "inferred",
-      relationId: seed.relation.id,
-      startNodeId: requireNode(nodeByModelId, seed.from, seed.relation.id).id,
-      steps: []
-    };
-  }
   const start = requireNode(nodeByModelId, seed.from, seed.relation.id);
   const steps = [
     {

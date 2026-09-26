@@ -16,19 +16,9 @@ resource ProtocolModuleHasOnlyKeysAstAnchor : GeneratedAstAnchor {
   fingerprint ast.semantic_subtree_v1("sha256:30daf6a9faa2698118b35ffd010e0065add61c9827b847a1caf6780937265c0d")
 }
 
-resource ProtocolModuleIsKernelDiagnosticCauseAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("experiments/semantic-kernel/harness/protocol.ts#isKernelDiagnosticCause")
-  fingerprint ast.semantic_subtree_v1("sha256:b989792a10d45b26852bc73f07c9010f50665257cfbc52186b726625f179c89c")
-}
-
-resource ProtocolModuleIsKernelDiagnosticCauseRoleAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("experiments/semantic-kernel/harness/protocol.ts#isKernelDiagnosticCauseRole")
-  fingerprint ast.semantic_subtree_v1("sha256:e78441c132f3f617ef414144755ec52fcc22cadf24b040b7dca6922ea1e26064")
-}
-
 resource ProtocolModuleIsKernelDiagnosticV1AstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/semantic-kernel/harness/protocol.ts#isKernelDiagnosticV1")
-  fingerprint ast.semantic_subtree_v1("sha256:4a88251943942674f9d66ddb3be1f5df59c9fe5808d00e4fb5299e655982a637")
+  fingerprint ast.semantic_subtree_v1("sha256:d86d164649b031ba1b5d99cfde54803c3e17ec9079a35f949662be114685149c")
 }
 
 resource ProtocolModuleIsKernelProvenanceAstAnchor : GeneratedAstAnchor {
@@ -57,12 +47,6 @@ component ProtocolModule : GeneratedCandidate {
     effects unknown
   fn hasOnlyKeys
     source ts("experiments/semantic-kernel/harness/protocol.ts#hasOnlyKeys")
-    effects unknown
-  fn isKernelDiagnosticCause
-    source ts("experiments/semantic-kernel/harness/protocol.ts#isKernelDiagnosticCause")
-    effects unknown
-  fn isKernelDiagnosticCauseRole
-    source ts("experiments/semantic-kernel/harness/protocol.ts#isKernelDiagnosticCauseRole")
     effects unknown
   fn isKernelDiagnosticV1
     source ts("experiments/semantic-kernel/harness/protocol.ts#isKernelDiagnosticV1")
@@ -97,27 +81,11 @@ relation ProtocolModuleHasOnlyKeysGeneratedFromProtocolModuleHasOnlyKeysAstAncho
   summary "fn ProtocolModule.hasOnlyKeys generated from typescript function_declaration at experiments/semantic-kernel/harness/protocol.ts#hasOnlyKeys."
 }
 
-relation ProtocolModuleIsKernelDiagnosticCauseGeneratedFromProtocolModuleIsKernelDiagnosticCauseAstAnchor {
-  kind generated_from
-  connects ProtocolModule -> ProtocolModuleIsKernelDiagnosticCauseAstAnchor
-  roles { ProtocolModule as generated, ProtocolModuleIsKernelDiagnosticCauseAstAnchor as syntax }
-  expects ProtocolModuleIsKernelDiagnosticCauseAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b989792a10d45b26852bc73f07c9010f50665257cfbc52186b726625f179c89c")
-  summary "fn ProtocolModule.isKernelDiagnosticCause generated from typescript function_declaration at experiments/semantic-kernel/harness/protocol.ts#isKernelDiagnosticCause."
-}
-
-relation ProtocolModuleIsKernelDiagnosticCauseRoleGeneratedFromProtocolModuleIsKernelDiagnosticCauseRoleAstAnchor {
-  kind generated_from
-  connects ProtocolModule -> ProtocolModuleIsKernelDiagnosticCauseRoleAstAnchor
-  roles { ProtocolModule as generated, ProtocolModuleIsKernelDiagnosticCauseRoleAstAnchor as syntax }
-  expects ProtocolModuleIsKernelDiagnosticCauseRoleAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e78441c132f3f617ef414144755ec52fcc22cadf24b040b7dca6922ea1e26064")
-  summary "fn ProtocolModule.isKernelDiagnosticCauseRole generated from typescript function_declaration at experiments/semantic-kernel/harness/protocol.ts#isKernelDiagnosticCauseRole."
-}
-
 relation ProtocolModuleIsKernelDiagnosticV1GeneratedFromProtocolModuleIsKernelDiagnosticV1AstAnchor {
   kind generated_from
   connects ProtocolModule -> ProtocolModuleIsKernelDiagnosticV1AstAnchor
   roles { ProtocolModule as generated, ProtocolModuleIsKernelDiagnosticV1AstAnchor as syntax }
-  expects ProtocolModuleIsKernelDiagnosticV1AstAnchor fingerprint ast.semantic_subtree_v1("sha256:4a88251943942674f9d66ddb3be1f5df59c9fe5808d00e4fb5299e655982a637")
+  expects ProtocolModuleIsKernelDiagnosticV1AstAnchor fingerprint ast.semantic_subtree_v1("sha256:d86d164649b031ba1b5d99cfde54803c3e17ec9079a35f949662be114685149c")
   summary "fn ProtocolModule.isKernelDiagnosticV1 generated from typescript function_declaration at experiments/semantic-kernel/harness/protocol.ts#isKernelDiagnosticV1."
 }
 

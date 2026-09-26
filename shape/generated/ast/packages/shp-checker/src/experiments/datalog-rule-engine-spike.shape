@@ -18,7 +18,7 @@ resource DatalogRuleEngineSpikeModuleEvaluateMissingGrantPrototypeAstAnchor : Ge
 
 resource DatalogRuleEngineSpikeModuleEvaluateRuleAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/experiments/datalog-rule-engine-spike.ts#evaluateRule")
-  fingerprint ast.semantic_subtree_v1("sha256:5e17ca88712770b0214062bc880a1070fcb23e50d3829277bb9808935e626ba1")
+  fingerprint ast.semantic_subtree_v1("sha256:714bcf655295f75959531695b184666cdcbbb4a80a095bd16b2e4f0b2b05f3e3")
 }
 
 resource DatalogRuleEngineSpikeModuleToTupleAstAnchor : GeneratedAstAnchor {
@@ -33,7 +33,7 @@ resource DatalogRuleEngineSpikeModuleTupleKeyAstAnchor : GeneratedAstAnchor {
 
 resource DatalogRuleEngineSpikeModuleUnifyAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/experiments/datalog-rule-engine-spike.ts#unify")
-  fingerprint ast.semantic_subtree_v1("sha256:372ff25548feba09831f77de773b8d3b587f28822131d7a65f8ad36a8b95c4e3")
+  fingerprint ast.semantic_subtree_v1("sha256:bdab447c64641042ead28bcdc89ef98869890465513e02957a49b32da66d4fc3")
 }
 
 component DatalogRuleEngineSpikeModule : GeneratedCandidate {
@@ -77,7 +77,7 @@ relation DatalogRuleEngineSpikeModuleEvaluateRuleGeneratedFromDatalogRuleEngineS
   kind generated_from
   connects DatalogRuleEngineSpikeModule -> DatalogRuleEngineSpikeModuleEvaluateRuleAstAnchor
   roles { DatalogRuleEngineSpikeModule as generated, DatalogRuleEngineSpikeModuleEvaluateRuleAstAnchor as syntax }
-  expects DatalogRuleEngineSpikeModuleEvaluateRuleAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5e17ca88712770b0214062bc880a1070fcb23e50d3829277bb9808935e626ba1")
+  expects DatalogRuleEngineSpikeModuleEvaluateRuleAstAnchor fingerprint ast.semantic_subtree_v1("sha256:714bcf655295f75959531695b184666cdcbbb4a80a095bd16b2e4f0b2b05f3e3")
   summary "fn DatalogRuleEngineSpikeModule.evaluateRule generated from typescript function_declaration at packages/shp-checker/src/experiments/datalog-rule-engine-spike.ts#evaluateRule."
 }
 
@@ -101,7 +101,7 @@ relation DatalogRuleEngineSpikeModuleUnifyGeneratedFromDatalogRuleEngineSpikeMod
   kind generated_from
   connects DatalogRuleEngineSpikeModule -> DatalogRuleEngineSpikeModuleUnifyAstAnchor
   roles { DatalogRuleEngineSpikeModule as generated, DatalogRuleEngineSpikeModuleUnifyAstAnchor as syntax }
-  expects DatalogRuleEngineSpikeModuleUnifyAstAnchor fingerprint ast.semantic_subtree_v1("sha256:372ff25548feba09831f77de773b8d3b587f28822131d7a65f8ad36a8b95c4e3")
+  expects DatalogRuleEngineSpikeModuleUnifyAstAnchor fingerprint ast.semantic_subtree_v1("sha256:bdab447c64641042ead28bcdc89ef98869890465513e02957a49b32da66d4fc3")
   summary "fn DatalogRuleEngineSpikeModule.unify generated from typescript function_declaration at packages/shp-checker/src/experiments/datalog-rule-engine-spike.ts#unify."
 }
 

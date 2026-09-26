@@ -8,7 +8,12 @@ trait GeneratedCandidate {
 
 resource AnalyzerModuleAnalyzeSourceTextAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/analyzer.ts#analyzeSourceText")
-  fingerprint ast.semantic_subtree_v1("sha256:a2641146c25106dded9e07f031592b635fdf09be9af8f112a143727280e2dc23")
+  fingerprint ast.semantic_subtree_v1("sha256:fa26b5bf865fc6bf4a8d01690d998f94f2b13193aef48d641595af41f0648bcd")
+}
+
+resource AnalyzerModuleAnalyzerMatchFromSqlAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer.ts#analyzerMatchFromSql")
+  fingerprint ast.semantic_subtree_v1("sha256:9e303c816a2d860f25327f68d6e6f8a8175ef1dd47f17fe8a37a63315e2a465c")
 }
 
 resource AnalyzerModuleCallEvidenceSpanAstAnchor : GeneratedAstAnchor {
@@ -28,12 +33,7 @@ resource AnalyzerModuleCollectLineStartsAstAnchor : GeneratedAstAnchor {
 
 resource AnalyzerModuleCollectRawSqlMatchesAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/analyzer.ts#collectRawSqlMatches")
-  fingerprint ast.semantic_subtree_v1("sha256:200134f4e6ff133abfcdcdb074db64448788f7c1b70a523cdf55c8ecae5f5939")
-}
-
-resource AnalyzerModuleCollectSqlFileMatchesAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/analyzer.ts#collectSqlFileMatches")
-  fingerprint ast.semantic_subtree_v1("sha256:696a4550b6cd4a62466585cc87e2a3538653247a34bcf2c65c8ac0776632ef32")
+  fingerprint ast.semantic_subtree_v1("sha256:5395b3dcbb59f192c691b880ccfeba3f8659379373f07edfb1b8ee1e322830df")
 }
 
 resource AnalyzerModuleCollectTypeScriptMatchesAstAnchor : GeneratedAstAnchor {
@@ -90,6 +90,9 @@ component AnalyzerModule : GeneratedCandidate {
   fn analyzeSourceText
     source ts("packages/shp-checker/src/analyzer.ts#analyzeSourceText")
     effects unknown
+  fn analyzerMatchFromSql
+    source ts("packages/shp-checker/src/analyzer.ts#analyzerMatchFromSql")
+    effects unknown
   fn callEvidenceSpan
     source ts("packages/shp-checker/src/analyzer.ts#callEvidenceSpan")
     effects unknown
@@ -101,9 +104,6 @@ component AnalyzerModule : GeneratedCandidate {
     effects unknown
   fn collectRawSqlMatches
     source ts("packages/shp-checker/src/analyzer.ts#collectRawSqlMatches")
-    effects unknown
-  fn collectSqlFileMatches
-    source ts("packages/shp-checker/src/analyzer.ts#collectSqlFileMatches")
     effects unknown
   fn collectTypeScriptMatches
     source ts("packages/shp-checker/src/analyzer.ts#collectTypeScriptMatches")
@@ -141,8 +141,16 @@ relation AnalyzerModuleAnalyzeSourceTextGeneratedFromAnalyzerModuleAnalyzeSource
   kind generated_from
   connects AnalyzerModule -> AnalyzerModuleAnalyzeSourceTextAstAnchor
   roles { AnalyzerModule as generated, AnalyzerModuleAnalyzeSourceTextAstAnchor as syntax }
-  expects AnalyzerModuleAnalyzeSourceTextAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a2641146c25106dded9e07f031592b635fdf09be9af8f112a143727280e2dc23")
+  expects AnalyzerModuleAnalyzeSourceTextAstAnchor fingerprint ast.semantic_subtree_v1("sha256:fa26b5bf865fc6bf4a8d01690d998f94f2b13193aef48d641595af41f0648bcd")
   summary "fn AnalyzerModule.analyzeSourceText generated from typescript function_declaration at packages/shp-checker/src/analyzer.ts#analyzeSourceText."
+}
+
+relation AnalyzerModuleAnalyzerMatchFromSqlGeneratedFromAnalyzerModuleAnalyzerMatchFromSqlAstAnchor {
+  kind generated_from
+  connects AnalyzerModule -> AnalyzerModuleAnalyzerMatchFromSqlAstAnchor
+  roles { AnalyzerModule as generated, AnalyzerModuleAnalyzerMatchFromSqlAstAnchor as syntax }
+  expects AnalyzerModuleAnalyzerMatchFromSqlAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9e303c816a2d860f25327f68d6e6f8a8175ef1dd47f17fe8a37a63315e2a465c")
+  summary "fn AnalyzerModule.analyzerMatchFromSql generated from typescript function_declaration at packages/shp-checker/src/analyzer.ts#analyzerMatchFromSql."
 }
 
 relation AnalyzerModuleCallEvidenceSpanGeneratedFromAnalyzerModuleCallEvidenceSpanAstAnchor {
@@ -173,16 +181,8 @@ relation AnalyzerModuleCollectRawSqlMatchesGeneratedFromAnalyzerModuleCollectRaw
   kind generated_from
   connects AnalyzerModule -> AnalyzerModuleCollectRawSqlMatchesAstAnchor
   roles { AnalyzerModule as generated, AnalyzerModuleCollectRawSqlMatchesAstAnchor as syntax }
-  expects AnalyzerModuleCollectRawSqlMatchesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:200134f4e6ff133abfcdcdb074db64448788f7c1b70a523cdf55c8ecae5f5939")
+  expects AnalyzerModuleCollectRawSqlMatchesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5395b3dcbb59f192c691b880ccfeba3f8659379373f07edfb1b8ee1e322830df")
   summary "fn AnalyzerModule.collectRawSqlMatches generated from typescript function_declaration at packages/shp-checker/src/analyzer.ts#collectRawSqlMatches."
-}
-
-relation AnalyzerModuleCollectSqlFileMatchesGeneratedFromAnalyzerModuleCollectSqlFileMatchesAstAnchor {
-  kind generated_from
-  connects AnalyzerModule -> AnalyzerModuleCollectSqlFileMatchesAstAnchor
-  roles { AnalyzerModule as generated, AnalyzerModuleCollectSqlFileMatchesAstAnchor as syntax }
-  expects AnalyzerModuleCollectSqlFileMatchesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:696a4550b6cd4a62466585cc87e2a3538653247a34bcf2c65c8ac0776632ef32")
-  summary "fn AnalyzerModule.collectSqlFileMatches generated from typescript function_declaration at packages/shp-checker/src/analyzer.ts#collectSqlFileMatches."
 }
 
 relation AnalyzerModuleCollectTypeScriptMatchesGeneratedFromAnalyzerModuleCollectTypeScriptMatchesAstAnchor {

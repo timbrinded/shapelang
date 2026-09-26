@@ -3,22 +3,7 @@
 // (declarations, relation endpoints, function targets, context objects) into
 // module-qualified keys, recording ambiguous-name diagnostics on the model. It
 // does not lower declarations or evaluate semantic rules.
-import type { ShapeModule } from "../language/generated/ast.ts";
-import {
-  isAttestationDecl,
-  isBindingDecl,
-  isCandidateEffectDecl,
-  isChangeDecl,
-  isComponentDecl,
-  isImplementationDecl,
-  isMemoryDecl,
-  isRationaleDecl,
-  isReevaluationDecl,
-  isRelationDecl,
-  isResourceDecl,
-  isRuleDecl,
-  isTraitDecl
-} from "../language/generated/ast.ts";
+import type { Declaration, ShapeModule } from "../language/generated/ast.ts";
 import type {
   CheckModuleInput,
   CheckModuleOrigin,
@@ -30,7 +15,7 @@ import type {
   ShapeTarget
 } from "./model.ts";
 import { resolveModuleReference } from "../module-resolution.ts";
-import { KNOWN_PRELUDE_TRAITS, type ContextKind } from "../prelude.ts";
+import { KNOWN_PRELUDE_TRAITS } from "../prelude.ts";
 import { functionKey, splitFunctionTarget, splitQualifiedName } from "./display.ts";
 import { describeProvenance, provenance } from "./provenance.ts";
 import {
@@ -83,64 +68,36 @@ export function indexModuleDeclarations(
   model: Model
 ): void {
   for (const declaration of module.declarations) {
-    const kind = declarationIndexKind(declaration);
+    if (declaration.$type === "AttestationDecl") {
+      continue;
+    }
+    const kind = declarationKinds[declaration.$type];
     if (!kind) {
       continue;
     }
     const names = model.declarations[kind].get(context.name) ?? new Set<string>();
-    names.add(declarationNameForIndex(declaration));
+    names.add(declaration.name);
     model.declarations[kind].set(context.name, names);
   }
 }
 
-function declarationNameForIndex(declaration: ShapeModule["declarations"][number]): string {
-  if (isAttestationDecl(declaration)) {
-    return declaration.kind;
-  }
-  if (isChangeDecl(declaration)) {
-    return declaration.name;
-  }
-  return "name" in declaration ? declaration.name : "";
-}
-
-function declarationIndexKind(
-  declaration: ShapeModule["declarations"][number]
-): DeclarationKind | undefined {
-  if (isResourceDecl(declaration)) {
-    return "resource";
-  }
-  if (isComponentDecl(declaration)) {
-    return "component";
-  }
-  if (isTraitDecl(declaration)) {
-    return "trait";
-  }
-  if (isRelationDecl(declaration)) {
-    return "relation";
-  }
-  if (isCandidateEffectDecl(declaration)) {
-    return "candidate_effect";
-  }
-  if (isImplementationDecl(declaration)) {
-    return "implementation";
-  }
-  if (isBindingDecl(declaration)) {
-    return "binding";
-  }
-  if (isRationaleDecl(declaration)) {
-    return "rationale";
-  }
-  if (isMemoryDecl(declaration)) {
-    return "memory";
-  }
-  if (isReevaluationDecl(declaration)) {
-    return "reevaluation";
-  }
-  if (isRuleDecl(declaration)) {
-    return "rule";
-  }
-  return undefined;
-}
+export const declarationKinds = {
+  ResourceDecl: "resource",
+  ComponentDecl: "component",
+  TraitDecl: "trait",
+  RelationDecl: "relation",
+  CandidateEffectDecl: "candidate_effect",
+  ImplementationDecl: "implementation",
+  BindingDecl: "binding",
+  RationaleDecl: "rationale",
+  MemoryDecl: "memory",
+  ReevaluationDecl: "reevaluation",
+  RuleDecl: "rule",
+  AttestationDecl: "attestation",
+  ChangeDecl: undefined,
+  RoleDecl: undefined,
+  PolicyDecl: undefined
+} as const satisfies Record<Declaration["$type"], DeclarationKind | "attestation" | undefined>;
 
 function declaredLocally(
   model: Model,
@@ -232,17 +189,9 @@ export function resolveTargetName(
   if (target.kind === "fn") {
     return { kind: target.kind, name: resolveFunctionTargetName(target.name, context, model) };
   }
-  const kind =
-    target.kind === "relation"
-      ? "relation"
-      : target.kind === "implementation"
-        ? "implementation"
-        : target.kind === "rule"
-          ? "rule"
-          : target.kind;
   return {
     kind: target.kind,
-    name: resolveDeclName(target.name, kind, context, model)
+    name: resolveDeclName(target.name, target.kind, context, model)
   };
 }
 
@@ -256,13 +205,4 @@ export function resolveFunctionTargetName(
     return value;
   }
   return functionKey(resolveDeclName(componentName, "component", context, model), functionName);
-}
-
-export function resolveContextObjectName(
-  kind: ContextKind,
-  name: string,
-  context: LoweringContext,
-  model: Model
-): string {
-  return resolveDeclName(name, kind, context, model);
 }

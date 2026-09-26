@@ -26,14 +26,14 @@ component DocsShapeBlockVerifier {
   grants Append<SemanticDiagnostics>
   grants Read<DocsShapeBlock>
   fn verifyShapeCodeBlocks : RefactorSensitive
-    source ts("docs-site/scripts/verify-shape-blocks.ts")
+    source ts("docs-site/scripts/verify-shape-blocks.ts#verifyShapeCorpus")
     effects complete {
       Append<ParsedModule>
-        evidence ts("docs-site/scripts/verify-shape-blocks.ts")
+        evidence ts("docs-site/scripts/verify-shape-blocks.ts#verifyShapeCorpus")
       Append<SemanticDiagnostics>
-        evidence ts("docs-site/scripts/verify-shape-blocks.ts")
+        evidence ts("docs-site/scripts/verify-shape-blocks.ts#verifyShapeCorpus")
       Read<DocsShapeBlock>
-        evidence ts("docs-site/scripts/verify-shape-blocks.ts")
+        evidence ts("docs-site/scripts/verify-shape-blocks.ts#verifyShapeCorpus")
     }
 }
 
@@ -75,6 +75,17 @@ component ShapeParser {
   grants Append<ParsedModule>
   grants Append<SemanticDiagnostics>
   grants Read<ShapeSource>
+  fn loadShapeModules
+    source ts("packages/shp-checker/src/shape-files.ts#loadShapeModules")
+    description "Reads and parses every supplied file in order, returning successful modules and all read or parse diagnostics. Checking and CLI callers retain their own origin classification and error policy."
+    effects complete {
+      Append<ParsedModule>
+        evidence ts("packages/shp-checker/src/shape-files.ts#loadShapeModules")
+      Append<SemanticDiagnostics>
+        evidence ts("packages/shp-checker/src/shape-files.ts#loadShapeModules")
+      Read<ShapeSource>
+        evidence ts("packages/shp-checker/src/shape-files.ts#loadShapeModules")
+    }
   fn parseShapeModule : RefactorSensitive
     source ts("packages/shp-checker/src/parser.ts#parseShapeModule")
     effects complete {
@@ -189,4 +200,15 @@ reevaluation ForbiddenPathParserRechecked {
   decided_on "2026-07-26"
   evidence md("docs-site/src/content/docs/reference/language-syntax.md")
   evidence test("packages/shp-checker/src/parser.test.ts")
+}
+
+reevaluation TypedParserDiagnosticsPreserved {
+  satisfies memory ParseDocumentContract
+  outcome Confirmed
+  summary "Direct mapping of the parser's typed errors preserves lexer-before-parser diagnostic order, messages and coordinates, including undefined and NaN values. Document state, source URI, AST attachment, and reference behavior are unchanged; malformed-source comparisons and parser, checker, critic, and editor tests confirm the contract."
+  reviewer Codex
+  decided_on "2026-09-26"
+  evidence test("packages/shp-checker/src/editor.test.ts")
+  evidence test("packages/shp-checker/src/parser.test.ts")
+  evidence ts("packages/shp-checker/src/parser.ts#parseShapeModule")
 }

@@ -1,61 +1,8 @@
-import type {
-  AttestationDecl,
-  BindingDecl,
-  CandidateEffectDecl,
-  ComponentDecl,
-  DescriptionDecl,
-  EffectEntry,
-  EffectPattern,
-  EffectsDecl,
-  EffectTerm,
-  FingerprintDecl,
-  ImplementationDecl,
-  ResourceDecl,
-  RuleDecl,
-  RuleForbidEffectDecl,
-  RuleForbidHypercycleDecl,
-  RuleForbidPathDecl,
-  RuleForbidProvidesDecl,
-  SourceRef,
-  TargetKind,
-  TargetRef,
-  TraitDecl,
-  TraitForbidDecl
-} from "../../language/generated/ast.ts";
-import {
-  isBindingAllowAttestDecl,
-  isBindingRequireChangedDecl,
-  isBindingWhenChangedDecl,
-  isCandidateEffectAnchorDecl,
-  isCandidateEffectConfidenceDecl,
-  isCandidateEffectFunctionDecl,
-  isCandidateEffectTermDecl,
-  isCompleteEffects,
-  isConformsToDecl,
-  isExpiresDecl,
-  isFingerprintDecl,
-  isFunctionRequiresDecl,
-  isFunctionSummary,
-  isGrantsDecl,
-  isOnChangeDecl,
-  isOwnsDecl,
-  isPathsBlock,
-  isRequireContextDecl,
-  isRuleForbidEffectDecl,
-  isRuleForbidHypercycleDecl,
-  isRuleForbidPathDecl,
-  isRuleForbidProvidesDecl,
-  isRuleWhenHasDecl,
-  isTraitForbidDecl,
-  isUnknownEffects,
-  isReasonDecl
-} from "../../language/generated/ast.ts";
+import * as ast from "../../language/generated/ast.ts";
 import type {
   BindingInfo,
   CandidateEffectInfo,
   ComponentInfo,
-  DescriptionInfo,
-  EffectEntryInfo,
   EffectSummaryInfo,
   FinalForbidPattern,
   FingerprintInfo,
@@ -66,7 +13,6 @@ import type {
   Model,
   Provenance,
   RuleInfo,
-  ShapeTarget,
   SourceRefInfo,
   TermInfo,
   TraitContextRequirement
@@ -74,12 +20,11 @@ import type {
 import type { ContextKind } from "../../prelude.ts";
 import { isPreludeTrait } from "../prelude-seed.ts";
 import { declKey, formatTerm, splitFunctionTarget, termKey } from "../display.ts";
-import { describeProvenance, provenance } from "../provenance.ts";
+import { describeProvenance, duplicateDeclaration, provenance } from "../provenance.ts";
 import {
   resolveDeclName,
   resolveDeclReference,
   resolveFunctionTargetName,
-  resolveTargetName,
   resolveVertexReference
 } from "../symbols.ts";
 import { normalizeShapeSourcePath, unquoteShapeString } from "../../shape-strings.ts";
@@ -88,23 +33,15 @@ import { emitFunctionFacts } from "./facts.ts";
 const SUPPORTED_ON_CHANGE_REQUIREMENTS: ReadonlySet<string> = new Set(["shape_update"]);
 
 export function lowerResource(
-  resource: ResourceDecl,
+  resource: ast.ResourceDecl,
   context: LoweringContext,
   model: Model
 ): void {
   const name = declKey(context.name, resource.name);
   const prov = provenance(context.filePath, `resource ${name}`);
-  if (model.resources.has(name)) {
-    model.diagnostics.push({
-      kind: "duplicate_declaration",
-      declarationKind: "resource",
-      name,
-      filePath: context.filePath,
-      causedBy: [
-        describeProvenance(model.resources.get(name)?.provenance),
-        describeProvenance(prov)
-      ]
-    });
+  const existing = model.resources.get(name);
+  if (existing) {
+    model.diagnostics.push(duplicateDeclaration("resource", name, existing.provenance, prov));
     return;
   }
 
@@ -123,7 +60,7 @@ export function lowerResource(
 
   const fingerprints = new Map<string, FingerprintInfo>();
   for (const member of resource.body?.members ?? []) {
-    if (!isFingerprintDecl(member)) {
+    if (!ast.isFingerprintDecl(member)) {
       continue;
     }
     const fingerprint = lowerFingerprint(member, context.filePath, `resource ${name}`);
@@ -155,23 +92,17 @@ export function lowerResource(
     name,
     traits,
     fingerprints,
-    generatedAstCandidate: context.generatedAst,
     provenance: prov
   });
   model.facts.push({ kind: "resource", name, provenance: prov });
 }
 
-export function lowerTrait(trait: TraitDecl, context: LoweringContext, model: Model): void {
+export function lowerTrait(trait: ast.TraitDecl, context: LoweringContext, model: Model): void {
   const name = declKey(context.name, trait.name);
   const prov = provenance(context.filePath, `trait ${name}`);
-  if (model.traits.has(name) && !isPreludeTrait(model.traits.get(name))) {
-    model.diagnostics.push({
-      kind: "duplicate_declaration",
-      declarationKind: "trait",
-      name,
-      filePath: context.filePath,
-      causedBy: [describeProvenance(model.traits.get(name)?.provenance), describeProvenance(prov)]
-    });
+  const existing = model.traits.get(name);
+  if (existing && !isPreludeTrait(existing)) {
+    model.diagnostics.push(duplicateDeclaration("trait", name, existing.provenance, prov));
     return;
   }
 
@@ -184,11 +115,11 @@ export function lowerTrait(trait: TraitDecl, context: LoweringContext, model: Mo
   const finalForbids: FinalForbidPattern[] = [];
   const contextRequirements: TraitContextRequirement[] = [];
   for (const member of trait.members) {
-    if (isTraitForbidDecl(member)) {
+    if (ast.isTraitForbidDecl(member)) {
       finalForbids.push(
         lowerForbidPattern(member, context, model, `trait ${name}`, typeParamNames)
       );
-    } else if (isRequireContextDecl(member)) {
+    } else if (ast.isRequireContextDecl(member)) {
       const memberProvenance = provenance(
         context.filePath,
         `trait ${name} require_context ${member.contextType}<${member.target}>`
@@ -234,9 +165,9 @@ export function lowerTrait(trait: TraitDecl, context: LoweringContext, model: Mo
  */
 
 export function requireContextTargetKind(
-  trait: TraitDecl,
+  trait: ast.TraitDecl,
   typeParamName: string
-): { kind: TargetKind } | { reason: string } {
+): { kind: ast.TargetKind } | { reason: string } {
   const param = trait.typeParams?.params.find((entry) => entry.name === typeParamName);
   if (!param) {
     return { reason: `type parameter ${typeParamName} is not declared by the trait` };
@@ -271,23 +202,15 @@ export function lowerSatisfiedByKinds(kinds: string[]): ContextKind[] {
 }
 
 export function lowerComponent(
-  component: ComponentDecl,
+  component: ast.ComponentDecl,
   context: LoweringContext,
   model: Model
 ): void {
   const name = declKey(context.name, component.name);
   const prov = provenance(context.filePath, `component ${name}`);
-  if (model.components.has(name)) {
-    model.diagnostics.push({
-      kind: "duplicate_declaration",
-      declarationKind: "component",
-      name,
-      filePath: context.filePath,
-      causedBy: [
-        describeProvenance(model.components.get(name)?.provenance),
-        describeProvenance(prov)
-      ]
-    });
+  const existing = model.components.get(name);
+  if (existing) {
+    model.diagnostics.push(duplicateDeclaration("component", name, existing.provenance, prov));
     return;
   }
 
@@ -297,7 +220,6 @@ export function lowerComponent(
     grants: new Map(),
     owns: new Map(),
     functions: new Map(),
-    generatedAstCandidate: context.generatedAst,
     provenance: prov
   };
 
@@ -315,7 +237,7 @@ export function lowerComponent(
   }
 
   for (const member of component.members) {
-    if (isOwnsDecl(member)) {
+    if (ast.isOwnsDecl(member)) {
       const resourceName = resolveDeclName(member.resource.name, "resource", context, model);
       const memberProv = provenance(context.filePath, `component ${name} owns ${resourceName}`);
       info.owns.set(resourceName, memberProv);
@@ -325,7 +247,7 @@ export function lowerComponent(
         resource: resourceName,
         provenance: memberProv
       });
-    } else if (isGrantsDecl(member)) {
+    } else if (ast.isGrantsDecl(member)) {
       const grant = lowerTerm(member.term, context, model);
       const memberProv = provenance(
         context.filePath,
@@ -339,7 +261,7 @@ export function lowerComponent(
         target: grant.target ?? "",
         provenance: memberProv
       });
-    } else if (isFunctionSummary(member)) {
+    } else if (ast.isFunctionSummary(member)) {
       const fn = lowerFunction(member, name, context, model);
       info.functions.set(fn.name, fn);
       emitFunctionFacts(fn, model);
@@ -350,100 +272,79 @@ export function lowerComponent(
   model.facts.push({ kind: "component", name, provenance: prov });
 }
 
+const CANDIDATE_EFFECT_FIELDS = {
+  CandidateEffectFunctionDecl: "fn",
+  CandidateEffectTermDecl: "effect",
+  SourceDecl: "source",
+  CandidateEffectConfidenceDecl: "confidence",
+  CandidateEffectAnchorDecl: "pin"
+} satisfies Record<ast.CandidateEffectMember["$type"], string>;
+
 export function lowerCandidateEffect(
-  candidateEffect: CandidateEffectDecl,
+  candidateEffect: ast.CandidateEffectDecl,
   context: LoweringContext,
   model: Model
 ): void {
   const name = declKey(context.name, candidateEffect.name);
   const prov = provenance(context.filePath, `effect candidate ${name}`);
   if (model.candidateEffects.has(name)) {
-    model.diagnostics.push({
-      kind: "duplicate_declaration",
-      declarationKind: "candidate_effect",
-      name,
-      filePath: context.filePath,
-      causedBy: [
-        describeProvenance(model.candidateEffects.get(name)?.provenance),
-        describeProvenance(prov)
-      ]
-    });
+    model.diagnostics.push(
+      duplicateDeclaration(
+        "candidate_effect",
+        name,
+        model.candidateEffects.get(name)?.provenance,
+        prov
+      )
+    );
     return;
   }
 
   const info: CandidateEffectInfo = {
+    kind: "candidate_effect",
     name,
+    functionTarget: "",
+    effect: "",
+    target: "",
+    source: undefined,
+    confidence: undefined,
+    anchor: undefined,
+    fingerprintProvider: undefined,
+    fingerprintValue: undefined,
     provenance: prov
   };
-  const seen = {
-    fn: 0,
-    effect: 0,
-    source: 0,
-    confidence: 0,
-    pin: 0
-  };
-
+  const seen = new Set<string>();
   for (const member of candidateEffect.members) {
-    if (isCandidateEffectFunctionDecl(member)) {
-      seen.fn += 1;
-      if (seen.fn > 1) {
-        pushInvalidCandidateEffect(model, name, "duplicate fn", context.filePath, prov);
-        continue;
-      }
+    const field = CANDIDATE_EFFECT_FIELDS[member.$type];
+    if (seen.has(field)) {
+      pushInvalidCandidateEffect(model, name, `duplicate ${field}`, context.filePath, prov);
+      continue;
+    }
+    seen.add(field);
+    if (ast.isCandidateEffectFunctionDecl(member)) {
       info.functionTarget = resolveFunctionTargetName(member.function, context, model);
-    } else if (isCandidateEffectTermDecl(member)) {
-      seen.effect += 1;
-      if (seen.effect > 1) {
-        pushInvalidCandidateEffect(model, name, "duplicate effect", context.filePath, prov);
-        continue;
-      }
-      info.term = lowerTerm(member.term, context, model);
-    } else if (isCandidateEffectConfidenceDecl(member)) {
-      seen.confidence += 1;
-      if (seen.confidence > 1) {
-        pushInvalidCandidateEffect(model, name, "duplicate confidence", context.filePath, prov);
-        continue;
-      }
+    } else if (ast.isCandidateEffectTermDecl(member)) {
+      const term = lowerTerm(member.term, context, model);
+      info.effect = term.name ?? "";
+      info.target = term.target ?? "";
+    } else if (ast.isCandidateEffectConfidenceDecl(member)) {
       info.confidence = member.value;
-    } else if (isCandidateEffectAnchorDecl(member)) {
-      seen.pin += 1;
-      if (seen.pin > 1) {
-        pushInvalidCandidateEffect(model, name, "duplicate pin", context.filePath, prov);
-        continue;
-      }
+    } else if (ast.isCandidateEffectAnchorDecl(member)) {
       info.anchor = resolveDeclName(member.target.name, "resource", context, model);
       info.fingerprintProvider = member.provider;
       info.fingerprintValue = unquoteShapeString(member.value);
     } else {
-      seen.source += 1;
-      if (seen.source > 1) {
-        pushInvalidCandidateEffect(model, name, "duplicate source", context.filePath, prov);
-        continue;
-      }
       info.source = lowerSourceRef(member);
     }
   }
 
-  for (const [field, count] of Object.entries(seen)) {
-    if (count === 0) {
+  for (const field of Object.values(CANDIDATE_EFFECT_FIELDS)) {
+    if (!seen.has(field)) {
       pushInvalidCandidateEffect(model, name, `missing ${field}`, context.filePath, prov);
     }
   }
 
   model.candidateEffects.set(name, info);
-  model.facts.push({
-    kind: "candidate_effect",
-    name,
-    functionTarget: info.functionTarget ?? "",
-    effect: info.term?.name ?? "",
-    target: info.term?.target ?? "",
-    source: info.source,
-    confidence: info.confidence,
-    anchor: info.anchor,
-    fingerprintProvider: info.fingerprintProvider,
-    fingerprintValue: info.fingerprintValue,
-    provenance: prov
-  });
+  model.facts.push(info);
 }
 
 export function pushInvalidCandidateEffect(
@@ -463,7 +364,7 @@ export function pushInvalidCandidateEffect(
 }
 
 export function lowerImplementation(
-  implementation: ImplementationDecl,
+  implementation: ast.ImplementationDecl,
   context: LoweringContext,
   model: Model
 ): void {
@@ -476,7 +377,7 @@ export function lowerImplementation(
   };
 
   for (const member of implementation.members) {
-    if (isPathsBlock(member)) {
+    if (ast.isPathsBlock(member)) {
       for (const path of member.paths) {
         const glob = unquoteShapeString(path);
         const pathProv = provenance(context.filePath, `implementation ${name} path ${glob}`);
@@ -488,7 +389,7 @@ export function lowerImplementation(
           provenance: pathProv
         });
       }
-    } else if (isConformsToDecl(member)) {
+    } else if (ast.isConformsToDecl(member)) {
       info.conformsTo = resolveDeclName(member.component.name, "component", context, model);
       model.facts.push({
         kind: "conforms_to",
@@ -499,7 +400,7 @@ export function lowerImplementation(
           `implementation ${name} conforms_to ${info.conformsTo}`
         )
       });
-    } else if (isOnChangeDecl(member)) {
+    } else if (ast.isOnChangeDecl(member)) {
       // Coverage only acts on known requirements, so an unknown value would
       // silently leave the implementation's paths ungoverned.
       if (SUPPORTED_ON_CHANGE_REQUIREMENTS.has(member.requirement)) {
@@ -524,17 +425,17 @@ export function lowerImplementation(
   model.facts.push({ kind: "implementation", name, provenance: prov });
 }
 
-export function lowerBinding(binding: BindingDecl, context: LoweringContext, model: Model): void {
+export function lowerBinding(
+  binding: ast.BindingDecl,
+  context: LoweringContext,
+  model: Model
+): void {
   const name = declKey(context.name, binding.name);
   const prov = provenance(context.filePath, `binding ${name}`);
   if (model.bindings.has(name)) {
-    model.diagnostics.push({
-      kind: "duplicate_declaration",
-      declarationKind: "binding",
-      name,
-      filePath: context.filePath,
-      causedBy: [describeProvenance(model.bindings.get(name)?.provenance), describeProvenance(prov)]
-    });
+    model.diagnostics.push(
+      duplicateDeclaration("binding", name, model.bindings.get(name)?.provenance, prov)
+    );
     return;
   }
 
@@ -547,31 +448,22 @@ export function lowerBinding(binding: BindingDecl, context: LoweringContext, mod
   };
 
   for (const member of binding.members) {
-    if (isBindingWhenChangedDecl(member)) {
+    if (ast.isBindingWhenChangedDecl(member) || ast.isBindingRequireChangedDecl(member)) {
+      const whenChanged = ast.isBindingWhenChangedDecl(member);
+      const paths = whenChanged ? info.whenChanged : info.requireChanged;
+      const clause = whenChanged ? "when_changed" : "require_changed";
       for (const path of member.body.paths) {
         const glob = unquoteShapeString(path);
-        const pathProv = provenance(context.filePath, `binding ${name} when_changed ${glob}`);
-        info.whenChanged.push({ glob, provenance: pathProv });
+        const pathProv = provenance(context.filePath, `binding ${name} ${clause} ${glob}`);
+        paths.push({ glob, provenance: pathProv });
         model.facts.push({
-          kind: "binding_when_changed",
+          kind: whenChanged ? "binding_when_changed" : "binding_require_changed",
           binding: name,
           glob,
           provenance: pathProv
         });
       }
-    } else if (isBindingRequireChangedDecl(member)) {
-      for (const path of member.body.paths) {
-        const glob = unquoteShapeString(path);
-        const pathProv = provenance(context.filePath, `binding ${name} require_changed ${glob}`);
-        info.requireChanged.push({ glob, provenance: pathProv });
-        model.facts.push({
-          kind: "binding_require_changed",
-          binding: name,
-          glob,
-          provenance: pathProv
-        });
-      }
-    } else if (isBindingAllowAttestDecl(member)) {
+    } else if (ast.isBindingAllowAttestDecl(member)) {
       const attestProv = provenance(
         context.filePath,
         `binding ${name} allow attest ${member.kind}`
@@ -591,11 +483,7 @@ export function lowerBinding(binding: BindingDecl, context: LoweringContext, mod
 }
 
 /** The kind, normalized path, and reason that identify an attestation. */
-export function attestationIdentity(attestation: AttestationDecl): {
-  kind: string;
-  path: string;
-  reason: string;
-} {
+export function attestationIdentity(attestation: ast.AttestationDecl) {
   return {
     kind: attestation.kind,
     path: normalizeShapeSourcePath(lowerSourceRef(attestation.source).path),
@@ -604,7 +492,7 @@ export function attestationIdentity(attestation: AttestationDecl): {
 }
 
 export function lowerAttestation(
-  attestation: AttestationDecl,
+  attestation: ast.AttestationDecl,
   context: LoweringContext,
   model: Model
 ): void {
@@ -620,13 +508,13 @@ export function lowerAttestation(
   });
 }
 
-export function lowerRule(rule: RuleDecl, context: LoweringContext, model: Model): void {
+export function lowerRule(rule: ast.RuleDecl, context: LoweringContext, model: Model): void {
   const name = declKey(context.name, rule.name);
   const finalForbidSubjects = new Set(
-    rule.members.filter(isRuleWhenHasDecl).map((member) => member.subject)
+    rule.members.filter(ast.isRuleWhenHasDecl).map((member) => member.subject)
   );
   const hasFinalForbid = rule.members.some(
-    (member) => isRuleForbidEffectDecl(member) && member.final
+    (member) => ast.isRuleForbidEffectDecl(member) && member.final
   );
   const finalForbidSubject =
     hasFinalForbid && finalForbidSubjects.size === 1 ? [...finalForbidSubjects][0] : undefined;
@@ -642,7 +530,7 @@ export function lowerRule(rule: RuleDecl, context: LoweringContext, model: Model
   };
 
   for (const member of rule.members) {
-    if (isRuleWhenHasDecl(member)) {
+    if (ast.isRuleWhenHasDecl(member)) {
       const traitResolution = resolveDeclReference(member.trait, "trait", context, model);
       const whenProvenance = provenance(
         context.filePath,
@@ -664,14 +552,12 @@ export function lowerRule(rule: RuleDecl, context: LoweringContext, model: Model
         traitResolution: traitResolution.kind,
         provenance: whenProvenance
       });
-    } else if (isRuleForbidEffectDecl(member)) {
-      info.forbidEffects.push(lowerRuleForbid(member, context, model, name, finalForbidSubjects));
-    } else if (isRuleForbidProvidesDecl(member)) {
-      info.forbidProvides.push(lowerRuleForbidProvides(member, context, model, name));
-    } else if (isRuleForbidHypercycleDecl(member)) {
-      info.forbidHypercycles.push(lowerRuleForbidHypercycle(member, context.filePath, name));
-    } else if (isRuleForbidPathDecl(member)) {
-      info.forbidPaths.push(lowerRuleForbidPath(member, context, model, name));
+    } else if (ast.isRuleForbidEffectDecl(member)) {
+      info.forbidEffects.push(
+        lowerForbidPattern(member, context, model, `rule ${name}`, finalForbidSubjects)
+      );
+    } else {
+      lowerRuleGraphForbid(member, info, context, model);
     }
   }
 
@@ -688,43 +574,38 @@ export function lowerFunction(
 ): FunctionInfo {
   const functionName = functionNameForAst(fn);
   const source = fn.source ? lowerSourceRef(fn.source) : undefined;
+  const label = `${labelContext ? `${labelContext} ` : ""}fn ${componentName}.${functionName}`;
+  const effects = lowerEffects(fn.effects, componentName, functionName, loweringContext, model);
+  const shapeTraits = new Map<string, Provenance>();
+  for (const trait of fn.shapeTraits?.traits ?? []) {
+    const traitName = resolveDeclName(trait.name, "trait", loweringContext, model);
+    shapeTraits.set(traitName, provenance(loweringContext.filePath, `${label} : ${traitName}`));
+  }
   const info: FunctionInfo = {
     component: componentName,
     name: functionName,
     source,
     unsafe: fn.unsafe,
-    effects: lowerEffects(
-      fn.effects,
-      loweringContext.filePath,
-      componentName,
-      functionName,
-      loweringContext,
-      model
-    ),
+    effects,
     requires: [],
-    shapeTraits: lowerShapeTraits(fn, componentName, loweringContext, model, labelContext),
+    shapeTraits,
     description: fn.description
-      ? lowerDescription(
-          fn.description,
-          componentName,
-          functionName,
-          loweringContext.filePath,
-          labelContext
-        )
+      ? {
+          required: fn.description.required,
+          summary: unquoteShapeString(fn.description.summary),
+          provenance: provenance(loweringContext.filePath, `${label} description`)
+        }
       : undefined,
     generatedAstCandidate: loweringContext.generatedAst,
-    provenance: provenance(
-      loweringContext.filePath,
-      `${labelContext ? `${labelContext} ` : ""}fn ${componentName}.${functionName}`
-    )
+    provenance: provenance(loweringContext.filePath, label)
   };
 
   for (const member of fn.members) {
-    if (isFunctionRequiresDecl(member)) {
+    if (ast.isFunctionRequiresDecl(member)) {
       info.requires.push(lowerTerm(member.term, loweringContext, model));
-    } else if (isReasonDecl(member)) {
+    } else if (ast.isReasonDecl(member)) {
       info.reason = unquoteShapeString(member.value);
-    } else if (isExpiresDecl(member)) {
+    } else if (ast.isExpiresDecl(member)) {
       info.expires = unquoteShapeString(member.value);
     }
   }
@@ -733,255 +614,153 @@ export function lowerFunction(
 }
 
 export function functionNameForAst(fn: FunctionAst): string {
-  if (isFunctionSummary(fn)) {
+  if (ast.isFunctionSummary(fn)) {
     return fn.name;
   }
   const [, functionName] = splitFunctionTarget(fn.target);
   return functionName ?? fn.target;
 }
 
-export function lowerShapeTraits(
-  fn: FunctionAst,
-  componentName: string,
-  context: LoweringContext,
-  model: Model,
-  labelContext?: string
-): Map<string, Provenance> {
-  const traits = new Map<string, Provenance>();
-  const functionName = functionNameForAst(fn);
-  for (const trait of fn.shapeTraits?.traits ?? []) {
-    const traitName = resolveDeclName(trait.name, "trait", context, model);
-    traits.set(
-      traitName,
-      provenance(
-        context.filePath,
-        `${labelContext ? `${labelContext} ` : ""}fn ${componentName}.${functionName} : ${traitName}`
-      )
-    );
-  }
-  return traits;
-}
-
-export function lowerDescription(
-  description: DescriptionDecl,
-  componentName: string,
-  functionName: string,
-  filePath: string | undefined,
-  context?: string
-): DescriptionInfo {
-  return {
-    required: description.required,
-    summary: unquoteShapeString(description.summary),
-    provenance: provenance(
-      filePath,
-      `${context ? `${context} ` : ""}fn ${componentName}.${functionName} description`
-    )
-  };
-}
-
 export function lowerEffects(
-  effects: EffectsDecl,
-  filePath: string | undefined,
+  effects: ast.EffectsDecl,
   componentName: string,
   functionName: string,
   context: LoweringContext,
   model: Model
 ): EffectSummaryInfo {
-  if (isUnknownEffects(effects)) {
-    return { kind: "unknown" };
-  }
-
-  if (!isCompleteEffects(effects)) {
+  if (!ast.isCompleteEffects(effects)) {
     return { kind: "unknown" };
   }
 
   return {
     kind: "complete",
-    entries: effects.effects.map((entry) =>
-      lowerEffectEntry(entry, filePath, componentName, functionName, context, model)
-    )
-  };
-}
-
-export function lowerEffectEntry(
-  entry: EffectEntry,
-  filePath: string | undefined,
-  componentName: string,
-  functionName: string,
-  context: LoweringContext,
-  model: Model
-): EffectEntryInfo {
-  const term = lowerTerm(entry.term, context, model);
-  return {
-    term,
-    evidence: entry.evidence ? lowerSourceRef(entry.evidence) : undefined,
-    provenance: provenance(
-      filePath,
-      `effect ${componentName}.${functionName} emits ${formatTerm(term.name, term.target ?? "")}`
-    )
+    entries: effects.effects.map((entry) => {
+      const term = lowerTerm(entry.term, context, model);
+      return {
+        term,
+        evidence: entry.evidence ? lowerSourceRef(entry.evidence) : undefined,
+        provenance: provenance(
+          context.filePath,
+          `effect ${componentName}.${functionName} emits ${formatTerm(term.name, term.target ?? "")}`
+        )
+      };
+    })
   };
 }
 
 export function lowerForbidPattern(
-  member: TraitForbidDecl,
+  member: ast.TraitForbidDecl | ast.RuleForbidEffectDecl,
   context: LoweringContext,
   model: Model,
   owner: string,
   genericTargets: Set<string>
 ): FinalForbidPattern {
-  const pattern = lowerPattern(member.pattern, context, model, genericTargets);
-  return {
-    effect: pattern.name,
-    target: pattern.target,
-    targetBinding: pattern.targetBinding,
-    final: member.final,
-    provenance: provenance(
-      context.filePath,
-      `${owner} forbids ${member.final ? "final " : ""}${formatTerm(pattern.name, pattern.target ?? "")}`
-    )
-  };
-}
-
-export function lowerRuleForbid(
-  member: RuleForbidEffectDecl,
-  context: LoweringContext,
-  model: Model,
-  ruleName: string,
-  genericTargets: Set<string>
-): FinalForbidPattern {
-  const pattern = lowerPattern(member.pattern, context, model, genericTargets);
-  return {
-    effect: pattern.name,
-    target: pattern.target,
-    targetBinding: pattern.targetBinding,
-    final: member.final,
-    provenance: provenance(
-      context.filePath,
-      `rule ${ruleName} forbids ${member.final ? "final " : ""}${formatTerm(pattern.name, pattern.target ?? "")}`
-    )
-  };
-}
-
-export function lowerRuleForbidProvides(
-  member: RuleForbidProvidesDecl,
-  context: LoweringContext,
-  model: Model,
-  ruleName: string
-): RuleInfo["forbidProvides"][number] {
-  const target = resolveDeclName(member.target.name, "resource", context, model);
-  const except = member.except
-    ? resolveDeclName(member.except, "component", context, model)
-    : undefined;
-  return {
-    target,
-    except,
-    provenance: provenance(context.filePath, `rule ${ruleName} forbids provides ${target}`)
-  };
-}
-
-export function lowerRuleForbidHypercycle(
-  member: RuleForbidHypercycleDecl,
-  filePath: string | undefined,
-  ruleName: string
-): RuleInfo["forbidHypercycles"][number] {
-  return {
-    kinds: [...member.kinds],
-    provenance: provenance(
-      filePath,
-      `rule ${ruleName} forbids hypercycle${member.kinds.length > 0 ? ` over ${member.kinds.join(" or ")}` : ""}`
-    )
-  };
-}
-
-export function lowerRuleForbidPath(
-  member: RuleForbidPathDecl,
-  context: LoweringContext,
-  model: Model,
-  ruleName: string
-): RuleInfo["forbidPaths"][number] {
-  const source = resolveVertexReference(member.source, context, model);
-  const target = resolveVertexReference(member.target, context, model);
-  const prov = provenance(
-    context.filePath,
-    `rule ${ruleName} forbids path ${source.name} -> ${target.name} over ${member.kinds.join(" or ")}`
-  );
-
-  const reportedAmbiguousNames = new Set<string>();
-  for (const [name, resolution] of [
-    [member.source, source],
-    [member.target, target]
-  ] as const) {
-    if (resolution.kind === "ambiguous" && !reportedAmbiguousNames.has(name)) {
-      reportedAmbiguousNames.add(name);
-      model.diagnostics.push({
-        kind: "ambiguous_name",
-        nameKind: "relation_endpoint",
-        name,
-        matches: resolution.matches,
-        filePath: context.filePath,
-        causedBy: [describeProvenance(prov)]
-      });
+  const pattern = member.pattern;
+  let target: string | undefined;
+  let targetBinding: FinalForbidPattern["targetBinding"] = "omitted";
+  if (pattern.target) {
+    target = pattern.target.name;
+    targetBinding = "generic";
+    if (!genericTargets.has(target)) {
+      const result = resolveDeclReference(target, "resource", context, model);
+      if (result.kind === "ambiguous") {
+        model.diagnostics.push({
+          kind: "ambiguous_name",
+          nameKind: "resource",
+          name: target,
+          matches: result.matches,
+          filePath: context.filePath,
+          causedBy: [
+            describeProvenance(provenance(context.filePath, `resource reference ${target}`))
+          ]
+        });
+      }
+      target = result.name;
+      targetBinding = result.kind === "ambiguous" ? "ambiguous" : "concrete";
     }
   }
-
+  const effect = pattern.name;
   return {
-    source: source.name,
-    sourceResolution: source.kind,
-    target: target.name,
-    targetResolution: target.kind,
-    kinds: [...member.kinds],
-    provenance: prov
+    effect,
+    target,
+    targetBinding,
+    final: member.final,
+    provenance: provenance(
+      context.filePath,
+      `${owner} forbids ${member.final ? "final " : ""}${formatTerm(effect, target ?? "")}`
+    )
   };
 }
 
-export function lowerTerm(term: EffectTerm, context: LoweringContext, model: Model): TermInfo {
+function lowerRuleGraphForbid(
+  member: ast.RuleForbidProvidesDecl | ast.RuleForbidHypercycleDecl | ast.RuleForbidPathDecl,
+  info: RuleInfo,
+  context: LoweringContext,
+  model: Model
+): void {
+  if (ast.isRuleForbidProvidesDecl(member)) {
+    const target = resolveDeclName(member.target.name, "resource", context, model);
+    const except = member.except
+      ? resolveDeclName(member.except, "component", context, model)
+      : undefined;
+    info.forbidProvides.push({
+      target,
+      except,
+      provenance: provenance(context.filePath, `rule ${info.name} forbids provides ${target}`)
+    });
+  } else if (ast.isRuleForbidHypercycleDecl(member)) {
+    info.forbidHypercycles.push({
+      kinds: [...member.kinds],
+      provenance: provenance(
+        context.filePath,
+        `rule ${info.name} forbids hypercycle${member.kinds.length > 0 ? ` over ${member.kinds.join(" or ")}` : ""}`
+      )
+    });
+  } else if (ast.isRuleForbidPathDecl(member)) {
+    const source = resolveVertexReference(member.source, context, model);
+    const target = resolveVertexReference(member.target, context, model);
+    const prov = provenance(
+      context.filePath,
+      `rule ${info.name} forbids path ${source.name} -> ${target.name} over ${member.kinds.join(" or ")}`
+    );
+
+    const reportedAmbiguousNames = new Set<string>();
+    for (const [name, resolution] of [
+      [member.source, source],
+      [member.target, target]
+    ] as const) {
+      if (resolution.kind === "ambiguous" && !reportedAmbiguousNames.has(name)) {
+        reportedAmbiguousNames.add(name);
+        model.diagnostics.push({
+          kind: "ambiguous_name",
+          nameKind: "relation_endpoint",
+          name,
+          matches: resolution.matches,
+          filePath: context.filePath,
+          causedBy: [describeProvenance(prov)]
+        });
+      }
+    }
+
+    info.forbidPaths.push({
+      source: source.name,
+      sourceResolution: source.kind,
+      target: target.name,
+      targetResolution: target.kind,
+      kinds: [...member.kinds],
+      provenance: prov
+    });
+  }
+}
+
+export function lowerTerm(term: ast.EffectTerm, context: LoweringContext, model: Model): TermInfo {
   return {
     name: term.name,
     target: term.target ? resolveDeclName(term.target.name, "resource", context, model) : undefined
   };
 }
 
-export function lowerPattern(
-  pattern: EffectPattern,
-  context: LoweringContext,
-  model: Model,
-  genericTargets: Set<string>
-): TermInfo & { targetBinding: FinalForbidPattern["targetBinding"] } {
-  if (!pattern.target) {
-    return {
-      name: pattern.name,
-      targetBinding: "omitted"
-    };
-  }
-  const targetName = pattern.target.name;
-  if (genericTargets.has(targetName)) {
-    return {
-      name: pattern.name,
-      target: targetName,
-      targetBinding: "generic"
-    };
-  }
-  const result = resolveDeclReference(targetName, "resource", context, model);
-  if (result.kind === "ambiguous") {
-    model.diagnostics.push({
-      kind: "ambiguous_name",
-      nameKind: "resource",
-      name: targetName,
-      matches: result.matches,
-      filePath: context.filePath,
-      causedBy: [
-        describeProvenance(provenance(context.filePath, `resource reference ${targetName}`))
-      ]
-    });
-  }
-  return {
-    name: pattern.name,
-    target: result.name,
-    targetBinding: result.kind === "ambiguous" ? "ambiguous" : "concrete"
-  };
-}
-
-export function lowerSourceRef(source: { ref: SourceRef }): SourceRefInfo {
+export function lowerSourceRef(source: { ref: ast.SourceRef }): SourceRefInfo {
   return {
     language: source.ref.language,
     path: unquoteShapeString(source.ref.path)
@@ -989,7 +768,7 @@ export function lowerSourceRef(source: { ref: SourceRef }): SourceRefInfo {
 }
 
 export function lowerFingerprint(
-  fingerprint: FingerprintDecl,
+  fingerprint: ast.FingerprintDecl,
   filePath: string | undefined,
   owner: string
 ): FingerprintInfo {
@@ -998,19 +777,4 @@ export function lowerFingerprint(
     value: unquoteShapeString(fingerprint.value),
     provenance: provenance(filePath, `${owner} fingerprint ${fingerprint.provider}`)
   };
-}
-
-export function lowerTargetRef(
-  target: TargetRef,
-  context: LoweringContext,
-  model: Model
-): ShapeTarget {
-  return resolveTargetName(
-    {
-      kind: target.kind,
-      name: target.name
-    },
-    context,
-    model
-  );
 }

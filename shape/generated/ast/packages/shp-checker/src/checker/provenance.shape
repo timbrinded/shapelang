@@ -11,6 +11,16 @@ resource ProvenanceModuleDescribeProvenanceAstAnchor : GeneratedAstAnchor {
   fingerprint ast.semantic_subtree_v1("sha256:90540069c32d43091b04d2df57bee554d20b9175b8ed57c24625305db7ace31b")
 }
 
+resource ProvenanceModuleDuplicateDeclarationAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/provenance.ts#duplicateDeclaration")
+  fingerprint ast.semantic_subtree_v1("sha256:8f3bee5e1009d27004146728eb24e5469e6524244a5fc06e847eeeb816975d4b")
+}
+
+resource ProvenanceModuleInvalidRelationAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/provenance.ts#invalidRelation")
+  fingerprint ast.semantic_subtree_v1("sha256:df3a3427f077cd90ba88124bc352bf80a08a30d7b0ec7c0ef6a8176607bd5fbb")
+}
+
 resource ProvenanceModuleProvenanceAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/checker/provenance.ts#provenance")
   fingerprint ast.semantic_subtree_v1("sha256:ea8e45337e2bdb1891d30f64e3043f15b715bb7bf7c489c7358acd2215589a5d")
@@ -19,6 +29,12 @@ resource ProvenanceModuleProvenanceAstAnchor : GeneratedAstAnchor {
 component ProvenanceModule : GeneratedCandidate {
   fn describeProvenance
     source ts("packages/shp-checker/src/checker/provenance.ts#describeProvenance")
+    effects unknown
+  fn duplicateDeclaration
+    source ts("packages/shp-checker/src/checker/provenance.ts#duplicateDeclaration")
+    effects unknown
+  fn invalidRelation
+    source ts("packages/shp-checker/src/checker/provenance.ts#invalidRelation")
     effects unknown
   fn provenance
     source ts("packages/shp-checker/src/checker/provenance.ts#provenance")
@@ -31,6 +47,22 @@ relation ProvenanceModuleDescribeProvenanceGeneratedFromProvenanceModuleDescribe
   roles { ProvenanceModule as generated, ProvenanceModuleDescribeProvenanceAstAnchor as syntax }
   expects ProvenanceModuleDescribeProvenanceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:90540069c32d43091b04d2df57bee554d20b9175b8ed57c24625305db7ace31b")
   summary "fn ProvenanceModule.describeProvenance generated from typescript function_declaration at packages/shp-checker/src/checker/provenance.ts#describeProvenance."
+}
+
+relation ProvenanceModuleDuplicateDeclarationGeneratedFromProvenanceModuleDuplicateDeclarationAstAnchor {
+  kind generated_from
+  connects ProvenanceModule -> ProvenanceModuleDuplicateDeclarationAstAnchor
+  roles { ProvenanceModule as generated, ProvenanceModuleDuplicateDeclarationAstAnchor as syntax }
+  expects ProvenanceModuleDuplicateDeclarationAstAnchor fingerprint ast.semantic_subtree_v1("sha256:8f3bee5e1009d27004146728eb24e5469e6524244a5fc06e847eeeb816975d4b")
+  summary "fn ProvenanceModule.duplicateDeclaration generated from typescript function_declaration at packages/shp-checker/src/checker/provenance.ts#duplicateDeclaration."
+}
+
+relation ProvenanceModuleInvalidRelationGeneratedFromProvenanceModuleInvalidRelationAstAnchor {
+  kind generated_from
+  connects ProvenanceModule -> ProvenanceModuleInvalidRelationAstAnchor
+  roles { ProvenanceModule as generated, ProvenanceModuleInvalidRelationAstAnchor as syntax }
+  expects ProvenanceModuleInvalidRelationAstAnchor fingerprint ast.semantic_subtree_v1("sha256:df3a3427f077cd90ba88124bc352bf80a08a30d7b0ec7c0ef6a8176607bd5fbb")
+  summary "fn ProvenanceModule.invalidRelation generated from typescript function_declaration at packages/shp-checker/src/checker/provenance.ts#invalidRelation."
 }
 
 relation ProvenanceModuleProvenanceGeneratedFromProvenanceModuleProvenanceAstAnchor {

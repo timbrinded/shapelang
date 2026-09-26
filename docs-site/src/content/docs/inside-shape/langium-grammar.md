@@ -21,7 +21,7 @@ Never hand-edit the generated files: change the grammar and regenerate. CI rerun
 
 Every ID-shaped quoted literal in `shape.langium`, such as `'role'` or `'transform'`, becomes a keyword everywhere in the language. It can no longer appear as a bare identifier, such as a module-name segment or a lowercase function name: `module policy.audit` and `fn role` both fail to parse. Keywords are case-sensitive, so PascalCase names such as `Policy` are unaffected. A rule that must accept a keyword where an identifier is expected lists it explicitly, as `ProtectsPropertyKind` does with `'description'` and `RelationKindName` does with the prelude relation kinds.
 
-Add every new keyword to `SHAPE_RESERVED_WORDS` in `packages/shp-checker/src/ast-generation-utils.ts`. The AST generator escapes generated names that match an entry, so it never emits an unparsable bare keyword. The test "reserved words cover every ID-shaped grammar keyword" in `packages/shp-checker/src/checker.guard-syntax.test.ts` extracts every quoted literal from the grammar and fails when one is missing from the set.
+`shapeReservedWords()` in `packages/shp-checker/src/ast-generation-utils.ts` derives and caches the ID-shaped keywords from the generated grammar. The AST generator escapes matching names, so regenerating the grammar also updates identifier escaping. The test "reserved words cover every ID-shaped grammar keyword" in `packages/shp-checker/src/checker.guard-syntax.test.ts` extracts every quoted literal from the grammar and fails when one is missing from the set.
 
 ## Grammar decisions to preserve
 
@@ -40,12 +40,11 @@ Add every new keyword to `SHAPE_RESERVED_WORDS` in `packages/shp-checker/src/ast
 Make every change in the same branch as the grammar edit:
 
 1. Edit `shape.langium`, then run `bun run langium:generate` and commit the regenerated files.
-2. Add each new ID-shaped keyword to `SHAPE_RESERVED_WORDS`.
-3. Add each new keyword to the docs highlighter, `docs-site/src/syntax/shape-language.mjs`, and to `KEYWORD_COMPLETIONS` in `packages/shp-checker/src/editor.ts` when users type it. Add hovers for user-facing constructs.
-4. Add parser tests (`packages/shp-checker/src/parser.test.ts`) for the accepted and rejected forms.
-5. Update the formatter (`packages/shp-checker/src/formatter.ts`) so its output stays canonical and round-trips.
-6. Lower new semantic concepts into the `Model` ([Fact Lowering](/shapelang/inside-shape/fact-lowering/)). Add a rule only if the syntax has semantic meaning ([Rule Evaluation](/shapelang/inside-shape/rule-evaluation/#adding-a-rule)).
-7. Update the AST generator and authoring helpers if they emit the construct.
-8. Update `docs-site/src/content/docs/reference/language-syntax.md` and this page. The `GrammarDocs` binding requires one of them when the grammar, the generated files, `docs-site/src/syntax/**`, or `shape/language.shape` changes. Every complete `shape` block in the docs must parse; mark an intentional fragment `shape no-verify`.
-9. Update `shape/language.shape` if the modeled grammar surface changes, and add or update bindings when the syntax affects docs, CLI behaviour, or another review surface.
-10. Run `bun run langium:generate`, `bun test`, `bun run typecheck`, and `bun run docs:check`. [`CONTRIBUTING.md`](https://github.com/timbrinded/shapelang/blob/master/CONTRIBUTING.md) lists the full local check sequence.
+2. Add each new keyword to the docs highlighter, `docs-site/src/syntax/shape-language.mjs`, and to `KEYWORD_COMPLETIONS` in `packages/shp-checker/src/editor.ts` when users type it. Add hovers for user-facing constructs.
+3. Add parser tests (`packages/shp-checker/src/parser.test.ts`) for the accepted and rejected forms.
+4. Update the formatter (`packages/shp-checker/src/formatter.ts`) so its output stays canonical and round-trips.
+5. Lower new semantic concepts into the `Model` ([Fact Lowering](/shapelang/inside-shape/fact-lowering/)). Add a rule only if the syntax has semantic meaning ([Rule Evaluation](/shapelang/inside-shape/rule-evaluation/#adding-a-rule)).
+6. Update the AST generator and authoring helpers if they emit the construct.
+7. Update `docs-site/src/content/docs/reference/language-syntax.md` and this page. The `GrammarDocs` binding requires one of them when the grammar, the generated files, `docs-site/src/syntax/**`, or `shape/language.shape` changes. Every complete `shape` block in the docs must parse; mark an intentional fragment `shape no-verify`.
+8. Update `shape/language.shape` if the modeled grammar surface changes, and add or update bindings when the syntax affects docs, CLI behaviour, or another review surface.
+9. Run `bun run langium:generate`, `bun test`, `bun run typecheck`, and `bun run docs:check`. [`CONTRIBUTING.md`](https://github.com/timbrinded/shapelang/blob/master/CONTRIBUTING.md) lists the full local check sequence.

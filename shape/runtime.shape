@@ -177,3 +177,13 @@ rule ExperimentalSemanticKernelIsolation {
   forbid path ShapeEditorServices -> ExperimentalSemanticKernel over calls
   forbid path ShpCli -> ExperimentalSemanticKernel over calls
 }
+
+attest docs_not_needed {
+  source ts("experiments/semantic-kernel/harness/protocol.ts")
+  reason "Response validation removes redundant private checks without changing protocol v1, public types, command behavior, or the documented experimental boundary."
+}
+
+attest no_shape_change {
+  source ts("experiments/semantic-kernel/harness/protocol.ts#parseKernelResponseV1")
+  reason "A single cause-validation pass preserves protocol-v1 field checks, provenance, exact cause count and role order, accepted responses, and rejection errors. The transport and kernel effects are unchanged."
+}

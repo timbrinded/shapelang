@@ -103,76 +103,12 @@ describe("shp update helpers", () => {
   });
 
   test("runs the update flow with mocked services", async () => {
-    const writes: string[] = [];
-    const downloads: string[] = [];
-    const extracted: string[] = [];
-    const replaced: string[] = [];
-    let removedTemp = false;
+    const {
+      services,
+      calls: { writes, downloads, extracted, replaced, removedDirs }
+    } = updateHarness();
 
-    const services: UpdateServices = {
-      fetchJson: async () => ({
-        tag_name: "v0.4.0",
-        assets: [
-          {
-            name: "checksums.txt",
-            browser_download_url: "https://example.test/checksums.txt"
-          },
-          {
-            name: "shp-linux-x64.tar.gz",
-            browser_download_url: "https://example.test/shp-linux-x64.tar.gz"
-          }
-        ]
-      }),
-      downloadBytes: async (url: string) => {
-        downloads.push(url);
-        if (url.endsWith("checksums.txt")) {
-          return new TextEncoder().encode(
-            "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc  shp-linux-x64.tar.gz\n"
-          );
-        }
-        return new Uint8Array([1, 2, 3]);
-      },
-      makeTempDir: async () => "/tmp/shp-update-test",
-      removeDir: async (path: string) => {
-        removedTemp = path === "/tmp/shp-update-test";
-      },
-      pathExists: async (path: string) =>
-        path === "/opt/bin/shp" || path === "/tmp/shp-update-test/tree-sitter-language-pack",
-      writeFile: async (path: string) => {
-        writes.push(path);
-      },
-      sha256File: async () => "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
-      extractTarGz: async (archivePath: string, destinationDir: string) => {
-        extracted.push(`${archivePath}:${destinationDir}`);
-      },
-      runVersion: async (binaryPath: string) => ({
-        exitCode: 0,
-        stdout: binaryPath === "/opt/bin/shp" ? "0.3.0\n" : "0.4.0\n",
-        stderr: ""
-      }),
-      runHelp: async () => validShpHelp(),
-      replaceBinary: async (
-        sourcePath: string,
-        targetPath: string,
-        platform: ReleasePlatform,
-        parserAssetsPath: string
-      ) => {
-        replaced.push(`${sourcePath}:${targetPath}:${platform.assetName}:${parserAssetsPath}`);
-        return { pending: false };
-      }
-    };
-
-    const output = await runUpdate(
-      {
-        currentVersion: "0.3.0",
-        dryRun: false,
-        targetPath: "/opt/bin/shp",
-        defaultTargetPath: "/usr/bin/shp",
-        processPlatform: "linux",
-        processArch: "x64"
-      },
-      services
-    );
+    const output = await runUpdate(baseUpdateOptions(), services);
 
     expect(output).toBe("updated shp 0.3.0 -> 0.4.0 at /opt/bin/shp\n");
     expect(downloads).toEqual([
@@ -187,42 +123,17 @@ describe("shp update helpers", () => {
     expect(replaced).toEqual([
       "/tmp/shp-update-test/shp:/opt/bin/shp:shp-linux-x64.tar.gz:/tmp/shp-update-test/tree-sitter-language-pack"
     ]);
-    expect(removedTemp).toBe(true);
+    expect(removedDirs).toEqual(["/tmp/shp-update-test"]);
   });
 
   test("updates an explicit stale target when the running version matches latest", async () => {
-    const replaced: string[] = [];
     const versionChecks: string[] = [];
-
-    const services: UpdateServices = {
-      fetchJson: async () => ({
-        tag_name: "v0.4.0",
-        assets: [
-          {
-            name: "checksums.txt",
-            browser_download_url: "https://example.test/checksums.txt"
-          },
-          {
-            name: "shp-linux-x64.tar.gz",
-            browser_download_url: "https://example.test/shp-linux-x64.tar.gz"
-          }
-        ]
-      }),
-      downloadBytes: async (url: string) => {
-        if (url.endsWith("checksums.txt")) {
-          return new TextEncoder().encode(
-            "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc  shp-linux-x64.tar.gz\n"
-          );
-        }
-        return new Uint8Array([1, 2, 3]);
-      },
-      makeTempDir: async () => "/tmp/shp-update-test",
-      removeDir: async () => {},
+    const {
+      services,
+      calls: { replaced }
+    } = updateHarness({
       pathExists: async (path: string) =>
         path === "/tmp/stale-shp" || path === "/tmp/shp-update-test/tree-sitter-language-pack",
-      writeFile: async () => {},
-      sha256File: async () => "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
-      extractTarGz: async () => {},
       runVersion: async (binaryPath: string) => {
         versionChecks.push(binaryPath);
         return {
@@ -230,28 +141,11 @@ describe("shp update helpers", () => {
           stdout: binaryPath === "/tmp/stale-shp" ? "0.3.0\n" : "0.4.0\n",
           stderr: ""
         };
-      },
-      runHelp: async () => validShpHelp(),
-      replaceBinary: async (
-        sourcePath: string,
-        targetPath: string,
-        platform: ReleasePlatform,
-        parserAssetsPath: string
-      ) => {
-        replaced.push(`${sourcePath}:${targetPath}:${platform.assetName}:${parserAssetsPath}`);
-        return { pending: false };
       }
-    };
+    });
 
     const output = await runUpdate(
-      {
-        currentVersion: "0.4.0",
-        dryRun: false,
-        targetPath: "/tmp/stale-shp",
-        defaultTargetPath: "/usr/bin/shp",
-        processPlatform: "linux",
-        processArch: "x64"
-      },
+      { ...baseUpdateOptions(), currentVersion: "0.4.0", targetPath: "/tmp/stale-shp" },
       services
     );
 
@@ -264,43 +158,22 @@ describe("shp update helpers", () => {
 
   test("accepts older shp help text when validating an explicit target", async () => {
     const downloads: string[] = [];
-    const services: UpdateServices = {
-      fetchJson: async () => ({
-        tag_name: "v0.4.0",
-        assets: [
-          {
-            name: "checksums.txt",
-            browser_download_url: "https://example.test/checksums.txt"
-          },
-          {
-            name: "shp-linux-x64.tar.gz",
-            browser_download_url: "https://example.test/shp-linux-x64.tar.gz"
-          }
-        ]
-      }),
+    const { services } = updateHarness({
       downloadBytes: async (url: string) => {
         downloads.push(url);
         return new Uint8Array();
       },
-      makeTempDir: async () => "/tmp/shp-update-test",
-      removeDir: async () => {},
       pathExists: async (path: string) => path === "/tmp/older-shp",
-      writeFile: async () => {},
-      sha256File: async () => "",
-      extractTarGz: async () => {},
       runVersion: async () => ({ exitCode: 0, stdout: "0.3.0\n", stderr: "" }),
-      runHelp: async () => olderShpHelp(),
-      replaceBinary: async () => ({ pending: false })
-    };
+      runHelp: async () => olderShpHelp()
+    });
 
     const output = await runUpdate(
       {
+        ...baseUpdateOptions(),
         currentVersion: "0.4.0",
         dryRun: true,
-        targetPath: "/tmp/older-shp",
-        defaultTargetPath: "/usr/bin/shp",
-        processPlatform: "linux",
-        processArch: "x64"
+        targetPath: "/tmp/older-shp"
       },
       services
     );
@@ -310,35 +183,17 @@ describe("shp update helpers", () => {
   });
 
   test("rejects an existing explicit target whose version output is not a shp version", async () => {
-    const services: UpdateServices = {
+    const { services } = updateHarness({
       fetchJson: async () => {
         throw new Error("release fetch should not run");
       },
-      downloadBytes: async () => new Uint8Array(),
-      makeTempDir: async () => "/tmp/shp-update-test",
-      removeDir: async () => {},
       pathExists: async (path: string) => path === "/tmp/not-shp",
-      writeFile: async () => {},
-      sha256File: async () => "",
-      extractTarGz: async () => {},
-      runVersion: async () => ({ exitCode: 0, stdout: "other-tool 1.2.3\n", stderr: "" }),
-      runHelp: async () => validShpHelp(),
-      replaceBinary: async () => ({ pending: false })
-    };
+      runVersion: async () => ({ exitCode: 0, stdout: "other-tool 1.2.3\n", stderr: "" })
+    });
 
     let message = "";
     try {
-      await runUpdate(
-        {
-          currentVersion: "0.3.0",
-          dryRun: false,
-          targetPath: "/tmp/not-shp",
-          defaultTargetPath: "/usr/bin/shp",
-          processPlatform: "linux",
-          processArch: "x64"
-        },
-        services
-      );
+      await runUpdate({ ...baseUpdateOptions(), targetPath: "/tmp/not-shp" }, services);
     } catch (error) {
       message = error instanceof Error ? error.message : String(error);
     }
@@ -349,35 +204,18 @@ describe("shp update helpers", () => {
   });
 
   test("rejects an existing explicit target that only reports a bare semver", async () => {
-    const services: UpdateServices = {
+    const { services } = updateHarness({
       fetchJson: async () => {
         throw new Error("release fetch should not run");
       },
-      downloadBytes: async () => new Uint8Array(),
-      makeTempDir: async () => "/tmp/shp-update-test",
-      removeDir: async () => {},
       pathExists: async (path: string) => path === "/tmp/semver-tool",
-      writeFile: async () => {},
-      sha256File: async () => "",
-      extractTarGz: async () => {},
       runVersion: async () => ({ exitCode: 0, stdout: "1.2.3\n", stderr: "" }),
-      runHelp: async () => ({ exitCode: 0, stdout: "usage: semver-tool\n", stderr: "" }),
-      replaceBinary: async () => ({ pending: false })
-    };
+      runHelp: async () => ({ exitCode: 0, stdout: "usage: semver-tool\n", stderr: "" })
+    });
 
     let message = "";
     try {
-      await runUpdate(
-        {
-          currentVersion: "0.3.0",
-          dryRun: false,
-          targetPath: "/tmp/semver-tool",
-          defaultTargetPath: "/usr/bin/shp",
-          processPlatform: "linux",
-          processArch: "x64"
-        },
-        services
-      );
+      await runUpdate({ ...baseUpdateOptions(), targetPath: "/tmp/semver-tool" }, services);
     } catch (error) {
       message = error instanceof Error ? error.message : String(error);
     }
@@ -387,46 +225,17 @@ describe("shp update helpers", () => {
 
   test("dry run resolves the release without downloading", async () => {
     const downloads: string[] = [];
-    const services: UpdateServices = {
-      fetchJson: async () => ({
-        tag_name: "v0.4.0",
-        assets: [
-          {
-            name: "checksums.txt",
-            browser_download_url: "https://example.test/checksums.txt"
-          },
-          {
-            name: "shp-linux-x64.tar.gz",
-            browser_download_url: "https://example.test/shp-linux-x64.tar.gz"
-          }
-        ]
-      }),
+    const { services } = updateHarness({
       downloadBytes: async (url: string) => {
         downloads.push(url);
         return new Uint8Array();
       },
-      makeTempDir: async () => "/tmp/shp-update-test",
-      removeDir: async () => {},
       pathExists: async () => false,
-      writeFile: async () => {},
-      sha256File: async () => "",
-      extractTarGz: async () => {},
       runVersion: async () => ({ exitCode: 0, stdout: "", stderr: "" }),
-      runHelp: async () => ({ exitCode: 0, stdout: "", stderr: "" }),
-      replaceBinary: async () => ({ pending: false })
-    };
+      runHelp: async () => ({ exitCode: 0, stdout: "", stderr: "" })
+    });
 
-    const output = await runUpdate(
-      {
-        currentVersion: "0.3.0",
-        dryRun: true,
-        targetPath: "/opt/bin/shp",
-        defaultTargetPath: "/usr/bin/shp",
-        processPlatform: "linux",
-        processArch: "x64"
-      },
-      services
-    );
+    const output = await runUpdate({ ...baseUpdateOptions(), dryRun: true }, services);
 
     expect(output).toContain("would update shp 0.3.0 -> 0.4.0");
     expect(output).toContain("asset: shp-linux-x64.tar.gz");
@@ -458,18 +267,8 @@ describe("shp update helpers", () => {
 });
 
 describe("shp update failure paths", () => {
-  test("failure harness baseline performs a full update", async () => {
-    const { services, calls } = failureHarness();
-
-    const output = await runUpdate(baseUpdateOptions(), services);
-
-    expect(output).toBe("updated shp 0.3.0 -> 0.4.0 at /opt/bin/shp\n");
-    expect(calls.replaced).toHaveLength(1);
-    expect(calls.removedDirs).toEqual(["/tmp/shp-update-test"]);
-  });
-
   test("rejects an archive whose checksum does not match checksums.txt", async () => {
-    const { services, calls } = failureHarness({
+    const { services, calls } = updateHarness({
       sha256File: async () => "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
     });
 
@@ -481,7 +280,7 @@ describe("shp update failure paths", () => {
   });
 
   test("rejects a checksums.txt that has no entry for the archive", async () => {
-    const { services, calls } = failureHarness({
+    const { services, calls } = updateHarness({
       downloadBytes: async (url: string) => {
         if (url.endsWith("checksums.txt")) {
           return new TextEncoder().encode(
@@ -500,7 +299,7 @@ describe("shp update failure paths", () => {
   });
 
   test("rejects a release that is missing the platform archive asset", async () => {
-    const { services, calls } = failureHarness({
+    const { services, calls } = updateHarness({
       fetchJson: async () => ({
         tag_name: "v0.4.0",
         assets: [
@@ -522,7 +321,7 @@ describe("shp update failure paths", () => {
   });
 
   test("rejects a release that is missing checksums.txt", async () => {
-    const { services, calls } = failureHarness({
+    const { services, calls } = updateHarness({
       fetchJson: async () => ({
         tag_name: "v0.4.0",
         assets: [
@@ -543,7 +342,7 @@ describe("shp update failure paths", () => {
   });
 
   test("rejects an extracted archive missing the parser assets", async () => {
-    const { services, calls } = failureHarness({
+    const { services, calls } = updateHarness({
       pathExists: async (path: string) => path === "/opt/bin/shp"
     });
 
@@ -557,7 +356,7 @@ describe("shp update failure paths", () => {
   });
 
   test("rejects a downloaded binary that fails --version", async () => {
-    const { services, calls } = failureHarness({
+    const { services, calls } = updateHarness({
       runVersion: async (binaryPath: string) =>
         binaryPath === "/opt/bin/shp"
           ? { exitCode: 0, stdout: "0.3.0\n", stderr: "" }
@@ -572,7 +371,7 @@ describe("shp update failure paths", () => {
   });
 
   test("rejects a downloaded binary that reports the wrong version", async () => {
-    const { services, calls } = failureHarness({
+    const { services, calls } = updateHarness({
       runVersion: async (binaryPath: string) => ({
         exitCode: 0,
         stdout: binaryPath === "/opt/bin/shp" ? "0.3.0\n" : "0.3.9\n",
@@ -588,7 +387,7 @@ describe("shp update failure paths", () => {
   });
 
   test("propagates a download failure and still removes the temp dir", async () => {
-    const { services, calls } = failureHarness({
+    const { services, calls } = updateHarness({
       downloadBytes: async () => {
         throw new Error("network down");
       }
@@ -602,20 +401,29 @@ describe("shp update failure paths", () => {
   });
 });
 
-type FailureHarnessCalls = {
+type UpdateHarnessCalls = {
+  writes: string[];
+  downloads: string[];
+  extracted: string[];
   replaced: string[];
   removedDirs: string[];
   tempDirs: number;
 };
 
-// Known-good mocked update flow (mirrors "runs the update flow with mocked
-// services"); each failure test overrides exactly one service so the rejection
-// is attributable to that single seam.
-function failureHarness(overrides: Partial<UpdateServices> = {}): {
+// Known-good update services with per-scenario overrides. Failure cases override
+// one service so each rejection remains attributable to that seam.
+function updateHarness(overrides: Partial<UpdateServices> = {}): {
   services: UpdateServices;
-  calls: FailureHarnessCalls;
+  calls: UpdateHarnessCalls;
 } {
-  const calls: FailureHarnessCalls = { replaced: [], removedDirs: [], tempDirs: 0 };
+  const calls: UpdateHarnessCalls = {
+    writes: [],
+    downloads: [],
+    extracted: [],
+    replaced: [],
+    removedDirs: [],
+    tempDirs: 0
+  };
   const services: UpdateServices = {
     fetchJson: async () => ({
       tag_name: "v0.4.0",
@@ -631,6 +439,7 @@ function failureHarness(overrides: Partial<UpdateServices> = {}): {
       ]
     }),
     downloadBytes: async (url: string) => {
+      calls.downloads.push(url);
       if (url.endsWith("checksums.txt")) {
         return new TextEncoder().encode(
           "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc  shp-linux-x64.tar.gz\n"
@@ -647,9 +456,13 @@ function failureHarness(overrides: Partial<UpdateServices> = {}): {
     },
     pathExists: async (path: string) =>
       path === "/opt/bin/shp" || path === "/tmp/shp-update-test/tree-sitter-language-pack",
-    writeFile: async () => {},
+    writeFile: async (path: string) => {
+      calls.writes.push(path);
+    },
     sha256File: async () => "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
-    extractTarGz: async () => {},
+    extractTarGz: async (archivePath: string, destinationDir: string) => {
+      calls.extracted.push(`${archivePath}:${destinationDir}`);
+    },
     runVersion: async (binaryPath: string) => ({
       exitCode: 0,
       stdout: binaryPath === "/opt/bin/shp" ? "0.3.0\n" : "0.4.0\n",

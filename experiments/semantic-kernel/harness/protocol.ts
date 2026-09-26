@@ -139,31 +139,20 @@ function isKernelDiagnosticV1(value: unknown): value is KernelDiagnosticV1 {
   ) {
     return false;
   }
-  if (!value.causes.every(isKernelDiagnosticCause)) {
-    return false;
-  }
-
   const expectedRoles: KernelDiagnosticCauseRole[] =
     value.actual === undefined
       ? ["candidate_effect", "anchor"]
       : ["candidate_effect", "anchor", "actual_fingerprint"];
   return (
     value.causes.length === expectedRoles.length &&
-    value.causes.every((cause, index) => cause.role === expectedRoles[index])
+    value.causes.every(
+      (cause, index) =>
+        isRecord(cause) &&
+        hasOnlyKeys(cause, ["role", "provenance"]) &&
+        cause.role === expectedRoles[index] &&
+        isKernelProvenance(cause.provenance)
+    )
   );
-}
-
-function isKernelDiagnosticCause(value: unknown): boolean {
-  return (
-    isRecord(value) &&
-    hasOnlyKeys(value, ["role", "provenance"]) &&
-    isKernelDiagnosticCauseRole(value.role) &&
-    isKernelProvenance(value.provenance)
-  );
-}
-
-function isKernelDiagnosticCauseRole(value: unknown): value is KernelDiagnosticCauseRole {
-  return value === "candidate_effect" || value === "anchor" || value === "actual_fingerprint";
 }
 
 function isKernelProvenance(value: unknown): value is KernelProvenance {

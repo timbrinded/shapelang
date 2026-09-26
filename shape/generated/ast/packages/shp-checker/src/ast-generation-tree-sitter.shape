@@ -23,7 +23,7 @@ resource AstGenerationTreeSitterModuleBundledTreeSitterParserLibsDirAstAnchor : 
 
 resource AstGenerationTreeSitterModuleConfigureBundledTreeSitterParsersAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/ast-generation-tree-sitter.ts#configureBundledTreeSitterParsers")
-  fingerprint ast.semantic_subtree_v1("sha256:02fff0b4f52195eabe21b6d578b70b92e166fe5fc2b10ce33a9302d70491ebbd")
+  fingerprint ast.semantic_subtree_v1("sha256:3de290afd6aba0eff1183bfe036ffd473707d25dcc3bda6d64bedf3c598b7731")
 }
 
 resource AstGenerationTreeSitterModuleCurrentTreeSitterNativeBindingTargetAstAnchor : GeneratedAstAnchor {
@@ -58,12 +58,12 @@ resource AstGenerationTreeSitterModuleLinuxMuslLoaderPathsAstAnchor : GeneratedA
 
 resource AstGenerationTreeSitterModuleLoadTreeSitterNativeBindingAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/ast-generation-tree-sitter.ts#loadTreeSitterNativeBinding")
-  fingerprint ast.semantic_subtree_v1("sha256:f960ba8b455456b527078c56569955cde414883519f785411f0e2a7492087d15")
+  fingerprint ast.semantic_subtree_v1("sha256:a3cf0495d621541a732467a7165d970af0d5bd1dd3aefbcf03bb2836af6eff0c")
 }
 
 resource AstGenerationTreeSitterModuleLoadTreeSitterProviderAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/ast-generation-tree-sitter.ts#loadTreeSitterProvider")
-  fingerprint ast.semantic_subtree_v1("sha256:62e688c0c832e7c809338a1085ed97fb8acad718882a1ac5aefc2d13a8fb601e")
+  fingerprint ast.semantic_subtree_v1("sha256:54811f91f618316fcee26029e1bf95b36edf00361386d1ed4e8c2eba8198691b")
 }
 
 resource AstGenerationTreeSitterModuleRequireTreeSitterEmbeddedBindingAstAnchor : GeneratedAstAnchor {
@@ -79,16 +79,6 @@ resource AstGenerationTreeSitterModuleRequireTreeSitterNativeBindingAstAnchor : 
 resource AstGenerationTreeSitterModuleRequireTreeSitterNativePackageBindingAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/ast-generation-tree-sitter.ts#requireTreeSitterNativePackageBinding")
   fingerprint ast.semantic_subtree_v1("sha256:c1f38a82c9da8cf9157b07ee31b5ca434125ebade602fc95972b9c01173efb2e")
-}
-
-resource AstGenerationTreeSitterModuleTreeSitterNativeLanguagePackAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/ast-generation-tree-sitter.ts#treeSitterNativeLanguagePack")
-  fingerprint ast.semantic_subtree_v1("sha256:035fc7647e49274a219363720c77c237a9ab21759878402807be5eb7b5b4bfa4")
-}
-
-resource AstGenerationTreeSitterModuleTreeSitterNativeParserAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/ast-generation-tree-sitter.ts#treeSitterNativeParser")
-  fingerprint ast.semantic_subtree_v1("sha256:01b7dd5bb303502af5f911e1b40c2b1f4d6ef8934b5cf513b67bfa8bdc7e240a")
 }
 
 resource AstGenerationTreeSitterModuleTreeSitterParserLibraryNameAstAnchor : GeneratedAstAnchor {
@@ -142,12 +132,6 @@ component AstGenerationTreeSitterModule : GeneratedCandidate {
   fn requireTreeSitterNativePackageBinding
     source ts("packages/shp-checker/src/ast-generation-tree-sitter.ts#requireTreeSitterNativePackageBinding")
     effects unknown
-  fn treeSitterNativeLanguagePack
-    source ts("packages/shp-checker/src/ast-generation-tree-sitter.ts#treeSitterNativeLanguagePack")
-    effects unknown
-  fn treeSitterNativeParser
-    source ts("packages/shp-checker/src/ast-generation-tree-sitter.ts#treeSitterNativeParser")
-    effects unknown
   fn treeSitterParserLibraryName
     source ts("packages/shp-checker/src/ast-generation-tree-sitter.ts#treeSitterParserLibraryName")
     effects unknown
@@ -181,7 +165,7 @@ relation AstGenerationTreeSitterModuleConfigureBundledTreeSitterParsersGenerated
   kind generated_from
   connects AstGenerationTreeSitterModule -> AstGenerationTreeSitterModuleConfigureBundledTreeSitterParsersAstAnchor
   roles { AstGenerationTreeSitterModule as generated, AstGenerationTreeSitterModuleConfigureBundledTreeSitterParsersAstAnchor as syntax }
-  expects AstGenerationTreeSitterModuleConfigureBundledTreeSitterParsersAstAnchor fingerprint ast.semantic_subtree_v1("sha256:02fff0b4f52195eabe21b6d578b70b92e166fe5fc2b10ce33a9302d70491ebbd")
+  expects AstGenerationTreeSitterModuleConfigureBundledTreeSitterParsersAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3de290afd6aba0eff1183bfe036ffd473707d25dcc3bda6d64bedf3c598b7731")
   summary "fn AstGenerationTreeSitterModule.configureBundledTreeSitterParsers generated from typescript function_declaration at packages/shp-checker/src/ast-generation-tree-sitter.ts#configureBundledTreeSitterParsers."
 }
 
@@ -237,7 +221,7 @@ relation AstGenerationTreeSitterModuleLoadTreeSitterNativeBindingGeneratedFromAs
   kind generated_from
   connects AstGenerationTreeSitterModule -> AstGenerationTreeSitterModuleLoadTreeSitterNativeBindingAstAnchor
   roles { AstGenerationTreeSitterModule as generated, AstGenerationTreeSitterModuleLoadTreeSitterNativeBindingAstAnchor as syntax }
-  expects AstGenerationTreeSitterModuleLoadTreeSitterNativeBindingAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f960ba8b455456b527078c56569955cde414883519f785411f0e2a7492087d15")
+  expects AstGenerationTreeSitterModuleLoadTreeSitterNativeBindingAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a3cf0495d621541a732467a7165d970af0d5bd1dd3aefbcf03bb2836af6eff0c")
   summary "fn AstGenerationTreeSitterModule.loadTreeSitterNativeBinding generated from typescript function_declaration at packages/shp-checker/src/ast-generation-tree-sitter.ts#loadTreeSitterNativeBinding."
 }
 
@@ -245,7 +229,7 @@ relation AstGenerationTreeSitterModuleLoadTreeSitterProviderGeneratedFromAstGene
   kind generated_from
   connects AstGenerationTreeSitterModule -> AstGenerationTreeSitterModuleLoadTreeSitterProviderAstAnchor
   roles { AstGenerationTreeSitterModule as generated, AstGenerationTreeSitterModuleLoadTreeSitterProviderAstAnchor as syntax }
-  expects AstGenerationTreeSitterModuleLoadTreeSitterProviderAstAnchor fingerprint ast.semantic_subtree_v1("sha256:62e688c0c832e7c809338a1085ed97fb8acad718882a1ac5aefc2d13a8fb601e")
+  expects AstGenerationTreeSitterModuleLoadTreeSitterProviderAstAnchor fingerprint ast.semantic_subtree_v1("sha256:54811f91f618316fcee26029e1bf95b36edf00361386d1ed4e8c2eba8198691b")
   summary "fn AstGenerationTreeSitterModule.loadTreeSitterProvider generated from typescript function_declaration at packages/shp-checker/src/ast-generation-tree-sitter.ts#loadTreeSitterProvider."
 }
 
@@ -271,22 +255,6 @@ relation AstGenerationTreeSitterModuleRequireTreeSitterNativePackageBindingGener
   roles { AstGenerationTreeSitterModule as generated, AstGenerationTreeSitterModuleRequireTreeSitterNativePackageBindingAstAnchor as syntax }
   expects AstGenerationTreeSitterModuleRequireTreeSitterNativePackageBindingAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c1f38a82c9da8cf9157b07ee31b5ca434125ebade602fc95972b9c01173efb2e")
   summary "fn AstGenerationTreeSitterModule.requireTreeSitterNativePackageBinding generated from typescript function_declaration at packages/shp-checker/src/ast-generation-tree-sitter.ts#requireTreeSitterNativePackageBinding."
-}
-
-relation AstGenerationTreeSitterModuleTreeSitterNativeLanguagePackGeneratedFromAstGenerationTreeSitterModuleTreeSitterNativeLanguagePackAstAnchor {
-  kind generated_from
-  connects AstGenerationTreeSitterModule -> AstGenerationTreeSitterModuleTreeSitterNativeLanguagePackAstAnchor
-  roles { AstGenerationTreeSitterModule as generated, AstGenerationTreeSitterModuleTreeSitterNativeLanguagePackAstAnchor as syntax }
-  expects AstGenerationTreeSitterModuleTreeSitterNativeLanguagePackAstAnchor fingerprint ast.semantic_subtree_v1("sha256:035fc7647e49274a219363720c77c237a9ab21759878402807be5eb7b5b4bfa4")
-  summary "fn AstGenerationTreeSitterModule.treeSitterNativeLanguagePack generated from typescript function_declaration at packages/shp-checker/src/ast-generation-tree-sitter.ts#treeSitterNativeLanguagePack."
-}
-
-relation AstGenerationTreeSitterModuleTreeSitterNativeParserGeneratedFromAstGenerationTreeSitterModuleTreeSitterNativeParserAstAnchor {
-  kind generated_from
-  connects AstGenerationTreeSitterModule -> AstGenerationTreeSitterModuleTreeSitterNativeParserAstAnchor
-  roles { AstGenerationTreeSitterModule as generated, AstGenerationTreeSitterModuleTreeSitterNativeParserAstAnchor as syntax }
-  expects AstGenerationTreeSitterModuleTreeSitterNativeParserAstAnchor fingerprint ast.semantic_subtree_v1("sha256:01b7dd5bb303502af5f911e1b40c2b1f4d6ef8934b5cf513b67bfa8bdc7e240a")
-  summary "fn AstGenerationTreeSitterModule.treeSitterNativeParser generated from typescript function_declaration at packages/shp-checker/src/ast-generation-tree-sitter.ts#treeSitterNativeParser."
 }
 
 relation AstGenerationTreeSitterModuleTreeSitterParserLibraryNameGeneratedFromAstGenerationTreeSitterModuleTreeSitterParserLibraryNameAstAnchor {

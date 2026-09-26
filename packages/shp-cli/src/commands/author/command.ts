@@ -1,5 +1,6 @@
 import { buildCommand } from "@stricli/core";
 import type { CliContext } from "../../context";
+import { optionalStringFlag, optionalBooleanFlag } from "../../parameters";
 import type { AuthorFlags } from "./impl";
 
 export const authorCommand = buildCommand<AuthorFlags, [], CliContext>({
@@ -12,67 +13,29 @@ export const authorCommand = buildCommand<AuthorFlags, [], CliContext>({
         brief: "Path to a newline-delimited changed-file list.",
         placeholder: "changed.txt"
       },
-      component: {
-        kind: "parsed",
-        parse: (input: string) => input,
-        optional: true,
-        brief: "Component to scaffold.",
-        placeholder: "ComponentName"
-      },
-      criticPrompt: {
-        kind: "parsed",
-        parse: (input: string) => input,
-        optional: true,
-        brief: "Proposed Shape update to review with a provider-neutral critic prompt.",
-        placeholder: "proposed.shape"
-      },
-      diff: {
-        kind: "parsed",
-        parse: (input: string) => input,
-        optional: true,
-        brief: "Unified PR diff used as prompt context.",
-        placeholder: "pr.diff"
-      },
-      instructions: {
-        kind: "parsed",
-        parse: (input: string) => input,
-        optional: true,
-        brief: "Additional human direction for prompt mode.",
-        placeholder: "TEXT"
-      },
-      module: {
-        kind: "parsed",
-        parse: (input: string) => input,
-        optional: true,
-        brief: "Shape module name for the generated draft.",
-        placeholder: "module.name"
-      },
-      projectPrelude: {
-        kind: "parsed",
-        parse: (input: string) => input,
-        optional: true,
-        brief: "Project prelude context file for prompt mode.",
-        placeholder: "prelude.shape"
-      },
-      prompt: {
-        kind: "boolean",
-        optional: true,
-        brief: "Emit a provider-neutral authoring prompt bundle instead of the draft."
-      },
-      shapeFiles: {
-        kind: "parsed",
-        parse: (input: string) => input,
-        optional: true,
-        brief: "Comma-separated existing Shape files required by prompt mode.",
-        placeholder: "file1.shape,file2.shape"
-      },
-      snippetFiles: {
-        kind: "parsed",
-        parse: (input: string) => input,
-        optional: true,
-        brief: "Comma-separated relevant source files for prompt mode.",
-        placeholder: "file1.ts,file2.rs"
-      }
+      component: optionalStringFlag("Component to scaffold.", "ComponentName"),
+      criticPrompt: optionalStringFlag(
+        "Proposed Shape update to review with a provider-neutral critic prompt.",
+        "proposed.shape"
+      ),
+      diff: optionalStringFlag("Unified PR diff used as prompt context.", "pr.diff"),
+      instructions: optionalStringFlag("Additional human direction for prompt mode.", "TEXT"),
+      module: optionalStringFlag("Shape module name for the generated draft.", "module.name"),
+      projectPrelude: optionalStringFlag(
+        "Project prelude context file for prompt mode.",
+        "prelude.shape"
+      ),
+      prompt: optionalBooleanFlag(
+        "Emit a provider-neutral authoring prompt bundle instead of the draft."
+      ),
+      shapeFiles: optionalStringFlag(
+        "Comma-separated existing Shape files required by prompt mode.",
+        "file1.shape,file2.shape"
+      ),
+      snippetFiles: optionalStringFlag(
+        "Comma-separated relevant source files for prompt mode.",
+        "file1.ts,file2.rs"
+      )
     }
   },
   docs: {

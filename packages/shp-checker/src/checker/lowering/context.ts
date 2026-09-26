@@ -1,123 +1,32 @@
-import type {
-  GuardForbidTransformDecl,
-  GuardRequireDecl,
-  MemoryDecl,
-  MemoryMember,
-  PolicyDecl,
-  RationaleDecl,
-  RationaleMember,
-  ReevaluationDecl,
-  RoleDecl
-} from "../../language/generated/ast.ts";
-import {
-  isAppliesToDecl,
-  isApproverDecl,
-  isConfidenceDecl,
-  isDecidedOnDecl,
-  isEvidenceLineDecl,
-  isGuardForbidTransformDecl,
-  isGuardsBlock,
-  isObservedDecl,
-  isOutcomeDecl,
-  isProtectsBlock,
-  isRequireApproverDecl,
-  isReviewerDecl,
-  isSatisfiesDecl,
-  isSensitiveDecl,
-  isStatusDecl,
-  isSummaryDecl,
-  isWhenBlock,
-  isWhoBlock,
-  isWhyDecl
-} from "../../language/generated/ast.ts";
-import type {
-  ContextObjectInfo,
-  LoweringContext,
-  MemoryInfo,
-  Model,
-  RationaleInfo,
-  ReevaluationInfo
-} from "../model.ts";
+import * as ast from "../../language/generated/ast.ts";
+import type { ContextObjectInfo, LoweringContext, Model, ReevaluationInfo } from "../model.ts";
 import type { ContextKind } from "../../prelude.ts";
 import { declKey } from "../display.ts";
 import { requiresReevaluation } from "../derivations.ts";
-import { describeProvenance, provenance } from "../provenance.ts";
-import { resolveContextObjectName, resolveDeclReference } from "../symbols.ts";
+import { duplicateDeclaration, provenance } from "../provenance.ts";
+import { resolveDeclName, resolveDeclReference, resolveTargetName } from "../symbols.ts";
 import { unquoteShapeString } from "../../shape-strings.ts";
-import { lowerSourceRef, lowerTargetRef } from "./declarations.ts";
+import { lowerSourceRef } from "./declarations.ts";
 
-export function lowerRationale(
-  rationale: RationaleDecl,
+export function lowerContextObject(
+  declaration: ast.RationaleDecl | ast.MemoryDecl,
   context: LoweringContext,
   model: Model
 ): void {
-  const name = declKey(context.name, rationale.name);
-  const prov = provenance(context.filePath, `rationale ${name}`);
-  if (model.rationales.has(name)) {
-    model.diagnostics.push({
-      kind: "duplicate_declaration",
-      declarationKind: "rationale",
-      name,
-      filePath: context.filePath,
-      causedBy: [
-        describeProvenance(model.rationales.get(name)?.provenance),
-        describeProvenance(prov)
-      ]
-    });
+  const kind = declaration.$type === "RationaleDecl" ? "rationale" : "memory";
+  const entries = kind === "rationale" ? model.rationales : model.memories;
+  const name = declKey(context.name, declaration.name);
+  const prov = provenance(context.filePath, `${kind} ${name}`);
+  const existing = entries.get(name);
+  if (existing) {
+    model.diagnostics.push(duplicateDeclaration(kind, name, existing.provenance, prov));
     return;
   }
 
-  const info: RationaleInfo = {
+  const info: ContextObjectInfo = {
     name,
-    contextType: rationale.contextType.name,
-    target: lowerTargetRef(rationale.contextType.target, context, model),
-    protects: [],
-    guards: [],
-    forbiddenTransforms: [],
-    evidence: [],
-    provenance: prov
-  };
-
-  for (const member of rationale.members) {
-    if (lowerContextMember(member, info, "rationale", context, model)) {
-      continue;
-    }
-
-    if (isWhyDecl(member)) {
-      info.why = member.reason;
-    }
-  }
-
-  model.rationales.set(name, info);
-  model.facts.push({
-    kind: "rationale",
-    name,
-    contextType: info.contextType,
-    targetKind: info.target.kind,
-    target: info.target.name,
-    provenance: prov
-  });
-  emitGuardFacts("rationale", info, model);
-}
-
-export function lowerMemory(memory: MemoryDecl, context: LoweringContext, model: Model): void {
-  const name = declKey(context.name, memory.name);
-  const prov = provenance(context.filePath, `memory ${name}`);
-  if (model.memories.has(name)) {
-    model.diagnostics.push({
-      kind: "duplicate_declaration",
-      declarationKind: "memory",
-      name,
-      filePath: context.filePath,
-      causedBy: [describeProvenance(model.memories.get(name)?.provenance), describeProvenance(prov)]
-    });
-    return;
-  }
-
-  const info: MemoryInfo = {
-    name,
-    contextType: memory.contextType.name,
-    target: lowerTargetRef(memory.contextType.target, context, model),
+    contextType: declaration.contextType.name,
+    target: resolveTargetName(declaration.contextType.target, context, model),
     sensitive: false,
     protects: [],
     guards: [],
@@ -127,80 +36,52 @@ export function lowerMemory(memory: MemoryDecl, context: LoweringContext, model:
     provenance: prov
   };
 
-  for (const member of memory.members) {
-    if (lowerContextMember(member, info, "memory", context, model)) {
-      continue;
-    }
-
-    if (isStatusDecl(member)) {
-      info.status = member.value;
-    } else if (isConfidenceDecl(member)) {
-      info.confidence = member.value;
-    } else if (isObservedDecl(member)) {
-      info.observed.push(lowerSourceRef(member));
-    } else if (isSensitiveDecl(member)) {
-      info.sensitive = true;
+  for (const member of declaration.members) {
+    if (ast.isAppliesToDecl(member)) {
+      info.appliesTo = resolveTargetName(member.target, context, model);
+    } else if (ast.isSummaryDecl(member)) {
+      info.summary = unquoteShapeString(member.value);
+    } else if (ast.isEvidenceLineDecl(member)) {
+      info.evidence.push(lowerSourceRef(member));
+    } else if (ast.isProtectsBlock(member)) {
+      for (const entry of member.entries) {
+        pushProtects(info, kind, entry.kind, entry.value, context, model);
+      }
+    } else if (ast.isGuardsBlock(member)) {
+      for (const entry of member.entries) {
+        pushGuard(info, kind, entry, context);
+      }
+    } else if (ast.isWhoBlock(member)) {
+      if (member.owner) {
+        info.owner = member.owner.value;
+      }
+    } else if (ast.isWhenBlock(member)) {
+      if (member.date) {
+        info.reviewBy = unquoteShapeString(member.date.value);
+      }
+    } else if (kind === "memory") {
+      if (ast.isStatusDecl(member)) {
+        info.status = member.value;
+      } else if (ast.isConfidenceDecl(member)) {
+        info.confidence = member.value;
+      } else if (ast.isObservedDecl(member)) {
+        info.observed.push(lowerSourceRef(member));
+      } else if (ast.isSensitiveDecl(member)) {
+        info.sensitive = true;
+      }
     }
   }
 
-  model.memories.set(name, info);
+  entries.set(name, info);
   model.facts.push({
-    kind: "memory",
+    kind,
     name,
     contextType: info.contextType,
     targetKind: info.target.kind,
     target: info.target.name,
     provenance: prov
   });
-  emitGuardFacts("memory", info, model);
-}
-
-export function lowerContextMember(
-  member: RationaleMember | MemoryMember,
-  info: ContextObjectInfo,
-  kind: ContextKind,
-  context: LoweringContext,
-  model: Model
-): boolean {
-  if (isAppliesToDecl(member)) {
-    info.appliesTo = lowerTargetRef(member.target, context, model);
-    return true;
-  }
-  if (isSummaryDecl(member)) {
-    info.summary = unquoteShapeString(member.value);
-    return true;
-  }
-  if (isEvidenceLineDecl(member)) {
-    info.evidence.push(lowerSourceRef(member));
-    return true;
-  }
-  // Grouped blocks are the only guard-member syntax; they lower into the
-  // shared context info.
-  if (isProtectsBlock(member)) {
-    for (const entry of member.entries) {
-      pushProtects(info, kind, entry.kind, entry.value, context, model);
-    }
-    return true;
-  }
-  if (isGuardsBlock(member)) {
-    for (const entry of member.entries) {
-      pushGuard(info, kind, entry, context);
-    }
-    return true;
-  }
-  if (isWhoBlock(member)) {
-    if (member.owner) {
-      info.owner = member.owner.value;
-    }
-    return true;
-  }
-  if (isWhenBlock(member)) {
-    if (member.date) {
-      info.reviewBy = unquoteShapeString(member.date.value);
-    }
-    return true;
-  }
-  return false;
+  emitGuardFacts(kind, info, model);
 }
 
 export function pushProtects(
@@ -234,10 +115,10 @@ export function pushProtects(
 export function pushGuard(
   info: ContextObjectInfo,
   kind: ContextKind,
-  action: GuardRequireDecl | GuardForbidTransformDecl,
+  action: ast.GuardRequireDecl | ast.GuardForbidTransformDecl,
   context: LoweringContext
 ): void {
-  if (isGuardForbidTransformDecl(action)) {
+  if (ast.isGuardForbidTransformDecl(action)) {
     info.forbiddenTransforms.push({
       label: action.label,
       provenance: provenance(
@@ -257,23 +138,16 @@ export function pushGuard(
 }
 
 export function lowerReevaluation(
-  reevaluation: ReevaluationDecl,
+  reevaluation: ast.ReevaluationDecl,
   context: LoweringContext,
   model: Model
 ): void {
   const name = declKey(context.name, reevaluation.name);
   const prov = provenance(context.filePath, `reevaluation ${name}`);
   if (model.reevaluations.has(name)) {
-    model.diagnostics.push({
-      kind: "duplicate_declaration",
-      declarationKind: "reevaluation",
-      name,
-      filePath: context.filePath,
-      causedBy: [
-        describeProvenance(model.reevaluations.get(name)?.provenance),
-        describeProvenance(prov)
-      ]
-    });
+    model.diagnostics.push(
+      duplicateDeclaration("reevaluation", name, model.reevaluations.get(name)?.provenance, prov)
+    );
     return;
   }
 
@@ -284,20 +158,20 @@ export function lowerReevaluation(
   };
 
   for (const member of reevaluation.members) {
-    if (isSatisfiesDecl(member)) {
+    if (ast.isSatisfiesDecl(member)) {
       info.satisfiesKind = member.kind;
-      info.satisfiesName = resolveContextObjectName(member.kind, member.name, context, model);
-    } else if (isOutcomeDecl(member)) {
+      info.satisfiesName = resolveDeclName(member.name, member.kind, context, model);
+    } else if (ast.isOutcomeDecl(member)) {
       info.outcome = member.value;
-    } else if (isSummaryDecl(member)) {
+    } else if (ast.isSummaryDecl(member)) {
       info.summary = unquoteShapeString(member.value);
-    } else if (isEvidenceLineDecl(member)) {
+    } else if (ast.isEvidenceLineDecl(member)) {
       info.evidence.push(lowerSourceRef(member));
-    } else if (isReviewerDecl(member)) {
+    } else if (ast.isReviewerDecl(member)) {
       info.reviewer = member.value;
-    } else if (isApproverDecl(member)) {
+    } else if (ast.isApproverDecl(member)) {
       info.approver = member.value;
-    } else if (isDecidedOnDecl(member)) {
+    } else if (ast.isDecidedOnDecl(member)) {
       info.decidedOn = unquoteShapeString(member.value);
     }
   }
@@ -320,35 +194,15 @@ export function lowerReevaluation(
  * Declaring at least one role turns on structural reviewer/approver validation.
  */
 
-export function lowerRole(role: RoleDecl, context: LoweringContext, model: Model): void {
-  if (!model.roles.has(role.name)) {
-    model.roles.set(role.name, provenance(context.filePath, `role ${role.name}`));
-  }
+export function lowerRole(role: ast.RoleDecl, model: Model): void {
+  model.roles.add(role.name);
 }
 
-export function lowerPolicy(policy: PolicyDecl, context: LoweringContext, model: Model): void {
-  const name = declKey(context.name, policy.name);
-  const requiresApprover = policy.members.some(isRequireApproverDecl);
-  const existing = model.policies.get(name);
-  if (existing) {
-    // Merge rather than ignore: a later `policy P { require approver }` must not
-    // be silently dropped by an earlier empty declaration of the same name, or
-    // sensitive memories would stop requiring approvers.
-    existing.requiresApprover ||= requiresApprover;
-    return;
-  }
-  model.policies.set(name, {
-    name,
-    requiresApprover,
-    provenance: provenance(context.filePath, `policy ${name}`)
-  });
+export function lowerPolicy(policy: ast.PolicyDecl, model: Model): void {
+  model.requiresApprover = policy.members.some(ast.isRequireApproverDecl) || model.requiresApprover;
 }
 
-export function emitGuardFacts(
-  kind: ContextKind,
-  info: RationaleInfo | MemoryInfo,
-  model: Model
-): void {
+export function emitGuardFacts(kind: ContextKind, info: ContextObjectInfo, model: Model): void {
   for (const item of info.protects) {
     model.facts.push({
       kind: "protected_shape",

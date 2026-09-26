@@ -21,11 +21,6 @@ resource AstGenerationRawModuleFallbackFunctionNameAstAnchor : GeneratedAstAncho
   fingerprint ast.semantic_subtree_v1("sha256:7b6ed977a51ab3b9a6cc882f0729eba09b978ab4f03c1356e2ba46c39e3bb040")
 }
 
-resource AstGenerationRawModuleFirstMatchingChildAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/ast-generation-raw.ts#firstMatchingChild")
-  fingerprint ast.semantic_subtree_v1("sha256:5675eb6d629e403d246e9140cf920cd543ee96356a63bcb7d590b85dc43d0b5b")
-}
-
 resource AstGenerationRawModuleGroupChildrenAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/ast-generation-raw.ts#groupChildren")
   fingerprint ast.semantic_subtree_v1("sha256:c955b629fd3853be644f8640bd80c4110697bb62cee57726b462dffd0a643f4c")
@@ -68,7 +63,7 @@ resource AstGenerationRawModuleReceiverTypeNameAstAnchor : GeneratedAstAnchor {
 
 resource AstGenerationRawModuleSemanticNameAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/ast-generation-raw.ts#semanticName")
-  fingerprint ast.semantic_subtree_v1("sha256:874a61fa4420fb74771d57f33c35e8e19dabe7cdaabfe03f72f25eca2f088e71")
+  fingerprint ast.semantic_subtree_v1("sha256:67b5e0018e6977aad30bff4cefe598dcb9f2a6c3e45119c042b4c3cea789b72f")
 }
 
 resource AstGenerationRawModuleSourceRefAstAnchor : GeneratedAstAnchor {
@@ -95,9 +90,6 @@ component AstGenerationRawModule : GeneratedCandidate {
     effects unknown
   fn fallbackFunctionName
     source ts("packages/shp-checker/src/ast-generation-raw.ts#fallbackFunctionName")
-    effects unknown
-  fn firstMatchingChild
-    source ts("packages/shp-checker/src/ast-generation-raw.ts#firstMatchingChild")
     effects unknown
   fn groupChildren
     source ts("packages/shp-checker/src/ast-generation-raw.ts#groupChildren")
@@ -159,14 +151,6 @@ relation AstGenerationRawModuleFallbackFunctionNameGeneratedFromAstGenerationRaw
   roles { AstGenerationRawModule as generated, AstGenerationRawModuleFallbackFunctionNameAstAnchor as syntax }
   expects AstGenerationRawModuleFallbackFunctionNameAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7b6ed977a51ab3b9a6cc882f0729eba09b978ab4f03c1356e2ba46c39e3bb040")
   summary "fn AstGenerationRawModule.fallbackFunctionName generated from typescript function_declaration at packages/shp-checker/src/ast-generation-raw.ts#fallbackFunctionName."
-}
-
-relation AstGenerationRawModuleFirstMatchingChildGeneratedFromAstGenerationRawModuleFirstMatchingChildAstAnchor {
-  kind generated_from
-  connects AstGenerationRawModule -> AstGenerationRawModuleFirstMatchingChildAstAnchor
-  roles { AstGenerationRawModule as generated, AstGenerationRawModuleFirstMatchingChildAstAnchor as syntax }
-  expects AstGenerationRawModuleFirstMatchingChildAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5675eb6d629e403d246e9140cf920cd543ee96356a63bcb7d590b85dc43d0b5b")
-  summary "fn AstGenerationRawModule.firstMatchingChild generated from typescript function_declaration at packages/shp-checker/src/ast-generation-raw.ts#firstMatchingChild."
 }
 
 relation AstGenerationRawModuleGroupChildrenGeneratedFromAstGenerationRawModuleGroupChildrenAstAnchor {
@@ -237,7 +221,7 @@ relation AstGenerationRawModuleSemanticNameGeneratedFromAstGenerationRawModuleSe
   kind generated_from
   connects AstGenerationRawModule -> AstGenerationRawModuleSemanticNameAstAnchor
   roles { AstGenerationRawModule as generated, AstGenerationRawModuleSemanticNameAstAnchor as syntax }
-  expects AstGenerationRawModuleSemanticNameAstAnchor fingerprint ast.semantic_subtree_v1("sha256:874a61fa4420fb74771d57f33c35e8e19dabe7cdaabfe03f72f25eca2f088e71")
+  expects AstGenerationRawModuleSemanticNameAstAnchor fingerprint ast.semantic_subtree_v1("sha256:67b5e0018e6977aad30bff4cefe598dcb9f2a6c3e45119c042b4c3cea789b72f")
   summary "fn AstGenerationRawModule.semanticName generated from typescript function_declaration at packages/shp-checker/src/ast-generation-raw.ts#semanticName."
 }
 

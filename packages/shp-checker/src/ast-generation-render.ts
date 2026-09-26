@@ -1,7 +1,6 @@
 import { formatShapeSource } from "./formatter.ts";
 
 import type {
-  AstGenerationDiagnostic,
   AstGenerationResult,
   AstSourceFileInput,
   CodeAstAnchor,
@@ -23,15 +22,11 @@ import {
   uniqueShapeName
 } from "./ast-generation-utils.ts";
 
+/** Render a graph finalized by the source or AST-JSON builders. */
 export function generateShapeFromCodeSemanticGraph(
   graph: CodeSemanticGraph,
   options: GenerateShapeOptions = {}
 ): AstGenerationResult<GeneratedShapeOutput> {
-  const validationDiagnostics = validateCodeSemanticGraphForRendering(graph);
-  if (validationDiagnostics.some((diagnostic) => diagnostic.kind === "error")) {
-    return { ok: false, diagnostics: validationDiagnostics };
-  }
-
   const moduleName = normalizeGeneratedModuleName(options.moduleName ?? "generated.ast");
   const semanticShape = formatSemanticShape(graph, moduleName, options.includeAstLayer === true);
   if (!semanticShape.ok) {
@@ -47,7 +42,7 @@ export function generateShapeFromCodeSemanticGraph(
   return {
     ok: true,
     value: { semanticShape: semanticShape.value, rawShape: rawShape?.value },
-    diagnostics: validationDiagnostics
+    diagnostics: []
   };
 }
 
@@ -84,67 +79,6 @@ export function generateShapeFromAstJson(
   return output.ok
     ? { ok: true, value: output.value, diagnostics: [...graph.diagnostics, ...output.diagnostics] }
     : { ok: false, diagnostics: [...graph.diagnostics, ...output.diagnostics] };
-}
-
-function validateCodeSemanticGraphForRendering(
-  graph: CodeSemanticGraph
-): AstGenerationDiagnostic[] {
-  const diagnostics: AstGenerationDiagnostic[] = [];
-  const endpointIds = new Set([
-    ...graph.containers.map((container) => container.id),
-    ...graph.resources.map((resource) => resource.id),
-    ...graph.anchors.map((anchor) => anchor.id)
-  ]);
-  const functionIds = new Set(graph.functions.map((fn) => fn.id));
-  const resourceIds = new Set(graph.resources.map((resource) => resource.id));
-  const anchorIds = new Set(graph.anchors.map((anchor) => anchor.id));
-
-  for (const relation of graph.relations) {
-    if (!endpointIds.has(relation.fromId) || !endpointIds.has(relation.toId)) {
-      diagnostics.push({
-        kind: "error",
-        code: "invalid_semantic_relation",
-        path: relation.path,
-        nodeId: relation.nodeId,
-        message: `relation ${relation.id} references missing endpoint(s): ${relation.fromId} -> ${relation.toId}`
-      });
-    }
-    if (relation.fromId === relation.toId) {
-      diagnostics.push({
-        kind: "error",
-        code: "invalid_semantic_relation",
-        path: relation.path,
-        nodeId: relation.nodeId,
-        message: `relation ${relation.id} points at the same endpoint twice`
-      });
-    }
-  }
-
-  for (const candidate of graph.candidateEffects) {
-    if (!functionIds.has(candidate.functionId)) {
-      diagnostics.push({
-        kind: "error",
-        code: "invalid_candidate_effect",
-        message: `candidate effect ${candidate.name} references missing function ${candidate.functionId}`
-      });
-    }
-    if (!resourceIds.has(candidate.targetResourceId)) {
-      diagnostics.push({
-        kind: "error",
-        code: "invalid_candidate_effect",
-        message: `candidate effect ${candidate.name} references missing resource ${candidate.targetResourceId}`
-      });
-    }
-    if (candidate.anchorId && !anchorIds.has(candidate.anchorId)) {
-      diagnostics.push({
-        kind: "error",
-        code: "invalid_candidate_effect",
-        message: `candidate effect ${candidate.name} references missing anchor ${candidate.anchorId}`
-      });
-    }
-  }
-
-  return diagnostics;
 }
 
 function formatSemanticShape(
@@ -225,16 +159,9 @@ function formatSemanticShape(
     lines.push("}");
   }
 
-  const endpointName = new Map<string, string>();
-  for (const component of graph.containers) {
-    endpointName.set(component.id, component.name);
-  }
-  for (const resource of graph.resources) {
-    endpointName.set(resource.id, resource.name);
-  }
-  for (const anchor of graph.anchors) {
-    endpointName.set(anchor.id, anchor.name);
-  }
+  const endpointName = new Map(
+    [...graph.containers, ...graph.resources, ...graph.anchors].map(({ id, name }) => [id, name])
+  );
 
   const seenRelationNames = new Set<string>();
   for (const relation of [...graph.relations].sort((left, right) =>
@@ -323,30 +250,22 @@ function appendGeneratedFromRelations(
   const semanticLinks: { from: string; anchor: CodeAstAnchor; summary: string; name: string }[] =
     [];
 
-  for (const component of graph.containers) {
-    const anchor = component.anchorId ? anchorsById.get(component.anchorId) : undefined;
-    if (!anchor) {
-      continue;
+  for (const { kind, declarations } of [
+    { kind: "component", declarations: graph.containers },
+    { kind: "resource", declarations: graph.resources }
+  ]) {
+    for (const declaration of declarations) {
+      const anchor = declaration.anchorId ? anchorsById.get(declaration.anchorId) : undefined;
+      if (!anchor) {
+        continue;
+      }
+      semanticLinks.push({
+        from: declaration.name,
+        anchor,
+        summary: `${kind} ${declaration.name} generated from ${anchor.language} ${anchor.kind} at ${anchor.sourceRef}.`,
+        name: `${declaration.name}GeneratedFrom${anchor.name}`
+      });
     }
-    semanticLinks.push({
-      from: component.name,
-      anchor,
-      summary: `component ${component.name} generated from ${anchor.language} ${anchor.kind} at ${anchor.sourceRef}.`,
-      name: `${component.name}GeneratedFrom${anchor.name}`
-    });
-  }
-
-  for (const resource of graph.resources) {
-    const anchor = resource.anchorId ? anchorsById.get(resource.anchorId) : undefined;
-    if (!anchor) {
-      continue;
-    }
-    semanticLinks.push({
-      from: resource.name,
-      anchor,
-      summary: `resource ${resource.name} generated from ${anchor.language} ${anchor.kind} at ${anchor.sourceRef}.`,
-      name: `${resource.name}GeneratedFrom${anchor.name}`
-    });
   }
 
   for (const fn of graph.functions) {

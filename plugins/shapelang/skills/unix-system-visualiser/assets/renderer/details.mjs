@@ -67,19 +67,7 @@ function groundPointFromPointer(event) {
   };
 }
 
-function panToGround(point, speak) {
-  if (!point) {
-    return;
-  }
-  state.selectedId = null;
-  closeDetailPanel();
-  const end = {
-    x: point.x,
-    y: state.camera.y,
-    z: point.z - Math.max(110, state.camera.y * 1.75),
-    yaw: fixedPerspective.yaw,
-    pitch: fixedPerspective.pitch
-  };
+function moveCamera(end, duration) {
   if (prefersReducedMotion.matches) {
     Object.assign(state.camera, end);
     state.focus = null;
@@ -88,9 +76,27 @@ function panToGround(point, speak) {
       start: { ...state.camera },
       end,
       startedAt: performance.now(),
-      duration: 520
+      duration
     };
   }
+}
+
+function panToGround(point, speak) {
+  if (!point) {
+    return;
+  }
+  state.selectedId = null;
+  closeDetailPanel();
+  moveCamera(
+    {
+      x: point.x,
+      y: state.camera.y,
+      z: point.z - Math.max(110, state.camera.y * 1.75),
+      yaw: fixedPerspective.yaw,
+      pitch: fixedPerspective.pitch
+    },
+    520
+  );
   selectionKind.textContent = "PLANE PAN";
   selectionTitle.textContent = "MOVING ACROSS MAP";
   selectionSummary.textContent =
@@ -119,13 +125,7 @@ function formatDetails(node) {
   } else if (node.effects?.length) {
     detailRows.push(["EFFECTS", node.effects.map((effect) => effect.name).join(", ")]);
   } else if (node.relation) {
-    const endpointNames = relationEndpointIds(node.relation);
-    detailRows.push([
-      "CONNECTS",
-      endpointNames.length
-        ? compactValues(endpointNames, 3)
-        : (node.relation.from || "?") + " to " + (node.relation.to || "?")
-    ]);
+    detailRows.push(["CONNECTS", compactValues(relationEndpointIds(node.relation), 3)]);
   } else if (node.type === "function" && !node.effectsComplete) {
     detailRows.push(["EFFECTS", "UNKNOWN"]);
   } else if (node.paths?.length) {
@@ -241,6 +241,10 @@ function compactValues(values, maximum) {
   return values.slice(0, maximum).join(", ") + " +" + String(values.length - maximum) + " more";
 }
 
+function countLabel(count, noun) {
+  return String(count) + " " + noun + (count === 1 ? "" : "s");
+}
+
 function sourceRefLabel(source) {
   return source.language + "(" + source.path + ")";
 }
@@ -285,6 +289,7 @@ function ruleClauseLabels(rule) {
 
 function evidenceEntries(node) {
   const entries = [];
+  const addEntry = (meta, title, copy) => entries.push({ meta, title, copy });
   node.memories.forEach((memory) => {
     const confidence = memory.confidence ? " / " + String(memory.confidence).toUpperCase() : "";
     const guardCount = memory.guards.length;
@@ -299,159 +304,126 @@ function evidenceEntries(node) {
     });
   });
   if (node.source) {
-    entries.push({
-      meta: "SOURCE ANCHOR",
-      title: sourceRefLabel(node.source),
-      copy: "Source path modeled for this function."
-    });
+    addEntry(
+      "SOURCE ANCHOR",
+      sourceRefLabel(node.source),
+      "Source path modeled for this function."
+    );
   }
   if (node.effects?.length) {
-    entries.push({
-      meta: "MODELED EFFECTS",
-      title: compactValues(
+    addEntry(
+      "MODELED EFFECTS",
+      compactValues(
         node.effects.map((effect) => {
           return effect.target ? effect.name + " <" + effect.target + ">" : effect.name;
         }),
         3
       ),
-      copy:
-        String(node.effects.length) +
-        " effect" +
-        (node.effects.length === 1 ? "" : "s") +
-        " declared by Shape."
-    });
+      countLabel(node.effects.length, "effect") + " declared by Shape."
+    );
   } else if (node.type === "function" && !node.effectsComplete) {
-    entries.push({
-      meta: "EFFECTS UNKNOWN",
-      title: "Shape does not claim a complete effect set.",
-      copy: "Unknown is not the same as an authored empty effect set."
-    });
+    addEntry(
+      "EFFECTS UNKNOWN",
+      "Shape does not claim a complete effect set.",
+      "Unknown is not the same as an authored empty effect set."
+    );
   }
   if (node.requires?.length) {
-    entries.push({
-      meta: "FUNCTION REQUIREMENTS",
-      title: compactValues(node.requires.map(termLabel), 3),
-      copy: "Requirements declared on this function."
-    });
+    addEntry(
+      "FUNCTION REQUIREMENTS",
+      compactValues(node.requires.map(termLabel), 3),
+      "Requirements declared on this function."
+    );
   }
   if (node.shapeTraits?.length) {
-    entries.push({
-      meta: "FUNCTION TRAITS",
-      title: compactValues(node.shapeTraits, 4),
-      copy: "Shape traits declared on this function."
-    });
+    addEntry(
+      "FUNCTION TRAITS",
+      compactValues(node.shapeTraits, 4),
+      "Shape traits declared on this function."
+    );
   }
   if (node.traits?.length) {
-    entries.push({
-      meta: "RESOURCE TRAITS",
-      title: compactValues(node.traits, 4),
-      copy: "Traits declared on this resource."
-    });
+    addEntry("RESOURCE TRAITS", compactValues(node.traits, 4), "Traits declared on this resource.");
   }
   if (node.fingerprints?.length) {
-    entries.push({
-      meta: "RESOURCE FINGERPRINTS",
-      title: compactValues(
+    addEntry(
+      "RESOURCE FINGERPRINTS",
+      compactValues(
         node.fingerprints.map((item) => item.provider + ":" + item.value),
         3
       ),
-      copy: "Fingerprint expectations declared on this resource."
-    });
+      "Fingerprint expectations declared on this resource."
+    );
   }
   if (node.classifiers?.length) {
-    entries.push({
-      meta: "COMPONENT CLASSIFIERS",
-      title: compactValues(node.classifiers, 4),
-      copy: "Classifiers declared on this component."
-    });
+    addEntry(
+      "COMPONENT CLASSIFIERS",
+      compactValues(node.classifiers, 4),
+      "Classifiers declared on this component."
+    );
   }
   if (node.grants?.length) {
-    entries.push({
-      meta: "COMPONENT GRANTS",
-      title: compactValues(node.grants.map(termLabel), 3),
-      copy: "Effect grants declared on this component."
-    });
+    addEntry(
+      "COMPONENT GRANTS",
+      compactValues(node.grants.map(termLabel), 3),
+      "Effect grants declared on this component."
+    );
   }
   if (node.relation) {
-    const endpointNames = relationEndpointIds(node.relation);
-    entries.push({
-      meta: "RELATION CONTRACT",
-      title:
-        node.relation.kind +
-        ": " +
-        (endpointNames.length
-          ? compactValues(endpointNames, 3)
-          : (node.relation.from || "?") + " to " + (node.relation.to || "?")),
-      copy: node.relation.summary || "Authored connection between the two endpoints."
-    });
+    addEntry(
+      "RELATION CONTRACT",
+      node.relation.kind + ": " + compactValues(relationEndpointIds(node.relation), 3),
+      node.relation.summary || "Authored connection between the two endpoints."
+    );
   }
   if (node.paths?.length) {
-    entries.push({
-      meta: "GOVERNED PATHS",
-      title: compactValues(node.paths, 2),
-      copy:
-        String(node.paths.length) +
-        " path" +
-        (node.paths.length === 1 ? "" : "s") +
-        " covered by this implementation."
-    });
+    addEntry(
+      "GOVERNED PATHS",
+      compactValues(node.paths, 2),
+      countLabel(node.paths.length, "path") + " covered by this implementation."
+    );
   }
   if (node.onChangeRequirement) {
-    entries.push({
-      meta: "ON CHANGE",
-      title: node.onChangeRequirement,
-      copy: "Required response when a governed implementation path changes."
-    });
+    addEntry(
+      "ON CHANGE",
+      node.onChangeRequirement,
+      "Required response when a governed implementation path changes."
+    );
   }
   if (node.binding) {
     const watched = node.binding.whenChanged;
     const required = node.binding.requireChanged;
-    entries.push({
-      meta: "CHANGE BINDING",
-      title:
-        compactValues(watched.concat(required), 2) ||
+    addEntry(
+      "CHANGE BINDING",
+      compactValues(watched.concat(required), 2) ||
         compactValues(node.binding.allowAttestations, 2) ||
         "Modeled change binding",
-      copy:
-        String(watched.length) +
-        " watched and " +
-        String(required.length) +
-        " required path" +
-        (required.length === 1 ? "" : "s") +
-        "."
-    });
+      String(watched.length) + " watched and " + countLabel(required.length, "required path") + "."
+    );
   }
   if (node.rule) {
     const clauses = ruleClauseLabels(node.rule);
-    entries.push({
-      meta: "ARCHITECTURE RULE",
-      title: compactValues(clauses, 3) || "Rule with no lowered clauses",
-      copy:
-        String(clauses.length) +
-        " deterministic rule clause" +
-        (clauses.length === 1 ? "" : "s") +
-        "."
-    });
+    addEntry(
+      "ARCHITECTURE RULE",
+      compactValues(clauses, 3) || "Rule with no lowered clauses",
+      countLabel(clauses.length, "deterministic rule clause") + "."
+    );
   }
   if (node.type === "module") {
     if (node.imports.length) {
-      entries.push({
-        meta: "MODULE IMPORTS",
-        title: compactValues(node.imports, 4),
-        copy:
-          String(node.imports.length) +
-          " imported Shape module" +
-          (node.imports.length === 1 ? "" : "s") +
-          "."
-      });
+      addEntry(
+        "MODULE IMPORTS",
+        compactValues(node.imports, 4),
+        countLabel(node.imports.length, "imported Shape module") + "."
+      );
     }
   }
   if (entries.length === 0) {
-    entries.push({
-      meta: "MODEL SOURCE",
-      title: node.file,
-      copy: "No extra memory or structured evidence is modeled for this tile."
-    });
+    addEntry(
+      "MODEL SOURCE",
+      node.file,
+      "No extra memory or structured evidence is modeled for this tile."
+    );
   }
   return entries;
 }
@@ -585,36 +557,14 @@ function focusJourneyStep(step) {
     return false;
   }
   selectNode(destination, false);
-  const end = journeyFrameFor(step, destination);
-  if (prefersReducedMotion.matches) {
-    Object.assign(state.camera, end);
-    state.focus = null;
-  } else {
-    state.focus = {
-      start: { ...state.camera },
-      end,
-      startedAt: performance.now(),
-      duration: 820
-    };
-  }
+  moveCamera(journeyFrameFor(step, destination), 820);
   scheduleRender();
   return true;
 }
 
 function focusNode(node, speak) {
   selectNode(node, speak);
-  const end = focusFrameFor(node);
-  if (prefersReducedMotion.matches) {
-    Object.assign(state.camera, end);
-    state.focus = null;
-  } else {
-    state.focus = {
-      start: { ...state.camera },
-      end,
-      startedAt: performance.now(),
-      duration: 820
-    };
-  }
+  moveCamera(focusFrameFor(node), 820);
   scheduleRender();
 }
 
@@ -622,17 +572,7 @@ function resetOverview(speak) {
   state.selectedId = null;
   state.hoverId = null;
   closeDetailPanel();
-  if (prefersReducedMotion.matches) {
-    Object.assign(state.camera, initialCamera);
-    state.focus = null;
-  } else {
-    state.focus = {
-      start: { ...state.camera },
-      end: { ...initialCamera },
-      startedAt: performance.now(),
-      duration: 780
-    };
-  }
+  moveCamera({ ...initialCamera }, 780);
   selectionKind.textContent = "PLANE OVERVIEW";
   selectionTitle.textContent = "START HERE";
   selectionSummary.textContent =

@@ -96,6 +96,16 @@ memory IncrementalInvalidationContract : CheckOrderRationale<fn ShapeIncremental
   }
 }
 
+reevaluation IncrementalCacheCommitPreserved {
+  satisfies memory IncrementalInvalidationContract
+  outcome Confirmed
+  summary "Parse failures and successful checks share one cache commit. Document and implicit-origin changes still rebuild the complete model, option-only parse failures reuse diagnostics, thrown validation leaves the previous snapshot intact, and returned results remain detached from the cache."
+  reviewer Codex
+  decided_on "2026-09-26"
+  evidence test("packages/shp-checker/src/checker/incremental.test.ts")
+  evidence ts("packages/shp-checker/src/checker/incremental.ts#check")
+}
+
 reevaluation IncrementalFullCheckOrderRechecked {
   satisfies memory CheckPipelineOrder
   outcome Confirmed

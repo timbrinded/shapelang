@@ -29,67 +29,206 @@ export function compareShapeDiagnostics(left: ShapeDiagnostic, right: ShapeDiagn
 }
 
 function formatDiagnostic(diagnostic: ShapeDiagnostic): string {
+  if (diagnostic.kind === "parse") {
+    return formatParseDiagnostic(diagnostic);
+  }
+  const [heading, ...body] = diagnosticLines(diagnostic);
+  return [heading, "", ...body, formatCausedBy(diagnostic.causedBy)].join("\n");
+}
+
+function diagnosticLines(diagnostic: SemanticDiagnostic): [string, ...string[]] {
   switch (diagnostic.kind) {
-    case "parse":
-      return formatParseDiagnostic(diagnostic);
-    case "final_forbidden_effect":
-      return formatFinalForbiddenDiagnostic(diagnostic);
+    case "final_forbidden_effect": {
+      const evidence = diagnostic.evidence ? `\nevidence: ${diagnostic.evidence}` : "";
+      return [
+        "error: forbidden effect",
+        `${displaySymbol(diagnostic.component)}.${diagnostic.functionName} emits ${formatTerm(diagnostic.effect, diagnostic.target)}.`,
+        `${displaySymbol(diagnostic.target)} has trait ${displaySymbol(diagnostic.trait)}.`,
+        `${displaySymbol(diagnostic.trait)} forbids final ${formatTerm(diagnostic.effect, diagnostic.target)}.${evidence}`
+      ];
+    }
     case "missing_grant":
-      return formatMissingGrantDiagnostic(diagnostic);
+      return [
+        "error: missing grant",
+        `${displaySymbol(diagnostic.component)}.${diagnostic.functionName} emits ${formatTerm(diagnostic.effect, diagnostic.target)}.`,
+        `${displaySymbol(diagnostic.component)} does not grant ${formatTerm(diagnostic.effect, diagnostic.target)}.`
+      ];
     case "unknown_effects":
-      return formatUnknownEffectsDiagnostic(diagnostic);
+      return [
+        `${diagnostic.severity}: unknown effects`,
+        `${displaySymbol(diagnostic.component)}.${diagnostic.functionName} declares effects unknown.`
+      ];
     case "unknown_name":
-      return formatUnknownNameDiagnostic(diagnostic);
+      return [
+        `error: unknown ${diagnostic.nameKind}`,
+        `${diagnostic.nameKind} ${displaySymbol(diagnostic.name)} is referenced but not declared.`
+      ];
     case "ambiguous_name":
-      return formatAmbiguousNameDiagnostic(diagnostic);
+      return [
+        `error: ambiguous ${diagnostic.nameKind}`,
+        `${diagnostic.nameKind} ${diagnostic.name} matches more than one imported declaration.`,
+        "Use a module-qualified reference.",
+        `matches: ${diagnostic.matches.join(", ")}`
+      ];
     case "invalid_rule":
-      return formatInvalidRuleDiagnostic(diagnostic);
+      return [
+        "error: invalid rule",
+        `rule ${displaySymbol(diagnostic.rule)} is invalid: ${diagnostic.reason}.`
+      ];
     case "duplicate_declaration":
-      return formatDuplicateDeclarationDiagnostic(diagnostic);
+      return [
+        `error: duplicate ${diagnostic.declarationKind}`,
+        `${diagnostic.declarationKind} ${displaySymbol(diagnostic.name)} is declared more than once.`
+      ];
     case "duplicate_fingerprint":
-      return formatDuplicateFingerprintDiagnostic(diagnostic);
+      return [
+        "error: duplicate fingerprint",
+        `resource ${displaySymbol(diagnostic.resource)} declares fingerprint provider ${diagnostic.provider} more than once.`
+      ];
     case "missing_shape_update":
-      return formatMissingShapeUpdateDiagnostic(diagnostic);
-    case "missing_bound_docs_change":
-      return formatMissingBoundDocsChangeDiagnostic(diagnostic);
+      return [
+        "error: governed source changed without current Shape update",
+        `Changed file: ${diagnostic.changedFile}`,
+        `Governed by: ${diagnostic.implementation}`,
+        `Matched path: ${diagnostic.glob}`,
+        "Required: update a current .shape file with matching source/evidence, or add a no_shape_change attestation."
+      ];
+    case "missing_bound_docs_change": {
+      const attest =
+        diagnostic.attestationKinds.length > 0
+          ? `, or add ${diagnostic.attestationKinds.map((kind) => `attest ${kind}`).join(" or ")}`
+          : "";
+      return [
+        "error: bound docs change missing",
+        `binding ${diagnostic.binding} was triggered by ${diagnostic.changedFile}.`,
+        `Required: change one of ${diagnostic.requiredPaths.join(", ")}${attest}.`
+      ];
+    }
     case "forbidden_path":
-      return formatForbiddenPathDiagnostic(diagnostic);
+      return forbiddenPathLines(diagnostic);
     case "forbidden_hypercycle":
-      return formatForbiddenHypercycleDiagnostic(diagnostic);
-    case "forbidden_provides":
-      return formatForbiddenProvidesDiagnostic(diagnostic);
-    case "fingerprint_mismatch":
-      return formatFingerprintMismatchDiagnostic(diagnostic);
-    case "candidate_pin_fingerprint_mismatch":
-      return formatCandidatePinFingerprintMismatchDiagnostic(diagnostic);
+      return [
+        "error: forbidden hypercycle",
+        `rule ${displaySymbol(diagnostic.rule)} rejects this hypercycle:`,
+        ...diagnostic.hyperedges.map((edge) => `  ${edge.kind} ${displaySymbol(edge.name)}`),
+        `witness: ${diagnostic.vertices.map(displaySymbol).join(" -> ")}`
+      ];
+    case "forbidden_provides": {
+      const allowed = diagnostic.allowedComponent
+        ? ` except ${displaySymbol(diagnostic.allowedComponent)}`
+        : "";
+      return [
+        "error: forbidden provides",
+        `${displaySymbol(diagnostic.provider)} provides ${displaySymbol(diagnostic.target)} via relation ${displaySymbol(diagnostic.hyperedge)}.`,
+        `rule ${displaySymbol(diagnostic.rule)} forbids provides ${displaySymbol(diagnostic.target)}${allowed}.`
+      ];
+    }
+    case "fingerprint_mismatch": {
+      const actual = diagnostic.actual ?? "missing";
+      return [
+        "error: stale fingerprint expectation",
+        `relation ${displaySymbol(diagnostic.relation)} expects ${displaySymbol(diagnostic.endpoint)} fingerprint ${diagnostic.provider}.`,
+        `expected: ${diagnostic.expected}`,
+        `actual: ${actual}`
+      ];
+    }
+    case "candidate_pin_fingerprint_mismatch": {
+      const actual = diagnostic.actual ?? "missing";
+      return [
+        "error: stale candidate effect pin",
+        `candidate effect ${displaySymbol(diagnostic.candidateEffect)} pins ${displaySymbol(diagnostic.anchor)} fingerprint ${diagnostic.provider}.`,
+        `expected: ${diagnostic.expected}`,
+        `actual: ${actual}`
+      ];
+    }
     case "invalid_candidate_effect":
-      return formatInvalidCandidateEffectDiagnostic(diagnostic);
+      return [
+        "error: invalid candidate effect",
+        `candidate effect ${diagnostic.name}: ${diagnostic.reason}.`
+      ];
     case "unsafe_effects":
-      return formatUnsafeEffectsDiagnostic(diagnostic);
+      return [
+        "error: unsafe effects missing policy metadata",
+        `${displaySymbol(diagnostic.component)}.${diagnostic.functionName} declares unsafe effects.`,
+        `Missing: ${diagnostic.missing.join(", ")}.`
+      ];
     case "missing_required_context":
-      return formatMissingRequiredContextDiagnostic(diagnostic);
+      return [
+        "error: missing required context",
+        `${diagnostic.targetKind} ${displaySymbol(diagnostic.target)} has shape ${displaySymbol(diagnostic.requiredBy)}.`,
+        `${displaySymbol(diagnostic.requiredBy)} requires ${diagnostic.requiredContext}.`,
+        "",
+        "No matching rationale or memory found."
+      ];
     case "invalid_context_target":
-      return formatInvalidContextTargetDiagnostic(diagnostic);
+      return [
+        "error: invalid context target",
+        `${diagnostic.contextKind} ${displaySymbol(diagnostic.name)} applies to ${diagnostic.targetKind} ${displaySymbol(diagnostic.target)},`,
+        "but that target is not declared."
+      ];
     case "context_target_mismatch":
-      return formatContextTargetMismatchDiagnostic(diagnostic);
+      return [
+        "error: context target mismatch",
+        `${diagnostic.contextKind} ${diagnostic.name} declares ${formatTarget(diagnostic.declaredTarget)},`,
+        `but applies_to references ${formatTarget(diagnostic.appliesToTarget)}.`
+      ];
     case "missing_required_description":
-      return formatMissingRequiredDescriptionDiagnostic(diagnostic);
+      return [
+        "error: missing required description",
+        `${diagnostic.targetKind} ${displaySymbol(diagnostic.target)} has shape ${displaySymbol(diagnostic.requiredBy)}.`,
+        `${displaySymbol(diagnostic.requiredBy)} requires a description.`
+      ];
     case "guarded_shape_changed":
-      return formatGuardedShapeChangedDiagnostic(diagnostic);
+      return [
+        "error: guarded shape changed",
+        `${diagnostic.targetKind} ${displaySymbol(diagnostic.target)} is protected by ${diagnostic.guardKind} ${displaySymbol(diagnostic.guard)}.`,
+        guardedShapeChangeSummary(diagnostic),
+        "",
+        "Required:",
+        `  add ${diagnostic.missingReevaluation}`,
+        "  or preserve the protected shape."
+      ];
     case "invalid_reevaluation":
-      return formatInvalidReevaluationDiagnostic(diagnostic);
+      return [
+        "error: invalid reevaluation",
+        `reevaluation ${diagnostic.name} is invalid: ${diagnostic.reason}.`
+      ];
     case "stale_memory":
-      return formatStaleMemoryDiagnostic(diagnostic);
+      return [
+        "error: stale design memory",
+        `${diagnostic.guardKind} ${displaySymbol(diagnostic.guard)} protects ${diagnostic.targetKind} ${displaySymbol(diagnostic.target)}.`,
+        `Its review_by date ${diagnostic.reviewBy} is before ${diagnostic.asOf}.`,
+        "",
+        "Required:",
+        "  review the design memory and update review_by, or replace it with a reevaluation."
+      ];
     case "invalid_relation":
-      return formatInvalidRelationDiagnostic(diagnostic);
+      return [
+        "error: invalid relation",
+        `relation ${diagnostic.name} is invalid: ${diagnostic.reason}.`
+      ];
     case "invalid_require_context":
-      return formatInvalidRequireContextDiagnostic(diagnostic);
+      return [
+        "error: invalid require_context",
+        `trait ${displaySymbol(diagnostic.trait)} require_context ${diagnostic.contextType}<${diagnostic.typeParam}> is invalid: ${diagnostic.reason}.`
+      ];
     case "invalid_implementation":
-      return formatInvalidImplementationDiagnostic(diagnostic);
+      return [
+        "error: invalid implementation",
+        `implementation ${displaySymbol(diagnostic.name)} is invalid: ${diagnostic.reason}.`
+      ];
     case "stale_attestation":
-      return formatStaleAttestationDiagnostic(diagnostic);
+      return [
+        "warning: stale attestation",
+        `attest ${diagnostic.attestationKind} for ${diagnostic.path} is unchanged from the base model, so it no longer satisfies coverage or bindings.`,
+        "Remove it with `shp attest prune`; git history keeps the decision."
+      ];
     case "missing_cited_path":
-      return formatMissingCitedPathDiagnostic(diagnostic);
+      return [
+        "error: missing cited path",
+        `${diagnostic.path} is cited by the model but is not in the repository.`,
+        "Update the citation to the file's new path, or remove it if the file is gone."
+      ];
   }
 }
 
@@ -98,146 +237,9 @@ function formatParseDiagnostic(diagnostic: ParseDiagnostic): string {
   return `error: parse error\n\n${location} ${diagnostic.message}`;
 }
 
-function formatFinalForbiddenDiagnostic(
-  diagnostic: Extract<SemanticDiagnostic, { kind: "final_forbidden_effect" }>
-): string {
-  const evidence = diagnostic.evidence ? `\nevidence: ${diagnostic.evidence}` : "";
-  return [
-    "error: forbidden effect",
-    "",
-    `${displaySymbol(diagnostic.component)}.${diagnostic.functionName} emits ${formatTerm(diagnostic.effect, diagnostic.target)}.`,
-    `${displaySymbol(diagnostic.target)} has trait ${displaySymbol(diagnostic.trait)}.`,
-    `${displaySymbol(diagnostic.trait)} forbids final ${formatTerm(diagnostic.effect, diagnostic.target)}.${evidence}`,
-    formatCausedBy(diagnostic.causedBy)
-  ].join("\n");
-}
-
-function formatMissingGrantDiagnostic(
-  diagnostic: Extract<SemanticDiagnostic, { kind: "missing_grant" }>
-): string {
-  return [
-    "error: missing grant",
-    "",
-    `${displaySymbol(diagnostic.component)}.${diagnostic.functionName} emits ${formatTerm(diagnostic.effect, diagnostic.target)}.`,
-    `${displaySymbol(diagnostic.component)} does not grant ${formatTerm(diagnostic.effect, diagnostic.target)}.`,
-    formatCausedBy(diagnostic.causedBy)
-  ].join("\n");
-}
-
-function formatUnknownEffectsDiagnostic(
-  diagnostic: Extract<SemanticDiagnostic, { kind: "unknown_effects" }>
-): string {
-  return [
-    `${diagnostic.severity}: unknown effects`,
-    "",
-    `${displaySymbol(diagnostic.component)}.${diagnostic.functionName} declares effects unknown.`,
-    formatCausedBy(diagnostic.causedBy)
-  ].join("\n");
-}
-
-function formatUnknownNameDiagnostic(
-  diagnostic: Extract<SemanticDiagnostic, { kind: "unknown_name" }>
-): string {
-  return [
-    `error: unknown ${diagnostic.nameKind}`,
-    "",
-    `${diagnostic.nameKind} ${displaySymbol(diagnostic.name)} is referenced but not declared.`,
-    formatCausedBy(diagnostic.causedBy)
-  ].join("\n");
-}
-
-function formatAmbiguousNameDiagnostic(
-  diagnostic: Extract<SemanticDiagnostic, { kind: "ambiguous_name" }>
-): string {
-  return [
-    `error: ambiguous ${diagnostic.nameKind}`,
-    "",
-    `${diagnostic.nameKind} ${diagnostic.name} matches more than one imported declaration.`,
-    "Use a module-qualified reference.",
-    `matches: ${diagnostic.matches.join(", ")}`,
-    formatCausedBy(diagnostic.causedBy)
-  ].join("\n");
-}
-
-function formatInvalidRuleDiagnostic(
-  diagnostic: Extract<SemanticDiagnostic, { kind: "invalid_rule" }>
-): string {
-  return [
-    "error: invalid rule",
-    "",
-    `rule ${displaySymbol(diagnostic.rule)} is invalid: ${diagnostic.reason}.`,
-    formatCausedBy(diagnostic.causedBy)
-  ].join("\n");
-}
-
-function formatDuplicateDeclarationDiagnostic(
-  diagnostic: Extract<SemanticDiagnostic, { kind: "duplicate_declaration" }>
-): string {
-  return [
-    `error: duplicate ${diagnostic.declarationKind}`,
-    "",
-    `${diagnostic.declarationKind} ${displaySymbol(diagnostic.name)} is declared more than once.`,
-    formatCausedBy(diagnostic.causedBy)
-  ].join("\n");
-}
-
-function formatDuplicateFingerprintDiagnostic(
-  diagnostic: Extract<SemanticDiagnostic, { kind: "duplicate_fingerprint" }>
-): string {
-  return [
-    "error: duplicate fingerprint",
-    "",
-    `resource ${displaySymbol(diagnostic.resource)} declares fingerprint provider ${diagnostic.provider} more than once.`,
-    formatCausedBy(diagnostic.causedBy)
-  ].join("\n");
-}
-
-function formatMissingShapeUpdateDiagnostic(
-  diagnostic: Extract<SemanticDiagnostic, { kind: "missing_shape_update" }>
-): string {
-  return [
-    "error: governed source changed without current Shape update",
-    "",
-    `Changed file: ${diagnostic.changedFile}`,
-    `Governed by: ${diagnostic.implementation}`,
-    `Matched path: ${diagnostic.glob}`,
-    "Required: update a current .shape file with matching source/evidence, or add a no_shape_change attestation.",
-    formatCausedBy(diagnostic.causedBy)
-  ].join("\n");
-}
-
-function formatMissingBoundDocsChangeDiagnostic(
-  diagnostic: Extract<SemanticDiagnostic, { kind: "missing_bound_docs_change" }>
-): string {
-  const attest =
-    diagnostic.attestationKinds.length > 0
-      ? `, or add ${diagnostic.attestationKinds.map((kind) => `attest ${kind}`).join(" or ")}`
-      : "";
-  return [
-    "error: bound docs change missing",
-    "",
-    `binding ${diagnostic.binding} was triggered by ${diagnostic.changedFile}.`,
-    `Required: change one of ${diagnostic.requiredPaths.join(", ")}${attest}.`,
-    formatCausedBy(diagnostic.causedBy)
-  ].join("\n");
-}
-
-function formatForbiddenHypercycleDiagnostic(
-  diagnostic: Extract<SemanticDiagnostic, { kind: "forbidden_hypercycle" }>
-): string {
-  return [
-    "error: forbidden hypercycle",
-    "",
-    `rule ${displaySymbol(diagnostic.rule)} rejects this hypercycle:`,
-    ...diagnostic.hyperedges.map((edge) => `  ${edge.kind} ${displaySymbol(edge.name)}`),
-    `witness: ${diagnostic.vertices.map(displaySymbol).join(" -> ")}`,
-    formatCausedBy(diagnostic.causedBy)
-  ].join("\n");
-}
-
-function formatForbiddenPathDiagnostic(
+function forbiddenPathLines(
   diagnostic: Extract<SemanticDiagnostic, { kind: "forbidden_path" }>
-): string {
+): [string, ...string[]] {
   const displayVertex = collisionAwareDisplay([
     diagnostic.source,
     diagnostic.target,
@@ -246,7 +248,6 @@ function formatForbiddenPathDiagnostic(
   const displayRelation = collisionAwareDisplay(diagnostic.steps.map((step) => step.relation));
   return [
     "error: forbidden path",
-    "",
     `rule ${displaySymbol(diagnostic.rule)} rejects this dependency path:`,
     ...diagnostic.steps.map(
       (step) =>
@@ -254,9 +255,8 @@ function formatForbiddenPathDiagnostic(
     ),
     `witness: ${[diagnostic.source, ...diagnostic.steps.map((step) => step.to)]
       .map(displayVertex)
-      .join(" -> ")}`,
-    formatCausedBy(diagnostic.causedBy)
-  ].join("\n");
+      .join(" -> ")}`
+  ];
 }
 
 function collisionAwareDisplay(names: string[]): (name: string) => string {
@@ -273,122 +273,6 @@ function collisionAwareDisplay(names: string[]): (name: string) => string {
       : displaySymbol(name);
 }
 
-function formatForbiddenProvidesDiagnostic(
-  diagnostic: Extract<SemanticDiagnostic, { kind: "forbidden_provides" }>
-): string {
-  const allowed = diagnostic.allowedComponent
-    ? ` except ${displaySymbol(diagnostic.allowedComponent)}`
-    : "";
-  return [
-    "error: forbidden provides",
-    "",
-    `${displaySymbol(diagnostic.provider)} provides ${displaySymbol(diagnostic.target)} via relation ${displaySymbol(diagnostic.hyperedge)}.`,
-    `rule ${displaySymbol(diagnostic.rule)} forbids provides ${displaySymbol(diagnostic.target)}${allowed}.`,
-    formatCausedBy(diagnostic.causedBy)
-  ].join("\n");
-}
-
-function formatFingerprintMismatchDiagnostic(
-  diagnostic: Extract<SemanticDiagnostic, { kind: "fingerprint_mismatch" }>
-): string {
-  const actual = diagnostic.actual ?? "missing";
-  return [
-    "error: stale fingerprint expectation",
-    "",
-    `relation ${displaySymbol(diagnostic.relation)} expects ${displaySymbol(diagnostic.endpoint)} fingerprint ${diagnostic.provider}.`,
-    `expected: ${diagnostic.expected}`,
-    `actual: ${actual}`,
-    formatCausedBy(diagnostic.causedBy)
-  ].join("\n");
-}
-
-function formatCandidatePinFingerprintMismatchDiagnostic(
-  diagnostic: Extract<SemanticDiagnostic, { kind: "candidate_pin_fingerprint_mismatch" }>
-): string {
-  const actual = diagnostic.actual ?? "missing";
-  return [
-    "error: stale candidate effect pin",
-    "",
-    `candidate effect ${displaySymbol(diagnostic.candidateEffect)} pins ${displaySymbol(diagnostic.anchor)} fingerprint ${diagnostic.provider}.`,
-    `expected: ${diagnostic.expected}`,
-    `actual: ${actual}`,
-    formatCausedBy(diagnostic.causedBy)
-  ].join("\n");
-}
-
-function formatInvalidCandidateEffectDiagnostic(
-  diagnostic: Extract<SemanticDiagnostic, { kind: "invalid_candidate_effect" }>
-): string {
-  return [
-    "error: invalid candidate effect",
-    "",
-    `candidate effect ${diagnostic.name}: ${diagnostic.reason}.`,
-    formatCausedBy(diagnostic.causedBy)
-  ].join("\n");
-}
-
-function formatUnsafeEffectsDiagnostic(
-  diagnostic: Extract<SemanticDiagnostic, { kind: "unsafe_effects" }>
-): string {
-  return [
-    "error: unsafe effects missing policy metadata",
-    "",
-    `${displaySymbol(diagnostic.component)}.${diagnostic.functionName} declares unsafe effects.`,
-    `Missing: ${diagnostic.missing.join(", ")}.`,
-    formatCausedBy(diagnostic.causedBy)
-  ].join("\n");
-}
-
-function formatMissingRequiredContextDiagnostic(
-  diagnostic: Extract<SemanticDiagnostic, { kind: "missing_required_context" }>
-): string {
-  return [
-    "error: missing required context",
-    "",
-    `${diagnostic.targetKind} ${displaySymbol(diagnostic.target)} has shape ${displaySymbol(diagnostic.requiredBy)}.`,
-    `${displaySymbol(diagnostic.requiredBy)} requires ${diagnostic.requiredContext}.`,
-    "",
-    "No matching rationale or memory found.",
-    formatCausedBy(diagnostic.causedBy)
-  ].join("\n");
-}
-
-function formatInvalidContextTargetDiagnostic(
-  diagnostic: Extract<SemanticDiagnostic, { kind: "invalid_context_target" }>
-): string {
-  return [
-    "error: invalid context target",
-    "",
-    `${diagnostic.contextKind} ${displaySymbol(diagnostic.name)} applies to ${diagnostic.targetKind} ${displaySymbol(diagnostic.target)},`,
-    "but that target is not declared.",
-    formatCausedBy(diagnostic.causedBy)
-  ].join("\n");
-}
-
-function formatContextTargetMismatchDiagnostic(
-  diagnostic: Extract<SemanticDiagnostic, { kind: "context_target_mismatch" }>
-): string {
-  return [
-    "error: context target mismatch",
-    "",
-    `${diagnostic.contextKind} ${diagnostic.name} declares ${formatTarget(diagnostic.declaredTarget)},`,
-    `but applies_to references ${formatTarget(diagnostic.appliesToTarget)}.`,
-    formatCausedBy(diagnostic.causedBy)
-  ].join("\n");
-}
-
-function formatMissingRequiredDescriptionDiagnostic(
-  diagnostic: Extract<SemanticDiagnostic, { kind: "missing_required_description" }>
-): string {
-  return [
-    "error: missing required description",
-    "",
-    `${diagnostic.targetKind} ${displaySymbol(diagnostic.target)} has shape ${displaySymbol(diagnostic.requiredBy)}.`,
-    `${displaySymbol(diagnostic.requiredBy)} requires a description.`,
-    formatCausedBy(diagnostic.causedBy)
-  ].join("\n");
-}
-
 function guardedShapeChangeSummary(
   diagnostic: Extract<SemanticDiagnostic, { kind: "guarded_shape_changed" }>
 ): string {
@@ -399,105 +283,6 @@ function guardedShapeChangeSummary(
     return `This change removes ${diagnostic.changedProperty} from the guarded target.`;
   }
   return "This change modifies the guarded target.";
-}
-
-function formatGuardedShapeChangedDiagnostic(
-  diagnostic: Extract<SemanticDiagnostic, { kind: "guarded_shape_changed" }>
-): string {
-  return [
-    "error: guarded shape changed",
-    "",
-    `${diagnostic.targetKind} ${displaySymbol(diagnostic.target)} is protected by ${diagnostic.guardKind} ${displaySymbol(diagnostic.guard)}.`,
-    guardedShapeChangeSummary(diagnostic),
-    "",
-    "Required:",
-    `  add ${diagnostic.missingReevaluation}`,
-    "  or preserve the protected shape.",
-    formatCausedBy(diagnostic.causedBy)
-  ].join("\n");
-}
-
-function formatInvalidReevaluationDiagnostic(
-  diagnostic: Extract<SemanticDiagnostic, { kind: "invalid_reevaluation" }>
-): string {
-  return [
-    "error: invalid reevaluation",
-    "",
-    `reevaluation ${diagnostic.name} is invalid: ${diagnostic.reason}.`,
-    formatCausedBy(diagnostic.causedBy)
-  ].join("\n");
-}
-
-function formatStaleMemoryDiagnostic(
-  diagnostic: Extract<SemanticDiagnostic, { kind: "stale_memory" }>
-): string {
-  return [
-    "error: stale design memory",
-    "",
-    `${diagnostic.guardKind} ${displaySymbol(diagnostic.guard)} protects ${diagnostic.targetKind} ${displaySymbol(diagnostic.target)}.`,
-    `Its review_by date ${diagnostic.reviewBy} is before ${diagnostic.asOf}.`,
-    "",
-    "Required:",
-    "  review the design memory and update review_by, or replace it with a reevaluation.",
-    formatCausedBy(diagnostic.causedBy)
-  ].join("\n");
-}
-
-function formatInvalidRelationDiagnostic(
-  diagnostic: Extract<SemanticDiagnostic, { kind: "invalid_relation" }>
-): string {
-  return [
-    "error: invalid relation",
-    "",
-    `relation ${diagnostic.name} is invalid: ${diagnostic.reason}.`,
-    formatCausedBy(diagnostic.causedBy)
-  ].join("\n");
-}
-
-function formatInvalidRequireContextDiagnostic(
-  diagnostic: Extract<SemanticDiagnostic, { kind: "invalid_require_context" }>
-): string {
-  return [
-    "error: invalid require_context",
-    "",
-    `trait ${displaySymbol(diagnostic.trait)} require_context ${diagnostic.contextType}<${diagnostic.typeParam}> is invalid: ${diagnostic.reason}.`,
-    formatCausedBy(diagnostic.causedBy)
-  ].join("\n");
-}
-
-function formatInvalidImplementationDiagnostic(
-  diagnostic: Extract<SemanticDiagnostic, { kind: "invalid_implementation" }>
-): string {
-  return [
-    "error: invalid implementation",
-    "",
-    `implementation ${displaySymbol(diagnostic.name)} is invalid: ${diagnostic.reason}.`,
-    formatCausedBy(diagnostic.causedBy)
-  ].join("\n");
-}
-
-function formatMissingCitedPathDiagnostic(
-  diagnostic: Extract<SemanticDiagnostic, { kind: "missing_cited_path" }>
-): string {
-  return [
-    "error: missing cited path",
-    "",
-    `${diagnostic.path} is cited by the model but is not in the repository.`,
-    "Update the citation to the file's new path, or remove it if the file is gone.",
-    formatCausedBy(diagnostic.causedBy)
-  ].join("\n");
-}
-
-function formatStaleAttestationDiagnostic(
-  diagnostic: Extract<SemanticDiagnostic, { kind: "stale_attestation" }>
-): string {
-  return [
-    "warning: stale attestation",
-    "",
-    `attest ${diagnostic.attestationKind} for ${diagnostic.path} is unchanged from the base model, so it no longer satisfies coverage or bindings.`,
-    "Remove it with `shp attest prune`; git history keeps the decision.",
-    formatCausedBy(diagnostic.causedBy)
-  ].join("\n");
 }
 
 function formatCausedBy(causedBy: string[]): string {

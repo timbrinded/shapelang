@@ -8,22 +8,22 @@ trait GeneratedCandidate {
 
 resource AstGenerationJsonModuleBuildCodeSemanticGraphFromAstJsonAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/ast-generation-json.ts#buildCodeSemanticGraphFromAstJson")
-  fingerprint ast.semantic_subtree_v1("sha256:7d2d82d7b3e0706061b6851e20f8afb4f804b3cba248d8bedb93a42e76068ba7")
+  fingerprint ast.semantic_subtree_v1("sha256:1b66a4b68c28797249895afc53e77f37a2f1b04292a7db49b6ffa2baa9849767")
 }
 
 resource AstGenerationJsonModuleNormalizeJsonAstFileAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/ast-generation-json.ts#normalizeJsonAstFile")
-  fingerprint ast.semantic_subtree_v1("sha256:792aed06bf81f93d1b121543b9d2be21c13712226e633374e2f9081d6fcba532")
+  fingerprint ast.semantic_subtree_v1("sha256:3bc3b42f72e0bdef1b2be88b798c5d4928caf48bd5f0479b8a68ed5526a7801b")
 }
 
 resource AstGenerationJsonModuleParseJsonAstInputAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/ast-generation-json.ts#parseJsonAstInput")
-  fingerprint ast.semantic_subtree_v1("sha256:438e0b32a684767aa4f5b395354a08f93761d45f4988887884f7429a2e42416f")
+  fingerprint ast.semantic_subtree_v1("sha256:9870b24cd39807103345703342534f27d8ed781825b0cde38de796765faa6439")
 }
 
 resource AstGenerationJsonModuleParseJsonAstNodeAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/ast-generation-json.ts#parseJsonAstNode")
-  fingerprint ast.semantic_subtree_v1("sha256:f2ad0b41cd9a8b48ef68a19b268633033e2890119f270c0e875bba327eb212cd")
+  fingerprint ast.semantic_subtree_v1("sha256:983fe9180ecdb211a2712aa2d2b94b19aa03b4806ec6b3f5d0fe0c4620786e12")
 }
 
 component AstGenerationJsonModule : GeneratedCandidate {
@@ -45,7 +45,7 @@ relation AstGenerationJsonModuleBuildCodeSemanticGraphFromAstJsonGeneratedFromAs
   kind generated_from
   connects AstGenerationJsonModule -> AstGenerationJsonModuleBuildCodeSemanticGraphFromAstJsonAstAnchor
   roles { AstGenerationJsonModule as generated, AstGenerationJsonModuleBuildCodeSemanticGraphFromAstJsonAstAnchor as syntax }
-  expects AstGenerationJsonModuleBuildCodeSemanticGraphFromAstJsonAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7d2d82d7b3e0706061b6851e20f8afb4f804b3cba248d8bedb93a42e76068ba7")
+  expects AstGenerationJsonModuleBuildCodeSemanticGraphFromAstJsonAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1b66a4b68c28797249895afc53e77f37a2f1b04292a7db49b6ffa2baa9849767")
   summary "fn AstGenerationJsonModule.buildCodeSemanticGraphFromAstJson generated from typescript function_declaration at packages/shp-checker/src/ast-generation-json.ts#buildCodeSemanticGraphFromAstJson."
 }
 
@@ -53,7 +53,7 @@ relation AstGenerationJsonModuleNormalizeJsonAstFileGeneratedFromAstGenerationJs
   kind generated_from
   connects AstGenerationJsonModule -> AstGenerationJsonModuleNormalizeJsonAstFileAstAnchor
   roles { AstGenerationJsonModule as generated, AstGenerationJsonModuleNormalizeJsonAstFileAstAnchor as syntax }
-  expects AstGenerationJsonModuleNormalizeJsonAstFileAstAnchor fingerprint ast.semantic_subtree_v1("sha256:792aed06bf81f93d1b121543b9d2be21c13712226e633374e2f9081d6fcba532")
+  expects AstGenerationJsonModuleNormalizeJsonAstFileAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3bc3b42f72e0bdef1b2be88b798c5d4928caf48bd5f0479b8a68ed5526a7801b")
   summary "fn AstGenerationJsonModule.normalizeJsonAstFile generated from typescript function_declaration at packages/shp-checker/src/ast-generation-json.ts#normalizeJsonAstFile."
 }
 
@@ -61,7 +61,7 @@ relation AstGenerationJsonModuleParseJsonAstInputGeneratedFromAstGenerationJsonM
   kind generated_from
   connects AstGenerationJsonModule -> AstGenerationJsonModuleParseJsonAstInputAstAnchor
   roles { AstGenerationJsonModule as generated, AstGenerationJsonModuleParseJsonAstInputAstAnchor as syntax }
-  expects AstGenerationJsonModuleParseJsonAstInputAstAnchor fingerprint ast.semantic_subtree_v1("sha256:438e0b32a684767aa4f5b395354a08f93761d45f4988887884f7429a2e42416f")
+  expects AstGenerationJsonModuleParseJsonAstInputAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9870b24cd39807103345703342534f27d8ed781825b0cde38de796765faa6439")
   summary "fn AstGenerationJsonModule.parseJsonAstInput generated from typescript function_declaration at packages/shp-checker/src/ast-generation-json.ts#parseJsonAstInput."
 }
 
@@ -69,7 +69,7 @@ relation AstGenerationJsonModuleParseJsonAstNodeGeneratedFromAstGenerationJsonMo
   kind generated_from
   connects AstGenerationJsonModule -> AstGenerationJsonModuleParseJsonAstNodeAstAnchor
   roles { AstGenerationJsonModule as generated, AstGenerationJsonModuleParseJsonAstNodeAstAnchor as syntax }
-  expects AstGenerationJsonModuleParseJsonAstNodeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f2ad0b41cd9a8b48ef68a19b268633033e2890119f270c0e875bba327eb212cd")
+  expects AstGenerationJsonModuleParseJsonAstNodeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:983fe9180ecdb211a2712aa2d2b94b19aa03b4806ec6b3f5d0fe0c4620786e12")
   summary "fn AstGenerationJsonModule.parseJsonAstNode generated from typescript function_declaration at packages/shp-checker/src/ast-generation-json.ts#parseJsonAstNode."
 }
 

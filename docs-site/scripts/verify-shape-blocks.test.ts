@@ -21,13 +21,7 @@
 
 import { describe, expect, test } from "bun:test";
 import { parseShapeModule } from "@shape/shp-checker";
-import {
-  type CorpusFile,
-  type Failure,
-  extractShapeFences,
-  verifyOneFence,
-  verifyShapeCorpus
-} from "./verify-shape-blocks.ts";
+import { type CorpusFile, type Failure, verifyShapeCorpus } from "./verify-shape-blocks.ts";
 
 // Vision-anchor labels (string literals following the TESTING.md "Vision-anchored" and "Labelled" conventions).
 // They are defined here rather than imported from the checker's behavioural
@@ -120,14 +114,11 @@ describe("docs fence verifier", () => {
 
       // The location passthrough is not always `unknown`: a fence the parser
       // can localise yields a concrete `line:col` prefix.
-      const localisable = verifyOneFence(
-        { info: "shape", code: BROKEN_GIBBERISH, line: 1 },
-        "docs/gibberish.md"
+      const localisable = verifyShapeCorpus(
+        corpusOf("docs/gibberish.md", fence("shape", BROKEN_GIBBERISH))
       );
-      expect(localisable.kind).toBe("fail");
-      if (localisable.kind === "fail") {
-        expect(localisable.messages.some((m) => /^\d+:\d+ /.test(m))).toBe(true);
-      }
+      expect(localisable.failures).toHaveLength(1);
+      expect(localisable.failures[0]!.messages.some((m) => /^\d+:\d+ /.test(m))).toBe(true);
     }
   );
 
@@ -145,12 +136,13 @@ describe("docs fence verifier", () => {
       expect(report.skipped).toBe(1);
       expect(report.checked).toBe(0);
 
-      // Cross-check at the single-fence level: the same broken body IS a failure
-      // without the marker, proving the skip is the only thing suppressing it.
-      const fences = extractShapeFences(fence("shape", BROKEN_DANGLING_BRACE));
-      expect(fences).toHaveLength(1);
-      const withoutMarker = verifyOneFence(fences[0]!, "docs/skipped.md");
-      expect(withoutMarker.kind).toBe("fail");
+      // The same broken body must fail without the marker.
+      const withoutMarker = verifyShapeCorpus(
+        corpusOf("docs/skipped.md", fence("shape", BROKEN_DANGLING_BRACE))
+      );
+      expect(withoutMarker.failures).toHaveLength(1);
+      expect(withoutMarker.checked).toBe(1);
+      expect(withoutMarker.skipped).toBe(0);
     }
   );
 
@@ -175,8 +167,10 @@ describe("docs fence verifier", () => {
       let sawReject = false;
       for (const { name, code } of snippets) {
         const parserOk = parseShapeModule(code, "parity.shape").ok;
-        const verdict = verifyOneFence({ info: "shape", code, line: 1 }, "parity.md");
-        const verifierOk = verdict.kind === "pass";
+        const report = verifyShapeCorpus(corpusOf("parity.md", fence("shape", code)));
+        const verifierOk = report.failures.length === 0;
+        expect(report.checked).toBe(1);
+        expect(report.skipped).toBe(0);
         expect({ name, verifierOk }).toEqual({ name, verifierOk: parserOk });
         sawAccept ||= parserOk;
         sawReject ||= !parserOk;

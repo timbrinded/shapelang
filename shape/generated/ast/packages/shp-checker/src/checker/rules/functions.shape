@@ -13,7 +13,7 @@ resource FunctionsModuleCheckCandidateEffectFingerprintsAstAnchor : GeneratedAst
 
 resource FunctionsModuleCheckFunctionsAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/checker/rules/functions.ts#checkFunctions")
-  fingerprint ast.semantic_subtree_v1("sha256:18e5a7e1d8461049f7f36f7c90b81a80217e96376a2783fd99d424062aaed78f")
+  fingerprint ast.semantic_subtree_v1("sha256:dc770ad9ef3fc5b8b73ebe0118c4b8291dd036d3b9466d3caaf0c52c0b98e67f")
 }
 
 resource FunctionsModuleMissingUnsafeRequirementsAstAnchor : GeneratedAstAnchor {
@@ -45,7 +45,7 @@ relation FunctionsModuleCheckFunctionsGeneratedFromFunctionsModuleCheckFunctions
   kind generated_from
   connects FunctionsModule -> FunctionsModuleCheckFunctionsAstAnchor
   roles { FunctionsModule as generated, FunctionsModuleCheckFunctionsAstAnchor as syntax }
-  expects FunctionsModuleCheckFunctionsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:18e5a7e1d8461049f7f36f7c90b81a80217e96376a2783fd99d424062aaed78f")
+  expects FunctionsModuleCheckFunctionsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:dc770ad9ef3fc5b8b73ebe0118c4b8291dd036d3b9466d3caaf0c52c0b98e67f")
   summary "fn FunctionsModule.checkFunctions generated from typescript function_declaration at packages/shp-checker/src/checker/rules/functions.ts#checkFunctions."
 }
 

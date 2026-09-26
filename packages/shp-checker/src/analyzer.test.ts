@@ -120,16 +120,40 @@ describe("Shape source analyzer", () => {
   });
 
   test("ignores destructive SQL vocabulary in comments and quoted regions", () => {
-    const source = [
+    for (const source of [
       "-- DELETE FROM audit_events;",
       "/* TRUNCATE TABLE audit_events; */",
       "SELECT 'DROP TABLE audit_events';",
       'SELECT "DELETE FROM audit_events";',
       "SELECT `TRUNCATE TABLE audit_events`;",
-      "SELECT $$DROP TABLE audit_events$$;"
-    ].join("\n");
-
-    expect(analyzeSourceText("db/audit/report.sql", source)).toEqual([]);
+      "SELECT $$DROP TABLE audit_events$$;",
+      "SELECT $tag$DELETE FROM hidden; DROP TABLE audit_events;$tag$;",
+      "SELECT $_tag09$DELETE FROM hidden; TRUNCATE TABLE audit_events;$_tag09$;",
+      "SELECT $TAG$DELETE FROM hidden; $tag$; DROP TABLE audit_events;$TAG$;"
+    ]) {
+      expect(analyzeSourceText("db/audit/report.sql", source)).toEqual([]);
+      expect(
+        withoutTargetIdentity(
+          analyzeSourceText("db/audit/report.sql", `${source}\nDELETE FROM visible;`)
+        )
+      ).toEqual([
+        {
+          effect: "HardDelete",
+          sourcePath: "db/audit/report.sql",
+          line: 2,
+          evidence: "DELETE FROM visible;",
+          target: "visible"
+        }
+      ]);
+    }
+    for (const prefix of ["name", "9", "_", "name$", "café"]) {
+      for (const delimiter of ["$$", "$tag$"]) {
+        const source = `SELECT ${prefix}${delimiter};\nDELETE FROM visible;`;
+        expect(analyzeSourceText("db/audit/report.sql", source).map((hint) => hint.target)).toEqual(
+          ["visible"]
+        );
+      }
+    }
   });
 
   test("preserves CRLF offsets and reports one-based start lines", () => {
@@ -258,8 +282,14 @@ describe("Shape source analyzer", () => {
   });
 
   test("fails softly on malformed comments and literals", () => {
-    expect(analyzeSourceText("db/audit/purge.sql", "/* DELETE FROM audit_events")).toEqual([]);
-    expect(analyzeSourceText("db/audit/purge.sql", "'DROP TABLE audit_events")).toEqual([]);
+    for (const source of [
+      "/* DELETE FROM audit_events",
+      "'DROP TABLE audit_events",
+      "SELECT $tag$DELETE FROM hidden; DROP TABLE audit_events;",
+      "SELECT $TAG$DELETE FROM hidden; $tag$; DROP TABLE audit_events;"
+    ]) {
+      expect(analyzeSourceText("db/audit/purge.sql", source)).toEqual([]);
+    }
     expect(
       analyzeSourceText("src/audit/purge.ts", 'db.execute("TRUNCATE TABLE audit_events')
     ).toEqual([]);

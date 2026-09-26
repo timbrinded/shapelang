@@ -30,62 +30,44 @@ json_escape() {
   printf '%s' "$value"
 }
 
-emit_json_result() {
-  local decision="$1"
-  local shape_command="$2"
-  local allow_unknown="$3"
-  local baseline_status="$4"
-  local baseline_exit="$5"
-  local baseline_output="$6"
-  local proposal_status="$7"
-  local proposal_exit="$8"
-  local proposal_output="$9"
-
-  printf '{'
-  printf '"mode":"contract-simulation",'
-  printf '"decision":"%s",' "$(json_escape "$decision")"
-  printf '"shape_command":"%s",' "$(json_escape "$shape_command")"
-  printf '"allow_unknown_effects":%s,' "$allow_unknown"
-  printf '"baseline":{"status":"%s","exit_code":%s,"output":"%s"},' \
-    "$(json_escape "$baseline_status")" \
-    "$baseline_exit" \
-    "$(json_escape "$baseline_output")"
-  if [[ "$proposal_status" == "not_run" ]]; then
-    printf '"proposal":null'
-  else
-    printf '"proposal":{"status":"%s","exit_code":%s,"output":"%s"}' \
-      "$(json_escape "$proposal_status")" \
-      "$proposal_exit" \
-      "$(json_escape "$proposal_output")"
-  fi
-  printf '}\n'
-}
-
-emit_human_result() {
-  local decision="$1"
-  local shape_command="$2"
-  local allow_unknown="$3"
-  local baseline_status="$4"
-  local baseline_exit="$5"
-  local baseline_output="$6"
-  local proposal_status="$7"
-  local proposal_exit="$8"
-  local proposal_output="$9"
-
-  printf 'Shape command: %s\n' "$shape_command"
-  printf 'Unknown effects allowed in proposal: %s\n' "$allow_unknown"
-  printf '\nBaseline: %s (exit %s)\n%s\n' "$baseline_status" "$baseline_exit" "$baseline_output"
-  if [[ "$proposal_status" != "not_run" ]]; then
-    printf '\nProposal: %s (exit %s)\n%s\n' "$proposal_status" "$proposal_exit" "$proposal_output"
-  fi
-  printf '\nDecision: %s\n' "$decision"
-}
-
 emit_result() {
+  local decision="$1"
+  local shape_command="$2"
+  local allow_unknown="$3"
+  local baseline_status="$4"
+  local baseline_exit="$5"
+  local baseline_output="$6"
+  local proposal_status="$7"
+  local proposal_exit="$8"
+  local proposal_output="$9"
+
   if [[ "$json_output" -eq 1 ]]; then
-    emit_json_result "$@"
+    printf '{'
+    printf '"mode":"contract-simulation",'
+    printf '"decision":"%s",' "$(json_escape "$decision")"
+    printf '"shape_command":"%s",' "$(json_escape "$shape_command")"
+    printf '"allow_unknown_effects":%s,' "$allow_unknown"
+    printf '"baseline":{"status":"%s","exit_code":%s,"output":"%s"},' \
+      "$(json_escape "$baseline_status")" \
+      "$baseline_exit" \
+      "$(json_escape "$baseline_output")"
+    if [[ "$proposal_status" == "not_run" ]]; then
+      printf '"proposal":null'
+    else
+      printf '"proposal":{"status":"%s","exit_code":%s,"output":"%s"}' \
+        "$(json_escape "$proposal_status")" \
+        "$proposal_exit" \
+        "$(json_escape "$proposal_output")"
+    fi
+    printf '}\n'
   else
-    emit_human_result "$@"
+    printf 'Shape command: %s\n' "$shape_command"
+    printf 'Unknown effects allowed in proposal: %s\n' "$allow_unknown"
+    printf '\nBaseline: %s (exit %s)\n%s\n' "$baseline_status" "$baseline_exit" "$baseline_output"
+    if [[ "$proposal_status" != "not_run" ]]; then
+      printf '\nProposal: %s (exit %s)\n%s\n' "$proposal_status" "$proposal_exit" "$proposal_output"
+    fi
+    printf '\nDecision: %s\n' "$decision"
   fi
 }
 

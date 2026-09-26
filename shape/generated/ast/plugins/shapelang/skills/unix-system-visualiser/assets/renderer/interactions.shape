@@ -48,7 +48,7 @@ resource InteractionsModuleReadyAstAnchor : GeneratedAstAnchor {
 
 resource InteractionsModuleReleasePointerAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/interactions.mjs#releasePointer")
-  fingerprint ast.semantic_subtree_v1("sha256:58b4fa2697cac6969c1fed58b14f39a261b02c724774d3ae742432366fd11f9f")
+  fingerprint ast.semantic_subtree_v1("sha256:a63b431c577838e64deace223fce1953b2f08a38e631d7b670d3236864c0d8f6")
 }
 
 resource InteractionsModuleResetAstAnchor : GeneratedAstAnchor {
@@ -197,7 +197,7 @@ relation InteractionsModuleReleasePointerGeneratedFromInteractionsModuleReleaseP
   kind generated_from
   connects InteractionsModule -> InteractionsModuleReleasePointerAstAnchor
   roles { InteractionsModule as generated, InteractionsModuleReleasePointerAstAnchor as syntax }
-  expects InteractionsModuleReleasePointerAstAnchor fingerprint ast.semantic_subtree_v1("sha256:58b4fa2697cac6969c1fed58b14f39a261b02c724774d3ae742432366fd11f9f")
+  expects InteractionsModuleReleasePointerAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a63b431c577838e64deace223fce1953b2f08a38e631d7b670d3236864c0d8f6")
   summary "fn InteractionsModule.releasePointer generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/assets/renderer/interactions.mjs#releasePointer."
 }
 

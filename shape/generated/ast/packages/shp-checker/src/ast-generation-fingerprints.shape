@@ -11,14 +11,9 @@ resource AstGenerationFingerprintsModuleCanonicalAttributesAstAnchor : Generated
   fingerprint ast.semantic_subtree_v1("sha256:a9fdb3a914d6892673eee159aac08ed649c6e09b1c242d842ed2931dad6e26bd")
 }
 
-resource AstGenerationFingerprintsModuleCanonicalFingerprintPayloadAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/ast-generation-fingerprints.ts#canonicalFingerprintPayload")
-  fingerprint ast.semantic_subtree_v1("sha256:6e47e8a1d56b17bbc0e13de3dc6266307de542c646897d585fe612d39846d677")
-}
-
 resource AstGenerationFingerprintsModuleCanonicalizeFingerprintNodeAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/ast-generation-fingerprints.ts#canonicalizeFingerprintNode")
-  fingerprint ast.semantic_subtree_v1("sha256:7ebbe1a88ac84c97f4d5cf149cf957705c8b0ce31711279f8ef3694357543b90")
+  fingerprint ast.semantic_subtree_v1("sha256:bd8576f9a58c6df28e204a72a1e10d0efe8d38f1dc80a8dc1027596de55b9464")
 }
 
 resource AstGenerationFingerprintsModuleFingerprintChildrenAstAnchor : GeneratedAstAnchor {
@@ -28,15 +23,12 @@ resource AstGenerationFingerprintsModuleFingerprintChildrenAstAnchor : Generated
 
 resource AstGenerationFingerprintsModuleFingerprintForAnchorAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/ast-generation-fingerprints.ts#fingerprintForAnchor")
-  fingerprint ast.semantic_subtree_v1("sha256:4df2881f410a8a120c942f327fb7b3ceab346f95b5a49a260fbb08c872304a50")
+  fingerprint ast.semantic_subtree_v1("sha256:a9fc4ed960437c6f6403f9044b26e6277c3d4456a4161c770a16c336f2ab6a13")
 }
 
 component AstGenerationFingerprintsModule : GeneratedCandidate {
   fn canonicalAttributes
     source ts("packages/shp-checker/src/ast-generation-fingerprints.ts#canonicalAttributes")
-    effects unknown
-  fn canonicalFingerprintPayload
-    source ts("packages/shp-checker/src/ast-generation-fingerprints.ts#canonicalFingerprintPayload")
     effects unknown
   fn canonicalizeFingerprintNode
     source ts("packages/shp-checker/src/ast-generation-fingerprints.ts#canonicalizeFingerprintNode")
@@ -57,19 +49,11 @@ relation AstGenerationFingerprintsModuleCanonicalAttributesGeneratedFromAstGener
   summary "fn AstGenerationFingerprintsModule.canonicalAttributes generated from typescript function_declaration at packages/shp-checker/src/ast-generation-fingerprints.ts#canonicalAttributes."
 }
 
-relation AstGenerationFingerprintsModuleCanonicalFingerprintPayloadGeneratedFromAstGenerationFingerprintsModuleCanonicalFingerprintPayloadAstAnchor {
-  kind generated_from
-  connects AstGenerationFingerprintsModule -> AstGenerationFingerprintsModuleCanonicalFingerprintPayloadAstAnchor
-  roles { AstGenerationFingerprintsModule as generated, AstGenerationFingerprintsModuleCanonicalFingerprintPayloadAstAnchor as syntax }
-  expects AstGenerationFingerprintsModuleCanonicalFingerprintPayloadAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6e47e8a1d56b17bbc0e13de3dc6266307de542c646897d585fe612d39846d677")
-  summary "fn AstGenerationFingerprintsModule.canonicalFingerprintPayload generated from typescript function_declaration at packages/shp-checker/src/ast-generation-fingerprints.ts#canonicalFingerprintPayload."
-}
-
 relation AstGenerationFingerprintsModuleCanonicalizeFingerprintNodeGeneratedFromAstGenerationFingerprintsModuleCanonicalizeFingerprintNodeAstAnchor {
   kind generated_from
   connects AstGenerationFingerprintsModule -> AstGenerationFingerprintsModuleCanonicalizeFingerprintNodeAstAnchor
   roles { AstGenerationFingerprintsModule as generated, AstGenerationFingerprintsModuleCanonicalizeFingerprintNodeAstAnchor as syntax }
-  expects AstGenerationFingerprintsModuleCanonicalizeFingerprintNodeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7ebbe1a88ac84c97f4d5cf149cf957705c8b0ce31711279f8ef3694357543b90")
+  expects AstGenerationFingerprintsModuleCanonicalizeFingerprintNodeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:bd8576f9a58c6df28e204a72a1e10d0efe8d38f1dc80a8dc1027596de55b9464")
   summary "fn AstGenerationFingerprintsModule.canonicalizeFingerprintNode generated from typescript function_declaration at packages/shp-checker/src/ast-generation-fingerprints.ts#canonicalizeFingerprintNode."
 }
 
@@ -85,7 +69,7 @@ relation AstGenerationFingerprintsModuleFingerprintForAnchorGeneratedFromAstGene
   kind generated_from
   connects AstGenerationFingerprintsModule -> AstGenerationFingerprintsModuleFingerprintForAnchorAstAnchor
   roles { AstGenerationFingerprintsModule as generated, AstGenerationFingerprintsModuleFingerprintForAnchorAstAnchor as syntax }
-  expects AstGenerationFingerprintsModuleFingerprintForAnchorAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4df2881f410a8a120c942f327fb7b3ceab346f95b5a49a260fbb08c872304a50")
+  expects AstGenerationFingerprintsModuleFingerprintForAnchorAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a9fc4ed960437c6f6403f9044b26e6277c3d4456a4161c770a16c336f2ab6a13")
   summary "fn AstGenerationFingerprintsModule.fingerprintForAnchor generated from typescript function_declaration at packages/shp-checker/src/ast-generation-fingerprints.ts#fingerprintForAnchor."
 }
 

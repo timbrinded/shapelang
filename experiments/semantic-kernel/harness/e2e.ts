@@ -95,10 +95,7 @@ console.log(
   "Experimental semantic kernel E2E passed: TypeScript facts -> native Rust and browser-targeted WASM."
 );
 
-async function loadFixtures(fileNames: readonly string[]): Promise<{
-  requestJson: string;
-  productionDiagnostics: CandidatePinDiagnostic[];
-}> {
+async function loadFixtures(fileNames: readonly string[]) {
   const modules: CheckModuleInput[] = [];
   for (const fileName of fileNames) {
     const filePath = join(semanticKernelRoot, "fixtures", fileName);
@@ -134,10 +131,7 @@ async function loadFixtures(fileNames: readonly string[]): Promise<{
 }
 
 async function verifySuccessfulCase(
-  fixture: {
-    requestJson: string;
-    productionDiagnostics: CandidatePinDiagnostic[];
-  },
+  fixture: Awaited<ReturnType<typeof loadFixtures>>,
   checkWasm: (input: string) => string
 ): Promise<KernelResponseV1> {
   const native = await runNativeKernel(fixture.requestJson);

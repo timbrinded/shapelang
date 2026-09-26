@@ -5,6 +5,7 @@ import { isIsoCalendarDate } from "../iso-date.ts";
 import { displaySymbol } from "../display.ts";
 import { describeProvenance } from "../provenance.ts";
 import {
+  allContexts,
   hasGuardAction,
   hasValidReevaluationForGuard,
   requiresReevaluation
@@ -15,7 +16,6 @@ import {
   type GuardedProperty,
   type GuardViolation
 } from "../../memory-guards.ts";
-import { allContexts } from "./context.ts";
 
 export function checkGuardedChanges(model: Model): SemanticDiagnostic[] {
   return evaluateGuards(buildGuardContexts(model), model.changeEvents).map(
@@ -29,9 +29,7 @@ export function buildGuardContexts(model: Model): GuardContext[] {
     if (!hasGuardAction(info)) {
       continue;
     }
-    const requireClauses = info.guards
-      .filter((guard) => requiresReevaluation(guard))
-      .map((guard) => ({ provenance: guard.provenance }));
+    const requireClauses = info.guards.filter(requiresReevaluation);
     const target = info.appliesTo ?? info.target;
     contexts.push({
       guardKind: kind,
@@ -42,10 +40,7 @@ export function buildGuardContexts(model: Model): GuardContext[] {
       protects: info.protects.map((property) =>
         classifyProtectedProperty(model, property, target.kind)
       ),
-      transformClauses: info.forbiddenTransforms.map((guard) => ({
-        label: guard.label,
-        provenance: guard.provenance
-      }))
+      transformClauses: info.forbiddenTransforms
     });
   }
   return contexts;

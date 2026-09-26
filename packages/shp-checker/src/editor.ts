@@ -6,27 +6,11 @@ import {
 } from "./checker.ts";
 import { localNameOf } from "./checker/display.ts";
 import { formatShapeSource, type FormatResult } from "./formatter.ts";
-import {
-  isAddDeclarationChange,
-  isAddFunctionChange,
-  isAttestationDecl,
-  isBindingDecl,
-  isChangeDecl,
-  isComponentDecl,
-  type ContextTypeRef,
-  type AddableDeclaration,
-  type ChangeEntry,
-  type Declaration,
-  type ShapeModule,
-  isFunctionSummary,
-  isImplementationDecl,
-  isMemoryDecl,
-  isRationaleDecl,
-  isReevaluationDecl,
-  isRelationDecl,
-  isResourceDecl,
-  isRuleDecl,
-  isTraitDecl
+import type {
+  ContextTypeRef,
+  AddableDeclaration,
+  Declaration,
+  ShapeModule
 } from "./language/generated/ast.ts";
 import { parseShapeModule } from "./parser.ts";
 import {
@@ -129,16 +113,11 @@ export function getEditorDiagnostics(
 ): EditorDiagnostic[] {
   const parsed = parseShapeModule(source, filePath);
   if (!parsed.ok) {
-    return parsed.diagnostics.map((diagnostic) => ({
-      message: diagnostic.message,
-      severity: "error",
-      line: diagnostic.line,
-      column: diagnostic.column
-    }));
+    return parsed.diagnostics.map(diagnosticToEditorDiagnostic);
   }
 
   const result = checkShapeModules([{ module: parsed.module, filePath }]);
-  return result.diagnostics.map((diagnostic) => diagnosticToEditorDiagnostic(diagnostic));
+  return result.diagnostics.map(diagnosticToEditorDiagnostic);
 }
 
 export function getEditorDiagnosticsForDocuments(
@@ -198,29 +177,23 @@ export function getDefinitionLocation(
     return undefined;
   }
 
-  const editorSymbols = [...editorSymbolsForDeclarations(parsed.module.declarations)];
-  const exactMatch = editorSymbols.find((editorSymbol) => editorSymbol.names.includes(symbol));
-  if (exactMatch) {
-    return astNodeToLocation(exactMatch.node, symbol);
-  }
-
   const localSymbol = localEditorReference(parsed.module.name, symbol);
-  if (!localSymbol) {
-    return undefined;
-  }
-
-  const name = definitionName(localSymbol);
-  if (!name) {
-    return undefined;
-  }
-
-  for (const editorSymbol of editorSymbols) {
-    if (editorSymbol.names.some((candidate) => symbolMatches(candidate, localSymbol, name))) {
+  let localMatch: EditorSymbol | undefined;
+  for (const editorSymbol of editorSymbolsForDeclarations(parsed.module.declarations)) {
+    if (editorSymbol.names.includes(symbol)) {
       return astNodeToLocation(editorSymbol.node, symbol);
+    }
+    if (
+      !localMatch &&
+      localSymbol &&
+      !localSymbol.endsWith(".") &&
+      editorSymbol.names.includes(localSymbol)
+    ) {
+      localMatch = editorSymbol;
     }
   }
 
-  return undefined;
+  return localMatch ? astNodeToLocation(localMatch.node, symbol) : undefined;
 }
 
 export function getCompletions(source: string, prefix = ""): string[] {
@@ -274,20 +247,17 @@ function* editorSymbolsForDeclaration(
   declaration: AddableDeclaration | Declaration
 ): Generator<EditorSymbol> {
   if (
-    isResourceDecl(declaration) ||
-    isTraitDecl(declaration) ||
-    isRelationDecl(declaration) ||
-    isImplementationDecl(declaration) ||
-    isBindingDecl(declaration) ||
-    isRuleDecl(declaration) ||
-    isReevaluationDecl(declaration)
+    declaration.$type === "AttestationDecl" ||
+    declaration.$type === "CandidateEffectDecl" ||
+    declaration.$type === "PolicyDecl" ||
+    declaration.$type === "RoleDecl"
   ) {
-    yield { names: [declaration.name], node: declaration };
     return;
   }
 
-  if (isRationaleDecl(declaration) || isMemoryDecl(declaration)) {
-    yield { names: [declaration.name], node: declaration };
+  yield { names: [declaration.name], node: declaration };
+
+  if (declaration.$type === "RationaleDecl" || declaration.$type === "MemoryDecl") {
     yield {
       names: [declaration.contextType.name, formatContextTypeReference(declaration.contextType)],
       node: declaration.contextType
@@ -295,70 +265,38 @@ function* editorSymbolsForDeclaration(
     return;
   }
 
-  if (isChangeDecl(declaration)) {
-    yield { names: [declaration.name], node: declaration };
+  if (declaration.$type === "ChangeDecl") {
     for (const entry of declaration.entries) {
-      yield* editorSymbolsForChangeEntry(entry);
+      if (entry.$type === "AddFunctionChange") {
+        yield { names: changeFunctionTargetNames(entry.target), node: entry };
+      } else if (entry.$type === "AddDeclarationChange") {
+        yield* editorSymbolsForDeclaration(entry.declaration);
+      }
+      // Modify and remove entries do not introduce definition locations.
     }
     return;
   }
 
-  if (isComponentDecl(declaration)) {
-    yield { names: [declaration.name], node: declaration };
-
+  if (declaration.$type === "ComponentDecl") {
     for (const member of declaration.members) {
-      if (isFunctionSummary(member)) {
+      if (member.$type === "FunctionSummary") {
         yield {
           names: [`${declaration.name}.${member.name}`, member.name],
           node: member
         };
       }
     }
-    return;
   }
-
-  if (isAttestationDecl(declaration)) {
-    return;
-  }
-}
-
-function* editorSymbolsForChangeEntry(entry: ChangeEntry): Generator<EditorSymbol> {
-  if (isAddFunctionChange(entry)) {
-    yield { names: changeFunctionTargetNames(entry.target), node: entry };
-    return;
-  }
-
-  if (isAddDeclarationChange(entry)) {
-    yield* editorSymbolsForDeclaration(entry.declaration);
-    return;
-  }
-
-  // Modify and remove entries refer to or remove existing symbols; they do not
-  // introduce definition locations.
 }
 
 function changeFunctionTargetNames(target: string): string[] {
   const localTarget = localNameOf(target);
   const functionName = localTarget.slice(localTarget.lastIndexOf(".") + 1);
-  return uniqueNames([target, localTarget, functionName]);
+  return [...new Set([target, localTarget, functionName].filter((name) => name.length > 0))];
 }
 
 function formatContextTypeReference(contextType: ContextTypeRef): string {
   return `${contextType.name}<${contextType.target.kind} ${contextType.target.name}>`;
-}
-
-function uniqueNames(candidates: readonly string[]): string[] {
-  const names = new Set<string>();
-  for (const candidate of candidates) {
-    if (candidate.length > 0) {
-      names.add(candidate);
-    }
-  }
-  return [...names];
-}
-
-function definitionName(symbol: string): string | undefined {
-  return symbol.includes(".") ? symbol.split(".").at(-1) : symbol;
 }
 
 function localEditorReference(moduleName: string | undefined, symbol: string): string | undefined {
@@ -370,14 +308,6 @@ function localEditorReference(moduleName: string | undefined, symbol: string): s
     return undefined;
   }
   return symbol.slice(qualifierSeparator + "::".length);
-}
-
-function symbolMatches(candidate: string, symbol: string, name: string): boolean {
-  if (symbol.includes(".")) {
-    return candidate === symbol;
-  }
-
-  return candidate === symbol || candidate === name;
 }
 
 function astNodeToLocation(node: AstNode, symbol: string): DefinitionLocation | undefined {

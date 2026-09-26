@@ -38,7 +38,7 @@ resource AnalyzerScopesModuleCollectTypeScriptFunctionScopesAstAnchor : Generate
 
 resource AnalyzerScopesModuleFindBodyAfterReturnTypeAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/analyzer-scopes.ts#findBodyAfterReturnType")
-  fingerprint ast.semantic_subtree_v1("sha256:bc5cdf06f4833938c0ce28d5d2e2a4bb5a2f0b8b2a04ef4a1b27872d435e34e4")
+  fingerprint ast.semantic_subtree_v1("sha256:bfe152ec6010f5f7b7aebba24647bb76efa17fca5b4d946b72f8bc91b32186e8")
 }
 
 resource AnalyzerScopesModuleFindFunctionBodyStartAstAnchor : GeneratedAstAnchor {
@@ -197,7 +197,7 @@ relation AnalyzerScopesModuleFindBodyAfterReturnTypeGeneratedFromAnalyzerScopesM
   kind generated_from
   connects AnalyzerScopesModule -> AnalyzerScopesModuleFindBodyAfterReturnTypeAstAnchor
   roles { AnalyzerScopesModule as generated, AnalyzerScopesModuleFindBodyAfterReturnTypeAstAnchor as syntax }
-  expects AnalyzerScopesModuleFindBodyAfterReturnTypeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:bc5cdf06f4833938c0ce28d5d2e2a4bb5a2f0b8b2a04ef4a1b27872d435e34e4")
+  expects AnalyzerScopesModuleFindBodyAfterReturnTypeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:bfe152ec6010f5f7b7aebba24647bb76efa17fca5b4d946b72f8bc91b32186e8")
   summary "fn AnalyzerScopesModule.findBodyAfterReturnType generated from typescript function_declaration at packages/shp-checker/src/analyzer-scopes.ts#findBodyAfterReturnType."
 }
 

@@ -29,34 +29,23 @@ export const AST_SOURCE_EXTENSIONS = [
   ".swift"
 ] as const;
 
+const AST_LANGUAGE_BY_EXTENSION = new Map<string, SourceLanguageName>([
+  [".tsx", "tsx"],
+  [".mts", "typescript"],
+  [".cts", "typescript"],
+  [".js", "javascript"],
+  [".jsx", "javascript"],
+  [".mjs", "javascript"],
+  [".cjs", "javascript"],
+  [".rs", "rust"],
+  [".go", "go"],
+  [".py", "python"],
+  [".swift", "swift"]
+]);
+
 export function inferAstSourceLanguageFromPath(path: string): SourceLanguageName | undefined {
-  if (path.endsWith(".ts") || path.endsWith(".mts") || path.endsWith(".cts")) {
-    return "typescript";
-  }
-  if (path.endsWith(".tsx")) {
-    return "tsx";
-  }
-  if (
-    path.endsWith(".js") ||
-    path.endsWith(".jsx") ||
-    path.endsWith(".mjs") ||
-    path.endsWith(".cjs")
-  ) {
-    return "javascript";
-  }
-  if (path.endsWith(".rs")) {
-    return "rust";
-  }
-  if (path.endsWith(".go")) {
-    return "go";
-  }
-  if (path.endsWith(".py")) {
-    return "python";
-  }
-  if (path.endsWith(".swift")) {
-    return "swift";
-  }
-  return undefined;
+  if (path.endsWith(".ts")) return "typescript";
+  return AST_LANGUAGE_BY_EXTENSION.get(path.slice(path.lastIndexOf(".")));
 }
 
 export function parseSourceLanguageName(language: string): SourceLanguageName | undefined {

@@ -98,10 +98,6 @@ test("copies every model container mutated by change lowering", () => {
   expect(staged.traits).not.toBe(model.traits);
   expect(staged.components).not.toBe(model.components);
   expect(staged.hypergraph.edges).not.toBe(model.hypergraph.edges);
-  expect(staged.hypergraph.incidence).not.toBe(model.hypergraph.incidence);
-  expect(staged.hypergraph.incidence.get("gateway::Gateway")).not.toBe(
-    model.hypergraph.incidence.get("gateway::Gateway")
-  );
   expect(stagedWithoutRelationChange.hypergraph).toBe(model.hypergraph);
   expect(staged.implementations).not.toBe(model.implementations);
   expect(staged.bindings).not.toBe(model.bindings);

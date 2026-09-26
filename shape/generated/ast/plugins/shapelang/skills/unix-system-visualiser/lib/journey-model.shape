@@ -38,17 +38,12 @@ resource JourneyModelModuleHumanizeAstAnchor : GeneratedAstAnchor {
 
 resource JourneyModelModuleInferDependencyJourneysAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/lib/journey-model.mjs#inferDependencyJourneys")
-  fingerprint ast.semantic_subtree_v1("sha256:0e34a4f3910fc459a3653a6ecf5fd623cbc8f48def166c341506bd719e3ae480")
+  fingerprint ast.semantic_subtree_v1("sha256:5e3027b9f8c8863e8f71a069290b7792588cac5e30c716f4893d034eedba522e")
 }
 
 resource JourneyModelModuleInferredJourneyAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/lib/journey-model.mjs#inferredJourney")
-  fingerprint ast.semantic_subtree_v1("sha256:525924214001c40a06e4dea87e85fdcfdf919e1229ec19cd1b2d47b0359b8d0f")
-}
-
-resource JourneyModelModuleInferredJourneyRecordAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("plugins/shapelang/skills/unix-system-visualiser/lib/journey-model.mjs#inferredJourneyRecord")
-  fingerprint ast.semantic_subtree_v1("sha256:1d854706ac34e02d1c86edb34e87432d5de1d874ec374137533b0c35303a2b0f")
+  fingerprint ast.semantic_subtree_v1("sha256:cb886237ccde7130cb0e6461f276eb09fdf51ac62132986bccdcd99a67d3c9fa")
 }
 
 resource JourneyModelModuleOrderedEndpointsAstAnchor : GeneratedAstAnchor {
@@ -100,9 +95,6 @@ component JourneyModelModule : GeneratedCandidate {
     effects unknown
   fn inferredJourney
     source js("plugins/shapelang/skills/unix-system-visualiser/lib/journey-model.mjs#inferredJourney")
-    effects unknown
-  fn inferredJourneyRecord
-    source js("plugins/shapelang/skills/unix-system-visualiser/lib/journey-model.mjs#inferredJourneyRecord")
     effects unknown
   fn orderedEndpoints
     source js("plugins/shapelang/skills/unix-system-visualiser/lib/journey-model.mjs#orderedEndpoints")
@@ -173,7 +165,7 @@ relation JourneyModelModuleInferDependencyJourneysGeneratedFromJourneyModelModul
   kind generated_from
   connects JourneyModelModule -> JourneyModelModuleInferDependencyJourneysAstAnchor
   roles { JourneyModelModule as generated, JourneyModelModuleInferDependencyJourneysAstAnchor as syntax }
-  expects JourneyModelModuleInferDependencyJourneysAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0e34a4f3910fc459a3653a6ecf5fd623cbc8f48def166c341506bd719e3ae480")
+  expects JourneyModelModuleInferDependencyJourneysAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5e3027b9f8c8863e8f71a069290b7792588cac5e30c716f4893d034eedba522e")
   summary "fn JourneyModelModule.inferDependencyJourneys generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/lib/journey-model.mjs#inferDependencyJourneys."
 }
 
@@ -181,16 +173,8 @@ relation JourneyModelModuleInferredJourneyGeneratedFromJourneyModelModuleInferre
   kind generated_from
   connects JourneyModelModule -> JourneyModelModuleInferredJourneyAstAnchor
   roles { JourneyModelModule as generated, JourneyModelModuleInferredJourneyAstAnchor as syntax }
-  expects JourneyModelModuleInferredJourneyAstAnchor fingerprint ast.semantic_subtree_v1("sha256:525924214001c40a06e4dea87e85fdcfdf919e1229ec19cd1b2d47b0359b8d0f")
+  expects JourneyModelModuleInferredJourneyAstAnchor fingerprint ast.semantic_subtree_v1("sha256:cb886237ccde7130cb0e6461f276eb09fdf51ac62132986bccdcd99a67d3c9fa")
   summary "fn JourneyModelModule.inferredJourney generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/lib/journey-model.mjs#inferredJourney."
-}
-
-relation JourneyModelModuleInferredJourneyRecordGeneratedFromJourneyModelModuleInferredJourneyRecordAstAnchor {
-  kind generated_from
-  connects JourneyModelModule -> JourneyModelModuleInferredJourneyRecordAstAnchor
-  roles { JourneyModelModule as generated, JourneyModelModuleInferredJourneyRecordAstAnchor as syntax }
-  expects JourneyModelModuleInferredJourneyRecordAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1d854706ac34e02d1c86edb34e87432d5de1d874ec374137533b0c35303a2b0f")
-  summary "fn JourneyModelModule.inferredJourneyRecord generated from javascript function_declaration at plugins/shapelang/skills/unix-system-visualiser/lib/journey-model.mjs#inferredJourneyRecord."
 }
 
 relation JourneyModelModuleOrderedEndpointsGeneratedFromJourneyModelModuleOrderedEndpointsAstAnchor {

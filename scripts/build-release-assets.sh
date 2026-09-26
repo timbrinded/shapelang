@@ -37,12 +37,13 @@ resolve_native_asset() {
   tree_sitter_native_assets+=("$native_asset")
 }
 
-while IFS= read -r specifier; do
-  resolve_native_asset "$specifier"
-done < <(
+native_specifiers="$(
   cd "$repo_root"
   bun -e 'import { treeSitterNativePackageSpecifiers } from "./packages/shp-checker/src/ast-generation.ts"; for (const specifier of treeSitterNativePackageSpecifiers()) console.log(specifier);'
-)
+)"
+while IFS= read -r specifier; do
+  resolve_native_asset "$specifier"
+done <<< "$native_specifiers"
 
 rm -rf "$bin_dir" "$release_dir"
 mkdir -p "$bin_dir" "$release_dir"
@@ -74,16 +75,19 @@ build_asset() {
     tree-sitter-language-pack
 }
 
-while IFS=$'\t' read -r target asset_name; do
-  executable_name="shp"
-  if [[ "$asset_name" == shp-windows-* ]]; then
-    executable_name="shp.exe"
-  fi
-  build_asset "$target" "$asset_name" "$executable_name"
-done < <(
+release_targets="$(
   cd "$repo_root"
   bun -e 'import { TREE_SITTER_NATIVE_BINDING_TARGETS } from "./packages/shp-checker/src/ast-generation.ts"; for (const target of TREE_SITTER_NATIVE_BINDING_TARGETS) console.log(`${target.bunTarget}\t${target.releaseName}`);'
-)
+)"
+if [[ -n "$release_targets" ]]; then
+  while IFS=$'\t' read -r target asset_name; do
+    executable_name="shp"
+    if [[ "$asset_name" == shp-windows-* ]]; then
+      executable_name="shp.exe"
+    fi
+    build_asset "$target" "$asset_name" "$executable_name"
+  done <<< "$release_targets"
+fi
 
 sed "s|__SHAPE_DEFAULT_VERSION__|$release_version_sed|g" "$repo_root/install.sh" > "$release_dir/install.sh"
 sed "s|__SHAPE_DEFAULT_VERSION__|$release_version_sed|g" "$repo_root/install.ps1" > "$release_dir/install.ps1"

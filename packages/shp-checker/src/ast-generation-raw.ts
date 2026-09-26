@@ -25,14 +25,6 @@ export function childByField(
   return childrenByParent.get(nodeId)?.find((child) => child.fieldName === fieldName);
 }
 
-export function firstMatchingChild(
-  nodeId: string,
-  childrenByParent: Map<string, RawAstNode[]>,
-  predicate: (node: RawAstNode) => boolean
-): RawAstNode | undefined {
-  return childrenByParent.get(nodeId)?.find(predicate);
-}
-
 export function descendants(
   nodeId: string,
   childrenByParent: Map<string, RawAstNode[]>
@@ -76,9 +68,9 @@ export function semanticName(
   }
   const nameChild =
     childByField(node.id, "name", childrenByParent) ??
-    firstMatchingChild(node.id, childrenByParent, (child) =>
-      /identifier|type_identifier|property_identifier/.test(child.kind)
-    );
+    childrenByParent
+      .get(node.id)
+      ?.find((child) => /identifier|type_identifier|property_identifier/.test(child.kind));
   return nameChild?.text?.trim() ?? nameFromText(node) ?? nearestNamedText(node, nodeById);
 }
 

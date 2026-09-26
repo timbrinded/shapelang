@@ -1,116 +1,5 @@
-import type {
-  AddDeclarationChange,
-  AddFunctionChange,
-  AttestationDecl,
-  BindingDecl,
-  CandidateEffectDecl,
-  ChangeDecl,
-  ComponentDecl,
-  DescriptionDecl,
-  EffectEntry,
-  EffectPattern,
-  EffectTerm,
-  FingerprintDecl,
-  FunctionMember,
-  FunctionSummary,
-  GuardForbidTransformDecl,
-  GuardRequireDecl,
-  ImplementationDecl,
-  MemoryDecl,
-  MemoryMember,
-  ModifyFunctionChange,
-  PolicyDecl,
-  TransformDecl,
-  RationaleDecl,
-  RationaleMember,
-  ReevaluationDecl,
-  RelationDecl,
-  ResourceDecl,
-  RuleDecl,
-  ShapeTraitList,
-  ShapeModule,
-  SourceDecl,
-  TargetRef,
-  TraitDecl,
-  TypeParamList
-} from "./language/generated/ast.ts";
 import { compareCodepointStrings } from "./shape-strings.ts";
-import {
-  isAddDeclarationChange,
-  isAddFunctionChange,
-  isAppliesToDecl,
-  isApproverDecl,
-  isAttestationDecl,
-  isBindingAllowAttestDecl,
-  isBindingDecl,
-  isBindingRequireChangedDecl,
-  isBindingWhenChangedDecl,
-  isCandidateEffectAnchorDecl,
-  isCandidateEffectConfidenceDecl,
-  isCandidateEffectDecl,
-  isCandidateEffectFunctionDecl,
-  isCandidateEffectTermDecl,
-  isChangeDecl,
-  isCompleteEffects,
-  isComponentDecl,
-  isConfidenceDecl,
-  isConformsToDecl,
-  isDecidedOnDecl,
-  isEvidenceLineDecl,
-  isExpiresDecl,
-  isFingerprintDecl,
-  isFunctionRequiresDecl,
-  isFunctionSummary,
-  isGrantsDecl,
-  isGuardForbidTransformDecl,
-  isGuardsBlock,
-  isImplementationDecl,
-  isMemoryDecl,
-  isModifyDeclarationChange,
-  isModifyFunctionChange,
-  isObservedDecl,
-  isOnChangeDecl,
-  isOutcomeDecl,
-  isOwnsDecl,
-  isPathsBlock,
-  isPolicyDecl,
-  isProtectsBlock,
-  isRationaleDecl,
-  isReasonDecl,
-  isReevaluationDecl,
-  isRelationConnectsDecl,
-  isRelationDecl,
-  isRelationFingerprintExpectationDecl,
-  isRelationKindDecl,
-  isRelationRolesDecl,
-  isRelationSummaryDecl,
-  isRemoveDeclarationChange,
-  isRemoveFunctionChange,
-  isRequireApproverDecl,
-  isRequireContextDecl,
-  isResourceDecl,
-  isReviewerDecl,
-  isRoleDecl,
-  isRuleDecl,
-  isRuleForbidEffectDecl,
-  isRuleForbidHypercycleDecl,
-  isRuleForbidPathDecl,
-  isRuleForbidProvidesDecl,
-  isRuleWhenHasDecl,
-  isSatisfiesDecl,
-  isSensitiveDecl,
-  isStatusDecl,
-  isStorageDecl,
-  isSummaryDecl,
-  isTraitAllowDecl,
-  isTraitDecl,
-  isTraitForbidDecl,
-  isTraitRequireDecl,
-  isUnknownEffects,
-  isWhenBlock,
-  isWhoBlock,
-  isWhyDecl
-} from "./language/generated/ast.ts";
+import * as ast from "./language/generated/ast.ts";
 import { parseShapeModule, type ParseDiagnostic } from "./parser.ts";
 import { unquoteShapeString } from "./shape-strings.ts";
 
@@ -139,7 +28,7 @@ export function formatShapeSource(source: string, filePath = "memory.shape"): Fo
   };
 }
 
-export function formatShapeModule(module: ShapeModule): string {
+export function formatShapeModule(module: ast.ShapeModule): string {
   const chunks: string[] = [];
   if (module.name) {
     chunks.push(`module ${module.name}`);
@@ -161,74 +50,80 @@ export function formatShapeModule(module: ShapeModule): string {
   return `${chunks.filter((chunk) => chunk.length > 0).join("\n\n")}\n`;
 }
 
-function formatDeclaration(declaration: ShapeModule["declarations"][number]): string {
-  if (isResourceDecl(declaration)) {
-    return formatResource(declaration);
-  }
-  if (isTraitDecl(declaration)) {
-    return formatTrait(declaration);
-  }
-  if (isComponentDecl(declaration)) {
-    return formatComponent(declaration);
-  }
-  if (isRelationDecl(declaration)) {
-    return formatRelation(declaration);
-  }
-  if (isCandidateEffectDecl(declaration)) {
-    return formatCandidateEffect(declaration);
-  }
-  if (isImplementationDecl(declaration)) {
-    return formatImplementation(declaration);
-  }
-  if (isBindingDecl(declaration)) {
-    return formatBinding(declaration);
-  }
-  if (isAttestationDecl(declaration)) {
-    return formatAttestation(declaration);
-  }
-  if (isChangeDecl(declaration)) {
-    return formatChange(declaration);
-  }
-  if (isRuleDecl(declaration)) {
-    return formatRule(declaration);
-  }
-  if (isRationaleDecl(declaration)) {
-    return formatRationale(declaration);
-  }
-  if (isMemoryDecl(declaration)) {
-    return formatMemory(declaration);
-  }
-  if (isReevaluationDecl(declaration)) {
-    return formatReevaluation(declaration);
-  }
-  if (isRoleDecl(declaration)) {
-    return `role ${declaration.name}`;
-  }
-  if (isPolicyDecl(declaration)) {
-    return formatPolicy(declaration);
+function formatDeclaration(declaration: ast.ShapeModule["declarations"][number]): string {
+  switch (declaration.$type) {
+    case "ResourceDecl":
+      return formatResource(declaration);
+    case "TraitDecl":
+      return block(
+        `trait ${declaration.name}${formatTypeParams(declaration.typeParams)}`,
+        sortMembers(declaration.members.map(formatMember))
+      );
+    case "ComponentDecl":
+      return block(
+        `component ${declaration.name}${formatTypeRefs(declaration.classifiers)}`,
+        sortMembers(declaration.members.map(formatMember), ["owns", "grants", "fn"])
+      );
+    case "RelationDecl":
+      return formatRelation(declaration);
+    case "CandidateEffectDecl":
+      return formatCandidateEffect(declaration);
+    case "ImplementationDecl":
+      return formatImplementation(declaration);
+    case "BindingDecl":
+      return block(
+        `binding ${declaration.name}`,
+        sortMembers(declaration.members.map(formatMember), [
+          "when_changed",
+          "require_changed",
+          "allow"
+        ])
+      );
+    case "AttestationDecl":
+      return block(`attest ${declaration.kind}`, [
+        `source ${formatSourceRef(declaration.source.ref)}`,
+        `reason ${quote(declaration.reason.value)}`
+      ]);
+    case "ChangeDecl":
+      return formatChange(declaration);
+    case "RuleDecl":
+      return block(`rule ${declaration.name}`, sortMembers(declaration.members.map(formatMember)));
+    case "RationaleDecl":
+      return block(
+        `rationale ${declaration.name} : ${formatContextTypeRef(declaration.contextType)}`,
+        formatContextMembers(declaration.members, RATIONALE_MEMBER_ORDER)
+      );
+    case "MemoryDecl":
+      return block(
+        `memory ${declaration.name} : ${formatContextTypeRef(declaration.contextType)}`,
+        formatContextMembers(declaration.members, MEMORY_MEMBER_ORDER)
+      );
+    case "ReevaluationDecl":
+      return block(
+        `reevaluation ${declaration.name}`,
+        sortMembers(declaration.members.map(formatMember), REEVALUATION_MEMBER_ORDER)
+      );
+    case "RoleDecl":
+      return `role ${declaration.name}`;
+    case "PolicyDecl":
+      return formatPolicy(declaration);
   }
   return "";
 }
 
-function formatPolicy(policy: PolicyDecl): string {
+function formatPolicy(policy: ast.PolicyDecl): string {
   const lines = [`policy ${policy.name} {`];
-  if (policy.members.some(isRequireApproverDecl)) {
+  if (policy.members.some(ast.isRequireApproverDecl)) {
     lines.push(indent("require approver"));
   }
   lines.push("}");
   return lines.join("\n");
 }
 
-function formatResource(resource: ResourceDecl): string {
-  const traits =
-    resource.traits.length > 0
-      ? ` : ${resource.traits
-          .map((trait) => trait.name)
-          .sort(compareCodepointStrings)
-          .join(", ")}`
-      : "";
-  const storage = resource.body?.members.filter(isStorageDecl) ?? [];
-  const fingerprints = resource.body?.members.filter(isFingerprintDecl) ?? [];
+function formatResource(resource: ast.ResourceDecl): string {
+  const traits = formatTypeRefs(resource.traits);
+  const storage = resource.body?.members.filter(ast.isStorageDecl) ?? [];
+  const fingerprints = resource.body?.members.filter(ast.isFingerprintDecl) ?? [];
   if (storage.length === 0 && fingerprints.length === 0) {
     return `resource ${resource.name}${traits}`;
   }
@@ -255,62 +150,7 @@ function formatResource(resource: ResourceDecl): string {
   ].join("\n");
 }
 
-function formatTrait(trait: TraitDecl): string {
-  const members = [...trait.members]
-    .map((member) => {
-      if (isTraitAllowDecl(member)) {
-        return `allow ${formatPattern(member.pattern)}`;
-      }
-      if (isTraitRequireDecl(member)) {
-        return `require ${formatPattern(member.pattern)}`;
-      }
-      if (isTraitForbidDecl(member)) {
-        return `forbid ${member.final ? "final " : ""}${formatPattern(member.pattern)}`;
-      }
-      if (isRequireContextDecl(member)) {
-        const satisfiedBy =
-          member.satisfiedBy.length > 0 ? ` satisfied_by ${member.satisfiedBy.join(" or ")}` : "";
-        return `require_context ${member.contextType}<${member.target}>${satisfiedBy}`;
-      }
-      return "";
-    })
-    .filter((line) => line.length > 0)
-    .sort(compareCodepointStrings);
-
-  return block(`trait ${trait.name}${formatTypeParams(trait.typeParams)}`, members);
-}
-
-function formatComponent(component: ComponentDecl): string {
-  const owns: string[] = [];
-  const grants: string[] = [];
-  const functions: string[] = [];
-
-  for (const member of component.members) {
-    if (isOwnsDecl(member)) {
-      owns.push(`owns ${member.resource.name}`);
-    } else if (isGrantsDecl(member)) {
-      grants.push(`grants ${formatTerm(member.term)}`);
-    } else if (isFunctionSummary(member)) {
-      functions.push(formatFunction(member));
-    }
-  }
-
-  const classifiers =
-    component.classifiers.length > 0
-      ? ` : ${component.classifiers
-          .map((classifier) => classifier.name)
-          .sort(compareCodepointStrings)
-          .join(", ")}`
-      : "";
-  const members = [
-    ...owns.sort(compareCodepointStrings),
-    ...grants.sort(compareCodepointStrings),
-    ...functions.sort(compareCodepointStrings)
-  ];
-  return block(`component ${component.name}${classifiers}`, members);
-}
-
-function formatRelation(relation: RelationDecl): string {
+function formatRelation(relation: ast.RelationDecl): string {
   let kindLine = "";
   let connectsLine = "";
   const rolesLines: string[] = [];
@@ -318,27 +158,27 @@ function formatRelation(relation: RelationDecl): string {
   let summaryLine = "";
 
   for (const member of relation.members) {
-    if (isRelationKindDecl(member)) {
+    if (member.$type === "RelationKindDecl") {
       kindLine = `kind ${member.value}`;
-    } else if (isRelationConnectsDecl(member)) {
+    } else if (member.$type === "RelationConnectsDecl") {
       const endpoints = member.endpoints.map((endpoint) => endpoint.name);
       if (member.ordered) {
         connectsLine = `connects ${endpoints.join(" -> ")}`;
       } else {
         connectsLine = `connects { ${endpoints.join(", ")} }`;
       }
-    } else if (isRelationRolesDecl(member)) {
+    } else if (member.$type === "RelationRolesDecl") {
       const sortedRoles = [...member.roles].sort((left, right) =>
         compareCodepointStrings(left.name, right.name)
       );
       rolesLines.push(
         `roles { ${sortedRoles.map((role) => `${role.name} as ${role.role}`).join(", ")} }`
       );
-    } else if (isRelationFingerprintExpectationDecl(member)) {
+    } else if (member.$type === "RelationFingerprintExpectationDecl") {
       expectationLines.push(
         `expects ${member.endpoint.name} fingerprint ${member.provider}(${quote(member.value)})`
       );
-    } else if (isRelationSummaryDecl(member)) {
+    } else if (member.$type === "RelationSummaryDecl") {
       summaryLine = `summary ${quote(member.value)}`;
     }
   }
@@ -353,7 +193,7 @@ function formatRelation(relation: RelationDecl): string {
   return block(`relation ${relation.name}`, lines);
 }
 
-function formatCandidateEffect(candidateEffect: CandidateEffectDecl): string {
+function formatCandidateEffect(candidateEffect: ast.CandidateEffectDecl): string {
   const functionLines: string[] = [];
   const effectLines: string[] = [];
   const sourceLines: string[] = [];
@@ -361,13 +201,13 @@ function formatCandidateEffect(candidateEffect: CandidateEffectDecl): string {
   const anchorLines: string[] = [];
 
   for (const member of candidateEffect.members) {
-    if (isCandidateEffectFunctionDecl(member)) {
+    if (member.$type === "CandidateEffectFunctionDecl") {
       functionLines.push(`fn ${member.function}`);
-    } else if (isCandidateEffectTermDecl(member)) {
+    } else if (member.$type === "CandidateEffectTermDecl") {
       effectLines.push(`effect ${formatTerm(member.term)}`);
-    } else if (isCandidateEffectConfidenceDecl(member)) {
+    } else if (member.$type === "CandidateEffectConfidenceDecl") {
       confidenceLines.push(`confidence ${member.value}`);
-    } else if (isCandidateEffectAnchorDecl(member)) {
+    } else if (member.$type === "CandidateEffectAnchorDecl") {
       anchorLines.push(
         `pin ${member.target.name} fingerprint ${member.provider}(${quote(member.value)})`
       );
@@ -385,63 +225,30 @@ function formatCandidateEffect(candidateEffect: CandidateEffectDecl): string {
   ]);
 }
 
-function formatFingerprint(fingerprint: FingerprintDecl): string {
+function formatFingerprint(fingerprint: ast.FingerprintDecl): string {
   return `fingerprint ${fingerprint.provider}(${quote(fingerprint.value)})`;
 }
 
-function formatFunction(fn: FunctionSummary | AddFunctionChange): string {
-  return formatFunctionParts(
-    `fn ${formatFunctionLocalName(fn)}`,
-    fn.shapeTraits,
-    undefined,
-    fn.source,
-    fn.description,
-    fn.unsafe,
-    fn.effects,
-    fn.members
-  );
-}
-
-function formatQualifiedFunction(
-  fn: AddFunctionChange | ModifyFunctionChange,
-  keyword: "add" | "modify"
+function formatFunction(
+  fn: ast.FunctionSummary | ast.AddFunctionChange | ast.ModifyFunctionChange,
+  header: string
 ): string {
-  return formatFunctionParts(
-    `${keyword} fn ${fn.target}`,
-    fn.shapeTraits,
-    isModifyFunctionChange(fn) ? fn.transforms : undefined,
-    fn.source,
-    fn.description,
-    fn.unsafe,
-    fn.effects,
-    fn.members
-  );
-}
-
-function formatFunctionParts(
-  header: string,
-  shapeTraits: ShapeTraitList | undefined,
-  transforms: TransformDecl | undefined,
-  source: SourceDecl | undefined,
-  description: DescriptionDecl | undefined,
-  unsafe: boolean,
-  effects: FunctionSummary["effects"],
-  members: FunctionMember[]
-): string {
-  const lines = [`${header}${formatShapeTraitList(shapeTraits)}`];
+  const { shapeTraits, source, description, unsafe, effects, members } = fn;
+  const transforms = fn.$type === "ModifyFunctionChange" ? fn.transforms : undefined;
+  const lines = [`${header}${shapeTraits ? formatTypeRefs(shapeTraits.traits) : ""}`];
   if (transforms && transforms.labels.length > 0) {
     lines.push(indent(`transform ${transforms.labels.join(", ")}`));
   }
   if (source) {
-    lines.push(indent(`source ${formatSource(source)}`));
+    lines.push(indent(`source ${formatSourceRef(source.ref)}`));
   }
   if (description) {
     lines.push(indent(formatDescription(description)));
   }
 
-  if (isUnknownEffects(effects)) {
+  if (effects.$type === "UnknownEffects") {
     lines.push(indent(`${unsafe ? "unsafe " : ""}effects unknown`));
-  } else if (isCompleteEffects(effects)) {
+  } else if (effects.$type === "CompleteEffects") {
     lines.push(indent(`${unsafe ? "unsafe " : ""}effects complete {`));
     for (const entry of [...effects.effects].sort((left, right) =>
       compareCodepointStrings(formatTerm(left.term), formatTerm(right.term))
@@ -451,28 +258,28 @@ function formatFunctionParts(
     lines.push(indent("}"));
   }
 
-  for (const member of sortFunctionMembers(members)) {
-    lines.push(indent(formatFunctionMember(member)));
+  for (const member of members.map(formatMember).sort(compareCodepointStrings)) {
+    lines.push(indent(member));
   }
 
   return lines.join("\n");
 }
 
-function formatShapeTraitList(shapeTraits: ShapeTraitList | undefined): string {
-  if (!shapeTraits || shapeTraits.traits.length === 0) {
+function formatTypeRefs(traits: readonly ast.TypeRef[]): string {
+  if (traits.length === 0) {
     return "";
   }
-  return ` : ${shapeTraits.traits
+  return ` : ${traits
     .map((trait) => trait.name)
     .sort(compareCodepointStrings)
     .join(", ")}`;
 }
 
-function formatDescription(description: DescriptionDecl): string {
+function formatDescription(description: ast.DescriptionDecl): string {
   return `description ${description.required ? "required " : ""}${quote(description.summary)}`;
 }
 
-function formatEffectEntry(entry: EffectEntry): string {
+function formatEffectEntry(entry: ast.EffectEntry): string {
   const lines = [formatTerm(entry.term)];
   if (entry.evidence) {
     lines.push(indent(`evidence ${formatSourceRef(entry.evidence.ref)}`));
@@ -480,38 +287,12 @@ function formatEffectEntry(entry: EffectEntry): string {
   return lines.join("\n");
 }
 
-function formatFunctionMember(member: FunctionMember): string {
-  if (isFunctionRequiresDecl(member)) {
-    return `requires ${formatTerm(member.term)}`;
-  }
-  if (isReasonDecl(member)) {
-    return `reason ${quote(member.value)}`;
-  }
-  if (isExpiresDecl(member)) {
-    return `expires ${quote(member.value)}`;
-  }
-  return "";
-}
+function formatImplementation(implementation: ast.ImplementationDecl): string {
+  const pathBlocks = implementation.members.filter(ast.isPathsBlock);
+  const conformsTo = implementation.members.find(ast.isConformsToDecl);
+  const onChange = implementation.members.find(ast.isOnChangeDecl);
 
-function sortFunctionMembers(members: FunctionMember[]): FunctionMember[] {
-  return [...members].sort((left, right) =>
-    compareCodepointStrings(formatFunctionMember(left), formatFunctionMember(right))
-  );
-}
-
-function formatImplementation(implementation: ImplementationDecl): string {
-  const lines: string[] = [];
-  const pathBlocks = implementation.members.filter(isPathsBlock);
-  const conformsTo = implementation.members.find(isConformsToDecl);
-  const onChange = implementation.members.find(isOnChangeDecl);
-
-  for (const pathBlock of pathBlocks) {
-    lines.push("paths {");
-    lines.push(
-      ...[...pathBlock.paths].sort(compareCodepointStrings).map((path) => indent(quote(path)))
-    );
-    lines.push("}");
-  }
+  const lines = pathBlocks.map((pathBlock) => formatPathsBlock(pathBlock.paths));
   if (conformsTo) {
     lines.push(`conforms_to ${conformsTo.component.name}`);
   }
@@ -522,62 +303,29 @@ function formatImplementation(implementation: ImplementationDecl): string {
   return block(`implementation ${implementation.name}`, lines);
 }
 
-function formatBinding(binding: BindingDecl): string {
-  const whenChanged: string[] = [];
-  const requireChanged: string[] = [];
-  const allowAttest: string[] = [];
-
-  for (const member of binding.members) {
-    if (isBindingWhenChangedDecl(member)) {
-      whenChanged.push(formatBindingPaths("when_changed", member.body.paths));
-    } else if (isBindingRequireChangedDecl(member)) {
-      requireChanged.push(formatBindingPaths("require_changed", member.body.paths));
-    } else if (isBindingAllowAttestDecl(member)) {
-      allowAttest.push(`allow attest ${member.kind}`);
-    }
-  }
-
-  return block(`binding ${binding.name}`, [
-    ...whenChanged.sort(compareCodepointStrings),
-    ...requireChanged.sort(compareCodepointStrings),
-    ...allowAttest.sort(compareCodepointStrings)
-  ]);
+function formatPathsBlock(paths: string[]): string {
+  return block("paths", [...paths].sort(compareCodepointStrings).map(quote));
 }
 
-function formatBindingPaths(keyword: "when_changed" | "require_changed", paths: string[]): string {
-  return [
-    `${keyword} paths {`,
-    ...[...paths].sort(compareCodepointStrings).map((path) => indent(quote(path))),
-    "}"
-  ].join("\n");
-}
-
-function formatAttestation(attestation: AttestationDecl): string {
-  return block(`attest ${attestation.kind}`, [
-    `source ${formatSource(attestation.source)}`,
-    `reason ${quote(attestation.reason.value)}`
-  ]);
-}
-
-function formatChange(change: ChangeDecl): string {
+function formatChange(change: ast.ChangeDecl): string {
   const entries = [...change.entries]
     .map((entry) => {
-      if (isAddFunctionChange(entry)) {
-        return formatQualifiedFunction(entry, "add");
+      if (entry.$type === "AddFunctionChange") {
+        return formatFunction(entry, `add fn ${entry.target}`);
       }
-      if (isModifyFunctionChange(entry)) {
-        return formatQualifiedFunction(entry, "modify");
+      if (entry.$type === "ModifyFunctionChange") {
+        return formatFunction(entry, `modify fn ${entry.target}`);
       }
-      if (isRemoveFunctionChange(entry)) {
+      if (entry.$type === "RemoveFunctionChange") {
         return `remove fn ${entry.target}`;
       }
-      if (isAddDeclarationChange(entry)) {
-        return formatChangedDeclaration("add", entry.declaration);
+      if (entry.$type === "AddDeclarationChange") {
+        return `add ${formatDeclaration(entry.declaration)}`;
       }
-      if (isModifyDeclarationChange(entry)) {
-        return formatChangedDeclaration("modify", entry.declaration);
+      if (entry.$type === "ModifyDeclarationChange") {
+        return `modify ${formatDeclaration(entry.declaration)}`;
       }
-      if (isRemoveDeclarationChange(entry)) {
+      if (entry.$type === "RemoveDeclarationChange") {
         return `remove ${entry.kind} ${entry.name}`;
       }
       return "";
@@ -588,81 +336,6 @@ function formatChange(change: ChangeDecl): string {
   return block(`change ${change.name}`, entries);
 }
 
-function formatFunctionLocalName(fn: FunctionSummary | AddFunctionChange): string {
-  if (isFunctionSummary(fn)) {
-    return fn.name;
-  }
-  return fn.target.slice(fn.target.lastIndexOf(".") + 1);
-}
-
-function formatChangedDeclaration(
-  keyword: "add" | "modify",
-  declaration: AddDeclarationChange["declaration"]
-): string {
-  const formatted = formatDeclaration(declaration);
-  const lines = formatted.split("\n");
-  if (lines.length === 1) {
-    return `${keyword} ${formatted}`;
-  }
-
-  const [first, ...rest] = lines;
-  return [`${keyword} ${first}`, ...rest].join("\n");
-}
-
-function formatRule(rule: RuleDecl): string {
-  const members = [...rule.members]
-    .map((member) => {
-      if (isRuleWhenHasDecl(member)) {
-        return `when ${member.subject} has ${member.trait}`;
-      }
-      if (isRuleForbidEffectDecl(member)) {
-        return `forbid ${member.final ? "final " : ""}${formatPattern(member.pattern)}`;
-      }
-      if (isRuleForbidProvidesDecl(member)) {
-        return `forbid provides ${member.target.name}${member.except ? ` except ${member.except}` : ""}`;
-      }
-      if (isRuleForbidHypercycleDecl(member)) {
-        const kinds = member.kinds.length > 0 ? ` over ${member.kinds.join(" or ")}` : "";
-        return `forbid hypercycle${kinds}`;
-      }
-      if (isRuleForbidPathDecl(member)) {
-        return `forbid path ${member.source} -> ${member.target} over ${member.kinds.join(" or ")}`;
-      }
-      return "";
-    })
-    .filter((line) => line.length > 0)
-    .sort(compareCodepointStrings);
-
-  return block(`rule ${rule.name}`, members);
-}
-
-function formatRationale(rationale: RationaleDecl): string {
-  const specific = rationale.members.filter(isWhyDecl).map((member) => `why ${member.reason}`);
-  return block(
-    `rationale ${rationale.name} : ${formatContextTypeRef(rationale.contextType)}`,
-    formatContextMembers(rationale.members, specific, RATIONALE_MEMBER_ORDER)
-  );
-}
-
-function formatMemory(memory: MemoryDecl): string {
-  const specific: string[] = [];
-  for (const member of memory.members) {
-    if (isStatusDecl(member)) {
-      specific.push(`status ${member.value}`);
-    } else if (isConfidenceDecl(member)) {
-      specific.push(`confidence ${member.value}`);
-    } else if (isObservedDecl(member)) {
-      specific.push(`observed ${formatSourceRef(member.ref)}`);
-    } else if (isSensitiveDecl(member)) {
-      specific.push("sensitive");
-    }
-  }
-  return block(
-    `memory ${memory.name} : ${formatContextTypeRef(memory.contextType)}`,
-    formatContextMembers(memory.members, specific, MEMORY_MEMBER_ORDER)
-  );
-}
-
 /**
  * Canonicalise the shared context members. Grouped blocks are the only guard
  * syntax: protects and guards are aggregated into one `protects { … }` /
@@ -670,39 +343,34 @@ function formatMemory(memory: MemoryDecl): string {
  * `when { … }`. Repeated blocks of the same kind are merged into one.
  */
 function formatContextMembers(
-  members: readonly (RationaleMember | MemoryMember)[],
-  specificLines: string[],
+  members: readonly (ast.RationaleMember | ast.MemoryMember)[],
   order: string[]
 ): string[] {
-  const lines = [...specificLines];
+  const lines: string[] = [];
   const protects: string[] = [];
   const guards: string[] = [];
   let owner: string | undefined;
   let reviewBy: string | undefined;
 
   for (const member of members) {
-    if (isAppliesToDecl(member)) {
-      lines.push(`applies_to ${formatTargetRef(member.target)}`);
-    } else if (isSummaryDecl(member)) {
-      lines.push(`summary ${quote(member.value)}`);
-    } else if (isEvidenceLineDecl(member)) {
-      lines.push(`evidence ${formatSourceRef(member.ref)}`);
-    } else if (isProtectsBlock(member)) {
+    if (member.$type === "ProtectsBlock") {
       for (const entry of member.entries) {
         protects.push(formatProtectsEntry(entry.kind, entry.value));
       }
-    } else if (isGuardsBlock(member)) {
+    } else if (member.$type === "GuardsBlock") {
       for (const entry of member.entries) {
         guards.push(formatGuardActionEntry(entry));
       }
-    } else if (isWhoBlock(member)) {
+    } else if (member.$type === "WhoBlock") {
       if (member.owner) {
         owner = member.owner.value;
       }
-    } else if (isWhenBlock(member)) {
+    } else if (member.$type === "WhenBlock") {
       if (member.date) {
         reviewBy = member.date.value;
       }
+    } else {
+      lines.push(formatMember(member));
     }
   }
 
@@ -719,20 +387,17 @@ function formatContextMembers(
     lines.push(block("when", [`review_by ${quote(reviewBy)}`]));
   }
 
-  return lines
-    .filter((line) => line.length > 0)
-    .sort(
-      (left, right) =>
-        memberOrder(left, order) - memberOrder(right, order) || compareCodepointStrings(left, right)
-    );
+  return sortMembers(lines, order);
 }
 
 function formatProtectsEntry(kind: string, value: string | undefined): string {
   return value ? `${kind} ${value}` : kind;
 }
 
-function formatGuardActionEntry(action: GuardRequireDecl | GuardForbidTransformDecl): string {
-  return isGuardForbidTransformDecl(action)
+function formatGuardActionEntry(
+  action: ast.GuardRequireDecl | ast.GuardForbidTransformDecl
+): string {
+  return action.$type === "GuardForbidTransformDecl"
     ? `forbid transform ${action.label}`
     : `on_change require ${action.requirement}`;
 }
@@ -743,40 +408,98 @@ function commaSeparated(entries: string[]): string[] {
   return entries.map((entry, index) => (index < entries.length - 1 ? `${entry},` : entry));
 }
 
-function formatReevaluation(reevaluation: ReevaluationDecl): string {
-  const members = [...reevaluation.members]
-    .map((member) => {
-      if (isSatisfiesDecl(member)) {
-        return `satisfies ${member.kind} ${member.name}`;
-      }
-      if (isOutcomeDecl(member)) {
-        return `outcome ${member.value}`;
-      }
-      if (isSummaryDecl(member)) {
-        return `summary ${quote(member.value)}`;
-      }
-      if (isReviewerDecl(member)) {
-        return `reviewer ${member.value}`;
-      }
-      if (isApproverDecl(member)) {
-        return `approver ${member.value}`;
-      }
-      if (isDecidedOnDecl(member)) {
-        return `decided_on ${quote(member.value)}`;
-      }
-      if (isEvidenceLineDecl(member)) {
-        return `evidence ${formatSourceRef(member.ref)}`;
-      }
-      return "";
-    })
-    .filter((line) => line.length > 0)
-    .sort(
-      (left, right) =>
-        memberOrder(left, REEVALUATION_MEMBER_ORDER) -
-          memberOrder(right, REEVALUATION_MEMBER_ORDER) || compareCodepointStrings(left, right)
-    );
+type FormattableMember =
+  | ast.BindingMember
+  | ast.ComponentMember
+  | ast.FunctionMember
+  | ast.MemoryMember
+  | ast.RationaleMember
+  | ast.ReevaluationMember
+  | ast.RuleMember
+  | ast.TraitMember;
 
-  return block(`reevaluation ${reevaluation.name}`, members);
+function formatMember(member: FormattableMember): string {
+  switch (member.$type) {
+    case "OwnsDecl":
+      return `owns ${member.resource.name}`;
+    case "GrantsDecl":
+      return `grants ${formatTerm(member.term)}`;
+    case "FunctionSummary":
+      return formatFunction(member, `fn ${member.name}`);
+    case "BindingWhenChangedDecl":
+      return `when_changed ${formatPathsBlock(member.body.paths)}`;
+    case "BindingRequireChangedDecl":
+      return `require_changed ${formatPathsBlock(member.body.paths)}`;
+    case "BindingAllowAttestDecl":
+      return `allow attest ${member.kind}`;
+    case "TraitAllowDecl":
+      return `allow ${formatTerm(member.pattern)}`;
+    case "TraitRequireDecl":
+      return `require ${formatTerm(member.pattern)}`;
+    case "TraitForbidDecl":
+    case "RuleForbidEffectDecl":
+      return `forbid ${member.final ? "final " : ""}${formatTerm(member.pattern)}`;
+    case "RequireContextDecl": {
+      const satisfiedBy =
+        member.satisfiedBy.length > 0 ? ` satisfied_by ${member.satisfiedBy.join(" or ")}` : "";
+      return `require_context ${member.contextType}<${member.target}>${satisfiedBy}`;
+    }
+    case "FunctionRequiresDecl":
+      return `requires ${formatTerm(member.term)}`;
+    case "ReasonDecl":
+      return `reason ${quote(member.value)}`;
+    case "ExpiresDecl":
+      return `expires ${quote(member.value)}`;
+    case "AppliesToDecl":
+      return `applies_to ${formatTargetRef(member.target)}`;
+    case "WhyDecl":
+      return `why ${member.reason}`;
+    case "SummaryDecl":
+      return `summary ${quote(member.value)}`;
+    case "EvidenceLineDecl":
+      return `evidence ${formatSourceRef(member.ref)}`;
+    case "StatusDecl":
+      return `status ${member.value}`;
+    case "ConfidenceDecl":
+      return `confidence ${member.value}`;
+    case "ObservedDecl":
+      return `observed ${formatSourceRef(member.ref)}`;
+    case "SensitiveDecl":
+      return "sensitive";
+    case "SatisfiesDecl":
+      return `satisfies ${member.kind} ${member.name}`;
+    case "OutcomeDecl":
+      return `outcome ${member.value}`;
+    case "ReviewerDecl":
+      return `reviewer ${member.value}`;
+    case "ApproverDecl":
+      return `approver ${member.value}`;
+    case "DecidedOnDecl":
+      return `decided_on ${quote(member.value)}`;
+    case "RuleWhenHasDecl":
+      return `when ${member.subject} has ${member.trait}`;
+    case "RuleForbidProvidesDecl":
+      return `forbid provides ${member.target.name}${member.except ? ` except ${member.except}` : ""}`;
+    case "RuleForbidHypercycleDecl": {
+      const kinds = member.kinds.length > 0 ? ` over ${member.kinds.join(" or ")}` : "";
+      return `forbid hypercycle${kinds}`;
+    }
+    case "RuleForbidPathDecl":
+      return `forbid path ${member.source} -> ${member.target} over ${member.kinds.join(" or ")}`;
+  }
+  return "";
+}
+
+function sortMembers(lines: string[], order: readonly string[] = []): string[] {
+  const groups = new Map(order.map((keyword) => [keyword, [] as string[]]));
+  const remaining: string[] = [];
+  for (const line of lines) {
+    if (line.length > 0) {
+      const keyword = line.split(/\s+/, 1)[0] ?? "";
+      (groups.get(keyword) ?? remaining).push(line);
+    }
+  }
+  return [...groups.values(), remaining].flatMap((group) => group.sort(compareCodepointStrings));
 }
 
 const RATIONALE_MEMBER_ORDER = [
@@ -814,99 +537,60 @@ const REEVALUATION_MEMBER_ORDER = [
   "evidence"
 ];
 
-function memberOrder(line: string, order: string[]): number {
-  const keyword = line.split(/\s+/, 1)[0] ?? "";
-  const index = order.indexOf(keyword);
-  return index === -1 ? order.length : index;
-}
-
 function formatContextTypeRef(
-  contextType: RationaleDecl["contextType"] | MemoryDecl["contextType"]
+  contextType: ast.RationaleDecl["contextType"] | ast.MemoryDecl["contextType"]
 ): string {
   return `${contextType.name}<${formatTargetRef(contextType.target)}>`;
 }
 
-function formatTargetRef(target: TargetRef): string {
+function formatTargetRef(target: ast.TargetRef): string {
   return `${target.kind} ${target.name}`;
 }
 
 function block(header: string, members: string[]): string {
-  if (members.length === 0) {
-    return `${header} {\n}`;
-  }
   return [`${header} {`, ...members.map((member) => indent(member)), "}"].join("\n");
 }
 
-function formatTypeParams(typeParams: TypeParamList | undefined): string {
+function formatTypeParams(typeParams: ast.TypeParamList | undefined): string {
   if (!typeParams || typeParams.params.length === 0) {
     return "";
   }
   return `<${typeParams.params.map((param) => `${param.name}${param.bound ? `: ${param.bound}` : ""}`).join(", ")}>`;
 }
 
-function formatTerm(term: EffectTerm): string {
+function formatTerm(term: ast.EffectTerm | ast.EffectPattern): string {
   return term.target ? `${term.name}<${term.target.name}>` : term.name;
 }
 
-function formatPattern(pattern: EffectPattern): string {
-  return pattern.target ? `${pattern.name}<${pattern.target.name}>` : pattern.name;
-}
-
-function formatSource(source: SourceDecl): string {
-  return formatSourceRef(source.ref);
-}
-
-function formatSourceRef(ref: SourceDecl["ref"]): string {
+function formatSourceRef(ref: ast.SourceDecl["ref"]): string {
   return `${ref.language}(${quote(ref.path)})`;
 }
 
-function declarationSortKey(declaration: ShapeModule["declarations"][number]): string {
-  if (isTraitDecl(declaration)) {
-    return `0:${declaration.name}`;
+const DECLARATION_ORDER: Record<ast.ShapeModule["declarations"][number]["$type"], string> = {
+  TraitDecl: "0",
+  ResourceDecl: "1",
+  ComponentDecl: "2",
+  RelationDecl: "3",
+  CandidateEffectDecl: "4",
+  ImplementationDecl: "5",
+  BindingDecl: "6",
+  RuleDecl: "7",
+  RoleDecl: "7A",
+  PolicyDecl: "7B",
+  RationaleDecl: "8",
+  MemoryDecl: "9",
+  ReevaluationDecl: "A",
+  AttestationDecl: "B",
+  ChangeDecl: "C"
+};
+
+function declarationSortKey(declaration: ast.ShapeModule["declarations"][number]): string {
+  const order = DECLARATION_ORDER[declaration.$type];
+  if (order === undefined) {
+    return "Z:";
   }
-  if (isResourceDecl(declaration)) {
-    return `1:${declaration.name}`;
-  }
-  if (isComponentDecl(declaration)) {
-    return `2:${declaration.name}`;
-  }
-  if (isRelationDecl(declaration)) {
-    return `3:${declaration.name}`;
-  }
-  if (isCandidateEffectDecl(declaration)) {
-    return `4:${declaration.name}`;
-  }
-  if (isImplementationDecl(declaration)) {
-    return `5:${declaration.name}`;
-  }
-  if (isBindingDecl(declaration)) {
-    return `6:${declaration.name}`;
-  }
-  if (isRuleDecl(declaration)) {
-    return `7:${declaration.name}`;
-  }
-  if (isRationaleDecl(declaration)) {
-    return `8:${declaration.name}`;
-  }
-  if (isMemoryDecl(declaration)) {
-    return `9:${declaration.name}`;
-  }
-  if (isReevaluationDecl(declaration)) {
-    return `A:${declaration.name}`;
-  }
-  if (isRoleDecl(declaration)) {
-    return `7A:${declaration.name}`;
-  }
-  if (isPolicyDecl(declaration)) {
-    return `7B:${declaration.name}`;
-  }
-  if (isAttestationDecl(declaration)) {
-    return `B:${declaration.kind}`;
-  }
-  if (isChangeDecl(declaration)) {
-    return `C:${declaration.name}`;
-  }
-  return "Z:";
+  const name = declaration.$type === "AttestationDecl" ? declaration.kind : declaration.name;
+  return `${order}:${name}`;
 }
 
 function indent(value: string, depth = 1): string {

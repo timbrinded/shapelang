@@ -1,19 +1,17 @@
 import { Glob } from "bun";
 import {
   formatDiagnostics,
-  parseShapeModule,
+  loadShapeModules,
   type CheckModuleInput,
-  type ParseDiagnostic,
-  type ShapeModule
+  type LoadedShapeModule
 } from "@shape/shp-checker";
 import { CliDiagnosticError, EXIT_USAGE, errorMessage } from "./errors";
 
-export type LoadedShapeModule = { module: ShapeModule; filePath: string };
-
-export type LoadedShapeModulesResult = {
-  modules: LoadedShapeModule[];
-  diagnostics: ParseDiagnostic[];
-};
+export {
+  loadShapeModules,
+  type LoadedShapeModule,
+  type LoadedShapeModulesResult
+} from "@shape/shp-checker";
 
 export async function defaultShapeFiles(): Promise<string[]> {
   const patterns = ["shape/**/*.shape"];
@@ -39,30 +37,6 @@ export async function providedOrDefaultShapeFiles(
   providedFiles: readonly string[]
 ): Promise<string[]> {
   return providedFiles.length > 0 ? [...providedFiles] : await defaultShapeFiles();
-}
-
-export async function loadShapeModules(
-  paths: readonly string[]
-): Promise<LoadedShapeModulesResult> {
-  const modules: LoadedShapeModule[] = [];
-  const diagnostics: ParseDiagnostic[] = [];
-  for (const filePath of paths) {
-    try {
-      const parsed = parseShapeModule(await Bun.file(filePath).text(), filePath);
-      if (parsed.ok) {
-        modules.push({ module: parsed.module, filePath });
-      } else {
-        diagnostics.push(...parsed.diagnostics);
-      }
-    } catch (error) {
-      diagnostics.push({
-        kind: "parse",
-        filePath,
-        message: errorMessage(error)
-      });
-    }
-  }
-  return { modules, diagnostics };
 }
 
 export async function parseModules(paths: readonly string[]): Promise<LoadedShapeModule[]> {

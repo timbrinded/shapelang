@@ -71,12 +71,7 @@ export function collectSwiftDeclarations(
   nodes: RawAstNode[],
   children: Children,
   nodeById: Map<string, RawAstNode>
-): {
-  types: SwiftType[];
-  functions: Map<string, SwiftFunction>;
-  freeFunctions: RawAstNode[];
-  diagnostics: AstGenerationDiagnostic[];
-} {
+) {
   const typeNames = new Map<string, string>();
   const typesByName = new Map<string, SwiftType>();
   const functions = new Map<string, SwiftFunction>();

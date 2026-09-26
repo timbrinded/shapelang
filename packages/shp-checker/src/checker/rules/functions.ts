@@ -1,7 +1,7 @@
 import type { FunctionInfo, Model, SemanticDiagnostic } from "../model.ts";
 import { formatSourceRefInfo, termKey } from "../display.ts";
 import { describeProvenance } from "../provenance.ts";
-import { findFinalForbidden, shouldIgnoreUnknownEffectsDiagnostic } from "../derivations.ts";
+import { findFinalForbidden } from "../derivations.ts";
 
 export function checkCandidateEffectFingerprints(model: Model): SemanticDiagnostic[] {
   const diagnostics: SemanticDiagnostic[] = [];
@@ -62,7 +62,9 @@ export function checkFunctions(model: Model): SemanticDiagnostic[] {
       }
 
       if (fn.effects.kind === "unknown") {
-        if (shouldIgnoreUnknownEffectsDiagnostic(fn)) {
+        // Generated-AST candidate functions are advisory: their unknown-effects are not
+        // reported as defects.
+        if (fn.generatedAstCandidate) {
           continue;
         }
         diagnostics.push({

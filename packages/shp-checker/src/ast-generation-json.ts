@@ -3,12 +3,13 @@ import { inferAstSourceLanguageFromPath } from "./source-languages.ts";
 import type {
   AstGenerationDiagnostic,
   AstGenerationResult,
-  CodeSemanticGraph,
-  SourceSpan
+  CodeSemanticGraph
 } from "./ast-generation-types.ts";
-import { createEmptyCodeSemanticGraph } from "./ast-generation-graph.ts";
-import { addSemanticProjection } from "./ast-generation-semantic.ts";
+import { createEmptyCodeSemanticGraph, finalizeCodeSemanticGraph } from "./ast-generation-graph.ts";
 import {
+  astError,
+  astErrorReporter,
+  astFailure,
   booleanProperty,
   hasNonScalarRecordEntry,
   isRecord,
@@ -20,12 +21,6 @@ import {
   stringProperty
 } from "./ast-generation-utils.ts";
 
-type JsonAstInput = {
-  module?: string;
-  language?: string;
-  files: JsonAstFile[];
-};
-
 type JsonAstFile = {
   path: string;
   language?: string;
@@ -33,16 +28,7 @@ type JsonAstFile = {
   nodes: JsonAstNode[];
 };
 
-type JsonAstNode = {
-  id: string;
-  kind: string;
-  named?: boolean;
-  span?: SourceSpan;
-  text?: string;
-  textHash?: string;
-  attributes?: Record<string, string | number | boolean | null>;
-  children?: JsonAstChild[];
-};
+type JsonAstNode = NonNullable<ReturnType<typeof parseJsonAstNode>>;
 
 type JsonAstChild = {
   id: string;
@@ -51,7 +37,6 @@ type JsonAstChild = {
 
 type ChildEdge = {
   parentId: string;
-  childId: string;
   index: number;
   fieldName?: string;
 };
@@ -65,27 +50,16 @@ export function buildCodeSemanticGraphFromAstJson(
   }
 
   const graph = createEmptyCodeSemanticGraph();
-  const diagnostics: AstGenerationDiagnostic[] = [];
   for (const file of parsed.value.files) {
     const fileResult = normalizeJsonAstFile(file, parsed.value.language);
     if (fileResult.ok) {
       graph.files.push(...fileResult.value.files);
       graph.rawNodes.push(...fileResult.value.rawNodes);
     }
-    diagnostics.push(...fileResult.diagnostics);
+    graph.diagnostics.push(...fileResult.diagnostics);
   }
 
-  graph.diagnostics.push(...diagnostics);
-  const errors = diagnostics.filter((diagnostic) => diagnostic.kind === "error");
-  if (errors.length > 0) {
-    return { ok: false, diagnostics };
-  }
-
-  addSemanticProjection(graph);
-  if (graph.diagnostics.some((diagnostic) => diagnostic.kind === "error")) {
-    return { ok: false, diagnostics: graph.diagnostics };
-  }
-  return { ok: true, value: graph, diagnostics: graph.diagnostics };
+  return finalizeCodeSemanticGraph(graph);
 }
 
 function normalizeJsonAstFile(
@@ -93,72 +67,47 @@ function normalizeJsonAstFile(
   fallbackLanguage: string | undefined
 ): AstGenerationResult<Pick<CodeSemanticGraph, "files" | "rawNodes">> {
   const diagnostics: AstGenerationDiagnostic[] = [];
+  const reportError = astErrorReporter(diagnostics, file.path);
   const language = normalizeLanguageName(
     file.language ?? fallbackLanguage ?? inferAstSourceLanguageFromPath(file.path)
   );
   if (!language) {
-    diagnostics.push({
-      kind: "error",
-      code: "unknown_language",
-      path: file.path,
-      message: `missing language for ${file.path}`
-    });
+    reportError("unknown_language", `missing language for ${file.path}`);
   }
 
   const nodeByParserId = new Map<string, JsonAstNode>();
   for (const node of file.nodes) {
     if (nodeByParserId.has(node.id)) {
-      diagnostics.push({
-        kind: "error",
-        code: "duplicate_node_id",
-        path: file.path,
-        nodeId: node.id,
-        message: `duplicate AST node id ${node.id}`
-      });
+      reportError("duplicate_node_id", `duplicate AST node id ${node.id}`, node.id);
     }
     nodeByParserId.set(node.id, node);
   }
 
   if (!nodeByParserId.has(file.root)) {
-    diagnostics.push({
-      kind: "error",
-      code: "missing_root",
-      path: file.path,
-      nodeId: file.root,
-      message: `root AST node ${file.root} is not declared`
-    });
+    reportError("missing_root", `root AST node ${file.root} is not declared`, file.root);
   }
 
-  const edges: ChildEdge[] = [];
-  const parentByChild = new Map<string, string>();
+  const parentByChild = new Map<string, ChildEdge>();
   for (const node of file.nodes) {
-    node.children?.forEach((child, index) => {
+    node.children.forEach((child, index) => {
       if (!nodeByParserId.has(child.id)) {
-        diagnostics.push({
-          kind: "error",
-          code: "missing_child",
-          path: file.path,
-          nodeId: child.id,
-          message: `${node.id} references missing child ${child.id}`
-        });
+        reportError("missing_child", `${node.id} references missing child ${child.id}`, child.id);
         return;
       }
       const existingParent = parentByChild.get(child.id);
-      if (existingParent && existingParent !== node.id) {
-        diagnostics.push({
-          kind: "error",
-          code: "multiple_parents",
-          path: file.path,
-          nodeId: child.id,
-          message: `${child.id} has multiple parents: ${existingParent} and ${node.id}`
-        });
+      if (existingParent && existingParent.parentId !== node.id) {
+        reportError(
+          "multiple_parents",
+          `${child.id} has multiple parents: ${existingParent.parentId} and ${node.id}`,
+          child.id
+        );
       }
-      parentByChild.set(child.id, node.id);
-      edges.push({ parentId: node.id, childId: child.id, index, fieldName: child.field });
+      if (!existingParent || existingParent.parentId !== node.id) {
+        parentByChild.set(child.id, { parentId: node.id, index, fieldName: child.field });
+      }
     });
   }
 
-  const reachable = new Set<string>();
   const visited = new Set<string>();
   const visiting = new Set<string>();
   const stack: { parserId: string; leaving: boolean }[] = [{ parserId: file.root, leaving: false }];
@@ -173,20 +122,13 @@ function normalizeJsonAstFile(
       continue;
     }
     if (visiting.has(frame.parserId)) {
-      diagnostics.push({
-        kind: "error",
-        code: "cycle",
-        path: file.path,
-        nodeId: frame.parserId,
-        message: `AST child graph contains a cycle at ${frame.parserId}`
-      });
+      reportError("cycle", `AST child graph contains a cycle at ${frame.parserId}`, frame.parserId);
       continue;
     }
     if (visited.has(frame.parserId)) {
       continue;
     }
     visiting.add(frame.parserId);
-    reachable.add(frame.parserId);
     stack.push({ parserId: frame.parserId, leaving: true });
     const node = nodeByParserId.get(frame.parserId);
     const children = node?.children ?? [];
@@ -199,30 +141,13 @@ function normalizeJsonAstFile(
   }
 
   for (const node of file.nodes) {
-    if (!reachable.has(node.id)) {
-      diagnostics.push({
-        kind: "error",
-        code: "unreachable_node",
-        path: file.path,
-        nodeId: node.id,
-        message: `AST node ${node.id} is not reachable from root ${file.root}`
-      });
+    if (!visited.has(node.id)) {
+      reportError(
+        "unreachable_node",
+        `AST node ${node.id} is not reachable from root ${file.root}`,
+        node.id
+      );
     }
-  }
-
-  const nestedAttribute = file.nodes.find((node) =>
-    Object.values(node.attributes ?? {}).some(
-      (attribute) => typeof attribute === "object" && attribute !== null
-    )
-  );
-  if (nestedAttribute) {
-    diagnostics.push({
-      kind: "error",
-      code: "nested_attribute",
-      path: file.path,
-      nodeId: nestedAttribute.id,
-      message: `AST node ${nestedAttribute.id} has a nested attribute; represent nested structure as child nodes`
-    });
   }
 
   if (diagnostics.some((diagnostic) => diagnostic.kind === "error")) {
@@ -231,7 +156,7 @@ function normalizeJsonAstFile(
 
   const fileId = stableShapeId(`file_${file.path}`, "File");
   const rawNodes = file.nodes.map((node) => {
-    const edge = edges.find((candidate) => candidate.childId === node.id);
+    const edge = parentByChild.get(node.id);
     const name = node.attributes?.name;
     return {
       id: stableShapeId(`${file.path}_${node.id}_${node.kind}`, "AstNode"),
@@ -278,54 +203,38 @@ function normalizeJsonAstFile(
   };
 }
 
-function parseJsonAstInput(value: unknown): AstGenerationResult<JsonAstInput> {
+function parseJsonAstInput(value: unknown) {
   const diagnostics: AstGenerationDiagnostic[] = [];
   if (!isRecord(value)) {
-    return {
-      ok: false,
-      diagnostics: [
-        { kind: "error", code: "invalid_json_ast", message: "AST JSON input must be an object" }
-      ]
-    };
+    return astFailure("invalid_json_ast", "AST JSON input must be an object");
   }
 
   const filesValue = value.files;
   if (!Array.isArray(filesValue)) {
-    return {
-      ok: false,
-      diagnostics: [
-        { kind: "error", code: "invalid_json_ast", message: "AST JSON input must contain files[]" }
-      ]
-    };
+    return astFailure("invalid_json_ast", "AST JSON input must contain files[]");
   }
 
   const files: JsonAstFile[] = [];
   filesValue.forEach((fileValue, fileIndex) => {
     if (!isRecord(fileValue)) {
-      diagnostics.push({
-        kind: "error",
-        code: "invalid_file",
-        message: `files[${fileIndex}] must be an object`
-      });
+      diagnostics.push(astError("invalid_file", `files[${fileIndex}] must be an object`));
       return;
     }
     const path = stringProperty(fileValue, "path");
     const root = stringProperty(fileValue, "root");
     const nodesValue = fileValue.nodes;
     if (!path || !root || !Array.isArray(nodesValue)) {
-      diagnostics.push({
-        kind: "error",
-        code: "invalid_file",
-        message: `files[${fileIndex}] must include path, root, and nodes[]`
-      });
+      diagnostics.push(
+        astError("invalid_file", `files[${fileIndex}] must include path, root, and nodes[]`)
+      );
       return;
     }
     const nodes: JsonAstNode[] = [];
+    const reportNodeError = astErrorReporter(diagnostics, path);
     nodesValue.forEach((nodeValue, nodeIndex) => {
-      const result = parseJsonAstNode(nodeValue, nodeIndex, path);
-      diagnostics.push(...result.diagnostics);
-      if (result.node) {
-        nodes.push(result.node);
+      const node = parseJsonAstNode(nodeValue, nodeIndex, reportNodeError);
+      if (node) {
+        nodes.push(node);
       }
     });
     files.push({
@@ -337,10 +246,10 @@ function parseJsonAstInput(value: unknown): AstGenerationResult<JsonAstInput> {
   });
 
   if (diagnostics.some((diagnostic) => diagnostic.kind === "error")) {
-    return { ok: false, diagnostics };
+    return { ok: false as const, diagnostics };
   }
   return {
-    ok: true,
+    ok: true as const,
     value: {
       module: stringProperty(value, "module"),
       language: stringProperty(value, "language"),
@@ -353,34 +262,17 @@ function parseJsonAstInput(value: unknown): AstGenerationResult<JsonAstInput> {
 function parseJsonAstNode(
   nodeValue: unknown,
   nodeIndex: number,
-  path: string
-): { node?: JsonAstNode; diagnostics: AstGenerationDiagnostic[] } {
-  const diagnostics: AstGenerationDiagnostic[] = [];
+  reportError: ReturnType<typeof astErrorReporter>
+) {
   if (!isRecord(nodeValue)) {
-    return {
-      diagnostics: [
-        {
-          kind: "error",
-          code: "invalid_node",
-          path,
-          message: `nodes[${nodeIndex}] must be an object`
-        }
-      ]
-    };
+    reportError("invalid_node", `nodes[${nodeIndex}] must be an object`);
+    return;
   }
   const id = stringProperty(nodeValue, "id");
   const kind = stringProperty(nodeValue, "kind");
   if (!id || !kind) {
-    return {
-      diagnostics: [
-        {
-          kind: "error",
-          code: "invalid_node",
-          path,
-          message: `nodes[${nodeIndex}] must include id and kind`
-        }
-      ]
-    };
+    reportError("invalid_node", `nodes[${nodeIndex}] must include id and kind`);
+    return;
   }
 
   const childrenValue = nodeValue.children;
@@ -395,37 +287,30 @@ function parseJsonAstNode(
           field: stringProperty(childValue, "field")
         });
       } else {
-        diagnostics.push({
-          kind: "error",
-          code: "invalid_child",
-          path,
-          nodeId: id,
-          message: `children[${childIndex}] for ${id} must be a string or { id }`
-        });
+        reportError(
+          "invalid_child",
+          `children[${childIndex}] for ${id} must be a string or { id }`,
+          id
+        );
       }
     });
   }
   if (hasNonScalarRecordEntry(nodeValue, "attributes")) {
-    diagnostics.push({
-      kind: "error",
-      code: "nested_attribute",
-      path,
-      nodeId: id,
-      message: `AST node ${id} has a nested attribute; represent nested structure as child nodes`
-    });
+    reportError(
+      "nested_attribute",
+      `AST node ${id} has a nested attribute; represent nested structure as child nodes`,
+      id
+    );
   }
 
   return {
-    node: {
-      id,
-      kind,
-      named: booleanProperty(nodeValue, "named"),
-      span: spanProperty(nodeValue, "span"),
-      text: stringProperty(nodeValue, "text"),
-      textHash: stringProperty(nodeValue, "textHash"),
-      attributes: scalarRecordProperty(nodeValue, "attributes"),
-      children
-    },
-    diagnostics
+    id,
+    kind,
+    named: booleanProperty(nodeValue, "named"),
+    span: spanProperty(nodeValue, "span"),
+    text: stringProperty(nodeValue, "text"),
+    textHash: stringProperty(nodeValue, "textHash"),
+    attributes: scalarRecordProperty(nodeValue, "attributes"),
+    children
   };
 }

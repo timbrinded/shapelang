@@ -33,6 +33,25 @@ bun run langium:generate
 `packages/shp-checker/src/language/generated` from the grammar. The artifacts are
 committed, and CI's Codegen job fails when regenerating them produces a diff.
 
+## Before making changes
+
+Read the relevant `shape/*.shape` claims and follow the
+[change-type table](#what-to-update-per-change-type). Prefer existing
+abstractions. Use strict TypeScript without casts to `any` to silence errors.
+
+Before changing a protected target, inspect `bun shp obligations`,
+`bun shp memory`, and `bun shp explain TARGET`; preserve the target or record a
+real reevaluation. Guards fire only from explicit `change` declarations;
+in-place edits do not trigger them.
+
+Model structural dependencies with top-level `relation` declarations; prefer
+prelude kinds. Before relation-heavy edits, run `bun shp graph stats`; use
+`bun shp graph show SYMBOL --kind KIND` for focused inspection.
+
+Keep raw research in ignored `.research/` and promote durable conclusions into
+tracked sources. Product code, docs, tests, CI, and releases must not depend on
+raw research artifacts.
+
 ## Repository layout
 
 | Path | Contents |
@@ -60,9 +79,10 @@ committed, and CI's Codegen job fails when regenerating them produces a diff.
 
 ## Checks before a pull request
 
-Run these from the repository root before opening a pull request:
+Run these from the repository root after code changes and before opening a pull
+request. Report what ran and any remaining verification gaps:
 
-<!-- AGENTS.md and RELEASING.md step 2 repeat this list; change all three together. -->
+<!-- RELEASING.md step 2 repeats this list; change both together. AGENTS.md links here. -->
 
 ```bash
 bun run changed-files
@@ -149,9 +169,13 @@ The checker treats every `source` or `evidence` ref in a `.shape` file listed in
 holds many refs, check which of them still apply. Attestations are held to the
 change itself: `shape:ci` compares them with the base in `changed-base.txt`, and
 one carried over from an earlier change does not count and is reported as a
-stale attestation. Delete those with
-`bun shp attest prune --base-ref "$(cat changed-base.txt)"`. Functions in
-generated AST modules never count as a Shape update.
+stale attestation. Functions in generated AST modules never count as a Shape
+update.
+
+In every PR touching `shape/`, run `bun run changed-files`, then
+`bun shp attest prune --base-ref "$(cat changed-base.txt)"` to remove stale
+attestations against the same base as the gate. For stacked work, use
+`BASE_REF=<parent branch> bun run changed-files` first.
 
 The [Keep the Model Current](https://timbrinded.github.io/shapelang/guides/keep-model-current/)
 guide explains coverage, bindings, and attestations in full.

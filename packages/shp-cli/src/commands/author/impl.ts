@@ -24,51 +24,7 @@ export type AuthorFlags = {
   readonly snippetFiles?: string;
 };
 
-type AuthorModeInput = {
-  readonly changedFilesPath: string;
-} & (
-  | {
-      readonly kind: "draft";
-      readonly componentName: string;
-      readonly moduleName?: string;
-    }
-  | {
-      readonly kind: "author_prompt";
-      readonly componentName: string;
-      readonly diffPath: string;
-      readonly instructions?: string;
-      readonly moduleName?: string;
-      readonly projectPreludePath?: string;
-      readonly shapeFiles: string[];
-      readonly snippetFiles: string[];
-    }
-  | {
-      readonly kind: "critic_prompt";
-      readonly diffPath: string;
-      readonly instructions?: string;
-      readonly projectPreludePath?: string;
-      readonly shapeFiles: string[];
-      readonly snippetFiles: string[];
-      readonly proposedShapePath: string;
-    }
-);
-
-type PromptModeInput = Exclude<AuthorModeInput, { kind: "draft" }>;
-
-type ExplicitPromptContext = {
-  readonly diff: string;
-  readonly existingShape: ShapeAuthorContextFile[];
-  readonly relevantSnippets?: ShapeAuthorContextFile[];
-  readonly projectPrelude?: ShapeAuthorContextFile;
-};
-
-type PromptInput = {
-  readonly diffPath: string;
-  readonly instructions?: string;
-  readonly projectPreludePath?: string;
-  readonly shapeFiles: string[];
-  readonly snippetFiles: string[];
-};
+type PromptModeInput = Exclude<ReturnType<typeof validateAuthorFlags>, { kind: "draft" }>;
 
 export default async function author(this: CliContext, flags: AuthorFlags): Promise<void> {
   const mode = validateAuthorFlags(flags);
@@ -130,7 +86,7 @@ export default async function author(this: CliContext, flags: AuthorFlags): Prom
   );
 }
 
-function validateAuthorFlags(flags: AuthorFlags): AuthorModeInput {
+function validateAuthorFlags(flags: AuthorFlags) {
   if (flags.prompt && flags.criticPrompt !== undefined) {
     throw new CliDiagnosticError("error: --prompt and --critic-prompt cannot be used together.\n");
   }
@@ -138,7 +94,7 @@ function validateAuthorFlags(flags: AuthorFlags): AuthorModeInput {
   if (flags.prompt) {
     const promptInput = requirePromptInput(flags, "--prompt");
     return {
-      kind: "author_prompt",
+      kind: "author_prompt" as const,
       changedFilesPath: flags.changedFiles,
       componentName: requireComponent(flags),
       moduleName: flags.module,
@@ -155,7 +111,7 @@ function validateAuthorFlags(flags: AuthorFlags): AuthorModeInput {
     }
     const promptInput = requirePromptInput(flags, "--critic-prompt");
     return {
-      kind: "critic_prompt",
+      kind: "critic_prompt" as const,
       changedFilesPath: flags.changedFiles,
       ...promptInput,
       proposedShapePath: flags.criticPrompt
@@ -176,7 +132,7 @@ function validateAuthorFlags(flags: AuthorFlags): AuthorModeInput {
   }
 
   return {
-    kind: "draft",
+    kind: "draft" as const,
     changedFilesPath: flags.changedFiles,
     componentName: requireComponent(flags),
     moduleName: flags.module
@@ -192,10 +148,7 @@ function requireComponent(flags: AuthorFlags): string {
   return flags.component;
 }
 
-function requirePromptInput(
-  flags: AuthorFlags,
-  modeFlag: "--prompt" | "--critic-prompt"
-): PromptInput {
+function requirePromptInput(flags: AuthorFlags, modeFlag: "--prompt" | "--critic-prompt") {
   if (flags.diff === undefined) {
     throw new CliDiagnosticError(`error: ${modeFlag} requires --diff.\n`);
   }
@@ -212,10 +165,7 @@ function requirePromptInput(
   };
 }
 
-async function readExplicitPromptContext(
-  mode: PromptModeInput,
-  changedFiles: string[]
-): Promise<ExplicitPromptContext> {
+async function readExplicitPromptContext(mode: PromptModeInput, changedFiles: string[]) {
   const diff = await readCliTextFile(mode.diffPath);
   const modeFlag = mode.kind === "author_prompt" ? "--prompt" : "--critic-prompt";
   if (diff.trim().length === 0) {

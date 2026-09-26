@@ -1,44 +1,35 @@
 import { buildCommand } from "@stricli/core";
 import type { CliContext } from "../../context";
-import { baseModelFlags, fileArguments } from "../../parameters";
+import {
+  baseModelFlags,
+  fileArguments,
+  optionalStringFlag,
+  optionalBooleanFlag
+} from "../../parameters";
 import type { CheckFlags } from "./impl";
 
 export const checkCommand = buildCommand<CheckFlags, string[], CliContext>({
   loader: () => import("./impl"),
   parameters: {
     flags: {
-      allowUnknownEffects: {
-        kind: "boolean",
-        optional: true,
-        brief: "Allow effects unknown as a non-fatal warning while validating drafts."
-      },
-      changedFiles: {
-        kind: "parsed",
-        parse: (input: string) => input,
-        optional: true,
-        brief: "Path to a newline-delimited changed-file list.",
-        placeholder: "changed.txt"
-      },
+      allowUnknownEffects: optionalBooleanFlag(
+        "Allow effects unknown as a non-fatal warning while validating drafts."
+      ),
+      changedFiles: optionalStringFlag(
+        "Path to a newline-delimited changed-file list.",
+        "changed.txt"
+      ),
       ...baseModelFlags,
-      checkCitedPaths: {
-        kind: "boolean",
-        optional: true,
-        brief:
-          "Fail when a source or evidence path the model cites is not a file in the git repository."
-      },
-      asOf: {
-        kind: "parsed",
-        parse: (input: string) => input,
-        optional: true,
-        brief:
-          "Freshness reference date (ISO YYYY-MM-DD); enforces stale design memory deterministically.",
-        placeholder: "YYYY-MM-DD"
-      },
-      strictFreshness: {
-        kind: "boolean",
-        optional: true,
-        brief: "Shorthand for --as-of today (UTC); fails when review_by is before today."
-      }
+      checkCitedPaths: optionalBooleanFlag(
+        "Fail when a source or evidence path the model cites is not a file in the git repository."
+      ),
+      asOf: optionalStringFlag(
+        "Freshness reference date (ISO YYYY-MM-DD); enforces stale design memory deterministically.",
+        "YYYY-MM-DD"
+      ),
+      strictFreshness: optionalBooleanFlag(
+        "Shorthand for --as-of today (UTC); fails when review_by is before today."
+      )
     },
     aliases: {},
     positional: fileArguments()

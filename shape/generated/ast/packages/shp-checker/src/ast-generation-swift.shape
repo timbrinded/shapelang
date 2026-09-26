@@ -8,7 +8,7 @@ trait GeneratedCandidate {
 
 resource AstGenerationSwiftModuleCollectSwiftDeclarationsAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/ast-generation-swift.ts#collectSwiftDeclarations")
-  fingerprint ast.semantic_subtree_v1("sha256:348147392d2a2836cb5f1cb89f827f7aad89d0f5816f262fe392b99dc0958e92")
+  fingerprint ast.semantic_subtree_v1("sha256:6816063a19a8f11a3a5f10ca2db94704d821a377915b978ac9483b33ed94be65")
 }
 
 resource AstGenerationSwiftModuleFunctionSignatureAstAnchor : GeneratedAstAnchor {
@@ -77,7 +77,7 @@ relation AstGenerationSwiftModuleCollectSwiftDeclarationsGeneratedFromAstGenerat
   kind generated_from
   connects AstGenerationSwiftModule -> AstGenerationSwiftModuleCollectSwiftDeclarationsAstAnchor
   roles { AstGenerationSwiftModule as generated, AstGenerationSwiftModuleCollectSwiftDeclarationsAstAnchor as syntax }
-  expects AstGenerationSwiftModuleCollectSwiftDeclarationsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:348147392d2a2836cb5f1cb89f827f7aad89d0f5816f262fe392b99dc0958e92")
+  expects AstGenerationSwiftModuleCollectSwiftDeclarationsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6816063a19a8f11a3a5f10ca2db94704d821a377915b978ac9483b33ed94be65")
   summary "fn AstGenerationSwiftModule.collectSwiftDeclarations generated from typescript function_declaration at packages/shp-checker/src/ast-generation-swift.ts#collectSwiftDeclarations."
 }
 

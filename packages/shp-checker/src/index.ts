@@ -114,4 +114,9 @@ export {
 } from "./checker/inspection.ts";
 export type { ShapeModule } from "./language/generated/ast.ts";
 export { parseShapeModule, type ParseDiagnostic, type ParseShapeModuleResult } from "./parser.ts";
+export {
+  loadShapeModules,
+  type LoadedShapeModule,
+  type LoadedShapeModulesResult
+} from "./shape-files.ts";
 export { compareCodepointStrings } from "./shape-strings.ts";

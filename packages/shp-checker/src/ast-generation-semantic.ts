@@ -1,6 +1,7 @@
 import type {
   CodeAstAnchor,
   CodeContainer,
+  CodeFunction,
   CodeResource,
   CodeSemanticGraph,
   RawAstNode
@@ -25,7 +26,6 @@ import {
   childByField,
   descendants,
   fallbackFunctionName,
-  firstMatchingChild,
   groupChildren,
   isFunctionNode,
   isImplNode,
@@ -46,7 +46,6 @@ export function addSemanticProjection(graph: CodeSemanticGraph): void {
   const childrenByParent = groupChildren(graph.rawNodes);
   const nodeById = new Map(graph.rawNodes.map((node) => [node.id, node]));
   const containersByName = new Map<string, CodeContainer>();
-  const resourcesByName = new Map<string, CodeResource>();
 
   for (const file of graph.files) {
     const fileNodes = graph.rawNodes.filter((node) => node.path === file.path);
@@ -74,12 +73,14 @@ export function addSemanticProjection(graph: CodeSemanticGraph): void {
       const ownedFunctions =
         swiftType?.functions ??
         uniqueNodes([...implFunctions, ...nestedFunctions, ...receiverFunctions]);
+      let container: CodeContainer | undefined;
+      let declaration: CodeContainer | CodeResource;
       if (
         ownedFunctions.length > 0 ||
         typeLooksStateful(typeNode) ||
         (swiftType && (swiftType.nodes.length > 1 || !DATA_RESOURCE_NAME_HINT.test(name)))
       ) {
-        const container = addContainer(graph, containersByName, {
+        container = addContainer(graph, containersByName, {
           name,
           kind: "type",
           path: file.path,
@@ -87,29 +88,40 @@ export function addSemanticProjection(graph: CodeSemanticGraph): void {
           nodeId: typeNode.id,
           confidence: "medium"
         });
-        for (const declaration of swiftType?.nodes ?? [typeNode]) {
-          const extensionSuffix =
-            declaration === typeNode
-              ? ""
-              : `Declaration${stableHash(
-                  swiftTokens(declaration, childrenByParent, true).join("\0")
-                )}`;
-          const anchor = addAnchor(graph, {
-            input: {
-              name: `${container.name}${extensionSuffix}AstAnchor`,
-              path: declaration.path,
-              language: declaration.language,
-              nodeId: declaration.id,
-              kind: declaration.kind,
-              sourceRef: sourceRef(declaration, name),
-              target: container.name,
-              targetKind: "component"
-            },
-            childrenByParent,
-            nodeById
-          });
-          container.anchorId ??= anchor.id;
-        }
+        declaration = container;
+      } else if (DATA_RESOURCE_NAME_HINT.test(name)) {
+        declaration = addResource(graph, {
+          name,
+          path: file.path,
+          language: typeNode.language,
+          nodeId: typeNode.id,
+          confidence: "medium",
+          reason: `Generated candidate from ${typeNode.language} ${typeNode.kind}`,
+          sourceRef: sourceRef(typeNode, name)
+        });
+      } else {
+        continue;
+      }
+      for (const node of swiftType?.nodes ?? [typeNode]) {
+        const extensionSuffix =
+          node === typeNode
+            ? ""
+            : `Declaration${stableHash(swiftTokens(node, childrenByParent, true).join("\0"))}`;
+        const anchor = addAnchor(
+          graph,
+          node,
+          {
+            name: `${declaration.name}${extensionSuffix}AstAnchor`,
+            sourceRef: sourceRef(node, name),
+            target: declaration.name,
+            targetKind: container ? "component" : "resource"
+          },
+          childrenByParent,
+          nodeById
+        );
+        declaration.anchorId ??= anchor.id;
+      }
+      if (container) {
         for (const fn of ownedFunctions) {
           addFunction(
             graph,
@@ -121,31 +133,6 @@ export function addSemanticProjection(graph: CodeSemanticGraph): void {
           );
           ownedFunctionNodeIds.add(fn.id);
         }
-      } else if (DATA_RESOURCE_NAME_HINT.test(name)) {
-        const resource = addResource(graph, resourcesByName, {
-          name,
-          path: file.path,
-          language: typeNode.language,
-          nodeId: typeNode.id,
-          confidence: "medium",
-          reason: `Generated candidate from ${typeNode.language} ${typeNode.kind}`,
-          sourceRef: sourceRef(typeNode, name)
-        });
-        const anchor = addAnchor(graph, {
-          input: {
-            name: `${resource.name}AstAnchor`,
-            path: typeNode.path,
-            language: typeNode.language,
-            nodeId: typeNode.id,
-            kind: typeNode.kind,
-            sourceRef: sourceRef(typeNode, name),
-            target: resource.name,
-            targetKind: "resource"
-          },
-          childrenByParent,
-          nodeById
-        });
-        resource.anchorId = anchor.id;
       }
     }
 
@@ -198,9 +185,10 @@ function collectImplFunctions(
     }
     const typeName =
       childByField(node.id, "type", childrenByParent)?.text?.trim() ??
-      firstMatchingChild(node.id, childrenByParent, (child) =>
-        /type_identifier|identifier/.test(child.kind)
-      )?.text?.trim();
+      childrenByParent
+        .get(node.id)
+        ?.find((child) => /type_identifier|identifier/.test(child.kind))
+        ?.text?.trim();
     if (!typeName) {
       continue;
     }
@@ -243,7 +231,7 @@ function addFunction(
   if (graph.functions.some((fn) => fn.id === id)) {
     return;
   }
-  graph.functions.push({
+  const fn: CodeFunction = {
     id,
     name: uniqueSemanticName(
       shapeFunctionName(name),
@@ -256,25 +244,20 @@ function addFunction(
     ownerId: owner.id,
     confidence: "medium",
     sourceRef: sourceRef(node, sourceSymbol)
-  });
-  const fn = graph.functions.at(-1);
-  if (!fn) {
-    return;
-  }
-  const anchor = addAnchor(graph, {
-    input: {
+  };
+  graph.functions.push(fn);
+  const anchor = addAnchor(
+    graph,
+    node,
+    {
       name: `${owner.name}${shapeTypeName(fn.name)}AstAnchor`,
-      path: node.path,
-      language: node.language,
-      nodeId: node.id,
-      kind: node.kind,
       sourceRef: fn.sourceRef,
       target: `${owner.name}.${fn.name}`,
       targetKind: "fn"
     },
     childrenByParent,
     nodeById
-  });
+  );
   fn.anchorId = anchor.id;
 }
 
@@ -300,11 +283,7 @@ function addContainer(
   return container;
 }
 
-function addResource(
-  graph: CodeSemanticGraph,
-  resourcesByName: Map<string, CodeResource>,
-  input: Omit<CodeResource, "id">
-): CodeResource {
+function addResource(graph: CodeSemanticGraph, input: Omit<CodeResource, "id">): CodeResource {
   const identity = `${input.path}:${input.nodeId ?? input.name}:${input.name}`;
   const resource = {
     ...input,
@@ -315,24 +294,27 @@ function addResource(
       identity
     )
   };
-  resourcesByName.set(identity, resource);
-  resourcesByName.set(input.name, resource);
-  resourcesByName.set(resource.name, resource);
   graph.resources.push(resource);
   return resource;
 }
 
 function addAnchor(
   graph: CodeSemanticGraph,
-  options: {
-    input: Omit<CodeAstAnchor, "id" | "name" | "fingerprint"> & {
-      name: string;
-    };
-    childrenByParent: Map<string, RawAstNode[]>;
-    nodeById: Map<string, RawAstNode>;
-  }
+  node: RawAstNode,
+  target: Pick<CodeAstAnchor, "name" | "sourceRef" | "target" | "targetKind">,
+  childrenByParent: Map<string, RawAstNode[]>,
+  nodeById: Map<string, RawAstNode>
 ): CodeAstAnchor {
-  const { input } = options;
+  const input = {
+    name: target.name,
+    path: node.path,
+    language: node.language,
+    nodeId: node.id,
+    kind: node.kind,
+    sourceRef: target.sourceRef,
+    target: target.target,
+    targetKind: target.targetKind
+  };
   const existing = graph.anchors.find(
     (anchor) =>
       anchor.nodeId === input.nodeId &&
@@ -343,8 +325,8 @@ function addAnchor(
     return existing;
   }
   const fingerprint = fingerprintForAnchor(graph, input, {
-    childrenByParent: options.childrenByParent,
-    nodeById: options.nodeById
+    childrenByParent,
+    nodeById
   });
   const anchor = {
     ...input,
@@ -385,11 +367,7 @@ function addResolvedReceiverCalls(
     const receiverNames = receiverNamesForFunction(fnNode);
 
     for (const call of receiverFieldCalls(fnNode.text, receiverNames)) {
-      const field = call.field;
-      if (!field) {
-        continue;
-      }
-      const targetName = fieldTypes.get(field);
+      const targetName = fieldTypes.get(call.field);
       if (!targetName) {
         continue;
       }
@@ -439,8 +417,7 @@ function addCandidateEffects(graph: CodeSemanticGraph, fileNodes: RawAstNode[]):
     if (!effect) {
       continue;
     }
-    const mentionedResources = [...new Set(candidateResourceMentions(node.text, resourcesByName))];
-    for (const resource of mentionedResources) {
+    for (const resource of candidateResourceMentions(node.text, resourcesByName)) {
       const anchorId = fn.anchorId;
       const anchor = anchorId ? graph.anchors.find((item) => item.id === anchorId) : undefined;
       if (!anchor?.fingerprint) {
@@ -476,12 +453,12 @@ function addCandidateEffects(graph: CodeSemanticGraph, fileNodes: RawAstNode[]):
 function candidateResourceMentions(
   text: string,
   resourcesByName: Map<string, CodeResource>
-): CodeResource[] {
-  const resources: CodeResource[] = [];
+): Set<CodeResource> {
+  const resources = new Set<CodeResource>();
   const tokens = new Set(semanticTokens(text).map((token) => token.toLowerCase()));
   for (const [name, resource] of resourcesByName) {
     if (tokens.has(name.toLowerCase())) {
-      resources.push(resource);
+      resources.add(resource);
     }
   }
   return resources;
@@ -511,10 +488,7 @@ function collectFieldTypes(nodes: RawAstNode[]): Map<string, Map<string, string>
     if (!name || !node.text) {
       continue;
     }
-    const fields = new Map<string, string>();
-    for (const field of fieldTypeEntries(node.text, node.language)) {
-      fields.set(field.name, field.typeName);
-    }
+    const fields = fieldTypesFromText(node.text, node.language);
     if (fields.size > 0) {
       fieldTypesByOwner.set(name, fields);
       fieldTypesByOwner.set(shapeTypeName(name), fields);
@@ -552,19 +526,19 @@ function receiverFieldCalls(
   return calls;
 }
 
-function fieldTypeEntries(text: string, language: string): { name: string; typeName: string }[] {
-  const fields: { name: string; typeName: string }[] = [];
+function fieldTypesFromText(text: string, language: string): Map<string, string> {
+  const fields = new Map<string, string>();
   const colonPattern = /\b([A-Za-z_][A-Za-z0-9_]*)\s*:\s*([A-Z][A-Za-z0-9_]*)\b/g;
   for (const match of text.matchAll(colonPattern)) {
     if (match[1] && match[2]) {
-      fields.push({ name: match[1], typeName: match[2] });
+      fields.set(match[1], match[2]);
     }
   }
   if (language === "go") {
     const goFieldPattern = /^\s*([A-Za-z_][A-Za-z0-9_]*)\s+\*?([A-Z][A-Za-z0-9_]*)\b/gm;
     for (const match of text.matchAll(goFieldPattern)) {
       if (match[1] && match[2] && match[1] !== "type") {
-        fields.push({ name: match[1], typeName: match[2] });
+        fields.set(match[1], match[2]);
       }
     }
   }

@@ -106,8 +106,6 @@ component CiPipeline {
       Read<CliPackageManifest>
         evidence json("packages/shp-cli/package.json")
       Read<DocsContent>
-        evidence md("AGENTS.md")
-      Read<DocsContent>
         evidence md("README.md")
       Read<DocsContent>
         evidence md("docs-site/src/content/docs/guides/ci.md")
@@ -588,6 +586,7 @@ component ReleasePipeline {
   grants Update<ReleaseArtifact>
   fn buildReleaseAssets : RefactorSensitive
     source sh("scripts/build-release-assets.sh")
+    description "Builds the configured archive targets with native parser assets, then writes installers and checksums. A failed native-package or target enumeration stops the build before installer or checksum generation."
     effects complete {
       Read<InstallScript>
         evidence sh("scripts/build-release-assets.sh")
@@ -837,6 +836,7 @@ implementation LanguageServerSource {
 implementation ParserSource {
   paths {
     "packages/shp-checker/src/parser.ts"
+    "packages/shp-checker/src/shape-files.ts"
   }
   conforms_to ShapeParser
   on_change require shape_update
@@ -1067,6 +1067,16 @@ memory SkillsApprovalReuseContract : RefactorConstraint<fn CiPipeline.reuseRelea
   }
 }
 
+reevaluation DocsCorpusVerificationSimplified {
+  satisfies memory DocsShapeBlockParsingContract
+  outcome Confirmed
+  summary "The corpus verifier uses parser results directly without an intermediate fence verdict. Shape selection, explicit no-verify skips, counters, file and line attribution, and diagnostic text are unchanged. All five behavioral tests exercise the corpus boundary, including parser agreement and broken-fence negative controls."
+  reviewer Codex
+  decided_on "2026-09-26"
+  evidence test("docs-site/scripts/verify-shape-blocks.test.ts")
+  evidence ts("docs-site/scripts/verify-shape-blocks.ts#verifyShapeCorpus")
+}
+
 reevaluation DocsShapeBlockVerificationRechecked {
   satisfies memory DocsShapeBlockParsingContract
   outcome Confirmed
@@ -1087,6 +1097,15 @@ reevaluation ReleaseDistributionVersionsRechecked {
   evidence yaml(".github/workflows/release.yml")
 }
 
+reevaluation ReleaseMetadataFailuresStopBuild {
+  satisfies memory ReleaseChecksumContract
+  outcome Confirmed
+  summary "Metadata enumeration failures now stop the release builder instead of producing an installer-only artifact set. Archive targets, native assets, version injection, and checksum contents remain unchanged when enumeration succeeds."
+  reviewer Codex
+  decided_on "2026-09-26"
+  evidence test("scripts/build-release-assets.test.ts")
+}
+
 reevaluation ReleaseNativeParserAssetsRechecked {
   satisfies memory ReleaseChecksumContract
   outcome Confirmed
@@ -1097,6 +1116,17 @@ reevaluation ReleaseNativeParserAssetsRechecked {
   evidence sh("install.sh")
   evidence sh("scripts/build-release-assets.sh")
   evidence ts("scripts/prepare-tree-sitter-parser-assets.ts")
+}
+
+reevaluation ReleaseNorthStarPinRemoved {
+  satisfies memory ReleaseVersionTagContract
+  outcome Confirmed
+  summary "AGENTS.md contains project intent rather than release examples, so it is no longer a version pin. The CLI, both plugin manifests, release notes, tags, and remaining public examples still share one version."
+  reviewer Codex
+  decided_on "2026-09-25"
+  evidence md("RELEASING.md")
+  evidence test("scripts/check-release-metadata.test.ts")
+  evidence ts("scripts/check-release-metadata.ts#releaseVersionPins")
 }
 
 reevaluation ReleaseNotesVersionRechecked {
@@ -1163,57 +1193,42 @@ reevaluation SkillsReportCopyNamed {
   evidence ts("scripts/check-release-approval.ts#findReusableSkillsReport")
 }
 
-attest no_shape_change {
-  source sh("scripts/write-changed-files.sh")
-  reason "The pull-request base branch is fetched without --depth=1 so the full-history checkout is never grafted; the written changed-file list and the modeled ChangedFileList effect are unchanged."
+attest docs_not_needed {
+  source ts("experiments/semantic-kernel/harness/e2e.ts#loadFixtures")
+  reason "Fixture result types are inferred and reused internally. Emitted JavaScript, commands, protocol, assertions, and user-facing behavior are unchanged."
 }
 
 attest no_shape_change {
-  source ts("packages/shp-checker/src/checker/model.ts")
-  reason "Adds the invalid_implementation variant to the SemanticDiagnostic union; the lowering and formatter behaviour that uses it is modelled in ShapeModelLowerer.lowerImplementation."
+  source sh("plugins/shapelang/skills/shape-contract-preflight/scripts/precheck.sh#emit_result")
+  reason "One result function binds the shared arguments before selecting human or JSON output. Escaping, output bytes, baseline and proposal command order, strict and draft behavior, and exit statuses are unchanged."
 }
 
 attest no_shape_change {
-  source ts("packages/shp-checker/src/checker/model.ts")
-  reason "Adds the baseModules check option and the stale_attestation diagnostic variant; the base comparison they carry is modelled by BaseShapeModel reads on checkCoverage, checkBindings, and checkStaleAttestations."
+  source mjs(".github/scripts/run-claude-skill.mjs#summaryLines")
+  reason "The four CI report renderers share their identical header; report bytes, schema validation, gate policy, provider inputs, and approval boundaries are unchanged."
 }
 
 attest no_shape_change {
-  source ts("packages/shp-checker/src/checker/rules.ts")
-  reason "Registers checkStaleAttestations after coverage in the ordered semantic-check list and threads the base attestation keys into checkCoverage; both rules are modelled on ShapeRuleEngine."
+  source ts("scripts/check-skills.ts")
+  reason "Routing and behavioral cases share file and JSON-array loading; bundled resources share diagnostic path formatting. Commands, filesystem access, error messages, field validation, and failure order are unchanged. Empty case arrays still reach coverage checks."
 }
 
 attest no_shape_change {
-  source ts("packages/shp-checker/src/checker/model.ts")
-  reason "Replaces the base attestation-key option with a BaseModel carrying keys and per-file attestation-free text, and records each input file's text on Model.attestationFreeTexts by file path; the binding behaviour it enables is modelled on ShapeBindings.checkBindings."
+  source mjs("plugins/shapelang/skills/unix-system-visualiser/assets/renderer/interactions.mjs#releasePointer")
+  reason "Pointer release and cancellation share cleanup. Both clear matching pointer state, release capture, and schedule rendering in the same order; only an undragged pointerup activates a tile or pans the ground."
 }
 
 attest no_shape_change {
-  source ts("packages/shp-checker/src/checker/rules.ts")
-  reason "Passes the BaseModel option to checkCoverage and checkStaleAttestations; rule order and the enabled checks are unchanged."
+  source test("docs-site/scripts/verify-shape-blocks.test.ts")
+  reason "The five existing verifier tests exercise the corpus entry point after removal of the intermediate verdict adapter. Parser acceptance, explicit skips, counts, and localisable diagnostics remain covered, with stronger count assertions and no architecture change."
 }
 
 attest no_shape_change {
-  source ts("packages/shp-checker/src/checker/model.ts")
-  reason "Adds the repositoryFiles check option and the missing_cited_path diagnostic variant; the rule that uses them is modelled as ShapeRuleEngine.checkCitedPaths."
+  source ts("docs-site/scripts/verify-shape-blocks.ts#extractShapeFences")
+  reason "Direct iterator projection replaces an array accumulator. Fence selection, order, text, info strings, and source line numbers are unchanged."
 }
 
 attest no_shape_change {
-  source ts("packages/shp-checker/src/checker/rules.ts")
-  reason "Registers checkCitedPaths last in the ordered semantic-check list, gated on the repositoryFiles option; the earlier checks and their order are unchanged."
-}
-
-attest no_shape_change {
-  source md("plugins/shapelang/skills/shape-lang/SKILL.md")
-  reason "Guidance now tells agents to pass --base-ref when the installed CLI supports it and to prune stale attestations; the skill's tools, inputs, and shipped surface are unchanged."
-}
-
-attest no_shape_change {
-  source md("plugins/shapelang/skills/shape-lang/references/cli-workflows.md")
-  reason "The command matrix lists the base-model flags, --check-cited-paths, and attest prune that the CLI already ships; no skill behaviour or packaging changed."
-}
-
-attest no_shape_change {
-  source md("plugins/shapelang/skills/shape-lang/references/make-shape-protocol.md")
-  reason "The coverage section explains that an attestation is evidence for one change and how stale ones are pruned; the authoring protocol's steps are unchanged."
+  source ts("experiments/semantic-kernel/harness/e2e.ts#loadFixtures")
+  reason "The private return shape is inferred from the already typed construction instead of repeated in an annotation. Emitted JavaScript is identical; data, validation, ordering, and effects are unchanged."
 }

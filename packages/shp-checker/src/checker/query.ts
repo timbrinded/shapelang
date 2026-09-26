@@ -9,17 +9,12 @@ import type {
   ContextObjectInfo,
   HyperedgeInfo,
   HyperedgeMember,
-  MemoryInfo,
   Model,
   ProtectedProperty,
   Provenance,
-  RationaleInfo,
-  SemanticDiagnostic,
-  ShapeDiagnostic,
   ShapeTarget
 } from "./model.ts";
 import type { IsoDateString } from "./iso-date.ts";
-import type { ContextKind } from "../prelude.ts";
 import { compareCodepointStrings } from "../shape-strings.ts";
 import {
   displaySymbol,
@@ -33,10 +28,12 @@ import {
   splitFunctionTarget
 } from "./display.ts";
 import {
+  allContexts,
   deriveFinalForbidsForResource,
   hasGuardAction,
   matchingContextsForTarget,
-  requirementsForTarget
+  requirementsForTarget,
+  type ContextEntry
 } from "./derivations.ts";
 import { lowerShapeModules } from "./lowerer.ts";
 import { checkShapeModules } from "./api.ts";
@@ -45,20 +42,16 @@ import { targetsEqual } from "../targets.ts";
 
 export function listMemoryGuardsShapeModules(modules: ShapeModule[] | CheckModuleInput[]): string {
   const model = lowerShapeModules(modules);
-  const entries = [
-    ...[...model.rationales.values()].map((rationale) => ({
-      target: rationale.appliesTo ?? rationale.target,
-      lines: formatRationaleMemoryListEntry(rationale)
-    })),
-    ...[...model.memories.values()].map((memory) => ({
-      target: memory.appliesTo ?? memory.target,
-      lines: formatMemoryListEntry(memory)
+  const entries = allContexts(model)
+    .map((context) => ({
+      target: context.info.appliesTo ?? context.info.target,
+      lines: formatContextListEntry(context)
     }))
-  ].sort((left, right) =>
-    `${formatTarget(left.target)}:${left.lines[0]}`.localeCompare(
-      `${formatTarget(right.target)}:${right.lines[0]}`
-    )
-  );
+    .sort((left, right) =>
+      `${formatTarget(left.target)}:${left.lines[0]}`.localeCompare(
+        `${formatTarget(right.target)}:${right.lines[0]}`
+      )
+    );
 
   if (entries.length === 0) {
     return "Memory Guards\n\nNo active memory guards.\n";
@@ -76,77 +69,56 @@ export function listShapeObligations(
   options: { freshnessDate?: IsoDateString } = {}
 ): string {
   const result = checkShapeModules(modules, { freshnessDate: options.freshnessDate });
-  const relevant = result.diagnostics.filter(isObligationDiagnostic);
-
-  if (relevant.length === 0) {
+  const sections: {
+    [heading in
+      | "missing context"
+      | "missing description"
+      | "guarded changes"
+      | "invalid reevaluations"
+      | "stale design memory"]: string[];
+  } = {
+    "missing context": [],
+    "missing description": [],
+    "guarded changes": [],
+    "invalid reevaluations": [],
+    "stale design memory": []
+  };
+  for (const diagnostic of result.diagnostics) {
+    switch (diagnostic.kind) {
+      case "missing_required_context":
+        sections["missing context"].push(
+          `${diagnostic.targetKind} ${diagnostic.target} requires ${diagnostic.requiredContext}`
+        );
+        break;
+      case "missing_required_description":
+        sections["missing description"].push(
+          `${diagnostic.targetKind} ${diagnostic.target} requires description`
+        );
+        break;
+      case "guarded_shape_changed":
+        sections["guarded changes"].push(
+          `${diagnostic.targetKind} ${diagnostic.target} changed; requires ${diagnostic.missingReevaluation}`
+        );
+        break;
+      case "invalid_reevaluation":
+        sections["invalid reevaluations"].push(
+          `reevaluation ${diagnostic.name}: ${diagnostic.reason}`
+        );
+        break;
+      case "stale_memory":
+        sections["stale design memory"].push(
+          `${diagnostic.guardKind} ${displaySymbol(diagnostic.guard)} review_by ${diagnostic.reviewBy} is before ${diagnostic.asOf}`
+        );
+        break;
+    }
+  }
+  const lines = Object.entries(sections).flatMap(([heading, entries]) =>
+    entries.length > 0 ? [`${heading}:`, ...entries.map((line) => `  ${line}`), ""] : []
+  );
+  if (lines.length === 0) {
     return "Open Shape Obligations\n\nNo open shape obligations.\n";
   }
-
-  const lines = ["Open Shape Obligations", ""];
-  const missingContext = relevant.filter(
-    (diagnostic) => diagnostic.kind === "missing_required_context"
-  );
-  const missingDescription = relevant.filter(
-    (diagnostic) => diagnostic.kind === "missing_required_description"
-  );
-  const guardedChanges = relevant.filter(
-    (diagnostic) => diagnostic.kind === "guarded_shape_changed"
-  );
-  const invalidReevaluations = relevant.filter(
-    (diagnostic) => diagnostic.kind === "invalid_reevaluation"
-  );
-  const staleMemories = relevant.filter((diagnostic) => diagnostic.kind === "stale_memory");
-
-  if (missingContext.length > 0) {
-    lines.push("missing context:");
-    lines.push(
-      ...missingContext.map(
-        (diagnostic) =>
-          `  ${diagnostic.targetKind} ${diagnostic.target} requires ${diagnostic.requiredContext}`
-      )
-    );
-    lines.push("");
-  }
-  if (missingDescription.length > 0) {
-    lines.push("missing description:");
-    lines.push(
-      ...missingDescription.map(
-        (diagnostic) => `  ${diagnostic.targetKind} ${diagnostic.target} requires description`
-      )
-    );
-    lines.push("");
-  }
-  if (guardedChanges.length > 0) {
-    lines.push("guarded changes:");
-    lines.push(
-      ...guardedChanges.map(
-        (diagnostic) =>
-          `  ${diagnostic.targetKind} ${diagnostic.target} changed; requires ${diagnostic.missingReevaluation}`
-      )
-    );
-    lines.push("");
-  }
-  if (invalidReevaluations.length > 0) {
-    lines.push("invalid reevaluations:");
-    lines.push(
-      ...invalidReevaluations.map(
-        (diagnostic) => `  reevaluation ${diagnostic.name}: ${diagnostic.reason}`
-      )
-    );
-    lines.push("");
-  }
-  if (staleMemories.length > 0) {
-    lines.push("stale design memory:");
-    lines.push(
-      ...staleMemories.map(
-        (diagnostic) =>
-          `  ${diagnostic.guardKind} ${displaySymbol(diagnostic.guard)} review_by ${diagnostic.reviewBy} is before ${diagnostic.asOf}`
-      )
-    );
-    lines.push("");
-  }
-
-  return `${lines.join("\n").trimEnd()}\n`;
+  return `Open Shape Obligations\n\n${lines.join("\n").trimEnd()}\n`;
 }
 
 export function explainShapeModules(
@@ -154,19 +126,18 @@ export function explainShapeModules(
   symbol: string
 ): string {
   const model = lowerShapeModules(modules);
-  const symbolAmbiguity = formatAmbiguousQuerySymbol(symbol, [
-    { kind: "resource", map: model.resources },
-    { kind: "component", map: model.components },
-    { kind: "relation", map: model.hypergraph.edges },
-    { kind: "rationale", map: model.rationales },
-    { kind: "memory", map: model.memories }
-  ]);
-  if (symbolAmbiguity) {
-    return symbolAmbiguity;
+  const resolved = resolveQuerySymbols(symbol, {
+    resource: model.resources,
+    component: model.components,
+    relation: model.hypergraph.edges,
+    rationale: model.rationales,
+    memory: model.memories
+  });
+  if (typeof resolved === "string") {
+    return resolved;
   }
 
-  const resourceKey = resolveQuerySymbol(symbol, model.resources);
-  const resource = resourceKey ? model.resources.get(resourceKey) : undefined;
+  const resource = resolved.resource;
   if (resource) {
     const finalForbids = deriveFinalForbidsForResource(resource, model);
     const lines = [
@@ -175,20 +146,18 @@ export function explainShapeModules(
       "  traits:",
       ...[...resource.traits.keys()].sort().map((trait) => `    ${trait}`)
     ];
-    if (finalForbids.length > 0) {
-      lines.push("", "  final forbidden effects:");
-      lines.push(
-        ...finalForbids.map((forbid) => `    ${formatTerm(forbid.effect, forbid.target)}`)
-      );
-    }
-    if (resource.fingerprints.size > 0) {
-      lines.push("", "  fingerprints:");
-      lines.push(
-        ...[...resource.fingerprints.values()]
-          .sort((left, right) => left.provider.localeCompare(right.provider))
-          .map((fingerprint) => `    ${formatFingerprintInfo(fingerprint)}`)
-      );
-    }
+    appendSection(
+      lines,
+      "final forbidden effects",
+      finalForbids.map((forbid) => formatTerm(forbid.effect, forbid.target))
+    );
+    appendSection(
+      lines,
+      "fingerprints",
+      [...resource.fingerprints.values()]
+        .sort((left, right) => left.provider.localeCompare(right.provider))
+        .map(formatFingerprintInfo)
+    );
     appendShapeTraitContext(
       { kind: "resource", name: resource.name },
       resource.traits,
@@ -201,19 +170,18 @@ export function explainShapeModules(
 
   const [componentName, functionName] = splitFunctionTarget(symbol);
   if (componentName && functionName) {
-    const componentKey = resolveQuerySymbol(componentName, model.components);
-    const fn = componentKey
-      ? model.components.get(componentKey)?.functions.get(functionName)
-      : undefined;
-    if (fn && componentKey) {
-      const lines = [`${componentKey}.${functionName}`, "  kind: function"];
+    const resolvedComponent = resolveQuerySymbols(componentName, { component: model.components });
+    if (typeof resolvedComponent === "string") {
+      return resolvedComponent;
+    }
+    const component = resolvedComponent.component;
+    const fn = component?.functions.get(functionName);
+    if (fn && component) {
+      const lines = [`${component.name}.${functionName}`, "  kind: function"];
       if (fn.source) {
         lines.push(`  source: ${formatSourceRefInfo(fn.source)}`);
       }
-      if (fn.shapeTraits.size > 0) {
-        lines.push("", "  shape traits:");
-        lines.push(...[...fn.shapeTraits.keys()].sort().map((trait) => `    ${trait}`));
-      }
+      appendSection(lines, "shape traits", [...fn.shapeTraits.keys()].sort());
       if (fn.description) {
         lines.push("", "  description:");
         if (fn.description.required) {
@@ -221,29 +189,12 @@ export function explainShapeModules(
         }
         lines.push(`    ${JSON.stringify(fn.description.summary)}`);
       }
-      const requirements = requirementsForTarget(model, "fn", fn.shapeTraits);
-      if (requirements.length > 0) {
-        const target = functionTarget(componentKey, functionName);
-        lines.push("", "  required context:");
-        lines.push(
-          ...requirements.map(
-            (requirement) => `    ${formatContextRequirement(requirement.contextType, target)}`
-          )
-        );
-      }
-      const satisfiedBy = matchingContextsForTarget(
-        functionTarget(componentKey, functionName),
-        model
+      appendShapeTraitContext(
+        functionTarget(component.name, functionName),
+        fn.shapeTraits,
+        model,
+        lines
       );
-      if (satisfiedBy.length > 0) {
-        lines.push("", "  satisfied by:");
-        lines.push(...satisfiedBy.map((context) => `    ${context.kind} ${context.name}`));
-      }
-      const guards = guardsForTarget(functionTarget(componentKey, functionName), model);
-      if (guards.length > 0) {
-        lines.push("", "  memory guards:");
-        lines.push(...guards.map((guard) => `    ${guard.kind} ${guard.info.name}`));
-      }
       lines.push("  effects:");
       if (fn.effects.kind === "unknown") {
         lines.push("    unknown");
@@ -256,28 +207,19 @@ export function explainShapeModules(
       }
       return `${lines.join("\n")}\n`;
     }
-    const ambiguity = formatAmbiguousQuerySymbol(componentName, [
-      { kind: "component", map: model.components }
-    ]);
-    if (ambiguity) {
-      return ambiguity;
-    }
   }
 
-  const rationaleKey = resolveQuerySymbol(symbol, model.rationales);
-  const rationale = rationaleKey ? model.rationales.get(rationaleKey) : undefined;
+  const rationale = resolved.rationale;
   if (rationale) {
-    return `${formatRationaleExplanation(rationale)}\n`;
+    return `${formatContextExplanation({ kind: "rationale", info: rationale })}\n`;
   }
 
-  const memoryKey = resolveQuerySymbol(symbol, model.memories);
-  const memory = memoryKey ? model.memories.get(memoryKey) : undefined;
+  const memory = resolved.memory;
   if (memory) {
-    return `${formatMemoryExplanation(memory)}\n`;
+    return `${formatContextExplanation({ kind: "memory", info: memory })}\n`;
   }
 
-  const componentKey = resolveQuerySymbol(symbol, model.components);
-  const component = componentKey ? model.components.get(componentKey) : undefined;
+  const component = resolved.component;
   if (component) {
     const lines = [symbol, "  kind: component"];
     if (component.classifiers.size > 0) {
@@ -303,8 +245,7 @@ export function explainShapeModules(
     return `${lines.join("\n")}\n`;
   }
 
-  const relationKey = resolveQuerySymbol(symbol, model.hypergraph.edges);
-  const relation = relationKey ? model.hypergraph.edges.get(relationKey) : undefined;
+  const relation = resolved.relation;
   if (relation) {
     return `${formatRelationExplanation(relation, model)}\n`;
   }
@@ -314,9 +255,7 @@ export function explainShapeModules(
 
 /**
  * Appends the shape-trait obligation sections (required context, satisfying
- * context, and active guards) for a component or resource target to an explain
- * listing. The listed guards are enforced: `modify` and `remove` change entries
- * emit guarded-change events for component and resource targets.
+ * context, and active guards) for a function, component, or resource target.
  */
 function appendShapeTraitContext(
   target: ShapeTarget,
@@ -324,15 +263,13 @@ function appendShapeTraitContext(
   model: Model,
   lines: string[]
 ): void {
-  const requirements = requirementsForTarget(model, target.kind, traits);
-  if (requirements.length > 0) {
-    lines.push("", "  required context:");
-    lines.push(
-      ...requirements.map(
-        (requirement) => `    ${formatContextRequirement(requirement.contextType, target)}`
-      )
-    );
-  }
+  appendSection(
+    lines,
+    "required context",
+    requirementsForTarget(model, target.kind, traits).map((requirement) =>
+      formatContextRequirement(requirement.contextType, target)
+    )
+  );
   appendContextAndGuardSections(target, model, lines);
 }
 
@@ -342,28 +279,25 @@ function appendShapeTraitContext(
  * context) can list its guards without a fake empty trait map.
  */
 function appendContextAndGuardSections(target: ShapeTarget, model: Model, lines: string[]): void {
-  const satisfiedBy = matchingContextsForTarget(target, model);
-  if (satisfiedBy.length > 0) {
-    lines.push("", "  satisfied by:");
-    lines.push(...satisfiedBy.map((context) => `    ${context.kind} ${context.name}`));
-  }
-  const guards = guardsForTarget(target, model);
-  if (guards.length > 0) {
-    lines.push("", "  memory guards:");
-    lines.push(...guards.map((guard) => `    ${guard.kind} ${guard.info.name}`));
-  }
+  appendSection(
+    lines,
+    "satisfied by",
+    matchingContextsForTarget(target, model).map((context) => `${context.kind} ${context.name}`)
+  );
+  appendSection(
+    lines,
+    "memory guards",
+    guardsForTarget(target, model).map((guard) => `${guard.kind} ${guard.info.name}`)
+  );
 }
 
-function compareHyperedges(left: HyperedgeInfo, right: HyperedgeInfo): number {
-  return compareKindName(left, right);
-}
-
-function resolveQuerySymbol<T extends { name: string }>(
-  symbol: string,
-  map: ReadonlyMap<string, T>
-): string | undefined {
-  const matches = querySymbolMatches(symbol, map);
-  return matches.length === 1 ? matches[0] : undefined;
+function appendSection(lines: string[], heading: string, entries: string[]): void {
+  if (entries.length > 0) {
+    lines.push("", `  ${heading}:`);
+    for (const entry of entries) {
+      lines.push(`    ${entry}`);
+    }
+  }
 }
 
 function querySymbolMatches<T extends { name: string }>(
@@ -376,23 +310,29 @@ function querySymbolMatches<T extends { name: string }>(
   return [...map.keys()].filter((key) => localNameOf(key) === symbol).sort(compareCodepointStrings);
 }
 
-function formatAmbiguousQuerySymbol(
+function resolveQuerySymbols<Entries extends Record<string, { name: string }>>(
   symbol: string,
-  groups: { kind: string; map: ReadonlyMap<string, { name: string }> }[]
-): string | undefined {
-  const candidates = groups.flatMap((group) =>
-    querySymbolMatches(symbol, group.map).map((name) => ({ kind: group.kind, name }))
-  );
-  if (candidates.length < 2) {
-    return undefined;
+  groups: { [Kind in keyof Entries]: ReadonlyMap<string, Entries[Kind]> }
+): Partial<Entries> | string {
+  const resolved: Partial<Entries> = {};
+  const candidates: string[] = [];
+  for (const kind in groups) {
+    const matches = querySymbolMatches(symbol, groups[kind]);
+    if (matches.length === 1) {
+      resolved[kind] = matches[0] ? groups[kind].get(matches[0]) : undefined;
+    }
+    for (const name of matches) {
+      candidates.push(`  ${kind} ${name}`);
+    }
   }
-  const lines = [
-    `Ambiguous shape symbol ${symbol}.`,
-    "Candidates:",
-    ...candidates.map((candidate) => `  ${candidate.kind} ${candidate.name}`),
-    "Use a module-qualified reference."
-  ];
-  return `${lines.join("\n")}\n`;
+  return candidates.length < 2
+    ? resolved
+    : [
+        `Ambiguous shape symbol ${symbol}.`,
+        "Candidates:",
+        ...candidates,
+        "Use a module-qualified reference.\n"
+      ].join("\n");
 }
 
 function allHyperedgesByKind(model: Model, kindFilter?: string): HyperedgeInfo[] {
@@ -411,33 +351,26 @@ export function graphShapeModules(
   kindFilter?: string
 ): string {
   const model = lowerShapeModules(modules);
-  const symbolAmbiguity = formatAmbiguousQuerySymbol(symbol, [
-    { kind: "relation", map: model.hypergraph.edges },
-    { kind: "component", map: model.components },
-    { kind: "resource", map: model.resources }
-  ]);
-  if (symbolAmbiguity) {
-    return symbolAmbiguity;
+  const resolved = resolveQuerySymbols(symbol, {
+    relation: model.hypergraph.edges,
+    component: model.components,
+    resource: model.resources
+  });
+  if (typeof resolved === "string") {
+    return resolved;
   }
 
-  const relationKey = resolveQuerySymbol(symbol, model.hypergraph.edges);
-  const relation = relationKey ? model.hypergraph.edges.get(relationKey) : undefined;
+  const relation = resolved.relation;
   if (relation) {
     if (kindFilter && relation.kind !== kindFilter) {
       return `No relations match kind ${kindFilter} for ${symbol}.\n`;
     }
     return `${formatHyperedgeLine(relation, 0, model)}\n`;
   }
-  const vertexKey =
-    resolveQuerySymbol(symbol, model.components) ??
-    resolveQuerySymbol(symbol, model.resources) ??
-    symbol;
-  const incidentNames = model.hypergraph.incidence.get(vertexKey) ?? [];
-  const incident = incidentNames
-    .map((name) => model.hypergraph.edges.get(name))
-    .filter((edge): edge is HyperedgeInfo => edge !== undefined)
-    .filter((edge) => !kindFilter || edge.kind === kindFilter)
-    .sort(compareHyperedges);
+  const vertexKey = resolved.component?.name ?? resolved.resource?.name ?? symbol;
+  const incident = allHyperedgesByKind(model, kindFilter)
+    .filter((edge) => edge.members.some((member) => member.endpoint === vertexKey))
+    .sort(compareKindName);
 
   const lines = [formatVertexHeader(vertexKey, model)];
   if (incident.length === 0) {
@@ -461,7 +394,7 @@ export function graphAllShapeModules(
   kindFilter?: string
 ): string {
   const model = lowerShapeModules(modules);
-  const edges = allHyperedgesByKind(model, kindFilter).sort(compareHyperedges);
+  const edges = allHyperedgesByKind(model, kindFilter).sort(compareKindName);
 
   if (edges.length === 0) {
     return kindFilter ? `No relations match kind ${kindFilter}.\n` : "No relations declared.\n";
@@ -566,30 +499,17 @@ function pluralSuffix(count: number): string {
   return count === 1 ? "" : "s";
 }
 
-function guardsForTarget(
-  target: ShapeTarget,
-  model: Model
-): { kind: ContextKind; info: RationaleInfo | MemoryInfo }[] {
-  const guards: { kind: ContextKind; info: RationaleInfo | MemoryInfo }[] = [];
-  for (const rationale of model.rationales.values()) {
-    if (
-      targetsEqual(rationale.appliesTo ?? rationale.target, target) &&
-      hasGuardAction(rationale)
-    ) {
-      guards.push({ kind: "rationale", info: rationale });
-    }
-  }
-  for (const memory of model.memories.values()) {
-    if (targetsEqual(memory.appliesTo ?? memory.target, target) && hasGuardAction(memory)) {
-      guards.push({ kind: "memory", info: memory });
-    }
-  }
-  return guards.sort((left, right) =>
-    compareKindName(
-      { kind: left.kind, name: left.info.name },
-      { kind: right.kind, name: right.info.name }
+function guardsForTarget(target: ShapeTarget, model: Model): ContextEntry[] {
+  return allContexts(model)
+    .filter(
+      ({ info }) => targetsEqual(info.appliesTo ?? info.target, target) && hasGuardAction(info)
     )
-  );
+    .sort((left, right) =>
+      compareKindName(
+        { kind: left.kind, name: left.info.name },
+        { kind: right.kind, name: right.info.name }
+      )
+    );
 }
 
 function formatRelationExplanation(relation: HyperedgeInfo, model: Model): string {
@@ -607,62 +527,49 @@ function formatRelationExplanation(relation: HyperedgeInfo, model: Model): strin
   if (relation.summary) {
     lines.push("", `  summary: ${JSON.stringify(relation.summary)}`);
   }
-  if (relation.fingerprintExpectations.length > 0) {
-    lines.push("", "  fingerprint expectations:");
-    lines.push(
-      ...relation.fingerprintExpectations
-        .sort((left, right) =>
-          `${left.endpoint}:${left.provider}`.localeCompare(`${right.endpoint}:${right.provider}`)
-        )
-        .map(
-          (expectation) =>
-            `    ${displaySymbol(expectation.endpoint)} ${expectation.provider}(${JSON.stringify(expectation.value)})`
-        )
-    );
-  }
+  appendSection(
+    lines,
+    "fingerprint expectations",
+    relation.fingerprintExpectations
+      .sort((left, right) =>
+        `${left.endpoint}:${left.provider}`.localeCompare(`${right.endpoint}:${right.provider}`)
+      )
+      .map(
+        (expectation) =>
+          `${displaySymbol(expectation.endpoint)} ${expectation.provider}(${JSON.stringify(expectation.value)})`
+      )
+  );
   appendContextAndGuardSections({ kind: "relation", name: relation.name }, model, lines);
   return lines.join("\n");
 }
 
 function appendIncidence(vertex: string, model: Model, lines: string[]): void {
-  const incident = (model.hypergraph.incidence.get(vertex) ?? [])
-    .map((name) => model.hypergraph.edges.get(name))
-    .filter((edge): edge is HyperedgeInfo => edge !== undefined)
-    .sort(compareHyperedges);
-  if (incident.length === 0) {
-    return;
-  }
-  lines.push("", "  relations:");
-  for (const edge of incident) {
-    lines.push(`    ${formatHyperedgeLine(edge, 2, model)}`);
-  }
+  const incident = allHyperedgesByKind(model)
+    .filter((edge) => edge.members.some((member) => member.endpoint === vertex))
+    .sort(compareKindName);
+  appendSection(
+    lines,
+    "relations",
+    incident.map((edge) => formatHyperedgeLine(edge, 2, model))
+  );
 }
 
-function formatRationaleExplanation(rationale: RationaleInfo): string {
+function formatContextExplanation({ kind, info }: ContextEntry): string {
   const lines = [
-    rationale.name,
-    "  kind: rationale",
-    `  type: ${rationale.contextType}`,
-    `  target: ${formatTarget(rationale.target)}`
+    info.name,
+    `  kind: ${kind}`,
+    `  type: ${info.contextType}`,
+    `  target: ${formatTarget(info.target)}`
   ];
-  appendContextExplanationFields(lines, rationale);
-  return lines.join("\n");
-}
-
-function formatMemoryExplanation(memory: MemoryInfo): string {
-  const lines = [
-    memory.name,
-    "  kind: memory",
-    `  type: ${memory.contextType}`,
-    `  target: ${formatTarget(memory.target)}`
-  ];
-  if (memory.status) {
-    lines.push(`  status: ${memory.status}`);
+  if (kind === "memory") {
+    if (info.status) {
+      lines.push(`  status: ${info.status}`);
+    }
+    if (info.confidence) {
+      lines.push(`  confidence: ${info.confidence}`);
+    }
   }
-  if (memory.confidence) {
-    lines.push(`  confidence: ${memory.confidence}`);
-  }
-  appendContextExplanationFields(lines, memory);
+  appendContextExplanationFields(lines, info);
   return lines.join("\n");
 }
 
@@ -688,21 +595,17 @@ function protectedPropertyText(property: ProtectedProperty): string {
   return property.value ? `${property.kind} ${property.value}` : property.kind;
 }
 
-function formatRationaleMemoryListEntry(rationale: RationaleInfo): string[] {
-  const lines = [`rationale ${displaySymbol(rationale.name)}`, `type: ${rationale.contextType}`];
-  appendContextListFields(lines, rationale);
-  return lines;
-}
-
-function formatMemoryListEntry(memory: MemoryInfo): string[] {
-  const lines = [`memory ${displaySymbol(memory.name)}`, `type: ${memory.contextType}`];
-  if (memory.status) {
-    lines.push(`status: ${memory.status}`);
+function formatContextListEntry({ kind, info }: ContextEntry): string[] {
+  const lines = [`${kind} ${displaySymbol(info.name)}`, `type: ${info.contextType}`];
+  if (kind === "memory") {
+    if (info.status) {
+      lines.push(`status: ${info.status}`);
+    }
+    if (info.confidence) {
+      lines.push(`confidence: ${info.confidence}`);
+    }
   }
-  if (memory.confidence) {
-    lines.push(`confidence: ${memory.confidence}`);
-  }
-  appendContextListFields(lines, memory);
+  appendContextListFields(lines, info);
   return lines;
 }
 
@@ -716,26 +619,6 @@ function appendContextListFields(lines: string[], context: ContextObjectInfo): v
   if (context.reviewBy) {
     lines.push(`review_by: ${context.reviewBy}`);
   }
-}
-
-function isObligationDiagnostic(diagnostic: ShapeDiagnostic): diagnostic is Extract<
-  SemanticDiagnostic,
-  {
-    kind:
-      | "missing_required_context"
-      | "missing_required_description"
-      | "guarded_shape_changed"
-      | "invalid_reevaluation"
-      | "stale_memory";
-  }
-> {
-  return (
-    diagnostic.kind === "missing_required_context" ||
-    diagnostic.kind === "missing_required_description" ||
-    diagnostic.kind === "guarded_shape_changed" ||
-    diagnostic.kind === "invalid_reevaluation" ||
-    diagnostic.kind === "stale_memory"
-  );
 }
 
 function formatHyperedgeLine(edge: HyperedgeInfo, _indent: number, model: Model): string {

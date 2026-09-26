@@ -13,7 +13,7 @@ resource ApiModuleCheckLoweredShapeModelAstAnchor : GeneratedAstAnchor {
 
 resource ApiModuleCheckShapeFilesAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/checker/api.ts#checkShapeFiles")
-  fingerprint ast.semantic_subtree_v1("sha256:78c3a94f7d3a445d5e5bb99b78a30a3c5e7a695771fd43c93bbe24666cc190a9")
+  fingerprint ast.semantic_subtree_v1("sha256:a879252d39eecb878d53c3cd05bc7bf60ea8e7e7af6cd75e158c396569605327")
 }
 
 resource ApiModuleCheckShapeModulesAstAnchor : GeneratedAstAnchor {
@@ -85,7 +85,7 @@ relation ApiModuleCheckShapeFilesGeneratedFromApiModuleCheckShapeFilesAstAnchor 
   kind generated_from
   connects ApiModule -> ApiModuleCheckShapeFilesAstAnchor
   roles { ApiModule as generated, ApiModuleCheckShapeFilesAstAnchor as syntax }
-  expects ApiModuleCheckShapeFilesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:78c3a94f7d3a445d5e5bb99b78a30a3c5e7a695771fd43c93bbe24666cc190a9")
+  expects ApiModuleCheckShapeFilesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a879252d39eecb878d53c3cd05bc7bf60ea8e7e7af6cd75e158c396569605327")
   summary "fn ApiModule.checkShapeFiles generated from typescript function_declaration at packages/shp-checker/src/checker/api.ts#checkShapeFiles."
 }
 

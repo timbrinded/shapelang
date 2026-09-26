@@ -13,7 +13,7 @@ resource AuthoringModuleBuildShapeAuthorPromptAstAnchor : GeneratedAstAnchor {
 
 resource AuthoringModuleBuildShapeAuthoringBundleAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/authoring.ts#buildShapeAuthoringBundle")
-  fingerprint ast.semantic_subtree_v1("sha256:3c25579148ef5eef16753c53c6bfc5af082896c8226ea6f3a3cb471150aabf99")
+  fingerprint ast.semantic_subtree_v1("sha256:fdcdf9465a725166f2c5150fa4db439315a3f490dedb42da98206fe19076d443")
 }
 
 resource AuthoringModuleContextRefAstAnchor : GeneratedAstAnchor {
@@ -51,19 +51,9 @@ resource AuthoringModuleFormatRelationKindGuidanceAstAnchor : GeneratedAstAnchor
   fingerprint ast.semantic_subtree_v1("sha256:b84675b38942193f8a99e4eac06d60a7130642d494df27f9dacacda04f92f152")
 }
 
-resource AuthoringModuleFormatUnknownFunctionAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/authoring.ts#formatUnknownFunction")
-  fingerprint ast.semantic_subtree_v1("sha256:67ee43dc80629d04c7b8a21edcb037a50d4cd71b61428dce1076c70da107437c")
-}
-
 resource AuthoringModuleGenerateShapeUpdateDraftAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/authoring.ts#generateShapeUpdateDraft")
-  fingerprint ast.semantic_subtree_v1("sha256:a9df6ee28caa4b89f9e6aa7f6f6f779ac9eed748135a2811ce92654d25eba0ad")
-}
-
-resource AuthoringModuleIndentBlockAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/authoring.ts#indentBlock")
-  fingerprint ast.semantic_subtree_v1("sha256:702b6188112ad32d0c53ca3421a7044acff7226664d2650a9c65a70d377ad100")
+  fingerprint ast.semantic_subtree_v1("sha256:acff7d14ae792969461e0d0406111095de9f70a740ff433184463223365ff246")
 }
 
 resource AuthoringModuleLanguageForPathAstAnchor : GeneratedAstAnchor {
@@ -104,14 +94,8 @@ component AuthoringModule : GeneratedCandidate {
   fn formatRelationKindGuidance
     source ts("packages/shp-checker/src/authoring.ts#formatRelationKindGuidance")
     effects unknown
-  fn formatUnknownFunction
-    source ts("packages/shp-checker/src/authoring.ts#formatUnknownFunction")
-    effects unknown
   fn generateShapeUpdateDraft
     source ts("packages/shp-checker/src/authoring.ts#generateShapeUpdateDraft")
-    effects unknown
-  fn indentBlock
-    source ts("packages/shp-checker/src/authoring.ts#indentBlock")
     effects unknown
   fn languageForPath
     source ts("packages/shp-checker/src/authoring.ts#languageForPath")
@@ -133,7 +117,7 @@ relation AuthoringModuleBuildShapeAuthoringBundleGeneratedFromAuthoringModuleBui
   kind generated_from
   connects AuthoringModule -> AuthoringModuleBuildShapeAuthoringBundleAstAnchor
   roles { AuthoringModule as generated, AuthoringModuleBuildShapeAuthoringBundleAstAnchor as syntax }
-  expects AuthoringModuleBuildShapeAuthoringBundleAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3c25579148ef5eef16753c53c6bfc5af082896c8226ea6f3a3cb471150aabf99")
+  expects AuthoringModuleBuildShapeAuthoringBundleAstAnchor fingerprint ast.semantic_subtree_v1("sha256:fdcdf9465a725166f2c5150fa4db439315a3f490dedb42da98206fe19076d443")
   summary "fn AuthoringModule.buildShapeAuthoringBundle generated from typescript function_declaration at packages/shp-checker/src/authoring.ts#buildShapeAuthoringBundle."
 }
 
@@ -193,28 +177,12 @@ relation AuthoringModuleFormatRelationKindGuidanceGeneratedFromAuthoringModuleFo
   summary "fn AuthoringModule.formatRelationKindGuidance generated from typescript function_declaration at packages/shp-checker/src/authoring.ts#formatRelationKindGuidance."
 }
 
-relation AuthoringModuleFormatUnknownFunctionGeneratedFromAuthoringModuleFormatUnknownFunctionAstAnchor {
-  kind generated_from
-  connects AuthoringModule -> AuthoringModuleFormatUnknownFunctionAstAnchor
-  roles { AuthoringModule as generated, AuthoringModuleFormatUnknownFunctionAstAnchor as syntax }
-  expects AuthoringModuleFormatUnknownFunctionAstAnchor fingerprint ast.semantic_subtree_v1("sha256:67ee43dc80629d04c7b8a21edcb037a50d4cd71b61428dce1076c70da107437c")
-  summary "fn AuthoringModule.formatUnknownFunction generated from typescript function_declaration at packages/shp-checker/src/authoring.ts#formatUnknownFunction."
-}
-
 relation AuthoringModuleGenerateShapeUpdateDraftGeneratedFromAuthoringModuleGenerateShapeUpdateDraftAstAnchor {
   kind generated_from
   connects AuthoringModule -> AuthoringModuleGenerateShapeUpdateDraftAstAnchor
   roles { AuthoringModule as generated, AuthoringModuleGenerateShapeUpdateDraftAstAnchor as syntax }
-  expects AuthoringModuleGenerateShapeUpdateDraftAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a9df6ee28caa4b89f9e6aa7f6f6f779ac9eed748135a2811ce92654d25eba0ad")
+  expects AuthoringModuleGenerateShapeUpdateDraftAstAnchor fingerprint ast.semantic_subtree_v1("sha256:acff7d14ae792969461e0d0406111095de9f70a740ff433184463223365ff246")
   summary "fn AuthoringModule.generateShapeUpdateDraft generated from typescript function_declaration at packages/shp-checker/src/authoring.ts#generateShapeUpdateDraft."
-}
-
-relation AuthoringModuleIndentBlockGeneratedFromAuthoringModuleIndentBlockAstAnchor {
-  kind generated_from
-  connects AuthoringModule -> AuthoringModuleIndentBlockAstAnchor
-  roles { AuthoringModule as generated, AuthoringModuleIndentBlockAstAnchor as syntax }
-  expects AuthoringModuleIndentBlockAstAnchor fingerprint ast.semantic_subtree_v1("sha256:702b6188112ad32d0c53ca3421a7044acff7226664d2650a9c65a70d377ad100")
-  summary "fn AuthoringModule.indentBlock generated from typescript function_declaration at packages/shp-checker/src/authoring.ts#indentBlock."
 }
 
 relation AuthoringModuleLanguageForPathGeneratedFromAuthoringModuleLanguageForPathAstAnchor {

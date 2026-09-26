@@ -28,17 +28,17 @@ resource CriticModuleExtractAddedDiffSourcesAstAnchor : GeneratedAstAnchor {
 
 resource CriticModuleFindComponentAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/critic.ts#findComponent")
-  fingerprint ast.semantic_subtree_v1("sha256:fa6f75398225ce63ce9420673f6cb612390ce45d947045ae143f34e2c8a8812e")
+  fingerprint ast.semantic_subtree_v1("sha256:960ea119dc1763be45f1b23b664167ce61d597676a2d36a0a59fb0b2c5e2c206")
 }
 
 resource CriticModuleFindComponentFunctionAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/critic.ts#findComponentFunction")
-  fingerprint ast.semantic_subtree_v1("sha256:4ce54294b8b012179e06a80ae2ea6d83a75ac51119a2718884719a7c320449fe")
+  fingerprint ast.semantic_subtree_v1("sha256:da2b43eefb30329f516f0f8b565810c5490526338c8a89daea991010e2737782")
 }
 
 resource CriticModuleFindSourceBackedFunctionAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/critic.ts#findSourceBackedFunction")
-  fingerprint ast.semantic_subtree_v1("sha256:102a206c8e1cfbe1028bca0c41781ae361fa01973cf704ba278d5b4edc7d84b4")
+  fingerprint ast.semantic_subtree_v1("sha256:488c0bf08754c7cb3966f6a59466c0ed2de047c3b45592a85dc17bd64a9a3696")
 }
 
 resource CriticModuleFinishHunkAstAnchor : GeneratedAstAnchor {
@@ -63,27 +63,27 @@ resource CriticModuleFormatShapeCriticAdvisoryAstAnchor : GeneratedAstAnchor {
 
 resource CriticModuleHasReevaluationGuardAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/critic.ts#hasReevaluationGuard")
-  fingerprint ast.semantic_subtree_v1("sha256:1a296c4f8613e9a03d4ef47a0a0c380066107911f112d1abd49f802c89bbb73d")
+  fingerprint ast.semantic_subtree_v1("sha256:598d63e671557e109ea11b171aae2919fb749c592fc238c4f87b6ae3c0aac858")
 }
 
 resource CriticModuleModuleDeclaresAnalyzerEffectAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/critic.ts#moduleDeclaresAnalyzerEffect")
-  fingerprint ast.semantic_subtree_v1("sha256:c94a666866f26482717514a859e3c7048289cb804d22ac8b768a4d37491946a8")
+  fingerprint ast.semantic_subtree_v1("sha256:1d2eda36f10d37d4ad37f2a7216bb03af4470e29b92c38f3c1afed3ccc9c1f18")
 }
 
 resource CriticModuleModuleDeclaresContextAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/critic.ts#moduleDeclaresContext")
-  fingerprint ast.semantic_subtree_v1("sha256:6476fcec493da43691babbb002af5c9f772a2df1cf2bd6360d73475555936139")
+  fingerprint ast.semantic_subtree_v1("sha256:d13504f2ca261607d5a96ffa657d9b3508c0521aab3fbdea2274f5e8043f3996")
 }
 
 resource CriticModuleNormalizeCriticPromptInputAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/critic.ts#normalizeCriticPromptInput")
-  fingerprint ast.semantic_subtree_v1("sha256:4ff47f7a44b0563fa1b6db6c39da5f1e6fe67c4750a6a23590a378588a71a839")
+  fingerprint ast.semantic_subtree_v1("sha256:a6881e54b35a4229664683010c10a141218cb19da26551e57e50ae6aeaa3a4f9")
 }
 
 resource CriticModuleParseContextFilesAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/critic.ts#parseContextFiles")
-  fingerprint ast.semantic_subtree_v1("sha256:37468a33a8397391d9ffc87a1eb9337c73c42f6bdf05a03ef0cb7ee4dbfa73f2")
+  fingerprint ast.semantic_subtree_v1("sha256:5ac18a9bc3f39887fe5d664ed05abac8bbedb3b0d5339701be97708027a0989d")
 }
 
 resource CriticModuleParseUnifiedDiffHunkAstAnchor : GeneratedAstAnchor {
@@ -93,27 +93,27 @@ resource CriticModuleParseUnifiedDiffHunkAstAnchor : GeneratedAstAnchor {
 
 resource CriticModuleProposalSatisfiesContextAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/critic.ts#proposalSatisfiesContext")
-  fingerprint ast.semantic_subtree_v1("sha256:2231a692e451d460f116e3b6588176964408314fc9ae1672fbafcd7808cd079f")
+  fingerprint ast.semantic_subtree_v1("sha256:086b24ac5ee9c491c3bf292d7dd780b1e239528e5c2512b50bd878f17d9d5ffa")
 }
 
 resource CriticModuleResolveContextReferenceAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/critic.ts#resolveContextReference")
-  fingerprint ast.semantic_subtree_v1("sha256:4e51872ad6a2ff184eecd2516be9c964778405085236f2437fbae0afc7c878f9")
+  fingerprint ast.semantic_subtree_v1("sha256:d2de0989ebbd562b726da7f2e281be5ab07498a68dac3a31db34f7fcc3b63e6c")
 }
 
 resource CriticModuleReviewDestructiveEffectsAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/critic.ts#reviewDestructiveEffects")
-  fingerprint ast.semantic_subtree_v1("sha256:8958d1fb1e243dd154bc2dab5eaa4010abf05e09565950c4e9888ebca6271157")
+  fingerprint ast.semantic_subtree_v1("sha256:67a5e1c7b57ee46ef728b72f0960830496a1cac3ffd08f871a785aeccd4e27b6")
 }
 
 resource CriticModuleReviewGuardedTargetsAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/critic.ts#reviewGuardedTargets")
-  fingerprint ast.semantic_subtree_v1("sha256:dffb066cd9a4f4f3c64da6e4518252b15ac9a2d42b125f356cc211dc42d215f2")
+  fingerprint ast.semantic_subtree_v1("sha256:2da7a0dddb792166c6487c54614e2cf284adc7be565067e91acebcc7a130d1b2")
 }
 
 resource CriticModuleReviewShapeAuthoringProposalAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/critic.ts#reviewShapeAuthoringProposal")
-  fingerprint ast.semantic_subtree_v1("sha256:ba611275b6d3d3e7c044605fec0c40c6a6373a7e81e9f58dab14c0cdeadc3db8")
+  fingerprint ast.semantic_subtree_v1("sha256:9f08e4131084bb4746f2ab054d2fc87c645c45cc94d6e9f1701628d5d414394f")
 }
 
 resource CriticModuleSortShapeCriticAdvisoriesAstAnchor : GeneratedAstAnchor {
@@ -229,7 +229,7 @@ relation CriticModuleFindComponentFunctionGeneratedFromCriticModuleFindComponent
   kind generated_from
   connects CriticModule -> CriticModuleFindComponentFunctionAstAnchor
   roles { CriticModule as generated, CriticModuleFindComponentFunctionAstAnchor as syntax }
-  expects CriticModuleFindComponentFunctionAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4ce54294b8b012179e06a80ae2ea6d83a75ac51119a2718884719a7c320449fe")
+  expects CriticModuleFindComponentFunctionAstAnchor fingerprint ast.semantic_subtree_v1("sha256:da2b43eefb30329f516f0f8b565810c5490526338c8a89daea991010e2737782")
   summary "fn CriticModule.findComponentFunction generated from typescript function_declaration at packages/shp-checker/src/critic.ts#findComponentFunction."
 }
 
@@ -237,7 +237,7 @@ relation CriticModuleFindComponentGeneratedFromCriticModuleFindComponentAstAncho
   kind generated_from
   connects CriticModule -> CriticModuleFindComponentAstAnchor
   roles { CriticModule as generated, CriticModuleFindComponentAstAnchor as syntax }
-  expects CriticModuleFindComponentAstAnchor fingerprint ast.semantic_subtree_v1("sha256:fa6f75398225ce63ce9420673f6cb612390ce45d947045ae143f34e2c8a8812e")
+  expects CriticModuleFindComponentAstAnchor fingerprint ast.semantic_subtree_v1("sha256:960ea119dc1763be45f1b23b664167ce61d597676a2d36a0a59fb0b2c5e2c206")
   summary "fn CriticModule.findComponent generated from typescript function_declaration at packages/shp-checker/src/critic.ts#findComponent."
 }
 
@@ -245,7 +245,7 @@ relation CriticModuleFindSourceBackedFunctionGeneratedFromCriticModuleFindSource
   kind generated_from
   connects CriticModule -> CriticModuleFindSourceBackedFunctionAstAnchor
   roles { CriticModule as generated, CriticModuleFindSourceBackedFunctionAstAnchor as syntax }
-  expects CriticModuleFindSourceBackedFunctionAstAnchor fingerprint ast.semantic_subtree_v1("sha256:102a206c8e1cfbe1028bca0c41781ae361fa01973cf704ba278d5b4edc7d84b4")
+  expects CriticModuleFindSourceBackedFunctionAstAnchor fingerprint ast.semantic_subtree_v1("sha256:488c0bf08754c7cb3966f6a59466c0ed2de047c3b45592a85dc17bd64a9a3696")
   summary "fn CriticModule.findSourceBackedFunction generated from typescript function_declaration at packages/shp-checker/src/critic.ts#findSourceBackedFunction."
 }
 
@@ -285,7 +285,7 @@ relation CriticModuleHasReevaluationGuardGeneratedFromCriticModuleHasReevaluatio
   kind generated_from
   connects CriticModule -> CriticModuleHasReevaluationGuardAstAnchor
   roles { CriticModule as generated, CriticModuleHasReevaluationGuardAstAnchor as syntax }
-  expects CriticModuleHasReevaluationGuardAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1a296c4f8613e9a03d4ef47a0a0c380066107911f112d1abd49f802c89bbb73d")
+  expects CriticModuleHasReevaluationGuardAstAnchor fingerprint ast.semantic_subtree_v1("sha256:598d63e671557e109ea11b171aae2919fb749c592fc238c4f87b6ae3c0aac858")
   summary "fn CriticModule.hasReevaluationGuard generated from typescript function_declaration at packages/shp-checker/src/critic.ts#hasReevaluationGuard."
 }
 
@@ -293,7 +293,7 @@ relation CriticModuleModuleDeclaresAnalyzerEffectGeneratedFromCriticModuleModule
   kind generated_from
   connects CriticModule -> CriticModuleModuleDeclaresAnalyzerEffectAstAnchor
   roles { CriticModule as generated, CriticModuleModuleDeclaresAnalyzerEffectAstAnchor as syntax }
-  expects CriticModuleModuleDeclaresAnalyzerEffectAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c94a666866f26482717514a859e3c7048289cb804d22ac8b768a4d37491946a8")
+  expects CriticModuleModuleDeclaresAnalyzerEffectAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1d2eda36f10d37d4ad37f2a7216bb03af4470e29b92c38f3c1afed3ccc9c1f18")
   summary "fn CriticModule.moduleDeclaresAnalyzerEffect generated from typescript function_declaration at packages/shp-checker/src/critic.ts#moduleDeclaresAnalyzerEffect."
 }
 
@@ -301,7 +301,7 @@ relation CriticModuleModuleDeclaresContextGeneratedFromCriticModuleModuleDeclare
   kind generated_from
   connects CriticModule -> CriticModuleModuleDeclaresContextAstAnchor
   roles { CriticModule as generated, CriticModuleModuleDeclaresContextAstAnchor as syntax }
-  expects CriticModuleModuleDeclaresContextAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6476fcec493da43691babbb002af5c9f772a2df1cf2bd6360d73475555936139")
+  expects CriticModuleModuleDeclaresContextAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d13504f2ca261607d5a96ffa657d9b3508c0521aab3fbdea2274f5e8043f3996")
   summary "fn CriticModule.moduleDeclaresContext generated from typescript function_declaration at packages/shp-checker/src/critic.ts#moduleDeclaresContext."
 }
 
@@ -309,7 +309,7 @@ relation CriticModuleNormalizeCriticPromptInputGeneratedFromCriticModuleNormaliz
   kind generated_from
   connects CriticModule -> CriticModuleNormalizeCriticPromptInputAstAnchor
   roles { CriticModule as generated, CriticModuleNormalizeCriticPromptInputAstAnchor as syntax }
-  expects CriticModuleNormalizeCriticPromptInputAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4ff47f7a44b0563fa1b6db6c39da5f1e6fe67c4750a6a23590a378588a71a839")
+  expects CriticModuleNormalizeCriticPromptInputAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a6881e54b35a4229664683010c10a141218cb19da26551e57e50ae6aeaa3a4f9")
   summary "fn CriticModule.normalizeCriticPromptInput generated from typescript function_declaration at packages/shp-checker/src/critic.ts#normalizeCriticPromptInput."
 }
 
@@ -317,7 +317,7 @@ relation CriticModuleParseContextFilesGeneratedFromCriticModuleParseContextFiles
   kind generated_from
   connects CriticModule -> CriticModuleParseContextFilesAstAnchor
   roles { CriticModule as generated, CriticModuleParseContextFilesAstAnchor as syntax }
-  expects CriticModuleParseContextFilesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:37468a33a8397391d9ffc87a1eb9337c73c42f6bdf05a03ef0cb7ee4dbfa73f2")
+  expects CriticModuleParseContextFilesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5ac18a9bc3f39887fe5d664ed05abac8bbedb3b0d5339701be97708027a0989d")
   summary "fn CriticModule.parseContextFiles generated from typescript function_declaration at packages/shp-checker/src/critic.ts#parseContextFiles."
 }
 
@@ -333,7 +333,7 @@ relation CriticModuleProposalSatisfiesContextGeneratedFromCriticModuleProposalSa
   kind generated_from
   connects CriticModule -> CriticModuleProposalSatisfiesContextAstAnchor
   roles { CriticModule as generated, CriticModuleProposalSatisfiesContextAstAnchor as syntax }
-  expects CriticModuleProposalSatisfiesContextAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2231a692e451d460f116e3b6588176964408314fc9ae1672fbafcd7808cd079f")
+  expects CriticModuleProposalSatisfiesContextAstAnchor fingerprint ast.semantic_subtree_v1("sha256:086b24ac5ee9c491c3bf292d7dd780b1e239528e5c2512b50bd878f17d9d5ffa")
   summary "fn CriticModule.proposalSatisfiesContext generated from typescript function_declaration at packages/shp-checker/src/critic.ts#proposalSatisfiesContext."
 }
 
@@ -341,7 +341,7 @@ relation CriticModuleResolveContextReferenceGeneratedFromCriticModuleResolveCont
   kind generated_from
   connects CriticModule -> CriticModuleResolveContextReferenceAstAnchor
   roles { CriticModule as generated, CriticModuleResolveContextReferenceAstAnchor as syntax }
-  expects CriticModuleResolveContextReferenceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4e51872ad6a2ff184eecd2516be9c964778405085236f2437fbae0afc7c878f9")
+  expects CriticModuleResolveContextReferenceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d2de0989ebbd562b726da7f2e281be5ab07498a68dac3a31db34f7fcc3b63e6c")
   summary "fn CriticModule.resolveContextReference generated from typescript function_declaration at packages/shp-checker/src/critic.ts#resolveContextReference."
 }
 
@@ -349,7 +349,7 @@ relation CriticModuleReviewDestructiveEffectsGeneratedFromCriticModuleReviewDest
   kind generated_from
   connects CriticModule -> CriticModuleReviewDestructiveEffectsAstAnchor
   roles { CriticModule as generated, CriticModuleReviewDestructiveEffectsAstAnchor as syntax }
-  expects CriticModuleReviewDestructiveEffectsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:8958d1fb1e243dd154bc2dab5eaa4010abf05e09565950c4e9888ebca6271157")
+  expects CriticModuleReviewDestructiveEffectsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:67a5e1c7b57ee46ef728b72f0960830496a1cac3ffd08f871a785aeccd4e27b6")
   summary "fn CriticModule.reviewDestructiveEffects generated from typescript function_declaration at packages/shp-checker/src/critic.ts#reviewDestructiveEffects."
 }
 
@@ -357,7 +357,7 @@ relation CriticModuleReviewGuardedTargetsGeneratedFromCriticModuleReviewGuardedT
   kind generated_from
   connects CriticModule -> CriticModuleReviewGuardedTargetsAstAnchor
   roles { CriticModule as generated, CriticModuleReviewGuardedTargetsAstAnchor as syntax }
-  expects CriticModuleReviewGuardedTargetsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:dffb066cd9a4f4f3c64da6e4518252b15ac9a2d42b125f356cc211dc42d215f2")
+  expects CriticModuleReviewGuardedTargetsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2da7a0dddb792166c6487c54614e2cf284adc7be565067e91acebcc7a130d1b2")
   summary "fn CriticModule.reviewGuardedTargets generated from typescript function_declaration at packages/shp-checker/src/critic.ts#reviewGuardedTargets."
 }
 
@@ -365,7 +365,7 @@ relation CriticModuleReviewShapeAuthoringProposalGeneratedFromCriticModuleReview
   kind generated_from
   connects CriticModule -> CriticModuleReviewShapeAuthoringProposalAstAnchor
   roles { CriticModule as generated, CriticModuleReviewShapeAuthoringProposalAstAnchor as syntax }
-  expects CriticModuleReviewShapeAuthoringProposalAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ba611275b6d3d3e7c044605fec0c40c6a6373a7e81e9f58dab14c0cdeadc3db8")
+  expects CriticModuleReviewShapeAuthoringProposalAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9f08e4131084bb4746f2ab054d2fc87c645c45cc94d6e9f1701628d5d414394f")
   summary "fn CriticModule.reviewShapeAuthoringProposal generated from typescript function_declaration at packages/shp-checker/src/critic.ts#reviewShapeAuthoringProposal."
 }
 

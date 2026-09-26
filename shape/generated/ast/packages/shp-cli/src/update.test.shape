@@ -11,11 +11,6 @@ resource UpdateTestModuleBaseUpdateOptionsAstAnchor : GeneratedAstAnchor {
   fingerprint ast.semantic_subtree_v1("sha256:77ecd1d8da51554ee4815d66ee10ce1470ba353c586823dac0a3c96f5d8e62a5")
 }
 
-resource UpdateTestModuleFailureHarnessAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-cli/src/update.test.ts#failureHarness")
-  fingerprint ast.semantic_subtree_v1("sha256:a319a655f4fa6dd10bd418ac52a372054ae60ef38bd4c2bea63c0e4f14880111")
-}
-
 resource UpdateTestModuleOlderShpHelpAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-cli/src/update.test.ts#olderShpHelp")
   fingerprint ast.semantic_subtree_v1("sha256:f4524eebaaaa4039c81a7eac94e607e27d598c06e6dad1392447aa1c0e5f830d")
@@ -24,6 +19,11 @@ resource UpdateTestModuleOlderShpHelpAstAnchor : GeneratedAstAnchor {
 resource UpdateTestModuleRunUpdateFailureMessageAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-cli/src/update.test.ts#runUpdateFailureMessage")
   fingerprint ast.semantic_subtree_v1("sha256:e006fd8dc1cba7d2e0b79f4caa3e6451f33288326fc8fe4c05339443b7c0a607")
+}
+
+resource UpdateTestModuleUpdateHarnessAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/update.test.ts#updateHarness")
+  fingerprint ast.semantic_subtree_v1("sha256:28d496bc9883d2b60cca1f80e18ead4788bec34504059a8b6739213b28b92124")
 }
 
 resource UpdateTestModuleValidShpHelpAstAnchor : GeneratedAstAnchor {
@@ -35,14 +35,14 @@ component UpdateTestModule : GeneratedCandidate {
   fn baseUpdateOptions
     source ts("packages/shp-cli/src/update.test.ts#baseUpdateOptions")
     effects unknown
-  fn failureHarness
-    source ts("packages/shp-cli/src/update.test.ts#failureHarness")
-    effects unknown
   fn olderShpHelp
     source ts("packages/shp-cli/src/update.test.ts#olderShpHelp")
     effects unknown
   fn runUpdateFailureMessage
     source ts("packages/shp-cli/src/update.test.ts#runUpdateFailureMessage")
+    effects unknown
+  fn updateHarness
+    source ts("packages/shp-cli/src/update.test.ts#updateHarness")
     effects unknown
   fn validShpHelp
     source ts("packages/shp-cli/src/update.test.ts#validShpHelp")
@@ -55,14 +55,6 @@ relation UpdateTestModuleBaseUpdateOptionsGeneratedFromUpdateTestModuleBaseUpdat
   roles { UpdateTestModule as generated, UpdateTestModuleBaseUpdateOptionsAstAnchor as syntax }
   expects UpdateTestModuleBaseUpdateOptionsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:77ecd1d8da51554ee4815d66ee10ce1470ba353c586823dac0a3c96f5d8e62a5")
   summary "fn UpdateTestModule.baseUpdateOptions generated from typescript function_declaration at packages/shp-cli/src/update.test.ts#baseUpdateOptions."
-}
-
-relation UpdateTestModuleFailureHarnessGeneratedFromUpdateTestModuleFailureHarnessAstAnchor {
-  kind generated_from
-  connects UpdateTestModule -> UpdateTestModuleFailureHarnessAstAnchor
-  roles { UpdateTestModule as generated, UpdateTestModuleFailureHarnessAstAnchor as syntax }
-  expects UpdateTestModuleFailureHarnessAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a319a655f4fa6dd10bd418ac52a372054ae60ef38bd4c2bea63c0e4f14880111")
-  summary "fn UpdateTestModule.failureHarness generated from typescript function_declaration at packages/shp-cli/src/update.test.ts#failureHarness."
 }
 
 relation UpdateTestModuleOlderShpHelpGeneratedFromUpdateTestModuleOlderShpHelpAstAnchor {
@@ -79,6 +71,14 @@ relation UpdateTestModuleRunUpdateFailureMessageGeneratedFromUpdateTestModuleRun
   roles { UpdateTestModule as generated, UpdateTestModuleRunUpdateFailureMessageAstAnchor as syntax }
   expects UpdateTestModuleRunUpdateFailureMessageAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e006fd8dc1cba7d2e0b79f4caa3e6451f33288326fc8fe4c05339443b7c0a607")
   summary "fn UpdateTestModule.runUpdateFailureMessage generated from typescript function_declaration at packages/shp-cli/src/update.test.ts#runUpdateFailureMessage."
+}
+
+relation UpdateTestModuleUpdateHarnessGeneratedFromUpdateTestModuleUpdateHarnessAstAnchor {
+  kind generated_from
+  connects UpdateTestModule -> UpdateTestModuleUpdateHarnessAstAnchor
+  roles { UpdateTestModule as generated, UpdateTestModuleUpdateHarnessAstAnchor as syntax }
+  expects UpdateTestModuleUpdateHarnessAstAnchor fingerprint ast.semantic_subtree_v1("sha256:28d496bc9883d2b60cca1f80e18ead4788bec34504059a8b6739213b28b92124")
+  summary "fn UpdateTestModule.updateHarness generated from typescript function_declaration at packages/shp-cli/src/update.test.ts#updateHarness."
 }
 
 relation UpdateTestModuleValidShpHelpGeneratedFromUpdateTestModuleValidShpHelpAstAnchor {

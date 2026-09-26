@@ -16,9 +16,8 @@ describe("shp CLI", () => {
   });
 
   test("exports a deterministic JSON inspection from recursive default discovery", async () => {
-    const projectRoot = await mkdtemp(join(tmpdir(), "shp-inspect-test-"));
-    const shapeFile = join(projectRoot, "shape", "nested", "system.shape");
-    try {
+    await withTempDirectory(join(tmpdir(), "shp-inspect-test-"), async (projectRoot) => {
+      const shapeFile = join(projectRoot, "shape", "nested", "system.shape");
       await mkdir(join(projectRoot, "shape", "nested"), { recursive: true });
       await writeFile(
         shapeFile,
@@ -69,9 +68,7 @@ relation ReaderProvidesRecord {
         }
       });
       expect(discovered.stdout).not.toContain("generatedAt");
-    } finally {
-      await rm(projectRoot, { recursive: true, force: true });
-    }
+    });
   });
 
   test("requires the explicit inspect JSON output mode", async () => {
@@ -200,17 +197,7 @@ relation ReaderProvidesRecord {
       await writeFile(join(repo, "src/audit/purge.ts"), "export const purge = 1;\n");
       await mkdir(join(baseDir, "shape"));
       await writeFile(join(baseDir, "shape/audit.shape"), attested);
-      git(repo, ["init", "-q"]);
-      git(repo, ["add", "."]);
-      git(repo, [
-        "-c",
-        "user.name=shp",
-        "-c",
-        "user.email=shp@example.com",
-        "commit",
-        "-qm",
-        "base"
-      ]);
+      commitFixtureBase(repo);
 
       // The later change edits the governed source and moves the model to a new
       // .shape file, but only carries the earlier attestation over. Naming just
@@ -261,8 +248,7 @@ relation ReaderProvidesRecord {
   });
 
   test("prunes only attestations that are unchanged from the base model", async () => {
-    const repo = await mkdtemp(join(tmpdir(), "shp-attest-prune-test-"));
-    try {
+    await withTempDirectory(join(tmpdir(), "shp-attest-prune-test-"), async (repo) => {
       const fixture = await readFile(
         resolve(repoRoot, "fixtures/fail/missing_shape_update/audit.shape"),
         "utf8"
@@ -278,17 +264,7 @@ relation ReaderProvidesRecord {
       const base = `${fixture}\n${earlier}\n${proposal(proposed)}`;
       await mkdir(join(repo, "shape"));
       await writeFile(join(repo, "shape/audit.shape"), crlf(base));
-      git(repo, ["init", "-q"]);
-      git(repo, ["add", "."]);
-      git(repo, [
-        "-c",
-        "user.name=shp",
-        "-c",
-        "user.email=shp@example.com",
-        "commit",
-        "-qm",
-        "base"
-      ]);
+      commitFixtureBase(repo);
       await writeFile(join(repo, "shape/audit.shape"), crlf(`${base}\n${fresh}`));
 
       const pruned = await runCli(["attest", "prune", "--base-ref", "HEAD"], cliPath, repo);
@@ -300,14 +276,11 @@ relation ReaderProvidesRecord {
 
       const again = await runCli(["attest", "prune", "--base-ref", "HEAD"], cliPath, repo);
       expect(again.stdout).toBe("No stale attestations.\n");
-    } finally {
-      await rm(repo, { recursive: true, force: true });
-    }
+    });
   });
 
   test("checks that cited paths exist in the git repository", async () => {
-    const repo = await mkdtemp(join(tmpdir(), "shp-cited-paths-test-"));
-    try {
+    await withTempDirectory(join(tmpdir(), "shp-cited-paths-test-"), async (repo) => {
       await mkdir(join(repo, "shape"));
       await mkdir(join(repo, "src"));
       await writeFile(
@@ -339,17 +312,7 @@ relation ReaderProvidesRecord {
       await writeFile(join(repo, "src/committed.ts"), "export const verify = 1;\n");
       await writeFile(join(repo, "src/sparse.ts"), "export const sparse = 1;\n");
       await writeFile(join(repo, "src/deleted.ts"), "export const deleted = 1;\n");
-      git(repo, ["init", "-q"]);
-      git(repo, ["add", "."]);
-      git(repo, [
-        "-c",
-        "user.name=shp",
-        "-c",
-        "user.email=shp@example.com",
-        "commit",
-        "-qm",
-        "base"
-      ]);
+      commitFixtureBase(repo);
       await writeFile(join(repo, "src/untracked.ts"), "export const helper = 1;\n");
       // A sparse checkout leaves a tracked file off disk without deleting it; an
       // unstaged deletion does delete it.
@@ -366,9 +329,7 @@ relation ReaderProvidesRecord {
 
       const withoutFlag = await runCli(["check"], cliPath, repo);
       expect(withoutFlag.exitCode).toBe(0);
-    } finally {
-      await rm(repo, { recursive: true, force: true });
-    }
+    });
   });
 
   test("rejects empty changed-file path during checks", async () => {
@@ -484,10 +445,9 @@ component AuditStore {
   });
 
   test("emits a critic prompt on stdout and advisory warnings on stderr without failing", async () => {
-    const tempDir = await mkdtemp(join(tmpdir(), "shp-critic-test-"));
-    const existingShape = join(tempDir, "audit.shape");
-    const proposedShape = join(tempDir, "proposed.shape");
-    try {
+    await withTempDirectory(join(tmpdir(), "shp-critic-test-"), async (tempDir) => {
+      const existingShape = join(tempDir, "audit.shape");
+      const proposedShape = join(tempDir, "proposed.shape");
       await Promise.all([
         writeFile(existingShape, guardedCriticShape()),
         writeFile(proposedShape, "module audit.update\n\ncomponent AuditUpdate {\n}\n")
@@ -523,16 +483,13 @@ component AuditStore {
       );
       expect(result.stderr).toContain("src/audit/purge.ts suggests HardDelete");
       expect(result.stderr).not.toContain("src/audit/purge.ts:");
-    } finally {
-      await rm(tempDir, { recursive: true, force: true });
-    }
+    });
   });
 
   test("keeps a clean critic review advisory-free and successful", async () => {
-    const tempDir = await mkdtemp(join(tmpdir(), "shp-critic-test-"));
-    const existingShape = join(tempDir, "audit.shape");
-    const proposedShape = join(tempDir, "proposed.shape");
-    try {
+    await withTempDirectory(join(tmpdir(), "shp-critic-test-"), async (tempDir) => {
+      const existingShape = join(tempDir, "audit.shape");
+      const proposedShape = join(tempDir, "proposed.shape");
       await Promise.all([
         writeFile(existingShape, guardedCriticShape()),
         writeFile(proposedShape, cleanCriticProposal())
@@ -553,9 +510,7 @@ component AuditStore {
       expect(result.exitCode).toBe(0);
       expect(result.stdout).toContain("Proposed shape update:");
       expect(result.stderr).toBe("");
-    } finally {
-      await rm(tempDir, { recursive: true, force: true });
-    }
+    });
   });
 
   test("rejects conflicting or malformed critic input as usage errors", async () => {
@@ -601,9 +556,8 @@ component AuditStore {
       expect(ignoredDraftFlag.stdout).toBe("");
     }
 
-    const tempDir = await mkdtemp(join(tmpdir(), "shp-critic-test-"));
-    const proposedShape = join(tempDir, "proposed.shape");
-    try {
+    await withTempDirectory(join(tmpdir(), "shp-critic-test-"), async (tempDir) => {
+      const proposedShape = join(tempDir, "proposed.shape");
       await writeFile(proposedShape, "not valid Shape");
       const malformed = await runCli([
         "author",
@@ -621,9 +575,7 @@ component AuditStore {
       expect(malformed.stderr).toContain(`error: failed to parse ${proposedShape}`);
       expect(malformed.stderr).not.toContain("\n    at ");
       expect(malformed.stdout).toBe("");
-    } finally {
-      await rm(tempDir, { recursive: true, force: true });
-    }
+    });
   });
 
   test("rejects incomplete authoring prompt context without a stack trace", async () => {
@@ -694,10 +646,9 @@ component AuditStore {
   });
 
   test("rejects empty or unreadable authoring prompt context without a stack trace", async () => {
-    const tempDir = await mkdtemp(join(tmpdir(), "shp-author-test-"));
-    const emptyDiff = join(tempDir, "empty.diff");
-    const emptyChangedFiles = join(tempDir, "empty-changed.txt");
-    try {
+    await withTempDirectory(join(tmpdir(), "shp-author-test-"), async (tempDir) => {
+      const emptyDiff = join(tempDir, "empty.diff");
+      const emptyChangedFiles = join(tempDir, "empty-changed.txt");
       await Promise.all([writeFile(emptyDiff, " \n"), writeFile(emptyChangedFiles, "\n")]);
 
       const emptyDiffResult = await runCli([
@@ -768,16 +719,13 @@ component AuditStore {
       expect(unreadableContextResult.stderr).toContain("fixtures/missing-author-context.shape");
       expect(unreadableContextResult.stderr).not.toContain("\n    at ");
       expect(unreadableContextResult.stdout).toBe("");
-    } finally {
-      await rm(tempDir, { recursive: true, force: true });
-    }
+    });
   });
 
   test("generates AST JSON shape drafts with raw trace sidecars", async () => {
-    const tempDir = await mkdtemp(join(tmpdir(), "shp-cli-test-"));
-    const astFile = join(tempDir, "ast.json");
-    const rawFile = join(tempDir, "raw.shape");
-    try {
+    await withTempDirectory(join(tmpdir(), "shp-cli-test-"), async (tempDir) => {
+      const astFile = join(tempDir, "ast.json");
+      const rawFile = join(tempDir, "raw.shape");
       await writeFile(astFile, JSON.stringify(cliAstJson()));
 
       const result = await runCli([
@@ -801,15 +749,12 @@ component AuditStore {
       expect(rawShape).toContain("module generated.audit.raw");
       expect(rawShape).toContain("GeneratedAstNode");
       expect(rawShape).toContain("kind ast_child");
-    } finally {
-      await rm(tempDir, { recursive: true, force: true });
-    }
+    });
   });
 
   test("embeds raw AST trace in AST JSON output on request", async () => {
-    const tempDir = await mkdtemp(join(tmpdir(), "shp-cli-test-"));
-    const astFile = join(tempDir, "ast.json");
-    try {
+    await withTempDirectory(join(tmpdir(), "shp-cli-test-"), async (tempDir) => {
+      const astFile = join(tempDir, "ast.json");
       await writeFile(astFile, JSON.stringify(cliAstJson()));
 
       const result = await runCli([
@@ -826,9 +771,7 @@ component AuditStore {
       expect(result.stdout).toContain("GeneratedAstNode");
       expect(result.stdout).toContain("kind ast_child");
       expect(result.stderr).toBe("");
-    } finally {
-      await rm(tempDir, { recursive: true, force: true });
-    }
+    });
   });
 
   test("generates AST source drafts from source checkout", async () => {
@@ -905,9 +848,8 @@ component AuditStore {
     );
     expect(inferred.stdout).toContain("effects unknown");
 
-    const tempDir = await mkdtemp(join(tmpdir(), "shp-swift-test-"));
-    const outDir = join(tempDir, "shape/generated/ast");
-    try {
+    await withTempDirectory(join(tmpdir(), "shp-swift-test-"), async (tempDir) => {
+      const outDir = join(tempDir, "shape/generated/ast");
       const args = ["ast", "source", "--out-dir", outDir, source];
       expect((await runCli(args)).exitCode).toBe(0);
       expect((await runCli([...args, "--check"])).exitCode).toBe(0);
@@ -917,9 +859,7 @@ component AuditStore {
       const stale = await runCli([...args, "--check"]);
       expect(stale.exitCode).toBe(1);
       expect(stale.stderr).toContain("stale");
-    } finally {
-      await rm(tempDir, { recursive: true, force: true });
-    }
+    });
   });
 
   test("generates source candidate effects from AST anchors", async () => {
@@ -944,9 +884,8 @@ component AuditStore {
   });
 
   test("writes and freshness-checks generated AST source directory output", async () => {
-    const tempDir = await mkdtemp(join(tmpdir(), "shp-cli-test-"));
-    const outDir = join(tempDir, "shape/generated/ast");
-    try {
+    await withTempDirectory(join(tmpdir(), "shp-cli-test-"), async (tempDir) => {
+      const outDir = join(tempDir, "shape/generated/ast");
       const writeResult = await runCli([
         "ast",
         "source",
@@ -1012,17 +951,14 @@ component AuditStore {
       ]);
       expect(checkResult.exitCode).toBe(0);
       expect(checkResult.stdout).toContain("up to date");
-    } finally {
-      await rm(tempDir, { recursive: true, force: true });
-    }
+    });
   });
 
   test("keeps generated AST identity stable for absolute paths and nested cwd", async () => {
-    const tempDir = await mkdtemp(join(repoRoot, ".tmp-shp-cli-test-"));
-    const absoluteOutDir = join(tempDir, "absolute/shape/generated/ast");
-    const nestedOutDir = join(tempDir, "nested/shape/generated/ast");
-    const absoluteSource = resolve(repoRoot, "fixtures/source/audit_purge.ts");
-    try {
+    await withTempDirectory(join(repoRoot, ".tmp-shp-cli-test-"), async (tempDir) => {
+      const absoluteOutDir = join(tempDir, "absolute/shape/generated/ast");
+      const nestedOutDir = join(tempDir, "nested/shape/generated/ast");
+      const absoluteSource = resolve(repoRoot, "fixtures/source/audit_purge.ts");
       const absoluteResult = await runCli([
         "ast",
         "source",
@@ -1061,17 +997,14 @@ component AuditStore {
 
       const manifest = await readFile(join(nestedOutDir, "manifest.json"), "utf8");
       expect(manifest).toContain('"sources": [\n        "fixtures/source/audit_purge.ts"\n      ]');
-    } finally {
-      await rm(tempDir, { recursive: true, force: true });
-    }
+    });
   });
 
   test("preserves authored Shape files in broad generated AST output directories", async () => {
-    const tempDir = await mkdtemp(join(repoRoot, ".tmp-shp-cli-test-"));
-    const shapeDir = join(tempDir, "shape");
-    const authoredShape = join(shapeDir, "model.shape");
-    const sourcePath = join(tempDir, "audit.ts");
-    try {
+    await withTempDirectory(join(repoRoot, ".tmp-shp-cli-test-"), async (tempDir) => {
+      const shapeDir = join(tempDir, "shape");
+      const authoredShape = join(shapeDir, "model.shape");
+      const sourcePath = join(tempDir, "audit.ts");
       await mkdir(shapeDir, { recursive: true });
       await writeFile(authoredShape, "module local.model\n\ncomponent AuthoredModel {\n}\n");
       await writeFile(sourcePath, "export function readAudit() { return 1; }\n");
@@ -1100,17 +1033,14 @@ component AuditStore {
       ]);
       expect(checkResult.exitCode).toBe(0);
       expect(checkResult.stderr).not.toContain("model.shape");
-    } finally {
-      await rm(tempDir, { recursive: true, force: true });
-    }
+    });
   });
 
   test("rejects generated AST output path and module collisions before writing", async () => {
-    const tempDir = await mkdtemp(join(repoRoot, ".tmp-shp-cli-test-"));
-    const outDir = join(tempDir, "shape/generated/ast");
-    const tsFile = join(tempDir, "foo.ts");
-    const tsxFile = join(tempDir, "foo.tsx");
-    try {
+    await withTempDirectory(join(repoRoot, ".tmp-shp-cli-test-"), async (tempDir) => {
+      const outDir = join(tempDir, "shape/generated/ast");
+      const tsFile = join(tempDir, "foo.ts");
+      const tsxFile = join(tempDir, "foo.tsx");
       await writeFile(tsFile, "export function readAudit() { return 1; }\n");
       await writeFile(tsxFile, "export function readAudit() { return 2; }\n");
 
@@ -1131,9 +1061,7 @@ component AuditStore {
       expect(result.stderr).toContain("generated AST output path collision");
       expect(result.stderr).toContain("foo.ts");
       expect(result.stderr).toContain("foo.tsx");
-    } finally {
-      await rm(tempDir, { recursive: true, force: true });
-    }
+    });
   });
 
   test("rejects AST source freshness check without generated output directory", async () => {
@@ -1151,8 +1079,7 @@ component AuditStore {
   });
 
   test("rejects generated AST directory output outside the generated AST module namespace", async () => {
-    const tempDir = await mkdtemp(join(tmpdir(), "shp-cli-test-"));
-    try {
+    await withTempDirectory(join(tmpdir(), "shp-cli-test-"), async (tempDir) => {
       const result = await runCli([
         "ast",
         "source",
@@ -1167,14 +1094,11 @@ component AuditStore {
 
       expect(result.exitCode).toBe(2);
       expect(result.stderr).toContain("shape.generated.ast or a child module");
-    } finally {
-      await rm(tempDir, { recursive: true, force: true });
-    }
+    });
   });
 
   test("rejects conflicting AST source raw output flags", async () => {
-    const tempDir = await mkdtemp(join(tmpdir(), "shp-cli-test-"));
-    try {
+    await withTempDirectory(join(tmpdir(), "shp-cli-test-"), async (tempDir) => {
       const result = await runCli([
         "ast",
         "source",
@@ -1186,15 +1110,12 @@ component AuditStore {
 
       expect(result.exitCode).toBe(2);
       expect(result.stderr).toContain("--include-ast-layer and --raw-out cannot be used together");
-    } finally {
-      await rm(tempDir, { recursive: true, force: true });
-    }
+    });
   });
 
   test("rejects conflicting AST JSON raw output flags", async () => {
-    const tempDir = await mkdtemp(join(tmpdir(), "shp-cli-test-"));
-    const astFile = join(tempDir, "ast.json");
-    try {
+    await withTempDirectory(join(tmpdir(), "shp-cli-test-"), async (tempDir) => {
+      const astFile = join(tempDir, "ast.json");
       await writeFile(astFile, JSON.stringify(cliAstJson()));
 
       const result = await runCli([
@@ -1208,15 +1129,12 @@ component AuditStore {
 
       expect(result.exitCode).toBe(2);
       expect(result.stderr).toContain("--include-ast-layer and --raw-out cannot be used together");
-    } finally {
-      await rm(tempDir, { recursive: true, force: true });
-    }
+    });
   });
 
   test("reports malformed AST JSON diagnostics without a stack trace", async () => {
-    const tempDir = await mkdtemp(join(tmpdir(), "shp-cli-test-"));
-    const astFile = join(tempDir, "ast.json");
-    try {
+    await withTempDirectory(join(tmpdir(), "shp-cli-test-"), async (tempDir) => {
+      const astFile = join(tempDir, "ast.json");
       await writeFile(
         astFile,
         JSON.stringify({
@@ -1244,15 +1162,12 @@ component AuditStore {
       expect(result.stderr).toContain("nested_attribute");
       expect(result.stderr).not.toContain("buildRouteScanner");
       expect(result.stdout).toBe("");
-    } finally {
-      await rm(tempDir, { recursive: true, force: true });
-    }
+    });
   });
 
   test("warns and skips fingerprints when AST JSON lacks token data", async () => {
-    const tempDir = await mkdtemp(join(tmpdir(), "shp-cli-test-"));
-    const astFile = join(tempDir, "ast.json");
-    try {
+    await withTempDirectory(join(tmpdir(), "shp-cli-test-"), async (tempDir) => {
+      const astFile = join(tempDir, "ast.json");
       await writeFile(
         astFile,
         JSON.stringify({
@@ -1276,9 +1191,7 @@ component AuditStore {
       expect(result.stderr).toContain("missing_fingerprint_tokens");
       expect(result.stdout).toContain("resource MainModuleMainAstAnchor");
       expect(result.stdout).not.toContain("fingerprint ast.semantic_subtree_v1");
-    } finally {
-      await rm(tempDir, { recursive: true, force: true });
-    }
+    });
   });
 
   test("reports missing AST source files without loading a parser", async () => {
@@ -1515,9 +1428,8 @@ component AuditStore {
 
   test("reports same-version update without network or mutation", async () => {
     const manifest = await readCliManifest();
-    const tempDir = await mkdtemp(join(tmpdir(), "shp-cli-test-"));
-    const fakeShp = join(tempDir, "shp");
-    try {
+    await withTempDirectory(join(tmpdir(), "shp-cli-test-"), async (tempDir) => {
+      const fakeShp = join(tempDir, "shp");
       await writeFile(
         fakeShp,
         [
@@ -1549,9 +1461,7 @@ component AuditStore {
       expect(result.exitCode).toBe(0);
       expect(result.stdout).toBe(`shp ${manifest.version} is already installed\n`);
       expect(result.stderr).toBe("");
-    } finally {
-      await rm(tempDir, { recursive: true, force: true });
-    }
+    });
   });
 
   test("refuses to update the Bun runtime when run from source", async () => {
@@ -1592,9 +1502,8 @@ component AuditStore {
   });
 
   test("preserves legacy graph invocation for a symbol named legacy", async () => {
-    const tempDir = await mkdtemp(join(tmpdir(), "shp-cli-test-"));
-    const shapeFile = join(tempDir, "legacy-symbol.shape");
-    try {
+    await withTempDirectory(join(tmpdir(), "shp-cli-test-"), async (tempDir) => {
+      const shapeFile = join(tempDir, "legacy-symbol.shape");
       await writeFile(
         shapeFile,
         ["module legacy_symbol", "", "component legacy {", "}", ""].join("\n")
@@ -1607,9 +1516,7 @@ component AuditStore {
       expect(result.stdout).toContain("(no incident relations)");
       expect(result.stdout).not.toContain("Hypergraph");
       expect(result.stderr).toBe("");
-    } finally {
-      await rm(tempDir, { recursive: true, force: true });
-    }
+    });
   });
 
   test("prints the whole hypergraph", async () => {
@@ -1897,6 +1804,24 @@ async function runCli(
   ]);
 
   return { exitCode, stdout, stderr };
+}
+
+async function withTempDirectory(
+  prefix: string,
+  run: (dir: string) => Promise<void>
+): Promise<void> {
+  const dir = await mkdtemp(prefix);
+  try {
+    await run(dir);
+  } finally {
+    await rm(dir, { recursive: true, force: true });
+  }
+}
+
+function commitFixtureBase(repo: string): void {
+  git(repo, ["init", "-q"]);
+  git(repo, ["add", "."]);
+  git(repo, ["-c", "user.name=shp", "-c", "user.email=shp@example.com", "commit", "-qm", "base"]);
 }
 
 function git(cwd: string, args: string[]): void {

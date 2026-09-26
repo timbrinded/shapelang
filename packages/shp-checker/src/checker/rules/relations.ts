@@ -2,7 +2,7 @@ import type { HyperedgeInfo, Model, Provenance, RuleInfo, SemanticDiagnostic } f
 import { PRELUDE_RELATION_KINDS } from "../../prelude.ts";
 import { compareCodepointStrings } from "../../shape-strings.ts";
 import { displaySymbol } from "../display.ts";
-import { describeProvenance } from "../provenance.ts";
+import { describeProvenance, invalidRelation } from "../provenance.ts";
 
 export function isResolvedVertex(name: string, model: Model): boolean {
   return model.components.has(name) || model.resources.has(name);
@@ -21,23 +21,23 @@ export function checkProvidesEndpointKinds(
   const target = providesTarget(hyperedge);
 
   if (provider && isResolvedVertex(provider, model) && !model.components.has(provider)) {
-    diagnostics.push({
-      kind: "invalid_relation",
-      name: hyperedge.name,
-      reason: `provides provider ${displaySymbol(provider)} must be a component`,
-      filePath: hyperedge.provenance.filePath,
-      causedBy: [describeProvenance(hyperedge.provenance)]
-    });
+    diagnostics.push(
+      invalidRelation(
+        hyperedge.name,
+        `provides provider ${displaySymbol(provider)} must be a component`,
+        hyperedge.provenance
+      )
+    );
   }
 
   if (target && isResolvedVertex(target, model) && !model.resources.has(target)) {
-    diagnostics.push({
-      kind: "invalid_relation",
-      name: hyperedge.name,
-      reason: `provides target ${displaySymbol(target)} must be a resource`,
-      filePath: hyperedge.provenance.filePath,
-      causedBy: [describeProvenance(hyperedge.provenance)]
-    });
+    diagnostics.push(
+      invalidRelation(
+        hyperedge.name,
+        `provides target ${displaySymbol(target)} must be a resource`,
+        hyperedge.provenance
+      )
+    );
   }
 
   return diagnostics;
@@ -56,25 +56,25 @@ export function checkFingerprintExpectations(model: Model): SemanticDiagnostic[]
         continue;
       }
       if (isAmbiguousVertex(expectation.endpoint, model)) {
-        diagnostics.push({
-          kind: "invalid_relation",
-          name: hyperedge.name,
-          reason: `fingerprint expectation endpoint ${displaySymbol(expectation.endpoint)} resolves to both a component and a resource`,
-          filePath: expectation.provenance.filePath,
-          causedBy: [describeProvenance(expectation.provenance)]
-        });
+        diagnostics.push(
+          invalidRelation(
+            hyperedge.name,
+            `fingerprint expectation endpoint ${displaySymbol(expectation.endpoint)} resolves to both a component and a resource`,
+            expectation.provenance
+          )
+        );
         continue;
       }
 
       const resource = model.resources.get(expectation.endpoint);
       if (!resource) {
-        diagnostics.push({
-          kind: "invalid_relation",
-          name: hyperedge.name,
-          reason: `fingerprint expectation endpoint ${displaySymbol(expectation.endpoint)} must be a resource`,
-          filePath: expectation.provenance.filePath,
-          causedBy: [describeProvenance(expectation.provenance)]
-        });
+        diagnostics.push(
+          invalidRelation(
+            hyperedge.name,
+            `fingerprint expectation endpoint ${displaySymbol(expectation.endpoint)} must be a resource`,
+            expectation.provenance
+          )
+        );
         continue;
       }
 
@@ -276,10 +276,7 @@ type RelationTraversalStep = {
   to: string;
 };
 
-type RelationTraversalGraph = {
-  vertices: string[];
-  adjacency: Map<string, RelationTraversalStep[]>;
-};
+type RelationTraversalGraph = Map<string, RelationTraversalStep[]>;
 
 /**
  * Find the shortest deterministic cycle in the directed hypergraph.
@@ -306,9 +303,12 @@ export function findHypercycle(model: Model, kindsFilter: string[]): TraversalWi
     if (!isCyclicComponent(component, graph)) {
       continue;
     }
-    const candidate = shortestCycleInComponent(component, graph);
-    if (candidate && (!shortestCycle || compareTraversalPaths(candidate, shortestCycle) < 0)) {
-      shortestCycle = candidate;
+    const members = new Set(component);
+    for (const start of component) {
+      const candidate = shortestPathBetween(start, start, graph, members);
+      if (candidate && (!shortestCycle || compareTraversalPaths(candidate, shortestCycle) < 0)) {
+        shortestCycle = candidate;
+      }
     }
   }
 
@@ -356,11 +356,8 @@ function buildRelationTraversalGraph(
 ): RelationTraversalGraph {
   const allowedKinds = kindsFilter.length === 0 ? undefined : new Set(kindsFilter);
   const adjacency = new Map<string, RelationTraversalStep[]>();
-  const vertices = new Set<string>();
 
   const addStep = (hyperedge: HyperedgeInfo, from: string, to: string): void => {
-    vertices.add(from);
-    vertices.add(to);
     const steps = adjacency.get(from) ?? [];
     steps.push({ hyperedge, from, to });
     adjacency.set(from, steps);
@@ -388,10 +385,7 @@ function buildRelationTraversalGraph(
     steps.sort(compareRelationTraversalSteps);
   }
 
-  return {
-    vertices: [...vertices].sort(compareCodepointStrings),
-    adjacency
-  };
+  return adjacency;
 }
 
 function compareRelationTraversalSteps(
@@ -411,41 +405,32 @@ function compareRelationTraversalSteps(
 
 function stronglyConnectedComponents(graph: RelationTraversalGraph): string[][] {
   const components: string[][] = [];
-  const indexByVertex = new Map<string, number>();
-  const lowLinkByVertex = new Map<string, number>();
+  const states = new Map<string, { index: number; lowLink: number; onStack: boolean }>();
   const stack: string[] = [];
-  const onStack = new Set<string>();
-  let nextIndex = 0;
 
   const visit = (vertex: string): void => {
-    const vertexIndex = nextIndex;
-    nextIndex += 1;
-    indexByVertex.set(vertex, vertexIndex);
-    lowLinkByVertex.set(vertex, vertexIndex);
+    const state = { index: states.size, lowLink: states.size, onStack: true };
+    states.set(vertex, state);
     stack.push(vertex);
-    onStack.add(vertex);
 
-    for (const step of graph.adjacency.get(vertex) ?? []) {
-      const targetIndex = indexByVertex.get(step.to);
-      if (targetIndex === undefined) {
+    for (const step of graph.get(vertex) ?? []) {
+      const target = states.get(step.to);
+      if (target === undefined) {
         visit(step.to);
-        lowLinkByVertex.set(
-          vertex,
-          Math.min(lowLinkByVertex.get(vertex)!, lowLinkByVertex.get(step.to)!)
-        );
-      } else if (onStack.has(step.to)) {
-        lowLinkByVertex.set(vertex, Math.min(lowLinkByVertex.get(vertex)!, targetIndex));
+        state.lowLink = Math.min(state.lowLink, states.get(step.to)!.lowLink);
+      } else if (target.onStack) {
+        state.lowLink = Math.min(state.lowLink, target.index);
       }
     }
 
-    if (lowLinkByVertex.get(vertex) !== vertexIndex) {
+    if (state.lowLink !== state.index) {
       return;
     }
 
     const component: string[] = [];
     while (true) {
       const member = stack.pop()!;
-      onStack.delete(member);
+      states.get(member)!.onStack = false;
       component.push(member);
       if (member === vertex) {
         break;
@@ -454,8 +439,9 @@ function stronglyConnectedComponents(graph: RelationTraversalGraph): string[][] 
     components.push(component);
   };
 
-  for (const vertex of graph.vertices) {
-    if (!indexByVertex.has(vertex)) {
+  // Vertices without outgoing steps are reached recursively from their incoming steps.
+  for (const vertex of [...graph.keys()].sort(compareCodepointStrings)) {
+    if (!states.has(vertex)) {
       visit(vertex);
     }
   }
@@ -468,68 +454,26 @@ function isCyclicComponent(component: string[], graph: RelationTraversalGraph): 
     return true;
   }
   const vertex = component[0];
-  return (
-    vertex !== undefined && (graph.adjacency.get(vertex) ?? []).some((step) => step.to === vertex)
-  );
-}
-
-function shortestCycleInComponent(
-  component: string[],
-  graph: RelationTraversalGraph
-): RelationTraversalStep[] | undefined {
-  const members = new Set(component);
-  let shortestCycle: RelationTraversalStep[] | undefined;
-
-  for (const start of component) {
-    const candidate = shortestCycleFrom(start, members, graph);
-    if (candidate && (!shortestCycle || compareTraversalPaths(candidate, shortestCycle) < 0)) {
-      shortestCycle = candidate;
-    }
-  }
-
-  return shortestCycle;
-}
-
-function shortestCycleFrom(
-  start: string,
-  members: ReadonlySet<string>,
-  graph: RelationTraversalGraph
-): RelationTraversalStep[] | undefined {
-  const queue: { vertex: string; path: RelationTraversalStep[] }[] = [{ vertex: start, path: [] }];
-  const visited = new Set([start]);
-
-  for (let cursor = 0; cursor < queue.length; cursor += 1) {
-    const current = queue[cursor]!;
-    for (const step of graph.adjacency.get(current.vertex) ?? []) {
-      if (!members.has(step.to)) {
-        continue;
-      }
-      const path = [...current.path, step];
-      if (step.to === start) {
-        return path;
-      }
-      if (!visited.has(step.to)) {
-        visited.add(step.to);
-        queue.push({ vertex: step.to, path });
-      }
-    }
-  }
-
-  return undefined;
+  return vertex !== undefined && (graph.get(vertex) ?? []).some((step) => step.to === vertex);
 }
 
 function shortestPathBetween(
   source: string,
   target: string,
-  graph: RelationTraversalGraph
+  graph: RelationTraversalGraph,
+  members?: ReadonlySet<string>
 ): RelationTraversalStep[] | undefined {
   const queue: { vertex: string; path: RelationTraversalStep[] }[] = [{ vertex: source, path: [] }];
   const visited = new Set([source]);
 
   for (let cursor = 0; cursor < queue.length; cursor += 1) {
     const current = queue[cursor]!;
-    for (const step of graph.adjacency.get(current.vertex) ?? []) {
+    for (const step of graph.get(current.vertex) ?? []) {
+      if (members && !members.has(step.to)) {
+        continue;
+      }
       const path = [...current.path, step];
+      // Check before visited so returning to the source produces a nonempty cycle.
       if (step.to === target) {
         return path;
       }

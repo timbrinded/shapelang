@@ -269,14 +269,13 @@ export function buildReviewPrompt(env = process.env) {
   ].join("\n");
 }
 
+function summaryLines(title, result) {
+  return [`## ${title}`, "", `Status: \`${result.status}\``, "", result.summary, ""];
+}
+
 export function renderReviewSummary(result) {
   return [
-    "## Shape Claude Review",
-    "",
-    `Status: \`${result.status}\``,
-    "",
-    result.summary,
-    "",
+    ...summaryLines("Shape Claude Review", result),
     `Findings: ${result.findings.length}`,
     ""
   ].join("\n");
@@ -362,12 +361,7 @@ export function renderGuardSummary(result) {
     }
   }
   return [
-    "## Shape Contract Guard",
-    "",
-    `Status: \`${result.status}\``,
-    "",
-    result.summary,
-    "",
+    ...summaryLines("Shape Contract Guard", result),
     `Findings: ${result.findings.length} (high: ${byImpact.high}, medium: ${byImpact.medium}, low: ${byImpact.low}; suspicious: ${suspicious}, supported: ${supported})`,
     ""
   ].join("\n");
@@ -508,14 +502,7 @@ export function buildIndexPrompt(env = process.env, uncovered = []) {
 }
 
 export function renderIndexSummary(result) {
-  const lines = [
-    "## Shape Index Coverage",
-    "",
-    `Status: \`${result.status}\``,
-    "",
-    result.summary,
-    ""
-  ];
+  const lines = summaryLines("Shape Index Coverage", result);
   for (const gap of result.gaps) {
     lines.push(
       `- **${gap.subsystem}** (${gap.files.length} file(s)): ${gap.why_significant}`,
@@ -593,14 +580,7 @@ export function releasePrefilter(env = process.env) {
 }
 
 export function renderSkillsReleaseSummary(result) {
-  const lines = [
-    "## Shape Skills Release Evaluation",
-    "",
-    `Status: \`${result.status}\``,
-    "",
-    result.summary,
-    ""
-  ];
+  const lines = summaryLines("Shape Skills Release Evaluation", result);
   for (const skill of result.skills) {
     lines.push(`- **${skill.name}**: \`${skill.status}\` — ${skill.summary}`);
     for (const staticCheck of skill.static_checks) {

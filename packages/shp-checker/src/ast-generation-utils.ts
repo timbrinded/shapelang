@@ -1,105 +1,49 @@
 import { createHash } from "node:crypto";
+import { AstUtils, GrammarAST } from "langium";
 
-import type { SourceSpan } from "./ast-generation-types.ts";
+import type {
+  AstGenerationDiagnostic,
+  AstGenerationResult,
+  SourceSpan
+} from "./ast-generation-types.ts";
+import { ShapeGrammar } from "./language/generated/grammar.ts";
 import { parseSourceLanguageName, type SourceLanguageName } from "./source-languages.ts";
 import { compareCodepointStrings } from "./shape-strings.ts";
 export { compareCodepointStrings } from "./shape-strings.ts";
 
-// Every ID-shaped keyword in shape.langium. A generated identifier that
-// matches a keyword would produce unparsable Shape, so the AST generator
-// escapes any source segment, function, or type name in this set. Keep it
-// exhaustive over the grammar; the "reserved words cover every ID-shaped
-// grammar keyword" test guards against drift when a new keyword is added.
-const SHAPE_RESERVED_WORDS = new Set([
-  "add",
-  "allow",
-  "applies_to",
-  "approver",
-  "as",
-  "attest",
-  "binding",
-  "callbacks",
-  "calls",
-  "candidate",
-  "change",
-  "complete",
-  "component",
-  "confidence",
-  "conforms_to",
-  "connects",
-  "coordinated_call",
-  "decided_on",
-  "description",
-  "effect",
-  "effects",
-  "evidence",
-  "except",
-  "expects",
-  "expires",
-  "final",
-  "fingerprint",
-  "fn",
-  "forbid",
-  "grants",
-  "guards",
-  "has",
-  "hypercycle",
-  "implementation",
-  "import",
-  "kind",
-  "memory",
-  "modify",
-  "module",
-  "observed",
-  "on_change",
-  "or",
-  "outcome",
-  "over",
-  "owner",
-  "owns",
-  "path",
-  "paths",
-  "pin",
-  "policy",
-  "protects",
-  "provides",
-  "rationale",
-  "reason",
-  "reevaluation",
-  "relation",
-  "remove",
-  "require",
-  "require_changed",
-  "require_context",
-  "required",
-  "requires",
-  "resource",
-  "review_by",
-  "reviewer",
-  "role",
-  "roles",
-  "rule",
-  "satisfied_by",
-  "satisfies",
-  "sensitive",
-  "source",
-  "status",
-  "storage",
-  "summary",
-  "trait",
-  "transform",
-  "unknown",
-  "unsafe",
-  "when",
-  "when_changed",
-  "who",
-  "why"
-]);
+let reservedWords: ReadonlySet<string> | undefined;
 
-/** The reserved Shape keywords the AST generator escapes. Exposed for the
- * grammar-coverage regression test. */
+export function astError(code: string, message: string): AstGenerationDiagnostic {
+  return { kind: "error", code, message };
+}
+
+export function astFailure(
+  code: string,
+  message: string
+): Extract<AstGenerationResult<never>, { ok: false }> {
+  return { ok: false, diagnostics: [astError(code, message)] };
+}
+
+export function astErrorReporter(diagnostics: AstGenerationDiagnostic[], path: string) {
+  return (code: string, message: string, nodeId?: string): void => {
+    diagnostics.push(
+      nodeId === undefined
+        ? { kind: "error", code, path, message }
+        : { kind: "error", code, path, nodeId, message }
+    );
+  };
+}
+
+/** ID-shaped grammar keywords must be escaped in generated Shape identifiers. */
 export function shapeReservedWords(): ReadonlySet<string> {
-  return SHAPE_RESERVED_WORDS;
+  return (reservedWords ??= new Set(
+    AstUtils.streamAllContents(ShapeGrammar())
+      .filter(GrammarAST.isKeyword)
+      .map((keyword) => keyword.value)
+      .filter((keyword) => /^[A-Za-z_][A-Za-z0-9_]*$/.test(keyword))
+      .toArray()
+      .sort(compareCodepointStrings)
+  ));
 }
 
 export function isRecord(value: unknown): value is Record<string, unknown> {
@@ -199,76 +143,49 @@ export function hasNonScalarRecordEntry(value: Record<string, unknown>, key: str
 }
 
 export function stableJson(value: unknown): string {
-  type StableJsonFrame =
-    | { kind: "value"; value: unknown }
-    | { kind: "array"; values: unknown[]; index: number; started: boolean }
-    | {
-        kind: "object";
-        entries: [string, unknown][];
-        index: number;
-        started: boolean;
-      };
-
+  type Container =
+    | { kind: "array"; values: unknown[]; index: number }
+    | { kind: "object"; values: [string, unknown][]; index: number };
+  const stack: Container[] = [];
   let output = "";
-  const stack: StableJsonFrame[] = [{ kind: "value", value }];
-  while (stack.length > 0) {
-    const frame = stack.pop();
-    if (!frame) {
-      continue;
-    }
-    if (frame.kind === "value") {
-      if (Array.isArray(frame.value)) {
-        stack.push({ kind: "array", values: frame.value, index: 0, started: false });
-      } else if (frame.value && typeof frame.value === "object") {
-        stack.push({
-          kind: "object",
-          entries: Object.entries(frame.value as Record<string, unknown>)
-            .filter(([, item]) => item !== undefined)
-            .sort(([left], [right]) => compareCodepointStrings(left, right)),
-          index: 0,
-          started: false
-        });
-      } else {
-        output += JSON.stringify(frame.value) ?? "null";
-      }
-      continue;
-    }
-    if (frame.kind === "array") {
-      if (!frame.started) {
-        output += "[";
-        frame.started = true;
-      }
-      if (frame.index >= frame.values.length) {
-        output += "]";
-        continue;
-      }
-      if (frame.index > 0) {
-        output += ",";
-      }
-      const item = frame.values[frame.index];
-      frame.index += 1;
-      stack.push(frame);
-      stack.push({ kind: "value", value: item });
-      continue;
-    }
-    if (!frame.started) {
+  for (;;) {
+    if (Array.isArray(value)) {
+      output += "[";
+      stack.push({ kind: "array", values: value, index: 0 });
+    } else if (value && typeof value === "object") {
       output += "{";
-      frame.started = true;
+      stack.push({
+        kind: "object",
+        values: Object.entries(value)
+          .filter(([, item]) => item !== undefined)
+          .sort(([left], [right]) => compareCodepointStrings(left, right)),
+        index: 0
+      });
+    } else {
+      output += JSON.stringify(value) ?? "null";
     }
-    if (frame.index >= frame.entries.length) {
-      output += "}";
-      continue;
+
+    let frame = stack.at(-1);
+    while (frame && frame.index >= frame.values.length) {
+      output += frame.kind === "array" ? "]" : "}";
+      stack.pop();
+      frame = stack.at(-1);
+    }
+    if (!frame) {
+      return output;
     }
     if (frame.index > 0) {
       output += ",";
     }
-    const [key, item] = frame.entries[frame.index] ?? ["", undefined];
-    output += `${JSON.stringify(key)}:`;
+    if (frame.kind === "array") {
+      value = frame.values[frame.index];
+    } else {
+      const [key, item] = frame.values[frame.index] ?? ["", undefined];
+      output += `${JSON.stringify(key)}:`;
+      value = item;
+    }
     frame.index += 1;
-    stack.push(frame);
-    stack.push({ kind: "value", value: item });
   }
-  return output;
 }
 
 export function sha256Fingerprint(value: string): string {
@@ -340,7 +257,7 @@ export function stableShapeId(value: string, fallback: string): string {
 }
 
 function avoidReservedShapeWord(value: string, fallback: string): string {
-  return SHAPE_RESERVED_WORDS.has(value.toLowerCase()) ? `${fallback}_${value}` : value;
+  return shapeReservedWords().has(value.toLowerCase()) ? `${fallback}_${value}` : value;
 }
 
 export function uniqueSemanticName(value: string, existing: string[], salt: string): string {

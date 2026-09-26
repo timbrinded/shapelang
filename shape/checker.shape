@@ -99,7 +99,7 @@ component ShapeChecker {
     }
   fn checkShapeFiles
     source ts("packages/shp-checker/src/checker/api.ts#checkShapeFiles")
-    description "Parses Shape files and classifies implicit generated-AST origins against the normalized repository root before running the authoritative full check."
+    description "Loads parsed Shape files through the shared file reader and classifies implicit generated-AST origins against the normalized repository root before running the authoritative full check."
     effects complete {
       Append<SemanticDiagnostics>
         evidence ts("packages/shp-checker/src/checker/api.ts")
@@ -223,6 +223,19 @@ component ShapeModelLowerer {
         evidence ts("packages/shp-checker/src/checker/lowering/declarations.ts")
       Update<EffectiveModel>
         evidence ts("packages/shp-checker/src/checker/lowering/declarations.ts")
+    }
+  fn lowerDeclaration
+    source ts("packages/shp-checker/src/checker/lowering/dispatch.ts#lowerDeclaration")
+    description "Dispatches regular declarations to the same domain lowerers during initial lowering and staged changes."
+    effects complete {
+      Append<FactSet>
+        evidence ts("packages/shp-checker/src/checker/lowering/dispatch.ts#lowerDeclaration")
+      Append<SemanticDiagnostics>
+        evidence ts("packages/shp-checker/src/checker/lowering/dispatch.ts#lowerDeclaration")
+      Read<ParsedModule>
+        evidence ts("packages/shp-checker/src/checker/lowering/dispatch.ts#lowerDeclaration")
+      Update<EffectiveModel>
+        evidence ts("packages/shp-checker/src/checker/lowering/dispatch.ts#lowerDeclaration")
     }
   fn lowerImplementation
     source ts("packages/shp-checker/src/checker/lowering/declarations.ts#lowerImplementation")
@@ -951,6 +964,17 @@ reevaluation BindingsIgnoreAttestationOnlyShapeChanges {
   evidence test("packages/shp-checker/src/behavioural/coverage-bindings.test.ts")
 }
 
+reevaluation CandidateFactOwnershipConsolidated {
+  satisfies memory LoweringBeforeRules
+  outcome Confirmed
+  summary "Candidate effects retain one normalized record shared by the effective index and historical fact list. Fact fields, insertion order, empty defaults, validation, and provenance are unchanged. Incremental results remain cloned so caller mutations cannot affect cached checks."
+  reviewer Codex
+  decided_on "2026-09-26"
+  evidence test("packages/shp-checker/src/checker.test.ts")
+  evidence ts("packages/shp-checker/src/checker/incremental.ts#IncrementalShapeChecker")
+  evidence ts("packages/shp-checker/src/checker/lowering/declarations.ts#lowerCandidateEffect")
+}
+
 reevaluation CheckerPhaseOrderRechecked {
   satisfies memory CheckPipelineOrder
   outcome Confirmed
@@ -984,6 +1008,17 @@ reevaluation DiagnosticOutputRechecked {
   summary "Diagnostic formatting remains path-aware and reviewer-readable after shared string handling, display-name fingerprint output, and ambiguous query/reference diagnostics."
   reviewer ShapeMaintainers
   decided_on "2026-05-22"
+  evidence test("packages/shp-checker/src/checker.test.ts")
+}
+
+reevaluation DiagnosticRenderingConsolidated {
+  satisfies memory DiagnosticContract
+  outcome Confirmed
+  summary "One semantic-diagnostic envelope preserves all headings, body text, causal provenance, whitespace, warning behavior, and canonical ordering, including collision-aware path witnesses."
+  reviewer Codex
+  decided_on "2026-09-25"
+  evidence test("packages/shp-checker/src/behavioural/determinism.test.ts")
+  evidence test("packages/shp-checker/src/behavioural/forbidden-path.test.ts")
   evidence test("packages/shp-checker/src/checker.test.ts")
 }
 
@@ -1041,6 +1076,15 @@ reevaluation ForbiddenPathTraversalRechecked {
   evidence test("packages/shp-checker/src/checker.test.ts")
 }
 
+reevaluation GovernanceStateConsolidated {
+  satisfies memory ReevaluationPolicyContract
+  outcome Confirmed
+  summary "Local role-name membership and one accumulated approver flag preserve optional role validation and sensitive-memory approver checks, including repeated policies and declaration-order independence. Diagnostics and facts retain their existing provenance."
+  reviewer Codex
+  decided_on "2026-09-26"
+  evidence test("packages/shp-checker/src/checker.governance-policy.test.ts")
+}
+
 reevaluation HypercycleSccTraversalRechecked {
   satisfies memory HypercycleWitness
   outcome Confirmed
@@ -1069,6 +1113,17 @@ reevaluation HypercycleTraversalRechecked {
   reviewer ShapeMaintainers
   decided_on "2026-05-20"
   evidence test("packages/shp-checker/src/checker.test.ts")
+}
+
+reevaluation InspectionOriginStatePreserved {
+  satisfies memory InspectionSchemaContract
+  outcome Confirmed
+  summary "Module origin tracking stores a single origin or an explicit mixed state; file provenance still takes precedence and mixed modules still reject declarations without file provenance. Shared effect-term projection preserves optional-field omission, property order, and deterministic DTO sorting. Public DTO types now derive from the explicit projections with unchanged assignability and runtime output."
+  reviewer Codex
+  decided_on "2026-09-26"
+  evidence test("packages/shp-checker/src/checker/inspection.test.ts")
+  evidence ts("packages/shp-checker/src/checker/inspection.ts#declarationOrigin")
+  evidence ts("packages/shp-checker/src/checker/inspection.ts#inspectionContext")
 }
 
 reevaluation LoweringFunctionRegistryRechecked {
@@ -1108,4 +1163,156 @@ reevaluation PreludeRuleTraitBoundsRechecked {
   reviewer ShapeMaintainers
   decided_on "2026-07-26"
   evidence test("packages/shp-checker/src/checker.rule-validation.test.ts")
+}
+
+reevaluation SharedBreadthFirstCycleWitness {
+  satisfies memory HypercycleWitness
+  outcome Confirmed
+  summary "Cycle and path queries share breadth-first traversal while cycle searches remain confined to each strongly connected component. Canonical shortest witnesses, self-cycle handling, provenance, and graph filtering agree with the baseline. Tarjan discovery index, low-link, and stack membership share one per-vertex record. The adjacency map is the sole traversal graph: cycle roots are sorted source keys, and traversal reaches destination-only vertices recursively. Private sink-component ordering can differ; canonical witness selection is unchanged."
+  reviewer Codex
+  decided_on "2026-09-26"
+  evidence test("packages/shp-checker/src/behavioural/hypercycle-witness.test.ts")
+  evidence test("packages/shp-checker/src/checker.test.ts")
+}
+
+reevaluation SharedBreadthFirstPathWitness {
+  satisfies memory ForbiddenPathWitness
+  outcome Confirmed
+  summary "The shared traversal preserves nonempty fewest-hop directed paths, relation-kind filtering, canonical tie breaking, and every hop's relation identity and provenance."
+  reviewer Codex
+  decided_on "2026-09-26"
+  evidence test("packages/shp-checker/src/behavioural/forbidden-path.test.ts")
+}
+
+reevaluation SharedDeclarationChangeDispatch {
+  satisfies memory AtomicChangePlanning
+  outcome Confirmed
+  summary "Declaration changes use the regular dispatcher and shared function metadata construction. Function changes share target resolution while preserving operation-specific missing-component behavior, snapshot and staging order, facts, provenance, transitions, and commit order. Relation queries use effective edges, with the staged edge map isolated until commit. Remove and modify share transition construction after their distinct mutations; copy-on-write staging, guard snapshots, transform labels, and event provenance are preserved."
+  reviewer Codex
+  decided_on "2026-09-26"
+  evidence test("packages/shp-checker/src/checker/change-planning.test.ts")
+}
+
+reevaluation SharedDeclarationDispatchOrder {
+  satisfies memory LoweringBeforeRules
+  outcome Confirmed
+  summary "Shared declaration dispatch, context lowering, and function metadata construction preserve global indexing before lowering, source-order declaration lowering, effects-before-traits diagnostic order, separate rationale and memory namespaces, the separate change pass, and rebuilding facts from the effective model."
+  reviewer Codex
+  decided_on "2026-09-26"
+  evidence test("packages/shp-checker/src/checker.test.ts")
+  evidence test("packages/shp-checker/src/checker/incremental.test.ts")
+}
+
+reevaluation SharedFinalForbidConstruction {
+  satisfies memory FinalForbidPrecedence
+  outcome Confirmed
+  summary "Trait and rule patterns share final-forbid construction and deduplicate at insertion, eliminating the duplicate-containing array and final filter. Eligibility checks, eager trait-before-rule traversal, target binding, key encoding, first-wins provenance, and final-forbid precedence over grants remain unchanged."
+  reviewer Codex
+  decided_on "2026-09-26"
+  evidence test("packages/shp-checker/src/checker.test.ts")
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/checker/model.ts")
+  reason "Diagnostic and fact payload maps share semantic field groups while retaining their public discriminants, fields, narrowing, and assignability. Private records share provenance and declaration identity types; context maps preserve namespaces and public projections. Resource and component records omit unused origin flags; function origin policy and inspection origins are unchanged. Relation queries derive membership from effective edges, removing the private incidence cache. Role membership and the aggregate approver requirement replace unused governance metadata without changing validation."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/checker/lowering/declarations.ts#lowerCandidateEffect")
+  reason "One clause-presence gate replaces repeated counters while preserving first-clause resolution, duplicate diagnostics in source order, missing-field order, effective candidate records, and public facts."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/checker/lowering/declarations.ts#lowerForbidPattern")
+  reason "Direct final-forbid construction removes an intermediate pattern object while retaining omitted, generic, concrete, and ambiguous targets, diagnostic order, facts, and provenance."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/checker/provenance.ts")
+  reason "Shared duplicate and invalid-relation diagnostic construction preserves payload fields, causal provenance order, and declaration-specific rejection decisions."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/checker/lowering/context.ts")
+  reason "One context member loop replaces the handled-boolean helper while preserving rationale and memory namespaces, member order, memory-only fields, facts, guard handling, and provenance. Authored rationale reasons remain in the AST and formatter; the unused private why copy is removed. Role names remain local and any policy requiring an approver enables the same sensitive-memory validation."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/checker/change-planning.test.ts")
+  reason "Two assertions about the removed private incidence cache are gone. The same test retains edge-map isolation and all other staged-container checks; guard planning and public relation behavior remain covered."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/checker/lowering/relations.ts")
+  reason "Relation lowering shares diagnostic construction and stores effective edges without an incidence cache. One ordered member map owns endpoint membership, roles, and final members. Validation order, first-role authority, endpoint resolution, facts, and fingerprints remain unchanged."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/checker/query.ts")
+  reason "Obligation grouping, once-only symbol resolution, and shared optional text sections preserve headings, whitespace, diagnostic and candidate order, exact-name precedence, ambiguity rejection, and checker invocation. Relation queries continue to use effective edges with the same filtering and order."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/checker/globs.ts#globToRegex")
+  reason "Ordered token replacement compiles the same glob operators and escaped literals; repository-path normalization, matching semantics, and coverage and binding decisions are unchanged."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/checker/lowering/facts.ts#collectShapeUpdatePathsFromFunction")
+  reason "Checking generatedAstCandidate directly removes a forwarding helper. Generated candidates remain excluded from coverage; authored source and evidence paths, normalization, facts, and provenance are unchanged."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/checker/rules/functions.ts#checkFunctions")
+  reason "Checking generatedAstCandidate directly removes a forwarding helper. Unknown-effect diagnostics still exclude generated candidates; unsafe metadata checks, final-forbid precedence, grants, diagnostic order, and provenance are unchanged."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/checker/derivations.ts#hasRequiredContext")
+  reason "One matching loop checks permitted rationales before memories without copying their maps into arrays. Context type, declared and effective target agreement, and early success remain unchanged."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/checker/derivations.ts#shapeTraitBearers")
+  reason "Trait bearers derive their kind from the typed target and requirements from their own trait map. Removing duplicate kind and fallback provenance fields preserves target identity, iteration order, and the known-present provenance used by facts and missing-context diagnostics."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/checker/rules/context.ts#checkRequiredContext")
+  reason "Requirements carry provenance from authored or prelude lowering and name a trait in the same bearer map. Reading those records directly preserves missing-context diagnostics and causal provenance without unreachable fallbacks."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/checker/lowering/facts.ts#emitDerivedFacts")
+  reason "Required-context facts read provenance from the same trait map that produced each requirement. Removing the unreachable bearer fallback preserves fact fields, order, and provenance."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/checker/rules/guards.ts#buildGuardContexts")
+  reason "Guard contexts borrow the existing requirement and transform clauses for read-only matching. Clause order, provenance, reevaluation eligibility, property and transform precedence, and diagnostic output are unchanged; matching does not mutate the model."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/checker/lowering/declarations.ts#lowerRuleGraphForbid")
+  reason "One typed graph-constraint lowerer replaces three single-caller producers. Provides, hypercycle, and path clauses retain separate resolution, ambiguity reporting, record fields, source order, and provenance."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/checker/query.ts#resolveQuerySymbols")
+  reason "Query resolution returns typed model entries directly, removing repeated key lookups in explain and graph. Qualified-name precedence, ambiguity ordering, canonical names, missing-symbol output, and rendering remain unchanged."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/checker/model.ts#createModel")
+  reason "The empty model constructor owns collection initialization and its inferred type. Each lowering call still receives fresh collections with the same property order and types; the lowerer supplies the same declaration index and prelude trait seed before indexing inputs."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/checker/lowering/declarations.ts#attestationIdentity")
+  reason "The private return shape is inferred from the already typed construction instead of repeated in an annotation. Emitted JavaScript is identical; data, validation, ordering, and effects are unchanged."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/checker/lowering/relations.ts#collectConnects")
+  reason "The private return shape is inferred from the already typed construction instead of repeated in an annotation. Emitted JavaScript is identical; data, validation, ordering, and effects are unchanged."
 }

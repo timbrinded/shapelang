@@ -11,11 +11,6 @@ resource ShapeFilesModuleDefaultShapeFilesAstAnchor : GeneratedAstAnchor {
   fingerprint ast.semantic_subtree_v1("sha256:08f7ddd6e6a46a87367677611adae04275a1ef5cc4d9a35844461644fc8089a3")
 }
 
-resource ShapeFilesModuleLoadShapeModulesAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-cli/src/shape-files.ts#loadShapeModules")
-  fingerprint ast.semantic_subtree_v1("sha256:5a75f4df54f629d12cb6c66cb1c313c8028505492e897e3c4ff55a0938829880")
-}
-
 resource ShapeFilesModuleParseModulesAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-cli/src/shape-files.ts#parseModules")
   fingerprint ast.semantic_subtree_v1("sha256:1c83947ceb57360e4ccd24dc6ec8d4af1ba445ef51f60377b5ab20f4cb35cebc")
@@ -45,9 +40,6 @@ component ShapeFilesModule : GeneratedCandidate {
   fn defaultShapeFiles
     source ts("packages/shp-cli/src/shape-files.ts#defaultShapeFiles")
     effects unknown
-  fn loadShapeModules
-    source ts("packages/shp-cli/src/shape-files.ts#loadShapeModules")
-    effects unknown
   fn parseModules
     source ts("packages/shp-cli/src/shape-files.ts#parseModules")
     effects unknown
@@ -71,14 +63,6 @@ relation ShapeFilesModuleDefaultShapeFilesGeneratedFromShapeFilesModuleDefaultSh
   roles { ShapeFilesModule as generated, ShapeFilesModuleDefaultShapeFilesAstAnchor as syntax }
   expects ShapeFilesModuleDefaultShapeFilesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:08f7ddd6e6a46a87367677611adae04275a1ef5cc4d9a35844461644fc8089a3")
   summary "fn ShapeFilesModule.defaultShapeFiles generated from typescript function_declaration at packages/shp-cli/src/shape-files.ts#defaultShapeFiles."
-}
-
-relation ShapeFilesModuleLoadShapeModulesGeneratedFromShapeFilesModuleLoadShapeModulesAstAnchor {
-  kind generated_from
-  connects ShapeFilesModule -> ShapeFilesModuleLoadShapeModulesAstAnchor
-  roles { ShapeFilesModule as generated, ShapeFilesModuleLoadShapeModulesAstAnchor as syntax }
-  expects ShapeFilesModuleLoadShapeModulesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5a75f4df54f629d12cb6c66cb1c313c8028505492e897e3c4ff55a0938829880")
-  summary "fn ShapeFilesModule.loadShapeModules generated from typescript function_declaration at packages/shp-cli/src/shape-files.ts#loadShapeModules."
 }
 
 relation ShapeFilesModuleParseModulesGeneratedFromShapeFilesModuleParseModulesAstAnchor {

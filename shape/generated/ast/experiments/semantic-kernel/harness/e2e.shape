@@ -18,7 +18,7 @@ resource E2eModuleCompareSemanticSummariesAstAnchor : GeneratedAstAnchor {
 
 resource E2eModuleLoadFixturesAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/semantic-kernel/harness/e2e.ts#loadFixtures")
-  fingerprint ast.semantic_subtree_v1("sha256:ff66acfcdb5715b15ded94f68bf0c084027f31e20302a882c1d02e438fe93c41")
+  fingerprint ast.semantic_subtree_v1("sha256:5b1ed9f7821076ca8097a77d9205e9526b145491054263086312f4c77438d92f")
 }
 
 resource E2eModuleToSemanticSummaryAstAnchor : GeneratedAstAnchor {
@@ -28,7 +28,7 @@ resource E2eModuleToSemanticSummaryAstAnchor : GeneratedAstAnchor {
 
 resource E2eModuleVerifySuccessfulCaseAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("experiments/semantic-kernel/harness/e2e.ts#verifySuccessfulCase")
-  fingerprint ast.semantic_subtree_v1("sha256:4c74e4b92a0fccef8d6311202cb9866dcb97e8f07562c462fec1cca8aa072e4e")
+  fingerprint ast.semantic_subtree_v1("sha256:d29a7184861ce4912e8db2723d79a401e9467e3d2c945f9a820c5039f445c266")
 }
 
 component E2eModule : GeneratedCandidate {
@@ -69,7 +69,7 @@ relation E2eModuleLoadFixturesGeneratedFromE2eModuleLoadFixturesAstAnchor {
   kind generated_from
   connects E2eModule -> E2eModuleLoadFixturesAstAnchor
   roles { E2eModule as generated, E2eModuleLoadFixturesAstAnchor as syntax }
-  expects E2eModuleLoadFixturesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ff66acfcdb5715b15ded94f68bf0c084027f31e20302a882c1d02e438fe93c41")
+  expects E2eModuleLoadFixturesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5b1ed9f7821076ca8097a77d9205e9526b145491054263086312f4c77438d92f")
   summary "fn E2eModule.loadFixtures generated from typescript function_declaration at experiments/semantic-kernel/harness/e2e.ts#loadFixtures."
 }
 
@@ -85,7 +85,7 @@ relation E2eModuleVerifySuccessfulCaseGeneratedFromE2eModuleVerifySuccessfulCase
   kind generated_from
   connects E2eModule -> E2eModuleVerifySuccessfulCaseAstAnchor
   roles { E2eModule as generated, E2eModuleVerifySuccessfulCaseAstAnchor as syntax }
-  expects E2eModuleVerifySuccessfulCaseAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4c74e4b92a0fccef8d6311202cb9866dcb97e8f07562c462fec1cca8aa072e4e")
+  expects E2eModuleVerifySuccessfulCaseAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d29a7184861ce4912e8db2723d79a401e9467e3d2c945f9a820c5039f445c266")
   summary "fn E2eModule.verifySuccessfulCase generated from typescript function_declaration at experiments/semantic-kernel/harness/e2e.ts#verifySuccessfulCase."
 }
 

@@ -150,17 +150,19 @@ function validateBundledResources(
   skillRoot: string,
   failures: string[]
 ): void {
+  const report = (path: string, message: string): void => {
+    failures.push(`${relative(repositoryRoot, path)}: ${message}`);
+  };
   const files = filesRecursively(skillRoot);
   for (const scriptPath of files.filter((path) => extname(path) === ".mjs")) {
-    const displayPath = relative(repositoryRoot, scriptPath);
     const result = spawnSync("node", ["--check", scriptPath], {
       cwd: repositoryRoot,
       encoding: "utf8"
     });
     if (result.error) {
-      failures.push(`${displayPath}: could not run node --check: ${result.error.message}`);
+      report(scriptPath, `could not run node --check: ${result.error.message}`);
     } else if (result.status !== 0) {
-      failures.push(`${displayPath}: node --check failed: ${result.stderr.trim()}`);
+      report(scriptPath, `node --check failed: ${result.stderr.trim()}`);
     }
   }
 
@@ -191,7 +193,7 @@ function validateBundledResources(
   ];
   for (const requiredPath of requiredPaths) {
     if (!existsSync(requiredPath)) {
-      failures.push(`${relative(repositoryRoot, requiredPath)}: missing required bundled resource`);
+      report(requiredPath, "missing required bundled resource");
     }
   }
   if (requiredPaths.some((requiredPath) => !existsSync(requiredPath))) {
@@ -200,45 +202,41 @@ function validateBundledResources(
 
   const generator = readFileSync(generatorPath, "utf8");
   if (!generator.includes("inspect") || !generator.includes("--json")) {
-    failures.push(
-      `${relative(repositoryRoot, generatorPath)}: generator must consume the semantic inspect --json interface`
-    );
+    report(generatorPath, "generator must consume the semantic inspect --json interface");
   }
   const deterministicSources =
     generator + readFileSync(atlasModelPath, "utf8") + readFileSync(journeyModelPath, "utf8");
   for (const nondeterministicMarker of ["generatedAt", "Date.now(", "new Date("]) {
     if (deterministicSources.includes(nondeterministicMarker)) {
-      failures.push(
-        `${relative(repositoryRoot, generatorPath)}: deterministic generation sources must not contain ${nondeterministicMarker}`
+      report(
+        generatorPath,
+        `deterministic generation sources must not contain ${nondeterministicMarker}`
       );
     }
   }
 
   const template = readFileSync(templatePath, "utf8");
   if (!/^<!doctype html>/i.test(template)) {
-    failures.push(
-      `${relative(repositoryRoot, templatePath)}: HTML asset must start with a doctype`
-    );
+    report(templatePath, "HTML asset must start with a doctype");
   }
   for (const marker of ["__STYLE_CSS__", "__RENDERER_JS__"]) {
     const markerCount = template.split(marker).length - 1;
     if (markerCount !== 1) {
-      failures.push(
-        `${relative(repositoryRoot, templatePath)}: expected exactly one ${marker} marker; found ${markerCount}`
-      );
+      report(templatePath, `expected exactly one ${marker} marker; found ${markerCount}`);
     }
   }
   if (!/<style>\s*__STYLE_CSS__\s*<\/style>/.test(template)) {
-    failures.push(`${relative(repositoryRoot, templatePath)}: style marker must be inline`);
+    report(templatePath, "style marker must be inline");
   }
   if (!/<script type="module">\s*__RENDERER_JS__;?\s*<\/script>/.test(template)) {
-    failures.push(`${relative(repositoryRoot, templatePath)}: renderer marker must be inline`);
+    report(templatePath, "renderer marker must be inline");
   }
   const renderer = rendererPaths.map((path) => readFileSync(path, "utf8")).join("\n");
   const atlasMarkers = renderer.split("__ATLAS_MODEL_JSON__").length - 1;
   if (atlasMarkers !== 1) {
-    failures.push(
-      `${relative(repositoryRoot, rendererPaths[0] ?? templatePath)}: expected exactly one __ATLAS_MODEL_JSON__ marker; found ${atlasMarkers}`
+    report(
+      rendererPaths[0] ?? templatePath,
+      `expected exactly one __ATLAS_MODEL_JSON__ marker; found ${atlasMarkers}`
     );
   }
   const scriptCheck = spawnSync("node", ["--input-type=module", "--check", "-"], {
@@ -247,13 +245,9 @@ function validateBundledResources(
     input: renderer.replace("__ATLAS_MODEL_JSON__", "{}")
   });
   if (scriptCheck.error) {
-    failures.push(
-      `${relative(repositoryRoot, templatePath)}: could not syntax-check combined renderer: ${scriptCheck.error.message}`
-    );
+    report(templatePath, `could not syntax-check combined renderer: ${scriptCheck.error.message}`);
   } else if (scriptCheck.status !== 0) {
-    failures.push(
-      `${relative(repositoryRoot, templatePath)}: combined renderer syntax check failed: ${scriptCheck.stderr.trim()}`
-    );
+    report(templatePath, `combined renderer syntax check failed: ${scriptCheck.stderr.trim()}`);
   }
 }
 
@@ -339,6 +333,28 @@ function validateCurrentCliExamples(
   }
 }
 
+function readCaseFile<T>(
+  path: string,
+  displayPath: string,
+  kind: "routing" | "behavioral",
+  failures: string[]
+): T[] | undefined {
+  if (!existsSync(path)) {
+    failures.push(`${displayPath}: missing ${kind} cases`);
+    return;
+  }
+
+  try {
+    const parsed = JSON.parse(readFileSync(path, "utf8"));
+    if (Array.isArray(parsed)) {
+      return parsed as T[];
+    }
+    failures.push(`${displayPath}: expected a JSON array`);
+  } catch (error) {
+    failures.push(`${displayPath}: ${error instanceof Error ? error.message : String(error)}`);
+  }
+}
+
 function validateRoutingCases(
   repositoryRoot: string,
   skillsRoot: string,
@@ -346,21 +362,8 @@ function validateRoutingCases(
 ): void {
   const path = join(skillsRoot, "routing-cases.json");
   const displayPath = relative(repositoryRoot, path);
-  if (!existsSync(path)) {
-    failures.push(`${displayPath}: missing routing cases`);
-    return;
-  }
-
-  let cases: RoutingCase[];
-  try {
-    const parsed = JSON.parse(readFileSync(path, "utf8"));
-    if (!Array.isArray(parsed)) {
-      failures.push(`${displayPath}: expected a JSON array`);
-      return;
-    }
-    cases = parsed as RoutingCase[];
-  } catch (error) {
-    failures.push(`${displayPath}: ${error instanceof Error ? error.message : String(error)}`);
+  const cases = readCaseFile<RoutingCase>(path, displayPath, "routing", failures);
+  if (cases === undefined) {
     return;
   }
 
@@ -457,21 +460,8 @@ function validateRoutingCases(
 function validateBehaviorCases(repositoryRoot: string, failures: string[]): void {
   const path = join(repositoryRoot, "fixtures/skills/cases.json");
   const displayPath = relative(repositoryRoot, path);
-  if (!existsSync(path)) {
-    failures.push(`${displayPath}: missing behavioral cases`);
-    return;
-  }
-
-  let cases: BehaviorCase[];
-  try {
-    const parsed = JSON.parse(readFileSync(path, "utf8"));
-    if (!Array.isArray(parsed)) {
-      failures.push(`${displayPath}: expected a JSON array`);
-      return;
-    }
-    cases = parsed as BehaviorCase[];
-  } catch (error) {
-    failures.push(`${displayPath}: ${error instanceof Error ? error.message : String(error)}`);
+  const cases = readCaseFile<BehaviorCase>(path, displayPath, "behavioral", failures);
+  if (cases === undefined) {
     return;
   }
 

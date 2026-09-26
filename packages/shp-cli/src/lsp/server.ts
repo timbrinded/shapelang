@@ -170,39 +170,26 @@ function registerShapeLanguageServer(
     }
 
     const identity = identityForUri(document.uri);
-    const localHover = getHoverText(document.getText(), reference.text, identity.filePath);
-    if (hasShapeFacts(localHover)) {
-      return {
-        contents: {
-          kind: MarkupKind.PlainText,
-          value: localHover
-        },
-        range: reference.range
-      };
-    }
-
-    const externalMatches = definitionMatches(
-      snapshotWithOpenDocuments(currentSnapshot, documents.all()),
-      reference.text,
-      document.uri
-    );
-    if (externalMatches.length !== 1) {
-      return null;
-    }
-
-    const match = externalMatches[0];
-    if (!match) {
-      return null;
-    }
-    const externalHover = getHoverText(match.source, reference.text, match.filePath);
-    if (!hasShapeFacts(externalHover)) {
-      return null;
+    let hover = getHoverText(document.getText(), reference.text, identity.filePath);
+    if (!hasShapeFacts(hover)) {
+      const match = uniqueDefinitionMatch(
+        snapshotWithOpenDocuments(currentSnapshot, documents.all()),
+        reference.text,
+        document.uri
+      );
+      if (!match) {
+        return null;
+      }
+      hover = getHoverText(match.source, reference.text, match.filePath);
+      if (!hasShapeFacts(hover)) {
+        return null;
+      }
     }
 
     return {
       contents: {
         kind: MarkupKind.PlainText,
-        value: externalHover
+        value: hover
       },
       range: reference.range
     };
@@ -227,17 +214,12 @@ function registerShapeLanguageServer(
       );
     }
 
-    const externalMatches = definitionMatches(
+    const match = uniqueDefinitionMatch(
       snapshotWithOpenDocuments(currentSnapshot, documents.all()),
       reference.text,
       document.uri
     );
-    if (externalMatches.length !== 1) {
-      return null;
-    }
-
-    const match = externalMatches[0];
-    if (!match?.definition) {
+    if (!match) {
       return null;
     }
     return Location.create(
@@ -415,16 +397,12 @@ function snapshotWithOpenDocuments(
   );
 }
 
-function definitionMatches(
+function uniqueDefinitionMatch(
   snapshot: readonly SnapshotDocument[],
   symbol: string,
   excludedUri: string
-): (SnapshotDocument & {
-  definition: NonNullable<ReturnType<typeof getDefinitionLocation>>;
-})[] {
-  const matches: (SnapshotDocument & {
-    definition: NonNullable<ReturnType<typeof getDefinitionLocation>>;
-  })[] = [];
+) {
+  const matches = [];
 
   for (const document of snapshot) {
     if (document.uri === excludedUri) {
@@ -436,7 +414,7 @@ function definitionMatches(
     }
   }
 
-  return matches;
+  return matches.length === 1 ? matches[0] : undefined;
 }
 
 function workspaceCompletions(snapshot: readonly SnapshotDocument[]): string[] {

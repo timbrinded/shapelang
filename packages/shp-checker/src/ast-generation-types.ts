@@ -64,38 +64,27 @@ export type RawAstFile = {
 
 export type SemanticConfidence = "high" | "medium" | "low";
 
-export type CodeContainer = {
+type CodeEntity = {
   id: string;
   name: string;
-  kind: "file" | "module" | "type" | "impl";
   path: string;
   language: string;
   nodeId?: string;
   anchorId?: string;
-  ownerId?: string;
   confidence: SemanticConfidence;
 };
 
-export type CodeFunction = {
-  id: string;
-  name: string;
-  path: string;
-  language: string;
-  nodeId?: string;
-  anchorId?: string;
+export type CodeContainer = CodeEntity & {
+  kind: "file" | "module" | "type" | "impl";
+  ownerId?: string;
+};
+
+export type CodeFunction = CodeEntity & {
   ownerId: string;
-  confidence: SemanticConfidence;
   sourceRef: string;
 };
 
-export type CodeResource = {
-  id: string;
-  name: string;
-  path: string;
-  language: string;
-  nodeId?: string;
-  anchorId?: string;
-  confidence: SemanticConfidence;
+export type CodeResource = CodeEntity & {
   reason: string;
   sourceRef: string;
 };

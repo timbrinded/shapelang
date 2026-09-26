@@ -2,10 +2,17 @@ import type { RawAstNode } from "./ast-generation-types.ts";
 
 export function signatureText(text: string, language: string): string {
   const withoutComments = stripComments(normalizeLineEndings(text), language);
-  const masked = maskStringLiterals(withoutComments);
-  const braceIndex = masked.indexOf("{");
-  if (braceIndex >= 0) {
-    return withoutComments.slice(0, braceIndex);
+  let quote: string | undefined;
+  for (let index = 0; index < withoutComments.length; index++) {
+    const char = withoutComments[index];
+    if (quote) {
+      if (char === "\\") index++;
+      else if (char === quote) quote = undefined;
+    } else if (char === '"' || char === "'" || char === "`") {
+      quote = char;
+    } else if (char === "{") {
+      return withoutComments.slice(0, index);
+    }
   }
   return withoutComments;
 }
@@ -42,38 +49,6 @@ export function stripComments(text: string, language: string): string {
 
 function normalizeLineEndings(text: string): string {
   return text.replace(/\r\n?/g, "\n");
-}
-
-function maskStringLiterals(text: string): string {
-  let masked = "";
-  let index = 0;
-  while (index < text.length) {
-    const quote = text[index];
-    if (quote !== '"' && quote !== "'" && quote !== "`") {
-      masked += quote;
-      index += 1;
-      continue;
-    }
-
-    masked += " ";
-    index += 1;
-    while (index < text.length) {
-      const char = text[index];
-      masked += char === "\n" ? "\n" : " ";
-      index += 1;
-      if (char === "\\") {
-        if (index < text.length) {
-          masked += text[index] === "\n" ? "\n" : " ";
-          index += 1;
-        }
-        continue;
-      }
-      if (char === quote) {
-        break;
-      }
-    }
-  }
-  return masked;
 }
 
 export function isCommentNode(node: RawAstNode): boolean {

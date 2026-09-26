@@ -6,19 +6,14 @@ trait GeneratedAstAnchor {
 trait GeneratedCandidate {
 }
 
-resource ContextModuleAllContextsAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/rules/context.ts#allContexts")
-  fingerprint ast.semantic_subtree_v1("sha256:4c1579cb1b7e5168304206ec17bc59dacd853f4e7159fd8b338f31c87133465b")
-}
-
 resource ContextModuleCheckContextTargetAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/checker/rules/context.ts#checkContextTarget")
-  fingerprint ast.semantic_subtree_v1("sha256:ddc7d3ce8d254ac6443562af9f64a38f3dccbc9231c162f5b94f8cd29554f6e6")
+  fingerprint ast.semantic_subtree_v1("sha256:395bad340e490e853ae66cb9522e2ecf59d50c11d97a9f5fcf6176115d418224")
 }
 
 resource ContextModuleCheckContextTargetsAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/checker/rules/context.ts#checkContextTargets")
-  fingerprint ast.semantic_subtree_v1("sha256:7d275d208a6adc2be3a066fc79dfb875eac10cd53f8c68e6f84701a6581fd3b4")
+  fingerprint ast.semantic_subtree_v1("sha256:4d0a60056da2f34f21ad1daa6031baa779a4154cef5b03cd78c18809191a61a7")
 }
 
 resource ContextModuleCheckReevaluationsAstAnchor : GeneratedAstAnchor {
@@ -28,7 +23,7 @@ resource ContextModuleCheckReevaluationsAstAnchor : GeneratedAstAnchor {
 
 resource ContextModuleCheckRequiredContextAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/checker/rules/context.ts#checkRequiredContext")
-  fingerprint ast.semantic_subtree_v1("sha256:827ad4e6daf924cf693683250e442a862c6119e1b2cf07bc5b8f2dfe56d41771")
+  fingerprint ast.semantic_subtree_v1("sha256:ae800617fd1189e837ce1b44b050a358c2b299d28cc29e0383ecbe0c9e1d607f")
 }
 
 resource ContextModuleCheckRequiredDescriptionsAstAnchor : GeneratedAstAnchor {
@@ -37,9 +32,6 @@ resource ContextModuleCheckRequiredDescriptionsAstAnchor : GeneratedAstAnchor {
 }
 
 component ContextModule : GeneratedCandidate {
-  fn allContexts
-    source ts("packages/shp-checker/src/checker/rules/context.ts#allContexts")
-    effects unknown
   fn checkContextTarget
     source ts("packages/shp-checker/src/checker/rules/context.ts#checkContextTarget")
     effects unknown
@@ -57,19 +49,11 @@ component ContextModule : GeneratedCandidate {
     effects unknown
 }
 
-relation ContextModuleAllContextsGeneratedFromContextModuleAllContextsAstAnchor {
-  kind generated_from
-  connects ContextModule -> ContextModuleAllContextsAstAnchor
-  roles { ContextModule as generated, ContextModuleAllContextsAstAnchor as syntax }
-  expects ContextModuleAllContextsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4c1579cb1b7e5168304206ec17bc59dacd853f4e7159fd8b338f31c87133465b")
-  summary "fn ContextModule.allContexts generated from typescript function_declaration at packages/shp-checker/src/checker/rules/context.ts#allContexts."
-}
-
 relation ContextModuleCheckContextTargetGeneratedFromContextModuleCheckContextTargetAstAnchor {
   kind generated_from
   connects ContextModule -> ContextModuleCheckContextTargetAstAnchor
   roles { ContextModule as generated, ContextModuleCheckContextTargetAstAnchor as syntax }
-  expects ContextModuleCheckContextTargetAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ddc7d3ce8d254ac6443562af9f64a38f3dccbc9231c162f5b94f8cd29554f6e6")
+  expects ContextModuleCheckContextTargetAstAnchor fingerprint ast.semantic_subtree_v1("sha256:395bad340e490e853ae66cb9522e2ecf59d50c11d97a9f5fcf6176115d418224")
   summary "fn ContextModule.checkContextTarget generated from typescript function_declaration at packages/shp-checker/src/checker/rules/context.ts#checkContextTarget."
 }
 
@@ -77,7 +61,7 @@ relation ContextModuleCheckContextTargetsGeneratedFromContextModuleCheckContextT
   kind generated_from
   connects ContextModule -> ContextModuleCheckContextTargetsAstAnchor
   roles { ContextModule as generated, ContextModuleCheckContextTargetsAstAnchor as syntax }
-  expects ContextModuleCheckContextTargetsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7d275d208a6adc2be3a066fc79dfb875eac10cd53f8c68e6f84701a6581fd3b4")
+  expects ContextModuleCheckContextTargetsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4d0a60056da2f34f21ad1daa6031baa779a4154cef5b03cd78c18809191a61a7")
   summary "fn ContextModule.checkContextTargets generated from typescript function_declaration at packages/shp-checker/src/checker/rules/context.ts#checkContextTargets."
 }
 
@@ -93,7 +77,7 @@ relation ContextModuleCheckRequiredContextGeneratedFromContextModuleCheckRequire
   kind generated_from
   connects ContextModule -> ContextModuleCheckRequiredContextAstAnchor
   roles { ContextModule as generated, ContextModuleCheckRequiredContextAstAnchor as syntax }
-  expects ContextModuleCheckRequiredContextAstAnchor fingerprint ast.semantic_subtree_v1("sha256:827ad4e6daf924cf693683250e442a862c6119e1b2cf07bc5b8f2dfe56d41771")
+  expects ContextModuleCheckRequiredContextAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ae800617fd1189e837ce1b44b050a358c2b299d28cc29e0383ecbe0c9e1d607f")
   summary "fn ContextModule.checkRequiredContext generated from typescript function_declaration at packages/shp-checker/src/checker/rules/context.ts#checkRequiredContext."
 }
 

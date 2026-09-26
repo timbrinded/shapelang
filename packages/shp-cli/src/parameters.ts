@@ -7,6 +7,18 @@ export const stringParameter = (brief: string, placeholder: string) => ({
   placeholder
 });
 
+export const optionalStringFlag = (brief: string, placeholder: string) => ({
+  kind: "parsed" as const,
+  optional: true as const,
+  ...stringParameter(brief, placeholder)
+});
+
+export const optionalBooleanFlag = (brief: string) => ({
+  kind: "boolean" as const,
+  optional: true as const,
+  brief
+});
+
 export const fileArguments = (
   brief = "Shape files to read. Defaults to shape/**/*.shape.",
   placeholder = "files"
@@ -18,22 +30,14 @@ export const fileArguments = (
 
 /** `--base-ref` / `--base-model`, shared by `check` and `coverage`. */
 export const baseModelFlags = {
-  baseRef: {
-    kind: "parsed",
-    parse: (input: string) => input,
-    optional: true,
-    brief:
-      "Compare attestations against the Shape model at the merge base of this git revision and HEAD.",
-    placeholder: "REF"
-  },
-  baseModel: {
-    kind: "parsed",
-    parse: (input: string) => input,
-    optional: true,
-    brief:
-      "Compare attestations against a copy of the base model in this directory, kept at repository paths.",
-    placeholder: "DIR"
-  }
+  baseRef: optionalStringFlag(
+    "Compare attestations against the Shape model at the merge base of this git revision and HEAD.",
+    "REF"
+  ),
+  baseModel: optionalStringFlag(
+    "Compare attestations against a copy of the base model in this directory, kept at repository paths.",
+    "DIR"
+  )
 } as const;
 
 export const requiredStringArguments = (

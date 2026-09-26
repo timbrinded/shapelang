@@ -3,13 +3,15 @@ import { createRequire } from "node:module";
 import { dirname, join } from "node:path";
 
 import type { AstGenerationDiagnostic, TreeSitterParseProvider } from "./ast-generation-types.ts";
-import { errorMessage, isRecord } from "./ast-generation-utils.ts";
+import { astError, astFailure, errorMessage, isRecord } from "./ast-generation-utils.ts";
 import {
   currentTreeSitterNativeBindingTarget as currentNativeBindingTarget,
   type TreeSitterNativeBindingEmbeddedSpecifier,
   type TreeSitterNativeBindingPackageSpecifier,
   type TreeSitterNativeBindingTarget
 } from "./tree-sitter-native-targets.ts";
+
+import { SOURCE_LANGUAGES } from "./source-languages.ts";
 
 type NativeBindingLoadResult =
   | { ok: true; moduleValue: unknown }
@@ -30,15 +32,7 @@ type TreeSitterNativeParser = {
 const treeSitterNativeRequire = createRequire(import.meta.url);
 
 export const TREE_SITTER_LANGUAGE_PACK_VERSION = "1.8.1";
-export const BUNDLED_TREE_SITTER_LANGUAGES = [
-  "javascript",
-  "typescript",
-  "tsx",
-  "rust",
-  "go",
-  "python",
-  "swift"
-] as const;
+export const BUNDLED_TREE_SITTER_LANGUAGES = [...SOURCE_LANGUAGES] as const;
 
 export async function loadTreeSitterProvider(): Promise<
   | { ok: true; provider: TreeSitterParseProvider }
@@ -49,18 +43,12 @@ export async function loadTreeSitterProvider(): Promise<
     return nativeBinding;
   }
 
-  const moduleValue = treeSitterNativeLanguagePack(nativeBinding.moduleValue);
-  if (!moduleValue) {
-    return {
-      ok: false,
-      diagnostics: [
-        {
-          kind: "error",
-          code: "invalid_tree_sitter_language_pack",
-          message: "@kreuzberg/tree-sitter-language-pack did not export an object"
-        }
-      ]
-    };
+  const moduleValue = nativeBinding.moduleValue;
+  if (!isTreeSitterNativeLanguagePack(moduleValue)) {
+    return astFailure(
+      "invalid_tree_sitter_language_pack",
+      "@kreuzberg/tree-sitter-language-pack did not export an object"
+    );
   }
 
   const bundledParserDiagnostics = configureBundledTreeSitterParsers(moduleValue);
@@ -74,8 +62,8 @@ export async function loadTreeSitterProvider(): Promise<
   return {
     ok: true,
     provider: async (language, source) => {
-      const parser = treeSitterNativeParser(await moduleValue.getParser(language));
-      if (!parser) {
+      const parser = await moduleValue.getParser(language);
+      if (!isTreeSitterNativeParser(parser)) {
         throw new Error(`parser for ${language} did not expose parse`);
       }
       const tree = parser.parse(source);
@@ -102,21 +90,19 @@ export function configureBundledTreeSitterParsers(
   ).filter((path) => !existsSync(path));
   if (missing.length > 0) {
     return [
-      {
-        kind: "error",
-        code: "missing_bundled_tree_sitter_parsers",
-        message: `bundled tree-sitter parser assets are incomplete; missing ${missing.join(", ")}`
-      }
+      astError(
+        "missing_bundled_tree_sitter_parsers",
+        `bundled tree-sitter parser assets are incomplete; missing ${missing.join(", ")}`
+      )
     ];
   }
 
   if (!moduleValue.configure) {
     return [
-      {
-        kind: "error",
-        code: "invalid_tree_sitter_language_pack",
-        message: "@kreuzberg/tree-sitter-language-pack native binding does not expose configure"
-      }
+      astError(
+        "invalid_tree_sitter_language_pack",
+        "@kreuzberg/tree-sitter-language-pack native binding does not expose configure"
+      )
     ];
   }
 
@@ -124,11 +110,10 @@ export function configureBundledTreeSitterParsers(
     moduleValue.configure({ cacheDir: libsDir });
   } catch (error) {
     return [
-      {
-        kind: "error",
-        code: "invalid_tree_sitter_parser_cache",
-        message: `failed to configure bundled tree-sitter parser cache: ${errorMessage(error)}`
-      }
+      astError(
+        "invalid_tree_sitter_parser_cache",
+        `failed to configure bundled tree-sitter parser cache: ${errorMessage(error)}`
+      )
     ];
   }
 
@@ -166,16 +151,10 @@ export function treeSitterParserLibraryName(
 function loadTreeSitterNativeBinding(): NativeBindingLoadResult {
   const target = currentTreeSitterNativeBindingTarget();
   if (!target) {
-    return {
-      ok: false,
-      diagnostics: [
-        {
-          kind: "error",
-          code: "unsupported_tree_sitter_platform",
-          message: `no bundled @kreuzberg/tree-sitter-language-pack native binding target for ${process.platform}-${process.arch}`
-        }
-      ]
-    };
+    return astFailure(
+      "unsupported_tree_sitter_platform",
+      `no bundled @kreuzberg/tree-sitter-language-pack native binding target for ${process.platform}-${process.arch}`
+    );
   }
 
   try {
@@ -184,16 +163,10 @@ function loadTreeSitterNativeBinding(): NativeBindingLoadResult {
       moduleValue: requireTreeSitterNativeBinding(target)
     };
   } catch (error) {
-    return {
-      ok: false,
-      diagnostics: [
-        {
-          kind: "error",
-          code: "missing_tree_sitter_language_pack",
-          message: `failed to load ${target.packageSpecifier}: ${errorMessage(error)}`
-        }
-      ]
-    };
+    return astFailure(
+      "missing_tree_sitter_language_pack",
+      `failed to load ${target.packageSpecifier}: ${errorMessage(error)}`
+    );
   }
 }
 
@@ -323,14 +296,6 @@ function linuxMuslLoaderPaths(arch: NodeJS.Architecture): string[] {
     default:
       return [];
   }
-}
-
-function treeSitterNativeLanguagePack(value: unknown): TreeSitterNativeLanguagePack | undefined {
-  return isTreeSitterNativeLanguagePack(value) ? value : undefined;
-}
-
-function treeSitterNativeParser(value: unknown): TreeSitterNativeParser | undefined {
-  return isTreeSitterNativeParser(value) ? value : undefined;
 }
 
 function isTreeSitterNativeLanguagePack(value: unknown): value is TreeSitterNativeLanguagePack {

@@ -40,13 +40,22 @@ export function parseShapeModule(
     textDocument: TextDocument.create(uri.toString(), "shape", 0, source)
   };
   (parseResult.value as Mutable<ShapeModule>).$document = document;
-  const lexerErrors = document.parseResult.lexerErrors.map((error) =>
-    lexerDiagnostic(error, filePath)
-  );
-  const parserErrors = document.parseResult.parserErrors.map((error) =>
-    parserDiagnostic(error, filePath)
-  );
-  const diagnostics = [...lexerErrors, ...parserErrors];
+  const diagnostics: ParseDiagnostic[] = [
+    ...parseResult.lexerErrors.map<ParseDiagnostic>((error) => ({
+      kind: "parse",
+      filePath,
+      message: error.message,
+      line: error.line,
+      column: error.column
+    })),
+    ...parseResult.parserErrors.map<ParseDiagnostic>((error) => ({
+      kind: "parse",
+      filePath,
+      message: error.message,
+      line: error.token.startLine,
+      column: error.token.startColumn
+    }))
+  ];
 
   if (diagnostics.length > 0) {
     return {
@@ -62,49 +71,4 @@ export function parseShapeModule(
     module: document.parseResult.value,
     document
   };
-}
-
-function lexerDiagnostic(error: unknown, filePath: string): ParseDiagnostic {
-  return {
-    kind: "parse",
-    filePath,
-    message: messageProperty(error),
-    line: numberProperty(error, "line"),
-    column: numberProperty(error, "column")
-  };
-}
-
-function parserDiagnostic(error: unknown, filePath: string): ParseDiagnostic {
-  const token = recordProperty(error, "token");
-  return {
-    kind: "parse",
-    filePath,
-    message: messageProperty(error),
-    line: numberProperty(token, "startLine"),
-    column: numberProperty(token, "startColumn")
-  };
-}
-
-function messageProperty(value: unknown): string {
-  const message = stringProperty(value, "message");
-  return message ?? String(value);
-}
-
-function recordProperty(value: unknown, key: string): Record<string, unknown> | undefined {
-  const propertyValue = isRecord(value) ? value[key] : undefined;
-  return isRecord(propertyValue) ? propertyValue : undefined;
-}
-
-function stringProperty(value: unknown, key: string): string | undefined {
-  const propertyValue = isRecord(value) ? value[key] : undefined;
-  return typeof propertyValue === "string" ? propertyValue : undefined;
-}
-
-function numberProperty(value: unknown, key: string): number | undefined {
-  const propertyValue = isRecord(value) ? value[key] : undefined;
-  return typeof propertyValue === "number" ? propertyValue : undefined;
-}
-
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === "object" && value !== null;
 }

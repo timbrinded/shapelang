@@ -6,9 +6,24 @@ trait GeneratedAstAnchor {
 trait GeneratedCandidate {
 }
 
+resource AstGenerationUtilsModuleAstErrorAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/ast-generation-utils.ts#astError")
+  fingerprint ast.semantic_subtree_v1("sha256:69094bf251a6d43e3a70a33e2c19620786ccc387d455aea204cd00122211cd08")
+}
+
+resource AstGenerationUtilsModuleAstErrorReporterAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/ast-generation-utils.ts#astErrorReporter")
+  fingerprint ast.semantic_subtree_v1("sha256:b2683fd4630c3807bb81715ee0815d55a4084029b635a19824bedafaf09c4ea2")
+}
+
+resource AstGenerationUtilsModuleAstFailureAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/ast-generation-utils.ts#astFailure")
+  fingerprint ast.semantic_subtree_v1("sha256:26ca85c62d7c8dbe01817e8fafc1c3583bd596f0818345c626460c5d722d2a40")
+}
+
 resource AstGenerationUtilsModuleAvoidReservedShapeWordAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/ast-generation-utils.ts#avoidReservedShapeWord")
-  fingerprint ast.semantic_subtree_v1("sha256:1b0af102fe60f8a6247d192663a8a949ec87811b5f93d80ebd0c2b11ddbf2b53")
+  fingerprint ast.semantic_subtree_v1("sha256:e3925f9e1796e88c9ef58f8d96b8bef3488cc3e22d2cd6f431f2a5be70020d89")
 }
 
 resource AstGenerationUtilsModuleBaseNameWithoutExtensionAstAnchor : GeneratedAstAnchor {
@@ -98,7 +113,7 @@ resource AstGenerationUtilsModuleShapeRelationNameAstAnchor : GeneratedAstAnchor
 
 resource AstGenerationUtilsModuleShapeReservedWordsAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/ast-generation-utils.ts#shapeReservedWords")
-  fingerprint ast.semantic_subtree_v1("sha256:df8bcb94481629724459345ab9929545161565fab149a2ea2094c28656dc2343")
+  fingerprint ast.semantic_subtree_v1("sha256:836fc22eb7190eef2b35d9f0fe590f450a521b1a507fe4bff3fa4218cc4aa50b")
 }
 
 resource AstGenerationUtilsModuleShapeTypeNameAstAnchor : GeneratedAstAnchor {
@@ -133,7 +148,7 @@ resource AstGenerationUtilsModuleStableIdentityHashAstAnchor : GeneratedAstAncho
 
 resource AstGenerationUtilsModuleStableJsonAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/ast-generation-utils.ts#stableJson")
-  fingerprint ast.semantic_subtree_v1("sha256:c59810af0275164ada1bb1c680190ac8aa4193e019eb9b0c0f1a36fe8357103a")
+  fingerprint ast.semantic_subtree_v1("sha256:e0bb4cf17764408f2eefee2f396ca51d1462bf7bf69aa4b6a9e74137023738f7")
 }
 
 resource AstGenerationUtilsModuleStableShapeIdAstAnchor : GeneratedAstAnchor {
@@ -172,6 +187,15 @@ resource AstGenerationUtilsModuleUniqueShapeNameAstAnchor : GeneratedAstAnchor {
 }
 
 component AstGenerationUtilsModule : GeneratedCandidate {
+  fn astError
+    source ts("packages/shp-checker/src/ast-generation-utils.ts#astError")
+    effects unknown
+  fn astErrorReporter
+    source ts("packages/shp-checker/src/ast-generation-utils.ts#astErrorReporter")
+    effects unknown
+  fn astFailure
+    source ts("packages/shp-checker/src/ast-generation-utils.ts#astFailure")
+    effects unknown
   fn avoidReservedShapeWord
     source ts("packages/shp-checker/src/ast-generation-utils.ts#avoidReservedShapeWord")
     effects unknown
@@ -273,11 +297,35 @@ component AstGenerationUtilsModule : GeneratedCandidate {
     effects unknown
 }
 
+relation AstGenerationUtilsModuleAstErrorGeneratedFromAstGenerationUtilsModuleAstErrorAstAnchor {
+  kind generated_from
+  connects AstGenerationUtilsModule -> AstGenerationUtilsModuleAstErrorAstAnchor
+  roles { AstGenerationUtilsModule as generated, AstGenerationUtilsModuleAstErrorAstAnchor as syntax }
+  expects AstGenerationUtilsModuleAstErrorAstAnchor fingerprint ast.semantic_subtree_v1("sha256:69094bf251a6d43e3a70a33e2c19620786ccc387d455aea204cd00122211cd08")
+  summary "fn AstGenerationUtilsModule.astError generated from typescript function_declaration at packages/shp-checker/src/ast-generation-utils.ts#astError."
+}
+
+relation AstGenerationUtilsModuleAstErrorReporterGeneratedFromAstGenerationUtilsModuleAstErrorReporterAstAnchor {
+  kind generated_from
+  connects AstGenerationUtilsModule -> AstGenerationUtilsModuleAstErrorReporterAstAnchor
+  roles { AstGenerationUtilsModule as generated, AstGenerationUtilsModuleAstErrorReporterAstAnchor as syntax }
+  expects AstGenerationUtilsModuleAstErrorReporterAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b2683fd4630c3807bb81715ee0815d55a4084029b635a19824bedafaf09c4ea2")
+  summary "fn AstGenerationUtilsModule.astErrorReporter generated from typescript function_declaration at packages/shp-checker/src/ast-generation-utils.ts#astErrorReporter."
+}
+
+relation AstGenerationUtilsModuleAstFailureGeneratedFromAstGenerationUtilsModuleAstFailureAstAnchor {
+  kind generated_from
+  connects AstGenerationUtilsModule -> AstGenerationUtilsModuleAstFailureAstAnchor
+  roles { AstGenerationUtilsModule as generated, AstGenerationUtilsModuleAstFailureAstAnchor as syntax }
+  expects AstGenerationUtilsModuleAstFailureAstAnchor fingerprint ast.semantic_subtree_v1("sha256:26ca85c62d7c8dbe01817e8fafc1c3583bd596f0818345c626460c5d722d2a40")
+  summary "fn AstGenerationUtilsModule.astFailure generated from typescript function_declaration at packages/shp-checker/src/ast-generation-utils.ts#astFailure."
+}
+
 relation AstGenerationUtilsModuleAvoidReservedShapeWordGeneratedFromAstGenerationUtilsModuleAvoidReservedShapeWordAstAnchor {
   kind generated_from
   connects AstGenerationUtilsModule -> AstGenerationUtilsModuleAvoidReservedShapeWordAstAnchor
   roles { AstGenerationUtilsModule as generated, AstGenerationUtilsModuleAvoidReservedShapeWordAstAnchor as syntax }
-  expects AstGenerationUtilsModuleAvoidReservedShapeWordAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1b0af102fe60f8a6247d192663a8a949ec87811b5f93d80ebd0c2b11ddbf2b53")
+  expects AstGenerationUtilsModuleAvoidReservedShapeWordAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e3925f9e1796e88c9ef58f8d96b8bef3488cc3e22d2cd6f431f2a5be70020d89")
   summary "fn AstGenerationUtilsModule.avoidReservedShapeWord generated from typescript function_declaration at packages/shp-checker/src/ast-generation-utils.ts#avoidReservedShapeWord."
 }
 
@@ -421,7 +469,7 @@ relation AstGenerationUtilsModuleShapeReservedWordsGeneratedFromAstGenerationUti
   kind generated_from
   connects AstGenerationUtilsModule -> AstGenerationUtilsModuleShapeReservedWordsAstAnchor
   roles { AstGenerationUtilsModule as generated, AstGenerationUtilsModuleShapeReservedWordsAstAnchor as syntax }
-  expects AstGenerationUtilsModuleShapeReservedWordsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:df8bcb94481629724459345ab9929545161565fab149a2ea2094c28656dc2343")
+  expects AstGenerationUtilsModuleShapeReservedWordsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:836fc22eb7190eef2b35d9f0fe590f450a521b1a507fe4bff3fa4218cc4aa50b")
   summary "fn AstGenerationUtilsModule.shapeReservedWords generated from typescript function_declaration at packages/shp-checker/src/ast-generation-utils.ts#shapeReservedWords."
 }
 
@@ -477,7 +525,7 @@ relation AstGenerationUtilsModuleStableJsonGeneratedFromAstGenerationUtilsModule
   kind generated_from
   connects AstGenerationUtilsModule -> AstGenerationUtilsModuleStableJsonAstAnchor
   roles { AstGenerationUtilsModule as generated, AstGenerationUtilsModuleStableJsonAstAnchor as syntax }
-  expects AstGenerationUtilsModuleStableJsonAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c59810af0275164ada1bb1c680190ac8aa4193e019eb9b0c0f1a36fe8357103a")
+  expects AstGenerationUtilsModuleStableJsonAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e0bb4cf17764408f2eefee2f396ca51d1462bf7bf69aa4b6a9e74137023738f7")
   summary "fn AstGenerationUtilsModule.stableJson generated from typescript function_declaration at packages/shp-checker/src/ast-generation-utils.ts#stableJson."
 }
 

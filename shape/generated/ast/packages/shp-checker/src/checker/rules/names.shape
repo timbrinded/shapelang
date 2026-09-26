@@ -8,12 +8,20 @@ trait GeneratedCandidate {
 
 resource NamesModuleCheckResolvedNamesAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/checker/rules/names.ts#checkResolvedNames")
-  fingerprint ast.semantic_subtree_v1("sha256:508a4818bd088fc1928ccb671bc89da317ee633925747570ea98b85898dcb280")
+  fingerprint ast.semantic_subtree_v1("sha256:b6abf2999e7fde8def38dca4761f05697caaec829c560a682422f8049d87ff99")
+}
+
+resource NamesModuleUnknownNameAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/rules/names.ts#unknownName")
+  fingerprint ast.semantic_subtree_v1("sha256:af9c4b56673af0e1d7bc3b5a0fe1d4913986c442c3adef56a23543322b659853")
 }
 
 component NamesModule : GeneratedCandidate {
   fn checkResolvedNames
     source ts("packages/shp-checker/src/checker/rules/names.ts#checkResolvedNames")
+    effects unknown
+  fn unknownName
+    source ts("packages/shp-checker/src/checker/rules/names.ts#unknownName")
     effects unknown
 }
 
@@ -21,8 +29,16 @@ relation NamesModuleCheckResolvedNamesGeneratedFromNamesModuleCheckResolvedNames
   kind generated_from
   connects NamesModule -> NamesModuleCheckResolvedNamesAstAnchor
   roles { NamesModule as generated, NamesModuleCheckResolvedNamesAstAnchor as syntax }
-  expects NamesModuleCheckResolvedNamesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:508a4818bd088fc1928ccb671bc89da317ee633925747570ea98b85898dcb280")
+  expects NamesModuleCheckResolvedNamesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b6abf2999e7fde8def38dca4761f05697caaec829c560a682422f8049d87ff99")
   summary "fn NamesModule.checkResolvedNames generated from typescript function_declaration at packages/shp-checker/src/checker/rules/names.ts#checkResolvedNames."
+}
+
+relation NamesModuleUnknownNameGeneratedFromNamesModuleUnknownNameAstAnchor {
+  kind generated_from
+  connects NamesModule -> NamesModuleUnknownNameAstAnchor
+  roles { NamesModule as generated, NamesModuleUnknownNameAstAnchor as syntax }
+  expects NamesModuleUnknownNameAstAnchor fingerprint ast.semantic_subtree_v1("sha256:af9c4b56673af0e1d7bc3b5a0fe1d4913986c442c3adef56a23543322b659853")
+  summary "fn NamesModule.unknownName generated from typescript function_declaration at packages/shp-checker/src/checker/rules/names.ts#unknownName."
 }
 
 implementation NamesModuleImpl {
