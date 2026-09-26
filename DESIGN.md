@@ -24,7 +24,24 @@ Every picture must be as accurate as the prose beside it.
 
 - **Fonts.** Geist Variable and Geist Mono Variable, loaded through `@fontsource-variable/geist*` in `custom.css`.
 - **Colours.** The tokens in `tokens.css` define the palette; most have a dark-theme override, while `--shape-pass`, `--shape-warn`, and `--shape-fail` keep one value in both themes. Blue (`--shape-blue`) marks model flow and links. Green, amber, and red (`--shape-pass`, `--shape-warn`, `--shape-fail`) are state colours: pass, unknown or pending review, and rejection. `--shape-agent` (violet, defined in `custom.css`) is used only for the home hero kicker.
-- **Layout.** The home page uses a text-only hero (`docs-site/src/components/Hero.astro`). Content pages rely on Starlight defaults, plus the rules in `custom.css`.
+- **Layout.** The home page uses a text-only hero (`docs-site/src/components/Hero.astro`), followed by the introduction video. Content pages rely on Starlight defaults, plus the rules in `custom.css`.
+
+## Videos
+
+A page can open with a narrated video. Its frontmatter names the files and gives a one-sentence caption:
+
+```yaml
+video:
+  name: shape-introduction
+  caption: "Shape in 49 seconds: ..."
+```
+
+`docs-site/src/components/MarkdownContent.astro` renders the video above the page content from three files in `docs-site/public/videos/`: `NAME.mp4` (H.264 and AAC, with `+faststart`), `NAME.webp` (the poster, one representative frame), and `NAME.vtt` (captions from the narration). The caption states the video's subject and length.
+
+- The content rules above apply to every frame: code is a valid fragment, diagnostics are real `shp` output, and no frame implies anything the list above rules out.
+- On-screen text carries the story with the sound off.
+- Keep each file small, because it stays in the repository history. Encode at 1920 × 1080 with `-crf 27 -preset slow -tune animation` and mono 96 kbps audio; a one-minute video is about 3 MB.
+- The videos are rendered with HyperFrames outside this repository. Replace a video by overwriting its three files under the same name.
 
 ## Diagrams
 
