@@ -24,7 +24,7 @@ Every picture must be as accurate as the prose beside it.
 
 - **Fonts.** Geist Variable and Geist Mono Variable, loaded through `@fontsource-variable/geist*` in `custom.css`.
 - **Colours.** The tokens in `tokens.css` define the palette; most have a dark-theme override, while `--shape-pass`, `--shape-warn`, and `--shape-fail` keep one value in both themes. Blue (`--shape-blue`) marks model flow and links. Green, amber, and red (`--shape-pass`, `--shape-warn`, `--shape-fail`) are state colours: pass, unknown or pending review, and rejection. `--shape-agent` (violet, defined in `custom.css`) is used only for the home hero kicker.
-- **Layout.** The home page uses a text-only hero (`docs-site/src/components/Hero.astro`), followed by the introduction video. Content pages rely on Starlight defaults, plus the rules in `custom.css`.
+- **Layout.** The home page uses a text-only hero (`docs-site/src/components/Hero.astro`), followed by the introduction video. Content pages rely on Starlight defaults, plus the rules in `custom.css`; each concept page opens with its concept video.
 
 ## Videos
 

@@ -1,0 +1,58 @@
+WEBVTT
+
+00:00:00.500 --> 00:00:03.320
+The gateway must never reach the secret store:
+
+00:00:03.350 --> 00:00:05.660
+not directly, and not through another service.
+
+00:00:06.010 --> 00:00:09.310
+In Shape, connections are relations you declare.
+
+00:00:09.660 --> 00:00:11.760
+Gateway calls Policy Service.
+
+00:00:12.120 --> 00:00:14.440
+Policy Service provides the Secret Store.
+
+00:00:14.440 --> 00:00:16.630
+The check passes: nothing forbids that yet.
+
+00:00:17.280 --> 00:00:18.800
+So add a rule:
+
+00:00:18.800 --> 00:00:20.930
+no path from Gateway to Secret
+
+00:00:20.980 --> 00:00:23.240
+Store over calls or provides.
+
+00:00:23.890 --> 00:00:25.840
+The check walks the declared graph
+
+00:00:26.090 --> 00:00:28.290
+and fails with a forbidden path.
+
+00:00:28.290 --> 00:00:30.480
+The witness names each relation on the route,
+
+00:00:30.730 --> 00:00:32.610
+so you know which link to break.
+
+00:00:33.010 --> 00:00:34.460
+Rules can also allow just
+
+00:00:34.480 --> 00:00:38.240
+one provider for an endpoint, or forbid dependency cycles.
+
+00:00:39.040 --> 00:00:41.750
+Shape sees only the relations you declare;
+
+00:00:41.750 --> 00:00:42.820
+it never reads your code.
+
+00:00:43.170 --> 00:00:45.630
+So review keeps the graph honest,
+
+00:00:45.630 --> 00:00:48.490
+and shp graph show lets you inspect it.

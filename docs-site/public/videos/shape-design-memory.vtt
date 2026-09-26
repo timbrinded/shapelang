@@ -1,0 +1,55 @@
+WEBVTT
+
+00:00:00.500 --> 00:00:01.660
+Some code is fragile for
+
+00:00:01.700 --> 00:00:03.620
+reasons the code doesn't show.
+
+00:00:04.110 --> 00:00:07.480
+Refactors of this function have broken error handling before.
+
+00:00:07.930 --> 00:00:10.070
+Mark it Refactor Sensitive,
+
+00:00:10.600 --> 00:00:12.070
+and the check asks for the reason.
+
+00:00:12.670 --> 00:00:15.040
+Record it as a memory: what went wrong,
+
+00:00:15.040 --> 00:00:15.520
+who owns it,
+
+00:00:15.880 --> 00:00:18.390
+and that the cause is still unexplained.
+
+00:00:18.390 --> 00:00:19.330
+Now it passes.
+
+00:00:19.880 --> 00:00:22.140
+Add a guard, and any declared change to
+
+00:00:22.140 --> 00:00:24.730
+the function needs a reevaluation.
+
+00:00:24.960 --> 00:00:27.330
+This refactor fails until someone reviews it.
+
+00:00:27.880 --> 00:00:29.480
+The reviewer records the outcome,
+
+00:00:29.650 --> 00:00:30.980
+the evidence and the date.
+
+00:00:30.980 --> 00:00:32.180
+The change passes.
+
+00:00:32.730 --> 00:00:34.920
+Shape checks that a review was recorded,
+
+00:00:35.080 --> 00:00:36.610
+not what it found.
+
+00:00:36.610 --> 00:00:39.220
+And no memory can waive a final forbid.

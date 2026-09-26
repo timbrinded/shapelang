@@ -1,6 +1,9 @@
 ---
 title: Design Memory
 description: Record why fragile shapes exist with rationale and memory, require that context through shape traits, guard changes with reevaluation, and enforce review dates.
+video:
+  name: shape-design-memory
+  caption: "Design memory in 41 seconds: record why fragile code looks the way it does, and make a declared change wait for a recorded review. Narrated, with captions."
 ---
 
 Design memory records why a fragile part of the Shape model looks the way it does, as typed `rationale` and `memory` declarations. It covers constraints that an effect summary cannot express: an authorization check that must stay inline, an error ordering that callers depend on, compatibility code, or a test-only helper that looks like production code. The checker enforces design memory through two separate mechanisms:
