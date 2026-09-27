@@ -3,7 +3,7 @@ title: Relations and Graph Rules
 description: Declare structural links as top-level relations, and reject provider, path, and cycle shapes with forbid provides, forbid path, and forbid hypercycle rules.
 video:
   name: shape-relations
-  caption: "Relations in 50 seconds: declare the graph, forbid a path, and read the witness the check reports. Narrated, with captions."
+  caption: "Relations in 52 seconds: a coding agent's shortcut connects the public feed to private drafts, and a path rule stops it, however indirect. Narrated, with captions."
 ---
 
 A `relation` declares one structural link between components and resources: a call, a callback, a provided resource, a multi-party coordination, or a link of a custom kind. Relations are top-level declarations, never members of a component. They are also the only structural links in the Shape model: `owns`, `grants`, and effect entries add no edges, and the checker infers none from source. Each relation is a hyperedge over two or more endpoints, and graph rules query the resulting hypergraph.

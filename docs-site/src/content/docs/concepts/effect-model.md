@@ -3,7 +3,7 @@ title: Effect Model
 description: How resources, traits, components, and function summaries fit together, and the order in which shp check judges each declared effect.
 video:
   name: shape-effect-model
-  caption: "The effect model in 57 seconds: an append-only resource, a purge job the check rejects, and why no grant overrides a final forbid. Narrated, with captions."
+  caption: "The effect model in 55 seconds: in a writing app, a coding agent's job that deletes old revisions breaks an append-only rule, and no grant can override it. Narrated, with captions."
 ---
 
 The effect model is the part of the Shape model that `shp check` judges function by function. Resources name the data the architecture protects, and traits attach final forbids to them. Components own resources, grant effects, and contain function summaries. Each summary declares the effects its function emits and can cite the code behind each claim.

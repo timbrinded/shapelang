@@ -39,6 +39,7 @@ video:
 `docs-site/src/components/MarkdownContent.astro` renders the video above the page content from three files in `docs-site/public/videos/`: `NAME.mp4` (H.264 and AAC, with `+faststart`), `NAME.webp` (the poster, one representative frame), and `NAME.vtt` (captions from the narration). The caption states the video's subject and length.
 
 - The content rules above apply to every frame: code is a valid fragment, diagnostics are real `shp` output, and no frame implies anything the list above rules out.
+- A video uses its page's example and may extend it, for example with the fix a failing check leads to. Every extension is a valid fragment checked with `shp`, and it stays in the same example world.
 - On-screen text carries the story with the sound off.
 - Keep each file small, because it stays in the repository history. Encode at 1920 × 1080 with `-crf 27 -preset slow -tune animation` and mono 96 kbps audio; a one-minute video is about 3 MB.
 - The videos are rendered with HyperFrames outside this repository. Replace a video by overwriting its three files under the same name.
