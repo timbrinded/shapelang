@@ -4,7 +4,7 @@ description: Shape is a small language for architecture claims, and shp is the c
 template: splash
 video:
   name: shape-introduction
-  caption: "Shape in 49 seconds: a coding agent's share button leaks private drafts, and the Shape check stops the merge. Narrated, with captions."
+  caption: "Shape in 73 seconds: in a writing app, a coding agent's share button would leak private drafts, and the Shape check on the pull request stops the merge. Narrated, with captions."
 hero:
   tagline: Architecture claims as text files, reviewed by people, checked by shp in CI.
   actions:
