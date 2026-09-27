@@ -1,0 +1,70 @@
+WEBVTT
+
+00:00:00.500 --> 00:00:01.420
+In our writing app,
+
+00:00:01.590 --> 00:00:03.610
+published stories go to a public feed,
+
+00:00:03.800 --> 00:00:05.490
+and drafts stay private.
+
+00:00:06.140 --> 00:00:07.630
+You ask your coding agent to
+
+00:00:07.630 --> 00:00:09.850
+add trending topics to that feed.
+
+00:00:09.850 --> 00:00:11.240
+It takes a shortcut:
+
+00:00:11.260 --> 00:00:13.760
+it wires the feed straight to the recommender.
+
+00:00:14.360 --> 00:00:16.970
+But your architecture keeps the public side apart
+
+00:00:16.970 --> 00:00:19.040
+from anything that works with private drafts,
+
+00:00:19.040 --> 00:00:20.790
+and the recommender does.
+
+00:00:20.790 --> 00:00:21.690
+The agent didn't know.
+
+00:00:22.340 --> 00:00:25.240
+That boundary is a rule in your Shape model.
+
+00:00:25.240 --> 00:00:27.490
+The agent records its new connection in the model,
+
+00:00:27.580 --> 00:00:28.650
+as the check requires,
+
+00:00:28.730 --> 00:00:29.850
+and the Shape check on the
+
+00:00:30.150 --> 00:00:31.750
+pull request stops the merge.
+
+00:00:32.350 --> 00:00:34.670
+The check names each connection on the path,
+
+00:00:34.780 --> 00:00:36.980
+so you can see which one crosses the line.
+
+00:00:37.630 --> 00:00:40.900
+So the agent goes the way the architecture allows:
+
+00:00:40.940 --> 00:00:42.650
+trending topics come from a service
+
+00:00:42.920 --> 00:00:45.180
+that only uses published stories.
+
+00:00:45.180 --> 00:00:45.940
+The check passes.
+
+00:00:46.640 --> 00:00:50.410
+Shape follows every connection you write down, however indirect.

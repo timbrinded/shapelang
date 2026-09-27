@@ -13,17 +13,17 @@ Put each pack under `shape/vendor/`, so that default discovery (`shape/**/*.shap
 shape/
 ├── project.shape
 └── vendor/
-    └── audit-policy/
+    └── durable-history/
         └── v1/
-            └── audit-policy.shape
+            └── durable-history.shape
 ```
 
 The pack declares a stable, versioned module name:
 
 ```shape
-module domain.audit.v1
+module domain.history.v1
 
-trait DurableAudit<T: Resource> {
+trait DurableHistory<T: Resource> {
   forbid final HardDelete<T>
 }
 ```
@@ -31,40 +31,40 @@ trait DurableAudit<T: Resource> {
 The project imports that module and applies the pack's trait beside a local one:
 
 ```shape
-module checkout
+module publishing
 
-import domain.audit.v1
+import domain.history.v1
 
-trait CheckoutRetention<T: Resource> {
+trait PublishingRetention<T: Resource> {
   forbid final Truncate<T>
 }
 
-resource CheckoutAudit : CheckoutRetention, DurableAudit
+resource PublishingHistory : DurableHistory, PublishingRetention
 
-component CheckoutStore {
-  owns CheckoutAudit
-  grants Append<CheckoutAudit>
-  fn recordCheckout
-    source ts("src/checkout/audit.ts#recordCheckout")
+component Publisher {
+  owns PublishingHistory
+  grants Append<PublishingHistory>
+  fn recordPublish
+    source ts("src/publishing/history.ts#recordPublish")
     effects complete {
-      Append<CheckoutAudit>
-        evidence ts("src/checkout/audit.ts#recordCheckout")
+      Append<PublishingHistory>
+        evidence ts("src/publishing/history.ts#recordPublish")
     }
 }
 ```
 
-`shp check` passes, and `shp explain CheckoutAudit` shows each trait under its module name, with the final forbids the two traits derive:
+`shp check` passes, and `shp explain PublishingHistory` shows each trait under its module name, with the final forbids the two traits derive:
 
 ```text
-CheckoutAudit
+PublishingHistory
   kind: resource
   traits:
-    checkout::CheckoutRetention
-    domain.audit.v1::DurableAudit
+    domain.history.v1::DurableHistory
+    publishing::PublishingRetention
 
   final forbidden effects:
-    Truncate<CheckoutAudit>
-    HardDelete<CheckoutAudit>
+    HardDelete<PublishingHistory>
+    Truncate<PublishingHistory>
 ```
 
 ## Installing and importing
@@ -72,7 +72,7 @@ CheckoutAudit
 Vendoring installs a pack, and importing only references it:
 
 - Default discovery loads every file under `shape/`, including `shape/vendor/`, whether or not any module imports it. A pack's resources, components, and rules join the Shape model as soon as its files are under `shape/`, and its rules run without an import.
-- `import domain.audit.v1` lets a module refer to that module's declarations by bare name. A qualified reference such as `domain.audit.v1::DurableAudit` works without the import. Importing a module that no file declares is not itself an error.
+- `import domain.history.v1` lets a module refer to that module's declarations by bare name. A qualified reference such as `domain.history.v1::DurableHistory` works without the import. Importing a module that no file declares is not itself an error.
 - When two imported modules declare the same name, a bare reference to it is reported as ambiguous (for example `ambiguous trait`) and must be qualified.
 - A bare prelude trait name such as `AppendOnly` resolves to the prelude even when an imported pack declares a trait with that name. Only a declaration in the same module, or in a file with no `module` line, shadows a prelude trait.
 
@@ -86,24 +86,24 @@ rule no_call_cycles {
 }
 ```
 
-Explicit file arguments replace discovery. `shp check shape/project.shape` loads only that file, so the pack's rules do not run and references to pack declarations fail. For the checkout project, it exits 1:
+Explicit file arguments replace discovery. `shp check shape/project.shape` loads only that file, so the pack's rules do not run and references to pack declarations fail. For the publishing project, it exits 1:
 
 ```text
 error: unknown trait
 
-trait DurableAudit is referenced but not declared.
+trait DurableHistory is referenced but not declared.
 
 caused by:
-  - shape/project.shape: resource CheckoutAudit : DurableAudit
+  - shape/project.shape: resource PublishingHistory : DurableHistory
 ```
 
 Discovery is relative to the working directory and does not search parent directories. From a directory with no `shape/` subdirectory, `shp check` loads nothing and passes, so run commands from the project root. See the [CLI Reference](/shapelang/reference/cli/).
 
 ## Changing a pack
 
-Shape has no override keyword. A local declaration with the same name as an imported one silently wins: a module that imports `domain.audit.v1` and declares its own `trait DurableAudit` gets the local trait, with none of the pack's forbids and no diagnostic. Local policy therefore needs its own names, applied alongside the pack's traits as `CheckoutRetention` is above.
+Shape has no override keyword. A local declaration with the same name as an imported one silently wins: a module that imports `domain.history.v1` and declares its own `trait DurableHistory` gets the local trait, with none of the pack's forbids and no diagnostic. Local policy therefore needs its own names, applied alongside the pack's traits as `PublishingRetention` is above.
 
-To change a pack's contract, vendor a new reviewed revision under a new module version, such as `domain.audit.v2`, and update the imports. A pack's final forbids stay final after import; see [Effect Model](/shapelang/concepts/effect-model/#nothing-waives-a-final-forbid).
+To change a pack's contract, vendor a new reviewed revision under a new module version, such as `domain.history.v2`, and update the imports. A pack's final forbids stay final after import; see [Effect Model](/shapelang/concepts/effect-model/#nothing-waives-a-final-forbid).
 
 ## Pinning and updates
 

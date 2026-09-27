@@ -58,44 +58,44 @@ The canonical form is:
 For example, this input puts the memory on one line with its members out of order and two `guards` blocks, and carries a comment:
 
 ```shape
-module gateway
+module editor
 
-memory DecisionRefactorConstraint : RefactorConstraint<fn Gateway.derivePolicyDecision> { summary "Previous refactors broke error normalisation." guards { on_change require ReEvaluation<Self> } status Unexplained guards { forbid transform Inline } applies_to fn Gateway.derivePolicyDecision who { owner GatewayTeam } confidence High }
+memory MergeRefactorConstraint : RefactorConstraint<fn Editor.mergeAutosaves> { summary "The sync library sends autosaves out of order, so keep the sort." guards { on_change require ReEvaluation<Self> } status Explained guards { forbid transform Inline } applies_to fn Editor.mergeAutosaves who { owner EditorTeam } confidence High }
 
-// Policy reads only.
-component Gateway {
-  fn derivePolicyDecision : RefactorSensitive
-    effects complete { Read<PolicySnapshot> }
-  grants Read<PolicySnapshot>
-  owns PolicySnapshot
+// Merge only reads autosaves.
+component Editor {
+  fn mergeAutosaves : RefactorSensitive
+    effects complete { Read<Autosave> }
+  grants Read<Autosave>
+  owns Autosave
 }
 
-resource PolicySnapshot
+resource Autosave
 ```
 
 `shp fmt` rewrites it as follows, dropping the comment:
 
 ```shape
-module gateway
+module editor
 
-resource PolicySnapshot
+resource Autosave
 
-component Gateway {
-  owns PolicySnapshot
-  grants Read<PolicySnapshot>
-  fn derivePolicyDecision : RefactorSensitive
+component Editor {
+  owns Autosave
+  grants Read<Autosave>
+  fn mergeAutosaves : RefactorSensitive
     effects complete {
-      Read<PolicySnapshot>
+      Read<Autosave>
     }
 }
 
-memory DecisionRefactorConstraint : RefactorConstraint<fn Gateway.derivePolicyDecision> {
-  applies_to fn Gateway.derivePolicyDecision
-  status Unexplained
+memory MergeRefactorConstraint : RefactorConstraint<fn Editor.mergeAutosaves> {
+  applies_to fn Editor.mergeAutosaves
+  status Explained
   confidence High
-  summary "Previous refactors broke error normalisation."
+  summary "The sync library sends autosaves out of order, so keep the sort."
   who {
-    owner GatewayTeam
+    owner EditorTeam
   }
   guards {
     forbid transform Inline
@@ -110,10 +110,10 @@ Definition lookup and completion collect names from the declarations in one docu
 
 - components, and each function under both `Component.fn` and its bare name;
 - resources, traits, relations, implementations, bindings, rules, reevaluations, and `change` declarations;
-- rationale and memory, under their own names and under their context type, both bare (`RefactorConstraint`) and complete (`RefactorConstraint<fn Gateway.derivePolicyDecision>`);
+- rationale and memory, under their own names and under their context type, both bare (`RefactorConstraint`) and complete (`RefactorConstraint<fn Editor.mergeAutosaves>`);
 - declarations and functions introduced by `add` entries in `change` blocks. `modify` and `remove` entries refer to existing symbols, so they are not definition sites. Attestations have no names.
 
-Context references are therefore target-aware. A definition query for `InlineRationale<fn Gateway.derivePolicyDecision>` finds the rationale or memory for that target, not the first declaration that uses `InlineRationale`. A reevaluation's `satisfies` target still resolves by the context's declared name.
+Context references are therefore target-aware. A definition query for `InlineRationale<fn Editor.mergeAutosaves>` finds the rationale or memory for that target, not the first declaration that uses `InlineRationale`. A reevaluation's `satisfies` target still resolves by the context's declared name.
 
 Completion candidates are the keywords, including phrases such as `effects complete`, `forbid final`, `forbid path`, `forbid provides`, and `allow attest`; the prelude effect names, traits, context types, and relation kinds; and the document's declared names when it parses.
 
@@ -129,7 +129,7 @@ The editor helpers pass `{ module, filePath }` inputs to `checkShapeModules` wit
 - **Snapshot.** Each validation builds one snapshot, the discovered files with every open document overlaid, and passes it, sorted by path, to `getEditorDiagnosticsForDocuments`.
 - **Publication.** A generation counter discards the results of superseded validations. Each run publishes a diagnostic set, possibly empty, for every document in the snapshot and for every URI it published before, which clears fixed and closed files.
 - **Placement.** Parse diagnostics appear at their position. Semantic diagnostics have none, so they appear on the first character of the file named in the diagnostic, or of the first snapshot document when the diagnostic names none.
-- **Reference under the cursor.** Hover and definition take a complete context reference such as `RefactorConstraint<fn Gateway.derivePolicyDecision>` when the cursor is inside one, and otherwise the qualified identifier there. Definitions return a zero-width range.
+- **Reference under the cursor.** Hover and definition take a complete context reference such as `RefactorConstraint<fn Editor.mergeAutosaves>` when the cursor is inside one, and otherwise the qualified identifier there. Definitions return a zero-width range.
 - **Completion.** Candidates are the union of `getCompletions` over the last validated snapshot and the open documents. The replacement range is derived from the chosen candidate, so accepting a phrase such as `forbid path` replaces the whole typed prefix.
 
 ## Critic

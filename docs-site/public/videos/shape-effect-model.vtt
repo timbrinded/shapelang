@@ -1,0 +1,67 @@
+WEBVTT
+
+00:00:00.500 --> 00:00:02.310
+Say you're building a writing app.
+
+00:00:02.470 --> 00:00:03.830
+Every save keeps a revision,
+
+00:00:04.040 --> 00:00:06.620
+so writers can go back to any earlier version.
+
+00:00:07.270 --> 00:00:08.540
+You ask your coding agent
+
+00:00:08.620 --> 00:00:10.410
+to keep that history small.
+
+00:00:10.420 --> 00:00:13.370
+Seconds later, a nightly job deletes old revisions.
+
+00:00:13.970 --> 00:00:16.470
+The agent writes down what the job does:
+
+00:00:16.470 --> 00:00:17.610
+a hard delete.
+
+00:00:17.620 --> 00:00:19.770
+But revisions are append-only,
+
+00:00:19.770 --> 00:00:22.410
+and that trait forbids hard deletes for good.
+
+00:00:22.450 --> 00:00:23.380
+The check fails.
+
+00:00:24.030 --> 00:00:26.420
+So the agent adds a grant for it.
+
+00:00:26.520 --> 00:00:30.180
+Still blocked: no grant overrides a final forbid.
+
+00:00:30.860 --> 00:00:33.890
+It marks the effects unknown instead.
+
+00:00:34.000 --> 00:00:36.680
+That fails too: unknown is never read as none.
+
+00:00:37.380 --> 00:00:40.230
+Deleting revision history is a decision for people.
+
+00:00:40.560 --> 00:00:42.750
+Change the rule in the model, with the code,
+
+00:00:42.750 --> 00:00:43.710
+and review it.
+
+00:00:44.360 --> 00:00:47.270
+Shape checks the claims against each other.
+
+00:00:47.270 --> 00:00:49.910
+The pull request's review, by a teammate,
+
+00:00:49.970 --> 00:00:51.650
+a CI job or a review agent,
+
+00:00:51.690 --> 00:00:53.830
+checks them against the code.

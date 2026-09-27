@@ -10,22 +10,22 @@ Each entry gives a minimal example that parses and passes `shp check` (the `effe
 ### File layout
 
 ```shape
-module audit.store
+module history.log
 
 import shared.resources
 
-resource AuditEvent : AppendOnly
+resource Revision : AppendOnly
 ```
 
 A file holds an optional `module` line, then any number of `import` lines, then declarations. An `import` after a declaration is a parse error. `shp fmt` sorts imports, and sorts declarations by kind and then by name. Every `.shape` file the checker loads belongs to one Shape model; which files those are is set by [file discovery](/shapelang/reference/cli/#file-discovery).
 
 ### Modules and references
 
-A module name is a dotted path of identifiers, such as `audit.store`. Every declaration belongs to its file's module, so two modules can both declare `Store`. Files without a `module` line share one unnamed module.
+A module name is a dotted path of identifiers, such as `history.log`. Every declaration belongs to its file's module, so two modules can both declare `Store`. Files without a `module` line share one unnamed module.
 
 References are resolved in this order:
 
-1. A qualified reference, `audit.store::AuditEvent`, names that module's declaration directly. The module need not be imported.
+1. A qualified reference, `history.log::Revision`, names that module's declaration directly. The module need not be imported.
 2. An unqualified reference resolves to a declaration in the referencing module first.
 3. Otherwise it resolves to the one imported module that declares the name. Two or more matches are [`ambiguous <kind>`](/shapelang/reference/diagnostics/#error-ambiguous-kind), and none is [`unknown <kind>`](/shapelang/reference/diagnostics/#error-unknown-kind).
 
@@ -69,7 +69,7 @@ A source reference is `tag("path#symbol")`. It follows `source` (in functions, a
 
 ### Declaration targets
 
-A target is `KIND Name`, where `KIND` is `fn`, `component`, `resource`, `implementation`, `rule`, or `relation`. Targets appear in context types (`RefactorConstraint<fn Gateway.derivePolicyDecision>`) and in `applies_to`.
+A target is `KIND Name`, where `KIND` is `fn`, `component`, `resource`, `implementation`, `rule`, or `relation`. Targets appear in context types (`RefactorConstraint<fn Editor.mergeAutosaves>`) and in `applies_to`.
 
 ### Type parameters and bounds
 
@@ -100,13 +100,13 @@ The `paths` blocks of `implementation` and `binding` hold quoted globs, matched 
 ### `resource`
 
 ```shape
-module audit
+module history
 
-resource AuditEvent : AppendOnly, Persistent {
-  storage postgres.table("audit_events")
+resource Revision : AppendOnly, Persistent {
+  storage postgres.table("revisions")
 }
 
-resource AuditStoreAstAnchor {
+resource RevisionLogAstAnchor {
   fingerprint ast.semantic_subtree_v1("sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
 }
 ```
@@ -124,7 +124,7 @@ The prelude supplies the resource traits `AppendOnly`, whose only members are fi
 ### `trait`
 
 ```shape
-module audit
+module history
 
 trait NeedsBoundaryNote<T: Component> {
   require_context BoundaryNote<T> satisfied_by rationale
@@ -135,7 +135,7 @@ trait Sealed<T: Resource> {
   forbid final Truncate<T>
 }
 
-resource AuditArchive : Sealed
+resource RevisionArchive : Sealed
 ```
 
 | Member | Checked | Form | Notes |
@@ -150,25 +150,25 @@ Only `forbid final` and `require_context` affect checking. A plain `forbid` does
 ### `component`
 
 ```shape
-module audit
+module history
 
-resource AuditEvent : AppendOnly
+resource Revision : AppendOnly
 
-component AuditStore {
-  owns AuditEvent
-  grants Append<AuditEvent>
-  grants Read<AuditEvent>
-  fn appendEvent
-    source ts("src/audit/store.ts#appendEvent")
+component RevisionLog {
+  owns Revision
+  grants Append<Revision>
+  grants Read<Revision>
+  fn appendRevision
+    source ts("src/history/log.ts#appendRevision")
     effects complete {
-      Append<AuditEvent>
-        evidence ts("src/audit/store.ts#appendEvent")
+      Append<Revision>
+        evidence ts("src/history/log.ts#appendRevision")
     }
-  fn listEvents
-    source ts("src/audit/store.ts#listEvents")
+  fn listRevisions
+    source ts("src/history/log.ts#listRevisions")
     effects complete {
-      Read<AuditEvent>
-        evidence ts("src/audit/store.ts#listEvents")
+      Read<Revision>
+        evidence ts("src/history/log.ts#listRevisions")
     }
 }
 ```
@@ -196,18 +196,18 @@ fn NAME [: Trait, …]
 ```
 
 ```shape
-module audit
+module history
 
-resource LegacyEvent
+resource LegacyRevision
 
-component AuditStore {
-  grants Import<LegacyEvent>
-  fn importLegacyEvents
-    source ts("src/audit/import.ts#importLegacyEvents")
-    description "Copies the legacy audit table into AuditStore once."
+component RevisionLog {
+  grants Import<LegacyRevision>
+  fn importLegacyRevisions
+    source ts("src/history/import.ts#importLegacyRevisions")
+    description "Copies the legacy revision table into RevisionLog once."
     unsafe effects complete {
-      Import<LegacyEvent>
-        evidence ts("src/audit/import.ts#importLegacyEvents")
+      Import<LegacyRevision>
+        evidence ts("src/history/import.ts#importLegacyRevisions")
     }
     expires "2026-12-31"
     reason "One-off migration from the legacy store."
@@ -233,26 +233,26 @@ Out-of-order members, a missing effects block, and two effects blocks are parse 
 ### `relation`
 
 ```shape
-module gateway
+module editor
 
-resource AuditEvent
+resource Revision
 
-component AuditStore {
+component Editor {
 }
 
-component Gateway {
+component RevisionLog {
 }
 
-relation AuditWritePath {
-  kind coordinated_call
-  connects Gateway -> AuditStore -> AuditEvent
-  summary "Audit writes flow Gateway -> AuditStore -> AuditEvent."
-}
-
-relation GatewayCallsAudit {
+relation EditorCallsLog {
   kind calls
-  connects Gateway -> AuditStore
-  roles { AuditStore as callee, Gateway as caller }
+  connects Editor -> RevisionLog
+  roles { Editor as caller, RevisionLog as callee }
+}
+
+relation RevisionWritePath {
+  kind coordinated_call
+  connects Editor -> RevisionLog -> Revision
+  summary "Editor writes revisions only through RevisionLog."
 }
 ```
 
@@ -279,31 +279,34 @@ An `expects` endpoint must be one of the relation's `connects` endpoints and mus
 ### `rule`
 
 ```shape
-module gateway
+module publishing
 
-resource JsonRpcEndpoint
+resource PrivateDraft
 
-resource SecretStore
+resource StoryEndpoint
 
-component Gateway {
+component Feed {
 }
 
-rule GatewayBoundary {
-  forbid provides JsonRpcEndpoint except Gateway
+component Publisher {
 }
 
-rule NoPiiPurge {
+rule NoDraftPurge {
   forbid final HardDelete<T>
   when T has PII
   when T has Persistent
+}
+
+rule NoDraftRoute {
+  forbid path Feed -> PrivateDraft over calls or provides
 }
 
 rule NoRuntimeCycle {
   forbid hypercycle over calls or callbacks
 }
 
-rule NoSecretRoute {
-  forbid path Gateway -> SecretStore over calls or provides
+rule publisher_only_story_endpoint {
+  forbid provides StoryEndpoint except Publisher
 }
 ```
 
@@ -323,16 +326,16 @@ A rule that breaks these constraints is reported as [`invalid rule`](/shapelang/
 ### `implementation`
 
 ```shape
-module audit
+module history
 
-component AuditStore {
+component RevisionLog {
 }
 
-implementation AuditStoreImpl {
+implementation RevisionLogImpl {
   paths {
-    "src/audit/**/*.ts"
+    "src/history/**/*.ts"
   }
-  conforms_to AuditStore
+  conforms_to RevisionLog
   on_change require shape_update
 }
 ```
@@ -384,7 +387,7 @@ attest docs_not_needed {
 }
 
 attest no_shape_change {
-  source ts("src/audit/store.ts")
+  source ts("src/history/log.ts")
   reason "Renamed a local variable; the architecture is unchanged."
 }
 ```
@@ -394,24 +397,24 @@ An attestation is `attest KIND { source REF reason "TEXT" }`. Both members are r
 ### `change`
 
 ```shape
-module gateway
+module editor
 
-resource PolicySnapshot
+resource Autosave
 
-component Gateway {
-  grants Read<PolicySnapshot>
-  fn derivePolicyDecision
+component Editor {
+  grants Read<Autosave>
+  fn mergeAutosaves
     effects complete {
-      Read<PolicySnapshot>
+      Read<Autosave>
     }
 }
 
-change RefactorDecision {
-  modify fn Gateway.derivePolicyDecision
+change RefactorMerge {
+  modify fn Editor.mergeAutosaves
     transform ExtractHelper
-    source ts("src/gateway/policy.ts#derivePolicyDecision")
+    source ts("src/editor/autosave.ts#mergeAutosaves")
     effects complete {
-      Read<PolicySnapshot>
+      Read<Autosave>
     }
 }
 ```
@@ -436,23 +439,23 @@ The checker applies `change` blocks after every ordinary declaration, entry by e
 ### `rationale`
 
 ```shape
-module gateway
+module editor
 
-resource PolicySnapshot
+resource Autosave
 
-component Gateway {
-  grants Read<PolicySnapshot>
-  fn derivePolicyDecision : PreserveInline
+component Editor {
+  grants Read<Autosave>
+  fn mergeAutosaves : PreserveInline
     effects complete {
-      Read<PolicySnapshot>
+      Read<Autosave>
     }
 }
 
-rationale PolicyInline : InlineRationale<fn Gateway.derivePolicyDecision> {
-  applies_to fn Gateway.derivePolicyDecision
+rationale AutosaveInline : InlineRationale<fn Editor.mergeAutosaves> {
+  applies_to fn Editor.mergeAutosaves
   why CognitiveLocality
-  summary "Branches stay inline so the check order is reviewable."
-  evidence test("gateway/policy.test.ts")
+  summary "Branches stay inline so the merge order is reviewable."
+  evidence test("editor/autosave.test.ts")
 }
 ```
 
@@ -468,31 +471,31 @@ rationale PolicyInline : InlineRationale<fn Gateway.derivePolicyDecision> {
 ### `memory`
 
 ```shape
-module gateway
+module editor
 
-resource PolicySnapshot
+resource Autosave
 
-component Gateway {
-  grants Read<PolicySnapshot>
-  fn derivePolicyDecision : RefactorSensitive
+component Editor {
+  grants Read<Autosave>
+  fn mergeAutosaves : RefactorSensitive
     effects complete {
-      Read<PolicySnapshot>
+      Read<Autosave>
     }
 }
 
-memory DecisionRefactorConstraint : RefactorConstraint<fn Gateway.derivePolicyDecision> {
-  applies_to fn Gateway.derivePolicyDecision
-  status Unexplained
+memory MergeRefactorConstraint : RefactorConstraint<fn Editor.mergeAutosaves> {
+  applies_to fn Editor.mergeAutosaves
+  status Explained
   confidence High
   sensitive
-  summary "Previous refactors changed error normalisation behaviour."
+  summary "The sync library sends autosaves out of order, so keep the sort."
   who {
-    owner GatewayTeam
+    owner EditorTeam
   }
   guards {
     on_change require ReEvaluation<Self>
   }
-  observed ts("src/gateway/policy.ts#derivePolicyDecision")
+  observed ts("src/editor/autosave.ts#mergeAutosaves")
 }
 ```
 
@@ -512,18 +515,18 @@ The checker requires none of these members.
 Guard members are written only as grouped blocks. This is their canonical syntax:
 
 ```shape
-module gateway
+module editor
 
-component Gateway {
-  fn derivePolicyDecision : PreserveInline
-    description "Branches stay inline so the check order is reviewable."
+component Editor {
+  fn mergeAutosaves : PreserveInline
+    description "Branches stay inline so the merge order is reviewable."
     effects complete {
     }
 }
 
-rationale PolicyInline : InlineRationale<fn Gateway.derivePolicyDecision> {
+rationale AutosaveInline : InlineRationale<fn Editor.mergeAutosaves> {
   who {
-    owner GatewayTeam
+    owner EditorTeam
   }
   when {
     review_by "2026-08-18"
@@ -551,15 +554,15 @@ A block may be empty. `shp fmt` writes context members in this order: `applies_t
 ### `reevaluation`
 
 ```shape
-module gateway
+module editor
 
-component Gateway {
-  fn derivePolicyDecision : RefactorSensitive
+component Editor {
+  fn mergeAutosaves : RefactorSensitive
     effects complete {
     }
 }
 
-role GatewayTeam
+role EditorTeam
 
 role Security
 
@@ -567,21 +570,21 @@ policy RequireApprover {
   require approver
 }
 
-memory DecisionRefactorConstraint : RefactorConstraint<fn Gateway.derivePolicyDecision> {
+memory MergeRefactorConstraint : RefactorConstraint<fn Editor.mergeAutosaves> {
   sensitive
   guards {
     on_change require ReEvaluation<Self>
   }
 }
 
-reevaluation DecisionShapeRechecked {
-  satisfies memory gateway::DecisionRefactorConstraint
+reevaluation MergeRechecked {
+  satisfies memory editor::MergeRefactorConstraint
   outcome Confirmed
-  summary "Refactor preserves error-normalisation behaviour."
-  reviewer GatewayTeam
+  summary "Refactor keeps the sort the sync library needs."
+  reviewer EditorTeam
   approver Security
   decided_on "2026-06-02"
-  evidence test("gateway/error-normalisation.test.ts")
+  evidence test("editor/out-of-order-autosaves.test.ts")
 }
 ```
 
@@ -601,9 +604,9 @@ A reevaluation that misses a requirement is reported, one diagnostic per reason,
 ### `role` and `policy`
 
 ```shape
-module gateway
+module editor
 
-role GatewayTeam
+role EditorTeam
 
 policy RequireApprover {
   require approver
@@ -617,26 +620,26 @@ policy RequireApprover {
 ### `effect candidate`
 
 ```shape
-module shape.generated.ast.src.audit.store
+module shape.generated.ast.src.history.log
 
-resource AuditEvent
+resource Revision
 
-resource AuditStoreAppendEventAstAnchor {
+resource RevisionLogAppendRevisionAstAnchor {
   fingerprint ast.semantic_subtree_v1("sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
 }
 
-component AuditStore {
-  fn appendEvent
-    source ts("src/audit/store.ts#AuditStore.appendEvent")
+component RevisionLog {
+  fn appendRevision
+    source ts("src/history/log.ts#RevisionLog.appendRevision")
     effects unknown
 }
 
-effect candidate AppendEventCandidate {
-  fn AuditStore.appendEvent
-  effect Append<AuditEvent>
-  source ts("src/audit/store.ts#AuditStore.appendEvent")
+effect candidate AppendRevisionCandidate {
+  fn RevisionLog.appendRevision
+  effect Append<Revision>
+  source ts("src/history/log.ts#RevisionLog.appendRevision")
   confidence low
-  pin AuditStoreAppendEventAstAnchor fingerprint ast.semantic_subtree_v1("sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+  pin RevisionLogAppendRevisionAstAnchor fingerprint ast.semantic_subtree_v1("sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
 }
 ```
 

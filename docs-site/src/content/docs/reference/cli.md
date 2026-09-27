@@ -71,7 +71,7 @@ A passing run prints `Shape check passed.` to stdout. A failing run prints its d
 shp check
 shp check --changed-files changed.txt
 shp check --changed-files changed.txt --base-ref origin/main
-shp check --as-of 2026-05-30 shape/gateway.shape
+shp check --as-of 2026-05-30 shape/editor.shape
 ```
 
 ### Base model
@@ -91,10 +91,10 @@ Strict `shp check` rejects `effects unknown` in authored modules. `--allow-unkno
 ```text
 warning: unknown effects
 
-AuditStore.appendEvent declares effects unknown.
+RevisionLog.appendRevision declares effects unknown.
 
 caused by:
-  - draft.shape: fn AuditStore.appendEvent
+  - draft.shape: fn RevisionLog.appendRevision
 
 Shape check passed with warnings.
 ```
@@ -174,27 +174,27 @@ The formatter rebuilds each file from its syntax tree. The rebuild:
 Keep explanations that must survive in `summary`, `description`, or design-memory declarations. Given this input:
 
 ```shape
-module audit
-// Audit events are append-only.
-resource AuditEvent : AppendOnly
-component AuditStore { owns AuditEvent
-  grants Append<AuditEvent>  /* writer */
-  fn appendEvent effects complete { Append<AuditEvent> } }
+module history
+// Revisions are append-only.
+resource Revision : AppendOnly
+component RevisionLog { owns Revision
+  grants Append<Revision>  /* writer */
+  fn appendRevision effects complete { Append<Revision> } }
 ```
 
 `shp fmt` writes:
 
 ```shape
-module audit
+module history
 
-resource AuditEvent : AppendOnly
+resource Revision : AppendOnly
 
-component AuditStore {
-  owns AuditEvent
-  grants Append<AuditEvent>
-  fn appendEvent
+component RevisionLog {
+  owns Revision
+  grants Append<Revision>
+  fn appendRevision
     effects complete {
-      Append<AuditEvent>
+      Append<Revision>
     }
 }
 ```
@@ -216,22 +216,22 @@ shp explain SYMBOL [files...]
 
 Prints the derived facts and incident relations for one symbol.
 
-`SYMBOL` is a resource, component, relation, rationale, or memory name, or a function written `Component.fn`. It may be module-qualified (`gateway::Gateway`). An unmatched symbol prints `No shape facts found for SYMBOL.` A name that matches more than one declaration prints `Ambiguous shape symbol SYMBOL.` and its candidates. Both cases exit `0`.
+`SYMBOL` is a resource, component, relation, rationale, or memory name, or a function written `Component.fn`. It may be module-qualified (`editor::Editor`). An unmatched symbol prints `No shape facts found for SYMBOL.` A name that matches more than one declaration prints `Ambiguous shape symbol SYMBOL.` and its candidates. Both cases exit `0`.
 
 ```text
-$ shp explain AuditEvent
-AuditEvent
+$ shp explain Revision
+Revision
   kind: resource
   traits:
     AppendOnly
 
   final forbidden effects:
-    HardDelete<AuditEvent>
-    Truncate<AuditEvent>
-    DropStorage<AuditEvent>
+    HardDelete<Revision>
+    Truncate<Revision>
+    DropStorage<Revision>
 
   relations:
-    coordinated_call AuditWritePath: Gateway (component) -> AuditStore (component) -> AuditEvent (resource)  // Audit writes flow Gateway -> AuditStore -> AuditEvent.
+    coordinated_call RevisionWritePath: Editor (component) -> RevisionLog (component) -> Revision (resource)  // Editor writes revisions only through RevisionLog.
 ```
 
 ## shp graph
@@ -256,18 +256,18 @@ $ shp graph all
 Hypergraph
 
 calls:
-  calls GatewayCallsAudit: Gateway (component) -> AuditStore (component)
+  calls EditorCallsLog: Editor (component) -> RevisionLog (component)
 
 coordinated_call:
-  coordinated_call AuditWritePath: Gateway (component) -> AuditStore (component) -> AuditEvent (resource)  // Audit writes flow Gateway -> AuditStore -> AuditEvent.
+  coordinated_call RevisionWritePath: Editor (component) -> RevisionLog (component) -> Revision (resource)  // Editor writes revisions only through RevisionLog.
 ```
 
 `graph show SYMBOL` accepts a component, a resource, or a relation name. For a vertex it prints the vertex and each incident relation, or `(no incident relations)`:
 
 ```text
-$ shp graph show Gateway --kind calls
-Gateway (component)
-  calls GatewayCallsAudit: Gateway (component) -> AuditStore (component)
+$ shp graph show Editor --kind calls
+Editor (component)
+  calls EditorCallsLog: Editor (component) -> RevisionLog (component)
 ```
 
 `graph stats` counts the whole model and does not accept a symbol:
@@ -281,9 +281,9 @@ Hypergraph stats
     coordinated_call: 1
   incidences: 5
   arity: min 2, max 3, avg 2.50
-    widest: coordinated_call AuditWritePath
+    widest: coordinated_call RevisionWritePath
   isolated vertices: 1
-    PolicySnapshot (resource)
+    Autosave (resource)
 ```
 
 How relation kinds become traversal steps is explained in [Relations and Graph Rules](/shapelang/concepts/relations/).
@@ -302,7 +302,7 @@ Hypergraph stats
   incidences: 2
   arity: min 2, max 2, avg 2.00
   isolated vertices: 2
-    AuditEvent (resource), PolicySnapshot (resource)
+    Autosave (resource), Revision (resource)
 ```
 
 ### Legacy forms
@@ -399,12 +399,12 @@ Each entry shows its type and, when declared, `status`, `confidence`, `protects`
 $ shp memory
 Memory Guards
 
-fn Gateway.derivePolicyDecision
-  memory DecisionRefactorConstraint
+fn Editor.mergeAutosaves
+  memory MergeRefactorConstraint
   type: RefactorConstraint
-  status: Unexplained
+  status: Explained
   confidence: High
-  owner: GatewayTeam
+  owner: EditorTeam
   review_by: 2026-01-01
 ```
 
@@ -429,10 +429,10 @@ $ shp obligations --as-of 2026-05-30
 Open Shape Obligations
 
 guarded changes:
-  fn gateway::Gateway.derivePolicyDecision changed; requires reevaluation satisfying memory DecisionRefactorConstraint
+  fn editor::Editor.mergeAutosaves changed; requires reevaluation satisfying memory MergeRefactorConstraint
 
 stale design memory:
-  memory DecisionRefactorConstraint review_by 2026-01-01 is before 2026-05-30
+  memory MergeRefactorConstraint review_by 2026-01-01 is before 2026-05-30
 ```
 
 ## shp author
@@ -469,7 +469,7 @@ The mode is chosen by `--prompt`, `--critic-prompt`, or neither:
 Each violation prints a one-line `error:` naming the flag and exits `2`; for example, `error: --prompt requires --shape-files.` In critic mode, a proposed or existing Shape file that fails to parse is reported as `error: failed to parse FILE:LINE:COLUMN: MESSAGE` and exits `2`. Advisories exit `0`.
 
 ```bash
-shp author --changed-files changed.txt --component AuditStore --module audit
+shp author --changed-files changed.txt --component RevisionLog --module history
 ```
 
 The draft, prompt, and critic workflow is described in [Author Updates with an Agent](/shapelang/guides/authoring/).
@@ -490,19 +490,19 @@ Scans source files for destructive-operation hints and, with `--shape-files`, co
 Without `--shape-files`, the command prints one hint per line to stdout, as `PATH:LINE EFFECT [target=TARGET] EVIDENCE`, and exits `0`:
 
 ```text
-$ shp analyze src/audit/purge.ts
-src/audit/purge.ts:2 HardDelete target=audit_events return db.deleteFrom("audit_events");
+$ shp analyze src/history/purge.ts
+src/history/purge.ts:2 HardDelete target=revisions return db.deleteFrom("revisions");
 ```
 
 With `--shape-files`, each mismatch is a warning on stderr and any warning exits `1`. With no mismatch, the command prints `Shape analyzer found no mismatches.` to stdout and exits `0`. A listed Shape file that fails to parse exits `2`, as does an unreadable source file.
 
 ```text
-$ shp analyze --shape-files shape/audit.shape src/audit/purge.ts
+$ shp analyze --shape-files shape/history.shape src/history/purge.ts
 warning: analyzer hint missing from shape effects
 
-src/audit/purge.ts:2 suggests HardDelete.
-suspected target: audit_events
-evidence: return db.deleteFrom("audit_events");
+src/history/purge.ts:2 suggests HardDelete.
+suspected target: revisions
+evidence: return db.deleteFrom("revisions");
 ```
 
 The supported patterns, the warning kinds, and the matcher's limits are described in [Analyzer Hints](/shapelang/guides/analyzer/).
@@ -519,7 +519,7 @@ shp ast json [--module NAME] [--include-ast-layer] [--raw-out PATH] ast.json
 | Flag | Applies to | Meaning |
 | --- | --- | --- |
 | `--language LANG` | `source` | Override source language for every input file. Values are listed under [`ast source --language LANG`](#ast-source---language-lang). |
-| `--module NAME` | both | Module name for the generated Shape draft. Defaults to `generated.ast`. With `--out-dir` it is a base, defaulting to `shape.generated.ast`, and each file's module appends its source path segments (for example `shape.generated.ast.src.audit.store`). |
+| `--module NAME` | both | Module name for the generated Shape draft. Defaults to `generated.ast`. With `--out-dir` it is a base, defaulting to `shape.generated.ast`, and each file's module appends its source path segments (for example `shape.generated.ast.src.history.log`). |
 | `--include-ast-layer` | both | Include raw AST resources and `ast_child` relations in stdout. |
 | `--raw-out PATH` | both | Write the raw AST trace to a sidecar Shape file (module `NAME.raw`) while stdout keeps the semantic draft. |
 | `--out-dir DIR` | `source` | Write one generated semantic Shape file per source under `DIR`, plus `DIR/manifest.json`. |
@@ -537,8 +537,8 @@ Constraints, each of which exits `2`:
 The draft goes to stdout. With `--out-dir`, stdout carries a one-line summary instead, such as `Wrote 1 generated AST Shape file(s) to shape/generated/ast.` or, under `--check`, `Generated AST Shape files are up to date in shape/generated/ast.` Warnings go to stderr and exit `0`. A generation failure prints `error: AST generation failed` and its reasons to stderr. Tree-sitter syntax errors without `--allow-parse-errors` exit `1`; other generation errors, such as an unknown file extension, exit `2`. `--check` with stale files prints `error: generated AST Shape files are stale` and each stale path to stderr, and exits `1`.
 
 ```bash
-shp ast source --out-dir shape/generated/ast src/audit/store.ts
-shp ast source --out-dir shape/generated/ast --check src/audit/store.ts
+shp ast source --out-dir shape/generated/ast src/history/log.ts
+shp ast source --out-dir shape/generated/ast --check src/history/log.ts
 ```
 
 The draft contents, the generated-AST exemption for `effects unknown`, the manifest, and the AST JSON input format are described in [Generate Drafts from Source](/shapelang/guides/ast-drafts/).

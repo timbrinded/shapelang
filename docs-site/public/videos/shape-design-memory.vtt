@@ -1,0 +1,73 @@
+WEBVTT
+
+00:00:00.500 --> 00:00:01.480
+In our writing app,
+
+00:00:01.610 --> 00:00:03.970
+the editor autosaves as people type.
+
+00:00:03.970 --> 00:00:05.300
+You ask your coding agent
+
+00:00:05.370 --> 00:00:06.690
+to clean up that code.
+
+00:00:06.710 --> 00:00:09.290
+It finds a sort that looks redundant, removes it,
+
+00:00:09.330 --> 00:00:11.090
+and records the change in the model.
+
+00:00:11.690 --> 00:00:14.130
+The Shape check on the pull request stops it.
+
+00:00:14.150 --> 00:00:15.810
+The team left a note on this function.
+
+00:00:16.460 --> 00:00:18.000
+The sync library you depend on
+
+00:00:18.080 --> 00:00:20.200
+delivers autosaves out of order,
+
+00:00:20.220 --> 00:00:22.650
+so this merge has to sort them first.
+
+00:00:22.670 --> 00:00:25.050
+It looks redundant, and it isn't.
+
+00:00:25.050 --> 00:00:27.930
+So any change here needs a recorded review.
+
+00:00:28.580 --> 00:00:31.390
+A reviewer, a teammate or a review agent,
+
+00:00:31.560 --> 00:00:32.210
+reads the note,
+
+00:00:32.510 --> 00:00:34.610
+and the agent puts the sort back.
+
+00:00:34.610 --> 00:00:36.490
+The review is recorded in the model,
+
+00:00:36.490 --> 00:00:37.430
+with the date.
+
+00:00:37.430 --> 00:00:38.490
+Now it can merge.
+
+00:00:39.190 --> 00:00:41.970
+Your agent can't know every past decision.
+
+00:00:42.120 --> 00:00:43.570
+Shape keeps them in the model,
+
+00:00:43.810 --> 00:00:45.780
+and makes sure a review is recorded.
+
+00:00:46.060 --> 00:00:47.470
+Who reviews, and how well,
+
+00:00:47.480 --> 00:00:49.060
+is up to your process.

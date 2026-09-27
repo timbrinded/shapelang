@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 608" role="img" aria-labelledby="t d">
   <title id="t">How relation kinds become traversal steps</title>
-  <desc id="d">Relation kinds turn into directed traversal steps. calls GatewayCallsAudit gives the step Gateway to AuditStore, callbacks AuditCallsGateway gives AuditStore to Gateway, coordinated_call AuditWritePath gives one step per consecutive pair, Gateway to AuditStore and AuditStore to AuditEvent, and the custom kind generated_from gives no steps. The rule no_runtime_cycle forbids a hypercycle over calls or callbacks, so shp check reports one shortest witness: error: forbidden hypercycle, listing callbacks AuditCallsGateway and calls GatewayCallsAudit, witness AuditStore to Gateway to AuditStore. The coordinated_call steps are outside the rule's kinds.</desc>
+  <desc id="d">Relation kinds turn into directed traversal steps. calls EditorCallsLog gives the step Editor to RevisionLog, callbacks LogCallsEditor gives RevisionLog to Editor, coordinated_call RevisionWritePath gives one step per consecutive pair, Editor to RevisionLog and RevisionLog to Revision, and the custom kind generated_from gives no steps. The rule no_runtime_cycle forbids a hypercycle over calls or callbacks, so shp check reports one shortest witness: error: forbidden hypercycle, listing calls EditorCallsLog and callbacks LogCallsEditor, witness Editor to RevisionLog to Editor. The coordinated_call steps are outside the rule's kinds.</desc>
   <style>
     .paper{fill:#f6f4ee}.grid{stroke:#e6e1d4}.gridM{stroke:#dbd4c4}
     .ink{fill:#1d2b34}.inkS{stroke:#1d2b34}.mute{fill:#5d6c74}.muteS{stroke:#8a959a}
@@ -51,18 +51,18 @@
   <path d="M41 160H623M41 192H623M41 248H623" class="rule" stroke-width=".8"/>
   <g class="mono ink" font-size="11.5">
     <text x="56" y="148" class="blue">calls</text>
-    <text x="200" y="148">GatewayCallsAudit</text>
-    <text x="344" y="148">Gateway -&gt; AuditStore</text>
+    <text x="200" y="148">EditorCallsLog</text>
+    <text x="344" y="148">Editor -&gt; RevisionLog</text>
     <text x="56" y="180" class="blue">callbacks</text>
-    <text x="200" y="180">AuditCallsGateway</text>
-    <text x="344" y="180">AuditStore -&gt; Gateway</text>
+    <text x="200" y="180">LogCallsEditor</text>
+    <text x="344" y="180">RevisionLog -&gt; Editor</text>
     <text x="56" y="214" class="blue">coordinated_call</text>
-    <text x="200" y="214">AuditWritePath</text>
-    <text x="344" y="214">Gateway -&gt; AuditStore -&gt; AuditEvent</text>
+    <text x="200" y="214">RevisionWritePath</text>
+    <text x="344" y="214">Editor -&gt; RevisionLog -&gt; Revision</text>
     <text x="344" y="234" class="mute" font-size="11">one step per consecutive pair</text>
     <text x="56" y="268">generated_from</text>
-    <text x="200" y="268">AuditEventLineage</text>
-    <text x="344" y="268">AuditEvent -&gt; AuditStore</text>
+    <text x="200" y="268">RevisionLineage</text>
+    <text x="344" y="268">Revision -&gt; RevisionLog</text>
   </g>
 
   <!-- steps each declaration contributes -->
@@ -74,16 +74,16 @@
   </g>
   <g class="mono ink" font-size="11.5">
     <rect x="672" y="133" width="216" height="22" class="card" stroke-width="1"/>
-    <text x="684" y="148">Gateway</text><text x="804" y="148">AuditStore</text>
+    <text x="684" y="148">Editor</text><text x="804" y="148">RevisionLog</text>
     <rect x="672" y="165" width="216" height="22" class="card" stroke-width="1"/>
-    <text x="684" y="180">AuditStore</text><text x="804" y="180">Gateway</text>
+    <text x="684" y="180">RevisionLog</text><text x="804" y="180">Editor</text>
     <rect x="672" y="197" width="216" height="22" class="card" stroke-width="1"/>
-    <text x="684" y="212">Gateway</text><text x="804" y="212">AuditStore</text>
+    <text x="684" y="212">Editor</text><text x="804" y="212">RevisionLog</text>
     <rect x="672" y="223" width="216" height="22" class="card" stroke-width="1"/>
-    <text x="684" y="238">AuditStore</text><text x="804" y="238">AuditEvent</text>
+    <text x="684" y="238">RevisionLog</text><text x="804" y="238">Revision</text>
   </g>
-  <path d="M764 144H788M764 176H788M764 208H788M764 234H788" fill="none" class="blueS" stroke-width="1.2"/>
-  <g class="blue"><path d="M786 140.5l7 3.5-7 3.5z"/><path d="M786 172.5l7 3.5-7 3.5z"/><path d="M786 204.5l7 3.5-7 3.5z"/><path d="M786 230.5l7 3.5-7 3.5z"/></g>
+  <path d="M768 144H790M768 176H790M768 208H790M768 234H790" fill="none" class="blueS" stroke-width="1.2"/>
+  <g class="blue"><path d="M788 140.5l7 3.5-7 3.5z"/><path d="M788 172.5l7 3.5-7 3.5z"/><path d="M788 204.5l7 3.5-7 3.5z"/><path d="M788 230.5l7 3.5-7 3.5z"/></g>
   <path d="M624 264H656M656 258V270" fill="none" class="muteS" stroke-width="1.3"/>
   <text x="672" y="268" class="mono mute" font-size="11.5">no traversal steps (custom kind)</text>
 
@@ -104,9 +104,9 @@
   <g class="mono ink" font-size="11.5">
     <text x="52" y="468" class="fail">error: forbidden hypercycle</text>
     <text x="52" y="486">rule no_runtime_cycle rejects this hypercycle:</text>
-    <text x="68" y="504">callbacks AuditCallsGateway</text>
-    <text x="68" y="522">calls GatewayCallsAudit</text>
-    <text x="52" y="540">witness: AuditStore -&gt; Gateway -&gt; AuditStore</text>
+    <text x="68" y="504">calls EditorCallsLog</text>
+    <text x="68" y="522">callbacks LogCallsEditor</text>
+    <text x="52" y="540">witness: Editor -&gt; RevisionLog -&gt; Editor</text>
   </g>
 
   <!-- step graph -->
@@ -119,16 +119,16 @@
   </g>
   <g class="mono" font-size="12.5" text-anchor="middle">
     <rect x="464" y="400" width="88" height="28" class="card" stroke-width="1.2"/>
-    <text x="508" y="418" class="ink">Gateway</text>
+    <text x="508" y="418" class="ink">Editor</text>
     <rect x="656" y="400" width="104" height="28" class="card" stroke-width="1.2"/>
-    <text x="708" y="418" class="ink">AuditStore</text>
+    <text x="708" y="418" class="ink">RevisionLog</text>
     <rect x="816" y="400" width="104" height="28" class="card" stroke-width="1.2"/>
-    <text x="868" y="418" class="ink">AuditEvent</text>
+    <text x="868" y="418" class="ink">Revision</text>
   </g>
   <g fill="none" class="failS" stroke-width="1.4"><circle cx="604" cy="390" r="8"/><path d="M600 386l8 8M608 386l-8 8"/></g>
   <g class="mono fail" font-size="11.5" text-anchor="middle">
-    <text x="604" y="356">calls GatewayCallsAudit</text>
-    <text x="604" y="482">callbacks AuditCallsGateway</text>
+    <text x="604" y="356">calls EditorCallsLog</text>
+    <text x="604" y="482">callbacks LogCallsEditor</text>
   </g>
   <path d="M464 512H488" class="muteS" stroke-width="1.3"/>
   <text x="496" y="516" class="mono mute" font-size="11.5">coordinated_call steps: not in this rule's kinds</text>

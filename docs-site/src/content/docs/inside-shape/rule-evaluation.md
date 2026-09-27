@@ -56,7 +56,7 @@ These behaviours span more than one check, or a check and the result assembly. T
   - Every `when` clause for the subject must match: the resource must carry each listed trait.
   - Each condition trait must be a marker trait with no type parameters, or have exactly one parameter explicitly bound to `Resource`, such as `AppendOnly<T: Resource>`. `resourceRuleConditionCompatibility` rejects unbound, non-`Resource`, and multiple parameters as `invalid_rule`, because the rule syntax cannot bind them to the subject.
   - An invalid or unresolved condition contributes no forbids.
-  - A generic target such as `HardDelete<T>` binds to the matching resource. A concrete target such as `HardDelete<audit::AuditEvent>` stays that exact resource after module and import resolution.
+  - A generic target such as `HardDelete<T>` binds to the matching resource. A concrete target such as `HardDelete<history::Revision>` stays that exact resource after module and import resolution.
   - Plain `forbid` members in a rule derive nothing.
   - A `final_forbidden_effect` from a rule names the first `when` trait as its trait.
 

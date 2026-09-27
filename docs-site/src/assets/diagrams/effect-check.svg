@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 544" role="img" aria-labelledby="t d">
   <title id="t">How shp check judges an emitted effect</title>
-  <desc id="d">shp check first rejects a function that declares effects unknown. For each emitted effect it then applies final forbids from the target resource's traits: AuditEvent has the prelude trait AppendOnly, which finally forbids HardDelete, so HardDelete of AuditEvent is rejected as a forbidden effect even though AuditStore grants it, and the grant is not consulted. Otherwise the component must grant the effect, or the check reports a missing grant. Effects without a resource target skip steps 2 and 3.</desc>
+  <desc id="d">shp check first rejects a function that declares effects unknown. For each emitted effect it then applies final forbids from the target resource's traits: Revision has the prelude trait AppendOnly, which finally forbids HardDelete, so HardDelete of Revision is rejected as a forbidden effect even though RevisionLog grants it, and the grant is not consulted. Otherwise the component must grant the effect, or the check reports a missing grant. Effects without a resource target skip steps 2 and 3.</desc>
   <style>
     .paper{fill:#f6f4ee}.grid{stroke:#e6e1d4}.gridM{stroke:#dbd4c4}
     .ink{fill:#1d2b34}.inkS{stroke:#1d2b34}.mute{fill:#5d6c74}.muteS{stroke:#8a959a}
@@ -43,8 +43,8 @@
   <!-- input -->
   <rect x="40" y="112" width="272" height="48" class="card" stroke-width="1.4"/>
   <g class="mono ink" font-size="12">
-    <text x="56" y="132">fn AuditStore.purgeOldEvents</text>
-    <text x="56" y="150">emits <tspan class="blue">HardDelete&lt;AuditEvent&gt;</tspan></text>
+    <text x="56" y="132">fn RevisionLog.purgeOldRevisions</text>
+    <text x="56" y="150">emits <tspan class="blue">HardDelete&lt;Revision&gt;</tspan></text>
   </g>
 
   <!-- spine -->
@@ -71,17 +71,17 @@
   <path d="M40 280H520" class="failS" stroke-width=".8" stroke-opacity=".5"/>
   <rect x="40" y="248" width="480" height="112" fill="none" class="failS" stroke-width="1.4"/>
   <text x="56" y="273" class="mono fail" font-size="11" letter-spacing="1.6">STEP 2</text>
-  <text x="120" y="273" class="mono ink" font-size="12">does a trait on AuditEvent finally forbid it?</text>
+  <text x="120" y="273" class="mono ink" font-size="12">does a trait on Revision finally forbid it?</text>
   <rect x="56" y="296" width="448" height="48" class="card" stroke-width="1"/>
   <g class="mono ink" font-size="12">
-    <text x="72" y="315">resource AuditEvent : AppendOnly</text>
+    <text x="72" y="315">resource Revision : AppendOnly</text>
     <text x="72" y="333">AppendOnly: <tspan class="fail">forbid final HardDelete&lt;T&gt;</tspan> <tspan class="mute" font-size="11.5">(prelude)</tspan></text>
   </g>
 
   <!-- step 3: grants -->
   <rect x="40" y="384" width="480" height="40" class="card" stroke-width="1.2"/>
   <text x="56" y="408" class="mono ink" font-size="11" letter-spacing="1.6">STEP 3</text>
-  <text x="120" y="408" class="mono ink" font-size="12">does AuditStore grant HardDelete&lt;AuditEvent&gt;?</text>
+  <text x="120" y="408" class="mono ink" font-size="12">does RevisionLog grant HardDelete&lt;Revision&gt;?</text>
 
   <!-- exits -->
   <g class="failS" stroke-width="1.4" fill="none" marker-end="url(#aF)">
@@ -109,7 +109,7 @@
 
   <!-- the grant that is not consulted -->
   <rect x="632" y="296" width="248" height="30" fill="none" class="muteS" stroke-width="1"/>
-  <text x="644" y="315" class="mono mute" font-size="12">grants HardDelete&lt;AuditEvent&gt;</text>
+  <text x="644" y="315" class="mono mute" font-size="12">grants HardDelete&lt;Revision&gt;</text>
   <text x="632" y="346" class="mono mute" font-size="11.5">not consulted when a final forbid matches</text>
 
   <!-- accepted -->
