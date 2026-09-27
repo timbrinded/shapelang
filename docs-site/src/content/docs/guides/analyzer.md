@@ -16,108 +16,108 @@ description: Scan source files for obvious hard deletes, truncates, and table dr
 
 ## Worked example
 
-`src/audit/purge.ts` deletes rows from the `audit_events` table:
+`src/history/purge.ts` deletes rows from the `revisions` table:
 
 ```typescript
-export async function purgeOldEvents(db: { deleteFrom: (table: string) => unknown }) {
-  return db.deleteFrom("audit_events");
+export async function purgeOldRevisions(db: { deleteFrom: (table: string) => unknown }) {
+  return db.deleteFrom("revisions");
 }
 ```
 
 Hint mode reports the delete, with the table as its static target:
 
 ```text
-$ shp analyze src/audit/purge.ts
-src/audit/purge.ts:2 HardDelete target=audit_events return db.deleteFrom("audit_events");
+$ shp analyze src/history/purge.ts
+src/history/purge.ts:2 HardDelete target=revisions return db.deleteFrom("revisions");
 ```
 
-The model in `shape/audit.shape` does not mention the purge yet:
+The model in `shape/history.shape` does not mention the purge yet:
 
 ```shape
-module audit
+module history
 
-resource AuditEvent : AppendOnly
+resource Revision : AppendOnly
 
-component AuditStore {
-  owns AuditEvent
-  grants Append<AuditEvent>
-  fn appendEvent
-    source ts("src/audit/store.ts#appendEvent")
+component RevisionLog {
+  owns Revision
+  grants Append<Revision>
+  fn appendRevision
+    source ts("src/history/log.ts#appendRevision")
     effects complete {
-      Append<AuditEvent>
-        evidence ts("src/audit/store.ts#appendEvent")
+      Append<Revision>
+        evidence ts("src/history/log.ts#appendRevision")
     }
 }
 ```
 
-Comparison mode warns and exits `1`. No declared function has a `source` or `evidence` reference to `src/audit/purge.ts`, so nothing in the model can account for the hint:
+Comparison mode warns and exits `1`. No declared function has a `source` or `evidence` reference to `src/history/purge.ts`, so nothing in the model can account for the hint:
 
 ```text
-$ shp analyze --shape-files shape/audit.shape src/audit/purge.ts
+$ shp analyze --shape-files shape/history.shape src/history/purge.ts
 warning: analyzer hint missing from shape effects
 
-src/audit/purge.ts:2 suggests HardDelete.
-suspected target: audit_events
-evidence: return db.deleteFrom("audit_events");
+src/history/purge.ts:2 suggests HardDelete.
+suspected target: revisions
+evidence: return db.deleteFrom("revisions");
 ```
 
 The fix declares the function with the same path the command scanned, and gives the resource a `storage` value that names the table:
 
 ```shape
-module audit
+module history
 
-resource AuditEvent : AppendOnly {
-  storage postgres.table("audit_events")
+resource Revision : AppendOnly {
+  storage postgres.table("revisions")
 }
 
-component AuditStore {
-  owns AuditEvent
-  grants Append<AuditEvent>
-  fn appendEvent
-    source ts("src/audit/store.ts#appendEvent")
+component RevisionLog {
+  owns Revision
+  grants Append<Revision>
+  fn appendRevision
+    source ts("src/history/log.ts#appendRevision")
     effects complete {
-      Append<AuditEvent>
-        evidence ts("src/audit/store.ts#appendEvent")
+      Append<Revision>
+        evidence ts("src/history/log.ts#appendRevision")
     }
-  fn purgeOldEvents
-    source ts("src/audit/purge.ts#purgeOldEvents")
+  fn purgeOldRevisions
+    source ts("src/history/purge.ts#purgeOldRevisions")
     effects complete {
-      HardDelete<AuditEvent>
-        evidence ts("src/audit/purge.ts#purgeOldEvents")
+      HardDelete<Revision>
+        evidence ts("src/history/purge.ts#purgeOldRevisions")
     }
 }
 ```
 
 ```text
-$ shp analyze --shape-files shape/audit.shape src/audit/purge.ts
+$ shp analyze --shape-files shape/history.shape src/history/purge.ts
 Shape analyzer found no mismatches.
 ```
 
-Both changes are needed. Without the `storage` line the effect is found but its target is not, because `audit_events` and `AuditEvent` are different names and the analyzer never pluralises:
+Both changes are needed. Without the `storage` line the effect is found but its target is not, because `revisions` and `Revision` are different names and the analyzer never pluralises:
 
 ```text
 warning: analyzer hint target does not match shape effects
 
-src/audit/purge.ts:2 suggests HardDelete.
-suspected target: audit_events
-declared targets: AuditEvent
-evidence: return db.deleteFrom("audit_events");
+src/history/purge.ts:2 suggests HardDelete.
+suspected target: revisions
+declared targets: Revision
+evidence: return db.deleteFrom("revisions");
 ```
 
 The analyzer's work ends once the model states the effect. `shp check` then judges the claim, and it rejects this one, exiting `1`:
 
 ```text
-$ shp check shape/audit.shape
+$ shp check shape/history.shape
 error: forbidden effect
 
-AuditStore.purgeOldEvents emits HardDelete<AuditEvent>.
-AuditEvent has trait AppendOnly.
-AppendOnly forbids final HardDelete<AuditEvent>.
-evidence: ts("src/audit/purge.ts#purgeOldEvents")
+RevisionLog.purgeOldRevisions emits HardDelete<Revision>.
+Revision has trait AppendOnly.
+AppendOnly forbids final HardDelete<Revision>.
+evidence: ts("src/history/purge.ts#purgeOldRevisions")
 
 caused by:
-  - shape/audit.shape: effect AuditStore.purgeOldEvents emits HardDelete<AuditEvent>
-  - shape/audit.shape: resource AuditEvent : AppendOnly
+  - shape/history.shape: effect RevisionLog.purgeOldRevisions emits HardDelete<Revision>
+  - shape/history.shape: resource Revision : AppendOnly
   - standard prelude: trait AppendOnly forbids final HardDelete<T>
 ```
 
@@ -138,12 +138,12 @@ Only effect entries inside `effects complete` count, including those in `add fn`
 3. Otherwise, an unanchored hint uses the one anchored reference in the file that declares the effect. If two or more declare it, or if the hint has an anchor that matched none of them in step 1, the hint is unattributable.
 4. If nothing in the file declares the effect, the hint is missing.
 
-A function referenced as `#AuditStore.purge`, the form `shp ast` writes for TypeScript methods, therefore never matches a hint from inside `purge` in step 1, and the hint falls through to steps 2 to 4.
+A function referenced as `#RevisionLog.purge`, the form `shp ast` writes for TypeScript methods, therefore never matches a hint from inside `purge` in step 1, and the hint falls through to steps 2 to 4.
 
 **Target.** When the effect is found and the hint has a static target, the target must match one of the resources those declarations target, either by the resource name or by one of its `storage` values. A declared target that is not a declared resource never matches. A hint without a static target matches any declaration of its effect.
 
-- Targets read from library calls (Kysely, Prisma, Drizzle) compare case-insensitively with underscores removed, so `auditEvents` matches a `storage` value of `audit_events`. Hyphens and dots stay significant.
-- Targets read from SQL compare segment by segment across `schema.table`. Unquoted segments compare case-insensitively; quoted segments must match exactly. The segment counts must agree, so `public.audit_events` does not match a `storage` value of `audit_events`.
+- Targets read from library calls (Kysely, Prisma, Drizzle) compare case-insensitively with underscores removed, so `documentRevisions` matches a `storage` value of `document_revisions`. Hyphens and dots stay significant.
+- Targets read from SQL compare segment by segment across `schema.table`. Unquoted segments compare case-insensitively; quoted segments must match exactly. The segment counts must agree, so `public.revisions` does not match a `storage` value of `revisions`.
 
 ## Warnings
 

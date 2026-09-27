@@ -1,9 +1,9 @@
 ---
 title: Quickstart
-description: Install a pinned shp, write a first Shape model for an audit log, watch a final forbid reject a change, and resolve it.
+description: Install a pinned shp, write a first Shape model for a writing app's revision history, watch a final forbid reject a change, and resolve it.
 ---
 
-This page installs the released `shp` binary, builds a small Shape model for an audit log, and walks through the most common failure: a change that claims an effect the model finally forbids. The [home page](/shapelang/) describes what the checker decides and where it stops.
+This page installs the released `shp` binary, builds a small Shape model for the revision history of a writing app, and walks through the most common failure: a change that claims an effect the model finally forbids. The [home page](/shapelang/) describes what the checker decides and where it stops.
 
 ## Install
 
@@ -39,42 +39,42 @@ shp --version
 
 ## Write a first model
 
-Create `shape/audit.shape` in your repository:
+In the writing app, each save in the editor appends a revision to the document's history, and history is append-only so that edits can always be recovered. Create `shape/history.shape` in your repository:
 
 ```shape
-module audit
+module history
 
-resource AuditEvent : AppendOnly
+resource Revision : AppendOnly
 
-component AuditStore {
-  owns AuditEvent
-  grants Append<AuditEvent>
-  grants Read<AuditEvent>
-  fn appendEvent
-    source ts("src/audit/store.ts#appendEvent")
+component RevisionLog {
+  owns Revision
+  grants Append<Revision>
+  grants Read<Revision>
+  fn appendRevision
+    source ts("src/history/log.ts#appendRevision")
     effects complete {
-      Append<AuditEvent>
-        evidence ts("src/audit/store.ts#appendEvent")
+      Append<Revision>
+        evidence ts("src/history/log.ts#appendRevision")
     }
-  fn listEvents
-    source ts("src/audit/store.ts#listEvents")
+  fn listRevisions
+    source ts("src/history/log.ts#listRevisions")
     effects complete {
-      Read<AuditEvent>
-        evidence ts("src/audit/store.ts#listEvents")
+      Read<Revision>
+        evidence ts("src/history/log.ts#listRevisions")
     }
 }
 ```
 
 Each declaration is a claim:
 
-- `module audit` names the namespace the declarations belong to.
-- `resource AuditEvent : AppendOnly` declares a resource, the data the claims protect, and attaches the `AppendOnly` trait to it. The resource need not exist as a runtime type. `AppendOnly` comes from Shape's built-in prelude, which defines it with three final forbids on the resource: `HardDelete`, `Truncate`, and `DropStorage`. Do not redeclare it, because a `trait AppendOnly` in the same module silently replaces the prelude trait.
-- `component AuditStore` is the part of the system that owns the resource. `owns AuditEvent` records that ownership for reviewers; the checker only checks that the resource exists, and ownership does not affect grants.
-- `grants Append<AuditEvent>` permits the component's functions to emit that effect. An effect is an operation name, optionally targeted at a resource in angle brackets; names are free identifiers that the checker matches literally against grants and final forbids. A function that emits a targeted effect its component does not grant fails with `missing grant`, so grant only what the component needs.
-- `fn appendEvent` summarises a source function; it is not an implementation. `effects complete { ... }` claims that the listed effects are all the function has.
+- `module history` names the namespace the declarations belong to.
+- `resource Revision : AppendOnly` declares a resource, the data the claims protect, and attaches the `AppendOnly` trait to it. The resource need not exist as a runtime type. `AppendOnly` comes from Shape's built-in prelude, which defines it with three final forbids on the resource: `HardDelete`, `Truncate`, and `DropStorage`. Do not redeclare it, because a `trait AppendOnly` in the same module silently replaces the prelude trait.
+- `component RevisionLog` is the part of the system that owns the resource. `owns Revision` records that ownership for reviewers; the checker only checks that the resource exists, and ownership does not affect grants.
+- `grants Append<Revision>` permits the component's functions to emit that effect. An effect is an operation name, optionally targeted at a resource in angle brackets; names are free identifiers that the checker matches literally against grants and final forbids. A function that emits a targeted effect its component does not grant fails with `missing grant`, so grant only what the component needs.
+- `fn appendRevision` summarises a source function; it is not an implementation. `effects complete { ... }` claims that the listed effects are all the function has.
 - `source` and `evidence` are refs written `tag("path#symbol")`. `source` points at the function, and `evidence` at the code behind one effect. The checker never opens these files. Reviewers follow the refs to check the claim, and coverage uses their paths to match changed files to the model. Prefer `#symbol` anchors to line numbers, which go stale.
 
-Structural links between components, such as one calling another, are top-level `relation` declarations, never members of a component. See [Relations and Graph Rules](/shapelang/concepts/relations/).
+Structural links between components, such as the editor calling the revision log, are top-level `relation` declarations, never members of a component. See [Relations and Graph Rules](/shapelang/concepts/relations/).
 
 ## Check the model
 
@@ -88,7 +88,7 @@ shp check
 Shape check passed.
 ```
 
-With no file arguments, `shp check` loads every `shape/**/*.shape` file under the working directory as one Shape model. File arguments replace that discovery: `shp check shape/audit.shape` checks only that file. With no `shape/` directory, `shp check` finds nothing and passes, so a pass in a new repository means nothing until the model exists. The [CLI Reference](/shapelang/reference/cli/) has the full discovery rules.
+With no file arguments, `shp check` loads every `shape/**/*.shape` file under the working directory as one Shape model. File arguments replace that discovery: `shp check shape/history.shape` checks only that file. With no `shape/` directory, `shp check` finds nothing and passes, so a pass in a new repository means nothing until the model exists. The [CLI Reference](/shapelang/reference/cli/) has the full discovery rules.
 
 Check the formatting too:
 
@@ -104,35 +104,35 @@ Shape format check passed.
 
 ## Make it fail
 
-A pull request adds a job that purges old audit events. The model must claim the new function's effect, so the author adds `purgeOldEvents` to `AuditStore`, together with `grants HardDelete<AuditEvent>` to allow it:
+A pull request adds a job that purges old revisions. The model must claim the new function's effect, so the author adds `purgeOldRevisions` to `RevisionLog`, together with `grants HardDelete<Revision>` to allow it:
 
 ```shape
-module audit
+module history
 
-resource AuditEvent : AppendOnly
+resource Revision : AppendOnly
 
-component AuditStore {
-  owns AuditEvent
-  grants Append<AuditEvent>
-  grants HardDelete<AuditEvent>
-  grants Read<AuditEvent>
-  fn appendEvent
-    source ts("src/audit/store.ts#appendEvent")
+component RevisionLog {
+  owns Revision
+  grants Append<Revision>
+  grants HardDelete<Revision>
+  grants Read<Revision>
+  fn appendRevision
+    source ts("src/history/log.ts#appendRevision")
     effects complete {
-      Append<AuditEvent>
-        evidence ts("src/audit/store.ts#appendEvent")
+      Append<Revision>
+        evidence ts("src/history/log.ts#appendRevision")
     }
-  fn listEvents
-    source ts("src/audit/store.ts#listEvents")
+  fn listRevisions
+    source ts("src/history/log.ts#listRevisions")
     effects complete {
-      Read<AuditEvent>
-        evidence ts("src/audit/store.ts#listEvents")
+      Read<Revision>
+        evidence ts("src/history/log.ts#listRevisions")
     }
-  fn purgeOldEvents
-    source ts("src/audit/purge.ts#purgeOldEvents")
+  fn purgeOldRevisions
+    source ts("src/history/purge.ts#purgeOldRevisions")
     effects complete {
-      HardDelete<AuditEvent>
-        evidence ts("src/audit/purge.ts#purgeOldEvents")
+      HardDelete<Revision>
+        evidence ts("src/history/purge.ts#purgeOldRevisions")
     }
 }
 ```
@@ -142,14 +142,14 @@ component AuditStore {
 ```text
 error: forbidden effect
 
-AuditStore.purgeOldEvents emits HardDelete<AuditEvent>.
-AuditEvent has trait AppendOnly.
-AppendOnly forbids final HardDelete<AuditEvent>.
-evidence: ts("src/audit/purge.ts#purgeOldEvents")
+RevisionLog.purgeOldRevisions emits HardDelete<Revision>.
+Revision has trait AppendOnly.
+AppendOnly forbids final HardDelete<Revision>.
+evidence: ts("src/history/purge.ts#purgeOldRevisions")
 
 caused by:
-  - shape/audit.shape: effect AuditStore.purgeOldEvents emits HardDelete<AuditEvent>
-  - shape/audit.shape: resource AuditEvent : AppendOnly
+  - shape/history.shape: effect RevisionLog.purgeOldRevisions emits HardDelete<Revision>
+  - shape/history.shape: resource Revision : AppendOnly
   - standard prelude: trait AppendOnly forbids final HardDelete<T>
 ```
 
@@ -163,27 +163,27 @@ The checker judges each function in this order:
 2. For each effect with a resource target: does a trait on that resource finally forbid it? If so, the result is `forbidden effect`, and the grant question is skipped.
 3. Otherwise, does the component grant the effect? If not, the result is `missing grant`.
 
-Effects without a resource target skip steps 2 and 3. `HardDelete<AuditEvent>` has a target and stops at step 2, so its grant is never consulted: delete the grant and the output is identical. The [Effect Model](/shapelang/concepts/effect-model/) gives the complete check order.
+Effects without a resource target skip steps 2 and 3. `HardDelete<Revision>` has a target and stops at step 2, so its grant is never consulted: delete the grant and the output is identical. The [Effect Model](/shapelang/concepts/effect-model/) gives the complete check order.
 
 ## Resolve it
 
 Nothing in the model waives a final forbid: not a grant, rationale, memory, reevaluation, or attestation. To land the purge, change one of the facts the diagnostic names:
 
-- **Remove the destructive code.** Take the hard delete out of the source, then remove its `HardDelete<AuditEvent>` claim and grant from the model.
-- **Change the decision.** If audit events may be deleted after all, remove `AppendOnly` from `AuditEvent`, and have reviewers approve that as a design change.
+- **Remove the destructive code.** Take the hard delete out of the source, then remove its `HardDelete<Revision>` claim and grant from the model.
+- **Change the decision.** If revisions may be deleted after all, remove `AppendOnly` from `Revision`, and have reviewers approve that as a design change.
 - **Move the behaviour.** Have the purge act on a resource whose traits do not finally forbid `HardDelete`, and claim the effect against that resource.
 
-Never make the check pass by deleting the `HardDelete<AuditEvent>` entry while the code still performs the delete. The summary claims to be complete, so a missing real effect makes the model false, and the checker cannot tell.
+Never make the check pass by deleting the `HardDelete<Revision>` entry while the code still performs the delete. The summary claims to be complete, so a missing real effect makes the model false, and the checker cannot tell.
 
-To continue with a passing model, remove `purgeOldEvents` and its grant.
+To continue with a passing model, remove `purgeOldRevisions` and its grant.
 
 ## Draft with unknown effects
 
-When a function exists but its effects are not yet known, say so with `effects unknown` inside `AuditStore`:
+When a function exists but its effects are not yet known, say so with `effects unknown` inside `RevisionLog`:
 
 ```shape no-verify
-  fn exportEvents
-    source ts("src/audit/export.ts#exportEvents")
+  fn exportRevisions
+    source ts("src/history/export.ts#exportRevisions")
     effects unknown
 ```
 
@@ -192,10 +192,10 @@ Prefer this to an empty `effects complete {}`, which claims the function has no 
 ```text
 error: unknown effects
 
-AuditStore.exportEvents declares effects unknown.
+RevisionLog.exportRevisions declares effects unknown.
 
 caused by:
-  - shape/audit.shape: fn AuditStore.exportEvents
+  - shape/history.shape: fn RevisionLog.exportRevisions
 ```
 
 While drafting locally, `--allow-unknown-effects` downgrades only this diagnostic to a warning. The run prints to stdout and exits 0:
@@ -207,10 +207,10 @@ shp check --allow-unknown-effects
 ```text
 warning: unknown effects
 
-AuditStore.exportEvents declares effects unknown.
+RevisionLog.exportRevisions declares effects unknown.
 
 caused by:
-  - shape/audit.shape: fn AuditStore.exportEvents
+  - shape/history.shape: fn RevisionLog.exportRevisions
 
 Shape check passed with warnings.
 ```

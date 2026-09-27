@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 560" role="img" aria-labelledby="t d">
   <title id="t">Coverage decision for one changed file</title>
-  <desc id="d">A changed file such as src/audit/export.ts is governed only when it matches the paths of an implementation with on_change require shape_update; changed .shape files are never governed. A governed file is covered by a Shape update, meaning a function source or effect evidence naming the path in a .shape file that is itself in changed.txt, or by an attest no_shape_change for that exact path with a reason, declared in a .shape file in changed.txt. Otherwise coverage fails with error: governed source changed without current Shape update. Coverage shows that the model changed with the code, not that it is faithful. Bindings are a separate check that only shp check --changed-files runs.</desc>
+  <desc id="d">A changed file such as src/history/export.ts is governed only when it matches the paths of an implementation with on_change require shape_update; changed .shape files are never governed. A governed file is covered by a Shape update, meaning a function source or effect evidence naming the path in a .shape file that is itself in changed.txt, or by an attest no_shape_change for that exact path with a reason, declared in a .shape file in changed.txt. Otherwise coverage fails with error: governed source changed without current Shape update. Coverage shows that the model changed with the code, not that it is faithful. Bindings are a separate check that only shp check --changed-files runs.</desc>
   <style>
     .paper{fill:#f6f4ee}.grid{stroke:#e6e1d4}.gridM{stroke:#dbd4c4}
     .ink{fill:#1d2b34}.inkS{stroke:#1d2b34}.mute{fill:#5d6c74}.muteS{stroke:#8a959a}
@@ -43,7 +43,7 @@
   <!-- start -->
   <rect x="40" y="112" width="256" height="48" class="card" stroke-width="1.4"/>
   <text x="56" y="131" class="mono mute" font-size="11">changed file in changed.txt</text>
-  <text x="56" y="150" class="mono ink" font-size="12.5" font-weight="700">src/audit/export.ts</text>
+  <text x="56" y="150" class="mono ink" font-size="12.5" font-weight="700">src/history/export.ts</text>
 
   <!-- spine -->
   <g class="blueS" stroke-width="1.4" fill="none" marker-end="url(#aB)">

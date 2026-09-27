@@ -24,27 +24,27 @@ Two extensions stay out of scope. Shape does not derive an authoritative model f
 The workflow assumes a technical reviewer who may not know every subsystem. Explicit claims reduce what that reviewer must infer.
 
 ```shape
-module audit
+module history
 
-resource AuditEvent : AppendOnly
+resource Revision : AppendOnly
 
-component AuditStore {
-  owns AuditEvent
-  grants Append<AuditEvent>
-  fn appendEvent
-    source ts("src/audit/store.ts#appendEvent")
+component RevisionLog {
+  owns Revision
+  grants Append<Revision>
+  fn appendRevision
+    source ts("src/history/log.ts#appendRevision")
     effects complete {
-      Append<AuditEvent>
-        evidence ts("src/audit/store.ts#appendEvent")
+      Append<Revision>
+        evidence ts("src/history/log.ts#appendRevision")
     }
 }
 ```
 
 This model states that:
 
-- `AuditEvent` is modelled as append-only;
-- `AuditStore` owns the resource;
-- `AuditStore.appendEvent` claims one material effect;
+- `Revision` is modelled as append-only;
+- `RevisionLog` owns the resource;
+- `RevisionLog.appendRevision` claims one material effect;
 - the claim is complete, not partial;
 - the source and the evidence can be inspected.
 
@@ -55,36 +55,36 @@ An expert could often recover the same information from source. Shape makes it a
 The files are review surfaces, so the syntax stays explicit and stable. A compressed notation could state the claim above in one line:
 
 ```shape no-verify
-AuditStore.appendEvent -> Append(AuditEvent) @ src/audit/store.ts#appendEvent
+RevisionLog.appendRevision -> Append(Revision) @ src/history/log.ts#appendRevision
 ```
 
-The compact form is shorter but loses structure. Is `AuditStore` a component? Is `AuditEvent` a resource? Is this a complete effect summary or a hint? Where would a rationale attach? Where would the formatter put evidence? The explicit form answers each question with a keyword, which gives the checker and the reviewer stable handles.
+The compact form is shorter but loses structure. Is `RevisionLog` a component? Is `Revision` a resource? Is this a complete effect summary or a hint? Where would a rationale attach? Where would the formatter put evidence? The explicit form answers each question with a keyword, which gives the checker and the reviewer stable handles.
 
 ## Why memory is typed
 
 Generic prose comments tend to rot. Shape memory is typed because the checker needs to know what a memory applies to and what obligations it creates.
 
 ```shape
-module gateway
+module editor
 
-resource PolicySnapshot
+resource Autosave
 
-component Gateway {
-  owns PolicySnapshot
-  grants Read<PolicySnapshot>
-  fn derivePolicyDecision : RefactorSensitive
+component Editor {
+  owns Autosave
+  grants Read<Autosave>
+  fn mergeAutosaves : RefactorSensitive
     effects complete {
-      Read<PolicySnapshot>
+      Read<Autosave>
     }
 }
 
-memory DecisionRefactorConstraint : RefactorConstraint<fn Gateway.derivePolicyDecision> {
-  applies_to fn Gateway.derivePolicyDecision
-  status Unexplained
+memory MergeRefactorConstraint : RefactorConstraint<fn Editor.mergeAutosaves> {
+  applies_to fn Editor.mergeAutosaves
+  status Explained
   confidence High
-  summary "Previous refactors broke error normalisation."
+  summary "The sync library sends autosaves out of order, so keep the sort."
   who {
-    owner GatewayTeam
+    owner EditorTeam
   }
   protects {
     shape CheckOrder
@@ -95,21 +95,21 @@ memory DecisionRefactorConstraint : RefactorConstraint<fn Gateway.derivePolicyDe
 }
 ```
 
-The checker acts on the memory's context type, target, protected property, and guard. Because `derivePolicyDecision` carries the `RefactorSensitive` shape trait, the model must contain a `RefactorConstraint` memory that applies to it; without one, `shp check` fails with `missing required context`. The guard then requires a `reevaluation` whenever a `change` declaration modifies or removes the function. The owner, `status`, and `confidence` are recorded for reviewers, and the checker does not interpret them. [Design Memory](/shapelang/concepts/design-memory/) describes the whole mechanism.
+The checker acts on the memory's context type, target, protected property, and guard. Because `mergeAutosaves` carries the `RefactorSensitive` shape trait, the model must contain a `RefactorConstraint` memory that applies to it; without one, `shp check` fails with `missing required context`. The guard then requires a `reevaluation` whenever a `change` declaration modifies or removes the function. The owner, `status`, and `confidence` are recorded for reviewers, and the checker does not interpret them. [Design Memory](/shapelang/concepts/design-memory/) describes the whole mechanism.
 
 That is the difference between a note in a comment and a review obligation in the model.
 
 ## Why diagnostics matter
 
-Checker output is part of the product. A rejection should read as a causal path from a source-backed function claim to the architecture constraint it breaks. Suppose a change adds a purge function and its grant to `AuditStore` in the audit model above:
+Checker output is part of the product. A rejection should read as a causal path from a source-backed function claim to the architecture constraint it breaks. Suppose a change adds a purge function and its grant to `RevisionLog` in the history model above:
 
 ```shape no-verify
-  grants HardDelete<AuditEvent>
-  fn purgeOldEvents
-    source ts("src/audit/purge.ts#purgeOldEvents")
+  grants HardDelete<Revision>
+  fn purgeOldRevisions
+    source ts("src/history/purge.ts#purgeOldRevisions")
     effects complete {
-      HardDelete<AuditEvent>
-        evidence ts("src/audit/purge.ts#purgeOldEvents")
+      HardDelete<Revision>
+        evidence ts("src/history/purge.ts#purgeOldRevisions")
     }
 ```
 
@@ -118,14 +118,14 @@ Checker output is part of the product. A rejection should read as a causal path 
 ```text
 error: forbidden effect
 
-AuditStore.purgeOldEvents emits HardDelete<AuditEvent>.
-AuditEvent has trait AppendOnly.
-AppendOnly forbids final HardDelete<AuditEvent>.
-evidence: ts("src/audit/purge.ts#purgeOldEvents")
+RevisionLog.purgeOldRevisions emits HardDelete<Revision>.
+Revision has trait AppendOnly.
+AppendOnly forbids final HardDelete<Revision>.
+evidence: ts("src/history/purge.ts#purgeOldRevisions")
 
 caused by:
-  - shape/audit.shape: effect AuditStore.purgeOldEvents emits HardDelete<AuditEvent>
-  - shape/audit.shape: resource AuditEvent : AppendOnly
+  - shape/history.shape: effect RevisionLog.purgeOldRevisions emits HardDelete<Revision>
+  - shape/history.shape: resource Revision : AppendOnly
   - standard prelude: trait AppendOnly forbids final HardDelete<T>
 ```
 

@@ -50,54 +50,54 @@ Lowering is global. Any change to any document rebuilds the whole `Model` and fa
 This model passes `shp check`:
 
 ```shape
-module audit
+module history
 
-resource AuditEvent : AppendOnly
+resource Revision : AppendOnly
 
-component AuditStore {
-  owns AuditEvent
-  grants Append<AuditEvent>
-  fn appendEvent
-    source ts("src/audit/store.ts#appendEvent")
+component RevisionLog {
+  owns Revision
+  grants Append<Revision>
+  fn appendRevision
+    source ts("src/history/log.ts#appendRevision")
     effects complete {
-      Append<AuditEvent>
-        evidence ts("src/audit/store.ts#appendEvent")
+      Append<Revision>
+        evidence ts("src/history/log.ts#appendRevision")
     }
 }
 ```
 
-Checked with `includeFacts: true`, it returns these 12 facts, in the returned order. Each provenance `filePath` is `audit.shape`, except the prelude rows, whose `filePath` is `standard prelude`:
+Checked with `includeFacts: true`, it returns these 12 facts, in the returned order. Each provenance `filePath` is `history.shape`, except the prelude rows, whose `filePath` is `standard prelude`:
 
 | `kind` | Other fields | `provenance.label` |
 | --- | --- | --- |
-| `component` | `name: audit::AuditStore` | `component audit::AuditStore` |
-| `effect` | `component: audit::AuditStore`, `functionName: appendEvent`, `effect: Append`, `target: audit::AuditEvent` | `effect audit::AuditStore.appendEvent emits Append<AuditEvent>` |
-| `function` | `component: audit::AuditStore`, `name: appendEvent` | `fn audit::AuditStore.appendEvent` |
-| `grants` | `component: audit::AuditStore`, `effect: Append`, `target: audit::AuditEvent` | `component audit::AuditStore grants Append<AuditEvent>` |
-| `owns` | `component: audit::AuditStore`, `resource: audit::AuditEvent` | `component audit::AuditStore owns audit::AuditEvent` |
-| `resource` | `name: audit::AuditEvent` | `resource audit::AuditEvent` |
-| `resource_trait` | `resource: audit::AuditEvent`, `trait: AppendOnly` | `resource audit::AuditEvent : AppendOnly` |
-| `shape_update_for` | `path: src/audit/store.ts` (from the `evidence`) | `effect audit::AuditStore.appendEvent emits Append<AuditEvent>` |
-| `shape_update_for` | `path: src/audit/store.ts` (from the `source`) | `fn audit::AuditStore.appendEvent` |
+| `component` | `name: history::RevisionLog` | `component history::RevisionLog` |
+| `effect` | `component: history::RevisionLog`, `functionName: appendRevision`, `effect: Append`, `target: history::Revision` | `effect history::RevisionLog.appendRevision emits Append<Revision>` |
+| `function` | `component: history::RevisionLog`, `name: appendRevision` | `fn history::RevisionLog.appendRevision` |
+| `grants` | `component: history::RevisionLog`, `effect: Append`, `target: history::Revision` | `component history::RevisionLog grants Append<Revision>` |
+| `owns` | `component: history::RevisionLog`, `resource: history::Revision` | `component history::RevisionLog owns history::Revision` |
+| `resource` | `name: history::Revision` | `resource history::Revision` |
+| `resource_trait` | `resource: history::Revision`, `trait: AppendOnly` | `resource history::Revision : AppendOnly` |
+| `shape_update_for` | `path: src/history/log.ts` (from the `evidence`) | `effect history::RevisionLog.appendRevision emits Append<Revision>` |
+| `shape_update_for` | `path: src/history/log.ts` (from the `source`) | `fn history::RevisionLog.appendRevision` |
 | `trait_final_forbid` | `trait: AppendOnly`, `effect: DropStorage`, `target: T` | `trait AppendOnly forbids final DropStorage<T>` |
 | `trait_final_forbid` | `trait: AppendOnly`, `effect: HardDelete`, `target: T` | `trait AppendOnly forbids final HardDelete<T>` |
 | `trait_final_forbid` | `trait: AppendOnly`, `effect: Truncate`, `target: T` | `trait AppendOnly forbids final Truncate<T>` |
 
-Declared names are module-qualified (`audit::AuditStore`); function names inside `function` and `effect` facts are local, and the prelude trait keeps its bare name. `shape_update_for` paths drop the `#appendEvent` anchor. The `effect` fact records only the effect and its target: the evidence ref stays on the function's effect entry (`EffectEntryInfo.evidence`) in the `components` index, where `checkFunctions` reads it for the `evidence:` line of a `forbidden effect` diagnostic.
+Declared names are module-qualified (`history::RevisionLog`); function names inside `function` and `effect` facts are local, and the prelude trait keeps its bare name. `shape_update_for` paths drop the `#appendRevision` anchor. The `effect` fact records only the effect and its target: the evidence ref stays on the function's effect entry (`EffectEntryInfo.evidence`) in the `components` index, where `checkFunctions` reads it for the `evidence:` line of a `forbidden effect` diagnostic.
 
-No fact says that `AuditEvent` forbids `HardDelete<audit::AuditEvent>`. That per-resource forbid is computed on demand from the indexes, as `shp explain` shows:
+No fact says that `Revision` forbids `HardDelete<history::Revision>`. That per-resource forbid is computed on demand from the indexes, as `shp explain` shows:
 
 ```text
-$ shp explain AuditEvent audit.shape
-AuditEvent
+$ shp explain Revision history.shape
+Revision
   kind: resource
   traits:
     AppendOnly
 
   final forbidden effects:
-    HardDelete<AuditEvent>
-    Truncate<AuditEvent>
-    DropStorage<AuditEvent>
+    HardDelete<Revision>
+    Truncate<Revision>
+    DropStorage<Revision>
 ```
 
 ## Traits
@@ -133,7 +133,7 @@ Lowering also builds `model.hypergraph.incidence`, a vertex-to-hyperedge index k
 - `who` sets `owner` and `when` sets `reviewBy`; a later block of the same kind that sets a value overwrites the earlier value;
 - `applies_to`, `summary`, and `evidence` are stored as given.
 
-Each rationale or memory emits one `rationale` or `memory` fact. The fact records the context type's own target (`RefactorConstraint<fn Gateway.derivePolicyDecision>`), not `applies_to`. Each `protects` entry emits a `protected_shape` fact, and each guard that requires reevaluation emits a `guard_requires_reevaluation` fact. `forbid transform` guards, `applies_to`, owners, `review_by` dates, `status`, `confidence`, and `sensitive` produce no facts.
+Each rationale or memory emits one `rationale` or `memory` fact. The fact records the context type's own target (`RefactorConstraint<fn Editor.mergeAutosaves>`), not `applies_to`. Each `protects` entry emits a `protected_shape` fact, and each guard that requires reevaluation emits a `guard_requires_reevaluation` fact. `forbid transform` guards, `applies_to`, owners, `review_by` dates, `status`, `confidence`, and `sensitive` produce no facts.
 
 `lowerReevaluation` stores a `ReevaluationInfo` and emits a `reevaluation` fact only when the declaration has `satisfies`. Whether a reevaluation is valid is decided at rule time by `reevaluationValidationReasons` in `checker/derivations.ts`. `lowerRole` keys roles by their local name, and `lowerPolicy` merges same-named policies, so `require approver` in any of them applies. Neither emits facts.
 
@@ -154,7 +154,7 @@ Required context is also decided at rule time. `emitDerivedFacts` emits one `con
 
 The events land in `model.changeEvents` as `ChangeTrigger` records (`shape-domain.ts`). For each transition, `changeEventsForTransition` emits them in a fixed order: `target_changed`, then `shape_trait_removed` for each trait the target lost, then `description_removed`, then `transform_applied` for each `transform` label. Change events are not facts. `checkGuardedChanges` is their only reader, so guards fire only for targets that a `change` declaration modifies or removes.
 
-The fact list follows function entries but not declaration entries. `add fn`, `modify fn`, and `remove fn` call `removeFunctionFacts` and, except for `remove fn`, re-emit the function's facts with `emitFunctionFacts`. Declaration-level `modify` and `remove` entries update the typed indexes but leave the replaced declaration's facts in `model.facts`. After `remove component Archive`, for example, the `component audit::Archive` fact remains; after `modify component AuditStore { … }`, the original component's facts remain beside the new ones. Rules are unaffected, because they read the indexes. Coverage is unaffected too, because step 4 of the lowering order rebuilds shape-update paths from the final function registry.
+The fact list follows function entries but not declaration entries. `add fn`, `modify fn`, and `remove fn` call `removeFunctionFacts` and, except for `remove fn`, re-emit the function's facts with `emitFunctionFacts`. Declaration-level `modify` and `remove` entries update the typed indexes but leave the replaced declaration's facts in `model.facts`. After `remove component Archive`, for example, the `component history::Archive` fact remains; after `modify component RevisionLog { … }`, the original component's facts remain beside the new ones. Rules are unaffected, because they read the indexes. Coverage is unaffected too, because step 4 of the lowering order rebuilds shape-update paths from the final function registry.
 
 ## Coverage
 

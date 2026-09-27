@@ -8,30 +8,30 @@ video:
 
 The effect model is the part of the Shape model that `shp check` judges function by function. Resources name the data the architecture protects, and traits attach final forbids to them. Components own resources, grant effects, and contain function summaries. Each summary declares the effects its function emits and can cite the code behind each claim.
 
-![AppendOnly, applied to AuditEvent, forbids final HardDelete, Truncate, and DropStorage; AuditStore owns AuditEvent (name-checked only), grants Append on AuditEvent, and contains appendEvent, which declares an Append effect targeting AuditEvent and cites ts("src/audit/store.ts#appendEvent") as source and evidence; GatewayCallsAudit is a top-level calls relation from Gateway to AuditStore.](../../../assets/diagrams/model-map.svg)
+![AppendOnly, applied to Revision, forbids final HardDelete, Truncate, and DropStorage; RevisionLog owns Revision (name-checked only), grants Append on Revision, and contains appendRevision, which declares an Append effect targeting Revision and cites ts("src/history/log.ts#appendRevision") as source and evidence; EditorCallsLog is a top-level calls relation from Editor to RevisionLog.](../../../assets/diagrams/model-map.svg)
 
 The examples on this page build on this model, which passes `shp check`:
 
 ```shape
-module audit
+module history
 
-resource AuditEvent : AppendOnly
+resource Revision : AppendOnly
 
-component AuditStore {
-  owns AuditEvent
-  grants Append<AuditEvent>
-  grants Read<AuditEvent>
-  fn appendEvent
-    source ts("src/audit/store.ts#appendEvent")
+component RevisionLog {
+  owns Revision
+  grants Append<Revision>
+  grants Read<Revision>
+  fn appendRevision
+    source ts("src/history/log.ts#appendRevision")
     effects complete {
-      Append<AuditEvent>
-        evidence ts("src/audit/store.ts#appendEvent")
+      Append<Revision>
+        evidence ts("src/history/log.ts#appendRevision")
     }
-  fn listEvents
-    source ts("src/audit/store.ts#listEvents")
+  fn listRevisions
+    source ts("src/history/log.ts#listRevisions")
     effects complete {
-      Read<AuditEvent>
-        evidence ts("src/audit/store.ts#listEvents")
+      Read<Revision>
+        evidence ts("src/history/log.ts#listRevisions")
     }
 }
 ```
@@ -41,10 +41,10 @@ component AuditStore {
 A resource is an architectural target that the model protects: a table, stream, bucket, ledger, queue, secret, endpoint, or domain object. It need not be a single runtime type. Traits follow the name after `:`, separated by commas, and an optional body holds metadata:
 
 ```shape
-module audit
+module history
 
-resource AuditEvent : AppendOnly {
-  storage postgres.table("audit_events")
+resource Revision : AppendOnly {
+  storage postgres.table("revisions")
 }
 ```
 
@@ -66,29 +66,29 @@ A `trait` declares members that apply to whatever carries it. Only two kinds of 
 ### Declaring a trait
 
 ```shape
-module audit
+module history
 
 trait Immutable<T: Resource> {
   forbid final Update<T>
 }
 
-resource AuditEvent : AppendOnly, Immutable
+resource Revision : AppendOnly, Immutable
 ```
 
-A trait application names the trait without type arguments. `resource AuditEvent : AppendOnly, Immutable` binds each trait's type parameter, whatever its name, to `AuditEvent`. A pattern written without a target, such as `forbid final Update`, also binds to the resource that carries the trait, so it forbids `Update<AuditEvent>`. `shp explain AuditEvent` lists the final forbids that result, the first three from the prelude `AppendOnly`:
+A trait application names the trait without type arguments. `resource Revision : AppendOnly, Immutable` binds each trait's type parameter, whatever its name, to `Revision`. A pattern written without a target, such as `forbid final Update`, also binds to the resource that carries the trait, so it forbids `Update<Revision>`. `shp explain Revision` lists the final forbids that result, the first three from the prelude `AppendOnly`:
 
 ```text
-AuditEvent
+Revision
   kind: resource
   traits:
     AppendOnly
-    audit::Immutable
+    history::Immutable
 
   final forbidden effects:
-    HardDelete<AuditEvent>
-    Truncate<AuditEvent>
-    DropStorage<AuditEvent>
-    Update<AuditEvent>
+    HardDelete<Revision>
+    Truncate<Revision>
+    DropStorage<Revision>
+    Update<Revision>
 ```
 
 ### Prelude traits
@@ -103,26 +103,26 @@ A trait declared in a module under a prelude name replaces the prelude trait for
 
 ### Rule-derived final forbids
 
-A `rule` can derive a final forbid from a condition instead of a trait member. This model marks `AuditEvent` with an empty trait, and the rule forbids hard deletes on every resource that carries it:
+A `rule` can derive a final forbid from a condition instead of a trait member. This model marks `Revision` with an empty trait, and the rule forbids hard deletes on every resource that carries it:
 
 ```shape
-module audit
+module history
 
 trait Protected<T: Resource> {
 }
 
-resource AuditEvent : Protected
+resource Revision : Protected
 
-component AuditStore {
-  owns AuditEvent
-  grants Read<AuditEvent>
-  fn listEvents
+component RevisionLog {
+  owns Revision
+  grants Read<Revision>
+  fn listRevisions
     effects complete {
-      Read<AuditEvent>
+      Read<Revision>
     }
 }
 
-rule protected_events_are_not_deleted {
+rule protected_revisions_are_not_deleted {
   forbid final HardDelete<T>
   when T has Protected
 }
@@ -134,7 +134,7 @@ rule protected_events_are_not_deleted {
 - The condition trait declares no type parameters, or exactly one `Resource`-bound parameter. Any other shape makes the rule an `invalid rule`.
 - A plain `forbid` in a rule, like one in a trait, is not enforced.
 
-A function in this model that emits `HardDelete<AuditEvent>` fails with `forbidden effect`. The message names the condition trait (`AuditEvent has trait Protected. Protected forbids final HardDelete<AuditEvent>.`), and the last `caused by:` line names the rule: `rule protected_events_are_not_deleted forbids final HardDelete<T>`.
+A function in this model that emits `HardDelete<Revision>` fails with `forbidden effect`. The message names the condition trait (`Revision has trait Protected. Protected forbids final HardDelete<Revision>.`), and the last `caused by:` line names the rule: `rule protected_revisions_are_not_deleted forbids final HardDelete<T>`.
 
 ### Nothing waives a final forbid
 
@@ -144,8 +144,8 @@ A final forbid, whether it comes from a trait or a rule, stays in force whatever
 
 A component is the authority boundary. It owns resources, grants effects, and contains function summaries, and its body holds only `owns`, `grants`, and `fn` members, in any order. Traits after the component name are shape traits (see [Design Memory](/shapelang/concepts/design-memory/)). A structural link such as a call between components is a top-level `relation`, never a component member; see [Relations and Graph Rules](/shapelang/concepts/relations/).
 
-- `owns AuditEvent` claims ownership, and the checker only checks that `AuditEvent` is a declared resource (`unknown resource` otherwise). Ownership does not gate grants or effects, several components may own the same resource, and `owns` adds no edge to the relation graph. It says nothing about runtime allocation.
-- `grants Append<AuditEvent>` permits every function in the component to emit that effect. A grant matches on the exact effect name and the resolved resource, and it covers only its own component.
+- `owns Revision` claims ownership, and the checker only checks that `Revision` is a declared resource (`unknown resource` otherwise). Ownership does not gate grants or effects, several components may own the same resource, and `owns` adds no edge to the relation graph. It says nothing about runtime allocation.
+- `grants Append<Revision>` permits every function in the component to emit that effect. A grant matches on the exact effect name and the resolved resource, and it covers only its own component.
 
 ## Function summaries
 
@@ -166,7 +166,7 @@ A `fn` member summarizes one function. Its members appear in this fixed order, a
 | --- | --- | --- |
 | `effects unknown` | The function's effects are not yet known. | In an authored module, `error: unknown effects` (exit 1). |
 | `effects complete { }` | The function emits no effects. | Passes, because there is nothing to check. |
-| `effects complete { Append<AuditEvent> ... }` | The function emits exactly these effects. | Each entry goes through the [check order](#check-order). |
+| `effects complete { Append<Revision> ... }` | The function emits exactly these effects. | Each entry goes through the [check order](#check-order). |
 
 An empty `effects complete { }` is a claim, not a placeholder: it asserts that the function has no effects. While the effects are not known, `effects unknown` is the accurate summary, and `shp check` keeps the gap visible by rejecting it. Two exceptions apply:
 
@@ -178,20 +178,20 @@ A constraint that the team knows about but cannot fully explain yet belongs in d
 ### Unsafe functions
 
 ```shape
-module audit
+module history
 
-resource AuditEvent : AppendOnly
+resource Revision : AppendOnly
 
-component AuditStore {
-  owns AuditEvent
-  grants Update<AuditEvent>
-  fn backfillEvents
-    source ts("src/audit/backfill.ts#backfillEvents")
+component RevisionLog {
+  owns Revision
+  grants Update<Revision>
+  fn backfillRevisions
+    source ts("src/history/backfill.ts#backfillRevisions")
     unsafe effects complete {
-      Update<AuditEvent>
+      Update<Revision>
     }
     expires "2026-12-31"
-    reason "One-off backfill for the audit schema migration."
+    reason "One-off backfill for the revision schema migration."
     requires MigrationWindow
 }
 ```
@@ -221,32 +221,32 @@ For each function, `shp check` applies these checks in order:
 2. A targeted effect that matches a final forbid on its target resource gives `error: forbidden effect`. The grant check is skipped for that entry, so no `missing grant` is reported.
 3. Any other targeted effect that the component does not grant gives `error: missing grant`.
 
-An effect without a `<Resource>` target skips both the forbid check and the grant check, so `HardDelete` written without a target passes even when every resource is `AppendOnly`. This includes a trait pattern written without a target: `forbid final Update` forbids `Update<AuditEvent>`, not a bare `Update`. A named target must be a declared resource; otherwise `unknown resource` is reported, alongside `missing grant` when the effect is not granted. Effect names are free identifiers matched literally against grants and forbids. The prelude names (`Read`, `Append`, `Update`, `Redact`, `LogicalDelete`, `HardDelete`, `Truncate`, `DropStorage`, `Export`, `Import`) are editor completions, not a closed set.
+An effect without a `<Resource>` target skips both the forbid check and the grant check, so `HardDelete` written without a target passes even when every resource is `AppendOnly`. This includes a trait pattern written without a target: `forbid final Update` forbids `Update<Revision>`, not a bare `Update`. A named target must be a declared resource; otherwise `unknown resource` is reported, alongside `missing grant` when the effect is not granted. Effect names are free identifiers matched literally against grants and forbids. The prelude names (`Read`, `Append`, `Update`, `Redact`, `LogicalDelete`, `HardDelete`, `Truncate`, `DropStorage`, `Export`, `Import`) are editor completions, not a closed set.
 
 This model exercises each step:
 
 ```shape
-module audit
+module history
 
-resource AuditEvent : AppendOnly
+resource Revision : AppendOnly
 
-component AuditStore {
-  owns AuditEvent
-  grants Append<AuditEvent>
-  fn importLegacyEvents
-    source ts("src/audit/import.ts#importLegacyEvents")
+component RevisionLog {
+  owns Revision
+  grants Append<Revision>
+  fn importLegacyRevisions
+    source ts("src/history/import.ts#importLegacyRevisions")
     effects unknown
-  fn purgeOldEvents
-    source ts("src/audit/purge.ts#purgeOldEvents")
+  fn purgeOldRevisions
+    source ts("src/history/purge.ts#purgeOldRevisions")
     effects complete {
-      HardDelete<AuditEvent>
-        evidence ts("src/audit/purge.ts#purgeOldEvents")
+      HardDelete<Revision>
+        evidence ts("src/history/purge.ts#purgeOldRevisions")
     }
-  fn redactEvent
-    source ts("src/audit/redact.ts#redactEvent")
+  fn redactRevision
+    source ts("src/history/redact.ts#redactRevision")
     effects complete {
       Notify
-      Redact<AuditEvent>
+      Redact<Revision>
     }
 }
 ```
@@ -256,31 +256,31 @@ component AuditStore {
 ```text
 error: forbidden effect
 
-AuditStore.purgeOldEvents emits HardDelete<AuditEvent>.
-AuditEvent has trait AppendOnly.
-AppendOnly forbids final HardDelete<AuditEvent>.
-evidence: ts("src/audit/purge.ts#purgeOldEvents")
+RevisionLog.purgeOldRevisions emits HardDelete<Revision>.
+Revision has trait AppendOnly.
+AppendOnly forbids final HardDelete<Revision>.
+evidence: ts("src/history/purge.ts#purgeOldRevisions")
 
 caused by:
-  - shape/audit.shape: effect AuditStore.purgeOldEvents emits HardDelete<AuditEvent>
-  - shape/audit.shape: resource AuditEvent : AppendOnly
+  - shape/history.shape: effect RevisionLog.purgeOldRevisions emits HardDelete<Revision>
+  - shape/history.shape: resource Revision : AppendOnly
   - standard prelude: trait AppendOnly forbids final HardDelete<T>
 
 error: missing grant
 
-AuditStore.redactEvent emits Redact<AuditEvent>.
-AuditStore does not grant Redact<AuditEvent>.
+RevisionLog.redactRevision emits Redact<Revision>.
+RevisionLog does not grant Redact<Revision>.
 
 caused by:
-  - shape/audit.shape: effect AuditStore.redactEvent emits Redact<AuditEvent>
-  - shape/audit.shape: component AuditStore
+  - shape/history.shape: effect RevisionLog.redactRevision emits Redact<Revision>
+  - shape/history.shape: component RevisionLog
 
 error: unknown effects
 
-AuditStore.importLegacyEvents declares effects unknown.
+RevisionLog.importLegacyRevisions declares effects unknown.
 
 caused by:
-  - shape/audit.shape: fn AuditStore.importLegacyEvents
+  - shape/history.shape: fn RevisionLog.importLegacyRevisions
 ```
 
-`HardDelete<AuditEvent>` is not granted, yet only `forbidden effect` appears for it. Adding `grants HardDelete<AuditEvent>` to `AuditStore` leaves this output unchanged. `Notify` has no target, so neither check applies to it. The diagnostics are sorted by kind and then by text, not by check order; see [Diagnostics](/shapelang/reference/diagnostics/).
+`HardDelete<Revision>` is not granted, yet only `forbidden effect` appears for it. Adding `grants HardDelete<Revision>` to `RevisionLog` leaves this output unchanged. `Notify` has no target, so neither check applies to it. The diagnostics are sorted by kind and then by text, not by check order; see [Diagnostics](/shapelang/reference/diagnostics/).
