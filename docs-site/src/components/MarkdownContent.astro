@@ -1,0 +1,43 @@
+---
+import Default from "@astrojs/starlight/components/MarkdownContent.astro";
+
+// A page opts in with `video: { name, caption }` frontmatter. The files are
+// public/videos/NAME.mp4, NAME.webp (poster), and NAME.vtt (captions).
+const { video } = Astro.locals.starlightRoute.entry.data;
+const file = (ext: string) => `${import.meta.env.BASE_URL.replace(/\/$/, "")}/videos/${video?.name}.${ext}`;
+---
+
+{
+  video && (
+    <figure class="shape-video">
+      <video controls playsinline preload="metadata" poster={file("webp")} width="1920" height="1080">
+        <source src={file("mp4")} type="video/mp4" />
+        <track kind="captions" src={file("vtt")} srclang="en-GB" label="English" />
+      </video>
+      <figcaption>{video.caption}</figcaption>
+    </figure>
+  )
+}
+<Default><slot /></Default>
+
+<style>
+  .shape-video {
+    margin: 0 0 2.5rem;
+  }
+
+  .shape-video video {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    border: 1px solid var(--shape-border);
+    border-radius: var(--shape-radius);
+    background: var(--shape-panel);
+  }
+
+  .shape-video figcaption {
+    margin-top: 0.65rem;
+    color: var(--shape-muted);
+    font-size: var(--sl-text-sm);
+  }
+</style>

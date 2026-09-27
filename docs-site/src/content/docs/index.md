@@ -2,6 +2,9 @@
 title: Shape
 description: Shape is a small language for architecture claims, and shp is the checker that accepts or rejects them in pull requests and CI.
 template: splash
+video:
+  name: shape-introduction
+  caption: "Shape in 73 seconds: in a writing app, a coding agent's share button would leak private drafts, and the Shape check on the pull request stops the merge. Narrated, with captions."
 hero:
   tagline: Architecture claims as text files, reviewed by people, checked by shp in CI.
   actions:

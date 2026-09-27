@@ -1,0 +1,109 @@
+WEBVTT
+
+00:00:00.500 --> 00:00:02.290
+Say you're building a writing app.
+
+00:00:02.520 --> 00:00:03.990
+Writers keep private drafts,
+
+00:00:03.990 --> 00:00:06.800
+and publish finished stories to a public feed.
+
+00:00:07.450 --> 00:00:09.550
+Your team writes its architecture down in
+
+00:00:09.550 --> 00:00:11.790
+a Shape model file in the repo.
+
+00:00:11.790 --> 00:00:12.860
+One rule in it says
+
+00:00:12.870 --> 00:00:15.290
+private drafts are never exported.
+
+00:00:15.990 --> 00:00:18.520
+You ask your coding agent for one small feature:
+
+00:00:18.520 --> 00:00:19.560
+a share button.
+
+00:00:19.760 --> 00:00:21.000
+Seconds later, it's done.
+
+00:00:21.000 --> 00:00:23.640
+But it also shares private drafts.
+
+00:00:24.240 --> 00:00:25.780
+The model file also marks the
+
+00:00:25.830 --> 00:00:27.760
+share code's folder as governed:
+
+00:00:27.760 --> 00:00:30.610
+any change there must update the model file too,
+
+00:00:30.620 --> 00:00:32.230
+or say why it doesn't need to.
+
+00:00:32.230 --> 00:00:33.700
+The agent's change didn't,
+
+00:00:33.700 --> 00:00:35.870
+so the Shape check on the pull request fails.
+
+00:00:36.570 --> 00:00:37.940
+So the agent adds what the
+
+00:00:37.990 --> 00:00:39.870
+button does to the model file:
+
+00:00:39.870 --> 00:00:41.860
+it exports a private draft.
+
+00:00:42.100 --> 00:00:43.630
+That breaks the team's rule,
+
+00:00:43.650 --> 00:00:45.620
+and a grant can't override it.
+
+00:00:45.620 --> 00:00:46.560
+The merge stops.
+
+00:00:47.160 --> 00:00:49.640
+Here the answer is obviously no.
+
+00:00:49.640 --> 00:00:51.030
+The agent fixes the code
+
+00:00:51.030 --> 00:00:52.940
+to share only published stories,
+
+00:00:53.030 --> 00:00:55.200
+and updates the model file to match.
+
+00:00:55.200 --> 00:00:55.880
+The check passes.
+
+00:00:56.580 --> 00:00:58.160
+If you did want drafts shared,
+
+00:00:58.400 --> 00:00:59.640
+say with an editor,
+
+00:00:59.720 --> 00:01:00.760
+you'd change the rule in the
+
+00:01:00.760 --> 00:01:02.600
+model file along with the code,
+
+00:01:02.600 --> 00:01:03.840
+and the pull request's review
+
+00:01:03.840 --> 00:01:05.090
+would check that they match.
+
+00:01:05.690 --> 00:01:08.480
+Shape: architecture you can check in CI.
+
+00:01:08.740 --> 00:01:11.550
+Install shp, and start with one rule.
