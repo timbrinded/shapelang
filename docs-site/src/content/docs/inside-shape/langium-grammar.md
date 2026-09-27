@@ -19,7 +19,7 @@ Never hand-edit the generated files: change the grammar and regenerate. CI rerun
 
 ## Keywords are global
 
-Every ID-shaped quoted literal in `shape.langium`, such as `'role'` or `'transform'`, becomes a keyword everywhere in the language. It can no longer appear as a bare identifier, such as a module-name segment or a lowercase function name: `module policy.audit` and `fn role` both fail to parse. Keywords are case-sensitive, so PascalCase names such as `Policy` are unaffected. A rule that must accept a keyword where an identifier is expected lists it explicitly, as `ProtectsPropertyKind` does with `'description'` and `RelationKindName` does with the prelude relation kinds.
+Every ID-shaped quoted literal in `shape.langium`, such as `'role'` or `'transform'`, becomes a keyword everywhere in the language. It can no longer appear as a bare identifier, such as a module-name segment or a lowercase function name: `module policy.history` and `fn role` both fail to parse. Keywords are case-sensitive, so PascalCase names such as `Policy` are unaffected. A rule that must accept a keyword where an identifier is expected lists it explicitly, as `ProtectsPropertyKind` does with `'description'` and `RelationKindName` does with the prelude relation kinds.
 
 Add every new keyword to `SHAPE_RESERVED_WORDS` in `packages/shp-checker/src/ast-generation-utils.ts`. The AST generator escapes generated names that match an entry, so it never emits an unparsable bare keyword. The test "reserved words cover every ID-shaped grammar keyword" in `packages/shp-checker/src/checker.guard-syntax.test.ts` extracts every quoted literal from the grammar and fails when one is missing from the set.
 

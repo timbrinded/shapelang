@@ -11,29 +11,29 @@ The other advisory tools are [`shp analyze`](/shapelang/guides/analyzer/) and [`
 
 ## The example change
 
-The procedure follows one change. A new file, `src/audit/exports.ts`, deletes expired rows from an `audit_exports` table:
+The procedure follows one change. A new file, `src/history/exports.ts`, deletes expired rows from a `revision_exports` table:
 
 ```typescript
 export async function purgeExpiredExports(db: { deleteFrom: (table: string) => unknown }) {
-  return db.deleteFrom("audit_exports");
+  return db.deleteFrom("revision_exports");
 }
 ```
 
-The existing `shape/audit.shape` declares `AuditStore` with `appendEvent` and `listEvents`, and governs `src/audit/**/*.ts` through an `implementation` with `on_change require shape_update`. Until the model is updated, `shp check --changed-files` fails with `governed source changed without current Shape update`; see [Keep the Model Current](/shapelang/guides/keep-model-current/).
+The existing `shape/history.shape` declares `RevisionLog` with `appendRevision` and `listRevisions`, and governs `src/history/**/*.ts` through an `implementation` with `on_change require shape_update`. Until the model is updated, `shp check --changed-files` fails with `governed source changed without current Shape update`; see [Keep the Model Current](/shapelang/guides/keep-model-current/).
 
 ## Procedure
 
-1. **List the changed files.** `changed.txt` holds one repository-relative path per line, the same list `shp check --changed-files` reads; [Keep the Model Current](/shapelang/guides/keep-model-current/) shows how to write it. Here it holds `src/audit/exports.ts`. `pr.diff` holds the change as a unified diff against the base branch, with `+++ b/path` headers.
+1. **List the changed files.** `changed.txt` holds one repository-relative path per line, the same list `shp check --changed-files` reads; [Keep the Model Current](/shapelang/guides/keep-model-current/) shows how to write it. Here it holds `src/history/exports.ts`. `pr.diff` holds the change as a unified diff against the base branch, with `+++ b/path` headers.
 
 2. **Draft a conservative update.**
 
    ```text
-   $ shp author --changed-files changed.txt --component AuditStore --module audit
-   module audit
+   $ shp author --changed-files changed.txt --component RevisionLog --module history
+   module history
 
-   component AuditStore {
+   component RevisionLog {
      fn reviewExportsShape1
-       source ts("src/audit/exports.ts")
+       source ts("src/history/exports.ts")
        effects unknown
    }
    ```
@@ -51,28 +51,28 @@ The existing `shape/audit.shape` declares `AuditStore` with `appendEvent` and `l
    ```bash
    shp author \
      --changed-files changed.txt \
-     --component AuditStore \
-     --module audit \
+     --component RevisionLog \
+     --module history \
      --diff pr.diff \
      --prompt \
-     --shape-files shape/audit.shape \
-     --snippet-files src/audit/exports.ts \
+     --shape-files shape/history.shape \
+     --snippet-files src/history/exports.ts \
      --instructions "Keep the update narrow." \
      > author-prompt.txt
    ```
 
-   The prompt holds, in order, the rules (see [Prompt and critic posture](#prompt-and-critic-posture)), the changed files, the project prelude when `--project-prelude` is given, the existing Shape, the diff, the source snippets, the same draft that step 2 prints, and the human instructions. Each context file is labelled with its path, as in `--- shape/audit.shape ---`.
+   The prompt holds, in order, the rules (see [Prompt and critic posture](#prompt-and-critic-posture)), the changed files, the project prelude when `--project-prelude` is given, the existing Shape, the diff, the source snippets, the same draft that step 2 prints, and the human instructions. Each context file is labelled with its path, as in `--- shape/history.shape ---`.
 
    Prompt mode reads only the Shape files you list and never loads `shape/**/*.shape` on its own. The explicit list keeps generated AST context and unrelated modules out of the prompt unless you choose to include them. A `--project-prelude` file is context only: `shp author` does not discover, import, or install domain packs. The diff is context too, and its hunk coordinates never become `path:start-end` references.
 
-4. **Get a proposal from your agent.** Give `author-prompt.txt` to the agent you use. Suppose it returns `proposed.shape`, a rewrite of the module that adds `resource AuditExport`, `owns AuditExport`, `grants Read<AuditExport>`, and this function:
+4. **Get a proposal from your agent.** Give `author-prompt.txt` to the agent you use. Suppose it returns `proposed.shape`, a rewrite of the module that adds `resource RevisionExport`, `owns RevisionExport`, `grants Read<RevisionExport>`, and this function:
 
    ```shape no-verify
      fn purgeExpiredExports
-       source ts("src/audit/exports.ts#purgeExpiredExports")
+       source ts("src/history/exports.ts#purgeExpiredExports")
        effects complete {
-         Read<AuditExport>
-           evidence ts("src/audit/exports.ts#purgeExpiredExports")
+         Read<RevisionExport>
+           evidence ts("src/history/exports.ts#purgeExpiredExports")
        }
    ```
 
@@ -85,16 +85,16 @@ The existing `shape/audit.shape` declares `AuditStore` with `appendEvent` and `l
      --changed-files changed.txt \
      --diff pr.diff \
      --critic-prompt proposed.shape \
-     --shape-files shape/audit.shape \
-     --snippet-files src/audit/exports.ts \
+     --shape-files shape/history.shape \
+     --snippet-files src/history/exports.ts \
      > critic-prompt.txt
    ```
 
    ```text
    warning: destructive operation missing from declared effects
 
-   src/audit/exports.ts suggests HardDelete.
-   evidence: return db.deleteFrom("audit_exports");
+   src/history/exports.ts suggests HardDelete.
+   evidence: return db.deleteFrom("revision_exports");
    ```
 
    It writes the critic prompt to stdout and its own advisories to stderr, and exits `0` whether or not it reports any. There are two advisories:
@@ -106,46 +106,46 @@ The existing `shape/audit.shape` declares `AuditStore` with `appendEvent` and `l
 
    Give `critic-prompt.txt` to a reviewing agent. Its findings, like the advisories, are input to step 6.
 
-6. **Review and fold the update.** Replace unknown or wrong effects with reviewed ones and their evidence. Refine file-only references to `#symbol` anchors where the source supports it, and add any rationale, memory, or reevaluation that shape traits and guards require. Fold the result into the module that owns the claims, and drop the draft's placeholder functions. The reviewed `shape/audit.shape`:
+6. **Review and fold the update.** Replace unknown or wrong effects with reviewed ones and their evidence. Refine file-only references to `#symbol` anchors where the source supports it, and add any rationale, memory, or reevaluation that shape traits and guards require. Fold the result into the module that owns the claims, and drop the draft's placeholder functions. The reviewed `shape/history.shape`:
 
    ```shape
-   module audit
+   module history
 
-   resource AuditEvent : AppendOnly
+   resource Revision : AppendOnly
 
-   resource AuditExport
+   resource RevisionExport
 
-   component AuditStore {
-     owns AuditEvent
-     owns AuditExport
-     grants Append<AuditEvent>
-     grants Read<AuditEvent>
-     grants HardDelete<AuditExport>
-     fn appendEvent
-       source ts("src/audit/store.ts#appendEvent")
+   component RevisionLog {
+     owns Revision
+     owns RevisionExport
+     grants Append<Revision>
+     grants Read<Revision>
+     grants HardDelete<RevisionExport>
+     fn appendRevision
+       source ts("src/history/log.ts#appendRevision")
        effects complete {
-         Append<AuditEvent>
-           evidence ts("src/audit/store.ts#appendEvent")
+         Append<Revision>
+           evidence ts("src/history/log.ts#appendRevision")
        }
-     fn listEvents
-       source ts("src/audit/store.ts#listEvents")
+     fn listRevisions
+       source ts("src/history/log.ts#listRevisions")
        effects complete {
-         Read<AuditEvent>
-           evidence ts("src/audit/store.ts#listEvents")
+         Read<Revision>
+           evidence ts("src/history/log.ts#listRevisions")
        }
      fn purgeExpiredExports
-       source ts("src/audit/exports.ts#purgeExpiredExports")
+       source ts("src/history/exports.ts#purgeExpiredExports")
        effects complete {
-         HardDelete<AuditExport>
-           evidence ts("src/audit/exports.ts#purgeExpiredExports")
+         HardDelete<RevisionExport>
+           evidence ts("src/history/exports.ts#purgeExpiredExports")
        }
    }
 
-   implementation AuditStoreImpl {
+   implementation RevisionLogImpl {
      paths {
-       "src/audit/**/*.ts"
+       "src/history/**/*.ts"
      }
-     conforms_to AuditStore
+     conforms_to RevisionLog
      on_change require shape_update
    }
    ```
@@ -156,21 +156,21 @@ The existing `shape/audit.shape` declares `AuditStore` with `appendEvent` and `l
 
    ```text
    $ shp fmt --check
-   shape/audit.shape: not formatted
-   $ shp fmt shape/audit.shape
+   shape/history.shape: not formatted
+   $ shp fmt shape/history.shape
    Shape format complete.
    $ shp fmt --check
    Shape format check passed.
    ```
 
-8. **Run the gate.** Add `shape/audit.shape` to `changed.txt`, because a model update counts only when its `.shape` file is in the changed-file list, then run the strict check:
+8. **Run the gate.** Add `shape/history.shape` to `changed.txt`, because a model update counts only when its `.shape` file is in the changed-file list, then run the strict check:
 
    ```text
    $ shp check --changed-files changed.txt
    Shape check passed.
    ```
 
-   The check passes because a `source` reference in the changed `shape/audit.shape` names `src/audit/exports.ts`, and every declared effect is granted.
+   The check passes because a `source` reference in the changed `shape/history.shape` names `src/history/exports.ts`, and every declared effect is granted.
 
 ## Prompt and critic posture
 

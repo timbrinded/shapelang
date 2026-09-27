@@ -76,7 +76,7 @@ import { IncrementalShapeChecker } from "@shape/shp-checker";
 
 const checker = new IncrementalShapeChecker();
 const { result, invalidation } = checker.check(
-  [{ filePath: "shape/audit.shape", source: "module audit\nresource AuditEvent\n" }],
+  [{ filePath: "shape/history.shape", source: "module history\nresource Revision\n" }],
   { includeFacts: true }
 );
 ```

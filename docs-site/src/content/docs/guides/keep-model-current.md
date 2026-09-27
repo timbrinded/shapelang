@@ -43,33 +43,33 @@ Replace `main` with your base branch, and add `changed.txt` to `.gitignore` so t
 An `implementation` block declares which source paths the model governs:
 
 ```shape
-module audit
+module history
 
-resource AuditEvent : AppendOnly
+resource Revision : AppendOnly
 
-component AuditStore {
-  owns AuditEvent
-  grants Append<AuditEvent>
-  grants Read<AuditEvent>
-  fn appendEvent
-    source ts("src/audit/store.ts#appendEvent")
+component RevisionLog {
+  owns Revision
+  grants Append<Revision>
+  grants Read<Revision>
+  fn appendRevision
+    source ts("src/history/log.ts#appendRevision")
     effects complete {
-      Append<AuditEvent>
-        evidence ts("src/audit/store.ts#appendEvent")
+      Append<Revision>
+        evidence ts("src/history/log.ts#appendRevision")
     }
-  fn listEvents
-    source ts("src/audit/store.ts#listEvents")
+  fn listRevisions
+    source ts("src/history/log.ts#listRevisions")
     effects complete {
-      Read<AuditEvent>
-        evidence ts("src/audit/store.ts#listEvents")
+      Read<Revision>
+        evidence ts("src/history/log.ts#listRevisions")
     }
 }
 
-implementation AuditStoreImpl {
+implementation RevisionLogImpl {
   paths {
-    "src/audit/**/*.ts"
+    "src/history/**/*.ts"
   }
-  conforms_to AuditStore
+  conforms_to RevisionLog
   on_change require shape_update
 }
 ```
@@ -93,7 +93,7 @@ A `.shape` file is *current* when it is in the changed-file list. A changed gove
 
 ![Coverage decision for one changed file: an ungoverned or .shape file needs nothing, and a governed file passes only with a current source or evidence reference or a current no_shape_change attestation, otherwise coverage fails.](../../../assets/diagrams/coverage-decision.svg)
 
-Matching compares exact paths after dropping any `#anchor` and any `:line` or `:line-line` suffix. So `ts("src/audit/export.ts#exportEvents")` matches `src/audit/export.ts`, but `ts("src/audit")` matches nothing below that directory. The tag (`ts`, `md`, and so on) is any identifier and plays no part in the match. Other details:
+Matching compares exact paths after dropping any `#anchor` and any `:line` or `:line-line` suffix. So `ts("src/history/export.ts#exportRevisions")` matches `src/history/export.ts`, but `ts("src/history")` matches nothing below that directory. The tag (`ts`, `md`, and so on) is any identifier and plays no part in the match. Other details:
 
 - A reference from any component counts, because coverage never consults `conforms_to`.
 - A function with `effects unknown` still contributes its `source`.
@@ -103,7 +103,7 @@ Matching compares exact paths after dropping any `#anchor` and any `:line` or `:
 For Shape updates, currency is per file: the checker does not know which references were written for this change, so every reference in a `.shape` file that is in the list counts, including old ones. Two consequences follow:
 
 - A reference in a file that the change does not touch never covers the change, however well it matches.
-- An old reference in a file that the change does touch covers its path again. If a change adds an attestation to `shape/audit.shape` for `src/audit/reporting.ts`, the existing `source ts("src/audit/store.ts#appendEvent")` also covers any change to `src/audit/store.ts` in the same change set.
+- An old reference in a file that the change does touch covers its path again. If a change adds an attestation to `shape/history.shape` for `src/history/reporting.ts`, the existing `source ts("src/history/log.ts#appendRevision")` also covers any change to `src/history/log.ts` in the same change set.
 
 Reviewers therefore need to check which references in a touched `.shape` file still describe the change.
 
@@ -129,22 +129,22 @@ If `shp explain TARGET` shows a guard on a claim you are changing, read [Guarded
 
 Find the claims that describe the changed behaviour, such as a component and its functions, a resource, an implementation, a relation, a rule, or design memory, and edit them in place so that they match the code. Cite the changed file in a function's `source` or in an effect entry's `evidence`; only those references make the update count for coverage.
 
-In this example, a change adds `src/audit/export.ts`, which reads audit events. Add the function to `AuditStore` in `shape/audit.shape`:
+In this example, a change adds `src/history/export.ts`, which reads revisions. Add the function to `RevisionLog` in `shape/history.shape`:
 
 ```shape no-verify
-  fn exportEvents
-    source ts("src/audit/export.ts#exportEvents")
+  fn exportRevisions
+    source ts("src/history/export.ts#exportRevisions")
     effects complete {
-      Read<AuditEvent>
-        evidence ts("src/audit/export.ts#exportEvents")
+      Read<Revision>
+        evidence ts("src/history/export.ts#exportRevisions")
     }
 ```
 
 `changed.txt` then contains both files:
 
 ```text
-shape/audit.shape
-src/audit/export.ts
+shape/history.shape
+src/history/export.ts
 ```
 
 ```text
@@ -152,7 +152,7 @@ $ shp check --changed-files changed.txt
 Shape check passed.
 ```
 
-A covered change still has to pass conformance. If the new claim were `HardDelete<AuditEvent>`, coverage would accept it, but the `forbid final` on `AppendOnly` would reject it; the [Quickstart](/shapelang/learn/quickstart/) walks through that failure.
+A covered change still has to pass conformance. If the new claim were `HardDelete<Revision>`, coverage would accept it, but the `forbid final` on `AppendOnly` would reject it; the [Quickstart](/shapelang/learn/quickstart/) walks through that failure.
 
 Deleting a governed file needs one more step. The deleted path still appears in the diff, and coverage has no notion of removal. When the change also removes the function whose `source` named the file, nothing in the model names the path any more, so coverage fails for it. The only way to cover it today is an `attest no_shape_change` that names the deleted path and gives a reason recording the removal; the next case shows the form.
 
@@ -162,12 +162,12 @@ When a governed file changes without changing any claim, such as a formatting-on
 
 ```shape
 attest no_shape_change {
-  source ts("src/audit/reporting.ts")
+  source ts("src/history/reporting.ts")
   reason "Formatting-only change; no resource access or effect changed."
 }
 ```
 
-With `shape/audit.shape` and `src/audit/reporting.ts` in `changed.txt`, `shp check --changed-files changed.txt` prints `Shape check passed.`
+With `shape/history.shape` and `src/history/reporting.ts` in `changed.txt`, `shp check --changed-files changed.txt` prints `Shape check passed.`
 
 An attestation declares exactly one `source` and one `reason`, so use one attestation per changed file. Write it for this change: with a base model, an older attestation for the same path does not count, so give the new one its own reason and delete the stale one. Use `no_shape_change` only when the contract is truly unchanged: coverage accepts the attestation whether or not its reason is true, so it can hide real model drift from everyone but the reviewer. An attestation never waives a `forbid final`; nothing does. See the [Effect Model](/shapelang/concepts/effect-model/).
 
@@ -176,72 +176,72 @@ An attestation declares exactly one `source` and one `reason`, so use one attest
 When a function's effects are not yet known, write `effects unknown` rather than guessing or writing an empty `effects complete {}`:
 
 ```shape no-verify
-  fn importLegacyEvents
-    source ts("src/audit/import.ts#importLegacyEvents")
+  fn importLegacyRevisions
+    source ts("src/history/import.ts#importLegacyRevisions")
     effects unknown
 ```
 
-A draft that is not ready for strict checks stays outside `shape/`, where default discovery does not load it. Check it by naming the file, here `draft.shape`, a copy of the `audit` module with this function added. Naming files replaces discovery, so the draft must declare everything it references:
+A draft that is not ready for strict checks stays outside `shape/`, where default discovery does not load it. Check it by naming the file, here `draft.shape`, a copy of the `history` module with this function added. Naming files replaces discovery, so the draft must declare everything it references:
 
 ```text
 $ shp check --allow-unknown-effects draft.shape
 warning: unknown effects
 
-AuditStore.importLegacyEvents declares effects unknown.
+RevisionLog.importLegacyRevisions declares effects unknown.
 
 caused by:
-  - draft.shape: fn AuditStore.importLegacyEvents
+  - draft.shape: fn RevisionLog.importLegacyRevisions
 
 Shape check passed with warnings.
 ```
 
 The exit code is `0`. `--allow-unknown-effects` turns only `unknown effects` into warnings, and every other check still blocks; the flag is described in the [CLI Reference](/shapelang/reference/cli/).
 
-Once the function moves into `shape/audit.shape` and that file is in the list, its `source` covers `src/audit/import.ts`, but strict `shp check` rejects the unknown summary with exit code `1`:
+Once the function moves into `shape/history.shape` and that file is in the list, its `source` covers `src/history/import.ts`, but strict `shp check` rejects the unknown summary with exit code `1`:
 
 ```text
 $ shp check --changed-files changed.txt
 error: unknown effects
 
-AuditStore.importLegacyEvents declares effects unknown.
+RevisionLog.importLegacyRevisions declares effects unknown.
 
 caused by:
-  - shape/audit.shape: fn AuditStore.importLegacyEvents
+  - shape/history.shape: fn RevisionLog.importLegacyRevisions
 ```
 
 A strict CI gate therefore rejects the change until every unknown in an authored module is resolved. The [Effect Model](/shapelang/concepts/effect-model/) explains unknown and complete summaries.
 
 ## When coverage fails
 
-If the change adds `src/audit/export.ts` but no current `.shape` file names it, coverage fails. With the model from [Governed paths](#governed-paths) unchanged and only `src/audit/export.ts` in `changed.txt`, the check writes this to stderr and exits `1`:
+If the change adds `src/history/export.ts` but no current `.shape` file names it, coverage fails. With the model from [Governed paths](#governed-paths) unchanged and only `src/history/export.ts` in `changed.txt`, the check writes this to stderr and exits `1`:
 
 ```text
 $ shp check --changed-files changed.txt
 error: governed source changed without current Shape update
 
-Changed file: src/audit/export.ts
-Governed by: audit::AuditStoreImpl
-Matched path: src/audit/**/*.ts
+Changed file: src/history/export.ts
+Governed by: history::RevisionLogImpl
+Matched path: src/history/**/*.ts
 Required: update a current .shape file with matching source/evidence, or add a no_shape_change attestation.
 
 caused by:
-  - shape/audit.shape: implementation AuditStoreImpl
-  - shape/audit.shape: implementation AuditStoreImpl path src/audit/**/*.ts
+  - shape/history.shape: implementation RevisionLogImpl
+  - shape/history.shape: implementation RevisionLogImpl path src/history/**/*.ts
 ```
 
-The same diagnostic appears when `shape/audit.shape` has the new function but is missing from `changed.txt`. Fix it with one of the cases above. `shp coverage --changed-files changed.txt` reports the same diagnostic.
+The same diagnostic appears when `shape/history.shape` has the new function but is missing from `changed.txt`. Fix it with one of the cases above. `shp coverage --changed-files changed.txt` reports the same diagnostic.
 
 ## Bindings
 
 A binding pairs trigger paths with required paths that must change alongside them, typically documentation:
 
 ```shape
-binding AuditDocs {
+binding HistoryDocs {
   when_changed paths {
-    "src/audit/**/*.ts"
+    "src/history/**/*.ts"
   }
   require_changed paths {
-    "docs/audit.md"
+    "docs/history.md"
   }
   allow attest docs_not_needed
 }
@@ -249,26 +249,26 @@ binding AuditDocs {
 
 A changed path that matches a `when_changed` glob is a trigger path, and it triggers the binding. One changed path that matches any `require_changed` glob then satisfies the whole binding. Otherwise, each trigger path needs a current attestation of a kind that the binding lists in `allow attest`, with the same exact-path, non-empty-reason, and currency rules as coverage. A binding with no `allow attest` line has no attestation escape. Unlike coverage, bindings do not skip `.shape` files, so a `when_changed` glob can name model files.
 
-With this binding in `shape/audit.shape`, the `exportEvents` update above now fails with exit code `1`, because `docs/audit.md` did not change:
+With this binding in `shape/history.shape`, the `exportRevisions` update above now fails with exit code `1`, because `docs/history.md` did not change:
 
 ```text
 $ shp check --changed-files changed.txt
 error: bound docs change missing
 
-binding audit::AuditDocs was triggered by src/audit/export.ts.
-Required: change one of docs/audit.md, or add attest docs_not_needed.
+binding history::HistoryDocs was triggered by src/history/export.ts.
+Required: change one of docs/history.md, or add attest docs_not_needed.
 
 caused by:
-  - shape/audit.shape: binding AuditDocs
-  - shape/audit.shape: binding AuditDocs when_changed src/audit/**/*.ts
+  - shape/history.shape: binding HistoryDocs
+  - shape/history.shape: binding HistoryDocs when_changed src/history/**/*.ts
 ```
 
-Changing `docs/audit.md` fixes it. When the docs do not need to change, add the permitted attestation to a `.shape` file in the list:
+Changing `docs/history.md` fixes it. When the docs do not need to change, add the permitted attestation to a `.shape` file in the list:
 
 ```shape
 attest docs_not_needed {
-  source ts("src/audit/export.ts")
-  reason "Export is internal tooling; the audit docs describe no export behaviour."
+  source ts("src/history/export.ts")
+  reason "Export is internal tooling; the history docs describe no export behaviour."
 }
 ```
 

@@ -44,47 +44,47 @@ In the index, `check` stands for every command that runs the semantic checks: `s
 
 Diagnostics judge the declared Shape model. They describe claims in `.shape` files, not the application source that `source` and `evidence` name, which the checker never opens.
 
-Every semantic diagnostic has the same layout. This model grants `HardDelete<AuditEvent>` and still fails, because a final forbid on the resource's trait wins over any grant:
+Every semantic diagnostic has the same layout. This model grants `HardDelete<Revision>` and still fails, because a final forbid on the resource's trait wins over any grant:
 
 ```shape
-module audit
+module history
 
-resource AuditEvent : AppendOnly
+resource Revision : AppendOnly
 
-component AuditStore {
-  owns AuditEvent
-  grants Append<AuditEvent>
-  grants HardDelete<AuditEvent>
+component RevisionLog {
+  owns Revision
+  grants Append<Revision>
+  grants HardDelete<Revision>
 
-  fn appendEvent
-    source ts("src/audit/store.ts#appendEvent")
+  fn appendRevision
+    source ts("src/history/log.ts#appendRevision")
     effects complete {
-      Append<AuditEvent>
-        evidence ts("src/audit/store.ts#appendEvent")
+      Append<Revision>
+        evidence ts("src/history/log.ts#appendRevision")
     }
 
-  fn purgeOldEvents
-    source ts("src/audit/purge.ts#purgeOldEvents")
+  fn purgeOldRevisions
+    source ts("src/history/purge.ts#purgeOldRevisions")
     effects complete {
-      HardDelete<AuditEvent>
-        evidence ts("src/audit/purge.ts#purgeOldEvents")
+      HardDelete<Revision>
+        evidence ts("src/history/purge.ts#purgeOldRevisions")
     }
 }
 ```
 
-`shp check audit.shape` prints this to stderr and exits `1`:
+`shp check history.shape` prints this to stderr and exits `1`:
 
 ```text
 error: forbidden effect
 
-AuditStore.purgeOldEvents emits HardDelete<AuditEvent>.
-AuditEvent has trait AppendOnly.
-AppendOnly forbids final HardDelete<AuditEvent>.
-evidence: ts("src/audit/purge.ts#purgeOldEvents")
+RevisionLog.purgeOldRevisions emits HardDelete<Revision>.
+Revision has trait AppendOnly.
+AppendOnly forbids final HardDelete<Revision>.
+evidence: ts("src/history/purge.ts#purgeOldRevisions")
 
 caused by:
-  - audit.shape: effect AuditStore.purgeOldEvents emits HardDelete<AuditEvent>
-  - audit.shape: resource AuditEvent : AppendOnly
+  - history.shape: effect RevisionLog.purgeOldRevisions emits HardDelete<Revision>
+  - history.shape: resource Revision : AppendOnly
   - standard prelude: trait AppendOnly forbids final HardDelete<T>
 ```
 
@@ -114,15 +114,15 @@ Kind `parse` · emitted by `shp check`, `coverage`, `explain`, `graph`, `memory`
 ```text
 error: parse error
 
-audit.shape:10:5: Expecting token of type '}' but found `effects`.
+history.shape:10:5: Expecting token of type '}' but found `effects`.
 ```
 
 **Cause.** The parser rejected the file, here because a function declares a second `effects` block. The location is `FILE:LINE:COLUMN:`, or `FILE:` alone when no position is known. A file that cannot be read produces the same title with the read error, for example `missing.shape: ENOENT: no such file or directory, open 'missing.shape'`. One diagnostic is printed per problem, and no semantic check runs.
 
 Three other tools report the same parser problem in their own form:
 
-- `shp fmt` prints ``audit.shape: Expecting token of type '}' but found `effects`.`` and exits `1`.
-- `shp author --critic-prompt` prints ``error: failed to parse audit.shape:10:5: Expecting token of type '}' but found `effects`.`` and exits `2`.
+- `shp fmt` prints ``history.shape: Expecting token of type '}' but found `effects`.`` and exits `1`.
+- `shp author --critic-prompt` prints ``error: failed to parse history.shape:10:5: Expecting token of type '}' but found `effects`.`` and exits `2`.
 - The language server publishes only the message, at the reported position.
 
 **Fix.** Correct the syntax at the reported position. Every declaration form and the reserved keywords are listed in [Language Syntax](/shapelang/reference/language-syntax/).
@@ -137,7 +137,7 @@ error: unknown relation_endpoint
 relation_endpoint GhostService is referenced but not declared.
 
 caused by:
-  - gateway.shape: relation GatewayCallsGhost
+  - editor.shape: relation EditorCallsGhost
 ```
 
 **Cause.** A reference names nothing of the expected kind in the loaded Shape model. The printed title depends on where the reference appears:
@@ -149,7 +149,7 @@ caused by:
 | `error: unknown trait` | a trait on a resource, component, or function; the trait in a rule's `when … has` |
 | `error: unknown relation_endpoint` | a relation endpoint that is neither a component nor a resource; a `forbid path` endpoint |
 
-An `effect candidate` whose `fn` names an undeclared function is reported as `unknown component` with the function as the name, for example `component AuditStore.missing is referenced but not declared.` A candidate with no `fn` member is reported as `component NAME function is referenced but not declared.`, next to `invalid candidate effect`. Not every reference is name-checked: `grants` targets, function `requires` terms, and the component of a `remove fn` entry can name undeclared declarations without a diagnostic.
+An `effect candidate` whose `fn` names an undeclared function is reported as `unknown component` with the function as the name, for example `component RevisionLog.missing is referenced but not declared.` A candidate with no `fn` member is reported as `component NAME function is referenced but not declared.`, next to `invalid candidate effect`. Not every reference is name-checked: `grants` targets, function `requires` terms, and the component of a `remove fn` entry can name undeclared declarations without a diagnostic.
 
 **Fix.** Declare the missing name, correct the spelling, add the `import` for its module, or qualify the reference as `module::Name`.
 
@@ -157,14 +157,14 @@ An `effect candidate` whose `fn` names an undeclared function is reported as `un
 
 Kind `ambiguous_name` · emitted by `check`
 
-This output comes from three files: `audit.shape` and `billing.shape` each declare `component Store`, and `app.shape` imports both modules and writes `conforms_to Store`.
+This output comes from three files: `history.shape` and `billing.shape` each declare `component Store`, and `app.shape` imports both modules and writes `conforms_to Store`.
 
 ```text
 error: ambiguous component
 
 component Store matches more than one imported declaration.
 Use a module-qualified reference.
-matches: audit::Store, billing::Store
+matches: billing::Store, history::Store
 
 caused by:
   - app.shape: component reference Store
@@ -179,7 +179,7 @@ caused by:
 
 **Cause.** An unqualified name is not declared in the referencing module and matches declarations in more than one imported module. A declaration in the referencing module always wins over imports, so it never causes this diagnostic. `<kind>` is the kind the reference expects: `resource`, `component`, `trait`, or `relation_endpoint` for most references, and `relation`, `implementation`, `binding`, `rule`, `rationale`, or `memory` for a context target, a `satisfies`, or a `change` entry that names one. The ambiguous reference resolves to nothing, so an `unknown <kind>` for the same name usually follows, as above.
 
-**Fix.** Qualify the reference, as in `conforms_to audit::Store`, or remove one of the imports.
+**Fix.** Qualify the reference, as in `conforms_to history::Store`, or remove one of the imports.
 
 ### `error: duplicate <kind>`
 
@@ -188,11 +188,11 @@ Kind `duplicate_declaration` · emitted by `check`
 ```text
 error: duplicate component
 
-component AuditStore is declared more than once.
+component RevisionLog is declared more than once.
 
 caused by:
-  - audit.shape: component AuditStore
-  - audit.shape: component AuditStore
+  - history.shape: component RevisionLog
+  - history.shape: component RevisionLog
 ```
 
 **Cause.** One module declares the same name twice for one kind. `<kind>` is `resource`, `trait`, `component`, `relation`, `candidate_effect`, `binding`, `rationale`, `memory`, or `reevaluation`. The first declaration, in file order and then declaration order, is kept and the later one is ignored, so diagnostics that only the later one would cause do not appear. Equal names in different modules are not duplicates, and a trait with a prelude trait's name shadows the prelude trait instead. Duplicate `implementation`, `rule`, and `attest` declarations are not reported, and a second `fn` with the same name in one component silently replaces the first.
@@ -206,10 +206,10 @@ Kind `invalid_implementation` · emitted by `check`
 ```text
 error: invalid implementation
 
-implementation AuditStoreImpl is invalid: on_change require shape_delta is not a supported requirement; expected shape_update.
+implementation RevisionLogImpl is invalid: on_change require shape_delta is not a supported requirement; expected shape_update.
 
 caused by:
-  - audit.shape: implementation AuditStoreImpl on_change require shape_delta
+  - history.shape: implementation RevisionLogImpl on_change require shape_delta
 ```
 
 **Cause.** An `implementation` declares an `on_change require` value other than `shape_update`, the only supported requirement. Coverage acts only on `shape_update`, so an unknown value, such as a typo or the pre-rename spelling `shape_delta`, would otherwise leave the implementation's paths silently ungoverned.
@@ -237,17 +237,17 @@ Kind `missing_grant` · emitted by `check`
 ```text
 error: missing grant
 
-AuditStore.appendEvent emits Append<AuditEvent>.
-AuditStore does not grant Append<AuditEvent>.
+RevisionLog.appendRevision emits Append<Revision>.
+RevisionLog does not grant Append<Revision>.
 
 caused by:
-  - audit.shape: effect AuditStore.appendEvent emits Append<AuditEvent>
-  - audit.shape: component AuditStore
+  - history.shape: effect RevisionLog.appendRevision emits Append<Revision>
+  - history.shape: component RevisionLog
 ```
 
 **Cause.** A function's effect entry has a `<Resource>` target, no final forbid matches it, and the function's component has no `grants` with the same effect name and target. `owns` does not imply any grant.
 
-**Fix.** Add `grants Append<AuditEvent>` to the component only if the component may perform that effect; otherwise remove the effect or move the function.
+**Fix.** Add `grants Append<Revision>` to the component only if the component may perform that effect; otherwise remove the effect or move the function.
 
 ### `error: unknown effects`
 
@@ -256,10 +256,10 @@ Kind `unknown_effects` · emitted by `check`; printed as `warning: unknown effec
 ```text
 error: unknown effects
 
-AuditStore.appendEvent declares effects unknown.
+RevisionLog.appendRevision declares effects unknown.
 
 caused by:
-  - audit.shape: fn AuditStore.appendEvent
+  - history.shape: fn RevisionLog.appendRevision
 ```
 
 **Cause.** A function in an authored module declares `effects unknown`. Strict checking always rejects it; no declaration in the model allows it. Functions in generated AST modules are exempt entirely: the module name must be `shape.generated.ast` or start with `shape.generated.ast.`, and the file must be under `shape/generated/ast/`.
@@ -273,11 +273,11 @@ Kind `unsafe_effects` · emitted by `check`
 ```text
 error: unsafe effects missing policy metadata
 
-AuditStore.importLegacyEvents declares unsafe effects.
+RevisionLog.importLegacyRevisions declares unsafe effects.
 Missing: expires, required capability.
 
 caused by:
-  - audit.shape: fn AuditStore.importLegacyEvents
+  - history.shape: fn RevisionLog.importLegacyRevisions
 ```
 
 **Cause.** A function marked `unsafe` lacks at least one of `reason "…"`, `expires "…"`, and a `requires Capability` term. `Missing:` lists the absent items in the order `reason`, `expires`, `required capability`. The values are not interpreted.
@@ -295,10 +295,10 @@ Kind `invalid_relation` · emitted by `check`
 ```text
 error: invalid relation
 
-relation gateway::GatewayCallsAudit is invalid: kind calls requires exactly two endpoints.
+relation editor::EditorCallsLog is invalid: kind calls requires exactly two endpoints.
 
 caused by:
-  - gateway.shape: relation GatewayCallsAudit
+  - editor.shape: relation EditorCallsLog
 ```
 
 **Cause.** A `relation` declaration is malformed. These reasons drop the relation from the hypergraph:
@@ -357,15 +357,15 @@ Kind `forbidden_path` · emitted by `check`
 ```text
 error: forbidden path
 
-rule no_gateway_to_secrets rejects this dependency path:
-  calls GatewayCallsPolicy: Gateway -> PolicyService
-  provides PolicyProvidesSecret: PolicyService -> SecretStore
-witness: Gateway -> PolicyService -> SecretStore
+rule no_feed_to_drafts rejects this dependency path:
+  calls FeedCallsRecommender: Feed -> Recommender
+  provides RecommenderProvidesDrafts: Recommender -> PrivateDraft
+witness: Feed -> Recommender -> PrivateDraft
 
 caused by:
-  - gateway.shape: rule no_gateway_to_secrets forbids path Gateway -> SecretStore over calls or provides
-  - gateway.shape: relation GatewayCallsPolicy
-  - gateway.shape: relation PolicyProvidesSecret
+  - feed.shape: rule no_feed_to_drafts forbids path Feed -> PrivateDraft over calls or provides
+  - feed.shape: relation FeedCallsRecommender
+  - feed.shape: relation RecommenderProvidesDrafts
 ```
 
 **Cause.** A `forbid path SOURCE -> TARGET over KIND …` clause found a directed path from `SOURCE` to `TARGET` whose every step uses a listed kind. Each step line reads `KIND RELATION: FROM -> TO`. The clause reports its one fewest-step witness. Relations with an unresolved or ambiguous endpoint, and `provides` relations with invalid endpoint kinds, contribute no steps.
@@ -380,14 +380,14 @@ Kind `forbidden_hypercycle` · emitted by `check`
 error: forbidden hypercycle
 
 rule no_runtime_cycle rejects this hypercycle:
-  callbacks AuditCallsGateway
-  calls GatewayCallsAudit
-witness: AuditStore -> Gateway -> AuditStore
+  calls EditorCallsLog
+  callbacks LogCallsEditor
+witness: Editor -> RevisionLog -> Editor
 
 caused by:
-  - gateway.shape: rule no_runtime_cycle forbids hypercycle over calls or callbacks
-  - gateway.shape: relation AuditCallsGateway
-  - gateway.shape: relation GatewayCallsAudit
+  - editor.shape: rule no_runtime_cycle forbids hypercycle over calls or callbacks
+  - editor.shape: relation EditorCallsLog
+  - editor.shape: relation LogCallsEditor
 ```
 
 **Cause.** A `forbid hypercycle` clause found a directed cycle among relations of the listed kinds, or of every kind when `over` is omitted. The relation lines follow the witness walk, which starts at the codepoint-smallest vertex, and the `witness:` line ends where it began. Each clause reports its one shortest cycle. Custom kinds contribute no steps, so `over` with only custom kinds is accepted but never matches.
@@ -401,15 +401,15 @@ Kind `forbidden_provides` · emitted by `check`
 ```text
 error: forbidden provides
 
-Sidecar provides JsonRpcEndpoint via relation SidecarProvidesRpc.
-rule GatewayBoundary forbids provides JsonRpcEndpoint except Gateway.
+Preview provides StoryEndpoint via relation PreviewProvidesStories.
+rule publisher_only_story_endpoint forbids provides StoryEndpoint except Publisher.
 
 caused by:
-  - gateway.shape: relation SidecarProvidesRpc
-  - gateway.shape: rule GatewayBoundary forbids provides JsonRpcEndpoint
+  - publishing.shape: relation PreviewProvidesStories
+  - publishing.shape: rule publisher_only_story_endpoint forbids provides StoryEndpoint
 ```
 
-**Cause.** A `forbid provides RESOURCE except COMPONENT` clause found a `provides` relation that supplies `RESOURCE` from a provider other than `COMPONENT`. `except` is optional; without it, every provider is rejected and the second line reads, for example, `rule NoSecretProviders forbids provides SecretStore.` One diagnostic is emitted per offending relation.
+**Cause.** A `forbid provides RESOURCE except COMPONENT` clause found a `provides` relation that supplies `RESOURCE` from a provider other than `COMPONENT`. `except` is optional; without it, every provider is rejected and the second line reads, for example, `rule no_story_endpoint forbids provides StoryEndpoint.` One diagnostic is emitted per offending relation.
 
 **Fix.** Move the `provides` relation onto the allowed component, or change the rule.
 
@@ -424,11 +424,11 @@ Kind `duplicate_fingerprint` · emitted by `check`
 ```text
 error: duplicate fingerprint
 
-resource AuditStoreAstAnchor declares fingerprint provider ast.semantic_subtree_v1 more than once.
+resource RevisionLogAstAnchor declares fingerprint provider ast.semantic_subtree_v1 more than once.
 
 caused by:
-  - audit.shape: resource AuditStoreAstAnchor fingerprint ast.semantic_subtree_v1
-  - audit.shape: resource AuditStoreAstAnchor fingerprint ast.semantic_subtree_v1
+  - history.shape: resource RevisionLogAstAnchor fingerprint ast.semantic_subtree_v1
+  - history.shape: resource RevisionLogAstAnchor fingerprint ast.semantic_subtree_v1
 ```
 
 **Cause.** One resource declares two `fingerprint` members with the same provider. The first is used and the later one is ignored.
@@ -442,14 +442,14 @@ Kind `fingerprint_mismatch` · emitted by `check`
 ```text
 error: stale fingerprint expectation
 
-relation ReviewedFromAst expects AuditStoreAstAnchor fingerprint ast.semantic_subtree_v1.
+relation ReviewedFromAst expects RevisionLogAstAnchor fingerprint ast.semantic_subtree_v1.
 expected: sha256:aaaa
 actual: sha256:bbbb
 
 caused by:
-  - audit.shape: relation ReviewedFromAst expects AuditStoreAstAnchor fingerprint ast.semantic_subtree_v1
-  - audit.shape: resource AuditStoreAstAnchor
-  - audit.shape: resource AuditStoreAstAnchor fingerprint ast.semantic_subtree_v1
+  - history.shape: relation ReviewedFromAst expects RevisionLogAstAnchor fingerprint ast.semantic_subtree_v1
+  - history.shape: resource RevisionLogAstAnchor
+  - history.shape: resource RevisionLogAstAnchor fingerprint ast.semantic_subtree_v1
 ```
 
 **Cause.** A relation's `expects ENDPOINT fingerprint PROVIDER("VALUE")` names a resource endpoint whose fingerprint for that provider differs, or is absent, which prints `actual: missing`. An `expects` endpoint that is not one of the relation's `connects` endpoints, or is not a resource, is reported as `invalid relation` instead.
@@ -463,14 +463,14 @@ Kind `candidate_pin_fingerprint_mismatch` · emitted by `check`
 ```text
 error: stale candidate effect pin
 
-candidate effect AppendEventCandidate pins AuditStoreAppendEventAstAnchor fingerprint ast.semantic_subtree_v1.
+candidate effect AppendRevisionCandidate pins RevisionLogAppendRevisionAstAnchor fingerprint ast.semantic_subtree_v1.
 expected: sha256:aaaa
 actual: sha256:bbbb
 
 caused by:
-  - audit.shape: effect candidate AppendEventCandidate
-  - audit.shape: resource AuditStoreAppendEventAstAnchor
-  - audit.shape: resource AuditStoreAppendEventAstAnchor fingerprint ast.semantic_subtree_v1
+  - history.shape: effect candidate AppendRevisionCandidate
+  - history.shape: resource RevisionLogAppendRevisionAstAnchor
+  - history.shape: resource RevisionLogAppendRevisionAstAnchor fingerprint ast.semantic_subtree_v1
 ```
 
 **Cause.** An `effect candidate`'s `pin RESOURCE fingerprint PROVIDER("VALUE")` no longer matches that resource's fingerprint, or the resource has none (`actual: missing`). A pin resource that is not declared is reported as `unknown resource` instead.
@@ -484,10 +484,10 @@ Kind `invalid_candidate_effect` · emitted by `check`
 ```text
 error: invalid candidate effect
 
-candidate effect audit::AppendEventCandidate: missing pin.
+candidate effect history::AppendRevisionCandidate: missing pin.
 
 caused by:
-  - audit.shape: effect candidate AppendEventCandidate
+  - history.shape: effect candidate AppendRevisionCandidate
 ```
 
 **Cause.** Each `effect candidate` needs exactly one each of `fn`, `effect`, `source`, `confidence`, and `pin`. The reason is `missing FIELD` or `duplicate FIELD`, with one diagnostic per problem.
@@ -505,14 +505,14 @@ Kind `missing_shape_update` · emitted by `shp check --changed-files` and `shp c
 ```text
 error: governed source changed without current Shape update
 
-Changed file: src/audit/purge.ts
-Governed by: audit::AuditStoreImpl
-Matched path: src/audit/**/*.ts
+Changed file: src/history/purge.ts
+Governed by: history::RevisionLogImpl
+Matched path: src/history/**/*.ts
 Required: update a current .shape file with matching source/evidence, or add a no_shape_change attestation.
 
 caused by:
-  - shape/audit.shape: implementation AuditStoreImpl
-  - shape/audit.shape: implementation AuditStoreImpl path src/audit/**/*.ts
+  - shape/history.shape: implementation RevisionLogImpl
+  - shape/history.shape: implementation RevisionLogImpl path src/history/**/*.ts
 ```
 
 **Cause.** A changed path that does not end in `.shape` matches a `paths` glob of an `implementation` with `on_change require shape_update`, and nothing current covers it. `Matched path:` is the first matching glob. The path counts as covered only when either exists:
@@ -548,11 +548,11 @@ Kind `stale_attestation` · emitted by `check` when given `--base-ref` or `--bas
 ```text
 warning: stale attestation
 
-attest no_shape_change for src/audit/reporting.ts is unchanged from the base model, so it no longer satisfies coverage or bindings.
+attest no_shape_change for src/history/reporting.ts is unchanged from the base model, so it no longer satisfies coverage or bindings.
 Remove it with `shp attest prune`; git history keeps the decision.
 
 caused by:
-  - shape/audit.shape: attest no_shape_change for src/audit/reporting.ts
+  - shape/history.shape: attest no_shape_change for src/history/reporting.ts
 ```
 
 **Cause.** An attestation with the same kind, path, and reason already exists in the base model. It was carried over from an earlier change, so it no longer satisfies coverage or bindings.
@@ -588,13 +588,13 @@ Kind `missing_required_context` · emitted by `check`
 ```text
 error: missing required context
 
-fn Gateway.derivePolicyDecision has shape PreserveInline.
-PreserveInline requires InlineRationale<fn Gateway.derivePolicyDecision>.
+fn Editor.mergeAutosaves has shape PreserveInline.
+PreserveInline requires InlineRationale<fn Editor.mergeAutosaves>.
 
 No matching rationale or memory found.
 
 caused by:
-  - gateway.shape: fn Gateway.derivePolicyDecision : PreserveInline
+  - editor.shape: fn Editor.mergeAutosaves : PreserveInline
   - standard prelude: PreserveInline requires InlineRationale
 ```
 
@@ -609,15 +609,15 @@ Kind `missing_required_description` · emitted by `check`
 ```text
 error: missing required description
 
-fn Gateway.derivePolicyDecision has shape RequiresDescription.
+fn Editor.mergeAutosaves has shape RequiresDescription.
 RequiresDescription requires a description.
 
 caused by:
-  - gateway.shape: fn Gateway.derivePolicyDecision : RequiresDescription
+  - editor.shape: fn Editor.mergeAutosaves : RequiresDescription
   - standard prelude: RequiresDescription requires description
 ```
 
-**Cause.** A function has the `RequiresDescription` trait but no non-empty `description`, or declares `description required ""` with an empty string. The second form prints `fn Gateway.summarise has shape description required.` `RequiresDescription` also requires a `DescriptionRationale`, which is reported separately as `missing required context`.
+**Cause.** A function has the `RequiresDescription` trait but no non-empty `description`, or declares `description required ""` with an empty string. The second form prints `fn Editor.summarise has shape description required.` `RequiresDescription` also requires a `DescriptionRationale`, which is reported separately as `missing required context`.
 
 **Fix.** Give the function a non-empty `description "…"`.
 
@@ -628,11 +628,11 @@ Kind `invalid_context_target` · emitted by `check`
 ```text
 error: invalid context target
 
-memory DecisionRefactorConstraint applies to fn Gateway.missingFn,
+memory MergeRefactorConstraint applies to fn Editor.missingFn,
 but that target is not declared.
 
 caused by:
-  - gateway.shape: memory DecisionRefactorConstraint
+  - editor.shape: memory MergeRefactorConstraint
 ```
 
 **Cause.** The target in a `rationale` or `memory` type, or its `applies_to` target, does not exist. A target is `fn`, `component`, `resource`, `implementation`, `rule`, or `relation`. A `change` block that removes the target also produces this diagnostic for every context still attached to it.
@@ -646,11 +646,11 @@ Kind `context_target_mismatch` · emitted by `check`
 ```text
 error: context target mismatch
 
-rationale gateway::DerivePolicyDecisionInline declares fn Gateway.derivePolicyDecision,
-but applies_to references fn Gateway.otherDecision.
+rationale editor::MergeAutosavesInline declares fn Editor.mergeAutosaves,
+but applies_to references fn Editor.otherMerge.
 
 caused by:
-  - gateway.shape: rationale DerivePolicyDecisionInline
+  - editor.shape: rationale MergeAutosavesInline
 ```
 
 **Cause.** The target in the context type and the `applies_to` target differ. Such a context satisfies no obligation, so a `missing required context` for the intended target can accompany this diagnostic.
@@ -667,7 +667,7 @@ error: invalid require_context
 trait ComponentBoundary require_context BoundaryReason<X> is invalid: type parameter X is not declared by the trait.
 
 caused by:
-  - gateway.shape: trait ComponentBoundary require_context BoundaryReason<X>
+  - editor.shape: trait ComponentBoundary require_context BoundaryReason<X>
 ```
 
 **Cause.** A trait's `require_context TYPE<T>` names a type parameter the trait does not declare, or one whose bound is not `Fn`, `Function`, `Component`, or `Resource`. The second reason reads `type parameter T has unsupported bound B (expected Fn, Component, or Resource)`. The obligation is dropped rather than silently attached to the wrong target.
@@ -681,16 +681,16 @@ Kind `guarded_shape_changed` · emitted by `check`
 ```text
 error: guarded shape changed
 
-fn Gateway.derivePolicyDecision is protected by memory DecisionRefactorConstraint.
+fn Editor.mergeAutosaves is protected by memory MergeRefactorConstraint.
 This change modifies the guarded target.
 
 Required:
-  add reevaluation satisfying memory DecisionRefactorConstraint
+  add reevaluation satisfying memory MergeRefactorConstraint
   or preserve the protected shape.
 
 caused by:
-  - gateway.shape: change RefactorDecision modify fn Gateway.derivePolicyDecision
-  - gateway.shape: memory DecisionRefactorConstraint guards on_change require ReEvaluation<Self>
+  - editor.shape: change RefactorMerge modify fn Editor.mergeAutosaves
+  - editor.shape: memory MergeRefactorConstraint guards on_change require ReEvaluation<Self>
 ```
 
 **Cause.** A `modify` or `remove` entry in a `change` block targets a function, component, resource, or relation that a `rationale` or `memory` guards, and no valid `reevaluation` satisfies that context. Editing a declaration in place produces no change event and never triggers this diagnostic. The second line says which guard fired:
@@ -708,10 +708,10 @@ Kind `invalid_reevaluation` · emitted by `check`
 ```text
 error: invalid reevaluation
 
-reevaluation gateway::DecisionShapeRechecked is invalid: missing evidence.
+reevaluation editor::MergeRechecked is invalid: missing evidence.
 
 caused by:
-  - gateway.shape: reevaluation DecisionShapeRechecked
+  - editor.shape: reevaluation MergeRechecked
 ```
 
 **Cause.** A `reevaluation` is incomplete. Each reason is its own diagnostic:
@@ -732,14 +732,14 @@ Kind `stale_memory` · emitted by `shp check --as-of` or `--strict-freshness`; l
 ```text
 error: stale design memory
 
-memory DecisionRefactorConstraint protects fn Gateway.derivePolicyDecision.
+memory MergeRefactorConstraint protects fn Editor.mergeAutosaves.
 Its review_by date 2026-01-01 is before 2026-05-30.
 
 Required:
   review the design memory and update review_by, or replace it with a reevaluation.
 
 caused by:
-  - gateway.shape: memory DecisionRefactorConstraint
+  - editor.shape: memory MergeRefactorConstraint
 ```
 
 **Cause.** Freshness checking is on and a `rationale` or `memory` has a valid ISO `review_by` date strictly before the reference date. Without the freshness flags this diagnostic never appears; the flags are described in [CLI Reference](/shapelang/reference/cli/#freshness).

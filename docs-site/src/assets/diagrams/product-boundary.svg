@@ -43,10 +43,10 @@
 
   <g class="mono" font-size="12">
     <rect x="40" y="130" width="210" height="96" class="card" stroke-width="1"/>
-    <text x="52" y="151" class="ink">src/audit/store.ts</text>
+    <text x="52" y="151" class="ink">src/history/log.ts</text>
     <path d="M52 168h120M52 184h150M64 200h96M64 212h70" class="muteS" stroke-width="3" stroke-linecap="round" opacity=".55"/>
     <rect x="40" y="248" width="210" height="96" class="card" stroke-width="1"/>
-    <text x="52" y="269" class="ink">src/audit/purge.ts</text>
+    <text x="52" y="269" class="ink">src/history/purge.ts</text>
     <path d="M52 286h110M64 302h140M64 318h84M52 330h60" class="muteS" stroke-width="3" stroke-linecap="round" opacity=".55"/>
   </g>
   <g class="mono ink" font-size="11.5">
@@ -66,14 +66,14 @@
 
   <rect x="320" y="130" width="330" height="230" class="card" stroke-width="1.4"/>
   <rect x="320.7" y="130.7" width="328.6" height="25" class="band"/>
-  <text x="332" y="148" class="mono blue" font-size="12">shape/audit.shape</text>
+  <text x="332" y="148" class="mono blue" font-size="12">shape/history.shape</text>
   <g class="mono ink" font-size="12.5">
-    <text x="332" y="180">resource AuditEvent : AppendOnly</text>
-    <text x="332" y="206">component AuditStore {</text>
-    <text x="348" y="226">grants HardDelete&lt;AuditEvent&gt;</text>
-    <text x="348" y="246">fn purgeOldEvents</text>
+    <text x="332" y="180">resource Revision : AppendOnly</text>
+    <text x="332" y="206">component RevisionLog {</text>
+    <text x="348" y="226">grants HardDelete&lt;Revision&gt;</text>
+    <text x="348" y="246">fn purgeOldRevisions</text>
     <text x="364" y="266">effects complete {</text>
-    <text x="380" y="286" class="fail">HardDelete&lt;AuditEvent&gt;</text>
+    <text x="380" y="286" class="fail">HardDelete&lt;Revision&gt;</text>
     <text x="396" y="306" class="mute">evidence ts("…purge.ts")</text>
     <text x="364" y="326">}</text>
     <text x="332" y="346">}</text>

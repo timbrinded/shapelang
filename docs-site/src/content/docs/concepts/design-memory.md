@@ -1,9 +1,12 @@
 ---
 title: Design Memory
 description: Record why fragile shapes exist with rationale and memory, require that context through shape traits, guard changes with reevaluation, and enforce review dates.
+video:
+  name: shape-design-memory
+  caption: "Design memory in 50 seconds: a coding agent tidies away a sort the upstream sync library needs, and the team's note holds the change until a review is recorded. Narrated, with captions."
 ---
 
-Design memory records why a fragile part of the Shape model looks the way it does, as typed `rationale` and `memory` declarations. It covers constraints that an effect summary cannot express: an authorization check that must stay inline, an error ordering that callers depend on, compatibility code, or a test-only helper that looks like production code. The checker enforces design memory through two separate mechanisms:
+Design memory records why a fragile part of the Shape model looks the way it does, as typed `rationale` and `memory` declarations. It covers constraints that an effect summary cannot express: a merge step that must stay inline, an error ordering that callers depend on, compatibility code, or a test-only helper that looks like production code. The checker enforces design memory through two separate mechanisms:
 
 - **Required context.** A shape trait such as `RefactorSensitive` requires a `rationale` or `memory` of a matching type for the same target. `shp check` evaluates this on every run and reports `missing required context` until one exists.
 - **Guards.** A `rationale` or `memory` can guard its target. When a `change` declaration modifies or removes that target, `shp check` reports `guarded shape changed` until a valid `reevaluation` satisfies the guarding declaration.
@@ -18,48 +21,48 @@ Review freshness is a separate, opt-in check: given a reference date, `shp check
 
 ### A minimal example
 
-`Gateway.derivePolicyDecision` builds an authorization decision, and earlier refactors of it broke error normalisation. The shape trait `RefactorSensitive` marks the function as needing recorded context:
+`Editor.mergeAutosaves` merges a draft's pending autosaves. The upstream sync library sends autosaves out of order, so the merge must keep its sort; a clean-up that drops the sort looks harmless but breaks the merge. The shape trait `RefactorSensitive` marks the function as needing recorded context:
 
 ```shape
-module gateway
+module editor
 
-resource PolicySnapshot
+resource Autosave
 
-component Gateway {
-  owns PolicySnapshot
-  grants Read<PolicySnapshot>
-  fn derivePolicyDecision : RefactorSensitive
+component Editor {
+  owns Autosave
+  grants Read<Autosave>
+  fn mergeAutosaves : RefactorSensitive
     effects complete {
-      Read<PolicySnapshot>
+      Read<Autosave>
     }
 }
 ```
 
-`shp check gateway.shape` exits 1:
+`shp check shape/editor.shape` exits 1:
 
 ```text
 error: missing required context
 
-fn Gateway.derivePolicyDecision has shape RefactorSensitive.
-RefactorSensitive requires RefactorConstraint<fn Gateway.derivePolicyDecision>.
+fn Editor.mergeAutosaves has shape RefactorSensitive.
+RefactorSensitive requires RefactorConstraint<fn Editor.mergeAutosaves>.
 
 No matching rationale or memory found.
 
 caused by:
-  - gateway.shape: fn Gateway.derivePolicyDecision : RefactorSensitive
+  - shape/editor.shape: fn Editor.mergeAutosaves : RefactorSensitive
   - standard prelude: RefactorSensitive requires RefactorConstraint
 ```
 
 The prelude defines this requirement: on a function, `RefactorSensitive` needs a `RefactorConstraint` for that function, and only a `memory` satisfies it. Adding one to the module makes the check pass:
 
 ```shape
-memory DecisionRefactorConstraint : RefactorConstraint<fn Gateway.derivePolicyDecision> {
-  applies_to fn Gateway.derivePolicyDecision
-  status Unexplained
+memory MergeRefactorConstraint : RefactorConstraint<fn Editor.mergeAutosaves> {
+  applies_to fn Editor.mergeAutosaves
+  status Explained
   confidence High
-  summary "Previous refactors broke error normalisation."
+  summary "The sync library sends autosaves out of order, so keep the sort."
   who {
-    owner GatewayTeam
+    owner EditorTeam
   }
 }
 ```
@@ -70,7 +73,7 @@ Shape check passed.
 
 ### Anatomy of a context declaration
 
-`rationale` and `memory` declarations, together called contexts, share one form: the kind, a name, and a context type written with its target, such as `RefactorConstraint<fn Gateway.derivePolicyDecision>`. The target must be a declared `fn`, `component`, `resource`, `relation`, `implementation`, or `rule`; otherwise `shp check` reports `invalid context target`.
+`rationale` and `memory` declarations, together called contexts, share one form: the kind, a name, and a context type written with its target, such as `RefactorConstraint<fn Editor.mergeAutosaves>`. The target must be a declared `fn`, `component`, `resource`, `relation`, `implementation`, or `rule`; otherwise `shp check` reports `invalid context target`.
 
 A context satisfies a trait's requirement only when its context type name, its kind, and its target all match what the trait requires. A `rationale` of type `RefactorConstraint` therefore does not satisfy `RefactorSensitive`, which accepts only a memory.
 
@@ -82,31 +85,31 @@ The remaining members are recorded for reviewers. The checker stores `status`, `
 
 A `rationale` records a deliberate design choice and its reason, given as `why`. A `memory` records a known constraint, often one learned from past failures, with `status` and `confidence`; only a `memory` can be marked `sensitive` (see [Approvers and roles](#approvers-and-roles)). The table in the next section fixes the accepted kind for most traits; among the built-in traits, the choice between the two is open only for `ProtectedCheckOrder` and `NonIdiomatic`, which accept either.
 
-`status Unexplained` records that a constraint is real but its cause is not yet understood; it signals to reviewers that the memory still needs an explanation. It differs from `effects unknown`, which marks incomplete effect analysis: `derivePolicyDecision` keeps a complete effect summary while its memory stays unexplained.
+`status` tells reviewers how well a constraint is understood. `MergeRefactorConstraint` is `Explained`: its cause is known, because the upstream sync library sends autosaves out of order. `status Unexplained` records a constraint that is real but whose cause is not yet understood, such as `RevisionLogBoundary` in [Components and resources](#components-and-resources); it signals to reviewers that the memory still needs an explanation. Neither value is related to `effects unknown`, which marks incomplete effect analysis: a function whose memory is `Unexplained` can still have a complete effect summary.
 
-Adding `PreserveInline` to `derivePolicyDecision` asks for a rationale that explains why the function stays inline:
+Adding `PreserveInline` to `mergeAutosaves` asks for a rationale that explains why the function stays inline:
 
 ```shape
-component Gateway {
-  owns PolicySnapshot
-  grants Read<PolicySnapshot>
-  fn derivePolicyDecision : PreserveInline, RefactorSensitive
+component Editor {
+  owns Autosave
+  grants Read<Autosave>
+  fn mergeAutosaves : PreserveInline, RefactorSensitive
     effects complete {
-      Read<PolicySnapshot>
+      Read<Autosave>
     }
 }
 
-rationale DerivePolicyInline : InlineRationale<fn Gateway.derivePolicyDecision> {
-  applies_to fn Gateway.derivePolicyDecision
+rationale MergeInline : InlineRationale<fn Editor.mergeAutosaves> {
+  applies_to fn Editor.mergeAutosaves
   why CognitiveLocality
-  summary "Policy checks stay inline so reviewers can read the authorization path in one place."
+  summary "Merge steps stay inline so reviewers can read the conflict rules in one place."
   who {
-    owner GatewayTeam
+    owner EditorTeam
   }
 }
 ```
 
-With this rationale and `DecisionRefactorConstraint` both present, the check passes.
+With this rationale and `MergeRefactorConstraint` both present, the check passes.
 
 ### Built-in shape traits
 
@@ -125,25 +128,25 @@ A shape trait goes in the same trait list as any other trait: `fn name : Trait`,
 
 ### Required descriptions
 
-`RequiresDescription` adds a second requirement: the function needs a non-empty `description` as well as a `DescriptionRationale` rationale. The description keeps a short explanation beside the effect summary. In this example `derivePolicyDecision` carries only `RequiresDescription`:
+`RequiresDescription` adds a second requirement: the function needs a non-empty `description` as well as a `DescriptionRationale` rationale. The description keeps a short explanation beside the effect summary. In this example `mergeAutosaves` carries only `RequiresDescription`:
 
 ```shape
-component Gateway {
-  owns PolicySnapshot
-  grants Read<PolicySnapshot>
-  fn derivePolicyDecision : RequiresDescription
-    description required "Builds the authorization decision from the current policy snapshot."
+component Editor {
+  owns Autosave
+  grants Read<Autosave>
+  fn mergeAutosaves : RequiresDescription
+    description required "Merges the pending autosaves into the current draft."
     effects complete {
-      Read<PolicySnapshot>
+      Read<Autosave>
     }
 }
 
-rationale DerivePolicyDescription : DescriptionRationale<fn Gateway.derivePolicyDecision> {
-  applies_to fn Gateway.derivePolicyDecision
-  why Auditability
-  summary "Reviewers need the decision's purpose beside its effect summary."
+rationale MergeDescription : DescriptionRationale<fn Editor.mergeAutosaves> {
+  applies_to fn Editor.mergeAutosaves
+  why Recoverability
+  summary "Reviewers need the merge's purpose beside its effect summary."
   who {
-    owner GatewayTeam
+    owner EditorTeam
   }
 }
 ```
@@ -153,11 +156,11 @@ Without the `description` line, `shp check` exits 1:
 ```text
 error: missing required description
 
-fn Gateway.derivePolicyDecision has shape RequiresDescription.
+fn Editor.mergeAutosaves has shape RequiresDescription.
 RequiresDescription requires a description.
 
 caused by:
-  - gateway.shape: fn Gateway.derivePolicyDecision : RequiresDescription
+  - shape/editor.shape: fn Editor.mergeAutosaves : RequiresDescription
   - standard prelude: RequiresDescription requires description
 ```
 
@@ -168,84 +171,84 @@ The trait accepts a description written with or without `required`. `required` m
 Components and resources take shape traits in their trait lists. Shape traits sit beside semantic traits such as `AppendOnly`, which derive no context obligation:
 
 ```shape
-module gateway
+module editor
 
-resource AuditEvent : AppendOnly, RefactorSensitive
+resource Revision : AppendOnly, RefactorSensitive
 
-component AuditStore : RefactorSensitive {
-  owns AuditEvent
-  grants Append<AuditEvent>
-  fn appendEvent
+component RevisionLog : RefactorSensitive {
+  owns Revision
+  grants Append<Revision>
+  fn appendRevision
     effects complete {
-      Append<AuditEvent>
+      Append<Revision>
     }
 }
 
-memory AuditEventLayout : RefactorConstraint<resource AuditEvent> {
-  applies_to resource AuditEvent
+memory RevisionLayout : RefactorConstraint<resource Revision> {
+  applies_to resource Revision
   status Explained
   confidence High
-  summary "External auditors parse the AuditEvent field layout."
+  summary "External export tools parse the Revision field layout."
   who {
-    owner AuditTeam
+    owner HistoryTeam
   }
 }
 
-memory AuditStoreBoundary : RefactorConstraint<component AuditStore> {
-  applies_to component AuditStore
+memory RevisionLogBoundary : RefactorConstraint<component RevisionLog> {
+  applies_to component RevisionLog
   status Unexplained
   confidence Medium
-  summary "Splitting AuditStore has broken audit exports before; the cause is not known."
+  summary "Splitting RevisionLog has broken revision exports before; the cause is not known."
   who {
-    owner AuditTeam
+    owner HistoryTeam
   }
 }
 ```
 
-`AppendOnly` contributes final forbids on `AuditEvent`, and `RefactorSensitive` contributes a required context. The model passes; removing `AuditStoreBoundary` reports `missing required context` for `component AuditStore`.
+`AppendOnly` contributes final forbids on `Revision`, and `RefactorSensitive` contributes a required context. The model passes; removing `RevisionLogBoundary` reports `missing required context` for `component RevisionLog`.
 
 ### Project-defined obligations
 
 A `require_context` member on a `trait` makes it a shape trait with a project-defined obligation. The bound of the type parameter it names chooses which declarations receive the obligation:
 
 ```shape
-module gateway
+module editor
 
 trait PreserveLocal<T: Fn> {
   require_context LocalRationale<T> satisfied_by rationale
 }
 
-resource PolicySnapshot
+resource Autosave
 
-component Gateway : PreserveLocal {
-  owns PolicySnapshot
-  grants Read<PolicySnapshot>
-  fn derivePolicyDecision : PreserveLocal
+component Editor : PreserveLocal {
+  owns Autosave
+  grants Read<Autosave>
+  fn mergeAutosaves : PreserveLocal
     effects complete {
-      Read<PolicySnapshot>
+      Read<Autosave>
     }
 }
 ```
 
-`shp check gateway.shape` exits 1 with one diagnostic, for the function only:
+`shp check shape/editor.shape` exits 1 with one diagnostic, for the function only:
 
 ```text
 error: missing required context
 
-fn Gateway.derivePolicyDecision has shape PreserveLocal.
-PreserveLocal requires LocalRationale<fn Gateway.derivePolicyDecision>.
+fn Editor.mergeAutosaves has shape PreserveLocal.
+PreserveLocal requires LocalRationale<fn Editor.mergeAutosaves>.
 
 No matching rationale or memory found.
 
 caused by:
-  - gateway.shape: fn Gateway.derivePolicyDecision : PreserveLocal
-  - gateway.shape: trait PreserveLocal require_context LocalRationale<T>
+  - shape/editor.shape: fn Editor.mergeAutosaves : PreserveLocal
+  - shape/editor.shape: trait PreserveLocal require_context LocalRationale<T>
 ```
 
-A `rationale DerivePolicyLocal : LocalRationale<fn Gateway.derivePolicyDecision>` satisfies it. The rules:
+A `rationale MergeLocal : LocalRationale<fn Editor.mergeAutosaves>` satisfies it. The rules:
 
 - The bound `Fn` (also `Function`, or no bound at all) targets functions; `Component` and `Resource` target those kinds. Bounds are case-insensitive.
-- The same trait on another kind of declaration derives nothing. `component Gateway : PreserveLocal` above requires no context, because `T` is bound to `Fn`.
+- The same trait on another kind of declaration derives nothing. `component Editor : PreserveLocal` above requires no context, because `T` is bound to `Fn`.
 - `satisfied_by rationale`, `satisfied_by memory`, or `satisfied_by rationale or memory` sets the accepted kinds. Without `satisfied_by`, either kind is accepted.
 - A `require_context` that names a type parameter the trait does not declare, or a parameter with any other bound, is reported as `invalid require_context`, and its obligation is dropped.
 - The `caused by:` block cites the trait's `require_context` line instead of the standard prelude.
@@ -276,58 +279,58 @@ A `remove` entry leaves every context on the removed target pointing at a declar
 
 ### A guarded change
 
-Here `DecisionRefactorConstraint` guards `derivePolicyDecision`, and `change RefactorDecision` modifies the function. The `modify fn` entry repeats `: RefactorSensitive` because a modify restates the whole function. Any `modify` counts as a change, even one that restates the function unchanged, as this one does:
+Here `MergeRefactorConstraint` guards `mergeAutosaves`, and `change RefactorMerge` modifies the function. The `modify fn` entry repeats `: RefactorSensitive` because a modify restates the whole function. Any `modify` counts as a change, even one that restates the function unchanged, as this one does:
 
 ```shape
-module gateway
+module editor
 
-resource PolicySnapshot
+resource Autosave
 
-component Gateway {
-  owns PolicySnapshot
-  grants Read<PolicySnapshot>
-  fn derivePolicyDecision : RefactorSensitive
+component Editor {
+  owns Autosave
+  grants Read<Autosave>
+  fn mergeAutosaves : RefactorSensitive
     effects complete {
-      Read<PolicySnapshot>
+      Read<Autosave>
     }
 }
 
-memory DecisionRefactorConstraint : RefactorConstraint<fn Gateway.derivePolicyDecision> {
-  applies_to fn Gateway.derivePolicyDecision
-  status Unexplained
+memory MergeRefactorConstraint : RefactorConstraint<fn Editor.mergeAutosaves> {
+  applies_to fn Editor.mergeAutosaves
+  status Explained
   confidence High
-  summary "Previous refactors broke error normalisation."
+  summary "The sync library sends autosaves out of order, so keep the sort."
   who {
-    owner GatewayTeam
+    owner EditorTeam
   }
   guards {
     on_change require ReEvaluation<Self>
   }
 }
 
-change RefactorDecision {
-  modify fn Gateway.derivePolicyDecision : RefactorSensitive
+change RefactorMerge {
+  modify fn Editor.mergeAutosaves : RefactorSensitive
     effects complete {
-      Read<PolicySnapshot>
+      Read<Autosave>
     }
 }
 ```
 
-`shp check gateway.shape` exits 1:
+`shp check shape/editor.shape` exits 1:
 
 ```text
 error: guarded shape changed
 
-fn Gateway.derivePolicyDecision is protected by memory DecisionRefactorConstraint.
+fn Editor.mergeAutosaves is protected by memory MergeRefactorConstraint.
 This change modifies the guarded target.
 
 Required:
-  add reevaluation satisfying memory DecisionRefactorConstraint
+  add reevaluation satisfying memory MergeRefactorConstraint
   or preserve the protected shape.
 
 caused by:
-  - gateway.shape: change RefactorDecision modify fn Gateway.derivePolicyDecision
-  - gateway.shape: memory DecisionRefactorConstraint guards on_change require ReEvaluation<Self>
+  - shape/editor.shape: change RefactorMerge modify fn Editor.mergeAutosaves
+  - shape/editor.shape: memory MergeRefactorConstraint guards on_change require ReEvaluation<Self>
 ```
 
 `shp obligations` reports the same work:
@@ -336,19 +339,19 @@ caused by:
 Open Shape Obligations
 
 guarded changes:
-  fn gateway::Gateway.derivePolicyDecision changed; requires reevaluation satisfying memory DecisionRefactorConstraint
+  fn editor::Editor.mergeAutosaves changed; requires reevaluation satisfying memory MergeRefactorConstraint
 ```
 
 A reevaluation that satisfies the memory clears the guard. Adding this declaration to the module makes the check pass:
 
 ```shape
-reevaluation DecisionShapeRechecked {
-  satisfies memory DecisionRefactorConstraint
+reevaluation MergeRechecked {
+  satisfies memory MergeRefactorConstraint
   outcome Confirmed
-  summary "Refactor preserves error-normalisation behaviour."
-  reviewer GatewayTeam
+  summary "Refactor keeps the sort the sync library needs."
+  reviewer EditorTeam
   decided_on "2026-06-02"
-  evidence test("gateway/error-normalisation.test.ts")
+  evidence test("editor/out-of-order-autosaves.test.ts")
 }
 ```
 
@@ -373,10 +376,10 @@ An invalid reevaluation is reported as `invalid reevaluation` with the missing p
 ```text
 error: invalid reevaluation
 
-reevaluation gateway::DecisionShapeRechecked is invalid: missing evidence.
+reevaluation editor::MergeRechecked is invalid: missing evidence.
 
 caused by:
-  - gateway.shape: reevaluation DecisionShapeRechecked
+  - shape/editor.shape: reevaluation MergeRechecked
 ```
 
 A valid reevaluation is not tied to a particular change, and it does not expire. While it exists, none of that context's guards fire, whether `on_change` or `forbid transform`, for this change or for any later `modify` or `remove` of the target. A reevaluation should follow the review it records and cite the evidence that review used.
@@ -391,7 +394,7 @@ By default `approver` is optional, and `reviewer` and `approver` accept any iden
 - Declaring any `role` restricts `reviewer` and `approver` to declared roles. With no roles declared, the checker does not check review identities.
 
 ```shape
-role GatewayTeam
+role EditorTeam
 
 role Security
 
@@ -399,28 +402,28 @@ policy ReviewPolicy {
   require approver
 }
 
-memory DecisionRefactorConstraint : RefactorConstraint<fn Gateway.derivePolicyDecision> {
-  applies_to fn Gateway.derivePolicyDecision
-  status Unexplained
+memory MergeRefactorConstraint : RefactorConstraint<fn Editor.mergeAutosaves> {
+  applies_to fn Editor.mergeAutosaves
+  status Explained
   confidence High
   sensitive
-  summary "Previous refactors broke error normalisation."
+  summary "The sync library sends autosaves out of order, so keep the sort."
   who {
-    owner GatewayTeam
+    owner EditorTeam
   }
   guards {
     on_change require ReEvaluation<Self>
   }
 }
 
-reevaluation DecisionShapeRechecked {
-  satisfies memory DecisionRefactorConstraint
+reevaluation MergeRechecked {
+  satisfies memory MergeRefactorConstraint
   outcome Confirmed
-  summary "Refactor preserves error-normalisation behaviour."
-  reviewer GatewayTeam
+  summary "Refactor keeps the sort the sync library needs."
+  reviewer EditorTeam
   approver Security
   decided_on "2026-06-02"
-  evidence test("gateway/error-normalisation.test.ts")
+  evidence test("editor/out-of-order-autosaves.test.ts")
 }
 ```
 
@@ -429,22 +432,22 @@ In the model from [A guarded change](#a-guarded-change), with its memory replace
 ```text
 error: invalid reevaluation
 
-reevaluation gateway::DecisionShapeRechecked is invalid: missing approver required by policy.
+reevaluation editor::MergeRechecked is invalid: missing approver required by policy.
 ```
 
 A `reviewer` or `approver` that is not a declared role gives `unknown reviewer role NAME` or `unknown approver role NAME`, with the same effect on the guard.
 
 ### Narrowing a guard with protects
 
-By default an `on_change` guard fires on any `modify` or `remove` of its target. A `protects` block narrows it to the removal of listed properties. The example below uses the function from [Rationale and memory](#rationale-and-memory), which carries `PreserveInline, RefactorSensitive`, and gives `DerivePolicyInline` a property guard:
+By default an `on_change` guard fires on any `modify` or `remove` of its target. A `protects` block narrows it to the removal of listed properties. The example below uses the function from [Rationale and memory](#rationale-and-memory), which carries `PreserveInline, RefactorSensitive`, and gives `MergeInline` a property guard:
 
 ```shape
-rationale DerivePolicyInline : InlineRationale<fn Gateway.derivePolicyDecision> {
-  applies_to fn Gateway.derivePolicyDecision
+rationale MergeInline : InlineRationale<fn Editor.mergeAutosaves> {
+  applies_to fn Editor.mergeAutosaves
   why CognitiveLocality
-  summary "Policy checks stay inline so reviewers can read the authorization path in one place."
+  summary "Merge steps stay inline so reviewers can read the conflict rules in one place."
   who {
-    owner GatewayTeam
+    owner EditorTeam
   }
   protects {
     shape PreserveInline
@@ -454,10 +457,10 @@ rationale DerivePolicyInline : InlineRationale<fn Gateway.derivePolicyDecision> 
   }
 }
 
-change RefactorDecision {
-  modify fn Gateway.derivePolicyDecision : RefactorSensitive
+change RefactorMerge {
+  modify fn Editor.mergeAutosaves : RefactorSensitive
     effects complete {
-      Read<PolicySnapshot>
+      Read<Autosave>
     }
 }
 ```
@@ -467,16 +470,16 @@ The `modify fn` omits `PreserveInline`, which counts as removing it, so `shp che
 ```text
 error: guarded shape changed
 
-fn Gateway.derivePolicyDecision is protected by rationale DerivePolicyInline.
+fn Editor.mergeAutosaves is protected by rationale MergeInline.
 This change removes shape trait PreserveInline from the guarded target.
 
 Required:
-  add reevaluation satisfying rationale DerivePolicyInline
+  add reevaluation satisfying rationale MergeInline
   or preserve the protected shape.
 
 caused by:
-  - gateway.shape: change RefactorDecision modify fn Gateway.derivePolicyDecision
-  - gateway.shape: rationale DerivePolicyInline guards on_change require ReEvaluation<Self>
+  - shape/editor.shape: change RefactorMerge modify fn Editor.mergeAutosaves
+  - shape/editor.shape: rationale MergeInline guards on_change require ReEvaluation<Self>
 ```
 
 A `modify fn` that keeps `PreserveInline` in its trait list does not trigger this guard, whatever else it changes.
@@ -490,26 +493,26 @@ If any entry is not detectable, the guard falls back to firing on any change to 
 
 ### Forbidding named transforms
 
-A `forbid transform` guard reacts to a declared refactor intent instead of to any change. A `modify fn` entry declares its intent with `transform`, followed by one or more comma-separated labels. Here `DerivePolicyInline` forbids extracting a helper:
+A `forbid transform` guard reacts to a declared refactor intent instead of to any change. A `modify fn` entry declares its intent with `transform`, followed by one or more comma-separated labels. Here `MergeInline` forbids extracting a helper:
 
 ```shape
-rationale DerivePolicyInline : InlineRationale<fn Gateway.derivePolicyDecision> {
-  applies_to fn Gateway.derivePolicyDecision
+rationale MergeInline : InlineRationale<fn Editor.mergeAutosaves> {
+  applies_to fn Editor.mergeAutosaves
   why CognitiveLocality
-  summary "Policy checks stay inline so reviewers can read the authorization path in one place."
+  summary "Merge steps stay inline so reviewers can read the conflict rules in one place."
   who {
-    owner GatewayTeam
+    owner EditorTeam
   }
   guards {
     forbid transform ExtractHelper
   }
 }
 
-change RefactorDecision {
-  modify fn Gateway.derivePolicyDecision : PreserveInline, RefactorSensitive
+change RefactorMerge {
+  modify fn Editor.mergeAutosaves : PreserveInline, RefactorSensitive
     transform ExtractHelper
     effects complete {
-      Read<PolicySnapshot>
+      Read<Autosave>
     }
 }
 ```
@@ -519,47 +522,47 @@ change RefactorDecision {
 ```text
 error: guarded shape changed
 
-fn Gateway.derivePolicyDecision is protected by rationale DerivePolicyInline.
+fn Editor.mergeAutosaves is protected by rationale MergeInline.
 This change applies the ExtractHelper transform to the guarded target.
 
 Required:
-  add reevaluation satisfying rationale DerivePolicyInline
+  add reevaluation satisfying rationale MergeInline
   or preserve the protected shape.
 
 caused by:
-  - gateway.shape: change RefactorDecision modify fn Gateway.derivePolicyDecision
-  - gateway.shape: rationale DerivePolicyInline guards forbid transform ExtractHelper
+  - shape/editor.shape: change RefactorMerge modify fn Editor.mergeAutosaves
+  - shape/editor.shape: rationale MergeInline guards forbid transform ExtractHelper
 ```
 
-Labels such as `ExtractHelper` have no built-in meaning. The guard fires only when a `modify fn` for the guarded function declares exactly that label. A change that declares a different label, or none, does not trigger it, and the checker does not detect an extraction that the change does not declare. Only `modify fn` entries carry `transform`, so transform guards apply only to functions. A reevaluation that satisfies `DerivePolicyInline` clears the guard.
+Labels such as `ExtractHelper` have no built-in meaning. The guard fires only when a `modify fn` for the guarded function declares exactly that label. A change that declares a different label, or none, does not trigger it, and the checker does not detect an extraction that the change does not declare. Only `modify fn` entries carry `transform`, so transform guards apply only to functions. A reevaluation that satisfies `MergeInline` clears the guard.
 
 ### Guarding relations
 
-A context can target a `relation`, so that a `change` that rewires or removes a load-bearing dependency needs a reevaluation. A relation carries no shape traits, so a context on a relation satisfies no required context; it exists to carry a guard and, optionally, a `review_by` date. This fragment assumes the model also contains the declarations from [A minimal example](#a-minimal-example), including its memory, and all of [Components and resources](#components-and-resources). It adds a `calls` relation from `Gateway` to `AuditStore`:
+A context can target a `relation`, so that a `change` that rewires or removes a load-bearing dependency needs a reevaluation. A relation carries no shape traits, so a context on a relation satisfies no required context; it exists to carry a guard and, optionally, a `review_by` date. This fragment assumes the model also contains the declarations from [A minimal example](#a-minimal-example), including its memory, and all of [Components and resources](#components-and-resources). It adds a `calls` relation from `Editor` to `RevisionLog`:
 
 ```shape
-relation GatewayCallsAudit {
+relation EditorCallsLog {
   kind calls
-  connects Gateway -> AuditStore
+  connects Editor -> RevisionLog
 }
 
-memory GatewayAuditCoupling : RefactorConstraint<relation GatewayCallsAudit> {
-  applies_to relation GatewayCallsAudit
+memory EditorLogCoupling : RefactorConstraint<relation EditorCallsLog> {
+  applies_to relation EditorCallsLog
   status Unexplained
   confidence High
-  summary "Rerouting Gateway audit calls has dropped audit events before."
+  summary "Rerouting Editor log calls has dropped revisions before."
   who {
-    owner GatewayTeam
+    owner EditorTeam
   }
   guards {
     on_change require ReEvaluation<Self>
   }
 }
 
-change RerouteAuditCalls {
-  modify relation GatewayCallsAudit {
+change RerouteLogCalls {
+  modify relation EditorCallsLog {
     kind callbacks
-    connects Gateway -> AuditStore
+    connects Editor -> RevisionLog
   }
 }
 ```
@@ -569,32 +572,32 @@ change RerouteAuditCalls {
 ```text
 error: guarded shape changed
 
-relation GatewayCallsAudit is protected by memory GatewayAuditCoupling.
+relation EditorCallsLog is protected by memory EditorLogCoupling.
 This change modifies the guarded target.
 
 Required:
-  add reevaluation satisfying memory GatewayAuditCoupling
+  add reevaluation satisfying memory EditorLogCoupling
   or preserve the protected shape.
 
 caused by:
-  - gateway.shape: change RerouteAuditCalls modify relation GatewayCallsAudit
-  - gateway.shape: memory GatewayAuditCoupling guards on_change require ReEvaluation<Self>
+  - shape/editor.shape: change RerouteLogCalls modify relation EditorCallsLog
+  - shape/editor.shape: memory EditorLogCoupling guards on_change require ReEvaluation<Self>
 ```
 
-`shp explain GatewayCallsAudit` lists `memory gateway::GatewayAuditCoupling` under `memory guards:`. [Relations and Graph Rules](/shapelang/concepts/relations/) covers relation kinds.
+`shp explain EditorCallsLog` lists `memory editor::EditorLogCoupling` under `memory guards:`. [Relations and Graph Rules](/shapelang/concepts/relations/) covers relation kinds.
 
 ## Review freshness
 
 A `memory` or `rationale` can carry a `review_by` date inside a `when` block. The examples in this section use the model from [A minimal example](#a-minimal-example), with its memory replaced by this one:
 
 ```shape
-memory DecisionRefactorConstraint : RefactorConstraint<fn Gateway.derivePolicyDecision> {
-  applies_to fn Gateway.derivePolicyDecision
-  status Unexplained
+memory MergeRefactorConstraint : RefactorConstraint<fn Editor.mergeAutosaves> {
+  applies_to fn Editor.mergeAutosaves
+  status Explained
   confidence High
-  summary "Previous refactors broke error normalisation."
+  summary "The sync library sends autosaves out of order, so keep the sort."
   who {
-    owner GatewayTeam
+    owner EditorTeam
   }
   when {
     review_by "2026-08-18"
@@ -609,19 +612,19 @@ Freshness checking is off by default, and `review_by` is then informational. A r
 
 A context is stale when its `review_by` is strictly before the reference date, so a review due on the reference date is still fresh. Missing, non-ISO, and impossible `review_by` dates, such as `2026-02-30`, are ignored. An invalid `--as-of` value is a usage error with exit 2.
 
-With a reference date, `shp check` fails on a stale context. `shp check --as-of 2026-09-01 gateway.shape` exits 1:
+With a reference date, `shp check` fails on a stale context. `shp check --as-of 2026-09-01 shape/editor.shape` exits 1:
 
 ```text
 error: stale design memory
 
-memory DecisionRefactorConstraint protects fn Gateway.derivePolicyDecision.
+memory MergeRefactorConstraint protects fn Editor.mergeAutosaves.
 Its review_by date 2026-08-18 is before 2026-09-01.
 
 Required:
   review the design memory and update review_by, or replace it with a reevaluation.
 
 caused by:
-  - gateway.shape: memory DecisionRefactorConstraint
+  - shape/editor.shape: memory MergeRefactorConstraint
 ```
 
 To clear the failure, review the context and move its `review_by` forward. The diagnostic's other suggestion does not work: a `reevaluation` does not affect freshness, and the context stays stale until its `review_by` is on or after the reference date. "protects" in the message names the context's target, not a `protects` block.
@@ -632,7 +635,7 @@ To clear the failure, review the context and move its `review_by` forward. The d
 Open Shape Obligations
 
 stale design memory:
-  memory DecisionRefactorConstraint review_by 2026-08-18 is before 2026-09-01
+  memory MergeRefactorConstraint review_by 2026-08-18 is before 2026-09-01
 ```
 
 Prefer `--as-of` in CI, because a fixed date makes the result reproducible, and turn freshness enforcement on only when the team will act on the failures. [CLI Reference](/shapelang/reference/cli/) lists the flags for `shp check` and `shp obligations`.
@@ -647,7 +650,7 @@ Three commands report design memory for review. Each exits 0 whenever its input 
 Open Shape Obligations
 
 missing context:
-  fn gateway::Gateway.derivePolicyDecision requires RefactorConstraint<fn Gateway.derivePolicyDecision>
+  fn editor::Editor.mergeAutosaves requires RefactorConstraint<fn Editor.mergeAutosaves>
 ```
 
 `shp memory` lists every `memory` and `rationale` grouped by target, with its type, `status`, `confidence`, `protects` entries, owner, and `review_by`. It does not print guard clauses. For the model in [Rationale and memory](#rationale-and-memory):
@@ -655,23 +658,23 @@ missing context:
 ```text
 Memory Guards
 
-fn Gateway.derivePolicyDecision
-  memory DecisionRefactorConstraint
+fn Editor.mergeAutosaves
+  memory MergeRefactorConstraint
   type: RefactorConstraint
-  status: Unexplained
+  status: Explained
   confidence: High
-  owner: GatewayTeam
+  owner: EditorTeam
 
-fn Gateway.derivePolicyDecision
-  rationale DerivePolicyInline
+fn Editor.mergeAutosaves
+  rationale MergeInline
   type: InlineRationale
-  owner: GatewayTeam
+  owner: EditorTeam
 ```
 
 `shp explain SYMBOL` shows one declaration. For a function, component, or resource it lists the shape traits (under `classifiers:` on a component and `traits:` on a resource), the required context, and, once a guard exists, the contexts that guard it under `memory guards:`. Under `satisfied by:` it lists every rationale or memory that targets the declaration, whether or not its type and kind match; `shp check` and `shp obligations` decide whether the obligation is met. For the same model:
 
 ```text
-gateway::Gateway.derivePolicyDecision
+editor::Editor.mergeAutosaves
   kind: function
 
   shape traits:
@@ -679,12 +682,12 @@ gateway::Gateway.derivePolicyDecision
     RefactorSensitive
 
   required context:
-    InlineRationale<fn Gateway.derivePolicyDecision>
-    RefactorConstraint<fn Gateway.derivePolicyDecision>
+    InlineRationale<fn Editor.mergeAutosaves>
+    RefactorConstraint<fn Editor.mergeAutosaves>
 
   satisfied by:
-    memory gateway::DecisionRefactorConstraint
-    rationale gateway::DerivePolicyInline
+    memory editor::MergeRefactorConstraint
+    rationale editor::MergeInline
   effects:
-    Read<PolicySnapshot>
+    Read<Autosave>
 ```
