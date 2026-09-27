@@ -40,7 +40,7 @@
   <text x="40" y="76" class="sans ink" font-size="19" font-weight="650">A shape trait requires matching context</text>
 
   <rect x="40" y="96" width="432" height="40" class="card" stroke-width="1.2"/>
-  <text x="56" y="121" class="mono ink" font-size="12.5">fn Gateway.derivePolicyDecision : <tspan class="blue">RefactorSensitive</tspan></text>
+  <text x="56" y="121" class="mono ink" font-size="12.5">fn Editor.mergeAutosaves : <tspan class="blue">RefactorSensitive</tspan></text>
 
   <path d="M96 136V172" class="blueS" stroke-width="1.4" marker-end="url(#aB)"/>
   <text x="108" y="159" class="mono blue" font-size="11.5">requires</text>
@@ -55,8 +55,8 @@
   <rect x="40" y="176" width="720" height="112" class="card" stroke-width="1.4"/>
   <rect x="40.7" y="234" width="718.6" height="24" class="band"/>
   <g class="mono ink" font-size="12">
-    <text x="56" y="204">memory DecisionRefactorConstraint : <tspan class="blue">RefactorConstraint&lt;fn Gateway.derivePolicyDecision&gt;</tspan> {</text>
-    <text x="72" y="226">applies_to fn Gateway.derivePolicyDecision</text>
+    <text x="56" y="204">memory MergeRefactorConstraint : <tspan class="blue">RefactorConstraint&lt;fn Editor.mergeAutosaves&gt;</tspan> {</text>
+    <text x="72" y="226">applies_to fn Editor.mergeAutosaves</text>
     <text x="72" y="250">guards { <tspan class="blue">on_change require ReEvaluation&lt;Self&gt;</tspan> }</text>
     <text x="56" y="274">}</text>
   </g>
@@ -71,9 +71,9 @@
 
   <rect x="40" y="368" width="480" height="100" class="card" stroke-width="1.2"/>
   <g class="mono ink" font-size="12">
-    <text x="56" y="392">change RefactorDecision {</text>
-    <text x="72" y="412">modify fn Gateway.derivePolicyDecision : <tspan class="blue">RefactorSensitive</tspan></text>
-    <text x="88" y="432">effects complete { Read&lt;PolicySnapshot&gt; }</text>
+    <text x="56" y="392">change RefactorMerge {</text>
+    <text x="72" y="412">modify fn Editor.mergeAutosaves : <tspan class="blue">RefactorSensitive</tspan></text>
+    <text x="88" y="432">effects complete { Read&lt;Autosave&gt; }</text>
     <text x="56" y="452">}</text>
   </g>
   <text x="40" y="492" class="mono mute" font-size="11.5">editing the fn in place creates no change event</text>
@@ -86,8 +86,8 @@
 
   <rect x="552" y="368" width="368" height="116" class="card warnS" stroke-width="1.4" stroke-dasharray="5 3"/>
   <g class="mono ink" font-size="12">
-    <text x="568" y="392">reevaluation DecisionShapeRechecked {</text>
-    <text x="584" y="412">satisfies memory DecisionRefactorConstraint</text>
+    <text x="568" y="392">reevaluation MergeRechecked {</text>
+    <text x="584" y="412">satisfies memory MergeRefactorConstraint</text>
     <text x="568" y="468">}</text>
   </g>
   <g class="mono mute" font-size="11.5">

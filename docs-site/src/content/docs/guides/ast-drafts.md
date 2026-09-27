@@ -12,7 +12,7 @@ Source parsing supports TypeScript (`.ts`, `.mts`, `.cts`), TSX (`.tsx`), JavaSc
 The semantic draft maps code structure onto Shape declarations:
 
 - **Components.** A type becomes a `component` when it owns functions (methods, `impl` blocks, or Go receiver methods) or has a field that looks like state: `repo`, `client`, `store`, `db`, `database`, `queue`, `sender`, `receiver`, `connection`, or `pool`. A file's free functions go into a `<File>Module` component.
-- **Functions.** Each function becomes an `fn` under its owner, with a `source` reference and `effects unknown`. A reference names the declaration's symbol, such as `src/audit/store.rs#AuditStore.append_event`, or only the file when no stable symbol exists, so moving lines does not change the draft.
+- **Functions.** Each function becomes an `fn` under its owner, with a `source` reference and `effects unknown`. A reference names the declaration's symbol, such as `src/history/log.rs#RevisionLog.append_revision`, or only the file when no stable symbol exists, so moving lines does not change the draft.
 - **Resources.** A type that is not a component becomes a `resource` only when its name ends in `Event`, `Record`, `Message`, `Config`, `State`, `Entity`, `Snapshot`, `Request`, `Response`, `Table`, `Queue`, `Topic`, or `Payload`. Any other such type is left out.
 - **Calls.** A call through `self.`, `this.`, or a Go receiver to a field whose declared type is another generated component becomes a `relation` of kind `calls`. Calls that cannot be resolved that way are left out.
 - **Implementations.** Each component gets an `implementation <Name>Impl` listing its source file. It has no `on_change` clause, so it never governs paths for coverage.
@@ -26,28 +26,28 @@ The semantic draft maps code structure onto Shape declarations:
 This Rust file is the input:
 
 ```rust
-pub struct AuditEvent {
+pub struct RevisionRecord {
     pub id: String,
 }
 
-pub struct AuditRepo;
+pub struct RevisionRepo;
 
-impl AuditRepo {
-    pub fn insert(&self, _event: AuditEvent) {}
+impl RevisionRepo {
+    pub fn insert(&self, _revision: RevisionRecord) {}
 }
 
-pub struct AuditStore {
-    repo: AuditRepo,
+pub struct RevisionLog {
+    repo: RevisionRepo,
 }
 
-impl AuditStore {
-    pub fn append_event(&self, event: AuditEvent) {
-        self.repo.insert(event);
+impl RevisionLog {
+    pub fn append_revision(&self, revision: RevisionRecord) {
+        self.repo.insert(revision);
     }
 }
 ```
 
-`shp ast source src/audit/store.rs` prints the draft to stdout under the default module name `generated.ast`; `--module` sets another. The excerpt below keeps the declarations for `AuditStore.append_event`. It omits the `AuditRepo` declarations and the type anchors for `AuditEvent` and `AuditStore`, which follow the same pattern.
+`shp ast source src/history/log.rs` prints the draft to stdout under the default module name `generated.ast`; `--module` sets another. The excerpt below keeps the declarations for `RevisionLog.append_revision`. It omits the `RevisionRepo` declarations and the type anchors for `RevisionRecord` and `RevisionLog`, which follow the same pattern.
 
 ```shape
 module generated.ast
@@ -58,64 +58,64 @@ trait GeneratedAstAnchor {
 trait GeneratedCandidate {
 }
 
-resource AuditEvent : GeneratedCandidate {
-  storage rust.type("src/audit/store.rs#AuditEvent")
+resource RevisionLogAppendRevisionAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("src/history/log.rs#RevisionLog.append_revision")
+  fingerprint ast.semantic_subtree_v1("sha256:47c0534f294562bb62d23df8208cb048e3a31760723740372e25ada530f5f4fe")
 }
 
-resource AuditStoreAppendEventAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("src/audit/store.rs#AuditStore.append_event")
-  fingerprint ast.semantic_subtree_v1("sha256:6486b2f6963404bca81c18eb18ae3f90508215c7a40b81d7734247b2e34c0a5b")
+resource RevisionRecord : GeneratedCandidate {
+  storage rust.type("src/history/log.rs#RevisionRecord")
 }
 
-component AuditStore : GeneratedCandidate {
-  fn append_event
-    source rust("src/audit/store.rs#AuditStore.append_event")
+component RevisionLog : GeneratedCandidate {
+  fn append_revision
+    source rust("src/history/log.rs#RevisionLog.append_revision")
     effects unknown
 }
 
-relation AuditStoreAppendEventGeneratedFromAuditStoreAppendEventAstAnchor {
+relation RevisionLogAppendRevisionGeneratedFromRevisionLogAppendRevisionAstAnchor {
   kind generated_from
-  connects AuditStore -> AuditStoreAppendEventAstAnchor
-  roles { AuditStore as generated, AuditStoreAppendEventAstAnchor as syntax }
-  expects AuditStoreAppendEventAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6486b2f6963404bca81c18eb18ae3f90508215c7a40b81d7734247b2e34c0a5b")
-  summary "fn AuditStore.append_event generated from rust function_item at src/audit/store.rs#AuditStore.append_event."
+  connects RevisionLog -> RevisionLogAppendRevisionAstAnchor
+  roles { RevisionLog as generated, RevisionLogAppendRevisionAstAnchor as syntax }
+  expects RevisionLogAppendRevisionAstAnchor fingerprint ast.semantic_subtree_v1("sha256:47c0534f294562bb62d23df8208cb048e3a31760723740372e25ada530f5f4fe")
+  summary "fn RevisionLog.append_revision generated from rust function_item at src/history/log.rs#RevisionLog.append_revision."
 }
 
-relation AuditStoreCallsAuditRepo {
+relation RevisionLogCallsRevisionRepo {
   kind calls
-  connects AuditStore -> AuditRepo
-  roles { AuditRepo as destination, AuditStore as origin }
-  summary "AuditStore.append_event calls AuditRepo; generated from src/audit/store.rs#AuditStore.append_event."
+  connects RevisionLog -> RevisionRepo
+  roles { RevisionLog as origin, RevisionRepo as destination }
+  summary "RevisionLog.append_revision calls RevisionRepo; generated from src/history/log.rs#RevisionLog.append_revision."
 }
 
-effect candidate AppendEventAppendAuditEventCandidateEffect {
-  fn AuditStore.append_event
-  effect Append<AuditEvent>
-  source rust("src/audit/store.rs#AuditStore.append_event")
+effect candidate AppendRevisionAppendRevisionRecordCandidateEffect {
+  fn RevisionLog.append_revision
+  effect Append<RevisionRecord>
+  source rust("src/history/log.rs#RevisionLog.append_revision")
   confidence low
-  pin AuditStoreAppendEventAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6486b2f6963404bca81c18eb18ae3f90508215c7a40b81d7734247b2e34c0a5b")
+  pin RevisionLogAppendRevisionAstAnchor fingerprint ast.semantic_subtree_v1("sha256:47c0534f294562bb62d23df8208cb048e3a31760723740372e25ada530f5f4fe")
 }
 
-implementation AuditStoreImpl {
+implementation RevisionLogImpl {
   paths {
-    "src/audit/store.rs"
+    "src/history/log.rs"
   }
-  conforms_to AuditStore
+  conforms_to RevisionLog
 }
 ```
 
-`AuditStore` is a component because it has a method and a `repo` field. `AuditEvent` has no functions and a data-like name, so it becomes a resource. The `calls` relation comes from `self.repo.insert(event)`, and the candidate effect from the word `insert` next to a mention of `AuditEvent`.
+`RevisionLog` is a component because it has a method and a `repo` field. `RevisionRecord` has no functions and a data-like name, so it becomes a resource. The `calls` relation comes from `self.repo.insert(revision)`, and the candidate effect from the word `insert` next to a mention of `RevisionRecord`.
 
 ## Commit generated context
 
 `--out-dir` writes one generated file per source file, plus a manifest:
 
 ```text
-$ shp ast source --out-dir shape/generated/ast src/audit/store.rs
+$ shp ast source --out-dir shape/generated/ast src/history/log.rs
 Wrote 1 generated AST Shape file(s) to shape/generated/ast.
 ```
 
-The draft lands in `shape/generated/ast/src/audit/store.shape` under the module `shape.generated.ast.src.audit.store`, with the same anchors and fingerprints as the stdout draft. `shape/generated/ast/manifest.json` records which files the generator owns:
+The draft lands in `shape/generated/ast/src/history/log.shape` under the module `shape.generated.ast.src.history.log`, with the same anchors and fingerprints as the stdout draft. `shape/generated/ast/manifest.json` records which files the generator owns:
 
 ```json
 {
@@ -123,10 +123,10 @@ The draft lands in `shape/generated/ast/src/audit/store.shape` under the module 
   "generatedAt": "deterministic",
   "entries": [
     {
-      "module": "shape.generated.ast.src.audit.store",
-      "path": "shape/generated/ast/src/audit/store.shape",
+      "module": "shape.generated.ast.src.history.log",
+      "path": "shape/generated/ast/src/history/log.shape",
       "sources": [
-        "src/audit/store.rs"
+        "src/history/log.rs"
       ]
     }
   ]
@@ -144,10 +144,10 @@ Default discovery loads the generated files with the rest of the Shape model. St
 In CI, run the same command with `--check` and the same source list. It regenerates in memory, compares the result with the files the manifest owns, writes nothing, and exits `1` when any owned file is stale, missing, or no longer produced:
 
 ```text
-$ shp ast source --out-dir shape/generated/ast --check src/audit/store.rs
+$ shp ast source --out-dir shape/generated/ast --check src/history/log.rs
 error: generated AST Shape files are stale
 
-  shape/generated/ast/src/audit/store.shape
+  shape/generated/ast/src/history/log.shape
 ```
 
 When everything matches, it prints `Generated AST Shape files are up to date in shape/generated/ast.` and exits `0`.
@@ -157,47 +157,47 @@ When everything matches, it prints `Generated AST Shape files are up to date in 
 A reviewed claim goes in an authored module. The overlay below imports the generated module, declares the reviewed effect, and pins the syntax it reviewed:
 
 ```shape
-module audit
+module history
 
-import shape.generated.ast.src.audit.store
+import shape.generated.ast.src.history.log
 
-resource AuditEvent : AppendOnly
+resource RevisionRecord : AppendOnly
 
-component AuditStore {
-  owns AuditEvent
-  grants Append<AuditEvent>
-  fn append_event
-    source rust("src/audit/store.rs#AuditStore.append_event")
+component RevisionLog {
+  owns RevisionRecord
+  grants Append<RevisionRecord>
+  fn append_revision
+    source rust("src/history/log.rs#RevisionLog.append_revision")
     effects complete {
-      Append<AuditEvent>
-        evidence rust("src/audit/store.rs#AuditStore.append_event")
+      Append<RevisionRecord>
+        evidence rust("src/history/log.rs#RevisionLog.append_revision")
     }
 }
 
-relation AuditStoreAppendEventReviewedFromAst {
+relation RevisionLogAppendRevisionReviewedFromAst {
   kind generated_from
-  connects AuditStore -> shape.generated.ast.src.audit.store::AuditStoreAppendEventAstAnchor
-  roles { AuditStore as reviewed, shape.generated.ast.src.audit.store::AuditStoreAppendEventAstAnchor as syntax }
-  expects shape.generated.ast.src.audit.store::AuditStoreAppendEventAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6486b2f6963404bca81c18eb18ae3f90508215c7a40b81d7734247b2e34c0a5b")
-  summary "Reviewed AuditStore.append_event effects are backed by the generated anchor for src/audit/store.rs#AuditStore.append_event."
+  connects RevisionLog -> shape.generated.ast.src.history.log::RevisionLogAppendRevisionAstAnchor
+  roles { RevisionLog as reviewed, shape.generated.ast.src.history.log::RevisionLogAppendRevisionAstAnchor as syntax }
+  expects shape.generated.ast.src.history.log::RevisionLogAppendRevisionAstAnchor fingerprint ast.semantic_subtree_v1("sha256:47c0534f294562bb62d23df8208cb048e3a31760723740372e25ada530f5f4fe")
+  summary "Reviewed RevisionLog.append_revision effects are backed by the generated anchor for src/history/log.rs#RevisionLog.append_revision."
 }
 ```
 
-`AuditStore` and `AuditEvent` here are the authored declarations in module `audit`; a local declaration wins over an imported one of the same name. The generated anchor is named with its module qualifier. With the generated file in place, `shp check` passes.
+`RevisionLog` and `RevisionRecord` here are the authored declarations in module `history`; a local declaration wins over an imported one of the same name. The generated anchor is named with its module qualifier. With the generated file in place, `shp check` passes.
 
-The pin must live in the authored file. Regeneration rewrites every generated file, including the generated `generated_from` relation's `expects`, so a generated pin always matches and cannot detect change. The authored `expects` stays fixed while the anchor it names is regenerated. When the body of `append_event` changes and the context is regenerated, `shp check` fails with exit `1`:
+The pin must live in the authored file. Regeneration rewrites every generated file, including the generated `generated_from` relation's `expects`, so a generated pin always matches and cannot detect change. The authored `expects` stays fixed while the anchor it names is regenerated. When the body of `append_revision` changes and the context is regenerated, `shp check` fails with exit `1`:
 
 ```text
 error: stale fingerprint expectation
 
-relation AuditStoreAppendEventReviewedFromAst expects AuditStoreAppendEventAstAnchor fingerprint ast.semantic_subtree_v1.
-expected: sha256:6486b2f6963404bca81c18eb18ae3f90508215c7a40b81d7734247b2e34c0a5b
-actual: sha256:baad3fbfa3bd4250ab56bdbf06870eec7ddaf8b6ff15c9fb7a05a2c6d99c535a
+relation RevisionLogAppendRevisionReviewedFromAst expects RevisionLogAppendRevisionAstAnchor fingerprint ast.semantic_subtree_v1.
+expected: sha256:47c0534f294562bb62d23df8208cb048e3a31760723740372e25ada530f5f4fe
+actual: sha256:178f10c360afabebe17e02cd913fe98750d3fb81829647aea70550ec4212b6b8
 
 caused by:
-  - shape/audit.shape: relation AuditStoreAppendEventReviewedFromAst expects AuditStoreAppendEventAstAnchor fingerprint ast.semantic_subtree_v1
-  - shape/generated/ast/src/audit/store.shape: resource AuditStoreAppendEventAstAnchor
-  - shape/generated/ast/src/audit/store.shape: resource AuditStoreAppendEventAstAnchor fingerprint ast.semantic_subtree_v1
+  - shape/history.shape: relation RevisionLogAppendRevisionReviewedFromAst expects RevisionLogAppendRevisionAstAnchor fingerprint ast.semantic_subtree_v1
+  - shape/generated/ast/src/history/log.shape: resource RevisionLogAppendRevisionAstAnchor
+  - shape/generated/ast/src/history/log.shape: resource RevisionLogAppendRevisionAstAnchor fingerprint ast.semantic_subtree_v1
 ```
 
 When the function is renamed or removed, regeneration drops its anchor, and the authored relation names an endpoint that no longer exists:
@@ -205,20 +205,20 @@ When the function is renamed or removed, regeneration drops its anchor, and the 
 ```text
 error: unknown relation_endpoint
 
-relation_endpoint AuditStoreAppendEventAstAnchor is referenced but not declared.
+relation_endpoint RevisionLogAppendRevisionAstAnchor is referenced but not declared.
 
 caused by:
-  - shape/audit.shape: relation AuditStoreAppendEventReviewedFromAst
+  - shape/history.shape: relation RevisionLogAppendRevisionReviewedFromAst
 ```
 
 Either failure means the reviewed syntax changed: review the function again, update the claim, and replace the pinned fingerprint with the `actual:` value from the diagnostic, or the endpoint with the new AST anchor. A change to comments or whitespace alone keeps the pin valid.
 
 ## Missing token evidence
 
-A fingerprint needs token text in the anchored subtree. When a declaration has none, generation keeps the draft and exits `0`, but prints a warning on stderr. The anchor is emitted without a fingerprint, its `generated_from` relation has no `expects`, and any candidate effect that would pin it is skipped, so no claim can be pinned to that anchor. This mostly happens with `shp ast json` input that omits `text`. For example, JSON input whose `AuditEvent` struct node has no `text` produces:
+A fingerprint needs token text in the anchored subtree. When a declaration has none, generation keeps the draft and exits `0`, but prints a warning on stderr. The anchor is emitted without a fingerprint, its `generated_from` relation has no `expects`, and any candidate effect that would pin it is skipped, so no claim can be pinned to that anchor. This mostly happens with `shp ast json` input that omits `text`. For example, JSON input whose `RevisionRecord` struct node has no `text` produces:
 
 ```text
-warning missing_fingerprint_tokens: src/audit/store.rs:src_audit_store_rs_store_struct_item_18ea0fee4873829e: cannot compute ast.semantic_subtree_v1 for AuditEvent; skipping fingerprint because AST JSON/source node lacks token text or semantic child tokens
+warning missing_fingerprint_tokens: src/history/log.rs:src_history_log_rs_log_struct_item_1bc227f3fc917ba9: cannot compute ast.semantic_subtree_v1 for RevisionRecord; skipping fingerprint because AST JSON/source node lacks token text or semantic child tokens
 ```
 
 ## Adapters and the raw layer
@@ -239,15 +239,15 @@ warning missing_fingerprint_tokens: src/audit/store.rs:src_audit_store_rs_store_
   "language": "rust",
   "files": [
     {
-      "path": "src/audit/store.rs",
+      "path": "src/history/log.rs",
       "root": "root",
       "nodes": [
-        { "id": "root", "kind": "source_file", "children": ["store"] },
+        { "id": "root", "kind": "source_file", "children": ["log"] },
         {
-          "id": "store",
+          "id": "log",
           "kind": "struct_item",
-          "attributes": { "name": "AuditStore" },
-          "text": "struct AuditStore { repo: AuditRepo }"
+          "attributes": { "name": "RevisionLog" },
+          "text": "struct RevisionLog { repo: RevisionRepo }"
         }
       ]
     }
@@ -255,10 +255,10 @@ warning missing_fingerprint_tokens: src/audit/store.rs:src_audit_store_rs_store_
 }
 ```
 
-`shp ast json --module generated.audit ast.json` turns this into a component with its anchor. This excerpt omits the `generated_from` relation and the implementation:
+`shp ast json --module generated.history ast.json` turns this into a component with its anchor. This excerpt omits the `generated_from` relation and the implementation:
 
 ```shape
-module generated.audit
+module generated.history
 
 trait GeneratedAstAnchor {
 }
@@ -266,12 +266,12 @@ trait GeneratedAstAnchor {
 trait GeneratedCandidate {
 }
 
-resource AuditStoreAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("src/audit/store.rs#AuditStore")
-  fingerprint ast.semantic_subtree_v1("sha256:cbb49cae1bb3702d7fc08059d759b7f133a60087b6f654cd3ea8b53b05dae9be")
+resource RevisionLogAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("src/history/log.rs#RevisionLog")
+  fingerprint ast.semantic_subtree_v1("sha256:93620cec0ac0a519f118c514ffd6eec44c4a9c898c781a8b7ceabb8a7bded130")
 }
 
-component AuditStore : GeneratedCandidate {
+component RevisionLog : GeneratedCandidate {
 }
 ```
 
@@ -284,25 +284,25 @@ Swift drafts come from syntax alone; no Swift compiler, Xcode, or SwiftPM config
 - Classes, structs, enums, actors, protocols, and extensions supply types. Functions, protocol requirements, initializers, deinitializers, subscripts, and computed properties supply functions, including a SwiftUI view's computed `body` even when the view has no other methods. Stored properties are part of the type's syntax. Local functions stay inside their enclosing function's syntax, and types declared inside functions, with anything nested in them, produce nothing.
 - A Swift type becomes a component unless it is a single declaration with no functions, no state-like field, and a data-like name (the resource suffixes above), in which case it becomes a resource.
 - Within a file, extensions are grouped with their type and keep separate anchors. Nested types use qualified names such as `Outer.Inner.run()`.
-- References include parameter labels and types, generic parameters, and return and effect syntax, such as `AuditStore.load(id:Int) -> AuditEvent ?` or `AuditStore.save(_:AuditEvent) async throws`. A constrained extension keeps its `where` clause, and a protocol requirement ends in `[requirement]`. These are review conventions, not compiler symbol IDs. Ambiguous duplicate signatures produce a warning and file-only references.
+- References include parameter labels and types, generic parameters, and return and effect syntax, such as `RevisionLog.load(id:Int) -> Revision ?` or `RevisionLog.save(_:Revision) async throws`. A constrained extension keeps its `where` clause, and a protocol requirement ends in `[requirement]`. These are review conventions, not compiler symbol IDs. Ambiguous duplicate signatures produce a warning and file-only references.
 - Every Swift function keeps `effects unknown`, and Swift drafts contain no inferred calls or candidate effects. Macros are not expanded, `#if` branches are not chosen, protocol and generic dispatch are not resolved, actor isolation is not proven, and types are not merged across files.
 - Fingerprints use parser tokens, so literal URLs, raw and multiline strings, interpolation, and Unicode are part of the evidence, while comments and formatting outside literals are not. Type anchors exclude method and computed-property bodies; function anchors include them.
 
 An authored Swift claim uses the same reference syntax:
 
 ```shape
-module swift.audit
+module swift.history
 
-resource AuditEvent : AppendOnly
+resource Revision : AppendOnly
 
-component AuditStore {
-  owns AuditEvent
-  grants Append<AuditEvent>
+component RevisionLog {
+  owns Revision
+  grants Append<Revision>
   fn save
-    source swift("Sources/AuditStore.swift#AuditStore.save(_:AuditEvent) async throws")
+    source swift("Sources/RevisionLog.swift#RevisionLog.save(_:Revision) async throws")
     effects complete {
-      Append<AuditEvent>
-        evidence swift("Sources/AuditStore.swift#AuditStore.save(_:AuditEvent) async throws")
+      Append<Revision>
+        evidence swift("Sources/RevisionLog.swift#RevisionLog.save(_:Revision) async throws")
     }
 }
 ```

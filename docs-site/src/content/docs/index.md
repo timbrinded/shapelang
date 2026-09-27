@@ -18,13 +18,13 @@ hero:
 
 ## The problem
 
-Architecture decisions often live only in people's heads, chat threads, or outdated diagrams. Code review then depends on someone noticing that a pull request deletes audit rows, exposes a private store on a public path, or breaks a dependency rule the team already agreed.
+Architecture decisions often live only in people's heads, chat threads, or outdated diagrams. Code review then depends on someone noticing that a pull request hard-deletes a document's revision history, exposes private drafts on the public feed, or breaks a dependency rule the team already agreed.
 
-Tests check behaviour and typecheckers check types. Neither is a natural place to state a durable decision such as "audit events are append-only" or "only the gateway may provide this endpoint", and to keep that decision visible and enforced as the code changes.
+Tests check behaviour and typecheckers check types. Neither is a natural place to state a durable decision such as "revisions are append-only" or "only the publisher may serve the story endpoint", and to keep that decision visible and enforced as the code changes.
 
 ## What Shape is
 
-Shape is a small language for writing those decisions down as claims, and `shp` is the checker that accepts or rejects them. A claim is a declaration the author asserts, such as "`AuditEvent` is append-only" or "`AuditStore.appendEvent` appends audit events and does nothing else".
+Shape is a small language for writing those decisions down as claims, and `shp` is the checker that accepts or rejects them. A claim is a declaration the author asserts, such as "`Revision` is append-only" or "`RevisionLog.appendRevision` appends revisions and does nothing else".
 
 Claims live in `.shape` files under `shape/`. Together the files form the Shape model: the checker loads every `.shape` file it finds there and checks them as one model. People, and optionally coding agents, write the claims. Reviewers read them in the pull request like any other change.
 
@@ -48,39 +48,39 @@ A passing check means the claims are coherent with each other. When CI also supp
 
 ## An example
 
-Suppose audit events must never be hard-deleted. `AuditEvent` is an append-only resource. `AuditStore` is the component that owns it; it may append and read events, and its two functions claim only those effects:
+Suppose a writing app keeps every document's history so that edits can always be recovered. Each time the editor saves, it appends a revision through the revision log, and revisions must never be hard-deleted. `Revision` is an append-only resource. `RevisionLog` is the component that owns it; it may append and read revisions, and its two functions claim only those effects:
 
 ```shape
-module audit
+module history
 
-resource AuditEvent : AppendOnly
+resource Revision : AppendOnly
 
-component AuditStore {
-  owns AuditEvent
-  grants Append<AuditEvent>
-  grants Read<AuditEvent>
-  fn appendEvent
+component RevisionLog {
+  owns Revision
+  grants Append<Revision>
+  grants Read<Revision>
+  fn appendRevision
     effects complete {
-      Append<AuditEvent>
+      Append<Revision>
     }
-  fn listEvents
+  fn listRevisions
     effects complete {
-      Read<AuditEvent>
+      Read<Revision>
     }
 }
 ```
 
-`AppendOnly` comes from Shape's built-in prelude. Because `AuditEvent` carries it, hard delete, truncate, and drop are finally forbidden for that resource. Saved as `shape/audit.shape`, this model passes, and `shp check` prints `Shape check passed.`
+`AppendOnly` comes from Shape's built-in prelude. Because `Revision` carries it, hard delete, truncate, and drop are finally forbidden for that resource. Saved as `shape/history.shape`, this model passes, and `shp check` prints `Shape check passed.`
 
-Later, a pull request adds a purge job. Its author adds a grant and a function to `AuditStore`:
+Later, a pull request adds a job that purges old revisions. Its author adds a grant and a function to `RevisionLog`:
 
 ```shape no-verify
-  grants HardDelete<AuditEvent>
-  fn purgeOldEvents
-    source ts("src/audit/purge.ts#purgeOldEvents")
+  grants HardDelete<Revision>
+  fn purgeOldRevisions
+    source ts("src/history/purge.ts#purgeOldRevisions")
     effects complete {
-      HardDelete<AuditEvent>
-        evidence ts("src/audit/purge.ts#purgeOldEvents")
+      HardDelete<Revision>
+        evidence ts("src/history/purge.ts#purgeOldRevisions")
     }
 ```
 
@@ -89,14 +89,14 @@ Later, a pull request adds a purge job. Its author adds a grant and a function t
 ```text
 error: forbidden effect
 
-AuditStore.purgeOldEvents emits HardDelete<AuditEvent>.
-AuditEvent has trait AppendOnly.
-AppendOnly forbids final HardDelete<AuditEvent>.
-evidence: ts("src/audit/purge.ts#purgeOldEvents")
+RevisionLog.purgeOldRevisions emits HardDelete<Revision>.
+Revision has trait AppendOnly.
+AppendOnly forbids final HardDelete<Revision>.
+evidence: ts("src/history/purge.ts#purgeOldRevisions")
 
 caused by:
-  - shape/audit.shape: effect AuditStore.purgeOldEvents emits HardDelete<AuditEvent>
-  - shape/audit.shape: resource AuditEvent : AppendOnly
+  - shape/history.shape: effect RevisionLog.purgeOldRevisions emits HardDelete<Revision>
+  - shape/history.shape: resource Revision : AppendOnly
   - standard prelude: trait AppendOnly forbids final HardDelete<T>
 ```
 
