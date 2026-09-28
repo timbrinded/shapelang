@@ -15,7 +15,7 @@ When application code changes, the Shape model should change with it. `shp` chec
 
 `shp check --changed-files changed.txt` runs all three checks. Use it locally and as the single gate in CI.
 
-- Without a changed-file list, or with an empty one, coverage and bindings check nothing.
+- Without a changed-file list, or with an empty one, coverage, bindings, and guards on edited function sources check nothing (see [Guarded targets](#guarded-targets)).
 - `shp coverage --changed-files F` runs conformance and coverage but not bindings. It has no `--allow-unknown-effects` or freshness flags, so any `effects unknown` in an authored module fails it.
 
 Flags and exit codes for both commands are in the [CLI Reference](/shapelang/reference/cli/).
@@ -288,4 +288,4 @@ Prune removes each attestation whose kind, path, and reason already exist in the
 
 ## Guarded targets
 
-Some claims carry design-memory guards. A guard fires only from a `change` declaration that modifies or removes the guarded target: `modify fn`, `remove fn`, or the `component`, `resource`, and `relation` forms. Editing a guarded declaration in place produces no change event, so its guard does not fire. The checker therefore does not report an in-place edit to a guarded target. A fired guard is satisfied by a valid `reevaluation`, never by an attestation. Before changing a guarded target, run `shp obligations` for open obligations and `shp explain TARGET` to see which contexts guard it; `shp memory` lists recorded memory and rationale but not their guards. [Design Memory](/shapelang/concepts/design-memory/) explains guards, `change` declarations, and reevaluation.
+Some claims carry design-memory guards. A guard fires from a `change` declaration that modifies or removes the guarded target: `modify fn`, `remove fn`, or the `component`, `resource`, and `relation` forms. Editing a guarded declaration in place in the model produces no change event, so its guard does not fire. Editing the guarded code does: with `--changed-files`, a guard on a function fires when the file in its `source` is in the list, and it needs a reevaluation written for this change, since one carried over from an earlier change does not count. A fired guard is satisfied by a valid `reevaluation`, never by an attestation. Before changing a guarded target, run `shp obligations` for open obligations and `shp explain TARGET` to see which contexts guard it; `shp memory` lists recorded memory and rationale but not their guards. [Design Memory](/shapelang/concepts/design-memory/) explains guards, `change` declarations, and reevaluation.

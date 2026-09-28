@@ -371,6 +371,178 @@ relation ReaderProvidesRecord {
     }
   });
 
+  test("fails when a rule edit is what lets the change pass, with the base read from git", async () => {
+    const repo = await mkdtemp(join(tmpdir(), "shp-loosening-test-"));
+    const fixture = (path: string) =>
+      readFile(resolve(repoRoot, "fixtures/loosening/trait_removed_from_resource", path), "utf8");
+    try {
+      await mkdir(join(repo, "shape"));
+      await writeFile(join(repo, "shape/history.shape"), await fixture("base/shape/history.shape"));
+      git(repo, ["init", "-q"]);
+      git(repo, ["add", "."]);
+      git(repo, [
+        "-c",
+        "user.name=shp",
+        "-c",
+        "user.email=shp@example.com",
+        "commit",
+        "-qm",
+        "base"
+      ]);
+      await writeFile(join(repo, "shape/history.shape"), await fixture("head/shape/history.shape"));
+
+      const loosened = await runCli(
+        ["check", "--base-ref", "HEAD", "--check-loosening"],
+        cliPath,
+        repo
+      );
+      expect(loosened.exitCode).toBe(1);
+      expect(loosened.stderr).toContain(
+        "error: rule loosening\n\nThis change removes trait AppendOnly from resource Revision."
+      );
+      expect(loosened.stderr).toContain("  error: forbidden effect");
+
+      const withoutFlag = await runCli(["check", "--base-ref", "HEAD"], cliPath, repo);
+      expect(withoutFlag.exitCode).toBe(0);
+
+      const withoutBase = await runCli(["check", "--check-loosening"], cliPath, repo);
+      expect(withoutBase.exitCode).toBe(2);
+      expect(withoutBase.stderr).toContain("--check-loosening needs --base-ref or --base-model");
+    } finally {
+      await rm(repo, { recursive: true, force: true });
+    }
+  });
+
+  test("does not count narrowed paths that follow a moved directory when cited paths are checked", async () => {
+    const repo = await mkdtemp(join(tmpdir(), "shp-loosening-move-test-"));
+    const fixture = (path: string) =>
+      readFile(resolve(repoRoot, "fixtures/loosening/governed_directory_moved", path), "utf8");
+    try {
+      await mkdir(join(repo, "shape"));
+      await mkdir(join(repo, "src/share"), { recursive: true });
+      await writeFile(join(repo, "shape/sharing.shape"), await fixture("base/shape/sharing.shape"));
+      await writeFile(join(repo, "src/share/public.ts"), "export function sharePublished() {}\n");
+      git(repo, ["init", "-q"]);
+      git(repo, ["add", "."]);
+      git(repo, [
+        "-c",
+        "user.name=shp",
+        "-c",
+        "user.email=shp@example.com",
+        "commit",
+        "-qm",
+        "base"
+      ]);
+      await mkdir(join(repo, "src/sharing"));
+      git(repo, ["mv", "src/share/public.ts", "src/sharing/public.ts"]);
+      await writeFile(join(repo, "shape/sharing.shape"), await fixture("head/shape/sharing.shape"));
+      await writeFile(join(repo, "changed.txt"), await fixture("changed-files.txt"));
+      const args = [
+        "check",
+        "--changed-files",
+        "changed.txt",
+        "--base-ref",
+        "HEAD",
+        "--check-loosening"
+      ];
+
+      const moved = await runCli([...args, "--check-cited-paths"], cliPath, repo);
+      expect(moved.stderr).toBe("");
+      expect(moved.exitCode).toBe(0);
+
+      // Without the repository file list the deleted file still counts.
+      const withoutList = await runCli(args, cliPath, repo);
+      expect(withoutList.exitCode).toBe(1);
+      expect(withoutList.stderr).toContain("This change edits implementation SharingImpl.");
+      expect(withoutList.stderr).toContain("Changed file: src/share/public.ts");
+    } finally {
+      await rm(repo, { recursive: true, force: true });
+    }
+  });
+
+  test("fires a guard when its function's source changes until a new reevaluation is written", async () => {
+    const repo = await mkdtemp(join(tmpdir(), "shp-guarded-source-test-"));
+    const model = [
+      "module editor",
+      "",
+      "resource Autosave",
+      "",
+      "component Editor {",
+      "  owns Autosave",
+      "  grants Read<Autosave>",
+      "  fn mergeAutosaves : RefactorSensitive",
+      `    source ts("src/editor/merge.ts#mergeAutosaves")`,
+      "    effects complete {",
+      "      Read<Autosave>",
+      "    }",
+      "}",
+      "",
+      "memory MergeRefactorConstraint : RefactorConstraint<fn Editor.mergeAutosaves> {",
+      "  applies_to fn Editor.mergeAutosaves",
+      "  status Explained",
+      "  confidence High",
+      `  summary "The sync library sends autosaves out of order, so keep the sort."`,
+      "  who {",
+      "    owner EditorTeam",
+      "  }",
+      "  guards {",
+      "    on_change require ReEvaluation<Self>",
+      "  }",
+      "}",
+      ""
+    ].join("\n");
+    const reevaluation = (summary: string) =>
+      [
+        "",
+        "reevaluation MergeRechecked {",
+        "  satisfies memory MergeRefactorConstraint",
+        "  outcome Confirmed",
+        `  summary "${summary}"`,
+        "  reviewer EditorTeam",
+        `  decided_on "2026-09-28"`,
+        `  evidence test("src/editor/merge.test.ts")`,
+        "}",
+        ""
+      ].join("\n");
+    try {
+      await mkdir(join(repo, "shape"));
+      await mkdir(join(repo, "src/editor"), { recursive: true });
+      await writeFile(join(repo, "shape/editor.shape"), model + reevaluation("Reviewed before."));
+      await writeFile(join(repo, "src/editor/merge.ts"), "export const merge = 1;\n");
+      git(repo, ["init", "-q"]);
+      git(repo, ["add", "."]);
+      git(repo, [
+        "-c",
+        "user.name=shp",
+        "-c",
+        "user.email=shp@example.com",
+        "commit",
+        "-qm",
+        "base"
+      ]);
+      await writeFile(join(repo, "src/editor/merge.ts"), "export const merge = 2;\n");
+      await writeFile(join(repo, "changed.txt"), "src/editor/merge.ts\nshape/editor.shape\n");
+      const args = ["check", "--changed-files", "changed.txt", "--base-ref", "HEAD"];
+
+      // The reevaluation in the base was written for an earlier change.
+      const carried = await runCli(args, cliPath, repo);
+      expect(carried.exitCode).toBe(1);
+      expect(carried.stderr).toContain(
+        "error: guarded source changed\n\nsrc/editor/merge.ts changed. It is the source of fn Editor.mergeAutosaves"
+      );
+
+      await writeFile(
+        join(repo, "shape/editor.shape"),
+        model + reevaluation("Sync library v5 delivers autosaves in order.")
+      );
+      const written = await runCli(args, cliPath, repo);
+      expect(written.stderr).toBe("");
+      expect(written.exitCode).toBe(0);
+    } finally {
+      await rm(repo, { recursive: true, force: true });
+    }
+  });
+
   test("rejects empty changed-file path during checks", async () => {
     const result = await runCli([
       "check",

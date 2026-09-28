@@ -258,7 +258,7 @@ A `rationale MergeLocal : LocalRationale<fn Editor.mergeAutosaves>` satisfies it
 
 ### When a guard fires
 
-A guard is a `guards` block inside a `rationale` or `memory`, and it protects that context's target. A `change` declaration groups `add`, `modify`, and `remove` entries against the Shape model; [Language Syntax](/shapelang/reference/language-syntax/) lists the entry forms. A guard fires only from a `change` declaration: a `modify` or `remove` entry whose target is the guarded `fn`, `component`, `resource`, or `relation`. A guard on any other target kind never fires.
+A guard is a `guards` block inside a `rationale` or `memory`, and it protects that context's target. A `change` declaration groups `add`, `modify`, and `remove` entries against the Shape model; [Language Syntax](/shapelang/reference/language-syntax/) lists the entry forms. A guard fires from a `change` declaration: a `modify` or `remove` entry whose target is the guarded `fn`, `component`, `resource`, or `relation`. With a changed-file list, a guard on a function also fires when the function's `source` file changed; see [When the guarded code changes](#when-the-guarded-code-changes). A guard on any other target kind never fires.
 
 A `guards` block holds two kinds of action:
 
@@ -382,9 +382,68 @@ caused by:
   - shape/editor.shape: reevaluation MergeRechecked
 ```
 
-A valid reevaluation is not tied to a particular change, and it does not expire. While it exists, none of that context's guards fire, whether `on_change` or `forbid transform`, for this change or for any later `modify` or `remove` of the target. A reevaluation should follow the review it records and cite the evidence that review used.
+A valid reevaluation is not tied to a particular change, and it does not expire. While it exists, none of that context's guards fire on a `change` declaration, whether `on_change` or `forbid transform`, for this change or for any later `modify` or `remove` of the target. An edit to the guarded function's source is the exception: it needs a reevaluation written for that change, as described in [When the guarded code changes](#when-the-guarded-code-changes). A reevaluation should follow the review it records and cite the evidence that review used.
 
 An attestation never satisfies a guard. `attest no_shape_change` answers the coverage question of whether a governed source change needs a model update; see [Keep the Model Current](/shapelang/guides/keep-model-current/).
+
+### When the guarded code changes
+
+Declaring a `change` is up to whoever edits the model, so a guard that listened only to `change` declarations would miss the most common edit: changing the guarded code and leaving the model alone. With a changed-file list (`shp check --changed-files`), an `on_change require ReEvaluation` guard on a function also fires when the file in the function's `source` is in the list.
+
+This model gives `mergeAutosaves` a `source`, and `changed.txt` lists `src/editor/merge.ts`:
+
+```shape
+module editor
+
+resource Autosave
+
+component Editor {
+  owns Autosave
+  grants Read<Autosave>
+  fn mergeAutosaves : RefactorSensitive
+    source ts("src/editor/merge.ts#mergeAutosaves")
+    effects complete {
+      Read<Autosave>
+    }
+}
+
+memory MergeRefactorConstraint : RefactorConstraint<fn Editor.mergeAutosaves> {
+  applies_to fn Editor.mergeAutosaves
+  status Explained
+  confidence High
+  summary "The sync library sends autosaves out of order, so keep the sort."
+  who {
+    owner EditorTeam
+  }
+  guards {
+    on_change require ReEvaluation<Self>
+  }
+}
+```
+
+`shp check --changed-files changed.txt` exits 1:
+
+```text
+error: guarded source changed
+
+src/editor/merge.ts changed. It is the source of fn Editor.mergeAutosaves, which is protected by memory MergeRefactorConstraint.
+
+Required:
+  add reevaluation satisfying memory MergeRefactorConstraint in this change
+  or leave src/editor/merge.ts unchanged.
+
+caused by:
+  - shape/editor.shape: fn Editor.mergeAutosaves
+  - shape/editor.shape: memory MergeRefactorConstraint guards on_change require ReEvaluation<Self>
+```
+
+A valid reevaluation clears it only when it was written for this change. With a base model (`--base-ref` or `--base-model`), that means no reevaluation in the base has the same `satisfies`, name, `outcome`, `summary`, `reviewer`, `approver`, `decided_on`, and `evidence`. Without a base, it means the reevaluation is declared in a `.shape` file in the changed-file list. A reevaluation carried over from an earlier change does not count here, although it still satisfies the guard for `change` declarations.
+
+- The match is by file. Editing any function in `src/editor/merge.ts` fires the guard, because the changed-file list does not say which lines changed. When the edit does not touch the guarded function, the reevaluation records that finding.
+- Only `source` counts. A function without a `source` never fires this way, and `evidence` paths do not count.
+- `forbid transform` guards never fire on a source edit, and neither do `on_change` guards whose `protects` block names only descriptions or declared traits, since a source edit cannot be matched against those properties.
+- When a `change` declaration also modifies the function and no valid reevaluation exists at all, only `guarded shape changed` is reported; one new reevaluation clears both.
+- With a base model, a guard whose `rationale` or `memory` this change adds does not fire on this change, since writing the context is its review. Renaming an existing context removes the base one, which [`--check-loosening`](/shapelang/reference/cli/#rule-loosening) reports.
 
 ### Approvers and roles
 

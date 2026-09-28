@@ -1,0 +1,29 @@
+module editor
+
+resource Autosave
+
+component Editor {
+  owns Autosave
+  grants Read<Autosave>
+  fn mergeAutosaves : RefactorSensitive
+    effects complete {
+      Read<Autosave>
+    }
+}
+
+memory MergeRefactorConstraint : RefactorConstraint<fn Editor.mergeAutosaves> {
+  applies_to fn Editor.mergeAutosaves
+  status Explained
+  confidence High
+  summary "The sync library sends autosaves out of order, so keep the sort."
+  who {
+    owner EditorTeam
+  }
+}
+
+change RefactorMerge {
+  modify fn Editor.mergeAutosaves : RefactorSensitive
+    effects complete {
+      Read<Autosave>
+    }
+}

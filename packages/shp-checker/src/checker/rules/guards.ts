@@ -1,14 +1,26 @@
 import type { TargetKind } from "../../language/generated/ast.ts";
-import type { Model, ProtectedProperty, SemanticDiagnostic } from "../model.ts";
+import type {
+  BaseModel,
+  Model,
+  ProtectedProperty,
+  ReevaluationInfo,
+  SemanticDiagnostic
+} from "../model.ts";
+import type { ContextKind } from "../../prelude.ts";
 import type { IsoDateString } from "../iso-date.ts";
 import { isIsoCalendarDate } from "../iso-date.ts";
-import { displaySymbol } from "../display.ts";
+import { displaySymbol, splitFunctionTarget } from "../display.ts";
 import { describeProvenance } from "../provenance.ts";
 import {
   hasGuardAction,
   hasValidReevaluationForGuard,
+  reevaluationValidationReasons,
   requiresReevaluation
 } from "../derivations.ts";
+import { normalizeShapeSourcePath } from "../../shape-strings.ts";
+import { targetsEqual } from "../../targets.ts";
+import { changedFileContext, provenanceFileChanged } from "./coverage.ts";
+import { normalizeRepoPath } from "../globs.ts";
 import {
   evaluateGuards,
   type GuardContext,
@@ -49,6 +61,112 @@ export function buildGuardContexts(model: Model): GuardContext[] {
     });
   }
   return contexts;
+}
+
+/**
+ * Identity used to compare a reevaluation against the base model. Every field
+ * that records the review is part of it, so rewriting an old reevaluation for a
+ * new review counts as new, while one carried over unchanged does not.
+ */
+export function reevaluationKey(reevaluation: ReevaluationInfo): string {
+  return JSON.stringify([
+    reevaluation.satisfiesKind ?? "",
+    reevaluation.satisfiesName ?? "",
+    reevaluation.name,
+    reevaluation.outcome ?? "",
+    reevaluation.summary ?? "",
+    reevaluation.reviewer ?? "",
+    reevaluation.approver ?? "",
+    reevaluation.decidedOn ?? "",
+    reevaluation.evidence.map((ref) => `${ref.language}:${ref.path}`)
+  ]);
+}
+
+export function contextKey(kind: ContextKind, name: string): string {
+  return `${kind}:${name}`;
+}
+
+/**
+ * Reports a changed file that is the `source` of a function an `on_change
+ * require ReEvaluation` guard protects, unless a reevaluation of that guard was
+ * written for this change: new relative to the base model when there is one, or
+ * declared in a changed `.shape` file when there is not. A guard whose `protects`
+ * lists only properties a source edit cannot be matched against is skipped, and
+ * a function whose guard already fires on a declared `change` without any valid
+ * reevaluation is left to `guarded_shape_changed`. With a base, a guard whose
+ * context the change adds is skipped too: writing the context is its review.
+ */
+export function checkGuardedSources(
+  model: Model,
+  changedFiles: string[],
+  repoRoot: string,
+  base?: BaseModel
+): SemanticDiagnostic[] {
+  if (changedFiles.length === 0) {
+    return [];
+  }
+  const changed = changedFileContext(changedFiles, repoRoot);
+  const diagnostics: SemanticDiagnostic[] = [];
+
+  for (const { kind, info } of allContexts(model)) {
+    const clause = info.guards.find(requiresReevaluation);
+    const target = info.appliesTo ?? info.target;
+    if (
+      !clause ||
+      target.kind !== "fn" ||
+      (base !== undefined && !base.contextKeys.has(contextKey(kind, info.name)))
+    ) {
+      continue;
+    }
+    const protects = info.protects.map((property) =>
+      classifyProtectedProperty(model, property, target.kind)
+    );
+    if (protects.length > 0 && protects.every((property) => property.kind !== "opaque")) {
+      continue;
+    }
+    const [component, functionName] = splitFunctionTarget(target.name);
+    const fn =
+      component && functionName
+        ? model.components.get(component)?.functions.get(functionName)
+        : undefined;
+    // Changed files are normalized against the repository root, so the source path is too.
+    const changedFile = fn?.source
+      ? normalizeRepoPath(normalizeShapeSourcePath(fn.source.path), repoRoot)
+      : undefined;
+    if (!fn || changedFile === undefined || !changed.set.has(changedFile)) {
+      continue;
+    }
+    if (
+      !hasValidReevaluationForGuard(model, kind, info.name) &&
+      model.changeEvents.some((event) => targetsEqual(event.target, target))
+    ) {
+      continue;
+    }
+    const current = [...model.reevaluations.values()].some(
+      (reevaluation) =>
+        reevaluation.satisfiesKind === kind &&
+        reevaluation.satisfiesName === info.name &&
+        reevaluationValidationReasons(reevaluation, model).length === 0 &&
+        (base === undefined
+          ? provenanceFileChanged(reevaluation.provenance, changed.set, repoRoot)
+          : !base.reevaluationKeys.has(reevaluationKey(reevaluation)))
+    );
+    if (current) {
+      continue;
+    }
+    diagnostics.push({
+      kind: "guarded_source_changed",
+      guardKind: kind,
+      guard: info.name,
+      targetKind: "fn",
+      target: target.name,
+      changedFile,
+      missingReevaluation: `reevaluation satisfying ${kind} ${displaySymbol(info.name)}`,
+      filePath: info.provenance.filePath,
+      causedBy: [describeProvenance(fn.provenance), describeProvenance(clause.provenance)]
+    });
+  }
+  return diagnostics;
 }
 
 /**

@@ -76,6 +76,8 @@ function formatDiagnostic(diagnostic: ShapeDiagnostic): string {
       return formatMissingRequiredDescriptionDiagnostic(diagnostic);
     case "guarded_shape_changed":
       return formatGuardedShapeChangedDiagnostic(diagnostic);
+    case "guarded_source_changed":
+      return formatGuardedSourceChangedDiagnostic(diagnostic);
     case "invalid_reevaluation":
       return formatInvalidReevaluationDiagnostic(diagnostic);
     case "stale_memory":
@@ -90,6 +92,8 @@ function formatDiagnostic(diagnostic: ShapeDiagnostic): string {
       return formatStaleAttestationDiagnostic(diagnostic);
     case "missing_cited_path":
       return formatMissingCitedPathDiagnostic(diagnostic);
+    case "rule_loosening":
+      return formatRuleLooseningDiagnostic(diagnostic);
   }
 }
 
@@ -417,6 +421,21 @@ function formatGuardedShapeChangedDiagnostic(
   ].join("\n");
 }
 
+function formatGuardedSourceChangedDiagnostic(
+  diagnostic: Extract<SemanticDiagnostic, { kind: "guarded_source_changed" }>
+): string {
+  return [
+    "error: guarded source changed",
+    "",
+    `${diagnostic.changedFile} changed. It is the source of ${diagnostic.targetKind} ${displaySymbol(diagnostic.target)}, which is protected by ${diagnostic.guardKind} ${displaySymbol(diagnostic.guard)}.`,
+    "",
+    "Required:",
+    `  add ${diagnostic.missingReevaluation} in this change`,
+    `  or leave ${diagnostic.changedFile} unchanged.`,
+    formatCausedBy(diagnostic.causedBy)
+  ].join("\n");
+}
+
 function formatInvalidReevaluationDiagnostic(
   diagnostic: Extract<SemanticDiagnostic, { kind: "invalid_reevaluation" }>
 ): string {
@@ -486,6 +505,30 @@ function formatMissingCitedPathDiagnostic(
     "Update the citation to the file's new path, or remove it if the file is gone.",
     formatCausedBy(diagnostic.causedBy)
   ].join("\n");
+}
+
+function formatRuleLooseningDiagnostic(
+  diagnostic: Extract<SemanticDiagnostic, { kind: "rule_loosening" }>
+): string {
+  const silenced = diagnostic.silenced.map((item) => indent(formatDiagnostic(item))).join("\n\n");
+  return [
+    "error: rule loosening",
+    "",
+    `This change ${diagnostic.edit}.`,
+    "With the base version restored, the check fails:",
+    "",
+    silenced,
+    "",
+    "Restore the base version, or have the people who own this architecture approve the loosening.",
+    formatCausedBy(diagnostic.causedBy)
+  ].join("\n");
+}
+
+function indent(text: string): string {
+  return text
+    .split("\n")
+    .map((line) => (line.length === 0 ? line : `  ${line}`))
+    .join("\n");
 }
 
 function formatStaleAttestationDiagnostic(

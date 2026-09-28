@@ -1,0 +1,34 @@
+module sharing
+
+trait DraftOnly<T: Resource> {
+  forbid final Export<T>
+}
+
+resource PrivateDraft
+
+resource PublishedStory
+
+component Sharing {
+  grants Export<PrivateDraft>
+  grants Export<PublishedStory>
+  fn shareDraft
+    source ts("src/share/button.ts#shareDraft")
+    effects complete {
+      Export<PrivateDraft>
+        evidence ts("src/share/button.ts#shareDraft")
+    }
+  fn sharePublished
+    source ts("src/share/public.ts#sharePublished")
+    effects complete {
+      Export<PublishedStory>
+        evidence ts("src/share/public.ts#sharePublished")
+    }
+}
+
+implementation SharingImpl {
+  paths {
+    "src/share/**/*.ts"
+  }
+  conforms_to Sharing
+  on_change require shape_update
+}

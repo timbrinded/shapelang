@@ -21,14 +21,29 @@ resource GuardsModuleCheckGuardedChangesAstAnchor : GeneratedAstAnchor {
   fingerprint ast.semantic_subtree_v1("sha256:ef3dc1f14925ba7e1dec8352fcfd78574ba86aaa4cb8e1e2b57b69d377ebbef6")
 }
 
+resource GuardsModuleCheckGuardedSourcesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/rules/guards.ts#checkGuardedSources")
+  fingerprint ast.semantic_subtree_v1("sha256:e41570b0f2a1e4563a94d52b75b3a060321327b0e8acc9c7f1ff6b47fb9cffb5")
+}
+
 resource GuardsModuleClassifyProtectedPropertyAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/checker/rules/guards.ts#classifyProtectedProperty")
   fingerprint ast.semantic_subtree_v1("sha256:55fd0843fa63507d0a07f88f77870f13a1e94d314251bf96db6daab50545b671")
 }
 
+resource GuardsModuleContextKeyAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/rules/guards.ts#contextKey")
+  fingerprint ast.semantic_subtree_v1("sha256:0535f9e5bef6bd4d6d8ff428c74f3565c2baa4ffb8e23ecb57bcce622cd430bd")
+}
+
 resource GuardsModuleGuardViolationDiagnosticAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/checker/rules/guards.ts#guardViolationDiagnostic")
   fingerprint ast.semantic_subtree_v1("sha256:428fb0654b6f02ccc97c446aa6854bf150826d2911449cbae83c3475029f2746")
+}
+
+resource GuardsModuleReevaluationKeyAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/rules/guards.ts#reevaluationKey")
+  fingerprint ast.semantic_subtree_v1("sha256:49fc57f316ffb840c9511fd37c333557aeeecf2a83b84c446755b14c2b49c2a3")
 }
 
 component GuardsModule : GeneratedCandidate {
@@ -41,11 +56,20 @@ component GuardsModule : GeneratedCandidate {
   fn checkGuardedChanges
     source ts("packages/shp-checker/src/checker/rules/guards.ts#checkGuardedChanges")
     effects unknown
+  fn checkGuardedSources
+    source ts("packages/shp-checker/src/checker/rules/guards.ts#checkGuardedSources")
+    effects unknown
   fn classifyProtectedProperty
     source ts("packages/shp-checker/src/checker/rules/guards.ts#classifyProtectedProperty")
     effects unknown
+  fn contextKey
+    source ts("packages/shp-checker/src/checker/rules/guards.ts#contextKey")
+    effects unknown
   fn guardViolationDiagnostic
     source ts("packages/shp-checker/src/checker/rules/guards.ts#guardViolationDiagnostic")
+    effects unknown
+  fn reevaluationKey
+    source ts("packages/shp-checker/src/checker/rules/guards.ts#reevaluationKey")
     effects unknown
 }
 
@@ -73,6 +97,14 @@ relation GuardsModuleCheckGuardedChangesGeneratedFromGuardsModuleCheckGuardedCha
   summary "fn GuardsModule.checkGuardedChanges generated from typescript function_declaration at packages/shp-checker/src/checker/rules/guards.ts#checkGuardedChanges."
 }
 
+relation GuardsModuleCheckGuardedSourcesGeneratedFromGuardsModuleCheckGuardedSourcesAstAnchor {
+  kind generated_from
+  connects GuardsModule -> GuardsModuleCheckGuardedSourcesAstAnchor
+  roles { GuardsModule as generated, GuardsModuleCheckGuardedSourcesAstAnchor as syntax }
+  expects GuardsModuleCheckGuardedSourcesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e41570b0f2a1e4563a94d52b75b3a060321327b0e8acc9c7f1ff6b47fb9cffb5")
+  summary "fn GuardsModule.checkGuardedSources generated from typescript function_declaration at packages/shp-checker/src/checker/rules/guards.ts#checkGuardedSources."
+}
+
 relation GuardsModuleClassifyProtectedPropertyGeneratedFromGuardsModuleClassifyProtectedPropertyAstAnchor {
   kind generated_from
   connects GuardsModule -> GuardsModuleClassifyProtectedPropertyAstAnchor
@@ -81,12 +113,28 @@ relation GuardsModuleClassifyProtectedPropertyGeneratedFromGuardsModuleClassifyP
   summary "fn GuardsModule.classifyProtectedProperty generated from typescript function_declaration at packages/shp-checker/src/checker/rules/guards.ts#classifyProtectedProperty."
 }
 
+relation GuardsModuleContextKeyGeneratedFromGuardsModuleContextKeyAstAnchor {
+  kind generated_from
+  connects GuardsModule -> GuardsModuleContextKeyAstAnchor
+  roles { GuardsModule as generated, GuardsModuleContextKeyAstAnchor as syntax }
+  expects GuardsModuleContextKeyAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0535f9e5bef6bd4d6d8ff428c74f3565c2baa4ffb8e23ecb57bcce622cd430bd")
+  summary "fn GuardsModule.contextKey generated from typescript function_declaration at packages/shp-checker/src/checker/rules/guards.ts#contextKey."
+}
+
 relation GuardsModuleGuardViolationDiagnosticGeneratedFromGuardsModuleGuardViolationDiagnosticAstAnchor {
   kind generated_from
   connects GuardsModule -> GuardsModuleGuardViolationDiagnosticAstAnchor
   roles { GuardsModule as generated, GuardsModuleGuardViolationDiagnosticAstAnchor as syntax }
   expects GuardsModuleGuardViolationDiagnosticAstAnchor fingerprint ast.semantic_subtree_v1("sha256:428fb0654b6f02ccc97c446aa6854bf150826d2911449cbae83c3475029f2746")
   summary "fn GuardsModule.guardViolationDiagnostic generated from typescript function_declaration at packages/shp-checker/src/checker/rules/guards.ts#guardViolationDiagnostic."
+}
+
+relation GuardsModuleReevaluationKeyGeneratedFromGuardsModuleReevaluationKeyAstAnchor {
+  kind generated_from
+  connects GuardsModule -> GuardsModuleReevaluationKeyAstAnchor
+  roles { GuardsModule as generated, GuardsModuleReevaluationKeyAstAnchor as syntax }
+  expects GuardsModuleReevaluationKeyAstAnchor fingerprint ast.semantic_subtree_v1("sha256:49fc57f316ffb840c9511fd37c333557aeeecf2a83b84c446755b14c2b49c2a3")
+  summary "fn GuardsModule.reevaluationKey generated from typescript function_declaration at packages/shp-checker/src/checker/rules/guards.ts#reevaluationKey."
 }
 
 implementation GuardsModuleImpl {

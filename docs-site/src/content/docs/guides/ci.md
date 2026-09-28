@@ -39,7 +39,7 @@ jobs:
           BASE_REF: ${{ github.base_ref }}
         run: |
           if [ -n "$BASE_REF" ]; then
-            shp check --changed-files changed.txt --base-ref "origin/$BASE_REF"
+            shp check --changed-files changed.txt --base-ref "origin/$BASE_REF" --check-loosening
           else
             shp check --changed-files changed.txt
           fi
@@ -50,9 +50,41 @@ jobs:
 - `shp fmt --check` fails on any `.shape` file that is not in canonical format. The formatter drops `//` and `/* */` comments, so a file that contains comments never passes; see the [CLI Reference](/shapelang/reference/cli/).
 - `shp check --changed-files changed.txt` is the only gate needed; it replaces separate `shp check` and `shp coverage` steps.
 - `--base-ref "origin/$BASE_REF"` compares attestations against the model at the merge base, so only attestations written for this pull request count and carried-over ones are reported as stale. It reads that history from git, which `fetch-depth: 0` provides. The flag ships in the first release after v0.9.0; with an older pinned `shp`, leave it out.
+- `--check-loosening` fails when an edit to the rules is what lets the pull request pass, for example removing `AppendOnly` from a resource so that a new purge job is allowed, or narrowing an implementation's `paths` so that an edited file is no longer governed. It needs `--base-ref`, and both flags ship in the first release after v0.9.0; with v0.9.0 pinned, leave them out. See [Approve a rule loosening](#approve-a-rule-loosening) for the case where someone asked for the change.
 - Design-memory freshness is off by default. To enforce it, add `--as-of YYYY-MM-DD`, which gives the same result on every run, rather than `--strict-freshness`, which uses today's date (UTC). Both flags are in the [CLI Reference](/shapelang/reference/cli/).
 
 A push has no base ref, so this job writes an empty list on push. The push run then checks conformance only, because coverage and bindings check nothing with an empty list; pull requests carry the change-set gate. To check pushes as well, diff `${{ github.event.before }}` against `HEAD`. That SHA is all zeros when the push creates the branch, and the diff then fails.
+
+## Approve a rule loosening
+
+`--check-loosening` fails whether or not anyone asked for the loosening, because the checker cannot tell. Sometimes a person did ask: legal requires old revisions to be deleted, so `AppendOnly` has to go. That is a design decision, and the approval belongs somewhere the author of the change cannot write, not in the Shape model. A rationale added in the same pull request does not count, since a coding agent can write one as easily as the rule edit.
+
+One way is a label that a maintainer adds after reading the change. The check then runs without `--check-loosening`, and every other error still fails the job:
+
+```yaml
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, labeled, unlabeled]
+
+# ...
+
+      - name: Shape check
+        env:
+          BASE_REF: ${{ github.base_ref }}
+          LOOSENING_APPROVED: ${{ contains(github.event.pull_request.labels.*.name, 'shape-loosening-approved') }}
+        run: |
+          if [ -z "$BASE_REF" ]; then
+            shp check --changed-files changed.txt
+          elif [ "$LOOSENING_APPROVED" = "true" ]; then
+            shp check --changed-files changed.txt --base-ref "origin/$BASE_REF"
+          else
+            shp check --changed-files changed.txt --base-ref "origin/$BASE_REF" --check-loosening
+          fi
+```
+
+- The `labeled` and `unlabeled` types rerun the job when the label is added or removed.
+- Anyone with triage access can add a label, and so can a coding agent that acts with a maintainer's token. Treat the label like an approving review, and tell agents in your instructions never to add it.
+- The label approves every loosening in the pull request. Remove it and ask for a new approval if later pushes change the rules again.
 
 ## Pin the version
 

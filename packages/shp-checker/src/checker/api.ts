@@ -13,14 +13,17 @@ import type {
   Fact,
   Model,
   NormalizedCheckOptions,
-  SemanticDiagnostic
+  SemanticDiagnostic,
+  ShapeDiagnostic
 } from "./model.ts";
 import { compareCodepointStrings } from "../shape-strings.ts";
 import { compareShapeDiagnostics } from "./diagnostics.ts";
-import { lowerShapeModules } from "./lowerer.ts";
+import { lowerShapeModules, normalizeModuleInputs } from "./lowerer.ts";
+import { checkRuleLoosening } from "./loosening.ts";
 import { requireIsoCalendarDate } from "./iso-date.ts";
 import { checkBindings, runSemanticChecks } from "./rules.ts";
 import { attestationKey } from "./rules/coverage.ts";
+import { contextKey, reevaluationKey } from "./rules/guards.ts";
 import { normalizeRepoPath } from "./globs.ts";
 import { removeAttestations, type AttestationRemoval } from "./attestation-text.ts";
 import { moduleOriginForShapeFile } from "./symbols.ts";
@@ -30,8 +33,41 @@ export function checkShapeModules(
   options: CheckOptions = {}
 ): CheckResult {
   const normalizedOptions = normalizeCheckOptions(options);
-  const model = lowerShapeModules(modules);
-  return checkLoweredShapeModel(model, normalizedOptions);
+  const inputs = normalizeModuleInputs(modules);
+  const result = checkLoweredShapeModel(lowerShapeModules(inputs), normalizedOptions);
+  if (!options.checkLoosening) {
+    return result;
+  }
+  if (options.baseModules === undefined) {
+    throw new Error("CheckOptions.checkLoosening requires CheckOptions.baseModules");
+  }
+  const composedOptions = { ...normalizedOptions, includeFacts: false };
+  const loosening = checkRuleLoosening({
+    head: inputs,
+    base: normalizeModuleInputs(options.baseModules),
+    headDiagnostics: result.diagnostics.filter(isSemantic),
+    check: (composed) =>
+      checkLoweredShapeModel(lowerShapeModules(composed), composedOptions).diagnostics.filter(
+        isSemantic
+      ),
+    repoRoot: normalizedOptions.repoRoot,
+    repositoryFiles: normalizedOptions.repositoryFiles
+  });
+  if (loosening.length === 0) {
+    return result;
+  }
+  const diagnostics = [...result.diagnostics, ...loosening];
+  const ok = diagnostics.every(isWarning);
+  return {
+    ...result,
+    ok,
+    exitCode: ok ? 0 : 1,
+    diagnostics: diagnostics.toSorted(compareShapeDiagnostics)
+  };
+}
+
+function isSemantic(diagnostic: ShapeDiagnostic): diagnostic is SemanticDiagnostic {
+  return diagnostic.kind !== "parse";
 }
 
 /**
@@ -69,7 +105,7 @@ export function checkLoweredShapeModel(
   };
 }
 
-function isWarning(diagnostic: SemanticDiagnostic): boolean {
+function isWarning(diagnostic: ShapeDiagnostic): boolean {
   return (
     diagnostic.kind === "stale_attestation" ||
     (diagnostic.kind === "unknown_effects" && diagnostic.severity === "warning")
@@ -88,10 +124,20 @@ function compareFacts(left: Fact, right: Fact): number {
 export function summarizeBaseModel(
   baseModules: ShapeModule[] | CheckModuleInput[],
   repoRoot: string
-): { attestationKeys: string[]; attestationFreeTexts: [string, string][] } {
+): {
+  attestationKeys: string[];
+  attestationFreeTexts: [string, string][];
+  reevaluationKeys: string[];
+  contextKeys: string[];
+} {
   const model = lowerShapeModules(baseModules);
   return {
     attestationKeys: model.attestations.map(attestationKey).toSorted(),
+    reevaluationKeys: [...model.reevaluations.values()].map(reevaluationKey).toSorted(),
+    contextKeys: [
+      ...[...model.rationales.keys()].map((name) => contextKey("rationale", name)),
+      ...[...model.memories.keys()].map((name) => contextKey("memory", name))
+    ].toSorted(),
     attestationFreeTexts: [...model.attestationFreeTexts]
       .map(([filePath, text]): [string, string] => [normalizeRepoPath(filePath, repoRoot), text])
       .toSorted(([left], [right]) => compareCodepointStrings(left, right))
@@ -125,7 +171,9 @@ export function normalizeCheckOptions(options: CheckOptions): NormalizedCheckOpt
         ? undefined
         : {
             attestationKeys: new Set(base.attestationKeys),
-            attestationFreeTexts: new Map(base.attestationFreeTexts)
+            attestationFreeTexts: new Map(base.attestationFreeTexts),
+            reevaluationKeys: new Set(base.reevaluationKeys),
+            contextKeys: new Set(base.contextKeys)
           },
     freshnessDate:
       options.freshnessDate === undefined

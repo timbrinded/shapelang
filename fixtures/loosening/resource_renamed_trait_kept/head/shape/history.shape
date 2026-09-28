@@ -1,0 +1,15 @@
+module history
+
+resource Ledger : AppendOnly
+
+component RevisionLog {
+  owns Ledger
+  grants Append<Ledger>
+  grants Read<Ledger>
+  fn appendRevision
+    source ts("src/history/log.ts#appendRevision")
+    effects complete {
+      Append<Ledger>
+        evidence ts("src/history/log.ts#appendRevision")
+    }
+}

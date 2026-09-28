@@ -1,0 +1,54 @@
+name: Rule loosening
+
+# Fails a pull request whose edits to Shape rules, traits, design memory, or
+# governed paths are what let its own change pass, unless the pull request body
+# gives each loosening a reason in a visible "Rule loosening" section. It runs
+# apart from the main CI workflow so that editing the body reruns only this check.
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, edited]
+
+concurrency:
+  group: rule-loosening-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  loosening:
+    name: Rule Loosening
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+
+      - name: Cache Bun downloads
+        uses: actions/cache@v4
+        with:
+          path: ~/.bun/install/cache
+          key: bun-${{ runner.os }}-${{ hashFiles('bun.lock') }}
+          restore-keys: |
+            bun-${{ runner.os }}-
+
+      - name: Install
+        run: bun install --frozen-lockfile
+
+      - name: Changed files
+        run: bun run changed-files
+        env:
+          GITHUB_BASE_REF: ${{ github.base_ref }}
+          GITHUB_SHA: ${{ github.sha }}
+
+      - name: Check rule loosening
+        run: |
+          # Other errors fail the Shape job; this job answers only for loosening.
+          bun run shape:loosening > loosening.log 2>&1 || true
+          cat loosening.log
+          node .github/scripts/check-loosening-rationale.mjs loosening.log

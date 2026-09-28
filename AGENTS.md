@@ -108,6 +108,17 @@ The TypeScript project is strict (`strict`, `noUncheckedIndexedAccess`,
   reevaluations before inventing new patterns.
 - Shape-affecting files with docs bindings require a docs update or current
   `attest docs_not_needed`.
+- Never loosen a rule, trait, memory guard, or governed path to make a check
+  pass. When `bun run shape:loosening` reports `error: rule loosening`, restore
+  the rule and change the code, or stop and ask the maintainer. Loosen a rule
+  only when the maintainer asked for it, and then give every loosening a reason
+  in a `## Rule loosening` section of the pull request body: one line per
+  loosened declaration that names it, says why, and links where the maintainer
+  asked. Never put that section in an HTML comment or a collapsed `<details>`
+  block; the Rule Loosening job ignores hidden text.
+- Editing the `source` file of a guarded function needs a new `reevaluation`
+  written for this change; an old one does not count. Write it only after
+  checking the change against the memory's summary.
 - For guarded targets, inspect obligations with `bun shp obligations` and memory
   with `bun shp memory`; then add a real `reevaluation` or preserve the protected
   shape.
@@ -194,5 +205,6 @@ bun run skills:check
 bun test
 bun run typecheck
 bun run shape:ci
+bun run shape:loosening
 bun run docs:check
 ```

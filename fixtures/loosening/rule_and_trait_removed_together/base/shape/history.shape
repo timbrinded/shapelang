@@ -1,0 +1,20 @@
+module history
+
+trait Protected<T: Resource> {
+}
+
+resource Revision : Protected
+
+component RevisionLog {
+  owns Revision
+  grants Read<Revision>
+  fn listRevisions
+    effects complete {
+      Read<Revision>
+    }
+}
+
+rule protected_revisions_are_not_deleted {
+  forbid final HardDelete<T>
+  when T has Protected
+}

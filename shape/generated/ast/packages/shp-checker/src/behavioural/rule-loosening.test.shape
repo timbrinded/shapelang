@@ -1,0 +1,81 @@
+module shape.generated.ast.packages.shp_checker.src.behavioural.rule_loosening_test
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource RuleLooseningTestModuleCheckFixtureAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/behavioural/rule-loosening.test.ts#checkFixture")
+  fingerprint ast.semantic_subtree_v1("sha256:9aef838255e8dc8682842983e60b2ae357f2cf56cd4b9ba072d7f1f55c82221c")
+}
+
+resource RuleLooseningTestModuleLinesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/behavioural/rule-loosening.test.ts#lines")
+  fingerprint ast.semantic_subtree_v1("sha256:5ad0dad77d1f046ddff0b2d81a1aec4ccae5a87fbe79354b59f5949c53725665")
+}
+
+resource RuleLooseningTestModuleLooseningsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/behavioural/rule-loosening.test.ts#loosenings")
+  fingerprint ast.semantic_subtree_v1("sha256:68386088056c6441cfcc0b5ff31888a2ce7c8d8ae16cb99cd1686e0cd6627a2d")
+}
+
+resource RuleLooseningTestModuleSideAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/behavioural/rule-loosening.test.ts#side")
+  fingerprint ast.semantic_subtree_v1("sha256:af1db287815768516ceafca9584893f938d45113c3d0562d50e6e782838f1646")
+}
+
+component RuleLooseningTestModule : GeneratedCandidate {
+  fn checkFixture
+    source ts("packages/shp-checker/src/behavioural/rule-loosening.test.ts#checkFixture")
+    effects unknown
+  fn lines
+    source ts("packages/shp-checker/src/behavioural/rule-loosening.test.ts#lines")
+    effects unknown
+  fn loosenings
+    source ts("packages/shp-checker/src/behavioural/rule-loosening.test.ts#loosenings")
+    effects unknown
+  fn side
+    source ts("packages/shp-checker/src/behavioural/rule-loosening.test.ts#side")
+    effects unknown
+}
+
+relation RuleLooseningTestModuleCheckFixtureGeneratedFromRuleLooseningTestModuleCheckFixtureAstAnchor {
+  kind generated_from
+  connects RuleLooseningTestModule -> RuleLooseningTestModuleCheckFixtureAstAnchor
+  roles { RuleLooseningTestModule as generated, RuleLooseningTestModuleCheckFixtureAstAnchor as syntax }
+  expects RuleLooseningTestModuleCheckFixtureAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9aef838255e8dc8682842983e60b2ae357f2cf56cd4b9ba072d7f1f55c82221c")
+  summary "fn RuleLooseningTestModule.checkFixture generated from typescript function_declaration at packages/shp-checker/src/behavioural/rule-loosening.test.ts#checkFixture."
+}
+
+relation RuleLooseningTestModuleLinesGeneratedFromRuleLooseningTestModuleLinesAstAnchor {
+  kind generated_from
+  connects RuleLooseningTestModule -> RuleLooseningTestModuleLinesAstAnchor
+  roles { RuleLooseningTestModule as generated, RuleLooseningTestModuleLinesAstAnchor as syntax }
+  expects RuleLooseningTestModuleLinesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5ad0dad77d1f046ddff0b2d81a1aec4ccae5a87fbe79354b59f5949c53725665")
+  summary "fn RuleLooseningTestModule.lines generated from typescript function_declaration at packages/shp-checker/src/behavioural/rule-loosening.test.ts#lines."
+}
+
+relation RuleLooseningTestModuleLooseningsGeneratedFromRuleLooseningTestModuleLooseningsAstAnchor {
+  kind generated_from
+  connects RuleLooseningTestModule -> RuleLooseningTestModuleLooseningsAstAnchor
+  roles { RuleLooseningTestModule as generated, RuleLooseningTestModuleLooseningsAstAnchor as syntax }
+  expects RuleLooseningTestModuleLooseningsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:68386088056c6441cfcc0b5ff31888a2ce7c8d8ae16cb99cd1686e0cd6627a2d")
+  summary "fn RuleLooseningTestModule.loosenings generated from typescript function_declaration at packages/shp-checker/src/behavioural/rule-loosening.test.ts#loosenings."
+}
+
+relation RuleLooseningTestModuleSideGeneratedFromRuleLooseningTestModuleSideAstAnchor {
+  kind generated_from
+  connects RuleLooseningTestModule -> RuleLooseningTestModuleSideAstAnchor
+  roles { RuleLooseningTestModule as generated, RuleLooseningTestModuleSideAstAnchor as syntax }
+  expects RuleLooseningTestModuleSideAstAnchor fingerprint ast.semantic_subtree_v1("sha256:af1db287815768516ceafca9584893f938d45113c3d0562d50e6e782838f1646")
+  summary "fn RuleLooseningTestModule.side generated from typescript function_declaration at packages/shp-checker/src/behavioural/rule-loosening.test.ts#side."
+}
+
+implementation RuleLooseningTestModuleImpl {
+  paths {
+    "packages/shp-checker/src/behavioural/rule-loosening.test.ts"
+  }
+  conforms_to RuleLooseningTestModule
+}

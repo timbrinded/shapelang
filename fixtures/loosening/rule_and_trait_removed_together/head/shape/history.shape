@@ -1,0 +1,22 @@
+module history
+
+trait Protected<T: Resource> {
+}
+
+resource Revision
+
+component RevisionLog {
+  owns Revision
+  grants HardDelete<Revision>
+  grants Read<Revision>
+  fn listRevisions
+    effects complete {
+      Read<Revision>
+    }
+  fn purgeOldRevisions
+    source ts("src/history/purge.ts#purgeOldRevisions")
+    effects complete {
+      HardDelete<Revision>
+        evidence ts("src/history/purge.ts#purgeOldRevisions")
+    }
+}

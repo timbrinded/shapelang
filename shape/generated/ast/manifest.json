@@ -3,6 +3,13 @@
   "generatedAt": "deterministic",
   "entries": [
     {
+      "module": "shape.generated.ast.github.scripts.check_loosening_rationale",
+      "path": "shape/generated/ast/.github/scripts/check-loosening-rationale.shape",
+      "sources": [
+        ".github/scripts/check-loosening-rationale.mjs"
+      ]
+    },
+    {
       "module": "shape.generated.ast.github.scripts.run_claude_skill",
       "path": "shape/generated/ast/.github/scripts/run-claude-skill.shape",
       "sources": [
@@ -507,6 +514,13 @@
       ]
     },
     {
+      "module": "shape.generated.ast.packages.shp_checker.src.behavioural.guarded_sources_test",
+      "path": "shape/generated/ast/packages/shp-checker/src/behavioural/guarded-sources.test.shape",
+      "sources": [
+        "packages/shp-checker/src/behavioural/guarded-sources.test.ts"
+      ]
+    },
+    {
       "module": "shape.generated.ast.packages.shp_checker.src.behavioural.harness",
       "path": "shape/generated/ast/packages/shp-checker/src/behavioural/harness.shape",
       "sources": [
@@ -518,6 +532,13 @@
       "path": "shape/generated/ast/packages/shp-checker/src/behavioural/hypercycle-witness.test.shape",
       "sources": [
         "packages/shp-checker/src/behavioural/hypercycle-witness.test.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.behavioural.rule_loosening_test",
+      "path": "shape/generated/ast/packages/shp-checker/src/behavioural/rule-loosening.test.shape",
+      "sources": [
+        "packages/shp-checker/src/behavioural/rule-loosening.test.ts"
       ]
     },
     {
@@ -707,6 +728,13 @@
       "path": "shape/generated/ast/packages/shp-checker/src/checker/iso-date.shape",
       "sources": [
         "packages/shp-checker/src/checker/iso-date.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.checker.loosening",
+      "path": "shape/generated/ast/packages/shp-checker/src/checker/loosening.shape",
+      "sources": [
+        "packages/shp-checker/src/checker/loosening.ts"
       ]
     },
     {
