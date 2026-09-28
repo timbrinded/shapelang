@@ -28,7 +28,7 @@ resource AnalyzerModuleCollectLineStartsAstAnchor : GeneratedAstAnchor {
 
 resource AnalyzerModuleCollectRawSqlMatchesAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/analyzer.ts#collectRawSqlMatches")
-  fingerprint ast.semantic_subtree_v1("sha256:200134f4e6ff133abfcdcdb074db64448788f7c1b70a523cdf55c8ecae5f5939")
+  fingerprint ast.semantic_subtree_v1("sha256:616fbde0a82a852e0bf8ffdb1cf638b5a41604e0b4259c14d0256b71589a3303")
 }
 
 resource AnalyzerModuleCollectSqlFileMatchesAstAnchor : GeneratedAstAnchor {
@@ -44,6 +44,11 @@ resource AnalyzerModuleCollectTypeScriptMatchesAstAnchor : GeneratedAstAnchor {
 resource AnalyzerModuleCompareAnalyzerMatchesAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/analyzer.ts#compareAnalyzerMatches")
   fingerprint ast.semantic_subtree_v1("sha256:4a8d060f69662daf610d242458e4dfa5bad41d99840938ba481a0a5a378d1f0f")
+}
+
+resource AnalyzerModuleDecodeJavaScriptStringContentAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer.ts#decodeJavaScriptStringContent")
+  fingerprint ast.semantic_subtree_v1("sha256:c45a8b6c068d014a6f2c782881cbf6d3c26ccc7b18062e6be4a587bb5cca4a1f")
 }
 
 resource AnalyzerModuleFindDirectRawSqlLiteralAstAnchor : GeneratedAstAnchor {
@@ -81,6 +86,11 @@ resource AnalyzerModuleReadDirectLibraryTargetAstAnchor : GeneratedAstAnchor {
   fingerprint ast.semantic_subtree_v1("sha256:1bf7e3c7d0938310422d643e656a40c100fca247507ccd0729be6e12a31d29fa")
 }
 
+resource AnalyzerModuleReadJavaScriptEscapeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/analyzer.ts#readJavaScriptEscape")
+  fingerprint ast.semantic_subtree_v1("sha256:bfcc58d405a6902d41b91c16b661a3a9f0f35bf59954282e330f150f67639f23")
+}
+
 resource AnalyzerModuleTargetIdentityKeyAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/analyzer.ts#targetIdentityKey")
   fingerprint ast.semantic_subtree_v1("sha256:23589f91891b9e5d757abe39a82a57f08d44477e07ae8009f0eebe9cae53011f")
@@ -111,6 +121,9 @@ component AnalyzerModule : GeneratedCandidate {
   fn compareAnalyzerMatches
     source ts("packages/shp-checker/src/analyzer.ts#compareAnalyzerMatches")
     effects unknown
+  fn decodeJavaScriptStringContent
+    source ts("packages/shp-checker/src/analyzer.ts#decodeJavaScriptStringContent")
+    effects unknown
   fn findDirectRawSqlLiteral
     source ts("packages/shp-checker/src/analyzer.ts#findDirectRawSqlLiteral")
     effects unknown
@@ -131,6 +144,9 @@ component AnalyzerModule : GeneratedCandidate {
     effects unknown
   fn readDirectLibraryTarget
     source ts("packages/shp-checker/src/analyzer.ts#readDirectLibraryTarget")
+    effects unknown
+  fn readJavaScriptEscape
+    source ts("packages/shp-checker/src/analyzer.ts#readJavaScriptEscape")
     effects unknown
   fn targetIdentityKey
     source ts("packages/shp-checker/src/analyzer.ts#targetIdentityKey")
@@ -173,7 +189,7 @@ relation AnalyzerModuleCollectRawSqlMatchesGeneratedFromAnalyzerModuleCollectRaw
   kind generated_from
   connects AnalyzerModule -> AnalyzerModuleCollectRawSqlMatchesAstAnchor
   roles { AnalyzerModule as generated, AnalyzerModuleCollectRawSqlMatchesAstAnchor as syntax }
-  expects AnalyzerModuleCollectRawSqlMatchesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:200134f4e6ff133abfcdcdb074db64448788f7c1b70a523cdf55c8ecae5f5939")
+  expects AnalyzerModuleCollectRawSqlMatchesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:616fbde0a82a852e0bf8ffdb1cf638b5a41604e0b4259c14d0256b71589a3303")
   summary "fn AnalyzerModule.collectRawSqlMatches generated from typescript function_declaration at packages/shp-checker/src/analyzer.ts#collectRawSqlMatches."
 }
 
@@ -199,6 +215,14 @@ relation AnalyzerModuleCompareAnalyzerMatchesGeneratedFromAnalyzerModuleCompareA
   roles { AnalyzerModule as generated, AnalyzerModuleCompareAnalyzerMatchesAstAnchor as syntax }
   expects AnalyzerModuleCompareAnalyzerMatchesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4a8d060f69662daf610d242458e4dfa5bad41d99840938ba481a0a5a378d1f0f")
   summary "fn AnalyzerModule.compareAnalyzerMatches generated from typescript function_declaration at packages/shp-checker/src/analyzer.ts#compareAnalyzerMatches."
+}
+
+relation AnalyzerModuleDecodeJavaScriptStringContentGeneratedFromAnalyzerModuleDecodeJavaScriptStringContentAstAnchor {
+  kind generated_from
+  connects AnalyzerModule -> AnalyzerModuleDecodeJavaScriptStringContentAstAnchor
+  roles { AnalyzerModule as generated, AnalyzerModuleDecodeJavaScriptStringContentAstAnchor as syntax }
+  expects AnalyzerModuleDecodeJavaScriptStringContentAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c45a8b6c068d014a6f2c782881cbf6d3c26ccc7b18062e6be4a587bb5cca4a1f")
+  summary "fn AnalyzerModule.decodeJavaScriptStringContent generated from typescript function_declaration at packages/shp-checker/src/analyzer.ts#decodeJavaScriptStringContent."
 }
 
 relation AnalyzerModuleFindDirectRawSqlLiteralGeneratedFromAnalyzerModuleFindDirectRawSqlLiteralAstAnchor {
@@ -255,6 +279,14 @@ relation AnalyzerModuleReadDirectLibraryTargetGeneratedFromAnalyzerModuleReadDir
   roles { AnalyzerModule as generated, AnalyzerModuleReadDirectLibraryTargetAstAnchor as syntax }
   expects AnalyzerModuleReadDirectLibraryTargetAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1bf7e3c7d0938310422d643e656a40c100fca247507ccd0729be6e12a31d29fa")
   summary "fn AnalyzerModule.readDirectLibraryTarget generated from typescript function_declaration at packages/shp-checker/src/analyzer.ts#readDirectLibraryTarget."
+}
+
+relation AnalyzerModuleReadJavaScriptEscapeGeneratedFromAnalyzerModuleReadJavaScriptEscapeAstAnchor {
+  kind generated_from
+  connects AnalyzerModule -> AnalyzerModuleReadJavaScriptEscapeAstAnchor
+  roles { AnalyzerModule as generated, AnalyzerModuleReadJavaScriptEscapeAstAnchor as syntax }
+  expects AnalyzerModuleReadJavaScriptEscapeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:bfcc58d405a6902d41b91c16b661a3a9f0f35bf59954282e330f150f67639f23")
+  summary "fn AnalyzerModule.readJavaScriptEscape generated from typescript function_declaration at packages/shp-checker/src/analyzer.ts#readJavaScriptEscape."
 }
 
 relation AnalyzerModuleTargetIdentityKeyGeneratedFromAnalyzerModuleTargetIdentityKeyAstAnchor {

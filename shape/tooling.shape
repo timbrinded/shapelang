@@ -66,7 +66,7 @@ component ShapeAnalyzer {
   grants Read<NormalizedShapeReference>
   fn analyzeSourceText
     source ts("packages/shp-checker/src/analyzer.ts#analyzeSourceText")
-    description "Lexically emits advisory destructive-operation hints with quote-aware direct static targets, one hint per supported SQL list target, and conservative balanced TypeScript function anchors while excluding comments, inert literals including SQL dollar-quoted text, malformed scopes, and dynamic target guesses."
+    description "Lexically emits advisory destructive-operation hints with quote-aware direct static targets, one hint per supported SQL list target, and conservative balanced TypeScript function anchors while excluding comments, inert literals including SQL dollar-quoted text, malformed scopes, and dynamic target guesses; raw-SQL string literals are scanned as their decoded runtime value."
     effects complete {
       Append<AnalyzerHint>
         evidence ts("packages/shp-checker/src/analyzer.ts")
@@ -1218,5 +1218,5 @@ reevaluation UpdateRuntimeAssetsRechecked {
 
 attest docs_not_needed {
   source shape("shape/tooling.shape")
-  reason "Records that the analyzer ignores SQL dollar-quoted text, which guides/analyzer.md documents; no CLI command, flag, or workflow changes."
+  reason "Records that the analyzer ignores SQL dollar-quoted text and decodes raw-SQL string literals, which guides/analyzer.md documents; no CLI command, flag, or workflow changes."
 }

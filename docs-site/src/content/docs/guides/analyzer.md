@@ -178,7 +178,8 @@ These details decide whether a hint appears and whether it carries a target:
 - In TypeScript, matches count only outside comments and string literals. SQL text inside a string is scanned only when the literal is the first argument of a raw-SQL sink and is followed by `)` or `,`. Any sink also accepts a `sql`-tagged template there, and `$executeRaw` and `$executeRawUnsafe` also accept a tagged template directly.
 - A raw-SQL literal must be closed and static. A template containing `${...}` produces no hint at all.
 - In SQL, the destructive keyword must be the first token of its statement; statements end at `;`. Whitespace, newlines, and comments (`--`, `#`, `/* */`) may separate the keywords, so a multiline `DELETE ... FROM` is found. Quoted text is ignored, and quoted identifiers keep their quoting for target comparison.
-- SQL dollar-quoted text (`$$...$$` or `$tag$...$tag$`) is ignored. A tag follows PostgreSQL's identifier rules without `$`, and the closing tag must match exactly, including case. A dollar quote is not recognised directly after a letter, digit, underscore, `$`, or non-ASCII character; in a TypeScript string literal, a whitespace or control escape such as `\n` or `\t` counts as a boundary.
+- SQL dollar-quoted text (`$$...$$` or `$tag$...$tag$`) is ignored. A tag follows PostgreSQL's identifier rules without `$`, and the closing tag must match exactly, including case. A dollar quote is not recognised directly after a letter, digit, underscore, `$`, or non-ASCII character.
+- A raw-SQL string or template literal is scanned as the value the database receives: escapes such as `\n` and `\x24` are decoded and line continuations are removed. Hints still report the line in the TypeScript source.
 
 ## Limits
 
@@ -187,7 +188,6 @@ The analyzer is a lexical scanner. The cases below produce no hint, a wrong hint
 - Effects other than the three above. The analyzer never reports reads, appends, updates, or exports.
 - Destructive SQL that does not start its statement, such as a CTE-prefixed `WITH ... DELETE`.
 - Statements inside dollar-quoted text, including the bodies of `CREATE FUNCTION` and `DO` blocks, which PostgreSQL runs as PL/pgSQL.
-- Escape sequences in TypeScript string literals, which are not decoded: in `"SELECT 1;\nDELETE FROM drafts;"` the `\n` hides the `DELETE`. A template literal with real line breaks is scanned correctly.
 - SQL held in a variable, built at runtime, or interpolated into a template.
 - Raw SQL sent through other calls, such as `$queryRawUnsafe` or Kysely's `` sql`...`.execute(db) `` form, and receivers under other names, including project aliases and dynamic call targets.
 - Control flow, which is never evaluated. A delete in a branch that never runs is still reported.
