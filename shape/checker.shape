@@ -100,7 +100,7 @@ component ShapeChecker {
     }
   fn checkRuleLoosening : RefactorSensitive
     source ts("packages/shp-checker/src/checker/loosening.ts#checkRuleLoosening")
-    description "Restores each rule-layer declaration or trait list that the head removed or edited to its base version, one at a time and then together, re-checks each copy with the head's options, and reports rule_loosening for each edit whose revert adds rule-violation diagnostics; head claims are never replaced."
+    description "Restores each rule-layer declaration or trait list that the head removed or edited to its base version, one at a time and then together, re-checks each copy with the head's options, and reports rule_loosening for each edit whose revert adds rule-violation diagnostics; a resource renamed under the same owning component keeps its base traits for the comparison, and head claims are never replaced."
     effects complete {
       Append<SemanticDiagnostics>
         evidence ts("packages/shp-checker/src/checker/loosening.ts#checkRuleLoosening")

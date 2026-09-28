@@ -96,6 +96,13 @@ describe("rule loosening", () => {
       expected: "purgeOldRevisions"
     },
     {
+      fixture: "resource_renamed_trait_dropped",
+      edit: "removes trait AppendOnly from resource Revision (renamed Ledger)",
+      silenced: "final_forbidden_effect",
+      subject: (d) => (d.kind === "final_forbidden_effect" ? d.target : undefined),
+      expected: "history::Ledger"
+    },
+    {
       fixture: "rule_removed",
       edit: "removes rule protected_revisions_are_not_deleted",
       silenced: "final_forbidden_effect",
@@ -225,11 +232,15 @@ describe("rule loosening", () => {
 
   test(
     lockedIntended(
-      "a rule moved to another file of its module, or renamed along with the component it names, is not reported",
+      "a rule moved to another file of its module, a rule renamed along with the component it names, and a resource renamed with its traits are not reported",
       CLI_DOCS
     ),
     async () => {
-      for (const fixture of ["rule_moved_between_files", "renamed_component"]) {
+      for (const fixture of [
+        "rule_moved_between_files",
+        "renamed_component",
+        "resource_renamed_trait_kept"
+      ]) {
         const { loosening } = await checkFixture(fixture);
         expect(loosening.exitCode).toBe(0);
         requireNoDiagnostic(loosening, "rule_loosening");
