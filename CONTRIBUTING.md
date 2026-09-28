@@ -319,8 +319,9 @@ neither is set. The script then runs twice:
 
 The Contract Guard job also writes `shape-task.md` before the review, with
 `.github/scripts/fetch-human-task.mjs`: the bodies of the issues the pull
-request closes and the pull request comments, kept only when their author has
-write access and the text has no Claude Code attribution footer. The pull
+request closes and the pull request comments, kept only when the collaborator
+permission API gives their author write or admin access and the text has no
+Claude Code attribution footer. The pull
 request description is left out. Only that task text can make a loosening
 `supported`; a rationale or attestation added in the same pull request counts as
 `generic` support at most.

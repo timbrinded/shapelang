@@ -8,32 +8,37 @@ trait GeneratedCandidate {
 
 resource FetchHumanTaskModuleClosingIssuesAstAnchor : GeneratedAstAnchor {
   storage ast.anchor(".github/scripts/fetch-human-task.mjs#closingIssues")
-  fingerprint ast.semantic_subtree_v1("sha256:894ed96adb2a779ca8f6b2539e11041bc92f00f0ea31edaa892eea70a193b8b4")
+  fingerprint ast.semantic_subtree_v1("sha256:9ac9b2f19f2d192daae69f7d75a7787fbce9e764f47b747b2a448475bc4d3466")
 }
 
 resource FetchHumanTaskModuleGithubAstAnchor : GeneratedAstAnchor {
   storage ast.anchor(".github/scripts/fetch-human-task.mjs#github")
-  fingerprint ast.semantic_subtree_v1("sha256:30e51df96d9199b7cc52dce89507ba5560286e10f720193d377f52704588f52d")
+  fingerprint ast.semantic_subtree_v1("sha256:7d6173789b6aa74247c0918de1bf7988106ffa6b8568170930cb5a0f5977548f")
 }
 
 resource FetchHumanTaskModuleHumanTaskMarkdownAstAnchor : GeneratedAstAnchor {
   storage ast.anchor(".github/scripts/fetch-human-task.mjs#humanTaskMarkdown")
-  fingerprint ast.semantic_subtree_v1("sha256:dafa5f8df7307e2c2c44cf6debdbacb8d13f1d890d66fbb2181c96a7d359623a")
+  fingerprint ast.semantic_subtree_v1("sha256:9f0e68e091d7589c48f3bcc7539d2e0ead9698c81616c4f26ff745ee70c1d73a")
 }
 
 resource FetchHumanTaskModuleIsHumanWrittenAstAnchor : GeneratedAstAnchor {
   storage ast.anchor(".github/scripts/fetch-human-task.mjs#isHumanWritten")
-  fingerprint ast.semantic_subtree_v1("sha256:5e472ea933c83d2ef08ceb086599b403f424c39859417122461344bc8f929b4e")
+  fingerprint ast.semantic_subtree_v1("sha256:9cb47dd275edb9e657e9127d5ecea9a6b2259b2aaec402fce327ed15b9928585")
 }
 
 resource FetchHumanTaskModuleMainAstAnchor : GeneratedAstAnchor {
   storage ast.anchor(".github/scripts/fetch-human-task.mjs#main")
-  fingerprint ast.semantic_subtree_v1("sha256:aa5c4f8c464c9d7e87cebcc966df168e3f52fef872d8b1f0b7a09ab490ad28d3")
+  fingerprint ast.semantic_subtree_v1("sha256:9e297cc9d1e5056cb26bca9003905587568f6e6f36fa468ab65c7c12770dca2a")
 }
 
 resource FetchHumanTaskModulePullRequestCommentsAstAnchor : GeneratedAstAnchor {
   storage ast.anchor(".github/scripts/fetch-human-task.mjs#pullRequestComments")
-  fingerprint ast.semantic_subtree_v1("sha256:65843319ffbcf4f423d7d3f1f40645a377c98eaa2ba16700a407962c7cf5322c")
+  fingerprint ast.semantic_subtree_v1("sha256:c7cb741d2ce000ee2061cf8bb06e80d2b971322d0ded489b0eadaf51bf4dd3cf")
+}
+
+resource FetchHumanTaskModuleWithPermissionsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor(".github/scripts/fetch-human-task.mjs#withPermissions")
+  fingerprint ast.semantic_subtree_v1("sha256:6d6169cda9aa4be7d919fc558b96c2356a4a969808bd55b610cb3887bdb78aec")
 }
 
 component FetchHumanTaskModule : GeneratedCandidate {
@@ -55,13 +60,16 @@ component FetchHumanTaskModule : GeneratedCandidate {
   fn pullRequestComments
     source js(".github/scripts/fetch-human-task.mjs#pullRequestComments")
     effects unknown
+  fn withPermissions
+    source js(".github/scripts/fetch-human-task.mjs#withPermissions")
+    effects unknown
 }
 
 relation FetchHumanTaskModuleClosingIssuesGeneratedFromFetchHumanTaskModuleClosingIssuesAstAnchor {
   kind generated_from
   connects FetchHumanTaskModule -> FetchHumanTaskModuleClosingIssuesAstAnchor
   roles { FetchHumanTaskModule as generated, FetchHumanTaskModuleClosingIssuesAstAnchor as syntax }
-  expects FetchHumanTaskModuleClosingIssuesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:894ed96adb2a779ca8f6b2539e11041bc92f00f0ea31edaa892eea70a193b8b4")
+  expects FetchHumanTaskModuleClosingIssuesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9ac9b2f19f2d192daae69f7d75a7787fbce9e764f47b747b2a448475bc4d3466")
   summary "fn FetchHumanTaskModule.closingIssues generated from javascript function_declaration at .github/scripts/fetch-human-task.mjs#closingIssues."
 }
 
@@ -69,7 +77,7 @@ relation FetchHumanTaskModuleGithubGeneratedFromFetchHumanTaskModuleGithubAstAnc
   kind generated_from
   connects FetchHumanTaskModule -> FetchHumanTaskModuleGithubAstAnchor
   roles { FetchHumanTaskModule as generated, FetchHumanTaskModuleGithubAstAnchor as syntax }
-  expects FetchHumanTaskModuleGithubAstAnchor fingerprint ast.semantic_subtree_v1("sha256:30e51df96d9199b7cc52dce89507ba5560286e10f720193d377f52704588f52d")
+  expects FetchHumanTaskModuleGithubAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7d6173789b6aa74247c0918de1bf7988106ffa6b8568170930cb5a0f5977548f")
   summary "fn FetchHumanTaskModule.github generated from javascript function_declaration at .github/scripts/fetch-human-task.mjs#github."
 }
 
@@ -77,7 +85,7 @@ relation FetchHumanTaskModuleHumanTaskMarkdownGeneratedFromFetchHumanTaskModuleH
   kind generated_from
   connects FetchHumanTaskModule -> FetchHumanTaskModuleHumanTaskMarkdownAstAnchor
   roles { FetchHumanTaskModule as generated, FetchHumanTaskModuleHumanTaskMarkdownAstAnchor as syntax }
-  expects FetchHumanTaskModuleHumanTaskMarkdownAstAnchor fingerprint ast.semantic_subtree_v1("sha256:dafa5f8df7307e2c2c44cf6debdbacb8d13f1d890d66fbb2181c96a7d359623a")
+  expects FetchHumanTaskModuleHumanTaskMarkdownAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9f0e68e091d7589c48f3bcc7539d2e0ead9698c81616c4f26ff745ee70c1d73a")
   summary "fn FetchHumanTaskModule.humanTaskMarkdown generated from javascript function_declaration at .github/scripts/fetch-human-task.mjs#humanTaskMarkdown."
 }
 
@@ -85,7 +93,7 @@ relation FetchHumanTaskModuleIsHumanWrittenGeneratedFromFetchHumanTaskModuleIsHu
   kind generated_from
   connects FetchHumanTaskModule -> FetchHumanTaskModuleIsHumanWrittenAstAnchor
   roles { FetchHumanTaskModule as generated, FetchHumanTaskModuleIsHumanWrittenAstAnchor as syntax }
-  expects FetchHumanTaskModuleIsHumanWrittenAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5e472ea933c83d2ef08ceb086599b403f424c39859417122461344bc8f929b4e")
+  expects FetchHumanTaskModuleIsHumanWrittenAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9cb47dd275edb9e657e9127d5ecea9a6b2259b2aaec402fce327ed15b9928585")
   summary "fn FetchHumanTaskModule.isHumanWritten generated from javascript function_declaration at .github/scripts/fetch-human-task.mjs#isHumanWritten."
 }
 
@@ -93,7 +101,7 @@ relation FetchHumanTaskModuleMainGeneratedFromFetchHumanTaskModuleMainAstAnchor 
   kind generated_from
   connects FetchHumanTaskModule -> FetchHumanTaskModuleMainAstAnchor
   roles { FetchHumanTaskModule as generated, FetchHumanTaskModuleMainAstAnchor as syntax }
-  expects FetchHumanTaskModuleMainAstAnchor fingerprint ast.semantic_subtree_v1("sha256:aa5c4f8c464c9d7e87cebcc966df168e3f52fef872d8b1f0b7a09ab490ad28d3")
+  expects FetchHumanTaskModuleMainAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9e297cc9d1e5056cb26bca9003905587568f6e6f36fa468ab65c7c12770dca2a")
   summary "fn FetchHumanTaskModule.main generated from javascript function_declaration at .github/scripts/fetch-human-task.mjs#main."
 }
 
@@ -101,8 +109,16 @@ relation FetchHumanTaskModulePullRequestCommentsGeneratedFromFetchHumanTaskModul
   kind generated_from
   connects FetchHumanTaskModule -> FetchHumanTaskModulePullRequestCommentsAstAnchor
   roles { FetchHumanTaskModule as generated, FetchHumanTaskModulePullRequestCommentsAstAnchor as syntax }
-  expects FetchHumanTaskModulePullRequestCommentsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:65843319ffbcf4f423d7d3f1f40645a377c98eaa2ba16700a407962c7cf5322c")
+  expects FetchHumanTaskModulePullRequestCommentsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c7cb741d2ce000ee2061cf8bb06e80d2b971322d0ded489b0eadaf51bf4dd3cf")
   summary "fn FetchHumanTaskModule.pullRequestComments generated from javascript function_declaration at .github/scripts/fetch-human-task.mjs#pullRequestComments."
+}
+
+relation FetchHumanTaskModuleWithPermissionsGeneratedFromFetchHumanTaskModuleWithPermissionsAstAnchor {
+  kind generated_from
+  connects FetchHumanTaskModule -> FetchHumanTaskModuleWithPermissionsAstAnchor
+  roles { FetchHumanTaskModule as generated, FetchHumanTaskModuleWithPermissionsAstAnchor as syntax }
+  expects FetchHumanTaskModuleWithPermissionsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6d6169cda9aa4be7d919fc558b96c2356a4a969808bd55b610cb3887bdb78aec")
+  summary "fn FetchHumanTaskModule.withPermissions generated from javascript function_declaration at .github/scripts/fetch-human-task.mjs#withPermissions."
 }
 
 implementation FetchHumanTaskModuleImpl {

@@ -230,7 +230,7 @@ component CiPipeline {
     }
   fn fetchHumanTask
     source mjs(".github/scripts/fetch-human-task.mjs#humanTaskMarkdown")
-    description "Writes shape-task.md for the contract guard from the issues the pull request closes and its comments, keeping only text whose author has write access, is not a bot, and carries no Claude Code attribution footer; the pull request description is never read."
+    description "Writes shape-task.md for the contract guard from the issues the pull request closes and its comments, keeping only text whose author the collaborator permission API gives write or admin access, is not a bot, and carries no Claude Code attribution footer; the pull request description is never read."
     effects complete {
       Update<HumanWrittenTask>
         evidence mjs(".github/scripts/fetch-human-task.mjs#main")
