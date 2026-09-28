@@ -236,7 +236,9 @@ function consumeQuoted(
       return { end: cursor, contentEnd: cursor, closed: false };
     }
     if (char === "\\") {
-      cursor = Math.min(source.length, cursor + 2);
+      // A backslash before CRLF continues the line over both characters.
+      const step = source[cursor + 1] === "\r" && source[cursor + 2] === "\n" ? 3 : 2;
+      cursor = Math.min(source.length, cursor + step);
       continue;
     }
     if (char === quote) {
