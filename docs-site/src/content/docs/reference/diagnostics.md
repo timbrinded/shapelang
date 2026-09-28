@@ -3,7 +3,7 @@ title: Diagnostics
 description: Every diagnostic that shp prints, with its kind code, the command that emits it, real output, cause, and fix.
 ---
 
-This page lists every diagnostic the checker emits: one parse diagnostic and 26 semantic ones. Each entry is headed by the exact first line that `shp` prints, so pasting that line into page search finds its entry. Where the title varies, the heading uses a placeholder such as `<kind>`, and the entry lists every printed value.
+This page lists every diagnostic the checker emits: one parse diagnostic and 30 semantic ones. Each entry is headed by the exact first line that `shp` prints, so pasting that line into page search finds its entry. Where the title varies, the heading uses a placeholder such as `<kind>`, and the entry lists every printed value.
 
 In the index, `check` stands for every command that runs the semantic checks: `shp check`, `shp coverage`, and the language server (`shp lsp`). `shp obligations` also lists five of them without failing: `missing required context`, `missing required description`, `guarded shape changed`, `invalid reevaluation`, and `stale design memory`.
 
@@ -31,6 +31,7 @@ In the index, `check` stands for every command that runs the semantic checks: `s
 | [`error: bound docs change missing`](#error-bound-docs-change-missing) | `missing_bound_docs_change` | `shp check --changed-files` | [Change sets](#change-sets) |
 | [`warning: stale attestation`](#warning-stale-attestation) | `stale_attestation` | `check` with `--base-ref` or `--base-model` | [Change sets](#change-sets) |
 | [`error: missing cited path`](#error-missing-cited-path) | `missing_cited_path` | `shp check --check-cited-paths` | [Change sets](#change-sets) |
+| [`error: rule loosening`](#error-rule-loosening) | `rule_loosening` | `shp check --check-loosening` | [Change sets](#change-sets) |
 | [`error: missing required context`](#error-missing-required-context) | `missing_required_context` | `check` | [Design memory](#design-memory) |
 | [`error: missing required description`](#error-missing-required-description) | `missing_required_description` | `check` | [Design memory](#design-memory) |
 | [`error: invalid context target`](#error-invalid-context-target) | `invalid_context_target` | `check` | [Design memory](#design-memory) |
@@ -576,6 +577,39 @@ caused by:
 **Cause.** A `source`, `evidence`, or `observed` path cited by a function (generated or authored), candidate effect, rationale, memory, or reevaluation is not a file in the repository, usually because the file was renamed or deleted without updating the model. `caused by` names every declaration that cites the path. Attestation sources are not checked, since attesting a deletion names a removed file.
 
 **Fix.** Point the citation at the file's new path, or remove the citation if the file is gone.
+
+### `error: rule loosening`
+
+Kind `rule_loosening` · emitted by `shp check --check-loosening` with `--base-ref` or `--base-model`
+
+```text
+error: rule loosening
+
+This change removes trait AppendOnly from resource Revision.
+With the base version restored, the check fails:
+
+  error: forbidden effect
+
+  RevisionLog.purgeOldRevisions emits HardDelete<Revision>.
+  Revision has trait AppendOnly.
+  AppendOnly forbids final HardDelete<Revision>.
+  evidence: ts("src/history/purge.ts#purgeOldRevisions")
+
+  caused by:
+    - shape/history.shape: effect RevisionLog.purgeOldRevisions emits HardDelete<Revision>
+    - shape/history.shape: resource Revision : AppendOnly
+    - standard prelude: trait AppendOnly forbids final HardDelete<T>
+
+Restore the base version, or have the people who own this architecture approve the loosening.
+
+caused by:
+  - base shape/history.shape: resource Revision : AppendOnly
+  - shape/history.shape: resource Revision
+```
+
+**Cause.** The change removed or edited a declaration in the rule layer (a `trait`, `rule`, `memory`, `rationale`, `implementation`, `binding`, `role`, or `policy`), or removed a trait from a resource, component, or function. With that edit put back to its base version, the check reports the quoted error, so the edit is what lets the model pass. Here a nightly job deletes old revisions, and the change removed `AppendOnly` from `Revision` so that the final forbid no longer applies. The first line says what the change did: `removes`, `edits`, or `removes trait`. The quoted error is the one the edit silenced, and `caused by` names the declaration at the base and in the change. [Rule loosening](/shapelang/reference/cli/#rule-loosening) describes how edits are found and which errors count.
+
+**Fix.** If nobody asked for the behaviour the rule forbids, restore the base version and change the code instead. If a person did ask for it, the loosening is a design decision: have the people who own the architecture approve it, then run the check without `--check-loosening` for that change. How they approve is a CI policy; [Run Shape in CI](/shapelang/guides/ci/) shows one.
 
 ## Design memory
 

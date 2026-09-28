@@ -37,6 +37,8 @@ Shared queries that more than one layer needs, such as `deriveFinalForbidsForRes
 | 17 | `checkCitedPaths` | `rules/paths.ts` | `missing_cited_path` | `repositoryFiles`, `repoRoot`; runs only when `repositoryFiles` is set |
 | after the registry | `checkBindings` | `rules/coverage.ts` | `missing_bound_docs_change` | `changedFiles`, `repoRoot`, `baseModules`; skipped when `enforceBindings` is `false` |
 
+With `checkLoosening` and `baseModules` set (`shp check --check-loosening`), `checkShapeModules` then calls `checkRuleLoosening` in `loosening.ts`, outside the registry, which reports `rule_loosening`. It compares the rule-layer declarations and trait lists of the authored modules with the base by module, declaration kind, and name, ignoring layout and comments. For each one the change removed or edited, it builds a copy of the input modules with that declaration or trait list put back, lowers and checks the copy with the same options, and keeps the rule-violation diagnostics absent from the first result. It never mutates the parsed modules; the copies share their unchanged declarations. [Rule loosening](/shapelang/reference/cli/#rule-loosening) lists which diagnostic kinds count.
+
 Lowering, not the registry, reports `duplicate_declaration`, `duplicate_fingerprint`, `ambiguous_name`, `invalid_candidate_effect`, `invalid_require_context`, and `invalid_implementation`, as well as some `invalid_relation` and `unknown_name` diagnostics.
 
 Diagnostic order does not depend on the `SEMANTIC_CHECKS` order: `checkLoweredShapeModel` sorts every result by kind, then by rendered text. The printed form of each kind, and how to fix it, is in [Diagnostics](/shapelang/reference/diagnostics/).

@@ -1,0 +1,5 @@
+module feed
+
+rule no_feed_to_drafts {
+  forbid path Feed -> PrivateDraft over calls or provides
+}

@@ -521,6 +521,13 @@
       ]
     },
     {
+      "module": "shape.generated.ast.packages.shp_checker.src.behavioural.rule_loosening_test",
+      "path": "shape/generated/ast/packages/shp-checker/src/behavioural/rule-loosening.test.shape",
+      "sources": [
+        "packages/shp-checker/src/behavioural/rule-loosening.test.ts"
+      ]
+    },
+    {
       "module": "shape.generated.ast.packages.shp_checker.src.behavioural.safety_invariants_test",
       "path": "shape/generated/ast/packages/shp-checker/src/behavioural/safety-invariants.test.shape",
       "sources": [
@@ -707,6 +714,13 @@
       "path": "shape/generated/ast/packages/shp-checker/src/checker/iso-date.shape",
       "sources": [
         "packages/shp-checker/src/checker/iso-date.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.packages.shp_checker.src.checker.loosening",
+      "path": "shape/generated/ast/packages/shp-checker/src/checker/loosening.shape",
+      "sources": [
+        "packages/shp-checker/src/checker/loosening.ts"
       ]
     },
     {

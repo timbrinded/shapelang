@@ -90,6 +90,8 @@ function formatDiagnostic(diagnostic: ShapeDiagnostic): string {
       return formatStaleAttestationDiagnostic(diagnostic);
     case "missing_cited_path":
       return formatMissingCitedPathDiagnostic(diagnostic);
+    case "rule_loosening":
+      return formatRuleLooseningDiagnostic(diagnostic);
   }
 }
 
@@ -486,6 +488,30 @@ function formatMissingCitedPathDiagnostic(
     "Update the citation to the file's new path, or remove it if the file is gone.",
     formatCausedBy(diagnostic.causedBy)
   ].join("\n");
+}
+
+function formatRuleLooseningDiagnostic(
+  diagnostic: Extract<SemanticDiagnostic, { kind: "rule_loosening" }>
+): string {
+  const silenced = diagnostic.silenced.map((item) => indent(formatDiagnostic(item))).join("\n\n");
+  return [
+    "error: rule loosening",
+    "",
+    `This change ${diagnostic.edit}.`,
+    "With the base version restored, the check fails:",
+    "",
+    silenced,
+    "",
+    "Restore the base version, or have the people who own this architecture approve the loosening.",
+    formatCausedBy(diagnostic.causedBy)
+  ].join("\n");
+}
+
+function indent(text: string): string {
+  return text
+    .split("\n")
+    .map((line) => (line.length === 0 ? line : `  ${line}`))
+    .join("\n");
 }
 
 function formatStaleAttestationDiagnostic(

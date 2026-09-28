@@ -47,7 +47,7 @@ Successful output goes to stdout and failing output to stderr, with these except
 ## shp check
 
 ```text
-shp check [--allow-unknown-effects] [--changed-files changed.txt] [--base-ref REF | --base-model DIR] [--check-cited-paths] [--as-of YYYY-MM-DD | --strict-freshness] [files...]
+shp check [--allow-unknown-effects] [--changed-files changed.txt] [--base-ref REF | --base-model DIR] [--check-loosening] [--check-cited-paths] [--as-of YYYY-MM-DD | --strict-freshness] [files...]
 ```
 
 Parses the Shape model and runs every semantic check. With `--changed-files`, it also runs coverage and bindings, which makes it the single gate recommended for CI.
@@ -58,6 +58,7 @@ Parses the Shape model and runs every semantic check. With `--changed-files`, it
 | `--changed-files changed.txt` | Path to a newline-delimited changed-file list. Enables coverage and bindings. |
 | `--base-ref REF` | Compare attestations against the Shape model at the merge base of `REF` and `HEAD`, read from git. See [Base model](#base-model). |
 | `--base-model DIR` | Compare attestations against a copy of the base model in `DIR`, kept at repository paths. Cannot be combined with `--base-ref`. |
+| `--check-loosening` | With `--base-ref` or `--base-model`, fail when an edit to a rule, trait, design memory, or governed path is what lets the model pass. See [Rule loosening](#rule-loosening). |
 | `--check-cited-paths` | Fail when a cited `source` or `evidence` path is not a file in the git repository. See [Cited paths](#cited-paths). |
 | `--as-of YYYY-MM-DD` | Freshness reference date (ISO `YYYY-MM-DD`); enforces stale design memory deterministically. See [Freshness](#freshness). |
 | `--strict-freshness` | Shorthand for `--as-of` today (UTC); fails when `review_by` is before today. |
@@ -71,6 +72,7 @@ A passing run prints `Shape check passed.` to stdout. A failing run prints its d
 shp check
 shp check --changed-files changed.txt
 shp check --changed-files changed.txt --base-ref origin/main
+shp check --changed-files changed.txt --base-ref origin/main --check-loosening
 shp check --as-of 2026-05-30 shape/editor.shape
 ```
 
@@ -79,6 +81,18 @@ shp check --as-of 2026-05-30 shape/editor.shape
 With `--base-ref REF`, the CLI reads the base model from git at the merge base of `REF` and `HEAD`: every `.shape` file under `shape/` except generated AST, plus the files named on the command line. It reads all of `shape/` even for a narrower check, so an attestation moved out of a file the check does not name is still found. An attestation satisfies coverage or bindings only when its kind, path, and reason are new relative to the base. Each attestation carried over unchanged is reported as `warning: stale attestation`, which does not fail the check. `--base-model DIR` reads the same paths from `DIR`, a copy of the base kept at repository paths, for example `git archive <base> shape | tar -x -C DIR`. A `DIR` with no `.shape` files at those paths exits `2`.
 
 Without either flag, an attestation counts whenever its `.shape` file is in the changed-file list, so an unrelated edit to that file revives every attestation in it. Pass a base in CI. If a base `.shape` file cannot be parsed, for example after a grammar change, the CLI prints a warning and falls back to that declaring-file rule. An unresolvable `REF` exits `2`.
+
+### Rule loosening
+
+A change can make a failing check pass by editing the rules instead of the code: removing `AppendOnly` from a resource so a purge job is allowed, deleting a `forbid path` rule, taking the guard off a memory, or narrowing an implementation's `paths` so an edited file is no longer governed. `--check-loosening` reports each such edit. It needs `--base-ref` or `--base-model`; without one, the command exits `2`.
+
+The check splits the model in two. The rule layer says what is allowed: `trait`, `rule`, `memory`, `rationale`, `implementation`, `binding`, `role`, and `policy` declarations, and the trait lists on resources, components, and functions. Everything else describes the code and is taken as the change wrote it: resources, components, grants, functions, effects, relations, `change` and `reevaluation` declarations, and attestations.
+
+For each rule-layer declaration that the change removed or edited, and each trait it removed from a list, the checker puts back the base version on its own and checks again. An error that appears only with the base version restored was silenced by that edit, and the check fails with `error: rule loosening`, which quotes the silenced error. When errors come back only with several edits restored together, one more diagnostic names them all. Added declarations and traits are never restored, since they can only tighten the model, and an edit that silences nothing, such as deleting a rule that the change does not depend on, is not reported. Each restored edit costs one more check, and a change with no rule-layer edits costs nothing.
+
+Only errors that mean a rule rejected the model count. Name and validation errors, such as `unknown <kind>` when a restored rule names a component the change renamed, are not reported, so a rule edited alongside a rename is not compared. `stale design memory` is not counted either, because moving `review_by` forward after a review is how it is cleared. With `--check-cited-paths`, a coverage or binding error about a changed file that is no longer in the repository is not counted, so narrowing `paths` to follow a moved directory passes.
+
+The check cannot tell whether someone asked for a loosening; review decides that. It does not look inside `change` declarations, so a `change` that modifies or removes a rule is not restored, and it cannot see a model that describes the code wrongly. If a base `.shape` file cannot be parsed, the CLI prints a warning and skips the check.
 
 ### Cited paths
 

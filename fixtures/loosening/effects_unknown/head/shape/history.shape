@@ -1,0 +1,18 @@
+module history
+
+resource Revision : AppendOnly
+
+component RevisionLog {
+  owns Revision
+  grants Append<Revision>
+  grants Read<Revision>
+  fn appendRevision
+    source ts("src/history/log.ts#appendRevision")
+    effects complete {
+      Append<Revision>
+        evidence ts("src/history/log.ts#appendRevision")
+    }
+  fn purgeOldRevisions
+    source ts("src/history/purge.ts#purgeOldRevisions")
+    effects unknown
+}

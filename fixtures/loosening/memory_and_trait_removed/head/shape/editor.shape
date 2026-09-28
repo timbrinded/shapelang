@@ -1,0 +1,19 @@
+module editor
+
+resource Autosave
+
+component Editor {
+  owns Autosave
+  grants Read<Autosave>
+  fn mergeAutosaves
+    effects complete {
+      Read<Autosave>
+    }
+}
+
+change RefactorMerge {
+  modify fn Editor.mergeAutosaves
+    effects complete {
+      Read<Autosave>
+    }
+}

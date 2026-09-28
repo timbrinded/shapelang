@@ -1,6 +1,12 @@
-import { checkShapeFiles, formatDiagnostics } from "@shape/shp-checker";
+import {
+  checkShapeFiles,
+  checkShapeModules,
+  formatDiagnostics,
+  parseShapeModule,
+  type CheckModuleInput
+} from "@shape/shp-checker";
 import { describe, expect, test } from "bun:test";
-import { resolve } from "node:path";
+import { join, resolve } from "node:path";
 
 // CLI contract matrix and CLI/library semantic parity (behavioural area #60).
 //
@@ -263,4 +269,69 @@ describe("shp CLI / library semantic parity (area #60)", () => {
       expect(forbidden.stderr).toContain("error: forbidden effect");
     }
   );
+});
+
+describe("shp check --check-loosening / library parity over fixtures/loosening", () => {
+  // Invariant: `shp check --base-model ../base --check-loosening` run in a
+  // fixture's head directory reports exactly what checkShapeModules computes for
+  // the same head and base files at the same repository paths. The library is
+  // the oracle; the CLI adds only the base loading and the flag.
+  const fixturesDir = resolve(repoRoot, "fixtures/loosening");
+  const fixtures = [...new Bun.Glob("*/head/shape/*.shape").scanSync({ cwd: fixturesDir })]
+    .map((path) => path.split("/")[0] ?? "")
+    .filter((name, index, names) => names.indexOf(name) === index)
+    .sort();
+
+  async function modulesAt(directory: string): Promise<CheckModuleInput[]> {
+    const paths = [...new Bun.Glob("shape/*.shape").scanSync({ cwd: directory })].sort();
+    return Promise.all(
+      paths.map(async (filePath) => {
+        const parsed = parseShapeModule(await Bun.file(join(directory, filePath)).text(), filePath);
+        if (!parsed.ok) {
+          throw new Error(`fixture ${directory}/${filePath} does not parse`);
+        }
+        return { module: parsed.module, filePath, origin: "authored" as const };
+      })
+    );
+  }
+
+  test("the fixture set holds cases that are reported and cases that are not", () => {
+    expect(fixtures).toContain("trait_removed_from_resource");
+    expect(fixtures).toContain("unused_rule_removed");
+  });
+
+  for (const fixture of fixtures) {
+    test(
+      `[locked-intended] ${fixture}: CLI output equals the library's ` +
+        "— anchor: docs-site/src/content/docs/reference/cli.md Rule loosening",
+      async () => {
+        const directory = join(fixturesDir, fixture);
+        const changedList = Bun.file(join(directory, "changed.txt"));
+        const changedFiles = (await changedList.exists())
+          ? (await changedList.text()).split("\n").filter((line) => line.trim().length > 0)
+          : undefined;
+        const cli = await runCli(
+          [
+            "check",
+            "--base-model",
+            "../base",
+            "--check-loosening",
+            ...(changedFiles ? ["--changed-files", "../changed.txt"] : [])
+          ],
+          cliPath,
+          join(directory, "head")
+        );
+        const library = checkShapeModules(await modulesAt(join(directory, "head")), {
+          baseModules: await modulesAt(join(directory, "base")),
+          changedFiles,
+          checkLoosening: true,
+          enforceBindings: true,
+          repoRoot: join(directory, "head")
+        });
+
+        expect(cli.exitCode).toBe(library.exitCode);
+        expect(cli.exitCode === 0 ? cli.stdout : cli.stderr).toBe(formatDiagnostics(library));
+      }
+    );
+  }
 });

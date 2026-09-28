@@ -16,6 +16,11 @@ resource CliContractTestModuleHelpCommandsAstAnchor : GeneratedAstAnchor {
   fingerprint ast.semantic_subtree_v1("sha256:3d0654842dc7c49b51e00297aacaad4bd441ddf1b8efddebc5fb6a938bab0bb4")
 }
 
+resource CliContractTestModuleModulesAtAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/cli-contract.test.ts#modulesAt")
+  fingerprint ast.semantic_subtree_v1("sha256:ebddc810a24e92dcb5440182b69d647168b5f441942e16be05dc15de8f36387f")
+}
+
 resource CliContractTestModuleRunCliAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-cli/src/cli-contract.test.ts#runCli")
   fingerprint ast.semantic_subtree_v1("sha256:1f9b816c81546aa1a2c8377c7416ea959dc478759e845fc9fa6b3144af863de0")
@@ -27,6 +32,9 @@ component CliContractTestModule : GeneratedCandidate {
     effects unknown
   fn helpCommands
     source ts("packages/shp-cli/src/cli-contract.test.ts#helpCommands")
+    effects unknown
+  fn modulesAt
+    source ts("packages/shp-cli/src/cli-contract.test.ts#modulesAt")
     effects unknown
   fn runCli
     source ts("packages/shp-cli/src/cli-contract.test.ts#runCli")
@@ -47,6 +55,14 @@ relation CliContractTestModuleHelpCommandsGeneratedFromCliContractTestModuleHelp
   roles { CliContractTestModule as generated, CliContractTestModuleHelpCommandsAstAnchor as syntax }
   expects CliContractTestModuleHelpCommandsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3d0654842dc7c49b51e00297aacaad4bd441ddf1b8efddebc5fb6a938bab0bb4")
   summary "fn CliContractTestModule.helpCommands generated from typescript function_declaration at packages/shp-cli/src/cli-contract.test.ts#helpCommands."
+}
+
+relation CliContractTestModuleModulesAtGeneratedFromCliContractTestModuleModulesAtAstAnchor {
+  kind generated_from
+  connects CliContractTestModule -> CliContractTestModuleModulesAtAstAnchor
+  roles { CliContractTestModule as generated, CliContractTestModuleModulesAtAstAnchor as syntax }
+  expects CliContractTestModuleModulesAtAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ebddc810a24e92dcb5440182b69d647168b5f441942e16be05dc15de8f36387f")
+  summary "fn CliContractTestModule.modulesAt generated from typescript function_declaration at packages/shp-cli/src/cli-contract.test.ts#modulesAt."
 }
 
 relation CliContractTestModuleRunCliGeneratedFromCliContractTestModuleRunCliAstAnchor {

@@ -371,6 +371,95 @@ relation ReaderProvidesRecord {
     }
   });
 
+  test("fails when a rule edit is what lets the change pass, with the base read from git", async () => {
+    const repo = await mkdtemp(join(tmpdir(), "shp-loosening-test-"));
+    const fixture = (path: string) =>
+      readFile(resolve(repoRoot, "fixtures/loosening/trait_removed_from_resource", path), "utf8");
+    try {
+      await mkdir(join(repo, "shape"));
+      await writeFile(join(repo, "shape/history.shape"), await fixture("base/shape/history.shape"));
+      git(repo, ["init", "-q"]);
+      git(repo, ["add", "."]);
+      git(repo, [
+        "-c",
+        "user.name=shp",
+        "-c",
+        "user.email=shp@example.com",
+        "commit",
+        "-qm",
+        "base"
+      ]);
+      await writeFile(join(repo, "shape/history.shape"), await fixture("head/shape/history.shape"));
+
+      const loosened = await runCli(
+        ["check", "--base-ref", "HEAD", "--check-loosening"],
+        cliPath,
+        repo
+      );
+      expect(loosened.exitCode).toBe(1);
+      expect(loosened.stderr).toContain(
+        "error: rule loosening\n\nThis change removes trait AppendOnly from resource Revision."
+      );
+      expect(loosened.stderr).toContain("  error: forbidden effect");
+
+      const withoutFlag = await runCli(["check", "--base-ref", "HEAD"], cliPath, repo);
+      expect(withoutFlag.exitCode).toBe(0);
+
+      const withoutBase = await runCli(["check", "--check-loosening"], cliPath, repo);
+      expect(withoutBase.exitCode).toBe(2);
+      expect(withoutBase.stderr).toContain("--check-loosening needs --base-ref or --base-model");
+    } finally {
+      await rm(repo, { recursive: true, force: true });
+    }
+  });
+
+  test("does not count narrowed paths that follow a moved directory when cited paths are checked", async () => {
+    const repo = await mkdtemp(join(tmpdir(), "shp-loosening-move-test-"));
+    const fixture = (path: string) =>
+      readFile(resolve(repoRoot, "fixtures/loosening/governed_directory_moved", path), "utf8");
+    try {
+      await mkdir(join(repo, "shape"));
+      await mkdir(join(repo, "src/share"), { recursive: true });
+      await writeFile(join(repo, "shape/sharing.shape"), await fixture("base/shape/sharing.shape"));
+      await writeFile(join(repo, "src/share/public.ts"), "export function sharePublished() {}\n");
+      git(repo, ["init", "-q"]);
+      git(repo, ["add", "."]);
+      git(repo, [
+        "-c",
+        "user.name=shp",
+        "-c",
+        "user.email=shp@example.com",
+        "commit",
+        "-qm",
+        "base"
+      ]);
+      await mkdir(join(repo, "src/sharing"));
+      git(repo, ["mv", "src/share/public.ts", "src/sharing/public.ts"]);
+      await writeFile(join(repo, "shape/sharing.shape"), await fixture("head/shape/sharing.shape"));
+      await writeFile(join(repo, "changed.txt"), await fixture("changed.txt"));
+      const args = [
+        "check",
+        "--changed-files",
+        "changed.txt",
+        "--base-ref",
+        "HEAD",
+        "--check-loosening"
+      ];
+
+      const moved = await runCli([...args, "--check-cited-paths"], cliPath, repo);
+      expect(moved.stderr).toBe("");
+      expect(moved.exitCode).toBe(0);
+
+      // Without the repository file list the deleted file still counts.
+      const withoutList = await runCli(args, cliPath, repo);
+      expect(withoutList.exitCode).toBe(1);
+      expect(withoutList.stderr).toContain("This change edits implementation SharingImpl.");
+      expect(withoutList.stderr).toContain("Changed file: src/share/public.ts");
+    } finally {
+      await rm(repo, { recursive: true, force: true });
+    }
+  });
+
   test("rejects empty changed-file path during checks", async () => {
     const result = await runCli([
       "check",

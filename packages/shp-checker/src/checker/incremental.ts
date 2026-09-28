@@ -242,6 +242,7 @@ function checkOptionsKey(options: CheckOptions): string {
       options.baseModules === undefined
         ? null
         : summarizeBaseModel(options.baseModules, resolve(options.repoRoot ?? process.cwd())),
+    checkLoosening: options.checkLoosening ?? null,
     changedFiles: options.changedFiles ?? null,
     enforceBindings: options.enforceBindings ?? null,
     includeFacts: options.includeFacts ?? null,

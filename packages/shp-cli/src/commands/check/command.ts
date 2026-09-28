@@ -20,6 +20,12 @@ export const checkCommand = buildCommand<CheckFlags, string[], CliContext>({
         placeholder: "changed.txt"
       },
       ...baseModelFlags,
+      checkLoosening: {
+        kind: "boolean",
+        optional: true,
+        brief:
+          "With --base-ref or --base-model, fail when an edit to a rule, trait, memory, or governed path is what lets the model pass."
+      },
       checkCitedPaths: {
         kind: "boolean",
         optional: true,
@@ -46,11 +52,11 @@ export const checkCommand = buildCommand<CheckFlags, string[], CliContext>({
   docs: {
     brief: "Run Shape semantic checks.",
     fullDescription:
-      "Parses modules, lowers facts, and runs semantic checks. With --allow-unknown-effects, effects unknown is reported as a non-fatal draft warning while all other diagnostics remain blocking. With --changed-files, also runs coverage and bindings. With --base-ref or --base-model, only attestations new relative to that base count, and unchanged ones are reported as stale warnings. With --check-cited-paths, every source and evidence path the model cites must be a file in the git repository. With --as-of (or --strict-freshness for today), stale design memory becomes a check failure.",
+      "Parses modules, lowers facts, and runs semantic checks. With --allow-unknown-effects, effects unknown is reported as a non-fatal draft warning while all other diagnostics remain blocking. With --changed-files, also runs coverage and bindings. With --base-ref or --base-model, only attestations new relative to that base count, and unchanged ones are reported as stale warnings. With --check-loosening, each edit to the rule layer (traits, rules, design memory, rationale, implementations, bindings, roles, policies, and trait lists) is reverted to the base in turn, and an edit whose revert makes the check fail is reported as rule loosening. With --check-cited-paths, every source and evidence path the model cites must be a file in the git repository. With --as-of (or --strict-freshness for today), stale design memory becomes a check failure.",
     customUsage: [
       {
         input:
-          "[--allow-unknown-effects] [--changed-files changed.txt] [--base-ref REF | --base-model DIR] [--check-cited-paths] [--as-of YYYY-MM-DD | --strict-freshness] [files...]",
+          "[--allow-unknown-effects] [--changed-files changed.txt] [--base-ref REF | --base-model DIR] [--check-loosening] [--check-cited-paths] [--as-of YYYY-MM-DD | --strict-freshness] [files...]",
         brief: "Run semantic checks."
       }
     ]

@@ -1,0 +1,14 @@
+module feed
+
+resource PrivateDraft
+
+component Feed {
+}
+
+component Recommender {
+}
+
+relation RecommenderProvidesDrafts {
+  kind provides
+  connects Recommender -> PrivateDraft
+}

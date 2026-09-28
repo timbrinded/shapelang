@@ -13,7 +13,7 @@ resource LowererModuleLowerShapeModulesAstAnchor : GeneratedAstAnchor {
 
 resource LowererModuleNormalizeModuleInputsAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/checker/lowerer.ts#normalizeModuleInputs")
-  fingerprint ast.semantic_subtree_v1("sha256:e25cf4d3b940a9b13cf11da1be23fdfd47a6ecd79380b37fbb28ecb79b30733b")
+  fingerprint ast.semantic_subtree_v1("sha256:602d98d4b99ae1a6d87e05db5f009a4a43fcd10487763b71cbcb9ffc1a8f6e61")
 }
 
 resource LowererModuleRebuildShapeUpdatePathsAstAnchor : GeneratedAstAnchor {
@@ -45,7 +45,7 @@ relation LowererModuleNormalizeModuleInputsGeneratedFromLowererModuleNormalizeMo
   kind generated_from
   connects LowererModule -> LowererModuleNormalizeModuleInputsAstAnchor
   roles { LowererModule as generated, LowererModuleNormalizeModuleInputsAstAnchor as syntax }
-  expects LowererModuleNormalizeModuleInputsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e25cf4d3b940a9b13cf11da1be23fdfd47a6ecd79380b37fbb28ecb79b30733b")
+  expects LowererModuleNormalizeModuleInputsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:602d98d4b99ae1a6d87e05db5f009a4a43fcd10487763b71cbcb9ffc1a8f6e61")
   summary "fn LowererModule.normalizeModuleInputs generated from typescript function_declaration at packages/shp-checker/src/checker/lowerer.ts#normalizeModuleInputs."
 }
 

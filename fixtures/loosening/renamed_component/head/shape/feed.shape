@@ -1,0 +1,18 @@
+module feed
+
+resource PrivateDraft
+
+component PublicFeed {
+}
+
+component Recommender {
+}
+
+relation RecommenderProvidesDrafts {
+  kind provides
+  connects Recommender -> PrivateDraft
+}
+
+rule no_feed_to_drafts {
+  forbid path PublicFeed -> PrivateDraft over calls or provides
+}

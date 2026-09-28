@@ -80,6 +80,7 @@ component ShapeChecker {
   grants Read<FactSet>
   grants Read<ParsedModule>
   grants Read<PreludeMetadata>
+  grants Read<RepositoryFileList>
   fn checkLoweredShapeModel : ProtectedCheckOrder
     source ts("packages/shp-checker/src/checker/api.ts#checkLoweredShapeModel")
     description "Runs the shared semantic and binding pipeline over an already lowered model without changing the public full-check authority."
@@ -97,6 +98,19 @@ component ShapeChecker {
       Read<PreludeMetadata>
         evidence ts("packages/shp-checker/src/checker/api.ts")
     }
+  fn checkRuleLoosening : RefactorSensitive
+    source ts("packages/shp-checker/src/checker/loosening.ts#checkRuleLoosening")
+    description "Restores each rule-layer declaration or trait list that the head removed or edited to its base version, one at a time and then together, re-checks each copy with the head's options, and reports rule_loosening for each edit whose revert adds rule-violation diagnostics; head claims are never replaced."
+    effects complete {
+      Append<SemanticDiagnostics>
+        evidence ts("packages/shp-checker/src/checker/loosening.ts#checkRuleLoosening")
+      Read<BaseShapeModel>
+        evidence ts("packages/shp-checker/src/checker/loosening.ts#findRuleEdits")
+      Read<ParsedModule>
+        evidence ts("packages/shp-checker/src/checker/loosening.ts#compose")
+      Read<RepositoryFileList>
+        evidence ts("packages/shp-checker/src/checker/loosening.ts#aboutDeletedFile")
+    }
   fn checkShapeFiles
     source ts("packages/shp-checker/src/checker/api.ts#checkShapeFiles")
     description "Parses Shape files and classifies implicit generated-AST origins against the normalized repository root before running the authoritative full check."
@@ -108,12 +122,14 @@ component ShapeChecker {
     }
   fn checkShapeModules : ProtectedCheckOrder
     source ts("packages/shp-checker/src/checker/api.ts#checkShapeModules")
-    description "Runs the complete semantic and binding pipeline; only draft-requested effects unknown and stale attestations are non-fatal warnings."
+    description "Runs the complete semantic and binding pipeline; only draft-requested effects unknown and stale attestations are non-fatal warnings. With checkLoosening and a base model, it then runs checkRuleLoosening against the finished result."
     effects complete {
       Append<SemanticDiagnostics>
         evidence ts("packages/shp-checker/src/checker/api.ts")
       Read<BaseShapeModel>
         evidence ts("packages/shp-checker/src/checker/api.ts#summarizeBaseModel")
+      Read<BaseShapeModel>
+        evidence ts("packages/shp-checker/src/checker/api.ts#checkShapeModules")
       Read<ChangedFileList>
         evidence ts("packages/shp-checker/src/checker/api.ts")
       Read<EffectiveModel>
@@ -167,7 +183,7 @@ component ShapeDiagnostics {
     }
   fn formatDiagnostics : RefactorSensitive
     source ts("packages/shp-checker/src/checker/diagnostics.ts#formatDiagnostics")
-    description "Formats deterministic causal diagnostics, including collision-aware per-hop forbidden path witnesses."
+    description "Formats deterministic causal diagnostics, including collision-aware per-hop forbidden path witnesses and rule loosening reports that quote each silenced diagnostic, indented, between the edit and the fix."
     effects complete {
       Append<DiagnosticText>
         evidence ts("packages/shp-checker/src/checker/diagnostics.ts")
@@ -876,6 +892,19 @@ memory ReevaluationPolicyContract : RefactorConstraint<fn ShapeRuleEngine.checkR
   }
 }
 
+memory RuleLayerSplit : RefactorConstraint<fn ShapeChecker.checkRuleLoosening> {
+  applies_to fn ShapeChecker.checkRuleLoosening
+  status Explained
+  confidence High
+  summary "The loosening check restores only the rule layer (traits, rules, memory, rationale, implementations, bindings, roles, policies, and trait lists) from the base and takes every claim about the code from the head. Moving a declaration kind across that line changes which edits count as loosening, so a coding agent could silence a violation through a kind the check treats as a claim."
+  who {
+    owner ShapeMaintainers
+  }
+  guards {
+    on_change require ReEvaluation<Self>
+  }
+}
+
 memory ShapeSourceNormalizationContract : RefactorConstraint<fn ShapeStringHelpers.normalizeShapeSourcePath> {
   applies_to fn ShapeStringHelpers.normalizeShapeSourcePath
   status Explained
@@ -949,6 +978,16 @@ reevaluation BindingsIgnoreAttestationOnlyShapeChanges {
   reviewer ShapeMaintainers
   decided_on "2026-09-25"
   evidence test("packages/shp-checker/src/behavioural/coverage-bindings.test.ts")
+}
+
+reevaluation CheckPipelineRunsLooseningAfterFullCheck {
+  satisfies memory CheckPipelineOrder
+  outcome Confirmed
+  summary "With checkLoosening, checkShapeModules finishes the full lowering, semantic, and binding pipeline on the head first, then checks copies with rule-layer edits restored through the same checkLoweredShapeModel; the phase order within each check is unchanged."
+  reviewer ShapeMaintainers
+  decided_on "2026-09-28"
+  evidence test("packages/shp-checker/src/behavioural/rule-loosening.test.ts")
+  evidence ts("packages/shp-checker/src/checker/api.ts")
 }
 
 reevaluation CheckerPhaseOrderRechecked {
@@ -1108,4 +1147,14 @@ reevaluation PreludeRuleTraitBoundsRechecked {
   reviewer ShapeMaintainers
   decided_on "2026-07-26"
   evidence test("packages/shp-checker/src/checker.rule-validation.test.ts")
+}
+
+reevaluation RuleLooseningDiagnosticOutputChecked {
+  satisfies memory DiagnosticContract
+  outcome Confirmed
+  summary "The rule loosening diagnostic states the edit, quotes each silenced diagnostic in its own rendered form, says how to fix it, and cites the base and head declarations, so a reviewer sees both the rule change and the violation it hid."
+  reviewer ShapeMaintainers
+  decided_on "2026-09-28"
+  evidence md("docs-site/src/content/docs/reference/diagnostics.md")
+  evidence test("packages/shp-checker/src/behavioural/rule-loosening.test.ts")
 }

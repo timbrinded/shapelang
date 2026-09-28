@@ -38,7 +38,7 @@ resource DiagnosticsModuleFormatContextTargetMismatchDiagnosticAstAnchor : Gener
 
 resource DiagnosticsModuleFormatDiagnosticAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/checker/diagnostics.ts#formatDiagnostic")
-  fingerprint ast.semantic_subtree_v1("sha256:a3eca83b4f52276fa817d65e01fd21c6071d4d1465d09b5f3e0c169b48ffd604")
+  fingerprint ast.semantic_subtree_v1("sha256:14ea61a8474124f758151bd1812688c10d2684de2cbe0a3c2ea30b895bc6e27b")
 }
 
 resource DiagnosticsModuleFormatDiagnosticsAstAnchor : GeneratedAstAnchor {
@@ -161,6 +161,11 @@ resource DiagnosticsModuleFormatParseDiagnosticAstAnchor : GeneratedAstAnchor {
   fingerprint ast.semantic_subtree_v1("sha256:4559de0c78940325cebd7a0b323939862eacf4770d5b93fbe6238adff08a51f2")
 }
 
+resource DiagnosticsModuleFormatRuleLooseningDiagnosticAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/diagnostics.ts#formatRuleLooseningDiagnostic")
+  fingerprint ast.semantic_subtree_v1("sha256:489d3060394893341bcfb52a69f9f1ec001b06973ecced19c2f6212bca587eca")
+}
+
 resource DiagnosticsModuleFormatStaleAttestationDiagnosticAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/checker/diagnostics.ts#formatStaleAttestationDiagnostic")
   fingerprint ast.semantic_subtree_v1("sha256:111277d76635dcda388b91e56aa9c673af24863d01bc57a451f7923d140eee6f")
@@ -189,6 +194,11 @@ resource DiagnosticsModuleFormatUnsafeEffectsDiagnosticAstAnchor : GeneratedAstA
 resource DiagnosticsModuleGuardedShapeChangeSummaryAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/checker/diagnostics.ts#guardedShapeChangeSummary")
   fingerprint ast.semantic_subtree_v1("sha256:332207e42ffa1b8f301de51d5367fc288d1cc3d04fa853d7ddeca599c7c8c22f")
+}
+
+resource DiagnosticsModuleIndentAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/diagnostics.ts#indent")
+  fingerprint ast.semantic_subtree_v1("sha256:130ebd6f0c8c780303e081e55145cdd187dd86e6884498b5b492afe1acd4636a")
 }
 
 component DiagnosticsModule : GeneratedCandidate {
@@ -285,6 +295,9 @@ component DiagnosticsModule : GeneratedCandidate {
   fn formatParseDiagnostic
     source ts("packages/shp-checker/src/checker/diagnostics.ts#formatParseDiagnostic")
     effects unknown
+  fn formatRuleLooseningDiagnostic
+    source ts("packages/shp-checker/src/checker/diagnostics.ts#formatRuleLooseningDiagnostic")
+    effects unknown
   fn formatStaleAttestationDiagnostic
     source ts("packages/shp-checker/src/checker/diagnostics.ts#formatStaleAttestationDiagnostic")
     effects unknown
@@ -302,6 +315,9 @@ component DiagnosticsModule : GeneratedCandidate {
     effects unknown
   fn guardedShapeChangeSummary
     source ts("packages/shp-checker/src/checker/diagnostics.ts#guardedShapeChangeSummary")
+    effects unknown
+  fn indent
+    source ts("packages/shp-checker/src/checker/diagnostics.ts#indent")
     effects unknown
 }
 
@@ -357,7 +373,7 @@ relation DiagnosticsModuleFormatDiagnosticGeneratedFromDiagnosticsModuleFormatDi
   kind generated_from
   connects DiagnosticsModule -> DiagnosticsModuleFormatDiagnosticAstAnchor
   roles { DiagnosticsModule as generated, DiagnosticsModuleFormatDiagnosticAstAnchor as syntax }
-  expects DiagnosticsModuleFormatDiagnosticAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a3eca83b4f52276fa817d65e01fd21c6071d4d1465d09b5f3e0c169b48ffd604")
+  expects DiagnosticsModuleFormatDiagnosticAstAnchor fingerprint ast.semantic_subtree_v1("sha256:14ea61a8474124f758151bd1812688c10d2684de2cbe0a3c2ea30b895bc6e27b")
   summary "fn DiagnosticsModule.formatDiagnostic generated from typescript function_declaration at packages/shp-checker/src/checker/diagnostics.ts#formatDiagnostic."
 }
 
@@ -553,6 +569,14 @@ relation DiagnosticsModuleFormatParseDiagnosticGeneratedFromDiagnosticsModuleFor
   summary "fn DiagnosticsModule.formatParseDiagnostic generated from typescript function_declaration at packages/shp-checker/src/checker/diagnostics.ts#formatParseDiagnostic."
 }
 
+relation DiagnosticsModuleFormatRuleLooseningDiagnosticGeneratedFromDiagnosticsModuleFormatRuleLooseningDiagnosticAstAnchor {
+  kind generated_from
+  connects DiagnosticsModule -> DiagnosticsModuleFormatRuleLooseningDiagnosticAstAnchor
+  roles { DiagnosticsModule as generated, DiagnosticsModuleFormatRuleLooseningDiagnosticAstAnchor as syntax }
+  expects DiagnosticsModuleFormatRuleLooseningDiagnosticAstAnchor fingerprint ast.semantic_subtree_v1("sha256:489d3060394893341bcfb52a69f9f1ec001b06973ecced19c2f6212bca587eca")
+  summary "fn DiagnosticsModule.formatRuleLooseningDiagnostic generated from typescript function_declaration at packages/shp-checker/src/checker/diagnostics.ts#formatRuleLooseningDiagnostic."
+}
+
 relation DiagnosticsModuleFormatStaleAttestationDiagnosticGeneratedFromDiagnosticsModuleFormatStaleAttestationDiagnosticAstAnchor {
   kind generated_from
   connects DiagnosticsModule -> DiagnosticsModuleFormatStaleAttestationDiagnosticAstAnchor
@@ -599,6 +623,14 @@ relation DiagnosticsModuleGuardedShapeChangeSummaryGeneratedFromDiagnosticsModul
   roles { DiagnosticsModule as generated, DiagnosticsModuleGuardedShapeChangeSummaryAstAnchor as syntax }
   expects DiagnosticsModuleGuardedShapeChangeSummaryAstAnchor fingerprint ast.semantic_subtree_v1("sha256:332207e42ffa1b8f301de51d5367fc288d1cc3d04fa853d7ddeca599c7c8c22f")
   summary "fn DiagnosticsModule.guardedShapeChangeSummary generated from typescript function_declaration at packages/shp-checker/src/checker/diagnostics.ts#guardedShapeChangeSummary."
+}
+
+relation DiagnosticsModuleIndentGeneratedFromDiagnosticsModuleIndentAstAnchor {
+  kind generated_from
+  connects DiagnosticsModule -> DiagnosticsModuleIndentAstAnchor
+  roles { DiagnosticsModule as generated, DiagnosticsModuleIndentAstAnchor as syntax }
+  expects DiagnosticsModuleIndentAstAnchor fingerprint ast.semantic_subtree_v1("sha256:130ebd6f0c8c780303e081e55145cdd187dd86e6884498b5b492afe1acd4636a")
+  summary "fn DiagnosticsModule.indent generated from typescript function_declaration at packages/shp-checker/src/checker/diagnostics.ts#indent."
 }
 
 implementation DiagnosticsModuleImpl {

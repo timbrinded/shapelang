@@ -13,11 +13,13 @@ import type {
   Fact,
   Model,
   NormalizedCheckOptions,
-  SemanticDiagnostic
+  SemanticDiagnostic,
+  ShapeDiagnostic
 } from "./model.ts";
 import { compareCodepointStrings } from "../shape-strings.ts";
 import { compareShapeDiagnostics } from "./diagnostics.ts";
-import { lowerShapeModules } from "./lowerer.ts";
+import { lowerShapeModules, normalizeModuleInputs } from "./lowerer.ts";
+import { checkRuleLoosening } from "./loosening.ts";
 import { requireIsoCalendarDate } from "./iso-date.ts";
 import { checkBindings, runSemanticChecks } from "./rules.ts";
 import { attestationKey } from "./rules/coverage.ts";
@@ -30,8 +32,41 @@ export function checkShapeModules(
   options: CheckOptions = {}
 ): CheckResult {
   const normalizedOptions = normalizeCheckOptions(options);
-  const model = lowerShapeModules(modules);
-  return checkLoweredShapeModel(model, normalizedOptions);
+  const inputs = normalizeModuleInputs(modules);
+  const result = checkLoweredShapeModel(lowerShapeModules(inputs), normalizedOptions);
+  if (!options.checkLoosening) {
+    return result;
+  }
+  if (options.baseModules === undefined) {
+    throw new Error("CheckOptions.checkLoosening requires CheckOptions.baseModules");
+  }
+  const composedOptions = { ...normalizedOptions, includeFacts: false };
+  const loosening = checkRuleLoosening({
+    head: inputs,
+    base: normalizeModuleInputs(options.baseModules),
+    headDiagnostics: result.diagnostics.filter(isSemantic),
+    check: (composed) =>
+      checkLoweredShapeModel(lowerShapeModules(composed), composedOptions).diagnostics.filter(
+        isSemantic
+      ),
+    repoRoot: normalizedOptions.repoRoot,
+    repositoryFiles: normalizedOptions.repositoryFiles
+  });
+  if (loosening.length === 0) {
+    return result;
+  }
+  const diagnostics = [...result.diagnostics, ...loosening];
+  const ok = diagnostics.every(isWarning);
+  return {
+    ...result,
+    ok,
+    exitCode: ok ? 0 : 1,
+    diagnostics: diagnostics.toSorted(compareShapeDiagnostics)
+  };
+}
+
+function isSemantic(diagnostic: ShapeDiagnostic): diagnostic is SemanticDiagnostic {
+  return diagnostic.kind !== "parse";
 }
 
 /**
@@ -69,7 +104,7 @@ export function checkLoweredShapeModel(
   };
 }
 
-function isWarning(diagnostic: SemanticDiagnostic): boolean {
+function isWarning(diagnostic: ShapeDiagnostic): boolean {
   return (
     diagnostic.kind === "stale_attestation" ||
     (diagnostic.kind === "unknown_effects" && diagnostic.severity === "warning")

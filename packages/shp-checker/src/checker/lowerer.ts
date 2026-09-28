@@ -148,7 +148,9 @@ function rebuildShapeUpdatePaths(model: Model): void {
   }
 }
 
-function normalizeModuleInputs(modules: ShapeModule[] | CheckModuleInput[]): CheckModuleInput[] {
+export function normalizeModuleInputs(
+  modules: ShapeModule[] | CheckModuleInput[]
+): CheckModuleInput[] {
   return modules.map((input) => {
     if ("module" in input) {
       return input;

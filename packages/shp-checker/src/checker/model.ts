@@ -272,6 +272,15 @@ export type SemanticDiagnostic =
       path: string;
       filePath?: string;
       causedBy: string[];
+    }
+  | {
+      kind: "rule_loosening";
+      /** What the change did to the rule, completing "This change ...". */
+      edit: string;
+      /** The errors the model reports once that edit is reverted to the base. */
+      silenced: SemanticDiagnostic[];
+      filePath?: string;
+      causedBy: string[];
     };
 
 export type ShapeDiagnostic = ParseDiagnostic | SemanticDiagnostic;
@@ -298,6 +307,14 @@ export type CheckOptions = {
    * changed-file input.
    */
   baseModules?: ShapeModule[] | CheckModuleInput[];
+  /**
+   * Requires `baseModules`. Reverts each edit to the rule layer (traits, rules,
+   * design memory, rationale, implementations, bindings, roles, policies, and the
+   * trait lists on resources, components, and functions) to its base version and
+   * checks again; an edit that silences an error is reported as
+   * `rule_loosening`. Only `checkShapeModules` and `checkShapeFiles` read it.
+   */
+  checkLoosening?: boolean;
   changedFiles?: string[];
   enforceBindings?: boolean;
   includeFacts?: boolean;
