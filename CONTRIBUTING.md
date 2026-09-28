@@ -35,30 +35,38 @@ committed, and CI's Codegen job fails when regenerating them produces a diff.
 
 ## Before making changes
 
-Read the relevant `shape/*.shape` claims and follow the
-[change-type table](#what-to-update-per-change-type). Prefer existing
-abstractions, and use strict TypeScript without casts to `any` to silence
-errors.
+Find your change in [What to update per change type](#what-to-update-per-change-type)
+and read the `shape/*.shape` claims whose `source` or `implementation` paths
+cover the files you will touch. Reuse existing abstractions. The TypeScript
+config is strict; do not cast to `any` to silence an error.
 
-The checker cannot enforce these, so keep to them:
+Checks catch some breaches of these rules but cannot judge intent, so keep to
+them even when every check passes:
 
-- Treat `.shape` files as source code. The files under `shape/` are the guide to
-  syntax and modelling style.
-- Model uncertainty as `effects unknown`, never as an empty `effects complete`.
-- A `forbid final` is final: rationale, memory, reevaluations, and grants never
-  waive it.
-- Diagnostics are a product surface. Keep diagnostics, formatting, graph output,
-  and witnesses deterministic.
+- Treat `.shape` files as code, not prose: every claim changes what the checker
+  accepts. The files under `shape/` are the guide to syntax and modelling style.
+- Never write an empty `effects complete` for effects you have not established.
+  `effects unknown` records the gap while drafting
+  (`shp check --allow-unknown-effects`), but the gate is strict, so establish
+  the real effects before the pull request.
+- A `forbid final` is final: never add a way for rationale, memory,
+  reevaluations, or grants to waive it.
+- Diagnostics are a product surface: each says what failed, why, and which
+  declaration or evidence caused it. Keep diagnostics, formatting, graph output,
+  and witnesses deterministic so review and CI can compare them.
 - Never loosen a rule, trait, memory guard, or governed path to make a check
-  pass. Change the code instead, or stop and ask the maintainer. A loosening the
-  maintainer asked for needs a reason in the pull request body; see
+  pass. Change the code instead, or stop and ask the maintainer. Write a
+  `## Rule loosening` reason only for a loosening the maintainer asked for; see
   [Rule loosening](#rule-loosening).
-- Before changing a protected target, inspect `bun shp obligations`,
-  `bun shp memory`, and `bun shp explain TARGET`. Preserve the target, or add a
-  `reevaluation` for this change after checking it against the memory's summary.
+- Before editing the `source` file of a guarded function (one a `memory`
+  protects), run `bun shp obligations`, `bun shp memory`, and
+  `bun shp explain Component.fn`. Keep the behaviour the memory protects, or
+  check your change against the memory's summary and then add a `reevaluation`
+  written for this change; see [The Shape gate](#the-shape-gate).
 - Model structural dependencies as top-level `relation` declarations, preferring
-  prelude kinds. Before relation-heavy edits, run `bun shp graph stats`; use
-  `bun shp graph show SYMBOL --kind KIND` to focus.
+  prelude kinds such as `calls`, `callbacks`, `provides`, and
+  `coordinated_call`. Before relation-heavy edits, run `bun shp graph stats`;
+  `bun shp graph show SYMBOL --kind KIND` shows one symbol's relations.
 
 ## Repository layout
 
@@ -82,9 +90,9 @@ The checker cannot enforce these, so keep to them:
 | `scripts/` | Repository scripts: release building, smoke tests, and canaries (`build-release-assets.sh`, `smoke-release-binary.sh`, `run-release-canaries.ts`); release gates (`check-release-metadata.ts`, `check-release-approval.ts`); `check-skills.ts`; `generate-ast-shapes.ts`; and `write-changed-files.sh`, which writes `changed.txt` and `changed-base.txt`. |
 | `.github/` | Workflows (`shape.yml`, `docs-pages.yml`, `release-candidate.yml`, `release.yml`), the `claude-skill-review` composite action, the Claude job runner in `scripts/`, its prompts in `prompts/`, and result schemas in `shape-contract/schemas/`. |
 | `action.yml`, `install.sh`, `install.ps1` | The GitHub setup action and the installers for released `shp` binaries. |
-| `AGENTS.md` | The project's purpose, for coding agents, with links to this file and `RELEASING.md`. `CLAUDE.md` is a symlink to it. |
+| `AGENTS.md` | A short statement of the project's purpose that coding agents load automatically, linking to this file and `RELEASING.md`. Working rules belong in this file, not there. `CLAUDE.md` is a symlink to it. |
 | `DESIGN.md`, `RELEASING.md` | Diagram and visual rules; the release procedure. |
-| `.research/` | Ignored local research material. Nothing tracked may depend on it. |
+| `.research/` | Ignored local research material. Nothing tracked may depend on it; when research drives a decision, record the conclusion in tracked docs, code comments, Shape memory or reevaluations, or the pull request text. |
 
 ## Checks before a pull request
 
@@ -152,8 +160,10 @@ failing step:
 `changed.txt` lists the files changed against a base, plus unstaged, staged, and
 untracked files. In CI the base is the pull request's base branch or, on a
 push, the commit the branch pointed at before the push. Locally it is the merge base with `origin/$BASE_REF`
-when `BASE_REF` is set, otherwise with `origin/HEAD`, `origin/main`, or
-`origin/master`.
+when `BASE_REF` is set and that ref exists, otherwise with `origin/HEAD`,
+`origin/main`, or `origin/master`. On a branch stacked on another branch, run
+`BASE_REF=<parent branch> bun run changed-files`, with the parent pushed and
+fetched, and check that the printed base is the parent.
 
 The gate fails in two common cases:
 
@@ -181,9 +191,8 @@ change itself: `shape:ci` compares them with the base in `changed-base.txt`, and
 one carried over from an earlier change does not count and is reported as a
 stale attestation. Delete those with
 `bun shp attest prune --base-ref "$(cat changed-base.txt)"` in every pull
-request that touches `shape/`. On a branch stacked on another branch, run
-`BASE_REF=<parent branch> bun run changed-files` first, so the base is the
-parent. Functions in generated AST modules never count as a Shape update.
+request that touches `shape/`. Functions in generated AST modules never count
+as a Shape update.
 
 The [Keep the Model Current](https://timbrinded.github.io/shapelang/guides/keep-model-current/)
 guide explains coverage, bindings, and attestations in full.

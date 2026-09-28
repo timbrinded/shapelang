@@ -86,7 +86,7 @@ function main() {
   const unexplained = unexplainedEdits(edits, section);
   for (const { edit, names } of unexplained) {
     console.log(
-      `::error title=Rule loosening without a reason::This change ${edit}. Add a line naming ${names[0]} and saying why to a visible "## Rule loosening" section of the pull request body.`
+      `::error title=Rule loosening without a reason::This change ${edit}. Restore the rule and change the code. If the maintainer asked for this loosening, add a line naming ${names[0]} and saying why to a visible "## Rule loosening" section of the pull request body.`
     );
   }
   if (unexplained.length > 0) {

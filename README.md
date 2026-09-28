@@ -103,7 +103,7 @@ The plugin adds six skills: `shapelang:shape-lang`, `shapelang:shape-contract-pr
 
 ## Contributing
 
-[CONTRIBUTING.md](CONTRIBUTING.md) covers the Bun workspace, the local checks CI runs, and how code, docs, and the repository's own Shape model change together. [RELEASING.md](RELEASING.md) is the release procedure. [AGENTS.md](AGENTS.md) holds the instructions for coding agents working in this repository.
+[CONTRIBUTING.md](CONTRIBUTING.md) covers the Bun workspace, the local checks CI runs, and how code, docs, and the repository's own Shape model change together. [RELEASING.md](RELEASING.md) is the release procedure. [AGENTS.md](AGENTS.md) states the project's purpose for coding agents and points them to CONTRIBUTING.md.
 
 ## License
 

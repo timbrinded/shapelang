@@ -9,5 +9,5 @@ reviewed alongside code. A small, deterministic checker exposes contradictions
 and unmet review obligations; evidence and judgment establish whether the
 claims describe the implementation.
 
-How to work in this repository: [CONTRIBUTING.md](CONTRIBUTING.md). Releases:
-[RELEASING.md](RELEASING.md).
+Read [CONTRIBUTING.md](CONTRIBUTING.md) before changing anything here; releases
+follow [RELEASING.md](RELEASING.md).

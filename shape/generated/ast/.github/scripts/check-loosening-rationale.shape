@@ -23,7 +23,7 @@ resource CheckLooseningRationaleModuleLooseningEditsAstAnchor : GeneratedAstAnch
 
 resource CheckLooseningRationaleModuleMainAstAnchor : GeneratedAstAnchor {
   storage ast.anchor(".github/scripts/check-loosening-rationale.mjs#main")
-  fingerprint ast.semantic_subtree_v1("sha256:e847bc7667d06962af1d5e515a248f89116d6844bf7e378ac26f0152b19f0c1d")
+  fingerprint ast.semantic_subtree_v1("sha256:78c435d1cbfd6fb17f5812059078935690713d618cffb1bd75e2f608b8fae7d6")
 }
 
 resource CheckLooseningRationaleModuleRationaleSectionAstAnchor : GeneratedAstAnchor {
@@ -93,7 +93,7 @@ relation CheckLooseningRationaleModuleMainGeneratedFromCheckLooseningRationaleMo
   kind generated_from
   connects CheckLooseningRationaleModule -> CheckLooseningRationaleModuleMainAstAnchor
   roles { CheckLooseningRationaleModule as generated, CheckLooseningRationaleModuleMainAstAnchor as syntax }
-  expects CheckLooseningRationaleModuleMainAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e847bc7667d06962af1d5e515a248f89116d6844bf7e378ac26f0152b19f0c1d")
+  expects CheckLooseningRationaleModuleMainAstAnchor fingerprint ast.semantic_subtree_v1("sha256:78c435d1cbfd6fb17f5812059078935690713d618cffb1bd75e2f608b8fae7d6")
   summary "fn CheckLooseningRationaleModule.main generated from javascript function_declaration at .github/scripts/check-loosening-rationale.mjs#main."
 }
 
