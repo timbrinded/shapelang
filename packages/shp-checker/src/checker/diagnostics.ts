@@ -8,6 +8,7 @@ import type { ParseDiagnostic } from "../parser.ts";
 import { compareCodepointStrings } from "../shape-strings.ts";
 import { displaySymbol, formatTarget, formatTerm } from "./display.ts";
 
+// e2e: a harmless edit to the guarded source.
 export function formatDiagnostics(result: CheckResult): string {
   if (result.diagnostics.length === 0) {
     return "Shape check passed.\n";

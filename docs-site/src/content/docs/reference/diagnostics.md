@@ -802,3 +802,5 @@ caused by:
 **Cause.** Freshness checking is on and a `rationale` or `memory` has a valid ISO `review_by` date strictly before the reference date. Without the freshness flags this diagnostic never appears; the flags are described in [CLI Reference](/shapelang/reference/cli/#freshness).
 
 **Fix.** Review the entry and move its `review_by` forward, or remove the date. A `reevaluation` that satisfies the entry does not clear this diagnostic.
+
+<!-- e2e: throwaway docs touch, do not merge. -->
