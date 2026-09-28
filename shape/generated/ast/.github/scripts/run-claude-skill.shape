@@ -18,7 +18,7 @@ resource RunClaudeSkillModuleBuildClaudeArgsAstAnchor : GeneratedAstAnchor {
 
 resource RunClaudeSkillModuleBuildGuardPromptAstAnchor : GeneratedAstAnchor {
   storage ast.anchor(".github/scripts/run-claude-skill.mjs#buildGuardPrompt")
-  fingerprint ast.semantic_subtree_v1("sha256:96be7b43d866bae630a5b7f0f1f5c867e2c21be11a242c50ec8fa58ba5364a45")
+  fingerprint ast.semantic_subtree_v1("sha256:5aa1875ef68b06e7ea3e05db6a34d861ebd14c09ffe9a8e0f1ce86d182d86a31")
 }
 
 resource RunClaudeSkillModuleBuildIndexPromptAstAnchor : GeneratedAstAnchor {
@@ -114,6 +114,11 @@ resource RunClaudeSkillModuleIsRecordAstAnchor : GeneratedAstAnchor {
 resource RunClaudeSkillModuleJsonObjectCandidatesAstAnchor : GeneratedAstAnchor {
   storage ast.anchor(".github/scripts/run-claude-skill.mjs#jsonObjectCandidates")
   fingerprint ast.semantic_subtree_v1("sha256:82c8ea1e0deb582a4b726dc59a36035816e4ba87df10d498201ac1b75ef08c18")
+}
+
+resource RunClaudeSkillModuleLooseningReasonsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor(".github/scripts/run-claude-skill.mjs#looseningReasons")
+  fingerprint ast.semantic_subtree_v1("sha256:791ec1fff05d4b0356b08ef95c440ab424a3cccf82fdea9d627a1b1b750373af")
 }
 
 resource RunClaudeSkillModuleMainAstAnchor : GeneratedAstAnchor {
@@ -278,6 +283,9 @@ component RunClaudeSkillModule : GeneratedCandidate {
   fn jsonObjectCandidates
     source js(".github/scripts/run-claude-skill.mjs#jsonObjectCandidates")
     effects unknown
+  fn looseningReasons
+    source js(".github/scripts/run-claude-skill.mjs#looseningReasons")
+    effects unknown
   fn main
     source js(".github/scripts/run-claude-skill.mjs#main")
     effects unknown
@@ -357,7 +365,7 @@ relation RunClaudeSkillModuleBuildGuardPromptGeneratedFromRunClaudeSkillModuleBu
   kind generated_from
   connects RunClaudeSkillModule -> RunClaudeSkillModuleBuildGuardPromptAstAnchor
   roles { RunClaudeSkillModule as generated, RunClaudeSkillModuleBuildGuardPromptAstAnchor as syntax }
-  expects RunClaudeSkillModuleBuildGuardPromptAstAnchor fingerprint ast.semantic_subtree_v1("sha256:96be7b43d866bae630a5b7f0f1f5c867e2c21be11a242c50ec8fa58ba5364a45")
+  expects RunClaudeSkillModuleBuildGuardPromptAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5aa1875ef68b06e7ea3e05db6a34d861ebd14c09ffe9a8e0f1ce86d182d86a31")
   summary "fn RunClaudeSkillModule.buildGuardPrompt generated from javascript function_declaration at .github/scripts/run-claude-skill.mjs#buildGuardPrompt."
 }
 
@@ -511,6 +519,14 @@ relation RunClaudeSkillModuleJsonObjectCandidatesGeneratedFromRunClaudeSkillModu
   roles { RunClaudeSkillModule as generated, RunClaudeSkillModuleJsonObjectCandidatesAstAnchor as syntax }
   expects RunClaudeSkillModuleJsonObjectCandidatesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:82c8ea1e0deb582a4b726dc59a36035816e4ba87df10d498201ac1b75ef08c18")
   summary "fn RunClaudeSkillModule.jsonObjectCandidates generated from javascript function_declaration at .github/scripts/run-claude-skill.mjs#jsonObjectCandidates."
+}
+
+relation RunClaudeSkillModuleLooseningReasonsGeneratedFromRunClaudeSkillModuleLooseningReasonsAstAnchor {
+  kind generated_from
+  connects RunClaudeSkillModule -> RunClaudeSkillModuleLooseningReasonsAstAnchor
+  roles { RunClaudeSkillModule as generated, RunClaudeSkillModuleLooseningReasonsAstAnchor as syntax }
+  expects RunClaudeSkillModuleLooseningReasonsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:791ec1fff05d4b0356b08ef95c440ab424a3cccf82fdea9d627a1b1b750373af")
+  summary "fn RunClaudeSkillModule.looseningReasons generated from javascript function_declaration at .github/scripts/run-claude-skill.mjs#looseningReasons."
 }
 
 relation RunClaudeSkillModuleMainGeneratedFromRunClaudeSkillModuleMainAstAnchor {

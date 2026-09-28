@@ -354,7 +354,7 @@ component CiPipeline {
     }
   fn runShapeGuardReview
     source mjs(".github/scripts/run-claude-skill.mjs#buildGuardPrompt")
-    description "Advisory loosening review of authored .shape diffs driven by the shape-contract-guard skill; a git-diff prefilter skips the model call when no authored .shape changed, the model call is delegated to anthropics/claude-code-action with structured output, and only high-impact suspicious findings fail the job."
+    description "Advisory loosening review of authored .shape diffs driven by the shape-contract-guard skill; a git-diff prefilter skips the model call when no authored .shape changed, the prompt quotes the visible Rule loosening section of the pull request body as decision evidence, the model call is delegated to anthropics/claude-code-action with structured output, and only high-impact suspicious findings fail the job."
     effects complete {
       Read<ChangedFileList>
         evidence yaml(".github/workflows/shape.yml")
@@ -368,6 +368,8 @@ component CiPipeline {
         evidence json(".github/shape-contract/schemas/shape-guard-result.schema.json")
       Read<ClaudeReviewResult>
         evidence mjs(".github/scripts/run-claude-skill.mjs")
+      Read<PullRequestDescription>
+        evidence mjs(".github/scripts/run-claude-skill.mjs#looseningReasons")
       Update<ClaudeReviewResult>
         evidence mjs(".github/scripts/run-claude-skill.mjs")
       Update<ClaudeReviewResult>
