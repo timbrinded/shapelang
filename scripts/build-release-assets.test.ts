@@ -4,7 +4,28 @@ import { copyFileSync, existsSync, mkdirSync, mkdtempSync, rmSync, writeFileSync
 import { tmpdir } from "node:os";
 import { delimiter, join } from "node:path";
 
-test.each([1, 2])("stops a release build when metadata read %i fails", (failureAt) => {
+test.each([
+  ["native parser packages", "treeSitterNativePackageSpecifiers"],
+  ["release targets", "TREE_SITTER_NATIVE_BINDING_TARGETS"]
+])("stops a release build when reading the %s fails", (_, failingRead) => {
+  const result = runReleaseBuild(failingRead);
+
+  expect(result.stderr).toContain("fixture metadata read failed");
+  expect(result.status).toBe(37);
+  expect(result.releaseFiles).toEqual([]);
+});
+
+test("stops a release build when no release targets are listed", () => {
+  const result = runReleaseBuild("no read fails");
+
+  expect(result.stderr).toContain("error: no release targets listed");
+  expect(result.status).toBe(1);
+  expect(result.releaseFiles).toEqual([]);
+});
+
+// Runs a copy of the build script with a fake `bun` whose metadata reads print
+// nothing, except that the read whose `-e` source names `failingRead` fails.
+function runReleaseBuild(failingRead: string) {
   const root = mkdtempSync(join(tmpdir(), "shape-release-build-"));
   try {
     const scripts = join(root, "scripts");
@@ -18,16 +39,12 @@ test.each([1, 2])("stops a release build when metadata read %i fails", (failureA
     writeFileSync(
       join(tools, "bun"),
       `#!/bin/sh
-calls=0
-if [ -f "$BUILD_TEST_CALLS" ]; then
-  read -r calls < "$BUILD_TEST_CALLS"
-fi
-calls=$((calls + 1))
-printf '%s\\n' "$calls" > "$BUILD_TEST_CALLS"
-if [ "$calls" -eq "$BUILD_TEST_FAILURE_AT" ]; then
-  echo "fixture metadata read failed" >&2
-  exit 37
-fi
+case "$2" in
+  *"$BUILD_TEST_FAILING_READ"*)
+    echo "fixture metadata read failed" >&2
+    exit 37
+    ;;
+esac
 `,
       { mode: 0o755 }
     );
@@ -35,25 +52,26 @@ fi
       writeFileSync(join(tools, name), "#!/bin/sh\nexit 0\n", { mode: 0o755 });
     }
 
-    const result = spawnSync(process.platform === "win32" ? "bash" : "/bin/bash", [script], {
+    const result = spawnSync("bash", [script], {
       cwd: root,
       encoding: "utf8",
+      timeout: 10_000,
       env: {
         ...process.env,
         PATH: `${tools}${delimiter}${process.env.PATH ?? ""}`,
-        BUILD_TEST_CALLS: join(root, "calls"),
-        BUILD_TEST_FAILURE_AT: String(failureAt),
+        BUILD_TEST_FAILING_READ: failingRead,
         SHAPE_RELEASE_VERSION: "v0.0.0-test"
       }
     });
-
     expect(result.error).toBeUndefined();
-    expect(result.stderr).toContain("fixture metadata read failed");
-    expect(result.status).toBe(37);
-    for (const name of ["install.sh", "install.ps1", "checksums.txt"]) {
-      expect(existsSync(join(root, "dist/release", name))).toBe(false);
-    }
+    return {
+      status: result.status,
+      stderr: result.stderr,
+      releaseFiles: ["install.sh", "install.ps1", "checksums.txt"].filter((name) =>
+        existsSync(join(root, "dist/release", name))
+      )
+    };
   } finally {
     rmSync(root, { recursive: true, force: true });
   }
-});
+}
