@@ -39,7 +39,6 @@ export function releaseVersionPins(version: string): ReleaseVersionPin[] {
     { file: "README.md", snippet: `timbrinded/shapelang@${tag}` },
     { file: "README.md", snippet: `version: ${tag}` },
     { file: "README.md", snippet: `shapelang--${tag}` },
-    { file: "AGENTS.md", snippet: `version: ${tag}` },
     {
       file: "docs-site/src/content/docs/learn/quickstart.md",
       snippet: `The current docs pin is \`${tag}\``

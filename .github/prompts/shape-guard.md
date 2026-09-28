@@ -1,6 +1,6 @@
 # Shape contract guard review
 
-Read AGENTS.md when it exists, then read
+Read AGENTS.md and CONTRIBUTING.md when they exist, then read
 `plugins/shapelang/skills/shape-contract-guard/SKILL.md` and its
 `references/signals.md` and `references/examples.md`, and apply that skill to
 this repository.

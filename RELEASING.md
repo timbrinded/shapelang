@@ -49,7 +49,7 @@ Choose the semver version `X.Y.Z`, then, on a release-prep branch:
    and it lists every file that is missing its snippet for the new version.
    The pins come from `releaseVersionPins` in
    `scripts/check-release-metadata.ts`, and they include files outside the
-   docs: `AGENTS.md`, `.github/prompts/shape-skills-release.md`,
+   docs: `.github/prompts/shape-skills-release.md`,
    `plugins/shapelang/skills/shape-lang/SKILL.md`, and `shape/delivery.shape`.
    In each pinned file, replace every occurrence of the old version, not just
    the one the check names: the check confirms only that one occurrence of each

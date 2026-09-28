@@ -1,6 +1,6 @@
 # Shape index coverage audit
 
-Read AGENTS.md when it exists, then read
+Read AGENTS.md and CONTRIBUTING.md when they exist, then read
 `plugins/shapelang/skills/shape-index/SKILL.md` for what counts as an
 architecture-significant subsystem and authored (Layer-2) Shape coverage.
 

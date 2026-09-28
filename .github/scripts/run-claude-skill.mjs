@@ -257,7 +257,7 @@ export function resultTextFromExecutionFile(path) {
 
 export function buildReviewPrompt(env = process.env) {
   return [
-    "Read AGENTS.md when it exists, then read .github/prompts/shape-contract-review.md.",
+    "Read AGENTS.md and CONTRIBUTING.md when they exist, then read .github/prompts/shape-contract-review.md.",
     "",
     "Analyze this repository for Shape contract drift.",
     `Scope: BASE_REF=${env.GITHUB_BASE_REF ?? ""}, HEAD_SHA=${env.GITHUB_SHA ?? ""}.`,

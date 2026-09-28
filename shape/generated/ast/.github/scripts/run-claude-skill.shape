@@ -28,7 +28,7 @@ resource RunClaudeSkillModuleBuildIndexPromptAstAnchor : GeneratedAstAnchor {
 
 resource RunClaudeSkillModuleBuildReviewPromptAstAnchor : GeneratedAstAnchor {
   storage ast.anchor(".github/scripts/run-claude-skill.mjs#buildReviewPrompt")
-  fingerprint ast.semantic_subtree_v1("sha256:3cf741f6d80198c6bdf2a1c44df9355fc9b079e9e6a74b55ebcedf6c1b02d118")
+  fingerprint ast.semantic_subtree_v1("sha256:cb73b19c631f9d1c982af29b6e463357f95dee79e00bf49128a6d0ed1fd91f16")
 }
 
 resource RunClaudeSkillModuleBuildSkillsReleasePromptAstAnchor : GeneratedAstAnchor {
@@ -381,7 +381,7 @@ relation RunClaudeSkillModuleBuildReviewPromptGeneratedFromRunClaudeSkillModuleB
   kind generated_from
   connects RunClaudeSkillModule -> RunClaudeSkillModuleBuildReviewPromptAstAnchor
   roles { RunClaudeSkillModule as generated, RunClaudeSkillModuleBuildReviewPromptAstAnchor as syntax }
-  expects RunClaudeSkillModuleBuildReviewPromptAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3cf741f6d80198c6bdf2a1c44df9355fc9b079e9e6a74b55ebcedf6c1b02d118")
+  expects RunClaudeSkillModuleBuildReviewPromptAstAnchor fingerprint ast.semantic_subtree_v1("sha256:cb73b19c631f9d1c982af29b6e463357f95dee79e00bf49128a6d0ed1fd91f16")
   summary "fn RunClaudeSkillModule.buildReviewPrompt generated from javascript function_declaration at .github/scripts/run-claude-skill.mjs#buildReviewPrompt."
 }
 

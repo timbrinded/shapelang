@@ -110,8 +110,6 @@ component CiPipeline {
       Read<CliPackageManifest>
         evidence json("packages/shp-cli/package.json")
       Read<DocsContent>
-        evidence md("AGENTS.md")
-      Read<DocsContent>
         evidence md("README.md")
       Read<DocsContent>
         evidence md("docs-site/src/content/docs/guides/ci.md")
@@ -1095,6 +1093,16 @@ reevaluation DocsShapeBlockVerificationRechecked {
   reviewer ShapeMaintainers
   decided_on "2026-05-20"
   evidence test("docs-site/scripts/verify-shape-blocks.ts")
+}
+
+reevaluation ReleaseAgentsPinRemoved {
+  satisfies memory ReleaseVersionTagContract
+  outcome Confirmed
+  summary "AGENTS.md now states the project's purpose and holds no release example, so it is no longer a version pin. The tag, the CLI package, both plugin manifests, the release notes, and the remaining public pins still share one version."
+  reviewer ShapeMaintainers
+  decided_on "2026-09-28"
+  evidence md("RELEASING.md")
+  evidence ts("scripts/check-release-metadata.ts#releaseVersionPins")
 }
 
 reevaluation ReleaseDistributionVersionsRechecked {

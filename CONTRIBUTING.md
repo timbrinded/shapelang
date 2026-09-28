@@ -33,6 +33,33 @@ bun run langium:generate
 `packages/shp-checker/src/language/generated` from the grammar. The artifacts are
 committed, and CI's Codegen job fails when regenerating them produces a diff.
 
+## Before making changes
+
+Read the relevant `shape/*.shape` claims and follow the
+[change-type table](#what-to-update-per-change-type). Prefer existing
+abstractions, and use strict TypeScript without casts to `any` to silence
+errors.
+
+The checker cannot enforce these, so keep to them:
+
+- Treat `.shape` files as source code. The files under `shape/` are the guide to
+  syntax and modelling style.
+- Model uncertainty as `effects unknown`, never as an empty `effects complete`.
+- A `forbid final` is final: rationale, memory, reevaluations, and grants never
+  waive it.
+- Diagnostics are a product surface. Keep diagnostics, formatting, graph output,
+  and witnesses deterministic.
+- Never loosen a rule, trait, memory guard, or governed path to make a check
+  pass. Change the code instead, or stop and ask the maintainer. A loosening the
+  maintainer asked for needs a reason in the pull request body; see
+  [Rule loosening](#rule-loosening).
+- Before changing a protected target, inspect `bun shp obligations`,
+  `bun shp memory`, and `bun shp explain TARGET`. Preserve the target, or add a
+  `reevaluation` for this change after checking it against the memory's summary.
+- Model structural dependencies as top-level `relation` declarations, preferring
+  prelude kinds. Before relation-heavy edits, run `bun shp graph stats`; use
+  `bun shp graph show SYMBOL --kind KIND` to focus.
+
 ## Repository layout
 
 | Path | Contents |
@@ -55,7 +82,7 @@ committed, and CI's Codegen job fails when regenerating them produces a diff.
 | `scripts/` | Repository scripts: release building, smoke tests, and canaries (`build-release-assets.sh`, `smoke-release-binary.sh`, `run-release-canaries.ts`); release gates (`check-release-metadata.ts`, `check-release-approval.ts`); `check-skills.ts`; `generate-ast-shapes.ts`; and `write-changed-files.sh`, which writes `changed.txt` and `changed-base.txt`. |
 | `.github/` | Workflows (`shape.yml`, `docs-pages.yml`, `release-candidate.yml`, `release.yml`), the `claude-skill-review` composite action, the Claude job runner in `scripts/`, its prompts in `prompts/`, and result schemas in `shape-contract/schemas/`. |
 | `action.yml`, `install.sh`, `install.ps1` | The GitHub setup action and the installers for released `shp` binaries. |
-| `AGENTS.md` | Instructions for coding agents. `CLAUDE.md` is a symlink to it. |
+| `AGENTS.md` | The project's purpose, for coding agents, with links to this file and `RELEASING.md`. `CLAUDE.md` is a symlink to it. |
 | `DESIGN.md`, `RELEASING.md` | Diagram and visual rules; the release procedure. |
 | `.research/` | Ignored local research material. Nothing tracked may depend on it. |
 
@@ -63,7 +90,7 @@ committed, and CI's Codegen job fails when regenerating them produces a diff.
 
 Run these from the repository root before opening a pull request:
 
-<!-- AGENTS.md and RELEASING.md step 2 repeat this list; change all three together. -->
+<!-- RELEASING.md step 2 repeats this list; change both together. -->
 
 ```bash
 bun run changed-files
@@ -153,8 +180,10 @@ holds many refs, check which of them still apply. Attestations are held to the
 change itself: `shape:ci` compares them with the base in `changed-base.txt`, and
 one carried over from an earlier change does not count and is reported as a
 stale attestation. Delete those with
-`bun shp attest prune --base-ref "$(cat changed-base.txt)"`. Functions in
-generated AST modules never count as a Shape update.
+`bun shp attest prune --base-ref "$(cat changed-base.txt)"` in every pull
+request that touches `shape/`. On a branch stacked on another branch, run
+`BASE_REF=<parent branch> bun run changed-files` first, so the base is the
+parent. Functions in generated AST modules never count as a Shape update.
 
 The [Keep the Model Current](https://timbrinded.github.io/shapelang/guides/keep-model-current/)
 guide explains coverage, bindings, and attestations in full.
