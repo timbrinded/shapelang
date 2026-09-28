@@ -195,13 +195,6 @@ export function trimHorizontalWhitespace(source: string, span: SourceSpan): Sour
   return { start, end };
 }
 
-export function shiftSpan(span: SourceSpan, offset: number): SourceSpan {
-  return {
-    start: span.start + offset,
-    end: span.end + offset
-  };
-}
-
 function consumeLineComment(source: string, start: number): number {
   let cursor = start;
   while (cursor < source.length && source[cursor] !== "\n" && source[cursor] !== "\r") {
@@ -351,12 +344,8 @@ function consumeBracketIdentifier(
 }
 
 function readDollarQuoteDelimiter(source: string, start: number): string | undefined {
-  // A dollar quote cannot start inside an unquoted SQL identifier. In a raw-SQL
-  // string literal the previous character can end a whitespace or control
-  // escape such as `\n`, which is a boundary; `\q` is just `q`.
-  const previous = source[start - 1] ?? "";
-  const afterIdentifier = isIdentifierPart(previous) || source.charCodeAt(start - 1) >= 0x80;
-  if (afterIdentifier && !(source[start - 2] === "\\" && "0bfnrtv".includes(previous))) {
+  // A dollar quote cannot start inside an unquoted SQL identifier.
+  if (isIdentifierPart(source[start - 1] ?? "") || source.charCodeAt(start - 1) >= 0x80) {
     return undefined;
   }
   // PostgreSQL tags follow identifier rules, non-ASCII letters included, but cannot contain "$".

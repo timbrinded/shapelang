@@ -4,7 +4,6 @@ import {
   normalizeStaticTarget,
   readUnquotedIdentifier,
   scanLexicalRegions,
-  shiftSpan,
   skipTrivia,
   trimHorizontalWhitespace
 } from "./analyzer-lexical.ts";
@@ -238,28 +237,100 @@ function collectRawSqlMatches(source: string, lexical: LexicalScan): AnalyzerMat
         continue;
       }
 
-      const sql = source.slice(literal.contentSpan.start, literal.contentSpan.end);
+      // Scan the SQL the database receives: escapes decoded, line continuations removed.
+      const { text: sql, offsets } = decodeJavaScriptStringContent(
+        source.slice(literal.contentSpan.start, literal.contentSpan.end)
+      );
+      const toSource = (span: SourceSpan): SourceSpan => ({
+        start: literal.contentSpan.start + (offsets[span.start] ?? 0),
+        end: literal.contentSpan.start + (offsets[span.end] ?? 0)
+      });
       const sqlLexical = scanLexicalRegions(sql, "sql");
       const evidenceSpan = callEvidenceSpan(source, sinkStart, literal.span.end);
       for (const sqlMatch of scanDestructiveSql(sql, sqlLexical)) {
+        const span = toSource(sqlMatch.span);
         matches.push({
           effect: sqlMatch.effect,
-          span: shiftSpan(sqlMatch.span, literal.contentSpan.start),
+          span,
           evidenceSpan,
-          lineOffset: sqlMatch.span.start + literal.contentSpan.start,
+          lineOffset: span.start,
           ...(sqlMatch.target === undefined ? {} : { target: sqlMatch.target }),
           ...(sqlMatch.targetIdentity === undefined
             ? {}
             : { targetIdentity: sqlMatch.targetIdentity }),
           ...(sqlMatch.targetSpan === undefined
             ? {}
-            : { targetSpan: shiftSpan(sqlMatch.targetSpan, literal.contentSpan.start) })
+            : { targetSpan: toSource(sqlMatch.targetSpan) })
         });
       }
     }
   }
 
   return matches;
+}
+
+/**
+ * The runtime value of a string or template literal's content, and for each of
+ * its characters (plus the end) the offset in `raw` it came from.
+ */
+function decodeJavaScriptStringContent(raw: string): { text: string; offsets: number[] } {
+  let text = "";
+  const offsets: number[] = [];
+  let index = 0;
+  while (index < raw.length) {
+    const start = index;
+    let value = raw[index] ?? "";
+    index += 1;
+    if (value === "\\") {
+      const escaped = readJavaScriptEscape(raw, index);
+      value = escaped.value;
+      index += escaped.length;
+    }
+    for (let unit = 0; unit < value.length; unit += 1) {
+      offsets.push(start);
+    }
+    text += value;
+  }
+  offsets.push(raw.length);
+  return { text, offsets };
+}
+
+const SINGLE_CHARACTER_ESCAPES: Record<string, string> = {
+  "0": "\0",
+  b: "\b",
+  f: "\f",
+  n: "\n",
+  r: "\r",
+  t: "\t",
+  v: "\v"
+};
+
+function readJavaScriptEscape(raw: string, at: number): { value: string; length: number } {
+  const char = raw[at] ?? "";
+  if (char === "\r") {
+    return { value: "", length: raw[at + 1] === "\n" ? 2 : 1 };
+  }
+  if (char === "\n" || char === "\u2028" || char === "\u2029") {
+    return { value: "", length: 1 };
+  }
+  const single = SINGLE_CHARACTER_ESCAPES[char];
+  if (single !== undefined) {
+    return { value: single, length: 1 };
+  }
+  const hex =
+    char === "x"
+      ? /^[0-9A-Fa-f]{2}/.exec(raw.slice(at + 1))
+      : char === "u"
+        ? /^(?:[0-9A-Fa-f]{4}|\{[0-9A-Fa-f]{1,6}\})/.exec(raw.slice(at + 1))
+        : null;
+  if (hex) {
+    const codePoint = Number.parseInt(hex[0].replace(/[{}]/g, ""), 16);
+    if (codePoint <= 0x10ffff) {
+      return { value: String.fromCodePoint(codePoint), length: 1 + hex[0].length };
+    }
+  }
+  // Any other escaped character, such as \', \" or \q, stands for itself.
+  return { value: char, length: char === "" ? 0 : 1 };
 }
 
 function findDirectRawSqlLiteral(
