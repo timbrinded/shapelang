@@ -756,9 +756,6 @@ memory DiagnosticContract : RefactorConstraint<fn ShapeDiagnostics.formatDiagnos
   protects {
     shape DiagnosticOutput
   }
-  guards {
-    on_change require ReEvaluation<Self>
-  }
 }
 
 memory FinalForbidPrecedence : RefactorConstraint<fn ShapeRuleEngine.deriveFinalForbidsForResource> {
@@ -1242,4 +1239,14 @@ reevaluation RuleLooseningDiagnosticOutputChecked {
   decided_on "2026-09-28"
   evidence md("docs-site/src/content/docs/reference/diagnostics.md")
   evidence test("packages/shp-checker/src/behavioural/rule-loosening.test.ts")
+}
+
+attest docs_not_needed {
+  source ts("packages/shp-checker/src/checker/diagnostics.ts")
+  reason "E2E test only: a comment edit that changes no documented behaviour."
+}
+
+attest docs_not_needed {
+  source shape("shape/checker.shape")
+  reason "E2E test only: removes a memory guard to exercise the rule loosening gate."
 }

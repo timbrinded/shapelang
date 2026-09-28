@@ -3,6 +3,7 @@
 // module depends on the model (diagnostic shapes) and the shared model-display
 // helpers (checker/display.ts); nothing here lowers declarations or evaluates
 // rules, so lowering and query code never import from diagnostics.
+// E2E TEST ONLY: a trivial edit to a guarded source file. Do not merge.
 import type { CheckResult, SemanticDiagnostic, ShapeDiagnostic } from "./model.ts";
 import type { ParseDiagnostic } from "../parser.ts";
 import { compareCodepointStrings } from "../shape-strings.ts";
