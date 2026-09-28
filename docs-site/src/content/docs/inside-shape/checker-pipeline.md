@@ -25,7 +25,7 @@ Paths are relative to `packages/shp-checker/src/`.
 
 - **`checkShapeFiles(paths, options)`** is the path `shp check` takes. It reads and parses every path, in the given order, before lowering any of them. When all of them parse, it classifies each module's origin with `moduleOriginForShapeFile` against the normalized `repoRoot` and passes the modules to `checkShapeModules`. A module is generated AST only when its name is `shape.generated.ast` or starts with `shape.generated.ast.`, and its path relative to `repoRoot` is under `shape/generated/ast/`.
 - **`checkShapeModules(modules, options)`** takes parsed `ShapeModule[]` or `CheckModuleInput[]` (`module`, optional `filePath`, optional `origin`). It trusts only explicit origins: an input without `origin: "generated_ast"` is authored. It normalizes the options, calls `lowerShapeModules`, and passes the model to `checkLoweredShapeModel`. It never returns exit code `2`.
-- **`checkLoweredShapeModel(model, normalizedOptions)`** is internal. `checker/api.ts` exports it, but the package does not. Both entry points and the incremental checker assemble their results through it, so the pass condition and the sort exist in one place.
+- **`checkLoweredShapeModel(model, normalizedOptions)`** is internal. `checker/api.ts` exports it, but the package does not. Both entry points and the incremental checker assemble their results through it. When `checkLoosening` adds diagnostics afterwards, `checkShapeModules` recomputes `ok` and the order with the same helpers, `isWarning` and `compareShapeDiagnostics`.
 - **`IncrementalShapeChecker`** caches parsed documents and the last lowered model for callers that check an in-memory workspace repeatedly. See [Incremental checking](#incremental-checking).
 
 `@shape/shp-checker` (`src/index.ts`) exports `checkShapeFiles`, `checkShapeModules`, and `IncrementalShapeChecker`. It does not export `lowerShapeModules` or `checkLoweredShapeModel`. The read-only query helpers in `checker/query.ts` (`explainShapeModules`, `graphShapeModules`, `listMemoryGuardsShapeModules`, and others) lower the modules themselves and never decide pass or fail; `listShapeObligations` calls `checkShapeModules` and filters its diagnostics.
@@ -35,6 +35,9 @@ Paths are relative to `packages/shp-checker/src/`.
 | Option | Default | Read by | Effect |
 | --- | --- | --- | --- |
 | `changedFiles` | none | `checkCoverage`, `checkBindings` | Paths are normalized against `repoRoot`. With no paths, coverage and bindings report nothing. |
+| `baseModules` | none | `checkCoverage`, `checkBindings`, `checkGuardedSources`, `checkStaleAttestations` | Summarized once into attestation, reevaluation, and context keys. An attestation identical to the base does not count and is reported as `stale_attestation`. |
+| `checkLoosening` | off | `checkShapeModules` | Reverts each rule-layer edit to the base in turn and reports `rule_loosening`. Requires `baseModules`. |
+| `repositoryFiles` | none | `checkCitedPaths`, the loosening check | Every file in the repository. Cited paths must be in it, and the loosening check ignores coverage errors about files the change deleted. |
 | `repoRoot` | the working directory | `checkShapeFiles`, `checkCoverage`, `checkBindings` | Resolved to an absolute path. It classifies module origins and normalizes absolute changed-file and provenance paths. |
 | `freshnessDate` | unset | `checkFreshness` | An ISO `YYYY-MM-DD` date; unset turns freshness off. An invalid value throws a `TypeError` instead of producing a diagnostic. |
 | `enforceBindings` | on | `checkLoweredShapeModel` | `false` skips `checkBindings`. |
@@ -45,7 +48,7 @@ Paths are relative to `packages/shp-checker/src/`.
 
 ## Pass condition and exit codes
 
-`CheckResult.ok` is `true` when there are no diagnostics or every diagnostic is a warning: either `stale_attestation` or `unknown_effects` with severity `warning`. `allowUnknownEffects` downgrades only the latter; stale attestations are always warnings.
+`CheckResult.ok` is `true` when every diagnostic is non-blocking, including when there are none. Only two kinds are non-blocking: `stale_attestation`, always, and `unknown_effects` once `allowUnknownEffects` has set its severity to `warning`.
 
 | `exitCode` | Meaning |
 | --- | --- |
