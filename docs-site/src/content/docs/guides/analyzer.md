@@ -178,7 +178,7 @@ These details decide whether a hint appears and whether it carries a target:
 - In TypeScript, matches count only outside comments and string literals. SQL text inside a string is scanned only when the literal is the first argument of a raw-SQL sink and is followed by `)` or `,`. Any sink also accepts a `sql`-tagged template there, and `$executeRaw` and `$executeRawUnsafe` also accept a tagged template directly.
 - A raw-SQL literal must be closed and static. A template containing `${...}` produces no hint at all.
 - In SQL, the destructive keyword must be the first token of its statement; statements end at `;`. Whitespace, newlines, and comments (`--`, `#`, `/* */`) may separate the keywords, so a multiline `DELETE ... FROM` is found. Quoted text is ignored, and quoted identifiers keep their quoting for target comparison.
-- SQL dollar-quoted text (`$$...$$` or `$tag$...$tag$`) is ignored. A tag follows PostgreSQL's identifier rules without `$`, and the closing tag must match exactly, including case. A dollar quote is not recognised directly after a letter, digit, underscore, `$`, or non-ASCII character; in a TypeScript string literal, an escape such as `\n` counts as a boundary.
+- SQL dollar-quoted text (`$$...$$` or `$tag$...$tag$`) is ignored. A tag follows PostgreSQL's identifier rules without `$`, and the closing tag must match exactly, including case. A dollar quote is not recognised directly after a letter, digit, underscore, `$`, or non-ASCII character; in a TypeScript string literal, a whitespace or control escape such as `\n` or `\t` counts as a boundary.
 
 ## Limits
 
