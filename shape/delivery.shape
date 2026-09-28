@@ -22,13 +22,13 @@ resource CliPackageManifest
 
 resource DocsContent
 
-resource HumanWrittenTask
-
 resource InstallScript
 
 resource NativeParserAsset
 
 resource PluginPackageManifest
+
+resource PullRequestDescription
 
 resource PullRequestStatusComment
 
@@ -49,7 +49,7 @@ component CiPipeline {
   owns CiWorkflow
   owns ClaudeReviewPrompt
   owns ClaudeReviewResult
-  owns HumanWrittenTask
+  owns PullRequestDescription
   owns PullRequestStatusComment
   owns SkillReleaseApproval
   owns SkillReleaseReport
@@ -64,10 +64,10 @@ component CiPipeline {
   grants Read<ExperimentalKernelDiagnosticSet>
   grants Read<ExperimentalKernelEnvelope>
   grants Read<GeneratedAstManifest>
-  grants Read<HumanWrittenTask>
   grants Read<LanguageSource>
   grants Read<NativeParserAsset>
   grants Read<PluginPackageManifest>
+  grants Read<PullRequestDescription>
   grants Read<PullRequestStatusComment>
   grants Read<ReleaseArtifact>
   grants Read<ReleaseVersionTag>
@@ -84,7 +84,6 @@ component CiPipeline {
   grants Update<ClaudeReviewResult>
   grants Update<ExperimentalKernelWasmArtifact>
   grants Update<GeneratedAstManifest>
-  grants Update<HumanWrittenTask>
   grants Update<PullRequestStatusComment>
   grants Update<ShapeModelDraft>
   grants Update<SkillReleaseApproval>
@@ -228,13 +227,6 @@ component CiPipeline {
       Update<SkillReleaseReport>
         evidence json(".github/shape-contract/schemas/shape-skills-release-result.schema.json")
     }
-  fn fetchHumanTask
-    source mjs(".github/scripts/fetch-human-task.mjs#humanTaskMarkdown")
-    description "Writes shape-task.md for the contract guard from the issues the pull request closes and its comments, keeping only text whose author the collaborator permission API gives write or admin access, is not a bot, and carries no Claude Code attribution footer; the pull request description is never read."
-    effects complete {
-      Update<HumanWrittenTask>
-        evidence mjs(".github/scripts/fetch-human-task.mjs#main")
-    }
   fn generateAstContext
     source ts("scripts/generate-ast-shapes.ts")
     effects complete {
@@ -310,7 +302,7 @@ component CiPipeline {
     }
   fn runRuleLooseningCheck
     source yaml(".github/workflows/shape-loosening.yml")
-    description "Runs shape:loosening on each pull request event, including label changes, and fails only on rule loosening unless the pull request carries the shape-loosening-approved label a maintainer adds."
+    description "Runs shape:loosening on each pull request event, including body edits, and fails when a reported rule loosening has no line in the body's visible Rule loosening section that names it and gives a reason; HTML comments and collapsed details blocks do not count."
     effects complete {
       Read<ChangeBaseRevision>
         evidence json("package.json")
@@ -318,8 +310,10 @@ component CiPipeline {
         evidence yaml(".github/workflows/shape-loosening.yml")
       Read<CiWorkflow>
         evidence yaml(".github/workflows/shape-loosening.yml")
+      Read<PullRequestDescription>
+        evidence mjs(".github/scripts/check-loosening-rationale.mjs#rationaleSection")
       Read<SemanticDiagnostics>
-        evidence yaml(".github/workflows/shape-loosening.yml")
+        evidence mjs(".github/scripts/check-loosening-rationale.mjs#looseningEdits")
     }
   fn runShapeCi
     source yaml(".github/workflows/shape.yml")
@@ -360,10 +354,8 @@ component CiPipeline {
     }
   fn runShapeGuardReview
     source mjs(".github/scripts/run-claude-skill.mjs#buildGuardPrompt")
-    description "Advisory loosening review of authored .shape diffs driven by the shape-contract-guard skill; a git-diff prefilter skips the model call when no authored .shape changed, the prompt asks for shp check --check-loosening against changed-base.txt and names the human-written task file, which alone can make a loosening supported, the model call is delegated to anthropics/claude-code-action with structured output, and only high-impact suspicious findings fail the job."
+    description "Advisory loosening review of authored .shape diffs driven by the shape-contract-guard skill; a git-diff prefilter skips the model call when no authored .shape changed, the model call is delegated to anthropics/claude-code-action with structured output, and only high-impact suspicious findings fail the job."
     effects complete {
-      Read<ChangeBaseRevision>
-        evidence mjs(".github/scripts/run-claude-skill.mjs#readChangedBase")
       Read<ChangedFileList>
         evidence yaml(".github/workflows/shape.yml")
       Read<CiWorkflow>
@@ -376,8 +368,6 @@ component CiPipeline {
         evidence json(".github/shape-contract/schemas/shape-guard-result.schema.json")
       Read<ClaudeReviewResult>
         evidence mjs(".github/scripts/run-claude-skill.mjs")
-      Read<HumanWrittenTask>
-        evidence md(".github/prompts/shape-guard.md")
       Update<ClaudeReviewResult>
         evidence mjs(".github/scripts/run-claude-skill.mjs")
       Update<ClaudeReviewResult>

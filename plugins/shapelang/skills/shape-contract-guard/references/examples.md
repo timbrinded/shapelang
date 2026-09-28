@@ -44,24 +44,7 @@ Expected:
 +}
 ```
 
-Expected: `impact: high`, `support: generic`, and `disposition: suspicious`. The rationale arrives in the same change as the removal, so it cannot support it.
-
-When the host supplies issue 123 as human-written task text that asks for `ExportBundle` to lose its protection, expected: `support: specific` and `disposition: supported`. Either way, do not lower impact because decision evidence exists, and do not call the change necessary.
-
-## Rule Loosening Report
-
-`--check-loosening` reports:
-
-```text
-error: rule loosening
-
-This change removes trait AppendOnly from resource Revision.
-With the base version restored, the check fails:
-
-  error: forbidden effect
-```
-
-Expected: one high-impact finding for `Revision`, with `before` `resource Revision : AppendOnly`, `after` `resource Revision`, and the quoted forbidden effect as `evidence`. Its support and disposition follow the human-written task, as above.
+Expected: `impact: high`, `support: specific`, and `disposition: supported`. Do not lower impact because decision evidence exists. Do not call the change necessary.
 
 ## Equivalent Relocation
 

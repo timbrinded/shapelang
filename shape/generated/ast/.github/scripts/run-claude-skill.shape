@@ -18,7 +18,7 @@ resource RunClaudeSkillModuleBuildClaudeArgsAstAnchor : GeneratedAstAnchor {
 
 resource RunClaudeSkillModuleBuildGuardPromptAstAnchor : GeneratedAstAnchor {
   storage ast.anchor(".github/scripts/run-claude-skill.mjs#buildGuardPrompt")
-  fingerprint ast.semantic_subtree_v1("sha256:688c774a989083e172c9fa568d2fa5e35570d46e0ed268429ac4b9ca8a58c4cc")
+  fingerprint ast.semantic_subtree_v1("sha256:96be7b43d866bae630a5b7f0f1f5c867e2c21be11a242c50ec8fa58ba5364a45")
 }
 
 resource RunClaudeSkillModuleBuildIndexPromptAstAnchor : GeneratedAstAnchor {
@@ -129,11 +129,6 @@ resource RunClaudeSkillModuleNormalizeReleaseEvidenceAstAnchor : GeneratedAstAnc
 resource RunClaudeSkillModulePrefilterOutputsAstAnchor : GeneratedAstAnchor {
   storage ast.anchor(".github/scripts/run-claude-skill.mjs#prefilterOutputs")
   fingerprint ast.semantic_subtree_v1("sha256:692b050fc1f1436bc4d81a8601073aa0cd989c2ce0cf0a7e84fd072b7364c749")
-}
-
-resource RunClaudeSkillModuleReadChangedBaseAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor(".github/scripts/run-claude-skill.mjs#readChangedBase")
-  fingerprint ast.semantic_subtree_v1("sha256:c4f5abc87f2c598d10b39cafb23e20090f731d5a463599e446a3212e990a0cf4")
 }
 
 resource RunClaudeSkillModuleReleasePrefilterAstAnchor : GeneratedAstAnchor {
@@ -292,9 +287,6 @@ component RunClaudeSkillModule : GeneratedCandidate {
   fn prefilterOutputs
     source js(".github/scripts/run-claude-skill.mjs#prefilterOutputs")
     effects unknown
-  fn readChangedBase
-    source js(".github/scripts/run-claude-skill.mjs#readChangedBase")
-    effects unknown
   fn releasePrefilter
     source js(".github/scripts/run-claude-skill.mjs#releasePrefilter")
     effects unknown
@@ -365,7 +357,7 @@ relation RunClaudeSkillModuleBuildGuardPromptGeneratedFromRunClaudeSkillModuleBu
   kind generated_from
   connects RunClaudeSkillModule -> RunClaudeSkillModuleBuildGuardPromptAstAnchor
   roles { RunClaudeSkillModule as generated, RunClaudeSkillModuleBuildGuardPromptAstAnchor as syntax }
-  expects RunClaudeSkillModuleBuildGuardPromptAstAnchor fingerprint ast.semantic_subtree_v1("sha256:688c774a989083e172c9fa568d2fa5e35570d46e0ed268429ac4b9ca8a58c4cc")
+  expects RunClaudeSkillModuleBuildGuardPromptAstAnchor fingerprint ast.semantic_subtree_v1("sha256:96be7b43d866bae630a5b7f0f1f5c867e2c21be11a242c50ec8fa58ba5364a45")
   summary "fn RunClaudeSkillModule.buildGuardPrompt generated from javascript function_declaration at .github/scripts/run-claude-skill.mjs#buildGuardPrompt."
 }
 
@@ -543,14 +535,6 @@ relation RunClaudeSkillModulePrefilterOutputsGeneratedFromRunClaudeSkillModulePr
   roles { RunClaudeSkillModule as generated, RunClaudeSkillModulePrefilterOutputsAstAnchor as syntax }
   expects RunClaudeSkillModulePrefilterOutputsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:692b050fc1f1436bc4d81a8601073aa0cd989c2ce0cf0a7e84fd072b7364c749")
   summary "fn RunClaudeSkillModule.prefilterOutputs generated from javascript function_declaration at .github/scripts/run-claude-skill.mjs#prefilterOutputs."
-}
-
-relation RunClaudeSkillModuleReadChangedBaseGeneratedFromRunClaudeSkillModuleReadChangedBaseAstAnchor {
-  kind generated_from
-  connects RunClaudeSkillModule -> RunClaudeSkillModuleReadChangedBaseAstAnchor
-  roles { RunClaudeSkillModule as generated, RunClaudeSkillModuleReadChangedBaseAstAnchor as syntax }
-  expects RunClaudeSkillModuleReadChangedBaseAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c4f5abc87f2c598d10b39cafb23e20090f731d5a463599e446a3212e990a0cf4")
-  summary "fn RunClaudeSkillModule.readChangedBase generated from javascript function_declaration at .github/scripts/run-claude-skill.mjs#readChangedBase."
 }
 
 relation RunClaudeSkillModuleReleasePrefilterGeneratedFromRunClaudeSkillModuleReleasePrefilterAstAnchor {

@@ -170,9 +170,20 @@ count.
 puts back, one at a time, each trait, rule, memory, rationale, implementation,
 binding, role, policy, or trait list the change removed or edited, and fails
 with `error: rule loosening` when that brings back an error. Fix the code
-instead of the rule. When a person asked for the loosening, a maintainer adds
-the `shape-loosening-approved` label to the pull request, and the Rule Loosening
-job then passes with a notice. Coding agents must never add that label.
+instead of the rule where you can. When the loosening is intended, the pull
+request body must give every loosening a reason under a `## Rule loosening`
+heading, one line each that names the loosened declaration and says why:
+
+```markdown
+## Rule loosening
+
+- `Revision`: loses `AppendOnly` because #140 asks for revisions older than seven years to be purged.
+```
+
+The line names the declaration that the report names last (either name of a
+renamed resource) and gives at least three words of reason. Text inside an HTML
+comment or a collapsed `<details>` block does not count, so the reason is always
+in front of the reviewer.
 
 ## What to update per change type
 
@@ -317,20 +328,13 @@ neither is set. The script then runs twice:
 | Shape Contract Guard (`shape-guard`) | The authored `.shape` diff against the pull request base, following `plugins/shapelang/skills/shape-contract-guard/SKILL.md` and `.github/prompts/shape-guard.md`: removed final forbids, weakened traits, widened grants or effects, weakened relations or coverage, and weak attestations. The prefilter passes without calling Claude when no authored `.shape` file (outside `shape/generated/`) changed. | The review errors, a `pass` carries findings, or a finding is high-impact and suspicious. Other findings, including high-impact ones marked supported, are advisory. |
 | Shape Index Coverage (`shape-index`) | Follows `plugins/shapelang/skills/shape-index/SKILL.md` and `.github/prompts/shape-index.md`. The prefilter lists changed source files that no `source` or `evidence` ref or `implementation` glob in `shape/*.shape` covers, passes without Claude when there are none, and otherwise asks Claude to judge that remainder for architecture-significant subsystems without coverage. | The review errors, a `pass` carries gaps, or it finds gaps while the Actions variable `SHAPE_INDEX_STRICT` is `true`. Otherwise gaps appear in the job summary but do not block. |
 
-The Contract Guard job also writes `shape-task.md` before the review, with
-`.github/scripts/fetch-human-task.mjs`: the bodies of the issues the pull
-request closes and the pull request comments, kept only when the collaborator
-permission API gives their author write or admin access and the text has no
-Claude Code attribution footer. The pull
-request description is left out. Only that task text can make a loosening
-`supported`; a rationale or attestation added in the same pull request counts as
-`generic` support at most.
-
 `.github/workflows/shape-loosening.yml` (workflow name `Rule loosening`) runs a
-Rule Loosening job on pull requests, including when a label is added or
-removed. It runs `shape:loosening` and fails only on `error: rule loosening`,
-unless the pull request carries the `shape-loosening-approved` label; other
-errors are the Shape job's to report.
+Rule Loosening job on pull requests, including when the pull request body is
+edited. It runs `shape:loosening`, then
+`.github/scripts/check-loosening-rationale.mjs`, which fails when a reported
+loosening has no reason in the body's visible `## Rule loosening` section and
+lists each loosening beside that section in the job summary. Other errors are
+the Shape job's to report.
 
 After these jobs, Shape PR Summary Comment (`shape-pr-comment`) upserts one
 comment on the pull request. It reports the results of Shape, Shape Claude

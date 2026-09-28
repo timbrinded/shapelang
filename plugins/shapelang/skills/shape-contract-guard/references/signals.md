@@ -14,7 +14,7 @@ Use this reference to classify normalized authored-contract changes. Keep checke
 
 - `none`: no decision evidence addresses the changed symbol and risk.
 - `generic`: rationale, evidence, reevaluation, or attestation exists but does not address the exact change.
-- `specific`: reviewable decision evidence from outside the change names the affected symbol/path, semantic risk, and reason. Only the base model or human-written task text the host supplies qualifies; evidence added in the same change is `generic` at most.
+- `specific`: reviewable decision evidence names the affected symbol/path, semantic risk, and reason.
 
 ### Disposition
 

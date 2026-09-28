@@ -11,9 +11,19 @@ resource ShapeWorkflowTestModuleGuardFindingAstAnchor : GeneratedAstAnchor {
   fingerprint ast.semantic_subtree_v1("sha256:17e7d2e8cbf9a61a11c09a3cf20a57c319a2a27f4fdcfad68dc7138ac50f8b09")
 }
 
+resource ShapeWorkflowTestModuleLooseningLogAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/shape-workflow.test.ts#looseningLog")
+  fingerprint ast.semantic_subtree_v1("sha256:603e1e37103e9ddb7c2fe188f8e96aa722b9025251d783fb17f5e3812007aa08")
+}
+
 resource ShapeWorkflowTestModuleReviewFindingAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-cli/src/shape-workflow.test.ts#reviewFinding")
   fingerprint ast.semantic_subtree_v1("sha256:3f58110cabe58ab99ebd3d731a5abaa6c81fbadbdf96e756f9203642586b6e1f")
+}
+
+resource ShapeWorkflowTestModuleRunLooseningRationaleAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-cli/src/shape-workflow.test.ts#runLooseningRationale")
+  fingerprint ast.semantic_subtree_v1("sha256:ecede4c8ab6f341255a08b894d8cb57ff9b4ec50d2cf809c49066b3d03e7cc97")
 }
 
 resource ShapeWorkflowTestModuleRunNodeModuleProbeAstAnchor : GeneratedAstAnchor {
@@ -45,8 +55,14 @@ component ShapeWorkflowTestModule : GeneratedCandidate {
   fn guardFinding
     source ts("packages/shp-cli/src/shape-workflow.test.ts#guardFinding")
     effects unknown
+  fn looseningLog
+    source ts("packages/shp-cli/src/shape-workflow.test.ts#looseningLog")
+    effects unknown
   fn reviewFinding
     source ts("packages/shp-cli/src/shape-workflow.test.ts#reviewFinding")
+    effects unknown
+  fn runLooseningRationale
+    source ts("packages/shp-cli/src/shape-workflow.test.ts#runLooseningRationale")
     effects unknown
   fn runNodeModuleProbe
     source ts("packages/shp-cli/src/shape-workflow.test.ts#runNodeModuleProbe")
@@ -73,12 +89,28 @@ relation ShapeWorkflowTestModuleGuardFindingGeneratedFromShapeWorkflowTestModule
   summary "fn ShapeWorkflowTestModule.guardFinding generated from typescript function_declaration at packages/shp-cli/src/shape-workflow.test.ts#guardFinding."
 }
 
+relation ShapeWorkflowTestModuleLooseningLogGeneratedFromShapeWorkflowTestModuleLooseningLogAstAnchor {
+  kind generated_from
+  connects ShapeWorkflowTestModule -> ShapeWorkflowTestModuleLooseningLogAstAnchor
+  roles { ShapeWorkflowTestModule as generated, ShapeWorkflowTestModuleLooseningLogAstAnchor as syntax }
+  expects ShapeWorkflowTestModuleLooseningLogAstAnchor fingerprint ast.semantic_subtree_v1("sha256:603e1e37103e9ddb7c2fe188f8e96aa722b9025251d783fb17f5e3812007aa08")
+  summary "fn ShapeWorkflowTestModule.looseningLog generated from typescript function_declaration at packages/shp-cli/src/shape-workflow.test.ts#looseningLog."
+}
+
 relation ShapeWorkflowTestModuleReviewFindingGeneratedFromShapeWorkflowTestModuleReviewFindingAstAnchor {
   kind generated_from
   connects ShapeWorkflowTestModule -> ShapeWorkflowTestModuleReviewFindingAstAnchor
   roles { ShapeWorkflowTestModule as generated, ShapeWorkflowTestModuleReviewFindingAstAnchor as syntax }
   expects ShapeWorkflowTestModuleReviewFindingAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3f58110cabe58ab99ebd3d731a5abaa6c81fbadbdf96e756f9203642586b6e1f")
   summary "fn ShapeWorkflowTestModule.reviewFinding generated from typescript function_declaration at packages/shp-cli/src/shape-workflow.test.ts#reviewFinding."
+}
+
+relation ShapeWorkflowTestModuleRunLooseningRationaleGeneratedFromShapeWorkflowTestModuleRunLooseningRationaleAstAnchor {
+  kind generated_from
+  connects ShapeWorkflowTestModule -> ShapeWorkflowTestModuleRunLooseningRationaleAstAnchor
+  roles { ShapeWorkflowTestModule as generated, ShapeWorkflowTestModuleRunLooseningRationaleAstAnchor as syntax }
+  expects ShapeWorkflowTestModuleRunLooseningRationaleAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ecede4c8ab6f341255a08b894d8cb57ff9b4ec50d2cf809c49066b3d03e7cc97")
+  summary "fn ShapeWorkflowTestModule.runLooseningRationale generated from typescript function_declaration at packages/shp-cli/src/shape-workflow.test.ts#runLooseningRationale."
 }
 
 relation ShapeWorkflowTestModuleRunNodeModuleProbeGeneratedFromShapeWorkflowTestModuleRunNodeModuleProbeAstAnchor {

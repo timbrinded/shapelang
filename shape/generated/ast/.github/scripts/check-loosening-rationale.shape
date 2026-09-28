@@ -1,0 +1,129 @@
+module shape.generated.ast.github.scripts.check_loosening_rationale
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource CheckLooseningRationaleModuleExplainsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor(".github/scripts/check-loosening-rationale.mjs#explains")
+  fingerprint ast.semantic_subtree_v1("sha256:5ff42e2aa1838a818ff0f46e57dd1a63b6084403e80afcf3605ab0ac237d2ae8")
+}
+
+resource CheckLooseningRationaleModuleIsMainModuleAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor(".github/scripts/check-loosening-rationale.mjs#isMainModule")
+  fingerprint ast.semantic_subtree_v1("sha256:a7630a5e5fbe44b11a467fb490a2c52019708e3bbc0e6d3476897795228c2a3f")
+}
+
+resource CheckLooseningRationaleModuleLooseningEditsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor(".github/scripts/check-loosening-rationale.mjs#looseningEdits")
+  fingerprint ast.semantic_subtree_v1("sha256:20be7909302888b44ffe741dd5a934ce68d93934064f30ed459b8c1f7c9d882e")
+}
+
+resource CheckLooseningRationaleModuleMainAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor(".github/scripts/check-loosening-rationale.mjs#main")
+  fingerprint ast.semantic_subtree_v1("sha256:e847bc7667d06962af1d5e515a248f89116d6844bf7e378ac26f0152b19f0c1d")
+}
+
+resource CheckLooseningRationaleModuleRationaleSectionAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor(".github/scripts/check-loosening-rationale.mjs#rationaleSection")
+  fingerprint ast.semantic_subtree_v1("sha256:6bfa495673e0a25cbe6c2e6f39219dc24f418b7bdd67d286372353ee0f902c0c")
+}
+
+resource CheckLooseningRationaleModuleUnexplainedEditsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor(".github/scripts/check-loosening-rationale.mjs#unexplainedEdits")
+  fingerprint ast.semantic_subtree_v1("sha256:416736799dbeb60a719d37e7cffab16ccaf4908faceb3f648385aac18a3d6e1c")
+}
+
+resource CheckLooseningRationaleModuleVisibleMarkdownAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor(".github/scripts/check-loosening-rationale.mjs#visibleMarkdown")
+  fingerprint ast.semantic_subtree_v1("sha256:4a2960607d4a8659f1989cef5bb364e83e6831564832c6661408791eabcfc7e8")
+}
+
+component CheckLooseningRationaleModule : GeneratedCandidate {
+  fn explains
+    source js(".github/scripts/check-loosening-rationale.mjs#explains")
+    effects unknown
+  fn isMainModule
+    source js(".github/scripts/check-loosening-rationale.mjs#isMainModule")
+    effects unknown
+  fn looseningEdits
+    source js(".github/scripts/check-loosening-rationale.mjs#looseningEdits")
+    effects unknown
+  fn main
+    source js(".github/scripts/check-loosening-rationale.mjs#main")
+    effects unknown
+  fn rationaleSection
+    source js(".github/scripts/check-loosening-rationale.mjs#rationaleSection")
+    effects unknown
+  fn unexplainedEdits
+    source js(".github/scripts/check-loosening-rationale.mjs#unexplainedEdits")
+    effects unknown
+  fn visibleMarkdown
+    source js(".github/scripts/check-loosening-rationale.mjs#visibleMarkdown")
+    effects unknown
+}
+
+relation CheckLooseningRationaleModuleExplainsGeneratedFromCheckLooseningRationaleModuleExplainsAstAnchor {
+  kind generated_from
+  connects CheckLooseningRationaleModule -> CheckLooseningRationaleModuleExplainsAstAnchor
+  roles { CheckLooseningRationaleModule as generated, CheckLooseningRationaleModuleExplainsAstAnchor as syntax }
+  expects CheckLooseningRationaleModuleExplainsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5ff42e2aa1838a818ff0f46e57dd1a63b6084403e80afcf3605ab0ac237d2ae8")
+  summary "fn CheckLooseningRationaleModule.explains generated from javascript function_declaration at .github/scripts/check-loosening-rationale.mjs#explains."
+}
+
+relation CheckLooseningRationaleModuleIsMainModuleGeneratedFromCheckLooseningRationaleModuleIsMainModuleAstAnchor {
+  kind generated_from
+  connects CheckLooseningRationaleModule -> CheckLooseningRationaleModuleIsMainModuleAstAnchor
+  roles { CheckLooseningRationaleModule as generated, CheckLooseningRationaleModuleIsMainModuleAstAnchor as syntax }
+  expects CheckLooseningRationaleModuleIsMainModuleAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a7630a5e5fbe44b11a467fb490a2c52019708e3bbc0e6d3476897795228c2a3f")
+  summary "fn CheckLooseningRationaleModule.isMainModule generated from javascript function_declaration at .github/scripts/check-loosening-rationale.mjs#isMainModule."
+}
+
+relation CheckLooseningRationaleModuleLooseningEditsGeneratedFromCheckLooseningRationaleModuleLooseningEditsAstAnchor {
+  kind generated_from
+  connects CheckLooseningRationaleModule -> CheckLooseningRationaleModuleLooseningEditsAstAnchor
+  roles { CheckLooseningRationaleModule as generated, CheckLooseningRationaleModuleLooseningEditsAstAnchor as syntax }
+  expects CheckLooseningRationaleModuleLooseningEditsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:20be7909302888b44ffe741dd5a934ce68d93934064f30ed459b8c1f7c9d882e")
+  summary "fn CheckLooseningRationaleModule.looseningEdits generated from javascript function_declaration at .github/scripts/check-loosening-rationale.mjs#looseningEdits."
+}
+
+relation CheckLooseningRationaleModuleMainGeneratedFromCheckLooseningRationaleModuleMainAstAnchor {
+  kind generated_from
+  connects CheckLooseningRationaleModule -> CheckLooseningRationaleModuleMainAstAnchor
+  roles { CheckLooseningRationaleModule as generated, CheckLooseningRationaleModuleMainAstAnchor as syntax }
+  expects CheckLooseningRationaleModuleMainAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e847bc7667d06962af1d5e515a248f89116d6844bf7e378ac26f0152b19f0c1d")
+  summary "fn CheckLooseningRationaleModule.main generated from javascript function_declaration at .github/scripts/check-loosening-rationale.mjs#main."
+}
+
+relation CheckLooseningRationaleModuleRationaleSectionGeneratedFromCheckLooseningRationaleModuleRationaleSectionAstAnchor {
+  kind generated_from
+  connects CheckLooseningRationaleModule -> CheckLooseningRationaleModuleRationaleSectionAstAnchor
+  roles { CheckLooseningRationaleModule as generated, CheckLooseningRationaleModuleRationaleSectionAstAnchor as syntax }
+  expects CheckLooseningRationaleModuleRationaleSectionAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6bfa495673e0a25cbe6c2e6f39219dc24f418b7bdd67d286372353ee0f902c0c")
+  summary "fn CheckLooseningRationaleModule.rationaleSection generated from javascript function_declaration at .github/scripts/check-loosening-rationale.mjs#rationaleSection."
+}
+
+relation CheckLooseningRationaleModuleUnexplainedEditsGeneratedFromCheckLooseningRationaleModuleUnexplainedEditsAstAnchor {
+  kind generated_from
+  connects CheckLooseningRationaleModule -> CheckLooseningRationaleModuleUnexplainedEditsAstAnchor
+  roles { CheckLooseningRationaleModule as generated, CheckLooseningRationaleModuleUnexplainedEditsAstAnchor as syntax }
+  expects CheckLooseningRationaleModuleUnexplainedEditsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:416736799dbeb60a719d37e7cffab16ccaf4908faceb3f648385aac18a3d6e1c")
+  summary "fn CheckLooseningRationaleModule.unexplainedEdits generated from javascript function_declaration at .github/scripts/check-loosening-rationale.mjs#unexplainedEdits."
+}
+
+relation CheckLooseningRationaleModuleVisibleMarkdownGeneratedFromCheckLooseningRationaleModuleVisibleMarkdownAstAnchor {
+  kind generated_from
+  connects CheckLooseningRationaleModule -> CheckLooseningRationaleModuleVisibleMarkdownAstAnchor
+  roles { CheckLooseningRationaleModule as generated, CheckLooseningRationaleModuleVisibleMarkdownAstAnchor as syntax }
+  expects CheckLooseningRationaleModuleVisibleMarkdownAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4a2960607d4a8659f1989cef5bb364e83e6831564832c6661408791eabcfc7e8")
+  summary "fn CheckLooseningRationaleModule.visibleMarkdown generated from javascript function_declaration at .github/scripts/check-loosening-rationale.mjs#visibleMarkdown."
+}
+
+implementation CheckLooseningRationaleModuleImpl {
+  paths {
+    ".github/scripts/check-loosening-rationale.mjs"
+  }
+  conforms_to CheckLooseningRationaleModule
+}

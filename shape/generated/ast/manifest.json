@@ -3,10 +3,10 @@
   "generatedAt": "deterministic",
   "entries": [
     {
-      "module": "shape.generated.ast.github.scripts.fetch_human_task",
-      "path": "shape/generated/ast/.github/scripts/fetch-human-task.shape",
+      "module": "shape.generated.ast.github.scripts.check_loosening_rationale",
+      "path": "shape/generated/ast/.github/scripts/check-loosening-rationale.shape",
       "sources": [
-        ".github/scripts/fetch-human-task.mjs"
+        ".github/scripts/check-loosening-rationale.mjs"
       ]
     },
     {

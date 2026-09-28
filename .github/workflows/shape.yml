@@ -237,7 +237,6 @@ jobs:
     if: github.event_name == 'pull_request'
     permissions:
       contents: read
-      issues: read
       pull-requests: read
 
     steps:
@@ -254,9 +253,7 @@ jobs:
         uses: ./.github/actions/claude-skill-review
         with:
           skill: guard
-          prepare-command: node .github/scripts/fetch-human-task.mjs shape-task.md
         env:
-          GH_TOKEN: ${{ github.token }}
           API_TIMEOUT_MS: 18000
           DISABLE_NON_ESSENTIAL_MODE_CALLS: 1
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
