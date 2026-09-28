@@ -1,0 +1,2 @@
+src/share/button.ts
+shape/sharing.shape

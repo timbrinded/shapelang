@@ -1,0 +1,3 @@
+shape/sharing.shape
+src/share/public.ts
+src/sharing/public.ts
