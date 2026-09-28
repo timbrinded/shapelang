@@ -174,6 +174,13 @@ describe("Shape source analyzer", () => {
         "visible"
       ]);
     }
+    // JavaScript reads `\q` as `q`, so PostgreSQL sees one identifier and no quote.
+    expect(
+      analyzeSourceText(
+        "src/audit/purge.ts",
+        "await db.execute('SELECT foo\\q$tag$; DELETE FROM visible;');"
+      ).map((hint) => hint.target)
+    ).toEqual(["visible"]);
   });
 
   test("preserves CRLF offsets and reports one-based start lines", () => {

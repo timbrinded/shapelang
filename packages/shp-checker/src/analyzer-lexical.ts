@@ -352,10 +352,11 @@ function consumeBracketIdentifier(
 
 function readDollarQuoteDelimiter(source: string, start: number): string | undefined {
   // A dollar quote cannot start inside an unquoted SQL identifier. In a raw-SQL
-  // string literal the previous character can end an escape such as `\n`.
-  const afterIdentifier =
-    isIdentifierPart(source[start - 1] ?? "") || source.charCodeAt(start - 1) >= 0x80;
-  if (afterIdentifier && source[start - 2] !== "\\") {
+  // string literal the previous character can end a whitespace or control
+  // escape such as `\n`, which is a boundary; `\q` is just `q`.
+  const previous = source[start - 1] ?? "";
+  const afterIdentifier = isIdentifierPart(previous) || source.charCodeAt(start - 1) >= 0x80;
+  if (afterIdentifier && !(source[start - 2] === "\\" && "0bfnrtv".includes(previous))) {
     return undefined;
   }
   // PostgreSQL tags follow identifier rules, non-ASCII letters included, but cannot contain "$".
