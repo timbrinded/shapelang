@@ -188,6 +188,7 @@ The analyzer is a lexical scanner. The cases below produce no hint, a wrong hint
 - Effects other than the three above. The analyzer never reports reads, appends, updates, or exports.
 - Destructive SQL that does not start its statement, such as a CTE-prefixed `WITH ... DELETE`.
 - Statements inside dollar-quoted text, including the bodies of `CREATE FUNCTION` and `DO` blocks, which PostgreSQL runs as PL/pgSQL.
+- SQL between two uses of a SQLite parameter shaped like `$name$`. The scanner reads SQL as PostgreSQL, so it takes the pair for a dollar quote.
 - SQL held in a variable, built at runtime, or interpolated into a template.
 - Raw SQL sent through other calls, such as `$queryRawUnsafe` or Kysely's `` sql`...`.execute(db) `` form, and receivers under other names, including project aliases and dynamic call targets.
 - Control flow, which is never evaluated. A delete in a branch that never runs is still reported.

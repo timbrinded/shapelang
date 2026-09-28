@@ -33,7 +33,7 @@ resource AnalyzerLexicalModuleConsumeLineCommentAstAnchor : GeneratedAstAnchor {
 
 resource AnalyzerLexicalModuleConsumeQuotedAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/analyzer-lexical.ts#consumeQuoted")
-  fingerprint ast.semantic_subtree_v1("sha256:2a5c592a1dfffcc4d53a0116b7bead90d1029266b1f22c98796242141df1e13d")
+  fingerprint ast.semantic_subtree_v1("sha256:3e1a4f5c4de6a8ae2f599e8eac4b81de342aeb60ebfdfbc8f553c18a83a77b8e")
 }
 
 resource AnalyzerLexicalModuleConsumeTemplateAstAnchor : GeneratedAstAnchor {
@@ -197,7 +197,7 @@ relation AnalyzerLexicalModuleConsumeQuotedGeneratedFromAnalyzerLexicalModuleCon
   kind generated_from
   connects AnalyzerLexicalModule -> AnalyzerLexicalModuleConsumeQuotedAstAnchor
   roles { AnalyzerLexicalModule as generated, AnalyzerLexicalModuleConsumeQuotedAstAnchor as syntax }
-  expects AnalyzerLexicalModuleConsumeQuotedAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2a5c592a1dfffcc4d53a0116b7bead90d1029266b1f22c98796242141df1e13d")
+  expects AnalyzerLexicalModuleConsumeQuotedAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3e1a4f5c4de6a8ae2f599e8eac4b81de342aeb60ebfdfbc8f553c18a83a77b8e")
   summary "fn AnalyzerLexicalModule.consumeQuoted generated from typescript function_declaration at packages/shp-checker/src/analyzer-lexical.ts#consumeQuoted."
 }
 
