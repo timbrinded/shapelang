@@ -1119,7 +1119,7 @@ reevaluation ReleaseDistributionVersionsRechecked {
 reevaluation ReleaseMetadataFailuresStopBuild {
   satisfies memory ReleaseChecksumContract
   outcome Confirmed
-  summary "A failed native-specifier or release-target read now stops the release build with its exit status, instead of continuing to write installers and checksums for an incomplete archive set. When both reads succeed, the archives, native parser assets, version injection, and checksums are unchanged."
+  summary "A failed native-specifier or release-target read now stops the release build with its exit status, and an empty target list stops it too, instead of continuing to write installers and checksums for archives missing their native parser bindings or targets. When both reads succeed, the archives, native parser assets, version injection, and checksums are unchanged."
   reviewer ShapeMaintainers
   decided_on "2026-09-28"
   evidence sh("scripts/build-release-assets.sh")

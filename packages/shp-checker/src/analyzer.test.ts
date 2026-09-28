@@ -129,7 +129,8 @@ describe("Shape source analyzer", () => {
       "SELECT $$DROP TABLE audit_events$$;",
       "SELECT $tag$DELETE FROM hidden; DROP TABLE audit_events;$tag$;",
       "SELECT $_tag09$DELETE FROM hidden; TRUNCATE TABLE audit_events;$_tag09$;",
-      "SELECT $TAG$DELETE FROM hidden; $tag$; DROP TABLE audit_events;$TAG$;"
+      "SELECT $TAG$DELETE FROM hidden; $tag$; DROP TABLE audit_events;$TAG$;",
+      "SELECT $été$DELETE FROM hidden; DROP TABLE audit_events;$été$;"
     ]) {
       expect(analyzeSourceText("db/audit/report.sql", source)).toEqual([]);
       expect(
@@ -153,6 +154,25 @@ describe("Shape source analyzer", () => {
           ["visible"]
         );
       }
+    }
+    // A positional parameter is not a quote, so a later tagged quote is matched where it starts.
+    expect(
+      analyzeSourceText(
+        "db/audit/report.sql",
+        "SELECT $1;\nDELETE FROM visible;\nSELECT $tag$x$tag$;"
+      ).map((hint) => hint.target)
+    ).toEqual(["visible"]);
+  });
+
+  test("ignores dollar-quoted bodies in raw-SQL string literals", () => {
+    for (const source of [
+      "await db.execute('DO $fn$ BEGIN DELETE FROM hidden; END $fn$; DROP TABLE visible;');",
+      // An escape such as \n before the quote is a boundary, not an identifier.
+      "await db.execute('CREATE FUNCTION f() AS\\n$$ BEGIN DELETE FROM hidden; END; $$; DROP TABLE visible;');"
+    ]) {
+      expect(analyzeSourceText("src/audit/purge.ts", source).map((hint) => hint.target)).toEqual([
+        "visible"
+      ]);
     }
   });
 
@@ -285,8 +305,7 @@ describe("Shape source analyzer", () => {
     for (const source of [
       "/* DELETE FROM audit_events",
       "'DROP TABLE audit_events",
-      "SELECT $tag$DELETE FROM hidden; DROP TABLE audit_events;",
-      "SELECT $TAG$DELETE FROM hidden; $tag$; DROP TABLE audit_events;"
+      "SELECT $tag$DELETE FROM hidden; DROP TABLE audit_events;"
     ]) {
       expect(analyzeSourceText("db/audit/purge.sql", source)).toEqual([]);
     }

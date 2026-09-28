@@ -79,15 +79,17 @@ release_targets="$(
   cd "$repo_root"
   bun -e 'import { TREE_SITTER_NATIVE_BINDING_TARGETS } from "./packages/shp-checker/src/ast-generation.ts"; for (const target of TREE_SITTER_NATIVE_BINDING_TARGETS) console.log(`${target.bunTarget}\t${target.releaseName}`);'
 )"
-if [[ -n "$release_targets" ]]; then
-  while IFS=$'\t' read -r target asset_name; do
-    executable_name="shp"
-    if [[ "$asset_name" == shp-windows-* ]]; then
-      executable_name="shp.exe"
-    fi
-    build_asset "$target" "$asset_name" "$executable_name"
-  done <<< "$release_targets"
+if [[ -z "$release_targets" ]]; then
+  echo "error: no release targets listed" >&2
+  exit 1
 fi
+while IFS=$'\t' read -r target asset_name; do
+  executable_name="shp"
+  if [[ "$asset_name" == shp-windows-* ]]; then
+    executable_name="shp.exe"
+  fi
+  build_asset "$target" "$asset_name" "$executable_name"
+done <<< "$release_targets"
 
 sed "s|__SHAPE_DEFAULT_VERSION__|$release_version_sed|g" "$repo_root/install.sh" > "$release_dir/install.sh"
 sed "s|__SHAPE_DEFAULT_VERSION__|$release_version_sed|g" "$repo_root/install.ps1" > "$release_dir/install.ps1"

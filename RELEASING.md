@@ -284,12 +284,15 @@ ignores:
 - `checksums.txt`
 
 The archive targets come from `packages/shp-checker/src/tree-sitter-native-targets.ts`.
-If native-package or target enumeration fails, the builder exits with that
-command's status before writing installers or checksums.
 Each archive holds `shp` (`shp.exe` on Windows), `LICENSE`, and the
 `tree-sitter-language-pack` parser assets that `shp ast source` uses for
 TypeScript, TSX, JavaScript/JSX, Rust, Go, Python, and Swift. `checksums.txt`
 holds the SHA-256 of every other asset.
+
+The builder reads the native parser packages and the archive targets from the
+checker before it builds anything. If either read fails, it exits with that
+read's status, and an empty target list exits 1, so no archive, installer, or
+checksum file is built from a partial list.
 
 ### Installer version injection
 
