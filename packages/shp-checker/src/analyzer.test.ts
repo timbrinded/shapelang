@@ -164,23 +164,34 @@ describe("Shape source analyzer", () => {
     ).toEqual(["visible"]);
   });
 
-  test("ignores dollar-quoted bodies in raw-SQL string literals", () => {
+  test("scans the value a raw-SQL string literal has at runtime", () => {
     for (const source of [
       "await db.execute('DO $fn$ BEGIN DELETE FROM hidden; END $fn$; DROP TABLE visible;');",
-      // An escape such as \n before the quote is a boundary, not an identifier.
-      "await db.execute('CREATE FUNCTION f() AS\\n$$ BEGIN DELETE FROM hidden; END; $$; DROP TABLE visible;');"
+      // Escapes are decoded: \n is a line break, \q is q, and \x24 is $.
+      "await db.execute('CREATE FUNCTION f() AS\\n$$ BEGIN DELETE FROM hidden; END; $$; DROP TABLE visible;');",
+      "await db.execute('SELECT foo\\q$tag$; DROP TABLE visible;');",
+      "await db.execute('SELECT \\x24tag\\x24 DELETE FROM hidden; \\x24tag\\x24; DROP TABLE visible;');",
+      // A line continuation joins foo and $tag$ into one identifier.
+      "await db.execute('SELECT 1 AS foo\\\n$tag$; DROP TABLE visible;');"
     ]) {
       expect(analyzeSourceText("src/audit/purge.ts", source).map((hint) => hint.target)).toEqual([
         "visible"
       ]);
     }
-    // JavaScript reads `\q` as `q`, so PostgreSQL sees one identifier and no quote.
+    const source = [
+      'await db.execute("SELECT 1;\\nDELETE FROM drafts;");',
+      'await db.execute("SELECT 2;\\\nTRUNCATE TABLE caches;");'
+    ].join("\n");
     expect(
-      analyzeSourceText(
-        "src/audit/purge.ts",
-        "await db.execute('SELECT foo\\q$tag$; DELETE FROM visible;');"
-      ).map((hint) => hint.target)
-    ).toEqual(["visible"]);
+      analyzeSourceText("src/audit/purge.ts", source).map(({ effect, line, target }) => ({
+        effect,
+        line,
+        target
+      }))
+    ).toEqual([
+      { effect: "HardDelete", line: 1, target: "drafts" },
+      { effect: "Truncate", line: 3, target: "caches" }
+    ]);
   });
 
   test("preserves CRLF offsets and reports one-based start lines", () => {
