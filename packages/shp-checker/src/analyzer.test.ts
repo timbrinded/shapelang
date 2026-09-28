@@ -180,7 +180,9 @@ describe("Shape source analyzer", () => {
     }
     const source = [
       'await db.execute("SELECT 1;\\nDELETE FROM drafts;");',
-      'await db.execute("SELECT 2;\\\nTRUNCATE TABLE caches;");'
+      'await db.execute("SELECT 2;\\\nTRUNCATE TABLE caches;");',
+      // A Windows line continuation spans both CR and LF.
+      'await db.execute("SELECT 3;\\\r\nDROP TABLE archive;");'
     ].join("\n");
     expect(
       analyzeSourceText("src/audit/purge.ts", source).map(({ effect, line, target }) => ({
@@ -190,7 +192,8 @@ describe("Shape source analyzer", () => {
       }))
     ).toEqual([
       { effect: "HardDelete", line: 1, target: "drafts" },
-      { effect: "Truncate", line: 3, target: "caches" }
+      { effect: "Truncate", line: 3, target: "caches" },
+      { effect: "DropStorage", line: 5, target: "archive" }
     ]);
   });
 
