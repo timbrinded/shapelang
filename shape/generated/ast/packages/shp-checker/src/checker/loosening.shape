@@ -41,14 +41,9 @@ resource LooseningModuleDisplayPathAstAnchor : GeneratedAstAnchor {
   fingerprint ast.semantic_subtree_v1("sha256:cd21bea79c36b52599e734eb89fc02e086a8af9379f127a3d42c4095bfca8123")
 }
 
-resource LooseningModuleFindDeclarationAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/loosening.ts#findDeclaration")
-  fingerprint ast.semantic_subtree_v1("sha256:7e4d4c2d4a43e10097da992a306461ed8999cc3e212a8188560536b96f5292c3")
-}
-
 resource LooseningModuleFindRuleEditsAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/checker/loosening.ts#findRuleEdits")
-  fingerprint ast.semantic_subtree_v1("sha256:f5222907c14abb8e64882a2bdf712f08c6308a42259a41c0277e7110b12acb26")
+  fingerprint ast.semantic_subtree_v1("sha256:645f47e8999fa889dbbd7a54a01c9c7ae07c840b5edb3119af344a4cb816fa50")
 }
 
 resource LooseningModuleFunctionTraitEditsAstAnchor : GeneratedAstAnchor {
@@ -56,9 +51,9 @@ resource LooseningModuleFunctionTraitEditsAstAnchor : GeneratedAstAnchor {
   fingerprint ast.semantic_subtree_v1("sha256:f6882fabbbf343ae0ea387af00c0bafb243fb3154cd814d18c1f9af6742244fa")
 }
 
-resource LooseningModuleIndexRuleDeclarationsAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/checker/loosening.ts#indexRuleDeclarations")
-  fingerprint ast.semantic_subtree_v1("sha256:bf23fecbeefe367de99aa3401533b43dacd1baa16d36a942e2fd8f051a46a2bb")
+resource LooseningModuleIndexDeclarationsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/loosening.ts#indexDeclarations")
+  fingerprint ast.semantic_subtree_v1("sha256:672c003f876af8af5030018e2244bcdf59485bed1ccdc924a24d64a2a9855895")
 }
 
 resource LooseningModuleIsAuthoredAstAnchor : GeneratedAstAnchor {
@@ -91,6 +86,16 @@ resource LooseningModuleNameOfAstAnchor : GeneratedAstAnchor {
   fingerprint ast.semantic_subtree_v1("sha256:3d10a8279119c64d0f3fb5580b33c12f6e56ff5d0b541973cde964463240e3ca")
 }
 
+resource LooseningModuleOwnedNamesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/loosening.ts#ownedNames")
+  fingerprint ast.semantic_subtree_v1("sha256:04d4f6d05681384dd619168929ee171b238bcb3a0e8963e7d86a932e3c664480")
+}
+
+resource LooseningModuleRenamedResourceAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/loosening.ts#renamedResource")
+  fingerprint ast.semantic_subtree_v1("sha256:8400bbbf780d327b56dfbf296488874071b1d52a409a1b5878590e255ee7944c")
+}
+
 resource LooseningModuleReplaceDeclarationAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/checker/loosening.ts#replaceDeclaration")
   fingerprint ast.semantic_subtree_v1("sha256:30cf3814746018ea10f04fee1e388237d7b2fdcde818ad24986895ce92e95eaa")
@@ -108,7 +113,7 @@ resource LooseningModuleSameNodeAstAnchor : GeneratedAstAnchor {
 
 resource LooseningModuleTraitListEditAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/checker/loosening.ts#traitListEdit")
-  fingerprint ast.semantic_subtree_v1("sha256:60f11784dbcd2114a189e032aa9ee4dff7e0122d62a2be5bcd586bd61626585e")
+  fingerprint ast.semantic_subtree_v1("sha256:7da29f868158f0ab5d9df5a829386394f51d0312a10d2467cd983c0225486176")
 }
 
 resource LooseningModuleTraitNamesAstAnchor : GeneratedAstAnchor {
@@ -163,17 +168,14 @@ component LooseningModule : GeneratedCandidate {
   fn displayPath
     source ts("packages/shp-checker/src/checker/loosening.ts#displayPath")
     effects unknown
-  fn findDeclaration
-    source ts("packages/shp-checker/src/checker/loosening.ts#findDeclaration")
-    effects unknown
   fn findRuleEdits
     source ts("packages/shp-checker/src/checker/loosening.ts#findRuleEdits")
     effects unknown
   fn functionTraitEdits
     source ts("packages/shp-checker/src/checker/loosening.ts#functionTraitEdits")
     effects unknown
-  fn indexRuleDeclarations
-    source ts("packages/shp-checker/src/checker/loosening.ts#indexRuleDeclarations")
+  fn indexDeclarations
+    source ts("packages/shp-checker/src/checker/loosening.ts#indexDeclarations")
     effects unknown
   fn isAuthored
     source ts("packages/shp-checker/src/checker/loosening.ts#isAuthored")
@@ -192,6 +194,12 @@ component LooseningModule : GeneratedCandidate {
     effects unknown
   fn nameOf
     source ts("packages/shp-checker/src/checker/loosening.ts#nameOf")
+    effects unknown
+  fn ownedNames
+    source ts("packages/shp-checker/src/checker/loosening.ts#ownedNames")
+    effects unknown
+  fn renamedResource
+    source ts("packages/shp-checker/src/checker/loosening.ts#renamedResource")
     effects unknown
   fn replaceDeclaration
     source ts("packages/shp-checker/src/checker/loosening.ts#replaceDeclaration")
@@ -281,19 +289,11 @@ relation LooseningModuleDisplayPathGeneratedFromLooseningModuleDisplayPathAstAnc
   summary "fn LooseningModule.displayPath generated from typescript function_declaration at packages/shp-checker/src/checker/loosening.ts#displayPath."
 }
 
-relation LooseningModuleFindDeclarationGeneratedFromLooseningModuleFindDeclarationAstAnchor {
-  kind generated_from
-  connects LooseningModule -> LooseningModuleFindDeclarationAstAnchor
-  roles { LooseningModule as generated, LooseningModuleFindDeclarationAstAnchor as syntax }
-  expects LooseningModuleFindDeclarationAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7e4d4c2d4a43e10097da992a306461ed8999cc3e212a8188560536b96f5292c3")
-  summary "fn LooseningModule.findDeclaration generated from typescript function_declaration at packages/shp-checker/src/checker/loosening.ts#findDeclaration."
-}
-
 relation LooseningModuleFindRuleEditsGeneratedFromLooseningModuleFindRuleEditsAstAnchor {
   kind generated_from
   connects LooseningModule -> LooseningModuleFindRuleEditsAstAnchor
   roles { LooseningModule as generated, LooseningModuleFindRuleEditsAstAnchor as syntax }
-  expects LooseningModuleFindRuleEditsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f5222907c14abb8e64882a2bdf712f08c6308a42259a41c0277e7110b12acb26")
+  expects LooseningModuleFindRuleEditsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:645f47e8999fa889dbbd7a54a01c9c7ae07c840b5edb3119af344a4cb816fa50")
   summary "fn LooseningModule.findRuleEdits generated from typescript function_declaration at packages/shp-checker/src/checker/loosening.ts#findRuleEdits."
 }
 
@@ -305,12 +305,12 @@ relation LooseningModuleFunctionTraitEditsGeneratedFromLooseningModuleFunctionTr
   summary "fn LooseningModule.functionTraitEdits generated from typescript function_declaration at packages/shp-checker/src/checker/loosening.ts#functionTraitEdits."
 }
 
-relation LooseningModuleIndexRuleDeclarationsGeneratedFromLooseningModuleIndexRuleDeclarationsAstAnchor {
+relation LooseningModuleIndexDeclarationsGeneratedFromLooseningModuleIndexDeclarationsAstAnchor {
   kind generated_from
-  connects LooseningModule -> LooseningModuleIndexRuleDeclarationsAstAnchor
-  roles { LooseningModule as generated, LooseningModuleIndexRuleDeclarationsAstAnchor as syntax }
-  expects LooseningModuleIndexRuleDeclarationsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:bf23fecbeefe367de99aa3401533b43dacd1baa16d36a942e2fd8f051a46a2bb")
-  summary "fn LooseningModule.indexRuleDeclarations generated from typescript function_declaration at packages/shp-checker/src/checker/loosening.ts#indexRuleDeclarations."
+  connects LooseningModule -> LooseningModuleIndexDeclarationsAstAnchor
+  roles { LooseningModule as generated, LooseningModuleIndexDeclarationsAstAnchor as syntax }
+  expects LooseningModuleIndexDeclarationsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:672c003f876af8af5030018e2244bcdf59485bed1ccdc924a24d64a2a9855895")
+  summary "fn LooseningModule.indexDeclarations generated from typescript function_declaration at packages/shp-checker/src/checker/loosening.ts#indexDeclarations."
 }
 
 relation LooseningModuleIsAuthoredGeneratedFromLooseningModuleIsAuthoredAstAnchor {
@@ -361,6 +361,22 @@ relation LooseningModuleNameOfGeneratedFromLooseningModuleNameOfAstAnchor {
   summary "fn LooseningModule.nameOf generated from typescript function_declaration at packages/shp-checker/src/checker/loosening.ts#nameOf."
 }
 
+relation LooseningModuleOwnedNamesGeneratedFromLooseningModuleOwnedNamesAstAnchor {
+  kind generated_from
+  connects LooseningModule -> LooseningModuleOwnedNamesAstAnchor
+  roles { LooseningModule as generated, LooseningModuleOwnedNamesAstAnchor as syntax }
+  expects LooseningModuleOwnedNamesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:04d4f6d05681384dd619168929ee171b238bcb3a0e8963e7d86a932e3c664480")
+  summary "fn LooseningModule.ownedNames generated from typescript function_declaration at packages/shp-checker/src/checker/loosening.ts#ownedNames."
+}
+
+relation LooseningModuleRenamedResourceGeneratedFromLooseningModuleRenamedResourceAstAnchor {
+  kind generated_from
+  connects LooseningModule -> LooseningModuleRenamedResourceAstAnchor
+  roles { LooseningModule as generated, LooseningModuleRenamedResourceAstAnchor as syntax }
+  expects LooseningModuleRenamedResourceAstAnchor fingerprint ast.semantic_subtree_v1("sha256:8400bbbf780d327b56dfbf296488874071b1d52a409a1b5878590e255ee7944c")
+  summary "fn LooseningModule.renamedResource generated from typescript function_declaration at packages/shp-checker/src/checker/loosening.ts#renamedResource."
+}
+
 relation LooseningModuleReplaceDeclarationGeneratedFromLooseningModuleReplaceDeclarationAstAnchor {
   kind generated_from
   connects LooseningModule -> LooseningModuleReplaceDeclarationAstAnchor
@@ -389,7 +405,7 @@ relation LooseningModuleTraitListEditGeneratedFromLooseningModuleTraitListEditAs
   kind generated_from
   connects LooseningModule -> LooseningModuleTraitListEditAstAnchor
   roles { LooseningModule as generated, LooseningModuleTraitListEditAstAnchor as syntax }
-  expects LooseningModuleTraitListEditAstAnchor fingerprint ast.semantic_subtree_v1("sha256:60f11784dbcd2114a189e032aa9ee4dff7e0122d62a2be5bcd586bd61626585e")
+  expects LooseningModuleTraitListEditAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7da29f868158f0ab5d9df5a829386394f51d0312a10d2467cd983c0225486176")
   summary "fn LooseningModule.traitListEdit generated from typescript function_declaration at packages/shp-checker/src/checker/loosening.ts#traitListEdit."
 }
 

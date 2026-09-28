@@ -38,7 +38,7 @@ In the index, `check` stands for every command that runs the semantic checks: `s
 | [`error: context target mismatch`](#error-context-target-mismatch) | `context_target_mismatch` | `check` | [Design memory](#design-memory) |
 | [`error: invalid require_context`](#error-invalid-require_context) | `invalid_require_context` | `check` | [Design memory](#design-memory) |
 | [`error: guarded shape changed`](#error-guarded-shape-changed) | `guarded_shape_changed` | `check` | [Design memory](#design-memory) |
-| [`error: guarded source changed`](#error-guarded-source-changed) | `guarded_source_changed` | `shp check --changed-files` | [Design memory](#design-memory) |
+| [`error: guarded source changed`](#error-guarded-source-changed) | `guarded_source_changed` | `shp check --changed-files`, `shp coverage` | [Design memory](#design-memory) |
 | [`error: invalid reevaluation`](#error-invalid-reevaluation) | `invalid_reevaluation` | `check` | [Design memory](#design-memory) |
 | [`error: stale design memory`](#error-stale-design-memory) | `stale_memory` | `shp check --as-of` or `--strict-freshness` | [Design memory](#design-memory) |
 
@@ -738,7 +738,7 @@ caused by:
 
 ### `error: guarded source changed`
 
-Kind `guarded_source_changed` · emitted by `shp check --changed-files`
+Kind `guarded_source_changed` · emitted by `shp check --changed-files` and `shp coverage`
 
 ```text
 error: guarded source changed

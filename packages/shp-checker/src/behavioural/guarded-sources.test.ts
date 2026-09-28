@@ -109,6 +109,24 @@ describe("guards on edited function sources", () => {
 
   test(
     lockedIntended(
+      "a source written as an absolute path under the repository root matches the relative changed file",
+      ANCHOR
+    ),
+    () => {
+      const absolute = editor().replace(
+        'source ts("src/editor/merge.ts#mergeAutosaves")',
+        'source ts("/repo/src/editor/merge.ts#mergeAutosaves")'
+      );
+      const diagnostic = requireDiagnostic(
+        check(absolute, { changedFiles: ["src/editor/merge.ts"] }),
+        "guarded_source_changed"
+      );
+      expect(diagnostic.changedFile).toBe("src/editor/merge.ts");
+    }
+  );
+
+  test(
+    lockedIntended(
       "with a base, only a reevaluation absent from the base clears it; one carried over does not",
       ANCHOR
     ),
