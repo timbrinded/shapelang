@@ -135,7 +135,7 @@ error: --as-of expects an ISO YYYY-MM-DD date, received "2026-02-30"
 shp coverage --changed-files changed.txt [--base-ref REF | --base-model DIR] [files...]
 ```
 
-Runs the same semantic checks as `shp check` plus changed-file coverage, but not bindings.
+Runs the same semantic checks as `shp check` plus changed-file coverage, but not bindings. The changed-file list also fires guards on edited function sources, as in [`shp check`](#shp-check).
 
 | Flag | Meaning |
 | --- | --- |

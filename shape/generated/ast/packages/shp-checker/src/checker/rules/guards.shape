@@ -23,7 +23,7 @@ resource GuardsModuleCheckGuardedChangesAstAnchor : GeneratedAstAnchor {
 
 resource GuardsModuleCheckGuardedSourcesAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/checker/rules/guards.ts#checkGuardedSources")
-  fingerprint ast.semantic_subtree_v1("sha256:3434b4cb4b226361e862e0e716708dcc6e6c734a417ea49afa0a03b776d411e0")
+  fingerprint ast.semantic_subtree_v1("sha256:e41570b0f2a1e4563a94d52b75b3a060321327b0e8acc9c7f1ff6b47fb9cffb5")
 }
 
 resource GuardsModuleClassifyProtectedPropertyAstAnchor : GeneratedAstAnchor {
@@ -101,7 +101,7 @@ relation GuardsModuleCheckGuardedSourcesGeneratedFromGuardsModuleCheckGuardedSou
   kind generated_from
   connects GuardsModule -> GuardsModuleCheckGuardedSourcesAstAnchor
   roles { GuardsModule as generated, GuardsModuleCheckGuardedSourcesAstAnchor as syntax }
-  expects GuardsModuleCheckGuardedSourcesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3434b4cb4b226361e862e0e716708dcc6e6c734a417ea49afa0a03b776d411e0")
+  expects GuardsModuleCheckGuardedSourcesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e41570b0f2a1e4563a94d52b75b3a060321327b0e8acc9c7f1ff6b47fb9cffb5")
   summary "fn GuardsModule.checkGuardedSources generated from typescript function_declaration at packages/shp-checker/src/checker/rules/guards.ts#checkGuardedSources."
 }
 

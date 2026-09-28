@@ -1172,3 +1172,13 @@ attest no_shape_change {
   source ts("packages/shp-checker/src/checker/rules.ts")
   reason "Registers checkGuardedSources after checkGuardedChanges in the ordered semantic-check list and passes it the changed files, repository root, and base model; the rule is modelled on ShapeRuleEngine."
 }
+
+attest no_shape_change {
+  source ts("packages/shp-cli/src/commands/check/command.ts")
+  reason "Help text only: --changed-files now also fires guards on edited function sources, which ShapeRuleEngine.checkGuardedSources models."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-cli/src/commands/coverage/command.ts")
+  reason "Help text only: coverage now also names the guarded-source rule that its shared semantic checks run, modelled as ShapeRuleEngine.checkGuardedSources."
+}

@@ -20,6 +20,7 @@ import {
 import { normalizeShapeSourcePath } from "../../shape-strings.ts";
 import { targetsEqual } from "../../targets.ts";
 import { changedFileContext, provenanceFileChanged } from "./coverage.ts";
+import { normalizeRepoPath } from "../globs.ts";
 import {
   evaluateGuards,
   type GuardContext,
@@ -128,7 +129,10 @@ export function checkGuardedSources(
       component && functionName
         ? model.components.get(component)?.functions.get(functionName)
         : undefined;
-    const changedFile = fn?.source ? normalizeShapeSourcePath(fn.source.path) : undefined;
+    // Changed files are normalized against the repository root, so the source path is too.
+    const changedFile = fn?.source
+      ? normalizeRepoPath(normalizeShapeSourcePath(fn.source.path), repoRoot)
+      : undefined;
     if (!fn || changedFile === undefined || !changed.set.has(changedFile)) {
       continue;
     }
