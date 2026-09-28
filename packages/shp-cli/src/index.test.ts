@@ -436,7 +436,7 @@ relation ReaderProvidesRecord {
       await mkdir(join(repo, "src/sharing"));
       git(repo, ["mv", "src/share/public.ts", "src/sharing/public.ts"]);
       await writeFile(join(repo, "shape/sharing.shape"), await fixture("head/shape/sharing.shape"));
-      await writeFile(join(repo, "changed.txt"), await fixture("changed.txt"));
+      await writeFile(join(repo, "changed.txt"), await fixture("changed-files.txt"));
       const args = [
         "check",
         "--changed-files",

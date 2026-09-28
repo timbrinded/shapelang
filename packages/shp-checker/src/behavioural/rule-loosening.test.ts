@@ -57,7 +57,7 @@ type Checked = { base: CheckResult; head: CheckResult; loosening: CheckResult };
 async function checkFixture(fixture: string, options: CheckOptions = {}): Promise<Checked> {
   const base = await side(fixture, "base");
   const head = await side(fixture, "head");
-  const changedFiles = await lines(fixture, "changed.txt");
+  const changedFiles = await lines(fixture, "changed-files.txt");
   const shared: CheckOptions = { changedFiles, repoRoot, ...options };
   return {
     // The base on its own, before this change's files changed.
