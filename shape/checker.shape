@@ -756,9 +756,6 @@ memory DiagnosticContract : RefactorConstraint<fn ShapeDiagnostics.formatDiagnos
   protects {
     shape DiagnosticOutput
   }
-  guards {
-    on_change require ReEvaluation<Self>
-  }
 }
 
 memory FinalForbidPrecedence : RefactorConstraint<fn ShapeRuleEngine.deriveFinalForbidsForResource> {
