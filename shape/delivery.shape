@@ -22,6 +22,8 @@ resource CliPackageManifest
 
 resource DocsContent
 
+resource HumanWrittenTask
+
 resource InstallScript
 
 resource NativeParserAsset
@@ -47,6 +49,7 @@ component CiPipeline {
   owns CiWorkflow
   owns ClaudeReviewPrompt
   owns ClaudeReviewResult
+  owns HumanWrittenTask
   owns PullRequestStatusComment
   owns SkillReleaseApproval
   owns SkillReleaseReport
@@ -61,6 +64,7 @@ component CiPipeline {
   grants Read<ExperimentalKernelDiagnosticSet>
   grants Read<ExperimentalKernelEnvelope>
   grants Read<GeneratedAstManifest>
+  grants Read<HumanWrittenTask>
   grants Read<LanguageSource>
   grants Read<NativeParserAsset>
   grants Read<PluginPackageManifest>
@@ -80,6 +84,7 @@ component CiPipeline {
   grants Update<ClaudeReviewResult>
   grants Update<ExperimentalKernelWasmArtifact>
   grants Update<GeneratedAstManifest>
+  grants Update<HumanWrittenTask>
   grants Update<PullRequestStatusComment>
   grants Update<ShapeModelDraft>
   grants Update<SkillReleaseApproval>
@@ -223,6 +228,13 @@ component CiPipeline {
       Update<SkillReleaseReport>
         evidence json(".github/shape-contract/schemas/shape-skills-release-result.schema.json")
     }
+  fn fetchHumanTask
+    source mjs(".github/scripts/fetch-human-task.mjs#humanTaskMarkdown")
+    description "Writes shape-task.md for the contract guard from the issues the pull request closes and its comments, keeping only text whose author has write access, is not a bot, and carries no Claude Code attribution footer; the pull request description is never read."
+    effects complete {
+      Update<HumanWrittenTask>
+        evidence mjs(".github/scripts/fetch-human-task.mjs#main")
+    }
   fn generateAstContext
     source ts("scripts/generate-ast-shapes.ts")
     effects complete {
@@ -296,6 +308,19 @@ component CiPipeline {
       Read<SkillBehaviorFixture>
         evidence ts("scripts/run-release-canaries.ts#loadReleaseCanaryCases")
     }
+  fn runRuleLooseningCheck
+    source yaml(".github/workflows/shape-loosening.yml")
+    description "Runs shape:loosening on each pull request event, including label changes, and fails only on rule loosening unless the pull request carries the shape-loosening-approved label a maintainer adds."
+    effects complete {
+      Read<ChangeBaseRevision>
+        evidence json("package.json")
+      Read<ChangedFileList>
+        evidence yaml(".github/workflows/shape-loosening.yml")
+      Read<CiWorkflow>
+        evidence yaml(".github/workflows/shape-loosening.yml")
+      Read<SemanticDiagnostics>
+        evidence yaml(".github/workflows/shape-loosening.yml")
+    }
   fn runShapeCi
     source yaml(".github/workflows/shape.yml")
     effects complete {
@@ -335,8 +360,10 @@ component CiPipeline {
     }
   fn runShapeGuardReview
     source mjs(".github/scripts/run-claude-skill.mjs#buildGuardPrompt")
-    description "Advisory loosening review of authored .shape diffs driven by the shape-contract-guard skill; a git-diff prefilter skips the model call when no authored .shape changed, the model call is delegated to anthropics/claude-code-action with structured output, and only high-impact suspicious findings fail the job."
+    description "Advisory loosening review of authored .shape diffs driven by the shape-contract-guard skill; a git-diff prefilter skips the model call when no authored .shape changed, the prompt asks for shp check --check-loosening against changed-base.txt and names the human-written task file, which alone can make a loosening supported, the model call is delegated to anthropics/claude-code-action with structured output, and only high-impact suspicious findings fail the job."
     effects complete {
+      Read<ChangeBaseRevision>
+        evidence mjs(".github/scripts/run-claude-skill.mjs#readChangedBase")
       Read<ChangedFileList>
         evidence yaml(".github/workflows/shape.yml")
       Read<CiWorkflow>
@@ -349,6 +376,8 @@ component CiPipeline {
         evidence json(".github/shape-contract/schemas/shape-guard-result.schema.json")
       Read<ClaudeReviewResult>
         evidence mjs(".github/scripts/run-claude-skill.mjs")
+      Read<HumanWrittenTask>
+        evidence md(".github/prompts/shape-guard.md")
       Update<ClaudeReviewResult>
         evidence mjs(".github/scripts/run-claude-skill.mjs")
       Update<ClaudeReviewResult>
@@ -1161,14 +1190,4 @@ reevaluation SkillsReportCopyNamed {
   decided_on "2026-09-07"
   evidence test("scripts/check-release-approval.test.ts")
   evidence ts("scripts/check-release-approval.ts#findReusableSkillsReport")
-}
-
-attest no_shape_change {
-  source ts("packages/shp-checker/src/checker/model.ts")
-  reason "Adds the guarded_source_changed diagnostic variant and the base model's reevaluation and context keys; the rule that uses them is modelled as ShapeRuleEngine.checkGuardedSources."
-}
-
-attest no_shape_change {
-  source ts("packages/shp-checker/src/checker/rules.ts")
-  reason "Registers checkGuardedSources after checkGuardedChanges in the ordered semantic-check list and passes it the changed files, repository root, and base model; the rule is modelled on ShapeRuleEngine."
 }

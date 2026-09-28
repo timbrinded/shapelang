@@ -1,0 +1,113 @@
+module shape.generated.ast.github.scripts.fetch_human_task
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource FetchHumanTaskModuleClosingIssuesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor(".github/scripts/fetch-human-task.mjs#closingIssues")
+  fingerprint ast.semantic_subtree_v1("sha256:894ed96adb2a779ca8f6b2539e11041bc92f00f0ea31edaa892eea70a193b8b4")
+}
+
+resource FetchHumanTaskModuleGithubAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor(".github/scripts/fetch-human-task.mjs#github")
+  fingerprint ast.semantic_subtree_v1("sha256:30e51df96d9199b7cc52dce89507ba5560286e10f720193d377f52704588f52d")
+}
+
+resource FetchHumanTaskModuleHumanTaskMarkdownAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor(".github/scripts/fetch-human-task.mjs#humanTaskMarkdown")
+  fingerprint ast.semantic_subtree_v1("sha256:dafa5f8df7307e2c2c44cf6debdbacb8d13f1d890d66fbb2181c96a7d359623a")
+}
+
+resource FetchHumanTaskModuleIsHumanWrittenAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor(".github/scripts/fetch-human-task.mjs#isHumanWritten")
+  fingerprint ast.semantic_subtree_v1("sha256:5e472ea933c83d2ef08ceb086599b403f424c39859417122461344bc8f929b4e")
+}
+
+resource FetchHumanTaskModuleMainAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor(".github/scripts/fetch-human-task.mjs#main")
+  fingerprint ast.semantic_subtree_v1("sha256:aa5c4f8c464c9d7e87cebcc966df168e3f52fef872d8b1f0b7a09ab490ad28d3")
+}
+
+resource FetchHumanTaskModulePullRequestCommentsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor(".github/scripts/fetch-human-task.mjs#pullRequestComments")
+  fingerprint ast.semantic_subtree_v1("sha256:65843319ffbcf4f423d7d3f1f40645a377c98eaa2ba16700a407962c7cf5322c")
+}
+
+component FetchHumanTaskModule : GeneratedCandidate {
+  fn closingIssues
+    source js(".github/scripts/fetch-human-task.mjs#closingIssues")
+    effects unknown
+  fn github
+    source js(".github/scripts/fetch-human-task.mjs#github")
+    effects unknown
+  fn humanTaskMarkdown
+    source js(".github/scripts/fetch-human-task.mjs#humanTaskMarkdown")
+    effects unknown
+  fn isHumanWritten
+    source js(".github/scripts/fetch-human-task.mjs#isHumanWritten")
+    effects unknown
+  fn main
+    source js(".github/scripts/fetch-human-task.mjs#main")
+    effects unknown
+  fn pullRequestComments
+    source js(".github/scripts/fetch-human-task.mjs#pullRequestComments")
+    effects unknown
+}
+
+relation FetchHumanTaskModuleClosingIssuesGeneratedFromFetchHumanTaskModuleClosingIssuesAstAnchor {
+  kind generated_from
+  connects FetchHumanTaskModule -> FetchHumanTaskModuleClosingIssuesAstAnchor
+  roles { FetchHumanTaskModule as generated, FetchHumanTaskModuleClosingIssuesAstAnchor as syntax }
+  expects FetchHumanTaskModuleClosingIssuesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:894ed96adb2a779ca8f6b2539e11041bc92f00f0ea31edaa892eea70a193b8b4")
+  summary "fn FetchHumanTaskModule.closingIssues generated from javascript function_declaration at .github/scripts/fetch-human-task.mjs#closingIssues."
+}
+
+relation FetchHumanTaskModuleGithubGeneratedFromFetchHumanTaskModuleGithubAstAnchor {
+  kind generated_from
+  connects FetchHumanTaskModule -> FetchHumanTaskModuleGithubAstAnchor
+  roles { FetchHumanTaskModule as generated, FetchHumanTaskModuleGithubAstAnchor as syntax }
+  expects FetchHumanTaskModuleGithubAstAnchor fingerprint ast.semantic_subtree_v1("sha256:30e51df96d9199b7cc52dce89507ba5560286e10f720193d377f52704588f52d")
+  summary "fn FetchHumanTaskModule.github generated from javascript function_declaration at .github/scripts/fetch-human-task.mjs#github."
+}
+
+relation FetchHumanTaskModuleHumanTaskMarkdownGeneratedFromFetchHumanTaskModuleHumanTaskMarkdownAstAnchor {
+  kind generated_from
+  connects FetchHumanTaskModule -> FetchHumanTaskModuleHumanTaskMarkdownAstAnchor
+  roles { FetchHumanTaskModule as generated, FetchHumanTaskModuleHumanTaskMarkdownAstAnchor as syntax }
+  expects FetchHumanTaskModuleHumanTaskMarkdownAstAnchor fingerprint ast.semantic_subtree_v1("sha256:dafa5f8df7307e2c2c44cf6debdbacb8d13f1d890d66fbb2181c96a7d359623a")
+  summary "fn FetchHumanTaskModule.humanTaskMarkdown generated from javascript function_declaration at .github/scripts/fetch-human-task.mjs#humanTaskMarkdown."
+}
+
+relation FetchHumanTaskModuleIsHumanWrittenGeneratedFromFetchHumanTaskModuleIsHumanWrittenAstAnchor {
+  kind generated_from
+  connects FetchHumanTaskModule -> FetchHumanTaskModuleIsHumanWrittenAstAnchor
+  roles { FetchHumanTaskModule as generated, FetchHumanTaskModuleIsHumanWrittenAstAnchor as syntax }
+  expects FetchHumanTaskModuleIsHumanWrittenAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5e472ea933c83d2ef08ceb086599b403f424c39859417122461344bc8f929b4e")
+  summary "fn FetchHumanTaskModule.isHumanWritten generated from javascript function_declaration at .github/scripts/fetch-human-task.mjs#isHumanWritten."
+}
+
+relation FetchHumanTaskModuleMainGeneratedFromFetchHumanTaskModuleMainAstAnchor {
+  kind generated_from
+  connects FetchHumanTaskModule -> FetchHumanTaskModuleMainAstAnchor
+  roles { FetchHumanTaskModule as generated, FetchHumanTaskModuleMainAstAnchor as syntax }
+  expects FetchHumanTaskModuleMainAstAnchor fingerprint ast.semantic_subtree_v1("sha256:aa5c4f8c464c9d7e87cebcc966df168e3f52fef872d8b1f0b7a09ab490ad28d3")
+  summary "fn FetchHumanTaskModule.main generated from javascript function_declaration at .github/scripts/fetch-human-task.mjs#main."
+}
+
+relation FetchHumanTaskModulePullRequestCommentsGeneratedFromFetchHumanTaskModulePullRequestCommentsAstAnchor {
+  kind generated_from
+  connects FetchHumanTaskModule -> FetchHumanTaskModulePullRequestCommentsAstAnchor
+  roles { FetchHumanTaskModule as generated, FetchHumanTaskModulePullRequestCommentsAstAnchor as syntax }
+  expects FetchHumanTaskModulePullRequestCommentsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:65843319ffbcf4f423d7d3f1f40645a377c98eaa2ba16700a407962c7cf5322c")
+  summary "fn FetchHumanTaskModule.pullRequestComments generated from javascript function_declaration at .github/scripts/fetch-human-task.mjs#pullRequestComments."
+}
+
+implementation FetchHumanTaskModuleImpl {
+  paths {
+    ".github/scripts/fetch-human-task.mjs"
+  }
+  conforms_to FetchHumanTaskModule
+}

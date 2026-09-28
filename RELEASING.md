@@ -95,6 +95,7 @@ bun run skills:check
 bun test
 bun run typecheck
 bun run shape:ci
+bun run shape:loosening
 bun run docs:check
 SHAPE_RELEASE_VERSION=vX.Y.Z bun run build:release
 scripts/smoke-release-binary.sh \

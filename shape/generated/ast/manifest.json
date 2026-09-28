@@ -3,6 +3,13 @@
   "generatedAt": "deterministic",
   "entries": [
     {
+      "module": "shape.generated.ast.github.scripts.fetch_human_task",
+      "path": "shape/generated/ast/.github/scripts/fetch-human-task.shape",
+      "sources": [
+        ".github/scripts/fetch-human-task.mjs"
+      ]
+    },
+    {
       "module": "shape.generated.ast.github.scripts.run_claude_skill",
       "path": "shape/generated/ast/.github/scripts/run-claude-skill.shape",
       "sources": [

@@ -73,6 +73,7 @@ bun run skills:check
 bun test
 bun run typecheck
 bun run shape:ci
+bun run shape:loosening
 bun run docs:check
 ```
 
@@ -85,6 +86,7 @@ bun run docs:check
 | `bun test` | Every workspace test. Behavioural tests follow [packages/shp-checker/TESTING.md](packages/shp-checker/TESTING.md). | Test |
 | `bun run typecheck` | `tsgo -p tsconfig.json --noEmit` | Typecheck |
 | `bun run shape:ci` | The Shape gate, described [below](#the-shape-gate). | Shape |
+| `bun run shape:loosening` | `shp check --check-loosening` against `changed-base.txt`: fails when an edit to a rule, trait, memory, or governed path is what lets the change pass. See [Rule loosening](#rule-loosening). | Rule Loosening |
 | `bun run docs:check` | `astro check`, the Shape-fence verifier, and the static site build. | Docs |
 
 These commands cover the CI jobs that you reproduce locally. The other jobs are
@@ -156,6 +158,21 @@ generated AST modules never count as a Shape update.
 
 The [Keep the Model Current](https://timbrinded.github.io/shapelang/guides/keep-model-current/)
 guide explains coverage, bindings, and attestations in full.
+
+Editing the `source` file of a guarded function also fails the gate, with
+`error: guarded source changed`, until a `reevaluation` of that guard written
+for this change is added. One carried over from an earlier change does not
+count.
+
+### Rule loosening
+
+`bun run shape:loosening` checks the change against the rules at its base: it
+puts back, one at a time, each trait, rule, memory, rationale, implementation,
+binding, role, policy, or trait list the change removed or edited, and fails
+with `error: rule loosening` when that brings back an error. Fix the code
+instead of the rule. When a person asked for the loosening, a maintainer adds
+the `shape-loosening-approved` label to the pull request, and the Rule Loosening
+job then passes with a notice. Coding agents must never add that label.
 
 ## What to update per change type
 
@@ -299,6 +316,20 @@ neither is set. The script then runs twice:
 | Shape Claude Review (`shape-claude-review`) | Source-to-model drift, following `.github/prompts/shape-contract-review.md`. | The status is not `pass`, or a `pass` carries findings. |
 | Shape Contract Guard (`shape-guard`) | The authored `.shape` diff against the pull request base, following `plugins/shapelang/skills/shape-contract-guard/SKILL.md` and `.github/prompts/shape-guard.md`: removed final forbids, weakened traits, widened grants or effects, weakened relations or coverage, and weak attestations. The prefilter passes without calling Claude when no authored `.shape` file (outside `shape/generated/`) changed. | The review errors, a `pass` carries findings, or a finding is high-impact and suspicious. Other findings, including high-impact ones marked supported, are advisory. |
 | Shape Index Coverage (`shape-index`) | Follows `plugins/shapelang/skills/shape-index/SKILL.md` and `.github/prompts/shape-index.md`. The prefilter lists changed source files that no `source` or `evidence` ref or `implementation` glob in `shape/*.shape` covers, passes without Claude when there are none, and otherwise asks Claude to judge that remainder for architecture-significant subsystems without coverage. | The review errors, a `pass` carries gaps, or it finds gaps while the Actions variable `SHAPE_INDEX_STRICT` is `true`. Otherwise gaps appear in the job summary but do not block. |
+
+The Contract Guard job also writes `shape-task.md` before the review, with
+`.github/scripts/fetch-human-task.mjs`: the bodies of the issues the pull
+request closes and the pull request comments, kept only when their author has
+write access and the text has no Claude Code attribution footer. The pull
+request description is left out. Only that task text can make a loosening
+`supported`; a rationale or attestation added in the same pull request counts as
+`generic` support at most.
+
+`.github/workflows/shape-loosening.yml` (workflow name `Rule loosening`) runs a
+Rule Loosening job on pull requests, including when a label is added or
+removed. It runs `shape:loosening` and fails only on `error: rule loosening`,
+unless the pull request carries the `shape-loosening-approved` label; other
+errors are the Shape job's to report.
 
 After these jobs, Shape PR Summary Comment (`shape-pr-comment`) upserts one
 comment on the pull request. It reports the results of Shape, Shape Claude
