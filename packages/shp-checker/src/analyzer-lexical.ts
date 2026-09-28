@@ -351,18 +351,14 @@ function consumeBracketIdentifier(
 }
 
 function readDollarQuoteDelimiter(source: string, start: number): string | undefined {
-  let cursor = start + 1;
-  if (source[cursor] === "$") {
-    return "$$";
-  }
-  if (!isIdentifierStart(source[cursor] ?? "")) {
+  // A dollar quote cannot start inside an unquoted SQL identifier.
+  if (isIdentifierPart(source[start - 1] ?? "") || source.charCodeAt(start - 1) >= 0x80) {
     return undefined;
   }
-  cursor += 1;
-  while (cursor < source.length && isIdentifierPart(source[cursor] ?? "")) {
-    cursor += 1;
-  }
-  return source[cursor] === "$" ? source.slice(start, cursor + 1) : undefined;
+  // PostgreSQL tags follow identifier rules but cannot contain "$".
+  const delimiter = /\$(?:[A-Za-z_][A-Za-z_0-9]*)?\$/y;
+  delimiter.lastIndex = start;
+  return delimiter.exec(source)?.[0];
 }
 
 function consumeDollarQuoted(

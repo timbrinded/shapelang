@@ -73,7 +73,7 @@ resource AnalyzerLexicalModuleNormalizeStaticTargetAstAnchor : GeneratedAstAncho
 
 resource AnalyzerLexicalModuleReadDollarQuoteDelimiterAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/analyzer-lexical.ts#readDollarQuoteDelimiter")
-  fingerprint ast.semantic_subtree_v1("sha256:2e42b212be01556c50a51ad471e19dc0aba9638a7b4914ac0b3070243ec3394c")
+  fingerprint ast.semantic_subtree_v1("sha256:a62b40c3057d9e278d39977406c985d64da417b395f5bef9eee4d8e31c0936be")
 }
 
 resource AnalyzerLexicalModuleReadUnquotedIdentifierAstAnchor : GeneratedAstAnchor {
@@ -269,7 +269,7 @@ relation AnalyzerLexicalModuleReadDollarQuoteDelimiterGeneratedFromAnalyzerLexic
   kind generated_from
   connects AnalyzerLexicalModule -> AnalyzerLexicalModuleReadDollarQuoteDelimiterAstAnchor
   roles { AnalyzerLexicalModule as generated, AnalyzerLexicalModuleReadDollarQuoteDelimiterAstAnchor as syntax }
-  expects AnalyzerLexicalModuleReadDollarQuoteDelimiterAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2e42b212be01556c50a51ad471e19dc0aba9638a7b4914ac0b3070243ec3394c")
+  expects AnalyzerLexicalModuleReadDollarQuoteDelimiterAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a62b40c3057d9e278d39977406c985d64da417b395f5bef9eee4d8e31c0936be")
   summary "fn AnalyzerLexicalModule.readDollarQuoteDelimiter generated from typescript function_declaration at packages/shp-checker/src/analyzer-lexical.ts#readDollarQuoteDelimiter."
 }
 
