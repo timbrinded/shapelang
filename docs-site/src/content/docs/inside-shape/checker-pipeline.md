@@ -16,7 +16,7 @@ Paths are relative to `packages/shp-checker/src/`.
 | Read and parse | `checkShapeFiles` reads each path; `parseShapeModule` in `parser.ts` parses it with the Langium services from `language/shape-module.ts`. | One `ShapeModule` AST per file. | A read error, or any lexer or parser error in any file, ends the check. The result holds only `parse` diagnostics, `exitCode` is `2`, and no `Model` is built. |
 | Lower | `lowerShapeModules` in `checker/lowerer.ts`, driving the domain lowerers in `checker/lowering/*`. | `Model`: typed indexes, `facts`, and lowering diagnostics. | Lowering always completes. Problems it finds (duplicate declarations, ambiguous or unknown names, invalid relations, invalid candidate effects, invalid `require_context`) become `model.diagnostics`. |
 | Check | `runSemanticChecks` runs `SEMANTIC_CHECKS` in `checker/rules.ts`; then `checkBindings` runs unless `enforceBindings` is `false`. | Semantic diagnostics. | No check stops a later one; each appends its diagnostics. |
-| Assemble | `checkLoweredShapeModel` in `checker/api.ts`. | `CheckResult`: `ok`, `exitCode`, sorted `diagnostics`, and `facts` when `includeFacts` is set. | `exitCode` is `1` when any diagnostic other than a downgraded `unknown_effects` warning remains; otherwise `0`. |
+| Assemble | `checkLoweredShapeModel` in `checker/api.ts`. | `CheckResult`: `ok`, `exitCode`, sorted `diagnostics`, and `facts` when `includeFacts` is set. | `exitCode` is `1` when any blocking diagnostic remains; stale attestations and downgraded `unknown_effects` are warnings. |
 | Render | `formatDiagnostics` in `checker/diagnostics.ts`. | Text. | None. It reads only the `CheckResult`. |
 
 `checkLoweredShapeModel` assembles the diagnostic list in a fixed order: lowering diagnostics, then the registry's output, then binding diagnostics. It then applies the `allowUnknownEffects` downgrade, computes `ok` and `exitCode`, sorts the diagnostics, and attaches sorted facts when requested. The sort makes the assembly order invisible in the returned list.
@@ -30,7 +30,7 @@ Paths are relative to `packages/shp-checker/src/`.
 
 `@shape/shp-checker` (`src/index.ts`) exports `checkShapeFiles`, `checkShapeModules`, and `IncrementalShapeChecker`. It does not export `lowerShapeModules` or `checkLoweredShapeModel`. The read-only query helpers in `checker/query.ts` (`explainShapeModules`, `graphShapeModules`, `listMemoryGuardsShapeModules`, and others) lower the modules themselves and never decide pass or fail; `listShapeObligations` calls `checkShapeModules` and filters its diagnostics.
 
-`normalizeCheckOptions` prepares the options once per check:
+`normalizeCheckOptions` resolves the repository root, summarizes any base model, and validates the freshness date before semantic checking:
 
 | Option | Default | Read by | Effect |
 | --- | --- | --- | --- |
@@ -45,7 +45,7 @@ Paths are relative to `packages/shp-checker/src/`.
 
 ## Pass condition and exit codes
 
-`CheckResult.ok` is `true` only when every diagnostic is an `unknown_effects` diagnostic with severity `warning`. That happens when there are no diagnostics at all, or when `allowUnknownEffects` downgraded every remaining one.
+`CheckResult.ok` is `true` when there are no diagnostics or every diagnostic is a warning: either `stale_attestation` or `unknown_effects` with severity `warning`. `allowUnknownEffects` downgrades only the latter; stale attestations are always warnings.
 
 | `exitCode` | Meaning |
 | --- | --- |
