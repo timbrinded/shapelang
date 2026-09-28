@@ -12,6 +12,7 @@ import {
   isFunctionSummary,
   isImplementationDecl,
   isMemoryDecl,
+  isOwnsDecl,
   isPolicyDecl,
   isRationaleDecl,
   isResourceDecl,
@@ -195,16 +196,17 @@ function findRuleEdits(
   base: readonly CheckModuleInput[],
   repoRoot: string
 ): RuleEdit[] {
-  const headAuthored = head.filter(isAuthored);
-  const headRules = indexRuleDeclarations(headAuthored);
+  const baseAuthored = base.filter(isAuthored);
+  const headDeclarations = indexDeclarations(head.filter(isAuthored));
+  const baseDeclarations = indexDeclarations(baseAuthored);
   const edits: RuleEdit[] = [];
 
-  for (const input of base.filter(isAuthored)) {
+  for (const input of baseAuthored) {
     const basePath = displayPath(input.filePath, repoRoot);
     for (const declaration of input.module.declarations) {
       if (isRuleDeclaration(declaration)) {
         const label = `${RULE_DECLARATION_KINDS[declaration.$type]} ${declaration.name}`;
-        const current = headRules.get(declarationKey(input, declaration));
+        const current = headDeclarations.get(declarationKey(input, declaration));
         if (current === undefined) {
           edits.push({
             description: `removes ${label}`,
@@ -222,7 +224,11 @@ function findRuleEdits(
           });
         }
       } else if (isResourceDecl(declaration) || isComponentDecl(declaration)) {
-        const headDeclaration = findDeclaration(headAuthored, input, declaration);
+        const headDeclaration =
+          headDeclarations.get(declarationKey(input, declaration)) ??
+          (isResourceDecl(declaration)
+            ? renamedResource(input, declaration, baseAuthored, headDeclarations, baseDeclarations)
+            : undefined);
         if (headDeclaration === undefined) {
           continue;
         }
@@ -255,15 +261,17 @@ function traitListEdit(
   }
   const kind = isResourceDecl(baseDeclaration) ? "resource" : "component";
   const headPath = displayPath(current.input.filePath, repoRoot);
+  const renamed =
+    headDeclaration.name === baseDeclaration.name ? "" : ` (renamed ${headDeclaration.name})`;
   return {
-    description: `removes ${traitNoun(missing)} ${traitNames(missing)} from ${kind} ${baseDeclaration.name}`,
+    description: `removes ${traitNoun(missing)} ${traitNames(missing)} from ${kind} ${baseDeclaration.name}${renamed}`,
     filePath: headPath,
     causedBy: [
       `base ${basePath}: ${kind} ${baseDeclaration.name} : ${traitNames(traitsOf(baseDeclaration))}`,
       `${headPath}: ${kind} ${headDeclaration.name}${traitSuffix(traitsOf(headDeclaration))}`
     ],
     revert: (entries) =>
-      updateDeclaration(entries, current.input, baseDeclaration, (declaration) =>
+      updateDeclaration(entries, current.input, headDeclaration, (declaration) =>
         isResourceDecl(declaration)
           ? { ...declaration, traits: [...declaration.traits, ...missing] }
           : isComponentDecl(declaration)
@@ -398,35 +406,59 @@ function updateDeclaration(
   }
 }
 
-function indexRuleDeclarations(
-  inputs: readonly CheckModuleInput[]
-): Map<string, { input: CheckModuleInput; declaration: RuleDeclaration }> {
-  const index = new Map<string, { input: CheckModuleInput; declaration: RuleDeclaration }>();
+type Located = { input: CheckModuleInput; declaration: Declaration };
+
+/** Every declaration by module, kind, and name, with the input that holds it. */
+function indexDeclarations(inputs: readonly CheckModuleInput[]): Map<string, Located> {
+  const index = new Map<string, Located>();
   for (const input of inputs) {
     for (const declaration of input.module.declarations) {
-      if (isRuleDeclaration(declaration)) {
-        index.set(declarationKey(input, declaration), { input, declaration });
-      }
+      index.set(declarationKey(input, declaration), { input, declaration });
     }
   }
   return index;
 }
 
-function findDeclaration(
-  inputs: readonly CheckModuleInput[],
+/**
+ * The head resource that a base resource the change removed was renamed to, when
+ * exactly one component that owned it at the base now owns exactly one resource
+ * that did not exist at the base. Renaming a resource would otherwise drop its
+ * traits without a trait edit to restore.
+ */
+function renamedResource(
   baseInput: CheckModuleInput,
-  baseDeclaration: Declaration
-): { input: CheckModuleInput; declaration: Declaration } | undefined {
-  const key = declarationKey(baseInput, baseDeclaration);
-  for (const input of inputs) {
-    const declaration = input.module.declarations.find(
-      (candidate) => declarationKey(input, candidate) === key
-    );
-    if (declaration) {
-      return { input, declaration };
+  resource: ResourceDecl,
+  baseAuthored: readonly CheckModuleInput[],
+  headDeclarations: ReadonlyMap<string, Located>,
+  baseDeclarations: ReadonlyMap<string, Located>
+): Located | undefined {
+  const moduleName = baseInput.module.name ?? "";
+  const candidates = new Map<string, Located>();
+  for (const input of baseAuthored.filter((item) => (item.module.name ?? "") === moduleName)) {
+    for (const owner of input.module.declarations.filter(isComponentDecl)) {
+      if (!ownedNames(owner).includes(resource.name)) {
+        continue;
+      }
+      const headOwner = headDeclarations.get(declarationKey(input, owner))?.declaration;
+      if (!headOwner || !isComponentDecl(headOwner)) {
+        continue;
+      }
+      for (const name of ownedNames(headOwner)) {
+        const key = JSON.stringify([moduleName, "ResourceDecl", name]);
+        const added = headDeclarations.get(key);
+        if (added && !baseDeclarations.has(key)) {
+          candidates.set(key, added);
+        }
+      }
     }
   }
-  return undefined;
+  return candidates.size === 1 ? [...candidates.values()][0] : undefined;
+}
+
+function ownedNames(component: ComponentDecl): string[] {
+  return component.members
+    .filter(isOwnsDecl)
+    .map((owns) => owns.resource.name.split("::").at(-1) ?? owns.resource.name);
 }
 
 function isRuleDeclaration(declaration: Declaration): declaration is RuleDeclaration {
