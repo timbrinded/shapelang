@@ -1108,6 +1108,16 @@ reevaluation ReleaseDistributionVersionsRechecked {
   evidence yaml(".github/workflows/release.yml")
 }
 
+reevaluation ReleaseMetadataFailuresStopBuild {
+  satisfies memory ReleaseChecksumContract
+  outcome Confirmed
+  summary "A failed native-specifier or release-target read now stops the release build with its exit status, instead of continuing to write installers and checksums for an incomplete archive set. When both reads succeed, the archives, native parser assets, version injection, and checksums are unchanged."
+  reviewer ShapeMaintainers
+  decided_on "2026-09-28"
+  evidence sh("scripts/build-release-assets.sh")
+  evidence test("scripts/build-release-assets.test.ts")
+}
+
 reevaluation ReleaseNativeParserAssetsRechecked {
   satisfies memory ReleaseChecksumContract
   outcome Confirmed

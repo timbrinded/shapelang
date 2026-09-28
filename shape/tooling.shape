@@ -1215,8 +1215,3 @@ reevaluation UpdateRuntimeAssetsRechecked {
   evidence test("packages/shp-cli/src/update.test.ts")
   evidence ts("packages/shp-cli/src/commands/update/impl.ts")
 }
-
-attest docs_not_needed {
-  source shape("shape/tooling.shape")
-  reason "Records that the analyzer ignores SQL dollar-quoted text, which guides/analyzer.md documents; no CLI command, flag, or workflow changes."
-}
