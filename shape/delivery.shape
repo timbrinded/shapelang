@@ -1165,25 +1165,10 @@ reevaluation SkillsReportCopyNamed {
 
 attest no_shape_change {
   source ts("packages/shp-checker/src/checker/model.ts")
-  reason "Adds the checkLoosening check option and the rule_loosening diagnostic variant; the check that uses them is modelled as ShapeChecker.checkRuleLoosening."
+  reason "Adds the guarded_source_changed diagnostic variant and the base model's reevaluation and context keys; the rule that uses them is modelled as ShapeRuleEngine.checkGuardedSources."
 }
 
 attest no_shape_change {
-  source ts("packages/shp-checker/src/checker/lowerer.ts")
-  reason "Exports normalizeModuleInputs so checkShapeModules can hand the same module inputs to checkRuleLoosening; lowering is unchanged."
-}
-
-attest no_shape_change {
-  source ts("packages/shp-checker/src/checker/incremental.ts")
-  reason "Adds checkLoosening to the options cache key so the key covers every CheckOptions field; the incremental checker never runs the loosening check."
-}
-
-attest no_shape_change {
-  source ts("packages/shp-cli/src/commands/check/command.ts")
-  reason "Declares the --check-loosening flag and its help text; the check it enables is modelled as ShapeChecker.checkRuleLoosening."
-}
-
-attest no_shape_change {
-  source ts("packages/shp-cli/src/commands/check/impl.ts")
-  reason "Rejects --check-loosening without --base-ref or --base-model, warns when the base cannot be read, and passes checkLoosening to the checker; it reads no new input."
+  source ts("packages/shp-checker/src/checker/rules.ts")
+  reason "Registers checkGuardedSources after checkGuardedChanges in the ordered semantic-check list and passes it the changed files, repository root, and base model; the rule is modelled on ShapeRuleEngine."
 }

@@ -460,6 +460,89 @@ relation ReaderProvidesRecord {
     }
   });
 
+  test("fires a guard when its function's source changes until a new reevaluation is written", async () => {
+    const repo = await mkdtemp(join(tmpdir(), "shp-guarded-source-test-"));
+    const model = [
+      "module editor",
+      "",
+      "resource Autosave",
+      "",
+      "component Editor {",
+      "  owns Autosave",
+      "  grants Read<Autosave>",
+      "  fn mergeAutosaves : RefactorSensitive",
+      `    source ts("src/editor/merge.ts#mergeAutosaves")`,
+      "    effects complete {",
+      "      Read<Autosave>",
+      "    }",
+      "}",
+      "",
+      "memory MergeRefactorConstraint : RefactorConstraint<fn Editor.mergeAutosaves> {",
+      "  applies_to fn Editor.mergeAutosaves",
+      "  status Explained",
+      "  confidence High",
+      `  summary "The sync library sends autosaves out of order, so keep the sort."`,
+      "  who {",
+      "    owner EditorTeam",
+      "  }",
+      "  guards {",
+      "    on_change require ReEvaluation<Self>",
+      "  }",
+      "}",
+      ""
+    ].join("\n");
+    const reevaluation = (summary: string) =>
+      [
+        "",
+        "reevaluation MergeRechecked {",
+        "  satisfies memory MergeRefactorConstraint",
+        "  outcome Confirmed",
+        `  summary "${summary}"`,
+        "  reviewer EditorTeam",
+        `  decided_on "2026-09-28"`,
+        `  evidence test("src/editor/merge.test.ts")`,
+        "}",
+        ""
+      ].join("\n");
+    try {
+      await mkdir(join(repo, "shape"));
+      await mkdir(join(repo, "src/editor"), { recursive: true });
+      await writeFile(join(repo, "shape/editor.shape"), model + reevaluation("Reviewed before."));
+      await writeFile(join(repo, "src/editor/merge.ts"), "export const merge = 1;\n");
+      git(repo, ["init", "-q"]);
+      git(repo, ["add", "."]);
+      git(repo, [
+        "-c",
+        "user.name=shp",
+        "-c",
+        "user.email=shp@example.com",
+        "commit",
+        "-qm",
+        "base"
+      ]);
+      await writeFile(join(repo, "src/editor/merge.ts"), "export const merge = 2;\n");
+      await writeFile(join(repo, "changed.txt"), "src/editor/merge.ts\nshape/editor.shape\n");
+      const args = ["check", "--changed-files", "changed.txt", "--base-ref", "HEAD"];
+
+      // The reevaluation in the base was written for an earlier change.
+      const carried = await runCli(args, cliPath, repo);
+      expect(carried.exitCode).toBe(1);
+      expect(carried.stderr).toContain(
+        "error: guarded source changed\n\nsrc/editor/merge.ts changed. It is the source of fn Editor.mergeAutosaves"
+      );
+
+      await writeFile(
+        join(repo, "shape/editor.shape"),
+        model + reevaluation("Sync library v5 delivers autosaves in order.")
+      );
+      const written = await runCli(args, cliPath, repo);
+      expect(written.stderr).toBe("");
+      expect(written.exitCode).toBe(0);
+    } finally {
+      await rm(repo, { recursive: true, force: true });
+    }
+  });
+
   test("rejects empty changed-file path during checks", async () => {
     const result = await runCli([
       "check",

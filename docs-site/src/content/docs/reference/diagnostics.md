@@ -3,7 +3,7 @@ title: Diagnostics
 description: Every diagnostic that shp prints, with its kind code, the command that emits it, real output, cause, and fix.
 ---
 
-This page lists every diagnostic the checker emits: one parse diagnostic and 30 semantic ones. Each entry is headed by the exact first line that `shp` prints, so pasting that line into page search finds its entry. Where the title varies, the heading uses a placeholder such as `<kind>`, and the entry lists every printed value.
+This page lists every diagnostic the checker emits: one parse diagnostic and 31 semantic ones. Each entry is headed by the exact first line that `shp` prints, so pasting that line into page search finds its entry. Where the title varies, the heading uses a placeholder such as `<kind>`, and the entry lists every printed value.
 
 In the index, `check` stands for every command that runs the semantic checks: `shp check`, `shp coverage`, and the language server (`shp lsp`). `shp obligations` also lists five of them without failing: `missing required context`, `missing required description`, `guarded shape changed`, `invalid reevaluation`, and `stale design memory`.
 
@@ -38,6 +38,7 @@ In the index, `check` stands for every command that runs the semantic checks: `s
 | [`error: context target mismatch`](#error-context-target-mismatch) | `context_target_mismatch` | `check` | [Design memory](#design-memory) |
 | [`error: invalid require_context`](#error-invalid-require_context) | `invalid_require_context` | `check` | [Design memory](#design-memory) |
 | [`error: guarded shape changed`](#error-guarded-shape-changed) | `guarded_shape_changed` | `check` | [Design memory](#design-memory) |
+| [`error: guarded source changed`](#error-guarded-source-changed) | `guarded_source_changed` | `shp check --changed-files` | [Design memory](#design-memory) |
 | [`error: invalid reevaluation`](#error-invalid-reevaluation) | `invalid_reevaluation` | `check` | [Design memory](#design-memory) |
 | [`error: stale design memory`](#error-stale-design-memory) | `stale_memory` | `shp check --as-of` or `--strict-freshness` | [Design memory](#design-memory) |
 
@@ -734,6 +735,28 @@ caused by:
 - `This change applies the L transform to the guarded target.` for `forbid transform L` when a `modify fn` declares `transform L`.
 
 **Fix.** Add a valid `reevaluation` that satisfies the named context, or keep the protected shape. An attestation never satisfies a guard.
+
+### `error: guarded source changed`
+
+Kind `guarded_source_changed` · emitted by `shp check --changed-files`
+
+```text
+error: guarded source changed
+
+src/editor/merge.ts changed. It is the source of fn Editor.mergeAutosaves, which is protected by memory MergeRefactorConstraint.
+
+Required:
+  add reevaluation satisfying memory MergeRefactorConstraint in this change
+  or leave src/editor/merge.ts unchanged.
+
+caused by:
+  - shape/editor.shape: fn Editor.mergeAutosaves
+  - shape/editor.shape: memory MergeRefactorConstraint guards on_change require ReEvaluation<Self>
+```
+
+**Cause.** A changed file is the `source` of a function that a `rationale` or `memory` guards with `on_change require ReEvaluation`, and no valid reevaluation of that context was written for this change: new relative to the base model when there is one, or declared in a changed `.shape` file when there is not. `caused by` names the function and the guard clause. [When the guarded code changes](/shapelang/concepts/design-memory/#when-the-guarded-code-changes) lists the guards that do not fire this way.
+
+**Fix.** Review the change against the context's summary, then add a `reevaluation` that satisfies it and records the review, with its evidence. A reevaluation carried over from an earlier change does not count, so write a new one rather than editing the model around the guard. If the edit was not meant to touch the guarded function, move it out of that file or undo it.
 
 ### `error: invalid reevaluation`
 

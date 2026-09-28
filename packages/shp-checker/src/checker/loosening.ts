@@ -71,6 +71,7 @@ const VIOLATION_KINDS: ReadonlySet<SemanticDiagnostic["kind"]> = new Set([
   "forbidden_path",
   "forbidden_provides",
   "guarded_shape_changed",
+  "guarded_source_changed",
   "missing_bound_docs_change",
   "missing_grant",
   "missing_required_context",

@@ -507,6 +507,13 @@
       ]
     },
     {
+      "module": "shape.generated.ast.packages.shp_checker.src.behavioural.guarded_sources_test",
+      "path": "shape/generated/ast/packages/shp-checker/src/behavioural/guarded-sources.test.shape",
+      "sources": [
+        "packages/shp-checker/src/behavioural/guarded-sources.test.ts"
+      ]
+    },
+    {
       "module": "shape.generated.ast.packages.shp_checker.src.behavioural.harness",
       "path": "shape/generated/ast/packages/shp-checker/src/behavioural/harness.shape",
       "sources": [

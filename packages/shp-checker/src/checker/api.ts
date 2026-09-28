@@ -23,6 +23,7 @@ import { checkRuleLoosening } from "./loosening.ts";
 import { requireIsoCalendarDate } from "./iso-date.ts";
 import { checkBindings, runSemanticChecks } from "./rules.ts";
 import { attestationKey } from "./rules/coverage.ts";
+import { contextKey, reevaluationKey } from "./rules/guards.ts";
 import { normalizeRepoPath } from "./globs.ts";
 import { removeAttestations, type AttestationRemoval } from "./attestation-text.ts";
 import { moduleOriginForShapeFile } from "./symbols.ts";
@@ -123,10 +124,20 @@ function compareFacts(left: Fact, right: Fact): number {
 export function summarizeBaseModel(
   baseModules: ShapeModule[] | CheckModuleInput[],
   repoRoot: string
-): { attestationKeys: string[]; attestationFreeTexts: [string, string][] } {
+): {
+  attestationKeys: string[];
+  attestationFreeTexts: [string, string][];
+  reevaluationKeys: string[];
+  contextKeys: string[];
+} {
   const model = lowerShapeModules(baseModules);
   return {
     attestationKeys: model.attestations.map(attestationKey).toSorted(),
+    reevaluationKeys: [...model.reevaluations.values()].map(reevaluationKey).toSorted(),
+    contextKeys: [
+      ...[...model.rationales.keys()].map((name) => contextKey("rationale", name)),
+      ...[...model.memories.keys()].map((name) => contextKey("memory", name))
+    ].toSorted(),
     attestationFreeTexts: [...model.attestationFreeTexts]
       .map(([filePath, text]): [string, string] => [normalizeRepoPath(filePath, repoRoot), text])
       .toSorted(([left], [right]) => compareCodepointStrings(left, right))
@@ -160,7 +171,9 @@ export function normalizeCheckOptions(options: CheckOptions): NormalizedCheckOpt
         ? undefined
         : {
             attestationKeys: new Set(base.attestationKeys),
-            attestationFreeTexts: new Map(base.attestationFreeTexts)
+            attestationFreeTexts: new Map(base.attestationFreeTexts),
+            reevaluationKeys: new Set(base.reevaluationKeys),
+            contextKeys: new Set(base.contextKeys)
           },
     freshnessDate:
       options.freshnessDate === undefined

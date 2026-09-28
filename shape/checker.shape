@@ -412,6 +412,21 @@ component ShapeRuleEngine {
       Read<EffectiveModel>
         evidence ts("packages/shp-checker/src/checker/rules/guards.ts")
     }
+  fn checkGuardedSources : RefactorSensitive
+    source ts("packages/shp-checker/src/checker/rules/guards.ts#checkGuardedSources")
+    description "With a changed-file list, reports each on_change ReEvaluation guard on a function whose source file changed, unless a valid reevaluation of that guard is new relative to the base model, or, without a base, declared in a changed Shape file."
+    effects complete {
+      Append<SemanticDiagnostics>
+        evidence ts("packages/shp-checker/src/checker/rules/guards.ts#checkGuardedSources")
+      Read<BaseShapeModel>
+        evidence ts("packages/shp-checker/src/checker/rules/guards.ts#reevaluationKey")
+      Read<ChangeEventSet>
+        evidence ts("packages/shp-checker/src/checker/rules/guards.ts#checkGuardedSources")
+      Read<ChangedFileList>
+        evidence ts("packages/shp-checker/src/checker/rules/guards.ts#checkGuardedSources")
+      Read<EffectiveModel>
+        evidence ts("packages/shp-checker/src/checker/rules/guards.ts#checkGuardedSources")
+    }
   fn checkReevaluations : RefactorSensitive
     source ts("packages/shp-checker/src/checker/rules/context.ts#checkReevaluations")
     effects complete {
@@ -810,6 +825,19 @@ memory GuardedChangePrecision : RefactorConstraint<fn ShapeRuleEngine.checkGuard
   }
 }
 
+memory GuardedSourceCurrency : RefactorConstraint<fn ShapeRuleEngine.checkGuardedSources> {
+  applies_to fn ShapeRuleEngine.checkGuardedSources
+  status Explained
+  confidence High
+  summary "An edit to a guarded function's source is cleared only by a reevaluation written for that change. Counting any valid reevaluation, as declared changes do, would let one old review switch the guard off for every later edit."
+  who {
+    owner ShapeMaintainers
+  }
+  guards {
+    on_change require ReEvaluation<Self>
+  }
+}
+
 memory HypercycleWitness : RefactorConstraint<fn ShapeRuleEngine.findHypercycle> {
   applies_to fn ShapeRuleEngine.findHypercycle
   status Explained
@@ -953,6 +981,16 @@ memory SharedCheckPipelineOrder : CheckOrderRationale<fn ShapeChecker.checkLower
   }
 }
 
+reevaluation BaseSummaryCarriesReevaluationKeys {
+  satisfies memory SharedCheckPipelineOrder
+  outcome Confirmed
+  summary "api.ts changed only in summarizeBaseModel and normalizeCheckOptions, which now carry the base model's reevaluation keys; checkLoweredShapeModel still runs the ordered registry and then bindings, and its authority is unchanged."
+  reviewer ShapeMaintainers
+  decided_on "2026-09-28"
+  evidence test("packages/shp-checker/src/behavioural/guarded-sources.test.ts")
+  evidence ts("packages/shp-checker/src/checker/api.ts#summarizeBaseModel")
+}
+
 reevaluation BindingAttestationsComparedWithBase {
   satisfies memory BindingDocsCouplingContract
   outcome Confirmed
@@ -988,6 +1026,16 @@ reevaluation CheckPipelineRunsLooseningAfterFullCheck {
   decided_on "2026-09-28"
   evidence test("packages/shp-checker/src/behavioural/rule-loosening.test.ts")
   evidence ts("packages/shp-checker/src/checker/api.ts")
+}
+
+reevaluation CheckShapeModulesUnchangedByGuardedSources {
+  satisfies memory CheckPipelineOrder
+  outcome Confirmed
+  summary "checkShapeModules is unchanged; the guarded-source rule runs inside the ordered registry after checkGuardedChanges, so lowering still finishes before any rule reads the model."
+  reviewer ShapeMaintainers
+  decided_on "2026-09-28"
+  evidence test("packages/shp-checker/src/behavioural/guarded-sources.test.ts")
+  evidence ts("packages/shp-checker/src/checker/rules.ts")
 }
 
 reevaluation CheckerPhaseOrderRechecked {
@@ -1080,6 +1128,34 @@ reevaluation ForbiddenPathTraversalRechecked {
   evidence test("packages/shp-checker/src/checker.test.ts")
 }
 
+reevaluation FreshnessUnchangedByGuardedSources {
+  satisfies memory FreshnessDeterminism
+  outcome Confirmed
+  summary "rules/guards.ts gained checkGuardedSources and reevaluationKey; checkFreshness is unchanged and still compares review_by only with the injected date."
+  reviewer ShapeMaintainers
+  decided_on "2026-09-28"
+  evidence test("packages/shp-checker/src/checker.memory-freshness.test.ts")
+}
+
+reevaluation GuardedChangesKeptAlongsideSourceEdits {
+  satisfies memory GuardedChangePrecision
+  outcome Confirmed
+  summary "checkGuardedChanges is unchanged. checkGuardedSources adds a coarse, file-level trigger for function guards, skips a target that a declared change already reports without any reevaluation, and never fires for forbid transform or property-narrowed guards."
+  reviewer ShapeMaintainers
+  decided_on "2026-09-28"
+  evidence test("packages/shp-checker/src/behavioural/guarded-sources.test.ts")
+}
+
+reevaluation GuardedSourceDiagnosticOutputChecked {
+  satisfies memory DiagnosticContract
+  outcome Confirmed
+  summary "guarded source changed names the changed file, the guarded function and its context, how to clear it, and the function and guard clause as causes, matching the guarded shape changed layout."
+  reviewer ShapeMaintainers
+  decided_on "2026-09-28"
+  evidence md("docs-site/src/content/docs/reference/diagnostics.md")
+  evidence test("packages/shp-checker/src/behavioural/guarded-sources.test.ts")
+}
+
 reevaluation HypercycleSccTraversalRechecked {
   satisfies memory HypercycleWitness
   outcome Confirmed
@@ -1108,6 +1184,15 @@ reevaluation HypercycleTraversalRechecked {
   reviewer ShapeMaintainers
   decided_on "2026-05-20"
   evidence test("packages/shp-checker/src/checker.test.ts")
+}
+
+reevaluation LooseningCountsGuardedSources {
+  satisfies memory RuleLayerSplit
+  outcome Confirmed
+  summary "loosening.ts only adds guarded_source_changed to the violation kinds, so taking a guard off while editing its source is reported; which declarations form the rule layer is unchanged."
+  reviewer ShapeMaintainers
+  decided_on "2026-09-28"
+  evidence test("packages/shp-checker/src/behavioural/guarded-sources.test.ts")
 }
 
 reevaluation LoweringFunctionRegistryRechecked {

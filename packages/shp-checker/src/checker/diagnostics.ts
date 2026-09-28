@@ -76,6 +76,8 @@ function formatDiagnostic(diagnostic: ShapeDiagnostic): string {
       return formatMissingRequiredDescriptionDiagnostic(diagnostic);
     case "guarded_shape_changed":
       return formatGuardedShapeChangedDiagnostic(diagnostic);
+    case "guarded_source_changed":
+      return formatGuardedSourceChangedDiagnostic(diagnostic);
     case "invalid_reevaluation":
       return formatInvalidReevaluationDiagnostic(diagnostic);
     case "stale_memory":
@@ -415,6 +417,21 @@ function formatGuardedShapeChangedDiagnostic(
     "Required:",
     `  add ${diagnostic.missingReevaluation}`,
     "  or preserve the protected shape.",
+    formatCausedBy(diagnostic.causedBy)
+  ].join("\n");
+}
+
+function formatGuardedSourceChangedDiagnostic(
+  diagnostic: Extract<SemanticDiagnostic, { kind: "guarded_source_changed" }>
+): string {
+  return [
+    "error: guarded source changed",
+    "",
+    `${diagnostic.changedFile} changed. It is the source of ${diagnostic.targetKind} ${displaySymbol(diagnostic.target)}, which is protected by ${diagnostic.guardKind} ${displaySymbol(diagnostic.guard)}.`,
+    "",
+    "Required:",
+    `  add ${diagnostic.missingReevaluation} in this change`,
+    `  or leave ${diagnostic.changedFile} unchanged.`,
     formatCausedBy(diagnostic.causedBy)
   ].join("\n");
 }

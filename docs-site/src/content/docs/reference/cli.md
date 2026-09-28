@@ -55,7 +55,7 @@ Parses the Shape model and runs every semantic check. With `--changed-files`, it
 | Flag | Meaning |
 | --- | --- |
 | `--allow-unknown-effects` | Allow `effects unknown` as a non-fatal warning while validating drafts. See [Draft validation](#draft-validation). |
-| `--changed-files changed.txt` | Path to a newline-delimited changed-file list. Enables coverage and bindings. |
+| `--changed-files changed.txt` | Path to a newline-delimited changed-file list. Enables coverage, bindings, and guards on edited function sources. |
 | `--base-ref REF` | Compare attestations against the Shape model at the merge base of `REF` and `HEAD`, read from git. See [Base model](#base-model). |
 | `--base-model DIR` | Compare attestations against a copy of the base model in `DIR`, kept at repository paths. Cannot be combined with `--base-ref`. |
 | `--check-loosening` | With `--base-ref` or `--base-model`, fail when an edit to a rule, trait, design memory, or governed path is what lets the model pass. See [Rule loosening](#rule-loosening). |
@@ -64,7 +64,7 @@ Parses the Shape model and runs every semantic check. With `--changed-files`, it
 | `--strict-freshness` | Shorthand for `--as-of` today (UTC); fails when `review_by` is before today. |
 | `files...` | Shape files to read. Defaults to `shape/**/*.shape`. |
 
-The changed-file list holds one path per line, relative to the working directory. Surrounding whitespace and blank lines are ignored, `\` becomes `/`, a leading `./` is dropped, and absolute paths are made relative to the working directory. Without the flag, or with an empty list, coverage and bindings check nothing. What counts as covered is described in [Keep the Model Current](/shapelang/guides/keep-model-current/).
+The changed-file list holds one path per line, relative to the working directory. Surrounding whitespace and blank lines are ignored, `\` becomes `/`, a leading `./` is dropped, and absolute paths are made relative to the working directory. Without the flag, or with an empty list, coverage, bindings, and source-edit guards check nothing. A guarded function whose `source` file is in the list needs a reevaluation written for this change; see [When the guarded code changes](/shapelang/concepts/design-memory/#when-the-guarded-code-changes). What counts as covered is described in [Keep the Model Current](/shapelang/guides/keep-model-current/).
 
 A passing run prints `Shape check passed.` to stdout. A failing run prints its diagnostics to stderr and exits `1`; each diagnostic's form is catalogued in [Diagnostics](/shapelang/reference/diagnostics/). When any file fails to parse or cannot be read, the command reports only the parse errors and exits `2` without running semantic checks. A missing or unreadable changed-file list also exits `2`.
 

@@ -38,7 +38,7 @@ resource DiagnosticsModuleFormatContextTargetMismatchDiagnosticAstAnchor : Gener
 
 resource DiagnosticsModuleFormatDiagnosticAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/checker/diagnostics.ts#formatDiagnostic")
-  fingerprint ast.semantic_subtree_v1("sha256:14ea61a8474124f758151bd1812688c10d2684de2cbe0a3c2ea30b895bc6e27b")
+  fingerprint ast.semantic_subtree_v1("sha256:392b155d50ad2aa24abd6c5bbd63b2d57b78e9d2beac8327ba238169654a20dc")
 }
 
 resource DiagnosticsModuleFormatDiagnosticsAstAnchor : GeneratedAstAnchor {
@@ -84,6 +84,11 @@ resource DiagnosticsModuleFormatForbiddenProvidesDiagnosticAstAnchor : Generated
 resource DiagnosticsModuleFormatGuardedShapeChangedDiagnosticAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/checker/diagnostics.ts#formatGuardedShapeChangedDiagnostic")
   fingerprint ast.semantic_subtree_v1("sha256:7fa788e83e2ef6a98483386598f14ed143d227aeeddcb2aef7b925ddac469cca")
+}
+
+resource DiagnosticsModuleFormatGuardedSourceChangedDiagnosticAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/checker/diagnostics.ts#formatGuardedSourceChangedDiagnostic")
+  fingerprint ast.semantic_subtree_v1("sha256:4c561b99d73eb31f6d5591bb7ec259a0a00205d068caa352363629ea9bf0dd7c")
 }
 
 resource DiagnosticsModuleFormatInvalidCandidateEffectDiagnosticAstAnchor : GeneratedAstAnchor {
@@ -250,6 +255,9 @@ component DiagnosticsModule : GeneratedCandidate {
   fn formatGuardedShapeChangedDiagnostic
     source ts("packages/shp-checker/src/checker/diagnostics.ts#formatGuardedShapeChangedDiagnostic")
     effects unknown
+  fn formatGuardedSourceChangedDiagnostic
+    source ts("packages/shp-checker/src/checker/diagnostics.ts#formatGuardedSourceChangedDiagnostic")
+    effects unknown
   fn formatInvalidCandidateEffectDiagnostic
     source ts("packages/shp-checker/src/checker/diagnostics.ts#formatInvalidCandidateEffectDiagnostic")
     effects unknown
@@ -373,7 +381,7 @@ relation DiagnosticsModuleFormatDiagnosticGeneratedFromDiagnosticsModuleFormatDi
   kind generated_from
   connects DiagnosticsModule -> DiagnosticsModuleFormatDiagnosticAstAnchor
   roles { DiagnosticsModule as generated, DiagnosticsModuleFormatDiagnosticAstAnchor as syntax }
-  expects DiagnosticsModuleFormatDiagnosticAstAnchor fingerprint ast.semantic_subtree_v1("sha256:14ea61a8474124f758151bd1812688c10d2684de2cbe0a3c2ea30b895bc6e27b")
+  expects DiagnosticsModuleFormatDiagnosticAstAnchor fingerprint ast.semantic_subtree_v1("sha256:392b155d50ad2aa24abd6c5bbd63b2d57b78e9d2beac8327ba238169654a20dc")
   summary "fn DiagnosticsModule.formatDiagnostic generated from typescript function_declaration at packages/shp-checker/src/checker/diagnostics.ts#formatDiagnostic."
 }
 
@@ -447,6 +455,14 @@ relation DiagnosticsModuleFormatGuardedShapeChangedDiagnosticGeneratedFromDiagno
   roles { DiagnosticsModule as generated, DiagnosticsModuleFormatGuardedShapeChangedDiagnosticAstAnchor as syntax }
   expects DiagnosticsModuleFormatGuardedShapeChangedDiagnosticAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7fa788e83e2ef6a98483386598f14ed143d227aeeddcb2aef7b925ddac469cca")
   summary "fn DiagnosticsModule.formatGuardedShapeChangedDiagnostic generated from typescript function_declaration at packages/shp-checker/src/checker/diagnostics.ts#formatGuardedShapeChangedDiagnostic."
+}
+
+relation DiagnosticsModuleFormatGuardedSourceChangedDiagnosticGeneratedFromDiagnosticsModuleFormatGuardedSourceChangedDiagnosticAstAnchor {
+  kind generated_from
+  connects DiagnosticsModule -> DiagnosticsModuleFormatGuardedSourceChangedDiagnosticAstAnchor
+  roles { DiagnosticsModule as generated, DiagnosticsModuleFormatGuardedSourceChangedDiagnosticAstAnchor as syntax }
+  expects DiagnosticsModuleFormatGuardedSourceChangedDiagnosticAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4c561b99d73eb31f6d5591bb7ec259a0a00205d068caa352363629ea9bf0dd7c")
+  summary "fn DiagnosticsModule.formatGuardedSourceChangedDiagnostic generated from typescript function_declaration at packages/shp-checker/src/checker/diagnostics.ts#formatGuardedSourceChangedDiagnostic."
 }
 
 relation DiagnosticsModuleFormatInvalidCandidateEffectDiagnosticGeneratedFromDiagnosticsModuleFormatInvalidCandidateEffectDiagnosticAstAnchor {

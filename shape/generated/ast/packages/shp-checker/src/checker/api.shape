@@ -38,7 +38,7 @@ resource ApiModuleIsWarningAstAnchor : GeneratedAstAnchor {
 
 resource ApiModuleNormalizeCheckOptionsAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/checker/api.ts#normalizeCheckOptions")
-  fingerprint ast.semantic_subtree_v1("sha256:6219efd91a7a595fc5d057bb8acf12091def2747573ac28ab2ea673f0039d33e")
+  fingerprint ast.semantic_subtree_v1("sha256:0993addc3319e070e9ba4f7426d5bba359baeedae20f34d6a9cd05a7149d023a")
 }
 
 resource ApiModuleStaleAttestationPrunerAstAnchor : GeneratedAstAnchor {
@@ -48,7 +48,7 @@ resource ApiModuleStaleAttestationPrunerAstAnchor : GeneratedAstAnchor {
 
 resource ApiModuleSummarizeBaseModelAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/checker/api.ts#summarizeBaseModel")
-  fingerprint ast.semantic_subtree_v1("sha256:55e71e7e62f740002548327b5707c075d1afd8ab0f726b981edad4ff5dc9343a")
+  fingerprint ast.semantic_subtree_v1("sha256:9fd96eeacd92a32fa705e7ebf12bc97ff6e360f8c3a539c38f2d44b62286c908")
 }
 
 component ApiModule : GeneratedCandidate {
@@ -133,7 +133,7 @@ relation ApiModuleNormalizeCheckOptionsGeneratedFromApiModuleNormalizeCheckOptio
   kind generated_from
   connects ApiModule -> ApiModuleNormalizeCheckOptionsAstAnchor
   roles { ApiModule as generated, ApiModuleNormalizeCheckOptionsAstAnchor as syntax }
-  expects ApiModuleNormalizeCheckOptionsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6219efd91a7a595fc5d057bb8acf12091def2747573ac28ab2ea673f0039d33e")
+  expects ApiModuleNormalizeCheckOptionsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0993addc3319e070e9ba4f7426d5bba359baeedae20f34d6a9cd05a7149d023a")
   summary "fn ApiModule.normalizeCheckOptions generated from typescript function_declaration at packages/shp-checker/src/checker/api.ts#normalizeCheckOptions."
 }
 
@@ -149,7 +149,7 @@ relation ApiModuleSummarizeBaseModelGeneratedFromApiModuleSummarizeBaseModelAstA
   kind generated_from
   connects ApiModule -> ApiModuleSummarizeBaseModelAstAnchor
   roles { ApiModule as generated, ApiModuleSummarizeBaseModelAstAnchor as syntax }
-  expects ApiModuleSummarizeBaseModelAstAnchor fingerprint ast.semantic_subtree_v1("sha256:55e71e7e62f740002548327b5707c075d1afd8ab0f726b981edad4ff5dc9343a")
+  expects ApiModuleSummarizeBaseModelAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9fd96eeacd92a32fa705e7ebf12bc97ff6e360f8c3a539c38f2d44b62286c908")
   summary "fn ApiModule.summarizeBaseModel generated from typescript function_declaration at packages/shp-checker/src/checker/api.ts#summarizeBaseModel."
 }
 

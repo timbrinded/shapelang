@@ -220,6 +220,17 @@ export type SemanticDiagnostic =
       causedBy: string[];
     }
   | {
+      kind: "guarded_source_changed";
+      guardKind: ContextKind;
+      guard: string;
+      targetKind: TargetKind;
+      target: string;
+      changedFile: string;
+      missingReevaluation: string;
+      filePath?: string;
+      causedBy: string[];
+    }
+  | {
       kind: "invalid_reevaluation";
       name: string;
       reason: string;
@@ -351,6 +362,10 @@ export type BaseModel = {
   attestationKeys: ReadonlySet<string>;
   /** Each base `.shape` file's source with its attestations removed. */
   attestationFreeTexts: ReadonlyMap<string, string>;
+  /** Identity keys of every reevaluation in the base. */
+  reevaluationKeys: ReadonlySet<string>;
+  /** `kind:name` of every rationale and memory in the base. */
+  contextKeys: ReadonlySet<string>;
 };
 
 export type Fact =
