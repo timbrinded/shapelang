@@ -36,8 +36,8 @@ committed, and CI's Codegen job fails when regenerating them produces a diff.
 ## Before making changes
 
 Find your change in [What to update per change type](#what-to-update-per-change-type)
-and read the `shape/*.shape` claims whose `source` or `implementation` paths
-cover the files you will touch. Reuse existing abstractions. The TypeScript
+and read the `shape/*.shape` claims whose `source`, `evidence`, or
+`implementation` paths cover the files you will touch. Reuse existing abstractions. The TypeScript
 config is strict; do not cast to `any` to silence an error.
 
 Checks catch some breaches of these rules but cannot judge intent, so keep to
@@ -56,8 +56,8 @@ them even when every check passes:
   and witnesses deterministic so review and CI can compare them.
 - Never loosen a rule, trait, memory guard, or governed path to make a check
   pass. Change the code instead, or stop and ask the maintainer. Write a
-  `## Rule loosening` reason only for a loosening the maintainer asked for; see
-  [Rule loosening](#rule-loosening).
+  `## Rule loosening` reason only for a loosening the maintainer asked for, and
+  link to where they asked; see [Rule loosening](#rule-loosening).
 - Before editing the `source` file of a guarded function (one a `memory`
   protects), run `bun shp obligations`, `bun shp memory`, and
   `bun shp explain Component.fn`. Keep the behaviour the memory protects, or
@@ -210,7 +210,8 @@ binding, role, policy, or trait list the change removed or edited, and fails
 with `error: rule loosening` when that brings back an error. Fix the code
 instead of the rule where you can. When the loosening is intended, the pull
 request body must give every loosening a reason under a `## Rule loosening`
-heading, one line each that names the loosened declaration and says why:
+heading, one line each that names the loosened declaration, says why, and links
+to where the maintainer asked:
 
 ```markdown
 ## Rule loosening
