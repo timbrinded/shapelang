@@ -8,7 +8,7 @@ trait GeneratedCandidate {
 
 resource RuleLooseningTestModuleCheckFixtureAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/behavioural/rule-loosening.test.ts#checkFixture")
-  fingerprint ast.semantic_subtree_v1("sha256:20dcc750f093d5999b651ed6aa327889ec595172ffa57f29ef5679f901a12066")
+  fingerprint ast.semantic_subtree_v1("sha256:9aef838255e8dc8682842983e60b2ae357f2cf56cd4b9ba072d7f1f55c82221c")
 }
 
 resource RuleLooseningTestModuleLinesAstAnchor : GeneratedAstAnchor {
@@ -45,7 +45,7 @@ relation RuleLooseningTestModuleCheckFixtureGeneratedFromRuleLooseningTestModule
   kind generated_from
   connects RuleLooseningTestModule -> RuleLooseningTestModuleCheckFixtureAstAnchor
   roles { RuleLooseningTestModule as generated, RuleLooseningTestModuleCheckFixtureAstAnchor as syntax }
-  expects RuleLooseningTestModuleCheckFixtureAstAnchor fingerprint ast.semantic_subtree_v1("sha256:20dcc750f093d5999b651ed6aa327889ec595172ffa57f29ef5679f901a12066")
+  expects RuleLooseningTestModuleCheckFixtureAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9aef838255e8dc8682842983e60b2ae357f2cf56cd4b9ba072d7f1f55c82221c")
   summary "fn RuleLooseningTestModule.checkFixture generated from typescript function_declaration at packages/shp-checker/src/behavioural/rule-loosening.test.ts#checkFixture."
 }
 

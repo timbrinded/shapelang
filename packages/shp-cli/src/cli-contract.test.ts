@@ -306,7 +306,7 @@ describe("shp check --check-loosening / library parity over fixtures/loosening",
         "— anchor: docs-site/src/content/docs/reference/cli.md Rule loosening",
       async () => {
         const directory = join(fixturesDir, fixture);
-        const changedList = Bun.file(join(directory, "changed.txt"));
+        const changedList = Bun.file(join(directory, "changed-files.txt"));
         const changedFiles = (await changedList.exists())
           ? (await changedList.text()).split("\n").filter((line) => line.trim().length > 0)
           : undefined;
@@ -316,7 +316,7 @@ describe("shp check --check-loosening / library parity over fixtures/loosening",
             "--base-model",
             "../base",
             "--check-loosening",
-            ...(changedFiles ? ["--changed-files", "../changed.txt"] : [])
+            ...(changedFiles ? ["--changed-files", "../changed-files.txt"] : [])
           ],
           cliPath,
           join(directory, "head")
