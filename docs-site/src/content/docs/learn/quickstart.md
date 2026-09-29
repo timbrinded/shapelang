@@ -7,22 +7,22 @@ This page installs the released `shp` binary, builds a small Shape model for the
 
 ## Install
 
-Pin a release version in scripts and CI. The current docs pin is `v0.9.0`:
+Pin a release version in scripts and CI. The current docs pin is `v0.10.0`:
 
 ```bash
-curl --proto '=https' --tlsv1.2 -LsSf https://github.com/timbrinded/shapelang/releases/download/v0.9.0/install.sh | sh
+curl --proto '=https' --tlsv1.2 -LsSf https://github.com/timbrinded/shapelang/releases/download/v0.10.0/install.sh | sh
 ```
 
 On Windows:
 
 ```powershell
-irm https://github.com/timbrinded/shapelang/releases/download/v0.9.0/install.ps1 | iex
+irm https://github.com/timbrinded/shapelang/releases/download/v0.10.0/install.ps1 | iex
 ```
 
 The installer downloads the release archive for your platform and verifies it against the release's `checksums.txt` (SHA-256). It then installs `shp`, with the `tree-sitter-language-pack` parser directory beside it for `shp ast`. Archives exist for Linux x64 and ARM64, macOS ARM64, and Windows x64, and each GitHub release also attaches them with `checksums.txt` for manual download. The released binary needs neither Bun nor Node.
 
 - **Location.** The default directory is `~/.local/bin`, or `$HOME\.local\bin` on Windows. Set `SHAPE_INSTALL_DIR` to install elsewhere. The POSIX installer also accepts `--install-dir`, passed through `sh`: `curl … install.sh | sh -s -- --install-dir DIR`.
-- **Version.** An installer downloaded from a release installs that release. To pin another one, replace `v0.9.0` in the URL, or set `SHAPE_VERSION` to a release tag.
+- **Version.** An installer downloaded from a release installs that release. To pin another one, replace `v0.10.0` in the URL, or set `SHAPE_VERSION` to a release tag.
 - **Updates.** `shp update` replaces the running binary with the latest release, or with the tag passed to `--version`. It is for local installs; CI should pin a version instead. See the [CLI Reference](/shapelang/reference/cli/).
 
 If the install directory is not on your `PATH`, the installer prints the line to add. For the default directory in a POSIX shell, that line is equivalent to:
@@ -245,7 +245,7 @@ In CI, install the same pin with the setup action and run both checks:
 ```yaml
 steps:
   - uses: actions/checkout@v4
-  - uses: timbrinded/shapelang@v0.9.0
+  - uses: timbrinded/shapelang@v0.10.0
   - run: shp fmt --check
   - run: shp check
 ```

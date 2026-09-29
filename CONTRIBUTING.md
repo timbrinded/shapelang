@@ -3,7 +3,7 @@
 This guide covers work on the Shape repository itself: the checker, the `shp`
 CLI, the docs site, the agent skills, and the release tooling. To use Shape in
 another repository, install the released `shp` binary
-(currently `0.9.0` / `v0.9.0`) as the
+(currently `0.10.0` / `v0.10.0`) as the
 [Quickstart](https://timbrinded.github.io/shapelang/learn/quickstart/) describes;
 that needs none of this workspace.
 

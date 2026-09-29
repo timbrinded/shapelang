@@ -23,7 +23,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - uses: timbrinded/shapelang@v0.9.0
+      - uses: timbrinded/shapelang@v0.10.0
       - run: shp fmt --check
       - name: Write changed.txt
         env:
@@ -49,8 +49,8 @@ jobs:
 - On a pull request, the diff against the base branch lists every file the pull request changes, including the `.shape` files that make its Shape updates and attestations current.
 - `shp fmt --check` fails on any `.shape` file that is not in canonical format. The formatter drops `//` and `/* */` comments, so a file that contains comments never passes; see the [CLI Reference](/shapelang/reference/cli/).
 - `shp check --changed-files changed.txt` is the only gate needed; it replaces separate `shp check` and `shp coverage` steps.
-- `--base-ref "origin/$BASE_REF"` compares attestations against the model at the merge base, so only attestations written for this pull request count and carried-over ones are reported as stale. It reads that history from git, which `fetch-depth: 0` provides. The flag ships in the first release after v0.9.0; with an older pinned `shp`, leave it out.
-- `--check-loosening` fails when an edit to the rules is what lets the pull request pass, for example removing `AppendOnly` from a resource so that a new purge job is allowed, or narrowing an implementation's `paths` so that an edited file is no longer governed. It needs `--base-ref`, and both flags ship in the first release after v0.9.0; with v0.9.0 pinned, leave them out. See [Approve a rule loosening](#approve-a-rule-loosening) for the case where someone asked for the change.
+- `--base-ref "origin/$BASE_REF"` compares attestations against the model at the merge base, so only attestations written for this pull request count and carried-over ones are reported as stale. It reads that history from git, which `fetch-depth: 0` provides. The flag ships in v0.10.0; upgrade an older pinned `shp` before using it.
+- `--check-loosening` fails when an edit to the rules is what lets the pull request pass, for example removing `AppendOnly` from a resource so that a new purge job is allowed, or narrowing an implementation's `paths` so that an edited file is no longer governed. It needs `--base-ref`, and both flags are available in the v0.10.0 pin above. See [Approve a rule loosening](#approve-a-rule-loosening) for the case where someone asked for the change.
 - Design-memory freshness is off by default. To enforce it, add `--as-of YYYY-MM-DD`, which gives the same result on every run, rather than `--strict-freshness`, which uses today's date (UTC). Both flags are in the [CLI Reference](/shapelang/reference/cli/).
 
 A push has no base ref, so this job writes an empty list on push. The push run then checks conformance only, because coverage and bindings check nothing with an empty list; pull requests carry the change-set gate. To check pushes as well, diff `${{ github.event.before }}` against `HEAD`. That SHA is all zeros when the push creates the branch, and the diff then fails.
@@ -88,7 +88,7 @@ on:
 
 ## Pin the version
 
-Pin the setup action to an explicit release tag such as `v0.9.0`, in every workflow. With a version tag as its ref, `timbrinded/shapelang@v0.9.0` installs that release. The optional `version` input selects a different release; with a branch ref and no `version`, the action installs the latest release. Do not install with `shp update` in CI: that command replaces a local developer binary.
+Pin the setup action to an explicit release tag such as `v0.10.0`, in every workflow. With a version tag as its ref, `timbrinded/shapelang@v0.10.0` installs that release. The optional `version` input selects a different release; with a branch ref and no `version`, the action installs the latest release. Do not install with `shp update` in CI: that command replaces a local developer binary.
 
 The action verifies the download against the release's `checksums.txt` when `sha256sum` or `shasum` is available, as it is on GitHub-hosted runners; otherwise it warns and skips the check. It supports Linux x64 and ARM64, macOS ARM64, and Windows x64 runners.
 
@@ -98,7 +98,7 @@ Run the installer from the pinned release instead:
 
 ```yaml
 - name: Install shp
-  run: curl --proto '=https' --tlsv1.2 -LsSf https://github.com/timbrinded/shapelang/releases/download/v0.9.0/install.sh | sh
+  run: curl --proto '=https' --tlsv1.2 -LsSf https://github.com/timbrinded/shapelang/releases/download/v0.10.0/install.sh | sh
 ```
 
 An installer downloaded from a release URL installs that release unless `SHAPE_VERSION` names another. It verifies the archive's SHA-256 against `checksums.txt` and installs into `~/.local/bin`, or into the directory that `SHAPE_INSTALL_DIR` or the installer's `--install-dir` argument names. Under GitHub Actions it also appends the install directory to `GITHUB_PATH`, so later steps find `shp`.
@@ -141,7 +141,7 @@ shape-claude-review:
       if: steps.claude-token.outputs.available == 'true'
       with:
         fetch-depth: 0
-    - uses: timbrinded/shapelang@v0.9.0
+    - uses: timbrinded/shapelang@v0.10.0
       if: steps.claude-token.outputs.available == 'true'
     - name: Write changed.txt
       if: steps.claude-token.outputs.available == 'true'

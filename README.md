@@ -55,13 +55,13 @@ caused by:
 Pin the version in scripts and CI:
 
 ```bash
-curl --proto '=https' --tlsv1.2 -LsSf https://github.com/timbrinded/shapelang/releases/download/v0.9.0/install.sh | sh
+curl --proto '=https' --tlsv1.2 -LsSf https://github.com/timbrinded/shapelang/releases/download/v0.10.0/install.sh | sh
 ```
 
 On Windows:
 
 ```powershell
-irm https://github.com/timbrinded/shapelang/releases/download/v0.9.0/install.ps1 | iex
+irm https://github.com/timbrinded/shapelang/releases/download/v0.10.0/install.ps1 | iex
 ```
 
 The installer verifies the archive against the release's SHA-256 checksums and installs `shp` into `~/.local/bin` (`$HOME\.local\bin` on Windows). The binary needs neither Bun nor Node.
@@ -71,16 +71,16 @@ The installer verifies the archive against the release's SHA-256 checksums and i
 ```yaml
 steps:
   - uses: actions/checkout@v4
-  - uses: timbrinded/shapelang@v0.9.0
+  - uses: timbrinded/shapelang@v0.10.0
   - run: shp check
 ```
 
-The setup action installs the release named by `version` when given; otherwise, the release named by a version-tag ref such as `@v0.9.0`; otherwise, the latest release:
+The setup action installs the release named by `version` when given; otherwise, the release named by a version-tag ref such as `@v0.10.0`; otherwise, the latest release:
 
 ```yaml
 - uses: timbrinded/shapelang@master
   with:
-    version: v0.9.0
+    version: v0.10.0
 ```
 
 ## Claude Code plugin
@@ -91,7 +91,7 @@ The setup action installs the release named by `version` when given; otherwise, 
 /reload-plugins
 ```
 
-The plugin adds six skills: `shapelang:shape-lang`, `shapelang:shape-contract-preflight`, `shapelang:shape-contract-guard`, `shapelang:shape-index`, `shapelang:shape-review`, and `shapelang:unix-system-visualiser`. They drive the `shp` CLI, so keep the binary on your `PATH`. The plugin is released as `shapelang--v0.9.0` from the same commit as `v0.9.0`.
+The plugin adds six skills: `shapelang:shape-lang`, `shapelang:shape-contract-preflight`, `shapelang:shape-contract-guard`, `shapelang:shape-index`, `shapelang:shape-review`, and `shapelang:unix-system-visualiser`. They drive the `shp` CLI, so keep the binary on your `PATH`. The plugin is released as `shapelang--v0.10.0` from the same commit as `v0.10.0`.
 
 ## Documentation
 

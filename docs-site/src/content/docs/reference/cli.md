@@ -3,7 +3,7 @@ title: CLI Reference
 description: Every shp command with its flags, output streams, and exit codes, plus file discovery and language-server setup.
 ---
 
-The released `shp` binary (version `0.9.0` / tag `v0.9.0`) exposes the commands below. Every command accepts `--help` (`-h`). `shp --version` (`-v`) prints the installed version.
+The released `shp` binary (version `0.10.0` / tag `v0.10.0`) exposes the commands below. Every command accepts `--help` (`-h`). `shp --version` (`-v`) prints the installed version.
 
 ## Commands
 
@@ -349,7 +349,7 @@ The command parses the model with the official parser, applies the same lowering
 ```json
 {
   "schemaVersion": 1,
-  "shapeVersion": "0.9.0",
+  "shapeVersion": "0.10.0",
   "documents": [],
   "resources": [],
   "components": [],
@@ -601,7 +601,7 @@ The command runs these steps in order and stops at the first that ends it:
 
 ```bash
 shp update --dry-run
-shp update --version v0.9.0
+shp update --version v0.10.0
 ```
 
 `shp update` is for local installs. CI installs a pinned release through the setup action or installer script, as described in [Run Shape in CI](/shapelang/guides/ci/).
