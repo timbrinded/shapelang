@@ -1215,6 +1215,6 @@ reevaluation WindowsNativeParserPackagingRechecked {
 }
 
 attest no_shape_change {
-  source md(".github/prompts/shape-skills-release.md")
-  reason "Require the evaluator to apply the existing skill's outcome-completeness rule to the full case task, separating helper results from skill decisions and derived conclusions from executed evidence. Shipped skill instructions, cases, report schema, model, tools, and approval gates are unchanged."
+  source yaml(".github/workflows/release.yml")
+  reason "Extract the published release body with jq -j so the verifier compares its actual bytes without appending a newline. Exact notes equality, metadata checks, asset checksums, installers, and release approval requirements remain unchanged."
 }
