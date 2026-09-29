@@ -23,7 +23,7 @@ resolve_native_asset() {
 
   if ! native_asset="$(
     cd "$repo_root"
-    SPECIFIER="$specifier" bun -e 'const { createRequire } = require("node:module"); const requireFromChecker = createRequire(process.cwd() + "/packages/shp-checker/src/ast-generation.ts"); const specifier = process.env.SPECIFIER; if (!specifier) process.exit(2); console.log(requireFromChecker.resolve(specifier));'
+    SPECIFIER="$specifier" bun -e 'import { basename, join } from "node:path"; import { treeSitterNativePackageDirectory } from "./packages/shp-checker/src/tree-sitter-native-targets.ts"; const specifier = process.env.SPECIFIER; if (!specifier) process.exit(2); console.log(join(treeSitterNativePackageDirectory(), basename(specifier)));'
   )"; then
     echo "error: failed to resolve $specifier" >&2
     exit 1

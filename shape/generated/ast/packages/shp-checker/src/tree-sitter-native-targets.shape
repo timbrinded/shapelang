@@ -11,6 +11,11 @@ resource TreeSitterNativeTargetsModuleCurrentTreeSitterNativeBindingTargetAstAnc
   fingerprint ast.semantic_subtree_v1("sha256:5e0309fc9cd37b6e759eed4291ac436d5965e24b6a0d5aee34f4f2c2eea72244")
 }
 
+resource TreeSitterNativeTargetsModuleTreeSitterNativePackageDirectoryAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("packages/shp-checker/src/tree-sitter-native-targets.ts#treeSitterNativePackageDirectory")
+  fingerprint ast.semantic_subtree_v1("sha256:3c59aac875e44345a3246f121c35fa31e1e881394664a069cfbaa0d54bd3e248")
+}
+
 resource TreeSitterNativeTargetsModuleTreeSitterNativePackageSpecifiersAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/tree-sitter-native-targets.ts#treeSitterNativePackageSpecifiers")
   fingerprint ast.semantic_subtree_v1("sha256:cae706b37cace0c70710a9a0f95eb98f605a104e3b92860bfd446d4ae23c1dfd")
@@ -19,6 +24,9 @@ resource TreeSitterNativeTargetsModuleTreeSitterNativePackageSpecifiersAstAnchor
 component TreeSitterNativeTargetsModule : GeneratedCandidate {
   fn currentTreeSitterNativeBindingTarget
     source ts("packages/shp-checker/src/tree-sitter-native-targets.ts#currentTreeSitterNativeBindingTarget")
+    effects unknown
+  fn treeSitterNativePackageDirectory
+    source ts("packages/shp-checker/src/tree-sitter-native-targets.ts#treeSitterNativePackageDirectory")
     effects unknown
   fn treeSitterNativePackageSpecifiers
     source ts("packages/shp-checker/src/tree-sitter-native-targets.ts#treeSitterNativePackageSpecifiers")
@@ -31,6 +39,14 @@ relation TreeSitterNativeTargetsModuleCurrentTreeSitterNativeBindingTargetGenera
   roles { TreeSitterNativeTargetsModule as generated, TreeSitterNativeTargetsModuleCurrentTreeSitterNativeBindingTargetAstAnchor as syntax }
   expects TreeSitterNativeTargetsModuleCurrentTreeSitterNativeBindingTargetAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5e0309fc9cd37b6e759eed4291ac436d5965e24b6a0d5aee34f4f2c2eea72244")
   summary "fn TreeSitterNativeTargetsModule.currentTreeSitterNativeBindingTarget generated from typescript function_declaration at packages/shp-checker/src/tree-sitter-native-targets.ts#currentTreeSitterNativeBindingTarget."
+}
+
+relation TreeSitterNativeTargetsModuleTreeSitterNativePackageDirectoryGeneratedFromTreeSitterNativeTargetsModuleTreeSitterNativePackageDirectoryAstAnchor {
+  kind generated_from
+  connects TreeSitterNativeTargetsModule -> TreeSitterNativeTargetsModuleTreeSitterNativePackageDirectoryAstAnchor
+  roles { TreeSitterNativeTargetsModule as generated, TreeSitterNativeTargetsModuleTreeSitterNativePackageDirectoryAstAnchor as syntax }
+  expects TreeSitterNativeTargetsModuleTreeSitterNativePackageDirectoryAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3c59aac875e44345a3246f121c35fa31e1e881394664a069cfbaa0d54bd3e248")
+  summary "fn TreeSitterNativeTargetsModule.treeSitterNativePackageDirectory generated from typescript function_declaration at packages/shp-checker/src/tree-sitter-native-targets.ts#treeSitterNativePackageDirectory."
 }
 
 relation TreeSitterNativeTargetsModuleTreeSitterNativePackageSpecifiersGeneratedFromTreeSitterNativeTargetsModuleTreeSitterNativePackageSpecifiersAstAnchor {

@@ -9,20 +9,15 @@ import { createRequire } from "node:module";
 import {
   BUNDLED_TREE_SITTER_LANGUAGES,
   TREE_SITTER_LANGUAGE_PACK_VERSION,
-  currentTreeSitterNativeBindingTarget,
   treeSitterParserLibraryName
 } from "../packages/shp-checker/src/ast-generation.ts";
+
+import { treeSitterNativePackageDirectory } from "../packages/shp-checker/src/tree-sitter-native-targets.ts";
 
 type Manifest = {
   readonly version: string;
   readonly platforms: Record<string, { readonly url: string; readonly sha256: string }>;
   readonly languages: Record<string, unknown>;
-};
-
-type LanguagePackModule = {
-  readonly JsDownloadManager?: {
-    readonly ["new"]: (version: string) => { fetchManifest(): unknown };
-  };
 };
 
 const FETCH_RETRY_DELAYS_MS = [1000, 3000, 7000] as const;
@@ -61,7 +56,7 @@ const requireFromChecker = createRequire(
   `${process.cwd()}/packages/shp-checker/src/ast-generation.ts`
 );
 const languagePackPackageJson = requireFromChecker(
-  "@kreuzberg/tree-sitter-language-pack/package.json"
+  join(treeSitterNativePackageDirectory(), "package.json")
 ) as { version?: string };
 if (languagePackPackageJson.version !== TREE_SITTER_LANGUAGE_PACK_VERSION) {
   throw new Error(
@@ -69,20 +64,10 @@ if (languagePackPackageJson.version !== TREE_SITTER_LANGUAGE_PACK_VERSION) {
   );
 }
 
-const nativeBindingTarget = currentTreeSitterNativeBindingTarget();
-if (!nativeBindingTarget) {
-  throw new Error(
-    `no tree-sitter language pack native binding for ${process.platform}-${process.arch}`
-  );
-}
-
-const languagePack = requireFromChecker(nativeBindingTarget.packageSpecifier) as LanguagePackModule;
-const manifest = languagePack.JsDownloadManager?.["new"](
-  TREE_SITTER_LANGUAGE_PACK_VERSION
-).fetchManifest() as Manifest | undefined;
-if (!manifest) {
-  throw new Error("tree-sitter language pack did not return a parser manifest");
-}
+const manifestUrl = `https://github.com/kreuzberg-dev/tree-sitter-language-pack/releases/download/v${TREE_SITTER_LANGUAGE_PACK_VERSION}/parsers.json`;
+const manifest = JSON.parse(
+  Buffer.from(await fetchBytes(manifestUrl)).toString("utf8")
+) as Manifest;
 if (manifest.version !== TREE_SITTER_LANGUAGE_PACK_VERSION) {
   throw new Error(`parser manifest version ${manifest.version} did not match package version`);
 }
