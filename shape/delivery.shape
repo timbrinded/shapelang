@@ -1215,11 +1215,16 @@ reevaluation WindowsNativeParserPackagingRechecked {
 }
 
 attest no_shape_change {
-  source ts("packages/shp-checker/src/ast-generation-tree-sitter.ts")
-  reason "Load the exact 1.9.0 language-pack native file relative to its public package entry point, preserving the embedded fallback. Align the parser-cache version with that pin. Source languages, draft semantics, effects, and relations are unchanged."
+  source mjs(".github/scripts/run-claude-skill.mjs")
+  reason "Set the shared Claude model default to Sonnet 5.5 for review, contract guard, index coverage, and release evaluation. Prompts, tools, effects, report schemas, and pass/fail gates are unchanged."
 }
 
 attest no_shape_change {
-  source ts("packages/shp-checker/src/tree-sitter-native-targets.ts")
-  reason "Resolve the installed native package directory through its public entry point because 1.9.0 does not export native-file subpaths. The supported platforms and release targets are unchanged."
+  source yaml(".github/workflows/release-candidate.yml")
+  reason "Remove the Opus model override so release skill evaluation inherits the same Sonnet 5.5 default as every Claude CI job. Required validations, native smoke tests, report checks, and human approval remain unchanged."
+}
+
+attest no_shape_change {
+  source yaml(".github/actions/claude-skill-review/action.yml")
+  reason "Document the shared Sonnet 5.5 default in the action input description. Model input forwarding and action behavior are unchanged."
 }

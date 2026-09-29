@@ -361,7 +361,8 @@ neither is set. The script then runs twice:
 
 1. A `--prefilter` pass either finishes the job deterministically or emits the
    prompt and `claude_args` for `anthropics/claude-code-action`, which runs the
-   model (Sonnet by default) with structured output.
+   model (Sonnet 5.5 by default) with structured output. Review, contract guard,
+   index coverage, and release evaluation all inherit this shared default.
 2. A gate pass validates the result against the job's JSON schema under
    `.github/shape-contract/schemas/`, writes the job summary, and applies the
    job's pass/fail policy. When a proxy gateway drops the structured output, the

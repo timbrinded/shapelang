@@ -26,7 +26,7 @@ export { RELEASE_SKILL_CASES, RELEASE_SKILL_STATIC_CHECKS };
 const JSON_ONLY_SYSTEM_PROMPT =
   'You are producing machine input for CI. Your final response must be exactly one JSON object matching the configured JSON schema. The first character must be "{" and the last character must be "}". Do not include prose, bullets, Markdown, code fences, preamble, or postscript. Follow the task-specific status and evidence rules exactly; never invent findings, gaps, checks, cases, or command evidence.';
 
-const DEFAULT_MODEL = "claude-sonnet-4-6";
+const DEFAULT_MODEL = "claude-sonnet-5-5";
 const DEFAULT_MAX_TURNS = 100;
 
 // ---------------------------------------------------------------------------
