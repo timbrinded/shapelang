@@ -10,7 +10,8 @@ that needs none of this workspace.
 ## Prerequisites
 
 - Bun. The root `package.json` records the expected version in
-  `packageManager`, and `bun.lock` is the lockfile.
+  `packageManager`, and `bun.lock` is the lockfile. Use that exact Bun version
+  locally; `oven-sh/setup-bun` reads the same field in CI.
 - Node 24 or later on `PATH`. `bun run langium:generate` and `bun run docs:check` invoke
   tooling through Node, and CI pins Node 24. The repository ships an `.nvmrc`,
   so `nvm use` selects the right version.

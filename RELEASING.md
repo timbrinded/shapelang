@@ -5,6 +5,9 @@ One commit ships two public surfaces:
 - the `shp` CLI and the setup action, under the tag `vX.Y.Z`;
 - the bundled Shape plugin, under the tag `shapelang--vX.Y.Z`.
 
+The GitHub release title is the CLI tag, `vX.Y.Z`. The publish command sets it
+explicitly so GitHub does not display the tagged commit's message as the title.
+
 Four versions must agree on `X.Y.Z`: `packages/shp-cli/package.json`,
 `plugins/shapelang/.codex-plugin/plugin.json`,
 `plugins/shapelang/.claude-plugin/plugin.json`, and the `# Shape vX.Y.Z` heading
@@ -28,6 +31,9 @@ One-time repository setup:
 
 On the maintainer's machine:
 
+- the Bun version pinned by `packageManager` in the root `package.json`;
+  confirm it with `bun --version`. CI and both release workflows resolve
+  the same pin through `oven-sh/setup-bun`;
 - the contributor prerequisites in [CONTRIBUTING.md](CONTRIBUTING.md),
   including `zstd` and `sha256sum` for `bun run build:release`;
 - an authenticated `gh` CLI;
@@ -192,7 +198,7 @@ order, except that the last two run in parallel:
 | Validate (`validate`) | `check-release-metadata.ts --tag` against the pushed tag, `skills:check`, the regenerated Langium artifacts, `ast:check`, format, lint, tests, typecheck, `format:shape:check`, `shp check`, `shp obligations`, `shp memory`, and `docs:check`. |
 | Release (`release`) | Rebuilds the assets, runs the full smoke test and `run-release-canaries.ts` on the Linux x64 archive, repeats the approval check, and publishes the GitHub release with every asset and the notes from `docs/releases/vX.Y.Z.md`. |
 | Verify published release (`verify`) | On Linux x64, Linux ARM64, macOS ARM64, and Windows x64: installs `vX.Y.Z` through the setup action, checks that `shp --version` reports `X.Y.Z`, and runs `shp check`. On Linux and Windows it also runs the release-hosted installer and checks the installed version. |
-| Verify published release metadata and assets (`verify-publication`) | The release is neither a draft nor a prerelease, has exactly the seven assets, carries notes equal to `docs/releases/vX.Y.Z.md`, passes `sha256sum --check checksums.txt`, and both installers contain the tag. |
+| Verify published release metadata and assets (`verify-publication`) | The release title equals `vX.Y.Z`, the release is neither a draft nor a prerelease, has exactly the seven assets, carries notes equal to `docs/releases/vX.Y.Z.md`, passes `sha256sum --check checksums.txt`, and both installers contain the tag. |
 
 ## If a step fails
 

@@ -1201,3 +1201,8 @@ reevaluation SkillsReportCopyNamed {
   evidence test("scripts/check-release-approval.test.ts")
   evidence ts("scripts/check-release-approval.ts#findReusableSkillsReport")
 }
+
+attest no_shape_change {
+  source yaml(".github/workflows/release.yml")
+  reason "Set and verify the GitHub release display title from the existing version tag. Publication effects, artifacts, notes, approval gates, and workflow dependencies are unchanged."
+}
