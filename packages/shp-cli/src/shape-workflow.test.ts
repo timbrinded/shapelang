@@ -300,9 +300,19 @@ describe("Shape workflow", () => {
     }
     equivalentIndexCase.evidence =
       "acceptImage calls resizeImage, while docs/images.md requires a missing binding.";
-    equivalentReviewCase.evidence = equivalentReviewCase.evidence.replace("shp explain", "explain");
+    equivalentReviewCase.evidence =
+      "RangeNormalizer.normalizeRange (shp explain) changes end to end - 1; both downstream symptoms share that correction.";
     const equivalentMarkerResult = await runSkillGate("release", equivalentMarkers);
     expect(equivalentMarkerResult.exitCode).toBe(0);
+
+    equivalentReviewCase.commands = equivalentReviewCase.commands.filter(
+      (command) => !command.startsWith("bun shp explain ")
+    );
+    const missingExplainResult = await runSkillGate("release", equivalentMarkers);
+    expect(missingExplainResult.exitCode).toBe(1);
+    expect(missingExplainResult.stderr).toContain(
+      "missing command evidence for bun shp explain RangeNormalizer.normalizeRange"
+    );
 
     const missingMarker = skillsReleaseResult();
     const indexSkill = missingMarker.skills.find((skill) => skill.name === "shape-index");

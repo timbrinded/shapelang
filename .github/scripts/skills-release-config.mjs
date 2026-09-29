@@ -39,11 +39,7 @@ const RELEASE_SKILL_EVIDENCE_MARKERS = {
     "binding",
     "docs/images.md"
   ],
-  "review-root-cause-grouping": [
-    "RangeNormalizer.normalizeRange",
-    "explain RangeNormalizer.normalizeRange",
-    "end - 1"
-  ],
+  "review-root-cause-grouping": ["RangeNormalizer.normalizeRange", "end - 1"],
   "visualiser-deterministic-nested-model": [
     "SystemEvent",
     "nested",
