@@ -13,7 +13,7 @@ Use this when choosing, sequencing, or interpreting `shp` commands. The released
 
 | Command | Use it for | Do not use it for |
 | --- | --- | --- |
-| `shp check [--allow-unknown-effects] [--changed-files changed.txt] [--base-ref REF \| --base-model DIR] [--check-cited-paths] [--as-of YYYY-MM-DD \| --strict-freshness] [files...]` | Full model validation and diagnostics. Draft mode makes only explicit unknown effects non-fatal; `--base-ref` counts only attestations new relative to the base and warns on stale ones; `--check-cited-paths` fails on cited files that no longer exist; freshness flags make stale design memory fail. | Formatting or source analysis. |
+| `shp check [--allow-unknown-effects] [--changed-files changed.txt] [--base-ref REF \| --base-model DIR] [--check-loosening] [--check-cited-paths] [--as-of YYYY-MM-DD \| --strict-freshness] [files...]` | Full model validation and diagnostics. Draft mode makes only explicit unknown effects non-fatal; a base counts only current attestations; `--check-loosening` detects rule edits that let a change pass; `--check-cited-paths` rejects missing cited files; freshness flags make stale design memory fail. | Formatting or source analysis. |
 | `shp coverage --changed-files changed.txt [--base-ref REF \| --base-model DIR] [files...]` | Enforcing global model updates or attestations for governed changed files. | Normal validation without a changed-files list. |
 | `shp attest prune (--base-ref REF \| --base-model DIR) [files...]` | Deleting attestations that are unchanged from the base, the ones `check` reports as stale. | Removing an attestation written for the current change. |
 | `shp fmt [--check] [files...]` | Canonical formatting or review-safe format checks. | Semantic validation. |
@@ -59,6 +59,26 @@ Combined semantic and coverage validation:
 ```bash
 shp check --changed-files changed.txt
 ```
+
+When a base is available, use the same base as the changed-file list:
+
+```bash
+shp check --changed-files changed.txt --base-ref <base> --check-cited-paths
+shp attest prune --base-ref <base>
+shp check --changed-files changed.txt --base-ref <base> --check-loosening
+```
+
+Pruning removes attestations already present at the base; it does not supply
+evidence for the current change. Stale-attestation warnings alone do not block
+a check, but stale attestations cannot satisfy coverage or bindings. With a
+changed-file list, editing a guarded function's source file requires a current
+reevaluation even when its Shape declaration is unchanged.
+
+`--check-loosening` needs `--base-ref` or `--base-model`. It restores individual
+base rule-layer declarations and reports edits whose restoration makes the
+check fail. Passing it does not prove that every semantic weakening is safe;
+use contract review for that question. Restore a rule that was weakened to
+make a check pass unless the maintainer explicitly requested that change.
 
 Guarded refactor review:
 
