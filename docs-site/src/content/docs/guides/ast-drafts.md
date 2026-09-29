@@ -5,7 +5,7 @@ description: Use shp ast to turn source syntax into a conservative generated Sha
 
 `shp ast source` parses source files with Tree-sitter and prints a Shape draft of their structure. The draft is candidate context for review, not a reviewed claim: every generated function keeps `effects unknown`, and the claims a team maintains belong in authored `.shape` files.
 
-Source parsing supports TypeScript (`.ts`, `.mts`, `.cts`), TSX (`.tsx`), JavaScript and JSX (`.js`, `.jsx`, `.mjs`, `.cjs`, all parsed with the JavaScript grammar), Rust (`.rs`), Go (`.go`), Python (`.py`), and Swift (`.swift`). `--language` overrides the extension; the [CLI Reference](/shapelang/reference/cli/) lists its values and the other flags. Release archives bundle the parsers beside `shp`, so generation downloads nothing. The bundled native parser runs on Linux x64 and arm64 with glibc, macOS arm64, and Windows x64. On musl Linux, generation fails with `unsupported_tree_sitter_platform`.
+Source parsing supports TypeScript (`.ts`, `.mts`, `.cts`), TSX (`.tsx`), JavaScript and JSX (`.js`, `.jsx`, `.mjs`, `.cjs`, all parsed with the JavaScript grammar), Rust (`.rs`), Go (`.go`), Python (`.py`), and Swift (`.swift`). `--language` overrides the extension; the [CLI Reference](/shapelang/reference/cli/) lists its values and the other flags. Release archives bundle the parsers beside `shp`, so generation downloads nothing. The bundled native parser runs on Linux x64 and arm64 with glibc, macOS arm64, and Windows x64. Windows archives include a native binding that loads inside the compiled executable without a separate Node.js installation. On musl Linux, generation fails with `unsupported_tree_sitter_platform`.
 
 ## What a draft contains
 

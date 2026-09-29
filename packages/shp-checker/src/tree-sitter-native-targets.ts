@@ -1,3 +1,6 @@
+import { createRequire } from "node:module";
+import { dirname } from "node:path";
+
 const TREE_SITTER_NATIVE_BINDING_TARGET_ROWS = [
   {
     platform: "linux",
@@ -61,4 +64,10 @@ export function currentTreeSitterNativeBindingTarget(
 
 export function treeSitterNativePackageSpecifiers(): TreeSitterNativeBindingPackageSpecifier[] {
   return TREE_SITTER_NATIVE_BINDING_TARGETS.map((target) => target.packageSpecifier);
+}
+
+export function treeSitterNativePackageDirectory(): string {
+  // Resolve the public entry point: the package does not export native files
+  // or package.json as subpaths, but ships them beside index.js.
+  return dirname(createRequire(import.meta.url).resolve("@kreuzberg/tree-sitter-language-pack"));
 }

@@ -365,6 +365,31 @@ jobs:
           version="$(bun -e 'console.log(require("./packages/shp-cli/package.json").version)')"
           scripts/smoke-release-binary.sh --expected-version "$version" dist/release/shp-linux-x64.tar.gz
 
+      - name: Upload Windows release archive
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-release-archive-${{ github.sha }}
+          path: dist/release/shp-windows-x64.tar.gz
+          if-no-files-found: error
+          retention-days: 7
+
+  smoke-windows:
+    name: Smoke packed archive (Windows)
+    needs: build
+    runs-on: windows-latest
+    steps:
+      - *checkout
+      - name: Download Windows release archive
+        uses: actions/download-artifact@v4
+        with:
+          name: windows-release-archive-${{ github.sha }}
+          path: dist/release
+      - name: Smoke test Windows archive
+        shell: bash
+        run: |
+          version="$(node -p 'require("./packages/shp-cli/package.json").version')"
+          bash scripts/smoke-release-binary.sh --quick --expected-version "$version" dist/release/shp-windows-x64.tar.gz
+
   links:
     name: Links
     runs-on: ubuntu-latest

@@ -398,6 +398,7 @@ component CiPipeline {
     }
   fn smokeReleaseBinary
     source yaml(".github/workflows/release.yml#Smoke test release binary")
+    description "Runs packed CLI smoke checks, including native AST generation. PR CI also extracts the Linux-built Windows archive on a Windows runner; release candidates retain every supported native platform gate."
     effects complete {
       Read<CiWorkflow>
         evidence yaml(".github/workflows/release.yml")
@@ -1202,7 +1203,23 @@ reevaluation SkillsReportCopyNamed {
   evidence ts("scripts/check-release-approval.ts#findReusableSkillsReport")
 }
 
+reevaluation WindowsNativeParserPackagingRechecked {
+  satisfies memory ReleaseChecksumContract
+  outcome Confirmed
+  summary "Resolve native assets and package metadata relative to the public package entry point for the exact 1.9.0 pin, and fetch its published parser manifest directly because the native API no longer exports that operation. The build still fails on missing assets, verifies matching parser versions and download checksums, includes the same supported targets and languages, and hashes the final archives and installers. Windows archive smoke now also runs in PR CI."
+  reviewer ShapeMaintainers
+  decided_on "2026-09-29"
+  evidence sh("scripts/build-release-assets.sh")
+  evidence ts("scripts/prepare-tree-sitter-parser-assets.ts")
+  evidence yaml(".github/workflows/shape.yml")
+}
+
 attest no_shape_change {
-  source yaml(".github/workflows/release.yml")
-  reason "Set and verify the GitHub release display title from the existing version tag. Publication effects, artifacts, notes, approval gates, and workflow dependencies are unchanged."
+  source ts("packages/shp-checker/src/ast-generation-tree-sitter.ts")
+  reason "Load the exact 1.9.0 language-pack native file relative to its public package entry point, preserving the embedded fallback. Align the parser-cache version with that pin. Source languages, draft semantics, effects, and relations are unchanged."
+}
+
+attest no_shape_change {
+  source ts("packages/shp-checker/src/tree-sitter-native-targets.ts")
+  reason "Resolve the installed native package directory through its public entry point because 1.9.0 does not export native-file subpaths. The supported platforms and release targets are unchanged."
 }

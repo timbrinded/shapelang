@@ -1,11 +1,12 @@
 import { existsSync, statSync } from "node:fs";
 import { createRequire } from "node:module";
-import { dirname, join } from "node:path";
+import { basename, dirname, join } from "node:path";
 
 import type { AstGenerationDiagnostic, TreeSitterParseProvider } from "./ast-generation-types.ts";
 import { errorMessage, isRecord } from "./ast-generation-utils.ts";
 import {
   currentTreeSitterNativeBindingTarget as currentNativeBindingTarget,
+  treeSitterNativePackageDirectory,
   type TreeSitterNativeBindingEmbeddedSpecifier,
   type TreeSitterNativeBindingPackageSpecifier,
   type TreeSitterNativeBindingTarget
@@ -29,7 +30,9 @@ type TreeSitterNativeParser = {
 
 const treeSitterNativeRequire = createRequire(import.meta.url);
 
-export const TREE_SITTER_LANGUAGE_PACK_VERSION = "1.8.1";
+// Keep this aligned with the exact package pin and bundled parser assets.
+// The 1.9.0 Windows binding resolves N-API symbols without requiring node.dll.
+export const TREE_SITTER_LANGUAGE_PACK_VERSION = "1.9.0";
 export const BUNDLED_TREE_SITTER_LANGUAGES = [
   "javascript",
   "typescript",
@@ -221,26 +224,7 @@ function requireTreeSitterNativeBinding(target: TreeSitterNativeBindingTarget): 
 function requireTreeSitterNativePackageBinding(
   specifier: TreeSitterNativeBindingPackageSpecifier
 ): unknown {
-  switch (specifier) {
-    case "@kreuzberg/tree-sitter-language-pack/ts-pack-core-node.linux-x64-gnu.node":
-      return treeSitterNativeRequire(
-        "@kreuzberg/tree-sitter-language-pack/ts-pack-core-node.linux-x64-gnu.node"
-      );
-    case "@kreuzberg/tree-sitter-language-pack/ts-pack-core-node.linux-arm64-gnu.node":
-      return treeSitterNativeRequire(
-        "@kreuzberg/tree-sitter-language-pack/ts-pack-core-node.linux-arm64-gnu.node"
-      );
-    case "@kreuzberg/tree-sitter-language-pack/ts-pack-core-node.darwin-arm64.node":
-      return treeSitterNativeRequire(
-        "@kreuzberg/tree-sitter-language-pack/ts-pack-core-node.darwin-arm64.node"
-      );
-    case "@kreuzberg/tree-sitter-language-pack/ts-pack-core-node.win32-x64-msvc.node":
-      return treeSitterNativeRequire(
-        "@kreuzberg/tree-sitter-language-pack/ts-pack-core-node.win32-x64-msvc.node"
-      );
-    default:
-      return assertNeverTreeSitterBinding(specifier);
-  }
+  return treeSitterNativeRequire(join(treeSitterNativePackageDirectory(), basename(specifier)));
 }
 
 function requireTreeSitterEmbeddedBinding(
