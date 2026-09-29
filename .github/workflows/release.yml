@@ -125,6 +125,7 @@ jobs:
           set -euo pipefail
           bun scripts/check-release-approval.ts --require-exact
           gh release create "$GITHUB_REF_NAME" dist/release/* \
+            --title "$GITHUB_REF_NAME" \
             --notes-file "docs/releases/$GITHUB_REF_NAME.md" \
             --verify-tag
 
@@ -212,8 +213,9 @@ jobs:
           release_dir="$RUNNER_TEMP/published-release"
           mkdir -p "$release_dir"
 
-          release_json="$(gh release view "$GITHUB_REF_NAME" --json isDraft,isPrerelease,body,assets)"
+          release_json="$(gh release view "$GITHUB_REF_NAME" --json name,isDraft,isPrerelease,body,assets)"
           jq -e '.isDraft == false and .isPrerelease == false' <<<"$release_json" >/dev/null
+          jq -e --arg tag "$GITHUB_REF_NAME" '.name == $tag' <<<"$release_json" >/dev/null
 
           jq -r '.assets[].name' <<<"$release_json" | sort >"$release_dir/actual-assets.txt"
           printf '%s\n' \
