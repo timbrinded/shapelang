@@ -120,16 +120,81 @@ describe("Shape source analyzer", () => {
   });
 
   test("ignores destructive SQL vocabulary in comments and quoted regions", () => {
-    const source = [
+    for (const source of [
       "-- DELETE FROM audit_events;",
       "/* TRUNCATE TABLE audit_events; */",
       "SELECT 'DROP TABLE audit_events';",
       'SELECT "DELETE FROM audit_events";',
       "SELECT `TRUNCATE TABLE audit_events`;",
-      "SELECT $$DROP TABLE audit_events$$;"
-    ].join("\n");
+      "SELECT $$DROP TABLE audit_events$$;",
+      "SELECT $tag$DELETE FROM hidden; DROP TABLE audit_events;$tag$;",
+      "SELECT $_tag09$DELETE FROM hidden; TRUNCATE TABLE audit_events;$_tag09$;",
+      "SELECT $TAG$DELETE FROM hidden; $tag$; DROP TABLE audit_events;$TAG$;",
+      "SELECT $été$DELETE FROM hidden; DROP TABLE audit_events;$été$;"
+    ]) {
+      expect(analyzeSourceText("db/audit/report.sql", source)).toEqual([]);
+      expect(
+        withoutTargetIdentity(
+          analyzeSourceText("db/audit/report.sql", `${source}\nDELETE FROM visible;`)
+        )
+      ).toEqual([
+        {
+          effect: "HardDelete",
+          sourcePath: "db/audit/report.sql",
+          line: 2,
+          evidence: "DELETE FROM visible;",
+          target: "visible"
+        }
+      ]);
+    }
+    for (const prefix of ["name", "9", "_", "name$", "café"]) {
+      for (const delimiter of ["$$", "$tag$"]) {
+        const source = `SELECT ${prefix}${delimiter};\nDELETE FROM visible;`;
+        expect(analyzeSourceText("db/audit/report.sql", source).map((hint) => hint.target)).toEqual(
+          ["visible"]
+        );
+      }
+    }
+    // A positional parameter is not a quote, so a later tagged quote is matched where it starts.
+    expect(
+      analyzeSourceText(
+        "db/audit/report.sql",
+        "SELECT $1;\nDELETE FROM visible;\nSELECT $tag$x$tag$;"
+      ).map((hint) => hint.target)
+    ).toEqual(["visible"]);
+  });
 
-    expect(analyzeSourceText("db/audit/report.sql", source)).toEqual([]);
+  test("scans the value a raw-SQL string literal has at runtime", () => {
+    for (const source of [
+      "await db.execute('DO $fn$ BEGIN DELETE FROM hidden; END $fn$; DROP TABLE visible;');",
+      // Escapes are decoded: \n is a line break, \q is q, and \x24 is $.
+      "await db.execute('CREATE FUNCTION f() AS\\n$$ BEGIN DELETE FROM hidden; END; $$; DROP TABLE visible;');",
+      "await db.execute('SELECT foo\\q$tag$; DROP TABLE visible;');",
+      "await db.execute('SELECT \\x24tag\\x24 DELETE FROM hidden; \\x24tag\\x24; DROP TABLE visible;');",
+      // A line continuation joins foo and $tag$ into one identifier.
+      "await db.execute('SELECT 1 AS foo\\\n$tag$; DROP TABLE visible;');"
+    ]) {
+      expect(analyzeSourceText("src/audit/purge.ts", source).map((hint) => hint.target)).toEqual([
+        "visible"
+      ]);
+    }
+    const source = [
+      'await db.execute("SELECT 1;\\nDELETE FROM drafts;");',
+      'await db.execute("SELECT 2;\\\nTRUNCATE TABLE caches;");',
+      // A Windows line continuation spans both CR and LF.
+      'await db.execute("SELECT 3;\\\r\nDROP TABLE archive;");'
+    ].join("\n");
+    expect(
+      analyzeSourceText("src/audit/purge.ts", source).map(({ effect, line, target }) => ({
+        effect,
+        line,
+        target
+      }))
+    ).toEqual([
+      { effect: "HardDelete", line: 1, target: "drafts" },
+      { effect: "Truncate", line: 3, target: "caches" },
+      { effect: "DropStorage", line: 5, target: "archive" }
+    ]);
   });
 
   test("preserves CRLF offsets and reports one-based start lines", () => {
@@ -258,8 +323,13 @@ describe("Shape source analyzer", () => {
   });
 
   test("fails softly on malformed comments and literals", () => {
-    expect(analyzeSourceText("db/audit/purge.sql", "/* DELETE FROM audit_events")).toEqual([]);
-    expect(analyzeSourceText("db/audit/purge.sql", "'DROP TABLE audit_events")).toEqual([]);
+    for (const source of [
+      "/* DELETE FROM audit_events",
+      "'DROP TABLE audit_events",
+      "SELECT $tag$DELETE FROM hidden; DROP TABLE audit_events;"
+    ]) {
+      expect(analyzeSourceText("db/audit/purge.sql", source)).toEqual([]);
+    }
     expect(
       analyzeSourceText("src/audit/purge.ts", 'db.execute("TRUNCATE TABLE audit_events')
     ).toEqual([]);

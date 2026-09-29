@@ -1466,6 +1466,13 @@
       ]
     },
     {
+      "module": "shape.generated.ast.scripts.build_release_assets_test",
+      "path": "shape/generated/ast/scripts/build-release-assets.test.shape",
+      "sources": [
+        "scripts/build-release-assets.test.ts"
+      ]
+    },
+    {
       "module": "shape.generated.ast.scripts.check_release_approval_test",
       "path": "shape/generated/ast/scripts/check-release-approval.test.shape",
       "sources": [

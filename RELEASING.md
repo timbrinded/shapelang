@@ -49,7 +49,8 @@ Choose the semver version `X.Y.Z`, then, on a release-prep branch:
    and it lists every file that is missing its snippet for the new version.
    The pins come from `releaseVersionPins` in
    `scripts/check-release-metadata.ts`, and they include files outside the
-   docs: `AGENTS.md`, `.github/prompts/shape-skills-release.md`,
+   docs site: `README.md`, `CONTRIBUTING.md`,
+   `.github/prompts/shape-skills-release.md`,
    `plugins/shapelang/skills/shape-lang/SKILL.md`, and `shape/delivery.shape`.
    In each pinned file, replace every occurrence of the old version, not just
    the one the check names: the check confirms only that one occurrence of each
@@ -83,6 +84,8 @@ Choose the semver version `X.Y.Z`, then, on a release-prep branch:
 ## 2. Validate locally
 
 From the release-prep branch:
+
+<!-- From `bun run changed-files` on, this list repeats CONTRIBUTING.md "Checks before a pull request"; change both together. -->
 
 ```bash
 bun install --frozen-lockfile
@@ -285,6 +288,11 @@ Each archive holds `shp` (`shp.exe` on Windows), `LICENSE`, and the
 `tree-sitter-language-pack` parser assets that `shp ast source` uses for
 TypeScript, TSX, JavaScript/JSX, Rust, Go, Python, and Swift. `checksums.txt`
 holds the SHA-256 of every other asset.
+
+The builder reads the native parser packages and the archive targets from the
+checker before it builds anything. If either read fails, it exits with that
+read's status, and an empty target list exits 1, so no archive, installer, or
+checksum file is built from a partial list.
 
 ### Installer version injection
 

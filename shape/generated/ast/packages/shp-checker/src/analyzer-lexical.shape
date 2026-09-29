@@ -33,7 +33,7 @@ resource AnalyzerLexicalModuleConsumeLineCommentAstAnchor : GeneratedAstAnchor {
 
 resource AnalyzerLexicalModuleConsumeQuotedAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/analyzer-lexical.ts#consumeQuoted")
-  fingerprint ast.semantic_subtree_v1("sha256:2a5c592a1dfffcc4d53a0116b7bead90d1029266b1f22c98796242141df1e13d")
+  fingerprint ast.semantic_subtree_v1("sha256:3e1a4f5c4de6a8ae2f599e8eac4b81de342aeb60ebfdfbc8f553c18a83a77b8e")
 }
 
 resource AnalyzerLexicalModuleConsumeTemplateAstAnchor : GeneratedAstAnchor {
@@ -73,7 +73,7 @@ resource AnalyzerLexicalModuleNormalizeStaticTargetAstAnchor : GeneratedAstAncho
 
 resource AnalyzerLexicalModuleReadDollarQuoteDelimiterAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/analyzer-lexical.ts#readDollarQuoteDelimiter")
-  fingerprint ast.semantic_subtree_v1("sha256:2e42b212be01556c50a51ad471e19dc0aba9638a7b4914ac0b3070243ec3394c")
+  fingerprint ast.semantic_subtree_v1("sha256:076590ed364350721bb9c807b76c53b1b85eae4e12108ee02ff491e9a35fb324")
 }
 
 resource AnalyzerLexicalModuleReadUnquotedIdentifierAstAnchor : GeneratedAstAnchor {
@@ -84,11 +84,6 @@ resource AnalyzerLexicalModuleReadUnquotedIdentifierAstAnchor : GeneratedAstAnch
 resource AnalyzerLexicalModuleScanLexicalRegionsAstAnchor : GeneratedAstAnchor {
   storage ast.anchor("packages/shp-checker/src/analyzer-lexical.ts#scanLexicalRegions")
   fingerprint ast.semantic_subtree_v1("sha256:2c53241c377f1ec12c6e38a923ee2287d0009ab900c503ac51ba1351694636c8")
-}
-
-resource AnalyzerLexicalModuleShiftSpanAstAnchor : GeneratedAstAnchor {
-  storage ast.anchor("packages/shp-checker/src/analyzer-lexical.ts#shiftSpan")
-  fingerprint ast.semantic_subtree_v1("sha256:ba12cd4565f018f196aff560144780cdce9ce866c0ab6a9d69eb524797fb00ca")
 }
 
 resource AnalyzerLexicalModuleSkipTriviaAstAnchor : GeneratedAstAnchor {
@@ -150,9 +145,6 @@ component AnalyzerLexicalModule : GeneratedCandidate {
   fn scanLexicalRegions
     source ts("packages/shp-checker/src/analyzer-lexical.ts#scanLexicalRegions")
     effects unknown
-  fn shiftSpan
-    source ts("packages/shp-checker/src/analyzer-lexical.ts#shiftSpan")
-    effects unknown
   fn skipTrivia
     source ts("packages/shp-checker/src/analyzer-lexical.ts#skipTrivia")
     effects unknown
@@ -205,7 +197,7 @@ relation AnalyzerLexicalModuleConsumeQuotedGeneratedFromAnalyzerLexicalModuleCon
   kind generated_from
   connects AnalyzerLexicalModule -> AnalyzerLexicalModuleConsumeQuotedAstAnchor
   roles { AnalyzerLexicalModule as generated, AnalyzerLexicalModuleConsumeQuotedAstAnchor as syntax }
-  expects AnalyzerLexicalModuleConsumeQuotedAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2a5c592a1dfffcc4d53a0116b7bead90d1029266b1f22c98796242141df1e13d")
+  expects AnalyzerLexicalModuleConsumeQuotedAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3e1a4f5c4de6a8ae2f599e8eac4b81de342aeb60ebfdfbc8f553c18a83a77b8e")
   summary "fn AnalyzerLexicalModule.consumeQuoted generated from typescript function_declaration at packages/shp-checker/src/analyzer-lexical.ts#consumeQuoted."
 }
 
@@ -269,7 +261,7 @@ relation AnalyzerLexicalModuleReadDollarQuoteDelimiterGeneratedFromAnalyzerLexic
   kind generated_from
   connects AnalyzerLexicalModule -> AnalyzerLexicalModuleReadDollarQuoteDelimiterAstAnchor
   roles { AnalyzerLexicalModule as generated, AnalyzerLexicalModuleReadDollarQuoteDelimiterAstAnchor as syntax }
-  expects AnalyzerLexicalModuleReadDollarQuoteDelimiterAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2e42b212be01556c50a51ad471e19dc0aba9638a7b4914ac0b3070243ec3394c")
+  expects AnalyzerLexicalModuleReadDollarQuoteDelimiterAstAnchor fingerprint ast.semantic_subtree_v1("sha256:076590ed364350721bb9c807b76c53b1b85eae4e12108ee02ff491e9a35fb324")
   summary "fn AnalyzerLexicalModule.readDollarQuoteDelimiter generated from typescript function_declaration at packages/shp-checker/src/analyzer-lexical.ts#readDollarQuoteDelimiter."
 }
 
@@ -287,14 +279,6 @@ relation AnalyzerLexicalModuleScanLexicalRegionsGeneratedFromAnalyzerLexicalModu
   roles { AnalyzerLexicalModule as generated, AnalyzerLexicalModuleScanLexicalRegionsAstAnchor as syntax }
   expects AnalyzerLexicalModuleScanLexicalRegionsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2c53241c377f1ec12c6e38a923ee2287d0009ab900c503ac51ba1351694636c8")
   summary "fn AnalyzerLexicalModule.scanLexicalRegions generated from typescript function_declaration at packages/shp-checker/src/analyzer-lexical.ts#scanLexicalRegions."
-}
-
-relation AnalyzerLexicalModuleShiftSpanGeneratedFromAnalyzerLexicalModuleShiftSpanAstAnchor {
-  kind generated_from
-  connects AnalyzerLexicalModule -> AnalyzerLexicalModuleShiftSpanAstAnchor
-  roles { AnalyzerLexicalModule as generated, AnalyzerLexicalModuleShiftSpanAstAnchor as syntax }
-  expects AnalyzerLexicalModuleShiftSpanAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ba12cd4565f018f196aff560144780cdce9ce866c0ab6a9d69eb524797fb00ca")
-  summary "fn AnalyzerLexicalModule.shiftSpan generated from typescript function_declaration at packages/shp-checker/src/analyzer-lexical.ts#shiftSpan."
 }
 
 relation AnalyzerLexicalModuleSkipTriviaGeneratedFromAnalyzerLexicalModuleSkipTriviaAstAnchor {

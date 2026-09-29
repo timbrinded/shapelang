@@ -66,7 +66,7 @@ component ShapeAnalyzer {
   grants Read<NormalizedShapeReference>
   fn analyzeSourceText
     source ts("packages/shp-checker/src/analyzer.ts#analyzeSourceText")
-    description "Lexically emits advisory destructive-operation hints with quote-aware direct static targets, one hint per supported SQL list target, and conservative balanced TypeScript function anchors while excluding comments, inert literals, malformed scopes, and dynamic target guesses."
+    description "Lexically emits advisory destructive-operation hints with quote-aware direct static targets, one hint per supported SQL list target, and conservative balanced TypeScript function anchors while excluding comments, inert literals including SQL dollar-quoted text, malformed scopes, and dynamic target guesses; raw-SQL string literals are scanned as their decoded runtime value."
     effects complete {
       Append<AnalyzerHint>
         evidence ts("packages/shp-checker/src/analyzer.ts")
@@ -74,6 +74,8 @@ component ShapeAnalyzer {
         evidence ts("packages/shp-checker/src/analyzer.ts")
       Read<LanguageSource>
         evidence ts("packages/shp-checker/src/analyzer-lexical.ts")
+      Read<LanguageSource>
+        evidence ts("packages/shp-checker/src/analyzer-lexical.ts#readDollarQuoteDelimiter")
       Read<LanguageSource>
         evidence ts("packages/shp-checker/src/analyzer-scopes.ts")
       Read<LanguageSource>

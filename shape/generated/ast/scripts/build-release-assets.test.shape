@@ -1,0 +1,33 @@
+module shape.generated.ast.scripts.build_release_assets_test
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource BuildReleaseAssetsTestModuleRunReleaseBuildAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("scripts/build-release-assets.test.ts#runReleaseBuild")
+  fingerprint ast.semantic_subtree_v1("sha256:abd11e006271a94e05664cfaaed7a67055d02a78076eade91d80fc5469c91930")
+}
+
+component BuildReleaseAssetsTestModule : GeneratedCandidate {
+  fn runReleaseBuild
+    source ts("scripts/build-release-assets.test.ts#runReleaseBuild")
+    effects unknown
+}
+
+relation BuildReleaseAssetsTestModuleRunReleaseBuildGeneratedFromBuildReleaseAssetsTestModuleRunReleaseBuildAstAnchor {
+  kind generated_from
+  connects BuildReleaseAssetsTestModule -> BuildReleaseAssetsTestModuleRunReleaseBuildAstAnchor
+  roles { BuildReleaseAssetsTestModule as generated, BuildReleaseAssetsTestModuleRunReleaseBuildAstAnchor as syntax }
+  expects BuildReleaseAssetsTestModuleRunReleaseBuildAstAnchor fingerprint ast.semantic_subtree_v1("sha256:abd11e006271a94e05664cfaaed7a67055d02a78076eade91d80fc5469c91930")
+  summary "fn BuildReleaseAssetsTestModule.runReleaseBuild generated from typescript function_declaration at scripts/build-release-assets.test.ts#runReleaseBuild."
+}
+
+implementation BuildReleaseAssetsTestModuleImpl {
+  paths {
+    "scripts/build-release-assets.test.ts"
+  }
+  conforms_to BuildReleaseAssetsTestModule
+}

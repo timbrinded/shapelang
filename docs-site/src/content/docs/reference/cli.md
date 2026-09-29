@@ -34,14 +34,15 @@ With no file arguments, the commands that read the Shape model (`check`, `covera
 
 | Code | Meaning |
 | --- | --- |
-| `0` | The command completed. For `check` and `coverage`, no blocking diagnostic remains; unknown-effects warnings under `--allow-unknown-effects` do not block. For `fmt`, every file is formatted. For `analyze --shape-files`, no warnings. The listing commands (`explain`, `graph`, `memory`, `obligations`, `inspect`) exit `0` whenever their input parses, even when the model has errors or open obligations. Critic advisories and AST warnings also exit `0`. |
+| `0` | The command completed. For `check` and `coverage`, no blocking diagnostic remains; stale-attestation warnings never block, and unknown-effects warnings do not block under `--allow-unknown-effects`. For `fmt`, every file is formatted. For `analyze --shape-files`, no warnings. The listing commands (`explain`, `graph`, `memory`, `obligations`, `inspect`) exit `0` whenever their input parses, even when the model has errors or open obligations. Critic advisories and AST warnings also exit `0`. |
 | `1` | Semantic, coverage, binding, or freshness diagnostics; a `fmt` parse failure or unformatted file; analyzer warnings; `ast source` Tree-sitter parse errors without `--allow-parse-errors`, or stale files under `--check`; `update` download, checksum, extraction, version-verification, or replacement failures; unexpected internal errors. |
 | `2` | Unknown or missing flags and arguments; unreadable input files; Shape parse errors in `check`, `coverage`, `explain`, `graph`, `memory`, `obligations`, `inspect`, and `analyze --shape-files`; an invalid `--as-of` date; `inspect` without `--json`; invalid `author` inputs; conflicting `ast` flags and AST generation errors other than parse errors; for `update`, an unsupported platform, an invalid version, a requested version older than the installed one, an invalid `--path` target, or a default target that is a `bun` executable. |
 
 Successful output goes to stdout and failing output to stderr, with these exceptions:
 
-- When `--allow-unknown-effects` leaves only warnings, they go to stdout, followed by `Shape check passed with warnings.` When the same run also has a blocking diagnostic, the warnings go to stderr with it.
+- When the only diagnostics left are stale-attestation warnings or unknown-effects warnings under `--allow-unknown-effects`, they go to stdout, followed by `Shape check passed with warnings.` When the same run also has a blocking diagnostic, the warnings go to stderr with it.
 - Critic advisories and AST warnings go to stderr while the command exits `0`.
+- Base-model warnings, such as an unparsable base model file or a skipped loosening check, go to stderr even when the check passes.
 - `shp lsp` reserves stdout for protocol messages.
 
 ## shp check
@@ -102,7 +103,7 @@ With `--check-cited-paths`, every `source`, `evidence`, or `observed` path the m
 
 ### Draft validation
 
-Strict `shp check` rejects `effects unknown` in authored modules. `--allow-unknown-effects` downgrades only that diagnostic to `warning: unknown effects`; every other diagnostic stays blocking, including parse errors, forbidden effects, missing grants, guarded changes, coverage, bindings, and freshness. When warnings are all that remain, the command prints them to stdout, ends with `Shape check passed with warnings.`, and exits `0`:
+Strict `shp check` rejects `effects unknown` in authored modules. `--allow-unknown-effects` downgrades only that diagnostic to `warning: unknown effects`. It changes nothing else: parse errors, forbidden effects, missing grants, guarded changes, coverage, bindings, freshness, and every other error still block, and stale attestations are warnings with or without it. When warnings are all that remain, the command prints them to stdout, ends with `Shape check passed with warnings.`, and exits `0`:
 
 ```text
 warning: unknown effects

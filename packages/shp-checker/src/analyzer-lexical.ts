@@ -195,13 +195,6 @@ export function trimHorizontalWhitespace(source: string, span: SourceSpan): Sour
   return { start, end };
 }
 
-export function shiftSpan(span: SourceSpan, offset: number): SourceSpan {
-  return {
-    start: span.start + offset,
-    end: span.end + offset
-  };
-}
-
 function consumeLineComment(source: string, start: number): number {
   let cursor = start;
   while (cursor < source.length && source[cursor] !== "\n" && source[cursor] !== "\r") {
@@ -243,7 +236,9 @@ function consumeQuoted(
       return { end: cursor, contentEnd: cursor, closed: false };
     }
     if (char === "\\") {
-      cursor = Math.min(source.length, cursor + 2);
+      // A backslash before CRLF continues the line over both characters.
+      const step = source[cursor + 1] === "\r" && source[cursor + 2] === "\n" ? 3 : 2;
+      cursor = Math.min(source.length, cursor + step);
       continue;
     }
     if (char === quote) {
@@ -351,18 +346,14 @@ function consumeBracketIdentifier(
 }
 
 function readDollarQuoteDelimiter(source: string, start: number): string | undefined {
-  let cursor = start + 1;
-  if (source[cursor] === "$") {
-    return "$$";
-  }
-  if (!isIdentifierStart(source[cursor] ?? "")) {
+  // A dollar quote cannot start inside an unquoted SQL identifier.
+  if (isIdentifierPart(source[start - 1] ?? "") || source.charCodeAt(start - 1) >= 0x80) {
     return undefined;
   }
-  cursor += 1;
-  while (cursor < source.length && isIdentifierPart(source[cursor] ?? "")) {
-    cursor += 1;
-  }
-  return source[cursor] === "$" ? source.slice(start, cursor + 1) : undefined;
+  // PostgreSQL tags follow identifier rules, non-ASCII letters included, but cannot contain "$".
+  const delimiter = /\$(?:[A-Za-z_\u0080-\uffff][A-Za-z_0-9\u0080-\uffff]*)?\$/y;
+  delimiter.lastIndex = start;
+  return delimiter.exec(source)?.[0];
 }
 
 function consumeDollarQuoted(

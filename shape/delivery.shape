@@ -110,8 +110,6 @@ component CiPipeline {
       Read<CliPackageManifest>
         evidence json("packages/shp-cli/package.json")
       Read<DocsContent>
-        evidence md("AGENTS.md")
-      Read<DocsContent>
         evidence md("README.md")
       Read<DocsContent>
         evidence md("docs-site/src/content/docs/guides/ci.md")
@@ -1097,6 +1095,16 @@ reevaluation DocsShapeBlockVerificationRechecked {
   evidence test("docs-site/scripts/verify-shape-blocks.ts")
 }
 
+reevaluation ReleaseAgentsPinRemoved {
+  satisfies memory ReleaseVersionTagContract
+  outcome Confirmed
+  summary "AGENTS.md now states the project's purpose and holds no release example, so it is no longer a version pin. The tag, the CLI package, both plugin manifests, the release notes, and the remaining public pins still share one version."
+  reviewer ShapeMaintainers
+  decided_on "2026-09-28"
+  evidence md("RELEASING.md")
+  evidence ts("scripts/check-release-metadata.ts#releaseVersionPins")
+}
+
 reevaluation ReleaseDistributionVersionsRechecked {
   satisfies memory ReleaseVersionTagContract
   outcome Confirmed
@@ -1106,6 +1114,16 @@ reevaluation ReleaseDistributionVersionsRechecked {
   evidence test("scripts/check-release-metadata.test.ts")
   evidence ts("scripts/check-release-metadata.ts#validateReleaseMetadata")
   evidence yaml(".github/workflows/release.yml")
+}
+
+reevaluation ReleaseMetadataFailuresStopBuild {
+  satisfies memory ReleaseChecksumContract
+  outcome Confirmed
+  summary "A failed native-specifier or release-target read now stops the release build with its exit status, and an empty target list stops it too, instead of continuing to write installers and checksums for archives missing their native parser bindings or targets. When both reads succeed, the archives, native parser assets, version injection, and checksums are unchanged."
+  reviewer ShapeMaintainers
+  decided_on "2026-09-28"
+  evidence sh("scripts/build-release-assets.sh")
+  evidence test("scripts/build-release-assets.test.ts")
 }
 
 reevaluation ReleaseNativeParserAssetsRechecked {

@@ -6,7 +6,7 @@ fields. Do not print a prose explanation.
 
 ## Required method
 
-1. Read `AGENTS.md` when it exists.
+1. Read `AGENTS.md` and `CONTRIBUTING.md` when they exist.
 2. Read `changed.txt`; this is the current changed-file set.
 3. Treat every `.shape` file under `shape/` and nested subdirectories as the
    durable Shape model. There is no `shape/system` split.
