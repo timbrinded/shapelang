@@ -1,7 +1,7 @@
 {
-  "name": "shapelang-local",
+  "name": "shapelang",
   "interface": {
-    "displayName": "Shape Local"
+    "displayName": "Shape"
   },
   "plugins": [
     {

@@ -1,6 +1,6 @@
 {
-  "name": "shapelang-local",
-  "description": "Local marketplace for the Shape language plugin.",
+  "name": "shapelang",
+  "description": "Marketplace for the Shape language plugin.",
   "owner": {
     "name": "Tim Brinded"
   },
