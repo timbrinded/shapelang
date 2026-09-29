@@ -1215,6 +1215,6 @@ reevaluation WindowsNativeParserPackagingRechecked {
 }
 
 attest no_shape_change {
-  source mjs(".github/scripts/skills-release-config.mjs")
-  reason "Remove a duplicate prose command marker from the root-cause report. The exact explain command remains required in command evidence, and the prose must still identify the qualified source symbol and changed expression. Required cases, static checks, effects, and human approval are unchanged."
+  source md(".github/prompts/shape-skills-release.md")
+  reason "Require the evaluator to apply the existing skill's outcome-completeness rule to the full case task, separating helper results from skill decisions and derived conclusions from executed evidence. Shipped skill instructions, cases, report schema, model, tools, and approval gates are unchanged."
 }

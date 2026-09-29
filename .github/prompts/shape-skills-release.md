@@ -71,6 +71,18 @@ Treat each listed fixture path as an isolated miniature repository snapshot.
 Outer-repository authored Shape or generated AST does not supply missing
 fixture evidence.
 
+Evaluate the complete requested outcome in each case's `task`, not just the
+supplied proposal or helper exit code. A supplied proposal may be incomplete.
+For preflight cases, trace every architecture-significant leg required by the
+task through the baseline and proposal, then apply the skill's Outcome
+Completeness rule. Report the helper's result separately from the skill's
+decision: a helper pass establishes only that the supplied model checks, not
+that it represents the whole task. Do not narrow the requested outcome to fit
+the proposal. Identify missing legs and any existing constraint that rejects
+the complete outcome. If read-only tools prevent executing a completed
+proposal, distinguish conclusions derived from the authored contract from
+results actually executed.
+
 The visualiser canaries may write only the declared ignored fixture artifacts.
 They must not modify tracked files. Verify deterministic output with the listed
 comparison command and treat the expected unignored-output failure as evidence,
