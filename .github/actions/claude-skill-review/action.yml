@@ -20,7 +20,7 @@ inputs:
     required: false
     default: ""
   model:
-    description: Claude model passed to the Claude Code action. Defaults to Sonnet in run-claude-skill.mjs.
+    description: Claude model passed to the Claude Code action. Defaults to Sonnet 5.5 in run-claude-skill.mjs.
     required: false
     default: ""
   max-turns:

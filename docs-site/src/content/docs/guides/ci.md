@@ -169,7 +169,7 @@ shape-claude-review:
           covers the change. Otherwise return "drift" or "error" with terse,
           evidence-backed findings.
         claude_args: |
-          --model claude-sonnet-4-6
+          --model claude-sonnet-5-5
           --max-turns 100
           --allowedTools 'Read,Glob,Grep,Bash(shp check --changed-files changed.txt),Bash(shp obligations),Bash(shp memory),Bash(shp explain *)'
           --disallowedTools Write,Edit

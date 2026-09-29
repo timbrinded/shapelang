@@ -130,7 +130,7 @@ runs only when dispatched on `master`. It has four jobs:
 | --- | --- | --- |
 | Validate release candidate (`validate`) | — | Requires `master`, then checks release metadata, `skills:check`, the regenerated Langium artifacts, `ast:check`, format, lint, tests, typecheck, `changed-files` plus `shape:ci`, and `docs:check`. Builds the release assets with `SHAPE_RELEASE_VERSION` set to the tag, runs the full smoke test and `run-release-canaries.ts` on the Linux x64 archive, and uploads the other three archives. |
 | Smoke packed archive (`smoke-archives`) | `validate` | Runs `scripts/smoke-release-binary.sh --quick` (version, help, check, AST generation) on native Linux ARM64, macOS ARM64, and Windows x64 runners. |
-| Evaluate skill conformance and behavior (`skills`) | `validate` | Requires Claude credentials. Evaluates all six shipped skills against their static checks and fixture cases, or copies an approved report (see [Skills report reuse](#skills-report-reuse)). Uploads `skill-release-report-<commit>`. |
+| Evaluate skill conformance and behavior (`skills`) | `validate` | Requires Claude credentials. Uses the shared Sonnet 5.5 default to evaluate all six shipped skills against their static checks and fixture cases, or copies an approved report (see [Skills report reuse](#skills-report-reuse)). Uploads `skill-release-report-<commit>`. |
 | Skill Release Approval (`approval`) | all three | Waits in the protected environment `skills-release-approval` for a human, then records the version, both tags, the commit, and the report name in the job summary. |
 
 `smoke-archives` and `skills` both depend only on `validate`, so they run in
