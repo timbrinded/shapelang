@@ -27,9 +27,10 @@ jobs:
       - name: Compare direct and embedded native loading
         shell: pwsh
         run: |
-          $binding = bun -e 'console.log(require.resolve("@kreuzberg/tree-sitter-language-pack/ts-pack-core-node.win32-x64-msvc.node",{paths:["./packages/shp-checker"]}))'
+          $binding = (Get-Item "packages/shp-checker/node_modules/@kreuzberg/tree-sitter-language-pack/ts-pack-core-node.win32-x64-msvc.node").FullName
+          $env:PROBE_BINDING = $binding
           Write-Host "[DEBUG-native] Direct package with Bun $(bun --version)"
-          bun -e 'const b = require(require.resolve("@kreuzberg/tree-sitter-language-pack/ts-pack-core-node.win32-x64-msvc.node",{paths:["./packages/shp-checker"]})); console.log(Object.keys(b));'
+          bun -e 'const b = require(process.env.PROBE_BINDING); console.log(Object.keys(b));'
           Write-Host "[DEBUG-native] Direct binding exit $LASTEXITCODE"
           @'
           import {createRequire} from "node:module";
@@ -48,7 +49,7 @@ jobs:
           Write-Host "[DEBUG-native] Embedded isolated exit $LASTEXITCODE"
           Pop-Location
           tar -xzf candidate/shp-windows-x64.tar.gz -C $probeDir
-          & "$probeDir/shp.exe" ast --language typescript --module generated.audit fixtures/source/audit_purge.ts
+          & "$probeDir/shp.exe" ast source --language typescript --module generated.audit fixtures/source/audit_purge.ts
           Write-Host "[DEBUG-native] Candidate PowerShell exit $LASTEXITCODE"
           Copy-Item $binding $probeDir
           & "$probeDir/native-probe.exe"
