@@ -87,7 +87,7 @@ The setup action installs the release named by `version` when given; otherwise, 
 
 ```text
 /plugin marketplace add timbrinded/shapelang
-/plugin install shapelang@shapelang-local
+/plugin install shapelang@shapelang
 /reload-plugins
 ```
 

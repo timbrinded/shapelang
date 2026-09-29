@@ -223,7 +223,7 @@ The Shape skills ship as a Claude Code plugin. They call the `shp` CLI, so keep 
 
 ```text
 /plugin marketplace add timbrinded/shapelang
-/plugin install shapelang@shapelang-local
+/plugin install shapelang@shapelang
 /reload-plugins
 ```
 
