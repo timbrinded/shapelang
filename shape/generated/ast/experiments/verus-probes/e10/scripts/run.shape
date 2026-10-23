@@ -1,0 +1,129 @@
+module shape.generated.ast.experiments.verus_probes.e10.scripts.run
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource RunModuleClassifySingleAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/e10/scripts/run.py#classify_single")
+  fingerprint ast.semantic_subtree_v1("sha256:947cf9a48743ec46690a20ff60af6a80178a1ef7ded4e81bd0b70755ce68d0c2")
+}
+
+resource RunModuleEffectKeyFromBodyAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/e10/scripts/run.py#effect_key_from_body")
+  fingerprint ast.semantic_subtree_v1("sha256:41720a85eee7f81c8c333249e69bf74ef4848273fb987da5cd60b818a37e6188")
+}
+
+resource RunModuleEnsureWorkersAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/e10/scripts/run.py#ensure_workers")
+  fingerprint ast.semantic_subtree_v1("sha256:58369fb4994b98bfb20e60200e0b066249542ca0a48d9899c238feb216411f29")
+}
+
+resource RunModuleInitAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/e10/scripts/run.py#init")
+  fingerprint ast.semantic_subtree_v1("sha256:9a1ccf48556062dadc5126b34bbe0fba2bff134a81051cdbf9b4fb57d8ad2162")
+}
+
+resource RunModuleMainAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/e10/scripts/run.py#main")
+  fingerprint ast.semantic_subtree_v1("sha256:343fdb7f71554067737e1dcb3864971bd3037bc08313682c8c576986ac985341")
+}
+
+resource RunModuleWorkBatchAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/e10/scripts/run.py#work_batch")
+  fingerprint ast.semantic_subtree_v1("sha256:3779efcbf6a641e850444e3d1c8c6041ab63019b76102060288802ad86a18d37")
+}
+
+resource RunModuleWorkSingleAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/e10/scripts/run.py#work_single")
+  fingerprint ast.semantic_subtree_v1("sha256:2a7545856030679bb1827824838a50fdb52071865dfd4b1daa6403d89c519e4c")
+}
+
+component RunModule : GeneratedCandidate {
+  fn classify_single
+    source python("experiments/verus-probes/e10/scripts/run.py#classify_single")
+    effects unknown
+  fn effect_key_from_body
+    source python("experiments/verus-probes/e10/scripts/run.py#effect_key_from_body")
+    effects unknown
+  fn ensure_workers
+    source python("experiments/verus-probes/e10/scripts/run.py#ensure_workers")
+    effects unknown
+  fn init
+    source python("experiments/verus-probes/e10/scripts/run.py#init")
+    effects unknown
+  fn main
+    source python("experiments/verus-probes/e10/scripts/run.py#main")
+    effects unknown
+  fn work_batch
+    source python("experiments/verus-probes/e10/scripts/run.py#work_batch")
+    effects unknown
+  fn work_single
+    source python("experiments/verus-probes/e10/scripts/run.py#work_single")
+    effects unknown
+}
+
+relation RunModuleClassifySingleGeneratedFromRunModuleClassifySingleAstAnchor {
+  kind generated_from
+  connects RunModule -> RunModuleClassifySingleAstAnchor
+  roles { RunModule as generated, RunModuleClassifySingleAstAnchor as syntax }
+  expects RunModuleClassifySingleAstAnchor fingerprint ast.semantic_subtree_v1("sha256:947cf9a48743ec46690a20ff60af6a80178a1ef7ded4e81bd0b70755ce68d0c2")
+  summary "fn RunModule.classify_single generated from python function_definition at experiments/verus-probes/e10/scripts/run.py#classify_single."
+}
+
+relation RunModuleEffectKeyFromBodyGeneratedFromRunModuleEffectKeyFromBodyAstAnchor {
+  kind generated_from
+  connects RunModule -> RunModuleEffectKeyFromBodyAstAnchor
+  roles { RunModule as generated, RunModuleEffectKeyFromBodyAstAnchor as syntax }
+  expects RunModuleEffectKeyFromBodyAstAnchor fingerprint ast.semantic_subtree_v1("sha256:41720a85eee7f81c8c333249e69bf74ef4848273fb987da5cd60b818a37e6188")
+  summary "fn RunModule.effect_key_from_body generated from python function_definition at experiments/verus-probes/e10/scripts/run.py#effect_key_from_body."
+}
+
+relation RunModuleEnsureWorkersGeneratedFromRunModuleEnsureWorkersAstAnchor {
+  kind generated_from
+  connects RunModule -> RunModuleEnsureWorkersAstAnchor
+  roles { RunModule as generated, RunModuleEnsureWorkersAstAnchor as syntax }
+  expects RunModuleEnsureWorkersAstAnchor fingerprint ast.semantic_subtree_v1("sha256:58369fb4994b98bfb20e60200e0b066249542ca0a48d9899c238feb216411f29")
+  summary "fn RunModule.ensure_workers generated from python function_definition at experiments/verus-probes/e10/scripts/run.py#ensure_workers."
+}
+
+relation RunModuleInitGeneratedFromRunModuleInitAstAnchor {
+  kind generated_from
+  connects RunModule -> RunModuleInitAstAnchor
+  roles { RunModule as generated, RunModuleInitAstAnchor as syntax }
+  expects RunModuleInitAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9a1ccf48556062dadc5126b34bbe0fba2bff134a81051cdbf9b4fb57d8ad2162")
+  summary "fn RunModule.init generated from python function_definition at experiments/verus-probes/e10/scripts/run.py#init."
+}
+
+relation RunModuleMainGeneratedFromRunModuleMainAstAnchor {
+  kind generated_from
+  connects RunModule -> RunModuleMainAstAnchor
+  roles { RunModule as generated, RunModuleMainAstAnchor as syntax }
+  expects RunModuleMainAstAnchor fingerprint ast.semantic_subtree_v1("sha256:343fdb7f71554067737e1dcb3864971bd3037bc08313682c8c576986ac985341")
+  summary "fn RunModule.main generated from python function_definition at experiments/verus-probes/e10/scripts/run.py#main."
+}
+
+relation RunModuleWorkBatchGeneratedFromRunModuleWorkBatchAstAnchor {
+  kind generated_from
+  connects RunModule -> RunModuleWorkBatchAstAnchor
+  roles { RunModule as generated, RunModuleWorkBatchAstAnchor as syntax }
+  expects RunModuleWorkBatchAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3779efcbf6a641e850444e3d1c8c6041ab63019b76102060288802ad86a18d37")
+  summary "fn RunModule.work_batch generated from python function_definition at experiments/verus-probes/e10/scripts/run.py#work_batch."
+}
+
+relation RunModuleWorkSingleGeneratedFromRunModuleWorkSingleAstAnchor {
+  kind generated_from
+  connects RunModule -> RunModuleWorkSingleAstAnchor
+  roles { RunModule as generated, RunModuleWorkSingleAstAnchor as syntax }
+  expects RunModuleWorkSingleAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2a7545856030679bb1827824838a50fdb52071865dfd4b1daa6403d89c519e4c")
+  summary "fn RunModule.work_single generated from python function_definition at experiments/verus-probes/e10/scripts/run.py#work_single."
+}
+
+implementation RunModuleImpl {
+  paths {
+    "experiments/verus-probes/e10/scripts/run.py"
+  }
+  conforms_to RunModule
+}

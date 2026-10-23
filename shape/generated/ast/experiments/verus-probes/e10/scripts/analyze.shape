@@ -1,0 +1,113 @@
+module shape.generated.ast.experiments.verus_probes.e10.scripts.analyze
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource AnalyzeModuleAddClaimAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/e10/scripts/analyze.py#add_claim")
+  fingerprint ast.semantic_subtree_v1("sha256:0188a533e0f4c29f7ac0cfbb809dc01d607f6b1fa415b7c3d2fc42a934e56966")
+}
+
+resource AnalyzeModuleCreditAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/e10/scripts/analyze.py#credit")
+  fingerprint ast.semantic_subtree_v1("sha256:e249de2fd6b15182afe9d7d25699553e53451a469fa80b717d1376bfa5509818")
+}
+
+resource AnalyzeModuleLoadMutantsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/e10/scripts/analyze.py#load_mutants")
+  fingerprint ast.semantic_subtree_v1("sha256:c6587989ba783e2d83f5cde706809b95f5ee33527f618f4e3bfed031bff7488f")
+}
+
+resource AnalyzeModuleLoadResultsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/e10/scripts/analyze.py#load_results")
+  fingerprint ast.semantic_subtree_v1("sha256:73b7aa8c72026654b3d98d7574ef02a0706a4b475c8bcbcfbd08a03b9ae18a6d")
+}
+
+resource AnalyzeModuleReachAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/e10/scripts/analyze.py#reach")
+  fingerprint ast.semantic_subtree_v1("sha256:afaf001683bd05790286a588dd50ccdcd6da4961984bab66a8cf1a0abd0f03e2")
+}
+
+resource AnalyzeModuleTallyAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/e10/scripts/analyze.py#tally")
+  fingerprint ast.semantic_subtree_v1("sha256:46716cbb5a821d271acc55b592751cced8b39a38c544e660df5feb1e1ff8d0ea")
+}
+
+component AnalyzeModule : GeneratedCandidate {
+  fn add_claim
+    source python("experiments/verus-probes/e10/scripts/analyze.py#add_claim")
+    effects unknown
+  fn credit
+    source python("experiments/verus-probes/e10/scripts/analyze.py#credit")
+    effects unknown
+  fn load_mutants
+    source python("experiments/verus-probes/e10/scripts/analyze.py#load_mutants")
+    effects unknown
+  fn load_results
+    source python("experiments/verus-probes/e10/scripts/analyze.py#load_results")
+    effects unknown
+  fn reach
+    source python("experiments/verus-probes/e10/scripts/analyze.py#reach")
+    effects unknown
+  fn tally
+    source python("experiments/verus-probes/e10/scripts/analyze.py#tally")
+    effects unknown
+}
+
+relation AnalyzeModuleAddClaimGeneratedFromAnalyzeModuleAddClaimAstAnchor {
+  kind generated_from
+  connects AnalyzeModule -> AnalyzeModuleAddClaimAstAnchor
+  roles { AnalyzeModule as generated, AnalyzeModuleAddClaimAstAnchor as syntax }
+  expects AnalyzeModuleAddClaimAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0188a533e0f4c29f7ac0cfbb809dc01d607f6b1fa415b7c3d2fc42a934e56966")
+  summary "fn AnalyzeModule.add_claim generated from python function_definition at experiments/verus-probes/e10/scripts/analyze.py#add_claim."
+}
+
+relation AnalyzeModuleCreditGeneratedFromAnalyzeModuleCreditAstAnchor {
+  kind generated_from
+  connects AnalyzeModule -> AnalyzeModuleCreditAstAnchor
+  roles { AnalyzeModule as generated, AnalyzeModuleCreditAstAnchor as syntax }
+  expects AnalyzeModuleCreditAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e249de2fd6b15182afe9d7d25699553e53451a469fa80b717d1376bfa5509818")
+  summary "fn AnalyzeModule.credit generated from python function_definition at experiments/verus-probes/e10/scripts/analyze.py#credit."
+}
+
+relation AnalyzeModuleLoadMutantsGeneratedFromAnalyzeModuleLoadMutantsAstAnchor {
+  kind generated_from
+  connects AnalyzeModule -> AnalyzeModuleLoadMutantsAstAnchor
+  roles { AnalyzeModule as generated, AnalyzeModuleLoadMutantsAstAnchor as syntax }
+  expects AnalyzeModuleLoadMutantsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c6587989ba783e2d83f5cde706809b95f5ee33527f618f4e3bfed031bff7488f")
+  summary "fn AnalyzeModule.load_mutants generated from python function_definition at experiments/verus-probes/e10/scripts/analyze.py#load_mutants."
+}
+
+relation AnalyzeModuleLoadResultsGeneratedFromAnalyzeModuleLoadResultsAstAnchor {
+  kind generated_from
+  connects AnalyzeModule -> AnalyzeModuleLoadResultsAstAnchor
+  roles { AnalyzeModule as generated, AnalyzeModuleLoadResultsAstAnchor as syntax }
+  expects AnalyzeModuleLoadResultsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:73b7aa8c72026654b3d98d7574ef02a0706a4b475c8bcbcfbd08a03b9ae18a6d")
+  summary "fn AnalyzeModule.load_results generated from python function_definition at experiments/verus-probes/e10/scripts/analyze.py#load_results."
+}
+
+relation AnalyzeModuleReachGeneratedFromAnalyzeModuleReachAstAnchor {
+  kind generated_from
+  connects AnalyzeModule -> AnalyzeModuleReachAstAnchor
+  roles { AnalyzeModule as generated, AnalyzeModuleReachAstAnchor as syntax }
+  expects AnalyzeModuleReachAstAnchor fingerprint ast.semantic_subtree_v1("sha256:afaf001683bd05790286a588dd50ccdcd6da4961984bab66a8cf1a0abd0f03e2")
+  summary "fn AnalyzeModule.reach generated from python function_definition at experiments/verus-probes/e10/scripts/analyze.py#reach."
+}
+
+relation AnalyzeModuleTallyGeneratedFromAnalyzeModuleTallyAstAnchor {
+  kind generated_from
+  connects AnalyzeModule -> AnalyzeModuleTallyAstAnchor
+  roles { AnalyzeModule as generated, AnalyzeModuleTallyAstAnchor as syntax }
+  expects AnalyzeModuleTallyAstAnchor fingerprint ast.semantic_subtree_v1("sha256:46716cbb5a821d271acc55b592751cced8b39a38c544e660df5feb1e1ff8d0ea")
+  summary "fn AnalyzeModule.tally generated from python function_definition at experiments/verus-probes/e10/scripts/analyze.py#tally."
+}
+
+implementation AnalyzeModuleImpl {
+  paths {
+    "experiments/verus-probes/e10/scripts/analyze.py"
+  }
+  conforms_to AnalyzeModule
+}

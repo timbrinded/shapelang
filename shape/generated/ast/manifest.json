@@ -122,6 +122,69 @@
       ]
     },
     {
+      "module": "shape.generated.ast.experiments.verus_probes.e10.scripts.analyze",
+      "path": "shape/generated/ast/experiments/verus-probes/e10/scripts/analyze.shape",
+      "sources": [
+        "experiments/verus-probes/e10/scripts/analyze.py"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.verus_probes.e10.scripts.ci_gate_demo",
+      "path": "shape/generated/ast/experiments/verus-probes/e10/scripts/ci_gate_demo.shape",
+      "sources": [
+        "experiments/verus-probes/e10/scripts/ci_gate_demo.py"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.verus_probes.e10.scripts.common",
+      "path": "shape/generated/ast/experiments/verus-probes/e10/scripts/common.shape",
+      "sources": [
+        "experiments/verus-probes/e10/scripts/common.py"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.verus_probes.e10.scripts.followups",
+      "path": "shape/generated/ast/experiments/verus-probes/e10/scripts/followups.shape",
+      "sources": [
+        "experiments/verus-probes/e10/scripts/followups.py"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.verus_probes.e10.scripts.gen_hocontrol",
+      "path": "shape/generated/ast/experiments/verus-probes/e10/scripts/gen_hocontrol.shape",
+      "sources": [
+        "experiments/verus-probes/e10/scripts/gen_hocontrol.py"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.verus_probes.e10.scripts.gen_mutants",
+      "path": "shape/generated/ast/experiments/verus-probes/e10/scripts/gen_mutants.shape",
+      "sources": [
+        "experiments/verus-probes/e10/scripts/gen_mutants.py"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.verus_probes.e10.scripts.run",
+      "path": "shape/generated/ast/experiments/verus-probes/e10/scripts/run.shape",
+      "sources": [
+        "experiments/verus-probes/e10/scripts/run.py"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.verus_probes.e10.scripts.tables",
+      "path": "shape/generated/ast/experiments/verus-probes/e10/scripts/tables.shape",
+      "sources": [
+        "experiments/verus-probes/e10/scripts/tables.py"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.verus_probes.e10.scripts.validate",
+      "path": "shape/generated/ast/experiments/verus-probes/e10/scripts/validate.shape",
+      "sources": [
+        "experiments/verus-probes/e10/scripts/validate.py"
+      ]
+    },
+    {
       "module": "shape.generated.ast.experiments.verus_probes.harness.harness",
       "path": "shape/generated/ast/experiments/verus-probes/harness/harness.shape",
       "sources": [

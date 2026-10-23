@@ -1,0 +1,49 @@
+module shape.generated.ast.experiments.verus_probes.e10.scripts.ci_gate_demo
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource CiGateDemoModuleGeneratedFunctionStatusAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/e10/scripts/ci_gate_demo.py#status")
+  fingerprint ast.semantic_subtree_v1("sha256:63d086af2a659c46e20ca2916f5620e14c23f246cdb65074f7373e83f658546c")
+}
+
+resource CiGateDemoModuleLoadAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/e10/scripts/ci_gate_demo.py#load")
+  fingerprint ast.semantic_subtree_v1("sha256:c27ef70990e4928f73de422bb1390101b64ee3510643f73bc20e9de7c7df1602")
+}
+
+component CiGateDemoModule : GeneratedCandidate {
+  fn generatedFunction_status
+    source python("experiments/verus-probes/e10/scripts/ci_gate_demo.py#status")
+    effects unknown
+  fn load
+    source python("experiments/verus-probes/e10/scripts/ci_gate_demo.py#load")
+    effects unknown
+}
+
+relation CiGateDemoModuleGeneratedFunctionStatusGeneratedFromCiGateDemoModuleGeneratedFunctionStatusAstAnchor {
+  kind generated_from
+  connects CiGateDemoModule -> CiGateDemoModuleGeneratedFunctionStatusAstAnchor
+  roles { CiGateDemoModule as generated, CiGateDemoModuleGeneratedFunctionStatusAstAnchor as syntax }
+  expects CiGateDemoModuleGeneratedFunctionStatusAstAnchor fingerprint ast.semantic_subtree_v1("sha256:63d086af2a659c46e20ca2916f5620e14c23f246cdb65074f7373e83f658546c")
+  summary "fn CiGateDemoModule.generatedFunction_status generated from python function_definition at experiments/verus-probes/e10/scripts/ci_gate_demo.py#status."
+}
+
+relation CiGateDemoModuleLoadGeneratedFromCiGateDemoModuleLoadAstAnchor {
+  kind generated_from
+  connects CiGateDemoModule -> CiGateDemoModuleLoadAstAnchor
+  roles { CiGateDemoModule as generated, CiGateDemoModuleLoadAstAnchor as syntax }
+  expects CiGateDemoModuleLoadAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c27ef70990e4928f73de422bb1390101b64ee3510643f73bc20e9de7c7df1602")
+  summary "fn CiGateDemoModule.load generated from python function_definition at experiments/verus-probes/e10/scripts/ci_gate_demo.py#load."
+}
+
+implementation CiGateDemoModuleImpl {
+  paths {
+    "experiments/verus-probes/e10/scripts/ci_gate_demo.py"
+  }
+  conforms_to CiGateDemoModule
+}

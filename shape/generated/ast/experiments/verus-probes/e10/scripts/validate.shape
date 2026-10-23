@@ -1,0 +1,33 @@
+module shape.generated.ast.experiments.verus_probes.e10.scripts.validate
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource ValidateModuleLoadAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/e10/scripts/validate.py#load")
+  fingerprint ast.semantic_subtree_v1("sha256:c3c4864e2792d8b790dcabc05f459b8eaa45bd7c104ee6986c1207809f79a2b9")
+}
+
+component ValidateModule : GeneratedCandidate {
+  fn load
+    source python("experiments/verus-probes/e10/scripts/validate.py#load")
+    effects unknown
+}
+
+relation ValidateModuleLoadGeneratedFromValidateModuleLoadAstAnchor {
+  kind generated_from
+  connects ValidateModule -> ValidateModuleLoadAstAnchor
+  roles { ValidateModule as generated, ValidateModuleLoadAstAnchor as syntax }
+  expects ValidateModuleLoadAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c3c4864e2792d8b790dcabc05f459b8eaa45bd7c104ee6986c1207809f79a2b9")
+  summary "fn ValidateModule.load generated from python function_definition at experiments/verus-probes/e10/scripts/validate.py#load."
+}
+
+implementation ValidateModuleImpl {
+  paths {
+    "experiments/verus-probes/e10/scripts/validate.py"
+  }
+  conforms_to ValidateModule
+}

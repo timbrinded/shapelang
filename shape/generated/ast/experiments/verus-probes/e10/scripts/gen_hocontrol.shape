@@ -1,0 +1,7 @@
+module shape.generated.ast.experiments.verus_probes.e10.scripts.gen_hocontrol
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}

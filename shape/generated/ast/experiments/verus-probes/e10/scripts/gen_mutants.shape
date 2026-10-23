@@ -1,0 +1,81 @@
+module shape.generated.ast.experiments.verus_probes.e10.scripts.gen_mutants
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource GenMutantsModuleHomeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/e10/scripts/gen_mutants.py#home")
+  fingerprint ast.semantic_subtree_v1("sha256:5f535a4082edd3cfed9009eba140ce465d88a83e7c9b6eb45e205264f0767995")
+}
+
+resource GenMutantsModuleHostFileAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/e10/scripts/gen_mutants.py#host_file")
+  fingerprint ast.semantic_subtree_v1("sha256:b1ad568fe55d7da9d1c16dd46b402833da53ee33b5adebceb3472748d88c8836")
+}
+
+resource GenMutantsModuleM1LineAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/e10/scripts/gen_mutants.py#m1_line")
+  fingerprint ast.semantic_subtree_v1("sha256:413ce8f70e454eb27ca66fc3ab5ff60210f05879d2825a40f9e53044a521ffa5")
+}
+
+resource GenMutantsModuleRelationMutantAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/e10/scripts/gen_mutants.py#relation_mutant")
+  fingerprint ast.semantic_subtree_v1("sha256:1f13c10ba1a65ae4f54b9b9a6744ed15841bbb33408f340e59495b07701126aa")
+}
+
+component GenMutantsModule : GeneratedCandidate {
+  fn home
+    source python("experiments/verus-probes/e10/scripts/gen_mutants.py#home")
+    effects unknown
+  fn host_file
+    source python("experiments/verus-probes/e10/scripts/gen_mutants.py#host_file")
+    effects unknown
+  fn m1_line
+    source python("experiments/verus-probes/e10/scripts/gen_mutants.py#m1_line")
+    effects unknown
+  fn relation_mutant
+    source python("experiments/verus-probes/e10/scripts/gen_mutants.py#relation_mutant")
+    effects unknown
+}
+
+relation GenMutantsModuleHomeGeneratedFromGenMutantsModuleHomeAstAnchor {
+  kind generated_from
+  connects GenMutantsModule -> GenMutantsModuleHomeAstAnchor
+  roles { GenMutantsModule as generated, GenMutantsModuleHomeAstAnchor as syntax }
+  expects GenMutantsModuleHomeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5f535a4082edd3cfed9009eba140ce465d88a83e7c9b6eb45e205264f0767995")
+  summary "fn GenMutantsModule.home generated from python function_definition at experiments/verus-probes/e10/scripts/gen_mutants.py#home."
+}
+
+relation GenMutantsModuleHostFileGeneratedFromGenMutantsModuleHostFileAstAnchor {
+  kind generated_from
+  connects GenMutantsModule -> GenMutantsModuleHostFileAstAnchor
+  roles { GenMutantsModule as generated, GenMutantsModuleHostFileAstAnchor as syntax }
+  expects GenMutantsModuleHostFileAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b1ad568fe55d7da9d1c16dd46b402833da53ee33b5adebceb3472748d88c8836")
+  summary "fn GenMutantsModule.host_file generated from python function_definition at experiments/verus-probes/e10/scripts/gen_mutants.py#host_file."
+}
+
+relation GenMutantsModuleM1LineGeneratedFromGenMutantsModuleM1LineAstAnchor {
+  kind generated_from
+  connects GenMutantsModule -> GenMutantsModuleM1LineAstAnchor
+  roles { GenMutantsModule as generated, GenMutantsModuleM1LineAstAnchor as syntax }
+  expects GenMutantsModuleM1LineAstAnchor fingerprint ast.semantic_subtree_v1("sha256:413ce8f70e454eb27ca66fc3ab5ff60210f05879d2825a40f9e53044a521ffa5")
+  summary "fn GenMutantsModule.m1_line generated from python function_definition at experiments/verus-probes/e10/scripts/gen_mutants.py#m1_line."
+}
+
+relation GenMutantsModuleRelationMutantGeneratedFromGenMutantsModuleRelationMutantAstAnchor {
+  kind generated_from
+  connects GenMutantsModule -> GenMutantsModuleRelationMutantAstAnchor
+  roles { GenMutantsModule as generated, GenMutantsModuleRelationMutantAstAnchor as syntax }
+  expects GenMutantsModuleRelationMutantAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1f13c10ba1a65ae4f54b9b9a6744ed15841bbb33408f340e59495b07701126aa")
+  summary "fn GenMutantsModule.relation_mutant generated from python function_definition at experiments/verus-probes/e10/scripts/gen_mutants.py#relation_mutant."
+}
+
+implementation GenMutantsModuleImpl {
+  paths {
+    "experiments/verus-probes/e10/scripts/gen_mutants.py"
+  }
+  conforms_to GenMutantsModule
+}

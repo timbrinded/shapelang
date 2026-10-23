@@ -29,3 +29,10 @@ s22_t2     seed=22          threads=2 verified=313 errors=0 []
 s23_t2     seed=23          threads=2 verified=313 errors=0 []
 s24_t2     seed=24          threads=2 verified=313 errors=0 []
 distinct seeds tried: 25; seeds with a failure: ['0', '18']; per-seed outcome always identical across repeats/threads: True
+
+NRKernel 1c86109 with the same Verus dccae1d (default seed, rlimit 100, CI flags: --cfg feature="impl" --cfg feature="hlspec_user"):
+  verified 602 errors 3
+      --> page-table/src/spec_t/mmu/rl2.rs:2791:9
+      --> page-table/src/impl_u/wrapped_token.rs:2104:5
+      --> page-table/src/spec_t/os_invariant.rs:996:1
+  NRKernel's CI verifies with the latest Verus release, not main.

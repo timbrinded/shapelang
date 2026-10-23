@@ -1,0 +1,33 @@
+module shape.generated.ast.experiments.verus_probes.e10.scripts.tables
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource TablesModulePctAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/e10/scripts/tables.py#pct")
+  fingerprint ast.semantic_subtree_v1("sha256:6fae521cb18bb534385644cff910506e1e483713a7c7af85c6cc17c8c0f7ce63")
+}
+
+component TablesModule : GeneratedCandidate {
+  fn pct
+    source python("experiments/verus-probes/e10/scripts/tables.py#pct")
+    effects unknown
+}
+
+relation TablesModulePctGeneratedFromTablesModulePctAstAnchor {
+  kind generated_from
+  connects TablesModule -> TablesModulePctAstAnchor
+  roles { TablesModule as generated, TablesModulePctAstAnchor as syntax }
+  expects TablesModulePctAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6fae521cb18bb534385644cff910506e1e483713a7c7af85c6cc17c8c0f7ce63")
+  summary "fn TablesModule.pct generated from python function_definition at experiments/verus-probes/e10/scripts/tables.py#pct."
+}
+
+implementation TablesModuleImpl {
+  paths {
+    "experiments/verus-probes/e10/scripts/tables.py"
+  }
+  conforms_to TablesModule
+}

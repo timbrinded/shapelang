@@ -1,0 +1,33 @@
+module shape.generated.ast.experiments.verus_probes.e10.scripts.followups
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource FollowupsModuleLoadAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/e10/scripts/followups.py#load")
+  fingerprint ast.semantic_subtree_v1("sha256:bd43fbb39b525b137d3f48408eff2c64670ef1b56c6f2a9a3daff395b69460f8")
+}
+
+component FollowupsModule : GeneratedCandidate {
+  fn load
+    source python("experiments/verus-probes/e10/scripts/followups.py#load")
+    effects unknown
+}
+
+relation FollowupsModuleLoadGeneratedFromFollowupsModuleLoadAstAnchor {
+  kind generated_from
+  connects FollowupsModule -> FollowupsModuleLoadAstAnchor
+  roles { FollowupsModule as generated, FollowupsModuleLoadAstAnchor as syntax }
+  expects FollowupsModuleLoadAstAnchor fingerprint ast.semantic_subtree_v1("sha256:bd43fbb39b525b137d3f48408eff2c64670ef1b56c6f2a9a3daff395b69460f8")
+  summary "fn FollowupsModule.load generated from python function_definition at experiments/verus-probes/e10/scripts/followups.py#load."
+}
+
+implementation FollowupsModuleImpl {
+  paths {
+    "experiments/verus-probes/e10/scripts/followups.py"
+  }
+  conforms_to FollowupsModule
+}

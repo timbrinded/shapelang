@@ -1,0 +1,161 @@
+module shape.generated.ast.experiments.verus_probes.e10.scripts.common
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource CommonModuleApplyEditsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/e10/scripts/common.py#apply_edits")
+  fingerprint ast.semantic_subtree_v1("sha256:092b6a4bb67c2a64c4a7d482cb9fe1270fcf7043b713056b156e0c67f525eca4")
+}
+
+resource CommonModuleCauseClaimsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/e10/scripts/common.py#cause_claims")
+  fingerprint ast.semantic_subtree_v1("sha256:257a1e4ddce44c5f1f6361f9380eab73de4d53f25e7e8857d2834c487a208dcd")
+}
+
+resource CommonModuleLoadModelAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/e10/scripts/common.py#load_model")
+  fingerprint ast.semantic_subtree_v1("sha256:0c7389fcaf112be8658c7fc43ea790160faee3e21632c9aabeaa1fcf70951af4")
+}
+
+resource CommonModuleParseDiagnosticsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/e10/scripts/common.py#parse_diagnostics")
+  fingerprint ast.semantic_subtree_v1("sha256:c6452ff292c3b074fa66d31b8aa797634dbe0d1935aed4235eea2e50dc849bf0")
+}
+
+resource CommonModuleReadLinesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/e10/scripts/common.py#read_lines")
+  fingerprint ast.semantic_subtree_v1("sha256:e844e21698fc6ca9b0b8db7d0093e6a6c9155920c4bc822ff1aa3d9d93d263d8")
+}
+
+resource CommonModuleRestoreAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/e10/scripts/common.py#restore")
+  fingerprint ast.semantic_subtree_v1("sha256:56963a6a95f1e7d1c27a5cd5ea6f73a1fd14ded3124e308a9f593e94e4d7a37f")
+}
+
+resource CommonModuleRunCheckAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/e10/scripts/common.py#run_check")
+  fingerprint ast.semantic_subtree_v1("sha256:d59ba975e47ffa64da69cd05fcd0b1bdb627ac97e7dc8bbca1ca95be6d5cd740")
+}
+
+resource CommonModuleScanAuthoredFileAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/e10/scripts/common.py#scan_authored_file")
+  fingerprint ast.semantic_subtree_v1("sha256:e855e2392e90484e74328cbf6fd977807ee45a17dc00b46a6384ec8194f995a2")
+}
+
+resource CommonModuleShortAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/e10/scripts/common.py#short")
+  fingerprint ast.semantic_subtree_v1("sha256:f9df3718e34917724322dd55cde2b35e94ef255f664da314dcaeda5776ba4cde")
+}
+
+component CommonModule : GeneratedCandidate {
+  fn apply_edits
+    source python("experiments/verus-probes/e10/scripts/common.py#apply_edits")
+    effects unknown
+  fn cause_claims
+    source python("experiments/verus-probes/e10/scripts/common.py#cause_claims")
+    effects unknown
+  fn load_model
+    source python("experiments/verus-probes/e10/scripts/common.py#load_model")
+    effects unknown
+  fn parse_diagnostics
+    source python("experiments/verus-probes/e10/scripts/common.py#parse_diagnostics")
+    effects unknown
+  fn read_lines
+    source python("experiments/verus-probes/e10/scripts/common.py#read_lines")
+    effects unknown
+  fn restore
+    source python("experiments/verus-probes/e10/scripts/common.py#restore")
+    effects unknown
+  fn run_check
+    source python("experiments/verus-probes/e10/scripts/common.py#run_check")
+    effects unknown
+  fn scan_authored_file
+    source python("experiments/verus-probes/e10/scripts/common.py#scan_authored_file")
+    effects unknown
+  fn short
+    source python("experiments/verus-probes/e10/scripts/common.py#short")
+    effects unknown
+}
+
+relation CommonModuleApplyEditsGeneratedFromCommonModuleApplyEditsAstAnchor {
+  kind generated_from
+  connects CommonModule -> CommonModuleApplyEditsAstAnchor
+  roles { CommonModule as generated, CommonModuleApplyEditsAstAnchor as syntax }
+  expects CommonModuleApplyEditsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:092b6a4bb67c2a64c4a7d482cb9fe1270fcf7043b713056b156e0c67f525eca4")
+  summary "fn CommonModule.apply_edits generated from python function_definition at experiments/verus-probes/e10/scripts/common.py#apply_edits."
+}
+
+relation CommonModuleCauseClaimsGeneratedFromCommonModuleCauseClaimsAstAnchor {
+  kind generated_from
+  connects CommonModule -> CommonModuleCauseClaimsAstAnchor
+  roles { CommonModule as generated, CommonModuleCauseClaimsAstAnchor as syntax }
+  expects CommonModuleCauseClaimsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:257a1e4ddce44c5f1f6361f9380eab73de4d53f25e7e8857d2834c487a208dcd")
+  summary "fn CommonModule.cause_claims generated from python function_definition at experiments/verus-probes/e10/scripts/common.py#cause_claims."
+}
+
+relation CommonModuleLoadModelGeneratedFromCommonModuleLoadModelAstAnchor {
+  kind generated_from
+  connects CommonModule -> CommonModuleLoadModelAstAnchor
+  roles { CommonModule as generated, CommonModuleLoadModelAstAnchor as syntax }
+  expects CommonModuleLoadModelAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0c7389fcaf112be8658c7fc43ea790160faee3e21632c9aabeaa1fcf70951af4")
+  summary "fn CommonModule.load_model generated from python function_definition at experiments/verus-probes/e10/scripts/common.py#load_model."
+}
+
+relation CommonModuleParseDiagnosticsGeneratedFromCommonModuleParseDiagnosticsAstAnchor {
+  kind generated_from
+  connects CommonModule -> CommonModuleParseDiagnosticsAstAnchor
+  roles { CommonModule as generated, CommonModuleParseDiagnosticsAstAnchor as syntax }
+  expects CommonModuleParseDiagnosticsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c6452ff292c3b074fa66d31b8aa797634dbe0d1935aed4235eea2e50dc849bf0")
+  summary "fn CommonModule.parse_diagnostics generated from python function_definition at experiments/verus-probes/e10/scripts/common.py#parse_diagnostics."
+}
+
+relation CommonModuleReadLinesGeneratedFromCommonModuleReadLinesAstAnchor {
+  kind generated_from
+  connects CommonModule -> CommonModuleReadLinesAstAnchor
+  roles { CommonModule as generated, CommonModuleReadLinesAstAnchor as syntax }
+  expects CommonModuleReadLinesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e844e21698fc6ca9b0b8db7d0093e6a6c9155920c4bc822ff1aa3d9d93d263d8")
+  summary "fn CommonModule.read_lines generated from python function_definition at experiments/verus-probes/e10/scripts/common.py#read_lines."
+}
+
+relation CommonModuleRestoreGeneratedFromCommonModuleRestoreAstAnchor {
+  kind generated_from
+  connects CommonModule -> CommonModuleRestoreAstAnchor
+  roles { CommonModule as generated, CommonModuleRestoreAstAnchor as syntax }
+  expects CommonModuleRestoreAstAnchor fingerprint ast.semantic_subtree_v1("sha256:56963a6a95f1e7d1c27a5cd5ea6f73a1fd14ded3124e308a9f593e94e4d7a37f")
+  summary "fn CommonModule.restore generated from python function_definition at experiments/verus-probes/e10/scripts/common.py#restore."
+}
+
+relation CommonModuleRunCheckGeneratedFromCommonModuleRunCheckAstAnchor {
+  kind generated_from
+  connects CommonModule -> CommonModuleRunCheckAstAnchor
+  roles { CommonModule as generated, CommonModuleRunCheckAstAnchor as syntax }
+  expects CommonModuleRunCheckAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d59ba975e47ffa64da69cd05fcd0b1bdb627ac97e7dc8bbca1ca95be6d5cd740")
+  summary "fn CommonModule.run_check generated from python function_definition at experiments/verus-probes/e10/scripts/common.py#run_check."
+}
+
+relation CommonModuleScanAuthoredFileGeneratedFromCommonModuleScanAuthoredFileAstAnchor {
+  kind generated_from
+  connects CommonModule -> CommonModuleScanAuthoredFileAstAnchor
+  roles { CommonModule as generated, CommonModuleScanAuthoredFileAstAnchor as syntax }
+  expects CommonModuleScanAuthoredFileAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e855e2392e90484e74328cbf6fd977807ee45a17dc00b46a6384ec8194f995a2")
+  summary "fn CommonModule.scan_authored_file generated from python function_definition at experiments/verus-probes/e10/scripts/common.py#scan_authored_file."
+}
+
+relation CommonModuleShortGeneratedFromCommonModuleShortAstAnchor {
+  kind generated_from
+  connects CommonModule -> CommonModuleShortAstAnchor
+  roles { CommonModule as generated, CommonModuleShortAstAnchor as syntax }
+  expects CommonModuleShortAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f9df3718e34917724322dd55cde2b35e94ef255f664da314dcaeda5776ba4cde")
+  summary "fn CommonModule.short generated from python function_definition at experiments/verus-probes/e10/scripts/common.py#short."
+}
+
+implementation CommonModuleImpl {
+  paths {
+    "experiments/verus-probes/e10/scripts/common.py"
+  }
+  conforms_to CommonModule
+}
