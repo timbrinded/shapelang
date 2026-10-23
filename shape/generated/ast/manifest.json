@@ -122,6 +122,83 @@
       ]
     },
     {
+      "module": "shape.generated.ast.experiments.verus_probes.harness.harness",
+      "path": "shape/generated/ast/experiments/verus-probes/harness/harness.shape",
+      "sources": [
+        "experiments/verus-probes/harness/harness.py"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.verus_probes.scripts.analyse",
+      "path": "shape/generated/ast/experiments/verus-probes/scripts/analyse.shape",
+      "sources": [
+        "experiments/verus-probes/scripts/analyse.py"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.verus_probes.scripts.e1_vir_fp",
+      "path": "shape/generated/ast/experiments/verus-probes/scripts/e1_vir_fp.shape",
+      "sources": [
+        "experiments/verus-probes/scripts/e1_vir_fp.py"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.verus_probes.scripts.e2_closure",
+      "path": "shape/generated/ast/experiments/verus-probes/scripts/e2_closure.shape",
+      "sources": [
+        "experiments/verus-probes/scripts/e2_closure.py"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.verus_probes.scripts.e3_refine",
+      "path": "shape/generated/ast/experiments/verus-probes/scripts/e3_refine.shape",
+      "sources": [
+        "experiments/verus-probes/scripts/e3_refine.py"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.verus_probes.scripts.e4_seed",
+      "path": "shape/generated/ast/experiments/verus-probes/scripts/e4_seed.shape",
+      "sources": [
+        "experiments/verus-probes/scripts/e4_seed.py"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.verus_probes.scripts.e9_baselines",
+      "path": "shape/generated/ast/experiments/verus-probes/scripts/e9_baselines.shape",
+      "sources": [
+        "experiments/verus-probes/scripts/e9_baselines.py"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.verus_probes.scripts.extra_analyses",
+      "path": "shape/generated/ast/experiments/verus-probes/scripts/extra_analyses.shape",
+      "sources": [
+        "experiments/verus-probes/scripts/extra_analyses.py"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.verus_probes.scripts.sample_contracts",
+      "path": "shape/generated/ast/experiments/verus-probes/scripts/sample_contracts.shape",
+      "sources": [
+        "experiments/verus-probes/scripts/sample_contracts.py"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.verus_probes.scripts.walk",
+      "path": "shape/generated/ast/experiments/verus-probes/scripts/walk.shape",
+      "sources": [
+        "experiments/verus-probes/scripts/walk.py"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.verus_probes.vprobe.src.main",
+      "path": "shape/generated/ast/experiments/verus-probes/vprobe/src/main.shape",
+      "sources": [
+        "experiments/verus-probes/vprobe/src/main.rs"
+      ]
+    },
+    {
       "module": "shape.generated.ast.fixtures.skills.index.coverage_gaps.src.upload",
       "path": "shape/generated/ast/fixtures/skills/index/coverage-gaps/src/upload.shape",
       "sources": [

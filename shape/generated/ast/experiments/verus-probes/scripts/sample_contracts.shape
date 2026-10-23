@@ -1,0 +1,49 @@
+module shape.generated.ast.experiments.verus_probes.scripts.sample_contracts
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource SampleContractsModuleExtractAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/scripts/sample_contracts.py#extract")
+  fingerprint ast.semantic_subtree_v1("sha256:8b422b20b0eeb5784aa8c777e64dfe8383a4f0b304273eeaf2fa792a967f95e5")
+}
+
+resource SampleContractsModuleShowAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/scripts/sample_contracts.py#show")
+  fingerprint ast.semantic_subtree_v1("sha256:28caba4378a2d778b1ef1856e341a09edcc47cbeed26dab4a4c0fc75233465c3")
+}
+
+component SampleContractsModule : GeneratedCandidate {
+  fn extract
+    source python("experiments/verus-probes/scripts/sample_contracts.py#extract")
+    effects unknown
+  fn show
+    source python("experiments/verus-probes/scripts/sample_contracts.py#show")
+    effects unknown
+}
+
+relation SampleContractsModuleExtractGeneratedFromSampleContractsModuleExtractAstAnchor {
+  kind generated_from
+  connects SampleContractsModule -> SampleContractsModuleExtractAstAnchor
+  roles { SampleContractsModule as generated, SampleContractsModuleExtractAstAnchor as syntax }
+  expects SampleContractsModuleExtractAstAnchor fingerprint ast.semantic_subtree_v1("sha256:8b422b20b0eeb5784aa8c777e64dfe8383a4f0b304273eeaf2fa792a967f95e5")
+  summary "fn SampleContractsModule.extract generated from python function_definition at experiments/verus-probes/scripts/sample_contracts.py#extract."
+}
+
+relation SampleContractsModuleShowGeneratedFromSampleContractsModuleShowAstAnchor {
+  kind generated_from
+  connects SampleContractsModule -> SampleContractsModuleShowAstAnchor
+  roles { SampleContractsModule as generated, SampleContractsModuleShowAstAnchor as syntax }
+  expects SampleContractsModuleShowAstAnchor fingerprint ast.semantic_subtree_v1("sha256:28caba4378a2d778b1ef1856e341a09edcc47cbeed26dab4a4c0fc75233465c3")
+  summary "fn SampleContractsModule.show generated from python function_definition at experiments/verus-probes/scripts/sample_contracts.py#show."
+}
+
+implementation SampleContractsModuleImpl {
+  paths {
+    "experiments/verus-probes/scripts/sample_contracts.py"
+  }
+  conforms_to SampleContractsModule
+}

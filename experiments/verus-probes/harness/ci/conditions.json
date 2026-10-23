@@ -1,0 +1,7 @@
+{
+  "N": [],
+  "V": ["verus.sh"],
+  "S": ["shape.sh"],
+  "VS": ["verus.sh", "shape.sh"],
+  "VSI": ["verus.sh", "shape.sh", "integration.sh"]
+}

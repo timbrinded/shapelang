@@ -1,0 +1,113 @@
+module shape.generated.ast.experiments.verus_probes.scripts.e3_refine
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource E3RefineModuleLoadVprobeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/scripts/e3_refine.py#load_vprobe")
+  fingerprint ast.semantic_subtree_v1("sha256:eb5a5fff3e8c68e01dc16ae282c028049f05ee1f5f4e6373317ad24cb581be4f")
+}
+
+resource E3RefineModuleLocateAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/scripts/e3_refine.py#locate")
+  fingerprint ast.semantic_subtree_v1("sha256:c54543bcf900aed125407d1fc7f3ebaf3be36071e36b7bef415fe3bb7d807bff")
+}
+
+resource E3RefineModuleParamsOfAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/scripts/e3_refine.py#params_of")
+  fingerprint ast.semantic_subtree_v1("sha256:daabcf14c9c167e5ee62b9121f594ba3c8de1fe2f61e35d117b633f35172bad3")
+}
+
+resource E3RefineModuleRenameAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/scripts/e3_refine.py#rename")
+  fingerprint ast.semantic_subtree_v1("sha256:a7cad845e5665d8ea84efd4a50f94f9977d1a8eaa1e6fda8d06b6d241077c4ab")
+}
+
+resource E3RefineModuleSigTextAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/scripts/e3_refine.py#sig_text")
+  fingerprint ast.semantic_subtree_v1("sha256:b7e76b8a6d919b7bd5c2dae9c0ed0a661a57e9c9800b627f7d5b451d4a0ce490")
+}
+
+resource E3RefineModuleSplitTopAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/scripts/e3_refine.py#split_top")
+  fingerprint ast.semantic_subtree_v1("sha256:afdb9df4545e882975544e29c14dd0b4c0bbe7ba0dd88751e60f41fa4bdc86e5")
+}
+
+component E3RefineModule : GeneratedCandidate {
+  fn load_vprobe
+    source python("experiments/verus-probes/scripts/e3_refine.py#load_vprobe")
+    effects unknown
+  fn locate
+    source python("experiments/verus-probes/scripts/e3_refine.py#locate")
+    effects unknown
+  fn params_of
+    source python("experiments/verus-probes/scripts/e3_refine.py#params_of")
+    effects unknown
+  fn rename
+    source python("experiments/verus-probes/scripts/e3_refine.py#rename")
+    effects unknown
+  fn sig_text
+    source python("experiments/verus-probes/scripts/e3_refine.py#sig_text")
+    effects unknown
+  fn split_top
+    source python("experiments/verus-probes/scripts/e3_refine.py#split_top")
+    effects unknown
+}
+
+relation E3RefineModuleLoadVprobeGeneratedFromE3RefineModuleLoadVprobeAstAnchor {
+  kind generated_from
+  connects E3RefineModule -> E3RefineModuleLoadVprobeAstAnchor
+  roles { E3RefineModule as generated, E3RefineModuleLoadVprobeAstAnchor as syntax }
+  expects E3RefineModuleLoadVprobeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:eb5a5fff3e8c68e01dc16ae282c028049f05ee1f5f4e6373317ad24cb581be4f")
+  summary "fn E3RefineModule.load_vprobe generated from python function_definition at experiments/verus-probes/scripts/e3_refine.py#load_vprobe."
+}
+
+relation E3RefineModuleLocateGeneratedFromE3RefineModuleLocateAstAnchor {
+  kind generated_from
+  connects E3RefineModule -> E3RefineModuleLocateAstAnchor
+  roles { E3RefineModule as generated, E3RefineModuleLocateAstAnchor as syntax }
+  expects E3RefineModuleLocateAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c54543bcf900aed125407d1fc7f3ebaf3be36071e36b7bef415fe3bb7d807bff")
+  summary "fn E3RefineModule.locate generated from python function_definition at experiments/verus-probes/scripts/e3_refine.py#locate."
+}
+
+relation E3RefineModuleParamsOfGeneratedFromE3RefineModuleParamsOfAstAnchor {
+  kind generated_from
+  connects E3RefineModule -> E3RefineModuleParamsOfAstAnchor
+  roles { E3RefineModule as generated, E3RefineModuleParamsOfAstAnchor as syntax }
+  expects E3RefineModuleParamsOfAstAnchor fingerprint ast.semantic_subtree_v1("sha256:daabcf14c9c167e5ee62b9121f594ba3c8de1fe2f61e35d117b633f35172bad3")
+  summary "fn E3RefineModule.params_of generated from python function_definition at experiments/verus-probes/scripts/e3_refine.py#params_of."
+}
+
+relation E3RefineModuleRenameGeneratedFromE3RefineModuleRenameAstAnchor {
+  kind generated_from
+  connects E3RefineModule -> E3RefineModuleRenameAstAnchor
+  roles { E3RefineModule as generated, E3RefineModuleRenameAstAnchor as syntax }
+  expects E3RefineModuleRenameAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a7cad845e5665d8ea84efd4a50f94f9977d1a8eaa1e6fda8d06b6d241077c4ab")
+  summary "fn E3RefineModule.rename generated from python function_definition at experiments/verus-probes/scripts/e3_refine.py#rename."
+}
+
+relation E3RefineModuleSigTextGeneratedFromE3RefineModuleSigTextAstAnchor {
+  kind generated_from
+  connects E3RefineModule -> E3RefineModuleSigTextAstAnchor
+  roles { E3RefineModule as generated, E3RefineModuleSigTextAstAnchor as syntax }
+  expects E3RefineModuleSigTextAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b7e76b8a6d919b7bd5c2dae9c0ed0a661a57e9c9800b627f7d5b451d4a0ce490")
+  summary "fn E3RefineModule.sig_text generated from python function_definition at experiments/verus-probes/scripts/e3_refine.py#sig_text."
+}
+
+relation E3RefineModuleSplitTopGeneratedFromE3RefineModuleSplitTopAstAnchor {
+  kind generated_from
+  connects E3RefineModule -> E3RefineModuleSplitTopAstAnchor
+  roles { E3RefineModule as generated, E3RefineModuleSplitTopAstAnchor as syntax }
+  expects E3RefineModuleSplitTopAstAnchor fingerprint ast.semantic_subtree_v1("sha256:afdb9df4545e882975544e29c14dd0b4c0bbe7ba0dd88751e60f41fa4bdc86e5")
+  summary "fn E3RefineModule.split_top generated from python function_definition at experiments/verus-probes/scripts/e3_refine.py#split_top."
+}
+
+implementation E3RefineModuleImpl {
+  paths {
+    "experiments/verus-probes/scripts/e3_refine.py"
+  }
+  conforms_to E3RefineModule
+}

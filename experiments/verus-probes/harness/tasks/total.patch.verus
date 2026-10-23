@@ -1,0 +1,25 @@
+
+pub open spec fn spec_sum(s: Seq<u64>) -> int
+    decreases s.len(),
+{
+    if s.len() == 0 { 0 } else { spec_sum(s.drop_last()) + s.last() }
+}
+
+impl RevisionLog {
+    pub fn total(&self) -> (t: u128)
+        requires
+            self@.len() < 1000,
+        ensures
+            t == spec_sum(self@),
+    {
+        let mut t: u128 = 0;
+        let mut i: usize = 0;
+        while i < self.revs.len()
+            decreases self.revs.len() - i,
+        {
+            t = t + self.revs[i] as u128;
+            i = i + 1;
+        }
+        t
+    }
+}

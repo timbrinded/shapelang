@@ -1,0 +1,200 @@
+module shape.generated.ast.experiments.verus_probes.scripts.walk
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource CatAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/scripts/walk.py#Cat")
+  fingerprint ast.semantic_subtree_v1("sha256:0bb6eb366c938c28ea9fafbdc3a677e34dfe374e4abcab71b9df50a2ceb345cf")
+}
+
+resource CatGetAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/scripts/walk.py#Cat.get")
+  fingerprint ast.semantic_subtree_v1("sha256:9fcbc6e3fd5bf1062bf83a0fd3784eb6507178db2409e6ecc896cb3102bc58ea")
+}
+
+resource CatInitAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/scripts/walk.py#Cat.__init__")
+  fingerprint ast.semantic_subtree_v1("sha256:afe39a8ccbb87d29e7b7fcb38e7751262a588ba96e0e32ea8f0a951841abee10")
+}
+
+resource WalkModuleAffectedExecAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/scripts/walk.py#affected_exec")
+  fingerprint ast.semantic_subtree_v1("sha256:9844a25e8eb0f796ce5e99de29a667ce4212a778f0809e1b19182526daa2201f")
+}
+
+resource WalkModuleBaseNameAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/scripts/walk.py#base_name")
+  fingerprint ast.semantic_subtree_v1("sha256:676bc5acf95e7ccaf877e5f3699482cca1b86089a503afc577a6ff2a27b85bce")
+}
+
+resource WalkModuleClosureTokensAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/scripts/walk.py#closure_tokens")
+  fingerprint ast.semantic_subtree_v1("sha256:9425fd08c79844fbdffc612403da2e83d2c4e2ed064e4e0901b3eb6d441ad67f")
+}
+
+resource WalkModuleExtractAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/scripts/walk.py#extract")
+  fingerprint ast.semantic_subtree_v1("sha256:b97cdd1106ec2fe0394a9682e9da82dc69046479528722957acbe83e2ce65774")
+}
+
+resource WalkModuleGitAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/scripts/walk.py#git")
+  fingerprint ast.semantic_subtree_v1("sha256:82e5c56a913b546981d916aa3a17b3ed56448494f95a6054919e282386becd84")
+}
+
+resource WalkModuleIndexFileAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/scripts/walk.py#index_file")
+  fingerprint ast.semantic_subtree_v1("sha256:bfd2b4f2f9f971104109de82b04c904f487e820a8684e9e45df84a2137981837")
+}
+
+resource WalkModuleIsTrustedFnAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/scripts/walk.py#is_trusted_fn")
+  fingerprint ast.semantic_subtree_v1("sha256:5954c68ecb03e626dfb47b7605f888f4218e2ca808f24dda1df7d2ccb68e6f72")
+}
+
+resource WalkModuleIsVerifiedExecAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/scripts/walk.py#is_verified_exec")
+  fingerprint ast.semantic_subtree_v1("sha256:45900885ec238dd457c0094ada83736d274f54aba2ba5090928e439d56b290d4")
+}
+
+component Cat : GeneratedCandidate {
+  fn __init__
+    source python("experiments/verus-probes/scripts/walk.py#Cat.__init__")
+    effects unknown
+  fn get
+    source python("experiments/verus-probes/scripts/walk.py#Cat.get")
+    effects unknown
+}
+
+component WalkModule : GeneratedCandidate {
+  fn affected_exec
+    source python("experiments/verus-probes/scripts/walk.py#affected_exec")
+    effects unknown
+  fn base_name
+    source python("experiments/verus-probes/scripts/walk.py#base_name")
+    effects unknown
+  fn closure_tokens
+    source python("experiments/verus-probes/scripts/walk.py#closure_tokens")
+    effects unknown
+  fn extract
+    source python("experiments/verus-probes/scripts/walk.py#extract")
+    effects unknown
+  fn git
+    source python("experiments/verus-probes/scripts/walk.py#git")
+    effects unknown
+  fn index_file
+    source python("experiments/verus-probes/scripts/walk.py#index_file")
+    effects unknown
+  fn is_trusted_fn
+    source python("experiments/verus-probes/scripts/walk.py#is_trusted_fn")
+    effects unknown
+  fn is_verified_exec
+    source python("experiments/verus-probes/scripts/walk.py#is_verified_exec")
+    effects unknown
+}
+
+relation CatGeneratedFromCatAstAnchor {
+  kind generated_from
+  connects Cat -> CatAstAnchor
+  roles { Cat as generated, CatAstAnchor as syntax }
+  expects CatAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0bb6eb366c938c28ea9fafbdc3a677e34dfe374e4abcab71b9df50a2ceb345cf")
+  summary "component Cat generated from python class_definition at experiments/verus-probes/scripts/walk.py#Cat."
+}
+
+relation CatGetGeneratedFromCatGetAstAnchor {
+  kind generated_from
+  connects Cat -> CatGetAstAnchor
+  roles { Cat as generated, CatGetAstAnchor as syntax }
+  expects CatGetAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9fcbc6e3fd5bf1062bf83a0fd3784eb6507178db2409e6ecc896cb3102bc58ea")
+  summary "fn Cat.get generated from python function_definition at experiments/verus-probes/scripts/walk.py#Cat.get."
+}
+
+relation CatInitGeneratedFromCatInitAstAnchor {
+  kind generated_from
+  connects Cat -> CatInitAstAnchor
+  roles { Cat as generated, CatInitAstAnchor as syntax }
+  expects CatInitAstAnchor fingerprint ast.semantic_subtree_v1("sha256:afe39a8ccbb87d29e7b7fcb38e7751262a588ba96e0e32ea8f0a951841abee10")
+  summary "fn Cat.__init__ generated from python function_definition at experiments/verus-probes/scripts/walk.py#Cat.__init__."
+}
+
+relation WalkModuleAffectedExecGeneratedFromWalkModuleAffectedExecAstAnchor {
+  kind generated_from
+  connects WalkModule -> WalkModuleAffectedExecAstAnchor
+  roles { WalkModule as generated, WalkModuleAffectedExecAstAnchor as syntax }
+  expects WalkModuleAffectedExecAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9844a25e8eb0f796ce5e99de29a667ce4212a778f0809e1b19182526daa2201f")
+  summary "fn WalkModule.affected_exec generated from python function_definition at experiments/verus-probes/scripts/walk.py#affected_exec."
+}
+
+relation WalkModuleBaseNameGeneratedFromWalkModuleBaseNameAstAnchor {
+  kind generated_from
+  connects WalkModule -> WalkModuleBaseNameAstAnchor
+  roles { WalkModule as generated, WalkModuleBaseNameAstAnchor as syntax }
+  expects WalkModuleBaseNameAstAnchor fingerprint ast.semantic_subtree_v1("sha256:676bc5acf95e7ccaf877e5f3699482cca1b86089a503afc577a6ff2a27b85bce")
+  summary "fn WalkModule.base_name generated from python function_definition at experiments/verus-probes/scripts/walk.py#base_name."
+}
+
+relation WalkModuleClosureTokensGeneratedFromWalkModuleClosureTokensAstAnchor {
+  kind generated_from
+  connects WalkModule -> WalkModuleClosureTokensAstAnchor
+  roles { WalkModule as generated, WalkModuleClosureTokensAstAnchor as syntax }
+  expects WalkModuleClosureTokensAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9425fd08c79844fbdffc612403da2e83d2c4e2ed064e4e0901b3eb6d441ad67f")
+  summary "fn WalkModule.closure_tokens generated from python function_definition at experiments/verus-probes/scripts/walk.py#closure_tokens."
+}
+
+relation WalkModuleExtractGeneratedFromWalkModuleExtractAstAnchor {
+  kind generated_from
+  connects WalkModule -> WalkModuleExtractAstAnchor
+  roles { WalkModule as generated, WalkModuleExtractAstAnchor as syntax }
+  expects WalkModuleExtractAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b97cdd1106ec2fe0394a9682e9da82dc69046479528722957acbe83e2ce65774")
+  summary "fn WalkModule.extract generated from python function_definition at experiments/verus-probes/scripts/walk.py#extract."
+}
+
+relation WalkModuleGitGeneratedFromWalkModuleGitAstAnchor {
+  kind generated_from
+  connects WalkModule -> WalkModuleGitAstAnchor
+  roles { WalkModule as generated, WalkModuleGitAstAnchor as syntax }
+  expects WalkModuleGitAstAnchor fingerprint ast.semantic_subtree_v1("sha256:82e5c56a913b546981d916aa3a17b3ed56448494f95a6054919e282386becd84")
+  summary "fn WalkModule.git generated from python function_definition at experiments/verus-probes/scripts/walk.py#git."
+}
+
+relation WalkModuleIndexFileGeneratedFromWalkModuleIndexFileAstAnchor {
+  kind generated_from
+  connects WalkModule -> WalkModuleIndexFileAstAnchor
+  roles { WalkModule as generated, WalkModuleIndexFileAstAnchor as syntax }
+  expects WalkModuleIndexFileAstAnchor fingerprint ast.semantic_subtree_v1("sha256:bfd2b4f2f9f971104109de82b04c904f487e820a8684e9e45df84a2137981837")
+  summary "fn WalkModule.index_file generated from python function_definition at experiments/verus-probes/scripts/walk.py#index_file."
+}
+
+relation WalkModuleIsTrustedFnGeneratedFromWalkModuleIsTrustedFnAstAnchor {
+  kind generated_from
+  connects WalkModule -> WalkModuleIsTrustedFnAstAnchor
+  roles { WalkModule as generated, WalkModuleIsTrustedFnAstAnchor as syntax }
+  expects WalkModuleIsTrustedFnAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5954c68ecb03e626dfb47b7605f888f4218e2ca808f24dda1df7d2ccb68e6f72")
+  summary "fn WalkModule.is_trusted_fn generated from python function_definition at experiments/verus-probes/scripts/walk.py#is_trusted_fn."
+}
+
+relation WalkModuleIsVerifiedExecGeneratedFromWalkModuleIsVerifiedExecAstAnchor {
+  kind generated_from
+  connects WalkModule -> WalkModuleIsVerifiedExecAstAnchor
+  roles { WalkModule as generated, WalkModuleIsVerifiedExecAstAnchor as syntax }
+  expects WalkModuleIsVerifiedExecAstAnchor fingerprint ast.semantic_subtree_v1("sha256:45900885ec238dd457c0094ada83736d274f54aba2ba5090928e439d56b290d4")
+  summary "fn WalkModule.is_verified_exec generated from python function_definition at experiments/verus-probes/scripts/walk.py#is_verified_exec."
+}
+
+implementation CatImpl {
+  paths {
+    "experiments/verus-probes/scripts/walk.py"
+  }
+  conforms_to Cat
+}
+
+implementation WalkModuleImpl {
+  paths {
+    "experiments/verus-probes/scripts/walk.py"
+  }
+  conforms_to WalkModule
+}

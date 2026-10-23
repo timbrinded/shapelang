@@ -1,0 +1,65 @@
+== Review-trigger policies (commit level; first-parent; bulk imports and parse-failure commits excluded) ==
+repo                            n  P1 any-fn P2 contract P3 clos-lo P3 clos-up    trust ghost/proof-only parse-fail
+anvil                         581      91.2%       62.8%      65.4%      73.5%    57.8%             6.5%         22
+atmosphere                    265      95.8%       81.1%      83.8%      86.4%    54.0%             0.8%          5
+verified-ironkv                15      80.0%       53.3%      53.3%      53.3%    46.7%            26.7%          0
+verified-memory-allocator      31      96.8%       51.6%      51.6%      58.1%    19.4%            25.8%          0
+verified-node-replication     145      65.5%       46.9%      49.7%      54.5%    28.3%             5.5%         12
+verified-nrkernel             747      89.3%       61.6%      64.5%      76.2%    57.2%             9.5%        135
+verified-storage              194      86.1%       66.0%      66.5%      70.6%    47.4%             6.2%          2
+vest                          224      79.0%       67.0%      67.9%      71.0%     9.4%             3.6%          0
+ALL                          2202      87.7%       64.0%      66.3%      73.8%    48.7%             6.9%        176
+
+== Modified verified exec fns (fn level): what changed ==
+repo                        modified  contract exec body ghost only | +closure-only lo     up
+anvil                            904     46.3%     50.1%       3.5% |              708  40131
+atmosphere                       688     62.4%     30.7%       7.0% |              772  14770
+verified-ironkv                   83     56.6%      2.4%      41.0% |               40    255
+verified-memory-allocator        387     65.6%     26.9%       7.5% |              465   1907
+verified-node-replication        204     44.6%     44.1%      11.3% |              140    870
+verified-nrkernel                628     56.5%     25.0%      18.5% |              781  13463
+verified-storage                 696     67.5%     23.3%       9.2% |              366  10925
+vest                            5818     52.5%     43.0%       4.5% |             5258  52625
+ALL                             9408     54.4%     39.1%       6.4% |             8530 134946
+
+== Trust base (TCB) churn ==
+repo                        TCB-adding commits markers +     - msg mentions in >=5-file commit trusted-body edits _t.rs commits
+anvil                          216 ( 37.2%)      1987  1757        14.8%              81.9%       103 ( 17.7%)      0 (  0.0%)
+atmosphere                      88 ( 33.2%)       357   123         8.0%              51.1%        45 ( 17.0%)     28 ( 10.6%)
+verified-ironkv                  2 ( 13.3%)         7     3       100.0%               0.0%         1 (  6.7%)     11 ( 73.3%)
+verified-memory-allocator        1 (  3.2%)         2     2       100.0%               0.0%         2 (  6.5%)      0 (  0.0%)
+verified-node-replication       26 ( 17.9%)        96    78         7.7%              23.1%         2 (  1.4%)      0 (  0.0%)
+verified-nrkernel              219 ( 29.3%)       948   868         4.6%              17.4%        29 (  3.9%)     57 (  7.6%)
+verified-storage                26 ( 13.4%)       151    80        11.5%              46.2%        46 ( 23.7%)    117 ( 60.3%)
+vest                             8 (  3.6%)        29    58         0.0%              50.0%         4 (  1.8%)      0 (  0.0%)
+
+== HEAD sizes (tokens) and contract+closure vs exec code per verified exec fn ==
+repo                        exec fns  exec tok ghost in exec  clauses  spec fns proof fns  med lo  med up  p90 up no clause trusted fns
+anvil                            263     22709          5117     5466    120220    368605    1.17   237.2  2267.1     25.5%         400
+atmosphere                       251     24680         57097    62784     52707     33038    4.17   228.2  1187.5      3.2%         122
+verified-ironkv                  144      8762         19605     5564     13768     14050    2.50    25.1   118.6     25.0%          39
+verified-memory-allocator        212     23241         20416    16449     11594     25440    3.34    34.2   420.3      9.0%          21
+verified-node-replication         43      7937          6017     2388     10726     11804    1.40     6.9    21.6     14.0%           7
+verified-nrkernel                101     13206         36200    11564     60321    122861    3.36   358.8  2836.4     16.8%          53
+verified-storage                 425     41107         29400    54973     51488     70579    3.09   494.0  3608.1     16.0%         154
+vest                            2856    221891         33587    23587    302044    545715    0.00     0.0  2942.8     79.2%          36
+
+== Share of contract-change events in mechanical/toolchain commits ==
+anvil                       mechanical commits 64/603 ( 10.6%) carry 31/419 contract-change events (  7.4%)
+atmosphere                  mechanical commits 3/270 (  1.1%) carry 0/429 contract-change events (  0.0%)
+verified-ironkv             mechanical commits 8/15 ( 53.3%) carry 47/47 contract-change events (100.0%)
+verified-memory-allocator   mechanical commits 17/31 ( 54.8%) carry 224/254 contract-change events ( 88.2%)
+verified-node-replication   mechanical commits 14/157 (  8.9%) carry 18/91 contract-change events ( 19.8%)
+verified-nrkernel           mechanical commits 57/882 (  6.5%) carry 29/355 contract-change events (  8.2%)
+verified-storage            mechanical commits 25/196 ( 12.8%) carry 212/470 contract-change events ( 45.1%)
+vest                        mechanical commits 15/224 (  6.7%) carry 13/3055 contract-change events (  0.4%)
+
+== TCB markers at HEAD (comments excluded) ==
+anvil                       {'admit': 1, 'external': 23, 'external_body': 401, 'uninterp': 53}
+atmosphere                  {'admit': 3, 'assume': 46, 'external_body': 122}
+verified-ironkv             {'axiom_fn': 3, 'external': 16, 'external_body': 24, 'uninterp': 4}
+verified-memory-allocator   {'external': 37, 'external_body': 18, 'external_fn_specification': 1, 'external_type_specification': 1, 'uninterp': 2}
+verified-node-replication   {'external_body': 9}
+verified-nrkernel           {'axiom_fn': 22, 'external_body': 38, 'uninterp': 19}
+verified-storage            {'admit': 7, 'assume': 7, 'external': 7, 'external_body': 159, 'external_fn_specification': 2, 'external_type_specification': 2, 'uninterp': 41}
+vest                        {'assume': 2, 'assume_specification': 3, 'axiom_fn': 1, 'external_body': 37, 'external_type_specification': 1, 'uninterp': 1}

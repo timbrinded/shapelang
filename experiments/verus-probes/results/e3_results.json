@@ -1,0 +1,762 @@
+{
+  "m0f": {
+    "status": "not_looser",
+    "chk": "e3_m0f_chk",
+    "new": "e3_m0f_new",
+    "errors": []
+  },
+  "m1f": {
+    "status": "not_looser",
+    "chk": "e3_m1f_chk",
+    "new": "e3_m1f_new",
+    "errors": []
+  },
+  "m2f": {
+    "status": "not_looser",
+    "chk": "e3_m2f_chk",
+    "new": "e3_m2f_new",
+    "errors": []
+  },
+  "m3f": {
+    "status": "not_looser",
+    "chk": "e3_m3f_chk",
+    "new": "e3_m3f_new",
+    "errors": []
+  },
+  "m4f": {
+    "status": "not_looser",
+    "chk": "e3_m4f_chk",
+    "new": "e3_m4f_new",
+    "errors": []
+  },
+  "m5f": {
+    "status": "not_looser",
+    "chk": "e3_m5f_chk",
+    "new": "e3_m5f_new",
+    "errors": []
+  },
+  "m6f": {
+    "status": "not_looser",
+    "chk": "e3_m6f_chk",
+    "new": "e3_m6f_new",
+    "errors": []
+  },
+  "m7f": {
+    "status": "not_looser",
+    "chk": "e3_m7f_chk",
+    "new": "e3_m7f_new",
+    "errors": []
+  },
+  "m8f": {
+    "status": "not_looser",
+    "chk": "e3_m8f_chk",
+    "new": "e3_m8f_new",
+    "errors": []
+  },
+  "m9f": {
+    "status": "not_looser",
+    "chk": "e3_m9f_chk",
+    "new": "e3_m9f_new",
+    "errors": []
+  },
+  "m10f": {
+    "status": "not_evaluable",
+    "chk": "e3_m10f_chk",
+    "new": "e3_m10f_new",
+    "error": ["expected `:`"]
+  },
+  "m11f": {
+    "status": "not_looser",
+    "chk": "e3_m11f_chk",
+    "new": "e3_m11f_new",
+    "errors": []
+  },
+  "m12f": {
+    "status": "not_looser",
+    "chk": "e3_m12f_chk",
+    "new": "e3_m12f_new",
+    "errors": []
+  },
+  "m13f": {
+    "status": "not_looser",
+    "chk": "e3_m13f_chk",
+    "new": "e3_m13f_new",
+    "errors": []
+  },
+  "m14f": {
+    "status": "not_looser",
+    "chk": "e3_m14f_chk",
+    "new": "e3_m14f_new",
+    "errors": []
+  },
+  "m15f": {
+    "status": "not_looser",
+    "chk": "e3_m15f_chk",
+    "new": "e3_m15f_new",
+    "errors": []
+  },
+  "m16f": {
+    "status": "not_looser",
+    "chk": "e3_m16f_chk",
+    "new": "e3_m16f_new",
+    "errors": []
+  },
+  "m17f": {
+    "status": "not_looser",
+    "chk": "e3_m17f_chk",
+    "new": "e3_m17f_new",
+    "errors": []
+  },
+  "m18f": {
+    "status": "not_looser",
+    "chk": "e3_m18f_chk",
+    "new": "e3_m18f_new",
+    "errors": []
+  },
+  "m19f": {
+    "status": "not_looser",
+    "chk": "e3_m19f_chk",
+    "new": "e3_m19f_new",
+    "errors": []
+  },
+  "m20f": {
+    "status": "not_looser",
+    "chk": "e3_m20f_chk",
+    "new": "e3_m20f_new",
+    "errors": []
+  },
+  "m21f": {
+    "status": "not_looser",
+    "chk": "e3_m21f_chk",
+    "new": "e3_m21f_new",
+    "errors": []
+  },
+  "m22f": {
+    "status": "not_looser",
+    "chk": "e3_m22f_chk",
+    "new": "e3_m22f_new",
+    "errors": []
+  },
+  "m23f": {
+    "status": "not_looser",
+    "chk": "e3_m23f_chk",
+    "new": "e3_m23f_new",
+    "errors": []
+  },
+  "m24f": {
+    "status": "not_looser",
+    "chk": "e3_m24f_chk",
+    "new": "e3_m24f_new",
+    "errors": []
+  },
+  "m25f": {
+    "status": "not_looser",
+    "chk": "e3_m25f_chk",
+    "new": "e3_m25f_new",
+    "errors": []
+  },
+  "m26f": {
+    "status": "not_looser",
+    "chk": "e3_m26f_chk",
+    "new": "e3_m26f_new",
+    "errors": []
+  },
+  "m27f": {
+    "status": "not_looser",
+    "chk": "e3_m27f_chk",
+    "new": "e3_m27f_new",
+    "errors": []
+  },
+  "m28f": {
+    "status": "not_looser",
+    "chk": "e3_m28f_chk",
+    "new": "e3_m28f_new",
+    "errors": []
+  },
+  "m29f": {
+    "status": "not_looser",
+    "chk": "e3_m29f_chk",
+    "new": "e3_m29f_new",
+    "errors": []
+  },
+  "m30f": {
+    "status": "not_looser",
+    "chk": "e3_m30f_chk",
+    "new": "e3_m30f_new",
+    "errors": []
+  },
+  "m31f": {
+    "status": "not_looser",
+    "chk": "e3_m31f_chk",
+    "new": "e3_m31f_new",
+    "errors": []
+  },
+  "m32f": {
+    "status": "skipped",
+    "reason": "trait method"
+  },
+  "m33f": {
+    "status": "not_looser",
+    "chk": "e3_m33f_chk",
+    "new": "e3_m33f_new",
+    "errors": []
+  },
+  "m34f": {
+    "status": "not_looser",
+    "chk": "e3_m34f_chk",
+    "new": "e3_m34f_new",
+    "errors": []
+  },
+  "m35f": {
+    "status": "not_looser",
+    "chk": "e3_m35f_chk",
+    "new": "e3_m35f_new",
+    "errors": []
+  },
+  "m36f": {
+    "status": "not_looser",
+    "chk": "e3_m36f_chk",
+    "new": "e3_m36f_new",
+    "errors": []
+  },
+  "m37f": {
+    "status": "not_looser",
+    "chk": "e3_m37f_chk",
+    "new": "e3_m37f_new",
+    "errors": []
+  },
+  "m38f": {
+    "status": "not_looser",
+    "chk": "e3_m38f_chk",
+    "new": "e3_m38f_new",
+    "errors": []
+  },
+  "m39f": {
+    "status": "not_looser",
+    "chk": "e3_m39f_chk",
+    "new": "e3_m39f_new",
+    "errors": []
+  },
+  "m40f": {
+    "status": "not_looser",
+    "chk": "e3_m40f_chk",
+    "new": "e3_m40f_new",
+    "errors": []
+  },
+  "m41f": {
+    "status": "not_looser",
+    "chk": "e3_m41f_chk",
+    "new": "e3_m41f_new",
+    "errors": []
+  },
+  "m42f": {
+    "status": "not_looser",
+    "chk": "e3_m42f_chk",
+    "new": "e3_m42f_new",
+    "errors": []
+  },
+  "m43f": {
+    "status": "not_looser",
+    "chk": "e3_m43f_chk",
+    "new": "e3_m43f_new",
+    "errors": []
+  },
+  "m0r": {
+    "status": "not_looser",
+    "chk": "e3_m0r_chk",
+    "new": "e3_m0r_new",
+    "errors": []
+  },
+  "m1r": {
+    "status": "not_looser",
+    "chk": "e3_m1r_chk",
+    "new": "e3_m1r_new",
+    "errors": []
+  },
+  "m2r": {
+    "status": "not_looser",
+    "chk": "e3_m2r_chk",
+    "new": "e3_m2r_new",
+    "errors": []
+  },
+  "m3r": {
+    "status": "not_looser",
+    "chk": "e3_m3r_chk",
+    "new": "e3_m3r_new",
+    "errors": []
+  },
+  "m4r": {
+    "status": "not_looser",
+    "chk": "e3_m4r_chk",
+    "new": "e3_m4r_new",
+    "errors": []
+  },
+  "m5r": {
+    "status": "not_looser",
+    "chk": "e3_m5r_chk",
+    "new": "e3_m5r_new",
+    "errors": []
+  },
+  "m6r": {
+    "status": "not_looser",
+    "chk": "e3_m6r_chk",
+    "new": "e3_m6r_new",
+    "errors": []
+  },
+  "m7r": {
+    "status": "not_looser",
+    "chk": "e3_m7r_chk",
+    "new": "e3_m7r_new",
+    "errors": []
+  },
+  "m8r": {
+    "status": "not_looser",
+    "chk": "e3_m8r_chk",
+    "new": "e3_m8r_new",
+    "errors": []
+  },
+  "m9r": {
+    "status": "not_looser",
+    "chk": "e3_m9r_chk",
+    "new": "e3_m9r_new",
+    "errors": []
+  },
+  "m10r": {
+    "status": "not_evaluable",
+    "chk": "e3_m10r_chk",
+    "new": "e3_m10r_new",
+    "error": ["expected `:`"]
+  },
+  "m11r": {
+    "status": "not_looser",
+    "chk": "e3_m11r_chk",
+    "new": "e3_m11r_new",
+    "errors": []
+  },
+  "m12r": {
+    "status": "not_looser",
+    "chk": "e3_m12r_chk",
+    "new": "e3_m12r_new",
+    "errors": []
+  },
+  "m13r": {
+    "status": "not_looser",
+    "chk": "e3_m13r_chk",
+    "new": "e3_m13r_new",
+    "errors": []
+  },
+  "m14r": {
+    "status": "not_looser",
+    "chk": "e3_m14r_chk",
+    "new": "e3_m14r_new",
+    "errors": []
+  },
+  "m15r": {
+    "status": "not_looser",
+    "chk": "e3_m15r_chk",
+    "new": "e3_m15r_new",
+    "errors": []
+  },
+  "m16r": {
+    "status": "not_looser",
+    "chk": "e3_m16r_chk",
+    "new": "e3_m16r_new",
+    "errors": []
+  },
+  "m17r": {
+    "status": "not_looser",
+    "chk": "e3_m17r_chk",
+    "new": "e3_m17r_new",
+    "errors": []
+  },
+  "m18r": {
+    "status": "not_looser",
+    "chk": "e3_m18r_chk",
+    "new": "e3_m18r_new",
+    "errors": []
+  },
+  "m19r": {
+    "status": "not_looser",
+    "chk": "e3_m19r_chk",
+    "new": "e3_m19r_new",
+    "errors": []
+  },
+  "m20r": {
+    "status": "not_looser",
+    "chk": "e3_m20r_chk",
+    "new": "e3_m20r_new",
+    "errors": []
+  },
+  "m21r": {
+    "status": "not_looser",
+    "chk": "e3_m21r_chk",
+    "new": "e3_m21r_new",
+    "errors": []
+  },
+  "m22r": {
+    "status": "not_looser",
+    "chk": "e3_m22r_chk",
+    "new": "e3_m22r_new",
+    "errors": []
+  },
+  "m23r": {
+    "status": "not_looser",
+    "chk": "e3_m23r_chk",
+    "new": "e3_m23r_new",
+    "errors": []
+  },
+  "m24r": {
+    "status": "not_looser",
+    "chk": "e3_m24r_chk",
+    "new": "e3_m24r_new",
+    "errors": []
+  },
+  "m25r": {
+    "status": "not_looser",
+    "chk": "e3_m25r_chk",
+    "new": "e3_m25r_new",
+    "errors": []
+  },
+  "m26r": {
+    "status": "not_looser",
+    "chk": "e3_m26r_chk",
+    "new": "e3_m26r_new",
+    "errors": []
+  },
+  "m27r": {
+    "status": "not_looser",
+    "chk": "e3_m27r_chk",
+    "new": "e3_m27r_new",
+    "errors": []
+  },
+  "m28r": {
+    "status": "not_looser",
+    "chk": "e3_m28r_chk",
+    "new": "e3_m28r_new",
+    "errors": []
+  },
+  "m29r": {
+    "status": "not_looser",
+    "chk": "e3_m29r_chk",
+    "new": "e3_m29r_new",
+    "errors": []
+  },
+  "m30r": {
+    "status": "not_looser",
+    "chk": "e3_m30r_chk",
+    "new": "e3_m30r_new",
+    "errors": []
+  },
+  "m31r": {
+    "status": "not_looser",
+    "chk": "e3_m31r_chk",
+    "new": "e3_m31r_new",
+    "errors": []
+  },
+  "m32r": {
+    "status": "skipped",
+    "reason": "trait method"
+  },
+  "m33r": {
+    "status": "not_looser",
+    "chk": "e3_m33r_chk",
+    "new": "e3_m33r_new",
+    "errors": []
+  },
+  "m34r": {
+    "status": "not_looser",
+    "chk": "e3_m34r_chk",
+    "new": "e3_m34r_new",
+    "errors": []
+  },
+  "m35r": {
+    "status": "not_looser",
+    "chk": "e3_m35r_chk",
+    "new": "e3_m35r_new",
+    "errors": []
+  },
+  "m36r": {
+    "status": "not_looser",
+    "chk": "e3_m36r_chk",
+    "new": "e3_m36r_new",
+    "errors": []
+  },
+  "m37r": {
+    "status": "not_looser",
+    "chk": "e3_m37r_chk",
+    "new": "e3_m37r_new",
+    "errors": []
+  },
+  "m38r": {
+    "status": "not_looser",
+    "chk": "e3_m38r_chk",
+    "new": "e3_m38r_new",
+    "errors": []
+  },
+  "m39r": {
+    "status": "not_looser",
+    "chk": "e3_m39r_chk",
+    "new": "e3_m39r_new",
+    "errors": []
+  },
+  "m40r": {
+    "status": "not_looser",
+    "chk": "e3_m40r_chk",
+    "new": "e3_m40r_new",
+    "errors": []
+  },
+  "m41r": {
+    "status": "not_looser",
+    "chk": "e3_m41r_chk",
+    "new": "e3_m41r_new",
+    "errors": []
+  },
+  "m42r": {
+    "status": "not_looser",
+    "chk": "e3_m42r_chk",
+    "new": "e3_m42r_new",
+    "errors": []
+  },
+  "m43r": {
+    "status": "not_looser",
+    "chk": "e3_m43r_chk",
+    "new": "e3_m43r_new",
+    "errors": []
+  },
+  "h0f": {
+    "status": "not_looser",
+    "chk": "e3_h0f_chk",
+    "new": "e3_h0f_new",
+    "errors": []
+  },
+  "h1f": {
+    "status": "not_looser",
+    "chk": "e3_h1f_chk",
+    "new": "e3_h1f_new",
+    "errors": []
+  },
+  "h2f": {
+    "status": "not_looser",
+    "chk": "e3_h2f_chk",
+    "new": "e3_h2f_new",
+    "errors": []
+  },
+  "h3f": {
+    "status": "not_looser",
+    "chk": "e3_h3f_chk",
+    "new": "e3_h3f_new",
+    "errors": []
+  },
+  "h4f": {
+    "status": "not_looser",
+    "chk": "e3_h4f_chk",
+    "new": "e3_h4f_new",
+    "errors": []
+  },
+  "h0r": {
+    "status": "not_looser",
+    "chk": "e3_h0r_chk",
+    "new": "e3_h0r_new",
+    "errors": []
+  },
+  "h1r": {
+    "status": "not_looser",
+    "chk": "e3_h1r_chk",
+    "new": "e3_h1r_new",
+    "errors": []
+  },
+  "h2r": {
+    "status": "not_looser",
+    "chk": "e3_h2r_chk",
+    "new": "e3_h2r_new",
+    "errors": []
+  },
+  "h3r": {
+    "status": "not_looser",
+    "chk": "e3_h3r_chk",
+    "new": "e3_h3r_new",
+    "errors": []
+  },
+  "h4r": {
+    "status": "not_looser",
+    "chk": "e3_h4r_chk",
+    "new": "e3_h4r_new",
+    "errors": []
+  },
+  "w0": {
+    "status": "looser_or_unknown",
+    "chk": "e3_w0_chk",
+    "new": "e3_w0_new",
+    "errors": ["postcondition not satisfied"]
+  },
+  "w1": {
+    "status": "looser_or_unknown",
+    "chk": "e3_w1_chk",
+    "new": "e3_w1_new",
+    "errors": ["postcondition not satisfied"]
+  },
+  "w2": {
+    "status": "looser_or_unknown",
+    "chk": "e3_w2_chk",
+    "new": "e3_w2_new",
+    "errors": ["postcondition not satisfied"]
+  },
+  "w3": {
+    "status": "not_looser",
+    "chk": "e3_w3_chk",
+    "new": "e3_w3_new",
+    "errors": []
+  },
+  "w4": {
+    "status": "looser_or_unknown",
+    "chk": "e3_w4_chk",
+    "new": "e3_w4_new",
+    "errors": ["postcondition not satisfied"]
+  },
+  "w5": {
+    "status": "looser_or_unknown",
+    "chk": "e3_w5_chk",
+    "new": "e3_w5_new",
+    "errors": ["postcondition not satisfied"]
+  },
+  "w6": {
+    "status": "looser_or_unknown",
+    "chk": "e3_w6_chk",
+    "new": "e3_w6_new",
+    "errors": ["postcondition not satisfied"]
+  },
+  "w7": {
+    "status": "skipped",
+    "reason": "trait method"
+  },
+  "w8": {
+    "status": "looser_or_unknown",
+    "chk": "e3_w8_chk",
+    "new": "e3_w8_new",
+    "errors": ["postcondition not satisfied"]
+  },
+  "w9": {
+    "status": "looser_or_unknown",
+    "chk": "e3_w9_chk",
+    "new": "e3_w9_new",
+    "errors": ["postcondition not satisfied"]
+  },
+  "w10": {
+    "status": "looser_or_unknown",
+    "chk": "e3_w10_chk",
+    "new": "e3_w10_new",
+    "errors": ["postcondition not satisfied"]
+  },
+  "w11": {
+    "status": "looser_or_unknown",
+    "chk": "e3_w11_chk",
+    "new": "e3_w11_new",
+    "errors": ["postcondition not satisfied"]
+  },
+  "w12": {
+    "status": "looser_or_unknown",
+    "chk": "e3_w12_chk",
+    "new": "e3_w12_new",
+    "errors": ["postcondition not satisfied"]
+  },
+  "w13": {
+    "status": "not_looser",
+    "chk": "e3_w13_chk",
+    "new": "e3_w13_new",
+    "errors": []
+  },
+  "w14": {
+    "status": "not_looser",
+    "chk": "e3_w14_chk",
+    "new": "e3_w14_new",
+    "errors": []
+  },
+  "s0": {
+    "status": "not_looser",
+    "chk": "e3_s0_chk",
+    "new": "e3_s0_new",
+    "errors": []
+  },
+  "s1": {
+    "status": "not_looser",
+    "chk": "e3_s1_chk",
+    "new": "e3_s1_new",
+    "errors": []
+  },
+  "s2": {
+    "status": "not_looser",
+    "chk": "e3_s2_chk",
+    "new": "e3_s2_new",
+    "errors": []
+  },
+  "s3": {
+    "status": "not_looser",
+    "chk": "e3_s3_chk",
+    "new": "e3_s3_new",
+    "errors": []
+  },
+  "s4": {
+    "status": "not_looser",
+    "chk": "e3_s4_chk",
+    "new": "e3_s4_new",
+    "errors": []
+  },
+  "s5": {
+    "status": "not_looser",
+    "chk": "e3_s5_chk",
+    "new": "e3_s5_new",
+    "errors": []
+  },
+  "s6": {
+    "status": "not_looser",
+    "chk": "e3_s6_chk",
+    "new": "e3_s6_new",
+    "errors": []
+  },
+  "s7": {
+    "status": "skipped",
+    "reason": "trait method"
+  },
+  "s8": {
+    "status": "not_looser",
+    "chk": "e3_s8_chk",
+    "new": "e3_s8_new",
+    "errors": []
+  },
+  "s9": {
+    "status": "not_looser",
+    "chk": "e3_s9_chk",
+    "new": "e3_s9_new",
+    "errors": []
+  },
+  "s10": {
+    "status": "not_looser",
+    "chk": "e3_s10_chk",
+    "new": "e3_s10_new",
+    "errors": []
+  },
+  "s11": {
+    "status": "not_looser",
+    "chk": "e3_s11_chk",
+    "new": "e3_s11_new",
+    "errors": []
+  },
+  "s12": {
+    "status": "not_looser",
+    "chk": "e3_s12_chk",
+    "new": "e3_s12_new",
+    "errors": []
+  },
+  "s13": {
+    "status": "not_looser",
+    "chk": "e3_s13_chk",
+    "new": "e3_s13_new",
+    "errors": []
+  },
+  "s14": {
+    "status": "not_looser",
+    "chk": "e3_s14_chk",
+    "new": "e3_s14_new",
+    "errors": []
+  }
+}

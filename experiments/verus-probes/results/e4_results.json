@@ -1,0 +1,58 @@
+{
+  "S1_verified_extra_send_via_trusted_wrapper": {
+    "D1_verus_rejects": false,
+    "verus_errors": [],
+    "D2_tcb_or_trusted_fn_changed": false,
+    "D3a_verus_callgraph_flags": true,
+    "callgraph_callers": [
+      "lib::host_impl_v::impl&%2::deliver_packet_seq",
+      "lib::io_t::impl&%7::send",
+      "node_2272"
+    ],
+    "D3b_syntactic_callers_flag": true,
+    "syntactic_new_calls": [["host_impl_v.rs", "deliver_packet_seq", "send_internal_wrapper"]],
+    "D4_rust_privacy_rejects": false
+  },
+  "S2_verified_extra_send_via_external_fn": {
+    "D1_verus_rejects": true,
+    "verus_errors": [
+      "cannot use function `lib::io_t::NetClient::send_internal` which is ignored because it is either declared outside the verus! macro or it is marked as `external`."
+    ],
+    "D2_tcb_or_trusted_fn_changed": false,
+    "D3a_verus_callgraph_flags": null,
+    "callgraph_callers": null,
+    "D3b_syntactic_callers_flag": true,
+    "syntactic_new_calls": [["host_impl_v.rs", "deliver_packet_seq", "send_internal"]],
+    "D4_rust_privacy_rejects": false
+  },
+  "S3_unverified_fn_outside_verus": {
+    "D1_verus_rejects": false,
+    "verus_errors": [],
+    "D2_tcb_or_trusted_fn_changed": false,
+    "D3a_verus_callgraph_flags": true,
+    "callgraph_callers": ["lib::io_t::impl&%7::send", "node_2272"],
+    "D3b_syntactic_callers_flag": true,
+    "syntactic_new_calls": [["host_impl_v.rs", "resend_hint", "send_internal_wrapper"]],
+    "D4_rust_privacy_rejects": false
+  },
+  "S3b_external_fn_inside_verus": {
+    "D1_verus_rejects": false,
+    "verus_errors": [],
+    "D2_tcb_or_trusted_fn_changed": true,
+    "D3a_verus_callgraph_flags": true,
+    "callgraph_callers": ["lib::io_t::impl&%7::send", "node_2272"],
+    "D3b_syntactic_callers_flag": true,
+    "syntactic_new_calls": [["net_sht_v.rs", "resend_hint", "send_internal_wrapper"]],
+    "D4_rust_privacy_rejects": false
+  },
+  "S4_verified_send_replaced_by_wrapper": {
+    "D1_verus_rejects": true,
+    "verus_errors": ["postcondition not satisfied"],
+    "D2_tcb_or_trusted_fn_changed": false,
+    "D3a_verus_callgraph_flags": true,
+    "callgraph_callers": ["lib::io_t::impl&%7::send", "lib::net_sht_v::send_packet", "node_2272"],
+    "D3b_syntactic_callers_flag": true,
+    "syntactic_new_calls": [["net_sht_v.rs", "send_packet", "send_internal_wrapper"]],
+    "D4_rust_privacy_rejects": false
+  }
+}

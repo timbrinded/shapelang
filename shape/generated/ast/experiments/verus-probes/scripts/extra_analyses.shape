@@ -1,0 +1,33 @@
+module shape.generated.ast.experiments.verus_probes.scripts.extra_analyses
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource ExtraAnalysesModuleCleanAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/scripts/extra_analyses.py#clean")
+  fingerprint ast.semantic_subtree_v1("sha256:42d567c3413929f90ae9d34c2f3b05d5c0788cb470e96f289bfd601a991d828b")
+}
+
+component ExtraAnalysesModule : GeneratedCandidate {
+  fn clean
+    source python("experiments/verus-probes/scripts/extra_analyses.py#clean")
+    effects unknown
+}
+
+relation ExtraAnalysesModuleCleanGeneratedFromExtraAnalysesModuleCleanAstAnchor {
+  kind generated_from
+  connects ExtraAnalysesModule -> ExtraAnalysesModuleCleanAstAnchor
+  roles { ExtraAnalysesModule as generated, ExtraAnalysesModuleCleanAstAnchor as syntax }
+  expects ExtraAnalysesModuleCleanAstAnchor fingerprint ast.semantic_subtree_v1("sha256:42d567c3413929f90ae9d34c2f3b05d5c0788cb470e96f289bfd601a991d828b")
+  summary "fn ExtraAnalysesModule.clean generated from python function_definition at experiments/verus-probes/scripts/extra_analyses.py#clean."
+}
+
+implementation ExtraAnalysesModuleImpl {
+  paths {
+    "experiments/verus-probes/scripts/extra_analyses.py"
+  }
+  conforms_to ExtraAnalysesModule
+}

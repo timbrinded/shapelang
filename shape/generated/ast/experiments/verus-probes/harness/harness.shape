@@ -1,0 +1,399 @@
+module shape.generated.ast.experiments.verus_probes.harness.harness
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource BudgetAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/harness/harness.py#Budget")
+  fingerprint ast.semantic_subtree_v1("sha256:34226e735456876437c2365ede64d50d60f17f0a2fe1d029ee223001bd9817fe")
+}
+
+resource BudgetExhaustedAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/harness/harness.py#Budget.exhausted")
+  fingerprint ast.semantic_subtree_v1("sha256:e76eb0dd2bed442aa6cdea96e0e0310c7d4cf6fbe6ea00372c4e0db50c1260f8")
+}
+
+resource BudgetGeneratedFunctionAddAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/harness/harness.py#Budget.add")
+  fingerprint ast.semantic_subtree_v1("sha256:57ff221c30e21369d6452181df6d72913ba2579da563d8265bf95ca772f3fd46")
+}
+
+resource BudgetInitAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/harness/harness.py#Budget.__init__")
+  fingerprint ast.semantic_subtree_v1("sha256:bc1b1c718e75aecfe6a7b55e1dcd11e845ee68a3ab9de208578e3c857fce9d44")
+}
+
+resource HarnessModuleAgentLoopAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/harness/harness.py#agent_loop")
+  fingerprint ast.semantic_subtree_v1("sha256:5ca3ada8ade8620ac98ca6b166b02397c771d89909d936ca955c3d06750e3ad8")
+}
+
+resource HarnessModuleGradeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/harness/harness.py#grade")
+  fingerprint ast.semantic_subtree_v1("sha256:5e1ca1f0514cc946f13ec0a048264645e28cdcd881d6b33f5b586d33d976b272")
+}
+
+resource HarnessModuleHostPathAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/harness/harness.py#host_path")
+  fingerprint ast.semantic_subtree_v1("sha256:9abb576b70effa42280a1043812c5101ab27b7ea9ee9c7a497df45f07db28390")
+}
+
+resource HarnessModuleMainAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/harness/harness.py#main")
+  fingerprint ast.semantic_subtree_v1("sha256:eadf735c97c6974daea0225d1d97d6bb6db4cd30bab7a931081088bfeafcf35c")
+}
+
+resource HarnessModuleModelEditAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/harness/harness.py#model_edit")
+  fingerprint ast.semantic_subtree_v1("sha256:66b9a46520f2230350c0e7f7bd65ac58e013c798dc595dd24f49ba9aa2aee28a")
+}
+
+resource HarnessModuleOneAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/harness/harness.py#one")
+  fingerprint ast.semantic_subtree_v1("sha256:3ffba00eda8916400a6f48c3f3815b1979cedabf61b4485f1e5aa83b3f16ce4c")
+}
+
+resource HarnessModuleOneExperimentsVerusProbesHarnessHarnessPy5954FunctionDefinition6d55c77e2fdb393aAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/harness/harness.py#one")
+  fingerprint ast.semantic_subtree_v1("sha256:ffcf2261ae474ad96001fa33409845ff0837e8868148037f91c2981fd85791fd")
+}
+
+resource HarnessModulePrepareTrialAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/harness/harness.py#prepare_trial")
+  fingerprint ast.semantic_subtree_v1("sha256:f9c55627c0645173aae57aeadcc4efa231d9253d48792c2b4e31cbb5ab01f6d9")
+}
+
+resource HarnessModuleRunE5AstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/harness/harness.py#run_e5")
+  fingerprint ast.semantic_subtree_v1("sha256:9de5346418435cb0cb9ed4b244cf556d7bcd25cc3ae103e1c412703273b27039")
+}
+
+resource HarnessModuleRunE6AstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/harness/harness.py#run_e6")
+  fingerprint ast.semantic_subtree_v1("sha256:fb49570a509404df530bbf9966e59abb713837fe92c3b6e496dbbfba90d4ae85")
+}
+
+resource HarnessModuleRunToolAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/harness/harness.py#run_tool")
+  fingerprint ast.semantic_subtree_v1("sha256:b48cb818e909c07e4a35f1f88c7b8066bacd0363139da5d38a5c6d4998754063")
+}
+
+resource HarnessModuleSelftestAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/harness/harness.py#selftest")
+  fingerprint ast.semantic_subtree_v1("sha256:233ac0278fb40b781512459b818a0ae0c21d3fdb9d3886532306cbed5317f3b2")
+}
+
+resource HarnessModuleShAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/harness/harness.py#sh")
+  fingerprint ast.semantic_subtree_v1("sha256:28c9ae6ec79ebd5f6b37792a28a33293f72df6605ebd9ac5a21b474fc1f35503")
+}
+
+resource HarnessModuleSystemPromptAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/harness/harness.py#system_prompt")
+  fingerprint ast.semantic_subtree_v1("sha256:7c127b8d2dc9d6e1c8858d3fac67151225755ae048e199cb9c8ebc310bd30995")
+}
+
+resource HarnessModuleTcbAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/harness/harness.py#tcb")
+  fingerprint ast.semantic_subtree_v1("sha256:2c4d61ea569f30a2875e7eab0e83602367f6208f469fdb116b468fa229883760")
+}
+
+resource SandboxAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/harness/harness.py#Sandbox")
+  fingerprint ast.semantic_subtree_v1("sha256:c328c328071ab7263288a68fad20e6325d65dca1669153851d8ad9664ee5560e")
+}
+
+resource SandboxCloseAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/harness/harness.py#Sandbox.close")
+  fingerprint ast.semantic_subtree_v1("sha256:01e67af0ccd3f20d72202a4557942a2890da748d45b3da52945e6f52fdb1c919")
+}
+
+resource SandboxInitAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/harness/harness.py#Sandbox.__init__")
+  fingerprint ast.semantic_subtree_v1("sha256:087cc1994040a417df193428f332bd4c12c857ba9e90f8db08521c331a4c7b56")
+}
+
+resource SandboxRunAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/harness/harness.py#Sandbox.run")
+  fingerprint ast.semantic_subtree_v1("sha256:ce8d61efcb3f44bdd1a63bfe1cf093180386bbc22ec5c96b762c700faf6408ea")
+}
+
+component Budget : GeneratedCandidate {
+  fn __init__
+    source python("experiments/verus-probes/harness/harness.py#Budget.__init__")
+    effects unknown
+  fn exhausted
+    source python("experiments/verus-probes/harness/harness.py#Budget.exhausted")
+    effects unknown
+  fn generatedFunction_add
+    source python("experiments/verus-probes/harness/harness.py#Budget.add")
+    effects unknown
+}
+
+component HarnessModule : GeneratedCandidate {
+  fn agent_loop
+    source python("experiments/verus-probes/harness/harness.py#agent_loop")
+    effects unknown
+  fn grade
+    source python("experiments/verus-probes/harness/harness.py#grade")
+    effects unknown
+  fn host_path
+    source python("experiments/verus-probes/harness/harness.py#host_path")
+    effects unknown
+  fn main
+    source python("experiments/verus-probes/harness/harness.py#main")
+    effects unknown
+  fn model_edit
+    source python("experiments/verus-probes/harness/harness.py#model_edit")
+    effects unknown
+  fn one
+    source python("experiments/verus-probes/harness/harness.py#one")
+    effects unknown
+  fn one_experiments_verus_probes_harness_harness_py_5954_function_definition_6d55c77e2fdb393a
+    source python("experiments/verus-probes/harness/harness.py#one")
+    effects unknown
+  fn prepare_trial
+    source python("experiments/verus-probes/harness/harness.py#prepare_trial")
+    effects unknown
+  fn run_e5
+    source python("experiments/verus-probes/harness/harness.py#run_e5")
+    effects unknown
+  fn run_e6
+    source python("experiments/verus-probes/harness/harness.py#run_e6")
+    effects unknown
+  fn run_tool
+    source python("experiments/verus-probes/harness/harness.py#run_tool")
+    effects unknown
+  fn selftest
+    source python("experiments/verus-probes/harness/harness.py#selftest")
+    effects unknown
+  fn sh
+    source python("experiments/verus-probes/harness/harness.py#sh")
+    effects unknown
+  fn system_prompt
+    source python("experiments/verus-probes/harness/harness.py#system_prompt")
+    effects unknown
+  fn tcb
+    source python("experiments/verus-probes/harness/harness.py#tcb")
+    effects unknown
+}
+
+component Sandbox : GeneratedCandidate {
+  fn __init__
+    source python("experiments/verus-probes/harness/harness.py#Sandbox.__init__")
+    effects unknown
+  fn close
+    source python("experiments/verus-probes/harness/harness.py#Sandbox.close")
+    effects unknown
+  fn run
+    source python("experiments/verus-probes/harness/harness.py#Sandbox.run")
+    effects unknown
+}
+
+relation BudgetExhaustedGeneratedFromBudgetExhaustedAstAnchor {
+  kind generated_from
+  connects Budget -> BudgetExhaustedAstAnchor
+  roles { Budget as generated, BudgetExhaustedAstAnchor as syntax }
+  expects BudgetExhaustedAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e76eb0dd2bed442aa6cdea96e0e0310c7d4cf6fbe6ea00372c4e0db50c1260f8")
+  summary "fn Budget.exhausted generated from python function_definition at experiments/verus-probes/harness/harness.py#Budget.exhausted."
+}
+
+relation BudgetGeneratedFromBudgetAstAnchor {
+  kind generated_from
+  connects Budget -> BudgetAstAnchor
+  roles { Budget as generated, BudgetAstAnchor as syntax }
+  expects BudgetAstAnchor fingerprint ast.semantic_subtree_v1("sha256:34226e735456876437c2365ede64d50d60f17f0a2fe1d029ee223001bd9817fe")
+  summary "component Budget generated from python class_definition at experiments/verus-probes/harness/harness.py#Budget."
+}
+
+relation BudgetGeneratedFunctionAddGeneratedFromBudgetGeneratedFunctionAddAstAnchor {
+  kind generated_from
+  connects Budget -> BudgetGeneratedFunctionAddAstAnchor
+  roles { Budget as generated, BudgetGeneratedFunctionAddAstAnchor as syntax }
+  expects BudgetGeneratedFunctionAddAstAnchor fingerprint ast.semantic_subtree_v1("sha256:57ff221c30e21369d6452181df6d72913ba2579da563d8265bf95ca772f3fd46")
+  summary "fn Budget.generatedFunction_add generated from python function_definition at experiments/verus-probes/harness/harness.py#Budget.add."
+}
+
+relation BudgetInitGeneratedFromBudgetInitAstAnchor {
+  kind generated_from
+  connects Budget -> BudgetInitAstAnchor
+  roles { Budget as generated, BudgetInitAstAnchor as syntax }
+  expects BudgetInitAstAnchor fingerprint ast.semantic_subtree_v1("sha256:bc1b1c718e75aecfe6a7b55e1dcd11e845ee68a3ab9de208578e3c857fce9d44")
+  summary "fn Budget.__init__ generated from python function_definition at experiments/verus-probes/harness/harness.py#Budget.__init__."
+}
+
+relation HarnessModuleAgentLoopGeneratedFromHarnessModuleAgentLoopAstAnchor {
+  kind generated_from
+  connects HarnessModule -> HarnessModuleAgentLoopAstAnchor
+  roles { HarnessModule as generated, HarnessModuleAgentLoopAstAnchor as syntax }
+  expects HarnessModuleAgentLoopAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5ca3ada8ade8620ac98ca6b166b02397c771d89909d936ca955c3d06750e3ad8")
+  summary "fn HarnessModule.agent_loop generated from python function_definition at experiments/verus-probes/harness/harness.py#agent_loop."
+}
+
+relation HarnessModuleGradeGeneratedFromHarnessModuleGradeAstAnchor {
+  kind generated_from
+  connects HarnessModule -> HarnessModuleGradeAstAnchor
+  roles { HarnessModule as generated, HarnessModuleGradeAstAnchor as syntax }
+  expects HarnessModuleGradeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5e1ca1f0514cc946f13ec0a048264645e28cdcd881d6b33f5b586d33d976b272")
+  summary "fn HarnessModule.grade generated from python function_definition at experiments/verus-probes/harness/harness.py#grade."
+}
+
+relation HarnessModuleHostPathGeneratedFromHarnessModuleHostPathAstAnchor {
+  kind generated_from
+  connects HarnessModule -> HarnessModuleHostPathAstAnchor
+  roles { HarnessModule as generated, HarnessModuleHostPathAstAnchor as syntax }
+  expects HarnessModuleHostPathAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9abb576b70effa42280a1043812c5101ab27b7ea9ee9c7a497df45f07db28390")
+  summary "fn HarnessModule.host_path generated from python function_definition at experiments/verus-probes/harness/harness.py#host_path."
+}
+
+relation HarnessModuleMainGeneratedFromHarnessModuleMainAstAnchor {
+  kind generated_from
+  connects HarnessModule -> HarnessModuleMainAstAnchor
+  roles { HarnessModule as generated, HarnessModuleMainAstAnchor as syntax }
+  expects HarnessModuleMainAstAnchor fingerprint ast.semantic_subtree_v1("sha256:eadf735c97c6974daea0225d1d97d6bb6db4cd30bab7a931081088bfeafcf35c")
+  summary "fn HarnessModule.main generated from python function_definition at experiments/verus-probes/harness/harness.py#main."
+}
+
+relation HarnessModuleModelEditGeneratedFromHarnessModuleModelEditAstAnchor {
+  kind generated_from
+  connects HarnessModule -> HarnessModuleModelEditAstAnchor
+  roles { HarnessModule as generated, HarnessModuleModelEditAstAnchor as syntax }
+  expects HarnessModuleModelEditAstAnchor fingerprint ast.semantic_subtree_v1("sha256:66b9a46520f2230350c0e7f7bd65ac58e013c798dc595dd24f49ba9aa2aee28a")
+  summary "fn HarnessModule.model_edit generated from python function_definition at experiments/verus-probes/harness/harness.py#model_edit."
+}
+
+relation HarnessModuleOneExperimentsVerusProbesHarnessHarnessPy5954FunctionDefinition6d55c77e2fdb393aGeneratedFromHarnessModuleOneExperimentsVerusProbesHarnessHarnessPy5954FunctionDefinition6d55c77e2fdb393aAstAnchor {
+  kind generated_from
+  connects HarnessModule -> HarnessModuleOneExperimentsVerusProbesHarnessHarnessPy5954FunctionDefinition6d55c77e2fdb393aAstAnchor
+  roles { HarnessModule as generated, HarnessModuleOneExperimentsVerusProbesHarnessHarnessPy5954FunctionDefinition6d55c77e2fdb393aAstAnchor as syntax }
+  expects HarnessModuleOneExperimentsVerusProbesHarnessHarnessPy5954FunctionDefinition6d55c77e2fdb393aAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ffcf2261ae474ad96001fa33409845ff0837e8868148037f91c2981fd85791fd")
+  summary "fn HarnessModule.one_experiments_verus_probes_harness_harness_py_5954_function_definition_6d55c77e2fdb393a generated from python function_definition at experiments/verus-probes/harness/harness.py#one."
+}
+
+relation HarnessModuleOneGeneratedFromHarnessModuleOneAstAnchor {
+  kind generated_from
+  connects HarnessModule -> HarnessModuleOneAstAnchor
+  roles { HarnessModule as generated, HarnessModuleOneAstAnchor as syntax }
+  expects HarnessModuleOneAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3ffba00eda8916400a6f48c3f3815b1979cedabf61b4485f1e5aa83b3f16ce4c")
+  summary "fn HarnessModule.one generated from python function_definition at experiments/verus-probes/harness/harness.py#one."
+}
+
+relation HarnessModulePrepareTrialGeneratedFromHarnessModulePrepareTrialAstAnchor {
+  kind generated_from
+  connects HarnessModule -> HarnessModulePrepareTrialAstAnchor
+  roles { HarnessModule as generated, HarnessModulePrepareTrialAstAnchor as syntax }
+  expects HarnessModulePrepareTrialAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f9c55627c0645173aae57aeadcc4efa231d9253d48792c2b4e31cbb5ab01f6d9")
+  summary "fn HarnessModule.prepare_trial generated from python function_definition at experiments/verus-probes/harness/harness.py#prepare_trial."
+}
+
+relation HarnessModuleRunE5GeneratedFromHarnessModuleRunE5AstAnchor {
+  kind generated_from
+  connects HarnessModule -> HarnessModuleRunE5AstAnchor
+  roles { HarnessModule as generated, HarnessModuleRunE5AstAnchor as syntax }
+  expects HarnessModuleRunE5AstAnchor fingerprint ast.semantic_subtree_v1("sha256:9de5346418435cb0cb9ed4b244cf556d7bcd25cc3ae103e1c412703273b27039")
+  summary "fn HarnessModule.run_e5 generated from python function_definition at experiments/verus-probes/harness/harness.py#run_e5."
+}
+
+relation HarnessModuleRunE6GeneratedFromHarnessModuleRunE6AstAnchor {
+  kind generated_from
+  connects HarnessModule -> HarnessModuleRunE6AstAnchor
+  roles { HarnessModule as generated, HarnessModuleRunE6AstAnchor as syntax }
+  expects HarnessModuleRunE6AstAnchor fingerprint ast.semantic_subtree_v1("sha256:fb49570a509404df530bbf9966e59abb713837fe92c3b6e496dbbfba90d4ae85")
+  summary "fn HarnessModule.run_e6 generated from python function_definition at experiments/verus-probes/harness/harness.py#run_e6."
+}
+
+relation HarnessModuleRunToolGeneratedFromHarnessModuleRunToolAstAnchor {
+  kind generated_from
+  connects HarnessModule -> HarnessModuleRunToolAstAnchor
+  roles { HarnessModule as generated, HarnessModuleRunToolAstAnchor as syntax }
+  expects HarnessModuleRunToolAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b48cb818e909c07e4a35f1f88c7b8066bacd0363139da5d38a5c6d4998754063")
+  summary "fn HarnessModule.run_tool generated from python function_definition at experiments/verus-probes/harness/harness.py#run_tool."
+}
+
+relation HarnessModuleSelftestGeneratedFromHarnessModuleSelftestAstAnchor {
+  kind generated_from
+  connects HarnessModule -> HarnessModuleSelftestAstAnchor
+  roles { HarnessModule as generated, HarnessModuleSelftestAstAnchor as syntax }
+  expects HarnessModuleSelftestAstAnchor fingerprint ast.semantic_subtree_v1("sha256:233ac0278fb40b781512459b818a0ae0c21d3fdb9d3886532306cbed5317f3b2")
+  summary "fn HarnessModule.selftest generated from python function_definition at experiments/verus-probes/harness/harness.py#selftest."
+}
+
+relation HarnessModuleShGeneratedFromHarnessModuleShAstAnchor {
+  kind generated_from
+  connects HarnessModule -> HarnessModuleShAstAnchor
+  roles { HarnessModule as generated, HarnessModuleShAstAnchor as syntax }
+  expects HarnessModuleShAstAnchor fingerprint ast.semantic_subtree_v1("sha256:28c9ae6ec79ebd5f6b37792a28a33293f72df6605ebd9ac5a21b474fc1f35503")
+  summary "fn HarnessModule.sh generated from python function_definition at experiments/verus-probes/harness/harness.py#sh."
+}
+
+relation HarnessModuleSystemPromptGeneratedFromHarnessModuleSystemPromptAstAnchor {
+  kind generated_from
+  connects HarnessModule -> HarnessModuleSystemPromptAstAnchor
+  roles { HarnessModule as generated, HarnessModuleSystemPromptAstAnchor as syntax }
+  expects HarnessModuleSystemPromptAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7c127b8d2dc9d6e1c8858d3fac67151225755ae048e199cb9c8ebc310bd30995")
+  summary "fn HarnessModule.system_prompt generated from python function_definition at experiments/verus-probes/harness/harness.py#system_prompt."
+}
+
+relation HarnessModuleTcbGeneratedFromHarnessModuleTcbAstAnchor {
+  kind generated_from
+  connects HarnessModule -> HarnessModuleTcbAstAnchor
+  roles { HarnessModule as generated, HarnessModuleTcbAstAnchor as syntax }
+  expects HarnessModuleTcbAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2c4d61ea569f30a2875e7eab0e83602367f6208f469fdb116b468fa229883760")
+  summary "fn HarnessModule.tcb generated from python function_definition at experiments/verus-probes/harness/harness.py#tcb."
+}
+
+relation SandboxCloseGeneratedFromSandboxCloseAstAnchor {
+  kind generated_from
+  connects Sandbox -> SandboxCloseAstAnchor
+  roles { Sandbox as generated, SandboxCloseAstAnchor as syntax }
+  expects SandboxCloseAstAnchor fingerprint ast.semantic_subtree_v1("sha256:01e67af0ccd3f20d72202a4557942a2890da748d45b3da52945e6f52fdb1c919")
+  summary "fn Sandbox.close generated from python function_definition at experiments/verus-probes/harness/harness.py#Sandbox.close."
+}
+
+relation SandboxGeneratedFromSandboxAstAnchor {
+  kind generated_from
+  connects Sandbox -> SandboxAstAnchor
+  roles { Sandbox as generated, SandboxAstAnchor as syntax }
+  expects SandboxAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c328c328071ab7263288a68fad20e6325d65dca1669153851d8ad9664ee5560e")
+  summary "component Sandbox generated from python class_definition at experiments/verus-probes/harness/harness.py#Sandbox."
+}
+
+relation SandboxInitGeneratedFromSandboxInitAstAnchor {
+  kind generated_from
+  connects Sandbox -> SandboxInitAstAnchor
+  roles { Sandbox as generated, SandboxInitAstAnchor as syntax }
+  expects SandboxInitAstAnchor fingerprint ast.semantic_subtree_v1("sha256:087cc1994040a417df193428f332bd4c12c857ba9e90f8db08521c331a4c7b56")
+  summary "fn Sandbox.__init__ generated from python function_definition at experiments/verus-probes/harness/harness.py#Sandbox.__init__."
+}
+
+relation SandboxRunGeneratedFromSandboxRunAstAnchor {
+  kind generated_from
+  connects Sandbox -> SandboxRunAstAnchor
+  roles { Sandbox as generated, SandboxRunAstAnchor as syntax }
+  expects SandboxRunAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ce8d61efcb3f44bdd1a63bfe1cf093180386bbc22ec5c96b762c700faf6408ea")
+  summary "fn Sandbox.run generated from python function_definition at experiments/verus-probes/harness/harness.py#Sandbox.run."
+}
+
+implementation BudgetImpl {
+  paths {
+    "experiments/verus-probes/harness/harness.py"
+  }
+  conforms_to Budget
+}
+
+implementation HarnessModuleImpl {
+  paths {
+    "experiments/verus-probes/harness/harness.py"
+  }
+  conforms_to HarnessModule
+}
+
+implementation SandboxImpl {
+  paths {
+    "experiments/verus-probes/harness/harness.py"
+  }
+  conforms_to Sandbox
+}

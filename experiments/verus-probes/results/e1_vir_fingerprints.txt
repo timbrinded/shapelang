@@ -1,0 +1,15 @@
+## A (HEAD) vs B (mut-ref migration reversed)
+rules=['none']: changed 44 ['lib::delegation_map_v::impl&%1::erase', 'lib::delegation_map_v::impl&%1::insert', 'lib::delegation_map_v::impl&%1::remove', 'lib::delegation_map_v::impl&%1::set', 'lib::delegation_map_v::impl&%3::erase', 'lib::delegation_map_v::impl&%3::set']
+rules=['read_kind']: changed 10 ['lib::delegation_map_v::impl&%3::erase', 'lib::delegation_map_v::impl&%3::set', 'lib::delegation_map_v::impl&%4::set', 'lib::delegation_map_v::vec_erase', 'lib::host_impl_v::impl&%2::deliver_outbound_packets', 'lib::host_impl_v::impl&%2::deliver_packet_seq']
+rules=['read_kind', 'rustc_ids']: changed 1 ['lib::delegation_map_v::vec_erase']
+rules=['read_kind', 'rustc_ids', 'true_conjuncts']: changed 0 []
+## A vs C (15 contracts mutated: sensitivity)
+rules=['none']: changed 15 ['lib::delegation_map_v::impl&%1::erase', 'lib::delegation_map_v::impl&%3::new', 'lib::delegation_map_v::impl&%3::values_agree', 'lib::host_impl_v::impl&%2::deliver_packet_seq', 'lib::host_impl_v::make_send_only_event_results', 'lib::io_t::impl&%7::reset']
+rules=['read_kind']: changed 15 ['lib::delegation_map_v::impl&%1::erase', 'lib::delegation_map_v::impl&%3::new', 'lib::delegation_map_v::impl&%3::values_agree', 'lib::host_impl_v::impl&%2::deliver_packet_seq', 'lib::host_impl_v::make_send_only_event_results', 'lib::io_t::impl&%7::reset']
+rules=['read_kind', 'rustc_ids']: changed 15 ['lib::delegation_map_v::impl&%1::erase', 'lib::delegation_map_v::impl&%3::new', 'lib::delegation_map_v::impl&%3::values_agree', 'lib::host_impl_v::impl&%2::deliver_packet_seq', 'lib::host_impl_v::make_send_only_event_results', 'lib::io_t::impl&%7::reset']
+rules=['read_kind', 'rustc_ids', 'true_conjuncts']: changed 15 ['lib::delegation_map_v::impl&%1::erase', 'lib::delegation_map_v::impl&%3::new', 'lib::delegation_map_v::impl&%3::values_agree', 'lib::host_impl_v::impl&%2::deliver_packet_seq', 'lib::host_impl_v::make_send_only_event_results', 'lib::io_t::impl&%7::reset']
+## A vs D (held-out is_Some migration reversed)
+rules=['none']: changed 5 ['lib::cmessage_v::impl&%1::clone_value', 'lib::delegation_map_v::impl&%2::end', 'lib::host_impl_v::impl&%2::parse_command_line_configuration', 'lib::seq_is_unique_v::clone_option_end_point', 'lib::seq_is_unique_v::clone_option_vec_u8']
+rules=['read_kind']: changed 5 ['lib::cmessage_v::impl&%1::clone_value', 'lib::delegation_map_v::impl&%2::end', 'lib::host_impl_v::impl&%2::parse_command_line_configuration', 'lib::seq_is_unique_v::clone_option_end_point', 'lib::seq_is_unique_v::clone_option_vec_u8']
+rules=['read_kind', 'rustc_ids']: changed 5 ['lib::cmessage_v::impl&%1::clone_value', 'lib::delegation_map_v::impl&%2::end', 'lib::host_impl_v::impl&%2::parse_command_line_configuration', 'lib::seq_is_unique_v::clone_option_end_point', 'lib::seq_is_unique_v::clone_option_vec_u8']
+rules=['read_kind', 'rustc_ids', 'true_conjuncts']: changed 5 ['lib::cmessage_v::impl&%1::clone_value', 'lib::delegation_map_v::impl&%2::end', 'lib::host_impl_v::impl&%2::parse_command_line_configuration', 'lib::seq_is_unique_v::clone_option_end_point', 'lib::seq_is_unique_v::clone_option_vec_u8']

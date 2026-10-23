@@ -1,0 +1,367 @@
+module shape.generated.ast.experiments.verus_probes.vprobe.src.main
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource CtxAddFnAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/vprobe/src/main.rs#Ctx.add_fn")
+  fingerprint ast.semantic_subtree_v1("sha256:367f9872025eb31178f0a178828f4cb2879b0251951f82b595040f373392fb73")
+}
+
+resource CtxAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/vprobe/src/main.rs#Ctx")
+  fingerprint ast.semantic_subtree_v1("sha256:733590e499e5edf2d6d0ee05ee4a4d3f8d19d45cabf519d4b2caa438e3f341c1")
+}
+
+resource CtxItemsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/vprobe/src/main.rs#Ctx.items")
+  fingerprint ast.semantic_subtree_v1("sha256:90d5a1bfe663c85b3256d85df67f51a6c1dbb5cc723149b6100dc6971ae37264")
+}
+
+resource GhostEraserAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/vprobe/src/main.rs#GhostEraser")
+  fingerprint ast.semantic_subtree_v1("sha256:7b091b4ca0e1fd6431f1e826bc47c5072b3b6d67dd55e96a172349c20d408e22")
+}
+
+resource GhostEraserVisitExprMutAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/vprobe/src/main.rs#GhostEraser.visit_expr_mut")
+  fingerprint ast.semantic_subtree_v1("sha256:ac1f1fe048234cdb483e20b53381ef16790b3e742135f74d8f5aa04c353f9cdf")
+}
+
+resource MainModuleAttrFlagsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/vprobe/src/main.rs#attr_flags")
+  fingerprint ast.semantic_subtree_v1("sha256:45d32005b66b71cb556f26a71307afdaf061c04edc83a4d202b8324a20dff077")
+}
+
+resource MainModuleCanonAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/vprobe/src/main.rs#canon")
+  fingerprint ast.semantic_subtree_v1("sha256:552b244a96ce40b4cf698052ebc73949447f7a611e8a12781b4982505583a617")
+}
+
+resource MainModuleClauseSpansAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/vprobe/src/main.rs#clause_spans")
+  fingerprint ast.semantic_subtree_v1("sha256:ced5cea123435454296890c432dabe0419ae15b79bbec30b59faae29bd240eee")
+}
+
+resource MainModuleCountAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/vprobe/src/main.rs#count")
+  fingerprint ast.semantic_subtree_v1("sha256:b2c04b1f214000cde4e1f1201eb9b8f1482acb402aa3915c23ac33bc6c85ed52")
+}
+
+resource MainModuleFlatAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/vprobe/src/main.rs#flat")
+  fingerprint ast.semantic_subtree_v1("sha256:069d749b8d9001ca04e4f2bfd05dcf2f4bc08961ca0ed62574eabd1767ab3ab1")
+}
+
+resource MainModuleHAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/vprobe/src/main.rs#h")
+  fingerprint ast.semantic_subtree_v1("sha256:b1ccdd14d6c182f967a1a8fb9abb76d74dd83f2758f6ea30229f19846ed80a74")
+}
+
+resource MainModuleIdentsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/vprobe/src/main.rs#idents")
+  fingerprint ast.semantic_subtree_v1("sha256:134cd045f5b89c1d78db80b9590752851f299fcea09012176435ea2ffb8a0d4a")
+}
+
+resource MainModuleMainAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/vprobe/src/main.rs#main")
+  fingerprint ast.semantic_subtree_v1("sha256:f340bfd5b733dcda47cc7b58bbeffacf013ce5827ff0d077b8471b5664d14c50")
+}
+
+resource MainModuleModeNameAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/vprobe/src/main.rs#mode_name")
+  fingerprint ast.semantic_subtree_v1("sha256:ae4aaef3028f281debc55c066a54186255cb84e0b6cffd432ece3ca925a61c98")
+}
+
+resource MainModuleMutMethodsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/vprobe/src/main.rs#mut_methods")
+  fingerprint ast.semantic_subtree_v1("sha256:160756b236d7307e9ea5f0fa1a9de72e7d7854e5a2eaa75c510a1561e2f435fd")
+}
+
+resource MainModuleObligationsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/vprobe/src/main.rs#obligations")
+  fingerprint ast.semantic_subtree_v1("sha256:00b46e51ca84e885be88ac538450eca77736cf63482bff7ee95cb310560367ba")
+}
+
+resource MainModulePosAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/vprobe/src/main.rs#pos")
+  fingerprint ast.semantic_subtree_v1("sha256:95d70621329bac95c85237ae58ada8c6c74dda9383a06da00474d40a8afe5977")
+}
+
+resource MainModuleScanAssumeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/vprobe/src/main.rs#scan_assume")
+  fingerprint ast.semantic_subtree_v1("sha256:6923dd28e2d61ac8101713e6bcb2999cf23e596f9ff53fd68996858eebfae670")
+}
+
+resource MainModuleSigFeaturesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/vprobe/src/main.rs#sig_features")
+  fingerprint ast.semantic_subtree_v1("sha256:c21ee625ef7fc6f87dfa722c1c1e615302dc18ca80092437e464674c46e4c1df")
+}
+
+resource MainModuleTcbCheckAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/vprobe/src/main.rs#tcb_check")
+  fingerprint ast.semantic_subtree_v1("sha256:3004781c8948fb93257751cf2f07e94b28ab86d31c8cfb3279e5845bbf62c020")
+}
+
+resource MainModuleTcbScanAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/vprobe/src/main.rs#tcb_scan")
+  fingerprint ast.semantic_subtree_v1("sha256:b115f352e91751f7aa07189143b06e9e151f48db219c6bcfcdf64738df05e7f6")
+}
+
+component Ctx : GeneratedCandidate {
+  fn add_fn
+    source rust("experiments/verus-probes/vprobe/src/main.rs#Ctx.add_fn")
+    effects unknown
+  fn items
+    source rust("experiments/verus-probes/vprobe/src/main.rs#Ctx.items")
+    effects unknown
+}
+
+component GhostEraser : GeneratedCandidate {
+  fn visit_expr_mut
+    source rust("experiments/verus-probes/vprobe/src/main.rs#GhostEraser.visit_expr_mut")
+    effects unknown
+}
+
+component MainModule : GeneratedCandidate {
+  fn attr_flags
+    source rust("experiments/verus-probes/vprobe/src/main.rs#attr_flags")
+    effects unknown
+  fn canon
+    source rust("experiments/verus-probes/vprobe/src/main.rs#canon")
+    effects unknown
+  fn clause_spans
+    source rust("experiments/verus-probes/vprobe/src/main.rs#clause_spans")
+    effects unknown
+  fn count
+    source rust("experiments/verus-probes/vprobe/src/main.rs#count")
+    effects unknown
+  fn flat
+    source rust("experiments/verus-probes/vprobe/src/main.rs#flat")
+    effects unknown
+  fn h
+    source rust("experiments/verus-probes/vprobe/src/main.rs#h")
+    effects unknown
+  fn idents
+    source rust("experiments/verus-probes/vprobe/src/main.rs#idents")
+    effects unknown
+  fn main
+    source rust("experiments/verus-probes/vprobe/src/main.rs#main")
+    effects unknown
+  fn mode_name
+    source rust("experiments/verus-probes/vprobe/src/main.rs#mode_name")
+    effects unknown
+  fn mut_methods
+    source rust("experiments/verus-probes/vprobe/src/main.rs#mut_methods")
+    effects unknown
+  fn obligations
+    source rust("experiments/verus-probes/vprobe/src/main.rs#obligations")
+    effects unknown
+  fn pos
+    source rust("experiments/verus-probes/vprobe/src/main.rs#pos")
+    effects unknown
+  fn scan_assume
+    source rust("experiments/verus-probes/vprobe/src/main.rs#scan_assume")
+    effects unknown
+  fn sig_features
+    source rust("experiments/verus-probes/vprobe/src/main.rs#sig_features")
+    effects unknown
+  fn tcb_check
+    source rust("experiments/verus-probes/vprobe/src/main.rs#tcb_check")
+    effects unknown
+  fn tcb_scan
+    source rust("experiments/verus-probes/vprobe/src/main.rs#tcb_scan")
+    effects unknown
+}
+
+relation CtxAddFnGeneratedFromCtxAddFnAstAnchor {
+  kind generated_from
+  connects Ctx -> CtxAddFnAstAnchor
+  roles { Ctx as generated, CtxAddFnAstAnchor as syntax }
+  expects CtxAddFnAstAnchor fingerprint ast.semantic_subtree_v1("sha256:367f9872025eb31178f0a178828f4cb2879b0251951f82b595040f373392fb73")
+  summary "fn Ctx.add_fn generated from rust function_item at experiments/verus-probes/vprobe/src/main.rs#Ctx.add_fn."
+}
+
+relation CtxGeneratedFromCtxAstAnchor {
+  kind generated_from
+  connects Ctx -> CtxAstAnchor
+  roles { Ctx as generated, CtxAstAnchor as syntax }
+  expects CtxAstAnchor fingerprint ast.semantic_subtree_v1("sha256:733590e499e5edf2d6d0ee05ee4a4d3f8d19d45cabf519d4b2caa438e3f341c1")
+  summary "component Ctx generated from rust struct_item at experiments/verus-probes/vprobe/src/main.rs#Ctx."
+}
+
+relation CtxItemsGeneratedFromCtxItemsAstAnchor {
+  kind generated_from
+  connects Ctx -> CtxItemsAstAnchor
+  roles { Ctx as generated, CtxItemsAstAnchor as syntax }
+  expects CtxItemsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:90d5a1bfe663c85b3256d85df67f51a6c1dbb5cc723149b6100dc6971ae37264")
+  summary "fn Ctx.items generated from rust function_item at experiments/verus-probes/vprobe/src/main.rs#Ctx.items."
+}
+
+relation GhostEraserGeneratedFromGhostEraserAstAnchor {
+  kind generated_from
+  connects GhostEraser -> GhostEraserAstAnchor
+  roles { GhostEraser as generated, GhostEraserAstAnchor as syntax }
+  expects GhostEraserAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7b091b4ca0e1fd6431f1e826bc47c5072b3b6d67dd55e96a172349c20d408e22")
+  summary "component GhostEraser generated from rust struct_item at experiments/verus-probes/vprobe/src/main.rs#GhostEraser."
+}
+
+relation GhostEraserVisitExprMutGeneratedFromGhostEraserVisitExprMutAstAnchor {
+  kind generated_from
+  connects GhostEraser -> GhostEraserVisitExprMutAstAnchor
+  roles { GhostEraser as generated, GhostEraserVisitExprMutAstAnchor as syntax }
+  expects GhostEraserVisitExprMutAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ac1f1fe048234cdb483e20b53381ef16790b3e742135f74d8f5aa04c353f9cdf")
+  summary "fn GhostEraser.visit_expr_mut generated from rust function_item at experiments/verus-probes/vprobe/src/main.rs#GhostEraser.visit_expr_mut."
+}
+
+relation MainModuleAttrFlagsGeneratedFromMainModuleAttrFlagsAstAnchor {
+  kind generated_from
+  connects MainModule -> MainModuleAttrFlagsAstAnchor
+  roles { MainModule as generated, MainModuleAttrFlagsAstAnchor as syntax }
+  expects MainModuleAttrFlagsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:45d32005b66b71cb556f26a71307afdaf061c04edc83a4d202b8324a20dff077")
+  summary "fn MainModule.attr_flags generated from rust function_item at experiments/verus-probes/vprobe/src/main.rs#attr_flags."
+}
+
+relation MainModuleCanonGeneratedFromMainModuleCanonAstAnchor {
+  kind generated_from
+  connects MainModule -> MainModuleCanonAstAnchor
+  roles { MainModule as generated, MainModuleCanonAstAnchor as syntax }
+  expects MainModuleCanonAstAnchor fingerprint ast.semantic_subtree_v1("sha256:552b244a96ce40b4cf698052ebc73949447f7a611e8a12781b4982505583a617")
+  summary "fn MainModule.canon generated from rust function_item at experiments/verus-probes/vprobe/src/main.rs#canon."
+}
+
+relation MainModuleClauseSpansGeneratedFromMainModuleClauseSpansAstAnchor {
+  kind generated_from
+  connects MainModule -> MainModuleClauseSpansAstAnchor
+  roles { MainModule as generated, MainModuleClauseSpansAstAnchor as syntax }
+  expects MainModuleClauseSpansAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ced5cea123435454296890c432dabe0419ae15b79bbec30b59faae29bd240eee")
+  summary "fn MainModule.clause_spans generated from rust function_item at experiments/verus-probes/vprobe/src/main.rs#clause_spans."
+}
+
+relation MainModuleCountGeneratedFromMainModuleCountAstAnchor {
+  kind generated_from
+  connects MainModule -> MainModuleCountAstAnchor
+  roles { MainModule as generated, MainModuleCountAstAnchor as syntax }
+  expects MainModuleCountAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b2c04b1f214000cde4e1f1201eb9b8f1482acb402aa3915c23ac33bc6c85ed52")
+  summary "fn MainModule.count generated from rust function_item at experiments/verus-probes/vprobe/src/main.rs#count."
+}
+
+relation MainModuleFlatGeneratedFromMainModuleFlatAstAnchor {
+  kind generated_from
+  connects MainModule -> MainModuleFlatAstAnchor
+  roles { MainModule as generated, MainModuleFlatAstAnchor as syntax }
+  expects MainModuleFlatAstAnchor fingerprint ast.semantic_subtree_v1("sha256:069d749b8d9001ca04e4f2bfd05dcf2f4bc08961ca0ed62574eabd1767ab3ab1")
+  summary "fn MainModule.flat generated from rust function_item at experiments/verus-probes/vprobe/src/main.rs#flat."
+}
+
+relation MainModuleHGeneratedFromMainModuleHAstAnchor {
+  kind generated_from
+  connects MainModule -> MainModuleHAstAnchor
+  roles { MainModule as generated, MainModuleHAstAnchor as syntax }
+  expects MainModuleHAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b1ccdd14d6c182f967a1a8fb9abb76d74dd83f2758f6ea30229f19846ed80a74")
+  summary "fn MainModule.h generated from rust function_item at experiments/verus-probes/vprobe/src/main.rs#h."
+}
+
+relation MainModuleIdentsGeneratedFromMainModuleIdentsAstAnchor {
+  kind generated_from
+  connects MainModule -> MainModuleIdentsAstAnchor
+  roles { MainModule as generated, MainModuleIdentsAstAnchor as syntax }
+  expects MainModuleIdentsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:134cd045f5b89c1d78db80b9590752851f299fcea09012176435ea2ffb8a0d4a")
+  summary "fn MainModule.idents generated from rust function_item at experiments/verus-probes/vprobe/src/main.rs#idents."
+}
+
+relation MainModuleMainGeneratedFromMainModuleMainAstAnchor {
+  kind generated_from
+  connects MainModule -> MainModuleMainAstAnchor
+  roles { MainModule as generated, MainModuleMainAstAnchor as syntax }
+  expects MainModuleMainAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f340bfd5b733dcda47cc7b58bbeffacf013ce5827ff0d077b8471b5664d14c50")
+  summary "fn MainModule.main generated from rust function_item at experiments/verus-probes/vprobe/src/main.rs#main."
+}
+
+relation MainModuleModeNameGeneratedFromMainModuleModeNameAstAnchor {
+  kind generated_from
+  connects MainModule -> MainModuleModeNameAstAnchor
+  roles { MainModule as generated, MainModuleModeNameAstAnchor as syntax }
+  expects MainModuleModeNameAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ae4aaef3028f281debc55c066a54186255cb84e0b6cffd432ece3ca925a61c98")
+  summary "fn MainModule.mode_name generated from rust function_item at experiments/verus-probes/vprobe/src/main.rs#mode_name."
+}
+
+relation MainModuleMutMethodsGeneratedFromMainModuleMutMethodsAstAnchor {
+  kind generated_from
+  connects MainModule -> MainModuleMutMethodsAstAnchor
+  roles { MainModule as generated, MainModuleMutMethodsAstAnchor as syntax }
+  expects MainModuleMutMethodsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:160756b236d7307e9ea5f0fa1a9de72e7d7854e5a2eaa75c510a1561e2f435fd")
+  summary "fn MainModule.mut_methods generated from rust function_item at experiments/verus-probes/vprobe/src/main.rs#mut_methods."
+}
+
+relation MainModuleObligationsGeneratedFromMainModuleObligationsAstAnchor {
+  kind generated_from
+  connects MainModule -> MainModuleObligationsAstAnchor
+  roles { MainModule as generated, MainModuleObligationsAstAnchor as syntax }
+  expects MainModuleObligationsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:00b46e51ca84e885be88ac538450eca77736cf63482bff7ee95cb310560367ba")
+  summary "fn MainModule.obligations generated from rust function_item at experiments/verus-probes/vprobe/src/main.rs#obligations."
+}
+
+relation MainModulePosGeneratedFromMainModulePosAstAnchor {
+  kind generated_from
+  connects MainModule -> MainModulePosAstAnchor
+  roles { MainModule as generated, MainModulePosAstAnchor as syntax }
+  expects MainModulePosAstAnchor fingerprint ast.semantic_subtree_v1("sha256:95d70621329bac95c85237ae58ada8c6c74dda9383a06da00474d40a8afe5977")
+  summary "fn MainModule.pos generated from rust function_item at experiments/verus-probes/vprobe/src/main.rs#pos."
+}
+
+relation MainModuleScanAssumeGeneratedFromMainModuleScanAssumeAstAnchor {
+  kind generated_from
+  connects MainModule -> MainModuleScanAssumeAstAnchor
+  roles { MainModule as generated, MainModuleScanAssumeAstAnchor as syntax }
+  expects MainModuleScanAssumeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6923dd28e2d61ac8101713e6bcb2999cf23e596f9ff53fd68996858eebfae670")
+  summary "fn MainModule.scan_assume generated from rust function_item at experiments/verus-probes/vprobe/src/main.rs#scan_assume."
+}
+
+relation MainModuleSigFeaturesGeneratedFromMainModuleSigFeaturesAstAnchor {
+  kind generated_from
+  connects MainModule -> MainModuleSigFeaturesAstAnchor
+  roles { MainModule as generated, MainModuleSigFeaturesAstAnchor as syntax }
+  expects MainModuleSigFeaturesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c21ee625ef7fc6f87dfa722c1c1e615302dc18ca80092437e464674c46e4c1df")
+  summary "fn MainModule.sig_features generated from rust function_item at experiments/verus-probes/vprobe/src/main.rs#sig_features."
+}
+
+relation MainModuleTcbCheckGeneratedFromMainModuleTcbCheckAstAnchor {
+  kind generated_from
+  connects MainModule -> MainModuleTcbCheckAstAnchor
+  roles { MainModule as generated, MainModuleTcbCheckAstAnchor as syntax }
+  expects MainModuleTcbCheckAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3004781c8948fb93257751cf2f07e94b28ab86d31c8cfb3279e5845bbf62c020")
+  summary "fn MainModule.tcb_check generated from rust function_item at experiments/verus-probes/vprobe/src/main.rs#tcb_check."
+}
+
+relation MainModuleTcbScanGeneratedFromMainModuleTcbScanAstAnchor {
+  kind generated_from
+  connects MainModule -> MainModuleTcbScanAstAnchor
+  roles { MainModule as generated, MainModuleTcbScanAstAnchor as syntax }
+  expects MainModuleTcbScanAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b115f352e91751f7aa07189143b06e9e151f48db219c6bcfcdf64738df05e7f6")
+  summary "fn MainModule.tcb_scan generated from rust function_item at experiments/verus-probes/vprobe/src/main.rs#tcb_scan."
+}
+
+implementation CtxImpl {
+  paths {
+    "experiments/verus-probes/vprobe/src/main.rs"
+  }
+  conforms_to Ctx
+}
+
+implementation GhostEraserImpl {
+  paths {
+    "experiments/verus-probes/vprobe/src/main.rs"
+  }
+  conforms_to GhostEraser
+}
+
+implementation MainModuleImpl {
+  paths {
+    "experiments/verus-probes/vprobe/src/main.rs"
+  }
+  conforms_to MainModule
+}

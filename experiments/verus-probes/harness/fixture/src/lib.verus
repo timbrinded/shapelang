@@ -1,0 +1,71 @@
+// Revision log service. The log is the system of record for document history.
+use vstd::prelude::*;
+
+verus! {
+
+pub struct RevisionLog {
+    revs: Vec<u64>,
+}
+
+impl View for RevisionLog {
+    type V = Seq<u64>;
+
+    closed spec fn view(&self) -> Seq<u64> {
+        self.revs@
+    }
+}
+
+impl RevisionLog {
+    pub fn new() -> (r: Self)
+        ensures
+            r@ == Seq::<u64>::empty(),
+    {
+        RevisionLog { revs: Vec::new() }
+    }
+
+    pub fn append(&mut self, id: u64)
+        ensures
+            final(self)@ == old(self)@.push(id),
+    {
+        self.revs.push(id);
+    }
+
+    pub fn len(&self) -> (n: usize)
+        ensures
+            n == self@.len(),
+    {
+        self.revs.len()
+    }
+
+    pub fn get(&self, i: usize) -> (id: u64)
+        requires
+            i < self@.len(),
+        ensures
+            id == self@[i as int],
+    {
+        self.revs[i]
+    }
+
+    pub fn persist(&self, disk: &mut Disk) {
+        disk.write_all(&self.revs);
+    }
+}
+
+/// Adapter to the storage engine. Trusted: its body is not verified.
+pub struct Disk {
+    pub bytes_written: u64,
+}
+
+impl Disk {
+    #[verifier::external_body]
+    pub fn write_all(&mut self, ids: &Vec<u64>) {
+        self.bytes_written = self.bytes_written + 8 * ids.len() as u64;
+    }
+
+    #[verifier::external_body]
+    pub fn delete_range(&mut self, start: u64, end: u64) {
+        let _ = (start, end);
+    }
+}
+
+} // verus!

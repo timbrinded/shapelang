@@ -1,0 +1,81 @@
+module shape.generated.ast.experiments.verus_probes.scripts.e2_closure
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource E2ClosureModuleGroupAfterAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/scripts/e2_closure.py#group_after")
+  fingerprint ast.semantic_subtree_v1("sha256:94196d34cdac4a84d226653c8eac1dfa6cbcc562b45d55e9a595086836df4572")
+}
+
+resource E2ClosureModuleNameClosureAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/scripts/e2_closure.py#name_closure")
+  fingerprint ast.semantic_subtree_v1("sha256:c414e3c4627332d6dfe679797bdc2099ff2c3ade2006d56e0a78c4018a919ba9")
+}
+
+resource E2ClosureModuleVirClosureAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/scripts/e2_closure.py#vir_closure")
+  fingerprint ast.semantic_subtree_v1("sha256:bf4517074bf4c7d87a2504c64e1ed108ce380232d367a00b13f5ac87dfe26582")
+}
+
+resource E2ClosureModuleVprobeForAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/scripts/e2_closure.py#vprobe_for")
+  fingerprint ast.semantic_subtree_v1("sha256:6e2d1406f844b6bd03ff150750ec6596bf56888b584dc635dda2ee8dc390f481")
+}
+
+component E2ClosureModule : GeneratedCandidate {
+  fn group_after
+    source python("experiments/verus-probes/scripts/e2_closure.py#group_after")
+    effects unknown
+  fn name_closure
+    source python("experiments/verus-probes/scripts/e2_closure.py#name_closure")
+    effects unknown
+  fn vir_closure
+    source python("experiments/verus-probes/scripts/e2_closure.py#vir_closure")
+    effects unknown
+  fn vprobe_for
+    source python("experiments/verus-probes/scripts/e2_closure.py#vprobe_for")
+    effects unknown
+}
+
+relation E2ClosureModuleGroupAfterGeneratedFromE2ClosureModuleGroupAfterAstAnchor {
+  kind generated_from
+  connects E2ClosureModule -> E2ClosureModuleGroupAfterAstAnchor
+  roles { E2ClosureModule as generated, E2ClosureModuleGroupAfterAstAnchor as syntax }
+  expects E2ClosureModuleGroupAfterAstAnchor fingerprint ast.semantic_subtree_v1("sha256:94196d34cdac4a84d226653c8eac1dfa6cbcc562b45d55e9a595086836df4572")
+  summary "fn E2ClosureModule.group_after generated from python function_definition at experiments/verus-probes/scripts/e2_closure.py#group_after."
+}
+
+relation E2ClosureModuleNameClosureGeneratedFromE2ClosureModuleNameClosureAstAnchor {
+  kind generated_from
+  connects E2ClosureModule -> E2ClosureModuleNameClosureAstAnchor
+  roles { E2ClosureModule as generated, E2ClosureModuleNameClosureAstAnchor as syntax }
+  expects E2ClosureModuleNameClosureAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c414e3c4627332d6dfe679797bdc2099ff2c3ade2006d56e0a78c4018a919ba9")
+  summary "fn E2ClosureModule.name_closure generated from python function_definition at experiments/verus-probes/scripts/e2_closure.py#name_closure."
+}
+
+relation E2ClosureModuleVirClosureGeneratedFromE2ClosureModuleVirClosureAstAnchor {
+  kind generated_from
+  connects E2ClosureModule -> E2ClosureModuleVirClosureAstAnchor
+  roles { E2ClosureModule as generated, E2ClosureModuleVirClosureAstAnchor as syntax }
+  expects E2ClosureModuleVirClosureAstAnchor fingerprint ast.semantic_subtree_v1("sha256:bf4517074bf4c7d87a2504c64e1ed108ce380232d367a00b13f5ac87dfe26582")
+  summary "fn E2ClosureModule.vir_closure generated from python function_definition at experiments/verus-probes/scripts/e2_closure.py#vir_closure."
+}
+
+relation E2ClosureModuleVprobeForGeneratedFromE2ClosureModuleVprobeForAstAnchor {
+  kind generated_from
+  connects E2ClosureModule -> E2ClosureModuleVprobeForAstAnchor
+  roles { E2ClosureModule as generated, E2ClosureModuleVprobeForAstAnchor as syntax }
+  expects E2ClosureModuleVprobeForAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6e2d1406f844b6bd03ff150750ec6596bf56888b584dc635dda2ee8dc390f481")
+  summary "fn E2ClosureModule.vprobe_for generated from python function_definition at experiments/verus-probes/scripts/e2_closure.py#vprobe_for."
+}
+
+implementation E2ClosureModuleImpl {
+  paths {
+    "experiments/verus-probes/scripts/e2_closure.py"
+  }
+  conforms_to E2ClosureModule
+}

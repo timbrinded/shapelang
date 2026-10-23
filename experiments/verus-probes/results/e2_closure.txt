@@ -1,0 +1,13 @@
+matched exec fns: 175
+spec fns in closure (crate only): median exact 1, name-lower 0, name-upper 4; incl. vstd exact 4
+closure tokens: median exact 20, lower 0, upper 793
+exact inside [lower, upper]: 155/175; below lower: 20; above upper: 0
+(clauses + exact closure) / exec tokens per fn: median 2.65, p75 10.89, p90 24.78
+exact / lower token ratio where lower>0: median 1.83 (n=85)
+
+matched exec fns: 54
+spec fns in closure (crate only): median exact 172.0, name-lower 3.0, name-upper 293.0; incl. vstd exact 203.0
+closure tokens: median exact 11547.5, lower 287.5, upper 45338.0
+exact inside [lower, upper]: 54/54; below lower: 0; above upper: 0
+(clauses + exact closure) / exec tokens per fn: median 63.77, p75 149.36, p90 321.42
+exact / lower token ratio where lower>0: median 19.77 (n=44)

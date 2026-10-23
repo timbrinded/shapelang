@@ -1,0 +1,77 @@
+module revlog
+
+resource Revision : AppendOnly
+
+resource StorageEngine : External
+
+component Disk {
+  grants Update<StorageEngine>
+  fn delete_range
+    source rust("src/lib.rs#Disk::delete_range")
+    unsafe effects complete {
+      Update<StorageEngine>
+    }
+    expires "2027-06-30"
+    reason "Trusted adapter to the storage engine; its body is not verified."
+    requires StorageAdapterReview
+  fn write_all
+    source rust("src/lib.rs#Disk::write_all")
+    unsafe effects complete {
+      Update<StorageEngine>
+    }
+    expires "2027-06-30"
+    reason "Trusted adapter to the storage engine; its body is not verified."
+    requires StorageAdapterReview
+}
+
+component RevisionLog {
+  owns Revision
+  grants Append<Revision>
+  grants Read<Revision>
+  fn append
+    source rust("src/lib.rs#RevisionLog::append")
+    effects complete {
+      Append<Revision>
+    }
+  fn get
+    source rust("src/lib.rs#RevisionLog::get")
+    effects complete {
+      Read<Revision>
+    }
+  fn len
+    source rust("src/lib.rs#RevisionLog::len")
+    effects complete {
+      Read<Revision>
+    }
+  fn new
+    source rust("src/lib.rs#RevisionLog::new")
+    effects complete {
+    }
+  fn persist
+    source rust("src/lib.rs#RevisionLog::persist")
+    effects complete {
+      Read<Revision>
+    }
+}
+
+relation RevisionLogCallsDisk {
+  kind calls
+  connects RevisionLog -> Disk
+}
+
+relation RevisionLogProvidesRevision {
+  kind provides
+  connects RevisionLog -> Revision
+}
+
+implementation RevisionLogImpl {
+  paths {
+    "src/**/*.rs"
+  }
+  conforms_to RevisionLog
+  on_change require shape_update
+}
+
+rule only_revision_log_provides_revisions {
+  forbid provides Revision except RevisionLog
+}

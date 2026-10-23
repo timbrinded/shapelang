@@ -1,0 +1,49 @@
+module shape.generated.ast.experiments.verus_probes.scripts.e1_vir_fp
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource E1VirFpModuleFpsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/scripts/e1_vir_fp.py#fps")
+  fingerprint ast.semantic_subtree_v1("sha256:b1a0c641dc14b0274ddf24b4ecda3d2bba3de3eb73cfcbc017d0a41e906025fc")
+}
+
+resource E1VirFpModuleGroupAfterAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/scripts/e1_vir_fp.py#group_after")
+  fingerprint ast.semantic_subtree_v1("sha256:460a49e5e93f78b28ea73ac7077242717688bd1acfb79a7baa6b88e5632ca135")
+}
+
+component E1VirFpModule : GeneratedCandidate {
+  fn fps
+    source python("experiments/verus-probes/scripts/e1_vir_fp.py#fps")
+    effects unknown
+  fn group_after
+    source python("experiments/verus-probes/scripts/e1_vir_fp.py#group_after")
+    effects unknown
+}
+
+relation E1VirFpModuleFpsGeneratedFromE1VirFpModuleFpsAstAnchor {
+  kind generated_from
+  connects E1VirFpModule -> E1VirFpModuleFpsAstAnchor
+  roles { E1VirFpModule as generated, E1VirFpModuleFpsAstAnchor as syntax }
+  expects E1VirFpModuleFpsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b1a0c641dc14b0274ddf24b4ecda3d2bba3de3eb73cfcbc017d0a41e906025fc")
+  summary "fn E1VirFpModule.fps generated from python function_definition at experiments/verus-probes/scripts/e1_vir_fp.py#fps."
+}
+
+relation E1VirFpModuleGroupAfterGeneratedFromE1VirFpModuleGroupAfterAstAnchor {
+  kind generated_from
+  connects E1VirFpModule -> E1VirFpModuleGroupAfterAstAnchor
+  roles { E1VirFpModule as generated, E1VirFpModuleGroupAfterAstAnchor as syntax }
+  expects E1VirFpModuleGroupAfterAstAnchor fingerprint ast.semantic_subtree_v1("sha256:460a49e5e93f78b28ea73ac7077242717688bd1acfb79a7baa6b88e5632ca135")
+  summary "fn E1VirFpModule.group_after generated from python function_definition at experiments/verus-probes/scripts/e1_vir_fp.py#group_after."
+}
+
+implementation E1VirFpModuleImpl {
+  paths {
+    "experiments/verus-probes/scripts/e1_vir_fp.py"
+  }
+  conforms_to E1VirFpModule
+}

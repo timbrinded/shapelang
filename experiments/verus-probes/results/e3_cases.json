@@ -1,0 +1,898 @@
+[
+  {
+    "id": "m0f",
+    "path": "ironsht/src/delegation_map_v.rs",
+    "key": "StrictlyOrderedVec<K>::set",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A"
+  },
+  {
+    "id": "m1f",
+    "path": "ironsht/src/delegation_map_v.rs",
+    "key": "StrictlyOrderedVec<K>::remove",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A"
+  },
+  {
+    "id": "m2f",
+    "path": "ironsht/src/delegation_map_v.rs",
+    "key": "StrictlyOrderedVec<K>::erase",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A"
+  },
+  {
+    "id": "m3f",
+    "path": "ironsht/src/delegation_map_v.rs",
+    "key": "StrictlyOrderedVec<K>::insert",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A"
+  },
+  {
+    "id": "m4f",
+    "path": "ironsht/src/delegation_map_v.rs",
+    "key": "vec_erase",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A"
+  },
+  {
+    "id": "m5f",
+    "path": "ironsht/src/delegation_map_v.rs",
+    "key": "StrictlyOrderedMap<K>::set",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A"
+  },
+  {
+    "id": "m6f",
+    "path": "ironsht/src/delegation_map_v.rs",
+    "key": "StrictlyOrderedMap<K>::erase",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A"
+  },
+  {
+    "id": "m7f",
+    "path": "ironsht/src/delegation_map_v.rs",
+    "key": "DelegationMap<K>::set",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A"
+  },
+  {
+    "id": "m8f",
+    "path": "ironsht/src/endpoint_hashmap_t.rs",
+    "key": "HashMap<V>::insert",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A"
+  },
+  {
+    "id": "m9f",
+    "path": "ironsht/src/endpoint_hashmap_t.rs",
+    "key": "HashMap<V>::put",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A"
+  },
+  {
+    "id": "m10f",
+    "path": "ironsht/src/endpoint_hashmap_t.rs",
+    "key": "HashMap<V>::swap",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A"
+  },
+  {
+    "id": "m11f",
+    "path": "ironsht/src/hashmap_t.rs",
+    "key": "CKeyHashMap::insert",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A"
+  },
+  {
+    "id": "m12f",
+    "path": "ironsht/src/hashmap_t.rs",
+    "key": "CKeyHashMap::remove",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A"
+  },
+  {
+    "id": "m13f",
+    "path": "ironsht/src/host_impl_t.rs",
+    "key": "HostState::next_impl",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A"
+  },
+  {
+    "id": "m14f",
+    "path": "ironsht/src/host_impl_v.rs",
+    "key": "HostState::deliver_packet_seq",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A"
+  },
+  {
+    "id": "m15f",
+    "path": "ironsht/src/host_impl_v.rs",
+    "key": "HostState::deliver_outbound_packets",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A"
+  },
+  {
+    "id": "m16f",
+    "path": "ironsht/src/host_impl_v.rs",
+    "key": "HostState::receive_packet_next",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A"
+  },
+  {
+    "id": "m17f",
+    "path": "ironsht/src/host_impl_v.rs",
+    "key": "HostState::host_next_receive_packet",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A"
+  },
+  {
+    "id": "m18f",
+    "path": "ironsht/src/host_impl_v.rs",
+    "key": "HostState::host_model_receive_packet",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A"
+  },
+  {
+    "id": "m19f",
+    "path": "ironsht/src/host_impl_v.rs",
+    "key": "HostState::host_model_next_get_request",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A"
+  },
+  {
+    "id": "m20f",
+    "path": "ironsht/src/host_impl_v.rs",
+    "key": "HostState::host_model_next_set_request",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A"
+  },
+  {
+    "id": "m21f",
+    "path": "ironsht/src/host_impl_v.rs",
+    "key": "HostState::host_model_next_delegate",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A"
+  },
+  {
+    "id": "m22f",
+    "path": "ironsht/src/host_impl_v.rs",
+    "key": "HostState::host_model_next_shard",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A"
+  },
+  {
+    "id": "m23f",
+    "path": "ironsht/src/host_impl_v.rs",
+    "key": "HostState::host_model_next_receive_message",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A"
+  },
+  {
+    "id": "m24f",
+    "path": "ironsht/src/host_impl_v.rs",
+    "key": "HostState::process_received_packet_next_impl",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A"
+  },
+  {
+    "id": "m25f",
+    "path": "ironsht/src/host_impl_v.rs",
+    "key": "HostState::host_noreceive_noclock_next",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A"
+  },
+  {
+    "id": "m26f",
+    "path": "ironsht/src/host_impl_v.rs",
+    "key": "HostState::real_next_impl",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A"
+  },
+  {
+    "id": "m27f",
+    "path": "ironsht/src/io_t.rs",
+    "key": "NetClient::reset",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A"
+  },
+  {
+    "id": "m28f",
+    "path": "ironsht/src/io_t.rs",
+    "key": "NetClient::get_time",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A"
+  },
+  {
+    "id": "m29f",
+    "path": "ironsht/src/io_t.rs",
+    "key": "NetClient::receive",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A"
+  },
+  {
+    "id": "m30f",
+    "path": "ironsht/src/io_t.rs",
+    "key": "NetClient::send_internal_wrapper",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A"
+  },
+  {
+    "id": "m31f",
+    "path": "ironsht/src/io_t.rs",
+    "key": "NetClient::send",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A"
+  },
+  {
+    "id": "m32f",
+    "path": "ironsht/src/marshal_v.rs",
+    "key": "trait Marshalable::serialize",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A"
+  },
+  {
+    "id": "m33f",
+    "path": "ironsht/src/net_sht_v.rs",
+    "key": "receive_with_demarshal",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A"
+  },
+  {
+    "id": "m34f",
+    "path": "ironsht/src/net_sht_v.rs",
+    "key": "send_packet",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A"
+  },
+  {
+    "id": "m35f",
+    "path": "ironsht/src/net_sht_v.rs",
+    "key": "send_packet_seq",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A"
+  },
+  {
+    "id": "m36f",
+    "path": "ironsht/src/single_delivery_model_v.rs",
+    "key": "CSingleDelivery::receive_ack_impl",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A"
+  },
+  {
+    "id": "m37f",
+    "path": "ironsht/src/single_delivery_model_v.rs",
+    "key": "CSingleDelivery::receive_real_packet_impl",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A"
+  },
+  {
+    "id": "m38f",
+    "path": "ironsht/src/single_delivery_model_v.rs",
+    "key": "CSingleDelivery::receive_impl",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A"
+  },
+  {
+    "id": "m39f",
+    "path": "ironsht/src/single_delivery_model_v.rs",
+    "key": "CSingleDelivery::send_single_cmessage",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A"
+  },
+  {
+    "id": "m40f",
+    "path": "ironsht/src/single_delivery_state_v.rs",
+    "key": "CAckState::truncate",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A"
+  },
+  {
+    "id": "m41f",
+    "path": "ironsht/src/single_delivery_state_v.rs",
+    "key": "CTombstoneTable::insert",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A"
+  },
+  {
+    "id": "m42f",
+    "path": "ironsht/src/single_delivery_state_v.rs",
+    "key": "CSendState::cack_state_swap",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A"
+  },
+  {
+    "id": "m43f",
+    "path": "ironsht/src/single_delivery_state_v.rs",
+    "key": "CSendState::put",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A"
+  },
+  {
+    "id": "m0r",
+    "path": "ironsht/src/delegation_map_v.rs",
+    "key": "StrictlyOrderedVec<K>::set",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B"
+  },
+  {
+    "id": "m1r",
+    "path": "ironsht/src/delegation_map_v.rs",
+    "key": "StrictlyOrderedVec<K>::remove",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B"
+  },
+  {
+    "id": "m2r",
+    "path": "ironsht/src/delegation_map_v.rs",
+    "key": "StrictlyOrderedVec<K>::erase",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B"
+  },
+  {
+    "id": "m3r",
+    "path": "ironsht/src/delegation_map_v.rs",
+    "key": "StrictlyOrderedVec<K>::insert",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B"
+  },
+  {
+    "id": "m4r",
+    "path": "ironsht/src/delegation_map_v.rs",
+    "key": "vec_erase",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B"
+  },
+  {
+    "id": "m5r",
+    "path": "ironsht/src/delegation_map_v.rs",
+    "key": "StrictlyOrderedMap<K>::set",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B"
+  },
+  {
+    "id": "m6r",
+    "path": "ironsht/src/delegation_map_v.rs",
+    "key": "StrictlyOrderedMap<K>::erase",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B"
+  },
+  {
+    "id": "m7r",
+    "path": "ironsht/src/delegation_map_v.rs",
+    "key": "DelegationMap<K>::set",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B"
+  },
+  {
+    "id": "m8r",
+    "path": "ironsht/src/endpoint_hashmap_t.rs",
+    "key": "HashMap<V>::insert",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B"
+  },
+  {
+    "id": "m9r",
+    "path": "ironsht/src/endpoint_hashmap_t.rs",
+    "key": "HashMap<V>::put",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B"
+  },
+  {
+    "id": "m10r",
+    "path": "ironsht/src/endpoint_hashmap_t.rs",
+    "key": "HashMap<V>::swap",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B"
+  },
+  {
+    "id": "m11r",
+    "path": "ironsht/src/hashmap_t.rs",
+    "key": "CKeyHashMap::insert",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B"
+  },
+  {
+    "id": "m12r",
+    "path": "ironsht/src/hashmap_t.rs",
+    "key": "CKeyHashMap::remove",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B"
+  },
+  {
+    "id": "m13r",
+    "path": "ironsht/src/host_impl_t.rs",
+    "key": "HostState::next_impl",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B"
+  },
+  {
+    "id": "m14r",
+    "path": "ironsht/src/host_impl_v.rs",
+    "key": "HostState::deliver_packet_seq",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B"
+  },
+  {
+    "id": "m15r",
+    "path": "ironsht/src/host_impl_v.rs",
+    "key": "HostState::deliver_outbound_packets",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B"
+  },
+  {
+    "id": "m16r",
+    "path": "ironsht/src/host_impl_v.rs",
+    "key": "HostState::receive_packet_next",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B"
+  },
+  {
+    "id": "m17r",
+    "path": "ironsht/src/host_impl_v.rs",
+    "key": "HostState::host_next_receive_packet",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B"
+  },
+  {
+    "id": "m18r",
+    "path": "ironsht/src/host_impl_v.rs",
+    "key": "HostState::host_model_receive_packet",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B"
+  },
+  {
+    "id": "m19r",
+    "path": "ironsht/src/host_impl_v.rs",
+    "key": "HostState::host_model_next_get_request",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B"
+  },
+  {
+    "id": "m20r",
+    "path": "ironsht/src/host_impl_v.rs",
+    "key": "HostState::host_model_next_set_request",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B"
+  },
+  {
+    "id": "m21r",
+    "path": "ironsht/src/host_impl_v.rs",
+    "key": "HostState::host_model_next_delegate",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B"
+  },
+  {
+    "id": "m22r",
+    "path": "ironsht/src/host_impl_v.rs",
+    "key": "HostState::host_model_next_shard",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B"
+  },
+  {
+    "id": "m23r",
+    "path": "ironsht/src/host_impl_v.rs",
+    "key": "HostState::host_model_next_receive_message",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B"
+  },
+  {
+    "id": "m24r",
+    "path": "ironsht/src/host_impl_v.rs",
+    "key": "HostState::process_received_packet_next_impl",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B"
+  },
+  {
+    "id": "m25r",
+    "path": "ironsht/src/host_impl_v.rs",
+    "key": "HostState::host_noreceive_noclock_next",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B"
+  },
+  {
+    "id": "m26r",
+    "path": "ironsht/src/host_impl_v.rs",
+    "key": "HostState::real_next_impl",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B"
+  },
+  {
+    "id": "m27r",
+    "path": "ironsht/src/io_t.rs",
+    "key": "NetClient::reset",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B"
+  },
+  {
+    "id": "m28r",
+    "path": "ironsht/src/io_t.rs",
+    "key": "NetClient::get_time",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B"
+  },
+  {
+    "id": "m29r",
+    "path": "ironsht/src/io_t.rs",
+    "key": "NetClient::receive",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B"
+  },
+  {
+    "id": "m30r",
+    "path": "ironsht/src/io_t.rs",
+    "key": "NetClient::send_internal_wrapper",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B"
+  },
+  {
+    "id": "m31r",
+    "path": "ironsht/src/io_t.rs",
+    "key": "NetClient::send",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B"
+  },
+  {
+    "id": "m32r",
+    "path": "ironsht/src/marshal_v.rs",
+    "key": "trait Marshalable::serialize",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B"
+  },
+  {
+    "id": "m33r",
+    "path": "ironsht/src/net_sht_v.rs",
+    "key": "receive_with_demarshal",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B"
+  },
+  {
+    "id": "m34r",
+    "path": "ironsht/src/net_sht_v.rs",
+    "key": "send_packet",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B"
+  },
+  {
+    "id": "m35r",
+    "path": "ironsht/src/net_sht_v.rs",
+    "key": "send_packet_seq",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B"
+  },
+  {
+    "id": "m36r",
+    "path": "ironsht/src/single_delivery_model_v.rs",
+    "key": "CSingleDelivery::receive_ack_impl",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B"
+  },
+  {
+    "id": "m37r",
+    "path": "ironsht/src/single_delivery_model_v.rs",
+    "key": "CSingleDelivery::receive_real_packet_impl",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B"
+  },
+  {
+    "id": "m38r",
+    "path": "ironsht/src/single_delivery_model_v.rs",
+    "key": "CSingleDelivery::receive_impl",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B"
+  },
+  {
+    "id": "m39r",
+    "path": "ironsht/src/single_delivery_model_v.rs",
+    "key": "CSingleDelivery::send_single_cmessage",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B"
+  },
+  {
+    "id": "m40r",
+    "path": "ironsht/src/single_delivery_state_v.rs",
+    "key": "CAckState::truncate",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B"
+  },
+  {
+    "id": "m41r",
+    "path": "ironsht/src/single_delivery_state_v.rs",
+    "key": "CTombstoneTable::insert",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B"
+  },
+  {
+    "id": "m42r",
+    "path": "ironsht/src/single_delivery_state_v.rs",
+    "key": "CSendState::cack_state_swap",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B"
+  },
+  {
+    "id": "m43r",
+    "path": "ironsht/src/single_delivery_state_v.rs",
+    "key": "CSendState::put",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/B"
+  },
+  {
+    "id": "h0f",
+    "path": "ironsht/src/cmessage_v.rs",
+    "key": "CMessage::clone_value",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/D",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A"
+  },
+  {
+    "id": "h1f",
+    "path": "ironsht/src/delegation_map_v.rs",
+    "key": "KeyIterator<K>::end",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/D",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A"
+  },
+  {
+    "id": "h2f",
+    "path": "ironsht/src/host_impl_v.rs",
+    "key": "HostState::parse_command_line_configuration",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/D",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A"
+  },
+  {
+    "id": "h3f",
+    "path": "ironsht/src/seq_is_unique_v.rs",
+    "key": "clone_option_vec_u8",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/D",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A"
+  },
+  {
+    "id": "h4f",
+    "path": "ironsht/src/seq_is_unique_v.rs",
+    "key": "clone_option_end_point",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/D",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A"
+  },
+  {
+    "id": "h0r",
+    "path": "ironsht/src/cmessage_v.rs",
+    "key": "CMessage::clone_value",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/D"
+  },
+  {
+    "id": "h1r",
+    "path": "ironsht/src/delegation_map_v.rs",
+    "key": "KeyIterator<K>::end",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/D"
+  },
+  {
+    "id": "h2r",
+    "path": "ironsht/src/host_impl_v.rs",
+    "key": "HostState::parse_command_line_configuration",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/D"
+  },
+  {
+    "id": "h3r",
+    "path": "ironsht/src/seq_is_unique_v.rs",
+    "key": "clone_option_vec_u8",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/D"
+  },
+  {
+    "id": "h4r",
+    "path": "ironsht/src/seq_is_unique_v.rs",
+    "key": "clone_option_end_point",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/D"
+  },
+  {
+    "id": "w0",
+    "path": "ironsht/src/delegation_map_v.rs",
+    "key": "StrictlyOrderedVec<K>::erase",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/C"
+  },
+  {
+    "id": "w1",
+    "path": "ironsht/src/delegation_map_v.rs",
+    "key": "StrictlyOrderedMap<K>::new",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/C"
+  },
+  {
+    "id": "w2",
+    "path": "ironsht/src/delegation_map_v.rs",
+    "key": "StrictlyOrderedMap<K>::values_agree",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/C"
+  },
+  {
+    "id": "w3",
+    "path": "ironsht/src/host_impl_v.rs",
+    "key": "make_send_only_event_results",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/C"
+  },
+  {
+    "id": "w4",
+    "path": "ironsht/src/host_impl_v.rs",
+    "key": "HostState::deliver_packet_seq",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/C"
+  },
+  {
+    "id": "w5",
+    "path": "ironsht/src/io_t.rs",
+    "key": "NetClient::reset",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/C"
+  },
+  {
+    "id": "w6",
+    "path": "ironsht/src/io_t.rs",
+    "key": "NetClient::send",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/C"
+  },
+  {
+    "id": "w7",
+    "path": "ironsht/src/marshal_v.rs",
+    "key": "trait Marshalable::serialize",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/C"
+  },
+  {
+    "id": "w8",
+    "path": "ironsht/src/single_delivery_model_v.rs",
+    "key": "CSingleDelivery::receive_real_packet_impl",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/C"
+  },
+  {
+    "id": "w9",
+    "path": "ironsht/src/single_delivery_model_v.rs",
+    "key": "CSingleDelivery::maybe_ack_packet_impl",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/C"
+  },
+  {
+    "id": "w10",
+    "path": "ironsht/src/single_delivery_model_v.rs",
+    "key": "CSingleDelivery::receive_impl",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/C"
+  },
+  {
+    "id": "w11",
+    "path": "ironsht/src/single_delivery_model_v.rs",
+    "key": "CSingleDelivery::send_single_cmessage",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/C"
+  },
+  {
+    "id": "w12",
+    "path": "ironsht/src/single_delivery_model_v.rs",
+    "key": "CSingleDelivery::retransmit_un_acked_packets",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/C"
+  },
+  {
+    "id": "w13",
+    "path": "ironsht/src/single_delivery_state_v.rs",
+    "key": "CAckState::new",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/C"
+  },
+  {
+    "id": "w14",
+    "path": "ironsht/src/single_delivery_state_v.rs",
+    "key": "CSendState::get",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/C"
+  },
+  {
+    "id": "s0",
+    "path": "ironsht/src/delegation_map_v.rs",
+    "key": "StrictlyOrderedVec<K>::erase",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/C",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A"
+  },
+  {
+    "id": "s1",
+    "path": "ironsht/src/delegation_map_v.rs",
+    "key": "StrictlyOrderedMap<K>::new",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/C",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A"
+  },
+  {
+    "id": "s2",
+    "path": "ironsht/src/delegation_map_v.rs",
+    "key": "StrictlyOrderedMap<K>::values_agree",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/C",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A"
+  },
+  {
+    "id": "s3",
+    "path": "ironsht/src/host_impl_v.rs",
+    "key": "make_send_only_event_results",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/C",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A"
+  },
+  {
+    "id": "s4",
+    "path": "ironsht/src/host_impl_v.rs",
+    "key": "HostState::deliver_packet_seq",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/C",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A"
+  },
+  {
+    "id": "s5",
+    "path": "ironsht/src/io_t.rs",
+    "key": "NetClient::reset",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/C",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A"
+  },
+  {
+    "id": "s6",
+    "path": "ironsht/src/io_t.rs",
+    "key": "NetClient::send",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/C",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A"
+  },
+  {
+    "id": "s7",
+    "path": "ironsht/src/marshal_v.rs",
+    "key": "trait Marshalable::serialize",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/C",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A"
+  },
+  {
+    "id": "s8",
+    "path": "ironsht/src/single_delivery_model_v.rs",
+    "key": "CSingleDelivery::receive_real_packet_impl",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/C",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A"
+  },
+  {
+    "id": "s9",
+    "path": "ironsht/src/single_delivery_model_v.rs",
+    "key": "CSingleDelivery::maybe_ack_packet_impl",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/C",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A"
+  },
+  {
+    "id": "s10",
+    "path": "ironsht/src/single_delivery_model_v.rs",
+    "key": "CSingleDelivery::receive_impl",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/C",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A"
+  },
+  {
+    "id": "s11",
+    "path": "ironsht/src/single_delivery_model_v.rs",
+    "key": "CSingleDelivery::send_single_cmessage",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/C",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A"
+  },
+  {
+    "id": "s12",
+    "path": "ironsht/src/single_delivery_model_v.rs",
+    "key": "CSingleDelivery::retransmit_un_acked_packets",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/C",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A"
+  },
+  {
+    "id": "s13",
+    "path": "ironsht/src/single_delivery_state_v.rs",
+    "key": "CAckState::new",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/C",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A"
+  },
+  {
+    "id": "s14",
+    "path": "ironsht/src/single_delivery_state_v.rs",
+    "key": "CSendState::get",
+    "x_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/C",
+    "y_tree": "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/exp/e1/A"
+  }
+]

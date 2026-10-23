@@ -1,0 +1,55 @@
+== Contract share of modified verified-exec-fn events by project-life quartile (non-mechanical) ==
+  anvil                       Q1  33.3% (n=54)  Q2  23.0% (n=244)  Q3  69.1% (n=317)  Q4  52.2% (n=182)
+  atmosphere                  Q1  66.7% (n=84)  Q2  72.9% (n=218)  Q3  58.9% (n=175)  Q4  52.6% (n=211)
+  verified-ironkv             Q1   0.0% (n=4)  Q2   n/a (n=0)  Q3   n/a (n=0)  Q4   n/a (n=0)
+  verified-memory-allocator   Q1   0.0% (n=13)  Q2  75.0% (n=12)  Q3  37.5% (n=24)  Q4  48.0% (n=25)
+  verified-node-replication   Q1  83.3% (n=6)  Q2  46.8% (n=47)  Q3  34.2% (n=79)  Q4  47.5% (n=40)
+  verified-nrkernel           Q1  57.8% (n=211)  Q2  43.1% (n=123)  Q3  66.1% (n=112)  Q4  51.0% (n=151)
+  verified-storage            Q1  57.5% (n=113)  Q2  65.9% (n=129)  Q3  46.0% (n=100)  Q4  50.0% (n=124)
+  vest                        Q1  56.7% (n=291)  Q2  66.3% (n=1677)  Q3  12.7% (n=598)  Q4  53.5% (n=3159)
+  pooled excl. vest            Q1  54.8% (n=485)  Q2  49.7% (n=773)  Q3  59.2% (n=807)  Q4  51.3% (n=733)
+
+== Net TCB growth per commit (moves within a commit cancel) ==
+  anvil                       commits  581  net-growing  186 ( 32.0%)  message names it  15.1%
+  atmosphere                  commits  265  net-growing   82 ( 30.9%)  message names it   8.5%
+  verified-ironkv             commits   15  net-growing    1 (  6.7%)  message names it 100.0%
+  verified-memory-allocator   commits   31  net-growing    1 (  3.2%)  message names it 100.0%
+  verified-node-replication   commits  145  net-growing   24 ( 16.6%)  message names it   8.3%
+  verified-nrkernel           commits  747  net-growing  175 ( 23.4%)  message names it   4.0%
+  verified-storage            commits  194  net-growing   21 ( 10.8%)  message names it   9.5%
+  vest                        commits  224  net-growing    7 (  3.1%)  message names it   0.0%
+
+== assume()/admit() proof debt over history (cumulative from root) ==
+  anvil                       commits  669  with outstanding debt  297 ( 44.4%)  peak  32  at HEAD   1  longest run 276
+  atmosphere                  commits  456  with outstanding debt  419 ( 91.9%)  peak  59  at HEAD  49  longest run 419
+  verified-ironkv             commits   16  with outstanding debt    0 (  0.0%)  peak   0  at HEAD   0  longest run 0
+  verified-memory-allocator   commits   32  with outstanding debt    0 (  0.0%)  peak   0  at HEAD   0  longest run 0
+  verified-node-replication   commits  185  with outstanding debt   96 ( 51.9%)  peak  26  at HEAD   0  longest run 61
+  verified-nrkernel           commits 1041  with outstanding debt 1020 ( 98.0%)  peak 125  at HEAD   0  longest run 1017
+  verified-storage            commits  206  with outstanding debt  171 ( 83.0%)  peak  29  at HEAD  14  longest run 171
+  vest                        commits  253  with outstanding debt  230 ( 90.9%)  peak  12  at HEAD   2  longest run 230
+
+== HEAD: TCB markers and _t.rs share ==
+  anvil                       {'admit': 1, 'external': 23, 'external_body': 401, 'uninterp': 53}  in _t.rs: 0/478 (  0.0%)
+  atmosphere                  {'admit': 3, 'assume': 46, 'external_body': 122}  in _t.rs: 72/171 ( 42.1%)
+  verified-ironkv             {'axiom_fn': 3, 'external': 16, 'external_body': 24, 'uninterp': 4}  in _t.rs: 42/47 ( 89.4%)
+  verified-memory-allocator   {'external': 37, 'external_body': 18, 'external_fn_specification': 1, 'external_type_specification': 1, 'uninterp': 2}  in _t.rs: 0/59 (  0.0%)
+  verified-node-replication   {'external_body': 9}  in _t.rs: 0/9 (  0.0%)
+  verified-nrkernel           {'axiom_fn': 22, 'external_body': 38, 'uninterp': 19}  in _t.rs: 0/79 (  0.0%)
+  verified-storage            {'admit': 7, 'assume': 7, 'external': 7, 'external_body': 159, 'external_fn_specification': 2, 'external_type_specification': 2, 'uninterp': 41}  in _t.rs: 215/225 ( 95.6%)
+  vest                        {'assume': 2, 'assume_specification': 3, 'axiom_fn': 1, 'external_body': 37, 'external_type_specification': 1, 'uninterp': 1}  in _t.rs: 0/45 (  0.0%)
+
+== E7: verified exec fns at HEAD by what the Rust signature bounds ==
+  repo                            n  read-only  &mut only  tracked perm  raw/interior/unsafe | &mut w/ two-state ensures
+  anvil                         263      98.5%       1.5%          0.0%                 0.0% | 100.0%
+  atmosphere                    251      40.2%      50.6%          4.0%                 5.2% |  74.8%
+  verified-ironkv               144      68.8%      31.2%          0.0%                 0.0% |  82.2%
+  verified-memory-allocator     212      38.7%       8.5%         41.0%                11.8% | 100.0%
+  verified-node-replication      43      41.9%       7.0%         51.2%                 0.0% |  33.3%
+  verified-nrkernel             101      38.6%       5.0%         54.5%                 2.0% |  40.0%
+  verified-storage              425      50.8%      24.0%         24.0%                 1.2% |  86.3%
+  vest                         2856      80.3%      19.4%          0.0%                 0.3% |   5.1%
+
+== Trusted surface in projects with a _t.rs boundary (tokens) ==
+  verified-ironkv: trusted surface 9652 vs verified exec outside _t.rs 8275 (1.17x); proof+ghost / verified exec 3.84x
+  verified-storage: trusted surface 32086 vs verified exec outside _t.rs 37070 (0.87x); proof+ghost / verified exec 2.45x

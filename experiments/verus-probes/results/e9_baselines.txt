@@ -1,0 +1,11 @@
+repo                        commits w/ trust event | recall:  B1 _t.rs B2 count+ B3 file-count   B1+B2 | B1 flags B1 flags w/o event | trusted-body-only commits
+anvil                           581   336 ( 57.8%) |   (no _t)     55.4%         84.8%   55.4% |        0                  0 |     51 ( 15.2%)
+atmosphere                      265   143 ( 54.0%) |     18.2%     57.3%         72.7%   62.9% |       28                  1 |     39 ( 27.3%)
+verified-ironkv                  15     7 ( 46.7%) |    100.0%     14.3%         28.6%  100.0% |       11                  4 |      5 ( 71.4%)
+verified-memory-allocator        31     6 ( 19.4%) |   (no _t)     16.7%         33.3%   16.7% |        0                  0 |      4 ( 66.7%)
+verified-node-replication       145    41 ( 28.3%) |   (no _t)     58.5%         97.6%   58.5% |        0                  0 |      1 (  2.4%)
+verified-nrkernel               747   427 ( 57.2%) |      2.1%     41.0%         93.9%   42.4% |       57                 32 |     26 (  6.1%)
+verified-storage                194    92 ( 47.4%) |     76.1%     22.8%         63.0%   82.6% |      117                 38 |     34 ( 37.0%)
+vest                            224    21 (  9.4%) |   (no _t)     33.3%         81.0%   33.3% |        0                  0 |      4 ( 19.0%)
+ALL                            2202  1073 ( 48.7%) |     16.7%     46.3%         84.7%   53.3% |          |                    |    164 ( 15.3%)
+B1 recall is computed only over repos that use the _t.rs convention.

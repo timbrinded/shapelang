@@ -1,0 +1,15 @@
+#!/bin/bash
+# sbx WORKDIR [--cpus N] -- CMD...: run CMD in a network-less, resource-limited
+# container with WORKDIR mounted at /work and host toolchains mounted read-only.
+set -euo pipefail
+VP_WORK=${VP_WORK:-/tmp/verus-probes}
+VERUS_DIR=${VERUS_DIR:-$VP_WORK/verus/source/target-verus/release}
+work=$(readlink -f "$1"); shift
+cpus=1
+if [ "${1:-}" = "--cpus" ]; then cpus=$2; shift 2; fi
+[ "${1:-}" = "--" ] && shift
+exec docker run --rm --network none --cpus "$cpus" --memory 6g --pids-limit 512 \
+  -v "$VERUS_DIR:/verus:ro" \
+  -v /root/.rustup:/root/.rustup:ro -v /root/.cargo/bin:/root/.cargo/bin:ro \
+  -v "$work:/work" -w /work -e PATH=/verus:/root/.cargo/bin:/usr/bin:/bin \
+  ubuntu:24.04 "$@"

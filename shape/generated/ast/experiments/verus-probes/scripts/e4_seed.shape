@@ -1,0 +1,65 @@
+module shape.generated.ast.experiments.verus_probes.scripts.e4_seed
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource E4SeedModuleCallersSyntacticAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/scripts/e4_seed.py#callers_syntactic")
+  fingerprint ast.semantic_subtree_v1("sha256:1b13986adf6762697e0eebea315fe5c75b6b9f2a9dde490e2347987a8de11651")
+}
+
+resource E4SeedModuleCallersVerusGraphAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/scripts/e4_seed.py#callers_verus_graph")
+  fingerprint ast.semantic_subtree_v1("sha256:a1a00664da1c0a1502fa54105defc5cacbbb2b12db2f59770964adb2ef202801")
+}
+
+resource E4SeedModuleTcbAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/scripts/e4_seed.py#tcb")
+  fingerprint ast.semantic_subtree_v1("sha256:6c453f2e2041207b994e3f6d2aa456ec2a3455ba6e8db021a77458a890eb1c30")
+}
+
+component E4SeedModule : GeneratedCandidate {
+  fn callers_syntactic
+    source python("experiments/verus-probes/scripts/e4_seed.py#callers_syntactic")
+    effects unknown
+  fn callers_verus_graph
+    source python("experiments/verus-probes/scripts/e4_seed.py#callers_verus_graph")
+    effects unknown
+  fn tcb
+    source python("experiments/verus-probes/scripts/e4_seed.py#tcb")
+    effects unknown
+}
+
+relation E4SeedModuleCallersSyntacticGeneratedFromE4SeedModuleCallersSyntacticAstAnchor {
+  kind generated_from
+  connects E4SeedModule -> E4SeedModuleCallersSyntacticAstAnchor
+  roles { E4SeedModule as generated, E4SeedModuleCallersSyntacticAstAnchor as syntax }
+  expects E4SeedModuleCallersSyntacticAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1b13986adf6762697e0eebea315fe5c75b6b9f2a9dde490e2347987a8de11651")
+  summary "fn E4SeedModule.callers_syntactic generated from python function_definition at experiments/verus-probes/scripts/e4_seed.py#callers_syntactic."
+}
+
+relation E4SeedModuleCallersVerusGraphGeneratedFromE4SeedModuleCallersVerusGraphAstAnchor {
+  kind generated_from
+  connects E4SeedModule -> E4SeedModuleCallersVerusGraphAstAnchor
+  roles { E4SeedModule as generated, E4SeedModuleCallersVerusGraphAstAnchor as syntax }
+  expects E4SeedModuleCallersVerusGraphAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a1a00664da1c0a1502fa54105defc5cacbbb2b12db2f59770964adb2ef202801")
+  summary "fn E4SeedModule.callers_verus_graph generated from python function_definition at experiments/verus-probes/scripts/e4_seed.py#callers_verus_graph."
+}
+
+relation E4SeedModuleTcbGeneratedFromE4SeedModuleTcbAstAnchor {
+  kind generated_from
+  connects E4SeedModule -> E4SeedModuleTcbAstAnchor
+  roles { E4SeedModule as generated, E4SeedModuleTcbAstAnchor as syntax }
+  expects E4SeedModuleTcbAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6c453f2e2041207b994e3f6d2aa456ec2a3455ba6e8db021a77458a890eb1c30")
+  summary "fn E4SeedModule.tcb generated from python function_definition at experiments/verus-probes/scripts/e4_seed.py#tcb."
+}
+
+implementation E4SeedModuleImpl {
+  paths {
+    "experiments/verus-probes/scripts/e4_seed.py"
+  }
+  conforms_to E4SeedModule
+}

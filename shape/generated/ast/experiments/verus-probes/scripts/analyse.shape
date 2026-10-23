@@ -1,0 +1,161 @@
+module shape.generated.ast.experiments.verus_probes.scripts.analyse
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource AnalyseModuleAnyFnAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/scripts/analyse.py#any_fn")
+  fingerprint ast.semantic_subtree_v1("sha256:e86cae05a25b4fefd60f8277ba7b97fb58ed864af250e97635e4e2adccb121dc")
+}
+
+resource AnalyseModuleGhostProofOnlyAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/scripts/analyse.py#ghost_proof_only")
+  fingerprint ast.semantic_subtree_v1("sha256:c333441e86b22731c071a95cc51073ee64fc03c9c3265bbaec08fcd5b265de9c")
+}
+
+resource AnalyseModuleIsMechAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/scripts/analyse.py#is_mech")
+  fingerprint ast.semantic_subtree_v1("sha256:ba66e69da29008d31dee6dc79000af3b4df567fa512c81fab7c0d3b910304112")
+}
+
+resource AnalyseModuleP2AstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/scripts/analyse.py#p2")
+  fingerprint ast.semantic_subtree_v1("sha256:24d40cee6546a9a1949b969431a4648f1c999f7c3b89eeed73955199623ef8da")
+}
+
+resource AnalyseModuleP3loAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/scripts/analyse.py#p3lo")
+  fingerprint ast.semantic_subtree_v1("sha256:345e311469d48fd10efb0840bacc671df8151675bdea1fcc65cea5ffd5e72958")
+}
+
+resource AnalyseModuleP3upAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/scripts/analyse.py#p3up")
+  fingerprint ast.semantic_subtree_v1("sha256:c92082944588dc3ca20f172b506cd126615a05dbf4e605d258371b2556027619")
+}
+
+resource AnalyseModulePctAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/scripts/analyse.py#pct")
+  fingerprint ast.semantic_subtree_v1("sha256:6c49e990e30aa989484fb2e33a2da30063a1b0b8c2986fa6ceb4ac7d4d638e37")
+}
+
+resource AnalyseModuleQAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/scripts/analyse.py#q")
+  fingerprint ast.semantic_subtree_v1("sha256:2ec627e26ac347692ca0711af1b21438144ea6e2d3445cfd8bd48a4b9cafdfd3")
+}
+
+resource AnalyseModuleTrustAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/verus-probes/scripts/analyse.py#trust")
+  fingerprint ast.semantic_subtree_v1("sha256:8fb30160f70910a738693332d0ec3de67a8648482334ce896cdbf0833eedaa5c")
+}
+
+component AnalyseModule : GeneratedCandidate {
+  fn any_fn
+    source python("experiments/verus-probes/scripts/analyse.py#any_fn")
+    effects unknown
+  fn ghost_proof_only
+    source python("experiments/verus-probes/scripts/analyse.py#ghost_proof_only")
+    effects unknown
+  fn is_mech
+    source python("experiments/verus-probes/scripts/analyse.py#is_mech")
+    effects unknown
+  fn p2
+    source python("experiments/verus-probes/scripts/analyse.py#p2")
+    effects unknown
+  fn p3lo
+    source python("experiments/verus-probes/scripts/analyse.py#p3lo")
+    effects unknown
+  fn p3up
+    source python("experiments/verus-probes/scripts/analyse.py#p3up")
+    effects unknown
+  fn pct
+    source python("experiments/verus-probes/scripts/analyse.py#pct")
+    effects unknown
+  fn q
+    source python("experiments/verus-probes/scripts/analyse.py#q")
+    effects unknown
+  fn trust
+    source python("experiments/verus-probes/scripts/analyse.py#trust")
+    effects unknown
+}
+
+relation AnalyseModuleAnyFnGeneratedFromAnalyseModuleAnyFnAstAnchor {
+  kind generated_from
+  connects AnalyseModule -> AnalyseModuleAnyFnAstAnchor
+  roles { AnalyseModule as generated, AnalyseModuleAnyFnAstAnchor as syntax }
+  expects AnalyseModuleAnyFnAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e86cae05a25b4fefd60f8277ba7b97fb58ed864af250e97635e4e2adccb121dc")
+  summary "fn AnalyseModule.any_fn generated from python function_definition at experiments/verus-probes/scripts/analyse.py#any_fn."
+}
+
+relation AnalyseModuleGhostProofOnlyGeneratedFromAnalyseModuleGhostProofOnlyAstAnchor {
+  kind generated_from
+  connects AnalyseModule -> AnalyseModuleGhostProofOnlyAstAnchor
+  roles { AnalyseModule as generated, AnalyseModuleGhostProofOnlyAstAnchor as syntax }
+  expects AnalyseModuleGhostProofOnlyAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c333441e86b22731c071a95cc51073ee64fc03c9c3265bbaec08fcd5b265de9c")
+  summary "fn AnalyseModule.ghost_proof_only generated from python function_definition at experiments/verus-probes/scripts/analyse.py#ghost_proof_only."
+}
+
+relation AnalyseModuleIsMechGeneratedFromAnalyseModuleIsMechAstAnchor {
+  kind generated_from
+  connects AnalyseModule -> AnalyseModuleIsMechAstAnchor
+  roles { AnalyseModule as generated, AnalyseModuleIsMechAstAnchor as syntax }
+  expects AnalyseModuleIsMechAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ba66e69da29008d31dee6dc79000af3b4df567fa512c81fab7c0d3b910304112")
+  summary "fn AnalyseModule.is_mech generated from python function_definition at experiments/verus-probes/scripts/analyse.py#is_mech."
+}
+
+relation AnalyseModuleP2GeneratedFromAnalyseModuleP2AstAnchor {
+  kind generated_from
+  connects AnalyseModule -> AnalyseModuleP2AstAnchor
+  roles { AnalyseModule as generated, AnalyseModuleP2AstAnchor as syntax }
+  expects AnalyseModuleP2AstAnchor fingerprint ast.semantic_subtree_v1("sha256:24d40cee6546a9a1949b969431a4648f1c999f7c3b89eeed73955199623ef8da")
+  summary "fn AnalyseModule.p2 generated from python function_definition at experiments/verus-probes/scripts/analyse.py#p2."
+}
+
+relation AnalyseModuleP3loGeneratedFromAnalyseModuleP3loAstAnchor {
+  kind generated_from
+  connects AnalyseModule -> AnalyseModuleP3loAstAnchor
+  roles { AnalyseModule as generated, AnalyseModuleP3loAstAnchor as syntax }
+  expects AnalyseModuleP3loAstAnchor fingerprint ast.semantic_subtree_v1("sha256:345e311469d48fd10efb0840bacc671df8151675bdea1fcc65cea5ffd5e72958")
+  summary "fn AnalyseModule.p3lo generated from python function_definition at experiments/verus-probes/scripts/analyse.py#p3lo."
+}
+
+relation AnalyseModuleP3upGeneratedFromAnalyseModuleP3upAstAnchor {
+  kind generated_from
+  connects AnalyseModule -> AnalyseModuleP3upAstAnchor
+  roles { AnalyseModule as generated, AnalyseModuleP3upAstAnchor as syntax }
+  expects AnalyseModuleP3upAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c92082944588dc3ca20f172b506cd126615a05dbf4e605d258371b2556027619")
+  summary "fn AnalyseModule.p3up generated from python function_definition at experiments/verus-probes/scripts/analyse.py#p3up."
+}
+
+relation AnalyseModulePctGeneratedFromAnalyseModulePctAstAnchor {
+  kind generated_from
+  connects AnalyseModule -> AnalyseModulePctAstAnchor
+  roles { AnalyseModule as generated, AnalyseModulePctAstAnchor as syntax }
+  expects AnalyseModulePctAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6c49e990e30aa989484fb2e33a2da30063a1b0b8c2986fa6ceb4ac7d4d638e37")
+  summary "fn AnalyseModule.pct generated from python function_definition at experiments/verus-probes/scripts/analyse.py#pct."
+}
+
+relation AnalyseModuleQGeneratedFromAnalyseModuleQAstAnchor {
+  kind generated_from
+  connects AnalyseModule -> AnalyseModuleQAstAnchor
+  roles { AnalyseModule as generated, AnalyseModuleQAstAnchor as syntax }
+  expects AnalyseModuleQAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2ec627e26ac347692ca0711af1b21438144ea6e2d3445cfd8bd48a4b9cafdfd3")
+  summary "fn AnalyseModule.q generated from python function_definition at experiments/verus-probes/scripts/analyse.py#q."
+}
+
+relation AnalyseModuleTrustGeneratedFromAnalyseModuleTrustAstAnchor {
+  kind generated_from
+  connects AnalyseModule -> AnalyseModuleTrustAstAnchor
+  roles { AnalyseModule as generated, AnalyseModuleTrustAstAnchor as syntax }
+  expects AnalyseModuleTrustAstAnchor fingerprint ast.semantic_subtree_v1("sha256:8fb30160f70910a738693332d0ec3de67a8648482334ce896cdbf0833eedaa5c")
+  summary "fn AnalyseModule.trust generated from python function_definition at experiments/verus-probes/scripts/analyse.py#trust."
+}
+
+implementation AnalyseModuleImpl {
+  paths {
+    "experiments/verus-probes/scripts/analyse.py"
+  }
+  conforms_to AnalyseModule
+}
