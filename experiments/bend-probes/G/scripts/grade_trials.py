@@ -87,8 +87,8 @@ def hidden_tests(task, env):
     cfg = TASKS[task]
     hdir = os.path.join(X, "hidden", task)
     rc, out = run(["bun", "test", os.path.join(hdir, cfg["hidden"])], cwd=hdir, env=env)
-    ff = len(re.findall(r"^\(fail\) .*\[feature\]", out, re.M))
-    fl = len(re.findall(r"^\(fail\) .*\[law\]", out, re.M))
+    ff = len(re.findall(r"^\(fail\) .*\[feature", out, re.M))
+    fl = len(re.findall(r"^\(fail\) .*\[law", out, re.M))
     m = re.search(r"(\d+) pass", out)
     n = re.search(r"(\d+) fail", out)
     return {"rc": rc, "feature_fail": ff, "law_fail": fl, "pass": int(m.group(1)) if m else 0,

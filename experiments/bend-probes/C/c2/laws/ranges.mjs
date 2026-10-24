@@ -47,7 +47,7 @@ export function arbitrary(fc) {
 // Every list over `items` of length 0..maxLength, shortest first.
 export function* listsOver(items, maxLength) {
   for (let length = 0; length <= maxLength; length++) {
-    const index = new Array(length).fill(0);
+    const index = Array.from({ length }, () => 0);
     while (true) {
       yield index.map((i) => items[i]);
       let k = length - 1;

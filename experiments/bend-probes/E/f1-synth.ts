@@ -344,6 +344,17 @@ export function synthesize(t: Target, sem: Sem, opts: { maxSize?: number; cap?: 
     const distinct = [...bySig.values()];
     const intendedFound = bySig.has(intendedSig);
     const unintended = distinct.filter((s) => s.sig !== intendedSig);
+    // genuine under-specification: differs from intent already on the law inputs;
+    // bound artefact: agrees with intent on every law input, differs only beyond the bound
+    const lawSigF = (f: Fn | [Fn, Fn]) => (Array.isArray(f) ? sigOf(f[0], lawIn) + "|" + sigOf(f[1], lawIn) : sigOf(f, lawIn));
+    const intendedLawSig = lawSigF(intended);
+    const boundArtefacts = unintended.filter((u) => lawSigF(u.f) === intendedLawSig);
+    // re-check every solution with the large test set as law inputs (a wider bound)
+    const wideOk = (u: Sol) => {
+      if (Array.isArray(u.f)) { const [fs, fe] = u.f; currentPair = { s: fs, e: fe }; return laws.every((l) => pts.every((x) => l.holds(fs, x))); }
+      const f = u.f; return laws.every((l) => pts.every((x) => l.holds(f, x)));
+    };
+    const survivorsWide = distinct.filter(wideOk);
     return {
       laws: laws.map((l) => l.name),
       first: firsts[li],
@@ -351,6 +362,11 @@ export function synthesize(t: Target, sem: Sem, opts: { maxSize?: number; cap?: 
       intendedFound,
       intendedExpr: intendedFound ? bySig.get(intendedSig)!.expr : undefined,
       unintendedCount: unintended.length,
+      underSpecified: unintended.length - boundArtefacts.length,
+      boundArtefacts: boundArtefacts.length,
+      distinctWithWideLawInputs: survivorsWide.length,
+      unintendedWithWideLawInputs: survivorsWide.filter((u) => u.sig !== intendedSig).length,
+      underSpecifiedExamples: unintended.filter((u) => !boundArtefacts.includes(u)).sort((a, b) => a.size - b.size).slice(0, 3).map((u) => u.expr),
       unintendedExamples: unintended.sort((a, b) => a.size - b.size).slice(0, 4).map((s) => s.expr)
     };
   });

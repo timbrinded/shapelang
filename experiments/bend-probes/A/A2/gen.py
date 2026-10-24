@@ -335,6 +335,30 @@ def getLabel(id: String) -> IO(String):
   label_or(is_known(id))
 ''' + PRESENT_IO + MAIN_IO, {})
 
+ENC["E14_cps_effect_crash"] = ("Maybe<String> kept (base type); unknown branch applies an IO effect to a continuation in pure code, which the runtime fail-stops on", PRE + '''
+def as_label(op: IO.OP<Unit>) -> Maybe<String>:
+  match op:
+    case Emit{v}:
+      None{}
+    case Halt{c, m}:
+      None{}
+    case Exit{c}:
+      None{}
+
+def label_for(k: Bool) -> Maybe<String>:
+  match k:
+    case True{}:
+      Some{"record"}
+    case False{}:
+      as_label(IO.print("missing record")(Unit, u => Emit{u}))
+
+def getLabel(id: String) -> Maybe<String>:
+  label_for(is_known(id))
+
+def presentRecord(id: String) -> String:
+  present_label(getLabel(id))
+''' + MAIN_PURE, {})
+
 IO_LAWS = '''# E7b: the base laws restated over IO, as an agent might after the
 # presenter became IO. Same intent: unknown ids present "not found".
 

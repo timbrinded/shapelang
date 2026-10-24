@@ -11,7 +11,9 @@
 //   - for an IO def, typed effects derived from the Base effect defs its body
 //     reaches (through every def body, Base included); effects unknown when it
 //     reaches a user foreign effect (host code the checker never reads);
-//   - an untargeted MayDiverge effect for a def that relies on @unsafe;
+//   - an untargeted ReliesOnUnsafe effect for a def that relies on @unsafe
+//     (a user @unsafe def skips the termination check; Base's Array.fork aliases);
+//   - no effects for a law's def (a proof is erased: it never runs);
 //   - grants equal to the effects its fns use, resources for each target;
 //   - a calls relation A -> B for each module A whose def bodies name a
 //     runtime def of module B.
@@ -145,7 +147,8 @@ async function analyse(entry: string, root: string) {
       unsafe: t.u === true,
       reliesUnsafe: [...all].filter((j) => book.tlds[j]?.u === true).map(norm).concat(t.u === true ? [nk] : []),
       reliesForeign: [...all, k].filter((j) => { const d = book.tlds[j]; return d?.$ === "Def" && d.i !== undefined && d.b !== true; }).map(norm),
-      baseEffects: [...run, k].filter((j) => { const d = book.tlds[j]; return d?.$ === "Def" && d.i !== undefined && d.b === true; })
+      // a law's def is a proof: erased, it runs nothing, even when its statement mentions IO
+      baseEffects: t.l === true ? [] : [...run, k].filter((j) => { const d = book.tlds[j]; return d?.$ === "Def" && d.i !== undefined && d.b === true; })
         .concat(typeIO && [...run, k].some((j) => refs(j).ctrs.has("Halt")) ? ["Halt"] : []).sort(),
       calls: [...new Set(callTargets)].sort(),
     });
@@ -190,7 +193,7 @@ export async function extract(root: string) {
       const hit = EFFECTS.find(([re]) => re.test(b));
       for (const [v, res] of hit ? hit[1] : [["Unmapped", "Host"] as [string, string]]) effects.add(v + "<" + res + ">");
     }
-    if (r.reliesUnsafe.length > 0) effects.add("MayDiverge");
+    if (r.reliesUnsafe.length > 0) effects.add("ReliesOnUnsafe");
     out.push({ ...r, shapeName: n, component: comp, effects: [...effects].sort(),
       claim: r.reliesForeign.length > 0 ? "unknown" : "complete" });
   }
@@ -234,6 +237,6 @@ if (import.meta.main) {
   const n = r.records.length;
   const io = r.records.filter((f) => f.ioType).length;
   const unk = r.records.filter((f) => f.claim === "unknown").length;
-  const div = r.records.filter((f) => f.effects.includes("MayDiverge")).length;
-  process.stderr.write(`${path.basename(process.argv[2])}: ${n} fns, ${io} IO-typed, ${unk} unknown, ${div} MayDiverge, errors ${r.errors.length}\n`);
+  const div = r.records.filter((f) => f.effects.includes("ReliesOnUnsafe")).length;
+  process.stderr.write(`${path.basename(process.argv[2])}: ${n} fns, ${io} IO-typed, ${unk} unknown, ${div} ReliesOnUnsafe, errors ${r.errors.length}\n`);
 }

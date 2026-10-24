@@ -72,7 +72,7 @@
       {"text": "the loosening check restores exactly the listed rule-layer kinds and takes code claims from head", "route": "static-scan"},
       {"text": "moving a kind across the line would let an agent silence a violation", "route": "rationale"}]},
     {"name": "ShapeSourceNormalizationContract", "kind": "memory", "clauses": [
-      {"text": "coverage, binding and analyzer comparisons use the same repo-relative path rules", "route": "call-graph"}]},
+      {"text": "coverage, binding and analyzer comparisons use the same repo-relative path rules", "route": "law", "note": "a call-graph formalisation gave 2 false positives (normalization happens in lowering, by data flow); implemented as a cross-surface law (E5 check C)"}]},
     {"name": "ShapeStringLiteralContract", "kind": "memory", "clauses": [
       {"text": "string unquoting is consistent across lowering and formatting", "route": "call-graph"}]},
     {"name": "SharedCheckPipelineOrder", "kind": "memory", "clauses": [

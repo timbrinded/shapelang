@@ -7,7 +7,9 @@ usage: python3 -I perlaw.py <project-dir> <work-dir>
 `law NAME` in LAWS.bend, a copy of the project is made under
 <work-dir>/<NAME>/ whose LAWS.bend states only that law and whose PROOF.bend
 keeps every helper def but drops the `def Laws.OTHER` fillers of the other
-laws. `bend PROOF.bend` is run there; one TSV line per law is printed:
+laws. A law whose proof uses another law (directly or through a helper def)
+keeps that law too, so a line reads "this law and the laws its proof uses".
+`bend PROOF.bend` is run there; one TSV line per law is printed:
 NAME, PASS/FAIL, exit code, first error line.
 """
 import os, re, shutil, subprocess, sys
@@ -38,16 +40,33 @@ def main():
     proof_src = open(os.path.join(proj, "PROOF.bend")).read()
     lb, pb = blocks(laws_src), blocks(proof_src)
     names = [re.match(r"law\s+([\w.]+)", head(b)).group(1) for b in lb if head(b).startswith("law ")]
+    defs = {}
+    for b in pb:
+        m = re.match(r"(?:@unsafe\s+)?def\s+([\w.]+?)\??\s*\(", head(b))
+        if m:
+            defs[m.group(1)] = b
+    def closure(n):
+        """Laws reachable from def Laws.n through calls to defs of PROOF.bend."""
+        laws, seen, todo = {n}, {"Laws." + n}, ["Laws." + n]
+        while todo:
+            body = defs.get(todo.pop(), "")
+            for other in defs:
+                if other not in seen and re.search(r"(?<![\w.])" + re.escape(other) + r"\(", body):
+                    seen.add(other); todo.append(other)
+                    if other.startswith("Laws."):
+                        laws.add(other[len("Laws."):])
+        return laws
     for n in names:
+        keep = closure(n)
         d = os.path.join(work, n)
         if os.path.exists(d):
             shutil.rmtree(d)
         shutil.copytree(proj, d)
-        keep_l = [b for b in lb if not head(b).startswith("law ") or re.match(r"law\s+" + re.escape(n) + r"\s*:", head(b))]
+        keep_l = [b for b in lb if not head(b).startswith("law ") or any(re.match(r"law\s+" + re.escape(k) + r"\s*:", head(b)) for k in keep)]
         keep_p = []
         for b in pb:
             m = re.match(r"(?:@unsafe\s+)?def\s+Laws\.([\w.]+?)\??\s*\(", head(b))
-            if m and m.group(1) != n:
+            if m and m.group(1) not in keep:
                 continue
             keep_p.append(b)
         open(os.path.join(d, "LAWS.bend"), "w").write("".join(keep_l))

@@ -234,7 +234,7 @@ export function createGraph(env) {
         chain = imp.namespace || imp.imported === "default" ? [`module:${imp.spec}`, ...names] : [`module:${imp.spec}`, imp.imported, ...names];
       } else if (!imp) {
         const decls = sym?.declarations ?? [];
-        if (decls.length === 0 || decls.every((d) => !isLocalFile(d.getSourceFile().fileName))) chain = [`global:${id.text}`, ...names];
+        if (decls.every((d) => !isLocalFile(d.getSourceFile().fileName))) chain = [`global:${id.text}`, ...names];
       }
       if (chain) {
         const c = classify(chain, ctx);

@@ -1,0 +1,518 @@
+[
+ {
+  "id": "T1-C0-s1",
+  "task": "T1",
+  "cond": "C0",
+  "seed": "s1",
+  "hidden_access": [
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/adapter.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/hidden.test.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m01_no_west_wall.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m02_no_north_wall.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m03_north_wall_short.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m04_west_wall_short.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m05_wrap_ignores_walls.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m06_east_wall_gap.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m07_won_by_row.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m08_replay_reversed.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m09_replay_drops_last.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m10_flag_moved.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m11_win_only_from_below.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m12_won_not_sticky.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m13_no_vertical_wrap.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m14_wrap_right_off_by_one.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m15_wrap_left_wrong_dimension.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m16_wall_in_open_row.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m17_down_wrap_to_row_1.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m18_north_wall_wrong_row.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m19_replay_stops_when_blocked.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m20_iswon_by_position.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/manifest.json",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/protected.sha256",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/ref/alt/alt_a_minimal_far_walls.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/ref/alt/alt_b_inner_walls.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/ref/alt/alt_c_flag_cage.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/ref/alt/bend_flag_cage/LAWS.bend",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/ref/alt/bend_flag_cage/PROOF.bend",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/ref/alt/bend_flag_cage/game.bend",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/ref/bend/LAWS.bend",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/ref/bend/PROOF.bend",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/ref/bend/game.bend",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/ref/ts/game.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/trap/bend/COUNTER.bend",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/trap/bend/LAWS.bend",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/trap/bend/PROOF.bend",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/trap/bend/game.bend",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/trap/ts/game.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/validate.sh"
+  ],
+  "protected_modified": [],
+  "changed_files": [
+   "shape/model.shape",
+   "src/game.ts",
+   "test/wrap.test.ts"
+  ],
+  "lines_changed": {
+   "shape": [
+    5,
+    2
+   ],
+   "code": [
+    24,
+    12
+   ],
+   "tests": [
+    161,
+    0
+   ]
+  },
+  "gate_runs": 2,
+  "gate_log_last": "2026-10-24T22:12:53Z shp=0 tests=0",
+  "final_gate_pass": true,
+  "final_gate_tail": "",
+  "hidden": {
+   "rc": 0,
+   "feature_fail": 0,
+   "law_fail": 0,
+   "pass": 23,
+   "fail": 0,
+   "fail_names": [],
+   "tail": ""
+  },
+  "shipped_law_violation": false,
+  "feature_complete": true
+ },
+ {
+  "id": "T1-C0-s2",
+  "task": "T1",
+  "cond": "C0",
+  "seed": "s2",
+  "hidden_access": [
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/adapter.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/hidden.test.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m01_no_west_wall.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m02_no_north_wall.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m03_north_wall_short.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m04_west_wall_short.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m05_wrap_ignores_walls.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m06_east_wall_gap.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m07_won_by_row.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m08_replay_reversed.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m09_replay_drops_last.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m10_flag_moved.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m11_win_only_from_below.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m12_won_not_sticky.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m13_no_vertical_wrap.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m14_wrap_right_off_by_one.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m15_wrap_left_wrong_dimension.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m16_wall_in_open_row.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m17_down_wrap_to_row_1.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m18_north_wall_wrong_row.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m19_replay_stops_when_blocked.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m20_iswon_by_position.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/manifest.json",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/protected.sha256",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/ref/alt/alt_a_minimal_far_walls.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/ref/alt/alt_b_inner_walls.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/ref/alt/alt_c_flag_cage.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/ref/alt/bend_flag_cage/LAWS.bend",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/ref/alt/bend_flag_cage/PROOF.bend",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/ref/alt/bend_flag_cage/game.bend",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/ref/bend/LAWS.bend",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/ref/bend/PROOF.bend",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/ref/bend/game.bend",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/ref/ts/game.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/trap/bend/COUNTER.bend",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/trap/bend/LAWS.bend",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/trap/bend/PROOF.bend",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/trap/bend/game.bend",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/trap/ts/game.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/validate.sh"
+  ],
+  "protected_modified": [],
+  "changed_files": [
+   "shape/model.shape",
+   "src/game.ts",
+   "test/wrap.test.ts"
+  ],
+  "lines_changed": {
+   "shape": [
+    5,
+    2
+   ],
+   "code": [
+    17,
+    10
+   ],
+   "tests": [
+    140,
+    0
+   ]
+  },
+  "gate_runs": 2,
+  "gate_log_last": "2026-10-24T22:13:11Z shp=0 tests=0",
+  "final_gate_pass": true,
+  "final_gate_tail": "",
+  "hidden": {
+   "rc": 0,
+   "feature_fail": 0,
+   "law_fail": 0,
+   "pass": 23,
+   "fail": 0,
+   "fail_names": [],
+   "tail": ""
+  },
+  "shipped_law_violation": false,
+  "feature_complete": true
+ },
+ {
+  "id": "T1-C1-s1",
+  "task": "T1",
+  "cond": "C1",
+  "seed": "s1",
+  "hidden_access": [
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/adapter.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/hidden.test.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m01_no_west_wall.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m02_no_north_wall.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m03_north_wall_short.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m04_west_wall_short.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m05_wrap_ignores_walls.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m06_east_wall_gap.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m07_won_by_row.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m08_replay_reversed.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m09_replay_drops_last.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m10_flag_moved.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m11_win_only_from_below.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m12_won_not_sticky.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m13_no_vertical_wrap.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m14_wrap_right_off_by_one.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m15_wrap_left_wrong_dimension.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m16_wall_in_open_row.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m17_down_wrap_to_row_1.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m18_north_wall_wrong_row.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m19_replay_stops_when_blocked.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m20_iswon_by_position.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/manifest.json",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/protected.sha256",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/ref/alt/alt_a_minimal_far_walls.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/ref/alt/alt_b_inner_walls.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/ref/alt/alt_c_flag_cage.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/ref/alt/bend_flag_cage/LAWS.bend",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/ref/alt/bend_flag_cage/PROOF.bend",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/ref/alt/bend_flag_cage/game.bend",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/ref/bend/LAWS.bend",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/ref/bend/PROOF.bend",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/ref/bend/game.bend",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/ref/ts/game.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/trap/bend/COUNTER.bend",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/trap/bend/LAWS.bend",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/trap/bend/PROOF.bend",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/trap/bend/game.bend",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/trap/ts/game.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/validate.sh"
+  ],
+  "protected_modified": [],
+  "changed_files": [
+   "shape/model.shape",
+   "src/game.ts",
+   "test/wrap.test.ts"
+  ],
+  "lines_changed": {
+   "shape": [
+    4,
+    2
+   ],
+   "code": [
+    24,
+    10
+   ],
+   "tests": [
+    103,
+    0
+   ]
+  },
+  "gate_runs": 2,
+  "gate_log_last": "2026-10-24T22:13:13Z shp=0 laws=0 tests=0",
+  "final_gate_pass": true,
+  "final_gate_tail": "",
+  "hidden": {
+   "rc": 0,
+   "feature_fail": 0,
+   "law_fail": 0,
+   "pass": 23,
+   "fail": 0,
+   "fail_names": [],
+   "tail": ""
+  },
+  "shipped_law_violation": false,
+  "feature_complete": true
+ },
+ {
+  "id": "T1-C1-s2",
+  "task": "T1",
+  "cond": "C1",
+  "seed": "s2",
+  "hidden_access": [
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/adapter.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/hidden.test.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m01_no_west_wall.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m02_no_north_wall.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m03_north_wall_short.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m04_west_wall_short.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m05_wrap_ignores_walls.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m06_east_wall_gap.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m07_won_by_row.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m08_replay_reversed.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m09_replay_drops_last.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m10_flag_moved.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m11_win_only_from_below.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m12_won_not_sticky.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m13_no_vertical_wrap.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m14_wrap_right_off_by_one.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m15_wrap_left_wrong_dimension.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m16_wall_in_open_row.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m17_down_wrap_to_row_1.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m18_north_wall_wrong_row.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m19_replay_stops_when_blocked.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m20_iswon_by_position.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/manifest.json",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/protected.sha256",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/ref/alt/alt_a_minimal_far_walls.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/ref/alt/alt_b_inner_walls.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/ref/alt/alt_c_flag_cage.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/ref/alt/bend_flag_cage/LAWS.bend",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/ref/alt/bend_flag_cage/PROOF.bend",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/ref/alt/bend_flag_cage/game.bend",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/ref/bend/LAWS.bend",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/ref/bend/PROOF.bend",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/ref/bend/game.bend",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/ref/ts/game.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/trap/bend/COUNTER.bend",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/trap/bend/LAWS.bend",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/trap/bend/PROOF.bend",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/trap/bend/game.bend",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/trap/ts/game.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/validate.sh"
+  ],
+  "protected_modified": [],
+  "changed_files": [
+   "shape/model.shape",
+   "src/game.ts",
+   "test/wrap.test.ts"
+  ],
+  "lines_changed": {
+   "shape": [
+    2,
+    1
+   ],
+   "code": [
+    22,
+    11
+   ],
+   "tests": [
+    43,
+    0
+   ]
+  },
+  "gate_runs": 1,
+  "gate_log_last": "2026-10-24T22:12:00Z shp=0 laws=0 tests=0",
+  "final_gate_pass": true,
+  "final_gate_tail": "",
+  "hidden": {
+   "rc": 0,
+   "feature_fail": 0,
+   "law_fail": 0,
+   "pass": 23,
+   "fail": 0,
+   "fail_names": [],
+   "tail": ""
+  },
+  "shipped_law_violation": false,
+  "feature_complete": true
+ },
+ {
+  "id": "T1-C2-s1",
+  "task": "T1",
+  "cond": "C2",
+  "seed": "s1",
+  "hidden_access": [
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/adapter.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/hidden.test.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m01_no_west_wall.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m02_no_north_wall.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m03_north_wall_short.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m04_west_wall_short.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m05_wrap_ignores_walls.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m06_east_wall_gap.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m07_won_by_row.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m08_replay_reversed.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m09_replay_drops_last.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m10_flag_moved.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m11_win_only_from_below.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m12_won_not_sticky.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m13_no_vertical_wrap.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m14_wrap_right_off_by_one.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m15_wrap_left_wrong_dimension.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m16_wall_in_open_row.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m17_down_wrap_to_row_1.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m18_north_wall_wrong_row.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m19_replay_stops_when_blocked.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m20_iswon_by_position.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/manifest.json",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/protected.sha256",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/ref/alt/alt_a_minimal_far_walls.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/ref/alt/alt_b_inner_walls.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/ref/alt/alt_c_flag_cage.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/ref/alt/bend_flag_cage/LAWS.bend",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/ref/alt/bend_flag_cage/PROOF.bend",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/ref/alt/bend_flag_cage/game.bend",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/ref/bend/LAWS.bend",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/ref/bend/PROOF.bend",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/ref/bend/game.bend",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/ref/ts/game.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/trap/bend/COUNTER.bend",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/trap/bend/LAWS.bend",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/trap/bend/PROOF.bend",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/trap/bend/game.bend",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/trap/ts/game.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/validate.sh"
+  ],
+  "protected_modified": [],
+  "changed_files": [
+   "PROOF.bend",
+   "game.bend",
+   "shape/model.shape",
+   "test/wrap.test.ts"
+  ],
+  "lines_changed": {
+   "proof": [
+    3,
+    0
+   ],
+   "code": [
+    22,
+    9
+   ],
+   "shape": [
+    3,
+    2
+   ],
+   "tests": [
+    123,
+    0
+   ]
+  },
+  "gate_runs": 1,
+  "gate_log_last": "2026-10-24T22:13:59Z proof=0 build=0 tests=0 shp=0",
+  "final_gate_pass": true,
+  "final_gate_tail": "",
+  "bend_build_ok": true,
+  "hidden": {
+   "rc": 0,
+   "feature_fail": 0,
+   "law_fail": 0,
+   "pass": 23,
+   "fail": 0,
+   "fail_names": [],
+   "tail": ""
+  },
+  "verdict": "ALL PROOFS CHECK",
+  "escape_hatches": {},
+  "proof_lines_final": 456,
+  "shipped_law_violation": false,
+  "feature_complete": true
+ },
+ {
+  "id": "T1-C2-s2",
+  "task": "T1",
+  "cond": "C2",
+  "seed": "s2",
+  "hidden_access": [
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/adapter.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/hidden.test.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m01_no_west_wall.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m02_no_north_wall.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m03_north_wall_short.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m04_west_wall_short.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m05_wrap_ignores_walls.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m06_east_wall_gap.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m07_won_by_row.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m08_replay_reversed.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m09_replay_drops_last.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m10_flag_moved.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m11_win_only_from_below.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m12_won_not_sticky.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m13_no_vertical_wrap.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m14_wrap_right_off_by_one.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m15_wrap_left_wrong_dimension.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m16_wall_in_open_row.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m17_down_wrap_to_row_1.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m18_north_wall_wrong_row.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m19_replay_stops_when_blocked.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/m20_iswon_by_position.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/mutants/manifest.json",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/protected.sha256",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/ref/alt/alt_a_minimal_far_walls.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/ref/alt/alt_b_inner_walls.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/ref/alt/alt_c_flag_cage.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/ref/alt/bend_flag_cage/LAWS.bend",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/ref/alt/bend_flag_cage/PROOF.bend",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/ref/alt/bend_flag_cage/game.bend",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/ref/bend/LAWS.bend",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/ref/bend/PROOF.bend",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/ref/bend/game.bend",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/ref/ts/game.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/trap/bend/COUNTER.bend",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/trap/bend/LAWS.bend",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/trap/bend/PROOF.bend",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/trap/bend/game.bend",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/trap/ts/game.ts",
+   "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/hidden/T1/validate.sh"
+  ],
+  "protected_modified": [],
+  "changed_files": [
+   "PROOF.bend",
+   "game.bend",
+   "shape/model.shape",
+   "test/wrap.test.ts"
+  ],
+  "lines_changed": {
+   "proof": [
+    5,
+    3
+   ],
+   "code": [
+    23,
+    10
+   ],
+   "shape": [
+    2,
+    1
+   ],
+   "tests": [
+    134,
+    0
+   ]
+  },
+  "gate_runs": 1,
+  "gate_log_last": "2026-10-24T22:13:27Z proof=0 build=0 tests=0 shp=0",
+  "final_gate_pass": true,
+  "final_gate_tail": "",
+  "bend_build_ok": true,
+  "hidden": {
+   "rc": 0,
+   "feature_fail": 0,
+   "law_fail": 0,
+   "pass": 23,
+   "fail": 0,
+   "fail_names": [],
+   "tail": ""
+  },
+  "verdict": "ALL PROOFS CHECK",
+  "escape_hatches": {},
+  "proof_lines_final": 455,
+  "shipped_law_violation": false,
+  "feature_complete": true
+ }
+]
