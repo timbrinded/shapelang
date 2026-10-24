@@ -1,0 +1,97 @@
+module shape.generated.ast.experiments.bend_probes.C.c2.laws.ranges
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource RangesModuleArbitraryAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/C/c2/laws/ranges.mjs#arbitrary")
+  fingerprint ast.semantic_subtree_v1("sha256:0254114d6c4c1cfdaaf2e4b550c903bbb5316f45aec3db2274c308f302313bfc")
+}
+
+resource RangesModuleBigArbitraryAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/C/c2/laws/ranges.mjs#bigArbitrary")
+  fingerprint ast.semantic_subtree_v1("sha256:ecedfc2a9f8615325f2c2075d8f7b98c6a5c3b4e4e5ca48a82bd6407bfa829ad")
+}
+
+resource RangesModuleCheckAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/C/c2/laws/ranges.mjs#check")
+  fingerprint ast.semantic_subtree_v1("sha256:821f8b277a1028301a4ee42fabf36777fc83bdd0c566e4c6a8ab21bfa175695c")
+}
+
+resource RangesModuleCoveredAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/C/c2/laws/ranges.mjs#covered")
+  fingerprint ast.semantic_subtree_v1("sha256:9130df593ab46e993759a1238a52a8d33dfac8ff09e3afefa019d17100eaaf1e")
+}
+
+resource RangesModuleRangesOverAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/C/c2/laws/ranges.mjs#rangesOver")
+  fingerprint ast.semantic_subtree_v1("sha256:0a3893bd89c2abc06d30d873b09bf0dcad16befe7990730bb83fd9be5404e95b")
+}
+
+component RangesModule : GeneratedCandidate {
+  fn arbitrary
+    source js("experiments/bend-probes/C/c2/laws/ranges.mjs#arbitrary")
+    effects unknown
+  fn bigArbitrary
+    source js("experiments/bend-probes/C/c2/laws/ranges.mjs#bigArbitrary")
+    effects unknown
+  fn check
+    source js("experiments/bend-probes/C/c2/laws/ranges.mjs#check")
+    effects unknown
+  fn covered
+    source js("experiments/bend-probes/C/c2/laws/ranges.mjs#covered")
+    effects unknown
+  fn rangesOver
+    source js("experiments/bend-probes/C/c2/laws/ranges.mjs#rangesOver")
+    effects unknown
+}
+
+relation RangesModuleArbitraryGeneratedFromRangesModuleArbitraryAstAnchor {
+  kind generated_from
+  connects RangesModule -> RangesModuleArbitraryAstAnchor
+  roles { RangesModule as generated, RangesModuleArbitraryAstAnchor as syntax }
+  expects RangesModuleArbitraryAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0254114d6c4c1cfdaaf2e4b550c903bbb5316f45aec3db2274c308f302313bfc")
+  summary "fn RangesModule.arbitrary generated from javascript function_declaration at experiments/bend-probes/C/c2/laws/ranges.mjs#arbitrary."
+}
+
+relation RangesModuleBigArbitraryGeneratedFromRangesModuleBigArbitraryAstAnchor {
+  kind generated_from
+  connects RangesModule -> RangesModuleBigArbitraryAstAnchor
+  roles { RangesModule as generated, RangesModuleBigArbitraryAstAnchor as syntax }
+  expects RangesModuleBigArbitraryAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ecedfc2a9f8615325f2c2075d8f7b98c6a5c3b4e4e5ca48a82bd6407bfa829ad")
+  summary "fn RangesModule.bigArbitrary generated from javascript function_declaration at experiments/bend-probes/C/c2/laws/ranges.mjs#bigArbitrary."
+}
+
+relation RangesModuleCheckGeneratedFromRangesModuleCheckAstAnchor {
+  kind generated_from
+  connects RangesModule -> RangesModuleCheckAstAnchor
+  roles { RangesModule as generated, RangesModuleCheckAstAnchor as syntax }
+  expects RangesModuleCheckAstAnchor fingerprint ast.semantic_subtree_v1("sha256:821f8b277a1028301a4ee42fabf36777fc83bdd0c566e4c6a8ab21bfa175695c")
+  summary "fn RangesModule.check generated from javascript function_declaration at experiments/bend-probes/C/c2/laws/ranges.mjs#check."
+}
+
+relation RangesModuleCoveredGeneratedFromRangesModuleCoveredAstAnchor {
+  kind generated_from
+  connects RangesModule -> RangesModuleCoveredAstAnchor
+  roles { RangesModule as generated, RangesModuleCoveredAstAnchor as syntax }
+  expects RangesModuleCoveredAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9130df593ab46e993759a1238a52a8d33dfac8ff09e3afefa019d17100eaaf1e")
+  summary "fn RangesModule.covered generated from javascript function_declaration at experiments/bend-probes/C/c2/laws/ranges.mjs#covered."
+}
+
+relation RangesModuleRangesOverGeneratedFromRangesModuleRangesOverAstAnchor {
+  kind generated_from
+  connects RangesModule -> RangesModuleRangesOverAstAnchor
+  roles { RangesModule as generated, RangesModuleRangesOverAstAnchor as syntax }
+  expects RangesModuleRangesOverAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0a3893bd89c2abc06d30d873b09bf0dcad16befe7990730bb83fd9be5404e95b")
+  summary "fn RangesModule.rangesOver generated from javascript function_declaration at experiments/bend-probes/C/c2/laws/ranges.mjs#rangesOver."
+}
+
+implementation RangesModuleImpl {
+  paths {
+    "experiments/bend-probes/C/c2/laws/ranges.mjs"
+  }
+  conforms_to RangesModule
+}

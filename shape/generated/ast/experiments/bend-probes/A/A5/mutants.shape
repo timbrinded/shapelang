@@ -1,0 +1,49 @@
+module shape.generated.ast.experiments.bend_probes.A.A5.mutants
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource MutantsModuleMutAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/A/A5/mutants.py#mut")
+  fingerprint ast.semantic_subtree_v1("sha256:a8ea181dedc5a1287c2d7bcac477ff79e7dbdd64194e01e3c0599dcebfdaeacb")
+}
+
+resource MutantsModuleRefAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/A/A5/mutants.py#ref")
+  fingerprint ast.semantic_subtree_v1("sha256:689caf447c1938ab9f5f27b9fa909581265038ecbe79d95611c0baa6a3bb2351")
+}
+
+component MutantsModule : GeneratedCandidate {
+  fn mut
+    source python("experiments/bend-probes/A/A5/mutants.py#mut")
+    effects unknown
+  fn ref
+    source python("experiments/bend-probes/A/A5/mutants.py#ref")
+    effects unknown
+}
+
+relation MutantsModuleMutGeneratedFromMutantsModuleMutAstAnchor {
+  kind generated_from
+  connects MutantsModule -> MutantsModuleMutAstAnchor
+  roles { MutantsModule as generated, MutantsModuleMutAstAnchor as syntax }
+  expects MutantsModuleMutAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a8ea181dedc5a1287c2d7bcac477ff79e7dbdd64194e01e3c0599dcebfdaeacb")
+  summary "fn MutantsModule.mut generated from python function_definition at experiments/bend-probes/A/A5/mutants.py#mut."
+}
+
+relation MutantsModuleRefGeneratedFromMutantsModuleRefAstAnchor {
+  kind generated_from
+  connects MutantsModule -> MutantsModuleRefAstAnchor
+  roles { MutantsModule as generated, MutantsModuleRefAstAnchor as syntax }
+  expects MutantsModuleRefAstAnchor fingerprint ast.semantic_subtree_v1("sha256:689caf447c1938ab9f5f27b9fa909581265038ecbe79d95611c0baa6a3bb2351")
+  summary "fn MutantsModule.ref generated from python function_definition at experiments/bend-probes/A/A5/mutants.py#ref."
+}
+
+implementation MutantsModuleImpl {
+  paths {
+    "experiments/bend-probes/A/A5/mutants.py"
+  }
+  conforms_to MutantsModule
+}

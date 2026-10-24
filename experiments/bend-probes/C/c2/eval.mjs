@@ -20,9 +20,17 @@ let out;
 if (technique === "pbt" || technique === "bigpbt") {
   const arb = technique === "pbt" ? laws.arbitrary(fc) : laws.bigArbitrary(fc);
   const options = technique === "pbt" ? { seed: 42, numRuns: 1000 } : { seed: 7, numRuns: 100_000 };
-  const r = fc.check(fc.property(arb, (input) => verdict(input) === null), options);
+  const r = fc.check(
+    fc.property(arb, (input) => verdict(input) === null),
+    options
+  );
   out = r.failed
-    ? { killed: true, law: verdict(r.counterexample[0]), input: r.counterexample[0], cases: r.numRuns }
+    ? {
+        killed: true,
+        law: verdict(r.counterexample[0]),
+        input: r.counterexample[0],
+        cases: r.numRuns
+      }
     : { killed: false, cases: r.numRuns };
 } else {
   const gen = technique === "small" ? laws.smallScope() : laws.largeScope();

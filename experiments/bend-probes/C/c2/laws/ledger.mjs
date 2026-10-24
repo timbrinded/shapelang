@@ -13,10 +13,12 @@ export function check(mod, { balances, from, to, amount }) {
   const res = mod.transfer(balances, from, to, amount);
   if (!same(balances, before)) return "transfer does not modify its input";
   const after = res.balances;
-  if (!Array.isArray(after) || after.length !== before.length) return "the account set is preserved";
+  if (!Array.isArray(after) || after.length !== before.length)
+    return "the account set is preserved";
   for (let i = 0; i < after.length; i++) {
     const b = after[i];
-    if (!(Number.isInteger(b) && b >= 0 && b <= U32_MAX)) return "balances stay within U32 (no negative balance)";
+    if (!(Number.isInteger(b) && b >= 0 && b <= U32_MAX))
+      return "balances stay within U32 (no negative balance)";
   }
   if (sum(after) !== sum(before)) return "total balance is conserved";
   if (res.ok !== true) {
@@ -24,9 +26,11 @@ export function check(mod, { balances, from, to, amount }) {
   } else {
     if (!valid(from) || !valid(to)) return "transfers naming an unknown account are rejected";
     for (let i = 0; i < after.length; i++) {
-      if (i !== from && i !== to && i !== FEE && after[i] !== before[i]) return "untouched accounts are unchanged";
+      if (i !== from && i !== to && i !== FEE && after[i] !== before[i])
+        return "untouched accounts are unchanged";
     }
-    if (to !== from && to !== FEE && after[to] !== before[to] + amount) return "the receiver gets exactly amount";
+    if (to !== from && to !== FEE && after[to] !== before[to] + amount)
+      return "the receiver gets exactly amount";
     if (from !== FEE && to !== FEE && amount > 0 && !(after[FEE] > before[FEE])) {
       return "a positive transfer credits a positive fee to the fee account";
     }
@@ -36,8 +40,12 @@ export function check(mod, { balances, from, to, amount }) {
   }
   const ample = 2 * amount + 1;
   if (
-    valid(from) && valid(to) && res.ok !== true &&
-    before[from] >= ample && before[to] + ample <= U32_MAX && before[FEE] + ample <= U32_MAX
+    valid(from) &&
+    valid(to) &&
+    res.ok !== true &&
+    before[from] >= ample &&
+    before[to] + ample <= U32_MAX &&
+    before[FEE] + ample <= U32_MAX
   ) {
     return "a transfer with ample funds and headroom succeeds";
   }
@@ -59,9 +67,11 @@ const range = (lo, hi) => Array.from({ length: hi - lo + 1 }, (_, i) => lo + i);
 function* cases(values, maxAccounts, indices, amounts) {
   for (const balances of listsOver(values, maxAccounts)) {
     if (balances.length === 0) continue;
-    for (const from of indices) for (const to of indices) for (const amount of amounts) {
-      yield { balances, from, to, amount };
-    }
+    for (const from of indices)
+      for (const to of indices)
+        for (const amount of amounts) {
+          yield { balances, from, to, amount };
+        }
   }
 }
 
@@ -70,7 +80,20 @@ export function* smallScope() {
   yield* cases(range(0, 5), 4, range(0, 5), range(0, 5));
 }
 
-export const BOUNDARY = [0, 1, 2, 3, 333, 334, 2 ** 31 - 2, 2 ** 31 - 1, 2 ** 31, 2 ** 32 - 3, 2 ** 32 - 2, U32_MAX];
+export const BOUNDARY = [
+  0,
+  1,
+  2,
+  3,
+  333,
+  334,
+  2 ** 31 - 2,
+  2 ** 31 - 1,
+  2 ** 31,
+  2 ** 32 - 3,
+  2 ** 32 - 2,
+  U32_MAX
+];
 
 export function* largeScope() {
   yield* cases(range(0, 9), 4, range(0, 4), range(0, 9));

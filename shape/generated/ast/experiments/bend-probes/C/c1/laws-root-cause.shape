@@ -1,0 +1,33 @@
+module shape.generated.ast.experiments.bend_probes.C.c1.laws_root_cause
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource LawsRootCauseModuleLawsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/C/c1/laws-root-cause.mjs#laws")
+  fingerprint ast.semantic_subtree_v1("sha256:c547a125796ce69f51705f91f3808f7395b8c4a0e343c1ed523126402593d89b")
+}
+
+component LawsRootCauseModule : GeneratedCandidate {
+  fn laws
+    source js("experiments/bend-probes/C/c1/laws-root-cause.mjs#laws")
+    effects unknown
+}
+
+relation LawsRootCauseModuleLawsGeneratedFromLawsRootCauseModuleLawsAstAnchor {
+  kind generated_from
+  connects LawsRootCauseModule -> LawsRootCauseModuleLawsAstAnchor
+  roles { LawsRootCauseModule as generated, LawsRootCauseModuleLawsAstAnchor as syntax }
+  expects LawsRootCauseModuleLawsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c547a125796ce69f51705f91f3808f7395b8c4a0e343c1ed523126402593d89b")
+  summary "fn LawsRootCauseModule.laws generated from javascript function_declaration at experiments/bend-probes/C/c1/laws-root-cause.mjs#laws."
+}
+
+implementation LawsRootCauseModuleImpl {
+  paths {
+    "experiments/bend-probes/C/c1/laws-root-cause.mjs"
+  }
+  conforms_to LawsRootCauseModule
+}

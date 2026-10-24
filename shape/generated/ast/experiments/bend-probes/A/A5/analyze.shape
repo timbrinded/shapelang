@@ -1,0 +1,49 @@
+module shape.generated.ast.experiments.bend_probes.A.A5.analyze
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource AnalyzeModuleClsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/A/A5/analyze.py#cls")
+  fingerprint ast.semantic_subtree_v1("sha256:e4914bb40eeb12cbe721ddeb59d47a04bcbb12e0c04f14c91e96e3e1d2376000")
+}
+
+resource AnalyzeModuleFalsesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/A/A5/analyze.py#falses")
+  fingerprint ast.semantic_subtree_v1("sha256:678ce4874bd47b57f5ae3d60f59348fe47feb95a1ad17bb005c3613897f6591f")
+}
+
+component AnalyzeModule : GeneratedCandidate {
+  fn cls
+    source python("experiments/bend-probes/A/A5/analyze.py#cls")
+    effects unknown
+  fn falses
+    source python("experiments/bend-probes/A/A5/analyze.py#falses")
+    effects unknown
+}
+
+relation AnalyzeModuleClsGeneratedFromAnalyzeModuleClsAstAnchor {
+  kind generated_from
+  connects AnalyzeModule -> AnalyzeModuleClsAstAnchor
+  roles { AnalyzeModule as generated, AnalyzeModuleClsAstAnchor as syntax }
+  expects AnalyzeModuleClsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e4914bb40eeb12cbe721ddeb59d47a04bcbb12e0c04f14c91e96e3e1d2376000")
+  summary "fn AnalyzeModule.cls generated from python function_definition at experiments/bend-probes/A/A5/analyze.py#cls."
+}
+
+relation AnalyzeModuleFalsesGeneratedFromAnalyzeModuleFalsesAstAnchor {
+  kind generated_from
+  connects AnalyzeModule -> AnalyzeModuleFalsesAstAnchor
+  roles { AnalyzeModule as generated, AnalyzeModuleFalsesAstAnchor as syntax }
+  expects AnalyzeModuleFalsesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:678ce4874bd47b57f5ae3d60f59348fe47feb95a1ad17bb005c3613897f6591f")
+  summary "fn AnalyzeModule.falses generated from python function_definition at experiments/bend-probes/A/A5/analyze.py#falses."
+}
+
+implementation AnalyzeModuleImpl {
+  paths {
+    "experiments/bend-probes/A/A5/analyze.py"
+  }
+  conforms_to AnalyzeModule
+}

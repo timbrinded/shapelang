@@ -1,0 +1,33 @@
+module shape.generated.ast.experiments.bend_probes.C.c3.effects_map
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource EffectsMapModuleJustifiedChannelsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/C/c3/effects-map.mjs#justifiedChannels")
+  fingerprint ast.semantic_subtree_v1("sha256:102405f100b3bbe514e155c3b4b31c649f2c26d18cdfa82d6f4494fef91d682e")
+}
+
+component EffectsMapModule : GeneratedCandidate {
+  fn justifiedChannels
+    source js("experiments/bend-probes/C/c3/effects-map.mjs#justifiedChannels")
+    effects unknown
+}
+
+relation EffectsMapModuleJustifiedChannelsGeneratedFromEffectsMapModuleJustifiedChannelsAstAnchor {
+  kind generated_from
+  connects EffectsMapModule -> EffectsMapModuleJustifiedChannelsAstAnchor
+  roles { EffectsMapModule as generated, EffectsMapModuleJustifiedChannelsAstAnchor as syntax }
+  expects EffectsMapModuleJustifiedChannelsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:102405f100b3bbe514e155c3b4b31c649f2c26d18cdfa82d6f4494fef91d682e")
+  summary "fn EffectsMapModule.justifiedChannels generated from javascript function_declaration at experiments/bend-probes/C/c3/effects-map.mjs#justifiedChannels."
+}
+
+implementation EffectsMapModuleImpl {
+  paths {
+    "experiments/bend-probes/C/c3/effects-map.mjs"
+  }
+  conforms_to EffectsMapModule
+}

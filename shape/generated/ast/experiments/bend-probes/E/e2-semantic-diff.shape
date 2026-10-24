@@ -1,0 +1,97 @@
+module shape.generated.ast.experiments.bend_probes.E.e2_semantic_diff
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource E2SemanticDiffModuleClassifyAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/E/e2-semantic-diff.ts#classify")
+  fingerprint ast.semantic_subtree_v1("sha256:a229235371a6a9467d7e1cab302294cedd5ac7aef121dba80f414e24701dd93c")
+}
+
+resource E2SemanticDiffModuleContextEntriesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/E/e2-semantic-diff.ts#contextEntries")
+  fingerprint ast.semantic_subtree_v1("sha256:2c28c9ad465dd1d3ace495f37e03adee2e7c1ea99c98f9c4b4b304fd89fc21b5")
+}
+
+resource E2SemanticDiffModuleDiffAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/E/e2-semantic-diff.ts#diff")
+  fingerprint ast.semantic_subtree_v1("sha256:f404328f51cc19a9165474c8c84807bec268007da2c84c465bdc859483119df0")
+}
+
+resource E2SemanticDiffModuleInspectAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/E/e2-semantic-diff.ts#inspect")
+  fingerprint ast.semantic_subtree_v1("sha256:6349534b1781c609cb7d10c8779b6997204495f2205c3aa9526cc8b0765cc601")
+}
+
+resource E2SemanticDiffModuleNormAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/E/e2-semantic-diff.ts#norm")
+  fingerprint ast.semantic_subtree_v1("sha256:daf606fe9f80395e69e0f41f81717deed4bd9a46f310fec3872e220d4f451a08")
+}
+
+component E2SemanticDiffModule : GeneratedCandidate {
+  fn classify
+    source ts("experiments/bend-probes/E/e2-semantic-diff.ts#classify")
+    effects unknown
+  fn contextEntries
+    source ts("experiments/bend-probes/E/e2-semantic-diff.ts#contextEntries")
+    effects unknown
+  fn diff
+    source ts("experiments/bend-probes/E/e2-semantic-diff.ts#diff")
+    effects unknown
+  fn inspect
+    source ts("experiments/bend-probes/E/e2-semantic-diff.ts#inspect")
+    effects unknown
+  fn norm
+    source ts("experiments/bend-probes/E/e2-semantic-diff.ts#norm")
+    effects unknown
+}
+
+relation E2SemanticDiffModuleClassifyGeneratedFromE2SemanticDiffModuleClassifyAstAnchor {
+  kind generated_from
+  connects E2SemanticDiffModule -> E2SemanticDiffModuleClassifyAstAnchor
+  roles { E2SemanticDiffModule as generated, E2SemanticDiffModuleClassifyAstAnchor as syntax }
+  expects E2SemanticDiffModuleClassifyAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a229235371a6a9467d7e1cab302294cedd5ac7aef121dba80f414e24701dd93c")
+  summary "fn E2SemanticDiffModule.classify generated from typescript function_declaration at experiments/bend-probes/E/e2-semantic-diff.ts#classify."
+}
+
+relation E2SemanticDiffModuleContextEntriesGeneratedFromE2SemanticDiffModuleContextEntriesAstAnchor {
+  kind generated_from
+  connects E2SemanticDiffModule -> E2SemanticDiffModuleContextEntriesAstAnchor
+  roles { E2SemanticDiffModule as generated, E2SemanticDiffModuleContextEntriesAstAnchor as syntax }
+  expects E2SemanticDiffModuleContextEntriesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2c28c9ad465dd1d3ace495f37e03adee2e7c1ea99c98f9c4b4b304fd89fc21b5")
+  summary "fn E2SemanticDiffModule.contextEntries generated from typescript function_declaration at experiments/bend-probes/E/e2-semantic-diff.ts#contextEntries."
+}
+
+relation E2SemanticDiffModuleDiffGeneratedFromE2SemanticDiffModuleDiffAstAnchor {
+  kind generated_from
+  connects E2SemanticDiffModule -> E2SemanticDiffModuleDiffAstAnchor
+  roles { E2SemanticDiffModule as generated, E2SemanticDiffModuleDiffAstAnchor as syntax }
+  expects E2SemanticDiffModuleDiffAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f404328f51cc19a9165474c8c84807bec268007da2c84c465bdc859483119df0")
+  summary "fn E2SemanticDiffModule.diff generated from typescript function_declaration at experiments/bend-probes/E/e2-semantic-diff.ts#diff."
+}
+
+relation E2SemanticDiffModuleInspectGeneratedFromE2SemanticDiffModuleInspectAstAnchor {
+  kind generated_from
+  connects E2SemanticDiffModule -> E2SemanticDiffModuleInspectAstAnchor
+  roles { E2SemanticDiffModule as generated, E2SemanticDiffModuleInspectAstAnchor as syntax }
+  expects E2SemanticDiffModuleInspectAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6349534b1781c609cb7d10c8779b6997204495f2205c3aa9526cc8b0765cc601")
+  summary "fn E2SemanticDiffModule.inspect generated from typescript function_declaration at experiments/bend-probes/E/e2-semantic-diff.ts#inspect."
+}
+
+relation E2SemanticDiffModuleNormGeneratedFromE2SemanticDiffModuleNormAstAnchor {
+  kind generated_from
+  connects E2SemanticDiffModule -> E2SemanticDiffModuleNormAstAnchor
+  roles { E2SemanticDiffModule as generated, E2SemanticDiffModuleNormAstAnchor as syntax }
+  expects E2SemanticDiffModuleNormAstAnchor fingerprint ast.semantic_subtree_v1("sha256:daf606fe9f80395e69e0f41f81717deed4bd9a46f310fec3872e220d4f451a08")
+  summary "fn E2SemanticDiffModule.norm generated from typescript function_declaration at experiments/bend-probes/E/e2-semantic-diff.ts#norm."
+}
+
+implementation E2SemanticDiffModuleImpl {
+  paths {
+    "experiments/bend-probes/E/e2-semantic-diff.ts"
+  }
+  conforms_to E2SemanticDiffModule
+}

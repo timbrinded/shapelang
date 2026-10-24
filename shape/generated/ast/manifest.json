@@ -66,6 +66,391 @@
       ]
     },
     {
+      "module": "shape.generated.ast.experiments.bend_probes.A.A2.gen",
+      "path": "shape/generated/ast/experiments/bend-probes/A/A2/gen.shape",
+      "sources": [
+        "experiments/bend-probes/A/A2/gen.py"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.bend_probes.A.A2.gen_reproof",
+      "path": "shape/generated/ast/experiments/bend-probes/A/A2/gen_reproof.shape",
+      "sources": [
+        "experiments/bend-probes/A/A2/gen_reproof.py"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.bend_probes.A.A3.R3_host_callback.host",
+      "path": "shape/generated/ast/experiments/bend-probes/A/A3/R3_host_callback/host.shape",
+      "sources": [
+        "experiments/bend-probes/A/A3/R3_host_callback/host.mjs"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.bend_probes.A.A3.gen",
+      "path": "shape/generated/ast/experiments/bend-probes/A/A3/gen.shape",
+      "sources": [
+        "experiments/bend-probes/A/A3/gen.py"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.bend_probes.A.A3.run",
+      "path": "shape/generated/ast/experiments/bend-probes/A/A3/run.shape",
+      "sources": [
+        "experiments/bend-probes/A/A3/run.py"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.bend_probes.A.A4.gen",
+      "path": "shape/generated/ast/experiments/bend-probes/A/A4/gen.shape",
+      "sources": [
+        "experiments/bend-probes/A/A4/gen.py"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.bend_probes.A.A5.analyze",
+      "path": "shape/generated/ast/experiments/bend-probes/A/A5/analyze.shape",
+      "sources": [
+        "experiments/bend-probes/A/A5/analyze.py"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.bend_probes.A.A5.mutants",
+      "path": "shape/generated/ast/experiments/bend-probes/A/A5/mutants.shape",
+      "sources": [
+        "experiments/bend-probes/A/A5/mutants.py"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.bend_probes.A.A5.oracle",
+      "path": "shape/generated/ast/experiments/bend-probes/A/A5/oracle.shape",
+      "sources": [
+        "experiments/bend-probes/A/A5/oracle.mjs"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.bend_probes.A.A5.redo_perlaw",
+      "path": "shape/generated/ast/experiments/bend-probes/A/A5/redo_perlaw.shape",
+      "sources": [
+        "experiments/bend-probes/A/A5/redo_perlaw.py"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.bend_probes.A.A5.run",
+      "path": "shape/generated/ast/experiments/bend-probes/A/A5/run.shape",
+      "sources": [
+        "experiments/bend-probes/A/A5/run.py"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.bend_probes.A.A5.sizes",
+      "path": "shape/generated/ast/experiments/bend-probes/A/A5/sizes.shape",
+      "sources": [
+        "experiments/bend-probes/A/A5/sizes.py"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.bend_probes.A.perlaw",
+      "path": "shape/generated/ast/experiments/bend-probes/A/perlaw.shape",
+      "sources": [
+        "experiments/bend-probes/A/perlaw.py"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.bend_probes.C.c1.laws_cross_object",
+      "path": "shape/generated/ast/experiments/bend-probes/C/c1/laws-cross-object.shape",
+      "sources": [
+        "experiments/bend-probes/C/c1/laws-cross-object.mjs"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.bend_probes.C.c1.laws_root_cause",
+      "path": "shape/generated/ast/experiments/bend-probes/C/c1/laws-root-cause.shape",
+      "sources": [
+        "experiments/bend-probes/C/c1/laws-root-cause.mjs"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.bend_probes.C.c1.run_c1",
+      "path": "shape/generated/ast/experiments/bend-probes/C/c1/run-c1.shape",
+      "sources": [
+        "experiments/bend-probes/C/c1/run-c1.mjs"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.bend_probes.C.c2.eval",
+      "path": "shape/generated/ast/experiments/bend-probes/C/c2/eval.shape",
+      "sources": [
+        "experiments/bend-probes/C/c2/eval.mjs"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.bend_probes.C.c2.laws.ledger",
+      "path": "shape/generated/ast/experiments/bend-probes/C/c2/laws/ledger.shape",
+      "sources": [
+        "experiments/bend-probes/C/c2/laws/ledger.mjs"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.bend_probes.C.c2.laws.log",
+      "path": "shape/generated/ast/experiments/bend-probes/C/c2/laws/log.shape",
+      "sources": [
+        "experiments/bend-probes/C/c2/laws/log.mjs"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.bend_probes.C.c2.laws.ranges",
+      "path": "shape/generated/ast/experiments/bend-probes/C/c2/laws/ranges.shape",
+      "sources": [
+        "experiments/bend-probes/C/c2/laws/ranges.mjs"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.bend_probes.C.c2.modules.ledger",
+      "path": "shape/generated/ast/experiments/bend-probes/C/c2/modules/ledger.shape",
+      "sources": [
+        "experiments/bend-probes/C/c2/modules/ledger.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.bend_probes.C.c2.modules.log",
+      "path": "shape/generated/ast/experiments/bend-probes/C/c2/modules/log.shape",
+      "sources": [
+        "experiments/bend-probes/C/c2/modules/log.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.bend_probes.C.c2.modules.ranges",
+      "path": "shape/generated/ast/experiments/bend-probes/C/c2/modules/ranges.shape",
+      "sources": [
+        "experiments/bend-probes/C/c2/modules/ranges.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.bend_probes.C.c2.mutants",
+      "path": "shape/generated/ast/experiments/bend-probes/C/c2/mutants.shape",
+      "sources": [
+        "experiments/bend-probes/C/c2/mutants.mjs"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.bend_probes.C.c2.run_c2",
+      "path": "shape/generated/ast/experiments/bend-probes/C/c2/run-c2.shape",
+      "sources": [
+        "experiments/bend-probes/C/c2/run-c2.mjs"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.bend_probes.C.c2.summarize_c2",
+      "path": "shape/generated/ast/experiments/bend-probes/C/c2/summarize-c2.shape",
+      "sources": [
+        "experiments/bend-probes/C/c2/summarize-c2.mjs"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.bend_probes.C.c3.effects_map",
+      "path": "shape/generated/ast/experiments/bend-probes/C/c3/effects-map.shape",
+      "sources": [
+        "experiments/bend-probes/C/c3/effects-map.mjs"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.bend_probes.C.c3.graph",
+      "path": "shape/generated/ast/experiments/bend-probes/C/c3/graph.shape",
+      "sources": [
+        "experiments/bend-probes/C/c3/graph.mjs"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.bend_probes.C.c3.manual",
+      "path": "shape/generated/ast/experiments/bend-probes/C/c3/manual.shape",
+      "sources": [
+        "experiments/bend-probes/C/c3/manual.mjs"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.bend_probes.C.c3.scan_effects",
+      "path": "shape/generated/ast/experiments/bend-probes/C/c3/scan-effects.shape",
+      "sources": [
+        "experiments/bend-probes/C/c3/scan-effects.mjs"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.bend_probes.C.c4.generated_calls",
+      "path": "shape/generated/ast/experiments/bend-probes/C/c4/calls.shape",
+      "sources": [
+        "experiments/bend-probes/C/c4/calls.mjs"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.bend_probes.C.c4.manual",
+      "path": "shape/generated/ast/experiments/bend-probes/C/c4/manual.shape",
+      "sources": [
+        "experiments/bend-probes/C/c4/manual.mjs"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.bend_probes.C.c5.run_c5",
+      "path": "shape/generated/ast/experiments/bend-probes/C/c5/run-c5.shape",
+      "sources": [
+        "experiments/bend-probes/C/c5/run-c5.mjs"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.bend_probes.C.lib.work",
+      "path": "shape/generated/ast/experiments/bend-probes/C/lib/work.shape",
+      "sources": [
+        "experiments/bend-probes/C/lib/work.mjs"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.bend_probes.D.d1.inventory",
+      "path": "shape/generated/ast/experiments/bend-probes/D/d1/inventory.shape",
+      "sources": [
+        "experiments/bend-probes/D/d1/inventory.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.bend_probes.D.d1.probes",
+      "path": "shape/generated/ast/experiments/bend-probes/D/d1/probes.shape",
+      "sources": [
+        "experiments/bend-probes/D/d1/probes.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.bend_probes.D.d2.lawdiff",
+      "path": "shape/generated/ast/experiments/bend-probes/D/d2/lawdiff.shape",
+      "sources": [
+        "experiments/bend-probes/D/d2/lawdiff.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.bend_probes.D.d2.weakenings",
+      "path": "shape/generated/ast/experiments/bend-probes/D/d2/weakenings.shape",
+      "sources": [
+        "experiments/bend-probes/D/d2/weakenings.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.bend_probes.D.d3.audit_sample",
+      "path": "shape/generated/ast/experiments/bend-probes/D/d3/audit_sample.shape",
+      "sources": [
+        "experiments/bend-probes/D/d3/audit_sample.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.bend_probes.D.d3.extract",
+      "path": "shape/generated/ast/experiments/bend-probes/D/d3/extract.shape",
+      "sources": [
+        "experiments/bend-probes/D/d3/extract.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.bend_probes.D.d3.ts_purity",
+      "path": "shape/generated/ast/experiments/bend-probes/D/d3/ts_purity.shape",
+      "sources": [
+        "experiments/bend-probes/D/d3/ts_purity.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.bend_probes.D.d4.coverage",
+      "path": "shape/generated/ast/experiments/bend-probes/D/d4/coverage.shape",
+      "sources": [
+        "experiments/bend-probes/D/d4/coverage.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.bend_probes.D.d5.boundary",
+      "path": "shape/generated/ast/experiments/bend-probes/D/d5/boundary.shape",
+      "sources": [
+        "experiments/bend-probes/D/d5/boundary.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.bend_probes.D.lib.bendbook",
+      "path": "shape/generated/ast/experiments/bend-probes/D/lib/bendbook.shape",
+      "sources": [
+        "experiments/bend-probes/D/lib/bendbook.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.bend_probes.E.callgraph",
+      "path": "shape/generated/ast/experiments/bend-probes/E/callgraph.shape",
+      "sources": [
+        "experiments/bend-probes/E/callgraph.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.bend_probes.E.e2_calibration",
+      "path": "shape/generated/ast/experiments/bend-probes/E/e2-calibration.shape",
+      "sources": [
+        "experiments/bend-probes/E/e2-calibration.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.bend_probes.E.e2_semantic_diff",
+      "path": "shape/generated/ast/experiments/bend-probes/E/e2-semantic-diff.shape",
+      "sources": [
+        "experiments/bend-probes/E/e2-semantic-diff.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.bend_probes.E.e3_index_scan",
+      "path": "shape/generated/ast/experiments/bend-probes/E/e3-index-scan.shape",
+      "sources": [
+        "experiments/bend-probes/E/e3-index-scan.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.bend_probes.E.e4_classify",
+      "path": "shape/generated/ast/experiments/bend-probes/E/e4-classify.shape",
+      "sources": [
+        "experiments/bend-probes/E/e4-classify.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.bend_probes.E.e5_checks",
+      "path": "shape/generated/ast/experiments/bend-probes/E/e5-checks.shape",
+      "sources": [
+        "experiments/bend-probes/E/e5-checks.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.bend_probes.E.e5_summary",
+      "path": "shape/generated/ast/experiments/bend-probes/E/e5-summary.shape",
+      "sources": [
+        "experiments/bend-probes/E/e5-summary.py"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.bend_probes.E.f1_synth",
+      "path": "shape/generated/ast/experiments/bend-probes/E/f1-synth.shape",
+      "sources": [
+        "experiments/bend-probes/E/f1-synth.ts"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.bend_probes.G.scripts.grade_g8",
+      "path": "shape/generated/ast/experiments/bend-probes/G/scripts/grade_g8.shape",
+      "sources": [
+        "experiments/bend-probes/G/scripts/grade_g8.py"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.bend_probes.G.scripts.grade_trials",
+      "path": "shape/generated/ast/experiments/bend-probes/G/scripts/grade_trials.shape",
+      "sources": [
+        "experiments/bend-probes/G/scripts/grade_trials.py"
+      ]
+    },
+    {
+      "module": "shape.generated.ast.experiments.bend_probes.G.scripts.summarize_g",
+      "path": "shape/generated/ast/experiments/bend-probes/G/scripts/summarize_g.shape",
+      "sources": [
+        "experiments/bend-probes/G/scripts/summarize_g.py"
+      ]
+    },
+    {
       "module": "shape.generated.ast.experiments.semantic_kernel.harness.benchmark",
       "path": "shape/generated/ast/experiments/semantic-kernel/harness/benchmark.shape",
       "sources": [

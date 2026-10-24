@@ -1,0 +1,49 @@
+module shape.generated.ast.experiments.bend_probes.A.A2.gen_reproof
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource GenReproofModuleMainAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/A/A2/gen_reproof.py#main")
+  fingerprint ast.semantic_subtree_v1("sha256:0a61287d07f2db82767c611a258963ae7d0a96301ab269425dcb2a1ce0390abc")
+}
+
+resource GenReproofModuleProofAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/A/A2/gen_reproof.py#proof")
+  fingerprint ast.semantic_subtree_v1("sha256:234c0041a307c6b7e809d4981d3bc1fc04a52cfe6aa7e5c6a4c88abf9dcb35d4")
+}
+
+component GenReproofModule : GeneratedCandidate {
+  fn main
+    source python("experiments/bend-probes/A/A2/gen_reproof.py#main")
+    effects unknown
+  fn proof
+    source python("experiments/bend-probes/A/A2/gen_reproof.py#proof")
+    effects unknown
+}
+
+relation GenReproofModuleMainGeneratedFromGenReproofModuleMainAstAnchor {
+  kind generated_from
+  connects GenReproofModule -> GenReproofModuleMainAstAnchor
+  roles { GenReproofModule as generated, GenReproofModuleMainAstAnchor as syntax }
+  expects GenReproofModuleMainAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0a61287d07f2db82767c611a258963ae7d0a96301ab269425dcb2a1ce0390abc")
+  summary "fn GenReproofModule.main generated from python function_definition at experiments/bend-probes/A/A2/gen_reproof.py#main."
+}
+
+relation GenReproofModuleProofGeneratedFromGenReproofModuleProofAstAnchor {
+  kind generated_from
+  connects GenReproofModule -> GenReproofModuleProofAstAnchor
+  roles { GenReproofModule as generated, GenReproofModuleProofAstAnchor as syntax }
+  expects GenReproofModuleProofAstAnchor fingerprint ast.semantic_subtree_v1("sha256:234c0041a307c6b7e809d4981d3bc1fc04a52cfe6aa7e5c6a4c88abf9dcb35d4")
+  summary "fn GenReproofModule.proof generated from python function_definition at experiments/bend-probes/A/A2/gen_reproof.py#proof."
+}
+
+implementation GenReproofModuleImpl {
+  paths {
+    "experiments/bend-probes/A/A2/gen_reproof.py"
+  }
+  conforms_to GenReproofModule
+}

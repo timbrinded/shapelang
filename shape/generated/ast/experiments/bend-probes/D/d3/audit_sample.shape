@@ -1,0 +1,33 @@
+module shape.generated.ast.experiments.bend_probes.D.d3.audit_sample
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource AuditSampleModuleBodyAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/D/d3/audit_sample.ts#body")
+  fingerprint ast.semantic_subtree_v1("sha256:9fede72166f9b1a1ece48a59a87dd03f276e5eb68a6be5f386266baa363fa656")
+}
+
+component AuditSampleModule : GeneratedCandidate {
+  fn body
+    source ts("experiments/bend-probes/D/d3/audit_sample.ts#body")
+    effects unknown
+}
+
+relation AuditSampleModuleBodyGeneratedFromAuditSampleModuleBodyAstAnchor {
+  kind generated_from
+  connects AuditSampleModule -> AuditSampleModuleBodyAstAnchor
+  roles { AuditSampleModule as generated, AuditSampleModuleBodyAstAnchor as syntax }
+  expects AuditSampleModuleBodyAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9fede72166f9b1a1ece48a59a87dd03f276e5eb68a6be5f386266baa363fa656")
+  summary "fn AuditSampleModule.body generated from typescript function_declaration at experiments/bend-probes/D/d3/audit_sample.ts#body."
+}
+
+implementation AuditSampleModuleImpl {
+  paths {
+    "experiments/bend-probes/D/d3/audit_sample.ts"
+  }
+  conforms_to AuditSampleModule
+}

@@ -1,0 +1,49 @@
+module shape.generated.ast.experiments.bend_probes.A.A5.sizes
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource SizesModuleDefsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/A/A5/sizes.py#defs")
+  fingerprint ast.semantic_subtree_v1("sha256:d242ffc3ba844b40aac1a2936839b764033329e3bc47788f2e43b1f61d21e626")
+}
+
+resource SizesModuleLocAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/A/A5/sizes.py#loc")
+  fingerprint ast.semantic_subtree_v1("sha256:45b6f7c8a5c8e79344a35fe55e0b55c136cefe95eed6a6235420351a9c7e06df")
+}
+
+component SizesModule : GeneratedCandidate {
+  fn defs
+    source python("experiments/bend-probes/A/A5/sizes.py#defs")
+    effects unknown
+  fn loc
+    source python("experiments/bend-probes/A/A5/sizes.py#loc")
+    effects unknown
+}
+
+relation SizesModuleDefsGeneratedFromSizesModuleDefsAstAnchor {
+  kind generated_from
+  connects SizesModule -> SizesModuleDefsAstAnchor
+  roles { SizesModule as generated, SizesModuleDefsAstAnchor as syntax }
+  expects SizesModuleDefsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d242ffc3ba844b40aac1a2936839b764033329e3bc47788f2e43b1f61d21e626")
+  summary "fn SizesModule.defs generated from python function_definition at experiments/bend-probes/A/A5/sizes.py#defs."
+}
+
+relation SizesModuleLocGeneratedFromSizesModuleLocAstAnchor {
+  kind generated_from
+  connects SizesModule -> SizesModuleLocAstAnchor
+  roles { SizesModule as generated, SizesModuleLocAstAnchor as syntax }
+  expects SizesModuleLocAstAnchor fingerprint ast.semantic_subtree_v1("sha256:45b6f7c8a5c8e79344a35fe55e0b55c136cefe95eed6a6235420351a9c7e06df")
+  summary "fn SizesModule.loc generated from python function_definition at experiments/bend-probes/A/A5/sizes.py#loc."
+}
+
+implementation SizesModuleImpl {
+  paths {
+    "experiments/bend-probes/A/A5/sizes.py"
+  }
+  conforms_to SizesModule
+}

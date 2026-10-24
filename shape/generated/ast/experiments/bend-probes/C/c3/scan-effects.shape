@@ -1,0 +1,49 @@
+module shape.generated.ast.experiments.bend_probes.C.c3.scan_effects
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource ScanEffectsModuleInspectAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/C/c3/scan-effects.mjs#inspect")
+  fingerprint ast.semantic_subtree_v1("sha256:6f390b7b60be48e9bf46b37c4d07fd42f50d468d4f098cdd0de3e4fc7ae2687c")
+}
+
+resource ScanEffectsModuleSummarizeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/C/c3/scan-effects.mjs#summarize")
+  fingerprint ast.semantic_subtree_v1("sha256:bceb2b0b877123fd697d5ba0d1c3d70e7bb134af954c2b7efb30a25f58e0614f")
+}
+
+component ScanEffectsModule : GeneratedCandidate {
+  fn inspect
+    source js("experiments/bend-probes/C/c3/scan-effects.mjs#inspect")
+    effects unknown
+  fn summarize
+    source js("experiments/bend-probes/C/c3/scan-effects.mjs#summarize")
+    effects unknown
+}
+
+relation ScanEffectsModuleInspectGeneratedFromScanEffectsModuleInspectAstAnchor {
+  kind generated_from
+  connects ScanEffectsModule -> ScanEffectsModuleInspectAstAnchor
+  roles { ScanEffectsModule as generated, ScanEffectsModuleInspectAstAnchor as syntax }
+  expects ScanEffectsModuleInspectAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6f390b7b60be48e9bf46b37c4d07fd42f50d468d4f098cdd0de3e4fc7ae2687c")
+  summary "fn ScanEffectsModule.inspect generated from javascript function_declaration at experiments/bend-probes/C/c3/scan-effects.mjs#inspect."
+}
+
+relation ScanEffectsModuleSummarizeGeneratedFromScanEffectsModuleSummarizeAstAnchor {
+  kind generated_from
+  connects ScanEffectsModule -> ScanEffectsModuleSummarizeAstAnchor
+  roles { ScanEffectsModule as generated, ScanEffectsModuleSummarizeAstAnchor as syntax }
+  expects ScanEffectsModuleSummarizeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:bceb2b0b877123fd697d5ba0d1c3d70e7bb134af954c2b7efb30a25f58e0614f")
+  summary "fn ScanEffectsModule.summarize generated from javascript function_declaration at experiments/bend-probes/C/c3/scan-effects.mjs#summarize."
+}
+
+implementation ScanEffectsModuleImpl {
+  paths {
+    "experiments/bend-probes/C/c3/scan-effects.mjs"
+  }
+  conforms_to ScanEffectsModule
+}

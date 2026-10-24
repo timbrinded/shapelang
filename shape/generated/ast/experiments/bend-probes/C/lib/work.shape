@@ -1,0 +1,7 @@
+module shape.generated.ast.experiments.bend_probes.C.lib.work
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}

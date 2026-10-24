@@ -1,0 +1,33 @@
+module shape.generated.ast.experiments.bend_probes.D.d4.coverage
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource CoverageModuleTipOfAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/D/d4/coverage.ts#tipOf")
+  fingerprint ast.semantic_subtree_v1("sha256:a57bb3d6ad958eeddc255449329fde71a8aebe874c99d4cbabccd26a3f933cd6")
+}
+
+component CoverageModule : GeneratedCandidate {
+  fn tipOf
+    source ts("experiments/bend-probes/D/d4/coverage.ts#tipOf")
+    effects unknown
+}
+
+relation CoverageModuleTipOfGeneratedFromCoverageModuleTipOfAstAnchor {
+  kind generated_from
+  connects CoverageModule -> CoverageModuleTipOfAstAnchor
+  roles { CoverageModule as generated, CoverageModuleTipOfAstAnchor as syntax }
+  expects CoverageModuleTipOfAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a57bb3d6ad958eeddc255449329fde71a8aebe874c99d4cbabccd26a3f933cd6")
+  summary "fn CoverageModule.tipOf generated from typescript function_declaration at experiments/bend-probes/D/d4/coverage.ts#tipOf."
+}
+
+implementation CoverageModuleImpl {
+  paths {
+    "experiments/bend-probes/D/d4/coverage.ts"
+  }
+  conforms_to CoverageModule
+}

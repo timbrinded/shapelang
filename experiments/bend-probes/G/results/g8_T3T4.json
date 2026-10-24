@@ -1,0 +1,350 @@
+{
+  "T3": {
+    "table": {
+      "agent": {
+        "pre_feature": "pass",
+        "ref": "pass",
+        "trap:audit.ts": "fail",
+        "mutant:m01_delete_filter.ts": "fail",
+        "mutant:m02_delete_nextid.ts": "fail",
+        "mutant:m03_boundary_strict.ts": "pass",
+        "mutant:m04_boundary_loose.ts": "fail",
+        "mutant:m05_reversed.ts": "fail",
+        "mutant:m06_redact_all.ts": "fail",
+        "mutant:m07_meta_timestamp.ts": "fail",
+        "mutant:m08_meta_actor.ts": "fail",
+        "mutant:m09_mutate_in_place.ts": "fail",
+        "mutant:m10_list_only.ts": "fail",
+        "mutant:m11_get_hides.ts": "fail",
+        "mutant:m12_list_hides.ts": "fail",
+        "mutant:m13_sorted_stop.ts": "pass",
+        "mutant:m14_sorted_prefix.ts": "fail",
+        "mutant:m15_flag_only.ts": "pass",
+        "mutant:m16_retention_zero.ts": "pass",
+        "mutant:m17_id_from_live.ts": "fail",
+        "mutant:m18_truncate_head.ts": "fail",
+        "mutant:m19_retention_days.ts": "pass"
+      },
+      "reference": {
+        "pre_feature": "pass",
+        "ref": "pass",
+        "trap:audit.ts": "fail",
+        "mutant:m01_delete_filter.ts": "fail",
+        "mutant:m02_delete_nextid.ts": "fail",
+        "mutant:m03_boundary_strict.ts": "pass",
+        "mutant:m04_boundary_loose.ts": "fail",
+        "mutant:m05_reversed.ts": "fail",
+        "mutant:m06_redact_all.ts": "fail",
+        "mutant:m07_meta_timestamp.ts": "fail",
+        "mutant:m08_meta_actor.ts": "fail",
+        "mutant:m09_mutate_in_place.ts": "fail",
+        "mutant:m10_list_only.ts": "fail",
+        "mutant:m11_get_hides.ts": "fail",
+        "mutant:m12_list_hides.ts": "fail",
+        "mutant:m13_sorted_stop.ts": "pass",
+        "mutant:m14_sorted_prefix.ts": "fail",
+        "mutant:m15_flag_only.ts": "pass",
+        "mutant:m16_retention_zero.ts": "pass",
+        "mutant:m17_id_from_live.ts": "fail",
+        "mutant:m18_truncate_head.ts": "fail",
+        "mutant:m19_retention_days.ts": "pass"
+      }
+    },
+    "mutant_tags": {
+      "mutant:m01_delete_filter.ts": {
+        "file": "m01_delete_filter.ts",
+        "breaks": ["L1", "L2", "L3", "L4", "L5", "feature"],
+        "description": "deletes expired entries (filter); later appends reuse ids; positions shift, so unexpired entries move (L4/L5) and get(id) finds the wrong entry",
+        "primary": ["L2"]
+      },
+      "mutant:m02_delete_nextid.ts": {
+        "file": "m02_delete_nextid.ts",
+        "breaks": ["L0", "L1", "L2", "L3", "L4", "L5", "feature"],
+        "description": "deletes expired entries, keeps a nextId counter so ids are not reused (the trap); get finds by id, so get and list disagree by position (L0)",
+        "primary": ["L2"]
+      },
+      "mutant:m03_boundary_strict.ts": {
+        "file": "m03_boundary_strict.ts",
+        "breaks": ["feature"],
+        "description": "boundary off by one: timestamp + retention < now (entry at the boundary keeps its payload)",
+        "primary": ["feature"]
+      },
+      "mutant:m04_boundary_loose.ts": {
+        "file": "m04_boundary_loose.ts",
+        "breaks": ["L4", "L5", "feature"],
+        "description": "boundary off by one the other way: redacts entries one unit inside retention; the over-redacted entry also loses a payload it should keep (L5)",
+        "primary": ["L4"]
+      },
+      "mutant:m05_reversed.ts": {
+        "file": "m05_reversed.ts",
+        "breaks": ["L4", "L5", "feature"],
+        "description": "comparison reversed: redacts the unexpired entries, keeps the expired ones",
+        "primary": ["L4"]
+      },
+      "mutant:m06_redact_all.ts": {
+        "file": "m06_redact_all.ts",
+        "breaks": ["L4", "L5", "feature"],
+        "description": "redacts every entry regardless of age",
+        "primary": ["L4"]
+      },
+      "mutant:m07_meta_timestamp.ts": {
+        "file": "m07_meta_timestamp.ts",
+        "breaks": ["L3"],
+        "description": "also zeroes the timestamp of redacted entries",
+        "primary": ["L3"]
+      },
+      "mutant:m08_meta_actor.ts": {
+        "file": "m08_meta_actor.ts",
+        "breaks": ["L3"],
+        "description": "also blanks the actor of redacted entries",
+        "primary": ["L3"]
+      },
+      "mutant:m09_mutate_in_place.ts": {
+        "file": "m09_mutate_in_place.ts",
+        "breaks": ["L0", "L4", "L5"],
+        "description": "redacts by mutating the entry objects shared with the input log; shared entry objects change other log values too, so later calls on them see redacted unexpired entries (L4/L5)",
+        "primary": ["L0"]
+      },
+      "mutant:m10_list_only.ts": {
+        "file": "m10_list_only.ts",
+        "breaks": ["L0", "feature"],
+        "description": "redaction applied in list() only; get() still returns the original payload",
+        "primary": ["L0"]
+      },
+      "mutant:m11_get_hides.ts": {
+        "file": "m11_get_hides.ts",
+        "breaks": ["L0"],
+        "description": "get() returns undefined for purged entries; the hidden L3 test also checks metadata through get",
+        "primary": ["L0"]
+      },
+      "mutant:m12_list_hides.ts": {
+        "file": "m12_list_hides.ts",
+        "breaks": ["L0", "L1", "L2", "L3", "L4", "L5", "feature"],
+        "description": "list() leaves out purged entries",
+        "primary": ["L2"]
+      },
+      "mutant:m13_sorted_stop.ts": {
+        "file": "m13_sorted_stop.ts",
+        "breaks": ["feature"],
+        "description": "assumes timestamps are sorted: stops at the first unexpired entry",
+        "primary": ["feature"]
+      },
+      "mutant:m14_sorted_prefix.ts": {
+        "file": "m14_sorted_prefix.ts",
+        "breaks": ["L4", "L5", "feature"],
+        "description": "assumes timestamps are sorted: redacts every entry up to the last expired one",
+        "primary": ["L4"]
+      },
+      "mutant:m15_flag_only.ts": {
+        "file": "m15_flag_only.ts",
+        "breaks": ["feature"],
+        "description": "marks entries as redacted but leaves the payload in place",
+        "primary": ["feature"]
+      },
+      "mutant:m16_retention_zero.ts": {
+        "file": "m16_retention_zero.ts",
+        "breaks": ["feature"],
+        "description": "treats retention 0 as \"no retention configured\" and purges nothing",
+        "primary": ["feature"]
+      },
+      "mutant:m17_id_from_live.ts": {
+        "file": "m17_id_from_live.ts",
+        "breaks": ["L5", "feature"],
+        "description": "append numbers new entries by the count of unredacted entries",
+        "primary": ["L5"]
+      },
+      "mutant:m18_truncate_head.ts": {
+        "file": "m18_truncate_head.ts",
+        "breaks": ["L1", "L2", "L3", "L4", "L5", "feature"],
+        "description": "truncates the expired head of the log",
+        "primary": ["L2"]
+      },
+      "mutant:m19_retention_days.ts": {
+        "file": "m19_retention_days.ts",
+        "breaks": ["feature"],
+        "description": "reads retention as days and multiplies by 86400",
+        "primary": ["feature"]
+      }
+    }
+  },
+  "T4": {
+    "table": {
+      "agent": {
+        "pre_feature": "pass",
+        "ref": "pass",
+        "trap:stale_all.ts": "fail",
+        "trap:stale_self.ts": "fail",
+        "mutant:m01_stale_self.ts": "fail",
+        "mutant:m02_stale_fee_balance.ts": "fail",
+        "mutant:m03_fee_not_credited.ts": "fail",
+        "mutant:m04_funds_check_without_fee.ts": "fail",
+        "mutant:m05_fee_charged_on_failure.ts": "fail",
+        "mutant:m06_self_transfer_fee.ts": "fail",
+        "mutant:m07_zero_amount_allowed.ts": "fail",
+        "mutant:m08_strict_funds_check.ts": "fail",
+        "mutant:m09_receiver_pays_fee.ts": "fail",
+        "mutant:m10_fee_to_receiver.ts": "fail",
+        "mutant:m11_inline_fee_no_minimum.ts": "fail",
+        "mutant:m12_total_excludes_fee.ts": "fail",
+        "mutant:m13_fee_ceil.ts": "pass",
+        "mutant:m14_fee_no_minimum.ts": "pass",
+        "mutant:m15_fee_round.ts": "pass",
+        "mutant:m16_self_transfer_rejected.ts": "pass",
+        "mutant:m17_self_transfer_ignores_funds.ts": "pass",
+        "mutant:m18_free_transfers_to_fee_account.ts": "pass"
+      },
+      "reference": {
+        "pre_feature": "pass",
+        "ref": "pass",
+        "trap:stale_all.ts": "fail",
+        "trap:stale_self.ts": "fail",
+        "mutant:m01_stale_self.ts": "fail",
+        "mutant:m02_stale_fee_balance.ts": "fail",
+        "mutant:m03_fee_not_credited.ts": "fail",
+        "mutant:m04_funds_check_without_fee.ts": "fail",
+        "mutant:m05_fee_charged_on_failure.ts": "fail",
+        "mutant:m06_self_transfer_fee.ts": "fail",
+        "mutant:m07_zero_amount_allowed.ts": "fail",
+        "mutant:m08_strict_funds_check.ts": "fail",
+        "mutant:m09_receiver_pays_fee.ts": "fail",
+        "mutant:m10_fee_to_receiver.ts": "fail",
+        "mutant:m11_inline_fee_no_minimum.ts": "fail",
+        "mutant:m12_total_excludes_fee.ts": "fail",
+        "mutant:m13_fee_ceil.ts": "pass",
+        "mutant:m14_fee_no_minimum.ts": "pass",
+        "mutant:m15_fee_round.ts": "pass",
+        "mutant:m16_self_transfer_rejected.ts": "pass",
+        "mutant:m17_self_transfer_ignores_funds.ts": "pass",
+        "mutant:m18_free_transfers_to_fee_account.ts": "pass"
+      }
+    },
+    "mutant_tags": {
+      "mutant:m01_stale_self.ts": {
+        "id": "m01_stale_self",
+        "file": "mutants/m01_stale_self.ts",
+        "tag": "law",
+        "breaks": ["L1", "L5"],
+        "description": "Self-transfer goes through the general path with balances read before writing: from == to gains the amount."
+      },
+      "mutant:m02_stale_fee_balance.ts": {
+        "id": "m02_stale_fee_balance",
+        "file": "mutants/m02_stale_fee_balance.ts",
+        "tag": "law",
+        "breaks": ["L1", "L4"],
+        "description": "Fee credit writes the fee balance read before the transfer: wrong when the sender or receiver is the fee account."
+      },
+      "mutant:m03_fee_not_credited.ts": {
+        "id": "m03_fee_not_credited",
+        "file": "mutants/m03_fee_not_credited.ts",
+        "tag": "law",
+        "breaks": ["L1", "L4"],
+        "description": "Fee is taken from the sender but never credited to the fee account."
+      },
+      "mutant:m04_funds_check_without_fee.ts": {
+        "id": "m04_funds_check_without_fee",
+        "file": "mutants/m04_funds_check_without_fee.ts",
+        "tag": "law",
+        "breaks": ["L2", "L4"],
+        "description": "Funds check covers the amount only, not amount + fee: the sender can go negative."
+      },
+      "mutant:m05_fee_charged_on_failure.ts": {
+        "id": "m05_fee_charged_on_failure",
+        "file": "mutants/m05_fee_charged_on_failure.ts",
+        "tag": "law",
+        "breaks": ["L3"],
+        "description": "An insufficient-funds transfer still moves the fee (when affordable) and reports failure."
+      },
+      "mutant:m06_self_transfer_fee.ts": {
+        "id": "m06_self_transfer_fee",
+        "file": "mutants/m06_self_transfer_fee.ts",
+        "tag": "law",
+        "breaks": ["L5"],
+        "description": "Self-transfers pay the minimum fee to the fee account."
+      },
+      "mutant:m07_zero_amount_allowed.ts": {
+        "id": "m07_zero_amount_allowed",
+        "file": "mutants/m07_zero_amount_allowed.ts",
+        "tag": "law",
+        "breaks": ["L4"],
+        "description": "A zero transfer between different accounts succeeds and charges the minimum fee."
+      },
+      "mutant:m08_strict_funds_check.ts": {
+        "id": "m08_strict_funds_check",
+        "file": "mutants/m08_strict_funds_check.ts",
+        "tag": "law",
+        "breaks": ["L4"],
+        "description": "Funds check requires more than amount + fee: a sender with exactly amount + fee is refused."
+      },
+      "mutant:m09_receiver_pays_fee.ts": {
+        "id": "m09_receiver_pays_fee",
+        "file": "mutants/m09_receiver_pays_fee.ts",
+        "tag": "law",
+        "breaks": ["L4"],
+        "description": "The receiver pays the fee instead of the sender (total still conserved)."
+      },
+      "mutant:m10_fee_to_receiver.ts": {
+        "id": "m10_fee_to_receiver",
+        "file": "mutants/m10_fee_to_receiver.ts",
+        "tag": "law",
+        "breaks": ["L4"],
+        "description": "The fee is credited to the receiver instead of the fee account (total still conserved)."
+      },
+      "mutant:m11_inline_fee_no_minimum.ts": {
+        "id": "m11_inline_fee_no_minimum",
+        "file": "mutants/m11_inline_fee_no_minimum.ts",
+        "tag": "law",
+        "breaks": ["L4"],
+        "description": "transfer computes floor(amount / 100) inline instead of feeFor: transfers under 100 are free while feeFor says 1."
+      },
+      "mutant:m12_total_excludes_fee.ts": {
+        "id": "m12_total_excludes_fee",
+        "file": "mutants/m12_total_excludes_fee.ts",
+        "tag": "law",
+        "breaks": ["L0", "L1"],
+        "description": "total() leaves out the fee account."
+      },
+      "mutant:m13_fee_ceil.ts": {
+        "id": "m13_fee_ceil",
+        "file": "mutants/m13_fee_ceil.ts",
+        "tag": "feature",
+        "breaks": ["feature"],
+        "description": "Fee rounds up: max(1, ceil(amount / 100))."
+      },
+      "mutant:m14_fee_no_minimum.ts": {
+        "id": "m14_fee_no_minimum",
+        "file": "mutants/m14_fee_no_minimum.ts",
+        "tag": "feature",
+        "breaks": ["feature"],
+        "description": "Fee has no minimum: floor(amount / 100), so transfers under 100 are free."
+      },
+      "mutant:m15_fee_round.ts": {
+        "id": "m15_fee_round",
+        "file": "mutants/m15_fee_round.ts",
+        "tag": "feature",
+        "breaks": ["feature"],
+        "description": "Fee rounds to nearest: max(1, round(amount / 100))."
+      },
+      "mutant:m16_self_transfer_rejected.ts": {
+        "id": "m16_self_transfer_rejected",
+        "file": "mutants/m16_self_transfer_rejected.ts",
+        "tag": "feature",
+        "breaks": ["feature"],
+        "description": "Self-transfers are still rejected."
+      },
+      "mutant:m17_self_transfer_ignores_funds.ts": {
+        "id": "m17_self_transfer_ignores_funds",
+        "file": "mutants/m17_self_transfer_ignores_funds.ts",
+        "tag": "feature",
+        "breaks": ["feature"],
+        "description": "A self-transfer succeeds even when the balance does not cover the amount."
+      },
+      "mutant:m18_free_transfers_to_fee_account.ts": {
+        "id": "m18_free_transfers_to_fee_account",
+        "file": "mutants/m18_free_transfers_to_fee_account.ts",
+        "tag": "feature",
+        "breaks": ["feature"],
+        "description": "Transfers to the fee account pay no fee."
+      }
+    }
+  }
+}

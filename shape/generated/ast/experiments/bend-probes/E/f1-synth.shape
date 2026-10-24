@@ -1,0 +1,145 @@
+module shape.generated.ast.experiments.bend_probes.E.f1_synth
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource F1SynthModuleCompileAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/E/f1-synth.ts#compile")
+  fingerprint ast.semantic_subtree_v1("sha256:f6d178b94565f2551e1446eb3d0184dae9da7b3a4bfe076b555997343497cf6c")
+}
+
+resource F1SynthModuleEnumerateAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/E/f1-synth.ts#enumerate")
+  fingerprint ast.semantic_subtree_v1("sha256:4854cffb87627671dbddbf1205f4aa378aa08c45fe8655fa920a653fd48eda1b")
+}
+
+resource F1SynthModuleEvalNodeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/E/f1-synth.ts#evalNode")
+  fingerprint ast.semantic_subtree_v1("sha256:1595cd4899f4e906542b06652adbc6de8d3c92a3316329c42e7bbcc2216714b7")
+}
+
+resource F1SynthModuleHashSigAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/E/f1-synth.ts#hashSig")
+  fingerprint ast.semantic_subtree_v1("sha256:3aeee499fce9d718a9dcf0724afcbe18d1ee3e73d931f96a91c53a0ee4eb286d")
+}
+
+resource F1SynthModuleSampleAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/E/f1-synth.ts#sample")
+  fingerprint ast.semantic_subtree_v1("sha256:0400731666f856db06f24baecb56e45ad849f491d6bcb3fd48dff2692176ffb3")
+}
+
+resource F1SynthModuleShowAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/E/f1-synth.ts#show")
+  fingerprint ast.semantic_subtree_v1("sha256:4cbcc2aad017b00f979759f5c05b240fd766400dd1c86cca8a7f5cc1601eee7e")
+}
+
+resource F1SynthModuleSigOfAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/E/f1-synth.ts#sigOf")
+  fingerprint ast.semantic_subtree_v1("sha256:2f367c21983110fcadc0ec4beb9a33cacae6d98c4f9b4343d9c7f78bddf76f85")
+}
+
+resource F1SynthModuleSynthesizeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/E/f1-synth.ts#synthesize")
+  fingerprint ast.semantic_subtree_v1("sha256:74a19a52f3c3905dda4498a642e94b4926514bb3ee5a49ef10795c77c67798a2")
+}
+
+component F1SynthModule : GeneratedCandidate {
+  fn compile
+    source ts("experiments/bend-probes/E/f1-synth.ts#compile")
+    effects unknown
+  fn enumerate
+    source ts("experiments/bend-probes/E/f1-synth.ts#enumerate")
+    effects unknown
+  fn evalNode
+    source ts("experiments/bend-probes/E/f1-synth.ts#evalNode")
+    effects unknown
+  fn hashSig
+    source ts("experiments/bend-probes/E/f1-synth.ts#hashSig")
+    effects unknown
+  fn sample
+    source ts("experiments/bend-probes/E/f1-synth.ts#sample")
+    effects unknown
+  fn show
+    source ts("experiments/bend-probes/E/f1-synth.ts#show")
+    effects unknown
+  fn sigOf
+    source ts("experiments/bend-probes/E/f1-synth.ts#sigOf")
+    effects unknown
+  fn synthesize
+    source ts("experiments/bend-probes/E/f1-synth.ts#synthesize")
+    effects unknown
+}
+
+relation F1SynthModuleCompileGeneratedFromF1SynthModuleCompileAstAnchor {
+  kind generated_from
+  connects F1SynthModule -> F1SynthModuleCompileAstAnchor
+  roles { F1SynthModule as generated, F1SynthModuleCompileAstAnchor as syntax }
+  expects F1SynthModuleCompileAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f6d178b94565f2551e1446eb3d0184dae9da7b3a4bfe076b555997343497cf6c")
+  summary "fn F1SynthModule.compile generated from typescript function_declaration at experiments/bend-probes/E/f1-synth.ts#compile."
+}
+
+relation F1SynthModuleEnumerateGeneratedFromF1SynthModuleEnumerateAstAnchor {
+  kind generated_from
+  connects F1SynthModule -> F1SynthModuleEnumerateAstAnchor
+  roles { F1SynthModule as generated, F1SynthModuleEnumerateAstAnchor as syntax }
+  expects F1SynthModuleEnumerateAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4854cffb87627671dbddbf1205f4aa378aa08c45fe8655fa920a653fd48eda1b")
+  summary "fn F1SynthModule.enumerate generated from typescript function_declaration at experiments/bend-probes/E/f1-synth.ts#enumerate."
+}
+
+relation F1SynthModuleEvalNodeGeneratedFromF1SynthModuleEvalNodeAstAnchor {
+  kind generated_from
+  connects F1SynthModule -> F1SynthModuleEvalNodeAstAnchor
+  roles { F1SynthModule as generated, F1SynthModuleEvalNodeAstAnchor as syntax }
+  expects F1SynthModuleEvalNodeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1595cd4899f4e906542b06652adbc6de8d3c92a3316329c42e7bbcc2216714b7")
+  summary "fn F1SynthModule.evalNode generated from typescript function_declaration at experiments/bend-probes/E/f1-synth.ts#evalNode."
+}
+
+relation F1SynthModuleHashSigGeneratedFromF1SynthModuleHashSigAstAnchor {
+  kind generated_from
+  connects F1SynthModule -> F1SynthModuleHashSigAstAnchor
+  roles { F1SynthModule as generated, F1SynthModuleHashSigAstAnchor as syntax }
+  expects F1SynthModuleHashSigAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3aeee499fce9d718a9dcf0724afcbe18d1ee3e73d931f96a91c53a0ee4eb286d")
+  summary "fn F1SynthModule.hashSig generated from typescript function_declaration at experiments/bend-probes/E/f1-synth.ts#hashSig."
+}
+
+relation F1SynthModuleSampleGeneratedFromF1SynthModuleSampleAstAnchor {
+  kind generated_from
+  connects F1SynthModule -> F1SynthModuleSampleAstAnchor
+  roles { F1SynthModule as generated, F1SynthModuleSampleAstAnchor as syntax }
+  expects F1SynthModuleSampleAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0400731666f856db06f24baecb56e45ad849f491d6bcb3fd48dff2692176ffb3")
+  summary "fn F1SynthModule.sample generated from typescript function_declaration at experiments/bend-probes/E/f1-synth.ts#sample."
+}
+
+relation F1SynthModuleShowGeneratedFromF1SynthModuleShowAstAnchor {
+  kind generated_from
+  connects F1SynthModule -> F1SynthModuleShowAstAnchor
+  roles { F1SynthModule as generated, F1SynthModuleShowAstAnchor as syntax }
+  expects F1SynthModuleShowAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4cbcc2aad017b00f979759f5c05b240fd766400dd1c86cca8a7f5cc1601eee7e")
+  summary "fn F1SynthModule.show generated from typescript function_declaration at experiments/bend-probes/E/f1-synth.ts#show."
+}
+
+relation F1SynthModuleSigOfGeneratedFromF1SynthModuleSigOfAstAnchor {
+  kind generated_from
+  connects F1SynthModule -> F1SynthModuleSigOfAstAnchor
+  roles { F1SynthModule as generated, F1SynthModuleSigOfAstAnchor as syntax }
+  expects F1SynthModuleSigOfAstAnchor fingerprint ast.semantic_subtree_v1("sha256:2f367c21983110fcadc0ec4beb9a33cacae6d98c4f9b4343d9c7f78bddf76f85")
+  summary "fn F1SynthModule.sigOf generated from typescript function_declaration at experiments/bend-probes/E/f1-synth.ts#sigOf."
+}
+
+relation F1SynthModuleSynthesizeGeneratedFromF1SynthModuleSynthesizeAstAnchor {
+  kind generated_from
+  connects F1SynthModule -> F1SynthModuleSynthesizeAstAnchor
+  roles { F1SynthModule as generated, F1SynthModuleSynthesizeAstAnchor as syntax }
+  expects F1SynthModuleSynthesizeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:74a19a52f3c3905dda4498a642e94b4926514bb3ee5a49ef10795c77c67798a2")
+  summary "fn F1SynthModule.synthesize generated from typescript function_declaration at experiments/bend-probes/E/f1-synth.ts#synthesize."
+}
+
+implementation F1SynthModuleImpl {
+  paths {
+    "experiments/bend-probes/E/f1-synth.ts"
+  }
+  conforms_to F1SynthModule
+}

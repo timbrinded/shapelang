@@ -1,0 +1,33 @@
+module shape.generated.ast.experiments.bend_probes.D.d1.probes
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource ProbesModuleRunAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/D/d1/probes.ts#run")
+  fingerprint ast.semantic_subtree_v1("sha256:d87c42f626edeb05f48fdf839af81d872c6313c5106c86e0590998cf5ee028b5")
+}
+
+component ProbesModule : GeneratedCandidate {
+  fn run
+    source ts("experiments/bend-probes/D/d1/probes.ts#run")
+    effects unknown
+}
+
+relation ProbesModuleRunGeneratedFromProbesModuleRunAstAnchor {
+  kind generated_from
+  connects ProbesModule -> ProbesModuleRunAstAnchor
+  roles { ProbesModule as generated, ProbesModuleRunAstAnchor as syntax }
+  expects ProbesModuleRunAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d87c42f626edeb05f48fdf839af81d872c6313c5106c86e0590998cf5ee028b5")
+  summary "fn ProbesModule.run generated from typescript function_declaration at experiments/bend-probes/D/d1/probes.ts#run."
+}
+
+implementation ProbesModuleImpl {
+  paths {
+    "experiments/bend-probes/D/d1/probes.ts"
+  }
+  conforms_to ProbesModule
+}

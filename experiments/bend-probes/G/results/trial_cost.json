@@ -1,0 +1,21 @@
+{
+  "_note": "Wall time and total subagent tokens per trial, from the Agent tool's completion notices.",
+  "T1-C0-s1": { "seconds": 157, "tokens": 69432 },
+  "T1-C0-s2": { "seconds": 170, "tokens": 76085 },
+  "T1-C1-s1": { "seconds": 170, "tokens": 72164 },
+  "T1-C1-s2": { "seconds": 105, "tokens": 71283 },
+  "T1-C2-s1": { "seconds": 224, "tokens": 103474 },
+  "T1-C2-s2": { "seconds": 184, "tokens": 96027 },
+  "T3-C0-s1": { "seconds": 106, "tokens": 68422 },
+  "T3-C0-s2": { "seconds": 98, "tokens": 67458 },
+  "T3-C1-s1": { "seconds": 189, "tokens": 71592 },
+  "T3-C1-s2": { "seconds": 135, "tokens": 72990 },
+  "T3-C2-s1": { "seconds": 215, "tokens": 98841 },
+  "T3-C2-s2": { "seconds": 302, "tokens": 101993 },
+  "T4-C0-s1": { "seconds": 90, "tokens": 66943 },
+  "T4-C0-s2": { "seconds": 74, "tokens": 66647 },
+  "T4-C1-s1": { "seconds": 77, "tokens": 68546 },
+  "T4-C1-s2": { "seconds": 61, "tokens": 66916 },
+  "T4-C2-s1": { "seconds": 384, "tokens": 128013 },
+  "T4-C2-s2": { "seconds": 444, "tokens": 126663 }
+}

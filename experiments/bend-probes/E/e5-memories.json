@@ -11,119 +11,437 @@
     "entry_rule": "full = every normative clause has a non-judgment route; partial = some do; none = no normative clause does. proxy = the deterministic route checks a textual proxy (phrase presence) rather than the semantic claim."
   },
   "entries": [
-    {"name": "IncrementalInvalidationContract", "kind": "memory", "clauses": [
-      {"text": "document mutations and implicit generated-AST origin changes rebuild the complete two-pass model and facts", "route": "law"},
-      {"text": "option-only checks may reuse the model when origins stay stable", "route": "law"},
-      {"text": "exact no-ops may reuse diagnostics", "route": "law"}]},
-    {"name": "AtomicChangePlanning", "kind": "memory", "clauses": [
-      {"text": "each change declaration is applied to an isolated snapshot", "route": "law"},
-      {"text": "ordered before/after transitions produce normalized guard events", "route": "law"},
-      {"text": "the plan is committed only after every entry is staged", "route": "law"}]},
-    {"name": "BindingDocsCouplingContract", "kind": "memory", "clauses": [
-      {"text": "bindings compare normalized repo-relative changed paths", "route": "law"},
-      {"text": "an allowed attestation counts only when new relative to base, or its file changed without a base", "route": "law"},
-      {"text": "with a base, an attestation-only Shape change does not trigger a binding", "route": "law"}]},
-    {"name": "CheckPipelineOrder", "kind": "memory", "clauses": [
-      {"text": "lower the effective model before semantic rules and coverage/binding checks", "route": "call-graph"}]},
-    {"name": "CoverageCurrentUpdateContract", "kind": "memory", "clauses": [
-      {"text": "a source reference counts only when its declaring Shape file matches the changed-file input after normalization", "route": "law"},
-      {"text": "an attestation counts only when new relative to base, or its file changed without a base", "route": "law"}]},
-    {"name": "DiagnosticContract", "kind": "memory", "clauses": [
-      {"text": "diagnostics are a product surface and must keep causal paths understandable", "route": "judgment"}]},
-    {"name": "FinalForbidPrecedence", "kind": "memory", "clauses": [
-      {"text": "final forbids remain stronger than component grants", "route": "law"},
-      {"text": "concrete targets resolve deterministically", "route": "law"},
-      {"text": "final forbids cannot be waived by rationale or memory", "route": "law"}]},
-    {"name": "ForbiddenPathWitness", "kind": "memory", "clauses": [
-      {"text": "the witness is a deterministic fewest-hop directed path", "route": "law"},
-      {"text": "each hop preserves relation kind, name and provenance", "route": "law"}]},
-    {"name": "FreshnessDeterminism", "kind": "memory", "clauses": [
-      {"text": "review_by is compared with a caller-injected date, never the system clock", "route": "static-scan"},
-      {"text": "only ISO YYYY-MM-DD values are enforced", "route": "law"}]},
-    {"name": "GuardedChangePrecision", "kind": "memory", "clauses": [
-      {"text": "guards fire property-level when every protected property is detectable", "route": "law"},
-      {"text": "forbid-transform guards fire on a matching declared transform", "route": "law"},
-      {"text": "other targets fall back to coarse modify/remove matching", "route": "law"},
-      {"text": "final forbids are never waived", "route": "law"}]},
-    {"name": "GuardedSourceCurrency", "kind": "memory", "clauses": [
-      {"text": "an edit to a guarded source is cleared only by a reevaluation written for that change", "route": "law"},
-      {"text": "counting any valid reevaluation would let one old review switch the guard off", "route": "rationale"}]},
-    {"name": "HypercycleWitness", "kind": "memory", "clauses": [
-      {"text": "hypercycle diagnostics use a deterministic shortest witness path", "route": "law"},
-      {"text": "so reviewers can understand the tightest rejected relation", "route": "rationale"}]},
-    {"name": "InspectionSchemaContract", "kind": "memory", "clauses": [
-      {"text": "the DTO is explicitly versioned", "route": "static-scan"},
-      {"text": "stable module-qualified identities", "route": "law"},
-      {"text": "preserves authored or generated-AST origin", "route": "law"},
-      {"text": "codepoint ordering", "route": "law"},
-      {"text": "files are normalized at the CLI boundary", "route": "call-graph"},
-      {"text": "never embeds the current time", "route": "static-scan"}]},
-    {"name": "LoweringBeforeRules", "kind": "memory", "clauses": [
-      {"text": "declarations, forbid targets, candidate evidence and change declarations are resolved before derived facts are emitted", "route": "call-graph"}]},
-    {"name": "PreludeMetadataContract", "kind": "memory", "clauses": [
-      {"text": "prelude metadata is shared by checker, editor and authoring surfaces", "route": "call-graph"},
-      {"text": "context requirements derive obligations for fn, component and resource targets", "route": "law"},
-      {"text": "they merge with user-defined require_context obligations", "route": "law"}]},
-    {"name": "ReevaluationPolicyContract", "kind": "memory", "clauses": [
-      {"text": "structural fields plus approver when a policy requires one for a sensitive memory", "route": "law"},
-      {"text": "reviewer/approver validated against declared roles", "route": "law"},
-      {"text": "approver and role checks stay opt-in", "route": "law"}]},
-    {"name": "RuleLayerSplit", "kind": "memory", "clauses": [
-      {"text": "the loosening check restores exactly the listed rule-layer kinds and takes code claims from head", "route": "static-scan"},
-      {"text": "moving a kind across the line would let an agent silence a violation", "route": "rationale"}]},
-    {"name": "ShapeSourceNormalizationContract", "kind": "memory", "clauses": [
-      {"text": "coverage, binding and analyzer comparisons use the same repo-relative path rules", "route": "law", "note": "a call-graph formalisation gave 2 false positives (normalization happens in lowering, by data flow); implemented as a cross-surface law (E5 check C)"}]},
-    {"name": "ShapeStringLiteralContract", "kind": "memory", "clauses": [
-      {"text": "string unquoting is consistent across lowering and formatting", "route": "call-graph"}]},
-    {"name": "SharedCheckPipelineOrder", "kind": "memory", "clauses": [
-      {"text": "model diagnostics, semantic rules, binding checks, canonical sorting, optional facts, in that order", "route": "call-graph"}]},
-    {"name": "ReleaseChecksumContract", "kind": "memory", "clauses": [
-      {"text": "release archives, parser assets, installer templates and checksums stay in sync", "route": "artefact-check"}]},
-    {"name": "ReleaseVersionTagContract", "kind": "memory", "clauses": [
-      {"text": "tag, CLI package, both plugin manifests, notes and public pins share one version before publishing", "route": "static-scan"}]},
-    {"name": "SkillsApprovalReuseContract", "kind": "memory", "clauses": [
-      {"text": "a report is copied from this SHA's approved run, or from an ancestor only when no relevant path changed", "route": "law"},
-      {"text": "publishing still requires an approved candidate run on the exact tag SHA", "route": "artefact-check"}]},
-    {"name": "DocsShapeBlockParsingContract", "kind": "memory", "clauses": [
-      {"text": "docs examples are parsed with the repo parser unless marked no-verify", "route": "call-graph"}]},
-    {"name": "GrammarMemoryGuardForms", "kind": "memory", "clauses": [
-      {"text": "grammar changes ripple to generated AST, parser, checker, formatter and docs", "route": "judgment"},
-      {"text": "the grammar supports the listed protects/guards/governance/require_context/forbid path/grouping forms", "route": "law"},
-      {"text": "new keywords are reserved in the AST generator", "route": "static-scan"}]},
-    {"name": "ParseDocumentContract", "kind": "memory", "clauses": [
-      {"text": "parser output preserves document state, URI, qualified refs, candidate/forbidden-path syntax and diagnostics", "route": "law"}]},
-    {"name": "AstGenerationUnknownSafety", "kind": "memory", "clauses": [
-      {"text": "drafts preserve uncertainty with effects unknown", "route": "law"},
-      {"text": "stable symbol or file references that do not churn on line-only movement", "route": "law"},
-      {"text": "compact anchors with semantic fingerprints when token evidence exists", "route": "law"},
-      {"text": "warn instead of failing on tokenless anchors", "route": "law"},
-      {"text": "candidate effect evidence only as review hints with checkable pins", "route": "law"},
-      {"text": "raw syntax traces opt-in", "route": "law"}]},
-    {"name": "AuthorPromptSafetyRules", "kind": "memory", "proxy": true, "clauses": [
-      {"text": "authoring prompts require stable evidence without line suffixes, explicit destructive effects, and no memory waiver for final forbids", "route": "static-scan"}]},
-    {"name": "AuthoringUnknownSafety", "kind": "memory", "clauses": [
-      {"text": "generated drafts prefer effects unknown over false empty complete summaries", "route": "law"}]},
-    {"name": "CliCommandDispatchOrder", "kind": "memory", "clauses": [
-      {"text": "commands dispatch to the same checker/formatter/helper semantics used by tests", "route": "call-graph"},
-      {"text": "ambiguous output modes are rejected before command work", "route": "law"},
-      {"text": "generated AST directory checks are explicit", "route": "law"},
-      {"text": "generated AST source identity derives from the workspace root", "route": "law"}]},
-    {"name": "ClockReadAtCliBoundary", "kind": "memory", "clauses": [
-      {"text": "the system clock is read only at the CLI boundary to inject a freshness date", "route": "static-scan"},
-      {"text": "the checker never reads the clock", "route": "static-scan"}]},
-    {"name": "CriticPromptSafetyRules", "kind": "memory", "proxy": true, "clauses": [
-      {"text": "critic prompts flag unstable numbered references, omitted destructive effects, false certainty, missing reevaluations and final-forbid waivers", "route": "static-scan"}]},
-    {"name": "DefaultShapeFileDiscovery", "kind": "memory", "clauses": [
-      {"text": "default discovery loads every Shape file under shape/, including nested vendor packs", "route": "law"}]},
-    {"name": "FormatterCanonicalDiffs", "kind": "memory", "clauses": [
-      {"text": "formatter ordering and indentation are stable (canonical, idempotent)", "route": "law"},
-      {"text": "nested rationale/memory grouping blocks canonicalize to flat members", "route": "law"},
-      {"text": "graph-rule endpoints and kind filters have one canonical form", "route": "law"},
-      {"text": "keeps Shape files reviewable", "route": "rationale"}]},
-    {"name": "UpdateBinaryIntegrity", "kind": "memory", "clauses": [
-      {"text": "self-update verifies target identity, checksum, version and parser assets before replacing the executable", "route": "call-graph"}]},
-    {"name": "AnalyzerCheckerSeparation", "kind": "rationale", "clauses": [
-      {"text": "the analyzer compares hints directly with parsed Shape", "route": "call-graph"},
-      {"text": "the analyzer stays advisory and does not call the authoritative checker", "route": "call-graph"}]}
+    {
+      "name": "IncrementalInvalidationContract",
+      "kind": "memory",
+      "clauses": [
+        {
+          "text": "document mutations and implicit generated-AST origin changes rebuild the complete two-pass model and facts",
+          "route": "law"
+        },
+        {
+          "text": "option-only checks may reuse the model when origins stay stable",
+          "route": "law"
+        },
+        { "text": "exact no-ops may reuse diagnostics", "route": "law" }
+      ]
+    },
+    {
+      "name": "AtomicChangePlanning",
+      "kind": "memory",
+      "clauses": [
+        { "text": "each change declaration is applied to an isolated snapshot", "route": "law" },
+        {
+          "text": "ordered before/after transitions produce normalized guard events",
+          "route": "law"
+        },
+        { "text": "the plan is committed only after every entry is staged", "route": "law" }
+      ]
+    },
+    {
+      "name": "BindingDocsCouplingContract",
+      "kind": "memory",
+      "clauses": [
+        { "text": "bindings compare normalized repo-relative changed paths", "route": "law" },
+        {
+          "text": "an allowed attestation counts only when new relative to base, or its file changed without a base",
+          "route": "law"
+        },
+        {
+          "text": "with a base, an attestation-only Shape change does not trigger a binding",
+          "route": "law"
+        }
+      ]
+    },
+    {
+      "name": "CheckPipelineOrder",
+      "kind": "memory",
+      "clauses": [
+        {
+          "text": "lower the effective model before semantic rules and coverage/binding checks",
+          "route": "call-graph"
+        }
+      ]
+    },
+    {
+      "name": "CoverageCurrentUpdateContract",
+      "kind": "memory",
+      "clauses": [
+        {
+          "text": "a source reference counts only when its declaring Shape file matches the changed-file input after normalization",
+          "route": "law"
+        },
+        {
+          "text": "an attestation counts only when new relative to base, or its file changed without a base",
+          "route": "law"
+        }
+      ]
+    },
+    {
+      "name": "DiagnosticContract",
+      "kind": "memory",
+      "clauses": [
+        {
+          "text": "diagnostics are a product surface and must keep causal paths understandable",
+          "route": "judgment"
+        }
+      ]
+    },
+    {
+      "name": "FinalForbidPrecedence",
+      "kind": "memory",
+      "clauses": [
+        { "text": "final forbids remain stronger than component grants", "route": "law" },
+        { "text": "concrete targets resolve deterministically", "route": "law" },
+        { "text": "final forbids cannot be waived by rationale or memory", "route": "law" }
+      ]
+    },
+    {
+      "name": "ForbiddenPathWitness",
+      "kind": "memory",
+      "clauses": [
+        { "text": "the witness is a deterministic fewest-hop directed path", "route": "law" },
+        { "text": "each hop preserves relation kind, name and provenance", "route": "law" }
+      ]
+    },
+    {
+      "name": "FreshnessDeterminism",
+      "kind": "memory",
+      "clauses": [
+        {
+          "text": "review_by is compared with a caller-injected date, never the system clock",
+          "route": "static-scan"
+        },
+        { "text": "only ISO YYYY-MM-DD values are enforced", "route": "law" }
+      ]
+    },
+    {
+      "name": "GuardedChangePrecision",
+      "kind": "memory",
+      "clauses": [
+        {
+          "text": "guards fire property-level when every protected property is detectable",
+          "route": "law"
+        },
+        { "text": "forbid-transform guards fire on a matching declared transform", "route": "law" },
+        { "text": "other targets fall back to coarse modify/remove matching", "route": "law" },
+        { "text": "final forbids are never waived", "route": "law" }
+      ]
+    },
+    {
+      "name": "GuardedSourceCurrency",
+      "kind": "memory",
+      "clauses": [
+        {
+          "text": "an edit to a guarded source is cleared only by a reevaluation written for that change",
+          "route": "law"
+        },
+        {
+          "text": "counting any valid reevaluation would let one old review switch the guard off",
+          "route": "rationale"
+        }
+      ]
+    },
+    {
+      "name": "HypercycleWitness",
+      "kind": "memory",
+      "clauses": [
+        {
+          "text": "hypercycle diagnostics use a deterministic shortest witness path",
+          "route": "law"
+        },
+        {
+          "text": "so reviewers can understand the tightest rejected relation",
+          "route": "rationale"
+        }
+      ]
+    },
+    {
+      "name": "InspectionSchemaContract",
+      "kind": "memory",
+      "clauses": [
+        { "text": "the DTO is explicitly versioned", "route": "static-scan" },
+        { "text": "stable module-qualified identities", "route": "law" },
+        { "text": "preserves authored or generated-AST origin", "route": "law" },
+        { "text": "codepoint ordering", "route": "law" },
+        { "text": "files are normalized at the CLI boundary", "route": "call-graph" },
+        { "text": "never embeds the current time", "route": "static-scan" }
+      ]
+    },
+    {
+      "name": "LoweringBeforeRules",
+      "kind": "memory",
+      "clauses": [
+        {
+          "text": "declarations, forbid targets, candidate evidence and change declarations are resolved before derived facts are emitted",
+          "route": "call-graph"
+        }
+      ]
+    },
+    {
+      "name": "PreludeMetadataContract",
+      "kind": "memory",
+      "clauses": [
+        {
+          "text": "prelude metadata is shared by checker, editor and authoring surfaces",
+          "route": "call-graph"
+        },
+        {
+          "text": "context requirements derive obligations for fn, component and resource targets",
+          "route": "law"
+        },
+        { "text": "they merge with user-defined require_context obligations", "route": "law" }
+      ]
+    },
+    {
+      "name": "ReevaluationPolicyContract",
+      "kind": "memory",
+      "clauses": [
+        {
+          "text": "structural fields plus approver when a policy requires one for a sensitive memory",
+          "route": "law"
+        },
+        { "text": "reviewer/approver validated against declared roles", "route": "law" },
+        { "text": "approver and role checks stay opt-in", "route": "law" }
+      ]
+    },
+    {
+      "name": "RuleLayerSplit",
+      "kind": "memory",
+      "clauses": [
+        {
+          "text": "the loosening check restores exactly the listed rule-layer kinds and takes code claims from head",
+          "route": "static-scan"
+        },
+        {
+          "text": "moving a kind across the line would let an agent silence a violation",
+          "route": "rationale"
+        }
+      ]
+    },
+    {
+      "name": "ShapeSourceNormalizationContract",
+      "kind": "memory",
+      "clauses": [
+        {
+          "text": "coverage, binding and analyzer comparisons use the same repo-relative path rules",
+          "route": "law",
+          "note": "a call-graph formalisation gave 2 false positives (normalization happens in lowering, by data flow); implemented as a cross-surface law (E5 check C)"
+        }
+      ]
+    },
+    {
+      "name": "ShapeStringLiteralContract",
+      "kind": "memory",
+      "clauses": [
+        {
+          "text": "string unquoting is consistent across lowering and formatting",
+          "route": "call-graph"
+        }
+      ]
+    },
+    {
+      "name": "SharedCheckPipelineOrder",
+      "kind": "memory",
+      "clauses": [
+        {
+          "text": "model diagnostics, semantic rules, binding checks, canonical sorting, optional facts, in that order",
+          "route": "call-graph"
+        }
+      ]
+    },
+    {
+      "name": "ReleaseChecksumContract",
+      "kind": "memory",
+      "clauses": [
+        {
+          "text": "release archives, parser assets, installer templates and checksums stay in sync",
+          "route": "artefact-check"
+        }
+      ]
+    },
+    {
+      "name": "ReleaseVersionTagContract",
+      "kind": "memory",
+      "clauses": [
+        {
+          "text": "tag, CLI package, both plugin manifests, notes and public pins share one version before publishing",
+          "route": "static-scan"
+        }
+      ]
+    },
+    {
+      "name": "SkillsApprovalReuseContract",
+      "kind": "memory",
+      "clauses": [
+        {
+          "text": "a report is copied from this SHA's approved run, or from an ancestor only when no relevant path changed",
+          "route": "law"
+        },
+        {
+          "text": "publishing still requires an approved candidate run on the exact tag SHA",
+          "route": "artefact-check"
+        }
+      ]
+    },
+    {
+      "name": "DocsShapeBlockParsingContract",
+      "kind": "memory",
+      "clauses": [
+        {
+          "text": "docs examples are parsed with the repo parser unless marked no-verify",
+          "route": "call-graph"
+        }
+      ]
+    },
+    {
+      "name": "GrammarMemoryGuardForms",
+      "kind": "memory",
+      "clauses": [
+        {
+          "text": "grammar changes ripple to generated AST, parser, checker, formatter and docs",
+          "route": "judgment"
+        },
+        {
+          "text": "the grammar supports the listed protects/guards/governance/require_context/forbid path/grouping forms",
+          "route": "law"
+        },
+        { "text": "new keywords are reserved in the AST generator", "route": "static-scan" }
+      ]
+    },
+    {
+      "name": "ParseDocumentContract",
+      "kind": "memory",
+      "clauses": [
+        {
+          "text": "parser output preserves document state, URI, qualified refs, candidate/forbidden-path syntax and diagnostics",
+          "route": "law"
+        }
+      ]
+    },
+    {
+      "name": "AstGenerationUnknownSafety",
+      "kind": "memory",
+      "clauses": [
+        { "text": "drafts preserve uncertainty with effects unknown", "route": "law" },
+        {
+          "text": "stable symbol or file references that do not churn on line-only movement",
+          "route": "law"
+        },
+        {
+          "text": "compact anchors with semantic fingerprints when token evidence exists",
+          "route": "law"
+        },
+        { "text": "warn instead of failing on tokenless anchors", "route": "law" },
+        {
+          "text": "candidate effect evidence only as review hints with checkable pins",
+          "route": "law"
+        },
+        { "text": "raw syntax traces opt-in", "route": "law" }
+      ]
+    },
+    {
+      "name": "AuthorPromptSafetyRules",
+      "kind": "memory",
+      "proxy": true,
+      "clauses": [
+        {
+          "text": "authoring prompts require stable evidence without line suffixes, explicit destructive effects, and no memory waiver for final forbids",
+          "route": "static-scan"
+        }
+      ]
+    },
+    {
+      "name": "AuthoringUnknownSafety",
+      "kind": "memory",
+      "clauses": [
+        {
+          "text": "generated drafts prefer effects unknown over false empty complete summaries",
+          "route": "law"
+        }
+      ]
+    },
+    {
+      "name": "CliCommandDispatchOrder",
+      "kind": "memory",
+      "clauses": [
+        {
+          "text": "commands dispatch to the same checker/formatter/helper semantics used by tests",
+          "route": "call-graph"
+        },
+        { "text": "ambiguous output modes are rejected before command work", "route": "law" },
+        { "text": "generated AST directory checks are explicit", "route": "law" },
+        { "text": "generated AST source identity derives from the workspace root", "route": "law" }
+      ]
+    },
+    {
+      "name": "ClockReadAtCliBoundary",
+      "kind": "memory",
+      "clauses": [
+        {
+          "text": "the system clock is read only at the CLI boundary to inject a freshness date",
+          "route": "static-scan"
+        },
+        { "text": "the checker never reads the clock", "route": "static-scan" }
+      ]
+    },
+    {
+      "name": "CriticPromptSafetyRules",
+      "kind": "memory",
+      "proxy": true,
+      "clauses": [
+        {
+          "text": "critic prompts flag unstable numbered references, omitted destructive effects, false certainty, missing reevaluations and final-forbid waivers",
+          "route": "static-scan"
+        }
+      ]
+    },
+    {
+      "name": "DefaultShapeFileDiscovery",
+      "kind": "memory",
+      "clauses": [
+        {
+          "text": "default discovery loads every Shape file under shape/, including nested vendor packs",
+          "route": "law"
+        }
+      ]
+    },
+    {
+      "name": "FormatterCanonicalDiffs",
+      "kind": "memory",
+      "clauses": [
+        {
+          "text": "formatter ordering and indentation are stable (canonical, idempotent)",
+          "route": "law"
+        },
+        {
+          "text": "nested rationale/memory grouping blocks canonicalize to flat members",
+          "route": "law"
+        },
+        { "text": "graph-rule endpoints and kind filters have one canonical form", "route": "law" },
+        { "text": "keeps Shape files reviewable", "route": "rationale" }
+      ]
+    },
+    {
+      "name": "UpdateBinaryIntegrity",
+      "kind": "memory",
+      "clauses": [
+        {
+          "text": "self-update verifies target identity, checksum, version and parser assets before replacing the executable",
+          "route": "call-graph"
+        }
+      ]
+    },
+    {
+      "name": "AnalyzerCheckerSeparation",
+      "kind": "rationale",
+      "clauses": [
+        { "text": "the analyzer compares hints directly with parsed Shape", "route": "call-graph" },
+        {
+          "text": "the analyzer stays advisory and does not call the authoritative checker",
+          "route": "call-graph"
+        }
+      ]
+    }
   ]
 }

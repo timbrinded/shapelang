@@ -1,0 +1,49 @@
+module shape.generated.ast.experiments.bend_probes.D.d3.ts_purity
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource TsPurityModulePrimitiveOrReadonlyAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/D/d3/ts_purity.ts#primitiveOrReadonly")
+  fingerprint ast.semantic_subtree_v1("sha256:41e4ef4f35c0cc064cbf755a82ece9c9225766f23919fbfa5ec562474794bc92")
+}
+
+resource TsPurityModuleWalkAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/D/d3/ts_purity.ts#walk")
+  fingerprint ast.semantic_subtree_v1("sha256:be1799a3642c4c926c01a9f1f87af1261e18c0846dc8ad5fe3205d1cd76f0994")
+}
+
+component TsPurityModule : GeneratedCandidate {
+  fn primitiveOrReadonly
+    source ts("experiments/bend-probes/D/d3/ts_purity.ts#primitiveOrReadonly")
+    effects unknown
+  fn walk
+    source ts("experiments/bend-probes/D/d3/ts_purity.ts#walk")
+    effects unknown
+}
+
+relation TsPurityModulePrimitiveOrReadonlyGeneratedFromTsPurityModulePrimitiveOrReadonlyAstAnchor {
+  kind generated_from
+  connects TsPurityModule -> TsPurityModulePrimitiveOrReadonlyAstAnchor
+  roles { TsPurityModule as generated, TsPurityModulePrimitiveOrReadonlyAstAnchor as syntax }
+  expects TsPurityModulePrimitiveOrReadonlyAstAnchor fingerprint ast.semantic_subtree_v1("sha256:41e4ef4f35c0cc064cbf755a82ece9c9225766f23919fbfa5ec562474794bc92")
+  summary "fn TsPurityModule.primitiveOrReadonly generated from typescript function_declaration at experiments/bend-probes/D/d3/ts_purity.ts#primitiveOrReadonly."
+}
+
+relation TsPurityModuleWalkGeneratedFromTsPurityModuleWalkAstAnchor {
+  kind generated_from
+  connects TsPurityModule -> TsPurityModuleWalkAstAnchor
+  roles { TsPurityModule as generated, TsPurityModuleWalkAstAnchor as syntax }
+  expects TsPurityModuleWalkAstAnchor fingerprint ast.semantic_subtree_v1("sha256:be1799a3642c4c926c01a9f1f87af1261e18c0846dc8ad5fe3205d1cd76f0994")
+  summary "fn TsPurityModule.walk generated from typescript function_declaration at experiments/bend-probes/D/d3/ts_purity.ts#walk."
+}
+
+implementation TsPurityModuleImpl {
+  paths {
+    "experiments/bend-probes/D/d3/ts_purity.ts"
+  }
+  conforms_to TsPurityModule
+}

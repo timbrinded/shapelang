@@ -1,0 +1,49 @@
+module shape.generated.ast.experiments.bend_probes.C.c2.run_c2
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource RunC2ModulePoolAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/C/c2/run-c2.mjs#pool")
+  fingerprint ast.semantic_subtree_v1("sha256:58551e39091aa4e66f3d297d5a45ea80d7b001863f709f32f8fe8219b9ceddc8")
+}
+
+resource RunC2ModuleRunAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/C/c2/run-c2.mjs#run")
+  fingerprint ast.semantic_subtree_v1("sha256:e12b87392d1200d7992ebf5b90e7cecb6fae828a1e65bb1100356b66c81043d7")
+}
+
+component RunC2Module : GeneratedCandidate {
+  fn pool
+    source js("experiments/bend-probes/C/c2/run-c2.mjs#pool")
+    effects unknown
+  fn run
+    source js("experiments/bend-probes/C/c2/run-c2.mjs#run")
+    effects unknown
+}
+
+relation RunC2ModulePoolGeneratedFromRunC2ModulePoolAstAnchor {
+  kind generated_from
+  connects RunC2Module -> RunC2ModulePoolAstAnchor
+  roles { RunC2Module as generated, RunC2ModulePoolAstAnchor as syntax }
+  expects RunC2ModulePoolAstAnchor fingerprint ast.semantic_subtree_v1("sha256:58551e39091aa4e66f3d297d5a45ea80d7b001863f709f32f8fe8219b9ceddc8")
+  summary "fn RunC2Module.pool generated from javascript function_declaration at experiments/bend-probes/C/c2/run-c2.mjs#pool."
+}
+
+relation RunC2ModuleRunGeneratedFromRunC2ModuleRunAstAnchor {
+  kind generated_from
+  connects RunC2Module -> RunC2ModuleRunAstAnchor
+  roles { RunC2Module as generated, RunC2ModuleRunAstAnchor as syntax }
+  expects RunC2ModuleRunAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e12b87392d1200d7992ebf5b90e7cecb6fae828a1e65bb1100356b66c81043d7")
+  summary "fn RunC2Module.run generated from javascript function_declaration at experiments/bend-probes/C/c2/run-c2.mjs#run."
+}
+
+implementation RunC2ModuleImpl {
+  paths {
+    "experiments/bend-probes/C/c2/run-c2.mjs"
+  }
+  conforms_to RunC2Module
+}

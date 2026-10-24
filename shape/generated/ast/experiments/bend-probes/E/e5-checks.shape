@@ -1,0 +1,145 @@
+module shape.generated.ast.experiments.bend_probes.E.e5_checks
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource E5ChecksModuleCheckAAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/E/e5-checks.ts#checkA")
+  fingerprint ast.semantic_subtree_v1("sha256:17c396aab92b338bb8d53cdb63ca8dde7d93662e1b01622c662edbace4ed8ba3")
+}
+
+resource E5ChecksModuleCheckBAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/E/e5-checks.ts#checkB")
+  fingerprint ast.semantic_subtree_v1("sha256:f4d4d8189ad3ac3b1a9b7fc6c5b1975da36464f399b7e16832a51787e037bb56")
+}
+
+resource E5ChecksModuleCheckC0AstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/E/e5-checks.ts#checkC0")
+  fingerprint ast.semantic_subtree_v1("sha256:16d5246201ac53fa21c690d2c6a2c83db0728bb147db16e6862fb9878871830a")
+}
+
+resource E5ChecksModuleCheckCAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/E/e5-checks.ts#checkC")
+  fingerprint ast.semantic_subtree_v1("sha256:d2f17b381f97c4596d98253c7ee0b0ce82645641dd53a53b6cb512bb0a862be6")
+}
+
+resource E5ChecksModuleCheckDAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/E/e5-checks.ts#checkD")
+  fingerprint ast.semantic_subtree_v1("sha256:03f97c777bcc4902a11bb431cefeafeeb6e5a549c31b13d6ac78772524da7f32")
+}
+
+resource E5ChecksModuleCheckEAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/E/e5-checks.ts#checkE")
+  fingerprint ast.semantic_subtree_v1("sha256:c72b3290657943a5d45137f584d12245ab269dd812e4c57661885d809fddcbbf")
+}
+
+resource E5ChecksModuleClosureAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/E/e5-checks.ts#closure")
+  fingerprint ast.semantic_subtree_v1("sha256:f55432acf4b4989b14a8ae47b424b626f7ade5fca0e5e5737604ccd92420bf44")
+}
+
+resource E5ChecksModuleOracleAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/E/e5-checks.ts#oracle")
+  fingerprint ast.semantic_subtree_v1("sha256:3ea53a67cc768bba8449e2798c1e3da779a68440343bb6645102b3ca61260be5")
+}
+
+component E5ChecksModule : GeneratedCandidate {
+  fn checkA
+    source ts("experiments/bend-probes/E/e5-checks.ts#checkA")
+    effects unknown
+  fn checkB
+    source ts("experiments/bend-probes/E/e5-checks.ts#checkB")
+    effects unknown
+  fn checkC
+    source ts("experiments/bend-probes/E/e5-checks.ts#checkC")
+    effects unknown
+  fn checkC0
+    source ts("experiments/bend-probes/E/e5-checks.ts#checkC0")
+    effects unknown
+  fn checkD
+    source ts("experiments/bend-probes/E/e5-checks.ts#checkD")
+    effects unknown
+  fn checkE
+    source ts("experiments/bend-probes/E/e5-checks.ts#checkE")
+    effects unknown
+  fn closure
+    source ts("experiments/bend-probes/E/e5-checks.ts#closure")
+    effects unknown
+  fn oracle
+    source ts("experiments/bend-probes/E/e5-checks.ts#oracle")
+    effects unknown
+}
+
+relation E5ChecksModuleCheckAGeneratedFromE5ChecksModuleCheckAAstAnchor {
+  kind generated_from
+  connects E5ChecksModule -> E5ChecksModuleCheckAAstAnchor
+  roles { E5ChecksModule as generated, E5ChecksModuleCheckAAstAnchor as syntax }
+  expects E5ChecksModuleCheckAAstAnchor fingerprint ast.semantic_subtree_v1("sha256:17c396aab92b338bb8d53cdb63ca8dde7d93662e1b01622c662edbace4ed8ba3")
+  summary "fn E5ChecksModule.checkA generated from typescript function_declaration at experiments/bend-probes/E/e5-checks.ts#checkA."
+}
+
+relation E5ChecksModuleCheckBGeneratedFromE5ChecksModuleCheckBAstAnchor {
+  kind generated_from
+  connects E5ChecksModule -> E5ChecksModuleCheckBAstAnchor
+  roles { E5ChecksModule as generated, E5ChecksModuleCheckBAstAnchor as syntax }
+  expects E5ChecksModuleCheckBAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f4d4d8189ad3ac3b1a9b7fc6c5b1975da36464f399b7e16832a51787e037bb56")
+  summary "fn E5ChecksModule.checkB generated from typescript function_declaration at experiments/bend-probes/E/e5-checks.ts#checkB."
+}
+
+relation E5ChecksModuleCheckC0GeneratedFromE5ChecksModuleCheckC0AstAnchor {
+  kind generated_from
+  connects E5ChecksModule -> E5ChecksModuleCheckC0AstAnchor
+  roles { E5ChecksModule as generated, E5ChecksModuleCheckC0AstAnchor as syntax }
+  expects E5ChecksModuleCheckC0AstAnchor fingerprint ast.semantic_subtree_v1("sha256:16d5246201ac53fa21c690d2c6a2c83db0728bb147db16e6862fb9878871830a")
+  summary "fn E5ChecksModule.checkC0 generated from typescript function_declaration at experiments/bend-probes/E/e5-checks.ts#checkC0."
+}
+
+relation E5ChecksModuleCheckCGeneratedFromE5ChecksModuleCheckCAstAnchor {
+  kind generated_from
+  connects E5ChecksModule -> E5ChecksModuleCheckCAstAnchor
+  roles { E5ChecksModule as generated, E5ChecksModuleCheckCAstAnchor as syntax }
+  expects E5ChecksModuleCheckCAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d2f17b381f97c4596d98253c7ee0b0ce82645641dd53a53b6cb512bb0a862be6")
+  summary "fn E5ChecksModule.checkC generated from typescript function_declaration at experiments/bend-probes/E/e5-checks.ts#checkC."
+}
+
+relation E5ChecksModuleCheckDGeneratedFromE5ChecksModuleCheckDAstAnchor {
+  kind generated_from
+  connects E5ChecksModule -> E5ChecksModuleCheckDAstAnchor
+  roles { E5ChecksModule as generated, E5ChecksModuleCheckDAstAnchor as syntax }
+  expects E5ChecksModuleCheckDAstAnchor fingerprint ast.semantic_subtree_v1("sha256:03f97c777bcc4902a11bb431cefeafeeb6e5a549c31b13d6ac78772524da7f32")
+  summary "fn E5ChecksModule.checkD generated from typescript function_declaration at experiments/bend-probes/E/e5-checks.ts#checkD."
+}
+
+relation E5ChecksModuleCheckEGeneratedFromE5ChecksModuleCheckEAstAnchor {
+  kind generated_from
+  connects E5ChecksModule -> E5ChecksModuleCheckEAstAnchor
+  roles { E5ChecksModule as generated, E5ChecksModuleCheckEAstAnchor as syntax }
+  expects E5ChecksModuleCheckEAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c72b3290657943a5d45137f584d12245ab269dd812e4c57661885d809fddcbbf")
+  summary "fn E5ChecksModule.checkE generated from typescript function_declaration at experiments/bend-probes/E/e5-checks.ts#checkE."
+}
+
+relation E5ChecksModuleClosureGeneratedFromE5ChecksModuleClosureAstAnchor {
+  kind generated_from
+  connects E5ChecksModule -> E5ChecksModuleClosureAstAnchor
+  roles { E5ChecksModule as generated, E5ChecksModuleClosureAstAnchor as syntax }
+  expects E5ChecksModuleClosureAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f55432acf4b4989b14a8ae47b424b626f7ade5fca0e5e5737604ccd92420bf44")
+  summary "fn E5ChecksModule.closure generated from typescript function_declaration at experiments/bend-probes/E/e5-checks.ts#closure."
+}
+
+relation E5ChecksModuleOracleGeneratedFromE5ChecksModuleOracleAstAnchor {
+  kind generated_from
+  connects E5ChecksModule -> E5ChecksModuleOracleAstAnchor
+  roles { E5ChecksModule as generated, E5ChecksModuleOracleAstAnchor as syntax }
+  expects E5ChecksModuleOracleAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3ea53a67cc768bba8449e2798c1e3da779a68440343bb6645102b3ca61260be5")
+  summary "fn E5ChecksModule.oracle generated from typescript function_declaration at experiments/bend-probes/E/e5-checks.ts#oracle."
+}
+
+implementation E5ChecksModuleImpl {
+  paths {
+    "experiments/bend-probes/E/e5-checks.ts"
+  }
+  conforms_to E5ChecksModule
+}

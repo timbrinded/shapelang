@@ -1,0 +1,49 @@
+module shape.generated.ast.experiments.bend_probes.D.d5.boundary
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource BoundaryModuleNumCaseAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/D/d5/boundary.ts#numCase")
+  fingerprint ast.semantic_subtree_v1("sha256:40cab8be5334f8e203b8486eef09e8c0b0302b09befa6cd0acbdd67189fa0cbc")
+}
+
+resource BoundaryModuleSortCaseAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/D/d5/boundary.ts#sortCase")
+  fingerprint ast.semantic_subtree_v1("sha256:8fddddd499f9f1a37db515480fbd9f397443be188c8017b2f2875d0dc6d129b8")
+}
+
+component BoundaryModule : GeneratedCandidate {
+  fn numCase
+    source ts("experiments/bend-probes/D/d5/boundary.ts#numCase")
+    effects unknown
+  fn sortCase
+    source ts("experiments/bend-probes/D/d5/boundary.ts#sortCase")
+    effects unknown
+}
+
+relation BoundaryModuleNumCaseGeneratedFromBoundaryModuleNumCaseAstAnchor {
+  kind generated_from
+  connects BoundaryModule -> BoundaryModuleNumCaseAstAnchor
+  roles { BoundaryModule as generated, BoundaryModuleNumCaseAstAnchor as syntax }
+  expects BoundaryModuleNumCaseAstAnchor fingerprint ast.semantic_subtree_v1("sha256:40cab8be5334f8e203b8486eef09e8c0b0302b09befa6cd0acbdd67189fa0cbc")
+  summary "fn BoundaryModule.numCase generated from typescript function_declaration at experiments/bend-probes/D/d5/boundary.ts#numCase."
+}
+
+relation BoundaryModuleSortCaseGeneratedFromBoundaryModuleSortCaseAstAnchor {
+  kind generated_from
+  connects BoundaryModule -> BoundaryModuleSortCaseAstAnchor
+  roles { BoundaryModule as generated, BoundaryModuleSortCaseAstAnchor as syntax }
+  expects BoundaryModuleSortCaseAstAnchor fingerprint ast.semantic_subtree_v1("sha256:8fddddd499f9f1a37db515480fbd9f397443be188c8017b2f2875d0dc6d129b8")
+  summary "fn BoundaryModule.sortCase generated from typescript function_declaration at experiments/bend-probes/D/d5/boundary.ts#sortCase."
+}
+
+implementation BoundaryModuleImpl {
+  paths {
+    "experiments/bend-probes/D/d5/boundary.ts"
+  }
+  conforms_to BoundaryModule
+}

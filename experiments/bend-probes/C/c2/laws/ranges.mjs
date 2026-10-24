@@ -20,8 +20,10 @@ export function check(mod, input) {
   if (!Array.isArray(out)) return "merge returns a list";
   for (let i = 0; i < out.length; i++) {
     const r = out[i];
-    if (!(Number.isInteger(r.start) && Number.isInteger(r.end) && r.start <= r.end)) return "merged ranges are normalized";
-    if (i > 0 && !(out[i - 1].end + 1 < r.start)) return "merged ranges are sorted, disjoint and non-adjacent";
+    if (!(Number.isInteger(r.start) && Number.isInteger(r.end) && r.start <= r.end))
+      return "merged ranges are normalized";
+    if (i > 0 && !(out[i - 1].end + 1 < r.start))
+      return "merged ranges are sorted, disjoint and non-adjacent";
   }
   // Coverage changes only at range boundaries, so probing every boundary of
   // input and output (and its neighbours) decides set equality exactly.
@@ -34,7 +36,8 @@ export function check(mod, input) {
     if (mod.contains(out, v) !== covered(out, v)) return "contains agrees with inclusive coverage";
   }
   for (let i = 0; i < input.length; i++) {
-    if (input[i].start !== copy[i].start || input[i].end !== copy[i].end) return "merge does not modify its input";
+    if (input[i].start !== copy[i].start || input[i].end !== copy[i].end)
+      return "merge does not modify its input";
   }
   return null;
 }
@@ -71,7 +74,20 @@ export function* smallScope() {
   yield* listsOver(rangesOver(range(0, 5)), 4);
 }
 
-export const BOUNDARY = [0, 1, 9, 10, 11, 99, 100, 2 ** 31 - 2, 2 ** 31 - 1, 2 ** 31, 2 ** 32 - 2, U32_MAX];
+export const BOUNDARY = [
+  0,
+  1,
+  9,
+  10,
+  11,
+  99,
+  100,
+  2 ** 31 - 2,
+  2 ** 31 - 1,
+  2 ** 31,
+  2 ** 32 - 2,
+  U32_MAX
+];
 
 // Large scope: endpoints 0..7 with lists up to length 4, then boundary values
 // with lists up to length 3.
@@ -81,6 +97,10 @@ export function* largeScope() {
 }
 
 export function bigArbitrary(fc) {
-  const u32 = fc.oneof(fc.nat({ max: U32_MAX }), fc.constantFrom(...BOUNDARY), fc.nat({ max: 200 }));
+  const u32 = fc.oneof(
+    fc.nat({ max: U32_MAX }),
+    fc.constantFrom(...BOUNDARY),
+    fc.nat({ max: 200 })
+  );
   return fc.array(fc.record({ start: u32, end: u32 }), { maxLength: 64 });
 }

@@ -11,8 +11,9 @@ export default function laws(fc, { normalizeRange, inclusiveSize, includesValue 
       const range = normalizeRange(start, end);
       return range.start === start && range.end === end;
     }),
-    "both endpoints are included": fc.property(ordered, ([start, end]) =>
-      includesValue(start, end, start) && includesValue(start, end, end)
+    "both endpoints are included": fc.property(
+      ordered,
+      ([start, end]) => includesValue(start, end, start) && includesValue(start, end, end)
     ),
     "inclusiveSize counts exactly the included integers": fc.property(ordered, ([start, end]) => {
       let included = 0;

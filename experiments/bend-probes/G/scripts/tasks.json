@@ -1,23 +1,23 @@
 {
- "T1": {
-  "ts": "src/game.ts",
-  "bend": "game.bend",
-  "hidden": "hidden.test.ts",
-  "feature": 16,
-  "law": 7
- },
- "T4": {
-  "ts": "src/ledger.ts",
-  "bend": "ledger.bend",
-  "hidden": "hidden.test.ts",
-  "feature": 14,
-  "law": 12
- },
- "T3": {
-  "ts": "src/audit.ts",
-  "bend": "audit.bend",
-  "hidden": "hidden.test.ts",
-  "feature": 14,
-  "law": 10
- }
+  "T1": {
+    "ts": "src/game.ts",
+    "bend": "game.bend",
+    "hidden": "hidden.test.ts",
+    "feature": 16,
+    "law": 7
+  },
+  "T4": {
+    "ts": "src/ledger.ts",
+    "bend": "ledger.bend",
+    "hidden": "hidden.test.ts",
+    "feature": 14,
+    "law": 12
+  },
+  "T3": {
+    "ts": "src/audit.ts",
+    "bend": "audit.bend",
+    "hidden": "hidden.test.ts",
+    "feature": 14,
+    "law": 10
+  }
 }

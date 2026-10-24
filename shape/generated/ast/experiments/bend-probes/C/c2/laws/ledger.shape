@@ -1,0 +1,65 @@
+module shape.generated.ast.experiments.bend_probes.C.c2.laws.ledger
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource LedgerModuleArbitraryAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/C/c2/laws/ledger.mjs#arbitrary")
+  fingerprint ast.semantic_subtree_v1("sha256:b69ef48bf0463f562b0d3ed4b6f3541fe6926349a1b2cc2ce4aab168e4be4c67")
+}
+
+resource LedgerModuleBigArbitraryAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/C/c2/laws/ledger.mjs#bigArbitrary")
+  fingerprint ast.semantic_subtree_v1("sha256:b78e2d17d33f59aeee4261e8c7b8364e62ae64db30367962113a34248fd9ba55")
+}
+
+resource LedgerModuleCheckAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/C/c2/laws/ledger.mjs#check")
+  fingerprint ast.semantic_subtree_v1("sha256:343f4a7db256b47a4539a87f6e9a9818eb32d4fdf85f9f003564e0da5c66cad2")
+}
+
+component LedgerModule : GeneratedCandidate {
+  fn arbitrary
+    source js("experiments/bend-probes/C/c2/laws/ledger.mjs#arbitrary")
+    effects unknown
+  fn bigArbitrary
+    source js("experiments/bend-probes/C/c2/laws/ledger.mjs#bigArbitrary")
+    effects unknown
+  fn check
+    source js("experiments/bend-probes/C/c2/laws/ledger.mjs#check")
+    effects unknown
+}
+
+relation LedgerModuleArbitraryGeneratedFromLedgerModuleArbitraryAstAnchor {
+  kind generated_from
+  connects LedgerModule -> LedgerModuleArbitraryAstAnchor
+  roles { LedgerModule as generated, LedgerModuleArbitraryAstAnchor as syntax }
+  expects LedgerModuleArbitraryAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b69ef48bf0463f562b0d3ed4b6f3541fe6926349a1b2cc2ce4aab168e4be4c67")
+  summary "fn LedgerModule.arbitrary generated from javascript function_declaration at experiments/bend-probes/C/c2/laws/ledger.mjs#arbitrary."
+}
+
+relation LedgerModuleBigArbitraryGeneratedFromLedgerModuleBigArbitraryAstAnchor {
+  kind generated_from
+  connects LedgerModule -> LedgerModuleBigArbitraryAstAnchor
+  roles { LedgerModule as generated, LedgerModuleBigArbitraryAstAnchor as syntax }
+  expects LedgerModuleBigArbitraryAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b78e2d17d33f59aeee4261e8c7b8364e62ae64db30367962113a34248fd9ba55")
+  summary "fn LedgerModule.bigArbitrary generated from javascript function_declaration at experiments/bend-probes/C/c2/laws/ledger.mjs#bigArbitrary."
+}
+
+relation LedgerModuleCheckGeneratedFromLedgerModuleCheckAstAnchor {
+  kind generated_from
+  connects LedgerModule -> LedgerModuleCheckAstAnchor
+  roles { LedgerModule as generated, LedgerModuleCheckAstAnchor as syntax }
+  expects LedgerModuleCheckAstAnchor fingerprint ast.semantic_subtree_v1("sha256:343f4a7db256b47a4539a87f6e9a9818eb32d4fdf85f9f003564e0da5c66cad2")
+  summary "fn LedgerModule.check generated from javascript function_declaration at experiments/bend-probes/C/c2/laws/ledger.mjs#check."
+}
+
+implementation LedgerModuleImpl {
+  paths {
+    "experiments/bend-probes/C/c2/laws/ledger.mjs"
+  }
+  conforms_to LedgerModule
+}

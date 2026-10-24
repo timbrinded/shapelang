@@ -1,0 +1,129 @@
+module shape.generated.ast.experiments.bend_probes.D.d1.inventory
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource InventoryModuleHolesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/D/d1/inventory.ts#holes")
+  fingerprint ast.semantic_subtree_v1("sha256:42b9a1f3886602dae7c36821c04d105eacb06749b5b27c7d879e31e51f898f9d")
+}
+
+resource InventoryModuleParseEntryAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/D/d1/inventory.ts#parseEntry")
+  fingerprint ast.semantic_subtree_v1("sha256:1f7a80cfaf1f15ab45f609ac817985aaba93e34fd1f1da4a860886f3c14c40e4")
+}
+
+resource InventoryModuleRefsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/D/d1/inventory.ts#refs")
+  fingerprint ast.semantic_subtree_v1("sha256:b9005ba6a4d6da669cba29ded6df77ae6f9dcd0bd30ceb3ecad616f6b97774c1")
+}
+
+resource InventoryModuleSeededAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/D/d1/inventory.ts#seeded")
+  fingerprint ast.semantic_subtree_v1("sha256:03305f0e69c2a810aeb3b5c275e4df8720b2661fb587018e86180cb873aaffe1")
+}
+
+resource InventoryModuleStripCommentsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/D/d1/inventory.ts#stripComments")
+  fingerprint ast.semantic_subtree_v1("sha256:db264647340cdc698cdda6aa70a93c7fdee6966a51ed755db6f245f218ebfa0a")
+}
+
+resource InventoryModuleUnitAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/D/d1/inventory.ts#unit")
+  fingerprint ast.semantic_subtree_v1("sha256:a4091422ec14075cce31607bafd12ee92c1ab0889ca4f382574da39d96be6572")
+}
+
+resource InventoryModuleWalkAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/D/d1/inventory.ts#walk")
+  fingerprint ast.semantic_subtree_v1("sha256:666402f1f2bfbd89703548b332fbf591ca0ce1500513f1b656adcb5cadf6d7f4")
+}
+
+component InventoryModule : GeneratedCandidate {
+  fn holes
+    source ts("experiments/bend-probes/D/d1/inventory.ts#holes")
+    effects unknown
+  fn parseEntry
+    source ts("experiments/bend-probes/D/d1/inventory.ts#parseEntry")
+    effects unknown
+  fn refs
+    source ts("experiments/bend-probes/D/d1/inventory.ts#refs")
+    effects unknown
+  fn seeded
+    source ts("experiments/bend-probes/D/d1/inventory.ts#seeded")
+    effects unknown
+  fn stripComments
+    source ts("experiments/bend-probes/D/d1/inventory.ts#stripComments")
+    effects unknown
+  fn unit
+    source ts("experiments/bend-probes/D/d1/inventory.ts#unit")
+    effects unknown
+  fn walk
+    source ts("experiments/bend-probes/D/d1/inventory.ts#walk")
+    effects unknown
+}
+
+relation InventoryModuleHolesGeneratedFromInventoryModuleHolesAstAnchor {
+  kind generated_from
+  connects InventoryModule -> InventoryModuleHolesAstAnchor
+  roles { InventoryModule as generated, InventoryModuleHolesAstAnchor as syntax }
+  expects InventoryModuleHolesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:42b9a1f3886602dae7c36821c04d105eacb06749b5b27c7d879e31e51f898f9d")
+  summary "fn InventoryModule.holes generated from typescript function_declaration at experiments/bend-probes/D/d1/inventory.ts#holes."
+}
+
+relation InventoryModuleParseEntryGeneratedFromInventoryModuleParseEntryAstAnchor {
+  kind generated_from
+  connects InventoryModule -> InventoryModuleParseEntryAstAnchor
+  roles { InventoryModule as generated, InventoryModuleParseEntryAstAnchor as syntax }
+  expects InventoryModuleParseEntryAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1f7a80cfaf1f15ab45f609ac817985aaba93e34fd1f1da4a860886f3c14c40e4")
+  summary "fn InventoryModule.parseEntry generated from typescript function_declaration at experiments/bend-probes/D/d1/inventory.ts#parseEntry."
+}
+
+relation InventoryModuleRefsGeneratedFromInventoryModuleRefsAstAnchor {
+  kind generated_from
+  connects InventoryModule -> InventoryModuleRefsAstAnchor
+  roles { InventoryModule as generated, InventoryModuleRefsAstAnchor as syntax }
+  expects InventoryModuleRefsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b9005ba6a4d6da669cba29ded6df77ae6f9dcd0bd30ceb3ecad616f6b97774c1")
+  summary "fn InventoryModule.refs generated from typescript function_declaration at experiments/bend-probes/D/d1/inventory.ts#refs."
+}
+
+relation InventoryModuleSeededGeneratedFromInventoryModuleSeededAstAnchor {
+  kind generated_from
+  connects InventoryModule -> InventoryModuleSeededAstAnchor
+  roles { InventoryModule as generated, InventoryModuleSeededAstAnchor as syntax }
+  expects InventoryModuleSeededAstAnchor fingerprint ast.semantic_subtree_v1("sha256:03305f0e69c2a810aeb3b5c275e4df8720b2661fb587018e86180cb873aaffe1")
+  summary "fn InventoryModule.seeded generated from typescript function_declaration at experiments/bend-probes/D/d1/inventory.ts#seeded."
+}
+
+relation InventoryModuleStripCommentsGeneratedFromInventoryModuleStripCommentsAstAnchor {
+  kind generated_from
+  connects InventoryModule -> InventoryModuleStripCommentsAstAnchor
+  roles { InventoryModule as generated, InventoryModuleStripCommentsAstAnchor as syntax }
+  expects InventoryModuleStripCommentsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:db264647340cdc698cdda6aa70a93c7fdee6966a51ed755db6f245f218ebfa0a")
+  summary "fn InventoryModule.stripComments generated from typescript function_declaration at experiments/bend-probes/D/d1/inventory.ts#stripComments."
+}
+
+relation InventoryModuleUnitGeneratedFromInventoryModuleUnitAstAnchor {
+  kind generated_from
+  connects InventoryModule -> InventoryModuleUnitAstAnchor
+  roles { InventoryModule as generated, InventoryModuleUnitAstAnchor as syntax }
+  expects InventoryModuleUnitAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a4091422ec14075cce31607bafd12ee92c1ab0889ca4f382574da39d96be6572")
+  summary "fn InventoryModule.unit generated from typescript function_declaration at experiments/bend-probes/D/d1/inventory.ts#unit."
+}
+
+relation InventoryModuleWalkGeneratedFromInventoryModuleWalkAstAnchor {
+  kind generated_from
+  connects InventoryModule -> InventoryModuleWalkAstAnchor
+  roles { InventoryModule as generated, InventoryModuleWalkAstAnchor as syntax }
+  expects InventoryModuleWalkAstAnchor fingerprint ast.semantic_subtree_v1("sha256:666402f1f2bfbd89703548b332fbf591ca0ce1500513f1b656adcb5cadf6d7f4")
+  summary "fn InventoryModule.walk generated from typescript function_declaration at experiments/bend-probes/D/d1/inventory.ts#walk."
+}
+
+implementation InventoryModuleImpl {
+  paths {
+    "experiments/bend-probes/D/d1/inventory.ts"
+  }
+  conforms_to InventoryModule
+}

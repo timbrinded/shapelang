@@ -1,0 +1,65 @@
+module shape.generated.ast.experiments.bend_probes.C.c2.modules.ranges
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource RangesModuleContainsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/C/c2/modules/ranges.ts#contains")
+  fingerprint ast.semantic_subtree_v1("sha256:12b8f32baacbfd61b8d0774a00ab7bab3adc8dd1d612739d3c0c235042888e3f")
+}
+
+resource RangesModuleMergeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/C/c2/modules/ranges.ts#merge")
+  fingerprint ast.semantic_subtree_v1("sha256:d35067c501d545bfb6065286d6878eb9d7c91c22b025adbd61fe05e33a3045e3")
+}
+
+resource RangesModuleNormalizeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/C/c2/modules/ranges.ts#normalize")
+  fingerprint ast.semantic_subtree_v1("sha256:f79829ea245bba9371123ad075cd9bde7bb7487d5b2c36b05d52a235b30feada")
+}
+
+component RangesModule : GeneratedCandidate {
+  fn contains
+    source ts("experiments/bend-probes/C/c2/modules/ranges.ts#contains")
+    effects unknown
+  fn merge
+    source ts("experiments/bend-probes/C/c2/modules/ranges.ts#merge")
+    effects unknown
+  fn normalize
+    source ts("experiments/bend-probes/C/c2/modules/ranges.ts#normalize")
+    effects unknown
+}
+
+relation RangesModuleContainsGeneratedFromRangesModuleContainsAstAnchor {
+  kind generated_from
+  connects RangesModule -> RangesModuleContainsAstAnchor
+  roles { RangesModule as generated, RangesModuleContainsAstAnchor as syntax }
+  expects RangesModuleContainsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:12b8f32baacbfd61b8d0774a00ab7bab3adc8dd1d612739d3c0c235042888e3f")
+  summary "fn RangesModule.contains generated from typescript function_declaration at experiments/bend-probes/C/c2/modules/ranges.ts#contains."
+}
+
+relation RangesModuleMergeGeneratedFromRangesModuleMergeAstAnchor {
+  kind generated_from
+  connects RangesModule -> RangesModuleMergeAstAnchor
+  roles { RangesModule as generated, RangesModuleMergeAstAnchor as syntax }
+  expects RangesModuleMergeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d35067c501d545bfb6065286d6878eb9d7c91c22b025adbd61fe05e33a3045e3")
+  summary "fn RangesModule.merge generated from typescript function_declaration at experiments/bend-probes/C/c2/modules/ranges.ts#merge."
+}
+
+relation RangesModuleNormalizeGeneratedFromRangesModuleNormalizeAstAnchor {
+  kind generated_from
+  connects RangesModule -> RangesModuleNormalizeAstAnchor
+  roles { RangesModule as generated, RangesModuleNormalizeAstAnchor as syntax }
+  expects RangesModuleNormalizeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f79829ea245bba9371123ad075cd9bde7bb7487d5b2c36b05d52a235b30feada")
+  summary "fn RangesModule.normalize generated from typescript function_declaration at experiments/bend-probes/C/c2/modules/ranges.ts#normalize."
+}
+
+implementation RangesModuleImpl {
+  paths {
+    "experiments/bend-probes/C/c2/modules/ranges.ts"
+  }
+  conforms_to RangesModule
+}

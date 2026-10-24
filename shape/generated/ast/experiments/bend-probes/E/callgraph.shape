@@ -1,0 +1,49 @@
+module shape.generated.ast.experiments.bend_probes.E.callgraph
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource CallgraphModuleBuildFactsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/E/callgraph.ts#buildFacts")
+  fingerprint ast.semantic_subtree_v1("sha256:c0543f4c9932ab5775605d74fb152742a684bb66992ab35a4376d8716dd54fea")
+}
+
+resource CallgraphModuleDeclNameAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/E/callgraph.ts#declName")
+  fingerprint ast.semantic_subtree_v1("sha256:bcbbb28bb7e0a2f6eb80f617828b9186aacd0bc8bce190faaa200c310bf34ee7")
+}
+
+component CallgraphModule : GeneratedCandidate {
+  fn buildFacts
+    source ts("experiments/bend-probes/E/callgraph.ts#buildFacts")
+    effects unknown
+  fn declName
+    source ts("experiments/bend-probes/E/callgraph.ts#declName")
+    effects unknown
+}
+
+relation CallgraphModuleBuildFactsGeneratedFromCallgraphModuleBuildFactsAstAnchor {
+  kind generated_from
+  connects CallgraphModule -> CallgraphModuleBuildFactsAstAnchor
+  roles { CallgraphModule as generated, CallgraphModuleBuildFactsAstAnchor as syntax }
+  expects CallgraphModuleBuildFactsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c0543f4c9932ab5775605d74fb152742a684bb66992ab35a4376d8716dd54fea")
+  summary "fn CallgraphModule.buildFacts generated from typescript function_declaration at experiments/bend-probes/E/callgraph.ts#buildFacts."
+}
+
+relation CallgraphModuleDeclNameGeneratedFromCallgraphModuleDeclNameAstAnchor {
+  kind generated_from
+  connects CallgraphModule -> CallgraphModuleDeclNameAstAnchor
+  roles { CallgraphModule as generated, CallgraphModuleDeclNameAstAnchor as syntax }
+  expects CallgraphModuleDeclNameAstAnchor fingerprint ast.semantic_subtree_v1("sha256:bcbbb28bb7e0a2f6eb80f617828b9186aacd0bc8bce190faaa200c310bf34ee7")
+  summary "fn CallgraphModule.declName generated from typescript function_declaration at experiments/bend-probes/E/callgraph.ts#declName."
+}
+
+implementation CallgraphModuleImpl {
+  paths {
+    "experiments/bend-probes/E/callgraph.ts"
+  }
+  conforms_to CallgraphModule
+}

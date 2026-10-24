@@ -9,12 +9,33 @@ export const MUTANTS = {
     ["R01", "ROR", "if (range.start > range.end)", "if (range.start >= range.end)"],
     ["R02", "ROR", "if (range.start > range.end)", "if (range.start < range.end)"],
     ["R03", "SDL", "    return { start: range.end, end: range.start };\n", ""],
-    ["R04", "VAR", "return { start: range.end, end: range.start };", "return { start: range.end, end: range.end };"],
-    ["R05", "RET", "  return { start: range.start, end: range.end };\n}\n\n// Merges", "  return range;\n}\n\n// Merges"],
-    ["R06", "ASW", "(a, b) => a.start - b.start || a.end - b.end", "(a, b) => b.start - a.start || b.end - a.end"],
+    [
+      "R04",
+      "VAR",
+      "return { start: range.end, end: range.start };",
+      "return { start: range.end, end: range.end };"
+    ],
+    [
+      "R05",
+      "RET",
+      "  return { start: range.start, end: range.end };\n}\n\n// Merges",
+      "  return range;\n}\n\n// Merges"
+    ],
+    [
+      "R06",
+      "ASW",
+      "(a, b) => a.start - b.start || a.end - b.end",
+      "(a, b) => b.start - a.start || b.end - a.end"
+    ],
     ["R07", "SDL", ".sort((a, b) => a.start - b.start || a.end - b.end)", ".sort()"],
     ["R08", "SDL", "a.start - b.start || a.end - b.end", "a.start - b.start"],
-    ["R09", "CRP", "(a, b) => a.start - b.start ||", "(a, b) => String(a.start).localeCompare(String(b.start)) ||", "large"],
+    [
+      "R09",
+      "CRP",
+      "(a, b) => a.start - b.start ||",
+      "(a, b) => String(a.start).localeCompare(String(b.start)) ||",
+      "large"
+    ],
     ["R10", "ROR", "range.start <= last.end + 1", "range.start < last.end + 1"],
     ["R11", "BND", "range.start <= last.end + 1", "range.start <= last.end"],
     ["R12", "BND", "range.start <= last.end + 1", "range.start <= last.end + 2"],
@@ -34,7 +55,12 @@ export const MUTANTS = {
     ["R26", "ROR", "range.start <= value", "range.start < value"],
     ["R27", "ROR", "value <= range.end", "value < range.end"],
     ["R28", "CRP", "ranges.some(", "ranges.every("],
-    ["R29", "RET", "return ranges.some((range) => range.start <= value && value <= range.end);", "return false;"],
+    [
+      "R29",
+      "RET",
+      "return ranges.some((range) => range.start <= value && value <= range.end);",
+      "return false;"
+    ],
     ["R30", "STL", "range.start <= last.end + 1", "range.start <= sorted[i - 1]!.end + 1"],
     ["R31", "BND", "i < sorted.length;", "i < sorted.length - 1;"],
     ["R32", "BND", "let i = 0;", "let i = 1;"],
@@ -54,7 +80,13 @@ export const MUTANTS = {
     ["L10", "ROR", "balances[from]! < amount + fee", "balances[from]! <= amount + fee"],
     ["L11", "ROR", "balances[from]! < amount + fee", "balances[from]! > amount + fee"],
     ["L12", "BND", "balances[from]! < amount + fee", "balances[from]! < amount + fee - 1"],
-    ["L13", "AOR", "balances[from]! < amount + fee", "balances[from]! < ((amount + fee) | 0)", "large"],
+    [
+      "L13",
+      "AOR",
+      "balances[from]! < amount + fee",
+      "balances[from]! < ((amount + fee) | 0)",
+      "large"
+    ],
     ["L14", "ASW", "move(next, from, to, amount);", "move(next, to, from, amount);"],
     ["L15", "ASW", "move(next, from, FEE_ACCOUNT, fee);", "move(next, FEE_ACCOUNT, from, fee);"],
     ["L16", "SDL", "  move(next, from, FEE_ACCOUNT, fee);\n", ""],
@@ -66,17 +98,44 @@ export const MUTANTS = {
       "  const fromBalance = balances[from]!;\n  const toBalance = balances[to]!;\n  balances[from] = fromBalance - amount;\n  balances[to] = toBalance + amount;\n"
     ],
     ["L19", "STL", "if (next[to]! > U32_MAX", "if (balances[to]! > U32_MAX", "large"],
-    ["L20", "SDL", '  if (next[to]! > U32_MAX || next[FEE_ACCOUNT]! > U32_MAX) {\n    return reject(balances, "balance overflow");\n  }\n', "", "large"],
-    ["L21", "SDL", "next[to]! > U32_MAX || next[FEE_ACCOUNT]! > U32_MAX", "next[to]! > U32_MAX", "large"],
+    [
+      "L20",
+      "SDL",
+      '  if (next[to]! > U32_MAX || next[FEE_ACCOUNT]! > U32_MAX) {\n    return reject(balances, "balance overflow");\n  }\n',
+      "",
+      "large"
+    ],
+    [
+      "L21",
+      "SDL",
+      "next[to]! > U32_MAX || next[FEE_ACCOUNT]! > U32_MAX",
+      "next[to]! > U32_MAX",
+      "large"
+    ],
     ["L22", "BND", "next[to]! > U32_MAX ||", "next[to]! > U32_MAX + 1 ||", "large"],
     ["L23", "ROR", "next[to]! > U32_MAX ||", "next[to]! >= U32_MAX ||"],
     ["L24", "BND", "account < balances.length", "account <= balances.length"],
     ["L25", "ROR", "account >= 0", "account > 0"],
     ["L26", "RET", "balances: balances.slice() };", "balances: [] };"],
-    ["L27", "RET", "return { ok: true, balances: next };", "return { ok: true, balances: balances.slice() };"],
-    ["L28", "ROR", "!isAccount(balances, from) || !isAccount(balances, to)", "!isAccount(balances, from) && !isAccount(balances, to)"],
+    [
+      "L27",
+      "RET",
+      "return { ok: true, balances: next };",
+      "return { ok: true, balances: balances.slice() };"
+    ],
+    [
+      "L28",
+      "ROR",
+      "!isAccount(balances, from) || !isAccount(balances, to)",
+      "!isAccount(balances, from) && !isAccount(balances, to)"
+    ],
     ["L29", "CRP", "FEE_ACCOUNT = 0;", "FEE_ACCOUNT = 1;"],
-    ["L30", "SDL", '  if (balances[from]! < amount + fee) {\n    return reject(balances, "insufficient funds");\n  }\n', ""],
+    [
+      "L30",
+      "SDL",
+      '  if (balances[from]! < amount + fee) {\n    return reject(balances, "insufficient funds");\n  }\n',
+      ""
+    ],
     ["L31", "RET", "    return 0;\n", "    return MIN_FEE;\n"],
     ["L32", "AOR", "move(next, from, to, amount);", "move(next, from, to, amount + fee);"]
   ],
@@ -84,26 +143,72 @@ export const MUTANTS = {
     ["G01", "ROR", "last.length === SEGMENT_SIZE", "last.length > SEGMENT_SIZE", "large"],
     ["G02", "BND", "last.length === SEGMENT_SIZE", "last.length === SEGMENT_SIZE - 1", "large"],
     ["G03", "CRP", "SEGMENT_SIZE = 8;", "SEGMENT_SIZE = 4;"],
-    ["G04", "VAR", "last.push({ id: log.nextId, payload });", "last.push({ id: count(log), payload });"],
+    [
+      "G04",
+      "VAR",
+      "last.push({ id: log.nextId, payload });",
+      "last.push({ id: count(log), payload });"
+    ],
     ["G05", "AOR", "nextId: log.nextId + 1 }", "nextId: log.nextId }"],
     ["G06", "CRP", "nextId: log.nextId + 1 }", "nextId: log.nextId + 2 }"],
     ["G07", "SDL", "    segments.push(last);\n", ""],
-    ["G08", "STL", "log.segments.map((segment) => segment.slice())", "log.segments.slice() as Entry[][]"],
+    [
+      "G08",
+      "STL",
+      "log.segments.map((segment) => segment.slice())",
+      "log.segments.slice() as Entry[][]"
+    ],
     ["G09", "SDL", "last === undefined || ", ""],
     ["G10", "RET", "return { segments, nextId: log.nextId + 1 };", "return log;"],
-    ["G11", "CRP", "log.segments[Math.floor(id / SEGMENT_SIZE)]", "log.segments[Math.ceil(id / SEGMENT_SIZE)]"],
+    [
+      "G11",
+      "CRP",
+      "log.segments[Math.floor(id / SEGMENT_SIZE)]",
+      "log.segments[Math.ceil(id / SEGMENT_SIZE)]"
+    ],
     ["G12", "VAR", "segment?.[id % SEGMENT_SIZE]", "segment?.[id]", "large"],
     ["G13", "CRP", "log.segments[Math.floor(id / SEGMENT_SIZE)]", "log.segments[0]", "large"],
     ["G14", "RET", "return segment?.[id % SEGMENT_SIZE];", "return undefined;"],
-    ["G15", "BND", "log.segments[Math.floor(id / SEGMENT_SIZE)]", "log.segments[Math.floor(id / (SEGMENT_SIZE + 1))]", "large"],
+    [
+      "G15",
+      "BND",
+      "log.segments[Math.floor(id / SEGMENT_SIZE)]",
+      "log.segments[Math.floor(id / (SEGMENT_SIZE + 1))]",
+      "large"
+    ],
     ["G16", "ROR", "index === segmentIndex", "index !== segmentIndex"],
     ["G17", "ROR", "i === offset", "i <= offset"],
-    ["G18", "AOR", "(i === offset ? { id: entry.id, payload: null }", "(i === offset ? { id: entry.id + 1, payload: null }"],
-    ["G19", "SDL", "segment.map((entry, i) => (i === offset ? { id: entry.id, payload: null } : entry))", "segment.filter((_, i) => i !== offset)"],
+    [
+      "G18",
+      "AOR",
+      "(i === offset ? { id: entry.id, payload: null }",
+      "(i === offset ? { id: entry.id + 1, payload: null }"
+    ],
+    [
+      "G19",
+      "SDL",
+      "segment.map((entry, i) => (i === offset ? { id: entry.id, payload: null } : entry))",
+      "segment.filter((_, i) => i !== offset)"
+    ],
     ["G20", "VAR", "const offset = id % SEGMENT_SIZE;", "const offset = id;", "large"],
-    ["G21", "BND", "const segmentIndex = Math.floor(id / SEGMENT_SIZE);", "const segmentIndex = Math.floor(id / SEGMENT_SIZE) + 1;"],
-    ["G22", "RET", "  return { segments, nextId: log.nextId };\n}\n\n// Retention", "  return log;\n}\n\n// Retention"],
-    ["G23", "AOR", "  return { segments, nextId: log.nextId };\n}\n\n// Retention", "  return { segments, nextId: log.nextId + 1 };\n}\n\n// Retention"],
+    [
+      "G21",
+      "BND",
+      "const segmentIndex = Math.floor(id / SEGMENT_SIZE);",
+      "const segmentIndex = Math.floor(id / SEGMENT_SIZE) + 1;"
+    ],
+    [
+      "G22",
+      "RET",
+      "  return { segments, nextId: log.nextId };\n}\n\n// Retention",
+      "  return log;\n}\n\n// Retention"
+    ],
+    [
+      "G23",
+      "AOR",
+      "  return { segments, nextId: log.nextId };\n}\n\n// Retention",
+      "  return { segments, nextId: log.nextId + 1 };\n}\n\n// Retention"
+    ],
     ["G24", "ROR", "position < cutoff", "position <= cutoff"],
     ["G25", "BND", "count(log) - keepLast;", "count(log) - keepLast - 1;"],
     ["G26", "SDL", "      position++;\n", ""],
@@ -116,7 +221,12 @@ export const MUTANTS = {
     ],
     ["G28", "VAR", "count(log) - keepLast;", "count(log);"],
     ["G29", "STL", "position < cutoff", "entry.id < cutoff"],
-    ["G30", "VAR", "const cutoff = count(log) - keepLast;", "const cutoff = log.segments.length - keepLast;"],
+    [
+      "G30",
+      "VAR",
+      "const cutoff = count(log) - keepLast;",
+      "const cutoff = log.segments.length - keepLast;"
+    ],
     ["G31", "AOR", "total + segment.length", "total + 1"],
     ["G32", "VAR", "entries(log).map((entry) => entry.id)", "entries(log).map((_, i) => i)"]
   ]

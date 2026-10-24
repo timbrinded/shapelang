@@ -1,0 +1,33 @@
+module shape.generated.ast.experiments.bend_probes.C.c2.eval
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource EvalModuleVerdictAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/C/c2/eval.mjs#verdict")
+  fingerprint ast.semantic_subtree_v1("sha256:bf5853716b7d6d4a502cb133b67e8a20d11d432e334e0baf58826f28538b1ce9")
+}
+
+component EvalModule : GeneratedCandidate {
+  fn verdict
+    source js("experiments/bend-probes/C/c2/eval.mjs#verdict")
+    effects unknown
+}
+
+relation EvalModuleVerdictGeneratedFromEvalModuleVerdictAstAnchor {
+  kind generated_from
+  connects EvalModule -> EvalModuleVerdictAstAnchor
+  roles { EvalModule as generated, EvalModuleVerdictAstAnchor as syntax }
+  expects EvalModuleVerdictAstAnchor fingerprint ast.semantic_subtree_v1("sha256:bf5853716b7d6d4a502cb133b67e8a20d11d432e334e0baf58826f28538b1ce9")
+  summary "fn EvalModule.verdict generated from javascript function_declaration at experiments/bend-probes/C/c2/eval.mjs#verdict."
+}
+
+implementation EvalModuleImpl {
+  paths {
+    "experiments/bend-probes/C/c2/eval.mjs"
+  }
+  conforms_to EvalModule
+}

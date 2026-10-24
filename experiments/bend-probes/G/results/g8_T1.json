@@ -1,284 +1,218 @@
 {
- "T1": {
-  "table": {
-   "agent": {
-    "pre_feature": "pass",
-    "ref": "pass",
-    "trap:game.ts": "fail",
-    "mutant:m01_no_west_wall.ts": "fail",
-    "mutant:m02_no_north_wall.ts": "fail",
-    "mutant:m03_north_wall_short.ts": "fail",
-    "mutant:m04_west_wall_short.ts": "fail",
-    "mutant:m05_wrap_ignores_walls.ts": "fail",
-    "mutant:m06_east_wall_gap.ts": "fail",
-    "mutant:m07_won_by_row.ts": "fail",
-    "mutant:m08_replay_reversed.ts": "fail",
-    "mutant:m09_replay_drops_last.ts": "fail",
-    "mutant:m10_flag_moved.ts": "fail",
-    "mutant:m11_win_only_from_below.ts": "fail",
-    "mutant:m12_won_not_sticky.ts": "pass",
-    "mutant:m13_no_vertical_wrap.ts": "pass",
-    "mutant:m14_wrap_right_off_by_one.ts": "pass",
-    "mutant:m15_wrap_left_wrong_dimension.ts": "pass",
-    "mutant:m16_wall_in_open_row.ts": "pass",
-    "mutant:m17_down_wrap_to_row_1.ts": "pass",
-    "mutant:m18_north_wall_wrong_row.ts": "fail",
-    "mutant:m19_replay_stops_when_blocked.ts": "fail",
-    "mutant:m20_iswon_by_position.ts": "pass"
-   },
-   "reference": {
-    "pre_feature": "pass",
-    "ref": "pass",
-    "trap:game.ts": "fail",
-    "mutant:m01_no_west_wall.ts": "fail",
-    "mutant:m02_no_north_wall.ts": "fail",
-    "mutant:m03_north_wall_short.ts": "fail",
-    "mutant:m04_west_wall_short.ts": "fail",
-    "mutant:m05_wrap_ignores_walls.ts": "fail",
-    "mutant:m06_east_wall_gap.ts": "fail",
-    "mutant:m07_won_by_row.ts": "fail",
-    "mutant:m08_replay_reversed.ts": "fail",
-    "mutant:m09_replay_drops_last.ts": "fail",
-    "mutant:m10_flag_moved.ts": "fail",
-    "mutant:m11_win_only_from_below.ts": "fail",
-    "mutant:m12_won_not_sticky.ts": "pass",
-    "mutant:m13_no_vertical_wrap.ts": "pass",
-    "mutant:m14_wrap_right_off_by_one.ts": "pass",
-    "mutant:m15_wrap_left_wrong_dimension.ts": "pass",
-    "mutant:m16_wall_in_open_row.ts": "pass",
-    "mutant:m17_down_wrap_to_row_1.ts": "pass",
-    "mutant:m18_north_wall_wrong_row.ts": "fail",
-    "mutant:m19_replay_stops_when_blocked.ts": "fail",
-    "mutant:m20_iswon_by_position.ts": "pass"
-   }
-  },
-  "mutant_tags": {
-   "mutant:m01_no_west_wall.ts": {
-    "id": "m01_no_west_wall",
-    "file": "m01_no_west_wall.ts",
-    "description": "The far-east wall column (x = 11, rows 0-3) is missing: Right from (11, y<=2) wraps into the room.",
-    "breaks_laws": [
-     "L1",
-     "L2"
-    ],
-    "breaks_feature": false,
-    "law_names": [
-     "no win",
-     "flag unreachable"
-    ]
-   },
-   "mutant:m02_no_north_wall.ts": {
-    "id": "m02_no_north_wall",
-    "file": "m02_no_north_wall.ts",
-    "description": "The far-bottom wall row (y = 7, columns 0-3) is missing: Down from (x<=2, 7) wraps into the room.",
-    "breaks_laws": [
-     "L1",
-     "L2"
-    ],
-    "breaks_feature": false,
-    "law_names": [
-     "no win",
-     "flag unreachable"
-    ]
-   },
-   "mutant:m03_north_wall_short.ts": {
-    "id": "m03_north_wall_short",
-    "file": "m03_north_wall_short.ts",
-    "description": "Off-by-one: the bottom wall row covers columns 0-1 only, so (2, 7) -> Down -> (2, 0) enters the room.",
-    "breaks_laws": [
-     "L1",
-     "L2"
-    ],
-    "breaks_feature": false,
-    "law_names": [
-     "no win",
-     "flag unreachable"
-    ]
-   },
-   "mutant:m04_west_wall_short.ts": {
-    "id": "m04_west_wall_short",
-    "file": "m04_west_wall_short.ts",
-    "description": "Off-by-one: the far-east wall column covers rows 0-1 only, so (11, 2) -> Right -> (0, 2) enters the room.",
-    "breaks_laws": [
-     "L1",
-     "L2"
-    ],
-    "breaks_feature": false,
-    "law_names": [
-     "no win",
-     "flag unreachable"
-    ]
-   },
-   "mutant:m05_wrap_ignores_walls.ts": {
-    "id": "m05_wrap_ignores_walls",
-    "file": "m05_wrap_ignores_walls.ts",
-    "description": "A wrapped move skips the wall check: (11, 7) -> Right lands on the wall (0, 7), then Down wraps into the room.",
-    "breaks_laws": [
-     "L1",
-     "L2"
-    ],
-    "breaks_feature": true,
-    "law_names": [
-     "no win",
-     "flag unreachable"
-    ]
-   },
-   "mutant:m06_east_wall_gap.ts": {
-    "id": "m06_east_wall_gap",
-    "file": "m06_east_wall_gap.ts",
-    "description": "The room's east wall starts at row 1, leaving (3, 0) open: a 13-move walk enters the room (beyond the 10-move exhaustive bound).",
-    "breaks_laws": [
-     "L1",
-     "L2"
-    ],
-    "breaks_feature": true,
-    "law_names": [
-     "no win",
-     "flag unreachable"
-    ]
-   },
-   "mutant:m07_won_by_row.ts": {
-    "id": "m07_won_by_row",
-    "file": "m07_won_by_row.ts",
-    "description": "isWon also answers true on the flag's row: reaching row 1 anywhere counts as a win.",
-    "breaks_laws": [
-     "L1"
-    ],
-    "breaks_feature": false,
-    "law_names": [
-     "no win"
-    ]
-   },
-   "mutant:m08_replay_reversed.ts": {
-    "id": "m08_replay_reversed",
-    "file": "m08_replay_reversed.ts",
-    "description": "replay plays the moves in reverse order.",
-    "breaks_laws": [
-     "L4"
-    ],
-    "breaks_feature": true,
-    "law_names": [
-     "replay applies moves in order"
-    ]
-   },
-   "mutant:m09_replay_drops_last.ts": {
-    "id": "m09_replay_drops_last",
-    "file": "m09_replay_drops_last.ts",
-    "description": "replay ignores the last move.",
-    "breaks_laws": [
-     "L4"
-    ],
-    "breaks_feature": true,
-    "law_names": [
-     "replay applies moves in order"
-    ]
-   },
-   "mutant:m10_flag_moved.ts": {
-    "id": "m10_flag_moved",
-    "file": "m10_flag_moved.ts",
-    "description": "The win is tested at (2, 2) instead of the flag cell (1, 1): stepping onto the flag no longer wins.",
-    "breaks_laws": [
-     "L3"
-    ],
-    "breaks_feature": true,
-    "law_names": [
-     "flag is live"
-    ]
-   },
-   "mutant:m11_win_only_from_below.ts": {
-    "id": "m11_win_only_from_below",
-    "file": "m11_win_only_from_below.ts",
-    "description": "Only an Up move onto the flag wins.",
-    "breaks_laws": [
-     "L3"
-    ],
-    "breaks_feature": true,
-    "law_names": [
-     "flag is live"
-    ]
-   },
-   "mutant:m12_won_not_sticky.ts": {
-    "id": "m12_won_not_sticky",
-    "file": "m12_won_not_sticky.ts",
-    "description": "won is recomputed on every move instead of staying true once set.",
-    "breaks_laws": [],
-    "breaks_feature": true,
-    "law_names": []
-   },
-   "mutant:m13_no_vertical_wrap.ts": {
-    "id": "m13_no_vertical_wrap",
-    "file": "m13_no_vertical_wrap.ts",
-    "description": "Only Left/Right wrap; Up/Down still stop at the edge.",
-    "breaks_laws": [],
-    "breaks_feature": true,
-    "law_names": []
-   },
-   "mutant:m14_wrap_right_off_by_one.ts": {
-    "id": "m14_wrap_right_off_by_one",
-    "file": "m14_wrap_right_off_by_one.ts",
-    "description": "Right from x = 11 lands on x = 1 instead of x = 0.",
-    "breaks_laws": [],
-    "breaks_feature": true,
-    "law_names": []
-   },
-   "mutant:m15_wrap_left_wrong_dimension.ts": {
-    "id": "m15_wrap_left_wrong_dimension",
-    "file": "m15_wrap_left_wrong_dimension.ts",
-    "description": "Left from x = 0 lands on x = MAP_H - 1 = 7 instead of 11.",
-    "breaks_laws": [],
-    "breaks_feature": true,
-    "law_names": []
-   },
-   "mutant:m16_wall_in_open_row.ts": {
-    "id": "m16_wall_in_open_row",
-    "file": "m16_wall_in_open_row.ts",
-    "description": "An extra wall at (11, 5) in an open row: the row-5 wrap is blocked.",
-    "breaks_laws": [],
-    "breaks_feature": true,
-    "law_names": []
-   },
-   "mutant:m17_down_wrap_to_row_1.ts": {
-    "id": "m17_down_wrap_to_row_1",
-    "file": "m17_down_wrap_to_row_1.ts",
-    "description": "Down from y = 7 lands on y = 1 instead of y = 0.",
-    "breaks_laws": [],
-    "breaks_feature": true,
-    "law_names": []
-   },
-   "mutant:m18_north_wall_wrong_row.ts": {
-    "id": "m18_north_wall_wrong_row",
-    "file": "m18_north_wall_wrong_row.ts",
-    "description": "The bottom wall row is put on y = 6 (an open row) instead of y = 7, so (x<=2, 7) -> Down enters the room.",
-    "breaks_laws": [
-     "L1",
-     "L2"
-    ],
-    "breaks_feature": true,
-    "law_names": [
-     "no win",
-     "flag unreachable"
-    ]
-   },
-   "mutant:m19_replay_stops_when_blocked.ts": {
-    "id": "m19_replay_stops_when_blocked",
-    "file": "m19_replay_stops_when_blocked.ts",
-    "description": "replay stops at the first blocked move and ignores the rest.",
-    "breaks_laws": [
-     "L4"
-    ],
-    "breaks_feature": true,
-    "law_names": [
-     "replay applies moves in order"
-    ]
-   },
-   "mutant:m20_iswon_by_position.ts": {
-    "id": "m20_iswon_by_position",
-    "file": "m20_iswon_by_position.ts",
-    "description": "isWon answers whether the player stands on the flag, ignoring the won field.",
-    "breaks_laws": [],
-    "breaks_feature": true,
-    "law_names": []
-   }
+  "T1": {
+    "table": {
+      "agent": {
+        "pre_feature": "pass",
+        "ref": "pass",
+        "trap:game.ts": "fail",
+        "mutant:m01_no_west_wall.ts": "fail",
+        "mutant:m02_no_north_wall.ts": "fail",
+        "mutant:m03_north_wall_short.ts": "fail",
+        "mutant:m04_west_wall_short.ts": "fail",
+        "mutant:m05_wrap_ignores_walls.ts": "fail",
+        "mutant:m06_east_wall_gap.ts": "fail",
+        "mutant:m07_won_by_row.ts": "fail",
+        "mutant:m08_replay_reversed.ts": "fail",
+        "mutant:m09_replay_drops_last.ts": "fail",
+        "mutant:m10_flag_moved.ts": "fail",
+        "mutant:m11_win_only_from_below.ts": "fail",
+        "mutant:m12_won_not_sticky.ts": "pass",
+        "mutant:m13_no_vertical_wrap.ts": "pass",
+        "mutant:m14_wrap_right_off_by_one.ts": "pass",
+        "mutant:m15_wrap_left_wrong_dimension.ts": "pass",
+        "mutant:m16_wall_in_open_row.ts": "pass",
+        "mutant:m17_down_wrap_to_row_1.ts": "pass",
+        "mutant:m18_north_wall_wrong_row.ts": "fail",
+        "mutant:m19_replay_stops_when_blocked.ts": "fail",
+        "mutant:m20_iswon_by_position.ts": "pass"
+      },
+      "reference": {
+        "pre_feature": "pass",
+        "ref": "pass",
+        "trap:game.ts": "fail",
+        "mutant:m01_no_west_wall.ts": "fail",
+        "mutant:m02_no_north_wall.ts": "fail",
+        "mutant:m03_north_wall_short.ts": "fail",
+        "mutant:m04_west_wall_short.ts": "fail",
+        "mutant:m05_wrap_ignores_walls.ts": "fail",
+        "mutant:m06_east_wall_gap.ts": "fail",
+        "mutant:m07_won_by_row.ts": "fail",
+        "mutant:m08_replay_reversed.ts": "fail",
+        "mutant:m09_replay_drops_last.ts": "fail",
+        "mutant:m10_flag_moved.ts": "fail",
+        "mutant:m11_win_only_from_below.ts": "fail",
+        "mutant:m12_won_not_sticky.ts": "pass",
+        "mutant:m13_no_vertical_wrap.ts": "pass",
+        "mutant:m14_wrap_right_off_by_one.ts": "pass",
+        "mutant:m15_wrap_left_wrong_dimension.ts": "pass",
+        "mutant:m16_wall_in_open_row.ts": "pass",
+        "mutant:m17_down_wrap_to_row_1.ts": "pass",
+        "mutant:m18_north_wall_wrong_row.ts": "fail",
+        "mutant:m19_replay_stops_when_blocked.ts": "fail",
+        "mutant:m20_iswon_by_position.ts": "pass"
+      }
+    },
+    "mutant_tags": {
+      "mutant:m01_no_west_wall.ts": {
+        "id": "m01_no_west_wall",
+        "file": "m01_no_west_wall.ts",
+        "description": "The far-east wall column (x = 11, rows 0-3) is missing: Right from (11, y<=2) wraps into the room.",
+        "breaks_laws": ["L1", "L2"],
+        "breaks_feature": false,
+        "law_names": ["no win", "flag unreachable"]
+      },
+      "mutant:m02_no_north_wall.ts": {
+        "id": "m02_no_north_wall",
+        "file": "m02_no_north_wall.ts",
+        "description": "The far-bottom wall row (y = 7, columns 0-3) is missing: Down from (x<=2, 7) wraps into the room.",
+        "breaks_laws": ["L1", "L2"],
+        "breaks_feature": false,
+        "law_names": ["no win", "flag unreachable"]
+      },
+      "mutant:m03_north_wall_short.ts": {
+        "id": "m03_north_wall_short",
+        "file": "m03_north_wall_short.ts",
+        "description": "Off-by-one: the bottom wall row covers columns 0-1 only, so (2, 7) -> Down -> (2, 0) enters the room.",
+        "breaks_laws": ["L1", "L2"],
+        "breaks_feature": false,
+        "law_names": ["no win", "flag unreachable"]
+      },
+      "mutant:m04_west_wall_short.ts": {
+        "id": "m04_west_wall_short",
+        "file": "m04_west_wall_short.ts",
+        "description": "Off-by-one: the far-east wall column covers rows 0-1 only, so (11, 2) -> Right -> (0, 2) enters the room.",
+        "breaks_laws": ["L1", "L2"],
+        "breaks_feature": false,
+        "law_names": ["no win", "flag unreachable"]
+      },
+      "mutant:m05_wrap_ignores_walls.ts": {
+        "id": "m05_wrap_ignores_walls",
+        "file": "m05_wrap_ignores_walls.ts",
+        "description": "A wrapped move skips the wall check: (11, 7) -> Right lands on the wall (0, 7), then Down wraps into the room.",
+        "breaks_laws": ["L1", "L2"],
+        "breaks_feature": true,
+        "law_names": ["no win", "flag unreachable"]
+      },
+      "mutant:m06_east_wall_gap.ts": {
+        "id": "m06_east_wall_gap",
+        "file": "m06_east_wall_gap.ts",
+        "description": "The room's east wall starts at row 1, leaving (3, 0) open: a 13-move walk enters the room (beyond the 10-move exhaustive bound).",
+        "breaks_laws": ["L1", "L2"],
+        "breaks_feature": true,
+        "law_names": ["no win", "flag unreachable"]
+      },
+      "mutant:m07_won_by_row.ts": {
+        "id": "m07_won_by_row",
+        "file": "m07_won_by_row.ts",
+        "description": "isWon also answers true on the flag's row: reaching row 1 anywhere counts as a win.",
+        "breaks_laws": ["L1"],
+        "breaks_feature": false,
+        "law_names": ["no win"]
+      },
+      "mutant:m08_replay_reversed.ts": {
+        "id": "m08_replay_reversed",
+        "file": "m08_replay_reversed.ts",
+        "description": "replay plays the moves in reverse order.",
+        "breaks_laws": ["L4"],
+        "breaks_feature": true,
+        "law_names": ["replay applies moves in order"]
+      },
+      "mutant:m09_replay_drops_last.ts": {
+        "id": "m09_replay_drops_last",
+        "file": "m09_replay_drops_last.ts",
+        "description": "replay ignores the last move.",
+        "breaks_laws": ["L4"],
+        "breaks_feature": true,
+        "law_names": ["replay applies moves in order"]
+      },
+      "mutant:m10_flag_moved.ts": {
+        "id": "m10_flag_moved",
+        "file": "m10_flag_moved.ts",
+        "description": "The win is tested at (2, 2) instead of the flag cell (1, 1): stepping onto the flag no longer wins.",
+        "breaks_laws": ["L3"],
+        "breaks_feature": true,
+        "law_names": ["flag is live"]
+      },
+      "mutant:m11_win_only_from_below.ts": {
+        "id": "m11_win_only_from_below",
+        "file": "m11_win_only_from_below.ts",
+        "description": "Only an Up move onto the flag wins.",
+        "breaks_laws": ["L3"],
+        "breaks_feature": true,
+        "law_names": ["flag is live"]
+      },
+      "mutant:m12_won_not_sticky.ts": {
+        "id": "m12_won_not_sticky",
+        "file": "m12_won_not_sticky.ts",
+        "description": "won is recomputed on every move instead of staying true once set.",
+        "breaks_laws": [],
+        "breaks_feature": true,
+        "law_names": []
+      },
+      "mutant:m13_no_vertical_wrap.ts": {
+        "id": "m13_no_vertical_wrap",
+        "file": "m13_no_vertical_wrap.ts",
+        "description": "Only Left/Right wrap; Up/Down still stop at the edge.",
+        "breaks_laws": [],
+        "breaks_feature": true,
+        "law_names": []
+      },
+      "mutant:m14_wrap_right_off_by_one.ts": {
+        "id": "m14_wrap_right_off_by_one",
+        "file": "m14_wrap_right_off_by_one.ts",
+        "description": "Right from x = 11 lands on x = 1 instead of x = 0.",
+        "breaks_laws": [],
+        "breaks_feature": true,
+        "law_names": []
+      },
+      "mutant:m15_wrap_left_wrong_dimension.ts": {
+        "id": "m15_wrap_left_wrong_dimension",
+        "file": "m15_wrap_left_wrong_dimension.ts",
+        "description": "Left from x = 0 lands on x = MAP_H - 1 = 7 instead of 11.",
+        "breaks_laws": [],
+        "breaks_feature": true,
+        "law_names": []
+      },
+      "mutant:m16_wall_in_open_row.ts": {
+        "id": "m16_wall_in_open_row",
+        "file": "m16_wall_in_open_row.ts",
+        "description": "An extra wall at (11, 5) in an open row: the row-5 wrap is blocked.",
+        "breaks_laws": [],
+        "breaks_feature": true,
+        "law_names": []
+      },
+      "mutant:m17_down_wrap_to_row_1.ts": {
+        "id": "m17_down_wrap_to_row_1",
+        "file": "m17_down_wrap_to_row_1.ts",
+        "description": "Down from y = 7 lands on y = 1 instead of y = 0.",
+        "breaks_laws": [],
+        "breaks_feature": true,
+        "law_names": []
+      },
+      "mutant:m18_north_wall_wrong_row.ts": {
+        "id": "m18_north_wall_wrong_row",
+        "file": "m18_north_wall_wrong_row.ts",
+        "description": "The bottom wall row is put on y = 6 (an open row) instead of y = 7, so (x<=2, 7) -> Down enters the room.",
+        "breaks_laws": ["L1", "L2"],
+        "breaks_feature": true,
+        "law_names": ["no win", "flag unreachable"]
+      },
+      "mutant:m19_replay_stops_when_blocked.ts": {
+        "id": "m19_replay_stops_when_blocked",
+        "file": "m19_replay_stops_when_blocked.ts",
+        "description": "replay stops at the first blocked move and ignores the rest.",
+        "breaks_laws": ["L4"],
+        "breaks_feature": true,
+        "law_names": ["replay applies moves in order"]
+      },
+      "mutant:m20_iswon_by_position.ts": {
+        "id": "m20_iswon_by_position",
+        "file": "m20_iswon_by_position.ts",
+        "description": "isWon answers whether the player stands on the flag, ignoring the won field.",
+        "breaks_laws": [],
+        "breaks_feature": true,
+        "law_names": []
+      }
+    }
   }
- }
 }

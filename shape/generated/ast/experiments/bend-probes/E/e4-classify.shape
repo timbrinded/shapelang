@@ -1,0 +1,33 @@
+module shape.generated.ast.experiments.bend_probes.E.e4_classify
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource E4ClassifyModuleAnchorsOfAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/E/e4-classify.ts#anchorsOf")
+  fingerprint ast.semantic_subtree_v1("sha256:59bd231aeda5eeb151b67dec044b1eed2c3ec1e0fa8505a9f01d69f5fcb5a2e6")
+}
+
+component E4ClassifyModule : GeneratedCandidate {
+  fn anchorsOf
+    source ts("experiments/bend-probes/E/e4-classify.ts#anchorsOf")
+    effects unknown
+}
+
+relation E4ClassifyModuleAnchorsOfGeneratedFromE4ClassifyModuleAnchorsOfAstAnchor {
+  kind generated_from
+  connects E4ClassifyModule -> E4ClassifyModuleAnchorsOfAstAnchor
+  roles { E4ClassifyModule as generated, E4ClassifyModuleAnchorsOfAstAnchor as syntax }
+  expects E4ClassifyModuleAnchorsOfAstAnchor fingerprint ast.semantic_subtree_v1("sha256:59bd231aeda5eeb151b67dec044b1eed2c3ec1e0fa8505a9f01d69f5fcb5a2e6")
+  summary "fn E4ClassifyModule.anchorsOf generated from typescript function_declaration at experiments/bend-probes/E/e4-classify.ts#anchorsOf."
+}
+
+implementation E4ClassifyModuleImpl {
+  paths {
+    "experiments/bend-probes/E/e4-classify.ts"
+  }
+  conforms_to E4ClassifyModule
+}

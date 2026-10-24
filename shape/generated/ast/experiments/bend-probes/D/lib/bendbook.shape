@@ -1,0 +1,129 @@
+module shape.generated.ast.experiments.bend_probes.D.lib.bendbook
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource BendbookModuleClosureAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/D/lib/bendbook.ts#closure")
+  fingerprint ast.semantic_subtree_v1("sha256:f3f92be1a9b172b835207c6d3cf09c9f51958d77457934845f6709de06b64a17")
+}
+
+resource BendbookModuleCtorFamilyAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/D/lib/bendbook.ts#ctorFamily")
+  fingerprint ast.semantic_subtree_v1("sha256:147763b2b6753d2e4416ddc567de765c4f72caf17702c219f40ba7e61050a193")
+}
+
+resource BendbookModuleDescribeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/D/lib/bendbook.ts#describe")
+  fingerprint ast.semantic_subtree_v1("sha256:c2b7aefc16097e6116145274556cf85c301f541457cb8b1e73ff0d508bcdedea")
+}
+
+resource BendbookModuleLoadBookAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/D/lib/bendbook.ts#loadBook")
+  fingerprint ast.semantic_subtree_v1("sha256:4296873177dd343fdbd87a29a8bbf754c23aba9fe83dbfdc360f4b429145c4bc")
+}
+
+resource BendbookModuleNsFileAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/D/lib/bendbook.ts#nsFile")
+  fingerprint ast.semantic_subtree_v1("sha256:c36d8cebbc8b2ab413172de1ae2911fbe106143b6909e3ede1e572eca0096baa")
+}
+
+resource BendbookModuleTermRefsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/D/lib/bendbook.ts#termRefs")
+  fingerprint ast.semantic_subtree_v1("sha256:9036dbd5caf68c3010ccfca33a0f6b71e2d649062569e84c5abecf4aef4772c4")
+}
+
+resource BendbookModuleTipAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/D/lib/bendbook.ts#tip")
+  fingerprint ast.semantic_subtree_v1("sha256:5332bc8537f31429ef071104fd26bd4576c436cd217bf21bdf7f776fe3e27c92")
+}
+
+component BendbookModule : GeneratedCandidate {
+  fn closure
+    source ts("experiments/bend-probes/D/lib/bendbook.ts#closure")
+    effects unknown
+  fn ctorFamily
+    source ts("experiments/bend-probes/D/lib/bendbook.ts#ctorFamily")
+    effects unknown
+  fn describe
+    source ts("experiments/bend-probes/D/lib/bendbook.ts#describe")
+    effects unknown
+  fn loadBook
+    source ts("experiments/bend-probes/D/lib/bendbook.ts#loadBook")
+    effects unknown
+  fn nsFile
+    source ts("experiments/bend-probes/D/lib/bendbook.ts#nsFile")
+    effects unknown
+  fn termRefs
+    source ts("experiments/bend-probes/D/lib/bendbook.ts#termRefs")
+    effects unknown
+  fn tip
+    source ts("experiments/bend-probes/D/lib/bendbook.ts#tip")
+    effects unknown
+}
+
+relation BendbookModuleClosureGeneratedFromBendbookModuleClosureAstAnchor {
+  kind generated_from
+  connects BendbookModule -> BendbookModuleClosureAstAnchor
+  roles { BendbookModule as generated, BendbookModuleClosureAstAnchor as syntax }
+  expects BendbookModuleClosureAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f3f92be1a9b172b835207c6d3cf09c9f51958d77457934845f6709de06b64a17")
+  summary "fn BendbookModule.closure generated from typescript function_declaration at experiments/bend-probes/D/lib/bendbook.ts#closure."
+}
+
+relation BendbookModuleCtorFamilyGeneratedFromBendbookModuleCtorFamilyAstAnchor {
+  kind generated_from
+  connects BendbookModule -> BendbookModuleCtorFamilyAstAnchor
+  roles { BendbookModule as generated, BendbookModuleCtorFamilyAstAnchor as syntax }
+  expects BendbookModuleCtorFamilyAstAnchor fingerprint ast.semantic_subtree_v1("sha256:147763b2b6753d2e4416ddc567de765c4f72caf17702c219f40ba7e61050a193")
+  summary "fn BendbookModule.ctorFamily generated from typescript function_declaration at experiments/bend-probes/D/lib/bendbook.ts#ctorFamily."
+}
+
+relation BendbookModuleDescribeGeneratedFromBendbookModuleDescribeAstAnchor {
+  kind generated_from
+  connects BendbookModule -> BendbookModuleDescribeAstAnchor
+  roles { BendbookModule as generated, BendbookModuleDescribeAstAnchor as syntax }
+  expects BendbookModuleDescribeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c2b7aefc16097e6116145274556cf85c301f541457cb8b1e73ff0d508bcdedea")
+  summary "fn BendbookModule.describe generated from typescript function_declaration at experiments/bend-probes/D/lib/bendbook.ts#describe."
+}
+
+relation BendbookModuleLoadBookGeneratedFromBendbookModuleLoadBookAstAnchor {
+  kind generated_from
+  connects BendbookModule -> BendbookModuleLoadBookAstAnchor
+  roles { BendbookModule as generated, BendbookModuleLoadBookAstAnchor as syntax }
+  expects BendbookModuleLoadBookAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4296873177dd343fdbd87a29a8bbf754c23aba9fe83dbfdc360f4b429145c4bc")
+  summary "fn BendbookModule.loadBook generated from typescript function_declaration at experiments/bend-probes/D/lib/bendbook.ts#loadBook."
+}
+
+relation BendbookModuleNsFileGeneratedFromBendbookModuleNsFileAstAnchor {
+  kind generated_from
+  connects BendbookModule -> BendbookModuleNsFileAstAnchor
+  roles { BendbookModule as generated, BendbookModuleNsFileAstAnchor as syntax }
+  expects BendbookModuleNsFileAstAnchor fingerprint ast.semantic_subtree_v1("sha256:c36d8cebbc8b2ab413172de1ae2911fbe106143b6909e3ede1e572eca0096baa")
+  summary "fn BendbookModule.nsFile generated from typescript function_declaration at experiments/bend-probes/D/lib/bendbook.ts#nsFile."
+}
+
+relation BendbookModuleTermRefsGeneratedFromBendbookModuleTermRefsAstAnchor {
+  kind generated_from
+  connects BendbookModule -> BendbookModuleTermRefsAstAnchor
+  roles { BendbookModule as generated, BendbookModuleTermRefsAstAnchor as syntax }
+  expects BendbookModuleTermRefsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9036dbd5caf68c3010ccfca33a0f6b71e2d649062569e84c5abecf4aef4772c4")
+  summary "fn BendbookModule.termRefs generated from typescript function_declaration at experiments/bend-probes/D/lib/bendbook.ts#termRefs."
+}
+
+relation BendbookModuleTipGeneratedFromBendbookModuleTipAstAnchor {
+  kind generated_from
+  connects BendbookModule -> BendbookModuleTipAstAnchor
+  roles { BendbookModule as generated, BendbookModuleTipAstAnchor as syntax }
+  expects BendbookModuleTipAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5332bc8537f31429ef071104fd26bd4576c436cd217bf21bdf7f776fe3e27c92")
+  summary "fn BendbookModule.tip generated from typescript function_declaration at experiments/bend-probes/D/lib/bendbook.ts#tip."
+}
+
+implementation BendbookModuleImpl {
+  paths {
+    "experiments/bend-probes/D/lib/bendbook.ts"
+  }
+  conforms_to BendbookModule
+}

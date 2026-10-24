@@ -1,0 +1,113 @@
+module shape.generated.ast.experiments.bend_probes.G.scripts.grade_trials
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource GradeTrialsModuleCategoryAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/G/scripts/grade_trials.py#category")
+  fingerprint ast.semantic_subtree_v1("sha256:774be94152e511f2244a8de26dd03cd2dded05292dfdf66d22eeda61ce6d6de0")
+}
+
+resource GradeTrialsModuleCheckHiddenAccessAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/G/scripts/grade_trials.py#check_hidden_access")
+  fingerprint ast.semantic_subtree_v1("sha256:e7d7eb8c10f0286f9a92410763de5d0472215ed0befb9345a85d2c8e4b09caff")
+}
+
+resource GradeTrialsModuleHiddenTestsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/G/scripts/grade_trials.py#hidden_tests")
+  fingerprint ast.semantic_subtree_v1("sha256:7a6d43efb22f7dc6c87b6dba13ef01b542dbc64e2cfca89db3ab69455a30d0ac")
+}
+
+resource GradeTrialsModuleLineDeltaAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/G/scripts/grade_trials.py#line_delta")
+  fingerprint ast.semantic_subtree_v1("sha256:80cb9f4d0da7c2d93c8fdbee7c65c33fd87454eec77ba2be6e3604f5cac7e39e")
+}
+
+resource GradeTrialsModuleManifestAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/G/scripts/grade_trials.py#manifest")
+  fingerprint ast.semantic_subtree_v1("sha256:ae9dbc7beefd4b74d9eee224e2568ab22f8ef1eb5b4ab631be5922b8db383f38")
+}
+
+resource GradeTrialsModuleRunAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/G/scripts/grade_trials.py#run")
+  fingerprint ast.semantic_subtree_v1("sha256:a242c3ae62ac6d55bf908720f1ab2901a0a21416f56e7073ebc9b4640a321c6e")
+}
+
+component GradeTrialsModule : GeneratedCandidate {
+  fn category
+    source python("experiments/bend-probes/G/scripts/grade_trials.py#category")
+    effects unknown
+  fn check_hidden_access
+    source python("experiments/bend-probes/G/scripts/grade_trials.py#check_hidden_access")
+    effects unknown
+  fn hidden_tests
+    source python("experiments/bend-probes/G/scripts/grade_trials.py#hidden_tests")
+    effects unknown
+  fn line_delta
+    source python("experiments/bend-probes/G/scripts/grade_trials.py#line_delta")
+    effects unknown
+  fn manifest
+    source python("experiments/bend-probes/G/scripts/grade_trials.py#manifest")
+    effects unknown
+  fn run
+    source python("experiments/bend-probes/G/scripts/grade_trials.py#run")
+    effects unknown
+}
+
+relation GradeTrialsModuleCategoryGeneratedFromGradeTrialsModuleCategoryAstAnchor {
+  kind generated_from
+  connects GradeTrialsModule -> GradeTrialsModuleCategoryAstAnchor
+  roles { GradeTrialsModule as generated, GradeTrialsModuleCategoryAstAnchor as syntax }
+  expects GradeTrialsModuleCategoryAstAnchor fingerprint ast.semantic_subtree_v1("sha256:774be94152e511f2244a8de26dd03cd2dded05292dfdf66d22eeda61ce6d6de0")
+  summary "fn GradeTrialsModule.category generated from python function_definition at experiments/bend-probes/G/scripts/grade_trials.py#category."
+}
+
+relation GradeTrialsModuleCheckHiddenAccessGeneratedFromGradeTrialsModuleCheckHiddenAccessAstAnchor {
+  kind generated_from
+  connects GradeTrialsModule -> GradeTrialsModuleCheckHiddenAccessAstAnchor
+  roles { GradeTrialsModule as generated, GradeTrialsModuleCheckHiddenAccessAstAnchor as syntax }
+  expects GradeTrialsModuleCheckHiddenAccessAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e7d7eb8c10f0286f9a92410763de5d0472215ed0befb9345a85d2c8e4b09caff")
+  summary "fn GradeTrialsModule.check_hidden_access generated from python function_definition at experiments/bend-probes/G/scripts/grade_trials.py#check_hidden_access."
+}
+
+relation GradeTrialsModuleHiddenTestsGeneratedFromGradeTrialsModuleHiddenTestsAstAnchor {
+  kind generated_from
+  connects GradeTrialsModule -> GradeTrialsModuleHiddenTestsAstAnchor
+  roles { GradeTrialsModule as generated, GradeTrialsModuleHiddenTestsAstAnchor as syntax }
+  expects GradeTrialsModuleHiddenTestsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7a6d43efb22f7dc6c87b6dba13ef01b542dbc64e2cfca89db3ab69455a30d0ac")
+  summary "fn GradeTrialsModule.hidden_tests generated from python function_definition at experiments/bend-probes/G/scripts/grade_trials.py#hidden_tests."
+}
+
+relation GradeTrialsModuleLineDeltaGeneratedFromGradeTrialsModuleLineDeltaAstAnchor {
+  kind generated_from
+  connects GradeTrialsModule -> GradeTrialsModuleLineDeltaAstAnchor
+  roles { GradeTrialsModule as generated, GradeTrialsModuleLineDeltaAstAnchor as syntax }
+  expects GradeTrialsModuleLineDeltaAstAnchor fingerprint ast.semantic_subtree_v1("sha256:80cb9f4d0da7c2d93c8fdbee7c65c33fd87454eec77ba2be6e3604f5cac7e39e")
+  summary "fn GradeTrialsModule.line_delta generated from python function_definition at experiments/bend-probes/G/scripts/grade_trials.py#line_delta."
+}
+
+relation GradeTrialsModuleManifestGeneratedFromGradeTrialsModuleManifestAstAnchor {
+  kind generated_from
+  connects GradeTrialsModule -> GradeTrialsModuleManifestAstAnchor
+  roles { GradeTrialsModule as generated, GradeTrialsModuleManifestAstAnchor as syntax }
+  expects GradeTrialsModuleManifestAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ae9dbc7beefd4b74d9eee224e2568ab22f8ef1eb5b4ab631be5922b8db383f38")
+  summary "fn GradeTrialsModule.manifest generated from python function_definition at experiments/bend-probes/G/scripts/grade_trials.py#manifest."
+}
+
+relation GradeTrialsModuleRunGeneratedFromGradeTrialsModuleRunAstAnchor {
+  kind generated_from
+  connects GradeTrialsModule -> GradeTrialsModuleRunAstAnchor
+  roles { GradeTrialsModule as generated, GradeTrialsModuleRunAstAnchor as syntax }
+  expects GradeTrialsModuleRunAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a242c3ae62ac6d55bf908720f1ab2901a0a21416f56e7073ebc9b4640a321c6e")
+  summary "fn GradeTrialsModule.run generated from python function_definition at experiments/bend-probes/G/scripts/grade_trials.py#run."
+}
+
+implementation GradeTrialsModuleImpl {
+  paths {
+    "experiments/bend-probes/G/scripts/grade_trials.py"
+  }
+  conforms_to GradeTrialsModule
+}

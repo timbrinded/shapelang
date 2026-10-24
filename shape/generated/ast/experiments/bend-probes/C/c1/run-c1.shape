@@ -1,0 +1,33 @@
+module shape.generated.ast.experiments.bend_probes.C.c1.run_c1
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource RunC1ModuleLawLinesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/C/c1/run-c1.mjs#lawLines")
+  fingerprint ast.semantic_subtree_v1("sha256:db641b4830fcc8bbf7529bb539a7ec7856088a846aae05943a410b094d4eb930")
+}
+
+component RunC1Module : GeneratedCandidate {
+  fn lawLines
+    source js("experiments/bend-probes/C/c1/run-c1.mjs#lawLines")
+    effects unknown
+}
+
+relation RunC1ModuleLawLinesGeneratedFromRunC1ModuleLawLinesAstAnchor {
+  kind generated_from
+  connects RunC1Module -> RunC1ModuleLawLinesAstAnchor
+  roles { RunC1Module as generated, RunC1ModuleLawLinesAstAnchor as syntax }
+  expects RunC1ModuleLawLinesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:db641b4830fcc8bbf7529bb539a7ec7856088a846aae05943a410b094d4eb930")
+  summary "fn RunC1Module.lawLines generated from javascript function_declaration at experiments/bend-probes/C/c1/run-c1.mjs#lawLines."
+}
+
+implementation RunC1ModuleImpl {
+  paths {
+    "experiments/bend-probes/C/c1/run-c1.mjs"
+  }
+  conforms_to RunC1Module
+}

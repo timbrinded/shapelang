@@ -1,0 +1,49 @@
+module shape.generated.ast.experiments.bend_probes.E.e2_calibration
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource E2CalibrationModuleGitAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/E/e2-calibration.ts#git")
+  fingerprint ast.semantic_subtree_v1("sha256:f73c42a1e53f603d2b999e7a24e8eb1d15fcb1b2795642645815544370c0a253")
+}
+
+resource E2CalibrationModuleWriteAllAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/E/e2-calibration.ts#writeAll")
+  fingerprint ast.semantic_subtree_v1("sha256:a89bd5eedd040bfd0217d803fbaf06c39466f369bec1ac2125b9cdefe16d77a2")
+}
+
+component E2CalibrationModule : GeneratedCandidate {
+  fn git
+    source ts("experiments/bend-probes/E/e2-calibration.ts#git")
+    effects unknown
+  fn writeAll
+    source ts("experiments/bend-probes/E/e2-calibration.ts#writeAll")
+    effects unknown
+}
+
+relation E2CalibrationModuleGitGeneratedFromE2CalibrationModuleGitAstAnchor {
+  kind generated_from
+  connects E2CalibrationModule -> E2CalibrationModuleGitAstAnchor
+  roles { E2CalibrationModule as generated, E2CalibrationModuleGitAstAnchor as syntax }
+  expects E2CalibrationModuleGitAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f73c42a1e53f603d2b999e7a24e8eb1d15fcb1b2795642645815544370c0a253")
+  summary "fn E2CalibrationModule.git generated from typescript function_declaration at experiments/bend-probes/E/e2-calibration.ts#git."
+}
+
+relation E2CalibrationModuleWriteAllGeneratedFromE2CalibrationModuleWriteAllAstAnchor {
+  kind generated_from
+  connects E2CalibrationModule -> E2CalibrationModuleWriteAllAstAnchor
+  roles { E2CalibrationModule as generated, E2CalibrationModuleWriteAllAstAnchor as syntax }
+  expects E2CalibrationModuleWriteAllAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a89bd5eedd040bfd0217d803fbaf06c39466f369bec1ac2125b9cdefe16d77a2")
+  summary "fn E2CalibrationModule.writeAll generated from typescript function_declaration at experiments/bend-probes/E/e2-calibration.ts#writeAll."
+}
+
+implementation E2CalibrationModuleImpl {
+  paths {
+    "experiments/bend-probes/E/e2-calibration.ts"
+  }
+  conforms_to E2CalibrationModule
+}

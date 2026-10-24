@@ -1,0 +1,33 @@
+module shape.generated.ast.experiments.bend_probes.G.scripts.summarize_g
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource SummarizeGModuleLocAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/G/scripts/summarize_g.py#loc")
+  fingerprint ast.semantic_subtree_v1("sha256:4c3b40252663b229141d6c5f48c81947eb6d0eddfd8f9227a877bae9bfd25f91")
+}
+
+component SummarizeGModule : GeneratedCandidate {
+  fn loc
+    source python("experiments/bend-probes/G/scripts/summarize_g.py#loc")
+    effects unknown
+}
+
+relation SummarizeGModuleLocGeneratedFromSummarizeGModuleLocAstAnchor {
+  kind generated_from
+  connects SummarizeGModule -> SummarizeGModuleLocAstAnchor
+  roles { SummarizeGModule as generated, SummarizeGModuleLocAstAnchor as syntax }
+  expects SummarizeGModuleLocAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4c3b40252663b229141d6c5f48c81947eb6d0eddfd8f9227a877bae9bfd25f91")
+  summary "fn SummarizeGModule.loc generated from python function_definition at experiments/bend-probes/G/scripts/summarize_g.py#loc."
+}
+
+implementation SummarizeGModuleImpl {
+  paths {
+    "experiments/bend-probes/G/scripts/summarize_g.py"
+  }
+  conforms_to SummarizeGModule
+}

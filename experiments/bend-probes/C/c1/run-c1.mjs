@@ -15,12 +15,18 @@ const fixtures = [
   {
     name: "root-cause-grouping",
     laws: rootCauseLaws,
-    load: async (dir) => ({ ...(await import(join(dir, "range.ts"))), ...(await import(join(dir, "metrics.ts"))) })
+    load: async (dir) => ({
+      ...(await import(join(dir, "range.ts"))),
+      ...(await import(join(dir, "metrics.ts")))
+    })
   },
   {
     name: "cross-object",
     laws: crossObjectLaws,
-    load: async (dir) => ({ ...(await import(join(dir, "catalog.ts"))), ...(await import(join(dir, "presenter.ts"))) })
+    load: async (dir) => ({
+      ...(await import(join(dir, "catalog.ts"))),
+      ...(await import(join(dir, "presenter.ts")))
+    })
   }
 ];
 
@@ -43,7 +49,10 @@ for (const fixture of fixtures) {
         holds: !out.failed,
         runs: out.numRuns,
         counterexample: out.failed ? JSON.stringify(out.counterexample) : null,
-        error: out.failed && out.errorInstance ? String(out.errorInstance.message ?? out.errorInstance) : null
+        error:
+          out.failed && out.errorInstance
+            ? String(out.errorInstance.message ?? out.errorInstance)
+            : null
       });
     }
   }
@@ -58,7 +67,10 @@ const effort = {
   "root-cause-grouping": lawLines("laws-root-cause.mjs"),
   "cross-object": lawLines("laws-cross-object.mjs")
 };
-writeFileSync(join(WORK, "c1", "results.json"), JSON.stringify({ seed: SEED, runs: RUNS, effort, results }, null, 2));
+writeFileSync(
+  join(WORK, "c1", "results.json"),
+  JSON.stringify({ seed: SEED, runs: RUNS, effort, results }, null, 2)
+);
 for (const r of results) {
   console.log(
     `${r.fixture.padEnd(20)} ${r.variant.padEnd(9)} ${r.holds ? "HOLDS" : "FAILS"}  ${r.law}` +
@@ -69,5 +81,7 @@ for (const fixture of fixtures) {
   const base = results.filter((r) => r.fixture === fixture.name && r.variant === "base");
   const cand = results.filter((r) => r.fixture === fixture.name && r.variant === "candidate");
   const separated = base.every((r) => r.holds) && cand.some((r) => !r.holds);
-  console.log(`${fixture.name}: base ${base.filter((r) => r.holds).length}/${base.length} hold, candidate ${cand.filter((r) => r.holds).length}/${cand.length} hold, separated=${separated}, law lines=${effort[fixture.name]}`);
+  console.log(
+    `${fixture.name}: base ${base.filter((r) => r.holds).length}/${base.length} hold, candidate ${cand.filter((r) => r.holds).length}/${cand.length} hold, separated=${separated}, law lines=${effort[fixture.name]}`
+  );
 }

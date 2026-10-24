@@ -1,0 +1,49 @@
+module shape.generated.ast.experiments.bend_probes.A.A5.run
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource RunModuleFirstErrAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/A/A5/run.py#first_err")
+  fingerprint ast.semantic_subtree_v1("sha256:85fbe25e0e1eda404a048c61593a51fb77a89a9181e83a01c8ac626a6609a037")
+}
+
+resource RunModuleShAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/A/A5/run.py#sh")
+  fingerprint ast.semantic_subtree_v1("sha256:70951486cd17331c1627fd0398002467ed3122c1b91f478f7e11ad3c04f4cd20")
+}
+
+component RunModule : GeneratedCandidate {
+  fn first_err
+    source python("experiments/bend-probes/A/A5/run.py#first_err")
+    effects unknown
+  fn sh
+    source python("experiments/bend-probes/A/A5/run.py#sh")
+    effects unknown
+}
+
+relation RunModuleFirstErrGeneratedFromRunModuleFirstErrAstAnchor {
+  kind generated_from
+  connects RunModule -> RunModuleFirstErrAstAnchor
+  roles { RunModule as generated, RunModuleFirstErrAstAnchor as syntax }
+  expects RunModuleFirstErrAstAnchor fingerprint ast.semantic_subtree_v1("sha256:85fbe25e0e1eda404a048c61593a51fb77a89a9181e83a01c8ac626a6609a037")
+  summary "fn RunModule.first_err generated from python function_definition at experiments/bend-probes/A/A5/run.py#first_err."
+}
+
+relation RunModuleShGeneratedFromRunModuleShAstAnchor {
+  kind generated_from
+  connects RunModule -> RunModuleShAstAnchor
+  roles { RunModule as generated, RunModuleShAstAnchor as syntax }
+  expects RunModuleShAstAnchor fingerprint ast.semantic_subtree_v1("sha256:70951486cd17331c1627fd0398002467ed3122c1b91f478f7e11ad3c04f4cd20")
+  summary "fn RunModule.sh generated from python function_definition at experiments/bend-probes/A/A5/run.py#sh."
+}
+
+implementation RunModuleImpl {
+  paths {
+    "experiments/bend-probes/A/A5/run.py"
+  }
+  conforms_to RunModule
+}

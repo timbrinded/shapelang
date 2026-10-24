@@ -1,0 +1,65 @@
+module shape.generated.ast.experiments.bend_probes.D.d3.extract
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource ExtractModuleAnalyseAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/D/d3/extract.ts#analyse")
+  fingerprint ast.semantic_subtree_v1("sha256:60935a000c5ac60023273493b2230e925abcaa4947785301e061c372f2997619")
+}
+
+resource ExtractModuleExtractAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/D/d3/extract.ts#extract")
+  fingerprint ast.semantic_subtree_v1("sha256:81dc41b20e7cda8135be2efc79db64563a302878a218b7559f507ba4f464b47e")
+}
+
+resource ExtractModuleTipAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/D/d3/extract.ts#tip")
+  fingerprint ast.semantic_subtree_v1("sha256:3fb8d23a4fd514c80a1ba57d7769f01c61a3eb6af83790ebe1b0a64ab87c9c01")
+}
+
+component ExtractModule : GeneratedCandidate {
+  fn analyse
+    source ts("experiments/bend-probes/D/d3/extract.ts#analyse")
+    effects unknown
+  fn extract
+    source ts("experiments/bend-probes/D/d3/extract.ts#extract")
+    effects unknown
+  fn tip
+    source ts("experiments/bend-probes/D/d3/extract.ts#tip")
+    effects unknown
+}
+
+relation ExtractModuleAnalyseGeneratedFromExtractModuleAnalyseAstAnchor {
+  kind generated_from
+  connects ExtractModule -> ExtractModuleAnalyseAstAnchor
+  roles { ExtractModule as generated, ExtractModuleAnalyseAstAnchor as syntax }
+  expects ExtractModuleAnalyseAstAnchor fingerprint ast.semantic_subtree_v1("sha256:60935a000c5ac60023273493b2230e925abcaa4947785301e061c372f2997619")
+  summary "fn ExtractModule.analyse generated from typescript function_declaration at experiments/bend-probes/D/d3/extract.ts#analyse."
+}
+
+relation ExtractModuleExtractGeneratedFromExtractModuleExtractAstAnchor {
+  kind generated_from
+  connects ExtractModule -> ExtractModuleExtractAstAnchor
+  roles { ExtractModule as generated, ExtractModuleExtractAstAnchor as syntax }
+  expects ExtractModuleExtractAstAnchor fingerprint ast.semantic_subtree_v1("sha256:81dc41b20e7cda8135be2efc79db64563a302878a218b7559f507ba4f464b47e")
+  summary "fn ExtractModule.extract generated from typescript function_declaration at experiments/bend-probes/D/d3/extract.ts#extract."
+}
+
+relation ExtractModuleTipGeneratedFromExtractModuleTipAstAnchor {
+  kind generated_from
+  connects ExtractModule -> ExtractModuleTipAstAnchor
+  roles { ExtractModule as generated, ExtractModuleTipAstAnchor as syntax }
+  expects ExtractModuleTipAstAnchor fingerprint ast.semantic_subtree_v1("sha256:3fb8d23a4fd514c80a1ba57d7769f01c61a3eb6af83790ebe1b0a64ab87c9c01")
+  summary "fn ExtractModule.tip generated from typescript function_declaration at experiments/bend-probes/D/d3/extract.ts#tip."
+}
+
+implementation ExtractModuleImpl {
+  paths {
+    "experiments/bend-probes/D/d3/extract.ts"
+  }
+  conforms_to ExtractModule
+}

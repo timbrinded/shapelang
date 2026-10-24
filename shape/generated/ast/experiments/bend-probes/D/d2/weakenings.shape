@@ -1,0 +1,65 @@
+module shape.generated.ast.experiments.bend_probes.D.d2.weakenings
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource WeakeningsModuleApplyAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/D/d2/weakenings.ts#apply")
+  fingerprint ast.semantic_subtree_v1("sha256:fe67c531edc7dbb959bcdf71697c0c866e909f132a4f8f4dbb4b549a3a874bae")
+}
+
+resource WeakeningsModuleBlockAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/D/d2/weakenings.ts#block")
+  fingerprint ast.semantic_subtree_v1("sha256:59a3413d020f44380662b3dddb132db8da52711e09507414a7dc2e005730bc4d")
+}
+
+resource WeakeningsModuleGateAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/D/d2/weakenings.ts#gate")
+  fingerprint ast.semantic_subtree_v1("sha256:72373778de54af3c8f223d4099b45d0075852beb6206e398e40911a312d06126")
+}
+
+component WeakeningsModule : GeneratedCandidate {
+  fn apply
+    source ts("experiments/bend-probes/D/d2/weakenings.ts#apply")
+    effects unknown
+  fn block
+    source ts("experiments/bend-probes/D/d2/weakenings.ts#block")
+    effects unknown
+  fn gate
+    source ts("experiments/bend-probes/D/d2/weakenings.ts#gate")
+    effects unknown
+}
+
+relation WeakeningsModuleApplyGeneratedFromWeakeningsModuleApplyAstAnchor {
+  kind generated_from
+  connects WeakeningsModule -> WeakeningsModuleApplyAstAnchor
+  roles { WeakeningsModule as generated, WeakeningsModuleApplyAstAnchor as syntax }
+  expects WeakeningsModuleApplyAstAnchor fingerprint ast.semantic_subtree_v1("sha256:fe67c531edc7dbb959bcdf71697c0c866e909f132a4f8f4dbb4b549a3a874bae")
+  summary "fn WeakeningsModule.apply generated from typescript function_declaration at experiments/bend-probes/D/d2/weakenings.ts#apply."
+}
+
+relation WeakeningsModuleBlockGeneratedFromWeakeningsModuleBlockAstAnchor {
+  kind generated_from
+  connects WeakeningsModule -> WeakeningsModuleBlockAstAnchor
+  roles { WeakeningsModule as generated, WeakeningsModuleBlockAstAnchor as syntax }
+  expects WeakeningsModuleBlockAstAnchor fingerprint ast.semantic_subtree_v1("sha256:59a3413d020f44380662b3dddb132db8da52711e09507414a7dc2e005730bc4d")
+  summary "fn WeakeningsModule.block generated from typescript function_declaration at experiments/bend-probes/D/d2/weakenings.ts#block."
+}
+
+relation WeakeningsModuleGateGeneratedFromWeakeningsModuleGateAstAnchor {
+  kind generated_from
+  connects WeakeningsModule -> WeakeningsModuleGateAstAnchor
+  roles { WeakeningsModule as generated, WeakeningsModuleGateAstAnchor as syntax }
+  expects WeakeningsModuleGateAstAnchor fingerprint ast.semantic_subtree_v1("sha256:72373778de54af3c8f223d4099b45d0075852beb6206e398e40911a312d06126")
+  summary "fn WeakeningsModule.gate generated from typescript function_declaration at experiments/bend-probes/D/d2/weakenings.ts#gate."
+}
+
+implementation WeakeningsModuleImpl {
+  paths {
+    "experiments/bend-probes/D/d2/weakenings.ts"
+  }
+  conforms_to WeakeningsModule
+}

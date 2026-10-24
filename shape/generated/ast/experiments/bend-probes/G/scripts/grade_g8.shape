@@ -1,0 +1,33 @@
+module shape.generated.ast.experiments.bend_probes.G.scripts.grade_g8
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource GradeG8ModuleRunSuiteAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/G/scripts/grade_g8.py#run_suite")
+  fingerprint ast.semantic_subtree_v1("sha256:9c7ce0a81669d84fd2a4c77cf1c7c7d8dc914607f22e10627627f351e38066cf")
+}
+
+component GradeG8Module : GeneratedCandidate {
+  fn run_suite
+    source python("experiments/bend-probes/G/scripts/grade_g8.py#run_suite")
+    effects unknown
+}
+
+relation GradeG8ModuleRunSuiteGeneratedFromGradeG8ModuleRunSuiteAstAnchor {
+  kind generated_from
+  connects GradeG8Module -> GradeG8ModuleRunSuiteAstAnchor
+  roles { GradeG8Module as generated, GradeG8ModuleRunSuiteAstAnchor as syntax }
+  expects GradeG8ModuleRunSuiteAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9c7ce0a81669d84fd2a4c77cf1c7c7d8dc914607f22e10627627f351e38066cf")
+  summary "fn GradeG8Module.run_suite generated from python function_definition at experiments/bend-probes/G/scripts/grade_g8.py#run_suite."
+}
+
+implementation GradeG8ModuleImpl {
+  paths {
+    "experiments/bend-probes/G/scripts/grade_g8.py"
+  }
+  conforms_to GradeG8Module
+}

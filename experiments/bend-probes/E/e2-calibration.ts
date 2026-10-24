@@ -1,3 +1,4 @@
+// @ts-nocheck
 // E2 extension: the 8 calibration cases of
 // plugins/shapelang/skills/shape-contract-guard/references/examples.md, encoded
 // as base/candidate Shape repos. For each: run `shp check --check-loosening`
@@ -9,13 +10,24 @@ import { mkdirSync, rmSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { classify, contextEntries, inspect } from "./e2-semantic-diff.ts";
 
-const WORK = (process.env.WORK ?? "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/work/E") + "/e2cal";
+const WORK =
+  (process.env.WORK ??
+    "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/work/E") +
+  "/e2cal";
 const SHP = ["bun", "/home/user/shapelang/packages/shp-cli/src/index.ts"];
 
 type Files = Record<string, string>;
-type Case = { id: string; base: Files; cand: Files; changed?: string[]; expected: string; expectFinding: boolean };
+type Case = {
+  id: string;
+  base: Files;
+  cand: Files;
+  changed?: string[];
+  expected: string;
+  expectFinding: boolean;
+};
 
-const audit = (traits: string, body = "") => `module audit\n\nresource AuditEvent${traits}\n${body}`;
+const audit = (traits: string, body = "") =>
+  `module audit\n\nresource AuditEvent${traits}\n${body}`;
 const store = `
 component AuditStore {
   owns AuditEvent
@@ -63,19 +75,29 @@ const cases: Case[] = [
     id: "3 equivalent relocation (rule)",
     base: {
       "shape/audit.shape": audit(" : Persistent", store),
-      "shape/rules.shape": "module audit\n\nrule audit_no_delete {\n  forbid final HardDelete<T>\n  when T has Persistent\n}\n"
+      "shape/rules.shape":
+        "module audit\n\nrule audit_no_delete {\n  forbid final HardDelete<T>\n  when T has Persistent\n}\n"
     },
     cand: {
       "shape/audit.shape": audit(" : Persistent", store),
-      "shape/retention.shape": "module audit\n\nrule audit_no_delete {\n  forbid final HardDelete<T>\n  when T has Persistent\n}\n"
+      "shape/retention.shape":
+        "module audit\n\nrule audit_no_delete {\n  forbid final HardDelete<T>\n  when T has Persistent\n}\n"
     },
     expected: "pass (no finding)",
     expectFinding: false
   },
   {
     id: "4 equal replacement (Protected -> AppendOnly)",
-    base: { "shape/audit.shape": "module audit\n\ntrait Protected<T: Resource> {\n  forbid final HardDelete<T>\n}\n\nresource AuditEvent : Protected\n" + store },
-    cand: { "shape/audit.shape": "module audit\n\ntrait Protected<T: Resource> {\n  forbid final HardDelete<T>\n}\n\nresource AuditEvent : AppendOnly\n" + store },
+    base: {
+      "shape/audit.shape":
+        "module audit\n\ntrait Protected<T: Resource> {\n  forbid final HardDelete<T>\n}\n\nresource AuditEvent : Protected\n" +
+        store
+    },
+    cand: {
+      "shape/audit.shape":
+        "module audit\n\ntrait Protected<T: Resource> {\n  forbid final HardDelete<T>\n}\n\nresource AuditEvent : AppendOnly\n" +
+        store
+    },
     expected: "no unsupported-removal finding (replacement recorded)",
     expectFinding: false
   },
@@ -95,12 +117,16 @@ const cases: Case[] = [
   {
     id: "6 vendored pack final forbid removal",
     base: {
-      "shape/vendor/durable/pack.shape": "module durable\n\ntrait DurableAudit<T: Resource> {\n  allow Append<T>\n  forbid final HardDelete<T>\n}\n",
-      "shape/audit.shape": "module audit\n\nimport durable\n\nresource AuditEvent : DurableAudit\n" + store
+      "shape/vendor/durable/pack.shape":
+        "module durable\n\ntrait DurableAudit<T: Resource> {\n  allow Append<T>\n  forbid final HardDelete<T>\n}\n",
+      "shape/audit.shape":
+        "module audit\n\nimport durable\n\nresource AuditEvent : DurableAudit\n" + store
     },
     cand: {
-      "shape/vendor/durable/pack.shape": "module durable\n\ntrait DurableAudit<T: Resource> {\n  allow Append<T>\n}\n",
-      "shape/audit.shape": "module audit\n\nimport durable\n\nresource AuditEvent : DurableAudit\n" + store
+      "shape/vendor/durable/pack.shape":
+        "module durable\n\ntrait DurableAudit<T: Resource> {\n  allow Append<T>\n}\n",
+      "shape/audit.shape":
+        "module audit\n\nimport durable\n\nresource AuditEvent : DurableAudit\n" + store
     },
     expected: "high/none/suspicious",
     expectFinding: true
@@ -108,7 +134,9 @@ const cases: Case[] = [
   {
     id: "7 generic attestation",
     base: {
-      "shape/audit.shape": audit("", store) + '\nimplementation AuditStoreImpl {\n  paths {\n    "src/audit/store.ts"\n  }\n  conforms_to AuditStore\n  on_change require shape_update\n}\n',
+      "shape/audit.shape":
+        audit("", store) +
+        '\nimplementation AuditStoreImpl {\n  paths {\n    "src/audit/store.ts"\n  }\n  conforms_to AuditStore\n  on_change require shape_update\n}\n',
       "src/audit/store.ts": "export function appendEvent() {}\n"
     },
     cand: {
@@ -122,8 +150,14 @@ const cases: Case[] = [
   },
   {
     id: "8 false completeness",
-    base: { "shape/exp.shape": "module exp\n\ncomponent Exporter {\n  fn exportSnapshot\n    effects unknown\n}\n" },
-    cand: { "shape/exp.shape": "module exp\n\ncomponent Exporter {\n  fn exportSnapshot\n    effects complete {\n    }\n}\n" },
+    base: {
+      "shape/exp.shape":
+        "module exp\n\ncomponent Exporter {\n  fn exportSnapshot\n    effects unknown\n}\n"
+    },
+    cand: {
+      "shape/exp.shape":
+        "module exp\n\ncomponent Exporter {\n  fn exportSnapshot\n    effects complete {\n    }\n}\n"
+    },
     expected: "high/none/suspicious",
     expectFinding: true
   }
@@ -160,16 +194,38 @@ for (const [i, c] of cases.entries()) {
   git(d, "add", "-A");
   git(d, "commit", "-qm", "cand");
   writeFileSync(join(d, "changed.txt"), git(d, "diff", "--name-only", "base", "HEAD"));
-  const r = spawnSync(SHP[0], [...SHP.slice(1), "check", "--allow-unknown-effects", "--changed-files", "changed.txt", "--base-ref", "base", "--check-loosening"], { cwd: d, encoding: "utf8" });
+  const r = spawnSync(
+    SHP[0],
+    [
+      ...SHP.slice(1),
+      "check",
+      "--allow-unknown-effects",
+      "--changed-files",
+      "changed.txt",
+      "--base-ref",
+      "base",
+      "--check-loosening"
+    ],
+    { cwd: d, encoding: "utf8" }
+  );
   const out = (r.stdout + r.stderr).trim();
   const firstErr = (out.match(/^error: .*$/m) ?? [out.split("\n").at(-1)])[0];
-  const sem = classify(inspect(bdir), inspect(d), { base: contextEntries(bdir), cand: contextEntries(d) });
-  const semTxt = sem.findings.length ? sem.findings.map((f) => `${f.impact}/${f.support}/${f.disposition} ${f.signal}`).join("; ") : "pass";
+  const sem = classify(inspect(bdir), inspect(d), {
+    base: contextEntries(bdir),
+    cand: contextEntries(d)
+  });
+  const semTxt = sem.findings.length
+    ? sem.findings.map((f) => `${f.impact}/${f.support}/${f.disposition} ${f.signal}`).join("; ")
+    : "pass";
   const loosenOk = (r.status !== 0 && /rule loosening/.test(out)) === c.expectFinding;
   const semOk = sem.findings.length > 0 === c.expectFinding;
-  rows.push(`| ${c.id} | ${c.expected} | exit ${r.status}: ${firstErr} | ${loosenOk ? "match" : "MISS"} | ${semTxt} | ${semOk ? "match" : "MISS"} |`);
+  rows.push(
+    `| ${c.id} | ${c.expected} | exit ${r.status}: ${firstErr} | ${loosenOk ? "match" : "MISS"} | ${semTxt} | ${semOk ? "match" : "MISS"} |`
+  );
   writeFileSync(join(WORK, `case${i + 1}.check.txt`), out + `\nexit=${r.status}\n`);
 }
-console.log("| case | examples.md expected | check --check-loosening | finding/no-finding agrees | semantic diff | agrees |");
+console.log(
+  "| case | examples.md expected | check --check-loosening | finding/no-finding agrees | semantic diff | agrees |"
+);
 console.log("|---|---|---|---|---|---|");
 for (const r of rows) console.log(r);

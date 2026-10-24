@@ -1,0 +1,33 @@
+module shape.generated.ast.experiments.bend_probes.A.A4.gen
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource GenModuleMainAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/A/A4/gen.py#main")
+  fingerprint ast.semantic_subtree_v1("sha256:d96929cd61639451d9cb560eecf52957831d62e044b6fc6cd24bfe6b81b1ef38")
+}
+
+component GenModule : GeneratedCandidate {
+  fn main
+    source python("experiments/bend-probes/A/A4/gen.py#main")
+    effects unknown
+}
+
+relation GenModuleMainGeneratedFromGenModuleMainAstAnchor {
+  kind generated_from
+  connects GenModule -> GenModuleMainAstAnchor
+  roles { GenModule as generated, GenModuleMainAstAnchor as syntax }
+  expects GenModuleMainAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d96929cd61639451d9cb560eecf52957831d62e044b6fc6cd24bfe6b81b1ef38")
+  summary "fn GenModule.main generated from python function_definition at experiments/bend-probes/A/A4/gen.py#main."
+}
+
+implementation GenModuleImpl {
+  paths {
+    "experiments/bend-probes/A/A4/gen.py"
+  }
+  conforms_to GenModule
+}

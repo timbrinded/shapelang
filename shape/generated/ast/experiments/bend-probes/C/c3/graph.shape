@@ -1,0 +1,257 @@
+module shape.generated.ast.experiments.bend_probes.C.c3.graph
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource GraphModuleAnalyzeAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/C/c3/graph.mjs#analyze")
+  fingerprint ast.semantic_subtree_v1("sha256:d2e7160d8a7a2d5f4d74f4e175cb08b580a07221828ca7b0b5ea6dda42adc4a9")
+}
+
+resource GraphModuleBodiesOfAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/C/c3/graph.mjs#bodiesOf")
+  fingerprint ast.semantic_subtree_v1("sha256:9e8a4d523e9b5080e3b2234ef227440abdacb025e7672bbf26dba384d400602d")
+}
+
+resource GraphModuleBuildProgramAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/C/c3/graph.mjs#buildProgram")
+  fingerprint ast.semantic_subtree_v1("sha256:1af15a30f09c9bde2c3159cb489843a95dd04a9b48741ffd437933ccddd26014")
+}
+
+resource GraphModuleClassifyAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/C/c3/graph.mjs#classify")
+  fingerprint ast.semantic_subtree_v1("sha256:df3225f9a3f110d0e1399253791f8aaa5832c869d644c5601275fc020fa6a990")
+}
+
+resource GraphModuleClosureAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/C/c3/graph.mjs#closure")
+  fingerprint ast.semantic_subtree_v1("sha256:cefb6c8836ea5a8d1a3c537ad6df84d06ef73004e9a063b36616ec44bfc1d88b")
+}
+
+resource GraphModuleCreateGraphAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/C/c3/graph.mjs#createGraph")
+  fingerprint ast.semantic_subtree_v1("sha256:7888f7e3a1e306d542fcebb465930223f9c6a30fa5f48ad2c75e78422d09f1c0")
+}
+
+resource GraphModuleFindSourceUnitAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/C/c3/graph.mjs#findSourceUnit")
+  fingerprint ast.semantic_subtree_v1("sha256:b246f253bbb9a0b9d0f5422c64e0e0bb796197a95092a8caa78a1946f9fbfdf6")
+}
+
+resource GraphModuleImportOfAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/C/c3/graph.mjs#importOf")
+  fingerprint ast.semantic_subtree_v1("sha256:bbb3c207ab7e4335c5222957cee8f4cc7c4bc2c0f9e6ea5960c0a6843dc9e1e6")
+}
+
+resource GraphModuleIsDeclNameAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/C/c3/graph.mjs#isDeclName")
+  fingerprint ast.semantic_subtree_v1("sha256:4e906b58a3752c756e5a900b86d7716454092a4ec3ebc6f100fdc8ffd3e22b9b")
+}
+
+resource GraphModuleOnIdentifierAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/C/c3/graph.mjs#onIdentifier")
+  fingerprint ast.semantic_subtree_v1("sha256:e4f8215c3e1afb8390f3a8655b4bd91714963c7b36de9e225147cebc95bf5477")
+}
+
+resource GraphModuleOnImportCallAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/C/c3/graph.mjs#onImportCall")
+  fingerprint ast.semantic_subtree_v1("sha256:82401655266bd32834ea0e8efb17ca1597e4734a89839a64fabaf435d9e0f6b7")
+}
+
+resource GraphModuleOnPropertyNameAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/C/c3/graph.mjs#onPropertyName")
+  fingerprint ast.semantic_subtree_v1("sha256:87970a45b03c85ea40025bcf167ca97d22ea2fd5ec4895483bac3631e72f0ec3")
+}
+
+resource GraphModuleResolveSymbolAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/C/c3/graph.mjs#resolveSymbol")
+  fingerprint ast.semantic_subtree_v1("sha256:f913a95d5d843c234c585e2085448a77c98cffb356b91537cda1cf3c31c3fcd9")
+}
+
+resource GraphModuleUnitOfAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/C/c3/graph.mjs#unitOf")
+  fingerprint ast.semantic_subtree_v1("sha256:1432ea42d9d9dcd19e248e51188dc84fc8ba5be0a64d7861e37b2e1abba1c8fc")
+}
+
+resource GraphModuleWalkAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/C/c3/graph.mjs#walk")
+  fingerprint ast.semantic_subtree_v1("sha256:5b016266edd9349e1b0bed2afbdc0589dc34a58df332237e11dd642a212a261f")
+}
+
+component GraphModule : GeneratedCandidate {
+  fn analyze
+    source js("experiments/bend-probes/C/c3/graph.mjs#analyze")
+    effects unknown
+  fn bodiesOf
+    source js("experiments/bend-probes/C/c3/graph.mjs#bodiesOf")
+    effects unknown
+  fn buildProgram
+    source js("experiments/bend-probes/C/c3/graph.mjs#buildProgram")
+    effects unknown
+  fn classify
+    source js("experiments/bend-probes/C/c3/graph.mjs#classify")
+    effects unknown
+  fn closure
+    source js("experiments/bend-probes/C/c3/graph.mjs#closure")
+    effects unknown
+  fn createGraph
+    source js("experiments/bend-probes/C/c3/graph.mjs#createGraph")
+    effects unknown
+  fn findSourceUnit
+    source js("experiments/bend-probes/C/c3/graph.mjs#findSourceUnit")
+    effects unknown
+  fn importOf
+    source js("experiments/bend-probes/C/c3/graph.mjs#importOf")
+    effects unknown
+  fn isDeclName
+    source js("experiments/bend-probes/C/c3/graph.mjs#isDeclName")
+    effects unknown
+  fn onIdentifier
+    source js("experiments/bend-probes/C/c3/graph.mjs#onIdentifier")
+    effects unknown
+  fn onImportCall
+    source js("experiments/bend-probes/C/c3/graph.mjs#onImportCall")
+    effects unknown
+  fn onPropertyName
+    source js("experiments/bend-probes/C/c3/graph.mjs#onPropertyName")
+    effects unknown
+  fn resolveSymbol
+    source js("experiments/bend-probes/C/c3/graph.mjs#resolveSymbol")
+    effects unknown
+  fn unitOf
+    source js("experiments/bend-probes/C/c3/graph.mjs#unitOf")
+    effects unknown
+  fn walk
+    source js("experiments/bend-probes/C/c3/graph.mjs#walk")
+    effects unknown
+}
+
+relation GraphModuleAnalyzeGeneratedFromGraphModuleAnalyzeAstAnchor {
+  kind generated_from
+  connects GraphModule -> GraphModuleAnalyzeAstAnchor
+  roles { GraphModule as generated, GraphModuleAnalyzeAstAnchor as syntax }
+  expects GraphModuleAnalyzeAstAnchor fingerprint ast.semantic_subtree_v1("sha256:d2e7160d8a7a2d5f4d74f4e175cb08b580a07221828ca7b0b5ea6dda42adc4a9")
+  summary "fn GraphModule.analyze generated from javascript function_declaration at experiments/bend-probes/C/c3/graph.mjs#analyze."
+}
+
+relation GraphModuleBodiesOfGeneratedFromGraphModuleBodiesOfAstAnchor {
+  kind generated_from
+  connects GraphModule -> GraphModuleBodiesOfAstAnchor
+  roles { GraphModule as generated, GraphModuleBodiesOfAstAnchor as syntax }
+  expects GraphModuleBodiesOfAstAnchor fingerprint ast.semantic_subtree_v1("sha256:9e8a4d523e9b5080e3b2234ef227440abdacb025e7672bbf26dba384d400602d")
+  summary "fn GraphModule.bodiesOf generated from javascript function_declaration at experiments/bend-probes/C/c3/graph.mjs#bodiesOf."
+}
+
+relation GraphModuleBuildProgramGeneratedFromGraphModuleBuildProgramAstAnchor {
+  kind generated_from
+  connects GraphModule -> GraphModuleBuildProgramAstAnchor
+  roles { GraphModule as generated, GraphModuleBuildProgramAstAnchor as syntax }
+  expects GraphModuleBuildProgramAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1af15a30f09c9bde2c3159cb489843a95dd04a9b48741ffd437933ccddd26014")
+  summary "fn GraphModule.buildProgram generated from javascript function_declaration at experiments/bend-probes/C/c3/graph.mjs#buildProgram."
+}
+
+relation GraphModuleClassifyGeneratedFromGraphModuleClassifyAstAnchor {
+  kind generated_from
+  connects GraphModule -> GraphModuleClassifyAstAnchor
+  roles { GraphModule as generated, GraphModuleClassifyAstAnchor as syntax }
+  expects GraphModuleClassifyAstAnchor fingerprint ast.semantic_subtree_v1("sha256:df3225f9a3f110d0e1399253791f8aaa5832c869d644c5601275fc020fa6a990")
+  summary "fn GraphModule.classify generated from javascript function_declaration at experiments/bend-probes/C/c3/graph.mjs#classify."
+}
+
+relation GraphModuleClosureGeneratedFromGraphModuleClosureAstAnchor {
+  kind generated_from
+  connects GraphModule -> GraphModuleClosureAstAnchor
+  roles { GraphModule as generated, GraphModuleClosureAstAnchor as syntax }
+  expects GraphModuleClosureAstAnchor fingerprint ast.semantic_subtree_v1("sha256:cefb6c8836ea5a8d1a3c537ad6df84d06ef73004e9a063b36616ec44bfc1d88b")
+  summary "fn GraphModule.closure generated from javascript function_declaration at experiments/bend-probes/C/c3/graph.mjs#closure."
+}
+
+relation GraphModuleCreateGraphGeneratedFromGraphModuleCreateGraphAstAnchor {
+  kind generated_from
+  connects GraphModule -> GraphModuleCreateGraphAstAnchor
+  roles { GraphModule as generated, GraphModuleCreateGraphAstAnchor as syntax }
+  expects GraphModuleCreateGraphAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7888f7e3a1e306d542fcebb465930223f9c6a30fa5f48ad2c75e78422d09f1c0")
+  summary "fn GraphModule.createGraph generated from javascript function_declaration at experiments/bend-probes/C/c3/graph.mjs#createGraph."
+}
+
+relation GraphModuleFindSourceUnitGeneratedFromGraphModuleFindSourceUnitAstAnchor {
+  kind generated_from
+  connects GraphModule -> GraphModuleFindSourceUnitAstAnchor
+  roles { GraphModule as generated, GraphModuleFindSourceUnitAstAnchor as syntax }
+  expects GraphModuleFindSourceUnitAstAnchor fingerprint ast.semantic_subtree_v1("sha256:b246f253bbb9a0b9d0f5422c64e0e0bb796197a95092a8caa78a1946f9fbfdf6")
+  summary "fn GraphModule.findSourceUnit generated from javascript function_declaration at experiments/bend-probes/C/c3/graph.mjs#findSourceUnit."
+}
+
+relation GraphModuleImportOfGeneratedFromGraphModuleImportOfAstAnchor {
+  kind generated_from
+  connects GraphModule -> GraphModuleImportOfAstAnchor
+  roles { GraphModule as generated, GraphModuleImportOfAstAnchor as syntax }
+  expects GraphModuleImportOfAstAnchor fingerprint ast.semantic_subtree_v1("sha256:bbb3c207ab7e4335c5222957cee8f4cc7c4bc2c0f9e6ea5960c0a6843dc9e1e6")
+  summary "fn GraphModule.importOf generated from javascript function_declaration at experiments/bend-probes/C/c3/graph.mjs#importOf."
+}
+
+relation GraphModuleIsDeclNameGeneratedFromGraphModuleIsDeclNameAstAnchor {
+  kind generated_from
+  connects GraphModule -> GraphModuleIsDeclNameAstAnchor
+  roles { GraphModule as generated, GraphModuleIsDeclNameAstAnchor as syntax }
+  expects GraphModuleIsDeclNameAstAnchor fingerprint ast.semantic_subtree_v1("sha256:4e906b58a3752c756e5a900b86d7716454092a4ec3ebc6f100fdc8ffd3e22b9b")
+  summary "fn GraphModule.isDeclName generated from javascript function_declaration at experiments/bend-probes/C/c3/graph.mjs#isDeclName."
+}
+
+relation GraphModuleOnIdentifierGeneratedFromGraphModuleOnIdentifierAstAnchor {
+  kind generated_from
+  connects GraphModule -> GraphModuleOnIdentifierAstAnchor
+  roles { GraphModule as generated, GraphModuleOnIdentifierAstAnchor as syntax }
+  expects GraphModuleOnIdentifierAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e4f8215c3e1afb8390f3a8655b4bd91714963c7b36de9e225147cebc95bf5477")
+  summary "fn GraphModule.onIdentifier generated from javascript function_declaration at experiments/bend-probes/C/c3/graph.mjs#onIdentifier."
+}
+
+relation GraphModuleOnImportCallGeneratedFromGraphModuleOnImportCallAstAnchor {
+  kind generated_from
+  connects GraphModule -> GraphModuleOnImportCallAstAnchor
+  roles { GraphModule as generated, GraphModuleOnImportCallAstAnchor as syntax }
+  expects GraphModuleOnImportCallAstAnchor fingerprint ast.semantic_subtree_v1("sha256:82401655266bd32834ea0e8efb17ca1597e4734a89839a64fabaf435d9e0f6b7")
+  summary "fn GraphModule.onImportCall generated from javascript function_declaration at experiments/bend-probes/C/c3/graph.mjs#onImportCall."
+}
+
+relation GraphModuleOnPropertyNameGeneratedFromGraphModuleOnPropertyNameAstAnchor {
+  kind generated_from
+  connects GraphModule -> GraphModuleOnPropertyNameAstAnchor
+  roles { GraphModule as generated, GraphModuleOnPropertyNameAstAnchor as syntax }
+  expects GraphModuleOnPropertyNameAstAnchor fingerprint ast.semantic_subtree_v1("sha256:87970a45b03c85ea40025bcf167ca97d22ea2fd5ec4895483bac3631e72f0ec3")
+  summary "fn GraphModule.onPropertyName generated from javascript function_declaration at experiments/bend-probes/C/c3/graph.mjs#onPropertyName."
+}
+
+relation GraphModuleResolveSymbolGeneratedFromGraphModuleResolveSymbolAstAnchor {
+  kind generated_from
+  connects GraphModule -> GraphModuleResolveSymbolAstAnchor
+  roles { GraphModule as generated, GraphModuleResolveSymbolAstAnchor as syntax }
+  expects GraphModuleResolveSymbolAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f913a95d5d843c234c585e2085448a77c98cffb356b91537cda1cf3c31c3fcd9")
+  summary "fn GraphModule.resolveSymbol generated from javascript function_declaration at experiments/bend-probes/C/c3/graph.mjs#resolveSymbol."
+}
+
+relation GraphModuleUnitOfGeneratedFromGraphModuleUnitOfAstAnchor {
+  kind generated_from
+  connects GraphModule -> GraphModuleUnitOfAstAnchor
+  roles { GraphModule as generated, GraphModuleUnitOfAstAnchor as syntax }
+  expects GraphModuleUnitOfAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1432ea42d9d9dcd19e248e51188dc84fc8ba5be0a64d7861e37b2e1abba1c8fc")
+  summary "fn GraphModule.unitOf generated from javascript function_declaration at experiments/bend-probes/C/c3/graph.mjs#unitOf."
+}
+
+relation GraphModuleWalkGeneratedFromGraphModuleWalkAstAnchor {
+  kind generated_from
+  connects GraphModule -> GraphModuleWalkAstAnchor
+  roles { GraphModule as generated, GraphModuleWalkAstAnchor as syntax }
+  expects GraphModuleWalkAstAnchor fingerprint ast.semantic_subtree_v1("sha256:5b016266edd9349e1b0bed2afbdc0589dc34a58df332237e11dd642a212a261f")
+  summary "fn GraphModule.walk generated from javascript function_declaration at experiments/bend-probes/C/c3/graph.mjs#walk."
+}
+
+implementation GraphModuleImpl {
+  paths {
+    "experiments/bend-probes/C/c3/graph.mjs"
+  }
+  conforms_to GraphModule
+}

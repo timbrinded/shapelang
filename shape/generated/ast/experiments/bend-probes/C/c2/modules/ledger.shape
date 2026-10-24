@@ -1,0 +1,97 @@
+module shape.generated.ast.experiments.bend_probes.C.c2.modules.ledger
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource LedgerModuleFeeForAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/C/c2/modules/ledger.ts#feeFor")
+  fingerprint ast.semantic_subtree_v1("sha256:1139a777db727ce4bc05720466e7bd5f9d58249925e0bf6cf764f5c6957e8365")
+}
+
+resource LedgerModuleIsAccountAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/C/c2/modules/ledger.ts#isAccount")
+  fingerprint ast.semantic_subtree_v1("sha256:16c4cf481659307ec9d105600cb386786f6bd8303b781023652b756efd4e9113")
+}
+
+resource LedgerModuleMoveAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/C/c2/modules/ledger.ts#move")
+  fingerprint ast.semantic_subtree_v1("sha256:1bb994e633ba1f122f95fe15af973c795450f1fabf61ed9ff5cf3ff799ccbb79")
+}
+
+resource LedgerModuleRejectAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/C/c2/modules/ledger.ts#reject")
+  fingerprint ast.semantic_subtree_v1("sha256:81ad068e5634a3b78844a9957ad8c49b7ad1e8e2c4f8e409bd315a9340cf82ff")
+}
+
+resource LedgerModuleTransferAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/C/c2/modules/ledger.ts#transfer")
+  fingerprint ast.semantic_subtree_v1("sha256:fcc6f7086f66b6497512a67dc4cfe549542c67d62989befebe949c46e51a4171")
+}
+
+component LedgerModule : GeneratedCandidate {
+  fn feeFor
+    source ts("experiments/bend-probes/C/c2/modules/ledger.ts#feeFor")
+    effects unknown
+  fn isAccount
+    source ts("experiments/bend-probes/C/c2/modules/ledger.ts#isAccount")
+    effects unknown
+  fn move
+    source ts("experiments/bend-probes/C/c2/modules/ledger.ts#move")
+    effects unknown
+  fn reject
+    source ts("experiments/bend-probes/C/c2/modules/ledger.ts#reject")
+    effects unknown
+  fn transfer
+    source ts("experiments/bend-probes/C/c2/modules/ledger.ts#transfer")
+    effects unknown
+}
+
+relation LedgerModuleFeeForGeneratedFromLedgerModuleFeeForAstAnchor {
+  kind generated_from
+  connects LedgerModule -> LedgerModuleFeeForAstAnchor
+  roles { LedgerModule as generated, LedgerModuleFeeForAstAnchor as syntax }
+  expects LedgerModuleFeeForAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1139a777db727ce4bc05720466e7bd5f9d58249925e0bf6cf764f5c6957e8365")
+  summary "fn LedgerModule.feeFor generated from typescript function_declaration at experiments/bend-probes/C/c2/modules/ledger.ts#feeFor."
+}
+
+relation LedgerModuleIsAccountGeneratedFromLedgerModuleIsAccountAstAnchor {
+  kind generated_from
+  connects LedgerModule -> LedgerModuleIsAccountAstAnchor
+  roles { LedgerModule as generated, LedgerModuleIsAccountAstAnchor as syntax }
+  expects LedgerModuleIsAccountAstAnchor fingerprint ast.semantic_subtree_v1("sha256:16c4cf481659307ec9d105600cb386786f6bd8303b781023652b756efd4e9113")
+  summary "fn LedgerModule.isAccount generated from typescript function_declaration at experiments/bend-probes/C/c2/modules/ledger.ts#isAccount."
+}
+
+relation LedgerModuleMoveGeneratedFromLedgerModuleMoveAstAnchor {
+  kind generated_from
+  connects LedgerModule -> LedgerModuleMoveAstAnchor
+  roles { LedgerModule as generated, LedgerModuleMoveAstAnchor as syntax }
+  expects LedgerModuleMoveAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1bb994e633ba1f122f95fe15af973c795450f1fabf61ed9ff5cf3ff799ccbb79")
+  summary "fn LedgerModule.move generated from typescript function_declaration at experiments/bend-probes/C/c2/modules/ledger.ts#move."
+}
+
+relation LedgerModuleRejectGeneratedFromLedgerModuleRejectAstAnchor {
+  kind generated_from
+  connects LedgerModule -> LedgerModuleRejectAstAnchor
+  roles { LedgerModule as generated, LedgerModuleRejectAstAnchor as syntax }
+  expects LedgerModuleRejectAstAnchor fingerprint ast.semantic_subtree_v1("sha256:81ad068e5634a3b78844a9957ad8c49b7ad1e8e2c4f8e409bd315a9340cf82ff")
+  summary "fn LedgerModule.reject generated from typescript function_declaration at experiments/bend-probes/C/c2/modules/ledger.ts#reject."
+}
+
+relation LedgerModuleTransferGeneratedFromLedgerModuleTransferAstAnchor {
+  kind generated_from
+  connects LedgerModule -> LedgerModuleTransferAstAnchor
+  roles { LedgerModule as generated, LedgerModuleTransferAstAnchor as syntax }
+  expects LedgerModuleTransferAstAnchor fingerprint ast.semantic_subtree_v1("sha256:fcc6f7086f66b6497512a67dc4cfe549542c67d62989befebe949c46e51a4171")
+  summary "fn LedgerModule.transfer generated from typescript function_declaration at experiments/bend-probes/C/c2/modules/ledger.ts#transfer."
+}
+
+implementation LedgerModuleImpl {
+  paths {
+    "experiments/bend-probes/C/c2/modules/ledger.ts"
+  }
+  conforms_to LedgerModule
+}

@@ -1,0 +1,33 @@
+module shape.generated.ast.experiments.bend_probes.E.e3_index_scan
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource E3IndexScanModuleShpAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/E/e3-index-scan.ts#shp")
+  fingerprint ast.semantic_subtree_v1("sha256:0fa4d40caafa252de5d273379d86d31c6032c196e2f01b8ed91dc2907ef4589d")
+}
+
+component E3IndexScanModule : GeneratedCandidate {
+  fn shp
+    source ts("experiments/bend-probes/E/e3-index-scan.ts#shp")
+    effects unknown
+}
+
+relation E3IndexScanModuleShpGeneratedFromE3IndexScanModuleShpAstAnchor {
+  kind generated_from
+  connects E3IndexScanModule -> E3IndexScanModuleShpAstAnchor
+  roles { E3IndexScanModule as generated, E3IndexScanModuleShpAstAnchor as syntax }
+  expects E3IndexScanModuleShpAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0fa4d40caafa252de5d273379d86d31c6032c196e2f01b8ed91dc2907ef4589d")
+  summary "fn E3IndexScanModule.shp generated from typescript function_declaration at experiments/bend-probes/E/e3-index-scan.ts#shp."
+}
+
+implementation E3IndexScanModuleImpl {
+  paths {
+    "experiments/bend-probes/E/e3-index-scan.ts"
+  }
+  conforms_to E3IndexScanModule
+}

@@ -1,0 +1,76 @@
+{
+  "T1": {
+    "agent": {
+      "law_killed": 13,
+      "law_total": 13,
+      "feature_only_killed": 0,
+      "feature_only_total": 7,
+      "pre_feature": "pass",
+      "ref": "pass",
+      "traps": {
+        "trap:game.ts": "fail"
+      }
+    },
+    "reference": {
+      "law_killed": 13,
+      "law_total": 13,
+      "feature_only_killed": 0,
+      "feature_only_total": 7,
+      "pre_feature": "pass",
+      "ref": "pass",
+      "traps": {
+        "trap:game.ts": "fail"
+      }
+    }
+  },
+  "T3": {
+    "agent": {
+      "law_killed": 14,
+      "law_total": 14,
+      "feature_only_killed": 0,
+      "feature_only_total": 5,
+      "pre_feature": "pass",
+      "ref": "pass",
+      "traps": {
+        "trap:audit.ts": "fail"
+      }
+    },
+    "reference": {
+      "law_killed": 14,
+      "law_total": 14,
+      "feature_only_killed": 0,
+      "feature_only_total": 5,
+      "pre_feature": "pass",
+      "ref": "pass",
+      "traps": {
+        "trap:audit.ts": "fail"
+      }
+    }
+  },
+  "T4": {
+    "agent": {
+      "law_killed": 12,
+      "law_total": 12,
+      "feature_only_killed": 0,
+      "feature_only_total": 6,
+      "pre_feature": "pass",
+      "ref": "pass",
+      "traps": {
+        "trap:stale_all.ts": "fail",
+        "trap:stale_self.ts": "fail"
+      }
+    },
+    "reference": {
+      "law_killed": 12,
+      "law_total": 12,
+      "feature_only_killed": 0,
+      "feature_only_total": 6,
+      "pre_feature": "pass",
+      "ref": "pass",
+      "traps": {
+        "trap:stale_all.ts": "fail",
+        "trap:stale_self.ts": "fail"
+      }
+    }
+  }
+}

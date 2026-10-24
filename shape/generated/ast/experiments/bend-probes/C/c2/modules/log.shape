@@ -1,0 +1,145 @@
+module shape.generated.ast.experiments.bend_probes.C.c2.modules.log
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource LogModuleAppendAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/C/c2/modules/log.ts#append")
+  fingerprint ast.semantic_subtree_v1("sha256:e34fb2e8a116066508445b9ada66cc6398a60fe0d080003e515601807791e4cb")
+}
+
+resource LogModuleCountAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/C/c2/modules/log.ts#count")
+  fingerprint ast.semantic_subtree_v1("sha256:ae021443b9fe3b7c81e709731fe75cbc2553ea643e8925069d78e0bf5c14240a")
+}
+
+resource LogModuleEmptyAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/C/c2/modules/log.ts#empty")
+  fingerprint ast.semantic_subtree_v1("sha256:54fb0e79b2731f7a224eee604119f57dc06a4dad1e320fd613924480b87fa3d3")
+}
+
+resource LogModuleEntriesAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/C/c2/modules/log.ts#entries")
+  fingerprint ast.semantic_subtree_v1("sha256:ac223930a8ec0172b1a2a2a37a9386e9100f1217141acb0164c6c32b6b09bebc")
+}
+
+resource LogModuleFindAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/C/c2/modules/log.ts#find")
+  fingerprint ast.semantic_subtree_v1("sha256:8846d31665a6c567174d33091471ae0cda59b5c8b5e1efe0213c8f6c9f295e51")
+}
+
+resource LogModuleIdsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/C/c2/modules/log.ts#ids")
+  fingerprint ast.semantic_subtree_v1("sha256:8662deda57a8fa21a62c48be2f0443a80195d2eba3ce91b05a300bbdb8d26689")
+}
+
+resource LogModuleRedactAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/C/c2/modules/log.ts#redact")
+  fingerprint ast.semantic_subtree_v1("sha256:33449d4f20c983e8a165f1f4d21ca77b133a1f72c57cde7b6d10d736edd17293")
+}
+
+resource LogModuleRetainAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/C/c2/modules/log.ts#retain")
+  fingerprint ast.semantic_subtree_v1("sha256:36315ce5bfb766fa961d92923390da180b7bc17561c0d70a7ce81acbb58e8725")
+}
+
+component LogModule : GeneratedCandidate {
+  fn append
+    source ts("experiments/bend-probes/C/c2/modules/log.ts#append")
+    effects unknown
+  fn count
+    source ts("experiments/bend-probes/C/c2/modules/log.ts#count")
+    effects unknown
+  fn empty
+    source ts("experiments/bend-probes/C/c2/modules/log.ts#empty")
+    effects unknown
+  fn entries
+    source ts("experiments/bend-probes/C/c2/modules/log.ts#entries")
+    effects unknown
+  fn find
+    source ts("experiments/bend-probes/C/c2/modules/log.ts#find")
+    effects unknown
+  fn ids
+    source ts("experiments/bend-probes/C/c2/modules/log.ts#ids")
+    effects unknown
+  fn redact
+    source ts("experiments/bend-probes/C/c2/modules/log.ts#redact")
+    effects unknown
+  fn retain
+    source ts("experiments/bend-probes/C/c2/modules/log.ts#retain")
+    effects unknown
+}
+
+relation LogModuleAppendGeneratedFromLogModuleAppendAstAnchor {
+  kind generated_from
+  connects LogModule -> LogModuleAppendAstAnchor
+  roles { LogModule as generated, LogModuleAppendAstAnchor as syntax }
+  expects LogModuleAppendAstAnchor fingerprint ast.semantic_subtree_v1("sha256:e34fb2e8a116066508445b9ada66cc6398a60fe0d080003e515601807791e4cb")
+  summary "fn LogModule.append generated from typescript function_declaration at experiments/bend-probes/C/c2/modules/log.ts#append."
+}
+
+relation LogModuleCountGeneratedFromLogModuleCountAstAnchor {
+  kind generated_from
+  connects LogModule -> LogModuleCountAstAnchor
+  roles { LogModule as generated, LogModuleCountAstAnchor as syntax }
+  expects LogModuleCountAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ae021443b9fe3b7c81e709731fe75cbc2553ea643e8925069d78e0bf5c14240a")
+  summary "fn LogModule.count generated from typescript function_declaration at experiments/bend-probes/C/c2/modules/log.ts#count."
+}
+
+relation LogModuleEmptyGeneratedFromLogModuleEmptyAstAnchor {
+  kind generated_from
+  connects LogModule -> LogModuleEmptyAstAnchor
+  roles { LogModule as generated, LogModuleEmptyAstAnchor as syntax }
+  expects LogModuleEmptyAstAnchor fingerprint ast.semantic_subtree_v1("sha256:54fb0e79b2731f7a224eee604119f57dc06a4dad1e320fd613924480b87fa3d3")
+  summary "fn LogModule.empty generated from typescript function_declaration at experiments/bend-probes/C/c2/modules/log.ts#empty."
+}
+
+relation LogModuleEntriesGeneratedFromLogModuleEntriesAstAnchor {
+  kind generated_from
+  connects LogModule -> LogModuleEntriesAstAnchor
+  roles { LogModule as generated, LogModuleEntriesAstAnchor as syntax }
+  expects LogModuleEntriesAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ac223930a8ec0172b1a2a2a37a9386e9100f1217141acb0164c6c32b6b09bebc")
+  summary "fn LogModule.entries generated from typescript function_declaration at experiments/bend-probes/C/c2/modules/log.ts#entries."
+}
+
+relation LogModuleFindGeneratedFromLogModuleFindAstAnchor {
+  kind generated_from
+  connects LogModule -> LogModuleFindAstAnchor
+  roles { LogModule as generated, LogModuleFindAstAnchor as syntax }
+  expects LogModuleFindAstAnchor fingerprint ast.semantic_subtree_v1("sha256:8846d31665a6c567174d33091471ae0cda59b5c8b5e1efe0213c8f6c9f295e51")
+  summary "fn LogModule.find generated from typescript function_declaration at experiments/bend-probes/C/c2/modules/log.ts#find."
+}
+
+relation LogModuleIdsGeneratedFromLogModuleIdsAstAnchor {
+  kind generated_from
+  connects LogModule -> LogModuleIdsAstAnchor
+  roles { LogModule as generated, LogModuleIdsAstAnchor as syntax }
+  expects LogModuleIdsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:8662deda57a8fa21a62c48be2f0443a80195d2eba3ce91b05a300bbdb8d26689")
+  summary "fn LogModule.ids generated from typescript function_declaration at experiments/bend-probes/C/c2/modules/log.ts#ids."
+}
+
+relation LogModuleRedactGeneratedFromLogModuleRedactAstAnchor {
+  kind generated_from
+  connects LogModule -> LogModuleRedactAstAnchor
+  roles { LogModule as generated, LogModuleRedactAstAnchor as syntax }
+  expects LogModuleRedactAstAnchor fingerprint ast.semantic_subtree_v1("sha256:33449d4f20c983e8a165f1f4d21ca77b133a1f72c57cde7b6d10d736edd17293")
+  summary "fn LogModule.redact generated from typescript function_declaration at experiments/bend-probes/C/c2/modules/log.ts#redact."
+}
+
+relation LogModuleRetainGeneratedFromLogModuleRetainAstAnchor {
+  kind generated_from
+  connects LogModule -> LogModuleRetainAstAnchor
+  roles { LogModule as generated, LogModuleRetainAstAnchor as syntax }
+  expects LogModuleRetainAstAnchor fingerprint ast.semantic_subtree_v1("sha256:36315ce5bfb766fa961d92923390da180b7bc17561c0d70a7ce81acbb58e8725")
+  summary "fn LogModule.retain generated from typescript function_declaration at experiments/bend-probes/C/c2/modules/log.ts#retain."
+}
+
+implementation LogModuleImpl {
+  paths {
+    "experiments/bend-probes/C/c2/modules/log.ts"
+  }
+  conforms_to LogModule
+}

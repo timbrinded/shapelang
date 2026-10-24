@@ -1,0 +1,65 @@
+module shape.generated.ast.experiments.bend_probes.C.c4.generated_calls
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource CallsModuleAnalyzeModelAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/C/c4/calls.mjs#analyzeModel")
+  fingerprint ast.semantic_subtree_v1("sha256:caec5f75c63932550d12cc60ae59694a79ac1650b07e4bfb78ef77cb44797571")
+}
+
+resource CallsModuleInspectAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/C/c4/calls.mjs#inspect")
+  fingerprint ast.semantic_subtree_v1("sha256:6f390b7b60be48e9bf46b37c4d07fd42f50d468d4f098cdd0de3e4fc7ae2687c")
+}
+
+resource CallsModuleTopLevelUnitsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/C/c4/calls.mjs#topLevelUnits")
+  fingerprint ast.semantic_subtree_v1("sha256:dde0e1eb7072ae1827c08c56b996045bac4b7ffa9086f41c3bfd6bbdc9f9a559")
+}
+
+component CallsModule : GeneratedCandidate {
+  fn analyzeModel
+    source js("experiments/bend-probes/C/c4/calls.mjs#analyzeModel")
+    effects unknown
+  fn inspect
+    source js("experiments/bend-probes/C/c4/calls.mjs#inspect")
+    effects unknown
+  fn topLevelUnits
+    source js("experiments/bend-probes/C/c4/calls.mjs#topLevelUnits")
+    effects unknown
+}
+
+relation CallsModuleAnalyzeModelGeneratedFromCallsModuleAnalyzeModelAstAnchor {
+  kind generated_from
+  connects CallsModule -> CallsModuleAnalyzeModelAstAnchor
+  roles { CallsModule as generated, CallsModuleAnalyzeModelAstAnchor as syntax }
+  expects CallsModuleAnalyzeModelAstAnchor fingerprint ast.semantic_subtree_v1("sha256:caec5f75c63932550d12cc60ae59694a79ac1650b07e4bfb78ef77cb44797571")
+  summary "fn CallsModule.analyzeModel generated from javascript function_declaration at experiments/bend-probes/C/c4/calls.mjs#analyzeModel."
+}
+
+relation CallsModuleInspectGeneratedFromCallsModuleInspectAstAnchor {
+  kind generated_from
+  connects CallsModule -> CallsModuleInspectAstAnchor
+  roles { CallsModule as generated, CallsModuleInspectAstAnchor as syntax }
+  expects CallsModuleInspectAstAnchor fingerprint ast.semantic_subtree_v1("sha256:6f390b7b60be48e9bf46b37c4d07fd42f50d468d4f098cdd0de3e4fc7ae2687c")
+  summary "fn CallsModule.inspect generated from javascript function_declaration at experiments/bend-probes/C/c4/calls.mjs#inspect."
+}
+
+relation CallsModuleTopLevelUnitsGeneratedFromCallsModuleTopLevelUnitsAstAnchor {
+  kind generated_from
+  connects CallsModule -> CallsModuleTopLevelUnitsAstAnchor
+  roles { CallsModule as generated, CallsModuleTopLevelUnitsAstAnchor as syntax }
+  expects CallsModuleTopLevelUnitsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:dde0e1eb7072ae1827c08c56b996045bac4b7ffa9086f41c3bfd6bbdc9f9a559")
+  summary "fn CallsModule.topLevelUnits generated from javascript function_declaration at experiments/bend-probes/C/c4/calls.mjs#topLevelUnits."
+}
+
+implementation CallsModuleImpl {
+  paths {
+    "experiments/bend-probes/C/c4/calls.mjs"
+  }
+  conforms_to CallsModule
+}

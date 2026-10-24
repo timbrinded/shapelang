@@ -1,0 +1,81 @@
+module shape.generated.ast.experiments.bend_probes.D.d2.lawdiff
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource LawdiffModuleBookLawsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/D/d2/lawdiff.ts#bookLaws")
+  fingerprint ast.semantic_subtree_v1("sha256:7659b37e8d0fd6b14db19338397280a4e7ebf529d3511a0921f1a2f58336a2b0")
+}
+
+resource LawdiffModuleDirLawsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/D/d2/lawdiff.ts#dirLaws")
+  fingerprint ast.semantic_subtree_v1("sha256:f0791eec9d0ddc760c31b0a707d9fcb3919c1acfc6ccbaeb1015ecc43c13a253")
+}
+
+resource LawdiffModuleLawDiffAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/D/d2/lawdiff.ts#lawDiff")
+  fingerprint ast.semantic_subtree_v1("sha256:75b301434ae501a913ce2b6362feba04b7f9b6478904c0d9766da80ff0133a62")
+}
+
+resource LawdiffModuleNormalAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/D/d2/lawdiff.ts#normal")
+  fingerprint ast.semantic_subtree_v1("sha256:742d8bc6f61a2724d8b151670bfcc13b4ac8c70218e89816065bd9a9e6a3b80d")
+}
+
+component LawdiffModule : GeneratedCandidate {
+  fn bookLaws
+    source ts("experiments/bend-probes/D/d2/lawdiff.ts#bookLaws")
+    effects unknown
+  fn dirLaws
+    source ts("experiments/bend-probes/D/d2/lawdiff.ts#dirLaws")
+    effects unknown
+  fn lawDiff
+    source ts("experiments/bend-probes/D/d2/lawdiff.ts#lawDiff")
+    effects unknown
+  fn normal
+    source ts("experiments/bend-probes/D/d2/lawdiff.ts#normal")
+    effects unknown
+}
+
+relation LawdiffModuleBookLawsGeneratedFromLawdiffModuleBookLawsAstAnchor {
+  kind generated_from
+  connects LawdiffModule -> LawdiffModuleBookLawsAstAnchor
+  roles { LawdiffModule as generated, LawdiffModuleBookLawsAstAnchor as syntax }
+  expects LawdiffModuleBookLawsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7659b37e8d0fd6b14db19338397280a4e7ebf529d3511a0921f1a2f58336a2b0")
+  summary "fn LawdiffModule.bookLaws generated from typescript function_declaration at experiments/bend-probes/D/d2/lawdiff.ts#bookLaws."
+}
+
+relation LawdiffModuleDirLawsGeneratedFromLawdiffModuleDirLawsAstAnchor {
+  kind generated_from
+  connects LawdiffModule -> LawdiffModuleDirLawsAstAnchor
+  roles { LawdiffModule as generated, LawdiffModuleDirLawsAstAnchor as syntax }
+  expects LawdiffModuleDirLawsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:f0791eec9d0ddc760c31b0a707d9fcb3919c1acfc6ccbaeb1015ecc43c13a253")
+  summary "fn LawdiffModule.dirLaws generated from typescript function_declaration at experiments/bend-probes/D/d2/lawdiff.ts#dirLaws."
+}
+
+relation LawdiffModuleLawDiffGeneratedFromLawdiffModuleLawDiffAstAnchor {
+  kind generated_from
+  connects LawdiffModule -> LawdiffModuleLawDiffAstAnchor
+  roles { LawdiffModule as generated, LawdiffModuleLawDiffAstAnchor as syntax }
+  expects LawdiffModuleLawDiffAstAnchor fingerprint ast.semantic_subtree_v1("sha256:75b301434ae501a913ce2b6362feba04b7f9b6478904c0d9766da80ff0133a62")
+  summary "fn LawdiffModule.lawDiff generated from typescript function_declaration at experiments/bend-probes/D/d2/lawdiff.ts#lawDiff."
+}
+
+relation LawdiffModuleNormalGeneratedFromLawdiffModuleNormalAstAnchor {
+  kind generated_from
+  connects LawdiffModule -> LawdiffModuleNormalAstAnchor
+  roles { LawdiffModule as generated, LawdiffModuleNormalAstAnchor as syntax }
+  expects LawdiffModuleNormalAstAnchor fingerprint ast.semantic_subtree_v1("sha256:742d8bc6f61a2724d8b151670bfcc13b4ac8c70218e89816065bd9a9e6a3b80d")
+  summary "fn LawdiffModule.normal generated from typescript function_declaration at experiments/bend-probes/D/d2/lawdiff.ts#normal."
+}
+
+implementation LawdiffModuleImpl {
+  paths {
+    "experiments/bend-probes/D/d2/lawdiff.ts"
+  }
+  conforms_to LawdiffModule
+}

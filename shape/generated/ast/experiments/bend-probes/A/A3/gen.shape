@@ -1,0 +1,49 @@
+module shape.generated.ast.experiments.bend_probes.A.A3.gen
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource GenModuleGeneratedFunctionPathAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/A/A3/gen.py#path")
+  fingerprint ast.semantic_subtree_v1("sha256:ad9edac24beb97aec345fb88d63ddf293d15289451096968d6573e57b4b19c80")
+}
+
+resource GenModuleMainAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/A/A3/gen.py#main")
+  fingerprint ast.semantic_subtree_v1("sha256:0e3f8e26d8d1898a6760a2431a74e2c3099186a842352d6f05f911af63df0160")
+}
+
+component GenModule : GeneratedCandidate {
+  fn generatedFunction_path
+    source python("experiments/bend-probes/A/A3/gen.py#path")
+    effects unknown
+  fn main
+    source python("experiments/bend-probes/A/A3/gen.py#main")
+    effects unknown
+}
+
+relation GenModuleGeneratedFunctionPathGeneratedFromGenModuleGeneratedFunctionPathAstAnchor {
+  kind generated_from
+  connects GenModule -> GenModuleGeneratedFunctionPathAstAnchor
+  roles { GenModule as generated, GenModuleGeneratedFunctionPathAstAnchor as syntax }
+  expects GenModuleGeneratedFunctionPathAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ad9edac24beb97aec345fb88d63ddf293d15289451096968d6573e57b4b19c80")
+  summary "fn GenModule.generatedFunction_path generated from python function_definition at experiments/bend-probes/A/A3/gen.py#path."
+}
+
+relation GenModuleMainGeneratedFromGenModuleMainAstAnchor {
+  kind generated_from
+  connects GenModule -> GenModuleMainAstAnchor
+  roles { GenModule as generated, GenModuleMainAstAnchor as syntax }
+  expects GenModuleMainAstAnchor fingerprint ast.semantic_subtree_v1("sha256:0e3f8e26d8d1898a6760a2431a74e2c3099186a842352d6f05f911af63df0160")
+  summary "fn GenModule.main generated from python function_definition at experiments/bend-probes/A/A3/gen.py#main."
+}
+
+implementation GenModuleImpl {
+  paths {
+    "experiments/bend-probes/A/A3/gen.py"
+  }
+  conforms_to GenModule
+}

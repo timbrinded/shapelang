@@ -1,0 +1,81 @@
+module shape.generated.ast.experiments.bend_probes.A.perlaw
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource PerlawModuleBlocksAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/A/perlaw.py#blocks")
+  fingerprint ast.semantic_subtree_v1("sha256:ad9636459daf2a7ab539df5f6956888ba850e8ff9ee9c65f4255b27c44d4d62c")
+}
+
+resource PerlawModuleClosureAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/A/perlaw.py#closure")
+  fingerprint ast.semantic_subtree_v1("sha256:1d87760cb969fa0744cb28d37d0c51e09fee0f31d302ac49ba58e503022ee69e")
+}
+
+resource PerlawModuleHeadAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/A/perlaw.py#head")
+  fingerprint ast.semantic_subtree_v1("sha256:7ae9203055b1815ca66963d5777dcce6d2eba0ff6036c3b9936fa028727816fe")
+}
+
+resource PerlawModuleMainAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/A/perlaw.py#main")
+  fingerprint ast.semantic_subtree_v1("sha256:ded58eb33ea7ef22c428c5e12a39d2e43a69ea2548248b94e65dfde8cad23283")
+}
+
+component PerlawModule : GeneratedCandidate {
+  fn blocks
+    source python("experiments/bend-probes/A/perlaw.py#blocks")
+    effects unknown
+  fn closure
+    source python("experiments/bend-probes/A/perlaw.py#closure")
+    effects unknown
+  fn head
+    source python("experiments/bend-probes/A/perlaw.py#head")
+    effects unknown
+  fn main
+    source python("experiments/bend-probes/A/perlaw.py#main")
+    effects unknown
+}
+
+relation PerlawModuleBlocksGeneratedFromPerlawModuleBlocksAstAnchor {
+  kind generated_from
+  connects PerlawModule -> PerlawModuleBlocksAstAnchor
+  roles { PerlawModule as generated, PerlawModuleBlocksAstAnchor as syntax }
+  expects PerlawModuleBlocksAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ad9636459daf2a7ab539df5f6956888ba850e8ff9ee9c65f4255b27c44d4d62c")
+  summary "fn PerlawModule.blocks generated from python function_definition at experiments/bend-probes/A/perlaw.py#blocks."
+}
+
+relation PerlawModuleClosureGeneratedFromPerlawModuleClosureAstAnchor {
+  kind generated_from
+  connects PerlawModule -> PerlawModuleClosureAstAnchor
+  roles { PerlawModule as generated, PerlawModuleClosureAstAnchor as syntax }
+  expects PerlawModuleClosureAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1d87760cb969fa0744cb28d37d0c51e09fee0f31d302ac49ba58e503022ee69e")
+  summary "fn PerlawModule.closure generated from python function_definition at experiments/bend-probes/A/perlaw.py#closure."
+}
+
+relation PerlawModuleHeadGeneratedFromPerlawModuleHeadAstAnchor {
+  kind generated_from
+  connects PerlawModule -> PerlawModuleHeadAstAnchor
+  roles { PerlawModule as generated, PerlawModuleHeadAstAnchor as syntax }
+  expects PerlawModuleHeadAstAnchor fingerprint ast.semantic_subtree_v1("sha256:7ae9203055b1815ca66963d5777dcce6d2eba0ff6036c3b9936fa028727816fe")
+  summary "fn PerlawModule.head generated from python function_definition at experiments/bend-probes/A/perlaw.py#head."
+}
+
+relation PerlawModuleMainGeneratedFromPerlawModuleMainAstAnchor {
+  kind generated_from
+  connects PerlawModule -> PerlawModuleMainAstAnchor
+  roles { PerlawModule as generated, PerlawModuleMainAstAnchor as syntax }
+  expects PerlawModuleMainAstAnchor fingerprint ast.semantic_subtree_v1("sha256:ded58eb33ea7ef22c428c5e12a39d2e43a69ea2548248b94e65dfde8cad23283")
+  summary "fn PerlawModule.main generated from python function_definition at experiments/bend-probes/A/perlaw.py#main."
+}
+
+implementation PerlawModuleImpl {
+  paths {
+    "experiments/bend-probes/A/perlaw.py"
+  }
+  conforms_to PerlawModule
+}

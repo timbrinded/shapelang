@@ -1,0 +1,65 @@
+module shape.generated.ast.experiments.bend_probes.C.c2.laws.log
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource LogModuleArbitraryAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/C/c2/laws/log.mjs#arbitrary")
+  fingerprint ast.semantic_subtree_v1("sha256:a851aa1b2e9251fb8de1fa4569e155a70becd35cdcd8afa8d19186570681eed2")
+}
+
+resource LogModuleBigArbitraryAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/C/c2/laws/log.mjs#bigArbitrary")
+  fingerprint ast.semantic_subtree_v1("sha256:a0739347b28151453c6be08061e7e450cf3113617deca0fe09b234cfa9ec6f17")
+}
+
+resource LogModuleCheckAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/C/c2/laws/log.mjs#check")
+  fingerprint ast.semantic_subtree_v1("sha256:03b27bdbea600e66f21e94c87923506a32e491b6a11863eb092451db96e21a07")
+}
+
+component LogModule : GeneratedCandidate {
+  fn arbitrary
+    source js("experiments/bend-probes/C/c2/laws/log.mjs#arbitrary")
+    effects unknown
+  fn bigArbitrary
+    source js("experiments/bend-probes/C/c2/laws/log.mjs#bigArbitrary")
+    effects unknown
+  fn check
+    source js("experiments/bend-probes/C/c2/laws/log.mjs#check")
+    effects unknown
+}
+
+relation LogModuleArbitraryGeneratedFromLogModuleArbitraryAstAnchor {
+  kind generated_from
+  connects LogModule -> LogModuleArbitraryAstAnchor
+  roles { LogModule as generated, LogModuleArbitraryAstAnchor as syntax }
+  expects LogModuleArbitraryAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a851aa1b2e9251fb8de1fa4569e155a70becd35cdcd8afa8d19186570681eed2")
+  summary "fn LogModule.arbitrary generated from javascript function_declaration at experiments/bend-probes/C/c2/laws/log.mjs#arbitrary."
+}
+
+relation LogModuleBigArbitraryGeneratedFromLogModuleBigArbitraryAstAnchor {
+  kind generated_from
+  connects LogModule -> LogModuleBigArbitraryAstAnchor
+  roles { LogModule as generated, LogModuleBigArbitraryAstAnchor as syntax }
+  expects LogModuleBigArbitraryAstAnchor fingerprint ast.semantic_subtree_v1("sha256:a0739347b28151453c6be08061e7e450cf3113617deca0fe09b234cfa9ec6f17")
+  summary "fn LogModule.bigArbitrary generated from javascript function_declaration at experiments/bend-probes/C/c2/laws/log.mjs#bigArbitrary."
+}
+
+relation LogModuleCheckGeneratedFromLogModuleCheckAstAnchor {
+  kind generated_from
+  connects LogModule -> LogModuleCheckAstAnchor
+  roles { LogModule as generated, LogModuleCheckAstAnchor as syntax }
+  expects LogModuleCheckAstAnchor fingerprint ast.semantic_subtree_v1("sha256:03b27bdbea600e66f21e94c87923506a32e491b6a11863eb092451db96e21a07")
+  summary "fn LogModule.check generated from javascript function_declaration at experiments/bend-probes/C/c2/laws/log.mjs#check."
+}
+
+implementation LogModuleImpl {
+  paths {
+    "experiments/bend-probes/C/c2/laws/log.mjs"
+  }
+  conforms_to LogModule
+}

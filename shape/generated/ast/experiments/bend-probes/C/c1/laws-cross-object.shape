@@ -1,0 +1,33 @@
+module shape.generated.ast.experiments.bend_probes.C.c1.laws_cross_object
+
+trait GeneratedAstAnchor {
+}
+
+trait GeneratedCandidate {
+}
+
+resource LawsCrossObjectModuleLawsAstAnchor : GeneratedAstAnchor {
+  storage ast.anchor("experiments/bend-probes/C/c1/laws-cross-object.mjs#laws")
+  fingerprint ast.semantic_subtree_v1("sha256:1ea48a292e0c638d85db73bee11cdecc4f5f08748924e23ffdbb970e66d2bf41")
+}
+
+component LawsCrossObjectModule : GeneratedCandidate {
+  fn laws
+    source js("experiments/bend-probes/C/c1/laws-cross-object.mjs#laws")
+    effects unknown
+}
+
+relation LawsCrossObjectModuleLawsGeneratedFromLawsCrossObjectModuleLawsAstAnchor {
+  kind generated_from
+  connects LawsCrossObjectModule -> LawsCrossObjectModuleLawsAstAnchor
+  roles { LawsCrossObjectModule as generated, LawsCrossObjectModuleLawsAstAnchor as syntax }
+  expects LawsCrossObjectModuleLawsAstAnchor fingerprint ast.semantic_subtree_v1("sha256:1ea48a292e0c638d85db73bee11cdecc4f5f08748924e23ffdbb970e66d2bf41")
+  summary "fn LawsCrossObjectModule.laws generated from javascript function_declaration at experiments/bend-probes/C/c1/laws-cross-object.mjs#laws."
+}
+
+implementation LawsCrossObjectModuleImpl {
+  paths {
+    "experiments/bend-probes/C/c1/laws-cross-object.mjs"
+  }
+  conforms_to LawsCrossObjectModule
+}
