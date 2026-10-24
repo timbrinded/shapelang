@@ -78,7 +78,8 @@ for (const p of projects) {
       const typeRefs = new Set<string>();
       if (t.$ === "Def") termRefs(Bend.term_lower(t.T), typeRefs);
       defs.set(nk, { t, refs: nrs, stmt: t.$ === "Def" && t.l === true ? stmt : undefined, module: mod, name,
-        ioType: typeRefs.has("IO"), sort: tp?.$ === "Typ", retHead: h ? (h.k ?? h.$) : "" });
+        ioType: typeRefs.has("IO"), sort: tp?.$ === "Typ",
+        retHead: tp?.$ === "Eql" ? "Eql" : tp?.$ === "Typ" ? "Typ" : h ? (h.k !== undefined ? (book.tlds[h.k]?.b === true ? h.k : norm(h.k)) : h.$) : "" });
     }
   }
   // which defs are proof, which laws are user laws
@@ -89,16 +90,26 @@ for (const p of projects) {
     solutionLine = lines.findIndex((l) => /^#\s*solution\b/.test(l));
     lines.forEach((l, i) => { const m = /^(?:@unsafe\s+)?(?:def|law)\s+([A-Za-z_][\w.]*)/.exec(l); if (m && !lineOf.has(m[1])) lineOf.set(m[1], i); });
   }
+  // a law whose statement is a proposition is a claim; one whose statement is
+  // a data type (some evals declare the function to write as a law, e.g.
+  // `law emit: for t: Tree ... List<Token>`) is code, filled below "# solution"
+  const isClaimType = (k: string) => {
+    const d = defs.get(k)!;
+    const h = d.retHead;
+    return h === "Eql" || h === "Empty" || h === "Sigma" || h === "Unit" || h === "Typ"
+      || (defs.get((h.includes(":") ? h : d.module + ":" + h))?.sort ?? false) || /:/.test(h) && (defs.get(h)?.sort ?? false);
+  };
+  const isCodeLaw = (k: string) => { const d = defs.get(k)!; return d.t.$ === "Def" && d.t.l === true && !isClaimType(k); };
   const isLaw = (k: string) => {
     const d = defs.get(k)!;
-    if (d.t.$ !== "Def" || d.t.l !== true) return false;
+    if (d.t.$ !== "Def" || d.t.l !== true || isCodeLaw(k)) return false;
     if (p.kind === "demo") return d.module === "LAWS";
     return (lineOf.get(d.name) ?? Infinity) < solutionLine;
   };
   const isProof = (k: string) => {
     const d = defs.get(k)!;
     if (d.t.$ !== "Def") return false;
-    if (d.t.l === true) return true; // a law's def is its proof
+    if (d.t.l === true) return !isCodeLaw(k); // a claim's def is its proof; a code law's def is code
     if (p.kind === "demo") return d.module === "PROOF" || d.module === "LAWS";
     return (lineOf.get(d.name) ?? -1) > solutionLine;
   };
@@ -132,7 +143,7 @@ for (const p of projects) {
   const cats: Record<string, number> = {};
   for (const k of uncoveredCode) cats[cat(k)] = (cats[cat(k)] ?? 0) + 1;
   results.push({
-    project: p.name, kind: p.kind, laws: laws.length,
+    project: p.name, kind: p.kind, laws: laws.length, codeLaws: [...defs.keys()].filter(isCodeLaw).length,
     programDefs: program.length, codeDefs: code.length, specDefs: program.length - code.length,
     coveredProgram: program.filter((k) => covered.has(k)).length,
     coveredCode: code.filter((k) => covered.has(k)).length,
