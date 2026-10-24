@@ -36,8 +36,10 @@ function seeded(): any {
 
 const parseErrors: string[] = [];
 async function parseEntry(file: string): Promise<any | string> {
-  const book = seeded();
-  const seen = new Map<string, string | null>([[BASE, ""]]);
+  // seed Base only into a file that imports it itself (as `bend --checkup`)
+  const own = /^(?:[\t\r ]*(?:(?:#|import )[^\n]*)?\n)*[\t ]*import Base\s/.test(fs.readFileSync(file, "utf8"));
+  const book = own ? seeded() : Bend.book_nil();
+  const seen = new Map<string, string | null>(own ? [[BASE, ""]] : []);
   try {
     await Bend.book_load(book, path.resolve(file), "", seen);
     return book;
