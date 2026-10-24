@@ -165,18 +165,18 @@ def bdisc(b: Bool) -> Type:
     case False{}:
       Empty
 
+# {False == True} is impossible: rewrite Empty into Unit through bdisc
+def bclash(e: {False{} == True{} : Bool}) -> Empty:
+  s = Equal.sym(Bool, False{}, True{}, e)
+  %s : bdisc(_)
+  Unit{}
+
 def label_ev(k: Bool) -> {k == True{} : Bool} -> String:
   match k:
     case True{}:
       e => "record"
     case False{}:
       e => Empty.absurd(String, bclash(e))
-
-# {False == True} is impossible: rewrite Empty into Unit through bdisc
-def bclash(e: {False{} == True{} : Bool}) -> Empty:
-  s = Equal.sym(Bool, False{}, True{}, e)
-  %s : bdisc(_)
-  Unit{}
 
 def getLabel(+id: String, known: {is_known(id) == True{} : Bool}) -> String:
   label_ev(is_known(id))(known)

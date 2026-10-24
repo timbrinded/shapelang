@@ -1,0 +1,3 @@
+{
+  "T1": {"ts": "src/game.ts", "bend": "game.bend", "hidden": "hidden.test.ts", "feature": 16, "law": 7}
+}

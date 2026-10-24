@@ -41,7 +41,8 @@ const hasRelation = (a: string, b: string) =>
     const i = ids.indexOf(a), j = ids.indexOf(b);
     return i >= 0 && j > i;
   });
-const globRe = (g: string) => new RegExp("^" + g.replace(/[.+^${}()|[\]\\]/g, "\\$&").replace(/\*\*\//g, "(?:.*/)?").replace(/\*\*/g, ".*").replace(/\*/g, "[^/]*").replace(/\?/g, ".") + "$");
+const globRe = (g: string) =>
+  new RegExp("^" + g.split(/(\*\*\/|\*\*|\*|\?)/).map((t) => (t === "**/" ? "(?:.*/)?" : t === "**" ? ".*" : t === "*" ? "[^/]*" : t === "?" ? "." : t.replace(/[.+^${}()|[\]\\]/g, "\\$&"))).join("") + "$");
 const governed = (p: string) =>
   (model.implementations ?? []).some((i: { paths: string[]; onChangeRequirement?: string }) => i.onChangeRequirement && i.paths.some((g) => globRe(g).test(p)));
 const citedBySource = (p: string) => [...fnByRef.keys()].some((k) => k.split("#")[0] === p);

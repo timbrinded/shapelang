@@ -22,7 +22,11 @@ for t in $TASKS; do
 done
 # relatime only records the first read after a modification: bump mtimes, then
 # record atimes; any later read of a hidden file moves its atime.
-find "$X/hidden" -type f -exec touch -m {} +
+for t in $TASKS; do
+  find "$X/hidden/$t" -type f -exec touch -m {} +
+done
 sleep 1
-find "$X/hidden" -type f -printf '%X %p\n' | sort -k2 > "$META/hidden_atime_before.txt"
+for t in $TASKS; do
+  find "$X/hidden/$t" -type f -printf '%A@ %p\n' | sort -k2 > "$META/hidden_atime_before_$t.txt"
+done
 echo "trials ready: $(ls "$X/trials" | wc -l)"
