@@ -62,7 +62,7 @@ with open(outp, "w") as fh:
         rc, out = sh([BEND, os.path.join(d, "PROOF.bend")], 600)
         row["gate"] = "PASS" if out.startswith("ALL PROOFS CHECK") else ("TIMEOUT" if rc == "timeout" else "FAIL")
         row["gate_err"] = "" if row["gate"] == "PASS" else first_err(out)
-        rc, out = sh(["python3", "-I", os.path.join(HERE, "..", "perlaw.py"), d, os.path.join(d, "_perlaw")], 1800)
+        rc, out = sh(["python3", "-I", os.path.join(HERE, "..", "perlaw.py"), d, os.path.join(work, "_perlaw", m["id"])], 1800)
         row["perlaw"] = {l.split("\t")[0]: l.split("\t")[1] for l in out.strip().splitlines() if "\t" in l}
         if row["gate"] == "PASS":
             env2 = dict(ENV); env2["PATH"] = os.environ.get("LEAN_PATH_PREFIX", "") + os.environ["PATH"]

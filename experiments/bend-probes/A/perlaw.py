@@ -7,8 +7,9 @@ usage: python3 -I perlaw.py <project-dir> <work-dir>
 `law NAME` in LAWS.bend, a copy of the project is made under
 <work-dir>/<NAME>/ whose LAWS.bend states only that law and whose PROOF.bend
 keeps every helper def but drops the `def Laws.OTHER` fillers of the other
-laws. A law whose proof uses another law (directly or through a helper def)
-keeps that law too, so a line reads "this law and the laws its proof uses".
+laws and every helper def its proof does not reach. A law whose proof uses
+another law (directly or through a helper def) keeps that law too, so a line
+reads "this law, the laws its proof uses, and the helpers they reach".
 `bend PROOF.bend` is run there; one TSV line per law is printed:
 NAME, PASS/FAIL, exit code, first error line.
 """
@@ -55,18 +56,18 @@ def main():
                     seen.add(other); todo.append(other)
                     if other.startswith("Laws."):
                         laws.add(other[len("Laws."):])
-        return laws
+        return laws, seen
     for n in names:
-        keep = closure(n)
+        keep, used = closure(n)
         d = os.path.join(work, n)
         if os.path.exists(d):
             shutil.rmtree(d)
-        shutil.copytree(proj, d)
+        shutil.copytree(proj, d, ignore=shutil.ignore_patterns("_perlaw"))
         keep_l = [b for b in lb if not head(b).startswith("law ") or any(re.match(r"law\s+" + re.escape(k) + r"\s*:", head(b)) for k in keep)]
         keep_p = []
         for b in pb:
-            m = re.match(r"(?:@unsafe\s+)?def\s+Laws\.([\w.]+?)\??\s*\(", head(b))
-            if m and m.group(1) not in keep:
+            m = re.match(r"(?:@unsafe\s+)?def\s+([\w.]+?)\??\s*\(", head(b))
+            if m and m.group(1) not in used:
                 continue
             keep_p.append(b)
         open(os.path.join(d, "LAWS.bend"), "w").write("".join(keep_l))

@@ -383,7 +383,8 @@ if (import.meta.main) {
   const ids = args.filter((a, i) => !a.startsWith("--") && !["--sem", "--max"].includes(args[i - 1]));
   for (const t of TARGETS.filter((x) => ids.length === 0 || ids.includes(x.id)))
     for (const sem of semArg) {
-      if (t.id === "ringMove" && sem === "nat") t.strengthen = t.strengthen.filter((l) => !l.name.startsWith("R6"));
-      console.log(JSON.stringify(synthesize(t, sem, { maxSize: maxArg }), null, 1));
+      // R6 uses negative deltas, outside the Nat domain: drop it for Nat only (without mutating the shared target)
+      const tt = t.id === "ringMove" && sem === "nat" ? { ...t, strengthen: t.strengthen.filter((l) => !l.name.startsWith("R6")) } : t;
+      console.log(JSON.stringify(synthesize(tt, sem, { maxSize: maxArg }), null, 1));
     }
 }
