@@ -1,3 +1,4 @@
+// @ts-nocheck -- research script, run with bun; Bend's checker is loaded untyped at runtime.
 // Shared helpers for the D experiments: load a Bend book with Bend's own
 // parser and checker (bend2/bend.ts), and describe its top-level defs.
 //
@@ -5,30 +6,31 @@
 
 import * as path from "node:path";
 
-const BENDC = process.env.BENDC
-  ?? "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/bendc/bend2";
+const BENDC =
+  process.env.BENDC ??
+  "/tmp/claude-0/-home-user-shapelang/83ff80bc-0161-572f-9e5a-9075cccad6d0/scratchpad/bendexp/bendc/bend2";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const Bend: any = await import(path.join(BENDC, "bend.ts"));
 
 export type DefInfo = {
-  key: string;            // book key, "ns:name" for imported modules, bare for the entry file
-  ns: string;             // module namespace ("" for the entry file)
-  name: string;           // name inside its module
+  key: string; // book key, "ns:name" for imported modules, bare for the entry file
+  ns: string; // module namespace ("" for the entry file)
+  name: string; // name inside its module
   kind: "Def" | "ADT";
-  law: boolean;           // declared with `law`
-  open: boolean;          // a law with no def (an open claim)
-  unsafe: boolean;        // @unsafe or def f?
+  law: boolean; // declared with `law`
+  open: boolean; // a law with no def (an open claim)
+  unsafe: boolean; // @unsafe or def f?
   foreign: string[] | null; // import "./x.js" / "./x.c" body
   base: boolean;
-  typeRefs: Set<string>;  // defs/types named in the type (and ctor fields for an ADT)
-  bodyRefs: Set<string>;  // defs/types/ctors' families named in the body
-  ctorRefs: Set<string>;  // constructors named in the body
-  ioType: boolean;        // the type mentions IO anywhere
-  ioReturn: boolean;      // the telescope tips at IO(...)
+  typeRefs: Set<string>; // defs/types named in the type (and ctor fields for an ADT)
+  bodyRefs: Set<string>; // defs/types/ctors' families named in the body
+  ctorRefs: Set<string>; // constructors named in the body
+  ioType: boolean; // the type mentions IO anywhere
+  ioReturn: boolean; // the telescope tips at IO(...)
   retHead: string | null; // head of the return type after the telescope
-  retIsSort: boolean;     // returns Type / Data / Kind(..) : a type-level def
-  retIsEq: boolean;       // returns an equality / Empty / a negation: a proposition
+  retIsSort: boolean; // returns Type / Data / Kind(..) : a type-level def
+  retIsEq: boolean; // returns an equality / Empty / a negation: a proposition
 };
 
 export async function loadBook(file: string, validate = true): Promise<any> {
@@ -44,7 +46,7 @@ export async function loadBook(file: string, validate = true): Promise<any> {
 // term_refs as in bend2/main.ts, plus constructor names
 export function termRefs(t: object, out: Set<string>, ctrs?: Set<string>): void {
   const seen = new Set([t]);
-  for (const todo = [t]; todo.length > 0;) {
+  for (const todo = [t]; todo.length > 0; ) {
     const x = todo.pop() as Record<string, unknown>;
     if ((x.$ === "Ref" || x.$ === "ADT") && typeof x.k === "string") {
       out.add(x.k);
@@ -129,15 +131,23 @@ export function describe(book: any, includeBase = false): DefInfo[] {
     }
     const [ns, name] = k.includes(":") ? k.split(":") : ["", k];
     out.push({
-      key: k, ns, name, kind: t.$,
+      key: k,
+      ns,
+      name,
+      kind: t.$,
       law: t.$ === "Def" && t.l === true,
       open: t.$ === "Def" && t.v === null && t.b !== true && !t.i,
       unsafe: t.$ === "Def" && t.u === true,
       foreign: t.$ === "Def" && t.i !== undefined ? t.i : null,
       base: t.b === true,
-      typeRefs, bodyRefs, ctorRefs,
+      typeRefs,
+      bodyRefs,
+      ctorRefs,
       ioType: typeRefs.has("IO"),
-      ioReturn, retHead, retIsSort, retIsEq,
+      ioReturn,
+      retHead,
+      retIsSort,
+      retIsEq
     });
   }
   return out;
@@ -149,7 +159,10 @@ export function nsFile(ns: string, entry: string): string {
 }
 
 // transitive closure over an adjacency function
-export function closure(start: Iterable<string>, next: (k: string) => Iterable<string>): Set<string> {
+export function closure(
+  start: Iterable<string>,
+  next: (k: string) => Iterable<string>
+): Set<string> {
   const seen = new Set<string>();
   const todo = [...start];
   while (todo.length > 0) {

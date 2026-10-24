@@ -1,3 +1,4 @@
+// @ts-nocheck -- research script, run with bun; Bend's checker is loaded untyped at runtime.
 // D4: law coverage. For every demo and eval with laws, the dependency closure
 // of each law statement over the project's defs (defs the statement names,
 // then everything their types and bodies name, transitively; Base excluded),
@@ -23,7 +24,10 @@ const CLONE = process.argv[2];
 function tipOf(T: any): any {
   let tel = Bend.term_strip(T);
   for (let d = 0; tel.$ === "All" || tel.$ === "Let"; d++) {
-    tel = tel.$ === "All" ? Bend.term_strip(tel.B(Bend.Var(tel.k, d))) : Bend.term_strip(typeof tel.f === "function" ? tel.f(tel.v) : tel.f);
+    tel =
+      tel.$ === "All"
+        ? Bend.term_strip(tel.B(Bend.Var(tel.k, d)))
+        : Bend.term_strip(typeof tel.f === "function" ? tel.f(tel.v) : tel.f);
   }
   return tel;
 }
@@ -32,18 +36,43 @@ type Proj = { name: string; kind: "demo" | "eval"; entries: string[]; root: stri
 const projects: Proj[] = [];
 for (const d of fs.readdirSync(path.join(CLONE, "demos")).sort()) {
   const root = path.join(CLONE, "demos", d);
-  const files = fs.readdirSync(root).filter((f) => f.endsWith(".bend")).sort()
+  const files = fs
+    .readdirSync(root)
+    .filter((f) => f.endsWith(".bend"))
+    .sort()
     .sort((a, b) => (b === "PROOF.bend" ? 1 : 0) - (a === "PROOF.bend" ? 1 : 0));
   projects.push({ name: d, kind: "demo", entries: files.map((f) => path.join(root, f)), root });
 }
-for (const f of fs.readdirSync(path.join(CLONE, "evals")).filter((f) => f.endsWith(".bend")).sort()) {
-  projects.push({ name: f.replace(/\.bend$/, ""), kind: "eval", entries: [path.join(CLONE, "evals", f)], root: path.join(CLONE, "evals") });
+for (const f of fs
+  .readdirSync(path.join(CLONE, "evals"))
+  .filter((f) => f.endsWith(".bend"))
+  .sort()) {
+  projects.push({
+    name: f.replace(/\.bend$/, ""),
+    kind: "eval",
+    entries: [path.join(CLONE, "evals", f)],
+    root: path.join(CLONE, "evals")
+  });
 }
 
 const results = [];
 for (const p of projects) {
   // merge the books of every entry, keys normalized to "module:name"
-  const defs = new Map<string, { t: any; refs: Set<string>; lawBody: Set<string>; eqAdt: boolean; stmt?: Set<string>; module: string; name: string; ioType: boolean; sort: boolean; retHead: string }>();
+  const defs = new Map<
+    string,
+    {
+      t: any;
+      refs: Set<string>;
+      lawBody: Set<string>;
+      eqAdt: boolean;
+      stmt?: Set<string>;
+      module: string;
+      name: string;
+      ioType: boolean;
+      sort: boolean;
+      retHead: string;
+    }
+  >();
   for (const e of p.entries) {
     const book = Bend.book_nil();
     await Bend.book_load(book, path.resolve(e), "", new Map());
@@ -64,7 +93,10 @@ for (const p of projects) {
         if (t.v !== null && t.l !== true) termRefs(Bend.term_lower(t.v), rs, ctrs);
         if (t.v !== null && t.l === true) termRefs(Bend.term_lower(t.v), lawBody, ctrs);
       }
-      for (const c of ctrs) { const f = fam.get(c); if (f) rs.add(f); }
+      for (const c of ctrs) {
+        const f = fam.get(c);
+        if (f) rs.add(f);
+      }
       const keep = (src: Set<string>) => {
         const out = new Set<string>();
         for (const r of src) {
@@ -93,14 +125,36 @@ for (const p of projects) {
       if (t.$ === "Def" && t.l === true) {
         const s0 = new Set<string>();
         termRefs(Bend.term_lower(t.T), s0);
-        for (const r of s0) if (book.tlds[r.replace(/~\d+$/, "")]?.b !== true && book.tlds[r]?.b !== true) stmt.add(norm(r.replace(/~\d+$/, "")));
+        for (const r of s0)
+          if (book.tlds[r.replace(/~\d+$/, "")]?.b !== true && book.tlds[r]?.b !== true)
+            stmt.add(norm(r.replace(/~\d+$/, "")));
       }
       const [mod, name] = nk.split(":");
       const typeRefs = new Set<string>();
       if (t.$ === "Def") termRefs(Bend.term_lower(t.T), typeRefs);
-      defs.set(nk, { t, refs: nrs, lawBody: nlb, eqAdt, stmt: t.$ === "Def" && t.l === true ? stmt : undefined, module: mod, name,
-        ioType: typeRefs.has("IO"), sort: tp?.$ === "Typ",
-        retHead: tp?.$ === "Eql" ? "Eql" : tp?.$ === "Typ" ? "Typ" : h ? (h.k !== undefined ? (book.tlds[h.k]?.b === true ? h.k : norm(h.k)) : h.$) : "" });
+      defs.set(nk, {
+        t,
+        refs: nrs,
+        lawBody: nlb,
+        eqAdt,
+        stmt: t.$ === "Def" && t.l === true ? stmt : undefined,
+        module: mod,
+        name,
+        ioType: typeRefs.has("IO"),
+        sort: tp?.$ === "Typ",
+        retHead:
+          tp?.$ === "Eql"
+            ? "Eql"
+            : tp?.$ === "Typ"
+              ? "Typ"
+              : h
+                ? h.k !== undefined
+                  ? book.tlds[h.k]?.b === true
+                    ? h.k
+                    : norm(h.k)
+                  : h.$
+                : ""
+      });
     }
   }
   // which defs are proof, which laws are user laws
@@ -109,7 +163,10 @@ for (const p of projects) {
   if (p.kind === "eval") {
     const lines = fs.readFileSync(p.entries[0], "utf8").split("\n");
     solutionLine = lines.findIndex((l) => /^#\s*solution\b/.test(l));
-    lines.forEach((l, i) => { const m = /^(?:@unsafe\s+)?(?:def|law)\s+([A-Za-z_][\w.]*)/.exec(l); if (m && !lineOf.has(m[1])) lineOf.set(m[1], i); });
+    lines.forEach((l, i) => {
+      const m = /^(?:@unsafe\s+)?(?:def|law)\s+([A-Za-z_][\w.]*)/.exec(l);
+      if (m && !lineOf.has(m[1])) lineOf.set(m[1], i);
+    });
   }
   // a law whose statement is a proposition is a claim; one whose statement is
   // a data type (some evals declare the function to write as a law, e.g.
@@ -117,13 +174,26 @@ for (const p of projects) {
   const isClaimType = (k: string) => {
     const d = defs.get(k)!;
     const h = d.retHead;
-    return h === "Eql" || h === "Empty" || h === "Sigma" || h === "Exists" || h === "Pair" || h === "Unit" || h === "Typ" || h === "Not"
-      || (defs.get(h)?.sort ?? false) || d.eqAdt;
+    return (
+      h === "Eql" ||
+      h === "Empty" ||
+      h === "Sigma" ||
+      h === "Exists" ||
+      h === "Pair" ||
+      h === "Unit" ||
+      h === "Typ" ||
+      h === "Not" ||
+      (defs.get(h)?.sort ?? false) ||
+      d.eqAdt
+    );
   };
   // a law whose statement is a data type (some evals declare the function to
   // write as a law, e.g. `law emit: for t: Tree ... List<Token>`) is code; a
   // claim on a proof-carrying datatype (eqAdt) is a claim whose fill is code too
-  const isCodeLaw = (k: string) => { const d = defs.get(k)!; return d.t.$ === "Def" && d.t.l === true && !isClaimType(k); };
+  const isCodeLaw = (k: string) => {
+    const d = defs.get(k)!;
+    return d.t.$ === "Def" && d.t.l === true && !isClaimType(k);
+  };
   const isLaw = (k: string) => {
     const d = defs.get(k)!;
     if (d.t.$ !== "Def" || d.t.l !== true || isCodeLaw(k)) return false;
@@ -161,22 +231,41 @@ for (const p of projects) {
     const d = defs.get(k)!;
     if (d.name === "main") return "main";
     if (d.ioType) return "IO";
-    if (/^(Image|Pix|Qua)$/.test(d.retHead) || /(^|\.)(draw|view|show|render|paint|pix|cell|row|grid|frame|shade|color|sky|raster|tri|quad|mesh)/i.test(d.name)) return "render/graphics";
-    if (/(^|\.)(read|parse|lex|tok|scan|chr|str_|word|digit|name)/i.test(d.name) || d.retHead === "String") return "parse/text";
+    if (
+      /^(Image|Pix|Qua)$/.test(d.retHead) ||
+      /(^|\.)(draw|view|show|render|paint|pix|cell|row|grid|frame|shade|color|sky|raster|tri|quad|mesh)/i.test(
+        d.name
+      )
+    )
+      return "render/graphics";
+    if (
+      /(^|\.)(read|parse|lex|tok|scan|chr|str_|word|digit|name)/i.test(d.name) ||
+      d.retHead === "String"
+    )
+      return "parse/text";
     return "other logic";
   };
   const uncoveredCode = code.filter((k) => !covered.has(k));
   const cats: Record<string, number> = {};
   for (const k of uncoveredCode) cats[cat(k)] = (cats[cat(k)] ?? 0) + 1;
   results.push({
-    project: p.name, kind: p.kind, laws: laws.length, codeLaws: [...defs.keys()].filter(isCodeLaw).length,
-    programDefs: program.length, codeDefs: code.length, specDefs: program.length - code.length,
+    project: p.name,
+    kind: p.kind,
+    laws: laws.length,
+    codeLaws: [...defs.keys()].filter(isCodeLaw).length,
+    programDefs: program.length,
+    codeDefs: code.length,
+    specDefs: program.length - code.length,
     coveredProgram: program.filter((k) => covered.has(k)).length,
     coveredCode: code.filter((k) => covered.has(k)).length,
     closurePerLaw: perLaw,
     uncoveredCodeByCategory: cats,
-    uncoveredCodeSample: uncoveredCode.slice(0, 12).map((k) => defs.get(k)!.module + "." + defs.get(k)!.name),
+    uncoveredCodeSample: uncoveredCode
+      .slice(0, 12)
+      .map((k) => defs.get(k)!.module + "." + defs.get(k)!.name)
   });
-  process.stderr.write(`${p.name}: laws ${laws.length} code ${code.filter((k) => covered.has(k)).length}/${code.length} program ${program.filter((k) => covered.has(k)).length}/${program.length}\n`);
+  process.stderr.write(
+    `${p.name}: laws ${laws.length} code ${code.filter((k) => covered.has(k)).length}/${code.length} program ${program.filter((k) => covered.has(k)).length}/${program.length}\n`
+  );
 }
 console.log(JSON.stringify(results, null, 1));

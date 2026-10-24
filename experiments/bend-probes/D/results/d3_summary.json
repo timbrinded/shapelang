@@ -1,0 +1,210 @@
+{
+  "perDemo": [
+    {
+      "demo": "app_pong_game_2d",
+      "modules": 3,
+      "fns": 21,
+      "ioTyped": 2,
+      "ioParam": 0,
+      "reliesOnUnsafe": 0,
+      "unknown": 0,
+      "relations": 3
+    },
+    {
+      "demo": "app_ray_tracer_3d",
+      "modules": 2,
+      "fns": 35,
+      "ioTyped": 2,
+      "ioParam": 0,
+      "reliesOnUnsafe": 0,
+      "unknown": 0,
+      "relations": 1
+    },
+    {
+      "demo": "app_slash_boss_3d",
+      "modules": 4,
+      "fns": 449,
+      "ioTyped": 37,
+      "ioParam": 6,
+      "reliesOnUnsafe": 4,
+      "unknown": 0,
+      "relations": 4
+    },
+    {
+      "demo": "app_triangle_2d",
+      "modules": 2,
+      "fns": 15,
+      "ioTyped": 2,
+      "ioParam": 0,
+      "reliesOnUnsafe": 0,
+      "unknown": 0,
+      "relations": 1
+    },
+    {
+      "demo": "app_win_is_bug_2d",
+      "modules": 3,
+      "fns": 72,
+      "ioTyped": 1,
+      "ioParam": 0,
+      "reliesOnUnsafe": 0,
+      "unknown": 0,
+      "relations": 3
+    },
+    {
+      "demo": "io_hello_world",
+      "modules": 2,
+      "fns": 2,
+      "ioTyped": 2,
+      "ioParam": 0,
+      "reliesOnUnsafe": 0,
+      "unknown": 0,
+      "relations": 1
+    },
+    {
+      "demo": "io_http_fetch",
+      "modules": 3,
+      "fns": 17,
+      "ioTyped": 6,
+      "ioParam": 0,
+      "reliesOnUnsafe": 0,
+      "unknown": 0,
+      "relations": 3
+    },
+    {
+      "demo": "io_http_server",
+      "modules": 3,
+      "fns": 10,
+      "ioTyped": 6,
+      "ioParam": 0,
+      "reliesOnUnsafe": 2,
+      "unknown": 0,
+      "relations": 2
+    },
+    {
+      "demo": "io_rollback_netcode",
+      "modules": 4,
+      "fns": 161,
+      "ioTyped": 60,
+      "ioParam": 9,
+      "reliesOnUnsafe": 6,
+      "unknown": 0,
+      "relations": 4
+    },
+    {
+      "demo": "io_tcp_echos",
+      "modules": 2,
+      "fns": 10,
+      "ioTyped": 7,
+      "ioParam": 3,
+      "reliesOnUnsafe": 4,
+      "unknown": 0,
+      "relations": 1
+    },
+    {
+      "demo": "proof_insertion_sort",
+      "modules": 3,
+      "fns": 17,
+      "ioTyped": 0,
+      "ioParam": 0,
+      "reliesOnUnsafe": 0,
+      "unknown": 0,
+      "relations": 3
+    },
+    {
+      "demo": "proof_numerics",
+      "modules": 3,
+      "fns": 23,
+      "ioTyped": 0,
+      "ioParam": 0,
+      "reliesOnUnsafe": 0,
+      "unknown": 0,
+      "relations": 3
+    },
+    {
+      "demo": "proof_typed_eval",
+      "modules": 3,
+      "fns": 15,
+      "ioTyped": 0,
+      "ioParam": 0,
+      "reliesOnUnsafe": 0,
+      "unknown": 0,
+      "relations": 3
+    },
+    {
+      "demo": "pure_hvm5_mini",
+      "modules": 3,
+      "fns": 177,
+      "ioTyped": 20,
+      "ioParam": 15,
+      "reliesOnUnsafe": 35,
+      "unknown": 0,
+      "relations": 3
+    },
+    {
+      "demo": "pure_par_sort",
+      "modules": 3,
+      "fns": 18,
+      "ioTyped": 1,
+      "ioParam": 0,
+      "reliesOnUnsafe": 0,
+      "unknown": 0,
+      "relations": 4
+    },
+    {
+      "demo": "pure_par_sum",
+      "modules": 3,
+      "fns": 8,
+      "ioTyped": 1,
+      "ioParam": 0,
+      "reliesOnUnsafe": 0,
+      "unknown": 0,
+      "relations": 3
+    }
+  ],
+  "total": {
+    "modules": 46,
+    "fns": 1050,
+    "ioTyped": 147,
+    "ioParam": 33,
+    "reliesOnUnsafe": 51,
+    "unknown": 0,
+    "relations": 42
+  },
+  "audit": {
+    "sample1": {
+      "drawn": "d3/audit_sample.ts strata: 20 IO-typed, 20 pure, 8 ReliesOnUnsafe (every n-th by sorted key)",
+      "errors_before_fix": [
+        "io_hello_world LAWS:prints_hello: a law about an IO value was given Write<Console>; a proof is erased and runs nothing (fixed: laws get no effects)"
+      ],
+      "errors_after_fix": [],
+      "higher_order_io": [
+        "app_slash_boss_3d main:Play.next",
+        "io_rollback_netcode walkers_test:Bot.frame",
+        "pure_hvm5_mini main:eof",
+        "pure_hvm5_mini main:name.go"
+      ],
+      "mapping_imprecision": [
+        "app_slash_boss_3d main:Probe.file: File.open(path, \"w\") truncates; the effect is listed as Open<FileSystem>, the mode and path are runtime values"
+      ]
+    },
+    "sample2": {
+      "drawn": "20 IO-typed at offset 0.5 (after the fix)",
+      "errors": [],
+      "higher_order_io": [
+        "app_slash_boss_3d main:Play.go",
+        "io_rollback_netcode netcode:Client.got",
+        "io_rollback_netcode netcode:Client.sync.go",
+        "io_rollback_netcode walkers_test:Bot.more",
+        "io_tcp_echos main:echo_sent",
+        "pure_hvm5_mini main:look",
+        "pure_hvm5_mini main:peek"
+      ]
+    },
+    "relations": {
+      "checked": 42,
+      "consistent_with_imports_and_body_refs": 42,
+      "note": "LAWS -> PROOF edges come from attributing a law's fill (written in PROOF.bend) to the LAWS module"
+    },
+    "source_refs": "1050/1050 name a def or law in the named file (d3/audit_sample.ts)"
+  }
+}

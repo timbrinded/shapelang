@@ -1,510 +1,510 @@
 {
- "summary": {
-  "sort": {
-   "holds": 4,
-   "VIOLATION": 7,
-   "rejected": 0,
-   "crash": 4,
-   "hang": 6
+  "summary": {
+    "sort": {
+      "holds": 4,
+      "VIOLATION": 7,
+      "rejected": 0,
+      "crash": 4,
+      "hang": 6
+    },
+    "num": {
+      "holds": 2,
+      "VIOLATION": 0,
+      "rejected": 8,
+      "crash": 1,
+      "hang": 0
+    },
+    "u32": {
+      "holds": 2,
+      "VIOLATION": 7,
+      "rejected": 0,
+      "crash": 1,
+      "hang": 0
+    },
+    "arr": {
+      "holds": 2,
+      "VIOLATION": 3,
+      "rejected": 0,
+      "crash": 1,
+      "hang": 0
+    },
+    "*": {
+      "holds": 10,
+      "VIOLATION": 17,
+      "rejected": 8,
+      "crash": 7,
+      "hang": 6
+    }
   },
-  "num": {
-   "holds": 2,
-   "VIOLATION": 0,
-   "rejected": 8,
-   "crash": 1,
-   "hang": 0
+  "byDomain": {
+    "in": {
+      "holds": 6,
+      "VIOLATION": 0,
+      "rejected": 0,
+      "crash": 1,
+      "hang": 2
+    },
+    "cap": {
+      "holds": 0,
+      "VIOLATION": 0,
+      "rejected": 2,
+      "crash": 0,
+      "hang": 1
+    },
+    "out": {
+      "holds": 1,
+      "VIOLATION": 14,
+      "rejected": 6,
+      "crash": 2,
+      "hang": 3
+    },
+    "shape": {
+      "holds": 2,
+      "VIOLATION": 0,
+      "rejected": 0,
+      "crash": 4,
+      "hang": 0
+    },
+    "alias": {
+      "holds": 1,
+      "VIOLATION": 3,
+      "rejected": 0,
+      "crash": 0,
+      "hang": 0
+    }
   },
-  "u32": {
-   "holds": 2,
-   "VIOLATION": 7,
-   "rejected": 0,
-   "crash": 1,
-   "hang": 0
-  },
-  "arr": {
-   "holds": 2,
-   "VIOLATION": 3,
-   "rejected": 0,
-   "crash": 1,
-   "hang": 0
-  },
-  "*": {
-   "holds": 10,
-   "VIOLATION": 17,
-   "rejected": 8,
-   "crash": 7,
-   "hang": 6
-  }
- },
- "byDomain": {
-  "in": {
-   "holds": 6,
-   "VIOLATION": 0,
-   "rejected": 0,
-   "crash": 1,
-   "hang": 2
-  },
-  "cap": {
-   "holds": 0,
-   "VIOLATION": 0,
-   "rejected": 2,
-   "crash": 0,
-   "hang": 1
-  },
-  "out": {
-   "holds": 1,
-   "VIOLATION": 14,
-   "rejected": 6,
-   "crash": 2,
-   "hang": 3
-  },
-  "shape": {
-   "holds": 2,
-   "VIOLATION": 0,
-   "rejected": 0,
-   "crash": 4,
-   "hang": 0
-  },
-  "alias": {
-   "holds": 1,
-   "VIOLATION": 3,
-   "rejected": 0,
-   "crash": 0,
-   "hang": 0
-  }
- },
- "rows": [
-  {
-   "id": "sort-ok",
-   "module": "sort",
-   "domain": "in",
-   "law": "sort_sorted, sort_perm",
-   "input": "[3, 1, 2]",
-   "outcome": "holds",
-   "detail": "out [1, 2, 3] sorted=true perm=true"
-  },
-  {
-   "id": "sort-negative",
-   "module": "sort",
-   "domain": "out",
-   "law": "sort_sorted, sort_perm",
-   "input": "[3, -1, 2]",
-   "outcome": "VIOLATION",
-   "detail": "out [2, 3, -1] sorted=false perm=true"
-  },
-  {
-   "id": "sort-negative-2",
-   "module": "sort",
-   "domain": "out",
-   "law": "sort_sorted, sort_perm",
-   "input": "[-2, -5]",
-   "outcome": "hang",
-   "detail": "no answer in 5 s"
-  },
-  {
-   "id": "sort-fraction",
-   "module": "sort",
-   "domain": "out",
-   "law": "sort_sorted, sort_perm",
-   "input": "[1.5, 0.5]",
-   "outcome": "hang",
-   "detail": "no answer in 5 s"
-  },
-  {
-   "id": "sort-fraction-int",
-   "module": "sort",
-   "domain": "out",
-   "law": "sort_sorted, sort_perm",
-   "input": "[2, 0.5]",
-   "outcome": "VIOLATION",
-   "detail": "out [2, 0.5] sorted=false perm=true"
-  },
-  {
-   "id": "sort-2^32",
-   "module": "sort",
-   "domain": "in",
-   "law": "sort_sorted, sort_perm",
-   "input": "[4294967297, 4294967296, 7]",
-   "outcome": "hang",
-   "detail": "no answer in 5 s"
-  },
-  {
-   "id": "sort-2^40",
-   "module": "sort",
-   "domain": "in",
-   "law": "sort_sorted, sort_perm",
-   "input": "[1099511627777, 1099511627776]",
-   "outcome": "hang",
-   "detail": "no answer in 5 s"
-  },
-  {
-   "id": "sort-2^53",
-   "module": "sort",
-   "domain": "cap",
-   "law": "sort_sorted, sort_perm",
-   "input": "[9007199254740994, 9007199254740992]",
-   "outcome": "hang",
-   "detail": "no answer in 5 s"
-  },
-  {
-   "id": "sort-bigint",
-   "module": "sort",
-   "domain": "out",
-   "law": "sort_sorted, sort_perm",
-   "input": "[3n, 1n]",
-   "outcome": "crash",
-   "detail": "TypeError: Invalid mix of BigInt and other type in subtraction."
-  },
-  {
-   "id": "sort-digit-strings",
-   "module": "sort",
-   "domain": "out",
-   "law": "sort_sorted, sort_perm",
-   "input": "[\"3\", \"1\", \"2\"]",
-   "outcome": "VIOLATION",
-   "detail": "out [\"1\", \"2\", \"3\"] sorted=false perm=true"
-  },
-  {
-   "id": "sort-strings",
-   "module": "sort",
-   "domain": "out",
-   "law": "sort_sorted, sort_perm",
-   "input": "[\"b\", \"a\"]",
-   "outcome": "hang",
-   "detail": "no answer in 5 s"
-  },
-  {
-   "id": "sort-NaN",
-   "module": "sort",
-   "domain": "out",
-   "law": "sort_sorted, sort_perm",
-   "input": "[NaN, 1]",
-   "outcome": "VIOLATION",
-   "detail": "out [1, NaN] sorted=false perm=true"
-  },
-  {
-   "id": "sort-Infinity",
-   "module": "sort",
-   "domain": "out",
-   "law": "sort_sorted, sort_perm",
-   "input": "[Infinity, 1]",
-   "outcome": "VIOLATION",
-   "detail": "out [1, Infinity] sorted=false perm=true"
-  },
-  {
-   "id": "sort-undefined-elem",
-   "module": "sort",
-   "domain": "out",
-   "law": "sort_sorted, sort_perm",
-   "input": "[undefined, 1]",
-   "outcome": "VIOLATION",
-   "detail": "out [1, undefined] sorted=false perm=true"
-  },
-  {
-   "id": "sort-null-elem",
-   "module": "sort",
-   "domain": "out",
-   "law": "sort_sorted, sort_perm",
-   "input": "[null, 2, 1]",
-   "outcome": "VIOLATION",
-   "detail": "out [1, 2, null] sorted=false perm=true"
-  },
-  {
-   "id": "sort-undefined-list",
-   "module": "sort",
-   "domain": "shape",
-   "law": "sort_sorted, sort_perm",
-   "input": "undefined",
-   "outcome": "crash",
-   "detail": "TypeError: undefined is not an object (evaluating '_xs_0.$')"
-  },
-  {
-   "id": "sort-wrong-tag",
-   "module": "sort",
-   "domain": "shape",
-   "law": "sort_sorted, sort_perm",
-   "input": "{$:'Cons',..}",
-   "outcome": "holds",
-   "detail": "out [1, 2] sorted=true perm=true"
-  },
-  {
-   "id": "sort-missing-tail",
-   "module": "sort",
-   "domain": "shape",
-   "law": "sort_sorted, sort_perm",
-   "input": "{$:'Con', head: 1}",
-   "outcome": "crash",
-   "detail": "TypeError: undefined is not an object (evaluating '_xs_0.$')"
-  },
-  {
-   "id": "sort-cyclic",
-   "module": "sort",
-   "domain": "shape",
-   "law": "sort_sorted, sort_perm",
-   "input": "cyclic Con",
-   "outcome": "crash",
-   "detail": "RangeError: Maximum call stack size exceeded."
-  },
-  {
-   "id": "sort-shared-tail",
-   "module": "sort",
-   "domain": "in",
-   "law": "sort_sorted, sort_perm",
-   "input": "[1,0,9,5,4] with a shared tail",
-   "outcome": "holds",
-   "detail": "out [0, 1, 4, 5, 9] sorted=true perm=true"
-  },
-  {
-   "id": "sort-alias-input-reuse",
-   "module": "sort",
-   "domain": "alias",
-   "law": "sort_perm",
-   "input": "the input list read again after sort",
-   "outcome": "holds",
-   "detail": "out [1, 2, 3] input after [3, 1, 2]"
-  },
-  {
-   "id": "num-add-ok",
-   "module": "num",
-   "domain": "in",
-   "law": "add_comm",
-   "input": "(3, 4)",
-   "outcome": "holds",
-   "detail": "7"
-  },
-  {
-   "id": "num-add-negative",
-   "module": "num",
-   "domain": "out",
-   "law": "add_comm",
-   "input": "(-1, 2)",
-   "outcome": "rejected",
-   "detail": "bend: expected a Nat host number: an integer from 0 to 2^53"
-  },
-  {
-   "id": "num-add-fraction",
-   "module": "num",
-   "domain": "out",
-   "law": "add_comm",
-   "input": "(1.5, 2)",
-   "outcome": "rejected",
-   "detail": "bend: expected a Nat host number: an integer from 0 to 2^53"
-  },
-  {
-   "id": "num-add-bigint",
-   "module": "num",
-   "domain": "out",
-   "law": "add_comm",
-   "input": "(3n, 4n)",
-   "outcome": "rejected",
-   "detail": "bend: expected a Nat host number: an integer from 0 to 2^53"
-  },
-  {
-   "id": "num-add-string",
-   "module": "num",
-   "domain": "out",
-   "law": "add_comm",
-   "input": "('3', 4)",
-   "outcome": "rejected",
-   "detail": "bend: expected a Nat host number: an integer from 0 to 2^53"
-  },
-  {
-   "id": "num-add-2^47",
-   "module": "num",
-   "domain": "in",
-   "law": "add_comm",
-   "input": "(2^47, 2^47)",
-   "outcome": "crash",
-   "detail": "RangeError: Maximum call stack size exceeded."
-  },
-  {
-   "id": "num-add-2^48",
-   "module": "num",
-   "domain": "cap",
-   "law": "add_comm",
-   "input": "(1, 2^48)",
-   "outcome": "rejected",
-   "detail": "bend: a Nat past the largest immediate 2^48-1"
-  },
-  {
-   "id": "num-add-2^53",
-   "module": "num",
-   "domain": "cap",
-   "law": "add_comm",
-   "input": "(2^53+2, 0)",
-   "outcome": "rejected",
-   "detail": "bend: expected a Nat host number: an integer from 0 to 2^53"
-  },
-  {
-   "id": "num-divmod-ok",
-   "module": "num",
-   "domain": "in",
-   "law": "divmod_ok",
-   "input": "(1024, 7)",
-   "outcome": "holds",
-   "detail": "146,2"
-  },
-  {
-   "id": "num-divmod-NaN",
-   "module": "num",
-   "domain": "out",
-   "law": "divmod_ok",
-   "input": "(NaN, 7)",
-   "outcome": "rejected",
-   "detail": "bend: expected a Nat host number: an integer from 0 to 2^53"
-  },
-  {
-   "id": "num-mul-undefined",
-   "module": "num",
-   "domain": "out",
-   "law": "mul_comm",
-   "input": "(undefined, 2)",
-   "outcome": "rejected",
-   "detail": "bend: expected a Nat host number: an integer from 0 to 2^53"
-  },
-  {
-   "id": "u32-ok",
-   "module": "u32",
-   "domain": "in",
-   "law": "add_comm, add_zero",
-   "input": "(5, 7)",
-   "outcome": "holds",
-   "detail": "12"
-  },
-  {
-   "id": "u32-zero-2^32",
-   "module": "u32",
-   "domain": "out",
-   "law": "add_zero",
-   "input": "a = 2^32 + 5",
-   "outcome": "VIOLATION",
-   "detail": "add(a, 0) = 5"
-  },
-  {
-   "id": "u32-zero-negative",
-   "module": "u32",
-   "domain": "out",
-   "law": "add_zero",
-   "input": "a = -1",
-   "outcome": "VIOLATION",
-   "detail": "add(a, 0) = 4294967295"
-  },
-  {
-   "id": "u32-zero-fraction",
-   "module": "u32",
-   "domain": "out",
-   "law": "add_zero",
-   "input": "a = 1.5",
-   "outcome": "VIOLATION",
-   "detail": "add(a, 0) = 1"
-  },
-  {
-   "id": "u32-zero-string",
-   "module": "u32",
-   "domain": "out",
-   "law": "add_zero",
-   "input": "a = '7'",
-   "outcome": "VIOLATION",
-   "detail": "add(a, 0) = 70"
-  },
-  {
-   "id": "u32-zero-undefined",
-   "module": "u32",
-   "domain": "out",
-   "law": "add_zero",
-   "input": "a = undefined",
-   "outcome": "VIOLATION",
-   "detail": "add(a, 0) = 0"
-  },
-  {
-   "id": "u32-comm-string",
-   "module": "u32",
-   "domain": "out",
-   "law": "add_comm",
-   "input": "('1', 2)",
-   "outcome": "VIOLATION",
-   "detail": "12 vs 21"
-  },
-  {
-   "id": "u32-comm-2^32",
-   "module": "u32",
-   "domain": "out",
-   "law": "add_comm",
-   "input": "(2^32, 1)",
-   "outcome": "holds",
-   "detail": "1 vs 1"
-  },
-  {
-   "id": "u32-comm-bigint",
-   "module": "u32",
-   "domain": "out",
-   "law": "add_comm",
-   "input": "(1n, 2n)",
-   "outcome": "crash",
-   "detail": "TypeError: BigInt does not support >>> operator"
-  },
-  {
-   "id": "u32-comm-object",
-   "module": "u32",
-   "domain": "out",
-   "law": "add_comm",
-   "input": "({valueOf}, '1')",
-   "outcome": "VIOLATION",
-   "detail": "21 vs 12"
-  },
-  {
-   "id": "arr-ok",
-   "module": "arr",
-   "domain": "in",
-   "law": "mark_reads_b",
-   "input": "two arrays",
-   "outcome": "holds",
-   "detail": "read 7, b[0] was 7"
-  },
-  {
-   "id": "arr-alias",
-   "module": "arr",
-   "domain": "alias",
-   "law": "mark_reads_b",
-   "input": "the same array as a and b",
-   "outcome": "VIOLATION",
-   "detail": "read 99, b[0] was 7"
-  },
-  {
-   "id": "arr-view-alias",
-   "module": "arr",
-   "domain": "alias",
-   "law": "mark_reads_b",
-   "input": "two Uint32Array views of one buffer",
-   "outcome": "VIOLATION",
-   "detail": "read 99, b[0] was 7"
-  },
-  {
-   "id": "arr-empty-a",
-   "module": "arr",
-   "domain": "shape",
-   "law": "mark_reads_b",
-   "input": "a = []",
-   "outcome": "holds",
-   "detail": "read 7; a = {\"NaN\":99}"
-  },
-  {
-   "id": "arr-frozen-a",
-   "module": "arr",
-   "domain": "shape",
-   "law": "mark_reads_b",
-   "input": "a frozen",
-   "outcome": "crash",
-   "detail": "TypeError: Attempted to assign to readonly property."
-  },
-  {
-   "id": "arr-caller-sees-write",
-   "module": "arr",
-   "domain": "alias",
-   "law": "(none: affinity)",
-   "input": "caller keeps a after the call",
-   "outcome": "VIOLATION",
-   "detail": "caller's a[0] is now 99"
-  }
- ]
+  "rows": [
+    {
+      "id": "sort-ok",
+      "module": "sort",
+      "domain": "in",
+      "law": "sort_sorted, sort_perm",
+      "input": "[3, 1, 2]",
+      "outcome": "holds",
+      "detail": "out [1, 2, 3] sorted=true perm=true"
+    },
+    {
+      "id": "sort-negative",
+      "module": "sort",
+      "domain": "out",
+      "law": "sort_sorted, sort_perm",
+      "input": "[3, -1, 2]",
+      "outcome": "VIOLATION",
+      "detail": "out [2, 3, -1] sorted=false perm=true"
+    },
+    {
+      "id": "sort-negative-2",
+      "module": "sort",
+      "domain": "out",
+      "law": "sort_sorted, sort_perm",
+      "input": "[-2, -5]",
+      "outcome": "hang",
+      "detail": "no answer in 5 s"
+    },
+    {
+      "id": "sort-fraction",
+      "module": "sort",
+      "domain": "out",
+      "law": "sort_sorted, sort_perm",
+      "input": "[1.5, 0.5]",
+      "outcome": "hang",
+      "detail": "no answer in 5 s"
+    },
+    {
+      "id": "sort-fraction-int",
+      "module": "sort",
+      "domain": "out",
+      "law": "sort_sorted, sort_perm",
+      "input": "[2, 0.5]",
+      "outcome": "VIOLATION",
+      "detail": "out [2, 0.5] sorted=false perm=true"
+    },
+    {
+      "id": "sort-2^32",
+      "module": "sort",
+      "domain": "in",
+      "law": "sort_sorted, sort_perm",
+      "input": "[4294967297, 4294967296, 7]",
+      "outcome": "hang",
+      "detail": "no answer in 5 s"
+    },
+    {
+      "id": "sort-2^40",
+      "module": "sort",
+      "domain": "in",
+      "law": "sort_sorted, sort_perm",
+      "input": "[1099511627777, 1099511627776]",
+      "outcome": "hang",
+      "detail": "no answer in 5 s"
+    },
+    {
+      "id": "sort-2^53",
+      "module": "sort",
+      "domain": "cap",
+      "law": "sort_sorted, sort_perm",
+      "input": "[9007199254740994, 9007199254740992]",
+      "outcome": "hang",
+      "detail": "no answer in 5 s"
+    },
+    {
+      "id": "sort-bigint",
+      "module": "sort",
+      "domain": "out",
+      "law": "sort_sorted, sort_perm",
+      "input": "[3n, 1n]",
+      "outcome": "crash",
+      "detail": "TypeError: Invalid mix of BigInt and other type in subtraction."
+    },
+    {
+      "id": "sort-digit-strings",
+      "module": "sort",
+      "domain": "out",
+      "law": "sort_sorted, sort_perm",
+      "input": "[\"3\", \"1\", \"2\"]",
+      "outcome": "VIOLATION",
+      "detail": "out [\"1\", \"2\", \"3\"] sorted=false perm=true"
+    },
+    {
+      "id": "sort-strings",
+      "module": "sort",
+      "domain": "out",
+      "law": "sort_sorted, sort_perm",
+      "input": "[\"b\", \"a\"]",
+      "outcome": "hang",
+      "detail": "no answer in 5 s"
+    },
+    {
+      "id": "sort-NaN",
+      "module": "sort",
+      "domain": "out",
+      "law": "sort_sorted, sort_perm",
+      "input": "[NaN, 1]",
+      "outcome": "VIOLATION",
+      "detail": "out [1, NaN] sorted=false perm=true"
+    },
+    {
+      "id": "sort-Infinity",
+      "module": "sort",
+      "domain": "out",
+      "law": "sort_sorted, sort_perm",
+      "input": "[Infinity, 1]",
+      "outcome": "VIOLATION",
+      "detail": "out [1, Infinity] sorted=false perm=true"
+    },
+    {
+      "id": "sort-undefined-elem",
+      "module": "sort",
+      "domain": "out",
+      "law": "sort_sorted, sort_perm",
+      "input": "[undefined, 1]",
+      "outcome": "VIOLATION",
+      "detail": "out [1, undefined] sorted=false perm=true"
+    },
+    {
+      "id": "sort-null-elem",
+      "module": "sort",
+      "domain": "out",
+      "law": "sort_sorted, sort_perm",
+      "input": "[null, 2, 1]",
+      "outcome": "VIOLATION",
+      "detail": "out [1, 2, null] sorted=false perm=true"
+    },
+    {
+      "id": "sort-undefined-list",
+      "module": "sort",
+      "domain": "shape",
+      "law": "sort_sorted, sort_perm",
+      "input": "undefined",
+      "outcome": "crash",
+      "detail": "TypeError: undefined is not an object (evaluating '_xs_0.$')"
+    },
+    {
+      "id": "sort-wrong-tag",
+      "module": "sort",
+      "domain": "shape",
+      "law": "sort_sorted, sort_perm",
+      "input": "{$:'Cons',..}",
+      "outcome": "holds",
+      "detail": "out [1, 2] sorted=true perm=true"
+    },
+    {
+      "id": "sort-missing-tail",
+      "module": "sort",
+      "domain": "shape",
+      "law": "sort_sorted, sort_perm",
+      "input": "{$:'Con', head: 1}",
+      "outcome": "crash",
+      "detail": "TypeError: undefined is not an object (evaluating '_xs_0.$')"
+    },
+    {
+      "id": "sort-cyclic",
+      "module": "sort",
+      "domain": "shape",
+      "law": "sort_sorted, sort_perm",
+      "input": "cyclic Con",
+      "outcome": "crash",
+      "detail": "RangeError: Maximum call stack size exceeded."
+    },
+    {
+      "id": "sort-shared-tail",
+      "module": "sort",
+      "domain": "in",
+      "law": "sort_sorted, sort_perm",
+      "input": "[1,0,9,5,4] with a shared tail",
+      "outcome": "holds",
+      "detail": "out [0, 1, 4, 5, 9] sorted=true perm=true"
+    },
+    {
+      "id": "sort-alias-input-reuse",
+      "module": "sort",
+      "domain": "alias",
+      "law": "sort_perm",
+      "input": "the input list read again after sort",
+      "outcome": "holds",
+      "detail": "out [1, 2, 3] input after [3, 1, 2]"
+    },
+    {
+      "id": "num-add-ok",
+      "module": "num",
+      "domain": "in",
+      "law": "add_comm",
+      "input": "(3, 4)",
+      "outcome": "holds",
+      "detail": "7"
+    },
+    {
+      "id": "num-add-negative",
+      "module": "num",
+      "domain": "out",
+      "law": "add_comm",
+      "input": "(-1, 2)",
+      "outcome": "rejected",
+      "detail": "bend: expected a Nat host number: an integer from 0 to 2^53"
+    },
+    {
+      "id": "num-add-fraction",
+      "module": "num",
+      "domain": "out",
+      "law": "add_comm",
+      "input": "(1.5, 2)",
+      "outcome": "rejected",
+      "detail": "bend: expected a Nat host number: an integer from 0 to 2^53"
+    },
+    {
+      "id": "num-add-bigint",
+      "module": "num",
+      "domain": "out",
+      "law": "add_comm",
+      "input": "(3n, 4n)",
+      "outcome": "rejected",
+      "detail": "bend: expected a Nat host number: an integer from 0 to 2^53"
+    },
+    {
+      "id": "num-add-string",
+      "module": "num",
+      "domain": "out",
+      "law": "add_comm",
+      "input": "('3', 4)",
+      "outcome": "rejected",
+      "detail": "bend: expected a Nat host number: an integer from 0 to 2^53"
+    },
+    {
+      "id": "num-add-2^47",
+      "module": "num",
+      "domain": "in",
+      "law": "add_comm",
+      "input": "(2^47, 2^47)",
+      "outcome": "crash",
+      "detail": "RangeError: Maximum call stack size exceeded."
+    },
+    {
+      "id": "num-add-2^48",
+      "module": "num",
+      "domain": "cap",
+      "law": "add_comm",
+      "input": "(1, 2^48)",
+      "outcome": "rejected",
+      "detail": "bend: a Nat past the largest immediate 2^48-1"
+    },
+    {
+      "id": "num-add-2^53",
+      "module": "num",
+      "domain": "cap",
+      "law": "add_comm",
+      "input": "(2^53+2, 0)",
+      "outcome": "rejected",
+      "detail": "bend: expected a Nat host number: an integer from 0 to 2^53"
+    },
+    {
+      "id": "num-divmod-ok",
+      "module": "num",
+      "domain": "in",
+      "law": "divmod_ok",
+      "input": "(1024, 7)",
+      "outcome": "holds",
+      "detail": "146,2"
+    },
+    {
+      "id": "num-divmod-NaN",
+      "module": "num",
+      "domain": "out",
+      "law": "divmod_ok",
+      "input": "(NaN, 7)",
+      "outcome": "rejected",
+      "detail": "bend: expected a Nat host number: an integer from 0 to 2^53"
+    },
+    {
+      "id": "num-mul-undefined",
+      "module": "num",
+      "domain": "out",
+      "law": "mul_comm",
+      "input": "(undefined, 2)",
+      "outcome": "rejected",
+      "detail": "bend: expected a Nat host number: an integer from 0 to 2^53"
+    },
+    {
+      "id": "u32-ok",
+      "module": "u32",
+      "domain": "in",
+      "law": "add_comm, add_zero",
+      "input": "(5, 7)",
+      "outcome": "holds",
+      "detail": "12"
+    },
+    {
+      "id": "u32-zero-2^32",
+      "module": "u32",
+      "domain": "out",
+      "law": "add_zero",
+      "input": "a = 2^32 + 5",
+      "outcome": "VIOLATION",
+      "detail": "add(a, 0) = 5"
+    },
+    {
+      "id": "u32-zero-negative",
+      "module": "u32",
+      "domain": "out",
+      "law": "add_zero",
+      "input": "a = -1",
+      "outcome": "VIOLATION",
+      "detail": "add(a, 0) = 4294967295"
+    },
+    {
+      "id": "u32-zero-fraction",
+      "module": "u32",
+      "domain": "out",
+      "law": "add_zero",
+      "input": "a = 1.5",
+      "outcome": "VIOLATION",
+      "detail": "add(a, 0) = 1"
+    },
+    {
+      "id": "u32-zero-string",
+      "module": "u32",
+      "domain": "out",
+      "law": "add_zero",
+      "input": "a = '7'",
+      "outcome": "VIOLATION",
+      "detail": "add(a, 0) = 70"
+    },
+    {
+      "id": "u32-zero-undefined",
+      "module": "u32",
+      "domain": "out",
+      "law": "add_zero",
+      "input": "a = undefined",
+      "outcome": "VIOLATION",
+      "detail": "add(a, 0) = 0"
+    },
+    {
+      "id": "u32-comm-string",
+      "module": "u32",
+      "domain": "out",
+      "law": "add_comm",
+      "input": "('1', 2)",
+      "outcome": "VIOLATION",
+      "detail": "12 vs 21"
+    },
+    {
+      "id": "u32-comm-2^32",
+      "module": "u32",
+      "domain": "out",
+      "law": "add_comm",
+      "input": "(2^32, 1)",
+      "outcome": "holds",
+      "detail": "1 vs 1"
+    },
+    {
+      "id": "u32-comm-bigint",
+      "module": "u32",
+      "domain": "out",
+      "law": "add_comm",
+      "input": "(1n, 2n)",
+      "outcome": "crash",
+      "detail": "TypeError: BigInt does not support >>> operator"
+    },
+    {
+      "id": "u32-comm-object",
+      "module": "u32",
+      "domain": "out",
+      "law": "add_comm",
+      "input": "({valueOf}, '1')",
+      "outcome": "VIOLATION",
+      "detail": "21 vs 12"
+    },
+    {
+      "id": "arr-ok",
+      "module": "arr",
+      "domain": "in",
+      "law": "mark_reads_b",
+      "input": "two arrays",
+      "outcome": "holds",
+      "detail": "read 7, b[0] was 7"
+    },
+    {
+      "id": "arr-alias",
+      "module": "arr",
+      "domain": "alias",
+      "law": "mark_reads_b",
+      "input": "the same array as a and b",
+      "outcome": "VIOLATION",
+      "detail": "read 99, b[0] was 7"
+    },
+    {
+      "id": "arr-view-alias",
+      "module": "arr",
+      "domain": "alias",
+      "law": "mark_reads_b",
+      "input": "two Uint32Array views of one buffer",
+      "outcome": "VIOLATION",
+      "detail": "read 99, b[0] was 7"
+    },
+    {
+      "id": "arr-empty-a",
+      "module": "arr",
+      "domain": "shape",
+      "law": "mark_reads_b",
+      "input": "a = []",
+      "outcome": "holds",
+      "detail": "read 7; a = {\"NaN\":99}"
+    },
+    {
+      "id": "arr-frozen-a",
+      "module": "arr",
+      "domain": "shape",
+      "law": "mark_reads_b",
+      "input": "a frozen",
+      "outcome": "crash",
+      "detail": "TypeError: Attempted to assign to readonly property."
+    },
+    {
+      "id": "arr-caller-sees-write",
+      "module": "arr",
+      "domain": "alias",
+      "law": "(none: affinity)",
+      "input": "caller keeps a after the call",
+      "outcome": "VIOLATION",
+      "detail": "caller's a[0] is now 99"
+    }
+  ]
 }

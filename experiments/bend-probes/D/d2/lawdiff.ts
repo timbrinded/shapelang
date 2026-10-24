@@ -1,3 +1,4 @@
+// @ts-nocheck -- research script, run with bun; Bend's checker is loaded untyped at runtime.
 // D2: a deterministic law-set diff between two versions of a Bend project.
 //
 //   bun d2/lawdiff.ts <old-dir> <new-dir>   -> JSON on stdout
@@ -27,8 +28,18 @@ export function normal(t: unknown): string {
     const o = x as Record<string, unknown>;
     const out: Record<string, unknown> = {};
     for (const k of Object.keys(o).sort()) {
-      if (k === "s") continue;                                  // span
-      if (k === "k" && o.$ !== "Ref" && o.$ !== "ADT" && o.$ !== "Ctr" && o.$ !== "Lit" && o.$ !== "Hol" && o.$ !== "Mat" && o.$ !== "PCtr") continue; // binder name
+      if (k === "s") continue; // span
+      if (
+        k === "k" &&
+        o.$ !== "Ref" &&
+        o.$ !== "ADT" &&
+        o.$ !== "Ctr" &&
+        o.$ !== "Lit" &&
+        o.$ !== "Hol" &&
+        o.$ !== "Mat" &&
+        o.$ !== "PCtr"
+      )
+        continue; // binder name
       out[k] = go(o[k]);
     }
     return out;
@@ -46,7 +57,10 @@ export async function bookLaws(dir: string): Promise<Record<string, LawView> | s
   try {
     book = await loadBook(path.join(dir, "PROOF.bend"), false);
   } catch (e: any) {
-    return "parse error: " + (e?.$ === "Err" ? Bend.err_show(e).split("\n").slice(0, 3).join(" ") : String(e));
+    return (
+      "parse error: " +
+      (e?.$ === "Err" ? Bend.err_show(e).split("\n").slice(0, 3).join(" ") : String(e))
+    );
   }
   const out: Record<string, LawView> = {};
   const isProofDef = (k: string) => !k.includes(":"); // PROOF.bend is the entry: its own keys are bare
@@ -78,17 +92,32 @@ export async function bookLaws(dir: string): Promise<Record<string, LawView> | s
     const defs = [...reach].sort();
     const parts = defs.map((j) => {
       const tj = book.tlds[j];
-      return j + "=" + (tj.$ === "ADT" ? normal([tj.T, ...tj.c.map((c: any) => [c.k, Bend.term_lower(c.T)])])
-        : normal([Bend.term_lower(tj.T), tj.v === null || tj.l === true ? null : Bend.term_lower(tj.v)]));
+      return (
+        j +
+        "=" +
+        (tj.$ === "ADT"
+          ? normal([tj.T, ...tj.c.map((c: any) => [c.k, Bend.term_lower(c.T)])])
+          : normal([
+              Bend.term_lower(tj.T),
+              tj.v === null || tj.l === true ? null : Bend.term_lower(tj.v)
+            ]))
+      );
     });
-    out[Bend.name_key(k)] = { stmt: hash(stmt), closure: hash(stmt + "|" + parts.join("|")), closureDefs: defs.map(Bend.name_key) };
+    out[Bend.name_key(k)] = {
+      stmt: hash(stmt),
+      closure: hash(stmt + "|" + parts.join("|")),
+      closureDefs: defs.map(Bend.name_key)
+    };
   }
   return out;
 }
 
 export function dirLaws(dir: string): string[] {
   const names: string[] = [];
-  for (const f of fs.readdirSync(dir).filter((f) => f.endsWith(".bend")).sort()) {
+  for (const f of fs
+    .readdirSync(dir)
+    .filter((f) => f.endsWith(".bend"))
+    .sort()) {
     const src = fs.readFileSync(path.join(dir, f), "utf8");
     for (const m of src.matchAll(/^law\s+([A-Za-z_][\w.]*)\s*:/gm)) names.push(m[1]);
   }
@@ -105,7 +134,7 @@ export async function lawDiff(oldDir: string, newDir: string) {
     const removed = Object.keys(a).filter((k) => !(k in b));
     const added = Object.keys(b).filter((k) => !(k in a));
     const renamed: string[] = [];
-    for (const r of [...removed]) {
+    for (const r of removed.slice()) {
       const hit = added.find((n) => b[n].stmt === a[r].stmt);
       if (hit !== undefined) {
         renamed.push(r + " -> " + hit);
@@ -114,15 +143,27 @@ export async function lawDiff(oldDir: string, newDir: string) {
       }
     }
     const changed = Object.keys(a).filter((k) => k in b && a[k].stmt !== b[k].stmt);
-    const closureOnly = Object.keys(a).filter((k) => k in b && a[k].stmt === b[k].stmt && a[k].closure !== b[k].closure);
-    res.book = { removed, added, renamed, changed, closureOnly,
+    const closureOnly = Object.keys(a).filter(
+      (k) => k in b && a[k].stmt === b[k].stmt && a[k].closure !== b[k].closure
+    );
+    res.book = {
+      removed,
+      added,
+      renamed,
+      changed,
+      closureOnly,
       flagged: removed.length + added.length + renamed.length + changed.length > 0,
-      closureFlagged: removed.length + added.length + renamed.length + changed.length + closureOnly.length > 0 };
+      closureFlagged:
+        removed.length + added.length + renamed.length + changed.length + closureOnly.length > 0
+    };
   }
   const da = dirLaws(oldDir);
   const db = dirLaws(newDir);
-  res.dir = { removed: da.filter((n) => !db.includes(n)), added: db.filter((n) => !da.includes(n)),
-    flagged: da.join() !== db.join() };
+  res.dir = {
+    removed: da.filter((n) => !db.includes(n)),
+    added: db.filter((n) => !da.includes(n)),
+    flagged: da.join() !== db.join()
+  };
   return res;
 }
 

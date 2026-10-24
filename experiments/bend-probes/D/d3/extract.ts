@@ -1,3 +1,4 @@
+// @ts-nocheck -- research script, run with bun; Bend's checker is loaded untyped at runtime.
 // D3: deterministic indexing of a Bend project into a Shape model.
 //
 //   bun d3/extract.ts <project-dir> <out.shape> [records.json]
@@ -42,26 +43,49 @@ const EFFECTS: Array<[RegExp, Array<[string, string]>]> = [
   [/^(TCP|UDP)\.(try_)?recv(_bytes)?(_from)?$/, [["Read", "Network"]]],
   [/^(Socket|Listener)\.close$/, [["Close", "Network"]]],
   [/^Window\.open$/, [["Open", "Display"]]],
-  [/^Window\.frame$/, [["Write", "Display"], ["Read", "Input"]]],
+  [
+    /^Window\.frame$/,
+    [
+      ["Write", "Display"],
+      ["Read", "Input"]
+    ]
+  ],
   [/^Window\.(set_title|grab)$/, [["Write", "Display"]]],
   [/^Window\.close$/, [["Close", "Display"]]],
   [/^Audio\.open$/, [["Open", "Audio"]]],
   [/^Audio\.write$/, [["Write", "Audio"]]],
   [/^Audio\.close$/, [["Close", "Audio"]]],
-  [/^Halt$/, [["Exit", "Process"]]],            // IO.OP's Halt constructor (IO.die, IO.exit, IO.pass on Fail)
+  [/^Halt$/, [["Exit", "Process"]]] // IO.OP's Halt constructor (IO.die, IO.exit, IO.pass on Fail)
 ];
 
-const KEYWORDS = new Set(("add allow applies_to approver as attest binding callbacks calls candidate change complete component confidence " +
-  "conforms_to connects coordinated_call decided_on description effect effects evidence except expects expires final fingerprint fn forbid " +
-  "grants guards has hypercycle implementation import kind memory modify module observed on_change or outcome over owner owns path paths " +
-  "pin policy protects provides rationale reason reevaluation relation remove require require_changed require_context required requires " +
-  "resource review_by reviewer role roles rule satisfied_by satisfies sensitive source status storage summary trait transform unknown " +
-  "unsafe when when_changed who why").split(" "));
+const KEYWORDS = new Set(
+  (
+    "add allow applies_to approver as attest binding callbacks calls candidate change complete component confidence " +
+    "conforms_to connects coordinated_call decided_on description effect effects evidence except expects expires final fingerprint fn forbid " +
+    "grants guards has hypercycle implementation import kind memory modify module observed on_change or outcome over owner owns path paths " +
+    "pin policy protects provides rationale reason reevaluation relation remove require require_changed require_context required requires " +
+    "resource review_by reviewer role roles rule satisfied_by satisfies sensitive source status storage summary trait transform unknown " +
+    "unsafe when when_changed who why"
+  ).split(" ")
+);
 
 export type FnRecord = {
-  key: string; module: string; file: string; name: string; shapeName: string; component: string;
-  law: boolean; ioType: boolean; ioParam: boolean; unsafe: boolean; reliesUnsafe: string[];
-  reliesForeign: string[]; baseEffects: string[]; effects: string[]; claim: "complete" | "unknown"; calls: string[];
+  key: string;
+  module: string;
+  file: string;
+  name: string;
+  shapeName: string;
+  component: string;
+  law: boolean;
+  ioType: boolean;
+  ioParam: boolean;
+  unsafe: boolean;
+  reliesUnsafe: string[];
+  reliesForeign: string[];
+  baseEffects: string[];
+  effects: string[];
+  claim: "complete" | "unknown";
+  calls: string[];
 };
 
 function tip(T: any): { doms: any[]; ret: any } {
@@ -95,9 +119,13 @@ async function analyse(entry: string, root: string) {
         const ctrs = r.ctrs;
         if (t.e !== undefined) termRefs(t.e, r.body, ctrs);
         else if (t.v !== null && t.v !== undefined) termRefs(Bend.term_lower(t.v), r.body, ctrs);
-        for (const c of ctrs) { const f = fam.get(c); if (f) r.body.add(f); }
+        for (const c of ctrs) {
+          const f = fam.get(c);
+          if (f) r.body.add(f);
+        }
       }
-      r.type.delete(k); r.body.delete(k);
+      r.type.delete(k);
+      r.body.delete(k);
     }
     refsCache.set(k, r);
     return r;
@@ -136,38 +164,83 @@ async function analyse(entry: string, root: string) {
     const run = reach(k, false, true);
     const typeIO = refs(k).type.has("IO");
     const { doms } = tip(t.T);
-    const ioParam = doms.some((A: any) => { const s = new Set<string>(); termRefs(Bend.term_lower(A), s); return s.has("IO"); });
+    const ioParam = doms.some((A: any) => {
+      const s = new Set<string>();
+      termRefs(Bend.term_lower(A), s);
+      return s.has("IO");
+    });
     // a template instance (T~n) counts as a call of its template; Base's (bare keys) are not modules
     const tmpl = (j: string) => j.replace(/~\d+$/, "");
-    const callTargets = [...refs(k).body].filter((j) => isDef(j) && book.tlds[tmpl(j)]?.b !== true && book.tlds[j].b !== true && !isSort(j))
-      .map((j) => norm(tmpl(j)).split(":")[0]).filter((m) => m !== mod);
+    const callTargets = [...refs(k).body]
+      .filter(
+        (j) => isDef(j) && book.tlds[tmpl(j)]?.b !== true && book.tlds[j].b !== true && !isSort(j)
+      )
+      .map((j) => norm(tmpl(j)).split(":")[0])
+      .filter((m) => m !== mod);
     out.set(nk, {
-      key: nk, module: mod, file: mod + ".bend", name, law: t.l === true,
-      ioType: typeIO, ioParam,
+      key: nk,
+      module: mod,
+      file: mod + ".bend",
+      name,
+      law: t.l === true,
+      ioType: typeIO,
+      ioParam,
       unsafe: t.u === true,
-      reliesUnsafe: [...all].filter((j) => book.tlds[j]?.u === true).map(norm).concat(t.u === true ? [nk] : []),
-      reliesForeign: [...all, k].filter((j) => { const d = book.tlds[j]; return d?.$ === "Def" && d.i !== undefined && d.b !== true; }).map(norm),
+      reliesUnsafe: [...all]
+        .filter((j) => book.tlds[j]?.u === true)
+        .map(norm)
+        .concat(t.u === true ? [nk] : []),
+      reliesForeign: [...all, k]
+        .filter((j) => {
+          const d = book.tlds[j];
+          return d?.$ === "Def" && d.i !== undefined && d.b !== true;
+        })
+        .map(norm),
       // a law's def is a proof: erased, it runs nothing, even when its statement mentions IO
-      baseEffects: t.l === true ? [] : [...run, k].filter((j) => { const d = book.tlds[j]; return d?.$ === "Def" && d.i !== undefined && d.b === true; })
-        .concat(typeIO && [...run, k].some((j) => refs(j).ctrs.has("Halt")) ? ["Halt"] : []).sort(),
-      calls: [...new Set(callTargets)].sort(),
+      baseEffects:
+        t.l === true
+          ? []
+          : [...run, k]
+              .filter((j) => {
+                const d = book.tlds[j];
+                return d?.$ === "Def" && d.i !== undefined && d.b === true;
+              })
+              .concat(typeIO && [...run, k].some((j) => refs(j).ctrs.has("Halt")) ? ["Halt"] : [])
+              .sort(),
+      calls: [...new Set(callTargets)].sort()
     });
   }
   return out;
 }
 
-const pascal = (s: string) => s.split(/[^A-Za-z0-9]+/).filter(Boolean).map((w) => w[0].toUpperCase() + w.slice(1)).join("") || "Root";
+const pascal = (s: string) =>
+  s
+    .split(/[^A-Za-z0-9]+/)
+    .filter(Boolean)
+    .map((w) => w[0].toUpperCase() + w.slice(1))
+    .join("") || "Root";
 
 export async function extract(root: string) {
-  const entries = fs.readdirSync(root).filter((f) => f.endsWith(".bend")).sort()
-    .sort((a, b) => (b === "PROOF.bend" ? 1 : 0) - (a === "PROOF.bend" ? 1 : 0)).map((f) => path.join(root, f));
+  const entries = fs
+    .readdirSync(root)
+    .filter((f) => f.endsWith(".bend"))
+    .sort()
+    .sort((a, b) => (b === "PROOF.bend" ? 1 : 0) - (a === "PROOF.bend" ? 1 : 0))
+    .map((f) => path.join(root, f));
   const recs = new Map<string, Omit<FnRecord, "shapeName" | "component" | "effects" | "claim">>();
   const errors: string[] = [];
   for (const e of entries) {
     try {
       for (const [k, v] of await analyse(e, root)) if (!recs.has(k)) recs.set(k, v);
     } catch (err: any) {
-      errors.push(path.basename(e) + ": " + (err?.$ === "Err" ? Bend.err_show(err).split("\n").slice(0, 3).join(" ") : String(err)).slice(0, 200));
+      errors.push(
+        path.basename(e) +
+          ": " +
+          (err?.$ === "Err"
+            ? Bend.err_show(err).split("\n").slice(0, 3).join(" ")
+            : String(err)
+          ).slice(0, 200)
+      );
     }
   }
   const modules = [...new Set([...recs.values()].map((r) => r.module))].sort();
@@ -176,7 +249,8 @@ export async function extract(root: string) {
   for (const m of modules) {
     let c = pascal(m);
     while (usedC.has(c) || KEYWORDS.has(c)) c += "_";
-    usedC.add(c); compOf.set(m, c);
+    usedC.add(c);
+    compOf.set(m, c);
   }
   const out: FnRecord[] = [];
   const usedN = new Map<string, Set<string>>();
@@ -191,28 +265,51 @@ export async function extract(root: string) {
     const effects = new Set<string>();
     for (const b of r.baseEffects) {
       const hit = EFFECTS.find(([re]) => re.test(b));
-      for (const [v, res] of hit ? hit[1] : [["Unmapped", "Host"] as [string, string]]) effects.add(v + "<" + res + ">");
+      for (const [v, res] of hit ? hit[1] : [["Unmapped", "Host"] as [string, string]])
+        effects.add(v + "<" + res + ">");
     }
     if (r.reliesUnsafe.length > 0) effects.add("ReliesOnUnsafe");
-    out.push({ ...r, shapeName: n, component: comp, effects: [...effects].sort(),
-      claim: r.reliesForeign.length > 0 ? "unknown" : "complete" });
+    out.push({
+      ...r,
+      shapeName: n,
+      component: comp,
+      effects: [...effects].sort(),
+      claim: r.reliesForeign.length > 0 ? "unknown" : "complete"
+    });
   }
   // Shape text
   const demo = path.basename(path.resolve(root)).replace(/[^A-Za-z0-9_]/g, "_");
   const lines: string[] = [`module bend.${demo}`, ""];
   const resources = new Set<string>();
-  for (const f of out) for (const e of f.effects) { const m = /<(\w+)>/.exec(e); if (m) resources.add(m[1]); }
+  for (const f of out)
+    for (const e of f.effects) {
+      const m = /<(\w+)>/.exec(e);
+      if (m) resources.add(m[1]);
+    }
   for (const r of [...resources].sort()) lines.push(`resource ${r} : External`, "");
   for (const m of modules) {
     const comp = compOf.get(m) as string;
     const fns = out.filter((f) => f.module === m);
-    const grants = [...new Set(fns.flatMap((f) => f.claim === "complete" ? f.effects.filter((e) => e.includes("<")) : []))].sort();
+    const grants = [
+      ...new Set(
+        fns.flatMap((f) => (f.claim === "complete" ? f.effects.filter((e) => e.includes("<")) : []))
+      )
+    ].sort();
     lines.push(`component ${comp} {`);
     for (const g of grants) lines.push(`  grants ${g}`);
     for (const f of fns) {
-      lines.push(`  fn ${f.shapeName}`, `    source bend(${JSON.stringify(f.file + "#" + f.name)})`);
-      if (f.claim === "unknown") { lines.push("    effects unknown"); continue; }
-      if (f.effects.length === 0) { lines.push("    effects complete {", "    }"); continue; }
+      lines.push(
+        `  fn ${f.shapeName}`,
+        `    source bend(${JSON.stringify(f.file + "#" + f.name)})`
+      );
+      if (f.claim === "unknown") {
+        lines.push("    effects unknown");
+        continue;
+      }
+      if (f.effects.length === 0) {
+        lines.push("    effects complete {", "    }");
+        continue;
+      }
       lines.push("    effects complete {");
       for (const e of f.effects) lines.push(`      ${e}`);
       lines.push("    }");
@@ -224,19 +321,31 @@ export async function extract(root: string) {
   for (const e of [...edges].sort()) {
     const [a, b] = e.split("\u0000");
     if (!compOf.has(b)) continue;
-    const ca = compOf.get(a) as string, cb = compOf.get(b) as string;
+    const ca = compOf.get(a) as string,
+      cb = compOf.get(b) as string;
     lines.push(`relation ${ca}Calls${cb} {`, "  kind calls", `  connects ${ca} -> ${cb}`, "}", "");
   }
-  return { shape: lines.join("\n"), records: out, errors, modules: modules.map((m) => [m, compOf.get(m)]) };
+  return {
+    shape: lines.join("\n"),
+    records: out,
+    errors,
+    modules: modules.map((m) => [m, compOf.get(m)])
+  };
 }
 
 if (import.meta.main) {
   const r = await extract(process.argv[2]);
   fs.writeFileSync(process.argv[3], r.shape);
-  if (process.argv[4]) fs.writeFileSync(process.argv[4], JSON.stringify({ errors: r.errors, modules: r.modules, records: r.records }, null, 1));
+  if (process.argv[4])
+    fs.writeFileSync(
+      process.argv[4],
+      JSON.stringify({ errors: r.errors, modules: r.modules, records: r.records }, null, 1)
+    );
   const n = r.records.length;
   const io = r.records.filter((f) => f.ioType).length;
   const unk = r.records.filter((f) => f.claim === "unknown").length;
   const div = r.records.filter((f) => f.effects.includes("ReliesOnUnsafe")).length;
-  process.stderr.write(`${path.basename(process.argv[2])}: ${n} fns, ${io} IO-typed, ${unk} unknown, ${div} ReliesOnUnsafe, errors ${r.errors.length}\n`);
+  process.stderr.write(
+    `${path.basename(process.argv[2])}: ${n} fns, ${io} IO-typed, ${unk} unknown, ${div} ReliesOnUnsafe, errors ${r.errors.length}\n`
+  );
 }
