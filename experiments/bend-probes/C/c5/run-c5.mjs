@@ -64,7 +64,8 @@ const tools = [
   ["oxlint 1.66.0 --type-aware -W all -W nursery (oxlint-tsgolint 7.0.2005)", [join(BIN, "oxlint"), "--type-aware", "-W", "all", "-W", "nursery", ...FILES]],
   ["oxlint 1.66.0 --type-aware, only typescript/no-unnecessary-condition", [join(BIN, "oxlint"), "--type-aware", "-A", "all", "-D", "typescript/no-unnecessary-condition", ...FILES]],
   ["eslint 9.37.0 + typescript-eslint 8.46.0 strictTypeChecked + stylisticTypeChecked", [join(BIN, "eslint"), ...FILES]],
-  ["eslint 9.37.0 + typescript-eslint 8.46.0 focused typed rules", [join(BIN, "eslint"), "-c", "eslint.focused.config.mjs", ...FILES]]
+  ["eslint 9.37.0 + typescript-eslint 8.46.0 focused typed rules", [join(BIN, "eslint"), "-c", "eslint.focused.config.mjs", ...FILES]],
+  ["eslint focused typed rules on the changed file only (catalog.ts)", [join(BIN, "eslint"), "-c", "eslint.focused.config.mjs", "catalog.ts"]]
 ];
 
 const lines = ["# C5 transcript", ""];

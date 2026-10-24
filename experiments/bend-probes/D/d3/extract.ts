@@ -135,8 +135,10 @@ async function analyse(entry: string, root: string) {
     const typeIO = refs(k).type.has("IO");
     const { doms } = tip(t.T);
     const ioParam = doms.some((A: any) => { const s = new Set<string>(); termRefs(Bend.term_lower(A), s); return s.has("IO"); });
-    const callTargets = [...refs(k).body].filter((j) => isDef(j) && book.tlds[j].b !== true && !isSort(j))
-      .map((j) => norm(j).split(":")[0]).filter((m) => m !== mod);
+    // a template instance (T~n) counts as a call of its template; Base's (bare keys) are not modules
+    const tmpl = (j: string) => j.replace(/~\d+$/, "");
+    const callTargets = [...refs(k).body].filter((j) => isDef(j) && book.tlds[tmpl(j)]?.b !== true && book.tlds[j].b !== true && !isSort(j))
+      .map((j) => norm(tmpl(j)).split(":")[0]).filter((m) => m !== mod);
     out.set(nk, {
       key: nk, module: mod, file: mod + ".bend", name, law: t.l === true,
       ioType: typeIO, ioParam,

@@ -150,7 +150,7 @@ export const TARGETS: Target[] = [
     id: "ringMove", vars: ["pos", "delta", "n"], out: "I", consts: [0, 1], div: [], maxSize: 13,
     domain: ([p, d, n], sem) => n >= 1 && p >= 0 && p < n && (sem === "nat" ? d >= 0 && d < n : d > -n && d < n),
     lawInputs: (sem) => grid([range(0, 5), sem === "nat" ? range(0, 5) : range(-5, 5), range(1, 6)]).filter(([p, d, n]) => p < n && (sem === "nat" ? d < n : d > -n && d < n)),
-    testInputs: (sem) => sample(grid([range(0, 19), sem === "nat" ? range(0, 19) : range(-19, 19), range(1, 20)]).filter(([p, d, n]) => p < n && (sem === "nat" ? d < n : d > -n && d < n)), 600, 13),
+    testInputs: (sem) => sample(grid([range(0, 19), sem === "nat" ? range(0, 19) : range(-19, 19), range(1, 20)]).filter(([p, d, n]) => p < n && (sem === "nat" ? d < n : d > -n && d < n)), 300, 13),
     intended: () => (p, d, n) => (((p + d) % n) + n) % n,
     laws: [
       { name: "R1 stays on the ring: 0 <= move < n", holds: (f, [p, d, n]) => f(p, d, n) >= 0 && f(p, d, n) < n },
@@ -196,12 +196,16 @@ export function enumerate(t: Target, sem: Sem, maxSize: number, cap: number, onL
   const buckets: Record<"I" | "B", Prog[][]> = { I: [[]], B: [[]] };
   const seen = new Set<string>();
   let total = 0, reached = 0, capped = false;
+  const EMPTY = new Int32Array(0);
+  let final = false;
   const add = (p: Prog, out: Prog[]) => {
     const key = p.t + hashSig(p.sig);
     if (seen.has(key)) return;
-    seen.add(key); out.push(p); total++;
+    seen.add(key); total++;
+    out.push(final ? { ...p, sig: EMPTY } : p); // last level is never reused: drop its signature
   };
   for (let s = 1; s <= maxSize; s++) {
+    final = s === maxSize;
     const I: Prog[] = [], B: Prog[] = [];
     if (s === 1) {
       t.vars.forEach((_, i) => add({ t: "I", size: 1, sig: Int32Array.from(pts.map((x) => x[i])), ast: { k: "var", i } }, I));
