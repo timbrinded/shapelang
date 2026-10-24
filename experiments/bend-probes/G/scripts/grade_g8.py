@@ -39,7 +39,12 @@ for task in TASKS_ARG:
         if f.endswith(".ts"):
             impls[f"trap:{f}"] = os.path.join(trap_dir, f)
     manifest = json.load(open(os.path.join(hid, "mutants", "manifest.json")))
-    entries = manifest if isinstance(manifest, list) else [dict(v, file=k) if isinstance(v, dict) else {"file": k, "breaks": v} for k, v in manifest.items()]
+    if isinstance(manifest, dict) and "mutants" in manifest:
+        entries = manifest["mutants"]
+    elif isinstance(manifest, list):
+        entries = manifest
+    else:
+        entries = [dict(v, file=k) if isinstance(v, dict) else {"file": k, "breaks": v} for k, v in manifest.items()]
     tags = {}
     for e in entries:
         f = e.get("file") or e.get("path") or e.get("name")
