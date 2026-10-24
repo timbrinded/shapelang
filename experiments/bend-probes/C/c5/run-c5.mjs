@@ -54,14 +54,17 @@ for (const variant of ["base", "candidate"]) {
   variants[variant] = dir;
 }
 
+const FILES = ["catalog.ts", "presenter.ts"];
 const tools = [
   ["tsc 5.9.3 --strict (+ all strictness flags in tsconfig)", [join(BIN, "tsc"), "-p", "tsconfig.json"]],
   ["tsgo 7.0 native preview (repo) --strict", [join(REPO, "node_modules/.bin/tsgo"), "-p", "tsconfig.json"]],
-  ["oxlint 1.66.0 -W all -W nursery (typescript, unicorn, oxc, import plugins)", [join(BIN, "oxlint"), "-W", "all", "-W", "nursery", "."]],
-  ["oxlint 1.66.0 --type-aware -W all -W nursery (oxlint-tsgolint 7.0.2005)", [join(BIN, "oxlint"), "--type-aware", "-W", "all", "-W", "nursery", "."]],
-  ["oxlint 1.66.0 --type-aware --type-check", [join(BIN, "oxlint"), "--type-aware", "--type-check", "-W", "all", "."]],
-  ["eslint 9.37.0 + typescript-eslint 8.46.0 strictTypeChecked + stylisticTypeChecked", [join(BIN, "eslint"), "--no-warn-ignored", "catalog.ts", "presenter.ts"]],
-  ["eslint 9.37.0 + typescript-eslint 8.46.0 focused typed rules", [join(BIN, "eslint"), "-c", "eslint.focused.config.mjs", "catalog.ts", "presenter.ts"]]
+  ["oxlint 1.66.0 with the repository's .oxlintrc.json --deny-warnings (as `bun run lint`)", [join(REPO, "node_modules/.bin/oxlint"), "-c", join(REPO, ".oxlintrc.json"), "--deny-warnings", ...FILES]],
+  ["oxlint 1.66.0 -W all -W nursery (typescript, unicorn, oxc, import plugins)", [join(BIN, "oxlint"), "-W", "all", "-W", "nursery", ...FILES]],
+  ["oxlint 1.66.0 --type-aware -W all (oxlint-tsgolint 7.0.2005)", [join(BIN, "oxlint"), "--type-aware", "-W", "all", ...FILES]],
+  ["oxlint 1.66.0 --type-aware -W all -W nursery (oxlint-tsgolint 7.0.2005)", [join(BIN, "oxlint"), "--type-aware", "-W", "all", "-W", "nursery", ...FILES]],
+  ["oxlint 1.66.0 --type-aware, only typescript/no-unnecessary-condition", [join(BIN, "oxlint"), "--type-aware", "-A", "all", "-D", "typescript/no-unnecessary-condition", ...FILES]],
+  ["eslint 9.37.0 + typescript-eslint 8.46.0 strictTypeChecked + stylisticTypeChecked", [join(BIN, "eslint"), ...FILES]],
+  ["eslint 9.37.0 + typescript-eslint 8.46.0 focused typed rules", [join(BIN, "eslint"), "-c", "eslint.focused.config.mjs", ...FILES]]
 ];
 
 const lines = ["# C5 transcript", ""];
@@ -71,11 +74,11 @@ for (const [label, cmd] of tools) {
     const r = spawnSync(cmd[0], cmd.slice(1), { cwd: dir, encoding: "utf8" });
     const output = `${r.stdout ?? ""}${r.stderr ?? ""}`.replaceAll(dir, `<${variant}>`).trim();
     lines.push(`## ${label} — ${variant}`, "", `\`${cmd.map((c) => c.replace(WORK, "$CWORK").replace(REPO, "<repo>")).join(" ")}\` (cwd <${variant}>)`, "", `exit ${r.status}`, "", "```", output || "(no output)", "```", "");
-    summary.push({ tool: label, variant, exit: r.status, mentionsPresenterNull: /presenter\.ts/.test(output) && /(null|overlap|[Uu]nnecessary)/.test(output), output });
+    summary.push({ tool: label, variant, exit: r.status, flagsDeadNullCheck: /no-unnecessary-condition/.test(output), output });
   }
 }
 writeFileSync(join(OUT, "transcript.md"), lines.join("\n"));
 for (const s of summary) {
-  console.log(`${s.variant.padEnd(9)} exit=${String(s.exit).padEnd(3)} flags-dead-null-check=${s.mentionsPresenterNull}  ${s.tool}`);
+  console.log(`${s.variant.padEnd(9)} exit=${String(s.exit).padEnd(3)} no-unnecessary-condition=${s.flagsDeadNullCheck}  ${s.tool}`);
 }
 console.log(`\ntranscript: ${join(OUT, "transcript.md")}`);
