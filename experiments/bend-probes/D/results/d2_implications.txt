@@ -1,0 +1,27 @@
+== IS3-length check=0 verdict=0
+ALL PROOFS CHECK
+Use --verdict for mathematical validity.
+== IS4-precond check=0 verdict=0
+ALL PROOFS CHECK
+Use --verdict for mathematical validity.
+== IS6-le check=0 verdict=0
+ALL PROOFS CHECK
+Use --verdict for mathematical validity.
+== IS7-defSorted check=0 verdict=0
+ALL PROOFS CHECK
+Use --verdict for mathematical validity.
+== NUM1-dropBound check=0 verdict=0
+ALL PROOFS CHECK
+Use --verdict for mathematical validity.
+== NUM4-swap check=0 verdict=0
+ALL PROOFS CHECK
+Use --verdict for mathematical validity.
+== TRI1-isSome check=0 verdict=0
+ALL PROOFS CHECK
+Use --verdict for mathematical validity.
+== WIN2-onemove check=0 verdict=0
+ALL PROOFS CHECK
+Use --verdict for mathematical validity.
+== WIN5-unfold check=0 verdict=0
+ALL PROOFS CHECK
+Use --verdict for mathematical validity.

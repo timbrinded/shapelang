@@ -1,0 +1,110 @@
+== app_pong_game_2d gate=0 verdict=0
+--- gate
+ALL PROOFS CHECK
+Use --verdict for mathematical validity.
+--- verdict
+ALL PROOFS CHECK
+== app_ray_tracer_3d gate=0 verdict=0
+--- gate
+ALL PROOFS CHECK
+Use --verdict for mathematical validity.
+--- verdict
+ALL PROOFS CHECK
+== app_slash_boss_3d gate=1 verdict=1
+--- gate
+SOME PROOFS FAIL
+Error: 4 defs rely on unsafe or foreign code:
+defs that depend on @unsafe: main.Play.loop, main.Play.run, main.Main.mode, main.main
+Hint: no law or proof uses these defs. Move them to a file this proof does not import, and the proofs will check: main.Play.loop, main.Play.run, main.Main.mode, main.main
+--- verdict
+SOME PROOFS FAIL
+Error: 4 defs rely on unsafe or foreign code:
+defs that depend on @unsafe: main.Play.loop, main.Play.run, main.Main.mode, main.main
+Hint: no law or proof uses these defs. Move them to a file this proof does not import, and the proofs will check: main.Play.loop, main.Play.run, main.Main.mode, main.main
+== app_triangle_2d gate=0 verdict=0
+--- gate
+ALL PROOFS CHECK
+Use --verdict for mathematical validity.
+--- verdict
+ALL PROOFS CHECK
+== app_win_is_bug_2d gate=0 verdict=0
+--- gate
+ALL PROOFS CHECK
+Use --verdict for mathematical validity.
+--- verdict
+ALL PROOFS CHECK
+== io_hello_world gate=0 verdict=0
+--- gate
+ALL PROOFS CHECK
+Use --verdict for mathematical validity.
+--- verdict
+ALL PROOFS CHECK
+== io_http_fetch gate=0 verdict=0
+--- gate
+ALL PROOFS CHECK
+Use --verdict for mathematical validity.
+--- verdict
+ALL PROOFS CHECK
+== io_http_server gate=1 verdict=1
+--- gate
+SOME PROOFS FAIL
+Error: 2 defs rely on unsafe or foreign code:
+defs that depend on @unsafe: main.http_serve, main.main
+Hint: no law or proof uses these defs. Move them to a file this proof does not import, and the proofs will check: main.http_serve, main.main
+--- verdict
+SOME PROOFS FAIL
+Error: 2 defs rely on unsafe or foreign code:
+defs that depend on @unsafe: main.http_serve, main.main
+Hint: no law or proof uses these defs. Move them to a file this proof does not import, and the proofs will check: main.http_serve, main.main
+== io_tcp_echos gate=1 verdict=1
+--- gate
+SOME PROOFS FAIL
+Error: 4 defs rely on unsafe or foreign code:
+defs that depend on @unsafe: main.echo_conn, main.serve_next, main.serve, main.main
+Hint: no law or proof uses these defs. Move them to a file this proof does not import, and the proofs will check: main.echo_conn, main.serve_next, main.serve, main.main
+--- verdict
+SOME PROOFS FAIL
+Error: 4 defs rely on unsafe or foreign code:
+defs that depend on @unsafe: main.echo_conn, main.serve_next, main.serve, main.main
+Hint: no law or proof uses these defs. Move them to a file this proof does not import, and the proofs will check: main.echo_conn, main.serve_next, main.serve, main.main
+== proof_insertion_sort gate=0 verdict=0
+--- gate
+ALL PROOFS CHECK
+Use --verdict for mathematical validity.
+--- verdict
+ALL PROOFS CHECK
+== proof_numerics gate=0 verdict=0
+--- gate
+ALL PROOFS CHECK
+Use --verdict for mathematical validity.
+--- verdict
+ALL PROOFS CHECK
+== proof_typed_eval gate=0 verdict=0
+--- gate
+ALL PROOFS CHECK
+Use --verdict for mathematical validity.
+--- verdict
+ALL PROOFS CHECK
+== pure_hvm5_mini gate=1 verdict=1
+--- gate
+SOME PROOFS FAIL
+Error: 35 defs rely on unsafe or foreign code:
+defs that depend on @unsafe: main.term, main.defs, main.prog, main.free_run, main.free, main.inst.drp, main.inst, main.ref_tpl, main.go_ref, main.dsp_bit, main.dsp_go, main.dsp_tpl, main.dsp, main.app, main.use, main.mat_bit, main.mat, main.get, main.settle_ded, main.settle_park, main.settle_go, main.settle, main.dup_sup, main.dup_sup_if, main.dup_lam, main.dup_one, main.dup_two, main.dup_pak, main.dup, main.run, main.drive, main.book_run.fin, main.book_run.go, main.book_run, main.main
+Hint: no law or proof uses these defs. Move them to a file this proof does not import, and the proofs will check: main.term, main.defs, main.prog, main.free_run, main.free, main.inst.drp, main.inst, main.ref_tpl, main.go_ref, main.dsp_bit, main.dsp_go, main.dsp_tpl, main.dsp, main.app, main.use, main.mat_bit, main.mat, main.get, main.settle_ded, main.settle_park, main.settle_go, main.settle, main.dup_sup, main.dup_sup_if, main.dup_lam, main.dup_one, main.dup_two, main.dup_pak, main.dup, main.run, main.drive, main.book_run.fin, main.book_run.go, main.book_run, main.main
+--- verdict
+SOME PROOFS FAIL
+Error: 35 defs rely on unsafe or foreign code:
+defs that depend on @unsafe: main.term, main.defs, main.prog, main.free_run, main.free, main.inst.drp, main.inst, main.ref_tpl, main.go_ref, main.dsp_bit, main.dsp_go, main.dsp_tpl, main.dsp, main.app, main.use, main.mat_bit, main.mat, main.get, main.settle_ded, main.settle_park, main.settle_go, main.settle, main.dup_sup, main.dup_sup_if, main.dup_lam, main.dup_one, main.dup_two, main.dup_pak, main.dup, main.run, main.drive, main.book_run.fin, main.book_run.go, main.book_run, main.main
+Hint: no law or proof uses these defs. Move them to a file this proof does not import, and the proofs will check: main.term, main.defs, main.prog, main.free_run, main.free, main.inst.drp, main.inst, main.ref_tpl, main.go_ref, main.dsp_bit, main.dsp_go, main.dsp_tpl, main.dsp, main.app, main.use, main.mat_bit, main.mat, main.get, main.settle_ded, main.settle_park, main.settle_go, main.settle, main.dup_sup, main.dup_sup_if, main.dup_lam, main.dup_one, main.dup_two, main.dup_pak, main.dup, main.run, main.drive, main.book_run.fin, main.book_run.go, main.book_run, main.main
+== pure_par_sort gate=0 verdict=0
+--- gate
+ALL PROOFS CHECK
+Use --verdict for mathematical validity.
+--- verdict
+ALL PROOFS CHECK
+== pure_par_sum gate=0 verdict=0
+--- gate
+ALL PROOFS CHECK
+Use --verdict for mathematical validity.
+--- verdict
+ALL PROOFS CHECK

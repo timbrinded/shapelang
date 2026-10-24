@@ -1,0 +1,97 @@
+module bend.io_tcp_echos
+
+resource Console : External
+
+resource Network : External
+
+resource Process : External
+
+resource Task : External
+
+component LAWS {
+  fn closes_on_end
+    source bend("LAWS.bend#closes_on_end")
+    effects complete {
+    }
+  fn echoes_data
+    source bend("LAWS.bend#echoes_data")
+    effects complete {
+    }
+}
+
+component Main {
+  grants Close<Network>
+  grants Connect<Network>
+  grants Exit<Process>
+  grants Read<Network>
+  grants Spawn<Task>
+  grants Write<Console>
+  grants Write<Network>
+  fn echo_back
+    source bend("main.bend#echo_back")
+    effects complete {
+      Close<Network>
+      Write<Network>
+    }
+  fn echo_conn
+    source bend("main.bend#echo_conn")
+    effects complete {
+      Close<Network>
+      Read<Network>
+      ReliesOnUnsafe
+      Write<Network>
+    }
+  fn echo_move
+    source bend("main.bend#echo_move")
+    effects complete {
+      Close<Network>
+      Write<Network>
+    }
+  fn echo_sent
+    source bend("main.bend#echo_sent")
+    effects complete {
+      Close<Network>
+    }
+  fn echo_step
+    source bend("main.bend#echo_step")
+    effects complete {
+    }
+  fn main
+    source bend("main.bend#main")
+    effects complete {
+      Close<Network>
+      Connect<Network>
+      Exit<Process>
+      Read<Network>
+      ReliesOnUnsafe
+      Spawn<Task>
+      Write<Console>
+      Write<Network>
+    }
+  fn serve
+    source bend("main.bend#serve")
+    effects complete {
+      Close<Network>
+      Connect<Network>
+      Exit<Process>
+      Read<Network>
+      ReliesOnUnsafe
+      Spawn<Task>
+      Write<Network>
+    }
+  fn serve_next
+    source bend("main.bend#serve_next")
+    effects complete {
+      Close<Network>
+      Exit<Process>
+      Read<Network>
+      ReliesOnUnsafe
+      Spawn<Task>
+      Write<Network>
+    }
+}
+
+relation LAWSCallsMain {
+  kind calls
+  connects LAWS -> Main
+}

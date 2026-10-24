@@ -1,0 +1,1485 @@
+[
+ {
+  "id": "base",
+  "hatch": "none",
+  "context": "baseline",
+  "run": {
+   "code": 0,
+   "verdict": "none",
+   "out": "6n"
+  },
+  "check": {
+   "code": 0,
+   "verdict": "PASS",
+   "out": "ALL PROOFS CHECK\nUse --verdict for mathematical validity.",
+   "namesHatch": []
+  },
+  "gate": {
+   "code": 0,
+   "verdict": "PASS",
+   "out": "ALL PROOFS CHECK\nUse --verdict for mathematical validity.",
+   "namesHatch": [],
+   "namesDependents": []
+  },
+  "verdict": {
+   "code": 0,
+   "verdict": "PASS",
+   "out": "ALL PROOFS CHECK",
+   "namesHatch": [],
+   "namesDependents": [],
+   "sameAsGate": true
+  },
+  "hatchDefs": [],
+  "dependents": []
+ },
+ {
+  "id": "unsafe-pure-unused",
+  "hatch": "@unsafe",
+  "context": "pure, unused by law/main",
+  "run": {
+   "code": 0,
+   "verdict": "none",
+   "out": "6n"
+  },
+  "check": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError: 2 defs rely on unsafe or foreign code:\ndefs that depend on @unsafe: halve, halve.go",
+   "namesHatch": [
+    true
+   ]
+  },
+  "gate": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError: 2 defs rely on unsafe or foreign code:\ndefs that depend on @unsafe: main.halve, main.halve.go\nHint: no law or proof uses these defs. Move them to a file this proof does not import, and the proofs will check: main.halve, main.halve.go",
+   "namesHatch": [
+    true
+   ],
+   "namesDependents": [
+    true
+   ]
+  },
+  "verdict": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError: 2 defs rely on unsafe or foreign code:\ndefs that depend on @unsafe: main.halve, main.halve.go\nHint: no law or proof uses these defs. Move them to a file this proof does not import, and the proofs will check: main.halve, main.halve.go",
+   "namesHatch": [
+    true
+   ],
+   "namesDependents": [
+    true
+   ],
+   "sameAsGate": true
+  },
+  "hatchDefs": [
+   "main.halve"
+  ],
+  "dependents": [
+   "main.halve.go"
+  ]
+ },
+ {
+  "id": "unsafe-pure-main",
+  "hatch": "@unsafe",
+  "context": "pure, used by a value main",
+  "run": {
+   "code": 0,
+   "verdict": "none",
+   "out": "9"
+  },
+  "check": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError: 3 defs rely on unsafe or foreign code:\ndefs that depend on @unsafe: halve, halve.go, main",
+   "namesHatch": [
+    true
+   ]
+  },
+  "gate": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError: 3 defs rely on unsafe or foreign code:\ndefs that depend on @unsafe: main.halve, main.halve.go, main.main\nHint: no law or proof uses these defs. Move them to a file this proof does not import, and the proofs will check: main.halve, main.halve.go, main.main",
+   "namesHatch": [
+    true
+   ],
+   "namesDependents": [
+    true,
+    true
+   ]
+  },
+  "verdict": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError: 3 defs rely on unsafe or foreign code:\ndefs that depend on @unsafe: main.halve, main.halve.go, main.main\nHint: no law or proof uses these defs. Move them to a file this proof does not import, and the proofs will check: main.halve, main.halve.go, main.main",
+   "namesHatch": [
+    true
+   ],
+   "namesDependents": [
+    true,
+    true
+   ],
+   "sameAsGate": true
+  },
+  "hatchDefs": [
+   "main.halve"
+  ],
+  "dependents": [
+   "main.halve.go",
+   "main.main"
+  ]
+ },
+ {
+  "id": "unsafe-law-def",
+  "hatch": "@unsafe",
+  "context": "pure, the law's def is @unsafe",
+  "run": {
+   "code": 0,
+   "verdict": "none",
+   "out": "6n"
+  },
+  "check": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError: 2 defs rely on unsafe or foreign code:\ndefs that depend on @unsafe: twice, main",
+   "namesHatch": [
+    true
+   ]
+  },
+  "gate": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError: 3 defs rely on unsafe or foreign code:\ndefs that depend on @unsafe: main.twice, main.main, LAWS.twice_succ",
+   "namesHatch": [
+    true
+   ],
+   "namesDependents": [
+    true,
+    true
+   ]
+  },
+  "verdict": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError: 3 defs rely on unsafe or foreign code:\ndefs that depend on @unsafe: main.twice, main.main, LAWS.twice_succ",
+   "namesHatch": [
+    true
+   ],
+   "namesDependents": [
+    true,
+    true
+   ],
+   "sameAsGate": true
+  },
+  "hatchDefs": [
+   "main.twice"
+  ],
+  "dependents": [
+   "main.main",
+   "LAWS.twice_succ"
+  ]
+ },
+ {
+  "id": "unsafe-proof-false",
+  "hatch": "@unsafe",
+  "context": "proof of a FALSE law via an @unsafe lemma",
+  "run": {
+   "code": 0,
+   "verdict": "none",
+   "out": "6n"
+  },
+  "check": {
+   "code": 0,
+   "verdict": "PASS",
+   "out": "ALL PROOFS CHECK\nUse --verdict for mathematical validity.",
+   "namesHatch": []
+  },
+  "gate": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError: 2 defs rely on unsafe or foreign code:\ndefs that depend on @unsafe: LAWS.twice_one, bot",
+   "namesHatch": [
+    true
+   ],
+   "namesDependents": [
+    true
+   ]
+  },
+  "verdict": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError: 2 defs rely on unsafe or foreign code:\ndefs that depend on @unsafe: LAWS.twice_one, bot",
+   "namesHatch": [
+    true
+   ],
+   "namesDependents": [
+    true
+   ],
+   "sameAsGate": true
+  },
+  "hatchDefs": [
+   "bot"
+  ],
+  "dependents": [
+   "LAWS.twice_one"
+  ]
+ },
+ {
+  "id": "unsafe-io",
+  "hatch": "@unsafe",
+  "context": "IO, used by main only",
+  "run": {
+   "code": 0,
+   "verdict": "none",
+   "out": "9"
+  },
+  "check": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError: 3 defs rely on unsafe or foreign code:\ndefs that depend on @unsafe: halve, halve.go, main",
+   "namesHatch": [
+    true
+   ]
+  },
+  "gate": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError: 3 defs rely on unsafe or foreign code:\ndefs that depend on @unsafe: main.halve, main.halve.go, main.main\nHint: no law or proof uses these defs. Move them to a file this proof does not import, and the proofs will check: main.halve, main.halve.go, main.main",
+   "namesHatch": [
+    true
+   ],
+   "namesDependents": [
+    true,
+    true
+   ]
+  },
+  "verdict": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError: 3 defs rely on unsafe or foreign code:\ndefs that depend on @unsafe: main.halve, main.halve.go, main.main\nHint: no law or proof uses these defs. Move them to a file this proof does not import, and the proofs will check: main.halve, main.halve.go, main.main",
+   "namesHatch": [
+    true
+   ],
+   "namesDependents": [
+    true,
+    true
+   ],
+   "sameAsGate": true
+  },
+  "hatchDefs": [
+   "main.halve"
+  ],
+  "dependents": [
+   "main.halve.go",
+   "main.main"
+  ]
+ },
+ {
+  "id": "unsafe-io-loop",
+  "hatch": "@unsafe",
+  "context": "IO loop def (demo style), main only",
+  "run": {
+   "code": 0,
+   "verdict": "none",
+   "out": "2\n1"
+  },
+  "check": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError: 3 defs rely on unsafe or foreign code:\ndefs that depend on @unsafe: loop, loop.go, main",
+   "namesHatch": [
+    true
+   ]
+  },
+  "gate": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError: 3 defs rely on unsafe or foreign code:\ndefs that depend on @unsafe: main.loop, main.loop.go, main.main\nHint: no law or proof uses these defs. Move them to a file this proof does not import, and the proofs will check: main.loop, main.loop.go, main.main",
+   "namesHatch": [
+    true
+   ],
+   "namesDependents": [
+    true,
+    true
+   ]
+  },
+  "verdict": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError: 3 defs rely on unsafe or foreign code:\ndefs that depend on @unsafe: main.loop, main.loop.go, main.main\nHint: no law or proof uses these defs. Move them to a file this proof does not import, and the proofs will check: main.loop, main.loop.go, main.main",
+   "namesHatch": [
+    true
+   ],
+   "namesDependents": [
+    true,
+    true
+   ],
+   "sameAsGate": true
+  },
+  "hatchDefs": [
+   "main.loop"
+  ],
+  "dependents": [
+   "main.loop.go",
+   "main.main"
+  ]
+ },
+ {
+  "id": "unsafe-dead",
+  "hatch": "@unsafe",
+  "context": "@unsafe call in dead code of the law's def",
+  "note": "the guide/WONTFIX say the checker skips dead code",
+  "run": {
+   "code": 0,
+   "verdict": "none",
+   "out": "6n"
+  },
+  "check": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError: 2 defs rely on unsafe or foreign code:\ndefs that depend on @unsafe: halve, halve.go",
+   "namesHatch": [
+    true
+   ]
+  },
+  "gate": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError: 2 defs rely on unsafe or foreign code:\ndefs that depend on @unsafe: main.halve, main.halve.go\nHint: no law or proof uses these defs. Move them to a file this proof does not import, and the proofs will check: main.halve, main.halve.go",
+   "namesHatch": [
+    true
+   ],
+   "namesDependents": [
+    true,
+    false,
+    false
+   ]
+  },
+  "verdict": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError: 2 defs rely on unsafe or foreign code:\ndefs that depend on @unsafe: main.halve, main.halve.go\nHint: no law or proof uses these defs. Move them to a file this proof does not import, and the proofs will check: main.halve, main.halve.go",
+   "namesHatch": [
+    true
+   ],
+   "namesDependents": [
+    true,
+    false,
+    false
+   ],
+   "sameAsGate": true
+  },
+  "hatchDefs": [
+   "main.halve"
+  ],
+  "dependents": [
+   "main.halve.go",
+   "main.twice",
+   "LAWS.twice_succ"
+  ]
+ },
+ {
+  "id": "unsafe-lib-module",
+  "hatch": "@unsafe",
+  "context": "pure, in an imported library used by the law's def",
+  "run": {
+   "code": 0,
+   "verdict": "none",
+   "out": "6n"
+  },
+  "check": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError: 3 defs rely on unsafe or foreign code:\ndefs that depend on @unsafe: lib.zero, twice, main",
+   "namesHatch": [
+    true
+   ]
+  },
+  "gate": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError: 4 defs rely on unsafe or foreign code:\ndefs that depend on @unsafe: lib.zero, main.twice, main.main, LAWS.twice_succ",
+   "namesHatch": [
+    true
+   ],
+   "namesDependents": [
+    true,
+    true
+   ]
+  },
+  "verdict": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError: 4 defs rely on unsafe or foreign code:\ndefs that depend on @unsafe: lib.zero, main.twice, main.main, LAWS.twice_succ",
+   "namesHatch": [
+    true
+   ],
+   "namesDependents": [
+    true,
+    true
+   ],
+   "sameAsGate": true
+  },
+  "hatchDefs": [
+   "lib.zero"
+  ],
+  "dependents": [
+   "main.twice",
+   "LAWS.twice_succ"
+  ]
+ },
+ {
+  "id": "qsugar-pure-unused",
+  "hatch": "def f?",
+  "context": "pure, unused",
+  "run": {
+   "code": 0,
+   "verdict": "none",
+   "out": "6n"
+  },
+  "check": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError: 2 defs rely on unsafe or foreign code:\ndefs that depend on @unsafe: halve, halve.go",
+   "namesHatch": [
+    true
+   ]
+  },
+  "gate": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError: 2 defs rely on unsafe or foreign code:\ndefs that depend on @unsafe: main.halve, main.halve.go\nHint: no law or proof uses these defs. Move them to a file this proof does not import, and the proofs will check: main.halve, main.halve.go",
+   "namesHatch": [
+    true
+   ],
+   "namesDependents": [
+    true
+   ]
+  },
+  "verdict": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError: 2 defs rely on unsafe or foreign code:\ndefs that depend on @unsafe: main.halve, main.halve.go\nHint: no law or proof uses these defs. Move them to a file this proof does not import, and the proofs will check: main.halve, main.halve.go",
+   "namesHatch": [
+    true
+   ],
+   "namesDependents": [
+    true
+   ],
+   "sameAsGate": true
+  },
+  "hatchDefs": [
+   "main.halve"
+  ],
+  "dependents": [
+   "main.halve.go"
+  ]
+ },
+ {
+  "id": "qsugar-law-def",
+  "hatch": "def f?",
+  "context": "pure, the law's def",
+  "run": {
+   "code": 0,
+   "verdict": "none",
+   "out": "6n"
+  },
+  "check": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError: 2 defs rely on unsafe or foreign code:\ndefs that depend on @unsafe: twice, main",
+   "namesHatch": [
+    true
+   ]
+  },
+  "gate": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError: 3 defs rely on unsafe or foreign code:\ndefs that depend on @unsafe: main.twice, main.main, LAWS.twice_succ",
+   "namesHatch": [
+    true
+   ],
+   "namesDependents": [
+    true,
+    true
+   ]
+  },
+  "verdict": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError: 3 defs rely on unsafe or foreign code:\ndefs that depend on @unsafe: main.twice, main.main, LAWS.twice_succ",
+   "namesHatch": [
+    true
+   ],
+   "namesDependents": [
+    true,
+    true
+   ],
+   "sameAsGate": true
+  },
+  "hatchDefs": [
+   "main.twice"
+  ],
+  "dependents": [
+   "main.main",
+   "LAWS.twice_succ"
+  ]
+ },
+ {
+  "id": "qsugar-io",
+  "hatch": "def f?",
+  "context": "IO, main only",
+  "run": {
+   "code": 0,
+   "verdict": "none",
+   "out": "9"
+  },
+  "check": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError: 3 defs rely on unsafe or foreign code:\ndefs that depend on @unsafe: halve, halve.go, main",
+   "namesHatch": [
+    true
+   ]
+  },
+  "gate": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError: 3 defs rely on unsafe or foreign code:\ndefs that depend on @unsafe: main.halve, main.halve.go, main.main\nHint: no law or proof uses these defs. Move them to a file this proof does not import, and the proofs will check: main.halve, main.halve.go, main.main",
+   "namesHatch": [
+    true
+   ],
+   "namesDependents": [
+    true,
+    true
+   ]
+  },
+  "verdict": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError: 3 defs rely on unsafe or foreign code:\ndefs that depend on @unsafe: main.halve, main.halve.go, main.main\nHint: no law or proof uses these defs. Move them to a file this proof does not import, and the proofs will check: main.halve, main.halve.go, main.main",
+   "namesHatch": [
+    true
+   ],
+   "namesDependents": [
+    true,
+    true
+   ],
+   "sameAsGate": true
+  },
+  "hatchDefs": [
+   "main.halve"
+  ],
+  "dependents": [
+   "main.halve.go",
+   "main.main"
+  ]
+ },
+ {
+  "id": "foreign-io-main",
+  "hatch": "foreign effect",
+  "context": "IO, main only",
+  "run": {
+   "code": 0,
+   "verdict": "none",
+   "out": "ms 527"
+  },
+  "check": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError: 2 defs rely on unsafe or foreign code:\ndefs that depend on foreign effects: Clock.now, main",
+   "namesHatch": [
+    true
+   ]
+  },
+  "gate": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError: 2 defs rely on unsafe or foreign code:\ndefs that depend on foreign effects: main.Clock.now, main.main\nHint: no law or proof uses these defs. Move them to a file this proof does not import, and the proofs will check: main.Clock.now, main.main",
+   "namesHatch": [
+    true
+   ],
+   "namesDependents": [
+    true
+   ]
+  },
+  "verdict": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError: 2 defs rely on unsafe or foreign code:\ndefs that depend on foreign effects: main.Clock.now, main.main\nHint: no law or proof uses these defs. Move them to a file this proof does not import, and the proofs will check: main.Clock.now, main.main",
+   "namesHatch": [
+    true
+   ],
+   "namesDependents": [
+    true
+   ],
+   "sameAsGate": true
+  },
+  "hatchDefs": [
+   "main.Clock.now"
+  ],
+  "dependents": [
+   "main.main"
+  ]
+ },
+ {
+  "id": "foreign-io-unused",
+  "hatch": "foreign effect",
+  "context": "declared, used by nothing",
+  "run": {
+   "code": 0,
+   "verdict": "none",
+   "out": "6n"
+  },
+  "check": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError: 1 def relies on unsafe or foreign code:\ndefs that depend on foreign effects: Clock.now",
+   "namesHatch": [
+    true
+   ]
+  },
+  "gate": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError: 1 def relies on unsafe or foreign code:\ndefs that depend on foreign effects: main.Clock.now\nHint: no law or proof uses these defs. Move them to a file this proof does not import, and the proofs will check: main.Clock.now",
+   "namesHatch": [
+    true
+   ],
+   "namesDependents": []
+  },
+  "verdict": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError: 1 def relies on unsafe or foreign code:\ndefs that depend on foreign effects: main.Clock.now\nHint: no law or proof uses these defs. Move them to a file this proof does not import, and the proofs will check: main.Clock.now",
+   "namesHatch": [
+    true
+   ],
+   "namesDependents": [],
+   "sameAsGate": true
+  },
+  "hatchDefs": [
+   "main.Clock.now"
+  ],
+  "dependents": []
+ },
+ {
+  "id": "foreign-io-lib",
+  "hatch": "foreign effect",
+  "context": "IO, in an imported library",
+  "run": {
+   "code": 0,
+   "verdict": "none",
+   "out": "ms 669"
+  },
+  "check": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError: 2 defs rely on unsafe or foreign code:\ndefs that depend on foreign effects: clk.Clock.now, main",
+   "namesHatch": [
+    true
+   ]
+  },
+  "gate": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError: 2 defs rely on unsafe or foreign code:\ndefs that depend on foreign effects: clk.Clock.now, main.main\nHint: no law or proof uses these defs. Move them to a file this proof does not import, and the proofs will check: clk.Clock.now, main.main",
+   "namesHatch": [
+    true
+   ],
+   "namesDependents": [
+    true
+   ]
+  },
+  "verdict": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError: 2 defs rely on unsafe or foreign code:\ndefs that depend on foreign effects: clk.Clock.now, main.main\nHint: no law or proof uses these defs. Move them to a file this proof does not import, and the proofs will check: clk.Clock.now, main.main",
+   "namesHatch": [
+    true
+   ],
+   "namesDependents": [
+    true
+   ],
+   "sameAsGate": true
+  },
+  "hatchDefs": [
+   "clk.Clock.now"
+  ],
+  "dependents": [
+   "main.main"
+  ]
+ },
+ {
+  "id": "foreign-io-law",
+  "hatch": "foreign effect",
+  "context": "IO def that a law mentions",
+  "run": {
+   "code": 0,
+   "verdict": "none",
+   "out": "ms 441"
+  },
+  "check": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError: 3 defs rely on unsafe or foreign code:\ndefs that depend on foreign effects: Clock.now, stamp, main",
+   "namesHatch": [
+    true
+   ]
+  },
+  "gate": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError: 4 defs rely on unsafe or foreign code:\ndefs that depend on foreign effects: main.Clock.now, main.stamp, main.main, LAWS.stamp_const",
+   "namesHatch": [
+    true
+   ],
+   "namesDependents": [
+    true,
+    true,
+    true
+   ]
+  },
+  "verdict": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError: 4 defs rely on unsafe or foreign code:\ndefs that depend on foreign effects: main.Clock.now, main.stamp, main.main, LAWS.stamp_const",
+   "namesHatch": [
+    true
+   ],
+   "namesDependents": [
+    true,
+    true,
+    true
+   ],
+   "sameAsGate": true
+  },
+  "hatchDefs": [
+   "main.Clock.now"
+  ],
+  "dependents": [
+   "main.stamp",
+   "main.main",
+   "LAWS.stamp_const"
+  ]
+ },
+ {
+  "id": "foreign-pure-type",
+  "hatch": "foreign effect",
+  "context": "foreign def with a non-IO type",
+  "run": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError:\n- expected : a foreign definition returning base IO(...) directly (return type aliases are not unfolded)\n- observed : magic\nLocation: magic\n 9 | "
+  },
+  "check": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError:\n- expected : a foreign definition returning base IO(...) directly (return type aliases are not unfolded)\n- observed : magic\nLocation: magic\n 9 | ",
+   "namesHatch": [
+    true
+   ]
+  },
+  "gate": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError:\n- expected : a foreign definition returning base IO(...) directly (return type aliases are not unfolded)\n- observed : main:magic\nLocation: magic\n 9 | \n10>| def magic(n: U32) -> U32:\n   |                      ^^^",
+   "namesHatch": [
+    true
+   ],
+   "namesDependents": []
+  },
+  "verdict": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError:\n- expected : a foreign definition returning base IO(...) directly (return type aliases are not unfolded)\n- observed : main:magic\nLocation: magic\n 9 | \n10>| def magic(n: U32) -> U32:\n   |                      ^^^",
+   "namesHatch": [
+    true
+   ],
+   "namesDependents": [],
+   "sameAsGate": true
+  },
+  "hatchDefs": [
+   "main.magic"
+  ],
+  "dependents": []
+ },
+ {
+  "id": "base-effect-io",
+  "hatch": "Base effect (IO.print, TCP)",
+  "context": "IO, main only",
+  "note": "Base effects are foreign defs (import ./x.js) inside base.bend",
+  "run": {
+   "code": 0,
+   "verdict": "none",
+   "out": "hi"
+  },
+  "check": {
+   "code": 0,
+   "verdict": "PASS",
+   "out": "ALL PROOFS CHECK\nUse --verdict for mathematical validity.",
+   "namesHatch": []
+  },
+  "gate": {
+   "code": 0,
+   "verdict": "PASS",
+   "out": "ALL PROOFS CHECK\nUse --verdict for mathematical validity.",
+   "namesHatch": [],
+   "namesDependents": []
+  },
+  "verdict": {
+   "code": 0,
+   "verdict": "PASS",
+   "out": "ALL PROOFS CHECK",
+   "namesHatch": [],
+   "namesDependents": [],
+   "sameAsGate": true
+  },
+  "hatchDefs": [],
+  "dependents": []
+ },
+ {
+  "id": "todo-pure-unused",
+  "hatch": "?TODO",
+  "context": "pure, unused def",
+  "run": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError: 1 TODO found.\nThe code is incomplete, and not a valid proof yet."
+  },
+  "check": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError: 1 TODO found.\nThe code is incomplete, and not a valid proof yet.",
+   "namesHatch": [
+    false
+   ]
+  },
+  "gate": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError: 1 TODO found.\nThe code is incomplete, and not a valid proof yet.",
+   "namesHatch": [
+    false
+   ],
+   "namesDependents": []
+  },
+  "verdict": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError: 1 TODO found.\nThe code is incomplete, and not a valid proof yet.",
+   "namesHatch": [
+    false
+   ],
+   "namesDependents": [],
+   "sameAsGate": true
+  },
+  "hatchDefs": [
+   "main.later"
+  ],
+  "dependents": []
+ },
+ {
+  "id": "todo-proof",
+  "hatch": "?TODO",
+  "context": "the law's proof body",
+  "run": {
+   "code": 0,
+   "verdict": "none",
+   "out": "6n"
+  },
+  "check": {
+   "code": 0,
+   "verdict": "PASS",
+   "out": "ALL PROOFS CHECK\nUse --verdict for mathematical validity.",
+   "namesHatch": []
+  },
+  "gate": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError: 1 TODO found.\nThe code is incomplete, and not a valid proof yet.",
+   "namesHatch": [
+    false
+   ],
+   "namesDependents": []
+  },
+  "verdict": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError: 1 TODO found.\nThe code is incomplete, and not a valid proof yet.",
+   "namesHatch": [
+    false
+   ],
+   "namesDependents": [],
+   "sameAsGate": true
+  },
+  "hatchDefs": [
+   "Laws.twice_succ"
+  ],
+  "dependents": []
+ },
+ {
+  "id": "todo-io",
+  "hatch": "?TODO",
+  "context": "IO code",
+  "run": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError: 1 TODO found.\nThe code is incomplete, and not a valid proof yet."
+  },
+  "check": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError: 1 TODO found.\nThe code is incomplete, and not a valid proof yet.",
+   "namesHatch": [
+    false
+   ]
+  },
+  "gate": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError: 1 TODO found.\nThe code is incomplete, and not a valid proof yet.",
+   "namesHatch": [
+    false
+   ],
+   "namesDependents": []
+  },
+  "verdict": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError: 1 TODO found.\nThe code is incomplete, and not a valid proof yet.",
+   "namesHatch": [
+    false
+   ],
+   "namesDependents": [],
+   "sameAsGate": true
+  },
+  "hatchDefs": [
+   "main.greeting"
+  ],
+  "dependents": []
+ },
+ {
+  "id": "todo-dead",
+  "hatch": "?TODO",
+  "context": "dead code of the law's def",
+  "run": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError: 1 TODO found.\nThe code is incomplete, and not a valid proof yet."
+  },
+  "check": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError: 1 TODO found.\nThe code is incomplete, and not a valid proof yet.",
+   "namesHatch": [
+    false
+   ]
+  },
+  "gate": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError: 1 TODO found.\nThe code is incomplete, and not a valid proof yet.",
+   "namesHatch": [
+    false
+   ],
+   "namesDependents": []
+  },
+  "verdict": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError: 1 TODO found.\nThe code is incomplete, and not a valid proof yet.",
+   "namesHatch": [
+    false
+   ],
+   "namesDependents": [],
+   "sameAsGate": true
+  },
+  "hatchDefs": [
+   "main.twice"
+  ],
+  "dependents": []
+ },
+ {
+  "id": "named-hole-proof",
+  "hatch": "?name",
+  "context": "the law's proof body",
+  "run": {
+   "code": 0,
+   "verdict": "none",
+   "out": "6n"
+  },
+  "check": {
+   "code": 0,
+   "verdict": "PASS",
+   "out": "ALL PROOFS CHECK\nUse --verdict for mathematical validity.",
+   "namesHatch": []
+  },
+  "gate": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError:\n- expected : {2n+M.twice(n) == 2n+M.twice(n) : Nat}\n- observed : ?goal\nContext:\n- n : Nat\nLocation: Laws.twice_succ\n5 | def Laws.twice_succ(n):",
+   "namesHatch": [
+    true
+   ],
+   "namesDependents": []
+  },
+  "verdict": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError:\n- expected : {2n+M.twice(n) == 2n+M.twice(n) : Nat}\n- observed : ?goal\nContext:\n- n : Nat\nLocation: Laws.twice_succ\n5 | def Laws.twice_succ(n):",
+   "namesHatch": [
+    true
+   ],
+   "namesDependents": [],
+   "sameAsGate": true
+  },
+  "hatchDefs": [
+   "Laws.twice_succ"
+  ],
+  "dependents": []
+ },
+ {
+  "id": "named-hole-pure",
+  "hatch": "?name",
+  "context": "pure, unused def",
+  "run": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError:\n- expected : Nat\n- observed : ?goal\nContext:\n- n : Nat"
+  },
+  "check": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError:\n- expected : Nat\n- observed : ?goal\nContext:\n- n : Nat",
+   "namesHatch": [
+    true
+   ]
+  },
+  "gate": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError:\n- expected : Nat\n- observed : ?goal\nContext:\n- n : Nat\nLocation: later\n10 | def later(n: Nat) -> Nat:",
+   "namesHatch": [
+    true
+   ],
+   "namesDependents": []
+  },
+  "verdict": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError:\n- expected : Nat\n- observed : ?goal\nContext:\n- n : Nat\nLocation: later\n10 | def later(n: Nat) -> Nat:",
+   "namesHatch": [
+    true
+   ],
+   "namesDependents": [],
+   "sameAsGate": true
+  },
+  "hatchDefs": [
+   "main.later"
+  ],
+  "dependents": []
+ },
+ {
+  "id": "open-law-gate",
+  "hatch": "open law",
+  "context": "a LAWS.bend law with no proof",
+  "run": {
+   "code": 0,
+   "verdict": "none",
+   "out": "6n"
+  },
+  "check": {
+   "code": 0,
+   "verdict": "PASS",
+   "out": "ALL PROOFS CHECK\nUse --verdict for mathematical validity.",
+   "namesHatch": []
+  },
+  "gate": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError: 1 TODO found.\nThe code is incomplete, and not a valid proof yet.",
+   "namesHatch": [
+    false
+   ],
+   "namesDependents": []
+  },
+  "verdict": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError: 1 TODO found.\nThe code is incomplete, and not a valid proof yet.",
+   "namesHatch": [
+    false
+   ],
+   "namesDependents": [],
+   "sameAsGate": true
+  },
+  "hatchDefs": [
+   "LAWS.twice_zero"
+  ],
+  "dependents": []
+ },
+ {
+  "id": "open-law-main",
+  "hatch": "open law",
+  "context": "an unused law left open in main.bend",
+  "run": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError: 1 TODO found.\nThe code is incomplete, and not a valid proof yet."
+  },
+  "check": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError: 1 TODO found.\nThe code is incomplete, and not a valid proof yet.",
+   "namesHatch": [
+    false
+   ]
+  },
+  "gate": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError: 1 TODO found.\nThe code is incomplete, and not a valid proof yet.",
+   "namesHatch": [
+    false
+   ],
+   "namesDependents": []
+  },
+  "verdict": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError: 1 TODO found.\nThe code is incomplete, and not a valid proof yet.",
+   "namesHatch": [
+    false
+   ],
+   "namesDependents": [],
+   "sameAsGate": true
+  },
+  "hatchDefs": [
+   "main.twice_assoc"
+  ],
+  "dependents": []
+ },
+ {
+  "id": "open-law-io",
+  "hatch": "open law",
+  "context": "an open law in a file with an IO main",
+  "run": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError: 1 TODO found.\nThe code is incomplete, and not a valid proof yet."
+  },
+  "check": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError: 1 TODO found.\nThe code is incomplete, and not a valid proof yet.",
+   "namesHatch": [
+    false
+   ]
+  },
+  "gate": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError: 1 TODO found.\nThe code is incomplete, and not a valid proof yet.",
+   "namesHatch": [
+    false
+   ],
+   "namesDependents": []
+  },
+  "verdict": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError: 1 TODO found.\nThe code is incomplete, and not a valid proof yet.",
+   "namesHatch": [
+    false
+   ],
+   "namesDependents": [],
+   "sameAsGate": true
+  },
+  "hatchDefs": [
+   "main.twice_assoc"
+  ],
+  "dependents": []
+ },
+ {
+  "id": "open-law-type",
+  "hatch": "open law (user handle type)",
+  "context": "law Token: Type, unused",
+  "run": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError: 1 TODO found.\nThe code is incomplete, and not a valid proof yet."
+  },
+  "check": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError: 1 TODO found.\nThe code is incomplete, and not a valid proof yet.",
+   "namesHatch": [
+    false
+   ]
+  },
+  "gate": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError: 1 TODO found.\nThe code is incomplete, and not a valid proof yet.",
+   "namesHatch": [
+    false
+   ],
+   "namesDependents": []
+  },
+  "verdict": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError: 1 TODO found.\nThe code is incomplete, and not a valid proof yet.",
+   "namesHatch": [
+    false
+   ],
+   "namesDependents": [],
+   "sameAsGate": true
+  },
+  "hatchDefs": [
+   "main.Token"
+  ],
+  "dependents": []
+ },
+ {
+  "id": "open-law-filled-elsewhere",
+  "hatch": "open law",
+  "context": "law open in main.bend, filled in PROOF.bend",
+  "note": "guide: a law left open in one file may be filled in another",
+  "run": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError: 1 TODO found.\nThe code is incomplete, and not a valid proof yet."
+  },
+  "check": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError: 1 TODO found.\nThe code is incomplete, and not a valid proof yet.",
+   "namesHatch": [
+    false
+   ]
+  },
+  "gate": {
+   "code": 0,
+   "verdict": "PASS",
+   "out": "ALL PROOFS CHECK\nUse --verdict for mathematical validity.",
+   "namesHatch": [
+    false
+   ],
+   "namesDependents": []
+  },
+  "verdict": {
+   "code": 0,
+   "verdict": "PASS",
+   "out": "ALL PROOFS CHECK",
+   "namesHatch": [
+    false
+   ],
+   "namesDependents": [],
+   "sameAsGate": true
+  },
+  "hatchDefs": [
+   "main.twice_zero"
+  ],
+  "dependents": []
+ },
+ {
+  "id": "f32-law-def",
+  "hatch": "F32 axiom",
+  "context": "the law's def computes with F32",
+  "run": {
+   "code": 0,
+   "verdict": "none",
+   "out": "6n"
+  },
+  "check": {
+   "code": 0,
+   "verdict": "PASS",
+   "out": "ALL PROOFS CHECK\nUse --verdict for mathematical validity.",
+   "namesHatch": [
+    false
+   ]
+  },
+  "gate": {
+   "code": 0,
+   "verdict": "PASS",
+   "out": "ALL PROOFS CHECK\nUse --verdict for mathematical validity.",
+   "namesHatch": [
+    false
+   ],
+   "namesDependents": []
+  },
+  "verdict": {
+   "code": 0,
+   "verdict": "PASS",
+   "out": "ALL PROOFS CHECK",
+   "namesHatch": [
+    false
+   ],
+   "namesDependents": [],
+   "sameAsGate": true
+  },
+  "hatchDefs": [
+   "main.scale"
+  ],
+  "dependents": []
+ },
+ {
+  "id": "f32-value-law",
+  "hatch": "F32 axiom",
+  "context": "a law about an F32 value (true in IEEE)",
+  "run": {
+   "code": 0,
+   "verdict": "none",
+   "out": "6n"
+  },
+  "check": {
+   "code": 0,
+   "verdict": "PASS",
+   "out": "ALL PROOFS CHECK\nUse --verdict for mathematical validity.",
+   "namesHatch": []
+  },
+  "gate": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError:\n- expected : F32.add(1.0, 1.0)\n- observed : 2.0\nLocation: Laws.one_plus_one\n 8 | def Laws.one_plus_one():\n 9>|   {==}\n   |   ^^^^",
+   "namesHatch": [],
+   "namesDependents": []
+  },
+  "verdict": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError:\n- expected : F32.add(1.0, 1.0)\n- observed : 2.0\nLocation: Laws.one_plus_one\n 8 | def Laws.one_plus_one():\n 9>|   {==}\n   |   ^^^^",
+   "namesHatch": [],
+   "namesDependents": [],
+   "sameAsGate": true
+  },
+  "hatchDefs": [],
+  "dependents": []
+ },
+ {
+  "id": "f32-io",
+  "hatch": "F32 axiom",
+  "context": "IO code",
+  "run": {
+   "code": 0,
+   "verdict": "none",
+   "out": "3"
+  },
+  "check": {
+   "code": 0,
+   "verdict": "PASS",
+   "out": "ALL PROOFS CHECK\nUse --verdict for mathematical validity.",
+   "namesHatch": []
+  },
+  "gate": {
+   "code": 0,
+   "verdict": "PASS",
+   "out": "ALL PROOFS CHECK\nUse --verdict for mathematical validity.",
+   "namesHatch": [],
+   "namesDependents": []
+  },
+  "verdict": {
+   "code": 0,
+   "verdict": "PASS",
+   "out": "ALL PROOFS CHECK",
+   "namesHatch": [],
+   "namesDependents": [],
+   "sameAsGate": true
+  },
+  "hatchDefs": [],
+  "dependents": []
+ },
+ {
+  "id": "fork-pure-unused",
+  "hatch": "Base @unsafe (Array.fork)",
+  "context": "pure, unused",
+  "run": {
+   "code": 0,
+   "verdict": "none",
+   "out": "6n"
+  },
+  "check": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError: 1 def relies on unsafe or foreign code:\ndefs that depend on @unsafe: both",
+   "namesHatch": [
+    true
+   ]
+  },
+  "gate": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError: 1 def relies on unsafe or foreign code:\ndefs that depend on @unsafe: main.both\nHint: no law or proof uses these defs. Move them to a file this proof does not import, and the proofs will check: main.both",
+   "namesHatch": [
+    true
+   ],
+   "namesDependents": []
+  },
+  "verdict": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError: 1 def relies on unsafe or foreign code:\ndefs that depend on @unsafe: main.both\nHint: no law or proof uses these defs. Move them to a file this proof does not import, and the proofs will check: main.both",
+   "namesHatch": [
+    true
+   ],
+   "namesDependents": [],
+   "sameAsGate": true
+  },
+  "hatchDefs": [
+   "main.both"
+  ],
+  "dependents": []
+ },
+ {
+  "id": "fork-law-def",
+  "hatch": "Base @unsafe (Array.fork)",
+  "context": "used by the law's def",
+  "run": {
+   "code": 0,
+   "verdict": "none",
+   "out": "6n"
+  },
+  "check": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError: 3 defs rely on unsafe or foreign code:\ndefs that depend on @unsafe: touch, twice, main",
+   "namesHatch": [
+    true
+   ]
+  },
+  "gate": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError: 4 defs rely on unsafe or foreign code:\ndefs that depend on @unsafe: main.touch, main.twice, main.main, LAWS.twice_succ",
+   "namesHatch": [
+    true
+   ],
+   "namesDependents": [
+    true,
+    true
+   ]
+  },
+  "verdict": {
+   "code": 1,
+   "verdict": "FAIL",
+   "out": "SOME PROOFS FAIL\nError: 4 defs rely on unsafe or foreign code:\ndefs that depend on @unsafe: main.touch, main.twice, main.main, LAWS.twice_succ",
+   "namesHatch": [
+    true
+   ],
+   "namesDependents": [
+    true,
+    true
+   ],
+   "sameAsGate": true
+  },
+  "hatchDefs": [
+   "main.touch"
+  ],
+  "dependents": [
+   "main.twice",
+   "LAWS.twice_succ"
+  ]
+ }
+]

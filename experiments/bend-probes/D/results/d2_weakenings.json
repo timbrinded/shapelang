@@ -1,0 +1,1152 @@
+[
+ {
+  "id": "IS1-delete",
+  "demo": "proof_insertion_sort",
+  "demoGateBaseline": 0,
+  "kind": "delete law",
+  "desc": "delete sort_perm",
+  "semantic": false,
+  "control": false,
+  "editErrors": [],
+  "gateUnchangedProof": {
+   "code": 1,
+   "out": "SOME PROOFS FAIL\nError:\n- expected : a fresh name (Laws is an import's alias)\n- observed : 'Laws.sort_perm'\nLocation:\n75 | # turns it into count(x, h <> sort(t)), and the IH closes the tail"
+  },
+  "gateAfterProofEdit": {
+   "code": 0,
+   "out": "ALL PROOFS CHECK\nUse --verdict for mathematical validity."
+  },
+  "verdictAfterProofEdit": {
+   "code": 0,
+   "out": "ALL PROOFS CHECK"
+  },
+  "proofEdited": true,
+  "proofLinesDelta": -8,
+  "diff": {
+   "book": {
+    "removed": [
+     "LAWS.sort_perm"
+    ],
+    "added": [],
+    "renamed": [],
+    "changed": [],
+    "closureOnly": [],
+    "flagged": true,
+    "closureFlagged": true
+   },
+   "dir": {
+    "removed": [
+     "sort_perm"
+    ],
+    "added": [],
+    "flagged": true
+   }
+  }
+ },
+ {
+  "id": "IS2-rename",
+  "demo": "proof_insertion_sort",
+  "demoGateBaseline": 0,
+  "kind": "rename law+proof",
+  "desc": "rename sort_sorted to sort_ascends",
+  "semantic": false,
+  "control": false,
+  "editErrors": [],
+  "gateUnchangedProof": {
+   "code": 1,
+   "out": "SOME PROOFS FAIL\nError:\n- expected : a fresh name (Laws is an import's alias)\n- observed : 'Laws.sort_sorted'\nLocation:\n33 | # sort(h <> t) inserts h into the sorted sort(t); 0n bounds everything"
+  },
+  "gateAfterProofEdit": {
+   "code": 0,
+   "out": "ALL PROOFS CHECK\nUse --verdict for mathematical validity."
+  },
+  "verdictAfterProofEdit": {
+   "code": 0,
+   "out": "ALL PROOFS CHECK"
+  },
+  "proofEdited": true,
+  "proofLinesDelta": 0,
+  "diff": {
+   "book": {
+    "removed": [],
+    "added": [],
+    "renamed": [
+     "LAWS.sort_sorted -> LAWS.sort_ascends"
+    ],
+    "changed": [],
+    "closureOnly": [],
+    "flagged": true,
+    "closureFlagged": true
+   },
+   "dir": {
+    "removed": [
+     "sort_sorted"
+    ],
+    "added": [
+     "sort_ascends"
+    ],
+    "flagged": true
+   }
+  }
+ },
+ {
+  "id": "IS3-length",
+  "demo": "proof_insertion_sort",
+  "demoGateBaseline": 0,
+  "kind": "weaken conclusion",
+  "desc": "sortedness -> length preservation",
+  "semantic": true,
+  "control": false,
+  "editErrors": [],
+  "gateUnchangedProof": {
+   "code": 1,
+   "out": "SOME PROOFS FAIL\nError:\n- expected : {0n == 0n : Nat}\n- observed : Unit\nLocation: Laws.sort_sorted\n36 |     case Nil{}:"
+  },
+  "gateAfterProofEdit": {
+   "code": 0,
+   "out": "ALL PROOFS CHECK\nUse --verdict for mathematical validity."
+  },
+  "verdictAfterProofEdit": {
+   "code": 0,
+   "out": "ALL PROOFS CHECK"
+  },
+  "proofEdited": true,
+  "proofLinesDelta": 18,
+  "diff": {
+   "book": {
+    "removed": [],
+    "added": [],
+    "renamed": [],
+    "changed": [
+     "LAWS.sort_sorted"
+    ],
+    "closureOnly": [],
+    "flagged": true,
+    "closureFlagged": true
+   },
+   "dir": {
+    "removed": [],
+    "added": [],
+    "flagged": false
+   }
+  }
+ },
+ {
+  "id": "IS4-precond",
+  "demo": "proof_insertion_sort",
+  "demoGateBaseline": 0,
+  "kind": "narrow domain (precondition)",
+  "desc": "sort_sorted only for already-sorted inputs",
+  "semantic": true,
+  "control": false,
+  "editErrors": [],
+  "gateUnchangedProof": {
+   "code": 1,
+   "out": "SOME PROOFS FAIL\nError:\n- expected : @h:Unit -> Unit\n- observed : Unit\nLocation: Laws.sort_sorted\n36 |     case Nil{}:"
+  },
+  "gateAfterProofEdit": {
+   "code": 0,
+   "out": "ALL PROOFS CHECK\nUse --verdict for mathematical validity."
+  },
+  "verdictAfterProofEdit": {
+   "code": 0,
+   "out": "ALL PROOFS CHECK"
+  },
+  "proofEdited": true,
+  "proofLinesDelta": 3,
+  "diff": {
+   "book": {
+    "removed": [],
+    "added": [],
+    "renamed": [],
+    "changed": [
+     "LAWS.sort_sorted"
+    ],
+    "closureOnly": [],
+    "flagged": true,
+    "closureFlagged": true
+   },
+   "dir": {
+    "removed": [],
+    "added": [],
+    "flagged": false
+   }
+  }
+ },
+ {
+  "id": "IS5-trivial",
+  "demo": "proof_insertion_sort",
+  "demoGateBaseline": 0,
+  "kind": "trivially true body",
+  "desc": "sort_perm becomes count(x,xs) == count(x,xs)",
+  "semantic": true,
+  "control": false,
+  "editErrors": [],
+  "gateUnchangedProof": {
+   "code": 1,
+   "out": "SOME PROOFS FAIL\nError:\n- expected : {Sort.bump(Cmp.is_eq(Nat.cmp(x, h)), Sort.count(x, t)) == Sort.bump(Cmp.is_eq(Nat.cmp(x, h)), Sort.count(x, t)) : Nat}\n- observed : {Sort.count(x, Sort.insert(h, Sort.sort(t))) == Sort.bump(Cmp.is_eq(Nat.cmp(x, h)), Sort.count(x, t)) : Nat}\nContext:\n- x : Nat"
+  },
+  "gateAfterProofEdit": {
+   "code": 0,
+   "out": "ALL PROOFS CHECK\nUse --verdict for mathematical validity."
+  },
+  "verdictAfterProofEdit": {
+   "code": 0,
+   "out": "ALL PROOFS CHECK"
+  },
+  "proofEdited": true,
+  "proofLinesDelta": -6,
+  "diff": {
+   "book": {
+    "removed": [],
+    "added": [],
+    "renamed": [],
+    "changed": [
+     "LAWS.sort_perm"
+    ],
+    "closureOnly": [],
+    "flagged": true,
+    "closureFlagged": true
+   },
+   "dir": {
+    "removed": [],
+    "added": [],
+    "flagged": false
+   }
+  }
+ },
+ {
+  "id": "IS6-le",
+  "demo": "proof_insertion_sort",
+  "demoGateBaseline": 0,
+  "kind": "weaken conclusion",
+  "desc": "sort_perm: count equality -> count(x, sort xs) <= count(x, xs)",
+  "semantic": true,
+  "control": false,
+  "editErrors": [],
+  "gateUnchangedProof": {
+   "code": 1,
+   "out": "SOME PROOFS FAIL\nError:\n- expected : {Cmp.is_le(Nat.cmp(Sort.count(x, Sort.insert(h, Sort.sort(t))), Sort.bump(Cmp.is_eq(Nat.cmp(x, h)), Sort.count(x, t)))) == True{} : Bool}\n- observed : {Sort.count(x, Sort.insert(h, Sort.sort(t))) == Sort.bump(Cmp.is_eq(Nat.cmp(x, h)), Sort.count(x, t)) : Nat}\nContext:\n- x : Nat"
+  },
+  "gateAfterProofEdit": {
+   "code": 0,
+   "out": "ALL PROOFS CHECK\nUse --verdict for mathematical validity."
+  },
+  "verdictAfterProofEdit": {
+   "code": 0,
+   "out": "ALL PROOFS CHECK"
+  },
+  "proofEdited": true,
+  "proofLinesDelta": 11,
+  "diff": {
+   "book": {
+    "removed": [],
+    "added": [],
+    "renamed": [],
+    "changed": [
+     "LAWS.sort_perm"
+    ],
+    "closureOnly": [],
+    "flagged": true,
+    "closureFlagged": true
+   },
+   "dir": {
+    "removed": [],
+    "added": [],
+    "flagged": false
+   }
+  }
+ },
+ {
+  "id": "IS7-defSorted",
+  "demo": "proof_insertion_sort",
+  "demoGateBaseline": 0,
+  "kind": "def change (spec helper)",
+  "desc": "Sorted.from in main.bend becomes Unit; LAWS.bend untouched",
+  "semantic": true,
+  "control": false,
+  "editErrors": [],
+  "gateUnchangedProof": {
+   "code": 1,
+   "out": "SOME PROOFS FAIL\nError:\n- expected : a constructor of Unit (missing, or already matched)\n- observed : \\{Tuple: (lh => st => lx => rec => \\{Inl: (e => (lx, e, st)); Inr: (e => (lh, rec(st, e)))})}\nContext:\n- lo : Nat"
+  },
+  "gateAfterProofEdit": {
+   "code": 0,
+   "out": "ALL PROOFS CHECK\nUse --verdict for mathematical validity."
+  },
+  "verdictAfterProofEdit": {
+   "code": 0,
+   "out": "ALL PROOFS CHECK"
+  },
+  "proofEdited": true,
+  "proofLinesDelta": -25,
+  "diff": {
+   "book": {
+    "removed": [],
+    "added": [],
+    "renamed": [],
+    "changed": [],
+    "closureOnly": [
+     "LAWS.sort_sorted"
+    ],
+    "flagged": false,
+    "closureFlagged": true
+   },
+   "dir": {
+    "removed": [],
+    "added": [],
+    "flagged": false
+   }
+  }
+ },
+ {
+  "id": "IS8-defCount",
+  "demo": "proof_insertion_sort",
+  "demoGateBaseline": 0,
+  "kind": "def change (spec helper)",
+  "desc": "count in main.bend returns 0n; LAWS.bend untouched",
+  "semantic": true,
+  "control": false,
+  "editErrors": [],
+  "gateUnchangedProof": {
+   "code": 1,
+   "out": "SOME PROOFS FAIL\nError:\n- expected : {0n == 0n : Nat}\n- observed : {0n == Sort.bump(Cmp.is_eq(Nat.cmp(x, h)), 0n) : Nat}\nContext:\n- x   : Nat"
+  },
+  "gateAfterProofEdit": {
+   "code": 0,
+   "out": "ALL PROOFS CHECK\nUse --verdict for mathematical validity."
+  },
+  "verdictAfterProofEdit": {
+   "code": 0,
+   "out": "ALL PROOFS CHECK"
+  },
+  "proofEdited": true,
+  "proofLinesDelta": -38,
+  "diff": {
+   "book": {
+    "removed": [],
+    "added": [],
+    "renamed": [],
+    "changed": [],
+    "closureOnly": [
+     "LAWS.sort_perm"
+    ],
+    "flagged": false,
+    "closureFlagged": true
+   },
+   "dir": {
+    "removed": [],
+    "added": [],
+    "flagged": false
+   }
+  }
+ },
+ {
+  "id": "IS9-move",
+  "demo": "proof_insertion_sort",
+  "demoGateBaseline": 0,
+  "kind": "move law out of PROOF's imports",
+  "desc": "sort_perm moved to LAWS_MORE.bend, which PROOF.bend does not import",
+  "semantic": false,
+  "control": false,
+  "editErrors": [],
+  "gateUnchangedProof": {
+   "code": 1,
+   "out": "SOME PROOFS FAIL\nError:\n- expected : a fresh name (Laws is an import's alias)\n- observed : 'Laws.sort_perm'\nLocation:\n75 | # turns it into count(x, h <> sort(t)), and the IH closes the tail"
+  },
+  "gateAfterProofEdit": {
+   "code": 0,
+   "out": "ALL PROOFS CHECK\nUse --verdict for mathematical validity."
+  },
+  "verdictAfterProofEdit": {
+   "code": 0,
+   "out": "ALL PROOFS CHECK"
+  },
+  "proofEdited": true,
+  "proofLinesDelta": -8,
+  "diff": {
+   "book": {
+    "removed": [
+     "LAWS.sort_perm"
+    ],
+    "added": [],
+    "renamed": [],
+    "changed": [],
+    "closureOnly": [],
+    "flagged": true,
+    "closureFlagged": true
+   },
+   "dir": {
+    "removed": [],
+    "added": [],
+    "flagged": false
+   }
+  }
+ },
+ {
+  "id": "IS10-pairs",
+  "demo": "proof_insertion_sort",
+  "demoGateBaseline": 0,
+  "kind": "narrow domain (instantiate)",
+  "desc": "sort_sorted only for two-element lists",
+  "semantic": true,
+  "control": false,
+  "editErrors": [],
+  "gateUnchangedProof": {
+   "code": 1,
+   "out": "SOME PROOFS FAIL\nError:\n- expected : a constructor of Nat (missing, or already matched)\n- observed : \\{Nil: Unit{}; Con: (h => t => sorted_ins(Sort.sort(t), 0n, h, Laws.sort_sorted(t), Unit{}))}\nLocation: Laws.sort_sorted\n35 |   match xs:"
+  },
+  "gateAfterProofEdit": {
+   "code": 0,
+   "out": "ALL PROOFS CHECK\nUse --verdict for mathematical validity."
+  },
+  "verdictAfterProofEdit": {
+   "code": 0,
+   "out": "ALL PROOFS CHECK"
+  },
+  "proofEdited": true,
+  "proofLinesDelta": 3,
+  "diff": {
+   "book": {
+    "removed": [],
+    "added": [],
+    "renamed": [],
+    "changed": [
+     "LAWS.sort_sorted"
+    ],
+    "closureOnly": [],
+    "flagged": true,
+    "closureFlagged": true
+   },
+   "dir": {
+    "removed": [],
+    "added": [],
+    "flagged": false
+   }
+  }
+ },
+ {
+  "id": "WIN1-delete",
+  "demo": "app_win_is_bug_2d",
+  "demoGateBaseline": 0,
+  "kind": "delete law",
+  "desc": "delete never_on_flag",
+  "semantic": false,
+  "control": false,
+  "editErrors": [],
+  "gateUnchangedProof": {
+   "code": 1,
+   "out": "SOME PROOFS FAIL\nError:\n- expected : a fresh name (Laws is an import's alias)\n- observed : 'Laws.never_on_flag'\nLocation:\n475 | "
+  },
+  "gateAfterProofEdit": {
+   "code": 0,
+   "out": "ALL PROOFS CHECK\nUse --verdict for mathematical validity."
+  },
+  "verdictAfterProofEdit": {
+   "code": 0,
+   "out": "ALL PROOFS CHECK"
+  },
+  "proofEdited": true,
+  "proofLinesDelta": -9,
+  "diff": {
+   "book": {
+    "removed": [
+     "LAWS.never_on_flag"
+    ],
+    "added": [],
+    "renamed": [],
+    "changed": [],
+    "closureOnly": [],
+    "flagged": true,
+    "closureFlagged": true
+   },
+   "dir": {
+    "removed": [
+     "never_on_flag"
+    ],
+    "added": [],
+    "flagged": true
+   }
+  }
+ },
+ {
+  "id": "WIN2-onemove",
+  "demo": "app_win_is_bug_2d",
+  "demoGateBaseline": 0,
+  "kind": "narrow domain (instantiate)",
+  "desc": "you_cant_win only for one-move sequences",
+  "semantic": true,
+  "control": false,
+  "editErrors": [],
+  "gateUnchangedProof": {
+   "code": 1,
+   "out": "SOME PROOFS FAIL\nError:\n- expected : List<&1, Game.Move>\n- observed : Game.Move\nContext:\n- moves : Game.Move"
+  },
+  "gateAfterProofEdit": {
+   "code": 0,
+   "out": "ALL PROOFS CHECK\nUse --verdict for mathematical validity."
+  },
+  "verdictAfterProofEdit": {
+   "code": 0,
+   "out": "ALL PROOFS CHECK"
+  },
+  "proofEdited": true,
+  "proofLinesDelta": 3,
+  "diff": {
+   "book": {
+    "removed": [],
+    "added": [],
+    "renamed": [],
+    "changed": [
+     "LAWS.you_cant_win"
+    ],
+    "closureOnly": [],
+    "flagged": true,
+    "closureFlagged": true
+   },
+   "dir": {
+    "removed": [],
+    "added": [],
+    "flagged": false
+   }
+  }
+ },
+ {
+  "id": "WIN3-trivial",
+  "demo": "app_win_is_bug_2d",
+  "demoGateBaseline": 0,
+  "kind": "trivially true body",
+  "desc": "never_on_flag becomes at_flag(board) == at_flag(board)",
+  "semantic": true,
+  "control": false,
+  "editErrors": [],
+  "gateUnchangedProof": {
+   "code": 1,
+   "out": "SOME PROOFS FAIL\nError:\n- expected : {Game.at_flag(Game.run(moves, Game.Game{8n, 5n, False{}})) == Game.at_flag(Game.run(moves, Game.Game{8n, 5n, False{}})) : Bool}\n- observed : {Game.at_flag(Game.run(moves, Game.Game{8n, 5n, False{}})) == False{} : Bool}\nContext:\n- moves : List<&1, Game.Move>"
+  },
+  "gateAfterProofEdit": {
+   "code": 0,
+   "out": "ALL PROOFS CHECK\nUse --verdict for mathematical validity."
+  },
+  "verdictAfterProofEdit": {
+   "code": 0,
+   "out": "ALL PROOFS CHECK"
+  },
+  "proofEdited": true,
+  "proofLinesDelta": -7,
+  "diff": {
+   "book": {
+    "removed": [],
+    "added": [],
+    "renamed": [],
+    "changed": [
+     "LAWS.never_on_flag"
+    ],
+    "closureOnly": [],
+    "flagged": true,
+    "closureFlagged": true
+   },
+   "dir": {
+    "removed": [],
+    "added": [],
+    "flagged": false
+   }
+  }
+ },
+ {
+  "id": "WIN4-defIsWon",
+  "demo": "app_win_is_bug_2d",
+  "demoGateBaseline": 0,
+  "kind": "def change (law's def)",
+  "desc": "is_won in main.bend always answers False{}; LAWS.bend untouched",
+  "semantic": true,
+  "control": false,
+  "editErrors": [],
+  "gateUnchangedProof": {
+   "code": 0,
+   "out": "ALL PROOFS CHECK\nUse --verdict for mathematical validity."
+  },
+  "gateAfterProofEdit": {
+   "code": 0,
+   "out": "ALL PROOFS CHECK\nUse --verdict for mathematical validity."
+  },
+  "verdictAfterProofEdit": {
+   "code": 0,
+   "out": "ALL PROOFS CHECK"
+  },
+  "proofEdited": false,
+  "proofLinesDelta": 0,
+  "diff": {
+   "book": {
+    "removed": [],
+    "added": [],
+    "renamed": [],
+    "changed": [],
+    "closureOnly": [
+     "LAWS.you_cant_win"
+    ],
+    "flagged": false,
+    "closureFlagged": true
+   },
+   "dir": {
+    "removed": [],
+    "added": [],
+    "flagged": false
+   }
+  }
+ },
+ {
+  "id": "NUM1-dropBound",
+  "demo": "proof_numerics",
+  "demoGateBaseline": 0,
+  "kind": "weaken conclusion",
+  "desc": "divmod_ok drops the remainder bound r < 1+m",
+  "semantic": true,
+  "control": false,
+  "editErrors": [],
+  "gateUnchangedProof": {
+   "code": 1,
+   "out": "SOME PROOFS FAIL\nError:\n- expected : {0n == 0n : Nat}\n- observed : Sigma\nContext:\n- m : Nat"
+  },
+  "gateAfterProofEdit": {
+   "code": 0,
+   "out": "ALL PROOFS CHECK\nUse --verdict for mathematical validity."
+  },
+  "verdictAfterProofEdit": {
+   "code": 0,
+   "out": "ALL PROOFS CHECK"
+  },
+  "proofEdited": true,
+  "proofLinesDelta": 8,
+  "diff": {
+   "book": {
+    "removed": [],
+    "added": [],
+    "renamed": [],
+    "changed": [
+     "LAWS.divmod_ok"
+    ],
+    "closureOnly": [],
+    "flagged": true,
+    "closureFlagged": true
+   },
+   "dir": {
+    "removed": [],
+    "added": [],
+    "flagged": false
+   }
+  }
+ },
+ {
+  "id": "NUM2-zero",
+  "demo": "proof_numerics",
+  "demoGateBaseline": 0,
+  "kind": "narrow domain (instantiate)",
+  "desc": "add_comm only for b = 0",
+  "semantic": true,
+  "control": false,
+  "editErrors": [],
+  "gateUnchangedProof": {
+   "code": 1,
+   "out": "SOME PROOFS FAIL\nError:\n- expected : {0n == 0n : Nat}\n- observed : non-inferrable term\nLocation: Laws.add_comm\n27 | "
+  },
+  "gateAfterProofEdit": {
+   "code": 0,
+   "out": "ALL PROOFS CHECK\nUse --verdict for mathematical validity."
+  },
+  "verdictAfterProofEdit": {
+   "code": 0,
+   "out": "ALL PROOFS CHECK"
+  },
+  "proofEdited": true,
+  "proofLinesDelta": -7,
+  "diff": {
+   "book": {
+    "removed": [],
+    "added": [],
+    "renamed": [],
+    "changed": [
+     "LAWS.add_comm"
+    ],
+    "closureOnly": [],
+    "flagged": true,
+    "closureFlagged": true
+   },
+   "dir": {
+    "removed": [],
+    "added": [],
+    "flagged": false
+   }
+  }
+ },
+ {
+  "id": "NUM3-delete",
+  "demo": "proof_numerics",
+  "demoGateBaseline": 0,
+  "kind": "delete law",
+  "desc": "delete mul_dist",
+  "semantic": false,
+  "control": false,
+  "editErrors": [],
+  "gateUnchangedProof": {
+   "code": 1,
+   "out": "SOME PROOFS FAIL\nError:\n- expected : a fresh name (Laws is an import's alias)\n- observed : 'Laws.mul_dist'\nLocation:\n84 | "
+  },
+  "gateAfterProofEdit": {
+   "code": 0,
+   "out": "ALL PROOFS CHECK\nUse --verdict for mathematical validity."
+  },
+  "verdictAfterProofEdit": {
+   "code": 0,
+   "out": "ALL PROOFS CHECK"
+  },
+  "proofEdited": true,
+  "proofLinesDelta": -7,
+  "diff": {
+   "book": {
+    "removed": [
+     "LAWS.mul_dist"
+    ],
+    "added": [],
+    "renamed": [],
+    "changed": [],
+    "closureOnly": [],
+    "flagged": true,
+    "closureFlagged": true
+   },
+   "dir": {
+    "removed": [
+     "mul_dist"
+    ],
+    "added": [],
+    "flagged": true
+   }
+  }
+ },
+ {
+  "id": "NUM4-swap",
+  "demo": "proof_numerics",
+  "demoGateBaseline": 0,
+  "kind": "control: equivalent restatement",
+  "desc": "add_comm with its sides swapped",
+  "semantic": true,
+  "control": true,
+  "editErrors": [],
+  "gateUnchangedProof": {
+   "code": 1,
+   "out": "SOME PROOFS FAIL\nError:\n- expected : {Num.add(b, 0n) == b : Nat}\n- observed : {b == Num.add(b, 0n) : Nat}\nContext:\n- b : Nat"
+  },
+  "gateAfterProofEdit": {
+   "code": 0,
+   "out": "ALL PROOFS CHECK\nUse --verdict for mathematical validity."
+  },
+  "verdictAfterProofEdit": {
+   "code": 0,
+   "out": "ALL PROOFS CHECK"
+  },
+  "proofEdited": true,
+  "proofLinesDelta": 3,
+  "diff": {
+   "book": {
+    "removed": [],
+    "added": [],
+    "renamed": [],
+    "changed": [
+     "LAWS.add_comm"
+    ],
+    "closureOnly": [],
+    "flagged": true,
+    "closureFlagged": true
+   },
+   "dir": {
+    "removed": [],
+    "added": [],
+    "flagged": false
+   }
+  }
+ },
+ {
+  "id": "NUM5-outOfDomain",
+  "demo": "proof_numerics",
+  "demoGateBaseline": 0,
+  "kind": "control: code change outside the laws' domain",
+  "desc": "divmod by 0n answers (0n, 0n) instead of (0n, n); no law constrains d = 0",
+  "semantic": true,
+  "control": true,
+  "editErrors": [],
+  "gateUnchangedProof": {
+   "code": 0,
+   "out": "ALL PROOFS CHECK\nUse --verdict for mathematical validity."
+  },
+  "gateAfterProofEdit": {
+   "code": 0,
+   "out": "ALL PROOFS CHECK\nUse --verdict for mathematical validity."
+  },
+  "verdictAfterProofEdit": {
+   "code": 0,
+   "out": "ALL PROOFS CHECK"
+  },
+  "proofEdited": false,
+  "proofLinesDelta": 0,
+  "diff": {
+   "book": {
+    "removed": [],
+    "added": [],
+    "renamed": [],
+    "changed": [],
+    "closureOnly": [
+     "LAWS.divmod_ok"
+    ],
+    "flagged": false,
+    "closureFlagged": true
+   },
+   "dir": {
+    "removed": [],
+    "added": [],
+    "flagged": false
+   }
+  }
+ },
+ {
+  "id": "PS1-depth0",
+  "demo": "pure_par_sort",
+  "demoGateBaseline": 0,
+  "kind": "narrow domain (instantiate)",
+  "desc": "sort_leaves only for depth-0 trees",
+  "semantic": true,
+  "control": false,
+  "editErrors": [],
+  "gateUnchangedProof": {
+   "code": 1,
+   "out": "SOME PROOFS FAIL\nError:\n- expected : a constructor of Bool (missing, or already matched)\n- observed : \\{Zero: (s => t => {==}); Succ: (p => s => \\{Tuple: (x => y => %(%sum_flow(p, s, Sort.mix(p, s, Sort.sort(p, True{}, x), Sort.sort(p, False{}, y))) : {Nat.add(Sort.sum(p, Sort.sort(p, True{}, x)), Sort.sum(p, Sort.sort(p, False{}, y))) == Nat.add(_, Sort.sum(p, Sort.flow(p, s, Sort.mix(p, Bool.not(s), Sort.sort(p, True{}, x), Sort.sort(p, False{}, y))))) : Nat}; %sum_flow(p, s, Sort.mix(p, Bool.not(s), Sort.sort(p, True{}, x), Sort.sort(p, False{}, y))) : {Nat.add(Sort.sum(p, Sort.sort(p, True{}, x)), Sort.sum(p, Sort.sort(p, False{}, y))) == Nat.add(Sort.sum(p, Sort.mix(p, s, Sort.sort(p, True{}, x), Sort.sort(p, False{}, y))), _) : Nat}; Laws.mix_leaves(p, s, Sort.sort(p, True{}, x), Sort.sort(p, False{}, y))) : {Nat.add(Sort.sum(p, x), Sort.sum(p, y)) == _ : Nat}; %Laws.sort_leaves(p, True{}, x) : {Nat.add(Sort.sum(p, x), Sort.sum(p, y)) == Nat.add(_, Sort.sum(p, Sort.sort(p, False{}, y))) : Nat}; %Laws.sort_leaves(p, False{}, y) : {Nat.add(Sort.sum(p, x), Sort.sum(p, y)) == Nat.add(Sort.sum(p, x), _) : Nat}; {==})})}\nLocation: Laws.sort_leaves\n94 |   match d:"
+  },
+  "gateAfterProofEdit": {
+   "code": 0,
+   "out": "ALL PROOFS CHECK\nUse --verdict for mathematical validity."
+  },
+  "verdictAfterProofEdit": {
+   "code": 0,
+   "out": "ALL PROOFS CHECK"
+  },
+  "proofEdited": true,
+  "proofLinesDelta": -8,
+  "diff": {
+   "book": {
+    "removed": [],
+    "added": [],
+    "renamed": [],
+    "changed": [
+     "LAWS.sort_leaves"
+    ],
+    "closureOnly": [],
+    "flagged": true,
+    "closureFlagged": true
+   },
+   "dir": {
+    "removed": [],
+    "added": [],
+    "flagged": false
+   }
+  }
+ },
+ {
+  "id": "PS2-rename",
+  "demo": "pure_par_sort",
+  "demoGateBaseline": 0,
+  "kind": "rename law+proof",
+  "desc": "rename mix_leaves to mix_sum",
+  "semantic": false,
+  "control": false,
+  "editErrors": [],
+  "gateUnchangedProof": {
+   "code": 1,
+   "out": "SOME PROOFS FAIL\nError:\n- expected : a fresh name (Laws is an import's alias)\n- observed : 'Laws.mix_leaves'\nLocation:\n61 | "
+  },
+  "gateAfterProofEdit": {
+   "code": 0,
+   "out": "ALL PROOFS CHECK\nUse --verdict for mathematical validity."
+  },
+  "verdictAfterProofEdit": {
+   "code": 0,
+   "out": "ALL PROOFS CHECK"
+  },
+  "proofEdited": true,
+  "proofLinesDelta": 0,
+  "diff": {
+   "book": {
+    "removed": [],
+    "added": [],
+    "renamed": [
+     "LAWS.mix_leaves -> LAWS.mix_sum"
+    ],
+    "changed": [],
+    "closureOnly": [],
+    "flagged": true,
+    "closureFlagged": true
+   },
+   "dir": {
+    "removed": [
+     "mix_leaves"
+    ],
+    "added": [
+     "mix_sum"
+    ],
+    "flagged": true
+   }
+  }
+ },
+ {
+  "id": "TE1-demote",
+  "demo": "proof_typed_eval",
+  "demoGateBaseline": 0,
+  "kind": "delete law (kept as lemma)",
+  "desc": "opt_complete deleted from LAWS.bend; its proof kept as a lemma",
+  "semantic": false,
+  "control": false,
+  "editErrors": [],
+  "gateUnchangedProof": {
+   "code": 1,
+   "out": "SOME PROOFS FAIL\nError:\n- expected : a fresh name (Laws is an import's alias)\n- observed : 'Laws.opt_complete'\nLocation:\n22 | "
+  },
+  "gateAfterProofEdit": {
+   "code": 0,
+   "out": "ALL PROOFS CHECK\nUse --verdict for mathematical validity."
+  },
+  "verdictAfterProofEdit": {
+   "code": 0,
+   "out": "ALL PROOFS CHECK"
+  },
+  "proofEdited": true,
+  "proofLinesDelta": 0,
+  "diff": {
+   "book": {
+    "removed": [
+     "LAWS.opt_complete"
+    ],
+    "added": [],
+    "renamed": [],
+    "changed": [],
+    "closureOnly": [],
+    "flagged": true,
+    "closureFlagged": true
+   },
+   "dir": {
+    "removed": [
+     "opt_complete"
+    ],
+    "added": [],
+    "flagged": true
+   }
+  }
+ },
+ {
+  "id": "TE2-numOnly",
+  "demo": "proof_typed_eval",
+  "demoGateBaseline": 0,
+  "kind": "narrow domain (instantiate)",
+  "desc": "opt_sound only at type TNum",
+  "semantic": true,
+  "control": false,
+  "editErrors": [],
+  "gateUnchangedProof": {
+   "code": 1,
+   "out": "SOME PROOFS FAIL\nError:\n- expected : {TE.eval(TE.TNum{}, TE.opt(TE.TNum{}, t)) == TE.eval(TE.TNum{}, t) : Nat}\n- observed : non-inferrable term\nContext:\n- t : TE.Expr<TE.TNum{}>"
+  },
+  "gateAfterProofEdit": {
+   "code": 0,
+   "out": "ALL PROOFS CHECK\nUse --verdict for mathematical validity."
+  },
+  "verdictAfterProofEdit": {
+   "code": 0,
+   "out": "ALL PROOFS CHECK"
+  },
+  "proofEdited": true,
+  "proofLinesDelta": 3,
+  "diff": {
+   "book": {
+    "removed": [],
+    "added": [],
+    "renamed": [],
+    "changed": [
+     "LAWS.opt_sound"
+    ],
+    "closureOnly": [],
+    "flagged": true,
+    "closureFlagged": true
+   },
+   "dir": {
+    "removed": [],
+    "added": [],
+    "flagged": false
+   }
+  }
+ },
+ {
+  "id": "H1-noBlank",
+  "demo": "io_http_server",
+  "demoGateBaseline": 1,
+  "kind": "weaken conclusion",
+  "desc": "page_after_blank no longer requires the blank line before the page",
+  "semantic": true,
+  "control": false,
+  "editErrors": [],
+  "gateUnchangedProof": {
+   "code": 1,
+   "out": "SOME PROOFS FAIL\nError:\n- expected : SCon{'H', SCon{'T', SCon{'T', SCon{'P', SCon{'/', SCon{'1', SCon{'.', SCon{'1', SCon{' ', SCon{'2', SCon{'0', SCon{'0', SCon{' ', SCon{'O', SCon{'K', SCon{'\\r', SCon{'\\n', SCon{'C', SCon{'o', SCon{'n', SCon{'t', SCon{'e', SCon{'n', SCon{'t', SCon{'-', SCon{'T', SCon{'y', SCon{'p', SCon{'e', SCon{':', SCon{' ', SCon{'t', SCon{'e', SCon{'x', SCon{'t', SCon{'/', SCon{'h', SCon{'t', SCon{'m', SCon{'l', SCon{'\\r', SCon{'\\n', SCon{'C', SCon{'o', SCon{'n', SCon{'n', SCon{'e', SCon{'c', SCon{'t', SCon{'i', SCon{'o', SCon{'n', SCon{':', SCon{' ', SCon{'c', SCon{'l', SCon{'o', SCon{'s', SCon{'e', page}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}\n- observed : SCon{'H', SCon{'T', SCon{'T', SCon{'P', SCon{'/', SCon{'1', SCon{'.', SCon{'1', SCon{' ', SCon{'2', SCon{'0', SCon{'0', SCon{' ', SCon{'O', SCon{'K', SCon{'\\r', SCon{'\\n', SCon{'C', SCon{'o', SCon{'n', SCon{'t', SCon{'e', SCon{'n', SCon{'t', SCon{'-', SCon{'T', SCon{'y', SCon{'p', SCon{'e', SCon{':', SCon{' ', SCon{'t', SCon{'e', SCon{'x', SCon{'t', SCon{'/', SCon{'h', SCon{'t', SCon{'m', SCon{'l', SCon{'\\r', SCon{'\\n', SCon{'C', SCon{'o', SCon{'n', SCon{'n', SCon{'e', SCon{'c', SCon{'t', SCon{'i', SCon{'o', SCon{'n', SCon{':', SCon{' ', SCon{'c', SCon{'l', SCon{'o', SCon{'s', SCon{'e', SCon{'\\r', SCon{'\\n', SCon{'\\r', SCon{'\\n', page}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}\nContext:\n- page : String"
+  },
+  "gateAfterProofEdit": {
+   "code": 1,
+   "out": "SOME PROOFS FAIL\nError: 2 defs rely on unsafe or foreign code:\ndefs that depend on @unsafe: main.http_serve, main.main\nHint: no law or proof uses these defs. Move them to a file this proof does not import, and the proofs will check: main.http_serve, main.main"
+  },
+  "verdictAfterProofEdit": {
+   "code": 1,
+   "out": "SOME PROOFS FAIL\nError: 2 defs rely on unsafe or foreign code:\ndefs that depend on @unsafe: main.http_serve, main.main\nHint: no law or proof uses these defs. Move them to a file this proof does not import, and the proofs will check: main.http_serve, main.main"
+  },
+  "proofEdited": true,
+  "proofLinesDelta": 0,
+  "diff": {
+   "book": {
+    "removed": [],
+    "added": [],
+    "renamed": [],
+    "changed": [
+     "LAWS.page_after_blank"
+    ],
+    "closureOnly": [],
+    "flagged": true,
+    "closureFlagged": true
+   },
+   "dir": {
+    "removed": [],
+    "added": [],
+    "flagged": false
+   }
+  }
+ },
+ {
+  "id": "TRI1-isSome",
+  "demo": "app_triangle_2d",
+  "demoGateBaseline": 0,
+  "kind": "weaken conclusion",
+  "desc": "click_inside: the count becomes n+1 -> the frame does not quit",
+  "semantic": true,
+  "control": false,
+  "editErrors": [],
+  "gateUnchangedProof": {
+   "code": 1,
+   "out": "SOME PROOFS FAIL\nError:\n- expected : {True{} == True{} : Bool}\n- observed : {Some{App.Tri.pick(Bool.and(Bool.and(Cmp.is_gt(U32.cmp(U32.sub(U32.mul(4294967104, U32.sub(y, 64)), U32.mul(384, U32.sub(x, 256))), 2147483647)), Cmp.is_gt(U32.cmp(U32.sub(U32.mul(384, U32.sub(y, 448)), U32.mul(0, U32.sub(x, 64))), 2147483647))), Cmp.is_gt(U32.cmp(U32.sub(U32.mul(4294967104, U32.sub(y, 448)), U32.mul(4294966912, U32.sub(x, 448))), 2147483647))), U32.add(n, 1), n)} == Some{U32.add(n, 1)} : Maybe<&1, U32>}\nContext:\n- x      : U32"
+  },
+  "gateAfterProofEdit": {
+   "code": 0,
+   "out": "ALL PROOFS CHECK\nUse --verdict for mathematical validity."
+  },
+  "verdictAfterProofEdit": {
+   "code": 0,
+   "out": "ALL PROOFS CHECK"
+  },
+  "proofEdited": true,
+  "proofLinesDelta": -2,
+  "diff": {
+   "book": {
+    "removed": [],
+    "added": [],
+    "renamed": [],
+    "changed": [
+     "LAWS.click_inside"
+    ],
+    "closureOnly": [],
+    "flagged": true,
+    "closureFlagged": true
+   },
+   "dir": {
+    "removed": [],
+    "added": [],
+    "flagged": false
+   }
+  }
+ },
+ {
+  "id": "WIN5-unfold",
+  "demo": "app_win_is_bug_2d",
+  "demoGateBaseline": 0,
+  "kind": "control: equivalent restatement",
+  "desc": "replay(start(), moves) written as run(moves, start())",
+  "semantic": true,
+  "control": true,
+  "editErrors": [],
+  "gateUnchangedProof": {
+   "code": 0,
+   "out": "ALL PROOFS CHECK\nUse --verdict for mathematical validity."
+  },
+  "gateAfterProofEdit": {
+   "code": 0,
+   "out": "ALL PROOFS CHECK\nUse --verdict for mathematical validity."
+  },
+  "verdictAfterProofEdit": {
+   "code": 0,
+   "out": "ALL PROOFS CHECK"
+  },
+  "proofEdited": false,
+  "proofLinesDelta": 0,
+  "diff": {
+   "book": {
+    "removed": [],
+    "added": [],
+    "renamed": [],
+    "changed": [
+     "LAWS.you_cant_win"
+    ],
+    "closureOnly": [],
+    "flagged": true,
+    "closureFlagged": true
+   },
+   "dir": {
+    "removed": [],
+    "added": [],
+    "flagged": false
+   }
+  }
+ },
+ {
+  "id": "WIN6-refactor",
+  "demo": "app_win_is_bug_2d",
+  "demoGateBaseline": 0,
+  "kind": "control: refactor under a law",
+  "desc": "drawn() uses the literal 7n for map_h() - 1",
+  "semantic": false,
+  "control": true,
+  "editErrors": [],
+  "gateUnchangedProof": {
+   "code": 0,
+   "out": "ALL PROOFS CHECK\nUse --verdict for mathematical validity."
+  },
+  "gateAfterProofEdit": {
+   "code": 0,
+   "out": "ALL PROOFS CHECK\nUse --verdict for mathematical validity."
+  },
+  "verdictAfterProofEdit": {
+   "code": 0,
+   "out": "ALL PROOFS CHECK"
+  },
+  "proofEdited": false,
+  "proofLinesDelta": 0,
+  "diff": {
+   "book": {
+    "removed": [],
+    "added": [],
+    "renamed": [],
+    "changed": [],
+    "closureOnly": [
+     "LAWS.never_on_flag"
+    ],
+    "flagged": false,
+    "closureFlagged": true
+   },
+   "dir": {
+    "removed": [],
+    "added": [],
+    "flagged": false
+   }
+  }
+ }
+]

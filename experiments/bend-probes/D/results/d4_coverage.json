@@ -1,0 +1,809 @@
+[
+ {
+  "project": "app_pong_game_2d",
+  "kind": "demo",
+  "laws": 2,
+  "codeLaws": 0,
+  "programDefs": 18,
+  "codeDefs": 18,
+  "specDefs": 0,
+  "coveredProgram": 4,
+  "coveredCode": 4,
+  "closurePerLaw": {
+   "esc_quits": 4,
+   "last_press": 2
+  },
+  "uncoveredCodeByCategory": {
+   "other logic": 9,
+   "IO": 1,
+   "render/graphics": 3,
+   "main": 1
+  },
+  "uncoveredCodeSample": [
+   "main.Pong.init",
+   "main.Pong.pick",
+   "main.Pong.paddle",
+   "main.Pong.overlap",
+   "main.Pong.reset",
+   "main.Pong.step",
+   "main.Pong.tick",
+   "main.Pong.inside",
+   "main.Pong.outside",
+   "main.Pong.color",
+   "main.Pong.flat",
+   "main.Pong.draw"
+  ]
+ },
+ {
+  "project": "app_ray_tracer_3d",
+  "kind": "demo",
+  "laws": 2,
+  "codeLaws": 0,
+  "programDefs": 33,
+  "codeDefs": 33,
+  "specDefs": 0,
+  "coveredProgram": 5,
+  "coveredCode": 5,
+  "closurePerLaw": {
+   "esc_quits": 4,
+   "press_reads": 2
+  },
+  "uncoveredCodeByCategory": {
+   "other logic": 22,
+   "IO": 1,
+   "render/graphics": 3,
+   "parse/text": 1,
+   "main": 1
+  },
+  "uncoveredCodeSample": [
+   "main.Fly.init",
+   "main.Fly.pick",
+   "main.Fly.min",
+   "main.Fly.max",
+   "main.Fly.clamp01",
+   "main.Fly.held",
+   "main.Fly.step",
+   "main.Fly.count",
+   "main.Fly.clock",
+   "main.Fly.tick",
+   "main.Fly.sdf",
+   "main.Fly.march"
+  ]
+ },
+ {
+  "project": "app_slash_boss_3d",
+  "kind": "demo",
+  "laws": 7,
+  "codeLaws": 0,
+  "programDefs": 439,
+  "codeDefs": 428,
+  "specDefs": 11,
+  "coveredProgram": 122,
+  "coveredCode": 121,
+  "closurePerLaw": {
+   "pause_freezes": 114,
+   "pause_twice": 5,
+   "esc_quits": 9,
+   "back_to_title": 111,
+   "pause_toggles": 19,
+   "dec_floor": 2,
+   "arrows_are_wasd": 3
+  },
+  "uncoveredCodeByCategory": {
+   "other logic": 193,
+   "render/graphics": 70,
+   "parse/text": 7,
+   "IO": 36,
+   "main": 1
+  },
+  "uncoveredCodeSample": [
+   "bend3d.pack",
+   "bend3d.chan",
+   "bend3d.Vec.cross",
+   "bend3d.Vec.rgb",
+   "bend3d.Cam.proj",
+   "bend3d.Cam.eye",
+   "bend3d.Cam.px",
+   "bend3d.Unit.go",
+   "bend3d.Inst.map",
+   "bend3d.Spline.at",
+   "bend3d.Spline.vec",
+   "bend3d.Surf.at"
+  ]
+ },
+ {
+  "project": "app_triangle_2d",
+  "kind": "demo",
+  "laws": 3,
+  "codeLaws": 0,
+  "programDefs": 12,
+  "codeDefs": 12,
+  "specDefs": 0,
+  "coveredProgram": 5,
+  "coveredCode": 5,
+  "closurePerLaw": {
+   "esc_quits": 5,
+   "click_inside": 4,
+   "click_outside": 4
+  },
+  "uncoveredCodeByCategory": {
+   "render/graphics": 5,
+   "IO": 1,
+   "main": 1
+  },
+  "uncoveredCodeSample": [
+   "main.Tri.out",
+   "main.Tri.color",
+   "main.Tri.flat",
+   "main.Tri.draw",
+   "main.Tri.view",
+   "main.Tri.tick",
+   "main.main"
+  ]
+ },
+ {
+  "project": "app_win_is_bug_2d",
+  "kind": "demo",
+  "laws": 2,
+  "codeLaws": 0,
+  "programDefs": 34,
+  "codeDefs": 34,
+  "specDefs": 0,
+  "coveredProgram": 32,
+  "coveredCode": 32,
+  "closurePerLaw": {
+   "you_cant_win": 23,
+   "never_on_flag": 31
+  },
+  "uncoveredCodeByCategory": {
+   "other logic": 1,
+   "main": 1
+  },
+  "uncoveredCodeSample": [
+   "main.key",
+   "main.main"
+  ]
+ },
+ {
+  "project": "io_hello_world",
+  "kind": "demo",
+  "laws": 1,
+  "codeLaws": 0,
+  "programDefs": 1,
+  "codeDefs": 1,
+  "specDefs": 0,
+  "coveredProgram": 1,
+  "coveredCode": 1,
+  "closurePerLaw": {
+   "prints_hello": 1
+  },
+  "uncoveredCodeByCategory": {},
+  "uncoveredCodeSample": []
+ },
+ {
+  "project": "io_http_fetch",
+  "kind": "demo",
+  "laws": 2,
+  "codeLaws": 0,
+  "programDefs": 13,
+  "codeDefs": 13,
+  "specDefs": 0,
+  "coveredProgram": 2,
+  "coveredCode": 2,
+  "closurePerLaw": {
+   "body_after_blank": 2,
+   "body_suffix": 2
+  },
+  "uncoveredCodeByCategory": {
+   "other logic": 3,
+   "parse/text": 2,
+   "IO": 5,
+   "main": 1
+  },
+  "uncoveredCodeSample": [
+   "main.utf8_start",
+   "main.utf8_more",
+   "main.utf8_byte",
+   "main.utf8_finish",
+   "main.utf8",
+   "main.fetch_fail",
+   "main.fetch_done",
+   "main.fetch_end",
+   "main.fetch_read",
+   "main.fetch_sent",
+   "main.main"
+  ]
+ },
+ {
+  "project": "io_http_server",
+  "kind": "demo",
+  "laws": 2,
+  "codeLaws": 0,
+  "programDefs": 7,
+  "codeDefs": 7,
+  "specDefs": 0,
+  "coveredProgram": 1,
+  "coveredCode": 1,
+  "closurePerLaw": {
+   "page_after_blank": 1,
+   "response_inj": 1
+  },
+  "uncoveredCodeByCategory": {
+   "IO": 5,
+   "main": 1
+  },
+  "uncoveredCodeSample": [
+   "main.http_sent",
+   "main.http_reply",
+   "main.http_talk",
+   "main.http_conn",
+   "main.http_serve",
+   "main.main"
+  ]
+ },
+ {
+  "project": "io_rollback_netcode",
+  "kind": "demo",
+  "laws": 0,
+  "codeLaws": 0,
+  "programDefs": 161,
+  "codeDefs": 160,
+  "specDefs": 1,
+  "coveredProgram": 0,
+  "coveredCode": 0,
+  "closurePerLaw": {},
+  "uncoveredCodeByCategory": {
+   "other logic": 81,
+   "parse/text": 8,
+   "render/graphics": 11,
+   "IO": 57,
+   "main": 3
+  },
+  "uncoveredCodeSample": [
+   "netcode.Nat.quo",
+   "netcode.Time.tick",
+   "netcode.Clock.new",
+   "netcode.Clock.server",
+   "netcode.Clock.keep",
+   "netcode.Clock.sample",
+   "netcode.Post.index",
+   "netcode.Post.tick",
+   "netcode.Post.name",
+   "netcode.Post.insert.go",
+   "netcode.Post.insert",
+   "netcode.Post.next.go"
+  ]
+ },
+ {
+  "project": "io_tcp_echos",
+  "kind": "demo",
+  "laws": 2,
+  "codeLaws": 0,
+  "programDefs": 8,
+  "codeDefs": 8,
+  "specDefs": 0,
+  "coveredProgram": 1,
+  "coveredCode": 1,
+  "closurePerLaw": {
+   "echoes_data": 1,
+   "closes_on_end": 1
+  },
+  "uncoveredCodeByCategory": {
+   "IO": 6,
+   "main": 1
+  },
+  "uncoveredCodeSample": [
+   "main.echo_sent",
+   "main.echo_move",
+   "main.echo_back",
+   "main.echo_conn",
+   "main.serve_next",
+   "main.serve",
+   "main.main"
+  ]
+ },
+ {
+  "project": "proof_insertion_sort",
+  "kind": "demo",
+  "laws": 2,
+  "codeLaws": 0,
+  "programDefs": 10,
+  "codeDefs": 7,
+  "specDefs": 3,
+  "coveredProgram": 9,
+  "coveredCode": 6,
+  "closurePerLaw": {
+   "sort_sorted": 7,
+   "sort_perm": 7
+  },
+  "uncoveredCodeByCategory": {
+   "main": 1
+  },
+  "uncoveredCodeSample": [
+   "main.main"
+  ]
+ },
+ {
+  "project": "proof_numerics",
+  "kind": "demo",
+  "laws": 5,
+  "codeLaws": 0,
+  "programDefs": 7,
+  "codeDefs": 7,
+  "specDefs": 0,
+  "coveredProgram": 6,
+  "coveredCode": 6,
+  "closurePerLaw": {
+   "add_comm": 1,
+   "add_assoc": 1,
+   "mul_comm": 2,
+   "mul_dist": 2,
+   "divmod_ok": 6
+  },
+  "uncoveredCodeByCategory": {
+   "main": 1
+  },
+  "uncoveredCodeSample": [
+   "main.main"
+  ]
+ },
+ {
+  "project": "proof_typed_eval",
+  "kind": "demo",
+  "laws": 2,
+  "codeLaws": 0,
+  "programDefs": 11,
+  "codeDefs": 10,
+  "specDefs": 1,
+  "coveredProgram": 9,
+  "coveredCode": 8,
+  "closurePerLaw": {
+   "opt_sound": 8,
+   "opt_complete": 9
+  },
+  "uncoveredCodeByCategory": {
+   "other logic": 1,
+   "main": 1
+  },
+  "uncoveredCodeSample": [
+   "main.sample",
+   "main.main"
+  ]
+ },
+ {
+  "project": "pure_hvm5_mini",
+  "kind": "demo",
+  "laws": 8,
+  "codeLaws": 0,
+  "programDefs": 161,
+  "codeDefs": 160,
+  "specDefs": 1,
+  "coveredProgram": 32,
+  "coveredCode": 32,
+  "closurePerLaw": {
+   "word_joins": 10,
+   "skip_is_drop": 8,
+   "pak_braces": 16,
+   "drop_drop": 1,
+   "at_drop": 2,
+   "run_push_pop": 5,
+   "name_round_trip": 8,
+   "book_depth_fits": 2
+  },
+  "uncoveredCodeByCategory": {
+   "parse/text": 4,
+   "other logic": 104,
+   "IO": 19,
+   "main": 1
+  },
+  "uncoveredCodeSample": [
+   "main.program",
+   "main.hc_hash",
+   "main.hc_lam",
+   "main.hc_new",
+   "main.st_new",
+   "main.P.pure",
+   "main.P.bind",
+   "main.fail",
+   "main.peek",
+   "main.drop",
+   "main.name.go",
+   "main.name"
+  ]
+ },
+ {
+  "project": "pure_par_sort",
+  "kind": "demo",
+  "laws": 2,
+  "codeLaws": 0,
+  "programDefs": 9,
+  "codeDefs": 8,
+  "specDefs": 1,
+  "coveredProgram": 6,
+  "coveredCode": 5,
+  "closurePerLaw": {
+   "mix_leaves": 4,
+   "sort_leaves": 6
+  },
+  "uncoveredCodeByCategory": {
+   "other logic": 2,
+   "main": 1
+  },
+  "uncoveredCodeSample": [
+   "main.gen",
+   "main.ascending",
+   "main.main"
+  ]
+ },
+ {
+  "project": "pure_par_sum",
+  "kind": "demo",
+  "laws": 1,
+  "codeLaws": 0,
+  "programDefs": 4,
+  "codeDefs": 4,
+  "specDefs": 0,
+  "coveredProgram": 3,
+  "coveredCode": 3,
+  "closurePerLaw": {
+   "tree_is_seq": 3
+  },
+  "uncoveredCodeByCategory": {
+   "main": 1
+  },
+  "uncoveredCodeSample": [
+   "main.main"
+  ]
+ },
+ {
+  "project": "cake.arena_carve",
+  "kind": "eval",
+  "laws": 1,
+  "codeLaws": 0,
+  "programDefs": 2,
+  "codeDefs": 2,
+  "specDefs": 0,
+  "coveredProgram": 2,
+  "coveredCode": 2,
+  "closurePerLaw": {
+   "carve_total": 2
+  },
+  "uncoveredCodeByCategory": {},
+  "uncoveredCodeSample": []
+ },
+ {
+  "project": "cake.journey_count",
+  "kind": "eval",
+  "laws": 1,
+  "codeLaws": 0,
+  "programDefs": 2,
+  "codeDefs": 2,
+  "specDefs": 0,
+  "coveredProgram": 2,
+  "coveredCode": 2,
+  "closurePerLaw": {
+   "replay_count": 2
+  },
+  "uncoveredCodeByCategory": {},
+  "uncoveredCodeSample": []
+ },
+ {
+  "project": "cake.queue_prefix",
+  "kind": "eval",
+  "laws": 4,
+  "codeLaws": 1,
+  "programDefs": 2,
+  "codeDefs": 2,
+  "specDefs": 0,
+  "coveredProgram": 2,
+  "coveredCode": 2,
+  "closurePerLaw": {
+   "trim_empty": 1,
+   "trim_zero": 1,
+   "trim_next": 1,
+   "combined_requests": 2
+  },
+  "uncoveredCodeByCategory": {},
+  "uncoveredCodeSample": []
+ },
+ {
+  "project": "cake.theme_mirror",
+  "kind": "eval",
+  "laws": 1,
+  "codeLaws": 0,
+  "programDefs": 3,
+  "codeDefs": 3,
+  "specDefs": 0,
+  "coveredProgram": 3,
+  "coveredCode": 3,
+  "closurePerLaw": {
+   "mirror_replay": 3
+  },
+  "uncoveredCodeByCategory": {},
+  "uncoveredCodeSample": []
+ },
+ {
+  "project": "easy.cursor_pages_full",
+  "kind": "eval",
+  "laws": 1,
+  "codeLaws": 0,
+  "programDefs": 8,
+  "codeDefs": 7,
+  "specDefs": 1,
+  "coveredProgram": 8,
+  "coveredCode": 7,
+  "closurePerLaw": {
+   "pages_full": 8
+  },
+  "uncoveredCodeByCategory": {},
+  "uncoveredCodeSample": []
+ },
+ {
+  "project": "easy.inventory_pruning",
+  "kind": "eval",
+  "laws": 1,
+  "codeLaws": 0,
+  "programDefs": 4,
+  "codeDefs": 4,
+  "specDefs": 0,
+  "coveredProgram": 4,
+  "coveredCode": 4,
+  "closurePerLaw": {
+   "merged_inventory": 4
+  },
+  "uncoveredCodeByCategory": {},
+  "uncoveredCodeSample": []
+ },
+ {
+  "project": "easy.postfix_bijection",
+  "kind": "eval",
+  "laws": 4,
+  "codeLaws": 1,
+  "programDefs": 2,
+  "codeDefs": 2,
+  "specDefs": 0,
+  "coveredProgram": 2,
+  "coveredCode": 2,
+  "closurePerLaw": {
+   "emit_leaf": 1,
+   "emit_fork": 1,
+   "execution": 2,
+   "complete": 2
+  },
+  "uncoveredCodeByCategory": {},
+  "uncoveredCodeSample": []
+ },
+ {
+  "project": "easy.stack_split_merge",
+  "kind": "eval",
+  "laws": 2,
+  "codeLaws": 0,
+  "programDefs": 5,
+  "codeDefs": 3,
+  "specDefs": 2,
+  "coveredProgram": 5,
+  "coveredCode": 3,
+  "closurePerLaw": {
+   "split_sum": 3,
+   "split_bounded": 4
+  },
+  "uncoveredCodeByCategory": {},
+  "uncoveredCodeSample": []
+ },
+ {
+  "project": "firm.conservation_timeline",
+  "kind": "eval",
+  "laws": 3,
+  "codeLaws": 1,
+  "programDefs": 4,
+  "codeDefs": 4,
+  "specDefs": 0,
+  "coveredProgram": 4,
+  "coveredCode": 4,
+  "closurePerLaw": {
+   "timeline_empty": 2,
+   "timeline_phase": 2,
+   "timeline_splice": 4
+  },
+  "uncoveredCodeByCategory": {},
+  "uncoveredCodeSample": []
+ },
+ {
+  "project": "firm.looper_cancellation",
+  "kind": "eval",
+  "laws": 2,
+  "codeLaws": 0,
+  "programDefs": 7,
+  "codeDefs": 4,
+  "specDefs": 3,
+  "coveredProgram": 7,
+  "coveredCode": 4,
+  "closurePerLaw": {
+   "canonical": 7,
+   "unique": 7
+  },
+  "uncoveredCodeByCategory": {},
+  "uncoveredCodeSample": []
+ },
+ {
+  "project": "firm.pomodoro_tally",
+  "kind": "eval",
+  "laws": 1,
+  "codeLaws": 0,
+  "programDefs": 11,
+  "codeDefs": 11,
+  "specDefs": 0,
+  "coveredProgram": 11,
+  "coveredCode": 11,
+  "closurePerLaw": {
+   "done_counts": 11
+  },
+  "uncoveredCodeByCategory": {},
+  "uncoveredCodeSample": []
+ },
+ {
+  "project": "firm.tictactoe_undo",
+  "kind": "eval",
+  "laws": 2,
+  "codeLaws": 0,
+  "programDefs": 17,
+  "codeDefs": 16,
+  "specDefs": 1,
+  "coveredProgram": 17,
+  "coveredCode": 16,
+  "closurePerLaw": {
+   "undo_ok": 16,
+   "redo_ok": 16
+  },
+  "uncoveredCodeByCategory": {},
+  "uncoveredCodeSample": []
+ },
+ {
+  "project": "hard.audit_undo",
+  "kind": "eval",
+  "laws": 2,
+  "codeLaws": 0,
+  "programDefs": 5,
+  "codeDefs": 4,
+  "specDefs": 1,
+  "coveredProgram": 5,
+  "coveredCode": 4,
+  "closurePerLaw": {
+   "undo_undo": 5,
+   "undo_wf": 5
+  },
+  "uncoveredCodeByCategory": {},
+  "uncoveredCodeSample": []
+ },
+ {
+  "project": "hard.factor_power_reduce",
+  "kind": "eval",
+  "laws": 1,
+  "codeLaws": 0,
+  "programDefs": 6,
+  "codeDefs": 5,
+  "specDefs": 1,
+  "coveredProgram": 6,
+  "coveredCode": 5,
+  "closurePerLaw": {
+   "reduce_pow": 6
+  },
+  "uncoveredCodeByCategory": {},
+  "uncoveredCodeSample": []
+ },
+ {
+  "project": "hard.protocol_equivalence",
+  "kind": "eval",
+  "laws": 1,
+  "codeLaws": 0,
+  "programDefs": 4,
+  "codeDefs": 4,
+  "specDefs": 0,
+  "coveredProgram": 4,
+  "coveredCode": 4,
+  "closurePerLaw": {
+   "compare": 4
+  },
+  "uncoveredCodeByCategory": {},
+  "uncoveredCodeSample": []
+ },
+ {
+  "project": "hard.resource_certificate",
+  "kind": "eval",
+  "laws": 1,
+  "codeLaws": 0,
+  "programDefs": 3,
+  "codeDefs": 3,
+  "specDefs": 0,
+  "coveredProgram": 3,
+  "coveredCode": 3,
+  "closurePerLaw": {
+   "certificate_unique": 3
+  },
+  "uncoveredCodeByCategory": {},
+  "uncoveredCodeSample": []
+ },
+ {
+  "project": "hell.avl_leaderboard",
+  "kind": "eval",
+  "laws": 7,
+  "codeLaws": 0,
+  "programDefs": 22,
+  "codeDefs": 18,
+  "specDefs": 4,
+  "coveredProgram": 22,
+  "coveredCode": 18,
+  "closurePerLaw": {
+   "insert_ord": 13,
+   "insert_count": 14,
+   "build_ord": 15,
+   "build_count": 16,
+   "to_list_sorted": 4,
+   "to_list_count": 4,
+   "build_size": 15
+  },
+  "uncoveredCodeByCategory": {},
+  "uncoveredCodeSample": []
+ },
+ {
+  "project": "hell.combinator_confluence",
+  "kind": "eval",
+  "laws": 1,
+  "codeLaws": 0,
+  "programDefs": 3,
+  "codeDefs": 2,
+  "specDefs": 1,
+  "coveredProgram": 3,
+  "coveredCode": 2,
+  "closurePerLaw": {
+   "confluence": 3
+  },
+  "uncoveredCodeByCategory": {},
+  "uncoveredCodeSample": []
+ },
+ {
+  "project": "hell.glob_backtrack_match",
+  "kind": "eval",
+  "laws": 10,
+  "codeLaws": 1,
+  "programDefs": 24,
+  "codeDefs": 19,
+  "specDefs": 5,
+  "coveredProgram": 23,
+  "coveredCode": 18,
+  "closurePerLaw": {
+   "bt_sound": 7,
+   "bt_complete": 7,
+   "nfa_bt": 15,
+   "norm_bt": 6,
+   "dedup_nodup": 6,
+   "dedup_idem": 5,
+   "mem_self": 3,
+   "sim_mem": 14,
+   "nfa_sound": 18,
+   "nfa_complete": 18
+  },
+  "uncoveredCodeByCategory": {
+   "other logic": 1
+  },
+  "uncoveredCodeSample": [
+   "hell.glob_backtrack_match.match_dec"
+  ]
+ },
+ {
+  "project": "hell.loop_normalization",
+  "kind": "eval",
+  "laws": 1,
+  "codeLaws": 0,
+  "programDefs": 7,
+  "codeDefs": 4,
+  "specDefs": 3,
+  "coveredProgram": 7,
+  "coveredCode": 4,
+  "closurePerLaw": {
+   "normalize": 7
+  },
+  "uncoveredCodeByCategory": {},
+  "uncoveredCodeSample": []
+ }
+]

@@ -1,0 +1,17 @@
+{
+ "files": 114,
+ "functions": 886,
+ "decidedPureByTypes": 0,
+ "signatureBound_E7": "221 (24.9%)",
+ "signatureBoundButLocalEffect": "42 (19.0%) of signature-bound",
+ "noLocalEffectSyntax": "566 (63.9%)",
+ "noLocalEffectAndNoCalls": "238 (26.9%)",
+ "noLocalEffectButCalls": "328 (37.0%)",
+ "localEffectReasons": {
+  "mutating-call": 230,
+  "await": 62,
+  "throw": 53,
+  "write": 30,
+  "host global or fs": 17
+ }
+}
