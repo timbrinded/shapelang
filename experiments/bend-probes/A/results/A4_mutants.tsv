@@ -1,0 +1,23 @@
+id	check_service	check_main	error	run	verdict	verdict_error
+D01_opaque_law_type	SOME PROOFS FAIL	SOME PROOFS FAIL	Error: 1 TODO found. 	SOME PROOFS FAIL Error: 1 TODO found. 	SOME PROOFS FAIL	Error: 1 TODO found.
+M00_control	ALL PROOFS CHECK	ALL PROOFS CHECK	 	entries=2 	ALL PROOFS CHECK	
+M01_no_token	SOME PROOFS FAIL	SOME PROOFS FAIL	Error: - observed : C.Log	SOME PROOFS FAIL Error: 	SOME PROOFS FAIL	Error:
+M02_wrong_token	SOME PROOFS FAIL	SOME PROOFS FAIL	Error: - observed : C.AppendCap	SOME PROOFS FAIL Error: 	SOME PROOFS FAIL	Error:
+M03_forge_ctor	ALL PROOFS CHECK	ALL PROOFS CHECK	 	entries=0 	ALL PROOFS CHECK	
+M04_forge_from_other_token	ALL PROOFS CHECK	ALL PROOFS CHECK	 	entries=0 	ALL PROOFS CHECK	
+M05_forge_own_mint_call	ALL PROOFS CHECK	ALL PROOFS CHECK	 	entries=0 	ALL PROOFS CHECK	
+M06_forge_redeclared_type	SOME PROOFS FAIL	SOME PROOFS FAIL	Error: - observed : DeleteCap	SOME PROOFS FAIL Error: 	SOME PROOFS FAIL	Error:
+M07_dup_plus_param	SOME PROOFS FAIL	SOME PROOFS FAIL	Error: - observed : Type	SOME PROOFS FAIL Error: 	SOME PROOFS FAIL	Error:
+M08_dup_use_twice	SOME PROOFS FAIL	SOME PROOFS FAIL	Error: - observed : d (consumed more than once)	SOME PROOFS FAIL Error: 	SOME PROOFS FAIL	Error:
+M09_dup_return_twice	SOME PROOFS FAIL	SOME PROOFS FAIL	Error: - observed : d (consumed more than once)	SOME PROOFS FAIL Error: 	SOME PROOFS FAIL	Error:
+M10_dup_closure_twice	SOME PROOFS FAIL	SOME PROOFS FAIL	Error: - observed : l => C.Log.hard_delete(d, l)	SOME PROOFS FAIL Error: 	SOME PROOFS FAIL	Error:
+M11_dup_data_box	SOME PROOFS FAIL	SOME PROOFS FAIL	Error: - observed : Type	SOME PROOFS FAIL Error: 	SOME PROOFS FAIL	Error:
+M12_dup_polymorphic	SOME PROOFS FAIL	SOME PROOFS FAIL	Error: - observed : Kind(a)	SOME PROOFS FAIL Error: 	SOME PROOFS FAIL	Error:
+M13_dup_replicate	SOME PROOFS FAIL	SOME PROOFS FAIL	Error: - observed : Type	SOME PROOFS FAIL Error: 	SOME PROOFS FAIL	Error:
+M14_dup_array_fork	SOME PROOFS FAIL	SOME PROOFS FAIL	Error: 1 def relies on unsafe or foreign code: 	entries=2 	SOME PROOFS FAIL	Error: 1 def relies on unsafe or foreign code:
+M15_forge_todo	SOME PROOFS FAIL	SOME PROOFS FAIL	Error: 1 TODO found. 	SOME PROOFS FAIL Error: 1 TODO found. 	SOME PROOFS FAIL	Error: 1 TODO found.
+M16_forge_unsafe	SOME PROOFS FAIL	SOME PROOFS FAIL	Error: 2 defs rely on unsafe or foreign code: 		SOME PROOFS FAIL	Error: 2 defs rely on unsafe or foreign code:
+M17_forge_open_law	SOME PROOFS FAIL	SOME PROOFS FAIL	Error: - observed : mint	SOME PROOFS FAIL Error: 	SOME PROOFS FAIL	Error:
+M18_forge_erased	SOME PROOFS FAIL	SOME PROOFS FAIL	Error: - observed : d	SOME PROOFS FAIL Error: 	SOME PROOFS FAIL	Error:
+M19_forge_foreign	SOME PROOFS FAIL	SOME PROOFS FAIL	Error: 2 defs rely on unsafe or foreign code: 	entries=2 	SOME PROOFS FAIL	Error: 2 defs rely on unsafe or foreign code:
+M20_forge_absurd	ALL PROOFS CHECK	ALL PROOFS CHECK	 	entries=2 	ALL PROOFS CHECK	

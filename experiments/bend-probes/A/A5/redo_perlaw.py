@@ -12,7 +12,7 @@ with open(outp, "w") as fh:
         r = json.loads(l)
         d = os.path.join(work, r["id"])
         shutil.rmtree(os.path.join(d, "_perlaw"), ignore_errors=True)
-        out = subprocess.run(["python3", "-I", os.path.join(HERE, "..", "perlaw.py"), d, os.path.join(work, "_perlaw", r["id"])],
+        out = subprocess.run(["python3", "-I", "-B", os.path.join(HERE, "..", "perlaw.py"), d, os.path.join(work, "_perlaw", r["id"])],
                              capture_output=True, text=True, timeout=3600).stdout
         r["perlaw"] = {x.split("\t")[0]: x.split("\t")[1] for x in out.strip().splitlines() if "\t" in x}
         fh.write(json.dumps(r) + "\n"); fh.flush()

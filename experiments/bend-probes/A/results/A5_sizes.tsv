@@ -1,0 +1,7 @@
+demo	code_loc	code_defs	laws	law_loc	proof_loc	proof_defs	proof/code
+proof_insertion_sort	57	10	2	9	56	7	0.98
+proof_typed_eval	88	11	2	10	40	4	0.45
+proof_numerics	37	7	5	26	119	16	3.22
+pure_par_sum	23	4	1	6	35	4	1.52
+pure_par_sort	61	9	2	13	91	9	1.49
+app_win_is_bug_2d	166	34	2	10	391	38	2.36

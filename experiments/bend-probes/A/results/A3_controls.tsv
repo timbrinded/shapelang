@@ -1,0 +1,6 @@
+id	check	check_error	run_exit	run_secs	effects_observed	run_output	verdict	verdict_error
+C0_filewrite	PASS		0	0.3	file	result=x	PASS	
+C0_print	PASS		0	0.3	stdout	EFFECT:print / result=x	PASS	
+C0_sleep	PASS		0	1.8	-	result=x	PASS	
+C0_spawn_process	PASS		0	0.3	file	result=x	PASS	
+C0_tcp	PASS		0	0.3	tcp	result=x	PASS	

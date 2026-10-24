@@ -1,0 +1,197 @@
+id	kind	law	law_holds_on_enumeration	per_law_gate	counterexample
+IS-m01	mutant	sort_sorted	False	FAIL	{"xs": [0, 1], "out": [1, 0]}
+IS-m01	mutant	sort_perm	True	FAIL	null
+IS-m02	mutant	sort_sorted	True	FAIL	null
+IS-m02	mutant	sort_perm	False	FAIL	{"x": 1, "xs": [1, 0], "out": [0]}
+IS-m03	mutant	sort_sorted	True	FAIL	null
+IS-m03	mutant	sort_perm	False	FAIL	{"x": 0, "xs": [0, 0], "out": [0]}
+IS-m04	mutant	sort_sorted	False	FAIL	{"xs": [0, 1, 0], "out": [0, 1, 0]}
+IS-m04	mutant	sort_perm	True	FAIL	null
+IS-m05	mutant	sort_sorted	False	FAIL	{"xs": [1, 0], "out": [1, 0]}
+IS-m05	mutant	sort_perm	True	FAIL	null
+IS-m06	mutant	sort_sorted	True	FAIL	null
+IS-m06	mutant	sort_perm	False	FAIL	{"x": 0, "xs": [0], "out": []}
+IS-m07	mutant	sort_sorted	True	FAIL	null
+IS-m07	mutant	sort_perm	False	FAIL	{"x": 0, "xs": [0], "out": [0, 0]}
+IS-m09	mutant	sort_sorted	False	FAIL	{"xs": [0, 1], "out": [1, 0]}
+IS-m09	mutant	sort_perm	True	FAIL	null
+IS-r01	refactor	sort_sorted	True	PASS	null
+IS-r01	refactor	sort_perm	True	PASS	null
+IS-r02	refactor	sort_sorted	True	PASS	null
+IS-r02	refactor	sort_perm	True	PASS	null
+IS-r03	refactor	sort_sorted	True	PASS	null
+IS-r03	refactor	sort_perm	True	PASS	null
+IS-r04	refactor	sort_sorted	True	PASS	null
+IS-r04	refactor	sort_perm	True	PASS	null
+IS-r05	refactor	sort_sorted	True	FAIL	null
+IS-r05	refactor	sort_perm	True	FAIL	null
+TE-m01	mutant	opt_sound	False	FAIL	{"e": "{\"$\":\"Add\",\"a\":{\"$\":\"Num\",\"n\":0,\"eq\":null},\"b\":{\"$\":\"Add\",\"a\":{\"$\":\"Num\",\"n\":1,\"eq\":null},\"b\":{\"$\":\"Num\",\"n\":0,\"eq
+TE-m01	mutant	opt_complete	False	FAIL	{"e": "{\"$\":\"Add\",\"a\":{\"$\":\"Num\",\"n\":0,\"eq\":null},\"b\":{\"$\":\"Add\",\"a\":{\"$\":\"Num\",\"n\":1,\"eq\":null},\"b\":{\"$\":\"Num\",\"n\":0,\"eq
+TE-m02	mutant	opt_sound	False	FAIL	{"e": "{\"$\":\"Add\",\"a\":{\"$\":\"Num\",\"n\":0,\"eq\":null},\"b\":{\"$\":\"Num\",\"n\":0,\"eq\":null},\"eq\":null}", "opt": {"$": "Num", "n": 1, "eq": null}
+TE-m02	mutant	opt_complete	False	FAIL	{"e": "{\"$\":\"Add\",\"a\":{\"$\":\"Num\",\"n\":0,\"eq\":null},\"b\":{\"$\":\"Num\",\"n\":0,\"eq\":null},\"eq\":null}", "opt": {"$": "Num", "n": 1, "eq": null}
+TE-m03	mutant	opt_sound	False	FAIL	{"e": "{\"$\":\"If\",\"c\":{\"$\":\"IsZero\",\"a\":{\"$\":\"Num\",\"n\":0,\"eq\":null},\"eq\":null},\"a\":{\"$\":\"Num\",\"n\":0,\"eq\":null},\"b\":{\"$\":\"Num
+TE-m03	mutant	opt_complete	False	FAIL	{"e": "{\"$\":\"If\",\"c\":{\"$\":\"IsZero\",\"a\":{\"$\":\"Num\",\"n\":0,\"eq\":null},\"eq\":null},\"a\":{\"$\":\"Num\",\"n\":0,\"eq\":null},\"b\":{\"$\":\"Num
+TE-m04	mutant	opt_sound	False	FAIL	{"e": "{\"$\":\"Add\",\"a\":{\"$\":\"Num\",\"n\":0,\"eq\":null},\"b\":{\"$\":\"If\",\"c\":{\"$\":\"Bit\",\"b\":true,\"eq\":null},\"a\":{\"$\":\"Num\",\"n\":0,\"
+TE-m04	mutant	opt_complete	False	FAIL	{"e": "{\"$\":\"Add\",\"a\":{\"$\":\"Num\",\"n\":0,\"eq\":null},\"b\":{\"$\":\"If\",\"c\":{\"$\":\"Bit\",\"b\":true,\"eq\":null},\"a\":{\"$\":\"Num\",\"n\":0,\"
+TE-m05	mutant	opt_sound	True	PASS	null
+TE-m05	mutant	opt_complete	True	PASS	null
+TE-m06	mutant	opt_sound	True	FAIL	null
+TE-m06	mutant	opt_complete	False	FAIL	{"e": "{\"$\":\"Add\",\"a\":{\"$\":\"Num\",\"n\":0,\"eq\":null},\"b\":{\"$\":\"Add\",\"a\":{\"$\":\"Num\",\"n\":0,\"eq\":null},\"b\":{\"$\":\"Num\",\"n\":0,\"eq
+TE-m07	mutant	opt_sound	False	FAIL	{"e": "{\"$\":\"Add\",\"a\":{\"$\":\"Num\",\"n\":0,\"eq\":null},\"b\":{\"$\":\"If\",\"c\":{\"$\":\"Bit\",\"b\":true,\"eq\":null},\"a\":{\"$\":\"Num\",\"n\":0,\"
+TE-m07	mutant	opt_complete	False	FAIL	{"e": "{\"$\":\"Add\",\"a\":{\"$\":\"Num\",\"n\":0,\"eq\":null},\"b\":{\"$\":\"If\",\"c\":{\"$\":\"Bit\",\"b\":true,\"eq\":null},\"a\":{\"$\":\"Num\",\"n\":0,\"
+TE-m08	mutant	opt_sound	True	FAIL	null
+TE-m08	mutant	opt_complete	False	FAIL	{"e": "{\"$\":\"If\",\"c\":{\"$\":\"IsZero\",\"a\":{\"$\":\"Num\",\"n\":0,\"eq\":null},\"eq\":null},\"a\":{\"$\":\"Num\",\"n\":0,\"eq\":null},\"b\":{\"$\":\"Num
+TE-m09	mutant	opt_sound	False	FAIL	{"e": "{\"$\":\"Num\",\"n\":0,\"eq\":null}", "opt": {"$": "Num", "n": 1, "eq": null}}
+TE-m09	mutant	opt_complete	False	FAIL	{"e": "{\"$\":\"Num\",\"n\":0,\"eq\":null}", "opt": {"$": "Num", "n": 1, "eq": null}}
+TE-m10	mutant	opt_sound	True	PASS	null
+TE-m10	mutant	opt_complete	True	PASS	null
+TE-r01	refactor	opt_sound	True	PASS	null
+TE-r01	refactor	opt_complete	True	PASS	null
+TE-r02	refactor	opt_sound	True	PASS	null
+TE-r02	refactor	opt_complete	True	PASS	null
+TE-r03	refactor	opt_sound	True	FAIL	null
+TE-r03	refactor	opt_complete	True	FAIL	null
+TE-r04	refactor	opt_sound	True	PASS	null
+TE-r04	refactor	opt_complete	True	PASS	null
+NU-m01	mutant	add_comm	False	FAIL	{"a": 0, "b": 1}
+NU-m01	mutant	add_assoc	True	FAIL	null
+NU-m01	mutant	mul_comm	True	FAIL	null
+NU-m01	mutant	mul_dist	True	FAIL	null
+NU-m01	mutant	divmod_ok	False	FAIL	{"n": 1, "m": 0, "q": 1, "r": 0}
+NU-m02	mutant	add_comm	True	FAIL	null
+NU-m02	mutant	add_assoc	True	PASS	null
+NU-m02	mutant	mul_comm	False	FAIL	{"a": 0, "b": 1}
+NU-m02	mutant	mul_dist	False	FAIL	{"a": 0, "b": 0, "c": 1}
+NU-m02	mutant	divmod_ok	False	FAIL	{"n": 0, "m": 0, "q": 0, "r": 0}
+NU-m04	mutant	add_comm	True	PASS	null
+NU-m04	mutant	add_assoc	True	PASS	null
+NU-m04	mutant	mul_comm	False	FAIL	{"a": 0, "b": 1}
+NU-m04	mutant	mul_dist	False	FAIL	{"a": 0, "b": 0, "c": 1}
+NU-m04	mutant	divmod_ok	False	FAIL	{"n": 0, "m": 0, "q": 0, "r": 0}
+NU-m05	mutant	add_comm	True	PASS	null
+NU-m05	mutant	add_assoc	True	PASS	null
+NU-m05	mutant	mul_comm	True	PASS	null
+NU-m05	mutant	mul_dist	True	PASS	null
+NU-m05	mutant	divmod_ok	False	FAIL	{"n": 1, "m": 1, "q": 0, "r": 0}
+NU-m06	mutant	add_comm	True	PASS	null
+NU-m06	mutant	add_assoc	True	PASS	null
+NU-m06	mutant	mul_comm	True	PASS	null
+NU-m06	mutant	mul_dist	True	PASS	null
+NU-m06	mutant	divmod_ok	False	FAIL	{"n": 1, "m": 0, "q": 0, "r": 1}
+NU-m07	mutant	add_comm	True	PASS	null
+NU-m07	mutant	add_assoc	True	PASS	null
+NU-m07	mutant	mul_comm	True	PASS	null
+NU-m07	mutant	mul_dist	True	PASS	null
+NU-m07	mutant	divmod_ok	False	FAIL	{"n": 1, "m": 0, "q": 0, "r": 1}
+NU-m08	mutant	add_comm	True	PASS	null
+NU-m08	mutant	add_assoc	True	PASS	null
+NU-m08	mutant	mul_comm	True	PASS	null
+NU-m08	mutant	mul_dist	True	PASS	null
+NU-m08	mutant	divmod_ok	False	FAIL	{"n": 0, "m": 0, "q": 0, "r": 1}
+NU-m09	mutant	add_comm	True	PASS	null
+NU-m09	mutant	add_assoc	True	PASS	null
+NU-m09	mutant	mul_comm	True	PASS	null
+NU-m09	mutant	mul_dist	True	PASS	null
+NU-m09	mutant	divmod_ok	True	PASS	null
+NU-m10	mutant	add_comm	True	PASS	null
+NU-m10	mutant	add_assoc	True	PASS	null
+NU-m10	mutant	mul_comm	True	PASS	null
+NU-m10	mutant	mul_dist	True	PASS	null
+NU-m10	mutant	divmod_ok	False	FAIL	{"n": 1, "m": 0, "q": 0, "r": 1}
+NU-r01	refactor	add_comm	True	PASS	null
+NU-r01	refactor	add_assoc	True	PASS	null
+NU-r01	refactor	mul_comm	True	PASS	null
+NU-r01	refactor	mul_dist	True	PASS	null
+NU-r01	refactor	divmod_ok	True	PASS	null
+NU-r02	refactor	add_comm	True	PASS	null
+NU-r02	refactor	add_assoc	True	PASS	null
+NU-r02	refactor	mul_comm	True	FAIL	null
+NU-r02	refactor	mul_dist	True	FAIL	null
+NU-r02	refactor	divmod_ok	True	FAIL	null
+NU-r03	refactor	add_comm	True	PASS	null
+NU-r03	refactor	add_assoc	True	PASS	null
+NU-r03	refactor	mul_comm	True	PASS	null
+NU-r03	refactor	mul_dist	True	PASS	null
+NU-r03	refactor	divmod_ok	True	PASS	null
+NU-r04	refactor	add_comm	True	FAIL	null
+NU-r04	refactor	add_assoc	True	FAIL	null
+NU-r04	refactor	mul_comm	True	FAIL	null
+NU-r04	refactor	mul_dist	True	FAIL	null
+NU-r04	refactor	divmod_ok	True	FAIL	null
+NU-r05	refactor	add_comm	True	PASS	null
+NU-r05	refactor	add_assoc	True	PASS	null
+NU-r05	refactor	mul_comm	True	PASS	null
+NU-r05	refactor	mul_dist	True	PASS	null
+NU-r05	refactor	divmod_ok	True	PASS	null
+PS-m01	mutant	tree_is_seq	False	FAIL	{"d": 0, "i": 0, "sum": 1, "seq": 0}
+PS-m02	mutant	tree_is_seq	False	FAIL	{"d": 1, "i": 0, "sum": 2, "seq": 1}
+PS-m03	mutant	tree_is_seq	False	FAIL	{"d": 1, "i": 0, "sum": 0, "seq": 1}
+PS-m04	mutant	tree_is_seq	False	FAIL	{"d": 2, "i": 0, "sum": 6, "seq": 3}
+PS-m05	mutant	tree_is_seq	False	FAIL	{"d": 0, "i": 0, "sum": 0, "seq": 1}
+PS-m06	mutant	tree_is_seq	False	FAIL	{"d": 1, "i": 0, "sum": 0, "seq": 1}
+PS-r01	refactor	tree_is_seq	True	PASS	null
+PS-r02	refactor	tree_is_seq	True	FAIL	null
+PS-r03	refactor	tree_is_seq	True	FAIL	null
+PO-m01	mutant	mix_leaves	True	FAIL	null
+PO-m01	mutant	sort_leaves	True	FAIL	null
+PO-m02	mutant	mix_leaves	False	FAIL	{"d": 0, "s": true, "xs": [0], "ys": [1], "got": 0}
+PO-m02	mutant	sort_leaves	False	FAIL	{"d": 1, "s": true, "xs": [0, 1], "got": 0}
+PO-m03	mutant	mix_leaves	True	FAIL	null
+PO-m03	mutant	sort_leaves	True	FAIL	null
+PO-m04	mutant	mix_leaves	True	PASS	null
+PO-m04	mutant	sort_leaves	False	FAIL	{"d": 1, "s": true, "xs": [0, 1], "got": 0}
+PO-m05	mutant	mix_leaves	True	PASS	null
+PO-m05	mutant	sort_leaves	True	FAIL	null
+PO-m06	mutant	mix_leaves	True	PASS	null
+PO-m06	mutant	sort_leaves	True	FAIL	null
+PO-m07	mutant	mix_leaves	True	PASS	null
+PO-m07	mutant	sort_leaves	False	FAIL	{"d": 1, "s": true, "xs": [0, 1], "got": 0}
+PO-m08	mutant	mix_leaves	True	PASS	null
+PO-m08	mutant	sort_leaves	True	FAIL	null
+PO-m09	mutant	mix_leaves	True	PASS	null
+PO-m09	mutant	sort_leaves	True	PASS	null
+PO-r01	refactor	mix_leaves	True	PASS	null
+PO-r01	refactor	sort_leaves	True	PASS	null
+PO-r02	refactor	mix_leaves	True	PASS	null
+PO-r02	refactor	sort_leaves	True	PASS	null
+PO-r03	refactor	mix_leaves	True	FAIL	null
+PO-r03	refactor	sort_leaves	True	FAIL	null
+WB-m01	mutant	you_cant_win	True	PASS	null
+WB-m01	mutant	never_on_flag	True	PASS	null
+WB-m02	mutant	you_cant_win	False	FAIL	{"how": "bfs", "g": {"$": "Game", "x": 8, "y": 1, "won": true}}
+WB-m02	mutant	never_on_flag	False	FAIL	{"how": "bfs", "g": {"$": "Game", "x": 8, "y": 1, "won": true}}
+WB-m03	mutant	you_cant_win	True	FAIL	null
+WB-m03	mutant	never_on_flag	True	FAIL	null
+WB-m04	mutant	you_cant_win	True	PASS	null
+WB-m04	mutant	never_on_flag	True	PASS	null
+WB-m05	mutant	you_cant_win	False	FAIL	{"how": "bfs", "g": {"$": "Game", "x": 1, "y": 1, "won": true}}
+WB-m05	mutant	never_on_flag	False	FAIL	{"how": "bfs", "g": {"$": "Game", "x": 1, "y": 1, "won": true}}
+WB-m06	mutant	you_cant_win	False	FAIL	{"how": "bfs", "g": {"$": "Game", "x": 1, "y": 5, "won": true}}
+WB-m06	mutant	never_on_flag	False	FAIL	{"how": "bfs", "g": {"$": "Game", "x": 1, "y": 5, "won": true}}
+WB-m07	mutant	you_cant_win	True	PASS	null
+WB-m07	mutant	never_on_flag	True	PASS	null
+WB-m08	mutant	you_cant_win	True	FAIL	null
+WB-m08	mutant	never_on_flag	True	FAIL	null
+WB-m09	mutant	you_cant_win	True	FAIL	null
+WB-m09	mutant	never_on_flag	True	FAIL	null
+WB-m10	mutant	you_cant_win	True	FAIL	null
+WB-m10	mutant	never_on_flag	True	FAIL	null
+WB-m11	mutant	you_cant_win	False	FAIL	{"how": "bfs", "g": {"$": "Game", "x": 9, "y": 5, "won": true}}
+WB-m11	mutant	never_on_flag	True	FAIL	null
+WB-r01	refactor	you_cant_win	True	PASS	null
+WB-r01	refactor	never_on_flag	True	PASS	null
+WB-r02	refactor	you_cant_win	True	PASS	null
+WB-r02	refactor	never_on_flag	True	PASS	null
+WB-r03	refactor	you_cant_win	True	PASS	null
+WB-r03	refactor	never_on_flag	True	PASS	null
+WB-r04	refactor	you_cant_win	True	PASS	null
+WB-r04	refactor	never_on_flag	True	PASS	null
+WB-r05	refactor	you_cant_win	True	PASS	null
+WB-r05	refactor	never_on_flag	True	PASS	null
+NU-m03b	mutant	add_comm	True	PASS	null
+NU-m03b	mutant	add_assoc	True	PASS	null
+NU-m03b	mutant	mul_comm	False	FAIL	{"a": 0, "b": 1}
+NU-m03b	mutant	mul_dist	True	FAIL	null
+NU-m03b	mutant	divmod_ok	False	FAIL	{"n": 2, "m": 1, "q": 1, "r": 0}
+WB-m12b	mutant	you_cant_win	False	FAIL	{"how": "bfs", "g": {"$": "Game", "x": 1, "y": 1, "won": true}}
+WB-m12b	mutant	never_on_flag	False	FAIL	{"how": "bfs", "g": {"$": "Game", "x": 1, "y": 1, "won": true}}

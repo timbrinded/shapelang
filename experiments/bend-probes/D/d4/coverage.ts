@@ -19,9 +19,12 @@ import { Bend, termRefs, ctorFamily } from "../lib/bendbook.ts";
 
 const CLONE = process.argv[2];
 
+// the tip of a telescope, looking through the lets a law statement may hold
 function tipOf(T: any): any {
   let tel = Bend.term_strip(T);
-  for (let d = 0; tel.$ === "All"; d++) tel = Bend.term_strip(tel.B(Bend.Var(tel.k, d)));
+  for (let d = 0; tel.$ === "All" || tel.$ === "Let"; d++) {
+    tel = tel.$ === "All" ? Bend.term_strip(tel.B(Bend.Var(tel.k, d))) : Bend.term_strip(typeof tel.f === "function" ? tel.f(tel.v) : tel.f);
+  }
   return tel;
 }
 
@@ -40,7 +43,7 @@ for (const f of fs.readdirSync(path.join(CLONE, "evals")).filter((f) => f.endsWi
 const results = [];
 for (const p of projects) {
   // merge the books of every entry, keys normalized to "module:name"
-  const defs = new Map<string, { t: any; refs: Set<string>; stmt?: Set<string>; module: string; name: string; ioType: boolean; sort: boolean; retHead: string }>();
+  const defs = new Map<string, { t: any; refs: Set<string>; lawBody: Set<string>; eqAdt: boolean; stmt?: Set<string>; module: string; name: string; ioType: boolean; sort: boolean; retHead: string }>();
   for (const e of p.entries) {
     const book = Bend.book_nil();
     await Bend.book_load(book, path.resolve(e), "", new Map());
@@ -53,19 +56,37 @@ for (const p of projects) {
       const nk = norm(k);
       if (defs.has(nk) && !(t.$ === "Def" && t.v !== null && defs.get(nk)!.t.v === null)) continue;
       const rs = new Set<string>();
+      const lawBody = new Set<string>();
       const ctrs = new Set<string>();
       if (t.$ === "ADT") for (const c of [t, ...t.c]) termRefs(Bend.term_lower(c.T), rs);
       else {
         termRefs(Bend.term_lower(t.T), rs);
         if (t.v !== null && t.l !== true) termRefs(Bend.term_lower(t.v), rs, ctrs);
+        if (t.v !== null && t.l === true) termRefs(Bend.term_lower(t.v), lawBody, ctrs);
       }
       for (const c of ctrs) { const f = fam.get(c); if (f) rs.add(f); }
-      const nrs = new Set<string>();
-      for (const r of rs) {
-        const base = book.tlds[r.replace(/~\d+$/, "")]?.b === true || book.tlds[r]?.b === true;
-        if (!base) nrs.add(norm(r.replace(/~\d+$/, "")));
+      const keep = (src: Set<string>) => {
+        const out = new Set<string>();
+        for (const r of src) {
+          const base = book.tlds[r.replace(/~\d+$/, "")]?.b === true || book.tlds[r]?.b === true;
+          if (!base) out.add(norm(r.replace(/~\d+$/, "")));
+        }
+        out.delete(nk);
+        return out;
+      };
+      const nrs = keep(rs);
+      const nlb = keep(lawBody);
+      // a law statement mentioning a user datatype whose constructors carry equalities
+      // (a proof-carrying result, e.g. Verdict) is a claim whose fill is also code
+      let eqAdt = false;
+      if (t.$ === "Def" && t.l === true) {
+        const tp0 = tipOf(t.T);
+        const [h0] = Bend.term_unapply(tp0);
+        const adt = h0?.k !== undefined ? book.tlds[h0.k] : undefined;
+        if (adt?.$ === "ADT" && adt.b !== true) {
+          eqAdt = adt.c.some((c: any) => /==/.test(Bend.term_show(Bend.term_lower(c.T))));
+        }
       }
-      nrs.delete(nk);
       const tp = t.$ === "Def" ? tipOf(t.T) : null;
       const [h] = tp ? Bend.term_unapply(tp) : [null];
       const stmt = new Set<string>();
@@ -77,7 +98,7 @@ for (const p of projects) {
       const [mod, name] = nk.split(":");
       const typeRefs = new Set<string>();
       if (t.$ === "Def") termRefs(Bend.term_lower(t.T), typeRefs);
-      defs.set(nk, { t, refs: nrs, stmt: t.$ === "Def" && t.l === true ? stmt : undefined, module: mod, name,
+      defs.set(nk, { t, refs: nrs, lawBody: nlb, eqAdt, stmt: t.$ === "Def" && t.l === true ? stmt : undefined, module: mod, name,
         ioType: typeRefs.has("IO"), sort: tp?.$ === "Typ",
         retHead: tp?.$ === "Eql" ? "Eql" : tp?.$ === "Typ" ? "Typ" : h ? (h.k !== undefined ? (book.tlds[h.k]?.b === true ? h.k : norm(h.k)) : h.$) : "" });
     }
@@ -96,9 +117,12 @@ for (const p of projects) {
   const isClaimType = (k: string) => {
     const d = defs.get(k)!;
     const h = d.retHead;
-    return h === "Eql" || h === "Empty" || h === "Sigma" || h === "Unit" || h === "Typ"
-      || (defs.get((h.includes(":") ? h : d.module + ":" + h))?.sort ?? false) || /:/.test(h) && (defs.get(h)?.sort ?? false);
+    return h === "Eql" || h === "Empty" || h === "Sigma" || h === "Exists" || h === "Pair" || h === "Unit" || h === "Typ" || h === "Not"
+      || (defs.get(h)?.sort ?? false) || d.eqAdt;
   };
+  // a law whose statement is a data type (some evals declare the function to
+  // write as a law, e.g. `law emit: for t: Tree ... List<Token>`) is code; a
+  // claim on a proof-carrying datatype (eqAdt) is a claim whose fill is code too
   const isCodeLaw = (k: string) => { const d = defs.get(k)!; return d.t.$ === "Def" && d.t.l === true && !isClaimType(k); };
   const isLaw = (k: string) => {
     const d = defs.get(k)!;
@@ -109,7 +133,7 @@ for (const p of projects) {
   const isProof = (k: string) => {
     const d = defs.get(k)!;
     if (d.t.$ !== "Def") return false;
-    if (d.t.l === true) return !isCodeLaw(k); // a claim's def is its proof; a code law's def is code
+    if (d.t.l === true) return !isCodeLaw(k) && !d.eqAdt; // a claim's def is its proof; a code law's def is code
     if (p.kind === "demo") return d.module === "PROOF" || d.module === "LAWS";
     return (lineOf.get(d.name) ?? -1) > solutionLine;
   };
@@ -120,12 +144,14 @@ for (const p of projects) {
   const perLaw: Record<string, number> = {};
   for (const l of laws) {
     const seen = new Set<string>();
-    const todo = [...(defs.get(l)!.stmt ?? [])];
+    const todo = [...(defs.get(l)!.stmt ?? []), ...(defs.get(l)!.eqAdt ? [l] : [])];
     while (todo.length > 0) {
       const k = todo.pop() as string;
       if (seen.has(k) || !defs.has(k) || isProof(k)) continue;
+      if (defs.get(k)!.t.l === true && !isCodeLaw(k) && !defs.get(k)!.eqAdt) continue;
       seen.add(k);
       for (const r of defs.get(k)!.refs) todo.push(r);
+      if (isCodeLaw(k) || defs.get(k)!.eqAdt) for (const r of defs.get(k)!.lawBody) todo.push(r);
     }
     const inProg = [...seen].filter((k) => program.includes(k));
     perLaw[defs.get(l)!.name] = inProg.length;

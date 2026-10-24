@@ -1,0 +1,55 @@
+id	check	check_error	run_exit	run_secs	effects_observed	run_output	verdict	verdict_error
+F1_chan	FAIL	- expected : String | - observed : @-R:Type -> @k:(@_:String -> IO.OP<R>) -> IO.OP<R>	1	0.4	-	SOME PROOFS FAIL / Error: / - expected : String	FAIL	- expected : String | - observed : @-R:Type -> @k:(@_:String -> IO.OP<R>) -> IO.OP<R>
+F1_closure_call	FAIL	- expected : String | - observed : @-R:Type -> @k:(@_:Unit -> IO.OP<R>) -> IO.OP<R>	1	0.5	-	SOME PROOFS FAIL / Error: / - expected : String	FAIL	- expected : String | - observed : @-R:Type -> @k:(@_:Unit -> IO.OP<R>) -> IO.OP<R>
+F1_die	FAIL	- expected : String | - observed : @-R:Type -> @k:(@_:String -> IO.OP<R>) -> IO.OP<R>	1	0.5	-	SOME PROOFS FAIL / Error: / - expected : String	FAIL	- expected : String | - observed : @-R:Type -> @k:(@_:String -> IO.OP<R>) -> IO.OP<R>
+F1_env	FAIL	- expected : String | - observed : @-R:Type -> @k:(@_:String -> IO.OP<R>) -> IO.OP<R>	1	0.4	-	SOME PROOFS FAIL / Error: / - expected : String	FAIL	- expected : String | - observed : @-R:Type -> @k:(@_:String -> IO.OP<R>) -> IO.OP<R>
+F1_exit	FAIL	- expected : String | - observed : @-R:Type -> @k:(@_:String -> IO.OP<R>) -> IO.OP<R>	1	0.5	-	SOME PROOFS FAIL / Error: / - expected : String	FAIL	- expected : String | - observed : @-R:Type -> @k:(@_:String -> IO.OP<R>) -> IO.OP<R>
+F1_filewrite	FAIL	- expected : String | - observed : @-R:Type -> @k:(@_:String -> IO.OP<R>) -> IO.OP<R>	1	0.5	-	SOME PROOFS FAIL / Error: / - expected : String	FAIL	- expected : String | - observed : @-R:Type -> @k:(@_:String -> IO.OP<R>) -> IO.OP<R>
+F1_foreign_c	FAIL	- expected : a foreign definition returning base IO(...) directly (return type aliases are not unfolded) | - observed : ffi_tag	1	0.4	-	SOME PROOFS FAIL / Error: / - expected : a foreign definition returning base IO(...) directly (return type aliases are not unfolded)	FAIL	- expected : a foreign definition returning base IO(...) directly (return type aliases are not unfolded) | - observed : ffi_tag
+F1_foreign_js	FAIL	- expected : a foreign definition returning base IO(...) directly (return type aliases are not unfolded) | - observed : ffi_tag	1	0.5	-	SOME PROOFS FAIL / Error: / - expected : a foreign definition returning base IO(...) directly (return type aliases are not unfolded)	FAIL	- expected : a foreign definition returning base IO(...) directly (return type aliases are not unfolded) | - observed : ffi_tag
+F1_foreign_js_io	FAIL	- expected : String | - observed : @-R:Type -> @k:(@_:String -> IO.OP<R>) -> IO.OP<R>	1	0.5	-	SOME PROOFS FAIL / Error: / - expected : String	FAIL	- expected : String | - observed : @-R:Type -> @k:(@_:String -> IO.OP<R>) -> IO.OP<R>
+F1_print	FAIL	- expected : String | - observed : @-R:Type -> @k:(@_:String -> IO.OP<R>) -> IO.OP<R>	1	0.4	-	SOME PROOFS FAIL / Error: / - expected : String	FAIL	- expected : String | - observed : @-R:Type -> @k:(@_:String -> IO.OP<R>) -> IO.OP<R>
+F1_random	FAIL	- expected : String | - observed : @-R:Type -> @k:(@_:String -> IO.OP<R>) -> IO.OP<R>	1	0.4	-	SOME PROOFS FAIL / Error: / - expected : String	FAIL	- expected : String | - observed : @-R:Type -> @k:(@_:String -> IO.OP<R>) -> IO.OP<R>
+F1_sleep	FAIL	- expected : String | - observed : @-R:Type -> @k:(@_:String -> IO.OP<R>) -> IO.OP<R>	1	0.5	-	SOME PROOFS FAIL / Error: / - expected : String	FAIL	- expected : String | - observed : @-R:Type -> @k:(@_:String -> IO.OP<R>) -> IO.OP<R>
+F1_spawn_process	FAIL	- expected : String | - observed : @-R:Type -> @k:(@_:String -> IO.OP<R>) -> IO.OP<R>	1	0.6	-	SOME PROOFS FAIL / Error: / - expected : String	FAIL	- expected : String | - observed : @-R:Type -> @k:(@_:String -> IO.OP<R>) -> IO.OP<R>
+F1_spawn_task	FAIL	- expected : String | - observed : @-R:Type -> @k:(@_:String -> IO.OP<R>) -> IO.OP<R>	1	0.5	-	SOME PROOFS FAIL / Error: / - expected : String	FAIL	- expected : String | - observed : @-R:Type -> @k:(@_:String -> IO.OP<R>) -> IO.OP<R>
+F1_tcp	FAIL	- expected : String | - observed : @-R:Type -> @k:(@_:String -> IO.OP<R>) -> IO.OP<R>	1	0.5	-	SOME PROOFS FAIL / Error: / - expected : String	FAIL	- expected : String | - observed : @-R:Type -> @k:(@_:String -> IO.OP<R>) -> IO.OP<R>
+F1_time	FAIL	- expected : String | - observed : @-R:Type -> @k:(@_:String -> IO.OP<R>) -> IO.OP<R>	1	0.3	-	SOME PROOFS FAIL / Error: / - expected : String	FAIL	- expected : String | - observed : @-R:Type -> @k:(@_:String -> IO.OP<R>) -> IO.OP<R>
+F1_udp	FAIL	- expected : String | - observed : @-R:Type -> @k:(@_:String -> IO.OP<R>) -> IO.OP<R>	1	0.6	-	SOME PROOFS FAIL / Error: / - expected : String	FAIL	- expected : String | - observed : @-R:Type -> @k:(@_:String -> IO.OP<R>) -> IO.OP<R>
+F2_chan	PASS		0	0.4	-	result=x	PASS	
+F2_closure	PASS		0	0.5	-	result=x	PASS	
+F2_data	PASS		0	0.5	-	result=x	PASS	
+F2_die	PASS		0	0.5	-	result=x	PASS	
+F2_env	PASS		0	0.4	-	result=x	PASS	
+F2_exit	PASS		0	0.4	-	result=x	PASS	
+F2_filewrite	PASS		0	0.4	-	result=x	PASS	
+F2_foreign_js_io	FAIL	Error: 3 defs rely on unsafe or foreign code:	0	0.4	-	result=x	FAIL	Error: 3 defs rely on unsafe or foreign code:
+F2_print	PASS		0	0.4	-	result=x	PASS	
+F2_random	PASS		0	0.4	-	result=x	PASS	
+F2_sleep	PASS		0	0.4	-	result=x	PASS	
+F2_spawn_process	PASS		0	0.5	-	result=x	PASS	
+F2_spawn_task	PASS		0	0.4	-	result=x	PASS	
+F2_tcp	PASS		0	0.5	-	result=x	PASS	
+F2_time	PASS		0	0.4	-	result=x	PASS	
+F2_udp	PASS		0	0.4	-	result=x	PASS	
+F3_chan	PASS		1	0.6	-	bend: runtime fail-stop	PASS	
+F3_die	PASS		0	0.4	-	result=Haltx	PASS	
+F3_env	PASS		1	0.5	-	bend: runtime fail-stop	PASS	
+F3_exit	PASS		0	0.8	-	result=Exitx	PASS	
+F3_filewrite	PASS		1	0.5	-	bend: runtime fail-stop	PASS	
+F3_foreign_js_io	FAIL	Error: 3 defs rely on unsafe or foreign code:	1	0.5	-	bend: runtime fail-stop	FAIL	Error: 3 defs rely on unsafe or foreign code:
+F3_print	PASS		1	0.5	-	bend: runtime fail-stop	PASS	
+F3_random	PASS		1	0.6	-	bend: runtime fail-stop	PASS	
+F3_sleep	PASS		1	0.5	-	bend: runtime fail-stop	PASS	
+F3_spawn_process	PASS		1	0.5	-	bend: runtime fail-stop	PASS	
+F3_spawn_task	PASS		1	0.5	-	bend: runtime fail-stop	PASS	
+F3_tcp	PASS		1	0.6	-	bend: runtime fail-stop	PASS	
+F3_time	PASS		1	0.4	-	bend: runtime fail-stop	PASS	
+F3_udp	PASS		1	0.8	-	bend: runtime fail-stop	PASS	
+R1_alias	PASS		0	0.8	stdout	EFFECT:alias / result=x	PASS	
+R2_structural	PASS		0	0.6	stdout	EFFECT:structural / result=x	PASS	
+R4_return_closure	PASS		0	0.7	stdout	EFFECT:closure-return / result=x	PASS	
+R4_return_list	PASS		0	0.5	stdout	EFFECT:list-return / result=x	PASS	
+R5_polymorphic	PASS		0	1.2	stdout	EFFECT:polymorphic / result=x	PASS	
+R6_unsafe_loop	FAIL	Error: 3 defs rely on unsafe or foreign code:	timeout	20.1	-		FAIL	Error: 3 defs rely on unsafe or foreign code:
+R7_array_fork	FAIL	Error: 2 defs rely on unsafe or foreign code:	0	0.8	-	result=41x	FAIL	Error: 2 defs rely on unsafe or foreign code:
