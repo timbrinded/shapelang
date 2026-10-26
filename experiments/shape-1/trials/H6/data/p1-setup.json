@@ -1,0 +1,157 @@
+{
+ "baseline": {
+  "verdict": "owed",
+  "obligations": 414,
+  "errors": 0
+ },
+ "comps": [
+  {
+   "q": "shape.checker.incremental::ShapeIncrementalChecker",
+   "unit": "check",
+   "id": "ts:packages/shp-checker/src/checker/incremental.ts#IncrementalShapeChecker.check",
+   "file": "ts:packages/shp-checker/src/checker/incremental.ts",
+   "tier": "critical"
+  },
+  {
+   "q": "shape.checker::ShapeBindings",
+   "unit": "checkBindings",
+   "id": "ts:packages/shp-checker/src/checker/rules/coverage.ts#checkBindings",
+   "file": "ts:packages/shp-checker/src/checker/rules/coverage.ts",
+   "tier": "critical"
+  },
+  {
+   "q": "shape.checker::ShapeChecker",
+   "unit": "checkLoweredShapeModel",
+   "id": "ts:packages/shp-checker/src/checker/api.ts#checkLoweredShapeModel",
+   "file": "ts:packages/shp-checker/src/checker/api.ts",
+   "tier": "critical"
+  },
+  {
+   "q": "shape.checker::ShapeDiagnostics",
+   "unit": "compareShapeDiagnostics",
+   "id": "ts:packages/shp-checker/src/checker/diagnostics.ts#compareShapeDiagnostics",
+   "file": "ts:packages/shp-checker/src/checker/diagnostics.ts",
+   "tier": "normal"
+  },
+  {
+   "q": "shape.checker::ShapeModelLowerer",
+   "unit": "indexModuleDeclarations",
+   "id": "ts:packages/shp-checker/src/checker/symbols.ts#indexModuleDeclarations",
+   "file": "ts:packages/shp-checker/src/checker/symbols.ts",
+   "tier": "critical"
+  },
+  {
+   "q": "shape.checker::ShapeModuleResolver",
+   "unit": "resolveModuleReference",
+   "id": "ts:packages/shp-checker/src/module-resolution.ts#resolveModuleReference",
+   "file": "ts:packages/shp-checker/src/module-resolution.ts",
+   "tier": "critical"
+  },
+  {
+   "q": "shape.checker::ShapePreludeRegistry",
+   "unit": "definePreludeMetadata",
+   "id": "ts:packages/shp-checker/src/prelude.ts",
+   "file": "ts:packages/shp-checker/src/prelude.ts",
+   "tier": "critical"
+  },
+  {
+   "q": "shape.checker::ShapeRuleEngine",
+   "unit": "checkCitedPaths",
+   "id": "ts:packages/shp-checker/src/checker/rules/paths.ts#checkCitedPaths",
+   "file": "ts:packages/shp-checker/src/checker/rules/paths.ts",
+   "tier": "critical"
+  },
+  {
+   "q": "shape.checker::ShapeStringHelpers",
+   "unit": "normalizeShapeSourcePath",
+   "id": "ts:packages/shp-checker/src/shape-strings.ts#normalizeShapeSourcePath",
+   "file": "ts:packages/shp-checker/src/shape-strings.ts",
+   "tier": "critical"
+  },
+  {
+   "q": "shape.delivery::CiPipeline",
+   "unit": "checkReleaseVersion",
+   "id": "ts:scripts/check-release-metadata.ts#validateReleaseMetadata",
+   "file": "ts:scripts/check-release-metadata.ts",
+   "tier": "critical"
+  },
+  {
+   "q": "shape.language::DocsShapeBlockVerifier",
+   "unit": "verifyShapeCodeBlocks",
+   "id": "ts:docs-site/scripts/verify-shape-blocks.ts#verifyShapeCorpus",
+   "file": "ts:docs-site/scripts/verify-shape-blocks.ts",
+   "tier": "normal"
+  },
+  {
+   "q": "shape.language::ShapeGrammar",
+   "unit": "updateSyntaxHighlighting",
+   "id": "ts:docs-site/src/syntax/shape-language.mjs",
+   "file": "ts:docs-site/src/syntax/shape-language.mjs",
+   "tier": "critical"
+  },
+  {
+   "q": "shape.language::ShapeParser",
+   "unit": "parseShapeModule",
+   "id": "ts:packages/shp-checker/src/parser.ts#parseShapeModule",
+   "file": "ts:packages/shp-checker/src/parser.ts",
+   "tier": "critical"
+  },
+  {
+   "q": "shape.runtime::ExperimentalSemanticKernelHarness",
+   "unit": "benchmarkCandidateFingerprintPrototype",
+   "id": "ts:experiments/semantic-kernel/harness/benchmark.ts",
+   "file": "ts:experiments/semantic-kernel/harness/benchmark.ts",
+   "tier": "low"
+  },
+  {
+   "q": "shape.tooling::ShapeAnalyzer",
+   "unit": "analyzeSourceText",
+   "id": "ts:packages/shp-checker/src/analyzer.ts#analyzeSourceText",
+   "file": "ts:packages/shp-checker/src/analyzer.ts",
+   "tier": "normal"
+  },
+  {
+   "q": "shape.tooling::ShapeAstGenerator",
+   "unit": "addSemanticProjection",
+   "id": "ts:packages/shp-checker/src/ast-generation-semantic.ts#addSemanticProjection",
+   "file": "ts:packages/shp-checker/src/ast-generation-semantic.ts",
+   "tier": "normal"
+  },
+  {
+   "q": "shape.tooling::ShapeAuthoring",
+   "unit": "buildShapeAuthorPrompt",
+   "id": "ts:packages/shp-checker/src/authoring.ts#buildShapeAuthorPrompt",
+   "file": "ts:packages/shp-checker/src/authoring.ts",
+   "tier": "normal"
+  },
+  {
+   "q": "shape.tooling::ShapeEditorServices",
+   "unit": "formatOnSave",
+   "id": "ts:packages/shp-checker/src/editor.ts#formatOnSave",
+   "file": "ts:packages/shp-checker/src/editor.ts",
+   "tier": "normal"
+  },
+  {
+   "q": "shape.tooling::ShapeFormatter",
+   "unit": "formatShapeModule",
+   "id": "ts:packages/shp-checker/src/formatter.ts#formatShapeModule",
+   "file": "ts:packages/shp-checker/src/formatter.ts",
+   "tier": "normal"
+  },
+  {
+   "q": "shape.tooling::ShapeLanguageServer",
+   "unit": "serve",
+   "id": "ts:packages/shp-cli/src/lsp/server.ts#startShapeLanguageServer",
+   "file": "ts:packages/shp-cli/src/lsp/server.ts",
+   "tier": "normal"
+  },
+  {
+   "q": "shape.tooling::ShpCli",
+   "unit": "attestPrune",
+   "id": "ts:packages/shp-cli/src/commands/attest/impl.ts#attestPrune",
+   "file": "ts:packages/shp-cli/src/commands/attest/impl.ts",
+   "tier": "normal"
+  }
+ ],
+ "resources": 79
+}

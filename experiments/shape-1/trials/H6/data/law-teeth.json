@@ -1,0 +1,163 @@
+{
+ "tally": {
+  "unassessed": 70,
+  "weak": 8,
+  "teeth": 5,
+  "vacuous": 4
+ },
+ "laws": [
+  {
+   "fp": "sha256:e746e5fbfd3fa572b9432e1c62a91dcccd60991674e0bd6afbad8a646a0a7cca",
+   "id": "shape.checker.incremental::IncrementalRebuildsOnDocumentChange",
+   "mutants": {
+    "total": 20,
+    "killed": 6
+   },
+   "verdict": "weak"
+  },
+  {
+   "fp": "sha256:70fd57bd2d693b13d718aaef543de2eb643e7c0267be7caa6dc7270239cce6c6",
+   "id": "shape.checker.incremental::IncrementalReusesDiagnosticsOnNoop",
+   "mutants": {
+    "total": 20,
+    "killed": 12
+   },
+   "verdict": "teeth"
+  },
+  {
+   "fp": "sha256:170d68b24ce8b294436e24c19d0f841447edb71dc5038137ff64b2caee6b0d74",
+   "id": "shape.checker.incremental::IncrementalReusesModelOnOptionChange",
+   "mutants": {
+    "total": 20,
+    "killed": 12
+   },
+   "verdict": "teeth"
+  },
+  {
+   "fp": "sha256:985e2a8be6dddcfd01bd494ce1ee748460ccefc64086bad84c682b106185500b",
+   "id": "shape.checker::CheckIsDeterministic",
+   "mutants": {
+    "total": 15,
+    "killed": 3
+   },
+   "verdict": "weak"
+  },
+  {
+   "fp": "sha256:def1e582679da5cccca445ca81c7e719b2444c58a8ab9198e12e3d08d5aad23e",
+   "id": "shape.checker::FinalForbidBeatsGrant",
+   "mutants": {
+    "total": 20,
+    "killed": 3
+   },
+   "verdict": "weak"
+  },
+  {
+   "fp": "sha256:64358d594ca68f6c520d0c90d30e6bc13bc4706f526641a03406fd3f0b973307",
+   "id": "shape.checker::FinalForbidNotWaivedByContext",
+   "mutants": {
+    "total": 20,
+    "killed": 0
+   },
+   "verdict": "vacuous"
+  },
+  {
+   "fp": "sha256:ba7ee5de093c0f9badf2bd8a1e469bfe95ac82b8ad797f814bfc1e8ab07aaa80",
+   "id": "shape.checker::FinalForbidTargetsDeterministic",
+   "mutants": {
+    "total": 20,
+    "killed": 0
+   },
+   "verdict": "vacuous"
+  },
+  {
+   "fp": "sha256:8076cee42ae5eda03f0518671ed6e7d4f3a002647c47febddb56fc52fa2450e5",
+   "id": "shape.checker::ForbiddenPathFewestHops",
+   "mutants": {
+    "total": 8,
+    "killed": 4
+   },
+   "verdict": "teeth"
+  },
+  {
+   "fp": "sha256:02f044127f2b496ddc4eb0bc02941e1c0691af0dc2e2a7dbc27a7cc5e0f3aadd",
+   "id": "shape.checker::ForbiddenPathHopsKeepProvenance",
+   "mutants": {
+    "total": 8,
+    "killed": 0
+   },
+   "verdict": "vacuous"
+  },
+  {
+   "fp": "sha256:c23ba7482238fc491199da58ea8cbf4bb02e0e107922caa8d04f006c0e69f2a6",
+   "id": "shape.checker::FreshnessEnforcesOnlyIsoDates",
+   "mutants": {
+    "total": 6,
+    "killed": 4
+   },
+   "verdict": "teeth"
+  },
+  {
+   "fp": "sha256:67d9aed94b8ecf5073a1b636da32cc2f953765525528eaed198b3bae06f86cf0",
+   "id": "shape.checker::HypercycleShortestWitness",
+   "mutants": {
+    "total": 14,
+    "killed": 8
+   },
+   "verdict": "teeth"
+  },
+  {
+   "fp": "sha256:5a8ca4d0665122a019cf77d002b111d836d49bc4648fc6aee246ccb7416a9952",
+   "id": "shape.checker::InspectionCodepointOrder",
+   "mutants": {
+    "total": 15,
+    "killed": 2
+   },
+   "verdict": "weak"
+  },
+  {
+   "fp": "sha256:53b648282d722bb38a3cd274819056e3cc0196781f5efbe0bfa590b6a87ee3f1",
+   "id": "shape.checker::InspectionPreservesOrigin",
+   "mutants": {
+    "total": 15,
+    "killed": 2
+   },
+   "verdict": "weak"
+  },
+  {
+   "fp": "sha256:1c30f221585c5c24ab35412568915c6dadbb4bdf72e3c5981c7dfb53522f6e5c",
+   "id": "shape.checker::InspectionQualifiedIdentities",
+   "mutants": {
+    "total": 15,
+    "killed": 2
+   },
+   "verdict": "weak"
+  },
+  {
+   "fp": "sha256:1ff14e892c4791d5f23058b70e458459e1154085e5f8113dfb111cb9ca8add94",
+   "id": "shape.checker::SourcePathRulesShared",
+   "mutants": {
+    "total": 5,
+    "killed": 2
+   },
+   "verdict": "weak"
+  },
+  {
+   "fp": "sha256:3c9a13ef3720796568028bab65a59b1b911a9de16e3e64321630001adbbab61c",
+   "id": "shape.tooling::FormatterIdempotent",
+   "mutants": {
+    "total": 2,
+    "killed": 0
+   },
+   "verdict": "vacuous"
+  },
+  {
+   "fp": "sha256:d7c6f5c883dc26c0c420fcf7279a55b11378507970e6502e68c99787d63a115b",
+   "id": "shape.tooling::UpdateDraftsPreferUnknown",
+   "mutants": {
+    "total": 14,
+    "killed": 2
+   },
+   "verdict": "weak"
+  }
+ ]
+}

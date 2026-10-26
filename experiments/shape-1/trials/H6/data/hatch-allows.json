@@ -1,0 +1,76 @@
+{
+ "boundary": {
+  "name": "HostTrusted",
+  "allows": [
+   "external_body",
+   "external",
+   "uninterp"
+  ]
+ },
+ "rows": [
+  {
+   "variant": "as-published",
+   "verdict": "blocked",
+   "errors": [],
+   "obligations": 3,
+   "hatch": [
+    {
+     "forbid": "ironkv::NoHatchesOutsideBoundaries/1584bb88c66c",
+     "atom": "assume<std::Trust>",
+     "code": "verus:ironkv/src/delegation_map_v.rs#DelegationMap::set",
+     "severity": "blocking",
+     "introduced": true,
+     "force": "sound"
+    },
+    {
+     "forbid": "ironkv::NoHatchesOutsideBoundaries/dc8454f26ba4",
+     "atom": "external_body<std::Trust>",
+     "code": "verus:ironkv/src/host_t.rs#Host::send",
+     "severity": "owed",
+     "introduced": false,
+     "force": "sound"
+    }
+   ]
+  },
+  {
+   "variant": "new-marker-in-boundary",
+   "verdict": "blocked",
+   "errors": [],
+   "obligations": 3,
+   "hatch": [
+    {
+     "forbid": "ironkv::NoHatchesOutsideBoundaries/dc8454f26ba4",
+     "atom": "external_body<std::Trust>",
+     "code": "verus:ironkv/src/host_t.rs#Host::send",
+     "severity": "blocking",
+     "introduced": true,
+     "force": "sound"
+    },
+    {
+     "forbid": "ironkv::NoHatchesOutsideBoundaries/1584bb88c66c",
+     "atom": "assume<std::Trust>",
+     "code": "verus:ironkv/src/delegation_map_v.rs#DelegationMap::set",
+     "severity": "blocking",
+     "introduced": true,
+     "force": "sound"
+    }
+   ]
+  },
+  {
+   "variant": "no-host-marker",
+   "verdict": "blocked",
+   "errors": [],
+   "obligations": 3,
+   "hatch": [
+    {
+     "forbid": "ironkv::NoHatchesOutsideBoundaries/1584bb88c66c",
+     "atom": "assume<std::Trust>",
+     "code": "verus:ironkv/src/delegation_map_v.rs#DelegationMap::set",
+     "severity": "blocking",
+     "introduced": true,
+     "force": "sound"
+    }
+   ]
+  }
+ ]
+}

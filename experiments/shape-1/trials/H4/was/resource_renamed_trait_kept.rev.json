@@ -1,0 +1,25 @@
+{
+ "v": "shape.source.v1",
+ "modules": [
+  {
+   "module": "history",
+   "imports": [
+    "std",
+    "shape1.migrated"
+   ],
+   "decls": [
+    {
+     "decl": "resource",
+     "name": "Revision",
+     "attach": [
+      {
+       "name": "std::AppendOnly"
+      }
+     ],
+     "tier": "final",
+     "was": "Ledger"
+    }
+   ]
+  }
+ ]
+}

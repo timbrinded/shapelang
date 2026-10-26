@@ -1,0 +1,20 @@
+{
+ "sampled": 300,
+ "agree": 300,
+ "disagreements": [],
+ "byOp": {
+  "W1": {
+   "sampled": 100,
+   "agree": 100
+  },
+  "W2": {
+   "sampled": 100,
+   "agree": 100
+  },
+  "P1": {
+   "sampled": 100,
+   "agree": 100
+  }
+ },
+ "ms": 83871
+}

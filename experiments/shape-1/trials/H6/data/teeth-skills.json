@@ -1,0 +1,878 @@
+[
+ {
+  "case": "guard/equivalent-relocation/base",
+  "shapeFiles": 1,
+  "codeFiles": 0,
+  "errors": [],
+  "claims": 1,
+  "claimOps": {
+   "effect.forbid": 1
+  },
+  "notAssessed": 0,
+  "operators": [
+   {
+    "op": "W1",
+    "mutants": 21,
+    "killed": 3
+   },
+   {
+    "op": "W2",
+    "mutants": 0,
+    "killed": 0
+   },
+   {
+    "op": "P1",
+    "mutants": 0,
+    "killed": 0
+   },
+   {
+    "op": "M2",
+    "mutants": 0,
+    "killed": 0
+   }
+  ],
+  "vacuous": [],
+  "redundant": [],
+  "unusedGrants": [],
+  "gapsW1": {
+   "hatch-unforbidden": 10,
+   "ungoverned": 8
+  },
+  "gapsW2": [],
+  "P1": {
+   "resources": 1,
+   "uncaught": [],
+   "caught": []
+  },
+  "laws": []
+ },
+ {
+  "case": "guard/equivalent-relocation/candidate",
+  "shapeFiles": 1,
+  "codeFiles": 0,
+  "errors": [],
+  "claims": 1,
+  "claimOps": {
+   "effect.forbid": 1
+  },
+  "notAssessed": 0,
+  "operators": [
+   {
+    "op": "W1",
+    "mutants": 21,
+    "killed": 3
+   },
+   {
+    "op": "W2",
+    "mutants": 0,
+    "killed": 0
+   },
+   {
+    "op": "P1",
+    "mutants": 0,
+    "killed": 0
+   },
+   {
+    "op": "M2",
+    "mutants": 0,
+    "killed": 0
+   }
+  ],
+  "vacuous": [],
+  "redundant": [],
+  "unusedGrants": [],
+  "gapsW1": {
+   "hatch-unforbidden": 10,
+   "ungoverned": 8
+  },
+  "gapsW2": [],
+  "P1": {
+   "resources": 1,
+   "uncaught": [],
+   "caught": []
+  },
+  "laws": []
+ },
+ {
+  "case": "guard/policy-removal/base",
+  "shapeFiles": 1,
+  "codeFiles": 0,
+  "errors": [],
+  "claims": 1,
+  "claimOps": {
+   "effect.forbid": 1
+  },
+  "notAssessed": 0,
+  "operators": [
+   {
+    "op": "W1",
+    "mutants": 21,
+    "killed": 3
+   },
+   {
+    "op": "W2",
+    "mutants": 0,
+    "killed": 0
+   },
+   {
+    "op": "P1",
+    "mutants": 0,
+    "killed": 0
+   },
+   {
+    "op": "M2",
+    "mutants": 0,
+    "killed": 0
+   }
+  ],
+  "vacuous": [],
+  "redundant": [],
+  "unusedGrants": [],
+  "gapsW1": {
+   "hatch-unforbidden": 10,
+   "ungoverned": 8
+  },
+  "gapsW2": [],
+  "P1": {
+   "resources": 1,
+   "uncaught": [],
+   "caught": []
+  },
+  "laws": []
+ },
+ {
+  "case": "guard/policy-removal/candidate",
+  "shapeFiles": 1,
+  "codeFiles": 0,
+  "errors": [],
+  "claims": 0,
+  "claimOps": {},
+  "notAssessed": 0,
+  "operators": [
+   {
+    "op": "W1",
+    "mutants": 21,
+    "killed": 0
+   },
+   {
+    "op": "W2",
+    "mutants": 0,
+    "killed": 0
+   },
+   {
+    "op": "P1",
+    "mutants": 0,
+    "killed": 0
+   },
+   {
+    "op": "M2",
+    "mutants": 0,
+    "killed": 0
+   }
+  ],
+  "vacuous": [],
+  "redundant": [],
+  "unusedGrants": [],
+  "gapsW1": {
+   "hatch-unforbidden": 10,
+   "ungoverned": 11
+  },
+  "gapsW2": [],
+  "P1": {
+   "resources": 1,
+   "uncaught": [],
+   "caught": []
+  },
+  "laws": []
+ },
+ {
+  "case": "index/coverage-gaps",
+  "shapeFiles": 1,
+  "codeFiles": 3,
+  "errors": [],
+  "claims": 4,
+  "claimOps": {
+   "effects.upper": 2,
+   "edge.forbid": 1,
+   "effect.forbid": 1
+  },
+  "notAssessed": 0,
+  "operators": [
+   {
+    "op": "W1",
+    "mutants": 105,
+    "killed": 40
+   },
+   {
+    "op": "W2",
+    "mutants": 10,
+    "killed": 1
+   },
+   {
+    "op": "P1",
+    "mutants": 0,
+    "killed": 0
+   },
+   {
+    "op": "M2",
+    "mutants": 0,
+    "killed": 0
+   }
+  ],
+  "vacuous": [],
+  "redundant": [],
+  "unusedGrants": [],
+  "gapsW1": {
+   "hatch-unforbidden": 50,
+   "open-authority": 13,
+   "ungoverned": 2
+  },
+  "gapsW2": [
+   {
+    "kind": "callbacks",
+    "class": "new-coupling",
+    "total": 2,
+    "killed": 0
+   },
+   {
+    "kind": "calls",
+    "class": "new-coupling",
+    "total": 2,
+    "killed": 0
+   },
+   {
+    "kind": "coordinated_call",
+    "class": "new-coupling",
+    "total": 2,
+    "killed": 0
+   },
+   {
+    "kind": "data_flow",
+    "class": "new-coupling",
+    "total": 2,
+    "killed": 0
+   },
+   {
+    "kind": "provides",
+    "class": "provider",
+    "total": 2,
+    "killed": 1
+   }
+  ],
+  "P1": {
+   "resources": 1,
+   "uncaught": [],
+   "caught": []
+  },
+  "laws": []
+ },
+ {
+  "case": "index/missing-ast",
+  "shapeFiles": 1,
+  "codeFiles": 1,
+  "errors": [],
+  "claims": 1,
+  "claimOps": {
+   "effects.upper": 1
+  },
+  "notAssessed": 0,
+  "operators": [
+   {
+    "op": "W1",
+    "mutants": 30,
+    "killed": 0
+   },
+   {
+    "op": "W2",
+    "mutants": 0,
+    "killed": 0
+   },
+   {
+    "op": "P1",
+    "mutants": 0,
+    "killed": 0
+   },
+   {
+    "op": "M2",
+    "mutants": 0,
+    "killed": 0
+   }
+  ],
+  "vacuous": [
+   "skill_index_missing_ast::AuthService.requireUser/effects.upper"
+  ],
+  "redundant": [],
+  "unusedGrants": [],
+  "gapsW1": {
+   "hatch-unforbidden": 30
+  },
+  "gapsW2": [],
+  "P1": {
+   "resources": 0,
+   "uncaught": [],
+   "caught": []
+  },
+  "laws": []
+ },
+ {
+  "case": "preflight/complete-route",
+  "shapeFiles": 1,
+  "codeFiles": 0,
+  "errors": [],
+  "claims": 1,
+  "claimOps": {
+   "path.forbid": 1
+  },
+  "notAssessed": 0,
+  "operators": [
+   {
+    "op": "W1",
+    "mutants": 63,
+    "killed": 0
+   },
+   {
+    "op": "W2",
+    "mutants": 10,
+    "killed": 1
+   },
+   {
+    "op": "P1",
+    "mutants": 0,
+    "killed": 0
+   },
+   {
+    "op": "M2",
+    "mutants": 0,
+    "killed": 0
+   }
+  ],
+  "vacuous": [],
+  "redundant": [],
+  "unusedGrants": [],
+  "gapsW1": {
+   "hatch-unforbidden": 30,
+   "open-authority": 22,
+   "ungoverned": 11
+  },
+  "gapsW2": [
+   {
+    "kind": "callbacks",
+    "class": "new-coupling",
+    "total": 2,
+    "killed": 0
+   },
+   {
+    "kind": "calls",
+    "class": "new-coupling",
+    "total": 2,
+    "killed": 0
+   },
+   {
+    "kind": "coordinated_call",
+    "class": "new-coupling",
+    "total": 2,
+    "killed": 0
+   },
+   {
+    "kind": "data_flow",
+    "class": "new-coupling",
+    "total": 2,
+    "killed": 0
+   },
+   {
+    "kind": "provides",
+    "class": "provider",
+    "total": 2,
+    "killed": 1
+   }
+  ],
+  "P1": {
+   "resources": 1,
+   "uncaught": [],
+   "caught": []
+  },
+  "laws": []
+ },
+ {
+  "case": "preflight/guarded-unknown",
+  "shapeFiles": 1,
+  "codeFiles": 0,
+  "errors": [
+   "E-unbound unit skill_preflight_guarded::ReportCompiler.compileReport"
+  ],
+  "claims": 4,
+  "claimOps": {
+   "effects.upper": 1,
+   "authority": 1,
+   "edge.forbid": 1,
+   "effect.forbid": 1
+  },
+  "notAssessed": 1,
+  "operators": [
+   {
+    "op": "W1",
+    "mutants": 62,
+    "killed": 29
+   },
+   {
+    "op": "W2",
+    "mutants": 1,
+    "killed": 0
+   },
+   {
+    "op": "P1",
+    "mutants": 3,
+    "killed": 0
+   },
+   {
+    "op": "M2",
+    "mutants": 1,
+    "killed": 1
+   }
+  ],
+  "vacuous": [
+   "skill_preflight_guarded::ReportCompilerOwnsTemplateCatalog/4feb89582cf5"
+  ],
+  "redundant": [
+   "skill_preflight_guarded::ReportCompiler.compileReport/effects.upper <= skill_preflight_guarded::ReportCompiler/authority"
+  ],
+  "unusedGrants": [],
+  "gapsW1": {
+   "granted-to-component": 1,
+   "hatch-unforbidden": 30,
+   "ungoverned": 2
+  },
+  "gapsW2": [
+   {
+    "kind": "provides",
+    "class": "provider",
+    "total": 1,
+    "killed": 0
+   }
+  ],
+  "P1": {
+   "resources": 1,
+   "uncaught": [
+    "skill_preflight_guarded::TemplateCatalog"
+   ],
+   "caught": []
+  },
+  "laws": [
+   "skill_preflight_guarded::ReportCompiler.compileReport/RefactorSensitive/law:unassessed"
+  ]
+ },
+ {
+  "case": "preflight/invalid-baseline",
+  "shapeFiles": 1,
+  "codeFiles": 0,
+  "errors": [
+   "E-unbound unit skill_preflight_invalid::AuditStore.appendEvent"
+  ],
+  "claims": 0,
+  "claimOps": {},
+  "notAssessed": 0,
+  "operators": [
+   {
+    "op": "W1",
+    "mutants": 30,
+    "killed": 0
+   },
+   {
+    "op": "W2",
+    "mutants": 0,
+    "killed": 0
+   },
+   {
+    "op": "P1",
+    "mutants": 0,
+    "killed": 0
+   },
+   {
+    "op": "M2",
+    "mutants": 0,
+    "killed": 0
+   }
+  ],
+  "vacuous": [],
+  "redundant": [],
+  "unusedGrants": [],
+  "gapsW1": {
+   "hatch-unforbidden": 30
+  },
+  "gapsW2": [],
+  "P1": {
+   "resources": 0,
+   "uncaught": [],
+   "caught": []
+  },
+  "laws": []
+ },
+ {
+  "case": "review/cross-object",
+  "shapeFiles": 1,
+  "codeFiles": 3,
+  "errors": [],
+  "claims": 2,
+  "claimOps": {
+   "effects.upper": 2
+  },
+  "notAssessed": 1,
+  "operators": [
+   {
+    "op": "W1",
+    "mutants": 50,
+    "killed": 0
+   },
+   {
+    "op": "W2",
+    "mutants": 7,
+    "killed": 0
+   },
+   {
+    "op": "P1",
+    "mutants": 0,
+    "killed": 0
+   },
+   {
+    "op": "M2",
+    "mutants": 0,
+    "killed": 0
+   }
+  ],
+  "vacuous": [
+   "skill_review_cross_object::RecordCatalog.getLabel/effects.upper",
+   "skill_review_cross_object::RecordPresenter.presentRecord/effects.upper"
+  ],
+  "redundant": [],
+  "unusedGrants": [],
+  "gapsW1": {
+   "hatch-unforbidden": 50
+  },
+  "gapsW2": [
+   {
+    "kind": "callbacks",
+    "class": "new-coupling",
+    "total": 2,
+    "killed": 0
+   },
+   {
+    "kind": "calls",
+    "class": "back-edge",
+    "total": 1,
+    "killed": 0
+   },
+   {
+    "kind": "coordinated_call",
+    "class": "new-coupling",
+    "total": 2,
+    "killed": 0
+   },
+   {
+    "kind": "data_flow",
+    "class": "new-coupling",
+    "total": 2,
+    "killed": 0
+   }
+  ],
+  "P1": {
+   "resources": 0,
+   "uncaught": [],
+   "caught": []
+  },
+  "laws": []
+ },
+ {
+  "case": "review/root-cause-grouping",
+  "shapeFiles": 1,
+  "codeFiles": 4,
+  "errors": [],
+  "claims": 3,
+  "claimOps": {
+   "effects.upper": 3
+  },
+  "notAssessed": 1,
+  "operators": [
+   {
+    "op": "W1",
+    "mutants": 60,
+    "killed": 0
+   },
+   {
+    "op": "W2",
+    "mutants": 7,
+    "killed": 0
+   },
+   {
+    "op": "P1",
+    "mutants": 0,
+    "killed": 0
+   },
+   {
+    "op": "M2",
+    "mutants": 0,
+    "killed": 0
+   }
+  ],
+  "vacuous": [
+   "skill_review_root_cause::RangeMetrics.includesValue/effects.upper",
+   "skill_review_root_cause::RangeMetrics.inclusiveSize/effects.upper",
+   "skill_review_root_cause::RangeNormalizer.normalizeRange/effects.upper"
+  ],
+  "redundant": [],
+  "unusedGrants": [],
+  "gapsW1": {
+   "hatch-unforbidden": 60
+  },
+  "gapsW2": [
+   {
+    "kind": "callbacks",
+    "class": "new-coupling",
+    "total": 2,
+    "killed": 0
+   },
+   {
+    "kind": "calls",
+    "class": "back-edge",
+    "total": 1,
+    "killed": 0
+   },
+   {
+    "kind": "coordinated_call",
+    "class": "new-coupling",
+    "total": 2,
+    "killed": 0
+   },
+   {
+    "kind": "data_flow",
+    "class": "new-coupling",
+    "total": 2,
+    "killed": 0
+   }
+  ],
+  "P1": {
+   "resources": 0,
+   "uncaught": [],
+   "caught": []
+  },
+  "laws": []
+ },
+ {
+  "case": "review/stale-model",
+  "shapeFiles": 1,
+  "codeFiles": 1,
+  "errors": [],
+  "claims": 1,
+  "claimOps": {
+   "effects.upper": 1
+  },
+  "notAssessed": 1,
+  "operators": [
+   {
+    "op": "W1",
+    "mutants": 40,
+    "killed": 0
+   },
+   {
+    "op": "W2",
+    "mutants": 7,
+    "killed": 0
+   },
+   {
+    "op": "P1",
+    "mutants": 0,
+    "killed": 0
+   },
+   {
+    "op": "M2",
+    "mutants": 0,
+    "killed": 0
+   }
+  ],
+  "vacuous": [
+   "skill_review_stale::ReportLoader.loadReport/effects.upper"
+  ],
+  "redundant": [],
+  "unusedGrants": [],
+  "gapsW1": {
+   "hatch-unforbidden": 40
+  },
+  "gapsW2": [
+   {
+    "kind": "callbacks",
+    "class": "new-coupling",
+    "total": 2,
+    "killed": 0
+   },
+   {
+    "kind": "calls",
+    "class": "back-edge",
+    "total": 1,
+    "killed": 0
+   },
+   {
+    "kind": "coordinated_call",
+    "class": "new-coupling",
+    "total": 2,
+    "killed": 0
+   },
+   {
+    "kind": "data_flow",
+    "class": "new-coupling",
+    "total": 2,
+    "killed": 0
+   }
+  ],
+  "P1": {
+   "resources": 0,
+   "uncaught": [],
+   "caught": []
+  },
+  "laws": []
+ },
+ {
+  "case": "unix-system-visualiser/connected",
+  "shapeFiles": 3,
+  "codeFiles": 2,
+  "errors": [],
+  "claims": 6,
+  "claimOps": {
+   "effects.upper": 2,
+   "authority": 1,
+   "edge.forbid": 1,
+   "effect.forbid": 2
+  },
+  "notAssessed": 4,
+  "operators": [
+   {
+    "op": "W1",
+    "mutants": 104,
+    "killed": 49
+   },
+   {
+    "op": "W2",
+    "mutants": 8,
+    "killed": 1
+   },
+   {
+    "op": "P1",
+    "mutants": 3,
+    "killed": 3
+   },
+   {
+    "op": "M2",
+    "mutants": 1,
+    "killed": 1
+   }
+  ],
+  "vacuous": [],
+  "redundant": [
+   "unix_visualiser_fixture::EventStore.loadEvents/effects.upper <= unix_visualiser_fixture::EventStore/authority"
+  ],
+  "unusedGrants": [],
+  "gapsW1": {
+   "granted-to-component": 1,
+   "hatch-unforbidden": 50,
+   "open-authority": 2,
+   "ungoverned": 2
+  },
+  "gapsW2": [
+   {
+    "kind": "callbacks",
+    "class": "new-coupling",
+    "total": 2,
+    "killed": 0
+   },
+   {
+    "kind": "calls",
+    "class": "back-edge",
+    "total": 1,
+    "killed": 0
+   },
+   {
+    "kind": "coordinated_call",
+    "class": "back-edge",
+    "total": 1,
+    "killed": 0
+   },
+   {
+    "kind": "data_flow",
+    "class": "new-coupling",
+    "total": 2,
+    "killed": 0
+   },
+   {
+    "kind": "provides",
+    "class": "provider",
+    "total": 2,
+    "killed": 1
+   }
+  ],
+  "P1": {
+   "resources": 1,
+   "uncaught": [],
+   "caught": [
+    "unix_visualiser_fixture::SystemEvent"
+   ]
+  },
+  "laws": [
+   "unix_visualiser_fixture::EventStore.loadEvents/RefactorSensitive/law:unassessed"
+  ]
+ },
+ {
+  "case": "unix-system-visualiser/invalid-model",
+  "shapeFiles": 1,
+  "codeFiles": 0,
+  "errors": [
+   "E-unbound unit invalid_visualiser_fixture::EventWriter.appendEvent"
+  ],
+  "claims": 1,
+  "claimOps": {
+   "effects.upper": 1
+  },
+  "notAssessed": 1,
+  "operators": [
+   {
+    "op": "W1",
+    "mutants": 62,
+    "killed": 2
+   },
+   {
+    "op": "W2",
+    "mutants": 1,
+    "killed": 0
+   },
+   {
+    "op": "P1",
+    "mutants": 0,
+    "killed": 0
+   },
+   {
+    "op": "M2",
+    "mutants": 0,
+    "killed": 0
+   }
+  ],
+  "vacuous": [],
+  "redundant": [],
+  "unusedGrants": [],
+  "gapsW1": {
+   "hatch-unforbidden": 30,
+   "open-authority": 19,
+   "ungoverned": 11
+  },
+  "gapsW2": [
+   {
+    "kind": "provides",
+    "class": "provider",
+    "total": 1,
+    "killed": 0
+   }
+  ],
+  "P1": {
+   "resources": 1,
+   "uncaught": [],
+   "caught": []
+  },
+  "laws": []
+ }
+]

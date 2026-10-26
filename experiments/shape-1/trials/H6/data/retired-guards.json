@@ -1,0 +1,15 @@
+{
+ "migrated": 35,
+ "dogfood": 27,
+ "retired": [
+  "shape.checker.incremental::ShapeIncrementalChecker.check",
+  "shape.checker::ShapeRuleEngine.checkFreshness",
+  "shape.checker::ShapeRuleEngine.deriveFinalForbidsForResource",
+  "shape.checker::ShapeRuleEngine.findHypercycle",
+  "shape.checker::ShapeRuleEngine.findShortestPath",
+  "shape.checker::ShapeStringHelpers.normalizeShapeSourcePath",
+  "shape.tooling::ShapeFormatter.formatShapeModule",
+  "shape.tooling::ShpCli.isoToday"
+ ],
+ "added": []
+}

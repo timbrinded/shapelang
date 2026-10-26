@@ -1,0 +1,214 @@
+{
+ "revision": "8cb085a8c17ef2b2b15dc7944a13a35330e23b67",
+ "tsClockScan": {
+  "facts": 23,
+  "files": 345,
+  "incomplete": 2
+ },
+ "tsCalls": {
+  "facts": 2748,
+  "files": 216
+ },
+ "bunTest": [
+  {
+   "law": "shape.checker.incremental::IncrementalRebuildsOnDocumentChange",
+   "result": "supports"
+  },
+  {
+   "law": "shape.checker.incremental::IncrementalReusesDiagnosticsOnNoop",
+   "result": "supports"
+  },
+  {
+   "law": "shape.checker.incremental::IncrementalReusesModelOnOptionChange",
+   "result": "supports"
+  },
+  {
+   "law": "shape.checker::ChangePlanCommitsOnlyWhenFullyStaged",
+   "result": "supports"
+  },
+  {
+   "law": "shape.checker::ChangePlanStagedInIsolation",
+   "result": "supports"
+  },
+  {
+   "law": "shape.checker::CheckIsDeterministic",
+   "result": "supports"
+  },
+  {
+   "law": "shape.checker::FinalForbidBeatsGrant",
+   "result": "supports"
+  },
+  {
+   "law": "shape.checker::FinalForbidNotWaivedByContext",
+   "result": "supports"
+  },
+  {
+   "law": "shape.checker::FinalForbidTargetsDeterministic",
+   "result": "supports"
+  },
+  {
+   "law": "shape.checker::ForbiddenPathFewestHops",
+   "result": "supports"
+  },
+  {
+   "law": "shape.checker::ForbiddenPathHopsKeepProvenance",
+   "result": "supports"
+  },
+  {
+   "law": "shape.checker::FreshnessEnforcesOnlyIsoDates",
+   "result": "supports"
+  },
+  {
+   "law": "shape.checker::HypercycleShortestWitness",
+   "result": "supports"
+  },
+  {
+   "law": "shape.checker::InspectionCodepointOrder",
+   "result": "supports"
+  },
+  {
+   "law": "shape.checker::InspectionPreservesOrigin",
+   "result": "supports"
+  },
+  {
+   "law": "shape.checker::InspectionQualifiedIdentities",
+   "result": "supports"
+  },
+  {
+   "law": "shape.checker::SourcePathRulesShared",
+   "result": "supports"
+  },
+  {
+   "law": "shape.tooling::FormatterCanonicalGraphRules",
+   "result": "contradicts"
+  },
+  {
+   "law": "shape.tooling::FormatterFlattensGroupedContext",
+   "result": "contradicts"
+  },
+  {
+   "law": "shape.tooling::FormatterIdempotent",
+   "result": "supports"
+  },
+  {
+   "law": "shape.tooling::UpdateDraftsPreferUnknown",
+   "result": "supports"
+  },
+  {
+   "law": "shape.checker::AttestationOnlyChangeDoesNotTriggerBinding",
+   "result": "inconclusive"
+  },
+  {
+   "law": "shape.checker::BindingAttestationCountsOnlyWhenNew",
+   "result": "inconclusive"
+  },
+  {
+   "law": "shape.checker::BindingsCompareNormalizedPaths",
+   "result": "inconclusive"
+  },
+  {
+   "law": "shape.checker::ChangeTransitionsYieldNormalizedGuardEvents",
+   "result": "inconclusive"
+  },
+  {
+   "law": "shape.checker::ContextRequirementsDeriveObligations",
+   "result": "inconclusive"
+  },
+  {
+   "law": "shape.checker::ContextRequirementsMergeWithUserTraits",
+   "result": "inconclusive"
+  },
+  {
+   "law": "shape.checker::CoverageAttestationCountsOnlyWhenNew",
+   "result": "inconclusive"
+  },
+  {
+   "law": "shape.checker::CoverageSourceRefMatchesChangedFile",
+   "result": "inconclusive"
+  },
+  {
+   "law": "shape.checker::GuardedSourceClearedOnlyByChangeReevaluation",
+   "result": "inconclusive"
+  },
+  {
+   "law": "shape.checker::GuardsFirePropertyLevel",
+   "result": "inconclusive"
+  },
+  {
+   "law": "shape.checker::GuardsNeverWaiveFinalForbids",
+   "result": "inconclusive"
+  },
+  {
+   "law": "shape.checker::OtherGuardTargetsUseCoarseMatching",
+   "result": "inconclusive"
+  },
+  {
+   "law": "shape.checker::ReevaluationNeedsApproverWhenPolicyRequires",
+   "result": "inconclusive"
+  },
+  {
+   "law": "shape.checker::ReevaluationRoleChecksOptIn",
+   "result": "inconclusive"
+  },
+  {
+   "law": "shape.checker::ReevaluationRolesValidated",
+   "result": "inconclusive"
+  },
+  {
+   "law": "shape.checker::TransformGuardsFireOnMatchingTransform",
+   "result": "inconclusive"
+  },
+  {
+   "law": "shape.delivery::SkillsReportReusedOnlyWhenUnchanged",
+   "result": "inconclusive"
+  },
+  {
+   "law": "shape.language::GrammarSupportsGuardForms",
+   "result": "inconclusive"
+  },
+  {
+   "law": "shape.language::ParserPreservesDocumentState",
+   "result": "inconclusive"
+  },
+  {
+   "law": "shape.tooling::AmbiguousOutputModesRejectedFirst",
+   "result": "inconclusive"
+  },
+  {
+   "law": "shape.tooling::CandidateEffectsAreHints",
+   "result": "inconclusive"
+  },
+  {
+   "law": "shape.tooling::DefaultDiscoveryLoadsNestedPacks",
+   "result": "inconclusive"
+  },
+  {
+   "law": "shape.tooling::DraftAnchorsCarryFingerprints",
+   "result": "inconclusive"
+  },
+  {
+   "law": "shape.tooling::DraftReferencesStableUnderLineMoves",
+   "result": "inconclusive"
+  },
+  {
+   "law": "shape.tooling::DraftsKeepEffectsUnknown",
+   "result": "inconclusive"
+  },
+  {
+   "law": "shape.tooling::GeneratedAstDirectoryChecksExplicit",
+   "result": "inconclusive"
+  },
+  {
+   "law": "shape.tooling::GeneratedAstIdentityFromWorkspaceRoot",
+   "result": "inconclusive"
+  },
+  {
+   "law": "shape.tooling::RawTracesOptIn",
+   "result": "inconclusive"
+  },
+  {
+   "law": "shape.tooling::TokenlessAnchorsWarn",
+   "result": "inconclusive"
+  }
+ ]
+}

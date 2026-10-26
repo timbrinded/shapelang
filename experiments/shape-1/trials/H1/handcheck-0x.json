@@ -1,0 +1,27 @@
+{
+ "what": "Hand check of 20 seeded 0.x coverage demands (sample0x.py, seed 20261026, pool 690 = 608 files + 82 guards over 115 commits). TRUE: the file change could affect behaviour that the governing component's shape describes (effects, calls, relations, guarded function), so deciding 'update the shape or attest' needs a look. FALSE: the question has a determinate no-impact answer from the diff alone (prose, version string, help text, comment-only, a helper beside an unchanged guarded function).",
+ "items": [
+  {"commit": "c04a5e7", "demand": "packages/shp-checker/src/checker/display.ts", "verdict": "TRUE", "why": "helpers re-exported from module-resolution: new dependency edge display -> module-resolution"},
+  {"commit": "02e3485", "demand": "plugins/shapelang/skills/shape-lang/references/cli-workflows.md", "verdict": "FALSE", "why": "skill reference prose about CLI flags; no shape claim describes it"},
+  {"commit": "5d033ae", "demand": "guard ReleaseChecksumContract @ scripts/build-release-assets.sh", "verdict": "TRUE", "why": "native-asset resolution in the guarded release build changed; the memory protects asset/checksum sync"},
+  {"commit": "1b82323", "demand": "docs-site/src/content/docs/examples/analyzer-warning.md", "verdict": "FALSE", "why": "docs page rewrite"},
+  {"commit": "00d0f86", "demand": "packages/shp-cli/src/parameters.ts", "verdict": "FALSE", "why": "flag help string only"},
+  {"commit": "fa20dee", "demand": "docs-site/src/content/docs/concepts/analyzer-hints.md", "verdict": "FALSE", "why": "docs page deleted in a docs restructure"},
+  {"commit": "b908c4f", "demand": ".github/scripts/fetch-human-task.mjs", "verdict": "TRUE", "why": "new CI script reading PR/issue data for the contract guard"},
+  {"commit": "3f7bfaf", "demand": "experiments/semantic-kernel/src/lib.rs", "verdict": "TRUE", "why": "new Rust kernel code"},
+  {"commit": "53fe3ce", "demand": "docs-site/src/content/docs/concepts/evidence-source-refs.md", "verdict": "FALSE", "why": "docs prose"},
+  {"commit": "36881e7", "demand": "packages/shp-checker/src/checker/rules/guards.ts", "verdict": "FALSE", "why": "comment-only edit"},
+  {"commit": "eccfa21", "demand": "plugins/shapelang/skills/shape-lang/SKILL.md", "verdict": "FALSE", "why": "version string in skill text"},
+  {"commit": "66c6840", "demand": "plugins/shapelang/.codex-plugin/plugin.json", "verdict": "FALSE", "why": "version bump"},
+  {"commit": "660e7c4", "demand": ".github/scripts/run-claude-skill.mjs", "verdict": "TRUE", "why": "new environment read CLAUDE_SKILL_MAX_TURNS"},
+  {"commit": "3ce8cb8", "demand": "packages/shp-checker/src/ast-generation-swift.ts", "verdict": "TRUE", "why": "new Swift AST generation code"},
+  {"commit": "4e7297c", "demand": "plugins/shapelang/skills/shape-contract-preflight/agents/openai.yaml", "verdict": "FALSE", "why": "agent default prompt text"},
+  {"commit": "1f55dce", "demand": ".github/shape-contract/schemas/shape-skills-release-result.schema.json", "verdict": "TRUE", "why": "release-result data contract gains a skill and checks (weak)"},
+  {"commit": "986c54a", "demand": "packages/shp-checker/src/checker/rules.ts", "verdict": "TRUE", "why": "base-model plumbing into coverage and stale-attestation checks changed"},
+  {"commit": "651de1a", "demand": "scripts/check-release-approval.ts", "verdict": "TRUE", "why": "approval-matching logic changed"},
+  {"commit": "986c54a", "demand": "guard LoweringBeforeRules @ packages/shp-checker/src/checker/lowerer.ts", "verdict": "TRUE", "why": "the guarded function lowerShapeModules itself changed"},
+  {"commit": "cc02c32", "demand": "guard PreludeMetadataContract @ packages/shp-checker/src/prelude.ts", "verdict": "FALSE", "why": "new helper in the file; the guarded definePreludeMetadata is unchanged (file-level guard)"}
+ ],
+ "true": 10,
+ "false": 10
+}

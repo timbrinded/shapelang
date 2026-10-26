@@ -1,0 +1,212 @@
+{
+ "calls": {
+  "classes": {
+   "shortcut": {
+    "killed": 0,
+    "survived": 98
+   },
+   "new-coupling": {
+    "killed": 28,
+    "survived": 228
+   },
+   "back-edge": {
+    "killed": 148,
+    "survived": 0
+   }
+  },
+  "pairs": {
+   "shape.checker.incremental -> shape.checker": {
+    "killed": 0,
+    "survived": 5
+   },
+   "shape.checker.incremental -> shape.delivery": {
+    "killed": 0,
+    "survived": 3
+   },
+   "shape.checker.incremental -> shape.language": {
+    "killed": 0,
+    "survived": 2
+   },
+   "shape.checker.incremental -> shape.runtime": {
+    "killed": 0,
+    "survived": 2
+   },
+   "shape.checker.incremental -> shape.tooling": {
+    "killed": 0,
+    "survived": 7
+   },
+   "shape.checker -> shape.checker.incremental": {
+    "killed": 8,
+    "survived": 0
+   },
+   "shape.checker -> shape.checker": {
+    "killed": 23,
+    "survived": 19
+   },
+   "shape.checker -> shape.delivery": {
+    "killed": 16,
+    "survived": 8
+   },
+   "shape.checker -> shape.language": {
+    "killed": 0,
+    "survived": 23
+   },
+   "shape.checker -> shape.runtime": {
+    "killed": 16,
+    "survived": 0
+   },
+   "shape.checker -> shape.tooling": {
+    "killed": 29,
+    "survived": 27
+   },
+   "shape.delivery -> shape.checker.incremental": {
+    "killed": 0,
+    "survived": 3
+   },
+   "shape.delivery -> shape.checker": {
+    "killed": 0,
+    "survived": 24
+   },
+   "shape.delivery -> shape.delivery": {
+    "killed": 1,
+    "survived": 4
+   },
+   "shape.delivery -> shape.language": {
+    "killed": 0,
+    "survived": 7
+   },
+   "shape.delivery -> shape.tooling": {
+    "killed": 0,
+    "survived": 19
+   },
+   "shape.delivery -> shape.runtime": {
+    "killed": 0,
+    "survived": 4
+   },
+   "shape.language -> shape.checker.incremental": {
+    "killed": 2,
+    "survived": 1
+   },
+   "shape.language -> shape.checker": {
+    "killed": 10,
+    "survived": 14
+   },
+   "shape.language -> shape.delivery": {
+    "killed": 7,
+    "survived": 2
+   },
+   "shape.language -> shape.language": {
+    "killed": 3,
+    "survived": 1
+   },
+   "shape.language -> shape.runtime": {
+    "killed": 4,
+    "survived": 2
+   },
+   "shape.language -> shape.tooling": {
+    "killed": 10,
+    "survived": 11
+   },
+   "shape.runtime -> shape.checker.incremental": {
+    "killed": 0,
+    "survived": 2
+   },
+   "shape.runtime -> shape.checker": {
+    "killed": 0,
+    "survived": 15
+   },
+   "shape.runtime -> shape.delivery": {
+    "killed": 4,
+    "survived": 2
+   },
+   "shape.runtime -> shape.language": {
+    "killed": 0,
+    "survived": 6
+   },
+   "shape.runtime -> shape.runtime": {
+    "killed": 1,
+    "survived": 0
+   },
+   "shape.runtime -> shape.tooling": {
+    "killed": 0,
+    "survived": 14
+   },
+   "shape.tooling -> shape.checker.incremental": {
+    "killed": 1,
+    "survived": 6
+   },
+   "shape.tooling -> shape.checker": {
+    "killed": 1,
+    "survived": 46
+   },
+   "shape.tooling -> shape.delivery": {
+    "killed": 14,
+    "survived": 7
+   },
+   "shape.tooling -> shape.language": {
+    "killed": 0,
+    "survived": 18
+   },
+   "shape.tooling -> shape.runtime": {
+    "killed": 14,
+    "survived": 0
+   },
+   "shape.tooling -> shape.tooling": {
+    "killed": 12,
+    "survived": 22
+   }
+  }
+ },
+ "named": [
+  {
+   "edge": "shape.tooling::ShapeAnalyzer -calls-> shape.checker::ShapeChecker",
+   "killed": true
+  },
+  {
+   "edge": "shape.tooling::ShapeAuthoring -calls-> shape.checker::ShapeChecker",
+   "killed": false
+  },
+  {
+   "edge": "shape.checker::ShapeChecker -calls-> shape.tooling::ShapeAuthoring",
+   "killed": false
+  },
+  {
+   "edge": "shape.checker.incremental::ShapeIncrementalChecker -calls-> shape.runtime::ExperimentalSemanticKernel",
+   "killed": false
+  },
+  {
+   "edge": "shape.delivery::DocsSite -calls-> shape.runtime::ExperimentalSemanticKernel",
+   "killed": false
+  },
+  {
+   "edge": "shape.language::DocsShapeBlockVerifier -calls-> shape.runtime::ExperimentalSemanticKernel",
+   "killed": false
+  },
+  {
+   "edge": "shape.delivery::ReleasePipeline -calls-> shape.runtime::ExperimentalSemanticKernel",
+   "killed": false
+  }
+ ],
+ "intoKernel": [
+  {
+   "kind": "callbacks",
+   "total": 23,
+   "killed": 0
+  },
+  {
+   "kind": "calls",
+   "total": 21,
+   "killed": 17
+  },
+  {
+   "kind": "coordinated_call",
+   "total": 23,
+   "killed": 0
+  },
+  {
+   "kind": "data_flow",
+   "total": 23,
+   "killed": 0
+  }
+ ]
+}

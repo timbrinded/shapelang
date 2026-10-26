@@ -1,0 +1,19 @@
+{
+ "v": "shape.source.v1",
+ "modules": [
+  {
+   "module": "feed",
+   "imports": [
+    "std",
+    "shape1.migrated"
+   ],
+   "decls": [
+    {
+     "decl": "component",
+     "name": "Feed",
+     "was": "PublicFeed"
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,14 @@
+module audit
+
+import durable
+
+resource AuditEvent : DurableAudit
+
+component AuditStore {
+  owns AuditEvent
+  grants Append<AuditEvent>
+  fn appendEvent
+    effects complete {
+      Append<AuditEvent>
+    }
+}

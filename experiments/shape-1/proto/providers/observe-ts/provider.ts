@@ -8,10 +8,12 @@
 // when every route in its whole span (descendants included) to a watched API yields a fact (scan.ts,
 // "Roots"): no dynamic member of a root (`dynamic:<root>[]`), eval, Function or constructor route
 // (`dynamic:eval`, `dynamic:constructor`), dynamic import or require, SQL with an interpolated table;
-// no supply of a root value the scan does not follow (`alias:<root>`), no read of a root through a
-// value typed as the root (`alias-type:<root>`), no untyped receiver or callee, and no call into or
-// handoff of an opaque external package (`external:<pkg>`). Absence rests on TypeScript's types:
-// a root retyped structurally (`const c: { now(): number } = Date`) is flagged where it is supplied.
+// no supply of a root value the scan does not follow (`alias:<root>`), no read of a watched member
+// (or of call/apply/bind) through a value typed as the root, by member access or destructuring
+// (`alias-type:<root>`) or handoff of such a value as an argument, no untyped receiver or callee,
+// and no call into or handoff of an opaque external package (`external:<pkg>`). `Date.call(null)`
+// and `Date.apply(x, [])` are Date() facts. Absence rests on TypeScript's types: a root retyped
+// structurally (`const c: { now(): number } = Date`) is flagged where it is supplied.
 import { globMatches } from "../../src/globs.ts";
 import type { CodeCite, ScopeEntry, ShapeRecord, Signer } from "../../src/records.ts";
 import { scopeRoot } from "../../src/records.ts";

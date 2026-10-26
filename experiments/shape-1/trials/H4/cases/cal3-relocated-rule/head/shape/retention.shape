@@ -1,0 +1,6 @@
+module audit
+
+rule audit_no_delete {
+  forbid final HardDelete<T>
+  when T has Persistent
+}

@@ -1,0 +1,61 @@
+[
+ {
+  "seed": "ungoverned: freshness.ts#resolveFreshnessDate",
+  "clockFactsBase": 23,
+  "clockFactsHead": 24,
+  "newSites": [
+   {
+    "at": "ts:packages/shp-cli/src/freshness.ts#resolveFreshnessDate",
+    "resource": "ts.call(\"Date.now\")",
+    "n": 1
+   }
+  ],
+  "verdict": "blocked",
+  "errors": [
+   "E-provider-missing"
+  ],
+  "introduced": []
+ },
+ {
+  "seed": "governed control: packages/shp-cli/src/git.ts#git",
+  "clockFactsBase": 23,
+  "clockFactsHead": 24,
+  "newSites": [
+   {
+    "at": "ts:packages/shp-cli/src/git.ts#git",
+    "resource": "ts.call(\"Date.now\")",
+    "n": 1
+   }
+  ],
+  "verdict": "blocked",
+  "errors": [
+   "E-provider-missing"
+  ],
+  "introduced": [
+   {
+    "kind": "contradiction",
+    "severity": "blocking",
+    "force": "sound",
+    "claim": "shape.tooling::ClockReadOnlyAtCliBoundary",
+    "subject": {
+     "code": "ts:packages/shp-cli/src/git.ts#git",
+     "atom": "Read<shape.tooling::SystemClock>"
+    }
+   },
+   {
+    "kind": "coverage",
+    "severity": "owed",
+    "force": null,
+    "claim": null,
+    "subject": "component shape.tooling::ShpCli"
+   },
+   {
+    "kind": "unestablished",
+    "severity": "owed",
+    "force": null,
+    "claim": "shape.tooling::CliDocumented",
+    "subject": null
+   }
+  ]
+ }
+]

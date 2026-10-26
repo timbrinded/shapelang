@@ -261,7 +261,7 @@ export async function main(argv: string[]): Promise<number> {
     case "teeth":
       return teethCmd(a);
     default:
-      process.stdout.write(`${HELP}\n`);
+      process.stderr.write(`shape1-providers: unknown provider "${provider}" (expected laws, observe-ts, trust, teeth)\n${HELP}\n`);
       return 2;
   }
 }

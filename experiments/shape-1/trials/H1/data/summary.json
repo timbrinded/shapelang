@@ -1,0 +1,1043 @@
+{
+ "label": "commits",
+ "replayable": 115,
+ "replayed_ok": 115,
+ "failed": [],
+ "not_run": [],
+ "governed": {
+  "population": "governed (0.x demand >= 1)",
+  "commits": 82,
+  "sums": {
+   "b_J": 851,
+   "b_J_blocking": 375,
+   "b_J_groups": 215,
+   "b_J_no_pc": 357,
+   "b_judges_any": 1497,
+   "a": 690,
+   "a_bind": 779,
+   "a_comp": 242,
+   "a_tip": 505,
+   "a_files": 608,
+   "a_guards": 82,
+   "a_residual": 179,
+   "a_bindings": 89,
+   "b_mech": 646,
+   "b_mech_blocking": 635,
+   "b_introduced": 1497,
+   "preexisting_J": 2683
+  },
+  "pooled": {
+   "b_J/a": {
+    "ratio": 1.233,
+    "ci95": [
+     0.859,
+     1.696
+    ]
+   },
+   "b_J_blocking/a": {
+    "ratio": 0.543,
+    "ci95": [
+     0.379,
+     0.748
+    ]
+   },
+   "b_J_groups/a": {
+    "ratio": 0.312,
+    "ci95": [
+     0.244,
+     0.414
+    ]
+   },
+   "b_J_no_pc/a": {
+    "ratio": 0.517,
+    "ci95": [
+     0.399,
+     0.67
+    ]
+   },
+   "b_judges_any/a": {
+    "ratio": 2.17,
+    "ci95": [
+     1.472,
+     3.035
+    ]
+   },
+   "b_J/a_bind": {
+    "ratio": 1.092,
+    "ci95": [
+     0.761,
+     1.485
+    ]
+   },
+   "b_J_blocking/a_bind": {
+    "ratio": 0.481,
+    "ci95": [
+     0.338,
+     0.653
+    ]
+   },
+   "b_J_groups/a_bind": {
+    "ratio": 0.276,
+    "ci95": [
+     0.219,
+     0.363
+    ]
+   },
+   "b_J_no_pc/a_bind": {
+    "ratio": 0.458,
+    "ci95": [
+     0.361,
+     0.579
+    ]
+   },
+   "b_judges_any/a_bind": {
+    "ratio": 1.922,
+    "ci95": [
+     1.32,
+     2.635
+    ]
+   },
+   "b_J/a_comp": {
+    "ratio": 3.517,
+    "ci95": [
+     2.369,
+     4.917
+    ]
+   },
+   "b_J_blocking/a_comp": {
+    "ratio": 1.55,
+    "ci95": [
+     1.077,
+     2.114
+    ]
+   },
+   "b_J_groups/a_comp": {
+    "ratio": 0.888,
+    "ci95": [
+     0.701,
+     1.177
+    ]
+   },
+   "b_J_no_pc/a_comp": {
+    "ratio": 1.475,
+    "ci95": [
+     1.233,
+     1.784
+    ]
+   },
+   "b_judges_any/a_comp": {
+    "ratio": 6.186,
+    "ci95": [
+     4.309,
+     8.201
+    ]
+   },
+   "b_J/a_tip": {
+    "ratio": 1.685,
+    "ci95": [
+     1.125,
+     2.394
+    ]
+   },
+   "b_J_blocking/a_tip": {
+    "ratio": 0.743,
+    "ci95": [
+     0.519,
+     1.02
+    ]
+   },
+   "b_J_groups/a_tip": {
+    "ratio": 0.426,
+    "ci95": [
+     0.318,
+     0.576
+    ]
+   },
+   "b_J_no_pc/a_tip": {
+    "ratio": 0.707,
+    "ci95": [
+     0.547,
+     0.904
+    ]
+   },
+   "b_judges_any/a_tip": {
+    "ratio": 2.964,
+    "ci95": [
+     2.006,
+     4.086
+    ]
+   }
+  },
+  "per_commit": {
+   "mean_a": 8.41,
+   "mean_b_J": 10.38,
+   "mean_b_J_groups": 2.62,
+   "median_a": 3.5,
+   "median_b_J": 2.0,
+   "median_b_J_groups": 2.0,
+   "median_ratio_b_J_over_a": 0.808,
+   "median_ratio_groups_over_a": 0.374,
+   "commits_with_a_gt_0": 82,
+   "commits_b_J_halved_or_better": 34,
+   "commits_groups_halved_or_better": 54,
+   "commits_b_J_gt_a": 23,
+   "commits_b_J_zero": 8,
+   "commits_a_zero_b_J_pos": 0
+  },
+  "errors_commits": 60,
+  "files_vs_1_0": {
+   "a_files": 608,
+   "asked_by_any_introduced": 354,
+   "asked_by_judgment": 354,
+   "silent_by_extension": {
+    "md": 211,
+    "yaml": 11,
+    "yml": 11,
+    "json": 10,
+    "ts": 6,
+    "css": 3,
+    "mjs": 2
+   }
+  },
+  "b_J_by_kind": {
+   "unestablished/producer-changed": 494,
+   "coverage": 143,
+   "unestablished/missing": 132,
+   "loosening/L1": 50,
+   "loosening/L2": 27,
+   "loosening/L6": 4,
+   "loosening/L2+L6": 1
+  },
+  "b_mech_by_kind": {
+   "contradiction": 635,
+   "unestablished/missing": 11
+  }
+ },
+ "last60": {
+  "population": "last 60 governed",
+  "commits": 60,
+  "sums": {
+   "b_J": 557,
+   "b_J_blocking": 264,
+   "b_J_groups": 141,
+   "b_J_no_pc": 226,
+   "b_judges_any": 957,
+   "a": 428,
+   "a_bind": 484,
+   "a_comp": 165,
+   "a_tip": 346,
+   "a_files": 369,
+   "a_guards": 59,
+   "a_residual": 120,
+   "a_bindings": 56,
+   "b_mech": 400,
+   "b_mech_blocking": 390,
+   "b_introduced": 957,
+   "preexisting_J": 2046
+  },
+  "pooled": {
+   "b_J/a": {
+    "ratio": 1.301,
+    "ci95": [
+     0.805,
+     1.931
+    ]
+   },
+   "b_J_blocking/a": {
+    "ratio": 0.617,
+    "ci95": [
+     0.388,
+     0.911
+    ]
+   },
+   "b_J_groups/a": {
+    "ratio": 0.329,
+    "ci95": [
+     0.238,
+     0.485
+    ]
+   },
+   "b_J_no_pc/a": {
+    "ratio": 0.528,
+    "ci95": [
+     0.382,
+     0.726
+    ]
+   },
+   "b_judges_any/a": {
+    "ratio": 2.236,
+    "ci95": [
+     1.321,
+     3.357
+    ]
+   },
+   "b_J/a_bind": {
+    "ratio": 1.151,
+    "ci95": [
+     0.714,
+     1.698
+    ]
+   },
+   "b_J_blocking/a_bind": {
+    "ratio": 0.545,
+    "ci95": [
+     0.345,
+     0.798
+    ]
+   },
+   "b_J_groups/a_bind": {
+    "ratio": 0.291,
+    "ci95": [
+     0.213,
+     0.427
+    ]
+   },
+   "b_J_no_pc/a_bind": {
+    "ratio": 0.467,
+    "ci95": [
+     0.345,
+     0.629
+    ]
+   },
+   "b_judges_any/a_bind": {
+    "ratio": 1.977,
+    "ci95": [
+     1.185,
+     2.903
+    ]
+   },
+   "b_J/a_comp": {
+    "ratio": 3.376,
+    "ci95": [
+     1.979,
+     5.134
+    ]
+   },
+   "b_J_blocking/a_comp": {
+    "ratio": 1.6,
+    "ci95": [
+     0.977,
+     2.349
+    ]
+   },
+   "b_J_groups/a_comp": {
+    "ratio": 0.855,
+    "ci95": [
+     0.607,
+     1.275
+    ]
+   },
+   "b_J_no_pc/a_comp": {
+    "ratio": 1.37,
+    "ci95": [
+     1.042,
+     1.821
+    ]
+   },
+   "b_judges_any/a_comp": {
+    "ratio": 5.8,
+    "ci95": [
+     3.452,
+     8.231
+    ]
+   },
+   "b_J/a_tip": {
+    "ratio": 1.61,
+    "ci95": [
+     0.926,
+     2.488
+    ]
+   },
+   "b_J_blocking/a_tip": {
+    "ratio": 0.763,
+    "ci95": [
+     0.466,
+     1.126
+    ]
+   },
+   "b_J_groups/a_tip": {
+    "ratio": 0.408,
+    "ci95": [
+     0.283,
+     0.602
+    ]
+   },
+   "b_J_no_pc/a_tip": {
+    "ratio": 0.653,
+    "ci95": [
+     0.475,
+     0.876
+    ]
+   },
+   "b_judges_any/a_tip": {
+    "ratio": 2.766,
+    "ci95": [
+     1.591,
+     4.109
+    ]
+   }
+  },
+  "per_commit": {
+   "mean_a": 7.13,
+   "mean_b_J": 9.28,
+   "mean_b_J_groups": 2.35,
+   "median_a": 3.0,
+   "median_b_J": 2.0,
+   "median_b_J_groups": 1.0,
+   "median_ratio_b_J_over_a": 0.708,
+   "median_ratio_groups_over_a": 0.359,
+   "commits_with_a_gt_0": 60,
+   "commits_b_J_halved_or_better": 27,
+   "commits_groups_halved_or_better": 40,
+   "commits_b_J_gt_a": 14,
+   "commits_b_J_zero": 7,
+   "commits_a_zero_b_J_pos": 0
+  },
+  "errors_commits": 38,
+  "files_vs_1_0": {
+   "a_files": 369,
+   "asked_by_any_introduced": 213,
+   "asked_by_judgment": 213,
+   "silent_by_extension": {
+    "md": 120,
+    "yml": 11,
+    "json": 8,
+    "yaml": 6,
+    "ts": 6,
+    "css": 3,
+    "mjs": 2
+   }
+  },
+  "b_J_by_kind": {
+   "unestablished/producer-changed": 331,
+   "coverage": 97,
+   "unestablished/missing": 75,
+   "loosening/L1": 37,
+   "loosening/L2": 17
+  },
+  "b_mech_by_kind": {
+   "contradiction": 390,
+   "unestablished/missing": 10
+  }
+ },
+ "all": {
+  "population": "all replayed",
+  "commits": 115,
+  "sums": {
+   "b_J": 1006,
+   "b_J_blocking": 429,
+   "b_J_groups": 238,
+   "b_J_no_pc": 377,
+   "b_judges_any": 1652,
+   "a": 690,
+   "a_bind": 796,
+   "a_comp": 242,
+   "a_tip": 505,
+   "a_files": 608,
+   "a_guards": 82,
+   "a_residual": 179,
+   "a_bindings": 106,
+   "b_mech": 646,
+   "b_mech_blocking": 635,
+   "b_introduced": 1652,
+   "preexisting_J": 3802
+  },
+  "pooled": {
+   "b_J/a": {
+    "ratio": 1.458,
+    "ci95": [
+     1.023,
+     2.041
+    ]
+   },
+   "b_J_blocking/a": {
+    "ratio": 0.622,
+    "ci95": [
+     0.441,
+     0.868
+    ]
+   },
+   "b_J_groups/a": {
+    "ratio": 0.345,
+    "ci95": [
+     0.269,
+     0.463
+    ]
+   },
+   "b_J_no_pc/a": {
+    "ratio": 0.546,
+    "ci95": [
+     0.424,
+     0.709
+    ]
+   },
+   "b_judges_any/a": {
+    "ratio": 2.394,
+    "ci95": [
+     1.656,
+     3.319
+    ]
+   },
+   "b_J/a_bind": {
+    "ratio": 1.264,
+    "ci95": [
+     0.891,
+     1.743
+    ]
+   },
+   "b_J_blocking/a_bind": {
+    "ratio": 0.539,
+    "ci95": [
+     0.385,
+     0.741
+    ]
+   },
+   "b_J_groups/a_bind": {
+    "ratio": 0.299,
+    "ci95": [
+     0.237,
+     0.396
+    ]
+   },
+   "b_J_no_pc/a_bind": {
+    "ratio": 0.474,
+    "ci95": [
+     0.377,
+     0.597
+    ]
+   },
+   "b_judges_any/a_bind": {
+    "ratio": 2.075,
+    "ci95": [
+     1.453,
+     2.83
+    ]
+   },
+   "b_J/a_comp": {
+    "ratio": 4.157,
+    "ci95": [
+     2.866,
+     5.797
+    ]
+   },
+   "b_J_blocking/a_comp": {
+    "ratio": 1.773,
+    "ci95": [
+     1.261,
+     2.413
+    ]
+   },
+   "b_J_groups/a_comp": {
+    "ratio": 0.983,
+    "ci95": [
+     0.772,
+     1.305
+    ]
+   },
+   "b_J_no_pc/a_comp": {
+    "ratio": 1.558,
+    "ci95": [
+     1.307,
+     1.9
+    ]
+   },
+   "b_judges_any/a_comp": {
+    "ratio": 6.826,
+    "ci95": [
+     4.889,
+     9.017
+    ]
+   },
+   "b_J/a_tip": {
+    "ratio": 1.992,
+    "ci95": [
+     1.369,
+     2.842
+    ]
+   },
+   "b_J_blocking/a_tip": {
+    "ratio": 0.85,
+    "ci95": [
+     0.604,
+     1.175
+    ]
+   },
+   "b_J_groups/a_tip": {
+    "ratio": 0.471,
+    "ci95": [
+     0.355,
+     0.642
+    ]
+   },
+   "b_J_no_pc/a_tip": {
+    "ratio": 0.747,
+    "ci95": [
+     0.581,
+     0.957
+    ]
+   },
+   "b_judges_any/a_tip": {
+    "ratio": 3.271,
+    "ci95": [
+     2.266,
+     4.492
+    ]
+   }
+  },
+  "per_commit": {
+   "mean_a": 6,
+   "mean_b_J": 8.75,
+   "mean_b_J_groups": 2.07,
+   "median_a": 2,
+   "median_b_J": 2,
+   "median_b_J_groups": 1,
+   "median_ratio_b_J_over_a": 0.808,
+   "median_ratio_groups_over_a": 0.374,
+   "commits_with_a_gt_0": 82,
+   "commits_b_J_halved_or_better": 34,
+   "commits_groups_halved_or_better": 54,
+   "commits_b_J_gt_a": 34,
+   "commits_b_J_zero": 30,
+   "commits_a_zero_b_J_pos": 11
+  },
+  "errors_commits": 88,
+  "files_vs_1_0": {
+   "a_files": 608,
+   "asked_by_any_introduced": 354,
+   "asked_by_judgment": 354,
+   "silent_by_extension": {
+    "md": 211,
+    "yaml": 11,
+    "yml": 11,
+    "json": 10,
+    "ts": 6,
+    "css": 3,
+    "mjs": 2
+   }
+  },
+  "b_J_by_kind": {
+   "unestablished/producer-changed": 629,
+   "unestablished/missing": 145,
+   "coverage": 144,
+   "loosening/L1": 53,
+   "loosening/L2": 30,
+   "loosening/L6": 4,
+   "loosening/L2+L6": 1
+  },
+  "b_mech_by_kind": {
+   "contradiction": 635,
+   "unestablished/missing": 11
+  }
+ },
+ "governed_no_errors": {
+  "population": "governed, head model elaborates with 0 errors",
+  "commits": 22,
+  "sums": {
+   "b_J": 213,
+   "b_J_blocking": 98,
+   "b_J_groups": 53,
+   "b_J_no_pc": 69,
+   "b_judges_any": 219,
+   "a": 73,
+   "a_bind": 86,
+   "a_comp": 39,
+   "a_tip": 74,
+   "a_files": 60,
+   "a_guards": 13,
+   "a_residual": 5,
+   "a_bindings": 13,
+   "b_mech": 6,
+   "b_mech_blocking": 4,
+   "b_introduced": 219,
+   "preexisting_J": 798
+  },
+  "pooled": {
+   "b_J/a": {
+    "ratio": 2.918,
+    "ci95": [
+     1.068,
+     5.286
+    ]
+   },
+   "b_J_blocking/a": {
+    "ratio": 1.342,
+    "ci95": [
+     0.556,
+     2.254
+    ]
+   },
+   "b_J_groups/a": {
+    "ratio": 0.726,
+    "ci95": [
+     0.356,
+     1.327
+    ]
+   },
+   "b_J_no_pc/a": {
+    "ratio": 0.945,
+    "ci95": [
+     0.528,
+     1.566
+    ]
+   },
+   "b_judges_any/a": {
+    "ratio": 3.0,
+    "ci95": [
+     1.167,
+     5.328
+    ]
+   },
+   "b_J/a_bind": {
+    "ratio": 2.477,
+    "ci95": [
+     0.889,
+     4.486
+    ]
+   },
+   "b_J_blocking/a_bind": {
+    "ratio": 1.14,
+    "ci95": [
+     0.46,
+     1.94
+    ]
+   },
+   "b_J_groups/a_bind": {
+    "ratio": 0.616,
+    "ci95": [
+     0.303,
+     1.157
+    ]
+   },
+   "b_J_no_pc/a_bind": {
+    "ratio": 0.802,
+    "ci95": [
+     0.461,
+     1.349
+    ]
+   },
+   "b_judges_any/a_bind": {
+    "ratio": 2.547,
+    "ci95": [
+     0.959,
+     4.527
+    ]
+   },
+   "b_J/a_comp": {
+    "ratio": 5.462,
+    "ci95": [
+     1.833,
+     10.737
+    ]
+   },
+   "b_J_blocking/a_comp": {
+    "ratio": 2.513,
+    "ci95": [
+     0.913,
+     4.909
+    ]
+   },
+   "b_J_groups/a_comp": {
+    "ratio": 1.359,
+    "ci95": [
+     0.615,
+     3.091
+    ]
+   },
+   "b_J_no_pc/a_comp": {
+    "ratio": 1.769,
+    "ci95": [
+     0.975,
+     3.6
+    ]
+   },
+   "b_judges_any/a_comp": {
+    "ratio": 5.615,
+    "ci95": [
+     2.0,
+     10.789
+    ]
+   },
+   "b_J/a_tip": {
+    "ratio": 2.878,
+    "ci95": [
+     1.043,
+     5.279
+    ]
+   },
+   "b_J_blocking/a_tip": {
+    "ratio": 1.324,
+    "ci95": [
+     0.54,
+     2.246
+    ]
+   },
+   "b_J_groups/a_tip": {
+    "ratio": 0.716,
+    "ci95": [
+     0.349,
+     1.323
+    ]
+   },
+   "b_J_no_pc/a_tip": {
+    "ratio": 0.932,
+    "ci95": [
+     0.52,
+     1.556
+    ]
+   },
+   "b_judges_any/a_tip": {
+    "ratio": 2.959,
+    "ci95": [
+     1.15,
+     5.312
+    ]
+   }
+  },
+  "per_commit": {
+   "mean_a": 3.32,
+   "mean_b_J": 9.68,
+   "mean_b_J_groups": 2.41,
+   "median_a": 2.0,
+   "median_b_J": 2.0,
+   "median_b_J_groups": 1.0,
+   "median_ratio_b_J_over_a": 1.0,
+   "median_ratio_groups_over_a": 0.583,
+   "commits_with_a_gt_0": 22,
+   "commits_b_J_halved_or_better": 5,
+   "commits_groups_halved_or_better": 11,
+   "commits_b_J_gt_a": 8,
+   "commits_b_J_zero": 1,
+   "commits_a_zero_b_J_pos": 0
+  },
+  "errors_commits": 0,
+  "files_vs_1_0": {
+   "a_files": 60,
+   "asked_by_any_introduced": 42,
+   "asked_by_judgment": 42,
+   "silent_by_extension": {
+    "md": 12,
+    "yml": 3,
+    "json": 2,
+    "mjs": 1
+   }
+  },
+  "b_J_by_kind": {
+   "unestablished/producer-changed": 144,
+   "coverage": 25,
+   "loosening/L1": 24,
+   "unestablished/missing": 16,
+   "loosening/L2": 4
+  },
+  "b_mech_by_kind": {
+   "contradiction": 4,
+   "unestablished/missing": 2
+  }
+ },
+ "governed_no_pc_commits": {
+  "population": "governed, commits without producer-changed",
+  "commits": 71,
+  "sums": {
+   "b_J": 281,
+   "b_J_blocking": 158,
+   "b_J_groups": 168,
+   "b_J_no_pc": 281,
+   "b_judges_any": 795,
+   "a": 506,
+   "a_bind": 582,
+   "a_comp": 201,
+   "a_tip": 400,
+   "a_files": 434,
+   "a_guards": 72,
+   "a_residual": 120,
+   "a_bindings": 76,
+   "b_mech": 514,
+   "b_mech_blocking": 503,
+   "b_introduced": 795,
+   "preexisting_J": 2333
+  },
+  "pooled": {
+   "b_J/a": {
+    "ratio": 0.555,
+    "ci95": [
+     0.424,
+     0.725
+    ]
+   },
+   "b_J_blocking/a": {
+    "ratio": 0.312,
+    "ci95": [
+     0.21,
+     0.448
+    ]
+   },
+   "b_J_groups/a": {
+    "ratio": 0.332,
+    "ci95": [
+     0.248,
+     0.465
+    ]
+   },
+   "b_J_no_pc/a": {
+    "ratio": 0.555,
+    "ci95": [
+     0.424,
+     0.725
+    ]
+   },
+   "b_judges_any/a": {
+    "ratio": 1.571,
+    "ci95": [
+     0.881,
+     2.483
+    ]
+   },
+   "b_J/a_bind": {
+    "ratio": 0.483,
+    "ci95": [
+     0.376,
+     0.617
+    ]
+   },
+   "b_J_blocking/a_bind": {
+    "ratio": 0.271,
+    "ci95": [
+     0.186,
+     0.385
+    ]
+   },
+   "b_J_groups/a_bind": {
+    "ratio": 0.289,
+    "ci95": [
+     0.219,
+     0.401
+    ]
+   },
+   "b_J_no_pc/a_bind": {
+    "ratio": 0.483,
+    "ci95": [
+     0.376,
+     0.617
+    ]
+   },
+   "b_judges_any/a_bind": {
+    "ratio": 1.366,
+    "ci95": [
+     0.777,
+     2.116
+    ]
+   },
+   "b_J/a_comp": {
+    "ratio": 1.398,
+    "ci95": [
+     1.146,
+     1.755
+    ]
+   },
+   "b_J_blocking/a_comp": {
+    "ratio": 0.786,
+    "ci95": [
+     0.57,
+     1.099
+    ]
+   },
+   "b_J_groups/a_comp": {
+    "ratio": 0.836,
+    "ci95": [
+     0.636,
+     1.172
+    ]
+   },
+   "b_J_no_pc/a_comp": {
+    "ratio": 1.398,
+    "ci95": [
+     1.146,
+     1.755
+    ]
+   },
+   "b_judges_any/a_comp": {
+    "ratio": 3.955,
+    "ci95": [
+     2.345,
+     5.879
+    ]
+   },
+   "b_J/a_tip": {
+    "ratio": 0.703,
+    "ci95": [
+     0.535,
+     0.913
+    ]
+   },
+   "b_J_blocking/a_tip": {
+    "ratio": 0.395,
+    "ci95": [
+     0.282,
+     0.553
+    ]
+   },
+   "b_J_groups/a_tip": {
+    "ratio": 0.42,
+    "ci95": [
+     0.306,
+     0.59
+    ]
+   },
+   "b_J_no_pc/a_tip": {
+    "ratio": 0.703,
+    "ci95": [
+     0.535,
+     0.913
+    ]
+   },
+   "b_judges_any/a_tip": {
+    "ratio": 1.988,
+    "ci95": [
+     1.141,
+     3.088
+    ]
+   }
+  },
+  "per_commit": {
+   "mean_a": 7.13,
+   "mean_b_J": 3.96,
+   "mean_b_J_groups": 2.37,
+   "median_a": 3,
+   "median_b_J": 2,
+   "median_b_J_groups": 1,
+   "median_ratio_b_J_over_a": 0.636,
+   "median_ratio_groups_over_a": 0.429,
+   "commits_with_a_gt_0": 71,
+   "commits_b_J_halved_or_better": 34,
+   "commits_groups_halved_or_better": 47,
+   "commits_b_J_gt_a": 12,
+   "commits_b_J_zero": 8,
+   "commits_a_zero_b_J_pos": 0
+  },
+  "errors_commits": 52,
+  "files_vs_1_0": {
+   "a_files": 434,
+   "asked_by_any_introduced": 275,
+   "asked_by_judgment": 275,
+   "silent_by_extension": {
+    "md": 127,
+    "yml": 9,
+    "yaml": 6,
+    "json": 6,
+    "ts": 6,
+    "css": 3,
+    "mjs": 2
+   }
+  },
+  "b_J_by_kind": {
+   "coverage": 118,
+   "unestablished/missing": 105,
+   "loosening/L1": 39,
+   "loosening/L2": 16,
+   "loosening/L6": 3
+  },
+  "b_mech_by_kind": {
+   "contradiction": 503,
+   "unestablished/missing": 11
+  }
+ }
+}

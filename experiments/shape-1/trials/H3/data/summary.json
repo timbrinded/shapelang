@@ -1,0 +1,10021 @@
+{
+ "configs": [
+  {
+   "arm": "C",
+   "tier": "critical",
+   "regime": "R1c",
+   "checker": "stock",
+   "law_tagged": 43,
+   "kills": 43,
+   "flags": 43,
+   "loss": [],
+   "contradiction_raised": 43,
+   "stale_raised": 0,
+   "refactors": 39,
+   "refactor_flags": 0,
+   "refactor_blocks": 0,
+   "refactor_flagged": [],
+   "refactor_verdicts": {
+    "pass": 14,
+    "owed": 25
+   },
+   "refactor_coverage_obligations": 25,
+   "feature_controls": 6,
+   "feature_control_flags": 0,
+   "feature_control_blocks": 0,
+   "feature_only": 18,
+   "feature_only_flags": 0,
+   "feature_only_blocks": 0,
+   "per_task": {
+    "T1": {
+     "kill": [
+      14,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      0,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    },
+    "T3": {
+     "kill": [
+      15,
+      15
+     ],
+     "flag": [
+      15,
+      15
+     ],
+     "refactor_flag": [
+      0,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    },
+    "T4": {
+     "kill": [
+      14,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      0,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    }
+   }
+  },
+  {
+   "arm": "C",
+   "tier": "critical",
+   "regime": "R1c",
+   "checker": "vnew",
+   "law_tagged": 43,
+   "kills": 43,
+   "flags": 43,
+   "loss": [],
+   "contradiction_raised": 43,
+   "stale_raised": 0,
+   "refactors": 39,
+   "refactor_flags": 0,
+   "refactor_blocks": 0,
+   "refactor_flagged": [],
+   "refactor_verdicts": {
+    "pass": 14,
+    "owed": 25
+   },
+   "refactor_coverage_obligations": 25,
+   "feature_controls": 6,
+   "feature_control_flags": 0,
+   "feature_control_blocks": 0,
+   "feature_only": 18,
+   "feature_only_flags": 0,
+   "feature_only_blocks": 0,
+   "per_task": {
+    "T1": {
+     "kill": [
+      14,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      0,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    },
+    "T3": {
+     "kill": [
+      15,
+      15
+     ],
+     "flag": [
+      15,
+      15
+     ],
+     "refactor_flag": [
+      0,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    },
+    "T4": {
+     "kill": [
+      14,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      0,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    }
+   }
+  },
+  {
+   "arm": "C",
+   "tier": "critical",
+   "regime": "R1i",
+   "checker": "stock",
+   "law_tagged": 43,
+   "kills": 43,
+   "flags": 43,
+   "loss": [],
+   "contradiction_raised": 0,
+   "stale_raised": 0,
+   "refactors": 39,
+   "refactor_flags": 0,
+   "refactor_blocks": 0,
+   "refactor_flagged": [],
+   "refactor_verdicts": {
+    "pass": 14,
+    "owed": 25
+   },
+   "refactor_coverage_obligations": 25,
+   "feature_controls": 6,
+   "feature_control_flags": 0,
+   "feature_control_blocks": 0,
+   "feature_only": 18,
+   "feature_only_flags": 0,
+   "feature_only_blocks": 0,
+   "per_task": {
+    "T1": {
+     "kill": [
+      14,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      0,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    },
+    "T3": {
+     "kill": [
+      15,
+      15
+     ],
+     "flag": [
+      15,
+      15
+     ],
+     "refactor_flag": [
+      0,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    },
+    "T4": {
+     "kill": [
+      14,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      0,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    }
+   }
+  },
+  {
+   "arm": "C",
+   "tier": "critical",
+   "regime": "R1i",
+   "checker": "vnew",
+   "law_tagged": 43,
+   "kills": 43,
+   "flags": 43,
+   "loss": [],
+   "contradiction_raised": 0,
+   "stale_raised": 0,
+   "refactors": 39,
+   "refactor_flags": 0,
+   "refactor_blocks": 0,
+   "refactor_flagged": [],
+   "refactor_verdicts": {
+    "pass": 14,
+    "owed": 25
+   },
+   "refactor_coverage_obligations": 25,
+   "feature_controls": 6,
+   "feature_control_flags": 0,
+   "feature_control_blocks": 0,
+   "feature_only": 18,
+   "feature_only_flags": 0,
+   "feature_only_blocks": 0,
+   "per_task": {
+    "T1": {
+     "kill": [
+      14,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      0,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    },
+    "T3": {
+     "kill": [
+      15,
+      15
+     ],
+     "flag": [
+      15,
+      15
+     ],
+     "refactor_flag": [
+      0,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    },
+    "T4": {
+     "kill": [
+      14,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      0,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    }
+   }
+  },
+  {
+   "arm": "C",
+   "tier": "critical",
+   "regime": "R2a",
+   "checker": "stock",
+   "law_tagged": 43,
+   "kills": 43,
+   "flags": 43,
+   "loss": [],
+   "contradiction_raised": 0,
+   "stale_raised": 43,
+   "refactors": 39,
+   "refactor_flags": 33,
+   "refactor_blocks": 33,
+   "refactor_flagged": [
+    "T1:r01_comments",
+    "T1:r03_reorder",
+    "T1:r04_rename_helpers",
+    "T1:r05_inline_targets",
+    "T1:r06_walls_table",
+    "T1:r07_arrow_helpers",
+    "T1:r08_replay_reduce",
+    "T1:r09_split_level",
+    "T1:r10_step_table",
+    "T1:r11_rename_locals",
+    "T1:r12_expressions",
+    "T3:r01_comments",
+    "T3:r03_reorder",
+    "T3:r04_rename_const",
+    "T3:r05_purge_loop",
+    "T3:r06_extract_expired",
+    "T3:r07_extract_redact",
+    "T3:r08_get_expression",
+    "T3:r09_list_slice",
+    "T3:r10_append_fields",
+    "T3:r11_with_entries",
+    "T3:r12_split_retention",
+    "T4:r01_comments",
+    "T4:r03_reorder",
+    "T4:r04_rename_helpers",
+    "T4:r05_total_reduce",
+    "T4:r06_fee_constants",
+    "T4:r07_transfer_cost",
+    "T4:r08_delta_map",
+    "T4:r09_balance_switch",
+    "T4:r10_arrow_helpers",
+    "T4:r11_split_fees",
+    "T4:r12_guard_order"
+   ],
+   "refactor_verdicts": {
+    "blocked": 33,
+    "pass": 6
+   },
+   "refactor_coverage_obligations": 25,
+   "feature_controls": 6,
+   "feature_control_flags": 6,
+   "feature_control_blocks": 6,
+   "feature_only": 18,
+   "feature_only_flags": 18,
+   "feature_only_blocks": 18,
+   "per_task": {
+    "T1": {
+     "kill": [
+      14,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      11,
+      13
+     ],
+     "refactor_block": [
+      11,
+      13
+     ]
+    },
+    "T3": {
+     "kill": [
+      15,
+      15
+     ],
+     "flag": [
+      15,
+      15
+     ],
+     "refactor_flag": [
+      11,
+      13
+     ],
+     "refactor_block": [
+      11,
+      13
+     ]
+    },
+    "T4": {
+     "kill": [
+      14,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      11,
+      13
+     ],
+     "refactor_block": [
+      11,
+      13
+     ]
+    }
+   }
+  },
+  {
+   "arm": "C",
+   "tier": "critical",
+   "regime": "R2a",
+   "checker": "vnew",
+   "law_tagged": 43,
+   "kills": 43,
+   "flags": 43,
+   "loss": [],
+   "contradiction_raised": 0,
+   "stale_raised": 43,
+   "refactors": 39,
+   "refactor_flags": 33,
+   "refactor_blocks": 33,
+   "refactor_flagged": [
+    "T1:r01_comments",
+    "T1:r03_reorder",
+    "T1:r04_rename_helpers",
+    "T1:r05_inline_targets",
+    "T1:r06_walls_table",
+    "T1:r07_arrow_helpers",
+    "T1:r08_replay_reduce",
+    "T1:r09_split_level",
+    "T1:r10_step_table",
+    "T1:r11_rename_locals",
+    "T1:r12_expressions",
+    "T3:r01_comments",
+    "T3:r03_reorder",
+    "T3:r04_rename_const",
+    "T3:r05_purge_loop",
+    "T3:r06_extract_expired",
+    "T3:r07_extract_redact",
+    "T3:r08_get_expression",
+    "T3:r09_list_slice",
+    "T3:r10_append_fields",
+    "T3:r11_with_entries",
+    "T3:r12_split_retention",
+    "T4:r01_comments",
+    "T4:r03_reorder",
+    "T4:r04_rename_helpers",
+    "T4:r05_total_reduce",
+    "T4:r06_fee_constants",
+    "T4:r07_transfer_cost",
+    "T4:r08_delta_map",
+    "T4:r09_balance_switch",
+    "T4:r10_arrow_helpers",
+    "T4:r11_split_fees",
+    "T4:r12_guard_order"
+   ],
+   "refactor_verdicts": {
+    "blocked": 33,
+    "pass": 6
+   },
+   "refactor_coverage_obligations": 25,
+   "feature_controls": 6,
+   "feature_control_flags": 6,
+   "feature_control_blocks": 6,
+   "feature_only": 18,
+   "feature_only_flags": 18,
+   "feature_only_blocks": 18,
+   "per_task": {
+    "T1": {
+     "kill": [
+      14,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      11,
+      13
+     ],
+     "refactor_block": [
+      11,
+      13
+     ]
+    },
+    "T3": {
+     "kill": [
+      15,
+      15
+     ],
+     "flag": [
+      15,
+      15
+     ],
+     "refactor_flag": [
+      11,
+      13
+     ],
+     "refactor_block": [
+      11,
+      13
+     ]
+    },
+    "T4": {
+     "kill": [
+      14,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      11,
+      13
+     ],
+     "refactor_block": [
+      11,
+      13
+     ]
+    }
+   }
+  },
+  {
+   "arm": "C",
+   "tier": "critical",
+   "regime": "R2r",
+   "checker": "stock",
+   "law_tagged": 43,
+   "kills": 43,
+   "flags": 43,
+   "loss": [],
+   "contradiction_raised": 0,
+   "stale_raised": 43,
+   "refactors": 39,
+   "refactor_flags": 39,
+   "refactor_blocks": 39,
+   "refactor_flagged": [
+    "T1:r01_comments",
+    "T1:r02_format",
+    "T1:r03_reorder",
+    "T1:r04_rename_helpers",
+    "T1:r05_inline_targets",
+    "T1:r06_walls_table",
+    "T1:r07_arrow_helpers",
+    "T1:r08_replay_reduce",
+    "T1:r09_split_level",
+    "T1:r10_step_table",
+    "T1:r11_rename_locals",
+    "T1:r12_expressions",
+    "T1:r13_line_comments",
+    "T3:r01_comments",
+    "T3:r02_format",
+    "T3:r03_reorder",
+    "T3:r04_rename_const",
+    "T3:r05_purge_loop",
+    "T3:r06_extract_expired",
+    "T3:r07_extract_redact",
+    "T3:r08_get_expression",
+    "T3:r09_list_slice",
+    "T3:r10_append_fields",
+    "T3:r11_with_entries",
+    "T3:r12_split_retention",
+    "T3:r13_line_comments",
+    "T4:r01_comments",
+    "T4:r02_format",
+    "T4:r03_reorder",
+    "T4:r04_rename_helpers",
+    "T4:r05_total_reduce",
+    "T4:r06_fee_constants",
+    "T4:r07_transfer_cost",
+    "T4:r08_delta_map",
+    "T4:r09_balance_switch",
+    "T4:r10_arrow_helpers",
+    "T4:r11_split_fees",
+    "T4:r12_guard_order",
+    "T4:r13_line_comments"
+   ],
+   "refactor_verdicts": {
+    "blocked": 39
+   },
+   "refactor_coverage_obligations": 25,
+   "feature_controls": 6,
+   "feature_control_flags": 6,
+   "feature_control_blocks": 6,
+   "feature_only": 18,
+   "feature_only_flags": 18,
+   "feature_only_blocks": 18,
+   "per_task": {
+    "T1": {
+     "kill": [
+      14,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      13,
+      13
+     ],
+     "refactor_block": [
+      13,
+      13
+     ]
+    },
+    "T3": {
+     "kill": [
+      15,
+      15
+     ],
+     "flag": [
+      15,
+      15
+     ],
+     "refactor_flag": [
+      13,
+      13
+     ],
+     "refactor_block": [
+      13,
+      13
+     ]
+    },
+    "T4": {
+     "kill": [
+      14,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      13,
+      13
+     ],
+     "refactor_block": [
+      13,
+      13
+     ]
+    }
+   }
+  },
+  {
+   "arm": "C",
+   "tier": "critical",
+   "regime": "R2r",
+   "checker": "vnew",
+   "law_tagged": 43,
+   "kills": 43,
+   "flags": 43,
+   "loss": [],
+   "contradiction_raised": 0,
+   "stale_raised": 43,
+   "refactors": 39,
+   "refactor_flags": 39,
+   "refactor_blocks": 39,
+   "refactor_flagged": [
+    "T1:r01_comments",
+    "T1:r02_format",
+    "T1:r03_reorder",
+    "T1:r04_rename_helpers",
+    "T1:r05_inline_targets",
+    "T1:r06_walls_table",
+    "T1:r07_arrow_helpers",
+    "T1:r08_replay_reduce",
+    "T1:r09_split_level",
+    "T1:r10_step_table",
+    "T1:r11_rename_locals",
+    "T1:r12_expressions",
+    "T1:r13_line_comments",
+    "T3:r01_comments",
+    "T3:r02_format",
+    "T3:r03_reorder",
+    "T3:r04_rename_const",
+    "T3:r05_purge_loop",
+    "T3:r06_extract_expired",
+    "T3:r07_extract_redact",
+    "T3:r08_get_expression",
+    "T3:r09_list_slice",
+    "T3:r10_append_fields",
+    "T3:r11_with_entries",
+    "T3:r12_split_retention",
+    "T3:r13_line_comments",
+    "T4:r01_comments",
+    "T4:r02_format",
+    "T4:r03_reorder",
+    "T4:r04_rename_helpers",
+    "T4:r05_total_reduce",
+    "T4:r06_fee_constants",
+    "T4:r07_transfer_cost",
+    "T4:r08_delta_map",
+    "T4:r09_balance_switch",
+    "T4:r10_arrow_helpers",
+    "T4:r11_split_fees",
+    "T4:r12_guard_order",
+    "T4:r13_line_comments"
+   ],
+   "refactor_verdicts": {
+    "blocked": 39
+   },
+   "refactor_coverage_obligations": 25,
+   "feature_controls": 6,
+   "feature_control_flags": 6,
+   "feature_control_blocks": 6,
+   "feature_only": 18,
+   "feature_only_flags": 18,
+   "feature_only_blocks": 18,
+   "per_task": {
+    "T1": {
+     "kill": [
+      14,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      13,
+      13
+     ],
+     "refactor_block": [
+      13,
+      13
+     ]
+    },
+    "T3": {
+     "kill": [
+      15,
+      15
+     ],
+     "flag": [
+      15,
+      15
+     ],
+     "refactor_flag": [
+      13,
+      13
+     ],
+     "refactor_block": [
+      13,
+      13
+     ]
+    },
+    "T4": {
+     "kill": [
+      14,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      13,
+      13
+     ],
+     "refactor_block": [
+      13,
+      13
+     ]
+    }
+   }
+  },
+  {
+   "arm": "C",
+   "tier": "critical",
+   "regime": "R2u",
+   "checker": "stock",
+   "law_tagged": 43,
+   "kills": 43,
+   "flags": 43,
+   "loss": [],
+   "contradiction_raised": 0,
+   "stale_raised": 43,
+   "refactors": 39,
+   "refactor_flags": 33,
+   "refactor_blocks": 33,
+   "refactor_flagged": [
+    "T1:r01_comments",
+    "T1:r03_reorder",
+    "T1:r04_rename_helpers",
+    "T1:r05_inline_targets",
+    "T1:r06_walls_table",
+    "T1:r07_arrow_helpers",
+    "T1:r08_replay_reduce",
+    "T1:r09_split_level",
+    "T1:r10_step_table",
+    "T1:r11_rename_locals",
+    "T1:r12_expressions",
+    "T3:r01_comments",
+    "T3:r03_reorder",
+    "T3:r04_rename_const",
+    "T3:r05_purge_loop",
+    "T3:r06_extract_expired",
+    "T3:r07_extract_redact",
+    "T3:r08_get_expression",
+    "T3:r09_list_slice",
+    "T3:r10_append_fields",
+    "T3:r11_with_entries",
+    "T3:r12_split_retention",
+    "T4:r01_comments",
+    "T4:r03_reorder",
+    "T4:r04_rename_helpers",
+    "T4:r05_total_reduce",
+    "T4:r06_fee_constants",
+    "T4:r07_transfer_cost",
+    "T4:r08_delta_map",
+    "T4:r09_balance_switch",
+    "T4:r10_arrow_helpers",
+    "T4:r11_split_fees",
+    "T4:r12_guard_order"
+   ],
+   "refactor_verdicts": {
+    "blocked": 33,
+    "pass": 6
+   },
+   "refactor_coverage_obligations": 25,
+   "feature_controls": 6,
+   "feature_control_flags": 6,
+   "feature_control_blocks": 6,
+   "feature_only": 18,
+   "feature_only_flags": 18,
+   "feature_only_blocks": 18,
+   "per_task": {
+    "T1": {
+     "kill": [
+      14,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      11,
+      13
+     ],
+     "refactor_block": [
+      11,
+      13
+     ]
+    },
+    "T3": {
+     "kill": [
+      15,
+      15
+     ],
+     "flag": [
+      15,
+      15
+     ],
+     "refactor_flag": [
+      11,
+      13
+     ],
+     "refactor_block": [
+      11,
+      13
+     ]
+    },
+    "T4": {
+     "kill": [
+      14,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      11,
+      13
+     ],
+     "refactor_block": [
+      11,
+      13
+     ]
+    }
+   }
+  },
+  {
+   "arm": "C",
+   "tier": "critical",
+   "regime": "R2u",
+   "checker": "vnew",
+   "law_tagged": 43,
+   "kills": 43,
+   "flags": 43,
+   "loss": [],
+   "contradiction_raised": 0,
+   "stale_raised": 43,
+   "refactors": 39,
+   "refactor_flags": 33,
+   "refactor_blocks": 33,
+   "refactor_flagged": [
+    "T1:r01_comments",
+    "T1:r03_reorder",
+    "T1:r04_rename_helpers",
+    "T1:r05_inline_targets",
+    "T1:r06_walls_table",
+    "T1:r07_arrow_helpers",
+    "T1:r08_replay_reduce",
+    "T1:r09_split_level",
+    "T1:r10_step_table",
+    "T1:r11_rename_locals",
+    "T1:r12_expressions",
+    "T3:r01_comments",
+    "T3:r03_reorder",
+    "T3:r04_rename_const",
+    "T3:r05_purge_loop",
+    "T3:r06_extract_expired",
+    "T3:r07_extract_redact",
+    "T3:r08_get_expression",
+    "T3:r09_list_slice",
+    "T3:r10_append_fields",
+    "T3:r11_with_entries",
+    "T3:r12_split_retention",
+    "T4:r01_comments",
+    "T4:r03_reorder",
+    "T4:r04_rename_helpers",
+    "T4:r05_total_reduce",
+    "T4:r06_fee_constants",
+    "T4:r07_transfer_cost",
+    "T4:r08_delta_map",
+    "T4:r09_balance_switch",
+    "T4:r10_arrow_helpers",
+    "T4:r11_split_fees",
+    "T4:r12_guard_order"
+   ],
+   "refactor_verdicts": {
+    "blocked": 33,
+    "pass": 6
+   },
+   "refactor_coverage_obligations": 25,
+   "feature_controls": 6,
+   "feature_control_flags": 6,
+   "feature_control_blocks": 6,
+   "feature_only": 18,
+   "feature_only_flags": 18,
+   "feature_only_blocks": 18,
+   "per_task": {
+    "T1": {
+     "kill": [
+      14,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      11,
+      13
+     ],
+     "refactor_block": [
+      11,
+      13
+     ]
+    },
+    "T3": {
+     "kill": [
+      15,
+      15
+     ],
+     "flag": [
+      15,
+      15
+     ],
+     "refactor_flag": [
+      11,
+      13
+     ],
+     "refactor_block": [
+      11,
+      13
+     ]
+    },
+    "T4": {
+     "kill": [
+      14,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      11,
+      13
+     ],
+     "refactor_block": [
+      11,
+      13
+     ]
+    }
+   }
+  },
+  {
+   "arm": "C",
+   "tier": "normal",
+   "regime": "R1c",
+   "checker": "stock",
+   "law_tagged": 43,
+   "kills": 43,
+   "flags": 43,
+   "loss": [],
+   "contradiction_raised": 43,
+   "stale_raised": 0,
+   "refactors": 39,
+   "refactor_flags": 0,
+   "refactor_blocks": 0,
+   "refactor_flagged": [],
+   "refactor_verdicts": {
+    "pass": 14,
+    "owed": 25
+   },
+   "refactor_coverage_obligations": 25,
+   "feature_controls": 6,
+   "feature_control_flags": 0,
+   "feature_control_blocks": 0,
+   "feature_only": 18,
+   "feature_only_flags": 0,
+   "feature_only_blocks": 0,
+   "per_task": {
+    "T1": {
+     "kill": [
+      14,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      0,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    },
+    "T3": {
+     "kill": [
+      15,
+      15
+     ],
+     "flag": [
+      15,
+      15
+     ],
+     "refactor_flag": [
+      0,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    },
+    "T4": {
+     "kill": [
+      14,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      0,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    }
+   }
+  },
+  {
+   "arm": "C",
+   "tier": "normal",
+   "regime": "R1c",
+   "checker": "vnew",
+   "law_tagged": 43,
+   "kills": 43,
+   "flags": 43,
+   "loss": [],
+   "contradiction_raised": 43,
+   "stale_raised": 0,
+   "refactors": 39,
+   "refactor_flags": 0,
+   "refactor_blocks": 0,
+   "refactor_flagged": [],
+   "refactor_verdicts": {
+    "pass": 14,
+    "owed": 25
+   },
+   "refactor_coverage_obligations": 25,
+   "feature_controls": 6,
+   "feature_control_flags": 0,
+   "feature_control_blocks": 0,
+   "feature_only": 18,
+   "feature_only_flags": 0,
+   "feature_only_blocks": 0,
+   "per_task": {
+    "T1": {
+     "kill": [
+      14,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      0,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    },
+    "T3": {
+     "kill": [
+      15,
+      15
+     ],
+     "flag": [
+      15,
+      15
+     ],
+     "refactor_flag": [
+      0,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    },
+    "T4": {
+     "kill": [
+      14,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      0,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    }
+   }
+  },
+  {
+   "arm": "C",
+   "tier": "normal",
+   "regime": "R1i",
+   "checker": "stock",
+   "law_tagged": 43,
+   "kills": 0,
+   "flags": 43,
+   "loss": [
+    "T1:trap_game",
+    "T1:m01_no_west_wall",
+    "T1:m02_no_north_wall",
+    "T1:m03_north_wall_short",
+    "T1:m04_west_wall_short",
+    "T1:m05_wrap_ignores_walls",
+    "T1:m06_east_wall_gap",
+    "T1:m07_won_by_row",
+    "T1:m08_replay_reversed",
+    "T1:m09_replay_drops_last",
+    "T1:m10_flag_moved",
+    "T1:m11_win_only_from_below",
+    "T1:m18_north_wall_wrong_row",
+    "T1:m19_replay_stops_when_blocked",
+    "T3:trap_audit",
+    "T3:m01_delete_filter",
+    "T3:m02_delete_nextid",
+    "T3:m04_boundary_loose",
+    "T3:m05_reversed",
+    "T3:m06_redact_all",
+    "T3:m07_meta_timestamp",
+    "T3:m08_meta_actor",
+    "T3:m09_mutate_in_place",
+    "T3:m10_list_only",
+    "T3:m11_get_hides",
+    "T3:m12_list_hides",
+    "T3:m14_sorted_prefix",
+    "T3:m17_id_from_live",
+    "T3:m18_truncate_head",
+    "T4:trap_stale_all",
+    "T4:trap_stale_self",
+    "T4:m01_stale_self",
+    "T4:m02_stale_fee_balance",
+    "T4:m03_fee_not_credited",
+    "T4:m04_funds_check_without_fee",
+    "T4:m05_fee_charged_on_failure",
+    "T4:m06_self_transfer_fee",
+    "T4:m07_zero_amount_allowed",
+    "T4:m08_strict_funds_check",
+    "T4:m09_receiver_pays_fee",
+    "T4:m10_fee_to_receiver",
+    "T4:m11_inline_fee_no_minimum",
+    "T4:m12_total_excludes_fee"
+   ],
+   "contradiction_raised": 0,
+   "stale_raised": 0,
+   "refactors": 39,
+   "refactor_flags": 0,
+   "refactor_blocks": 0,
+   "refactor_flagged": [],
+   "refactor_verdicts": {
+    "pass": 14,
+    "owed": 25
+   },
+   "refactor_coverage_obligations": 25,
+   "feature_controls": 6,
+   "feature_control_flags": 0,
+   "feature_control_blocks": 0,
+   "feature_only": 18,
+   "feature_only_flags": 0,
+   "feature_only_blocks": 0,
+   "per_task": {
+    "T1": {
+     "kill": [
+      0,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      0,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    },
+    "T3": {
+     "kill": [
+      0,
+      15
+     ],
+     "flag": [
+      15,
+      15
+     ],
+     "refactor_flag": [
+      0,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    },
+    "T4": {
+     "kill": [
+      0,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      0,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    }
+   }
+  },
+  {
+   "arm": "C",
+   "tier": "normal",
+   "regime": "R1i",
+   "checker": "vnew",
+   "law_tagged": 43,
+   "kills": 0,
+   "flags": 43,
+   "loss": [
+    "T1:trap_game",
+    "T1:m01_no_west_wall",
+    "T1:m02_no_north_wall",
+    "T1:m03_north_wall_short",
+    "T1:m04_west_wall_short",
+    "T1:m05_wrap_ignores_walls",
+    "T1:m06_east_wall_gap",
+    "T1:m07_won_by_row",
+    "T1:m08_replay_reversed",
+    "T1:m09_replay_drops_last",
+    "T1:m10_flag_moved",
+    "T1:m11_win_only_from_below",
+    "T1:m18_north_wall_wrong_row",
+    "T1:m19_replay_stops_when_blocked",
+    "T3:trap_audit",
+    "T3:m01_delete_filter",
+    "T3:m02_delete_nextid",
+    "T3:m04_boundary_loose",
+    "T3:m05_reversed",
+    "T3:m06_redact_all",
+    "T3:m07_meta_timestamp",
+    "T3:m08_meta_actor",
+    "T3:m09_mutate_in_place",
+    "T3:m10_list_only",
+    "T3:m11_get_hides",
+    "T3:m12_list_hides",
+    "T3:m14_sorted_prefix",
+    "T3:m17_id_from_live",
+    "T3:m18_truncate_head",
+    "T4:trap_stale_all",
+    "T4:trap_stale_self",
+    "T4:m01_stale_self",
+    "T4:m02_stale_fee_balance",
+    "T4:m03_fee_not_credited",
+    "T4:m04_funds_check_without_fee",
+    "T4:m05_fee_charged_on_failure",
+    "T4:m06_self_transfer_fee",
+    "T4:m07_zero_amount_allowed",
+    "T4:m08_strict_funds_check",
+    "T4:m09_receiver_pays_fee",
+    "T4:m10_fee_to_receiver",
+    "T4:m11_inline_fee_no_minimum",
+    "T4:m12_total_excludes_fee"
+   ],
+   "contradiction_raised": 0,
+   "stale_raised": 0,
+   "refactors": 39,
+   "refactor_flags": 0,
+   "refactor_blocks": 0,
+   "refactor_flagged": [],
+   "refactor_verdicts": {
+    "pass": 14,
+    "owed": 25
+   },
+   "refactor_coverage_obligations": 25,
+   "feature_controls": 6,
+   "feature_control_flags": 0,
+   "feature_control_blocks": 0,
+   "feature_only": 18,
+   "feature_only_flags": 0,
+   "feature_only_blocks": 0,
+   "per_task": {
+    "T1": {
+     "kill": [
+      0,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      0,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    },
+    "T3": {
+     "kill": [
+      0,
+      15
+     ],
+     "flag": [
+      15,
+      15
+     ],
+     "refactor_flag": [
+      0,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    },
+    "T4": {
+     "kill": [
+      0,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      0,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    }
+   }
+  },
+  {
+   "arm": "C",
+   "tier": "normal",
+   "regime": "R2a",
+   "checker": "stock",
+   "law_tagged": 43,
+   "kills": 43,
+   "flags": 43,
+   "loss": [],
+   "contradiction_raised": 0,
+   "stale_raised": 43,
+   "refactors": 39,
+   "refactor_flags": 33,
+   "refactor_blocks": 33,
+   "refactor_flagged": [
+    "T1:r01_comments",
+    "T1:r03_reorder",
+    "T1:r04_rename_helpers",
+    "T1:r05_inline_targets",
+    "T1:r06_walls_table",
+    "T1:r07_arrow_helpers",
+    "T1:r08_replay_reduce",
+    "T1:r09_split_level",
+    "T1:r10_step_table",
+    "T1:r11_rename_locals",
+    "T1:r12_expressions",
+    "T3:r01_comments",
+    "T3:r03_reorder",
+    "T3:r04_rename_const",
+    "T3:r05_purge_loop",
+    "T3:r06_extract_expired",
+    "T3:r07_extract_redact",
+    "T3:r08_get_expression",
+    "T3:r09_list_slice",
+    "T3:r10_append_fields",
+    "T3:r11_with_entries",
+    "T3:r12_split_retention",
+    "T4:r01_comments",
+    "T4:r03_reorder",
+    "T4:r04_rename_helpers",
+    "T4:r05_total_reduce",
+    "T4:r06_fee_constants",
+    "T4:r07_transfer_cost",
+    "T4:r08_delta_map",
+    "T4:r09_balance_switch",
+    "T4:r10_arrow_helpers",
+    "T4:r11_split_fees",
+    "T4:r12_guard_order"
+   ],
+   "refactor_verdicts": {
+    "blocked": 33,
+    "pass": 6
+   },
+   "refactor_coverage_obligations": 25,
+   "feature_controls": 6,
+   "feature_control_flags": 6,
+   "feature_control_blocks": 6,
+   "feature_only": 18,
+   "feature_only_flags": 18,
+   "feature_only_blocks": 18,
+   "per_task": {
+    "T1": {
+     "kill": [
+      14,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      11,
+      13
+     ],
+     "refactor_block": [
+      11,
+      13
+     ]
+    },
+    "T3": {
+     "kill": [
+      15,
+      15
+     ],
+     "flag": [
+      15,
+      15
+     ],
+     "refactor_flag": [
+      11,
+      13
+     ],
+     "refactor_block": [
+      11,
+      13
+     ]
+    },
+    "T4": {
+     "kill": [
+      14,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      11,
+      13
+     ],
+     "refactor_block": [
+      11,
+      13
+     ]
+    }
+   }
+  },
+  {
+   "arm": "C",
+   "tier": "normal",
+   "regime": "R2a",
+   "checker": "vnew",
+   "law_tagged": 43,
+   "kills": 43,
+   "flags": 43,
+   "loss": [],
+   "contradiction_raised": 0,
+   "stale_raised": 43,
+   "refactors": 39,
+   "refactor_flags": 33,
+   "refactor_blocks": 33,
+   "refactor_flagged": [
+    "T1:r01_comments",
+    "T1:r03_reorder",
+    "T1:r04_rename_helpers",
+    "T1:r05_inline_targets",
+    "T1:r06_walls_table",
+    "T1:r07_arrow_helpers",
+    "T1:r08_replay_reduce",
+    "T1:r09_split_level",
+    "T1:r10_step_table",
+    "T1:r11_rename_locals",
+    "T1:r12_expressions",
+    "T3:r01_comments",
+    "T3:r03_reorder",
+    "T3:r04_rename_const",
+    "T3:r05_purge_loop",
+    "T3:r06_extract_expired",
+    "T3:r07_extract_redact",
+    "T3:r08_get_expression",
+    "T3:r09_list_slice",
+    "T3:r10_append_fields",
+    "T3:r11_with_entries",
+    "T3:r12_split_retention",
+    "T4:r01_comments",
+    "T4:r03_reorder",
+    "T4:r04_rename_helpers",
+    "T4:r05_total_reduce",
+    "T4:r06_fee_constants",
+    "T4:r07_transfer_cost",
+    "T4:r08_delta_map",
+    "T4:r09_balance_switch",
+    "T4:r10_arrow_helpers",
+    "T4:r11_split_fees",
+    "T4:r12_guard_order"
+   ],
+   "refactor_verdicts": {
+    "blocked": 33,
+    "pass": 6
+   },
+   "refactor_coverage_obligations": 25,
+   "feature_controls": 6,
+   "feature_control_flags": 6,
+   "feature_control_blocks": 6,
+   "feature_only": 18,
+   "feature_only_flags": 18,
+   "feature_only_blocks": 18,
+   "per_task": {
+    "T1": {
+     "kill": [
+      14,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      11,
+      13
+     ],
+     "refactor_block": [
+      11,
+      13
+     ]
+    },
+    "T3": {
+     "kill": [
+      15,
+      15
+     ],
+     "flag": [
+      15,
+      15
+     ],
+     "refactor_flag": [
+      11,
+      13
+     ],
+     "refactor_block": [
+      11,
+      13
+     ]
+    },
+    "T4": {
+     "kill": [
+      14,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      11,
+      13
+     ],
+     "refactor_block": [
+      11,
+      13
+     ]
+    }
+   }
+  },
+  {
+   "arm": "C",
+   "tier": "normal",
+   "regime": "R2r",
+   "checker": "stock",
+   "law_tagged": 43,
+   "kills": 43,
+   "flags": 43,
+   "loss": [],
+   "contradiction_raised": 0,
+   "stale_raised": 43,
+   "refactors": 39,
+   "refactor_flags": 39,
+   "refactor_blocks": 39,
+   "refactor_flagged": [
+    "T1:r01_comments",
+    "T1:r02_format",
+    "T1:r03_reorder",
+    "T1:r04_rename_helpers",
+    "T1:r05_inline_targets",
+    "T1:r06_walls_table",
+    "T1:r07_arrow_helpers",
+    "T1:r08_replay_reduce",
+    "T1:r09_split_level",
+    "T1:r10_step_table",
+    "T1:r11_rename_locals",
+    "T1:r12_expressions",
+    "T1:r13_line_comments",
+    "T3:r01_comments",
+    "T3:r02_format",
+    "T3:r03_reorder",
+    "T3:r04_rename_const",
+    "T3:r05_purge_loop",
+    "T3:r06_extract_expired",
+    "T3:r07_extract_redact",
+    "T3:r08_get_expression",
+    "T3:r09_list_slice",
+    "T3:r10_append_fields",
+    "T3:r11_with_entries",
+    "T3:r12_split_retention",
+    "T3:r13_line_comments",
+    "T4:r01_comments",
+    "T4:r02_format",
+    "T4:r03_reorder",
+    "T4:r04_rename_helpers",
+    "T4:r05_total_reduce",
+    "T4:r06_fee_constants",
+    "T4:r07_transfer_cost",
+    "T4:r08_delta_map",
+    "T4:r09_balance_switch",
+    "T4:r10_arrow_helpers",
+    "T4:r11_split_fees",
+    "T4:r12_guard_order",
+    "T4:r13_line_comments"
+   ],
+   "refactor_verdicts": {
+    "blocked": 39
+   },
+   "refactor_coverage_obligations": 25,
+   "feature_controls": 6,
+   "feature_control_flags": 6,
+   "feature_control_blocks": 6,
+   "feature_only": 18,
+   "feature_only_flags": 18,
+   "feature_only_blocks": 18,
+   "per_task": {
+    "T1": {
+     "kill": [
+      14,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      13,
+      13
+     ],
+     "refactor_block": [
+      13,
+      13
+     ]
+    },
+    "T3": {
+     "kill": [
+      15,
+      15
+     ],
+     "flag": [
+      15,
+      15
+     ],
+     "refactor_flag": [
+      13,
+      13
+     ],
+     "refactor_block": [
+      13,
+      13
+     ]
+    },
+    "T4": {
+     "kill": [
+      14,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      13,
+      13
+     ],
+     "refactor_block": [
+      13,
+      13
+     ]
+    }
+   }
+  },
+  {
+   "arm": "C",
+   "tier": "normal",
+   "regime": "R2r",
+   "checker": "vnew",
+   "law_tagged": 43,
+   "kills": 43,
+   "flags": 43,
+   "loss": [],
+   "contradiction_raised": 0,
+   "stale_raised": 43,
+   "refactors": 39,
+   "refactor_flags": 39,
+   "refactor_blocks": 39,
+   "refactor_flagged": [
+    "T1:r01_comments",
+    "T1:r02_format",
+    "T1:r03_reorder",
+    "T1:r04_rename_helpers",
+    "T1:r05_inline_targets",
+    "T1:r06_walls_table",
+    "T1:r07_arrow_helpers",
+    "T1:r08_replay_reduce",
+    "T1:r09_split_level",
+    "T1:r10_step_table",
+    "T1:r11_rename_locals",
+    "T1:r12_expressions",
+    "T1:r13_line_comments",
+    "T3:r01_comments",
+    "T3:r02_format",
+    "T3:r03_reorder",
+    "T3:r04_rename_const",
+    "T3:r05_purge_loop",
+    "T3:r06_extract_expired",
+    "T3:r07_extract_redact",
+    "T3:r08_get_expression",
+    "T3:r09_list_slice",
+    "T3:r10_append_fields",
+    "T3:r11_with_entries",
+    "T3:r12_split_retention",
+    "T3:r13_line_comments",
+    "T4:r01_comments",
+    "T4:r02_format",
+    "T4:r03_reorder",
+    "T4:r04_rename_helpers",
+    "T4:r05_total_reduce",
+    "T4:r06_fee_constants",
+    "T4:r07_transfer_cost",
+    "T4:r08_delta_map",
+    "T4:r09_balance_switch",
+    "T4:r10_arrow_helpers",
+    "T4:r11_split_fees",
+    "T4:r12_guard_order",
+    "T4:r13_line_comments"
+   ],
+   "refactor_verdicts": {
+    "blocked": 39
+   },
+   "refactor_coverage_obligations": 25,
+   "feature_controls": 6,
+   "feature_control_flags": 6,
+   "feature_control_blocks": 6,
+   "feature_only": 18,
+   "feature_only_flags": 18,
+   "feature_only_blocks": 18,
+   "per_task": {
+    "T1": {
+     "kill": [
+      14,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      13,
+      13
+     ],
+     "refactor_block": [
+      13,
+      13
+     ]
+    },
+    "T3": {
+     "kill": [
+      15,
+      15
+     ],
+     "flag": [
+      15,
+      15
+     ],
+     "refactor_flag": [
+      13,
+      13
+     ],
+     "refactor_block": [
+      13,
+      13
+     ]
+    },
+    "T4": {
+     "kill": [
+      14,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      13,
+      13
+     ],
+     "refactor_block": [
+      13,
+      13
+     ]
+    }
+   }
+  },
+  {
+   "arm": "C",
+   "tier": "normal",
+   "regime": "R2u",
+   "checker": "stock",
+   "law_tagged": 43,
+   "kills": 0,
+   "flags": 43,
+   "loss": [
+    "T1:trap_game",
+    "T1:m01_no_west_wall",
+    "T1:m02_no_north_wall",
+    "T1:m03_north_wall_short",
+    "T1:m04_west_wall_short",
+    "T1:m05_wrap_ignores_walls",
+    "T1:m06_east_wall_gap",
+    "T1:m07_won_by_row",
+    "T1:m08_replay_reversed",
+    "T1:m09_replay_drops_last",
+    "T1:m10_flag_moved",
+    "T1:m11_win_only_from_below",
+    "T1:m18_north_wall_wrong_row",
+    "T1:m19_replay_stops_when_blocked",
+    "T3:trap_audit",
+    "T3:m01_delete_filter",
+    "T3:m02_delete_nextid",
+    "T3:m04_boundary_loose",
+    "T3:m05_reversed",
+    "T3:m06_redact_all",
+    "T3:m07_meta_timestamp",
+    "T3:m08_meta_actor",
+    "T3:m09_mutate_in_place",
+    "T3:m10_list_only",
+    "T3:m11_get_hides",
+    "T3:m12_list_hides",
+    "T3:m14_sorted_prefix",
+    "T3:m17_id_from_live",
+    "T3:m18_truncate_head",
+    "T4:trap_stale_all",
+    "T4:trap_stale_self",
+    "T4:m01_stale_self",
+    "T4:m02_stale_fee_balance",
+    "T4:m03_fee_not_credited",
+    "T4:m04_funds_check_without_fee",
+    "T4:m05_fee_charged_on_failure",
+    "T4:m06_self_transfer_fee",
+    "T4:m07_zero_amount_allowed",
+    "T4:m08_strict_funds_check",
+    "T4:m09_receiver_pays_fee",
+    "T4:m10_fee_to_receiver",
+    "T4:m11_inline_fee_no_minimum",
+    "T4:m12_total_excludes_fee"
+   ],
+   "contradiction_raised": 0,
+   "stale_raised": 43,
+   "refactors": 39,
+   "refactor_flags": 33,
+   "refactor_blocks": 0,
+   "refactor_flagged": [
+    "T1:r01_comments",
+    "T1:r03_reorder",
+    "T1:r04_rename_helpers",
+    "T1:r05_inline_targets",
+    "T1:r06_walls_table",
+    "T1:r07_arrow_helpers",
+    "T1:r08_replay_reduce",
+    "T1:r09_split_level",
+    "T1:r10_step_table",
+    "T1:r11_rename_locals",
+    "T1:r12_expressions",
+    "T3:r01_comments",
+    "T3:r03_reorder",
+    "T3:r04_rename_const",
+    "T3:r05_purge_loop",
+    "T3:r06_extract_expired",
+    "T3:r07_extract_redact",
+    "T3:r08_get_expression",
+    "T3:r09_list_slice",
+    "T3:r10_append_fields",
+    "T3:r11_with_entries",
+    "T3:r12_split_retention",
+    "T4:r01_comments",
+    "T4:r03_reorder",
+    "T4:r04_rename_helpers",
+    "T4:r05_total_reduce",
+    "T4:r06_fee_constants",
+    "T4:r07_transfer_cost",
+    "T4:r08_delta_map",
+    "T4:r09_balance_switch",
+    "T4:r10_arrow_helpers",
+    "T4:r11_split_fees",
+    "T4:r12_guard_order"
+   ],
+   "refactor_verdicts": {
+    "owed": 33,
+    "pass": 6
+   },
+   "refactor_coverage_obligations": 25,
+   "feature_controls": 6,
+   "feature_control_flags": 6,
+   "feature_control_blocks": 0,
+   "feature_only": 18,
+   "feature_only_flags": 18,
+   "feature_only_blocks": 0,
+   "per_task": {
+    "T1": {
+     "kill": [
+      0,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      11,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    },
+    "T3": {
+     "kill": [
+      0,
+      15
+     ],
+     "flag": [
+      15,
+      15
+     ],
+     "refactor_flag": [
+      11,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    },
+    "T4": {
+     "kill": [
+      0,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      11,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    }
+   }
+  },
+  {
+   "arm": "C",
+   "tier": "normal",
+   "regime": "R2u",
+   "checker": "vnew",
+   "law_tagged": 43,
+   "kills": 0,
+   "flags": 43,
+   "loss": [
+    "T1:trap_game",
+    "T1:m01_no_west_wall",
+    "T1:m02_no_north_wall",
+    "T1:m03_north_wall_short",
+    "T1:m04_west_wall_short",
+    "T1:m05_wrap_ignores_walls",
+    "T1:m06_east_wall_gap",
+    "T1:m07_won_by_row",
+    "T1:m08_replay_reversed",
+    "T1:m09_replay_drops_last",
+    "T1:m10_flag_moved",
+    "T1:m11_win_only_from_below",
+    "T1:m18_north_wall_wrong_row",
+    "T1:m19_replay_stops_when_blocked",
+    "T3:trap_audit",
+    "T3:m01_delete_filter",
+    "T3:m02_delete_nextid",
+    "T3:m04_boundary_loose",
+    "T3:m05_reversed",
+    "T3:m06_redact_all",
+    "T3:m07_meta_timestamp",
+    "T3:m08_meta_actor",
+    "T3:m09_mutate_in_place",
+    "T3:m10_list_only",
+    "T3:m11_get_hides",
+    "T3:m12_list_hides",
+    "T3:m14_sorted_prefix",
+    "T3:m17_id_from_live",
+    "T3:m18_truncate_head",
+    "T4:trap_stale_all",
+    "T4:trap_stale_self",
+    "T4:m01_stale_self",
+    "T4:m02_stale_fee_balance",
+    "T4:m03_fee_not_credited",
+    "T4:m04_funds_check_without_fee",
+    "T4:m05_fee_charged_on_failure",
+    "T4:m06_self_transfer_fee",
+    "T4:m07_zero_amount_allowed",
+    "T4:m08_strict_funds_check",
+    "T4:m09_receiver_pays_fee",
+    "T4:m10_fee_to_receiver",
+    "T4:m11_inline_fee_no_minimum",
+    "T4:m12_total_excludes_fee"
+   ],
+   "contradiction_raised": 0,
+   "stale_raised": 43,
+   "refactors": 39,
+   "refactor_flags": 33,
+   "refactor_blocks": 0,
+   "refactor_flagged": [
+    "T1:r01_comments",
+    "T1:r03_reorder",
+    "T1:r04_rename_helpers",
+    "T1:r05_inline_targets",
+    "T1:r06_walls_table",
+    "T1:r07_arrow_helpers",
+    "T1:r08_replay_reduce",
+    "T1:r09_split_level",
+    "T1:r10_step_table",
+    "T1:r11_rename_locals",
+    "T1:r12_expressions",
+    "T3:r01_comments",
+    "T3:r03_reorder",
+    "T3:r04_rename_const",
+    "T3:r05_purge_loop",
+    "T3:r06_extract_expired",
+    "T3:r07_extract_redact",
+    "T3:r08_get_expression",
+    "T3:r09_list_slice",
+    "T3:r10_append_fields",
+    "T3:r11_with_entries",
+    "T3:r12_split_retention",
+    "T4:r01_comments",
+    "T4:r03_reorder",
+    "T4:r04_rename_helpers",
+    "T4:r05_total_reduce",
+    "T4:r06_fee_constants",
+    "T4:r07_transfer_cost",
+    "T4:r08_delta_map",
+    "T4:r09_balance_switch",
+    "T4:r10_arrow_helpers",
+    "T4:r11_split_fees",
+    "T4:r12_guard_order"
+   ],
+   "refactor_verdicts": {
+    "owed": 33,
+    "pass": 6
+   },
+   "refactor_coverage_obligations": 25,
+   "feature_controls": 6,
+   "feature_control_flags": 6,
+   "feature_control_blocks": 0,
+   "feature_only": 18,
+   "feature_only_flags": 18,
+   "feature_only_blocks": 0,
+   "per_task": {
+    "T1": {
+     "kill": [
+      0,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      11,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    },
+    "T3": {
+     "kill": [
+      0,
+      15
+     ],
+     "flag": [
+      15,
+      15
+     ],
+     "refactor_flag": [
+      11,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    },
+    "T4": {
+     "kill": [
+      0,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      11,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    }
+   }
+  },
+  {
+   "arm": "N",
+   "tier": "critical",
+   "regime": "R1c",
+   "checker": "stock",
+   "law_tagged": 43,
+   "kills": 33,
+   "flags": 43,
+   "loss": [
+    "T1:trap_game",
+    "T1:m01_no_west_wall",
+    "T1:m02_no_north_wall",
+    "T1:m03_north_wall_short",
+    "T1:m04_west_wall_short",
+    "T1:m05_wrap_ignores_walls",
+    "T1:m06_east_wall_gap",
+    "T1:m10_flag_moved",
+    "T1:m11_win_only_from_below",
+    "T1:m18_north_wall_wrong_row"
+   ],
+   "contradiction_raised": 43,
+   "stale_raised": 0,
+   "refactors": 39,
+   "refactor_flags": 0,
+   "refactor_blocks": 0,
+   "refactor_flagged": [],
+   "refactor_verdicts": {
+    "pass": 14,
+    "owed": 25
+   },
+   "refactor_coverage_obligations": 25,
+   "feature_controls": 6,
+   "feature_control_flags": 0,
+   "feature_control_blocks": 0,
+   "feature_only": 18,
+   "feature_only_flags": 0,
+   "feature_only_blocks": 0,
+   "per_task": {
+    "T1": {
+     "kill": [
+      4,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      0,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    },
+    "T3": {
+     "kill": [
+      15,
+      15
+     ],
+     "flag": [
+      15,
+      15
+     ],
+     "refactor_flag": [
+      0,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    },
+    "T4": {
+     "kill": [
+      14,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      0,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    }
+   }
+  },
+  {
+   "arm": "N",
+   "tier": "critical",
+   "regime": "R1c",
+   "checker": "vnew",
+   "law_tagged": 43,
+   "kills": 43,
+   "flags": 43,
+   "loss": [],
+   "contradiction_raised": 43,
+   "stale_raised": 0,
+   "refactors": 39,
+   "refactor_flags": 0,
+   "refactor_blocks": 0,
+   "refactor_flagged": [],
+   "refactor_verdicts": {
+    "pass": 14,
+    "owed": 25
+   },
+   "refactor_coverage_obligations": 25,
+   "feature_controls": 6,
+   "feature_control_flags": 0,
+   "feature_control_blocks": 0,
+   "feature_only": 18,
+   "feature_only_flags": 0,
+   "feature_only_blocks": 0,
+   "per_task": {
+    "T1": {
+     "kill": [
+      14,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      0,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    },
+    "T3": {
+     "kill": [
+      15,
+      15
+     ],
+     "flag": [
+      15,
+      15
+     ],
+     "refactor_flag": [
+      0,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    },
+    "T4": {
+     "kill": [
+      14,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      0,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    }
+   }
+  },
+  {
+   "arm": "N",
+   "tier": "critical",
+   "regime": "R1i",
+   "checker": "stock",
+   "law_tagged": 43,
+   "kills": 33,
+   "flags": 43,
+   "loss": [
+    "T1:trap_game",
+    "T1:m01_no_west_wall",
+    "T1:m02_no_north_wall",
+    "T1:m03_north_wall_short",
+    "T1:m04_west_wall_short",
+    "T1:m05_wrap_ignores_walls",
+    "T1:m06_east_wall_gap",
+    "T1:m10_flag_moved",
+    "T1:m11_win_only_from_below",
+    "T1:m18_north_wall_wrong_row"
+   ],
+   "contradiction_raised": 0,
+   "stale_raised": 0,
+   "refactors": 39,
+   "refactor_flags": 0,
+   "refactor_blocks": 0,
+   "refactor_flagged": [],
+   "refactor_verdicts": {
+    "pass": 14,
+    "owed": 25
+   },
+   "refactor_coverage_obligations": 25,
+   "feature_controls": 6,
+   "feature_control_flags": 0,
+   "feature_control_blocks": 0,
+   "feature_only": 18,
+   "feature_only_flags": 0,
+   "feature_only_blocks": 0,
+   "per_task": {
+    "T1": {
+     "kill": [
+      4,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      0,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    },
+    "T3": {
+     "kill": [
+      15,
+      15
+     ],
+     "flag": [
+      15,
+      15
+     ],
+     "refactor_flag": [
+      0,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    },
+    "T4": {
+     "kill": [
+      14,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      0,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    }
+   }
+  },
+  {
+   "arm": "N",
+   "tier": "critical",
+   "regime": "R1i",
+   "checker": "vnew",
+   "law_tagged": 43,
+   "kills": 33,
+   "flags": 43,
+   "loss": [
+    "T1:trap_game",
+    "T1:m01_no_west_wall",
+    "T1:m02_no_north_wall",
+    "T1:m03_north_wall_short",
+    "T1:m04_west_wall_short",
+    "T1:m05_wrap_ignores_walls",
+    "T1:m06_east_wall_gap",
+    "T1:m10_flag_moved",
+    "T1:m11_win_only_from_below",
+    "T1:m18_north_wall_wrong_row"
+   ],
+   "contradiction_raised": 0,
+   "stale_raised": 0,
+   "refactors": 39,
+   "refactor_flags": 0,
+   "refactor_blocks": 0,
+   "refactor_flagged": [],
+   "refactor_verdicts": {
+    "pass": 14,
+    "owed": 25
+   },
+   "refactor_coverage_obligations": 25,
+   "feature_controls": 6,
+   "feature_control_flags": 0,
+   "feature_control_blocks": 0,
+   "feature_only": 18,
+   "feature_only_flags": 0,
+   "feature_only_blocks": 0,
+   "per_task": {
+    "T1": {
+     "kill": [
+      4,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      0,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    },
+    "T3": {
+     "kill": [
+      15,
+      15
+     ],
+     "flag": [
+      15,
+      15
+     ],
+     "refactor_flag": [
+      0,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    },
+    "T4": {
+     "kill": [
+      14,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      0,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    }
+   }
+  },
+  {
+   "arm": "N",
+   "tier": "critical",
+   "regime": "R2a",
+   "checker": "stock",
+   "law_tagged": 43,
+   "kills": 43,
+   "flags": 43,
+   "loss": [],
+   "contradiction_raised": 0,
+   "stale_raised": 43,
+   "refactors": 39,
+   "refactor_flags": 33,
+   "refactor_blocks": 33,
+   "refactor_flagged": [
+    "T1:r01_comments",
+    "T1:r03_reorder",
+    "T1:r04_rename_helpers",
+    "T1:r05_inline_targets",
+    "T1:r06_walls_table",
+    "T1:r07_arrow_helpers",
+    "T1:r08_replay_reduce",
+    "T1:r09_split_level",
+    "T1:r10_step_table",
+    "T1:r11_rename_locals",
+    "T1:r12_expressions",
+    "T3:r01_comments",
+    "T3:r03_reorder",
+    "T3:r04_rename_const",
+    "T3:r05_purge_loop",
+    "T3:r06_extract_expired",
+    "T3:r07_extract_redact",
+    "T3:r08_get_expression",
+    "T3:r09_list_slice",
+    "T3:r10_append_fields",
+    "T3:r11_with_entries",
+    "T3:r12_split_retention",
+    "T4:r01_comments",
+    "T4:r03_reorder",
+    "T4:r04_rename_helpers",
+    "T4:r05_total_reduce",
+    "T4:r06_fee_constants",
+    "T4:r07_transfer_cost",
+    "T4:r08_delta_map",
+    "T4:r09_balance_switch",
+    "T4:r10_arrow_helpers",
+    "T4:r11_split_fees",
+    "T4:r12_guard_order"
+   ],
+   "refactor_verdicts": {
+    "blocked": 33,
+    "pass": 6
+   },
+   "refactor_coverage_obligations": 25,
+   "feature_controls": 6,
+   "feature_control_flags": 6,
+   "feature_control_blocks": 6,
+   "feature_only": 18,
+   "feature_only_flags": 18,
+   "feature_only_blocks": 18,
+   "per_task": {
+    "T1": {
+     "kill": [
+      14,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      11,
+      13
+     ],
+     "refactor_block": [
+      11,
+      13
+     ]
+    },
+    "T3": {
+     "kill": [
+      15,
+      15
+     ],
+     "flag": [
+      15,
+      15
+     ],
+     "refactor_flag": [
+      11,
+      13
+     ],
+     "refactor_block": [
+      11,
+      13
+     ]
+    },
+    "T4": {
+     "kill": [
+      14,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      11,
+      13
+     ],
+     "refactor_block": [
+      11,
+      13
+     ]
+    }
+   }
+  },
+  {
+   "arm": "N",
+   "tier": "critical",
+   "regime": "R2a",
+   "checker": "vnew",
+   "law_tagged": 43,
+   "kills": 43,
+   "flags": 43,
+   "loss": [],
+   "contradiction_raised": 0,
+   "stale_raised": 43,
+   "refactors": 39,
+   "refactor_flags": 33,
+   "refactor_blocks": 33,
+   "refactor_flagged": [
+    "T1:r01_comments",
+    "T1:r03_reorder",
+    "T1:r04_rename_helpers",
+    "T1:r05_inline_targets",
+    "T1:r06_walls_table",
+    "T1:r07_arrow_helpers",
+    "T1:r08_replay_reduce",
+    "T1:r09_split_level",
+    "T1:r10_step_table",
+    "T1:r11_rename_locals",
+    "T1:r12_expressions",
+    "T3:r01_comments",
+    "T3:r03_reorder",
+    "T3:r04_rename_const",
+    "T3:r05_purge_loop",
+    "T3:r06_extract_expired",
+    "T3:r07_extract_redact",
+    "T3:r08_get_expression",
+    "T3:r09_list_slice",
+    "T3:r10_append_fields",
+    "T3:r11_with_entries",
+    "T3:r12_split_retention",
+    "T4:r01_comments",
+    "T4:r03_reorder",
+    "T4:r04_rename_helpers",
+    "T4:r05_total_reduce",
+    "T4:r06_fee_constants",
+    "T4:r07_transfer_cost",
+    "T4:r08_delta_map",
+    "T4:r09_balance_switch",
+    "T4:r10_arrow_helpers",
+    "T4:r11_split_fees",
+    "T4:r12_guard_order"
+   ],
+   "refactor_verdicts": {
+    "blocked": 33,
+    "pass": 6
+   },
+   "refactor_coverage_obligations": 25,
+   "feature_controls": 6,
+   "feature_control_flags": 6,
+   "feature_control_blocks": 6,
+   "feature_only": 18,
+   "feature_only_flags": 18,
+   "feature_only_blocks": 18,
+   "per_task": {
+    "T1": {
+     "kill": [
+      14,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      11,
+      13
+     ],
+     "refactor_block": [
+      11,
+      13
+     ]
+    },
+    "T3": {
+     "kill": [
+      15,
+      15
+     ],
+     "flag": [
+      15,
+      15
+     ],
+     "refactor_flag": [
+      11,
+      13
+     ],
+     "refactor_block": [
+      11,
+      13
+     ]
+    },
+    "T4": {
+     "kill": [
+      14,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      11,
+      13
+     ],
+     "refactor_block": [
+      11,
+      13
+     ]
+    }
+   }
+  },
+  {
+   "arm": "N",
+   "tier": "critical",
+   "regime": "R2r",
+   "checker": "stock",
+   "law_tagged": 43,
+   "kills": 43,
+   "flags": 43,
+   "loss": [],
+   "contradiction_raised": 0,
+   "stale_raised": 43,
+   "refactors": 39,
+   "refactor_flags": 39,
+   "refactor_blocks": 39,
+   "refactor_flagged": [
+    "T1:r01_comments",
+    "T1:r02_format",
+    "T1:r03_reorder",
+    "T1:r04_rename_helpers",
+    "T1:r05_inline_targets",
+    "T1:r06_walls_table",
+    "T1:r07_arrow_helpers",
+    "T1:r08_replay_reduce",
+    "T1:r09_split_level",
+    "T1:r10_step_table",
+    "T1:r11_rename_locals",
+    "T1:r12_expressions",
+    "T1:r13_line_comments",
+    "T3:r01_comments",
+    "T3:r02_format",
+    "T3:r03_reorder",
+    "T3:r04_rename_const",
+    "T3:r05_purge_loop",
+    "T3:r06_extract_expired",
+    "T3:r07_extract_redact",
+    "T3:r08_get_expression",
+    "T3:r09_list_slice",
+    "T3:r10_append_fields",
+    "T3:r11_with_entries",
+    "T3:r12_split_retention",
+    "T3:r13_line_comments",
+    "T4:r01_comments",
+    "T4:r02_format",
+    "T4:r03_reorder",
+    "T4:r04_rename_helpers",
+    "T4:r05_total_reduce",
+    "T4:r06_fee_constants",
+    "T4:r07_transfer_cost",
+    "T4:r08_delta_map",
+    "T4:r09_balance_switch",
+    "T4:r10_arrow_helpers",
+    "T4:r11_split_fees",
+    "T4:r12_guard_order",
+    "T4:r13_line_comments"
+   ],
+   "refactor_verdicts": {
+    "blocked": 39
+   },
+   "refactor_coverage_obligations": 25,
+   "feature_controls": 6,
+   "feature_control_flags": 6,
+   "feature_control_blocks": 6,
+   "feature_only": 18,
+   "feature_only_flags": 18,
+   "feature_only_blocks": 18,
+   "per_task": {
+    "T1": {
+     "kill": [
+      14,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      13,
+      13
+     ],
+     "refactor_block": [
+      13,
+      13
+     ]
+    },
+    "T3": {
+     "kill": [
+      15,
+      15
+     ],
+     "flag": [
+      15,
+      15
+     ],
+     "refactor_flag": [
+      13,
+      13
+     ],
+     "refactor_block": [
+      13,
+      13
+     ]
+    },
+    "T4": {
+     "kill": [
+      14,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      13,
+      13
+     ],
+     "refactor_block": [
+      13,
+      13
+     ]
+    }
+   }
+  },
+  {
+   "arm": "N",
+   "tier": "critical",
+   "regime": "R2r",
+   "checker": "vnew",
+   "law_tagged": 43,
+   "kills": 43,
+   "flags": 43,
+   "loss": [],
+   "contradiction_raised": 0,
+   "stale_raised": 43,
+   "refactors": 39,
+   "refactor_flags": 39,
+   "refactor_blocks": 39,
+   "refactor_flagged": [
+    "T1:r01_comments",
+    "T1:r02_format",
+    "T1:r03_reorder",
+    "T1:r04_rename_helpers",
+    "T1:r05_inline_targets",
+    "T1:r06_walls_table",
+    "T1:r07_arrow_helpers",
+    "T1:r08_replay_reduce",
+    "T1:r09_split_level",
+    "T1:r10_step_table",
+    "T1:r11_rename_locals",
+    "T1:r12_expressions",
+    "T1:r13_line_comments",
+    "T3:r01_comments",
+    "T3:r02_format",
+    "T3:r03_reorder",
+    "T3:r04_rename_const",
+    "T3:r05_purge_loop",
+    "T3:r06_extract_expired",
+    "T3:r07_extract_redact",
+    "T3:r08_get_expression",
+    "T3:r09_list_slice",
+    "T3:r10_append_fields",
+    "T3:r11_with_entries",
+    "T3:r12_split_retention",
+    "T3:r13_line_comments",
+    "T4:r01_comments",
+    "T4:r02_format",
+    "T4:r03_reorder",
+    "T4:r04_rename_helpers",
+    "T4:r05_total_reduce",
+    "T4:r06_fee_constants",
+    "T4:r07_transfer_cost",
+    "T4:r08_delta_map",
+    "T4:r09_balance_switch",
+    "T4:r10_arrow_helpers",
+    "T4:r11_split_fees",
+    "T4:r12_guard_order",
+    "T4:r13_line_comments"
+   ],
+   "refactor_verdicts": {
+    "blocked": 39
+   },
+   "refactor_coverage_obligations": 25,
+   "feature_controls": 6,
+   "feature_control_flags": 6,
+   "feature_control_blocks": 6,
+   "feature_only": 18,
+   "feature_only_flags": 18,
+   "feature_only_blocks": 18,
+   "per_task": {
+    "T1": {
+     "kill": [
+      14,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      13,
+      13
+     ],
+     "refactor_block": [
+      13,
+      13
+     ]
+    },
+    "T3": {
+     "kill": [
+      15,
+      15
+     ],
+     "flag": [
+      15,
+      15
+     ],
+     "refactor_flag": [
+      13,
+      13
+     ],
+     "refactor_block": [
+      13,
+      13
+     ]
+    },
+    "T4": {
+     "kill": [
+      14,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      13,
+      13
+     ],
+     "refactor_block": [
+      13,
+      13
+     ]
+    }
+   }
+  },
+  {
+   "arm": "N",
+   "tier": "critical",
+   "regime": "R2u",
+   "checker": "stock",
+   "law_tagged": 43,
+   "kills": 33,
+   "flags": 43,
+   "loss": [
+    "T1:trap_game",
+    "T1:m01_no_west_wall",
+    "T1:m02_no_north_wall",
+    "T1:m03_north_wall_short",
+    "T1:m04_west_wall_short",
+    "T1:m05_wrap_ignores_walls",
+    "T1:m06_east_wall_gap",
+    "T1:m10_flag_moved",
+    "T1:m11_win_only_from_below",
+    "T1:m18_north_wall_wrong_row"
+   ],
+   "contradiction_raised": 0,
+   "stale_raised": 43,
+   "refactors": 39,
+   "refactor_flags": 33,
+   "refactor_blocks": 24,
+   "refactor_flagged": [
+    "T1:r01_comments",
+    "T1:r03_reorder",
+    "T1:r04_rename_helpers",
+    "T1:r05_inline_targets",
+    "T1:r06_walls_table",
+    "T1:r07_arrow_helpers",
+    "T1:r08_replay_reduce",
+    "T1:r09_split_level",
+    "T1:r10_step_table",
+    "T1:r11_rename_locals",
+    "T1:r12_expressions",
+    "T3:r01_comments",
+    "T3:r03_reorder",
+    "T3:r04_rename_const",
+    "T3:r05_purge_loop",
+    "T3:r06_extract_expired",
+    "T3:r07_extract_redact",
+    "T3:r08_get_expression",
+    "T3:r09_list_slice",
+    "T3:r10_append_fields",
+    "T3:r11_with_entries",
+    "T3:r12_split_retention",
+    "T4:r01_comments",
+    "T4:r03_reorder",
+    "T4:r04_rename_helpers",
+    "T4:r05_total_reduce",
+    "T4:r06_fee_constants",
+    "T4:r07_transfer_cost",
+    "T4:r08_delta_map",
+    "T4:r09_balance_switch",
+    "T4:r10_arrow_helpers",
+    "T4:r11_split_fees",
+    "T4:r12_guard_order"
+   ],
+   "refactor_verdicts": {
+    "owed": 9,
+    "pass": 6,
+    "blocked": 24
+   },
+   "refactor_coverage_obligations": 25,
+   "feature_controls": 6,
+   "feature_control_flags": 6,
+   "feature_control_blocks": 2,
+   "feature_only": 18,
+   "feature_only_flags": 18,
+   "feature_only_blocks": 12,
+   "per_task": {
+    "T1": {
+     "kill": [
+      4,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      11,
+      13
+     ],
+     "refactor_block": [
+      7,
+      13
+     ]
+    },
+    "T3": {
+     "kill": [
+      15,
+      15
+     ],
+     "flag": [
+      15,
+      15
+     ],
+     "refactor_flag": [
+      11,
+      13
+     ],
+     "refactor_block": [
+      9,
+      13
+     ]
+    },
+    "T4": {
+     "kill": [
+      14,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      11,
+      13
+     ],
+     "refactor_block": [
+      8,
+      13
+     ]
+    }
+   }
+  },
+  {
+   "arm": "N",
+   "tier": "critical",
+   "regime": "R2u",
+   "checker": "vnew",
+   "law_tagged": 43,
+   "kills": 33,
+   "flags": 43,
+   "loss": [
+    "T1:trap_game",
+    "T1:m01_no_west_wall",
+    "T1:m02_no_north_wall",
+    "T1:m03_north_wall_short",
+    "T1:m04_west_wall_short",
+    "T1:m05_wrap_ignores_walls",
+    "T1:m06_east_wall_gap",
+    "T1:m10_flag_moved",
+    "T1:m11_win_only_from_below",
+    "T1:m18_north_wall_wrong_row"
+   ],
+   "contradiction_raised": 0,
+   "stale_raised": 43,
+   "refactors": 39,
+   "refactor_flags": 33,
+   "refactor_blocks": 24,
+   "refactor_flagged": [
+    "T1:r01_comments",
+    "T1:r03_reorder",
+    "T1:r04_rename_helpers",
+    "T1:r05_inline_targets",
+    "T1:r06_walls_table",
+    "T1:r07_arrow_helpers",
+    "T1:r08_replay_reduce",
+    "T1:r09_split_level",
+    "T1:r10_step_table",
+    "T1:r11_rename_locals",
+    "T1:r12_expressions",
+    "T3:r01_comments",
+    "T3:r03_reorder",
+    "T3:r04_rename_const",
+    "T3:r05_purge_loop",
+    "T3:r06_extract_expired",
+    "T3:r07_extract_redact",
+    "T3:r08_get_expression",
+    "T3:r09_list_slice",
+    "T3:r10_append_fields",
+    "T3:r11_with_entries",
+    "T3:r12_split_retention",
+    "T4:r01_comments",
+    "T4:r03_reorder",
+    "T4:r04_rename_helpers",
+    "T4:r05_total_reduce",
+    "T4:r06_fee_constants",
+    "T4:r07_transfer_cost",
+    "T4:r08_delta_map",
+    "T4:r09_balance_switch",
+    "T4:r10_arrow_helpers",
+    "T4:r11_split_fees",
+    "T4:r12_guard_order"
+   ],
+   "refactor_verdicts": {
+    "owed": 9,
+    "pass": 6,
+    "blocked": 24
+   },
+   "refactor_coverage_obligations": 25,
+   "feature_controls": 6,
+   "feature_control_flags": 6,
+   "feature_control_blocks": 2,
+   "feature_only": 18,
+   "feature_only_flags": 18,
+   "feature_only_blocks": 12,
+   "per_task": {
+    "T1": {
+     "kill": [
+      4,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      11,
+      13
+     ],
+     "refactor_block": [
+      7,
+      13
+     ]
+    },
+    "T3": {
+     "kill": [
+      15,
+      15
+     ],
+     "flag": [
+      15,
+      15
+     ],
+     "refactor_flag": [
+      11,
+      13
+     ],
+     "refactor_block": [
+      9,
+      13
+     ]
+    },
+    "T4": {
+     "kill": [
+      14,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      11,
+      13
+     ],
+     "refactor_block": [
+      8,
+      13
+     ]
+    }
+   }
+  },
+  {
+   "arm": "N",
+   "tier": "normal",
+   "regime": "R1c",
+   "checker": "stock",
+   "law_tagged": 43,
+   "kills": 33,
+   "flags": 43,
+   "loss": [
+    "T1:trap_game",
+    "T1:m01_no_west_wall",
+    "T1:m02_no_north_wall",
+    "T1:m03_north_wall_short",
+    "T1:m04_west_wall_short",
+    "T1:m05_wrap_ignores_walls",
+    "T1:m06_east_wall_gap",
+    "T1:m10_flag_moved",
+    "T1:m11_win_only_from_below",
+    "T1:m18_north_wall_wrong_row"
+   ],
+   "contradiction_raised": 43,
+   "stale_raised": 0,
+   "refactors": 39,
+   "refactor_flags": 0,
+   "refactor_blocks": 0,
+   "refactor_flagged": [],
+   "refactor_verdicts": {
+    "pass": 14,
+    "owed": 25
+   },
+   "refactor_coverage_obligations": 25,
+   "feature_controls": 6,
+   "feature_control_flags": 0,
+   "feature_control_blocks": 0,
+   "feature_only": 18,
+   "feature_only_flags": 0,
+   "feature_only_blocks": 0,
+   "per_task": {
+    "T1": {
+     "kill": [
+      4,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      0,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    },
+    "T3": {
+     "kill": [
+      15,
+      15
+     ],
+     "flag": [
+      15,
+      15
+     ],
+     "refactor_flag": [
+      0,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    },
+    "T4": {
+     "kill": [
+      14,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      0,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    }
+   }
+  },
+  {
+   "arm": "N",
+   "tier": "normal",
+   "regime": "R1c",
+   "checker": "vnew",
+   "law_tagged": 43,
+   "kills": 43,
+   "flags": 43,
+   "loss": [],
+   "contradiction_raised": 43,
+   "stale_raised": 0,
+   "refactors": 39,
+   "refactor_flags": 0,
+   "refactor_blocks": 0,
+   "refactor_flagged": [],
+   "refactor_verdicts": {
+    "pass": 14,
+    "owed": 25
+   },
+   "refactor_coverage_obligations": 25,
+   "feature_controls": 6,
+   "feature_control_flags": 0,
+   "feature_control_blocks": 0,
+   "feature_only": 18,
+   "feature_only_flags": 0,
+   "feature_only_blocks": 0,
+   "per_task": {
+    "T1": {
+     "kill": [
+      14,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      0,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    },
+    "T3": {
+     "kill": [
+      15,
+      15
+     ],
+     "flag": [
+      15,
+      15
+     ],
+     "refactor_flag": [
+      0,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    },
+    "T4": {
+     "kill": [
+      14,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      0,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    }
+   }
+  },
+  {
+   "arm": "N",
+   "tier": "normal",
+   "regime": "R1i",
+   "checker": "stock",
+   "law_tagged": 43,
+   "kills": 0,
+   "flags": 43,
+   "loss": [
+    "T1:trap_game",
+    "T1:m01_no_west_wall",
+    "T1:m02_no_north_wall",
+    "T1:m03_north_wall_short",
+    "T1:m04_west_wall_short",
+    "T1:m05_wrap_ignores_walls",
+    "T1:m06_east_wall_gap",
+    "T1:m07_won_by_row",
+    "T1:m08_replay_reversed",
+    "T1:m09_replay_drops_last",
+    "T1:m10_flag_moved",
+    "T1:m11_win_only_from_below",
+    "T1:m18_north_wall_wrong_row",
+    "T1:m19_replay_stops_when_blocked",
+    "T3:trap_audit",
+    "T3:m01_delete_filter",
+    "T3:m02_delete_nextid",
+    "T3:m04_boundary_loose",
+    "T3:m05_reversed",
+    "T3:m06_redact_all",
+    "T3:m07_meta_timestamp",
+    "T3:m08_meta_actor",
+    "T3:m09_mutate_in_place",
+    "T3:m10_list_only",
+    "T3:m11_get_hides",
+    "T3:m12_list_hides",
+    "T3:m14_sorted_prefix",
+    "T3:m17_id_from_live",
+    "T3:m18_truncate_head",
+    "T4:trap_stale_all",
+    "T4:trap_stale_self",
+    "T4:m01_stale_self",
+    "T4:m02_stale_fee_balance",
+    "T4:m03_fee_not_credited",
+    "T4:m04_funds_check_without_fee",
+    "T4:m05_fee_charged_on_failure",
+    "T4:m06_self_transfer_fee",
+    "T4:m07_zero_amount_allowed",
+    "T4:m08_strict_funds_check",
+    "T4:m09_receiver_pays_fee",
+    "T4:m10_fee_to_receiver",
+    "T4:m11_inline_fee_no_minimum",
+    "T4:m12_total_excludes_fee"
+   ],
+   "contradiction_raised": 0,
+   "stale_raised": 0,
+   "refactors": 39,
+   "refactor_flags": 0,
+   "refactor_blocks": 0,
+   "refactor_flagged": [],
+   "refactor_verdicts": {
+    "pass": 14,
+    "owed": 25
+   },
+   "refactor_coverage_obligations": 25,
+   "feature_controls": 6,
+   "feature_control_flags": 0,
+   "feature_control_blocks": 0,
+   "feature_only": 18,
+   "feature_only_flags": 0,
+   "feature_only_blocks": 0,
+   "per_task": {
+    "T1": {
+     "kill": [
+      0,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      0,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    },
+    "T3": {
+     "kill": [
+      0,
+      15
+     ],
+     "flag": [
+      15,
+      15
+     ],
+     "refactor_flag": [
+      0,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    },
+    "T4": {
+     "kill": [
+      0,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      0,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    }
+   }
+  },
+  {
+   "arm": "N",
+   "tier": "normal",
+   "regime": "R1i",
+   "checker": "vnew",
+   "law_tagged": 43,
+   "kills": 0,
+   "flags": 43,
+   "loss": [
+    "T1:trap_game",
+    "T1:m01_no_west_wall",
+    "T1:m02_no_north_wall",
+    "T1:m03_north_wall_short",
+    "T1:m04_west_wall_short",
+    "T1:m05_wrap_ignores_walls",
+    "T1:m06_east_wall_gap",
+    "T1:m07_won_by_row",
+    "T1:m08_replay_reversed",
+    "T1:m09_replay_drops_last",
+    "T1:m10_flag_moved",
+    "T1:m11_win_only_from_below",
+    "T1:m18_north_wall_wrong_row",
+    "T1:m19_replay_stops_when_blocked",
+    "T3:trap_audit",
+    "T3:m01_delete_filter",
+    "T3:m02_delete_nextid",
+    "T3:m04_boundary_loose",
+    "T3:m05_reversed",
+    "T3:m06_redact_all",
+    "T3:m07_meta_timestamp",
+    "T3:m08_meta_actor",
+    "T3:m09_mutate_in_place",
+    "T3:m10_list_only",
+    "T3:m11_get_hides",
+    "T3:m12_list_hides",
+    "T3:m14_sorted_prefix",
+    "T3:m17_id_from_live",
+    "T3:m18_truncate_head",
+    "T4:trap_stale_all",
+    "T4:trap_stale_self",
+    "T4:m01_stale_self",
+    "T4:m02_stale_fee_balance",
+    "T4:m03_fee_not_credited",
+    "T4:m04_funds_check_without_fee",
+    "T4:m05_fee_charged_on_failure",
+    "T4:m06_self_transfer_fee",
+    "T4:m07_zero_amount_allowed",
+    "T4:m08_strict_funds_check",
+    "T4:m09_receiver_pays_fee",
+    "T4:m10_fee_to_receiver",
+    "T4:m11_inline_fee_no_minimum",
+    "T4:m12_total_excludes_fee"
+   ],
+   "contradiction_raised": 0,
+   "stale_raised": 0,
+   "refactors": 39,
+   "refactor_flags": 0,
+   "refactor_blocks": 0,
+   "refactor_flagged": [],
+   "refactor_verdicts": {
+    "pass": 14,
+    "owed": 25
+   },
+   "refactor_coverage_obligations": 25,
+   "feature_controls": 6,
+   "feature_control_flags": 0,
+   "feature_control_blocks": 0,
+   "feature_only": 18,
+   "feature_only_flags": 0,
+   "feature_only_blocks": 0,
+   "per_task": {
+    "T1": {
+     "kill": [
+      0,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      0,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    },
+    "T3": {
+     "kill": [
+      0,
+      15
+     ],
+     "flag": [
+      15,
+      15
+     ],
+     "refactor_flag": [
+      0,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    },
+    "T4": {
+     "kill": [
+      0,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      0,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    }
+   }
+  },
+  {
+   "arm": "N",
+   "tier": "normal",
+   "regime": "R2a",
+   "checker": "stock",
+   "law_tagged": 43,
+   "kills": 43,
+   "flags": 43,
+   "loss": [],
+   "contradiction_raised": 0,
+   "stale_raised": 43,
+   "refactors": 39,
+   "refactor_flags": 33,
+   "refactor_blocks": 33,
+   "refactor_flagged": [
+    "T1:r01_comments",
+    "T1:r03_reorder",
+    "T1:r04_rename_helpers",
+    "T1:r05_inline_targets",
+    "T1:r06_walls_table",
+    "T1:r07_arrow_helpers",
+    "T1:r08_replay_reduce",
+    "T1:r09_split_level",
+    "T1:r10_step_table",
+    "T1:r11_rename_locals",
+    "T1:r12_expressions",
+    "T3:r01_comments",
+    "T3:r03_reorder",
+    "T3:r04_rename_const",
+    "T3:r05_purge_loop",
+    "T3:r06_extract_expired",
+    "T3:r07_extract_redact",
+    "T3:r08_get_expression",
+    "T3:r09_list_slice",
+    "T3:r10_append_fields",
+    "T3:r11_with_entries",
+    "T3:r12_split_retention",
+    "T4:r01_comments",
+    "T4:r03_reorder",
+    "T4:r04_rename_helpers",
+    "T4:r05_total_reduce",
+    "T4:r06_fee_constants",
+    "T4:r07_transfer_cost",
+    "T4:r08_delta_map",
+    "T4:r09_balance_switch",
+    "T4:r10_arrow_helpers",
+    "T4:r11_split_fees",
+    "T4:r12_guard_order"
+   ],
+   "refactor_verdicts": {
+    "blocked": 33,
+    "pass": 6
+   },
+   "refactor_coverage_obligations": 25,
+   "feature_controls": 6,
+   "feature_control_flags": 6,
+   "feature_control_blocks": 6,
+   "feature_only": 18,
+   "feature_only_flags": 18,
+   "feature_only_blocks": 18,
+   "per_task": {
+    "T1": {
+     "kill": [
+      14,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      11,
+      13
+     ],
+     "refactor_block": [
+      11,
+      13
+     ]
+    },
+    "T3": {
+     "kill": [
+      15,
+      15
+     ],
+     "flag": [
+      15,
+      15
+     ],
+     "refactor_flag": [
+      11,
+      13
+     ],
+     "refactor_block": [
+      11,
+      13
+     ]
+    },
+    "T4": {
+     "kill": [
+      14,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      11,
+      13
+     ],
+     "refactor_block": [
+      11,
+      13
+     ]
+    }
+   }
+  },
+  {
+   "arm": "N",
+   "tier": "normal",
+   "regime": "R2a",
+   "checker": "vnew",
+   "law_tagged": 43,
+   "kills": 43,
+   "flags": 43,
+   "loss": [],
+   "contradiction_raised": 0,
+   "stale_raised": 43,
+   "refactors": 39,
+   "refactor_flags": 33,
+   "refactor_blocks": 33,
+   "refactor_flagged": [
+    "T1:r01_comments",
+    "T1:r03_reorder",
+    "T1:r04_rename_helpers",
+    "T1:r05_inline_targets",
+    "T1:r06_walls_table",
+    "T1:r07_arrow_helpers",
+    "T1:r08_replay_reduce",
+    "T1:r09_split_level",
+    "T1:r10_step_table",
+    "T1:r11_rename_locals",
+    "T1:r12_expressions",
+    "T3:r01_comments",
+    "T3:r03_reorder",
+    "T3:r04_rename_const",
+    "T3:r05_purge_loop",
+    "T3:r06_extract_expired",
+    "T3:r07_extract_redact",
+    "T3:r08_get_expression",
+    "T3:r09_list_slice",
+    "T3:r10_append_fields",
+    "T3:r11_with_entries",
+    "T3:r12_split_retention",
+    "T4:r01_comments",
+    "T4:r03_reorder",
+    "T4:r04_rename_helpers",
+    "T4:r05_total_reduce",
+    "T4:r06_fee_constants",
+    "T4:r07_transfer_cost",
+    "T4:r08_delta_map",
+    "T4:r09_balance_switch",
+    "T4:r10_arrow_helpers",
+    "T4:r11_split_fees",
+    "T4:r12_guard_order"
+   ],
+   "refactor_verdicts": {
+    "blocked": 33,
+    "pass": 6
+   },
+   "refactor_coverage_obligations": 25,
+   "feature_controls": 6,
+   "feature_control_flags": 6,
+   "feature_control_blocks": 6,
+   "feature_only": 18,
+   "feature_only_flags": 18,
+   "feature_only_blocks": 18,
+   "per_task": {
+    "T1": {
+     "kill": [
+      14,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      11,
+      13
+     ],
+     "refactor_block": [
+      11,
+      13
+     ]
+    },
+    "T3": {
+     "kill": [
+      15,
+      15
+     ],
+     "flag": [
+      15,
+      15
+     ],
+     "refactor_flag": [
+      11,
+      13
+     ],
+     "refactor_block": [
+      11,
+      13
+     ]
+    },
+    "T4": {
+     "kill": [
+      14,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      11,
+      13
+     ],
+     "refactor_block": [
+      11,
+      13
+     ]
+    }
+   }
+  },
+  {
+   "arm": "N",
+   "tier": "normal",
+   "regime": "R2r",
+   "checker": "stock",
+   "law_tagged": 43,
+   "kills": 43,
+   "flags": 43,
+   "loss": [],
+   "contradiction_raised": 0,
+   "stale_raised": 43,
+   "refactors": 39,
+   "refactor_flags": 39,
+   "refactor_blocks": 39,
+   "refactor_flagged": [
+    "T1:r01_comments",
+    "T1:r02_format",
+    "T1:r03_reorder",
+    "T1:r04_rename_helpers",
+    "T1:r05_inline_targets",
+    "T1:r06_walls_table",
+    "T1:r07_arrow_helpers",
+    "T1:r08_replay_reduce",
+    "T1:r09_split_level",
+    "T1:r10_step_table",
+    "T1:r11_rename_locals",
+    "T1:r12_expressions",
+    "T1:r13_line_comments",
+    "T3:r01_comments",
+    "T3:r02_format",
+    "T3:r03_reorder",
+    "T3:r04_rename_const",
+    "T3:r05_purge_loop",
+    "T3:r06_extract_expired",
+    "T3:r07_extract_redact",
+    "T3:r08_get_expression",
+    "T3:r09_list_slice",
+    "T3:r10_append_fields",
+    "T3:r11_with_entries",
+    "T3:r12_split_retention",
+    "T3:r13_line_comments",
+    "T4:r01_comments",
+    "T4:r02_format",
+    "T4:r03_reorder",
+    "T4:r04_rename_helpers",
+    "T4:r05_total_reduce",
+    "T4:r06_fee_constants",
+    "T4:r07_transfer_cost",
+    "T4:r08_delta_map",
+    "T4:r09_balance_switch",
+    "T4:r10_arrow_helpers",
+    "T4:r11_split_fees",
+    "T4:r12_guard_order",
+    "T4:r13_line_comments"
+   ],
+   "refactor_verdicts": {
+    "blocked": 39
+   },
+   "refactor_coverage_obligations": 25,
+   "feature_controls": 6,
+   "feature_control_flags": 6,
+   "feature_control_blocks": 6,
+   "feature_only": 18,
+   "feature_only_flags": 18,
+   "feature_only_blocks": 18,
+   "per_task": {
+    "T1": {
+     "kill": [
+      14,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      13,
+      13
+     ],
+     "refactor_block": [
+      13,
+      13
+     ]
+    },
+    "T3": {
+     "kill": [
+      15,
+      15
+     ],
+     "flag": [
+      15,
+      15
+     ],
+     "refactor_flag": [
+      13,
+      13
+     ],
+     "refactor_block": [
+      13,
+      13
+     ]
+    },
+    "T4": {
+     "kill": [
+      14,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      13,
+      13
+     ],
+     "refactor_block": [
+      13,
+      13
+     ]
+    }
+   }
+  },
+  {
+   "arm": "N",
+   "tier": "normal",
+   "regime": "R2r",
+   "checker": "vnew",
+   "law_tagged": 43,
+   "kills": 43,
+   "flags": 43,
+   "loss": [],
+   "contradiction_raised": 0,
+   "stale_raised": 43,
+   "refactors": 39,
+   "refactor_flags": 39,
+   "refactor_blocks": 39,
+   "refactor_flagged": [
+    "T1:r01_comments",
+    "T1:r02_format",
+    "T1:r03_reorder",
+    "T1:r04_rename_helpers",
+    "T1:r05_inline_targets",
+    "T1:r06_walls_table",
+    "T1:r07_arrow_helpers",
+    "T1:r08_replay_reduce",
+    "T1:r09_split_level",
+    "T1:r10_step_table",
+    "T1:r11_rename_locals",
+    "T1:r12_expressions",
+    "T1:r13_line_comments",
+    "T3:r01_comments",
+    "T3:r02_format",
+    "T3:r03_reorder",
+    "T3:r04_rename_const",
+    "T3:r05_purge_loop",
+    "T3:r06_extract_expired",
+    "T3:r07_extract_redact",
+    "T3:r08_get_expression",
+    "T3:r09_list_slice",
+    "T3:r10_append_fields",
+    "T3:r11_with_entries",
+    "T3:r12_split_retention",
+    "T3:r13_line_comments",
+    "T4:r01_comments",
+    "T4:r02_format",
+    "T4:r03_reorder",
+    "T4:r04_rename_helpers",
+    "T4:r05_total_reduce",
+    "T4:r06_fee_constants",
+    "T4:r07_transfer_cost",
+    "T4:r08_delta_map",
+    "T4:r09_balance_switch",
+    "T4:r10_arrow_helpers",
+    "T4:r11_split_fees",
+    "T4:r12_guard_order",
+    "T4:r13_line_comments"
+   ],
+   "refactor_verdicts": {
+    "blocked": 39
+   },
+   "refactor_coverage_obligations": 25,
+   "feature_controls": 6,
+   "feature_control_flags": 6,
+   "feature_control_blocks": 6,
+   "feature_only": 18,
+   "feature_only_flags": 18,
+   "feature_only_blocks": 18,
+   "per_task": {
+    "T1": {
+     "kill": [
+      14,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      13,
+      13
+     ],
+     "refactor_block": [
+      13,
+      13
+     ]
+    },
+    "T3": {
+     "kill": [
+      15,
+      15
+     ],
+     "flag": [
+      15,
+      15
+     ],
+     "refactor_flag": [
+      13,
+      13
+     ],
+     "refactor_block": [
+      13,
+      13
+     ]
+    },
+    "T4": {
+     "kill": [
+      14,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      13,
+      13
+     ],
+     "refactor_block": [
+      13,
+      13
+     ]
+    }
+   }
+  },
+  {
+   "arm": "N",
+   "tier": "normal",
+   "regime": "R2u",
+   "checker": "stock",
+   "law_tagged": 43,
+   "kills": 0,
+   "flags": 43,
+   "loss": [
+    "T1:trap_game",
+    "T1:m01_no_west_wall",
+    "T1:m02_no_north_wall",
+    "T1:m03_north_wall_short",
+    "T1:m04_west_wall_short",
+    "T1:m05_wrap_ignores_walls",
+    "T1:m06_east_wall_gap",
+    "T1:m07_won_by_row",
+    "T1:m08_replay_reversed",
+    "T1:m09_replay_drops_last",
+    "T1:m10_flag_moved",
+    "T1:m11_win_only_from_below",
+    "T1:m18_north_wall_wrong_row",
+    "T1:m19_replay_stops_when_blocked",
+    "T3:trap_audit",
+    "T3:m01_delete_filter",
+    "T3:m02_delete_nextid",
+    "T3:m04_boundary_loose",
+    "T3:m05_reversed",
+    "T3:m06_redact_all",
+    "T3:m07_meta_timestamp",
+    "T3:m08_meta_actor",
+    "T3:m09_mutate_in_place",
+    "T3:m10_list_only",
+    "T3:m11_get_hides",
+    "T3:m12_list_hides",
+    "T3:m14_sorted_prefix",
+    "T3:m17_id_from_live",
+    "T3:m18_truncate_head",
+    "T4:trap_stale_all",
+    "T4:trap_stale_self",
+    "T4:m01_stale_self",
+    "T4:m02_stale_fee_balance",
+    "T4:m03_fee_not_credited",
+    "T4:m04_funds_check_without_fee",
+    "T4:m05_fee_charged_on_failure",
+    "T4:m06_self_transfer_fee",
+    "T4:m07_zero_amount_allowed",
+    "T4:m08_strict_funds_check",
+    "T4:m09_receiver_pays_fee",
+    "T4:m10_fee_to_receiver",
+    "T4:m11_inline_fee_no_minimum",
+    "T4:m12_total_excludes_fee"
+   ],
+   "contradiction_raised": 0,
+   "stale_raised": 43,
+   "refactors": 39,
+   "refactor_flags": 33,
+   "refactor_blocks": 0,
+   "refactor_flagged": [
+    "T1:r01_comments",
+    "T1:r03_reorder",
+    "T1:r04_rename_helpers",
+    "T1:r05_inline_targets",
+    "T1:r06_walls_table",
+    "T1:r07_arrow_helpers",
+    "T1:r08_replay_reduce",
+    "T1:r09_split_level",
+    "T1:r10_step_table",
+    "T1:r11_rename_locals",
+    "T1:r12_expressions",
+    "T3:r01_comments",
+    "T3:r03_reorder",
+    "T3:r04_rename_const",
+    "T3:r05_purge_loop",
+    "T3:r06_extract_expired",
+    "T3:r07_extract_redact",
+    "T3:r08_get_expression",
+    "T3:r09_list_slice",
+    "T3:r10_append_fields",
+    "T3:r11_with_entries",
+    "T3:r12_split_retention",
+    "T4:r01_comments",
+    "T4:r03_reorder",
+    "T4:r04_rename_helpers",
+    "T4:r05_total_reduce",
+    "T4:r06_fee_constants",
+    "T4:r07_transfer_cost",
+    "T4:r08_delta_map",
+    "T4:r09_balance_switch",
+    "T4:r10_arrow_helpers",
+    "T4:r11_split_fees",
+    "T4:r12_guard_order"
+   ],
+   "refactor_verdicts": {
+    "owed": 33,
+    "pass": 6
+   },
+   "refactor_coverage_obligations": 25,
+   "feature_controls": 6,
+   "feature_control_flags": 6,
+   "feature_control_blocks": 0,
+   "feature_only": 18,
+   "feature_only_flags": 18,
+   "feature_only_blocks": 0,
+   "per_task": {
+    "T1": {
+     "kill": [
+      0,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      11,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    },
+    "T3": {
+     "kill": [
+      0,
+      15
+     ],
+     "flag": [
+      15,
+      15
+     ],
+     "refactor_flag": [
+      11,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    },
+    "T4": {
+     "kill": [
+      0,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      11,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    }
+   }
+  },
+  {
+   "arm": "N",
+   "tier": "normal",
+   "regime": "R2u",
+   "checker": "vnew",
+   "law_tagged": 43,
+   "kills": 0,
+   "flags": 43,
+   "loss": [
+    "T1:trap_game",
+    "T1:m01_no_west_wall",
+    "T1:m02_no_north_wall",
+    "T1:m03_north_wall_short",
+    "T1:m04_west_wall_short",
+    "T1:m05_wrap_ignores_walls",
+    "T1:m06_east_wall_gap",
+    "T1:m07_won_by_row",
+    "T1:m08_replay_reversed",
+    "T1:m09_replay_drops_last",
+    "T1:m10_flag_moved",
+    "T1:m11_win_only_from_below",
+    "T1:m18_north_wall_wrong_row",
+    "T1:m19_replay_stops_when_blocked",
+    "T3:trap_audit",
+    "T3:m01_delete_filter",
+    "T3:m02_delete_nextid",
+    "T3:m04_boundary_loose",
+    "T3:m05_reversed",
+    "T3:m06_redact_all",
+    "T3:m07_meta_timestamp",
+    "T3:m08_meta_actor",
+    "T3:m09_mutate_in_place",
+    "T3:m10_list_only",
+    "T3:m11_get_hides",
+    "T3:m12_list_hides",
+    "T3:m14_sorted_prefix",
+    "T3:m17_id_from_live",
+    "T3:m18_truncate_head",
+    "T4:trap_stale_all",
+    "T4:trap_stale_self",
+    "T4:m01_stale_self",
+    "T4:m02_stale_fee_balance",
+    "T4:m03_fee_not_credited",
+    "T4:m04_funds_check_without_fee",
+    "T4:m05_fee_charged_on_failure",
+    "T4:m06_self_transfer_fee",
+    "T4:m07_zero_amount_allowed",
+    "T4:m08_strict_funds_check",
+    "T4:m09_receiver_pays_fee",
+    "T4:m10_fee_to_receiver",
+    "T4:m11_inline_fee_no_minimum",
+    "T4:m12_total_excludes_fee"
+   ],
+   "contradiction_raised": 0,
+   "stale_raised": 43,
+   "refactors": 39,
+   "refactor_flags": 33,
+   "refactor_blocks": 0,
+   "refactor_flagged": [
+    "T1:r01_comments",
+    "T1:r03_reorder",
+    "T1:r04_rename_helpers",
+    "T1:r05_inline_targets",
+    "T1:r06_walls_table",
+    "T1:r07_arrow_helpers",
+    "T1:r08_replay_reduce",
+    "T1:r09_split_level",
+    "T1:r10_step_table",
+    "T1:r11_rename_locals",
+    "T1:r12_expressions",
+    "T3:r01_comments",
+    "T3:r03_reorder",
+    "T3:r04_rename_const",
+    "T3:r05_purge_loop",
+    "T3:r06_extract_expired",
+    "T3:r07_extract_redact",
+    "T3:r08_get_expression",
+    "T3:r09_list_slice",
+    "T3:r10_append_fields",
+    "T3:r11_with_entries",
+    "T3:r12_split_retention",
+    "T4:r01_comments",
+    "T4:r03_reorder",
+    "T4:r04_rename_helpers",
+    "T4:r05_total_reduce",
+    "T4:r06_fee_constants",
+    "T4:r07_transfer_cost",
+    "T4:r08_delta_map",
+    "T4:r09_balance_switch",
+    "T4:r10_arrow_helpers",
+    "T4:r11_split_fees",
+    "T4:r12_guard_order"
+   ],
+   "refactor_verdicts": {
+    "owed": 33,
+    "pass": 6
+   },
+   "refactor_coverage_obligations": 25,
+   "feature_controls": 6,
+   "feature_control_flags": 6,
+   "feature_control_blocks": 0,
+   "feature_only": 18,
+   "feature_only_flags": 18,
+   "feature_only_blocks": 0,
+   "per_task": {
+    "T1": {
+     "kill": [
+      0,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      11,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    },
+    "T3": {
+     "kill": [
+      0,
+      15
+     ],
+     "flag": [
+      15,
+      15
+     ],
+     "refactor_flag": [
+      11,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    },
+    "T4": {
+     "kill": [
+      0,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      11,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    }
+   }
+  },
+  {
+   "arm": "P",
+   "tier": "critical",
+   "regime": "R1c",
+   "checker": "stock",
+   "law_tagged": 43,
+   "kills": 29,
+   "flags": 43,
+   "loss": [
+    "T1:trap_game",
+    "T1:m01_no_west_wall",
+    "T1:m02_no_north_wall",
+    "T1:m03_north_wall_short",
+    "T1:m04_west_wall_short",
+    "T1:m05_wrap_ignores_walls",
+    "T1:m06_east_wall_gap",
+    "T1:m07_won_by_row",
+    "T1:m10_flag_moved",
+    "T1:m11_win_only_from_below",
+    "T1:m18_north_wall_wrong_row",
+    "T3:m09_mutate_in_place",
+    "T3:m10_list_only",
+    "T3:m12_list_hides"
+   ],
+   "contradiction_raised": 43,
+   "stale_raised": 0,
+   "refactors": 39,
+   "refactor_flags": 0,
+   "refactor_blocks": 0,
+   "refactor_flagged": [],
+   "refactor_verdicts": {
+    "pass": 14,
+    "owed": 25
+   },
+   "refactor_coverage_obligations": 25,
+   "feature_controls": 6,
+   "feature_control_flags": 0,
+   "feature_control_blocks": 0,
+   "feature_only": 18,
+   "feature_only_flags": 0,
+   "feature_only_blocks": 0,
+   "per_task": {
+    "T1": {
+     "kill": [
+      3,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      0,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    },
+    "T3": {
+     "kill": [
+      12,
+      15
+     ],
+     "flag": [
+      15,
+      15
+     ],
+     "refactor_flag": [
+      0,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    },
+    "T4": {
+     "kill": [
+      14,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      0,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    }
+   }
+  },
+  {
+   "arm": "P",
+   "tier": "critical",
+   "regime": "R1c",
+   "checker": "vnew",
+   "law_tagged": 43,
+   "kills": 43,
+   "flags": 43,
+   "loss": [],
+   "contradiction_raised": 43,
+   "stale_raised": 0,
+   "refactors": 39,
+   "refactor_flags": 0,
+   "refactor_blocks": 0,
+   "refactor_flagged": [],
+   "refactor_verdicts": {
+    "pass": 14,
+    "owed": 25
+   },
+   "refactor_coverage_obligations": 25,
+   "feature_controls": 6,
+   "feature_control_flags": 0,
+   "feature_control_blocks": 0,
+   "feature_only": 18,
+   "feature_only_flags": 0,
+   "feature_only_blocks": 0,
+   "per_task": {
+    "T1": {
+     "kill": [
+      14,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      0,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    },
+    "T3": {
+     "kill": [
+      15,
+      15
+     ],
+     "flag": [
+      15,
+      15
+     ],
+     "refactor_flag": [
+      0,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    },
+    "T4": {
+     "kill": [
+      14,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      0,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    }
+   }
+  },
+  {
+   "arm": "P",
+   "tier": "critical",
+   "regime": "R1i",
+   "checker": "stock",
+   "law_tagged": 43,
+   "kills": 29,
+   "flags": 43,
+   "loss": [
+    "T1:trap_game",
+    "T1:m01_no_west_wall",
+    "T1:m02_no_north_wall",
+    "T1:m03_north_wall_short",
+    "T1:m04_west_wall_short",
+    "T1:m05_wrap_ignores_walls",
+    "T1:m06_east_wall_gap",
+    "T1:m07_won_by_row",
+    "T1:m10_flag_moved",
+    "T1:m11_win_only_from_below",
+    "T1:m18_north_wall_wrong_row",
+    "T3:m09_mutate_in_place",
+    "T3:m10_list_only",
+    "T3:m12_list_hides"
+   ],
+   "contradiction_raised": 0,
+   "stale_raised": 0,
+   "refactors": 39,
+   "refactor_flags": 0,
+   "refactor_blocks": 0,
+   "refactor_flagged": [],
+   "refactor_verdicts": {
+    "pass": 14,
+    "owed": 25
+   },
+   "refactor_coverage_obligations": 25,
+   "feature_controls": 6,
+   "feature_control_flags": 0,
+   "feature_control_blocks": 0,
+   "feature_only": 18,
+   "feature_only_flags": 0,
+   "feature_only_blocks": 0,
+   "per_task": {
+    "T1": {
+     "kill": [
+      3,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      0,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    },
+    "T3": {
+     "kill": [
+      12,
+      15
+     ],
+     "flag": [
+      15,
+      15
+     ],
+     "refactor_flag": [
+      0,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    },
+    "T4": {
+     "kill": [
+      14,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      0,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    }
+   }
+  },
+  {
+   "arm": "P",
+   "tier": "critical",
+   "regime": "R1i",
+   "checker": "vnew",
+   "law_tagged": 43,
+   "kills": 29,
+   "flags": 43,
+   "loss": [
+    "T1:trap_game",
+    "T1:m01_no_west_wall",
+    "T1:m02_no_north_wall",
+    "T1:m03_north_wall_short",
+    "T1:m04_west_wall_short",
+    "T1:m05_wrap_ignores_walls",
+    "T1:m06_east_wall_gap",
+    "T1:m07_won_by_row",
+    "T1:m10_flag_moved",
+    "T1:m11_win_only_from_below",
+    "T1:m18_north_wall_wrong_row",
+    "T3:m09_mutate_in_place",
+    "T3:m10_list_only",
+    "T3:m12_list_hides"
+   ],
+   "contradiction_raised": 0,
+   "stale_raised": 0,
+   "refactors": 39,
+   "refactor_flags": 0,
+   "refactor_blocks": 0,
+   "refactor_flagged": [],
+   "refactor_verdicts": {
+    "pass": 14,
+    "owed": 25
+   },
+   "refactor_coverage_obligations": 25,
+   "feature_controls": 6,
+   "feature_control_flags": 0,
+   "feature_control_blocks": 0,
+   "feature_only": 18,
+   "feature_only_flags": 0,
+   "feature_only_blocks": 0,
+   "per_task": {
+    "T1": {
+     "kill": [
+      3,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      0,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    },
+    "T3": {
+     "kill": [
+      12,
+      15
+     ],
+     "flag": [
+      15,
+      15
+     ],
+     "refactor_flag": [
+      0,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    },
+    "T4": {
+     "kill": [
+      14,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      0,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    }
+   }
+  },
+  {
+   "arm": "P",
+   "tier": "critical",
+   "regime": "R2a",
+   "checker": "stock",
+   "law_tagged": 43,
+   "kills": 43,
+   "flags": 43,
+   "loss": [],
+   "contradiction_raised": 0,
+   "stale_raised": 43,
+   "refactors": 39,
+   "refactor_flags": 33,
+   "refactor_blocks": 33,
+   "refactor_flagged": [
+    "T1:r01_comments",
+    "T1:r03_reorder",
+    "T1:r04_rename_helpers",
+    "T1:r05_inline_targets",
+    "T1:r06_walls_table",
+    "T1:r07_arrow_helpers",
+    "T1:r08_replay_reduce",
+    "T1:r09_split_level",
+    "T1:r10_step_table",
+    "T1:r11_rename_locals",
+    "T1:r12_expressions",
+    "T3:r01_comments",
+    "T3:r03_reorder",
+    "T3:r04_rename_const",
+    "T3:r05_purge_loop",
+    "T3:r06_extract_expired",
+    "T3:r07_extract_redact",
+    "T3:r08_get_expression",
+    "T3:r09_list_slice",
+    "T3:r10_append_fields",
+    "T3:r11_with_entries",
+    "T3:r12_split_retention",
+    "T4:r01_comments",
+    "T4:r03_reorder",
+    "T4:r04_rename_helpers",
+    "T4:r05_total_reduce",
+    "T4:r06_fee_constants",
+    "T4:r07_transfer_cost",
+    "T4:r08_delta_map",
+    "T4:r09_balance_switch",
+    "T4:r10_arrow_helpers",
+    "T4:r11_split_fees",
+    "T4:r12_guard_order"
+   ],
+   "refactor_verdicts": {
+    "blocked": 33,
+    "pass": 6
+   },
+   "refactor_coverage_obligations": 25,
+   "feature_controls": 6,
+   "feature_control_flags": 6,
+   "feature_control_blocks": 6,
+   "feature_only": 18,
+   "feature_only_flags": 18,
+   "feature_only_blocks": 18,
+   "per_task": {
+    "T1": {
+     "kill": [
+      14,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      11,
+      13
+     ],
+     "refactor_block": [
+      11,
+      13
+     ]
+    },
+    "T3": {
+     "kill": [
+      15,
+      15
+     ],
+     "flag": [
+      15,
+      15
+     ],
+     "refactor_flag": [
+      11,
+      13
+     ],
+     "refactor_block": [
+      11,
+      13
+     ]
+    },
+    "T4": {
+     "kill": [
+      14,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      11,
+      13
+     ],
+     "refactor_block": [
+      11,
+      13
+     ]
+    }
+   }
+  },
+  {
+   "arm": "P",
+   "tier": "critical",
+   "regime": "R2a",
+   "checker": "vnew",
+   "law_tagged": 43,
+   "kills": 43,
+   "flags": 43,
+   "loss": [],
+   "contradiction_raised": 0,
+   "stale_raised": 43,
+   "refactors": 39,
+   "refactor_flags": 33,
+   "refactor_blocks": 33,
+   "refactor_flagged": [
+    "T1:r01_comments",
+    "T1:r03_reorder",
+    "T1:r04_rename_helpers",
+    "T1:r05_inline_targets",
+    "T1:r06_walls_table",
+    "T1:r07_arrow_helpers",
+    "T1:r08_replay_reduce",
+    "T1:r09_split_level",
+    "T1:r10_step_table",
+    "T1:r11_rename_locals",
+    "T1:r12_expressions",
+    "T3:r01_comments",
+    "T3:r03_reorder",
+    "T3:r04_rename_const",
+    "T3:r05_purge_loop",
+    "T3:r06_extract_expired",
+    "T3:r07_extract_redact",
+    "T3:r08_get_expression",
+    "T3:r09_list_slice",
+    "T3:r10_append_fields",
+    "T3:r11_with_entries",
+    "T3:r12_split_retention",
+    "T4:r01_comments",
+    "T4:r03_reorder",
+    "T4:r04_rename_helpers",
+    "T4:r05_total_reduce",
+    "T4:r06_fee_constants",
+    "T4:r07_transfer_cost",
+    "T4:r08_delta_map",
+    "T4:r09_balance_switch",
+    "T4:r10_arrow_helpers",
+    "T4:r11_split_fees",
+    "T4:r12_guard_order"
+   ],
+   "refactor_verdicts": {
+    "blocked": 33,
+    "pass": 6
+   },
+   "refactor_coverage_obligations": 25,
+   "feature_controls": 6,
+   "feature_control_flags": 6,
+   "feature_control_blocks": 6,
+   "feature_only": 18,
+   "feature_only_flags": 18,
+   "feature_only_blocks": 18,
+   "per_task": {
+    "T1": {
+     "kill": [
+      14,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      11,
+      13
+     ],
+     "refactor_block": [
+      11,
+      13
+     ]
+    },
+    "T3": {
+     "kill": [
+      15,
+      15
+     ],
+     "flag": [
+      15,
+      15
+     ],
+     "refactor_flag": [
+      11,
+      13
+     ],
+     "refactor_block": [
+      11,
+      13
+     ]
+    },
+    "T4": {
+     "kill": [
+      14,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      11,
+      13
+     ],
+     "refactor_block": [
+      11,
+      13
+     ]
+    }
+   }
+  },
+  {
+   "arm": "P",
+   "tier": "critical",
+   "regime": "R2r",
+   "checker": "stock",
+   "law_tagged": 43,
+   "kills": 43,
+   "flags": 43,
+   "loss": [],
+   "contradiction_raised": 0,
+   "stale_raised": 43,
+   "refactors": 39,
+   "refactor_flags": 39,
+   "refactor_blocks": 39,
+   "refactor_flagged": [
+    "T1:r01_comments",
+    "T1:r02_format",
+    "T1:r03_reorder",
+    "T1:r04_rename_helpers",
+    "T1:r05_inline_targets",
+    "T1:r06_walls_table",
+    "T1:r07_arrow_helpers",
+    "T1:r08_replay_reduce",
+    "T1:r09_split_level",
+    "T1:r10_step_table",
+    "T1:r11_rename_locals",
+    "T1:r12_expressions",
+    "T1:r13_line_comments",
+    "T3:r01_comments",
+    "T3:r02_format",
+    "T3:r03_reorder",
+    "T3:r04_rename_const",
+    "T3:r05_purge_loop",
+    "T3:r06_extract_expired",
+    "T3:r07_extract_redact",
+    "T3:r08_get_expression",
+    "T3:r09_list_slice",
+    "T3:r10_append_fields",
+    "T3:r11_with_entries",
+    "T3:r12_split_retention",
+    "T3:r13_line_comments",
+    "T4:r01_comments",
+    "T4:r02_format",
+    "T4:r03_reorder",
+    "T4:r04_rename_helpers",
+    "T4:r05_total_reduce",
+    "T4:r06_fee_constants",
+    "T4:r07_transfer_cost",
+    "T4:r08_delta_map",
+    "T4:r09_balance_switch",
+    "T4:r10_arrow_helpers",
+    "T4:r11_split_fees",
+    "T4:r12_guard_order",
+    "T4:r13_line_comments"
+   ],
+   "refactor_verdicts": {
+    "blocked": 39
+   },
+   "refactor_coverage_obligations": 25,
+   "feature_controls": 6,
+   "feature_control_flags": 6,
+   "feature_control_blocks": 6,
+   "feature_only": 18,
+   "feature_only_flags": 18,
+   "feature_only_blocks": 18,
+   "per_task": {
+    "T1": {
+     "kill": [
+      14,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      13,
+      13
+     ],
+     "refactor_block": [
+      13,
+      13
+     ]
+    },
+    "T3": {
+     "kill": [
+      15,
+      15
+     ],
+     "flag": [
+      15,
+      15
+     ],
+     "refactor_flag": [
+      13,
+      13
+     ],
+     "refactor_block": [
+      13,
+      13
+     ]
+    },
+    "T4": {
+     "kill": [
+      14,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      13,
+      13
+     ],
+     "refactor_block": [
+      13,
+      13
+     ]
+    }
+   }
+  },
+  {
+   "arm": "P",
+   "tier": "critical",
+   "regime": "R2r",
+   "checker": "vnew",
+   "law_tagged": 43,
+   "kills": 43,
+   "flags": 43,
+   "loss": [],
+   "contradiction_raised": 0,
+   "stale_raised": 43,
+   "refactors": 39,
+   "refactor_flags": 39,
+   "refactor_blocks": 39,
+   "refactor_flagged": [
+    "T1:r01_comments",
+    "T1:r02_format",
+    "T1:r03_reorder",
+    "T1:r04_rename_helpers",
+    "T1:r05_inline_targets",
+    "T1:r06_walls_table",
+    "T1:r07_arrow_helpers",
+    "T1:r08_replay_reduce",
+    "T1:r09_split_level",
+    "T1:r10_step_table",
+    "T1:r11_rename_locals",
+    "T1:r12_expressions",
+    "T1:r13_line_comments",
+    "T3:r01_comments",
+    "T3:r02_format",
+    "T3:r03_reorder",
+    "T3:r04_rename_const",
+    "T3:r05_purge_loop",
+    "T3:r06_extract_expired",
+    "T3:r07_extract_redact",
+    "T3:r08_get_expression",
+    "T3:r09_list_slice",
+    "T3:r10_append_fields",
+    "T3:r11_with_entries",
+    "T3:r12_split_retention",
+    "T3:r13_line_comments",
+    "T4:r01_comments",
+    "T4:r02_format",
+    "T4:r03_reorder",
+    "T4:r04_rename_helpers",
+    "T4:r05_total_reduce",
+    "T4:r06_fee_constants",
+    "T4:r07_transfer_cost",
+    "T4:r08_delta_map",
+    "T4:r09_balance_switch",
+    "T4:r10_arrow_helpers",
+    "T4:r11_split_fees",
+    "T4:r12_guard_order",
+    "T4:r13_line_comments"
+   ],
+   "refactor_verdicts": {
+    "blocked": 39
+   },
+   "refactor_coverage_obligations": 25,
+   "feature_controls": 6,
+   "feature_control_flags": 6,
+   "feature_control_blocks": 6,
+   "feature_only": 18,
+   "feature_only_flags": 18,
+   "feature_only_blocks": 18,
+   "per_task": {
+    "T1": {
+     "kill": [
+      14,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      13,
+      13
+     ],
+     "refactor_block": [
+      13,
+      13
+     ]
+    },
+    "T3": {
+     "kill": [
+      15,
+      15
+     ],
+     "flag": [
+      15,
+      15
+     ],
+     "refactor_flag": [
+      13,
+      13
+     ],
+     "refactor_block": [
+      13,
+      13
+     ]
+    },
+    "T4": {
+     "kill": [
+      14,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      13,
+      13
+     ],
+     "refactor_block": [
+      13,
+      13
+     ]
+    }
+   }
+  },
+  {
+   "arm": "P",
+   "tier": "critical",
+   "regime": "R2u",
+   "checker": "stock",
+   "law_tagged": 43,
+   "kills": 31,
+   "flags": 43,
+   "loss": [
+    "T1:trap_game",
+    "T1:m01_no_west_wall",
+    "T1:m02_no_north_wall",
+    "T1:m03_north_wall_short",
+    "T1:m04_west_wall_short",
+    "T1:m05_wrap_ignores_walls",
+    "T1:m06_east_wall_gap",
+    "T1:m07_won_by_row",
+    "T1:m10_flag_moved",
+    "T1:m11_win_only_from_below",
+    "T1:m18_north_wall_wrong_row",
+    "T3:m12_list_hides"
+   ],
+   "contradiction_raised": 0,
+   "stale_raised": 43,
+   "refactors": 39,
+   "refactor_flags": 33,
+   "refactor_blocks": 21,
+   "refactor_flagged": [
+    "T1:r01_comments",
+    "T1:r03_reorder",
+    "T1:r04_rename_helpers",
+    "T1:r05_inline_targets",
+    "T1:r06_walls_table",
+    "T1:r07_arrow_helpers",
+    "T1:r08_replay_reduce",
+    "T1:r09_split_level",
+    "T1:r10_step_table",
+    "T1:r11_rename_locals",
+    "T1:r12_expressions",
+    "T3:r01_comments",
+    "T3:r03_reorder",
+    "T3:r04_rename_const",
+    "T3:r05_purge_loop",
+    "T3:r06_extract_expired",
+    "T3:r07_extract_redact",
+    "T3:r08_get_expression",
+    "T3:r09_list_slice",
+    "T3:r10_append_fields",
+    "T3:r11_with_entries",
+    "T3:r12_split_retention",
+    "T4:r01_comments",
+    "T4:r03_reorder",
+    "T4:r04_rename_helpers",
+    "T4:r05_total_reduce",
+    "T4:r06_fee_constants",
+    "T4:r07_transfer_cost",
+    "T4:r08_delta_map",
+    "T4:r09_balance_switch",
+    "T4:r10_arrow_helpers",
+    "T4:r11_split_fees",
+    "T4:r12_guard_order"
+   ],
+   "refactor_verdicts": {
+    "owed": 12,
+    "pass": 6,
+    "blocked": 21
+   },
+   "refactor_coverage_obligations": 25,
+   "feature_controls": 6,
+   "feature_control_flags": 6,
+   "feature_control_blocks": 2,
+   "feature_only": 18,
+   "feature_only_flags": 18,
+   "feature_only_blocks": 7,
+   "per_task": {
+    "T1": {
+     "kill": [
+      3,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      11,
+      13
+     ],
+     "refactor_block": [
+      6,
+      13
+     ]
+    },
+    "T3": {
+     "kill": [
+      14,
+      15
+     ],
+     "flag": [
+      15,
+      15
+     ],
+     "refactor_flag": [
+      11,
+      13
+     ],
+     "refactor_block": [
+      9,
+      13
+     ]
+    },
+    "T4": {
+     "kill": [
+      14,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      11,
+      13
+     ],
+     "refactor_block": [
+      6,
+      13
+     ]
+    }
+   }
+  },
+  {
+   "arm": "P",
+   "tier": "critical",
+   "regime": "R2u",
+   "checker": "vnew",
+   "law_tagged": 43,
+   "kills": 31,
+   "flags": 43,
+   "loss": [
+    "T1:trap_game",
+    "T1:m01_no_west_wall",
+    "T1:m02_no_north_wall",
+    "T1:m03_north_wall_short",
+    "T1:m04_west_wall_short",
+    "T1:m05_wrap_ignores_walls",
+    "T1:m06_east_wall_gap",
+    "T1:m07_won_by_row",
+    "T1:m10_flag_moved",
+    "T1:m11_win_only_from_below",
+    "T1:m18_north_wall_wrong_row",
+    "T3:m12_list_hides"
+   ],
+   "contradiction_raised": 0,
+   "stale_raised": 43,
+   "refactors": 39,
+   "refactor_flags": 33,
+   "refactor_blocks": 21,
+   "refactor_flagged": [
+    "T1:r01_comments",
+    "T1:r03_reorder",
+    "T1:r04_rename_helpers",
+    "T1:r05_inline_targets",
+    "T1:r06_walls_table",
+    "T1:r07_arrow_helpers",
+    "T1:r08_replay_reduce",
+    "T1:r09_split_level",
+    "T1:r10_step_table",
+    "T1:r11_rename_locals",
+    "T1:r12_expressions",
+    "T3:r01_comments",
+    "T3:r03_reorder",
+    "T3:r04_rename_const",
+    "T3:r05_purge_loop",
+    "T3:r06_extract_expired",
+    "T3:r07_extract_redact",
+    "T3:r08_get_expression",
+    "T3:r09_list_slice",
+    "T3:r10_append_fields",
+    "T3:r11_with_entries",
+    "T3:r12_split_retention",
+    "T4:r01_comments",
+    "T4:r03_reorder",
+    "T4:r04_rename_helpers",
+    "T4:r05_total_reduce",
+    "T4:r06_fee_constants",
+    "T4:r07_transfer_cost",
+    "T4:r08_delta_map",
+    "T4:r09_balance_switch",
+    "T4:r10_arrow_helpers",
+    "T4:r11_split_fees",
+    "T4:r12_guard_order"
+   ],
+   "refactor_verdicts": {
+    "owed": 12,
+    "pass": 6,
+    "blocked": 21
+   },
+   "refactor_coverage_obligations": 25,
+   "feature_controls": 6,
+   "feature_control_flags": 6,
+   "feature_control_blocks": 2,
+   "feature_only": 18,
+   "feature_only_flags": 18,
+   "feature_only_blocks": 7,
+   "per_task": {
+    "T1": {
+     "kill": [
+      3,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      11,
+      13
+     ],
+     "refactor_block": [
+      6,
+      13
+     ]
+    },
+    "T3": {
+     "kill": [
+      14,
+      15
+     ],
+     "flag": [
+      15,
+      15
+     ],
+     "refactor_flag": [
+      11,
+      13
+     ],
+     "refactor_block": [
+      9,
+      13
+     ]
+    },
+    "T4": {
+     "kill": [
+      14,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      11,
+      13
+     ],
+     "refactor_block": [
+      6,
+      13
+     ]
+    }
+   }
+  },
+  {
+   "arm": "P",
+   "tier": "normal",
+   "regime": "R1c",
+   "checker": "stock",
+   "law_tagged": 43,
+   "kills": 29,
+   "flags": 43,
+   "loss": [
+    "T1:trap_game",
+    "T1:m01_no_west_wall",
+    "T1:m02_no_north_wall",
+    "T1:m03_north_wall_short",
+    "T1:m04_west_wall_short",
+    "T1:m05_wrap_ignores_walls",
+    "T1:m06_east_wall_gap",
+    "T1:m07_won_by_row",
+    "T1:m10_flag_moved",
+    "T1:m11_win_only_from_below",
+    "T1:m18_north_wall_wrong_row",
+    "T3:m09_mutate_in_place",
+    "T3:m10_list_only",
+    "T3:m12_list_hides"
+   ],
+   "contradiction_raised": 43,
+   "stale_raised": 0,
+   "refactors": 39,
+   "refactor_flags": 0,
+   "refactor_blocks": 0,
+   "refactor_flagged": [],
+   "refactor_verdicts": {
+    "pass": 14,
+    "owed": 25
+   },
+   "refactor_coverage_obligations": 25,
+   "feature_controls": 6,
+   "feature_control_flags": 0,
+   "feature_control_blocks": 0,
+   "feature_only": 18,
+   "feature_only_flags": 0,
+   "feature_only_blocks": 0,
+   "per_task": {
+    "T1": {
+     "kill": [
+      3,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      0,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    },
+    "T3": {
+     "kill": [
+      12,
+      15
+     ],
+     "flag": [
+      15,
+      15
+     ],
+     "refactor_flag": [
+      0,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    },
+    "T4": {
+     "kill": [
+      14,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      0,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    }
+   }
+  },
+  {
+   "arm": "P",
+   "tier": "normal",
+   "regime": "R1c",
+   "checker": "vnew",
+   "law_tagged": 43,
+   "kills": 43,
+   "flags": 43,
+   "loss": [],
+   "contradiction_raised": 43,
+   "stale_raised": 0,
+   "refactors": 39,
+   "refactor_flags": 0,
+   "refactor_blocks": 0,
+   "refactor_flagged": [],
+   "refactor_verdicts": {
+    "pass": 14,
+    "owed": 25
+   },
+   "refactor_coverage_obligations": 25,
+   "feature_controls": 6,
+   "feature_control_flags": 0,
+   "feature_control_blocks": 0,
+   "feature_only": 18,
+   "feature_only_flags": 0,
+   "feature_only_blocks": 0,
+   "per_task": {
+    "T1": {
+     "kill": [
+      14,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      0,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    },
+    "T3": {
+     "kill": [
+      15,
+      15
+     ],
+     "flag": [
+      15,
+      15
+     ],
+     "refactor_flag": [
+      0,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    },
+    "T4": {
+     "kill": [
+      14,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      0,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    }
+   }
+  },
+  {
+   "arm": "P",
+   "tier": "normal",
+   "regime": "R1i",
+   "checker": "stock",
+   "law_tagged": 43,
+   "kills": 0,
+   "flags": 43,
+   "loss": [
+    "T1:trap_game",
+    "T1:m01_no_west_wall",
+    "T1:m02_no_north_wall",
+    "T1:m03_north_wall_short",
+    "T1:m04_west_wall_short",
+    "T1:m05_wrap_ignores_walls",
+    "T1:m06_east_wall_gap",
+    "T1:m07_won_by_row",
+    "T1:m08_replay_reversed",
+    "T1:m09_replay_drops_last",
+    "T1:m10_flag_moved",
+    "T1:m11_win_only_from_below",
+    "T1:m18_north_wall_wrong_row",
+    "T1:m19_replay_stops_when_blocked",
+    "T3:trap_audit",
+    "T3:m01_delete_filter",
+    "T3:m02_delete_nextid",
+    "T3:m04_boundary_loose",
+    "T3:m05_reversed",
+    "T3:m06_redact_all",
+    "T3:m07_meta_timestamp",
+    "T3:m08_meta_actor",
+    "T3:m09_mutate_in_place",
+    "T3:m10_list_only",
+    "T3:m11_get_hides",
+    "T3:m12_list_hides",
+    "T3:m14_sorted_prefix",
+    "T3:m17_id_from_live",
+    "T3:m18_truncate_head",
+    "T4:trap_stale_all",
+    "T4:trap_stale_self",
+    "T4:m01_stale_self",
+    "T4:m02_stale_fee_balance",
+    "T4:m03_fee_not_credited",
+    "T4:m04_funds_check_without_fee",
+    "T4:m05_fee_charged_on_failure",
+    "T4:m06_self_transfer_fee",
+    "T4:m07_zero_amount_allowed",
+    "T4:m08_strict_funds_check",
+    "T4:m09_receiver_pays_fee",
+    "T4:m10_fee_to_receiver",
+    "T4:m11_inline_fee_no_minimum",
+    "T4:m12_total_excludes_fee"
+   ],
+   "contradiction_raised": 0,
+   "stale_raised": 0,
+   "refactors": 39,
+   "refactor_flags": 0,
+   "refactor_blocks": 0,
+   "refactor_flagged": [],
+   "refactor_verdicts": {
+    "pass": 14,
+    "owed": 25
+   },
+   "refactor_coverage_obligations": 25,
+   "feature_controls": 6,
+   "feature_control_flags": 0,
+   "feature_control_blocks": 0,
+   "feature_only": 18,
+   "feature_only_flags": 0,
+   "feature_only_blocks": 0,
+   "per_task": {
+    "T1": {
+     "kill": [
+      0,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      0,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    },
+    "T3": {
+     "kill": [
+      0,
+      15
+     ],
+     "flag": [
+      15,
+      15
+     ],
+     "refactor_flag": [
+      0,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    },
+    "T4": {
+     "kill": [
+      0,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      0,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    }
+   }
+  },
+  {
+   "arm": "P",
+   "tier": "normal",
+   "regime": "R1i",
+   "checker": "vnew",
+   "law_tagged": 43,
+   "kills": 0,
+   "flags": 43,
+   "loss": [
+    "T1:trap_game",
+    "T1:m01_no_west_wall",
+    "T1:m02_no_north_wall",
+    "T1:m03_north_wall_short",
+    "T1:m04_west_wall_short",
+    "T1:m05_wrap_ignores_walls",
+    "T1:m06_east_wall_gap",
+    "T1:m07_won_by_row",
+    "T1:m08_replay_reversed",
+    "T1:m09_replay_drops_last",
+    "T1:m10_flag_moved",
+    "T1:m11_win_only_from_below",
+    "T1:m18_north_wall_wrong_row",
+    "T1:m19_replay_stops_when_blocked",
+    "T3:trap_audit",
+    "T3:m01_delete_filter",
+    "T3:m02_delete_nextid",
+    "T3:m04_boundary_loose",
+    "T3:m05_reversed",
+    "T3:m06_redact_all",
+    "T3:m07_meta_timestamp",
+    "T3:m08_meta_actor",
+    "T3:m09_mutate_in_place",
+    "T3:m10_list_only",
+    "T3:m11_get_hides",
+    "T3:m12_list_hides",
+    "T3:m14_sorted_prefix",
+    "T3:m17_id_from_live",
+    "T3:m18_truncate_head",
+    "T4:trap_stale_all",
+    "T4:trap_stale_self",
+    "T4:m01_stale_self",
+    "T4:m02_stale_fee_balance",
+    "T4:m03_fee_not_credited",
+    "T4:m04_funds_check_without_fee",
+    "T4:m05_fee_charged_on_failure",
+    "T4:m06_self_transfer_fee",
+    "T4:m07_zero_amount_allowed",
+    "T4:m08_strict_funds_check",
+    "T4:m09_receiver_pays_fee",
+    "T4:m10_fee_to_receiver",
+    "T4:m11_inline_fee_no_minimum",
+    "T4:m12_total_excludes_fee"
+   ],
+   "contradiction_raised": 0,
+   "stale_raised": 0,
+   "refactors": 39,
+   "refactor_flags": 0,
+   "refactor_blocks": 0,
+   "refactor_flagged": [],
+   "refactor_verdicts": {
+    "pass": 14,
+    "owed": 25
+   },
+   "refactor_coverage_obligations": 25,
+   "feature_controls": 6,
+   "feature_control_flags": 0,
+   "feature_control_blocks": 0,
+   "feature_only": 18,
+   "feature_only_flags": 0,
+   "feature_only_blocks": 0,
+   "per_task": {
+    "T1": {
+     "kill": [
+      0,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      0,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    },
+    "T3": {
+     "kill": [
+      0,
+      15
+     ],
+     "flag": [
+      15,
+      15
+     ],
+     "refactor_flag": [
+      0,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    },
+    "T4": {
+     "kill": [
+      0,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      0,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    }
+   }
+  },
+  {
+   "arm": "P",
+   "tier": "normal",
+   "regime": "R2a",
+   "checker": "stock",
+   "law_tagged": 43,
+   "kills": 43,
+   "flags": 43,
+   "loss": [],
+   "contradiction_raised": 0,
+   "stale_raised": 43,
+   "refactors": 39,
+   "refactor_flags": 33,
+   "refactor_blocks": 33,
+   "refactor_flagged": [
+    "T1:r01_comments",
+    "T1:r03_reorder",
+    "T1:r04_rename_helpers",
+    "T1:r05_inline_targets",
+    "T1:r06_walls_table",
+    "T1:r07_arrow_helpers",
+    "T1:r08_replay_reduce",
+    "T1:r09_split_level",
+    "T1:r10_step_table",
+    "T1:r11_rename_locals",
+    "T1:r12_expressions",
+    "T3:r01_comments",
+    "T3:r03_reorder",
+    "T3:r04_rename_const",
+    "T3:r05_purge_loop",
+    "T3:r06_extract_expired",
+    "T3:r07_extract_redact",
+    "T3:r08_get_expression",
+    "T3:r09_list_slice",
+    "T3:r10_append_fields",
+    "T3:r11_with_entries",
+    "T3:r12_split_retention",
+    "T4:r01_comments",
+    "T4:r03_reorder",
+    "T4:r04_rename_helpers",
+    "T4:r05_total_reduce",
+    "T4:r06_fee_constants",
+    "T4:r07_transfer_cost",
+    "T4:r08_delta_map",
+    "T4:r09_balance_switch",
+    "T4:r10_arrow_helpers",
+    "T4:r11_split_fees",
+    "T4:r12_guard_order"
+   ],
+   "refactor_verdicts": {
+    "blocked": 33,
+    "pass": 6
+   },
+   "refactor_coverage_obligations": 25,
+   "feature_controls": 6,
+   "feature_control_flags": 6,
+   "feature_control_blocks": 6,
+   "feature_only": 18,
+   "feature_only_flags": 18,
+   "feature_only_blocks": 18,
+   "per_task": {
+    "T1": {
+     "kill": [
+      14,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      11,
+      13
+     ],
+     "refactor_block": [
+      11,
+      13
+     ]
+    },
+    "T3": {
+     "kill": [
+      15,
+      15
+     ],
+     "flag": [
+      15,
+      15
+     ],
+     "refactor_flag": [
+      11,
+      13
+     ],
+     "refactor_block": [
+      11,
+      13
+     ]
+    },
+    "T4": {
+     "kill": [
+      14,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      11,
+      13
+     ],
+     "refactor_block": [
+      11,
+      13
+     ]
+    }
+   }
+  },
+  {
+   "arm": "P",
+   "tier": "normal",
+   "regime": "R2a",
+   "checker": "vnew",
+   "law_tagged": 43,
+   "kills": 43,
+   "flags": 43,
+   "loss": [],
+   "contradiction_raised": 0,
+   "stale_raised": 43,
+   "refactors": 39,
+   "refactor_flags": 33,
+   "refactor_blocks": 33,
+   "refactor_flagged": [
+    "T1:r01_comments",
+    "T1:r03_reorder",
+    "T1:r04_rename_helpers",
+    "T1:r05_inline_targets",
+    "T1:r06_walls_table",
+    "T1:r07_arrow_helpers",
+    "T1:r08_replay_reduce",
+    "T1:r09_split_level",
+    "T1:r10_step_table",
+    "T1:r11_rename_locals",
+    "T1:r12_expressions",
+    "T3:r01_comments",
+    "T3:r03_reorder",
+    "T3:r04_rename_const",
+    "T3:r05_purge_loop",
+    "T3:r06_extract_expired",
+    "T3:r07_extract_redact",
+    "T3:r08_get_expression",
+    "T3:r09_list_slice",
+    "T3:r10_append_fields",
+    "T3:r11_with_entries",
+    "T3:r12_split_retention",
+    "T4:r01_comments",
+    "T4:r03_reorder",
+    "T4:r04_rename_helpers",
+    "T4:r05_total_reduce",
+    "T4:r06_fee_constants",
+    "T4:r07_transfer_cost",
+    "T4:r08_delta_map",
+    "T4:r09_balance_switch",
+    "T4:r10_arrow_helpers",
+    "T4:r11_split_fees",
+    "T4:r12_guard_order"
+   ],
+   "refactor_verdicts": {
+    "blocked": 33,
+    "pass": 6
+   },
+   "refactor_coverage_obligations": 25,
+   "feature_controls": 6,
+   "feature_control_flags": 6,
+   "feature_control_blocks": 6,
+   "feature_only": 18,
+   "feature_only_flags": 18,
+   "feature_only_blocks": 18,
+   "per_task": {
+    "T1": {
+     "kill": [
+      14,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      11,
+      13
+     ],
+     "refactor_block": [
+      11,
+      13
+     ]
+    },
+    "T3": {
+     "kill": [
+      15,
+      15
+     ],
+     "flag": [
+      15,
+      15
+     ],
+     "refactor_flag": [
+      11,
+      13
+     ],
+     "refactor_block": [
+      11,
+      13
+     ]
+    },
+    "T4": {
+     "kill": [
+      14,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      11,
+      13
+     ],
+     "refactor_block": [
+      11,
+      13
+     ]
+    }
+   }
+  },
+  {
+   "arm": "P",
+   "tier": "normal",
+   "regime": "R2r",
+   "checker": "stock",
+   "law_tagged": 43,
+   "kills": 43,
+   "flags": 43,
+   "loss": [],
+   "contradiction_raised": 0,
+   "stale_raised": 43,
+   "refactors": 39,
+   "refactor_flags": 39,
+   "refactor_blocks": 39,
+   "refactor_flagged": [
+    "T1:r01_comments",
+    "T1:r02_format",
+    "T1:r03_reorder",
+    "T1:r04_rename_helpers",
+    "T1:r05_inline_targets",
+    "T1:r06_walls_table",
+    "T1:r07_arrow_helpers",
+    "T1:r08_replay_reduce",
+    "T1:r09_split_level",
+    "T1:r10_step_table",
+    "T1:r11_rename_locals",
+    "T1:r12_expressions",
+    "T1:r13_line_comments",
+    "T3:r01_comments",
+    "T3:r02_format",
+    "T3:r03_reorder",
+    "T3:r04_rename_const",
+    "T3:r05_purge_loop",
+    "T3:r06_extract_expired",
+    "T3:r07_extract_redact",
+    "T3:r08_get_expression",
+    "T3:r09_list_slice",
+    "T3:r10_append_fields",
+    "T3:r11_with_entries",
+    "T3:r12_split_retention",
+    "T3:r13_line_comments",
+    "T4:r01_comments",
+    "T4:r02_format",
+    "T4:r03_reorder",
+    "T4:r04_rename_helpers",
+    "T4:r05_total_reduce",
+    "T4:r06_fee_constants",
+    "T4:r07_transfer_cost",
+    "T4:r08_delta_map",
+    "T4:r09_balance_switch",
+    "T4:r10_arrow_helpers",
+    "T4:r11_split_fees",
+    "T4:r12_guard_order",
+    "T4:r13_line_comments"
+   ],
+   "refactor_verdicts": {
+    "blocked": 39
+   },
+   "refactor_coverage_obligations": 25,
+   "feature_controls": 6,
+   "feature_control_flags": 6,
+   "feature_control_blocks": 6,
+   "feature_only": 18,
+   "feature_only_flags": 18,
+   "feature_only_blocks": 18,
+   "per_task": {
+    "T1": {
+     "kill": [
+      14,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      13,
+      13
+     ],
+     "refactor_block": [
+      13,
+      13
+     ]
+    },
+    "T3": {
+     "kill": [
+      15,
+      15
+     ],
+     "flag": [
+      15,
+      15
+     ],
+     "refactor_flag": [
+      13,
+      13
+     ],
+     "refactor_block": [
+      13,
+      13
+     ]
+    },
+    "T4": {
+     "kill": [
+      14,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      13,
+      13
+     ],
+     "refactor_block": [
+      13,
+      13
+     ]
+    }
+   }
+  },
+  {
+   "arm": "P",
+   "tier": "normal",
+   "regime": "R2r",
+   "checker": "vnew",
+   "law_tagged": 43,
+   "kills": 43,
+   "flags": 43,
+   "loss": [],
+   "contradiction_raised": 0,
+   "stale_raised": 43,
+   "refactors": 39,
+   "refactor_flags": 39,
+   "refactor_blocks": 39,
+   "refactor_flagged": [
+    "T1:r01_comments",
+    "T1:r02_format",
+    "T1:r03_reorder",
+    "T1:r04_rename_helpers",
+    "T1:r05_inline_targets",
+    "T1:r06_walls_table",
+    "T1:r07_arrow_helpers",
+    "T1:r08_replay_reduce",
+    "T1:r09_split_level",
+    "T1:r10_step_table",
+    "T1:r11_rename_locals",
+    "T1:r12_expressions",
+    "T1:r13_line_comments",
+    "T3:r01_comments",
+    "T3:r02_format",
+    "T3:r03_reorder",
+    "T3:r04_rename_const",
+    "T3:r05_purge_loop",
+    "T3:r06_extract_expired",
+    "T3:r07_extract_redact",
+    "T3:r08_get_expression",
+    "T3:r09_list_slice",
+    "T3:r10_append_fields",
+    "T3:r11_with_entries",
+    "T3:r12_split_retention",
+    "T3:r13_line_comments",
+    "T4:r01_comments",
+    "T4:r02_format",
+    "T4:r03_reorder",
+    "T4:r04_rename_helpers",
+    "T4:r05_total_reduce",
+    "T4:r06_fee_constants",
+    "T4:r07_transfer_cost",
+    "T4:r08_delta_map",
+    "T4:r09_balance_switch",
+    "T4:r10_arrow_helpers",
+    "T4:r11_split_fees",
+    "T4:r12_guard_order",
+    "T4:r13_line_comments"
+   ],
+   "refactor_verdicts": {
+    "blocked": 39
+   },
+   "refactor_coverage_obligations": 25,
+   "feature_controls": 6,
+   "feature_control_flags": 6,
+   "feature_control_blocks": 6,
+   "feature_only": 18,
+   "feature_only_flags": 18,
+   "feature_only_blocks": 18,
+   "per_task": {
+    "T1": {
+     "kill": [
+      14,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      13,
+      13
+     ],
+     "refactor_block": [
+      13,
+      13
+     ]
+    },
+    "T3": {
+     "kill": [
+      15,
+      15
+     ],
+     "flag": [
+      15,
+      15
+     ],
+     "refactor_flag": [
+      13,
+      13
+     ],
+     "refactor_block": [
+      13,
+      13
+     ]
+    },
+    "T4": {
+     "kill": [
+      14,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      13,
+      13
+     ],
+     "refactor_block": [
+      13,
+      13
+     ]
+    }
+   }
+  },
+  {
+   "arm": "P",
+   "tier": "normal",
+   "regime": "R2u",
+   "checker": "stock",
+   "law_tagged": 43,
+   "kills": 0,
+   "flags": 43,
+   "loss": [
+    "T1:trap_game",
+    "T1:m01_no_west_wall",
+    "T1:m02_no_north_wall",
+    "T1:m03_north_wall_short",
+    "T1:m04_west_wall_short",
+    "T1:m05_wrap_ignores_walls",
+    "T1:m06_east_wall_gap",
+    "T1:m07_won_by_row",
+    "T1:m08_replay_reversed",
+    "T1:m09_replay_drops_last",
+    "T1:m10_flag_moved",
+    "T1:m11_win_only_from_below",
+    "T1:m18_north_wall_wrong_row",
+    "T1:m19_replay_stops_when_blocked",
+    "T3:trap_audit",
+    "T3:m01_delete_filter",
+    "T3:m02_delete_nextid",
+    "T3:m04_boundary_loose",
+    "T3:m05_reversed",
+    "T3:m06_redact_all",
+    "T3:m07_meta_timestamp",
+    "T3:m08_meta_actor",
+    "T3:m09_mutate_in_place",
+    "T3:m10_list_only",
+    "T3:m11_get_hides",
+    "T3:m12_list_hides",
+    "T3:m14_sorted_prefix",
+    "T3:m17_id_from_live",
+    "T3:m18_truncate_head",
+    "T4:trap_stale_all",
+    "T4:trap_stale_self",
+    "T4:m01_stale_self",
+    "T4:m02_stale_fee_balance",
+    "T4:m03_fee_not_credited",
+    "T4:m04_funds_check_without_fee",
+    "T4:m05_fee_charged_on_failure",
+    "T4:m06_self_transfer_fee",
+    "T4:m07_zero_amount_allowed",
+    "T4:m08_strict_funds_check",
+    "T4:m09_receiver_pays_fee",
+    "T4:m10_fee_to_receiver",
+    "T4:m11_inline_fee_no_minimum",
+    "T4:m12_total_excludes_fee"
+   ],
+   "contradiction_raised": 0,
+   "stale_raised": 43,
+   "refactors": 39,
+   "refactor_flags": 33,
+   "refactor_blocks": 0,
+   "refactor_flagged": [
+    "T1:r01_comments",
+    "T1:r03_reorder",
+    "T1:r04_rename_helpers",
+    "T1:r05_inline_targets",
+    "T1:r06_walls_table",
+    "T1:r07_arrow_helpers",
+    "T1:r08_replay_reduce",
+    "T1:r09_split_level",
+    "T1:r10_step_table",
+    "T1:r11_rename_locals",
+    "T1:r12_expressions",
+    "T3:r01_comments",
+    "T3:r03_reorder",
+    "T3:r04_rename_const",
+    "T3:r05_purge_loop",
+    "T3:r06_extract_expired",
+    "T3:r07_extract_redact",
+    "T3:r08_get_expression",
+    "T3:r09_list_slice",
+    "T3:r10_append_fields",
+    "T3:r11_with_entries",
+    "T3:r12_split_retention",
+    "T4:r01_comments",
+    "T4:r03_reorder",
+    "T4:r04_rename_helpers",
+    "T4:r05_total_reduce",
+    "T4:r06_fee_constants",
+    "T4:r07_transfer_cost",
+    "T4:r08_delta_map",
+    "T4:r09_balance_switch",
+    "T4:r10_arrow_helpers",
+    "T4:r11_split_fees",
+    "T4:r12_guard_order"
+   ],
+   "refactor_verdicts": {
+    "owed": 33,
+    "pass": 6
+   },
+   "refactor_coverage_obligations": 25,
+   "feature_controls": 6,
+   "feature_control_flags": 6,
+   "feature_control_blocks": 0,
+   "feature_only": 18,
+   "feature_only_flags": 18,
+   "feature_only_blocks": 0,
+   "per_task": {
+    "T1": {
+     "kill": [
+      0,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      11,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    },
+    "T3": {
+     "kill": [
+      0,
+      15
+     ],
+     "flag": [
+      15,
+      15
+     ],
+     "refactor_flag": [
+      11,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    },
+    "T4": {
+     "kill": [
+      0,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      11,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    }
+   }
+  },
+  {
+   "arm": "P",
+   "tier": "normal",
+   "regime": "R2u",
+   "checker": "vnew",
+   "law_tagged": 43,
+   "kills": 0,
+   "flags": 43,
+   "loss": [
+    "T1:trap_game",
+    "T1:m01_no_west_wall",
+    "T1:m02_no_north_wall",
+    "T1:m03_north_wall_short",
+    "T1:m04_west_wall_short",
+    "T1:m05_wrap_ignores_walls",
+    "T1:m06_east_wall_gap",
+    "T1:m07_won_by_row",
+    "T1:m08_replay_reversed",
+    "T1:m09_replay_drops_last",
+    "T1:m10_flag_moved",
+    "T1:m11_win_only_from_below",
+    "T1:m18_north_wall_wrong_row",
+    "T1:m19_replay_stops_when_blocked",
+    "T3:trap_audit",
+    "T3:m01_delete_filter",
+    "T3:m02_delete_nextid",
+    "T3:m04_boundary_loose",
+    "T3:m05_reversed",
+    "T3:m06_redact_all",
+    "T3:m07_meta_timestamp",
+    "T3:m08_meta_actor",
+    "T3:m09_mutate_in_place",
+    "T3:m10_list_only",
+    "T3:m11_get_hides",
+    "T3:m12_list_hides",
+    "T3:m14_sorted_prefix",
+    "T3:m17_id_from_live",
+    "T3:m18_truncate_head",
+    "T4:trap_stale_all",
+    "T4:trap_stale_self",
+    "T4:m01_stale_self",
+    "T4:m02_stale_fee_balance",
+    "T4:m03_fee_not_credited",
+    "T4:m04_funds_check_without_fee",
+    "T4:m05_fee_charged_on_failure",
+    "T4:m06_self_transfer_fee",
+    "T4:m07_zero_amount_allowed",
+    "T4:m08_strict_funds_check",
+    "T4:m09_receiver_pays_fee",
+    "T4:m10_fee_to_receiver",
+    "T4:m11_inline_fee_no_minimum",
+    "T4:m12_total_excludes_fee"
+   ],
+   "contradiction_raised": 0,
+   "stale_raised": 43,
+   "refactors": 39,
+   "refactor_flags": 33,
+   "refactor_blocks": 0,
+   "refactor_flagged": [
+    "T1:r01_comments",
+    "T1:r03_reorder",
+    "T1:r04_rename_helpers",
+    "T1:r05_inline_targets",
+    "T1:r06_walls_table",
+    "T1:r07_arrow_helpers",
+    "T1:r08_replay_reduce",
+    "T1:r09_split_level",
+    "T1:r10_step_table",
+    "T1:r11_rename_locals",
+    "T1:r12_expressions",
+    "T3:r01_comments",
+    "T3:r03_reorder",
+    "T3:r04_rename_const",
+    "T3:r05_purge_loop",
+    "T3:r06_extract_expired",
+    "T3:r07_extract_redact",
+    "T3:r08_get_expression",
+    "T3:r09_list_slice",
+    "T3:r10_append_fields",
+    "T3:r11_with_entries",
+    "T3:r12_split_retention",
+    "T4:r01_comments",
+    "T4:r03_reorder",
+    "T4:r04_rename_helpers",
+    "T4:r05_total_reduce",
+    "T4:r06_fee_constants",
+    "T4:r07_transfer_cost",
+    "T4:r08_delta_map",
+    "T4:r09_balance_switch",
+    "T4:r10_arrow_helpers",
+    "T4:r11_split_fees",
+    "T4:r12_guard_order"
+   ],
+   "refactor_verdicts": {
+    "owed": 33,
+    "pass": 6
+   },
+   "refactor_coverage_obligations": 25,
+   "feature_controls": 6,
+   "feature_control_flags": 6,
+   "feature_control_blocks": 0,
+   "feature_only": 18,
+   "feature_only_flags": 18,
+   "feature_only_blocks": 0,
+   "per_task": {
+    "T1": {
+     "kill": [
+      0,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      11,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    },
+    "T3": {
+     "kill": [
+      0,
+      15
+     ],
+     "flag": [
+      15,
+      15
+     ],
+     "refactor_flag": [
+      11,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    },
+    "T4": {
+     "kill": [
+      0,
+      14
+     ],
+     "flag": [
+      14,
+      14
+     ],
+     "refactor_flag": [
+      11,
+      13
+     ],
+     "refactor_block": [
+      0,
+      13
+     ]
+    }
+   }
+  }
+ ],
+ "tested_scope": {
+  "T1": {
+   "law_tagged": 14,
+   "suite_kills": 14,
+   "suite_misses": [],
+   "feature_only_mutants": 7,
+   "feature_only_suite_fails": [],
+   "refactors": 13,
+   "refactor_suite_fails": [],
+   "feature_controls": 4,
+   "feature_control_suite_fails": []
+  },
+  "T3": {
+   "law_tagged": 15,
+   "suite_kills": 15,
+   "suite_misses": [],
+   "feature_only_mutants": 5,
+   "feature_only_suite_fails": [],
+   "refactors": 13,
+   "refactor_suite_fails": [],
+   "feature_controls": 1,
+   "feature_control_suite_fails": []
+  },
+  "T4": {
+   "law_tagged": 14,
+   "suite_kills": 14,
+   "suite_misses": [],
+   "feature_only_mutants": 6,
+   "feature_only_suite_fails": [],
+   "refactors": 13,
+   "refactor_suite_fails": [],
+   "feature_controls": 1,
+   "feature_control_suite_fails": []
+  }
+ },
+ "losses": {},
+ "refactor_obligations": {},
+ "kernel": {
+  "agreement": {
+   "cases": 954,
+   "verdict": 954,
+   "errors": 954,
+   "law_obligations": 954,
+   "all_keys": 954
+  },
+  "disagreements": [],
+  "n_disagreements": 0
+ },
+ "moved": {
+  "T1": {
+   "ref": [
+    "ts:src/game.ts#downY[own,unit]",
+    "ts:src/game.ts#isWall[own,unit]",
+    "ts:src/game.ts#leftX[own,unit]",
+    "ts:src/game.ts#rightX[own,unit]",
+    "ts:src/game.ts#upY[own,unit]"
+   ],
+   "alt_a_minimal_far_walls": [
+    "ts:src/game.ts#downY[own,unit]",
+    "ts:src/game.ts#isWall[own,unit]",
+    "ts:src/game.ts#leftX[own,unit]",
+    "ts:src/game.ts#rightX[own,unit]",
+    "ts:src/game.ts#upY[own,unit]"
+   ],
+   "alt_b_inner_walls": [
+    "ts:src/game.ts#downY[own,unit]",
+    "ts:src/game.ts#isWall[own,unit]",
+    "ts:src/game.ts#leftX[own,unit]",
+    "ts:src/game.ts#rightX[own,unit]",
+    "ts:src/game.ts#upY[own,unit]"
+   ],
+   "alt_c_flag_cage": [
+    "ts:src/game.ts#downY[own,unit]",
+    "ts:src/game.ts#isWall[own,unit]",
+    "ts:src/game.ts#leftX[own,unit]",
+    "ts:src/game.ts#rightX[own,unit]",
+    "ts:src/game.ts#upY[own,unit]"
+   ],
+   "trap_game": [
+    "ts:src/game.ts#downY[own,unit]",
+    "ts:src/game.ts#leftX[own,unit]",
+    "ts:src/game.ts#rightX[own,unit]",
+    "ts:src/game.ts#upY[own,unit]"
+   ],
+   "m01_no_west_wall": [
+    "ts:src/game.ts#isWall[own,unit]"
+   ],
+   "m02_no_north_wall": [
+    "ts:src/game.ts#isWall[own,unit]"
+   ],
+   "m03_north_wall_short": [
+    "ts:src/game.ts#isWall[own,unit]"
+   ],
+   "m04_west_wall_short": [
+    "ts:src/game.ts#isWall[own,unit]"
+   ],
+   "m05_wrap_ignores_walls": [
+    "ts:src/game.ts#moveTo[own,unit]"
+   ],
+   "m06_east_wall_gap": [
+    "ts:src/game.ts#isWall[own,unit]"
+   ],
+   "m07_won_by_row": [
+    "ts:src/game.ts#isWon[own,unit]"
+   ],
+   "m08_replay_reversed": [
+    "ts:src/game.ts#replay[own,unit]"
+   ],
+   "m09_replay_drops_last": [
+    "ts:src/game.ts#replay[own,unit]"
+   ],
+   "m10_flag_moved": [
+    "ts:src/game.ts#onFlag[own,unit]"
+   ],
+   "m11_win_only_from_below": [
+    "ts:src/game.ts#moveTo[own,unit]"
+   ],
+   "m12_won_not_sticky": [
+    "ts:src/game.ts#moveTo[own,unit]"
+   ],
+   "m13_no_vertical_wrap": [
+    "ts:src/game.ts#downY[own,unit]",
+    "ts:src/game.ts#upY[own,unit]"
+   ],
+   "m14_wrap_right_off_by_one": [
+    "ts:src/game.ts#rightX[own,unit]"
+   ],
+   "m15_wrap_left_wrong_dimension": [
+    "ts:src/game.ts#leftX[own,unit]"
+   ],
+   "m16_wall_in_open_row": [
+    "ts:src/game.ts#isWall[own,unit]"
+   ],
+   "m17_down_wrap_to_row_1": [
+    "ts:src/game.ts#downY[own,unit]"
+   ],
+   "m18_north_wall_wrong_row": [
+    "ts:src/game.ts#isWall[own,unit]"
+   ],
+   "m19_replay_stops_when_blocked": [
+    "ts:src/game.ts#replay[own,unit]"
+   ],
+   "m20_iswon_by_position": [
+    "ts:src/game.ts#isWon[own,unit]"
+   ],
+   "r01_comments": [],
+   "r02_format": [],
+   "r03_reorder": [],
+   "r04_rename_helpers": [
+    "ts:src/game.ts#columnLeft[added]",
+    "ts:src/game.ts#columnRight[added]",
+    "ts:src/game.ts#downY[removed]",
+    "ts:src/game.ts#enterOrStay[added]",
+    "ts:src/game.ts#isFlagCell[added]",
+    "ts:src/game.ts#leftX[removed]",
+    "ts:src/game.ts#moveTo[removed]",
+    "ts:src/game.ts#onFlag[removed]",
+    "ts:src/game.ts#rightX[removed]",
+    "ts:src/game.ts#rowAbove[added]",
+    "ts:src/game.ts#rowBelow[added]",
+    "ts:src/game.ts#step[own,unit]",
+    "ts:src/game.ts#upY[removed]"
+   ],
+   "r05_inline_targets": [
+    "ts:src/game.ts#downY[removed]",
+    "ts:src/game.ts#leftX[removed]",
+    "ts:src/game.ts#moveTo[removed]",
+    "ts:src/game.ts#onFlag[removed]",
+    "ts:src/game.ts#rightX[removed]",
+    "ts:src/game.ts#step[own,unit]",
+    "ts:src/game.ts#upY[removed]"
+   ],
+   "r06_walls_table": [
+    "ts:src/game.ts#cellKey[added]",
+    "ts:src/game.ts#isWall[own,unit]",
+    "ts:src/game.ts#wallCells[added]"
+   ],
+   "r07_arrow_helpers": [
+    "ts:src/game.ts#downY[own,unit]",
+    "ts:src/game.ts#leftX[own,unit]",
+    "ts:src/game.ts#moveTo[own,unit]",
+    "ts:src/game.ts#onFlag[own,unit]",
+    "ts:src/game.ts#rightX[own,unit]",
+    "ts:src/game.ts#upY[own,unit]"
+   ],
+   "r08_replay_reduce": [
+    "ts:src/game.ts#replay[own,unit]"
+   ],
+   "r09_split_level": [
+    "ts:src/game.ts#downY[unit]",
+    "ts:src/game.ts#isWall[own,unit]",
+    "ts:src/game.ts#leftX[unit]",
+    "ts:src/game.ts#onFlag[unit]",
+    "ts:src/game.ts#rightX[unit]",
+    "ts:src/game.ts#start[unit]",
+    "ts:src/game.ts#upY[unit]",
+    "ts:src/level.ts#wallAt[added]"
+   ],
+   "r10_step_table": [
+    "ts:src/game.ts#TARGET[added]",
+    "ts:src/game.ts#TARGET.Down[added]",
+    "ts:src/game.ts#TARGET.Left[added]",
+    "ts:src/game.ts#TARGET.Right[added]",
+    "ts:src/game.ts#TARGET.Up[added]",
+    "ts:src/game.ts#downY[removed]",
+    "ts:src/game.ts#leftX[removed]",
+    "ts:src/game.ts#moveTo[removed]",
+    "ts:src/game.ts#onFlag[removed]",
+    "ts:src/game.ts#rightX[removed]",
+    "ts:src/game.ts#step[own,unit]",
+    "ts:src/game.ts#upY[removed]"
+   ],
+   "r11_rename_locals": [
+    "ts:src/game.ts#downY[own,unit]",
+    "ts:src/game.ts#isWall[own,unit]",
+    "ts:src/game.ts#isWon[own,unit]",
+    "ts:src/game.ts#leftX[own,unit]",
+    "ts:src/game.ts#moveTo[own,unit]",
+    "ts:src/game.ts#onFlag[own,unit]",
+    "ts:src/game.ts#replay[own,unit]",
+    "ts:src/game.ts#rightX[own,unit]",
+    "ts:src/game.ts#step[own,unit]",
+    "ts:src/game.ts#upY[own,unit]"
+   ],
+   "r12_expressions": [
+    "ts:src/game.ts#downY[own,unit]",
+    "ts:src/game.ts#isWall[own,unit]",
+    "ts:src/game.ts#leftX[own,unit]",
+    "ts:src/game.ts#moveTo[own,unit]",
+    "ts:src/game.ts#replay[own,unit]",
+    "ts:src/game.ts#rightX[own,unit]",
+    "ts:src/game.ts#step[own,unit]",
+    "ts:src/game.ts#upY[own,unit]"
+   ],
+   "r13_line_comments": []
+  },
+  "T3": {
+   "ref": [
+    "ts:src/audit.ts#purge[own,unit]"
+   ],
+   "trap_audit": [
+    "ts:src/audit.ts#append[own,unit]",
+    "ts:src/audit.ts#append.stored[own,unit]",
+    "ts:src/audit.ts#emptyLog[own,unit]",
+    "ts:src/audit.ts#get[own,unit]",
+    "ts:src/audit.ts#purge[own,unit]"
+   ],
+   "m01_delete_filter": [
+    "ts:src/audit.ts#purge[own,unit]"
+   ],
+   "m02_delete_nextid": [
+    "ts:src/audit.ts#append[own,unit]",
+    "ts:src/audit.ts#append.stored[own,unit]",
+    "ts:src/audit.ts#emptyLog[own,unit]",
+    "ts:src/audit.ts#get[own,unit]",
+    "ts:src/audit.ts#purge[own,unit]"
+   ],
+   "m03_boundary_strict": [
+    "ts:src/audit.ts#purge[own,unit]"
+   ],
+   "m04_boundary_loose": [
+    "ts:src/audit.ts#purge[own,unit]"
+   ],
+   "m05_reversed": [
+    "ts:src/audit.ts#purge[own,unit]"
+   ],
+   "m06_redact_all": [
+    "ts:src/audit.ts#purge[own,unit]"
+   ],
+   "m07_meta_timestamp": [
+    "ts:src/audit.ts#purge[own,unit]"
+   ],
+   "m08_meta_actor": [
+    "ts:src/audit.ts#purge[own,unit]"
+   ],
+   "m09_mutate_in_place": [
+    "ts:src/audit.ts#purge[own,unit]"
+   ],
+   "m10_list_only": [
+    "ts:src/audit.ts#append[own,unit]",
+    "ts:src/audit.ts#list[own,unit]",
+    "ts:src/audit.ts#purge[own,unit]"
+   ],
+   "m11_get_hides": [
+    "ts:src/audit.ts#get[own,unit]"
+   ],
+   "m12_list_hides": [
+    "ts:src/audit.ts#list[own,unit]"
+   ],
+   "m13_sorted_stop": [
+    "ts:src/audit.ts#purge[own,unit]"
+   ],
+   "m14_sorted_prefix": [
+    "ts:src/audit.ts#purge[own,unit]"
+   ],
+   "m15_flag_only": [
+    "ts:src/audit.ts#purge[own,unit]"
+   ],
+   "m16_retention_zero": [
+    "ts:src/audit.ts#purge[own,unit]"
+   ],
+   "m17_id_from_live": [
+    "ts:src/audit.ts#append[unit]",
+    "ts:src/audit.ts#append.stored[own,unit]"
+   ],
+   "m18_truncate_head": [
+    "ts:src/audit.ts#purge[own,unit]"
+   ],
+   "m19_retention_days": [
+    "ts:src/audit.ts#purge[own,unit]"
+   ],
+   "r01_comments": [],
+   "r02_format": [],
+   "r03_reorder": [],
+   "r04_rename_const": [
+    "ts:src/audit.ts#purge[own,unit]"
+   ],
+   "r05_purge_loop": [
+    "ts:src/audit.ts#purge[own,unit]"
+   ],
+   "r06_extract_expired": [
+    "ts:src/audit.ts#isExpired[added]",
+    "ts:src/audit.ts#purge[own,unit]"
+   ],
+   "r07_extract_redact": [
+    "ts:src/audit.ts#purge[own,unit]",
+    "ts:src/audit.ts#redacted[added]"
+   ],
+   "r08_get_expression": [
+    "ts:src/audit.ts#get[own,unit]"
+   ],
+   "r09_list_slice": [
+    "ts:src/audit.ts#append[own,unit]",
+    "ts:src/audit.ts#list[own,unit]"
+   ],
+   "r10_append_fields": [
+    "ts:src/audit.ts#append[own,unit]",
+    "ts:src/audit.ts#append.stored[removed]"
+   ],
+   "r11_with_entries": [
+    "ts:src/audit.ts#append[own,unit]",
+    "ts:src/audit.ts#emptyLog[own,unit]",
+    "ts:src/audit.ts#purge[own,unit]",
+    "ts:src/audit.ts#withEntries[added]"
+   ],
+   "r12_split_retention": [
+    "ts:src/audit.ts#purge[own,unit]",
+    "ts:src/retention.ts#hasExpired[added]"
+   ],
+   "r13_line_comments": []
+  },
+  "T4": {
+   "ref": [
+    "ts:src/ledger.ts#adjust[added]",
+    "ts:src/ledger.ts#feeFor[own,unit]",
+    "ts:src/ledger.ts#transfer[own,unit]"
+   ],
+   "trap_stale_all": [
+    "ts:src/ledger.ts#feeFor[own,unit]",
+    "ts:src/ledger.ts#transfer[own,unit]"
+   ],
+   "trap_stale_self": [
+    "ts:src/ledger.ts#feeFor[own,unit]",
+    "ts:src/ledger.ts#transfer[own,unit]"
+   ],
+   "m01_stale_self": [
+    "ts:src/ledger.ts#transfer[own,unit]"
+   ],
+   "m02_stale_fee_balance": [
+    "ts:src/ledger.ts#transfer[own,unit]"
+   ],
+   "m03_fee_not_credited": [
+    "ts:src/ledger.ts#transfer[own,unit]"
+   ],
+   "m04_funds_check_without_fee": [
+    "ts:src/ledger.ts#transfer[own,unit]"
+   ],
+   "m05_fee_charged_on_failure": [
+    "ts:src/ledger.ts#transfer[own,unit]"
+   ],
+   "m06_self_transfer_fee": [
+    "ts:src/ledger.ts#feeFor[own,unit]",
+    "ts:src/ledger.ts#transfer[own,unit]"
+   ],
+   "m07_zero_amount_allowed": [
+    "ts:src/ledger.ts#transfer[own,unit]"
+   ],
+   "m08_strict_funds_check": [
+    "ts:src/ledger.ts#transfer[own,unit]"
+   ],
+   "m09_receiver_pays_fee": [
+    "ts:src/ledger.ts#transfer[own,unit]"
+   ],
+   "m10_fee_to_receiver": [
+    "ts:src/ledger.ts#transfer[own,unit]"
+   ],
+   "m11_inline_fee_no_minimum": [
+    "ts:src/ledger.ts#transfer[own,unit]"
+   ],
+   "m12_total_excludes_fee": [
+    "ts:src/ledger.ts#total[own,unit]"
+   ],
+   "m13_fee_ceil": [
+    "ts:src/ledger.ts#feeFor[own,unit]"
+   ],
+   "m14_fee_no_minimum": [
+    "ts:src/ledger.ts#feeFor[own,unit]"
+   ],
+   "m15_fee_round": [
+    "ts:src/ledger.ts#feeFor[own,unit]"
+   ],
+   "m16_self_transfer_rejected": [
+    "ts:src/ledger.ts#transfer[own,unit]"
+   ],
+   "m17_self_transfer_ignores_funds": [
+    "ts:src/ledger.ts#transfer[own,unit]"
+   ],
+   "m18_free_transfers_to_fee_account": [
+    "ts:src/ledger.ts#feeFor[own,unit]"
+   ],
+   "r01_comments": [],
+   "r02_format": [],
+   "r03_reorder": [],
+   "r04_rename_helpers": [
+    "ts:src/ledger.ts#adjust[removed]",
+    "ts:src/ledger.ts#credit[added]",
+    "ts:src/ledger.ts#refuse[added]",
+    "ts:src/ledger.ts#rejected[removed]",
+    "ts:src/ledger.ts#setBalance[removed]",
+    "ts:src/ledger.ts#transfer[own,unit]",
+    "ts:src/ledger.ts#withBalance[added]"
+   ],
+   "r05_total_reduce": [
+    "ts:src/ledger.ts#total[own,unit]"
+   ],
+   "r06_fee_constants": [
+    "ts:src/ledger.ts#feeFor[own,unit]"
+   ],
+   "r07_transfer_cost": [
+    "ts:src/ledger.ts#rejected[removed]",
+    "ts:src/ledger.ts#transfer[own,unit]"
+   ],
+   "r08_delta_map": [
+    "ts:src/ledger.ts#adjust[removed]",
+    "ts:src/ledger.ts#applyDeltas[added]",
+    "ts:src/ledger.ts#applyDeltas.sums[added]",
+    "ts:src/ledger.ts#rejected[removed]",
+    "ts:src/ledger.ts#setBalance[removed]",
+    "ts:src/ledger.ts#transfer[own,unit]"
+   ],
+   "r09_balance_switch": [
+    "ts:src/ledger.ts#balance[own,unit]",
+    "ts:src/ledger.ts#total[own,unit]"
+   ],
+   "r10_arrow_helpers": [
+    "ts:src/ledger.ts#adjust[own,unit]",
+    "ts:src/ledger.ts#rejected[own,unit]",
+    "ts:src/ledger.ts#setBalance[own,unit]"
+   ],
+   "r11_split_fees": [
+    "ts:src/fees.ts#scheduleFee[added]",
+    "ts:src/ledger.ts#feeFor[own,unit]"
+   ],
+   "r12_guard_order": [
+    "ts:src/ledger.ts#feeFor[own,unit]",
+    "ts:src/ledger.ts#rejected[removed]",
+    "ts:src/ledger.ts#transfer[own,unit]"
+   ],
+   "r13_line_comments": []
+  }
+ },
+ "validation": [
+  {
+   "task": "T1",
+   "id": "ref",
+   "kind": "feature",
+   "breaks": [],
+   "breaksFeature": false,
+   "g8Fail": [],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 0,
+   "g8Ms": 392,
+   "c1Fail": 0,
+   "c1Cases": 7,
+   "c1Exit": 0,
+   "hidden": {
+    "exit": 0,
+    "total": 23,
+    "featureFail": 0,
+    "featureTotal": 16,
+    "lawFail": 0,
+    "lawTotal": 7
+   }
+  },
+  {
+   "task": "T1",
+   "id": "alt_a_minimal_far_walls",
+   "kind": "feature",
+   "breaks": [],
+   "breaksFeature": false,
+   "g8Fail": [],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 0,
+   "g8Ms": 367,
+   "c1Fail": 0,
+   "c1Cases": 7,
+   "c1Exit": 0,
+   "hidden": {
+    "exit": 0,
+    "total": 23,
+    "featureFail": 0,
+    "featureTotal": 16,
+    "lawFail": 0,
+    "lawTotal": 7
+   }
+  },
+  {
+   "task": "T1",
+   "id": "alt_b_inner_walls",
+   "kind": "feature",
+   "breaks": [],
+   "breaksFeature": false,
+   "g8Fail": [],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 0,
+   "g8Ms": 323,
+   "c1Fail": 0,
+   "c1Cases": 7,
+   "c1Exit": 0,
+   "hidden": {
+    "exit": 0,
+    "total": 23,
+    "featureFail": 0,
+    "featureTotal": 16,
+    "lawFail": 0,
+    "lawTotal": 7
+   }
+  },
+  {
+   "task": "T1",
+   "id": "alt_c_flag_cage",
+   "kind": "feature",
+   "breaks": [],
+   "breaksFeature": false,
+   "g8Fail": [],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 0,
+   "g8Ms": 203,
+   "c1Fail": 0,
+   "c1Cases": 7,
+   "c1Exit": 0,
+   "hidden": {
+    "exit": 0,
+    "total": 23,
+    "featureFail": 0,
+    "featureTotal": 16,
+    "lawFail": 0,
+    "lawTotal": 7
+   }
+  },
+  {
+   "task": "T1",
+   "id": "trap_game",
+   "kind": "trap",
+   "breaks": [
+    "L1",
+    "L2"
+   ],
+   "breaksFeature": null,
+   "g8Fail": [
+    "L1",
+    "L2"
+   ],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 1,
+   "g8Ms": 234,
+   "c1Fail": 3,
+   "c1Cases": 7,
+   "c1Exit": 1,
+   "hidden": {
+    "exit": 1,
+    "total": 23,
+    "featureFail": 0,
+    "featureTotal": 16,
+    "lawFail": 7,
+    "lawTotal": 7
+   }
+  },
+  {
+   "task": "T1",
+   "id": "m01_no_west_wall",
+   "kind": "mutant",
+   "breaks": [
+    "L1",
+    "L2"
+   ],
+   "breaksFeature": false,
+   "g8Fail": [
+    "L1",
+    "L2"
+   ],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 1,
+   "g8Ms": 251,
+   "c1Fail": 3,
+   "c1Cases": 7,
+   "c1Exit": 1,
+   "hidden": {
+    "exit": 1,
+    "total": 23,
+    "featureFail": 0,
+    "featureTotal": 16,
+    "lawFail": 6,
+    "lawTotal": 7
+   }
+  },
+  {
+   "task": "T1",
+   "id": "m02_no_north_wall",
+   "kind": "mutant",
+   "breaks": [
+    "L1",
+    "L2"
+   ],
+   "breaksFeature": false,
+   "g8Fail": [
+    "L1",
+    "L2"
+   ],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 1,
+   "g8Ms": 395,
+   "c1Fail": 3,
+   "c1Cases": 7,
+   "c1Exit": 1,
+   "hidden": {
+    "exit": 1,
+    "total": 23,
+    "featureFail": 0,
+    "featureTotal": 16,
+    "lawFail": 6,
+    "lawTotal": 7
+   }
+  },
+  {
+   "task": "T1",
+   "id": "m03_north_wall_short",
+   "kind": "mutant",
+   "breaks": [
+    "L1",
+    "L2"
+   ],
+   "breaksFeature": false,
+   "g8Fail": [
+    "L1",
+    "L2"
+   ],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 1,
+   "g8Ms": 296,
+   "c1Fail": 2,
+   "c1Cases": 7,
+   "c1Exit": 1,
+   "hidden": {
+    "exit": 1,
+    "total": 23,
+    "featureFail": 0,
+    "featureTotal": 16,
+    "lawFail": 3,
+    "lawTotal": 7
+   }
+  },
+  {
+   "task": "T1",
+   "id": "m04_west_wall_short",
+   "kind": "mutant",
+   "breaks": [
+    "L1",
+    "L2"
+   ],
+   "breaksFeature": false,
+   "g8Fail": [
+    "L1",
+    "L2"
+   ],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 1,
+   "g8Ms": 345,
+   "c1Fail": 3,
+   "c1Cases": 7,
+   "c1Exit": 1,
+   "hidden": {
+    "exit": 1,
+    "total": 23,
+    "featureFail": 0,
+    "featureTotal": 16,
+    "lawFail": 5,
+    "lawTotal": 7
+   }
+  },
+  {
+   "task": "T1",
+   "id": "m05_wrap_ignores_walls",
+   "kind": "mutant",
+   "breaks": [
+    "L1",
+    "L2"
+   ],
+   "breaksFeature": true,
+   "g8Fail": [
+    "L1",
+    "L2"
+   ],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 1,
+   "g8Ms": 410,
+   "c1Fail": 3,
+   "c1Cases": 7,
+   "c1Exit": 1,
+   "hidden": {
+    "exit": 1,
+    "total": 23,
+    "featureFail": 2,
+    "featureTotal": 16,
+    "lawFail": 4,
+    "lawTotal": 7
+   }
+  },
+  {
+   "task": "T1",
+   "id": "m06_east_wall_gap",
+   "kind": "mutant",
+   "breaks": [
+    "L1",
+    "L2"
+   ],
+   "breaksFeature": true,
+   "g8Fail": [
+    "L1",
+    "L2"
+   ],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 1,
+   "g8Ms": 276,
+   "c1Fail": 2,
+   "c1Cases": 7,
+   "c1Exit": 1,
+   "hidden": {
+    "exit": 1,
+    "total": 23,
+    "featureFail": 3,
+    "featureTotal": 16,
+    "lawFail": 2,
+    "lawTotal": 7
+   }
+  },
+  {
+   "task": "T1",
+   "id": "m07_won_by_row",
+   "kind": "mutant",
+   "breaks": [
+    "L1"
+   ],
+   "breaksFeature": false,
+   "g8Fail": [
+    "L1"
+   ],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 1,
+   "g8Ms": 218,
+   "c1Fail": 3,
+   "c1Cases": 7,
+   "c1Exit": 1,
+   "hidden": {
+    "exit": 1,
+    "total": 23,
+    "featureFail": 0,
+    "featureTotal": 16,
+    "lawFail": 6,
+    "lawTotal": 7
+   }
+  },
+  {
+   "task": "T1",
+   "id": "m08_replay_reversed",
+   "kind": "mutant",
+   "breaks": [
+    "L4"
+   ],
+   "breaksFeature": true,
+   "g8Fail": [
+    "L4"
+   ],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 1,
+   "g8Ms": 176,
+   "c1Fail": 2,
+   "c1Cases": 7,
+   "c1Exit": 1,
+   "hidden": {
+    "exit": 1,
+    "total": 23,
+    "featureFail": 2,
+    "featureTotal": 16,
+    "lawFail": 0,
+    "lawTotal": 7
+   }
+  },
+  {
+   "task": "T1",
+   "id": "m09_replay_drops_last",
+   "kind": "mutant",
+   "breaks": [
+    "L4"
+   ],
+   "breaksFeature": true,
+   "g8Fail": [
+    "L4"
+   ],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 1,
+   "g8Ms": 151,
+   "c1Fail": 2,
+   "c1Cases": 7,
+   "c1Exit": 1,
+   "hidden": {
+    "exit": 1,
+    "total": 23,
+    "featureFail": 4,
+    "featureTotal": 16,
+    "lawFail": 0,
+    "lawTotal": 7
+   }
+  },
+  {
+   "task": "T1",
+   "id": "m10_flag_moved",
+   "kind": "mutant",
+   "breaks": [
+    "L3"
+   ],
+   "breaksFeature": true,
+   "g8Fail": [
+    "L3"
+   ],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 1,
+   "g8Ms": 341,
+   "c1Fail": 1,
+   "c1Cases": 7,
+   "c1Exit": 1,
+   "hidden": {
+    "exit": 1,
+    "total": 23,
+    "featureFail": 2,
+    "featureTotal": 16,
+    "lawFail": 0,
+    "lawTotal": 7
+   }
+  },
+  {
+   "task": "T1",
+   "id": "m11_win_only_from_below",
+   "kind": "mutant",
+   "breaks": [
+    "L3"
+   ],
+   "breaksFeature": true,
+   "g8Fail": [
+    "L3"
+   ],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 1,
+   "g8Ms": 301,
+   "c1Fail": 1,
+   "c1Cases": 7,
+   "c1Exit": 1,
+   "hidden": {
+    "exit": 1,
+    "total": 23,
+    "featureFail": 2,
+    "featureTotal": 16,
+    "lawFail": 0,
+    "lawTotal": 7
+   }
+  },
+  {
+   "task": "T1",
+   "id": "m12_won_not_sticky",
+   "kind": "mutant",
+   "breaks": [],
+   "breaksFeature": true,
+   "g8Fail": [],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 0,
+   "g8Ms": 241,
+   "c1Fail": 0,
+   "c1Cases": 7,
+   "c1Exit": 0,
+   "hidden": {
+    "exit": 1,
+    "total": 23,
+    "featureFail": 1,
+    "featureTotal": 16,
+    "lawFail": 0,
+    "lawTotal": 7
+   }
+  },
+  {
+   "task": "T1",
+   "id": "m13_no_vertical_wrap",
+   "kind": "mutant",
+   "breaks": [],
+   "breaksFeature": true,
+   "g8Fail": [],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 0,
+   "g8Ms": 316,
+   "c1Fail": 0,
+   "c1Cases": 7,
+   "c1Exit": 0,
+   "hidden": {
+    "exit": 1,
+    "total": 23,
+    "featureFail": 5,
+    "featureTotal": 16,
+    "lawFail": 0,
+    "lawTotal": 7
+   }
+  },
+  {
+   "task": "T1",
+   "id": "m14_wrap_right_off_by_one",
+   "kind": "mutant",
+   "breaks": [],
+   "breaksFeature": true,
+   "g8Fail": [],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 0,
+   "g8Ms": 334,
+   "c1Fail": 0,
+   "c1Cases": 7,
+   "c1Exit": 0,
+   "hidden": {
+    "exit": 1,
+    "total": 23,
+    "featureFail": 4,
+    "featureTotal": 16,
+    "lawFail": 0,
+    "lawTotal": 7
+   }
+  },
+  {
+   "task": "T1",
+   "id": "m15_wrap_left_wrong_dimension",
+   "kind": "mutant",
+   "breaks": [],
+   "breaksFeature": true,
+   "g8Fail": [],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 0,
+   "g8Ms": 370,
+   "c1Fail": 0,
+   "c1Cases": 7,
+   "c1Exit": 0,
+   "hidden": {
+    "exit": 1,
+    "total": 23,
+    "featureFail": 4,
+    "featureTotal": 16,
+    "lawFail": 0,
+    "lawTotal": 7
+   }
+  },
+  {
+   "task": "T1",
+   "id": "m16_wall_in_open_row",
+   "kind": "mutant",
+   "breaks": [],
+   "breaksFeature": true,
+   "g8Fail": [],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 0,
+   "g8Ms": 300,
+   "c1Fail": 0,
+   "c1Cases": 7,
+   "c1Exit": 0,
+   "hidden": {
+    "exit": 1,
+    "total": 23,
+    "featureFail": 4,
+    "featureTotal": 16,
+    "lawFail": 0,
+    "lawTotal": 7
+   }
+  },
+  {
+   "task": "T1",
+   "id": "m17_down_wrap_to_row_1",
+   "kind": "mutant",
+   "breaks": [],
+   "breaksFeature": true,
+   "g8Fail": [],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 0,
+   "g8Ms": 225,
+   "c1Fail": 0,
+   "c1Cases": 7,
+   "c1Exit": 0,
+   "hidden": {
+    "exit": 1,
+    "total": 23,
+    "featureFail": 4,
+    "featureTotal": 16,
+    "lawFail": 0,
+    "lawTotal": 7
+   }
+  },
+  {
+   "task": "T1",
+   "id": "m18_north_wall_wrong_row",
+   "kind": "mutant",
+   "breaks": [
+    "L1",
+    "L2"
+   ],
+   "breaksFeature": true,
+   "g8Fail": [
+    "L1",
+    "L2"
+   ],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 1,
+   "g8Ms": 252,
+   "c1Fail": 3,
+   "c1Cases": 7,
+   "c1Exit": 1,
+   "hidden": {
+    "exit": 1,
+    "total": 23,
+    "featureFail": 2,
+    "featureTotal": 16,
+    "lawFail": 5,
+    "lawTotal": 7
+   }
+  },
+  {
+   "task": "T1",
+   "id": "m19_replay_stops_when_blocked",
+   "kind": "mutant",
+   "breaks": [
+    "L4"
+   ],
+   "breaksFeature": true,
+   "g8Fail": [
+    "L4"
+   ],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 1,
+   "g8Ms": 188,
+   "c1Fail": 2,
+   "c1Cases": 7,
+   "c1Exit": 1,
+   "hidden": {
+    "exit": 1,
+    "total": 23,
+    "featureFail": 1,
+    "featureTotal": 16,
+    "lawFail": 0,
+    "lawTotal": 7
+   }
+  },
+  {
+   "task": "T1",
+   "id": "m20_iswon_by_position",
+   "kind": "mutant",
+   "breaks": [],
+   "breaksFeature": true,
+   "g8Fail": [],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 0,
+   "g8Ms": 293,
+   "c1Fail": 0,
+   "c1Cases": 7,
+   "c1Exit": 0,
+   "hidden": {
+    "exit": 1,
+    "total": 23,
+    "featureFail": 2,
+    "featureTotal": 16,
+    "lawFail": 0,
+    "lawTotal": 7
+   }
+  },
+  {
+   "task": "T1",
+   "id": "r01_comments",
+   "kind": "refactor",
+   "breaks": [],
+   "breaksFeature": false,
+   "g8Fail": [],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 0,
+   "g8Ms": 254,
+   "c1Fail": 0,
+   "c1Cases": 7,
+   "c1Exit": 0,
+   "hidden": {
+    "exit": 0,
+    "total": 23,
+    "featureFail": 0,
+    "featureTotal": 16,
+    "lawFail": 0,
+    "lawTotal": 7
+   }
+  },
+  {
+   "task": "T1",
+   "id": "r02_format",
+   "kind": "refactor",
+   "breaks": [],
+   "breaksFeature": false,
+   "g8Fail": [],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 0,
+   "g8Ms": 265,
+   "c1Fail": 0,
+   "c1Cases": 7,
+   "c1Exit": 0,
+   "hidden": {
+    "exit": 0,
+    "total": 23,
+    "featureFail": 0,
+    "featureTotal": 16,
+    "lawFail": 0,
+    "lawTotal": 7
+   }
+  },
+  {
+   "task": "T1",
+   "id": "r03_reorder",
+   "kind": "refactor",
+   "breaks": [],
+   "breaksFeature": false,
+   "g8Fail": [],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 0,
+   "g8Ms": 240,
+   "c1Fail": 0,
+   "c1Cases": 7,
+   "c1Exit": 0,
+   "hidden": {
+    "exit": 0,
+    "total": 23,
+    "featureFail": 0,
+    "featureTotal": 16,
+    "lawFail": 0,
+    "lawTotal": 7
+   }
+  },
+  {
+   "task": "T1",
+   "id": "r04_rename_helpers",
+   "kind": "refactor",
+   "breaks": [],
+   "breaksFeature": false,
+   "g8Fail": [],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 0,
+   "g8Ms": 241,
+   "c1Fail": 0,
+   "c1Cases": 7,
+   "c1Exit": 0,
+   "hidden": {
+    "exit": 0,
+    "total": 23,
+    "featureFail": 0,
+    "featureTotal": 16,
+    "lawFail": 0,
+    "lawTotal": 7
+   }
+  },
+  {
+   "task": "T1",
+   "id": "r05_inline_targets",
+   "kind": "refactor",
+   "breaks": [],
+   "breaksFeature": false,
+   "g8Fail": [],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 0,
+   "g8Ms": 247,
+   "c1Fail": 0,
+   "c1Cases": 7,
+   "c1Exit": 0,
+   "hidden": {
+    "exit": 0,
+    "total": 23,
+    "featureFail": 0,
+    "featureTotal": 16,
+    "lawFail": 0,
+    "lawTotal": 7
+   }
+  },
+  {
+   "task": "T1",
+   "id": "r06_walls_table",
+   "kind": "refactor",
+   "breaks": [],
+   "breaksFeature": false,
+   "g8Fail": [],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 0,
+   "g8Ms": 432,
+   "c1Fail": 0,
+   "c1Cases": 7,
+   "c1Exit": 0,
+   "hidden": {
+    "exit": 0,
+    "total": 23,
+    "featureFail": 0,
+    "featureTotal": 16,
+    "lawFail": 0,
+    "lawTotal": 7
+   }
+  },
+  {
+   "task": "T1",
+   "id": "r07_arrow_helpers",
+   "kind": "refactor",
+   "breaks": [],
+   "breaksFeature": false,
+   "g8Fail": [],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 0,
+   "g8Ms": 294,
+   "c1Fail": 0,
+   "c1Cases": 7,
+   "c1Exit": 0,
+   "hidden": {
+    "exit": 0,
+    "total": 23,
+    "featureFail": 0,
+    "featureTotal": 16,
+    "lawFail": 0,
+    "lawTotal": 7
+   }
+  },
+  {
+   "task": "T1",
+   "id": "r08_replay_reduce",
+   "kind": "refactor",
+   "breaks": [],
+   "breaksFeature": false,
+   "g8Fail": [],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 0,
+   "g8Ms": 241,
+   "c1Fail": 0,
+   "c1Cases": 7,
+   "c1Exit": 0,
+   "hidden": {
+    "exit": 0,
+    "total": 23,
+    "featureFail": 0,
+    "featureTotal": 16,
+    "lawFail": 0,
+    "lawTotal": 7
+   }
+  },
+  {
+   "task": "T1",
+   "id": "r09_split_level",
+   "kind": "refactor",
+   "breaks": [],
+   "breaksFeature": false,
+   "g8Fail": [],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 0,
+   "g8Ms": 277,
+   "c1Fail": 0,
+   "c1Cases": 7,
+   "c1Exit": 0,
+   "hidden": {
+    "exit": 0,
+    "total": 23,
+    "featureFail": 0,
+    "featureTotal": 16,
+    "lawFail": 0,
+    "lawTotal": 7
+   }
+  },
+  {
+   "task": "T1",
+   "id": "r10_step_table",
+   "kind": "refactor",
+   "breaks": [],
+   "breaksFeature": false,
+   "g8Fail": [],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 0,
+   "g8Ms": 261,
+   "c1Fail": 0,
+   "c1Cases": 7,
+   "c1Exit": 0,
+   "hidden": {
+    "exit": 0,
+    "total": 23,
+    "featureFail": 0,
+    "featureTotal": 16,
+    "lawFail": 0,
+    "lawTotal": 7
+   }
+  },
+  {
+   "task": "T1",
+   "id": "r11_rename_locals",
+   "kind": "refactor",
+   "breaks": [],
+   "breaksFeature": false,
+   "g8Fail": [],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 0,
+   "g8Ms": 448,
+   "c1Fail": 0,
+   "c1Cases": 7,
+   "c1Exit": 0,
+   "hidden": {
+    "exit": 0,
+    "total": 23,
+    "featureFail": 0,
+    "featureTotal": 16,
+    "lawFail": 0,
+    "lawTotal": 7
+   }
+  },
+  {
+   "task": "T1",
+   "id": "r12_expressions",
+   "kind": "refactor",
+   "breaks": [],
+   "breaksFeature": false,
+   "g8Fail": [],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 0,
+   "g8Ms": 342,
+   "c1Fail": 0,
+   "c1Cases": 7,
+   "c1Exit": 0,
+   "hidden": {
+    "exit": 0,
+    "total": 23,
+    "featureFail": 0,
+    "featureTotal": 16,
+    "lawFail": 0,
+    "lawTotal": 7
+   }
+  },
+  {
+   "task": "T1",
+   "id": "r13_line_comments",
+   "kind": "refactor",
+   "breaks": [],
+   "breaksFeature": false,
+   "g8Fail": [],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 0,
+   "g8Ms": 281,
+   "c1Fail": 0,
+   "c1Cases": 7,
+   "c1Exit": 0,
+   "hidden": {
+    "exit": 0,
+    "total": 23,
+    "featureFail": 0,
+    "featureTotal": 16,
+    "lawFail": 0,
+    "lawTotal": 7
+   }
+  },
+  {
+   "task": "T3",
+   "id": "ref",
+   "kind": "feature",
+   "breaks": [],
+   "breaksFeature": false,
+   "g8Fail": [],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 0,
+   "g8Ms": 8127,
+   "c1Fail": 0,
+   "c1Cases": 7,
+   "c1Exit": 0,
+   "hidden": {
+    "exit": 0,
+    "total": 24,
+    "featureFail": 0,
+    "featureTotal": 14,
+    "lawFail": 0,
+    "lawTotal": 10
+   }
+  },
+  {
+   "task": "T3",
+   "id": "trap_audit",
+   "kind": "trap",
+   "breaks": [
+    "L0",
+    "L1",
+    "L2",
+    "L3",
+    "L4",
+    "L5"
+   ],
+   "breaksFeature": null,
+   "g8Fail": [
+    "L0",
+    "L1",
+    "L2",
+    "L3",
+    "L4",
+    "L5"
+   ],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 1,
+   "g8Ms": 313,
+   "c1Fail": 6,
+   "c1Cases": 7,
+   "c1Exit": 1,
+   "hidden": {
+    "exit": 1,
+    "total": 24,
+    "featureFail": 1,
+    "featureTotal": 14,
+    "lawFail": 7,
+    "lawTotal": 10
+   }
+  },
+  {
+   "task": "T3",
+   "id": "m01_delete_filter",
+   "kind": "mutant",
+   "breaks": [
+    "L1",
+    "L2",
+    "L3",
+    "L4",
+    "L5"
+   ],
+   "breaksFeature": true,
+   "g8Fail": [
+    "L1",
+    "L2",
+    "L3",
+    "L4",
+    "L5"
+   ],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 1,
+   "g8Ms": 1363,
+   "c1Fail": 5,
+   "c1Cases": 7,
+   "c1Exit": 1,
+   "hidden": {
+    "exit": 1,
+    "total": 24,
+    "featureFail": 5,
+    "featureTotal": 14,
+    "lawFail": 7,
+    "lawTotal": 10
+   }
+  },
+  {
+   "task": "T3",
+   "id": "m02_delete_nextid",
+   "kind": "mutant",
+   "breaks": [
+    "L0",
+    "L1",
+    "L2",
+    "L3",
+    "L4",
+    "L5"
+   ],
+   "breaksFeature": true,
+   "g8Fail": [
+    "L0",
+    "L1",
+    "L2",
+    "L3",
+    "L4",
+    "L5"
+   ],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 1,
+   "g8Ms": 313,
+   "c1Fail": 6,
+   "c1Cases": 7,
+   "c1Exit": 1,
+   "hidden": {
+    "exit": 1,
+    "total": 24,
+    "featureFail": 1,
+    "featureTotal": 14,
+    "lawFail": 7,
+    "lawTotal": 10
+   }
+  },
+  {
+   "task": "T3",
+   "id": "m03_boundary_strict",
+   "kind": "mutant",
+   "breaks": [],
+   "breaksFeature": true,
+   "g8Fail": [],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 0,
+   "g8Ms": 7986,
+   "c1Fail": 0,
+   "c1Cases": 7,
+   "c1Exit": 0,
+   "hidden": {
+    "exit": 1,
+    "total": 24,
+    "featureFail": 5,
+    "featureTotal": 14,
+    "lawFail": 0,
+    "lawTotal": 10
+   }
+  },
+  {
+   "task": "T3",
+   "id": "m04_boundary_loose",
+   "kind": "mutant",
+   "breaks": [
+    "L4",
+    "L5"
+   ],
+   "breaksFeature": true,
+   "g8Fail": [
+    "L4",
+    "L5"
+   ],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 1,
+   "g8Ms": 6028,
+   "c1Fail": 2,
+   "c1Cases": 7,
+   "c1Exit": 1,
+   "hidden": {
+    "exit": 1,
+    "total": 24,
+    "featureFail": 3,
+    "featureTotal": 14,
+    "lawFail": 3,
+    "lawTotal": 10
+   }
+  },
+  {
+   "task": "T3",
+   "id": "m05_reversed",
+   "kind": "mutant",
+   "breaks": [
+    "L4",
+    "L5"
+   ],
+   "breaksFeature": true,
+   "g8Fail": [
+    "L4",
+    "L5"
+   ],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 1,
+   "g8Ms": 6034,
+   "c1Fail": 2,
+   "c1Cases": 7,
+   "c1Exit": 1,
+   "hidden": {
+    "exit": 1,
+    "total": 24,
+    "featureFail": 11,
+    "featureTotal": 14,
+    "lawFail": 4,
+    "lawTotal": 10
+   }
+  },
+  {
+   "task": "T3",
+   "id": "m06_redact_all",
+   "kind": "mutant",
+   "breaks": [
+    "L4",
+    "L5"
+   ],
+   "breaksFeature": true,
+   "g8Fail": [
+    "L4",
+    "L5"
+   ],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 1,
+   "g8Ms": 5168,
+   "c1Fail": 2,
+   "c1Cases": 7,
+   "c1Exit": 1,
+   "hidden": {
+    "exit": 1,
+    "total": 24,
+    "featureFail": 6,
+    "featureTotal": 14,
+    "lawFail": 4,
+    "lawTotal": 10
+   }
+  },
+  {
+   "task": "T3",
+   "id": "m07_meta_timestamp",
+   "kind": "mutant",
+   "breaks": [
+    "L3"
+   ],
+   "breaksFeature": false,
+   "g8Fail": [
+    "L3",
+    "L4"
+   ],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 1,
+   "g8Ms": 5885,
+   "c1Fail": 1,
+   "c1Cases": 7,
+   "c1Exit": 1,
+   "hidden": {
+    "exit": 1,
+    "total": 24,
+    "featureFail": 0,
+    "featureTotal": 14,
+    "lawFail": 2,
+    "lawTotal": 10
+   }
+  },
+  {
+   "task": "T3",
+   "id": "m08_meta_actor",
+   "kind": "mutant",
+   "breaks": [
+    "L3"
+   ],
+   "breaksFeature": false,
+   "g8Fail": [
+    "L3",
+    "L4"
+   ],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 1,
+   "g8Ms": 6404,
+   "c1Fail": 1,
+   "c1Cases": 7,
+   "c1Exit": 1,
+   "hidden": {
+    "exit": 1,
+    "total": 24,
+    "featureFail": 0,
+    "featureTotal": 14,
+    "lawFail": 2,
+    "lawTotal": 10
+   }
+  },
+  {
+   "task": "T3",
+   "id": "m09_mutate_in_place",
+   "kind": "mutant",
+   "breaks": [
+    "L0",
+    "L4",
+    "L5"
+   ],
+   "breaksFeature": false,
+   "g8Fail": [
+    "L0",
+    "L5"
+   ],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 1,
+   "g8Ms": 4014,
+   "c1Fail": 3,
+   "c1Cases": 7,
+   "c1Exit": 1,
+   "hidden": {
+    "exit": 1,
+    "total": 24,
+    "featureFail": 0,
+    "featureTotal": 14,
+    "lawFail": 2,
+    "lawTotal": 10
+   }
+  },
+  {
+   "task": "T3",
+   "id": "m10_list_only",
+   "kind": "mutant",
+   "breaks": [
+    "L0"
+   ],
+   "breaksFeature": true,
+   "g8Fail": [
+    "L0"
+   ],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 1,
+   "g8Ms": 3912,
+   "c1Fail": 1,
+   "c1Cases": 7,
+   "c1Exit": 1,
+   "hidden": {
+    "exit": 1,
+    "total": 24,
+    "featureFail": 7,
+    "featureTotal": 14,
+    "lawFail": 2,
+    "lawTotal": 10
+   }
+  },
+  {
+   "task": "T3",
+   "id": "m11_get_hides",
+   "kind": "mutant",
+   "breaks": [
+    "L0"
+   ],
+   "breaksFeature": false,
+   "g8Fail": [
+    "L0"
+   ],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 1,
+   "g8Ms": 3419,
+   "c1Fail": 1,
+   "c1Cases": 7,
+   "c1Exit": 1,
+   "hidden": {
+    "exit": 1,
+    "total": 24,
+    "featureFail": 0,
+    "featureTotal": 14,
+    "lawFail": 3,
+    "lawTotal": 10
+   }
+  },
+  {
+   "task": "T3",
+   "id": "m12_list_hides",
+   "kind": "mutant",
+   "breaks": [
+    "L0",
+    "L1",
+    "L2",
+    "L3",
+    "L4",
+    "L5"
+   ],
+   "breaksFeature": true,
+   "g8Fail": [
+    "L0",
+    "L1",
+    "L2",
+    "L3",
+    "L4",
+    "L5"
+   ],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 1,
+   "g8Ms": 314,
+   "c1Fail": 6,
+   "c1Cases": 7,
+   "c1Exit": 1,
+   "hidden": {
+    "exit": 1,
+    "total": 24,
+    "featureFail": 1,
+    "featureTotal": 14,
+    "lawFail": 7,
+    "lawTotal": 10
+   }
+  },
+  {
+   "task": "T3",
+   "id": "m13_sorted_stop",
+   "kind": "mutant",
+   "breaks": [],
+   "breaksFeature": true,
+   "g8Fail": [],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 0,
+   "g8Ms": 7398,
+   "c1Fail": 0,
+   "c1Cases": 7,
+   "c1Exit": 0,
+   "hidden": {
+    "exit": 1,
+    "total": 24,
+    "featureFail": 2,
+    "featureTotal": 14,
+    "lawFail": 0,
+    "lawTotal": 10
+   }
+  },
+  {
+   "task": "T3",
+   "id": "m14_sorted_prefix",
+   "kind": "mutant",
+   "breaks": [
+    "L4",
+    "L5"
+   ],
+   "breaksFeature": true,
+   "g8Fail": [
+    "L4",
+    "L5"
+   ],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 1,
+   "g8Ms": 5189,
+   "c1Fail": 2,
+   "c1Cases": 7,
+   "c1Exit": 1,
+   "hidden": {
+    "exit": 1,
+    "total": 24,
+    "featureFail": 1,
+    "featureTotal": 14,
+    "lawFail": 3,
+    "lawTotal": 10
+   }
+  },
+  {
+   "task": "T3",
+   "id": "m15_flag_only",
+   "kind": "mutant",
+   "breaks": [],
+   "breaksFeature": true,
+   "g8Fail": [],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 0,
+   "g8Ms": 9912,
+   "c1Fail": 0,
+   "c1Cases": 7,
+   "c1Exit": 0,
+   "hidden": {
+    "exit": 1,
+    "total": 24,
+    "featureFail": 8,
+    "featureTotal": 14,
+    "lawFail": 0,
+    "lawTotal": 10
+   }
+  },
+  {
+   "task": "T3",
+   "id": "m16_retention_zero",
+   "kind": "mutant",
+   "breaks": [],
+   "breaksFeature": true,
+   "g8Fail": [],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 0,
+   "g8Ms": 7683,
+   "c1Fail": 0,
+   "c1Cases": 7,
+   "c1Exit": 0,
+   "hidden": {
+    "exit": 1,
+    "total": 24,
+    "featureFail": 2,
+    "featureTotal": 14,
+    "lawFail": 0,
+    "lawTotal": 10
+   }
+  },
+  {
+   "task": "T3",
+   "id": "m17_id_from_live",
+   "kind": "mutant",
+   "breaks": [
+    "L5"
+   ],
+   "breaksFeature": true,
+   "g8Fail": [
+    "L5"
+   ],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 1,
+   "g8Ms": 7219,
+   "c1Fail": 1,
+   "c1Cases": 7,
+   "c1Exit": 1,
+   "hidden": {
+    "exit": 1,
+    "total": 24,
+    "featureFail": 1,
+    "featureTotal": 14,
+    "lawFail": 2,
+    "lawTotal": 10
+   }
+  },
+  {
+   "task": "T3",
+   "id": "m18_truncate_head",
+   "kind": "mutant",
+   "breaks": [
+    "L1",
+    "L2",
+    "L3",
+    "L4",
+    "L5"
+   ],
+   "breaksFeature": true,
+   "g8Fail": [
+    "L1",
+    "L2",
+    "L3",
+    "L4",
+    "L5"
+   ],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 1,
+   "g8Ms": 1361,
+   "c1Fail": 5,
+   "c1Cases": 7,
+   "c1Exit": 1,
+   "hidden": {
+    "exit": 1,
+    "total": 24,
+    "featureFail": 7,
+    "featureTotal": 14,
+    "lawFail": 6,
+    "lawTotal": 10
+   }
+  },
+  {
+   "task": "T3",
+   "id": "m19_retention_days",
+   "kind": "mutant",
+   "breaks": [],
+   "breaksFeature": true,
+   "g8Fail": [],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 0,
+   "g8Ms": 8536,
+   "c1Fail": 0,
+   "c1Cases": 7,
+   "c1Exit": 0,
+   "hidden": {
+    "exit": 1,
+    "total": 24,
+    "featureFail": 7,
+    "featureTotal": 14,
+    "lawFail": 0,
+    "lawTotal": 10
+   }
+  },
+  {
+   "task": "T3",
+   "id": "r01_comments",
+   "kind": "refactor",
+   "breaks": [],
+   "breaksFeature": false,
+   "g8Fail": [],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 0,
+   "g8Ms": 8588,
+   "c1Fail": 0,
+   "c1Cases": 7,
+   "c1Exit": 0,
+   "hidden": {
+    "exit": 0,
+    "total": 24,
+    "featureFail": 0,
+    "featureTotal": 14,
+    "lawFail": 0,
+    "lawTotal": 10
+   }
+  },
+  {
+   "task": "T3",
+   "id": "r02_format",
+   "kind": "refactor",
+   "breaks": [],
+   "breaksFeature": false,
+   "g8Fail": [],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 0,
+   "g8Ms": 9399,
+   "c1Fail": 0,
+   "c1Cases": 7,
+   "c1Exit": 0,
+   "hidden": {
+    "exit": 0,
+    "total": 24,
+    "featureFail": 0,
+    "featureTotal": 14,
+    "lawFail": 0,
+    "lawTotal": 10
+   }
+  },
+  {
+   "task": "T3",
+   "id": "r03_reorder",
+   "kind": "refactor",
+   "breaks": [],
+   "breaksFeature": false,
+   "g8Fail": [],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 0,
+   "g8Ms": 8422,
+   "c1Fail": 0,
+   "c1Cases": 7,
+   "c1Exit": 0,
+   "hidden": {
+    "exit": 0,
+    "total": 24,
+    "featureFail": 0,
+    "featureTotal": 14,
+    "lawFail": 0,
+    "lawTotal": 10
+   }
+  },
+  {
+   "task": "T3",
+   "id": "r04_rename_const",
+   "kind": "refactor",
+   "breaks": [],
+   "breaksFeature": false,
+   "g8Fail": [],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 0,
+   "g8Ms": 7816,
+   "c1Fail": 0,
+   "c1Cases": 7,
+   "c1Exit": 0,
+   "hidden": {
+    "exit": 0,
+    "total": 24,
+    "featureFail": 0,
+    "featureTotal": 14,
+    "lawFail": 0,
+    "lawTotal": 10
+   }
+  },
+  {
+   "task": "T3",
+   "id": "r05_purge_loop",
+   "kind": "refactor",
+   "breaks": [],
+   "breaksFeature": false,
+   "g8Fail": [],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 0,
+   "g8Ms": 9228,
+   "c1Fail": 0,
+   "c1Cases": 7,
+   "c1Exit": 0,
+   "hidden": {
+    "exit": 0,
+    "total": 24,
+    "featureFail": 0,
+    "featureTotal": 14,
+    "lawFail": 0,
+    "lawTotal": 10
+   }
+  },
+  {
+   "task": "T3",
+   "id": "r06_extract_expired",
+   "kind": "refactor",
+   "breaks": [],
+   "breaksFeature": false,
+   "g8Fail": [],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 0,
+   "g8Ms": 7661,
+   "c1Fail": 0,
+   "c1Cases": 7,
+   "c1Exit": 0,
+   "hidden": {
+    "exit": 0,
+    "total": 24,
+    "featureFail": 0,
+    "featureTotal": 14,
+    "lawFail": 0,
+    "lawTotal": 10
+   }
+  },
+  {
+   "task": "T3",
+   "id": "r07_extract_redact",
+   "kind": "refactor",
+   "breaks": [],
+   "breaksFeature": false,
+   "g8Fail": [],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 0,
+   "g8Ms": 8382,
+   "c1Fail": 0,
+   "c1Cases": 7,
+   "c1Exit": 0,
+   "hidden": {
+    "exit": 0,
+    "total": 24,
+    "featureFail": 0,
+    "featureTotal": 14,
+    "lawFail": 0,
+    "lawTotal": 10
+   }
+  },
+  {
+   "task": "T3",
+   "id": "r08_get_expression",
+   "kind": "refactor",
+   "breaks": [],
+   "breaksFeature": false,
+   "g8Fail": [],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 0,
+   "g8Ms": 8212,
+   "c1Fail": 0,
+   "c1Cases": 7,
+   "c1Exit": 0,
+   "hidden": {
+    "exit": 0,
+    "total": 24,
+    "featureFail": 0,
+    "featureTotal": 14,
+    "lawFail": 0,
+    "lawTotal": 10
+   }
+  },
+  {
+   "task": "T3",
+   "id": "r09_list_slice",
+   "kind": "refactor",
+   "breaks": [],
+   "breaksFeature": false,
+   "g8Fail": [],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 0,
+   "g8Ms": 9368,
+   "c1Fail": 0,
+   "c1Cases": 7,
+   "c1Exit": 0,
+   "hidden": {
+    "exit": 0,
+    "total": 24,
+    "featureFail": 0,
+    "featureTotal": 14,
+    "lawFail": 0,
+    "lawTotal": 10
+   }
+  },
+  {
+   "task": "T3",
+   "id": "r10_append_fields",
+   "kind": "refactor",
+   "breaks": [],
+   "breaksFeature": false,
+   "g8Fail": [],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 0,
+   "g8Ms": 10037,
+   "c1Fail": 0,
+   "c1Cases": 7,
+   "c1Exit": 0,
+   "hidden": {
+    "exit": 0,
+    "total": 24,
+    "featureFail": 0,
+    "featureTotal": 14,
+    "lawFail": 0,
+    "lawTotal": 10
+   }
+  },
+  {
+   "task": "T3",
+   "id": "r11_with_entries",
+   "kind": "refactor",
+   "breaks": [],
+   "breaksFeature": false,
+   "g8Fail": [],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 0,
+   "g8Ms": 8423,
+   "c1Fail": 0,
+   "c1Cases": 7,
+   "c1Exit": 0,
+   "hidden": {
+    "exit": 0,
+    "total": 24,
+    "featureFail": 0,
+    "featureTotal": 14,
+    "lawFail": 0,
+    "lawTotal": 10
+   }
+  },
+  {
+   "task": "T3",
+   "id": "r12_split_retention",
+   "kind": "refactor",
+   "breaks": [],
+   "breaksFeature": false,
+   "g8Fail": [],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 0,
+   "g8Ms": 10409,
+   "c1Fail": 0,
+   "c1Cases": 7,
+   "c1Exit": 0,
+   "hidden": {
+    "exit": 0,
+    "total": 24,
+    "featureFail": 0,
+    "featureTotal": 14,
+    "lawFail": 0,
+    "lawTotal": 10
+   }
+  },
+  {
+   "task": "T3",
+   "id": "r13_line_comments",
+   "kind": "refactor",
+   "breaks": [],
+   "breaksFeature": false,
+   "g8Fail": [],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 0,
+   "g8Ms": 9128,
+   "c1Fail": 0,
+   "c1Cases": 7,
+   "c1Exit": 0,
+   "hidden": {
+    "exit": 0,
+    "total": 24,
+    "featureFail": 0,
+    "featureTotal": 14,
+    "lawFail": 0,
+    "lawTotal": 10
+   }
+  },
+  {
+   "task": "T4",
+   "id": "ref",
+   "kind": "feature",
+   "breaks": [],
+   "breaksFeature": false,
+   "g8Fail": [],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 0,
+   "g8Ms": 1073,
+   "c1Fail": 0,
+   "c1Cases": 6,
+   "c1Exit": 0,
+   "hidden": {
+    "exit": 0,
+    "total": 26,
+    "featureFail": 0,
+    "featureTotal": 14,
+    "lawFail": 0,
+    "lawTotal": 12
+   }
+  },
+  {
+   "task": "T4",
+   "id": "trap_stale_all",
+   "kind": "trap",
+   "breaks": [
+    "L1",
+    "L4",
+    "L5"
+   ],
+   "breaksFeature": null,
+   "g8Fail": [
+    "L1",
+    "L4",
+    "L5"
+   ],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 1,
+   "g8Ms": 785,
+   "c1Fail": 3,
+   "c1Cases": 6,
+   "c1Exit": 1,
+   "hidden": {
+    "exit": 1,
+    "total": 26,
+    "featureFail": 4,
+    "featureTotal": 14,
+    "lawFail": 8,
+    "lawTotal": 12
+   }
+  },
+  {
+   "task": "T4",
+   "id": "trap_stale_self",
+   "kind": "trap",
+   "breaks": [
+    "L1",
+    "L5"
+   ],
+   "breaksFeature": null,
+   "g8Fail": [
+    "L1",
+    "L5"
+   ],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 1,
+   "g8Ms": 798,
+   "c1Fail": 2,
+   "c1Cases": 6,
+   "c1Exit": 1,
+   "hidden": {
+    "exit": 1,
+    "total": 26,
+    "featureFail": 2,
+    "featureTotal": 14,
+    "lawFail": 5,
+    "lawTotal": 12
+   }
+  },
+  {
+   "task": "T4",
+   "id": "m01_stale_self",
+   "kind": "mutant",
+   "breaks": [
+    "L1",
+    "L5"
+   ],
+   "breaksFeature": false,
+   "g8Fail": [
+    "L1",
+    "L5"
+   ],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 1,
+   "g8Ms": 851,
+   "c1Fail": 2,
+   "c1Cases": 6,
+   "c1Exit": 1,
+   "hidden": {
+    "exit": 1,
+    "total": 26,
+    "featureFail": 2,
+    "featureTotal": 14,
+    "lawFail": 5,
+    "lawTotal": 12
+   }
+  },
+  {
+   "task": "T4",
+   "id": "m02_stale_fee_balance",
+   "kind": "mutant",
+   "breaks": [
+    "L1",
+    "L4"
+   ],
+   "breaksFeature": false,
+   "g8Fail": [
+    "L1",
+    "L4"
+   ],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 1,
+   "g8Ms": 766,
+   "c1Fail": 2,
+   "c1Cases": 6,
+   "c1Exit": 1,
+   "hidden": {
+    "exit": 1,
+    "total": 26,
+    "featureFail": 2,
+    "featureTotal": 14,
+    "lawFail": 6,
+    "lawTotal": 12
+   }
+  },
+  {
+   "task": "T4",
+   "id": "m03_fee_not_credited",
+   "kind": "mutant",
+   "breaks": [
+    "L1",
+    "L4"
+   ],
+   "breaksFeature": false,
+   "g8Fail": [
+    "L1",
+    "L4"
+   ],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 1,
+   "g8Ms": 791,
+   "c1Fail": 2,
+   "c1Cases": 6,
+   "c1Exit": 1,
+   "hidden": {
+    "exit": 1,
+    "total": 26,
+    "featureFail": 7,
+    "featureTotal": 14,
+    "lawFail": 6,
+    "lawTotal": 12
+   }
+  },
+  {
+   "task": "T4",
+   "id": "m04_funds_check_without_fee",
+   "kind": "mutant",
+   "breaks": [
+    "L2",
+    "L4"
+   ],
+   "breaksFeature": false,
+   "g8Fail": [
+    "L1",
+    "L2",
+    "L4"
+   ],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 1,
+   "g8Ms": 795,
+   "c1Fail": 2,
+   "c1Cases": 6,
+   "c1Exit": 1,
+   "hidden": {
+    "exit": 1,
+    "total": 26,
+    "featureFail": 2,
+    "featureTotal": 14,
+    "lawFail": 3,
+    "lawTotal": 12
+   }
+  },
+  {
+   "task": "T4",
+   "id": "m05_fee_charged_on_failure",
+   "kind": "mutant",
+   "breaks": [
+    "L3"
+   ],
+   "breaksFeature": false,
+   "g8Fail": [
+    "L3"
+   ],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 1,
+   "g8Ms": 989,
+   "c1Fail": 1,
+   "c1Cases": 6,
+   "c1Exit": 1,
+   "hidden": {
+    "exit": 1,
+    "total": 26,
+    "featureFail": 1,
+    "featureTotal": 14,
+    "lawFail": 2,
+    "lawTotal": 12
+   }
+  },
+  {
+   "task": "T4",
+   "id": "m06_self_transfer_fee",
+   "kind": "mutant",
+   "breaks": [
+    "L5"
+   ],
+   "breaksFeature": false,
+   "g8Fail": [
+    "L5"
+   ],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 1,
+   "g8Ms": 948,
+   "c1Fail": 1,
+   "c1Cases": 6,
+   "c1Exit": 1,
+   "hidden": {
+    "exit": 1,
+    "total": 26,
+    "featureFail": 3,
+    "featureTotal": 14,
+    "lawFail": 2,
+    "lawTotal": 12
+   }
+  },
+  {
+   "task": "T4",
+   "id": "m07_zero_amount_allowed",
+   "kind": "mutant",
+   "breaks": [
+    "L4"
+   ],
+   "breaksFeature": false,
+   "g8Fail": [
+    "L4"
+   ],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 1,
+   "g8Ms": 1026,
+   "c1Fail": 1,
+   "c1Cases": 6,
+   "c1Exit": 1,
+   "hidden": {
+    "exit": 1,
+    "total": 26,
+    "featureFail": 3,
+    "featureTotal": 14,
+    "lawFail": 1,
+    "lawTotal": 12
+   }
+  },
+  {
+   "task": "T4",
+   "id": "m08_strict_funds_check",
+   "kind": "mutant",
+   "breaks": [
+    "L4"
+   ],
+   "breaksFeature": false,
+   "g8Fail": [
+    "L4"
+   ],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 1,
+   "g8Ms": 861,
+   "c1Fail": 1,
+   "c1Cases": 6,
+   "c1Exit": 1,
+   "hidden": {
+    "exit": 1,
+    "total": 26,
+    "featureFail": 3,
+    "featureTotal": 14,
+    "lawFail": 2,
+    "lawTotal": 12
+   }
+  },
+  {
+   "task": "T4",
+   "id": "m09_receiver_pays_fee",
+   "kind": "mutant",
+   "breaks": [
+    "L4"
+   ],
+   "breaksFeature": false,
+   "g8Fail": [
+    "L4"
+   ],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 1,
+   "g8Ms": 968,
+   "c1Fail": 1,
+   "c1Cases": 6,
+   "c1Exit": 1,
+   "hidden": {
+    "exit": 1,
+    "total": 26,
+    "featureFail": 7,
+    "featureTotal": 14,
+    "lawFail": 3,
+    "lawTotal": 12
+   }
+  },
+  {
+   "task": "T4",
+   "id": "m10_fee_to_receiver",
+   "kind": "mutant",
+   "breaks": [
+    "L4"
+   ],
+   "breaksFeature": false,
+   "g8Fail": [
+    "L4"
+   ],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 1,
+   "g8Ms": 920,
+   "c1Fail": 1,
+   "c1Cases": 6,
+   "c1Exit": 1,
+   "hidden": {
+    "exit": 1,
+    "total": 26,
+    "featureFail": 6,
+    "featureTotal": 14,
+    "lawFail": 3,
+    "lawTotal": 12
+   }
+  },
+  {
+   "task": "T4",
+   "id": "m11_inline_fee_no_minimum",
+   "kind": "mutant",
+   "breaks": [
+    "L4"
+   ],
+   "breaksFeature": false,
+   "g8Fail": [
+    "L4"
+   ],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 1,
+   "g8Ms": 858,
+   "c1Fail": 1,
+   "c1Cases": 6,
+   "c1Exit": 1,
+   "hidden": {
+    "exit": 1,
+    "total": 26,
+    "featureFail": 3,
+    "featureTotal": 14,
+    "lawFail": 3,
+    "lawTotal": 12
+   }
+  },
+  {
+   "task": "T4",
+   "id": "m12_total_excludes_fee",
+   "kind": "mutant",
+   "breaks": [
+    "L0",
+    "L1"
+   ],
+   "breaksFeature": false,
+   "g8Fail": [
+    "L0",
+    "L1"
+   ],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 1,
+   "g8Ms": 434,
+   "c1Fail": 2,
+   "c1Cases": 6,
+   "c1Exit": 1,
+   "hidden": {
+    "exit": 1,
+    "total": 26,
+    "featureFail": 0,
+    "featureTotal": 14,
+    "lawFail": 6,
+    "lawTotal": 12
+   }
+  },
+  {
+   "task": "T4",
+   "id": "m13_fee_ceil",
+   "kind": "mutant",
+   "breaks": [],
+   "breaksFeature": true,
+   "g8Fail": [],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 0,
+   "g8Ms": 1038,
+   "c1Fail": 0,
+   "c1Cases": 6,
+   "c1Exit": 0,
+   "hidden": {
+    "exit": 1,
+    "total": 26,
+    "featureFail": 2,
+    "featureTotal": 14,
+    "lawFail": 0,
+    "lawTotal": 12
+   }
+  },
+  {
+   "task": "T4",
+   "id": "m14_fee_no_minimum",
+   "kind": "mutant",
+   "breaks": [],
+   "breaksFeature": true,
+   "g8Fail": [],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 0,
+   "g8Ms": 1005,
+   "c1Fail": 0,
+   "c1Cases": 6,
+   "c1Exit": 0,
+   "hidden": {
+    "exit": 1,
+    "total": 26,
+    "featureFail": 4,
+    "featureTotal": 14,
+    "lawFail": 0,
+    "lawTotal": 12
+   }
+  },
+  {
+   "task": "T4",
+   "id": "m15_fee_round",
+   "kind": "mutant",
+   "breaks": [],
+   "breaksFeature": true,
+   "g8Fail": [],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 0,
+   "g8Ms": 1052,
+   "c1Fail": 0,
+   "c1Cases": 6,
+   "c1Exit": 0,
+   "hidden": {
+    "exit": 1,
+    "total": 26,
+    "featureFail": 2,
+    "featureTotal": 14,
+    "lawFail": 0,
+    "lawTotal": 12
+   }
+  },
+  {
+   "task": "T4",
+   "id": "m16_self_transfer_rejected",
+   "kind": "mutant",
+   "breaks": [],
+   "breaksFeature": true,
+   "g8Fail": [],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 0,
+   "g8Ms": 1059,
+   "c1Fail": 0,
+   "c1Cases": 6,
+   "c1Exit": 0,
+   "hidden": {
+    "exit": 1,
+    "total": 26,
+    "featureFail": 2,
+    "featureTotal": 14,
+    "lawFail": 0,
+    "lawTotal": 12
+   }
+  },
+  {
+   "task": "T4",
+   "id": "m17_self_transfer_ignores_funds",
+   "kind": "mutant",
+   "breaks": [],
+   "breaksFeature": true,
+   "g8Fail": [],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 0,
+   "g8Ms": 934,
+   "c1Fail": 0,
+   "c1Cases": 6,
+   "c1Exit": 0,
+   "hidden": {
+    "exit": 1,
+    "total": 26,
+    "featureFail": 1,
+    "featureTotal": 14,
+    "lawFail": 0,
+    "lawTotal": 12
+   }
+  },
+  {
+   "task": "T4",
+   "id": "m18_free_transfers_to_fee_account",
+   "kind": "mutant",
+   "breaks": [],
+   "breaksFeature": true,
+   "g8Fail": [],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 0,
+   "g8Ms": 950,
+   "c1Fail": 0,
+   "c1Cases": 6,
+   "c1Exit": 0,
+   "hidden": {
+    "exit": 1,
+    "total": 26,
+    "featureFail": 2,
+    "featureTotal": 14,
+    "lawFail": 0,
+    "lawTotal": 12
+   }
+  },
+  {
+   "task": "T4",
+   "id": "r01_comments",
+   "kind": "refactor",
+   "breaks": [],
+   "breaksFeature": false,
+   "g8Fail": [],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 0,
+   "g8Ms": 977,
+   "c1Fail": 0,
+   "c1Cases": 6,
+   "c1Exit": 0,
+   "hidden": {
+    "exit": 0,
+    "total": 26,
+    "featureFail": 0,
+    "featureTotal": 14,
+    "lawFail": 0,
+    "lawTotal": 12
+   }
+  },
+  {
+   "task": "T4",
+   "id": "r02_format",
+   "kind": "refactor",
+   "breaks": [],
+   "breaksFeature": false,
+   "g8Fail": [],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 0,
+   "g8Ms": 1057,
+   "c1Fail": 0,
+   "c1Cases": 6,
+   "c1Exit": 0,
+   "hidden": {
+    "exit": 0,
+    "total": 26,
+    "featureFail": 0,
+    "featureTotal": 14,
+    "lawFail": 0,
+    "lawTotal": 12
+   }
+  },
+  {
+   "task": "T4",
+   "id": "r03_reorder",
+   "kind": "refactor",
+   "breaks": [],
+   "breaksFeature": false,
+   "g8Fail": [],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 0,
+   "g8Ms": 1042,
+   "c1Fail": 0,
+   "c1Cases": 6,
+   "c1Exit": 0,
+   "hidden": {
+    "exit": 0,
+    "total": 26,
+    "featureFail": 0,
+    "featureTotal": 14,
+    "lawFail": 0,
+    "lawTotal": 12
+   }
+  },
+  {
+   "task": "T4",
+   "id": "r04_rename_helpers",
+   "kind": "refactor",
+   "breaks": [],
+   "breaksFeature": false,
+   "g8Fail": [],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 0,
+   "g8Ms": 1047,
+   "c1Fail": 0,
+   "c1Cases": 6,
+   "c1Exit": 0,
+   "hidden": {
+    "exit": 0,
+    "total": 26,
+    "featureFail": 0,
+    "featureTotal": 14,
+    "lawFail": 0,
+    "lawTotal": 12
+   }
+  },
+  {
+   "task": "T4",
+   "id": "r05_total_reduce",
+   "kind": "refactor",
+   "breaks": [],
+   "breaksFeature": false,
+   "g8Fail": [],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 0,
+   "g8Ms": 957,
+   "c1Fail": 0,
+   "c1Cases": 6,
+   "c1Exit": 0,
+   "hidden": {
+    "exit": 0,
+    "total": 26,
+    "featureFail": 0,
+    "featureTotal": 14,
+    "lawFail": 0,
+    "lawTotal": 12
+   }
+  },
+  {
+   "task": "T4",
+   "id": "r06_fee_constants",
+   "kind": "refactor",
+   "breaks": [],
+   "breaksFeature": false,
+   "g8Fail": [],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 0,
+   "g8Ms": 989,
+   "c1Fail": 0,
+   "c1Cases": 6,
+   "c1Exit": 0,
+   "hidden": {
+    "exit": 0,
+    "total": 26,
+    "featureFail": 0,
+    "featureTotal": 14,
+    "lawFail": 0,
+    "lawTotal": 12
+   }
+  },
+  {
+   "task": "T4",
+   "id": "r07_transfer_cost",
+   "kind": "refactor",
+   "breaks": [],
+   "breaksFeature": false,
+   "g8Fail": [],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 0,
+   "g8Ms": 868,
+   "c1Fail": 0,
+   "c1Cases": 6,
+   "c1Exit": 0,
+   "hidden": {
+    "exit": 0,
+    "total": 26,
+    "featureFail": 0,
+    "featureTotal": 14,
+    "lawFail": 0,
+    "lawTotal": 12
+   }
+  },
+  {
+   "task": "T4",
+   "id": "r08_delta_map",
+   "kind": "refactor",
+   "breaks": [],
+   "breaksFeature": false,
+   "g8Fail": [],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 0,
+   "g8Ms": 1018,
+   "c1Fail": 0,
+   "c1Cases": 6,
+   "c1Exit": 0,
+   "hidden": {
+    "exit": 0,
+    "total": 26,
+    "featureFail": 0,
+    "featureTotal": 14,
+    "lawFail": 0,
+    "lawTotal": 12
+   }
+  },
+  {
+   "task": "T4",
+   "id": "r09_balance_switch",
+   "kind": "refactor",
+   "breaks": [],
+   "breaksFeature": false,
+   "g8Fail": [],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 0,
+   "g8Ms": 979,
+   "c1Fail": 0,
+   "c1Cases": 6,
+   "c1Exit": 0,
+   "hidden": {
+    "exit": 0,
+    "total": 26,
+    "featureFail": 0,
+    "featureTotal": 14,
+    "lawFail": 0,
+    "lawTotal": 12
+   }
+  },
+  {
+   "task": "T4",
+   "id": "r10_arrow_helpers",
+   "kind": "refactor",
+   "breaks": [],
+   "breaksFeature": false,
+   "g8Fail": [],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 0,
+   "g8Ms": 989,
+   "c1Fail": 0,
+   "c1Cases": 6,
+   "c1Exit": 0,
+   "hidden": {
+    "exit": 0,
+    "total": 26,
+    "featureFail": 0,
+    "featureTotal": 14,
+    "lawFail": 0,
+    "lawTotal": 12
+   }
+  },
+  {
+   "task": "T4",
+   "id": "r11_split_fees",
+   "kind": "refactor",
+   "breaks": [],
+   "breaksFeature": false,
+   "g8Fail": [],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 0,
+   "g8Ms": 1035,
+   "c1Fail": 0,
+   "c1Cases": 6,
+   "c1Exit": 0,
+   "hidden": {
+    "exit": 0,
+    "total": 26,
+    "featureFail": 0,
+    "featureTotal": 14,
+    "lawFail": 0,
+    "lawTotal": 12
+   }
+  },
+  {
+   "task": "T4",
+   "id": "r12_guard_order",
+   "kind": "refactor",
+   "breaks": [],
+   "breaksFeature": false,
+   "g8Fail": [],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 0,
+   "g8Ms": 1075,
+   "c1Fail": 0,
+   "c1Cases": 6,
+   "c1Exit": 0,
+   "hidden": {
+    "exit": 0,
+    "total": 26,
+    "featureFail": 0,
+    "featureTotal": 14,
+    "lawFail": 0,
+    "lawTotal": 12
+   }
+  },
+  {
+   "task": "T4",
+   "id": "r13_line_comments",
+   "kind": "refactor",
+   "breaks": [],
+   "breaksFeature": false,
+   "g8Fail": [],
+   "g8SelfCheckFailed": false,
+   "g8Exit": 0,
+   "g8Ms": 1034,
+   "c1Fail": 0,
+   "c1Cases": 6,
+   "c1Exit": 0,
+   "hidden": {
+    "exit": 0,
+    "total": 26,
+    "featureFail": 0,
+    "featureTotal": 14,
+    "lawFail": 0,
+    "lawTotal": 12
+   }
+  }
+ ]
+}

@@ -1,0 +1,143 @@
+rows: A=76, X=76; crashes: 0
+
+| seed | cat | A class | A matched (kind / claim / force / severity / provider) | X class | X matched |
+|---|---|---|---|---|---|
+| S01 | S | hit | contradiction / shape.tooling::AnalyzerStaysAdvisory / sound / blocking normal r7 / tsCalls | hit | contradiction / shape.tooling::ShapeAnalyzer.compareAnalyzerHintsToShape/effects.upper / sound / blocking normal r7 / tsCalls+shape |
+| S02 | S | hit | contradiction / shape.tooling::AnalyzerStaysAdvisory / sound / blocking normal r7 / tsCalls+shape | hit | contradiction / shape.tooling::ShapeAnalyzer.compareAnalyzerHintsToShape/effects.upper / sound / blocking normal r7 / tsCalls+shape |
+| S03 | S | flag-only | coverage:component shape.tooling::ShpCli:owed:None:None; unestablished:shape.tooling::CliDocumented:owed:None:missing | flag-only | coverage:component shape.tooling::ShpCli:owed:None:None; unestablished:shape.tooling::CliDocumented:owed:None:stale |
+| S04 | S | hit | contradiction / shape.runtime::ExperimentalSemanticKernelIsolation / sound / blocking normal r7 / tsCalls+shape | hit | contradiction / shape.runtime::ExperimentalSemanticKernelIsolation / sound / blocking normal r7 / tsCalls+shape |
+| S05 | S | hit | contradiction / shape.checker::no_runtime_dependency_cycles / sound / blocking normal r7 / tsCalls+shape | hit | contradiction / shape.checker::no_runtime_dependency_cycles / sound / blocking normal r7 / tsCalls+shape |
+| S06 | S | hit | contradiction / shape.checker::no_runtime_dependency_cycles / sound / blocking normal r7 / tsCalls+shape | hit | contradiction / shape.checker::ShapeStringHelpers/relations.complete-calls / sound / blocking critical r7 / tsCalls |
+| S07 | S | hit | contradiction / shape.checker::no_runtime_dependency_cycles / sound / blocking normal r7 / tsCalls+shape / FLIPPED | hit | contradiction / shape.checker::ShapeDiagnostics/relations.complete-calls / sound / blocking normal r7 / tsCalls |
+| S08 | S | hit | contradiction / shape.checker::no_runtime_dependency_cycles / sound / blocking normal r7 / tsCalls+shape / FLIPPED | hit | contradiction / shape.checker::ShapeRuleEngine/relations.complete-calls / sound / blocking critical r7 / tsCalls |
+| S09 | S | other | contradiction:shape.tooling::ShapeAuthoring.reviewShapeAuthoringProposal/effects.upper:blocking:sound:None; contradiction:shape.tooling::ShapeAuthoring.reviewSh | hit | contradiction / shape.tooling::ShapeAuthoring/relations.complete-calls / sound / blocking normal r7 / tsCalls |
+| S10 | S | other | contradiction:shape.tooling::ShapeLanguageServer.serve/effects.upper:blocking:sound:None; contradiction:shape.tooling::ShapeLanguageServer.serve/effects.upper:b | hit | contradiction / shape.tooling::ShapeLanguageServer/relations.complete-calls / sound / blocking normal r7 / tsCalls |
+| S11 | S | other | contradiction:shape.tooling::ShapeLanguageServer.serve/effects.upper:blocking:sound:None; contradiction:shape.tooling::ShapeLanguageServer.serve/effects.upper:b | hit | contradiction / shape.tooling::ShapeEditorServices/relations.complete-calls / sound / blocking normal r7 / tsCalls |
+| S12 | S | other | contradiction:shape.runtime::ExperimentalSemanticKernelHarness.createKernelRequestV1/effects.upper:blocking:sound:None; contradiction:shape.runtime::Experimenta | hit | contradiction / shape.runtime::ExperimentalSemanticKernelHarness/relations.complete-calls / sound / blocking low r7 / tsCalls |
+| R01 | R | flag-only | coverage:component shape.checker::ShapeChecker:blocking:None:None; unestablished:shape.checker::ShapeChecker.checkLoweredShapeModel/RefactorSensitive/law:blocki | hit-preex | contradiction / shape.checker::ShapeCheckerUsesBindings / sound / owed critical r6 / tsCalls (absence, refutation) |
+| R02 | R | flag-only | coverage:component shape.tooling::ShapeEditorServices:owed:None:None | hit-preex | contradiction / shape.tooling::ShapeEditorUsesFormatter / sound / owed normal r6 / tsCalls (absence, refutation) |
+| R03 | R | flag-only | coverage:component shape.tooling::ShpCli:owed:None:None; unestablished:shape.tooling::CliDocumented:owed:None:missing | hit-preex | contradiction / shape.tooling::ShpCliUsesFormatter / sound / owed normal r6 / tsCalls (absence, refutation) |
+| R04 | R | flag-only | coverage:component shape.checker::ShapeRuleEngine:blocking:None:None; unestablished:shape.checker::RuleEngineDocumented:owed:None:missing | hit-preex | contradiction / shape.checker::ShapeRuleEngineUsesPreludeRegistry / sound / owed critical r6 / tsCalls (absence, refutation) |
+| R05 | R | flag-only | coverage:component shape.tooling::ShapeAuthoring:owed:None:None; unestablished:shape.tooling::AuthoringDocumented:owed:None:missing | hit-preex | contradiction / shape.tooling::ShapeAuthoringUsesPreludeRegistry / sound / owed normal r6 / tsCalls (absence, refutation) |
+| R06 | R | flag-only | coverage:component shape.checker.incremental::ShapeIncrementalChecker:blocking:None:None; unestablished:shape.checker.incremental::IncrementalCheckerDocumented: | hit-preex | contradiction / shape.checker.incremental::ShapeIncrementalCheckerUsesStringHelpers / sound / owed critical r6 / tsCalls (absence, refutation) |
+| R07 | R | flag-only | coverage:component shape.tooling::ShpCli:owed:None:None; unestablished:shape.tooling::CliDocumented:owed:None:missing | hit-preex | contradiction / shape.tooling::ShpCliUsesLanguageServer / sound / owed normal r6 / tsCalls (absence, refutation) |
+| E01 | E | hit | contradiction / shape.checker::ShapeRuleEngine.checkFreshness/effects.upper / sound / blocking critical r7 / tsClockScan | hit | contradiction / shape.checker::ShapeRuleEngine.checkFreshness/effects.upper / sound / blocking critical r7 / tsClockScan |
+| E02 | E | hit | contradiction / shape.checker::ShapeModelLowerer.lowerChange/effects.upper / sound / blocking critical r7 / tsClockScan | hit | contradiction / shape.checker::ShapeModelLowerer.lowerChange/effects.upper / sound / blocking critical r7 / tsClockScan |
+| E03 | E | hit | contradiction / shape.checker::CheckerNeverReadsClock / sound / blocking critical r7 / tsClockScan | hit | contradiction / shape.checker::CheckerNeverReadsClock / sound / blocking critical r7 / tsClockScan |
+| E04 | E | hit | contradiction / shape.checker::CheckerNeverReadsClock / sound / blocking critical r7 / tsClockScan | hit | contradiction / shape.checker::CheckerNeverReadsClock / sound / blocking critical r7 / tsClockScan |
+| E05 | E | hit | contradiction / shape.checker::CheckerNeverReadsClock / sound / blocking critical r7 / tsClockScan | hit | contradiction / shape.checker::CheckerNeverReadsClock / sound / blocking critical r7 / tsClockScan |
+| E06 | E | hit | contradiction / shape.tooling::ShapeFormatter.formatShapeModule/effects.upper / sound / blocking normal r7 / tsClockScan | hit | contradiction / shape.tooling::ShapeFormatter.formatShapeModule/effects.upper / sound / blocking normal r7 / tsClockScan |
+| E07 | E | hit | contradiction / shape.tooling::ClockReadOnlyAtCliBoundary / sound / blocking normal r7 / tsClockScan | hit | contradiction / shape.tooling::ClockReadOnlyAtCliBoundary / sound / blocking normal r7 / tsClockScan |
+| E08 | E | hit | contradiction / shape.tooling::ClockReadOnlyAtCliBoundary / sound / blocking normal r7 / tsClockScan | hit | contradiction / shape.tooling::ClockReadOnlyAtCliBoundary / sound / blocking normal r7 / tsClockScan |
+| E09 | E | hit | contradiction / shape.delivery::DocsSite/authority / sound / blocking low r7 / tsClockScan | hit | contradiction / shape.delivery::DocsSite/authority / sound / blocking low r7 / tsClockScan |
+| E10 | E | hit | contradiction / shape.language::ShapeParser/authority / sound / blocking critical r7 / tsClockScan | hit | contradiction / shape.language::ShapeParser/authority / sound / blocking critical r7 / tsClockScan |
+| E11 | E | hit | contradiction / shape.checker::ShapePreludeRegistry.isReevaluationRequirement/effects.upper / sound / blocking critical r7 / tsClockScan | hit | contradiction / shape.checker::ShapePreludeRegistry.isReevaluationRequirement/effects.upper / sound / blocking critical r7 / tsClockScan |
+| E12 | E | hit | coverage / None / None / blocking critical r9 / none (no absence-sound observer) | hit | coverage / None / None / blocking critical r9 / none (no absence-sound observer) |
+| E13 | E | hit | contradiction / shape.checker::ShapeChecker.explainShapeModules/effects.upper / sound / blocking critical r7 / tsCalls+shape | hit | contradiction / shape.checker::ShapeChecker.explainShapeModules/effects.upper / sound / blocking critical r7 / tsCalls+shape |
+| E14 | E | hit | contradiction / shape.checker::CheckerNeverReadsClock / sound / blocking critical r7 / tsClockScan | hit | contradiction / shape.checker::CheckerNeverReadsClock / sound / blocking critical r7 / tsClockScan |
+| E15 | E | hit | contradiction / shape.checker::ShapeBindings.checkBindings/effects.upper / sound / blocking critical r7 / tsClockScan | hit | contradiction / shape.checker::ShapeBindings.checkBindings/effects.upper / sound / blocking critical r7 / tsClockScan |
+| E16 | E | hit | contradiction / shape.runtime::ExperimentalSemanticKernelHarness.createKernelRequestV1/effects.upper / sound / blocking low r7 / tsClockScan | hit | contradiction / shape.runtime::ExperimentalSemanticKernelHarness.createKernelRequestV1/effects.upper / sound / blocking low r7 / tsClockScan |
+| E17 | E | flag-only | contradiction:shape.tooling::FormatterFlattensGroupedContext:blocking:sound:None; contradiction:shape.tooling::FormatterCanonicalGraphRules:blocking:sound:None; | flag-only | contradiction:shape.tooling::FormatterFlattensGroupedContext:blocking:sound:None; contradiction:shape.tooling::FormatterCanonicalGraphRules:blocking:sound:None; |
+| E18 | E | hit | contradiction / shape.tooling::ClockReadOnlyAtCliBoundary / sound / blocking normal r7 / tsClockScan | hit | contradiction / shape.tooling::ClockReadOnlyAtCliBoundary / sound / blocking normal r7 / tsClockScan |
+| M01 | M | hit | E-unbound unit shape.checker::ShapeRuleEngine.checkFreshness | hit | E-unbound unit shape.checker::ShapeRuleEngine.checkFreshness |
+| M02 | M | hit | E-unbound unit shape.checker::ShapeStringHelpers.unquoteShapeString | hit | E-unbound unit shape.checker::ShapeStringHelpers.unquoteShapeString |
+| M03 | M | hit | contradiction / shape.tooling::ClockReadOnlyAtCliBoundary / sound / blocking normal r7 / tsClockScan | hit | contradiction / shape.tooling::ClockReadOnlyAtCliBoundary / sound / blocking normal r7 / tsClockScan |
+| M04 | M | hit | contradiction / shape.tooling::ClockReadOnlyAtCliBoundary / sound / blocking normal r7 / tsClockScan | hit | contradiction / shape.tooling::ClockReadOnlyAtCliBoundary / sound / blocking normal r7 / tsClockScan |
+| M05 | M | hit | E-unbound unit shape.checker::ShapePreludeRegistry.isReevaluationRequirement | hit | E-unbound unit shape.checker::ShapePreludeRegistry.isReevaluationRequirement |
+| M06 | M | hit | contradiction / shape.tooling::AnalyzerStaysAdvisory / sound / blocking normal r7 / tsCalls | hit | contradiction / shape.tooling::AnalyzerStaysAdvisory / sound / blocking normal r7 / tsCalls |
+| N01 | N | hit | E-unbound unit shape.checker::ShapeRuleEngine.checkCoverage | hit | E-unbound unit shape.checker::ShapeRuleEngine.checkCoverage |
+| N02 | N | hit | E-unbound unit shape.tooling::ShapeFormatter.formatShapeModule | hit | E-unbound unit shape.tooling::ShapeFormatter.formatShapeModule |
+| N03 | N | hit | E-unbound unit shape.tooling::ShpCli.isoToday | hit | E-unbound unit shape.tooling::ShpCli.isoToday |
+| N04 | N | flag-only | coverage:component shape.tooling::ShapeAstGenerator:owed:None:None; unestablished:shape.tooling::AstGeneratorDocumented:owed:None:missing | flag-only | coverage:component shape.tooling::ShapeAstGenerator:owed:None:None; unestablished:shape.tooling::AstGeneratorDocumented:owed:None:stale |
+| N05 | N | hit | E-unbound unit shape.checker::ShapePreludeRegistry.definePreludeMetadata; E-unbound unit shape.checker::ShapePreludeRegistry.isReevaluationRequirement | hit | E-unbound unit shape.checker::ShapePreludeRegistry.definePreludeMetadata; E-unbound unit shape.checker::ShapePreludeRegistry.isReevaluationRequirement |
+| N06 | N | hit | E-unbound unit shape.tooling::ShapeAnalyzer.compareAnalyzerHintsToShape | hit | E-unbound unit shape.tooling::ShapeAnalyzer.compareAnalyzerHintsToShape |
+| N07 | N | hit | unestablished / shape.tooling::CliDocumented / None / owed normal r9 / judgment route / FLIPPED | hit | unestablished / shape.tooling::CliDocumented / None / owed normal r9 / judgment route |
+| L01 | L | hit | contradiction / shape.tooling::FormatterIdempotent / sound / blocking normal r7 / bunTest | hit | contradiction / shape.tooling::FormatterIdempotent / sound / blocking normal r7 / bunTest |
+| L02 | L | hit | contradiction / shape.checker::FreshnessEnforcesOnlyIsoDates / sound / blocking critical r7 / bunTest | hit | contradiction / shape.checker::FreshnessEnforcesOnlyIsoDates / sound / blocking critical r7 / bunTest |
+| L03 | L | hit | contradiction / shape.checker::InspectionCodepointOrder / sound / blocking critical r7 / bunTest | hit | contradiction / shape.checker::InspectionCodepointOrder / sound / blocking critical r7 / bunTest |
+| L04 | L | hit-preex | contradiction / shape.checker::InspectionCodepointOrder / sound / owed critical r6 / bunTest | hit-preex | contradiction / shape.checker::InspectionCodepointOrder / sound / owed critical r6 / bunTest |
+| L05 | L | hit | contradiction / shape.checker::SourcePathRulesShared / sound / blocking critical r7 / bunTest | hit | contradiction / shape.checker::SourcePathRulesShared / sound / blocking critical r7 / bunTest |
+| L06 | L | hit-preex | contradiction / shape.checker::SourcePathRulesShared / sound / owed critical r6 / bunTest | hit-preex | contradiction / shape.checker::SourcePathRulesShared / sound / owed critical r6 / bunTest |
+| L07 | L | hit-preex | contradiction / shape.tooling::UpdateDraftsPreferUnknown / sound / owed normal r6 / bunTest | hit-preex | contradiction / shape.tooling::UpdateDraftsPreferUnknown / sound / owed normal r6 / bunTest |
+| L08 | L | hit | unestablished / shape.checker::ShapeChecker.checkLoweredShapeModel/RefactorSensitive/law / None / blocking critical r9 / judgment route / FLIPPED | hit | unestablished / shape.checker::ShapeChecker.checkLoweredShapeModel/RefactorSensitive/law / None / blocking critical r9 / judgment route |
+| L09 | L | hit | contradiction / shape.checker.incremental::IncrementalReusesDiagnosticsOnNoop / sound / blocking critical r7 / bunTest | hit | contradiction / shape.checker.incremental::IncrementalReusesDiagnosticsOnNoop / sound / blocking critical r7 / bunTest |
+| L10 | L | hit | unestablished / shape.checker::ShapeChecker.checkLoweredShapeModel/RefactorSensitive/law / None / blocking critical r9 / judgment route / FLIPPED | hit | unestablished / shape.checker::ShapeChecker.checkLoweredShapeModel/RefactorSensitive/law / None / blocking critical r9 / judgment route |
+| L11 | L | hit | unestablished / shape.checker::ShapeRuleEngine.checkGuardedChanges/RefactorSensitive/law / None / blocking critical r9 / judgment route / FLIPPED | hit | unestablished / shape.checker::ShapeRuleEngine.checkGuardedChanges/RefactorSensitive/law / None / blocking critical r9 / judgment route |
+| L12 | L | flag-only | coverage:component shape.checker::ShapeStringHelpers:blocking:None:None | flag-only | coverage:component shape.checker::ShapeStringHelpers:blocking:None:None |
+| C00 | C | miss | (nothing introduced) | miss | (nothing introduced) |
+| C01 | C | miss | (nothing introduced) | miss | (nothing introduced) |
+| C02 | C | flag-only | unestablished:shape.checker::RuleEngineDocumented:owed:None:missing | miss | (nothing introduced) |
+| C03 | C | miss | (nothing introduced) | miss | (nothing introduced) |
+| C04 | C | flag-only | contradiction:shape.tooling::FormatterFlattensGroupedContext:blocking:sound:None; contradiction:shape.tooling::FormatterCanonicalGraphRules:blocking:sound:None; | flag-only | contradiction:shape.tooling::FormatterFlattensGroupedContext:blocking:sound:None; contradiction:shape.tooling::FormatterCanonicalGraphRules:blocking:sound:None; |
+| C05 | C | flag-only | coverage:component shape.checker::ShapeStringHelpers:blocking:None:None | flag-only | coverage:component shape.checker::ShapeStringHelpers:blocking:None:None |
+| C06 | C | flag-only | coverage:component shape.checker::ShapeStringHelpers:blocking:None:None | flag-only | coverage:component shape.checker::ShapeStringHelpers:blocking:None:None |
+| C07 | C | flag-only | coverage:component shape.checker::ShapeRuleEngine:blocking:None:None; unestablished:shape.checker::RuleEngineDocumented:owed:None:missing | flag-only | coverage:component shape.checker::ShapeRuleEngine:blocking:None:None; unestablished:shape.checker::RuleEngineDocumented:owed:None:stale |
+| C08 | C | miss | (nothing introduced) | miss | (nothing introduced) |
+| C09 | C | flag-only | coverage:component shape.tooling::ShpCli:owed:None:None; unestablished:shape.tooling::ShpCli.main/RefactorSensitive/law:owed:None:missing; unestablished:shape.t | flag-only | coverage:component shape.tooling::ShpCli:owed:None:None; unestablished:shape.tooling::ShpCli.main/RefactorSensitive/law:owed:None:stale; unestablished:shape.too |
+| C10 | C | flag-only | coverage:component shape.tooling::ShapeFormatter:owed:None:None; unestablished:shape.tooling::FormatterEditorDocumented:owed:None:missing | flag-only | coverage:component shape.tooling::ShapeFormatter:owed:None:None; unestablished:shape.tooling::FormatterEditorDocumented:owed:None:stale |
+| C11 | C | miss | (nothing introduced) | miss | (nothing introduced) |
+| C12 | C | miss | (nothing introduced) | miss | (nothing introduced) |
+| C13 | C | flag-only | contradiction:shape.checker::no_runtime_dependency_cycles:blocking:sound:None; coverage:component shape.checker::ShapeChecker:blocking:None:None | flag-only | contradiction:shape.checker::no_runtime_dependency_cycles:blocking:sound:None; coverage:component shape.checker::ShapeChecker:blocking:None:None |
+
+== arm A
+  S: n=12 {'hit': 7, 'flag-only': 1, 'other': 4} blocking-verdict=11
+  R: n=7 {'flag-only': 7} blocking-verdict=3
+  E: n=18 {'hit': 17, 'flag-only': 1} blocking-verdict=18
+  N: n=7 {'hit': 6, 'flag-only': 1} blocking-verdict=5
+  M: n=6 {'hit': 6} blocking-verdict=6
+  L: n=12 {'hit': 8, 'hit-preex': 3, 'flag-only': 1} blocking-verdict=11
+  C: n=14 {'miss': 6, 'flag-only': 8} blocking-verdict=5
+  drift total n=62 {'hit': 44, 'flag-only': 11, 'other': 4, 'hit-preex': 3}
+  hits by matched kind: {'contradiction': 31, 'coverage': 1, 'error': 8, 'unestablished': 4}
+  hits by provider: {'tsCalls': 2, 'tsCalls+shape': 7, 'tsClockScan': 17, 'none (no absence-sound observer)': 1, 'elaborator (error)': 8, 'judgment route': 4, 'bunTest': 5}
+  hits by force: {'sound': 31, 'None': 5, 'error': 8}
+  hits by severity: {'blocking': 35, 'error-blocks': 8, 'owed': 1}
+  control C00 miss verdict=owed new={} flipped=[] errors=[]
+  control C01 miss verdict=owed new={} flipped=[] errors=[]
+  control C02 flag-only verdict=owed new={} flipped=['unestablished:shape.checker::RuleEngineDocumented:owed->owed'] errors=[]
+  control C03 miss verdict=owed new={} flipped=[] errors=[]
+  control C04 flag-only verdict=blocked new={'coverage/owed': 1} flipped=['contradiction:shape.tooling::FormatterFlattensGroupedContext:owed->blocking', 'contradiction:shape.tooling::FormatterCanonicalGraphRules:owed->blocking', 'unestablished:shape.tooling::FormatterEditorDocumented:owed->owed'] errors=[]
+  control C05 flag-only verdict=blocked new={'coverage/blocking': 1} flipped=[] errors=[]
+  control C06 flag-only verdict=blocked new={'coverage/blocking': 1} flipped=[] errors=[]
+  control C07 flag-only verdict=blocked new={'coverage/blocking': 1} flipped=['unestablished:shape.checker::RuleEngineDocumented:owed->owed'] errors=[]
+  control C08 miss verdict=owed new={} flipped=[] errors=[]
+  control C09 flag-only verdict=owed new={'coverage/owed': 1} flipped=['unestablished:shape.tooling::ShpCli.main/RefactorSensitive/law:owed->owed', 'unestablished:shape.tooling::GeneratedAstIdentityFromWorkspaceRoot:owed->owed', 'unestablished:shape.tooling::GeneratedAstDirectoryChecksExplicit:owed->owed', 'unestablished:shape.tooling::CliDocumented:owed->owed', 'unestablished:shape.tooling::AmbiguousOutputModesRejectedFirst:owed->owed'] errors=[]
+  control C10 flag-only verdict=owed new={'coverage/owed': 1} flipped=['unestablished:shape.tooling::FormatterEditorDocumented:owed->owed'] errors=[]
+  control C11 miss verdict=owed new={} flipped=[] errors=[]
+  control C12 miss verdict=owed new={} flipped=[] errors=[]
+  control C13 flag-only verdict=blocked new={'coverage/blocking': 1} flipped=['contradiction:shape.checker::no_runtime_dependency_cycles:owed->blocking'] errors=[]
+  introduced per drift run: [1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 6, 7, 7, 7, 7, 7, 9, 11, 11, 13, 14, 18, 18, 21, 23, 26, 28, 32, 105, 120]
+  groups per drift run: []
+  flipped (old obligations newly introduced) per drift run: [('S01', 3), ('S02', 2), ('S03', 1), ('S04', 1), ('S05', 1), ('S06', 41), ('S07', 9), ('S08', 2), ('S09', 2), ('S10', 2), ('S12', 4), ('R01', 1), ('R03', 1), ('R04', 1), ('R05', 1), ('R06', 1), ('R07', 1), ('E01', 1), ('E02', 3), ('E03', 1), ('E05', 1), ('E06', 3), ('E07', 1), ('E08', 1), ('E10', 4), ('E11', 2), ('E14', 4), ('E15', 6), ('E16', 1), ('E17', 3), ('E18', 2), ('M01', 2), ('M02', 1), ('M03', 1), ('M04', 1), ('M05', 1), ('M06', 1), ('N01', 2), ('N02', 8), ('N04', 1), ('N05', 3), ('N06', 3), ('N07', 1), ('L01', 3), ('L02', 1), ('L03', 1), ('L07', 1), ('L08', 1), ('L09', 1), ('L10', 1), ('L11', 6)]
+
+== arm X
+  S: n=12 {'hit': 11, 'flag-only': 1} blocking-verdict=11
+  R: n=7 {'hit-preex': 7} blocking-verdict=3
+  E: n=18 {'hit': 17, 'flag-only': 1} blocking-verdict=18
+  N: n=7 {'hit': 6, 'flag-only': 1} blocking-verdict=5
+  M: n=6 {'hit': 6} blocking-verdict=6
+  L: n=12 {'hit': 8, 'hit-preex': 3, 'flag-only': 1} blocking-verdict=11
+  C: n=14 {'miss': 7, 'flag-only': 7} blocking-verdict=5
+  drift total n=62 {'hit': 48, 'flag-only': 4, 'hit-preex': 10}
+  hits by matched kind: {'contradiction': 35, 'coverage': 1, 'error': 8, 'unestablished': 4}
+  hits by provider: {'tsCalls+shape': 5, 'tsCalls': 8, 'tsClockScan': 17, 'none (no absence-sound observer)': 1, 'elaborator (error)': 8, 'judgment route': 4, 'bunTest': 5}
+  hits by force: {'sound': 35, 'None': 5, 'error': 8}
+  hits by severity: {'blocking': 39, 'error-blocks': 8, 'owed': 1}
+  control C00 miss verdict=owed new={} flipped=[] errors=[]
+  control C01 miss verdict=owed new={} flipped=[] errors=[]
+  control C02 miss verdict=owed new={} flipped=[] errors=[]
+  control C03 miss verdict=owed new={} flipped=[] errors=[]
+  control C04 flag-only verdict=blocked new={'coverage/owed': 1, 'unestablished/owed': 1} flipped=['contradiction:shape.tooling::FormatterFlattensGroupedContext:owed->blocking', 'contradiction:shape.tooling::FormatterCanonicalGraphRules:owed->blocking'] errors=[]
+  control C05 flag-only verdict=blocked new={'coverage/blocking': 1} flipped=[] errors=[]
+  control C06 flag-only verdict=blocked new={'coverage/blocking': 1} flipped=[] errors=[]
+  control C07 flag-only verdict=blocked new={'coverage/blocking': 1, 'unestablished/owed': 1} flipped=[] errors=[]
+  control C08 miss verdict=owed new={} flipped=[] errors=[]
+  control C09 flag-only verdict=owed new={'coverage/owed': 1, 'unestablished/owed': 2} flipped=['unestablished:shape.tooling::GeneratedAstIdentityFromWorkspaceRoot:owed->owed', 'unestablished:shape.tooling::GeneratedAstDirectoryChecksExplicit:owed->owed', 'unestablished:shape.tooling::AmbiguousOutputModesRejectedFirst:owed->owed'] errors=[]
+  control C10 flag-only verdict=owed new={'coverage/owed': 1, 'unestablished/owed': 1} flipped=[] errors=[]
+  control C11 miss verdict=owed new={} flipped=[] errors=[]
+  control C12 miss verdict=owed new={} flipped=[] errors=[]
+  control C13 flag-only verdict=blocked new={'coverage/blocking': 1} flipped=['contradiction:shape.checker::no_runtime_dependency_cycles:owed->blocking'] errors=[]
+  introduced per drift run: [1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 6, 6, 6, 6, 6, 7, 7, 7, 7, 8, 8, 9, 11, 12, 13, 15, 17, 21, 23, 26, 28, 33, 40, 106, 121]
+  groups per drift run: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 7]
+  flipped (old obligations newly introduced) per drift run: [('S01', 2), ('S02', 1), ('S06', 41), ('S07', 9), ('S08', 1), ('S09', 1), ('S10', 2), ('S12', 4), ('E02', 2), ('E03', 1), ('E06', 2), ('E10', 3), ('E11', 2), ('E14', 2), ('E15', 4), ('E16', 1), ('E17', 2), ('M01', 2), ('M05', 1), ('N01', 2), ('N02', 7), ('L01', 2), ('L11', 4)]
+

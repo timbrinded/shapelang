@@ -1,0 +1,7 @@
+module exp
+
+component Exporter {
+  fn exportSnapshot
+    effects complete {
+    }
+}

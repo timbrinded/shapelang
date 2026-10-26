@@ -17,10 +17,25 @@
 // `satisfies`, `<T>`) are transparent. A binding that can never be rebound (const, or a let/var
 // no code assigns) forwards its root, so `const g = globalThis; g.Date.now()` is the fact itself.
 //
+// Function.prototype on a root invokes it: `Date.call(null)`, `Date.apply(x, [])` and
+// `globalThis.Date.call(…)` are Date() reads (facts); `Date.bind(…)`, `Date.call` as a value and
+// `Date.call.call(…)` hand Date on (a supply). A member of the global object that is no known root
+// (`globalThis.myClock`, `(globalThis as any).myDate`) is an ordinary value, checked by its type.
+//
 // Supply (A.5.2.1). A root value that flows anywhere else (an argument, a return, a property, an
 // `extends` clause, a binding that may be rebound, `x || Date`) is supplied by the entry where it
 // flows: that entry is incomplete (`alias:<root>`), and so is every entry that reads a binding
 // which may hold a root. A dynamic member of a root (`globalThis[k]`) is `dynamic:<root>[]`.
+//
+// Typed reads. Where the root arrives by a route the scan does not follow (a parameter, a return,
+// shared state), the reading entry is incomplete when it reads a watched member, or `call`,
+// `apply`, `bind` of a callable root, from a value typed as the root (`alias-type:<root>`), or from
+// an untyped value (`unresolved:untyped-receiver`, `unresolved:untyped-callee`). A member read is a
+// property access (`d.now`), a binding pattern (`{ now }: DateConstructor`, `const { now } = d`,
+// nested) or an assignment pattern (`({ now } = d)`, `for ({ now } of ds)`). A value typed as the
+// root passed as an argument (`xs.map(D)`, `Reflect.apply(D, …)`) is a typed supply. Typing is
+// nominal: a structural clock (`{ now(): number }`) stays complete, and the root's supply is
+// flagged where it escapes into it.
 import { existsSync } from "node:fs";
 import { join, relative, resolve } from "node:path";
 import type { ManifestIndex } from "../../src/manifest.ts";
@@ -155,6 +170,9 @@ const GOVERNED_GLOBALS = new Set([...API_ROOTS, ...GLOBAL_OBJECTS, "eval", "Func
  *  return it (`valueOf`, `__proto__` for the prototype chain): on a root they invoke or alias it. */
 const REFLECTIVE = new Set(["call", "apply", "bind", "valueOf", "__proto__"]);
 const INVOKERS = new Set(["call", "apply"]);
+/** Function.prototype members that invoke or rebind a value typed as a callable root (`D.call(null)`
+ *  is `D()`); every function inherits them, so they mark a read only on a value that holds the root */
+const TYPED_INVOKERS = new Set(["call", "apply", "bind"]);
 
 const IDENT = String.raw`(?:"[^"]+"|[A-Za-z_][\w$]*)(?:\s*\.\s*(?:"[^"]+"|[A-Za-z_][\w$]*))?`;
 const END = String.raw`(?=\s*(?:$|;|\)|,))`;
@@ -990,38 +1008,111 @@ export function scanTs(ts: TsFull, o: ScanOptions): ScanResult {
      *  the scan does not follow, so the reading entry is incomplete. A dynamic member's value is
      *  typed by the receiver's index signature: it reaches an API only through a later static read
      *  (checked here) or a call. */
+    /** One static read of member `key` from a value that is no exact chain to a governed root:
+     *  incomplete when `key` can reach a watched API of some root g (a watched member, or `call`,
+     *  `apply`, `bind` when calling g is watched) and the value is untyped, or its type t holds g, or
+     *  the member read is g's own (`accessed`: the declarations of the member symbol read). Shared
+     *  by member reads (`d.now`), binding patterns (`{ now }: DateConstructor`) and assignment
+     *  patterns (`({ now } = d)`). */
+    const typedRead = (at: TsNode, t: TsType, key: string, accessed: readonly TsNode[]): void => {
+      const cands = [...rootTypes.keys()].filter((g) => memberWatched(g, key) || (TYPED_INVOKERS.has(key) && callWatched(g)));
+      if (cands.length === 0) return;
+      if (isAny(t)) {
+        incomplete(at, "effects", "unresolved:untyped-receiver");
+        return;
+      }
+      for (const g of cands) {
+        const r = rootTypes.get(g) as TsType;
+        // every function inherits call/apply/bind: only a value holding the root reads its invokers
+        const own = memberWatched(g, key) && (checker.getPropertyOfType(r, key)?.declarations ?? []).some((d) => accessed.includes(d));
+        if (own || holdsRoot(t, r)) {
+          incomplete(at, "effects", `alias-type:${g}`);
+          return;
+        }
+      }
+    };
     const onTypedMember = (m: TsNode): void => {
       if (rootTypes.size === 0) return;
       const recv = m.expression as TsNode;
       const up = m.parent;
       if (up?.kind === K.BinaryExpression && up.left === m && isOp(up.operatorToken?.kind, "EqualsToken")) return; // written, not read
-      if (chainBase(recv) !== null) return; // root chains: onChain; bindings that may hold one: onIdentifier
+      // an element of an untyped value, called, can be any API (as a called member: onPropertyAccess),
+      // unless the element is itself an exact chain to a governed root (`(globalThis as any)["Date"]()`
+      // is Date, classified by onChain); `(globalThis as any)["myDate"]()` is untyped
+      if (m.kind === K.ElementAccessExpression && up && (up.kind === K.CallExpression || up.kind === K.NewExpression) && up.expression === m && !handledChain(m) && isAny(typeOf(recv))) {
+        incomplete(m, "effects", "unresolved:untyped-receiver");
+        return;
+      }
+      // chains to a governed root: onChain; bindings that may hold one: onIdentifier. A member of the
+      // global object that is no known root (`globalThis.myClock`) is checked by its type here.
+      if (handledChain(recv)) return;
       const key = m.kind === K.PropertyAccessExpression ? (m.name?.text ?? null) : literalKey(m.argumentExpression);
-      // an element of an untyped value, called, can be any API (as a called member: onPropertyAccess)
-      if (m.kind === K.ElementAccessExpression && up && (up.kind === K.CallExpression || up.kind === K.NewExpression) && up.expression === m && isAny(typeOf(recv))) {
-        incomplete(m, "effects", "unresolved:untyped-receiver");
-        return;
-      }
       if (key === null) return;
-      const cands = [...rootTypes.keys()].filter((g) => memberWatched(g, key));
-      if (cands.length === 0) return;
-      const t = typeOf(recv);
-      if (isAny(t)) {
-        incomplete(m, "effects", "unresolved:untyped-receiver");
+      const accessed = checker.getSymbolAtLocation((m.kind === K.PropertyAccessExpression ? m.name : m.argumentExpression) as TsNode);
+      typedRead(m, typeOf(recv), key, accessed?.declarations ?? []);
+    };
+    /** `{ now }: DateConstructor`, `const { now } = d`, `{ x: { now } }`: each static key destructured
+     *  is a member read of the pattern's source value (the checker types the pattern as its source).
+     *  A pattern over an exact chain to a governed root binds that root's members exactly
+     *  (onIdentifier classifies each read of the bound names). */
+    const onObjectBindingPattern = (pat: TsNode): void => {
+      if (rootTypes.size === 0) return;
+      const src = patternValue(pat).base;
+      if (src && src.kind === "root" && governed(src)) return;
+      const t = typeOf(pat);
+      for (const el of pat.elements ?? []) {
+        if (el.kind !== K.BindingElement || el.dotDotDotToken) continue; // a rest object keeps the root's members: read later, by type
+        const pn = el.propertyName ?? el.name;
+        const key = pn && pn.kind === K.Identifier ? (pn.text ?? null) : literalKey(pn);
+        if (key === null) continue;
+        typedRead(el, t, key, checker.getPropertyOfType(t, key)?.declarations ?? []);
+      }
+    };
+    /** is this object or array literal a destructuring assignment target? (only the forms the
+     *  checker types: `x = …`, `for (x of …)`, and patterns nested in them, without wrappers) */
+    const isAssignmentPattern = (lit: TsNode): boolean => {
+      const p = lit.parent;
+      if (!p) return false;
+      if (p.kind === K.BinaryExpression) return p.left === lit && isOp(p.operatorToken?.kind, "EqualsToken");
+      if (p.kind === K.ForOfStatement) return p.initializer === lit;
+      if (p.kind === K.PropertyAssignment) return p.initializer === lit && p.parent !== undefined && isAssignmentPattern(p.parent);
+      if (p.kind === K.ArrayLiteralExpression) return isAssignmentPattern(p);
+      return false;
+    };
+    /** the right side of the outermost assignment an assignment pattern belongs to (null in for-of) */
+    const assignSource = (lit: TsNode): TsNode | null => {
+      for (let n: TsNode = lit; ; ) {
+        const p = n.parent;
+        if (!p) return null;
+        if (p.kind === K.BinaryExpression) return p.right ?? null;
+        if (p.kind === K.PropertyAssignment && p.parent) n = p.parent;
+        else if (p.kind === K.ArrayLiteralExpression) n = p;
+        else return null;
+      }
+    };
+    /** `({ now } = d)`, `for ({ now } of ds)`, `({ x: { now } } = o)`: an object assignment pattern
+     *  reads its static keys from the value the checker says it receives, like a binding pattern */
+    const onAssignmentPattern = (lit: TsNode): void => {
+      if (rootTypes.size === 0) return;
+      const right = assignSource(lit);
+      if (right && handledChain(right)) return; // an exact root on the right escapes there (onChain)
+      let t: TsType;
+      try {
+        t = checker.getTypeOfAssignmentPattern(lit);
+      } catch {
         return;
       }
-      const accessed = checker.getSymbolAtLocation((m.kind === K.PropertyAccessExpression ? m.name : m.argumentExpression) as TsNode);
-      for (const g of cands) {
-        const r = rootTypes.get(g) as TsType;
-        const own = (checker.getPropertyOfType(r, key)?.declarations ?? []).some((d) => (accessed?.declarations ?? []).includes(d));
-        if (own || holdsRoot(t, r)) {
-          incomplete(m, "effects", `alias-type:${g}`);
-          return;
-        }
+      for (const p of lit.properties ?? []) {
+        if (p.kind !== K.ShorthandPropertyAssignment && p.kind !== K.PropertyAssignment) continue;
+        const nm = p.name as TsNode;
+        const key = nm.kind === K.Identifier ? (nm.text ?? null) : literalKey(nm);
+        if (key === null) continue;
+        typedRead(p, t, key, checker.getPropertyOfType(t, key)?.declarations ?? []);
       }
     };
     /** a call or construction of a value typed as a watched callable root (`D: DateConstructor`,
-     *  `new D()`), or untyped, other than a root chain */
+     *  `new D()`, `o.clock()` with `clock: DateConstructor`), or untyped, other than a chain to a
+     *  governed root */
     const onTypedCallee = (n: TsNode): void => {
       const callee = n.expression;
       if (!callee || callee.kind === K.ImportKeyword || callee.kind === K.SuperKeyword || rootTypes.size === 0) return;
@@ -1029,16 +1120,43 @@ export function scanTs(ts: TsFull, o: ScanOptions): ScanResult {
       const spread = args.some((x) => x.kind === K.SpreadElement);
       // Date reads the clock as Date() and new Date() (or new Date(...xs))
       const cands = [...rootTypes.keys()].filter((g) => callWatched(g) && !(g === "Date" && n.kind === K.NewExpression && args.length > 0 && !spread));
-      if (cands.length === 0 || chainBase(callee) !== null) return;
+      // chains to a governed root: onChain; an undeclared or repo-declared global (`myDate()`) is typed here
+      if (cands.length === 0 || handledChain(callee)) return;
       const u = unwrap(callee);
-      if (u.kind === K.PropertyAccessExpression || u.kind === K.ElementAccessExpression) return; // member callees: onTypedMember, onPropertyAccess
       const t = typeOf(callee);
       if (isAny(t)) {
-        incomplete(n, "effects", "unresolved:untyped-callee");
+        // a member of an untyped receiver is onPropertyAccess's or onTypedMember's
+        // (`unresolved:untyped-receiver`), a member of `x.constructor` onConstructorAccess's; an
+        // untyped member of a typed value (`o.f()` with `f: any`, `Record<string, any>`) is here
+        const member = u.kind === K.PropertyAccessExpression || u.kind === K.ElementAccessExpression;
+        const recv = member ? (u.expression as TsNode) : null;
+        const r0 = recv ? unwrap(recv) : null;
+        const viaCtor = r0 !== null && ((r0.kind === K.PropertyAccessExpression && r0.name?.text === "constructor") || (r0.kind === K.ElementAccessExpression && literalKey(r0.argumentExpression) === "constructor"));
+        if (recv === null || (!viaCtor && !isAny(typeOf(recv)))) incomplete(n, "effects", "unresolved:untyped-callee");
         return;
       }
       const g = cands.find((x) => holdsRoot(t, rootTypes.get(x) as TsType));
       if (g !== undefined) incomplete(n, "effects", `alias-type:${g}`);
+    };
+
+    /** a value typed as a watched root handed to other code as an argument (`xs.map(D)`,
+     *  `Reflect.apply(D, null, [])`, `use(perf)` with `perf: Performance`): the callee may invoke or
+     *  read it out of the scan's sight (library code, a structurally typed parameter), so the handing
+     *  entry is incomplete, as for an exact root (isEscape). Untyped arguments are not evidence of a
+     *  root; exact root chains are onChain's. */
+    const onTypedArguments = (n: TsNode): void => {
+      if (rootTypes.size === 0) return;
+      for (const a of n.arguments ?? []) {
+        if (a.kind === K.SpreadElement || handledChain(a)) continue;
+        const t = typeOf(a);
+        if (isAny(t)) continue;
+        for (const [g, r] of rootTypes) {
+          if (holdsRoot(t, r)) {
+            incomplete(a, "effects", `alias-type:${g}`);
+            break;
+          }
+        }
+      }
     };
 
     const onImportCall = (n: TsNode): void => {
@@ -1087,9 +1205,13 @@ export function scanTs(ts: TsFull, o: ScanOptions): ScanResult {
       } else if (k === K.ElementAccessExpression) {
         if (literalKey(n.argumentExpression) === "constructor") onConstructorAccess(n);
         else onTypedMember(n);
-      } else if ((k === K.CallExpression || k === K.NewExpression) && n.expression?.kind !== K.ImportKeyword) onTypedCallee(n);
-      else if (k === K.StringLiteral || k === K.NoSubstitutionTemplateLiteral || k === K.TemplateExpression) onLiteral(n);
+      } else if ((k === K.CallExpression || k === K.NewExpression) && n.expression?.kind !== K.ImportKeyword) {
+        onTypedCallee(n);
+        onTypedArguments(n);
+      } else if (k === K.StringLiteral || k === K.NoSubstitutionTemplateLiteral || k === K.TemplateExpression) onLiteral(n);
       else if (k === K.CallExpression && n.expression?.kind === K.ImportKeyword) onImportCall(n);
+      else if (k === K.ObjectBindingPattern) onObjectBindingPattern(n);
+      else if (k === K.ObjectLiteralExpression && isAssignmentPattern(n)) onAssignmentPattern(n);
       ts.forEachChild(n, walk);
     };
     walk(sf);

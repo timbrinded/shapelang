@@ -1,0 +1,8 @@
+module exp
+
+resource ExportBundle
+
+rationale ExportBundleLifecycle : DesignRationale<resource ExportBundle> {
+  summary "ExportBundle is ephemeral; retention remains on AuditEvent."
+  evidence issue("123")
+}

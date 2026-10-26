@@ -1,0 +1,1645 @@
+{
+ "screen": {
+  "unit": {
+   "killed": 23,
+   "candidates": 85
+  },
+  "callee": {
+   "killed": 12,
+   "candidates": 84
+  },
+  "import": {
+   "killed": 12,
+   "candidates": 54
+  }
+ },
+ "mutants": {
+  "stock": {
+   "by_location": {
+    "unit": {
+     "n": 13,
+     "suite_kill": 13,
+     "law_blocked": 13,
+     "law_flagged": 13,
+     "introduced": 13,
+     "loss": 0
+    },
+    "callee": {
+     "n": 7,
+     "suite_kill": 7,
+     "law_blocked": 0,
+     "law_flagged": 7,
+     "introduced": 0,
+     "loss": 7
+    },
+    "import": {
+     "n": 4,
+     "suite_kill": 4,
+     "law_blocked": 0,
+     "law_flagged": 4,
+     "introduced": 0,
+     "loss": 4
+    }
+   },
+   "details": [
+    {
+     "variant": "M-UpdateDraftsPreferUnknown-unit-1",
+     "where": "unit",
+     "at": "ts:packages/shp-checker/src/authoring.ts#generateShapeUpdateDraft",
+     "mutant": "constant:0\u21921@138:78",
+     "failing": [
+      "shape.tooling::UpdateDraftsPreferUnknown"
+     ],
+     "obligations": [
+      "contradiction:UpdateDraftsPreferUnknown:sound:intro:blocking"
+     ],
+     "law_blocked": true,
+     "verdict": "blocked",
+     "moved": [
+      "ts:packages/shp-checker/src/authoring.ts@file",
+      "ts:packages/shp-checker/src/authoring.ts#generateShapeUpdateDraft@own",
+      "ts:packages/shp-checker/src/authoring.ts#generateShapeUpdateDraft@unit"
+     ]
+    },
+    {
+     "variant": "M-CheckIsDeterministic-callee-1",
+     "where": "callee",
+     "at": "ts:packages/shp-checker/src/checker/api.ts#normalizeCheckOptions",
+     "mutant": "equality:===\u2192!==@170:12",
+     "failing": [
+      "shape.checker.incremental::IncrementalRebuildsOnDocumentChange",
+      "shape.checker.incremental::IncrementalReusesDiagnosticsOnNoop",
+      "shape.checker.incremental::IncrementalReusesModelOnOptionChange",
+      "shape.checker::CheckIsDeterministic",
+      "shape.checker::FinalForbidBeatsGrant",
+      "shape.checker::FinalForbidNotWaivedByContext",
+      "shape.checker::FinalForbidTargetsDeterministic",
+      "shape.checker::ForbiddenPathFewestHops",
+      "shape.checker::ForbiddenPathHopsKeepProvenance",
+      "shape.checker::FreshnessEnforcesOnlyIsoDates",
+      "shape.checker::HypercycleShortestWitness",
+      "shape.checker::SourcePathRulesShared",
+      "shape.tooling::UpdateDraftsPreferUnknown"
+     ],
+     "obligations": [
+      "contradiction:FinalForbidTargetsDeterministic:sound:pre:owed",
+      "contradiction:FinalForbidBeatsGrant:sound:pre:owed",
+      "contradiction:IncrementalReusesDiagnosticsOnNoop:sound:pre:owed",
+      "contradiction:SourcePathRulesShared:sound:pre:owed",
+      "contradiction:FinalForbidNotWaivedByContext:sound:pre:owed",
+      "contradiction:ForbiddenPathHopsKeepProvenance:sound:pre:owed",
+      "contradiction:UpdateDraftsPreferUnknown:sound:pre:owed",
+      "contradiction:IncrementalReusesModelOnOptionChange:sound:pre:owed",
+      "contradiction:HypercycleShortestWitness:sound:pre:owed",
+      "contradiction:CheckIsDeterministic:sound:pre:owed",
+      "contradiction:IncrementalRebuildsOnDocumentChange:sound:pre:owed",
+      "contradiction:FreshnessEnforcesOnlyIsoDates:sound:pre:owed",
+      "contradiction:ForbiddenPathFewestHops:sound:pre:owed"
+     ],
+     "law_blocked": false,
+     "verdict": "blocked",
+     "moved": [
+      "ts:packages/shp-checker/src/checker/api.ts@file",
+      "ts:packages/shp-checker/src/checker/api.ts#normalizeCheckOptions@own",
+      "ts:packages/shp-checker/src/checker/api.ts#normalizeCheckOptions@unit"
+     ]
+    },
+    {
+     "variant": "M-IncrementalRebuildsOnDocumentChange-callee-1",
+     "where": "callee",
+     "at": "ts:packages/shp-checker/src/checker/incremental.ts#checkOptionsKey",
+     "mutant": "equality:===\u2192!==@242:27",
+     "failing": [
+      "shape.checker.incremental::IncrementalRebuildsOnDocumentChange",
+      "shape.checker.incremental::IncrementalReusesDiagnosticsOnNoop",
+      "shape.checker.incremental::IncrementalReusesModelOnOptionChange"
+     ],
+     "obligations": [
+      "contradiction:IncrementalReusesDiagnosticsOnNoop:sound:pre:owed",
+      "contradiction:IncrementalReusesModelOnOptionChange:sound:pre:owed",
+      "contradiction:IncrementalRebuildsOnDocumentChange:sound:pre:owed"
+     ],
+     "law_blocked": false,
+     "verdict": "blocked",
+     "moved": [
+      "ts:packages/shp-checker/src/checker/incremental.ts@file",
+      "ts:packages/shp-checker/src/checker/incremental.ts#checkOptionsKey@own",
+      "ts:packages/shp-checker/src/checker/incremental.ts#checkOptionsKey@unit"
+     ]
+    },
+    {
+     "variant": "M-InspectionQualifiedIdentities-callee-1",
+     "where": "callee",
+     "at": "ts:packages/shp-checker/src/checker/inspection.ts#inspectFunctions",
+     "mutant": "equality:===\u2192!==@271:28",
+     "failing": [
+      "shape.checker::InspectionCodepointOrder",
+      "shape.checker::InspectionPreservesOrigin",
+      "shape.checker::InspectionQualifiedIdentities"
+     ],
+     "obligations": [
+      "contradiction:InspectionPreservesOrigin:sound:pre:owed",
+      "contradiction:InspectionCodepointOrder:sound:pre:owed",
+      "contradiction:InspectionQualifiedIdentities:sound:pre:owed"
+     ],
+     "law_blocked": false,
+     "verdict": "blocked",
+     "moved": [
+      "ts:packages/shp-checker/src/checker/inspection.ts@file",
+      "ts:packages/shp-checker/src/checker/inspection.ts#inspectFunctions@own",
+      "ts:packages/shp-checker/src/checker/inspection.ts#inspectFunctions@unit"
+     ]
+    },
+    {
+     "variant": "M-FinalForbidBeatsGrant-unit-1",
+     "where": "unit",
+     "at": "ts:packages/shp-checker/src/checker/derivations.ts#deriveFinalForbidsForResource",
+     "mutant": "negation:drop@344:9",
+     "failing": [
+      "shape.checker::FinalForbidBeatsGrant"
+     ],
+     "obligations": [
+      "contradiction:FinalForbidBeatsGrant:sound:intro:blocking"
+     ],
+     "law_blocked": true,
+     "verdict": "blocked",
+     "moved": [
+      "ts:packages/shp-checker/src/checker/derivations.ts@file",
+      "ts:packages/shp-checker/src/checker/derivations.ts#deriveFinalForbidsForResource@own",
+      "ts:packages/shp-checker/src/checker/derivations.ts#deriveFinalForbidsForResource@unit"
+     ]
+    },
+    {
+     "variant": "M-HypercycleShortestWitness-unit-1",
+     "where": "unit",
+     "at": "ts:packages/shp-checker/src/checker/rules/relations.ts#findHypercycle",
+     "mutant": "negation:drop@306:9",
+     "failing": [
+      "shape.checker::HypercycleShortestWitness"
+     ],
+     "obligations": [
+      "contradiction:HypercycleShortestWitness:sound:intro:blocking"
+     ],
+     "law_blocked": true,
+     "verdict": "blocked",
+     "moved": [
+      "ts:packages/shp-checker/src/checker/rules/relations.ts@file",
+      "ts:packages/shp-checker/src/checker/rules/relations.ts#findHypercycle@own",
+      "ts:packages/shp-checker/src/checker/rules/relations.ts#findHypercycle@unit"
+     ]
+    },
+    {
+     "variant": "M-FreshnessEnforcesOnlyIsoDates-unit-1",
+     "where": "unit",
+     "at": "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness",
+     "mutant": "negation:drop@228:9",
+     "failing": [
+      "shape.checker::FreshnessEnforcesOnlyIsoDates"
+     ],
+     "obligations": [
+      "contradiction:FreshnessEnforcesOnlyIsoDates:sound:intro:blocking"
+     ],
+     "law_blocked": true,
+     "verdict": "blocked",
+     "moved": [
+      "ts:packages/shp-checker/src/checker/rules/guards.ts@file",
+      "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness@own",
+      "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness@unit"
+     ]
+    },
+    {
+     "variant": "M-FormatterIdempotent-import-2",
+     "where": "import",
+     "at": "ts:packages/shp-checker/src/shape-strings.ts#compareCodepointStrings",
+     "mutant": "constant:0\u21921@17:64",
+     "failing": [
+      "shape.checker::CheckIsDeterministic",
+      "shape.checker::ForbiddenPathFewestHops",
+      "shape.checker::HypercycleShortestWitness",
+      "shape.checker::InspectionCodepointOrder",
+      "shape.tooling::FormatterIdempotent"
+     ],
+     "obligations": [
+      "contradiction:FormatterIdempotent:sound:pre:owed",
+      "contradiction:HypercycleShortestWitness:sound:pre:owed",
+      "contradiction:CheckIsDeterministic:sound:pre:owed",
+      "contradiction:InspectionCodepointOrder:sound:pre:owed",
+      "contradiction:ForbiddenPathFewestHops:sound:pre:owed"
+     ],
+     "law_blocked": false,
+     "verdict": "blocked",
+     "moved": [
+      "ts:packages/shp-checker/src/shape-strings.ts@file",
+      "ts:packages/shp-checker/src/shape-strings.ts#compareCodepointStrings@own",
+      "ts:packages/shp-checker/src/shape-strings.ts#compareCodepointStrings@unit"
+     ]
+    },
+    {
+     "variant": "M-UpdateDraftsPreferUnknown-callee-1",
+     "where": "callee",
+     "at": "ts:packages/shp-checker/src/authoring.ts#uniqueFunctionName",
+     "mutant": "arithmetic:+\u2192-@189:51",
+     "failing": [
+      "shape.tooling::UpdateDraftsPreferUnknown"
+     ],
+     "obligations": [
+      "contradiction:UpdateDraftsPreferUnknown:sound:pre:owed"
+     ],
+     "law_blocked": false,
+     "verdict": "owed",
+     "moved": [
+      "ts:packages/shp-checker/src/authoring.ts@file",
+      "ts:packages/shp-checker/src/authoring.ts#uniqueFunctionName@own",
+      "ts:packages/shp-checker/src/authoring.ts#uniqueFunctionName@unit"
+     ]
+    },
+    {
+     "variant": "M-IncrementalRebuildsOnDocumentChange-unit-1",
+     "where": "unit",
+     "at": "ts:packages/shp-checker/src/checker/incremental.ts#IncrementalShapeChecker.check",
+     "mutant": "equality:!==\u2192===@76:16",
+     "failing": [
+      "shape.checker.incremental::IncrementalRebuildsOnDocumentChange",
+      "shape.checker.incremental::IncrementalReusesDiagnosticsOnNoop",
+      "shape.checker.incremental::IncrementalReusesModelOnOptionChange"
+     ],
+     "obligations": [
+      "contradiction:IncrementalReusesDiagnosticsOnNoop:sound:intro:blocking",
+      "contradiction:IncrementalReusesModelOnOptionChange:sound:intro:blocking",
+      "contradiction:IncrementalRebuildsOnDocumentChange:sound:intro:blocking"
+     ],
+     "law_blocked": true,
+     "verdict": "blocked",
+     "moved": [
+      "ts:packages/shp-checker/src/checker/incremental.ts@file",
+      "ts:packages/shp-checker/src/checker/incremental.ts#IncrementalShapeChecker@unit",
+      "ts:packages/shp-checker/src/checker/incremental.ts#IncrementalShapeChecker.check@own",
+      "ts:packages/shp-checker/src/checker/incremental.ts#IncrementalShapeChecker.check@unit"
+     ]
+    },
+    {
+     "variant": "M-IncrementalReusesModelOnOptionChange-unit-1",
+     "where": "unit",
+     "at": "ts:packages/shp-checker/src/checker/incremental.ts#IncrementalShapeChecker.check",
+     "mutant": "negation:drop@97:7",
+     "failing": [
+      "shape.checker.incremental::IncrementalReusesDiagnosticsOnNoop",
+      "shape.checker.incremental::IncrementalReusesModelOnOptionChange"
+     ],
+     "obligations": [
+      "contradiction:IncrementalReusesDiagnosticsOnNoop:sound:intro:blocking",
+      "contradiction:IncrementalReusesModelOnOptionChange:sound:intro:blocking"
+     ],
+     "law_blocked": true,
+     "verdict": "blocked",
+     "moved": [
+      "ts:packages/shp-checker/src/checker/incremental.ts@file",
+      "ts:packages/shp-checker/src/checker/incremental.ts#IncrementalShapeChecker@unit",
+      "ts:packages/shp-checker/src/checker/incremental.ts#IncrementalShapeChecker.check@own",
+      "ts:packages/shp-checker/src/checker/incremental.ts#IncrementalShapeChecker.check@unit"
+     ]
+    },
+    {
+     "variant": "M-SourcePathRulesShared-unit-1",
+     "where": "unit",
+     "at": "ts:packages/shp-checker/src/shape-strings.ts#normalizeShapeSourcePath",
+     "mutant": "constant:0\u21921@2:44",
+     "failing": [
+      "shape.checker::SourcePathRulesShared"
+     ],
+     "obligations": [
+      "contradiction:SourcePathRulesShared:sound:intro:blocking"
+     ],
+     "law_blocked": true,
+     "verdict": "blocked",
+     "moved": [
+      "ts:packages/shp-checker/src/shape-strings.ts@file",
+      "ts:packages/shp-checker/src/shape-strings.ts#normalizeShapeSourcePath@own",
+      "ts:packages/shp-checker/src/shape-strings.ts#normalizeShapeSourcePath@unit"
+     ]
+    },
+    {
+     "variant": "M-ForbiddenPathFewestHops-callee-1",
+     "where": "callee",
+     "at": "ts:packages/shp-checker/src/checker/rules/relations.ts#validPathHyperedges",
+     "mutant": "negation:drop@334:11",
+     "failing": [
+      "shape.checker::ForbiddenPathFewestHops"
+     ],
+     "obligations": [
+      "contradiction:ForbiddenPathFewestHops:sound:pre:owed"
+     ],
+     "law_blocked": false,
+     "verdict": "blocked",
+     "moved": [
+      "ts:packages/shp-checker/src/checker/rules/relations.ts@file",
+      "ts:packages/shp-checker/src/checker/rules/relations.ts#validPathHyperedges@own",
+      "ts:packages/shp-checker/src/checker/rules/relations.ts#validPathHyperedges@unit"
+     ]
+    },
+    {
+     "variant": "M-HypercycleShortestWitness-unit-2",
+     "where": "unit",
+     "at": "ts:packages/shp-checker/src/checker/rules/relations.ts#findHypercycle",
+     "mutant": "logical:&&\u2192||@310:19",
+     "failing": [
+      "shape.checker::HypercycleShortestWitness"
+     ],
+     "obligations": [
+      "contradiction:HypercycleShortestWitness:sound:intro:blocking"
+     ],
+     "law_blocked": true,
+     "verdict": "blocked",
+     "moved": [
+      "ts:packages/shp-checker/src/checker/rules/relations.ts@file",
+      "ts:packages/shp-checker/src/checker/rules/relations.ts#findHypercycle@own",
+      "ts:packages/shp-checker/src/checker/rules/relations.ts#findHypercycle@unit"
+     ]
+    },
+    {
+     "variant": "M-FreshnessEnforcesOnlyIsoDates-unit-2",
+     "where": "unit",
+     "at": "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness",
+     "mutant": "logical:||\u2192&&@228:24",
+     "failing": [
+      "shape.checker::FreshnessEnforcesOnlyIsoDates"
+     ],
+     "obligations": [
+      "contradiction:FreshnessEnforcesOnlyIsoDates:sound:intro:blocking"
+     ],
+     "law_blocked": true,
+     "verdict": "blocked",
+     "moved": [
+      "ts:packages/shp-checker/src/checker/rules/guards.ts@file",
+      "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness@own",
+      "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness@unit"
+     ]
+    },
+    {
+     "variant": "M-FreshnessEnforcesOnlyIsoDates-import-1",
+     "where": "import",
+     "at": "ts:packages/shp-checker/src/checker/iso-date.ts#isIsoCalendarDate",
+     "mutant": "negation:drop@4:7",
+     "failing": [
+      "shape.checker.incremental::IncrementalRebuildsOnDocumentChange",
+      "shape.checker.incremental::IncrementalReusesDiagnosticsOnNoop",
+      "shape.checker.incremental::IncrementalReusesModelOnOptionChange",
+      "shape.checker::CheckIsDeterministic",
+      "shape.checker::FreshnessEnforcesOnlyIsoDates"
+     ],
+     "obligations": [
+      "contradiction:FreshnessEnforcesOnlyIsoDates:sound:pre:owed",
+      "unestablished:IncrementalReusesDiagnosticsOnNoop:missing:pre:owed",
+      "unestablished:IncrementalRebuildsOnDocumentChange:missing:pre:owed",
+      "unestablished:IncrementalReusesModelOnOptionChange:missing:pre:owed",
+      "unestablished:CheckIsDeterministic:missing:pre:owed"
+     ],
+     "law_blocked": false,
+     "verdict": "blocked",
+     "moved": [
+      "ts:packages/shp-checker/src/checker/iso-date.ts@file",
+      "ts:packages/shp-checker/src/checker/iso-date.ts#isIsoCalendarDate@own",
+      "ts:packages/shp-checker/src/checker/iso-date.ts#isIsoCalendarDate@unit"
+     ]
+    },
+    {
+     "variant": "M-CheckIsDeterministic-unit-1",
+     "where": "unit",
+     "at": "ts:packages/shp-checker/src/checker/api.ts#checkShapeModules",
+     "mutant": "negation:drop@38:7",
+     "failing": [
+      "shape.checker.incremental::IncrementalRebuildsOnDocumentChange",
+      "shape.checker.incremental::IncrementalReusesDiagnosticsOnNoop",
+      "shape.checker.incremental::IncrementalReusesModelOnOptionChange",
+      "shape.checker::CheckIsDeterministic",
+      "shape.checker::FinalForbidBeatsGrant",
+      "shape.checker::FinalForbidNotWaivedByContext",
+      "shape.checker::FinalForbidTargetsDeterministic",
+      "shape.checker::ForbiddenPathFewestHops",
+      "shape.checker::ForbiddenPathHopsKeepProvenance",
+      "shape.checker::FreshnessEnforcesOnlyIsoDates",
+      "shape.checker::HypercycleShortestWitness",
+      "shape.checker::SourcePathRulesShared",
+      "shape.tooling::UpdateDraftsPreferUnknown"
+     ],
+     "obligations": [
+      "contradiction:CheckIsDeterministic:sound:intro:blocking",
+      "contradiction:FinalForbidTargetsDeterministic:sound:pre:owed",
+      "contradiction:FinalForbidBeatsGrant:sound:pre:owed",
+      "contradiction:IncrementalReusesDiagnosticsOnNoop:sound:pre:owed",
+      "contradiction:SourcePathRulesShared:sound:pre:owed",
+      "contradiction:FinalForbidNotWaivedByContext:sound:pre:owed",
+      "contradiction:ForbiddenPathHopsKeepProvenance:sound:pre:owed",
+      "contradiction:UpdateDraftsPreferUnknown:sound:pre:owed",
+      "contradiction:IncrementalReusesModelOnOptionChange:sound:pre:owed",
+      "contradiction:HypercycleShortestWitness:sound:pre:owed",
+      "contradiction:IncrementalRebuildsOnDocumentChange:sound:pre:owed",
+      "contradiction:FreshnessEnforcesOnlyIsoDates:sound:pre:owed",
+      "contradiction:ForbiddenPathFewestHops:sound:pre:owed"
+     ],
+     "law_blocked": true,
+     "verdict": "blocked",
+     "moved": [
+      "ts:packages/shp-checker/src/checker/api.ts@file",
+      "ts:packages/shp-checker/src/checker/api.ts#checkShapeModules@own",
+      "ts:packages/shp-checker/src/checker/api.ts#checkShapeModules@unit"
+     ]
+    },
+    {
+     "variant": "M-IncrementalRebuildsOnDocumentChange-unit-2",
+     "where": "unit",
+     "at": "ts:packages/shp-checker/src/checker/incremental.ts#IncrementalShapeChecker.check",
+     "mutant": "constant:0\u21921@97:87",
+     "failing": [
+      "shape.checker.incremental::IncrementalRebuildsOnDocumentChange",
+      "shape.checker.incremental::IncrementalReusesDiagnosticsOnNoop",
+      "shape.checker.incremental::IncrementalReusesModelOnOptionChange"
+     ],
+     "obligations": [
+      "contradiction:IncrementalReusesDiagnosticsOnNoop:sound:intro:blocking",
+      "contradiction:IncrementalReusesModelOnOptionChange:sound:intro:blocking",
+      "contradiction:IncrementalRebuildsOnDocumentChange:sound:intro:blocking"
+     ],
+     "law_blocked": true,
+     "verdict": "blocked",
+     "moved": [
+      "ts:packages/shp-checker/src/checker/incremental.ts@file",
+      "ts:packages/shp-checker/src/checker/incremental.ts#IncrementalShapeChecker@unit",
+      "ts:packages/shp-checker/src/checker/incremental.ts#IncrementalShapeChecker.check@own",
+      "ts:packages/shp-checker/src/checker/incremental.ts#IncrementalShapeChecker.check@unit"
+     ]
+    },
+    {
+     "variant": "M-IncrementalReusesModelOnOptionChange-unit-2",
+     "where": "unit",
+     "at": "ts:packages/shp-checker/src/checker/incremental.ts#IncrementalShapeChecker.check",
+     "mutant": "equality:===\u2192!==@140:57",
+     "failing": [
+      "shape.checker.incremental::IncrementalReusesDiagnosticsOnNoop",
+      "shape.checker.incremental::IncrementalReusesModelOnOptionChange"
+     ],
+     "obligations": [
+      "contradiction:IncrementalReusesDiagnosticsOnNoop:sound:intro:blocking",
+      "contradiction:IncrementalReusesModelOnOptionChange:sound:intro:blocking"
+     ],
+     "law_blocked": true,
+     "verdict": "blocked",
+     "moved": [
+      "ts:packages/shp-checker/src/checker/incremental.ts@file",
+      "ts:packages/shp-checker/src/checker/incremental.ts#IncrementalShapeChecker@unit",
+      "ts:packages/shp-checker/src/checker/incremental.ts#IncrementalShapeChecker.check@own",
+      "ts:packages/shp-checker/src/checker/incremental.ts#IncrementalShapeChecker.check@unit"
+     ]
+    },
+    {
+     "variant": "M-SourcePathRulesShared-unit-2",
+     "where": "unit",
+     "at": "ts:packages/shp-checker/src/shape-strings.ts#normalizeShapeSourcePath",
+     "mutant": "constant:1\u21922@4:41",
+     "failing": [
+      "shape.checker::SourcePathRulesShared"
+     ],
+     "obligations": [
+      "contradiction:SourcePathRulesShared:sound:intro:blocking"
+     ],
+     "law_blocked": true,
+     "verdict": "blocked",
+     "moved": [
+      "ts:packages/shp-checker/src/shape-strings.ts@file",
+      "ts:packages/shp-checker/src/shape-strings.ts#normalizeShapeSourcePath@own",
+      "ts:packages/shp-checker/src/shape-strings.ts#normalizeShapeSourcePath@unit"
+     ]
+    },
+    {
+     "variant": "M-ForbiddenPathFewestHops-callee-2",
+     "where": "callee",
+     "at": "ts:packages/shp-checker/src/checker/rules/relations.ts#buildRelationTraversalGraph",
+     "mutant": "constant:1\u21922@376:31",
+     "failing": [
+      "shape.checker::ForbiddenPathFewestHops",
+      "shape.checker::HypercycleShortestWitness"
+     ],
+     "obligations": [
+      "contradiction:HypercycleShortestWitness:sound:pre:owed",
+      "contradiction:ForbiddenPathFewestHops:sound:pre:owed"
+     ],
+     "law_blocked": false,
+     "verdict": "blocked",
+     "moved": [
+      "ts:packages/shp-checker/src/checker/rules/relations.ts@file",
+      "ts:packages/shp-checker/src/checker/rules/relations.ts#buildRelationTraversalGraph@own",
+      "ts:packages/shp-checker/src/checker/rules/relations.ts#buildRelationTraversalGraph@unit"
+     ]
+    },
+    {
+     "variant": "M-HypercycleShortestWitness-callee-1",
+     "where": "callee",
+     "at": "ts:packages/shp-checker/src/checker/rules/relations.ts#buildRelationTraversalGraph",
+     "mutant": "equality:===\u2192!==@357:43",
+     "failing": [
+      "shape.checker::ForbiddenPathFewestHops",
+      "shape.checker::ForbiddenPathHopsKeepProvenance",
+      "shape.checker::HypercycleShortestWitness"
+     ],
+     "obligations": [
+      "contradiction:ForbiddenPathHopsKeepProvenance:sound:pre:owed",
+      "contradiction:HypercycleShortestWitness:sound:pre:owed",
+      "contradiction:ForbiddenPathFewestHops:sound:pre:owed"
+     ],
+     "law_blocked": false,
+     "verdict": "blocked",
+     "moved": [
+      "ts:packages/shp-checker/src/checker/rules/relations.ts@file",
+      "ts:packages/shp-checker/src/checker/rules/relations.ts#buildRelationTraversalGraph@own",
+      "ts:packages/shp-checker/src/checker/rules/relations.ts#buildRelationTraversalGraph@unit"
+     ]
+    },
+    {
+     "variant": "M-FormatterIdempotent-import-1",
+     "where": "import",
+     "at": "ts:packages/shp-checker/src/shape-strings.ts#compareCodepointStrings",
+     "mutant": "constant:1\u21922@15:48",
+     "failing": [
+      "shape.checker::InspectionCodepointOrder",
+      "shape.tooling::FormatterIdempotent"
+     ],
+     "obligations": [
+      "contradiction:FormatterIdempotent:sound:pre:owed",
+      "contradiction:InspectionCodepointOrder:sound:pre:owed"
+     ],
+     "law_blocked": false,
+     "verdict": "blocked",
+     "moved": [
+      "ts:packages/shp-checker/src/shape-strings.ts@file",
+      "ts:packages/shp-checker/src/shape-strings.ts#compareCodepointStrings@own",
+      "ts:packages/shp-checker/src/shape-strings.ts#compareCodepointStrings@unit"
+     ]
+    },
+    {
+     "variant": "M-FreshnessEnforcesOnlyIsoDates-import-2",
+     "where": "import",
+     "at": "ts:packages/shp-checker/src/checker/iso-date.ts#isIsoCalendarDate",
+     "mutant": "constant:4\u21925@7:38",
+     "failing": [
+      "shape.checker::FreshnessEnforcesOnlyIsoDates"
+     ],
+     "obligations": [
+      "contradiction:FreshnessEnforcesOnlyIsoDates:sound:pre:owed"
+     ],
+     "law_blocked": false,
+     "verdict": "blocked",
+     "moved": [
+      "ts:packages/shp-checker/src/checker/iso-date.ts@file",
+      "ts:packages/shp-checker/src/checker/iso-date.ts#isIsoCalendarDate@own",
+      "ts:packages/shp-checker/src/checker/iso-date.ts#isIsoCalendarDate@unit"
+     ]
+    }
+   ]
+  },
+  "vnew": {
+   "by_location": {
+    "unit": {
+     "n": 13,
+     "suite_kill": 13,
+     "law_blocked": 13,
+     "law_flagged": 13,
+     "introduced": 13,
+     "loss": 0
+    },
+    "callee": {
+     "n": 7,
+     "suite_kill": 7,
+     "law_blocked": 7,
+     "law_flagged": 7,
+     "introduced": 7,
+     "loss": 0
+    },
+    "import": {
+     "n": 4,
+     "suite_kill": 4,
+     "law_blocked": 4,
+     "law_flagged": 4,
+     "introduced": 4,
+     "loss": 0
+    }
+   },
+   "details": [
+    {
+     "variant": "M-UpdateDraftsPreferUnknown-unit-1",
+     "where": "unit",
+     "at": "ts:packages/shp-checker/src/authoring.ts#generateShapeUpdateDraft",
+     "mutant": "constant:0\u21921@138:78",
+     "failing": [
+      "shape.tooling::UpdateDraftsPreferUnknown"
+     ],
+     "obligations": [
+      "contradiction:UpdateDraftsPreferUnknown:sound:intro:blocking"
+     ],
+     "law_blocked": true,
+     "verdict": "blocked",
+     "moved": [
+      "ts:packages/shp-checker/src/authoring.ts@file",
+      "ts:packages/shp-checker/src/authoring.ts#generateShapeUpdateDraft@own",
+      "ts:packages/shp-checker/src/authoring.ts#generateShapeUpdateDraft@unit"
+     ]
+    },
+    {
+     "variant": "M-CheckIsDeterministic-callee-1",
+     "where": "callee",
+     "at": "ts:packages/shp-checker/src/checker/api.ts#normalizeCheckOptions",
+     "mutant": "equality:===\u2192!==@170:12",
+     "failing": [
+      "shape.checker.incremental::IncrementalRebuildsOnDocumentChange",
+      "shape.checker.incremental::IncrementalReusesDiagnosticsOnNoop",
+      "shape.checker.incremental::IncrementalReusesModelOnOptionChange",
+      "shape.checker::CheckIsDeterministic",
+      "shape.checker::FinalForbidBeatsGrant",
+      "shape.checker::FinalForbidNotWaivedByContext",
+      "shape.checker::FinalForbidTargetsDeterministic",
+      "shape.checker::ForbiddenPathFewestHops",
+      "shape.checker::ForbiddenPathHopsKeepProvenance",
+      "shape.checker::FreshnessEnforcesOnlyIsoDates",
+      "shape.checker::HypercycleShortestWitness",
+      "shape.checker::SourcePathRulesShared",
+      "shape.tooling::UpdateDraftsPreferUnknown"
+     ],
+     "obligations": [
+      "contradiction:FinalForbidTargetsDeterministic:sound:intro:blocking",
+      "contradiction:FinalForbidBeatsGrant:sound:intro:blocking",
+      "contradiction:IncrementalReusesDiagnosticsOnNoop:sound:intro:blocking",
+      "contradiction:SourcePathRulesShared:sound:intro:blocking",
+      "contradiction:FinalForbidNotWaivedByContext:sound:intro:blocking",
+      "contradiction:ForbiddenPathHopsKeepProvenance:sound:intro:blocking",
+      "contradiction:UpdateDraftsPreferUnknown:sound:intro:blocking",
+      "contradiction:IncrementalReusesModelOnOptionChange:sound:intro:blocking",
+      "contradiction:HypercycleShortestWitness:sound:intro:blocking",
+      "contradiction:CheckIsDeterministic:sound:intro:blocking",
+      "contradiction:IncrementalRebuildsOnDocumentChange:sound:intro:blocking",
+      "contradiction:FreshnessEnforcesOnlyIsoDates:sound:intro:blocking",
+      "contradiction:ForbiddenPathFewestHops:sound:intro:blocking"
+     ],
+     "law_blocked": true,
+     "verdict": "blocked",
+     "moved": [
+      "ts:packages/shp-checker/src/checker/api.ts@file",
+      "ts:packages/shp-checker/src/checker/api.ts#normalizeCheckOptions@own",
+      "ts:packages/shp-checker/src/checker/api.ts#normalizeCheckOptions@unit"
+     ]
+    },
+    {
+     "variant": "M-IncrementalRebuildsOnDocumentChange-callee-1",
+     "where": "callee",
+     "at": "ts:packages/shp-checker/src/checker/incremental.ts#checkOptionsKey",
+     "mutant": "equality:===\u2192!==@242:27",
+     "failing": [
+      "shape.checker.incremental::IncrementalRebuildsOnDocumentChange",
+      "shape.checker.incremental::IncrementalReusesDiagnosticsOnNoop",
+      "shape.checker.incremental::IncrementalReusesModelOnOptionChange"
+     ],
+     "obligations": [
+      "contradiction:IncrementalReusesDiagnosticsOnNoop:sound:intro:blocking",
+      "contradiction:IncrementalReusesModelOnOptionChange:sound:intro:blocking",
+      "contradiction:IncrementalRebuildsOnDocumentChange:sound:intro:blocking"
+     ],
+     "law_blocked": true,
+     "verdict": "blocked",
+     "moved": [
+      "ts:packages/shp-checker/src/checker/incremental.ts@file",
+      "ts:packages/shp-checker/src/checker/incremental.ts#checkOptionsKey@own",
+      "ts:packages/shp-checker/src/checker/incremental.ts#checkOptionsKey@unit"
+     ]
+    },
+    {
+     "variant": "M-InspectionQualifiedIdentities-callee-1",
+     "where": "callee",
+     "at": "ts:packages/shp-checker/src/checker/inspection.ts#inspectFunctions",
+     "mutant": "equality:===\u2192!==@271:28",
+     "failing": [
+      "shape.checker::InspectionCodepointOrder",
+      "shape.checker::InspectionPreservesOrigin",
+      "shape.checker::InspectionQualifiedIdentities"
+     ],
+     "obligations": [
+      "contradiction:InspectionPreservesOrigin:sound:intro:blocking",
+      "contradiction:InspectionCodepointOrder:sound:intro:blocking",
+      "contradiction:InspectionQualifiedIdentities:sound:intro:blocking"
+     ],
+     "law_blocked": true,
+     "verdict": "blocked",
+     "moved": [
+      "ts:packages/shp-checker/src/checker/inspection.ts@file",
+      "ts:packages/shp-checker/src/checker/inspection.ts#inspectFunctions@own",
+      "ts:packages/shp-checker/src/checker/inspection.ts#inspectFunctions@unit"
+     ]
+    },
+    {
+     "variant": "M-FinalForbidBeatsGrant-unit-1",
+     "where": "unit",
+     "at": "ts:packages/shp-checker/src/checker/derivations.ts#deriveFinalForbidsForResource",
+     "mutant": "negation:drop@344:9",
+     "failing": [
+      "shape.checker::FinalForbidBeatsGrant"
+     ],
+     "obligations": [
+      "contradiction:FinalForbidBeatsGrant:sound:intro:blocking"
+     ],
+     "law_blocked": true,
+     "verdict": "blocked",
+     "moved": [
+      "ts:packages/shp-checker/src/checker/derivations.ts@file",
+      "ts:packages/shp-checker/src/checker/derivations.ts#deriveFinalForbidsForResource@own",
+      "ts:packages/shp-checker/src/checker/derivations.ts#deriveFinalForbidsForResource@unit"
+     ]
+    },
+    {
+     "variant": "M-HypercycleShortestWitness-unit-1",
+     "where": "unit",
+     "at": "ts:packages/shp-checker/src/checker/rules/relations.ts#findHypercycle",
+     "mutant": "negation:drop@306:9",
+     "failing": [
+      "shape.checker::HypercycleShortestWitness"
+     ],
+     "obligations": [
+      "contradiction:HypercycleShortestWitness:sound:intro:blocking"
+     ],
+     "law_blocked": true,
+     "verdict": "blocked",
+     "moved": [
+      "ts:packages/shp-checker/src/checker/rules/relations.ts@file",
+      "ts:packages/shp-checker/src/checker/rules/relations.ts#findHypercycle@own",
+      "ts:packages/shp-checker/src/checker/rules/relations.ts#findHypercycle@unit"
+     ]
+    },
+    {
+     "variant": "M-FreshnessEnforcesOnlyIsoDates-unit-1",
+     "where": "unit",
+     "at": "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness",
+     "mutant": "negation:drop@228:9",
+     "failing": [
+      "shape.checker::FreshnessEnforcesOnlyIsoDates"
+     ],
+     "obligations": [
+      "contradiction:FreshnessEnforcesOnlyIsoDates:sound:intro:blocking"
+     ],
+     "law_blocked": true,
+     "verdict": "blocked",
+     "moved": [
+      "ts:packages/shp-checker/src/checker/rules/guards.ts@file",
+      "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness@own",
+      "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness@unit"
+     ]
+    },
+    {
+     "variant": "M-FormatterIdempotent-import-2",
+     "where": "import",
+     "at": "ts:packages/shp-checker/src/shape-strings.ts#compareCodepointStrings",
+     "mutant": "constant:0\u21921@17:64",
+     "failing": [
+      "shape.checker::CheckIsDeterministic",
+      "shape.checker::ForbiddenPathFewestHops",
+      "shape.checker::HypercycleShortestWitness",
+      "shape.checker::InspectionCodepointOrder",
+      "shape.tooling::FormatterIdempotent"
+     ],
+     "obligations": [
+      "contradiction:FormatterIdempotent:sound:intro:blocking",
+      "contradiction:HypercycleShortestWitness:sound:intro:blocking",
+      "contradiction:CheckIsDeterministic:sound:intro:blocking",
+      "contradiction:InspectionCodepointOrder:sound:intro:blocking",
+      "contradiction:ForbiddenPathFewestHops:sound:intro:blocking"
+     ],
+     "law_blocked": true,
+     "verdict": "blocked",
+     "moved": [
+      "ts:packages/shp-checker/src/shape-strings.ts@file",
+      "ts:packages/shp-checker/src/shape-strings.ts#compareCodepointStrings@own",
+      "ts:packages/shp-checker/src/shape-strings.ts#compareCodepointStrings@unit"
+     ]
+    },
+    {
+     "variant": "M-UpdateDraftsPreferUnknown-callee-1",
+     "where": "callee",
+     "at": "ts:packages/shp-checker/src/authoring.ts#uniqueFunctionName",
+     "mutant": "arithmetic:+\u2192-@189:51",
+     "failing": [
+      "shape.tooling::UpdateDraftsPreferUnknown"
+     ],
+     "obligations": [
+      "contradiction:UpdateDraftsPreferUnknown:sound:intro:blocking"
+     ],
+     "law_blocked": true,
+     "verdict": "blocked",
+     "moved": [
+      "ts:packages/shp-checker/src/authoring.ts@file",
+      "ts:packages/shp-checker/src/authoring.ts#uniqueFunctionName@own",
+      "ts:packages/shp-checker/src/authoring.ts#uniqueFunctionName@unit"
+     ]
+    },
+    {
+     "variant": "M-IncrementalRebuildsOnDocumentChange-unit-1",
+     "where": "unit",
+     "at": "ts:packages/shp-checker/src/checker/incremental.ts#IncrementalShapeChecker.check",
+     "mutant": "equality:!==\u2192===@76:16",
+     "failing": [
+      "shape.checker.incremental::IncrementalRebuildsOnDocumentChange",
+      "shape.checker.incremental::IncrementalReusesDiagnosticsOnNoop",
+      "shape.checker.incremental::IncrementalReusesModelOnOptionChange"
+     ],
+     "obligations": [
+      "contradiction:IncrementalReusesDiagnosticsOnNoop:sound:intro:blocking",
+      "contradiction:IncrementalReusesModelOnOptionChange:sound:intro:blocking",
+      "contradiction:IncrementalRebuildsOnDocumentChange:sound:intro:blocking"
+     ],
+     "law_blocked": true,
+     "verdict": "blocked",
+     "moved": [
+      "ts:packages/shp-checker/src/checker/incremental.ts@file",
+      "ts:packages/shp-checker/src/checker/incremental.ts#IncrementalShapeChecker@unit",
+      "ts:packages/shp-checker/src/checker/incremental.ts#IncrementalShapeChecker.check@own",
+      "ts:packages/shp-checker/src/checker/incremental.ts#IncrementalShapeChecker.check@unit"
+     ]
+    },
+    {
+     "variant": "M-IncrementalReusesModelOnOptionChange-unit-1",
+     "where": "unit",
+     "at": "ts:packages/shp-checker/src/checker/incremental.ts#IncrementalShapeChecker.check",
+     "mutant": "negation:drop@97:7",
+     "failing": [
+      "shape.checker.incremental::IncrementalReusesDiagnosticsOnNoop",
+      "shape.checker.incremental::IncrementalReusesModelOnOptionChange"
+     ],
+     "obligations": [
+      "contradiction:IncrementalReusesDiagnosticsOnNoop:sound:intro:blocking",
+      "contradiction:IncrementalReusesModelOnOptionChange:sound:intro:blocking"
+     ],
+     "law_blocked": true,
+     "verdict": "blocked",
+     "moved": [
+      "ts:packages/shp-checker/src/checker/incremental.ts@file",
+      "ts:packages/shp-checker/src/checker/incremental.ts#IncrementalShapeChecker@unit",
+      "ts:packages/shp-checker/src/checker/incremental.ts#IncrementalShapeChecker.check@own",
+      "ts:packages/shp-checker/src/checker/incremental.ts#IncrementalShapeChecker.check@unit"
+     ]
+    },
+    {
+     "variant": "M-SourcePathRulesShared-unit-1",
+     "where": "unit",
+     "at": "ts:packages/shp-checker/src/shape-strings.ts#normalizeShapeSourcePath",
+     "mutant": "constant:0\u21921@2:44",
+     "failing": [
+      "shape.checker::SourcePathRulesShared"
+     ],
+     "obligations": [
+      "contradiction:SourcePathRulesShared:sound:intro:blocking"
+     ],
+     "law_blocked": true,
+     "verdict": "blocked",
+     "moved": [
+      "ts:packages/shp-checker/src/shape-strings.ts@file",
+      "ts:packages/shp-checker/src/shape-strings.ts#normalizeShapeSourcePath@own",
+      "ts:packages/shp-checker/src/shape-strings.ts#normalizeShapeSourcePath@unit"
+     ]
+    },
+    {
+     "variant": "M-ForbiddenPathFewestHops-callee-1",
+     "where": "callee",
+     "at": "ts:packages/shp-checker/src/checker/rules/relations.ts#validPathHyperedges",
+     "mutant": "negation:drop@334:11",
+     "failing": [
+      "shape.checker::ForbiddenPathFewestHops"
+     ],
+     "obligations": [
+      "contradiction:ForbiddenPathFewestHops:sound:intro:blocking"
+     ],
+     "law_blocked": true,
+     "verdict": "blocked",
+     "moved": [
+      "ts:packages/shp-checker/src/checker/rules/relations.ts@file",
+      "ts:packages/shp-checker/src/checker/rules/relations.ts#validPathHyperedges@own",
+      "ts:packages/shp-checker/src/checker/rules/relations.ts#validPathHyperedges@unit"
+     ]
+    },
+    {
+     "variant": "M-HypercycleShortestWitness-unit-2",
+     "where": "unit",
+     "at": "ts:packages/shp-checker/src/checker/rules/relations.ts#findHypercycle",
+     "mutant": "logical:&&\u2192||@310:19",
+     "failing": [
+      "shape.checker::HypercycleShortestWitness"
+     ],
+     "obligations": [
+      "contradiction:HypercycleShortestWitness:sound:intro:blocking"
+     ],
+     "law_blocked": true,
+     "verdict": "blocked",
+     "moved": [
+      "ts:packages/shp-checker/src/checker/rules/relations.ts@file",
+      "ts:packages/shp-checker/src/checker/rules/relations.ts#findHypercycle@own",
+      "ts:packages/shp-checker/src/checker/rules/relations.ts#findHypercycle@unit"
+     ]
+    },
+    {
+     "variant": "M-FreshnessEnforcesOnlyIsoDates-unit-2",
+     "where": "unit",
+     "at": "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness",
+     "mutant": "logical:||\u2192&&@228:24",
+     "failing": [
+      "shape.checker::FreshnessEnforcesOnlyIsoDates"
+     ],
+     "obligations": [
+      "contradiction:FreshnessEnforcesOnlyIsoDates:sound:intro:blocking"
+     ],
+     "law_blocked": true,
+     "verdict": "blocked",
+     "moved": [
+      "ts:packages/shp-checker/src/checker/rules/guards.ts@file",
+      "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness@own",
+      "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness@unit"
+     ]
+    },
+    {
+     "variant": "M-FreshnessEnforcesOnlyIsoDates-import-1",
+     "where": "import",
+     "at": "ts:packages/shp-checker/src/checker/iso-date.ts#isIsoCalendarDate",
+     "mutant": "negation:drop@4:7",
+     "failing": [
+      "shape.checker.incremental::IncrementalRebuildsOnDocumentChange",
+      "shape.checker.incremental::IncrementalReusesDiagnosticsOnNoop",
+      "shape.checker.incremental::IncrementalReusesModelOnOptionChange",
+      "shape.checker::CheckIsDeterministic",
+      "shape.checker::FreshnessEnforcesOnlyIsoDates"
+     ],
+     "obligations": [
+      "contradiction:FreshnessEnforcesOnlyIsoDates:sound:intro:blocking",
+      "unestablished:IncrementalReusesDiagnosticsOnNoop:missing:pre:owed",
+      "unestablished:IncrementalRebuildsOnDocumentChange:missing:pre:owed",
+      "unestablished:IncrementalReusesModelOnOptionChange:missing:pre:owed",
+      "unestablished:CheckIsDeterministic:missing:pre:owed"
+     ],
+     "law_blocked": true,
+     "verdict": "blocked",
+     "moved": [
+      "ts:packages/shp-checker/src/checker/iso-date.ts@file",
+      "ts:packages/shp-checker/src/checker/iso-date.ts#isIsoCalendarDate@own",
+      "ts:packages/shp-checker/src/checker/iso-date.ts#isIsoCalendarDate@unit"
+     ]
+    },
+    {
+     "variant": "M-CheckIsDeterministic-unit-1",
+     "where": "unit",
+     "at": "ts:packages/shp-checker/src/checker/api.ts#checkShapeModules",
+     "mutant": "negation:drop@38:7",
+     "failing": [
+      "shape.checker.incremental::IncrementalRebuildsOnDocumentChange",
+      "shape.checker.incremental::IncrementalReusesDiagnosticsOnNoop",
+      "shape.checker.incremental::IncrementalReusesModelOnOptionChange",
+      "shape.checker::CheckIsDeterministic",
+      "shape.checker::FinalForbidBeatsGrant",
+      "shape.checker::FinalForbidNotWaivedByContext",
+      "shape.checker::FinalForbidTargetsDeterministic",
+      "shape.checker::ForbiddenPathFewestHops",
+      "shape.checker::ForbiddenPathHopsKeepProvenance",
+      "shape.checker::FreshnessEnforcesOnlyIsoDates",
+      "shape.checker::HypercycleShortestWitness",
+      "shape.checker::SourcePathRulesShared",
+      "shape.tooling::UpdateDraftsPreferUnknown"
+     ],
+     "obligations": [
+      "contradiction:FinalForbidTargetsDeterministic:sound:intro:blocking",
+      "contradiction:FinalForbidBeatsGrant:sound:intro:blocking",
+      "contradiction:IncrementalReusesDiagnosticsOnNoop:sound:intro:blocking",
+      "contradiction:SourcePathRulesShared:sound:intro:blocking",
+      "contradiction:FinalForbidNotWaivedByContext:sound:intro:blocking",
+      "contradiction:ForbiddenPathHopsKeepProvenance:sound:intro:blocking",
+      "contradiction:UpdateDraftsPreferUnknown:sound:intro:blocking",
+      "contradiction:IncrementalReusesModelOnOptionChange:sound:intro:blocking",
+      "contradiction:HypercycleShortestWitness:sound:intro:blocking",
+      "contradiction:CheckIsDeterministic:sound:intro:blocking",
+      "contradiction:IncrementalRebuildsOnDocumentChange:sound:intro:blocking",
+      "contradiction:FreshnessEnforcesOnlyIsoDates:sound:intro:blocking",
+      "contradiction:ForbiddenPathFewestHops:sound:intro:blocking"
+     ],
+     "law_blocked": true,
+     "verdict": "blocked",
+     "moved": [
+      "ts:packages/shp-checker/src/checker/api.ts@file",
+      "ts:packages/shp-checker/src/checker/api.ts#checkShapeModules@own",
+      "ts:packages/shp-checker/src/checker/api.ts#checkShapeModules@unit"
+     ]
+    },
+    {
+     "variant": "M-IncrementalRebuildsOnDocumentChange-unit-2",
+     "where": "unit",
+     "at": "ts:packages/shp-checker/src/checker/incremental.ts#IncrementalShapeChecker.check",
+     "mutant": "constant:0\u21921@97:87",
+     "failing": [
+      "shape.checker.incremental::IncrementalRebuildsOnDocumentChange",
+      "shape.checker.incremental::IncrementalReusesDiagnosticsOnNoop",
+      "shape.checker.incremental::IncrementalReusesModelOnOptionChange"
+     ],
+     "obligations": [
+      "contradiction:IncrementalReusesDiagnosticsOnNoop:sound:intro:blocking",
+      "contradiction:IncrementalReusesModelOnOptionChange:sound:intro:blocking",
+      "contradiction:IncrementalRebuildsOnDocumentChange:sound:intro:blocking"
+     ],
+     "law_blocked": true,
+     "verdict": "blocked",
+     "moved": [
+      "ts:packages/shp-checker/src/checker/incremental.ts@file",
+      "ts:packages/shp-checker/src/checker/incremental.ts#IncrementalShapeChecker@unit",
+      "ts:packages/shp-checker/src/checker/incremental.ts#IncrementalShapeChecker.check@own",
+      "ts:packages/shp-checker/src/checker/incremental.ts#IncrementalShapeChecker.check@unit"
+     ]
+    },
+    {
+     "variant": "M-IncrementalReusesModelOnOptionChange-unit-2",
+     "where": "unit",
+     "at": "ts:packages/shp-checker/src/checker/incremental.ts#IncrementalShapeChecker.check",
+     "mutant": "equality:===\u2192!==@140:57",
+     "failing": [
+      "shape.checker.incremental::IncrementalReusesDiagnosticsOnNoop",
+      "shape.checker.incremental::IncrementalReusesModelOnOptionChange"
+     ],
+     "obligations": [
+      "contradiction:IncrementalReusesDiagnosticsOnNoop:sound:intro:blocking",
+      "contradiction:IncrementalReusesModelOnOptionChange:sound:intro:blocking"
+     ],
+     "law_blocked": true,
+     "verdict": "blocked",
+     "moved": [
+      "ts:packages/shp-checker/src/checker/incremental.ts@file",
+      "ts:packages/shp-checker/src/checker/incremental.ts#IncrementalShapeChecker@unit",
+      "ts:packages/shp-checker/src/checker/incremental.ts#IncrementalShapeChecker.check@own",
+      "ts:packages/shp-checker/src/checker/incremental.ts#IncrementalShapeChecker.check@unit"
+     ]
+    },
+    {
+     "variant": "M-SourcePathRulesShared-unit-2",
+     "where": "unit",
+     "at": "ts:packages/shp-checker/src/shape-strings.ts#normalizeShapeSourcePath",
+     "mutant": "constant:1\u21922@4:41",
+     "failing": [
+      "shape.checker::SourcePathRulesShared"
+     ],
+     "obligations": [
+      "contradiction:SourcePathRulesShared:sound:intro:blocking"
+     ],
+     "law_blocked": true,
+     "verdict": "blocked",
+     "moved": [
+      "ts:packages/shp-checker/src/shape-strings.ts@file",
+      "ts:packages/shp-checker/src/shape-strings.ts#normalizeShapeSourcePath@own",
+      "ts:packages/shp-checker/src/shape-strings.ts#normalizeShapeSourcePath@unit"
+     ]
+    },
+    {
+     "variant": "M-ForbiddenPathFewestHops-callee-2",
+     "where": "callee",
+     "at": "ts:packages/shp-checker/src/checker/rules/relations.ts#buildRelationTraversalGraph",
+     "mutant": "constant:1\u21922@376:31",
+     "failing": [
+      "shape.checker::ForbiddenPathFewestHops",
+      "shape.checker::HypercycleShortestWitness"
+     ],
+     "obligations": [
+      "contradiction:HypercycleShortestWitness:sound:intro:blocking",
+      "contradiction:ForbiddenPathFewestHops:sound:intro:blocking"
+     ],
+     "law_blocked": true,
+     "verdict": "blocked",
+     "moved": [
+      "ts:packages/shp-checker/src/checker/rules/relations.ts@file",
+      "ts:packages/shp-checker/src/checker/rules/relations.ts#buildRelationTraversalGraph@own",
+      "ts:packages/shp-checker/src/checker/rules/relations.ts#buildRelationTraversalGraph@unit"
+     ]
+    },
+    {
+     "variant": "M-HypercycleShortestWitness-callee-1",
+     "where": "callee",
+     "at": "ts:packages/shp-checker/src/checker/rules/relations.ts#buildRelationTraversalGraph",
+     "mutant": "equality:===\u2192!==@357:43",
+     "failing": [
+      "shape.checker::ForbiddenPathFewestHops",
+      "shape.checker::ForbiddenPathHopsKeepProvenance",
+      "shape.checker::HypercycleShortestWitness"
+     ],
+     "obligations": [
+      "contradiction:ForbiddenPathHopsKeepProvenance:sound:intro:blocking",
+      "contradiction:HypercycleShortestWitness:sound:intro:blocking",
+      "contradiction:ForbiddenPathFewestHops:sound:intro:blocking"
+     ],
+     "law_blocked": true,
+     "verdict": "blocked",
+     "moved": [
+      "ts:packages/shp-checker/src/checker/rules/relations.ts@file",
+      "ts:packages/shp-checker/src/checker/rules/relations.ts#buildRelationTraversalGraph@own",
+      "ts:packages/shp-checker/src/checker/rules/relations.ts#buildRelationTraversalGraph@unit"
+     ]
+    },
+    {
+     "variant": "M-FormatterIdempotent-import-1",
+     "where": "import",
+     "at": "ts:packages/shp-checker/src/shape-strings.ts#compareCodepointStrings",
+     "mutant": "constant:1\u21922@15:48",
+     "failing": [
+      "shape.checker::InspectionCodepointOrder",
+      "shape.tooling::FormatterIdempotent"
+     ],
+     "obligations": [
+      "contradiction:FormatterIdempotent:sound:intro:blocking",
+      "contradiction:InspectionCodepointOrder:sound:intro:blocking"
+     ],
+     "law_blocked": true,
+     "verdict": "blocked",
+     "moved": [
+      "ts:packages/shp-checker/src/shape-strings.ts@file",
+      "ts:packages/shp-checker/src/shape-strings.ts#compareCodepointStrings@own",
+      "ts:packages/shp-checker/src/shape-strings.ts#compareCodepointStrings@unit"
+     ]
+    },
+    {
+     "variant": "M-FreshnessEnforcesOnlyIsoDates-import-2",
+     "where": "import",
+     "at": "ts:packages/shp-checker/src/checker/iso-date.ts#isIsoCalendarDate",
+     "mutant": "constant:4\u21925@7:38",
+     "failing": [
+      "shape.checker::FreshnessEnforcesOnlyIsoDates"
+     ],
+     "obligations": [
+      "contradiction:FreshnessEnforcesOnlyIsoDates:sound:intro:blocking"
+     ],
+     "law_blocked": true,
+     "verdict": "blocked",
+     "moved": [
+      "ts:packages/shp-checker/src/checker/iso-date.ts@file",
+      "ts:packages/shp-checker/src/checker/iso-date.ts#isIsoCalendarDate@own",
+      "ts:packages/shp-checker/src/checker/iso-date.ts#isIsoCalendarDate@unit"
+     ]
+    }
+   ]
+  }
+ },
+ "refactors": {
+  "stock": [
+   {
+    "variant": "D01-freshness-rename-local",
+    "where": "unit",
+    "note": "local `target` renamed to `subject` in checkFreshness",
+    "moved": [
+     "ts:packages/shp-checker/src/checker/rules/guards.ts@file",
+     "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness@own",
+     "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness@unit"
+    ],
+    "verdict": "blocked",
+    "tested_law_obligations": [],
+    "tested_laws_failing": [],
+    "introduced_other_law_obligations": [
+     "unestablished:shape.checker::RuleEngineDocumented:missing:owed"
+    ],
+    "introduced_coverage": [
+     "component shape.checker::ShapeRuleEngine:blocking"
+    ],
+    "errors": []
+   },
+   {
+    "variant": "D04-sourcepath-reorder",
+    "where": "file",
+    "note": "normalizeShapePath moved above normalizeShapeSourcePath",
+    "moved": [
+     "ts:packages/shp-checker/src/shape-strings.ts@file",
+     "ts:packages/shp-checker/src/shape-strings.ts@own"
+    ],
+    "verdict": "blocked",
+    "tested_law_obligations": [],
+    "tested_laws_failing": [],
+    "introduced_other_law_obligations": [],
+    "introduced_coverage": [
+     "component shape.checker::ShapeStringHelpers:blocking"
+    ],
+    "errors": []
+   },
+   {
+    "variant": "D07-finalforbids-rename-local",
+    "where": "unit",
+    "note": "loop variable `traitName` renamed to `attached` in deriveFinalForbidsForResource",
+    "moved": [
+     "ts:packages/shp-checker/src/checker/derivations.ts@file",
+     "ts:packages/shp-checker/src/checker/derivations.ts#deriveFinalForbidsForResource@own",
+     "ts:packages/shp-checker/src/checker/derivations.ts#deriveFinalForbidsForResource@unit"
+    ],
+    "verdict": "blocked",
+    "tested_law_obligations": [],
+    "tested_laws_failing": [],
+    "introduced_other_law_obligations": [
+     "unestablished:shape.checker::RuleEngineDocumented:missing:owed"
+    ],
+    "introduced_coverage": [
+     "component shape.checker::ShapeRuleEngine:blocking"
+    ],
+    "errors": []
+   },
+   {
+    "variant": "D10-formatter-rename-local",
+    "where": "unit",
+    "note": "local `chunks` renamed to `parts` in formatShapeModule",
+    "moved": [
+     "ts:packages/shp-checker/src/formatter.ts@file",
+     "ts:packages/shp-checker/src/formatter.ts#formatShapeModule@own",
+     "ts:packages/shp-checker/src/formatter.ts#formatShapeModule@unit"
+    ],
+    "verdict": "blocked",
+    "tested_law_obligations": [],
+    "tested_laws_failing": [],
+    "introduced_other_law_obligations": [
+     "contradiction:shape.tooling::FormatterFlattensGroupedContext:None:blocking",
+     "contradiction:shape.tooling::FormatterCanonicalGraphRules:None:blocking",
+     "unestablished:shape.tooling::FormatterEditorDocumented:missing:owed"
+    ],
+    "introduced_coverage": [
+     "component shape.tooling::ShapeFormatter:owed"
+    ],
+    "errors": []
+   },
+   {
+    "variant": "D02-freshness-line-comment",
+    "where": "unit",
+    "note": "line comment added inside checkFreshness (inert)",
+    "moved": [
+     "ts:packages/shp-checker/src/checker/rules/guards.ts@file"
+    ],
+    "verdict": "owed",
+    "tested_law_obligations": [],
+    "tested_laws_failing": [],
+    "introduced_other_law_obligations": [
+     "unestablished:shape.checker::RuleEngineDocumented:missing:owed"
+    ],
+    "introduced_coverage": [],
+    "errors": []
+   },
+   {
+    "variant": "D05-shortestpath-rename-local",
+    "where": "unit",
+    "note": "local `graph` renamed to `traversal` in findShortestPath",
+    "moved": [
+     "ts:packages/shp-checker/src/checker/rules/relations.ts@file",
+     "ts:packages/shp-checker/src/checker/rules/relations.ts#findShortestPath@own",
+     "ts:packages/shp-checker/src/checker/rules/relations.ts#findShortestPath@unit"
+    ],
+    "verdict": "blocked",
+    "tested_law_obligations": [],
+    "tested_laws_failing": [],
+    "introduced_other_law_obligations": [
+     "unestablished:shape.checker::RuleEngineDocumented:missing:owed"
+    ],
+    "introduced_coverage": [
+     "component shape.checker::ShapeRuleEngine:blocking"
+    ],
+    "errors": []
+   },
+   {
+    "variant": "D08-isodate-rename-locals",
+    "where": "callee",
+    "note": "locals renamed in isIsoCalendarDate (cross-file callee of checkFreshness)",
+    "moved": [
+     "ts:packages/shp-checker/src/checker/iso-date.ts@file",
+     "ts:packages/shp-checker/src/checker/iso-date.ts#isIsoCalendarDate@own",
+     "ts:packages/shp-checker/src/checker/iso-date.ts#isIsoCalendarDate@unit"
+    ],
+    "verdict": "blocked",
+    "tested_law_obligations": [],
+    "tested_laws_failing": [],
+    "introduced_other_law_obligations": [],
+    "introduced_coverage": [
+     "component shape.checker::ShapeChecker:blocking"
+    ],
+    "errors": []
+   },
+   {
+    "variant": "D11-planchange-rename-local",
+    "where": "callee",
+    "note": "local `transitions` renamed to `steps` in planChange (callee of lowerChange)",
+    "moved": [
+     "ts:packages/shp-checker/src/checker/lowering/changes.ts@file",
+     "ts:packages/shp-checker/src/checker/lowering/changes.ts#planChange@own",
+     "ts:packages/shp-checker/src/checker/lowering/changes.ts#planChange@unit"
+    ],
+    "verdict": "blocked",
+    "tested_law_obligations": [],
+    "tested_laws_failing": [],
+    "introduced_other_law_obligations": [],
+    "introduced_coverage": [
+     "component shape.checker::ShapeModelLowerer:blocking"
+    ],
+    "errors": []
+   },
+   {
+    "variant": "D03-sourcepath-rename-locals",
+    "where": "unit",
+    "note": "locals renamed in normalizeShapeSourcePath",
+    "moved": [
+     "ts:packages/shp-checker/src/shape-strings.ts@file",
+     "ts:packages/shp-checker/src/shape-strings.ts#normalizeShapeSourcePath@own",
+     "ts:packages/shp-checker/src/shape-strings.ts#normalizeShapeSourcePath@unit"
+    ],
+    "verdict": "blocked",
+    "tested_law_obligations": [],
+    "tested_laws_failing": [],
+    "introduced_other_law_obligations": [],
+    "introduced_coverage": [
+     "component shape.checker::ShapeStringHelpers:blocking"
+    ],
+    "errors": []
+   },
+   {
+    "variant": "D06-validpath-rename-locals",
+    "where": "callee",
+    "note": "locals renamed in validPathHyperedges (callee of findShortestPath)",
+    "moved": [
+     "ts:packages/shp-checker/src/checker/rules/relations.ts@file",
+     "ts:packages/shp-checker/src/checker/rules/relations.ts#validPathHyperedges@own",
+     "ts:packages/shp-checker/src/checker/rules/relations.ts#validPathHyperedges@unit"
+    ],
+    "verdict": "blocked",
+    "tested_law_obligations": [],
+    "tested_laws_failing": [],
+    "introduced_other_law_obligations": [
+     "unestablished:shape.checker::RuleEngineDocumented:missing:owed"
+    ],
+    "introduced_coverage": [
+     "component shape.checker::ShapeRuleEngine:blocking"
+    ],
+    "errors": []
+   },
+   {
+    "variant": "D09-codepoint-rename-locals",
+    "where": "callee",
+    "note": "locals renamed in compareCodepointStrings (cross-file callee of inspectShapeModules)",
+    "moved": [
+     "ts:packages/shp-checker/src/shape-strings.ts@file",
+     "ts:packages/shp-checker/src/shape-strings.ts#compareCodepointStrings@own",
+     "ts:packages/shp-checker/src/shape-strings.ts#compareCodepointStrings@unit"
+    ],
+    "verdict": "blocked",
+    "tested_law_obligations": [],
+    "tested_laws_failing": [],
+    "introduced_other_law_obligations": [],
+    "introduced_coverage": [
+     "component shape.checker::ShapeStringHelpers:blocking"
+    ],
+    "errors": []
+   },
+   {
+    "variant": "D12-updatedraft-rename-local",
+    "where": "unit",
+    "note": "local `changedFunctions` renamed to `drafted` in generateShapeUpdateDraft",
+    "moved": [
+     "ts:packages/shp-checker/src/authoring.ts@file",
+     "ts:packages/shp-checker/src/authoring.ts#generateShapeUpdateDraft@own",
+     "ts:packages/shp-checker/src/authoring.ts#generateShapeUpdateDraft@unit"
+    ],
+    "verdict": "owed",
+    "tested_law_obligations": [],
+    "tested_laws_failing": [],
+    "introduced_other_law_obligations": [
+     "unestablished:shape.tooling::AuthoringDocumented:missing:owed",
+     "unestablished:shape.tooling::ShapeAuthoring.generateShapeUpdateDraft/RefactorSensitive/law:missing:owed"
+    ],
+    "introduced_coverage": [
+     "component shape.tooling::ShapeAuthoring:owed"
+    ],
+    "errors": []
+   }
+  ],
+  "vnew": [
+   {
+    "variant": "D01-freshness-rename-local",
+    "where": "unit",
+    "note": "local `target` renamed to `subject` in checkFreshness",
+    "moved": [
+     "ts:packages/shp-checker/src/checker/rules/guards.ts@file",
+     "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness@own",
+     "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness@unit"
+    ],
+    "verdict": "blocked",
+    "tested_law_obligations": [],
+    "tested_laws_failing": [],
+    "introduced_other_law_obligations": [
+     "unestablished:shape.checker::RuleEngineDocumented:missing:owed"
+    ],
+    "introduced_coverage": [
+     "component shape.checker::ShapeRuleEngine:blocking"
+    ],
+    "errors": []
+   },
+   {
+    "variant": "D04-sourcepath-reorder",
+    "where": "file",
+    "note": "normalizeShapePath moved above normalizeShapeSourcePath",
+    "moved": [
+     "ts:packages/shp-checker/src/shape-strings.ts@file",
+     "ts:packages/shp-checker/src/shape-strings.ts@own"
+    ],
+    "verdict": "blocked",
+    "tested_law_obligations": [],
+    "tested_laws_failing": [],
+    "introduced_other_law_obligations": [],
+    "introduced_coverage": [
+     "component shape.checker::ShapeStringHelpers:blocking"
+    ],
+    "errors": []
+   },
+   {
+    "variant": "D07-finalforbids-rename-local",
+    "where": "unit",
+    "note": "loop variable `traitName` renamed to `attached` in deriveFinalForbidsForResource",
+    "moved": [
+     "ts:packages/shp-checker/src/checker/derivations.ts@file",
+     "ts:packages/shp-checker/src/checker/derivations.ts#deriveFinalForbidsForResource@own",
+     "ts:packages/shp-checker/src/checker/derivations.ts#deriveFinalForbidsForResource@unit"
+    ],
+    "verdict": "blocked",
+    "tested_law_obligations": [],
+    "tested_laws_failing": [],
+    "introduced_other_law_obligations": [
+     "unestablished:shape.checker::RuleEngineDocumented:missing:owed"
+    ],
+    "introduced_coverage": [
+     "component shape.checker::ShapeRuleEngine:blocking"
+    ],
+    "errors": []
+   },
+   {
+    "variant": "D10-formatter-rename-local",
+    "where": "unit",
+    "note": "local `chunks` renamed to `parts` in formatShapeModule",
+    "moved": [
+     "ts:packages/shp-checker/src/formatter.ts@file",
+     "ts:packages/shp-checker/src/formatter.ts#formatShapeModule@own",
+     "ts:packages/shp-checker/src/formatter.ts#formatShapeModule@unit"
+    ],
+    "verdict": "blocked",
+    "tested_law_obligations": [],
+    "tested_laws_failing": [],
+    "introduced_other_law_obligations": [
+     "contradiction:shape.tooling::FormatterFlattensGroupedContext:None:blocking",
+     "contradiction:shape.tooling::FormatterCanonicalGraphRules:None:blocking",
+     "unestablished:shape.tooling::FormatterEditorDocumented:missing:owed"
+    ],
+    "introduced_coverage": [
+     "component shape.tooling::ShapeFormatter:owed"
+    ],
+    "errors": []
+   },
+   {
+    "variant": "D02-freshness-line-comment",
+    "where": "unit",
+    "note": "line comment added inside checkFreshness (inert)",
+    "moved": [
+     "ts:packages/shp-checker/src/checker/rules/guards.ts@file"
+    ],
+    "verdict": "owed",
+    "tested_law_obligations": [],
+    "tested_laws_failing": [],
+    "introduced_other_law_obligations": [
+     "unestablished:shape.checker::RuleEngineDocumented:missing:owed"
+    ],
+    "introduced_coverage": [],
+    "errors": []
+   },
+   {
+    "variant": "D05-shortestpath-rename-local",
+    "where": "unit",
+    "note": "local `graph` renamed to `traversal` in findShortestPath",
+    "moved": [
+     "ts:packages/shp-checker/src/checker/rules/relations.ts@file",
+     "ts:packages/shp-checker/src/checker/rules/relations.ts#findShortestPath@own",
+     "ts:packages/shp-checker/src/checker/rules/relations.ts#findShortestPath@unit"
+    ],
+    "verdict": "blocked",
+    "tested_law_obligations": [],
+    "tested_laws_failing": [],
+    "introduced_other_law_obligations": [
+     "unestablished:shape.checker::RuleEngineDocumented:missing:owed"
+    ],
+    "introduced_coverage": [
+     "component shape.checker::ShapeRuleEngine:blocking"
+    ],
+    "errors": []
+   },
+   {
+    "variant": "D08-isodate-rename-locals",
+    "where": "callee",
+    "note": "locals renamed in isIsoCalendarDate (cross-file callee of checkFreshness)",
+    "moved": [
+     "ts:packages/shp-checker/src/checker/iso-date.ts@file",
+     "ts:packages/shp-checker/src/checker/iso-date.ts#isIsoCalendarDate@own",
+     "ts:packages/shp-checker/src/checker/iso-date.ts#isIsoCalendarDate@unit"
+    ],
+    "verdict": "blocked",
+    "tested_law_obligations": [],
+    "tested_laws_failing": [],
+    "introduced_other_law_obligations": [],
+    "introduced_coverage": [
+     "component shape.checker::ShapeChecker:blocking"
+    ],
+    "errors": []
+   },
+   {
+    "variant": "D11-planchange-rename-local",
+    "where": "callee",
+    "note": "local `transitions` renamed to `steps` in planChange (callee of lowerChange)",
+    "moved": [
+     "ts:packages/shp-checker/src/checker/lowering/changes.ts@file",
+     "ts:packages/shp-checker/src/checker/lowering/changes.ts#planChange@own",
+     "ts:packages/shp-checker/src/checker/lowering/changes.ts#planChange@unit"
+    ],
+    "verdict": "blocked",
+    "tested_law_obligations": [],
+    "tested_laws_failing": [],
+    "introduced_other_law_obligations": [],
+    "introduced_coverage": [
+     "component shape.checker::ShapeModelLowerer:blocking"
+    ],
+    "errors": []
+   },
+   {
+    "variant": "D03-sourcepath-rename-locals",
+    "where": "unit",
+    "note": "locals renamed in normalizeShapeSourcePath",
+    "moved": [
+     "ts:packages/shp-checker/src/shape-strings.ts@file",
+     "ts:packages/shp-checker/src/shape-strings.ts#normalizeShapeSourcePath@own",
+     "ts:packages/shp-checker/src/shape-strings.ts#normalizeShapeSourcePath@unit"
+    ],
+    "verdict": "blocked",
+    "tested_law_obligations": [],
+    "tested_laws_failing": [],
+    "introduced_other_law_obligations": [],
+    "introduced_coverage": [
+     "component shape.checker::ShapeStringHelpers:blocking"
+    ],
+    "errors": []
+   },
+   {
+    "variant": "D06-validpath-rename-locals",
+    "where": "callee",
+    "note": "locals renamed in validPathHyperedges (callee of findShortestPath)",
+    "moved": [
+     "ts:packages/shp-checker/src/checker/rules/relations.ts@file",
+     "ts:packages/shp-checker/src/checker/rules/relations.ts#validPathHyperedges@own",
+     "ts:packages/shp-checker/src/checker/rules/relations.ts#validPathHyperedges@unit"
+    ],
+    "verdict": "blocked",
+    "tested_law_obligations": [],
+    "tested_laws_failing": [],
+    "introduced_other_law_obligations": [
+     "unestablished:shape.checker::RuleEngineDocumented:missing:owed"
+    ],
+    "introduced_coverage": [
+     "component shape.checker::ShapeRuleEngine:blocking"
+    ],
+    "errors": []
+   },
+   {
+    "variant": "D09-codepoint-rename-locals",
+    "where": "callee",
+    "note": "locals renamed in compareCodepointStrings (cross-file callee of inspectShapeModules)",
+    "moved": [
+     "ts:packages/shp-checker/src/shape-strings.ts@file",
+     "ts:packages/shp-checker/src/shape-strings.ts#compareCodepointStrings@own",
+     "ts:packages/shp-checker/src/shape-strings.ts#compareCodepointStrings@unit"
+    ],
+    "verdict": "blocked",
+    "tested_law_obligations": [],
+    "tested_laws_failing": [],
+    "introduced_other_law_obligations": [],
+    "introduced_coverage": [
+     "component shape.checker::ShapeStringHelpers:blocking"
+    ],
+    "errors": []
+   },
+   {
+    "variant": "D12-updatedraft-rename-local",
+    "where": "unit",
+    "note": "local `changedFunctions` renamed to `drafted` in generateShapeUpdateDraft",
+    "moved": [
+     "ts:packages/shp-checker/src/authoring.ts@file",
+     "ts:packages/shp-checker/src/authoring.ts#generateShapeUpdateDraft@own",
+     "ts:packages/shp-checker/src/authoring.ts#generateShapeUpdateDraft@unit"
+    ],
+    "verdict": "owed",
+    "tested_law_obligations": [],
+    "tested_laws_failing": [],
+    "introduced_other_law_obligations": [
+     "unestablished:shape.tooling::AuthoringDocumented:missing:owed",
+     "unestablished:shape.tooling::ShapeAuthoring.generateShapeUpdateDraft/RefactorSensitive/law:missing:owed"
+    ],
+    "introduced_coverage": [
+     "component shape.tooling::ShapeAuthoring:owed"
+    ],
+    "errors": []
+   }
+  ]
+ },
+ "crashes": []
+}

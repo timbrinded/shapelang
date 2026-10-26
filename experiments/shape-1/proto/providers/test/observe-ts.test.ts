@@ -401,6 +401,174 @@ export function mock(): number { const fake = { now: (): number => 0 }; return f
     });
   }, 60_000);
 
+  const CLOCK4 = [...CLOCK3, 'ts.call("process.hrtime")'];
+  test("Function.prototype on a callable root: Date.call and Date.apply are Date() reads, never complete without a fact", async () => {
+    const { facts, inc } = await scanOf(
+      {
+        "tsconfig.json": TS_PLAIN,
+        "src/f.ts": `export function dateCall(): string { return Date.call(null); }
+export function dateApply(): string { return Date.apply(undefined, []); }
+export function globalDateCall(): string { return globalThis.Date.call(undefined); }
+export function elementCall(): string { return Date["call"](null); }
+export function optionalCall(): string { return Date?.call(null); }
+export function protoCall(): string { return Date.prototype.constructor.call(null); }
+export function callCall(): string { return Date.call.call(Date); }
+export function bindCall(): string { return Date.bind(null)(); }
+export function typedCall(D: DateConstructor): string { return D.call(null); }
+export function typedApply(D: DateConstructor): string { return D.apply(undefined, []); }
+export function fnCall(f: () => number): number { return f.call(null); }
+export function nowCall(): number { return Date.now.call(null); }
+`
+      },
+      CLOCK4
+    );
+    expect(facts).toEqual([
+      'f.ts#dateApply Read ts.call("Date")',
+      'f.ts#dateCall Read ts.call("Date")',
+      'f.ts#elementCall Read ts.call("Date")',
+      'f.ts#globalDateCall Read ts.call("Date")',
+      'f.ts#nowCall Read ts.call("Date.now")',
+      'f.ts#optionalCall Read ts.call("Date")',
+      'f.ts#protoCall Read ts.call("Date")'
+    ]);
+    // Date.call handed on, a bound Date, and call/apply on a value typed as Date: incomplete.
+    // Any other function's call/apply (fnCall) stays complete.
+    expect(inc).toEqual({
+      "f.ts#bindCall": ["alias-type:Date", "alias:Date"],
+      "f.ts#callCall": ["alias:Date"],
+      "f.ts#typedApply": ["alias-type:Date"],
+      "f.ts#typedCall": ["alias-type:Date"]
+    });
+  }, 60_000);
+
+  test("destructuring a value typed as the root (parameters, locals, nested, assignment, for-of) is a typed read", async () => {
+    const { facts, inc } = await scanOf(
+      {
+        "tsconfig.json": TS_PLAIN,
+        "src/d.ts": `export function destructParam({ now }: DateConstructor): number { return now(); }
+export function destructLocal(d: DateConstructor): number { const { now } = d; return now(); }
+export function nestedParam({ x: { now } }: { x: DateConstructor }): number { return now(); }
+export function renamed({ hrtime: h }: NodeJS.Process): number { return h()[0]; }
+export function assignPattern(d: DateConstructor, now: () => number): number { ({ now } = d); return now(); }
+export function nestedAssign(o: { c: DateConstructor }, now: () => number): number { ({ c: { now } } = o); return now(); }
+export function forOfPattern(ds: DateConstructor[], now: () => number): number { for ({ now } of ds) now(); return 0; }
+export function restPattern(d: DateConstructor): number { const { ...rest } = d; return rest.now(); }
+export function untypedPattern({ now }: any): number { return 1; }
+export function structuralPattern({ now }: { now(): number }): number { return now(); }
+export function exactRoot(): number { const { now } = Date; return now(); }
+export function plain(b: number): number { const { a } = { a: 1 }; ({ b } = { b: 2 }); return a + b; }
+export function feed(): number { return destructParam(Date); }
+declare namespace NodeJS { interface Process { hrtime(): [number, number] } }
+`
+      },
+      CLOCK4
+    );
+    expect(facts).toEqual(['d.ts#exactRoot Read ts.call("Date.now")']);
+    // structural shapes stay complete (nominal on purpose); the supply is flagged where Date is passed (feed)
+    expect(inc).toEqual({
+      "d.ts#assignPattern": ["alias-type:Date"],
+      "d.ts#destructLocal": ["alias-type:Date"],
+      "d.ts#destructParam": ["alias-type:Date"],
+      "d.ts#feed": ["alias:Date"],
+      "d.ts#forOfPattern": ["alias-type:Date"],
+      "d.ts#nestedAssign": ["alias-type:Date"],
+      "d.ts#nestedParam": ["alias-type:Date"],
+      "d.ts#restPattern": ["alias-type:Date"],
+      "d.ts#untypedPattern": ["unresolved:untyped-receiver"]
+    });
+  }, 60_000);
+
+  test("a value typed as the root handed on as an argument, or called as a member, is a typed read; untyped members are untyped callees", async () => {
+    const { facts, inc } = await scanOf(
+      {
+        "tsconfig.json": TS_REPO,
+        "src/h.ts": `export function mapTyped(D: DateConstructor): string[] { return [0].map(D); }
+export function reflectTyped(D: DateConstructor): string { return Reflect.apply(D, null, []); }
+function structuralUse(f: () => string): string { return f(); }
+export function handTyped(D: DateConstructor): string { return structuralUse(D); }
+function measure(c: { now(): number }): number { return c.now(); }
+export function perfHand(p: Performance): number { return measure(p); }
+export function anyHand(x: any): number { return measure(x); }
+export function strHand(s: string): number { return parseInt(s); }
+export function memberTyped(o: { clock: DateConstructor }): string { return o.clock(); }
+export function memberAny(o: { f: any }): unknown { return o.f(); }
+export function anyRecv(x: any): unknown { return x.f(); }
+`
+      },
+      CLOCK4
+    );
+    expect(facts).toEqual([]);
+    // the structural callees (structuralUse, measure) stay complete; untyped arguments are no evidence
+    expect(inc).toEqual({
+      "h.ts#handTyped": ["alias-type:Date"],
+      "h.ts#anyRecv": ["unresolved:untyped-receiver"],
+      "h.ts#mapTyped": ["alias-type:Date"],
+      "h.ts#memberAny": ["unresolved:untyped-callee"],
+      "h.ts#memberTyped": ["alias-type:Date"],
+      "h.ts#perfHand": ["alias-type:performance"],
+      "h.ts#reflectTyped": ["alias-type:Date"]
+    });
+  }, 60_000);
+
+  test("members of the global object that are no known root are checked by type: untyped or typed as the root", async () => {
+    for (const cfg of [TS_PLAIN, TS_REPO]) {
+      const { facts, inc } = await scanOf(
+        {
+          "tsconfig.json": cfg,
+          "src/u.ts": `declare global { var myClock: DateConstructor; }
+export function anyMember(): number { return (globalThis as any).myClock.now(); }
+export function anyCall(): string { return (globalThis as any).myDate(); }
+export function anyElement(): string { return (globalThis as any)["myDate"](); }
+export function declaredMember(): number { return globalThis.myClock.now(); }
+export function declaredBare(): number { return myClock.now(); }
+// @ts-expect-error undeclared
+export function undeclaredCall(): string { return myDate(); }
+export function json(): string { return JSON.stringify(globalThis.JSON.parse("1")); }
+`
+        },
+        CLOCK4
+      );
+      expect(facts).toEqual([]);
+      expect(inc).toEqual({
+        "u.ts#anyCall": ["unresolved:untyped-receiver"],
+        "u.ts#anyElement": ["unresolved:untyped-receiver"],
+        "u.ts#anyMember": ["unresolved:untyped-receiver"],
+        "u.ts#declaredBare": ["alias-type:Date"],
+        "u.ts#declaredMember": ["alias-type:Date"],
+        "u.ts#undeclaredCall": ["unresolved:untyped-callee"]
+      });
+    }
+  }, 120_000);
+
+  test("derive: Date(), Date.call(null) and globalThis[\"Date\"]() are each a sound contradiction under sound absence", async () => {
+    const ch = ['ts.call("Date")'];
+    const signer = signerFromSeed("24");
+    const info = effectsProvider({ q: "demo::clockEffects", channels: ch, identity: signer.identity });
+    const root = tree({
+      "tsconfig.json": TS_PLAIN,
+      "src/a/stamp.ts": "export function stampA(): string {\n  return Date();\n}\n",
+      "src/b/stamp.ts": "export function stampB(): string {\n  return Date.call(null);\n}\n",
+      "src/c/stamp.ts": 'export function stampC(): string {\n  return globalThis["Date"]();\n}\n'
+    });
+    const man = await manifestFor({ root });
+    const { records, scan } = await runObserveTs({ man, root, time: "2026-10-25T10:00:00Z", effects: { info, channels: ch, signer } });
+    // every scope entry is complete, and each reading identity carries its fact
+    expect([...scan.identities.values()].every((x) => x.effectsIncomplete.length === 0)).toBe(true);
+    expect(scan.effects.map((f) => f.at).sort()).toEqual(["ts:src/a/stamp.ts#stampA", "ts:src/b/stamp.ts#stampB", "ts:src/c/stamp.ts#stampC"]);
+    const decls: Decl[] = [
+      { decl: "resource", name: "SystemClock", bind: ch },
+      ...["A", "B", "C"].map((c): Decl => ({ decl: "component", name: c, owner: "alice", tier: "critical", paths: [`src/${c.toLowerCase()}/**`], grants: [] })),
+      info.decl
+    ];
+    const out = derive(input({ source: shape("demo", decls), manifest: man.statement, revision: man.revision, records: records.map((r) => r.record) }));
+    expect(out.rejected).toEqual([]);
+    expect(out.obligations.map((o) => `${o.kind} ${o.claim?.ids.join(",")} ${(o.subject as { code: string }).code} ${o.force} ${o.severity}`).sort()).toEqual([
+      "contradiction demo::A/authority ts:src/a/stamp.ts#stampA sound blocking",
+      "contradiction demo::B/authority ts:src/b/stamp.ts#stampB sound blocking",
+      "contradiction demo::C/authority ts:src/c/stamp.ts#stampC sound blocking"
+    ]);
+  }, 60_000);
+
   // the gate's end-to-end case: no grants, SystemClock bound to ts.call("Date.now")
   const fxShape = (identity: string): Decl[] => [
     { decl: "resource", name: "SystemClock", bind: ['ts.call("Date.now")'] },

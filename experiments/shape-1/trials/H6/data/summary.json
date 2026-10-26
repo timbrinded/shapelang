@@ -1,0 +1,2474 @@
+{
+ "e10W1": {
+  "byKiller": {
+   "authority": 79168,
+   "forbid": 144,
+   "summary": 78988
+  },
+  "killed": 80195,
+  "n": 80205,
+  "survivorClass": {
+   "granted-no-sibling": 1,
+   "sibling-already-has": 9
+  },
+  "survivors": [
+   "shape.checker::ShapeRuleEngine.requirementsForTarget Append<shape.checker::SemanticDiagnostics>",
+   "shape.checker::ShapeRuleEngine.requirementsForTarget Read<shape.checker::BaseShapeModel>",
+   "shape.checker::ShapeRuleEngine.requirementsForTarget Read<shape.checker::ChangeEventSet>",
+   "shape.checker::ShapeRuleEngine.requirementsForTarget Read<shape.checker::ChangedFileList>",
+   "shape.checker::ShapeRuleEngine.requirementsForTarget Read<shape.checker::EffectiveModel>",
+   "shape.checker::ShapeRuleEngine.requirementsForTarget Read<shape.checker::FactSet>",
+   "shape.checker::ShapeRuleEngine.requirementsForTarget Read<shape.checker::NormalizedShapeReference>",
+   "shape.checker::ShapeRuleEngine.requirementsForTarget Read<shape.checker::PreludeMetadata>",
+   "shape.checker::ShapeRuleEngine.requirementsForTarget Read<shape.checker::RepositoryFileList>",
+   "shape.checker::ShapeRuleEngine.requirementsForTarget Update<shape.checker::ShapeHypergraph>"
+  ]
+ },
+ "laws": {
+  "baselineHolds": 19,
+  "baselineLaws": 21,
+  "mutantsAvailable": {
+   "callee": 278,
+   "unit": 248
+  },
+  "nonUnitLaws": 20,
+  "per": 12,
+  "perUnit": {
+   "shape.checker.incremental::ShapeIncrementalChecker.check": {
+    "killed": 12,
+    "killedOwn": 12,
+    "kind": "tested",
+    "laws": [
+     "tested:IncrementalReusesModelOnOptionChange",
+     "tested:IncrementalReusesDiagnosticsOnNoop",
+     "tested:IncrementalRebuildsOnDocumentChange"
+    ],
+    "n": 20,
+    "survivors": [
+     "unit IncrementalShapeChecker.check boolean:false\u2192true@107:19",
+     "unit IncrementalShapeChecker.check equality:!==\u2192===@137:17",
+     "callee normalizeDocuments constant:1\u21922@179:20",
+     "callee moduleOriginsChanged equality:!==\u2192===@229:78",
+     "callee checkOptionsKey logical:??\u2192||@246:40",
+     "callee normalizeDocuments arithmetic:-\u2192+@180:22",
+     "callee checkOptionsKey logical:??\u2192||@240:54",
+     "callee checkOptionsKey logical:??\u2192||@249:46"
+    ],
+    "unreached": 0
+   },
+   "shape.checker::ShapeBindings.checkBindings": {
+    "killed": 1,
+    "killedOwn": 0,
+    "kind": "untested+informal",
+    "laws": [
+     "untested:AttestationOnlyChangeDoesNotTriggerBinding",
+     "untested:BindingsCompareNormalizedPaths",
+     "untested:BindingAttestationCountsOnlyWhenNew",
+     "informal:RefactorSensitive:ShapeBindings.checkBindings/RefactorSensitive/law"
+    ],
+    "n": 10,
+    "survivors": [
+     "unit checkBindings equality:===\u2192!==@177:27",
+     "callee changedFileContext constant:0\u21921@103:37",
+     "callee isAttestationOnlyChange boolean:false\u2192true@236:12",
+     "callee isAttestationOnlyChange logical:&&\u2192||@239:81",
+     "unit checkBindings constant:0\u21921@177:31",
+     "callee changedFileContext relational:>\u2192>=@103:35",
+     "callee isAttestationOnlyChange equality:===\u2192!==@235:16",
+     "callee isAttestationOnlyChange equality:===\u2192!==@239:65",
+     "callee isAttestationOnlyChange equality:===\u2192!==@239:89"
+    ],
+    "unreached": 0
+   },
+   "shape.checker::ShapeChecker.checkLoweredShapeModel": {
+    "killed": 1,
+    "killedOwn": 0,
+    "kind": "informal-only",
+    "laws": [
+     "informal:RefactorSensitive:ShapeChecker.checkLoweredShapeModel/RefactorSensitive/law"
+    ],
+    "n": 7,
+    "survivors": [
+     "unit checkLoweredShapeModel equality:===\u2192!==@85:43",
+     "unit checkLoweredShapeModel logical:??\u2192||@89:42",
+     "unit checkLoweredShapeModel constant:1\u21922@102:24",
+     "unit checkLoweredShapeModel boolean:false\u2192true@85:47",
+     "unit checkLoweredShapeModel logical:&&\u2192||@94:43",
+     "unit checkLoweredShapeModel constant:0\u21921@102:20"
+    ],
+    "unreached": 0
+   },
+   "shape.checker::ShapeChecker.checkRuleLoosening": {
+    "killed": 0,
+    "killedOwn": 0,
+    "kind": "informal-only",
+    "laws": [
+     "informal:RefactorSensitive:ShapeChecker.checkRuleLoosening/RefactorSensitive/law"
+    ],
+    "n": 20,
+    "survivors": [
+     "unit checkRuleLoosening constant:0\u21921@118:24",
+     "unit checkRuleLoosening equality:===\u2192!==@124:41",
+     "unit checkRuleLoosening logical:&&\u2192||@130:30",
+     "unit checkRuleLoosening equality:===\u2192!==@141:25",
+     "unit checkRuleLoosening constant:1\u21922@150:22",
+     "unit checkRuleLoosening constant:0\u21921@154:24",
+     "callee aboutDeletedFile logical:||\u2192&&@183:49",
+     "callee aboutDeletedFile negation:drop@185:5",
+     "callee findRuleEdits negation:drop@217:20",
+     "callee findRuleEdits equality:===\u2192!==@232:29",
+     "unit checkRuleLoosening equality:===\u2192!==@118:20",
+     "unit checkRuleLoosening equality:===\u2192!==@122:41",
+     "unit checkRuleLoosening logical:||\u2192&&@124:55",
+     "unit checkRuleLoosening negation:drop@130:33",
+     "unit checkRuleLoosening relational:>\u2192>=@150:20",
+     "unit checkRuleLoosening relational:>\u2192>=@154:22",
+     "callee aboutDeletedFile equality:===\u2192!==@183:22",
+     "callee aboutDeletedFile equality:===\u2192!==@184:23",
+     "callee findRuleEdits equality:===\u2192!==@210:21",
+     "callee findRuleEdits logical:??\u2192||@228:68"
+    ],
+    "unreached": 0
+   },
+   "shape.checker::ShapeChecker.checkShapeModules": {
+    "killed": 4,
+    "killedOwn": 3,
+    "kind": "tested",
+    "laws": [
+     "informal:RefactorSensitive:ShapeChecker.checkShapeModules/RefactorSensitive/law",
+     "tested:CheckIsDeterministic"
+    ],
+    "n": 15,
+    "survivors": [
+     "unit checkShapeModules equality:===\u2192!==@41:27",
+     "unit checkShapeModules equality:===\u2192!==@56:24",
+     "unit checkShapeModules constant:0\u21921@64:20",
+     "callee checkLoweredShapeModel equality:===\u2192!==@85:43",
+     "callee checkLoweredShapeModel logical:??\u2192||@89:42",
+     "callee checkLoweredShapeModel constant:0\u21921@102:20",
+     "unit checkShapeModules boolean:false\u2192true@44:65",
+     "unit checkShapeModules constant:0\u21921@56:28",
+     "unit checkShapeModules constant:1\u21922@64:24",
+     "callee checkLoweredShapeModel boolean:false\u2192true@85:47",
+     "callee checkLoweredShapeModel constant:1\u21922@102:24"
+    ],
+    "unreached": 0
+   },
+   "shape.checker::ShapeChecker.inspectShapeModules": {
+    "killed": 2,
+    "killedOwn": 2,
+    "kind": "tested",
+    "laws": [
+     "tested:InspectionQualifiedIdentities",
+     "informal:RefactorSensitive:ShapeChecker.inspectShapeModules/RefactorSensitive/law",
+     "tested:InspectionPreservesOrigin",
+     "tested:InspectionCodepointOrder"
+    ],
+    "n": 15,
+    "survivors": [
+     "unit inspectShapeModules logical:??\u2192||@170:20",
+     "unit inspectShapeModules logical:??\u2192||@173:83",
+     "unit inspectShapeModules logical:??\u2192||@180:27",
+     "unit inspectShapeModules constant:0\u21921@212:75",
+     "callee inspectRelations constant:1\u21922@300:27",
+     "callee inspectMemories equality:===\u2192!==@373:28",
+     "unit inspectShapeModules equality:===\u2192!==@171:23",
+     "unit inspectShapeModules logical:??\u2192||@179:22",
+     "unit inspectShapeModules arithmetic:+\u2192-@212:54",
+     "callee inspectFunctions equality:===\u2192!==@253:25",
+     "callee inspectRelations arithmetic:-\u2192+@294:47",
+     "callee inspectImplementations equality:===\u2192!==@317:46",
+     "callee inspectMemories equality:===\u2192!==@379:24"
+    ],
+    "unreached": 0
+   },
+   "shape.checker::ShapeDiagnostics.formatDiagnostics": {
+    "killed": 0,
+    "killedOwn": 0,
+    "kind": "informal-only",
+    "laws": [
+     "informal:RefactorSensitive:ShapeDiagnostics.formatDiagnostics/RefactorSensitive/law"
+    ],
+    "n": 2,
+    "survivors": [
+     "unit formatDiagnostics constant:0\u21921@12:37",
+     "unit formatDiagnostics equality:===\u2192!==@12:33"
+    ],
+    "unreached": 0
+   },
+   "shape.checker::ShapeModelLowerer.lowerShapeModules": {
+    "killed": 0,
+    "killedOwn": 0,
+    "kind": "informal-only",
+    "laws": [
+     "informal:RefactorSensitive:ShapeModelLowerer.lowerShapeModules/RefactorSensitive/law"
+    ],
+    "n": 6,
+    "survivors": [
+     "unit lowerShapeModules logical:&&\u2192||@85:38",
+     "unit lowerShapeModules logical:??\u2192||@92:41",
+     "callee rebuildShapeUpdatePaths equality:!==\u2192===@142:56",
+     "unit lowerShapeModules equality:!==\u2192===@85:24",
+     "unit lowerShapeModules equality:!==\u2192===@85:46",
+     "unit lowerShapeModules logical:??\u2192||@127:41"
+    ],
+    "unreached": 0
+   },
+   "shape.checker::ShapePreludeRegistry.definePreludeMetadata": {
+    "killed": 0,
+    "killedOwn": 0,
+    "kind": "informal-only",
+    "laws": [
+     "informal:RefactorSensitive:ShapePreludeRegistry.definePreludeMetadata/RefactorSensitive/law"
+    ],
+    "n": 5,
+    "survivors": [
+     "unit ts:packages/shp-checker/src/prelude.ts logical:||\u2192&&@53:40",
+     "unit ts:packages/shp-checker/src/prelude.ts boolean:true\u2192false@80:26",
+     "unit ts:packages/shp-checker/src/prelude.ts equality:===\u2192!==@53:21",
+     "unit ts:packages/shp-checker/src/prelude.ts equality:===\u2192!==@53:54",
+     "unit ts:packages/shp-checker/src/prelude.ts boolean:true\u2192false@122:61"
+    ],
+    "unreached": 0
+   },
+   "shape.checker::ShapeRuleEngine.checkCoverage": {
+    "killed": 1,
+    "killedOwn": 0,
+    "kind": "untested+informal",
+    "laws": [
+     "informal:RefactorSensitive:ShapeRuleEngine.checkCoverage/RefactorSensitive/law",
+     "untested:CoverageAttestationCountsOnlyWhenNew",
+     "untested:CoverageSourceRefMatchesChangedFile"
+    ],
+    "n": 8,
+    "survivors": [
+     "unit checkCoverage equality:===\u2192!==@41:27",
+     "unit checkCoverage equality:!==\u2192===@50:44",
+     "callee changedFileContext relational:>\u2192>=@103:35",
+     "callee currentShapeUpdateExists logical:??\u2192||@119:87",
+     "unit checkCoverage constant:0\u21921@41:31",
+     "callee changedFileContext constant:0\u21921@103:37",
+     "callee currentShapeUpdateExists boolean:false\u2192true@119:90"
+    ],
+    "unreached": 0
+   },
+   "shape.checker::ShapeRuleEngine.checkFreshness": {
+    "killed": 4,
+    "killedOwn": 4,
+    "kind": "tested",
+    "laws": [
+     "tested:FreshnessEnforcesOnlyIsoDates"
+    ],
+    "n": 6,
+    "survivors": [
+     "unit checkFreshness relational:>=\u2192>@228:78",
+     "unit checkFreshness logical:??\u2192||@232:35"
+    ],
+    "unreached": 0
+   },
+   "shape.checker::ShapeRuleEngine.checkGuardedChanges": {
+    "killed": 0,
+    "killedOwn": 0,
+    "kind": "untested+informal",
+    "laws": [
+     "informal:RefactorSensitive:ShapeRuleEngine.checkGuardedChanges/RefactorSensitive/law",
+     "untested:GuardsNeverWaiveFinalForbids",
+     "untested:OtherGuardTargetsUseCoarseMatching",
+     "untested:GuardsFirePropertyLevel",
+     "untested:TransformGuardsFireOnMatchingTransform"
+    ],
+    "n": 2,
+    "survivors": [
+     "callee buildGuardContexts negation:drop@41:9",
+     "callee buildGuardContexts logical:??\u2192||@47:35"
+    ],
+    "unreached": 0
+   },
+   "shape.checker::ShapeRuleEngine.checkGuardedSources": {
+    "killed": 0,
+    "killedOwn": 0,
+    "kind": "untested+informal",
+    "laws": [
+     "informal:RefactorSensitive:ShapeRuleEngine.checkGuardedSources/RefactorSensitive/law",
+     "untested:GuardedSourceClearedOnlyByChangeReevaluation"
+    ],
+    "n": 20,
+    "survivors": [
+     "unit checkGuardedSources equality:===\u2192!==@105:27",
+     "unit checkGuardedSources equality:!==\u2192===@116:19",
+     "unit checkGuardedSources relational:>\u2192>=@124:25",
+     "unit checkGuardedSources negation:drop@136:9",
+     "unit checkGuardedSources negation:drop@140:7",
+     "unit checkGuardedSources logical:&&\u2192||@148:50",
+     "callee reevaluationKey logical:??\u2192||@73:32",
+     "callee reevaluationKey logical:??\u2192||@76:26",
+     "callee reevaluationKey logical:??\u2192||@79:27",
+     "callee classifyProtectedProperty equality:===\u2192!==@185:23",
+     "unit checkGuardedSources logical:??\u2192||@113:35",
+     "unit checkGuardedSources equality:!==\u2192===@117:13",
+     "unit checkGuardedSources logical:&&\u2192||@124:29",
+     "unit checkGuardedSources logical:||\u2192&&@136:42",
+     "unit checkGuardedSources logical:&&\u2192||@147:45",
+     "unit checkGuardedSources logical:&&\u2192||@149:73",
+     "callee reevaluationKey logical:??\u2192||@74:32",
+     "callee reevaluationKey logical:??\u2192||@78:27",
+     "callee reevaluationKey logical:??\u2192||@80:28",
+     "callee classifyProtectedProperty equality:===\u2192!==@187:21"
+    ],
+    "unreached": 0
+   },
+   "shape.checker::ShapeRuleEngine.deriveFinalForbidsForResource": {
+    "killed": 3,
+    "killedOwn": 3,
+    "kind": "tested",
+    "laws": [
+     "tested:FinalForbidNotWaivedByContext",
+     "tested:FinalForbidTargetsDeterministic",
+     "tested:FinalForbidBeatsGrant"
+    ],
+    "n": 20,
+    "survivors": [
+     "unit deriveFinalForbidsForResource negation:drop@363:9",
+     "unit deriveFinalForbidsForResource equality:===\u2192!==@368:20",
+     "unit deriveFinalForbidsForResource logical:||\u2192&&@368:26",
+     "unit deriveFinalForbidsForResource equality:===\u2192!==@371:64",
+     "unit deriveFinalForbidsForResource constant:0\u21921@377:35",
+     "callee resourceRuleConditionCompatibility equality:===\u2192!==@293:33",
+     "callee resourceRuleConditionCompatibility equality:===\u2192!==@304:31",
+     "callee resourceRuleConditionCompatibility negation:drop@316:7",
+     "unit deriveFinalForbidsForResource equality:===\u2192!==@366:62",
+     "unit deriveFinalForbidsForResource constant:0\u21921@368:24",
+     "unit deriveFinalForbidsForResource negation:drop@369:7",
+     "unit deriveFinalForbidsForResource logical:&&\u2192||@371:81",
+     "unit deriveFinalForbidsForResource negation:drop@378:9",
+     "callee resourceRuleConditionCompatibility equality:===\u2192!==@299:38",
+     "callee resourceRuleConditionCompatibility relational:>\u2192>=@307:31",
+     "callee resourceRuleConditionCompatibility equality:!==\u2192===@326:37",
+     "callee instantiateFinalForbidTarget logical:??\u2192||@412:24"
+    ],
+    "unreached": 0
+   },
+   "shape.checker::ShapeRuleEngine.findHypercycle": {
+    "killed": 8,
+    "killedOwn": 8,
+    "kind": "tested",
+    "laws": [
+     "tested:HypercycleShortestWitness"
+    ],
+    "n": 14,
+    "survivors": [
+     "unit findHypercycle relational:<\u2192<=@310:89",
+     "callee buildRelationTraversalGraph constant:1\u21922@381:57",
+     "callee isCyclicComponent constant:0\u21921@470:28",
+     "callee compareTraversalPaths constant:0\u21921@556:20",
+     "unit findHypercycle constant:0\u21921@310:91",
+     "callee compareTraversalPaths constant:1\u21922@563:53"
+    ],
+    "unreached": 0
+   },
+   "shape.checker::ShapeRuleEngine.findShortestPath": {
+    "killed": 4,
+    "killedOwn": 4,
+    "kind": "tested",
+    "laws": [
+     "tested:ForbiddenPathHopsKeepProvenance",
+     "tested:ForbiddenPathFewestHops"
+    ],
+    "n": 8,
+    "survivors": [
+     "callee validPathHyperedges logical:&&\u2192||@347:38",
+     "callee buildRelationTraversalGraph constant:1\u21922@382:75",
+     "callee buildRelationTraversalGraph relational:<\u2192<=@381:33",
+     "callee shortestPathBetween logical:??\u2192||@531:60"
+    ],
+    "unreached": 0
+   },
+   "shape.checker::ShapeRuleEngine.requirementsForTarget": {
+    "killed": 0,
+    "killedOwn": 0,
+    "kind": "untested-only",
+    "laws": [
+     "untested:ContextRequirementsDeriveObligations",
+     "untested:ContextRequirementsMergeWithUserTraits"
+    ],
+    "n": 2,
+    "survivors": [
+     "unit requirementsForTarget negation:drop@82:9",
+     "unit requirementsForTarget equality:!==\u2192===@86:34"
+    ],
+    "unreached": 0
+   },
+   "shape.checker::ShapeStringHelpers.normalizeShapeSourcePath": {
+    "killed": 2,
+    "killedOwn": 2,
+    "kind": "tested",
+    "laws": [
+     "tested:SourcePathRulesShared"
+    ],
+    "n": 5,
+    "survivors": [
+     "unit normalizeShapeSourcePath constant:1\u21922@2:41",
+     "unit normalizeShapeSourcePath logical:??\u2192||@2:47",
+     "unit normalizeShapeSourcePath logical:??\u2192||@4:44"
+    ],
+    "unreached": 0
+   },
+   "shape.checker::ShapeStringHelpers.unquoteShapeString": {
+    "killed": 0,
+    "killedOwn": 0,
+    "kind": "informal-only",
+    "laws": [
+     "informal:RefactorSensitive:ShapeStringHelpers.unquoteShapeString/RefactorSensitive/law"
+    ],
+    "n": 11,
+    "survivors": [
+     "unit unquoteShapeString constant:1\u21922@27:26",
+     "unit unquoteShapeString logical:&&\u2192||@28:22",
+     "unit unquoteShapeString logical:||\u2192&&@28:39",
+     "unit unquoteShapeString logical:&&\u2192||@28:57",
+     "unit unquoteShapeString constant:1\u21922@29:24",
+     "unit unquoteShapeString constant:0\u21921@26:26",
+     "unit unquoteShapeString equality:===\u2192!==@28:14",
+     "unit unquoteShapeString equality:===\u2192!==@28:30",
+     "unit unquoteShapeString equality:===\u2192!==@28:49",
+     "unit unquoteShapeString equality:===\u2192!==@28:65",
+     "unit unquoteShapeString constant:1\u21922@29:28"
+    ],
+    "unreached": 0
+   },
+   "shape.delivery::CiPipeline.checkReleaseVersion": {
+    "killed": 0,
+    "killedOwn": 0,
+    "kind": "informal-only",
+    "laws": [
+     "informal:RefactorSensitive:CiPipeline.checkReleaseVersion/RefactorSensitive/law"
+    ],
+    "n": 7,
+    "survivors": [
+     "unit validateReleaseMetadata negation:drop@163:9",
+     "unit validateReleaseMetadata relational:>\u2192>=@169:25",
+     "unit validateReleaseMetadata equality:!==\u2192===@179:20",
+     "unit validateReleaseMetadata equality:!==\u2192===@179:50",
+     "unit validateReleaseMetadata equality:!==\u2192===@168:63",
+     "unit validateReleaseMetadata constant:0\u21921@169:27",
+     "unit validateReleaseMetadata logical:&&\u2192||@179:34"
+    ],
+    "unreached": 7
+   },
+   "shape.delivery::CiPipeline.reuseReleaseSkillsEvaluation": {
+    "killed": 0,
+    "killedOwn": 0,
+    "kind": "untested+informal",
+    "laws": [
+     "informal:RefactorSensitive:CiPipeline.reuseReleaseSkillsEvaluation/RefactorSensitive/law",
+     "untested:SkillsReportReusedOnlyWhenUnchanged"
+    ],
+    "n": 13,
+    "survivors": [
+     "unit findReusableSkillsReport negation:drop@161:9",
+     "unit findReusableSkillsReport negation:drop@164:12",
+     "callee runHasSkillsApproval equality:===\u2192!==@96:22",
+     "callee runHasSkillsApproval logical:??\u2192||@97:30",
+     "callee maxByRunNumber constant:0\u21921@104:23",
+     "callee successfulMasterRuns logical:&&\u2192||@112:43",
+     "unit findReusableSkillsReport equality:===\u2192!==@155:70",
+     "unit findReusableSkillsReport boolean:false\u2192true@162:14",
+     "unit findReusableSkillsReport negation:drop@167:7",
+     "callee runHasSkillsApproval logical:&&\u2192||@96:37",
+     "callee maxByRunNumber equality:===\u2192!==@104:19",
+     "callee maxByRunNumber relational:>\u2192>=@107:55",
+     "callee successfulMasterRuns equality:===\u2192!==@112:61"
+    ],
+    "unreached": 13
+   },
+   "shape.language::DocsShapeBlockVerifier.verifyShapeCodeBlocks": {
+    "killed": 0,
+    "killedOwn": 0,
+    "kind": "informal-only",
+    "laws": [
+     "informal:RefactorSensitive:DocsShapeBlockVerifier.verifyShapeCodeBlocks/RefactorSensitive/law"
+    ],
+    "n": 16,
+    "survivors": [
+     "unit verifyShapeCorpus constant:0\u21921@106:17",
+     "unit verifyShapeCorpus negation:drop@111:11",
+     "unit verifyShapeCorpus constant:1\u21922@117:20",
+     "unit verifyShapeCorpus constant:1\u21922@119:20",
+     "callee extractShapeFences constant:1\u21922@54:20",
+     "callee extractShapeFences constant:2\u21923@55:19",
+     "callee extractShapeFences constant:0\u21921@56:49",
+     "callee isShapeFence equality:===\u2192!==@65:19",
+     "unit verifyShapeCorpus constant:0\u21921@107:17",
+     "unit verifyShapeCorpus equality:===\u2192!==@116:24",
+     "unit verifyShapeCorpus equality:===\u2192!==@118:31",
+     "unit verifyShapeCorpus constant:1\u21922@121:20",
+     "callee extractShapeFences logical:??\u2192||@54:23",
+     "callee extractShapeFences logical:??\u2192||@55:22",
+     "callee isShapeFence constant:1\u21922@64:40",
+     "callee verifyOneFence logical:??\u2192||@93:82"
+    ],
+    "unreached": 16
+   },
+   "shape.language::ShapeParser.parseShapeModule": {
+    "killed": 2,
+    "killedOwn": 0,
+    "kind": "untested+informal",
+    "laws": [
+     "informal:RefactorSensitive:ShapeParser.parseShapeModule/RefactorSensitive/law",
+     "untested:ParserPreservesDocumentState",
+     "untested:GrammarSupportsGuardForms"
+    ],
+    "n": 5,
+    "survivors": [
+     "unit parseShapeModule constant:0\u21921@40:64",
+     "unit parseShapeModule constant:0\u21921@51:28",
+     "unit parseShapeModule boolean:false\u2192true@53:11"
+    ],
+    "unreached": 0
+   },
+   "shape.tooling::ShapeAstGenerator.generateShapeFromCodeSemanticGraph": {
+    "killed": 0,
+    "killedOwn": 0,
+    "kind": "untested+informal",
+    "laws": [
+     "untested:CandidateEffectsAreHints",
+     "untested:DraftAnchorsCarryFingerprints",
+     "untested:RawTracesOptIn",
+     "untested:DraftReferencesStableUnderLineMoves",
+     "untested:TokenlessAnchorsWarn",
+     "informal:RefactorSensitive:ShapeAstGenerator.generateShapeFromCodeSemanticGraph/RefactorSensitive/law",
+     "untested:DraftsKeepEffectsUnknown"
+    ],
+    "n": 18,
+    "survivors": [
+     "unit generateShapeFromCodeSemanticGraph boolean:false\u2192true@32:18",
+     "unit generateShapeFromCodeSemanticGraph equality:===\u2192!==@36:88",
+     "unit generateShapeFromCodeSemanticGraph negation:drop@37:7",
+     "unit generateShapeFromCodeSemanticGraph logical:&&\u2192||@44:16",
+     "unit generateShapeFromCodeSemanticGraph boolean:true\u2192false@48:9",
+     "callee validateCodeSemanticGraphForRendering negation:drop@103:46",
+     "callee validateCodeSemanticGraphForRendering logical:&&\u2192||@138:28",
+     "callee formatSemanticShape logical:||\u2192&&@245:15",
+     "callee formatSemanticShape boolean:false\u2192true@247:13",
+     "unit generateShapeFromCodeSemanticGraph equality:===\u2192!==@31:66",
+     "unit generateShapeFromCodeSemanticGraph logical:??\u2192||@35:70",
+     "unit generateShapeFromCodeSemanticGraph boolean:true\u2192false@36:92",
+     "unit generateShapeFromCodeSemanticGraph equality:!==\u2192===@41:27",
+     "unit generateShapeFromCodeSemanticGraph negation:drop@44:19",
+     "callee validateCodeSemanticGraphForRendering negation:drop@103:9",
+     "callee validateCodeSemanticGraphForRendering negation:drop@124:9",
+     "callee formatSemanticShape equality:===\u2192!==@182:34",
+     "callee formatSemanticShape logical:||\u2192&&@245:22"
+    ],
+    "unreached": 0
+   },
+   "shape.tooling::ShapeAuthoring.buildShapeAuthorPrompt": {
+    "killed": 0,
+    "killedOwn": 0,
+    "kind": "informal-only",
+    "laws": [
+     "informal:RefactorSensitive:ShapeAuthoring.buildShapeAuthorPrompt/RefactorSensitive/law"
+    ],
+    "n": 2,
+    "survivors": [
+     "unit buildShapeAuthorPrompt constant:0\u21921@73:37",
+     "unit buildShapeAuthorPrompt relational:>\u2192>=@73:35"
+    ],
+    "unreached": 0
+   },
+   "shape.tooling::ShapeAuthoring.generateShapeUpdateDraft": {
+    "killed": 2,
+    "killedOwn": 2,
+    "kind": "tested",
+    "laws": [
+     "informal:RefactorSensitive:ShapeAuthoring.generateShapeUpdateDraft/RefactorSensitive/law",
+     "tested:UpdateDraftsPreferUnknown"
+    ],
+    "n": 14,
+    "survivors": [
+     "unit generateShapeUpdateDraft logical:&&\u2192||@137:38",
+     "unit generateShapeUpdateDraft constant:0\u21921@145:52",
+     "callee uniqueFunctionName logical:??\u2192||@186:33",
+     "callee uniqueFunctionName constant:0\u21921@187:80",
+     "callee uniqueFunctionName constant:1\u21922@188:83",
+     "unit generateShapeUpdateDraft logical:??\u2192||@128:39",
+     "unit generateShapeUpdateDraft constant:0\u21921@137:58",
+     "unit generateShapeUpdateDraft equality:===\u2192!==@145:48",
+     "callee uniqueFunctionName constant:1\u21922@185:12",
+     "callee uniqueFunctionName relational:>\u2192>=@187:78",
+     "callee uniqueFunctionName logical:??\u2192||@188:64",
+     "callee uniqueFunctionName logical:||\u2192&&@189:26"
+    ],
+    "unreached": 0
+   },
+   "shape.tooling::ShapeFormatter.formatShapeModule": {
+    "killed": 0,
+    "killedOwn": 0,
+    "kind": "tested",
+    "laws": [
+     "tested:FormatterIdempotent",
+     "tested:FormatterCanonicalGraphRules",
+     "tested:FormatterFlattensGroupedContext"
+    ],
+    "n": 2,
+    "survivors": [
+     "unit formatShapeModule constant:0\u21921@161:53",
+     "unit formatShapeModule relational:>\u2192>=@161:51"
+    ],
+    "unreached": 0
+   },
+   "shape.tooling::ShpCli.defaultShapeFiles": {
+    "killed": 0,
+    "killedOwn": 0,
+    "kind": "untested+informal",
+    "laws": [
+     "informal:RefactorSensitive:ShpCli.defaultShapeFiles/RefactorSensitive/law",
+     "untested:DefaultDiscoveryLoadsNestedPacks"
+    ],
+    "n": 1,
+    "survivors": [
+     "unit defaultShapeFiles boolean:true\u2192false@23:73"
+    ],
+    "unreached": 1
+   },
+   "shape.tooling::ShpCli.main": {
+    "killed": 0,
+    "killedOwn": 0,
+    "kind": "untested+informal",
+    "laws": [
+     "untested:AmbiguousOutputModesRejectedFirst",
+     "untested:GeneratedAstDirectoryChecksExplicit",
+     "informal:RefactorSensitive:ShpCli.main/RefactorSensitive/law",
+     "untested:GeneratedAstIdentityFromWorkspaceRoot"
+    ],
+    "n": 12,
+    "survivors": [
+     "unit main constant:2\u21923@9:33",
+     "unit main constant:256\u2192257@14:32",
+     "unit main arithmetic:+\u2192-@16:39",
+     "unit main equality:===\u2192!==@21:14",
+     "unit main logical:||\u2192&&@26:41",
+     "unit main equality:===\u2192!==@29:14",
+     "unit main arithmetic:+\u2192-@12:38",
+     "unit main constant:256\u2192257@15:35",
+     "unit main logical:||\u2192&&@19:43",
+     "unit main constant:2\u21923@24:24",
+     "unit main equality:===\u2192!==@28:14",
+     "unit main logical:||\u2192&&@30:42"
+    ],
+    "unreached": 12
+   },
+   "shape.tooling::ShpCli.updateInstalledBinary": {
+    "killed": 0,
+    "killedOwn": 0,
+    "kind": "informal-only",
+    "laws": [
+     "informal:RefactorSensitive:ShpCli.updateInstalledBinary/RefactorSensitive/law"
+    ],
+    "n": 10,
+    "survivors": [
+     "unit update logical:??\u2192||@116:28",
+     "callee runUpdate negation:drop@130:7",
+     "callee runUpdate logical:??\u2192||@144:41",
+     "callee runUpdate equality:===\u2192!==@154:30",
+     "callee runUpdate negation:drop@207:9",
+     "unit update boolean:false\u2192true@116:31",
+     "callee runUpdate logical:&&\u2192||@130:27",
+     "callee runUpdate equality:===\u2192!==@147:30",
+     "callee runUpdate equality:!==\u2192===@200:26",
+     "callee runUpdate constant:0\u21921@211:36"
+    ],
+    "unreached": 10
+   }
+  },
+  "rows": 296,
+  "skipped": {
+   "shape.delivery::ReleasePipeline.buildReleaseAssets": "binding raw:scripts/build-release-assets.sh",
+   "shape.language::ShapeGrammar.generateAst": "binding raw:packages/shp-checker/src/language/shape.langium"
+  },
+  "survivorOutcome": {
+   "guard judgment (stale informal law)": 206,
+   "silent at the law layer (tested laws still pass)": 42,
+   "unestablished (untested law)": 2
+  },
+  "survivorOutcomeByTier": {
+   "guard judgment (stale informal law) @ critical": 133,
+   "guard judgment (stale informal law) @ normal": 73,
+   "silent at the law layer (tested laws still pass) @ -": 42,
+   "unestablished (untested law) @ normal": 2
+  },
+  "table": {
+   "all / callee": {
+    "killed-other": 1,
+    "killed-own": 16,
+    "survived": 77,
+    "unreached": 24
+   },
+   "all / unit": {
+    "killed-other": 5,
+    "killed-own": 24,
+    "survived": 114,
+    "unreached": 35
+   },
+   "informal-only / callee": {
+    "survived": 9,
+    "unreached": 16
+   },
+   "informal-only / unit": {
+    "killed-other": 1,
+    "survived": 43,
+    "unreached": 17
+   },
+   "tested / callee": {
+    "killed-other": 1,
+    "killed-own": 16,
+    "survived": 39
+   },
+   "tested / unit": {
+    "killed-own": 24,
+    "survived": 39
+   },
+   "untested+informal / callee": {
+    "survived": 29,
+    "unreached": 8
+   },
+   "untested+informal / unit": {
+    "killed-other": 4,
+    "survived": 30,
+    "unreached": 18
+   },
+   "untested-only / unit": {
+    "survived": 2
+   }
+  },
+  "teethVerdictCounts": {
+   "teeth": 5,
+   "vacuous": 4,
+   "weak": 8
+  },
+  "teethVerdicts": {
+   "shape.checker.incremental::IncrementalRebuildsOnDocumentChange": {
+    "killed": 6,
+    "total": 20,
+    "verdict": "weak"
+   },
+   "shape.checker.incremental::IncrementalReusesDiagnosticsOnNoop": {
+    "killed": 12,
+    "total": 20,
+    "verdict": "teeth"
+   },
+   "shape.checker.incremental::IncrementalReusesModelOnOptionChange": {
+    "killed": 12,
+    "total": 20,
+    "verdict": "teeth"
+   },
+   "shape.checker::CheckIsDeterministic": {
+    "killed": 3,
+    "total": 15,
+    "verdict": "weak"
+   },
+   "shape.checker::FinalForbidBeatsGrant": {
+    "killed": 3,
+    "total": 20,
+    "verdict": "weak"
+   },
+   "shape.checker::FinalForbidNotWaivedByContext": {
+    "killed": 0,
+    "total": 20,
+    "verdict": "vacuous"
+   },
+   "shape.checker::FinalForbidTargetsDeterministic": {
+    "killed": 0,
+    "total": 20,
+    "verdict": "vacuous"
+   },
+   "shape.checker::ForbiddenPathFewestHops": {
+    "killed": 4,
+    "total": 8,
+    "verdict": "teeth"
+   },
+   "shape.checker::ForbiddenPathHopsKeepProvenance": {
+    "killed": 0,
+    "total": 8,
+    "verdict": "vacuous"
+   },
+   "shape.checker::FreshnessEnforcesOnlyIsoDates": {
+    "killed": 4,
+    "total": 6,
+    "verdict": "teeth"
+   },
+   "shape.checker::HypercycleShortestWitness": {
+    "killed": 8,
+    "total": 14,
+    "verdict": "teeth"
+   },
+   "shape.checker::InspectionCodepointOrder": {
+    "killed": 2,
+    "total": 15,
+    "verdict": "weak"
+   },
+   "shape.checker::InspectionPreservesOrigin": {
+    "killed": 2,
+    "total": 15,
+    "verdict": "weak"
+   },
+   "shape.checker::InspectionQualifiedIdentities": {
+    "killed": 2,
+    "total": 15,
+    "verdict": "weak"
+   },
+   "shape.checker::SourcePathRulesShared": {
+    "killed": 2,
+    "total": 5,
+    "verdict": "weak"
+   },
+   "shape.tooling::FormatterIdempotent": {
+    "killed": 0,
+    "total": 2,
+    "verdict": "vacuous"
+   },
+   "shape.tooling::UpdateDraftsPreferUnknown": {
+    "killed": 2,
+    "total": 14,
+    "verdict": "weak"
+   }
+  },
+  "totals": {
+   "killed": 46,
+   "mutants": 296,
+   "survivedRan": 191,
+   "unreached": 59
+  },
+  "unitsLawBound": 35,
+  "unitsTsFunctions": 33
+ },
+ "observability": {
+  "W1all": [
+   110001,
+   111130
+  ],
+  "W1observableChannel": [
+   1426,
+   1437
+  ],
+  "W1observableChannelGap": {
+   "ungoverned": 11
+  },
+  "W1observableVerbs": [
+   336,
+   337
+  ],
+  "W1observableVerbsGap": {
+   "ungoverned": 1
+  },
+  "kindObservability": [
+   {
+    "kind": "callbacks",
+    "observedPresence": false
+   },
+   {
+    "kind": "calls",
+    "observedPresence": true
+   },
+   {
+    "kind": "coordinated_call",
+    "observedPresence": false
+   },
+   {
+    "kind": "data_flow",
+    "observedPresence": false
+   },
+   {
+    "kind": "provides",
+    "observedPresence": false
+   }
+  ],
+  "observablyVacuousTotal": [
+   33,
+   154
+  ],
+  "observablyVacuousW1Channel": {
+   "byOp": {
+    "authority": 1,
+    "effect.forbid": 1,
+    "effects.upper": 14
+   },
+   "count": 16,
+   "ids": [
+    "shape.delivery::CiPipeline.approveReleaseSkills/effects.upper",
+    "shape.delivery::CiPipeline.runExperimentalSemanticKernel/effects.upper",
+    "shape.delivery::CiPipeline.runRuleLooseningCheck/effects.upper",
+    "shape.delivery::CiPipeline.runShapeCi/effects.upper",
+    "shape.delivery::CiPipeline.smokeReleaseBinary/effects.upper",
+    "shape.delivery::CiPipeline.writeChangedFiles/effects.upper",
+    "shape.delivery::DocsSite.verifyDocs/effects.upper",
+    "shape.delivery::ReleasePipeline.buildReleaseAssets/effects.upper",
+    "shape.delivery::ReleasePipeline.selectInstallReleaseAsset/effects.upper",
+    "shape.delivery::ReleasePipeline.smokeReleaseBinary/effects.upper",
+    "shape.governance::NoHatchesOutsideBoundaries/c062e5c3410c",
+    "shape.language::ShapeGrammar.generateAst/effects.upper",
+    "shape.runtime::ExperimentalSemanticKernel.buildBrowserWasm/effects.upper",
+    "shape.runtime::ExperimentalSemanticKernel.checkFactsJson/effects.upper",
+    "shape.runtime::ExperimentalSemanticKernel.runNativeProtocol/effects.upper",
+    "shape.runtime::ExperimentalSemanticKernel/authority"
+   ]
+  },
+  "observablyVacuousW1Verbs": {
+   "byOp": {
+    "authority": 2,
+    "effect.forbid": 1,
+    "effects.upper": 16
+   },
+   "count": 19,
+   "ids": [
+    "shape.delivery::CiPipeline.approveReleaseSkills/effects.upper",
+    "shape.delivery::CiPipeline.runExperimentalSemanticKernel/effects.upper",
+    "shape.delivery::CiPipeline.runRuleLooseningCheck/effects.upper",
+    "shape.delivery::CiPipeline.runShapeCi/effects.upper",
+    "shape.delivery::CiPipeline.smokeReleaseBinary/effects.upper",
+    "shape.delivery::CiPipeline.writeChangedFiles/effects.upper",
+    "shape.delivery::DocsSite.verifyDocs/effects.upper",
+    "shape.delivery::ReleasePipeline.buildReleaseAssets/effects.upper",
+    "shape.delivery::ReleasePipeline.selectInstallReleaseAsset/effects.upper",
+    "shape.delivery::ReleasePipeline.smokeReleaseBinary/effects.upper",
+    "shape.governance::NoHatchesOutsideBoundaries/c062e5c3410c",
+    "shape.language::ShapeGrammar.generateAst/effects.upper",
+    "shape.runtime::ExperimentalSemanticKernel.buildBrowserWasm/effects.upper",
+    "shape.runtime::ExperimentalSemanticKernel.checkFactsJson/effects.upper",
+    "shape.runtime::ExperimentalSemanticKernel.runNativeProtocol/effects.upper",
+    "shape.runtime::ExperimentalSemanticKernel/authority",
+    "shape.tooling::ShpCli.isoToday/effects.upper",
+    "shape.tooling::ShpCli.main/effects.upper",
+    "shape.tooling::ShpCli/authority"
+   ]
+  },
+  "presenceChannels": [
+   "call(ts)",
+   "effect(ts.call(\"Date\"))",
+   "effect(ts.call(\"Date.now\"))",
+   "effect(ts.call(\"performance.now\"))",
+   "effect(ts.call(\"process.hrtime\"))"
+  ],
+  "reportedVerbs": {
+   "ts.call(\"Date\")": [
+    "Read"
+   ],
+   "ts.call(\"Date.now\")": [
+    "Read"
+   ],
+   "ts.call(\"performance.now\")": [
+    "Read"
+   ]
+  },
+  "resources": 79,
+  "resourcesBound": 67,
+  "resourcesObservable": [
+   "shape.tooling::SystemClock"
+  ],
+  "structureClaimsOverUnobservedKinds": 14,
+  "summariesWithObservableAtom": [
+   2,
+   101
+  ],
+  "ungovernedIds": [
+   2049,
+   3679
+  ]
+ },
+ "p1change": {
+  "crashes": 0,
+  "rows": 632,
+  "setup": {
+   "baseline": {
+    "errors": 0,
+    "obligations": 414,
+    "verdict": "owed"
+   },
+   "componentTiers": {
+    "critical": 11,
+    "low": 1,
+    "normal": 9
+   },
+   "components": 21,
+   "resources": 79
+  },
+  "variants": {
+   "E0 HardDelete": {
+    "all": {
+     "L1 blocking": 0,
+     "L1 exploited": 0,
+     "L1 owed": 0,
+     "L2 blocking": 0,
+     "authority contradiction blocking": 0,
+     "coverage": 79,
+     "coverage blocking": 48,
+     "errors": 0,
+     "escalated preexisting to blocking": 52,
+     "no new-key blocking item": 31,
+     "summary contradiction blocking": 0,
+     "verdict blocked": 72
+    },
+    "byTier": {
+     "critical": {
+      "L1 blocking": 0,
+      "L1 exploited": 0,
+      "L1 owed": 0,
+      "L2 blocking": 0,
+      "authority contradiction blocking": 0,
+      "coverage": 44,
+      "coverage blocking": 44,
+      "errors": 0,
+      "escalated preexisting to blocking": 28,
+      "no new-key blocking item": 0,
+      "summary contradiction blocking": 0,
+      "verdict blocked": 44
+     },
+     "low": {
+      "L1 blocking": 0,
+      "L1 exploited": 0,
+      "L1 owed": 0,
+      "L2 blocking": 0,
+      "authority contradiction blocking": 0,
+      "coverage": 4,
+      "coverage blocking": 0,
+      "errors": 0,
+      "escalated preexisting to blocking": 4,
+      "no new-key blocking item": 4,
+      "summary contradiction blocking": 0,
+      "verdict blocked": 4
+     },
+     "normal": {
+      "L1 blocking": 0,
+      "L1 exploited": 0,
+      "L1 owed": 0,
+      "L2 blocking": 0,
+      "authority contradiction blocking": 0,
+      "coverage": 31,
+      "coverage blocking": 4,
+      "errors": 0,
+      "escalated preexisting to blocking": 20,
+      "no new-key blocking item": 27,
+      "summary contradiction blocking": 0,
+      "verdict blocked": 24
+     }
+    },
+    "medianMs": 11109,
+    "n": 79,
+    "tiers": {
+     "critical": 44,
+     "low": 4,
+     "normal": 31
+    }
+   },
+   "E1 HardDelete": {
+    "all": {
+     "L1 blocking": 0,
+     "L1 exploited": 0,
+     "L1 owed": 0,
+     "L2 blocking": 0,
+     "authority contradiction blocking": 79,
+     "coverage": 79,
+     "coverage blocking": 48,
+     "errors": 0,
+     "escalated preexisting to blocking": 52,
+     "no new-key blocking item": 0,
+     "summary contradiction blocking": 79,
+     "verdict blocked": 79
+    },
+    "byTier": {
+     "critical": {
+      "L1 blocking": 0,
+      "L1 exploited": 0,
+      "L1 owed": 0,
+      "L2 blocking": 0,
+      "authority contradiction blocking": 44,
+      "coverage": 44,
+      "coverage blocking": 44,
+      "errors": 0,
+      "escalated preexisting to blocking": 28,
+      "no new-key blocking item": 0,
+      "summary contradiction blocking": 44,
+      "verdict blocked": 44
+     },
+     "low": {
+      "L1 blocking": 0,
+      "L1 exploited": 0,
+      "L1 owed": 0,
+      "L2 blocking": 0,
+      "authority contradiction blocking": 4,
+      "coverage": 4,
+      "coverage blocking": 0,
+      "errors": 0,
+      "escalated preexisting to blocking": 4,
+      "no new-key blocking item": 0,
+      "summary contradiction blocking": 4,
+      "verdict blocked": 4
+     },
+     "normal": {
+      "L1 blocking": 0,
+      "L1 exploited": 0,
+      "L1 owed": 0,
+      "L2 blocking": 0,
+      "authority contradiction blocking": 31,
+      "coverage": 31,
+      "coverage blocking": 4,
+      "errors": 0,
+      "escalated preexisting to blocking": 20,
+      "no new-key blocking item": 0,
+      "summary contradiction blocking": 31,
+      "verdict blocked": 31
+     }
+    },
+    "medianMs": 9624,
+    "n": 79,
+    "tiers": {
+     "critical": 44,
+     "low": 4,
+     "normal": 31
+    }
+   },
+   "G1 HardDelete": {
+    "all": {
+     "L1 blocking": 75,
+     "L1 exploited": 0,
+     "L1 owed": 4,
+     "L2 blocking": 0,
+     "authority contradiction blocking": 0,
+     "coverage": 0,
+     "coverage blocking": 0,
+     "errors": 0,
+     "escalated preexisting to blocking": 0,
+     "no new-key blocking item": 4,
+     "summary contradiction blocking": 0,
+     "verdict blocked": 75
+    },
+    "byTier": {
+     "critical": {
+      "L1 blocking": 44,
+      "L1 exploited": 0,
+      "L1 owed": 0,
+      "L2 blocking": 0,
+      "authority contradiction blocking": 0,
+      "coverage": 0,
+      "coverage blocking": 0,
+      "errors": 0,
+      "escalated preexisting to blocking": 0,
+      "no new-key blocking item": 0,
+      "summary contradiction blocking": 0,
+      "verdict blocked": 44
+     },
+     "low": {
+      "L1 blocking": 0,
+      "L1 exploited": 0,
+      "L1 owed": 4,
+      "L2 blocking": 0,
+      "authority contradiction blocking": 0,
+      "coverage": 0,
+      "coverage blocking": 0,
+      "errors": 0,
+      "escalated preexisting to blocking": 0,
+      "no new-key blocking item": 4,
+      "summary contradiction blocking": 0,
+      "verdict blocked": 0
+     },
+     "normal": {
+      "L1 blocking": 31,
+      "L1 exploited": 0,
+      "L1 owed": 0,
+      "L2 blocking": 0,
+      "authority contradiction blocking": 0,
+      "coverage": 0,
+      "coverage blocking": 0,
+      "errors": 0,
+      "escalated preexisting to blocking": 0,
+      "no new-key blocking item": 0,
+      "summary contradiction blocking": 0,
+      "verdict blocked": 31
+     }
+    },
+    "medianMs": 9363,
+    "n": 79,
+    "tiers": {
+     "critical": 44,
+     "low": 4,
+     "normal": 31
+    }
+   },
+   "G2 DropStorage": {
+    "all": {
+     "L1 blocking": 79,
+     "L1 exploited": 79,
+     "L1 owed": 0,
+     "L2 blocking": 79,
+     "authority contradiction blocking": 0,
+     "coverage": 0,
+     "coverage blocking": 0,
+     "errors": 0,
+     "escalated preexisting to blocking": 28,
+     "no new-key blocking item": 0,
+     "summary contradiction blocking": 41,
+     "verdict blocked": 79
+    },
+    "byTier": {
+     "critical": {
+      "L1 blocking": 44,
+      "L1 exploited": 44,
+      "L1 owed": 0,
+      "L2 blocking": 44,
+      "authority contradiction blocking": 0,
+      "coverage": 0,
+      "coverage blocking": 0,
+      "errors": 0,
+      "escalated preexisting to blocking": 18,
+      "no new-key blocking item": 0,
+      "summary contradiction blocking": 24,
+      "verdict blocked": 44
+     },
+     "low": {
+      "L1 blocking": 4,
+      "L1 exploited": 4,
+      "L1 owed": 0,
+      "L2 blocking": 4,
+      "authority contradiction blocking": 0,
+      "coverage": 0,
+      "coverage blocking": 0,
+      "errors": 0,
+      "escalated preexisting to blocking": 0,
+      "no new-key blocking item": 0,
+      "summary contradiction blocking": 0,
+      "verdict blocked": 4
+     },
+     "normal": {
+      "L1 blocking": 31,
+      "L1 exploited": 31,
+      "L1 owed": 0,
+      "L2 blocking": 31,
+      "authority contradiction blocking": 0,
+      "coverage": 0,
+      "coverage blocking": 0,
+      "errors": 0,
+      "escalated preexisting to blocking": 10,
+      "no new-key blocking item": 0,
+      "summary contradiction blocking": 17,
+      "verdict blocked": 31
+     }
+    },
+    "medianMs": 9391,
+    "n": 79,
+    "tiers": {
+     "critical": 44,
+     "low": 4,
+     "normal": 31
+    }
+   },
+   "G2 HardDelete": {
+    "all": {
+     "L1 blocking": 79,
+     "L1 exploited": 79,
+     "L1 owed": 0,
+     "L2 blocking": 79,
+     "authority contradiction blocking": 0,
+     "coverage": 0,
+     "coverage blocking": 0,
+     "errors": 0,
+     "escalated preexisting to blocking": 28,
+     "no new-key blocking item": 0,
+     "summary contradiction blocking": 41,
+     "verdict blocked": 79
+    },
+    "byTier": {
+     "critical": {
+      "L1 blocking": 44,
+      "L1 exploited": 44,
+      "L1 owed": 0,
+      "L2 blocking": 44,
+      "authority contradiction blocking": 0,
+      "coverage": 0,
+      "coverage blocking": 0,
+      "errors": 0,
+      "escalated preexisting to blocking": 18,
+      "no new-key blocking item": 0,
+      "summary contradiction blocking": 24,
+      "verdict blocked": 44
+     },
+     "low": {
+      "L1 blocking": 4,
+      "L1 exploited": 4,
+      "L1 owed": 0,
+      "L2 blocking": 4,
+      "authority contradiction blocking": 0,
+      "coverage": 0,
+      "coverage blocking": 0,
+      "errors": 0,
+      "escalated preexisting to blocking": 0,
+      "no new-key blocking item": 0,
+      "summary contradiction blocking": 0,
+      "verdict blocked": 4
+     },
+     "normal": {
+      "L1 blocking": 31,
+      "L1 exploited": 31,
+      "L1 owed": 0,
+      "L2 blocking": 31,
+      "authority contradiction blocking": 0,
+      "coverage": 0,
+      "coverage blocking": 0,
+      "errors": 0,
+      "escalated preexisting to blocking": 10,
+      "no new-key blocking item": 0,
+      "summary contradiction blocking": 17,
+      "verdict blocked": 31
+     }
+    },
+    "medianMs": 9281,
+    "n": 79,
+    "tiers": {
+     "critical": 44,
+     "low": 4,
+     "normal": 31
+    }
+   },
+   "G2 Truncate": {
+    "all": {
+     "L1 blocking": 79,
+     "L1 exploited": 79,
+     "L1 owed": 0,
+     "L2 blocking": 79,
+     "authority contradiction blocking": 0,
+     "coverage": 0,
+     "coverage blocking": 0,
+     "errors": 0,
+     "escalated preexisting to blocking": 28,
+     "no new-key blocking item": 0,
+     "summary contradiction blocking": 41,
+     "verdict blocked": 79
+    },
+    "byTier": {
+     "critical": {
+      "L1 blocking": 44,
+      "L1 exploited": 44,
+      "L1 owed": 0,
+      "L2 blocking": 44,
+      "authority contradiction blocking": 0,
+      "coverage": 0,
+      "coverage blocking": 0,
+      "errors": 0,
+      "escalated preexisting to blocking": 18,
+      "no new-key blocking item": 0,
+      "summary contradiction blocking": 24,
+      "verdict blocked": 44
+     },
+     "low": {
+      "L1 blocking": 4,
+      "L1 exploited": 4,
+      "L1 owed": 0,
+      "L2 blocking": 4,
+      "authority contradiction blocking": 0,
+      "coverage": 0,
+      "coverage blocking": 0,
+      "errors": 0,
+      "escalated preexisting to blocking": 0,
+      "no new-key blocking item": 0,
+      "summary contradiction blocking": 0,
+      "verdict blocked": 4
+     },
+     "normal": {
+      "L1 blocking": 31,
+      "L1 exploited": 31,
+      "L1 owed": 0,
+      "L2 blocking": 31,
+      "authority contradiction blocking": 0,
+      "coverage": 0,
+      "coverage blocking": 0,
+      "errors": 0,
+      "escalated preexisting to blocking": 10,
+      "no new-key blocking item": 0,
+      "summary contradiction blocking": 17,
+      "verdict blocked": 31
+     }
+    },
+    "medianMs": 8745,
+    "n": 79,
+    "tiers": {
+     "critical": 44,
+     "low": 4,
+     "normal": 31
+    }
+   },
+   "G3 HardDelete": {
+    "all": {
+     "L1 blocking": 79,
+     "L1 exploited": 79,
+     "L1 owed": 0,
+     "L2 blocking": 0,
+     "authority contradiction blocking": 0,
+     "coverage": 79,
+     "coverage blocking": 48,
+     "errors": 0,
+     "escalated preexisting to blocking": 52,
+     "no new-key blocking item": 0,
+     "summary contradiction blocking": 79,
+     "verdict blocked": 79
+    },
+    "byTier": {
+     "critical": {
+      "L1 blocking": 44,
+      "L1 exploited": 44,
+      "L1 owed": 0,
+      "L2 blocking": 0,
+      "authority contradiction blocking": 0,
+      "coverage": 44,
+      "coverage blocking": 44,
+      "errors": 0,
+      "escalated preexisting to blocking": 28,
+      "no new-key blocking item": 0,
+      "summary contradiction blocking": 44,
+      "verdict blocked": 44
+     },
+     "low": {
+      "L1 blocking": 4,
+      "L1 exploited": 4,
+      "L1 owed": 0,
+      "L2 blocking": 0,
+      "authority contradiction blocking": 0,
+      "coverage": 4,
+      "coverage blocking": 0,
+      "errors": 0,
+      "escalated preexisting to blocking": 4,
+      "no new-key blocking item": 0,
+      "summary contradiction blocking": 4,
+      "verdict blocked": 4
+     },
+     "normal": {
+      "L1 blocking": 31,
+      "L1 exploited": 31,
+      "L1 owed": 0,
+      "L2 blocking": 0,
+      "authority contradiction blocking": 0,
+      "coverage": 31,
+      "coverage blocking": 4,
+      "errors": 0,
+      "escalated preexisting to blocking": 20,
+      "no new-key blocking item": 0,
+      "summary contradiction blocking": 31,
+      "verdict blocked": 31
+     }
+    },
+    "medianMs": 10233,
+    "n": 79,
+    "tiers": {
+     "critical": 44,
+     "low": 4,
+     "normal": 31
+    }
+   },
+   "G4 HardDelete": {
+    "all": {
+     "L1 blocking": 75,
+     "L1 exploited": 44,
+     "L1 owed": 4,
+     "L2 blocking": 0,
+     "authority contradiction blocking": 0,
+     "coverage": 79,
+     "coverage blocking": 48,
+     "errors": 0,
+     "escalated preexisting to blocking": 52,
+     "no new-key blocking item": 4,
+     "summary contradiction blocking": 0,
+     "verdict blocked": 79
+    },
+    "byTier": {
+     "critical": {
+      "L1 blocking": 44,
+      "L1 exploited": 44,
+      "L1 owed": 0,
+      "L2 blocking": 0,
+      "authority contradiction blocking": 0,
+      "coverage": 44,
+      "coverage blocking": 44,
+      "errors": 0,
+      "escalated preexisting to blocking": 28,
+      "no new-key blocking item": 0,
+      "summary contradiction blocking": 0,
+      "verdict blocked": 44
+     },
+     "low": {
+      "L1 blocking": 0,
+      "L1 exploited": 0,
+      "L1 owed": 4,
+      "L2 blocking": 0,
+      "authority contradiction blocking": 0,
+      "coverage": 4,
+      "coverage blocking": 0,
+      "errors": 0,
+      "escalated preexisting to blocking": 4,
+      "no new-key blocking item": 4,
+      "summary contradiction blocking": 0,
+      "verdict blocked": 4
+     },
+     "normal": {
+      "L1 blocking": 31,
+      "L1 exploited": 0,
+      "L1 owed": 0,
+      "L2 blocking": 0,
+      "authority contradiction blocking": 0,
+      "coverage": 31,
+      "coverage blocking": 4,
+      "errors": 0,
+      "escalated preexisting to blocking": 20,
+      "no new-key blocking item": 0,
+      "summary contradiction blocking": 0,
+      "verdict blocked": 31
+     }
+    },
+    "medianMs": 10180,
+    "n": 79,
+    "tiers": {
+     "critical": 44,
+     "low": 4,
+     "normal": 31
+    }
+   }
+  }
+ },
+ "skills": {
+  "P1uncaught": [
+   "skill_preflight_guarded::TemplateCatalog"
+  ],
+  "claims": 26,
+  "errors": {
+   "preflight/guarded-unknown": [
+    "E-unbound unit skill_preflight_guarded::ReportCompiler.compileReport"
+   ],
+   "preflight/invalid-baseline": [
+    "E-unbound unit skill_preflight_invalid::AuditStore.appendEvent"
+   ],
+   "unix-system-visualiser/invalid-model": [
+    "E-unbound unit invalid_visualiser_fixture::EventWriter.appendEvent"
+   ]
+  },
+  "models": 14,
+  "perModel": {
+   "guard/equivalent-relocation/base": {
+    "W1gap": {
+     "hatch-unforbidden": 10,
+     "ungoverned": 8
+    },
+    "claims": 1,
+    "redundant": 0,
+    "vacuous": 0
+   },
+   "guard/equivalent-relocation/candidate": {
+    "W1gap": {
+     "hatch-unforbidden": 10,
+     "ungoverned": 8
+    },
+    "claims": 1,
+    "redundant": 0,
+    "vacuous": 0
+   },
+   "guard/policy-removal/base": {
+    "W1gap": {
+     "hatch-unforbidden": 10,
+     "ungoverned": 8
+    },
+    "claims": 1,
+    "redundant": 0,
+    "vacuous": 0
+   },
+   "guard/policy-removal/candidate": {
+    "W1gap": {
+     "hatch-unforbidden": 10,
+     "ungoverned": 11
+    },
+    "claims": 0,
+    "redundant": 0,
+    "vacuous": 0
+   },
+   "index/coverage-gaps": {
+    "W1gap": {
+     "hatch-unforbidden": 50,
+     "open-authority": 13,
+     "ungoverned": 2
+    },
+    "claims": 4,
+    "redundant": 0,
+    "vacuous": 0
+   },
+   "index/missing-ast": {
+    "W1gap": {
+     "hatch-unforbidden": 30
+    },
+    "claims": 1,
+    "redundant": 0,
+    "vacuous": 1
+   },
+   "preflight/complete-route": {
+    "W1gap": {
+     "hatch-unforbidden": 30,
+     "open-authority": 22,
+     "ungoverned": 11
+    },
+    "claims": 1,
+    "redundant": 0,
+    "vacuous": 0
+   },
+   "preflight/guarded-unknown": {
+    "W1gap": {
+     "granted-to-component": 1,
+     "hatch-unforbidden": 30,
+     "ungoverned": 2
+    },
+    "claims": 4,
+    "redundant": 1,
+    "vacuous": 1
+   },
+   "preflight/invalid-baseline": {
+    "W1gap": {
+     "hatch-unforbidden": 30
+    },
+    "claims": 0,
+    "redundant": 0,
+    "vacuous": 0
+   },
+   "review/cross-object": {
+    "W1gap": {
+     "hatch-unforbidden": 50
+    },
+    "claims": 2,
+    "redundant": 0,
+    "vacuous": 2
+   },
+   "review/root-cause-grouping": {
+    "W1gap": {
+     "hatch-unforbidden": 60
+    },
+    "claims": 3,
+    "redundant": 0,
+    "vacuous": 3
+   },
+   "review/stale-model": {
+    "W1gap": {
+     "hatch-unforbidden": 40
+    },
+    "claims": 1,
+    "redundant": 0,
+    "vacuous": 1
+   },
+   "unix-system-visualiser/connected": {
+    "W1gap": {
+     "granted-to-component": 1,
+     "hatch-unforbidden": 50,
+     "open-authority": 2,
+     "ungoverned": 2
+    },
+    "claims": 6,
+    "redundant": 1,
+    "vacuous": 0
+   },
+   "unix-system-visualiser/invalid-model": {
+    "W1gap": {
+     "hatch-unforbidden": 30,
+     "open-authority": 19,
+     "ungoverned": 11
+    },
+    "claims": 1,
+    "redundant": 0,
+    "vacuous": 0
+   }
+  },
+  "redundant": [
+   "skill_preflight_guarded::ReportCompiler.compileReport/effects.upper <= skill_preflight_guarded::ReportCompiler/authority",
+   "unix_visualiser_fixture::EventStore.loadEvents/effects.upper <= unix_visualiser_fixture::EventStore/authority"
+  ],
+  "unusedGrants": [],
+  "vacuous": [
+   "skill_index_missing_ast::AuthService.requireUser/effects.upper",
+   "skill_preflight_guarded::ReportCompilerOwnsTemplateCatalog/4feb89582cf5",
+   "skill_review_cross_object::RecordCatalog.getLabel/effects.upper",
+   "skill_review_cross_object::RecordPresenter.presentRecord/effects.upper",
+   "skill_review_root_cause::RangeMetrics.includesValue/effects.upper",
+   "skill_review_root_cause::RangeMetrics.inclusiveSize/effects.upper",
+   "skill_review_root_cause::RangeNormalizer.normalizeRange/effects.upper",
+   "skill_review_stale::ReportLoader.loadReport/effects.upper"
+  ],
+  "withClaims": 12
+ },
+ "teeth": {
+  "decl": {
+   "P1": {
+    "resources": 79,
+    "uncaught": 79
+   },
+   "claimsAssessed": 154,
+   "gapsW1": {
+    "granted-to-component": 260,
+    "ungoverned": 869
+   },
+   "gapsW2": [
+    {
+     "class": "new-coupling",
+     "killed": 0,
+     "kind": "callbacks",
+     "total": 552
+    },
+    {
+     "class": "back-edge",
+     "killed": 148,
+     "kind": "calls",
+     "total": 148
+    },
+    {
+     "class": "new-coupling",
+     "killed": 28,
+     "kind": "calls",
+     "total": 256
+    },
+    {
+     "class": "shortcut",
+     "killed": 0,
+     "kind": "calls",
+     "total": 98
+    },
+    {
+     "class": "back-edge",
+     "killed": 0,
+     "kind": "coordinated_call",
+     "total": 21
+    },
+    {
+     "class": "new-coupling",
+     "killed": 0,
+     "kind": "coordinated_call",
+     "total": 510
+    },
+    {
+     "class": "shortcut",
+     "killed": 0,
+     "kind": "coordinated_call",
+     "total": 15
+    },
+    {
+     "class": "new-coupling",
+     "killed": 0,
+     "kind": "data_flow",
+     "total": 552
+    },
+    {
+     "class": "provider",
+     "killed": 322,
+     "kind": "provides",
+     "total": 1876
+    }
+   ],
+   "laws": {
+    "unassessed": 87
+   },
+   "notAssessed": 177,
+   "operators": {
+    "M2": [
+     179,
+     181
+    ],
+    "P1": [
+     0,
+     5607
+    ],
+    "W1": [
+     110001,
+     111130
+    ],
+    "W2": [
+     498,
+     4028
+    ]
+   },
+   "redundant": 19,
+   "redundantPairs": {
+    "shape.checker.incremental::ShapeIncrementalChecker.check/effects.upper": [
+     "shape.checker.incremental::ShapeIncrementalChecker/authority"
+    ],
+    "shape.checker::ShapeBindings.checkBindings/effects.upper": [
+     "shape.checker::ShapeBindings/authority"
+    ],
+    "shape.checker::ShapeDiagnostics.formatDiagnostics/effects.upper": [
+     "shape.checker::ShapeDiagnostics/authority"
+    ],
+    "shape.checker::ShapeModuleResolver.resolveModuleReference/effects.upper": [
+     "shape.checker::ShapeModuleResolver/authority"
+    ],
+    "shape.checker::ShapeStringHelpers.normalizeShapeSourcePath/effects.upper": [
+     "shape.checker::ShapeStringHelpers/authority"
+    ],
+    "shape.checker::ShapeStringHelpers.unquoteShapeString/effects.upper": [
+     "shape.checker::ShapeStringHelpers/authority"
+    ],
+    "shape.governance::NoHatchesOutsideBoundaries/001074f4e213": [
+     "shape.governance::NoHatchesOutsideBoundaries/dc8454f26ba4"
+    ],
+    "shape.governance::NoHatchesOutsideBoundaries/117282a24149": [
+     "shape.governance::NoHatchesOutsideBoundaries/dc8454f26ba4"
+    ],
+    "shape.governance::NoHatchesOutsideBoundaries/1584bb88c66c": [
+     "shape.governance::NoHatchesOutsideBoundaries/dc8454f26ba4"
+    ],
+    "shape.governance::NoHatchesOutsideBoundaries/260f9bab2f56": [
+     "shape.governance::NoHatchesOutsideBoundaries/dc8454f26ba4"
+    ],
+    "shape.governance::NoHatchesOutsideBoundaries/6afbb1f2310c": [
+     "shape.governance::NoHatchesOutsideBoundaries/dc8454f26ba4"
+    ],
+    "shape.governance::NoHatchesOutsideBoundaries/7707fdede7e7": [
+     "shape.governance::NoHatchesOutsideBoundaries/dc8454f26ba4"
+    ],
+    "shape.governance::NoHatchesOutsideBoundaries/7ef4d39fc5cc": [
+     "shape.governance::NoHatchesOutsideBoundaries/dc8454f26ba4"
+    ],
+    "shape.governance::NoHatchesOutsideBoundaries/999e379d3817": [
+     "shape.governance::NoHatchesOutsideBoundaries/dc8454f26ba4"
+    ],
+    "shape.governance::NoHatchesOutsideBoundaries/c062e5c3410c": [
+     "shape.governance::NoHatchesOutsideBoundaries/dc8454f26ba4"
+    ],
+    "shape.language::DocsShapeBlockVerifier.verifyShapeCodeBlocks/effects.upper": [
+     "shape.language::DocsShapeBlockVerifier/authority"
+    ],
+    "shape.language::ShapeParser.parseShapeModule/effects.upper": [
+     "shape.language::ShapeParser/authority"
+    ],
+    "shape.tooling::ShapeFormatter.formatShapeModule/effects.upper": [
+     "shape.tooling::ShapeFormatter/authority"
+    ],
+    "shape.tooling::ShapeLanguageServer.serve/effects.upper": [
+     "shape.tooling::ShapeLanguageServer/authority"
+    ]
+   },
+   "sources": [
+    {
+     "claim": "shape.runtime::ExperimentalSemanticKernelIsolation",
+     "kills": 40,
+     "redundantWith": [
+      "shape.tooling::ShapeEditorServices",
+      "shape.tooling::ShpCli"
+     ],
+     "source": "shape.checker::ShapeChecker"
+    },
+    {
+     "claim": "shape.runtime::ExperimentalSemanticKernelIsolation",
+     "kills": 48,
+     "redundantWith": [
+      "shape.tooling::ShpCli"
+     ],
+     "source": "shape.tooling::ShapeEditorServices"
+    },
+    {
+     "claim": "shape.runtime::ExperimentalSemanticKernelIsolation",
+     "kills": 68,
+     "redundantWith": [],
+     "source": "shape.tooling::ShpCli"
+    }
+   ],
+   "unusedGrants": [
+    "shape.checker::ShapeRuleEngine Update<shape.checker::ShapeHypergraph>",
+    "shape.delivery::DocsSite Update<shape.delivery::DocsContent>"
+   ],
+   "vacuous": []
+  },
+  "obs": {
+   "P1": {
+    "resources": 79,
+    "uncaught": 79
+   },
+   "claimsAssessed": 154,
+   "gapsW1": {
+    "granted-to-component": 32
+   },
+   "gapsW2": [
+    {
+     "class": "new-coupling",
+     "killed": 0,
+     "kind": "callbacks",
+     "total": 552
+    },
+    {
+     "class": "back-edge",
+     "killed": 175,
+     "kind": "calls",
+     "total": 175
+    },
+    {
+     "class": "new-coupling",
+     "killed": 31,
+     "kind": "calls",
+     "total": 198
+    },
+    {
+     "class": "shortcut",
+     "killed": 0,
+     "kind": "calls",
+     "total": 98
+    },
+    {
+     "class": "back-edge",
+     "killed": 0,
+     "kind": "coordinated_call",
+     "total": 21
+    },
+    {
+     "class": "new-coupling",
+     "killed": 0,
+     "kind": "coordinated_call",
+     "total": 510
+    },
+    {
+     "class": "shortcut",
+     "killed": 0,
+     "kind": "coordinated_call",
+     "total": 15
+    },
+    {
+     "class": "new-coupling",
+     "killed": 0,
+     "kind": "data_flow",
+     "total": 552
+    },
+    {
+     "class": "provider",
+     "killed": 322,
+     "kind": "provides",
+     "total": 1876
+    }
+   ],
+   "laws": {
+    "unassessed": 87
+   },
+   "notAssessed": 177,
+   "operators": {
+    "M2": [
+     179,
+     181
+    ],
+    "P1": [
+     0,
+     5607
+    ],
+    "W1": [
+     111094,
+     111126
+    ],
+    "W2": [
+     528,
+     3997
+    ]
+   },
+   "redundant": 50,
+   "redundantPairs": {
+    "shape.checker.incremental::ShapeIncrementalChecker.check/effects.upper": [
+     "shape.checker::ShapeChecker.checkLoweredShapeModel/effects.upper",
+     "shape.checker::ShapeChecker.checkRuleLoosening/effects.upper",
+     "shape.checker::ShapeChecker.checkShapeFiles/effects.upper",
+     "shape.checker::ShapeChecker.checkShapeModules/effects.upper",
+     "shape.checker::ShapeChecker.explainShapeModules/effects.upper",
+     "shape.checker::ShapeChecker.staleAttestationPruner/effects.upper",
+     "shape.checker::ShapeRuleEngine.checkCitedPaths/effects.upper",
+     "shape.checker::ShapeRuleEngine.checkFingerprintExpectations/effects.upper",
+     "shape.checker::ShapeRuleEngine.checkForbiddenPaths/effects.upper",
+     "shape.checker::ShapeRuleEngine.checkFreshness/effects.upper",
+     "shape.checker::ShapeRuleEngine.checkReevaluations/effects.upper",
+     "shape.checker::ShapeRuleEngine.checkResolvedNames/effects.upper",
+     "shape.checker::ShapeRuleEngine.checkRules/effects.upper",
+     "shape.checker::ShapeRuleEngine.checkStaleAttestations/effects.upper",
+     "shape.checker::ShapeRuleEngine.deriveFinalForbidsForResource/effects.upper",
+     "shape.checker::ShapeRuleEngine.findHypercycle/effects.upper",
+     "shape.checker::ShapeRuleEngine.findShortestPath/effects.upper"
+    ],
+    "shape.checker::ShapeBindings.checkBindings/effects.upper": [
+     "shape.checker::ShapeChecker.checkShapeFiles/effects.upper",
+     "shape.checker::ShapeRuleEngine.checkCoverage/effects.upper",
+     "shape.checker::ShapeRuleEngine.checkFreshness/effects.upper",
+     "shape.checker::ShapeRuleEngine.checkReevaluations/effects.upper",
+     "shape.checker::ShapeRuleEngine.checkStaleAttestations/effects.upper"
+    ],
+    "shape.checker::ShapeChecker.checkLoweredShapeModel/effects.upper": [
+     "shape.checker::ShapeChecker.checkShapeFiles/effects.upper",
+     "shape.checker::ShapeChecker.explainShapeModules/effects.upper",
+     "shape.checker::ShapeRuleEngine.checkFingerprintExpectations/effects.upper",
+     "shape.checker::ShapeRuleEngine.checkForbiddenPaths/effects.upper",
+     "shape.checker::ShapeRuleEngine.checkFreshness/effects.upper",
+     "shape.checker::ShapeRuleEngine.checkReevaluations/effects.upper",
+     "shape.checker::ShapeRuleEngine.checkResolvedNames/effects.upper",
+     "shape.checker::ShapeRuleEngine.checkRules/effects.upper",
+     "shape.checker::ShapeRuleEngine.checkStaleAttestations/effects.upper",
+     "shape.checker::ShapeRuleEngine.deriveFinalForbidsForResource/effects.upper",
+     "shape.checker::ShapeRuleEngine.findHypercycle/effects.upper",
+     "shape.checker::ShapeRuleEngine.findShortestPath/effects.upper"
+    ],
+    "shape.checker::ShapeChecker.checkRuleLoosening/effects.upper": [
+     "shape.checker::ShapeChecker.staleAttestationPruner/effects.upper"
+    ],
+    "shape.checker::ShapeChecker.checkShapeModules/effects.upper": [
+     "shape.checker::ShapeChecker.checkLoweredShapeModel/effects.upper",
+     "shape.checker::ShapeChecker.checkShapeFiles/effects.upper",
+     "shape.checker::ShapeChecker.explainShapeModules/effects.upper",
+     "shape.checker::ShapeRuleEngine.checkFingerprintExpectations/effects.upper",
+     "shape.checker::ShapeRuleEngine.checkForbiddenPaths/effects.upper",
+     "shape.checker::ShapeRuleEngine.checkFreshness/effects.upper",
+     "shape.checker::ShapeRuleEngine.checkReevaluations/effects.upper",
+     "shape.checker::ShapeRuleEngine.checkResolvedNames/effects.upper",
+     "shape.checker::ShapeRuleEngine.checkRules/effects.upper",
+     "shape.checker::ShapeRuleEngine.checkStaleAttestations/effects.upper",
+     "shape.checker::ShapeRuleEngine.deriveFinalForbidsForResource/effects.upper",
+     "shape.checker::ShapeRuleEngine.findHypercycle/effects.upper",
+     "shape.checker::ShapeRuleEngine.findShortestPath/effects.upper"
+    ],
+    "shape.checker::ShapeChecker.explainShapeModules/effects.upper": [
+     "shape.checker::ShapeRuleEngine.deriveFinalForbidsForResource/effects.upper",
+     "shape.checker::ShapeRuleEngine.findHypercycle/effects.upper",
+     "shape.checker::ShapeRuleEngine.findShortestPath/effects.upper"
+    ],
+    "shape.checker::ShapeDiagnostics.formatDiagnostics/effects.upper": [
+     "shape.checker::ShapeDiagnostics/authority"
+    ],
+    "shape.checker::ShapeModelLowerer.lowerChange/effects.upper": [
+     "shape.checker::ShapeModelLowerer.lowerComponent/effects.upper",
+     "shape.checker::ShapeModelLowerer.lowerImplementation/effects.upper"
+    ],
+    "shape.checker::ShapeModelLowerer.lowerImplementation/effects.upper": [
+     "shape.checker::ShapeModelLowerer.lowerComponent/effects.upper"
+    ],
+    "shape.checker::ShapeModelLowerer.lowerRule/effects.upper": [
+     "shape.checker::ShapeModelLowerer.lowerComponent/effects.upper",
+     "shape.checker::ShapeModelLowerer.lowerImplementation/effects.upper",
+     "shape.checker::ShapeModelLowerer.lowerTrait/effects.upper"
+    ],
+    "shape.checker::ShapeModelLowerer.lowerShapeModules/effects.upper": [
+     "shape.checker::ShapeModelLowerer.indexModuleDeclarations/effects.upper"
+    ],
+    "shape.checker::ShapePreludeRegistry.isReevaluationRequirement/effects.upper": [
+     "shape.checker::ShapeRuleEngine.requiresReevaluation/effects.upper"
+    ],
+    "shape.checker::ShapeRuleEngine.checkCitedPaths/effects.upper": [
+     "shape.checker::ShapeRuleEngine.checkFreshness/effects.upper",
+     "shape.checker::ShapeRuleEngine.checkReevaluations/effects.upper"
+    ],
+    "shape.checker::ShapeRuleEngine.checkCoverage/effects.upper": [
+     "shape.checker::ShapeChecker.checkShapeFiles/effects.upper",
+     "shape.checker::ShapeRuleEngine.checkFreshness/effects.upper",
+     "shape.checker::ShapeRuleEngine.checkReevaluations/effects.upper",
+     "shape.checker::ShapeRuleEngine.checkStaleAttestations/effects.upper"
+    ],
+    "shape.checker::ShapeRuleEngine.checkFingerprintExpectations/effects.upper": [
+     "shape.checker::ShapeRuleEngine.checkFreshness/effects.upper",
+     "shape.checker::ShapeRuleEngine.checkReevaluations/effects.upper"
+    ],
+    "shape.checker::ShapeRuleEngine.checkForbiddenPaths/effects.upper": [
+     "shape.checker::ShapeRuleEngine.checkFreshness/effects.upper",
+     "shape.checker::ShapeRuleEngine.checkReevaluations/effects.upper",
+     "shape.checker::ShapeRuleEngine.checkResolvedNames/effects.upper",
+     "shape.checker::ShapeRuleEngine.checkRules/effects.upper",
+     "shape.checker::ShapeRuleEngine.deriveFinalForbidsForResource/effects.upper",
+     "shape.checker::ShapeRuleEngine.findHypercycle/effects.upper",
+     "shape.checker::ShapeRuleEngine.findShortestPath/effects.upper"
+    ],
+    "shape.checker::ShapeRuleEngine.checkGuardedChanges/effects.upper": [
+     "shape.checker::ShapeRuleEngine.checkFreshness/effects.upper",
+     "shape.checker::ShapeRuleEngine.checkReevaluations/effects.upper"
+    ],
+    "shape.checker::ShapeRuleEngine.checkGuardedSources/effects.upper": [
+     "shape.checker::ShapeChecker.checkShapeFiles/effects.upper",
+     "shape.checker::ShapeRuleEngine.checkFreshness/effects.upper",
+     "shape.checker::ShapeRuleEngine.checkGuardedChanges/effects.upper",
+     "shape.checker::ShapeRuleEngine.checkReevaluations/effects.upper",
+     "shape.checker::ShapeRuleEngine.checkStaleAttestations/effects.upper"
+    ],
+    "shape.checker::ShapeRuleEngine.checkReevaluations/effects.upper": [
+     "shape.checker::ShapeRuleEngine.checkFreshness/effects.upper"
+    ],
+    "shape.checker::ShapeRuleEngine.checkResolvedNames/effects.upper": [
+     "shape.checker::ShapeRuleEngine.checkFreshness/effects.upper",
+     "shape.checker::ShapeRuleEngine.checkReevaluations/effects.upper",
+     "shape.checker::ShapeRuleEngine.deriveFinalForbidsForResource/effects.upper",
+     "shape.checker::ShapeRuleEngine.findHypercycle/effects.upper",
+     "shape.checker::ShapeRuleEngine.findShortestPath/effects.upper"
+    ],
+    "shape.checker::ShapeRuleEngine.checkRules/effects.upper": [
+     "shape.checker::ShapeRuleEngine.checkFreshness/effects.upper",
+     "shape.checker::ShapeRuleEngine.checkReevaluations/effects.upper",
+     "shape.checker::ShapeRuleEngine.checkResolvedNames/effects.upper",
+     "shape.checker::ShapeRuleEngine.deriveFinalForbidsForResource/effects.upper",
+     "shape.checker::ShapeRuleEngine.findHypercycle/effects.upper",
+     "shape.checker::ShapeRuleEngine.findShortestPath/effects.upper"
+    ],
+    "shape.checker::ShapeRuleEngine.checkStaleAttestations/effects.upper": [
+     "shape.checker::ShapeRuleEngine.checkFreshness/effects.upper",
+     "shape.checker::ShapeRuleEngine.checkReevaluations/effects.upper"
+    ],
+    "shape.checker::ShapeRuleEngine.findHypercycle/effects.upper": [
+     "shape.checker::ShapeRuleEngine.deriveFinalForbidsForResource/effects.upper"
+    ],
+    "shape.checker::ShapeRuleEngine.findShortestPath/effects.upper": [
+     "shape.checker::ShapeRuleEngine.deriveFinalForbidsForResource/effects.upper",
+     "shape.checker::ShapeRuleEngine.findHypercycle/effects.upper"
+    ],
+    "shape.checker::ShapeStringHelpers.normalizeShapeSourcePath/effects.upper": [
+     "shape.tooling::ShpCli.loadBaseModules/effects.upper"
+    ],
+    "shape.checker::ShapeStringHelpers.unquoteShapeString/effects.upper": [
+     "shape.checker::ShapeStringHelpers/authority",
+     "shape.tooling::ShpCli.loadBaseModules/effects.upper"
+    ],
+    "shape.delivery::CiPipeline.checkReleaseVersion/effects.upper": [
+     "shape.tooling::ShpCli.loadBaseModules/effects.upper"
+    ],
+    "shape.governance::NoHatchesOutsideBoundaries/001074f4e213": [
+     "shape.governance::NoHatchesOutsideBoundaries/dc8454f26ba4"
+    ],
+    "shape.governance::NoHatchesOutsideBoundaries/117282a24149": [
+     "shape.governance::NoHatchesOutsideBoundaries/dc8454f26ba4"
+    ],
+    "shape.governance::NoHatchesOutsideBoundaries/1584bb88c66c": [
+     "shape.governance::NoHatchesOutsideBoundaries/dc8454f26ba4"
+    ],
+    "shape.governance::NoHatchesOutsideBoundaries/260f9bab2f56": [
+     "shape.governance::NoHatchesOutsideBoundaries/dc8454f26ba4"
+    ],
+    "shape.governance::NoHatchesOutsideBoundaries/6afbb1f2310c": [
+     "shape.governance::NoHatchesOutsideBoundaries/dc8454f26ba4"
+    ],
+    "shape.governance::NoHatchesOutsideBoundaries/7707fdede7e7": [
+     "shape.governance::NoHatchesOutsideBoundaries/dc8454f26ba4"
+    ],
+    "shape.governance::NoHatchesOutsideBoundaries/7ef4d39fc5cc": [
+     "shape.governance::NoHatchesOutsideBoundaries/dc8454f26ba4"
+    ],
+    "shape.governance::NoHatchesOutsideBoundaries/999e379d3817": [
+     "shape.governance::NoHatchesOutsideBoundaries/dc8454f26ba4"
+    ],
+    "shape.governance::NoHatchesOutsideBoundaries/c062e5c3410c": [
+     "shape.governance::NoHatchesOutsideBoundaries/dc8454f26ba4"
+    ],
+    "shape.language::ShapeParser.parseShapeModule/effects.upper": [
+     "shape.tooling::ShpCli.loadBaseModules/effects.upper"
+    ],
+    "shape.tooling::ShapeAstGenerator.addSemanticProjection/effects.upper": [
+     "shape.tooling::ShapeAstGenerator.buildCodeSemanticGraphFromAstJson/effects.upper"
+    ],
+    "shape.tooling::ShapeAuthoring.buildShapeAuthorPrompt/effects.upper": [
+     "shape.tooling::ShpCli.loadBaseModules/effects.upper"
+    ],
+    "shape.tooling::ShapeAuthoring.buildShapeAuthoringBundle/effects.upper": [
+     "shape.tooling::ShpCli.loadBaseModules/effects.upper"
+    ],
+    "shape.tooling::ShapeAuthoring.buildShapeCriticPrompt/effects.upper": [
+     "shape.tooling::ShpCli.loadBaseModules/effects.upper"
+    ],
+    "shape.tooling::ShapeAuthoring.reviewShapeAuthoringProposal/effects.upper": [
+     "shape.tooling::ShpCli.loadBaseModules/effects.upper"
+    ],
+    "shape.tooling::ShapeEditorServices.formatOnSave/effects.upper": [
+     "shape.tooling::ShpCli.loadBaseModules/effects.upper"
+    ],
+    "shape.tooling::ShapeEditorServices.getCompletions/effects.upper": [
+     "shape.tooling::ShapeEditorServices.getHoverText/effects.upper"
+    ],
+    "shape.tooling::ShapeEditorServices.getDefinitionLocation/effects.upper": [
+     "shape.tooling::ShapeLanguageServer.serve/effects.upper",
+     "shape.tooling::ShpCli.loadBaseModules/effects.upper"
+    ],
+    "shape.tooling::ShapeEditorServices.getEditorDiagnosticsForDocuments/effects.upper": [
+     "shape.tooling::ShapeEditorServices.getEditorDiagnostics/effects.upper",
+     "shape.tooling::ShapeLanguageServer.serve/effects.upper",
+     "shape.tooling::ShpCli.loadBaseModules/effects.upper"
+    ],
+    "shape.tooling::ShapeLanguageServer.serve/effects.upper": [
+     "shape.tooling::ShpCli.loadBaseModules/effects.upper"
+    ],
+    "shape.tooling::ShpCli.defaultShapeFiles/effects.upper": [
+     "shape.tooling::ShpCli.loadBaseModules/effects.upper"
+    ],
+    "shape.tooling::ShpCli.main/effects.upper": [
+     "shape.tooling::ShapeLanguageServer.serve/effects.upper",
+     "shape.tooling::ShpCli.attestPrune/effects.upper",
+     "shape.tooling::ShpCli.inspectShapeModel/effects.upper",
+     "shape.tooling::ShpCli.isoToday/effects.upper",
+     "shape.tooling::ShpCli.listRepositoryFiles/effects.upper",
+     "shape.tooling::ShpCli.loadBaseModules/effects.upper",
+     "shape.tooling::ShpCli.runShapeFileCheck/effects.upper"
+    ],
+    "shape.tooling::ShpCli.runShapeFileCheck/effects.upper": [
+     "shape.tooling::ShpCli.loadBaseModules/effects.upper"
+    ]
+   },
+   "sources": [
+    {
+     "claim": "shape.runtime::ExperimentalSemanticKernelIsolation",
+     "kills": 52,
+     "redundantWith": [
+      "shape.tooling::ShapeEditorServices",
+      "shape.tooling::ShpCli"
+     ],
+     "source": "shape.checker::ShapeChecker"
+    },
+    {
+     "claim": "shape.runtime::ExperimentalSemanticKernelIsolation",
+     "kills": 56,
+     "redundantWith": [
+      "shape.tooling::ShpCli"
+     ],
+     "source": "shape.tooling::ShapeEditorServices"
+    },
+    {
+     "claim": "shape.runtime::ExperimentalSemanticKernelIsolation",
+     "kills": 72,
+     "redundantWith": [],
+     "source": "shape.tooling::ShpCli"
+    }
+   ],
+   "unusedGrants": [
+    "shape.checker::ShapeRuleEngine Update<shape.checker::ShapeHypergraph>",
+    "shape.delivery::DocsSite Update<shape.delivery::DocsContent>"
+   ],
+   "vacuous": []
+  },
+  "redundantClassesDecl": {
+   "hatch forbid <= catch-all Hatch forbid": 9,
+   "unit summary <= its component's authority": 10
+  },
+  "redundantClassesObs": {
+   "hatch forbid <= catch-all Hatch forbid": 9,
+   "unit summary <= a caller's summary (observed calls)": 40,
+   "unit summary <= its component's authority": 1
+  },
+  "validate": {
+   "agree": 300,
+   "byOp": {
+    "P1": {
+     "agree": 100,
+     "sampled": 100
+    },
+    "W1": {
+     "agree": 100,
+     "sampled": 100
+    },
+    "W2": {
+     "agree": 100,
+     "sampled": 100
+    }
+   },
+   "sampled": 300,
+   "seconds": 84
+  }
+ },
+ "w2": {
+  "calls": {
+   "classes": {
+    "back-edge": {
+     "killed": 148,
+     "survived": 0
+    },
+    "new-coupling": {
+     "killed": 28,
+     "survived": 228
+    },
+    "shortcut": {
+     "killed": 0,
+     "survived": 98
+    }
+   },
+   "pairs": {
+    "shape.checker -> shape.checker": {
+     "killed": 23,
+     "survived": 19
+    },
+    "shape.checker -> shape.checker.incremental": {
+     "killed": 8,
+     "survived": 0
+    },
+    "shape.checker -> shape.delivery": {
+     "killed": 16,
+     "survived": 8
+    },
+    "shape.checker -> shape.language": {
+     "killed": 0,
+     "survived": 23
+    },
+    "shape.checker -> shape.runtime": {
+     "killed": 16,
+     "survived": 0
+    },
+    "shape.checker -> shape.tooling": {
+     "killed": 29,
+     "survived": 27
+    },
+    "shape.checker.incremental -> shape.checker": {
+     "killed": 0,
+     "survived": 5
+    },
+    "shape.checker.incremental -> shape.delivery": {
+     "killed": 0,
+     "survived": 3
+    },
+    "shape.checker.incremental -> shape.language": {
+     "killed": 0,
+     "survived": 2
+    },
+    "shape.checker.incremental -> shape.runtime": {
+     "killed": 0,
+     "survived": 2
+    },
+    "shape.checker.incremental -> shape.tooling": {
+     "killed": 0,
+     "survived": 7
+    },
+    "shape.delivery -> shape.checker": {
+     "killed": 0,
+     "survived": 24
+    },
+    "shape.delivery -> shape.checker.incremental": {
+     "killed": 0,
+     "survived": 3
+    },
+    "shape.delivery -> shape.delivery": {
+     "killed": 1,
+     "survived": 4
+    },
+    "shape.delivery -> shape.language": {
+     "killed": 0,
+     "survived": 7
+    },
+    "shape.delivery -> shape.runtime": {
+     "killed": 0,
+     "survived": 4
+    },
+    "shape.delivery -> shape.tooling": {
+     "killed": 0,
+     "survived": 19
+    },
+    "shape.language -> shape.checker": {
+     "killed": 10,
+     "survived": 14
+    },
+    "shape.language -> shape.checker.incremental": {
+     "killed": 2,
+     "survived": 1
+    },
+    "shape.language -> shape.delivery": {
+     "killed": 7,
+     "survived": 2
+    },
+    "shape.language -> shape.language": {
+     "killed": 3,
+     "survived": 1
+    },
+    "shape.language -> shape.runtime": {
+     "killed": 4,
+     "survived": 2
+    },
+    "shape.language -> shape.tooling": {
+     "killed": 10,
+     "survived": 11
+    },
+    "shape.runtime -> shape.checker": {
+     "killed": 0,
+     "survived": 15
+    },
+    "shape.runtime -> shape.checker.incremental": {
+     "killed": 0,
+     "survived": 2
+    },
+    "shape.runtime -> shape.delivery": {
+     "killed": 4,
+     "survived": 2
+    },
+    "shape.runtime -> shape.language": {
+     "killed": 0,
+     "survived": 6
+    },
+    "shape.runtime -> shape.runtime": {
+     "killed": 1,
+     "survived": 0
+    },
+    "shape.runtime -> shape.tooling": {
+     "killed": 0,
+     "survived": 14
+    },
+    "shape.tooling -> shape.checker": {
+     "killed": 1,
+     "survived": 46
+    },
+    "shape.tooling -> shape.checker.incremental": {
+     "killed": 1,
+     "survived": 6
+    },
+    "shape.tooling -> shape.delivery": {
+     "killed": 14,
+     "survived": 7
+    },
+    "shape.tooling -> shape.language": {
+     "killed": 0,
+     "survived": 18
+    },
+    "shape.tooling -> shape.runtime": {
+     "killed": 14,
+     "survived": 0
+    },
+    "shape.tooling -> shape.tooling": {
+     "killed": 12,
+     "survived": 22
+    }
+   }
+  },
+  "intoKernel": [
+   {
+    "killed": 0,
+    "kind": "callbacks",
+    "total": 23
+   },
+   {
+    "killed": 17,
+    "kind": "calls",
+    "total": 21
+   },
+   {
+    "killed": 0,
+    "kind": "coordinated_call",
+    "total": 23
+   },
+   {
+    "killed": 0,
+    "kind": "data_flow",
+    "total": 23
+   }
+  ],
+  "named": [
+   {
+    "edge": "shape.tooling::ShapeAnalyzer -calls-> shape.checker::ShapeChecker",
+    "killed": true
+   },
+   {
+    "edge": "shape.tooling::ShapeAuthoring -calls-> shape.checker::ShapeChecker",
+    "killed": false
+   },
+   {
+    "edge": "shape.checker::ShapeChecker -calls-> shape.tooling::ShapeAuthoring",
+    "killed": false
+   },
+   {
+    "edge": "shape.checker.incremental::ShapeIncrementalChecker -calls-> shape.runtime::ExperimentalSemanticKernel",
+    "killed": false
+   },
+   {
+    "edge": "shape.delivery::DocsSite -calls-> shape.runtime::ExperimentalSemanticKernel",
+    "killed": false
+   },
+   {
+    "edge": "shape.language::DocsShapeBlockVerifier -calls-> shape.runtime::ExperimentalSemanticKernel",
+    "killed": false
+   },
+   {
+    "edge": "shape.delivery::ReleasePipeline -calls-> shape.runtime::ExperimentalSemanticKernel",
+    "killed": false
+   }
+  ]
+ }
+}

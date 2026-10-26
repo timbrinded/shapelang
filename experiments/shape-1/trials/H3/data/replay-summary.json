@@ -1,0 +1,217 @@
+{
+ "T": {
+  "C R1c stock": {
+   "tagged": 43,
+   "blocked": 43,
+   "refactors": 39,
+   "refactor_flagged": 0,
+   "refactor_blocked": 0
+  },
+  "C R1c vnew": {
+   "tagged": 43,
+   "blocked": 43,
+   "refactors": 39,
+   "refactor_flagged": 0,
+   "refactor_blocked": 0
+  },
+  "C R1c vnew2": {
+   "tagged": 43,
+   "blocked": 43,
+   "refactors": 39,
+   "refactor_flagged": 0,
+   "refactor_blocked": 0
+  },
+  "C R2u stock": {
+   "tagged": 43,
+   "blocked": 43,
+   "refactors": 39,
+   "refactor_flagged": 33,
+   "refactor_blocked": 33
+  },
+  "C R2u vnew": {
+   "tagged": 43,
+   "blocked": 43,
+   "refactors": 39,
+   "refactor_flagged": 33,
+   "refactor_blocked": 33
+  },
+  "C R2u vnew2": {
+   "tagged": 43,
+   "blocked": 43,
+   "refactors": 39,
+   "refactor_flagged": 33,
+   "refactor_blocked": 33
+  },
+  "N R1c stock": {
+   "tagged": 43,
+   "blocked": 33,
+   "refactors": 39,
+   "refactor_flagged": 0,
+   "refactor_blocked": 0
+  },
+  "N R1c vnew": {
+   "tagged": 43,
+   "blocked": 43,
+   "refactors": 39,
+   "refactor_flagged": 0,
+   "refactor_blocked": 0
+  },
+  "N R1c vnew2": {
+   "tagged": 43,
+   "blocked": 43,
+   "refactors": 39,
+   "refactor_flagged": 0,
+   "refactor_blocked": 0
+  },
+  "N R2u stock": {
+   "tagged": 43,
+   "blocked": 33,
+   "refactors": 39,
+   "refactor_flagged": 33,
+   "refactor_blocked": 24
+  },
+  "N R2u vnew": {
+   "tagged": 43,
+   "blocked": 33,
+   "refactors": 39,
+   "refactor_flagged": 33,
+   "refactor_blocked": 24
+  },
+  "N R2u vnew2": {
+   "tagged": 43,
+   "blocked": 33,
+   "refactors": 39,
+   "refactor_flagged": 33,
+   "refactor_blocked": 24
+  },
+  "P R1c stock": {
+   "tagged": 43,
+   "blocked": 29,
+   "refactors": 39,
+   "refactor_flagged": 0,
+   "refactor_blocked": 0
+  },
+  "P R1c vnew": {
+   "tagged": 43,
+   "blocked": 43,
+   "refactors": 39,
+   "refactor_flagged": 0,
+   "refactor_blocked": 0
+  },
+  "P R1c vnew2": {
+   "tagged": 43,
+   "blocked": 43,
+   "refactors": 39,
+   "refactor_flagged": 0,
+   "refactor_blocked": 0
+  },
+  "P R2u stock": {
+   "tagged": 43,
+   "blocked": 31,
+   "refactors": 39,
+   "refactor_flagged": 33,
+   "refactor_blocked": 21
+  },
+  "P R2u vnew": {
+   "tagged": 43,
+   "blocked": 31,
+   "refactors": 39,
+   "refactor_flagged": 33,
+   "refactor_blocked": 21
+  },
+  "P R2u vnew2": {
+   "tagged": 43,
+   "blocked": 31,
+   "refactors": 39,
+   "refactor_flagged": 33,
+   "refactor_blocked": 21
+  }
+ },
+ "dog": {
+  "table": {
+   "refactor unit stock": {
+    "n": 7,
+    "intro_law_obligations": 6,
+    "intro_blocking_contradiction": 1
+   },
+   "refactor unit vnew": {
+    "n": 7,
+    "intro_law_obligations": 6,
+    "intro_blocking_contradiction": 1
+   },
+   "refactor unit vnew2": {
+    "n": 7,
+    "intro_law_obligations": 6,
+    "intro_blocking_contradiction": 0
+   },
+   "refactor file stock": {
+    "n": 1,
+    "intro_law_obligations": 0,
+    "intro_blocking_contradiction": 0
+   },
+   "refactor file vnew": {
+    "n": 1,
+    "intro_law_obligations": 0,
+    "intro_blocking_contradiction": 0
+   },
+   "refactor file vnew2": {
+    "n": 1,
+    "intro_law_obligations": 0,
+    "intro_blocking_contradiction": 0
+   },
+   "refactor callee stock": {
+    "n": 4,
+    "intro_law_obligations": 1,
+    "intro_blocking_contradiction": 0
+   },
+   "refactor callee vnew": {
+    "n": 4,
+    "intro_law_obligations": 1,
+    "intro_blocking_contradiction": 0
+   },
+   "refactor callee vnew2": {
+    "n": 4,
+    "intro_law_obligations": 1,
+    "intro_blocking_contradiction": 0
+   },
+   "mutant callee stock": {
+    "n": 7,
+    "law_blocked": 0
+   },
+   "mutant callee vnew": {
+    "n": 7,
+    "law_blocked": 7
+   },
+   "mutant callee vnew2": {
+    "n": 7,
+    "law_blocked": 7
+   },
+   "mutant unit stock": {
+    "n": 13,
+    "law_blocked": 13
+   },
+   "mutant unit vnew": {
+    "n": 13,
+    "law_blocked": 13
+   },
+   "mutant unit vnew2": {
+    "n": 13,
+    "law_blocked": 13
+   },
+   "mutant import stock": {
+    "n": 4,
+    "law_blocked": 0
+   },
+   "mutant import vnew": {
+    "n": 4,
+    "law_blocked": 4
+   },
+   "mutant import vnew2": {
+    "n": 4,
+    "law_blocked": 4
+   }
+  },
+  "kernel": {},
+  "kernel_disagreements": []
+ }
+}

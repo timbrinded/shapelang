@@ -1,0 +1,102 @@
+[
+ {
+  "commit": "c04a5e7546c8c4cd924b0b2f0945fc85e62a2e3d",
+  "subject": "refactor: tighten critic integration",
+  "file": "packages/shp-checker/src/checker/display.ts"
+ },
+ {
+  "commit": "02e3485cf8ce34bcff6738ee79e52a60b4d83826",
+  "subject": "skill refactor",
+  "file": "plugins/shapelang/skills/shape-lang/references/cli-workflows.md"
+ },
+ {
+  "commit": "5d033ae4b3ecac268fd4db672db3523e9dd84548",
+  "subject": "fix: load native parsers in Windows release archives (#164)",
+  "guard": "memory:shape.delivery::ReleaseChecksumContract@scripts/build-release-assets.sh"
+ },
+ {
+  "commit": "1b823232f0914fc019329f9d2e5bef2b83516551",
+  "subject": "initial go",
+  "file": "docs-site/src/content/docs/examples/analyzer-warning.md"
+ },
+ {
+  "commit": "00d0f86ee20f083bc7fe64abaf6f4b15f9cfccc1",
+  "subject": "fix: read the whole base shape/ model at repository paths",
+  "file": "packages/shp-cli/src/parameters.ts"
+ },
+ {
+  "commit": "fa20dee9bce36440c9b7c0865727b2b32f54dab2",
+  "subject": "docs: rebuild the docs site around 21 pages and SVG diagrams",
+  "file": "docs-site/src/content/docs/concepts/analyzer-hints.md"
+ },
+ {
+  "commit": "b908c4fdde208e716c2a9cf6c2870d296713a5b2",
+  "subject": "ci: gate rule loosening on a maintainer label and give the guard the human task",
+  "file": ".github/scripts/fetch-human-task.mjs"
+ },
+ {
+  "commit": "3f7bfaf98865dc974752828991002a2444ee05aa",
+  "subject": "feat: prototype Rust WASM semantic kernel",
+  "file": "experiments/semantic-kernel/src/lib.rs"
+ },
+ {
+  "commit": "53fe3cec61241652b7485e1b8efcbb48d7fe9181",
+  "subject": "fix: stabilize Shape source references",
+  "file": "docs-site/src/content/docs/concepts/evidence-source-refs.md"
+ },
+ {
+  "commit": "36881e7f97334ea46ef094c71a95c647486a1dd8",
+  "subject": "refactor: tighten code comments against the code",
+  "file": "packages/shp-checker/src/checker/rules/guards.ts"
+ },
+ {
+  "commit": "eccfa2105d73939f49c76433b7032306882140b2",
+  "subject": "chore: prepare Shape v0.10.0 release",
+  "file": "plugins/shapelang/skills/shape-lang/SKILL.md"
+ },
+ {
+  "commit": "66c6840831aa3db1c8bab73ac8e84dca701bc3a2",
+  "subject": "chore(release): prepare v0.9.0",
+  "file": "plugins/shapelang/.codex-plugin/plugin.json"
+ },
+ {
+  "commit": "660e7c4c04dd0008dfeea6da59499a5ec9711a8f",
+  "subject": "ci: allow Opus release canary to complete",
+  "file": ".github/scripts/run-claude-skill.mjs"
+ },
+ {
+  "commit": "3ce8cb8e54d167711419c653893316b3477bd72b",
+  "subject": "feat: support Swift source drafts",
+  "file": "packages/shp-checker/src/ast-generation-swift.ts"
+ },
+ {
+  "commit": "4e7297ce908fb0ec000e004631b415411885db3d",
+  "subject": "chore(release): prepare v0.7.0",
+  "file": "plugins/shapelang/skills/shape-contract-preflight/agents/openai.yaml"
+ },
+ {
+  "commit": "986c54a42026bfb18060c93d938080692b8ecfec",
+  "subject": "feat: add shp attest prune and prune the 143 stale attestations",
+  "guard": "memory:shape.checker::LoweringBeforeRules@packages/shp-checker/src/checker/lowerer.ts"
+ },
+ {
+  "commit": "cc02c32133f10164b418b054cb5d5b6540e29e36",
+  "subject": "feat: add Shape critic pass",
+  "guard": "memory:shape.checker::PreludeMetadataContract@packages/shp-checker/src/prelude.ts"
+ },
+ {
+  "commit": "1f55dce80d6d7b6ba6a644737ec95e19ecbc90a2",
+  "subject": "feat: add Unix system visualiser skill",
+  "file": ".github/shape-contract/schemas/shape-skills-release-result.schema.json"
+ },
+ {
+  "commit": "986c54a42026bfb18060c93d938080692b8ecfec",
+  "subject": "feat: add shp attest prune and prune the 143 stale attestations",
+  "file": "packages/shp-checker/src/checker/rules.ts"
+ },
+ {
+  "commit": "651de1a9eec4d2b55a862336829fb06973b54104",
+  "subject": "fix: close release-gate review findings and Shape smoke drift",
+  "file": "scripts/check-release-approval.ts"
+ }
+]

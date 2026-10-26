@@ -27,7 +27,7 @@ describe("cli", () => {
     expect(JSON.parse(o.out)).toHaveLength(2);
   });
 
-  test("an unknown subcommand is named, exit 2", () => {
+  test("an unknown provider or subcommand is named, exit 2", () => {
     for (const [provider, cmd] of [
       ["laws", "frobnicate"],
       ["observe-ts", "nope"],
@@ -38,6 +38,9 @@ describe("cli", () => {
       expect(r.code).toBe(2);
       expect(r.err).toContain(`unknown ${provider} command "${cmd}"`);
     }
+    const u = run(["observe", "run"]);
+    expect(u.code).toBe(2);
+    expect(u.err).toContain('unknown provider "observe"');
   });
 
   test("laws run writes JSON lines; teeth run and trust rust-audit report", () => {

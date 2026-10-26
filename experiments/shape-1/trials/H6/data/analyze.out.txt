@@ -1,0 +1,65 @@
+== teeth provider (dogfood)
+  decl: W1 110001/111130, W2 498/4028, P1 0/5607, M2 179/181; vacuous 0, redundant 19, unused 2, P1 uncaught 79/79, W1 gaps {'granted-to-component': 260, 'ungoverned': 869}
+  obs: W1 111094/111126, W2 528/3997, P1 0/5607, M2 179/181; vacuous 0, redundant 50, unused 2, P1 uncaught 79/79, W1 gaps {'granted-to-component': 32}
+  validate: 300/300 {'W1': {'sampled': 100, 'agree': 100}, 'W2': {'sampled': 100, 'agree': 100}, 'P1': {'sampled': 100, 'agree': 100}}
+  redundancy classes decl: {"unit summary <= its component's authority": 10, 'hatch forbid <= catch-all Hatch forbid': 9}  obs: {"unit summary <= a caller's summary (observed calls)": 40, "unit summary <= its component's authority": 1, 'hatch forbid <= catch-all Hatch forbid': 9}
+== observability
+  resources observable 1/79 (bound 67)
+  W1 observable (channel) 1437 of 111130; killed 1426; gap {'ungoverned': 11}
+  W1 observable (reported verbs) 337; killed 336; gap {'ungoverned': 1}
+  summaries with any observable atom 2/101
+  observably vacuous: W1 claims 19 {'effects.upper': 16, 'authority': 2, 'effect.forbid': 1} + 14 edge.forbid over provides = 33/154
+  ungoverned identities 2049/3679
+  E10-comparable W1 (unit positions x 10 verbs x 79 resources): 80195/80205 killed; survivors 10 {'sibling-already-has': 9, 'granted-no-sibling': 1}
+== W2 calls classes {'shortcut': {'killed': 0, 'survived': 98}, 'new-coupling': {'killed': 28, 'survived': 228}, 'back-edge': {'killed': 148, 'survived': 0}}
+  named [('shape.tooling::ShapeAnalyzer -calls-> shape.checker::ShapeChecker', True), ('shape.tooling::ShapeAuthoring -calls-> shape.checker::ShapeChecker', False), ('shape.checker::ShapeChecker -calls-> shape.tooling::ShapeAuthoring', False), ('shape.checker.incremental::ShapeIncrementalChecker -calls-> shape.runtime::ExperimentalSemanticKernel', False), ('shape.delivery::DocsSite -calls-> shape.runtime::ExperimentalSemanticKernel', False), ('shape.language::DocsShapeBlockVerifier -calls-> shape.runtime::ExperimentalSemanticKernel', False), ('shape.delivery::ReleasePipeline -calls-> shape.runtime::ExperimentalSemanticKernel', False)]
+  into kernel [{'kind': 'callbacks', 'total': 23, 'killed': 0}, {'kind': 'calls', 'total': 21, 'killed': 17}, {'kind': 'coordinated_call', 'total': 23, 'killed': 0}, {'kind': 'data_flow', 'total': 23, 'killed': 0}]
+== change-mode P1 (rows 632 crashes 0 )
+  E0 HardDelete n 79: {'L1 blocking': 0, 'L1 owed': 0, 'L1 exploited': 0, 'L2 blocking': 0, 'authority contradiction blocking': 0, 'summary contradiction blocking': 0, 'coverage': 79, 'coverage blocking': 48, 'errors': 0, 'escalated preexisting to blocking': 52, 'verdict blocked': 72, 'no new-key blocking item': 31}
+      low: {'L1 blocking': 0, 'L1 owed': 0, 'L1 exploited': 0, 'L2 blocking': 0, 'authority contradiction blocking': 0, 'summary contradiction blocking': 0, 'coverage': 4, 'coverage blocking': 0, 'errors': 0, 'escalated preexisting to blocking': 4, 'verdict blocked': 4, 'no new-key blocking item': 4}
+  E1 HardDelete n 79: {'L1 blocking': 0, 'L1 owed': 0, 'L1 exploited': 0, 'L2 blocking': 0, 'authority contradiction blocking': 79, 'summary contradiction blocking': 79, 'coverage': 79, 'coverage blocking': 48, 'errors': 0, 'escalated preexisting to blocking': 52, 'verdict blocked': 79, 'no new-key blocking item': 0}
+      low: {'L1 blocking': 0, 'L1 owed': 0, 'L1 exploited': 0, 'L2 blocking': 0, 'authority contradiction blocking': 4, 'summary contradiction blocking': 4, 'coverage': 4, 'coverage blocking': 0, 'errors': 0, 'escalated preexisting to blocking': 4, 'verdict blocked': 4, 'no new-key blocking item': 0}
+  G1 HardDelete n 79: {'L1 blocking': 75, 'L1 owed': 4, 'L1 exploited': 0, 'L2 blocking': 0, 'authority contradiction blocking': 0, 'summary contradiction blocking': 0, 'coverage': 0, 'coverage blocking': 0, 'errors': 0, 'escalated preexisting to blocking': 0, 'verdict blocked': 75, 'no new-key blocking item': 4}
+      low: {'L1 blocking': 0, 'L1 owed': 4, 'L1 exploited': 0, 'L2 blocking': 0, 'authority contradiction blocking': 0, 'summary contradiction blocking': 0, 'coverage': 0, 'coverage blocking': 0, 'errors': 0, 'escalated preexisting to blocking': 0, 'verdict blocked': 0, 'no new-key blocking item': 4}
+  G2 DropStorage n 79: {'L1 blocking': 79, 'L1 owed': 0, 'L1 exploited': 79, 'L2 blocking': 79, 'authority contradiction blocking': 0, 'summary contradiction blocking': 41, 'coverage': 0, 'coverage blocking': 0, 'errors': 0, 'escalated preexisting to blocking': 28, 'verdict blocked': 79, 'no new-key blocking item': 0}
+      low: {'L1 blocking': 4, 'L1 owed': 0, 'L1 exploited': 4, 'L2 blocking': 4, 'authority contradiction blocking': 0, 'summary contradiction blocking': 0, 'coverage': 0, 'coverage blocking': 0, 'errors': 0, 'escalated preexisting to blocking': 0, 'verdict blocked': 4, 'no new-key blocking item': 0}
+  G2 HardDelete n 79: {'L1 blocking': 79, 'L1 owed': 0, 'L1 exploited': 79, 'L2 blocking': 79, 'authority contradiction blocking': 0, 'summary contradiction blocking': 41, 'coverage': 0, 'coverage blocking': 0, 'errors': 0, 'escalated preexisting to blocking': 28, 'verdict blocked': 79, 'no new-key blocking item': 0}
+      low: {'L1 blocking': 4, 'L1 owed': 0, 'L1 exploited': 4, 'L2 blocking': 4, 'authority contradiction blocking': 0, 'summary contradiction blocking': 0, 'coverage': 0, 'coverage blocking': 0, 'errors': 0, 'escalated preexisting to blocking': 0, 'verdict blocked': 4, 'no new-key blocking item': 0}
+  G2 Truncate n 79: {'L1 blocking': 79, 'L1 owed': 0, 'L1 exploited': 79, 'L2 blocking': 79, 'authority contradiction blocking': 0, 'summary contradiction blocking': 41, 'coverage': 0, 'coverage blocking': 0, 'errors': 0, 'escalated preexisting to blocking': 28, 'verdict blocked': 79, 'no new-key blocking item': 0}
+      low: {'L1 blocking': 4, 'L1 owed': 0, 'L1 exploited': 4, 'L2 blocking': 4, 'authority contradiction blocking': 0, 'summary contradiction blocking': 0, 'coverage': 0, 'coverage blocking': 0, 'errors': 0, 'escalated preexisting to blocking': 0, 'verdict blocked': 4, 'no new-key blocking item': 0}
+  G3 HardDelete n 79: {'L1 blocking': 79, 'L1 owed': 0, 'L1 exploited': 79, 'L2 blocking': 0, 'authority contradiction blocking': 0, 'summary contradiction blocking': 79, 'coverage': 79, 'coverage blocking': 48, 'errors': 0, 'escalated preexisting to blocking': 52, 'verdict blocked': 79, 'no new-key blocking item': 0}
+      low: {'L1 blocking': 4, 'L1 owed': 0, 'L1 exploited': 4, 'L2 blocking': 0, 'authority contradiction blocking': 0, 'summary contradiction blocking': 4, 'coverage': 4, 'coverage blocking': 0, 'errors': 0, 'escalated preexisting to blocking': 4, 'verdict blocked': 4, 'no new-key blocking item': 0}
+  G4 HardDelete n 79: {'L1 blocking': 75, 'L1 owed': 4, 'L1 exploited': 44, 'L2 blocking': 0, 'authority contradiction blocking': 0, 'summary contradiction blocking': 0, 'coverage': 79, 'coverage blocking': 48, 'errors': 0, 'escalated preexisting to blocking': 52, 'verdict blocked': 79, 'no new-key blocking item': 4}
+      low: {'L1 blocking': 0, 'L1 owed': 4, 'L1 exploited': 0, 'L2 blocking': 0, 'authority contradiction blocking': 0, 'summary contradiction blocking': 0, 'coverage': 4, 'coverage blocking': 0, 'errors': 0, 'escalated preexisting to blocking': 4, 'verdict blocked': 4, 'no new-key blocking item': 4}
+== law adequacy (rows 296 )
+  all                callee n 118 killed-own 16, killed-other 1, survived 77, unreached 24
+  all                unit   n 178 killed-own 24, killed-other 5, survived 114, unreached 35
+  informal-only      callee n  25 killed-own 0, killed-other 0, survived 9, unreached 16
+  informal-only      unit   n  61 killed-own 0, killed-other 1, survived 43, unreached 17
+  tested             callee n  56 killed-own 16, killed-other 1, survived 39, unreached 0
+  tested             unit   n  63 killed-own 24, killed-other 0, survived 39, unreached 0
+  untested+informal  callee n  37 killed-own 0, killed-other 0, survived 29, unreached 8
+  untested+informal  unit   n  52 killed-own 0, killed-other 4, survived 30, unreached 18
+  untested-only      unit   n   2 killed-own 0, killed-other 0, survived 2, unreached 0
+  survivor outcomes: {'silent at the law layer (tested laws still pass)': 42, 'guard judgment (stale informal law)': 206, 'unestablished (untested law)': 2}
+  by tier: {'guard judgment (stal @ critical': 133, 'guard judgment (stal @ normal': 73, 'silent at the law la @ -': 42, 'unestablished (untes @ normal': 2}
+  totals: 296 mutants, 46 killed by some law, 191 ran and survived, 59 in files no law test imports
+  teeth law verdicts (own-law kill share over unit+callee mutants): {'weak': 8, 'teeth': 5, 'vacuous': 4}
+    IncrementalRebuildsOnDocumentChange       6/20 weak
+    IncrementalReusesDiagnosticsOnNoop       12/20 teeth
+    IncrementalReusesModelOnOptionChange     12/20 teeth
+    CheckIsDeterministic                      3/15 weak
+    FinalForbidBeatsGrant                     3/20 weak
+    FinalForbidNotWaivedByContext             0/20 vacuous
+    FinalForbidTargetsDeterministic           0/20 vacuous
+    ForbiddenPathFewestHops                   4/ 8 teeth
+    ForbiddenPathHopsKeepProvenance           0/ 8 vacuous
+    FreshnessEnforcesOnlyIsoDates             4/ 6 teeth
+    HypercycleShortestWitness                 8/14 teeth
+    InspectionCodepointOrder                  2/15 weak
+    InspectionPreservesOrigin                 2/15 weak
+    InspectionQualifiedIdentities             2/15 weak
+    SourcePathRulesShared                     2/ 5 weak
+    FormatterIdempotent                       0/ 2 vacuous
+    UpdateDraftsPreferUnknown                 2/14 weak
+== fixtures/skills: {'models': 14, 'withClaims': 12, 'claims': 26, 'vacuous': 8, 'redundant': 2, 'unusedGrants': 0, 'P1uncaught': 1, 'errors': {'preflight/guarded-unknown': ['E-unbound unit skill_preflight_guarded::ReportCompiler.compileReport'], 'preflight/invalid-baseline': ['E-unbound unit skill_preflight_invalid::AuditStore.appendEvent'], 'unix-system-visualiser/invalid-model': ['E-unbound unit invalid_visualiser_fixture::EventWriter.appendEvent']}}

@@ -1,0 +1,6 @@
+module durable
+
+trait DurableAudit<T: Resource> {
+  allow Append<T>
+  forbid final HardDelete<T>
+}

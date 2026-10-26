@@ -1,0 +1,3063 @@
+[
+ {
+  "law": "shape.tooling::UpdateDraftsPreferUnknown",
+  "file": "authoring.law.test.ts",
+  "unit": "shape.tooling::ShapeAuthoring.generateShapeUpdateDraft",
+  "id": "ts:packages/shp-checker/src/authoring.ts#generateShapeUpdateDraft",
+  "path": "packages/shp-checker/src/authoring.ts",
+  "callees": [
+   "ts:packages/shp-checker/src/authoring.ts#formatUnknownFunction",
+   "ts:packages/shp-checker/src/authoring.ts#formatMemoryGuardScaffold",
+   "ts:packages/shp-checker/src/authoring.ts#uniqueFunctionName",
+   "ts:packages/shp-checker/src/authoring.ts#indentBlock"
+  ],
+  "candidates": [
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/authoring.ts#generateShapeUpdateDraft",
+    "mutant": {
+     "id": "logical:??→||@128:39",
+     "op": "logical:??→||",
+     "start": 4938,
+     "end": 4940,
+     "replacement": "||"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 411
+   },
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/authoring.ts#generateShapeUpdateDraft",
+    "mutant": {
+     "id": "logical:&&→||@137:38",
+     "op": "logical:&&→||",
+     "start": 5259,
+     "end": 5261,
+     "replacement": "||"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 489
+   },
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/authoring.ts#generateShapeUpdateDraft",
+    "mutant": {
+     "id": "constant:0→1@137:58",
+     "op": "constant:0→1",
+     "start": 5279,
+     "end": 5280,
+     "replacement": "1"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 463
+   },
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/authoring.ts#generateShapeUpdateDraft",
+    "mutant": {
+     "id": "constant:0→1@138:78",
+     "op": "constant:0→1",
+     "start": 5359,
+     "end": 5360,
+     "replacement": "1"
+    },
+    "killed": true,
+    "verdict": false,
+    "exit": 1,
+    "otherLawsFailing": [],
+    "ms": 356
+   },
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/authoring.ts#generateShapeUpdateDraft",
+    "mutant": {
+     "id": "equality:===→!==@145:48",
+     "op": "equality:===→!==",
+     "start": 5526,
+     "end": 5529,
+     "replacement": "!=="
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 494
+   },
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/authoring.ts#generateShapeUpdateDraft",
+    "mutant": {
+     "id": "constant:0→1@145:52",
+     "op": "constant:0→1",
+     "start": 5530,
+     "end": 5531,
+     "replacement": "1"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 639
+   },
+   {
+    "where": "callee",
+    "at": "ts:packages/shp-checker/src/authoring.ts#uniqueFunctionName",
+    "mutant": {
+     "id": "constant:1→2@185:12",
+     "op": "constant:1→2",
+     "start": 6722,
+     "end": 6723,
+     "replacement": "2"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 546
+   },
+   {
+    "where": "callee",
+    "at": "ts:packages/shp-checker/src/authoring.ts#uniqueFunctionName",
+    "mutant": {
+     "id": "logical:??→||@186:33",
+     "op": "logical:??→||",
+     "start": 6757,
+     "end": 6759,
+     "replacement": "||"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 563
+   },
+   {
+    "where": "callee",
+    "at": "ts:packages/shp-checker/src/authoring.ts#uniqueFunctionName",
+    "mutant": {
+     "id": "constant:0→1@187:80",
+     "op": "constant:0→1",
+     "start": 6849,
+     "end": 6850,
+     "replacement": "1"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 389
+   },
+   {
+    "where": "callee",
+    "at": "ts:packages/shp-checker/src/authoring.ts#uniqueFunctionName",
+    "mutant": {
+     "id": "logical:??→||@188:64",
+     "op": "logical:??→||",
+     "start": 6916,
+     "end": 6918,
+     "replacement": "||"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 505
+   },
+   {
+    "where": "callee",
+    "at": "ts:packages/shp-checker/src/authoring.ts#uniqueFunctionName",
+    "mutant": {
+     "id": "constant:1→2@188:83",
+     "op": "constant:1→2",
+     "start": 6935,
+     "end": 6936,
+     "replacement": "2"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 550
+   },
+   {
+    "where": "callee",
+    "at": "ts:packages/shp-checker/src/authoring.ts#uniqueFunctionName",
+    "mutant": {
+     "id": "arithmetic:+→-@189:51",
+     "op": "arithmetic:+→-",
+     "start": 7001,
+     "end": 7002,
+     "replacement": "-"
+    },
+    "killed": true,
+    "verdict": false,
+    "exit": 1,
+    "otherLawsFailing": [],
+    "ms": 273
+   }
+  ]
+ },
+ {
+  "law": "shape.checker::ChangePlanStagedInIsolation",
+  "file": "change-planning.law.test.ts",
+  "unit": "shape.checker::ShapeModelLowerer.lowerChange",
+  "id": "ts:packages/shp-checker/src/checker/lowering/changes.ts#lowerChange",
+  "path": "packages/shp-checker/src/checker/lowering/changes.ts",
+  "callees": [
+   "ts:packages/shp-checker/src/checker/lowering/changes.ts#planChange"
+  ],
+  "candidates": []
+ },
+ {
+  "law": "shape.checker::ChangePlanCommitsOnlyWhenFullyStaged",
+  "file": "change-planning.law.test.ts",
+  "unit": "shape.checker::ShapeModelLowerer.lowerChange",
+  "id": "ts:packages/shp-checker/src/checker/lowering/changes.ts#lowerChange",
+  "path": "packages/shp-checker/src/checker/lowering/changes.ts",
+  "callees": [
+   "ts:packages/shp-checker/src/checker/lowering/changes.ts#planChange"
+  ],
+  "candidates": []
+ },
+ {
+  "law": "shape.checker::CheckIsDeterministic",
+  "file": "determinism.law.test.ts",
+  "unit": "shape.checker::ShapeChecker.checkShapeModules",
+  "id": "ts:packages/shp-checker/src/checker/api.ts#checkShapeModules",
+  "path": "packages/shp-checker/src/checker/api.ts",
+  "callees": [
+   "ts:packages/shp-checker/src/checker/api.ts#checkLoweredShapeModel",
+   "ts:packages/shp-checker/src/checker/api.ts#normalizeCheckOptions"
+  ],
+  "candidates": [
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/checker/api.ts#checkShapeModules",
+    "mutant": {
+     "id": "negation:drop@38:7",
+     "op": "negation:drop",
+     "start": 1724,
+     "end": 1725,
+     "replacement": ""
+    },
+    "killed": true,
+    "verdict": false,
+    "exit": 1,
+    "otherLawsFailing": [],
+    "ms": 276
+   },
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/checker/api.ts#checkShapeModules",
+    "mutant": {
+     "id": "equality:===→!==@41:27",
+     "op": "equality:===→!==",
+     "start": 1800,
+     "end": 1803,
+     "replacement": "!=="
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1217
+   },
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/checker/api.ts#checkShapeModules",
+    "mutant": {
+     "id": "boolean:false→true@44:65",
+     "op": "boolean:false→true",
+     "start": 1971,
+     "end": 1976,
+     "replacement": "true"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1341
+   },
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/checker/api.ts#checkShapeModules",
+    "mutant": {
+     "id": "equality:===→!==@56:24",
+     "op": "equality:===→!==",
+     "start": 2427,
+     "end": 2430,
+     "replacement": "!=="
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1100
+   },
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/checker/api.ts#checkShapeModules",
+    "mutant": {
+     "id": "constant:0→1@56:28",
+     "op": "constant:0→1",
+     "start": 2431,
+     "end": 2432,
+     "replacement": "1"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1414
+   },
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/checker/api.ts#checkShapeModules",
+    "mutant": {
+     "id": "constant:0→1@64:20",
+     "op": "constant:0→1",
+     "start": 2616,
+     "end": 2617,
+     "replacement": "1"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1620
+   },
+   {
+    "where": "callee",
+    "at": "ts:packages/shp-checker/src/checker/api.ts#checkLoweredShapeModel",
+    "mutant": {
+     "id": "equality:===→!==@85:43",
+     "op": "equality:===→!==",
+     "start": 3330,
+     "end": 3333,
+     "replacement": "!=="
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1451
+   },
+   {
+    "where": "callee",
+    "at": "ts:packages/shp-checker/src/checker/api.ts#checkLoweredShapeModel",
+    "mutant": {
+     "id": "boolean:false→true@85:47",
+     "op": "boolean:false→true",
+     "start": 3334,
+     "end": 3339,
+     "replacement": "true"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1391
+   },
+   {
+    "where": "callee",
+    "at": "ts:packages/shp-checker/src/checker/api.ts#checkLoweredShapeModel",
+    "mutant": {
+     "id": "logical:&&→||@94:43",
+     "op": "logical:&&→||",
+     "start": 3587,
+     "end": 3589,
+     "replacement": "||"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1400
+   },
+   {
+    "where": "callee",
+    "at": "ts:packages/shp-checker/src/checker/api.ts#checkLoweredShapeModel",
+    "mutant": {
+     "id": "constant:0→1@102:20",
+     "op": "constant:0→1",
+     "start": 3781,
+     "end": 3782,
+     "replacement": "1"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1448
+   },
+   {
+    "where": "callee",
+    "at": "ts:packages/shp-checker/src/checker/api.ts#normalizeCheckOptions",
+    "mutant": {
+     "id": "logical:??→||@161:45",
+     "op": "logical:??→||",
+     "start": 6157,
+     "end": 6159,
+     "replacement": "||"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1479
+   },
+   {
+    "where": "callee",
+    "at": "ts:packages/shp-checker/src/checker/api.ts#normalizeCheckOptions",
+    "mutant": {
+     "id": "equality:===→!==@170:12",
+     "op": "equality:===→!==",
+     "start": 6368,
+     "end": 6371,
+     "replacement": "!=="
+    },
+    "killed": true,
+    "verdict": false,
+    "exit": 1,
+    "otherLawsFailing": [],
+    "ms": 333
+   }
+  ]
+ },
+ {
+  "law": "shape.tooling::FormatterIdempotent",
+  "file": "formatter.law.test.ts",
+  "unit": "shape.tooling::ShapeFormatter.formatShapeModule",
+  "id": "ts:packages/shp-checker/src/formatter.ts#formatShapeModule",
+  "path": "packages/shp-checker/src/formatter.ts",
+  "callees": [
+   "ts:packages/shp-checker/src/formatter.ts#formatDeclaration",
+   "ts:packages/shp-checker/src/formatter.ts#declarationSortKey"
+  ],
+  "candidates": [
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/formatter.ts#formatShapeModule",
+    "mutant": {
+     "id": "relational:>→>=@161:51",
+     "op": "relational:>→>=",
+     "start": 3594,
+     "end": 3595,
+     "replacement": ">="
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 673
+   },
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/formatter.ts#formatShapeModule",
+    "mutant": {
+     "id": "constant:0→1@161:53",
+     "op": "constant:0→1",
+     "start": 3596,
+     "end": 3597,
+     "replacement": "1"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 756
+   }
+  ]
+ },
+ {
+  "law": "shape.checker.incremental::IncrementalRebuildsOnDocumentChange",
+  "file": "incremental.law.test.ts",
+  "unit": "shape.checker.incremental::ShapeIncrementalChecker.check",
+  "id": "ts:packages/shp-checker/src/checker/incremental.ts#IncrementalShapeChecker.check",
+  "path": "packages/shp-checker/src/checker/incremental.ts",
+  "callees": [
+   "ts:packages/shp-checker/src/checker/incremental.ts#normalizeDocuments",
+   "ts:packages/shp-checker/src/checker/incremental.ts#collectParseDiagnostics",
+   "ts:packages/shp-checker/src/checker/incremental.ts#collectModuleInputs",
+   "ts:packages/shp-checker/src/checker/incremental.ts#moduleOriginsChanged",
+   "ts:packages/shp-checker/src/checker/incremental.ts#checkOptionsKey",
+   "ts:packages/shp-checker/src/checker/incremental.ts#invalidationCauses",
+   "ts:packages/shp-checker/src/checker/incremental.ts#cloneCheckResult"
+  ],
+  "candidates": [
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/checker/incremental.ts#IncrementalShapeChecker.check",
+    "mutant": {
+     "id": "equality:!==→===@76:16",
+     "op": "equality:!==→===",
+     "start": 2491,
+     "end": 2494,
+     "replacement": "==="
+    },
+    "killed": true,
+    "verdict": false,
+    "exit": 1,
+    "otherLawsFailing": [
+     "shape.checker.incremental::IncrementalReusesModelOnOptionChange",
+     "shape.checker.incremental::IncrementalReusesDiagnosticsOnNoop"
+    ],
+    "ms": 235
+   },
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/checker/incremental.ts#IncrementalShapeChecker.check",
+    "mutant": {
+     "id": "negation:drop@97:7",
+     "op": "negation:drop",
+     "start": 3173,
+     "end": 3174,
+     "replacement": ""
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 1,
+    "otherLawsFailing": [
+     "shape.checker.incremental::IncrementalReusesModelOnOptionChange",
+     "shape.checker.incremental::IncrementalReusesDiagnosticsOnNoop"
+    ],
+    "ms": 1707
+   },
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/checker/incremental.ts#IncrementalShapeChecker.check",
+    "mutant": {
+     "id": "constant:0→1@97:87",
+     "op": "constant:0→1",
+     "start": 3253,
+     "end": 3254,
+     "replacement": "1"
+    },
+    "killed": true,
+    "verdict": false,
+    "exit": 1,
+    "otherLawsFailing": [
+     "shape.checker.incremental::IncrementalReusesModelOnOptionChange",
+     "shape.checker.incremental::IncrementalReusesDiagnosticsOnNoop"
+    ],
+    "ms": 932
+   },
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/checker/incremental.ts#IncrementalShapeChecker.check",
+    "mutant": {
+     "id": "boolean:false→true@107:19",
+     "op": "boolean:false→true",
+     "start": 3720,
+     "end": 3725,
+     "replacement": "true"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1969
+   },
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/checker/incremental.ts#IncrementalShapeChecker.check",
+    "mutant": {
+     "id": "equality:!==→===@137:17",
+     "op": "equality:!==→===",
+     "start": 4577,
+     "end": 4580,
+     "replacement": "==="
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1972
+   },
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/checker/incremental.ts#IncrementalShapeChecker.check",
+    "mutant": {
+     "id": "equality:===→!==@140:57",
+     "op": "equality:===→!==",
+     "start": 4789,
+     "end": 4792,
+     "replacement": "!=="
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 1,
+    "otherLawsFailing": [
+     "shape.checker.incremental::IncrementalReusesModelOnOptionChange",
+     "shape.checker.incremental::IncrementalReusesDiagnosticsOnNoop"
+    ],
+    "ms": 997
+   },
+   {
+    "where": "callee",
+    "at": "ts:packages/shp-checker/src/checker/incremental.ts#normalizeDocuments",
+    "mutant": {
+     "id": "constant:1→2@179:20",
+     "op": "constant:1→2",
+     "start": 5968,
+     "end": 5969,
+     "replacement": "2"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1655
+   },
+   {
+    "where": "callee",
+    "at": "ts:packages/shp-checker/src/checker/incremental.ts#normalizeDocuments",
+    "mutant": {
+     "id": "constant:1→2@180:24",
+     "op": "constant:1→2",
+     "start": 6031,
+     "end": 6032,
+     "replacement": "2"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1462
+   },
+   {
+    "where": "callee",
+    "at": "ts:packages/shp-checker/src/checker/incremental.ts#moduleOriginsChanged",
+    "mutant": {
+     "id": "equality:===→!==@221:20",
+     "op": "equality:===→!==",
+     "start": 7139,
+     "end": 7142,
+     "replacement": "!=="
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1632
+   },
+   {
+    "where": "callee",
+    "at": "ts:packages/shp-checker/src/checker/incremental.ts#moduleOriginsChanged",
+    "mutant": {
+     "id": "equality:!==→===@229:78",
+     "op": "equality:!==→===",
+     "start": 7375,
+     "end": 7378,
+     "replacement": "==="
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1761
+   },
+   {
+    "where": "callee",
+    "at": "ts:packages/shp-checker/src/checker/incremental.ts#checkOptionsKey",
+    "mutant": {
+     "id": "equality:===→!==@242:27",
+     "op": "equality:===→!==",
+     "start": 7694,
+     "end": 7697,
+     "replacement": "!=="
+    },
+    "killed": true,
+    "verdict": false,
+    "exit": 1,
+    "otherLawsFailing": [
+     "shape.checker.incremental::IncrementalReusesModelOnOptionChange",
+     "shape.checker.incremental::IncrementalReusesDiagnosticsOnNoop"
+    ],
+    "ms": 289
+   },
+   {
+    "where": "callee",
+    "at": "ts:packages/shp-checker/src/checker/incremental.ts#checkOptionsKey",
+    "mutant": {
+     "id": "logical:??→||@248:40",
+     "op": "logical:??→||",
+     "start": 8011,
+     "end": 8013,
+     "replacement": "||"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1562
+   }
+  ]
+ },
+ {
+  "law": "shape.checker.incremental::IncrementalReusesModelOnOptionChange",
+  "file": "incremental.law.test.ts",
+  "unit": "shape.checker.incremental::ShapeIncrementalChecker.check",
+  "id": "ts:packages/shp-checker/src/checker/incremental.ts#IncrementalShapeChecker.check",
+  "path": "packages/shp-checker/src/checker/incremental.ts",
+  "callees": [
+   "ts:packages/shp-checker/src/checker/incremental.ts#normalizeDocuments",
+   "ts:packages/shp-checker/src/checker/incremental.ts#collectParseDiagnostics",
+   "ts:packages/shp-checker/src/checker/incremental.ts#collectModuleInputs",
+   "ts:packages/shp-checker/src/checker/incremental.ts#moduleOriginsChanged",
+   "ts:packages/shp-checker/src/checker/incremental.ts#checkOptionsKey",
+   "ts:packages/shp-checker/src/checker/incremental.ts#invalidationCauses",
+   "ts:packages/shp-checker/src/checker/incremental.ts#cloneCheckResult"
+  ],
+  "candidates": [
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/checker/incremental.ts#IncrementalShapeChecker.check",
+    "mutant": {
+     "id": "equality:!==→===@76:16",
+     "op": "equality:!==→===",
+     "start": 2491,
+     "end": 2494,
+     "replacement": "==="
+    },
+    "killed": true,
+    "verdict": false,
+    "exit": 1,
+    "otherLawsFailing": [
+     "shape.checker.incremental::IncrementalRebuildsOnDocumentChange",
+     "shape.checker.incremental::IncrementalReusesDiagnosticsOnNoop"
+    ],
+    "ms": 121
+   },
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/checker/incremental.ts#IncrementalShapeChecker.check",
+    "mutant": {
+     "id": "negation:drop@97:7",
+     "op": "negation:drop",
+     "start": 3173,
+     "end": 3174,
+     "replacement": ""
+    },
+    "killed": true,
+    "verdict": false,
+    "exit": 1,
+    "otherLawsFailing": [
+     "shape.checker.incremental::IncrementalReusesDiagnosticsOnNoop"
+    ],
+    "ms": 964
+   },
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/checker/incremental.ts#IncrementalShapeChecker.check",
+    "mutant": {
+     "id": "constant:0→1@97:87",
+     "op": "constant:0→1",
+     "start": 3253,
+     "end": 3254,
+     "replacement": "1"
+    },
+    "killed": true,
+    "verdict": false,
+    "exit": 1,
+    "otherLawsFailing": [
+     "shape.checker.incremental::IncrementalRebuildsOnDocumentChange",
+     "shape.checker.incremental::IncrementalReusesDiagnosticsOnNoop"
+    ],
+    "ms": 742
+   },
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/checker/incremental.ts#IncrementalShapeChecker.check",
+    "mutant": {
+     "id": "boolean:false→true@107:19",
+     "op": "boolean:false→true",
+     "start": 3720,
+     "end": 3725,
+     "replacement": "true"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1850
+   },
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/checker/incremental.ts#IncrementalShapeChecker.check",
+    "mutant": {
+     "id": "equality:!==→===@137:17",
+     "op": "equality:!==→===",
+     "start": 4577,
+     "end": 4580,
+     "replacement": "==="
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1869
+   },
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/checker/incremental.ts#IncrementalShapeChecker.check",
+    "mutant": {
+     "id": "equality:===→!==@140:57",
+     "op": "equality:===→!==",
+     "start": 4789,
+     "end": 4792,
+     "replacement": "!=="
+    },
+    "killed": true,
+    "verdict": false,
+    "exit": 1,
+    "otherLawsFailing": [
+     "shape.checker.incremental::IncrementalReusesDiagnosticsOnNoop"
+    ],
+    "ms": 1267
+   },
+   {
+    "where": "callee",
+    "at": "ts:packages/shp-checker/src/checker/incremental.ts#normalizeDocuments",
+    "mutant": {
+     "id": "constant:1→2@179:20",
+     "op": "constant:1→2",
+     "start": 5968,
+     "end": 5969,
+     "replacement": "2"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 2041
+   },
+   {
+    "where": "callee",
+    "at": "ts:packages/shp-checker/src/checker/incremental.ts#normalizeDocuments",
+    "mutant": {
+     "id": "constant:1→2@180:24",
+     "op": "constant:1→2",
+     "start": 6031,
+     "end": 6032,
+     "replacement": "2"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1929
+   },
+   {
+    "where": "callee",
+    "at": "ts:packages/shp-checker/src/checker/incremental.ts#moduleOriginsChanged",
+    "mutant": {
+     "id": "equality:===→!==@221:20",
+     "op": "equality:===→!==",
+     "start": 7139,
+     "end": 7142,
+     "replacement": "!=="
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 2048
+   },
+   {
+    "where": "callee",
+    "at": "ts:packages/shp-checker/src/checker/incremental.ts#moduleOriginsChanged",
+    "mutant": {
+     "id": "equality:!==→===@229:78",
+     "op": "equality:!==→===",
+     "start": 7375,
+     "end": 7378,
+     "replacement": "==="
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1740
+   },
+   {
+    "where": "callee",
+    "at": "ts:packages/shp-checker/src/checker/incremental.ts#checkOptionsKey",
+    "mutant": {
+     "id": "equality:===→!==@242:27",
+     "op": "equality:===→!==",
+     "start": 7694,
+     "end": 7697,
+     "replacement": "!=="
+    },
+    "killed": true,
+    "verdict": false,
+    "exit": 1,
+    "otherLawsFailing": [
+     "shape.checker.incremental::IncrementalRebuildsOnDocumentChange",
+     "shape.checker.incremental::IncrementalReusesDiagnosticsOnNoop"
+    ],
+    "ms": 348
+   },
+   {
+    "where": "callee",
+    "at": "ts:packages/shp-checker/src/checker/incremental.ts#checkOptionsKey",
+    "mutant": {
+     "id": "logical:??→||@248:40",
+     "op": "logical:??→||",
+     "start": 8011,
+     "end": 8013,
+     "replacement": "||"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1569
+   }
+  ]
+ },
+ {
+  "law": "shape.checker.incremental::IncrementalReusesDiagnosticsOnNoop",
+  "file": "incremental.law.test.ts",
+  "unit": "shape.checker.incremental::ShapeIncrementalChecker.check",
+  "id": "ts:packages/shp-checker/src/checker/incremental.ts#IncrementalShapeChecker.check",
+  "path": "packages/shp-checker/src/checker/incremental.ts",
+  "callees": [
+   "ts:packages/shp-checker/src/checker/incremental.ts#normalizeDocuments",
+   "ts:packages/shp-checker/src/checker/incremental.ts#collectParseDiagnostics",
+   "ts:packages/shp-checker/src/checker/incremental.ts#collectModuleInputs",
+   "ts:packages/shp-checker/src/checker/incremental.ts#moduleOriginsChanged",
+   "ts:packages/shp-checker/src/checker/incremental.ts#checkOptionsKey",
+   "ts:packages/shp-checker/src/checker/incremental.ts#invalidationCauses",
+   "ts:packages/shp-checker/src/checker/incremental.ts#cloneCheckResult"
+  ],
+  "candidates": [
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/checker/incremental.ts#IncrementalShapeChecker.check",
+    "mutant": {
+     "id": "equality:!==→===@76:16",
+     "op": "equality:!==→===",
+     "start": 2491,
+     "end": 2494,
+     "replacement": "==="
+    },
+    "killed": true,
+    "verdict": false,
+    "exit": 1,
+    "otherLawsFailing": [
+     "shape.checker.incremental::IncrementalRebuildsOnDocumentChange",
+     "shape.checker.incremental::IncrementalReusesModelOnOptionChange"
+    ],
+    "ms": 242
+   },
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/checker/incremental.ts#IncrementalShapeChecker.check",
+    "mutant": {
+     "id": "negation:drop@97:7",
+     "op": "negation:drop",
+     "start": 3173,
+     "end": 3174,
+     "replacement": ""
+    },
+    "killed": true,
+    "verdict": false,
+    "exit": 1,
+    "otherLawsFailing": [
+     "shape.checker.incremental::IncrementalReusesModelOnOptionChange"
+    ],
+    "ms": 1120
+   },
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/checker/incremental.ts#IncrementalShapeChecker.check",
+    "mutant": {
+     "id": "constant:0→1@97:87",
+     "op": "constant:0→1",
+     "start": 3253,
+     "end": 3254,
+     "replacement": "1"
+    },
+    "killed": true,
+    "verdict": false,
+    "exit": 1,
+    "otherLawsFailing": [
+     "shape.checker.incremental::IncrementalRebuildsOnDocumentChange",
+     "shape.checker.incremental::IncrementalReusesModelOnOptionChange"
+    ],
+    "ms": 808
+   },
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/checker/incremental.ts#IncrementalShapeChecker.check",
+    "mutant": {
+     "id": "boolean:false→true@107:19",
+     "op": "boolean:false→true",
+     "start": 3720,
+     "end": 3725,
+     "replacement": "true"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1812
+   },
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/checker/incremental.ts#IncrementalShapeChecker.check",
+    "mutant": {
+     "id": "equality:!==→===@137:17",
+     "op": "equality:!==→===",
+     "start": 4577,
+     "end": 4580,
+     "replacement": "==="
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1844
+   },
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/checker/incremental.ts#IncrementalShapeChecker.check",
+    "mutant": {
+     "id": "equality:===→!==@140:57",
+     "op": "equality:===→!==",
+     "start": 4789,
+     "end": 4792,
+     "replacement": "!=="
+    },
+    "killed": true,
+    "verdict": false,
+    "exit": 1,
+    "otherLawsFailing": [
+     "shape.checker.incremental::IncrementalReusesModelOnOptionChange"
+    ],
+    "ms": 1185
+   },
+   {
+    "where": "callee",
+    "at": "ts:packages/shp-checker/src/checker/incremental.ts#normalizeDocuments",
+    "mutant": {
+     "id": "constant:1→2@179:20",
+     "op": "constant:1→2",
+     "start": 5968,
+     "end": 5969,
+     "replacement": "2"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1741
+   },
+   {
+    "where": "callee",
+    "at": "ts:packages/shp-checker/src/checker/incremental.ts#normalizeDocuments",
+    "mutant": {
+     "id": "constant:1→2@180:24",
+     "op": "constant:1→2",
+     "start": 6031,
+     "end": 6032,
+     "replacement": "2"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 2105
+   },
+   {
+    "where": "callee",
+    "at": "ts:packages/shp-checker/src/checker/incremental.ts#moduleOriginsChanged",
+    "mutant": {
+     "id": "equality:===→!==@221:20",
+     "op": "equality:===→!==",
+     "start": 7139,
+     "end": 7142,
+     "replacement": "!=="
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1336
+   },
+   {
+    "where": "callee",
+    "at": "ts:packages/shp-checker/src/checker/incremental.ts#moduleOriginsChanged",
+    "mutant": {
+     "id": "equality:!==→===@229:78",
+     "op": "equality:!==→===",
+     "start": 7375,
+     "end": 7378,
+     "replacement": "==="
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1806
+   },
+   {
+    "where": "callee",
+    "at": "ts:packages/shp-checker/src/checker/incremental.ts#checkOptionsKey",
+    "mutant": {
+     "id": "equality:===→!==@242:27",
+     "op": "equality:===→!==",
+     "start": 7694,
+     "end": 7697,
+     "replacement": "!=="
+    },
+    "killed": true,
+    "verdict": false,
+    "exit": 1,
+    "otherLawsFailing": [
+     "shape.checker.incremental::IncrementalRebuildsOnDocumentChange",
+     "shape.checker.incremental::IncrementalReusesModelOnOptionChange"
+    ],
+    "ms": 405
+   },
+   {
+    "where": "callee",
+    "at": "ts:packages/shp-checker/src/checker/incremental.ts#checkOptionsKey",
+    "mutant": {
+     "id": "logical:??→||@248:40",
+     "op": "logical:??→||",
+     "start": 8011,
+     "end": 8013,
+     "replacement": "||"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 2059
+   }
+  ]
+ },
+ {
+  "law": "shape.checker::InspectionQualifiedIdentities",
+  "file": "inspection.law.test.ts",
+  "unit": "shape.checker::ShapeChecker.inspectShapeModules",
+  "id": "ts:packages/shp-checker/src/checker/inspection.ts#inspectShapeModules",
+  "path": "packages/shp-checker/src/checker/inspection.ts",
+  "callees": [
+   "ts:packages/shp-checker/src/checker/inspection.ts#inspectResources",
+   "ts:packages/shp-checker/src/checker/inspection.ts#inspectComponents",
+   "ts:packages/shp-checker/src/checker/inspection.ts#inspectFunctions",
+   "ts:packages/shp-checker/src/checker/inspection.ts#inspectRelations",
+   "ts:packages/shp-checker/src/checker/inspection.ts#inspectImplementations",
+   "ts:packages/shp-checker/src/checker/inspection.ts#inspectBindings",
+   "ts:packages/shp-checker/src/checker/inspection.ts#inspectRules",
+   "ts:packages/shp-checker/src/checker/inspection.ts#inspectMemories",
+   "ts:packages/shp-checker/src/checker/inspection.ts#inspectionContext",
+   "ts:packages/shp-checker/src/checker/inspection.ts#sortStrings"
+  ],
+  "candidates": [
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/checker/inspection.ts#inspectShapeModules",
+    "mutant": {
+     "id": "logical:??→||@170:20",
+     "op": "logical:??→||",
+     "start": 4505,
+     "end": 4507,
+     "replacement": "||"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1125
+   },
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/checker/inspection.ts#inspectShapeModules",
+    "mutant": {
+     "id": "equality:===→!==@171:23",
+     "op": "equality:===→!==",
+     "start": 4530,
+     "end": 4533,
+     "replacement": "!=="
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1153
+   },
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/checker/inspection.ts#inspectShapeModules",
+    "mutant": {
+     "id": "logical:??→||@173:83",
+     "op": "logical:??→||",
+     "start": 4647,
+     "end": 4649,
+     "replacement": "||"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1263
+   },
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/checker/inspection.ts#inspectShapeModules",
+    "mutant": {
+     "id": "logical:??→||@179:22",
+     "op": "logical:??→||",
+     "start": 4895,
+     "end": 4897,
+     "replacement": "||"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1041
+   },
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/checker/inspection.ts#inspectShapeModules",
+    "mutant": {
+     "id": "logical:??→||@180:27",
+     "op": "logical:??→||",
+     "start": 4928,
+     "end": 4930,
+     "replacement": "||"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1406
+   },
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/checker/inspection.ts#inspectShapeModules",
+    "mutant": {
+     "id": "arithmetic:+→-@212:54",
+     "op": "arithmetic:+→-",
+     "start": 5959,
+     "end": 5960,
+     "replacement": "-"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1274
+   },
+   {
+    "where": "callee",
+    "at": "ts:packages/shp-checker/src/checker/inspection.ts#inspectFunctions",
+    "mutant": {
+     "id": "equality:===→!==@253:25",
+     "op": "equality:===→!==",
+     "start": 7516,
+     "end": 7519,
+     "replacement": "!=="
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1181
+   },
+   {
+    "where": "callee",
+    "at": "ts:packages/shp-checker/src/checker/inspection.ts#inspectFunctions",
+    "mutant": {
+     "id": "equality:===→!==@271:28",
+     "op": "equality:===→!==",
+     "start": 8363,
+     "end": 8366,
+     "replacement": "!=="
+    },
+    "killed": true,
+    "verdict": false,
+    "exit": 1,
+    "otherLawsFailing": [
+     "shape.checker::InspectionPreservesOrigin",
+     "shape.checker::InspectionCodepointOrder"
+    ],
+    "ms": 265
+   },
+   {
+    "where": "callee",
+    "at": "ts:packages/shp-checker/src/checker/inspection.ts#inspectRelations",
+    "mutant": {
+     "id": "logical:??→||@299:35",
+     "op": "logical:??→||",
+     "start": 9278,
+     "end": 9280,
+     "replacement": "||"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1320
+   },
+   {
+    "where": "callee",
+    "at": "ts:packages/shp-checker/src/checker/inspection.ts#inspectImplementations",
+    "mutant": {
+     "id": "equality:===→!==@317:46",
+     "op": "equality:===→!==",
+     "start": 10119,
+     "end": 10122,
+     "replacement": "!=="
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1424
+   },
+   {
+    "where": "callee",
+    "at": "ts:packages/shp-checker/src/checker/inspection.ts#inspectMemories",
+    "mutant": {
+     "id": "equality:===→!==@376:25",
+     "op": "equality:===→!==",
+     "start": 12471,
+     "end": 12474,
+     "replacement": "!=="
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1189
+   },
+   {
+    "where": "callee",
+    "at": "ts:packages/shp-checker/src/checker/inspection.ts#inspectionContext",
+    "mutant": {
+     "id": "equality:!==→===@412:18",
+     "op": "equality:!==→===",
+     "start": 14024,
+     "end": 14027,
+     "replacement": "==="
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1164
+   }
+  ]
+ },
+ {
+  "law": "shape.checker::InspectionPreservesOrigin",
+  "file": "inspection.law.test.ts",
+  "unit": "shape.checker::ShapeChecker.inspectShapeModules",
+  "id": "ts:packages/shp-checker/src/checker/inspection.ts#inspectShapeModules",
+  "path": "packages/shp-checker/src/checker/inspection.ts",
+  "callees": [
+   "ts:packages/shp-checker/src/checker/inspection.ts#inspectResources",
+   "ts:packages/shp-checker/src/checker/inspection.ts#inspectComponents",
+   "ts:packages/shp-checker/src/checker/inspection.ts#inspectFunctions",
+   "ts:packages/shp-checker/src/checker/inspection.ts#inspectRelations",
+   "ts:packages/shp-checker/src/checker/inspection.ts#inspectImplementations",
+   "ts:packages/shp-checker/src/checker/inspection.ts#inspectBindings",
+   "ts:packages/shp-checker/src/checker/inspection.ts#inspectRules",
+   "ts:packages/shp-checker/src/checker/inspection.ts#inspectMemories",
+   "ts:packages/shp-checker/src/checker/inspection.ts#inspectionContext",
+   "ts:packages/shp-checker/src/checker/inspection.ts#sortStrings"
+  ],
+  "candidates": [
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/checker/inspection.ts#inspectShapeModules",
+    "mutant": {
+     "id": "logical:??→||@170:20",
+     "op": "logical:??→||",
+     "start": 4505,
+     "end": 4507,
+     "replacement": "||"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1142
+   },
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/checker/inspection.ts#inspectShapeModules",
+    "mutant": {
+     "id": "equality:===→!==@171:23",
+     "op": "equality:===→!==",
+     "start": 4530,
+     "end": 4533,
+     "replacement": "!=="
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1303
+   },
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/checker/inspection.ts#inspectShapeModules",
+    "mutant": {
+     "id": "logical:??→||@173:83",
+     "op": "logical:??→||",
+     "start": 4647,
+     "end": 4649,
+     "replacement": "||"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1071
+   },
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/checker/inspection.ts#inspectShapeModules",
+    "mutant": {
+     "id": "logical:??→||@179:22",
+     "op": "logical:??→||",
+     "start": 4895,
+     "end": 4897,
+     "replacement": "||"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1276
+   },
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/checker/inspection.ts#inspectShapeModules",
+    "mutant": {
+     "id": "logical:??→||@180:27",
+     "op": "logical:??→||",
+     "start": 4928,
+     "end": 4930,
+     "replacement": "||"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1342
+   },
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/checker/inspection.ts#inspectShapeModules",
+    "mutant": {
+     "id": "arithmetic:+→-@212:54",
+     "op": "arithmetic:+→-",
+     "start": 5959,
+     "end": 5960,
+     "replacement": "-"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1007
+   },
+   {
+    "where": "callee",
+    "at": "ts:packages/shp-checker/src/checker/inspection.ts#inspectFunctions",
+    "mutant": {
+     "id": "equality:===→!==@253:25",
+     "op": "equality:===→!==",
+     "start": 7516,
+     "end": 7519,
+     "replacement": "!=="
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1027
+   },
+   {
+    "where": "callee",
+    "at": "ts:packages/shp-checker/src/checker/inspection.ts#inspectFunctions",
+    "mutant": {
+     "id": "equality:===→!==@271:28",
+     "op": "equality:===→!==",
+     "start": 8363,
+     "end": 8366,
+     "replacement": "!=="
+    },
+    "killed": true,
+    "verdict": false,
+    "exit": 1,
+    "otherLawsFailing": [
+     "shape.checker::InspectionQualifiedIdentities",
+     "shape.checker::InspectionCodepointOrder"
+    ],
+    "ms": 301
+   },
+   {
+    "where": "callee",
+    "at": "ts:packages/shp-checker/src/checker/inspection.ts#inspectRelations",
+    "mutant": {
+     "id": "logical:??→||@299:35",
+     "op": "logical:??→||",
+     "start": 9278,
+     "end": 9280,
+     "replacement": "||"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 871
+   },
+   {
+    "where": "callee",
+    "at": "ts:packages/shp-checker/src/checker/inspection.ts#inspectImplementations",
+    "mutant": {
+     "id": "equality:===→!==@317:46",
+     "op": "equality:===→!==",
+     "start": 10119,
+     "end": 10122,
+     "replacement": "!=="
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1244
+   },
+   {
+    "where": "callee",
+    "at": "ts:packages/shp-checker/src/checker/inspection.ts#inspectMemories",
+    "mutant": {
+     "id": "equality:===→!==@376:25",
+     "op": "equality:===→!==",
+     "start": 12471,
+     "end": 12474,
+     "replacement": "!=="
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1272
+   },
+   {
+    "where": "callee",
+    "at": "ts:packages/shp-checker/src/checker/inspection.ts#inspectionContext",
+    "mutant": {
+     "id": "equality:!==→===@412:18",
+     "op": "equality:!==→===",
+     "start": 14024,
+     "end": 14027,
+     "replacement": "==="
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1195
+   }
+  ]
+ },
+ {
+  "law": "shape.checker::InspectionCodepointOrder",
+  "file": "inspection.law.test.ts",
+  "unit": "shape.checker::ShapeChecker.inspectShapeModules",
+  "id": "ts:packages/shp-checker/src/checker/inspection.ts#inspectShapeModules",
+  "path": "packages/shp-checker/src/checker/inspection.ts",
+  "callees": [
+   "ts:packages/shp-checker/src/checker/inspection.ts#inspectResources",
+   "ts:packages/shp-checker/src/checker/inspection.ts#inspectComponents",
+   "ts:packages/shp-checker/src/checker/inspection.ts#inspectFunctions",
+   "ts:packages/shp-checker/src/checker/inspection.ts#inspectRelations",
+   "ts:packages/shp-checker/src/checker/inspection.ts#inspectImplementations",
+   "ts:packages/shp-checker/src/checker/inspection.ts#inspectBindings",
+   "ts:packages/shp-checker/src/checker/inspection.ts#inspectRules",
+   "ts:packages/shp-checker/src/checker/inspection.ts#inspectMemories",
+   "ts:packages/shp-checker/src/checker/inspection.ts#inspectionContext",
+   "ts:packages/shp-checker/src/checker/inspection.ts#sortStrings"
+  ],
+  "candidates": [
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/checker/inspection.ts#inspectShapeModules",
+    "mutant": {
+     "id": "logical:??→||@170:20",
+     "op": "logical:??→||",
+     "start": 4505,
+     "end": 4507,
+     "replacement": "||"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1237
+   },
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/checker/inspection.ts#inspectShapeModules",
+    "mutant": {
+     "id": "equality:===→!==@171:23",
+     "op": "equality:===→!==",
+     "start": 4530,
+     "end": 4533,
+     "replacement": "!=="
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1045
+   },
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/checker/inspection.ts#inspectShapeModules",
+    "mutant": {
+     "id": "logical:??→||@173:83",
+     "op": "logical:??→||",
+     "start": 4647,
+     "end": 4649,
+     "replacement": "||"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1034
+   },
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/checker/inspection.ts#inspectShapeModules",
+    "mutant": {
+     "id": "logical:??→||@179:22",
+     "op": "logical:??→||",
+     "start": 4895,
+     "end": 4897,
+     "replacement": "||"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1183
+   },
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/checker/inspection.ts#inspectShapeModules",
+    "mutant": {
+     "id": "logical:??→||@180:27",
+     "op": "logical:??→||",
+     "start": 4928,
+     "end": 4930,
+     "replacement": "||"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1284
+   },
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/checker/inspection.ts#inspectShapeModules",
+    "mutant": {
+     "id": "arithmetic:+→-@212:54",
+     "op": "arithmetic:+→-",
+     "start": 5959,
+     "end": 5960,
+     "replacement": "-"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1024
+   },
+   {
+    "where": "callee",
+    "at": "ts:packages/shp-checker/src/checker/inspection.ts#inspectFunctions",
+    "mutant": {
+     "id": "equality:===→!==@253:25",
+     "op": "equality:===→!==",
+     "start": 7516,
+     "end": 7519,
+     "replacement": "!=="
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1134
+   },
+   {
+    "where": "callee",
+    "at": "ts:packages/shp-checker/src/checker/inspection.ts#inspectFunctions",
+    "mutant": {
+     "id": "equality:===→!==@271:28",
+     "op": "equality:===→!==",
+     "start": 8363,
+     "end": 8366,
+     "replacement": "!=="
+    },
+    "killed": true,
+    "verdict": false,
+    "exit": 1,
+    "otherLawsFailing": [
+     "shape.checker::InspectionQualifiedIdentities",
+     "shape.checker::InspectionPreservesOrigin"
+    ],
+    "ms": 239
+   },
+   {
+    "where": "callee",
+    "at": "ts:packages/shp-checker/src/checker/inspection.ts#inspectRelations",
+    "mutant": {
+     "id": "logical:??→||@299:35",
+     "op": "logical:??→||",
+     "start": 9278,
+     "end": 9280,
+     "replacement": "||"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1164
+   },
+   {
+    "where": "callee",
+    "at": "ts:packages/shp-checker/src/checker/inspection.ts#inspectImplementations",
+    "mutant": {
+     "id": "equality:===→!==@317:46",
+     "op": "equality:===→!==",
+     "start": 10119,
+     "end": 10122,
+     "replacement": "!=="
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1109
+   },
+   {
+    "where": "callee",
+    "at": "ts:packages/shp-checker/src/checker/inspection.ts#inspectMemories",
+    "mutant": {
+     "id": "equality:===→!==@376:25",
+     "op": "equality:===→!==",
+     "start": 12471,
+     "end": 12474,
+     "replacement": "!=="
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1110
+   },
+   {
+    "where": "callee",
+    "at": "ts:packages/shp-checker/src/checker/inspection.ts#inspectionContext",
+    "mutant": {
+     "id": "equality:!==→===@412:18",
+     "op": "equality:!==→===",
+     "start": 14024,
+     "end": 14027,
+     "replacement": "==="
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1086
+   }
+  ]
+ },
+ {
+  "law": "shape.checker::SourcePathRulesShared",
+  "file": "paths.law.test.ts",
+  "unit": "shape.checker::ShapeStringHelpers.normalizeShapeSourcePath",
+  "id": "ts:packages/shp-checker/src/shape-strings.ts#normalizeShapeSourcePath",
+  "path": "packages/shp-checker/src/shape-strings.ts",
+  "callees": [
+   "ts:packages/shp-checker/src/shape-strings.ts#normalizeShapePath"
+  ],
+  "candidates": [
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/shape-strings.ts#normalizeShapeSourcePath",
+    "mutant": {
+     "id": "constant:1→2@2:41",
+     "op": "constant:1→2",
+     "start": 105,
+     "end": 106,
+     "replacement": "2"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1023
+   },
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/shape-strings.ts#normalizeShapeSourcePath",
+    "mutant": {
+     "id": "constant:0→1@2:44",
+     "op": "constant:0→1",
+     "start": 108,
+     "end": 109,
+     "replacement": "1"
+    },
+    "killed": true,
+    "verdict": false,
+    "exit": 1,
+    "otherLawsFailing": [],
+    "ms": 279
+   },
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/shape-strings.ts#normalizeShapeSourcePath",
+    "mutant": {
+     "id": "logical:??→||@2:47",
+     "op": "logical:??→||",
+     "start": 111,
+     "end": 113,
+     "replacement": "||"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 917
+   },
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/shape-strings.ts#normalizeShapeSourcePath",
+    "mutant": {
+     "id": "constant:1→2@4:41",
+     "op": "constant:1→2",
+     "start": 223,
+     "end": 224,
+     "replacement": "2"
+    },
+    "killed": true,
+    "verdict": false,
+    "exit": 1,
+    "otherLawsFailing": [],
+    "ms": 318
+   },
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/shape-strings.ts#normalizeShapeSourcePath",
+    "mutant": {
+     "id": "logical:??→||@4:44",
+     "op": "logical:??→||",
+     "start": 226,
+     "end": 228,
+     "replacement": "||"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 854
+   }
+  ]
+ },
+ {
+  "law": "shape.checker::FinalForbidBeatsGrant",
+  "file": "rules.law.test.ts",
+  "unit": "shape.checker::ShapeRuleEngine.deriveFinalForbidsForResource",
+  "id": "ts:packages/shp-checker/src/checker/derivations.ts#deriveFinalForbidsForResource",
+  "path": "packages/shp-checker/src/checker/derivations.ts",
+  "callees": [
+   "ts:packages/shp-checker/src/checker/derivations.ts#resourceRuleConditionCompatibility",
+   "ts:packages/shp-checker/src/checker/derivations.ts#instantiateFinalForbidTarget",
+   "ts:packages/shp-checker/src/checker/derivations.ts#dedupeForbids"
+  ],
+  "candidates": [
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/checker/derivations.ts#deriveFinalForbidsForResource",
+    "mutant": {
+     "id": "negation:drop@344:9",
+     "op": "negation:drop",
+     "start": 11476,
+     "end": 11477,
+     "replacement": ""
+    },
+    "killed": true,
+    "verdict": false,
+    "exit": 1,
+    "otherLawsFailing": [],
+    "ms": 2270
+   },
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/checker/derivations.ts#deriveFinalForbidsForResource",
+    "mutant": {
+     "id": "negation:drop@363:9",
+     "op": "negation:drop",
+     "start": 11904,
+     "end": 11905,
+     "replacement": ""
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 2658
+   },
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/checker/derivations.ts#deriveFinalForbidsForResource",
+    "mutant": {
+     "id": "equality:===→!==@368:20",
+     "op": "equality:===→!==",
+     "start": 12041,
+     "end": 12044,
+     "replacement": "!=="
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 3072
+   },
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/checker/derivations.ts#deriveFinalForbidsForResource",
+    "mutant": {
+     "id": "logical:||→&&@368:26",
+     "op": "logical:||→&&",
+     "start": 12047,
+     "end": 12049,
+     "replacement": "&&"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 3829
+   },
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/checker/derivations.ts#deriveFinalForbidsForResource",
+    "mutant": {
+     "id": "equality:===→!==@371:64",
+     "op": "equality:===→!==",
+     "start": 12151,
+     "end": 12154,
+     "replacement": "!=="
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 3330
+   },
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/checker/derivations.ts#deriveFinalForbidsForResource",
+    "mutant": {
+     "id": "constant:0→1@377:35",
+     "op": "constant:0→1",
+     "start": 12285,
+     "end": 12286,
+     "replacement": "1"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 2116
+   },
+   {
+    "where": "callee",
+    "at": "ts:packages/shp-checker/src/checker/derivations.ts#resourceRuleConditionCompatibility",
+    "mutant": {
+     "id": "equality:===→!==@293:33",
+     "op": "equality:===→!==",
+     "start": 9724,
+     "end": 9727,
+     "replacement": "!=="
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 2703
+   },
+   {
+    "where": "callee",
+    "at": "ts:packages/shp-checker/src/checker/derivations.ts#resourceRuleConditionCompatibility",
+    "mutant": {
+     "id": "logical:&&→||@299:53",
+     "op": "logical:&&→||",
+     "start": 9902,
+     "end": 9904,
+     "replacement": "||"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 2824
+   },
+   {
+    "where": "callee",
+    "at": "ts:packages/shp-checker/src/checker/derivations.ts#resourceRuleConditionCompatibility",
+    "mutant": {
+     "id": "relational:>→>=@307:31",
+     "op": "relational:>→>=",
+     "start": 10123,
+     "end": 10124,
+     "replacement": ">="
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 2331
+   },
+   {
+    "where": "callee",
+    "at": "ts:packages/shp-checker/src/checker/derivations.ts#resourceRuleConditionCompatibility",
+    "mutant": {
+     "id": "negation:drop@316:7",
+     "op": "negation:drop",
+     "start": 10453,
+     "end": 10454,
+     "replacement": ""
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 2725
+   },
+   {
+    "where": "callee",
+    "at": "ts:packages/shp-checker/src/checker/derivations.ts#instantiateFinalForbidTarget",
+    "mutant": {
+     "id": "equality:===→!==@409:28",
+     "op": "equality:===→!==",
+     "start": 13128,
+     "end": 13131,
+     "replacement": "!=="
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 3376
+   },
+   {
+    "where": "callee",
+    "at": "ts:packages/shp-checker/src/checker/derivations.ts#instantiateFinalForbidTarget",
+    "mutant": {
+     "id": "logical:??→||@412:24",
+     "op": "logical:??→||",
+     "start": 13235,
+     "end": 13237,
+     "replacement": "||"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 2715
+   }
+  ]
+ },
+ {
+  "law": "shape.checker::FinalForbidTargetsDeterministic",
+  "file": "rules.law.test.ts",
+  "unit": "shape.checker::ShapeRuleEngine.deriveFinalForbidsForResource",
+  "id": "ts:packages/shp-checker/src/checker/derivations.ts#deriveFinalForbidsForResource",
+  "path": "packages/shp-checker/src/checker/derivations.ts",
+  "callees": [
+   "ts:packages/shp-checker/src/checker/derivations.ts#resourceRuleConditionCompatibility",
+   "ts:packages/shp-checker/src/checker/derivations.ts#instantiateFinalForbidTarget",
+   "ts:packages/shp-checker/src/checker/derivations.ts#dedupeForbids"
+  ],
+  "candidates": [
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/checker/derivations.ts#deriveFinalForbidsForResource",
+    "mutant": {
+     "id": "negation:drop@344:9",
+     "op": "negation:drop",
+     "start": 11476,
+     "end": 11477,
+     "replacement": ""
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 1,
+    "otherLawsFailing": [
+     "shape.checker::FinalForbidBeatsGrant"
+    ],
+    "ms": 2621
+   },
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/checker/derivations.ts#deriveFinalForbidsForResource",
+    "mutant": {
+     "id": "negation:drop@363:9",
+     "op": "negation:drop",
+     "start": 11904,
+     "end": 11905,
+     "replacement": ""
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 2357
+   },
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/checker/derivations.ts#deriveFinalForbidsForResource",
+    "mutant": {
+     "id": "equality:===→!==@368:20",
+     "op": "equality:===→!==",
+     "start": 12041,
+     "end": 12044,
+     "replacement": "!=="
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 3117
+   },
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/checker/derivations.ts#deriveFinalForbidsForResource",
+    "mutant": {
+     "id": "logical:||→&&@368:26",
+     "op": "logical:||→&&",
+     "start": 12047,
+     "end": 12049,
+     "replacement": "&&"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 2884
+   },
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/checker/derivations.ts#deriveFinalForbidsForResource",
+    "mutant": {
+     "id": "equality:===→!==@371:64",
+     "op": "equality:===→!==",
+     "start": 12151,
+     "end": 12154,
+     "replacement": "!=="
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 3009
+   },
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/checker/derivations.ts#deriveFinalForbidsForResource",
+    "mutant": {
+     "id": "constant:0→1@377:35",
+     "op": "constant:0→1",
+     "start": 12285,
+     "end": 12286,
+     "replacement": "1"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 3471
+   },
+   {
+    "where": "callee",
+    "at": "ts:packages/shp-checker/src/checker/derivations.ts#resourceRuleConditionCompatibility",
+    "mutant": {
+     "id": "equality:===→!==@293:33",
+     "op": "equality:===→!==",
+     "start": 9724,
+     "end": 9727,
+     "replacement": "!=="
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 3362
+   },
+   {
+    "where": "callee",
+    "at": "ts:packages/shp-checker/src/checker/derivations.ts#resourceRuleConditionCompatibility",
+    "mutant": {
+     "id": "logical:&&→||@299:53",
+     "op": "logical:&&→||",
+     "start": 9902,
+     "end": 9904,
+     "replacement": "||"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 2210
+   },
+   {
+    "where": "callee",
+    "at": "ts:packages/shp-checker/src/checker/derivations.ts#resourceRuleConditionCompatibility",
+    "mutant": {
+     "id": "relational:>→>=@307:31",
+     "op": "relational:>→>=",
+     "start": 10123,
+     "end": 10124,
+     "replacement": ">="
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 2925
+   },
+   {
+    "where": "callee",
+    "at": "ts:packages/shp-checker/src/checker/derivations.ts#resourceRuleConditionCompatibility",
+    "mutant": {
+     "id": "negation:drop@316:7",
+     "op": "negation:drop",
+     "start": 10453,
+     "end": 10454,
+     "replacement": ""
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 3124
+   },
+   {
+    "where": "callee",
+    "at": "ts:packages/shp-checker/src/checker/derivations.ts#instantiateFinalForbidTarget",
+    "mutant": {
+     "id": "equality:===→!==@409:28",
+     "op": "equality:===→!==",
+     "start": 13128,
+     "end": 13131,
+     "replacement": "!=="
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 2940
+   },
+   {
+    "where": "callee",
+    "at": "ts:packages/shp-checker/src/checker/derivations.ts#instantiateFinalForbidTarget",
+    "mutant": {
+     "id": "logical:??→||@412:24",
+     "op": "logical:??→||",
+     "start": 13235,
+     "end": 13237,
+     "replacement": "||"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 3260
+   }
+  ]
+ },
+ {
+  "law": "shape.checker::FinalForbidNotWaivedByContext",
+  "file": "rules.law.test.ts",
+  "unit": "shape.checker::ShapeRuleEngine.deriveFinalForbidsForResource",
+  "id": "ts:packages/shp-checker/src/checker/derivations.ts#deriveFinalForbidsForResource",
+  "path": "packages/shp-checker/src/checker/derivations.ts",
+  "callees": [
+   "ts:packages/shp-checker/src/checker/derivations.ts#resourceRuleConditionCompatibility",
+   "ts:packages/shp-checker/src/checker/derivations.ts#instantiateFinalForbidTarget",
+   "ts:packages/shp-checker/src/checker/derivations.ts#dedupeForbids"
+  ],
+  "candidates": [
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/checker/derivations.ts#deriveFinalForbidsForResource",
+    "mutant": {
+     "id": "negation:drop@344:9",
+     "op": "negation:drop",
+     "start": 11476,
+     "end": 11477,
+     "replacement": ""
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 1,
+    "otherLawsFailing": [
+     "shape.checker::FinalForbidBeatsGrant"
+    ],
+    "ms": 2606
+   },
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/checker/derivations.ts#deriveFinalForbidsForResource",
+    "mutant": {
+     "id": "negation:drop@363:9",
+     "op": "negation:drop",
+     "start": 11904,
+     "end": 11905,
+     "replacement": ""
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 2437
+   },
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/checker/derivations.ts#deriveFinalForbidsForResource",
+    "mutant": {
+     "id": "equality:===→!==@368:20",
+     "op": "equality:===→!==",
+     "start": 12041,
+     "end": 12044,
+     "replacement": "!=="
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 2951
+   },
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/checker/derivations.ts#deriveFinalForbidsForResource",
+    "mutant": {
+     "id": "logical:||→&&@368:26",
+     "op": "logical:||→&&",
+     "start": 12047,
+     "end": 12049,
+     "replacement": "&&"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 3116
+   },
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/checker/derivations.ts#deriveFinalForbidsForResource",
+    "mutant": {
+     "id": "equality:===→!==@371:64",
+     "op": "equality:===→!==",
+     "start": 12151,
+     "end": 12154,
+     "replacement": "!=="
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 3041
+   },
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/checker/derivations.ts#deriveFinalForbidsForResource",
+    "mutant": {
+     "id": "constant:0→1@377:35",
+     "op": "constant:0→1",
+     "start": 12285,
+     "end": 12286,
+     "replacement": "1"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 3284
+   },
+   {
+    "where": "callee",
+    "at": "ts:packages/shp-checker/src/checker/derivations.ts#resourceRuleConditionCompatibility",
+    "mutant": {
+     "id": "equality:===→!==@293:33",
+     "op": "equality:===→!==",
+     "start": 9724,
+     "end": 9727,
+     "replacement": "!=="
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 2907
+   },
+   {
+    "where": "callee",
+    "at": "ts:packages/shp-checker/src/checker/derivations.ts#resourceRuleConditionCompatibility",
+    "mutant": {
+     "id": "logical:&&→||@299:53",
+     "op": "logical:&&→||",
+     "start": 9902,
+     "end": 9904,
+     "replacement": "||"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 2729
+   },
+   {
+    "where": "callee",
+    "at": "ts:packages/shp-checker/src/checker/derivations.ts#resourceRuleConditionCompatibility",
+    "mutant": {
+     "id": "relational:>→>=@307:31",
+     "op": "relational:>→>=",
+     "start": 10123,
+     "end": 10124,
+     "replacement": ">="
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 2844
+   },
+   {
+    "where": "callee",
+    "at": "ts:packages/shp-checker/src/checker/derivations.ts#resourceRuleConditionCompatibility",
+    "mutant": {
+     "id": "negation:drop@316:7",
+     "op": "negation:drop",
+     "start": 10453,
+     "end": 10454,
+     "replacement": ""
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 3175
+   },
+   {
+    "where": "callee",
+    "at": "ts:packages/shp-checker/src/checker/derivations.ts#instantiateFinalForbidTarget",
+    "mutant": {
+     "id": "equality:===→!==@409:28",
+     "op": "equality:===→!==",
+     "start": 13128,
+     "end": 13131,
+     "replacement": "!=="
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 3181
+   },
+   {
+    "where": "callee",
+    "at": "ts:packages/shp-checker/src/checker/derivations.ts#instantiateFinalForbidTarget",
+    "mutant": {
+     "id": "logical:??→||@412:24",
+     "op": "logical:??→||",
+     "start": 13235,
+     "end": 13237,
+     "replacement": "||"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 3581
+   }
+  ]
+ },
+ {
+  "law": "shape.checker::ForbiddenPathFewestHops",
+  "file": "rules.law.test.ts",
+  "unit": "shape.checker::ShapeRuleEngine.findShortestPath",
+  "id": "ts:packages/shp-checker/src/checker/rules/relations.ts#findShortestPath",
+  "path": "packages/shp-checker/src/checker/rules/relations.ts",
+  "callees": [
+   "ts:packages/shp-checker/src/checker/rules/relations.ts#validPathHyperedges",
+   "ts:packages/shp-checker/src/checker/rules/relations.ts#buildRelationTraversalGraph",
+   "ts:packages/shp-checker/src/checker/rules/relations.ts#shortestPathBetween",
+   "ts:packages/shp-checker/src/checker/rules/relations.ts#witnessFromPath"
+  ],
+  "candidates": [
+   {
+    "where": "callee",
+    "at": "ts:packages/shp-checker/src/checker/rules/relations.ts#validPathHyperedges",
+    "mutant": {
+     "id": "negation:drop@334:11",
+     "op": "negation:drop",
+     "start": 10886,
+     "end": 10887,
+     "replacement": ""
+    },
+    "killed": true,
+    "verdict": false,
+    "exit": 1,
+    "otherLawsFailing": [],
+    "ms": 3224
+   },
+   {
+    "where": "callee",
+    "at": "ts:packages/shp-checker/src/checker/rules/relations.ts#validPathHyperedges",
+    "mutant": {
+     "id": "logical:&&→||@345:30",
+     "op": "logical:&&→||",
+     "start": 11204,
+     "end": 11206,
+     "replacement": "||"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 2268
+   },
+   {
+    "where": "callee",
+    "at": "ts:packages/shp-checker/src/checker/rules/relations.ts#buildRelationTraversalGraph",
+    "mutant": {
+     "id": "logical:??→||@364:39",
+     "op": "logical:??→||",
+     "start": 11809,
+     "end": 11811,
+     "replacement": "||"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 3382
+   },
+   {
+    "where": "callee",
+    "at": "ts:packages/shp-checker/src/checker/rules/relations.ts#buildRelationTraversalGraph",
+    "mutant": {
+     "id": "constant:1→2@376:31",
+     "op": "constant:1→2",
+     "start": 12208,
+     "end": 12209,
+     "replacement": "2"
+    },
+    "killed": true,
+    "verdict": false,
+    "exit": 1,
+    "otherLawsFailing": [
+     "shape.checker::HypercycleShortestWitness"
+    ],
+    "ms": 2323
+   },
+   {
+    "where": "callee",
+    "at": "ts:packages/shp-checker/src/checker/rules/relations.ts#buildRelationTraversalGraph",
+    "mutant": {
+     "id": "constant:1→2@381:57",
+     "op": "constant:1→2",
+     "start": 12390,
+     "end": 12391,
+     "replacement": "2"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 2697
+   },
+   {
+    "where": "callee",
+    "at": "ts:packages/shp-checker/src/checker/rules/relations.ts#shortestPathBetween",
+    "mutant": {
+     "id": "constant:1→2@529:57",
+     "op": "constant:1→2",
+     "start": 16499,
+     "end": 16500,
+     "replacement": "2"
+    },
+    "killed": true,
+    "verdict": false,
+    "exit": 1,
+    "otherLawsFailing": [],
+    "ms": 2273
+   }
+  ]
+ },
+ {
+  "law": "shape.checker::ForbiddenPathHopsKeepProvenance",
+  "file": "rules.law.test.ts",
+  "unit": "shape.checker::ShapeRuleEngine.findShortestPath",
+  "id": "ts:packages/shp-checker/src/checker/rules/relations.ts#findShortestPath",
+  "path": "packages/shp-checker/src/checker/rules/relations.ts",
+  "callees": [
+   "ts:packages/shp-checker/src/checker/rules/relations.ts#validPathHyperedges",
+   "ts:packages/shp-checker/src/checker/rules/relations.ts#buildRelationTraversalGraph",
+   "ts:packages/shp-checker/src/checker/rules/relations.ts#shortestPathBetween",
+   "ts:packages/shp-checker/src/checker/rules/relations.ts#witnessFromPath"
+  ],
+  "candidates": [
+   {
+    "where": "callee",
+    "at": "ts:packages/shp-checker/src/checker/rules/relations.ts#validPathHyperedges",
+    "mutant": {
+     "id": "negation:drop@334:11",
+     "op": "negation:drop",
+     "start": 10886,
+     "end": 10887,
+     "replacement": ""
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 1,
+    "otherLawsFailing": [
+     "shape.checker::ForbiddenPathFewestHops"
+    ],
+    "ms": 2724
+   },
+   {
+    "where": "callee",
+    "at": "ts:packages/shp-checker/src/checker/rules/relations.ts#validPathHyperedges",
+    "mutant": {
+     "id": "logical:&&→||@345:30",
+     "op": "logical:&&→||",
+     "start": 11204,
+     "end": 11206,
+     "replacement": "||"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 2268
+   },
+   {
+    "where": "callee",
+    "at": "ts:packages/shp-checker/src/checker/rules/relations.ts#buildRelationTraversalGraph",
+    "mutant": {
+     "id": "logical:??→||@364:39",
+     "op": "logical:??→||",
+     "start": 11809,
+     "end": 11811,
+     "replacement": "||"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 2665
+   },
+   {
+    "where": "callee",
+    "at": "ts:packages/shp-checker/src/checker/rules/relations.ts#buildRelationTraversalGraph",
+    "mutant": {
+     "id": "constant:1→2@376:31",
+     "op": "constant:1→2",
+     "start": 12208,
+     "end": 12209,
+     "replacement": "2"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 1,
+    "otherLawsFailing": [
+     "shape.checker::ForbiddenPathFewestHops",
+     "shape.checker::HypercycleShortestWitness"
+    ],
+    "ms": 3218
+   },
+   {
+    "where": "callee",
+    "at": "ts:packages/shp-checker/src/checker/rules/relations.ts#buildRelationTraversalGraph",
+    "mutant": {
+     "id": "constant:1→2@381:57",
+     "op": "constant:1→2",
+     "start": 12390,
+     "end": 12391,
+     "replacement": "2"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 3032
+   },
+   {
+    "where": "callee",
+    "at": "ts:packages/shp-checker/src/checker/rules/relations.ts#shortestPathBetween",
+    "mutant": {
+     "id": "constant:1→2@529:57",
+     "op": "constant:1→2",
+     "start": 16499,
+     "end": 16500,
+     "replacement": "2"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 1,
+    "otherLawsFailing": [
+     "shape.checker::ForbiddenPathFewestHops"
+    ],
+    "ms": 2224
+   }
+  ]
+ },
+ {
+  "law": "shape.checker::HypercycleShortestWitness",
+  "file": "rules.law.test.ts",
+  "unit": "shape.checker::ShapeRuleEngine.findHypercycle",
+  "id": "ts:packages/shp-checker/src/checker/rules/relations.ts#findHypercycle",
+  "path": "packages/shp-checker/src/checker/rules/relations.ts",
+  "callees": [
+   "ts:packages/shp-checker/src/checker/rules/relations.ts#buildRelationTraversalGraph",
+   "ts:packages/shp-checker/src/checker/rules/relations.ts#stronglyConnectedComponents",
+   "ts:packages/shp-checker/src/checker/rules/relations.ts#isCyclicComponent",
+   "ts:packages/shp-checker/src/checker/rules/relations.ts#shortestCycleInComponent",
+   "ts:packages/shp-checker/src/checker/rules/relations.ts#compareTraversalPaths",
+   "ts:packages/shp-checker/src/checker/rules/relations.ts#witnessFromPath"
+  ],
+  "candidates": [
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/checker/rules/relations.ts#findHypercycle",
+    "mutant": {
+     "id": "negation:drop@306:9",
+     "op": "negation:drop",
+     "start": 10012,
+     "end": 10013,
+     "replacement": ""
+    },
+    "killed": true,
+    "verdict": false,
+    "exit": 1,
+    "otherLawsFailing": [],
+    "ms": 2630
+   },
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/checker/rules/relations.ts#findHypercycle",
+    "mutant": {
+     "id": "logical:&&→||@310:19",
+     "op": "logical:&&→||",
+     "start": 10158,
+     "end": 10160,
+     "replacement": "||"
+    },
+    "killed": true,
+    "verdict": false,
+    "exit": 1,
+    "otherLawsFailing": [],
+    "ms": 2431
+   },
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/checker/rules/relations.ts#findHypercycle",
+    "mutant": {
+     "id": "negation:drop@310:23",
+     "op": "negation:drop",
+     "start": 10162,
+     "end": 10163,
+     "replacement": ""
+    },
+    "killed": true,
+    "verdict": false,
+    "exit": 1,
+    "otherLawsFailing": [],
+    "ms": 2215
+   },
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/checker/rules/relations.ts#findHypercycle",
+    "mutant": {
+     "id": "logical:||→&&@310:38",
+     "op": "logical:||→&&",
+     "start": 10177,
+     "end": 10179,
+     "replacement": "&&"
+    },
+    "killed": true,
+    "verdict": false,
+    "exit": 1,
+    "otherLawsFailing": [],
+    "ms": 2011
+   },
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/checker/rules/relations.ts#findHypercycle",
+    "mutant": {
+     "id": "relational:<→<=@310:89",
+     "op": "relational:<→<=",
+     "start": 10228,
+     "end": 10229,
+     "replacement": "<="
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 2438
+   },
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/checker/rules/relations.ts#findHypercycle",
+    "mutant": {
+     "id": "constant:0→1@310:91",
+     "op": "constant:0→1",
+     "start": 10230,
+     "end": 10231,
+     "replacement": "1"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 2639
+   },
+   {
+    "where": "callee",
+    "at": "ts:packages/shp-checker/src/checker/rules/relations.ts#buildRelationTraversalGraph",
+    "mutant": {
+     "id": "equality:===→!==@357:43",
+     "op": "equality:===→!==",
+     "start": 11498,
+     "end": 11501,
+     "replacement": "!=="
+    },
+    "killed": true,
+    "verdict": false,
+    "exit": 1,
+    "otherLawsFailing": [
+     "shape.checker::ForbiddenPathFewestHops",
+     "shape.checker::ForbiddenPathHopsKeepProvenance"
+    ],
+    "ms": 2054
+   },
+   {
+    "where": "callee",
+    "at": "ts:packages/shp-checker/src/checker/rules/relations.ts#buildRelationTraversalGraph",
+    "mutant": {
+     "id": "logical:&&→||@377:16",
+     "op": "logical:&&→||",
+     "start": 12237,
+     "end": 12239,
+     "replacement": "||"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 2457
+   },
+   {
+    "where": "callee",
+    "at": "ts:packages/shp-checker/src/checker/rules/relations.ts#stronglyConnectedComponents",
+    "mutant": {
+     "id": "constant:1→2@422:18",
+     "op": "constant:1→2",
+     "start": 13547,
+     "end": 13548,
+     "replacement": "2"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 2448
+   },
+   {
+    "where": "callee",
+    "at": "ts:packages/shp-checker/src/checker/rules/relations.ts#isCyclicComponent",
+    "mutant": {
+     "id": "constant:0→1@470:28",
+     "op": "constant:0→1",
+     "start": 14778,
+     "end": 14779,
+     "replacement": "1"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 2542
+   },
+   {
+    "where": "callee",
+    "at": "ts:packages/shp-checker/src/checker/rules/relations.ts#shortestCycleInComponent",
+    "mutant": {
+     "id": "constant:0→1@485:91",
+     "op": "constant:0→1",
+     "start": 15317,
+     "end": 15318,
+     "replacement": "1"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 2504
+   },
+   {
+    "where": "callee",
+    "at": "ts:packages/shp-checker/src/checker/rules/relations.ts#compareTraversalPaths",
+    "mutant": {
+     "id": "constant:0→1@563:20",
+     "op": "constant:0→1",
+     "start": 17441,
+     "end": 17442,
+     "replacement": "1"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 2980
+   }
+  ]
+ },
+ {
+  "law": "shape.checker::FreshnessEnforcesOnlyIsoDates",
+  "file": "rules.law.test.ts",
+  "unit": "shape.checker::ShapeRuleEngine.checkFreshness",
+  "id": "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness",
+  "path": "packages/shp-checker/src/checker/rules/guards.ts",
+  "callees": [],
+  "candidates": [
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness",
+    "mutant": {
+     "id": "negation:drop@228:9",
+     "op": "negation:drop",
+     "start": 8110,
+     "end": 8111,
+     "replacement": ""
+    },
+    "killed": true,
+    "verdict": false,
+    "exit": 1,
+    "otherLawsFailing": [],
+    "ms": 2343
+   },
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness",
+    "mutant": {
+     "id": "logical:||→&&@228:24",
+     "op": "logical:||→&&",
+     "start": 8125,
+     "end": 8127,
+     "replacement": "&&"
+    },
+    "killed": true,
+    "verdict": false,
+    "exit": 1,
+    "otherLawsFailing": [],
+    "ms": 2274
+   },
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness",
+    "mutant": {
+     "id": "negation:drop@228:27",
+     "op": "negation:drop",
+     "start": 8128,
+     "end": 8129,
+     "replacement": ""
+    },
+    "killed": true,
+    "verdict": false,
+    "exit": 1,
+    "otherLawsFailing": [],
+    "ms": 2335
+   },
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness",
+    "mutant": {
+     "id": "logical:||→&&@228:61",
+     "op": "logical:||→&&",
+     "start": 8162,
+     "end": 8164,
+     "replacement": "&&"
+    },
+    "killed": true,
+    "verdict": false,
+    "exit": 1,
+    "otherLawsFailing": [],
+    "ms": 2594
+   },
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness",
+    "mutant": {
+     "id": "relational:>=→>@228:78",
+     "op": "relational:>=→>",
+     "start": 8179,
+     "end": 8181,
+     "replacement": ">"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 2468
+   },
+   {
+    "where": "unit",
+    "at": "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness",
+    "mutant": {
+     "id": "logical:??→||@232:35",
+     "op": "logical:??→||",
+     "start": 8247,
+     "end": 8249,
+     "replacement": "||"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 2375
+   }
+  ]
+ }
+]

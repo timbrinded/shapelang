@@ -1,0 +1,16 @@
+module audit
+
+trait Protected<T: Resource> {
+  forbid final HardDelete<T>
+}
+
+resource AuditEvent : Protected
+
+component AuditStore {
+  owns AuditEvent
+  grants Append<AuditEvent>
+  fn appendEvent
+    effects complete {
+      Append<AuditEvent>
+    }
+}

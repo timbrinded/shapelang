@@ -1,0 +1,10 @@
+module deploy
+
+resource ProductionStore
+
+component BuildOrchestrator {
+}
+
+rule no_build_to_production_store {
+  forbid path BuildOrchestrator -> ProductionStore over calls or provides
+}

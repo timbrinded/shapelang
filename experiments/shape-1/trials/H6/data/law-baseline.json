@@ -1,0 +1,25 @@
+{
+ "all": {
+  "shape.checker::InspectionQualifiedIdentities": true,
+  "shape.checker::InspectionPreservesOrigin": true,
+  "shape.checker::InspectionCodepointOrder": true,
+  "shape.checker::FinalForbidBeatsGrant": true,
+  "shape.checker::FinalForbidTargetsDeterministic": true,
+  "shape.checker::FinalForbidNotWaivedByContext": true,
+  "shape.checker::ForbiddenPathFewestHops": true,
+  "shape.checker::ForbiddenPathHopsKeepProvenance": true,
+  "shape.checker::HypercycleShortestWitness": true,
+  "shape.checker::FreshnessEnforcesOnlyIsoDates": true,
+  "shape.checker::SourcePathRulesShared": true,
+  "shape.tooling::FormatterIdempotent": true,
+  "shape.tooling::FormatterFlattensGroupedContext": false,
+  "shape.tooling::FormatterCanonicalGraphRules": false,
+  "shape.checker::ChangePlanStagedInIsolation": true,
+  "shape.checker::ChangePlanCommitsOnlyWhenFullyStaged": true,
+  "shape.tooling::UpdateDraftsPreferUnknown": true,
+  "shape.checker.incremental::IncrementalRebuildsOnDocumentChange": true,
+  "shape.checker.incremental::IncrementalReusesModelOnOptionChange": true,
+  "shape.checker.incremental::IncrementalReusesDiagnosticsOnNoop": true,
+  "shape.checker::CheckIsDeterministic": true
+ }
+}

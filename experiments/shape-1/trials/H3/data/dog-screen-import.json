@@ -1,0 +1,1269 @@
+[
+ {
+  "law": "shape.tooling::UpdateDraftsPreferUnknown",
+  "file": "authoring.law.test.ts",
+  "unit": "shape.tooling::ShapeAuthoring.generateShapeUpdateDraft",
+  "id": "ts:packages/shp-checker/src/authoring.ts#generateShapeUpdateDraft",
+  "path": "packages/shp-checker/src/authoring.ts",
+  "callees": [
+   "ts:packages/shp-checker/src/authoring.ts#formatUnknownFunction",
+   "ts:packages/shp-checker/src/authoring.ts#formatMemoryGuardScaffold",
+   "ts:packages/shp-checker/src/authoring.ts#uniqueFunctionName",
+   "ts:packages/shp-checker/src/authoring.ts#indentBlock"
+  ],
+  "imported": [],
+  "candidates": []
+ },
+ {
+  "law": "shape.checker::ChangePlanStagedInIsolation",
+  "file": "change-planning.law.test.ts",
+  "unit": "shape.checker::ShapeModelLowerer.lowerChange",
+  "id": "ts:packages/shp-checker/src/checker/lowering/changes.ts#lowerChange",
+  "path": "packages/shp-checker/src/checker/lowering/changes.ts",
+  "callees": [
+   "ts:packages/shp-checker/src/checker/lowering/changes.ts#planChange"
+  ],
+  "imported": [
+   "ts:packages/shp-checker/src/checker/change-planning.ts#commitPlannedChange"
+  ],
+  "candidates": []
+ },
+ {
+  "law": "shape.checker::ChangePlanCommitsOnlyWhenFullyStaged",
+  "file": "change-planning.law.test.ts",
+  "unit": "shape.checker::ShapeModelLowerer.lowerChange",
+  "id": "ts:packages/shp-checker/src/checker/lowering/changes.ts#lowerChange",
+  "path": "packages/shp-checker/src/checker/lowering/changes.ts",
+  "callees": [
+   "ts:packages/shp-checker/src/checker/lowering/changes.ts#planChange"
+  ],
+  "imported": [
+   "ts:packages/shp-checker/src/checker/change-planning.ts#commitPlannedChange"
+  ],
+  "candidates": []
+ },
+ {
+  "law": "shape.checker::CheckIsDeterministic",
+  "file": "determinism.law.test.ts",
+  "unit": "shape.checker::ShapeChecker.checkShapeModules",
+  "id": "ts:packages/shp-checker/src/checker/api.ts#checkShapeModules",
+  "path": "packages/shp-checker/src/checker/api.ts",
+  "callees": [
+   "ts:packages/shp-checker/src/checker/api.ts#checkLoweredShapeModel",
+   "ts:packages/shp-checker/src/checker/api.ts#normalizeCheckOptions"
+  ],
+  "imported": [
+   "ts:packages/shp-checker/src/checker/lowerer.ts#lowerShapeModules",
+   "ts:packages/shp-checker/src/checker/lowerer.ts#normalizeModuleInputs",
+   "ts:packages/shp-checker/src/checker/loosening.ts#checkRuleLoosening"
+  ],
+  "candidates": [
+   {
+    "where": "import",
+    "at": "ts:packages/shp-checker/src/checker/lowerer.ts#lowerShapeModules",
+    "path": "packages/shp-checker/src/checker/lowerer.ts",
+    "mutant": {
+     "id": "equality:!==→===@85:24",
+     "op": "equality:!==→===",
+     "start": 2698,
+     "end": 2701,
+     "replacement": "==="
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1285
+   },
+   {
+    "where": "import",
+    "at": "ts:packages/shp-checker/src/checker/lowerer.ts#lowerShapeModules",
+    "path": "packages/shp-checker/src/checker/lowerer.ts",
+    "mutant": {
+     "id": "logical:??→||@92:41",
+     "op": "logical:??→||",
+     "start": 2939,
+     "end": 2941,
+     "replacement": "||"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1288
+   },
+   {
+    "where": "import",
+    "at": "ts:packages/shp-checker/src/checker/loosening.ts#checkRuleLoosening",
+    "path": "packages/shp-checker/src/checker/loosening.ts",
+    "mutant": {
+     "id": "equality:===→!==@122:41",
+     "op": "equality:===→!==",
+     "start": 4013,
+     "end": 4016,
+     "replacement": "!=="
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1272
+   },
+   {
+    "where": "import",
+    "at": "ts:packages/shp-checker/src/checker/loosening.ts#checkRuleLoosening",
+    "path": "packages/shp-checker/src/checker/loosening.ts",
+    "mutant": {
+     "id": "negation:drop@124:58",
+     "op": "negation:drop",
+     "start": 4192,
+     "end": 4193,
+     "replacement": ""
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1076
+   },
+   {
+    "where": "import",
+    "at": "ts:packages/shp-checker/src/checker/loosening.ts#checkRuleLoosening",
+    "path": "packages/shp-checker/src/checker/loosening.ts",
+    "mutant": {
+     "id": "equality:===→!==@141:25",
+     "op": "equality:===→!==",
+     "start": 4908,
+     "end": 4911,
+     "replacement": "!=="
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1177
+   },
+   {
+    "where": "import",
+    "at": "ts:packages/shp-checker/src/checker/loosening.ts#checkRuleLoosening",
+    "path": "packages/shp-checker/src/checker/loosening.ts",
+    "mutant": {
+     "id": "negation:drop@152:23",
+     "op": "negation:drop",
+     "start": 5351,
+     "end": 5352,
+     "replacement": ""
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1228
+   }
+  ]
+ },
+ {
+  "law": "shape.tooling::FormatterIdempotent",
+  "file": "formatter.law.test.ts",
+  "unit": "shape.tooling::ShapeFormatter.formatShapeModule",
+  "id": "ts:packages/shp-checker/src/formatter.ts#formatShapeModule",
+  "path": "packages/shp-checker/src/formatter.ts",
+  "callees": [
+   "ts:packages/shp-checker/src/formatter.ts#formatDeclaration",
+   "ts:packages/shp-checker/src/formatter.ts#declarationSortKey"
+  ],
+  "imported": [
+   "ts:packages/shp-checker/src/shape-strings.ts#compareCodepointStrings"
+  ],
+  "candidates": [
+   {
+    "where": "import",
+    "at": "ts:packages/shp-checker/src/shape-strings.ts#compareCodepointStrings",
+    "path": "packages/shp-checker/src/shape-strings.ts",
+    "mutant": {
+     "id": "constant:0→1@15:20",
+     "op": "constant:0→1",
+     "start": 628,
+     "end": 629,
+     "replacement": "1"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 586
+   },
+   {
+    "where": "import",
+    "at": "ts:packages/shp-checker/src/shape-strings.ts#compareCodepointStrings",
+    "path": "packages/shp-checker/src/shape-strings.ts",
+    "mutant": {
+     "id": "constant:1→2@15:48",
+     "op": "constant:1→2",
+     "start": 656,
+     "end": 657,
+     "replacement": "2"
+    },
+    "killed": true,
+    "verdict": false,
+    "exit": 1,
+    "otherLawsFailing": [],
+    "ms": 262
+   },
+   {
+    "where": "import",
+    "at": "ts:packages/shp-checker/src/shape-strings.ts#compareCodepointStrings",
+    "path": "packages/shp-checker/src/shape-strings.ts",
+    "mutant": {
+     "id": "logical:??→||@16:65",
+     "op": "logical:??→||",
+     "start": 725,
+     "end": 727,
+     "replacement": "||"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 569
+   },
+   {
+    "where": "import",
+    "at": "ts:packages/shp-checker/src/shape-strings.ts#compareCodepointStrings",
+    "path": "packages/shp-checker/src/shape-strings.ts",
+    "mutant": {
+     "id": "constant:0→1@17:64",
+     "op": "constant:0→1",
+     "start": 794,
+     "end": 795,
+     "replacement": "1"
+    },
+    "killed": true,
+    "verdict": false,
+    "exit": 1,
+    "otherLawsFailing": [],
+    "ms": 270
+   },
+   {
+    "where": "import",
+    "at": "ts:packages/shp-checker/src/shape-strings.ts#compareCodepointStrings",
+    "path": "packages/shp-checker/src/shape-strings.ts",
+    "mutant": {
+     "id": "constant:0→1@17:70",
+     "op": "constant:0→1",
+     "start": 800,
+     "end": 801,
+     "replacement": "1"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 548
+   },
+   {
+    "where": "import",
+    "at": "ts:packages/shp-checker/src/shape-strings.ts#compareCodepointStrings",
+    "path": "packages/shp-checker/src/shape-strings.ts",
+    "mutant": {
+     "id": "arithmetic:-→+@19:28",
+     "op": "arithmetic:-→+",
+     "start": 874,
+     "end": 875,
+     "replacement": "+"
+    },
+    "killed": true,
+    "verdict": false,
+    "exit": 1,
+    "otherLawsFailing": [],
+    "ms": 264
+   }
+  ]
+ },
+ {
+  "law": "shape.checker.incremental::IncrementalRebuildsOnDocumentChange",
+  "file": "incremental.law.test.ts",
+  "unit": "shape.checker.incremental::ShapeIncrementalChecker.check",
+  "id": "ts:packages/shp-checker/src/checker/incremental.ts#IncrementalShapeChecker.check",
+  "path": "packages/shp-checker/src/checker/incremental.ts",
+  "callees": [
+   "ts:packages/shp-checker/src/checker/incremental.ts#normalizeDocuments",
+   "ts:packages/shp-checker/src/checker/incremental.ts#collectParseDiagnostics",
+   "ts:packages/shp-checker/src/checker/incremental.ts#collectModuleInputs",
+   "ts:packages/shp-checker/src/checker/incremental.ts#moduleOriginsChanged",
+   "ts:packages/shp-checker/src/checker/incremental.ts#checkOptionsKey",
+   "ts:packages/shp-checker/src/checker/incremental.ts#invalidationCauses",
+   "ts:packages/shp-checker/src/checker/incremental.ts#cloneCheckResult"
+  ],
+  "imported": [
+   "ts:packages/shp-checker/src/parser.ts#parseShapeModule",
+   "ts:packages/shp-checker/src/checker/api.ts#checkLoweredShapeModel",
+   "ts:packages/shp-checker/src/checker/api.ts#normalizeCheckOptions",
+   "ts:packages/shp-checker/src/checker/lowerer.ts#lowerShapeModules"
+  ],
+  "candidates": [
+   {
+    "where": "import",
+    "at": "ts:packages/shp-checker/src/parser.ts#parseShapeModule",
+    "path": "packages/shp-checker/src/parser.ts",
+    "mutant": {
+     "id": "constant:0→1@40:64",
+     "op": "constant:0→1",
+     "start": 1156,
+     "end": 1157,
+     "replacement": "1"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1580
+   },
+   {
+    "where": "import",
+    "at": "ts:packages/shp-checker/src/parser.ts#parseShapeModule",
+    "path": "packages/shp-checker/src/parser.ts",
+    "mutant": {
+     "id": "boolean:false→true@53:11",
+     "op": "boolean:false→true",
+     "start": 1580,
+     "end": 1585,
+     "replacement": "true"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1696
+   },
+   {
+    "where": "import",
+    "at": "ts:packages/shp-checker/src/checker/api.ts#checkLoweredShapeModel",
+    "path": "packages/shp-checker/src/checker/api.ts",
+    "mutant": {
+     "id": "logical:??→||@89:42",
+     "op": "logical:??→||",
+     "start": 3432,
+     "end": 3434,
+     "replacement": "||"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1443
+   },
+   {
+    "where": "import",
+    "at": "ts:packages/shp-checker/src/checker/api.ts#checkLoweredShapeModel",
+    "path": "packages/shp-checker/src/checker/api.ts",
+    "mutant": {
+     "id": "constant:0→1@102:20",
+     "op": "constant:0→1",
+     "start": 3781,
+     "end": 3782,
+     "replacement": "1"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1656
+   },
+   {
+    "where": "import",
+    "at": "ts:packages/shp-checker/src/checker/api.ts#normalizeCheckOptions",
+    "path": "packages/shp-checker/src/checker/api.ts",
+    "mutant": {
+     "id": "equality:===→!==@170:12",
+     "op": "equality:===→!==",
+     "start": 6368,
+     "end": 6371,
+     "replacement": "!=="
+    },
+    "killed": true,
+    "verdict": false,
+    "exit": 1,
+    "otherLawsFailing": [
+     "shape.checker.incremental::IncrementalReusesModelOnOptionChange",
+     "shape.checker.incremental::IncrementalReusesDiagnosticsOnNoop"
+    ],
+    "ms": 252
+   },
+   {
+    "where": "import",
+    "at": "ts:packages/shp-checker/src/checker/lowerer.ts#lowerShapeModules",
+    "path": "packages/shp-checker/src/checker/lowerer.ts",
+    "mutant": {
+     "id": "logical:&&→||@85:38",
+     "op": "logical:&&→||",
+     "start": 2712,
+     "end": 2714,
+     "replacement": "||"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1347
+   }
+  ]
+ },
+ {
+  "law": "shape.checker.incremental::IncrementalReusesModelOnOptionChange",
+  "file": "incremental.law.test.ts",
+  "unit": "shape.checker.incremental::ShapeIncrementalChecker.check",
+  "id": "ts:packages/shp-checker/src/checker/incremental.ts#IncrementalShapeChecker.check",
+  "path": "packages/shp-checker/src/checker/incremental.ts",
+  "callees": [
+   "ts:packages/shp-checker/src/checker/incremental.ts#normalizeDocuments",
+   "ts:packages/shp-checker/src/checker/incremental.ts#collectParseDiagnostics",
+   "ts:packages/shp-checker/src/checker/incremental.ts#collectModuleInputs",
+   "ts:packages/shp-checker/src/checker/incremental.ts#moduleOriginsChanged",
+   "ts:packages/shp-checker/src/checker/incremental.ts#checkOptionsKey",
+   "ts:packages/shp-checker/src/checker/incremental.ts#invalidationCauses",
+   "ts:packages/shp-checker/src/checker/incremental.ts#cloneCheckResult"
+  ],
+  "imported": [
+   "ts:packages/shp-checker/src/parser.ts#parseShapeModule",
+   "ts:packages/shp-checker/src/checker/api.ts#checkLoweredShapeModel",
+   "ts:packages/shp-checker/src/checker/api.ts#normalizeCheckOptions",
+   "ts:packages/shp-checker/src/checker/lowerer.ts#lowerShapeModules"
+  ],
+  "candidates": [
+   {
+    "where": "import",
+    "at": "ts:packages/shp-checker/src/parser.ts#parseShapeModule",
+    "path": "packages/shp-checker/src/parser.ts",
+    "mutant": {
+     "id": "constant:0→1@40:64",
+     "op": "constant:0→1",
+     "start": 1156,
+     "end": 1157,
+     "replacement": "1"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1342
+   },
+   {
+    "where": "import",
+    "at": "ts:packages/shp-checker/src/parser.ts#parseShapeModule",
+    "path": "packages/shp-checker/src/parser.ts",
+    "mutant": {
+     "id": "boolean:false→true@53:11",
+     "op": "boolean:false→true",
+     "start": 1580,
+     "end": 1585,
+     "replacement": "true"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1580
+   },
+   {
+    "where": "import",
+    "at": "ts:packages/shp-checker/src/checker/api.ts#checkLoweredShapeModel",
+    "path": "packages/shp-checker/src/checker/api.ts",
+    "mutant": {
+     "id": "logical:??→||@89:42",
+     "op": "logical:??→||",
+     "start": 3432,
+     "end": 3434,
+     "replacement": "||"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1611
+   },
+   {
+    "where": "import",
+    "at": "ts:packages/shp-checker/src/checker/api.ts#checkLoweredShapeModel",
+    "path": "packages/shp-checker/src/checker/api.ts",
+    "mutant": {
+     "id": "constant:0→1@102:20",
+     "op": "constant:0→1",
+     "start": 3781,
+     "end": 3782,
+     "replacement": "1"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1621
+   },
+   {
+    "where": "import",
+    "at": "ts:packages/shp-checker/src/checker/api.ts#normalizeCheckOptions",
+    "path": "packages/shp-checker/src/checker/api.ts",
+    "mutant": {
+     "id": "equality:===→!==@170:12",
+     "op": "equality:===→!==",
+     "start": 6368,
+     "end": 6371,
+     "replacement": "!=="
+    },
+    "killed": true,
+    "verdict": false,
+    "exit": 1,
+    "otherLawsFailing": [
+     "shape.checker.incremental::IncrementalRebuildsOnDocumentChange",
+     "shape.checker.incremental::IncrementalReusesDiagnosticsOnNoop"
+    ],
+    "ms": 299
+   },
+   {
+    "where": "import",
+    "at": "ts:packages/shp-checker/src/checker/lowerer.ts#lowerShapeModules",
+    "path": "packages/shp-checker/src/checker/lowerer.ts",
+    "mutant": {
+     "id": "logical:&&→||@85:38",
+     "op": "logical:&&→||",
+     "start": 2712,
+     "end": 2714,
+     "replacement": "||"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1565
+   }
+  ]
+ },
+ {
+  "law": "shape.checker.incremental::IncrementalReusesDiagnosticsOnNoop",
+  "file": "incremental.law.test.ts",
+  "unit": "shape.checker.incremental::ShapeIncrementalChecker.check",
+  "id": "ts:packages/shp-checker/src/checker/incremental.ts#IncrementalShapeChecker.check",
+  "path": "packages/shp-checker/src/checker/incremental.ts",
+  "callees": [
+   "ts:packages/shp-checker/src/checker/incremental.ts#normalizeDocuments",
+   "ts:packages/shp-checker/src/checker/incremental.ts#collectParseDiagnostics",
+   "ts:packages/shp-checker/src/checker/incremental.ts#collectModuleInputs",
+   "ts:packages/shp-checker/src/checker/incremental.ts#moduleOriginsChanged",
+   "ts:packages/shp-checker/src/checker/incremental.ts#checkOptionsKey",
+   "ts:packages/shp-checker/src/checker/incremental.ts#invalidationCauses",
+   "ts:packages/shp-checker/src/checker/incremental.ts#cloneCheckResult"
+  ],
+  "imported": [
+   "ts:packages/shp-checker/src/parser.ts#parseShapeModule",
+   "ts:packages/shp-checker/src/checker/api.ts#checkLoweredShapeModel",
+   "ts:packages/shp-checker/src/checker/api.ts#normalizeCheckOptions",
+   "ts:packages/shp-checker/src/checker/lowerer.ts#lowerShapeModules"
+  ],
+  "candidates": [
+   {
+    "where": "import",
+    "at": "ts:packages/shp-checker/src/parser.ts#parseShapeModule",
+    "path": "packages/shp-checker/src/parser.ts",
+    "mutant": {
+     "id": "constant:0→1@40:64",
+     "op": "constant:0→1",
+     "start": 1156,
+     "end": 1157,
+     "replacement": "1"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1715
+   },
+   {
+    "where": "import",
+    "at": "ts:packages/shp-checker/src/parser.ts#parseShapeModule",
+    "path": "packages/shp-checker/src/parser.ts",
+    "mutant": {
+     "id": "boolean:false→true@53:11",
+     "op": "boolean:false→true",
+     "start": 1580,
+     "end": 1585,
+     "replacement": "true"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1439
+   },
+   {
+    "where": "import",
+    "at": "ts:packages/shp-checker/src/checker/api.ts#checkLoweredShapeModel",
+    "path": "packages/shp-checker/src/checker/api.ts",
+    "mutant": {
+     "id": "logical:??→||@89:42",
+     "op": "logical:??→||",
+     "start": 3432,
+     "end": 3434,
+     "replacement": "||"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1449
+   },
+   {
+    "where": "import",
+    "at": "ts:packages/shp-checker/src/checker/api.ts#checkLoweredShapeModel",
+    "path": "packages/shp-checker/src/checker/api.ts",
+    "mutant": {
+     "id": "constant:0→1@102:20",
+     "op": "constant:0→1",
+     "start": 3781,
+     "end": 3782,
+     "replacement": "1"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1540
+   },
+   {
+    "where": "import",
+    "at": "ts:packages/shp-checker/src/checker/api.ts#normalizeCheckOptions",
+    "path": "packages/shp-checker/src/checker/api.ts",
+    "mutant": {
+     "id": "equality:===→!==@170:12",
+     "op": "equality:===→!==",
+     "start": 6368,
+     "end": 6371,
+     "replacement": "!=="
+    },
+    "killed": true,
+    "verdict": false,
+    "exit": 1,
+    "otherLawsFailing": [
+     "shape.checker.incremental::IncrementalRebuildsOnDocumentChange",
+     "shape.checker.incremental::IncrementalReusesModelOnOptionChange"
+    ],
+    "ms": 412
+   },
+   {
+    "where": "import",
+    "at": "ts:packages/shp-checker/src/checker/lowerer.ts#lowerShapeModules",
+    "path": "packages/shp-checker/src/checker/lowerer.ts",
+    "mutant": {
+     "id": "logical:&&→||@85:38",
+     "op": "logical:&&→||",
+     "start": 2712,
+     "end": 2714,
+     "replacement": "||"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1470
+   }
+  ]
+ },
+ {
+  "law": "shape.checker::InspectionQualifiedIdentities",
+  "file": "inspection.law.test.ts",
+  "unit": "shape.checker::ShapeChecker.inspectShapeModules",
+  "id": "ts:packages/shp-checker/src/checker/inspection.ts#inspectShapeModules",
+  "path": "packages/shp-checker/src/checker/inspection.ts",
+  "callees": [
+   "ts:packages/shp-checker/src/checker/inspection.ts#inspectResources",
+   "ts:packages/shp-checker/src/checker/inspection.ts#inspectComponents",
+   "ts:packages/shp-checker/src/checker/inspection.ts#inspectFunctions",
+   "ts:packages/shp-checker/src/checker/inspection.ts#inspectRelations",
+   "ts:packages/shp-checker/src/checker/inspection.ts#inspectImplementations",
+   "ts:packages/shp-checker/src/checker/inspection.ts#inspectBindings",
+   "ts:packages/shp-checker/src/checker/inspection.ts#inspectRules",
+   "ts:packages/shp-checker/src/checker/inspection.ts#inspectMemories",
+   "ts:packages/shp-checker/src/checker/inspection.ts#inspectionContext",
+   "ts:packages/shp-checker/src/checker/inspection.ts#sortStrings"
+  ],
+  "imported": [
+   "ts:packages/shp-checker/src/checker/lowerer.ts#lowerShapeModules",
+   "ts:packages/shp-checker/src/checker/symbols.ts#moduleOriginForShapeFile"
+  ],
+  "candidates": [
+   {
+    "where": "import",
+    "at": "ts:packages/shp-checker/src/checker/lowerer.ts#lowerShapeModules",
+    "path": "packages/shp-checker/src/checker/lowerer.ts",
+    "mutant": {
+     "id": "equality:!==→===@85:24",
+     "op": "equality:!==→===",
+     "start": 2698,
+     "end": 2701,
+     "replacement": "==="
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 843
+   },
+   {
+    "where": "import",
+    "at": "ts:packages/shp-checker/src/checker/lowerer.ts#lowerShapeModules",
+    "path": "packages/shp-checker/src/checker/lowerer.ts",
+    "mutant": {
+     "id": "logical:&&→||@85:38",
+     "op": "logical:&&→||",
+     "start": 2712,
+     "end": 2714,
+     "replacement": "||"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1089
+   },
+   {
+    "where": "import",
+    "at": "ts:packages/shp-checker/src/checker/lowerer.ts#lowerShapeModules",
+    "path": "packages/shp-checker/src/checker/lowerer.ts",
+    "mutant": {
+     "id": "equality:!==→===@85:46",
+     "op": "equality:!==→===",
+     "start": 2720,
+     "end": 2723,
+     "replacement": "==="
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 995
+   },
+   {
+    "where": "import",
+    "at": "ts:packages/shp-checker/src/checker/lowerer.ts#lowerShapeModules",
+    "path": "packages/shp-checker/src/checker/lowerer.ts",
+    "mutant": {
+     "id": "logical:??→||@92:41",
+     "op": "logical:??→||",
+     "start": 2939,
+     "end": 2941,
+     "replacement": "||"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 739
+   },
+   {
+    "where": "import",
+    "at": "ts:packages/shp-checker/src/checker/lowerer.ts#lowerShapeModules",
+    "path": "packages/shp-checker/src/checker/lowerer.ts",
+    "mutant": {
+     "id": "logical:??→||@127:41",
+     "op": "logical:??→||",
+     "start": 4519,
+     "end": 4521,
+     "replacement": "||"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 983
+   },
+   {
+    "where": "import",
+    "at": "ts:packages/shp-checker/src/checker/symbols.ts#moduleOriginForShapeFile",
+    "path": "packages/shp-checker/src/checker/symbols.ts",
+    "mutant": {
+     "id": "logical:??→||@73:34",
+     "op": "logical:??→||",
+     "start": 2133,
+     "end": 2135,
+     "replacement": "||"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 765
+   }
+  ]
+ },
+ {
+  "law": "shape.checker::InspectionPreservesOrigin",
+  "file": "inspection.law.test.ts",
+  "unit": "shape.checker::ShapeChecker.inspectShapeModules",
+  "id": "ts:packages/shp-checker/src/checker/inspection.ts#inspectShapeModules",
+  "path": "packages/shp-checker/src/checker/inspection.ts",
+  "callees": [
+   "ts:packages/shp-checker/src/checker/inspection.ts#inspectResources",
+   "ts:packages/shp-checker/src/checker/inspection.ts#inspectComponents",
+   "ts:packages/shp-checker/src/checker/inspection.ts#inspectFunctions",
+   "ts:packages/shp-checker/src/checker/inspection.ts#inspectRelations",
+   "ts:packages/shp-checker/src/checker/inspection.ts#inspectImplementations",
+   "ts:packages/shp-checker/src/checker/inspection.ts#inspectBindings",
+   "ts:packages/shp-checker/src/checker/inspection.ts#inspectRules",
+   "ts:packages/shp-checker/src/checker/inspection.ts#inspectMemories",
+   "ts:packages/shp-checker/src/checker/inspection.ts#inspectionContext",
+   "ts:packages/shp-checker/src/checker/inspection.ts#sortStrings"
+  ],
+  "imported": [
+   "ts:packages/shp-checker/src/checker/lowerer.ts#lowerShapeModules",
+   "ts:packages/shp-checker/src/checker/symbols.ts#moduleOriginForShapeFile"
+  ],
+  "candidates": [
+   {
+    "where": "import",
+    "at": "ts:packages/shp-checker/src/checker/lowerer.ts#lowerShapeModules",
+    "path": "packages/shp-checker/src/checker/lowerer.ts",
+    "mutant": {
+     "id": "equality:!==→===@85:24",
+     "op": "equality:!==→===",
+     "start": 2698,
+     "end": 2701,
+     "replacement": "==="
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1110
+   },
+   {
+    "where": "import",
+    "at": "ts:packages/shp-checker/src/checker/lowerer.ts#lowerShapeModules",
+    "path": "packages/shp-checker/src/checker/lowerer.ts",
+    "mutant": {
+     "id": "logical:&&→||@85:38",
+     "op": "logical:&&→||",
+     "start": 2712,
+     "end": 2714,
+     "replacement": "||"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1018
+   },
+   {
+    "where": "import",
+    "at": "ts:packages/shp-checker/src/checker/lowerer.ts#lowerShapeModules",
+    "path": "packages/shp-checker/src/checker/lowerer.ts",
+    "mutant": {
+     "id": "equality:!==→===@85:46",
+     "op": "equality:!==→===",
+     "start": 2720,
+     "end": 2723,
+     "replacement": "==="
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 890
+   },
+   {
+    "where": "import",
+    "at": "ts:packages/shp-checker/src/checker/lowerer.ts#lowerShapeModules",
+    "path": "packages/shp-checker/src/checker/lowerer.ts",
+    "mutant": {
+     "id": "logical:??→||@92:41",
+     "op": "logical:??→||",
+     "start": 2939,
+     "end": 2941,
+     "replacement": "||"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 779
+   },
+   {
+    "where": "import",
+    "at": "ts:packages/shp-checker/src/checker/lowerer.ts#lowerShapeModules",
+    "path": "packages/shp-checker/src/checker/lowerer.ts",
+    "mutant": {
+     "id": "logical:??→||@127:41",
+     "op": "logical:??→||",
+     "start": 4519,
+     "end": 4521,
+     "replacement": "||"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 831
+   },
+   {
+    "where": "import",
+    "at": "ts:packages/shp-checker/src/checker/symbols.ts#moduleOriginForShapeFile",
+    "path": "packages/shp-checker/src/checker/symbols.ts",
+    "mutant": {
+     "id": "logical:??→||@73:34",
+     "op": "logical:??→||",
+     "start": 2133,
+     "end": 2135,
+     "replacement": "||"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 875
+   }
+  ]
+ },
+ {
+  "law": "shape.checker::InspectionCodepointOrder",
+  "file": "inspection.law.test.ts",
+  "unit": "shape.checker::ShapeChecker.inspectShapeModules",
+  "id": "ts:packages/shp-checker/src/checker/inspection.ts#inspectShapeModules",
+  "path": "packages/shp-checker/src/checker/inspection.ts",
+  "callees": [
+   "ts:packages/shp-checker/src/checker/inspection.ts#inspectResources",
+   "ts:packages/shp-checker/src/checker/inspection.ts#inspectComponents",
+   "ts:packages/shp-checker/src/checker/inspection.ts#inspectFunctions",
+   "ts:packages/shp-checker/src/checker/inspection.ts#inspectRelations",
+   "ts:packages/shp-checker/src/checker/inspection.ts#inspectImplementations",
+   "ts:packages/shp-checker/src/checker/inspection.ts#inspectBindings",
+   "ts:packages/shp-checker/src/checker/inspection.ts#inspectRules",
+   "ts:packages/shp-checker/src/checker/inspection.ts#inspectMemories",
+   "ts:packages/shp-checker/src/checker/inspection.ts#inspectionContext",
+   "ts:packages/shp-checker/src/checker/inspection.ts#sortStrings"
+  ],
+  "imported": [
+   "ts:packages/shp-checker/src/checker/lowerer.ts#lowerShapeModules",
+   "ts:packages/shp-checker/src/checker/symbols.ts#moduleOriginForShapeFile"
+  ],
+  "candidates": [
+   {
+    "where": "import",
+    "at": "ts:packages/shp-checker/src/checker/lowerer.ts#lowerShapeModules",
+    "path": "packages/shp-checker/src/checker/lowerer.ts",
+    "mutant": {
+     "id": "equality:!==→===@85:24",
+     "op": "equality:!==→===",
+     "start": 2698,
+     "end": 2701,
+     "replacement": "==="
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 832
+   },
+   {
+    "where": "import",
+    "at": "ts:packages/shp-checker/src/checker/lowerer.ts#lowerShapeModules",
+    "path": "packages/shp-checker/src/checker/lowerer.ts",
+    "mutant": {
+     "id": "logical:&&→||@85:38",
+     "op": "logical:&&→||",
+     "start": 2712,
+     "end": 2714,
+     "replacement": "||"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 986
+   },
+   {
+    "where": "import",
+    "at": "ts:packages/shp-checker/src/checker/lowerer.ts#lowerShapeModules",
+    "path": "packages/shp-checker/src/checker/lowerer.ts",
+    "mutant": {
+     "id": "equality:!==→===@85:46",
+     "op": "equality:!==→===",
+     "start": 2720,
+     "end": 2723,
+     "replacement": "==="
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 993
+   },
+   {
+    "where": "import",
+    "at": "ts:packages/shp-checker/src/checker/lowerer.ts#lowerShapeModules",
+    "path": "packages/shp-checker/src/checker/lowerer.ts",
+    "mutant": {
+     "id": "logical:??→||@92:41",
+     "op": "logical:??→||",
+     "start": 2939,
+     "end": 2941,
+     "replacement": "||"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 995
+   },
+   {
+    "where": "import",
+    "at": "ts:packages/shp-checker/src/checker/lowerer.ts#lowerShapeModules",
+    "path": "packages/shp-checker/src/checker/lowerer.ts",
+    "mutant": {
+     "id": "logical:??→||@127:41",
+     "op": "logical:??→||",
+     "start": 4519,
+     "end": 4521,
+     "replacement": "||"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 894
+   },
+   {
+    "where": "import",
+    "at": "ts:packages/shp-checker/src/checker/symbols.ts#moduleOriginForShapeFile",
+    "path": "packages/shp-checker/src/checker/symbols.ts",
+    "mutant": {
+     "id": "logical:??→||@73:34",
+     "op": "logical:??→||",
+     "start": 2133,
+     "end": 2135,
+     "replacement": "||"
+    },
+    "killed": false,
+    "verdict": true,
+    "exit": 0,
+    "otherLawsFailing": [],
+    "ms": 1035
+   }
+  ]
+ },
+ {
+  "law": "shape.checker::SourcePathRulesShared",
+  "file": "paths.law.test.ts",
+  "unit": "shape.checker::ShapeStringHelpers.normalizeShapeSourcePath",
+  "id": "ts:packages/shp-checker/src/shape-strings.ts#normalizeShapeSourcePath",
+  "path": "packages/shp-checker/src/shape-strings.ts",
+  "callees": [
+   "ts:packages/shp-checker/src/shape-strings.ts#normalizeShapePath"
+  ],
+  "imported": [],
+  "candidates": []
+ },
+ {
+  "law": "shape.checker::FinalForbidBeatsGrant",
+  "file": "rules.law.test.ts",
+  "unit": "shape.checker::ShapeRuleEngine.deriveFinalForbidsForResource",
+  "id": "ts:packages/shp-checker/src/checker/derivations.ts#deriveFinalForbidsForResource",
+  "path": "packages/shp-checker/src/checker/derivations.ts",
+  "callees": [
+   "ts:packages/shp-checker/src/checker/derivations.ts#resourceRuleConditionCompatibility",
+   "ts:packages/shp-checker/src/checker/derivations.ts#instantiateFinalForbidTarget",
+   "ts:packages/shp-checker/src/checker/derivations.ts#dedupeForbids"
+  ],
+  "imported": [],
+  "candidates": []
+ },
+ {
+  "law": "shape.checker::FinalForbidTargetsDeterministic",
+  "file": "rules.law.test.ts",
+  "unit": "shape.checker::ShapeRuleEngine.deriveFinalForbidsForResource",
+  "id": "ts:packages/shp-checker/src/checker/derivations.ts#deriveFinalForbidsForResource",
+  "path": "packages/shp-checker/src/checker/derivations.ts",
+  "callees": [
+   "ts:packages/shp-checker/src/checker/derivations.ts#resourceRuleConditionCompatibility",
+   "ts:packages/shp-checker/src/checker/derivations.ts#instantiateFinalForbidTarget",
+   "ts:packages/shp-checker/src/checker/derivations.ts#dedupeForbids"
+  ],
+  "imported": [],
+  "candidates": []
+ },
+ {
+  "law": "shape.checker::FinalForbidNotWaivedByContext",
+  "file": "rules.law.test.ts",
+  "unit": "shape.checker::ShapeRuleEngine.deriveFinalForbidsForResource",
+  "id": "ts:packages/shp-checker/src/checker/derivations.ts#deriveFinalForbidsForResource",
+  "path": "packages/shp-checker/src/checker/derivations.ts",
+  "callees": [
+   "ts:packages/shp-checker/src/checker/derivations.ts#resourceRuleConditionCompatibility",
+   "ts:packages/shp-checker/src/checker/derivations.ts#instantiateFinalForbidTarget",
+   "ts:packages/shp-checker/src/checker/derivations.ts#dedupeForbids"
+  ],
+  "imported": [],
+  "candidates": []
+ },
+ {
+  "law": "shape.checker::ForbiddenPathFewestHops",
+  "file": "rules.law.test.ts",
+  "unit": "shape.checker::ShapeRuleEngine.findShortestPath",
+  "id": "ts:packages/shp-checker/src/checker/rules/relations.ts#findShortestPath",
+  "path": "packages/shp-checker/src/checker/rules/relations.ts",
+  "callees": [
+   "ts:packages/shp-checker/src/checker/rules/relations.ts#validPathHyperedges",
+   "ts:packages/shp-checker/src/checker/rules/relations.ts#buildRelationTraversalGraph",
+   "ts:packages/shp-checker/src/checker/rules/relations.ts#shortestPathBetween",
+   "ts:packages/shp-checker/src/checker/rules/relations.ts#witnessFromPath"
+  ],
+  "imported": [],
+  "candidates": []
+ },
+ {
+  "law": "shape.checker::ForbiddenPathHopsKeepProvenance",
+  "file": "rules.law.test.ts",
+  "unit": "shape.checker::ShapeRuleEngine.findShortestPath",
+  "id": "ts:packages/shp-checker/src/checker/rules/relations.ts#findShortestPath",
+  "path": "packages/shp-checker/src/checker/rules/relations.ts",
+  "callees": [
+   "ts:packages/shp-checker/src/checker/rules/relations.ts#validPathHyperedges",
+   "ts:packages/shp-checker/src/checker/rules/relations.ts#buildRelationTraversalGraph",
+   "ts:packages/shp-checker/src/checker/rules/relations.ts#shortestPathBetween",
+   "ts:packages/shp-checker/src/checker/rules/relations.ts#witnessFromPath"
+  ],
+  "imported": [],
+  "candidates": []
+ },
+ {
+  "law": "shape.checker::HypercycleShortestWitness",
+  "file": "rules.law.test.ts",
+  "unit": "shape.checker::ShapeRuleEngine.findHypercycle",
+  "id": "ts:packages/shp-checker/src/checker/rules/relations.ts#findHypercycle",
+  "path": "packages/shp-checker/src/checker/rules/relations.ts",
+  "callees": [
+   "ts:packages/shp-checker/src/checker/rules/relations.ts#buildRelationTraversalGraph",
+   "ts:packages/shp-checker/src/checker/rules/relations.ts#stronglyConnectedComponents",
+   "ts:packages/shp-checker/src/checker/rules/relations.ts#isCyclicComponent",
+   "ts:packages/shp-checker/src/checker/rules/relations.ts#shortestCycleInComponent",
+   "ts:packages/shp-checker/src/checker/rules/relations.ts#compareTraversalPaths",
+   "ts:packages/shp-checker/src/checker/rules/relations.ts#witnessFromPath"
+  ],
+  "imported": [],
+  "candidates": []
+ },
+ {
+  "law": "shape.checker::FreshnessEnforcesOnlyIsoDates",
+  "file": "rules.law.test.ts",
+  "unit": "shape.checker::ShapeRuleEngine.checkFreshness",
+  "id": "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness",
+  "path": "packages/shp-checker/src/checker/rules/guards.ts",
+  "callees": [],
+  "imported": [
+   "ts:packages/shp-checker/src/checker/iso-date.ts#isIsoCalendarDate",
+   "ts:packages/shp-checker/src/checker/provenance.ts#describeProvenance",
+   "ts:packages/shp-checker/src/checker/rules/context.ts#allContexts"
+  ],
+  "candidates": [
+   {
+    "where": "import",
+    "at": "ts:packages/shp-checker/src/checker/iso-date.ts#isIsoCalendarDate",
+    "path": "packages/shp-checker/src/checker/iso-date.ts",
+    "mutant": {
+     "id": "negation:drop@4:7",
+     "op": "negation:drop",
+     "start": 164,
+     "end": 165,
+     "replacement": ""
+    },
+    "killed": true,
+    "verdict": false,
+    "exit": 1,
+    "otherLawsFailing": [],
+    "ms": 2400
+   },
+   {
+    "where": "import",
+    "at": "ts:packages/shp-checker/src/checker/iso-date.ts#isIsoCalendarDate",
+    "path": "packages/shp-checker/src/checker/iso-date.ts",
+    "mutant": {
+     "id": "constant:4→5@7:38",
+     "op": "constant:4→5",
+     "start": 261,
+     "end": 262,
+     "replacement": "5"
+    },
+    "killed": true,
+    "verdict": false,
+    "exit": 1,
+    "otherLawsFailing": [],
+    "ms": 2690
+   },
+   {
+    "where": "import",
+    "at": "ts:packages/shp-checker/src/checker/iso-date.ts#isIsoCalendarDate",
+    "path": "packages/shp-checker/src/checker/iso-date.ts",
+    "mutant": {
+     "id": "constant:8→9@9:34",
+     "op": "constant:8→9",
+     "start": 342,
+     "end": 343,
+     "replacement": "9"
+    },
+    "killed": true,
+    "verdict": false,
+    "exit": 1,
+    "otherLawsFailing": [],
+    "ms": 2489
+   },
+   {
+    "where": "import",
+    "at": "ts:packages/shp-checker/src/checker/iso-date.ts#isIsoCalendarDate",
+    "path": "packages/shp-checker/src/checker/iso-date.ts",
+    "mutant": {
+     "id": "constant:1→2@10:15",
+     "op": "constant:1→2",
+     "start": 365,
+     "end": 366,
+     "replacement": "2"
+    },
+    "killed": true,
+    "verdict": false,
+    "exit": 1,
+    "otherLawsFailing": [],
+    "ms": 2267
+   },
+   {
+    "where": "import",
+    "at": "ts:packages/shp-checker/src/checker/iso-date.ts#isIsoCalendarDate",
+    "path": "packages/shp-checker/src/checker/iso-date.ts",
+    "mutant": {
+     "id": "constant:12→13@10:28",
+     "op": "constant:12→13",
+     "start": 378,
+     "end": 380,
+     "replacement": "13"
+    },
+    "killed": true,
+    "verdict": false,
+    "exit": 1,
+    "otherLawsFailing": [],
+    "ms": 3040
+   },
+   {
+    "where": "import",
+    "at": "ts:packages/shp-checker/src/checker/iso-date.ts#isIsoCalendarDate",
+    "path": "packages/shp-checker/src/checker/iso-date.ts",
+    "mutant": {
+     "id": "constant:1→2@10:40",
+     "op": "constant:1→2",
+     "start": 390,
+     "end": 391,
+     "replacement": "2"
+    },
+    "killed": true,
+    "verdict": false,
+    "exit": 1,
+    "otherLawsFailing": [],
+    "ms": 2525
+   }
+  ]
+ }
+]

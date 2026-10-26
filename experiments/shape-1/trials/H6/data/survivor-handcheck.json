@@ -1,0 +1,19 @@
+{
+ "what": "12 evenly spaced survivors (of 78 law-test survivors in units that carry a tested law), read by hand: does the mutant change observable behaviour on some input the law's domain admits?",
+ "selection": "law-rows sorted by (unit, location, mutant id); index floor(i*78/12), i=0..11",
+ "rows": [
+  {"unit": "ShapeIncrementalChecker.check", "at": "normalizeDocuments", "mutant": "arithmetic:-→+@180:22", "code": "sorted[index - 1]?.filePath === sorted[index]?.filePath", "equivalent": false, "note": "duplicate-path detection compares with the next element instead of the previous; a duplicate pair at the end of the sorted list is missed"},
+  {"unit": "ShapeIncrementalChecker.check", "at": "IncrementalShapeChecker.check", "mutant": "boolean:false→true@107:19", "code": "ok: false, exitCode: 2", "equivalent": false, "note": "an error result reports ok: true; no law exercises the error path"},
+  {"unit": "ShapeChecker.checkShapeModules", "at": "checkShapeModules", "mutant": "boolean:false→true@44:65", "code": "{ ...normalizedOptions, includeFacts: false }", "equivalent": false, "note": "loosening check runs with facts included; result changes but stays deterministic, so CheckIsDeterministic cannot see it"},
+  {"unit": "ShapeChecker.inspectShapeModules", "at": "inspectRelations", "mutant": "arithmetic:-→+@294:47", "code": "left.index - right.index || compareJson(left, right)", "equivalent": false, "note": "comparator no longer orders by index; relation member order changes"},
+  {"unit": "ShapeChecker.inspectShapeModules", "at": "inspectShapeModules", "mutant": "constant:0→1@212:75", "code": "functions.reduce((count, fn) => count + fn.effects.length, 0)", "equivalent": false, "note": "summary effect count off by one"},
+  {"unit": "ShapeRuleEngine.checkFreshness", "at": "checkFreshness", "mutant": "logical:??→||@232:35", "code": "info.appliesTo ?? info.target", "equivalent": true, "note": "differs only when appliesTo is the empty string"},
+  {"unit": "ShapeRuleEngine.deriveFinalForbidsForResource", "at": "resourceRuleConditionCompatibility", "mutant": "negation:drop@316:7", "code": "if (!typeParam) return { kind: \"unresolved\" }", "equivalent": false, "note": "rule-based (when R has T) final forbids resolve the wrong way; the three laws exercise trait-attached final forbids only"},
+  {"unit": "ShapeRuleEngine.deriveFinalForbidsForResource", "at": "deriveFinalForbidsForResource", "mutant": "equality:===→!==@371:64", "code": "resourceRuleConditionCompatibility(when, model).kind === \"compatible\"", "equivalent": false, "note": "same rule-based path"},
+  {"unit": "ShapeRuleEngine.findHypercycle", "at": "compareTraversalPaths", "mutant": "constant:0→1@556:20", "code": "for (let index = 0; index < leftVertices.length; ...)", "equivalent": false, "note": "tie-break skips the first vertex; witness choice changes when paths differ only there"},
+  {"unit": "ShapeRuleEngine.findShortestPath", "at": "validPathHyperedges", "mutant": "logical:&&→||@347:38", "code": "model.components.has(provider) && model.resources.has(target)", "equivalent": false, "note": "accepts provides hyperedges with an unknown endpoint"},
+  {"unit": "ShapeAuthoring.generateShapeUpdateDraft", "at": "uniqueFunctionName", "mutant": "constant:1→2@185:12", "code": ".split(\"/\").at(-1)", "equivalent": false, "note": "takes the directory name instead of the file name"},
+  {"unit": "ShapeAuthoring.generateShapeUpdateDraft", "at": "generateShapeUpdateDraft", "mutant": "constant:0→1@137:58", "code": "input.includeMemoryGuardScaffold && changedFunctions[0]", "equivalent": false, "note": "scaffold omitted when exactly one function changed"}
+ ],
+ "result": {"sampled": 12, "behaviourChanging": 11, "equivalentOrNearEquivalent": 1}
+}

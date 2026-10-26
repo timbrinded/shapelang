@@ -1,0 +1,1542 @@
+[
+ {
+  "id": "S01",
+  "cat": "S",
+  "kind": "drift",
+  "title": "ShapeAnalyzer calls ShapeChecker directly (AnalyzerStaysAdvisory path)",
+  "expect": {
+   "A": [
+    {
+     "kind": "contradiction",
+     "claim": [
+      "AnalyzerStaysAdvisory"
+     ]
+    }
+   ],
+   "X": [
+    {
+     "kind": "contradiction",
+     "claim": [
+      "AnalyzerStaysAdvisory",
+      "ShapeAnalyzer"
+     ]
+    }
+   ]
+  },
+  "predict": {
+   "A": "hit",
+   "X": "hit"
+  }
+ },
+ {
+  "id": "S02",
+  "cat": "S",
+  "kind": "drift",
+  "title": "ShapeAnalyzer calls ShapeEditorServices, which calls ShapeChecker (2-hop forbidden path)",
+  "expect": {
+   "A": [
+    {
+     "kind": "contradiction",
+     "claim": [
+      "AnalyzerStaysAdvisory"
+     ]
+    }
+   ],
+   "X": [
+    {
+     "kind": "contradiction",
+     "claim": [
+      "AnalyzerStaysAdvisory",
+      "ShapeAnalyzer"
+     ]
+    }
+   ]
+  },
+  "predict": {
+   "A": "hit",
+   "X": "hit"
+  }
+ },
+ {
+  "id": "S03",
+  "cat": "S",
+  "kind": "drift",
+  "title": "ShpCli runs the Rust semantic kernel as a subprocess (cross-language call into ExperimentalSemanticKernel)",
+  "expect": {
+   "A": [
+    {
+     "kind": "contradiction",
+     "claim": [
+      "ExperimentalSemanticKernelIsolation"
+     ]
+    }
+   ]
+  },
+  "predict": {
+   "A": "miss (no observer of process-level calls)",
+   "X": "miss"
+  }
+ },
+ {
+  "id": "S04",
+  "cat": "S",
+  "kind": "drift",
+  "title": "ShpCli calls the kernel harness (declared Harness->Kernel completes a forbidden path to the kernel)",
+  "expect": {
+   "A": [
+    {
+     "kind": "contradiction",
+     "claim": [
+      "ExperimentalSemanticKernelIsolation"
+     ]
+    }
+   ],
+   "X": [
+    {
+     "kind": "contradiction",
+     "claim": [
+      "ExperimentalSemanticKernelIsolation",
+      "ShpCli"
+     ]
+    }
+   ]
+  },
+  "predict": {
+   "A": "hit",
+   "X": "hit"
+  }
+ },
+ {
+  "id": "S05",
+  "cat": "S",
+  "kind": "drift",
+  "title": "ShapeGrammar calls ShapeParser (new calls cycle Grammar<->Parser)",
+  "expect": {
+   "A": [
+    {
+     "kind": "contradiction",
+     "claim": [
+      "no_runtime_dependency_cycles"
+     ],
+     "at": "ShapeGrammar"
+    }
+   ],
+   "X": [
+    {
+     "kind": "contradiction",
+     "claim": [
+      "no_runtime_dependency_cycles",
+      "ShapeGrammar"
+     ],
+     "at": "ShapeParser"
+    }
+   ]
+  },
+  "predict": {
+   "A": "hit",
+   "X": "hit"
+  }
+ },
+ {
+  "id": "S06",
+  "cat": "S",
+  "kind": "drift",
+  "title": "ShapeStringHelpers calls ShapeFormatter (new calls cycle)",
+  "expect": {
+   "A": [
+    {
+     "kind": "contradiction",
+     "claim": [
+      "no_runtime_dependency_cycles"
+     ],
+     "at": "ShapeStringHelpers"
+    }
+   ],
+   "X": [
+    {
+     "kind": "contradiction",
+     "claim": [
+      "no_runtime_dependency_cycles",
+      "ShapeStringHelpers"
+     ],
+     "at": "ShapeFormatter"
+    }
+   ]
+  },
+  "predict": {
+   "A": "hit",
+   "X": "hit"
+  }
+ },
+ {
+  "id": "S07",
+  "cat": "S",
+  "kind": "drift",
+  "title": "ShapeDiagnostics calls ShapeChecker (joins the existing checker SCC)",
+  "expect": {
+   "A": [
+    {
+     "kind": "contradiction",
+     "claim": [
+      "no_runtime_dependency_cycles"
+     ],
+     "at": "ShapeDiagnostics"
+    }
+   ],
+   "X": [
+    {
+     "kind": "contradiction",
+     "claim": [
+      "no_runtime_dependency_cycles",
+      "ShapeDiagnostics"
+     ],
+     "at": "ShapeChecker"
+    }
+   ]
+  },
+  "predict": {
+   "A": "hit",
+   "X": "hit"
+  }
+ },
+ {
+  "id": "S08",
+  "cat": "S",
+  "kind": "drift",
+  "title": "ShapeRuleEngine calls ShapeBindings (undeclared edge inside the existing checker SCC)",
+  "expect": {
+   "A": [
+    {
+     "kind": "contradiction",
+     "claim": [
+      "no_runtime_dependency_cycles"
+     ]
+    }
+   ],
+   "X": [
+    {
+     "kind": "contradiction",
+     "claim": [
+      "ShapeRuleEngine"
+     ],
+     "at": "ShapeBindings"
+    }
+   ]
+  },
+  "predict": {
+   "A": "hit (new fact in the SCC's support)",
+   "X": "hit"
+  }
+ },
+ {
+  "id": "S09",
+  "cat": "S",
+  "kind": "drift",
+  "title": "ShapeAuthoring calls ShapeFormatter (undeclared, no forbid covers it)",
+  "expect": {
+   "X": [
+    {
+     "kind": "contradiction",
+     "claim": [
+      "ShapeAuthoring"
+     ],
+     "at": "ShapeFormatter"
+    }
+   ]
+  },
+  "predict": {
+   "A": "miss (no claim excludes the edge)",
+   "X": "hit"
+  }
+ },
+ {
+  "id": "S10",
+  "cat": "S",
+  "kind": "drift",
+  "title": "ShapeLanguageServer calls ShapeParser (undeclared, no forbid covers it)",
+  "expect": {
+   "X": [
+    {
+     "kind": "contradiction",
+     "claim": [
+      "ShapeLanguageServer"
+     ],
+     "at": "ShapeParser"
+    }
+   ]
+  },
+  "predict": {
+   "A": "miss (no claim excludes the edge)",
+   "X": "hit"
+  }
+ },
+ {
+  "id": "S11",
+  "cat": "S",
+  "kind": "drift",
+  "title": "ShapeEditorServices calls ShapeAnalyzer (undeclared, no forbid covers it)",
+  "expect": {
+   "X": [
+    {
+     "kind": "contradiction",
+     "claim": [
+      "ShapeEditorServices"
+     ],
+     "at": "ShapeAnalyzer"
+    }
+   ]
+  },
+  "predict": {
+   "A": "miss (no claim excludes the edge)",
+   "X": "hit"
+  }
+ },
+ {
+  "id": "S12",
+  "cat": "S",
+  "kind": "drift",
+  "title": "ExperimentalSemanticKernelHarness calls ShapeFormatter (undeclared, low tier)",
+  "expect": {
+   "X": [
+    {
+     "kind": "contradiction",
+     "claim": [
+      "ExperimentalSemanticKernelHarness"
+     ],
+     "at": "ShapeFormatter"
+    }
+   ]
+  },
+  "predict": {
+   "A": "miss (no claim excludes the edge)",
+   "X": "hit"
+  }
+ },
+ {
+  "id": "R01",
+  "cat": "R",
+  "kind": "drift",
+  "title": "ShapeChecker stops calling ShapeBindings (relation ShapeCheckerUsesBindings no longer realised)",
+  "expect": {
+   "A": [
+    {
+     "kind": "contradiction",
+     "claim": [
+      "ShapeCheckerUsesBindings"
+     ]
+    }
+   ]
+  },
+  "predict": {
+   "A": "miss (refutation needs an absence-sound call observer)",
+   "X": "hit (refuted)"
+  }
+ },
+ {
+  "id": "R02",
+  "cat": "R",
+  "kind": "drift",
+  "title": "ShapeEditorServices.formatOnSave stops calling ShapeFormatter (ShapeEditorUsesFormatter)",
+  "expect": {
+   "A": [
+    {
+     "kind": "contradiction",
+     "claim": [
+      "ShapeEditorUsesFormatter"
+     ]
+    }
+   ]
+  },
+  "predict": {
+   "A": "miss",
+   "X": "hit (refuted)"
+  }
+ },
+ {
+  "id": "R03",
+  "cat": "R",
+  "kind": "drift",
+  "title": "shp fmt stops calling ShapeFormatter (ShpCliUsesFormatter)",
+  "expect": {
+   "A": [
+    {
+     "kind": "contradiction",
+     "claim": [
+      "ShpCliUsesFormatter"
+     ]
+    }
+   ]
+  },
+  "predict": {
+   "A": "miss",
+   "X": "hit (refuted)"
+  }
+ },
+ {
+  "id": "R04",
+  "cat": "R",
+  "kind": "drift",
+  "title": "ShapeRuleEngine inlines isReevaluationRequirement (ShapeRuleEngineUsesPreludeRegistry, behaviour kept)",
+  "expect": {
+   "A": [
+    {
+     "kind": "contradiction",
+     "claim": [
+      "ShapeRuleEngineUsesPreludeRegistry"
+     ]
+    }
+   ]
+  },
+  "predict": {
+   "A": "miss",
+   "X": "hit (refuted)"
+  }
+ },
+ {
+  "id": "R05",
+  "cat": "R",
+  "kind": "drift",
+  "title": "ShapeAuthoring inlines isReevaluationRequirement (ShapeAuthoringUsesPreludeRegistry, behaviour kept)",
+  "expect": {
+   "A": [
+    {
+     "kind": "contradiction",
+     "claim": [
+      "ShapeAuthoringUsesPreludeRegistry"
+     ]
+    }
+   ]
+  },
+  "predict": {
+   "A": "miss",
+   "X": "hit (refuted)"
+  }
+ },
+ {
+  "id": "R06",
+  "cat": "R",
+  "kind": "drift",
+  "title": "ShapeIncrementalChecker stops calling compareCodepointStrings (ShapeIncrementalCheckerUsesStringHelpers)",
+  "expect": {
+   "A": [
+    {
+     "kind": "contradiction",
+     "claim": [
+      "ShapeIncrementalCheckerUsesStringHelpers"
+     ]
+    }
+   ]
+  },
+  "predict": {
+   "A": "miss",
+   "X": "hit (refuted)"
+  }
+ },
+ {
+  "id": "R07",
+  "cat": "R",
+  "kind": "drift",
+  "title": "shp lsp stops starting the language server (ShpCliUsesLanguageServer)",
+  "expect": {
+   "A": [
+    {
+     "kind": "contradiction",
+     "claim": [
+      "ShpCliUsesLanguageServer"
+     ]
+    }
+   ]
+  },
+  "predict": {
+   "A": "miss",
+   "X": "hit (refuted)"
+  }
+ },
+ {
+  "id": "E01",
+  "cat": "E",
+  "kind": "drift",
+  "title": "Date.now() in ShapeRuleEngine.checkFreshness (CheckerNeverReadsClock, critical)",
+  "expect": {
+   "A": [
+    {
+     "kind": "contradiction",
+     "claim": [
+      "CheckerNeverReadsClock",
+      "checkFreshness/effects.upper",
+      "ShapeRuleEngine"
+     ],
+     "at": "guards.ts#checkFreshness"
+    }
+   ]
+  },
+  "predict": {
+   "A": "hit",
+   "X": "hit"
+  }
+ },
+ {
+  "id": "E02",
+  "cat": "E",
+  "kind": "drift",
+  "title": "new Date() in ShapeModelLowerer.lowerChange",
+  "expect": {
+   "A": [
+    {
+     "kind": "contradiction",
+     "claim": [
+      "CheckerNeverReadsClock",
+      "lowerChange/effects.upper",
+      "ShapeModelLowerer"
+     ],
+     "at": "changes.ts#lowerChange"
+    }
+   ]
+  },
+  "predict": {
+   "A": "hit",
+   "X": "hit"
+  }
+ },
+ {
+  "id": "E03",
+  "cat": "E",
+  "kind": "drift",
+  "title": "performance.now() in a ShapeStringHelpers helper no unit binds (normalizeShapePath)",
+  "expect": {
+   "A": [
+    {
+     "kind": "contradiction",
+     "claim": [
+      "CheckerNeverReadsClock",
+      "ShapeStringHelpers"
+     ],
+     "at": "shape-strings.ts#normalizeShapePath"
+    }
+   ]
+  },
+  "predict": {
+   "A": "hit",
+   "X": "hit"
+  }
+ },
+ {
+  "id": "E04",
+  "cat": "E",
+  "kind": "drift",
+  "title": "process.hrtime() in ShapeDiagnostics.compareShapeDiagnostics",
+  "expect": {
+   "A": [
+    {
+     "kind": "contradiction",
+     "claim": [
+      "CheckerNeverReadsClock",
+      "compareShapeDiagnostics/effects.upper",
+      "ShapeDiagnostics"
+     ],
+     "at": "diagnostics.ts#compareShapeDiagnostics"
+    }
+   ]
+  },
+  "predict": {
+   "A": "hit",
+   "X": "hit"
+  }
+ },
+ {
+  "id": "E05",
+  "cat": "E",
+  "kind": "drift",
+  "title": "Date.now() in the IncrementalShapeChecker.check method",
+  "expect": {
+   "A": [
+    {
+     "kind": "contradiction",
+     "claim": [
+      "CheckerNeverReadsClock",
+      "ShapeIncrementalChecker"
+     ],
+     "at": "incremental.ts#IncrementalShapeChecker.check"
+    }
+   ]
+  },
+  "predict": {
+   "A": "hit",
+   "X": "hit"
+  }
+ },
+ {
+  "id": "E06",
+  "cat": "E",
+  "kind": "drift",
+  "title": "Date.now() in ShapeFormatter.formatShapeModule (ClockReadOnlyAtCliBoundary, normal)",
+  "expect": {
+   "A": [
+    {
+     "kind": "contradiction",
+     "claim": [
+      "ClockReadOnlyAtCliBoundary",
+      "formatShapeModule/effects.upper",
+      "ShapeFormatter"
+     ],
+     "at": "formatter.ts#formatShapeModule"
+    }
+   ]
+  },
+  "predict": {
+   "A": "hit",
+   "X": "hit"
+  }
+ },
+ {
+  "id": "E07",
+  "cat": "E",
+  "kind": "drift",
+  "title": "performance.now() in ShapeAnalyzer.analyzeSourceText",
+  "expect": {
+   "A": [
+    {
+     "kind": "contradiction",
+     "claim": [
+      "ClockReadOnlyAtCliBoundary",
+      "analyzeSourceText/effects.upper",
+      "ShapeAnalyzer"
+     ],
+     "at": "analyzer.ts#analyzeSourceText"
+    }
+   ]
+  },
+  "predict": {
+   "A": "hit",
+   "X": "hit"
+  }
+ },
+ {
+  "id": "E08",
+  "cat": "E",
+  "kind": "drift",
+  "title": "Date.now() in ShpCli inspect (granted at the CLI, but forbidden outside isoToday and main)",
+  "expect": {
+   "A": [
+    {
+     "kind": "contradiction",
+     "claim": [
+      "ClockReadOnlyAtCliBoundary",
+      "inspectShapeModel/effects.upper"
+     ],
+     "at": "inspect/impl.ts#inspect"
+    }
+   ]
+  },
+  "predict": {
+   "A": "hit",
+   "X": "hit"
+  }
+ },
+ {
+  "id": "E09",
+  "cat": "E",
+  "kind": "drift",
+  "title": "new Date() at top level of a DocsSite script test (authority, low tier)",
+  "expect": {
+   "A": [
+    {
+     "kind": "contradiction",
+     "claim": [
+      "DocsSite"
+     ],
+     "at": "verify-shape-blocks.test.ts"
+    }
+   ]
+  },
+  "predict": {
+   "A": "hit",
+   "X": "hit"
+  }
+ },
+ {
+  "id": "E10",
+  "cat": "E",
+  "kind": "drift",
+  "title": "Date.now() in ShapeParser.parseShapeModule",
+  "expect": {
+   "A": [
+    {
+     "kind": "contradiction",
+     "claim": [
+      "ClockReadOnlyAtCliBoundary",
+      "parseShapeModule/effects.upper",
+      "ShapeParser"
+     ],
+     "at": "parser.ts#parseShapeModule"
+    }
+   ]
+  },
+  "predict": {
+   "A": "hit",
+   "X": "hit"
+  }
+ },
+ {
+  "id": "E11",
+  "cat": "E",
+  "kind": "drift",
+  "title": "Date.now() in ShapePreludeRegistry.isReevaluationRequirement",
+  "expect": {
+   "A": [
+    {
+     "kind": "contradiction",
+     "claim": [
+      "CheckerNeverReadsClock",
+      "isReevaluationRequirement/effects.upper",
+      "ShapePreludeRegistry"
+     ],
+     "at": "prelude.ts#isReevaluationRequirement"
+    }
+   ]
+  },
+  "predict": {
+   "A": "hit",
+   "X": "hit"
+  }
+ },
+ {
+  "id": "E12",
+  "cat": "E",
+  "kind": "drift",
+  "title": "Clock read through an alias (const clock = Date; clock.now()) in ShapeChecker.staleAttestationPruner",
+  "expect": {
+   "A": [
+    {
+     "kind": "contradiction",
+     "claim": [
+      "CheckerNeverReadsClock",
+      "staleAttestationPruner/effects.upper",
+      "ShapeChecker"
+     ],
+     "at": "api.ts"
+    },
+    {
+     "kind": "coverage",
+     "at": "api.ts"
+    }
+   ]
+  },
+  "predict": {
+   "A": "coverage only (the scan marks the file incomplete, no fact)",
+   "X": "coverage only"
+  }
+ },
+ {
+  "id": "E13",
+  "cat": "E",
+  "kind": "drift",
+  "title": "ShapeChecker.explainShapeModules calls ShpCli.isoToday (clock read reached through a call)",
+  "expect": {
+   "A": [
+    {
+     "kind": "contradiction",
+     "claim": [
+      "explainShapeModules/effects.upper"
+     ],
+     "at": "freshness.ts#isoToday"
+    },
+    {
+     "kind": "contradiction",
+     "claim": [
+      "no_runtime_dependency_cycles"
+     ],
+     "at": "ShpCli"
+    }
+   ]
+  },
+  "predict": {
+   "A": "hit (summary contradiction via a call hop, plus a cycle)",
+   "X": "hit"
+  }
+ },
+ {
+  "id": "E14",
+  "cat": "E",
+  "kind": "drift",
+  "title": "New ShapeRuleEngine helper reads Date.now(); checkCoverage calls it",
+  "expect": {
+   "A": [
+    {
+     "kind": "contradiction",
+     "claim": [
+      "CheckerNeverReadsClock",
+      "ShapeRuleEngine"
+     ],
+     "at": "coverage.ts#coverageClock"
+    },
+    {
+     "kind": "contradiction",
+     "claim": [
+      "checkCoverage/effects.upper"
+     ]
+    }
+   ]
+  },
+  "predict": {
+   "A": "hit",
+   "X": "hit"
+  }
+ },
+ {
+  "id": "E15",
+  "cat": "E",
+  "kind": "drift",
+  "title": "globalThis.Date.now() in ShapeBindings.checkBindings",
+  "expect": {
+   "A": [
+    {
+     "kind": "contradiction",
+     "claim": [
+      "CheckerNeverReadsClock",
+      "checkBindings/effects.upper",
+      "ShapeBindings"
+     ],
+     "at": "coverage.ts#checkBindings"
+    }
+   ]
+  },
+  "predict": {
+   "A": "hit",
+   "X": "hit"
+  }
+ },
+ {
+  "id": "E16",
+  "cat": "E",
+  "kind": "drift",
+  "title": "performance.now() in ExperimentalSemanticKernelHarness.createKernelRequestV1 (low tier)",
+  "expect": {
+   "A": [
+    {
+     "kind": "contradiction",
+     "claim": [
+      "ExperimentalSemanticKernelHarness"
+     ],
+     "at": "protocol.ts#createKernelRequestV1"
+    }
+   ]
+  },
+  "predict": {
+   "A": "hit",
+   "X": "hit"
+  }
+ },
+ {
+  "id": "E17",
+  "cat": "E",
+  "kind": "drift",
+  "title": "ShapeFormatter writes a .shape file (Write<ShapeSource>, fs.path resource code; ungranted)",
+  "expect": {
+   "A": [
+    {
+     "kind": "contradiction",
+     "claim": [
+      "ShapeFormatter",
+      "formatShapeModule/effects.upper"
+     ],
+     "at": "formatter.ts#formatShapeModule"
+    }
+   ]
+  },
+  "predict": {
+   "A": "miss (no fs.path observer); coverage at most",
+   "X": "miss"
+  }
+ },
+ {
+  "id": "E18",
+  "cat": "E",
+  "kind": "drift",
+  "title": "new Date() in ShapeAuthoring.generateShapeUpdateDraft",
+  "expect": {
+   "A": [
+    {
+     "kind": "contradiction",
+     "claim": [
+      "ClockReadOnlyAtCliBoundary",
+      "generateShapeUpdateDraft/effects.upper",
+      "ShapeAuthoring"
+     ],
+     "at": "authoring.ts#generateShapeUpdateDraft"
+    }
+   ]
+  },
+  "predict": {
+   "A": "hit",
+   "X": "hit"
+  }
+ },
+ {
+  "id": "M01",
+  "cat": "M",
+  "kind": "drift",
+  "title": "Move checkFreshness to a new file in ShapeRuleEngine (rules/freshness.ts)",
+  "expect": {
+   "A": [
+    {
+     "kind": "error",
+     "code": "E-unbound",
+     "at": "checkFreshness"
+    }
+   ]
+  },
+  "predict": {
+   "A": "hit (E-unbound)",
+   "X": "hit"
+  }
+ },
+ {
+  "id": "M02",
+  "cat": "M",
+  "kind": "drift",
+  "title": "Move unquoteShapeString from ShapeStringHelpers into formatter.ts (ShapeFormatter), re-exported",
+  "expect": {
+   "A": [
+    {
+     "kind": "error",
+     "code": "E-unbound",
+     "at": "unquoteShapeString"
+    }
+   ]
+  },
+  "predict": {
+   "A": "hit (E-unbound)",
+   "X": "hit"
+  }
+ },
+ {
+  "id": "M03",
+  "cat": "M",
+  "kind": "drift",
+  "title": "Move replaceWindowsBinary (clock read under exception UpdateTempTokenReadsClock) to update/windows.ts",
+  "expect": {
+   "A": [
+    {
+     "kind": "contradiction",
+     "claim": [
+      "ClockReadOnlyAtCliBoundary"
+     ],
+     "at": "windows.ts#replaceWindowsBinary"
+    }
+   ]
+  },
+  "predict": {
+   "A": "hit (the exception names the old identity, so the moved read is new and unmatched)",
+   "X": "hit"
+  }
+ },
+ {
+  "id": "M04",
+  "cat": "M",
+  "kind": "drift",
+  "title": "Move isoToday (the excepted clock reader) into shape-files.ts, re-exported from freshness.ts",
+  "expect": {
+   "A": [
+    {
+     "kind": "error",
+     "code": "E-unbound",
+     "at": "isoToday"
+    },
+    {
+     "kind": "contradiction",
+     "claim": [
+      "ClockReadOnlyAtCliBoundary"
+     ],
+     "at": "shape-files.ts#isoToday"
+    }
+   ]
+  },
+  "predict": {
+   "A": "hit (E-unbound and a new clock contradiction)",
+   "X": "hit"
+  }
+ },
+ {
+  "id": "M05",
+  "cat": "M",
+  "kind": "drift",
+  "title": "Move isReevaluationRequirement out of ShapePreludeRegistry into an ungoverned file, re-exported",
+  "expect": {
+   "A": [
+    {
+     "kind": "error",
+     "code": "E-unbound",
+     "at": "isReevaluationRequirement"
+    }
+   ]
+  },
+  "predict": {
+   "A": "hit (E-unbound)",
+   "X": "hit"
+  }
+ },
+ {
+  "id": "M06",
+  "cat": "M",
+  "kind": "drift",
+  "title": "Move getEditorDiagnostics (calls the checker) from ShapeEditorServices into analyzer-shape.ts",
+  "expect": {
+   "A": [
+    {
+     "kind": "error",
+     "code": "E-unbound",
+     "at": "getEditorDiagnostics"
+    },
+    {
+     "kind": "contradiction",
+     "claim": [
+      "AnalyzerStaysAdvisory"
+     ]
+    }
+   ]
+  },
+  "predict": {
+   "A": "hit (E-unbound and the forbidden path)",
+   "X": "hit"
+  }
+ },
+ {
+  "id": "N01",
+  "cat": "N",
+  "kind": "drift",
+  "title": "Rename checkCoverage -> checkCoverageRules (all TS references)",
+  "expect": {
+   "A": [
+    {
+     "kind": "error",
+     "code": "E-unbound",
+     "at": "checkCoverage"
+    }
+   ]
+  },
+  "predict": {
+   "A": "hit (E-unbound)",
+   "X": "hit"
+  }
+ },
+ {
+  "id": "N02",
+  "cat": "N",
+  "kind": "drift",
+  "title": "Rename formatShapeModule -> formatShapeModuleText (all TS references)",
+  "expect": {
+   "A": [
+    {
+     "kind": "error",
+     "code": "E-unbound",
+     "at": "formatShapeModule"
+    }
+   ]
+  },
+  "predict": {
+   "A": "hit (E-unbound)",
+   "X": "hit"
+  }
+ },
+ {
+  "id": "N03",
+  "cat": "N",
+  "kind": "drift",
+  "title": "Rename isoToday -> currentIsoDay (the clock exception names the unit)",
+  "expect": {
+   "A": [
+    {
+     "kind": "error",
+     "code": "E-unbound",
+     "at": "isoToday"
+    },
+    {
+     "kind": "contradiction",
+     "claim": [
+      "ClockReadOnlyAtCliBoundary"
+     ],
+     "at": "freshness.ts#currentIsoDay"
+    }
+   ]
+  },
+  "predict": {
+   "A": "hit (E-unbound and a new clock contradiction)",
+   "X": "hit"
+  }
+ },
+ {
+  "id": "N04",
+  "cat": "N",
+  "kind": "drift",
+  "title": "Rename type RawAstFile -> RawSyntaxFile (resource SourceSyntaxTree binds ts.type(...#RawAstFile))",
+  "expect": {
+   "A": [
+    {
+     "kind": "error",
+     "at": "RawAstFile"
+    },
+    {
+     "kind": "error",
+     "at": "SourceSyntaxTree"
+    }
+   ]
+  },
+  "predict": {
+   "A": "miss (resource codes are not checked against the manifest)",
+   "X": "miss"
+  }
+ },
+ {
+  "id": "N05",
+  "cat": "N",
+  "kind": "drift",
+  "title": "Rename file prelude.ts -> prelude-registry.ts (ShapePreludeRegistry's literal path glob)",
+  "expect": {
+   "A": [
+    {
+     "kind": "error",
+     "code": "E-unbound",
+     "at": "ShapePreludeRegistry"
+    }
+   ]
+  },
+  "predict": {
+   "A": "hit (E-unbound)",
+   "X": "hit"
+  }
+ },
+ {
+  "id": "N06",
+  "cat": "N",
+  "kind": "drift",
+  "title": "Rename compareAnalyzerHintsToShape -> compareHintsToShape (all TS references)",
+  "expect": {
+   "A": [
+    {
+     "kind": "error",
+     "code": "E-unbound",
+     "at": "compareAnalyzerHintsToShape"
+    }
+   ]
+  },
+  "predict": {
+   "A": "hit (E-unbound)",
+   "X": "hit"
+  }
+ },
+ {
+  "id": "N07",
+  "cat": "N",
+  "kind": "drift",
+  "title": "Rename docs page reference/cli.md -> reference/cli-reference.md (law CliDocumented names the file)",
+  "expect": {
+   "A": [
+    {
+     "kind": "error",
+     "at": "cli.md"
+    },
+    {
+     "kind": "unestablished",
+     "claim": [
+      "CliDocumented"
+     ]
+    }
+   ]
+  },
+  "predict": {
+   "A": "unclear",
+   "X": "unclear"
+  }
+ },
+ {
+  "id": "L01",
+  "cat": "L",
+  "kind": "drift",
+  "title": "formatShapeModule stops sorting declarations (FormatterIdempotent: order changes the output)",
+  "expect": {
+   "A": [
+    {
+     "kind": "contradiction",
+     "claim": [
+      "FormatterIdempotent"
+     ]
+    }
+   ]
+  },
+  "predict": {
+   "A": "hit",
+   "X": "hit"
+  }
+ },
+ {
+  "id": "L02",
+  "cat": "L",
+  "kind": "drift",
+  "title": "checkFreshness enforces non-ISO review_by values (FreshnessEnforcesOnlyIsoDates)",
+  "expect": {
+   "A": [
+    {
+     "kind": "contradiction",
+     "claim": [
+      "FreshnessEnforcesOnlyIsoDates"
+     ]
+    }
+   ]
+  },
+  "predict": {
+   "A": "hit",
+   "X": "hit"
+  }
+ },
+ {
+  "id": "L03",
+  "cat": "L",
+  "kind": "drift",
+  "title": "inspectShapeModules reverses document order (InspectionCodepointOrder, change inside the law's unit)",
+  "expect": {
+   "A": [
+    {
+     "kind": "contradiction",
+     "claim": [
+      "InspectionCodepointOrder"
+     ]
+    }
+   ]
+  },
+  "predict": {
+   "A": "hit",
+   "X": "hit"
+  }
+ },
+ {
+  "id": "L04",
+  "cat": "L",
+  "kind": "drift",
+  "title": "compareCodepointStrings made locale-aware (InspectionCodepointOrder, change in a cross-file dependency)",
+  "expect": {
+   "A": [
+    {
+     "kind": "contradiction",
+     "claim": [
+      "InspectionCodepointOrder"
+     ]
+    }
+   ]
+  },
+  "predict": {
+   "A": "contradiction raised but preexisting (Req is the law's unit, not its dependencies)",
+   "X": "same"
+  }
+ },
+ {
+  "id": "L05",
+  "cat": "L",
+  "kind": "drift",
+  "title": "normalizeShapeSourcePath keeps the line suffix (SourcePathRulesShared, change inside the unit)",
+  "expect": {
+   "A": [
+    {
+     "kind": "contradiction",
+     "claim": [
+      "SourcePathRulesShared"
+     ]
+    }
+   ]
+  },
+  "predict": {
+   "A": "hit",
+   "X": "hit"
+  }
+ },
+ {
+  "id": "L06",
+  "cat": "L",
+  "kind": "drift",
+  "title": "normalizeShapePath stops stripping './' (SourcePathRulesShared, change in a same-file callee)",
+  "expect": {
+   "A": [
+    {
+     "kind": "contradiction",
+     "claim": [
+      "SourcePathRulesShared"
+     ]
+    }
+   ]
+  },
+  "predict": {
+   "A": "hit if the unit digest's environment includes same-file callees",
+   "X": "same"
+  }
+ },
+ {
+  "id": "L07",
+  "cat": "L",
+  "kind": "drift",
+  "title": "Update drafts claim empty complete summaries (UpdateDraftsPreferUnknown, change in a same-file helper)",
+  "expect": {
+   "A": [
+    {
+     "kind": "contradiction",
+     "claim": [
+      "UpdateDraftsPreferUnknown"
+     ]
+    }
+   ]
+  },
+  "predict": {
+   "A": "hit if same-file callees move the unit digest",
+   "X": "same"
+  }
+ },
+ {
+  "id": "L08",
+  "cat": "L",
+  "kind": "drift",
+  "title": "checkLoweredShapeModel stops sorting diagnostics (CheckIsDeterministic on checkShapeModules, same-file callee; guarded unit)",
+  "expect": {
+   "A": [
+    {
+     "kind": "contradiction",
+     "claim": [
+      "CheckIsDeterministic"
+     ]
+    },
+    {
+     "kind": "unestablished",
+     "claim": [
+      "checkLoweredShapeModel/RefactorSensitive"
+     ]
+    }
+   ]
+  },
+  "predict": {
+   "A": "guard obligation; law contradiction if the test sees it",
+   "X": "same, guard stale"
+  }
+ },
+ {
+  "id": "L09",
+  "cat": "L",
+  "kind": "drift",
+  "title": "IncrementalShapeChecker.check never reuses diagnostics (IncrementalReusesDiagnosticsOnNoop)",
+  "expect": {
+   "A": [
+    {
+     "kind": "contradiction",
+     "claim": [
+      "IncrementalReusesDiagnosticsOnNoop"
+     ]
+    }
+   ]
+  },
+  "predict": {
+   "A": "hit",
+   "X": "hit"
+  }
+ },
+ {
+  "id": "L10",
+  "cat": "L",
+  "kind": "drift",
+  "title": "checkLoweredShapeModel runs binding checks before semantic rules (RefactorSensitive memory: pipeline order)",
+  "expect": {
+   "A": [
+    {
+     "kind": "unestablished",
+     "claim": [
+      "checkLoweredShapeModel/RefactorSensitive"
+     ]
+    }
+   ]
+  },
+  "predict": {
+   "A": "hit (guard, reason missing: no base judgment)",
+   "X": "hit (guard, reason stale)"
+  }
+ },
+ {
+  "id": "L11",
+  "cat": "L",
+  "kind": "drift",
+  "title": "checkGuardedChanges reports nothing (untested Property laws GuardsFirePropertyLevel and siblings)",
+  "expect": {
+   "A": [
+    {
+     "kind": "unestablished",
+     "claim": [
+      "GuardsFirePropertyLevel",
+      "TransformGuardsFireOnMatchingTransform",
+      "OtherGuardTargetsUseCoarseMatching",
+      "GuardsNeverWaiveFinalForbids",
+      "checkGuardedChanges/RefactorSensitive"
+     ]
+    }
+   ]
+  },
+  "predict": {
+   "A": "hit (unestablished, introduced)",
+   "X": "hit"
+  }
+ },
+ {
+  "id": "L12",
+  "cat": "L",
+  "kind": "drift",
+  "title": "normalizeShapeSourcePath drops only short line suffixes (SourcePathRulesShared broken outside the sampled spellings)",
+  "expect": {
+   "A": [
+    {
+     "kind": "contradiction",
+     "claim": [
+      "SourcePathRulesShared"
+     ]
+    }
+   ]
+  },
+  "predict": {
+   "A": "miss (the generator only spells :12 and :3-9)",
+   "X": "miss"
+  }
+ },
+ {
+  "id": "C00",
+  "cat": "C",
+  "kind": "control",
+  "title": "No edit (baseline)",
+  "expect": {},
+  "predict": {
+   "A": "nothing"
+  }
+ },
+ {
+  "id": "C01",
+  "cat": "C",
+  "kind": "control",
+  "title": "Comment-only edit inside ShapeRuleEngine.checkCoverage",
+  "expect": {},
+  "predict": {
+   "A": "nothing (inert comments do not move digests)"
+  }
+ },
+ {
+  "id": "C02",
+  "cat": "C",
+  "kind": "control",
+  "title": "Formatting-only edit of checkFreshness (line breaks, blank line)",
+  "expect": {},
+  "predict": {
+   "A": "nothing (digests ignore formatting)"
+  }
+ },
+ {
+  "id": "C03",
+  "cat": "C",
+  "kind": "control",
+  "title": "README edit",
+  "expect": {},
+  "predict": {
+   "A": "nothing"
+  }
+ },
+ {
+  "id": "C04",
+  "cat": "C",
+  "kind": "control",
+  "title": "Rename a local variable in ShapeFormatter.formatShapeModule (chunks -> parts)",
+  "expect": {},
+  "predict": {
+   "A": "no drift obligation; coverage on ShapeFormatter (call(ts) unobserved)"
+  }
+ },
+ {
+  "id": "C05",
+  "cat": "C",
+  "kind": "control",
+  "title": "Extract the line-suffix regex of normalizeShapeSourcePath into a module constant",
+  "expect": {},
+  "predict": {
+   "A": "no drift obligation; coverage on ShapeStringHelpers"
+  }
+ },
+ {
+  "id": "C06",
+  "cat": "C",
+  "kind": "control",
+  "title": "Swap the order of two top-level functions in shape-strings.ts",
+  "expect": {},
+  "predict": {
+   "A": "nothing or file-level coverage only"
+  }
+ },
+ {
+  "id": "C07",
+  "cat": "C",
+  "kind": "control",
+  "title": "Extract a pure helper isPastDue from checkFreshness (same component, behaviour kept)",
+  "expect": {},
+  "predict": {
+   "A": "no drift obligation; coverage on ShapeRuleEngine"
+  }
+ },
+ {
+  "id": "C08",
+  "cat": "C",
+  "kind": "control",
+  "title": "Clock read in ungoverned code (experiments/shape-1/proto/src/util.ts)",
+  "expect": {},
+  "predict": {
+   "A": "nothing (no claim governs ungoverned code)"
+  }
+ },
+ {
+  "id": "C09",
+  "cat": "C",
+  "kind": "control",
+  "title": "Clock read in ShpCli.main (granted, excepted, and in main's complete summary)",
+  "expect": {},
+  "predict": {
+   "A": "no drift obligation; coverage on ShpCli"
+  }
+ },
+ {
+  "id": "C10",
+  "cat": "C",
+  "kind": "control",
+  "title": "Rename an unbound private helper in formatter.ts (indent -> indentText)",
+  "expect": {},
+  "predict": {
+   "A": "no drift obligation; coverage on ShapeFormatter"
+  }
+ },
+ {
+  "id": "C11",
+  "cat": "C",
+  "kind": "control",
+  "title": "Docs edit in a page no law names (guides/ci.md)",
+  "expect": {},
+  "predict": {
+   "A": "nothing (DocsSite is low tier: coverage is health only)"
+  }
+ },
+ {
+  "id": "C12",
+  "cat": "C",
+  "kind": "control",
+  "title": "Whitespace-only edit of a 0.x shape file (shape/checker.shape)",
+  "expect": {},
+  "predict": {
+   "A": "nothing (no claim changes)"
+  }
+ },
+ {
+  "id": "C13",
+  "cat": "C",
+  "kind": "control",
+  "title": "Add a unit test file inside ShapeChecker's path glob",
+  "expect": {},
+  "predict": {
+   "A": "no drift obligation; coverage on ShapeChecker"
+  }
+ }
+]

@@ -1,0 +1,33 @@
+{
+ "resourcesAttached": 79,
+ "errors": [],
+ "operators": [
+  {
+   "op": "W1",
+   "mutants": 111130,
+   "killed": 110238
+  },
+  {
+   "op": "W2",
+   "mutants": 4028,
+   "killed": 498
+  },
+  {
+   "op": "P1",
+   "mutants": 5607,
+   "killed": 5607
+  },
+  {
+   "op": "M2",
+   "mutants": 181,
+   "killed": 179
+  }
+ ],
+ "P1": {
+  "resources": 79,
+  "uncaught": 0,
+  "caught": 79
+ },
+ "vacuous": [],
+ "redundant": 19
+}

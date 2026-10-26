@@ -1,0 +1,25 @@
+module audit
+
+resource AuditEvent
+
+component AuditStore {
+  owns AuditEvent
+  grants Append<AuditEvent>
+  fn appendEvent
+    effects complete {
+      Append<AuditEvent>
+    }
+}
+
+implementation AuditStoreImpl {
+  paths {
+    "src/audit/store.ts"
+  }
+  conforms_to AuditStore
+  on_change require shape_update
+}
+
+attest no_shape_change {
+  source ts("src/audit/store.ts")
+  reason "No changes."
+}
