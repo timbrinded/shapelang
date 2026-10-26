@@ -1,0 +1,1223 @@
+{
+ "authors": [
+  "audit::codeAgent",
+  "audit::alice"
+ ],
+ "base": {
+  "esf": {
+   "actors": [
+    {
+     "identities": [],
+     "kind": "team",
+     "members": [
+      "audit::alice",
+      "audit::carol"
+     ],
+     "operator": null,
+     "q": "audit::Platform"
+    },
+    {
+     "identities": [],
+     "kind": "team",
+     "members": [
+      "audit::bob"
+     ],
+     "operator": null,
+     "q": "audit::AuditTeam"
+    },
+    {
+     "identities": [],
+     "kind": "person",
+     "members": [],
+     "operator": null,
+     "q": "audit::alice"
+    },
+    {
+     "identities": [],
+     "kind": "person",
+     "members": [],
+     "operator": null,
+     "q": "audit::carol"
+    },
+    {
+     "identities": [],
+     "kind": "person",
+     "members": [],
+     "operator": null,
+     "q": "audit::bob"
+    },
+    {
+     "identities": [],
+     "kind": "agent",
+     "members": [],
+     "operator": "audit::alice",
+     "q": "audit::codeAgent"
+    }
+   ],
+   "claims": [
+    {
+     "args": {
+      "atom": "HardDelete<audit::AuditEvent>",
+      "except": [],
+      "scope": [
+       "*"
+      ]
+     },
+     "ids": [
+      "audit::AuditEvent/AppendOnly/effect.forbid-HardDelete"
+     ],
+     "op": "effect.forbid",
+     "owner": "audit::AuditTeam",
+     "requirement": null,
+     "tier": "final"
+    },
+    {
+     "args": {
+      "component": "audit::AuditStore",
+      "grants": [
+       "Append<audit::AuditEvent>",
+       "Read<audit::AuditEvent>"
+      ]
+     },
+     "ids": [
+      "audit::AuditStore/authority"
+     ],
+     "op": "authority",
+     "owner": "audit::AuditTeam",
+     "requirement": null,
+     "tier": "critical"
+    },
+    {
+     "args": {
+      "atoms": [
+       "Append<audit::AuditEvent>"
+      ],
+      "unit": "audit::AuditStore.appendEvent"
+     },
+     "ids": [
+      "audit::AuditStore.appendEvent/effects"
+     ],
+     "op": "effects.upper",
+     "owner": "audit::AuditTeam",
+     "requirement": null,
+     "tier": "critical"
+    },
+    {
+     "args": {
+      "atoms": [
+       "Append<audit::AuditEvent>"
+      ],
+      "unit": "audit::AuditStore.appendEvent"
+     },
+     "ids": [
+      "audit::AuditStore.appendEvent/effects"
+     ],
+     "op": "effects.lower",
+     "owner": "audit::AuditTeam",
+     "requirement": null,
+     "tier": "critical"
+    },
+    {
+     "args": {
+      "on": [
+       "component audit::AuditStore"
+      ],
+      "statement": {
+       "args": [
+        "resource audit::AuditEvent"
+       ],
+       "schema": "std::HistoryPreserved",
+       "schemaFp": "sha256:3c5937e280af3a8d80cde26bd287b0a9a5454d81eb01f305653b3e8e978dbeb9"
+      }
+     },
+     "ids": [
+      "audit::EventsArePreserved"
+     ],
+     "op": "law",
+     "owner": "audit::AuditTeam",
+     "requirement": {
+      "judged": false,
+      "level": "tested",
+      "pins": [
+       "audit::fastCheck"
+      ],
+      "projection": "unit"
+     },
+     "tier": "critical"
+    }
+   ],
+   "components": [
+    {
+     "allows": [],
+     "assumes": [],
+     "attach": [],
+     "boundary": false,
+     "complete": [],
+     "grants": [
+      "Append<audit::AuditEvent>",
+      "Read<audit::AuditEvent>"
+     ],
+     "owner": "audit::AuditTeam",
+     "paths": [
+      "src/audit/**/*.ts"
+     ],
+     "q": "audit::AuditStore",
+     "tier": "critical",
+     "units": [],
+     "was": null
+    }
+   ],
+   "effects": [
+    {
+     "implies": [],
+     "verb": "Read"
+    },
+    {
+     "implies": [],
+     "verb": "Write"
+    },
+    {
+     "implies": [
+      "Read"
+     ],
+     "verb": "Export"
+    },
+    {
+     "implies": [
+      "Write"
+     ],
+     "verb": "Append"
+    },
+    {
+     "implies": [
+      "Write"
+     ],
+     "verb": "Import"
+    },
+    {
+     "implies": [
+      "Write"
+     ],
+     "verb": "Update"
+    },
+    {
+     "implies": [
+      "Update"
+     ],
+     "verb": "Redact"
+    },
+    {
+     "implies": [
+      "Update"
+     ],
+     "verb": "LogicalDelete"
+    },
+    {
+     "implies": [
+      "Update"
+     ],
+     "verb": "HardDelete"
+    },
+    {
+     "implies": [
+      "HardDelete"
+     ],
+     "verb": "Truncate"
+    },
+    {
+     "implies": [
+      "Truncate"
+     ],
+     "verb": "DropStorage"
+    },
+    {
+     "implies": [],
+     "verb": "Hatch"
+    }
+   ],
+   "errors": [],
+   "exceptions": [],
+   "hatches": [
+    {
+     "kind": "external_body",
+     "lang": "verus"
+    },
+    {
+     "kind": "external",
+     "lang": "verus"
+    },
+    {
+     "kind": "assume",
+     "lang": "verus"
+    },
+    {
+     "kind": "admit",
+     "lang": "verus"
+    },
+    {
+     "kind": "assume_specification",
+     "lang": "verus"
+    },
+    {
+     "kind": "uninterp",
+     "lang": "verus"
+    },
+    {
+     "kind": "axiom",
+     "lang": "verus"
+    },
+    {
+     "kind": "unsafe",
+     "lang": "bend"
+    },
+    {
+     "kind": "ts_ignore",
+     "lang": "ts"
+    }
+   ],
+   "kinds": [
+    {
+     "from": "component",
+     "name": "calls",
+     "to": "component"
+    },
+    {
+     "from": "component",
+     "name": "callbacks",
+     "to": "component"
+    },
+    {
+     "from": "component",
+     "name": "provides",
+     "to": "resource"
+    },
+    {
+     "from": "component",
+     "name": "data_flow",
+     "to": "component"
+    },
+    {
+     "from": "component",
+     "name": "coordinated_call",
+     "to": "component"
+    }
+   ],
+   "notes": [],
+   "providers": [
+    {
+     "absence": true,
+     "decides": [],
+     "depsComplete": true,
+     "identity": "sigstore(\"https://github.com/acme/audit/.github/workflows/sql.yml@refs/heads/main\")",
+     "implementation": {
+      "digest": "sha256:sql-effects-2.3.1",
+      "paths": []
+     },
+     "observes": [
+      "effect(pg.table(\"*\"))"
+     ],
+     "persist": false,
+     "presence": true,
+     "produces": [
+      "observation"
+     ],
+     "q": "audit::sqlEffects",
+     "trusts": []
+    },
+    {
+     "absence": false,
+     "decides": [
+      "template std::HistoryPreserved"
+     ],
+     "depsComplete": false,
+     "identity": "sigstore(\"https://github.com/acme/audit/.github/workflows/test.yml@refs/heads/main\")",
+     "implementation": {
+      "digest": null,
+      "paths": [
+       "package.json",
+       "bun.lock",
+       "bunfig.toml"
+      ]
+     },
+     "observes": [],
+     "persist": false,
+     "presence": true,
+     "produces": [
+      "test"
+     ],
+     "q": "audit::fastCheck",
+     "trusts": []
+    },
+    {
+     "absence": false,
+     "decides": [],
+     "depsComplete": false,
+     "identity": "sigstore(\"https://github.com/acme/audit/.github/workflows/relay.yml@refs/heads/main\")",
+     "implementation": {
+      "digest": "sha256:shape-review-relay-1.0.0",
+      "paths": []
+     },
+     "observes": [],
+     "persist": false,
+     "presence": false,
+     "produces": [
+      "judgment"
+     ],
+     "q": "audit::reviews",
+     "trusts": []
+    }
+   ],
+   "resources": [
+    {
+     "attach": [
+      "std::AppendOnly"
+     ],
+     "bind": [
+      "pg.table(\"audit_events\")"
+     ],
+     "owner": "audit::AuditTeam",
+     "q": "audit::AuditEvent",
+     "tier": "final",
+     "was": null
+    }
+   ],
+   "shape": {
+    "owner": "audit::Platform",
+    "policy": "std::DefaultPolicy",
+    "q": "audit::AuditService"
+   },
+   "templates": [],
+   "units": [
+    {
+     "attach": [],
+     "bind": null,
+     "component": "audit::AuditStore",
+     "name": "appendEvent",
+     "owner": "audit::AuditTeam",
+     "q": "audit::AuditStore.appendEvent",
+     "summary": null,
+     "tier": "critical",
+     "was": null
+    }
+   ],
+   "v": "shape.elaborated.v1"
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "predicate": {
+    "shape": {
+     "entries": [
+      {
+       "digest": "sha256:b147f095622b8e82c384851abed1340f2ee0e15ead51a743a4da5c3a3663a7ff",
+       "id": "pkgjson:package.json",
+       "kind": "file",
+       "parent": null,
+       "projection": "file",
+       "scheme": "pkgjson.file.v2"
+      },
+      {
+       "digest": "sha256:ac2f8e81226908f8920646fe9459842c7fccfdbb3444552e10868d5093470347",
+       "id": "pkgjson:package.json",
+       "kind": "file",
+       "parent": null,
+       "projection": "own",
+       "scheme": "pkgjson.own.v2"
+      },
+      {
+       "digest": "sha256:29701283f81b68ea3f34ac723b5326d09945f4ec372b16861da27d9c539d3d0e",
+       "id": "raw:bun.lock",
+       "kind": "file",
+       "parent": null,
+       "projection": "file",
+       "scheme": "raw.file.v1"
+      },
+      {
+       "digest": "sha256:507e6c6eeca1322948d83aea7ac60cb927f84a2fcb52346fa4ec41e5883912ee",
+       "id": "raw:bun.lock",
+       "kind": "file",
+       "parent": null,
+       "projection": "own",
+       "scheme": "raw.own.v1"
+      },
+      {
+       "digest": "sha256:a955648ac042149dbcf0ad36204b4e22132bec3f16e7b60385bb4cdced0b4138",
+       "id": "ts:src/audit/store.ts",
+       "kind": "file",
+       "parent": null,
+       "projection": "file",
+       "scheme": "ts.file.v2"
+      },
+      {
+       "digest": "sha256:160a210d7998cb331c389fa51bb18fac303e4d5c1f3d6c39c7c82b2901717541",
+       "id": "ts:src/audit/store.ts",
+       "kind": "file",
+       "parent": null,
+       "projection": "own",
+       "scheme": "ts.own.v2"
+      },
+      {
+       "digest": "sha256:df38d45acb53c51e2faaca77f1229602ab595acdd158a52f2a526d1fa3408f08",
+       "id": "ts:src/audit/store.ts#appendEvent",
+       "kind": "symbol",
+       "parent": "ts:src/audit/store.ts",
+       "projection": "unit",
+       "scheme": "ts.unit.v2"
+      },
+      {
+       "digest": "sha256:2b9ef62a172a9ba7eefdb6bb46f1a2c275bf1898823e1b0a0a20e4b90500baad",
+       "id": "ts:src/audit/store.ts#appendEvent",
+       "kind": "symbol",
+       "parent": "ts:src/audit/store.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2"
+      },
+      {
+       "digest": "sha256:8f92bec50b0c01171d3f7ee059b9dcc680f814a50be82cf99c7761c5f7339c96",
+       "id": "ts:test/audit/history.test.ts",
+       "kind": "file",
+       "parent": null,
+       "projection": "file",
+       "scheme": "ts.file.v2"
+      },
+      {
+       "digest": "sha256:1a247c54cb6fe0d53af890a9690f67297e8e351a90980f166716d2050f7aabdd",
+       "id": "ts:test/audit/history.test.ts",
+       "kind": "file",
+       "parent": null,
+       "projection": "own",
+       "scheme": "ts.own.v2"
+      }
+     ],
+     "revision": "b0",
+     "tree": [],
+     "v": "shape.manifest.v1"
+    }
+   },
+   "predicateType": "https://shapelang.dev/manifest/v1",
+   "subject": []
+  },
+  "revision": "b0"
+ },
+ "baseRecords": [
+  {
+   "_type": "https://in-toto.io/Statement/v1",
+   "authenticated": true,
+   "predicate": {
+    "shape": {
+     "assumptions": [],
+     "facts": [
+      {
+       "at": "ts:src/audit/store.ts#appendEvent",
+       "resource": "pg.table(\"public.audit_events\")",
+       "type": "effect",
+       "verb": "Append"
+      }
+     ],
+     "harness": [],
+     "kind": "observation",
+     "provider": {
+      "id": "audit::sqlEffects",
+      "version": "2.3.1"
+     },
+     "result": "observes",
+     "revision": "b0",
+     "scope": {
+      "entries": [
+       {
+        "complete": true,
+        "deps": [],
+        "digest": "sha256:a955648ac042149dbcf0ad36204b4e22132bec3f16e7b60385bb4cdced0b4138",
+        "id": "ts:src/audit/store.ts",
+        "projection": "file",
+        "scheme": "ts.file.v2"
+       },
+       {
+        "complete": true,
+        "deps": [],
+        "digest": "sha256:df38d45acb53c51e2faaca77f1229602ab595acdd158a52f2a526d1fa3408f08",
+        "id": "ts:src/audit/store.ts#appendEvent",
+        "projection": "unit",
+        "scheme": "ts.unit.v2"
+       }
+      ],
+      "root": "sha256:ae2c60231357f6ff"
+     },
+     "time": "2026-10-25T09:12:44Z",
+     "v": "shape.evidence.v1"
+    }
+   },
+   "predicateType": "https://shapelang.dev/evidence/v1",
+   "subject": []
+  }
+ ],
+ "cells": [],
+ "change": {
+  "ids": [
+   "github:acme/audit#57"
+  ]
+ },
+ "contract": "shape.kernel.case/v1",
+ "head": {
+  "esf": {
+   "actors": [
+    {
+     "identities": [],
+     "kind": "team",
+     "members": [
+      "audit::alice",
+      "audit::carol"
+     ],
+     "operator": null,
+     "q": "audit::Platform"
+    },
+    {
+     "identities": [],
+     "kind": "team",
+     "members": [
+      "audit::bob"
+     ],
+     "operator": null,
+     "q": "audit::AuditTeam"
+    },
+    {
+     "identities": [],
+     "kind": "person",
+     "members": [],
+     "operator": null,
+     "q": "audit::alice"
+    },
+    {
+     "identities": [],
+     "kind": "person",
+     "members": [],
+     "operator": null,
+     "q": "audit::carol"
+    },
+    {
+     "identities": [],
+     "kind": "person",
+     "members": [],
+     "operator": null,
+     "q": "audit::bob"
+    },
+    {
+     "identities": [],
+     "kind": "agent",
+     "members": [],
+     "operator": "audit::alice",
+     "q": "audit::codeAgent"
+    }
+   ],
+   "claims": [
+    {
+     "args": {
+      "atom": "HardDelete<audit::AuditEvent>",
+      "except": [],
+      "scope": [
+       "*"
+      ]
+     },
+     "ids": [
+      "audit::AuditEvent/AppendOnly/effect.forbid-HardDelete"
+     ],
+     "op": "effect.forbid",
+     "owner": "audit::AuditTeam",
+     "requirement": null,
+     "tier": "final"
+    },
+    {
+     "args": {
+      "component": "audit::AuditStore",
+      "grants": [
+       "Append<audit::AuditEvent>",
+       "Read<audit::AuditEvent>"
+      ]
+     },
+     "ids": [
+      "audit::AuditStore/authority"
+     ],
+     "op": "authority",
+     "owner": "audit::AuditTeam",
+     "requirement": null,
+     "tier": "critical"
+    },
+    {
+     "args": {
+      "atoms": [
+       "Append<audit::AuditEvent>"
+      ],
+      "unit": "audit::AuditStore.appendEvent"
+     },
+     "ids": [
+      "audit::AuditStore.appendEvent/effects"
+     ],
+     "op": "effects.upper",
+     "owner": "audit::AuditTeam",
+     "requirement": null,
+     "tier": "critical"
+    },
+    {
+     "args": {
+      "atoms": [
+       "Append<audit::AuditEvent>"
+      ],
+      "unit": "audit::AuditStore.appendEvent"
+     },
+     "ids": [
+      "audit::AuditStore.appendEvent/effects"
+     ],
+     "op": "effects.lower",
+     "owner": "audit::AuditTeam",
+     "requirement": null,
+     "tier": "critical"
+    },
+    {
+     "args": {
+      "on": [
+       "component audit::AuditStore"
+      ],
+      "statement": {
+       "args": [
+        "resource audit::AuditEvent"
+       ],
+       "schema": "std::HistoryPreserved",
+       "schemaFp": "sha256:3c5937e280af3a8d80cde26bd287b0a9a5454d81eb01f305653b3e8e978dbeb9"
+      }
+     },
+     "ids": [
+      "audit::EventsArePreserved"
+     ],
+     "op": "law",
+     "owner": "audit::AuditTeam",
+     "requirement": {
+      "judged": false,
+      "level": "tested",
+      "pins": [
+       "audit::fastCheck"
+      ],
+      "projection": "unit"
+     },
+     "tier": "critical"
+    }
+   ],
+   "components": [
+    {
+     "allows": [],
+     "assumes": [],
+     "attach": [],
+     "boundary": false,
+     "complete": [],
+     "grants": [
+      "Append<audit::AuditEvent>",
+      "Read<audit::AuditEvent>"
+     ],
+     "owner": "audit::AuditTeam",
+     "paths": [
+      "src/audit/**/*.ts"
+     ],
+     "q": "audit::AuditStore",
+     "tier": "critical",
+     "units": [],
+     "was": null
+    }
+   ],
+   "effects": [
+    {
+     "implies": [],
+     "verb": "Read"
+    },
+    {
+     "implies": [],
+     "verb": "Write"
+    },
+    {
+     "implies": [
+      "Read"
+     ],
+     "verb": "Export"
+    },
+    {
+     "implies": [
+      "Write"
+     ],
+     "verb": "Append"
+    },
+    {
+     "implies": [
+      "Write"
+     ],
+     "verb": "Import"
+    },
+    {
+     "implies": [
+      "Write"
+     ],
+     "verb": "Update"
+    },
+    {
+     "implies": [
+      "Update"
+     ],
+     "verb": "Redact"
+    },
+    {
+     "implies": [
+      "Update"
+     ],
+     "verb": "LogicalDelete"
+    },
+    {
+     "implies": [
+      "Update"
+     ],
+     "verb": "HardDelete"
+    },
+    {
+     "implies": [
+      "HardDelete"
+     ],
+     "verb": "Truncate"
+    },
+    {
+     "implies": [
+      "Truncate"
+     ],
+     "verb": "DropStorage"
+    },
+    {
+     "implies": [],
+     "verb": "Hatch"
+    }
+   ],
+   "errors": [],
+   "exceptions": [],
+   "hatches": [
+    {
+     "kind": "external_body",
+     "lang": "verus"
+    },
+    {
+     "kind": "external",
+     "lang": "verus"
+    },
+    {
+     "kind": "assume",
+     "lang": "verus"
+    },
+    {
+     "kind": "admit",
+     "lang": "verus"
+    },
+    {
+     "kind": "assume_specification",
+     "lang": "verus"
+    },
+    {
+     "kind": "uninterp",
+     "lang": "verus"
+    },
+    {
+     "kind": "axiom",
+     "lang": "verus"
+    },
+    {
+     "kind": "unsafe",
+     "lang": "bend"
+    },
+    {
+     "kind": "ts_ignore",
+     "lang": "ts"
+    }
+   ],
+   "kinds": [
+    {
+     "from": "component",
+     "name": "calls",
+     "to": "component"
+    },
+    {
+     "from": "component",
+     "name": "callbacks",
+     "to": "component"
+    },
+    {
+     "from": "component",
+     "name": "provides",
+     "to": "resource"
+    },
+    {
+     "from": "component",
+     "name": "data_flow",
+     "to": "component"
+    },
+    {
+     "from": "component",
+     "name": "coordinated_call",
+     "to": "component"
+    }
+   ],
+   "notes": [],
+   "providers": [
+    {
+     "absence": true,
+     "decides": [],
+     "depsComplete": true,
+     "identity": "sigstore(\"https://github.com/acme/audit/.github/workflows/sql.yml@refs/heads/main\")",
+     "implementation": {
+      "digest": "sha256:sql-effects-2.3.1",
+      "paths": []
+     },
+     "observes": [
+      "effect(pg.table(\"*\"))"
+     ],
+     "persist": false,
+     "presence": true,
+     "produces": [
+      "observation"
+     ],
+     "q": "audit::sqlEffects",
+     "trusts": []
+    },
+    {
+     "absence": false,
+     "decides": [
+      "template std::HistoryPreserved"
+     ],
+     "depsComplete": false,
+     "identity": "sigstore(\"https://github.com/acme/audit/.github/workflows/test.yml@refs/heads/main\")",
+     "implementation": {
+      "digest": null,
+      "paths": [
+       "package.json",
+       "bun.lock",
+       "bunfig.toml"
+      ]
+     },
+     "observes": [],
+     "persist": false,
+     "presence": true,
+     "produces": [
+      "test"
+     ],
+     "q": "audit::fastCheck",
+     "trusts": []
+    },
+    {
+     "absence": false,
+     "decides": [],
+     "depsComplete": false,
+     "identity": "sigstore(\"https://github.com/acme/audit/.github/workflows/relay.yml@refs/heads/main\")",
+     "implementation": {
+      "digest": "sha256:shape-review-relay-1.0.0",
+      "paths": []
+     },
+     "observes": [],
+     "persist": false,
+     "presence": false,
+     "produces": [
+      "judgment"
+     ],
+     "q": "audit::reviews",
+     "trusts": []
+    }
+   ],
+   "resources": [
+    {
+     "attach": [
+      "std::AppendOnly"
+     ],
+     "bind": [
+      "pg.table(\"audit_events\")"
+     ],
+     "owner": "audit::AuditTeam",
+     "q": "audit::AuditEvent",
+     "tier": "final",
+     "was": null
+    }
+   ],
+   "shape": {
+    "owner": "audit::Platform",
+    "policy": "std::DefaultPolicy",
+    "q": "audit::AuditService"
+   },
+   "templates": [],
+   "units": [
+    {
+     "attach": [],
+     "bind": null,
+     "component": "audit::AuditStore",
+     "name": "appendEvent",
+     "owner": "audit::AuditTeam",
+     "q": "audit::AuditStore.appendEvent",
+     "summary": null,
+     "tier": "critical",
+     "was": null
+    }
+   ],
+   "v": "shape.elaborated.v1"
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "predicate": {
+    "shape": {
+     "entries": [
+      {
+       "digest": "sha256:b147f095622b8e82c384851abed1340f2ee0e15ead51a743a4da5c3a3663a7ff",
+       "id": "pkgjson:package.json",
+       "kind": "file",
+       "parent": null,
+       "projection": "file",
+       "scheme": "pkgjson.file.v2"
+      },
+      {
+       "digest": "sha256:ac2f8e81226908f8920646fe9459842c7fccfdbb3444552e10868d5093470347",
+       "id": "pkgjson:package.json",
+       "kind": "file",
+       "parent": null,
+       "projection": "own",
+       "scheme": "pkgjson.own.v2"
+      },
+      {
+       "digest": "sha256:29701283f81b68ea3f34ac723b5326d09945f4ec372b16861da27d9c539d3d0e",
+       "id": "raw:bun.lock",
+       "kind": "file",
+       "parent": null,
+       "projection": "file",
+       "scheme": "raw.file.v1"
+      },
+      {
+       "digest": "sha256:507e6c6eeca1322948d83aea7ac60cb927f84a2fcb52346fa4ec41e5883912ee",
+       "id": "raw:bun.lock",
+       "kind": "file",
+       "parent": null,
+       "projection": "own",
+       "scheme": "raw.own.v1"
+      },
+      {
+       "digest": "sha256:a955648ac042149dbcf0ad36204b4e22132bec3f16e7b60385bb4cdced0b4138",
+       "id": "ts:src/audit/store.ts",
+       "kind": "file",
+       "parent": null,
+       "projection": "file",
+       "scheme": "ts.file.v2"
+      },
+      {
+       "digest": "sha256:160a210d7998cb331c389fa51bb18fac303e4d5c1f3d6c39c7c82b2901717541",
+       "id": "ts:src/audit/store.ts",
+       "kind": "file",
+       "parent": null,
+       "projection": "own",
+       "scheme": "ts.own.v2"
+      },
+      {
+       "digest": "sha256:df38d45acb53c51e2faaca77f1229602ab595acdd158a52f2a526d1fa3408f08",
+       "id": "ts:src/audit/store.ts#appendEvent",
+       "kind": "symbol",
+       "parent": "ts:src/audit/store.ts",
+       "projection": "unit",
+       "scheme": "ts.unit.v2"
+      },
+      {
+       "digest": "sha256:2b9ef62a172a9ba7eefdb6bb46f1a2c275bf1898823e1b0a0a20e4b90500baad",
+       "id": "ts:src/audit/store.ts#appendEvent",
+       "kind": "symbol",
+       "parent": "ts:src/audit/store.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2"
+      },
+      {
+       "digest": "sha256:8f92bec50b0c01171d3f7ee059b9dcc680f814a50be82cf99c7761c5f7339c96",
+       "id": "ts:test/audit/history.test.ts",
+       "kind": "file",
+       "parent": null,
+       "projection": "file",
+       "scheme": "ts.file.v2"
+      },
+      {
+       "digest": "sha256:1a247c54cb6fe0d53af890a9690f67297e8e351a90980f166716d2050f7aabdd",
+       "id": "ts:test/audit/history.test.ts",
+       "kind": "file",
+       "parent": null,
+       "projection": "own",
+       "scheme": "ts.own.v2"
+      },
+      {
+       "digest": "sha256:ba062333d9091f522631b641c25afdab1107d546f76d365933ecd3cfdff77e61",
+       "id": "ts:src/audit/purge.ts",
+       "kind": "file",
+       "parent": null,
+       "projection": "file",
+       "scheme": "ts.file.v2"
+      },
+      {
+       "digest": "sha256:cee18250dbcb854bee21763da5790dac8b0966e807ac89587ecbf01615c1f5f7",
+       "id": "ts:src/audit/purge.ts",
+       "kind": "file",
+       "parent": null,
+       "projection": "own",
+       "scheme": "ts.own.v2"
+      },
+      {
+       "digest": "sha256:f60c501bff9e4c1bde932d78e58977e86d40c7890605c25bedbc684a1aa4bcc7",
+       "id": "ts:src/audit/purge.ts#purgeOldEvents",
+       "kind": "symbol",
+       "parent": "ts:src/audit/purge.ts",
+       "projection": "unit",
+       "scheme": "ts.unit.v2"
+      },
+      {
+       "digest": "sha256:ac3121d807553e794b5b280c8367edd5dbf54a5ff2ddb827eeeeb87590eb7896",
+       "id": "ts:src/audit/purge.ts#purgeOldEvents",
+       "kind": "symbol",
+       "parent": "ts:src/audit/purge.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2"
+      }
+     ],
+     "revision": "h1",
+     "tree": [],
+     "v": "shape.manifest.v1"
+    }
+   },
+   "predicateType": "https://shapelang.dev/manifest/v1",
+   "subject": []
+  },
+  "revision": "h1"
+ },
+ "mode": "change",
+ "now": "2026-10-25T12:00:00Z",
+ "records": [
+  {
+   "_type": "https://in-toto.io/Statement/v1",
+   "authenticated": true,
+   "predicate": {
+    "shape": {
+     "assumptions": [],
+     "facts": [
+      {
+       "at": "ts:src/audit/purge.ts#purgeOldEvents",
+       "resource": "pg.table(\"\\\"audit_events\\\"\")",
+       "type": "effect",
+       "verb": "HardDelete"
+      },
+      {
+       "at": "ts:src/audit/store.ts#appendEvent",
+       "resource": "pg.table(\"public.audit_events\")",
+       "type": "effect",
+       "verb": "Append"
+      }
+     ],
+     "harness": [],
+     "kind": "observation",
+     "provider": {
+      "id": "audit::sqlEffects",
+      "version": "2.3.1"
+     },
+     "result": "observes",
+     "revision": "h1",
+     "scope": {
+      "entries": [
+       {
+        "complete": true,
+        "deps": [],
+        "digest": "sha256:ba062333d9091f522631b641c25afdab1107d546f76d365933ecd3cfdff77e61",
+        "id": "ts:src/audit/purge.ts",
+        "projection": "file",
+        "scheme": "ts.file.v2"
+       },
+       {
+        "complete": true,
+        "deps": [],
+        "digest": "sha256:f60c501bff9e4c1bde932d78e58977e86d40c7890605c25bedbc684a1aa4bcc7",
+        "id": "ts:src/audit/purge.ts#purgeOldEvents",
+        "projection": "unit",
+        "scheme": "ts.unit.v2"
+       },
+       {
+        "complete": true,
+        "deps": [],
+        "digest": "sha256:a955648ac042149dbcf0ad36204b4e22132bec3f16e7b60385bb4cdced0b4138",
+        "id": "ts:src/audit/store.ts",
+        "projection": "file",
+        "scheme": "ts.file.v2"
+       },
+       {
+        "complete": true,
+        "deps": [],
+        "digest": "sha256:df38d45acb53c51e2faaca77f1229602ab595acdd158a52f2a526d1fa3408f08",
+        "id": "ts:src/audit/store.ts#appendEvent",
+        "projection": "unit",
+        "scheme": "ts.unit.v2"
+       }
+      ],
+      "root": "sha256:ae2c60231357f6ff"
+     },
+     "time": "2026-10-25T09:12:44Z",
+     "v": "shape.evidence.v1"
+    }
+   },
+   "predicateType": "https://shapelang.dev/evidence/v1",
+   "subject": []
+  },
+  {
+   "_type": "https://in-toto.io/Statement/v1",
+   "authenticated": true,
+   "predicate": {
+    "shape": {
+     "assumptions": [],
+     "claim": {
+      "fp": "sha256:2da8fb7008513c5d4434893c76fcb70a4dab922e56ed89f988b390962a63dff3",
+      "id": "audit::EventsArePreserved"
+     },
+     "code": [
+      {
+       "digest": "sha256:df38d45acb53c51e2faaca77f1229602ab595acdd158a52f2a526d1fa3408f08",
+       "id": "ts:src/audit/store.ts#appendEvent",
+       "projection": "unit",
+       "scheme": "ts.unit.v2"
+      },
+      {
+       "digest": "sha256:160a210d7998cb331c389fa51bb18fac303e4d5c1f3d6c39c7c82b2901717541",
+       "id": "ts:src/audit/store.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2"
+      },
+      {
+       "digest": "sha256:f60c501bff9e4c1bde932d78e58977e86d40c7890605c25bedbc684a1aa4bcc7",
+       "id": "ts:src/audit/purge.ts#purgeOldEvents",
+       "projection": "unit",
+       "scheme": "ts.unit.v2"
+      },
+      {
+       "digest": "sha256:cee18250dbcb854bee21763da5790dac8b0966e807ac89587ecbf01615c1f5f7",
+       "id": "ts:src/audit/purge.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2"
+      }
+     ],
+     "counterexample": null,
+     "deps": [],
+     "harness": [
+      {
+       "digest": "sha256:1a247c54cb6fe0d53af890a9690f67297e8e351a90980f166716d2050f7aabdd",
+       "id": "ts:test/audit/history.test.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2"
+      }
+     ],
+     "kind": "test",
+     "provider": {
+      "id": "audit::fastCheck",
+      "version": "3.0.0"
+     },
+     "result": "supports",
+     "revision": "h1",
+     "time": "2026-10-25T09:30:00Z",
+     "v": "shape.evidence.v1"
+    }
+   },
+   "predicateType": "https://shapelang.dev/evidence/v1",
+   "subject": []
+  }
+ ]
+}

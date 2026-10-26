@@ -1,0 +1,25 @@
+{
+ "errors": [],
+ "exact": true,
+ "obligations": [
+  {
+   "binding": "bd:8d771e08d86d43b2d2d173d67a65d6275ff315fdcfc89a9d36c20edbc8332eb5",
+   "exploited": true,
+   "group": "g:1a70082cc28046319bf3834eab91ef44ab823bc11c48141d5b96c276c92a899a",
+   "key": "ob:031024b1dfd16fe266cf991b13b10ca3e58431846f44d3ae2c851d52644fd44a",
+   "kind": "loosening",
+   "severity": "blocking",
+   "tier": "final"
+  },
+  {
+   "binding": "bd:2785f31d20281bdda1ebd5a9b6561490c4952af5f4ac71d00e23dea73b894954",
+   "exploited": true,
+   "group": "g:1a70082cc28046319bf3834eab91ef44ab823bc11c48141d5b96c276c92a899a",
+   "key": "ob:ca99c5461b8ff9a8410d4389337b30099a13b1a78bf99bd8f9cc107df9d04054",
+   "kind": "loosening",
+   "severity": "blocking",
+   "tier": "critical"
+  }
+ ],
+ "verdict": "blocked"
+}

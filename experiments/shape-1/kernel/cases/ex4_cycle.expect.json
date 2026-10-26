@@ -1,0 +1,16 @@
+{
+ "exact": true,
+ "obligations": [
+  {
+   "binding": "bd:45ee0c48b6cfaddb2725e47f1c0e0d0698adc42ebc94a790a0c30701f3a3ede0",
+   "budget": "judgment",
+   "force": "heuristic",
+   "group": "g:1a3d754f198b44004f2556aa978842a7569c0c08460960f1a7ae0851480bac6e",
+   "introduced": false,
+   "key": "ob:6efc5ef79a4f52afb377a55833ed8d9b6fd57521da5d44328afeab6daf0a6547",
+   "kind": "contradiction",
+   "severity": "owed"
+  }
+ ],
+ "verdict": "owed"
+}

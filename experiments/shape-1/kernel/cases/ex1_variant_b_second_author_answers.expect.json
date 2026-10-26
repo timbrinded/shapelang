@@ -1,0 +1,10 @@
+{
+ "exact": true,
+ "obligations": [
+  {
+   "key": "ob:155fa0bf253e0793716dee7451858de84676f017da2d47ee65a8e9d24a457c67",
+   "severity": "blocking"
+  }
+ ],
+ "verdict": "blocked"
+}

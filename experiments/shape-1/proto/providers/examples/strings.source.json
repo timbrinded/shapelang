@@ -1,0 +1,38 @@
+{
+ "v": "shape.source.v1",
+ "modules": [
+  {
+   "module": "strings",
+   "imports": ["std"],
+   "decls": [
+    { "decl": "shape", "name": "Strings", "owner": "maintainers" },
+    { "decl": "actor", "name": "maintainers", "kind": "team", "members": ["tim"] },
+    { "decl": "actor", "name": "tim", "kind": "person", "identities": ["github(\"tim\")"] },
+    { "decl": "template", "name": "CodepointOrder", "params": [["F", "unit"]], "body": [{ "law": { "evidence": { "level": "tested" } } }] },
+    { "decl": "template", "name": "Unquotes", "params": [["F", "unit"]], "body": [{ "law": { "evidence": { "level": "tested" } } }] },
+    { "decl": "template", "name": "PathNormal", "params": [["F", "unit"]], "body": [{ "law": { "evidence": { "level": "tested" } } }] },
+    {
+     "decl": "component",
+     "name": "ShapeStringHelpers",
+     "owner": "maintainers",
+     "tier": "critical",
+     "paths": ["packages/shp-checker/src/shape-strings.ts"],
+     "units": [
+      { "name": "compareCodepointStrings", "attach": [{ "name": "CodepointOrder" }] },
+      { "name": "unquoteShapeString", "attach": [{ "name": "Unquotes" }] },
+      { "name": "normalizeShapeSourcePath", "attach": [{ "name": "PathNormal" }] }
+     ]
+    },
+    {
+     "decl": "provider",
+     "name": "bunLaws",
+     "produces": ["test"],
+     "decides": ["template CodepointOrder", "template PathNormal", "template Unquotes"],
+     "sound": ["presence"],
+     "trusts": [["bun", "1.4.2"]],
+     "implementation": { "paths": ["experiments/shape-1/proto/providers/laws/**"] }
+    }
+   ]
+  }
+ ]
+}

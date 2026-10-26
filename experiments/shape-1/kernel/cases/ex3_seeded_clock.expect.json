@@ -1,0 +1,17 @@
+{
+ "exact": true,
+ "obligations": [
+  {
+   "force": "sound",
+   "introduced": true,
+   "key": "ob:d4218b3063c6f1b91aae4d39f84ca56299815d68e7994c92d0ecaeb3ce3c89e7",
+   "kind": "contradiction",
+   "severity": "blocking",
+   "tier": "critical",
+   "witness": [
+    "sha256:fedfa0b09d953521b133cd23472c44fba3a187a4b97d64f01324f5fb0a682a3e"
+   ]
+  }
+ ],
+ "verdict": "blocked"
+}

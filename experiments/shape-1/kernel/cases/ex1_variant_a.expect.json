@@ -1,0 +1,25 @@
+{
+ "errors": [
+  {
+   "code": "E-conduct",
+   "subject": "unit audit::AuditStore.purgeOldEvents"
+  }
+ ],
+ "exact": true,
+ "obligations": [
+  {
+   "exploited": true,
+   "key": "ob:ca99c5461b8ff9a8410d4389337b30099a13b1a78bf99bd8f9cc107df9d04054",
+   "kind": "loosening",
+   "severity": "blocking",
+   "tier": "critical"
+  },
+  {
+   "kind": "coverage",
+   "severity": "blocking",
+   "subject": "component audit::AuditStore",
+   "tier": "critical"
+  }
+ ],
+ "verdict": "blocked"
+}

@@ -1,0 +1,12 @@
+{
+ "exact": true,
+ "obligations": [
+  {
+   "exploited": false,
+   "kind": "loosening",
+   "severity": "blocking",
+   "tier": "critical"
+  }
+ ],
+ "verdict": "blocked"
+}

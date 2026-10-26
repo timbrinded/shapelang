@@ -1,0 +1,21 @@
+{
+ "exact": true,
+ "obligations": [
+  {
+   "binding": "bd:904f519651548b32b48d40a8582cc3851352274a2fc41a0be64a31fa845bb1ed",
+   "introduced": true,
+   "key": "ob:5b2b722c136fd4da308e0f1e74276988e91427030963ada796bc16b9a9137bf0",
+   "kind": "unestablished",
+   "reason": "stale",
+   "severity": "owed",
+   "tier": "normal"
+  },
+  {
+   "kind": "coverage",
+   "severity": "owed",
+   "subject": "component tooling::ShpCli",
+   "tier": "normal"
+  }
+ ],
+ "verdict": "owed"
+}

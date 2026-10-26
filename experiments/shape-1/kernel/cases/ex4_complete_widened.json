@@ -1,0 +1,814 @@
+{
+ "authors": [
+  "tooling::claude",
+  "tooling::tim"
+ ],
+ "base": {
+  "esf": {
+   "actors": [
+    {
+     "identities": [],
+     "kind": "team",
+     "members": [
+      "tooling::tim"
+     ],
+     "operator": null,
+     "q": "tooling::ShapeMaintainers"
+    },
+    {
+     "identities": [],
+     "kind": "person",
+     "members": [],
+     "operator": null,
+     "q": "tooling::tim"
+    },
+    {
+     "identities": [],
+     "kind": "agent",
+     "members": [],
+     "operator": "tooling::tim",
+     "q": "tooling::claude"
+    }
+   ],
+   "claims": [
+    {
+     "args": {
+      "from": "checker::ShapeRuleEngine",
+      "kind": "calls",
+      "to": "checker::ShapeModelLowerer"
+     },
+     "ids": [
+      "checker::ShapeRuleEngineReadsLoweredFacts"
+     ],
+     "op": "edge.exists",
+     "owner": "tooling::ShapeMaintainers",
+     "requirement": null,
+     "tier": "normal"
+    },
+    {
+     "args": {
+      "exceptFrom": [],
+      "exceptTo": [
+       "component checker::ShapeModelLowerer"
+      ],
+      "from": [
+       "component checker::ShapeRuleEngine"
+      ],
+      "kind": "calls",
+      "to": [
+       "*"
+      ]
+     },
+     "ids": [
+      "checker::ShapeRuleEngine/relations-complete-calls"
+     ],
+     "op": "edge.forbid",
+     "owner": "tooling::ShapeMaintainers",
+     "requirement": null,
+     "tier": "normal"
+    }
+   ],
+   "components": [
+    {
+     "allows": [],
+     "assumes": [],
+     "attach": [],
+     "boundary": false,
+     "complete": [],
+     "grants": null,
+     "owner": "tooling::ShapeMaintainers",
+     "paths": [
+      "packages/shp-checker/src/**/*.ts"
+     ],
+     "q": "checker::ShapeChecker",
+     "tier": "normal",
+     "units": [],
+     "was": null
+    },
+    {
+     "allows": [],
+     "assumes": [],
+     "attach": [],
+     "boundary": false,
+     "complete": [],
+     "grants": null,
+     "owner": "tooling::ShapeMaintainers",
+     "paths": [
+      "packages/shp-checker/src/checker/derivations.ts",
+      "packages/shp-checker/src/checker/rules/**/*.ts"
+     ],
+     "q": "checker::ShapeRuleEngine",
+     "tier": "normal",
+     "units": [],
+     "was": null
+    },
+    {
+     "allows": [],
+     "assumes": [],
+     "attach": [],
+     "boundary": false,
+     "complete": [],
+     "grants": null,
+     "owner": "tooling::ShapeMaintainers",
+     "paths": [
+      "packages/shp-checker/src/checker/lowering/**/*.ts"
+     ],
+     "q": "checker::ShapeModelLowerer",
+     "tier": "normal",
+     "units": [],
+     "was": null
+    },
+    {
+     "allows": [],
+     "assumes": [],
+     "attach": [],
+     "boundary": false,
+     "complete": [],
+     "grants": null,
+     "owner": "tooling::ShapeMaintainers",
+     "paths": [
+      "packages/shp-checker/src/checker/diagnostics/**/*.ts"
+     ],
+     "q": "checker::ShapeDiagnostics",
+     "tier": "normal",
+     "units": [],
+     "was": null
+    }
+   ],
+   "effects": [
+    {
+     "implies": [],
+     "verb": "Read"
+    },
+    {
+     "implies": [],
+     "verb": "Write"
+    },
+    {
+     "implies": [
+      "Read"
+     ],
+     "verb": "Export"
+    },
+    {
+     "implies": [
+      "Write"
+     ],
+     "verb": "Append"
+    },
+    {
+     "implies": [
+      "Write"
+     ],
+     "verb": "Import"
+    },
+    {
+     "implies": [
+      "Write"
+     ],
+     "verb": "Update"
+    },
+    {
+     "implies": [
+      "Update"
+     ],
+     "verb": "Redact"
+    },
+    {
+     "implies": [
+      "Update"
+     ],
+     "verb": "LogicalDelete"
+    },
+    {
+     "implies": [
+      "Update"
+     ],
+     "verb": "HardDelete"
+    },
+    {
+     "implies": [
+      "HardDelete"
+     ],
+     "verb": "Truncate"
+    },
+    {
+     "implies": [
+      "Truncate"
+     ],
+     "verb": "DropStorage"
+    },
+    {
+     "implies": [],
+     "verb": "Hatch"
+    }
+   ],
+   "errors": [],
+   "exceptions": [],
+   "hatches": [
+    {
+     "kind": "external_body",
+     "lang": "verus"
+    },
+    {
+     "kind": "external",
+     "lang": "verus"
+    },
+    {
+     "kind": "assume",
+     "lang": "verus"
+    },
+    {
+     "kind": "admit",
+     "lang": "verus"
+    },
+    {
+     "kind": "assume_specification",
+     "lang": "verus"
+    },
+    {
+     "kind": "uninterp",
+     "lang": "verus"
+    },
+    {
+     "kind": "axiom",
+     "lang": "verus"
+    },
+    {
+     "kind": "unsafe",
+     "lang": "bend"
+    },
+    {
+     "kind": "ts_ignore",
+     "lang": "ts"
+    }
+   ],
+   "kinds": [
+    {
+     "from": "component",
+     "name": "calls",
+     "to": "component"
+    },
+    {
+     "from": "component",
+     "name": "callbacks",
+     "to": "component"
+    },
+    {
+     "from": "component",
+     "name": "provides",
+     "to": "resource"
+    },
+    {
+     "from": "component",
+     "name": "data_flow",
+     "to": "component"
+    },
+    {
+     "from": "component",
+     "name": "coordinated_call",
+     "to": "component"
+    }
+   ],
+   "notes": [],
+   "providers": [],
+   "resources": [],
+   "shape": {
+    "owner": "tooling::ShapeMaintainers",
+    "policy": "std::DefaultPolicy",
+    "q": "tooling::Shape"
+   },
+   "templates": [],
+   "units": [],
+   "v": "shape.elaborated.v1"
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "predicate": {
+    "shape": {
+     "entries": [
+      {
+       "digest": "sha256:05f94654da2fee3276135ad58e654d792ee6b86f8ca9ea62f89187c0e47b210f",
+       "id": "ts:packages/shp-checker/src/checker/lowering/facts.ts",
+       "kind": "file",
+       "parent": null,
+       "projection": "file",
+       "scheme": "ts.file.v2"
+      },
+      {
+       "digest": "sha256:0cc1783131ea095746a905d9c804655f5079429ada407e35beada7ebdbeb3b60",
+       "id": "ts:packages/shp-checker/src/checker/lowering/facts.ts",
+       "kind": "file",
+       "parent": null,
+       "projection": "own",
+       "scheme": "ts.own.v2"
+      },
+      {
+       "digest": "sha256:87fd7e3c4c54c1191078d4cc21d8d450d72184036fe708f51ef530ab654a886d",
+       "id": "ts:packages/shp-checker/src/checker/lowering/context.ts",
+       "kind": "file",
+       "parent": null,
+       "projection": "file",
+       "scheme": "ts.file.v2"
+      },
+      {
+       "digest": "sha256:6cfacec82fe6ff291edc3aca449219c7682da953604a23cd30218019eeaee21b",
+       "id": "ts:packages/shp-checker/src/checker/lowering/context.ts",
+       "kind": "file",
+       "parent": null,
+       "projection": "own",
+       "scheme": "ts.own.v2"
+      },
+      {
+       "digest": "sha256:da845a39ef667a7ee8d2635e07491cdbe521572ccf44a1ec58d954f97ce783b3",
+       "id": "ts:packages/shp-checker/src/checker/derivations.ts",
+       "kind": "file",
+       "parent": null,
+       "projection": "file",
+       "scheme": "ts.file.v2"
+      },
+      {
+       "digest": "sha256:be4778d6fb25f626c04c023fde43f2d42744512c522acb1e5e357b6eddd60006",
+       "id": "ts:packages/shp-checker/src/checker/derivations.ts",
+       "kind": "file",
+       "parent": null,
+       "projection": "own",
+       "scheme": "ts.own.v2"
+      },
+      {
+       "digest": "sha256:72442c39dba79df19934413ac87735017eb4326d79e88975bc47a17f81b04fc9",
+       "id": "ts:packages/shp-checker/src/checker/derivations.ts#requirementsForTarget",
+       "kind": "symbol",
+       "parent": "ts:packages/shp-checker/src/checker/derivations.ts",
+       "projection": "unit",
+       "scheme": "ts.unit.v2"
+      },
+      {
+       "digest": "sha256:2681cf302fb11df3bcc6006deab3e99aed4e24322bd5164a64229f5a33abce8f",
+       "id": "ts:packages/shp-checker/src/checker/derivations.ts#requirementsForTarget",
+       "kind": "symbol",
+       "parent": "ts:packages/shp-checker/src/checker/derivations.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2"
+      },
+      {
+       "digest": "sha256:2c173eb15cea58648f5016660440707fe4e035e7b3c3a57bc1aac9ba3799956e",
+       "id": "ts:packages/shp-checker/src/checker/derivations.ts#shapeTraitBearers",
+       "kind": "symbol",
+       "parent": "ts:packages/shp-checker/src/checker/derivations.ts",
+       "projection": "unit",
+       "scheme": "ts.unit.v2"
+      },
+      {
+       "digest": "sha256:54fe6e39dbb623ee58d20b7944a492709f8c87ec5154ace4eb0ac5aeb315e4fe",
+       "id": "ts:packages/shp-checker/src/checker/derivations.ts#shapeTraitBearers",
+       "kind": "symbol",
+       "parent": "ts:packages/shp-checker/src/checker/derivations.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2"
+      },
+      {
+       "digest": "sha256:9ac45211051fa3dbbbdffa49cc9e7a6121843b27e032041051fb50cb3ddd48a9",
+       "id": "ts:packages/shp-checker/src/checker/derivations.ts#requiresReevaluation",
+       "kind": "symbol",
+       "parent": "ts:packages/shp-checker/src/checker/derivations.ts",
+       "projection": "unit",
+       "scheme": "ts.unit.v2"
+      },
+      {
+       "digest": "sha256:3e581c1f3b64b074abbb27bde13ee78079e65f4c8b458e5c16cc2daf83fd16da",
+       "id": "ts:packages/shp-checker/src/checker/derivations.ts#requiresReevaluation",
+       "kind": "symbol",
+       "parent": "ts:packages/shp-checker/src/checker/derivations.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2"
+      }
+     ],
+     "revision": "h5",
+     "tree": [],
+     "v": "shape.manifest.v1"
+    }
+   },
+   "predicateType": "https://shapelang.dev/manifest/v1",
+   "subject": []
+  },
+  "revision": "h5"
+ },
+ "baseRecords": [],
+ "cells": [],
+ "change": {
+  "ids": [
+   "github:acme/shape#6"
+  ]
+ },
+ "contract": "shape.kernel.case/v1",
+ "head": {
+  "esf": {
+   "actors": [
+    {
+     "identities": [],
+     "kind": "team",
+     "members": [
+      "tooling::tim"
+     ],
+     "operator": null,
+     "q": "tooling::ShapeMaintainers"
+    },
+    {
+     "identities": [],
+     "kind": "person",
+     "members": [],
+     "operator": null,
+     "q": "tooling::tim"
+    },
+    {
+     "identities": [],
+     "kind": "agent",
+     "members": [],
+     "operator": "tooling::tim",
+     "q": "tooling::claude"
+    }
+   ],
+   "claims": [
+    {
+     "args": {
+      "from": "checker::ShapeRuleEngine",
+      "kind": "calls",
+      "to": "checker::ShapeModelLowerer"
+     },
+     "ids": [
+      "checker::ShapeRuleEngineReadsLoweredFacts"
+     ],
+     "op": "edge.exists",
+     "owner": "tooling::ShapeMaintainers",
+     "requirement": null,
+     "tier": "normal"
+    },
+    {
+     "args": {
+      "from": "checker::ShapeRuleEngine",
+      "kind": "calls",
+      "to": "checker::ShapeDiagnostics"
+     },
+     "ids": [
+      "checker::ShapeRuleEngineReportsDiagnostics"
+     ],
+     "op": "edge.exists",
+     "owner": "tooling::ShapeMaintainers",
+     "requirement": null,
+     "tier": "normal"
+    },
+    {
+     "args": {
+      "exceptFrom": [],
+      "exceptTo": [
+       "component checker::ShapeDiagnostics",
+       "component checker::ShapeModelLowerer"
+      ],
+      "from": [
+       "component checker::ShapeRuleEngine"
+      ],
+      "kind": "calls",
+      "to": [
+       "*"
+      ]
+     },
+     "ids": [
+      "checker::ShapeRuleEngine/relations-complete-calls"
+     ],
+     "op": "edge.forbid",
+     "owner": "tooling::ShapeMaintainers",
+     "requirement": null,
+     "tier": "normal"
+    }
+   ],
+   "components": [
+    {
+     "allows": [],
+     "assumes": [],
+     "attach": [],
+     "boundary": false,
+     "complete": [],
+     "grants": null,
+     "owner": "tooling::ShapeMaintainers",
+     "paths": [
+      "packages/shp-checker/src/**/*.ts"
+     ],
+     "q": "checker::ShapeChecker",
+     "tier": "normal",
+     "units": [],
+     "was": null
+    },
+    {
+     "allows": [],
+     "assumes": [],
+     "attach": [],
+     "boundary": false,
+     "complete": [],
+     "grants": null,
+     "owner": "tooling::ShapeMaintainers",
+     "paths": [
+      "packages/shp-checker/src/checker/derivations.ts",
+      "packages/shp-checker/src/checker/rules/**/*.ts"
+     ],
+     "q": "checker::ShapeRuleEngine",
+     "tier": "normal",
+     "units": [],
+     "was": null
+    },
+    {
+     "allows": [],
+     "assumes": [],
+     "attach": [],
+     "boundary": false,
+     "complete": [],
+     "grants": null,
+     "owner": "tooling::ShapeMaintainers",
+     "paths": [
+      "packages/shp-checker/src/checker/lowering/**/*.ts"
+     ],
+     "q": "checker::ShapeModelLowerer",
+     "tier": "normal",
+     "units": [],
+     "was": null
+    },
+    {
+     "allows": [],
+     "assumes": [],
+     "attach": [],
+     "boundary": false,
+     "complete": [],
+     "grants": null,
+     "owner": "tooling::ShapeMaintainers",
+     "paths": [
+      "packages/shp-checker/src/checker/diagnostics/**/*.ts"
+     ],
+     "q": "checker::ShapeDiagnostics",
+     "tier": "normal",
+     "units": [],
+     "was": null
+    }
+   ],
+   "effects": [
+    {
+     "implies": [],
+     "verb": "Read"
+    },
+    {
+     "implies": [],
+     "verb": "Write"
+    },
+    {
+     "implies": [
+      "Read"
+     ],
+     "verb": "Export"
+    },
+    {
+     "implies": [
+      "Write"
+     ],
+     "verb": "Append"
+    },
+    {
+     "implies": [
+      "Write"
+     ],
+     "verb": "Import"
+    },
+    {
+     "implies": [
+      "Write"
+     ],
+     "verb": "Update"
+    },
+    {
+     "implies": [
+      "Update"
+     ],
+     "verb": "Redact"
+    },
+    {
+     "implies": [
+      "Update"
+     ],
+     "verb": "LogicalDelete"
+    },
+    {
+     "implies": [
+      "Update"
+     ],
+     "verb": "HardDelete"
+    },
+    {
+     "implies": [
+      "HardDelete"
+     ],
+     "verb": "Truncate"
+    },
+    {
+     "implies": [
+      "Truncate"
+     ],
+     "verb": "DropStorage"
+    },
+    {
+     "implies": [],
+     "verb": "Hatch"
+    }
+   ],
+   "errors": [],
+   "exceptions": [],
+   "hatches": [
+    {
+     "kind": "external_body",
+     "lang": "verus"
+    },
+    {
+     "kind": "external",
+     "lang": "verus"
+    },
+    {
+     "kind": "assume",
+     "lang": "verus"
+    },
+    {
+     "kind": "admit",
+     "lang": "verus"
+    },
+    {
+     "kind": "assume_specification",
+     "lang": "verus"
+    },
+    {
+     "kind": "uninterp",
+     "lang": "verus"
+    },
+    {
+     "kind": "axiom",
+     "lang": "verus"
+    },
+    {
+     "kind": "unsafe",
+     "lang": "bend"
+    },
+    {
+     "kind": "ts_ignore",
+     "lang": "ts"
+    }
+   ],
+   "kinds": [
+    {
+     "from": "component",
+     "name": "calls",
+     "to": "component"
+    },
+    {
+     "from": "component",
+     "name": "callbacks",
+     "to": "component"
+    },
+    {
+     "from": "component",
+     "name": "provides",
+     "to": "resource"
+    },
+    {
+     "from": "component",
+     "name": "data_flow",
+     "to": "component"
+    },
+    {
+     "from": "component",
+     "name": "coordinated_call",
+     "to": "component"
+    }
+   ],
+   "notes": [],
+   "providers": [],
+   "resources": [],
+   "shape": {
+    "owner": "tooling::ShapeMaintainers",
+    "policy": "std::DefaultPolicy",
+    "q": "tooling::Shape"
+   },
+   "templates": [],
+   "units": [],
+   "v": "shape.elaborated.v1"
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "predicate": {
+    "shape": {
+     "entries": [
+      {
+       "digest": "sha256:05f94654da2fee3276135ad58e654d792ee6b86f8ca9ea62f89187c0e47b210f",
+       "id": "ts:packages/shp-checker/src/checker/lowering/facts.ts",
+       "kind": "file",
+       "parent": null,
+       "projection": "file",
+       "scheme": "ts.file.v2"
+      },
+      {
+       "digest": "sha256:0cc1783131ea095746a905d9c804655f5079429ada407e35beada7ebdbeb3b60",
+       "id": "ts:packages/shp-checker/src/checker/lowering/facts.ts",
+       "kind": "file",
+       "parent": null,
+       "projection": "own",
+       "scheme": "ts.own.v2"
+      },
+      {
+       "digest": "sha256:87fd7e3c4c54c1191078d4cc21d8d450d72184036fe708f51ef530ab654a886d",
+       "id": "ts:packages/shp-checker/src/checker/lowering/context.ts",
+       "kind": "file",
+       "parent": null,
+       "projection": "file",
+       "scheme": "ts.file.v2"
+      },
+      {
+       "digest": "sha256:6cfacec82fe6ff291edc3aca449219c7682da953604a23cd30218019eeaee21b",
+       "id": "ts:packages/shp-checker/src/checker/lowering/context.ts",
+       "kind": "file",
+       "parent": null,
+       "projection": "own",
+       "scheme": "ts.own.v2"
+      },
+      {
+       "digest": "sha256:da845a39ef667a7ee8d2635e07491cdbe521572ccf44a1ec58d954f97ce783b3",
+       "id": "ts:packages/shp-checker/src/checker/derivations.ts",
+       "kind": "file",
+       "parent": null,
+       "projection": "file",
+       "scheme": "ts.file.v2"
+      },
+      {
+       "digest": "sha256:be4778d6fb25f626c04c023fde43f2d42744512c522acb1e5e357b6eddd60006",
+       "id": "ts:packages/shp-checker/src/checker/derivations.ts",
+       "kind": "file",
+       "parent": null,
+       "projection": "own",
+       "scheme": "ts.own.v2"
+      },
+      {
+       "digest": "sha256:72442c39dba79df19934413ac87735017eb4326d79e88975bc47a17f81b04fc9",
+       "id": "ts:packages/shp-checker/src/checker/derivations.ts#requirementsForTarget",
+       "kind": "symbol",
+       "parent": "ts:packages/shp-checker/src/checker/derivations.ts",
+       "projection": "unit",
+       "scheme": "ts.unit.v2"
+      },
+      {
+       "digest": "sha256:2681cf302fb11df3bcc6006deab3e99aed4e24322bd5164a64229f5a33abce8f",
+       "id": "ts:packages/shp-checker/src/checker/derivations.ts#requirementsForTarget",
+       "kind": "symbol",
+       "parent": "ts:packages/shp-checker/src/checker/derivations.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2"
+      },
+      {
+       "digest": "sha256:2c173eb15cea58648f5016660440707fe4e035e7b3c3a57bc1aac9ba3799956e",
+       "id": "ts:packages/shp-checker/src/checker/derivations.ts#shapeTraitBearers",
+       "kind": "symbol",
+       "parent": "ts:packages/shp-checker/src/checker/derivations.ts",
+       "projection": "unit",
+       "scheme": "ts.unit.v2"
+      },
+      {
+       "digest": "sha256:54fe6e39dbb623ee58d20b7944a492709f8c87ec5154ace4eb0ac5aeb315e4fe",
+       "id": "ts:packages/shp-checker/src/checker/derivations.ts#shapeTraitBearers",
+       "kind": "symbol",
+       "parent": "ts:packages/shp-checker/src/checker/derivations.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2"
+      },
+      {
+       "digest": "sha256:9ac45211051fa3dbbbdffa49cc9e7a6121843b27e032041051fb50cb3ddd48a9",
+       "id": "ts:packages/shp-checker/src/checker/derivations.ts#requiresReevaluation",
+       "kind": "symbol",
+       "parent": "ts:packages/shp-checker/src/checker/derivations.ts",
+       "projection": "unit",
+       "scheme": "ts.unit.v2"
+      },
+      {
+       "digest": "sha256:3e581c1f3b64b074abbb27bde13ee78079e65f4c8b458e5c16cc2daf83fd16da",
+       "id": "ts:packages/shp-checker/src/checker/derivations.ts#requiresReevaluation",
+       "kind": "symbol",
+       "parent": "ts:packages/shp-checker/src/checker/derivations.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2"
+      }
+     ],
+     "revision": "h5",
+     "tree": [],
+     "v": "shape.manifest.v1"
+    }
+   },
+   "predicateType": "https://shapelang.dev/manifest/v1",
+   "subject": []
+  },
+  "revision": "h5"
+ },
+ "mode": "change",
+ "now": "2026-10-25T12:00:00Z",
+ "records": []
+}

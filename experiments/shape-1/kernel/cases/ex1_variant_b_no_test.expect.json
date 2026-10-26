@@ -1,0 +1,19 @@
+{
+ "errors": [
+  {
+   "code": "E-provider-missing",
+   "subject": "provider audit::fastCheck sha256:2da8fb7008513c5d4434893c76fcb70a4dab922e56ed89f988b390962a63dff3"
+  }
+ ],
+ "obligations": [
+  {
+   "key": "ob:bb51a88f52f5081e773dabf7f021b863325e003c20a47af0a4e2b8e133f59628"
+  },
+  {
+   "kind": "unestablished",
+   "reason": "missing",
+   "severity": "blocking"
+  }
+ ],
+ "verdict": "blocked"
+}

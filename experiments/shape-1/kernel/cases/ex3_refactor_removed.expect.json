@@ -1,0 +1,13 @@
+{
+ "exact": true,
+ "obligations": [
+  {
+   "exploited": false,
+   "key": "ob:a4a8d01ab841cdac2718c03927694215d569d314bdf6c753487e5123267e47f0",
+   "kind": "loosening",
+   "severity": "blocking",
+   "tier": "normal"
+  }
+ ],
+ "verdict": "blocked"
+}

@@ -1,0 +1,38 @@
+{
+ "errors": [],
+ "exact": true,
+ "obligations": [
+  {
+   "binding": "bd:2ea660886d27e5e3e377c2e500e48bcb542e347d272df45c3ca3a92e4491972a",
+   "budget": "mechanical",
+   "force": "sound",
+   "group": "g:f16ee5b2da967ed85fed5a5b7527502f641bd97d0d74292f7e9eaa67b0cda56a",
+   "introduced": true,
+   "key": "ob:815d7ebb9678dbead1b3bef2195fa49bbf807b46d53827e5a944e8009cfc4403",
+   "kind": "contradiction",
+   "severity": "blocking"
+  },
+  {
+   "binding": "bd:1da36a42e325dc5acd89366516a304d11c2ce32f9dba52dc6934ad33a2c0535d",
+   "budget": "mechanical",
+   "group": "g:f16ee5b2da967ed85fed5a5b7527502f641bd97d0d74292f7e9eaa67b0cda56a",
+   "introduced": true,
+   "key": "ob:8b9a1c953f7ed31c50f09fcd65a8e27bdb6d9a40db449c8fd69946b621161e7d",
+   "kind": "unestablished",
+   "reason": "assumption",
+   "severity": "blocking"
+  },
+  {
+   "claimFp": "sha256:dc8454f26ba4a098a6681e766d63ddf9226954a5a5bf8ed9d8148c7b0996fac8",
+   "force": "sound",
+   "introduced": false,
+   "kind": "contradiction",
+   "severity": "owed",
+   "subject": {
+    "atom": "external_body<std::Trust>",
+    "code": "verus:ironkv/src/host_t.rs#send"
+   }
+  }
+ ],
+ "verdict": "blocked"
+}

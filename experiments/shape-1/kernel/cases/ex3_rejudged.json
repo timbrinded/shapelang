@@ -1,0 +1,692 @@
+{
+ "authors": [
+  "tooling::claude",
+  "tooling::tim"
+ ],
+ "base": {
+  "esf": {
+   "actors": [
+    {
+     "identities": [],
+     "kind": "team",
+     "members": [
+      "tooling::tim"
+     ],
+     "operator": null,
+     "q": "tooling::ShapeMaintainers"
+    },
+    {
+     "identities": [],
+     "kind": "person",
+     "members": [],
+     "operator": null,
+     "q": "tooling::tim"
+    },
+    {
+     "identities": [],
+     "kind": "agent",
+     "members": [],
+     "operator": "tooling::tim",
+     "q": "tooling::claude"
+    }
+   ],
+   "claims": [
+    {
+     "args": {
+      "on": [
+       "unit tooling::ShpCli.isoToday"
+      ],
+      "statement": {
+       "text": "Changes to this unit preserve the constraint recorded in its memory note."
+      }
+     },
+     "ids": [
+      "tooling::ShpCli.isoToday/RefactorSensitive/law"
+     ],
+     "op": "law",
+     "owner": "tooling::ShapeMaintainers",
+     "requirement": {
+      "judged": true,
+      "level": "none",
+      "pins": [],
+      "projection": "unit"
+     },
+     "tier": "normal"
+    },
+    {
+     "args": {
+      "atoms": [
+       "Read<tooling::SystemClock>"
+      ],
+      "unit": "tooling::ShpCli.isoToday"
+     },
+     "ids": [
+      "tooling::ShpCli.isoToday/effects"
+     ],
+     "op": "effects.upper",
+     "owner": "tooling::ShapeMaintainers",
+     "requirement": null,
+     "tier": "normal"
+    }
+   ],
+   "components": [
+    {
+     "allows": [],
+     "assumes": [],
+     "attach": [],
+     "boundary": false,
+     "complete": [],
+     "grants": null,
+     "owner": "tooling::ShapeMaintainers",
+     "paths": [
+      "packages/shp-cli/src/**/*.ts"
+     ],
+     "q": "tooling::ShpCli",
+     "tier": "normal",
+     "units": [],
+     "was": null
+    }
+   ],
+   "effects": [
+    {
+     "implies": [],
+     "verb": "Read"
+    },
+    {
+     "implies": [],
+     "verb": "Write"
+    },
+    {
+     "implies": [
+      "Read"
+     ],
+     "verb": "Export"
+    },
+    {
+     "implies": [
+      "Write"
+     ],
+     "verb": "Append"
+    },
+    {
+     "implies": [
+      "Write"
+     ],
+     "verb": "Import"
+    },
+    {
+     "implies": [
+      "Write"
+     ],
+     "verb": "Update"
+    },
+    {
+     "implies": [
+      "Update"
+     ],
+     "verb": "Redact"
+    },
+    {
+     "implies": [
+      "Update"
+     ],
+     "verb": "LogicalDelete"
+    },
+    {
+     "implies": [
+      "Update"
+     ],
+     "verb": "HardDelete"
+    },
+    {
+     "implies": [
+      "HardDelete"
+     ],
+     "verb": "Truncate"
+    },
+    {
+     "implies": [
+      "Truncate"
+     ],
+     "verb": "DropStorage"
+    },
+    {
+     "implies": [],
+     "verb": "Hatch"
+    }
+   ],
+   "errors": [],
+   "exceptions": [],
+   "hatches": [
+    {
+     "kind": "external_body",
+     "lang": "verus"
+    },
+    {
+     "kind": "external",
+     "lang": "verus"
+    },
+    {
+     "kind": "assume",
+     "lang": "verus"
+    },
+    {
+     "kind": "admit",
+     "lang": "verus"
+    },
+    {
+     "kind": "assume_specification",
+     "lang": "verus"
+    },
+    {
+     "kind": "uninterp",
+     "lang": "verus"
+    },
+    {
+     "kind": "axiom",
+     "lang": "verus"
+    },
+    {
+     "kind": "unsafe",
+     "lang": "bend"
+    },
+    {
+     "kind": "ts_ignore",
+     "lang": "ts"
+    }
+   ],
+   "kinds": [
+    {
+     "from": "component",
+     "name": "calls",
+     "to": "component"
+    },
+    {
+     "from": "component",
+     "name": "callbacks",
+     "to": "component"
+    },
+    {
+     "from": "component",
+     "name": "provides",
+     "to": "resource"
+    },
+    {
+     "from": "component",
+     "name": "data_flow",
+     "to": "component"
+    },
+    {
+     "from": "component",
+     "name": "coordinated_call",
+     "to": "component"
+    }
+   ],
+   "notes": [],
+   "providers": [
+    {
+     "absence": false,
+     "decides": [],
+     "depsComplete": false,
+     "identity": "sigstore(\"relay\")",
+     "implementation": {
+      "digest": "sha256:relay",
+      "paths": []
+     },
+     "observes": [],
+     "persist": false,
+     "presence": false,
+     "produces": [
+      "judgment"
+     ],
+     "q": "tooling::reviews",
+     "trusts": []
+    }
+   ],
+   "resources": [
+    {
+     "attach": [],
+     "bind": [],
+     "owner": "tooling::ShapeMaintainers",
+     "q": "tooling::SystemClock",
+     "tier": "normal",
+     "was": null
+    }
+   ],
+   "shape": {
+    "owner": "tooling::ShapeMaintainers",
+    "policy": "std::DefaultPolicy",
+    "q": "tooling::Shape"
+   },
+   "templates": [],
+   "units": [
+    {
+     "attach": [
+      "std::RefactorSensitive"
+     ],
+     "bind": "ts:packages/shp-cli/src/freshness.ts#isoToday",
+     "component": "tooling::ShpCli",
+     "name": "isoToday",
+     "owner": "tooling::ShapeMaintainers",
+     "q": "tooling::ShpCli.isoToday",
+     "summary": null,
+     "tier": "normal",
+     "was": null
+    }
+   ],
+   "v": "shape.elaborated.v1"
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "predicate": {
+    "shape": {
+     "entries": [
+      {
+       "digest": "sha256:a33d0ca3762193f37db4870ae3c098e1e94a5a431782e7114b393a2e7ba18bac",
+       "id": "ts:packages/shp-cli/src/freshness.ts",
+       "kind": "file",
+       "parent": null,
+       "projection": "file",
+       "scheme": "ts.file.v2"
+      },
+      {
+       "digest": "sha256:adc8e1b4d94f72805dbcbb7b9f7067ac2ac6e37f53825f44ab8c95657f50e74b",
+       "id": "ts:packages/shp-cli/src/freshness.ts",
+       "kind": "file",
+       "parent": null,
+       "projection": "own",
+       "scheme": "ts.own.v2"
+      },
+      {
+       "digest": "sha256:3018423164cf0d769cf3a0b13c4f5a70297ad51908b34467dcf8eb9ca4193703",
+       "id": "ts:packages/shp-cli/src/freshness.ts#isoToday",
+       "kind": "symbol",
+       "parent": "ts:packages/shp-cli/src/freshness.ts",
+       "projection": "unit",
+       "scheme": "ts.unit.v2"
+      },
+      {
+       "digest": "sha256:823f392ddd34a1b34cbaa11254016fc04917fd5994d51432e7545452b6f638c6",
+       "id": "ts:packages/shp-cli/src/freshness.ts#isoToday",
+       "kind": "symbol",
+       "parent": "ts:packages/shp-cli/src/freshness.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2"
+      }
+     ],
+     "revision": "b3",
+     "tree": [],
+     "v": "shape.manifest.v1"
+    }
+   },
+   "predicateType": "https://shapelang.dev/manifest/v1",
+   "subject": []
+  },
+  "revision": "b3"
+ },
+ "baseRecords": [],
+ "cells": [],
+ "change": {
+  "ids": [
+   "github:acme/shape#3"
+  ]
+ },
+ "contract": "shape.kernel.case/v1",
+ "head": {
+  "esf": {
+   "actors": [
+    {
+     "identities": [],
+     "kind": "team",
+     "members": [
+      "tooling::tim"
+     ],
+     "operator": null,
+     "q": "tooling::ShapeMaintainers"
+    },
+    {
+     "identities": [],
+     "kind": "person",
+     "members": [],
+     "operator": null,
+     "q": "tooling::tim"
+    },
+    {
+     "identities": [],
+     "kind": "agent",
+     "members": [],
+     "operator": "tooling::tim",
+     "q": "tooling::claude"
+    }
+   ],
+   "claims": [
+    {
+     "args": {
+      "on": [
+       "unit tooling::ShpCli.isoToday"
+      ],
+      "statement": {
+       "text": "Changes to this unit preserve the constraint recorded in its memory note."
+      }
+     },
+     "ids": [
+      "tooling::ShpCli.isoToday/RefactorSensitive/law"
+     ],
+     "op": "law",
+     "owner": "tooling::ShapeMaintainers",
+     "requirement": {
+      "judged": true,
+      "level": "none",
+      "pins": [],
+      "projection": "unit"
+     },
+     "tier": "normal"
+    },
+    {
+     "args": {
+      "atoms": [
+       "Read<tooling::SystemClock>"
+      ],
+      "unit": "tooling::ShpCli.isoToday"
+     },
+     "ids": [
+      "tooling::ShpCli.isoToday/effects"
+     ],
+     "op": "effects.upper",
+     "owner": "tooling::ShapeMaintainers",
+     "requirement": null,
+     "tier": "normal"
+    }
+   ],
+   "components": [
+    {
+     "allows": [],
+     "assumes": [],
+     "attach": [],
+     "boundary": false,
+     "complete": [],
+     "grants": null,
+     "owner": "tooling::ShapeMaintainers",
+     "paths": [
+      "packages/shp-cli/src/**/*.ts"
+     ],
+     "q": "tooling::ShpCli",
+     "tier": "normal",
+     "units": [],
+     "was": null
+    }
+   ],
+   "effects": [
+    {
+     "implies": [],
+     "verb": "Read"
+    },
+    {
+     "implies": [],
+     "verb": "Write"
+    },
+    {
+     "implies": [
+      "Read"
+     ],
+     "verb": "Export"
+    },
+    {
+     "implies": [
+      "Write"
+     ],
+     "verb": "Append"
+    },
+    {
+     "implies": [
+      "Write"
+     ],
+     "verb": "Import"
+    },
+    {
+     "implies": [
+      "Write"
+     ],
+     "verb": "Update"
+    },
+    {
+     "implies": [
+      "Update"
+     ],
+     "verb": "Redact"
+    },
+    {
+     "implies": [
+      "Update"
+     ],
+     "verb": "LogicalDelete"
+    },
+    {
+     "implies": [
+      "Update"
+     ],
+     "verb": "HardDelete"
+    },
+    {
+     "implies": [
+      "HardDelete"
+     ],
+     "verb": "Truncate"
+    },
+    {
+     "implies": [
+      "Truncate"
+     ],
+     "verb": "DropStorage"
+    },
+    {
+     "implies": [],
+     "verb": "Hatch"
+    }
+   ],
+   "errors": [],
+   "exceptions": [],
+   "hatches": [
+    {
+     "kind": "external_body",
+     "lang": "verus"
+    },
+    {
+     "kind": "external",
+     "lang": "verus"
+    },
+    {
+     "kind": "assume",
+     "lang": "verus"
+    },
+    {
+     "kind": "admit",
+     "lang": "verus"
+    },
+    {
+     "kind": "assume_specification",
+     "lang": "verus"
+    },
+    {
+     "kind": "uninterp",
+     "lang": "verus"
+    },
+    {
+     "kind": "axiom",
+     "lang": "verus"
+    },
+    {
+     "kind": "unsafe",
+     "lang": "bend"
+    },
+    {
+     "kind": "ts_ignore",
+     "lang": "ts"
+    }
+   ],
+   "kinds": [
+    {
+     "from": "component",
+     "name": "calls",
+     "to": "component"
+    },
+    {
+     "from": "component",
+     "name": "callbacks",
+     "to": "component"
+    },
+    {
+     "from": "component",
+     "name": "provides",
+     "to": "resource"
+    },
+    {
+     "from": "component",
+     "name": "data_flow",
+     "to": "component"
+    },
+    {
+     "from": "component",
+     "name": "coordinated_call",
+     "to": "component"
+    }
+   ],
+   "notes": [],
+   "providers": [
+    {
+     "absence": false,
+     "decides": [],
+     "depsComplete": false,
+     "identity": "sigstore(\"relay\")",
+     "implementation": {
+      "digest": "sha256:relay",
+      "paths": []
+     },
+     "observes": [],
+     "persist": false,
+     "presence": false,
+     "produces": [
+      "judgment"
+     ],
+     "q": "tooling::reviews",
+     "trusts": []
+    }
+   ],
+   "resources": [
+    {
+     "attach": [],
+     "bind": [],
+     "owner": "tooling::ShapeMaintainers",
+     "q": "tooling::SystemClock",
+     "tier": "normal",
+     "was": null
+    }
+   ],
+   "shape": {
+    "owner": "tooling::ShapeMaintainers",
+    "policy": "std::DefaultPolicy",
+    "q": "tooling::Shape"
+   },
+   "templates": [],
+   "units": [
+    {
+     "attach": [
+      "std::RefactorSensitive"
+     ],
+     "bind": "ts:packages/shp-cli/src/freshness.ts#isoToday",
+     "component": "tooling::ShpCli",
+     "name": "isoToday",
+     "owner": "tooling::ShapeMaintainers",
+     "q": "tooling::ShpCli.isoToday",
+     "summary": null,
+     "tier": "normal",
+     "was": null
+    }
+   ],
+   "v": "shape.elaborated.v1"
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "predicate": {
+    "shape": {
+     "entries": [
+      {
+       "digest": "sha256:994a423bc62418fc38500e3073787a5708eaa84088a737689e8082c29492c326",
+       "id": "ts:packages/shp-cli/src/freshness.ts",
+       "kind": "file",
+       "parent": null,
+       "projection": "file",
+       "scheme": "ts.file.v2"
+      },
+      {
+       "digest": "sha256:adc8e1b4d94f72805dbcbb7b9f7067ac2ac6e37f53825f44ab8c95657f50e74b",
+       "id": "ts:packages/shp-cli/src/freshness.ts",
+       "kind": "file",
+       "parent": null,
+       "projection": "own",
+       "scheme": "ts.own.v2"
+      },
+      {
+       "digest": "sha256:6f68619e784427af2372e479a15e284f6054a0fb6540a8287959d16cd4cc02fb",
+       "id": "ts:packages/shp-cli/src/freshness.ts#isoToday",
+       "kind": "symbol",
+       "parent": "ts:packages/shp-cli/src/freshness.ts",
+       "projection": "unit",
+       "scheme": "ts.unit.v2"
+      },
+      {
+       "digest": "sha256:e898502b279892532646325362931faa73ea5d95b37986b5b8a0ba2f7c00c558",
+       "id": "ts:packages/shp-cli/src/freshness.ts#isoToday",
+       "kind": "symbol",
+       "parent": "ts:packages/shp-cli/src/freshness.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2"
+      }
+     ],
+     "revision": "h3",
+     "tree": [],
+     "v": "shape.manifest.v1"
+    }
+   },
+   "predicateType": "https://shapelang.dev/manifest/v1",
+   "subject": []
+  },
+  "revision": "h3"
+ },
+ "mode": "change",
+ "now": "2026-10-25T12:00:00Z",
+ "records": [
+  {
+   "_type": "https://in-toto.io/Statement/v1",
+   "authenticated": true,
+   "predicate": {
+    "shape": {
+     "claim": {
+      "fp": "sha256:c414eadc238d87c4e004899e9f2fe5a2ecfe615dae7eb8a242714426a059a077",
+      "id": "tooling::ShpCli.isoToday/RefactorSensitive/law"
+     },
+     "code": [
+      {
+       "digest": "sha256:6f68619e784427af2372e479a15e284f6054a0fb6540a8287959d16cd4cc02fb",
+       "id": "ts:packages/shp-cli/src/freshness.ts#isoToday",
+       "projection": "unit",
+       "scheme": "ts.unit.v2"
+      }
+     ],
+     "judge": "tooling::tim",
+     "kind": "judgment",
+     "provider": {
+      "id": "tooling::reviews",
+      "version": "1.0.0"
+     },
+     "result": "supports",
+     "revision": "h3",
+     "time": "2026-09-01T10:00:00Z",
+     "v": "shape.evidence.v1"
+    }
+   },
+   "predicateType": "https://shapelang.dev/evidence/v1",
+   "subject": []
+  }
+ ]
+}

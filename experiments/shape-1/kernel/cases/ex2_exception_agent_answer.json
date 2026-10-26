@@ -1,0 +1,1519 @@
+{
+ "authors": [
+  "ironkv::agent",
+  "ironkv::erin"
+ ],
+ "base": {
+  "esf": {
+   "actors": [
+    {
+     "identities": [],
+     "kind": "team",
+     "members": [
+      "ironkv::dana",
+      "ironkv::erin"
+     ],
+     "operator": null,
+     "q": "ironkv::IronKvTeam"
+    },
+    {
+     "identities": [],
+     "kind": "person",
+     "members": [],
+     "operator": null,
+     "q": "ironkv::dana"
+    },
+    {
+     "identities": [],
+     "kind": "person",
+     "members": [],
+     "operator": null,
+     "q": "ironkv::erin"
+    },
+    {
+     "identities": [],
+     "kind": "agent",
+     "members": [],
+     "operator": "ironkv::erin",
+     "q": "ironkv::agent"
+    }
+   ],
+   "claims": [
+    {
+     "args": {
+      "atom": "Hatch<std::Trust>",
+      "except": [],
+      "scope": [
+       "*"
+      ]
+     },
+     "ids": [
+      "ironkv::NoHatchesOutsideBoundaries/Hatch"
+     ],
+     "op": "effect.forbid",
+     "owner": "ironkv::IronKvTeam",
+     "requirement": null,
+     "tier": "critical"
+    },
+    {
+     "args": {
+      "atom": "admit<std::Trust>",
+      "except": [],
+      "scope": [
+       "*"
+      ]
+     },
+     "ids": [
+      "ironkv::NoHatchesOutsideBoundaries/admit"
+     ],
+     "op": "effect.forbid",
+     "owner": "ironkv::IronKvTeam",
+     "requirement": null,
+     "tier": "critical"
+    },
+    {
+     "args": {
+      "atom": "assume<std::Trust>",
+      "except": [],
+      "scope": [
+       "*"
+      ]
+     },
+     "ids": [
+      "ironkv::NoHatchesOutsideBoundaries/assume"
+     ],
+     "op": "effect.forbid",
+     "owner": "ironkv::IronKvTeam",
+     "requirement": null,
+     "tier": "critical"
+    },
+    {
+     "args": {
+      "atom": "assume_specification<std::Trust>",
+      "except": [],
+      "scope": [
+       "*"
+      ]
+     },
+     "ids": [
+      "ironkv::NoHatchesOutsideBoundaries/assume_specification"
+     ],
+     "op": "effect.forbid",
+     "owner": "ironkv::IronKvTeam",
+     "requirement": null,
+     "tier": "critical"
+    },
+    {
+     "args": {
+      "atom": "axiom<std::Trust>",
+      "except": [],
+      "scope": [
+       "*"
+      ]
+     },
+     "ids": [
+      "ironkv::NoHatchesOutsideBoundaries/axiom"
+     ],
+     "op": "effect.forbid",
+     "owner": "ironkv::IronKvTeam",
+     "requirement": null,
+     "tier": "critical"
+    },
+    {
+     "args": {
+      "atom": "external<std::Trust>",
+      "except": [
+       "component ironkv::HostTrusted"
+      ],
+      "scope": [
+       "*"
+      ]
+     },
+     "ids": [
+      "ironkv::NoHatchesOutsideBoundaries/external"
+     ],
+     "op": "effect.forbid",
+     "owner": "ironkv::IronKvTeam",
+     "requirement": null,
+     "tier": "critical"
+    },
+    {
+     "args": {
+      "atom": "external_body<std::Trust>",
+      "except": [
+       "component ironkv::HostTrusted"
+      ],
+      "scope": [
+       "*"
+      ]
+     },
+     "ids": [
+      "ironkv::NoHatchesOutsideBoundaries/external_body"
+     ],
+     "op": "effect.forbid",
+     "owner": "ironkv::IronKvTeam",
+     "requirement": null,
+     "tier": "critical"
+    },
+    {
+     "args": {
+      "atom": "ts_ignore<std::Trust>",
+      "except": [],
+      "scope": [
+       "*"
+      ]
+     },
+     "ids": [
+      "ironkv::NoHatchesOutsideBoundaries/ts_ignore"
+     ],
+     "op": "effect.forbid",
+     "owner": "ironkv::IronKvTeam",
+     "requirement": null,
+     "tier": "critical"
+    },
+    {
+     "args": {
+      "atom": "uninterp<std::Trust>",
+      "except": [
+       "component ironkv::HostTrusted"
+      ],
+      "scope": [
+       "*"
+      ]
+     },
+     "ids": [
+      "ironkv::NoHatchesOutsideBoundaries/uninterp"
+     ],
+     "op": "effect.forbid",
+     "owner": "ironkv::IronKvTeam",
+     "requirement": null,
+     "tier": "critical"
+    },
+    {
+     "args": {
+      "atom": "unsafe<std::Trust>",
+      "except": [],
+      "scope": [
+       "*"
+      ]
+     },
+     "ids": [
+      "ironkv::NoHatchesOutsideBoundaries/unsafe"
+     ],
+     "op": "effect.forbid",
+     "owner": "ironkv::IronKvTeam",
+     "requirement": null,
+     "tier": "critical"
+    },
+    {
+     "args": {
+      "on": [
+       "unit ironkv::DelegationMap.set"
+      ],
+      "statement": {
+       "projection": "closure",
+       "ref": "verus:ironkv/src/delegation_map_v.rs#DelegationMap::set"
+      }
+     },
+     "ids": [
+      "ironkv::SetRefinesSpec"
+     ],
+     "op": "law",
+     "owner": "ironkv::IronKvTeam",
+     "requirement": {
+      "judged": false,
+      "level": "proven",
+      "pins": [
+       "ironkv::verus"
+      ],
+      "projection": "unit"
+     },
+     "tier": "critical"
+    },
+    {
+     "args": {
+      "on": [
+       "unit ironkv::DelegationMap.set"
+      ],
+      "statement": {
+       "text": "The ensures clause of set states the map update the protocol layer relies on."
+      }
+     },
+     "ids": [
+      "ironkv::SetContractFaithful"
+     ],
+     "op": "law",
+     "owner": "ironkv::IronKvTeam",
+     "requirement": {
+      "judged": true,
+      "level": "none",
+      "pins": [],
+      "projection": "contract"
+     },
+     "tier": "critical"
+    },
+    {
+     "args": {
+      "on": [
+       "component ironkv::HostTrusted"
+      ],
+      "statement": {
+       "text": "The trusted surface of this component is acceptable."
+      }
+     },
+     "ids": [
+      "ironkv::HostTrusted/ReviewedSurface/law"
+     ],
+     "op": "law",
+     "owner": "ironkv::IronKvTeam",
+     "requirement": {
+      "judged": true,
+      "level": "none",
+      "pins": [],
+      "projection": "trust"
+     },
+     "tier": "critical"
+    }
+   ],
+   "components": [
+    {
+     "allows": [
+      "external_body",
+      "external",
+      "uninterp"
+     ],
+     "assumes": [],
+     "attach": [
+      "std::ReviewedSurface"
+     ],
+     "boundary": true,
+     "complete": [],
+     "grants": null,
+     "owner": "ironkv::IronKvTeam",
+     "paths": [
+      "ironkv/src/**/*_t.rs"
+     ],
+     "q": "ironkv::HostTrusted",
+     "tier": "critical",
+     "units": [],
+     "was": null
+    },
+    {
+     "allows": [],
+     "assumes": [],
+     "attach": [],
+     "boundary": false,
+     "complete": [],
+     "grants": null,
+     "owner": "ironkv::IronKvTeam",
+     "paths": [
+      "ironkv/src/delegation_map_v.rs"
+     ],
+     "q": "ironkv::DelegationMap",
+     "tier": "critical",
+     "units": [],
+     "was": null
+    }
+   ],
+   "effects": [
+    {
+     "implies": [],
+     "verb": "Read"
+    },
+    {
+     "implies": [],
+     "verb": "Write"
+    },
+    {
+     "implies": [
+      "Read"
+     ],
+     "verb": "Export"
+    },
+    {
+     "implies": [
+      "Write"
+     ],
+     "verb": "Append"
+    },
+    {
+     "implies": [
+      "Write"
+     ],
+     "verb": "Import"
+    },
+    {
+     "implies": [
+      "Write"
+     ],
+     "verb": "Update"
+    },
+    {
+     "implies": [
+      "Update"
+     ],
+     "verb": "Redact"
+    },
+    {
+     "implies": [
+      "Update"
+     ],
+     "verb": "LogicalDelete"
+    },
+    {
+     "implies": [
+      "Update"
+     ],
+     "verb": "HardDelete"
+    },
+    {
+     "implies": [
+      "HardDelete"
+     ],
+     "verb": "Truncate"
+    },
+    {
+     "implies": [
+      "Truncate"
+     ],
+     "verb": "DropStorage"
+    },
+    {
+     "implies": [],
+     "verb": "Hatch"
+    }
+   ],
+   "errors": [],
+   "exceptions": [],
+   "hatches": [
+    {
+     "kind": "external_body",
+     "lang": "verus"
+    },
+    {
+     "kind": "external",
+     "lang": "verus"
+    },
+    {
+     "kind": "assume",
+     "lang": "verus"
+    },
+    {
+     "kind": "admit",
+     "lang": "verus"
+    },
+    {
+     "kind": "assume_specification",
+     "lang": "verus"
+    },
+    {
+     "kind": "uninterp",
+     "lang": "verus"
+    },
+    {
+     "kind": "axiom",
+     "lang": "verus"
+    },
+    {
+     "kind": "unsafe",
+     "lang": "bend"
+    },
+    {
+     "kind": "ts_ignore",
+     "lang": "ts"
+    }
+   ],
+   "kinds": [
+    {
+     "from": "component",
+     "name": "calls",
+     "to": "component"
+    },
+    {
+     "from": "component",
+     "name": "callbacks",
+     "to": "component"
+    },
+    {
+     "from": "component",
+     "name": "provides",
+     "to": "resource"
+    },
+    {
+     "from": "component",
+     "name": "data_flow",
+     "to": "component"
+    },
+    {
+     "from": "component",
+     "name": "coordinated_call",
+     "to": "component"
+    }
+   ],
+   "notes": [],
+   "providers": [
+    {
+     "absence": false,
+     "decides": [
+      "statements verus"
+     ],
+     "depsComplete": true,
+     "identity": "sigstore(\"verus\")",
+     "implementation": {
+      "digest": "sha256:verus-ci",
+      "paths": []
+     },
+     "observes": [],
+     "persist": false,
+     "presence": true,
+     "produces": [
+      "proof"
+     ],
+     "q": "ironkv::verus",
+     "trusts": [
+      [
+       "z3",
+       "4.12.5"
+      ],
+      [
+       "verus",
+       "dccae1d"
+      ]
+     ]
+    },
+    {
+     "absence": false,
+     "decides": [
+      "equivalence"
+     ],
+     "depsComplete": false,
+     "identity": "sigstore(\"refines\")",
+     "implementation": {
+      "digest": "sha256:refines",
+      "paths": []
+     },
+     "observes": [],
+     "persist": false,
+     "presence": true,
+     "produces": [
+      "equivalence"
+     ],
+     "q": "ironkv::verusRefines",
+     "trusts": []
+    },
+    {
+     "absence": false,
+     "decides": [],
+     "depsComplete": false,
+     "identity": "sigstore(\"relay\")",
+     "implementation": {
+      "digest": "sha256:relay",
+      "paths": []
+     },
+     "observes": [],
+     "persist": false,
+     "presence": false,
+     "produces": [
+      "judgment"
+     ],
+     "q": "ironkv::reviews",
+     "trusts": []
+    }
+   ],
+   "resources": [],
+   "shape": {
+    "owner": "ironkv::IronKvTeam",
+    "policy": "std::DefaultPolicy",
+    "q": "ironkv::IronKV"
+   },
+   "templates": [],
+   "units": [
+    {
+     "attach": [],
+     "bind": "verus:ironkv/src/delegation_map_v.rs#DelegationMap::set",
+     "component": "ironkv::DelegationMap",
+     "name": "set",
+     "owner": "ironkv::IronKvTeam",
+     "q": "ironkv::DelegationMap.set",
+     "summary": null,
+     "tier": "critical",
+     "was": null
+    }
+   ],
+   "v": "shape.elaborated.v1"
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "predicate": {
+    "shape": {
+     "entries": [
+      {
+       "digest": "sha256:59b5f1fd15f00e2b8cef51fd2db4ad6f4090ad0767f959e8b776db7ee396140e",
+       "id": "verus:ironkv/src/delegation_map_v.rs",
+       "kind": "file",
+       "parent": null,
+       "projection": "file",
+       "scheme": "verus.file.v2"
+      },
+      {
+       "digest": "sha256:8842375d84b7e80d5ae4f33cc891d0416ccd440b8d9f06e4b72232d2cb063f76",
+       "id": "verus:ironkv/src/delegation_map_v.rs",
+       "kind": "file",
+       "parent": null,
+       "projection": "own",
+       "scheme": "verus.own.v2"
+      },
+      {
+       "digest": "sha256:6f1180911c9d6b41b4441e993941c6b6b61d238815faa7cbde959751ae1b03ff",
+       "id": "verus:ironkv/src/delegation_map_v.rs#DelegationMap::set",
+       "kind": "symbol",
+       "parent": "verus:ironkv/src/delegation_map_v.rs",
+       "projection": "unit",
+       "scheme": "verus.unit.v2"
+      },
+      {
+       "digest": "sha256:52aeddebdcc531fc660d05abc458d9146fbb78ede070eb9614467b60b57dcfd7",
+       "id": "verus:ironkv/src/delegation_map_v.rs#DelegationMap::set",
+       "kind": "symbol",
+       "parent": "verus:ironkv/src/delegation_map_v.rs",
+       "projection": "own",
+       "scheme": "verus.own.v2"
+      },
+      {
+       "digest": "sha256:1304a1cbb8c361924f9cdebcf223c2848c282fcd84c693086dee58071f193440",
+       "id": "verus:ironkv/src/delegation_map_v.rs#DelegationMap::set",
+       "kind": "symbol",
+       "parent": "verus:ironkv/src/delegation_map_v.rs",
+       "projection": "contract",
+       "scheme": "verus.contract.vir.v2"
+      },
+      {
+       "digest": "sha256:447e6db6d5159076b32ae28c0f6c41582e1c285506d6182931d52d7d9a1b1d0b",
+       "id": "verus:ironkv/src/delegation_map_v.rs#DelegationMap::set",
+       "kind": "symbol",
+       "parent": "verus:ironkv/src/delegation_map_v.rs",
+       "projection": "closure",
+       "scheme": "verus.closure.vir.v2"
+      },
+      {
+       "digest": "sha256:fd2796c2785d086b4c499b97ebcecbd42f8f84b0861ed69aee17e46e33854f0e",
+       "id": "verus:ironkv/src/delegation_map_v.rs#StrictlyOrderedVec::insert",
+       "kind": "symbol",
+       "parent": "verus:ironkv/src/delegation_map_v.rs",
+       "projection": "unit",
+       "scheme": "verus.unit.v2"
+      },
+      {
+       "digest": "sha256:38293c2eeaa475cfeac7d8d4b09fee1961a33cc347b35e821b2f5a789af50827",
+       "id": "verus:ironkv/src/delegation_map_v.rs#StrictlyOrderedVec::insert",
+       "kind": "symbol",
+       "parent": "verus:ironkv/src/delegation_map_v.rs",
+       "projection": "own",
+       "scheme": "verus.own.v2"
+      },
+      {
+       "digest": "sha256:d604e795ba9c30b54be93324f03bfba983c3f8cccc0188c1f8cc9ee7905105f2",
+       "id": "verus:ironkv/src/delegation_map_v.rs#StrictlyOrderedVec::insert",
+       "kind": "symbol",
+       "parent": "verus:ironkv/src/delegation_map_v.rs",
+       "projection": "contract",
+       "scheme": "verus.contract.vir.v2"
+      },
+      {
+       "digest": "sha256:57743a505177657a7b647f7ecfa9849a1a8dd44c729693cfc05f07a77e2bafa3",
+       "id": "verus:ironkv/src/host_t.rs",
+       "kind": "file",
+       "parent": null,
+       "projection": "file",
+       "scheme": "verus.file.v2"
+      },
+      {
+       "digest": "sha256:90af1faad92f4c3d133a22df7fcbef98bb551e912e4e2cd51f2735cfe9e52f7f",
+       "id": "verus:ironkv/src/host_t.rs",
+       "kind": "file",
+       "parent": null,
+       "projection": "own",
+       "scheme": "verus.own.v2"
+      },
+      {
+       "digest": "sha256:3f4d25f77e8a23e03eb78acf8cc604db8f4ddece5b0383dbf9e106343cefe869",
+       "id": "verus:ironkv/src/host_t.rs#send",
+       "kind": "symbol",
+       "parent": "verus:ironkv/src/host_t.rs",
+       "projection": "unit",
+       "scheme": "verus.unit.v2"
+      },
+      {
+       "digest": "sha256:e3242cd1364e843975cf5104c0a26217b1a81951e638aa7e9e408155f4bdf4d1",
+       "id": "verus:ironkv/src/host_t.rs#send",
+       "kind": "symbol",
+       "markers": {
+        "external_body": 1
+       },
+       "parent": "verus:ironkv/src/host_t.rs",
+       "projection": "own",
+       "scheme": "verus.own.v2"
+      }
+     ],
+     "revision": "b2",
+     "tree": [],
+     "v": "shape.manifest.v1"
+    }
+   },
+   "predicateType": "https://shapelang.dev/manifest/v1",
+   "subject": []
+  },
+  "revision": "b2"
+ },
+ "baseRecords": [],
+ "cells": [],
+ "change": {
+  "ids": [
+   "github:acme/ironkv#12"
+  ]
+ },
+ "contract": "shape.kernel.case/v1",
+ "head": {
+  "esf": {
+   "actors": [
+    {
+     "identities": [],
+     "kind": "team",
+     "members": [
+      "ironkv::dana",
+      "ironkv::erin"
+     ],
+     "operator": null,
+     "q": "ironkv::IronKvTeam"
+    },
+    {
+     "identities": [],
+     "kind": "person",
+     "members": [],
+     "operator": null,
+     "q": "ironkv::dana"
+    },
+    {
+     "identities": [],
+     "kind": "person",
+     "members": [],
+     "operator": null,
+     "q": "ironkv::erin"
+    },
+    {
+     "identities": [],
+     "kind": "agent",
+     "members": [],
+     "operator": "ironkv::erin",
+     "q": "ironkv::agent"
+    }
+   ],
+   "claims": [
+    {
+     "args": {
+      "atom": "Hatch<std::Trust>",
+      "except": [],
+      "scope": [
+       "*"
+      ]
+     },
+     "ids": [
+      "ironkv::NoHatchesOutsideBoundaries/Hatch"
+     ],
+     "op": "effect.forbid",
+     "owner": "ironkv::IronKvTeam",
+     "requirement": null,
+     "tier": "critical"
+    },
+    {
+     "args": {
+      "atom": "admit<std::Trust>",
+      "except": [],
+      "scope": [
+       "*"
+      ]
+     },
+     "ids": [
+      "ironkv::NoHatchesOutsideBoundaries/admit"
+     ],
+     "op": "effect.forbid",
+     "owner": "ironkv::IronKvTeam",
+     "requirement": null,
+     "tier": "critical"
+    },
+    {
+     "args": {
+      "atom": "assume<std::Trust>",
+      "except": [],
+      "scope": [
+       "*"
+      ]
+     },
+     "ids": [
+      "ironkv::NoHatchesOutsideBoundaries/assume"
+     ],
+     "op": "effect.forbid",
+     "owner": "ironkv::IronKvTeam",
+     "requirement": null,
+     "tier": "critical"
+    },
+    {
+     "args": {
+      "atom": "assume_specification<std::Trust>",
+      "except": [],
+      "scope": [
+       "*"
+      ]
+     },
+     "ids": [
+      "ironkv::NoHatchesOutsideBoundaries/assume_specification"
+     ],
+     "op": "effect.forbid",
+     "owner": "ironkv::IronKvTeam",
+     "requirement": null,
+     "tier": "critical"
+    },
+    {
+     "args": {
+      "atom": "axiom<std::Trust>",
+      "except": [],
+      "scope": [
+       "*"
+      ]
+     },
+     "ids": [
+      "ironkv::NoHatchesOutsideBoundaries/axiom"
+     ],
+     "op": "effect.forbid",
+     "owner": "ironkv::IronKvTeam",
+     "requirement": null,
+     "tier": "critical"
+    },
+    {
+     "args": {
+      "atom": "external<std::Trust>",
+      "except": [
+       "component ironkv::HostTrusted"
+      ],
+      "scope": [
+       "*"
+      ]
+     },
+     "ids": [
+      "ironkv::NoHatchesOutsideBoundaries/external"
+     ],
+     "op": "effect.forbid",
+     "owner": "ironkv::IronKvTeam",
+     "requirement": null,
+     "tier": "critical"
+    },
+    {
+     "args": {
+      "atom": "external_body<std::Trust>",
+      "except": [
+       "component ironkv::HostTrusted"
+      ],
+      "scope": [
+       "*"
+      ]
+     },
+     "ids": [
+      "ironkv::NoHatchesOutsideBoundaries/external_body"
+     ],
+     "op": "effect.forbid",
+     "owner": "ironkv::IronKvTeam",
+     "requirement": null,
+     "tier": "critical"
+    },
+    {
+     "args": {
+      "atom": "ts_ignore<std::Trust>",
+      "except": [],
+      "scope": [
+       "*"
+      ]
+     },
+     "ids": [
+      "ironkv::NoHatchesOutsideBoundaries/ts_ignore"
+     ],
+     "op": "effect.forbid",
+     "owner": "ironkv::IronKvTeam",
+     "requirement": null,
+     "tier": "critical"
+    },
+    {
+     "args": {
+      "atom": "uninterp<std::Trust>",
+      "except": [
+       "component ironkv::HostTrusted"
+      ],
+      "scope": [
+       "*"
+      ]
+     },
+     "ids": [
+      "ironkv::NoHatchesOutsideBoundaries/uninterp"
+     ],
+     "op": "effect.forbid",
+     "owner": "ironkv::IronKvTeam",
+     "requirement": null,
+     "tier": "critical"
+    },
+    {
+     "args": {
+      "atom": "unsafe<std::Trust>",
+      "except": [],
+      "scope": [
+       "*"
+      ]
+     },
+     "ids": [
+      "ironkv::NoHatchesOutsideBoundaries/unsafe"
+     ],
+     "op": "effect.forbid",
+     "owner": "ironkv::IronKvTeam",
+     "requirement": null,
+     "tier": "critical"
+    },
+    {
+     "args": {
+      "on": [
+       "unit ironkv::DelegationMap.set"
+      ],
+      "statement": {
+       "projection": "closure",
+       "ref": "verus:ironkv/src/delegation_map_v.rs#DelegationMap::set"
+      }
+     },
+     "ids": [
+      "ironkv::SetRefinesSpec"
+     ],
+     "op": "law",
+     "owner": "ironkv::IronKvTeam",
+     "requirement": {
+      "judged": false,
+      "level": "proven",
+      "pins": [
+       "ironkv::verus"
+      ],
+      "projection": "unit"
+     },
+     "tier": "critical"
+    },
+    {
+     "args": {
+      "on": [
+       "unit ironkv::DelegationMap.set"
+      ],
+      "statement": {
+       "text": "The ensures clause of set states the map update the protocol layer relies on."
+      }
+     },
+     "ids": [
+      "ironkv::SetContractFaithful"
+     ],
+     "op": "law",
+     "owner": "ironkv::IronKvTeam",
+     "requirement": {
+      "judged": true,
+      "level": "none",
+      "pins": [],
+      "projection": "contract"
+     },
+     "tier": "critical"
+    },
+    {
+     "args": {
+      "on": [
+       "component ironkv::HostTrusted"
+      ],
+      "statement": {
+       "text": "The trusted surface of this component is acceptable."
+      }
+     },
+     "ids": [
+      "ironkv::HostTrusted/ReviewedSurface/law"
+     ],
+     "op": "law",
+     "owner": "ironkv::IronKvTeam",
+     "requirement": {
+      "judged": true,
+      "level": "none",
+      "pins": [],
+      "projection": "trust"
+     },
+     "tier": "critical"
+    }
+   ],
+   "components": [
+    {
+     "allows": [
+      "external_body",
+      "external",
+      "uninterp"
+     ],
+     "assumes": [],
+     "attach": [
+      "std::ReviewedSurface"
+     ],
+     "boundary": true,
+     "complete": [],
+     "grants": null,
+     "owner": "ironkv::IronKvTeam",
+     "paths": [
+      "ironkv/src/**/*_t.rs"
+     ],
+     "q": "ironkv::HostTrusted",
+     "tier": "critical",
+     "units": [],
+     "was": null
+    },
+    {
+     "allows": [],
+     "assumes": [],
+     "attach": [],
+     "boundary": false,
+     "complete": [],
+     "grants": null,
+     "owner": "ironkv::IronKvTeam",
+     "paths": [
+      "ironkv/src/delegation_map_v.rs"
+     ],
+     "q": "ironkv::DelegationMap",
+     "tier": "critical",
+     "units": [],
+     "was": null
+    }
+   ],
+   "effects": [
+    {
+     "implies": [],
+     "verb": "Read"
+    },
+    {
+     "implies": [],
+     "verb": "Write"
+    },
+    {
+     "implies": [
+      "Read"
+     ],
+     "verb": "Export"
+    },
+    {
+     "implies": [
+      "Write"
+     ],
+     "verb": "Append"
+    },
+    {
+     "implies": [
+      "Write"
+     ],
+     "verb": "Import"
+    },
+    {
+     "implies": [
+      "Write"
+     ],
+     "verb": "Update"
+    },
+    {
+     "implies": [
+      "Update"
+     ],
+     "verb": "Redact"
+    },
+    {
+     "implies": [
+      "Update"
+     ],
+     "verb": "LogicalDelete"
+    },
+    {
+     "implies": [
+      "Update"
+     ],
+     "verb": "HardDelete"
+    },
+    {
+     "implies": [
+      "HardDelete"
+     ],
+     "verb": "Truncate"
+    },
+    {
+     "implies": [
+      "Truncate"
+     ],
+     "verb": "DropStorage"
+    },
+    {
+     "implies": [],
+     "verb": "Hatch"
+    }
+   ],
+   "errors": [],
+   "exceptions": [
+    {
+     "expires": "2026-12-15T00:00:00Z",
+     "expiresText": "2026-12-15",
+     "for": [
+      {
+       "id": "verus:ironkv/src/delegation_map_v.rs#DelegationMap::set",
+       "kind": "code"
+      }
+     ],
+     "owner": "ironkv::IronKvTeam",
+     "q": "ironkv::SetAssume",
+     "target": {
+      "kind": "component",
+      "q": "ironkv::DelegationMap"
+     },
+     "waives": [
+      "contradiction",
+      "unestablished"
+     ]
+    }
+   ],
+   "hatches": [
+    {
+     "kind": "external_body",
+     "lang": "verus"
+    },
+    {
+     "kind": "external",
+     "lang": "verus"
+    },
+    {
+     "kind": "assume",
+     "lang": "verus"
+    },
+    {
+     "kind": "admit",
+     "lang": "verus"
+    },
+    {
+     "kind": "assume_specification",
+     "lang": "verus"
+    },
+    {
+     "kind": "uninterp",
+     "lang": "verus"
+    },
+    {
+     "kind": "axiom",
+     "lang": "verus"
+    },
+    {
+     "kind": "unsafe",
+     "lang": "bend"
+    },
+    {
+     "kind": "ts_ignore",
+     "lang": "ts"
+    }
+   ],
+   "kinds": [
+    {
+     "from": "component",
+     "name": "calls",
+     "to": "component"
+    },
+    {
+     "from": "component",
+     "name": "callbacks",
+     "to": "component"
+    },
+    {
+     "from": "component",
+     "name": "provides",
+     "to": "resource"
+    },
+    {
+     "from": "component",
+     "name": "data_flow",
+     "to": "component"
+    },
+    {
+     "from": "component",
+     "name": "coordinated_call",
+     "to": "component"
+    }
+   ],
+   "notes": [],
+   "providers": [
+    {
+     "absence": false,
+     "decides": [
+      "statements verus"
+     ],
+     "depsComplete": true,
+     "identity": "sigstore(\"verus\")",
+     "implementation": {
+      "digest": "sha256:verus-ci",
+      "paths": []
+     },
+     "observes": [],
+     "persist": false,
+     "presence": true,
+     "produces": [
+      "proof"
+     ],
+     "q": "ironkv::verus",
+     "trusts": [
+      [
+       "z3",
+       "4.12.5"
+      ],
+      [
+       "verus",
+       "dccae1d"
+      ]
+     ]
+    },
+    {
+     "absence": false,
+     "decides": [
+      "equivalence"
+     ],
+     "depsComplete": false,
+     "identity": "sigstore(\"refines\")",
+     "implementation": {
+      "digest": "sha256:refines",
+      "paths": []
+     },
+     "observes": [],
+     "persist": false,
+     "presence": true,
+     "produces": [
+      "equivalence"
+     ],
+     "q": "ironkv::verusRefines",
+     "trusts": []
+    },
+    {
+     "absence": false,
+     "decides": [],
+     "depsComplete": false,
+     "identity": "sigstore(\"relay\")",
+     "implementation": {
+      "digest": "sha256:relay",
+      "paths": []
+     },
+     "observes": [],
+     "persist": false,
+     "presence": false,
+     "produces": [
+      "judgment"
+     ],
+     "q": "ironkv::reviews",
+     "trusts": []
+    }
+   ],
+   "resources": [],
+   "shape": {
+    "owner": "ironkv::IronKvTeam",
+    "policy": "std::DefaultPolicy",
+    "q": "ironkv::IronKV"
+   },
+   "templates": [],
+   "units": [
+    {
+     "attach": [],
+     "bind": "verus:ironkv/src/delegation_map_v.rs#DelegationMap::set",
+     "component": "ironkv::DelegationMap",
+     "name": "set",
+     "owner": "ironkv::IronKvTeam",
+     "q": "ironkv::DelegationMap.set",
+     "summary": null,
+     "tier": "critical",
+     "was": null
+    }
+   ],
+   "v": "shape.elaborated.v1"
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "predicate": {
+    "shape": {
+     "entries": [
+      {
+       "digest": "sha256:262a3b1b33bb11bc7aa68d1b4e192b2c532427eb746883bc5f7955c9968d9585",
+       "id": "verus:ironkv/src/delegation_map_v.rs",
+       "kind": "file",
+       "parent": null,
+       "projection": "file",
+       "scheme": "verus.file.v2"
+      },
+      {
+       "digest": "sha256:8842375d84b7e80d5ae4f33cc891d0416ccd440b8d9f06e4b72232d2cb063f76",
+       "id": "verus:ironkv/src/delegation_map_v.rs",
+       "kind": "file",
+       "parent": null,
+       "projection": "own",
+       "scheme": "verus.own.v2"
+      },
+      {
+       "digest": "sha256:5ab2582637d304f0050e6e6eb48b9a3f0ddca246e9d3777c775b0673f6034faf",
+       "id": "verus:ironkv/src/delegation_map_v.rs#DelegationMap::set",
+       "kind": "symbol",
+       "parent": "verus:ironkv/src/delegation_map_v.rs",
+       "projection": "unit",
+       "scheme": "verus.unit.v2"
+      },
+      {
+       "digest": "sha256:393b716540569fd40f27d1f90fc3727034dcd4e06b101c6835c47f3a8f030d8f",
+       "id": "verus:ironkv/src/delegation_map_v.rs#DelegationMap::set",
+       "kind": "symbol",
+       "markers": {
+        "assume": 1
+       },
+       "parent": "verus:ironkv/src/delegation_map_v.rs",
+       "projection": "own",
+       "scheme": "verus.own.v2"
+      },
+      {
+       "digest": "sha256:1304a1cbb8c361924f9cdebcf223c2848c282fcd84c693086dee58071f193440",
+       "id": "verus:ironkv/src/delegation_map_v.rs#DelegationMap::set",
+       "kind": "symbol",
+       "parent": "verus:ironkv/src/delegation_map_v.rs",
+       "projection": "contract",
+       "scheme": "verus.contract.vir.v2"
+      },
+      {
+       "digest": "sha256:447e6db6d5159076b32ae28c0f6c41582e1c285506d6182931d52d7d9a1b1d0b",
+       "id": "verus:ironkv/src/delegation_map_v.rs#DelegationMap::set",
+       "kind": "symbol",
+       "parent": "verus:ironkv/src/delegation_map_v.rs",
+       "projection": "closure",
+       "scheme": "verus.closure.vir.v2"
+      },
+      {
+       "digest": "sha256:fd2796c2785d086b4c499b97ebcecbd42f8f84b0861ed69aee17e46e33854f0e",
+       "id": "verus:ironkv/src/delegation_map_v.rs#StrictlyOrderedVec::insert",
+       "kind": "symbol",
+       "parent": "verus:ironkv/src/delegation_map_v.rs",
+       "projection": "unit",
+       "scheme": "verus.unit.v2"
+      },
+      {
+       "digest": "sha256:38293c2eeaa475cfeac7d8d4b09fee1961a33cc347b35e821b2f5a789af50827",
+       "id": "verus:ironkv/src/delegation_map_v.rs#StrictlyOrderedVec::insert",
+       "kind": "symbol",
+       "parent": "verus:ironkv/src/delegation_map_v.rs",
+       "projection": "own",
+       "scheme": "verus.own.v2"
+      },
+      {
+       "digest": "sha256:d604e795ba9c30b54be93324f03bfba983c3f8cccc0188c1f8cc9ee7905105f2",
+       "id": "verus:ironkv/src/delegation_map_v.rs#StrictlyOrderedVec::insert",
+       "kind": "symbol",
+       "parent": "verus:ironkv/src/delegation_map_v.rs",
+       "projection": "contract",
+       "scheme": "verus.contract.vir.v2"
+      },
+      {
+       "digest": "sha256:57743a505177657a7b647f7ecfa9849a1a8dd44c729693cfc05f07a77e2bafa3",
+       "id": "verus:ironkv/src/host_t.rs",
+       "kind": "file",
+       "parent": null,
+       "projection": "file",
+       "scheme": "verus.file.v2"
+      },
+      {
+       "digest": "sha256:90af1faad92f4c3d133a22df7fcbef98bb551e912e4e2cd51f2735cfe9e52f7f",
+       "id": "verus:ironkv/src/host_t.rs",
+       "kind": "file",
+       "parent": null,
+       "projection": "own",
+       "scheme": "verus.own.v2"
+      },
+      {
+       "digest": "sha256:3f4d25f77e8a23e03eb78acf8cc604db8f4ddece5b0383dbf9e106343cefe869",
+       "id": "verus:ironkv/src/host_t.rs#send",
+       "kind": "symbol",
+       "parent": "verus:ironkv/src/host_t.rs",
+       "projection": "unit",
+       "scheme": "verus.unit.v2"
+      },
+      {
+       "digest": "sha256:e3242cd1364e843975cf5104c0a26217b1a81951e638aa7e9e408155f4bdf4d1",
+       "id": "verus:ironkv/src/host_t.rs#send",
+       "kind": "symbol",
+       "markers": {
+        "external_body": 1
+       },
+       "parent": "verus:ironkv/src/host_t.rs",
+       "projection": "own",
+       "scheme": "verus.own.v2"
+      }
+     ],
+     "revision": "h2",
+     "tree": [],
+     "v": "shape.manifest.v1"
+    }
+   },
+   "predicateType": "https://shapelang.dev/manifest/v1",
+   "subject": []
+  },
+  "revision": "h2"
+ },
+ "mode": "change",
+ "now": "2026-10-25T12:00:00Z",
+ "records": [
+  {
+   "_type": "https://in-toto.io/Statement/v1",
+   "authenticated": true,
+   "predicate": {
+    "shape": {
+     "assumptions": [
+      {
+       "id": "set/assume",
+       "kind": "hatch"
+      },
+      {
+       "id": "z3",
+       "kind": "tool"
+      },
+      {
+       "id": "verus",
+       "kind": "tool"
+      }
+     ],
+     "bound": {
+      "rlimit": 10
+     },
+     "claim": {
+      "fp": "sha256:60a867af53d80a7f7691530f9ae5869779c05abccd602cd75b2baad28a85db38",
+      "id": "ironkv::SetRefinesSpec"
+     },
+     "code": [
+      {
+       "digest": "sha256:5ab2582637d304f0050e6e6eb48b9a3f0ddca246e9d3777c775b0673f6034faf",
+       "id": "verus:ironkv/src/delegation_map_v.rs#DelegationMap::set",
+       "projection": "unit",
+       "scheme": "verus.unit.v2"
+      },
+      {
+       "digest": "sha256:447e6db6d5159076b32ae28c0f6c41582e1c285506d6182931d52d7d9a1b1d0b",
+       "id": "verus:ironkv/src/delegation_map_v.rs#DelegationMap::set",
+       "projection": "closure",
+       "scheme": "verus.closure.v2"
+      }
+     ],
+     "counterexample": null,
+     "deps": [
+      {
+       "digest": "sha256:d604e795ba9c30b54be93324f03bfba983c3f8cccc0188c1f8cc9ee7905105f2",
+       "id": "verus:ironkv/src/delegation_map_v.rs#StrictlyOrderedVec::insert",
+       "projection": "contract",
+       "scheme": "verus.contract.v2"
+      }
+     ],
+     "harness": [],
+     "kind": "proof",
+     "provider": {
+      "id": "ironkv::verus",
+      "version": "dccae1d"
+     },
+     "result": "supports",
+     "revision": "h2",
+     "time": "2026-10-25T10:00:00Z",
+     "v": "shape.evidence.v1"
+    }
+   },
+   "predicateType": "https://shapelang.dev/evidence/v1",
+   "subject": []
+  },
+  {
+   "_type": "https://in-toto.io/Statement/v1",
+   "authenticated": true,
+   "predicate": {
+    "shape": {
+     "claim": {
+      "fp": "sha256:3d6b9e247facc73677afbf88e873548e4c05981cb24d158eee0bc01fb1ad7b68",
+      "id": "ironkv::SetContractFaithful"
+     },
+     "code": [
+      {
+       "digest": "sha256:1304a1cbb8c361924f9cdebcf223c2848c282fcd84c693086dee58071f193440",
+       "id": "verus:ironkv/src/delegation_map_v.rs#DelegationMap::set",
+       "projection": "contract",
+       "scheme": "verus.contract.v2"
+      }
+     ],
+     "judge": "ironkv::dana",
+     "kind": "judgment",
+     "provider": null,
+     "result": "supports",
+     "revision": "b2",
+     "time": "2026-10-20T10:00:00Z",
+     "v": "shape.evidence.v1"
+    }
+   },
+   "predicateType": "https://shapelang.dev/evidence/v1",
+   "subject": []
+  },
+  {
+   "_type": "https://in-toto.io/Statement/v1",
+   "authenticated": true,
+   "predicate": {
+    "shape": {
+     "claim": {
+      "fp": "sha256:f3119983e55f6aae012d4804f39af9f73ecafb27fc5fdccc6040b906efb7b03a",
+      "id": "ironkv::HostTrusted/ReviewedSurface/law"
+     },
+     "code": [
+      {
+       "digest": "sha256:3f4d25f77e8a23e03eb78acf8cc604db8f4ddece5b0383dbf9e106343cefe869",
+       "id": "verus:ironkv/src/host_t.rs#send",
+       "projection": "unit",
+       "scheme": "verus.unit.v2"
+      }
+     ],
+     "judge": "ironkv::dana",
+     "kind": "judgment",
+     "provider": {
+      "id": "ironkv::reviews",
+      "version": "1.0.0"
+     },
+     "result": "supports",
+     "revision": "b2",
+     "time": "2026-10-20T10:00:00Z",
+     "v": "shape.evidence.v1"
+    }
+   },
+   "predicateType": "https://shapelang.dev/evidence/v1",
+   "subject": []
+  },
+  {
+   "_type": "https://in-toto.io/Statement/v1",
+   "authenticated": true,
+   "predicate": {
+    "shape": {
+     "about": {
+      "change": "github:acme/ironkv#12",
+      "refs": [
+       "bd:2ea660886d27e5e3",
+       "bd:1da36a42e325dc5a"
+      ]
+     },
+     "identity": "github(\"agent\")",
+     "judge": "ironkv::agent",
+     "kind": "judgment",
+     "provider": {
+      "id": "ironkv::reviews",
+      "version": "1.0.0"
+     },
+     "result": "approves",
+     "revision": "h",
+     "time": "2026-10-25T11:00:00Z",
+     "v": "shape.evidence.v1"
+    }
+   },
+   "predicateType": "https://shapelang.dev/evidence/v1",
+   "subject": []
+  }
+ ]
+}

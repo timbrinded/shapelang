@@ -1,0 +1,6600 @@
+{
+ "v": "shape.source.v1",
+ "modules": [
+  {
+   "module": "shape.checker",
+   "imports": [
+    "shape.governance",
+    "shape.language",
+    "shape.tooling",
+    "std"
+   ],
+   "decls": [
+    {
+     "decl": "resource",
+     "name": "BaseShapeModel",
+     "bind": [
+      "ts.type(\"packages/shp-checker/src/checker/model.ts#BaseModel\")"
+     ]
+    },
+    {
+     "decl": "resource",
+     "name": "ChangeEventSet",
+     "bind": [
+      "ts.type(\"packages/shp-checker/src/checker/model.ts#ChangeEvent\")"
+     ]
+    },
+    {
+     "decl": "resource",
+     "name": "ChangedFileList",
+     "bind": [
+      "ts.type(\"packages/shp-checker/src/checker/model.ts#ChangedFileContext\")",
+      "fs.path(\"changed.txt\")"
+     ]
+    },
+    {
+     "decl": "resource",
+     "name": "EffectiveModel",
+     "bind": [
+      "ts.type(\"packages/shp-checker/src/checker/model.ts#Model\")"
+     ]
+    },
+    {
+     "decl": "resource",
+     "name": "EffectiveShapeModel"
+    },
+    {
+     "decl": "resource",
+     "name": "FactSet",
+     "bind": [
+      "ts.type(\"packages/shp-checker/src/checker/model.ts#Fact\")"
+     ]
+    },
+    {
+     "decl": "resource",
+     "name": "HumanReadableDiagnostics"
+    },
+    {
+     "decl": "resource",
+     "name": "MachineReadableShapeModel",
+     "bind": [
+      "ts.type(\"packages/shp-checker/src/checker/inspection.ts#ShapeInspection\")"
+     ]
+    },
+    {
+     "decl": "resource",
+     "name": "ModuleNamespace",
+     "bind": [
+      "ts.type(\"packages/shp-checker/src/checker/model.ts#DeclarationIndex\")"
+     ]
+    },
+    {
+     "decl": "resource",
+     "name": "NormalizedShapeReference"
+    },
+    {
+     "decl": "resource",
+     "name": "PreludeMetadata",
+     "bind": [
+      "ts.type(\"packages/shp-checker/src/prelude.ts#PreludeTraitDefinition\")",
+      "ts.type(\"packages/shp-checker/src/prelude.ts#PreludeContextRule\")",
+      "ts.type(\"packages/shp-checker/src/prelude.ts#PreludeRelationKindRule\")"
+     ]
+    },
+    {
+     "decl": "resource",
+     "name": "RepositoryFileList",
+     "bind": [
+      "proc.exec(\"git ls-files\")"
+     ]
+    },
+    {
+     "decl": "resource",
+     "name": "ResolvedModuleReference",
+     "bind": [
+      "ts.type(\"packages/shp-checker/src/module-resolution.ts#ModuleReferenceResolution\")"
+     ]
+    },
+    {
+     "decl": "resource",
+     "name": "SemanticDiagnosticSet"
+    },
+    {
+     "decl": "resource",
+     "name": "SemanticDiagnostics",
+     "bind": [
+      "ts.type(\"packages/shp-checker/src/checker/model.ts#SemanticDiagnostic\")"
+     ]
+    },
+    {
+     "decl": "resource",
+     "name": "ShapeBinding",
+     "bind": [
+      "ts.type(\"packages/shp-checker/src/checker/model.ts#BindingInfo\")"
+     ]
+    },
+    {
+     "decl": "resource",
+     "name": "ShapeConformance",
+     "bind": [
+      "ts.type(\"packages/shp-checker/src/checker/model.ts#CheckResult\")"
+     ]
+    },
+    {
+     "decl": "resource",
+     "name": "ShapeFacts"
+    },
+    {
+     "decl": "resource",
+     "name": "ShapeHypergraph",
+     "bind": [
+      "ts.type(\"packages/shp-checker/src/checker/model.ts#Hypergraph\")"
+     ]
+    },
+    {
+     "decl": "component",
+     "name": "ShapeBindings",
+     "grants": [
+      "Append<shape.checker::SemanticDiagnostics>",
+      "Read<shape.checker::BaseShapeModel>",
+      "Read<shape.checker::ChangedFileList>",
+      "Read<shape.checker::EffectiveModel>",
+      "Read<shape.checker::NormalizedShapeReference>",
+      "Read<shape.checker::ShapeBinding>"
+     ],
+     "units": [
+      {
+       "name": "checkBindings",
+       "bind": "ts(\"packages/shp-checker/src/checker/rules/coverage.ts#checkBindings\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Append<shape.checker::SemanticDiagnostics>"
+         },
+         {
+          "atom": "Read<shape.checker::BaseShapeModel>"
+         },
+         {
+          "atom": "Read<shape.checker::BaseShapeModel>"
+         },
+         {
+          "atom": "Read<shape.checker::ChangedFileList>"
+         },
+         {
+          "atom": "Read<shape.checker::EffectiveModel>"
+         },
+         {
+          "atom": "Read<shape.checker::NormalizedShapeReference>"
+         },
+         {
+          "atom": "Read<shape.checker::ShapeBinding>"
+         }
+        ]
+       },
+       "attach": [
+        {
+         "name": "std::RefactorSensitive"
+        }
+       ]
+      }
+     ],
+     "tier": "critical"
+    },
+    {
+     "decl": "component",
+     "name": "ShapeChecker",
+     "paths": [
+      "packages/shp-checker/src/checker/**/*.ts",
+      "packages/shp-checker/src/memory-guards.ts",
+      "packages/shp-checker/src/targets.ts"
+     ],
+     "grants": [
+      "Append<shape.checker::MachineReadableShapeModel>",
+      "Append<shape.checker::SemanticDiagnostics>",
+      "Read<shape.checker::BaseShapeModel>",
+      "Read<shape.checker::ChangedFileList>",
+      "Read<shape.checker::EffectiveModel>",
+      "Read<shape.checker::FactSet>",
+      "Read<shape.checker::PreludeMetadata>",
+      "Read<shape.checker::RepositoryFileList>",
+      "Read<shape.language::ParsedModule>"
+     ],
+     "units": [
+      {
+       "name": "checkLoweredShapeModel",
+       "bind": "ts(\"packages/shp-checker/src/checker/api.ts#checkLoweredShapeModel\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Append<shape.checker::SemanticDiagnostics>"
+         },
+         {
+          "atom": "Read<shape.checker::BaseShapeModel>"
+         },
+         {
+          "atom": "Read<shape.checker::ChangedFileList>"
+         },
+         {
+          "atom": "Read<shape.checker::EffectiveModel>"
+         },
+         {
+          "atom": "Read<shape.checker::FactSet>"
+         },
+         {
+          "atom": "Read<shape.checker::PreludeMetadata>"
+         }
+        ]
+       },
+       "attach": [
+        {
+         "name": "std::RefactorSensitive"
+        }
+       ]
+      },
+      {
+       "name": "checkRuleLoosening",
+       "bind": "ts(\"packages/shp-checker/src/checker/loosening.ts#checkRuleLoosening\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Append<shape.checker::SemanticDiagnostics>"
+         },
+         {
+          "atom": "Read<shape.checker::BaseShapeModel>"
+         },
+         {
+          "atom": "Read<shape.checker::RepositoryFileList>"
+         },
+         {
+          "atom": "Read<shape.language::ParsedModule>"
+         }
+        ]
+       },
+       "attach": [
+        {
+         "name": "std::RefactorSensitive"
+        }
+       ]
+      },
+      {
+       "name": "checkShapeFiles",
+       "bind": "ts(\"packages/shp-checker/src/checker/api.ts#checkShapeFiles\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Append<shape.checker::SemanticDiagnostics>"
+         },
+         {
+          "atom": "Read<shape.checker::ChangedFileList>"
+         }
+        ]
+       }
+      },
+      {
+       "name": "checkShapeModules",
+       "bind": "ts(\"packages/shp-checker/src/checker/api.ts#checkShapeModules\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Append<shape.checker::SemanticDiagnostics>"
+         },
+         {
+          "atom": "Read<shape.checker::BaseShapeModel>"
+         },
+         {
+          "atom": "Read<shape.checker::BaseShapeModel>"
+         },
+         {
+          "atom": "Read<shape.checker::ChangedFileList>"
+         },
+         {
+          "atom": "Read<shape.checker::EffectiveModel>"
+         },
+         {
+          "atom": "Read<shape.checker::FactSet>"
+         },
+         {
+          "atom": "Read<shape.checker::PreludeMetadata>"
+         }
+        ]
+       },
+       "attach": [
+        {
+         "name": "std::RefactorSensitive"
+        }
+       ]
+      },
+      {
+       "name": "explainShapeModules",
+       "bind": "ts(\"packages/shp-checker/src/checker/query.ts#explainShapeModules\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Read<shape.checker::EffectiveModel>"
+         },
+         {
+          "atom": "Read<shape.checker::FactSet>"
+         },
+         {
+          "atom": "Read<shape.checker::PreludeMetadata>"
+         }
+        ]
+       }
+      },
+      {
+       "name": "inspectShapeModules",
+       "bind": "ts(\"packages/shp-checker/src/checker/inspection.ts#inspectShapeModules\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Append<shape.checker::MachineReadableShapeModel>"
+         },
+         {
+          "atom": "Read<shape.checker::EffectiveModel>"
+         },
+         {
+          "atom": "Read<shape.language::ParsedModule>"
+         }
+        ]
+       },
+       "attach": [
+        {
+         "name": "std::RefactorSensitive"
+        }
+       ]
+      },
+      {
+       "name": "staleAttestationPruner",
+       "bind": "ts(\"packages/shp-checker/src/checker/api.ts#staleAttestationPruner\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Read<shape.checker::BaseShapeModel>"
+         },
+         {
+          "atom": "Read<shape.language::ParsedModule>"
+         }
+        ]
+       }
+      }
+     ],
+     "tier": "critical"
+    },
+    {
+     "decl": "component",
+     "name": "ShapeDiagnostics",
+     "grants": [
+      "Append<shape.tooling::DiagnosticText>",
+      "Read<shape.checker::SemanticDiagnostics>"
+     ],
+     "units": [
+      {
+       "name": "compareShapeDiagnostics",
+       "bind": "ts(\"packages/shp-checker/src/checker/diagnostics.ts#compareShapeDiagnostics\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Read<shape.checker::SemanticDiagnostics>"
+         }
+        ]
+       }
+      },
+      {
+       "name": "formatDiagnostics",
+       "bind": "ts(\"packages/shp-checker/src/checker/diagnostics.ts#formatDiagnostics\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Append<shape.tooling::DiagnosticText>"
+         },
+         {
+          "atom": "Read<shape.checker::SemanticDiagnostics>"
+         }
+        ]
+       },
+       "attach": [
+        {
+         "name": "std::RefactorSensitive"
+        }
+       ]
+      }
+     ],
+     "tier": "normal",
+     "paths": [
+      "packages/shp-checker/src/checker/diagnostics.ts",
+      "packages/shp-checker/src/checker/display.ts"
+     ]
+    },
+    {
+     "decl": "component",
+     "name": "ShapeModelLowerer",
+     "grants": [
+      "Append<shape.checker::ChangeEventSet>",
+      "Append<shape.checker::FactSet>",
+      "Append<shape.checker::ModuleNamespace>",
+      "Append<shape.checker::SemanticDiagnostics>",
+      "Read<shape.checker::NormalizedShapeReference>",
+      "Read<shape.checker::PreludeMetadata>",
+      "Read<shape.language::ParsedModule>",
+      "Read<shape.tooling::GeneratedCandidateEffect>",
+      "Update<shape.checker::EffectiveModel>"
+     ],
+     "units": [
+      {
+       "name": "indexModuleDeclarations",
+       "bind": "ts(\"packages/shp-checker/src/checker/symbols.ts#indexModuleDeclarations\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Append<shape.checker::ModuleNamespace>"
+         },
+         {
+          "atom": "Read<shape.language::ParsedModule>"
+         }
+        ]
+       }
+      },
+      {
+       "name": "lowerChange",
+       "bind": "ts(\"packages/shp-checker/src/checker/lowering/changes.ts#lowerChange\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Append<shape.checker::ChangeEventSet>"
+         },
+         {
+          "atom": "Append<shape.checker::FactSet>"
+         },
+         {
+          "atom": "Append<shape.checker::SemanticDiagnostics>"
+         },
+         {
+          "atom": "Read<shape.language::ParsedModule>"
+         },
+         {
+          "atom": "Update<shape.checker::EffectiveModel>"
+         }
+        ]
+       },
+       "attach": [
+        {
+         "name": "std::RefactorSensitive"
+        }
+       ]
+      },
+      {
+       "name": "lowerComponent",
+       "bind": "ts(\"packages/shp-checker/src/checker/lowering/declarations.ts#lowerComponent\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Append<shape.checker::FactSet>"
+         },
+         {
+          "atom": "Append<shape.checker::SemanticDiagnostics>"
+         },
+         {
+          "atom": "Read<shape.language::ParsedModule>"
+         },
+         {
+          "atom": "Update<shape.checker::EffectiveModel>"
+         }
+        ]
+       }
+      },
+      {
+       "name": "lowerImplementation",
+       "bind": "ts(\"packages/shp-checker/src/checker/lowering/declarations.ts#lowerImplementation\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Append<shape.checker::FactSet>"
+         },
+         {
+          "atom": "Append<shape.checker::SemanticDiagnostics>"
+         },
+         {
+          "atom": "Read<shape.language::ParsedModule>"
+         },
+         {
+          "atom": "Update<shape.checker::EffectiveModel>"
+         }
+        ]
+       }
+      },
+      {
+       "name": "lowerRule",
+       "bind": "ts(\"packages/shp-checker/src/checker/lowering/declarations.ts#lowerRule\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Append<shape.checker::FactSet>"
+         },
+         {
+          "atom": "Append<shape.checker::SemanticDiagnostics>"
+         },
+         {
+          "atom": "Read<shape.checker::PreludeMetadata>"
+         },
+         {
+          "atom": "Read<shape.language::ParsedModule>"
+         },
+         {
+          "atom": "Update<shape.checker::EffectiveModel>"
+         }
+        ]
+       }
+      },
+      {
+       "name": "lowerShapeModules",
+       "bind": "ts(\"packages/shp-checker/src/checker/lowerer.ts#lowerShapeModules\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Append<shape.checker::FactSet>"
+         },
+         {
+          "atom": "Append<shape.checker::ModuleNamespace>"
+         },
+         {
+          "atom": "Read<shape.checker::NormalizedShapeReference>"
+         },
+         {
+          "atom": "Read<shape.checker::PreludeMetadata>"
+         },
+         {
+          "atom": "Read<shape.language::ParsedModule>"
+         },
+         {
+          "atom": "Read<shape.tooling::GeneratedCandidateEffect>"
+         },
+         {
+          "atom": "Update<shape.checker::EffectiveModel>"
+         }
+        ]
+       },
+       "attach": [
+        {
+         "name": "std::RefactorSensitive"
+        }
+       ]
+      },
+      {
+       "name": "lowerTrait",
+       "bind": "ts(\"packages/shp-checker/src/checker/lowering/declarations.ts#lowerTrait\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Append<shape.checker::SemanticDiagnostics>"
+         },
+         {
+          "atom": "Read<shape.checker::PreludeMetadata>"
+         },
+         {
+          "atom": "Read<shape.language::ParsedModule>"
+         },
+         {
+          "atom": "Update<shape.checker::EffectiveModel>"
+         }
+        ]
+       }
+      }
+     ],
+     "tier": "critical",
+     "paths": [
+      "packages/shp-checker/src/checker/lowering/**/*.ts",
+      "packages/shp-checker/src/checker/lowerer.ts",
+      "packages/shp-checker/src/checker/symbols.ts",
+      "packages/shp-checker/src/checker/change-planning.ts",
+      "packages/shp-checker/src/checker/prelude-seed.ts"
+     ]
+    },
+    {
+     "decl": "component",
+     "name": "ShapeModuleResolver",
+     "paths": [
+      "packages/shp-checker/src/module-resolution.ts"
+     ],
+     "grants": [
+      "Read<shape.checker::ModuleNamespace>",
+      "Update<shape.checker::ResolvedModuleReference>"
+     ],
+     "units": [
+      {
+       "name": "resolveModuleReference",
+       "bind": "ts(\"packages/shp-checker/src/module-resolution.ts#resolveModuleReference\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Read<shape.checker::ModuleNamespace>"
+         },
+         {
+          "atom": "Update<shape.checker::ResolvedModuleReference>"
+         }
+        ]
+       }
+      }
+     ],
+     "tier": "critical"
+    },
+    {
+     "decl": "component",
+     "name": "ShapePreludeRegistry",
+     "grants": [
+      "Read<shape.checker::PreludeMetadata>",
+      "Update<shape.checker::PreludeMetadata>"
+     ],
+     "units": [
+      {
+       "name": "definePreludeMetadata",
+       "bind": "ts(\"packages/shp-checker/src/prelude.ts\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Update<shape.checker::PreludeMetadata>"
+         }
+        ]
+       },
+       "attach": [
+        {
+         "name": "std::RefactorSensitive"
+        }
+       ]
+      },
+      {
+       "name": "isReevaluationRequirement",
+       "bind": "ts(\"packages/shp-checker/src/prelude.ts#isReevaluationRequirement\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Read<shape.checker::PreludeMetadata>"
+         }
+        ]
+       }
+      }
+     ],
+     "tier": "critical",
+     "paths": [
+      "packages/shp-checker/src/prelude.ts"
+     ]
+    },
+    {
+     "decl": "component",
+     "name": "ShapeRuleEngine",
+     "grants": [
+      "Append<shape.checker::SemanticDiagnostics>",
+      "Read<shape.checker::BaseShapeModel>",
+      "Read<shape.checker::ChangeEventSet>",
+      "Read<shape.checker::ChangedFileList>",
+      "Read<shape.checker::EffectiveModel>",
+      "Read<shape.checker::FactSet>",
+      "Read<shape.checker::NormalizedShapeReference>",
+      "Read<shape.checker::PreludeMetadata>",
+      "Read<shape.checker::RepositoryFileList>",
+      "Update<shape.checker::ShapeHypergraph>"
+     ],
+     "units": [
+      {
+       "name": "checkCitedPaths",
+       "bind": "ts(\"packages/shp-checker/src/checker/rules/paths.ts#checkCitedPaths\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Append<shape.checker::SemanticDiagnostics>"
+         },
+         {
+          "atom": "Read<shape.checker::EffectiveModel>"
+         },
+         {
+          "atom": "Read<shape.checker::RepositoryFileList>"
+         }
+        ]
+       }
+      },
+      {
+       "name": "checkCoverage",
+       "bind": "ts(\"packages/shp-checker/src/checker/rules/coverage.ts#checkCoverage\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Append<shape.checker::SemanticDiagnostics>"
+         },
+         {
+          "atom": "Read<shape.checker::BaseShapeModel>"
+         },
+         {
+          "atom": "Read<shape.checker::ChangedFileList>"
+         },
+         {
+          "atom": "Read<shape.checker::EffectiveModel>"
+         },
+         {
+          "atom": "Read<shape.checker::NormalizedShapeReference>"
+         }
+        ]
+       },
+       "attach": [
+        {
+         "name": "std::RefactorSensitive"
+        }
+       ]
+      },
+      {
+       "name": "checkFingerprintExpectations",
+       "bind": "ts(\"packages/shp-checker/src/checker/rules/relations.ts#checkFingerprintExpectations\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Append<shape.checker::SemanticDiagnostics>"
+         },
+         {
+          "atom": "Read<shape.checker::EffectiveModel>"
+         },
+         {
+          "atom": "Read<shape.checker::FactSet>"
+         }
+        ]
+       }
+      },
+      {
+       "name": "checkForbiddenPaths",
+       "bind": "ts(\"packages/shp-checker/src/checker/rules/relations.ts#checkForbiddenPaths\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Append<shape.checker::SemanticDiagnostics>"
+         },
+         {
+          "atom": "Read<shape.checker::EffectiveModel>"
+         },
+         {
+          "atom": "Read<shape.checker::PreludeMetadata>"
+         }
+        ]
+       }
+      },
+      {
+       "name": "checkFreshness",
+       "bind": "ts(\"packages/shp-checker/src/checker/rules/guards.ts#checkFreshness\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Append<shape.checker::SemanticDiagnostics>"
+         },
+         {
+          "atom": "Read<shape.checker::EffectiveModel>"
+         }
+        ]
+       },
+       "attach": []
+      },
+      {
+       "name": "checkGuardedChanges",
+       "bind": "ts(\"packages/shp-checker/src/checker/rules/guards.ts#checkGuardedChanges\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Append<shape.checker::SemanticDiagnostics>"
+         },
+         {
+          "atom": "Read<shape.checker::ChangeEventSet>"
+         },
+         {
+          "atom": "Read<shape.checker::EffectiveModel>"
+         }
+        ]
+       },
+       "attach": [
+        {
+         "name": "std::RefactorSensitive"
+        }
+       ]
+      },
+      {
+       "name": "checkGuardedSources",
+       "bind": "ts(\"packages/shp-checker/src/checker/rules/guards.ts#checkGuardedSources\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Append<shape.checker::SemanticDiagnostics>"
+         },
+         {
+          "atom": "Read<shape.checker::BaseShapeModel>"
+         },
+         {
+          "atom": "Read<shape.checker::ChangeEventSet>"
+         },
+         {
+          "atom": "Read<shape.checker::ChangedFileList>"
+         },
+         {
+          "atom": "Read<shape.checker::EffectiveModel>"
+         }
+        ]
+       },
+       "attach": [
+        {
+         "name": "std::RefactorSensitive"
+        }
+       ]
+      },
+      {
+       "name": "checkReevaluations",
+       "bind": "ts(\"packages/shp-checker/src/checker/rules/context.ts#checkReevaluations\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Append<shape.checker::SemanticDiagnostics>"
+         },
+         {
+          "atom": "Read<shape.checker::EffectiveModel>"
+         }
+        ]
+       },
+       "attach": [
+        {
+         "name": "std::RefactorSensitive"
+        }
+       ]
+      },
+      {
+       "name": "checkResolvedNames",
+       "bind": "ts(\"packages/shp-checker/src/checker/rules/names.ts#checkResolvedNames\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Append<shape.checker::SemanticDiagnostics>"
+         },
+         {
+          "atom": "Read<shape.checker::EffectiveModel>"
+         },
+         {
+          "atom": "Read<shape.checker::PreludeMetadata>"
+         }
+        ]
+       }
+      },
+      {
+       "name": "checkRules",
+       "bind": "ts(\"packages/shp-checker/src/checker/rules/declarations.ts#checkRules\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Append<shape.checker::SemanticDiagnostics>"
+         },
+         {
+          "atom": "Read<shape.checker::EffectiveModel>"
+         },
+         {
+          "atom": "Read<shape.checker::PreludeMetadata>"
+         }
+        ]
+       }
+      },
+      {
+       "name": "checkStaleAttestations",
+       "bind": "ts(\"packages/shp-checker/src/checker/rules/coverage.ts#checkStaleAttestations\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Append<shape.checker::SemanticDiagnostics>"
+         },
+         {
+          "atom": "Read<shape.checker::BaseShapeModel>"
+         },
+         {
+          "atom": "Read<shape.checker::EffectiveModel>"
+         }
+        ]
+       }
+      },
+      {
+       "name": "deriveFinalForbidsForResource",
+       "bind": "ts(\"packages/shp-checker/src/checker/derivations.ts#deriveFinalForbidsForResource\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Read<shape.checker::EffectiveModel>"
+         },
+         {
+          "atom": "Read<shape.checker::PreludeMetadata>"
+         }
+        ]
+       },
+       "attach": []
+      },
+      {
+       "name": "findHypercycle",
+       "bind": "ts(\"packages/shp-checker/src/checker/rules/relations.ts#findHypercycle\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Read<shape.checker::EffectiveModel>"
+         },
+         {
+          "atom": "Read<shape.checker::PreludeMetadata>"
+         }
+        ]
+       },
+       "attach": []
+      },
+      {
+       "name": "findShortestPath",
+       "bind": "ts(\"packages/shp-checker/src/checker/rules/relations.ts#findShortestPath\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Read<shape.checker::EffectiveModel>"
+         },
+         {
+          "atom": "Read<shape.checker::PreludeMetadata>"
+         }
+        ]
+       },
+       "attach": []
+      },
+      {
+       "name": "requiresReevaluation",
+       "bind": "ts(\"packages/shp-checker/src/checker/derivations.ts#requiresReevaluation\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Read<shape.checker::PreludeMetadata>"
+         }
+        ]
+       }
+      },
+      {
+       "name": "requirementsForTarget",
+       "bind": "ts(\"packages/shp-checker/src/checker/derivations.ts#requirementsForTarget\")",
+       "effects": {
+        "mode": "unknown"
+       }
+      }
+     ],
+     "tier": "critical",
+     "paths": [
+      "packages/shp-checker/src/checker/rules/**/*.ts",
+      "packages/shp-checker/src/checker/rules.ts",
+      "packages/shp-checker/src/checker/derivations.ts"
+     ]
+    },
+    {
+     "decl": "component",
+     "name": "ShapeStringHelpers",
+     "grants": [
+      "Read<shape.language::ShapeSource>",
+      "Update<shape.checker::NormalizedShapeReference>"
+     ],
+     "units": [
+      {
+       "name": "normalizeShapeSourcePath",
+       "bind": "ts(\"packages/shp-checker/src/shape-strings.ts#normalizeShapeSourcePath\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Read<shape.language::ShapeSource>"
+         },
+         {
+          "atom": "Update<shape.checker::NormalizedShapeReference>"
+         }
+        ]
+       },
+       "attach": []
+      },
+      {
+       "name": "unquoteShapeString",
+       "bind": "ts(\"packages/shp-checker/src/shape-strings.ts#unquoteShapeString\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Read<shape.language::ShapeSource>"
+         },
+         {
+          "atom": "Update<shape.checker::NormalizedShapeReference>"
+         }
+        ]
+       },
+       "attach": [
+        {
+         "name": "std::RefactorSensitive"
+        }
+       ]
+      }
+     ],
+     "tier": "critical",
+     "paths": [
+      "packages/shp-checker/src/shape-strings.ts"
+     ]
+    },
+    {
+     "decl": "relation",
+     "name": "ShapeBindingsReadLoweredFacts",
+     "kind": "calls",
+     "connects": [
+      "shape.checker::ShapeBindings",
+      "shape.checker::ShapeModelLowerer"
+     ]
+    },
+    {
+     "decl": "relation",
+     "name": "ShapeBindingsUsesStringHelpers",
+     "kind": "calls",
+     "connects": [
+      "shape.checker::ShapeBindings",
+      "shape.checker::ShapeStringHelpers"
+     ]
+    },
+    {
+     "decl": "relation",
+     "name": "ShapeCheckerProvidesConformance",
+     "kind": "provides",
+     "connects": [
+      "shape.checker::ShapeChecker",
+      "shape.checker::ShapeConformance"
+     ]
+    },
+    {
+     "decl": "relation",
+     "name": "ShapeCheckerProvidesMachineReadableModel",
+     "kind": "provides",
+     "connects": [
+      "shape.checker::ShapeChecker",
+      "shape.checker::MachineReadableShapeModel"
+     ]
+    },
+    {
+     "decl": "relation",
+     "name": "ShapeCheckerUsesBindings",
+     "kind": "calls",
+     "connects": [
+      "shape.checker::ShapeChecker",
+      "shape.checker::ShapeBindings"
+     ]
+    },
+    {
+     "decl": "relation",
+     "name": "ShapeCheckerUsesDiagnostics",
+     "kind": "calls",
+     "connects": [
+      "shape.checker::ShapeChecker",
+      "shape.checker::ShapeDiagnostics"
+     ]
+    },
+    {
+     "decl": "relation",
+     "name": "ShapeCheckerUsesModelPipeline",
+     "kind": "calls",
+     "connects": [
+      "shape.checker::ShapeChecker",
+      "shape.checker::ShapeModelLowerer"
+     ]
+    },
+    {
+     "decl": "relation",
+     "name": "ShapeCheckerUsesRulePipeline",
+     "kind": "calls",
+     "connects": [
+      "shape.checker::ShapeChecker",
+      "shape.checker::ShapeRuleEngine"
+     ]
+    },
+    {
+     "decl": "relation",
+     "name": "ShapeCheckerUsesStringHelpers",
+     "kind": "calls",
+     "connects": [
+      "shape.checker::ShapeChecker",
+      "shape.checker::ShapeStringHelpers"
+     ]
+    },
+    {
+     "decl": "relation",
+     "name": "ShapeDiagnosticsProvidesText",
+     "kind": "provides",
+     "connects": [
+      "shape.checker::ShapeDiagnostics",
+      "shape.checker::HumanReadableDiagnostics"
+     ]
+    },
+    {
+     "decl": "relation",
+     "name": "ShapeDiagnosticsReadsRuleOutput",
+     "kind": "calls",
+     "connects": [
+      "shape.checker::ShapeDiagnostics",
+      "shape.checker::ShapeRuleEngine"
+     ]
+    },
+    {
+     "decl": "relation",
+     "name": "ShapeModelLowererProvidesChangeEvents",
+     "kind": "provides",
+     "connects": [
+      "shape.checker::ShapeModelLowerer",
+      "shape.checker::ChangeEventSet"
+     ]
+    },
+    {
+     "decl": "relation",
+     "name": "ShapeModelLowererProvidesEffectiveModel",
+     "kind": "provides",
+     "connects": [
+      "shape.checker::ShapeModelLowerer",
+      "shape.checker::EffectiveShapeModel"
+     ]
+    },
+    {
+     "decl": "relation",
+     "name": "ShapeModelLowererProvidesFacts",
+     "kind": "provides",
+     "connects": [
+      "shape.checker::ShapeModelLowerer",
+      "shape.checker::ShapeFacts"
+     ]
+    },
+    {
+     "decl": "relation",
+     "name": "ShapeModelLowererUsesModuleResolver",
+     "kind": "calls",
+     "connects": [
+      "shape.checker::ShapeModelLowerer",
+      "shape.checker::ShapeModuleResolver"
+     ]
+    },
+    {
+     "decl": "relation",
+     "name": "ShapeModelLowererUsesParser",
+     "kind": "calls",
+     "connects": [
+      "shape.checker::ShapeModelLowerer",
+      "shape.language::ShapeParser"
+     ]
+    },
+    {
+     "decl": "relation",
+     "name": "ShapeModelLowererUsesPreludeRegistry",
+     "kind": "calls",
+     "connects": [
+      "shape.checker::ShapeModelLowerer",
+      "shape.checker::ShapePreludeRegistry"
+     ]
+    },
+    {
+     "decl": "relation",
+     "name": "ShapeModelLowererUsesStringHelpers",
+     "kind": "calls",
+     "connects": [
+      "shape.checker::ShapeModelLowerer",
+      "shape.checker::ShapeStringHelpers"
+     ]
+    },
+    {
+     "decl": "relation",
+     "name": "ShapeModuleResolverProvidesReference",
+     "kind": "provides",
+     "connects": [
+      "shape.checker::ShapeModuleResolver",
+      "shape.checker::ResolvedModuleReference"
+     ]
+    },
+    {
+     "decl": "relation",
+     "name": "ShapePreludeRegistryProvidesMetadata",
+     "kind": "provides",
+     "connects": [
+      "shape.checker::ShapePreludeRegistry",
+      "shape.checker::PreludeMetadata"
+     ]
+    },
+    {
+     "decl": "relation",
+     "name": "ShapeRuleEngineProvidesDiagnostics",
+     "kind": "provides",
+     "connects": [
+      "shape.checker::ShapeRuleEngine",
+      "shape.checker::SemanticDiagnosticSet"
+     ]
+    },
+    {
+     "decl": "relation",
+     "name": "ShapeRuleEngineReadsLoweredFacts",
+     "kind": "calls",
+     "connects": [
+      "shape.checker::ShapeRuleEngine",
+      "shape.checker::ShapeModelLowerer"
+     ]
+    },
+    {
+     "decl": "relation",
+     "name": "ShapeRuleEngineUsesPreludeRegistry",
+     "kind": "calls",
+     "connects": [
+      "shape.checker::ShapeRuleEngine",
+      "shape.checker::ShapePreludeRegistry"
+     ]
+    },
+    {
+     "decl": "relation",
+     "name": "ShapeRuleEngineUsesStringHelpers",
+     "kind": "calls",
+     "connects": [
+      "shape.checker::ShapeRuleEngine",
+      "shape.checker::ShapeStringHelpers"
+     ]
+    },
+    {
+     "decl": "relation",
+     "name": "ShapeStringHelpersProvideReferences",
+     "kind": "provides",
+     "connects": [
+      "shape.checker::ShapeStringHelpers",
+      "shape.checker::NormalizedShapeReference"
+     ]
+    },
+    {
+     "decl": "rule",
+     "name": "checker_contract_providers",
+     "clauses": [
+      {
+       "forbid": "edge",
+       "kind": "provides",
+       "from": [
+        "*"
+       ],
+       "to": [
+        "shape.checker::EffectiveShapeModel"
+       ],
+       "exceptFrom": [
+        "shape.checker::ShapeModelLowerer"
+       ]
+      },
+      {
+       "forbid": "edge",
+       "kind": "provides",
+       "from": [
+        "*"
+       ],
+       "to": [
+        "shape.checker::HumanReadableDiagnostics"
+       ],
+       "exceptFrom": [
+        "shape.checker::ShapeDiagnostics"
+       ]
+      },
+      {
+       "forbid": "edge",
+       "kind": "provides",
+       "from": [
+        "*"
+       ],
+       "to": [
+        "shape.checker::MachineReadableShapeModel"
+       ],
+       "exceptFrom": [
+        "shape.checker::ShapeChecker"
+       ]
+      },
+      {
+       "forbid": "edge",
+       "kind": "provides",
+       "from": [
+        "*"
+       ],
+       "to": [
+        "shape.checker::NormalizedShapeReference"
+       ],
+       "exceptFrom": [
+        "shape.checker::ShapeStringHelpers"
+       ]
+      },
+      {
+       "forbid": "edge",
+       "kind": "provides",
+       "from": [
+        "*"
+       ],
+       "to": [
+        "shape.checker::PreludeMetadata"
+       ],
+       "exceptFrom": [
+        "shape.checker::ShapePreludeRegistry"
+       ]
+      },
+      {
+       "forbid": "edge",
+       "kind": "provides",
+       "from": [
+        "*"
+       ],
+       "to": [
+        "shape.checker::SemanticDiagnosticSet"
+       ],
+       "exceptFrom": [
+        "shape.checker::ShapeRuleEngine"
+       ]
+      },
+      {
+       "forbid": "edge",
+       "kind": "provides",
+       "from": [
+        "*"
+       ],
+       "to": [
+        "shape.checker::ShapeConformance"
+       ],
+       "exceptFrom": [
+        "shape.checker::ShapeChecker"
+       ]
+      },
+      {
+       "forbid": "edge",
+       "kind": "provides",
+       "from": [
+        "*"
+       ],
+       "to": [
+        "shape.checker::ShapeFacts"
+       ],
+       "exceptFrom": [
+        "shape.checker::ShapeModelLowerer"
+       ]
+      }
+     ]
+    },
+    {
+     "decl": "rule",
+     "name": "no_runtime_dependency_cycles",
+     "clauses": [
+      {
+       "forbid": "cycle",
+       "over": [
+        "calls"
+       ]
+      }
+     ]
+    },
+    {
+     "decl": "note",
+     "name": "AtomicChangePlanning",
+     "kind": "memory",
+     "about": [
+      "unit shape.checker::ShapeModelLowerer.lowerChange"
+     ],
+     "owner": "shape.governance::ShapeMaintainers",
+     "text": "Each change declaration is applied to an isolated effective-model snapshot; ordered before/after target transitions produce normalized guard events, and the complete plan is committed only after every entry has been staged.",
+     "confidence": "high"
+    },
+    {
+     "decl": "note",
+     "name": "BindingDocsCouplingContract",
+     "kind": "memory",
+     "about": [
+      "unit shape.checker::ShapeBindings.checkBindings"
+     ],
+     "owner": "shape.governance::ShapeMaintainers",
+     "text": "Bindings enforce review coupling against normalized repo-relative changed-file paths; an allowed attestation counts only when it is new relative to the base model, or, without a base, when its declaring Shape file changed. With a base, a Shape file that changed only in attestations does not trigger a binding.",
+     "confidence": "high"
+    },
+    {
+     "decl": "note",
+     "name": "CheckPipelineOrder",
+     "kind": "memory",
+     "about": [
+      "unit shape.checker::ShapeChecker.checkShapeModules"
+     ],
+     "owner": "shape.governance::ShapeMaintainers",
+     "text": "The checker must lower the effective model before semantic rules and coverage/binding checks run.",
+     "confidence": "high"
+    },
+    {
+     "decl": "note",
+     "name": "CoverageCurrentUpdateContract",
+     "kind": "memory",
+     "about": [
+      "unit shape.checker::ShapeRuleEngine.checkCoverage"
+     ],
+     "owner": "shape.governance::ShapeMaintainers",
+     "text": "Coverage accepts a source reference only when its declaring Shape file matches the current changed-file input after path normalization; an attestation counts only when it is new relative to the base model, or, without a base, when its declaring Shape file changed.",
+     "confidence": "high"
+    },
+    {
+     "decl": "note",
+     "name": "DiagnosticContract",
+     "kind": "memory",
+     "about": [
+      "unit shape.checker::ShapeDiagnostics.formatDiagnostics"
+     ],
+     "owner": "shape.governance::ShapeMaintainers",
+     "text": "Diagnostics are a product surface and must keep causal paths understandable for reviewers.",
+     "confidence": "high"
+    },
+    {
+     "decl": "note",
+     "name": "FinalForbidPrecedence",
+     "kind": "memory",
+     "about": [
+      "unit shape.checker::ShapeRuleEngine.deriveFinalForbidsForResource"
+     ],
+     "owner": "shape.governance::ShapeMaintainers",
+     "text": "Final forbids must remain stronger than component grants, resolve concrete targets deterministically, and cannot be waived by rationale or memory.",
+     "confidence": "high"
+    },
+    {
+     "decl": "note",
+     "name": "ForbiddenPathWitness",
+     "kind": "memory",
+     "about": [
+      "unit shape.checker::ShapeRuleEngine.findShortestPath"
+     ],
+     "owner": "shape.governance::ShapeMaintainers",
+     "text": "Forbidden path diagnostics must choose a deterministic fewest-hop directed witness and preserve relation kind, name, and provenance for every hop.",
+     "confidence": "high"
+    },
+    {
+     "decl": "note",
+     "name": "FreshnessDeterminism",
+     "kind": "memory",
+     "about": [
+      "unit shape.checker::ShapeRuleEngine.checkFreshness"
+     ],
+     "owner": "shape.governance::ShapeMaintainers",
+     "text": "Freshness compares review_by against a caller-injected ISO date, never the system clock, and enforces only ISO YYYY-MM-DD values so checks stay deterministic.",
+     "confidence": "high"
+    },
+    {
+     "decl": "note",
+     "name": "GuardedChangePrecision",
+     "kind": "memory",
+     "about": [
+      "unit shape.checker::ShapeRuleEngine.checkGuardedChanges"
+     ],
+     "owner": "shape.governance::ShapeMaintainers",
+     "text": "Guards fire property-level when every protected property is detectable (a named shape trait or the description), forbid-transform guards fire when a change declares the matching transform intent, and function, component, resource, and relation targets otherwise fall back to coarse modify/remove matching, so existing coarse guards keep their behaviour and final forbids are never waived.",
+     "confidence": "high"
+    },
+    {
+     "decl": "note",
+     "name": "GuardedSourceCurrency",
+     "kind": "memory",
+     "about": [
+      "unit shape.checker::ShapeRuleEngine.checkGuardedSources"
+     ],
+     "owner": "shape.governance::ShapeMaintainers",
+     "text": "An edit to a guarded function's source is cleared only by a reevaluation written for that change. Counting any valid reevaluation, as declared changes do, would let one old review switch the guard off for every later edit.",
+     "confidence": "high"
+    },
+    {
+     "decl": "note",
+     "name": "HypercycleWitness",
+     "kind": "memory",
+     "about": [
+      "unit shape.checker::ShapeRuleEngine.findHypercycle"
+     ],
+     "owner": "shape.governance::ShapeMaintainers",
+     "text": "Hypercycle diagnostics need a deterministic shortest witness path so reviewers can understand the tightest rejected structural relation.",
+     "confidence": "high"
+    },
+    {
+     "decl": "note",
+     "name": "InspectionSchemaContract",
+     "kind": "memory",
+     "about": [
+      "unit shape.checker::ShapeChecker.inspectShapeModules"
+     ],
+     "owner": "shape.governance::ShapeMaintainers",
+     "text": "The inspection DTO is explicitly versioned, uses stable module-qualified identities, preserves authored or generated-AST origin, uses codepoint ordering, normalizes files at the CLI boundary, and never embeds the current time.",
+     "confidence": "high"
+    },
+    {
+     "decl": "note",
+     "name": "LoweringBeforeRules",
+     "kind": "memory",
+     "about": [
+      "unit shape.checker::ShapeModelLowerer.lowerShapeModules"
+     ],
+     "owner": "shape.governance::ShapeMaintainers",
+     "text": "Module-scoped declarations, concrete forbid targets, generated candidate evidence, and change declarations must be resolved into the final effective model before derived facts are emitted.",
+     "confidence": "high"
+    },
+    {
+     "decl": "note",
+     "name": "PreludeMetadataContract",
+     "kind": "memory",
+     "about": [
+      "unit shape.checker::ShapePreludeRegistry.definePreludeMetadata"
+     ],
+     "owner": "shape.governance::ShapeMaintainers",
+     "text": "Prelude traits, relation kinds, and context requirements are semantic inputs shared by checker, editor, and authoring surfaces; context requirements derive obligations for function, component, and resource targets, and are merged with user-defined trait require_context obligations during checking.",
+     "confidence": "high"
+    },
+    {
+     "decl": "note",
+     "name": "ReevaluationPolicyContract",
+     "kind": "memory",
+     "about": [
+      "unit shape.checker::ShapeRuleEngine.checkReevaluations"
+     ],
+     "owner": "shape.governance::ShapeMaintainers",
+     "text": "Reevaluation validation requires structural fields plus an approver when a project policy requires one for a sensitive memory, and validates reviewer/approver against declared roles; approver and role checks stay opt-in so the default reviewer-only path is preserved.",
+     "confidence": "high"
+    },
+    {
+     "decl": "note",
+     "name": "RuleLayerSplit",
+     "kind": "memory",
+     "about": [
+      "unit shape.checker::ShapeChecker.checkRuleLoosening"
+     ],
+     "owner": "shape.governance::ShapeMaintainers",
+     "text": "The loosening check restores only the rule layer (traits, rules, memory, rationale, implementations, bindings, roles, policies, and trait lists) from the base and takes every claim about the code from the head. Moving a declaration kind across that line changes which edits count as loosening, so a coding agent could silence a violation through a kind the check treats as a claim.",
+     "confidence": "high"
+    },
+    {
+     "decl": "note",
+     "name": "ShapeSourceNormalizationContract",
+     "kind": "memory",
+     "about": [
+      "unit shape.checker::ShapeStringHelpers.normalizeShapeSourcePath"
+     ],
+     "owner": "shape.governance::ShapeMaintainers",
+     "text": "Source-reference normalization must keep coverage, binding, and analyzer comparisons using the same repo-relative path rules.",
+     "confidence": "high"
+    },
+    {
+     "decl": "note",
+     "name": "ShapeStringLiteralContract",
+     "kind": "memory",
+     "about": [
+      "unit shape.checker::ShapeStringHelpers.unquoteShapeString"
+     ],
+     "owner": "shape.governance::ShapeMaintainers",
+     "text": "Shape string literal unquoting must stay consistent across lowering and formatting.",
+     "confidence": "high"
+    },
+    {
+     "decl": "note",
+     "name": "SharedCheckPipelineOrder",
+     "kind": "memory",
+     "about": [
+      "unit shape.checker::ShapeChecker.checkLoweredShapeModel"
+     ],
+     "owner": "shape.governance::ShapeMaintainers",
+     "text": "The shared lowered-model pipeline must retain model diagnostics, semantic rules, binding checks, canonical diagnostic sorting, and optional fact output in that order.",
+     "confidence": "high"
+    },
+    {
+     "decl": "rule",
+     "name": "CheckerNeverReadsClock",
+     "tier": "critical",
+     "clauses": [
+      {
+       "forbid": "effect",
+       "atom": "Read<shape.tooling::SystemClock>",
+       "within": [
+        "component ShapeChecker",
+        "component ShapeRuleEngine",
+        "component ShapeModelLowerer",
+        "component ShapeBindings",
+        "component ShapePreludeRegistry",
+        "component ShapeModuleResolver",
+        "component ShapeStringHelpers",
+        "component ShapeDiagnostics",
+        "component shape.checker.incremental::ShapeIncrementalChecker"
+       ]
+      }
+     ]
+    },
+    {
+     "decl": "law",
+     "name": "CheckIsDeterministic",
+     "template": {
+      "name": "std::Deterministic",
+      "args": [
+       "ShapeChecker.checkShapeModules"
+      ]
+     },
+     "tier": "critical",
+     "evidence": {
+      "level": "tested",
+      "by": [
+       "shape.governance::bunTest"
+      ]
+     }
+    },
+    {
+     "decl": "law",
+     "name": "RuleEngineDocumented",
+     "template": {
+      "name": "std::DocumentedBy",
+      "args": [
+       "ShapeRuleEngine",
+       "code raw(\"docs-site/src/content/docs/inside-shape/rule-evaluation.md\")"
+      ]
+     },
+     "tier": "normal",
+     "evidence": {
+      "judged": true
+     }
+    },
+    {
+     "decl": "law",
+     "name": "ChangePlanStagedInIsolation",
+     "template": {
+      "name": "shape.governance::Property",
+      "args": [
+       "ShapeModelLowerer.lowerChange",
+       "each change declaration is applied to an isolated snapshot"
+      ]
+     },
+     "tier": "critical",
+     "evidence": {
+      "level": "tested",
+      "by": [
+       "shape.governance::bunTest"
+      ]
+     }
+    },
+    {
+     "decl": "law",
+     "name": "ChangeTransitionsYieldNormalizedGuardEvents",
+     "template": {
+      "name": "shape.governance::Property",
+      "args": [
+       "ShapeModelLowerer.lowerChange",
+       "ordered before/after transitions produce normalized guard events"
+      ]
+     },
+     "tier": "normal",
+     "evidence": {
+      "level": "tested",
+      "by": [
+       "shape.governance::bunTest"
+      ]
+     }
+    },
+    {
+     "decl": "law",
+     "name": "ChangePlanCommitsOnlyWhenFullyStaged",
+     "template": {
+      "name": "shape.governance::Property",
+      "args": [
+       "ShapeModelLowerer.lowerChange",
+       "the plan is committed only after every entry is staged"
+      ]
+     },
+     "tier": "critical",
+     "evidence": {
+      "level": "tested",
+      "by": [
+       "shape.governance::bunTest"
+      ]
+     }
+    },
+    {
+     "decl": "law",
+     "name": "BindingsCompareNormalizedPaths",
+     "template": {
+      "name": "shape.governance::Property",
+      "args": [
+       "ShapeBindings.checkBindings",
+       "bindings compare normalized repo-relative changed paths"
+      ]
+     },
+     "tier": "normal",
+     "evidence": {
+      "level": "tested",
+      "by": [
+       "shape.governance::bunTest"
+      ]
+     }
+    },
+    {
+     "decl": "law",
+     "name": "BindingAttestationCountsOnlyWhenNew",
+     "template": {
+      "name": "shape.governance::Property",
+      "args": [
+       "ShapeBindings.checkBindings",
+       "an allowed attestation counts only when new relative to base, or its file changed without a base"
+      ]
+     },
+     "tier": "normal",
+     "evidence": {
+      "level": "tested",
+      "by": [
+       "shape.governance::bunTest"
+      ]
+     }
+    },
+    {
+     "decl": "law",
+     "name": "AttestationOnlyChangeDoesNotTriggerBinding",
+     "template": {
+      "name": "shape.governance::Property",
+      "args": [
+       "ShapeBindings.checkBindings",
+       "with a base, an attestation-only Shape change does not trigger a binding"
+      ]
+     },
+     "tier": "normal",
+     "evidence": {
+      "level": "tested",
+      "by": [
+       "shape.governance::bunTest"
+      ]
+     }
+    },
+    {
+     "decl": "law",
+     "name": "CoverageSourceRefMatchesChangedFile",
+     "template": {
+      "name": "shape.governance::Property",
+      "args": [
+       "ShapeRuleEngine.checkCoverage",
+       "a source reference counts only when its declaring Shape file matches the changed-file input after normalization"
+      ]
+     },
+     "tier": "normal",
+     "evidence": {
+      "level": "tested",
+      "by": [
+       "shape.governance::bunTest"
+      ]
+     }
+    },
+    {
+     "decl": "law",
+     "name": "CoverageAttestationCountsOnlyWhenNew",
+     "template": {
+      "name": "shape.governance::Property",
+      "args": [
+       "ShapeRuleEngine.checkCoverage",
+       "an attestation counts only when new relative to base, or its file changed without a base"
+      ]
+     },
+     "tier": "normal",
+     "evidence": {
+      "level": "tested",
+      "by": [
+       "shape.governance::bunTest"
+      ]
+     }
+    },
+    {
+     "decl": "law",
+     "name": "FinalForbidBeatsGrant",
+     "template": {
+      "name": "shape.governance::Property",
+      "args": [
+       "ShapeRuleEngine.deriveFinalForbidsForResource",
+       "final forbids remain stronger than component grants"
+      ]
+     },
+     "tier": "critical",
+     "evidence": {
+      "level": "tested",
+      "by": [
+       "shape.governance::bunTest"
+      ]
+     }
+    },
+    {
+     "decl": "law",
+     "name": "FinalForbidTargetsDeterministic",
+     "template": {
+      "name": "std::Deterministic",
+      "args": [
+       "ShapeRuleEngine.deriveFinalForbidsForResource"
+      ]
+     },
+     "tier": "critical",
+     "evidence": {
+      "level": "tested",
+      "by": [
+       "shape.governance::bunTest"
+      ]
+     }
+    },
+    {
+     "decl": "law",
+     "name": "FinalForbidNotWaivedByContext",
+     "template": {
+      "name": "shape.governance::Property",
+      "args": [
+       "ShapeRuleEngine.deriveFinalForbidsForResource",
+       "final forbids cannot be waived by rationale or memory"
+      ]
+     },
+     "tier": "critical",
+     "evidence": {
+      "level": "tested",
+      "by": [
+       "shape.governance::bunTest"
+      ]
+     }
+    },
+    {
+     "decl": "law",
+     "name": "ForbiddenPathFewestHops",
+     "template": {
+      "name": "shape.governance::ShortestWitness",
+      "args": [
+       "ShapeRuleEngine.findShortestPath"
+      ]
+     },
+     "tier": "critical",
+     "evidence": {
+      "level": "tested",
+      "by": [
+       "shape.governance::bunTest"
+      ]
+     }
+    },
+    {
+     "decl": "law",
+     "name": "ForbiddenPathHopsKeepProvenance",
+     "template": {
+      "name": "shape.governance::Property",
+      "args": [
+       "ShapeRuleEngine.findShortestPath",
+       "each hop preserves relation kind, name and provenance"
+      ]
+     },
+     "tier": "critical",
+     "evidence": {
+      "level": "tested",
+      "by": [
+       "shape.governance::bunTest"
+      ]
+     }
+    },
+    {
+     "decl": "law",
+     "name": "FreshnessEnforcesOnlyIsoDates",
+     "template": {
+      "name": "shape.governance::Property",
+      "args": [
+       "ShapeRuleEngine.checkFreshness",
+       "only ISO YYYY-MM-DD values are enforced"
+      ]
+     },
+     "tier": "critical",
+     "evidence": {
+      "level": "tested",
+      "by": [
+       "shape.governance::bunTest"
+      ]
+     }
+    },
+    {
+     "decl": "law",
+     "name": "GuardsFirePropertyLevel",
+     "template": {
+      "name": "shape.governance::Property",
+      "args": [
+       "ShapeRuleEngine.checkGuardedChanges",
+       "guards fire property-level when every protected property is detectable"
+      ]
+     },
+     "tier": "normal",
+     "evidence": {
+      "level": "tested",
+      "by": [
+       "shape.governance::bunTest"
+      ]
+     }
+    },
+    {
+     "decl": "law",
+     "name": "TransformGuardsFireOnMatchingTransform",
+     "template": {
+      "name": "shape.governance::Property",
+      "args": [
+       "ShapeRuleEngine.checkGuardedChanges",
+       "forbid-transform guards fire on a matching declared transform"
+      ]
+     },
+     "tier": "normal",
+     "evidence": {
+      "level": "tested",
+      "by": [
+       "shape.governance::bunTest"
+      ]
+     }
+    },
+    {
+     "decl": "law",
+     "name": "OtherGuardTargetsUseCoarseMatching",
+     "template": {
+      "name": "shape.governance::Property",
+      "args": [
+       "ShapeRuleEngine.checkGuardedChanges",
+       "other targets fall back to coarse modify/remove matching"
+      ]
+     },
+     "tier": "normal",
+     "evidence": {
+      "level": "tested",
+      "by": [
+       "shape.governance::bunTest"
+      ]
+     }
+    },
+    {
+     "decl": "law",
+     "name": "GuardsNeverWaiveFinalForbids",
+     "template": {
+      "name": "shape.governance::Property",
+      "args": [
+       "ShapeRuleEngine.checkGuardedChanges",
+       "final forbids are never waived"
+      ]
+     },
+     "tier": "normal",
+     "evidence": {
+      "level": "tested",
+      "by": [
+       "shape.governance::bunTest"
+      ]
+     }
+    },
+    {
+     "decl": "law",
+     "name": "GuardedSourceClearedOnlyByChangeReevaluation",
+     "template": {
+      "name": "shape.governance::Property",
+      "args": [
+       "ShapeRuleEngine.checkGuardedSources",
+       "an edit to a guarded source is cleared only by a reevaluation written for that change"
+      ]
+     },
+     "tier": "normal",
+     "evidence": {
+      "level": "tested",
+      "by": [
+       "shape.governance::bunTest"
+      ]
+     }
+    },
+    {
+     "decl": "law",
+     "name": "HypercycleShortestWitness",
+     "template": {
+      "name": "shape.governance::ShortestWitness",
+      "args": [
+       "ShapeRuleEngine.findHypercycle"
+      ]
+     },
+     "tier": "critical",
+     "evidence": {
+      "level": "tested",
+      "by": [
+       "shape.governance::bunTest"
+      ]
+     }
+    },
+    {
+     "decl": "law",
+     "name": "InspectionQualifiedIdentities",
+     "template": {
+      "name": "shape.governance::Property",
+      "args": [
+       "ShapeChecker.inspectShapeModules",
+       "stable module-qualified identities"
+      ]
+     },
+     "tier": "critical",
+     "evidence": {
+      "level": "tested",
+      "by": [
+       "shape.governance::bunTest"
+      ]
+     }
+    },
+    {
+     "decl": "law",
+     "name": "InspectionPreservesOrigin",
+     "template": {
+      "name": "shape.governance::Property",
+      "args": [
+       "ShapeChecker.inspectShapeModules",
+       "preserves authored or generated-AST origin"
+      ]
+     },
+     "tier": "critical",
+     "evidence": {
+      "level": "tested",
+      "by": [
+       "shape.governance::bunTest"
+      ]
+     }
+    },
+    {
+     "decl": "law",
+     "name": "InspectionCodepointOrder",
+     "template": {
+      "name": "shape.governance::Property",
+      "args": [
+       "ShapeChecker.inspectShapeModules",
+       "codepoint ordering"
+      ]
+     },
+     "tier": "critical",
+     "evidence": {
+      "level": "tested",
+      "by": [
+       "shape.governance::bunTest"
+      ]
+     }
+    },
+    {
+     "decl": "law",
+     "name": "ContextRequirementsDeriveObligations",
+     "template": {
+      "name": "shape.governance::Property",
+      "args": [
+       "ShapeRuleEngine.requirementsForTarget",
+       "context requirements derive obligations for fn, component and resource targets"
+      ]
+     },
+     "tier": "normal",
+     "evidence": {
+      "level": "tested",
+      "by": [
+       "shape.governance::bunTest"
+      ]
+     }
+    },
+    {
+     "decl": "law",
+     "name": "ContextRequirementsMergeWithUserTraits",
+     "template": {
+      "name": "shape.governance::Property",
+      "args": [
+       "ShapeRuleEngine.requirementsForTarget",
+       "they merge with user-defined require_context obligations"
+      ]
+     },
+     "tier": "normal",
+     "evidence": {
+      "level": "tested",
+      "by": [
+       "shape.governance::bunTest"
+      ]
+     }
+    },
+    {
+     "decl": "law",
+     "name": "ReevaluationNeedsApproverWhenPolicyRequires",
+     "template": {
+      "name": "shape.governance::Property",
+      "args": [
+       "ShapeRuleEngine.checkReevaluations",
+       "structural fields plus approver when a policy requires one for a sensitive memory"
+      ]
+     },
+     "tier": "normal",
+     "evidence": {
+      "level": "tested",
+      "by": [
+       "shape.governance::bunTest"
+      ]
+     }
+    },
+    {
+     "decl": "law",
+     "name": "ReevaluationRolesValidated",
+     "template": {
+      "name": "shape.governance::Property",
+      "args": [
+       "ShapeRuleEngine.checkReevaluations",
+       "reviewer/approver validated against declared roles"
+      ]
+     },
+     "tier": "normal",
+     "evidence": {
+      "level": "tested",
+      "by": [
+       "shape.governance::bunTest"
+      ]
+     }
+    },
+    {
+     "decl": "law",
+     "name": "ReevaluationRoleChecksOptIn",
+     "template": {
+      "name": "shape.governance::Property",
+      "args": [
+       "ShapeRuleEngine.checkReevaluations",
+       "approver and role checks stay opt-in"
+      ]
+     },
+     "tier": "normal",
+     "evidence": {
+      "level": "tested",
+      "by": [
+       "shape.governance::bunTest"
+      ]
+     }
+    },
+    {
+     "decl": "law",
+     "name": "SourcePathRulesShared",
+     "template": {
+      "name": "shape.governance::Property",
+      "args": [
+       "ShapeStringHelpers.normalizeShapeSourcePath",
+       "coverage, binding and analyzer comparisons use the same repo-relative path rules"
+      ]
+     },
+     "tier": "critical",
+     "evidence": {
+      "level": "tested",
+      "by": [
+       "shape.governance::bunTest"
+      ]
+     }
+    }
+   ],
+   "file": "shape/checker.shape"
+  },
+  {
+   "module": "shape.checker.incremental",
+   "imports": [
+    "shape.checker",
+    "shape.governance",
+    "shape.language",
+    "std"
+   ],
+   "decls": [
+    {
+     "decl": "resource",
+     "name": "IncrementalCheckState",
+     "bind": [
+      "ts.type(\"packages/shp-checker/src/checker/incremental.ts#IncrementalShapeChecker\")"
+     ]
+    },
+    {
+     "decl": "resource",
+     "name": "IncrementalInvalidationReport",
+     "bind": [
+      "ts.type(\"packages/shp-checker/src/checker/incremental.ts#IncrementalInvalidationReport\")"
+     ]
+    },
+    {
+     "decl": "component",
+     "name": "ShapeIncrementalChecker",
+     "paths": [
+      "packages/shp-checker/src/checker/incremental.ts"
+     ],
+     "grants": [
+      "Append<shape.checker.incremental::IncrementalInvalidationReport>",
+      "Append<shape.checker::SemanticDiagnostics>",
+      "Read<shape.checker.incremental::IncrementalCheckState>",
+      "Read<shape.checker::BaseShapeModel>",
+      "Read<shape.checker::ChangedFileList>",
+      "Read<shape.checker::EffectiveModel>",
+      "Read<shape.checker::FactSet>",
+      "Read<shape.checker::PreludeMetadata>",
+      "Read<shape.checker::RepositoryFileList>",
+      "Read<shape.language::ParsedModule>",
+      "Update<shape.checker.incremental::IncrementalCheckState>"
+     ],
+     "units": [
+      {
+       "name": "check",
+       "bind": "ts(\"packages/shp-checker/src/checker/incremental.ts#IncrementalShapeChecker.check\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Append<shape.checker.incremental::IncrementalInvalidationReport>"
+         },
+         {
+          "atom": "Append<shape.checker::SemanticDiagnostics>"
+         },
+         {
+          "atom": "Read<shape.checker.incremental::IncrementalCheckState>"
+         },
+         {
+          "atom": "Read<shape.checker::BaseShapeModel>"
+         },
+         {
+          "atom": "Read<shape.checker::ChangedFileList>"
+         },
+         {
+          "atom": "Read<shape.checker::EffectiveModel>"
+         },
+         {
+          "atom": "Read<shape.checker::FactSet>"
+         },
+         {
+          "atom": "Read<shape.checker::PreludeMetadata>"
+         },
+         {
+          "atom": "Read<shape.checker::RepositoryFileList>"
+         },
+         {
+          "atom": "Read<shape.language::ParsedModule>"
+         },
+         {
+          "atom": "Update<shape.checker.incremental::IncrementalCheckState>"
+         }
+        ]
+       },
+       "attach": []
+      }
+     ],
+     "tier": "critical"
+    },
+    {
+     "decl": "relation",
+     "name": "ShapeIncrementalCheckerProvidesInvalidationReport",
+     "kind": "provides",
+     "connects": [
+      "shape.checker.incremental::ShapeIncrementalChecker",
+      "shape.checker.incremental::IncrementalInvalidationReport"
+     ]
+    },
+    {
+     "decl": "relation",
+     "name": "ShapeIncrementalCheckerUsesFullPipeline",
+     "kind": "calls",
+     "connects": [
+      "shape.checker.incremental::ShapeIncrementalChecker",
+      "shape.checker::ShapeChecker"
+     ]
+    },
+    {
+     "decl": "relation",
+     "name": "ShapeIncrementalCheckerUsesModelPipeline",
+     "kind": "calls",
+     "connects": [
+      "shape.checker.incremental::ShapeIncrementalChecker",
+      "shape.checker::ShapeModelLowerer"
+     ]
+    },
+    {
+     "decl": "relation",
+     "name": "ShapeIncrementalCheckerUsesParser",
+     "kind": "calls",
+     "connects": [
+      "shape.checker.incremental::ShapeIncrementalChecker",
+      "shape.language::ShapeParser"
+     ]
+    },
+    {
+     "decl": "relation",
+     "name": "ShapeIncrementalCheckerUsesStringHelpers",
+     "kind": "calls",
+     "connects": [
+      "shape.checker.incremental::ShapeIncrementalChecker",
+      "shape.checker::ShapeStringHelpers"
+     ]
+    },
+    {
+     "decl": "note",
+     "name": "IncrementalInvalidationContract",
+     "kind": "memory",
+     "about": [
+      "unit shape.checker.incremental::ShapeIncrementalChecker.check"
+     ],
+     "owner": "shape.governance::ShapeMaintainers",
+     "text": "Document mutations and implicit generated-AST origin changes must rebuild the complete two-pass effective model and derived facts; option-only checks may reuse the model when origins stay stable, and exact no-ops may also reuse diagnostics.",
+     "confidence": "high"
+    },
+    {
+     "decl": "law",
+     "name": "IncrementalRebuildsOnDocumentChange",
+     "template": {
+      "name": "shape.governance::Property",
+      "args": [
+       "ShapeIncrementalChecker.check",
+       "document mutations and implicit generated-AST origin changes rebuild the complete two-pass model and facts"
+      ]
+     },
+     "tier": "critical",
+     "evidence": {
+      "level": "tested",
+      "by": [
+       "shape.governance::bunTest"
+      ]
+     }
+    },
+    {
+     "decl": "law",
+     "name": "IncrementalReusesModelOnOptionChange",
+     "template": {
+      "name": "shape.governance::Property",
+      "args": [
+       "ShapeIncrementalChecker.check",
+       "option-only checks may reuse the model when origins stay stable"
+      ]
+     },
+     "tier": "critical",
+     "evidence": {
+      "level": "tested",
+      "by": [
+       "shape.governance::bunTest"
+      ]
+     }
+    },
+    {
+     "decl": "law",
+     "name": "IncrementalReusesDiagnosticsOnNoop",
+     "template": {
+      "name": "shape.governance::Property",
+      "args": [
+       "ShapeIncrementalChecker.check",
+       "exact no-ops may reuse diagnostics"
+      ]
+     },
+     "tier": "critical",
+     "evidence": {
+      "level": "tested",
+      "by": [
+       "shape.governance::bunTest"
+      ]
+     }
+    },
+    {
+     "decl": "law",
+     "name": "IncrementalCheckerDocumented",
+     "template": {
+      "name": "std::DocumentedBy",
+      "args": [
+       "ShapeIncrementalChecker",
+       "code raw(\"docs-site/src/content/docs/inside-shape/checker-pipeline.md\")"
+      ]
+     },
+     "tier": "normal",
+     "evidence": {
+      "judged": true
+     }
+    }
+   ],
+   "file": "shape/incremental-checker.shape"
+  },
+  {
+   "module": "shape.delivery",
+   "imports": [
+    "shape.checker",
+    "shape.checker.incremental",
+    "shape.governance",
+    "shape.language",
+    "shape.runtime",
+    "shape.tooling",
+    "std"
+   ],
+   "decls": [
+    {
+     "decl": "resource",
+     "name": "ChangeBaseRevision",
+     "bind": [
+      "fs.path(\"changed-base.txt\")"
+     ]
+    },
+    {
+     "decl": "resource",
+     "name": "CiWorkflow",
+     "bind": [
+      "fs.path(\".github/workflows/*.yml\")"
+     ]
+    },
+    {
+     "decl": "resource",
+     "name": "ClaudeReviewPrompt",
+     "bind": [
+      "fs.path(\".github/prompts/*.md\")"
+     ]
+    },
+    {
+     "decl": "resource",
+     "name": "ClaudeReviewResult",
+     "bind": [
+      "gha.output(\".github/actions/claude-skill-review#result\")"
+     ]
+    },
+    {
+     "decl": "resource",
+     "name": "CliPackageManifest",
+     "bind": [
+      "fs.path(\"packages/shp-cli/package.json\")"
+     ]
+    },
+    {
+     "decl": "resource",
+     "name": "DocsContent",
+     "bind": [
+      "fs.path(\"docs-site/src/content/docs/**/*.md\")",
+      "fs.path(\"README.md\")"
+     ]
+    },
+    {
+     "decl": "resource",
+     "name": "InstallScript",
+     "bind": [
+      "fs.path(\"install.sh\")",
+      "fs.path(\"install.ps1\")"
+     ]
+    },
+    {
+     "decl": "resource",
+     "name": "NativeParserAsset",
+     "bind": [
+      "http.route(\"GET /kreuzberg-dev/tree-sitter-language-pack/releases/download/{v}/{asset}\")"
+     ]
+    },
+    {
+     "decl": "resource",
+     "name": "PluginPackageManifest",
+     "bind": [
+      "fs.path(\"plugins/shapelang/.claude-plugin/plugin.json\")",
+      "fs.path(\"plugins/shapelang/.codex-plugin/plugin.json\")"
+     ]
+    },
+    {
+     "decl": "resource",
+     "name": "PullRequestDescription",
+     "bind": [
+      "gha.event(\"pull_request.body\")"
+     ]
+    },
+    {
+     "decl": "resource",
+     "name": "PullRequestStatusComment",
+     "bind": [
+      "http.route(\"POST /repos/{owner}/{repo}/issues/{n}/comments\")",
+      "http.route(\"PATCH /repos/{owner}/{repo}/issues/comments/{id}\")"
+     ]
+    },
+    {
+     "decl": "resource",
+     "name": "ReleaseArtifact",
+     "bind": [
+      "fs.path(\"dist/release/*\")"
+     ]
+    },
+    {
+     "decl": "resource",
+     "name": "ReleaseVersionTag",
+     "bind": [
+      "git.ref(\"refs/tags/v*\")"
+     ]
+    },
+    {
+     "decl": "resource",
+     "name": "ShapeAgentSkill",
+     "bind": [
+      "fs.path(\"plugins/shapelang/skills/*/SKILL.md\")"
+     ]
+    },
+    {
+     "decl": "resource",
+     "name": "SkillBehaviorFixture",
+     "bind": [
+      "fs.path(\"fixtures/skills/**\")"
+     ]
+    },
+    {
+     "decl": "resource",
+     "name": "SkillReleaseApproval",
+     "bind": [
+      "http.route(\"GET /repos/{owner}/{repo}/actions/runs/{id}/approvals\")"
+     ]
+    },
+    {
+     "decl": "resource",
+     "name": "SkillReleaseReport",
+     "bind": [
+      "gha.artifact(\"skill-release-report-*\")"
+     ]
+    },
+    {
+     "decl": "component",
+     "name": "CiPipeline",
+     "paths": [
+      ".github/actions/**/*.yml",
+      ".github/prompts/**/*.md",
+      ".github/scripts/**/*.mjs",
+      ".github/shape-contract/**/*.json",
+      ".github/workflows/**/*.yml",
+      "plugins/shapelang/skills/**/*.css",
+      "plugins/shapelang/skills/**/*.html",
+      "plugins/shapelang/skills/**/*.md",
+      "plugins/shapelang/skills/**/*.mjs",
+      "plugins/shapelang/skills/**/*.sh",
+      "plugins/shapelang/skills/**/*.yaml",
+      "scripts/check-release-approval.ts",
+      "scripts/check-release-metadata.ts",
+      "scripts/check-skills.ts",
+      "scripts/generate-ast-shapes.sh",
+      "scripts/generate-ast-shapes.ts",
+      "scripts/run-release-canaries.ts",
+      "scripts/write-changed-files.sh"
+     ],
+     "grants": [
+      "Read<shape.checker::ChangedFileList>",
+      "Read<shape.checker::SemanticDiagnostics>",
+      "Read<shape.delivery::ChangeBaseRevision>",
+      "Read<shape.delivery::CiWorkflow>",
+      "Read<shape.delivery::ClaudeReviewPrompt>",
+      "Read<shape.delivery::ClaudeReviewResult>",
+      "Read<shape.delivery::CliPackageManifest>",
+      "Read<shape.delivery::DocsContent>",
+      "Read<shape.delivery::NativeParserAsset>",
+      "Read<shape.delivery::PluginPackageManifest>",
+      "Read<shape.delivery::PullRequestDescription>",
+      "Read<shape.delivery::PullRequestStatusComment>",
+      "Read<shape.delivery::ReleaseArtifact>",
+      "Read<shape.delivery::ReleaseVersionTag>",
+      "Read<shape.delivery::ShapeAgentSkill>",
+      "Read<shape.delivery::SkillBehaviorFixture>",
+      "Read<shape.delivery::SkillReleaseApproval>",
+      "Read<shape.delivery::SkillReleaseReport>",
+      "Read<shape.language::ShapeSource>",
+      "Read<shape.runtime::ExperimentalKernelDiagnosticSet>",
+      "Read<shape.runtime::ExperimentalKernelEnvelope>",
+      "Read<shape.tooling::CommandLineInterface>",
+      "Read<shape.tooling::GeneratedAstManifest>",
+      "Read<shape.tooling::LanguageSource>",
+      "Read<shape.tooling::ShapeModelDraft>",
+      "Read<shape.tooling::SourceSyntaxTree>",
+      "Update<shape.checker::ChangedFileList>",
+      "Update<shape.delivery::ChangeBaseRevision>",
+      "Update<shape.delivery::ClaudeReviewResult>",
+      "Update<shape.delivery::PullRequestStatusComment>",
+      "Update<shape.delivery::SkillReleaseApproval>",
+      "Update<shape.delivery::SkillReleaseReport>",
+      "Update<shape.runtime::ExperimentalKernelWasmArtifact>",
+      "Update<shape.tooling::GeneratedAstManifest>",
+      "Update<shape.tooling::ShapeModelDraft>"
+     ],
+     "units": [
+      {
+       "name": "approveReleaseSkills",
+       "bind": "gha(\".github/workflows/release-candidate.yml\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Read<shape.delivery::CiWorkflow>"
+         },
+         {
+          "atom": "Read<shape.delivery::SkillReleaseReport>"
+         },
+         {
+          "atom": "Update<shape.delivery::SkillReleaseApproval>"
+         }
+        ]
+       }
+      },
+      {
+       "name": "checkReleaseVersion",
+       "bind": "ts(\"scripts/check-release-metadata.ts#validateReleaseMetadata\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Read<shape.delivery::CiWorkflow>"
+         },
+         {
+          "atom": "Read<shape.delivery::ClaudeReviewPrompt>"
+         },
+         {
+          "atom": "Read<shape.delivery::CliPackageManifest>"
+         },
+         {
+          "atom": "Read<shape.delivery::DocsContent>"
+         },
+         {
+          "atom": "Read<shape.delivery::DocsContent>"
+         },
+         {
+          "atom": "Read<shape.delivery::DocsContent>"
+         },
+         {
+          "atom": "Read<shape.delivery::DocsContent>"
+         },
+         {
+          "atom": "Read<shape.delivery::DocsContent>"
+         },
+         {
+          "atom": "Read<shape.delivery::DocsContent>"
+         },
+         {
+          "atom": "Read<shape.delivery::PluginPackageManifest>"
+         },
+         {
+          "atom": "Read<shape.delivery::PluginPackageManifest>"
+         },
+         {
+          "atom": "Read<shape.delivery::ReleaseVersionTag>"
+         },
+         {
+          "atom": "Read<shape.delivery::ReleaseVersionTag>"
+         },
+         {
+          "atom": "Read<shape.delivery::ShapeAgentSkill>"
+         },
+         {
+          "atom": "Read<shape.language::ShapeSource>"
+         }
+        ]
+       },
+       "attach": [
+        {
+         "name": "std::RefactorSensitive"
+        }
+       ]
+      },
+      {
+       "name": "evaluateReleaseSkills",
+       "bind": "ts(\".github/scripts/run-claude-skill.mjs#buildSkillsReleasePrompt\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Read<shape.delivery::CiWorkflow>"
+         },
+         {
+          "atom": "Read<shape.delivery::CiWorkflow>"
+         },
+         {
+          "atom": "Read<shape.delivery::ClaudeReviewPrompt>"
+         },
+         {
+          "atom": "Read<shape.delivery::ShapeAgentSkill>"
+         },
+         {
+          "atom": "Read<shape.delivery::ShapeAgentSkill>"
+         },
+         {
+          "atom": "Read<shape.delivery::ShapeAgentSkill>"
+         },
+         {
+          "atom": "Read<shape.delivery::ShapeAgentSkill>"
+         },
+         {
+          "atom": "Read<shape.delivery::ShapeAgentSkill>"
+         },
+         {
+          "atom": "Read<shape.delivery::ShapeAgentSkill>"
+         },
+         {
+          "atom": "Read<shape.delivery::ShapeAgentSkill>"
+         },
+         {
+          "atom": "Read<shape.delivery::ShapeAgentSkill>"
+         },
+         {
+          "atom": "Read<shape.delivery::ShapeAgentSkill>"
+         },
+         {
+          "atom": "Read<shape.delivery::ShapeAgentSkill>"
+         },
+         {
+          "atom": "Read<shape.delivery::ShapeAgentSkill>"
+         },
+         {
+          "atom": "Read<shape.delivery::ShapeAgentSkill>"
+         },
+         {
+          "atom": "Read<shape.delivery::ShapeAgentSkill>"
+         },
+         {
+          "atom": "Read<shape.delivery::ShapeAgentSkill>"
+         },
+         {
+          "atom": "Read<shape.delivery::ShapeAgentSkill>"
+         },
+         {
+          "atom": "Read<shape.delivery::ShapeAgentSkill>"
+         },
+         {
+          "atom": "Read<shape.delivery::ShapeAgentSkill>"
+         },
+         {
+          "atom": "Read<shape.delivery::ShapeAgentSkill>"
+         },
+         {
+          "atom": "Read<shape.delivery::ShapeAgentSkill>"
+         },
+         {
+          "atom": "Read<shape.delivery::ShapeAgentSkill>"
+         },
+         {
+          "atom": "Read<shape.delivery::ShapeAgentSkill>"
+         },
+         {
+          "atom": "Read<shape.delivery::ShapeAgentSkill>"
+         },
+         {
+          "atom": "Read<shape.delivery::ShapeAgentSkill>"
+         },
+         {
+          "atom": "Read<shape.delivery::ShapeAgentSkill>"
+         },
+         {
+          "atom": "Read<shape.delivery::ShapeAgentSkill>"
+         },
+         {
+          "atom": "Read<shape.delivery::ShapeAgentSkill>"
+         },
+         {
+          "atom": "Read<shape.delivery::ShapeAgentSkill>"
+         },
+         {
+          "atom": "Read<shape.delivery::ShapeAgentSkill>"
+         },
+         {
+          "atom": "Read<shape.delivery::ShapeAgentSkill>"
+         },
+         {
+          "atom": "Read<shape.delivery::ShapeAgentSkill>"
+         },
+         {
+          "atom": "Read<shape.delivery::ShapeAgentSkill>"
+         },
+         {
+          "atom": "Read<shape.delivery::ShapeAgentSkill>"
+         },
+         {
+          "atom": "Read<shape.delivery::ShapeAgentSkill>"
+         },
+         {
+          "atom": "Read<shape.delivery::ShapeAgentSkill>"
+         },
+         {
+          "atom": "Read<shape.delivery::ShapeAgentSkill>"
+         },
+         {
+          "atom": "Read<shape.delivery::ShapeAgentSkill>"
+         },
+         {
+          "atom": "Read<shape.delivery::ShapeAgentSkill>"
+         },
+         {
+          "atom": "Read<shape.delivery::ShapeAgentSkill>"
+         },
+         {
+          "atom": "Read<shape.delivery::SkillBehaviorFixture>"
+         },
+         {
+          "atom": "Update<shape.delivery::SkillReleaseReport>"
+         }
+        ]
+       }
+      },
+      {
+       "name": "generateAstContext",
+       "bind": "ts(\"scripts/generate-ast-shapes.ts\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Read<shape.delivery::CiWorkflow>"
+         },
+         {
+          "atom": "Read<shape.delivery::CiWorkflow>"
+         },
+         {
+          "atom": "Read<shape.delivery::CliPackageManifest>"
+         },
+         {
+          "atom": "Read<shape.tooling::GeneratedAstManifest>"
+         },
+         {
+          "atom": "Read<shape.tooling::LanguageSource>"
+         },
+         {
+          "atom": "Read<shape.tooling::LanguageSource>"
+         },
+         {
+          "atom": "Read<shape.tooling::SourceSyntaxTree>"
+         },
+         {
+          "atom": "Update<shape.tooling::GeneratedAstManifest>"
+         },
+         {
+          "atom": "Update<shape.tooling::ShapeModelDraft>"
+         }
+        ]
+       }
+      },
+      {
+       "name": "reportShapeCiStatus",
+       "bind": "ts(\".github/scripts/upsert-shape-ci-comment.mjs\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Read<shape.checker::SemanticDiagnostics>"
+         },
+         {
+          "atom": "Read<shape.delivery::CiWorkflow>"
+         },
+         {
+          "atom": "Read<shape.delivery::ClaudeReviewResult>"
+         },
+         {
+          "atom": "Read<shape.delivery::PullRequestStatusComment>"
+         },
+         {
+          "atom": "Update<shape.delivery::PullRequestStatusComment>"
+         }
+        ]
+       }
+      },
+      {
+       "name": "reuseReleaseSkillsEvaluation",
+       "bind": "ts(\"scripts/check-release-approval.ts#findReusableSkillsReport\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Read<shape.delivery::CiWorkflow>"
+         },
+         {
+          "atom": "Read<shape.delivery::SkillReleaseApproval>"
+         },
+         {
+          "atom": "Read<shape.delivery::SkillReleaseReport>"
+         },
+         {
+          "atom": "Update<shape.delivery::SkillReleaseReport>"
+         }
+        ]
+       },
+       "attach": [
+        {
+         "name": "std::RefactorSensitive"
+        }
+       ]
+      },
+      {
+       "name": "runExperimentalSemanticKernel",
+       "bind": "gha(\".github/workflows/shape.yml#jobs.semantic-kernel.steps.6\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Read<shape.delivery::CiWorkflow>"
+         },
+         {
+          "atom": "Read<shape.runtime::ExperimentalKernelDiagnosticSet>"
+         },
+         {
+          "atom": "Read<shape.runtime::ExperimentalKernelEnvelope>"
+         },
+         {
+          "atom": "Update<shape.runtime::ExperimentalKernelWasmArtifact>"
+         }
+        ]
+       }
+      },
+      {
+       "name": "runReleaseCanaries",
+       "bind": "ts(\"scripts/run-release-canaries.ts#runReleaseCanaries\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Read<shape.delivery::ReleaseArtifact>"
+         },
+         {
+          "atom": "Read<shape.delivery::SkillBehaviorFixture>"
+         },
+         {
+          "atom": "Read<shape.delivery::SkillBehaviorFixture>"
+         }
+        ]
+       }
+      },
+      {
+       "name": "runRuleLooseningCheck",
+       "bind": "gha(\".github/workflows/shape-loosening.yml\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Read<shape.checker::ChangedFileList>"
+         },
+         {
+          "atom": "Read<shape.checker::SemanticDiagnostics>"
+         },
+         {
+          "atom": "Read<shape.delivery::ChangeBaseRevision>"
+         },
+         {
+          "atom": "Read<shape.delivery::CiWorkflow>"
+         },
+         {
+          "atom": "Read<shape.delivery::PullRequestDescription>"
+         }
+        ]
+       }
+      },
+      {
+       "name": "runShapeCi",
+       "bind": "gha(\".github/workflows/shape.yml#jobs.shape.steps.5\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Read<shape.checker::ChangedFileList>"
+         },
+         {
+          "atom": "Read<shape.checker::SemanticDiagnostics>"
+         },
+         {
+          "atom": "Read<shape.delivery::ChangeBaseRevision>"
+         },
+         {
+          "atom": "Read<shape.delivery::CiWorkflow>"
+         },
+         {
+          "atom": "Read<shape.delivery::CiWorkflow>"
+         }
+        ]
+       }
+      },
+      {
+       "name": "runShapeContractReview",
+       "bind": "ts(\".github/scripts/run-claude-skill.mjs#buildReviewPrompt\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Read<shape.checker::ChangedFileList>"
+         },
+         {
+          "atom": "Read<shape.checker::SemanticDiagnostics>"
+         },
+         {
+          "atom": "Read<shape.delivery::CiWorkflow>"
+         },
+         {
+          "atom": "Read<shape.delivery::CiWorkflow>"
+         },
+         {
+          "atom": "Read<shape.delivery::CiWorkflow>"
+         },
+         {
+          "atom": "Read<shape.delivery::ClaudeReviewPrompt>"
+         },
+         {
+          "atom": "Read<shape.delivery::ClaudeReviewResult>"
+         },
+         {
+          "atom": "Read<shape.delivery::ClaudeReviewResult>"
+         },
+         {
+          "atom": "Update<shape.delivery::ClaudeReviewResult>"
+         }
+        ]
+       }
+      },
+      {
+       "name": "runShapeGuardReview",
+       "bind": "ts(\".github/scripts/run-claude-skill.mjs#buildGuardPrompt\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Read<shape.checker::ChangedFileList>"
+         },
+         {
+          "atom": "Read<shape.delivery::CiWorkflow>"
+         },
+         {
+          "atom": "Read<shape.delivery::CiWorkflow>"
+         },
+         {
+          "atom": "Read<shape.delivery::ClaudeReviewPrompt>"
+         },
+         {
+          "atom": "Read<shape.delivery::ClaudeReviewResult>"
+         },
+         {
+          "atom": "Read<shape.delivery::ClaudeReviewResult>"
+         },
+         {
+          "atom": "Read<shape.delivery::PullRequestDescription>"
+         },
+         {
+          "atom": "Update<shape.delivery::ClaudeReviewResult>"
+         },
+         {
+          "atom": "Update<shape.delivery::ClaudeReviewResult>"
+         }
+        ]
+       }
+      },
+      {
+       "name": "runShapeIndexAudit",
+       "bind": "ts(\".github/scripts/run-claude-skill.mjs#buildIndexPrompt\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Read<shape.checker::ChangedFileList>"
+         },
+         {
+          "atom": "Read<shape.delivery::CiWorkflow>"
+         },
+         {
+          "atom": "Read<shape.delivery::CiWorkflow>"
+         },
+         {
+          "atom": "Read<shape.delivery::ClaudeReviewPrompt>"
+         },
+         {
+          "atom": "Read<shape.delivery::ClaudeReviewResult>"
+         },
+         {
+          "atom": "Read<shape.delivery::ClaudeReviewResult>"
+         },
+         {
+          "atom": "Read<shape.language::ShapeSource>"
+         },
+         {
+          "atom": "Update<shape.delivery::ClaudeReviewResult>"
+         },
+         {
+          "atom": "Update<shape.delivery::ClaudeReviewResult>"
+         }
+        ]
+       }
+      },
+      {
+       "name": "smokeReleaseBinary",
+       "bind": "gha(\".github/workflows/release.yml\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Read<shape.checker::SemanticDiagnostics>"
+         },
+         {
+          "atom": "Read<shape.checker::SemanticDiagnostics>"
+         },
+         {
+          "atom": "Read<shape.delivery::CiWorkflow>"
+         },
+         {
+          "atom": "Read<shape.delivery::CiWorkflow>"
+         },
+         {
+          "atom": "Read<shape.delivery::NativeParserAsset>"
+         },
+         {
+          "atom": "Read<shape.delivery::NativeParserAsset>"
+         },
+         {
+          "atom": "Read<shape.delivery::ReleaseArtifact>"
+         },
+         {
+          "atom": "Read<shape.delivery::ReleaseArtifact>"
+         },
+         {
+          "atom": "Read<shape.tooling::LanguageSource>"
+         },
+         {
+          "atom": "Read<shape.tooling::LanguageSource>"
+         },
+         {
+          "atom": "Read<shape.tooling::ShapeModelDraft>"
+         },
+         {
+          "atom": "Read<shape.tooling::ShapeModelDraft>"
+         },
+         {
+          "atom": "Read<shape.tooling::SourceSyntaxTree>"
+         },
+         {
+          "atom": "Read<shape.tooling::SourceSyntaxTree>"
+         }
+        ]
+       }
+      },
+      {
+       "name": "validateShippedSkills",
+       "bind": "ts(\"scripts/check-skills.ts#validateSkillPackage\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Read<shape.delivery::ShapeAgentSkill>"
+         },
+         {
+          "atom": "Read<shape.delivery::ShapeAgentSkill>"
+         },
+         {
+          "atom": "Read<shape.delivery::ShapeAgentSkill>"
+         },
+         {
+          "atom": "Read<shape.delivery::ShapeAgentSkill>"
+         },
+         {
+          "atom": "Read<shape.delivery::ShapeAgentSkill>"
+         },
+         {
+          "atom": "Read<shape.delivery::ShapeAgentSkill>"
+         },
+         {
+          "atom": "Read<shape.delivery::ShapeAgentSkill>"
+         },
+         {
+          "atom": "Read<shape.delivery::ShapeAgentSkill>"
+         },
+         {
+          "atom": "Read<shape.delivery::ShapeAgentSkill>"
+         },
+         {
+          "atom": "Read<shape.delivery::ShapeAgentSkill>"
+         },
+         {
+          "atom": "Read<shape.delivery::ShapeAgentSkill>"
+         },
+         {
+          "atom": "Read<shape.delivery::ShapeAgentSkill>"
+         },
+         {
+          "atom": "Read<shape.delivery::ShapeAgentSkill>"
+         },
+         {
+          "atom": "Read<shape.delivery::ShapeAgentSkill>"
+         },
+         {
+          "atom": "Read<shape.delivery::ShapeAgentSkill>"
+         },
+         {
+          "atom": "Read<shape.delivery::ShapeAgentSkill>"
+         },
+         {
+          "atom": "Read<shape.delivery::ShapeAgentSkill>"
+         },
+         {
+          "atom": "Read<shape.delivery::ShapeAgentSkill>"
+         },
+         {
+          "atom": "Read<shape.delivery::ShapeAgentSkill>"
+         },
+         {
+          "atom": "Read<shape.delivery::ShapeAgentSkill>"
+         },
+         {
+          "atom": "Read<shape.delivery::ShapeAgentSkill>"
+         },
+         {
+          "atom": "Read<shape.delivery::ShapeAgentSkill>"
+         },
+         {
+          "atom": "Read<shape.delivery::ShapeAgentSkill>"
+         },
+         {
+          "atom": "Read<shape.delivery::ShapeAgentSkill>"
+         },
+         {
+          "atom": "Read<shape.delivery::ShapeAgentSkill>"
+         },
+         {
+          "atom": "Read<shape.delivery::ShapeAgentSkill>"
+         },
+         {
+          "atom": "Read<shape.delivery::ShapeAgentSkill>"
+         },
+         {
+          "atom": "Read<shape.delivery::ShapeAgentSkill>"
+         },
+         {
+          "atom": "Read<shape.delivery::ShapeAgentSkill>"
+         },
+         {
+          "atom": "Read<shape.delivery::ShapeAgentSkill>"
+         },
+         {
+          "atom": "Read<shape.delivery::ShapeAgentSkill>"
+         },
+         {
+          "atom": "Read<shape.delivery::ShapeAgentSkill>"
+         },
+         {
+          "atom": "Read<shape.delivery::ShapeAgentSkill>"
+         },
+         {
+          "atom": "Read<shape.delivery::ShapeAgentSkill>"
+         },
+         {
+          "atom": "Read<shape.delivery::ShapeAgentSkill>"
+         },
+         {
+          "atom": "Read<shape.delivery::ShapeAgentSkill>"
+         },
+         {
+          "atom": "Read<shape.delivery::ShapeAgentSkill>"
+         },
+         {
+          "atom": "Read<shape.delivery::ShapeAgentSkill>"
+         },
+         {
+          "atom": "Read<shape.delivery::ShapeAgentSkill>"
+         },
+         {
+          "atom": "Read<shape.delivery::ShapeAgentSkill>"
+         },
+         {
+          "atom": "Read<shape.delivery::ShapeAgentSkill>"
+         },
+         {
+          "atom": "Read<shape.delivery::SkillBehaviorFixture>"
+         },
+         {
+          "atom": "Read<shape.tooling::CommandLineInterface>"
+         }
+        ]
+       }
+      },
+      {
+       "name": "verifyReleaseSkillsApproval",
+       "bind": "ts(\"scripts/check-release-approval.ts#findExactApprovedCandidate\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Read<shape.delivery::CiWorkflow>"
+         },
+         {
+          "atom": "Read<shape.delivery::ReleaseVersionTag>"
+         },
+         {
+          "atom": "Read<shape.delivery::SkillReleaseApproval>"
+         },
+         {
+          "atom": "Read<shape.delivery::SkillReleaseReport>"
+         }
+        ]
+       }
+      },
+      {
+       "name": "writeChangedFiles",
+       "bind": "raw(\"scripts/write-changed-files.sh\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Update<shape.checker::ChangedFileList>"
+         },
+         {
+          "atom": "Update<shape.delivery::ChangeBaseRevision>"
+         }
+        ]
+       }
+      }
+     ],
+     "tier": "critical",
+     "boundary": true,
+     "assumes": [
+      {
+       "id": "ClaudeReviewIsAdvisory",
+       "text": "Claude review jobs report findings; the deterministic checker, not the model, decides the gate."
+      },
+      {
+       "id": "GitHubReportsTheChange",
+       "text": "The pull request event and git merge-base name the change under review."
+      }
+     ]
+    },
+    {
+     "decl": "component",
+     "name": "DocsSite",
+     "paths": [
+      "docs-site/scripts/**/*.ts",
+      "docs-site/src/content/docs/**/*.md"
+     ],
+     "grants": [
+      "Read<shape.delivery::DocsContent>",
+      "Update<shape.delivery::DocsContent>"
+     ],
+     "units": [
+      {
+       "name": "verifyDocs",
+       "bind": "pkgjson(\"docs-site/package.json#scripts.verify:shape\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Read<shape.delivery::DocsContent>"
+         },
+         {
+          "atom": "Read<shape.delivery::DocsContent>"
+         },
+         {
+          "atom": "Read<shape.delivery::DocsContent>"
+         },
+         {
+          "atom": "Read<shape.delivery::DocsContent>"
+         },
+         {
+          "atom": "Read<shape.delivery::DocsContent>"
+         },
+         {
+          "atom": "Read<shape.delivery::DocsContent>"
+         },
+         {
+          "atom": "Read<shape.delivery::DocsContent>"
+         },
+         {
+          "atom": "Read<shape.delivery::DocsContent>"
+         },
+         {
+          "atom": "Read<shape.delivery::DocsContent>"
+         },
+         {
+          "atom": "Read<shape.delivery::DocsContent>"
+         },
+         {
+          "atom": "Read<shape.delivery::DocsContent>"
+         },
+         {
+          "atom": "Read<shape.delivery::DocsContent>"
+         },
+         {
+          "atom": "Read<shape.delivery::DocsContent>"
+         },
+         {
+          "atom": "Read<shape.delivery::DocsContent>"
+         },
+         {
+          "atom": "Read<shape.delivery::DocsContent>"
+         },
+         {
+          "atom": "Read<shape.delivery::DocsContent>"
+         },
+         {
+          "atom": "Read<shape.delivery::DocsContent>"
+         },
+         {
+          "atom": "Read<shape.delivery::DocsContent>"
+         },
+         {
+          "atom": "Read<shape.delivery::DocsContent>"
+         },
+         {
+          "atom": "Read<shape.delivery::DocsContent>"
+         },
+         {
+          "atom": "Read<shape.delivery::DocsContent>"
+         },
+         {
+          "atom": "Read<shape.delivery::DocsContent>"
+         }
+        ]
+       }
+      }
+     ],
+     "tier": "low"
+    },
+    {
+     "decl": "component",
+     "name": "ReleasePipeline",
+     "paths": [
+      "action.yml",
+      "install.ps1",
+      "install.sh",
+      "plugins/shapelang/.claude-plugin/plugin.json",
+      "plugins/shapelang/.codex-plugin/plugin.json",
+      "scripts/build-release-assets.sh",
+      "scripts/prepare-tree-sitter-parser-assets.ts",
+      "scripts/smoke-release-binary.sh"
+     ],
+     "grants": [
+      "Read<shape.delivery::InstallScript>",
+      "Read<shape.delivery::NativeParserAsset>",
+      "Read<shape.delivery::ReleaseArtifact>",
+      "Update<shape.delivery::ReleaseArtifact>"
+     ],
+     "units": [
+      {
+       "name": "buildReleaseAssets",
+       "bind": "raw(\"scripts/build-release-assets.sh\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Read<shape.delivery::InstallScript>"
+         },
+         {
+          "atom": "Read<shape.delivery::InstallScript>"
+         },
+         {
+          "atom": "Read<shape.delivery::InstallScript>"
+         },
+         {
+          "atom": "Read<shape.delivery::NativeParserAsset>"
+         },
+         {
+          "atom": "Read<shape.delivery::NativeParserAsset>"
+         },
+         {
+          "atom": "Read<shape.delivery::NativeParserAsset>"
+         },
+         {
+          "atom": "Update<shape.delivery::ReleaseArtifact>"
+         }
+        ]
+       },
+       "attach": [
+        {
+         "name": "std::RefactorSensitive"
+        }
+       ]
+      },
+      {
+       "name": "selectInstallReleaseAsset",
+       "bind": "raw(\"action.yml\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Read<shape.delivery::InstallScript>"
+         },
+         {
+          "atom": "Read<shape.delivery::InstallScript>"
+         },
+         {
+          "atom": "Read<shape.delivery::InstallScript>"
+         },
+         {
+          "atom": "Read<shape.delivery::NativeParserAsset>"
+         },
+         {
+          "atom": "Read<shape.delivery::ReleaseArtifact>"
+         },
+         {
+          "atom": "Read<shape.delivery::ReleaseArtifact>"
+         },
+         {
+          "atom": "Read<shape.delivery::ReleaseArtifact>"
+         }
+        ]
+       }
+      },
+      {
+       "name": "smokeReleaseBinary",
+       "bind": "raw(\"scripts/smoke-release-binary.sh\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Read<shape.delivery::ReleaseArtifact>"
+         }
+        ]
+       }
+      }
+     ],
+     "tier": "critical"
+    },
+    {
+     "decl": "relation",
+     "name": "CiPipelineUsesExperimentalSemanticKernel",
+     "kind": "calls",
+     "connects": [
+      "shape.delivery::CiPipeline",
+      "shape.runtime::ExperimentalSemanticKernel"
+     ]
+    },
+    {
+     "decl": "relation",
+     "name": "CiPipelineUsesExperimentalSemanticKernelHarness",
+     "kind": "calls",
+     "connects": [
+      "shape.delivery::CiPipeline",
+      "shape.runtime::ExperimentalSemanticKernelHarness"
+     ]
+    },
+    {
+     "decl": "relation",
+     "name": "CiPipelineUsesShapeCi",
+     "kind": "calls",
+     "connects": [
+      "shape.delivery::CiPipeline",
+      "shape.tooling::ShpCli"
+     ]
+    },
+    {
+     "decl": "relation",
+     "name": "CiPipelineUsesShapeReview",
+     "kind": "calls",
+     "connects": [
+      "shape.delivery::CiPipeline",
+      "shape.tooling::ShpCli"
+     ]
+    },
+    {
+     "decl": "relation",
+     "name": "DocsSiteUsesDocsVerifier",
+     "kind": "calls",
+     "connects": [
+      "shape.delivery::DocsSite",
+      "shape.language::DocsShapeBlockVerifier"
+     ]
+    },
+    {
+     "decl": "relation",
+     "name": "DocsSiteUsesGrammar",
+     "kind": "calls",
+     "connects": [
+      "shape.delivery::DocsSite",
+      "shape.language::ShapeGrammar"
+     ]
+    },
+    {
+     "decl": "relation",
+     "name": "ReleasePipelineUsesCi",
+     "kind": "calls",
+     "connects": [
+      "shape.delivery::ReleasePipeline",
+      "shape.delivery::CiPipeline"
+     ]
+    },
+    {
+     "decl": "relation",
+     "name": "ReleasePipelineUsesCli",
+     "kind": "calls",
+     "connects": [
+      "shape.delivery::ReleasePipeline",
+      "shape.tooling::ShpCli"
+     ]
+    },
+    {
+     "decl": "note",
+     "name": "ReleaseChecksumContract",
+     "kind": "memory",
+     "about": [
+      "unit shape.delivery::ReleasePipeline.buildReleaseAssets"
+     ],
+     "owner": "shape.governance::ShapeMaintainers",
+     "text": "Release archives, bundled parser assets, installer templates, and checksums must stay in sync for binary installation.",
+     "confidence": "high"
+    },
+    {
+     "decl": "note",
+     "name": "ReleaseVersionTagContract",
+     "kind": "memory",
+     "about": [
+      "unit shape.delivery::CiPipeline.checkReleaseVersion"
+     ],
+     "owner": "shape.governance::ShapeMaintainers",
+     "text": "Release tags, the CLI package, both plugin manifests, authored notes, and current public version pins must share one version before approved release assets are published.",
+     "confidence": "high"
+    },
+    {
+     "decl": "note",
+     "name": "SkillsApprovalReuseContract",
+     "kind": "memory",
+     "about": [
+      "unit shape.delivery::CiPipeline.reuseReleaseSkillsEvaluation"
+     ],
+     "owner": "shape.governance::ShapeMaintainers",
+     "text": "A skills report may be copied from this SHA's approved run, or from an ancestor when git diff --name-only --no-renames has no path under SKILLS_RELEVANT_PATH_PREFIXES. Publishing still requires an approved candidate run on the exact tag SHA.",
+     "confidence": "high"
+    },
+    {
+     "decl": "law",
+     "name": "SkillsReportReusedOnlyWhenUnchanged",
+     "template": {
+      "name": "shape.governance::Property",
+      "args": [
+       "CiPipeline.reuseReleaseSkillsEvaluation",
+       "a report is copied from this SHA's approved run, or from an ancestor only when no relevant path changed"
+      ]
+     },
+     "tier": "normal",
+     "evidence": {
+      "level": "tested",
+      "by": [
+       "shape.governance::bunTest"
+      ]
+     }
+    }
+   ],
+   "file": "shape/delivery.shape"
+  },
+  {
+   "module": "shape.governance",
+   "imports": [
+    "std"
+   ],
+   "decls": [
+    {
+     "decl": "shape",
+     "name": "Shape",
+     "owner": "ShapeMaintainers",
+     "policy": "ShapePolicy"
+    },
+    {
+     "decl": "actor",
+     "name": "timbrinded",
+     "kind": "person",
+     "identities": [
+      "github(\"timbrinded\")"
+     ]
+    },
+    {
+     "decl": "actor",
+     "name": "ShapeMaintainers",
+     "kind": "team",
+     "members": [
+      "timbrinded"
+     ]
+    },
+    {
+     "decl": "actor",
+     "name": "claude",
+     "kind": "agent",
+     "operator": "timbrinded",
+     "identities": [
+      "github(\"claude[bot]\")"
+     ]
+    },
+    {
+     "decl": "policy",
+     "name": "ShapePolicy",
+     "tiers": {
+      "low": {
+       "floor": "declared",
+       "blocks": [],
+       "maxAge": 365,
+       "judges": [
+        "owner",
+        "agents"
+       ]
+      },
+      "normal": {
+       "floor": "declared",
+       "blocks": [
+        "latent-loosening"
+       ],
+       "maxAge": 180,
+       "judges": [
+        "owner",
+        "agents"
+       ]
+      },
+      "critical": {
+       "floor": "tested",
+       "blocks": [
+        "unestablished",
+        "coverage",
+        "latent-loosening"
+       ],
+       "maxAge": 90,
+       "judges": [
+        "owner"
+       ]
+      }
+     },
+     "budget": 3
+    },
+    {
+     "decl": "template",
+     "name": "Idempotent",
+     "params": [
+      [
+       "F",
+       "unit"
+      ]
+     ],
+     "body": [
+      {
+       "law": {
+        "evidence": {
+         "level": "tested"
+        }
+       }
+      }
+     ]
+    },
+    {
+     "decl": "template",
+     "name": "ShortestWitness",
+     "params": [
+      [
+       "F",
+       "unit"
+      ]
+     ],
+     "body": [
+      {
+       "law": {
+        "evidence": {
+         "level": "tested"
+        }
+       }
+      }
+     ]
+    },
+    {
+     "decl": "template",
+     "name": "Property",
+     "params": [
+      [
+       "F",
+       "unit"
+      ],
+      [
+       "Statement",
+       "value"
+      ]
+     ],
+     "body": [
+      {
+       "law": {
+        "evidence": {
+         "level": "tested"
+        }
+       }
+      }
+     ]
+    },
+    {
+     "decl": "provider",
+     "name": "bunTest",
+     "produces": [
+      "test"
+     ],
+     "decides": [
+      "template shape.governance::Property",
+      "template shape.governance::Idempotent",
+      "template shape.governance::ShortestWitness",
+      "template std::Deterministic"
+     ],
+     "sound": [
+      "presence"
+     ],
+     "identity": "ed25519(\"daa0dccee98887cb1c203655e7dd486ad0e9939e928163d71217e3ac7c92db98\")",
+     "implementation": {
+      "paths": [
+       "package.json",
+       "bun.lock",
+       "tsconfig.json",
+       "experiments/shape-1/dogfood/providers/bun-test.ts",
+       "experiments/shape-1/dogfood/providers/common.ts"
+      ]
+     }
+    },
+    {
+     "decl": "provider",
+     "name": "tsClockScan",
+     "produces": [
+      "observation"
+     ],
+     "observes": [
+      "effect(ts.call(\"Date.now\"))",
+      "effect(ts.call(\"Date\"))",
+      "effect(ts.call(\"performance.now\"))",
+      "effect(ts.call(\"process.hrtime\"))"
+     ],
+     "sound": [
+      "presence",
+      "absence"
+     ],
+     "identity": "ed25519(\"0ad5f48ae7f2a0762b7ffd3c0fca49d747c1b73fa81c7de81b94d3096bc52858\")",
+     "implementation": {
+      "paths": [
+       "experiments/shape-1/dogfood/providers/ts-clock-scan.ts",
+       "experiments/shape-1/dogfood/providers/ts-ident.ts",
+       "experiments/shape-1/dogfood/providers/common.ts"
+      ]
+     }
+    },
+    {
+     "decl": "provider",
+     "name": "tsCalls",
+     "produces": [
+      "observation"
+     ],
+     "observes": [
+      "call(ts)"
+     ],
+     "sound": [
+      "presence"
+     ],
+     "identity": "ed25519(\"c7543debaa33fd4aa03ef3ac9f6a39ff3043c9a6e4cd58a5a16209c6c549af76\")",
+     "implementation": {
+      "paths": [
+       "experiments/shape-1/dogfood/providers/ts-calls.ts",
+       "experiments/shape-1/dogfood/providers/ts-ident.ts",
+       "experiments/shape-1/dogfood/providers/common.ts"
+      ]
+     }
+    },
+    {
+     "decl": "rule",
+     "name": "NoHatchesOutsideBoundaries",
+     "template": {
+      "name": "std::HatchesStayAtBoundaries"
+     },
+     "tier": "normal"
+    }
+   ],
+   "file": "shape.governance"
+  },
+  {
+   "module": "shape.language",
+   "imports": [
+    "shape.checker",
+    "shape.governance",
+    "std"
+   ],
+   "decls": [
+    {
+     "decl": "resource",
+     "name": "DocsShapeBlock",
+     "bind": [
+      "md.fence(\"shape\")"
+     ]
+    },
+    {
+     "decl": "resource",
+     "name": "GeneratedAst",
+     "bind": [
+      "fs.path(\"packages/shp-checker/src/language/generated/*.ts\")"
+     ]
+    },
+    {
+     "decl": "resource",
+     "name": "GeneratedAstContract",
+     "bind": [
+      "ts.module(\"packages/shp-checker/src/language/generated/ast.ts\")"
+     ]
+    },
+    {
+     "decl": "resource",
+     "name": "LangiumGrammar",
+     "bind": [
+      "fs.path(\"packages/shp-checker/src/language/shape.langium\")"
+     ]
+    },
+    {
+     "decl": "resource",
+     "name": "ParsedModule",
+     "bind": [
+      "ts.type(\"packages/shp-checker/src/language/generated/ast.ts#ShapeModule\")"
+     ]
+    },
+    {
+     "decl": "resource",
+     "name": "ParsedShapeModule",
+     "bind": [
+      "ts.type(\"packages/shp-checker/src/parser.ts#ParseShapeModuleResult\")"
+     ]
+    },
+    {
+     "decl": "resource",
+     "name": "ShapeLanguageDefinition",
+     "bind": [
+      "ts.module(\"packages/shp-checker/src/language/generated/module.ts\")"
+     ]
+    },
+    {
+     "decl": "resource",
+     "name": "ShapeSource",
+     "bind": [
+      "fs.path(\"**/*.shape\")"
+     ]
+    },
+    {
+     "decl": "resource",
+     "name": "SyntaxHighlighting",
+     "bind": [
+      "fs.path(\"docs-site/src/syntax/shape-language.mjs\")"
+     ]
+    },
+    {
+     "decl": "component",
+     "name": "DocsShapeBlockVerifier",
+     "grants": [
+      "Append<shape.checker::SemanticDiagnostics>",
+      "Append<shape.language::ParsedModule>",
+      "Read<shape.language::DocsShapeBlock>"
+     ],
+     "units": [
+      {
+       "name": "verifyShapeCodeBlocks",
+       "bind": "ts(\"docs-site/scripts/verify-shape-blocks.ts#verifyShapeCorpus\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Append<shape.checker::SemanticDiagnostics>"
+         },
+         {
+          "atom": "Append<shape.language::ParsedModule>"
+         },
+         {
+          "atom": "Read<shape.language::DocsShapeBlock>"
+         }
+        ]
+       },
+       "attach": [
+        {
+         "name": "std::RefactorSensitive"
+        }
+       ]
+      }
+     ],
+     "tier": "normal",
+     "paths": [
+      "docs-site/scripts/verify-shape-blocks.ts"
+     ]
+    },
+    {
+     "decl": "component",
+     "name": "ShapeGrammar",
+     "paths": [
+      "docs-site/src/syntax/**/*.mjs",
+      "packages/shp-checker/src/language/**/*.ts",
+      "packages/shp-checker/src/language/shape.langium"
+     ],
+     "grants": [
+      "Read<shape.language::LangiumGrammar>",
+      "Update<shape.language::GeneratedAst>",
+      "Update<shape.language::ShapeLanguageDefinition>",
+      "Update<shape.language::SyntaxHighlighting>"
+     ],
+     "units": [
+      {
+       "name": "generateAst",
+       "bind": "raw(\"packages/shp-checker/src/language/shape.langium\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Read<shape.language::LangiumGrammar>"
+         },
+         {
+          "atom": "Update<shape.language::GeneratedAst>"
+         },
+         {
+          "atom": "Update<shape.language::GeneratedAst>"
+         },
+         {
+          "atom": "Update<shape.language::GeneratedAst>"
+         },
+         {
+          "atom": "Update<shape.language::ShapeLanguageDefinition>"
+         }
+        ]
+       },
+       "attach": [
+        {
+         "name": "std::RefactorSensitive"
+        }
+       ]
+      },
+      {
+       "name": "updateSyntaxHighlighting",
+       "bind": "ts(\"docs-site/src/syntax/shape-language.mjs\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Update<shape.language::SyntaxHighlighting>"
+         }
+        ]
+       }
+      }
+     ],
+     "tier": "critical"
+    },
+    {
+     "decl": "component",
+     "name": "ShapeParser",
+     "paths": [
+      "packages/shp-checker/src/parser.ts"
+     ],
+     "grants": [
+      "Append<shape.checker::SemanticDiagnostics>",
+      "Append<shape.language::ParsedModule>",
+      "Read<shape.language::ShapeSource>"
+     ],
+     "units": [
+      {
+       "name": "parseShapeModule",
+       "bind": "ts(\"packages/shp-checker/src/parser.ts#parseShapeModule\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Append<shape.checker::SemanticDiagnostics>"
+         },
+         {
+          "atom": "Append<shape.language::ParsedModule>"
+         },
+         {
+          "atom": "Read<shape.language::ShapeSource>"
+         }
+        ]
+       },
+       "attach": [
+        {
+         "name": "std::RefactorSensitive"
+        }
+       ]
+      }
+     ],
+     "tier": "critical"
+    },
+    {
+     "decl": "relation",
+     "name": "DocsShapeBlockVerifierUsesParser",
+     "kind": "calls",
+     "connects": [
+      "shape.language::DocsShapeBlockVerifier",
+      "shape.language::ShapeParser"
+     ]
+    },
+    {
+     "decl": "relation",
+     "name": "ShapeGrammarProvidesAstContract",
+     "kind": "provides",
+     "connects": [
+      "shape.language::ShapeGrammar",
+      "shape.language::GeneratedAstContract"
+     ]
+    },
+    {
+     "decl": "relation",
+     "name": "ShapeGrammarProvidesLanguageDefinition",
+     "kind": "provides",
+     "connects": [
+      "shape.language::ShapeGrammar",
+      "shape.language::ShapeLanguageDefinition"
+     ]
+    },
+    {
+     "decl": "relation",
+     "name": "ShapeParserProvidesParsedModule",
+     "kind": "provides",
+     "connects": [
+      "shape.language::ShapeParser",
+      "shape.language::ParsedShapeModule"
+     ]
+    },
+    {
+     "decl": "relation",
+     "name": "ShapeParserUsesGrammar",
+     "kind": "calls",
+     "connects": [
+      "shape.language::ShapeParser",
+      "shape.language::ShapeGrammar"
+     ]
+    },
+    {
+     "decl": "rule",
+     "name": "grammar_contract_providers",
+     "clauses": [
+      {
+       "forbid": "edge",
+       "kind": "provides",
+       "from": [
+        "*"
+       ],
+       "to": [
+        "shape.language::GeneratedAstContract"
+       ],
+       "exceptFrom": [
+        "shape.language::ShapeGrammar"
+       ]
+      },
+      {
+       "forbid": "edge",
+       "kind": "provides",
+       "from": [
+        "*"
+       ],
+       "to": [
+        "shape.language::ParsedShapeModule"
+       ],
+       "exceptFrom": [
+        "shape.language::ShapeParser"
+       ]
+      },
+      {
+       "forbid": "edge",
+       "kind": "provides",
+       "from": [
+        "*"
+       ],
+       "to": [
+        "shape.language::ShapeLanguageDefinition"
+       ],
+       "exceptFrom": [
+        "shape.language::ShapeGrammar"
+       ]
+      }
+     ]
+    },
+    {
+     "decl": "note",
+     "name": "DocsShapeBlockParsingContract",
+     "kind": "memory",
+     "about": [
+      "unit shape.language::DocsShapeBlockVerifier.verifyShapeCodeBlocks"
+     ],
+     "owner": "shape.governance::ShapeMaintainers",
+     "text": "Docs examples must be parsed with the repo parser unless explicitly marked no-verify.",
+     "confidence": "high"
+    },
+    {
+     "decl": "note",
+     "name": "GrammarMemoryGuardForms",
+     "kind": "memory",
+     "about": [
+      "unit shape.language::ShapeGrammar.generateAst"
+     ],
+     "owner": "shape.governance::ShapeMaintainers",
+     "text": "Grammar changes ripple to the generated AST, parser, checker, formatter, and docs; the memory-guard protects clause supports a shape-trait form with a value and a valueless description form, guards support on_change require and forbid transform forms alongside modify-fn transform intent, review governance adds role, policy, and sensitive keywords, traits support require_context obligations, forbidden paths require explicit endpoints and relation kinds, and rationale/memory members may be grouped in nested protects/guards/who/when blocks that lower to the flat form; new keywords must also be reserved in the AST generator.",
+     "confidence": "high"
+    },
+    {
+     "decl": "note",
+     "name": "ParseDocumentContract",
+     "kind": "memory",
+     "about": [
+      "unit shape.language::ShapeParser.parseShapeModule"
+     ],
+     "owner": "shape.governance::ShapeMaintainers",
+     "text": "Parser output must preserve Langium document state, source URI, module-qualified references, candidate effect and forbidden path syntax, and parse diagnostics for downstream checker and editor use.",
+     "confidence": "high"
+    },
+    {
+     "decl": "law",
+     "name": "GrammarDocumented",
+     "template": {
+      "name": "std::DocumentedBy",
+      "args": [
+       "ShapeGrammar",
+       "code raw(\"docs-site/src/content/docs/reference/language-syntax.md\")"
+      ]
+     },
+     "tier": "normal",
+     "evidence": {
+      "judged": true
+     }
+    },
+    {
+     "decl": "law",
+     "name": "DocsVerifierDocumented",
+     "template": {
+      "name": "std::DocumentedBy",
+      "args": [
+       "DocsShapeBlockVerifier",
+       "code raw(\"docs-site/src/content/docs/inside-shape/langium-grammar.md\")"
+      ]
+     },
+     "tier": "normal",
+     "evidence": {
+      "judged": true
+     }
+    },
+    {
+     "decl": "law",
+     "name": "GrammarSupportsGuardForms",
+     "template": {
+      "name": "shape.governance::Property",
+      "args": [
+       "ShapeParser.parseShapeModule",
+       "the grammar supports the listed protects/guards/governance/require_context/forbid path/grouping forms"
+      ]
+     },
+     "tier": "normal",
+     "evidence": {
+      "level": "tested",
+      "by": [
+       "shape.governance::bunTest"
+      ]
+     }
+    },
+    {
+     "decl": "law",
+     "name": "ParserPreservesDocumentState",
+     "template": {
+      "name": "shape.governance::Property",
+      "args": [
+       "ShapeParser.parseShapeModule",
+       "parser output preserves document state, URI, qualified refs, candidate/forbidden-path syntax and diagnostics"
+      ]
+     },
+     "tier": "normal",
+     "evidence": {
+      "level": "tested",
+      "by": [
+       "shape.governance::bunTest"
+      ]
+     }
+    }
+   ],
+   "file": "shape/language.shape"
+  },
+  {
+   "module": "shape.runtime",
+   "imports": [
+    "shape.checker",
+    "shape.governance",
+    "shape.tooling",
+    "std"
+   ],
+   "decls": [
+    {
+     "decl": "resource",
+     "name": "ExperimentalKernelBenchmarkResult"
+    },
+    {
+     "decl": "resource",
+     "name": "ExperimentalKernelBuildConfiguration",
+     "bind": [
+      "fs.path(\"experiments/semantic-kernel/Cargo.toml\")",
+      "fs.path(\"experiments/semantic-kernel/Cargo.lock\")",
+      "fs.path(\"experiments/semantic-kernel/rust-toolchain.toml\")"
+     ]
+    },
+    {
+     "decl": "resource",
+     "name": "ExperimentalKernelDiagnosticSet",
+     "bind": [
+      "rust.type(\"experiments/semantic-kernel/src/lib.rs#KernelDiagnosticV1\")"
+     ]
+    },
+    {
+     "decl": "resource",
+     "name": "ExperimentalKernelEnvelope",
+     "bind": [
+      "rust.type(\"experiments/semantic-kernel/src/lib.rs#KernelRequestV1\")",
+      "ts.type(\"experiments/semantic-kernel/harness/protocol.ts#KernelRequestV1\")"
+     ]
+    },
+    {
+     "decl": "resource",
+     "name": "ExperimentalKernelProtocolV1",
+     "bind": [
+      "fs.path(\"experiments/semantic-kernel/schema/kernel-protocol-v1.schema.json\")"
+     ]
+    },
+    {
+     "decl": "resource",
+     "name": "ExperimentalKernelWasmArtifact",
+     "bind": [
+      "fs.path(\"experiments/semantic-kernel/target/wasm-web/*\")"
+     ]
+    },
+    {
+     "decl": "component",
+     "name": "ExperimentalSemanticKernel",
+     "paths": [
+      "experiments/semantic-kernel/Cargo.lock",
+      "experiments/semantic-kernel/Cargo.toml",
+      "experiments/semantic-kernel/rust-toolchain.toml",
+      "experiments/semantic-kernel/schema/**/*.json",
+      "experiments/semantic-kernel/scripts/**/*.sh",
+      "experiments/semantic-kernel/src/**/*.rs",
+      "experiments/semantic-kernel/tests/**/*.rs"
+     ],
+     "grants": [
+      "Append<shape.runtime::ExperimentalKernelDiagnosticSet>",
+      "Read<shape.runtime::ExperimentalKernelBuildConfiguration>",
+      "Read<shape.runtime::ExperimentalKernelEnvelope>",
+      "Read<shape.runtime::ExperimentalKernelProtocolV1>",
+      "Read<shape.tooling::LanguageSource>",
+      "Update<shape.runtime::ExperimentalKernelWasmArtifact>"
+     ],
+     "units": [
+      {
+       "name": "buildBrowserWasm",
+       "bind": "raw(\"experiments/semantic-kernel/scripts/build-wasm.sh\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Read<shape.runtime::ExperimentalKernelBuildConfiguration>"
+         },
+         {
+          "atom": "Read<shape.runtime::ExperimentalKernelBuildConfiguration>"
+         },
+         {
+          "atom": "Read<shape.runtime::ExperimentalKernelBuildConfiguration>"
+         },
+         {
+          "atom": "Read<shape.runtime::ExperimentalKernelBuildConfiguration>"
+         },
+         {
+          "atom": "Read<shape.tooling::LanguageSource>"
+         },
+         {
+          "atom": "Update<shape.runtime::ExperimentalKernelWasmArtifact>"
+         }
+        ]
+       }
+      },
+      {
+       "name": "checkFactsJson",
+       "bind": "rust(\"experiments/semantic-kernel/src/lib.rs#check_json\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Append<shape.runtime::ExperimentalKernelDiagnosticSet>"
+         },
+         {
+          "atom": "Read<shape.runtime::ExperimentalKernelEnvelope>"
+         },
+         {
+          "atom": "Read<shape.runtime::ExperimentalKernelProtocolV1>"
+         }
+        ]
+       }
+      },
+      {
+       "name": "runNativeProtocol",
+       "bind": "rust(\"experiments/semantic-kernel/src/main.rs\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Append<shape.runtime::ExperimentalKernelDiagnosticSet>"
+         },
+         {
+          "atom": "Read<shape.runtime::ExperimentalKernelEnvelope>"
+         },
+         {
+          "atom": "Read<shape.runtime::ExperimentalKernelProtocolV1>"
+         }
+        ]
+       }
+      }
+     ],
+     "tier": "low",
+     "boundary": true,
+     "assumes": [
+      {
+       "id": "WasmBindgenFaithful",
+       "text": "wasm-bindgen output preserves the native kernel's semantics in the browser build."
+      }
+     ]
+    },
+    {
+     "decl": "component",
+     "name": "ExperimentalSemanticKernelHarness",
+     "paths": [
+      "experiments/semantic-kernel/fixtures/**/*.shape",
+      "experiments/semantic-kernel/harness/**/*.ts"
+     ],
+     "grants": [
+      "Append<shape.runtime::ExperimentalKernelBenchmarkResult>",
+      "Append<shape.runtime::ExperimentalKernelEnvelope>",
+      "Read<shape.checker::ShapeFacts>",
+      "Read<shape.runtime::ExperimentalKernelDiagnosticSet>",
+      "Read<shape.runtime::ExperimentalKernelEnvelope>",
+      "Read<shape.runtime::ExperimentalKernelWasmArtifact>"
+     ],
+     "units": [
+      {
+       "name": "benchmarkCandidateFingerprintPrototype",
+       "bind": "ts(\"experiments/semantic-kernel/harness/benchmark.ts\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Append<shape.runtime::ExperimentalKernelBenchmarkResult>"
+         },
+         {
+          "atom": "Read<shape.checker::ShapeFacts>"
+         },
+         {
+          "atom": "Read<shape.runtime::ExperimentalKernelDiagnosticSet>"
+         },
+         {
+          "atom": "Read<shape.runtime::ExperimentalKernelWasmArtifact>"
+         }
+        ]
+       }
+      },
+      {
+       "name": "createKernelRequestV1",
+       "bind": "ts(\"experiments/semantic-kernel/harness/protocol.ts#createKernelRequestV1\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Append<shape.runtime::ExperimentalKernelEnvelope>"
+         },
+         {
+          "atom": "Read<shape.checker::ShapeFacts>"
+         }
+        ]
+       }
+      },
+      {
+       "name": "runKernelE2e",
+       "bind": "ts(\"experiments/semantic-kernel/harness/e2e.ts\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Read<shape.checker::ShapeFacts>"
+         },
+         {
+          "atom": "Read<shape.runtime::ExperimentalKernelDiagnosticSet>"
+         },
+         {
+          "atom": "Read<shape.runtime::ExperimentalKernelEnvelope>"
+         },
+         {
+          "atom": "Read<shape.runtime::ExperimentalKernelWasmArtifact>"
+         }
+        ]
+       }
+      }
+     ],
+     "tier": "low"
+    },
+    {
+     "decl": "relation",
+     "name": "ExperimentalHarnessUsesProductionChecker",
+     "kind": "calls",
+     "connects": [
+      "shape.runtime::ExperimentalSemanticKernelHarness",
+      "shape.checker::ShapeChecker"
+     ]
+    },
+    {
+     "decl": "relation",
+     "name": "ExperimentalHarnessUsesSemanticKernel",
+     "kind": "calls",
+     "connects": [
+      "shape.runtime::ExperimentalSemanticKernelHarness",
+      "shape.runtime::ExperimentalSemanticKernel"
+     ]
+    },
+    {
+     "decl": "relation",
+     "name": "ExperimentalKernelProvidesDiagnostics",
+     "kind": "provides",
+     "connects": [
+      "shape.runtime::ExperimentalSemanticKernel",
+      "shape.runtime::ExperimentalKernelDiagnosticSet"
+     ]
+    },
+    {
+     "decl": "relation",
+     "name": "ExperimentalKernelProvidesWasm",
+     "kind": "provides",
+     "connects": [
+      "shape.runtime::ExperimentalSemanticKernel",
+      "shape.runtime::ExperimentalKernelWasmArtifact"
+     ]
+    },
+    {
+     "decl": "rule",
+     "name": "ExperimentalSemanticKernelIsolation",
+     "clauses": [
+      {
+       "forbid": "path",
+       "from": [
+        "shape.checker::ShapeChecker",
+        "shape.tooling::ShapeEditorServices",
+        "shape.tooling::ShpCli"
+       ],
+       "to": [
+        "shape.runtime::ExperimentalSemanticKernel"
+       ],
+       "over": [
+        "calls"
+       ]
+      }
+     ]
+    },
+    {
+     "decl": "law",
+     "name": "ExperimentalKernelDocumented",
+     "template": {
+      "name": "std::DocumentedBy",
+      "args": [
+       "ExperimentalSemanticKernel",
+       "code raw(\"experiments/semantic-kernel/README.md\")"
+      ]
+     },
+     "tier": "low",
+     "evidence": {
+      "judged": true
+     }
+    }
+   ],
+   "file": "shape/runtime.shape"
+  },
+  {
+   "module": "shape.tooling",
+   "imports": [
+    "shape.checker",
+    "shape.governance",
+    "shape.language",
+    "std"
+   ],
+   "decls": [
+    {
+     "decl": "resource",
+     "name": "AnalyzerHint",
+     "bind": [
+      "ts.type(\"packages/shp-checker/src/analyzer-types.ts#AnalyzerHint\")"
+     ]
+    },
+    {
+     "decl": "resource",
+     "name": "AnalyzerWarning",
+     "bind": [
+      "ts.type(\"packages/shp-checker/src/analyzer-types.ts#AnalyzerWarning\")"
+     ]
+    },
+    {
+     "decl": "resource",
+     "name": "AstAnchorFingerprint",
+     "bind": [
+      "ts.type(\"packages/shp-checker/src/ast-generation-types.ts#AstFingerprint\")"
+     ]
+    },
+    {
+     "decl": "resource",
+     "name": "AuthoringAdvisory",
+     "bind": [
+      "ts.type(\"packages/shp-checker/src/critic.ts#ShapeCriticAdvisory\")"
+     ]
+    },
+    {
+     "decl": "resource",
+     "name": "AuthoringPrompt"
+    },
+    {
+     "decl": "resource",
+     "name": "CanonicalShapeFormat"
+    },
+    {
+     "decl": "resource",
+     "name": "CodeSemanticGraph",
+     "bind": [
+      "ts.type(\"packages/shp-checker/src/ast-generation-types.ts#CodeSemanticGraph\")"
+     ]
+    },
+    {
+     "decl": "resource",
+     "name": "CommandLineInterface",
+     "bind": [
+      "ts.call(\"process.argv\")"
+     ]
+    },
+    {
+     "decl": "resource",
+     "name": "DiagnosticText"
+    },
+    {
+     "decl": "resource",
+     "name": "EditorOutput",
+     "bind": [
+      "ts.type(\"packages/shp-checker/src/editor.ts#EditorDiagnostic\")",
+      "ts.type(\"packages/shp-checker/src/editor.ts#DefinitionLocation\")"
+     ]
+    },
+    {
+     "decl": "resource",
+     "name": "FormattedShape",
+     "bind": [
+      "ts.type(\"packages/shp-checker/src/formatter.ts#FormatResult\")"
+     ]
+    },
+    {
+     "decl": "resource",
+     "name": "GeneratedAstAnchor",
+     "bind": [
+      "ts.type(\"packages/shp-checker/src/ast-generation-types.ts#CodeAstAnchor\")"
+     ]
+    },
+    {
+     "decl": "resource",
+     "name": "GeneratedAstManifest",
+     "bind": [
+      "fs.path(\"shape/generated/ast/manifest.json\")"
+     ]
+    },
+    {
+     "decl": "resource",
+     "name": "GeneratedAstTrace"
+    },
+    {
+     "decl": "resource",
+     "name": "GeneratedCandidateEffect",
+     "bind": [
+      "ts.type(\"packages/shp-checker/src/ast-generation-types.ts#CodeCandidateEffect\")"
+     ]
+    },
+    {
+     "decl": "resource",
+     "name": "InstalledShpBinary",
+     "bind": [
+      "ts.call(\"process.execPath\")"
+     ]
+    },
+    {
+     "decl": "resource",
+     "name": "InstalledShpRuntimeAssets",
+     "bind": [
+      "fs.path(\"$EXEC_DIR/tree-sitter-language-pack\")"
+     ]
+    },
+    {
+     "decl": "resource",
+     "name": "LanguageServerProtocol",
+     "bind": [
+      "ts.call(\"createConnection\")"
+     ]
+    },
+    {
+     "decl": "resource",
+     "name": "LanguageSource"
+    },
+    {
+     "decl": "resource",
+     "name": "ReleaseArchive",
+     "bind": [
+      "http.route(\"GET /{owner}/{repo}/releases/download/{tag}/{asset}\")"
+     ]
+    },
+    {
+     "decl": "resource",
+     "name": "ReleaseChecksumManifest",
+     "bind": [
+      "http.route(\"GET /{owner}/{repo}/releases/download/{tag}/checksums.txt\")"
+     ]
+    },
+    {
+     "decl": "resource",
+     "name": "ReleaseMetadata",
+     "bind": [
+      "http.route(\"GET /repos/{owner}/{repo}/releases/latest\")",
+      "http.route(\"GET /repos/{owner}/{repo}/releases/tags/{tag}\")"
+     ]
+    },
+    {
+     "decl": "resource",
+     "name": "ShapeModelDraft",
+     "bind": [
+      "fs.path(\"shape/generated/ast/**/*.shape\")"
+     ]
+    },
+    {
+     "decl": "resource",
+     "name": "SourceSyntaxTree",
+     "bind": [
+      "ts.type(\"packages/shp-checker/src/ast-generation-types.ts#RawAstFile\")"
+     ]
+    },
+    {
+     "decl": "resource",
+     "name": "SystemClock",
+     "bind": [
+      "ts.call(\"Date.now\")",
+      "ts.call(\"Date\")",
+      "ts.call(\"performance.now\")",
+      "ts.call(\"process.hrtime\")"
+     ]
+    },
+    {
+     "decl": "resource",
+     "name": "UnifiedDiff"
+    },
+    {
+     "decl": "component",
+     "name": "ShapeAnalyzer",
+     "paths": [
+      "packages/shp-checker/src/analyzer-lexical.ts",
+      "packages/shp-checker/src/analyzer-scopes.ts",
+      "packages/shp-checker/src/analyzer-shape.ts",
+      "packages/shp-checker/src/analyzer-sql.ts",
+      "packages/shp-checker/src/analyzer-types.ts",
+      "packages/shp-checker/src/analyzer.ts"
+     ],
+     "grants": [
+      "Append<shape.tooling::AnalyzerHint>",
+      "Append<shape.tooling::AnalyzerWarning>",
+      "Read<shape.checker::NormalizedShapeReference>",
+      "Read<shape.tooling::AnalyzerHint>",
+      "Read<shape.tooling::LanguageSource>"
+     ],
+     "units": [
+      {
+       "name": "analyzeSourceText",
+       "bind": "ts(\"packages/shp-checker/src/analyzer.ts#analyzeSourceText\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Append<shape.tooling::AnalyzerHint>"
+         },
+         {
+          "atom": "Read<shape.tooling::LanguageSource>"
+         },
+         {
+          "atom": "Read<shape.tooling::LanguageSource>"
+         },
+         {
+          "atom": "Read<shape.tooling::LanguageSource>"
+         },
+         {
+          "atom": "Read<shape.tooling::LanguageSource>"
+         },
+         {
+          "atom": "Read<shape.tooling::LanguageSource>"
+         }
+        ]
+       }
+      },
+      {
+       "name": "compareAnalyzerHintsToShape",
+       "bind": "ts(\"packages/shp-checker/src/analyzer-shape.ts#compareAnalyzerHintsToShape\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Append<shape.tooling::AnalyzerWarning>"
+         },
+         {
+          "atom": "Read<shape.checker::NormalizedShapeReference>"
+         },
+         {
+          "atom": "Read<shape.tooling::AnalyzerHint>"
+         }
+        ]
+       }
+      }
+     ],
+     "tier": "normal"
+    },
+    {
+     "decl": "component",
+     "name": "ShapeAstGenerator",
+     "paths": [
+      "packages/shp-checker/src/ast-generation-fingerprints.ts",
+      "packages/shp-checker/src/ast-generation-graph.ts",
+      "packages/shp-checker/src/ast-generation-json.ts",
+      "packages/shp-checker/src/ast-generation-raw.ts",
+      "packages/shp-checker/src/ast-generation-render.ts",
+      "packages/shp-checker/src/ast-generation-semantic.ts",
+      "packages/shp-checker/src/ast-generation-source.ts",
+      "packages/shp-checker/src/ast-generation-swift.ts",
+      "packages/shp-checker/src/ast-generation-tokens.ts",
+      "packages/shp-checker/src/ast-generation-tree-sitter-normalize.ts",
+      "packages/shp-checker/src/ast-generation-tree-sitter.ts",
+      "packages/shp-checker/src/ast-generation-types.ts",
+      "packages/shp-checker/src/ast-generation-utils.ts",
+      "packages/shp-checker/src/ast-generation.ts",
+      "packages/shp-checker/src/generated-ast-policy.ts",
+      "packages/shp-checker/src/source-languages.ts",
+      "packages/shp-checker/src/tree-sitter-native-targets.ts"
+     ],
+     "grants": [
+      "Append<shape.checker::SemanticDiagnostics>",
+      "Append<shape.tooling::AstAnchorFingerprint>",
+      "Append<shape.tooling::CodeSemanticGraph>",
+      "Append<shape.tooling::GeneratedAstAnchor>",
+      "Append<shape.tooling::GeneratedAstTrace>",
+      "Append<shape.tooling::GeneratedCandidateEffect>",
+      "Append<shape.tooling::ShapeModelDraft>",
+      "Read<shape.tooling::CodeSemanticGraph>",
+      "Read<shape.tooling::LanguageSource>",
+      "Read<shape.tooling::SourceSyntaxTree>"
+     ],
+     "units": [
+      {
+       "name": "addSemanticProjection",
+       "bind": "ts(\"packages/shp-checker/src/ast-generation-semantic.ts#addSemanticProjection\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Append<shape.checker::SemanticDiagnostics>"
+         },
+         {
+          "atom": "Append<shape.tooling::AstAnchorFingerprint>"
+         },
+         {
+          "atom": "Append<shape.tooling::CodeSemanticGraph>"
+         },
+         {
+          "atom": "Append<shape.tooling::GeneratedAstAnchor>"
+         },
+         {
+          "atom": "Append<shape.tooling::GeneratedCandidateEffect>"
+         },
+         {
+          "atom": "Read<shape.tooling::SourceSyntaxTree>"
+         },
+         {
+          "atom": "Read<shape.tooling::SourceSyntaxTree>"
+         }
+        ]
+       }
+      },
+      {
+       "name": "buildCodeSemanticGraphFromAstJson",
+       "bind": "ts(\"packages/shp-checker/src/ast-generation-json.ts#buildCodeSemanticGraphFromAstJson\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Append<shape.checker::SemanticDiagnostics>"
+         },
+         {
+          "atom": "Append<shape.tooling::CodeSemanticGraph>"
+         },
+         {
+          "atom": "Append<shape.tooling::CodeSemanticGraph>"
+         },
+         {
+          "atom": "Append<shape.tooling::CodeSemanticGraph>"
+         },
+         {
+          "atom": "Append<shape.tooling::CodeSemanticGraph>"
+         },
+         {
+          "atom": "Read<shape.tooling::SourceSyntaxTree>"
+         }
+        ]
+       }
+      },
+      {
+       "name": "fingerprintForAnchor",
+       "bind": "ts(\"packages/shp-checker/src/ast-generation-fingerprints.ts#fingerprintForAnchor\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Append<shape.checker::SemanticDiagnostics>"
+         },
+         {
+          "atom": "Append<shape.tooling::AstAnchorFingerprint>"
+         },
+         {
+          "atom": "Read<shape.tooling::SourceSyntaxTree>"
+         },
+         {
+          "atom": "Read<shape.tooling::SourceSyntaxTree>"
+         }
+        ]
+       }
+      },
+      {
+       "name": "generateShapeFromAstJson",
+       "bind": "ts(\"packages/shp-checker/src/ast-generation-render.ts#generateShapeFromAstJson\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Append<shape.tooling::AstAnchorFingerprint>"
+         },
+         {
+          "atom": "Append<shape.tooling::CodeSemanticGraph>"
+         },
+         {
+          "atom": "Append<shape.tooling::GeneratedAstAnchor>"
+         },
+         {
+          "atom": "Append<shape.tooling::GeneratedAstTrace>"
+         },
+         {
+          "atom": "Append<shape.tooling::GeneratedCandidateEffect>"
+         },
+         {
+          "atom": "Append<shape.tooling::ShapeModelDraft>"
+         },
+         {
+          "atom": "Read<shape.tooling::SourceSyntaxTree>"
+         }
+        ]
+       }
+      },
+      {
+       "name": "generateShapeFromCodeSemanticGraph",
+       "bind": "ts(\"packages/shp-checker/src/ast-generation-render.ts#generateShapeFromCodeSemanticGraph\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Append<shape.tooling::GeneratedAstAnchor>"
+         },
+         {
+          "atom": "Append<shape.tooling::GeneratedAstTrace>"
+         },
+         {
+          "atom": "Append<shape.tooling::GeneratedCandidateEffect>"
+         },
+         {
+          "atom": "Append<shape.tooling::ShapeModelDraft>"
+         },
+         {
+          "atom": "Read<shape.tooling::CodeSemanticGraph>"
+         },
+         {
+          "atom": "Read<shape.tooling::CodeSemanticGraph>"
+         },
+         {
+          "atom": "Read<shape.tooling::CodeSemanticGraph>"
+         }
+        ]
+       },
+       "attach": [
+        {
+         "name": "std::RefactorSensitive"
+        }
+       ]
+      },
+      {
+       "name": "generateShapeFromSourceFiles",
+       "bind": "ts(\"packages/shp-checker/src/ast-generation-render.ts#generateShapeFromSourceFiles\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Append<shape.tooling::AstAnchorFingerprint>"
+         },
+         {
+          "atom": "Append<shape.tooling::CodeSemanticGraph>"
+         },
+         {
+          "atom": "Append<shape.tooling::GeneratedAstAnchor>"
+         },
+         {
+          "atom": "Append<shape.tooling::GeneratedAstTrace>"
+         },
+         {
+          "atom": "Append<shape.tooling::GeneratedCandidateEffect>"
+         },
+         {
+          "atom": "Append<shape.tooling::ShapeModelDraft>"
+         },
+         {
+          "atom": "Append<shape.tooling::ShapeModelDraft>"
+         },
+         {
+          "atom": "Read<shape.tooling::LanguageSource>"
+         },
+         {
+          "atom": "Read<shape.tooling::LanguageSource>"
+         },
+         {
+          "atom": "Read<shape.tooling::SourceSyntaxTree>"
+         }
+        ]
+       }
+      },
+      {
+       "name": "parseSourceFilesToCodeSemanticGraph",
+       "bind": "ts(\"packages/shp-checker/src/ast-generation-source.ts#parseSourceFilesToCodeSemanticGraph\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Append<shape.checker::SemanticDiagnostics>"
+         },
+         {
+          "atom": "Append<shape.tooling::CodeSemanticGraph>"
+         },
+         {
+          "atom": "Append<shape.tooling::CodeSemanticGraph>"
+         },
+         {
+          "atom": "Append<shape.tooling::CodeSemanticGraph>"
+         },
+         {
+          "atom": "Append<shape.tooling::CodeSemanticGraph>"
+         },
+         {
+          "atom": "Read<shape.tooling::LanguageSource>"
+         },
+         {
+          "atom": "Read<shape.tooling::LanguageSource>"
+         },
+         {
+          "atom": "Read<shape.tooling::SourceSyntaxTree>"
+         },
+         {
+          "atom": "Read<shape.tooling::SourceSyntaxTree>"
+         }
+        ]
+       }
+      }
+     ],
+     "tier": "normal",
+     "boundary": true,
+     "assumes": [
+      {
+       "id": "TreeSitterParsersFaithful",
+       "text": "Bundled tree-sitter grammars parse each supported language as its compiler does."
+      }
+     ]
+    },
+    {
+     "decl": "component",
+     "name": "ShapeAuthoring",
+     "paths": [
+      "packages/shp-checker/src/authoring.ts",
+      "packages/shp-checker/src/critic.ts"
+     ],
+     "grants": [
+      "Append<shape.tooling::AuthoringAdvisory>",
+      "Append<shape.tooling::AuthoringPrompt>",
+      "Append<shape.tooling::DiagnosticText>",
+      "Append<shape.tooling::ShapeModelDraft>",
+      "Read<shape.checker::ChangedFileList>",
+      "Read<shape.checker::PreludeMetadata>",
+      "Read<shape.checker::ResolvedModuleReference>",
+      "Read<shape.language::ShapeSource>",
+      "Read<shape.tooling::AnalyzerHint>",
+      "Read<shape.tooling::AuthoringAdvisory>",
+      "Read<shape.tooling::LanguageSource>",
+      "Read<shape.tooling::UnifiedDiff>"
+     ],
+     "units": [
+      {
+       "name": "buildShapeAuthorPrompt",
+       "bind": "ts(\"packages/shp-checker/src/authoring.ts#buildShapeAuthorPrompt\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Append<shape.tooling::AuthoringPrompt>"
+         },
+         {
+          "atom": "Read<shape.checker::ChangedFileList>"
+         },
+         {
+          "atom": "Read<shape.checker::PreludeMetadata>"
+         },
+         {
+          "atom": "Read<shape.language::ShapeSource>"
+         },
+         {
+          "atom": "Read<shape.tooling::LanguageSource>"
+         },
+         {
+          "atom": "Read<shape.tooling::UnifiedDiff>"
+         }
+        ]
+       },
+       "attach": [
+        {
+         "name": "std::RefactorSensitive"
+        }
+       ]
+      },
+      {
+       "name": "buildShapeAuthoringBundle",
+       "bind": "ts(\"packages/shp-checker/src/authoring.ts#buildShapeAuthoringBundle\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Append<shape.tooling::AuthoringPrompt>"
+         },
+         {
+          "atom": "Append<shape.tooling::ShapeModelDraft>"
+         },
+         {
+          "atom": "Read<shape.checker::ChangedFileList>"
+         },
+         {
+          "atom": "Read<shape.checker::PreludeMetadata>"
+         },
+         {
+          "atom": "Read<shape.language::ShapeSource>"
+         },
+         {
+          "atom": "Read<shape.tooling::LanguageSource>"
+         },
+         {
+          "atom": "Read<shape.tooling::UnifiedDiff>"
+         }
+        ]
+       }
+      },
+      {
+       "name": "buildShapeCriticPrompt",
+       "bind": "ts(\"packages/shp-checker/src/critic.ts#buildShapeCriticPrompt\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Append<shape.tooling::AuthoringPrompt>"
+         },
+         {
+          "atom": "Read<shape.checker::ChangedFileList>"
+         },
+         {
+          "atom": "Read<shape.checker::PreludeMetadata>"
+         },
+         {
+          "atom": "Read<shape.language::ShapeSource>"
+         },
+         {
+          "atom": "Read<shape.tooling::LanguageSource>"
+         },
+         {
+          "atom": "Read<shape.tooling::UnifiedDiff>"
+         }
+        ]
+       },
+       "attach": [
+        {
+         "name": "std::RefactorSensitive"
+        }
+       ]
+      },
+      {
+       "name": "formatShapeCriticAdvisories",
+       "bind": "ts(\"packages/shp-checker/src/critic.ts#formatShapeCriticAdvisories\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Append<shape.tooling::DiagnosticText>"
+         },
+         {
+          "atom": "Read<shape.tooling::AuthoringAdvisory>"
+         }
+        ]
+       }
+      },
+      {
+       "name": "generateShapeUpdateDraft",
+       "bind": "ts(\"packages/shp-checker/src/authoring.ts#generateShapeUpdateDraft\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Append<shape.tooling::ShapeModelDraft>"
+         },
+         {
+          "atom": "Read<shape.checker::ChangedFileList>"
+         }
+        ]
+       },
+       "attach": [
+        {
+         "name": "std::RefactorSensitive"
+        }
+       ]
+      },
+      {
+       "name": "reviewShapeAuthoringProposal",
+       "bind": "ts(\"packages/shp-checker/src/critic.ts#reviewShapeAuthoringProposal\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Append<shape.tooling::AuthoringAdvisory>"
+         },
+         {
+          "atom": "Append<shape.tooling::AuthoringPrompt>"
+         },
+         {
+          "atom": "Read<shape.checker::ChangedFileList>"
+         },
+         {
+          "atom": "Read<shape.checker::PreludeMetadata>"
+         },
+         {
+          "atom": "Read<shape.checker::ResolvedModuleReference>"
+         },
+         {
+          "atom": "Read<shape.language::ShapeSource>"
+         },
+         {
+          "atom": "Read<shape.tooling::AnalyzerHint>"
+         },
+         {
+          "atom": "Read<shape.tooling::LanguageSource>"
+         },
+         {
+          "atom": "Read<shape.tooling::UnifiedDiff>"
+         }
+        ]
+       }
+      }
+     ],
+     "tier": "normal"
+    },
+    {
+     "decl": "component",
+     "name": "ShapeEditorServices",
+     "paths": [
+      "packages/shp-checker/src/editor.ts"
+     ],
+     "grants": [
+      "Append<shape.tooling::EditorOutput>",
+      "Read<shape.checker::PreludeMetadata>",
+      "Read<shape.checker::SemanticDiagnostics>",
+      "Read<shape.language::ParsedModule>",
+      "Read<shape.language::ShapeSource>",
+      "Update<shape.tooling::FormattedShape>"
+     ],
+     "units": [
+      {
+       "name": "formatOnSave",
+       "bind": "ts(\"packages/shp-checker/src/editor.ts#formatOnSave\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Read<shape.language::ShapeSource>"
+         },
+         {
+          "atom": "Update<shape.tooling::FormattedShape>"
+         }
+        ]
+       }
+      },
+      {
+       "name": "getCompletions",
+       "bind": "ts(\"packages/shp-checker/src/editor.ts#getCompletions\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Append<shape.tooling::EditorOutput>"
+         },
+         {
+          "atom": "Read<shape.checker::PreludeMetadata>"
+         },
+         {
+          "atom": "Read<shape.language::ParsedModule>"
+         }
+        ]
+       }
+      },
+      {
+       "name": "getDefinitionLocation",
+       "bind": "ts(\"packages/shp-checker/src/editor.ts#getDefinitionLocation\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Append<shape.tooling::EditorOutput>"
+         },
+         {
+          "atom": "Read<shape.language::ShapeSource>"
+         }
+        ]
+       }
+      },
+      {
+       "name": "getEditorDiagnostics",
+       "bind": "ts(\"packages/shp-checker/src/editor.ts#getEditorDiagnostics\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Append<shape.tooling::EditorOutput>"
+         },
+         {
+          "atom": "Read<shape.checker::SemanticDiagnostics>"
+         }
+        ]
+       }
+      },
+      {
+       "name": "getEditorDiagnosticsForDocuments",
+       "bind": "ts(\"packages/shp-checker/src/editor.ts#getEditorDiagnosticsForDocuments\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Append<shape.tooling::EditorOutput>"
+         },
+         {
+          "atom": "Read<shape.checker::SemanticDiagnostics>"
+         },
+         {
+          "atom": "Read<shape.language::ShapeSource>"
+         }
+        ]
+       }
+      },
+      {
+       "name": "getHoverText",
+       "bind": "ts(\"packages/shp-checker/src/editor.ts#getHoverText\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Append<shape.tooling::EditorOutput>"
+         },
+         {
+          "atom": "Read<shape.checker::PreludeMetadata>"
+         },
+         {
+          "atom": "Read<shape.language::ParsedModule>"
+         }
+        ]
+       }
+      }
+     ],
+     "tier": "normal"
+    },
+    {
+     "decl": "component",
+     "name": "ShapeFormatter",
+     "paths": [
+      "packages/shp-checker/src/formatter.ts"
+     ],
+     "grants": [
+      "Read<shape.checker::NormalizedShapeReference>",
+      "Read<shape.language::ParsedModule>",
+      "Update<shape.tooling::FormattedShape>"
+     ],
+     "units": [
+      {
+       "name": "formatShapeModule",
+       "bind": "ts(\"packages/shp-checker/src/formatter.ts#formatShapeModule\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Read<shape.checker::NormalizedShapeReference>"
+         },
+         {
+          "atom": "Read<shape.language::ParsedModule>"
+         },
+         {
+          "atom": "Update<shape.tooling::FormattedShape>"
+         }
+        ]
+       },
+       "attach": []
+      }
+     ],
+     "tier": "normal"
+    },
+    {
+     "decl": "component",
+     "name": "ShapeLanguageServer",
+     "paths": [
+      "packages/shp-cli/src/lsp/positions.ts",
+      "packages/shp-cli/src/lsp/server.ts"
+     ],
+     "grants": [
+      "Append<shape.tooling::EditorOutput>",
+      "Read<shape.language::ShapeSource>"
+     ],
+     "units": [
+      {
+       "name": "serve",
+       "bind": "ts(\"packages/shp-cli/src/lsp/server.ts#startShapeLanguageServer\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Append<shape.tooling::EditorOutput>"
+         },
+         {
+          "atom": "Append<shape.tooling::EditorOutput>"
+         },
+         {
+          "atom": "Read<shape.language::ShapeSource>"
+         }
+        ]
+       }
+      }
+     ],
+     "tier": "normal"
+    },
+    {
+     "decl": "component",
+     "name": "ShpCli",
+     "paths": [
+      "packages/shp-cli/src/app.ts",
+      "packages/shp-cli/src/base-model.ts",
+      "packages/shp-cli/src/check-runner.ts",
+      "packages/shp-cli/src/commands/**/*.ts",
+      "packages/shp-cli/src/context.ts",
+      "packages/shp-cli/src/errors.ts",
+      "packages/shp-cli/src/git.ts",
+      "packages/shp-cli/src/index.ts",
+      "packages/shp-cli/src/io.ts",
+      "packages/shp-cli/src/parameters.ts",
+      "packages/shp-cli/src/shape-files.ts",
+      "packages/shp-cli/src/version.ts"
+     ],
+     "grants": [
+      "Append<shape.tooling::AuthoringAdvisory>",
+      "Append<shape.tooling::AuthoringPrompt>",
+      "Append<shape.tooling::EditorOutput>",
+      "Append<shape.tooling::GeneratedAstAnchor>",
+      "Append<shape.tooling::GeneratedAstManifest>",
+      "Append<shape.tooling::GeneratedAstTrace>",
+      "Append<shape.tooling::GeneratedCandidateEffect>",
+      "Append<shape.tooling::ShapeModelDraft>",
+      "Read<shape.checker::ChangedFileList>",
+      "Read<shape.checker::MachineReadableShapeModel>",
+      "Read<shape.language::ShapeSource>",
+      "Read<shape.tooling::AuthoringAdvisory>",
+      "Read<shape.tooling::DiagnosticText>",
+      "Read<shape.tooling::FormattedShape>",
+      "Read<shape.tooling::GeneratedAstManifest>",
+      "Read<shape.tooling::InstalledShpBinary>",
+      "Read<shape.tooling::InstalledShpRuntimeAssets>",
+      "Read<shape.tooling::LanguageSource>",
+      "Read<shape.tooling::ReleaseArchive>",
+      "Read<shape.tooling::ReleaseChecksumManifest>",
+      "Read<shape.tooling::ReleaseMetadata>",
+      "Read<shape.tooling::SystemClock>",
+      "Read<shape.tooling::UnifiedDiff>",
+      "Update<shape.checker::RepositoryFileList>",
+      "Update<shape.language::ShapeSource>",
+      "Update<shape.tooling::InstalledShpBinary>",
+      "Update<shape.tooling::InstalledShpRuntimeAssets>"
+     ],
+     "units": [
+      {
+       "name": "attestPrune",
+       "bind": "ts(\"packages/shp-cli/src/commands/attest/impl.ts#attestPrune\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Read<shape.language::ShapeSource>"
+         },
+         {
+          "atom": "Update<shape.language::ShapeSource>"
+         }
+        ]
+       }
+      },
+      {
+       "name": "defaultShapeFiles",
+       "bind": "ts(\"packages/shp-cli/src/shape-files.ts#defaultShapeFiles\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Read<shape.language::ShapeSource>"
+         }
+        ]
+       },
+       "attach": [
+        {
+         "name": "std::RefactorSensitive"
+        }
+       ]
+      },
+      {
+       "name": "inspectShapeModel",
+       "bind": "ts(\"packages/shp-cli/src/commands/inspect/impl.ts#inspect\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Read<shape.checker::MachineReadableShapeModel>"
+         },
+         {
+          "atom": "Read<shape.language::ShapeSource>"
+         }
+        ]
+       }
+      },
+      {
+       "name": "isoToday",
+       "bind": "ts(\"packages/shp-cli/src/freshness.ts#isoToday\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Read<shape.tooling::SystemClock>"
+         }
+        ]
+       },
+       "attach": []
+      },
+      {
+       "name": "listRepositoryFiles",
+       "bind": "ts(\"packages/shp-cli/src/git.ts#repositoryFiles\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Update<shape.checker::RepositoryFileList>"
+         }
+        ]
+       }
+      },
+      {
+       "name": "loadBaseModules",
+       "bind": "ts(\"packages/shp-cli/src/base-model.ts#loadBaseModules\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Read<shape.language::ShapeSource>"
+         },
+         {
+          "atom": "Read<shape.language::ShapeSource>"
+         }
+        ]
+       }
+      },
+      {
+       "name": "main",
+       "bind": "ts(\"packages/shp-cli/src/index.ts#main\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Append<shape.tooling::AuthoringAdvisory>"
+         },
+         {
+          "atom": "Append<shape.tooling::AuthoringPrompt>"
+         },
+         {
+          "atom": "Append<shape.tooling::EditorOutput>"
+         },
+         {
+          "atom": "Append<shape.tooling::EditorOutput>"
+         },
+         {
+          "atom": "Append<shape.tooling::GeneratedAstAnchor>"
+         },
+         {
+          "atom": "Append<shape.tooling::GeneratedAstManifest>"
+         },
+         {
+          "atom": "Append<shape.tooling::GeneratedAstTrace>"
+         },
+         {
+          "atom": "Append<shape.tooling::GeneratedCandidateEffect>"
+         },
+         {
+          "atom": "Append<shape.tooling::ShapeModelDraft>"
+         },
+         {
+          "atom": "Append<shape.tooling::ShapeModelDraft>"
+         },
+         {
+          "atom": "Read<shape.checker::ChangedFileList>"
+         },
+         {
+          "atom": "Read<shape.checker::ChangedFileList>"
+         },
+         {
+          "atom": "Read<shape.checker::ChangedFileList>"
+         },
+         {
+          "atom": "Read<shape.checker::MachineReadableShapeModel>"
+         },
+         {
+          "atom": "Read<shape.language::ShapeSource>"
+         },
+         {
+          "atom": "Read<shape.language::ShapeSource>"
+         },
+         {
+          "atom": "Read<shape.language::ShapeSource>"
+         },
+         {
+          "atom": "Read<shape.language::ShapeSource>"
+         },
+         {
+          "atom": "Read<shape.tooling::AuthoringAdvisory>"
+         },
+         {
+          "atom": "Read<shape.tooling::DiagnosticText>"
+         },
+         {
+          "atom": "Read<shape.tooling::DiagnosticText>"
+         },
+         {
+          "atom": "Read<shape.tooling::DiagnosticText>"
+         },
+         {
+          "atom": "Read<shape.tooling::DiagnosticText>"
+         },
+         {
+          "atom": "Read<shape.tooling::DiagnosticText>"
+         },
+         {
+          "atom": "Read<shape.tooling::DiagnosticText>"
+         },
+         {
+          "atom": "Read<shape.tooling::DiagnosticText>"
+         },
+         {
+          "atom": "Read<shape.tooling::DiagnosticText>"
+         },
+         {
+          "atom": "Read<shape.tooling::DiagnosticText>"
+         },
+         {
+          "atom": "Read<shape.tooling::DiagnosticText>"
+         },
+         {
+          "atom": "Read<shape.tooling::DiagnosticText>"
+         },
+         {
+          "atom": "Read<shape.tooling::DiagnosticText>"
+         },
+         {
+          "atom": "Read<shape.tooling::DiagnosticText>"
+         },
+         {
+          "atom": "Read<shape.tooling::DiagnosticText>"
+         },
+         {
+          "atom": "Read<shape.tooling::DiagnosticText>"
+         },
+         {
+          "atom": "Read<shape.tooling::DiagnosticText>"
+         },
+         {
+          "atom": "Read<shape.tooling::DiagnosticText>"
+         },
+         {
+          "atom": "Read<shape.tooling::DiagnosticText>"
+         },
+         {
+          "atom": "Read<shape.tooling::DiagnosticText>"
+         },
+         {
+          "atom": "Read<shape.tooling::DiagnosticText>"
+         },
+         {
+          "atom": "Read<shape.tooling::DiagnosticText>"
+         },
+         {
+          "atom": "Read<shape.tooling::DiagnosticText>"
+         },
+         {
+          "atom": "Read<shape.tooling::DiagnosticText>"
+         },
+         {
+          "atom": "Read<shape.tooling::DiagnosticText>"
+         },
+         {
+          "atom": "Read<shape.tooling::DiagnosticText>"
+         },
+         {
+          "atom": "Read<shape.tooling::DiagnosticText>"
+         },
+         {
+          "atom": "Read<shape.tooling::DiagnosticText>"
+         },
+         {
+          "atom": "Read<shape.tooling::DiagnosticText>"
+         },
+         {
+          "atom": "Read<shape.tooling::FormattedShape>"
+         },
+         {
+          "atom": "Read<shape.tooling::GeneratedAstManifest>"
+         },
+         {
+          "atom": "Read<shape.tooling::LanguageSource>"
+         },
+         {
+          "atom": "Read<shape.tooling::LanguageSource>"
+         },
+         {
+          "atom": "Read<shape.tooling::LanguageSource>"
+         },
+         {
+          "atom": "Read<shape.tooling::SystemClock>"
+         },
+         {
+          "atom": "Read<shape.tooling::UnifiedDiff>"
+         },
+         {
+          "atom": "Update<shape.checker::RepositoryFileList>"
+         },
+         {
+          "atom": "Update<shape.language::ShapeSource>"
+         }
+        ]
+       },
+       "attach": [
+        {
+         "name": "std::RefactorSensitive"
+        }
+       ]
+      },
+      {
+       "name": "runShapeFileCheck",
+       "bind": "ts(\"packages/shp-cli/src/check-runner.ts#runShapeFileCheck\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Read<shape.language::ShapeSource>"
+         },
+         {
+          "atom": "Read<shape.tooling::DiagnosticText>"
+         }
+        ]
+       }
+      },
+      {
+       "name": "updateInstalledBinary",
+       "bind": "ts(\"packages/shp-cli/src/commands/update/impl.ts#update\")",
+       "effects": {
+        "mode": "complete",
+        "atoms": [
+         {
+          "atom": "Read<shape.tooling::InstalledShpBinary>"
+         },
+         {
+          "atom": "Read<shape.tooling::InstalledShpRuntimeAssets>"
+         },
+         {
+          "atom": "Read<shape.tooling::ReleaseArchive>"
+         },
+         {
+          "atom": "Read<shape.tooling::ReleaseChecksumManifest>"
+         },
+         {
+          "atom": "Read<shape.tooling::ReleaseMetadata>"
+         },
+         {
+          "atom": "Update<shape.tooling::InstalledShpBinary>"
+         },
+         {
+          "atom": "Update<shape.tooling::InstalledShpRuntimeAssets>"
+         }
+        ]
+       },
+       "attach": [
+        {
+         "name": "std::RefactorSensitive"
+        }
+       ]
+      }
+     ],
+     "tier": "normal",
+     "boundary": true,
+     "assumes": [
+      {
+       "id": "GitReportsRepositoryState",
+       "text": "git ls-files and git merge-base report the repository's tracked files and change base."
+      },
+      {
+       "id": "GitHubReleasesAuthentic",
+       "text": "GitHub release metadata and checksums.txt come from the Shape release workflow."
+      }
+     ]
+    },
+    {
+     "decl": "relation",
+     "name": "CheckShapesWithShpCheck",
+     "kind": "coordinated_call",
+     "connects": [
+      "shape.tooling::ShpCli",
+      "shape.checker::ShapeChecker",
+      "shape.language::ShapeParser",
+      "shape.checker::ShapeModelLowerer",
+      "shape.checker::ShapeRuleEngine",
+      "shape.checker::ShapeBindings",
+      "shape.checker::ShapeDiagnostics"
+     ]
+    },
+    {
+     "decl": "relation",
+     "name": "ShapeAnalyzerUsesStringHelpers",
+     "kind": "calls",
+     "connects": [
+      "shape.tooling::ShapeAnalyzer",
+      "shape.checker::ShapeStringHelpers"
+     ]
+    },
+    {
+     "decl": "relation",
+     "name": "ShapeAstGeneratorProvidesDraft",
+     "kind": "provides",
+     "connects": [
+      "shape.tooling::ShapeAstGenerator",
+      "shape.tooling::ShapeModelDraft"
+     ]
+    },
+    {
+     "decl": "relation",
+     "name": "ShapeAuthoringUsesAnalyzer",
+     "kind": "calls",
+     "connects": [
+      "shape.tooling::ShapeAuthoring",
+      "shape.tooling::ShapeAnalyzer"
+     ]
+    },
+    {
+     "decl": "relation",
+     "name": "ShapeAuthoringUsesModuleResolver",
+     "kind": "calls",
+     "connects": [
+      "shape.tooling::ShapeAuthoring",
+      "shape.checker::ShapeModuleResolver"
+     ]
+    },
+    {
+     "decl": "relation",
+     "name": "ShapeAuthoringUsesParser",
+     "kind": "calls",
+     "connects": [
+      "shape.tooling::ShapeAuthoring",
+      "shape.language::ShapeParser"
+     ]
+    },
+    {
+     "decl": "relation",
+     "name": "ShapeAuthoringUsesPreludeRegistry",
+     "kind": "calls",
+     "connects": [
+      "shape.tooling::ShapeAuthoring",
+      "shape.checker::ShapePreludeRegistry"
+     ]
+    },
+    {
+     "decl": "relation",
+     "name": "ShapeAuthoringUsesStringHelpers",
+     "kind": "calls",
+     "connects": [
+      "shape.tooling::ShapeAuthoring",
+      "shape.checker::ShapeStringHelpers"
+     ]
+    },
+    {
+     "decl": "relation",
+     "name": "ShapeEditorUsesChecker",
+     "kind": "calls",
+     "connects": [
+      "shape.tooling::ShapeEditorServices",
+      "shape.checker::ShapeChecker"
+     ]
+    },
+    {
+     "decl": "relation",
+     "name": "ShapeEditorUsesFormatter",
+     "kind": "calls",
+     "connects": [
+      "shape.tooling::ShapeEditorServices",
+      "shape.tooling::ShapeFormatter"
+     ]
+    },
+    {
+     "decl": "relation",
+     "name": "ShapeEditorUsesParser",
+     "kind": "calls",
+     "connects": [
+      "shape.tooling::ShapeEditorServices",
+      "shape.language::ShapeParser"
+     ]
+    },
+    {
+     "decl": "relation",
+     "name": "ShapeEditorUsesPreludeRegistry",
+     "kind": "calls",
+     "connects": [
+      "shape.tooling::ShapeEditorServices",
+      "shape.checker::ShapePreludeRegistry"
+     ]
+    },
+    {
+     "decl": "relation",
+     "name": "ShapeFormatterProvidesFormat",
+     "kind": "provides",
+     "connects": [
+      "shape.tooling::ShapeFormatter",
+      "shape.tooling::CanonicalShapeFormat"
+     ]
+    },
+    {
+     "decl": "relation",
+     "name": "ShapeFormatterUsesParser",
+     "kind": "calls",
+     "connects": [
+      "shape.tooling::ShapeFormatter",
+      "shape.language::ShapeParser"
+     ]
+    },
+    {
+     "decl": "relation",
+     "name": "ShapeFormatterUsesStringHelpers",
+     "kind": "calls",
+     "connects": [
+      "shape.tooling::ShapeFormatter",
+      "shape.checker::ShapeStringHelpers"
+     ]
+    },
+    {
+     "decl": "relation",
+     "name": "ShapeLanguageServerProvidesProtocol",
+     "kind": "provides",
+     "connects": [
+      "shape.tooling::ShapeLanguageServer",
+      "shape.tooling::LanguageServerProtocol"
+     ]
+    },
+    {
+     "decl": "relation",
+     "name": "ShapeLanguageServerUsesEditorServices",
+     "kind": "calls",
+     "connects": [
+      "shape.tooling::ShapeLanguageServer",
+      "shape.tooling::ShapeEditorServices"
+     ]
+    },
+    {
+     "decl": "relation",
+     "name": "ShpCliProvidesInterface",
+     "kind": "provides",
+     "connects": [
+      "shape.tooling::ShpCli",
+      "shape.tooling::CommandLineInterface"
+     ]
+    },
+    {
+     "decl": "relation",
+     "name": "ShpCliUsesAnalyzer",
+     "kind": "calls",
+     "connects": [
+      "shape.tooling::ShpCli",
+      "shape.tooling::ShapeAnalyzer"
+     ]
+    },
+    {
+     "decl": "relation",
+     "name": "ShpCliUsesAstGenerator",
+     "kind": "calls",
+     "connects": [
+      "shape.tooling::ShpCli",
+      "shape.tooling::ShapeAstGenerator"
+     ]
+    },
+    {
+     "decl": "relation",
+     "name": "ShpCliUsesAuthoring",
+     "kind": "calls",
+     "connects": [
+      "shape.tooling::ShpCli",
+      "shape.tooling::ShapeAuthoring"
+     ]
+    },
+    {
+     "decl": "relation",
+     "name": "ShpCliUsesChecker",
+     "kind": "calls",
+     "connects": [
+      "shape.tooling::ShpCli",
+      "shape.checker::ShapeChecker"
+     ]
+    },
+    {
+     "decl": "relation",
+     "name": "ShpCliUsesDiagnostics",
+     "kind": "calls",
+     "connects": [
+      "shape.tooling::ShpCli",
+      "shape.checker::ShapeDiagnostics"
+     ]
+    },
+    {
+     "decl": "relation",
+     "name": "ShpCliUsesFormatter",
+     "kind": "calls",
+     "connects": [
+      "shape.tooling::ShpCli",
+      "shape.tooling::ShapeFormatter"
+     ]
+    },
+    {
+     "decl": "relation",
+     "name": "ShpCliUsesLanguageServer",
+     "kind": "calls",
+     "connects": [
+      "shape.tooling::ShpCli",
+      "shape.tooling::ShapeLanguageServer"
+     ]
+    },
+    {
+     "decl": "relation",
+     "name": "ShpCliUsesModelInspection",
+     "kind": "calls",
+     "connects": [
+      "shape.tooling::ShpCli",
+      "shape.checker::ShapeChecker"
+     ]
+    },
+    {
+     "decl": "rule",
+     "name": "tooling_contract_providers",
+     "clauses": [
+      {
+       "forbid": "edge",
+       "kind": "provides",
+       "from": [
+        "*"
+       ],
+       "to": [
+        "shape.tooling::CanonicalShapeFormat"
+       ],
+       "exceptFrom": [
+        "shape.tooling::ShapeFormatter"
+       ]
+      },
+      {
+       "forbid": "edge",
+       "kind": "provides",
+       "from": [
+        "*"
+       ],
+       "to": [
+        "shape.tooling::CommandLineInterface"
+       ],
+       "exceptFrom": [
+        "shape.tooling::ShpCli"
+       ]
+      },
+      {
+       "forbid": "edge",
+       "kind": "provides",
+       "from": [
+        "*"
+       ],
+       "to": [
+        "shape.tooling::LanguageServerProtocol"
+       ],
+       "exceptFrom": [
+        "shape.tooling::ShapeLanguageServer"
+       ]
+      }
+     ]
+    },
+    {
+     "decl": "note",
+     "name": "AstGenerationUnknownSafety",
+     "kind": "memory",
+     "about": [
+      "unit shape.tooling::ShapeAstGenerator.generateShapeFromCodeSemanticGraph"
+     ],
+     "owner": "shape.governance::ShapeMaintainers",
+     "text": "AST-derived architecture drafts must preserve uncertainty with effects unknown, use stable symbol or file references that do not churn on line-only movement, include compact syntax anchors with semantic fingerprints when token evidence exists, warn instead of failing on tokenless anchors, emit candidate effect evidence only as review hints with checkable pins, and keep raw syntax traces opt-in.",
+     "confidence": "high"
+    },
+    {
+     "decl": "note",
+     "name": "AuthorPromptSafetyRules",
+     "kind": "memory",
+     "about": [
+      "unit shape.tooling::ShapeAuthoring.buildShapeAuthorPrompt"
+     ],
+     "owner": "shape.governance::ShapeMaintainers",
+     "text": "Authoring prompts must require stable symbol or file evidence without line suffixes, explicit destructive effects, and no memory waiver for final forbids.",
+     "confidence": "high"
+    },
+    {
+     "decl": "note",
+     "name": "AuthoringUnknownSafety",
+     "kind": "memory",
+     "about": [
+      "unit shape.tooling::ShapeAuthoring.generateShapeUpdateDraft"
+     ],
+     "owner": "shape.governance::ShapeMaintainers",
+     "text": "Generated model drafts must prefer effects unknown over false empty complete summaries.",
+     "confidence": "high"
+    },
+    {
+     "decl": "note",
+     "name": "CliCommandDispatchOrder",
+     "kind": "memory",
+     "about": [
+      "unit shape.tooling::ShpCli.main"
+     ],
+     "owner": "shape.governance::ShapeMaintainers",
+     "text": "CLI commands must dispatch to the same checker/formatter/helper semantics used by tests, reject ambiguous output modes before running command work, make generated AST directory checks explicit, and derive generated AST source identity from the workspace root.",
+     "confidence": "high"
+    },
+    {
+     "decl": "note",
+     "name": "ClockReadAtCliBoundary",
+     "kind": "memory",
+     "about": [
+      "unit shape.tooling::ShpCli.isoToday"
+     ],
+     "owner": "shape.governance::ShapeMaintainers",
+     "text": "The system clock is read only at the CLI boundary to inject a freshness date; the checker never reads the clock so freshness checking stays deterministic.",
+     "confidence": "high"
+    },
+    {
+     "decl": "note",
+     "name": "CriticPromptSafetyRules",
+     "kind": "memory",
+     "about": [
+      "unit shape.tooling::ShapeAuthoring.buildShapeCriticPrompt"
+     ],
+     "owner": "shape.governance::ShapeMaintainers",
+     "text": "Critic prompts must flag unstable numbered references, omitted destructive effects, false certainty, missing reevaluations, and attempted waivers of final forbids.",
+     "confidence": "high"
+    },
+    {
+     "decl": "note",
+     "name": "DefaultShapeFileDiscovery",
+     "kind": "memory",
+     "about": [
+      "unit shape.tooling::ShpCli.defaultShapeFiles"
+     ],
+     "owner": "shape.governance::ShapeMaintainers",
+     "text": "Default discovery loads every Shape file under the shape directory, including source-controlled domain packs in nested vendor directories.",
+     "confidence": "high"
+    },
+    {
+     "decl": "note",
+     "name": "FormatterCanonicalDiffs",
+     "kind": "memory",
+     "about": [
+      "unit shape.tooling::ShapeFormatter.formatShapeModule"
+     ],
+     "owner": "shape.governance::ShapeMaintainers",
+     "text": "Formatter ordering and indentation keep Shape files reviewable and stable in diffs, nested rationale/memory grouping blocks are canonicalized to their flat members, and graph-rule endpoints and kind filters have one canonical on-disk form.",
+     "confidence": "high"
+    },
+    {
+     "decl": "note",
+     "name": "UpdateBinaryIntegrity",
+     "kind": "memory",
+     "about": [
+      "unit shape.tooling::ShpCli.updateInstalledBinary"
+     ],
+     "owner": "shape.governance::ShapeMaintainers",
+     "text": "Self-update must verify any existing target binary identity, release checksum, downloaded binary version, and bundled runtime parser assets before replacing the local executable.",
+     "confidence": "high"
+    },
+    {
+     "decl": "rule",
+     "name": "ClockReadOnlyAtCliBoundary",
+     "tier": "normal",
+     "clauses": [
+      {
+       "forbid": "effect",
+       "atom": "Read<SystemClock>",
+       "within": [
+        "component ShpCli",
+        "component ShapeAnalyzer",
+        "component ShapeAstGenerator",
+        "component ShapeAuthoring",
+        "component ShapeEditorServices",
+        "component ShapeFormatter",
+        "component ShapeLanguageServer",
+        "component shape.language::ShapeParser",
+        "component shape.language::ShapeGrammar"
+       ],
+       "except": [
+        "unit ShpCli.isoToday",
+        "unit ShpCli.main"
+       ]
+      }
+     ]
+    },
+    {
+     "decl": "rule",
+     "name": "AnalyzerStaysAdvisory",
+     "tier": "normal",
+     "clauses": [
+      {
+       "forbid": "path",
+       "from": [
+        "ShapeAnalyzer"
+       ],
+       "to": [
+        "shape.checker::ShapeChecker"
+       ],
+       "over": [
+        "calls"
+       ]
+      }
+     ]
+    },
+    {
+     "decl": "note",
+     "name": "AnalyzerCheckerSeparation",
+     "kind": "rationale",
+     "about": [
+      "rule AnalyzerStaysAdvisory",
+      "component ShapeAnalyzer"
+     ],
+     "owner": "shape.governance::ShapeMaintainers",
+     "text": "The analyzer compares source hints directly with parsed Shape and remains advisory; it does not call the authoritative deterministic checker."
+    },
+    {
+     "decl": "exception",
+     "name": "UpdateTempTokenReadsClock",
+     "waives": [
+      "contradiction"
+     ],
+     "target": "rule ClockReadOnlyAtCliBoundary",
+     "for": [
+      "code ts(\"packages/shp-cli/src/commands/update/impl.ts#replaceWindowsBinary\")"
+     ],
+     "owner": "shape.governance::ShapeMaintainers",
+     "expires": "2027-04-30"
+    },
+    {
+     "decl": "law",
+     "name": "CliDocumented",
+     "template": {
+      "name": "std::DocumentedBy",
+      "args": [
+       "ShpCli",
+       "code raw(\"docs-site/src/content/docs/reference/cli.md\")"
+      ]
+     },
+     "tier": "normal",
+     "evidence": {
+      "judged": true
+     }
+    },
+    {
+     "decl": "law",
+     "name": "AnalyzerDocumented",
+     "template": {
+      "name": "std::DocumentedBy",
+      "args": [
+       "ShapeAnalyzer",
+       "code raw(\"docs-site/src/content/docs/guides/analyzer.md\")"
+      ]
+     },
+     "tier": "normal",
+     "evidence": {
+      "judged": true
+     }
+    },
+    {
+     "decl": "law",
+     "name": "AstGeneratorDocumented",
+     "template": {
+      "name": "std::DocumentedBy",
+      "args": [
+       "ShapeAstGenerator",
+       "code raw(\"docs-site/src/content/docs/guides/ast-drafts.md\")"
+      ]
+     },
+     "tier": "normal",
+     "evidence": {
+      "judged": true
+     }
+    },
+    {
+     "decl": "law",
+     "name": "AuthoringDocumented",
+     "template": {
+      "name": "std::DocumentedBy",
+      "args": [
+       "ShapeAuthoring",
+       "code raw(\"docs-site/src/content/docs/guides/authoring.md\")"
+      ]
+     },
+     "tier": "normal",
+     "evidence": {
+      "judged": true
+     }
+    },
+    {
+     "decl": "law",
+     "name": "FormatterEditorDocumented",
+     "template": {
+      "name": "std::DocumentedBy",
+      "args": [
+       "ShapeFormatter",
+       "code raw(\"docs-site/src/content/docs/inside-shape/formatter-editor-authoring.md\")"
+      ]
+     },
+     "tier": "normal",
+     "evidence": {
+      "judged": true
+     }
+    },
+    {
+     "decl": "law",
+     "name": "DraftsKeepEffectsUnknown",
+     "template": {
+      "name": "shape.governance::Property",
+      "args": [
+       "ShapeAstGenerator.generateShapeFromCodeSemanticGraph",
+       "drafts preserve uncertainty with effects unknown"
+      ]
+     },
+     "tier": "normal",
+     "evidence": {
+      "level": "tested",
+      "by": [
+       "shape.governance::bunTest"
+      ]
+     }
+    },
+    {
+     "decl": "law",
+     "name": "DraftReferencesStableUnderLineMoves",
+     "template": {
+      "name": "shape.governance::Property",
+      "args": [
+       "ShapeAstGenerator.generateShapeFromCodeSemanticGraph",
+       "stable symbol or file references that do not churn on line-only movement"
+      ]
+     },
+     "tier": "normal",
+     "evidence": {
+      "level": "tested",
+      "by": [
+       "shape.governance::bunTest"
+      ]
+     }
+    },
+    {
+     "decl": "law",
+     "name": "DraftAnchorsCarryFingerprints",
+     "template": {
+      "name": "shape.governance::Property",
+      "args": [
+       "ShapeAstGenerator.generateShapeFromCodeSemanticGraph",
+       "compact anchors with semantic fingerprints when token evidence exists"
+      ]
+     },
+     "tier": "normal",
+     "evidence": {
+      "level": "tested",
+      "by": [
+       "shape.governance::bunTest"
+      ]
+     }
+    },
+    {
+     "decl": "law",
+     "name": "TokenlessAnchorsWarn",
+     "template": {
+      "name": "shape.governance::Property",
+      "args": [
+       "ShapeAstGenerator.generateShapeFromCodeSemanticGraph",
+       "warn instead of failing on tokenless anchors"
+      ]
+     },
+     "tier": "normal",
+     "evidence": {
+      "level": "tested",
+      "by": [
+       "shape.governance::bunTest"
+      ]
+     }
+    },
+    {
+     "decl": "law",
+     "name": "CandidateEffectsAreHints",
+     "template": {
+      "name": "shape.governance::Property",
+      "args": [
+       "ShapeAstGenerator.generateShapeFromCodeSemanticGraph",
+       "candidate effect evidence only as review hints with checkable pins"
+      ]
+     },
+     "tier": "normal",
+     "evidence": {
+      "level": "tested",
+      "by": [
+       "shape.governance::bunTest"
+      ]
+     }
+    },
+    {
+     "decl": "law",
+     "name": "RawTracesOptIn",
+     "template": {
+      "name": "shape.governance::Property",
+      "args": [
+       "ShapeAstGenerator.generateShapeFromCodeSemanticGraph",
+       "raw syntax traces opt-in"
+      ]
+     },
+     "tier": "normal",
+     "evidence": {
+      "level": "tested",
+      "by": [
+       "shape.governance::bunTest"
+      ]
+     }
+    },
+    {
+     "decl": "law",
+     "name": "UpdateDraftsPreferUnknown",
+     "template": {
+      "name": "shape.governance::Property",
+      "args": [
+       "ShapeAuthoring.generateShapeUpdateDraft",
+       "generated drafts prefer effects unknown over false empty complete summaries"
+      ]
+     },
+     "tier": "normal",
+     "evidence": {
+      "level": "tested",
+      "by": [
+       "shape.governance::bunTest"
+      ]
+     }
+    },
+    {
+     "decl": "law",
+     "name": "AmbiguousOutputModesRejectedFirst",
+     "template": {
+      "name": "shape.governance::Property",
+      "args": [
+       "ShpCli.main",
+       "ambiguous output modes are rejected before command work"
+      ]
+     },
+     "tier": "normal",
+     "evidence": {
+      "level": "tested",
+      "by": [
+       "shape.governance::bunTest"
+      ]
+     }
+    },
+    {
+     "decl": "law",
+     "name": "GeneratedAstDirectoryChecksExplicit",
+     "template": {
+      "name": "shape.governance::Property",
+      "args": [
+       "ShpCli.main",
+       "generated AST directory checks are explicit"
+      ]
+     },
+     "tier": "normal",
+     "evidence": {
+      "level": "tested",
+      "by": [
+       "shape.governance::bunTest"
+      ]
+     }
+    },
+    {
+     "decl": "law",
+     "name": "GeneratedAstIdentityFromWorkspaceRoot",
+     "template": {
+      "name": "shape.governance::Property",
+      "args": [
+       "ShpCli.main",
+       "generated AST source identity derives from the workspace root"
+      ]
+     },
+     "tier": "normal",
+     "evidence": {
+      "level": "tested",
+      "by": [
+       "shape.governance::bunTest"
+      ]
+     }
+    },
+    {
+     "decl": "law",
+     "name": "DefaultDiscoveryLoadsNestedPacks",
+     "template": {
+      "name": "shape.governance::Property",
+      "args": [
+       "ShpCli.defaultShapeFiles",
+       "default discovery loads every Shape file under shape/, including nested vendor packs"
+      ]
+     },
+     "tier": "normal",
+     "evidence": {
+      "level": "tested",
+      "by": [
+       "shape.governance::bunTest"
+      ]
+     }
+    },
+    {
+     "decl": "law",
+     "name": "FormatterIdempotent",
+     "template": {
+      "name": "shape.governance::Idempotent",
+      "args": [
+       "ShapeFormatter.formatShapeModule"
+      ]
+     },
+     "tier": "normal",
+     "evidence": {
+      "level": "tested",
+      "by": [
+       "shape.governance::bunTest"
+      ]
+     }
+    },
+    {
+     "decl": "law",
+     "name": "FormatterFlattensGroupedContext",
+     "template": {
+      "name": "shape.governance::Property",
+      "args": [
+       "ShapeFormatter.formatShapeModule",
+       "nested rationale/memory grouping blocks canonicalize to flat members"
+      ]
+     },
+     "tier": "normal",
+     "evidence": {
+      "level": "tested",
+      "by": [
+       "shape.governance::bunTest"
+      ]
+     }
+    },
+    {
+     "decl": "law",
+     "name": "FormatterCanonicalGraphRules",
+     "template": {
+      "name": "shape.governance::Property",
+      "args": [
+       "ShapeFormatter.formatShapeModule",
+       "graph-rule endpoints and kind filters have one canonical form"
+      ]
+     },
+     "tier": "normal",
+     "evidence": {
+      "level": "tested",
+      "by": [
+       "shape.governance::bunTest"
+      ]
+     }
+    }
+   ],
+   "file": "shape/tooling.shape"
+  }
+ ]
+}

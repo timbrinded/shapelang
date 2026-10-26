@@ -1,0 +1,14 @@
+{
+ "obligations": [
+  {
+   "force": "sound",
+   "key": "ob:bb51a88f52f5081e773dabf7f021b863325e003c20a47af0a4e2b8e133f59628",
+   "severity": "blocking"
+  },
+  {
+   "kind": "loosening",
+   "subject": "provider audit::sqlEffects"
+  }
+ ],
+ "verdict": "blocked"
+}

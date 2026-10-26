@@ -1,0 +1,724 @@
+# Shape's own model, 1.0 sidecar (dogfood).
+#
+# Today's authored model is shape/*.shape (Shape 0.x). `tools/compose.ts` reads it through the
+# prototype's `shp migrate` (experiments/shape-1/proto), then applies this overlay and writes the
+# complete 1.0 model to model.source.json (shape.source.v1).
+#
+# Overlay semantics (dogfood-only; the prototype's own --sidecar replaces whole declarations):
+#   - a declaration with the same (module, decl, name) as a migrated one is MERGED field by field;
+#     component `units` merge by unit name; every other array replaces; `null` deletes a field;
+#   - a new declaration is appended to its module;
+#   - x-overlay.renameModules renames modules and every `module::` reference;
+#   - x-overlay.drop removes migrated declarations that 0.x never claimed.
+v: shape.source.v1
+x-overlay:
+  renameModules:
+    shape1.migrated: shape.governance
+  drop:
+    # 0.x `owns` is name-checked only ("not exclusive", glossary); migrate's std::Owns mints an
+    # exclusive-writer claim 0.x never made (35 of the 43 baseline errors).
+    - { decl: rule, template: "std::Owns" }
+    # replaced by shape.governance's own shape, actors and owner team
+    - { module: shape.governance, decl: shape }
+    - { module: shape.governance, decl: actor }
+
+modules:
+  # ------------------------------------------------------------------------------------------
+  # Governance: shape owner, actors, policy, providers, templates
+  # ------------------------------------------------------------------------------------------
+  - module: shape.governance
+    imports: [std]
+    decls:
+      - { decl: shape, name: Shape, owner: ShapeMaintainers, policy: ShapePolicy }
+      - { decl: actor, name: timbrinded, kind: person, identities: ['github("timbrinded")'] }
+      - { decl: actor, name: ShapeMaintainers, kind: team, members: [timbrinded] }
+      - { decl: actor, name: claude, kind: agent, operator: timbrinded, identities: ['github("claude[bot]")'] }
+
+      # Criticality tiers. critical: the checker and the release/CI gates (a wrong verdict or a
+      # tampered release is the product failing); normal: authoring and editor tooling; low:
+      # docs site and the experimental kernel.
+      - decl: policy
+        name: ShapePolicy
+        tiers:
+          low: { floor: declared, blocks: [], maxAge: 365, judges: [owner, agents] }
+          normal: { floor: declared, blocks: [latent-loosening], maxAge: 180, judges: [owner, agents] }
+          critical: { floor: tested, blocks: [unestablished, coverage, latent-loosening], maxAge: 90, judges: [owner] }
+        budget: 3
+
+      # Law templates. TypeScript has no hosted statements (no closure projection), so every TS
+      # law is a template instance whose meaning the deciding provider's test carries.
+      - decl: template
+        name: Idempotent
+        params: [[F, unit]]
+        body: [{ law: { evidence: { level: tested } } }]
+      - decl: template
+        name: ShortestWitness
+        params: [[F, unit]]
+        body: [{ law: { evidence: { level: tested } } }]
+      - decl: template
+        name: Property
+        params: [[F, unit], [Statement, value]]
+        body: [{ law: { evidence: { level: tested } } }]
+
+      # Providers (dogfood implementations under experiments/shape-1/dogfood/providers).
+      - decl: provider
+        name: bunTest
+        produces: [test]
+        decides:
+          - template shape.governance::Property
+          - template shape.governance::Idempotent
+          - template shape.governance::ShortestWitness
+          - template std::Deterministic
+        sound: [presence]
+        identity: 'ed25519("daa0dccee98887cb1c203655e7dd486ad0e9939e928163d71217e3ac7c92db98")'
+        implementation:
+          paths: [package.json, bun.lock, tsconfig.json, experiments/shape-1/dogfood/providers/bun-test.ts, experiments/shape-1/dogfood/providers/common.ts]
+      - decl: provider
+        name: tsClockScan
+        produces: [observation]
+        observes:
+          - 'effect(ts.call("Date.now"))'
+          - 'effect(ts.call("Date"))'
+          - 'effect(ts.call("performance.now"))'
+          - 'effect(ts.call("process.hrtime"))'
+        sound: [presence, absence]
+        identity: 'ed25519("0ad5f48ae7f2a0762b7ffd3c0fca49d747c1b73fa81c7de81b94d3096bc52858")'
+        implementation:
+          paths: [experiments/shape-1/dogfood/providers/ts-clock-scan.ts, experiments/shape-1/dogfood/providers/ts-ident.ts, experiments/shape-1/dogfood/providers/common.ts]
+      - decl: provider
+        name: tsCalls
+        produces: [observation]
+        observes: ["call(ts)"]
+        sound: [presence]
+        identity: 'ed25519("c7543debaa33fd4aa03ef3ac9f6a39ff3043c9a6e4cd58a5a16209c6c549af76")'
+        implementation:
+          paths: [experiments/shape-1/dogfood/providers/ts-calls.ts, experiments/shape-1/dogfood/providers/ts-ident.ts, experiments/shape-1/dogfood/providers/common.ts]
+
+      # Hatch markers may only appear at boundaries (today: 0 counted markers in the manifest).
+      - decl: rule
+        name: NoHatchesOutsideBoundaries
+        template: { name: std::HatchesStayAtBoundaries }
+        tier: normal
+
+  # ------------------------------------------------------------------------------------------
+  # shape.checker
+  # ------------------------------------------------------------------------------------------
+  - module: shape.checker
+    decls:
+      # resource bindings: in-memory values bind the TS type that carries them
+      - { decl: resource, name: BaseShapeModel, bind: ['ts.type("packages/shp-checker/src/checker/model.ts#BaseModel")'] }
+      - { decl: resource, name: ChangeEventSet, bind: ['ts.type("packages/shp-checker/src/checker/model.ts#ChangeEvent")'] }
+      - { decl: resource, name: ChangedFileList, bind: ['ts.type("packages/shp-checker/src/checker/model.ts#ChangedFileContext")', 'fs.path("changed.txt")'] }
+      - { decl: resource, name: EffectiveModel, bind: ['ts.type("packages/shp-checker/src/checker/model.ts#Model")'] }
+      # EffectiveShapeModel: no binding (the provides-contract name for EffectiveModel's code)
+      - { decl: resource, name: FactSet, bind: ['ts.type("packages/shp-checker/src/checker/model.ts#Fact")'] }
+      # HumanReadableDiagnostics: no binding (contract name for DiagnosticText, a plain string)
+      - { decl: resource, name: MachineReadableShapeModel, bind: ['ts.type("packages/shp-checker/src/checker/inspection.ts#ShapeInspection")'] }
+      - { decl: resource, name: ModuleNamespace, bind: ['ts.type("packages/shp-checker/src/checker/model.ts#DeclarationIndex")'] }
+      # NormalizedShapeReference: no binding (a plain string returned by normalizeShapeSourcePath)
+      - decl: resource
+        name: PreludeMetadata
+        bind:
+          - 'ts.type("packages/shp-checker/src/prelude.ts#PreludeTraitDefinition")'
+          - 'ts.type("packages/shp-checker/src/prelude.ts#PreludeContextRule")'
+          - 'ts.type("packages/shp-checker/src/prelude.ts#PreludeRelationKindRule")'
+      - { decl: resource, name: RepositoryFileList, bind: ['proc.exec("git ls-files")'] }
+      - { decl: resource, name: ResolvedModuleReference, bind: ['ts.type("packages/shp-checker/src/module-resolution.ts#ModuleReferenceResolution")'] }
+      # SemanticDiagnosticSet: no binding (contract name for SemanticDiagnostics)
+      - { decl: resource, name: SemanticDiagnostics, bind: ['ts.type("packages/shp-checker/src/checker/model.ts#SemanticDiagnostic")'] }
+      - { decl: resource, name: ShapeBinding, bind: ['ts.type("packages/shp-checker/src/checker/model.ts#BindingInfo")'] }
+      - { decl: resource, name: ShapeConformance, bind: ['ts.type("packages/shp-checker/src/checker/model.ts#CheckResult")'] }
+      # ShapeFacts: no binding (contract name for FactSet)
+      - { decl: resource, name: ShapeHypergraph, bind: ['ts.type("packages/shp-checker/src/checker/model.ts#Hypergraph")'] }
+
+      # components: tiers, and paths for the seven components 0.x left pathless
+      - { decl: component, name: ShapeChecker, tier: critical }
+      - { decl: component, name: ShapeBindings, tier: critical }
+      - decl: component
+        name: ShapeDiagnostics
+        tier: normal
+        paths: [packages/shp-checker/src/checker/diagnostics.ts, packages/shp-checker/src/checker/display.ts]
+      - decl: component
+        name: ShapeModelLowerer
+        tier: critical
+        paths:
+          - packages/shp-checker/src/checker/lowering/**/*.ts
+          - packages/shp-checker/src/checker/lowerer.ts
+          - packages/shp-checker/src/checker/symbols.ts
+          - packages/shp-checker/src/checker/change-planning.ts
+          - packages/shp-checker/src/checker/prelude-seed.ts
+      - { decl: component, name: ShapeModuleResolver, tier: critical }
+      - { decl: component, name: ShapePreludeRegistry, tier: critical, paths: [packages/shp-checker/src/prelude.ts] }
+      - decl: component
+        name: ShapeRuleEngine
+        tier: critical
+        paths: [packages/shp-checker/src/checker/rules/**/*.ts, packages/shp-checker/src/checker/rules.ts, packages/shp-checker/src/checker/derivations.ts]
+        units:
+          # fully covered by tested laws below (memories FreshnessDeterminism, FinalForbidPrecedence,
+          # ForbiddenPathWitness, HypercycleWitness): the judged RefactorSensitive law is retired
+          - { name: checkFreshness, attach: [] }
+          - { name: deriveFinalForbidsForResource, attach: [] }
+          - { name: findShortestPath, attach: [] }
+          - { name: findHypercycle, attach: [] }
+          # 0.x binds definePreludeMetadata to the whole file prelude.ts, and a file has no
+          # `unit` projection, so no test can cite it: PreludeMetadataContract's laws target
+          # the unit that derives context obligations instead
+          - name: requirementsForTarget
+            bind: 'ts("packages/shp-checker/src/checker/derivations.ts#requirementsForTarget")'
+            effects: { mode: unknown }
+      - decl: component
+        name: ShapeStringHelpers
+        tier: critical
+        paths: [packages/shp-checker/src/shape-strings.ts]
+        units:
+          - { name: normalizeShapeSourcePath, attach: [] }
+
+      # The checker library never reads the clock (memories ClockReadAtCliBoundary, FreshnessDeterminism).
+      - decl: rule
+        name: CheckerNeverReadsClock
+        tier: critical
+        clauses:
+          - forbid: effect
+            atom: Read<shape.tooling::SystemClock>
+            within:
+              - component ShapeChecker
+              - component ShapeRuleEngine
+              - component ShapeModelLowerer
+              - component ShapeBindings
+              - component ShapePreludeRegistry
+              - component ShapeModuleResolver
+              - component ShapeStringHelpers
+              - component ShapeDiagnostics
+              - component shape.checker.incremental::ShapeIncrementalChecker
+
+      - decl: law
+        name: CheckIsDeterministic
+        template: { name: std::Deterministic, args: [ShapeChecker.checkShapeModules] }
+        tier: critical
+        evidence: { level: tested, by: [shape.governance::bunTest] }
+
+      - decl: law
+        name: RuleEngineDocumented
+        template: { name: std::DocumentedBy, args: [ShapeRuleEngine, 'code raw("docs-site/src/content/docs/inside-shape/rule-evaluation.md")'] }
+        tier: normal
+        evidence: { judged: true }
+
+      # ---- laws from memory clauses (experiments/bend-probes/E/e5-memories.json, route "law") ----
+      # AtomicChangePlanning
+      - decl: law
+        name: ChangePlanStagedInIsolation
+        template: { name: shape.governance::Property, args: [ShapeModelLowerer.lowerChange, "each change declaration is applied to an isolated snapshot"] }
+        tier: critical
+        evidence: { level: tested, by: [shape.governance::bunTest] }
+      - decl: law
+        name: ChangeTransitionsYieldNormalizedGuardEvents
+        template: { name: shape.governance::Property, args: [ShapeModelLowerer.lowerChange, "ordered before/after transitions produce normalized guard events"] }
+        tier: normal
+        evidence: { level: tested, by: [shape.governance::bunTest] }
+      - decl: law
+        name: ChangePlanCommitsOnlyWhenFullyStaged
+        template: { name: shape.governance::Property, args: [ShapeModelLowerer.lowerChange, "the plan is committed only after every entry is staged"] }
+        tier: critical
+        evidence: { level: tested, by: [shape.governance::bunTest] }
+      # BindingDocsCouplingContract
+      - decl: law
+        name: BindingsCompareNormalizedPaths
+        template: { name: shape.governance::Property, args: [ShapeBindings.checkBindings, "bindings compare normalized repo-relative changed paths"] }
+        tier: normal
+        evidence: { level: tested, by: [shape.governance::bunTest] }
+      - decl: law
+        name: BindingAttestationCountsOnlyWhenNew
+        template: { name: shape.governance::Property, args: [ShapeBindings.checkBindings, "an allowed attestation counts only when new relative to base, or its file changed without a base"] }
+        tier: normal
+        evidence: { level: tested, by: [shape.governance::bunTest] }
+      - decl: law
+        name: AttestationOnlyChangeDoesNotTriggerBinding
+        template: { name: shape.governance::Property, args: [ShapeBindings.checkBindings, "with a base, an attestation-only Shape change does not trigger a binding"] }
+        tier: normal
+        evidence: { level: tested, by: [shape.governance::bunTest] }
+      # CoverageCurrentUpdateContract
+      - decl: law
+        name: CoverageSourceRefMatchesChangedFile
+        template: { name: shape.governance::Property, args: [ShapeRuleEngine.checkCoverage, "a source reference counts only when its declaring Shape file matches the changed-file input after normalization"] }
+        tier: normal
+        evidence: { level: tested, by: [shape.governance::bunTest] }
+      - decl: law
+        name: CoverageAttestationCountsOnlyWhenNew
+        template: { name: shape.governance::Property, args: [ShapeRuleEngine.checkCoverage, "an attestation counts only when new relative to base, or its file changed without a base"] }
+        tier: normal
+        evidence: { level: tested, by: [shape.governance::bunTest] }
+      # FinalForbidPrecedence
+      - decl: law
+        name: FinalForbidBeatsGrant
+        template: { name: shape.governance::Property, args: [ShapeRuleEngine.deriveFinalForbidsForResource, "final forbids remain stronger than component grants"] }
+        tier: critical
+        evidence: { level: tested, by: [shape.governance::bunTest] }
+      - decl: law
+        name: FinalForbidTargetsDeterministic
+        template: { name: std::Deterministic, args: [ShapeRuleEngine.deriveFinalForbidsForResource] }
+        tier: critical
+        evidence: { level: tested, by: [shape.governance::bunTest] }
+      - decl: law
+        name: FinalForbidNotWaivedByContext
+        template: { name: shape.governance::Property, args: [ShapeRuleEngine.deriveFinalForbidsForResource, "final forbids cannot be waived by rationale or memory"] }
+        tier: critical
+        evidence: { level: tested, by: [shape.governance::bunTest] }
+      # ForbiddenPathWitness
+      - decl: law
+        name: ForbiddenPathFewestHops
+        template: { name: shape.governance::ShortestWitness, args: [ShapeRuleEngine.findShortestPath] }
+        tier: critical
+        evidence: { level: tested, by: [shape.governance::bunTest] }
+      - decl: law
+        name: ForbiddenPathHopsKeepProvenance
+        template: { name: shape.governance::Property, args: [ShapeRuleEngine.findShortestPath, "each hop preserves relation kind, name and provenance"] }
+        tier: critical
+        evidence: { level: tested, by: [shape.governance::bunTest] }
+      # FreshnessDeterminism
+      - decl: law
+        name: FreshnessEnforcesOnlyIsoDates
+        template: { name: shape.governance::Property, args: [ShapeRuleEngine.checkFreshness, "only ISO YYYY-MM-DD values are enforced"] }
+        tier: critical
+        evidence: { level: tested, by: [shape.governance::bunTest] }
+      # GuardedChangePrecision
+      - decl: law
+        name: GuardsFirePropertyLevel
+        template: { name: shape.governance::Property, args: [ShapeRuleEngine.checkGuardedChanges, "guards fire property-level when every protected property is detectable"] }
+        tier: normal
+        evidence: { level: tested, by: [shape.governance::bunTest] }
+      - decl: law
+        name: TransformGuardsFireOnMatchingTransform
+        template: { name: shape.governance::Property, args: [ShapeRuleEngine.checkGuardedChanges, "forbid-transform guards fire on a matching declared transform"] }
+        tier: normal
+        evidence: { level: tested, by: [shape.governance::bunTest] }
+      - decl: law
+        name: OtherGuardTargetsUseCoarseMatching
+        template: { name: shape.governance::Property, args: [ShapeRuleEngine.checkGuardedChanges, "other targets fall back to coarse modify/remove matching"] }
+        tier: normal
+        evidence: { level: tested, by: [shape.governance::bunTest] }
+      - decl: law
+        name: GuardsNeverWaiveFinalForbids
+        template: { name: shape.governance::Property, args: [ShapeRuleEngine.checkGuardedChanges, "final forbids are never waived"] }
+        tier: normal
+        evidence: { level: tested, by: [shape.governance::bunTest] }
+      # GuardedSourceCurrency
+      - decl: law
+        name: GuardedSourceClearedOnlyByChangeReevaluation
+        template: { name: shape.governance::Property, args: [ShapeRuleEngine.checkGuardedSources, "an edit to a guarded source is cleared only by a reevaluation written for that change"] }
+        tier: normal
+        evidence: { level: tested, by: [shape.governance::bunTest] }
+      # HypercycleWitness
+      - decl: law
+        name: HypercycleShortestWitness
+        template: { name: shape.governance::ShortestWitness, args: [ShapeRuleEngine.findHypercycle] }
+        tier: critical
+        evidence: { level: tested, by: [shape.governance::bunTest] }
+      # InspectionSchemaContract
+      - decl: law
+        name: InspectionQualifiedIdentities
+        template: { name: shape.governance::Property, args: [ShapeChecker.inspectShapeModules, "stable module-qualified identities"] }
+        tier: critical
+        evidence: { level: tested, by: [shape.governance::bunTest] }
+      - decl: law
+        name: InspectionPreservesOrigin
+        template: { name: shape.governance::Property, args: [ShapeChecker.inspectShapeModules, "preserves authored or generated-AST origin"] }
+        tier: critical
+        evidence: { level: tested, by: [shape.governance::bunTest] }
+      - decl: law
+        name: InspectionCodepointOrder
+        template: { name: shape.governance::Property, args: [ShapeChecker.inspectShapeModules, "codepoint ordering"] }
+        tier: critical
+        evidence: { level: tested, by: [shape.governance::bunTest] }
+      # PreludeMetadataContract (retargeted: see ShapeRuleEngine.requirementsForTarget)
+      - decl: law
+        name: ContextRequirementsDeriveObligations
+        template: { name: shape.governance::Property, args: [ShapeRuleEngine.requirementsForTarget, "context requirements derive obligations for fn, component and resource targets"] }
+        tier: normal
+        evidence: { level: tested, by: [shape.governance::bunTest] }
+      - decl: law
+        name: ContextRequirementsMergeWithUserTraits
+        template: { name: shape.governance::Property, args: [ShapeRuleEngine.requirementsForTarget, "they merge with user-defined require_context obligations"] }
+        tier: normal
+        evidence: { level: tested, by: [shape.governance::bunTest] }
+      # ReevaluationPolicyContract
+      - decl: law
+        name: ReevaluationNeedsApproverWhenPolicyRequires
+        template: { name: shape.governance::Property, args: [ShapeRuleEngine.checkReevaluations, "structural fields plus approver when a policy requires one for a sensitive memory"] }
+        tier: normal
+        evidence: { level: tested, by: [shape.governance::bunTest] }
+      - decl: law
+        name: ReevaluationRolesValidated
+        template: { name: shape.governance::Property, args: [ShapeRuleEngine.checkReevaluations, "reviewer/approver validated against declared roles"] }
+        tier: normal
+        evidence: { level: tested, by: [shape.governance::bunTest] }
+      - decl: law
+        name: ReevaluationRoleChecksOptIn
+        template: { name: shape.governance::Property, args: [ShapeRuleEngine.checkReevaluations, "approver and role checks stay opt-in"] }
+        tier: normal
+        evidence: { level: tested, by: [shape.governance::bunTest] }
+      # ShapeSourceNormalizationContract
+      - decl: law
+        name: SourcePathRulesShared
+        template: { name: shape.governance::Property, args: [ShapeStringHelpers.normalizeShapeSourcePath, "coverage, binding and analyzer comparisons use the same repo-relative path rules"] }
+        tier: critical
+        evidence: { level: tested, by: [shape.governance::bunTest] }
+
+  # ------------------------------------------------------------------------------------------
+  # shape.checker.incremental
+  # ------------------------------------------------------------------------------------------
+  - module: shape.checker.incremental
+    decls:
+      - { decl: resource, name: IncrementalCheckState, bind: ['ts.type("packages/shp-checker/src/checker/incremental.ts#IncrementalShapeChecker")'] }
+      - { decl: resource, name: IncrementalInvalidationReport, bind: ['ts.type("packages/shp-checker/src/checker/incremental.ts#IncrementalInvalidationReport")'] }
+      - decl: component
+        name: ShapeIncrementalChecker
+        tier: critical
+        units:
+          - { name: check, attach: [] }
+      # IncrementalInvalidationContract
+      - decl: law
+        name: IncrementalRebuildsOnDocumentChange
+        template: { name: shape.governance::Property, args: [ShapeIncrementalChecker.check, "document mutations and implicit generated-AST origin changes rebuild the complete two-pass model and facts"] }
+        tier: critical
+        evidence: { level: tested, by: [shape.governance::bunTest] }
+      - decl: law
+        name: IncrementalReusesModelOnOptionChange
+        template: { name: shape.governance::Property, args: [ShapeIncrementalChecker.check, "option-only checks may reuse the model when origins stay stable"] }
+        tier: critical
+        evidence: { level: tested, by: [shape.governance::bunTest] }
+      - decl: law
+        name: IncrementalReusesDiagnosticsOnNoop
+        template: { name: shape.governance::Property, args: [ShapeIncrementalChecker.check, "exact no-ops may reuse diagnostics"] }
+        tier: critical
+        evidence: { level: tested, by: [shape.governance::bunTest] }
+      - decl: law
+        name: IncrementalCheckerDocumented
+        template: { name: std::DocumentedBy, args: [ShapeIncrementalChecker, 'code raw("docs-site/src/content/docs/inside-shape/checker-pipeline.md")'] }
+        tier: normal
+        evidence: { judged: true }
+
+  # ------------------------------------------------------------------------------------------
+  # shape.delivery
+  # ------------------------------------------------------------------------------------------
+  - module: shape.delivery
+    decls:
+      - { decl: resource, name: ChangeBaseRevision, bind: ['fs.path("changed-base.txt")'] }
+      - { decl: resource, name: CiWorkflow, bind: ['fs.path(".github/workflows/*.yml")'] }
+      - { decl: resource, name: ClaudeReviewPrompt, bind: ['fs.path(".github/prompts/*.md")'] }
+      - { decl: resource, name: ClaudeReviewResult, bind: ['gha.output(".github/actions/claude-skill-review#result")'] }
+      - { decl: resource, name: CliPackageManifest, bind: ['fs.path("packages/shp-cli/package.json")'] }
+      - { decl: resource, name: DocsContent, bind: ['fs.path("docs-site/src/content/docs/**/*.md")', 'fs.path("README.md")'] }
+      - { decl: resource, name: InstallScript, bind: ['fs.path("install.sh")', 'fs.path("install.ps1")'] }
+      - { decl: resource, name: NativeParserAsset, bind: ['http.route("GET /kreuzberg-dev/tree-sitter-language-pack/releases/download/{v}/{asset}")'] }
+      - { decl: resource, name: PluginPackageManifest, bind: ['fs.path("plugins/shapelang/.claude-plugin/plugin.json")', 'fs.path("plugins/shapelang/.codex-plugin/plugin.json")'] }
+      - { decl: resource, name: PullRequestDescription, bind: ['gha.event("pull_request.body")'] }
+      - { decl: resource, name: PullRequestStatusComment, bind: ['http.route("POST /repos/{owner}/{repo}/issues/{n}/comments")', 'http.route("PATCH /repos/{owner}/{repo}/issues/comments/{id}")'] }
+      - { decl: resource, name: ReleaseArtifact, bind: ['fs.path("dist/release/*")'] }
+      - { decl: resource, name: ReleaseVersionTag, bind: ['git.ref("refs/tags/v*")'] }
+      - { decl: resource, name: ShapeAgentSkill, bind: ['fs.path("plugins/shapelang/skills/*/SKILL.md")'] }
+      - { decl: resource, name: SkillBehaviorFixture, bind: ['fs.path("fixtures/skills/**")'] }
+      - { decl: resource, name: SkillReleaseApproval, bind: ['http.route("GET /repos/{owner}/{repo}/actions/runs/{id}/approvals")'] }
+      - { decl: resource, name: SkillReleaseReport, bind: ['gha.artifact("skill-release-report-*")'] }
+
+      - decl: component
+        name: CiPipeline
+        tier: critical
+        boundary: true
+        assumes:
+          - { id: ClaudeReviewIsAdvisory, text: "Claude review jobs report findings; the deterministic checker, not the model, decides the gate." }
+          - { id: GitHubReportsTheChange, text: "The pull request event and git merge-base name the change under review." }
+        units:
+          # 0.x bound two units to the whole workflow file (E-overlap); bind the job steps
+          - { name: runShapeCi, bind: 'gha(".github/workflows/shape.yml#jobs.shape.steps.5")' }
+          - { name: runExperimentalSemanticKernel, bind: 'gha(".github/workflows/shape.yml#jobs.semantic-kernel.steps.6")' }
+      - decl: component
+        name: DocsSite
+        tier: low
+        units:
+          - { name: verifyDocs, bind: 'pkgjson("docs-site/package.json#scripts.verify:shape")' }
+      - { decl: component, name: ReleasePipeline, tier: critical }
+      # SkillsApprovalReuseContract
+      - decl: law
+        name: SkillsReportReusedOnlyWhenUnchanged
+        template: { name: shape.governance::Property, args: [CiPipeline.reuseReleaseSkillsEvaluation, "a report is copied from this SHA's approved run, or from an ancestor only when no relevant path changed"] }
+        tier: normal
+        evidence: { level: tested, by: [shape.governance::bunTest] }
+
+  # ------------------------------------------------------------------------------------------
+  # shape.language
+  # ------------------------------------------------------------------------------------------
+  - module: shape.language
+    decls:
+      - { decl: resource, name: DocsShapeBlock, bind: ['md.fence("shape")'] }
+      - { decl: resource, name: GeneratedAst, bind: ['fs.path("packages/shp-checker/src/language/generated/*.ts")'] }
+      - { decl: resource, name: GeneratedAstContract, bind: ['ts.module("packages/shp-checker/src/language/generated/ast.ts")'] }
+      - { decl: resource, name: LangiumGrammar, bind: ['fs.path("packages/shp-checker/src/language/shape.langium")'] }
+      - { decl: resource, name: ParsedModule, bind: ['ts.type("packages/shp-checker/src/language/generated/ast.ts#ShapeModule")'] }
+      - { decl: resource, name: ParsedShapeModule, bind: ['ts.type("packages/shp-checker/src/parser.ts#ParseShapeModuleResult")'] }
+      - { decl: resource, name: ShapeLanguageDefinition, bind: ['ts.module("packages/shp-checker/src/language/generated/module.ts")'] }
+      - { decl: resource, name: ShapeSource, bind: ['fs.path("**/*.shape")'] }
+      - { decl: resource, name: SyntaxHighlighting, bind: ['fs.path("docs-site/src/syntax/shape-language.mjs")'] }
+
+      - decl: component
+        name: DocsShapeBlockVerifier
+        tier: normal
+        paths: [docs-site/scripts/verify-shape-blocks.ts]
+        units:
+          - { name: verifyShapeCodeBlocks, bind: 'ts("docs-site/scripts/verify-shape-blocks.ts#verifyShapeCorpus")' }
+      - { decl: component, name: ShapeGrammar, tier: critical }
+      - { decl: component, name: ShapeParser, tier: critical }
+      - decl: law
+        name: GrammarDocumented
+        template: { name: std::DocumentedBy, args: [ShapeGrammar, 'code raw("docs-site/src/content/docs/reference/language-syntax.md")'] }
+        tier: normal
+        evidence: { judged: true }
+      - decl: law
+        name: DocsVerifierDocumented
+        template: { name: std::DocumentedBy, args: [DocsShapeBlockVerifier, 'code raw("docs-site/src/content/docs/inside-shape/langium-grammar.md")'] }
+        tier: normal
+        evidence: { judged: true }
+      # GrammarMemoryGuardForms (ShapeGrammar.generateAst binds the raw .langium file, which no
+      # test can cite at `unit`; the parser is where the listed forms are accepted)
+      - decl: law
+        name: GrammarSupportsGuardForms
+        template: { name: shape.governance::Property, args: [ShapeParser.parseShapeModule, "the grammar supports the listed protects/guards/governance/require_context/forbid path/grouping forms"] }
+        tier: normal
+        evidence: { level: tested, by: [shape.governance::bunTest] }
+      # ParseDocumentContract
+      - decl: law
+        name: ParserPreservesDocumentState
+        template: { name: shape.governance::Property, args: [ShapeParser.parseShapeModule, "parser output preserves document state, URI, qualified refs, candidate/forbidden-path syntax and diagnostics"] }
+        tier: normal
+        evidence: { level: tested, by: [shape.governance::bunTest] }
+
+  # ------------------------------------------------------------------------------------------
+  # shape.runtime
+  # ------------------------------------------------------------------------------------------
+  - module: shape.runtime
+    decls:
+      # ExperimentalKernelBenchmarkResult: no binding (printed to stdout, never stored)
+      - decl: resource
+        name: ExperimentalKernelBuildConfiguration
+        bind: ['fs.path("experiments/semantic-kernel/Cargo.toml")', 'fs.path("experiments/semantic-kernel/Cargo.lock")', 'fs.path("experiments/semantic-kernel/rust-toolchain.toml")']
+      - { decl: resource, name: ExperimentalKernelDiagnosticSet, bind: ['rust.type("experiments/semantic-kernel/src/lib.rs#KernelDiagnosticV1")'] }
+      - { decl: resource, name: ExperimentalKernelEnvelope, bind: ['rust.type("experiments/semantic-kernel/src/lib.rs#KernelRequestV1")', 'ts.type("experiments/semantic-kernel/harness/protocol.ts#KernelRequestV1")'] }
+      - { decl: resource, name: ExperimentalKernelProtocolV1, bind: ['fs.path("experiments/semantic-kernel/schema/kernel-protocol-v1.schema.json")'] }
+      - { decl: resource, name: ExperimentalKernelWasmArtifact, bind: ['fs.path("experiments/semantic-kernel/target/wasm-web/*")'] }
+      - decl: component
+        name: ExperimentalSemanticKernel
+        tier: low
+        boundary: true
+        assumes:
+          - { id: WasmBindgenFaithful, text: "wasm-bindgen output preserves the native kernel's semantics in the browser build." }
+      - { decl: component, name: ExperimentalSemanticKernelHarness, tier: low }
+      - decl: law
+        name: ExperimentalKernelDocumented
+        template: { name: std::DocumentedBy, args: [ExperimentalSemanticKernel, 'code raw("experiments/semantic-kernel/README.md")'] }
+        tier: low
+        evidence: { judged: true }
+
+  # ------------------------------------------------------------------------------------------
+  # shape.tooling
+  # ------------------------------------------------------------------------------------------
+  - module: shape.tooling
+    decls:
+      - { decl: resource, name: AnalyzerHint, bind: ['ts.type("packages/shp-checker/src/analyzer-types.ts#AnalyzerHint")'] }
+      - { decl: resource, name: AnalyzerWarning, bind: ['ts.type("packages/shp-checker/src/analyzer-types.ts#AnalyzerWarning")'] }
+      - { decl: resource, name: AstAnchorFingerprint, bind: ['ts.type("packages/shp-checker/src/ast-generation-types.ts#AstFingerprint")'] }
+      - { decl: resource, name: AuthoringAdvisory, bind: ['ts.type("packages/shp-checker/src/critic.ts#ShapeCriticAdvisory")'] }
+      # AuthoringPrompt: no binding (a plain string)
+      # CanonicalShapeFormat: no binding (contract name for FormattedShape)
+      - { decl: resource, name: CodeSemanticGraph, bind: ['ts.type("packages/shp-checker/src/ast-generation-types.ts#CodeSemanticGraph")'] }
+      - { decl: resource, name: CommandLineInterface, bind: ['ts.call("process.argv")'] }
+      # DiagnosticText: no binding (a plain string returned by formatDiagnostics)
+      - { decl: resource, name: EditorOutput, bind: ['ts.type("packages/shp-checker/src/editor.ts#EditorDiagnostic")', 'ts.type("packages/shp-checker/src/editor.ts#DefinitionLocation")'] }
+      - { decl: resource, name: FormattedShape, bind: ['ts.type("packages/shp-checker/src/formatter.ts#FormatResult")'] }
+      - { decl: resource, name: GeneratedAstAnchor, bind: ['ts.type("packages/shp-checker/src/ast-generation-types.ts#CodeAstAnchor")'] }
+      - { decl: resource, name: GeneratedAstManifest, bind: ['fs.path("shape/generated/ast/manifest.json")'] }
+      # GeneratedAstTrace: no binding (comment text inside generated drafts)
+      - { decl: resource, name: GeneratedCandidateEffect, bind: ['ts.type("packages/shp-checker/src/ast-generation-types.ts#CodeCandidateEffect")'] }
+      - { decl: resource, name: InstalledShpBinary, bind: ['ts.call("process.execPath")'] }
+      - { decl: resource, name: InstalledShpRuntimeAssets, bind: ['fs.path("$EXEC_DIR/tree-sitter-language-pack")'] }
+      - { decl: resource, name: LanguageServerProtocol, bind: ['ts.call("createConnection")'] }
+      # LanguageSource: no binding (any source file handed to the AST generator)
+      - { decl: resource, name: ReleaseArchive, bind: ['http.route("GET /{owner}/{repo}/releases/download/{tag}/{asset}")'] }
+      - { decl: resource, name: ReleaseChecksumManifest, bind: ['http.route("GET /{owner}/{repo}/releases/download/{tag}/checksums.txt")'] }
+      - { decl: resource, name: ReleaseMetadata, bind: ['http.route("GET /repos/{owner}/{repo}/releases/latest")', 'http.route("GET /repos/{owner}/{repo}/releases/tags/{tag}")'] }
+      - { decl: resource, name: ShapeModelDraft, bind: ['fs.path("shape/generated/ast/**/*.shape")'] }
+      - { decl: resource, name: SourceSyntaxTree, bind: ['ts.type("packages/shp-checker/src/ast-generation-types.ts#RawAstFile")'] }
+      - decl: resource
+        name: SystemClock
+        bind: ['ts.call("Date.now")', 'ts.call("Date")', 'ts.call("performance.now")', 'ts.call("process.hrtime")']
+      # UnifiedDiff: no binding (a plain string input)
+
+      - decl: component
+        name: ShpCli
+        tier: normal
+        boundary: true
+        assumes:
+          - { id: GitReportsRepositoryState, text: "git ls-files and git merge-base report the repository's tracked files and change base." }
+          - { id: GitHubReleasesAuthentic, text: "GitHub release metadata and checksums.txt come from the Shape release workflow." }
+        units:
+          # ClockReadAtCliBoundary is now a rule plus the tsClockScan observer
+          - { name: isoToday, attach: [] }
+      - decl: component
+        name: ShapeAstGenerator
+        tier: normal
+        boundary: true
+        assumes:
+          - { id: TreeSitterParsersFaithful, text: "Bundled tree-sitter grammars parse each supported language as its compiler does." }
+      - { decl: component, name: ShapeAnalyzer, tier: normal }
+      - { decl: component, name: ShapeAuthoring, tier: normal }
+      - { decl: component, name: ShapeEditorServices, tier: normal }
+      - decl: component
+        name: ShapeFormatter
+        tier: normal
+        units:
+          - { name: formatShapeModule, attach: [] }
+      - { decl: component, name: ShapeLanguageServer, tier: normal }
+
+      # The clock is read only at the CLI boundary, to inject a freshness date.
+      - decl: rule
+        name: ClockReadOnlyAtCliBoundary
+        tier: normal
+        clauses:
+          - forbid: effect
+            atom: Read<SystemClock>
+            within:
+              - component ShpCli
+              - component ShapeAnalyzer
+              - component ShapeAstGenerator
+              - component ShapeAuthoring
+              - component ShapeEditorServices
+              - component ShapeFormatter
+              - component ShapeLanguageServer
+              - component shape.language::ShapeParser
+              - component shape.language::ShapeGrammar
+            # main's complete summary lists the clock read it reaches through isoToday, and a
+            # forbid reads declared summaries per unit, so every summarising caller is excepted too
+            except: [unit ShpCli.isoToday, unit ShpCli.main]
+      # The analyzer stays advisory: it never reaches the authoritative checker (rationale
+      # AnalyzerCheckerSeparation, route call-graph).
+      - decl: rule
+        name: AnalyzerStaysAdvisory
+        tier: normal
+        clauses:
+          - { forbid: path, from: [ShapeAnalyzer], to: [shape.checker::ShapeChecker], over: [calls] }
+      - decl: note
+        name: AnalyzerCheckerSeparation
+        kind: rationale
+        about: [rule AnalyzerStaysAdvisory, component ShapeAnalyzer]
+        owner: shape.governance::ShapeMaintainers
+        text: "The analyzer compares source hints directly with parsed Shape and remains advisory; it does not call the authoritative deterministic checker."
+
+      # Known deviation: update's Windows replacement path stamps temp files with Date.now().
+      - decl: exception
+        name: UpdateTempTokenReadsClock
+        waives: [contradiction]
+        target: rule ClockReadOnlyAtCliBoundary
+        for: ['code ts("packages/shp-cli/src/commands/update/impl.ts#replaceWindowsBinary")']
+        owner: shape.governance::ShapeMaintainers
+        expires: "2027-04-30"
+
+      - decl: law
+        name: CliDocumented
+        template: { name: std::DocumentedBy, args: [ShpCli, 'code raw("docs-site/src/content/docs/reference/cli.md")'] }
+        tier: normal
+        evidence: { judged: true }
+      - decl: law
+        name: AnalyzerDocumented
+        template: { name: std::DocumentedBy, args: [ShapeAnalyzer, 'code raw("docs-site/src/content/docs/guides/analyzer.md")'] }
+        tier: normal
+        evidence: { judged: true }
+      - decl: law
+        name: AstGeneratorDocumented
+        template: { name: std::DocumentedBy, args: [ShapeAstGenerator, 'code raw("docs-site/src/content/docs/guides/ast-drafts.md")'] }
+        tier: normal
+        evidence: { judged: true }
+      - decl: law
+        name: AuthoringDocumented
+        template: { name: std::DocumentedBy, args: [ShapeAuthoring, 'code raw("docs-site/src/content/docs/guides/authoring.md")'] }
+        tier: normal
+        evidence: { judged: true }
+      - decl: law
+        name: FormatterEditorDocumented
+        template: { name: std::DocumentedBy, args: [ShapeFormatter, 'code raw("docs-site/src/content/docs/inside-shape/formatter-editor-authoring.md")'] }
+        tier: normal
+        evidence: { judged: true }
+
+      # ---- laws from memory clauses ----
+      # AstGenerationUnknownSafety
+      - decl: law
+        name: DraftsKeepEffectsUnknown
+        template: { name: shape.governance::Property, args: [ShapeAstGenerator.generateShapeFromCodeSemanticGraph, "drafts preserve uncertainty with effects unknown"] }
+        tier: normal
+        evidence: { level: tested, by: [shape.governance::bunTest] }
+      - decl: law
+        name: DraftReferencesStableUnderLineMoves
+        template: { name: shape.governance::Property, args: [ShapeAstGenerator.generateShapeFromCodeSemanticGraph, "stable symbol or file references that do not churn on line-only movement"] }
+        tier: normal
+        evidence: { level: tested, by: [shape.governance::bunTest] }
+      - decl: law
+        name: DraftAnchorsCarryFingerprints
+        template: { name: shape.governance::Property, args: [ShapeAstGenerator.generateShapeFromCodeSemanticGraph, "compact anchors with semantic fingerprints when token evidence exists"] }
+        tier: normal
+        evidence: { level: tested, by: [shape.governance::bunTest] }
+      - decl: law
+        name: TokenlessAnchorsWarn
+        template: { name: shape.governance::Property, args: [ShapeAstGenerator.generateShapeFromCodeSemanticGraph, "warn instead of failing on tokenless anchors"] }
+        tier: normal
+        evidence: { level: tested, by: [shape.governance::bunTest] }
+      - decl: law
+        name: CandidateEffectsAreHints
+        template: { name: shape.governance::Property, args: [ShapeAstGenerator.generateShapeFromCodeSemanticGraph, "candidate effect evidence only as review hints with checkable pins"] }
+        tier: normal
+        evidence: { level: tested, by: [shape.governance::bunTest] }
+      - decl: law
+        name: RawTracesOptIn
+        template: { name: shape.governance::Property, args: [ShapeAstGenerator.generateShapeFromCodeSemanticGraph, "raw syntax traces opt-in"] }
+        tier: normal
+        evidence: { level: tested, by: [shape.governance::bunTest] }
+      # AuthoringUnknownSafety
+      - decl: law
+        name: UpdateDraftsPreferUnknown
+        template: { name: shape.governance::Property, args: [ShapeAuthoring.generateShapeUpdateDraft, "generated drafts prefer effects unknown over false empty complete summaries"] }
+        tier: normal
+        evidence: { level: tested, by: [shape.governance::bunTest] }
+      # CliCommandDispatchOrder
+      - decl: law
+        name: AmbiguousOutputModesRejectedFirst
+        template: { name: shape.governance::Property, args: [ShpCli.main, "ambiguous output modes are rejected before command work"] }
+        tier: normal
+        evidence: { level: tested, by: [shape.governance::bunTest] }
+      - decl: law
+        name: GeneratedAstDirectoryChecksExplicit
+        template: { name: shape.governance::Property, args: [ShpCli.main, "generated AST directory checks are explicit"] }
+        tier: normal
+        evidence: { level: tested, by: [shape.governance::bunTest] }
+      - decl: law
+        name: GeneratedAstIdentityFromWorkspaceRoot
+        template: { name: shape.governance::Property, args: [ShpCli.main, "generated AST source identity derives from the workspace root"] }
+        tier: normal
+        evidence: { level: tested, by: [shape.governance::bunTest] }
+      # DefaultShapeFileDiscovery
+      - decl: law
+        name: DefaultDiscoveryLoadsNestedPacks
+        template: { name: shape.governance::Property, args: [ShpCli.defaultShapeFiles, "default discovery loads every Shape file under shape/, including nested vendor packs"] }
+        tier: normal
+        evidence: { level: tested, by: [shape.governance::bunTest] }
+      # FormatterCanonicalDiffs
+      - decl: law
+        name: FormatterIdempotent
+        template: { name: shape.governance::Idempotent, args: [ShapeFormatter.formatShapeModule] }
+        tier: normal
+        evidence: { level: tested, by: [shape.governance::bunTest] }
+      - decl: law
+        name: FormatterFlattensGroupedContext
+        template: { name: shape.governance::Property, args: [ShapeFormatter.formatShapeModule, "nested rationale/memory grouping blocks canonicalize to flat members"] }
+        tier: normal
+        evidence: { level: tested, by: [shape.governance::bunTest] }
+      - decl: law
+        name: FormatterCanonicalGraphRules
+        template: { name: shape.governance::Property, args: [ShapeFormatter.formatShapeModule, "graph-rule endpoints and kind filters have one canonical form"] }
+        tier: normal
+        evidence: { level: tested, by: [shape.governance::bunTest] }

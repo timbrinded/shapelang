@@ -1,0 +1,12 @@
+{
+ "exact": true,
+ "obligations": [
+  {
+   "kind": "coverage",
+   "severity": "owed",
+   "subject": "component tooling::ShpCli",
+   "tier": "normal"
+  }
+ ],
+ "verdict": "owed"
+}

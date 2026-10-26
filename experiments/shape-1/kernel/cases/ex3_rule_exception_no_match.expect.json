@@ -1,0 +1,11 @@
+{
+ "exact": true,
+ "obligations": [
+  {
+   "exception": null,
+   "key": "ob:d4218b3063c6f1b91aae4d39f84ca56299815d68e7994c92d0ecaeb3ce3c89e7",
+   "severity": "blocking"
+  }
+ ],
+ "verdict": "blocked"
+}

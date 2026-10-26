@@ -1,0 +1,12 @@
+{
+ "exact": true,
+ "obligations": [
+  {
+   "force": "sound",
+   "key": "ob:0e15fc409b2de2abf47e6566460c2f53432612f365fcd64c367356cf3ba85326",
+   "severity": "blocking",
+   "tier": "final"
+  }
+ ],
+ "verdict": "blocked"
+}

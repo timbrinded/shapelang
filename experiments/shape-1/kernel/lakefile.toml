@@ -1,0 +1,14 @@
+name = "kernel"
+version = "0.1.0"
+defaultTargets = ["Kernel", "shapek", "l3fuzz"]
+
+[[lean_lib]]
+name = "Kernel"
+
+[[lean_exe]]
+name = "shapek"
+root = "Main"
+
+[[lean_exe]]
+name = "l3fuzz"
+root = "Fuzz"

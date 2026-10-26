@@ -10,6 +10,7 @@ specs/
 .research/
 .idea/
 experiments/semantic-kernel/target/
+experiments/shape-1/kernel/.lake/
 
 TODO.md
 plans/

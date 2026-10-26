@@ -1,0 +1,14 @@
+{
+ "exact": true,
+ "obligations": [
+  {
+   "binding": "bd:0ee8731661d897e621efbd56e0875beecb7c4b7524920ad681fdc55c8ad187d6",
+   "key": "ob:bb51a88f52f5081e773dabf7f021b863325e003c20a47af0a4e2b8e133f59628",
+   "severity": "blocking",
+   "witness": [
+    "sha256:51ed979304abfea638295c5bec1e63db15cfa26c3425a552f31ae7ca312dc279"
+   ]
+  }
+ ],
+ "verdict": "blocked"
+}
