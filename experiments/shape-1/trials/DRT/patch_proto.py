@@ -191,3 +191,9 @@ patch("laws.ts", """      if (producerChanged(ctx, r)) {
         for (const x of producerFinest(ctx, r)) pfinest.add(x);
       }""")
 print("T16 T17 applied")
+
+# GL (kernel-gap emulation): no refutation of lower bounds (effects.lower, edge.exists); the kernel's
+# documented "Not implemented: refutation of lower bounds"
+patch("checker.ts", "export function evalLower(ctx: Ctx, facts: WFact[], edges: Edge[]): Contra[] {\n",
+      "export function evalLower(ctx: Ctx, facts: WFact[], edges: Edge[]): Contra[] {\n  if (fix(\"GL\")) return [];\n")
+print("GL applied")
