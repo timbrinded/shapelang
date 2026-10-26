@@ -3,12 +3,14 @@
 // shape.kernel.case/v1, a runner for the Lean kernel executable, and an exact comparator over the
 // kernel's core-output fields.
 //
-// Pre-pass = kernel/test/bridge.ts's kernelCase, with three corrections that the kernel interface
+// Pre-pass = kernel/test/bridge.ts's kernelCase, with four corrections that the kernel interface
 // assigns to the pre-pass (A.11.2.1):
 //   1. records the prototype rejected (RJ01-RJ14 validation) are dropped (as trials/H5/kernel-xcheck.ts);
 //   2. elaboration uses now* = max(now, base committer time), as derive does (bridge used now);
 //   3. review lines whose `change` is not one of the change ids are dropped (derive drops them for
-//      every line kind; the kernel only checks the change of approve lines).
+//      every line kind; the kernel only checks the change of approve lines);
+//   4. cells are computed whenever there is a base outside audit mode, also when no component has a
+//      glob (the prototype then has the single cell (ungoverned, ungoverned); bridge.ts passed none).
 import { spawnSync } from "node:child_process";
 import { derive } from "../../proto/src/derive.ts";
 import { elaborate } from "../../proto/src/elaborate.ts";
@@ -53,7 +55,9 @@ export function kernelCase(input, tsOut) {
     for (const c of base.components) for (const g of c.paths) owners.push({ side: "b", glob: g, owner: `${c.q}.*` });
     for (const c of head.components) for (const g of c.paths) owners.push({ side: "h", glob: g, owner: `${c.q}.*` });
   }
-  const cells = owners.length ? computeCells(owners).cells.filter((c) => typeof c.b === "string" && typeof c.h === "string").map((c) => [c.b, c.h]) : [];
+  // correction 4: with no component globs the prototype still has the universe cell (ungoverned, ungoverned);
+  // bridge.ts passed no cells at all
+  const cells = base && input.mode !== "audit" ? computeCells(owners).cells.filter((c) => typeof c.b === "string" && typeof c.h === "string").map((c) => [c.b, c.h]) : [];
   return {
     contract: "shape.kernel.case/v1",
     mode: input.mode,

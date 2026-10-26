@@ -639,3 +639,83 @@ patch('Kernel/Facts.lean', """        introduced := sup.any (factNew e brs), tie
         affected := aff, code := finestRows e aff, witness := sortStrs (sup.map (fun x => factId x.f)),
         gsupport := sortStrs (sup.map (fun x => factId x.f) ++ declSup.map (·.2)),""")
 print("batch 5 applied")
+
+# ---- batch 6 ----
+# K21 (both sides with T18): L3's first pass over W_eval(head) edges (A.8.4.2 "A first pass uses
+#      W_eval(head) edges only"): a counterexample inside G_A ∩ W_eval is preferred, so a realised one is
+#      found whenever it exists (the kernel searched G_A directly; for edge forbids it took the first
+#      violating edge in (kind, to) order)
+patch('Kernel/Loosen.lean', """    match l3Decide (heads.map (·.op)) cb.op W G (e.fx "A11") with
+    | .heir | .ga | .exhausted => []""", """    let full := l3Decide (heads.map (·.op)) cb.op W G (e.fx "A11")
+    let first : L3Verdict := if e.fx "K21" then (match full with
+        | .edgeCex _ | .searchCex _ | .budget => l3Decide (heads.map (·.op)) cb.op W (G.filter (Eh.contains ·)) (e.fx "A11")
+        | _ => .exhausted) else .exhausted
+    let v : L3Verdict := match first with
+      | .edgeCex ed => .edgeCex ed
+      | .searchCex P => .searchCex P
+      | _ => full
+    match v with
+    | .heir | .ga | .exhausted => []""")
+print("batch 6 applied")
+
+# ---- batch 7 ----
+# K22: a unit of a component without paths binds by default to the unique M_h identity whose last symbol
+#      segment is the unit's name (A.3.3.2 "ids(M_h) without paths"); the kernel's unitBind searched only
+#      the component's globs, so such units were unbound (found first by trial H4's "prebind" variant).
+#      Applied in the parser, to head and base, so unitBind itself stays unchanged.
+patch('Kernel/Parse.lean', """def parseInput (j : J) : Except String Input := do""", """def pathlessBind (S : Esf) (m : List MEntry) : Esf :=
+  { S with units := S.units.map fun u =>
+      if u.bind.isSome then u else
+      match S.comps.find? (·.q == u.comp) with
+      | some c =>
+        if c.paths.isEmpty then
+          (match (mIds m).filter (fun x => idSym x != "" && symLast (idSym x) == u.name) with
+           | [x] => { u with bind := some x }
+           | _ => u)
+        else u
+      | none => u }
+
+def parseInput (j : J) : Except String Input := do""")
+patch('Kernel/Parse.lean', """      authors := authors, unmappedBot := unmappedBot, head := hEsf, base := if mode == .audit then none else bEsf,""",
+"""      authors := authors, unmappedBot := unmappedBot,
+      head := if (j.strs "drtFix").contains "K22" then pathlessBind hEsf mh else hEsf,
+      base := if mode == .audit then none else if (j.strs "drtFix").contains "K22" then bEsf.map (pathlessBind · mh) else bEsf,""")
+print("batch 7 applied")
+
+# K23: the coverage set also holds F_h(c) ∖ F_b(c) for head upper bounds with an equal-NF base claim
+#      (A.7.4.1, third clause; the kernel had only finest changes and changed-deps entries). Footprints:
+#      effect forbids by scope at att(x), authority and structural forbids by component, effects.upper by
+#      reach(u) under each side's unit binding over M_h.
+patch('Kernel/Coverage.lean', """def coverageSet (e : Env) (rs : List Record) : List String :=""", """def footIn (S : Esf) (m : List MEntry) (reachOf : String → List String) (c : Claim) (x : String) : Bool :=
+  let u := att S m x
+  match c.op with
+  | .effectForbid _ sc ex => covers S sc ex u
+  | .authority k _ => compOf S u == some k
+  | .effectsUpper uq _ => (reachOf uq).contains x
+  | .edgeForbid Ssel X _ _ _ => match compOf S u with
+    | some kq => nselMatch Ssel kq && !nselMatch X kq
+    | none => false
+  | .pathForbid _ _ _ _ | .cycleForbid _ => (compOf S u).isSome
+  | _ => false
+
+def footGrow (e : Env) (rs : List Record) : List String :=
+  match e.base with
+  | none => []
+  | some Sb =>
+    let cp := callPairs e rs
+    let reachIn (S : Esf) (uq : String) : List String :=
+      reachSet cp (fun _ => true) ((mIds e.mh).filter (fun x => att S e.mh x == .unit uq))
+    let ups := e.head.claims.filter (fun c => Sb.claims.any (·.fp == c.fp) && (match c.op with
+      | .effectForbid .. | .authority .. | .effectsUpper .. | .edgeForbid .. | .pathForbid .. | .cycleForbid .. => true
+      | _ => false))
+    let tbl := ups.filterMap (fun c => match c.op with
+      | .effectsUpper uq _ => some (uq, reachIn e.head uq, reachIn Sb uq)
+      | _ => none)
+    let rH (uq : String) : List String := ((tbl.find? (·.1 == uq)).map (·.2.1)).getD []
+    let rB (uq : String) : List String := ((tbl.find? (·.1 == uq)).map (·.2.2)).getD []
+    (mIds e.mh).filter fun x => ups.any fun c => footIn e.head e.mh rH c x && !footIn Sb e.mh rB c x
+
+def coverageSet (e : Env) (rs : List Record) : List String :=""")
+patch('Kernel/Coverage.lean', """      (fun x => !e.fx "K20" || e.mh.any (·.id == x)))""",
+      """      (fun x => !e.fx "K20" || e.mh.any (·.id == x)) ++ (if e.fx "K23" then footGrow e rs else []))""")
+print("K23 applied")

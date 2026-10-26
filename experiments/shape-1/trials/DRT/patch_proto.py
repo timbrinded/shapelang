@@ -197,3 +197,46 @@ print("T16 T17 applied")
 patch("checker.ts", "export function evalLower(ctx: Ctx, facts: WFact[], edges: Edge[]): Contra[] {\n",
       "export function evalLower(ctx: Ctx, facts: WFact[], edges: Edge[]): Contra[] {\n  if (fix(\"GL\")) return [];\n")
 print("GL applied")
+
+# ---- batch 6 ----
+# T18 (both sides with K21): L3's first pass over W_eval(head) = W_decl(head) plus observed edges
+#      (A.8.4.2 "A first pass uses W_eval(head) edges only"); a counterexample is realised when every
+#      edge is in W_eval (declared edges count, A.8.3.1 "a W_eval path")
+patch("loosening.ts", "  const observedEdges = new Set(inp.edgesHead.map((e) => `${e.from}|${e.kind}|${e.to}`));\n",
+      "  const observedEdges = new Set(inp.edgesHead.map((e) => `${e.from}|${e.kind}|${e.to}`));\n"
+      "  const evalKey = new Set([...declKey, ...observedEdges]);\n"
+      "  const ekey = (e: SEdge): string => `${e.from}|${e.kind}|${e.to}`;\n")
+patch("loosening.ts", "    const realised = cx !== null && cx.every((e) => observedEdges.has(`${e.from}|${e.kind}|${e.to}`));",
+      "    const realised = cx !== null && cx.every((e) => (fix(\"T18\") ? evalKey : observedEdges).has(`${e.from}|${e.kind}|${e.to}`));")
+patch("loosening.ts", "    const cx = GA.filter((e) => e.kind === ren.args.kind && S.has(e.from) && T.has(e.to)).sort((a, b) => cmpTuple([a.kind, a.from, a.to], [b.kind, b.from, b.to]))[0];",
+      "    const cands = GA.filter((e) => e.kind === ren.args.kind && S.has(e.from) && T.has(e.to)).sort((a, b) => cmpTuple([a.kind, a.from, a.to], [b.kind, b.from, b.to]));\n"
+      "    const cx = (fix(\"T18\") ? cands.find((e) => evalKey.has(ekey(e))) : undefined) ?? cands[0];")
+patch("loosening.ts", """  let units = 0;
+  const K = new Set(kindsB);
+  const gaK = GA.filter((e) => K.has(e.kind))""", """  let units = 0;
+  const K = new Set(kindsB);
+  const runSearch = (GAx: SEdge[]): [SEdge[] | null, boolean] => {
+  const gaK = GAx.filter((e) => K.has(e.kind))""")
+patch("loosening.ts", """    for (const n of nodes) if (dfs(n, n, [], new Set([n]))) break;
+  }
+  if (exhausted) return mk(null, "undecided", units);""", """    for (const n of nodes) if (dfs(n, n, [], new Set([n]))) break;
+  }
+  return [found, exhausted];
+  };
+  let found: SEdge[] | null = null;
+  let exhausted = false;
+  if (fix("T18")) [found] = runSearch(GA.filter((e) => evalKey.has(ekey(e))));
+  if (!found) [found, exhausted] = runSearch(GA);
+  if (exhausted) return mk(null, "undecided", units);""")
+print("batch 6 applied")
+
+# ---- batch 7 (fixture triage) ----
+# A15 (ambiguity): L2 affected for a base unit removed from the head is code(u) under the base binding
+#      over M_h (A.6.4.3; kernel), not the empty head code of the absent unit (prototype) (A.8.3.2 "code(ρu)")
+patch("loosening.ts", "  const code = [...(Wh.codeOfPos.get(uh) ?? [])];\n  const out: LoosePart = {\n    question: \"L2\",",
+      "  const code = [...(Wh.codeOfPos.get(uh) ?? (fix(\"A15\") && !ctx.head.units.some((x) => x.q === uh) ? Wb.codeOfPos.get(u) : undefined) ?? [])];\n  const out: LoosePart = {\n    question: \"L2\",")
+# A16 (ambiguity): a law target naming an unbound unit (head has E-unbound) contributes no Req pair (kernel);
+#      the prototype kept a placeholder pair "unbound:<unit>"
+patch("laws.ts", "        out.push({ id: `unbound:${t.slice(5)}`, projection: \"unit\" });\n        continue;",
+      "        if (!fix(\"A16\")) out.push({ id: `unbound:${t.slice(5)}`, projection: \"unit\" });\n        continue;")
+print("batch 7 applied")

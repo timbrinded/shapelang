@@ -69,5 +69,7 @@ def main (args : List String) : IO UInt32 := do
       ("laws", .arr ((e.head.claims.filter (·.isLaw)).map (lawEval i))),
       ("parts", .arr (parts.map partJ)),
       ("uncovered", .arr unc), ("coverageSet", .arr ((coverageSet e i.records).map js)),
-      ("authors", .arr (e.authors.map js))]).jcs)
+      ("authors", .arr (e.authors.map js)),
+      ("declEdges", .arr ((declEdges e.head).map fun ed => js (edgeName ed))),
+      ("evalEdges", .arr ((evalEdges e i.records).map fun ed => js (edgeName ed)))]).jcs)
     return 0

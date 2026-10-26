@@ -399,7 +399,7 @@ export function genCase(seed, profile = "fragment") {
       else if (r < 0.5 || laws.length === 0) hd.push(lawDecl());
       else {
         const l = pick(laws);
-        l.evidence = { ...(l.evidence ?? {}) };
+        l.evidence = { ...l.evidence };
         const s = rnd();
         if (s < 0.4) l.evidence.level = pick(["declared", "tested"]);
         else if (s < 0.7) l.evidence.orJudged = !l.evidence.orJudged;
@@ -548,8 +548,16 @@ export function genCase(seed, profile = "fragment") {
         feat("deleted-fn");
       }
     }
-    if (chance(0.1)) headCode.get("pkgjson:package.json").own += 1, (headCode.get("pkgjson:package.json").file += 1), feat("pkg-changed");
-    if (chance(0.1)) headCode.get("ts:test/sys.test.ts").own += 1, (headCode.get("ts:test/sys.test.ts").file += 1), feat("harness-changed");
+    if (chance(0.1)) {
+      headCode.get("pkgjson:package.json").own += 1;
+      headCode.get("pkgjson:package.json").file += 1;
+      feat("pkg-changed");
+    }
+    if (chance(0.1)) {
+      headCode.get("ts:test/sys.test.ts").own += 1;
+      headCode.get("ts:test/sys.test.ts").file += 1;
+      feat("harness-changed");
+    }
   }
   const dig = (id, proj, v) => label(`${id} ${proj} v${v}`);
   const specs = (m) =>
