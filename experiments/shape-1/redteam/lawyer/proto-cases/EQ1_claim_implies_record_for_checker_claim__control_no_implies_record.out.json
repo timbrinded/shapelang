@@ -1,0 +1,152 @@
+{
+ "contract": "shape.check.output/v1",
+ "mode": "change",
+ "inputDigest": "sha256:654e010bcc8572eb4049cf13820763feefb19637508977121bdf1d51f91ed4c2",
+ "verdict": "blocked",
+ "errors": [],
+ "rejected": [],
+ "obligations": [
+  {
+   "key": "ob:293bff79611759cfe708a6d53f20be4be9b599322285bfa9d5817ab3751f43dc",
+   "kind": "loosening",
+   "reason": null,
+   "questions": [
+    "L3"
+   ],
+   "introduced": true,
+   "severity": "blocking",
+   "tier": "critical",
+   "budget": "judgment",
+   "force": null,
+   "owner": "q::Team",
+   "assignee": null,
+   "group": "g:967fb1189775cd6bf60b354eafa676b6eb140ae45c53bef7f99d1ab35b5e04f2",
+   "claim": {
+    "fp": "sha256:abf7412af8204ffac3577041268c5580c5034a33e45fc73f8b744c6a6020f461",
+    "ids": [
+     "q::Isolation"
+    ],
+    "tier": "critical"
+   },
+   "subject": "sha256:abf7412af8204ffac3577041268c5580c5034a33e45fc73f8b744c6a6020f461",
+   "witness": [],
+   "facts": {},
+   "counterexample": [
+    {
+     "from": "q::A",
+     "kind": "calls",
+     "to": "q::C"
+    }
+   ],
+   "exploited": false,
+   "final": false,
+   "binding": "bd:da8c1ef0127a2913a14923556ad65e6d8922bbf22d9f4ab7014f1b88d19bd137",
+   "exception": null,
+   "dischargers": [
+    {
+     "act": "revert",
+     "by": "author",
+     "agentSafe": true,
+     "eligible": [],
+     "creates": null
+    },
+    {
+     "act": "answer",
+     "by": "judges",
+     "agentSafe": false,
+     "eligible": [
+      "q::quinn"
+     ],
+     "creates": null
+    }
+   ],
+   "causes": [
+    {
+     "type": "base-claim",
+     "id": "sha256:abf7412af8204ffac3577041268c5580c5034a33e45fc73f8b744c6a6020f461"
+    }
+   ]
+  }
+ ],
+ "answered": [],
+ "loosening": [
+  {
+   "question": "L3",
+   "subject": "sha256:abf7412af8204ffac3577041268c5580c5034a33e45fc73f8b744c6a6020f461",
+   "answer": "loosened",
+   "exploited": false,
+   "final": false,
+   "affected": [
+    "ts:src/a/a.ts"
+   ],
+   "counterexample": [
+    {
+     "from": "q::A",
+     "kind": "calls",
+     "to": "q::C"
+    }
+   ],
+   "obligation": "ob:293bff79611759cfe708a6d53f20be4be9b599322285bfa9d5817ab3751f43dc"
+  }
+ ],
+ "renames": [],
+ "debt": [],
+ "preexisting": [],
+ "budget": {
+  "limit": null,
+  "used": 0,
+  "overflow": []
+ },
+ "health": {
+  "coverage": {
+   "num": 0,
+   "den": 0
+  },
+  "unobservable": [
+   "q::Isolation"
+  ],
+  "unanswered": [],
+  "openAuthority": [
+   "q::A",
+   "q::B",
+   "q::C"
+  ],
+  "ungoverned": {
+   "num": 0,
+   "den": 3
+  },
+  "unmapped": [],
+  "externalCalls": 0,
+  "ungovernedCalls": 0,
+  "unanchored": 0,
+  "droppedEdges": 0,
+  "unauthenticated": [],
+  "executesHead": [
+   "q::refines"
+  ],
+  "baseObservations": "present",
+  "baseDefects": [],
+  "clockClamped": false,
+  "trustDebt": 0,
+  "budget": {
+   "limit": null,
+   "used": 0,
+   "overflow": 0
+  },
+  "self": [],
+  "preexisting": 0,
+  "renames": 0,
+  "assumption": "dependency code and configuration data",
+  "cells": [
+   "cell:[\"q::A.*\",\"q::A.*\"]",
+   "cell:[\"q::B.*\",\"q::B.*\"]",
+   "cell:[\"q::C.*\",\"q::C.*\"]",
+   "cell:[\"ungoverned\",\"ungoverned\"]"
+  ],
+  "records": {
+   "valid": 0,
+   "rejected": 0
+  },
+  "baseUnreadable": false
+ }
+}

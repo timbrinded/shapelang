@@ -1,0 +1,30 @@
+{
+ "answered": [],
+ "contract": "shape.check.output/v1",
+ "debt": [],
+ "errors": [],
+ "mode": "change",
+ "obligations": [
+  {
+   "binding": "bd:47123ca8f8c5a3460d9a183ada61ee9819ef83613eb0b80cc4ddd954e958d94a",
+   "budget": "judgment",
+   "claim": null,
+   "exception": null,
+   "exploited": null,
+   "final": false,
+   "force": null,
+   "group": "g:fe70ca3a066631e81e795a6541563d827d67024b670ed42d3847ccf1226e4e2a",
+   "introduced": true,
+   "key": "ob:3584651e10a56f966347e42830866f9135f6cebf596e03eed8ed0649cf250c6c",
+   "kind": "coverage",
+   "owner": "x::StoreTeam",
+   "questions": null,
+   "reason": null,
+   "severity": "blocking",
+   "subject": "component x::Store",
+   "tier": "critical",
+   "witness": []
+  }
+ ],
+ "verdict": "blocked"
+}

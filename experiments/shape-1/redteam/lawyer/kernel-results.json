@@ -1,0 +1,1483 @@
+{
+ "A10_judge_line_not_bound_to_revision": {
+  "control_approve_line_push2": {
+   "answered": [],
+   "case": "cases/A10_approve_push2.json",
+   "debt": [],
+   "errors": [],
+   "exit": 1,
+   "obligations": [
+    {
+     "binding": "bd:ba1e5d4d8e441e58",
+     "claim": null,
+     "exception": null,
+     "exploited": false,
+     "force": null,
+     "introduced": true,
+     "kind": "loosening",
+     "reason": null,
+     "severity": "blocking",
+     "subject": "sha256:c414eadc238d87c4e004899e9f2fe5a2ecfe615dae7eb8a242714426a059a077",
+     "tier": "normal"
+    }
+   ],
+   "verdict": "blocked"
+  },
+  "push1_reviewed_by_ann": {
+   "answered": [],
+   "case": "cases/A10_push1_reviewed_by_ann.json",
+   "debt": [],
+   "errors": [],
+   "exit": 0,
+   "obligations": [],
+   "verdict": "pass"
+  },
+  "push2_never_reviewed": {
+   "answered": [],
+   "case": "cases/A10_push2_never_reviewed.json",
+   "debt": [],
+   "errors": [],
+   "exit": 0,
+   "obligations": [],
+   "verdict": "pass"
+  }
+ },
+ "A11_empty_req_vacuous_exception": {
+  "attack_cli_exception_matches_empty_component_law": {
+   "answered": [],
+   "case": "cases/A11_attack.json",
+   "debt": [
+    {
+     "exception": "tooling::CliWaiver",
+     "expiresInDays": 37,
+     "obligation": "ob:84b8ade724a4286fd02a101d0d688fa8fe9316e1dbe226ff470a7ced07b80106",
+     "owner": "tooling::ShapeMaintainers"
+    }
+   ],
+   "errors": [],
+   "exit": 0,
+   "obligations": [
+    {
+     "binding": "bd:947151562f795ed0",
+     "claim": [
+      "tooling::EmptyDocumented"
+     ],
+     "exception": "tooling::CliWaiver",
+     "exploited": null,
+     "force": null,
+     "introduced": false,
+     "kind": "unestablished",
+     "reason": "missing",
+     "severity": "owed",
+     "subject": null,
+     "tier": "normal"
+    }
+   ],
+   "verdict": "owed"
+  }
+ },
+ "A12_judges_string_intersection": {
+  "attack_judges_owner_to_member": {
+   "answered": [],
+   "case": "cases/A12_attack_judges_owner_to_member.json",
+   "debt": [],
+   "errors": [],
+   "exit": 1,
+   "obligations": [
+    {
+     "binding": "bd:72559ae279f14740",
+     "claim": null,
+     "exception": null,
+     "exploited": false,
+     "force": null,
+     "introduced": true,
+     "kind": "loosening",
+     "reason": null,
+     "severity": "blocking",
+     "subject": "policy normal",
+     "tier": "normal"
+    }
+   ],
+   "verdict": "blocked"
+  },
+  "control_unchanged": {
+   "answered": [],
+   "case": "cases/A12_control_unchanged.json",
+   "debt": [],
+   "errors": [],
+   "exit": 0,
+   "obligations": [],
+   "verdict": "pass"
+  }
+ },
+ "A13_named_judges_final_two_person": {
+  "outsiders_dave_and_erin_answer": {
+   "answered": [
+    {
+     "as": "discharge",
+     "obligation": "ob:031024b1dfd16fe266cf991b13b10ca3e58431846f44d3ae2c851d52644fd44a"
+    },
+    {
+     "as": "discharge",
+     "obligation": "ob:ca99c5461b8ff9a8410d4389337b30099a13b1a78bf99bd8f9cc107df9d04054"
+    }
+   ],
+   "case": "cases/A13_outsiders_dave_and_erin_answer.json",
+   "debt": [],
+   "errors": [],
+   "exit": 0,
+   "obligations": [],
+   "verdict": "pass"
+  },
+  "owners_bob_and_carol_answer": {
+   "answered": [],
+   "case": "cases/A13_owners_bob_and_carol_answer.json",
+   "debt": [],
+   "errors": [],
+   "exit": 1,
+   "obligations": [
+    {
+     "binding": "bd:1ec9793b583996b6",
+     "claim": null,
+     "exception": null,
+     "exploited": true,
+     "force": null,
+     "introduced": true,
+     "kind": "loosening",
+     "reason": null,
+     "severity": "blocking",
+     "subject": "sha256:ccfcbabf10265d643560fc2bcd0014f9bf15241ce35da1f5e0a269c349e617c0",
+     "tier": "final"
+    },
+    {
+     "binding": "bd:09a1177838b4bef8",
+     "claim": null,
+     "exception": null,
+     "exploited": true,
+     "force": null,
+     "introduced": true,
+     "kind": "loosening",
+     "reason": null,
+     "severity": "blocking",
+     "subject": "component audit::AuditStore",
+     "tier": "critical"
+    }
+   ],
+   "verdict": "blocked"
+  }
+ },
+ "A14_hosted_law_closure_change": {
+  "attack_spec_weakened": {
+   "answered": [],
+   "case": "cases/A14_attack_spec_weakened.json",
+   "debt": [],
+   "errors": [],
+   "exit": 0,
+   "obligations": [],
+   "verdict": "pass"
+  },
+  "control_spec_unchanged": {
+   "answered": [],
+   "case": "cases/A14_control_spec_unchanged.json",
+   "debt": [],
+   "errors": [],
+   "exit": 0,
+   "obligations": [],
+   "verdict": "pass"
+  }
+ },
+ "A1a_judges_narrowing_L4": {
+  "attack_head_narrows_judges": {
+   "answered": [
+    {
+     "as": "discharge",
+     "obligation": "ob:a4a8d01ab841cdac2718c03927694215d569d314bdf6c753487e5123267e47f0"
+    }
+   ],
+   "case": "cases/A1a_attack_head_narrows_judges.json",
+   "debt": [],
+   "errors": [],
+   "exit": 0,
+   "obligations": [],
+   "verdict": "pass"
+  },
+  "control_head_policy_unchanged": {
+   "answered": [],
+   "case": "cases/A1a_control_head_policy_unchanged.json",
+   "debt": [],
+   "errors": [],
+   "exit": 1,
+   "obligations": [
+    {
+     "binding": "bd:2e201b86c28e32a8",
+     "claim": null,
+     "exception": null,
+     "exploited": false,
+     "force": null,
+     "introduced": true,
+     "kind": "loosening",
+     "reason": null,
+     "severity": "blocking",
+     "subject": "sha256:c414eadc238d87c4e004899e9f2fe5a2ecfe615dae7eb8a242714426a059a077",
+     "tier": "normal"
+    }
+   ],
+   "verdict": "blocked"
+  }
+ },
+ "A1b_judges_narrowing_guard": {
+  "attack_head_narrows_judges": {
+   "answered": [],
+   "case": "cases/A1b_attack_head_narrows_judges.json",
+   "debt": [],
+   "errors": [],
+   "exit": 0,
+   "obligations": [],
+   "verdict": "pass"
+  },
+  "control_head_policy_unchanged": {
+   "answered": [],
+   "case": "cases/A1b_control_head_policy_unchanged.json",
+   "debt": [],
+   "errors": [],
+   "exit": 1,
+   "obligations": [
+    {
+     "binding": "bd:2dd342b8c63f0baa",
+     "claim": [
+      "tooling::ShpCli.isoToday/RefactorSensitive/law"
+     ],
+     "exception": null,
+     "exploited": null,
+     "force": null,
+     "introduced": true,
+     "kind": "unestablished",
+     "reason": "missing",
+     "severity": "blocking",
+     "subject": null,
+     "tier": "critical"
+    }
+   ],
+   "verdict": "blocked"
+  }
+ },
+ "A1c_judges_narrowing_exception_answer": {
+  "attack_head_narrows_judges": {
+   "answered": [
+    {
+     "as": "exception-answer",
+     "obligation": "ob:d98055745547389f83971693def7cf3d1e3dd6850821637f736b8867dbc95226"
+    }
+   ],
+   "case": "cases/A1c_attack_head_narrows_judges.json",
+   "debt": [
+    {
+     "exception": "tooling::ClockComp",
+     "expiresInDays": 37,
+     "obligation": "ob:d98055745547389f83971693def7cf3d1e3dd6850821637f736b8867dbc95226",
+     "owner": "tooling::ShapeMaintainers"
+    }
+   ],
+   "errors": [],
+   "exit": 0,
+   "obligations": [
+    {
+     "binding": "bd:26c1f8d79bf5d094",
+     "claim": [
+      "tooling::CheckerNeverReadsClock"
+     ],
+     "exception": "tooling::ClockComp",
+     "exploited": null,
+     "force": "sound",
+     "introduced": true,
+     "kind": "contradiction",
+     "reason": null,
+     "severity": "owed",
+     "subject": {
+      "atom": "Read<tooling::SystemClock>",
+      "code": "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness"
+     },
+     "tier": "critical"
+    }
+   ],
+   "verdict": "owed"
+  },
+  "control_head_policy_unchanged": {
+   "answered": [],
+   "case": "cases/A1c_control_head_policy_unchanged.json",
+   "debt": [],
+   "errors": [],
+   "exit": 1,
+   "obligations": [
+    {
+     "binding": "bd:26c1f8d79bf5d094",
+     "claim": [
+      "tooling::CheckerNeverReadsClock"
+     ],
+     "exception": null,
+     "exploited": null,
+     "force": "sound",
+     "introduced": true,
+     "kind": "contradiction",
+     "reason": null,
+     "severity": "blocking",
+     "subject": {
+      "atom": "Read<tooling::SystemClock>",
+      "code": "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness"
+     },
+     "tier": "critical"
+    }
+   ],
+   "verdict": "blocked"
+  }
+ },
+ "A2a_pc_masks_assumption_critical": {
+  "attack_lockfile_bumped": {
+   "answered": [
+    {
+     "as": "discharge",
+     "obligation": "ob:8b9a1c953f7ed31c50f09fcd65a8e27bdb6d9a40db449c8fd69946b621161e7d"
+    }
+   ],
+   "case": "cases/A2a_critical_attack_lockfile_bumped.json",
+   "debt": [],
+   "errors": [],
+   "exit": 0,
+   "obligations": [],
+   "verdict": "pass"
+  },
+  "control_no_lockfile_edit": {
+   "answered": [],
+   "case": "cases/A2a_critical_control_no_lockfile_edit.json",
+   "debt": [],
+   "errors": [],
+   "exit": 1,
+   "obligations": [
+    {
+     "binding": "bd:8ad54064b6f2def4",
+     "claim": [
+      "ironkv::SetRefinesSpec"
+     ],
+     "exception": null,
+     "exploited": null,
+     "force": null,
+     "introduced": true,
+     "kind": "unestablished",
+     "reason": "assumption",
+     "severity": "blocking",
+     "subject": null,
+     "tier": "critical"
+    }
+   ],
+   "verdict": "blocked"
+  }
+ },
+ "A2a_pc_masks_assumption_final": {
+  "attack_lockfile_bumped": {
+   "answered": [
+    {
+     "as": "discharge",
+     "obligation": "ob:8b9a1c953f7ed31c50f09fcd65a8e27bdb6d9a40db449c8fd69946b621161e7d"
+    }
+   ],
+   "case": "cases/A2a_final_attack_lockfile_bumped.json",
+   "debt": [],
+   "errors": [],
+   "exit": 0,
+   "obligations": [],
+   "verdict": "pass"
+  },
+  "control_no_lockfile_edit": {
+   "answered": [],
+   "case": "cases/A2a_final_control_no_lockfile_edit.json",
+   "debt": [],
+   "errors": [],
+   "exit": 1,
+   "obligations": [
+    {
+     "binding": "bd:8ad54064b6f2def4",
+     "claim": [
+      "ironkv::SetRefinesSpec"
+     ],
+     "exception": null,
+     "exploited": null,
+     "force": null,
+     "introduced": true,
+     "kind": "unestablished",
+     "reason": "assumption",
+     "severity": "blocking",
+     "subject": null,
+     "tier": "final"
+    }
+   ],
+   "verdict": "blocked"
+  }
+ },
+ "A2b_pc_masks_missing_fake_provider": {
+  "attack_fake_headonly_provider": {
+   "answered": [
+    {
+     "as": "discharge",
+     "obligation": "ob:79b18d16e2bc560c6c28f3722f151421320a80116886e10f80d3b5e0cab8e4fc"
+    }
+   ],
+   "case": "cases/A2b_attack_fake_headonly_provider.json",
+   "debt": [],
+   "errors": [],
+   "exit": 0,
+   "obligations": [],
+   "verdict": "pass"
+  },
+  "control_timeout_only": {
+   "answered": [],
+   "case": "cases/A2b_control_timeout_only.json",
+   "debt": [],
+   "errors": [],
+   "exit": 1,
+   "obligations": [
+    {
+     "binding": "bd:6804c5e50e6a312f",
+     "claim": [
+      "tooling::CheckIsDeterministic"
+     ],
+     "exception": null,
+     "exploited": null,
+     "force": null,
+     "introduced": true,
+     "kind": "unestablished",
+     "reason": "missing",
+     "severity": "blocking",
+     "subject": null,
+     "tier": "critical"
+    }
+   ],
+   "verdict": "blocked"
+  }
+ },
+ "A34_relay_commit_stales_revision_tied_records": {
+  "phase1_head_h5": {
+   "answered": [],
+   "case": "cases/A34_phase1_head_h5.json",
+   "debt": [],
+   "errors": [],
+   "exit": 0,
+   "obligations": [],
+   "verdict": "pass"
+  },
+  "phase2_after_relay_commit_h5r": {
+   "answered": [],
+   "case": "cases/A34_phase2_after_relay_commit_h5r.json",
+   "debt": [],
+   "errors": [
+    {
+     "code": "E-provider-missing",
+     "subject": "provider tooling::bunTest sha256:8620c3bead39262d509d30d813c84d79db4e1ce51b1dd92c904225082519b8c3"
+    }
+   ],
+   "exit": 1,
+   "obligations": [
+    {
+     "binding": "bd:6804c5e50e6a312f",
+     "claim": [
+      "tooling::CheckIsDeterministic"
+     ],
+     "exception": null,
+     "exploited": null,
+     "force": null,
+     "introduced": true,
+     "kind": "unestablished",
+     "reason": "stale",
+     "severity": "blocking",
+     "subject": null,
+     "tier": "critical"
+    }
+   ],
+   "verdict": "blocked"
+  }
+ },
+ "A38_record_hatch_assumption_ignored": {
+  "attack_record_lists_hatch_manifest_silent": {
+   "answered": [],
+   "case": "cases/A38_attack_record_lists_hatch_manifest_silent.json",
+   "debt": [],
+   "errors": [],
+   "exit": 0,
+   "obligations": [],
+   "verdict": "pass"
+  },
+  "control_manifest_marker": {
+   "answered": [],
+   "case": "cases/A38_control_manifest_marker.json",
+   "debt": [],
+   "errors": [],
+   "exit": 1,
+   "obligations": [
+    {
+     "binding": "bd:8ad54064b6f2def4",
+     "claim": [
+      "ironkv::SetRefinesSpec"
+     ],
+     "exception": null,
+     "exploited": null,
+     "force": null,
+     "introduced": true,
+     "kind": "unestablished",
+     "reason": "assumption",
+     "severity": "blocking",
+     "subject": null,
+     "tier": "critical"
+    }
+   ],
+   "verdict": "blocked"
+  }
+ },
+ "A39_final_law_through_admit": {
+  "attack_admit_allowed_by_boundary": {
+   "answered": [],
+   "case": "cases/A39_attack_admit_allowed_by_boundary.json",
+   "debt": [],
+   "errors": [],
+   "exit": 0,
+   "obligations": [],
+   "verdict": "pass"
+  },
+  "control_assume_allowed_by_boundary": {
+   "answered": [],
+   "case": "cases/A39_control_assume_allowed_by_boundary.json",
+   "debt": [],
+   "errors": [],
+   "exit": 1,
+   "obligations": [
+    {
+     "binding": "bd:8ad54064b6f2def4",
+     "claim": [
+      "ironkv::SetRefinesSpec"
+     ],
+     "exception": null,
+     "exploited": null,
+     "force": null,
+     "introduced": true,
+     "kind": "unestablished",
+     "reason": "assumption",
+     "severity": "blocking",
+     "subject": null,
+     "tier": "final"
+    }
+   ],
+   "verdict": "blocked"
+  }
+ },
+ "A3_two_exceptions_expiry": {
+  "now_2026-10-25": {
+   "answered": [],
+   "case": "cases/A3_now_2026-10-25.json",
+   "debt": [
+    {
+     "exception": "tooling::AaaRuleWaiver",
+     "expiresInDays": 311,
+     "obligation": "ob:d98055745547389f83971693def7cf3d1e3dd6850821637f736b8867dbc95226",
+     "owner": "tooling::ShapeMaintainers"
+    }
+   ],
+   "errors": [],
+   "exit": 0,
+   "obligations": [
+    {
+     "binding": "bd:d097f68eb32b3049",
+     "claim": [
+      "tooling::CheckerNeverReadsClock"
+     ],
+     "exception": "tooling::AaaRuleWaiver",
+     "exploited": null,
+     "force": "sound",
+     "introduced": false,
+     "kind": "contradiction",
+     "reason": null,
+     "severity": "owed",
+     "subject": {
+      "atom": "Read<tooling::SystemClock>",
+      "code": "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness"
+     },
+     "tier": "critical"
+    }
+   ],
+   "verdict": "owed"
+  },
+  "now_2026-11-01_after_short_expiry": {
+   "answered": [],
+   "case": "cases/A3_now_2026-11-01_after_short_expiry.json",
+   "debt": [],
+   "errors": [],
+   "exit": 0,
+   "obligations": [
+    {
+     "binding": "bd:d097f68eb32b3049",
+     "claim": [
+      "tooling::CheckerNeverReadsClock"
+     ],
+     "exception": null,
+     "exploited": null,
+     "force": "sound",
+     "introduced": false,
+     "kind": "contradiction",
+     "reason": null,
+     "severity": "owed",
+     "subject": {
+      "atom": "Read<tooling::SystemClock>",
+      "code": "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness"
+     },
+     "tier": "critical"
+    }
+   ],
+   "verdict": "owed"
+  }
+ },
+ "A4_coverage_unmet_claim_owner": {
+  "attack_kate_only": {
+   "answered": [
+    {
+     "as": "discharge",
+     "obligation": "ob:3584651e10a56f966347e42830866f9135f6cebf596e03eed8ed0649cf250c6c"
+    }
+   ],
+   "case": "cases/A4_attack_kate_only.json",
+   "debt": [],
+   "errors": [],
+   "exit": 0,
+   "obligations": [],
+   "verdict": "pass"
+  },
+  "control_sam_only": {
+   "answered": [],
+   "case": "cases/A4_control_sam_only.json",
+   "debt": [],
+   "errors": [],
+   "exit": 1,
+   "obligations": [
+    {
+     "binding": "bd:47123ca8f8c5a346",
+     "claim": null,
+     "exception": null,
+     "exploited": null,
+     "force": null,
+     "introduced": true,
+     "kind": "coverage",
+     "reason": null,
+     "severity": "blocking",
+     "subject": "component x::Store",
+     "tier": "critical"
+    }
+   ],
+   "verdict": "blocked"
+  }
+ },
+ "A50_move_code_out_of_final_authority": {
+  "attack_glob_moves_new_code_to_low_component": {
+   "answered": [],
+   "case": "cases/A50_attack_glob_moves_new_code_to_low_component.json",
+   "debt": [],
+   "errors": [],
+   "exit": 0,
+   "obligations": [],
+   "verdict": "pass"
+  },
+  "control_new_code_stays_in_final_component": {
+   "answered": [],
+   "case": "cases/A50_control_new_code_stays_in_final_component.json",
+   "debt": [],
+   "errors": [],
+   "exit": 1,
+   "obligations": [
+    {
+     "binding": "bd:fda16315a36d667c",
+     "claim": null,
+     "exception": null,
+     "exploited": null,
+     "force": null,
+     "introduced": true,
+     "kind": "coverage",
+     "reason": null,
+     "severity": "blocking",
+     "subject": "component w::Vault",
+     "tier": "final"
+    }
+   ],
+   "verdict": "blocked"
+  }
+ },
+ "A5a_final_informal_law_single_judge": {
+  "attack_one_agent_judges": {
+   "answered": [],
+   "case": "cases/A5a_attack_one_agent_judges.json",
+   "debt": [],
+   "errors": [],
+   "exit": 0,
+   "obligations": [],
+   "verdict": "pass"
+  },
+  "attack_one_person_judges": {
+   "answered": [],
+   "case": "cases/A5a_attack_one_person_judges.json",
+   "debt": [],
+   "errors": [],
+   "exit": 0,
+   "obligations": [],
+   "verdict": "pass"
+  },
+  "control_no_judgment": {
+   "answered": [],
+   "case": "cases/A5a_control_no_judgment.json",
+   "debt": [],
+   "errors": [],
+   "exit": 1,
+   "obligations": [
+    {
+     "binding": "bd:2dd342b8c63f0baa",
+     "claim": [
+      "tooling::ShpCli.isoToday/RefactorSensitive/law"
+     ],
+     "exception": null,
+     "exploited": null,
+     "force": null,
+     "introduced": true,
+     "kind": "unestablished",
+     "reason": "missing",
+     "severity": "blocking",
+     "subject": null,
+     "tier": "final"
+    }
+   ],
+   "verdict": "blocked"
+  }
+ },
+ "A5b_final_heuristic_agent_dismissal": {
+  "attack_agent_dismisses": {
+   "answered": [
+    {
+     "as": "discharge",
+     "obligation": "ob:d98055745547389f83971693def7cf3d1e3dd6850821637f736b8867dbc95226"
+    }
+   ],
+   "case": "cases/A5b_attack_agent_dismisses.json",
+   "debt": [],
+   "errors": [],
+   "exit": 0,
+   "obligations": [],
+   "verdict": "pass"
+  },
+  "control_no_answer": {
+   "answered": [],
+   "case": "cases/A5b_control_no_answer.json",
+   "debt": [],
+   "errors": [],
+   "exit": 0,
+   "obligations": [
+    {
+     "binding": "bd:26c1f8d79bf5d094",
+     "claim": [
+      "tooling::CheckerNeverReadsClock"
+     ],
+     "exception": null,
+     "exploited": null,
+     "force": "heuristic",
+     "introduced": true,
+     "kind": "contradiction",
+     "reason": null,
+     "severity": "owed",
+     "subject": {
+      "atom": "Read<tooling::SystemClock>",
+      "code": "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness"
+     },
+     "tier": "final"
+    }
+   ],
+   "verdict": "owed"
+  }
+ },
+ "A6_rebind_resource_code_final": {
+  "attack_binding_moved": {
+   "answered": [],
+   "case": "cases/A6_attack_binding_moved.json",
+   "debt": [],
+   "errors": [],
+   "exit": 0,
+   "obligations": [],
+   "verdict": "pass"
+  },
+  "control_binding_kept": {
+   "answered": [],
+   "case": "cases/A6_control_binding_kept.json",
+   "debt": [],
+   "errors": [],
+   "exit": 1,
+   "obligations": [
+    {
+     "binding": "bd:7a72c442cfd931cc",
+     "claim": [
+      "audit::AuditEvent/AppendOnly/effect.forbid-HardDelete"
+     ],
+     "exception": null,
+     "exploited": null,
+     "force": "sound",
+     "introduced": true,
+     "kind": "contradiction",
+     "reason": null,
+     "severity": "blocking",
+     "subject": {
+      "atom": "HardDelete<audit::AuditEvent>",
+      "code": "ts:src/audit/purge.ts#purgeOldEvents"
+     },
+     "tier": "final"
+    }
+   ],
+   "verdict": "blocked"
+  }
+ },
+ "A7_L3_search_order_exploited": {
+  "attack_observed_edge_A_to_C": {
+   "answered": [],
+   "case": "cases/A7_attack_observed_edge_A_to_C.json",
+   "debt": [],
+   "errors": [],
+   "exit": 0,
+   "obligations": [
+    {
+     "binding": "bd:dc12efdad4312d93",
+     "claim": null,
+     "exception": null,
+     "exploited": false,
+     "force": null,
+     "introduced": true,
+     "kind": "loosening",
+     "reason": null,
+     "severity": "owed",
+     "subject": "sha256:753c19ad661d62d42ec22377528e08324c1166d2a8350d3cf738cda66deb8a3f",
+     "tier": "low"
+    }
+   ],
+   "verdict": "owed"
+  },
+  "control_no_observed_edge": {
+   "answered": [],
+   "case": "cases/A7_control_no_observed_edge.json",
+   "debt": [],
+   "errors": [],
+   "exit": 0,
+   "obligations": [
+    {
+     "binding": "bd:dc12efdad4312d93",
+     "claim": null,
+     "exception": null,
+     "exploited": false,
+     "force": null,
+     "introduced": true,
+     "kind": "loosening",
+     "reason": null,
+     "severity": "owed",
+     "subject": "sha256:753c19ad661d62d42ec22377528e08324c1166d2a8350d3cf738cda66deb8a3f",
+     "tier": "low"
+    }
+   ],
+   "verdict": "owed"
+  }
+ },
+ "A8_base_glob_tie_name_dependence": {
+  "lax_component_sorts_first": {
+   "answered": [],
+   "case": "cases/A8_lax_component_sorts_first.json",
+   "debt": [],
+   "errors": [],
+   "exit": 0,
+   "obligations": [],
+   "verdict": "pass"
+  },
+  "strict_component_sorts_first": {
+   "answered": [],
+   "case": "cases/A8_strict_component_sorts_first.json",
+   "debt": [],
+   "errors": [],
+   "exit": 1,
+   "obligations": [
+    {
+     "binding": "bd:e135f465f002bc0c",
+     "claim": null,
+     "exception": null,
+     "exploited": false,
+     "force": null,
+     "introduced": true,
+     "kind": "loosening",
+     "reason": null,
+     "severity": "blocking",
+     "subject": "component z::Alpha",
+     "tier": "critical"
+    }
+   ],
+   "verdict": "blocked"
+  }
+ },
+ "A9_A29_observer_silence_normal_tier": {
+  "attack_only_base_revision_record": {
+   "answered": [],
+   "case": "cases/A9_attack_only_base_revision_record.json",
+   "debt": [],
+   "errors": [],
+   "exit": 0,
+   "obligations": [
+    {
+     "binding": "bd:4d6726f1cb82a21c",
+     "claim": null,
+     "exception": null,
+     "exploited": null,
+     "force": null,
+     "introduced": true,
+     "kind": "coverage",
+     "reason": null,
+     "severity": "owed",
+     "subject": "component checker::ShapeRuleEngine",
+     "tier": "normal"
+    }
+   ],
+   "verdict": "owed"
+  },
+  "attack_scanner_edited_reports_nothing": {
+   "answered": [],
+   "case": "cases/A9_attack_scanner_edited_reports_nothing.json",
+   "debt": [],
+   "errors": [],
+   "exit": 0,
+   "obligations": [
+    {
+     "binding": "bd:4d6726f1cb82a21c",
+     "claim": null,
+     "exception": null,
+     "exploited": null,
+     "force": null,
+     "introduced": true,
+     "kind": "coverage",
+     "reason": null,
+     "severity": "owed",
+     "subject": "component checker::ShapeRuleEngine",
+     "tier": "normal"
+    }
+   ],
+   "verdict": "owed"
+  },
+  "control_scanner_edited_still_reports": {
+   "answered": [],
+   "case": "cases/A9_control_scanner_edited_still_reports.json",
+   "debt": [],
+   "errors": [],
+   "exit": 1,
+   "obligations": [
+    {
+     "binding": "bd:26c1f8d79bf5d094",
+     "claim": [
+      "tooling::CheckerNeverReadsClock"
+     ],
+     "exception": null,
+     "exploited": null,
+     "force": "sound",
+     "introduced": true,
+     "kind": "contradiction",
+     "reason": null,
+     "severity": "blocking",
+     "subject": {
+      "atom": "Read<tooling::SystemClock>",
+      "code": "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness"
+     },
+     "tier": "normal"
+    },
+    {
+     "binding": "bd:4d6726f1cb82a21c",
+     "claim": null,
+     "exception": null,
+     "exploited": null,
+     "force": null,
+     "introduced": true,
+     "kind": "coverage",
+     "reason": null,
+     "severity": "owed",
+     "subject": "component checker::ShapeRuleEngine",
+     "tier": "normal"
+    }
+   ],
+   "verdict": "blocked"
+  },
+  "control_scanner_reports": {
+   "answered": [],
+   "case": "cases/A9_control_scanner_reports.json",
+   "debt": [],
+   "errors": [],
+   "exit": 1,
+   "obligations": [
+    {
+     "binding": "bd:26c1f8d79bf5d094",
+     "claim": [
+      "tooling::CheckerNeverReadsClock"
+     ],
+     "exception": null,
+     "exploited": null,
+     "force": "sound",
+     "introduced": true,
+     "kind": "contradiction",
+     "reason": null,
+     "severity": "blocking",
+     "subject": {
+      "atom": "Read<tooling::SystemClock>",
+      "code": "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness"
+     },
+     "tier": "normal"
+    }
+   ],
+   "verdict": "blocked"
+  }
+ },
+ "D13_introduced_core_vs_annex": {
+  "stale_record_and_harness_edited": {
+   "answered": [],
+   "case": "cases/D13_stale_and_pc.json",
+   "debt": [],
+   "errors": [],
+   "exit": 0,
+   "obligations": [
+    {
+     "binding": "bd:8dd89c9c58381352",
+     "claim": [
+      "tooling::CheckIsDeterministic"
+     ],
+     "exception": null,
+     "exploited": null,
+     "force": null,
+     "introduced": false,
+     "kind": "unestablished",
+     "reason": "stale",
+     "severity": "owed",
+     "subject": null,
+     "tier": "critical"
+    }
+   ],
+   "verdict": "owed"
+  }
+ },
+ "DH_stale_harness_digest": {
+  "harness_digest_mismatch_not_in_delta": {
+   "answered": [],
+   "case": "cases/DH_harness_mismatch.json",
+   "debt": [],
+   "errors": [],
+   "exit": 0,
+   "obligations": [],
+   "verdict": "pass"
+  }
+ },
+ "GSTAR_head_trusts_not_in_run": {
+  "attack_head_adds_trust": {
+   "answered": [],
+   "case": "cases/GSTAR_attack_head_adds_trust.json",
+   "debt": [],
+   "errors": [],
+   "exit": 1,
+   "obligations": [
+    {
+     "binding": "bd:03a47c966f1ab68a",
+     "claim": null,
+     "exception": null,
+     "exploited": false,
+     "force": null,
+     "introduced": true,
+     "kind": "loosening",
+     "reason": null,
+     "severity": "blocking",
+     "subject": "provider ironkv::verus",
+     "tier": "critical"
+    },
+    {
+     "binding": "bd:8ad54064b6f2def4",
+     "claim": [
+      "ironkv::SetRefinesSpec"
+     ],
+     "exception": null,
+     "exploited": null,
+     "force": null,
+     "introduced": true,
+     "kind": "unestablished",
+     "reason": "assumption",
+     "severity": "blocking",
+     "subject": null,
+     "tier": "critical"
+    }
+   ],
+   "verdict": "blocked"
+  },
+  "control_head_unchanged": {
+   "answered": [],
+   "case": "cases/GSTAR_control_head_unchanged.json",
+   "debt": [],
+   "errors": [],
+   "exit": 1,
+   "obligations": [
+    {
+     "binding": "bd:8ad54064b6f2def4",
+     "claim": [
+      "ironkv::SetRefinesSpec"
+     ],
+     "exception": null,
+     "exploited": null,
+     "force": null,
+     "introduced": true,
+     "kind": "unestablished",
+     "reason": "assumption",
+     "severity": "blocking",
+     "subject": null,
+     "tier": "critical"
+    }
+   ],
+   "verdict": "blocked"
+  }
+ },
+ "HS_heuristic_answer_survives_force_upgrade": {
+  "phase1_heuristic_dismissed": {
+   "answered": [
+    {
+     "as": "discharge",
+     "obligation": "ob:d98055745547389f83971693def7cf3d1e3dd6850821637f736b8867dbc95226"
+    }
+   ],
+   "case": "cases/HS_phase1_heuristic_dismissed.json",
+   "debt": [],
+   "errors": [],
+   "exit": 0,
+   "obligations": [],
+   "verdict": "pass"
+  },
+  "phase2_head_declares_presence": {
+   "answered": [],
+   "case": "cases/HS_phase2_head_declares_presence.json",
+   "debt": [],
+   "errors": [],
+   "exit": 1,
+   "obligations": [
+    {
+     "binding": "bd:26c1f8d79bf5d094",
+     "claim": [
+      "tooling::CheckerNeverReadsClock"
+     ],
+     "exception": null,
+     "exploited": null,
+     "force": "sound",
+     "introduced": true,
+     "kind": "contradiction",
+     "reason": null,
+     "severity": "blocking",
+     "subject": {
+      "atom": "Read<tooling::SystemClock>",
+      "code": "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness"
+     },
+     "tier": "critical"
+    },
+    {
+     "binding": "bd:7db6836523836805",
+     "claim": null,
+     "exception": null,
+     "exploited": false,
+     "force": null,
+     "introduced": true,
+     "kind": "loosening",
+     "reason": null,
+     "severity": "blocking",
+     "subject": "provider tooling::tsClockScan",
+     "tier": "critical"
+    }
+   ],
+   "verdict": "blocked"
+  }
+ },
+ "NM_final_drift_exit_non_monotone": {
+  "a_unrelated_change": {
+   "answered": [],
+   "case": "cases/NM_a_unrelated_change.json",
+   "debt": [],
+   "errors": [],
+   "exit": 1,
+   "obligations": [
+    {
+     "binding": "bd:d097f68eb32b3049",
+     "claim": [
+      "tooling::CheckerNeverReadsClock"
+     ],
+     "exception": null,
+     "exploited": null,
+     "force": "sound",
+     "introduced": false,
+     "kind": "contradiction",
+     "reason": null,
+     "severity": "blocking",
+     "subject": {
+      "atom": "Read<tooling::SystemClock>",
+      "code": "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness"
+     },
+     "tier": "final"
+    }
+   ],
+   "verdict": "blocked"
+  },
+  "b_lower_to_critical_same_nf": {
+   "answered": [
+    {
+     "as": "discharge",
+     "obligation": "ob:3a030062c4258ba1e0eded3f281716eff41bdca4316917987bdab1eb8e4f0e22"
+    }
+   ],
+   "case": "cases/NM_b_lower_to_critical_same_nf.json",
+   "debt": [],
+   "errors": [],
+   "exit": 1,
+   "obligations": [
+    {
+     "binding": "bd:d097f68eb32b3049",
+     "claim": [
+      "tooling::CheckerNeverReadsClock"
+     ],
+     "exception": null,
+     "exploited": null,
+     "force": "sound",
+     "introduced": false,
+     "kind": "contradiction",
+     "reason": null,
+     "severity": "blocking",
+     "subject": {
+      "atom": "Read<tooling::SystemClock>",
+      "code": "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness"
+     },
+     "tier": "final"
+    }
+   ],
+   "verdict": "blocked"
+  },
+  "c_remove_forbid": {
+   "answered": [
+    {
+     "as": "discharge",
+     "obligation": "ob:3a030062c4258ba1e0eded3f281716eff41bdca4316917987bdab1eb8e4f0e22"
+    }
+   ],
+   "case": "cases/NM_c_remove_forbid.json",
+   "debt": [],
+   "errors": [],
+   "exit": 0,
+   "obligations": [
+    {
+     "binding": "bd:668767f56ea9dd25",
+     "claim": [
+      "checker::ShapeRuleEngine/authority"
+     ],
+     "exception": null,
+     "exploited": null,
+     "force": "sound",
+     "introduced": false,
+     "kind": "contradiction",
+     "reason": null,
+     "severity": "owed",
+     "subject": {
+      "atom": "Read<tooling::SystemClock>",
+      "code": "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness"
+     },
+     "tier": "normal"
+    }
+   ],
+   "verdict": "owed"
+  },
+  "d_perturbed_nf_at_critical": {
+   "answered": [
+    {
+     "as": "discharge",
+     "obligation": "ob:3a030062c4258ba1e0eded3f281716eff41bdca4316917987bdab1eb8e4f0e22"
+    }
+   ],
+   "case": "cases/NM_d_perturbed_nf_at_critical.json",
+   "debt": [],
+   "errors": [],
+   "exit": 0,
+   "obligations": [
+    {
+     "binding": "bd:92d2a9ce15a1c4c4",
+     "claim": [
+      "tooling::CheckerNeverReadsClock"
+     ],
+     "exception": null,
+     "exploited": null,
+     "force": "sound",
+     "introduced": false,
+     "kind": "contradiction",
+     "reason": null,
+     "severity": "owed",
+     "subject": {
+      "atom": "Read<tooling::SystemClock>",
+      "code": "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness"
+     },
+     "tier": "critical"
+    }
+   ],
+   "verdict": "owed"
+  }
+ },
+ "OLD_rewritten_violation_not_new": {
+  "site_rewritten_same_fact": {
+   "answered": [],
+   "case": "cases/OLD_site_rewritten_same_fact.json",
+   "debt": [],
+   "errors": [],
+   "exit": 0,
+   "obligations": [
+    {
+     "binding": "bd:eae5fcbd53bb9747",
+     "claim": [
+      "tooling::CheckerNeverReadsClock"
+     ],
+     "exception": null,
+     "exploited": null,
+     "force": "sound",
+     "introduced": false,
+     "kind": "contradiction",
+     "reason": null,
+     "severity": "owed",
+     "subject": {
+      "atom": "Read<tooling::SystemClock>",
+      "code": "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness"
+     },
+     "tier": "critical"
+    }
+   ],
+   "verdict": "owed"
+  },
+  "unchanged_site": {
+   "answered": [],
+   "case": "cases/OLD_unchanged_site.json",
+   "debt": [],
+   "errors": [],
+   "exit": 0,
+   "obligations": [
+    {
+     "binding": "bd:d097f68eb32b3049",
+     "claim": [
+      "tooling::CheckerNeverReadsClock"
+     ],
+     "exception": null,
+     "exploited": null,
+     "force": "sound",
+     "introduced": false,
+     "kind": "contradiction",
+     "reason": null,
+     "severity": "owed",
+     "subject": {
+      "atom": "Read<tooling::SystemClock>",
+      "code": "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness"
+     },
+     "tier": "critical"
+    }
+   ],
+   "verdict": "owed"
+  }
+ },
+ "VETO_agent_reject_is_sound": {
+  "attack_bot_rejects": {
+   "answered": [],
+   "case": "cases/VETO_attack_bot_rejects.json",
+   "debt": [],
+   "errors": [],
+   "exit": 1,
+   "obligations": [
+    {
+     "binding": "bd:fc9749239b6bf3aa",
+     "claim": [
+      "tooling::ShpCli.isoToday/RefactorSensitive/law"
+     ],
+     "exception": null,
+     "exploited": null,
+     "force": "sound",
+     "introduced": true,
+     "kind": "contradiction",
+     "reason": null,
+     "severity": "blocking",
+     "subject": null,
+     "tier": "normal"
+    }
+   ],
+   "verdict": "blocked"
+  },
+  "control_bot_judges": {
+   "answered": [],
+   "case": "cases/VETO_control_bot_judges.json",
+   "debt": [],
+   "errors": [],
+   "exit": 0,
+   "obligations": [],
+   "verdict": "pass"
+  }
+ },
+ "XF_exception_for_file_subject": {
+  "for_code_file": {
+   "answered": [],
+   "case": "cases/XF_for_code_file.json",
+   "debt": [],
+   "errors": [],
+   "exit": 0,
+   "obligations": [
+    {
+     "binding": "bd:d097f68eb32b3049",
+     "claim": [
+      "tooling::CheckerNeverReadsClock"
+     ],
+     "exception": null,
+     "exploited": null,
+     "force": "sound",
+     "introduced": false,
+     "kind": "contradiction",
+     "reason": null,
+     "severity": "owed",
+     "subject": {
+      "atom": "Read<tooling::SystemClock>",
+      "code": "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness"
+     },
+     "tier": "critical"
+    }
+   ],
+   "verdict": "owed"
+  },
+  "for_code_symbol": {
+   "answered": [],
+   "case": "cases/XF_for_code_symbol.json",
+   "debt": [
+    {
+     "exception": "tooling::ClockFile",
+     "expiresInDays": 37,
+     "obligation": "ob:d98055745547389f83971693def7cf3d1e3dd6850821637f736b8867dbc95226",
+     "owner": "tooling::ShapeMaintainers"
+    }
+   ],
+   "errors": [],
+   "exit": 0,
+   "obligations": [
+    {
+     "binding": "bd:d097f68eb32b3049",
+     "claim": [
+      "tooling::CheckerNeverReadsClock"
+     ],
+     "exception": "tooling::ClockFile",
+     "exploited": null,
+     "force": "sound",
+     "introduced": false,
+     "kind": "contradiction",
+     "reason": null,
+     "severity": "owed",
+     "subject": {
+      "atom": "Read<tooling::SystemClock>",
+      "code": "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness"
+     },
+     "tier": "critical"
+    }
+   ],
+   "verdict": "owed"
+  }
+ }
+}

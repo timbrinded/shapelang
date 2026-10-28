@@ -1,0 +1,238 @@
+{
+ "contract": "shape.check.output/v1",
+ "mode": "change",
+ "inputDigest": "sha256:641225a836aab10da906f9be376ff6b1bc8a131f5a866187379498ad933c9191",
+ "verdict": "blocked",
+ "errors": [],
+ "rejected": [],
+ "obligations": [
+  {
+   "key": "ob:100f170a726fc970b54208c57f9bb6d755899f33fd6694c06707f71c7cabda57",
+   "kind": "contradiction",
+   "reason": null,
+   "questions": null,
+   "introduced": false,
+   "severity": "blocking",
+   "tier": "final",
+   "budget": "mechanical",
+   "force": "sound",
+   "owner": "tooling::ShapeMaintainers",
+   "assignee": null,
+   "group": "g:8c25fc8d3d54705ed0027e730d3f6290bd8c46c1a500f14452353892c26e0d2d",
+   "claim": {
+    "fp": "sha256:3b25b11bdcb82d158b11088127c75348c466aa2b4b06698fba7c9a121415fa8c",
+    "ids": [
+     "tooling::CheckerNeverReadsClock"
+    ],
+    "tier": "critical"
+   },
+   "subject": {
+    "code": "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness",
+    "atom": "Read<tooling::SystemClock>"
+   },
+   "witness": [
+    "sha256:fedfa0b09d953521b133cd23472c44fba3a187a4b97d64f01324f5fb0a682a3e"
+   ],
+   "facts": {
+    "sha256:fedfa0b09d953521b133cd23472c44fba3a187a4b97d64f01324f5fb0a682a3e": {
+     "at": "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness",
+     "resource": "ts.call(\"Date.now\")",
+     "type": "effect",
+     "verb": "Read"
+    }
+   },
+   "counterexample": null,
+   "exploited": null,
+   "final": true,
+   "binding": "bd:46e490405535eb6bb67cb9a38c0590c789173fe56b8d375068143d1eabf07c80",
+   "exception": null,
+   "dischargers": [
+    {
+     "act": "edit-code",
+     "by": "author",
+     "agentSafe": true,
+     "eligible": [],
+     "creates": null
+    },
+    {
+     "act": "edit-shape",
+     "by": "author",
+     "agentSafe": true,
+     "eligible": [],
+     "creates": {
+      "kind": "loosening",
+      "tier": "final",
+      "answers": 2,
+      "owners": [
+       "tooling::ShapeMaintainers"
+      ]
+     }
+    }
+   ],
+   "causes": [
+    {
+     "type": "fact",
+     "id": "sha256:fedfa0b09d953521b133cd23472c44fba3a187a4b97d64f01324f5fb0a682a3e"
+    },
+    {
+     "type": "binding",
+     "id": "resource tooling::SystemClock"
+    },
+    {
+     "type": "code",
+     "id": "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness"
+    },
+    {
+     "type": "claim",
+     "id": "sha256:5fa66543f9b4e84f7271a263fe085f0434dce547552debaf0159e9b4fb885363"
+    }
+   ]
+  },
+  {
+   "key": "ob:2b89ce1d2a6218c5659868325017a9d3c3e6c4b8e86e9e8eadfd1b7dae57efa7",
+   "kind": "loosening",
+   "reason": null,
+   "questions": [
+    "L1",
+    "L7"
+   ],
+   "introduced": true,
+   "severity": "blocking",
+   "tier": "final",
+   "budget": "judgment",
+   "force": null,
+   "owner": "tooling::ShapeMaintainers",
+   "assignee": null,
+   "group": "g:8c25fc8d3d54705ed0027e730d3f6290bd8c46c1a500f14452353892c26e0d2d",
+   "claim": {
+    "fp": "sha256:3b25b11bdcb82d158b11088127c75348c466aa2b4b06698fba7c9a121415fa8c",
+    "ids": [
+     "tooling::CheckerNeverReadsClock"
+    ],
+    "tier": "final"
+   },
+   "subject": "sha256:3b25b11bdcb82d158b11088127c75348c466aa2b4b06698fba7c9a121415fa8c",
+   "witness": [],
+   "facts": {},
+   "counterexample": "sha256:fedfa0b09d953521b133cd23472c44fba3a187a4b97d64f01324f5fb0a682a3e",
+   "exploited": true,
+   "final": true,
+   "binding": "bd:406d5ac47eea8b3b6b32ad1f8743ee404f26f2182014b32008aa35679b3480f6",
+   "exception": null,
+   "dischargers": [
+    {
+     "act": "revert",
+     "by": "author",
+     "agentSafe": true,
+     "eligible": [],
+     "creates": null
+    },
+    {
+     "act": "answer",
+     "by": "judges",
+     "agentSafe": false,
+     "eligible": [
+      "tooling::ann",
+      "tooling::bob"
+     ],
+     "creates": null
+    }
+   ],
+   "causes": [
+    {
+     "type": "base-claim",
+     "id": "sha256:3b25b11bdcb82d158b11088127c75348c466aa2b4b06698fba7c9a121415fa8c"
+    },
+    {
+     "type": "base-claim",
+     "id": "sha256:3b25b11bdcb82d158b11088127c75348c466aa2b4b06698fba7c9a121415fa8c"
+    }
+   ]
+  }
+ ],
+ "answered": [],
+ "loosening": [
+  {
+   "question": "L1",
+   "subject": "sha256:3b25b11bdcb82d158b11088127c75348c466aa2b4b06698fba7c9a121415fa8c",
+   "answer": "loosened",
+   "exploited": true,
+   "final": true,
+   "affected": [
+    "cell:[\"tooling::ShapeRuleEngine.*\",\"tooling::ShapeRuleEngine.*\"]",
+    "ts:packages/shp-checker/src/checker/rules/guards.ts",
+    "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness"
+   ],
+   "counterexample": "sha256:fedfa0b09d953521b133cd23472c44fba3a187a4b97d64f01324f5fb0a682a3e",
+   "obligation": "ob:2b89ce1d2a6218c5659868325017a9d3c3e6c4b8e86e9e8eadfd1b7dae57efa7"
+  },
+  {
+   "question": "L7",
+   "subject": "sha256:3b25b11bdcb82d158b11088127c75348c466aa2b4b06698fba7c9a121415fa8c",
+   "answer": "loosened",
+   "exploited": false,
+   "final": true,
+   "affected": [],
+   "counterexample": null,
+   "obligation": "ob:2b89ce1d2a6218c5659868325017a9d3c3e6c4b8e86e9e8eadfd1b7dae57efa7"
+  }
+ ],
+ "renames": [],
+ "debt": [],
+ "preexisting": [
+  {
+   "obligation": "ob:100f170a726fc970b54208c57f9bb6d755899f33fd6694c06707f71c7cabda57",
+   "owner": "tooling::ShapeMaintainers"
+  }
+ ],
+ "budget": {
+  "limit": null,
+  "used": 0,
+  "overflow": []
+ },
+ "health": {
+  "coverage": {
+   "num": 1,
+   "den": 1
+  },
+  "unobservable": [],
+  "unanswered": [],
+  "openAuthority": [
+   "tooling::ShpCli"
+  ],
+  "ungoverned": {
+   "num": 2,
+   "den": 4
+  },
+  "unmapped": [],
+  "externalCalls": 0,
+  "ungovernedCalls": 0,
+  "unanchored": 0,
+  "droppedEdges": 0,
+  "unauthenticated": [],
+  "executesHead": [],
+  "baseObservations": "present",
+  "baseDefects": [],
+  "clockClamped": false,
+  "trustDebt": 0,
+  "budget": {
+   "limit": null,
+   "used": 0,
+   "overflow": 0
+  },
+  "self": [],
+  "preexisting": 1,
+  "renames": 0,
+  "assumption": "dependency code and configuration data",
+  "cells": [
+   "cell:[\"tooling::ShapeRuleEngine.*\",\"tooling::ShapeRuleEngine.*\"]",
+   "cell:[\"tooling::ShpCli.*\",\"tooling::ShpCli.*\"]",
+   "cell:[\"ungoverned\",\"ungoverned\"]"
+  ],
+  "records": {
+   "valid": 1,
+   "rejected": 0
+  },
+  "baseUnreadable": false
+ }
+}

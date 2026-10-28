@@ -1,0 +1,134 @@
+{
+ "contract": "shape.check.output/v1",
+ "mode": "change",
+ "inputDigest": "sha256:daadbc079a86290a8e52d2d8f496f74e131cbb5b017374844eeb3fa85b287b01",
+ "verdict": "blocked",
+ "errors": [],
+ "rejected": [],
+ "obligations": [
+  {
+   "key": "ob:7b2c583993cf9872051d371ad1318c2dd2dff4d84f6c1b2cdb6b79e7a1f49311",
+   "kind": "loosening",
+   "reason": null,
+   "questions": [
+    "L1"
+   ],
+   "introduced": true,
+   "severity": "blocking",
+   "tier": "critical",
+   "budget": "judgment",
+   "force": null,
+   "owner": "z::Team",
+   "assignee": null,
+   "group": "g:f9782376fcda7194ab2ac43e5db14e212cbfb320a92d5f53b6bd4c655d96ffd6",
+   "claim": null,
+   "subject": "component z::Beta",
+   "witness": [],
+   "facts": {},
+   "counterexample": {
+    "position": "cell:[[\"z::Alpha.*\",\"z::Beta.*\"],\"z::Alpha.*\"]",
+    "path": "src/.ts",
+    "atom": "Write<z::R>"
+   },
+   "exploited": false,
+   "final": false,
+   "binding": "bd:74ee0073b120c96c2967844d06548c9d967784d13734af0b2974f33ac2a471e0",
+   "exception": null,
+   "dischargers": [
+    {
+     "act": "revert",
+     "by": "author",
+     "agentSafe": true,
+     "eligible": [],
+     "creates": null
+    },
+    {
+     "act": "answer",
+     "by": "judges",
+     "agentSafe": false,
+     "eligible": [
+      "z::quinn"
+     ],
+     "creates": null
+    }
+   ],
+   "causes": [
+    {
+     "type": "base-claim",
+     "id": "component z::Beta"
+    }
+   ]
+  }
+ ],
+ "answered": [],
+ "loosening": [
+  {
+   "question": "L1",
+   "subject": "component z::Beta",
+   "answer": "loosened",
+   "exploited": false,
+   "final": false,
+   "affected": [
+    "cell:[[\"z::Alpha.*\",\"z::Beta.*\"],\"z::Alpha.*\"]"
+   ],
+   "counterexample": {
+    "position": "cell:[[\"z::Alpha.*\",\"z::Beta.*\"],\"z::Alpha.*\"]",
+    "path": "src/.ts",
+    "atom": "Write<z::R>"
+   },
+   "obligation": "ob:7b2c583993cf9872051d371ad1318c2dd2dff4d84f6c1b2cdb6b79e7a1f49311"
+  }
+ ],
+ "renames": [],
+ "debt": [],
+ "preexisting": [],
+ "budget": {
+  "limit": null,
+  "used": 0,
+  "overflow": []
+ },
+ "health": {
+  "coverage": {
+   "num": 0,
+   "den": 0
+  },
+  "unobservable": [
+   "z::Alpha/authority"
+  ],
+  "unanswered": [],
+  "openAuthority": [],
+  "ungoverned": {
+   "num": 0,
+   "den": 2
+  },
+  "unmapped": [],
+  "externalCalls": 0,
+  "ungovernedCalls": 0,
+  "unanchored": 0,
+  "droppedEdges": 0,
+  "unauthenticated": [],
+  "executesHead": [],
+  "baseObservations": "present",
+  "baseDefects": [],
+  "clockClamped": false,
+  "trustDebt": 0,
+  "budget": {
+   "limit": null,
+   "used": 0,
+   "overflow": 0
+  },
+  "self": [],
+  "preexisting": 0,
+  "renames": 0,
+  "assumption": "dependency code and configuration data",
+  "cells": [
+   "cell:[\"ungoverned\",\"ungoverned\"]",
+   "cell:[[\"z::Alpha.*\",\"z::Beta.*\"],\"z::Alpha.*\"]"
+  ],
+  "records": {
+   "valid": 0,
+   "rejected": 0
+  },
+  "baseUnreadable": false
+ }
+}

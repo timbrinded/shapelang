@@ -1,0 +1,54 @@
+{
+ "answered": [],
+ "contract": "shape.check.output/v1",
+ "debt": [],
+ "errors": [],
+ "mode": "change",
+ "obligations": [
+  {
+   "binding": "bd:1ec9793b583996b69789216726cfb273d1c016fc9c2b24f5974a3c79b5b46ae6",
+   "budget": "judgment",
+   "claim": null,
+   "exception": null,
+   "exploited": true,
+   "final": true,
+   "force": null,
+   "group": "g:1a70082cc28046319bf3834eab91ef44ab823bc11c48141d5b96c276c92a899a",
+   "introduced": true,
+   "key": "ob:031024b1dfd16fe266cf991b13b10ca3e58431846f44d3ae2c851d52644fd44a",
+   "kind": "loosening",
+   "owner": "audit::AuditTeam",
+   "questions": [
+    "L1"
+   ],
+   "reason": null,
+   "severity": "blocking",
+   "subject": "sha256:ccfcbabf10265d643560fc2bcd0014f9bf15241ce35da1f5e0a269c349e617c0",
+   "tier": "final",
+   "witness": []
+  },
+  {
+   "binding": "bd:09a1177838b4bef87fec6ce3eff88bb4099faa51555cdd79c7883dc12d560134",
+   "budget": "judgment",
+   "claim": null,
+   "exception": null,
+   "exploited": true,
+   "final": false,
+   "force": null,
+   "group": "g:1a70082cc28046319bf3834eab91ef44ab823bc11c48141d5b96c276c92a899a",
+   "introduced": true,
+   "key": "ob:ca99c5461b8ff9a8410d4389337b30099a13b1a78bf99bd8f9cc107df9d04054",
+   "kind": "loosening",
+   "owner": "audit::AuditTeam",
+   "questions": [
+    "L1"
+   ],
+   "reason": null,
+   "severity": "blocking",
+   "subject": "component audit::AuditStore",
+   "tier": "critical",
+   "witness": []
+  }
+ ],
+ "verdict": "blocked"
+}

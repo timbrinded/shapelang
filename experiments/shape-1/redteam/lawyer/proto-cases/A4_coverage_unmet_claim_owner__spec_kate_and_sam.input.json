@@ -1,0 +1,436 @@
+{
+ "contract": "shape.check.input/v1",
+ "mode": "change",
+ "now": "2026-10-25T12:00:00Z",
+ "base": {
+  "revision": "a400000000000000000000000000000000000000",
+  "source": {
+   "v": "shape.source.v1",
+   "modules": [
+    {
+     "module": "x",
+     "imports": [
+      "std"
+     ],
+     "decls": [
+      {
+       "decl": "shape",
+       "name": "Shop",
+       "owner": "Platform"
+      },
+      {
+       "decl": "actor",
+       "name": "StoreTeam",
+       "kind": "team",
+       "members": [
+        "kate"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "SecTeam",
+       "kind": "team",
+       "members": [
+        "sam"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "Platform",
+       "kind": "team",
+       "members": [
+        "alex"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "kate",
+       "kind": "person",
+       "identities": [
+        "github(\"kate\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "sam",
+       "kind": "person",
+       "identities": [
+        "github(\"sam\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "alex",
+       "kind": "person",
+       "identities": [
+        "github(\"alex\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "bot",
+       "kind": "agent",
+       "operator": "alex",
+       "identities": [
+        "github(\"bot[bot]\")"
+       ]
+      },
+      {
+       "decl": "resource",
+       "name": "Ledger",
+       "owner": "SecTeam",
+       "tier": "critical",
+       "bind": [
+        "pg.table(\"ledger\")"
+       ]
+      },
+      {
+       "decl": "component",
+       "name": "Store",
+       "owner": "StoreTeam",
+       "paths": [
+        "src/store/**/*.ts"
+       ]
+      },
+      {
+       "decl": "rule",
+       "name": "LedgerIsAppendOnly",
+       "owner": "SecTeam",
+       "tier": "critical",
+       "clauses": [
+        {
+         "forbid": "effect",
+         "atom": "HardDelete<Ledger>"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "subject": [
+    {
+     "name": "shape:manifest/a400000000000000000000000000000000000000",
+     "digest": {
+      "sha256": "10c2accdf5dc3460fabb8ceb3ae2d89cf177f423fceb55faf25d5af269c8a2de"
+     }
+    }
+   ],
+   "predicateType": "https://in-toto.io/attestation/scai/attribute-report/v0.3",
+   "predicate": {
+    "attributes": [
+     {
+      "attribute": "SHAPE_MANIFEST"
+     }
+    ],
+    "shape": {
+     "v": "shape.manifest.v1",
+     "revision": "a400000000000000000000000000000000000000",
+     "tree": [
+      {
+       "path": "shape.lock",
+       "mode": "100644",
+       "blob": "83977260e3920505bd1bd2bb8cf4977969dbb729"
+      },
+      {
+       "path": "shape/x.shape",
+       "mode": "100644",
+       "blob": "275ec948bf6450520823d8531535aacef70f3fd5"
+      },
+      {
+       "path": "src/store/a.ts",
+       "mode": "100644",
+       "blob": "6a9308b8b6f3d28d178fcd700203c12ce93757fa"
+      }
+     ],
+     "entries": [
+      {
+       "id": "ts:src/store/a.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:c2a56be09e6469805408381401241db5474e3b115e90dc6fa727c5ab844aa829",
+       "kind": "file",
+       "parent": null
+      },
+      {
+       "id": "ts:src/store/a.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:ea0a432950765033dd24a14db3933737d02349b242924cb695123fe547d1de48",
+       "kind": "file",
+       "parent": null
+      },
+      {
+       "id": "ts:src/store/a.ts#f",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:6e64f1633272d6ac7647c73098252bd33eea37655c5720ae2fdc946eb354d69f",
+       "kind": "function",
+       "parent": "ts:src/store/a.ts"
+      },
+      {
+       "id": "ts:src/store/a.ts#f",
+       "projection": "unit",
+       "scheme": "ts.unit.v2",
+       "digest": "sha256:0e6b62da1b50d721a83b09c7c2deedf6762782ed6d2379f445b30fcb0fc8b1e7",
+       "kind": "function",
+       "parent": "ts:src/store/a.ts"
+      }
+     ]
+    }
+   }
+  }
+ },
+ "change": {
+  "ids": [
+   "github:acme/x#1"
+  ]
+ },
+ "authors": [
+  {
+   "identity": "github(\"bot[bot]\")",
+   "verified": true,
+   "bot": true
+  }
+ ],
+ "reviews": [
+  {
+   "identity": "github(\"kate\")",
+   "line": "shape approve bd:1f7db965e52e50cd"
+  },
+  {
+   "identity": "github(\"sam\")",
+   "line": "shape approve bd:1f7db965e52e50cd"
+  }
+ ],
+ "records": [],
+ "baseRecords": [],
+ "persisted": {
+  "base": [],
+  "head": []
+ },
+ "options": {
+  "health": true,
+  "teeth": false
+ },
+ "head": {
+  "revision": "a411111111111111111111111111111111111111",
+  "source": {
+   "v": "shape.source.v1",
+   "modules": [
+    {
+     "module": "x",
+     "imports": [
+      "std"
+     ],
+     "decls": [
+      {
+       "decl": "shape",
+       "name": "Shop",
+       "owner": "Platform"
+      },
+      {
+       "decl": "actor",
+       "name": "StoreTeam",
+       "kind": "team",
+       "members": [
+        "kate"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "SecTeam",
+       "kind": "team",
+       "members": [
+        "sam"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "Platform",
+       "kind": "team",
+       "members": [
+        "alex"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "kate",
+       "kind": "person",
+       "identities": [
+        "github(\"kate\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "sam",
+       "kind": "person",
+       "identities": [
+        "github(\"sam\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "alex",
+       "kind": "person",
+       "identities": [
+        "github(\"alex\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "bot",
+       "kind": "agent",
+       "operator": "alex",
+       "identities": [
+        "github(\"bot[bot]\")"
+       ]
+      },
+      {
+       "decl": "resource",
+       "name": "Ledger",
+       "owner": "SecTeam",
+       "tier": "critical",
+       "bind": [
+        "pg.table(\"ledger\")"
+       ]
+      },
+      {
+       "decl": "component",
+       "name": "Store",
+       "owner": "StoreTeam",
+       "paths": [
+        "src/store/**/*.ts"
+       ]
+      },
+      {
+       "decl": "rule",
+       "name": "LedgerIsAppendOnly",
+       "owner": "SecTeam",
+       "tier": "critical",
+       "clauses": [
+        {
+         "forbid": "effect",
+         "atom": "HardDelete<Ledger>"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "subject": [
+    {
+     "name": "shape:manifest/a411111111111111111111111111111111111111",
+     "digest": {
+      "sha256": "1d673566144555d9d5dd6c16beb64d23d747d51a4cad3a53b3396d002c8919f1"
+     }
+    }
+   ],
+   "predicateType": "https://in-toto.io/attestation/scai/attribute-report/v0.3",
+   "predicate": {
+    "attributes": [
+     {
+      "attribute": "SHAPE_MANIFEST"
+     }
+    ],
+    "shape": {
+     "v": "shape.manifest.v1",
+     "revision": "a411111111111111111111111111111111111111",
+     "tree": [
+      {
+       "path": "shape.lock",
+       "mode": "100644",
+       "blob": "83977260e3920505bd1bd2bb8cf4977969dbb729"
+      },
+      {
+       "path": "shape/x.shape",
+       "mode": "100644",
+       "blob": "275ec948bf6450520823d8531535aacef70f3fd5"
+      },
+      {
+       "path": "src/store/a.ts",
+       "mode": "100644",
+       "blob": "6a9308b8b6f3d28d178fcd700203c12ce93757fa"
+      },
+      {
+       "path": "src/store/purge.ts",
+       "mode": "100644",
+       "blob": "fdc58958341cf99e44430ae229008ab96378c092"
+      }
+     ],
+     "entries": [
+      {
+       "id": "ts:src/store/a.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:c2a56be09e6469805408381401241db5474e3b115e90dc6fa727c5ab844aa829",
+       "kind": "file",
+       "parent": null
+      },
+      {
+       "id": "ts:src/store/a.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:ea0a432950765033dd24a14db3933737d02349b242924cb695123fe547d1de48",
+       "kind": "file",
+       "parent": null
+      },
+      {
+       "id": "ts:src/store/a.ts#f",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:6e64f1633272d6ac7647c73098252bd33eea37655c5720ae2fdc946eb354d69f",
+       "kind": "function",
+       "parent": "ts:src/store/a.ts"
+      },
+      {
+       "id": "ts:src/store/a.ts#f",
+       "projection": "unit",
+       "scheme": "ts.unit.v2",
+       "digest": "sha256:0e6b62da1b50d721a83b09c7c2deedf6762782ed6d2379f445b30fcb0fc8b1e7",
+       "kind": "function",
+       "parent": "ts:src/store/a.ts"
+      },
+      {
+       "id": "ts:src/store/purge.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:1886dfac93616dd3ea78dc443f839dcc8a89872fe996267ed43733ef49e62bbc",
+       "kind": "file",
+       "parent": null
+      },
+      {
+       "id": "ts:src/store/purge.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:1a267834ce68e464416fc3bbd4f1b64ff5c2716b192c274e7e3fad570321e31e",
+       "kind": "file",
+       "parent": null
+      },
+      {
+       "id": "ts:src/store/purge.ts#purge",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:92f29964e0d877036098d3131860d3617c1a2d3f5615467db5956e052e9021ff",
+       "kind": "function",
+       "parent": "ts:src/store/purge.ts"
+      },
+      {
+       "id": "ts:src/store/purge.ts#purge",
+       "projection": "unit",
+       "scheme": "ts.unit.v2",
+       "digest": "sha256:0ab8a7b128141fb2dd972ec8c8e548e5fdcc72b0fbb7dc563f62d76e426c536c",
+       "kind": "function",
+       "parent": "ts:src/store/purge.ts"
+      }
+     ]
+    }
+   }
+  }
+ }
+}

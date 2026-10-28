@@ -1,0 +1,212 @@
+{
+ "contract": "shape.check.output/v1",
+ "mode": "change",
+ "inputDigest": "sha256:25d24d02de6c76bb4abf0a2ad67fdf19c5047a27ca7969aef7dbfabab40a869d",
+ "verdict": "blocked",
+ "errors": [
+  {
+   "code": "E-provider-missing",
+   "subject": "provider tooling::tsClockScan",
+   "causes": [
+    {
+     "type": "provider",
+     "id": "tooling::tsClockScan"
+    }
+   ],
+   "dischargers": [
+    {
+     "act": "rerun",
+     "by": "ci",
+     "agentSafe": true,
+     "eligible": [],
+     "creates": null
+    }
+   ]
+  }
+ ],
+ "rejected": [],
+ "obligations": [
+  {
+   "key": "ob:9a7ac505af321fd7902f957d1304a93444014dd998937d5bff21645d1e596037",
+   "kind": "coverage",
+   "reason": null,
+   "questions": null,
+   "introduced": true,
+   "severity": "owed",
+   "tier": "normal",
+   "budget": "judgment",
+   "force": null,
+   "owner": "tooling::ShapeMaintainers",
+   "assignee": "agents",
+   "group": "g:3bf8e48f3b15baf00d8370153b4d538d5a3b4e907f09d5fcd5ccf9561e63c603",
+   "claim": null,
+   "subject": "component tooling::ShapeRuleEngine",
+   "witness": [],
+   "facts": {},
+   "counterexample": null,
+   "exploited": null,
+   "final": false,
+   "binding": "bd:53aab763bde4f521b9e9315cce73564829cf06ea5a6b90f655844d665a50b90a",
+   "exception": null,
+   "dischargers": [
+    {
+     "act": "answer",
+     "by": "judges",
+     "agentSafe": false,
+     "eligible": [
+      "tooling::ann",
+      "tooling::bob"
+     ],
+     "creates": null
+    },
+    {
+     "act": "bind",
+     "by": "author",
+     "agentSafe": true,
+     "eligible": [],
+     "creates": null
+    },
+    {
+     "act": "provide",
+     "by": "author",
+     "agentSafe": true,
+     "eligible": [],
+     "creates": null
+    }
+   ],
+   "causes": [
+    {
+     "type": "code",
+     "id": "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness"
+    },
+    {
+     "type": "code",
+     "id": "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness"
+    },
+    {
+     "type": "code",
+     "id": "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness"
+    },
+    {
+     "type": "code",
+     "id": "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness"
+    },
+    {
+     "type": "code",
+     "id": "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness"
+    },
+    {
+     "type": "code",
+     "id": "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness"
+    },
+    {
+     "type": "code",
+     "id": "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness"
+    },
+    {
+     "type": "code",
+     "id": "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness"
+    },
+    {
+     "type": "code",
+     "id": "ts:packages/shp-checker/src/checker/rules/guards.ts"
+    },
+    {
+     "type": "code",
+     "id": "ts:packages/shp-checker/src/checker/rules/guards.ts"
+    },
+    {
+     "type": "code",
+     "id": "ts:packages/shp-checker/src/checker/rules/guards.ts"
+    },
+    {
+     "type": "code",
+     "id": "ts:packages/shp-checker/src/checker/rules/guards.ts"
+    },
+    {
+     "type": "code",
+     "id": "ts:packages/shp-checker/src/checker/rules/guards.ts"
+    },
+    {
+     "type": "code",
+     "id": "ts:packages/shp-checker/src/checker/rules/guards.ts"
+    },
+    {
+     "type": "code",
+     "id": "ts:packages/shp-checker/src/checker/rules/guards.ts"
+    },
+    {
+     "type": "code",
+     "id": "ts:packages/shp-checker/src/checker/rules/guards.ts"
+    }
+   ]
+  }
+ ],
+ "answered": [],
+ "loosening": [],
+ "renames": [],
+ "debt": [],
+ "preexisting": [],
+ "budget": {
+  "limit": null,
+  "used": 1,
+  "overflow": []
+ },
+ "health": {
+  "coverage": {
+   "num": 1,
+   "den": 3
+  },
+  "unobservable": [],
+  "unanswered": [
+   {
+    "key": "ob:9a7ac505af321fd7902f957d1304a93444014dd998937d5bff21645d1e596037",
+    "kind": "coverage",
+    "subject": "component tooling::ShapeRuleEngine",
+    "questions": null,
+    "tier": "normal",
+    "affected": [
+     "ts:packages/shp-checker/src/checker/rules/guards.ts",
+     "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness"
+    ]
+   }
+  ],
+  "openAuthority": [
+   "tooling::ShpCli"
+  ],
+  "ungoverned": {
+   "num": 2,
+   "den": 4
+  },
+  "unmapped": [],
+  "externalCalls": 0,
+  "ungovernedCalls": 0,
+  "unanchored": 0,
+  "droppedEdges": 0,
+  "unauthenticated": [],
+  "executesHead": [],
+  "baseObservations": "missing",
+  "baseDefects": [],
+  "clockClamped": false,
+  "trustDebt": 0,
+  "budget": {
+   "limit": null,
+   "used": 1,
+   "overflow": 0
+  },
+  "self": [],
+  "preexisting": 0,
+  "renames": 0,
+  "assumption": "dependency code and configuration data",
+  "cells": [
+   "cell:[\"tooling::ShapeRuleEngine.*\",\"tooling::ShapeRuleEngine.*\"]",
+   "cell:[\"tooling::ShpCli.*\",\"tooling::ShpCli.*\"]",
+   "cell:[\"ungoverned\",\"ungoverned\"]"
+  ],
+  "records": {
+   "valid": 1,
+   "rejected": 0
+  },
+  "baseUnreadable": false
+ }
+}

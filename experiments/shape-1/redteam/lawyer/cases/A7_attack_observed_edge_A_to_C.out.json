@@ -1,0 +1,32 @@
+{
+ "answered": [],
+ "contract": "shape.check.output/v1",
+ "debt": [],
+ "errors": [],
+ "mode": "change",
+ "obligations": [
+  {
+   "binding": "bd:dc12efdad4312d9326b9a7cf0fbda7e352a6b46418448d47536bcbecfc8b9b01",
+   "budget": "judgment",
+   "claim": null,
+   "exception": null,
+   "exploited": false,
+   "final": false,
+   "force": null,
+   "group": "g:4ad685c451f0dac260148b3ba7e19b3bb916cc8bbd1c8077855acb926f46fbc6",
+   "introduced": true,
+   "key": "ob:cd34cf41903d1afd19434a10a4658ca833b7391f149ee9f6e70b60873219011f",
+   "kind": "loosening",
+   "owner": "y::Team",
+   "questions": [
+    "L3"
+   ],
+   "reason": null,
+   "severity": "owed",
+   "subject": "sha256:753c19ad661d62d42ec22377528e08324c1166d2a8350d3cf738cda66deb8a3f",
+   "tier": "low",
+   "witness": []
+  }
+ ],
+ "verdict": "owed"
+}

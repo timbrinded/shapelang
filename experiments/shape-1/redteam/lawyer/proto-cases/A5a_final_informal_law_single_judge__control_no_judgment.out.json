@@ -1,0 +1,125 @@
+{
+ "contract": "shape.check.output/v1",
+ "mode": "change",
+ "inputDigest": "sha256:430da256e88e8ab6c89074b403645556abca57b1c9bacc680e7464e47bbe6bb8",
+ "verdict": "blocked",
+ "errors": [],
+ "rejected": [],
+ "obligations": [
+  {
+   "key": "ob:5b2b722c136fd4da308e0f1e74276988e91427030963ada796bc16b9a9137bf0",
+   "kind": "unestablished",
+   "reason": "stale",
+   "questions": null,
+   "introduced": true,
+   "severity": "blocking",
+   "tier": "final",
+   "budget": "judgment",
+   "force": null,
+   "owner": "tooling::ShapeMaintainers",
+   "assignee": "agents",
+   "group": "g:317d24c25b95205f39c84fabf66d795a21512cd321c9534d65f5c68ff73c31a5",
+   "claim": {
+    "fp": "sha256:c414eadc238d87c4e004899e9f2fe5a2ecfe615dae7eb8a242714426a059a077",
+    "ids": [
+     "tooling::ShpCli.isoToday/RefactorSensitive/law"
+    ],
+    "tier": "final"
+   },
+   "subject": null,
+   "witness": [],
+   "facts": {},
+   "counterexample": null,
+   "exploited": null,
+   "final": true,
+   "binding": "bd:904f519651548b32b48d40a8582cc3851352274a2fc41a0be64a31fa845bb1ed",
+   "exception": null,
+   "dischargers": [
+    {
+     "act": "judge",
+     "by": "judges",
+     "agentSafe": true,
+     "eligible": [
+      "tooling::ann",
+      "tooling::reviewBot"
+     ],
+     "creates": null
+    },
+    {
+     "act": "lower-requirement",
+     "by": "author",
+     "agentSafe": true,
+     "eligible": [],
+     "creates": {
+      "kind": "loosening",
+      "tier": "final",
+      "answers": 2,
+      "owners": [
+       "tooling::ShapeMaintainers"
+      ]
+     }
+    }
+   ],
+   "causes": [
+    {
+     "type": "record",
+     "id": "sha256:fe382e7093ff71ec6c621f4996ad23515a55b6f985ecb3431efaed7918406022"
+    }
+   ]
+  }
+ ],
+ "answered": [],
+ "loosening": [],
+ "renames": [],
+ "debt": [],
+ "preexisting": [],
+ "budget": {
+  "limit": null,
+  "used": 1,
+  "overflow": []
+ },
+ "health": {
+  "coverage": {
+   "num": 2,
+   "den": 2
+  },
+  "unobservable": [],
+  "unanswered": [],
+  "openAuthority": [
+   "tooling::ShpCli"
+  ],
+  "ungoverned": {
+   "num": 0,
+   "den": 3
+  },
+  "unmapped": [],
+  "externalCalls": 0,
+  "ungovernedCalls": 0,
+  "unanchored": 0,
+  "droppedEdges": 0,
+  "unauthenticated": [],
+  "executesHead": [],
+  "baseObservations": "present",
+  "baseDefects": [],
+  "clockClamped": false,
+  "trustDebt": 0,
+  "budget": {
+   "limit": null,
+   "used": 1,
+   "overflow": 0
+  },
+  "self": [],
+  "preexisting": 0,
+  "renames": 0,
+  "assumption": "dependency code and configuration data",
+  "cells": [
+   "cell:[\"tooling::ShpCli.*\",\"tooling::ShpCli.*\"]",
+   "cell:[\"ungoverned\",\"ungoverned\"]"
+  ],
+  "records": {
+   "valid": 1,
+   "rejected": 0
+  },
+  "baseUnreadable": false
+ }
+}

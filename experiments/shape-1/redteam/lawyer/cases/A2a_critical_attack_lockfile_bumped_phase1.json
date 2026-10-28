@@ -1,0 +1,867 @@
+{
+ "authors": [
+  "ironkv::agent",
+  "ironkv::erin"
+ ],
+ "base": {
+  "esf": {
+   "actors": [
+    {
+     "identities": [],
+     "kind": "team",
+     "members": [
+      "ironkv::dana",
+      "ironkv::erin"
+     ],
+     "operator": null,
+     "q": "ironkv::IronKvTeam"
+    },
+    {
+     "identities": [],
+     "kind": "person",
+     "members": [],
+     "operator": null,
+     "q": "ironkv::dana"
+    },
+    {
+     "identities": [],
+     "kind": "person",
+     "members": [],
+     "operator": null,
+     "q": "ironkv::erin"
+    },
+    {
+     "identities": [],
+     "kind": "agent",
+     "members": [],
+     "operator": "ironkv::erin",
+     "q": "ironkv::agent"
+    }
+   ],
+   "claims": [
+    {
+     "args": {
+      "on": [
+       "unit ironkv::DelegationMap.set"
+      ],
+      "statement": {
+       "projection": "closure",
+       "ref": "verus:ironkv/src/delegation_map_v.rs#DelegationMap::set"
+      }
+     },
+     "ids": [
+      "ironkv::SetRefinesSpec"
+     ],
+     "op": "law",
+     "owner": "ironkv::IronKvTeam",
+     "requirement": {
+      "judged": false,
+      "level": "proven",
+      "pins": [
+       "ironkv::verus"
+      ],
+      "projection": "unit"
+     },
+     "tier": "critical"
+    }
+   ],
+   "components": [
+    {
+     "allows": [],
+     "assumes": [],
+     "attach": [],
+     "boundary": false,
+     "complete": [],
+     "grants": null,
+     "owner": "ironkv::IronKvTeam",
+     "paths": [
+      "ironkv/src/delegation_map_v.rs"
+     ],
+     "q": "ironkv::DelegationMap",
+     "tier": "critical",
+     "units": [],
+     "was": null
+    }
+   ],
+   "effects": [
+    {
+     "implies": [],
+     "verb": "Read"
+    },
+    {
+     "implies": [],
+     "verb": "Write"
+    },
+    {
+     "implies": [
+      "Read"
+     ],
+     "verb": "Export"
+    },
+    {
+     "implies": [
+      "Write"
+     ],
+     "verb": "Append"
+    },
+    {
+     "implies": [
+      "Write"
+     ],
+     "verb": "Import"
+    },
+    {
+     "implies": [
+      "Write"
+     ],
+     "verb": "Update"
+    },
+    {
+     "implies": [
+      "Update"
+     ],
+     "verb": "Redact"
+    },
+    {
+     "implies": [
+      "Update"
+     ],
+     "verb": "LogicalDelete"
+    },
+    {
+     "implies": [
+      "Update"
+     ],
+     "verb": "HardDelete"
+    },
+    {
+     "implies": [
+      "HardDelete"
+     ],
+     "verb": "Truncate"
+    },
+    {
+     "implies": [
+      "Truncate"
+     ],
+     "verb": "DropStorage"
+    },
+    {
+     "implies": [],
+     "verb": "Hatch"
+    }
+   ],
+   "errors": [],
+   "exceptions": [],
+   "hatches": [
+    {
+     "kind": "external_body",
+     "lang": "verus"
+    },
+    {
+     "kind": "external",
+     "lang": "verus"
+    },
+    {
+     "kind": "assume",
+     "lang": "verus"
+    },
+    {
+     "kind": "admit",
+     "lang": "verus"
+    },
+    {
+     "kind": "assume_specification",
+     "lang": "verus"
+    },
+    {
+     "kind": "uninterp",
+     "lang": "verus"
+    },
+    {
+     "kind": "axiom",
+     "lang": "verus"
+    },
+    {
+     "kind": "unsafe",
+     "lang": "bend"
+    },
+    {
+     "kind": "ts_ignore",
+     "lang": "ts"
+    }
+   ],
+   "kinds": [
+    {
+     "from": "component",
+     "name": "calls",
+     "to": "component"
+    },
+    {
+     "from": "component",
+     "name": "callbacks",
+     "to": "component"
+    },
+    {
+     "from": "component",
+     "name": "provides",
+     "to": "resource"
+    },
+    {
+     "from": "component",
+     "name": "data_flow",
+     "to": "component"
+    },
+    {
+     "from": "component",
+     "name": "coordinated_call",
+     "to": "component"
+    }
+   ],
+   "notes": [],
+   "providers": [
+    {
+     "absence": false,
+     "decides": [
+      "statements verus"
+     ],
+     "depsComplete": true,
+     "identity": "sigstore(\"verus\")",
+     "implementation": {
+      "digest": null,
+      "paths": [
+       "ironkv/Cargo.toml",
+       "ironkv/Cargo.lock"
+      ]
+     },
+     "observes": [],
+     "persist": false,
+     "presence": true,
+     "produces": [
+      "proof"
+     ],
+     "q": "ironkv::verus",
+     "trusts": [
+      [
+       "z3",
+       "4.12.5"
+      ],
+      [
+       "verus",
+       "dccae1d"
+      ]
+     ]
+    }
+   ],
+   "resources": [],
+   "shape": {
+    "owner": "ironkv::IronKvTeam",
+    "policy": "std::DefaultPolicy",
+    "q": "ironkv::IronKV"
+   },
+   "templates": [],
+   "units": [
+    {
+     "attach": [],
+     "bind": "verus:ironkv/src/delegation_map_v.rs#DelegationMap::set",
+     "component": "ironkv::DelegationMap",
+     "name": "set",
+     "owner": "ironkv::IronKvTeam",
+     "q": "ironkv::DelegationMap.set",
+     "summary": null,
+     "tier": "critical",
+     "was": null
+    }
+   ],
+   "v": "shape.elaborated.v1"
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "predicate": {
+    "shape": {
+     "entries": [
+      {
+       "digest": "sha256:0a357e493e510d6633da6e1a4dc038088985f8e8b46cedce55597052172b272c",
+       "id": "verus:ironkv/src/delegation_map_v.rs",
+       "kind": "file",
+       "parent": null,
+       "projection": "file",
+       "scheme": "verus.file.v1"
+      },
+      {
+       "digest": "sha256:c8392563f11140504eafc24ccfc103ca35748b12a6f6c4e3d74b4f12f8de688f",
+       "id": "verus:ironkv/src/delegation_map_v.rs",
+       "kind": "file",
+       "parent": null,
+       "projection": "own",
+       "scheme": "verus.own.v1"
+      },
+      {
+       "digest": "sha256:94b393fc6c2b720097c8b2aba01f6f102787883ad96f00eafe468246b8ef2453",
+       "id": "verus:ironkv/src/delegation_map_v.rs#DelegationMap::set",
+       "kind": "symbol",
+       "parent": "verus:ironkv/src/delegation_map_v.rs",
+       "projection": "unit",
+       "scheme": "verus.unit.v2"
+      },
+      {
+       "digest": "sha256:4cb117989e47a56d2061246805f97d965c9f082429ea94866d1c7bfeb492a759",
+       "id": "verus:ironkv/src/delegation_map_v.rs#DelegationMap::set",
+       "kind": "symbol",
+       "parent": "verus:ironkv/src/delegation_map_v.rs",
+       "projection": "own",
+       "scheme": "verus.own.v2"
+      },
+      {
+       "digest": "sha256:e134d491bc50f78bf89dd8e5337ba759623af0b43f81daab60460206d8abb664",
+       "id": "verus:ironkv/src/delegation_map_v.rs#DelegationMap::set",
+       "kind": "symbol",
+       "parent": "verus:ironkv/src/delegation_map_v.rs",
+       "projection": "contract",
+       "scheme": "verus.contract.vir.v2"
+      },
+      {
+       "digest": "sha256:d3b832e4388757265cdc01742cb3e6e426757c085858d0ae2c51b9cc0d840372",
+       "id": "verus:ironkv/src/delegation_map_v.rs#DelegationMap::set",
+       "kind": "symbol",
+       "parent": "verus:ironkv/src/delegation_map_v.rs",
+       "projection": "closure",
+       "scheme": "verus.closure.vir.v2"
+      },
+      {
+       "digest": "sha256:fd2796c2785d086b4c499b97ebcecbd42f8f84b0861ed69aee17e46e33854f0e",
+       "id": "verus:ironkv/src/delegation_map_v.rs#StrictlyOrderedVec::insert",
+       "kind": "symbol",
+       "parent": "verus:ironkv/src/delegation_map_v.rs",
+       "projection": "unit",
+       "scheme": "verus.unit.v2"
+      },
+      {
+       "digest": "sha256:38293c2eeaa475cfeac7d8d4b09fee1961a33cc347b35e821b2f5a789af50827",
+       "id": "verus:ironkv/src/delegation_map_v.rs#StrictlyOrderedVec::insert",
+       "kind": "symbol",
+       "parent": "verus:ironkv/src/delegation_map_v.rs",
+       "projection": "own",
+       "scheme": "verus.own.v2"
+      },
+      {
+       "digest": "sha256:d604e795ba9c30b54be93324f03bfba983c3f8cccc0188c1f8cc9ee7905105f2",
+       "id": "verus:ironkv/src/delegation_map_v.rs#StrictlyOrderedVec::insert",
+       "kind": "symbol",
+       "parent": "verus:ironkv/src/delegation_map_v.rs",
+       "projection": "contract",
+       "scheme": "verus.contract.vir.v2"
+      },
+      {
+       "digest": "sha256:9ab27f6944c6959c74024699ade5c880fbd1a15e3912ad75905dec074a10e789",
+       "id": "raw:ironkv/Cargo.toml",
+       "kind": "file",
+       "parent": null,
+       "projection": "file",
+       "scheme": "raw.file.v1"
+      },
+      {
+       "digest": "sha256:ccc447163ee0fab3a16161318b7304bea132f8f6c84752cf70cc924a080e67b4",
+       "id": "raw:ironkv/Cargo.toml",
+       "kind": "file",
+       "parent": null,
+       "projection": "own",
+       "scheme": "raw.own.v1"
+      },
+      {
+       "digest": "sha256:56c748211faab5a307e9c4c362467b61cf6c8e644a596714cb76c7e98ae05b42",
+       "id": "raw:ironkv/Cargo.lock",
+       "kind": "file",
+       "parent": null,
+       "projection": "file",
+       "scheme": "raw.file.v1"
+      },
+      {
+       "digest": "sha256:a19f165924b44d3a695c1b1fb557ba15b21eb4b9251afd270734f22c71154d43",
+       "id": "raw:ironkv/Cargo.lock",
+       "kind": "file",
+       "parent": null,
+       "projection": "own",
+       "scheme": "raw.own.v1"
+      }
+     ],
+     "revision": "b2",
+     "tree": [],
+     "v": "shape.manifest.v1"
+    }
+   },
+   "predicateType": "https://shapelang.dev/manifest/v1",
+   "subject": []
+  },
+  "revision": "b2"
+ },
+ "baseRecords": [],
+ "cells": [],
+ "change": {
+  "ids": [
+   "github:acme/ironkv#12"
+  ]
+ },
+ "contract": "shape.kernel.case/v1",
+ "head": {
+  "esf": {
+   "actors": [
+    {
+     "identities": [],
+     "kind": "team",
+     "members": [
+      "ironkv::dana",
+      "ironkv::erin"
+     ],
+     "operator": null,
+     "q": "ironkv::IronKvTeam"
+    },
+    {
+     "identities": [],
+     "kind": "person",
+     "members": [],
+     "operator": null,
+     "q": "ironkv::dana"
+    },
+    {
+     "identities": [],
+     "kind": "person",
+     "members": [],
+     "operator": null,
+     "q": "ironkv::erin"
+    },
+    {
+     "identities": [],
+     "kind": "agent",
+     "members": [],
+     "operator": "ironkv::erin",
+     "q": "ironkv::agent"
+    }
+   ],
+   "claims": [
+    {
+     "args": {
+      "on": [
+       "unit ironkv::DelegationMap.set"
+      ],
+      "statement": {
+       "projection": "closure",
+       "ref": "verus:ironkv/src/delegation_map_v.rs#DelegationMap::set"
+      }
+     },
+     "ids": [
+      "ironkv::SetRefinesSpec"
+     ],
+     "op": "law",
+     "owner": "ironkv::IronKvTeam",
+     "requirement": {
+      "judged": false,
+      "level": "proven",
+      "pins": [
+       "ironkv::verus"
+      ],
+      "projection": "unit"
+     },
+     "tier": "critical"
+    }
+   ],
+   "components": [
+    {
+     "allows": [],
+     "assumes": [],
+     "attach": [],
+     "boundary": false,
+     "complete": [],
+     "grants": null,
+     "owner": "ironkv::IronKvTeam",
+     "paths": [
+      "ironkv/src/delegation_map_v.rs"
+     ],
+     "q": "ironkv::DelegationMap",
+     "tier": "critical",
+     "units": [],
+     "was": null
+    }
+   ],
+   "effects": [
+    {
+     "implies": [],
+     "verb": "Read"
+    },
+    {
+     "implies": [],
+     "verb": "Write"
+    },
+    {
+     "implies": [
+      "Read"
+     ],
+     "verb": "Export"
+    },
+    {
+     "implies": [
+      "Write"
+     ],
+     "verb": "Append"
+    },
+    {
+     "implies": [
+      "Write"
+     ],
+     "verb": "Import"
+    },
+    {
+     "implies": [
+      "Write"
+     ],
+     "verb": "Update"
+    },
+    {
+     "implies": [
+      "Update"
+     ],
+     "verb": "Redact"
+    },
+    {
+     "implies": [
+      "Update"
+     ],
+     "verb": "LogicalDelete"
+    },
+    {
+     "implies": [
+      "Update"
+     ],
+     "verb": "HardDelete"
+    },
+    {
+     "implies": [
+      "HardDelete"
+     ],
+     "verb": "Truncate"
+    },
+    {
+     "implies": [
+      "Truncate"
+     ],
+     "verb": "DropStorage"
+    },
+    {
+     "implies": [],
+     "verb": "Hatch"
+    }
+   ],
+   "errors": [],
+   "exceptions": [],
+   "hatches": [
+    {
+     "kind": "external_body",
+     "lang": "verus"
+    },
+    {
+     "kind": "external",
+     "lang": "verus"
+    },
+    {
+     "kind": "assume",
+     "lang": "verus"
+    },
+    {
+     "kind": "admit",
+     "lang": "verus"
+    },
+    {
+     "kind": "assume_specification",
+     "lang": "verus"
+    },
+    {
+     "kind": "uninterp",
+     "lang": "verus"
+    },
+    {
+     "kind": "axiom",
+     "lang": "verus"
+    },
+    {
+     "kind": "unsafe",
+     "lang": "bend"
+    },
+    {
+     "kind": "ts_ignore",
+     "lang": "ts"
+    }
+   ],
+   "kinds": [
+    {
+     "from": "component",
+     "name": "calls",
+     "to": "component"
+    },
+    {
+     "from": "component",
+     "name": "callbacks",
+     "to": "component"
+    },
+    {
+     "from": "component",
+     "name": "provides",
+     "to": "resource"
+    },
+    {
+     "from": "component",
+     "name": "data_flow",
+     "to": "component"
+    },
+    {
+     "from": "component",
+     "name": "coordinated_call",
+     "to": "component"
+    }
+   ],
+   "notes": [],
+   "providers": [
+    {
+     "absence": false,
+     "decides": [
+      "statements verus"
+     ],
+     "depsComplete": true,
+     "identity": "sigstore(\"verus\")",
+     "implementation": {
+      "digest": null,
+      "paths": [
+       "ironkv/Cargo.toml",
+       "ironkv/Cargo.lock"
+      ]
+     },
+     "observes": [],
+     "persist": false,
+     "presence": true,
+     "produces": [
+      "proof"
+     ],
+     "q": "ironkv::verus",
+     "trusts": [
+      [
+       "z3",
+       "4.12.5"
+      ],
+      [
+       "verus",
+       "dccae1d"
+      ]
+     ]
+    }
+   ],
+   "resources": [],
+   "shape": {
+    "owner": "ironkv::IronKvTeam",
+    "policy": "std::DefaultPolicy",
+    "q": "ironkv::IronKV"
+   },
+   "templates": [],
+   "units": [
+    {
+     "attach": [],
+     "bind": "verus:ironkv/src/delegation_map_v.rs#DelegationMap::set",
+     "component": "ironkv::DelegationMap",
+     "name": "set",
+     "owner": "ironkv::IronKvTeam",
+     "q": "ironkv::DelegationMap.set",
+     "summary": null,
+     "tier": "critical",
+     "was": null
+    }
+   ],
+   "v": "shape.elaborated.v1"
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "predicate": {
+    "shape": {
+     "entries": [
+      {
+       "digest": "sha256:082fbbae78122e7c6a04a5e33bd825fae9d92064757482940fc021ff83ecdd5d",
+       "id": "verus:ironkv/src/delegation_map_v.rs",
+       "kind": "file",
+       "parent": null,
+       "projection": "file",
+       "scheme": "verus.file.v1"
+      },
+      {
+       "digest": "sha256:0fb3c9909d1f9d70ca53042663487dd21269d78e8a2d913aa4d0e31a2aa64552",
+       "id": "verus:ironkv/src/delegation_map_v.rs",
+       "kind": "file",
+       "parent": null,
+       "projection": "own",
+       "scheme": "verus.own.v1"
+      },
+      {
+       "digest": "sha256:05f326a01e7411f3bad0ae501cf4b9ce2110220fa560a6fc9be096d637dcfb4d",
+       "id": "verus:ironkv/src/delegation_map_v.rs#DelegationMap::set",
+       "kind": "symbol",
+       "parent": "verus:ironkv/src/delegation_map_v.rs",
+       "projection": "unit",
+       "scheme": "verus.unit.v2"
+      },
+      {
+       "digest": "sha256:32887bbd0cbadecfdd8d785a6fe4ee296f8f060edf006c6d43f964721c7eb262",
+       "id": "verus:ironkv/src/delegation_map_v.rs#DelegationMap::set",
+       "kind": "symbol",
+       "markers": {
+        "assume": 1
+       },
+       "parent": "verus:ironkv/src/delegation_map_v.rs",
+       "projection": "own",
+       "scheme": "verus.own.v2"
+      },
+      {
+       "digest": "sha256:e134d491bc50f78bf89dd8e5337ba759623af0b43f81daab60460206d8abb664",
+       "id": "verus:ironkv/src/delegation_map_v.rs#DelegationMap::set",
+       "kind": "symbol",
+       "parent": "verus:ironkv/src/delegation_map_v.rs",
+       "projection": "contract",
+       "scheme": "verus.contract.vir.v2"
+      },
+      {
+       "digest": "sha256:d3b832e4388757265cdc01742cb3e6e426757c085858d0ae2c51b9cc0d840372",
+       "id": "verus:ironkv/src/delegation_map_v.rs#DelegationMap::set",
+       "kind": "symbol",
+       "parent": "verus:ironkv/src/delegation_map_v.rs",
+       "projection": "closure",
+       "scheme": "verus.closure.vir.v2"
+      },
+      {
+       "digest": "sha256:fd2796c2785d086b4c499b97ebcecbd42f8f84b0861ed69aee17e46e33854f0e",
+       "id": "verus:ironkv/src/delegation_map_v.rs#StrictlyOrderedVec::insert",
+       "kind": "symbol",
+       "parent": "verus:ironkv/src/delegation_map_v.rs",
+       "projection": "unit",
+       "scheme": "verus.unit.v2"
+      },
+      {
+       "digest": "sha256:38293c2eeaa475cfeac7d8d4b09fee1961a33cc347b35e821b2f5a789af50827",
+       "id": "verus:ironkv/src/delegation_map_v.rs#StrictlyOrderedVec::insert",
+       "kind": "symbol",
+       "parent": "verus:ironkv/src/delegation_map_v.rs",
+       "projection": "own",
+       "scheme": "verus.own.v2"
+      },
+      {
+       "digest": "sha256:d604e795ba9c30b54be93324f03bfba983c3f8cccc0188c1f8cc9ee7905105f2",
+       "id": "verus:ironkv/src/delegation_map_v.rs#StrictlyOrderedVec::insert",
+       "kind": "symbol",
+       "parent": "verus:ironkv/src/delegation_map_v.rs",
+       "projection": "contract",
+       "scheme": "verus.contract.vir.v2"
+      },
+      {
+       "digest": "sha256:9ab27f6944c6959c74024699ade5c880fbd1a15e3912ad75905dec074a10e789",
+       "id": "raw:ironkv/Cargo.toml",
+       "kind": "file",
+       "parent": null,
+       "projection": "file",
+       "scheme": "raw.file.v1"
+      },
+      {
+       "digest": "sha256:ccc447163ee0fab3a16161318b7304bea132f8f6c84752cf70cc924a080e67b4",
+       "id": "raw:ironkv/Cargo.toml",
+       "kind": "file",
+       "parent": null,
+       "projection": "own",
+       "scheme": "raw.own.v1"
+      },
+      {
+       "digest": "sha256:3a1911b629c6061d0a02a72c3adbefab27c3f74926e6152ba9f3054924f03ac4",
+       "id": "raw:ironkv/Cargo.lock",
+       "kind": "file",
+       "parent": null,
+       "projection": "file",
+       "scheme": "raw.file.v1"
+      },
+      {
+       "digest": "sha256:98c2b1f48f7108048a7dd5cb4a5d67daea275140148af425e3b02571536ff7b5",
+       "id": "raw:ironkv/Cargo.lock",
+       "kind": "file",
+       "parent": null,
+       "projection": "own",
+       "scheme": "raw.own.v1"
+      }
+     ],
+     "revision": "h2",
+     "tree": [],
+     "v": "shape.manifest.v1"
+    }
+   },
+   "predicateType": "https://shapelang.dev/manifest/v1",
+   "subject": []
+  },
+  "revision": "h2"
+ },
+ "mode": "change",
+ "now": "2026-10-25T12:00:00Z",
+ "records": [
+  {
+   "_type": "https://in-toto.io/Statement/v1",
+   "authenticated": true,
+   "predicate": {
+    "shape": {
+     "assumptions": [
+      {
+       "id": "verus:ironkv/src/delegation_map_v.rs#DelegationMap::set/assume",
+       "kind": "hatch"
+      },
+      {
+       "id": "z3@4.12.5",
+       "kind": "tool"
+      },
+      {
+       "id": "verus@dccae1d",
+       "kind": "tool"
+      }
+     ],
+     "claim": {
+      "fp": "sha256:60a867af53d80a7f7691530f9ae5869779c05abccd602cd75b2baad28a85db38",
+      "id": "ironkv::SetRefinesSpec"
+     },
+     "code": [
+      {
+       "digest": "sha256:05f326a01e7411f3bad0ae501cf4b9ce2110220fa560a6fc9be096d637dcfb4d",
+       "id": "verus:ironkv/src/delegation_map_v.rs#DelegationMap::set",
+       "projection": "unit",
+       "scheme": "verus.unit.v2"
+      },
+      {
+       "digest": "sha256:d3b832e4388757265cdc01742cb3e6e426757c085858d0ae2c51b9cc0d840372",
+       "id": "verus:ironkv/src/delegation_map_v.rs#DelegationMap::set",
+       "projection": "closure",
+       "scheme": "verus.closure.v2"
+      }
+     ],
+     "counterexample": null,
+     "deps": [
+      {
+       "digest": "sha256:d604e795ba9c30b54be93324f03bfba983c3f8cccc0188c1f8cc9ee7905105f2",
+       "id": "verus:ironkv/src/delegation_map_v.rs#StrictlyOrderedVec::insert",
+       "projection": "contract",
+       "scheme": "verus.contract.v2"
+      }
+     ],
+     "harness": [],
+     "kind": "proof",
+     "provider": {
+      "id": "ironkv::verus",
+      "version": "dccae1d"
+     },
+     "result": "supports",
+     "revision": "h2",
+     "time": "2026-10-25T10:00:00Z",
+     "v": "shape.evidence.v1"
+    }
+   },
+   "predicateType": "https://shapelang.dev/evidence/v1",
+   "subject": []
+  }
+ ],
+ "reviews": []
+}

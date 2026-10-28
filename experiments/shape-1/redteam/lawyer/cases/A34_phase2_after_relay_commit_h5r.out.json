@@ -1,0 +1,41 @@
+{
+ "answered": [],
+ "contract": "shape.check.output/v1",
+ "debt": [],
+ "errors": [
+  {
+   "code": "E-provider-missing",
+   "subject": "provider tooling::bunTest sha256:8620c3bead39262d509d30d813c84d79db4e1ce51b1dd92c904225082519b8c3"
+  }
+ ],
+ "mode": "change",
+ "obligations": [
+  {
+   "binding": "bd:6804c5e50e6a312f32f60938503bb57c421bebea5486d05f2f5d88b896cf244e",
+   "budget": "mechanical",
+   "claim": {
+    "fp": "sha256:8620c3bead39262d509d30d813c84d79db4e1ce51b1dd92c904225082519b8c3",
+    "ids": [
+     "tooling::CheckIsDeterministic"
+    ],
+    "tier": "critical"
+   },
+   "exception": null,
+   "exploited": null,
+   "final": false,
+   "force": null,
+   "group": "g:a5e8cc5973b3b857398b7a97ebecf38c7b0e05913f0bce0ec2dde6d7ce00bdc3",
+   "introduced": true,
+   "key": "ob:79b18d16e2bc560c6c28f3722f151421320a80116886e10f80d3b5e0cab8e4fc",
+   "kind": "unestablished",
+   "owner": "tooling::ShapeMaintainers",
+   "questions": null,
+   "reason": "stale",
+   "severity": "blocking",
+   "subject": null,
+   "tier": "critical",
+   "witness": []
+  }
+ ],
+ "verdict": "blocked"
+}

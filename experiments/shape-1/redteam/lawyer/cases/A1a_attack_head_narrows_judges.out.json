@@ -1,0 +1,14 @@
+{
+ "answered": [
+  {
+   "as": "discharge",
+   "obligation": "ob:a4a8d01ab841cdac2718c03927694215d569d314bdf6c753487e5123267e47f0"
+  }
+ ],
+ "contract": "shape.check.output/v1",
+ "debt": [],
+ "errors": [],
+ "mode": "change",
+ "obligations": [],
+ "verdict": "pass"
+}

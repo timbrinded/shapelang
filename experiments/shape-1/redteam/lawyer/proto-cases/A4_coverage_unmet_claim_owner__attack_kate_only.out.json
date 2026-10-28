@@ -1,0 +1,127 @@
+{
+ "contract": "shape.check.output/v1",
+ "mode": "change",
+ "inputDigest": "sha256:ad693a47d4bb6c765c18e131a7438300f0cc3ee3fd65b7c1d47c91d61def7542",
+ "verdict": "blocked",
+ "errors": [],
+ "rejected": [],
+ "obligations": [
+  {
+   "key": "ob:3584651e10a56f966347e42830866f9135f6cebf596e03eed8ed0649cf250c6c",
+   "kind": "coverage",
+   "reason": null,
+   "questions": null,
+   "introduced": true,
+   "severity": "blocking",
+   "tier": "critical",
+   "budget": "judgment",
+   "force": null,
+   "owner": "x::StoreTeam",
+   "assignee": null,
+   "group": "g:fe70ca3a066631e81e795a6541563d827d67024b670ed42d3847ccf1226e4e2a",
+   "claim": null,
+   "subject": "component x::Store",
+   "witness": [],
+   "facts": {},
+   "counterexample": null,
+   "exploited": null,
+   "final": false,
+   "binding": "bd:1f7db965e52e50cd1117125f518c499fe49fd79e02631ac8503befd3a1f6e9bf",
+   "exception": null,
+   "dischargers": [
+    {
+     "act": "answer",
+     "by": "judges",
+     "agentSafe": false,
+     "eligible": [
+      "x::kate",
+      "x::sam"
+     ],
+     "creates": null
+    },
+    {
+     "act": "bind",
+     "by": "author",
+     "agentSafe": true,
+     "eligible": [],
+     "creates": null
+    },
+    {
+     "act": "provide",
+     "by": "author",
+     "agentSafe": true,
+     "eligible": [],
+     "creates": null
+    }
+   ],
+   "causes": [
+    {
+     "type": "code",
+     "id": "ts:src/store/purge.ts#purge"
+    },
+    {
+     "type": "code",
+     "id": "ts:src/store/purge.ts"
+    }
+   ]
+  }
+ ],
+ "answered": [],
+ "loosening": [],
+ "renames": [],
+ "debt": [],
+ "preexisting": [],
+ "budget": {
+  "limit": null,
+  "used": 0,
+  "overflow": []
+ },
+ "health": {
+  "coverage": {
+   "num": 0,
+   "den": 2
+  },
+  "unobservable": [
+   "x::LedgerIsAppendOnly"
+  ],
+  "unanswered": [],
+  "openAuthority": [
+   "x::Store"
+  ],
+  "ungoverned": {
+   "num": 0,
+   "den": 4
+  },
+  "unmapped": [],
+  "externalCalls": 0,
+  "ungovernedCalls": 0,
+  "unanchored": 0,
+  "droppedEdges": 0,
+  "unauthenticated": [
+   "review x::kate: shape approve bd:1f7db965e52e50cd"
+  ],
+  "executesHead": [],
+  "baseObservations": "present",
+  "baseDefects": [],
+  "clockClamped": false,
+  "trustDebt": 0,
+  "budget": {
+   "limit": null,
+   "used": 0,
+   "overflow": 0
+  },
+  "self": [],
+  "preexisting": 0,
+  "renames": 0,
+  "assumption": "dependency code and configuration data",
+  "cells": [
+   "cell:[\"ungoverned\",\"ungoverned\"]",
+   "cell:[\"x::Store.*\",\"x::Store.*\"]"
+  ],
+  "records": {
+   "valid": 0,
+   "rejected": 0
+  },
+  "baseUnreadable": false
+ }
+}

@@ -1,0 +1,58 @@
+{
+ "answered": [],
+ "contract": "shape.check.output/v1",
+ "debt": [],
+ "errors": [],
+ "mode": "change",
+ "obligations": [
+  {
+   "binding": "bd:03a47c966f1ab68a5039a49a2c3c862fb0666f626d6e13e757569296454390f9",
+   "budget": "judgment",
+   "claim": null,
+   "exception": null,
+   "exploited": false,
+   "final": false,
+   "force": null,
+   "group": "g:9e3a5fa08b9c5953055ae7d2411c8a028e704ea59283c560b6450e256adfa191",
+   "introduced": true,
+   "key": "ob:b871c4238ecb38fcc9dcc3eada007c9182470d138a3f605eb0be8b417d95614a",
+   "kind": "loosening",
+   "owner": "ironkv::IronKvTeam",
+   "questions": [
+    "L7"
+   ],
+   "reason": null,
+   "severity": "blocking",
+   "subject": "provider ironkv::verus",
+   "tier": "critical",
+   "witness": []
+  },
+  {
+   "binding": "bd:8ad54064b6f2def43913b10f8f46647730904c3ad9fb31f7e3e24f992bfcb55c",
+   "budget": "mechanical",
+   "claim": {
+    "fp": "sha256:60a867af53d80a7f7691530f9ae5869779c05abccd602cd75b2baad28a85db38",
+    "ids": [
+     "ironkv::SetRefinesSpec"
+    ],
+    "tier": "critical"
+   },
+   "exception": null,
+   "exploited": null,
+   "final": false,
+   "force": null,
+   "group": "g:f6592a87115ebb63e3616dd9d1321262005019a9ec3f2bf6981ac65bdab8e1e4",
+   "introduced": true,
+   "key": "ob:8b9a1c953f7ed31c50f09fcd65a8e27bdb6d9a40db449c8fd69946b621161e7d",
+   "kind": "unestablished",
+   "owner": "ironkv::IronKvTeam",
+   "questions": null,
+   "reason": "assumption",
+   "severity": "blocking",
+   "subject": null,
+   "tier": "critical",
+   "witness": []
+  }
+ ],
+ "verdict": "blocked"
+}

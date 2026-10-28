@@ -1,0 +1,759 @@
+{
+ "authors": [
+  "y::bot",
+  "y::pat"
+ ],
+ "base": {
+  "esf": {
+   "actors": [
+    {
+     "identities": [],
+     "kind": "team",
+     "members": [
+      "y::pat"
+     ],
+     "operator": null,
+     "q": "y::Team"
+    },
+    {
+     "identities": [],
+     "kind": "person",
+     "members": [],
+     "operator": null,
+     "q": "y::pat"
+    },
+    {
+     "identities": [],
+     "kind": "agent",
+     "members": [],
+     "operator": "y::pat",
+     "q": "y::bot"
+    }
+   ],
+   "claims": [
+    {
+     "args": {
+      "exceptVia": [],
+      "from": [
+       "component y::A"
+      ],
+      "kinds": [
+       "calls"
+      ],
+      "to": [
+       "component y::C"
+      ]
+     },
+     "ids": [
+      "y::AdoesNotReachC"
+     ],
+     "op": "path.forbid",
+     "owner": "y::Team",
+     "requirement": null,
+     "tier": "low"
+    }
+   ],
+   "components": [
+    {
+     "allows": [],
+     "assumes": [],
+     "attach": [],
+     "boundary": false,
+     "complete": [],
+     "grants": null,
+     "owner": "y::Team",
+     "paths": [
+      "src/a/**/*.ts"
+     ],
+     "q": "y::A",
+     "tier": "low",
+     "units": [],
+     "was": null
+    },
+    {
+     "allows": [],
+     "assumes": [],
+     "attach": [],
+     "boundary": false,
+     "complete": [],
+     "grants": null,
+     "owner": "y::Team",
+     "paths": [
+      "src/b/**/*.ts"
+     ],
+     "q": "y::B",
+     "tier": "low",
+     "units": [],
+     "was": null
+    },
+    {
+     "allows": [],
+     "assumes": [],
+     "attach": [],
+     "boundary": false,
+     "complete": [],
+     "grants": null,
+     "owner": "y::Team",
+     "paths": [
+      "src/c/**/*.ts"
+     ],
+     "q": "y::C",
+     "tier": "low",
+     "units": [],
+     "was": null
+    }
+   ],
+   "effects": [
+    {
+     "implies": [],
+     "verb": "Read"
+    },
+    {
+     "implies": [],
+     "verb": "Write"
+    },
+    {
+     "implies": [
+      "Read"
+     ],
+     "verb": "Export"
+    },
+    {
+     "implies": [
+      "Write"
+     ],
+     "verb": "Append"
+    },
+    {
+     "implies": [
+      "Write"
+     ],
+     "verb": "Import"
+    },
+    {
+     "implies": [
+      "Write"
+     ],
+     "verb": "Update"
+    },
+    {
+     "implies": [
+      "Update"
+     ],
+     "verb": "Redact"
+    },
+    {
+     "implies": [
+      "Update"
+     ],
+     "verb": "LogicalDelete"
+    },
+    {
+     "implies": [
+      "Update"
+     ],
+     "verb": "HardDelete"
+    },
+    {
+     "implies": [
+      "HardDelete"
+     ],
+     "verb": "Truncate"
+    },
+    {
+     "implies": [
+      "Truncate"
+     ],
+     "verb": "DropStorage"
+    },
+    {
+     "implies": [],
+     "verb": "Hatch"
+    }
+   ],
+   "errors": [],
+   "exceptions": [],
+   "hatches": [
+    {
+     "kind": "external_body",
+     "lang": "verus"
+    },
+    {
+     "kind": "external",
+     "lang": "verus"
+    },
+    {
+     "kind": "assume",
+     "lang": "verus"
+    },
+    {
+     "kind": "admit",
+     "lang": "verus"
+    },
+    {
+     "kind": "assume_specification",
+     "lang": "verus"
+    },
+    {
+     "kind": "uninterp",
+     "lang": "verus"
+    },
+    {
+     "kind": "axiom",
+     "lang": "verus"
+    },
+    {
+     "kind": "unsafe",
+     "lang": "bend"
+    },
+    {
+     "kind": "ts_ignore",
+     "lang": "ts"
+    }
+   ],
+   "kinds": [
+    {
+     "from": "component",
+     "name": "calls",
+     "to": "component"
+    },
+    {
+     "from": "component",
+     "name": "callbacks",
+     "to": "component"
+    },
+    {
+     "from": "component",
+     "name": "provides",
+     "to": "resource"
+    },
+    {
+     "from": "component",
+     "name": "data_flow",
+     "to": "component"
+    },
+    {
+     "from": "component",
+     "name": "coordinated_call",
+     "to": "component"
+    }
+   ],
+   "notes": [],
+   "providers": [
+    {
+     "absence": false,
+     "decides": [],
+     "depsComplete": false,
+     "identity": "sigstore(\"calls\")",
+     "implementation": {
+      "digest": "sha256:calls",
+      "paths": []
+     },
+     "observes": [
+      "call(ts)"
+     ],
+     "persist": false,
+     "presence": false,
+     "produces": [
+      "observation"
+     ],
+     "q": "y::calls",
+     "trusts": []
+    }
+   ],
+   "resources": [],
+   "shape": {
+    "owner": "y::Team",
+    "policy": "std::DefaultPolicy",
+    "q": "y::S"
+   },
+   "templates": [],
+   "units": [],
+   "v": "shape.elaborated.v1"
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "predicate": {
+    "shape": {
+     "entries": [
+      {
+       "digest": "sha256:a02b0d22134caa3059e0285a129401dd21d1df26d11689700bc2bbb8c150ca22",
+       "id": "ts:src/a/a.ts",
+       "kind": "file",
+       "parent": null,
+       "projection": "file",
+       "scheme": "ts.file.v1"
+      },
+      {
+       "digest": "sha256:254d439bcd272c3c8670fc79e5b17d37b16a2c590859791c7afbc9129c990638",
+       "id": "ts:src/a/a.ts",
+       "kind": "file",
+       "parent": null,
+       "projection": "own",
+       "scheme": "ts.own.v1"
+      },
+      {
+       "digest": "sha256:a39d63e60e2e10d46cbe9ae70ec819daace4d9433b58e7c026337abb7d474ef0",
+       "id": "ts:src/a/a.ts#f",
+       "kind": "symbol",
+       "parent": "ts:src/a/a.ts",
+       "projection": "unit",
+       "scheme": "ts.unit.v2"
+      },
+      {
+       "digest": "sha256:c7c383af7f70dbcab3092026b12008286c783dffc8f63e2be794972c058db7a1",
+       "id": "ts:src/a/a.ts#f",
+       "kind": "symbol",
+       "parent": "ts:src/a/a.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2"
+      },
+      {
+       "digest": "sha256:f3b2ab109d424d4fd7a80dbffc27d76de04c0db3c5937a928db2b5e527095091",
+       "id": "ts:src/c/c.ts",
+       "kind": "file",
+       "parent": null,
+       "projection": "file",
+       "scheme": "ts.file.v1"
+      },
+      {
+       "digest": "sha256:3db3d752cfc8de722bf2f7c10a356d963ff338604001d28db80239aee1b5582e",
+       "id": "ts:src/c/c.ts",
+       "kind": "file",
+       "parent": null,
+       "projection": "own",
+       "scheme": "ts.own.v1"
+      },
+      {
+       "digest": "sha256:6a96c50122196ce5c179816bf4ed66ca74b821f4c56024dbfd421cd637cd5e91",
+       "id": "ts:src/c/c.ts#g",
+       "kind": "symbol",
+       "parent": "ts:src/c/c.ts",
+       "projection": "unit",
+       "scheme": "ts.unit.v2"
+      },
+      {
+       "digest": "sha256:557f58e89396671a4ad1c414638108b0e92cca6336bbe6f9d2c4ab1469933918",
+       "id": "ts:src/c/c.ts#g",
+       "kind": "symbol",
+       "parent": "ts:src/c/c.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2"
+      },
+      {
+       "digest": "sha256:1bc1b9473e07dfc86b81a6cdfe2b6fccba2cfc45f17c0e9674fa70b957e78db8",
+       "id": "ts:src/b/b.ts",
+       "kind": "file",
+       "parent": null,
+       "projection": "file",
+       "scheme": "ts.file.v1"
+      },
+      {
+       "digest": "sha256:b6bcf6be430abfe72161d28fde035f154d0474d4742b4ed4d873b5f10c03b884",
+       "id": "ts:src/b/b.ts",
+       "kind": "file",
+       "parent": null,
+       "projection": "own",
+       "scheme": "ts.own.v1"
+      }
+     ],
+     "revision": "h7",
+     "tree": [],
+     "v": "shape.manifest.v1"
+    }
+   },
+   "predicateType": "https://shapelang.dev/manifest/v1",
+   "subject": []
+  },
+  "revision": "h7"
+ },
+ "baseRecords": [],
+ "cells": [],
+ "change": {
+  "ids": [
+   "github:acme/x#1"
+  ]
+ },
+ "contract": "shape.kernel.case/v1",
+ "head": {
+  "esf": {
+   "actors": [
+    {
+     "identities": [],
+     "kind": "team",
+     "members": [
+      "y::pat"
+     ],
+     "operator": null,
+     "q": "y::Team"
+    },
+    {
+     "identities": [],
+     "kind": "person",
+     "members": [],
+     "operator": null,
+     "q": "y::pat"
+    },
+    {
+     "identities": [],
+     "kind": "agent",
+     "members": [],
+     "operator": "y::pat",
+     "q": "y::bot"
+    }
+   ],
+   "claims": [],
+   "components": [
+    {
+     "allows": [],
+     "assumes": [],
+     "attach": [],
+     "boundary": false,
+     "complete": [],
+     "grants": null,
+     "owner": "y::Team",
+     "paths": [
+      "src/a/**/*.ts"
+     ],
+     "q": "y::A",
+     "tier": "low",
+     "units": [],
+     "was": null
+    },
+    {
+     "allows": [],
+     "assumes": [],
+     "attach": [],
+     "boundary": false,
+     "complete": [],
+     "grants": null,
+     "owner": "y::Team",
+     "paths": [
+      "src/b/**/*.ts"
+     ],
+     "q": "y::B",
+     "tier": "low",
+     "units": [],
+     "was": null
+    },
+    {
+     "allows": [],
+     "assumes": [],
+     "attach": [],
+     "boundary": false,
+     "complete": [],
+     "grants": null,
+     "owner": "y::Team",
+     "paths": [
+      "src/c/**/*.ts"
+     ],
+     "q": "y::C",
+     "tier": "low",
+     "units": [],
+     "was": null
+    }
+   ],
+   "effects": [
+    {
+     "implies": [],
+     "verb": "Read"
+    },
+    {
+     "implies": [],
+     "verb": "Write"
+    },
+    {
+     "implies": [
+      "Read"
+     ],
+     "verb": "Export"
+    },
+    {
+     "implies": [
+      "Write"
+     ],
+     "verb": "Append"
+    },
+    {
+     "implies": [
+      "Write"
+     ],
+     "verb": "Import"
+    },
+    {
+     "implies": [
+      "Write"
+     ],
+     "verb": "Update"
+    },
+    {
+     "implies": [
+      "Update"
+     ],
+     "verb": "Redact"
+    },
+    {
+     "implies": [
+      "Update"
+     ],
+     "verb": "LogicalDelete"
+    },
+    {
+     "implies": [
+      "Update"
+     ],
+     "verb": "HardDelete"
+    },
+    {
+     "implies": [
+      "HardDelete"
+     ],
+     "verb": "Truncate"
+    },
+    {
+     "implies": [
+      "Truncate"
+     ],
+     "verb": "DropStorage"
+    },
+    {
+     "implies": [],
+     "verb": "Hatch"
+    }
+   ],
+   "errors": [],
+   "exceptions": [],
+   "hatches": [
+    {
+     "kind": "external_body",
+     "lang": "verus"
+    },
+    {
+     "kind": "external",
+     "lang": "verus"
+    },
+    {
+     "kind": "assume",
+     "lang": "verus"
+    },
+    {
+     "kind": "admit",
+     "lang": "verus"
+    },
+    {
+     "kind": "assume_specification",
+     "lang": "verus"
+    },
+    {
+     "kind": "uninterp",
+     "lang": "verus"
+    },
+    {
+     "kind": "axiom",
+     "lang": "verus"
+    },
+    {
+     "kind": "unsafe",
+     "lang": "bend"
+    },
+    {
+     "kind": "ts_ignore",
+     "lang": "ts"
+    }
+   ],
+   "kinds": [
+    {
+     "from": "component",
+     "name": "calls",
+     "to": "component"
+    },
+    {
+     "from": "component",
+     "name": "callbacks",
+     "to": "component"
+    },
+    {
+     "from": "component",
+     "name": "provides",
+     "to": "resource"
+    },
+    {
+     "from": "component",
+     "name": "data_flow",
+     "to": "component"
+    },
+    {
+     "from": "component",
+     "name": "coordinated_call",
+     "to": "component"
+    }
+   ],
+   "notes": [],
+   "providers": [
+    {
+     "absence": false,
+     "decides": [],
+     "depsComplete": false,
+     "identity": "sigstore(\"calls\")",
+     "implementation": {
+      "digest": "sha256:calls",
+      "paths": []
+     },
+     "observes": [
+      "call(ts)"
+     ],
+     "persist": false,
+     "presence": false,
+     "produces": [
+      "observation"
+     ],
+     "q": "y::calls",
+     "trusts": []
+    }
+   ],
+   "resources": [],
+   "shape": {
+    "owner": "y::Team",
+    "policy": "std::DefaultPolicy",
+    "q": "y::S"
+   },
+   "templates": [],
+   "units": [],
+   "v": "shape.elaborated.v1"
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "predicate": {
+    "shape": {
+     "entries": [
+      {
+       "digest": "sha256:a02b0d22134caa3059e0285a129401dd21d1df26d11689700bc2bbb8c150ca22",
+       "id": "ts:src/a/a.ts",
+       "kind": "file",
+       "parent": null,
+       "projection": "file",
+       "scheme": "ts.file.v1"
+      },
+      {
+       "digest": "sha256:254d439bcd272c3c8670fc79e5b17d37b16a2c590859791c7afbc9129c990638",
+       "id": "ts:src/a/a.ts",
+       "kind": "file",
+       "parent": null,
+       "projection": "own",
+       "scheme": "ts.own.v1"
+      },
+      {
+       "digest": "sha256:a39d63e60e2e10d46cbe9ae70ec819daace4d9433b58e7c026337abb7d474ef0",
+       "id": "ts:src/a/a.ts#f",
+       "kind": "symbol",
+       "parent": "ts:src/a/a.ts",
+       "projection": "unit",
+       "scheme": "ts.unit.v2"
+      },
+      {
+       "digest": "sha256:c7c383af7f70dbcab3092026b12008286c783dffc8f63e2be794972c058db7a1",
+       "id": "ts:src/a/a.ts#f",
+       "kind": "symbol",
+       "parent": "ts:src/a/a.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2"
+      },
+      {
+       "digest": "sha256:f3b2ab109d424d4fd7a80dbffc27d76de04c0db3c5937a928db2b5e527095091",
+       "id": "ts:src/c/c.ts",
+       "kind": "file",
+       "parent": null,
+       "projection": "file",
+       "scheme": "ts.file.v1"
+      },
+      {
+       "digest": "sha256:3db3d752cfc8de722bf2f7c10a356d963ff338604001d28db80239aee1b5582e",
+       "id": "ts:src/c/c.ts",
+       "kind": "file",
+       "parent": null,
+       "projection": "own",
+       "scheme": "ts.own.v1"
+      },
+      {
+       "digest": "sha256:6a96c50122196ce5c179816bf4ed66ca74b821f4c56024dbfd421cd637cd5e91",
+       "id": "ts:src/c/c.ts#g",
+       "kind": "symbol",
+       "parent": "ts:src/c/c.ts",
+       "projection": "unit",
+       "scheme": "ts.unit.v2"
+      },
+      {
+       "digest": "sha256:557f58e89396671a4ad1c414638108b0e92cca6336bbe6f9d2c4ab1469933918",
+       "id": "ts:src/c/c.ts#g",
+       "kind": "symbol",
+       "parent": "ts:src/c/c.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2"
+      },
+      {
+       "digest": "sha256:1bc1b9473e07dfc86b81a6cdfe2b6fccba2cfc45f17c0e9674fa70b957e78db8",
+       "id": "ts:src/b/b.ts",
+       "kind": "file",
+       "parent": null,
+       "projection": "file",
+       "scheme": "ts.file.v1"
+      },
+      {
+       "digest": "sha256:b6bcf6be430abfe72161d28fde035f154d0474d4742b4ed4d873b5f10c03b884",
+       "id": "ts:src/b/b.ts",
+       "kind": "file",
+       "parent": null,
+       "projection": "own",
+       "scheme": "ts.own.v1"
+      }
+     ],
+     "revision": "h7",
+     "tree": [],
+     "v": "shape.manifest.v1"
+    }
+   },
+   "predicateType": "https://shapelang.dev/manifest/v1",
+   "subject": []
+  },
+  "revision": "h7"
+ },
+ "mode": "change",
+ "now": "2026-10-25T12:00:00Z",
+ "records": [
+  {
+   "_type": "https://in-toto.io/Statement/v1",
+   "authenticated": true,
+   "predicate": {
+    "shape": {
+     "facts": [],
+     "harness": [],
+     "kind": "observation",
+     "provider": {
+      "id": "y::calls",
+      "version": "1"
+     },
+     "result": "observes",
+     "revision": "h7",
+     "scope": {
+      "entries": [
+       {
+        "complete": false,
+        "deps": [],
+        "digest": "sha256:a39d63e60e2e10d46cbe9ae70ec819daace4d9433b58e7c026337abb7d474ef0",
+        "id": "ts:src/a/a.ts#f",
+        "projection": "unit",
+        "scheme": "ts.unit.v2"
+       }
+      ],
+      "root": "x"
+     },
+     "time": "2026-10-25T10:00:00Z",
+     "v": "shape.evidence.v1"
+    }
+   },
+   "predicateType": "https://shapelang.dev/evidence/v1",
+   "subject": []
+  }
+ ],
+ "reviews": []
+}

@@ -1,0 +1,79 @@
+{
+ "contract": "shape.check.output/v1",
+ "mode": "change",
+ "inputDigest": "sha256:8b2aad82bb3175f280bf8ca4623aac7b1a07096d4ad1ebdbec5714a80fa42585",
+ "verdict": "pass",
+ "errors": [],
+ "rejected": [],
+ "obligations": [],
+ "answered": [
+  {
+   "obligation": "ob:3584651e10a56f966347e42830866f9135f6cebf596e03eed8ed0649cf250c6c",
+   "records": [
+    "review:57deae0f96a848ae",
+    "review:ba2113b4d8302c12"
+   ],
+   "self": false,
+   "exploited": null,
+   "as": "discharge"
+  }
+ ],
+ "loosening": [],
+ "renames": [],
+ "debt": [],
+ "preexisting": [],
+ "budget": {
+  "limit": null,
+  "used": 0,
+  "overflow": []
+ },
+ "health": {
+  "coverage": {
+   "num": 0,
+   "den": 2
+  },
+  "unobservable": [
+   "x::LedgerIsAppendOnly"
+  ],
+  "unanswered": [],
+  "openAuthority": [
+   "x::Store"
+  ],
+  "ungoverned": {
+   "num": 0,
+   "den": 4
+  },
+  "unmapped": [],
+  "externalCalls": 0,
+  "ungovernedCalls": 0,
+  "unanchored": 0,
+  "droppedEdges": 0,
+  "unauthenticated": [
+   "review x::kate: shape approve bd:1f7db965e52e50cd",
+   "review x::sam: shape approve bd:1f7db965e52e50cd"
+  ],
+  "executesHead": [],
+  "baseObservations": "present",
+  "baseDefects": [],
+  "clockClamped": false,
+  "trustDebt": 0,
+  "budget": {
+   "limit": null,
+   "used": 0,
+   "overflow": 0
+  },
+  "self": [],
+  "preexisting": 0,
+  "renames": 0,
+  "assumption": "dependency code and configuration data",
+  "cells": [
+   "cell:[\"ungoverned\",\"ungoverned\"]",
+   "cell:[\"x::Store.*\",\"x::Store.*\"]"
+  ],
+  "records": {
+   "valid": 0,
+   "rejected": 0
+  },
+  "baseUnreadable": false
+ }
+}

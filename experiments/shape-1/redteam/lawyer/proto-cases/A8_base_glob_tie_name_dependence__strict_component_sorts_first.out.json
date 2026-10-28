@@ -1,0 +1,192 @@
+{
+ "contract": "shape.check.output/v1",
+ "mode": "change",
+ "inputDigest": "sha256:f30a574c86596e020e5d6d9e8c7f59e00ac3898a584894c3979f8a6a8b30ee6f",
+ "verdict": "blocked",
+ "errors": [],
+ "rejected": [],
+ "obligations": [
+  {
+   "key": "ob:74def49d813a49761be122536591275a0b5895492d16fb04822dbc0505648a78",
+   "kind": "coverage",
+   "reason": null,
+   "questions": null,
+   "introduced": true,
+   "severity": "blocking",
+   "tier": "critical",
+   "budget": "judgment",
+   "force": null,
+   "owner": "z::Team",
+   "assignee": null,
+   "group": "g:1c36b3f365c5576468b70a36d726be4e73cc3f49632ff6140b2c92f30d6b69d7",
+   "claim": null,
+   "subject": "component z::Beta",
+   "witness": [],
+   "facts": {},
+   "counterexample": null,
+   "exploited": null,
+   "final": false,
+   "binding": "bd:5ae34a75cac87ca80a24d31b437a8daa176589d6dc54cc425527be202bc5d665",
+   "exception": null,
+   "dischargers": [
+    {
+     "act": "answer",
+     "by": "judges",
+     "agentSafe": false,
+     "eligible": [
+      "z::quinn"
+     ],
+     "creates": null
+    },
+    {
+     "act": "bind",
+     "by": "author",
+     "agentSafe": true,
+     "eligible": [],
+     "creates": null
+    },
+    {
+     "act": "provide",
+     "by": "author",
+     "agentSafe": true,
+     "eligible": [],
+     "creates": null
+    }
+   ],
+   "causes": [
+    {
+     "type": "code",
+     "id": "ts:src/m.ts#f"
+    },
+    {
+     "type": "code",
+     "id": "ts:src/m.ts"
+    }
+   ]
+  },
+  {
+   "key": "ob:c70bf9372fa346b5387a27eea9343c8f82b33e6be90082400736eeeeefc9be68",
+   "kind": "loosening",
+   "reason": null,
+   "questions": [
+    "L1"
+   ],
+   "introduced": true,
+   "severity": "blocking",
+   "tier": "critical",
+   "budget": "judgment",
+   "force": null,
+   "owner": "z::Team",
+   "assignee": null,
+   "group": "g:399407b2689a7afda7d8f78ffadc12342deb517adec47d21aab1f0510ff14e54",
+   "claim": null,
+   "subject": "component z::Alpha",
+   "witness": [],
+   "facts": {},
+   "counterexample": {
+    "position": "ts:src/m.ts",
+    "atom": "Write<z::R>"
+   },
+   "exploited": false,
+   "final": false,
+   "binding": "bd:8d20a7b5a28baa8c759b2d698d9bf1fd88c61da633ecc2459498bfb49b22de34",
+   "exception": null,
+   "dischargers": [
+    {
+     "act": "revert",
+     "by": "author",
+     "agentSafe": true,
+     "eligible": [],
+     "creates": null
+    },
+    {
+     "act": "answer",
+     "by": "judges",
+     "agentSafe": false,
+     "eligible": [
+      "z::quinn"
+     ],
+     "creates": null
+    }
+   ],
+   "causes": [
+    {
+     "type": "base-claim",
+     "id": "component z::Alpha"
+    }
+   ]
+  }
+ ],
+ "answered": [],
+ "loosening": [
+  {
+   "question": "L1",
+   "subject": "component z::Alpha",
+   "answer": "loosened",
+   "exploited": false,
+   "final": false,
+   "affected": [
+    "cell:[[\"z::Alpha.*\",\"z::Beta.*\"],\"z::Beta.*\"]",
+    "ts:src/m.ts",
+    "ts:src/m.ts#f"
+   ],
+   "counterexample": {
+    "position": "ts:src/m.ts",
+    "atom": "Write<z::R>"
+   },
+   "obligation": "ob:c70bf9372fa346b5387a27eea9343c8f82b33e6be90082400736eeeeefc9be68"
+  }
+ ],
+ "renames": [],
+ "debt": [],
+ "preexisting": [],
+ "budget": {
+  "limit": null,
+  "used": 0,
+  "overflow": []
+ },
+ "health": {
+  "coverage": {
+   "num": 0,
+   "den": 2
+  },
+  "unobservable": [
+   "z::Beta/authority"
+  ],
+  "unanswered": [],
+  "openAuthority": [],
+  "ungoverned": {
+   "num": 0,
+   "den": 2
+  },
+  "unmapped": [],
+  "externalCalls": 0,
+  "ungovernedCalls": 0,
+  "unanchored": 0,
+  "droppedEdges": 0,
+  "unauthenticated": [],
+  "executesHead": [],
+  "baseObservations": "present",
+  "baseDefects": [],
+  "clockClamped": false,
+  "trustDebt": 0,
+  "budget": {
+   "limit": null,
+   "used": 0,
+   "overflow": 0
+  },
+  "self": [],
+  "preexisting": 0,
+  "renames": 0,
+  "assumption": "dependency code and configuration data",
+  "cells": [
+   "cell:[\"ungoverned\",\"ungoverned\"]",
+   "cell:[[\"z::Alpha.*\",\"z::Beta.*\"],\"z::Beta.*\"]"
+  ],
+  "records": {
+   "valid": 0,
+   "rejected": 0
+  },
+  "baseUnreadable": false
+ }
+}

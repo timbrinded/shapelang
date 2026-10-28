@@ -1,0 +1,36 @@
+{
+ "answered": [],
+ "contract": "shape.check.output/v1",
+ "debt": [],
+ "errors": [],
+ "mode": "change",
+ "obligations": [
+  {
+   "binding": "bd:2dd342b8c63f0baa0d0703230ba3bb5acfb3a78fe658cd8e3725050c327666a8",
+   "budget": "judgment",
+   "claim": {
+    "fp": "sha256:c414eadc238d87c4e004899e9f2fe5a2ecfe615dae7eb8a242714426a059a077",
+    "ids": [
+     "tooling::ShpCli.isoToday/RefactorSensitive/law"
+    ],
+    "tier": "critical"
+   },
+   "exception": null,
+   "exploited": null,
+   "final": false,
+   "force": null,
+   "group": "g:317d24c25b95205f39c84fabf66d795a21512cd321c9534d65f5c68ff73c31a5",
+   "introduced": true,
+   "key": "ob:5b2b722c136fd4da308e0f1e74276988e91427030963ada796bc16b9a9137bf0",
+   "kind": "unestablished",
+   "owner": "tooling::ShapeMaintainers",
+   "questions": null,
+   "reason": "missing",
+   "severity": "blocking",
+   "subject": null,
+   "tier": "critical",
+   "witness": []
+  }
+ ],
+ "verdict": "blocked"
+}

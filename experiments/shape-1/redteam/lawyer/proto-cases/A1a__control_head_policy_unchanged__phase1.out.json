@@ -1,0 +1,135 @@
+{
+ "contract": "shape.check.output/v1",
+ "mode": "change",
+ "inputDigest": "sha256:2df5c9aebc628265bb6189cd1f9079f4f332525d19c552b8a71f49b7cc735665",
+ "verdict": "blocked",
+ "errors": [],
+ "rejected": [],
+ "obligations": [
+  {
+   "key": "ob:a4a8d01ab841cdac2718c03927694215d569d314bdf6c753487e5123267e47f0",
+   "kind": "loosening",
+   "reason": null,
+   "questions": [
+    "L4"
+   ],
+   "introduced": true,
+   "severity": "blocking",
+   "tier": "normal",
+   "budget": "judgment",
+   "force": null,
+   "owner": "tooling::ShapeMaintainers",
+   "assignee": null,
+   "group": "g:159b9d4d1d03fd792c7adb82fa2137da8272a266f0dd5b1d559bd10f27f76529",
+   "claim": {
+    "fp": "sha256:c414eadc238d87c4e004899e9f2fe5a2ecfe615dae7eb8a242714426a059a077",
+    "ids": [
+     "tooling::ShpCli.isoToday/RefactorSensitive/law"
+    ],
+    "tier": "normal"
+   },
+   "subject": "sha256:c414eadc238d87c4e004899e9f2fe5a2ecfe615dae7eb8a242714426a059a077",
+   "witness": [],
+   "facts": {},
+   "counterexample": null,
+   "exploited": false,
+   "final": false,
+   "binding": "bd:2e201b86c28e32a804ed815cbec4c0d5f9a96c7fe1a568eb317515d435fa3e87",
+   "exception": null,
+   "dischargers": [
+    {
+     "act": "revert",
+     "by": "author",
+     "agentSafe": true,
+     "eligible": [],
+     "creates": null
+    },
+    {
+     "act": "answer",
+     "by": "judges",
+     "agentSafe": false,
+     "eligible": [
+      "tooling::tim"
+     ],
+     "creates": null
+    }
+   ],
+   "causes": [
+    {
+     "type": "base-claim",
+     "id": "sha256:c414eadc238d87c4e004899e9f2fe5a2ecfe615dae7eb8a242714426a059a077"
+    }
+   ]
+  }
+ ],
+ "answered": [],
+ "loosening": [
+  {
+   "question": "L4",
+   "subject": "sha256:c414eadc238d87c4e004899e9f2fe5a2ecfe615dae7eb8a242714426a059a077",
+   "answer": "loosened",
+   "exploited": false,
+   "final": false,
+   "affected": [
+    "ts:packages/shp-cli/src/freshness.ts#isoToday"
+   ],
+   "counterexample": null,
+   "obligation": "ob:a4a8d01ab841cdac2718c03927694215d569d314bdf6c753487e5123267e47f0"
+  }
+ ],
+ "renames": [],
+ "debt": [],
+ "preexisting": [],
+ "budget": {
+  "limit": null,
+  "used": 0,
+  "overflow": []
+ },
+ "health": {
+  "coverage": {
+   "num": 0,
+   "den": 0
+  },
+  "unobservable": [
+   "tooling::ShpCli.isoToday/effects.lower",
+   "tooling::ShpCli.isoToday/effects.upper"
+  ],
+  "unanswered": [],
+  "openAuthority": [
+   "tooling::ShpCli"
+  ],
+  "ungoverned": {
+   "num": 0,
+   "den": 3
+  },
+  "unmapped": [],
+  "externalCalls": 0,
+  "ungovernedCalls": 0,
+  "unanchored": 0,
+  "droppedEdges": 0,
+  "unauthenticated": [],
+  "executesHead": [],
+  "baseObservations": "present",
+  "baseDefects": [],
+  "clockClamped": false,
+  "trustDebt": 0,
+  "budget": {
+   "limit": null,
+   "used": 0,
+   "overflow": 0
+  },
+  "self": [],
+  "preexisting": 0,
+  "renames": 0,
+  "assumption": "dependency code and configuration data",
+  "cells": [
+   "cell:[\"tooling::ShpCli.*\",\"tooling::ShpCli.*\"]",
+   "cell:[\"ungoverned\",\"ungoverned\"]"
+  ],
+  "records": {
+   "valid": 0,
+   "rejected": 0
+  },
+  "baseUnreadable": false
+ }
+}

@@ -1,0 +1,229 @@
+{
+ "contract": "shape.check.output/v1",
+ "mode": "change",
+ "inputDigest": "sha256:043e3b3bbb2fb91e948a9f3d8df774195142ac4398d47662c63e0854dc0b9d22",
+ "verdict": "blocked",
+ "errors": [],
+ "rejected": [],
+ "obligations": [
+  {
+   "key": "ob:2b89ce1d2a6218c5659868325017a9d3c3e6c4b8e86e9e8eadfd1b7dae57efa7",
+   "kind": "loosening",
+   "reason": null,
+   "questions": [
+    "L1"
+   ],
+   "introduced": true,
+   "severity": "blocking",
+   "tier": "final",
+   "budget": "judgment",
+   "force": null,
+   "owner": "tooling::ShapeMaintainers",
+   "assignee": null,
+   "group": "g:0d15c506add7f89eea6056150c804f2bf8b6c6407f399afc754b35dabe0434fe",
+   "claim": {
+    "fp": "sha256:3b25b11bdcb82d158b11088127c75348c466aa2b4b06698fba7c9a121415fa8c",
+    "ids": [
+     "tooling::CheckerNeverReadsClock"
+    ],
+    "tier": "final"
+   },
+   "subject": "sha256:3b25b11bdcb82d158b11088127c75348c466aa2b4b06698fba7c9a121415fa8c",
+   "witness": [],
+   "facts": {},
+   "counterexample": "sha256:fedfa0b09d953521b133cd23472c44fba3a187a4b97d64f01324f5fb0a682a3e",
+   "exploited": true,
+   "final": true,
+   "binding": "bd:0adff7fc08e4cda062b8a7f125fd2ad0a78dfdfcda14ea3a60b8f8dbaf02fcc9",
+   "exception": null,
+   "dischargers": [
+    {
+     "act": "revert",
+     "by": "author",
+     "agentSafe": true,
+     "eligible": [],
+     "creates": null
+    },
+    {
+     "act": "answer",
+     "by": "judges",
+     "agentSafe": false,
+     "eligible": [
+      "tooling::ann",
+      "tooling::bob"
+     ],
+     "creates": null
+    }
+   ],
+   "causes": [
+    {
+     "type": "base-claim",
+     "id": "sha256:3b25b11bdcb82d158b11088127c75348c466aa2b4b06698fba7c9a121415fa8c"
+    }
+   ]
+  },
+  {
+   "key": "ob:c730063bdbce331f9da695b52b53a216435f635aa20257828ba4ee8a7b8cdc9c",
+   "kind": "contradiction",
+   "reason": null,
+   "questions": null,
+   "introduced": false,
+   "severity": "owed",
+   "tier": "normal",
+   "budget": "mechanical",
+   "force": "sound",
+   "owner": "tooling::ShapeMaintainers",
+   "assignee": null,
+   "group": "g:0d15c506add7f89eea6056150c804f2bf8b6c6407f399afc754b35dabe0434fe",
+   "claim": {
+    "fp": "sha256:5fa66543f9b4e84f7271a263fe085f0434dce547552debaf0159e9b4fb885363",
+    "ids": [
+     "tooling::ShapeRuleEngine/authority"
+    ],
+    "tier": "normal"
+   },
+   "subject": {
+    "code": "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness",
+    "atom": "Read<tooling::SystemClock>"
+   },
+   "witness": [
+    "sha256:fedfa0b09d953521b133cd23472c44fba3a187a4b97d64f01324f5fb0a682a3e"
+   ],
+   "facts": {
+    "sha256:fedfa0b09d953521b133cd23472c44fba3a187a4b97d64f01324f5fb0a682a3e": {
+     "at": "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness",
+     "resource": "ts.call(\"Date.now\")",
+     "type": "effect",
+     "verb": "Read"
+    }
+   },
+   "counterexample": null,
+   "exploited": null,
+   "final": false,
+   "binding": "bd:1e17deae3f5fd6b44f925dc9464ff39e3b05ff5b6582d033e0a318f3bb44583e",
+   "exception": null,
+   "dischargers": [
+    {
+     "act": "edit-code",
+     "by": "author",
+     "agentSafe": true,
+     "eligible": [],
+     "creates": null
+    },
+    {
+     "act": "exception",
+     "by": "judges",
+     "agentSafe": false,
+     "eligible": [
+      "tooling::ann",
+      "tooling::bob"
+     ],
+     "creates": null
+    },
+    {
+     "act": "edit-shape",
+     "by": "author",
+     "agentSafe": true,
+     "eligible": [],
+     "creates": {
+      "kind": "loosening",
+      "tier": "normal",
+      "answers": 1,
+      "owners": [
+       "tooling::ShapeMaintainers"
+      ]
+     }
+    }
+   ],
+   "causes": [
+    {
+     "type": "fact",
+     "id": "sha256:fedfa0b09d953521b133cd23472c44fba3a187a4b97d64f01324f5fb0a682a3e"
+    },
+    {
+     "type": "binding",
+     "id": "resource tooling::SystemClock"
+    },
+    {
+     "type": "code",
+     "id": "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness"
+    }
+   ]
+  }
+ ],
+ "answered": [],
+ "loosening": [
+  {
+   "question": "L1",
+   "subject": "sha256:3b25b11bdcb82d158b11088127c75348c466aa2b4b06698fba7c9a121415fa8c",
+   "answer": "loosened",
+   "exploited": true,
+   "final": true,
+   "affected": [
+    "cell:[\"tooling::ShapeRuleEngine.*\",\"tooling::ShapeRuleEngine.*\"]",
+    "ts:packages/shp-checker/src/checker/rules/guards.ts",
+    "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness"
+   ],
+   "counterexample": "sha256:fedfa0b09d953521b133cd23472c44fba3a187a4b97d64f01324f5fb0a682a3e",
+   "obligation": "ob:2b89ce1d2a6218c5659868325017a9d3c3e6c4b8e86e9e8eadfd1b7dae57efa7"
+  }
+ ],
+ "renames": [],
+ "debt": [],
+ "preexisting": [
+  {
+   "obligation": "ob:c730063bdbce331f9da695b52b53a216435f635aa20257828ba4ee8a7b8cdc9c",
+   "owner": "tooling::ShapeMaintainers"
+  }
+ ],
+ "budget": {
+  "limit": null,
+  "used": 0,
+  "overflow": []
+ },
+ "health": {
+  "coverage": {
+   "num": 1,
+   "den": 1
+  },
+  "unobservable": [],
+  "unanswered": [],
+  "openAuthority": [
+   "tooling::ShpCli"
+  ],
+  "ungoverned": {
+   "num": 2,
+   "den": 4
+  },
+  "unmapped": [],
+  "externalCalls": 0,
+  "ungovernedCalls": 0,
+  "unanchored": 0,
+  "droppedEdges": 0,
+  "unauthenticated": [],
+  "executesHead": [],
+  "baseObservations": "present",
+  "baseDefects": [],
+  "clockClamped": false,
+  "trustDebt": 0,
+  "budget": {
+   "limit": null,
+   "used": 0,
+   "overflow": 0
+  },
+  "self": [],
+  "preexisting": 1,
+  "renames": 0,
+  "assumption": "dependency code and configuration data",
+  "cells": [
+   "cell:[\"tooling::ShapeRuleEngine.*\",\"tooling::ShapeRuleEngine.*\"]",
+   "cell:[\"tooling::ShpCli.*\",\"tooling::ShpCli.*\"]",
+   "cell:[\"ungoverned\",\"ungoverned\"]"
+  ],
+  "records": {
+   "valid": 1,
+   "rejected": 0
+  },
+  "baseUnreadable": false
+ }
+}

@@ -1,0 +1,30 @@
+{
+ "answered": [],
+ "contract": "shape.check.output/v1",
+ "debt": [],
+ "errors": [],
+ "mode": "change",
+ "obligations": [
+  {
+   "binding": "bd:fda16315a36d667c456a3d4201d55f79e25dec80ad97970e563319ad5d42bd78",
+   "budget": "judgment",
+   "claim": null,
+   "exception": null,
+   "exploited": null,
+   "final": true,
+   "force": null,
+   "group": "g:07afa9c845c79e9ee31b453497fe9e2561e74d853df5ffb07b879db00f098422",
+   "introduced": true,
+   "key": "ob:558a8fd337b9cc4e2dcbef38ef77c7b219ff38b74f36e120cb5c8adcc92b24c9",
+   "kind": "coverage",
+   "owner": "w::Team",
+   "questions": null,
+   "reason": null,
+   "severity": "blocking",
+   "subject": "component w::Vault",
+   "tier": "final",
+   "witness": []
+  }
+ ],
+ "verdict": "blocked"
+}

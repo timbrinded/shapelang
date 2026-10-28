@@ -1,0 +1,66 @@
+{
+ "contract": "shape.check.output/v1",
+ "mode": "change",
+ "inputDigest": "sha256:2b915794a83fa9e26a387b83788dd142d4b4310d36f62405bc7f21454afa1bdc",
+ "verdict": "pass",
+ "errors": [],
+ "rejected": [],
+ "obligations": [],
+ "answered": [],
+ "loosening": [],
+ "renames": [],
+ "debt": [],
+ "preexisting": [],
+ "budget": {
+  "limit": null,
+  "used": 0,
+  "overflow": []
+ },
+ "health": {
+  "coverage": {
+   "num": 0,
+   "den": 2
+  },
+  "unobservable": [
+   "w::Scratch/authority",
+   "w::Vault/authority"
+  ],
+  "unanswered": [],
+  "openAuthority": [],
+  "ungoverned": {
+   "num": 0,
+   "den": 4
+  },
+  "unmapped": [],
+  "externalCalls": 0,
+  "ungovernedCalls": 0,
+  "unanchored": 0,
+  "droppedEdges": 0,
+  "unauthenticated": [],
+  "executesHead": [],
+  "baseObservations": "present",
+  "baseDefects": [],
+  "clockClamped": false,
+  "trustDebt": 0,
+  "budget": {
+   "limit": null,
+   "used": 0,
+   "overflow": 0
+  },
+  "self": [],
+  "preexisting": 0,
+  "renames": 0,
+  "assumption": "dependency code and configuration data",
+  "cells": [
+   "cell:[\"ungoverned\",\"ungoverned\"]",
+   "cell:[\"w::Scratch.*\",\"w::Scratch.*\"]",
+   "cell:[\"w::Vault.*\",\"w::Scratch.*\"]",
+   "cell:[\"w::Vault.*\",\"w::Vault.*\"]"
+  ],
+  "records": {
+   "valid": 0,
+   "rejected": 0
+  },
+  "baseUnreadable": false
+ }
+}

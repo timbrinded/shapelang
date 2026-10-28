@@ -1,0 +1,475 @@
+{
+ "contract": "shape.check.input/v1",
+ "mode": "change",
+ "now": "2026-10-25T12:00:00Z",
+ "base": {
+  "revision": "e100000000000000000000000000000000000000",
+  "source": {
+   "v": "shape.source.v1",
+   "modules": [
+    {
+     "module": "q",
+     "imports": [
+      "std"
+     ],
+     "decls": [
+      {
+       "decl": "shape",
+       "name": "S",
+       "owner": "Team"
+      },
+      {
+       "decl": "actor",
+       "name": "Team",
+       "kind": "team",
+       "members": [
+        "pat",
+        "quinn"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "pat",
+       "kind": "person",
+       "identities": [
+        "github(\"pat\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "quinn",
+       "kind": "person",
+       "identities": [
+        "github(\"quinn\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "bot",
+       "kind": "agent",
+       "operator": "pat",
+       "identities": [
+        "github(\"bot[bot]\")"
+       ]
+      },
+      {
+       "decl": "component",
+       "name": "A",
+       "owner": "Team",
+       "tier": "critical",
+       "paths": [
+        "src/a/**/*.ts"
+       ]
+      },
+      {
+       "decl": "component",
+       "name": "B",
+       "owner": "Team",
+       "tier": "critical",
+       "paths": [
+        "src/b/**/*.ts"
+       ]
+      },
+      {
+       "decl": "component",
+       "name": "C",
+       "owner": "Team",
+       "tier": "critical",
+       "paths": [
+        "src/c/**/*.ts"
+       ]
+      },
+      {
+       "decl": "rule",
+       "name": "Isolation",
+       "tier": "critical",
+       "clauses": [
+        {
+         "forbid": "path",
+         "from": [
+          "component A"
+         ],
+         "to": [
+          "component C"
+         ],
+         "over": [
+          "calls"
+         ]
+        }
+       ]
+      },
+      {
+       "decl": "provider",
+       "name": "refines",
+       "produces": [
+        "equivalence"
+       ],
+       "decides": [
+        "equivalence"
+       ],
+       "sound": [
+        "presence"
+       ],
+       "identity": "ed25519(\"9035dd13c4c9eb3d8f71adf9cfd629abbcb6849a4d8ec9ed772996aaeab8fa65\")",
+       "implementation": {
+        "digest": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "subject": [
+    {
+     "name": "shape:manifest/e100000000000000000000000000000000000000",
+     "digest": {
+      "sha256": "cfebd4fb0544ed8dc0c488768a55151f6c2cb48a51d259eee5ac627d1abd0637"
+     }
+    }
+   ],
+   "predicateType": "https://in-toto.io/attestation/scai/attribute-report/v0.3",
+   "predicate": {
+    "attributes": [
+     {
+      "attribute": "SHAPE_MANIFEST"
+     }
+    ],
+    "shape": {
+     "v": "shape.manifest.v1",
+     "revision": "e100000000000000000000000000000000000000",
+     "tree": [
+      {
+       "path": "shape.lock",
+       "mode": "100644",
+       "blob": "83977260e3920505bd1bd2bb8cf4977969dbb729"
+      },
+      {
+       "path": "shape/q.shape",
+       "mode": "100644",
+       "blob": "2c0f51a9edeef4664a2b8abe6048beb6622a5f56"
+      },
+      {
+       "path": "src/a/a.ts",
+       "mode": "100644",
+       "blob": "1ec7db0b5d56540e4d0d3f837201726512f25196"
+      },
+      {
+       "path": "src/b/b.ts",
+       "mode": "100644",
+       "blob": "c49ce1f467d4eceff29756dce7c78579f23c8906"
+      },
+      {
+       "path": "src/c/c.ts",
+       "mode": "100644",
+       "blob": "2068768b1053dab97ba671c51fe72596177b2375"
+      }
+     ],
+     "entries": [
+      {
+       "id": "ts:src/a/a.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:1809ac7d4d5c25b2a148e77a27780f9235e6bc4b63368678e89e6e99a054775c",
+       "kind": "file",
+       "parent": null
+      },
+      {
+       "id": "ts:src/a/a.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:a2adfadc5bfd287d188094dd72c12f47ad4f10b7f773945fe6213ff1a2c9036e",
+       "kind": "file",
+       "parent": null
+      },
+      {
+       "id": "ts:src/b/b.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:c5fc50acf0cdf944ff3473d8cac602d94e7aac3764091b1cd0cc569c9f4a4f75",
+       "kind": "file",
+       "parent": null
+      },
+      {
+       "id": "ts:src/b/b.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:e489c87316a2875d7ff987f236c47af69ce84d3ecf08db14668622452e6e62b6",
+       "kind": "file",
+       "parent": null
+      },
+      {
+       "id": "ts:src/c/c.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:b9b6dd71eef52e631c20e7257921ce16d5fa30132f7ab375760220afd2aa8f26",
+       "kind": "file",
+       "parent": null
+      },
+      {
+       "id": "ts:src/c/c.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:04b7ce1923471ccf0a1b5083a07efce5abea42fa0194beb95390f2989c614107",
+       "kind": "file",
+       "parent": null
+      }
+     ]
+    }
+   }
+  }
+ },
+ "change": {
+  "ids": [
+   "github:acme/q#1"
+  ]
+ },
+ "authors": [
+  {
+   "identity": "github(\"bot[bot]\")",
+   "verified": true,
+   "bot": true
+  }
+ ],
+ "reviews": [],
+ "records": [
+  {
+   "payloadType": "application/vnd.in-toto+json",
+   "payload": "eyJfdHlwZSI6Imh0dHBzOi8vaW4tdG90by5pby9TdGF0ZW1lbnQvdjEiLCJwcmVkaWNhdGUiOnsiYXR0cmlidXRlcyI6W3siYXR0cmlidXRlIjoiU0hBUEVfSU1QTElFUyIsImNvbmRpdGlvbnMiOnsic2hhcGUua2luZCI6ImVxdWl2YWxlbmNlIn19XSwicHJvZHVjZXIiOnsiYW5ub3RhdGlvbnMiOnsic2hhcGUucHJvdmlkZXIiOiJxOjpyZWZpbmVzIiwidmVyc2lvbiI6IjEifSwidXJpIjoicTo6cmVmaW5lcyJ9LCJzaGFwZSI6eyJhc3N1bXB0aW9ucyI6W10sImNvZGUiOltdLCJoYXJuZXNzIjpbXSwia2luZCI6ImVxdWl2YWxlbmNlIiwicGFpciI6eyJmcm9tIjoic2hhMjU2OmY2NzBmMWY1NTk1OTQxZmIwNWQ2Zjc3ZTY4ZTNiMTE2MzNlZTJhOGM1NzllY2Q4YjMzZTMwNDY4MWU5ZTQzZjIiLCJzcGFjZSI6ImNsYWltIiwidG8iOiJzaGEyNTY6YWJmNzQxMmFmODIwNGZmYWMzNTc3MDQxMjY4YzU1ODBjNTAzNGEzM2U0NWZjNzNmOGI3NDRjNmE2MDIwZjQ2MSJ9LCJwcm92aWRlciI6eyJpZCI6InE6OnJlZmluZXMiLCJ2ZXJzaW9uIjoiMSJ9LCJyZXN1bHQiOiJpbXBsaWVzIiwicmV2aXNpb24iOiJlMTAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwIiwidGltZSI6IjIwMjYtMTAtMjVUMTA6MDA6MDBaIiwidiI6InNoYXBlLmV2aWRlbmNlLnYxIn19LCJwcmVkaWNhdGVUeXBlIjoiaHR0cHM6Ly9pbi10b3RvLmlvL2F0dGVzdGF0aW9uL3NjYWkvYXR0cmlidXRlLXJlcG9ydC92MC4zIiwic3ViamVjdCI6W119",
+   "signatures": [
+    {
+     "keyid": "9035dd13c4c9eb3d8f71adf9cfd629abbcb6849a4d8ec9ed772996aaeab8fa65",
+     "sig": "CkpU9K7m3mwoe6Nd02HrhUI+L/AWG/dhDyDwsTaEPAPolU0s+4z4ntR7zPl5jvsY9f/uRzhV6thigj+JeRFGDg=="
+    }
+   ]
+  }
+ ],
+ "baseRecords": [],
+ "persisted": {
+  "base": [],
+  "head": []
+ },
+ "options": {
+  "health": true,
+  "teeth": false
+ },
+ "head": {
+  "revision": "e100000000000000000000000000000000000000",
+  "source": {
+   "v": "shape.source.v1",
+   "modules": [
+    {
+     "module": "q",
+     "imports": [
+      "std"
+     ],
+     "decls": [
+      {
+       "decl": "shape",
+       "name": "S",
+       "owner": "Team"
+      },
+      {
+       "decl": "actor",
+       "name": "Team",
+       "kind": "team",
+       "members": [
+        "pat",
+        "quinn"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "pat",
+       "kind": "person",
+       "identities": [
+        "github(\"pat\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "quinn",
+       "kind": "person",
+       "identities": [
+        "github(\"quinn\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "bot",
+       "kind": "agent",
+       "operator": "pat",
+       "identities": [
+        "github(\"bot[bot]\")"
+       ]
+      },
+      {
+       "decl": "component",
+       "name": "A",
+       "owner": "Team",
+       "tier": "critical",
+       "paths": [
+        "src/a/**/*.ts"
+       ]
+      },
+      {
+       "decl": "component",
+       "name": "B",
+       "owner": "Team",
+       "tier": "critical",
+       "paths": [
+        "src/b/**/*.ts"
+       ]
+      },
+      {
+       "decl": "component",
+       "name": "C",
+       "owner": "Team",
+       "tier": "critical",
+       "paths": [
+        "src/c/**/*.ts"
+       ]
+      },
+      {
+       "decl": "rule",
+       "name": "Isolation",
+       "tier": "critical",
+       "clauses": [
+        {
+         "forbid": "path",
+         "from": [
+          "component A"
+         ],
+         "to": [
+          "component B"
+         ],
+         "over": [
+          "calls"
+         ]
+        }
+       ]
+      },
+      {
+       "decl": "provider",
+       "name": "refines",
+       "produces": [
+        "equivalence"
+       ],
+       "decides": [
+        "equivalence"
+       ],
+       "sound": [
+        "presence"
+       ],
+       "identity": "ed25519(\"9035dd13c4c9eb3d8f71adf9cfd629abbcb6849a4d8ec9ed772996aaeab8fa65\")",
+       "implementation": {
+        "digest": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "subject": [
+    {
+     "name": "shape:manifest/e100000000000000000000000000000000000000",
+     "digest": {
+      "sha256": "cfebd4fb0544ed8dc0c488768a55151f6c2cb48a51d259eee5ac627d1abd0637"
+     }
+    }
+   ],
+   "predicateType": "https://in-toto.io/attestation/scai/attribute-report/v0.3",
+   "predicate": {
+    "attributes": [
+     {
+      "attribute": "SHAPE_MANIFEST"
+     }
+    ],
+    "shape": {
+     "v": "shape.manifest.v1",
+     "revision": "e100000000000000000000000000000000000000",
+     "tree": [
+      {
+       "path": "shape.lock",
+       "mode": "100644",
+       "blob": "83977260e3920505bd1bd2bb8cf4977969dbb729"
+      },
+      {
+       "path": "shape/q.shape",
+       "mode": "100644",
+       "blob": "2c0f51a9edeef4664a2b8abe6048beb6622a5f56"
+      },
+      {
+       "path": "src/a/a.ts",
+       "mode": "100644",
+       "blob": "1ec7db0b5d56540e4d0d3f837201726512f25196"
+      },
+      {
+       "path": "src/b/b.ts",
+       "mode": "100644",
+       "blob": "c49ce1f467d4eceff29756dce7c78579f23c8906"
+      },
+      {
+       "path": "src/c/c.ts",
+       "mode": "100644",
+       "blob": "2068768b1053dab97ba671c51fe72596177b2375"
+      }
+     ],
+     "entries": [
+      {
+       "id": "ts:src/a/a.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:1809ac7d4d5c25b2a148e77a27780f9235e6bc4b63368678e89e6e99a054775c",
+       "kind": "file",
+       "parent": null
+      },
+      {
+       "id": "ts:src/a/a.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:a2adfadc5bfd287d188094dd72c12f47ad4f10b7f773945fe6213ff1a2c9036e",
+       "kind": "file",
+       "parent": null
+      },
+      {
+       "id": "ts:src/b/b.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:c5fc50acf0cdf944ff3473d8cac602d94e7aac3764091b1cd0cc569c9f4a4f75",
+       "kind": "file",
+       "parent": null
+      },
+      {
+       "id": "ts:src/b/b.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:e489c87316a2875d7ff987f236c47af69ce84d3ecf08db14668622452e6e62b6",
+       "kind": "file",
+       "parent": null
+      },
+      {
+       "id": "ts:src/c/c.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:b9b6dd71eef52e631c20e7257921ce16d5fa30132f7ab375760220afd2aa8f26",
+       "kind": "file",
+       "parent": null
+      },
+      {
+       "id": "ts:src/c/c.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:04b7ce1923471ccf0a1b5083a07efce5abea42fa0194beb95390f2989c614107",
+       "kind": "file",
+       "parent": null
+      }
+     ]
+    }
+   }
+  }
+ }
+}

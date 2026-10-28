@@ -1,0 +1,685 @@
+{
+ "authors": [
+  "w::bot",
+  "w::pat"
+ ],
+ "base": {
+  "esf": {
+   "actors": [
+    {
+     "identities": [],
+     "kind": "team",
+     "members": [
+      "w::pat",
+      "w::quinn"
+     ],
+     "operator": null,
+     "q": "w::Team"
+    },
+    {
+     "identities": [],
+     "kind": "person",
+     "members": [],
+     "operator": null,
+     "q": "w::pat"
+    },
+    {
+     "identities": [],
+     "kind": "person",
+     "members": [],
+     "operator": null,
+     "q": "w::quinn"
+    },
+    {
+     "identities": [],
+     "kind": "agent",
+     "members": [],
+     "operator": "w::pat",
+     "q": "w::bot"
+    }
+   ],
+   "claims": [
+    {
+     "args": {
+      "component": "w::Vault",
+      "grants": [
+       "Read<w::Ledger>"
+      ]
+     },
+     "ids": [
+      "w::Vault/authority"
+     ],
+     "op": "authority",
+     "owner": "w::Team",
+     "requirement": null,
+     "tier": "final"
+    },
+    {
+     "args": {
+      "component": "w::Scratch",
+      "grants": [
+       "Read<w::Ledger>"
+      ]
+     },
+     "ids": [
+      "w::Scratch/authority"
+     ],
+     "op": "authority",
+     "owner": "w::Team",
+     "requirement": null,
+     "tier": "low"
+    }
+   ],
+   "components": [
+    {
+     "allows": [],
+     "assumes": [],
+     "attach": [],
+     "boundary": false,
+     "complete": [],
+     "grants": [
+      "Read<w::Ledger>"
+     ],
+     "owner": "w::Team",
+     "paths": [
+      "src/vault/**/*.ts"
+     ],
+     "q": "w::Vault",
+     "tier": "final",
+     "units": [],
+     "was": null
+    },
+    {
+     "allows": [],
+     "assumes": [],
+     "attach": [],
+     "boundary": false,
+     "complete": [],
+     "grants": [
+      "Read<w::Ledger>"
+     ],
+     "owner": "w::Team",
+     "paths": [
+      "src/scratch/**/*.ts"
+     ],
+     "q": "w::Scratch",
+     "tier": "low",
+     "units": [],
+     "was": null
+    }
+   ],
+   "effects": [
+    {
+     "implies": [],
+     "verb": "Read"
+    },
+    {
+     "implies": [],
+     "verb": "Write"
+    },
+    {
+     "implies": [
+      "Read"
+     ],
+     "verb": "Export"
+    },
+    {
+     "implies": [
+      "Write"
+     ],
+     "verb": "Append"
+    },
+    {
+     "implies": [
+      "Write"
+     ],
+     "verb": "Import"
+    },
+    {
+     "implies": [
+      "Write"
+     ],
+     "verb": "Update"
+    },
+    {
+     "implies": [
+      "Update"
+     ],
+     "verb": "Redact"
+    },
+    {
+     "implies": [
+      "Update"
+     ],
+     "verb": "LogicalDelete"
+    },
+    {
+     "implies": [
+      "Update"
+     ],
+     "verb": "HardDelete"
+    },
+    {
+     "implies": [
+      "HardDelete"
+     ],
+     "verb": "Truncate"
+    },
+    {
+     "implies": [
+      "Truncate"
+     ],
+     "verb": "DropStorage"
+    },
+    {
+     "implies": [],
+     "verb": "Hatch"
+    }
+   ],
+   "errors": [],
+   "exceptions": [],
+   "hatches": [
+    {
+     "kind": "external_body",
+     "lang": "verus"
+    },
+    {
+     "kind": "external",
+     "lang": "verus"
+    },
+    {
+     "kind": "assume",
+     "lang": "verus"
+    },
+    {
+     "kind": "admit",
+     "lang": "verus"
+    },
+    {
+     "kind": "assume_specification",
+     "lang": "verus"
+    },
+    {
+     "kind": "uninterp",
+     "lang": "verus"
+    },
+    {
+     "kind": "axiom",
+     "lang": "verus"
+    },
+    {
+     "kind": "unsafe",
+     "lang": "bend"
+    },
+    {
+     "kind": "ts_ignore",
+     "lang": "ts"
+    }
+   ],
+   "kinds": [
+    {
+     "from": "component",
+     "name": "calls",
+     "to": "component"
+    },
+    {
+     "from": "component",
+     "name": "callbacks",
+     "to": "component"
+    },
+    {
+     "from": "component",
+     "name": "provides",
+     "to": "resource"
+    },
+    {
+     "from": "component",
+     "name": "data_flow",
+     "to": "component"
+    },
+    {
+     "from": "component",
+     "name": "coordinated_call",
+     "to": "component"
+    }
+   ],
+   "notes": [],
+   "providers": [],
+   "resources": [
+    {
+     "attach": [],
+     "bind": [
+      "pg.table(\"ledger\")"
+     ],
+     "owner": "w::Team",
+     "q": "w::Ledger",
+     "tier": "final",
+     "was": null
+    }
+   ],
+   "shape": {
+    "owner": "w::Team",
+    "policy": "std::DefaultPolicy",
+    "q": "w::S"
+   },
+   "templates": [],
+   "units": [],
+   "v": "shape.elaborated.v1"
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "predicate": {
+    "shape": {
+     "entries": [
+      {
+       "digest": "sha256:07c334bbc36a408f0e6a9e3987418baa915121fd39c33f87299f0967966ee793",
+       "id": "ts:src/vault/v.ts",
+       "kind": "file",
+       "parent": null,
+       "projection": "file",
+       "scheme": "ts.file.v1"
+      },
+      {
+       "digest": "sha256:66fc35cc489cde2c09527e32a66631979ad76fde015642f31b3a68a4d07a1dc0",
+       "id": "ts:src/vault/v.ts",
+       "kind": "file",
+       "parent": null,
+       "projection": "own",
+       "scheme": "ts.own.v1"
+      },
+      {
+       "digest": "sha256:3e72968477570a34213c125ce5bf610b57cbf2205234eeff220d6bd869c6192d",
+       "id": "ts:src/vault/v.ts#read",
+       "kind": "symbol",
+       "parent": "ts:src/vault/v.ts",
+       "projection": "unit",
+       "scheme": "ts.unit.v2"
+      },
+      {
+       "digest": "sha256:6086218046bd0e6386e524f80b5c1a9ce54d8bf665c99ec651af560d2cd7819c",
+       "id": "ts:src/vault/v.ts#read",
+       "kind": "symbol",
+       "parent": "ts:src/vault/v.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2"
+      }
+     ],
+     "revision": "b9",
+     "tree": [],
+     "v": "shape.manifest.v1"
+    }
+   },
+   "predicateType": "https://shapelang.dev/manifest/v1",
+   "subject": []
+  },
+  "revision": "b9"
+ },
+ "baseRecords": [],
+ "cells": [
+  [
+   "w::Vault.*",
+   "w::Vault.*"
+  ],
+  [
+   "w::Scratch.*",
+   "w::Scratch.*"
+  ],
+  [
+   "ungoverned",
+   "ungoverned"
+  ]
+ ],
+ "change": {
+  "ids": [
+   "github:acme/x#1"
+  ]
+ },
+ "contract": "shape.kernel.case/v1",
+ "head": {
+  "esf": {
+   "actors": [
+    {
+     "identities": [],
+     "kind": "team",
+     "members": [
+      "w::pat",
+      "w::quinn"
+     ],
+     "operator": null,
+     "q": "w::Team"
+    },
+    {
+     "identities": [],
+     "kind": "person",
+     "members": [],
+     "operator": null,
+     "q": "w::pat"
+    },
+    {
+     "identities": [],
+     "kind": "person",
+     "members": [],
+     "operator": null,
+     "q": "w::quinn"
+    },
+    {
+     "identities": [],
+     "kind": "agent",
+     "members": [],
+     "operator": "w::pat",
+     "q": "w::bot"
+    }
+   ],
+   "claims": [
+    {
+     "args": {
+      "component": "w::Vault",
+      "grants": [
+       "Read<w::Ledger>"
+      ]
+     },
+     "ids": [
+      "w::Vault/authority"
+     ],
+     "op": "authority",
+     "owner": "w::Team",
+     "requirement": null,
+     "tier": "final"
+    },
+    {
+     "args": {
+      "component": "w::Scratch",
+      "grants": [
+       "Read<w::Ledger>"
+      ]
+     },
+     "ids": [
+      "w::Scratch/authority"
+     ],
+     "op": "authority",
+     "owner": "w::Team",
+     "requirement": null,
+     "tier": "low"
+    }
+   ],
+   "components": [
+    {
+     "allows": [],
+     "assumes": [],
+     "attach": [],
+     "boundary": false,
+     "complete": [],
+     "grants": [
+      "Read<w::Ledger>"
+     ],
+     "owner": "w::Team",
+     "paths": [
+      "src/vault/**/*.ts"
+     ],
+     "q": "w::Vault",
+     "tier": "final",
+     "units": [],
+     "was": null
+    },
+    {
+     "allows": [],
+     "assumes": [],
+     "attach": [],
+     "boundary": false,
+     "complete": [],
+     "grants": [
+      "Read<w::Ledger>"
+     ],
+     "owner": "w::Team",
+     "paths": [
+      "src/scratch/**/*.ts"
+     ],
+     "q": "w::Scratch",
+     "tier": "low",
+     "units": [],
+     "was": null
+    }
+   ],
+   "effects": [
+    {
+     "implies": [],
+     "verb": "Read"
+    },
+    {
+     "implies": [],
+     "verb": "Write"
+    },
+    {
+     "implies": [
+      "Read"
+     ],
+     "verb": "Export"
+    },
+    {
+     "implies": [
+      "Write"
+     ],
+     "verb": "Append"
+    },
+    {
+     "implies": [
+      "Write"
+     ],
+     "verb": "Import"
+    },
+    {
+     "implies": [
+      "Write"
+     ],
+     "verb": "Update"
+    },
+    {
+     "implies": [
+      "Update"
+     ],
+     "verb": "Redact"
+    },
+    {
+     "implies": [
+      "Update"
+     ],
+     "verb": "LogicalDelete"
+    },
+    {
+     "implies": [
+      "Update"
+     ],
+     "verb": "HardDelete"
+    },
+    {
+     "implies": [
+      "HardDelete"
+     ],
+     "verb": "Truncate"
+    },
+    {
+     "implies": [
+      "Truncate"
+     ],
+     "verb": "DropStorage"
+    },
+    {
+     "implies": [],
+     "verb": "Hatch"
+    }
+   ],
+   "errors": [],
+   "exceptions": [],
+   "hatches": [
+    {
+     "kind": "external_body",
+     "lang": "verus"
+    },
+    {
+     "kind": "external",
+     "lang": "verus"
+    },
+    {
+     "kind": "assume",
+     "lang": "verus"
+    },
+    {
+     "kind": "admit",
+     "lang": "verus"
+    },
+    {
+     "kind": "assume_specification",
+     "lang": "verus"
+    },
+    {
+     "kind": "uninterp",
+     "lang": "verus"
+    },
+    {
+     "kind": "axiom",
+     "lang": "verus"
+    },
+    {
+     "kind": "unsafe",
+     "lang": "bend"
+    },
+    {
+     "kind": "ts_ignore",
+     "lang": "ts"
+    }
+   ],
+   "kinds": [
+    {
+     "from": "component",
+     "name": "calls",
+     "to": "component"
+    },
+    {
+     "from": "component",
+     "name": "callbacks",
+     "to": "component"
+    },
+    {
+     "from": "component",
+     "name": "provides",
+     "to": "resource"
+    },
+    {
+     "from": "component",
+     "name": "data_flow",
+     "to": "component"
+    },
+    {
+     "from": "component",
+     "name": "coordinated_call",
+     "to": "component"
+    }
+   ],
+   "notes": [],
+   "providers": [],
+   "resources": [
+    {
+     "attach": [],
+     "bind": [
+      "pg.table(\"ledger\")"
+     ],
+     "owner": "w::Team",
+     "q": "w::Ledger",
+     "tier": "final",
+     "was": null
+    }
+   ],
+   "shape": {
+    "owner": "w::Team",
+    "policy": "std::DefaultPolicy",
+    "q": "w::S"
+   },
+   "templates": [],
+   "units": [],
+   "v": "shape.elaborated.v1"
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "predicate": {
+    "shape": {
+     "entries": [
+      {
+       "digest": "sha256:07c334bbc36a408f0e6a9e3987418baa915121fd39c33f87299f0967966ee793",
+       "id": "ts:src/vault/v.ts",
+       "kind": "file",
+       "parent": null,
+       "projection": "file",
+       "scheme": "ts.file.v1"
+      },
+      {
+       "digest": "sha256:66fc35cc489cde2c09527e32a66631979ad76fde015642f31b3a68a4d07a1dc0",
+       "id": "ts:src/vault/v.ts",
+       "kind": "file",
+       "parent": null,
+       "projection": "own",
+       "scheme": "ts.own.v1"
+      },
+      {
+       "digest": "sha256:3e72968477570a34213c125ce5bf610b57cbf2205234eeff220d6bd869c6192d",
+       "id": "ts:src/vault/v.ts#read",
+       "kind": "symbol",
+       "parent": "ts:src/vault/v.ts",
+       "projection": "unit",
+       "scheme": "ts.unit.v2"
+      },
+      {
+       "digest": "sha256:6086218046bd0e6386e524f80b5c1a9ce54d8bf665c99ec651af560d2cd7819c",
+       "id": "ts:src/vault/v.ts#read",
+       "kind": "symbol",
+       "parent": "ts:src/vault/v.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2"
+      },
+      {
+       "digest": "sha256:b258a94188f1215021113b9b9b98ed414816b777d010c32bc05f6d8a9553f031",
+       "id": "ts:src/vault/purge/p.ts",
+       "kind": "file",
+       "parent": null,
+       "projection": "file",
+       "scheme": "ts.file.v1"
+      },
+      {
+       "digest": "sha256:2709beeb16eadda7f52be94c90306ef1fc651daa6c8d92506ada6acb1d129326",
+       "id": "ts:src/vault/purge/p.ts",
+       "kind": "file",
+       "parent": null,
+       "projection": "own",
+       "scheme": "ts.own.v1"
+      },
+      {
+       "digest": "sha256:a9c985d8b2038009e13445ee53f4e4d727b9a970ec0b9059ba1029f664b047e4",
+       "id": "ts:src/vault/purge/p.ts#purge",
+       "kind": "symbol",
+       "parent": "ts:src/vault/purge/p.ts",
+       "projection": "unit",
+       "scheme": "ts.unit.v2"
+      },
+      {
+       "digest": "sha256:629e23820b6b1b96174e03cfee170d19cb23274c8e2aff3f9633133af9446419",
+       "id": "ts:src/vault/purge/p.ts#purge",
+       "kind": "symbol",
+       "parent": "ts:src/vault/purge/p.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2"
+      }
+     ],
+     "revision": "h9",
+     "tree": [],
+     "v": "shape.manifest.v1"
+    }
+   },
+   "predicateType": "https://shapelang.dev/manifest/v1",
+   "subject": []
+  },
+  "revision": "h9"
+ },
+ "mode": "change",
+ "now": "2026-10-25T12:00:00Z",
+ "records": [],
+ "reviews": []
+}

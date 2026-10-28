@@ -1,0 +1,924 @@
+{
+ "authors": [
+  "tooling::claude",
+  "tooling::tim"
+ ],
+ "base": {
+  "esf": {
+   "actors": [
+    {
+     "identities": [],
+     "kind": "team",
+     "members": [
+      "tooling::tim"
+     ],
+     "operator": null,
+     "q": "tooling::ShapeMaintainers"
+    },
+    {
+     "identities": [],
+     "kind": "person",
+     "members": [],
+     "operator": null,
+     "q": "tooling::tim"
+    },
+    {
+     "identities": [],
+     "kind": "agent",
+     "members": [],
+     "operator": "tooling::tim",
+     "q": "tooling::claude"
+    },
+    {
+     "identities": [],
+     "kind": "person",
+     "members": [],
+     "operator": null,
+     "q": "tooling::bob"
+    }
+   ],
+   "claims": [
+    {
+     "args": {
+      "atom": "Read<tooling::SystemClock>",
+      "except": [],
+      "scope": [
+       "component checker::ShapeRuleEngine"
+      ]
+     },
+     "ids": [
+      "tooling::CheckerNeverReadsClock"
+     ],
+     "op": "effect.forbid",
+     "owner": "tooling::ShapeMaintainers",
+     "requirement": null,
+     "tier": "critical"
+    },
+    {
+     "args": {
+      "component": "checker::ShapeRuleEngine",
+      "grants": [
+       "Read<tooling::ShapeSource>"
+      ]
+     },
+     "ids": [
+      "checker::ShapeRuleEngine/authority"
+     ],
+     "op": "authority",
+     "owner": "tooling::ShapeMaintainers",
+     "requirement": null,
+     "tier": "normal"
+    }
+   ],
+   "components": [
+    {
+     "allows": [],
+     "assumes": [],
+     "attach": [],
+     "boundary": false,
+     "complete": [],
+     "grants": null,
+     "owner": "tooling::ShapeMaintainers",
+     "paths": [
+      "packages/shp-cli/src/**/*.ts"
+     ],
+     "q": "tooling::ShpCli",
+     "tier": "normal",
+     "units": [],
+     "was": null
+    },
+    {
+     "allows": [],
+     "assumes": [],
+     "attach": [],
+     "boundary": false,
+     "complete": [],
+     "grants": [
+      "Read<tooling::ShapeSource>"
+     ],
+     "owner": "tooling::ShapeMaintainers",
+     "paths": [
+      "packages/shp-checker/src/checker/rules/**/*.ts"
+     ],
+     "q": "checker::ShapeRuleEngine",
+     "tier": "normal",
+     "units": [],
+     "was": null
+    }
+   ],
+   "effects": [
+    {
+     "implies": [],
+     "verb": "Read"
+    },
+    {
+     "implies": [],
+     "verb": "Write"
+    },
+    {
+     "implies": [
+      "Read"
+     ],
+     "verb": "Export"
+    },
+    {
+     "implies": [
+      "Write"
+     ],
+     "verb": "Append"
+    },
+    {
+     "implies": [
+      "Write"
+     ],
+     "verb": "Import"
+    },
+    {
+     "implies": [
+      "Write"
+     ],
+     "verb": "Update"
+    },
+    {
+     "implies": [
+      "Update"
+     ],
+     "verb": "Redact"
+    },
+    {
+     "implies": [
+      "Update"
+     ],
+     "verb": "LogicalDelete"
+    },
+    {
+     "implies": [
+      "Update"
+     ],
+     "verb": "HardDelete"
+    },
+    {
+     "implies": [
+      "HardDelete"
+     ],
+     "verb": "Truncate"
+    },
+    {
+     "implies": [
+      "Truncate"
+     ],
+     "verb": "DropStorage"
+    },
+    {
+     "implies": [],
+     "verb": "Hatch"
+    }
+   ],
+   "errors": [],
+   "exceptions": [],
+   "hatches": [
+    {
+     "kind": "external_body",
+     "lang": "verus"
+    },
+    {
+     "kind": "external",
+     "lang": "verus"
+    },
+    {
+     "kind": "assume",
+     "lang": "verus"
+    },
+    {
+     "kind": "admit",
+     "lang": "verus"
+    },
+    {
+     "kind": "assume_specification",
+     "lang": "verus"
+    },
+    {
+     "kind": "uninterp",
+     "lang": "verus"
+    },
+    {
+     "kind": "axiom",
+     "lang": "verus"
+    },
+    {
+     "kind": "unsafe",
+     "lang": "bend"
+    },
+    {
+     "kind": "ts_ignore",
+     "lang": "ts"
+    }
+   ],
+   "kinds": [
+    {
+     "from": "component",
+     "name": "calls",
+     "to": "component"
+    },
+    {
+     "from": "component",
+     "name": "callbacks",
+     "to": "component"
+    },
+    {
+     "from": "component",
+     "name": "provides",
+     "to": "resource"
+    },
+    {
+     "from": "component",
+     "name": "data_flow",
+     "to": "component"
+    },
+    {
+     "from": "component",
+     "name": "coordinated_call",
+     "to": "component"
+    }
+   ],
+   "notes": [],
+   "policy": {
+    "tiers": {
+     "critical": {
+      "blocks": [
+       "unestablished",
+       "coverage",
+       "latent-loosening"
+      ],
+      "floor": "tested",
+      "judges": [
+       "owner",
+       "tooling::bob"
+      ],
+      "maxAge": 90
+     },
+     "low": {
+      "blocks": [],
+      "floor": "declared",
+      "judges": [
+       "owner",
+       "agents"
+      ],
+      "maxAge": 365
+     },
+     "normal": {
+      "blocks": [
+       "latent-loosening"
+      ],
+      "floor": "declared",
+      "judges": [
+       "owner",
+       "agents",
+       "tooling::bob"
+      ],
+      "maxAge": 365
+     }
+    }
+   },
+   "providers": [
+    {
+     "absence": false,
+     "decides": [],
+     "depsComplete": false,
+     "identity": "sigstore(\"relay\")",
+     "implementation": {
+      "digest": "sha256:relay",
+      "paths": []
+     },
+     "observes": [],
+     "persist": false,
+     "presence": false,
+     "produces": [
+      "judgment"
+     ],
+     "q": "tooling::reviews",
+     "trusts": []
+    },
+    {
+     "absence": true,
+     "decides": [],
+     "depsComplete": false,
+     "identity": "sigstore(\"clock\")",
+     "implementation": {
+      "digest": null,
+      "paths": [
+       "tools/clock-scan.ts",
+       "tsconfig.json",
+       "package.json",
+       "bun.lock"
+      ]
+     },
+     "observes": [
+      "effect(ts.call(\"Date.now\"))",
+      "effect(ts.call(\"Date\"))",
+      "effect(ts.call(\"performance.now\"))",
+      "effect(ts.call(\"process.hrtime\"))"
+     ],
+     "persist": false,
+     "presence": true,
+     "produces": [
+      "observation"
+     ],
+     "q": "tooling::tsClockScan",
+     "trusts": []
+    }
+   ],
+   "resources": [
+    {
+     "attach": [],
+     "bind": [
+      "ts.call(\"Date.now\")",
+      "ts.call(\"Date\")",
+      "ts.call(\"performance.now\")",
+      "ts.call(\"process.hrtime\")"
+     ],
+     "owner": "tooling::ShapeMaintainers",
+     "q": "tooling::SystemClock",
+     "tier": "normal",
+     "was": null
+    },
+    {
+     "attach": [],
+     "bind": [],
+     "owner": "tooling::ShapeMaintainers",
+     "q": "tooling::ShapeSource",
+     "tier": "normal",
+     "was": null
+    }
+   ],
+   "shape": {
+    "owner": "tooling::ShapeMaintainers",
+    "policy": "std::DefaultPolicy",
+    "q": "tooling::Shape"
+   },
+   "templates": [],
+   "units": [],
+   "v": "shape.elaborated.v1"
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "predicate": {
+    "shape": {
+     "entries": [
+      {
+       "digest": "sha256:4a964cb72d1310421445386c21664d3ce12dd8e237a92936129ed64ff6ca781f",
+       "id": "ts:packages/shp-checker/src/checker/rules/guards.ts",
+       "kind": "file",
+       "parent": null,
+       "projection": "file",
+       "scheme": "ts.file.v1"
+      },
+      {
+       "digest": "sha256:bd3f91b41944c2cc5fd7c4b8eed2576f577e93fa165365fac4c16edcd0a671fa",
+       "id": "ts:packages/shp-checker/src/checker/rules/guards.ts",
+       "kind": "file",
+       "parent": null,
+       "projection": "own",
+       "scheme": "ts.own.v1"
+      },
+      {
+       "digest": "sha256:247f91b835d76c8d5af65dc27571336708503f0ec631cd7bed921bfa38bfc7cc",
+       "id": "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness",
+       "kind": "symbol",
+       "parent": "ts:packages/shp-checker/src/checker/rules/guards.ts",
+       "projection": "unit",
+       "scheme": "ts.unit.v2"
+      },
+      {
+       "digest": "sha256:a70fdf157a9c126b6af5971da67b0f5233d11ba987f0810684a62f23ee981617",
+       "id": "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness",
+       "kind": "symbol",
+       "parent": "ts:packages/shp-checker/src/checker/rules/guards.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2"
+      },
+      {
+       "digest": "sha256:9bb6fabad3626bbff1d4c9bbe14fc2edb6ff41fa6f08c6501c0b1f9bb6bb093f",
+       "id": "ts:tools/clock-scan.ts",
+       "kind": "file",
+       "parent": null,
+       "projection": "file",
+       "scheme": "ts.file.v1"
+      },
+      {
+       "digest": "sha256:75b9717161c05c24bc852542592edd6e3d988b36fbde6925b2029cce3664112e",
+       "id": "ts:tools/clock-scan.ts",
+       "kind": "file",
+       "parent": null,
+       "projection": "own",
+       "scheme": "ts.own.v1"
+      }
+     ],
+     "revision": "b4",
+     "tree": [],
+     "v": "shape.manifest.v1"
+    }
+   },
+   "predicateType": "https://shapelang.dev/manifest/v1",
+   "subject": []
+  },
+  "revision": "b4"
+ },
+ "baseRecords": [],
+ "cells": [],
+ "change": {
+  "ids": [
+   "github:acme/x#1"
+  ]
+ },
+ "contract": "shape.kernel.case/v1",
+ "head": {
+  "esf": {
+   "actors": [
+    {
+     "identities": [],
+     "kind": "team",
+     "members": [
+      "tooling::tim"
+     ],
+     "operator": null,
+     "q": "tooling::ShapeMaintainers"
+    },
+    {
+     "identities": [],
+     "kind": "person",
+     "members": [],
+     "operator": null,
+     "q": "tooling::tim"
+    },
+    {
+     "identities": [],
+     "kind": "agent",
+     "members": [],
+     "operator": "tooling::tim",
+     "q": "tooling::claude"
+    },
+    {
+     "identities": [],
+     "kind": "person",
+     "members": [],
+     "operator": null,
+     "q": "tooling::bob"
+    }
+   ],
+   "claims": [
+    {
+     "args": {
+      "atom": "Read<tooling::SystemClock>",
+      "except": [],
+      "scope": [
+       "component checker::ShapeRuleEngine"
+      ]
+     },
+     "ids": [
+      "tooling::CheckerNeverReadsClock"
+     ],
+     "op": "effect.forbid",
+     "owner": "tooling::ShapeMaintainers",
+     "requirement": null,
+     "tier": "critical"
+    },
+    {
+     "args": {
+      "component": "checker::ShapeRuleEngine",
+      "grants": [
+       "Read<tooling::ShapeSource>"
+      ]
+     },
+     "ids": [
+      "checker::ShapeRuleEngine/authority"
+     ],
+     "op": "authority",
+     "owner": "tooling::ShapeMaintainers",
+     "requirement": null,
+     "tier": "normal"
+    }
+   ],
+   "components": [
+    {
+     "allows": [],
+     "assumes": [],
+     "attach": [],
+     "boundary": false,
+     "complete": [],
+     "grants": null,
+     "owner": "tooling::ShapeMaintainers",
+     "paths": [
+      "packages/shp-cli/src/**/*.ts"
+     ],
+     "q": "tooling::ShpCli",
+     "tier": "normal",
+     "units": [],
+     "was": null
+    },
+    {
+     "allows": [],
+     "assumes": [],
+     "attach": [],
+     "boundary": false,
+     "complete": [],
+     "grants": [
+      "Read<tooling::ShapeSource>"
+     ],
+     "owner": "tooling::ShapeMaintainers",
+     "paths": [
+      "packages/shp-checker/src/checker/rules/**/*.ts"
+     ],
+     "q": "checker::ShapeRuleEngine",
+     "tier": "normal",
+     "units": [],
+     "was": null
+    }
+   ],
+   "effects": [
+    {
+     "implies": [],
+     "verb": "Read"
+    },
+    {
+     "implies": [],
+     "verb": "Write"
+    },
+    {
+     "implies": [
+      "Read"
+     ],
+     "verb": "Export"
+    },
+    {
+     "implies": [
+      "Write"
+     ],
+     "verb": "Append"
+    },
+    {
+     "implies": [
+      "Write"
+     ],
+     "verb": "Import"
+    },
+    {
+     "implies": [
+      "Write"
+     ],
+     "verb": "Update"
+    },
+    {
+     "implies": [
+      "Update"
+     ],
+     "verb": "Redact"
+    },
+    {
+     "implies": [
+      "Update"
+     ],
+     "verb": "LogicalDelete"
+    },
+    {
+     "implies": [
+      "Update"
+     ],
+     "verb": "HardDelete"
+    },
+    {
+     "implies": [
+      "HardDelete"
+     ],
+     "verb": "Truncate"
+    },
+    {
+     "implies": [
+      "Truncate"
+     ],
+     "verb": "DropStorage"
+    },
+    {
+     "implies": [],
+     "verb": "Hatch"
+    }
+   ],
+   "errors": [],
+   "exceptions": [
+    {
+     "expires": "2026-12-01T00:00:00Z",
+     "for": null,
+     "owner": "tooling::ShapeMaintainers",
+     "q": "tooling::ClockComp",
+     "target": {
+      "kind": "component",
+      "q": "checker::ShapeRuleEngine"
+     },
+     "waives": [
+      "contradiction"
+     ]
+    }
+   ],
+   "hatches": [
+    {
+     "kind": "external_body",
+     "lang": "verus"
+    },
+    {
+     "kind": "external",
+     "lang": "verus"
+    },
+    {
+     "kind": "assume",
+     "lang": "verus"
+    },
+    {
+     "kind": "admit",
+     "lang": "verus"
+    },
+    {
+     "kind": "assume_specification",
+     "lang": "verus"
+    },
+    {
+     "kind": "uninterp",
+     "lang": "verus"
+    },
+    {
+     "kind": "axiom",
+     "lang": "verus"
+    },
+    {
+     "kind": "unsafe",
+     "lang": "bend"
+    },
+    {
+     "kind": "ts_ignore",
+     "lang": "ts"
+    }
+   ],
+   "kinds": [
+    {
+     "from": "component",
+     "name": "calls",
+     "to": "component"
+    },
+    {
+     "from": "component",
+     "name": "callbacks",
+     "to": "component"
+    },
+    {
+     "from": "component",
+     "name": "provides",
+     "to": "resource"
+    },
+    {
+     "from": "component",
+     "name": "data_flow",
+     "to": "component"
+    },
+    {
+     "from": "component",
+     "name": "coordinated_call",
+     "to": "component"
+    }
+   ],
+   "notes": [],
+   "policy": {
+    "tiers": {
+     "critical": {
+      "blocks": [
+       "unestablished",
+       "coverage",
+       "latent-loosening"
+      ],
+      "floor": "tested",
+      "judges": [
+       "owner",
+       "tooling::bob"
+      ],
+      "maxAge": 90
+     },
+     "low": {
+      "blocks": [],
+      "floor": "declared",
+      "judges": [
+       "owner",
+       "agents"
+      ],
+      "maxAge": 365
+     },
+     "normal": {
+      "blocks": [
+       "latent-loosening"
+      ],
+      "floor": "declared",
+      "judges": [
+       "owner",
+       "agents",
+       "tooling::bob"
+      ],
+      "maxAge": 365
+     }
+    }
+   },
+   "providers": [
+    {
+     "absence": false,
+     "decides": [],
+     "depsComplete": false,
+     "identity": "sigstore(\"relay\")",
+     "implementation": {
+      "digest": "sha256:relay",
+      "paths": []
+     },
+     "observes": [],
+     "persist": false,
+     "presence": false,
+     "produces": [
+      "judgment"
+     ],
+     "q": "tooling::reviews",
+     "trusts": []
+    },
+    {
+     "absence": true,
+     "decides": [],
+     "depsComplete": false,
+     "identity": "sigstore(\"clock\")",
+     "implementation": {
+      "digest": null,
+      "paths": [
+       "tools/clock-scan.ts",
+       "tsconfig.json",
+       "package.json",
+       "bun.lock"
+      ]
+     },
+     "observes": [
+      "effect(ts.call(\"Date.now\"))",
+      "effect(ts.call(\"Date\"))",
+      "effect(ts.call(\"performance.now\"))",
+      "effect(ts.call(\"process.hrtime\"))"
+     ],
+     "persist": false,
+     "presence": true,
+     "produces": [
+      "observation"
+     ],
+     "q": "tooling::tsClockScan",
+     "trusts": []
+    }
+   ],
+   "resources": [
+    {
+     "attach": [],
+     "bind": [
+      "ts.call(\"Date.now\")",
+      "ts.call(\"Date\")",
+      "ts.call(\"performance.now\")",
+      "ts.call(\"process.hrtime\")"
+     ],
+     "owner": "tooling::ShapeMaintainers",
+     "q": "tooling::SystemClock",
+     "tier": "normal",
+     "was": null
+    },
+    {
+     "attach": [],
+     "bind": [],
+     "owner": "tooling::ShapeMaintainers",
+     "q": "tooling::ShapeSource",
+     "tier": "normal",
+     "was": null
+    }
+   ],
+   "shape": {
+    "owner": "tooling::ShapeMaintainers",
+    "policy": "std::DefaultPolicy",
+    "q": "tooling::Shape"
+   },
+   "templates": [],
+   "units": [],
+   "v": "shape.elaborated.v1"
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "predicate": {
+    "shape": {
+     "entries": [
+      {
+       "digest": "sha256:22517d7af78f70719ac28d80ee4c7dd07a4cc366d30d53ea67c2efbde0d64b80",
+       "id": "ts:packages/shp-checker/src/checker/rules/guards.ts",
+       "kind": "file",
+       "parent": null,
+       "projection": "file",
+       "scheme": "ts.file.v1"
+      },
+      {
+       "digest": "sha256:4bcdab43bef3e7258697dccf08c30390a79540f9878ccdd1f9ae347240f59a98",
+       "id": "ts:packages/shp-checker/src/checker/rules/guards.ts",
+       "kind": "file",
+       "parent": null,
+       "projection": "own",
+       "scheme": "ts.own.v1"
+      },
+      {
+       "digest": "sha256:029b3d29f879371aaecf2ec972f25b1f2ba060e7e972b3aa246b3ae2ab4b2ef2",
+       "id": "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness",
+       "kind": "symbol",
+       "parent": "ts:packages/shp-checker/src/checker/rules/guards.ts",
+       "projection": "unit",
+       "scheme": "ts.unit.v2"
+      },
+      {
+       "digest": "sha256:0df73333364c6eaf4b50f040ad43b7703f82ff45ceee099538556d21c679e132",
+       "id": "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness",
+       "kind": "symbol",
+       "parent": "ts:packages/shp-checker/src/checker/rules/guards.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2"
+      },
+      {
+       "digest": "sha256:9bb6fabad3626bbff1d4c9bbe14fc2edb6ff41fa6f08c6501c0b1f9bb6bb093f",
+       "id": "ts:tools/clock-scan.ts",
+       "kind": "file",
+       "parent": null,
+       "projection": "file",
+       "scheme": "ts.file.v1"
+      },
+      {
+       "digest": "sha256:75b9717161c05c24bc852542592edd6e3d988b36fbde6925b2029cce3664112e",
+       "id": "ts:tools/clock-scan.ts",
+       "kind": "file",
+       "parent": null,
+       "projection": "own",
+       "scheme": "ts.own.v1"
+      }
+     ],
+     "revision": "h4",
+     "tree": [],
+     "v": "shape.manifest.v1"
+    }
+   },
+   "predicateType": "https://shapelang.dev/manifest/v1",
+   "subject": []
+  },
+  "revision": "h4"
+ },
+ "mode": "change",
+ "now": "2026-10-25T12:00:00Z",
+ "records": [
+  {
+   "_type": "https://in-toto.io/Statement/v1",
+   "authenticated": true,
+   "predicate": {
+    "shape": {
+     "facts": [
+      {
+       "at": "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness",
+       "resource": "ts.call(\"Date.now\")",
+       "type": "effect",
+       "verb": "Read"
+      }
+     ],
+     "harness": [],
+     "kind": "observation",
+     "provider": {
+      "id": "tooling::tsClockScan",
+      "version": "1"
+     },
+     "result": "observes",
+     "revision": "h4",
+     "scope": {
+      "entries": [
+       {
+        "complete": true,
+        "deps": [],
+        "digest": "sha256:029b3d29f879371aaecf2ec972f25b1f2ba060e7e972b3aa246b3ae2ab4b2ef2",
+        "id": "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness",
+        "projection": "unit",
+        "scheme": "ts.unit.v2"
+       },
+       {
+        "complete": true,
+        "deps": [],
+        "digest": "sha256:22517d7af78f70719ac28d80ee4c7dd07a4cc366d30d53ea67c2efbde0d64b80",
+        "id": "ts:packages/shp-checker/src/checker/rules/guards.ts",
+        "projection": "file",
+        "scheme": "ts.file.v2"
+       }
+      ],
+      "root": "x"
+     },
+     "time": "2026-10-25T10:00:00Z",
+     "v": "shape.evidence.v1"
+    }
+   },
+   "predicateType": "https://shapelang.dev/evidence/v1",
+   "subject": []
+  }
+ ],
+ "reviews": []
+}

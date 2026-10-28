@@ -1,0 +1,604 @@
+{
+ "authors": [
+  "z::bot",
+  "z::pat"
+ ],
+ "base": {
+  "esf": {
+   "actors": [
+    {
+     "identities": [],
+     "kind": "team",
+     "members": [
+      "z::pat"
+     ],
+     "operator": null,
+     "q": "z::Team"
+    },
+    {
+     "identities": [],
+     "kind": "person",
+     "members": [],
+     "operator": null,
+     "q": "z::pat"
+    },
+    {
+     "identities": [],
+     "kind": "agent",
+     "members": [],
+     "operator": "z::pat",
+     "q": "z::bot"
+    }
+   ],
+   "claims": [
+    {
+     "args": {
+      "component": "z::Alpha",
+      "grants": [
+       "Read<z::R>",
+       "Write<z::R>"
+      ]
+     },
+     "ids": [
+      "z::Alpha/authority"
+     ],
+     "op": "authority",
+     "owner": "z::Team",
+     "requirement": null,
+     "tier": "critical"
+    },
+    {
+     "args": {
+      "component": "z::Beta",
+      "grants": [
+       "Read<z::R>"
+      ]
+     },
+     "ids": [
+      "z::Beta/authority"
+     ],
+     "op": "authority",
+     "owner": "z::Team",
+     "requirement": null,
+     "tier": "critical"
+    }
+   ],
+   "components": [
+    {
+     "allows": [],
+     "assumes": [],
+     "attach": [],
+     "boundary": false,
+     "complete": [],
+     "grants": [
+      "Read<z::R>",
+      "Write<z::R>"
+     ],
+     "owner": "z::Team",
+     "paths": [
+      "src/**/*.ts"
+     ],
+     "q": "z::Alpha",
+     "tier": "critical",
+     "units": [],
+     "was": null
+    },
+    {
+     "allows": [],
+     "assumes": [],
+     "attach": [],
+     "boundary": false,
+     "complete": [],
+     "grants": [
+      "Read<z::R>"
+     ],
+     "owner": "z::Team",
+     "paths": [
+      "src/**/*.ts"
+     ],
+     "q": "z::Beta",
+     "tier": "critical",
+     "units": [],
+     "was": null
+    }
+   ],
+   "effects": [
+    {
+     "implies": [],
+     "verb": "Read"
+    },
+    {
+     "implies": [],
+     "verb": "Write"
+    },
+    {
+     "implies": [
+      "Read"
+     ],
+     "verb": "Export"
+    },
+    {
+     "implies": [
+      "Write"
+     ],
+     "verb": "Append"
+    },
+    {
+     "implies": [
+      "Write"
+     ],
+     "verb": "Import"
+    },
+    {
+     "implies": [
+      "Write"
+     ],
+     "verb": "Update"
+    },
+    {
+     "implies": [
+      "Update"
+     ],
+     "verb": "Redact"
+    },
+    {
+     "implies": [
+      "Update"
+     ],
+     "verb": "LogicalDelete"
+    },
+    {
+     "implies": [
+      "Update"
+     ],
+     "verb": "HardDelete"
+    },
+    {
+     "implies": [
+      "HardDelete"
+     ],
+     "verb": "Truncate"
+    },
+    {
+     "implies": [
+      "Truncate"
+     ],
+     "verb": "DropStorage"
+    },
+    {
+     "implies": [],
+     "verb": "Hatch"
+    }
+   ],
+   "errors": [],
+   "exceptions": [],
+   "hatches": [
+    {
+     "kind": "external_body",
+     "lang": "verus"
+    },
+    {
+     "kind": "external",
+     "lang": "verus"
+    },
+    {
+     "kind": "assume",
+     "lang": "verus"
+    },
+    {
+     "kind": "admit",
+     "lang": "verus"
+    },
+    {
+     "kind": "assume_specification",
+     "lang": "verus"
+    },
+    {
+     "kind": "uninterp",
+     "lang": "verus"
+    },
+    {
+     "kind": "axiom",
+     "lang": "verus"
+    },
+    {
+     "kind": "unsafe",
+     "lang": "bend"
+    },
+    {
+     "kind": "ts_ignore",
+     "lang": "ts"
+    }
+   ],
+   "kinds": [
+    {
+     "from": "component",
+     "name": "calls",
+     "to": "component"
+    },
+    {
+     "from": "component",
+     "name": "callbacks",
+     "to": "component"
+    },
+    {
+     "from": "component",
+     "name": "provides",
+     "to": "resource"
+    },
+    {
+     "from": "component",
+     "name": "data_flow",
+     "to": "component"
+    },
+    {
+     "from": "component",
+     "name": "coordinated_call",
+     "to": "component"
+    }
+   ],
+   "notes": [],
+   "providers": [],
+   "resources": [
+    {
+     "attach": [],
+     "bind": [
+      "pg.table(\"r\")"
+     ],
+     "owner": "z::Team",
+     "q": "z::R",
+     "tier": "critical",
+     "was": null
+    }
+   ],
+   "shape": {
+    "owner": "z::Team",
+    "policy": "std::DefaultPolicy",
+    "q": "z::S"
+   },
+   "templates": [],
+   "units": [],
+   "v": "shape.elaborated.v1"
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "predicate": {
+    "shape": {
+     "entries": [
+      {
+       "digest": "sha256:d58587e152cdeb426a0d5f54055d38bf297a10e0b507196eb924bc7498595428",
+       "id": "ts:src/m.ts",
+       "kind": "file",
+       "parent": null,
+       "projection": "file",
+       "scheme": "ts.file.v1"
+      },
+      {
+       "digest": "sha256:5e00d18d404585e7971fead12599b7fdcf8593a729a35b49ceab16e04d7164df",
+       "id": "ts:src/m.ts",
+       "kind": "file",
+       "parent": null,
+       "projection": "own",
+       "scheme": "ts.own.v1"
+      },
+      {
+       "digest": "sha256:cf89123989ff90e2d2c09bbda80bba89aeab126d4d173137c8a24b3a4e8db22a",
+       "id": "ts:src/m.ts#f",
+       "kind": "symbol",
+       "parent": "ts:src/m.ts",
+       "projection": "unit",
+       "scheme": "ts.unit.v2"
+      },
+      {
+       "digest": "sha256:7c67291b1fe7400723b4ef150efe49baa13b46f08d64a965b79f47dba6b4126a",
+       "id": "ts:src/m.ts#f",
+       "kind": "symbol",
+       "parent": "ts:src/m.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2"
+      }
+     ],
+     "revision": "h8",
+     "tree": [],
+     "v": "shape.manifest.v1"
+    }
+   },
+   "predicateType": "https://shapelang.dev/manifest/v1",
+   "subject": []
+  },
+  "revision": "h8"
+ },
+ "baseRecords": [],
+ "cells": [
+  [
+   "z::Alpha.*",
+   "z::Alpha.*"
+  ],
+  [
+   "ungoverned",
+   "ungoverned"
+  ]
+ ],
+ "change": {
+  "ids": [
+   "github:acme/x#1"
+  ]
+ },
+ "contract": "shape.kernel.case/v1",
+ "head": {
+  "esf": {
+   "actors": [
+    {
+     "identities": [],
+     "kind": "team",
+     "members": [
+      "z::pat"
+     ],
+     "operator": null,
+     "q": "z::Team"
+    },
+    {
+     "identities": [],
+     "kind": "person",
+     "members": [],
+     "operator": null,
+     "q": "z::pat"
+    },
+    {
+     "identities": [],
+     "kind": "agent",
+     "members": [],
+     "operator": "z::pat",
+     "q": "z::bot"
+    }
+   ],
+   "claims": [
+    {
+     "args": {
+      "component": "z::Alpha",
+      "grants": [
+       "Read<z::R>",
+       "Write<z::R>"
+      ]
+     },
+     "ids": [
+      "z::Alpha/authority"
+     ],
+     "op": "authority",
+     "owner": "z::Team",
+     "requirement": null,
+     "tier": "critical"
+    }
+   ],
+   "components": [
+    {
+     "allows": [],
+     "assumes": [],
+     "attach": [],
+     "boundary": false,
+     "complete": [],
+     "grants": [
+      "Read<z::R>",
+      "Write<z::R>"
+     ],
+     "owner": "z::Team",
+     "paths": [
+      "src/**/*.ts"
+     ],
+     "q": "z::Alpha",
+     "tier": "critical",
+     "units": [],
+     "was": null
+    }
+   ],
+   "effects": [
+    {
+     "implies": [],
+     "verb": "Read"
+    },
+    {
+     "implies": [],
+     "verb": "Write"
+    },
+    {
+     "implies": [
+      "Read"
+     ],
+     "verb": "Export"
+    },
+    {
+     "implies": [
+      "Write"
+     ],
+     "verb": "Append"
+    },
+    {
+     "implies": [
+      "Write"
+     ],
+     "verb": "Import"
+    },
+    {
+     "implies": [
+      "Write"
+     ],
+     "verb": "Update"
+    },
+    {
+     "implies": [
+      "Update"
+     ],
+     "verb": "Redact"
+    },
+    {
+     "implies": [
+      "Update"
+     ],
+     "verb": "LogicalDelete"
+    },
+    {
+     "implies": [
+      "Update"
+     ],
+     "verb": "HardDelete"
+    },
+    {
+     "implies": [
+      "HardDelete"
+     ],
+     "verb": "Truncate"
+    },
+    {
+     "implies": [
+      "Truncate"
+     ],
+     "verb": "DropStorage"
+    },
+    {
+     "implies": [],
+     "verb": "Hatch"
+    }
+   ],
+   "errors": [],
+   "exceptions": [],
+   "hatches": [
+    {
+     "kind": "external_body",
+     "lang": "verus"
+    },
+    {
+     "kind": "external",
+     "lang": "verus"
+    },
+    {
+     "kind": "assume",
+     "lang": "verus"
+    },
+    {
+     "kind": "admit",
+     "lang": "verus"
+    },
+    {
+     "kind": "assume_specification",
+     "lang": "verus"
+    },
+    {
+     "kind": "uninterp",
+     "lang": "verus"
+    },
+    {
+     "kind": "axiom",
+     "lang": "verus"
+    },
+    {
+     "kind": "unsafe",
+     "lang": "bend"
+    },
+    {
+     "kind": "ts_ignore",
+     "lang": "ts"
+    }
+   ],
+   "kinds": [
+    {
+     "from": "component",
+     "name": "calls",
+     "to": "component"
+    },
+    {
+     "from": "component",
+     "name": "callbacks",
+     "to": "component"
+    },
+    {
+     "from": "component",
+     "name": "provides",
+     "to": "resource"
+    },
+    {
+     "from": "component",
+     "name": "data_flow",
+     "to": "component"
+    },
+    {
+     "from": "component",
+     "name": "coordinated_call",
+     "to": "component"
+    }
+   ],
+   "notes": [],
+   "providers": [],
+   "resources": [
+    {
+     "attach": [],
+     "bind": [
+      "pg.table(\"r\")"
+     ],
+     "owner": "z::Team",
+     "q": "z::R",
+     "tier": "critical",
+     "was": null
+    }
+   ],
+   "shape": {
+    "owner": "z::Team",
+    "policy": "std::DefaultPolicy",
+    "q": "z::S"
+   },
+   "templates": [],
+   "units": [],
+   "v": "shape.elaborated.v1"
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "predicate": {
+    "shape": {
+     "entries": [
+      {
+       "digest": "sha256:d58587e152cdeb426a0d5f54055d38bf297a10e0b507196eb924bc7498595428",
+       "id": "ts:src/m.ts",
+       "kind": "file",
+       "parent": null,
+       "projection": "file",
+       "scheme": "ts.file.v1"
+      },
+      {
+       "digest": "sha256:5e00d18d404585e7971fead12599b7fdcf8593a729a35b49ceab16e04d7164df",
+       "id": "ts:src/m.ts",
+       "kind": "file",
+       "parent": null,
+       "projection": "own",
+       "scheme": "ts.own.v1"
+      },
+      {
+       "digest": "sha256:cf89123989ff90e2d2c09bbda80bba89aeab126d4d173137c8a24b3a4e8db22a",
+       "id": "ts:src/m.ts#f",
+       "kind": "symbol",
+       "parent": "ts:src/m.ts",
+       "projection": "unit",
+       "scheme": "ts.unit.v2"
+      },
+      {
+       "digest": "sha256:7c67291b1fe7400723b4ef150efe49baa13b46f08d64a965b79f47dba6b4126a",
+       "id": "ts:src/m.ts#f",
+       "kind": "symbol",
+       "parent": "ts:src/m.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2"
+      }
+     ],
+     "revision": "h8",
+     "tree": [],
+     "v": "shape.manifest.v1"
+    }
+   },
+   "predicateType": "https://shapelang.dev/manifest/v1",
+   "subject": []
+  },
+  "revision": "h8"
+ },
+ "mode": "change",
+ "now": "2026-10-25T12:00:00Z",
+ "records": [],
+ "reviews": []
+}

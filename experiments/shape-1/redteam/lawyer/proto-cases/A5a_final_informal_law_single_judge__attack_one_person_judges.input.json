@@ -1,0 +1,461 @@
+{
+ "contract": "shape.check.input/v1",
+ "mode": "change",
+ "now": "2026-10-25T12:00:00Z",
+ "base": {
+  "revision": "4444444444444444444444444444444444444444",
+  "source": {
+   "v": "shape.source.v1",
+   "modules": [
+    {
+     "module": "tooling",
+     "imports": [
+      "std"
+     ],
+     "decls": [
+      {
+       "decl": "shape",
+       "name": "Shape",
+       "owner": "ShapeMaintainers",
+       "policy": "P"
+      },
+      {
+       "decl": "actor",
+       "name": "ShapeMaintainers",
+       "kind": "team",
+       "members": [
+        "tim",
+        "ann"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "tim",
+       "kind": "person",
+       "identities": [
+        "github(\"tim\")",
+        "ed25519(\"527250081bdcdc2e8101ecbd4f6e3536e70d14be91f451527326b97d0de20e51\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "claude",
+       "kind": "agent",
+       "operator": "tim",
+       "identities": [
+        "github(\"claude[bot]\")"
+       ]
+      },
+      {
+       "decl": "resource",
+       "name": "SystemClock"
+      },
+      {
+       "decl": "component",
+       "name": "ShpCli",
+       "paths": [
+        "packages/shp-cli/src/**/*.ts"
+       ],
+       "units": [
+        {
+         "name": "isoToday",
+         "attach": [
+          {
+           "name": "RefactorSensitive"
+          }
+         ],
+         "bind": "ts(\"packages/shp-cli/src/freshness.ts#isoToday\")",
+         "tier": "final"
+        }
+       ]
+      },
+      {
+       "decl": "note",
+       "name": "ClockReadAtCliBoundary",
+       "kind": "memory",
+       "about": [
+        "unit ShpCli.isoToday"
+       ],
+       "text": "The CLI reads the clock once, at the boundary; the checker never does.",
+       "confidence": "high"
+      },
+      {
+       "decl": "actor",
+       "name": "ann",
+       "kind": "person",
+       "identities": [
+        "github(\"ann\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "reviewBot",
+       "kind": "agent",
+       "operator": "ann",
+       "identities": [
+        "github(\"review-bot[bot]\")"
+       ]
+      },
+      {
+       "decl": "policy",
+       "name": "P",
+       "tiers": {
+        "critical": {
+         "floor": "tested",
+         "blocks": [
+          "unestablished",
+          "coverage",
+          "latent-loosening"
+         ],
+         "maxAge": 90,
+         "judges": [
+          "owner",
+          "agents"
+         ]
+        }
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "subject": [
+    {
+     "name": "shape:manifest/4444444444444444444444444444444444444444",
+     "digest": {
+      "sha256": "8a6fc87046ed333c14b9e3e452b30a52346087b41e0c3036831410d9a314d4e8"
+     }
+    }
+   ],
+   "predicateType": "https://in-toto.io/attestation/scai/attribute-report/v0.3",
+   "predicate": {
+    "attributes": [
+     {
+      "attribute": "SHAPE_MANIFEST"
+     }
+    ],
+    "shape": {
+     "v": "shape.manifest.v1",
+     "revision": "4444444444444444444444444444444444444444",
+     "tree": [
+      {
+       "path": "packages/shp-cli/src/freshness.ts",
+       "mode": "100644",
+       "blob": "2aa918f024bd1032d212e51ab5d601d17d6e821b"
+      },
+      {
+       "path": "shape.lock",
+       "mode": "100644",
+       "blob": "83977260e3920505bd1bd2bb8cf4977969dbb729"
+      },
+      {
+       "path": "shape/tooling.shape",
+       "mode": "100644",
+       "blob": "2dc8c9b0a975efbc582a998c29da03abb64d4d01"
+      }
+     ],
+     "entries": [
+      {
+       "id": "ts:packages/shp-cli/src/freshness.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:67f2d0b7379df47c3669ccef60cc2989725af56e3357ffe1bdcc1a7f2a92ec3d",
+       "kind": "file",
+       "parent": null
+      },
+      {
+       "id": "ts:packages/shp-cli/src/freshness.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:1cf66289077f71fbbaadbb901a78352a8fea36b34b36d4a1f4150b3f81c72156",
+       "kind": "file",
+       "parent": null
+      },
+      {
+       "id": "ts:packages/shp-cli/src/freshness.ts#checkWindow",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:a6fba48ff02b8099908d3d3fc2de3209b32f68fa55442852bcbdb29cde60f96f",
+       "kind": "function",
+       "parent": "ts:packages/shp-cli/src/freshness.ts"
+      },
+      {
+       "id": "ts:packages/shp-cli/src/freshness.ts#checkWindow",
+       "projection": "unit",
+       "scheme": "ts.unit.v2",
+       "digest": "sha256:51cb9d9149b47bcb2de0d40617b861cc267e525514782d0f56fa8bdef8bc0ec9",
+       "kind": "function",
+       "parent": "ts:packages/shp-cli/src/freshness.ts"
+      },
+      {
+       "id": "ts:packages/shp-cli/src/freshness.ts#isoToday",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:98b0b070b4fb70c4d14fe5f27c6e20f715b3becb4d1285b981ab433f00b1397b",
+       "kind": "function",
+       "parent": "ts:packages/shp-cli/src/freshness.ts"
+      },
+      {
+       "id": "ts:packages/shp-cli/src/freshness.ts#isoToday",
+       "projection": "unit",
+       "scheme": "ts.unit.v2",
+       "digest": "sha256:3018423164cf0d769cf3a0b13c4f5a70297ad51908b34467dcf8eb9ca4193703",
+       "kind": "function",
+       "parent": "ts:packages/shp-cli/src/freshness.ts"
+      }
+     ]
+    }
+   }
+  }
+ },
+ "change": {
+  "ids": [
+   "github:smoothbrains/shapelang#200"
+  ]
+ },
+ "authors": [
+  {
+   "identity": "github(\"claude[bot]\")",
+   "verified": true,
+   "bot": true
+  }
+ ],
+ "reviews": [
+  {
+   "identity": "github(\"ann\")",
+   "line": "shape judge tooling::ShpCli.isoToday/RefactorSensitive/law",
+   "change": "github:smoothbrains/shapelang#200"
+  }
+ ],
+ "records": [
+  {
+   "payloadType": "application/vnd.in-toto+json",
+   "payload": "eyJfdHlwZSI6Imh0dHBzOi8vaW4tdG90by5pby9TdGF0ZW1lbnQvdjEiLCJwcmVkaWNhdGUiOnsiYXR0cmlidXRlcyI6W3siYXR0cmlidXRlIjoiU0hBUEVfU1VQUE9SVFMiLCJjb25kaXRpb25zIjp7InNoYXBlLmtpbmQiOiJqdWRnbWVudCJ9fV0sInNoYXBlIjp7ImNsYWltIjp7ImZwIjoic2hhMjU2OmM0MTRlYWRjMjM4ZDg3YzRlMDA0ODk5ZTlmMmZlNWEyZWNmZTYxNWRhZTdlYjhhMjQyNzE0NDI2YTA1OWEwNzciLCJpZCI6InRvb2xpbmc6OlNocENsaS5pc29Ub2RheS9SZWZhY3RvclNlbnNpdGl2ZS9sYXcifSwiY29kZSI6W3siZGlnZXN0Ijoic2hhMjU2OjMwMTg0MjMxNjRjZjBkNzY5Y2YzYTBiMTNjNGY1YTcwMjk3YWQ1MTkwOGIzNDQ2N2RjZjhlYjljYTQxOTM3MDMiLCJpZCI6InRzOnBhY2thZ2VzL3NocC1jbGkvc3JjL2ZyZXNobmVzcy50cyNpc29Ub2RheSIsInByb2plY3Rpb24iOiJ1bml0Iiwic2NoZW1lIjoidHMudW5pdC52MiJ9XSwianVkZ2UiOiJ0b29saW5nOjp0aW0iLCJraW5kIjoianVkZ21lbnQiLCJwcm92aWRlciI6bnVsbCwicmVzdWx0Ijoic3VwcG9ydHMiLCJyZXZpc2lvbiI6IjQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQiLCJ0aW1lIjoiMjAyNi0wOS0wMVQwOTowMDowMFoiLCJ2Ijoic2hhcGUuZXZpZGVuY2UudjEifX0sInByZWRpY2F0ZVR5cGUiOiJodHRwczovL2luLXRvdG8uaW8vYXR0ZXN0YXRpb24vc2NhaS9hdHRyaWJ1dGUtcmVwb3J0L3YwLjMiLCJzdWJqZWN0IjpbeyJkaWdlc3QiOnsic2hhMjU2IjoiYzQxNGVhZGMyMzhkODdjNGUwMDQ4OTllOWYyZmU1YTJlY2ZlNjE1ZGFlN2ViOGEyNDI3MTQ0MjZhMDU5YTA3NyJ9LCJuYW1lIjoic2hhcGU6Y2xhaW0vdG9vbGluZzo6U2hwQ2xpLmlzb1RvZGF5L1JlZmFjdG9yU2Vuc2l0aXZlL2xhdyJ9LHsiYW5ub3RhdGlvbnMiOnsic2hhcGUuc2NoZW1lIjoidHMudW5pdC52MiJ9LCJkaWdlc3QiOnsic2hhMjU2IjoiMzAxODQyMzE2NGNmMGQ3NjljZjNhMGIxM2M0ZjVhNzAyOTdhZDUxOTA4YjM0NDY3ZGNmOGViOWNhNDE5MzcwMyJ9LCJuYW1lIjoic2hhcGU6Y29kZS90czpwYWNrYWdlcy9zaHAtY2xpL3NyYy9mcmVzaG5lc3MudHMjaXNvVG9kYXlAdW5pdCJ9XX0=",
+   "signatures": [
+    {
+     "keyid": "527250081bdcdc2e8101ecbd4f6e3536e70d14be91f451527326b97d0de20e51",
+     "sig": "UjysH0gGFf5TEsNxZ8S/AeDeZwt4hSoYslFgov7OKixK7LUpsnPE60H4O8tRUAiQVZEjcpO7kQXWfKYf6oMvBA=="
+    }
+   ]
+  }
+ ],
+ "baseRecords": [],
+ "persisted": {
+  "base": [],
+  "head": []
+ },
+ "options": {
+  "health": true,
+  "teeth": false
+ },
+ "head": {
+  "revision": "5555555555555555555555555555555555555555",
+  "source": {
+   "v": "shape.source.v1",
+   "modules": [
+    {
+     "module": "tooling",
+     "imports": [
+      "std"
+     ],
+     "decls": [
+      {
+       "decl": "shape",
+       "name": "Shape",
+       "owner": "ShapeMaintainers",
+       "policy": "P"
+      },
+      {
+       "decl": "actor",
+       "name": "ShapeMaintainers",
+       "kind": "team",
+       "members": [
+        "tim",
+        "ann"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "tim",
+       "kind": "person",
+       "identities": [
+        "github(\"tim\")",
+        "ed25519(\"527250081bdcdc2e8101ecbd4f6e3536e70d14be91f451527326b97d0de20e51\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "claude",
+       "kind": "agent",
+       "operator": "tim",
+       "identities": [
+        "github(\"claude[bot]\")"
+       ]
+      },
+      {
+       "decl": "resource",
+       "name": "SystemClock"
+      },
+      {
+       "decl": "component",
+       "name": "ShpCli",
+       "paths": [
+        "packages/shp-cli/src/**/*.ts"
+       ],
+       "units": [
+        {
+         "name": "isoToday",
+         "attach": [
+          {
+           "name": "RefactorSensitive"
+          }
+         ],
+         "bind": "ts(\"packages/shp-cli/src/freshness.ts#isoToday\")",
+         "tier": "final"
+        }
+       ]
+      },
+      {
+       "decl": "note",
+       "name": "ClockReadAtCliBoundary",
+       "kind": "memory",
+       "about": [
+        "unit ShpCli.isoToday"
+       ],
+       "text": "The CLI reads the clock once, at the boundary; the checker never does.",
+       "confidence": "high"
+      },
+      {
+       "decl": "actor",
+       "name": "ann",
+       "kind": "person",
+       "identities": [
+        "github(\"ann\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "reviewBot",
+       "kind": "agent",
+       "operator": "ann",
+       "identities": [
+        "github(\"review-bot[bot]\")"
+       ]
+      },
+      {
+       "decl": "policy",
+       "name": "P",
+       "tiers": {
+        "critical": {
+         "floor": "tested",
+         "blocks": [
+          "unestablished",
+          "coverage",
+          "latent-loosening"
+         ],
+         "maxAge": 90,
+         "judges": [
+          "owner",
+          "agents"
+         ]
+        }
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "subject": [
+    {
+     "name": "shape:manifest/5555555555555555555555555555555555555555",
+     "digest": {
+      "sha256": "b12020faf7fa1d5daf8c9d9d9f27192c25987581e862d91e20a04f754834d08c"
+     }
+    }
+   ],
+   "predicateType": "https://in-toto.io/attestation/scai/attribute-report/v0.3",
+   "predicate": {
+    "attributes": [
+     {
+      "attribute": "SHAPE_MANIFEST"
+     }
+    ],
+    "shape": {
+     "v": "shape.manifest.v1",
+     "revision": "5555555555555555555555555555555555555555",
+     "tree": [
+      {
+       "path": "packages/shp-cli/src/freshness.ts",
+       "mode": "100644",
+       "blob": "2aa918f024bd1032d212e51ab5d601d17d6e821b"
+      },
+      {
+       "path": "shape.lock",
+       "mode": "100644",
+       "blob": "83977260e3920505bd1bd2bb8cf4977969dbb729"
+      },
+      {
+       "path": "shape/tooling.shape",
+       "mode": "100644",
+       "blob": "2dc8c9b0a975efbc582a998c29da03abb64d4d01"
+      }
+     ],
+     "entries": [
+      {
+       "id": "ts:packages/shp-cli/src/freshness.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:67f2d0b7379df47c3669ccef60cc2989725af56e3357ffe1bdcc1a7f2a92ec3d",
+       "kind": "file",
+       "parent": null
+      },
+      {
+       "id": "ts:packages/shp-cli/src/freshness.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:cd88e322d4f9735cbdcfe9f523e8dcdaba983ace5cc1c56e000634844bce7c57",
+       "kind": "file",
+       "parent": null
+      },
+      {
+       "id": "ts:packages/shp-cli/src/freshness.ts#checkWindow",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:a6fba48ff02b8099908d3d3fc2de3209b32f68fa55442852bcbdb29cde60f96f",
+       "kind": "function",
+       "parent": "ts:packages/shp-cli/src/freshness.ts"
+      },
+      {
+       "id": "ts:packages/shp-cli/src/freshness.ts#checkWindow",
+       "projection": "unit",
+       "scheme": "ts.unit.v2",
+       "digest": "sha256:51cb9d9149b47bcb2de0d40617b861cc267e525514782d0f56fa8bdef8bc0ec9",
+       "kind": "function",
+       "parent": "ts:packages/shp-cli/src/freshness.ts"
+      },
+      {
+       "id": "ts:packages/shp-cli/src/freshness.ts#isoToday",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:9f52c7571b7fd24790b7217d3f5f4e0e0193e4c75b7c9c293af6b42f9d9066f5",
+       "kind": "function",
+       "parent": "ts:packages/shp-cli/src/freshness.ts"
+      },
+      {
+       "id": "ts:packages/shp-cli/src/freshness.ts#isoToday",
+       "projection": "unit",
+       "scheme": "ts.unit.v2",
+       "digest": "sha256:6f68619e784427af2372e479a15e284f6054a0fb6540a8287959d16cd4cc02fb",
+       "kind": "function",
+       "parent": "ts:packages/shp-cli/src/freshness.ts"
+      }
+     ]
+    }
+   }
+  }
+ }
+}

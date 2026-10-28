@@ -1,0 +1,552 @@
+{
+ "contract": "shape.check.input/v1",
+ "mode": "change",
+ "now": "2026-10-25T12:00:00Z",
+ "base": {
+  "revision": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+  "source": {
+   "v": "shape.source.v1",
+   "modules": [
+    {
+     "module": "tooling",
+     "imports": [
+      "std"
+     ],
+     "decls": [
+      {
+       "decl": "shape",
+       "name": "Shape",
+       "owner": "ShapeMaintainers"
+      },
+      {
+       "decl": "actor",
+       "name": "ShapeMaintainers",
+       "kind": "team",
+       "members": [
+        "tim",
+        "ann",
+        "bob"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "tim",
+       "kind": "person",
+       "identities": [
+        "github(\"tim\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "ann",
+       "kind": "person",
+       "identities": [
+        "github(\"ann\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "bob",
+       "kind": "person",
+       "identities": [
+        "github(\"bob\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "claude",
+       "kind": "agent",
+       "operator": "tim",
+       "identities": [
+        "github(\"claude[bot]\")"
+       ]
+      },
+      {
+       "decl": "resource",
+       "name": "SystemClock",
+       "bind": [
+        "ts.call(\"Date.now\")",
+        "ts.call(\"Date\")",
+        "ts.call(\"performance.now\")",
+        "ts.call(\"process.hrtime\")"
+       ]
+      },
+      {
+       "decl": "resource",
+       "name": "ShapeSource"
+      },
+      {
+       "decl": "component",
+       "name": "ShpCli",
+       "paths": [
+        "packages/shp-cli/src/**/*.ts"
+       ]
+      },
+      {
+       "decl": "component",
+       "name": "ShapeRuleEngine",
+       "paths": [
+        "packages/shp-checker/src/checker/rules/**/*.ts"
+       ],
+       "grants": [
+        "Read<ShapeSource>"
+       ]
+      },
+      {
+       "decl": "rule",
+       "name": "CheckerNeverReadsClock",
+       "tier": "final",
+       "clauses": [
+        {
+         "forbid": "effect",
+         "atom": "Read<SystemClock>",
+         "within": [
+          "component ShapeRuleEngine"
+         ]
+        }
+       ]
+      },
+      {
+       "decl": "provider",
+       "name": "tsClockScan",
+       "produces": [
+        "observation"
+       ],
+       "observes": [
+        "effect(ts.call(\"Date.now\"))",
+        "effect(ts.call(\"Date\"))",
+        "effect(ts.call(\"performance.now\"))",
+        "effect(ts.call(\"process.hrtime\"))"
+       ],
+       "sound": [
+        "presence",
+        "absence"
+       ],
+       "identity": "ed25519(\"be3b4f95d1d875d71dd2facf6c5e4da57c1a2c79dead9e1fc5c3b5c1de54c022\")",
+       "implementation": {
+        "paths": [
+         "tools/clock-scan.ts",
+         "tsconfig.json",
+         "package.json",
+         "bun.lock"
+        ]
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "subject": [
+    {
+     "name": "shape:manifest/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+     "digest": {
+      "sha256": "a48b3a06207114b13b0ba6bf94e32587245dd17b16fa5d4287d4125b94452353"
+     }
+    }
+   ],
+   "predicateType": "https://in-toto.io/attestation/scai/attribute-report/v0.3",
+   "predicate": {
+    "attributes": [
+     {
+      "attribute": "SHAPE_MANIFEST"
+     }
+    ],
+    "shape": {
+     "v": "shape.manifest.v1",
+     "revision": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+     "tree": [
+      {
+       "path": "README.md",
+       "mode": "100644",
+       "blob": "988b2a99ba3e5e000d5a095e31e460201a7d130a"
+      },
+      {
+       "path": "packages/shp-checker/src/checker/rules/guards.ts",
+       "mode": "100644",
+       "blob": "fdc688bbb4dde86e2175a7a2f2544fbea640f2bb"
+      },
+      {
+       "path": "shape.lock",
+       "mode": "100644",
+       "blob": "83977260e3920505bd1bd2bb8cf4977969dbb729"
+      },
+      {
+       "path": "shape/tooling.shape",
+       "mode": "100644",
+       "blob": "2dc8c9b0a975efbc582a998c29da03abb64d4d01"
+      },
+      {
+       "path": "tools/clock-scan.ts",
+       "mode": "100644",
+       "blob": "0295f0dbd1c39bfd2cd8b42a47cb738d25af613f"
+      }
+     ],
+     "entries": [
+      {
+       "id": "raw:README.md",
+       "projection": "file",
+       "scheme": "raw.file.v1",
+       "digest": "sha256:39fef212904d34e3d8fd0008484564d4ac83bea5b87f661cb2a3096276ccbd74",
+       "kind": "file",
+       "parent": null
+      },
+      {
+       "id": "raw:README.md",
+       "projection": "own",
+       "scheme": "raw.own.v1",
+       "digest": "sha256:8a684f0f391fbd18066a2f6788cdb9bbd39a6387bdd7b8f034c39314be9dbf00",
+       "kind": "file",
+       "parent": null
+      },
+      {
+       "id": "ts:packages/shp-checker/src/checker/rules/guards.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:6f66d2c80820721b3c49f279802f04936fe7d496e5765ef797ae65dac063f6ce",
+       "kind": "file",
+       "parent": null
+      },
+      {
+       "id": "ts:packages/shp-checker/src/checker/rules/guards.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:7fcb8986f0026c6392c5a6d429247631ca81dda738f8c8f5375f5932868bbc18",
+       "kind": "file",
+       "parent": null
+      },
+      {
+       "id": "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:7ccdb858a486a604c5dfcb5a0b36c7454d073b7a30f9abfc9694e74a9c5c7206",
+       "kind": "function",
+       "parent": "ts:packages/shp-checker/src/checker/rules/guards.ts"
+      },
+      {
+       "id": "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness",
+       "projection": "unit",
+       "scheme": "ts.unit.v2",
+       "digest": "sha256:17b13bdf3370aea1e68b824d92051813a1619b4f5aab5f028cee10c7a96c0d90",
+       "kind": "function",
+       "parent": "ts:packages/shp-checker/src/checker/rules/guards.ts"
+      },
+      {
+       "id": "ts:tools/clock-scan.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:277081a34ffbebd592605672dc35d7328881004e013dd9d5b48a856d18e46f96",
+       "kind": "file",
+       "parent": null
+      },
+      {
+       "id": "ts:tools/clock-scan.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:fb2af0748d7a3f5397bea4ceb89e0d3385fac2bef68090c0329061b7f1746060",
+       "kind": "file",
+       "parent": null
+      }
+     ]
+    }
+   }
+  }
+ },
+ "change": {
+  "ids": [
+   "github:acme/shape#9"
+  ]
+ },
+ "authors": [
+  {
+   "identity": "github(\"claude[bot]\")",
+   "verified": true,
+   "bot": true
+  }
+ ],
+ "reviews": [],
+ "records": [
+  {
+   "payloadType": "application/vnd.in-toto+json",
+   "payload": "eyJfdHlwZSI6Imh0dHBzOi8vaW4tdG90by5pby9TdGF0ZW1lbnQvdjEiLCJwcmVkaWNhdGUiOnsiYXR0cmlidXRlcyI6W3siYXR0cmlidXRlIjoiU0hBUEVfT0JTRVJWRVMiLCJjb25kaXRpb25zIjp7InNoYXBlLmtpbmQiOiJvYnNlcnZhdGlvbiJ9fV0sInByb2R1Y2VyIjp7ImFubm90YXRpb25zIjp7InNoYXBlLnByb3ZpZGVyIjoidG9vbGluZzo6dHNDbG9ja1NjYW4iLCJ2ZXJzaW9uIjoiMSJ9LCJ1cmkiOiJ0b29saW5nOjp0c0Nsb2NrU2NhbiJ9LCJzaGFwZSI6eyJhc3N1bXB0aW9ucyI6W10sImZhY3RzIjpbeyJhdCI6InRzOnBhY2thZ2VzL3NocC1jaGVja2VyL3NyYy9jaGVja2VyL3J1bGVzL2d1YXJkcy50cyNjaGVja0ZyZXNobmVzcyIsInJlc291cmNlIjoidHMuY2FsbChcIkRhdGUubm93XCIpIiwidHlwZSI6ImVmZmVjdCIsInZlcmIiOiJSZWFkIn1dLCJoYXJuZXNzIjpbXSwia2luZCI6Im9ic2VydmF0aW9uIiwicHJvdmlkZXIiOnsiaWQiOiJ0b29saW5nOjp0c0Nsb2NrU2NhbiIsInZlcnNpb24iOiIxIn0sInJlc3VsdCI6Im9ic2VydmVzIiwicmV2aXNpb24iOiJjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjIiwic2NvcGUiOnsiZW50cmllcyI6W3siY29tcGxldGUiOnRydWUsImRlcHMiOltdLCJkaWdlc3QiOiJzaGEyNTY6MTdiMTNiZGYzMzcwYWVhMWU2OGI4MjRkOTIwNTE4MTNhMTYxOWI0ZjVhYWI1ZjAyOGNlZTEwYzdhOTZjMGQ5MCIsImlkIjoidHM6cGFja2FnZXMvc2hwLWNoZWNrZXIvc3JjL2NoZWNrZXIvcnVsZXMvZ3VhcmRzLnRzI2NoZWNrRnJlc2huZXNzIiwicHJvamVjdGlvbiI6InVuaXQiLCJzY2hlbWUiOiJ0cy51bml0LnYyIn1dLCJyb290Ijoic2hhMjU2OjcxYjVlMWZiNTBjNjhmOTlmY2QyNWE4N2EwZjcyNGI0MDVkMTQ1ZGVjNzBkNThhMDhlNWI5ZDYzNTRhMzkyM2IifSwidGltZSI6IjIwMjYtMTAtMjVUMTA6MDA6MDBaIiwidiI6InNoYXBlLmV2aWRlbmNlLnYxIn19LCJwcmVkaWNhdGVUeXBlIjoiaHR0cHM6Ly9pbi10b3RvLmlvL2F0dGVzdGF0aW9uL3NjYWkvYXR0cmlidXRlLXJlcG9ydC92MC4zIiwic3ViamVjdCI6W3siZGlnZXN0Ijp7InNoYTI1NiI6IjcxYjVlMWZiNTBjNjhmOTlmY2QyNWE4N2EwZjcyNGI0MDVkMTQ1ZGVjNzBkNThhMDhlNWI5ZDYzNTRhMzkyM2IifSwibmFtZSI6InNoYXBlOnNjb3BlL3Rvb2xpbmc6OnRzQ2xvY2tTY2FuL2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2MifV19",
+   "signatures": [
+    {
+     "keyid": "be3b4f95d1d875d71dd2facf6c5e4da57c1a2c79dead9e1fc5c3b5c1de54c022",
+     "sig": "R+uxTEnEUNoraMwftiU0m/63yM5vdgZDi9yjG1UuUdzLtIYSr9oMhuaM1GDyQDS+o/hVhfg4MlDiSlLDrkh4DQ=="
+    }
+   ]
+  }
+ ],
+ "baseRecords": [
+  {
+   "payloadType": "application/vnd.in-toto+json",
+   "payload": "eyJfdHlwZSI6Imh0dHBzOi8vaW4tdG90by5pby9TdGF0ZW1lbnQvdjEiLCJwcmVkaWNhdGUiOnsiYXR0cmlidXRlcyI6W3siYXR0cmlidXRlIjoiU0hBUEVfT0JTRVJWRVMiLCJjb25kaXRpb25zIjp7InNoYXBlLmtpbmQiOiJvYnNlcnZhdGlvbiJ9fV0sInByb2R1Y2VyIjp7ImFubm90YXRpb25zIjp7InNoYXBlLnByb3ZpZGVyIjoidG9vbGluZzo6dHNDbG9ja1NjYW4iLCJ2ZXJzaW9uIjoiMSJ9LCJ1cmkiOiJ0b29saW5nOjp0c0Nsb2NrU2NhbiJ9LCJzaGFwZSI6eyJhc3N1bXB0aW9ucyI6W10sImZhY3RzIjpbeyJhdCI6InRzOnBhY2thZ2VzL3NocC1jaGVja2VyL3NyYy9jaGVja2VyL3J1bGVzL2d1YXJkcy50cyNjaGVja0ZyZXNobmVzcyIsInJlc291cmNlIjoidHMuY2FsbChcIkRhdGUubm93XCIpIiwidHlwZSI6ImVmZmVjdCIsInZlcmIiOiJSZWFkIn1dLCJoYXJuZXNzIjpbXSwia2luZCI6Im9ic2VydmF0aW9uIiwicHJvdmlkZXIiOnsiaWQiOiJ0b29saW5nOjp0c0Nsb2NrU2NhbiIsInZlcnNpb24iOiIxIn0sInJlc3VsdCI6Im9ic2VydmVzIiwicmV2aXNpb24iOiJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiIiwic2NvcGUiOnsiZW50cmllcyI6W3siY29tcGxldGUiOnRydWUsImRlcHMiOltdLCJkaWdlc3QiOiJzaGEyNTY6MTdiMTNiZGYzMzcwYWVhMWU2OGI4MjRkOTIwNTE4MTNhMTYxOWI0ZjVhYWI1ZjAyOGNlZTEwYzdhOTZjMGQ5MCIsImlkIjoidHM6cGFja2FnZXMvc2hwLWNoZWNrZXIvc3JjL2NoZWNrZXIvcnVsZXMvZ3VhcmRzLnRzI2NoZWNrRnJlc2huZXNzIiwicHJvamVjdGlvbiI6InVuaXQiLCJzY2hlbWUiOiJ0cy51bml0LnYyIn1dLCJyb290Ijoic2hhMjU2OjcxYjVlMWZiNTBjNjhmOTlmY2QyNWE4N2EwZjcyNGI0MDVkMTQ1ZGVjNzBkNThhMDhlNWI5ZDYzNTRhMzkyM2IifSwidGltZSI6IjIwMjYtMTAtMjVUMTA6MDA6MDBaIiwidiI6InNoYXBlLmV2aWRlbmNlLnYxIn19LCJwcmVkaWNhdGVUeXBlIjoiaHR0cHM6Ly9pbi10b3RvLmlvL2F0dGVzdGF0aW9uL3NjYWkvYXR0cmlidXRlLXJlcG9ydC92MC4zIiwic3ViamVjdCI6W3siZGlnZXN0Ijp7InNoYTI1NiI6IjcxYjVlMWZiNTBjNjhmOTlmY2QyNWE4N2EwZjcyNGI0MDVkMTQ1ZGVjNzBkNThhMDhlNWI5ZDYzNTRhMzkyM2IifSwibmFtZSI6InNoYXBlOnNjb3BlL3Rvb2xpbmc6OnRzQ2xvY2tTY2FuL2JiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmJiYmIifV19",
+   "signatures": [
+    {
+     "keyid": "be3b4f95d1d875d71dd2facf6c5e4da57c1a2c79dead9e1fc5c3b5c1de54c022",
+     "sig": "BMoYDWixFQXxewMth4Jurip6NmMzqxp5d1X6/0lLBdh1soTs8qv5uv3fNk6mjAcaSN6OP+4xU1V0UlNcLv98Cg=="
+    }
+   ]
+  }
+ ],
+ "persisted": {
+  "base": [],
+  "head": []
+ },
+ "options": {
+  "health": true,
+  "teeth": false
+ },
+ "head": {
+  "revision": "cccccccccccccccccccccccccccccccccccccccc",
+  "source": {
+   "v": "shape.source.v1",
+   "modules": [
+    {
+     "module": "tooling",
+     "imports": [
+      "std"
+     ],
+     "decls": [
+      {
+       "decl": "shape",
+       "name": "Shape",
+       "owner": "ShapeMaintainers"
+      },
+      {
+       "decl": "actor",
+       "name": "ShapeMaintainers",
+       "kind": "team",
+       "members": [
+        "tim",
+        "ann",
+        "bob"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "tim",
+       "kind": "person",
+       "identities": [
+        "github(\"tim\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "ann",
+       "kind": "person",
+       "identities": [
+        "github(\"ann\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "bob",
+       "kind": "person",
+       "identities": [
+        "github(\"bob\")"
+       ]
+      },
+      {
+       "decl": "actor",
+       "name": "claude",
+       "kind": "agent",
+       "operator": "tim",
+       "identities": [
+        "github(\"claude[bot]\")"
+       ]
+      },
+      {
+       "decl": "resource",
+       "name": "SystemClock",
+       "bind": [
+        "ts.call(\"Date.now\")",
+        "ts.call(\"Date\")",
+        "ts.call(\"performance.now\")",
+        "ts.call(\"process.hrtime\")"
+       ]
+      },
+      {
+       "decl": "resource",
+       "name": "ShapeSource"
+      },
+      {
+       "decl": "component",
+       "name": "ShpCli",
+       "paths": [
+        "packages/shp-cli/src/**/*.ts"
+       ]
+      },
+      {
+       "decl": "component",
+       "name": "ShapeRuleEngine",
+       "paths": [
+        "packages/shp-checker/src/checker/rules/**/*.ts"
+       ],
+       "grants": [
+        "Read<ShapeSource>"
+       ]
+      },
+      {
+       "decl": "rule",
+       "name": "CheckerNeverReadsClock",
+       "tier": "critical",
+       "clauses": [
+        {
+         "forbid": "effect",
+         "atom": "Read<SystemClock>",
+         "within": [
+          "component ShapeRuleEngine"
+         ]
+        }
+       ]
+      },
+      {
+       "decl": "provider",
+       "name": "tsClockScan",
+       "produces": [
+        "observation"
+       ],
+       "observes": [
+        "effect(ts.call(\"Date.now\"))",
+        "effect(ts.call(\"Date\"))",
+        "effect(ts.call(\"performance.now\"))",
+        "effect(ts.call(\"process.hrtime\"))"
+       ],
+       "sound": [
+        "presence",
+        "absence"
+       ],
+       "identity": "ed25519(\"be3b4f95d1d875d71dd2facf6c5e4da57c1a2c79dead9e1fc5c3b5c1de54c022\")",
+       "implementation": {
+        "paths": [
+         "tools/clock-scan.ts",
+         "tsconfig.json",
+         "package.json",
+         "bun.lock"
+        ]
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "subject": [
+    {
+     "name": "shape:manifest/cccccccccccccccccccccccccccccccccccccccc",
+     "digest": {
+      "sha256": "ce0b16dd2b648ea71e541fb6db75f9de1665eb6493e9359cae83937206da5add"
+     }
+    }
+   ],
+   "predicateType": "https://in-toto.io/attestation/scai/attribute-report/v0.3",
+   "predicate": {
+    "attributes": [
+     {
+      "attribute": "SHAPE_MANIFEST"
+     }
+    ],
+    "shape": {
+     "v": "shape.manifest.v1",
+     "revision": "cccccccccccccccccccccccccccccccccccccccc",
+     "tree": [
+      {
+       "path": "README.md",
+       "mode": "100644",
+       "blob": "db4c9d5e2cdb41f104109c5b0bb170e5d661c8fb"
+      },
+      {
+       "path": "packages/shp-checker/src/checker/rules/guards.ts",
+       "mode": "100644",
+       "blob": "fdc688bbb4dde86e2175a7a2f2544fbea640f2bb"
+      },
+      {
+       "path": "shape.lock",
+       "mode": "100644",
+       "blob": "83977260e3920505bd1bd2bb8cf4977969dbb729"
+      },
+      {
+       "path": "shape/tooling.shape",
+       "mode": "100644",
+       "blob": "2dc8c9b0a975efbc582a998c29da03abb64d4d01"
+      },
+      {
+       "path": "tools/clock-scan.ts",
+       "mode": "100644",
+       "blob": "0295f0dbd1c39bfd2cd8b42a47cb738d25af613f"
+      }
+     ],
+     "entries": [
+      {
+       "id": "raw:README.md",
+       "projection": "file",
+       "scheme": "raw.file.v1",
+       "digest": "sha256:782134d501f405758fbeb72e326071314418cedca899aa901e54aa2c838057f9",
+       "kind": "file",
+       "parent": null
+      },
+      {
+       "id": "raw:README.md",
+       "projection": "own",
+       "scheme": "raw.own.v1",
+       "digest": "sha256:4d96b874b89e71fe03e8e8abedabafd3e449c54ef96ed60f83bda49acd545b96",
+       "kind": "file",
+       "parent": null
+      },
+      {
+       "id": "ts:packages/shp-checker/src/checker/rules/guards.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:6f66d2c80820721b3c49f279802f04936fe7d496e5765ef797ae65dac063f6ce",
+       "kind": "file",
+       "parent": null
+      },
+      {
+       "id": "ts:packages/shp-checker/src/checker/rules/guards.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:7fcb8986f0026c6392c5a6d429247631ca81dda738f8c8f5375f5932868bbc18",
+       "kind": "file",
+       "parent": null
+      },
+      {
+       "id": "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:7ccdb858a486a604c5dfcb5a0b36c7454d073b7a30f9abfc9694e74a9c5c7206",
+       "kind": "function",
+       "parent": "ts:packages/shp-checker/src/checker/rules/guards.ts"
+      },
+      {
+       "id": "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness",
+       "projection": "unit",
+       "scheme": "ts.unit.v2",
+       "digest": "sha256:17b13bdf3370aea1e68b824d92051813a1619b4f5aab5f028cee10c7a96c0d90",
+       "kind": "function",
+       "parent": "ts:packages/shp-checker/src/checker/rules/guards.ts"
+      },
+      {
+       "id": "ts:tools/clock-scan.ts",
+       "projection": "file",
+       "scheme": "ts.file.v1",
+       "digest": "sha256:277081a34ffbebd592605672dc35d7328881004e013dd9d5b48a856d18e46f96",
+       "kind": "file",
+       "parent": null
+      },
+      {
+       "id": "ts:tools/clock-scan.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2",
+       "digest": "sha256:fb2af0748d7a3f5397bea4ceb89e0d3385fac2bef68090c0329061b7f1746060",
+       "kind": "file",
+       "parent": null
+      }
+     ]
+    }
+   }
+  }
+ }
+}

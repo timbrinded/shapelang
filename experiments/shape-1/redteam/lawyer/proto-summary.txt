@@ -1,0 +1,77 @@
+== A10_judge_line_not_bound_to_revision
+  push1_reviewed_by_ann                            pass     errs=[] rej=[] ans=[] debt=[] | 
+  push2_never_reviewed                             pass     errs=[] rej=[] ans=[] debt=[] | 
+== A12_judges_string_intersection
+  attack_judges_owner_to_member                    blocked  errs=[] rej=[] ans=[] debt=[] | loosening/-/blocking/normal/L7; unestablished/missing/owed/normal
+  control_unchanged                                owed     errs=[] rej=[] ans=[] debt=[] | unestablished/missing/owed/normal
+== A13_named_judges_final_two_person
+  outsiders_dave_and_erin_answer                   blocked  errs=[] rej=[] ans=[] debt=[] | coverage/-/blocking/critical; loosening/-/blocking/final/expl/L1; loosening/-/blocking/critical/expl/L1
+  owners_bob_and_carol_answer                      blocked  errs=[] rej=[] ans=[] debt=[] | coverage/-/blocking/critical; loosening/-/blocking/final/expl/L1; loosening/-/blocking/critical/expl/L1
+== A14_hosted_law_closure_change
+  attack_spec_weakened                             pass     errs=[] rej=[] ans=[] debt=[] | 
+  control_spec_unchanged                           pass     errs=[] rej=[] ans=[] debt=[] | 
+== A1a_judges_narrowing_L4
+  attack_head_narrows_judges                       pass     errs=[] rej=[] ans=["discharge(self)"] debt=[] | 
+  control_head_policy_unchanged                    pass     errs=[] rej=[] ans=["discharge(self)"] debt=[] | 
+== A2a_pc_masks_assumption_critical
+  attack_lockfile_bumped                           pass     errs=[] rej=[] ans=["discharge"] debt=[] | 
+  control_no_lockfile_edit                         blocked  errs=[] rej=[] ans=[] debt=[] | unestablished/assumption/blocking/critical
+== A2a_pc_masks_assumption_final
+  attack_lockfile_bumped                           pass     errs=[] rej=[] ans=["discharge"] debt=[] | 
+  control_no_lockfile_edit                         blocked  errs=[] rej=[] ans=[] debt=[] | unestablished/assumption/blocking/final
+== A2b_pc_masks_missing_fake_provider
+  attack_fake_headonly_provider                    pass     errs=[] rej=[] ans=["discharge"] debt=[] | 
+  control_timeout_only                             blocked  errs=[] rej=[] ans=[] debt=[] | unestablished/missing/blocking/critical
+== A34_relay_commit_stales_revision_tied_records
+  phase1_head                                      pass     errs=[] rej=[] ans=[] debt=[] | 
+  phase2_after_relay_commit                        blocked  errs=["E-provider-missing provider checker::bunTest claim checker::CheckIsDeterministic","E-provider-missing provider tooling::tsClockScan"] rej=[] ans=[] debt=[] | unestablished/stale/owed/critical
+== A38_record_hatch_assumption_ignored
+  attack_record_lists_hatch_manifest_silent        blocked  errs=[] rej=[] ans=[] debt=[] | unestablished/assumption/blocking/critical
+  control_manifest_marker                          blocked  errs=[] rej=[] ans=[] debt=[] | unestablished/assumption/blocking/critical
+== A39_final_law_through_admit
+  attack_admit_allowed_by_boundary                 pass     errs=[] rej=[] ans=[] debt=[] | 
+  control_assume_allowed_by_boundary               blocked  errs=[] rej=[] ans=[] debt=[] | unestablished/assumption/blocking/final
+== A3_two_exceptions_expiry
+  now_2026-10-25                                   owed     errs=[] rej=[] ans=[] debt=[{"exception":"tooling::AaaRuleWaiver","expiresInDays":311}] | contradiction/sound/owed/critical/exc=tooling::AaaRuleWaiver
+  now_2026-11-01_after_short_expiry                owed     errs=[] rej=[] ans=[] debt=[] | contradiction/sound/owed/critical
+== A4_coverage_unmet_claim_owner
+  attack_kate_only                                 blocked  errs=[] rej=[] ans=[] debt=[] | coverage/-/blocking/critical
+  control_sam_only                                 blocked  errs=[] rej=[] ans=[] debt=[] | coverage/-/blocking/critical
+  spec_kate_and_sam                                pass     errs=[] rej=[] ans=["discharge"] debt=[] | 
+== A50_move_code_out_of_final_authority
+  attack_glob_moves_new_code_to_low_component      pass     errs=[] rej=[] ans=[] debt=[] | 
+  control_new_code_stays_in_final_component        blocked  errs=[] rej=[] ans=[] debt=[] | coverage/-/blocking/final
+== A5a_final_informal_law_single_judge
+  attack_one_agent_judges                          pass     errs=[] rej=[] ans=[] debt=[] | 
+  attack_one_person_judges                         pass     errs=[] rej=[] ans=[] debt=[] | 
+  control_no_judgment                              blocked  errs=[] rej=[] ans=[] debt=[] | unestablished/stale/blocking/final
+== A6_rebind_resource_code_final
+  attack_binding_moved                             blocked  errs=[] rej=[] ans=[] debt=[] | coverage/-/blocking/final; loosening/-/blocking/final/L1; loosening/-/blocking/critical/L1
+  control_binding_kept                             blocked  errs=[] rej=[] ans=[] debt=[] | contradiction/sound/blocking/final
+== A7_L3_search_order_exploited
+  attack_observed_edge_A_to_C                      owed     errs=[] rej=[] ans=[] debt=[] | loosening/-/owed/low/L3
+  control_no_observed_edge                         owed     errs=[] rej=[] ans=[] debt=[] | loosening/-/owed/low/L3
+== A8_base_glob_tie_name_dependence
+  lax_component_sorts_first                        blocked  errs=[] rej=[] ans=[] debt=[] | loosening/-/blocking/critical/L1
+  strict_component_sorts_first                     blocked  errs=[] rej=[] ans=[] debt=[] | coverage/-/blocking/critical; loosening/-/blocking/critical/L1
+== A9_A29_observer_silence_normal_tier
+  attack_only_base_revision_record                 blocked  errs=["E-provider-missing provider tooling::tsClockScan"] rej=[] ans=[] debt=[] | coverage/-/owed/normal
+  attack_scanner_edited_reports_nothing            owed     errs=[] rej=[] ans=[] debt=[] | coverage/-/owed/normal
+  control_scanner_edited_still_reports             blocked  errs=[] rej=[] ans=[] debt=[] | contradiction/sound/blocking/normal; coverage/-/owed/normal
+  control_scanner_reports                          blocked  errs=[] rej=[] ans=[] debt=[] | contradiction/sound/blocking/normal; coverage/-/owed/normal
+== DH_stale_harness_digest
+  harness_digest_mismatch_not_in_delta             blocked  errs=[] rej=[] ans=[] debt=[] | unestablished/producer-changed/blocking/critical
+== EQ1_claim_implies_record_for_checker_claim
+  attack_implies_record_head_to_base               pass     errs=[] rej=[] ans=[] debt=[] | 
+  control_no_implies_record                        blocked  errs=[] rej=[] ans=[] debt=[] | loosening/-/blocking/critical/L3
+== EQ2_code_equivalence_revalidates_guard
+  attack_code_equivalence_record                   owed     errs=[] rej=[] ans=[] debt=[] | coverage/-/owed/normal
+  control_guard_stale                              owed     errs=[] rej=[] ans=[] debt=[] | coverage/-/owed/normal; unestablished/stale/owed/normal
+== NM_final_drift_exit_non_monotone
+  a_unrelated_change                               blocked  errs=[] rej=[] ans=[] debt=[] | contradiction/sound/blocking/final
+  b_lower_to_critical_same_nf                      blocked  errs=[] rej=[] ans=["discharge"] debt=[] | contradiction/sound/blocking/final
+  c_remove_forbid                                  owed     errs=[] rej=[] ans=["discharge"] debt=[] | contradiction/sound/owed/normal
+  d_perturbed_nf_at_critical                       owed     errs=[] rej=[] ans=["discharge"] debt=[] | contradiction/sound/owed/critical
+== UA_unmapped_human_author
+  attack_unmapped_machine_user                     pass     errs=[] rej=[] ans=["discharge","discharge","discharge"] debt=[] | 
+  control_mapped_agent                             blocked  errs=[] rej=[] ans=["discharge","discharge"] debt=[] | loosening/-/blocking/final/expl/L1

@@ -1,0 +1,140 @@
+{
+ "contract": "shape.check.output/v1",
+ "mode": "change",
+ "inputDigest": "sha256:98c186dc99e50569740463ebfb1dcffcd9a87ee50c8b3249072a5f7fcaa3f419",
+ "verdict": "owed",
+ "errors": [],
+ "rejected": [],
+ "obligations": [
+  {
+   "key": "ob:fc86e1bb3ce8d2d51aaf7e20ffd0f74381bcd45d8870b789696d4d6bfa8a06d7",
+   "kind": "coverage",
+   "reason": null,
+   "questions": null,
+   "introduced": true,
+   "severity": "owed",
+   "tier": "normal",
+   "budget": "judgment",
+   "force": null,
+   "owner": "tooling::ShapeMaintainers",
+   "assignee": "agents",
+   "group": "g:1e82e1953c8fff430577e789bef3554a852dfbce727ccca7ef5bc64d40d55cdd",
+   "claim": null,
+   "subject": "component tooling::ShpCli",
+   "witness": [],
+   "facts": {},
+   "counterexample": null,
+   "exploited": null,
+   "final": false,
+   "binding": "bd:1db1e0d1005be37de26feaaa8bf004ef242c5d9bc9a9c8ba7d4659983776c33a",
+   "exception": null,
+   "dischargers": [
+    {
+     "act": "answer",
+     "by": "judges",
+     "agentSafe": false,
+     "eligible": [
+      "tooling::tim"
+     ],
+     "creates": null
+    },
+    {
+     "act": "bind",
+     "by": "author",
+     "agentSafe": true,
+     "eligible": [],
+     "creates": null
+    },
+    {
+     "act": "provide",
+     "by": "author",
+     "agentSafe": true,
+     "eligible": [],
+     "creates": null
+    }
+   ],
+   "causes": [
+    {
+     "type": "code",
+     "id": "ts:packages/shp-cli/src/freshness.ts#isoToday"
+    },
+    {
+     "type": "code",
+     "id": "ts:packages/shp-cli/src/freshness.ts#isoToday"
+    }
+   ]
+  }
+ ],
+ "answered": [],
+ "loosening": [],
+ "renames": [],
+ "debt": [],
+ "preexisting": [],
+ "budget": {
+  "limit": null,
+  "used": 1,
+  "overflow": []
+ },
+ "health": {
+  "coverage": {
+   "num": 1,
+   "den": 2
+  },
+  "unobservable": [
+   "tooling::ShpCli.isoToday/effects.lower",
+   "tooling::ShpCli.isoToday/effects.upper"
+  ],
+  "unanswered": [
+   {
+    "key": "ob:fc86e1bb3ce8d2d51aaf7e20ffd0f74381bcd45d8870b789696d4d6bfa8a06d7",
+    "kind": "coverage",
+    "subject": "component tooling::ShpCli",
+    "questions": null,
+    "tier": "normal",
+    "affected": [
+     "ts:packages/shp-cli/src/freshness.ts#isoToday"
+    ]
+   }
+  ],
+  "openAuthority": [
+   "tooling::ShpCli"
+  ],
+  "ungoverned": {
+   "num": 0,
+   "den": 3
+  },
+  "unmapped": [],
+  "externalCalls": 0,
+  "ungovernedCalls": 0,
+  "unanchored": 0,
+  "droppedEdges": 0,
+  "unauthenticated": [],
+  "executesHead": [
+   "tooling::verusRefines"
+  ],
+  "baseObservations": "present",
+  "baseDefects": [],
+  "clockClamped": false,
+  "trustDebt": 0,
+  "budget": {
+   "limit": null,
+   "used": 1,
+   "overflow": 0
+  },
+  "self": [
+   "judgment tooling::ShpCli.isoToday/RefactorSensitive/law by tooling::tim"
+  ],
+  "preexisting": 0,
+  "renames": 0,
+  "assumption": "dependency code and configuration data",
+  "cells": [
+   "cell:[\"tooling::ShpCli.*\",\"tooling::ShpCli.*\"]",
+   "cell:[\"ungoverned\",\"ungoverned\"]"
+  ],
+  "records": {
+   "valid": 2,
+   "rejected": 0
+  },
+  "baseUnreadable": false
+ }
+}

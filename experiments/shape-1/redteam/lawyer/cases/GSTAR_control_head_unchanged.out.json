@@ -1,0 +1,36 @@
+{
+ "answered": [],
+ "contract": "shape.check.output/v1",
+ "debt": [],
+ "errors": [],
+ "mode": "change",
+ "obligations": [
+  {
+   "binding": "bd:8ad54064b6f2def43913b10f8f46647730904c3ad9fb31f7e3e24f992bfcb55c",
+   "budget": "mechanical",
+   "claim": {
+    "fp": "sha256:60a867af53d80a7f7691530f9ae5869779c05abccd602cd75b2baad28a85db38",
+    "ids": [
+     "ironkv::SetRefinesSpec"
+    ],
+    "tier": "critical"
+   },
+   "exception": null,
+   "exploited": null,
+   "final": false,
+   "force": null,
+   "group": "g:f6592a87115ebb63e3616dd9d1321262005019a9ec3f2bf6981ac65bdab8e1e4",
+   "introduced": true,
+   "key": "ob:8b9a1c953f7ed31c50f09fcd65a8e27bdb6d9a40db449c8fd69946b621161e7d",
+   "kind": "unestablished",
+   "owner": "ironkv::IronKvTeam",
+   "questions": null,
+   "reason": "assumption",
+   "severity": "blocking",
+   "subject": null,
+   "tier": "critical",
+   "witness": []
+  }
+ ],
+ "verdict": "blocked"
+}

@@ -1,0 +1,726 @@
+{
+ "authors": [
+  "tooling::claude",
+  "tooling::tim"
+ ],
+ "base": {
+  "esf": {
+   "actors": [
+    {
+     "identities": [],
+     "kind": "team",
+     "members": [
+      "tooling::tim",
+      "tooling::ann"
+     ],
+     "operator": null,
+     "q": "tooling::ShapeMaintainers"
+    },
+    {
+     "identities": [],
+     "kind": "person",
+     "members": [],
+     "operator": null,
+     "q": "tooling::ann"
+    },
+    {
+     "identities": [],
+     "kind": "person",
+     "members": [],
+     "operator": null,
+     "q": "tooling::tim"
+    },
+    {
+     "identities": [],
+     "kind": "agent",
+     "members": [],
+     "operator": "tooling::tim",
+     "q": "tooling::claude"
+    }
+   ],
+   "claims": [
+    {
+     "args": {
+      "on": [
+       "unit checker::ShapeChecker.checkShapeModules"
+      ],
+      "statement": {
+       "args": [
+        "unit checker::ShapeChecker.checkShapeModules"
+       ],
+       "schema": "std::Deterministic",
+       "schemaFp": "sha256:5dd1f7b8369f9557a9403b64a20f9d62e456c9960127a258755161b56e21d3e0"
+      }
+     },
+     "ids": [
+      "tooling::CheckIsDeterministic"
+     ],
+     "op": "law",
+     "owner": "tooling::ShapeMaintainers",
+     "requirement": {
+      "judged": false,
+      "level": "tested",
+      "pins": [],
+      "projection": "unit"
+     },
+     "tier": "critical"
+    }
+   ],
+   "components": [
+    {
+     "allows": [],
+     "assumes": [],
+     "attach": [],
+     "boundary": false,
+     "complete": [],
+     "grants": null,
+     "owner": "tooling::ShapeMaintainers",
+     "paths": [
+      "packages/shp-checker/src/**/*.ts"
+     ],
+     "q": "checker::ShapeChecker",
+     "tier": "critical",
+     "units": [],
+     "was": null
+    }
+   ],
+   "effects": [
+    {
+     "implies": [],
+     "verb": "Read"
+    },
+    {
+     "implies": [],
+     "verb": "Write"
+    },
+    {
+     "implies": [
+      "Read"
+     ],
+     "verb": "Export"
+    },
+    {
+     "implies": [
+      "Write"
+     ],
+     "verb": "Append"
+    },
+    {
+     "implies": [
+      "Write"
+     ],
+     "verb": "Import"
+    },
+    {
+     "implies": [
+      "Write"
+     ],
+     "verb": "Update"
+    },
+    {
+     "implies": [
+      "Update"
+     ],
+     "verb": "Redact"
+    },
+    {
+     "implies": [
+      "Update"
+     ],
+     "verb": "LogicalDelete"
+    },
+    {
+     "implies": [
+      "Update"
+     ],
+     "verb": "HardDelete"
+    },
+    {
+     "implies": [
+      "HardDelete"
+     ],
+     "verb": "Truncate"
+    },
+    {
+     "implies": [
+      "Truncate"
+     ],
+     "verb": "DropStorage"
+    },
+    {
+     "implies": [],
+     "verb": "Hatch"
+    }
+   ],
+   "errors": [],
+   "exceptions": [],
+   "hatches": [
+    {
+     "kind": "external_body",
+     "lang": "verus"
+    },
+    {
+     "kind": "external",
+     "lang": "verus"
+    },
+    {
+     "kind": "assume",
+     "lang": "verus"
+    },
+    {
+     "kind": "admit",
+     "lang": "verus"
+    },
+    {
+     "kind": "assume_specification",
+     "lang": "verus"
+    },
+    {
+     "kind": "uninterp",
+     "lang": "verus"
+    },
+    {
+     "kind": "axiom",
+     "lang": "verus"
+    },
+    {
+     "kind": "unsafe",
+     "lang": "bend"
+    },
+    {
+     "kind": "ts_ignore",
+     "lang": "ts"
+    }
+   ],
+   "kinds": [
+    {
+     "from": "component",
+     "name": "calls",
+     "to": "component"
+    },
+    {
+     "from": "component",
+     "name": "callbacks",
+     "to": "component"
+    },
+    {
+     "from": "component",
+     "name": "provides",
+     "to": "resource"
+    },
+    {
+     "from": "component",
+     "name": "data_flow",
+     "to": "component"
+    },
+    {
+     "from": "component",
+     "name": "coordinated_call",
+     "to": "component"
+    }
+   ],
+   "notes": [],
+   "providers": [
+    {
+     "absence": false,
+     "decides": [
+      "template std::Deterministic"
+     ],
+     "depsComplete": true,
+     "identity": "sigstore(\"bun\")",
+     "implementation": {
+      "digest": null,
+      "paths": [
+       "bunfig.toml",
+       "package.json",
+       "bun.lock"
+      ]
+     },
+     "observes": [],
+     "persist": false,
+     "presence": true,
+     "produces": [
+      "test"
+     ],
+     "q": "tooling::bunTest",
+     "trusts": []
+    }
+   ],
+   "resources": [],
+   "shape": {
+    "owner": "tooling::ShapeMaintainers",
+    "policy": "std::DefaultPolicy",
+    "q": "tooling::Shape"
+   },
+   "templates": [],
+   "units": [
+    {
+     "attach": [],
+     "bind": "ts:packages/shp-checker/src/checker/check.ts#checkShapeModules",
+     "component": "checker::ShapeChecker",
+     "name": "checkShapeModules",
+     "owner": "tooling::ShapeMaintainers",
+     "q": "checker::ShapeChecker.checkShapeModules",
+     "summary": null,
+     "tier": "critical",
+     "was": null
+    }
+   ],
+   "v": "shape.elaborated.v1"
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "predicate": {
+    "shape": {
+     "entries": [
+      {
+       "digest": "sha256:e7bd6ac46540da0179f7181a8f10bf6e4784278f7084162fd18e3bbf37feaadd",
+       "id": "ts:packages/shp-checker/src/checker/check.ts",
+       "kind": "file",
+       "parent": null,
+       "projection": "file",
+       "scheme": "ts.file.v1"
+      },
+      {
+       "digest": "sha256:4925098611ab1ed93fd81439132ae6dd082799780121c18b21b99ae19160d660",
+       "id": "ts:packages/shp-checker/src/checker/check.ts",
+       "kind": "file",
+       "parent": null,
+       "projection": "own",
+       "scheme": "ts.own.v1"
+      },
+      {
+       "digest": "sha256:99ad7163faa65e3d3714d62207c6ba25e7f210aa3464435ed90bb8eb21d97a2b",
+       "id": "ts:packages/shp-checker/src/checker/check.ts#checkShapeModules",
+       "kind": "symbol",
+       "parent": "ts:packages/shp-checker/src/checker/check.ts",
+       "projection": "unit",
+       "scheme": "ts.unit.v2"
+      },
+      {
+       "digest": "sha256:bbeaff34f37a4d96e30d6c31fa29666d354a85a1c1134f0cc075ebc577fb9364",
+       "id": "ts:packages/shp-checker/src/checker/check.ts#checkShapeModules",
+       "kind": "symbol",
+       "parent": "ts:packages/shp-checker/src/checker/check.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2"
+      },
+      {
+       "digest": "sha256:1d8c5165e231f1060756778133ff046297a62aaeb826dd94fe12b3dfcd377379",
+       "id": "ts:packages/shp-checker/src/behavioural/determinism.test.ts",
+       "kind": "file",
+       "parent": null,
+       "projection": "file",
+       "scheme": "ts.file.v1"
+      },
+      {
+       "digest": "sha256:7e106ddcd1e3f2763f135f48cb6f14ef054dc52c3f9f509babde818d08706e76",
+       "id": "ts:packages/shp-checker/src/behavioural/determinism.test.ts",
+       "kind": "file",
+       "parent": null,
+       "projection": "own",
+       "scheme": "ts.own.v1"
+      }
+     ],
+     "revision": "b5",
+     "tree": [],
+     "v": "shape.manifest.v1"
+    }
+   },
+   "predicateType": "https://shapelang.dev/manifest/v1",
+   "subject": []
+  },
+  "revision": "b5"
+ },
+ "baseRecords": [],
+ "cells": [],
+ "change": {
+  "ids": [
+   "github:acme/x#1"
+  ]
+ },
+ "contract": "shape.kernel.case/v1",
+ "head": {
+  "esf": {
+   "actors": [
+    {
+     "identities": [],
+     "kind": "team",
+     "members": [
+      "tooling::tim",
+      "tooling::ann"
+     ],
+     "operator": null,
+     "q": "tooling::ShapeMaintainers"
+    },
+    {
+     "identities": [],
+     "kind": "person",
+     "members": [],
+     "operator": null,
+     "q": "tooling::ann"
+    },
+    {
+     "identities": [],
+     "kind": "person",
+     "members": [],
+     "operator": null,
+     "q": "tooling::tim"
+    },
+    {
+     "identities": [],
+     "kind": "agent",
+     "members": [],
+     "operator": "tooling::tim",
+     "q": "tooling::claude"
+    }
+   ],
+   "claims": [
+    {
+     "args": {
+      "on": [
+       "unit checker::ShapeChecker.checkShapeModules"
+      ],
+      "statement": {
+       "args": [
+        "unit checker::ShapeChecker.checkShapeModules"
+       ],
+       "schema": "std::Deterministic",
+       "schemaFp": "sha256:5dd1f7b8369f9557a9403b64a20f9d62e456c9960127a258755161b56e21d3e0"
+      }
+     },
+     "ids": [
+      "tooling::CheckIsDeterministic"
+     ],
+     "op": "law",
+     "owner": "tooling::ShapeMaintainers",
+     "requirement": {
+      "judged": false,
+      "level": "tested",
+      "pins": [],
+      "projection": "unit"
+     },
+     "tier": "critical"
+    }
+   ],
+   "components": [
+    {
+     "allows": [],
+     "assumes": [],
+     "attach": [],
+     "boundary": false,
+     "complete": [],
+     "grants": null,
+     "owner": "tooling::ShapeMaintainers",
+     "paths": [
+      "packages/shp-checker/src/**/*.ts"
+     ],
+     "q": "checker::ShapeChecker",
+     "tier": "critical",
+     "units": [],
+     "was": null
+    }
+   ],
+   "effects": [
+    {
+     "implies": [],
+     "verb": "Read"
+    },
+    {
+     "implies": [],
+     "verb": "Write"
+    },
+    {
+     "implies": [
+      "Read"
+     ],
+     "verb": "Export"
+    },
+    {
+     "implies": [
+      "Write"
+     ],
+     "verb": "Append"
+    },
+    {
+     "implies": [
+      "Write"
+     ],
+     "verb": "Import"
+    },
+    {
+     "implies": [
+      "Write"
+     ],
+     "verb": "Update"
+    },
+    {
+     "implies": [
+      "Update"
+     ],
+     "verb": "Redact"
+    },
+    {
+     "implies": [
+      "Update"
+     ],
+     "verb": "LogicalDelete"
+    },
+    {
+     "implies": [
+      "Update"
+     ],
+     "verb": "HardDelete"
+    },
+    {
+     "implies": [
+      "HardDelete"
+     ],
+     "verb": "Truncate"
+    },
+    {
+     "implies": [
+      "Truncate"
+     ],
+     "verb": "DropStorage"
+    },
+    {
+     "implies": [],
+     "verb": "Hatch"
+    }
+   ],
+   "errors": [],
+   "exceptions": [],
+   "hatches": [
+    {
+     "kind": "external_body",
+     "lang": "verus"
+    },
+    {
+     "kind": "external",
+     "lang": "verus"
+    },
+    {
+     "kind": "assume",
+     "lang": "verus"
+    },
+    {
+     "kind": "admit",
+     "lang": "verus"
+    },
+    {
+     "kind": "assume_specification",
+     "lang": "verus"
+    },
+    {
+     "kind": "uninterp",
+     "lang": "verus"
+    },
+    {
+     "kind": "axiom",
+     "lang": "verus"
+    },
+    {
+     "kind": "unsafe",
+     "lang": "bend"
+    },
+    {
+     "kind": "ts_ignore",
+     "lang": "ts"
+    }
+   ],
+   "kinds": [
+    {
+     "from": "component",
+     "name": "calls",
+     "to": "component"
+    },
+    {
+     "from": "component",
+     "name": "callbacks",
+     "to": "component"
+    },
+    {
+     "from": "component",
+     "name": "provides",
+     "to": "resource"
+    },
+    {
+     "from": "component",
+     "name": "data_flow",
+     "to": "component"
+    },
+    {
+     "from": "component",
+     "name": "coordinated_call",
+     "to": "component"
+    }
+   ],
+   "notes": [],
+   "providers": [
+    {
+     "absence": false,
+     "decides": [
+      "template std::Deterministic"
+     ],
+     "depsComplete": true,
+     "identity": "sigstore(\"bun\")",
+     "implementation": {
+      "digest": null,
+      "paths": [
+       "bunfig.toml",
+       "package.json",
+       "bun.lock"
+      ]
+     },
+     "observes": [],
+     "persist": false,
+     "presence": true,
+     "produces": [
+      "test"
+     ],
+     "q": "tooling::bunTest",
+     "trusts": []
+    }
+   ],
+   "resources": [],
+   "shape": {
+    "owner": "tooling::ShapeMaintainers",
+    "policy": "std::DefaultPolicy",
+    "q": "tooling::Shape"
+   },
+   "templates": [],
+   "units": [
+    {
+     "attach": [],
+     "bind": "ts:packages/shp-checker/src/checker/check.ts#checkShapeModules",
+     "component": "checker::ShapeChecker",
+     "name": "checkShapeModules",
+     "owner": "tooling::ShapeMaintainers",
+     "q": "checker::ShapeChecker.checkShapeModules",
+     "summary": null,
+     "tier": "critical",
+     "was": null
+    }
+   ],
+   "v": "shape.elaborated.v1"
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "predicate": {
+    "shape": {
+     "entries": [
+      {
+       "digest": "sha256:e7bd6ac46540da0179f7181a8f10bf6e4784278f7084162fd18e3bbf37feaadd",
+       "id": "ts:packages/shp-checker/src/checker/check.ts",
+       "kind": "file",
+       "parent": null,
+       "projection": "file",
+       "scheme": "ts.file.v1"
+      },
+      {
+       "digest": "sha256:4925098611ab1ed93fd81439132ae6dd082799780121c18b21b99ae19160d660",
+       "id": "ts:packages/shp-checker/src/checker/check.ts",
+       "kind": "file",
+       "parent": null,
+       "projection": "own",
+       "scheme": "ts.own.v1"
+      },
+      {
+       "digest": "sha256:99ad7163faa65e3d3714d62207c6ba25e7f210aa3464435ed90bb8eb21d97a2b",
+       "id": "ts:packages/shp-checker/src/checker/check.ts#checkShapeModules",
+       "kind": "symbol",
+       "parent": "ts:packages/shp-checker/src/checker/check.ts",
+       "projection": "unit",
+       "scheme": "ts.unit.v2"
+      },
+      {
+       "digest": "sha256:bbeaff34f37a4d96e30d6c31fa29666d354a85a1c1134f0cc075ebc577fb9364",
+       "id": "ts:packages/shp-checker/src/checker/check.ts#checkShapeModules",
+       "kind": "symbol",
+       "parent": "ts:packages/shp-checker/src/checker/check.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2"
+      },
+      {
+       "digest": "sha256:1d8c5165e231f1060756778133ff046297a62aaeb826dd94fe12b3dfcd377379",
+       "id": "ts:packages/shp-checker/src/behavioural/determinism.test.ts",
+       "kind": "file",
+       "parent": null,
+       "projection": "file",
+       "scheme": "ts.file.v1"
+      },
+      {
+       "digest": "sha256:7e106ddcd1e3f2763f135f48cb6f14ef054dc52c3f9f509babde818d08706e76",
+       "id": "ts:packages/shp-checker/src/behavioural/determinism.test.ts",
+       "kind": "file",
+       "parent": null,
+       "projection": "own",
+       "scheme": "ts.own.v1"
+      }
+     ],
+     "revision": "h5",
+     "tree": [],
+     "v": "shape.manifest.v1"
+    }
+   },
+   "predicateType": "https://shapelang.dev/manifest/v1",
+   "subject": []
+  },
+  "revision": "h5"
+ },
+ "mode": "change",
+ "now": "2026-10-25T12:00:00Z",
+ "records": [
+  {
+   "_type": "https://in-toto.io/Statement/v1",
+   "authenticated": true,
+   "predicate": {
+    "shape": {
+     "assumptions": [],
+     "claim": {
+      "fp": "sha256:8620c3bead39262d509d30d813c84d79db4e1ce51b1dd92c904225082519b8c3",
+      "id": "tooling::CheckIsDeterministic"
+     },
+     "code": [
+      {
+       "digest": "sha256:99ad7163faa65e3d3714d62207c6ba25e7f210aa3464435ed90bb8eb21d97a2b",
+       "id": "ts:packages/shp-checker/src/checker/check.ts#checkShapeModules",
+       "projection": "unit",
+       "scheme": "ts.unit.v2"
+      }
+     ],
+     "counterexample": null,
+     "deps": [
+      {
+       "digest": "sha256:4925098611ab1ed93fd81439132ae6dd082799780121c18b21b99ae19160d660",
+       "id": "ts:packages/shp-checker/src/checker/check.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2"
+      }
+     ],
+     "harness": [
+      {
+       "digest": "sha256:a875ae2919f09359fe10d9b8c85af69913a32a3b6c516ecc34f615390cb9159c",
+       "id": "ts:packages/shp-checker/src/behavioural/determinism.test.ts",
+       "projection": "own",
+       "scheme": "ts.own.v1"
+      }
+     ],
+     "kind": "test",
+     "provider": {
+      "id": "tooling::bunTest",
+      "version": "1"
+     },
+     "result": "supports",
+     "revision": "b5",
+     "time": "2026-10-25T10:00:00Z",
+     "v": "shape.evidence.v1"
+    }
+   },
+   "predicateType": "https://shapelang.dev/evidence/v1",
+   "subject": []
+  }
+ ],
+ "reviews": []
+}

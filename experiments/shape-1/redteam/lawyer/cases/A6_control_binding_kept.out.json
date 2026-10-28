@@ -1,0 +1,41 @@
+{
+ "answered": [],
+ "contract": "shape.check.output/v1",
+ "debt": [],
+ "errors": [],
+ "mode": "change",
+ "obligations": [
+  {
+   "binding": "bd:7a72c442cfd931cc0a353b622eb6d1fb18b7a92330dded58d80b70777ce2ca39",
+   "budget": "mechanical",
+   "claim": {
+    "fp": "sha256:ccfcbabf10265d643560fc2bcd0014f9bf15241ce35da1f5e0a269c349e617c0",
+    "ids": [
+     "audit::AuditEvent/AppendOnly/effect.forbid-HardDelete"
+    ],
+    "tier": "final"
+   },
+   "exception": null,
+   "exploited": null,
+   "final": true,
+   "force": "sound",
+   "group": "g:d8aa91339ae209d845c6f3b0b20443bd6e5e00f65fe7445743a1b97284f09738",
+   "introduced": true,
+   "key": "ob:bb51a88f52f5081e773dabf7f021b863325e003c20a47af0a4e2b8e133f59628",
+   "kind": "contradiction",
+   "owner": "audit::AuditTeam",
+   "questions": null,
+   "reason": null,
+   "severity": "blocking",
+   "subject": {
+    "atom": "HardDelete<audit::AuditEvent>",
+    "code": "ts:src/audit/purge.ts#purgeOldEvents"
+   },
+   "tier": "final",
+   "witness": [
+    "sha256:51ed979304abfea638295c5bec1e63db15cfa26c3425a552f31ae7ca312dc279"
+   ]
+  }
+ ],
+ "verdict": "blocked"
+}

@@ -1,0 +1,63 @@
+{
+ "answered": [],
+ "contract": "shape.check.output/v1",
+ "debt": [],
+ "errors": [],
+ "mode": "change",
+ "obligations": [
+  {
+   "binding": "bd:918418dea11e94ba088caa22aa66914b09667ed5c7fa67cd15cf4660fc5310d8",
+   "budget": "judgment",
+   "claim": null,
+   "exception": null,
+   "exploited": true,
+   "final": true,
+   "force": null,
+   "group": "g:61b3ca6c93aab3e8ff60daa557231c928c7b6b3ceb4edb751e7d386b8ccfb8d5",
+   "introduced": true,
+   "key": "ob:3a030062c4258ba1e0eded3f281716eff41bdca4316917987bdab1eb8e4f0e22",
+   "kind": "loosening",
+   "owner": "tooling::ShapeMaintainers",
+   "questions": [
+    "L1"
+   ],
+   "reason": null,
+   "severity": "blocking",
+   "subject": "sha256:cf369f77ee17e87abf8598b5489f3b483cc1b4efe348610cee5fe703c0ac7110",
+   "tier": "final",
+   "witness": []
+  },
+  {
+   "binding": "bd:92d2a9ce15a1c4c4d36a9a58d101ed3b035bd1709da472f424ee27fc1f400ff3",
+   "budget": "mechanical",
+   "claim": {
+    "fp": "sha256:251f84fefa1522b2d12739d7e8cdf52f7918ef6007e400ec9dfd0acb5f691eb9",
+    "ids": [
+     "tooling::CheckerNeverReadsClock"
+    ],
+    "tier": "critical"
+   },
+   "exception": null,
+   "exploited": null,
+   "final": false,
+   "force": "sound",
+   "group": "g:5f05ed57b4280186684f929afd52f527b76e3d5efa47f51913de44ffd30ed96a",
+   "introduced": false,
+   "key": "ob:6403abf43025e6c5cbb3e6255c2acab2a51155d493a9f5606343bb9e9531c671",
+   "kind": "contradiction",
+   "owner": "tooling::ShapeMaintainers",
+   "questions": null,
+   "reason": null,
+   "severity": "owed",
+   "subject": {
+    "atom": "Read<tooling::SystemClock>",
+    "code": "ts:packages/shp-checker/src/checker/rules/guards.ts#checkFreshness"
+   },
+   "tier": "critical",
+   "witness": [
+    "sha256:fedfa0b09d953521b133cd23472c44fba3a187a4b97d64f01324f5fb0a682a3e"
+   ]
+  }
+ ],
+ "verdict": "blocked"
+}

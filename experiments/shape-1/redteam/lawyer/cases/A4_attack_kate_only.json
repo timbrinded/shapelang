@@ -1,0 +1,658 @@
+{
+ "authors": [
+  "x::bot",
+  "x::alex"
+ ],
+ "base": {
+  "esf": {
+   "actors": [
+    {
+     "identities": [],
+     "kind": "team",
+     "members": [
+      "x::kate"
+     ],
+     "operator": null,
+     "q": "x::StoreTeam"
+    },
+    {
+     "identities": [],
+     "kind": "team",
+     "members": [
+      "x::sam"
+     ],
+     "operator": null,
+     "q": "x::SecTeam"
+    },
+    {
+     "identities": [],
+     "kind": "team",
+     "members": [
+      "x::alex"
+     ],
+     "operator": null,
+     "q": "x::Platform"
+    },
+    {
+     "identities": [],
+     "kind": "person",
+     "members": [],
+     "operator": null,
+     "q": "x::kate"
+    },
+    {
+     "identities": [],
+     "kind": "person",
+     "members": [],
+     "operator": null,
+     "q": "x::sam"
+    },
+    {
+     "identities": [],
+     "kind": "person",
+     "members": [],
+     "operator": null,
+     "q": "x::alex"
+    },
+    {
+     "identities": [],
+     "kind": "agent",
+     "members": [],
+     "operator": "x::alex",
+     "q": "x::bot"
+    }
+   ],
+   "claims": [
+    {
+     "args": {
+      "atom": "HardDelete<x::Ledger>",
+      "except": [],
+      "scope": [
+       "*"
+      ]
+     },
+     "ids": [
+      "x::LedgerIsAppendOnly"
+     ],
+     "op": "effect.forbid",
+     "owner": "x::SecTeam",
+     "requirement": null,
+     "tier": "critical"
+    }
+   ],
+   "components": [
+    {
+     "allows": [],
+     "assumes": [],
+     "attach": [],
+     "boundary": false,
+     "complete": [],
+     "grants": null,
+     "owner": "x::StoreTeam",
+     "paths": [
+      "src/store/**/*.ts"
+     ],
+     "q": "x::Store",
+     "tier": "normal",
+     "units": [],
+     "was": null
+    }
+   ],
+   "effects": [
+    {
+     "implies": [],
+     "verb": "Read"
+    },
+    {
+     "implies": [],
+     "verb": "Write"
+    },
+    {
+     "implies": [
+      "Read"
+     ],
+     "verb": "Export"
+    },
+    {
+     "implies": [
+      "Write"
+     ],
+     "verb": "Append"
+    },
+    {
+     "implies": [
+      "Write"
+     ],
+     "verb": "Import"
+    },
+    {
+     "implies": [
+      "Write"
+     ],
+     "verb": "Update"
+    },
+    {
+     "implies": [
+      "Update"
+     ],
+     "verb": "Redact"
+    },
+    {
+     "implies": [
+      "Update"
+     ],
+     "verb": "LogicalDelete"
+    },
+    {
+     "implies": [
+      "Update"
+     ],
+     "verb": "HardDelete"
+    },
+    {
+     "implies": [
+      "HardDelete"
+     ],
+     "verb": "Truncate"
+    },
+    {
+     "implies": [
+      "Truncate"
+     ],
+     "verb": "DropStorage"
+    },
+    {
+     "implies": [],
+     "verb": "Hatch"
+    }
+   ],
+   "errors": [],
+   "exceptions": [],
+   "hatches": [
+    {
+     "kind": "external_body",
+     "lang": "verus"
+    },
+    {
+     "kind": "external",
+     "lang": "verus"
+    },
+    {
+     "kind": "assume",
+     "lang": "verus"
+    },
+    {
+     "kind": "admit",
+     "lang": "verus"
+    },
+    {
+     "kind": "assume_specification",
+     "lang": "verus"
+    },
+    {
+     "kind": "uninterp",
+     "lang": "verus"
+    },
+    {
+     "kind": "axiom",
+     "lang": "verus"
+    },
+    {
+     "kind": "unsafe",
+     "lang": "bend"
+    },
+    {
+     "kind": "ts_ignore",
+     "lang": "ts"
+    }
+   ],
+   "kinds": [
+    {
+     "from": "component",
+     "name": "calls",
+     "to": "component"
+    },
+    {
+     "from": "component",
+     "name": "callbacks",
+     "to": "component"
+    },
+    {
+     "from": "component",
+     "name": "provides",
+     "to": "resource"
+    },
+    {
+     "from": "component",
+     "name": "data_flow",
+     "to": "component"
+    },
+    {
+     "from": "component",
+     "name": "coordinated_call",
+     "to": "component"
+    }
+   ],
+   "notes": [],
+   "providers": [],
+   "resources": [
+    {
+     "attach": [],
+     "bind": [
+      "pg.table(\"ledger\")"
+     ],
+     "owner": "x::SecTeam",
+     "q": "x::Ledger",
+     "tier": "critical",
+     "was": null
+    }
+   ],
+   "shape": {
+    "owner": "x::Platform",
+    "policy": "std::DefaultPolicy",
+    "q": "x::Shop"
+   },
+   "templates": [],
+   "units": [],
+   "v": "shape.elaborated.v1"
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "predicate": {
+    "shape": {
+     "entries": [
+      {
+       "digest": "sha256:f800345c25f8b574b91dc9a18f72ba8cad02650eaacfedbb96a214e9b0a3525c",
+       "id": "ts:src/store/a.ts",
+       "kind": "file",
+       "parent": null,
+       "projection": "file",
+       "scheme": "ts.file.v1"
+      },
+      {
+       "digest": "sha256:a125d7e00829793d1d9eae33db51d7864aef3d1c1d54bb60ca5b87f002aaa9d2",
+       "id": "ts:src/store/a.ts",
+       "kind": "file",
+       "parent": null,
+       "projection": "own",
+       "scheme": "ts.own.v1"
+      },
+      {
+       "digest": "sha256:70e1915331d4cf962e2bbc626cf3a0479e0a2d230e0c5f96125db30600bbdbe7",
+       "id": "ts:src/store/a.ts#f",
+       "kind": "symbol",
+       "parent": "ts:src/store/a.ts",
+       "projection": "unit",
+       "scheme": "ts.unit.v2"
+      },
+      {
+       "digest": "sha256:99689bc742b060edd931e4b2b3c61b4f0b69e5162fa3f4b6665f42f494ec7580",
+       "id": "ts:src/store/a.ts#f",
+       "kind": "symbol",
+       "parent": "ts:src/store/a.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2"
+      }
+     ],
+     "revision": "b6",
+     "tree": [],
+     "v": "shape.manifest.v1"
+    }
+   },
+   "predicateType": "https://shapelang.dev/manifest/v1",
+   "subject": []
+  },
+  "revision": "b6"
+ },
+ "baseRecords": [],
+ "cells": [],
+ "change": {
+  "ids": [
+   "github:acme/x#1"
+  ]
+ },
+ "contract": "shape.kernel.case/v1",
+ "head": {
+  "esf": {
+   "actors": [
+    {
+     "identities": [],
+     "kind": "team",
+     "members": [
+      "x::kate"
+     ],
+     "operator": null,
+     "q": "x::StoreTeam"
+    },
+    {
+     "identities": [],
+     "kind": "team",
+     "members": [
+      "x::sam"
+     ],
+     "operator": null,
+     "q": "x::SecTeam"
+    },
+    {
+     "identities": [],
+     "kind": "team",
+     "members": [
+      "x::alex"
+     ],
+     "operator": null,
+     "q": "x::Platform"
+    },
+    {
+     "identities": [],
+     "kind": "person",
+     "members": [],
+     "operator": null,
+     "q": "x::kate"
+    },
+    {
+     "identities": [],
+     "kind": "person",
+     "members": [],
+     "operator": null,
+     "q": "x::sam"
+    },
+    {
+     "identities": [],
+     "kind": "person",
+     "members": [],
+     "operator": null,
+     "q": "x::alex"
+    },
+    {
+     "identities": [],
+     "kind": "agent",
+     "members": [],
+     "operator": "x::alex",
+     "q": "x::bot"
+    }
+   ],
+   "claims": [
+    {
+     "args": {
+      "atom": "HardDelete<x::Ledger>",
+      "except": [],
+      "scope": [
+       "*"
+      ]
+     },
+     "ids": [
+      "x::LedgerIsAppendOnly"
+     ],
+     "op": "effect.forbid",
+     "owner": "x::SecTeam",
+     "requirement": null,
+     "tier": "critical"
+    }
+   ],
+   "components": [
+    {
+     "allows": [],
+     "assumes": [],
+     "attach": [],
+     "boundary": false,
+     "complete": [],
+     "grants": null,
+     "owner": "x::StoreTeam",
+     "paths": [
+      "src/store/**/*.ts"
+     ],
+     "q": "x::Store",
+     "tier": "normal",
+     "units": [],
+     "was": null
+    }
+   ],
+   "effects": [
+    {
+     "implies": [],
+     "verb": "Read"
+    },
+    {
+     "implies": [],
+     "verb": "Write"
+    },
+    {
+     "implies": [
+      "Read"
+     ],
+     "verb": "Export"
+    },
+    {
+     "implies": [
+      "Write"
+     ],
+     "verb": "Append"
+    },
+    {
+     "implies": [
+      "Write"
+     ],
+     "verb": "Import"
+    },
+    {
+     "implies": [
+      "Write"
+     ],
+     "verb": "Update"
+    },
+    {
+     "implies": [
+      "Update"
+     ],
+     "verb": "Redact"
+    },
+    {
+     "implies": [
+      "Update"
+     ],
+     "verb": "LogicalDelete"
+    },
+    {
+     "implies": [
+      "Update"
+     ],
+     "verb": "HardDelete"
+    },
+    {
+     "implies": [
+      "HardDelete"
+     ],
+     "verb": "Truncate"
+    },
+    {
+     "implies": [
+      "Truncate"
+     ],
+     "verb": "DropStorage"
+    },
+    {
+     "implies": [],
+     "verb": "Hatch"
+    }
+   ],
+   "errors": [],
+   "exceptions": [],
+   "hatches": [
+    {
+     "kind": "external_body",
+     "lang": "verus"
+    },
+    {
+     "kind": "external",
+     "lang": "verus"
+    },
+    {
+     "kind": "assume",
+     "lang": "verus"
+    },
+    {
+     "kind": "admit",
+     "lang": "verus"
+    },
+    {
+     "kind": "assume_specification",
+     "lang": "verus"
+    },
+    {
+     "kind": "uninterp",
+     "lang": "verus"
+    },
+    {
+     "kind": "axiom",
+     "lang": "verus"
+    },
+    {
+     "kind": "unsafe",
+     "lang": "bend"
+    },
+    {
+     "kind": "ts_ignore",
+     "lang": "ts"
+    }
+   ],
+   "kinds": [
+    {
+     "from": "component",
+     "name": "calls",
+     "to": "component"
+    },
+    {
+     "from": "component",
+     "name": "callbacks",
+     "to": "component"
+    },
+    {
+     "from": "component",
+     "name": "provides",
+     "to": "resource"
+    },
+    {
+     "from": "component",
+     "name": "data_flow",
+     "to": "component"
+    },
+    {
+     "from": "component",
+     "name": "coordinated_call",
+     "to": "component"
+    }
+   ],
+   "notes": [],
+   "providers": [],
+   "resources": [
+    {
+     "attach": [],
+     "bind": [
+      "pg.table(\"ledger\")"
+     ],
+     "owner": "x::SecTeam",
+     "q": "x::Ledger",
+     "tier": "critical",
+     "was": null
+    }
+   ],
+   "shape": {
+    "owner": "x::Platform",
+    "policy": "std::DefaultPolicy",
+    "q": "x::Shop"
+   },
+   "templates": [],
+   "units": [],
+   "v": "shape.elaborated.v1"
+  },
+  "manifest": {
+   "_type": "https://in-toto.io/Statement/v1",
+   "predicate": {
+    "shape": {
+     "entries": [
+      {
+       "digest": "sha256:f800345c25f8b574b91dc9a18f72ba8cad02650eaacfedbb96a214e9b0a3525c",
+       "id": "ts:src/store/a.ts",
+       "kind": "file",
+       "parent": null,
+       "projection": "file",
+       "scheme": "ts.file.v1"
+      },
+      {
+       "digest": "sha256:a125d7e00829793d1d9eae33db51d7864aef3d1c1d54bb60ca5b87f002aaa9d2",
+       "id": "ts:src/store/a.ts",
+       "kind": "file",
+       "parent": null,
+       "projection": "own",
+       "scheme": "ts.own.v1"
+      },
+      {
+       "digest": "sha256:70e1915331d4cf962e2bbc626cf3a0479e0a2d230e0c5f96125db30600bbdbe7",
+       "id": "ts:src/store/a.ts#f",
+       "kind": "symbol",
+       "parent": "ts:src/store/a.ts",
+       "projection": "unit",
+       "scheme": "ts.unit.v2"
+      },
+      {
+       "digest": "sha256:99689bc742b060edd931e4b2b3c61b4f0b69e5162fa3f4b6665f42f494ec7580",
+       "id": "ts:src/store/a.ts#f",
+       "kind": "symbol",
+       "parent": "ts:src/store/a.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2"
+      },
+      {
+       "digest": "sha256:456b97389ac68a54e84a65d47e413e439d471509676121d76ccac0e3aa0acb2d",
+       "id": "ts:src/store/purge.ts",
+       "kind": "file",
+       "parent": null,
+       "projection": "file",
+       "scheme": "ts.file.v1"
+      },
+      {
+       "digest": "sha256:45d14b3392a77b6dc0b804e8bda571b244268d74e1ba2923d37fcf26cc8bc9ce",
+       "id": "ts:src/store/purge.ts",
+       "kind": "file",
+       "parent": null,
+       "projection": "own",
+       "scheme": "ts.own.v1"
+      },
+      {
+       "digest": "sha256:324b792db859060848d43a5e47fb149bc093eee8d94e0aa91e612b8550a03c17",
+       "id": "ts:src/store/purge.ts#purge",
+       "kind": "symbol",
+       "parent": "ts:src/store/purge.ts",
+       "projection": "unit",
+       "scheme": "ts.unit.v2"
+      },
+      {
+       "digest": "sha256:b90c2ae653238d7b4172b0e9409b4436420206853e0d891e4a749b5f9e1186e5",
+       "id": "ts:src/store/purge.ts#purge",
+       "kind": "symbol",
+       "parent": "ts:src/store/purge.ts",
+       "projection": "own",
+       "scheme": "ts.own.v2"
+      }
+     ],
+     "revision": "h6",
+     "tree": [],
+     "v": "shape.manifest.v1"
+    }
+   },
+   "predicateType": "https://shapelang.dev/manifest/v1",
+   "subject": []
+  },
+  "revision": "h6"
+ },
+ "mode": "change",
+ "now": "2026-10-25T12:00:00Z",
+ "records": [],
+ "reviews": [
+  {
+   "actor": "x::kate",
+   "change": "github:acme/x#1",
+   "line": "shape approve bd:47123ca8f8c5a346"
+  }
+ ]
+}
